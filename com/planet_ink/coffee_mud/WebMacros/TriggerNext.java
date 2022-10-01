@@ -51,6 +51,7 @@ public class TriggerNext extends StdWebMacro
 	public static List<String[]> parseTriggerDef(String trigger)
 	{
 		final List<String[]> triggers = new Vector<String[]>();
+		String lastConn = "&";
 		while(trigger.length()>0)
 		{
 			final int div1=trigger.indexOf('&');
@@ -73,14 +74,14 @@ public class TriggerNext extends StdWebMacro
 			if(trig.length()>0)
 			{
 				final Vector<String> V=CMParms.parse(trig);
-				if(V.size()>1)
+				if(V.size()>0)
 				{
-					String cmd=V.firstElement();
+					String cmd=V.firstElement().toUpperCase().trim();
 					TriggerCode T;
 					if(cmd.endsWith("+"))
 						T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd.substring(0,cmd.length()-1));
 					else
-						T = (TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd);
+						T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd);
 					if(T==null)
 					{
 						for(final TriggerCode RT : TriggerCode.values())
@@ -96,11 +97,13 @@ public class TriggerNext extends StdWebMacro
 					if(T!=null)
 					{
 						final List<String> t = new ArrayList<String>();
-						t.add((div==div1)?"&":"|");
+						t.add(lastConn);
+						lastConn=((div==div1)?"&":"|");
 						t.add(cmd);
 						for(int i=1;i<T.parmTypes.length;i++)
-							t.add(1,V.remove(V.size()-1));
-						t.add(1,CMParms.combine(V,1));
+							t.add(2,V.remove(V.size()-1));
+						if(T.parmTypes.length>0)
+							t.add(2,CMParms.combine(V,1));
 						triggers.add(t.toArray(new String[t.size()]));
 					}
 				}
@@ -111,14 +114,23 @@ public class TriggerNext extends StdWebMacro
 
 	protected static List<String[]> getTrigDefs(final HTTPRequest httpReq, final String triggerDefStr)
 	{
-		@SuppressWarnings("unchecked")
-		List<String[]> trigDefs = (List<String[]>)httpReq.getRequestObjects().get("ALLTRIGGERS");
-		if(trigDefs == null)
+		return parseTriggerDef(triggerDefStr);
+	}
+
+	protected static enum TrigMGField
+	{
+		PARMCOUNT("CT"),
+		CONNECTOR("CONN"),
+		TRIGTYPE("TRIG"),
+		VALUE("VAL"),
+		PARMTYPE("PARM"),
+		ARG("ARG"),
+		;
+		public String str;
+		private TrigMGField(final String fieldPostdex)
 		{
-			trigDefs = parseTriggerDef(triggerDefStr);
-			httpReq.getRequestObjects().put("ALLTRIGGERS", trigDefs);
+			str = fieldPostdex;
 		}
-		return trigDefs;
 	}
 
 	@Override
@@ -135,10 +147,56 @@ public class TriggerNext extends StdWebMacro
 		final String field = httpReq.getUrlParameter("FIELD");
 		if(field == null)
 			return " @break@";
-		final String triggerDefStr = httpReq.getUrlParameter(field);
-		if(triggerDefStr == null)
-			return " @break@";
-		final List<String[]> trigDefs = getTrigDefs(httpReq, triggerDefStr);
+		@SuppressWarnings("unchecked")
+		List<String[]> trigDefs = (List<String[]>)httpReq.getRequestObjects().get("TRIGGERDEFSTR");
+		if(trigDefs == null)
+		{
+			String triggerDefStr = httpReq.getUrlParameter(field);
+			if(triggerDefStr == null)
+				return " @break@";
+			final StringBuilder buildStr = new StringBuilder("");
+			int trigDex=0;
+			while(httpReq.isUrlParameter("TRIG"+trigDex+TrigMGField.PARMCOUNT.str))
+			{
+				final String cmd = httpReq.getUrlParameter("TRIG"+trigDex+TrigMGField.TRIGTYPE.str);
+				if(!cmd.equalsIgnoreCase("DELETE"))
+				{
+					final int ct = CMath.s_int(httpReq.getUrlParameter("TRIG"+trigDex+TrigMGField.PARMCOUNT.str));
+					if(trigDex>0)
+					{
+						final String connStr=httpReq.getUrlParameter("TRIG"+trigDex+TrigMGField.CONNECTOR.str);
+						buildStr.append(connStr);
+					}
+					buildStr.append(cmd);
+					if("on".equalsIgnoreCase(httpReq.getUrlParameter("TRIG"+trigDex+TrigMGField.ARG.str)))
+						buildStr.append("+");
+					buildStr.append(" ");
+					for(int x=0;x<ct;x++)
+					{
+						String p = httpReq.getUrlParameter("TRIG"+trigDex+TrigMGField.VALUE.str+x);
+						if(p == null)
+							p="";
+						if(p.indexOf(' ')>0)
+							p="\""+CMStrings.replaceAll(CMStrings.replaceAll(p,"\\","\\\\"),"\"","\\\"")+"\"";
+						buildStr.append(p).append(" ");
+					}
+				}
+				trigDex++;
+			}
+			final String newConn = httpReq.getUrlParameter("TRIGCONN");
+			if((newConn != null) && (newConn.length()==1))
+			{
+				if(buildStr.length()>0)
+					buildStr.append(newConn);
+				buildStr.append("WAIT 0");
+			}
+			if(buildStr.length()>0)
+			{
+				triggerDefStr = buildStr.toString();
+			}
+			trigDefs = getTrigDefs(httpReq, triggerDefStr);
+			httpReq.getRequestObjects().put("TRIGGERDEFSTR",trigDefs);
+		}
 		String lastID="";
 		String componentID;
 		int trigDex = 0;
@@ -152,23 +210,35 @@ public class TriggerNext extends StdWebMacro
 			{
 				httpReq.addFakeUrlParameter("TRIGGER",componentID);
 				final String[] td = trigDefs.get(trigDex);
-				final TriggerCode T = (TriggerCode)CMath.s_valueOf(TriggerCode.class, td[1]);
-				if(!httpReq.isUrlParameter("TRIG"+trigDex+"CT"))
-					httpReq.addFakeUrlParameter("TRIG"+trigDex+"CT", Integer.toString(T.parmTypes.length));
-				if(!httpReq.isUrlParameter("TRIG"+trigDex+"CONN"))
-					httpReq.addFakeUrlParameter("TRIG"+trigDex+"CONN", td[0]);
-				if(!httpReq.isUrlParameter("TRIG"+trigDex+"TYP"))
-					httpReq.addFakeUrlParameter("TRIG"+trigDex+"TYP", td[1]);
+				if(td[1].equalsIgnoreCase("DELETE"))
+				{
+					trigDex--;
+					continue;
+				}
+				TriggerCode T;
+				if(td[1].endsWith("+"))
+					T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, td[1].substring(0,td[1].length()-1));
+				else
+					T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, td[1]);
+				final StringBuilder newSubTrigger = new StringBuilder("");
+				httpReq.addFakeUrlParameter("TRIG"+trigDex+TrigMGField.ARG.str, td[1].endsWith("+")?"on":"");
+				httpReq.addFakeUrlParameter("TRIG"+trigDex+TrigMGField.PARMCOUNT.str, Integer.toString(T.parmTypes.length));
+				httpReq.addFakeUrlParameter("TRIG"+trigDex+TrigMGField.CONNECTOR.str, td[0]);
+				newSubTrigger.append(httpReq.getUrlParameter("TRIG"+trigDex+TrigMGField.CONNECTOR.str));
+				httpReq.addFakeUrlParameter("TRIG"+trigDex+TrigMGField.TRIGTYPE.str, T.name());
+				newSubTrigger.append(httpReq.getUrlParameter("TRIG"+trigDex+TrigMGField.TRIGTYPE.str));
+				newSubTrigger.append(" ");
 				for(int x=2;x<td.length;x++)
 				{
-					if(!httpReq.isUrlParameter("TRIG"+trigDex+"VAL"))
-						httpReq.addFakeUrlParameter("TRIG"+trigDex+"VAL"+(x-2), td[x]);
+					httpReq.addFakeUrlParameter("TRIG"+trigDex+TrigMGField.VALUE.str+(x-2), td[x]);
+					String p = httpReq.getUrlParameter("TRIG"+trigDex+TrigMGField.VALUE.str+(x-2));
+					if(p.indexOf(' ')>0)
+						p="\""+CMStrings.replaceAll(CMStrings.replaceAll(p,"\\","\\\\"),"\"","\\\"")+"\"";
+					newSubTrigger.append(p).append(" ");
 				}
 				for(int x=0;x<T.parmTypes.length;x++)
-				{
-					if(!httpReq.isUrlParameter("TRIG"+trigDex+"TYP"))
-						httpReq.addFakeUrlParameter("TRIG"+trigDex+"TYP"+x, T.parmTypes[x].getSimpleName());
-				}
+					httpReq.addFakeUrlParameter("TRIG"+trigDex+TrigMGField.PARMTYPE.str+x, T.parmTypes[x].getSimpleName());
+				httpReq.addFakeUrlParameter("TRIG"+trigDex+"BUILT", newSubTrigger.toString());
 				return "";
 			}
 			trigDex++;

@@ -13,7 +13,7 @@
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
 		var properTarget='MAP';
-		
+	
 		function AddNewItem()
 		{
 			document.AREAEDIT.action='/grinder/addmobitem.cmvp';
@@ -111,7 +111,6 @@
 			document.AREAEDIT.action='/grinder/editmobform.cmvp';
 			document.AREAEDIT.submit();
 		}
-		
 		function ReShow()
 		{
 			document.AREAEDIT.action='/grinder/editmobform.cmvp';
@@ -132,6 +131,18 @@
 				document.AREAEDIT.submit();
 			}
 		}
+		
+		function adjfieldval(field,val)
+		{
+			eval('field = document.AREAEDIT.'+field+';');
+			field.value = val;
+		}
+		function Trigger(field, value)
+		{
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/grinder/trigger.cmvp?FIELD="+field+"&AUTH="+encodeURIComponent("@Authenticate?AUTH@")+"&"+field+"="+encodeURIComponent(value),
+			            "Trigger/Ritual Worksheet",strFeatures, false);
+		}
 	//-->
 	</SCRIPT>
 </head>
@@ -149,7 +160,7 @@
 <P><FONT COLOR=RED><H1>@RequestParameter?ERRMSG@</H1></FONT>
 <BR>
 @if?CheckReqParm?ROOM=ANY@
-	<FORM  ACCEPT-CHARSET="UTF-8" NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/editnewmobdone.cmvp">
+	<FORM ACCEPT-CHARSET="UTF-8" NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/editnewmobdone.cmvp">
 	<INPUT TYPE=HIDDEN NAME=ROOM VALUE="ANY">
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
@@ -462,15 +473,15 @@
 	</TR>
 	<TR>
 		<TD><FONT COLOR="#66FFFF"><B>Cleric Ritual:</B></FONT></TD>
-		<TD COLSPAN=2><TEXTAREA ROWS=3 NAME=CLERIT COLS=45 WRAP=VIRTUAL>@MobData?CLERIT@</TEXTAREA>
+		<TD COLSPAN=2><TEXTAREA ROWS=3 NAME=CLERIT COLS=45 WRAP=VIRTUAL ONCLICK="Trigger('CLERIT',this.value);">@MobData?CLERIT@</TEXTAREA>
 	</TR>
 	<TR>
 		<TD><FONT COLOR="#66FFFF"><B>Worship Ritual:</B></FONT></TD>
-		<TD COLSPAN=2><TEXTAREA ROWS=3  NAME=WORRIT COLS=45 WRAP=VIRTUAL>@MobData?WORRIT@</TEXTAREA>
+		<TD COLSPAN=2><TEXTAREA ROWS=3  NAME=WORRIT COLS=45 WRAP=VIRTUAL ONCLICK="Trigger('WORRIT',this.value);">@MobData?WORRIT@</TEXTAREA>
 	</TR>
 	<TR>
 		<TD><FONT COLOR="#66FFFF"><B>Service Ritual:</B></FONT></TD>
-		<TD COLSPAN=2><TEXTAREA ROWS=3  NAME=SVCRIT COLS=45 WRAP=VIRTUAL>@MobData?SVCRIT@</TEXTAREA>
+		<TD COLSPAN=2><TEXTAREA ROWS=3  NAME=SVCRIT COLS=45 WRAP=VIRTUAL ONCLICK="Trigger('SVCRIT',this.value);">@MobData?SVCRIT@</TEXTAREA>
 	</TR>
 	<TR>
 		<TD><FONT COLOR="#66FFFF"><B>Curses of Sin:</B></FONT>

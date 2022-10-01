@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_COMPONENTS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<html>
+	<META CHARSET="utf-8"/>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+    <title>Trigger/Ritual Worksheet</title>
+    <script language=JavaScript>
+    <!--
+        function Delete()
+        {
+            if(confirm('Delete this trigger definition?! Confirm!'))
+            {
+                document.RESOURCES.FUNCTION.value='DELETE';
+                document.RESOURCES.action='/grinder/trigger.cmvp';
+                document.RESOURCES.submit();
+            }
+        }
+        function EditDone()
+        {
+            if(confirm('Submit your changes to this trigger?'))
+            {
+                document.RESOURCES.FUNCTION.value='EDIT';
+                document.RESOURCES.action='/grinder/trigger.cmvp';
+                document.RESOURCES.submit();
+            }
+        }
+        function ReShow()
+        {
+            document.RESOURCES.FUNCTION.value='';
+            document.RESOURCES.action='/grinder/trigger.cmvp';
+            document.RESOURCES.submit();
+        }
+        function Cancel()
+        {
+            window.close();
+        }
+    //-->
+    </script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="component.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=HIDDEN NAME=TRIGCOMPONENTMODE VALUE="@RequestParameter?TRIGCOMPONENTMODE@">
+<INPUT TYPE=HIDDEN NAME=FIELD VALUE="@RequestParameter?FIELD@">
+<INPUT TYPE=HIDDEN NAME=@RequestParameter?FIELD@ VALUE="@RequestParameter?@@RequestParameter?FIELD@@ @">
+<CENTER><FONT COLOR=WHITE>@RequestParameter?FIELD@ Trigger/Ritual Worksheet</FONT></CENTER>
+<P>
+@TriggerNext?RESET@
+@loop@
+    @TriggerNext@
+    <CENTER>
+    @if?!CheckReqParm?TRIGGER=0@
+        <SELECT NAME="TRIG@RequestParameter?TRIGGER@CONN">
+            <OPTION VALUE="&" @if?CheckReqParm?TRIG@@RequestParameter?TRIGGER@@CONN=&amp;@SELECTED@endif@>AND THEN
+            <OPTION VALUE="|" @if?CheckReqParm?TRIG@@RequestParameter?TRIGGER@@CONN=|@SELECTED@endif@>OR
+        </SELECT>
+    @else@
+    	<INPUT TYPE=HIDDEN NAME="TRIG@RequestParameter?TRIGGER@CONN" VALUE="&amp;">
+    @endif@
+    </CENTER>
+    <P>
+    <TABLE WIDTH=100% BORDER=0>
+    	<TR>
+    	<TD WIDTH=20%><FONT COLOR=YELLOW>Trigger Code:</FONT></TD>
+    	<TD>
+	    <SELECT NAME="TRIG@RequestParameter?TRIGGER@TRIG" ONCHANGE="ReShow();">
+	        <OPTION VALUE=DELETE>DELETE
+	        @TriggerData?CODES@
+	    </SELECT>
+	    &nbsp;&nbsp;
+	    <INPUT TYPE=CHECKBOX NAME="TRIG@RequestParameter?TRIGGER@ARG" @if?CheckReqParm?TRIG@@RequestParameter?TRIGGER@@ARG=on@checked@endif@>
+	    <INPUT TYPE=HIDDEN NAME="TRIG@RequestParameter?TRIGGER@CT" VALUE="@RequestParameter?TRIG@@RequestParameter?TRIGGER@@CT@">
+    	</TD></TR>
+	    @AddRequestParameter?TRIGPARMDEX=0@
+	    @loop@
+	        @if?CheckReqParm?TRIGPARMDEX=@@RequestParameter?TRIG@@@RequestParameter?TRIGGER@@@CT@@ @
+	            @break@
+	        @endif@
+	        <TR>
+		    	<TD WIDTH=20%>
+		    		<FONT COLOR=YELLOW>Param #@RequestParameter?TRIGPARMDEX@:</FONT>
+		    	</TD>
+		    	<TD>
+		    		@if?CheckReqParm?TRIG@@RequestParameter?TRIGGER@@PARM@@RequestParameter?TRIGPARMDEX@@=String@
+				        <INPUT TYPE=TEXT SIZE=50 NAME="TRIG@RequestParameter?TRIGGER@VAL@RequestParameter?TRIGPARMDEX@"
+				            VALUE="@RequestParameter?TRIG@@RequestParameter?TRIGGER@@VAL@@RequestParameter?TRIGPARMDEX@@ @">
+				    @elif?CheckReqParm?TRIG@@RequestParameter?TRIGGER@@PARM@@RequestParameter?TRIGPARMDEX@@=Integer@
+				        <INPUT TYPE=TEXT SIZE=10 NAME="TRIG@RequestParameter?TRIGGER@VAL@RequestParameter?TRIGPARMDEX@"
+				            VALUE="@RequestParameter?TRIG@@RequestParameter?TRIGGER@@VAL@@RequestParameter?TRIGPARMDEX@@ @">
+				    @elif?CheckReqParm?TRIG@@RequestParameter?TRIGGER@@PARM@@RequestParameter?TRIGPARMDEX@@=Social@
+				        <SELECT NAME="TRIG@RequestParameter?TRIGGER@VAL@RequestParameter?TRIGPARMDEX@">
+				        @SocialNext?RESET@
+				        @loop@
+				        	@SocialNext@
+				        	<OPTION VALUE="@SocialID@"
+				        	@if?CheckReqParm?TRIG@@RequestParameter?TRIGGER@@VAL@@RequestParameter?TRIGPARMDEX@@=@@SocialID@@ @
+				        	SELECTED
+				        	@endif@
+				        	>@SocialID@
+				        @back@
+			        	@if?!CheckReqParm?TRIGCOMPONENTMODE=@
+					        @SocialNext?RESET&COMPONENT@
+					        @loop@
+					        	@SocialNext?COMPONENT@
+					        	<OPTION VALUE="@SocialID@"
+					        	@if?CheckReqParm?TRIG@@RequestParameter?TRIGGER@@VAL@@RequestParameter?TRIGPARMDEX@@=@@SocialID@@ @
+					        	SELECTED
+					        	@endif@
+					        	>@SocialID@
+					        @back@
+			        	@endif@
+				        </SELECT>
+		    		@elif?CheckReqParm?TRIG@@RequestParameter?TRIGGER@@PARM@@RequestParameter?TRIGPARMDEX@@=Ability@
+				        <SELECT NAME="TRIG@RequestParameter?TRIGGER@VAL@RequestParameter?TRIGPARMDEX@">
+				        @AbilityNext?RESET@
+				        @loop@
+				        	@AbilityNext@
+				        	<OPTION VALUE="@AbilityID@"
+				        	@if?CheckReqParm?TRIG@@RequestParameter?TRIGGER@@VAL@@RequestParameter?TRIGPARMDEX@@=@@AbilityID@@ @
+				        	SELECTED
+				        	@endif@
+				        	>@AbilityID@
+				        @back@
+				        </SELECT>
+		    		@elif?CheckReqParm?TRIG@@RequestParameter?TRIGGER@@PARM@@RequestParameter?TRIGPARMDEX@@=Material@
+				        <SELECT NAME="TRIG@RequestParameter?TRIGGER@VAL@RequestParameter?TRIGPARMDEX@">
+				        @TriggerData?MATS&VALUE=@@RequestParameter?TRIG@@@RequestParameter?TRIGGER@@@VAL@@@RequestParameter?TRIGPARMDEX@@@ @@ @
+				        </SELECT>
+				    @else@
+				        <INPUT TYPE=TEXT SIZE=50 NAME="TRIG@RequestParameter?TRIGGER@VAL@RequestParameter?TRIGPARMDEX@"
+				            VALUE="@RequestParameter?TRIG@@RequestParameter?TRIGGER@@VAL@@RequestParameter?TRIGPARMDEX@@ @">
+				    @endif@
+			    </TD>
+		        @AddRequestParameter?TRIGPARMDEX=++@
+		    </TR>
+	    @back@
+    </TABLE>
+@back@
+<INPUT TYPE=HIDDEN NAME=NEWVALUE VALUE="@TriggerData?FINAL@">
+<CENTER>
+	<SELECT NAME="TRIGCONN"  ONCHANGE="ReShow()">
+	<OPTION VALUE="">Pick one to add
+	<OPTION VALUE="&amp;">And
+	<OPTION VALUE="|">Or
+	</SELECT>
+</CENTER>
+<BR>
+<TABLE WIDTH=100% BORDER=0>
+<TR>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Finished" ONCLICK="EditDone();"></TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="window.close();"></TD>
+</TR>
+</TABLE>
+</FORM>
+<script language=JavaScript>
+<!--
+@if?CheckReqParm?FUNCTION=DELETE@
+    window.opener.adjfieldval('@RequestParameter?FIELD@','');
+    window.close();
+@endif@
+@if?CheckReqParm?FUNCTION=EDIT@
+    var newval = document.RESOURCES.NEWVALUE.value;
+    window.opener.adjfieldval('@RequestParameter?FIELD@',newval);
+    window.close();
+@endif@
+//-->
+</script>
+</BODY>
+</HTML>
+@endif@
+@endif@

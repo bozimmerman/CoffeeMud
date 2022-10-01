@@ -385,7 +385,7 @@ public class StdWebMacro implements WebMacro
 		return "";
 	}
 
-	protected PairSVector<String,String> parseOrderedParms(final String parm, final boolean preserveCase)
+	protected PairSVector<String,String> parseOrderedParms(String parm, final boolean preserveCase)
 	{
 		final PairSVector<String,String> requestParms=new PairSVector<String,String>();
 		if((parm!=null)&&(parm.length()>0))
@@ -401,6 +401,14 @@ public class StdWebMacro implements WebMacro
 					break;
 				case '&':
 				{
+					if((i<parm.length()-4)
+					&&(parm.charAt(i+1)=='a')
+					&&(parm.substring(i+1,i+5).equals("amp;")))
+					{
+						parm=parm.substring(0,i+1)+parm.substring(i+5);
+						break;
+					}
+					else
 					if(varSeq==null)
 					{
 						if(preserveCase)

@@ -69,6 +69,21 @@ public class SocialNext extends StdWebMacro
 			}
 			lastID=name;
 		}
+		if(parms.containsKey("COMPONENT"))
+		{
+			final Map<String,List<Social>> compSoc = CMLib.ableComponents().getComponentSocials();
+			final List<String> list = new XVector<String>(compSoc.keySet());
+			for(int s=0;s<list.size();s++)
+			{
+				final String name=list.get(s);
+				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!name.equalsIgnoreCase(lastID))))
+				{
+					httpReq.addFakeUrlParameter("SOCIAL",name);
+					return "";
+				}
+				lastID=name;
+			}
+		}
 		httpReq.addFakeUrlParameter("SOCIAL","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";

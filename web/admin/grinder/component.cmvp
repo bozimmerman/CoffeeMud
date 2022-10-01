@@ -64,6 +64,17 @@
             w=window.open("/"+file+"?HELPTOPIC="+named,
                         "Help",strFeatures, false);
         }
+		function adjfieldval(field,val)
+		{
+			eval('field = document.RESOURCES.'+field+';');
+			field.value = val;
+		}
+		function Trigger(field, value)
+		{
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/grinder/trigger.cmvp?FIELD="+field+"&TRIGCOMPONENTMODE=true&AUTH="+encodeURIComponent("@Authenticate?AUTH@")+"&"+field+"="+encodeURIComponent(value),
+			            "Trigger/Ritual Worksheet",strFeatures, false);
+		}
     //-->
     </script>
 </head>
@@ -124,7 +135,7 @@
 			<TR>
 				<TD><FONT COLOR=YELLOW><B>Trigger Ritual:</B></FONT><A HREF="javascript:openUp('RITUALS')"><FONT COLOR=WHITE>?</FONT></a></TD>
 				<TD COLSPAN=2>
-					<TEXTAREA ROWS=3 NAME=@ComponentID@_PIECE_RITUAL_@ComponentPieceID@ COLS=45 WRAP=VIRTUAL>@ComponentPieceData?RITUAL@</TEXTAREA>
+					<TEXTAREA ROWS=3 NAME=@ComponentID@_PIECE_RITUAL_@ComponentPieceID@ COLS=45 WRAP=VIRTUAL  ONCLICK="Trigger('@ComponentID@_PIECE_RITUAL_@ComponentPieceID@',this.value);">@ComponentPieceData?RITUAL@</TEXTAREA>
 				</TD>
 			</TR>
 	    @endif@
