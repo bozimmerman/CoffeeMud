@@ -1,5 +1,7 @@
 # Build 5.10.? Release ?/??/2022
   1. FasterRecovery expanded and new char stat REJUVRATE for Prop*Adjuster
+  2. Ability Components now support their own private socials list.
+  3. Deity and Component rituals and triggers now have their own MUDGrinder editor.
 # Build 5.10.0 Release 9/23/2022
   1. New Scriptable functions: ROOMPC and AREAPC
   2. Caravans now have their own internal Directions (fore, back, right, left, up, down)
