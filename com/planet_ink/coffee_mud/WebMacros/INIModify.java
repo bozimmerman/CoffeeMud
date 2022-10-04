@@ -346,7 +346,11 @@ public class INIModify extends StdWebMacro
 				if(keyModified || modified.contains(thisKey))
 				{
 					modified.add(thisKey);
-					page.set(p,thisKey+"="+val);
+					if(val.toUpperCase().startsWith(thisKey)
+					&& val.substring(thisKey.length()).trim().startsWith("="))
+						page.set(p,val);
+					else
+						page.set(p,thisKey+"="+val);
 				}
 			}
 			if(modified.size()>0)
