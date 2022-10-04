@@ -227,7 +227,9 @@ public class MasterLacquerring extends MasterPaintingSkill
 					if(workColors.startsWith(cStr))
 					{
 						final Color256 C=getAllColors256NamesMap().get(cStr);
-						if(C!=null)
+						if((C!=null)
+						&&(!C.getCmChars().equals("^K"))
+						&&(!C.getCmChars().equals("^#000")))
 						{
 							if(C.getExpertiseNum()<=super.getXLEVELLevel(mob))
 							{

@@ -99,14 +99,14 @@ public class Prayer_Adoption extends Prayer
 		final String name2=commands.get(commands.size()-1);
 		final String name1=CMParms.combine(commands,0,commands.size()-1);
 		final MOB parent=R.fetchInhabitant(name1);
-		if((parent==null)||(!CMLib.flags().canBeSeenBy(mob,parent)))
+		if((parent==null)||(!CMLib.flags().canBeSeenBy(parent,mob)))
 		{
 			mob.tell(L("You don't see @x1 here!",name1));
 			return false;
 		}
 		final MOB child=R.fetchInhabitant(name2);
 
-		if((child==null)||(!CMLib.flags().canBeSeenBy(mob,child)))
+		if((child == null)||(!CMLib.flags().canBeSeenBy(child,mob)))
 		{
 			mob.tell(L("You don't see @x1 here!",name2));
 			return false;

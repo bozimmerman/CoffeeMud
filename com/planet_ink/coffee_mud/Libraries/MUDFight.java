@@ -1551,6 +1551,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		&&(!isKnockedOutUponDeath(deadM,killerM)))
 			body=(DeadBody)deadM.killMeDead(true);
 
+		if(deadM.isPlayer())
+			deadM.playerStats().deathCounter(1);
 		final boolean stillExists = handleCombatLossConsequences(deadM,killerM,cmds,expLost,"^*You lose @x1 experience points.^?^.");
 		if(!isKnockedOutUponDeath(deadM,killerM))
 		{
@@ -3188,42 +3190,59 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			else
 			if(whatToDo.startsWith("PUR")) // "PURGE"
 			{
+				int maxLives = 1;
+				final int x = whatToDo.indexOf(' ');
+				if(x>0)
+					maxLives = CMath.s_int(whatToDo.substring(x+1).trim());
 				final MOB deadMOB=(!deadM.isPlayer())?CMLib.get(deadM.session())._players().getLoadPlayer(deadM.Name()):deadM;
 				if((deadMOB!=null)&&(deadM.session()!=null))
 				{
-					CMLib.threads().executeRunnable(deadM.session().getGroupName(), new Runnable()
+					if((deadMOB.playerStats()==null) // this happens after the bump, so...
+					||(deadMOB.playerStats().deathCounter(0)>=maxLives))
 					{
-						@Override
-						public void run()
+						CMLib.threads().executeRunnable(deadM.session().getGroupName(), new Runnable()
 						{
-							final Session session=deadMOB.session();
-							if(session!=null)
-								session.stopSession(true, true, true);
-							// preserve their corpse, if it is in the game
-							final PlayerStats pStat = deadMOB.playerStats();
-							if(pStat != null)
+							final MOB mob = deadMOB;
+							@Override
+							public void run()
 							{
-								final List<Item> removeThese=new ArrayList<Item>(1);
-								for(final Enumeration<Item>  o = pStat.getExtItems().items();o.hasMoreElements();)
+								final Session session=mob.session();
+								if(session!=null)
+									session.stopSession(true, true, true);
+								// preserve their corpse, if it is in the game
+								final PlayerStats pStat = mob.playerStats();
+								if(pStat != null)
 								{
-									final Item I = o.nextElement();
-									Item chkI = I;
-									if(I.container() instanceof DeadBody)
-										chkI=I.container();
-									if((chkI instanceof DeadBody)
-									&&(((DeadBody)chkI).isPlayerCorpse())
-									&&(CMLib.flags().isInTheGame(chkI, true)))
-										removeThese.add(I);
+									final List<Item> removeThese=new ArrayList<Item>(1);
+									for(final Enumeration<Item>  o = pStat.getExtItems().items();o.hasMoreElements();)
+									{
+										final Item I = o.nextElement();
+										Item chkI = I;
+										if(I.container() instanceof DeadBody)
+											chkI=I.container();
+										if((chkI instanceof DeadBody)
+										&&(((DeadBody)chkI).isPlayerCorpse())
+										&&(CMLib.flags().isInTheGame(chkI, true)))
+											removeThese.add(I);
+									}
+									for(final Item I : removeThese)
+										pStat.getExtItems().delItem(I);
 								}
-								for(final Item I : removeThese)
-									pStat.getExtItems().delItem(I);
-
+								CMLib.players().obliteratePlayer(mob,true,CMSecurity.isDisabled(CMSecurity.DisFlag.DEATHCRY));
+								mob.destroy();
 							}
-							CMLib.players().obliteratePlayer(deadMOB,true,CMSecurity.isDisabled(CMSecurity.DisFlag.DEATHCRY));
-							deadMOB.destroy();
-						}
-					});
-					return false;
+						});
+						return false;
+					}
+					else
+					if(deadMOB.isPlayer())
+					{
+						final int remain = (maxLives-deadMOB.playerStats().deathCounter(0));
+						if(remain == 1)
+							deadMOB.tell(L("\n\r^HYou have ^W1^? life remaining.^N"));
+						else
+							deadMOB.tell(L("\n\r^HYou have ^W@x1^? lives remaining.^N",""+remain));
+					}
 				}
 			}
 			else

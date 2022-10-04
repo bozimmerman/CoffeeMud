@@ -105,9 +105,9 @@ public class Score extends Affect
 			else
 				levelStr=mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())+" "+classLevel+"/"+mob.phyStats().level();
 			if((powerLevel != mob.phyStats().level())&&(showPowerLevel))
-				msg.append(L("You are ^H@x1^? the ^H@x2^?, power level ^H@x3^?.\n\r",mob.Name(),levelStr,""+powerLevel));
+				msg.append(L("You are ^H@x1^? the ^H@x2^?, power level ^H@x3^?.",mob.Name(),levelStr,""+powerLevel));
 			else
-				msg.append(L("You are ^H@x1^? the ^H@x2^?.\n\r",mob.Name(),levelStr));
+				msg.append(L("You are ^H@x1^? the ^H@x2^?.",mob.Name(),levelStr));
 		}
 		else
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
@@ -120,16 +120,39 @@ public class Score extends Affect
 			else
 				levelStr=L(", level ")+classLevel+"/"+mob.phyStats().level();
 			if((powerLevel != mob.phyStats().level())&&(showPowerLevel))
-				msg.append(L("You are ^H@x1^?^H@x2^?, power level ^H@x3^?.\n\r",mob.Name(),levelStr,""+powerLevel));
+				msg.append(L("You are ^H@x1^?^H@x2^?, power level ^H@x3^?.",mob.Name(),levelStr,""+powerLevel));
 			else
-				msg.append(L("You are ^H@x1^?^H@x2^?.\n\r",mob.Name(),levelStr));
+				msg.append(L("You are ^H@x1^?^H@x2^?.",mob.Name(),levelStr));
 		}
 		else
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		&&(!mob.charStats().getMyRace().classless()))
-			msg.append(L("You are ^H@x1^? the ^H@x2^?.\n\r",mob.Name(),mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())));
+			msg.append(L("You are ^H@x1^? the ^H@x2^?.",mob.Name(),mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())));
 		else
-			msg.append(L("You are ^H@x1^?.\n\r",mob.Name()));
+			msg.append(L("You are ^H@x1^?.",mob.Name()));
+		if(mob.isPlayer())
+		{
+			final String[] cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.get(mob.session()).getStr(CMProps.Str.PLAYERDEATH),true));
+			for(final String cmd : cmds)
+			{
+				if(cmd.toUpperCase().startsWith("PUR"))
+				{
+					int maxLives = 1;
+					final int x = cmd.indexOf(' ');
+					if(x>0)
+						maxLives = CMath.s_int(cmd.substring(x+1).trim());
+					if(maxLives > 1)
+					{
+						final int remain = (maxLives-mob.playerStats().deathCounter(0));
+						if(remain == 1)
+							msg.append(L("  (^H1^? life remaining)"));
+						else
+							msg.append(L("  (^H@x1^? lives remaining)",""+remain));
+					}
+				}
+			}
+		}
+		msg.append("\n\r");
 
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		&&(classLevel<mob.phyStats().level()))

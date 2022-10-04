@@ -200,7 +200,15 @@ public class Chant_Reincarnation extends Chant
 				for(final String cmd : cmds)
 				{
 					if(cmd.toUpperCase().startsWith("PUR"))
-						return false;
+					{
+						int maxLives = 1;
+						final int x = cmd.indexOf(' ');
+						if(x>0)
+							maxLives = CMath.s_int(cmd.substring(x+1).trim());
+						if((msg.source().playerStats()==null)
+						||(msg.source().playerStats().deathCounter(0)>=maxLives-1))
+							return false;
+					}
 				}
 			}
 		}

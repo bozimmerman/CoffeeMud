@@ -1033,6 +1033,15 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	public long getLastXPAwardMillis();
 
 	/**
+	 * Reads from and/or alters the internal deaths
+	 * counter for the number of character deaths.
+	 *
+	 * @param bump 0, or the number to change deaths by
+	 * @return the current death counter
+	 */
+	public int deathCounter(int bump);
+
+	/**
 	 * Sets the last time this player has been awarded
 	 * XP.  This is used for the guildmaster exception, where
 	 * XP is only awarded under certain conditions.

@@ -74,6 +74,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected long			 lastRolePlayTm = System.currentTimeMillis();
 	protected int			 deferredXP		= 0;
 	protected int			 maxDeferredXP	= 0;
+	protected int			 deathCounter	= 0;
 	protected int   		 channelMask;
 	protected String		 email			= "";
 	protected String		 password		= "";
@@ -993,6 +994,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+"<AUTOINVSET>"+CMLib.xml().parseOutAngleBrackets(getStat("AUTOINVSET"))+"</AUTOINVSET>"
 			+"<XP RP="+this.rolePlayXP+" MAXRP="+this.maxRolePlayXP+" DEF="+this.deferredXP+" MAXDEF="+this.maxDeferredXP+" />"
 			+"<LASTXPMILLIS>"+this.lastXPDateTime+"</LASTXPMILLIS>"
+			+"<NUMDEATHS>"+this.deathCounter+"</NUMDEATHS>"
 			+((playFlags.size()>0)?"<FLAGS>"+this.getStat("FLAGS")+"</FLAGS>":"")
 			+roomSet().xml()
 			+rest.toString();
@@ -1321,6 +1323,7 @@ public class DefaultPlayerStats implements PlayerStats
 			this.deferredXP = CMath.s_int(xpPiece.getParmValue("DEF"));
 		}
 		this.lastXPDateTime=CMath.s_long(xmlLib.getValFromPieces(xml, "LASTXPMILLIS"));
+		this.deathCounter=CMath.s_int(xmlLib.getValFromPieces(xml, "NUMDEATHS"));
 	}
 
 	private String getLevelDateTimesStr()
@@ -1842,6 +1845,14 @@ public class DefaultPlayerStats implements PlayerStats
 		this.lastXPDateTime = time;
 	}
 
+	@Override
+	public synchronized int deathCounter(final int bump)
+	{
+		deathCounter += bump;
+		return deathCounter;
+	}
+
+
 	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","TITLES",
 									 "ALIAS","LASTIP","LASTDATETIME",
 									 "CHANNELMASK",
@@ -1855,7 +1866,7 @@ public class DefaultPlayerStats implements PlayerStats
 									 "MAXRPXP","CURRRPXP",
 									 "MAXDEFXP","CURRDEFXP",
 									 "LASTXPAWARD","FLAGS","SUBSCRIPTIONS",
-									 "COMBATSTATS"};
+									 "COMBATSTATS","DEATHS"};
 
 	@Override
 	public String getStat(final String code)
@@ -1953,6 +1964,8 @@ public class DefaultPlayerStats implements PlayerStats
 			}
 			return str.toString();
 		}
+		case 38:
+			return Integer.toString(this.deathCounter);
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -2124,6 +2137,9 @@ public class DefaultPlayerStats implements PlayerStats
 			break;
 
 		}
+		case 38:
+			this.deathCounter = CMath.s_parseIntExpression(val);
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
