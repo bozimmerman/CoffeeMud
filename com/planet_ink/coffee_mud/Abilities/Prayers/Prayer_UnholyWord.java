@@ -96,9 +96,6 @@ public class Prayer_UnholyWord extends Prayer
 			return;
 		final MOB mob=(MOB)affected;
 
-		if(mob==invoker)
-			return;
-
 		final int xlvl=super.getXLEVELLevel(invoker());
 		if(CMLib.flags().isEvil(mob))
 		{

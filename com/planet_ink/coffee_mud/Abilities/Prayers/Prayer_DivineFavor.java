@@ -130,16 +130,30 @@ public class Prayer_DivineFavor extends Prayer
 		if((affected instanceof MOB)
 		&&(((MOB)affected).isInCombat())
 		&&(!struckDownToday)
-		&&(CMLib.dice().roll(1,1000,0)==1)
-		&&(((MOB)affected).charStats().getWorshipCharID().length()>0)
-		&&(!((MOB)affected).getVictim().charStats().getWorshipCharID().equals(((MOB)affected).charStats().getWorshipCharID())))
+		&&(CMLib.dice().roll(1,1000,0)==1))
 		{
-			final MOB deityM=((MOB)affected).charStats().getMyDeity();
-			if(deityM!=null)
+			final MOB mob = (MOB)affected;
+			final MOB targetM = mob.getVictim();
+			if((mob.charStats().getWorshipCharID().length()>0)
+			&&(targetM!=null)
+			&&(!targetM.charStats().getWorshipCharID().equals(mob.charStats().getWorshipCharID())))
 			{
-				struckDownToday=true;
-				((MOB)affected).location().showOthers(deityM,((MOB)affected).getVictim(),null,CMMsg.MSG_OK_ACTION,L("@x1 strike(s) down <T-NAME> with all of <S-HIS-HER> divine fury!",deityM.name()));
-				CMLib.combat().postDeath(deityM,((MOB)affected).getVictim(),null);
+				final MOB deityM=mob.charStats().getMyDeity();
+				if(deityM!=null)
+				{
+					struckDownToday=true;
+					mob.location().showOthers(deityM,targetM,null,CMMsg.MSG_OK_ACTION,L("@x1 strike(s) down <T-NAME> with all of <S-HIS-HER> divine fury!",deityM.name()));
+					final MOB folM = mob.amFollowing();
+					try
+					{
+						mob.setFollowing(deityM);
+						CMLib.combat().postDeath(deityM,targetM,null);
+					}
+					finally
+					{
+						mob.setFollowing(folM);
+					}
+				}
 			}
 		}
 		return true;

@@ -517,6 +517,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * birthday based on the number of hours they've played.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getBirthday()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getBirthdayClock(TimeClock)
 	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#getAgeMinutes()
 	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race
 	 *
@@ -527,6 +528,17 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 */
 	public int initializeBirthday(TimeClock clock, int ageHours, Race R);
 
+	/**
+	 * Returns the derived TimeClock of this players birthday.  Requires
+	 * that the actual birthday be initialized first.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getBirthday()
+	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#getAgeMinutes()
+	 *
+	 * @param clock the players start area clock
+	 * @return the derived birthday clock
+	 */
+	public TimeClock getBirthdayClock(final TimeClock clock);
 	/**
 	 * Returns a 2-dimensional integer array with the players birth
 	 * day and month and year and last year celebrated (in mud calendar)

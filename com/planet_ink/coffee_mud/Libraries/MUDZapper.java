@@ -5944,11 +5944,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(mob.isPlayer()
 						&&(mob.getStartRoom()!=null))
 						{
-							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
-							final int day = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
-							final TimeClock C = (TimeClock)mob.getStartRoom().getArea().getTimeObj().copyOf();
-							C.setMonth(month);
-							C.setDayOfMonth(day);
+							final TimeClock C = mob.playerStats().getBirthdayClock(mob.getStartRoom().getArea().getTimeObj());
 							final int num = C.getWeekOfMonth();
 							for(final Object o : entry.parms())
 							{
@@ -5964,11 +5960,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(mob.isPlayer()
 						&&(mob.getStartRoom()!=null))
 						{
-							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
-							final int day = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
-							final TimeClock C = (TimeClock)mob.getStartRoom().getArea().getTimeObj().copyOf();
-							C.setMonth(month);
-							C.setDayOfMonth(day);
+							final TimeClock C = mob.playerStats().getBirthdayClock(mob.getStartRoom().getArea().getTimeObj());
 							final int num = C.getWeekOfMonth();
 							for(final Object o : entry.parms())
 							{
@@ -5988,11 +5980,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(mob.isPlayer()
 						&&(mob.getStartRoom()!=null))
 						{
-							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
-							final int day = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
-							final TimeClock C = (TimeClock)mob.getStartRoom().getArea().getTimeObj().copyOf();
-							C.setMonth(month);
-							C.setDayOfMonth(day);
+							final TimeClock C = mob.playerStats().getBirthdayClock(mob.getStartRoom().getArea().getTimeObj());
 							final int num = C.getSeasonCode().ordinal();
 							for(final Object o : entry.parms())
 							{
@@ -6008,11 +5996,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(mob.isPlayer()
 						&&(mob.getStartRoom()!=null))
 						{
-							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
-							final int day = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
-							final TimeClock C = (TimeClock)mob.getStartRoom().getArea().getTimeObj().copyOf();
-							C.setMonth(month);
-							C.setDayOfMonth(day);
+							final TimeClock C = mob.playerStats().getBirthdayClock(mob.getStartRoom().getArea().getTimeObj());
 							final int num = C.getSeasonCode().ordinal();
 							for(final Object o : entry.parms())
 							{
@@ -6190,11 +6174,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(mob.isPlayer()
 						&&(mob.getStartRoom()!=null))
 						{
-							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
-							final int day = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
-							final TimeClock C = (TimeClock)mob.getStartRoom().getArea().getTimeObj().copyOf();
-							C.setMonth(month);
-							C.setDayOfMonth(day);
+							final TimeClock C = mob.playerStats().getBirthdayClock(mob.getStartRoom().getArea().getTimeObj());
 							final int num = C.getDayOfYear();
 							for(final Object o : entry.parms())
 							{
@@ -6210,11 +6190,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(mob.isPlayer()
 						&&(mob.getStartRoom()!=null))
 						{
-							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
-							final int day = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
-							final TimeClock C = (TimeClock)mob.getStartRoom().getArea().getTimeObj().copyOf();
-							C.setMonth(month);
-							C.setDayOfMonth(day);
+							final TimeClock C = mob.playerStats().getBirthdayClock(mob.getStartRoom().getArea().getTimeObj());
 							final int num = C.getDayOfYear();
 							for(final Object o : entry.parms())
 							{
@@ -6266,11 +6242,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(mob.isPlayer()
 						&&(mob.getStartRoom()!=null))
 						{
-							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
-							final int day = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
-							final TimeClock C = (TimeClock)mob.getStartRoom().getArea().getTimeObj().copyOf();
-							C.setMonth(month);
-							C.setDayOfMonth(day);
+							final TimeClock C = mob.playerStats().getBirthdayClock(mob.getStartRoom().getArea().getTimeObj());
 							final int num = C.getWeekOfYear();
 							for(final Object o : entry.parms())
 							{
@@ -6286,11 +6258,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(mob.isPlayer()
 						&&(mob.getStartRoom()!=null))
 						{
-							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
-							final int day = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
-							final TimeClock C = (TimeClock)mob.getStartRoom().getArea().getTimeObj().copyOf();
-							C.setMonth(month);
-							C.setDayOfMonth(day);
+							final TimeClock C = mob.playerStats().getBirthdayClock(mob.getStartRoom().getArea().getTimeObj());
 							final int num = C.getWeekOfYear();
 							for(final Object o : entry.parms())
 							{

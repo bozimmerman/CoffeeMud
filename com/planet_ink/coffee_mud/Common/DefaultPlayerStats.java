@@ -116,6 +116,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected long[]	 	 prideExpireTime= new long[TimeClock.TimePeriod.values().length];
 	protected int[][]		 prideStats		= new int[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
 	protected long[][]		 combatStats	= new long[0][PlayerCombatStat.values().length];
+	protected TimeClock		 birthdayClock	= null;
 
 	protected ItemCollection extItems;
 
@@ -862,6 +863,19 @@ public class DefaultPlayerStats implements PlayerStats
 	public int[] getBirthday()
 	{
 		return birthday;
+	}
+
+	@Override
+	public TimeClock getBirthdayClock(final TimeClock clock)
+	{
+		if(birthdayClock == null)
+		{
+			birthdayClock = (TimeClock)clock.copyOf();
+			birthdayClock.setYear(birthday[2]);
+			birthdayClock.setMonth(birthday[1]);
+			birthdayClock.setDayOfMonth(birthday[0]);
+		}
+		return birthdayClock;
 	}
 
 	@Override

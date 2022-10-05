@@ -104,8 +104,6 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 			return;
 		final MOB mob=(MOB)affected;
 
-		if(mob==invoker)
-			return;
 		final int xlvl=super.getXLEVELLevel(invoker());
 		if(CMLib.flags().isGood(mob))
 		{
