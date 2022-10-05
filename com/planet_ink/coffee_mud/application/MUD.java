@@ -67,8 +67,7 @@ import java.sql.*;
 */
 public class MUD extends Thread implements MudHost
 {
-	private static final float	  HOST_VERSION_MAJOR	= (float)5.10;
-	private static final float	  HOST_VERSION_MINOR	= (float)0.2;
+	private static final String	  HOST_VERSION	= "5.10.0.2";
 
 	private static enum MudState
 	{
@@ -1871,7 +1870,7 @@ public class MUD extends Thread implements MudHost
 
 			final DBConnector currentDBconnector=new DBConnector();
 			CMLib.registerLibrary(new DBInterface(currentDBconnector,CMProps.getPrivateSubSet("DB.*")));
-			CMProps.setVar(CMProps.Str.MUDVER,HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
+			CMProps.setVar(CMProps.Str.MUDVER, HOST_VERSION);
 
 			// an arbitrary dividing line. After threadCode 0
 			if(threadCode==MAIN_HOST)
@@ -2105,7 +2104,7 @@ public class MUD extends Thread implements MudHost
 			final PrintStream eolStream = System.out;
 			eolStream.println();
 			grpid=0;
-			Log.sysOut(Thread.currentThread().getName(),"CoffeeMud v"+HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
+			Log.sysOut(Thread.currentThread().getName(),"CoffeeMud v"+HOST_VERSION);
 			Log.sysOut(Thread.currentThread().getName(),"(C) 2000-2022 Bo Zimmerman");
 			Log.sysOut(Thread.currentThread().getName(),"http://www.coffeemud.org");
 			CMLib.hosts().clear();
