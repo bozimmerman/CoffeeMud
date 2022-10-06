@@ -1406,10 +1406,11 @@ public class RoomLoader
 		if(rooms!=null)
 		{
 			CMProps.setBoolAllVar(CMProps.Bool.POPULATIONSTARTED, true);
+			recordCount = rooms.size();
 			for(final Map.Entry<String,Room> entry : rooms.entrySet())
 			{
 				if((((++currentRecordPos)%updateBreak)==0)&&(setStatus))
-					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Populating Rooms ("+(currentRecordPos)+" of "+recordCount+")");
+					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Populating Rooms ("+(currentRecordPos)+" of "+((recordCount==1)?"?":Integer.toString(recordCount))+")");
 				final Room room=entry.getValue();
 				if(debug)
 					Log.debugOut("RoomLoader","Populating room: "+room.roomID());

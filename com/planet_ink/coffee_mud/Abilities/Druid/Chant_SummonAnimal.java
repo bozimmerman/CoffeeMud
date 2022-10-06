@@ -241,17 +241,28 @@ public class Chant_SummonAnimal extends Chant
 		"Tarantula", "Walrus", "Worm"
 	};
 
-	protected static MOB determineMonster(final MOB caster, int level, final String text)
+	protected static MOB determineMonster(final MOB caster, int level, String text)
 	{
 		MOB newMOB=null;
 		if(level>5)
 			level=level-3;
 		else
 			level=1;
-		if((text!=null)&&(text.length()>0))
-			newMOB = CMClass.getMOB(text);
+		if((text==null)||(text.length()==0))
+			text = mobIDs[CMLib.dice().roll(1, mobIDs.length, -1)];
+		newMOB = CMClass.getMOB(text);
 		while(newMOB==null)
-			newMOB = CMClass.getMOB(mobIDs[CMLib.dice().roll(1, mobIDs.length, -1)]);
+		{
+			final Race R=CMClass.getRace(text);
+			if(R != null)
+			{
+				newMOB = CMClass.getMOB("GenMob");
+				newMOB.setName(CMLib.english().startWithAorAn(R.name()));
+				break;
+			}
+			text = mobIDs[CMLib.dice().roll(1, mobIDs.length, -1)];
+			newMOB = CMClass.getMOB(text);
+		}
 
 		newMOB.setLocation(caster.location());
 		newMOB.basePhyStats().setLevel(level);

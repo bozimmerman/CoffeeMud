@@ -134,8 +134,9 @@ public class Chant_SummonAnimals extends Chant
 			final int x=text.indexOf('/');
 			if(x>0)
 			{
-				if(CMath.isMathExpression(text.substring(0,x).trim()))
-					num = CMath.parseIntExpression(text.substring(0,x).trim());
+				final String math = text.substring(0,x).trim();
+				if(CMath.isMathExpression(math))
+					num = CMath.parseIntExpression(math);
 				text=text.substring(x+1).trim();
 			}
 
