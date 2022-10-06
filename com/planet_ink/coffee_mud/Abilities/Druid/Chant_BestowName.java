@@ -96,12 +96,13 @@ public class Chant_BestowName extends Chant
 		if(++nameCheckCtr > 10)
 		{
 			nameCheckCtr = 0;
-			if((affected instanceof MOB)
-			&&(((MOB)affected).amFollowing()==null)
-			&&(CMLib.flags().isInTheGame((MOB)affected,true)))
+			final Physical P = affected;
+			if((P instanceof MOB)
+			&&(((MOB)P).amFollowing()==null)
+			&&(CMLib.flags().isInTheGame((MOB)P,true)))
 			{
-				affected.delEffect(affected.fetchEffect(ID()));
-				affected.recoverPhyStats();
+				P.delEffect(P.fetchEffect(ID()));
+				P.recoverPhyStats();
 				return false;
 			}
 		}

@@ -4252,7 +4252,22 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							else
 							if((str2.startsWith("-"))||(str2.startsWith("+")))
 							{
-								final int code=CMLib.materials().findResourceCode(str2.substring(1),false);
+								String nm = str2.substring(1).trim();
+								for(final RawMaterial.ResourceFlag f : RawMaterial.ResourceFlag.values())
+								{
+									if(nm.equalsIgnoreCase(f.name()) || CMParms.containsIgnoreCase(f.altNames, nm))
+									{
+										final int[] rscs = RawMaterial.CODES.flaggedResources(f);
+										if(rscs.length>0)
+										{
+											for(int i=1;i<rscs.length;i++)
+												parms.add(RawMaterial.CODES.NAME(rscs[i]));
+											nm = RawMaterial.CODES.NAME(rscs[0]);
+										}
+										break;
+									}
+								}
+								final int code=CMLib.materials().findResourceCode(nm,false);
 								if(code>=0)
 									parms.add(RawMaterial.CODES.NAME(code));
 							}

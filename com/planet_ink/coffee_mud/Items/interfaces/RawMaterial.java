@@ -591,9 +591,15 @@ public interface RawMaterial extends Item
 	 */
 	public static enum ResourceFlag
 	{
-		BERRY,
-		FISH,
-		WOODY
+		BERRY("BERRIES"),
+		FISH("FISHES"),
+		WOODY("WOOD")
+		;
+		public String[] altNames;
+		private ResourceFlag(final String alt)
+		{
+			altNames = new String[] {alt};
+		}
 	}
 
 	/**
@@ -1067,6 +1073,26 @@ public interface RawMaterial extends Item
 		public int[] fishes()
 		{
 			return fishes;
+		}
+
+		/**
+		 * Returns an array of the numeric codes for the flagged resources
+		 *
+		 * @param flag the flag to use
+		 * @return an array of the numeric codes for the flagged resources
+		 */
+		public static int[] flaggedResources(final RawMaterial.ResourceFlag flag)
+		{
+			switch(flag)
+			{
+			case BERRY:
+				return BERRIES();
+			case FISH:
+				return FISHES();
+			case WOODY:
+				return WOODIES();
+			}
+			return new int[0];
 		}
 
 		/**

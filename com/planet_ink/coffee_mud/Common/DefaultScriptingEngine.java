@@ -116,6 +116,122 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		resources = globalResources();
 	}
 
+	/**
+	 * An object that holds the information about an event until it is
+	 * time to execute its associated script.
+	 * @author Bo Zimmerman
+	 */
+	private static class ScriptableResponse
+	{
+		/** The trigger code being executed */
+		public int triggerCode = 0;
+		/** The number of ticks to delay before triggering */
+		private int tickDelay=0;
+		/** (host) the object being scripted */
+		public PhysicalAgent h=null;
+		/** (source) the source of the event */
+		public MOB s=null;
+		/** (target) the target of the event */
+		public Environmental t=null;
+		/** (host mob) a mob representation of the host (h)*/
+		public MOB m=null;
+		/** (primary item) an item associated with this event */
+		public Item pi=null;
+		/** (second item) a second item associated with this event */
+		public Item si=null;
+		/** (script) the actual script to execute for this event */
+		public SubScript scr;
+		/** a string associated with this event */
+		public String message=null;
+		/** the hash code for this whole thing */
+		private Integer hashCode = null;
+
+		/**
+		 * Create an event response object
+		 * @param triggerCode the triggerCode for the event
+		 * @param host the object being scripted
+		 * @param source the source of the event
+		 * @param target the target of the event
+		 * @param monster a mob representation of the host
+		 * @param primaryItem an item associated with this event
+		 * @param secondaryItem a second item associated with this event
+		 * @param script the actual script to execute for this event
+		 * @param ticks how many ticks to wait before executing the script
+		 * @param msg a string associated with this event
+		 */
+		public ScriptableResponse(final int triggerCode,
+								  final PhysicalAgent host,
+								  final MOB source,
+								  final Environmental target,
+								  final MOB monster,
+								  final Item primaryItem,
+								  final Item secondaryItem,
+								  final SubScript script,
+								  final int ticks,
+								  final String msg)
+		{
+			this.triggerCode = triggerCode;
+			h=host;
+			s=source;
+			t=target;
+			m=monster;
+			pi=primaryItem;
+			si=secondaryItem;
+			scr=script;
+			tickDelay=ticks;
+			message=msg;
+		}
+
+		/**
+		 * Decrements the internal tick counter and returns true if
+		 * the tick counter has dropped to or below 0
+		 * @return true if its time to execute
+		 */
+		public boolean checkTimeToExecute()
+		{
+			return ((--tickDelay) <= 0);
+		}
+
+		/**
+		 * Return a description of this event, typically for debugging.
+		 * @return a description of this event, typically for debugging.
+		 */
+		@Override
+		public String toString()
+		{
+			final StringBuilder str=new StringBuilder("");
+			str.append("tc:").append(triggerCode).append("/");
+			str.append("h:").append(h==null?"null":h.name()).append("/");
+			str.append("s:").append(s==null?"null":s.name()).append("/");
+			str.append("t:").append(t==null?"null":t.name()).append("/");
+			str.append("m:").append(m==null?"null":m.name()).append("/");
+			str.append("pi:").append(pi==null?"null":pi.name()).append("/");
+			str.append("si:").append(si==null?"null":si.name()).append("/");
+			str.append("sc:").append(scr==null?"null":scr.toString()).append("/");
+			str.append("td:").append(tickDelay).append("/");
+			str.append("m:").append(message).append("");
+			return str.toString();
+		}
+
+		@Override
+		public int hashCode()
+		{
+			if(this.hashCode != null)
+				return this.hashCode.intValue();
+			int hc = triggerCode;
+			hc ^= (h == null)?0:h.hashCode();
+			hc ^= (s == null)?0:s.hashCode();
+			hc ^= (t == null)?0:t.hashCode();
+			hc ^= (m == null)?0:m.hashCode();
+			hc ^= (pi == null)?0:pi.hashCode();
+			hc ^= (si == null)?0:si.hashCode();
+			hc ^= (scr == null)?0:scr.hashCode();
+			hc ^= (message == null)?0:message.hashCode();
+			hashCode = Integer.valueOf(hc);
+			return hc;
+		}
+	}
+
 	private static class SubScriptImpl extends SubScript
 	{
 		private static final long serialVersionUID = 9212002543627348955L;
@@ -15178,6 +15294,30 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
 
+	protected void dupCheckClear(final ScriptableResponse resp, final String[] triggerStr)
+	{
+		if(que.size()>25)
+		{
+			final int hc = resp.hashCode();
+			final List<ScriptableResponse> removeables = new ArrayList<ScriptableResponse>(1);
+			for(final Iterator<ScriptableResponse> r=que.iterator();r.hasNext();)
+			{
+				final ScriptableResponse R = r.next();
+				if(hc == R.hashCode())
+					removeables.add(R);
+			}
+			que.removeAll(removeables);
+			if(que.size()>25)
+			{
+				if(triggerStr == null)
+					this.logError(resp.m, "UNK", "SYS", "Attempt to pre-que more than 25 events).");
+				else
+					this.logError(resp.m, "UNK", "SYS", "Attempt to enque more than 25 events (last was "+CMParms.toListString(triggerStr)+" ).");
+				que.clear();
+			}
+		}
+	}
+
 	public void enqueResponse(final int triggerCode,
 							  final PhysicalAgent host,
 							  final MOB source,
@@ -15192,15 +15332,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return;
-		if(que.size()>25)
-		{
-			this.logError(monster, "UNK", "SYS", "Attempt to enque more than 25 events (last was "+CMParms.toListString(triggerStr)+" ).");
-			que.clear();
-		}
 		if(noDelay)
 			execute(host,source,target,monster,primaryItem,secondaryItem,script,msg,newObjs());
 		else
-			que.add(new ScriptableResponse(triggerCode,host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg));
+		{
+			final ScriptableResponse resp = new ScriptableResponse(triggerCode,host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg);
+			dupCheckClear(resp,triggerStr);
+			que.add(resp);
+		}
 	}
 
 	public void prequeResponse(final int triggerCode,
@@ -15216,12 +15355,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return;
-		if(que.size()>25)
-		{
-			this.logError(monster, "UNK", "SYS", "Attempt to pre que more than 25 events.");
-			que.clear();
-		}
-		que.add(0,new ScriptableResponse(triggerCode,host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg));
+		final ScriptableResponse resp = new ScriptableResponse(triggerCode,host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg);
+		dupCheckClear(resp,null);
+		que.add(0,resp);
 	}
 
 	@Override
@@ -15236,7 +15372,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				try
 				{
 					SB=que.get(q);
-					if(SB.checkTimeToExecute())
+					if((SB != null) && (SB.checkTimeToExecute()))
 					{
 						execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
 						que.remove(SB);
