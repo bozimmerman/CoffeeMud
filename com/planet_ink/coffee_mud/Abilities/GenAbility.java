@@ -604,7 +604,9 @@ public class GenAbility extends StdAbility
 									if(A!=null)
 									{
 										A.setAffectedOne(affectA.affecting());
-										A.setMiscText((String)V(ID,V_MOKT));
+										final String miscText=
+											CMStrings.replaceVariables((String)V(ID,V_MOKT), commands.toArray(new String[commands.size()]));
+										A.setMiscText(miscText);
 										affectA.makeLongLasting();
 										affectA.setSavable(false);
 										affectA.setProficiency(100);
@@ -643,7 +645,11 @@ public class GenAbility extends StdAbility
 												if(x<0)
 													A.setMiscText("");
 												else
-													A.setMiscText(t.substring(x+1));
+												{
+													final String miscText=
+															CMStrings.replaceVariables(t.substring(x+1), commands.toArray(new String[commands.size()]));
+													A.setMiscText(miscText);
+												}
 											}
 											final int tickDown=(abstractQuality()==Ability.QUALITY_MALICIOUS)?
 													getMaliciousTickdownTime(mob,target,tickOverride(),asLevel):
