@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.core.CMProps.CostType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -359,9 +360,9 @@ public class WaterCurrents extends ActiveTicker
 		}
 
 		@Override
-		public ExpertiseLibrary.CostManager getTrainingCost(final MOB mob)
+		public ExpertiseLibrary.SkillCostManager getTrainingCost(final MOB mob)
 		{
-			return CMLib.expertises().createCostManager(ExpertiseLibrary.CostType.TRAIN, Double.valueOf(1.0));
+			return CMLib.expertises().createCostManager(CostType.TRAIN, Double.valueOf(1.0));
 		}
 
 		@Override

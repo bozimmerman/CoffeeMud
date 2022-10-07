@@ -360,7 +360,7 @@ public interface CMMiscUtils extends CMLibrary
 	 */
 	public void deAlias(final String rawAliasDefinition, final List<String> parsedInput,
 			final List<List<String>> executableCommands, final boolean[] doEcho);
-	
+
 	/**
 	 * Iterates through every mob and player in the game, replacing the old race
 	 * object with the new one.
@@ -472,5 +472,15 @@ public interface CMMiscUtils extends CMLibrary
 		PRESENT_CONTAINED
 	}
 
+	/**
+	 * Returns whether the given item is in the given state
+	 *
+	 * @param R the room container
+	 * @param mob the mob container
+	 * @param state the item state
+	 * @param I the item to check
+	 * @return true if the state is correct
+	 */
 	public boolean isItemInState(final Room R, final MOB mob, final ItemState state, final Item I);
+
 }

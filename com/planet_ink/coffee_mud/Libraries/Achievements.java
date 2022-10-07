@@ -9,7 +9,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMappi
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
-import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.CostType;
+import com.planet_ink.coffee_mud.core.CMProps.CostType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.XType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEval;

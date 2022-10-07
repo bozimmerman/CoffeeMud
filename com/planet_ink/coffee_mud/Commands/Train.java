@@ -14,8 +14,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.CostType;
-import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.CostManager;
+import com.planet_ink.coffee_mud.core.CMProps.CostType;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.SkillCostManager;
 
 import java.util.*;
 
@@ -298,7 +298,7 @@ public class Train extends StdCommand
 				return false;
 			}
 		}
-		final CostManager cost = CMLib.expertises().createCostManager(costType, Double.valueOf(costAmount));
+		final SkillCostManager cost = CMLib.expertises().createCostManager(costType, Double.valueOf(costAmount));
 		if(!cost.doesMeetCostRequirements(mob))
 		{
 			final String ofWhat=cost.costType(mob);

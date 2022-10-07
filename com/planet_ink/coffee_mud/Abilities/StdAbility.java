@@ -14,6 +14,8 @@ import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
+import com.planet_ink.coffee_mud.core.CMProps.CostDef;
+import com.planet_ink.coffee_mud.core.CMProps.CostType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
@@ -208,13 +210,13 @@ public class StdAbility implements Ability
 	{
 	}
 
-	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost()
+	protected CostDef getRawTrainingCost()
 	{
 		return CMProps.getNormalSkillGainCost(ID());
 	}
 
 	@Override
-	public ExpertiseLibrary.CostManager getTrainingCost(final MOB mob)
+	public ExpertiseLibrary.SkillCostManager getTrainingCost(final MOB mob)
 	{
 		int qualifyingLevel;
 		int playerLevel=1;
@@ -225,10 +227,10 @@ public class StdAbility implements Ability
 			{
 				Integer val=O[AbilityMapper.Cost.TRAIN.ordinal()];
 				if(val!=null)
-					return CMLib.expertises().createCostManager(ExpertiseLibrary.CostType.TRAIN,Double.valueOf(val.intValue()));
+					return CMLib.expertises().createCostManager(CostType.TRAIN,Double.valueOf(val.intValue()));
 				val=O[AbilityMapper.Cost.PRAC.ordinal()];
 				if(val!=null)
-					return CMLib.expertises().createCostManager(ExpertiseLibrary.CostType.PRACTICE,Double.valueOf(val.intValue()));
+					return CMLib.expertises().createCostManager(CostType.PRACTICE,Double.valueOf(val.intValue()));
 			}
 			qualifyingLevel=CMLib.ableMapper().qualifyingLevel(mob, this);
 			playerLevel=mob.basePhyStats().level();
@@ -240,9 +242,9 @@ public class StdAbility implements Ability
 		}
 		if(qualifyingLevel<=0)
 			qualifyingLevel=1;
-		final ExpertiseLibrary.SkillCostDefinition rawCost=getRawTrainingCost();
+		final CostDef rawCost=getRawTrainingCost();
 		if(rawCost==null)
-			return CMLib.expertises().createCostManager(ExpertiseLibrary.CostType.TRAIN,Double.valueOf(1.0));
+			return CMLib.expertises().createCostManager(CostType.TRAIN,Double.valueOf(1.0));
 		final double[] vars=new double[]{ qualifyingLevel,playerLevel};
 		final double value=CMath.parseMathExpression(rawCost.costDefinition(),vars);
 		return CMLib.expertises().createCostManager(rawCost.type(),Double.valueOf(value));
@@ -2183,14 +2185,14 @@ public class StdAbility implements Ability
 	@Override
 	public String requirements(final MOB mob)
 	{
-		final ExpertiseLibrary.CostManager cost=getTrainingCost(mob);
+		final ExpertiseLibrary.SkillCostManager cost=getTrainingCost(mob);
 		return cost.requirements(mob);
 	}
 
 	@Override
 	public boolean canBeLearnedBy(final MOB teacher, final MOB student)
 	{
-		final ExpertiseLibrary.CostManager cost=getTrainingCost(student);
+		final ExpertiseLibrary.SkillCostManager cost=getTrainingCost(student);
 		if(!cost.doesMeetCostRequirements(student))
 		{
 			final String ofWhat=cost.costType(student);
@@ -2469,7 +2471,7 @@ public class StdAbility implements Ability
 	{
 		if(student.fetchAbility(ID())==null)
 		{
-			final ExpertiseLibrary.CostManager cost=getTrainingCost(student);
+			final ExpertiseLibrary.SkillCostManager cost=getTrainingCost(student);
 			if(!cost.doesMeetCostRequirements(student))
 				return;
 			cost.spendSkillCost(student);

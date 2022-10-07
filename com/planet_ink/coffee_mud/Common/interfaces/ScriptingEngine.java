@@ -51,7 +51,6 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * The scripts are formatted as a SubScript class.  Each
 	 * row consists of the String command, and a parsed String[]
 	 * array as dimension 2.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.ScriptableResponse
 	 * @param scripted the object that is scripted
 	 * @param source the source of the event
 	 * @param target the target of the event

@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.core.CMProps.CostDef;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -66,7 +67,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost()
+	protected CostDef getRawTrainingCost()
 	{
 		return CMProps.getNormalSkillGainCost(ID());
 	}
@@ -289,7 +290,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			duration=10;
 		return duration;
 	}
-	
+
 	@Override
 	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
 								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<CraftedItem> crafted)

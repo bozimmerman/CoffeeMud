@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.core.CMProps.CostType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -225,7 +226,7 @@ public interface ExpertiseLibrary extends CMLibrary
 	 * @param value the amount of the type
 	 * @return the SkillCost object
 	 */
-	public CostManager createCostManager(CostType costType, Double value);
+	public SkillCostManager createCostManager(CostType costType, Double value);
 
 	/**
 	 * Given a mob and expertise id, this method will return the definition for the
@@ -628,45 +629,11 @@ public interface ExpertiseLibrary extends CMLibrary
 		public String rawFinalMask();
 	}
 
-	/** Enumeration of the types of costs of gaining this ability */
-	public enum CostType
-	{
-		TRAIN,
-		PRACTICE,
-		XP,
-		GOLD,
-		QP;
-	}
-
-	/**
-	 * Class for the definition of the cost of a skill
-	 * @author Bo Zimmerman
-	 */
-	public interface SkillCostDefinition
-	{
-		/**
-		 * Returns the type of resources defining the cost
-		 * of a skill.
-		 * @see ExpertiseLibrary.CostType
-		 * @return the type of cost
-		 */
-		public CostType type();
-
-		/**
-		 * A math formula definition the amount of the cost
-		 * type required, where at-x1 is the qualifying level
-		 * and at-x2 is the player level
-		 *
-		 * @return the amount formula
-		 */
-		public String costDefinition();
-	}
-
 	/**
 	 * Class for the cost of a skill, or similar things perhaps
 	 * @author Bo Zimmerman
 	 */
-	public interface CostManager
+	public interface SkillCostManager
 	{
 		/**
 		 * Returns a simple description of the Type of

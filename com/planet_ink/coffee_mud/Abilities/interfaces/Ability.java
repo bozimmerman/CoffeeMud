@@ -163,7 +163,7 @@ public interface Ability extends Environmental
 	 * @param mob the potential caster
 	 * @return a pair, with the number of the cost type, and the cost type
 	 */
-	public ExpertiseLibrary.CostManager getTrainingCost(MOB mob);
+	public ExpertiseLibrary.SkillCostManager getTrainingCost(MOB mob);
 
 	/**
 	 * A set of the command strings the user types to access

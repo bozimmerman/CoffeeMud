@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.Basic.GenDrink;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.core.CMProps.CostDef;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -98,7 +99,7 @@ public class CommonSkill extends StdAbility
 	}
 
 	@Override
-	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost()
+	protected CostDef getRawTrainingCost()
 	{
 		return CMProps.getCommonSkillGainCost(ID());
 	}

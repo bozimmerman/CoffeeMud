@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
+import com.planet_ink.coffee_mud.core.CMProps.CostDef;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -68,7 +69,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost()
+	protected CostDef getRawTrainingCost()
 	{
 		return CMProps.getNormalSkillGainCost(ID());
 	}
@@ -294,7 +295,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			duration=10;
 		return duration;
 	}
-	
+
 	@Override
 	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
 								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<CraftedItem> crafted)
@@ -519,7 +520,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			buildingI=buildItem(theSpell, theLevel);
 			playSound="hotspring.wav";
 
-			int duration=calculateDuration(mob,theSpell);
+			final int duration=calculateDuration(mob,theSpell);
 			messedUp=!proficiencyCheck(mob,0,auto);
 			final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),null);
 			if(mob.location().okMessage(mob,msg))

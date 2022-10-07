@@ -3,7 +3,6 @@ package com.planet_ink.coffee_mud.core;
 import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CombatLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
-import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.CostType;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
@@ -583,6 +582,43 @@ public class CMProps extends Properties
 		IPSNEWPLAYERS
 	}
 
+	/**
+	 * Enumeration of the types of costs of gaining this ability
+	 */
+	public enum CostType
+	{
+		TRAIN,
+		PRACTICE,
+		XP,
+		GOLD,
+		QP;
+	}
+
+	/**
+	 * Class for the definition of a cost of some sort
+	 *
+	 * @author Bo Zimmerman
+	 */
+	public interface CostDef
+	{
+		/**
+		 * Returns the type of resources defining the cost
+		 * of a skill.
+		 * @see CostType
+		 * @return the type of cost
+		 */
+		public CostType type();
+
+		/**
+		 * A math formula definition the amount of the cost
+		 * type required, where at-x1 is the qualifying level
+		 * and at-x2 is the player level
+		 *
+		 * @return the amount formula
+		 */
+		public String costDefinition();
+	}
+
 	@SuppressWarnings("unchecked")
 	public static final Class<? extends Enum<?>>[] PROP_CLASSES = new Class[]
 	{
@@ -632,9 +668,9 @@ public class CMProps extends Properties
 	protected final Map<WhiteList,Pattern[]>whiteLists				= new HashMap<WhiteList,Pattern[]>();
 	protected final PairVector<String,Long> newusersByIP			= new PairVector<String,Long>();
 	protected final Map<String,ThreadGroup> privateSet				= new HashMap<String,ThreadGroup>();
-	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> commonCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
-	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> skillsCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
-	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> languageCost=new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
+	protected final Map<String,CostDef> commonCost  =new HashMap<String,CostDef>();
+	protected final Map<String,CostDef> skillsCost  =new HashMap<String,CostDef>();
+	protected final Map<String,CostDef> languageCost=new HashMap<String,CostDef>();
 
 	protected double speedAdj = 1.0;
 
@@ -1713,7 +1749,7 @@ public class CMProps extends Properties
 	 * @param map the map to store the cost definitions in
 	 * @param fields the pre-separated list of cost definitions to finish parsing
 	 */
-	public static final void setUpCosts(final String fieldName, final Map<String,ExpertiseLibrary.SkillCostDefinition> map, final List<String> fields)
+	public static final void setUpCosts(final String fieldName, final Map<String,CostDef> map, final List<String> fields)
 	{
 		final double[] doubleChecker=new double[10];
 		for(String field : fields)
@@ -1729,11 +1765,11 @@ public class CMProps extends Properties
 			}
 			final String type=field.substring(typeIndex+1).toUpperCase().trim();
 			String formula=field.substring(0,typeIndex).trim();
-			final ExpertiseLibrary.CostType costType=(ExpertiseLibrary.CostType)CMath.s_valueOf(ExpertiseLibrary.CostType.values(), type);
+			final CostType costType=(CostType)CMath.s_valueOf(CostType.values(), type);
 			if(costType==null)
 			{
 				Log.errOut("CMProps","Error parsing coffeemud.ini field '"+fieldName+"', invalid type: "+type);
-				Log.errOut("CMProps","Valid values include "+CMParms.toListString(ExpertiseLibrary.CostType.values()));
+				Log.errOut("CMProps","Valid values include "+CMParms.toListString(CostType.values()));
 				continue;
 			}
 			String keyField="";
@@ -1762,9 +1798,18 @@ public class CMProps extends Properties
 		}
 	}
 
-	private static final ExpertiseLibrary.SkillCostDefinition makeCostDefinition(final CostType costType, final String costDefinition)
+	/**
+	 * Creates a simple CostDef object from the given type and formula.
+	 * The formula is a number where at-x1 is the qualifying level
+	 * and at-x2 is the player level
+	 *
+	 * @param costType the cost type
+	 * @param costDefinition the definition formula
+	 * @return the built costdef object
+	 */
+	public static final CostDef makeCostDefinition(final CostType costType, final String costDefinition)
 	{
-		return new ExpertiseLibrary.SkillCostDefinition()
+		return new CostDef()
 		{
 			@Override
 			public CostType type()
@@ -1777,6 +1822,17 @@ public class CMProps extends Properties
 			{
 				return costDefinition;
 			}
+
+			@Override
+			public boolean equals(final Object o)
+			{
+				if(o instanceof CostDef)
+				{
+					return (costType == ((CostDef)o).type())
+						&& (costDefinition.equalsIgnoreCase(((CostDef)o).costDefinition()));
+				}
+				return false;
+			}
 		};
 	}
 
@@ -1786,14 +1842,14 @@ public class CMProps extends Properties
 	 * @param id the Ability id to find a cost for
 	 * @return the cost definition object for the given Ability.
 	 */
-	public static final ExpertiseLibrary.SkillCostDefinition getNormalSkillGainCost(final String id)
+	public static final CostDef getNormalSkillGainCost(final String id)
 	{
 		final CMProps p=p();
-		ExpertiseLibrary.SkillCostDefinition pair=p.skillsCost.get(id.toUpperCase());
+		CostDef pair=p.skillsCost.get(id.toUpperCase());
 		if(pair==null)
 			pair=p.skillsCost.get("");
 		if(pair==null)
-			pair=makeCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
+			pair=makeCostDefinition(CostType.TRAIN, "1");
 		return pair;
 	}
 
@@ -1803,14 +1859,14 @@ public class CMProps extends Properties
 	 * @param id the common skill Ability id to find a cost for
 	 * @return the cost definition object for the given common skill Ability.
 	 */
-	public static final ExpertiseLibrary.SkillCostDefinition getCommonSkillGainCost(final String id)
+	public static final CostDef getCommonSkillGainCost(final String id)
 	{
 		final CMProps p=p();
-		ExpertiseLibrary.SkillCostDefinition pair=p.commonCost.get(id.toUpperCase());
+		CostDef pair=p.commonCost.get(id.toUpperCase());
 		if(pair==null)
 			pair=p.commonCost.get("");
 		if(pair==null)
-			pair=makeCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
+			pair=makeCostDefinition(CostType.TRAIN, "1");
 		return pair;
 	}
 
@@ -1820,14 +1876,14 @@ public class CMProps extends Properties
 	 * @param id the language skill Ability id to find a cost for
 	 * @return the cost definition object for the given language skill Ability.
 	 */
-	public static final ExpertiseLibrary.SkillCostDefinition getLangSkillGainCost(final String id)
+	public static final CostDef getLangSkillGainCost(final String id)
 	{
 		final CMProps p=p();
-		ExpertiseLibrary.SkillCostDefinition pair=p.languageCost.get(id.toUpperCase());
+		CostDef pair=p.languageCost.get(id.toUpperCase());
 		if(pair==null)
 			pair=p.languageCost.get("");
 		if(pair==null)
-			pair=makeCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
+			pair=makeCostDefinition(CostType.TRAIN, "1");
 		return pair;
 	}
 
