@@ -8,6 +8,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.interfaces.MudHost;
 
 import java.util.*;
@@ -580,43 +582,6 @@ public class CMProps extends Properties
 		IPSCONN,
 		LOGINS,
 		IPSNEWPLAYERS
-	}
-
-	/**
-	 * Enumeration of the types of costs of gaining this ability
-	 */
-	public enum CostType
-	{
-		TRAIN,
-		PRACTICE,
-		XP,
-		GOLD,
-		QP;
-	}
-
-	/**
-	 * Class for the definition of a cost of some sort
-	 *
-	 * @author Bo Zimmerman
-	 */
-	public interface CostDef
-	{
-		/**
-		 * Returns the type of resources defining the cost
-		 * of a skill.
-		 * @see CostType
-		 * @return the type of cost
-		 */
-		public CostType type();
-
-		/**
-		 * A math formula definition the amount of the cost
-		 * type required, where at-x1 is the qualifying level
-		 * and at-x2 is the player level
-		 *
-		 * @return the amount formula
-		 */
-		public String costDefinition();
 	}
 
 	@SuppressWarnings("unchecked")
