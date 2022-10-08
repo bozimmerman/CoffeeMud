@@ -1832,9 +1832,22 @@ public class CMProps extends Properties
 		final CMProps p=p();
 		CostDef pair=p.skillsCost.get(id.toUpperCase());
 		if(pair==null)
+		{
+			setUpCosts("SKILLCOST",p.skillsCost,CMParms.parseCommas(p.getStr(Str.SKILLCOST),true));
+			pair=p.skillsCost.get(id.toUpperCase());
+		}
+		if(pair == null)
+		{
 			pair=p.skillsCost.get("");
+			if(pair != null)
+				p.skillsCost.put(id.toUpperCase(), pair);
+		}
 		if(pair==null)
+		{
 			pair=makeCostDefinition(CostType.TRAIN, null, "1");
+			p.skillsCost.put(id.toUpperCase(), pair);
+		}
+
 		return pair;
 	}
 
@@ -1849,9 +1862,21 @@ public class CMProps extends Properties
 		final CMProps p=p();
 		CostDef pair=p.commonCost.get(id.toUpperCase());
 		if(pair==null)
+		{
+			setUpCosts("COMMONCOST",p.commonCost,CMParms.parseCommas(p.getStr(Str.COMMONCOST),true));
+			pair=p.commonCost.get(id.toUpperCase());
+		}
+		if(pair == null)
+		{
 			pair=p.commonCost.get("");
+			if(pair != null)
+				p.commonCost.put(id.toUpperCase(), pair);
+		}
 		if(pair==null)
+		{
 			pair=makeCostDefinition(CostType.TRAIN, null, "1");
+			p.commonCost.put(id.toUpperCase(), pair);
+		}
 		return pair;
 	}
 
@@ -1866,9 +1891,21 @@ public class CMProps extends Properties
 		final CMProps p=p();
 		CostDef pair=p.languageCost.get(id.toUpperCase());
 		if(pair==null)
+		{
+			setUpCosts("LANGCOST",p.languageCost,CMParms.parseCommas(p.getStr(Str.LANGCOST),true));
+			pair=p.languageCost.get(id.toUpperCase());
+		}
+		if(pair == null)
+		{
 			pair=p.languageCost.get("");
+			if(pair != null)
+				p.languageCost.put(id.toUpperCase(), pair);
+		}
 		if(pair==null)
+		{
 			pair=makeCostDefinition(CostType.TRAIN, null, "1");
+			p.languageCost.put(id.toUpperCase(), pair);
+		}
 		return pair;
 	}
 
@@ -2498,9 +2535,12 @@ public class CMProps extends Properties
 		setUpLowVar(Str.CHARCREATIONSCRIPTS,getStr("CHARCREATIONSCRIPTS"));
 		setUpLowVar(Str.CHARSETINPUT,getStr("CHARSETINPUT","iso-8859-1"));
 		setUpLowVar(Str.CHARSETOUTPUT,getStr("CHARSETOUTPUT","iso-8859-1"));
-		setUpCosts("COMMONCOST",commonCost,CMParms.parseCommas(getStr("COMMONCOST","1 TRAIN"),true));
-		setUpCosts("SKILLCOST",skillsCost,CMParms.parseCommas(getStr("SKILLCOST","1 TRAIN"),true));
-		setUpCosts("LANGCOST",languageCost,CMParms.parseCommas(getStr("LANGCOST","3 PRACTICE"),true));
+		setUpLowVar(Str.COMMONCOST,getStr("COMMONCOST","1 TRAIN"));
+		commonCost.clear();
+		setUpLowVar(Str.SKILLCOST,getStr("SKILLCOST","1 TRAIN"));
+		skillsCost.clear();
+		setUpLowVar(Str.LANGCOST,getStr("LANGCOST","3 PRACTICE"));
+		languageCost.clear();
 		setVar(Str.RACEMIXING,getStr("RACEMIXING"));
 		final String[] hungerCodes=CMParms.parseCommas(getStr("HUNGER","500,100,100"),true).toArray(new String[3]);
 		setIntVar(Int.HUNGER_FULL,hungerCodes.length>0?CMath.s_int(hungerCodes[0]):500);
