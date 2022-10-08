@@ -1830,12 +1830,9 @@ public class CMProps extends Properties
 	public static final CostDef getNormalSkillGainCost(final String id)
 	{
 		final CMProps p=p();
-		CostDef pair=p.skillsCost.get(id.toUpperCase());
-		if(pair==null)
-		{
+		if(p.skillsCost.size()==0)
 			setUpCosts("SKILLCOST",p.skillsCost,CMParms.parseCommas(p.getStr(Str.SKILLCOST),true));
-			pair=p.skillsCost.get(id.toUpperCase());
-		}
+		CostDef pair=p.skillsCost.get(id.toUpperCase());
 		if(pair == null)
 		{
 			pair=p.skillsCost.get("");
@@ -1847,7 +1844,6 @@ public class CMProps extends Properties
 			pair=makeCostDefinition(CostType.TRAIN, null, "1");
 			p.skillsCost.put(id.toUpperCase(), pair);
 		}
-
 		return pair;
 	}
 
@@ -1860,12 +1856,9 @@ public class CMProps extends Properties
 	public static final CostDef getCommonSkillGainCost(final String id)
 	{
 		final CMProps p=p();
-		CostDef pair=p.commonCost.get(id.toUpperCase());
-		if(pair==null)
-		{
+		if(p.commonCost.size()==0)
 			setUpCosts("COMMONCOST",p.commonCost,CMParms.parseCommas(p.getStr(Str.COMMONCOST),true));
-			pair=p.commonCost.get(id.toUpperCase());
-		}
+		CostDef pair=p.commonCost.get(id.toUpperCase());
 		if(pair == null)
 		{
 			pair=p.commonCost.get("");
@@ -1889,12 +1882,9 @@ public class CMProps extends Properties
 	public static final CostDef getLangSkillGainCost(final String id)
 	{
 		final CMProps p=p();
-		CostDef pair=p.languageCost.get(id.toUpperCase());
-		if(pair==null)
-		{
+		if(p.languageCost.size()==0)
 			setUpCosts("LANGCOST",p.languageCost,CMParms.parseCommas(p.getStr(Str.LANGCOST),true));
-			pair=p.languageCost.get(id.toUpperCase());
-		}
+		CostDef pair=p.languageCost.get(id.toUpperCase());
 		if(pair == null)
 		{
 			pair=p.languageCost.get("");

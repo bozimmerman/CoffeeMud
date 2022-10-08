@@ -180,7 +180,7 @@ public class Train extends StdCommand
 				{
 					final CostManager man = CMLib.utensils().createCostManager(costAmount);
 					cols.add("^H"+CMStrings.padRight(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)),14)+"^N"
-							+CMStrings.limit(man.requirements(mob),10));
+							+CMStrings.limit(man.requirements(mob).toUpperCase(),10));
 				}
 			}
 			for(final Trainable t : getTrainCosts().keySet())
