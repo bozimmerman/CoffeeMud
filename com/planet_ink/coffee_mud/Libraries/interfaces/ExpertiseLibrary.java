@@ -67,7 +67,7 @@ public interface ExpertiseLibrary extends CMLibrary
 	 * @see ExpertiseLibrary#numStages(String)
 	 * @see ExpertiseLibrary#getDefinition(String)
 	 * @see ExpertiseLibrary#definitions()
-	 * @see ExpertiseLibrary#createCostManager(CostType, Double)
+	 * @see CMMiscUtils#createCostManager(CostType, Double)
 	 * @see ExpertiseLibrary#confirmExpertiseLine(String, String, boolean)
 	 *
 	 * @param codedLine the coded expertise line
@@ -207,7 +207,7 @@ public interface ExpertiseLibrary extends CMLibrary
 	 * Validate the syntax of a coded expertise definition line,
 	 * returning a readable error if found.
 	 * @see ExpertiseLibrary#addModifyDefinition(String, boolean)
-	 * @see ExpertiseLibrary#createCostManager(CostType, Double)
+	 * @see CMMiscUtils#createCostManager(CostType, Double)
 	 *
 	 * @param row the coded definition
 	 * @param ID the expertise definition id code
@@ -215,18 +215,6 @@ public interface ExpertiseLibrary extends CMLibrary
 	 * @return an error message, or null if all is OK
 	 */
 	public String confirmExpertiseLine(String row, String ID, boolean addIfPossible);
-
-	/**
-	 * Creates a new SkillCost object reflecting the given type and value.
-	 * This is part of the expertise defining process.
-	 * @see ExpertiseLibrary#addModifyDefinition(String, boolean)
-	 * @see ExpertiseLibrary#confirmExpertiseLine(String, String, boolean)
-	 *
-	 * @param costType the type of code
-	 * @param value the amount of the type
-	 * @return the SkillCost object
-	 */
-	public SkillCostManager createCostManager(CostType costType, Double value);
 
 	/**
 	 * Given a mob and expertise id, this method will return the definition for the
@@ -627,42 +615,5 @@ public interface ExpertiseLibrary extends CMLibrary
 		 * @return the raw unprocessed final mask
 		 */
 		public String rawFinalMask();
-	}
-
-	/**
-	 * Class for the cost of a skill, or similar things perhaps
-	 * @author Bo Zimmerman
-	 */
-	public interface SkillCostManager
-	{
-		/**
-		 * Returns a simple description of the Type of
-		 * this cost.  A MOB and sample value is required for
-		 * money currencies.
-		 * @param mob MOB, for GOLD type currency eval
-		 * @return the type of currency
-		 */
-		public String costType(final MOB mob);
-
-		/**
-		 * Returns a simple description of the amount
-		 * and type of cost required for the skill.
-		 * @param mob the creature, for evaluating currency
-		 * @return a description of the required amount
-		 */
-		public String requirements(final MOB mob);
-
-		/**
-		 * Returns whether the given mob meets the given cost requirements.
-		 * @param student the student to check
-		 * @return true if it meets, false otherwise
-		 */
-		public boolean doesMeetCostRequirements(final MOB student);
-
-		/**
-		 * Expends the given cost upon the given student
-		 * @param student the student to check
-		 */
-		public void spendSkillCost(final MOB student);
 	}
 }

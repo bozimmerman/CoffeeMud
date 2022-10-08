@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -140,9 +141,9 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @param mob the mob who is trying to train
 	 * @param abilityCode the ability code the mob wants to train
 	 * @param quiet true to not give verbal errors
-	 * @return negative number for error, or the number of trains required
+	 * @return null for error, or the number of trains required and type
 	 */
-	public int getTrainingCost(MOB mob, int abilityCode, boolean quiet);
+	public Cost getTrainingCost(MOB mob, int abilityCode, boolean quiet);
 
 	/**
 	 * Returns whether the given mob can change to the given class (that is,

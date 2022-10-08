@@ -2,7 +2,6 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
-import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.SkillCostManager;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
@@ -638,117 +637,6 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public SkillCostManager createCostManager(final CostType costType, final Double value)
-	{
-		return new SkillCostManager()
-		{
-			/**
-			 * Returns a simple description of the Type of
-			 * this cost.  A MOB and sample value is required for
-			 * money currencies.
-			 * @param mob MOB, for GOLD type currency eval
-			 * @return the type of currency
-			 */
-			@Override
-			public String costType(final MOB mob)
-			{
-				final String ofWhat;
-				switch(costType)
-				{
-				case XP:
-					ofWhat = "experience points";
-					break;
-				case GOLD:
-					ofWhat = CMLib.beanCounter().getDenominationName(mob, value.doubleValue());
-					break;
-				case PRACTICE:
-					ofWhat = "practice points";
-					break;
-				case QP:
-					ofWhat = "quest points";
-					break;
-				default:
-					ofWhat = CMLib.english().makePlural(costType.name().toLowerCase());
-					break;
-				}
-				return ofWhat;
-			}
-
-			@Override
-			public String requirements(final MOB mob)
-			{
-				switch(costType)
-				{
-				case XP:
-					return value.intValue() + " XP";
-				case QP:
-					return value.intValue() + " quest pts";
-				case GOLD:
-				{
-					if (mob == null)
-						return CMLib.beanCounter().abbreviatedPrice("", value.doubleValue());
-					else
-						return CMLib.beanCounter().abbreviatedPrice(mob, value.doubleValue());
-				}
-				default:
-					return value.intValue() + " " + ((value.intValue() == 1) ? costType.name().toLowerCase() : CMLib.english().makePlural(costType.name().toLowerCase()));
-				}
-			}
-
-			/**
-			 * Returns whether the given mob meets the given cost requirements.
-			 * @param student the student to check
-			 * @return true if it meets, false otherwise
-			 */
-			@Override
-			public boolean doesMeetCostRequirements(final MOB student)
-			{
-				switch(costType)
-				{
-				case XP:
-					return student.getExperience() >= value.intValue();
-				case GOLD:
-					return CMLib.beanCounter().getTotalAbsoluteNativeValue(student) >= value.doubleValue();
-				case TRAIN:
-					return student.getTrains() >= value.intValue();
-				case PRACTICE:
-					return student.getPractices() >= value.intValue();
-				case QP:
-					return student.getQuestPoint() >= value.intValue();
-				}
-				return false;
-			}
-
-			/**
-			 * Expends the given cost upon the given student
-			 * @param student the student to check
-			 */
-			@Override
-			public void spendSkillCost(final MOB student)
-			{
-				switch(costType)
-				{
-				case XP:
-					CMLib.leveler().postExperience(student, null, "", -value.intValue(), true);
-					break;
-				case GOLD:
-					CMLib.beanCounter().subtractMoney(student, value.doubleValue());
-					break;
-				case TRAIN:
-					student.setTrains(student.getTrains() - value.intValue());
-					break;
-				case PRACTICE:
-					student.setPractices(student.getPractices() - value.intValue());
-					break;
-				case QP:
-					student.setQuestPoint(student.getQuestPoint() - value.intValue());
-					break;
-				}
-			}
-		};
-	}
-
-	@Override
 	public String confirmExpertiseLine(String row, String ID, final boolean addIfPossible)
 	{
 		int levels=0;
@@ -1321,7 +1209,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			private MaskingLibrary.CompiledZMask		compiledListMask	= null;
 			private final ExpertiseDefinition			parent				= null;
 			private MaskingLibrary.CompiledZMask		compiledFinalMask	= null;
-			private final List<SkillCostManager>				costs				= new LinkedList<SkillCostManager>();
+			private final List<CostManager>				costs				= new LinkedList<CostManager>();
 			private final Set<XType>					xTypes				= new HashSet<XType>();
 
 			@Override
@@ -1474,14 +1362,14 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			@Override
 			public void addCost(final CostType type, final Double value)
 			{
-				costs.add(createCostManager(type,value));
+				costs.add(CMLib.utensils().createCostManager(type,value));
 			}
 
 			@Override
 			public String costDescription()
 			{
 				final StringBuffer costStr=new StringBuffer("");
-				for(final SkillCostManager cost : costs)
+				for(final CostManager cost : costs)
 					costStr.append(cost.requirements(null)).append(", ");
 				if(costStr.length()==0)
 					return "";
@@ -1491,7 +1379,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			@Override
 			public boolean meetsCostRequirements(final MOB mob)
 			{
-				for(final SkillCostManager cost : costs)
+				for(final CostManager cost : costs)
 				{
 					if(!cost.doesMeetCostRequirements(mob))
 						return false;
@@ -1502,8 +1390,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			@Override
 			public void spendCostRequirements(final MOB mob)
 			{
-				for(final SkillCostManager cost : costs)
-					cost.spendSkillCost(mob);
+				for(final CostManager cost : costs)
+					cost.doSpend(mob);
 			}
 
 			@Override

@@ -158,8 +158,8 @@ public class Pirate extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_Curse",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Song_PirateShanty",false);
-		final Integer[] onePracCost = new Integer[AbilityMapper.Cost.values().length];
-		onePracCost[AbilityMapper.Cost.PRAC.ordinal()] = Integer.valueOf(1);
+		final Integer[] onePracCost = new Integer[AbilityMapper.AbilCostType.values().length];
+		onePracCost[AbilityMapper.AbilCostType.PRAC.ordinal()] = Integer.valueOf(1);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Song_Nothing",onePracCost);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_PiecesOfEight",false,new XVector<String>("Thief_BuriedTreasure"));
 

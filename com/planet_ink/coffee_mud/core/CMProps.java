@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.interfaces.MudHost;
 
@@ -1730,7 +1731,19 @@ public class CMProps extends Properties
 			}
 			final String type=field.substring(typeIndex+1).toUpperCase().trim();
 			String formula=field.substring(0,typeIndex).trim();
-			final CostType costType=(CostType)CMath.s_valueOf(CostType.values(), type);
+			final CostType costType;
+			final String curr;
+			final Cost costPoss=CMLib.utensils().compileCost(1, type);
+			if(costPoss != null)
+			{
+				costType = costPoss.second;
+				curr = costPoss.third;
+			}
+			else
+			{
+				costType=(CostType)CMath.s_valueOf(CostType.values(), type);
+				curr=null;
+			}
 			if(costType==null)
 			{
 				Log.errOut("CMProps","Error parsing coffeemud.ini field '"+fieldName+"', invalid type: "+type);
@@ -1759,7 +1772,7 @@ public class CMProps extends Properties
 				Log.errOut("CMProps","Error parsing coffeemud.ini '"+fieldName+"' has duplicate key:"+((keyField.length()==0)?"<EMPTY>":keyField));
 				continue;
 			}
-			map.put(keyField.toUpperCase(), makeCostDefinition(costType,formula));
+			map.put(keyField.toUpperCase(), makeCostDefinition(costType,curr,formula));
 		}
 	}
 
@@ -1769,10 +1782,11 @@ public class CMProps extends Properties
 	 * and at-x2 is the player level
 	 *
 	 * @param costType the cost type
+	 * @param currency null, "", or a currency type
 	 * @param costDefinition the definition formula
 	 * @return the built costdef object
 	 */
-	public static final CostDef makeCostDefinition(final CostType costType, final String costDefinition)
+	public static final CostDef makeCostDefinition(final CostType costType, final String currency, final String costDefinition)
 	{
 		return new CostDef()
 		{
@@ -1786,6 +1800,12 @@ public class CMProps extends Properties
 			public String costDefinition()
 			{
 				return costDefinition;
+			}
+
+			@Override
+			public String typeCurrency()
+			{
+				return currency;
 			}
 
 			@Override
@@ -1814,7 +1834,7 @@ public class CMProps extends Properties
 		if(pair==null)
 			pair=p.skillsCost.get("");
 		if(pair==null)
-			pair=makeCostDefinition(CostType.TRAIN, "1");
+			pair=makeCostDefinition(CostType.TRAIN, null, "1");
 		return pair;
 	}
 
@@ -1831,7 +1851,7 @@ public class CMProps extends Properties
 		if(pair==null)
 			pair=p.commonCost.get("");
 		if(pair==null)
-			pair=makeCostDefinition(CostType.TRAIN, "1");
+			pair=makeCostDefinition(CostType.TRAIN, null, "1");
 		return pair;
 	}
 
@@ -1848,7 +1868,7 @@ public class CMProps extends Properties
 		if(pair==null)
 			pair=p.languageCost.get("");
 		if(pair==null)
-			pair=makeCostDefinition(CostType.TRAIN, "1");
+			pair=makeCostDefinition(CostType.TRAIN, null, "1");
 		return pair;
 	}
 

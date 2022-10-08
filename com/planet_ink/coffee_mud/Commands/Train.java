@@ -14,8 +14,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
-import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.SkillCostManager;
 
 import java.util.*;
 
@@ -40,7 +40,7 @@ public class Train extends StdCommand
 	{
 	}
 
-	protected Pair<String,Map<Trainable,Triad<Integer,Integer,CostType>>> trainCosts = null;
+	protected Pair<String,Map<Trainable,Pair<Integer,Cost>>> trainCosts = null;
 
 	private final String[] access=I(new String[]{"TRAIN","TR","TRA"});
 	@Override
@@ -66,18 +66,18 @@ public class Train extends StdCommand
 		}
 	}
 
-	public Triad<Integer,Integer,CostType> getTrainCost(final Trainable t)
+	public Pair<Integer,Cost> getTrainCost(final Trainable t)
 	{
-		final Map<Trainable,Triad<Integer,Integer,CostType>> cost = getTrainCosts();
+		final Map<Trainable,Pair<Integer,Cost>> cost = getTrainCosts();
 		return cost.get(t);
 	}
 
-	public synchronized Map<Trainable,Triad<Integer,Integer,CostType>> getTrainCosts()
+	public synchronized Map<Trainable,Pair<Integer,Cost>> getTrainCosts()
 	{
 		final String trainCostStr = CMProps.getVar(CMProps.Str.TRAINCOSTS);
 		if((trainCosts == null)||(!trainCostStr.equals(trainCosts.first)))
 		{
-			final Map<Trainable,Triad<Integer,Integer,CostType>> costs = new Hashtable<Trainable,Triad<Integer,Integer,CostType>>();
+			final Map<Trainable,Pair<Integer,Cost>> costs = new Hashtable<Trainable,Pair<Integer,Cost>>();
 			for(final String s : CMParms.parseCommas(trainCostStr.toUpperCase(), true))
 			{
 				final String[] split = CMParms.parse(s).toArray(new String[0]);
@@ -99,20 +99,17 @@ public class Train extends StdCommand
 						Log.errOut("Illegal amount "+split[2]+" on TRAINCOSTS entry in INI file: "+s);
 					else
 					{
-						final CostType C = (CostType)CMath.s_valueOf(CostType.class, split[3]);
+						final Cost C = CMLib.utensils().compileCost(CMath.s_double(split[2]), split[3]);
 						if(C==null)
 							Log.errOut("Illegal cost type "+split[3]+" on TRAINCOSTS entry in INI file: "+s);
 						else
 						{
-							costs.put(t, new Triad<Integer,Integer,CostType>(
-										Integer.valueOf(CMath.s_int(split[1])),
-										Integer.valueOf(CMath.s_int(split[2])),
-										C));
+							costs.put(t, new Pair<Integer,Cost>(Integer.valueOf(CMath.s_int(split[1])),C));
 						}
 					}
 				}
 			}
-			trainCosts = new Pair<String,Map<Trainable,Triad<Integer,Integer,CostType>>>(trainCostStr,costs);
+			trainCosts = new Pair<String,Map<Trainable,Pair<Integer,Cost>>>(trainCostStr,costs);
 		}
 		return trainCosts.second;
 	}
@@ -178,20 +175,21 @@ public class Train extends StdCommand
 			final List<String> cols=new ArrayList<String>();
 			for(final int i: CharStats.CODES.BASECODES())
 			{
-				final int costAmount=CMLib.login().getTrainingCost(mob, i, false);
-				if(costAmount>=0)
+				final Cost costAmount=CMLib.login().getTrainingCost(mob, i, false);
+				if(costAmount != null)
 				{
+					final CostManager man = CMLib.utensils().createCostManager(costAmount);
 					cols.add("^H"+CMStrings.padRight(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)),14)+"^N"
-							+CMStrings.limit(L("@x1 "+plural(costAmount,"TRAIN"),""+costAmount),10));
+							+CMStrings.limit(man.requirements(mob),10));
 				}
 			}
 			for(final Trainable t : getTrainCosts().keySet())
 			{
-				final Triad<Integer,Integer,CostType> cost = getTrainCosts().get(t);
-				final int amt = cost.second.intValue();
+				final Pair<Integer,Cost> cost = getTrainCosts().get(t);
+				final CostManager man = CMLib.utensils().createCostManager(cost.second);
 				final int num = cost.first.intValue();
 				cols.add("^H"+CMStrings.padRight(num+" "+CMStrings.capitalizeAndLower(t.word),14)+"^N"
-						+CMStrings.limit(amt+" "+plural(amt,cost.third.name().toUpperCase()),10));
+						+CMStrings.limit(man.requirements(mob).toUpperCase(),10));
 			}
 			final Map<CharClass,Integer> map = getAvailableCharClasses(mob);
 			for(final CharClass C : map.keySet())
@@ -223,9 +221,8 @@ public class Train extends StdCommand
 		for(final Trainable t : getTrainCosts().keySet())
 			thingsToTrainFor.append(t.word+", ");
 
-		int costAmount=1;
 		int gainAmount=1;
-		CostType costType=null;
+		Cost cost=null;
 		Trainable trainType = null;
 		int curStat=-1;
 		final int abilityCode=mob.baseCharStats().getStatCode(abilityName);
@@ -234,10 +231,9 @@ public class Train extends StdCommand
 		{
 			trainType = Trainable.ATTRIBUTE;
 			curStat=mob.baseCharStats().getRacialStat(mob, abilityCode);
-			costAmount=CMLib.login().getTrainingCost(mob, abilityCode, false);
-			if(costAmount<0)
+			cost = CMLib.login().getTrainingCost(mob, abilityCode, false);
+			if(cost == null)
 				return false;
-			costType=CostType.TRAIN;
 		}
 		CharClass theClass=null;
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSTRAINING))&&(abilityCode<0))
@@ -260,10 +256,9 @@ public class Train extends StdCommand
 					{
 						trainType = Trainable.CCLASS;
 						theClass=C;
-						costAmount=trainCost;
-						if(costAmount<0)
+						if(trainCost<0)
 							return false;
-						costType=CostType.TRAIN;
+						cost = new CostDef.Cost(trainCost, CostType.TRAIN, null);
 					}
 					break;
 				}
@@ -281,13 +276,12 @@ public class Train extends StdCommand
 				if((t.word.length()>0)
 				&&(t.word.startsWith(abilityName.toUpperCase())))
 				{
-					final Triad<Integer,Integer,CostType> cost = getTrainCost(t);
-					if(cost != null)
+					final Pair<Integer,Cost> subcost = getTrainCost(t);
+					if(subcost != null)
 					{
 						trainType = t;
-						costAmount = cost.second.intValue();
 						gainAmount = cost.first.intValue();
-						costType = cost.third;
+						cost = subcost.second;
 						break;
 					}
 				}
@@ -298,11 +292,11 @@ public class Train extends StdCommand
 				return false;
 			}
 		}
-		final SkillCostManager cost = CMLib.expertises().createCostManager(costType, Double.valueOf(costAmount));
-		if(!cost.doesMeetCostRequirements(mob))
+		final CostManager finalCost = CMLib.utensils().createCostManager(cost);
+		if(!finalCost.doesMeetCostRequirements(mob))
 		{
-			final String ofWhat=cost.costType(mob);
-			mob.tell(L("You do not have enough @x1.  You need @x2.",ofWhat,cost.requirements(mob)));
+			final String ofWhat=finalCost.costType(mob);
+			mob.tell(L("You do not have enough @x1.  You need @x2.",ofWhat,finalCost.requirements(mob)));
 			return false;
 		}
 
@@ -426,7 +420,7 @@ public class Train extends StdCommand
 		if(!mob.location().okMessage(mob,msg))
 			return false;
 		mob.location().send(mob,msg);
-		cost.spendSkillCost(mob);
+		finalCost.doSpend(mob);
 		switch(trainType)
 		{
 		case MANA:

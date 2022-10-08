@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -189,6 +190,16 @@ public interface MoneyLibrary extends CMLibrary
 	 * @return the lowest denomination with an abbreviation char
 	 */
 	public double lowestAbbreviatedDenomination(String currency);
+
+	/**
+	 * Returns the denomination of the given currency and given
+	 * abbreviation or name.
+	 *
+	 * @param currency the currency
+	 * @param name the abbreviation or name
+	 * @return null, or the denomination
+	 */
+	public MoneyDenomination getDenomination(final String currency, final String name);
 
 	/**
 	 * Given a currency type and an absolute value, this will return the lowest

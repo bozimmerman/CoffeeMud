@@ -150,9 +150,9 @@ public class QuestBound implements Ability
 	}
 
 	@Override
-	public ExpertiseLibrary.SkillCostManager getTrainingCost(final MOB mob)
+	public CostManager getTrainingCost(final MOB mob)
 	{
-		return CMLib.expertises().createCostManager(CostType.TRAIN, Double.valueOf(1.0));
+		return CMLib.utensils().createCostManager(CostType.TRAIN, Double.valueOf(1.0));
 	}
 
 	@Override

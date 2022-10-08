@@ -12,6 +12,8 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CMMiscUtils.ItemState;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -1506,16 +1508,184 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		final long[][] finalSet = new long[endOfRange - startOfRange + 1][];
 		for(String cond : condV)
 		{
-			final Vector<String> V=CMParms.parse(cond.trim());
+			final List<String> V=CMParms.parse(cond.trim());
 			if(V.size()<2)
 				continue;
 			final long[] vals=new long[numDigits];
 			for(int i=0;i<numDigits;i++)
 			{
 				if(i+1<V.size())
-					vals[i]=CMath.s_long(V.elementAt(i+1));
+					vals[i]=CMath.s_long(V.get(i+1));
 			}
-			cond=V.firstElement().trim();
+			cond=V.get(0).trim();
+			int start=startOfRange;
+			int finish=endOfRange;
+			if(cond.startsWith("<="))
+				finish=CMath.s_int(cond.substring(2).trim());
+			else
+			if(cond.startsWith(">="))
+				start=CMath.s_int(cond.substring(2).trim());
+			else
+			if(cond.startsWith("=="))
+			{
+				start=CMath.s_int(cond.substring(2).trim());
+				finish=start;
+			}
+			else
+			if(cond.startsWith("="))
+			{
+				start=CMath.s_int(cond.substring(1).trim());
+				finish=start;
+			}
+			else
+			if(cond.startsWith(">"))
+				start=CMath.s_int(cond.substring(1).trim())+1;
+			else
+			if(cond.startsWith("<"))
+				finish=CMath.s_int(cond.substring(1).trim())-1;
+
+			if(finish > endOfRange)
+				finish = endOfRange;
+			if((start>=startOfRange)&&(start<=finish))
+			{
+				for(int s=start;s<=finish;s++)
+				{
+					if(finalSet[s-startOfRange]==null)
+						finalSet[s-startOfRange] = vals;
+				}
+			}
+		}
+		return finalSet;
+	}
+
+	@Override
+	public Cost compileCost(double amt, final String poss)
+	{
+		boolean found=false;
+		String curr = "";
+		CostType typ = CostType.TRAIN;
+		for(final CostType t : CostType.values())
+		{
+			if(t.name().startsWith(poss))
+			{
+				found=true;
+				typ = t;
+				break;
+			}
+		}
+		final List<String> currs = CMLib.beanCounter().getAllCurrencies();
+		if(!found)
+		{
+			for(final String cu : currs)
+			{
+				final List<String> denoms = CMLib.beanCounter().getDenominationNameSet(cu);
+				int x = CMParms.indexOfIgnoreCase(denoms, poss);
+				if(x < 0)
+					x = CMParms.indexOfIgnoreCase(denoms, poss+"(S)");
+				if((x < 0)&&(poss.endsWith("S")))
+					x = CMParms.indexOfIgnoreCase(denoms, poss.substring(0,poss.length()-1)+"(S)");
+				if(x>=0)
+				{
+					final MoneyDenomination d = CMLib.beanCounter().getDenomination(cu, poss);
+					if(d != null)
+					{
+						amt = amt * d.value();
+						curr = cu;
+						found=true;
+						typ = CostType.GOLD;
+						break;
+					}
+				}
+			}
+		}
+		if(!found)
+		{
+			final int x = CMParms.indexOfIgnoreCase(currs, poss);
+			if(x>=0)
+			{
+				found=true;
+				curr = currs.get(x);
+				typ = CostType.GOLD;
+			}
+		}
+		if(!found)
+		{
+			for(final String cu : currs)
+			{
+				final List<String> denoms = CMLib.beanCounter().getDenominationNameSet(cu);
+				for(final String ds : denoms)
+				{
+					if(ds.toUpperCase().startsWith(poss.toUpperCase()))
+					{
+						final MoneyDenomination d = CMLib.beanCounter().getDenomination(cu, ds);
+						if(d != null)
+						{
+							amt = amt * d.value();
+							curr = cu;
+							found=true;
+							typ = CostType.GOLD;
+							break;
+						}
+					}
+				}
+				if(found)
+					break;
+			}
+		}
+		if(!found)
+		{
+			for(final String c : currs)
+			{
+				if(c.toUpperCase().startsWith(poss.toUpperCase()))
+				{
+					found=true;
+					curr = c;
+					typ = CostType.GOLD;
+					break;
+				}
+			}
+		}
+		if(found)
+			return new CostDef.Cost(amt, typ, curr);
+		return null;
+	}
+
+	@Override
+	public Cost[][] compileConditionalCosts(final List<String> condV, final int numDigits, final int startOfRange, final int endOfRange)
+	{
+		final Cost[][] finalSet = new Cost[endOfRange - startOfRange + 1][];
+		for(String cond : condV)
+		{
+			final List<String> V=CMParms.parse(cond.trim());
+			if(V.size()<2)
+				continue;
+			Cost[] vals=new Cost[numDigits];
+			cond=V.get(0).trim();
+			int vdex = 0;
+			for(int i=1;i<V.size();i++)
+			{
+				if(CMath.isNumber(V.get(i)))
+				{
+					double amt = CMath.s_double(V.get(i));
+					CostType typ = CostType.TRAIN;
+					String curr = "";
+					if((i<V.size()-1)
+					&&(!CMath.isNumber(V.get(i+1))))
+					{
+						final Cost possCost = compileCost(amt, V.get(i+1).toUpperCase().trim());
+						if(possCost != null)
+						{
+							i++;
+							amt = possCost.first.doubleValue();
+							typ = possCost.second;
+							curr = possCost.third;
+						}
+					}
+					if(vdex>=vals.length)
+						vals = Arrays.copyOf(vals, vdex);
+					vals[vdex++]=new Cost(amt,typ,curr);
+				}
+			}
 			int start=startOfRange;
 			int finish=endOfRange;
 			if(cond.startsWith("<="))
@@ -2791,6 +2961,174 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		default:
 			return false;
 		}
+	}
+
+	protected CostManager createCostManager(final CostType costType, final Double value, final String curr)
+	{
+		return new CostManager()
+		{
+			final String currency = curr;
+			/**
+			 * Returns a simple description of the Type of
+			 * this cost.  A MOB and sample value is required for
+			 * money currencies.
+			 * @param mob MOB, for GOLD type currency eval
+			 * @return the type of currency
+			 */
+			@Override
+			public String costType(final MOB mob)
+			{
+				final String ofWhat;
+				switch(costType)
+				{
+				case XP:
+					ofWhat = "experience points";
+					break;
+				case GOLD:
+					if(currency != null)
+						ofWhat = CMLib.beanCounter().getDenominationName(currency, value.doubleValue());
+					else
+						ofWhat = CMLib.beanCounter().getDenominationName(mob, value.doubleValue());
+					break;
+				case PRACTICE:
+					ofWhat = "practice points";
+					break;
+				case QP:
+					ofWhat = "quest points";
+					break;
+				case HITPOINT:
+					ofWhat = "hit points";
+					break;
+				case MANA:
+					ofWhat = "mana";
+					break;
+				case MOVEMENT:
+					ofWhat = "movement";
+					break;
+				default:
+					ofWhat = CMLib.english().makePlural(costType.name().toLowerCase());
+					break;
+				}
+				return ofWhat;
+			}
+
+			/**
+			 * Returns an abbreviated description of this cost.
+			 * @param mob the one to describe
+			 * @return the description
+			 */
+			@Override
+			public String requirements(final MOB mob)
+			{
+				switch(costType)
+				{
+				case XP:
+					return value.intValue() + " XP";
+				case QP:
+					return value.intValue() + " quest pts";
+				case MANA:
+					return value.intValue() + " mana";
+				case HITPOINT:
+					return value.intValue() + " " + ((value.intValue() == 1) ? "hit point" : "hit points");
+				case GOLD:
+				{
+					if(currency != null)
+						return CMLib.beanCounter().abbreviatedPrice(currency, value.doubleValue());
+					else
+					if (mob == null)
+						return CMLib.beanCounter().abbreviatedPrice("", value.doubleValue());
+					else
+						return CMLib.beanCounter().abbreviatedPrice(mob, value.doubleValue());
+				}
+				default:
+					return value.intValue() + " " + ((value.intValue() == 1) ? costType.name().toLowerCase() : CMLib.english().makePlural(costType.name().toLowerCase()));
+				}
+			}
+
+			/**
+			 * Returns whether the given mob meets the given cost requirements.
+			 * @param student the student to check
+			 * @return true if it meets, false otherwise
+			 */
+			@Override
+			public boolean doesMeetCostRequirements(final MOB student)
+			{
+				switch(costType)
+				{
+				case XP:
+					return student.getExperience() >= value.intValue();
+				case GOLD:
+					if(currency != null)
+						return CMLib.beanCounter().getTotalAbsoluteValue(student,currency) >= value.doubleValue();
+					else
+						return CMLib.beanCounter().getTotalAbsoluteNativeValue(student) >= value.doubleValue();
+				case TRAIN:
+					return student.getTrains() >= value.intValue();
+				case PRACTICE:
+					return student.getPractices() >= value.intValue();
+				case QP:
+					return student.getQuestPoint() >= value.intValue();
+				case MANA:
+					return student.curState().getMana() >= value.intValue();
+				case MOVEMENT:
+					return student.curState().getMovement() >= value.intValue();
+				case HITPOINT:
+					return student.curState().getHitPoints() >= value.intValue();
+				}
+				return false;
+			}
+
+			/**
+			 * Expends the given cost upon the given student
+			 * @param student the student to check
+			 */
+			@Override
+			public void doSpend(final MOB student)
+			{
+				switch(costType)
+				{
+				case XP:
+					CMLib.leveler().postExperience(student, null, "", -value.intValue(), true);
+					break;
+				case GOLD:
+					if(currency != null)
+						CMLib.beanCounter().subtractMoney(student, currency, value.doubleValue());
+					else
+						CMLib.beanCounter().subtractMoney(student, value.doubleValue());
+					break;
+				case TRAIN:
+					student.setTrains(student.getTrains() - value.intValue());
+					break;
+				case PRACTICE:
+					student.setPractices(student.getPractices() - value.intValue());
+					break;
+				case QP:
+					student.setQuestPoint(student.getQuestPoint() - value.intValue());
+					break;
+				case MANA:
+					student.curState().adjMana(-value.intValue(), student.maxState());
+					break;
+				case MOVEMENT:
+					student.curState().adjMovement(-value.intValue(), student.maxState());
+					break;
+				case HITPOINT:
+					student.curState().adjHitPoints(-value.intValue(), student.maxState());
+					break;
+				}
+			}
+		};
+	}
+
+	@Override
+	public CostManager createCostManager(final CostType costType, final Double value)
+	{
+		return createCostManager(costType, value, null);
+	}
+
+	@Override
+	public CostManager createCostManager(final Cost cost)
+	{
+		return createCostManager(cost.second, cost.first, cost.third);
 	}
 
 	@Override

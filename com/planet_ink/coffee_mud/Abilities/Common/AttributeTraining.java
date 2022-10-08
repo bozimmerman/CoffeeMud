@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -157,7 +158,10 @@ public class AttributeTraining extends CommonSkill
 								follower.addNonUninvokableEffect(adjA);
 							}
 							final int oldVal=CMParms.getParmInt(adjA.text(), CMStrings.limit(CharStats.CODES.NAME(attribute),3), 0);
-							int trainsRequired=CMLib.login().getTrainingCost(follower, attribute, false)*costMultiplier;
+							final Cost c = CMLib.login().getTrainingCost(follower, attribute, false);
+							int trainsRequired = costMultiplier;
+							if(c != null)
+								trainsRequired=c.first.intValue()*costMultiplier;
 							if(trainsRequired>=0)
 								trainsRequired+=costAdder;
 							commonTell(mob,L("The training cost @x1 @x2 training sessions.",follower.name(),""+trainsRequired));
@@ -257,11 +261,12 @@ public class AttributeTraining extends CommonSkill
 				return false;
 			}
 			final int curStat=M.baseCharStats().getRacialStat(M, attribute);
-			int trainsRequired=CMLib.login().getTrainingCost(M, attribute, false)*costMultiplier;
+			final Cost c = CMLib.login().getTrainingCost(M, attribute, true);
+			if(c == null)
+				return false;
+			int trainsRequired  = costMultiplier * c.first.intValue();
 			if(trainsRequired>=0)
 				trainsRequired+=costAdder;
-			if(trainsRequired<0)
-				return false;
 			final int teachStat=mob.charStats().getStat(attribute);
 			if(curStat>=teachStat)
 			{

@@ -61,7 +61,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	protected Map<String, Integer>	maxProficiencyMap	 	= new SHashtable<String, Integer>();
 	protected Map<String, Object>	allows  				= new SHashtable<String, Object>();
 	protected List<AbilityMapping>	eachClassSet			= null;
-	protected final Integer[]		costOverrides			= new Integer[Cost.values().length];
+	protected final Integer[]		costOverrides			= new Integer[AbilCostType.values().length];
 
 	@Override
 	public AbilityMapping addCharAbilityMapping(final String ID,
@@ -523,7 +523,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			private DVector				skillPreReqs			= new DVector(2);
 			private String				extraMask				= "";
 			private String				originalSkillPreReqList	= "";
-			private Integer[]			costOverrides			= new Integer[Cost.values().length];
+			private Integer[]			costOverrides			= new Integer[AbilCostType.values().length];
 			private boolean				allQualifyFlag			= false;
 			private Map<String, String>	extFields				= new Hashtable<String, String>(1);
 

@@ -894,7 +894,7 @@ public interface AbilityMapper extends CMLibrary
 	 * Returns any mapping-based overrides to the standard system white
 	 * standards for casting costs (the amount of mana or moves to use a skill).
 	 * The integer array is indexed by the ordinals of the Cost enum.
-	 * @see AbilityMapper.Cost
+	 * @see AbilityMapper.AbilCostType
 	 * @see AbilityMapper#getAllCostOverrides(String)
 	 * @see AbilityMapper#getCostOverrides(String)
 	 * @see AbilityMapper#getCostOverrides(MOB, String)
@@ -909,7 +909,7 @@ public interface AbilityMapper extends CMLibrary
 	 * Returns any All-Qualifies overrides to the standard system white
 	 * standards for casting costs (the amount of mana or moves to use a skill).
 	 * The integer array is indexed by the ordinals of the Cost enum.
-	 * @see AbilityMapper.Cost
+	 * @see AbilityMapper.AbilCostType
 	 * @see AbilityMapper#getCostOverrides(String, boolean, String)
 	 * @see AbilityMapper#getCostOverrides(String)
 	 * @see AbilityMapper#getCostOverrides(MOB, String)
@@ -923,7 +923,7 @@ public interface AbilityMapper extends CMLibrary
 	 * standards for casting costs (the amount of mana or moves to use a skill)
 	 * relevant to the given mob, based on their class, race, etc.
 	 * The integer array is indexed by the ordinals of the Cost enum.
-	 * @see AbilityMapper.Cost
+	 * @see AbilityMapper.AbilCostType
 	 * @see AbilityMapper#getAllCostOverrides(String)
 	 * @see AbilityMapper#getCostOverrides(String)
 	 * @see AbilityMapper#getCostOverrides(String, boolean, String)
@@ -937,7 +937,7 @@ public interface AbilityMapper extends CMLibrary
 	 * Returns the first mapping-based override to the standard system white
 	 * standards for casting costs (the amount of mana or moves to use a skill).
 	 * The integer array is indexed by the ordinals of the Cost enum.
-	 * @see AbilityMapper.Cost
+	 * @see AbilityMapper.AbilCostType
 	 * @see AbilityMapper#getCostOverrides(String, boolean, String)
 	 * @see AbilityMapper#getAllCostOverrides(String)
 	 * @see AbilityMapper#getCostOverrides(MOB, String)
@@ -1103,7 +1103,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @see AbilityMapper#getCostOverrides(String)
 	 * @author Bo Zimmerman
 	 */
-	public enum Cost
+	public enum AbilCostType
 	{
 		PRAC,
 		TRAIN,
@@ -1331,7 +1331,7 @@ public interface AbilityMapper extends CMLibrary
 		/**
 		 * Gets the array of cost overrides, indexed by the Costs enum, or
 		 * null if there is no overrides of the basic costs.
-		 * @see AbilityMapper.Cost
+		 * @see AbilityMapper.AbilCostType
 		 * @see AbilityMapper.AbilityMapping#costOverrides(Integer[])
 		 * @return the array of cost overrides, or null
 		 */
@@ -1340,7 +1340,7 @@ public interface AbilityMapper extends CMLibrary
 		/**
 		 * Sets the array of cost overrides, indexed by the Costs enum, or
 		 * null if there is no overrides of the basic costs.
-		 * @see AbilityMapper.Cost
+		 * @see AbilityMapper.AbilCostType
 		 * @see AbilityMapper.AbilityMapping#costOverrides()
 		 * @param newValue the array of cost overrides, or null
 		 * @return this

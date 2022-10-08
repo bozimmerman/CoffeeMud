@@ -294,6 +294,21 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
+	public MoneyDenomination getDenomination(final String currency, final String name)
+	{
+		final MoneyDefinition DV=getCurrencySet(currency);
+		if(DV!=null)
+		{
+			for (final MoneyDenomination element : DV.denominations())
+			{
+				if(element.abbr().equals(name) || element.name().equals(name))
+					return element;
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public double lowestAbbreviatedDenomination(final String currency, final double absoluteAmount)
 	{
 		final MoneyDefinition DV=getCurrencySet(currency);

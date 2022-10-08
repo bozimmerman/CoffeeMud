@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -132,6 +134,31 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return the list of number lists
 	 */
 	public long[][] compileConditionalRange(List<String> condV, int numDigits, final int startOfRange, final int endOfRange);
+
+	/**
+	 * This strange method takes a list of space-delimited expressions of the
+	 * form [CONDITION]number number type number type , etc. E.G.: &gt;1 3 trains 5 pracs.
+	 * Each list must contain at least the given num of digits. If the condition falls
+	 * within the given start of range and end of range, then the condition
+	 * range of entries in the returned array is populated with the values on
+	 * that row.  Each digit represents a single cost.
+	 * @param condV the list of fully expressions
+	 * @param numDigits the min number of digits in each expression
+	 * @param startOfRange the starting range to return
+	 * @param endOfRange the ending range to return &gt; startOfRange
+	 * @return the list of number lists
+	 */
+	public Cost[][] compileConditionalCosts(final List<String> condV, final int numDigits, final int startOfRange, final int endOfRange);
+
+	/**
+	 * Compiles a cost object based on the amount, and the given possible
+	 * train, practice, or a currency, or any other type.
+	 *
+	 * @param amt the given amount
+	 * @param poss string describing an amount
+	 * @return null, or a cost object
+	 */
+	public Cost compileCost(double amt, final String poss);
 
 	/**
 	 * Outfits the given mob with the list of given items.  If the mob
@@ -359,7 +386,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * @param doEcho 1 dim array to put whether echo is on or off
 	 */
 	public void deAlias(final String rawAliasDefinition, final List<String> parsedInput,
-			final List<List<String>> executableCommands, final boolean[] doEcho);
+						final List<List<String>> executableCommands, final boolean[] doEcho);
 
 	/**
 	 * Iterates through every mob and player in the game, replacing the old race
@@ -451,6 +478,25 @@ public interface CMMiscUtils extends CMLibrary
 	 */
 	public String getUnsubscribeURL(final String name);
 
+
+	/**
+	 * Creates a new CostManager object reflecting the given type and value.
+	 * @see CMMiscUtils#createCostManager(Cost)
+	 *
+	 * @param costType the type of code
+	 * @param value the amount of the type
+	 * @return the CostManager object
+	 */
+	public CostManager createCostManager(final CostType costType, final Double value);
+
+	/**
+	 * Creates a new CostManager object reflecting the given cost object.
+	 * @see CMMiscUtils#createCostManager(Cost)
+	 *
+	 * @param cost the cost
+	 * @return the CostManager object
+	 */
+	public CostManager createCostManager(final Cost cost);
 
 	/**
 	 * A enum for item state flags

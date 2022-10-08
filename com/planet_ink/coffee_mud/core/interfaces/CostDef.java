@@ -1,8 +1,9 @@
 package com.planet_ink.coffee_mud.core.interfaces;
 
+import com.planet_ink.coffee_mud.core.collections.Triad;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 /*
-Copyright 2010-2022 Bo Zimmerman
+Copyright 2006-2022 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -31,6 +32,9 @@ public interface CostDef
 	{
 		TRAIN,
 		PRACTICE,
+		MANA,
+		MOVEMENT,
+		HITPOINT,
 		XP,
 		GOLD,
 		QP;
@@ -45,6 +49,13 @@ public interface CostDef
 	public CostType type();
 
 	/**
+	 * Currency, if applicable, to the cost.
+	 *
+	 * @return null, or "", or a currency
+	 */
+	public String typeCurrency();
+
+	/**
 	 * A math formula definition the amount of the cost
 	 * type required, where at-x1 is the qualifying level
 	 * and at-x2 is the player level
@@ -52,4 +63,35 @@ public interface CostDef
 	 * @return the amount formula
 	 */
 	public String costDefinition();
+
+	/**
+	 * A final cost is an integer, and the type, and possibly
+	 * a currency.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static class Cost extends Triad<Double,CostType, String>
+	{
+		/**
+		 * Construct a Cost object
+		 * @param amt the amount
+		 * @param type the cost type
+		 * @param currency the currency type
+		 */
+		public Cost(final double amt, final CostType type, final String currency)
+		{
+			super(Double.valueOf(amt), type, currency);
+		}
+
+		/**
+		 * Construct a Cost object
+		 * @param amt the amount
+		 * @param type the cost type
+		 */
+		public Cost(final double amt, final CostType type)
+		{
+			super(Double.valueOf(amt), type, "");
+		}
+	}
 }

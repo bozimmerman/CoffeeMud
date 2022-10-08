@@ -651,9 +651,9 @@ public class CommonSkill extends StdAbility
 			if(overrideMana()>=0)
 				consumed=overrideMana();
 			minimum=5;
-			if((costOverrides!=null)&&(costOverrides[AbilityMapper.Cost.MANA.ordinal()]!=null))
+			if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilCostType.MANA.ordinal()]!=null))
 			{
-				consumed=costOverrides[AbilityMapper.Cost.MANA.ordinal()].intValue();
+				consumed=costOverrides[AbilityMapper.AbilCostType.MANA.ordinal()].intValue();
 				if((consumed<minimum)&&(consumed>=0))
 					minimum=consumed;
 			}

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -1916,9 +1917,8 @@ public class Spell_Wish extends Spell
 					case CharStats.STAT_STRENGTH:
 					case CharStats.STAT_WISDOM:
 					{
-						int trainsRequired=CMLib.login().getTrainingCost(mob, foundAttribute, true);
-						if(trainsRequired<0)
-							trainsRequired=-trainsRequired;
+						final Cost c = CMLib.login().getTrainingCost(mob, foundAttribute, true);
+						int trainsRequired  = (c == null)?1:c.first.intValue();
 						if(trainsRequired>100)
 							trainsRequired=100;
 						baseLoss+=((CMLib.leveler().getLevelExperienceJustThisLevel(mob, mob.basePhyStats().level())/5)*(1+trainsRequired));

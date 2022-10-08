@@ -216,7 +216,7 @@ public class StdAbility implements Ability
 	}
 
 	@Override
-	public ExpertiseLibrary.SkillCostManager getTrainingCost(final MOB mob)
+	public CostManager getTrainingCost(final MOB mob)
 	{
 		int qualifyingLevel;
 		int playerLevel=1;
@@ -225,12 +225,12 @@ public class StdAbility implements Ability
 			final Integer[] O=CMLib.ableMapper().getCostOverrides(mob,ID());
 			if(O!=null)
 			{
-				Integer val=O[AbilityMapper.Cost.TRAIN.ordinal()];
+				Integer val=O[AbilityMapper.AbilCostType.TRAIN.ordinal()];
 				if(val!=null)
-					return CMLib.expertises().createCostManager(CostType.TRAIN,Double.valueOf(val.intValue()));
-				val=O[AbilityMapper.Cost.PRAC.ordinal()];
+					return CMLib.utensils().createCostManager(CostType.TRAIN,Double.valueOf(val.intValue()));
+				val=O[AbilityMapper.AbilCostType.PRAC.ordinal()];
 				if(val!=null)
-					return CMLib.expertises().createCostManager(CostType.PRACTICE,Double.valueOf(val.intValue()));
+					return CMLib.utensils().createCostManager(CostType.PRACTICE,Double.valueOf(val.intValue()));
 			}
 			qualifyingLevel=CMLib.ableMapper().qualifyingLevel(mob, this);
 			playerLevel=mob.basePhyStats().level();
@@ -244,10 +244,10 @@ public class StdAbility implements Ability
 			qualifyingLevel=1;
 		final CostDef rawCost=getRawTrainingCost();
 		if(rawCost==null)
-			return CMLib.expertises().createCostManager(CostType.TRAIN,Double.valueOf(1.0));
+			return CMLib.utensils().createCostManager(CostType.TRAIN,Double.valueOf(1.0));
 		final double[] vars=new double[]{ qualifyingLevel,playerLevel};
 		final double value=CMath.parseMathExpression(rawCost.costDefinition(),vars);
-		return CMLib.expertises().createCostManager(rawCost.type(),Double.valueOf(value));
+		return CMLib.utensils().createCostManager(new CostDef.Cost(value, rawCost.type(), rawCost.typeCurrency()));
 	}
 
 	protected int practicesToPractice(final MOB mob)
@@ -255,8 +255,8 @@ public class StdAbility implements Ability
 		if(mob!=null)
 		{
 			final Integer[] O=CMLib.ableMapper().getCostOverrides(mob,ID());
-			if((O!=null)&&(O[AbilityMapper.Cost.PRACPRAC.ordinal()]!=null))
-				return O[AbilityMapper.Cost.PRACPRAC.ordinal()].intValue();
+			if((O!=null)&&(O[AbilityMapper.AbilCostType.PRACPRAC.ordinal()]!=null))
+				return O[AbilityMapper.AbilCostType.PRACPRAC.ordinal()].intValue();
 		}
 		return iniPracticesToPractice();
 	}
@@ -1545,9 +1545,9 @@ public class StdAbility implements Ability
 				consumed=minimum;
 			if((overrideMana()>=0) && (CMProps.getManaCostExceptionObject(ID()) == null))
 				consumed=overrideMana();
-			if((costOverrides!=null)&&(costOverrides[AbilityMapper.Cost.MANA.ordinal()]!=null))
+			if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilCostType.MANA.ordinal()]!=null))
 			{
-				consumed=costOverrides[AbilityMapper.Cost.MANA.ordinal()].intValue();
+				consumed=costOverrides[AbilityMapper.AbilCostType.MANA.ordinal()].intValue();
 				if((consumed<minimum)&&(consumed>=0))
 					minimum=consumed;
 			}
@@ -2185,14 +2185,14 @@ public class StdAbility implements Ability
 	@Override
 	public String requirements(final MOB mob)
 	{
-		final ExpertiseLibrary.SkillCostManager cost=getTrainingCost(mob);
+		final CostManager cost=getTrainingCost(mob);
 		return cost.requirements(mob);
 	}
 
 	@Override
 	public boolean canBeLearnedBy(final MOB teacher, final MOB student)
 	{
-		final ExpertiseLibrary.SkillCostManager cost=getTrainingCost(student);
+		final CostManager cost=getTrainingCost(student);
 		if(!cost.doesMeetCostRequirements(student))
 		{
 			final String ofWhat=cost.costType(student);
@@ -2471,10 +2471,10 @@ public class StdAbility implements Ability
 	{
 		if(student.fetchAbility(ID())==null)
 		{
-			final ExpertiseLibrary.SkillCostManager cost=getTrainingCost(student);
+			final CostManager cost=getTrainingCost(student);
 			if(!cost.doesMeetCostRequirements(student))
 				return;
-			cost.spendSkillCost(student);
+			cost.doSpend(student);
 			final Ability newAbility=(Ability)newInstance();
 			final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,newAbility.ID()), .75));
 			newAbility.setProficiency((int)Math.round(CMath.mul(proficiency(),((CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),100.0))))));
