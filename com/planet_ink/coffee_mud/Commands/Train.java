@@ -175,7 +175,7 @@ public class Train extends StdCommand
 			final List<String> cols=new ArrayList<String>();
 			for(final int i: CharStats.CODES.BASECODES())
 			{
-				final Cost costAmount=CMLib.login().getTrainingCost(mob, i, false);
+				final Cost costAmount=CMLib.login().getTrainingCost(mob, i, true);
 				if(costAmount != null)
 				{
 					final CostManager man = CMLib.utensils().createCostManager(costAmount);
