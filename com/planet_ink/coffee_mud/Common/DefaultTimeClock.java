@@ -244,7 +244,19 @@ public class DefaultTimeClock implements TimeClock
 			long x=((long)getYear())*((long)getMonthsInYear())*getDaysInMonth();
 			x=x+((long)(getMonth()-1))*((long)getDaysInMonth());
 			x=x+getDayOfMonth();
-			timeDesc.append(getWeekNames()[(int)(x%getDaysInWeek())]+", ");
+			final String[] weekNames = getWeekNames();
+			int weekDayIndex = (int)(x%getDaysInWeek());
+			if((weekDayIndex<0) || (weekDayIndex >= weekNames.length))
+			{
+				if(weekDayIndex < 0)
+					Log.errOut("Negative weekday configuration: "+getYear()+", "+getMonthsInYear()+", "+getDaysInMonth()+", "+getMonth());
+				else
+				if(getDaysInWeek() > weekNames.length)
+					Log.errOut("Bad weekday configuration: "+getDaysInWeek()+"/"+weekDayIndex);
+				timeDesc.append(L("Unknown")+", ");
+			}
+			else
+				timeDesc.append(weekNames[weekDayIndex]+", ");
 		}
 		timeDesc.append("the "+getDayOfMonth()+CMath.numAppendage(getDayOfMonth()));
 		timeDesc.append(" day of "+getMonthNames()[getMonth()-1]);

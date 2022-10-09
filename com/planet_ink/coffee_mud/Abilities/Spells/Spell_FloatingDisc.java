@@ -88,11 +88,18 @@ public class Spell_FloatingDisc extends Spell
 		final Item item=(Item)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked())
+		if(canBeUninvoked()
+		&&(mob != null)
+		&&(item != null))
 		{
 			if(item.amWearingAt(Wearable.WORN_FLOATING_NEARBY))
 			{
-				mob.location().show(mob,item,CMMsg.MSG_OK_VISUAL,L("<T-NAME> floating near <S-NAME> now floats back @x1",((wasntMine)?"down to the ground":"into <S-HIS-HER> hands.")));
+				final Room R=mob.location();
+				if(R!=null)
+				{
+					R.show(mob,item,CMMsg.MSG_OK_VISUAL,L("<T-NAME> floating near <S-NAME> now floats back @x1",
+							((wasntMine)?"down to the ground":"into <S-HIS-HER> hands.")));
+				}
 				item.unWear();
 			}
 			if(wasntMine)
