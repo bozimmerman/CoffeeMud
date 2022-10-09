@@ -144,7 +144,9 @@
 	</SELECT>
 	<BR>
 	@if?CheckAuthCode?ALLMODAREAS=true@
-	<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="New" ONCLICK="Clicked('newarea.cmvp');">
+		@if?CheckAuthCode?AUTH_CMDAREAS=true@
+		<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="New" ONCLICK="Clicked('newarea.cmvp');">
+		@endif@
 	<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Edit" ONCLICK="Clicked('possmodarea.cmvp');">
 	<INPUT TYPE=BUTTON NAME=MAPAREA VALUE="Map" ONCLICK="Clicked('maparea.cmvp');">
 	<INPUT TYPE=BUTTON NAME=DELAREA VALUE="Del" ONCLICK="if(confirm('Are you sure you want to delete the area '+document.SELECTAREA.AREA.value+'?'))Clicked('areagone.cmvp');">
@@ -176,7 +178,7 @@
 	
 @/block@ 
 
-@if?CheckAuthCode?SYSOP=true&||AUTH_LOADUNLOAD=true&||AUTH_LISTADMIN=true&||ANYFILEBROWSE=true&||AUTH_CMDPLAYERS&||AUTH_STAT=true&||AUTH_JOURNALS=true&||AUTH_CMDQUESTS=true&||AUTH_BAN=true@
+@if?CheckAuthCode?SYSOP=true&||AUTH_LOADUNLOAD=true&||AUTH_LISTADMIN=true&||ANYFILEBROWSE=true&||AUTH_CMDPLAYERS=true&||AUTH_STAT=true&||AUTH_JOURNALS=true&||AUTH_CMDQUESTS=true&||AUTH_BAN=true@
 	<TABLE WIDTH=600 BORDER=1>
 	<TR>
 		<TD WIDTH=33% ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Utilities:</B></FONT></TD>
