@@ -124,7 +124,9 @@ public class Prayer_BoneMoon extends Prayer
 			}
 			if(B!=null)
 			{
-				new Prayer_AnimateSkeleton().makeSkeletonFrom(R,B,null,level);
+				Prayer_AnimateSkeleton skA = (Prayer_AnimateSkeleton)CMClass.getAbility("Prayer_AnimateSkeleton");
+				skA.setInvoker(invoker());
+				skA.makeSkeletonFrom(R,B,null,level);
 				B.destroy();
 				level+=3;
 			}
@@ -132,9 +134,9 @@ public class Prayer_BoneMoon extends Prayer
 		return super.tick(ticking,tickID);
 	}
 
-   @Override
-public int castingQuality(final MOB mob, final Physical target)
-   {
+	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
 		if(mob!=null)
 		{
 			if((mob.isMonster())&&(mob.isInCombat()))

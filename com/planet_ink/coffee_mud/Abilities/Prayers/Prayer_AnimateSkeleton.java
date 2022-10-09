@@ -168,7 +168,7 @@ public class Prayer_AnimateSkeleton extends Prayer
 			newMOB.setDisplayText(L("@x1 skeleton is here",race));
 		}
 		if(mob == null)
-			newMOB.basePhyStats().setLevel(body.phyStats().level());
+			newMOB.basePhyStats().setLevel(body.phyStats().level()+level);
 		else
 			newMOB.basePhyStats().setLevel(getUndeadLevel(mob,level,body.phyStats().level()));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
@@ -227,7 +227,12 @@ public class Prayer_AnimateSkeleton extends Prayer
 		}
 		body.destroy();
 		newMOB.setStartRoom(null);
-		beneficialAffect(mob,newMOB,0,0);
+		MOB invokerM = mob;
+		if(invokerM == null)
+			invokerM = invoker();
+		if(invokerM == null)
+			invokerM = newMOB;
+		beneficialAffect(invokerM,newMOB,0,0);
 		R.show(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> begin(s) to rise!"));
 		R.recoverRoomStats();
 	}
