@@ -280,7 +280,7 @@ public class Train extends StdCommand
 					if(subcost != null)
 					{
 						trainType = t;
-						gainAmount = cost.first.intValue();
+						gainAmount = subcost.first.intValue();
 						cost = subcost.second;
 						break;
 					}
