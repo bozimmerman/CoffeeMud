@@ -1014,20 +1014,21 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 	protected Room unpackRoomObjectFromXML(final String buf, final boolean andContent)
 	{
-		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf);
+		final XMLLibrary xmlLib = CMLib.xml();
+		final List<XMLLibrary.XMLTag> xml=xmlLib.parseAllXML(buf);
 		if(xml==null)
 			return null;
-		final List<XMLLibrary.XMLTag> roomData=CMLib.xml().getContentsFromPieces(xml,"AROOM");
+		final List<XMLLibrary.XMLTag> roomData=xmlLib.getContentsFromPieces(xml,"AROOM");
 		if(roomData==null)
 			return null;
-		final String roomClass=CMLib.xml().getValFromPieces(roomData,"RCLAS");
+		final String roomClass=xmlLib.getValFromPieces(roomData,"RCLAS");
 		final Room newRoom=CMClass.getLocale(roomClass);
 		if(newRoom==null)
 			return null;
-		//newRoom.setRoomID(CMLib.xml().getValFromPieces(roomData,"ROOMID"));
-		newRoom.setDisplayText(CMLib.xml().getValFromPieces(roomData,"RDISP"));
-		newRoom.setDescription(CMLib.xml().getValFromPieces(roomData,"RDESC"));
-		newRoom.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(roomData,"RTEXT")));
+		//newRoom.setRoomID(xmlLib.getValFromPieces(roomData,"ROOMID"));
+		newRoom.setDisplayText(xmlLib.getValFromPieces(roomData,"RDISP"));
+		newRoom.setDescription(xmlLib.getValFromPieces(roomData,"RDESC"));
+		newRoom.setMiscText(xmlLib.restoreAngleBrackets(xmlLib.getValFromPieces(roomData,"RTEXT")));
 		if(andContent)
 		{
 			final String err = this.fillRoomContentFromXML(newRoom, roomData);
@@ -1042,12 +1043,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 	protected String fillRoomContentFromXML(final Room newRoom, final List<XMLTag> xml)
 	{
+		final XMLLibrary xmlLib = CMLib.xml();
 		final Map<String,Physical> identTable=new Hashtable<String,Physical>();
 
-		final List<XMLLibrary.XMLTag> cV=CMLib.xml().getContentsFromPieces(xml,"ROOMCONTENT");
+		final List<XMLLibrary.XMLTag> cV=xmlLib.getContentsFromPieces(xml,"ROOMCONTENT");
 		if(cV==null)
 			return unpackErr("Room","null 'ROOMCONTENT' in room "+newRoom.roomID(),xml);
-		final XMLLibrary xmlLib=CMLib.xml();
 		if(cV.size()>0)
 		{
 			final Map<MOB,String> mobRideTable=new Hashtable<MOB,String>();
@@ -1577,8 +1578,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	@Override
 	public String unpackAreaFromXML(final List<XMLTag> aV, final Session S, final String overrideAreaType, final boolean andRooms, final boolean savable)
 	{
-		String areaClass=CMLib.xml().getValFromPieces(aV,"ACLAS");
-		final String areaName=CMLib.xml().getValFromPieces(aV,"ANAME");
+		final XMLLibrary xmlLib = CMLib.xml();
+		String areaClass=xmlLib.getValFromPieces(aV,"ACLAS");
+		final String areaName=xmlLib.getValFromPieces(aV,"ANAME");
 
 		if((CMLib.map().getArea(areaName)!=null) && (savable))
 			return "Area Exists: "+areaName;
@@ -1598,16 +1600,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		else
 			CMLib.flags().setSavable(newArea, false);
 
-		newArea.setDescription(CMLib.coffeeFilter().safetyInFilter(CMLib.xml().getValFromPieces(aV,"ADESC")));
-		newArea.setClimateType(CMLib.xml().getIntFromPieces(aV,"ACLIM"));
-		newArea.setTheme(CMLib.xml().getIntFromPieces(aV,"ATECH"));
-		newArea.setSubOpList(CMLib.xml().getValFromPieces(aV,"ASUBS"));
-		newArea.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(aV,"ADATA")));
+		newArea.setDescription(CMLib.coffeeFilter().safetyInFilter(xmlLib.getValFromPieces(aV,"ADESC")));
+		newArea.setClimateType(xmlLib.getIntFromPieces(aV,"ACLIM"));
+		newArea.setTheme(xmlLib.getIntFromPieces(aV,"ATECH"));
+		newArea.setSubOpList(xmlLib.getValFromPieces(aV,"ASUBS"));
+		newArea.setMiscText(xmlLib.restoreAngleBrackets(xmlLib.getValFromPieces(aV,"ADATA")));
 		if(CMLib.flags().isSavable(newArea))
 			CMLib.database().DBUpdateArea(newArea.Name(),newArea);
 		if(andRooms)
 		{
-			final List<XMLLibrary.XMLTag> rV=CMLib.xml().getContentsFromPieces(aV,"AROOMS");
+			final List<XMLLibrary.XMLTag> rV=xmlLib.getContentsFromPieces(aV,"AROOMS");
 			if(rV==null)
 				return unpackErr("Area","null 'AROOMS'",aV);
 			for(int r=0;r<rV.size();r++)
