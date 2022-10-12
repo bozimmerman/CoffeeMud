@@ -5,6 +5,7 @@
   4. PLAYERDEATH now supports PURGE X for a "lives remaining" type effect.
   5. New chant: Summon Animals
   6. Stat and train costs can now be specified in terms of a local currency
+  7. WHERE Archon command now supports MQL updates via WHERE UPDATE: ...
 # Build 5.10.0 Release 9/23/2022
   1. New Scriptable functions: ROOMPC and AREAPC
   2. Caravans now have their own internal Directions (fore, back, right, left, up, down)

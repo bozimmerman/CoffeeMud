@@ -233,6 +233,16 @@ public interface AreaGenerationLibrary extends CMLibrary
 	public List<Map<String,Object>> doMQLSelectObjects(final Modifiable E, final String mql) throws MQLException;
 
 	/**
+	 * Updates objects using an MQL query that begins with UPDATE:
+	 *
+	 * @param E a random object you want to use as a base, or null
+	 * @param mql the MQL query
+	 * @return the list of UpdateSet that should be modified
+	 * @throws MQLException something went wrong
+	 */
+	public List<UpdateSet> doMQLUpdateObjects(final Modifiable E, final String mql) throws MQLException;
+
+	/**
 	 * Returns a flattened string result from an MQL query that begins with SELECT:
 	 *
 	 * @param E a random object you want to use as a base, or null
@@ -514,6 +524,20 @@ public interface AreaGenerationLibrary extends CMLibrary
 		ud,
 		nesw,
 		nwse
+	}
+
+	/**
+	 * The result set from an update
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public class UpdateSet extends Triad<Modifiable,String,String>
+	{
+		public UpdateSet(final Modifiable obj, final String key, final String value)
+		{
+			super(obj, key, value);
+		}
 	}
 
 	//public void testMQLParsing();

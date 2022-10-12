@@ -9,8 +9,10 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.UpdateSet;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -189,6 +191,109 @@ public class Where extends StdCommand
 									else
 										lines.append("     "+CMStrings.padRight(key, 10)+": "+o.toString()+"\n\r");
 								}
+							}
+						}
+					}
+					catch(final MQLException e)
+					{
+						final ByteArrayOutputStream bout=new ByteArrayOutputStream();
+						final PrintStream pw=new PrintStream(bout);
+						e.printStackTrace(pw);
+						pw.flush();
+						lines.append(e.getMessage()+"\n\r"+bout.toString());
+					}
+				}
+				else
+				if(who.toUpperCase().startsWith("UPDATE:"))
+				{
+					lines.setLength(0);
+					try
+					{
+						final List<UpdateSet> res=CMLib.percolator().doMQLUpdateObjects(areaFlag?(mob.location().getArea()):null, who);
+						if(res.size()==0)
+							lines.append("(nothing to do)");
+						else
+						{
+							lines.append("Update preview:\n\r");
+							for(final UpdateSet o : res)
+							{
+								if(o.first instanceof Environmental)
+									lines.append(o.first.name()+" ("+o.first.ID()+") @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation((Environmental)o.first))+":\n\r");
+								else
+									lines.append(o.first.name()+" ("+o.first.ID()+"):\n\r");
+								lines.append("  OLD: "+o.second+"="+o.first.getStat(o.second)).append("\n\r");
+								lines.append("  NEW: "+o.second+"="+o.third).append("\n\r");
+							}
+							final Runnable doUpdate = new Runnable()
+							{
+								final List<UpdateSet> todo=res;
+								public void run()
+								{
+									for(final UpdateSet o : todo)
+									{
+										o.first.setStat(o.second, o.third);
+										if(o.first instanceof Environmental)
+										{
+											Environmental E=(Environmental)o.first;
+											final Room R=CMLib.map().roomLocation(E);
+											if((R!=null) && R.isSavable() && (R.roomID().length()>0))
+											{
+												Log.infoOut(mob.name()+" modified "+E.name()+" at "+R.roomID());
+												if(E instanceof Ability)
+													E=((Ability)E).affecting();
+												if(E instanceof Room)
+													CMLib.database().DBUpdateRoom(R);
+												else
+												if(E instanceof Item)
+												{
+													final Item I=(Item)E;
+													if((I.owner() instanceof Room)
+													&&(I.databaseID().length()>0))
+														CMLib.database().DBUpdateItem(R.roomID(), I);
+													else
+													if((I.owner() instanceof MOB)
+													&&(((MOB)I.owner()).databaseID().length()>0)
+													&&(((MOB)I.owner()).getStartRoom()!=null)
+													&&(((MOB)I.owner()).getStartRoom().roomID().length()>0))
+														CMLib.database().DBUpdateMOB(((MOB)I.owner()).getStartRoom().roomID(), (MOB)I.owner());
+												}
+												else
+												if((E instanceof MOB)
+												&&(((MOB)E).databaseID().length()>0))
+													CMLib.database().DBUpdateMOB(R.roomID(), (MOB)E);
+											}
+										}
+									}
+								}
+							};
+							final Session session = mob.session();
+							if(session!=null)
+							{
+								final InputCallback callBack = new InputCallback(InputCallback.Type.CONFIRM,"N",0)
+								{
+									@Override
+									public void showPrompt()
+									{
+										session.promptPrint(L("\n\rSave the above changes (y/N)? "));
+									}
+
+									@Override
+									public void timedOut()
+									{
+									}
+
+									@Override
+									public void callBack()
+									{
+										if(this.input.equals("Y"))
+										{
+											doUpdate.run();
+										}
+									}
+								};
+								session.wraplessPrintln(lines.toString());
+								lines.setLength(0);
+								session.prompt(callBack);
 							}
 						}
 					}

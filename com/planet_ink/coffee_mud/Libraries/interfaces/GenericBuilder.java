@@ -200,7 +200,8 @@ public interface GenericBuilder extends CMLibrary
 		SENSESSTR,
 		CURRENCY,
 		CURRENCY_NAME,
-		DENOMINATION_NAME
+		DENOMINATION_NAME,
+		OWNER
 	}
 
 	/**

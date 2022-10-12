@@ -3254,6 +3254,23 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					str.append(currency.toLowerCase());
 				break;
 			}
+			case OWNER:
+			{
+				final PrivateProperty pA;
+				if(P instanceof Area)
+					pA=CMLib.law().getPropertyRecord((Area)P);
+				else
+				if(P instanceof Item)
+					pA=CMLib.law().getPropertyRecord((Item)P);
+				else
+				if(P instanceof Room)
+					pA=CMLib.law().getPropertyRecord((Room)P);
+				else
+					pA=null;
+				if(pA!=null)
+					str.append(pA.getOwnerName());
+				break;
+			}
 			case DENOMINATION_NAME:
 			{
 				str.append(CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(P)));
@@ -3601,6 +3618,23 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						P.basePhyStats().setDisposition(newDisposition);
 					break;
 				}
+			case OWNER:
+			{
+				final PrivateProperty pA;
+				if(P instanceof Area)
+					pA=CMLib.law().getPropertyRecord((Area)P);
+				else
+				if(P instanceof Item)
+					pA=CMLib.law().getPropertyRecord((Item)P);
+				else
+				if(P instanceof Room)
+					pA=CMLib.law().getPropertyRecord((Room)P);
+				else
+					pA=null;
+				if(pA!=null)
+					pA.setOwnerName(value);
+				break;
+			}
 			case SENSESSTR:
 				{
 					int newSensesMask=0;

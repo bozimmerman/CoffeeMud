@@ -823,6 +823,22 @@ public class CMStrings
 	}
 
 	/**
+	 * This methods replaces any double-escapes to single escape characters, and any
+	 * escaped double-chars to double-chars
+	 * @param str the string to de-escape
+	 * @param quot the char to de-escape
+	 * @return the string, de-escaped
+	 */
+	public final static String deEscape(final String str, final char quot)
+	{
+		if(str==null)
+			return str;
+		if(str.indexOf('\\')<0)
+			return str;
+		return replaceAll(replaceAll(str,"\\"+quot,""+quot),"\\\\","\\");
+	}
+
+	/**
 	 * This methods replaces any escapes to double-escape characters, and any
 	 *  double-quotes to escaped double-quotes
 	 * @param str the string to escape
