@@ -4681,7 +4681,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				case STATE_WHERE2: // where rhs of clause
 				{
-					if(Character.isWhitespace(c))
+					if(Character.isWhitespace(c)||(c==';'))
 					{
 						if(curr.length()>0)
 						{
@@ -4689,7 +4689,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							{
 								wcomp.rhs = WhereComp.parseHS(curr.toString());
 								curr.setLength(0);
-								state=SelectMQLState.STATE_EXPECTCONNOREND;
+								if(c==';')
+									state=SelectMQLState.STATE_EXPECTNOTHING;
+								else
+									state=SelectMQLState.STATE_EXPECTCONNOREND;
 							}
 							else
 								curr.append(c);
@@ -4821,6 +4824,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 			if((state != SelectMQLState.STATE_EXPECTNOTHING)
 			&&(state != SelectMQLState.STATE_EXPECTWHEREOREND)
+			&&(state != SelectMQLState.STATE_EXPECTCOMMAORWHEREOREND)
 			&&(state != SelectMQLState.STATE_EXPECTCONNOREND))
 				throw new MQLException("Unexpected end of clause in state "+state.toString()+" in mql: "+str);
 			// finally, parse the aggregators
