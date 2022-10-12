@@ -450,10 +450,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			final String mqlWSelect=testMQLs[i];
 			final int x=mqlWSelect.indexOf(':');
-			final String mql=mqlWSelect.substring(x+1).toUpperCase().trim();
+			final String setmql = mqlWSelect.substring(x+1).trim();
+			final String mql=setmql.toUpperCase();
 			try
 			{
-				MQLClause.parseMQL(testMQLs[i], mql, SelectMQLState.STATE_SELECT0);
+				MQLClause.parseMQL(testMQLs[i], setmql, mql, SelectMQLState.STATE_SELECT0);
 			}
 			catch(final Exception e)
 			{
@@ -3989,17 +3990,18 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		 * parse the mql statement into this object
 		 *
 		 * @param str the original mql statement
+		 * @param setmqlbits mql statement, minus select:
 		 * @param mqlbits mql statement, minus select: must be ALL UPPERCASE
 		 * @param startState the starting state
 		 * @return the parsed MQL clause
 		 * @throws CMException
 		 */
-		protected static MQLClause parseMQL(final String str, final String mqlbits, final SelectMQLState startState) throws MQLException
+		protected static MQLClause parseMQL(final String str, final String setmqlbits, final String mqlbits, final SelectMQLState startState) throws MQLException
 		{
 			if(cachedClauses.containsKey(mqlbits))
 				return cachedClauses.get(mqlbits);
 			final MQLClause clause=new MQLClause();
-			clause.parseInternalMQL(str, mqlbits,startState);
+			clause.parseInternalMQL(str, setmqlbits, mqlbits,startState);
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MQLCACHE))
 				cachedClauses.put(mqlbits, clause);
 			return clause;
@@ -4010,11 +4012,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		 * parse the mql statement into this object
 		 *
 		 * @param str the original mql statement
+		 * @param setmqlbits mql statement, minus select:
 		 * @param mqlbits mql statement, minus select: must be ALL UPPERCASE
 		 * @param state the initial parse state
 		 * @throws CMException
 		 */
-		private void parseInternalMQL(final String str, final String mqlbits, SelectMQLState state) throws MQLException
+		private void parseInternalMQL(final String str, final String setmqlbits, final String mqlbits, SelectMQLState state) throws MQLException
 		{
 			this.mql=str;
 			final StringBuilder curr=new StringBuilder("");
@@ -4186,6 +4189,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				case STATE_SET2: // get the new value
 				{
+					final char lc=(i>=setmqlbits.length())?' ':setmqlbits.charAt(i);
 					if(Character.isWhitespace(c)
 					||(i==mqlbits.length()-1)
 					||((c=='\'')||(c=='\"')||(c=='`')))
@@ -4194,23 +4198,27 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						{
 							if(isTermProperlyEnded(curr))
 							{
-								if(!Character.isWhitespace(c))
-									curr.append(c);
-								varer[1] = curr.toString().toUpperCase().trim();
+								if(!Character.isWhitespace(lc))
+									curr.append(lc);
+								String currStr = curr.toString().trim();
+								final int x = currStr.toLowerCase().indexOf("select:");
+								if((x==0)||((x==1)&&(!Character.isLetter(curr.charAt(0)))))
+									currStr = currStr.toUpperCase();
+								varer[1] = currStr;
 								sets.add(varer);
 								varer = new String[2];
 								state=SelectMQLState.STATE_EXPECTCOMMAORWHEREOREND;
 								curr.setLength(0);
 							}
 							else
-								curr.append(c);
+								curr.append(lc);
 						}
 						else
-						if(!Character.isWhitespace(c))
-							curr.append(c);
+						if(!Character.isWhitespace(lc))
+							curr.append(lc);
 					}
 					else
-						curr.append(c);
+						curr.append(lc);
 					break;
 				}
 				case STATE_EXPECTCOMMAORWHEREOREND: // expect comma, where, or valid end
@@ -7020,10 +7028,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final int x=str.indexOf(':');
 		if(x<0)
 			throw new MQLException("Malformed mql: "+str);
-		final String mqlbits=str.substring(x+1).toUpperCase();
+		final String setmqlbits=str.substring(x+1);
+		final String mqlbits=setmqlbits.toUpperCase();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 			Log.debugOut("Starting MQL: "+CMStrings.deleteCRLFTAB(mqlbits) +" on "+((E==null)?"null":E.name()));
-		final MQLClause clause = MQLClause.parseMQL(str, mqlbits, SelectMQLState.STATE_SELECT0);
+		final MQLClause clause = MQLClause.parseMQL(str, setmqlbits, mqlbits, SelectMQLState.STATE_SELECT0);
 		final List<Map<String,String>> results = this.doSubSelectStr(E, ignoreStats, defPrefix, clause, str, piece, defined);
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 			Log.debugOut("Finished MQL: "+results.size()+" results");
@@ -7035,11 +7044,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final int x=str.indexOf(':');
 		if(x<0)
 			throw new MQLException("Malformed mql: "+str);
-		final String mqlbits=str.substring(x+1).toUpperCase();
+		final String setmqlbits=str.substring(x+1);
+		final String mqlbits=setmqlbits.toUpperCase();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 			Log.debugOut("Starting MQL: "+CMStrings.deleteCRLFTAB(mqlbits)+" on "+((E==null)?"null":((E instanceof Room)?((Room)E).roomID():E.name())));
 
-		final MQLClause clause = MQLClause.parseMQL(str, mqlbits, SelectMQLState.STATE_SELECT0);
+		final MQLClause clause = MQLClause.parseMQL(str, setmqlbits, mqlbits, SelectMQLState.STATE_SELECT0);
 		final List<Map<String,Object>> results = this.doSubObjSelect(E, ignoreStats, defPrefix, clause, str, piece, defined);
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 		{
@@ -7106,11 +7116,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final int x=mql.indexOf(':');
 			if(x<0)
 				throw new MQLException("Malformed mql: "+mql);
-			final String mqlbits=mql.substring(x+1).toUpperCase();
+			final String setmqlbits = mql.substring(x+1);
+			final String mqlbits=setmqlbits.toUpperCase();
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("Starting MQL: "+CMStrings.deleteCRLFTAB(mqlbits)+" on "+((E==null)?"null":((E instanceof Room)?((Room)E).roomID():E.name())));
 
-			final MQLClause clause = MQLClause.parseMQL(mql, mqlbits, SelectMQLState.STATE_UPDATE0);
+			final MQLClause clause = MQLClause.parseMQL(mql, setmqlbits, mqlbits, SelectMQLState.STATE_UPDATE0);
 			final List<UpdateSet> results = doSubObjUpdate(E, null, null, clause, mql, piece, defined);
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("Finished MQL USEL: "+results.size()+" results");

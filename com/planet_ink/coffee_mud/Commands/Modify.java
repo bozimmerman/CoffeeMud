@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
+import com.planet_ink.coffee_mud.core.exceptions.MQLException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.PlanarAbility.PlanarVar;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -10,10 +11,12 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.UpdateSet;
 import com.planet_ink.coffee_mud.Libraries.interfaces.HelpLibrary.HelpSection;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrCallback;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrResolution;
@@ -22,7 +25,9 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 
 /*
    Copyright 2004-2022 Bo Zimmerman
@@ -636,6 +641,120 @@ public class Modify extends StdCommand
 				CMLib.database().DBUpdatePlayerPlayerStats(playerM);
 		}
 		CMLib.database().DBUpdateAccount(theAccount);
+	}
+
+	public void doMql(final MOB mob, final boolean areaFlag, final List<String> commands)
+		throws IOException
+	{
+		if(commands.size()<2)
+			mob.tell(L("This is not valid MQL."));
+		else
+		{
+			final StringBuilder lines = new StringBuilder("");
+			final String mql=CMParms.combineQuoted(commands,0);
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around."));
+			try
+			{
+				final List<UpdateSet> res=CMLib.percolator().doMQLUpdateObjects(areaFlag?(mob.location().getArea()):null, mql);
+				if(res.size()==0)
+					lines.append("(nothing to do)");
+				else
+				{
+					lines.append("Update preview:\n\r");
+					for(final UpdateSet o : res)
+					{
+						if(o.first instanceof Environmental)
+							lines.append(o.first.name()+" ("+o.first.ID()+") @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation((Environmental)o.first))+":\n\r");
+						else
+							lines.append(o.first.name()+" ("+o.first.ID()+"):\n\r");
+						lines.append("  OLD: "+o.second+"="+o.first.getStat(o.second)).append("\n\r");
+						lines.append("  NEW: "+o.second+"="+o.third).append("\n\r");
+					}
+					final Runnable doUpdate = new Runnable()
+					{
+						final List<UpdateSet> todo=res;
+						public void run()
+						{
+							for(final UpdateSet o : todo)
+							{
+								o.first.setStat(o.second, o.third);
+								if(o.first instanceof Environmental)
+								{
+									Environmental E=(Environmental)o.first;
+									final Room R=CMLib.map().roomLocation(E);
+									if((R!=null) && R.isSavable() && (R.roomID().length()>0))
+									{
+										Log.infoOut(mob.name()+" modified "+E.name()+" at "+R.roomID());
+										if(E instanceof Ability)
+											E=((Ability)E).affecting();
+										if(E instanceof Room)
+											CMLib.database().DBUpdateRoom(R);
+										else
+										if(E instanceof Item)
+										{
+											final Item I=(Item)E;
+											if((I.owner() instanceof Room)
+											&&(I.databaseID().length()>0))
+												CMLib.database().DBUpdateItem(R.roomID(), I);
+											else
+											if((I.owner() instanceof MOB)
+											&&(((MOB)I.owner()).databaseID().length()>0)
+											&&(((MOB)I.owner()).getStartRoom()!=null)
+											&&(((MOB)I.owner()).getStartRoom().roomID().length()>0))
+												CMLib.database().DBUpdateMOB(((MOB)I.owner()).getStartRoom().roomID(), (MOB)I.owner());
+										}
+										else
+										if((E instanceof MOB)
+										&&(((MOB)E).databaseID().length()>0))
+											CMLib.database().DBUpdateMOB(R.roomID(), (MOB)E);
+									}
+								}
+							}
+						}
+					};
+					final Session session = mob.session();
+					if(session!=null)
+					{
+						final InputCallback callBack = new InputCallback(InputCallback.Type.CONFIRM,"N",0)
+						{
+							@Override
+							public void showPrompt()
+							{
+								session.promptPrint(L("\n\rSave the above changes (y/N)? "));
+							}
+
+							@Override
+							public void timedOut()
+							{
+							}
+
+							@Override
+							public void callBack()
+							{
+								if(this.input.equals("Y"))
+								{
+									doUpdate.run();
+								}
+							}
+						};
+						session.wraplessPrintln(lines.toString());
+						lines.setLength(0);
+						session.prompt(callBack);
+					}
+				}
+			}
+			catch(final MQLException e)
+			{
+				final ByteArrayOutputStream bout=new ByteArrayOutputStream();
+				final PrintStream pw=new PrintStream(bout);
+				e.printStackTrace(pw);
+				pw.flush();
+				lines.append(e.getMessage()+"\n\r"+bout.toString());
+				if(mob.session()!=null)
+					mob.session().wraplessPrintln(lines.toString());
+				lines.setLength(0);
+			}
+		}
 	}
 
 	public void areas(final MOB mob, final List<String> commands)
@@ -2209,7 +2328,7 @@ public class Modify extends StdCommand
 			+ "ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, QUEST, "
 			+ "MOB, USER, HOLIDAY, ACHIEVEMENT, MANUFACTURER, HELP/AHELP, TRAP, CRON, "
 			+ "GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, "
-			+ "TIME, HOUR, or ROOM";
+			+ "TIME, HOUR, UPDATE:, or ROOM";
 	}
 
 	@Override
@@ -2359,7 +2478,16 @@ public class Modify extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDAREAS))
 				return errorOut(mob);
-			areas(mob,commands);
+			if((commands.size()>2)
+			&&(commands.get(2).equalsIgnoreCase("UPDATE:"))
+			&&(CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.CMDAREAS)))
+			{
+				commands.remove(1);
+				commands.remove(0);
+				doMql(mob, true, commands);
+			}
+			else
+				areas(mob,commands);
 		}
 		else
 		if(commandType.equals("EXIT"))
@@ -2735,6 +2863,14 @@ public class Modify extends StdCommand
 					Log.sysOut("CreateEdit",mob.Name()+" modified Faction "+F.name()+" ("+F.factionID()+").");
 				}
 			}
+		}
+		else
+		if(commandType.equals("UPDATE:"))
+		{
+			if((!CMSecurity.isASysOp(mob))&&(!CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.CMDAREAS)))
+				return errorOut(mob);
+			commands.remove(0);
+			doMql(mob, false, commands);
 		}
 		else
 		if(commandType.equals("CLAN"))

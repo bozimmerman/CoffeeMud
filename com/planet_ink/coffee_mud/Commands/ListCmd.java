@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ShopPrice;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.MQLException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -33,7 +34,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.*;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -3605,6 +3608,50 @@ public class ListCmd extends StdCommand
 		return str.toString();
 	}
 
+	public String listMQL(final MOB mob, final boolean areaFlag, final List<String> commands)
+	{
+		final StringBuilder lines = new StringBuilder("");
+		try
+		{
+			final String mql = CMParms.combineQuoted(commands, 0);
+			final List<Map<String,Object>> res=CMLib.percolator().doMQLSelectObjects(areaFlag?(mob.location().getArea()):null, mql);
+			if(res.size()==0)
+				lines.append("(empty set)");
+			else
+			{
+				for(int line=0;line<res.size();line++)
+				{
+					lines.append("----- Row #"+line+"\n\r");
+					for(final String key : res.get(line).keySet())
+					{
+						final Object o=res.get(line).get(key);
+						if(o instanceof String)
+							lines.append("     "+CMStrings.padRight(key, 10)+": "+o.toString()+"\n\r");
+						else
+						if(o instanceof Environmental)
+						{
+							final Environmental E=(Environmental)o;
+							final Room R=CMLib.map().roomLocation(E);
+							final String loc=(R==null)?"":("@"+CMLib.map().getApproximateExtendedRoomID(R));
+							lines.append("    "+CMStrings.padRight(E.ID(), 10)+": "+E.name()+loc+"\n\r");
+						}
+						else
+							lines.append("     "+CMStrings.padRight(key, 10)+": "+o.toString()+"\n\r");
+					}
+				}
+			}
+		}
+		catch(final MQLException e)
+		{
+			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
+			final PrintStream pw=new PrintStream(bout);
+			e.printStackTrace(pw);
+			pw.flush();
+			lines.append(e.getMessage()+"\n\r"+bout.toString());
+		}
+		return lines.toString();
+	}
+
 	public String listCron(final Session viewerS, final String rest)
 	{
 		final StringBuilder str=new StringBuilder("");
@@ -4490,7 +4537,8 @@ public class ListCmd extends StdCommand
 		LIBRARIES("LIBRARIES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS}),
 		POSTOFFICES("POSTOFFICES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS}),
 		WHO("WHO",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDPLAYERS}),
-		CRON("CRON",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDCRON})
+		CRON("CRON",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDCRON}),
+		SELECT("SELECT:",new SecFlag[]{SecFlag.LISTADMIN}),
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -5730,6 +5778,9 @@ public class ListCmd extends StdCommand
 		case CRON:
 			s.wraplessPrintln(listCron(mob.session(), rest));
 			break;
+		case SELECT:
+			s.wraplessPrint(listMQL(mob, false, commands));
+			break;
 		case WEAPONS:
 			s.println("^HWeapon Item IDs:^N");
 			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.weapons()).toString());
@@ -5743,7 +5794,13 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(roomDetails(mob.session(), mob.location().getArea().getMetroMap(), mob.location(), rest).toString());
 			break;
 		case AREA:
-			s.wraplessPrintln(roomTypes(mob, mob.location().getArea().getMetroMap(), mob.location(), commands).toString());
+			if((commands.size()>2)&&(commands.get(1).equalsIgnoreCase("select:")))
+			{
+				commands.remove(0);
+				s.wraplessPrint(listMQL(mob, true, commands));
+			}
+			else
+				s.wraplessPrintln(roomTypes(mob, mob.location().getArea().getMetroMap(), mob.location(), commands).toString());
 			break;
 		case LOCALES:
 			s.println("^HRoom Class Locale IDs:^N");
