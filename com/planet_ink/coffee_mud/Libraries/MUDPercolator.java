@@ -6619,7 +6619,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				P=(Pattern)defined.get(".MATCHER:"+rhstr+".");
 			else
 			{
-				P = Pattern.compile(rhstr, Pattern.CASE_INSENSITIVE|Pattern.MULTILINE|Pattern.CANON_EQ|Pattern.DOTALL);
+				try
+				{
+					P = Pattern.compile(rhstr, Pattern.CASE_INSENSITIVE|Pattern.MULTILINE|Pattern.CANON_EQ|Pattern.DOTALL);
+				}
+				catch(final Exception e)
+				{
+					throw new MQLException(e.getMessage());
+				}
 				defined.put(".MATCHER:"+rhstr+".",P);
 			}
 			final Matcher M = P.matcher(lhstr);
@@ -6632,8 +6639,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					captures[i]=M.group(i+1);
 				}
 				defined.put(".LASTMATCHED.", Arrays.asList(captures));
+				return true;
 			}
-			break;
+			else
+				return false;
 		}
 		case LT:
 			if(CMath.isNumber(lhstr) && CMath.isNumber(rhstr))
@@ -6763,6 +6772,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					}
 					catch(final CMException x)
 					{
+						doMQLWhereClauseFilter(clause.wheres, froms, o,cache,mql,E,ignoreStats,defPrefix,piece,defined);
 						throw new MQLException(x.getMessage());
 					}
 				}

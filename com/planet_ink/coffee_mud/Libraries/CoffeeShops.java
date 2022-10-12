@@ -1351,10 +1351,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				}
 				else
 					col="";
-				col += CMStrings.padRightPreserve("^<SHOP^>"+E.name()+"^</SHOP^>",prodWidth);
+				col += CMStrings.padRightPreserve("^<SHOP^>"+E.name()+"^.^N^</SHOP^>",prodWidth);
 				if(E.name().length()>=prodWidth)
 				{
-					if(colNum>=totalCols)
+					if(colNum>0)
 						str.append("\n\r");
 					col += "\n\r";
 					rowNum++;
