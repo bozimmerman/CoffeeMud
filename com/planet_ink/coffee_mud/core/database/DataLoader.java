@@ -632,7 +632,7 @@ public class DataLoader
 		for(int i=0;i<itemSet.size();i++)
 		{
 			final String itemID=itemSet.get(i);
-			final Ability A=CMClass.getAbility("Prop_Artifact");
+			final Ability A=CMClass.getRawAbility("Prop_Artifact");
 			if(A!=null)
 			{
 				A.setMiscText("BOOT;"+itemID);

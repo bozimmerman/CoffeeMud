@@ -693,6 +693,17 @@ public class CMParms
 	}
 
 	/**
+	 * Parses the given string comma-delimited, handling escaped commas.
+	 * @param s the string to parse
+	 * @param ignoreNulls don't include any of the empty entries (,,)
+	 * @return the list of parsed strings
+	 */
+	public final static List<String> parseCommasSafe(final String s, final boolean ignoreNulls)
+	{
+		return parseAny(s,',',ignoreNulls);
+	}
+
+	/**
 	 * Returns a list of those flag strings that appear in the given string.
 	 * @param s the string to search
 	 * @param flags the set of flags to look for
@@ -808,29 +819,48 @@ public class CMParms
 	 * @param s the string to parse
 	 * @param delimiter the delimiter to use
 	 * @param ignoreNulls don't include any of the empty entries (-delim-delim)
+	 * @param safe handle escaped delimiters
 	 * @return the list of parsed strings
 	 */
-	public final static List<String> parseAny(final String s, final char delimiter, final boolean ignoreNulls)
+	public final static List<String> parseAny(final String s, final char delimiter, final boolean ignoreNulls, final boolean safe)
 	{
 		final Vector<String> V=new Vector<String>(1);
 		if((s==null)||(s.isEmpty()))
 			return V;
 		int last=0;
 		String sub;
-		for(int i=0;i<s.length();i++)
+		char c;
+		final StringBuilder str=new StringBuilder(s);
+		for(int i=0;i<str.length();i++)
 		{
-			if(s.charAt(i)==delimiter)
+			c=str.charAt(i);
+			if(c==delimiter)
 			{
-				sub=s.substring(last,i).trim();
+				sub=str.substring(last,i).trim();
 				last=i+1;
 				if(!ignoreNulls||(sub.length()>0))
-					V.add(sub);
+					V.add(sub.replace("\\",""));
 			}
+			else
+			if(safe &&(c=='\\'))
+				str.deleteCharAt(i);
 		}
-		sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
+		sub = (last>=str.length())?"":str.substring(last,str.length()).trim();
 		if(!ignoreNulls||(sub.length()>0))
 			V.add(sub);
 		return V;
+	}
+
+	/**
+	 * Parses the given string by the given delimiter.
+	 * @param s the string to parse
+	 * @param delimiter the delimiter to use
+	 * @param ignoreNulls don't include any of the empty entries (-delim-delim)
+	 * @return the list of parsed strings
+	 */
+	public final static List<String> parseAny(final String s, final char delimiter, final boolean ignoreNulls)
+	{
+		return parseAny(s,delimiter,ignoreNulls,false);
 	}
 
 	/**

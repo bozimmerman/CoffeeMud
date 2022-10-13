@@ -252,7 +252,8 @@ public class CMProps extends Properties
 		FORMULA_MAXCARRY,
 		FORMULA_MAXITEMS,
 		FORMULA_MAXFOLLOW,
-		TRAINCOSTS
+		TRAINCOSTS,
+		DEFAULTABILITYARGS
 	}
 
 	public final static int DEFAULT_MOB_HP_BASE = 11;
@@ -637,6 +638,7 @@ public class CMProps extends Properties
 	protected final Map<String,CostDef> commonCost  =new HashMap<String,CostDef>();
 	protected final Map<String,CostDef> skillsCost  =new HashMap<String,CostDef>();
 	protected final Map<String,CostDef> languageCost=new HashMap<String,CostDef>();
+	protected final Map<String,String>	ableArgs	=new HashMap<String,String>();
 
 	protected double speedAdj = 1.0;
 
@@ -1669,6 +1671,20 @@ public class CMProps extends Properties
 	}
 
 	/**
+	 * Returns any default arguments for the given ability id.
+	 * Parsed from the DEFAULTABILITYARGS entry.
+	 *
+	 * @param abilityID the ability id to get args for
+	 * @return null, or the arguments to use.
+	 */
+	public static final String getAbleArg(final String abilityID)
+	{
+		if(abilityID != null)
+			return p().ableArgs.get(abilityID.toUpperCase());
+		return null;
+	}
+
+	/**
 	 * Retrurns true if the given chk string matches one of the entries in the given WhiteList type for the
 	 * given properties object.
 	 * @param props the properties to check the whitelist on
@@ -2409,6 +2425,14 @@ public class CMProps extends Properties
 		setVar(Str.AUTOREACTION,getStr("AUTOREACTION"));
 		setVar(Str.WIZLISTMASK,getStr("WIZLISTMASK"));
 		setUpLowVar(Str.DEITYPOLICY,getStr("DEITYPOLICY"));
+		setUpLowVar(Str.DEFAULTABILITYARGS,getStr("DEFAULTABILITYARGS"));
+		ableArgs.clear();
+		for(final String set : CMParms.parseCommasSafe(getVar(Str.DEFAULTABILITYARGS), true))
+		{
+			final int i=set.indexOf('=');
+			if(i>0)
+				ableArgs.put(set.substring(0,i).toUpperCase().trim(), set.substring(i+1));
+		}
 		setUpLowVar(Str.DEFAULTPARENTAREA,getStr("DEFAULTPARENTAREA"));
 		setUpLowVar(Str.CLANWEBSITES,getStr("CLANWEBSITES"));
 		setVar(Str.CHANNELBACKLOG,getStr("CHANNELBACKLOG"));

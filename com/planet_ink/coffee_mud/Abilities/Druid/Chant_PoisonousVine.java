@@ -121,7 +121,9 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 		case 2:
 			A = CMClass.getAbility("Poison_Venom");
 			break;
-		default: 	A=CMClass.getAbility("Poison_Decreptifier"); break;
+		default:
+			A=CMClass.getAbility("Poison_Decreptifier");
+			break;
 		}
 		if(A!=null)
 		{

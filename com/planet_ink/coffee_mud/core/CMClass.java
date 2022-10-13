@@ -1048,6 +1048,25 @@ public class CMClass extends ClassLoader
 	 */
 	public static final Ability getAbility(final String calledThis)
 	{
+		final Ability A = (Ability) getNewGlobal(c().abilities, calledThis);
+		if(A!=null)
+		{
+			final String arg = CMProps.getAbleArg(A.ID());
+			if(arg != null)
+				A.setMiscText(arg);
+		}
+		return A;
+	}
+
+	/**
+	 * Returns a new instance of a ability object of the given ID from your
+	 * classloader, and ignores default arguments.
+	 *
+	 * @param calledThis the ID() of the object to return
+	 * @return a new instance of a ability object of the given ID
+	 */
+	public static final Ability getRawAbility(final String calledThis)
+	{
 		return (Ability) getNewGlobal(c().abilities, calledThis);
 	}
 
@@ -1062,7 +1081,7 @@ public class CMClass extends ClassLoader
 	public static final Ability getAbility(final String calledThis, final String miscText)
 	{
 		final Ability A=(Ability) getNewGlobal(c().abilities, calledThis);
-		if(A!=null)
+		if((A!=null)&&(miscText!=null))
 			A.setMiscText(miscText);
 		return A;
 	}

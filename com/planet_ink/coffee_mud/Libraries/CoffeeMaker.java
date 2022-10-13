@@ -188,7 +188,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				final String type=ablk.getParmValue( "TYPE");
 				if(type!=null)
 				{
-					Ability A=CMClass.getAbility(type);
+					Ability A=CMClass.getRawAbility(type);
 					if(A!=null)
 					{
 						A=(Ability)A.copyOf();
@@ -1421,15 +1421,15 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					final String type=ablk.getParmValue( "TYPE");
 					if(type!=null)
 					{
-						Ability A=CMClass.getAbility(type);
+						Ability A=CMClass.getRawAbility(type);
 						if(A!=null)
 						{
 							A=(Ability)A.copyOf();
 							final String ID=ablk.getParmValue( "ID");
-							final boolean exists=CMClass.getAbility(ID)!=null;
+							final boolean exists=CMClass.getRawAbility(ID)!=null;
 							A.setStat("ALLXML", ablk.value());
 							if(!exists)
-								CMClass.delClass(CMObjectType.ABILITY, CMClass.getAbility(ID));
+								CMClass.delClass(CMObjectType.ABILITY, CMClass.getRawAbility(ID));
 							custom.add(A);
 						}
 						else
@@ -1540,7 +1540,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					}
 					else
 					{
-						A=CMClass.getAbility(prop);
+						A=CMClass.getRawAbility(prop);
 						if((A!=null)&&(newArea.fetchEffect(A.ID())==null))
 						{
 							newArea.addNonUninvokableEffect(A);
@@ -2831,7 +2831,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				return;
 			}
 			final String abilityID=ablk.getValFromPieces("ACLASS");
-			final Ability newOne=CMClass.getAbility(abilityID);
+			final Ability newOne=CMClass.getRawAbility(abilityID);
 			if(newOne==null)
 			{
 				if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
@@ -4086,7 +4086,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final String lee=xml.getValFromPieces(buf, "SPELL");
 			if((lee!=null)&&(lee.length()>0))
 			{
-				final Ability spellA=CMClass.getAbility(lee);
+				final Ability spellA=CMClass.getRawAbility(lee);
 				((Wand)E).setSpell(spellA);
 			}
 		}
@@ -4294,7 +4294,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						Log.errOut("CoffeeMaker","Error parsing 'BLESS' of "+identifier(E,null)+".  Load aborted");
 						return;
 					}
-					final Ability newOne=CMClass.getAbility(ablk.getValFromPieces("BLCLASS"));
+					final Ability newOne=CMClass.getRawAbility(ablk.getValFromPieces("BLCLASS"));
 					if(newOne==null)
 					{
 						Log.errOut("CoffeeMaker","Unknown bless "+ablk.getValFromPieces("BLCLASS")+" on "+identifier(E,null)+", skipping.");
@@ -4321,7 +4321,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 							Log.errOut("CoffeeMaker","Error parsing 'CURSE' of "+identifier(E,null)+".  Load aborted");
 							return;
 						}
-						final Ability newOne=CMClass.getAbility(ablk.getValFromPieces("CUCLASS"));
+						final Ability newOne=CMClass.getRawAbility(ablk.getValFromPieces("CUCLASS"));
 						if(newOne==null)
 						{
 							Log.errOut("CoffeeMaker","Unknown curse "+ablk.getValFromPieces("CUCLASS")+" on "+identifier(E,null)+", skipping.");
@@ -4349,7 +4349,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 							Log.errOut("CoffeeMaker","Error parsing 'POWER' of "+identifier(E,null)+".  Load aborted");
 							return;
 						}
-						final Ability newOne=CMClass.getAbility(ablk.getValFromPieces("POCLASS"));
+						final Ability newOne=CMClass.getRawAbility(ablk.getValFromPieces("POCLASS"));
 						if(newOne==null)
 						{
 							Log.errOut("CoffeeMaker","Unknown power "+ablk.getValFromPieces("POCLASS")+" on "+identifier(E,null)+", skipping.");
@@ -5143,7 +5143,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					return;
 				}
 				final String newID=ablk.getValFromPieces("ACLASS");
-				final Ability newOne=CMClass.getAbility(newID);
+				final Ability newOne=CMClass.getRawAbility(newID);
 				final String aparms=ablk.getValFromPieces("ATEXT");
 				if(newOne==null)
 				{
@@ -5855,7 +5855,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			int x=spellsOrBehavsList.indexOf(';');
 			if(x<0)
 				x=spellsOrBehavsList.length();
-			final Ability A=CMClass.getAbility(spellsOrBehavsList.substring(0,x));
+			final Ability A=CMClass.getRawAbility(spellsOrBehavsList.substring(0,x));
 			if(A!=null)
 			{
 				if(x<spellsOrBehavsList.length())
@@ -5877,7 +5877,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		for(int v=0;v<V.size();v++)
 		{
 			spellsOrBehavsList=V.get(v);
-			final Ability A=CMClass.getAbility(spellsOrBehavsList);
+			final Ability A=CMClass.getRawAbility(spellsOrBehavsList);
 			if(A!=null)
 			{
 				lastThing=A;

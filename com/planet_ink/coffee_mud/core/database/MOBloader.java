@@ -371,7 +371,7 @@ public class MOBloader
 					{
 						if(proficiency<0)
 							proficiency+=200;
-						final Ability A=CMClass.getAbility(abilityID);
+						final Ability A=CMClass.getRawAbility(abilityID);
 						if(A!=null)
 						{
 							A.setProficiency(proficiency);
@@ -414,7 +414,7 @@ public class MOBloader
 					}
 					else
 					{
-						final Ability A=CMClass.getAbility(abilityID);
+						final Ability A=CMClass.getRawAbility(abilityID);
 						if(A!=null)
 						{
 							A.setMiscText(DBConnections.getRes(R2,"CMABTX"));
@@ -1416,7 +1416,7 @@ public class MOBloader
 				}
 				else
 				{
-					final Ability newAbility=CMClass.getAbility(abilityID);
+					final Ability newAbility=CMClass.getRawAbility(abilityID);
 					if(newAbility==null)
 						Log.errOut("MOB","Couldn't find ability '"+abilityID+"'");
 					else
