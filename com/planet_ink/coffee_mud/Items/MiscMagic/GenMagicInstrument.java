@@ -102,7 +102,7 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 	public void setMaxCharges(final int num)
 	{
 		maxUses = num;
-		if(num > getCharges() && (num > 0))
+		if(num < getCharges() && (num > 0))
 			setCharges(num);
 	}
 

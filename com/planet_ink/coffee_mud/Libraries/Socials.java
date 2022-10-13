@@ -874,7 +874,7 @@ public class Socials extends StdLibrary implements SocialsList
 		final String arg = (commands.size() > 2) ? commands.get(2).toUpperCase().trim() : "";
 		if((target.equals("SELF"))||(target.equals("ALL")))
 			return fetchSocial(socialsMap, socialName, target, arg, exactOnly);
-		final List<Social> listS = getSocialsSet(socialName, exactOnly);
+		final List<Social> listS = getSocialsSet(socialsMap, socialName, exactOnly);
 		if(listS == null)
 			return null; // not a chance
 		if(target.length()==0)
@@ -1065,17 +1065,25 @@ public class Socials extends StdLibrary implements SocialsList
 		return findSocialName(getSocialHash(),named,exactOnly);
 	}
 
-	protected List<Social> getSocialsSet(String named, final boolean exactOnly)
+	protected List<Social> getSocialsSet(final Map<String,List<Social>> socialsMap, String named, final boolean exactOnly)
 	{
 		if(named == null)
 			return null;
 		named=realName(named);
-		final List<Social> listS=getSocialsSet(named);
+		final List<Social> listS;
+		if(socialsMap == null)
+			listS=getSocialsSet(named);
+		else
+			listS=socialsMap.get(named);
 		if(listS != null)
 			return listS;
 		if(exactOnly)
 			return null;
-		final Map<String,List<Social>> soc=getSocialHash();
+		final Map<String,List<Social>> soc;
+		if(socialsMap == null)
+			soc=getSocialHash();
+		else
+			soc=socialsMap;
 		for(final String key : soc.keySet())
 		{
 			if(key.startsWith(named))

@@ -116,7 +116,7 @@ public class GenWand extends StdWand
 	public void setMaxCharges(final int newMaxUses)
 	{
 		maxUses = newMaxUses;
-		if(newMaxUses > super.usesRemaining() && (newMaxUses > 0))
+		if(newMaxUses < super.usesRemaining() && (newMaxUses > 0))
 			super.setUsesRemaining(newMaxUses);
 	}
 

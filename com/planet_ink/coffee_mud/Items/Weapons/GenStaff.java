@@ -100,7 +100,7 @@ public class GenStaff extends GenWeapon implements Wand
 	public void setMaxCharges(final int num)
 	{
 		maxUses = num;
-		if(num > getCharges() && (num > 0))
+		if(num < getCharges() && (num > 0))
 			setCharges(num);
 	}
 
