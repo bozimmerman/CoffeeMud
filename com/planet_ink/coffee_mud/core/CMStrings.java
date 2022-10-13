@@ -2920,6 +2920,44 @@ public class CMStrings
 	}
 
 	/**
+	 * If the given string contains cr or lf, but not both,
+	 * then this method will fix the string to use both as
+	 * per mud standard.
+	 * @param thisStr the string to fix cr and lf in
+	 * @return the string fixed, or unchanged
+	 */
+	public final static String fixMudCRLF(final String thisStr)
+	{
+		if(thisStr==null)
+			return null;
+		if((thisStr.indexOf('\n')<0)&&(thisStr.indexOf('\r')<0))
+			return thisStr;
+		final StringBuilder seq = new StringBuilder(thisStr);
+		for(int i=0;i<seq.length();i++)
+		{
+			if(seq.charAt(i)=='\n')
+			{
+				if(i==seq.length()-1)
+					seq.append('\r');
+				else
+				if(seq.charAt(i+1) != '\r')
+					seq.insert(i+1, '\r');
+				i++;
+			}
+			else
+			if(seq.charAt(i)=='\r')
+			{
+				if(i==0)
+					seq.insert(0, '\n');
+				else
+					seq.insert(i, '\n');
+				i++;
+			}
+		}
+		return thisStr;
+	}
+
+	/**
 	 * Pads the string to the right with spaces until it is the length
 	 * of the given number. If the string is already larger than the given number, the
 	 * string is truncated at the end until it is the given length.  If the string

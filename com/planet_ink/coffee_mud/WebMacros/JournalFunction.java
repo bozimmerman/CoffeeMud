@@ -143,7 +143,7 @@ public class JournalFunction extends StdWebMacro
 			final JournalEntry msg = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
 			msg.from(from);
 			msg.subj(clearWebMacros(subject));
-			msg.msg(clearWebMacros(text));
+			msg.msg(clearWebMacros(CMStrings.fixMudCRLF(text)));
 			if((date!=null) && (CMath.isLong(date)))
 				msg.date(CMath.s_long(date));
 			else

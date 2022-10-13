@@ -196,7 +196,7 @@ public class GrinderClasses
 		C.setStat("ASTATS",GrinderRaces.getCStats('A',httpReq));
 		C.setStat("ASTATE",GrinderRaces.getCState('A',httpReq));
 		C.setStat("STARTASTATE",GrinderRaces.getCState('S',httpReq));
-		old=httpReq.getUrlParameter("GENHELP");
+		old=CMStrings.fixMudCRLF(httpReq.getUrlParameter("GENHELP"));
 		C.setStat("HELP", ((old==null)?"":old));
 		old=httpReq.getUrlParameter("RACQUAL");
 		C.setStat("RACQUAL",(old==null)?"All":old);

@@ -121,7 +121,7 @@ public class GrinderClans
 			if(C!=null)
 			{
 				String str=null;
-				str=httpReq.getUrlParameter("PREMISE");
+				str=CMStrings.fixMudCRLF(httpReq.getUrlParameter("PREMISE"));
 				if(str!=null)
 					C.setPremise(str);
 				str=httpReq.getUrlParameter("RECALLID");

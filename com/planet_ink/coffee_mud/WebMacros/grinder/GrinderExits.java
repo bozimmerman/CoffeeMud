@@ -144,7 +144,7 @@ public class GrinderExits
 						break;
 					case 16: // readable text
 						if(X.isReadable())
-							X.setReadableText(old);
+							X.setReadableText(CMStrings.fixMudCRLF(old));
 						break;
 					case 17: // isclassrestricuted
 						break;

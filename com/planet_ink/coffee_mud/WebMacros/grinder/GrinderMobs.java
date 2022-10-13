@@ -494,7 +494,7 @@ public class GrinderMobs
 					M.setDisplayText(old);
 					break;
 				case DESCRIPTION: // description
-					M.setDescription(old);
+					M.setDescription(CMStrings.fixMudCRLF(old));
 					break;
 				case LEVEL: // level
 					M.basePhyStats().setLevel(CMath.s_int(old));

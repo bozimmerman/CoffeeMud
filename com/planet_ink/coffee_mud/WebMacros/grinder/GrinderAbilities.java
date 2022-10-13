@@ -85,7 +85,7 @@ public class GrinderAbilities
 				V.addElement(httpReq.getUrlParameter("ABILITY_FLAGS"+id));
 		}
 		A.setStat("FLAGS",CMParms.toListString(V));
-		old=httpReq.getUrlParameter("GENHELP");
+		old=CMStrings.fixMudCRLF(httpReq.getUrlParameter("GENHELP"));
 		A.setStat("HELP", old==null?"":old);
 		old=httpReq.getUrlParameter("OVERRIDEMANA");
 		x1=CMath.s_int(old);

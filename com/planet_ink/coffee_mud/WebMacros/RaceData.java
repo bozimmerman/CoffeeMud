@@ -924,7 +924,7 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("GENHELP"))
 				{
-					String old=httpReq.getUrlParameter("GENHELP");
+					String old=CMStrings.fixMudCRLF(httpReq.getUrlParameter("GENHELP"));
 					if(old==null)
 					{
 						R=R.makeGenRace();

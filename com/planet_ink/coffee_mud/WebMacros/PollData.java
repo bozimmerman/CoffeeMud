@@ -89,7 +89,7 @@ public class PollData extends StdWebMacro
 			old=httpReq.getUrlParameter("SUBJECT");
 			if(old!=null)
 				P.setSubject(old);
-			old=httpReq.getUrlParameter("DESCRIPTION");
+			old=CMStrings.fixMudCRLF(httpReq.getUrlParameter("DESCRIPTION"));
 			if(old!=null)
 				P.setDescription(old);
 			old=httpReq.getUrlParameter("QUALZAPPER");

@@ -133,7 +133,7 @@ public class GrinderClanGovernments
 			str=httpReq.getUrlParameter("AUTOPROMOTEBY");
 			if(str!=null)
 				G.setAutoPromoteBy((Clan.AutoPromoteFlag)CMath.s_valueOf(Clan.AutoPromoteFlag.values(), str));
-			str=httpReq.getUrlParameter("LONGDESC");
+			str=CMStrings.fixMudCRLF(httpReq.getUrlParameter("LONGDESC"));
 			if(str!=null)
 				G.setLongDesc(str);
 			final String old=httpReq.getUrlParameter("VOTEFUNCS");

@@ -87,7 +87,7 @@ public class GrinderPlayers extends GrinderMobs
 			case NAME:
 				break; // dont set name!
 			case DESCRIPTION:
-				M.setDescription(old);
+				M.setDescription(CMStrings.fixMudCRLF(old));
 				break;
 			case LASTDATETIME:
 				if (M.playerStats() != null)

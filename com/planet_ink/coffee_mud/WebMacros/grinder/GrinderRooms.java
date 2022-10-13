@@ -117,7 +117,7 @@ public class GrinderRooms
 			R.setDisplayText(name);
 
 			// description
-			String desc=httpReq.getUrlParameter("DESCRIPTION");
+			String desc=CMStrings.fixMudCRLF(httpReq.getUrlParameter("DESCRIPTION"));
 			if(desc==null)
 				desc="";
 			R.setDescription(desc);

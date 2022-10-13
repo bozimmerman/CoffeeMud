@@ -342,7 +342,7 @@ public class GrinderRaces
 		R.setStat("EVENTRACE",(old==null)?"EVENTRACE":old);
 		old=httpReq.getUrlParameter("CANRIDE");
 		R.setStat("CANRIDE",(old==null)?"false":(""+old.equalsIgnoreCase("on")));
-		old=httpReq.getUrlParameter("GENHELP");
+		old=CMStrings.fixMudCRLF(httpReq.getUrlParameter("GENHELP"));
 		R.setStat("HELP", ((old==null)?"":old));
 		final StringBuffer bodyOld=new StringBuffer("");
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)

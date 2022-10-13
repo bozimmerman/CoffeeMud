@@ -235,7 +235,7 @@ public class GrinderItems
 					I.setDisplayText(old);
 					break;
 				case DESCRIPTION: // description
-					I.setDescription(old);
+					I.setDescription(CMStrings.fixMudCRLF(old));
 					break;
 				case LEVEL: // level
 					I.basePhyStats().setLevel(CMath.s_int(old));
@@ -266,7 +266,7 @@ public class GrinderItems
 					if((!(I instanceof Ammunition))&&(!(I instanceof SpellHolder))&&(!(I instanceof Wand)))
 					{
 						if(httpReq.isUrlParameter(fieldName)) // must do this to keep special fields from being clobbered
-							I.setReadableText(old);
+							I.setReadableText(CMStrings.fixMudCRLF(old));
 					}
 					break;
 				case ISDRINK: // is drink

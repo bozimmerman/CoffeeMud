@@ -232,42 +232,45 @@ public class Mood extends StdAbility
 			if(ticking instanceof Physical)
 				((Physical)ticking).delEffect(this);
 		}
-		else
-		switch(mood)
+		if((!(affected instanceof MOB))
+		||(CMLib.flags().isAliveAwakeMobileUnbound((MOB)affected, true)))
 		{
-		case SILLY: // silly
-		{
-			final Physical affected=this.affected;
-			if(affected instanceof MOB)
+			switch(mood)
 			{
-				if(counter<=0)
-					counter=CMLib.dice().roll(1, 55, 5);
-				else
-				if(--counter<=1)
+			case SILLY: // silly
+			{
+				final Physical affected=this.affected;
+				if(affected instanceof MOB)
 				{
-					counter=2;
-					final int sillySocialIndex=CMLib.dice().roll(1, sillySocials.length, -1);
-					final String socialName = sillySocials[sillySocialIndex];
-					final Social social = CMLib.socials().fetchSocial(socialName, true);
-					if(social != null)
-					{
+					if(counter<=0)
 						counter=CMLib.dice().roll(1, 55, 5);
-						CMLib.threads().scheduleRunnable(new Runnable()
+					else
+					if(--counter<=1)
+					{
+						counter=2;
+						final int sillySocialIndex=CMLib.dice().roll(1, sillySocials.length, -1);
+						final String socialName = sillySocials[sillySocialIndex];
+						final Social social = CMLib.socials().fetchSocial(socialName, true);
+						if(social != null)
 						{
-							final MOB mob=(MOB)affected;
-							@Override
-							public void run()
+							counter=CMLib.dice().roll(1, 55, 5);
+							CMLib.threads().scheduleRunnable(new Runnable()
 							{
-								mob.enqueCommand(new XVector<String>(socialName), 0, 0);
-							}
-						}, 500);
+								final MOB mob=(MOB)affected;
+								@Override
+								public void run()
+								{
+									mob.enqueCommand(new XVector<String>(socialName), 0, 0);
+								}
+							}, 500);
+						}
 					}
 				}
 			}
 			break;
-		}
-		default:
-			break;
+			default:
+				break;
+			}
 		}
 		return true;
 	}

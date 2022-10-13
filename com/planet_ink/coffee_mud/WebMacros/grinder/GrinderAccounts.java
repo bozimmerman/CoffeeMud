@@ -66,7 +66,7 @@ public class GrinderAccounts
 				str=httpReq.getUrlParameter("EMAIL");
 				if(str!=null)
 					A.setEmail(str);
-				str=httpReq.getUrlParameter("NOTES");
+				str=CMStrings.fixMudCRLF(httpReq.getUrlParameter("NOTES"));
 				if(str!=null)
 					A.setNotes(str);
 				str=httpReq.getUrlParameter("BONUSLANGS");
