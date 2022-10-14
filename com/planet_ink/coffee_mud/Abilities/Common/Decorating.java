@@ -262,7 +262,10 @@ public class Decorating extends CommonSkill
 			&&(!commands.get(0).equalsIgnoreCase("mount"))
 			&&(!commands.get(0).equalsIgnoreCase("stick"))))
 		{
-			mob.tell(L("Decorate what, how?  Try decorate HANG [item name], or decorate MOUNT [item name], or decorate STICK [item name]."));
+			mob.tell(L("Decorate what, how?  Try "
+					+ "decorate HANG [item name], or "
+					+ "decorate MOUNT [item name], or "
+					+ "decorate STICK [item name]."));
 			return false;
 		}
 		final String word = commands.remove(0).toLowerCase();
