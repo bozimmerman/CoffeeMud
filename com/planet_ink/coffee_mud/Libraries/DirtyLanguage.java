@@ -510,16 +510,33 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<List<String>> preCommandParser(final List<String> CMDS)
+	public List<List<String>> preCommandParser(final List<String> commands)
 	{
-		final List<String> MORE_CMDS=new Vector<String>();
-		final String combinedWithTabs=CMParms.combineWithTabs(CMDS,0);
-		MORE_CMDS.add(combinedWithTabs);
-		final DVector parser=getLanguageParser("COMMAND-PRE-PROCESSOR");
-		if((parser==null)||(CMDS==null))
+		final List<String> workCmdList=new XVector<String>(commands);
+		StringBuilder s;
+		String cs;
+		for(int commandIndex=0;commandIndex<workCmdList.size();commandIndex++)
 		{
-			return new XVector<List<String>>(CMDS);
+			cs=workCmdList.get(commandIndex);
+			if((cs.indexOf('\\')<0)&&(cs.indexOf('\t')<0))
+				continue;
+			s = new StringBuilder(workCmdList.get(commandIndex).toString());
+			for(int i=0;i<s.length();i++)
+			{
+				if((s.charAt(i)=='\\')||(s.charAt(i)=='\t'))
+				{
+					s.insert(i, '\\');
+					i++;
+				}
+			}
+			workCmdList.set(commandIndex, s.toString());
 		}
+		final String combinedWithTabs=CMParms.combineWithTabs(workCmdList,0);
+		workCmdList.clear();
+		workCmdList.add(combinedWithTabs);
+		final DVector parser=getLanguageParser("COMMAND-PRE-PROCESSOR");
+		if((parser==null)||(commands==null))
+			return new XVector<List<String>>(commands);
 		Pattern pattern=null;
 		Matcher matcher=null;
 		Command I=null;
@@ -544,9 +561,9 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				while(!nothingDone)
 				{
 					nothingDone=true;
-					for(int m=0;m<MORE_CMDS.size();m++)
+					for(int m=0;m<workCmdList.size();m++)
 					{
-						str=MORE_CMDS.get(m);
+						str=workCmdList.get(m);
 						strLen=str.length();
 						matcher=pattern.matcher(str);
 						if(matcher.find())
@@ -554,8 +571,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 							str=(String)parser.elementAt(p,3);
 							for(int i=0;i<=matcher.groupCount();i++)
 								str=CMStrings.replaceAll(str,"\\"+i,matcher.group(i));
-							if(!MORE_CMDS.get(m).equals(str))
-								nothingDone=insertExpansion(MORE_CMDS,str,m,strLen,nothingDone);
+							if(!workCmdList.get(m).equals(str))
+								nothingDone=insertExpansion(workCmdList,str,m,strLen,nothingDone);
 						 }
 					}
 				}
@@ -566,7 +583,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				rep=((Hashtable<String,String>)parser.elementAt(p,2)).get(combinedWithTabs.toLowerCase());
 				if(rep!=null)
 				{
-					insertExpansion(MORE_CMDS,rep,0,combinedWithTabs.length(),true);
+					insertExpansion(workCmdList,rep,0,combinedWithTabs.length(),true);
 					p=parser.size();
 				}
 				break;
@@ -576,7 +593,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				rep=((Hashtable<String,String>)parser.elementAt(p,2)).get(combinedWithTabs);
 				if(rep!=null)
 				{
-					insertExpansion(MORE_CMDS,rep,0,combinedWithTabs.length(),true);
+					insertExpansion(workCmdList,rep,0,combinedWithTabs.length(),true);
 					p=parser.size();
 				}
 				break;
@@ -586,9 +603,9 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				rep=(String)parser.elementAt(p,2);
 				if(rep.length()==0)
 					break;
-				for(int m=0;m<MORE_CMDS.size();m++)
+				for(int m=0;m<workCmdList.size();m++)
 				{
-					str=MORE_CMDS.get(m);
+					str=workCmdList.get(m);
 					strLen=str.length();
 					int x=str.toLowerCase().indexOf(rep);
 					if(x>=0)
@@ -599,7 +616,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 							str=str.substring(0,x)+wit+str.substring(x+rep.length());
 							x=str.toLowerCase().indexOf(rep,x+wit.length());
 						}
-						insertExpansion(MORE_CMDS,str,m,strLen,true);
+						insertExpansion(workCmdList,str,m,strLen,true);
 					}
 				}
 				break;
@@ -626,8 +643,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				break;
 			}
 		}
-		if((MORE_CMDS.size()==1)
-		&&(MORE_CMDS.get(0).equals(combinedWithTabs)))
+		if((workCmdList.size()==1)
+		&&(workCmdList.get(0).equals(combinedWithTabs)))
 		{
 			if((autoIgnoreLen>0)&&(str!=null)&&(str.length()<=autoIgnoreLen))
 			{
@@ -642,10 +659,10 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				addAutoIgnoredString(combinedWithTabs,fileData,fileIndexes,"COMMAND-PRE-PROCESSOR");
 			}
 		}
-		final List<List<String>> FINAL_CMDS=new Vector<List<String>>();
-		for(int m=0;m<MORE_CMDS.size();m++)
-			FINAL_CMDS.add(CMParms.parseTabs(MORE_CMDS.get(m),false));
-		return FINAL_CMDS;
+		final List<List<String>> finalCmdList=new Vector<List<String>>();
+		for(int m=0;m<workCmdList.size();m++)
+			finalCmdList.add(CMParms.parseTabs(workCmdList.get(m),false));
+		return finalCmdList;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -733,7 +733,7 @@ public class CMParms
 	 */
 	public final static List<String> parseTabs(final String s, final boolean ignoreNulls)
 	{
-		return parseAny(s,'\t',ignoreNulls);
+		return parseAny(s,'\t',ignoreNulls,true);
 	}
 
 	/**
@@ -839,7 +839,12 @@ public class CMParms
 				sub=str.substring(last,i).trim();
 				last=i+1;
 				if(!ignoreNulls||(sub.length()>0))
-					V.add(sub.replace("\\",""));
+				{
+					if(!safe)
+						V.add(sub.replace("\\",""));
+					else
+						V.add(sub);
+				}
 			}
 			else
 			if(safe &&(c=='\\'))
