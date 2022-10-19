@@ -226,7 +226,7 @@ public class TriggerNext extends StdWebMacro
 				httpReq.addFakeUrlParameter("TRIG"+trigDex+TrigMGField.CONNECTOR.str, td[0]);
 				newSubTrigger.append(httpReq.getUrlParameter("TRIG"+trigDex+TrigMGField.CONNECTOR.str));
 				httpReq.addFakeUrlParameter("TRIG"+trigDex+TrigMGField.TRIGTYPE.str, T.name());
-				newSubTrigger.append(httpReq.getUrlParameter("TRIG"+trigDex+TrigMGField.TRIGTYPE.str));
+				newSubTrigger.append(td[1]);
 				newSubTrigger.append(" ");
 				for(int x=2;x<td.length;x++)
 				{
