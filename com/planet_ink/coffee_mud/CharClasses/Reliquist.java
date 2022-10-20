@@ -360,10 +360,10 @@ public class Reliquist extends Thief
 					mob.tell(L("The goodness of @x1 disrupts your prayer.",A.name()));
 				else
 				if(CMLib.flags().isGood(mob))
-					mob.tell(L("The anti-good nature of @x1 disrupts your thought.",A.name()));
+					mob.tell(L("The non-good nature of @x1 disrupts your thought.",A.name()));
 				else
 				if(CMLib.flags().isEvil(mob))
-					mob.tell(L("The anti-evil nature of @x1 disrupts your thought.",A.name()));
+					mob.tell(L("The non-evil nature of @x1 disrupts your thought.",A.name()));
 				return false;
 
 			}

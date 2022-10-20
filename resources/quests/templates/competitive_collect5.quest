@@ -253,8 +253,10 @@ BRIBE_PROG 1
 			sayto "$n" That's $<$n $QUEST_ID_COLLECTED>/$NUM_COLLECTABLES.
 		endif
 	else
-		sayto "$n" What's this?
-		give "$o" "$n"
+		if HAS($i $o)
+			sayto "$n" What's this?
+			give "$o" "$n"
+		endif
 	endif
 ~
 

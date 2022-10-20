@@ -237,8 +237,10 @@ GREET_PROG 100
 BRIBE_PROG 1
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
-			sayto "$n" What's this?
-			give "$o" "$n"
+			if HAS($i $o)
+				sayto "$n" What's this?
+				give "$o" "$n"
+			endif
 		else
 			mpsetvar $n QUEST_DELIVERED +$%GOLDAMT($o)%
 			mpjunk $o
@@ -275,8 +277,10 @@ BRIBE_PROG 1
 			ENDIF
 		endif
 	else
-		sayto "$n" What's this?
-		give "$o" "$n"
+		if HAS($i $o)
+			sayto "$n" What's this?
+			give "$o" "$n"
+		endif
 	endif
 ~
 

@@ -73,6 +73,7 @@
 	    </SELECT>
 	    &nbsp;&nbsp;
 	    <INPUT TYPE=CHECKBOX NAME="TRIG@RequestParameter?TRIGGER@ARG" @if?CheckReqParm?TRIG@@RequestParameter?TRIGGER@@ARG=on@checked@endif@>
+	    <FONT COLOR=WHITE>+args</FONT>
 	    <INPUT TYPE=HIDDEN NAME="TRIG@RequestParameter?TRIGGER@CT" VALUE="@RequestParameter?TRIG@@RequestParameter?TRIGGER@@CT@">
     	</TD></TR>
 	    @AddRequestParameter?TRIGPARMDEX=0@

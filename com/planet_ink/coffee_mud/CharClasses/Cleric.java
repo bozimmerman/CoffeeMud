@@ -504,10 +504,10 @@ public class Cleric extends StdCharClass
 				myChar.tell(L("The goodness of @x1 disrupts your prayer.",A.name()));
 			else
 			if(CMLib.flags().isGood(myChar))
-				myChar.tell(L("The anti-good nature of @x1 disrupts your thought.",A.name()));
+				myChar.tell(L("The non-good nature of @x1 disrupts your thought.",A.name()));
 			else
 			if(CMLib.flags().isEvil(myChar))
-				myChar.tell(L("The anti-evil nature of @x1 disrupts your thought.",A.name()));
+				myChar.tell(L("The non-evil nature of @x1 disrupts your thought.",A.name()));
 			return false;
 		}
 		return true;

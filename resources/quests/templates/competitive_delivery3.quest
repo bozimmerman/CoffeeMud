@@ -317,8 +317,10 @@ GREET_PROG 100
 GIVE_PROG all
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
-			sayto "$n" What's this?
-			give "$o" "$n"
+			if HAS($i $o)
+				sayto "$n" What's this?
+				give "$o" "$n"
+			endif
 		else
 			if EVAL($o == '$[1 *]')
 				if EVAL($DELIVEREE_COUNT > 1) 
@@ -366,13 +368,17 @@ GIVE_PROG all
 					ENDIF
 				ENDIF
 			else
-				sayto "$n" What's this?
-				give "$o" "$n"
+				if HAS($i $o)
+					sayto "$n" What's this?
+					give "$o" "$n"
+				endif
 			endif
 		endif
 	else
-		sayto "$n" What's this?
-		give "$o" "$n"
+		if HAS($i $o)
+			sayto "$n" What's this?
+			give "$o" "$n"
+		endif
 	endif
 ~
 </DATA></FILE>

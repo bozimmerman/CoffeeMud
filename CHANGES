@@ -7,7 +7,7 @@
   6. Stat and train costs can now be specified in terms of a local currency
   7. WHERE Archon command now supports MQL updates via WHERE UPDATE: ...
   8. Disease_Vampirism greatly expanded, and its features argument-controllable
-  9. New INI entry DEFAULTARGS for setting default property/skill arguments.
+  9. New INI entry DEFAULTABILITYARGS for setting default property/skill arguments.
 # Build 5.10.0 Release 9/23/2022
   1. New Scriptable functions: ROOMPC and AREAPC
   2. Caravans now have their own internal Directions (fore, back, right, left, up, down)
