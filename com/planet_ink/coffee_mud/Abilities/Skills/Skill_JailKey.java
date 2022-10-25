@@ -115,6 +115,23 @@ public class Skill_JailKey extends StdSkill
 		return legalBehavior.isJailRoom(legalArea, rooms);
 	}
 
+	protected boolean isJailIshRoom(final List<Room> jails)
+	{
+		boolean answer = false;
+		{
+			final String jailWord = L("jail");
+			final String prisonWord = L("prison");
+			final String dungeonWord = L("dungeon");
+			for(final Room R : jails)
+			{
+				answer = answer || CMLib.english().containsString(R.displayText(), jailWord)
+								|| CMLib.english().containsString(R.displayText(), prisonWord)
+								|| CMLib.english().containsString(R.displayText(), dungeonWord);
+			}
+		}
+		return answer;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -127,18 +144,18 @@ public class Skill_JailKey extends StdSkill
 			final Room unlockThat=mob.location().getRoomInDir(dirCode);
 			if(unlockThat==null)
 				unlockThis=null;
-			if(unlockThis!=null)
+			if((unlockThat != null)
+			&&(unlockThis != null)
+			&&(!isJailIshRoom(new XVector<Room>(mob.location(), unlockThat))))
 			{
 				LegalBehavior B=null;
-
 				final Area legalA=CMLib.law().getLegalObject(mob.location());
 				if(legalA!=null)
 					B=CMLib.law().getLegalBehavior(legalA);
 				if(B==null)
 					unlockThis=null;
 				else
-				if((!B.isJailRoom(legalA,new XVector<Room>(mob.location())))
-				&&(!B.isJailRoom(legalA,new XVector<Room>(unlockThat)))
+				if((!B.isJailRoom(legalA,new XVector<Room>(mob.location(), unlockThat)))
 				&&(!isRightOutsideACell(mob.location(), B, legalA))
 				&&(!isRightOutsideACell(unlockThat, B, legalA)))
 					unlockThis=null;

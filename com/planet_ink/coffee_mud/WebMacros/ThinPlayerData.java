@@ -76,7 +76,7 @@ public class ThinPlayerData extends StdWebMacro
 				final PlayerSortCode x=CMLib.players().getCharThinSortCode(key.toUpperCase().trim(),false);
 				if(x!=null)
 				{
-					String value = CMLib.players().getThinSortValue(player, x);
+					String value = CMLib.players().getThinSortValue(player, x).toString();
 					if(x==PlayerSortCode.LAST)
 						value=CMLib.time().date2String(CMath.s_long(value));
 					else

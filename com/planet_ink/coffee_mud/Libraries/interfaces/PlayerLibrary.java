@@ -508,7 +508,7 @@ public interface PlayerLibrary extends CMLibrary
 	 * @param code the code for the value to return
 	 * @return the value of the code from the character
 	 */
-	public String getThinSortValue(ThinPlayer player, PlayerSortCode code);
+	public Object getThinSortValue(ThinPlayer player, PlayerSortCode code);
 
 	/**
 	 * Given a player character mob, and a sort code, this will

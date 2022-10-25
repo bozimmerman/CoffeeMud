@@ -29,6 +29,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary.AutoProp
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerSortCode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.*;
@@ -1628,7 +1629,7 @@ public class ListCmd extends StdCommand
 			}
 		}
 		commands.remove(0);
-		PlayerSortCode sortBy=null;
+		final PlayerSortCode sortBy;
 		if(commands.size()>0)
 		{
 			final String rest=CMParms.combine(commands,0).toUpperCase();
@@ -1639,6 +1640,8 @@ public class ListCmd extends StdCommand
 				return;
 			}
 		}
+		else
+			sortBy = null;
 		final int COL_LEN1=CMLib.lister().fixColWidth(8.0,viewerS);
 		final int COL_LEN2=CMLib.lister().fixColWidth(10.0,viewerS);
 		final int COL_LEN3=CMLib.lister().fixColWidth(4.0,viewerS);
@@ -1669,44 +1672,29 @@ public class ListCmd extends StdCommand
 		}
 
 		head.append("] Character name\n\r");
-		java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
-		final java.util.List<PlayerLibrary.ThinPlayer> oldSet=allUsers;
+		final java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
 		final PlayerSortCode showBy=sortBy;
 		final PlayerLibrary lib=CMLib.players();
-		while((oldSet.size()>0)&&(sortBy!=null)&&(sortBy!=PlayerSortCode.IP))
+		if(sortBy!=null)
 		{
-			if(oldSet==allUsers)
-				allUsers=new ArrayList<PlayerLibrary.ThinPlayer>();
-			if((sortBy!=PlayerSortCode.LEVEL)||(sortBy!=PlayerSortCode.AGE))
-			{
-				PlayerLibrary.ThinPlayer selected=oldSet.get(0);
-				for(int u=1;u<oldSet.size();u++)
+			Collections.sort(allUsers, new Comparator<PlayerLibrary.ThinPlayer>() {
+				@Override
+				public int compare(final ThinPlayer o1, final ThinPlayer o2)
 				{
-					final PlayerLibrary.ThinPlayer U=oldSet.get(u);
-					if(lib.getThinSortValue(selected,sortBy).compareTo(lib.getThinSortValue(U,sortBy))>0)
-						selected=U;
+					if(o1 == null)
+						return (o2 == null) ? 0 : -1;
+					if(o2 == null)
+						return 1;
+					@SuppressWarnings("unchecked")
+					final Comparable<Object> c1 = (Comparable<Object>)lib.getThinSortValue(o1, sortBy);
+					@SuppressWarnings("unchecked")
+					final Comparable<Object> c2 = (Comparable<Object>)lib.getThinSortValue(o2, sortBy);
+					final int x= c1.compareTo(c2);
+					if(x != 0)
+						return x;
+					return lib.getThinSortValue(o1, PlayerSortCode.NAME).toString().compareTo(lib.getThinSortValue(o2,PlayerSortCode.NAME).toString());
 				}
-				if(selected!=null)
-				{
-					oldSet.remove(selected);
-					allUsers.add(selected);
-				}
-			}
-			else
-			{
-				PlayerLibrary.ThinPlayer selected=oldSet.get(0);
-				for(int u=1;u<oldSet.size();u++)
-				{
-					final PlayerLibrary.ThinPlayer U=oldSet.get(u);
-					if(CMath.s_long(lib.getThinSortValue(selected,sortBy))>CMath.s_long(lib.getThinSortValue(U,sortBy)))
-						selected=U;
-				}
-				if(selected!=null)
-				{
-					oldSet.remove(selected);
-					allUsers.add(selected);
-				}
-			}
+			});
 		}
 
 		for(int u=0;u<allUsers.size();u++)
@@ -1896,8 +1884,7 @@ public class ListCmd extends StdCommand
 		}
 
 		head.append("] Characters^.^N\n\r");
-		List<PlayerAccount> allAccounts=CMLib.database().DBListAccounts(null);
-		final List<PlayerAccount> oldSet=allAccounts;
+		final List<PlayerAccount> allAccounts=CMLib.database().DBListAccounts(null);
 		final Hashtable<String, PlayerLibrary.ThinPlayer> thinAcctHash=new Hashtable<String, PlayerLibrary.ThinPlayer>();
 		for(final PlayerAccount acct : allAccounts)
 		{
@@ -1980,50 +1967,28 @@ public class ListCmd extends StdCommand
 		}
 		final PlayerSortCode showBy=sortBy;
 		final PlayerLibrary lib=CMLib.players();
-		while((oldSet.size()>0)&&(sortBy!=null)&&(sortBy!=PlayerSortCode.IP))
+		if((allAccounts.size()>0)&&(sortBy!=null))
 		{
-			if(oldSet==allAccounts)
-				allAccounts=new ArrayList<PlayerAccount>();
-			if((sortBy!=PlayerSortCode.LEVEL)||(sortBy!=PlayerSortCode.AGE))
-			{
-				PlayerAccount selected = oldSet.get(0);
-				if(selected != null)
+			Collections.sort(allAccounts, new Comparator<PlayerAccount>() {
+				@Override
+				public int compare(final PlayerAccount a1, final PlayerAccount a2)
 				{
-					PlayerLibrary.ThinPlayer selectedU=thinAcctHash.get(selected.getAccountName());
-					for(int u=1;u<oldSet.size();u++)
-					{
-						final PlayerAccount acct = oldSet.get(u);
-						final PlayerLibrary.ThinPlayer U=thinAcctHash.get(acct.getAccountName());
-						if(lib.getThinSortValue(selectedU,sortBy).compareTo(lib.getThinSortValue(U,sortBy))>0)
-						{
-							selected=acct;
-							selectedU=U;
-						}
-					}
-					oldSet.remove(selected);
-					allAccounts.add(selected);
+					if(a1 == null)
+						return (a2 == null) ? 0 : -1;
+					if(a2 == null)
+						return 1;
+					final PlayerLibrary.ThinPlayer o1=thinAcctHash.get(a1.getAccountName());
+					final PlayerLibrary.ThinPlayer o2=thinAcctHash.get(a2.getAccountName());
+					@SuppressWarnings("unchecked")
+					final Comparable<Object> c1 = (Comparable<Object>)lib.getThinSortValue(o1, showBy);
+					@SuppressWarnings("unchecked")
+					final Comparable<Object> c2 = (Comparable<Object>)lib.getThinSortValue(o2, showBy);
+					final int x= c1.compareTo(c2);
+					if(x != 0)
+						return x;
+					return a1.getAccountName().compareTo(a2.getAccountName());
 				}
-			}
-			else
-			{
-				PlayerAccount selected = oldSet.get(0);
-				if(selected!=null)
-				{
-					PlayerLibrary.ThinPlayer selectedU=thinAcctHash.get(selected.getAccountName());
-					for(int u=1;u<oldSet.size();u++)
-					{
-						final PlayerAccount acct = oldSet.get(u);
-						final PlayerLibrary.ThinPlayer U=thinAcctHash.get(acct.getAccountName());
-						if(CMath.s_long(lib.getThinSortValue(selectedU,sortBy))>CMath.s_long(lib.getThinSortValue(U,sortBy)))
-						{
-							selected=acct;
-							selectedU=U;
-						}
-					}
-					oldSet.remove(selected);
-					allAccounts.add(selected);
-				}
-			}
+			});
 		}
 
 		for(int u=0;u<allAccounts.size();u++)

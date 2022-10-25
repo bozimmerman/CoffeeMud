@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder.GenMOBCode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerSortCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -1108,7 +1109,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public String getThinSortValue(final ThinPlayer player, final PlayerSortCode code)
+	public Object getThinSortValue(final ThinPlayer player, final PlayerSortCode code)
 	{
 		switch(code)
 		{
@@ -1119,11 +1120,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		case RACE:
 			return player.race();
 		case LEVEL:
-			return Integer.toString(player.level());
+			return Integer.valueOf(player.level());
 		case AGE:
-			return Integer.toString(player.age());
+			return Integer.valueOf(player.age());
 		case LAST:
-			return Long.toString(player.last());
+			return Long.valueOf(player.last());
 		case EMAIL:
 			return player.email();
 		case IP:
@@ -1199,35 +1200,23 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			&&(code != null)
 			&&(V.size()>1))
 			{
-				final List<PlayerLibrary.ThinPlayer> unV=V;
-				V=new Vector<PlayerLibrary.ThinPlayer>();
-				while(unV.size()>0)
-				{
-					ThinPlayer M=unV.get(0);
-					String loweStr=getThinSortValue(M,code);
-					ThinPlayer lowestM=M;
-					for(int i=1;i<unV.size();i++)
+				final PlayerLibrary lib = CMLib.players();
+				Collections.sort(V, new Comparator<PlayerLibrary.ThinPlayer>() {
+					@Override
+					public int compare(final ThinPlayer o1, final ThinPlayer o2)
 					{
-						M=unV.get(i);
-						final String val=getThinSortValue(M,code);
-						if((CMath.isNumber(val)&&CMath.isNumber(loweStr)))
-						{
-							if(CMath.s_long(val)<CMath.s_long(loweStr))
-							{
-								loweStr=val;
-								lowestM=M;
-							}
-						}
-						else
-						if(val.compareTo(loweStr)<0)
-						{
-							loweStr=val;
-							lowestM=M;
-						}
+						if(o1 == null)
+							return (o2 == null) ? 0 : -1;
+						if(o2 == null)
+							return 1;
+						final Comparable<Object> c1 = (Comparable<Object>)lib.getThinSortValue(o1, code);
+						final Comparable<Object> c2 = (Comparable<Object>)lib.getThinSortValue(o2,code);
+						final int x= c1.compareTo(c2);
+						if(x != 0)
+							return x;
+						return lib.getThinSortValue(o1, PlayerSortCode.NAME).toString().compareTo(lib.getThinSortValue(o2,PlayerSortCode.NAME).toString());
 					}
-					unV.remove(lowestM);
-					V.add(lowestM);
-				}
+				});
 			}
 			if(cache!=null)
 				cache.put("PLAYERLISTVECTOR"+sort,V);

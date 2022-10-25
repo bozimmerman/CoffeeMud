@@ -6618,6 +6618,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final String arg1=tt[t+0];
 					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 					final String arg2=varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, tt[t+1]);
+					returnable=false;
 					if(E==null)
 						returnable=false;
 					else
@@ -6626,17 +6627,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(arg2.length()==0)
 							returnable=((Rideable)E).numRiders()==0;
 						else
-							returnable=CMLib.english().fetchEnvironmental(new XVector<Rider>(((Rideable)E).riders()), arg2, false)!=null;
+							returnable=CMLib.english().fetchEnvironmental(((Rideable)E).riders(), arg2, false)!=null;
 					}
-					if(E instanceof Container)
+					if((E instanceof Container)
+					&&(!returnable))
 					{
 						if(arg2.length()==0)
 							returnable=!((Container)E).hasContent();
 						else
 							returnable=CMLib.english().fetchEnvironmental(((Container)E).getDeepContents(), arg2, false)!=null;
 					}
-					else
-						returnable=false;
 					break;
 				}
 				case 97: // wornon

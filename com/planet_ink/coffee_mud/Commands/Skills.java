@@ -40,7 +40,6 @@ public class Skills extends StdCommand
 
 	protected static final int[] playerAcodes = new int[]
 	{
-		Ability.ACODE_CHANT,
 		Ability.ACODE_PRAYER,
 		Ability.ACODE_SPELL,
 		Ability.ACODE_SKILL,

@@ -666,7 +666,7 @@ settable vars:
 		<STRING CONDITION="$target_gender != 'M' and $target_gender != 'F'">it</STRING>
 	</STRING>
 	
-	<STRING ID="target_heshe" SELECT="any-1" DEFINE="target_himher">
+	<STRING ID="target_heshe" SELECT="any-1" DEFINE="target_heshe">
 		<STRING CONDITION="$target_gender = 'M'">he</STRING>
 		<STRING CONDITION="$target_gender = 'F'">she</STRING>
 		<STRING CONDITION="$target_gender != 'M' and $target_gender != 'F'">it</STRING>
