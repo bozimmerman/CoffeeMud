@@ -607,9 +607,9 @@ public class GenAbility extends StdAbility
 										final String miscText=
 											CMStrings.replaceVariables((String)V(ID,V_MOKT), commands.toArray(new String[commands.size()]));
 										A.setMiscText(miscText);
-										affectA.makeLongLasting();
-										affectA.setSavable(false);
-										affectA.setProficiency(100);
+										A.makeLongLasting();
+										A.setSavable(false);
+										A.setProficiency(100);
 										affectA.quietEffect=A;
 									}
 								}
