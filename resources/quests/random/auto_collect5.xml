@@ -62,7 +62,7 @@ vars:
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
 
 	<STRING ID="num_targets" SELECT="any-1" DEFINE="num_targets" MERGE=override>
-		<STRING>$[$target_level*20]</STRING>
+		<STRING>$[1 + ($target_level*20)]</STRING>
 	</STRING>
 
 	<STRING ID="reason_verbed" define="reason_verbed">$verb_donated</STRING>

@@ -85,7 +85,11 @@ public class Teach extends StdCommand
 				final Pair<String,Integer> e=mob.fetchExpertise(exi.nextElement());
 				final List<String> codes = CMLib.expertises().getStageCodes(e.getKey());
 				if((codes==null)||(codes.size()==0))
-					V.add(CMLib.expertises().getDefinition(e.getKey()));
+				{
+					final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(e.getKey());
+					if(def != null)
+						V.add(def);
+				}
 				else
 				for(final String ID : codes)
 				{

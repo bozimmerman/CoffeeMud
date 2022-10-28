@@ -188,6 +188,7 @@ public class Painting extends CommonSkill
 				building.setSecretIdentity(getBrand(mob));
 			}
 			else
+			if(session != null)
 			{
 				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 				{
@@ -316,6 +317,7 @@ public class Painting extends CommonSkill
 				canvasI.destroy();
 			}
 			else
+			if(session != null)
 			{
 				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 				{
@@ -365,6 +367,12 @@ public class Painting extends CommonSkill
 				});
 				return true;
 			}
+		}
+
+		if(building == null)
+		{
+			this.commonTell(mob, L("I have no idea what I'm doing."));
+			return false;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -73,7 +73,8 @@ public class Time extends StdCommand
 				timeDesc.append(C.getWeekNames()[(int)(x%C.getDaysInWeek())]+", ");
 			}
 			timeDesc.append("the "+bday+CMath.numAppendage(bday));
-			timeDesc.append(" day of "+C.getMonthNames()[bmonth-1]);
+			final int bmonthdex = (bmonth - 1) % C.getMonthNames().length;
+			timeDesc.append(" day of "+C.getMonthNames()[bmonthdex]);
 			if(C.getYearNames().length>0)
 				timeDesc.append(", "+CMStrings.replaceAll(C.getYearNames()[year%C.getYearNames().length],"#",""+year));
 			mob.tell(L("Your next birthday is @x1.",timeDesc.toString()));

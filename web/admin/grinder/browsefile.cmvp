@@ -55,12 +55,14 @@
 @endif@
 <BR><FONT COLOR=WHITE SIZE=-1>
 <INPUT TYPE=RADIO NAME=FILESAVETO VALUE=DEFAULT checked>Save Default (@if?FileInfo?ISVFS@VFS@else@Local@endif@)
+@if?!CheckReqParm?FILE=coffeemud.ini@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <INPUT TYPE=RADIO NAME=FILESAVETO VALUE=VFS>Save VFS
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <INPUT TYPE=RADIO NAME=FILESAVETO VALUE=LOCAL>Save Local
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <INPUT TYPE=RADIO NAME=FILESAVETO VALUE=BOTH>Save Both
+@endif@
 </FONT>
 <BR>
 <BR>
