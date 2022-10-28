@@ -1265,6 +1265,68 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
+			new AbilityParmEditorImpl("ACTIVE_VERB","Active Verb",ParmType.STRING)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "verbing";
+				}
+
+				@Override
+				public boolean confirmValue(final String oldVal)
+				{
+					return true;
+				}
+
+				@Override
+				public int minColWidth()
+				{
+					return 3;
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+			},
+			new AbilityParmEditorImpl("DISPLAY_MASK","Display Mask",ParmType.STRING)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "@x1 is here";
+				}
+
+				@Override
+				public boolean confirmValue(final String oldVal)
+				{
+					return true;
+				}
+
+				@Override
+				public int minColWidth()
+				{
+					return 3;
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return CMStrings.replaceAll(I.displayText(), I.Name(), "@x1");
+				}
+			},
 			new AbilityParmEditorImpl("COLOR_MASK","Color mask",ParmType.STRING)
 			{
 				@Override
@@ -1542,6 +1604,25 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
 					return ""+(10 + (I.basePhyStats().level()/2));
+				}
+			},
+			new AbilityParmEditorImpl("XLEVEL","Expertise Level",ParmType.NUMBER)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "0";
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "0";
 				}
 			},
 			new AbilityParmEditorImpl("FUTURE_USE","Future Use",ParmType.STRINGORNULL)

@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Decorating extends CommonSkill
+public class Decorating extends CommonSkill implements RecipeDriven
 {
 	@Override
 	public String ID()
@@ -70,10 +70,59 @@ public class Decorating extends CommonSkill
 		verb=L("mounting");
 	}
 
-	protected String	mountWord	= "mounted";
-	protected Item		mountingI	= null;
-	protected Room		mountingR	= null;
-	protected boolean	messedUp	= false;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	protected static final int	RCP_TICKS		= 2;
+	protected static final int	RCP_VERB		= 3;
+	protected static final int	RCP_DISPLAY		= 4;
+	protected static final int	RCP_XLEVEL		= 5;
+
+	protected String	mountWord		= "mounted";
+	protected String	mountedPhrase	= "@x1 is mounted here.";
+	protected Item		mountingI		= null;
+	protected Room		mountingR		= null;
+	protected boolean	messedUp		= false;
+
+	@Override
+	public List<List<String>> fetchRecipes()
+	{
+		return loadRecipes(getRecipeFilename());
+	}
+
+	@Override
+	public String getRecipeFormat()
+	{
+		return
+		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\t"
+		+ "ACTIVE_VERB\tDISPLAY_MASK\tXLEVEL";
+	}
+
+	@Override
+	public String getRecipeFilename()
+	{
+		return "decorations.txt";
+	}
+
+	@Override
+	public List<String> matchingRecipeNames(final String recipeName, final boolean beLoose)
+	{
+		final List<String> matches = new Vector<String>();
+		for(final List<String> list : fetchRecipes())
+		{
+			final String name=list.get(RecipeDriven.RCP_FINALNAME);
+			if(name.equalsIgnoreCase(recipeName)
+			||(beLoose && (name.toUpperCase().indexOf(recipeName.toUpperCase())>=0)))
+				matches.add(name);
+		}
+		return matches;
+	}
+
+	@Override
+	public Pair<String, Integer> getDecodedItemNameAndLevel(final List<String> recipe)
+	{
+		return new Pair<String,Integer>(recipe.get( RecipeDriven.RCP_FINALNAME ),
+				Integer.valueOf(CMath.s_int(recipe.get( RecipeDriven.RCP_LEVEL ))));
+	}
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -156,8 +205,10 @@ public class Decorating extends CommonSkill
 					{
 						final Room room=CMLib.map().roomLocation(I);
 						final String ownerName=CMLib.law().getLandOwnerName(room);
-						if((messedUp)||(room==null)||(ownerName.length()==0))
-							commonTell(mob,L("You've messed up "+mountWord+"ing @x1!",I.name()));
+						if((messedUp)
+						||(room==null)
+						||(ownerName.length()==0))
+							commonTell(mob,L("You've messed up @x1!",verb));
 						else
 						{
 							I.delEffect(I.fetchEffect("Decorating"));
@@ -165,11 +216,8 @@ public class Decorating extends CommonSkill
 							mount.setMiscText(I.displayText());
 							mount.canBeUninvoked = false;
 							I.addNonUninvokableEffect(mount);
-							if(mountWord.equals("mount"))
-								I.setDisplayText(I.name()+" is mounted here.");
-							else
-							if(!mountWord.equals("stick"))
-								I.setDisplayText(I.name()+" is hanging here.");
+							if(mountedPhrase.trim().length()>0)
+								I.setDisplayText(L(mountedPhrase,I.name()));
 							room.moveItemTo(I, Expire.Never);
 							room.show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to "+mountWord+" @x1.",I.name()));
 						}
@@ -255,32 +303,60 @@ public class Decorating extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		if((auto)&&(commands.size()==0))
+		if((auto)
+		&&(commands.size()==0))
 			commands.add("hang");
-		if((commands.size()==0)
-		||((!commands.get(0).equalsIgnoreCase("hang"))
-			&&(!commands.get(0).equalsIgnoreCase("mount"))
-			&&(!commands.get(0).equalsIgnoreCase("stick"))))
+		if(commands.size()==0)
 		{
-			mob.tell(L("Decorate what, how?  Try "
-					+ "decorate HANG [item name], or "
-					+ "decorate MOUNT [item name], or "
-					+ "decorate STICK [item name]."));
+			commonTell(mob, L("Decorate what, how?  Try DECORATE LIST."));
 			return false;
 		}
+		final List<List<String>> recipes = CMLib.utensils().addExtRecipes(mob,ID(),fetchRecipes());
 		final String word = commands.remove(0).toLowerCase();
+		if(word.equals("list"))
+		{
+			final StringBuilder words=new StringBuilder(L("^NDecoration terms: "));
+			for(final List<String> list : recipes)
+			{
+				final String name=list.get(RCP_FINALNAME);
+				final int level=CMath.s_int(list.get(RCP_LEVEL));
+				final int xlevel=CMath.s_int(list.get(RCP_XLEVEL));
+				if((level <= adjustedLevel(mob,asLevel))
+				&&(super.getXLEVELLevel(mob) >= xlevel))
+					words.append(name).append(", ");
+			}
+			commonTell(mob,words.substring(0,words.length()-2)+".\n\r");
+			return false;
+		}
+		List<String> matche = null;
+		for(final List<String> list : fetchRecipes())
+		{
+			final String name=list.get(RecipeDriven.RCP_FINALNAME);
+			final int level=CMath.s_int(list.get(RCP_LEVEL));
+			final int xlevel=CMath.s_int(list.get(RCP_XLEVEL));
+			if((level <= adjustedLevel(mob,asLevel))
+			&&(super.getXLEVELLevel(mob) >= xlevel)
+			&&(name.equalsIgnoreCase(word)))
+				matche = list;
+		}
+		if(matche == null)
+		{
+			commonTell(mob, L("Decorate what? '@x1' is unknown. Try DECORATE LIST.",word));
+			return false;
+		}
+		commands.remove(0);
+		if(commands.size()==0)
+		{
+			commonTell(mob, L("Decorate what, how?  Try DECORATE LIST."));
+			return false;
+		}
 		final Item I=super.getTarget(mob, null, givenTarget, commands, Wearable.FILTER_UNWORNONLY);
 		if(I==null)
 			return false;
 		mountingI = I;
 		this.mountWord = word;
-		if(word.equals("hang"))
-			verb=L("hanging @x1",I.name());
-		else
-		if(word.equals("mount"))
-			verb=L("mounting @x1",I.name());
-		else
-			verb=L("stickup @x1 up",I.name());
+		this.mountedPhrase=matche.get(RCP_DISPLAY);
+		this.verb=L(matche.get(RCP_VERB),I.name());
 
 		if(!CMLib.law().doesHavePriviledgesHere(mob, mob.location()))
 		{
@@ -296,18 +372,16 @@ public class Decorating extends CommonSkill
 		case Room.DOMAIN_INDOORS_WOOD:
 			break;
 		default:
-		{
 			commonTell(mob,L("You can't mount anything here."));
 			return false;
-		}
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		final int duration=getDuration(15,mob,I.phyStats().level(),2);
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),L("<S-NAME> start(s) "+verb+".",I.name()));
+		final int duration=getDuration(CMath.s_int(matche.get(RCP_TICKS)),mob,I.phyStats().level(),2);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),L("<S-NAME> start(s) @x1.",verb));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

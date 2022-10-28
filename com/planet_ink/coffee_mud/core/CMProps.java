@@ -374,7 +374,8 @@ public class CMProps extends Properties
 		EFFECTCAP,
 		EFFECTCXL,
 		CLASSTRAINCOST,
-		CLASSSWITCHCOST
+		CLASSSWITCHCOST,
+		LOGOUTMASKTICKS
 		;
 
 		public static final int	EXVIEW_DEFAULT		= 0;
@@ -2503,7 +2504,24 @@ public class CMProps extends Properties
 		parseXPDeferDetails(getVar(Str.EXPDEFER));
 		setVar(Str.RPAWARDS,getStr("RPAWARDS",""));
 		parseRPAwards(getVar(Str.RPAWARDS));
-		setVar(Str.LOGOUTMASK,getStr("LOGOUTMASK",""));
+		{
+			final String logoutMaskStr = getStr("LOGOUTMASK","").trim();
+			final String logoutMask;
+			final int logoutTicks;
+			final int x = logoutMaskStr.indexOf(' ');
+			if((x>0)&&(CMath.s_int(logoutMaskStr.substring(0,x))>0))
+			{
+				logoutTicks = CMath.s_int(logoutMaskStr.substring(0,x));
+				logoutMask = logoutMaskStr.substring(x+1).trim();
+			}
+			else
+			{
+				logoutTicks = 0;
+				logoutMask = logoutMaskStr;
+			}
+			setVar(Str.LOGOUTMASK, logoutMask);
+			setIntVar(Int.LOGOUTMASKTICKS, logoutTicks);
+		}
 		setVar(Str.TRAINCOSTS,getStr("TRAINCOSTS","HITPOINTS 10 1 TRAIN, MANA 20 1 TRAIN, MOVES 20 1 TRAIN, GAIN 1 7 PRACTICE, PRACTICES 5 1 TRAIN"));
 		String ppath=getStr("PRIVATERESOURCEPATH","");
 		if(!ppath.endsWith("/"))

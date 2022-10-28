@@ -2527,10 +2527,15 @@ public class DefaultSession implements Session
 		{
 			preLogout(mob);
 		}
-		if(removeMOB
-		&&(mob()!=null))
+		final MOB M = mob();
+		if(removeMOB && (M!=null))
 		{
-			mob().removeFromGame(true, dropSession);
+			if((CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS)
+				||(!CMLib.masking().maskCheck(CMProps.getVar(CMProps.Str.LOGOUTMASK), mob(), true)))
+			&&(!CMSecurity.isASysOp(mob())))
+			{ /* do nothing right now */ }
+			else
+				M.removeFromGame(true, dropSession);
 		}
 		if(dropSession)
 			logoutFinal();
@@ -3158,6 +3163,7 @@ public class DefaultSession implements Session
 					Log.errOut(e);
 				}
 			}
+			boolean setKillFlag = true;
 			if(M!=null)
 			{
 				try
@@ -3177,6 +3183,24 @@ public class DefaultSession implements Session
 						M.setSession(this);
 						M.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SLEEPING);
 						M.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SLEEPING);
+						setKillFlag = false;
+						if(CMProps.getIntVar(CMProps.Int.LOGOUTMASKTICKS)>0)
+						{
+							CMLib.threads().scheduleRunnable(new Runnable() {
+								final MOB M1 = M;
+								final Session S1 = M.session();
+								@Override
+								public void run()
+								{
+									if(M1.session() == S1)
+									{
+										M1.removeFromGame(true,true);
+										M1.setSession(null);
+										S1.setMob(null);
+									}
+								}
+							}, CMProps.getTickMillis() * CMProps.getIntVar(CMProps.Int.LOGOUTMASKTICKS));
+						}
 					}
 					else
 					{
@@ -3195,7 +3219,7 @@ public class DefaultSession implements Session
 			}
 
 			setStatus(SessionStatus.LOGOUT4);
-			setKillFlag(true);
+			setKillFlag(setKillFlag);
 			waiting=false;
 			needPrompt=false;
 			this.acct=null;
