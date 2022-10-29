@@ -344,7 +344,6 @@ public class Decorating extends CommonSkill implements RecipeDriven
 			commonTell(mob, L("Decorate what? '@x1' is unknown. Try DECORATE LIST.",word));
 			return false;
 		}
-		commands.remove(0);
 		if(commands.size()==0)
 		{
 			commonTell(mob, L("Decorate what, how?  Try DECORATE LIST."));
