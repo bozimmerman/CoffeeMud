@@ -3099,7 +3099,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					mob.tell(L("You are starved, and near death.  EAT SOMETHING!"));
 				else
 				{
-					if(thirsty && ((ticksThirsty-1 % CharState.ANNOYANCE_DEFAULT_TICKS)==0))
+					if(thirsty && (((ticksThirsty-1) % CharState.ANNOYANCE_DEFAULT_TICKS)==0))
 					{
 						if(ticksThirsty>((CharState.DEATH_THIRST_TICKS/2)+(CharState.DEATH_THIRST_TICKS/4)))
 							mob.tell(L("You are dehydrated! Drink something!"));
@@ -3109,7 +3109,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 						else
 							mob.tell(L("You are thirsty."));
 					}
-					if((hungry) && ((ticksHungry-1 % CharState.ANNOYANCE_DEFAULT_TICKS)==0))
+					if((hungry) && (((ticksHungry-1) % CharState.ANNOYANCE_DEFAULT_TICKS)==0))
 					{
 						if(ticksHungry>((CharState.DEATH_HUNGER_TICKS/2)+(CharState.DEATH_HUNGER_TICKS/4)))
 							mob.tell(L("You are starved! Eat something!"));
