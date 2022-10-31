@@ -3,7 +3,10 @@ BUGS/UNTESTED STUFF:
 
 TECH TODO:
    *. navigation course system.
-   *. make inertia drives that alter ships inertia overall for dir change (Kinetic Energy (inertia) KE=0.5*mass*velocity*velocity)
+   *. make inertia battery that alter ships inertia overall for dir change 
+      (Kinetic Energy (inertia) KE=0.5*mass*velocity*velocity)
+      discharge of all stored inertial power to stop the ship entirely
+   *. Make SMAC that alters the ships mass, which has huge effects on drives
    *. make ship impulse and warp engines -- see tech doc
    *. make orbit ability, integrate with navigation: 1. go dir, 2. adjust point same dist from planet. 3. plot course.
    *. make ship active scanners
