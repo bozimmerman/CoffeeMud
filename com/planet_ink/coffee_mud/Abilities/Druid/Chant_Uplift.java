@@ -138,7 +138,7 @@ public class Chant_Uplift extends Chant
 			final Room mobR=mob.location();
 			if (mobR!=null)
 			{
-				if((super.tickDown<2) 
+				if((super.tickDown<2)
 				|| (super.tickDown<this.neoTickDown))
 				{
 					final boolean totallyComplete = tickDown < 2;
@@ -197,7 +197,7 @@ public class Chant_Uplift extends Chant
 							}
 							R.bodyMask()[Race.BODY_HAND]=R.bodyMask()[Race.BODY_ARM];
 							R.bodyMask()[Race.BODY_FOOT]=R.bodyMask()[Race.BODY_LEG];
-	
+
 							long forbidden = R.forbiddenWornBits();
 							forbidden = forbidden &
 									~(Wearable.WORN_ARMS |
@@ -211,13 +211,15 @@ public class Chant_Uplift extends Chant
 									Wearable.WORN_HELD|
 									Wearable.WORN_MOUTH|
 									Wearable.WORN_NECK|
+									Wearable.WORN_HANDS|
+									Wearable.WORN_FEET|
 									Wearable.WORN_LEFT_WRIST|
 									Wearable.WORN_RIGHT_WRIST|
 									Wearable.WORN_LEFT_FINGER|
 									Wearable.WORN_RIGHT_FINGER);
 							R.setStat("WEAR",""+forbidden);
 						}
-	
+
 						final CharStats adjCStats=(CharStats)CMClass.getCommon("DefaultCharStats");
 						adjCStats.setAllValues(0);
 						final String adjCStatsStr=R.getStat("ASTATS");
@@ -255,7 +257,7 @@ public class Chant_Uplift extends Chant
 						}
 						R.setStat("ASTATS", CMLib.coffeeMaker().getCharStatsStr(adjCStats));
 						R.setStat("CSTATS", CMLib.coffeeMaker().getCharStatsStr(oldCStats));
-	
+
 						final int numRable = CMath.s_int(R.getStat("NUMRABLE"));
 						if(numRable <= 0)
 							R.setStat("NUMRABLE","");
@@ -289,7 +291,7 @@ public class Chant_Uplift extends Chant
 								R.setStat("GETRABLEPARM"+i,data[4]);
 							}
 						}
-	
+
 						CMClass.addRace(R);
 						CMLib.database().DBCreateRace(raceID, R.racialParms());
 					}
