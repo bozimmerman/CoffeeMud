@@ -404,9 +404,7 @@ public class GrinderMap extends GrinderFlatMap
 							}
 							case 1:
 							{ // west, east
-								buf.append("<TD>" +
-										   getDoorLabelGif(Directions.WEST, GR, httpReq) +
-										   "</TD>");
+								buf.append("<TD><BR></TD>");
 								buf.append("<TD COLSPAN=3 ROWSPAN=3 VALIGN=TOP ");
 								buf.append(roomColorStyle(GR));
 								buf.append((boundsXYXY!=null)?" ID=X"+(x+boundsXYXY[0])+"_"+(y+boundsXYXY[1]):"");
@@ -432,18 +430,14 @@ public class GrinderMap extends GrinderFlatMap
 										   ")<BR>");
 								String displayText = GR.room().displayText();
 								if (displayText.length() > 20)
-								{
 									displayText = displayText.substring(0, 20) + "...";
-								}
 								buf.append(displayText + "</FONT></TD>");
-								buf.append("<TD>" +
-										   getDoorLabelGif(Directions.EAST, GR, httpReq) +
-										   "</TD>");
+								buf.append("<TD><BR></TD>");
 								break;
 							}
 							case 2: // nada
-								buf.append("<TD><BR></TD>");
-								buf.append("<TD><BR></TD>");
+								buf.append("<TD>"+getDoorLabelGif(Directions.WEST,GR,httpReq)+"</TD>");
+								buf.append("<TD>"+getDoorLabelGif(Directions.EAST,GR,httpReq)+"</TD>");
 								break;
 							case 3:
 							{ // alt e,w
