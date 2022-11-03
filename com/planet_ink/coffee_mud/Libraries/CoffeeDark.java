@@ -760,6 +760,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				rooms.add((LocationRoom)R2);
 			}
 		}
+		// TODO: really should look to see if there is something between the ship and
+		// the landing point that could collide.
 		Collections.sort(rooms,new Comparator<LocationRoom>()
 		{
 			final SpaceObject sship = ship;
