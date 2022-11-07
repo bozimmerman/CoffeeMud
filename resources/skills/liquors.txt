@@ -80,7 +80,7 @@ fortified wine	DRINK	Poison_Alcohol	72	GRAPES	1	brandy	1	SUGAR	1	yeast	1	wood	-1
 spicy lager	DRINK	Poison_Alcohol	73	malt	1	WATER	1	SUGAR	1	bottom fermented yeast	1	PEPPERS	1				
 pecan stout	DRINK	Poison_Alcohol	74	dark roasted malt	1	WATER	1	SUGAR	1	top fermented yeast	1	NUTS	1				
 overproof rum	DRINK	Poison_Liquor	75	yeast	1	rum	1	SUGAR	2	molasses	1						
-tripple sec	DRINK	Poison_Liquor	76	ORANGES	1	WATER	1	SUGAR	1	YEAST	1						
+triple sec	DRINK	Poison_Liquor	76	ORANGES	1	WATER	1	SUGAR	1	YEAST	1						
 vermouth	DRINK	Poison_Liquor	77	FLOWERS	1	white wine	1	SUGAR	1	CINNAMON	1	HERBS	1				
 milk stout	DRINK	Poison_Alcohol	78	medium dark roasted malt	1	MILK	1	SUGAR	1	top fermented yeast	1						
 ginger wine	DRINK	Poison_Alcohol	79	GRAPES	1	brandy	1	SUGAR	1	ginger	1						

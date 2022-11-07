@@ -227,6 +227,31 @@ public class Spell_Spellbinding extends Spell
 		super.executeMsg(host,msg);
 	}
 
+	protected boolean checkBindableAbility(final MOB mob, final Ability A, final String wd)
+	{
+		if(A==null)
+		{
+			mob.tell(L("You can't bind '@x1'.",wd));
+			return false;
+		}
+		if((A.classificationCode()&ALL_ACODES)!=ACODE_SPELL)
+		{
+			mob.tell(L("You can't bind '@x1' -- it's not a spell!",A.ID()));
+			return false;
+		}
+		if(A.ID().equals(ID()))
+		{
+			mob.tell(L("You can't bind '@x1'.",A.ID()));
+			return false;
+		}
+		if(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]>50)
+		{
+			mob.tell(L("You can't bind '@x1' -- it requires too much mana.",A.ID()));
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -245,30 +270,47 @@ public class Spell_Spellbinding extends Spell
 		final String combined=CMParms.combine(commands,0);
 		final DVector V=new DVector(2);
 		Ability A=mob.fetchAbility(combined);
+		if(A==null)
+		{
+			for(final Enumeration<Ability> a = mob.allAbilities();a.hasMoreElements();)
+			{
+				final Ability A1 = a.nextElement();
+				if((A1!=null)
+				&&(A1.name().equalsIgnoreCase(combined)))
+				{
+					A=A1;
+					break;
+				}
+			}
+		}
 		if(A!=null)
 		{
-			if(((A.classificationCode()&ALL_ACODES)!=ACODE_SPELL)
-			||(A.ID().equals(ID()))
-			||(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]>50))
-			{
-				mob.tell(L("You can't bind '@x1'.",A.ID()));
+			if(!checkBindableAbility(mob,A,combined))
 				return false;
-			}
 			V.addElement(A.ID(),Integer.valueOf(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
 		}
 		else
-		for(int v=0;v<commands.size();v++)
 		{
-			A=mob.fetchAbility(commands.get(v));
-			if((A==null)
-			||(A.ID().equals(ID()))
-			||((A.classificationCode()&ALL_ACODES)!=ACODE_SPELL)
-			||(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]>50))
+			for(int v=0;v<commands.size();v++)
 			{
-				mob.tell(L("You can't bind '@x1'.",(commands.get(v))));
-				return false;
+				A=mob.fetchAbility(commands.get(v));
+				if(A==null)
+				{
+					for(final Enumeration<Ability> a = mob.allAbilities();a.hasMoreElements();)
+					{
+						final Ability A1 = a.nextElement();
+						if((A1!=null)
+						&&(A1.name().equalsIgnoreCase(commands.get(v))))
+						{
+							A=A1;
+							break;
+						}
+					}
+				}
+				if(!checkBindableAbility(mob,A,commands.get(v)))
+					return false;
+				V.addElement(A.ID(),Integer.valueOf(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
 			}
-			V.addElement(A.ID(),Integer.valueOf(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
 		}
 
 		int totalcost=0;

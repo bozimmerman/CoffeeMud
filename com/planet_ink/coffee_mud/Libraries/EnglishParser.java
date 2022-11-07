@@ -226,7 +226,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return uppercase ? feewords2[x].toUpperCase() : feewords2[x];
 		if(lowerStr.endsWith("is"))
 			return str.substring(0,str.length()-2)+(uppercase?"ES":"es");
-		if(lowerStr.endsWith("s")&&(lowerStr.indexOf(" pair of ")>0))
+		if(lowerStr.endsWith("s")
+		&&(lowerStr.indexOf(" pair of ")>0))
+			return str;
+		if(lowerStr.endsWith("ts"))
 			return str;
 		if(lowerStr.endsWith("s")||lowerStr.endsWith("z")||lowerStr.endsWith("x")||lowerStr.endsWith("ch")||lowerStr.endsWith("sh"))
 			return str+(uppercase?"ES":"es");

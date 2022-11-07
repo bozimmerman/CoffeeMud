@@ -6135,10 +6135,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(arg2.equals("!="))
 							returnable=!clanID.equalsIgnoreCase(arg3);
 						else
-						if(arg2.equals("in"))
+						if(arg2.equalsIgnoreCase("IN"))
 							returnable=((MOB)E).getClanRole(arg3)!=null;
 						else
-						if(arg2.equals("notin"))
+						if(arg2.equalsIgnoreCase("NOTIN"))
 							returnable=((MOB)E).getClanRole(arg3)==null;
 						else
 						{
@@ -10231,16 +10231,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Physical newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				final String amtStr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]).trim();
 				int t=CMath.s_int(amtStr);
-				if((newTarget!=null)&&(newTarget instanceof MOB))
+				if(newTarget instanceof MOB)
 				{
+					final MOB targM = (MOB)newTarget;
 					if((amtStr.endsWith("%"))
-					&&(((MOB)newTarget).getExpNeededLevel()<Integer.MAX_VALUE))
+					&&(targM.getExpNeededLevel()<Integer.MAX_VALUE))
 					{
 						final int baseLevel=newTarget.basePhyStats().level();
-						final int lastLevelExpNeeded=(baseLevel<=1)?0:CMLib.leveler().getLevelExperience((MOB)newTarget, baseLevel-1);
-						final int thisLevelExpNeeded=CMLib.leveler().getLevelExperience((MOB)newTarget, baseLevel);
-						t=(int)Math.round(CMath.mul(thisLevelExpNeeded-lastLevelExpNeeded,
-											CMath.div(CMath.s_int(amtStr.substring(0,amtStr.length()-1)),100.0)));
+						final int lastLevelExpNeeded=(baseLevel<=1)?0:CMLib.leveler().getLevelExperience(targM, baseLevel-1);
+						final int thisLevelExpNeeded=CMLib.leveler().getLevelExperience(targM, baseLevel);
+						final double pct = CMath.s_pct(amtStr);
+						t=(int)Math.round(CMath.mul(thisLevelExpNeeded-lastLevelExpNeeded,pct));
+						if((t>thisLevelExpNeeded)&&(pct<1))
+							t=thisLevelExpNeeded;
 					}
 					if(t!=0)
 						CMLib.leveler().postExperience((MOB)newTarget,null,null,t,false);

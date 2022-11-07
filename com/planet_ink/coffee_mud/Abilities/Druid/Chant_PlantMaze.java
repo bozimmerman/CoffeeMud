@@ -181,7 +181,11 @@ public class Chant_PlantMaze extends Chant
 				final Room newRoom=CMClass.getLocale("WoodsMaze");
 				((GridLocale)newRoom).setXGridSize(10+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()));
 				((GridLocale)newRoom).setYGridSize(10+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()));
-				final String s=CMLib.english().makePlural(CMParms.parse(thePlants.name()).lastElement().toLowerCase());
+				final String s;
+				if(thePlants.name().toLowerCase().endsWith("s"))
+					s=CMParms.parse(thePlants.name()).lastElement().toLowerCase();
+				else
+					s=CMLib.english().makePlural(CMParms.parse(thePlants.name()).lastElement().toLowerCase());
 				final String nos=s.substring(0,s.length()-1).toLowerCase();
 				newRoom.setDisplayText(L("@x1 Maze",CMStrings.capitalizeAndLower(nos)));
 				newRoom.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
