@@ -71,9 +71,16 @@ public class FasterRecovery extends StdBehavior
 		final List<Triad<RecType,Integer,int[]>> lst = new ArrayList<Triad<RecType,Integer,int[]>>();
 		for(final RecType r : RecType.values())
 		{
-			final String val = CMParms.getParmStr(parameters, r.name(), "").trim();
+			String val = CMParms.getParmStr(parameters, r.name(), "").trim();
 			if(val.length()>0)
 			{
+				boolean abs = false;
+				if(((val.charAt(0)=='+') || (val.charAt(0)=='-'))
+				&&(val.length()>1))
+				{
+					val=val.substring(1);
+					abs=true;
+				}
 				if(Character.isDigit(val.charAt(0)))
 				{
 					int valn;
@@ -87,7 +94,12 @@ public class FasterRecovery extends StdBehavior
 					else
 						valn  = CMath.s_int(val);
 					if(valn != 0)
-						lst.add(new Triad<RecType,Integer,int[]>(r,Integer.valueOf(valn),new int[] {ticks, ticks}));
+					{
+						if(abs)
+							lst.add(new Triad<RecType,Integer,int[]>(r,Integer.valueOf(valn),new int[] {ticks, ticks, 0}));
+						else
+							lst.add(new Triad<RecType,Integer,int[]>(r,Integer.valueOf(valn),new int[] {ticks, ticks}));
+					}
 				}
 				else
 					Log.errOut("Unknown val '"+val+"' on FasterRecovery");
@@ -112,48 +124,75 @@ public class FasterRecovery extends StdBehavior
 			if(--td[0] > 0)
 				continue;
 			td[0] = td[1];
-			switch(typ.first)
+			if((td.length==3) && (td[2] == 1))
 			{
-			case BURST:
-				for(int i2=0;i2<typ.second.intValue();i2++)
-					M.tick(M,Tickable.TICKID_MOB);
-				break;
-			case HEALTH:
-				for(int i2=0;i2<typ.second.intValue();i2++)
-					CMLib.combat().recoverTick(M);
-				break;
-			case HITS:
-			{
-				final int oldMana=M.curState().getMana();
-				final int oldMove=M.curState().getMovement();
-				for(int i2=0;i2<RecType.HITS.ordinal();i2++)
-					CMLib.combat().recoverTick(M);
-				M.curState().setMana(oldMana);
-				M.curState().setMovement(oldMove);
-				break;
+				final int val = typ.second.intValue();
+				switch(typ.first)
+				{
+				case BURST:
+				case HEALTH:
+					M.curState().adjHitPoints(val, M.maxState());
+					M.curState().adjMana(val, M.maxState());
+					M.curState().adjMovement(val, M.maxState());
+					break;
+				case HITS:
+					M.curState().adjHitPoints(val, M.maxState());
+					break;
+				case MANA:
+					M.curState().adjMana(val, M.maxState());
+					break;
+				case MOVE:
+					M.curState().adjMovement(val, M.maxState());
+					break;
+				default:
+					break;
+				}
 			}
-			case MANA:
+			else
 			{
-				final int oldHP=M.curState().getHitPoints();
-				final int oldMove=M.curState().getMovement();
-				for(int i2=0;i2<RecType.MANA.ordinal();i2++)
-					CMLib.combat().recoverTick(M);
-				M.curState().setHitPoints(oldHP);
-				M.curState().setMovement(oldMove);
-				break;
-			}
-			case MOVE:
-			{
-				final int oldMana=M.curState().getMana();
-				final int oldHP=M.curState().getHitPoints();
-				for(int i2=0;i2<RecType.MOVE.ordinal();i2++)
-					CMLib.combat().recoverTick(M);
-				M.curState().setMana(oldMana);
-				M.curState().setHitPoints(oldHP);
-				break;
-			}
-			default:
-				break;
+				switch(typ.first)
+				{
+				case BURST:
+					for(int i2=0;i2<typ.second.intValue();i2++)
+						M.tick(M,Tickable.TICKID_MOB);
+					break;
+				case HEALTH:
+					for(int i2=0;i2<typ.second.intValue();i2++)
+						CMLib.combat().recoverTick(M);
+					break;
+				case HITS:
+				{
+					final int oldMana=M.curState().getMana();
+					final int oldMove=M.curState().getMovement();
+					for(int i2=0;i2<RecType.HITS.ordinal();i2++)
+						CMLib.combat().recoverTick(M);
+					M.curState().setMana(oldMana);
+					M.curState().setMovement(oldMove);
+					break;
+				}
+				case MANA:
+				{
+					final int oldHP=M.curState().getHitPoints();
+					final int oldMove=M.curState().getMovement();
+					for(int i2=0;i2<RecType.MANA.ordinal();i2++)
+						CMLib.combat().recoverTick(M);
+					M.curState().setHitPoints(oldHP);
+					M.curState().setMovement(oldMove);
+					break;
+				}
+				case MOVE:
+				{
+					final int oldMana=M.curState().getMana();
+					final int oldHP=M.curState().getHitPoints();
+					for(int i2=0;i2<RecType.MOVE.ordinal();i2++)
+						CMLib.combat().recoverTick(M);
+					M.curState().setMana(oldMana);
+					M.curState().setHitPoints(oldHP);
+					break;
+				}
+				default:
+					break;
+				}
 			}
 		}
 	}
