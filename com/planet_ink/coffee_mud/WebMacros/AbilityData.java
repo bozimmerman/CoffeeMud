@@ -271,7 +271,7 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("ISBOMB"))
 				{
 					if(A instanceof Trap)
-						return CMath.s_bool(A.getStat("ISBOMB"))?"CHECKED, ":"";
+						return CMath.s_bool(A.getStat("ISBOMB"))?"CHECKED ":"";
 				}
 				if(parms.containsKey("ISGATHERSKILL"))
 				{

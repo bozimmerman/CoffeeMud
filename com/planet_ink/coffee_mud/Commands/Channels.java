@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
@@ -72,6 +73,68 @@ public class Channels extends StdCommand
 			else
 				buf.append(L("Channels are now all turned off."));
 			pstats.setChannelMask(Integer.MAX_VALUE);
+		}
+		else
+		if((commands.size()>2)
+		&&("COPY".equals(wd)))
+		{
+			final String whomName=(commands.size()>2)?CMParms.combine(commands,2):"";
+			if(whomName.length()==0)
+				mob.tell(L("Copy whose channel settings?"));
+			else
+			if(!CMLib.players().playerExists(whomName))
+				mob.tell(L("Player '@x1' doesn't exist.",whomName));
+			else
+			{
+				final boolean unloadAfter = CMLib.players().isLoadedPlayer(whomName);
+				final MOB M=CMLib.players().getLoadPlayer(whomName);
+				final Session sess = mob.session();
+				if((M!=null)
+				&&(M!=mob)
+				&&(sess!=null))
+				{
+					try
+					{
+						final MOB M1=mob;
+						final MOB M2=M;
+						if(M.playerStats().getChannelMask() == mob.playerStats().getChannelMask())
+							mob.tell(L("Your channel settings already match @x1s.",M.name()));
+						else
+						sess.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)
+						{
+							final Session S=sess;
+							final MOB mob=M1;
+							final MOB M=M2;
+							@Override
+							public void showPrompt()
+							{
+								S.promptPrint(L("\n\rCopy the channel settings from player @x1 (y/N)? ", M.name()));
+							}
+							@Override
+							public void timedOut()
+							{
+							}
+							@Override
+							public void callBack()
+							{
+								if(this.input.equals("Y"))
+								{
+									mob.playerStats().setChannelMask(M.playerStats().getChannelMask());
+									mob.tell(L("Channel settings copied and active."));
+								}
+							}
+						});
+					}
+					finally
+					{
+						if(unloadAfter
+						&&(M!=null)
+						&&((M.session()==null)||(M.session().isStopped())))
+							CMLib.players().unloadOfflinePlayer(M);
+					}
+				}
+			}
+			return true;
 		}
 		else
 		if(wd.length()>0)

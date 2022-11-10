@@ -600,7 +600,7 @@
 						            </TD>
 						        </TR>
 						    @endif@
-						    @if?CheckReqParm?!TEMPLOC=Trigger@
+						    @if?CheckReqParm?TEMPLOC=Trigger@
 					            <TD WIDTH=25%>
 					            	<FONT COLOR=YELLOW>Trigger Ritual: </FONT>
 					            	<A HREF="javascript:openUp('RITUALS')"><FONT COLOR=WHITE>?</FONT></a>

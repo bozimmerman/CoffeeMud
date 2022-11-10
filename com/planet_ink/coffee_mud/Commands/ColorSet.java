@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -164,6 +165,67 @@ public class ColorSet extends StdCommand
 			pstats.setColorStr("");
 			mob.tell(L("Your colors have been changed back to default."));
 			return false;
+		}
+		if((commands.size()>2)
+		&&("COPY".equals(commands.get(1).toUpperCase())))
+		{
+			final String whomName=(commands.size()>2)?CMParms.combine(commands,2):"";
+			if(whomName.length()==0)
+				mob.tell(L("Copy whose color settings?"));
+			else
+			if(!CMLib.players().playerExists(whomName))
+				mob.tell(L("Player '@x1' doesn't exist.",whomName));
+			else
+			{
+				final boolean unloadAfter = CMLib.players().isLoadedPlayer(whomName);
+				final MOB M=CMLib.players().getLoadPlayer(whomName);
+				final Session sess = mob.session();
+				if((M!=null)
+				&&(M!=mob)
+				&&(sess!=null))
+				{
+					try
+					{
+						final MOB M1=mob;
+						final MOB M2=M;
+						if(M.playerStats().getColorStr().equals(mob.playerStats().getColorStr()))
+							mob.tell(L("Your colors already match @x1s.",M.name()));
+						else
+						sess.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)
+						{
+							final Session S=sess;
+							final MOB mob=M1;
+							final MOB M=M2;
+							@Override
+							public void showPrompt()
+							{
+								S.promptPrint(L("\n\rCopy the color settings from player @x1 (y/N)? ", M.name()));
+							}
+							@Override
+							public void timedOut()
+							{
+							}
+							@Override
+							public void callBack()
+							{
+								if(this.input.equals("Y"))
+								{
+									mob.playerStats().setColorStr(M.playerStats().getColorStr());
+									mob.tell(L("Color settings copied and active."));
+								}
+							}
+						});
+					}
+					finally
+					{
+						if(unloadAfter
+						&&(M!=null)
+						&&((M.session()==null)||(M.session().isStopped())))
+							CMLib.players().unloadOfflinePlayer(M);
+					}
+				}
+			}
+			return true;
 		}
 
 		final List<String> allBackgroundColorsList = new ArrayList<String>();

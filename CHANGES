@@ -10,6 +10,9 @@
   9. New INI entry DEFAULTABILITYARGS for setting default property/skill arguments.
  10. LOGOUTMASK now supports a tick argument for how long to keep the mob in game.
  11. Decorating is now recipe driven, and has numerous new options
+ 12. Commands now support copying other player settings: 
+     CONFIG COPY [playername] /CHANNELS COPY [playername]/COLORSET COPY [playername]
+     
 # Build 5.10.0 Release 9/23/2022
   1. New Scriptable functions: ROOMPC and AREAPC
   2. Caravans now have their own internal Directions (fore, back, right, left, up, down)
