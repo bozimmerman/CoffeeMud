@@ -1150,12 +1150,11 @@ public class DefaultCharStats implements CharStats
 			stats[statNum]+=(short)value;
 			if(CharStats.CODES.isBASE(statNum))
 			{
-				if(stats[statNum]<1)
+				if(stats[statNum]<1) // negative/0 absolute stat values are bad.
 					stats[statNum]=1;
 				final int maxStatNum=CharStats.CODES.toMAXBASE(statNum);
 				stats[maxStatNum]+=(short)value;
-				if(stats[maxStatNum]<1)
-					stats[maxStatNum]=1;
+				// negative maxstats are ok, as they are deltas!
 			}
 		}
 	}

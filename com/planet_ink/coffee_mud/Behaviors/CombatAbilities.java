@@ -664,7 +664,8 @@ public class CombatAbilities extends ActiveTicker
 		if((tickID!=Tickable.TICKID_MOB)
 		||(!(ticking instanceof MOB)))
 		{
-			Log.errOut("CombatAbilities",ticking.name()+" wants to fight?!");
+			Log.errOut("CombatAbilities",ticking.name()+" does not want to fight.");
+			((Behavable)ticking).delBehavior(this);
 			return false;
 		}
 		final MOB mob=(MOB)ticking;
