@@ -215,6 +215,6 @@ public class Switch extends StdCommand
 	@Override
 	public boolean securityCheck(final MOB mob)
 	{
-		return CMProps.isUsingAccountSystem();
+		return CMProps.isUsingAccountSystem()||CMSecurity.isASysOp(mob);
 	}
 }
