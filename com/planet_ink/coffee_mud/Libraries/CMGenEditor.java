@@ -9369,7 +9369,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected boolean modifyComponent(final MOB mob, final AbilityComponent comp, int showFlag)
 	throws IOException
 	{
-		final PairList<String,String> decoded=CMLib.ableComponents().getAbilityComponentCoded(comp);
+		PairList<String,String> decoded=CMLib.ableComponents().getAbilityComponentCoded(comp);
 		if(mob.isMonster())
 			return true;
 		boolean ok=false;
@@ -9383,9 +9383,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genText(mob,decoded,(new String[]{"&&","||","X"}),choices+" &&, ||, X",++showNumber,showFlag,"Conjunction (X Deletes) (?)","ANDOR");
 			if(decoded.get(0).second.equalsIgnoreCase("X"))
 				return false;
+			final String oldT = (decoded.size()>2)?decoded.getSecond(1):"";
 			genText(mob,decoded,(new String[]{"INVENTORY","HELD","WORN","ONGROUND","NEARBY","TRIGGER"}),
 						choices+" INVENTORY, HELD, WORN, ONGROUND, NEARBY, TRIGGER",++showNumber,showFlag,"Component position (?)","DISPOSITION");
-			if((decoded.size()>2)&&(decoded.get(1).second.equalsIgnoreCase("TRIGGER")))
+			final String newT = (decoded.size()>2)?decoded.getSecond(1):"";
+			if((!oldT.equalsIgnoreCase(newT))
+			&&(oldT.equalsIgnoreCase("TRIGGER")||newT.equalsIgnoreCase("TRIGGER")))
+			{
+				CMLib.ableComponents().setAbilityComponentCodedFromCodedPairs(decoded,comp);
+				decoded=CMLib.ableComponents().getAbilityComponentCoded(comp);
+			}
+			if(newT.equalsIgnoreCase("TRIGGER"))
 				genText(mob,decoded,null,null,++showNumber,showFlag,"Trigger Ritual","TRIGGER");
 			else
 			{

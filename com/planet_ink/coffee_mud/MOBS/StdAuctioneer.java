@@ -49,7 +49,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	protected int			maxTimedAuctionDays	= -1;
 	protected int			minTimedAuctionDays	= -1;
 	public AuctionData		lastMsgData			= null;
-	protected String		currency			= null;
+	protected String		currency			= "";
 	protected Set<ViewType>	viewTypes			= new XHashSet<ViewType>(ViewType.BASIC);
 
 	protected static final Map<String,Long> lastCheckTimes=new Hashtable<String,Long>();

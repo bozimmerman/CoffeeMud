@@ -628,7 +628,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	{
 		double totalWidth=(session==null)?78.0:(double)session.getWrap();
 		if(totalWidth==0.0)
-			totalWidth=1024.0;
+			totalWidth=78.0;
 		return (int)Math.round((colWidth/78.0)*totalWidth);
 	}
 
@@ -637,7 +637,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	{
 		double totalWidth=(session==null)?78.0:(double)session.getWrap();
 		if(totalWidth==0.0)
-			totalWidth=1024.0;
+			totalWidth=78.0;
 		for(int i=0;i<colWidths.length;i++)
 			colWidths[i] = (int)Math.round((colWidths[i]/78.0)*totalWidth);
 	}

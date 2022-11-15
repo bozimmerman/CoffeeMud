@@ -2345,21 +2345,17 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	@Override
 	public AuctionData fetchAuctionByItemName(final String named, final String auctionHouse)
 	{
-		final List<Item> V2=new ArrayList<Item>();
-		for(final Enumeration<AuctionData> a=CMLib.coffeeShops().getAuctions(null,auctionHouse);a.hasMoreElements();)
-			V2.add(a.nextElement().getAuctionedItem());
-		Environmental E=CMLib.english().fetchEnvironmental(V2,named,true);
-		if(!(E instanceof Item))
-			E=CMLib.english().fetchEnvironmental(V2,named,false);
-		if(E!=null)
+		final Map<Item, AuctionData> dats = new HashMap<Item, AuctionData>();
+		for(final Enumeration<AuctionData> a = CMLib.coffeeShops().getAuctions(null,auctionHouse); a.hasMoreElements();)
 		{
-			for(final Enumeration<AuctionData> a=CMLib.coffeeShops().getAuctions(null,auctionHouse);a.hasMoreElements();)
-			{
-				final AuctionData A=a.nextElement();
-				if(A.getAuctionedItem()==E)
-					return A;
-			}
+			final AuctionData A = a.nextElement();
+			dats.put(A.getAuctionedItem(), A);
 		}
+		Environmental E=CMLib.english().fetchEnvironmental(dats.keySet(),named,true);
+		if(!(E instanceof Item))
+			E=CMLib.english().fetchEnvironmental(dats.keySet(),named,false);
+		if(E!=null)
+			return dats.get(E);
 		return null;
 	}
 

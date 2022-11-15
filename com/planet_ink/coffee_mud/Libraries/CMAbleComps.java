@@ -370,8 +370,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			else
 				comp.setConsumed(false);
 			comp.setAmount(CMath.s_int(s[3]));
-			final String compType=s[4];
-			final String subType=s[5];
+			final String compType=s[4]==null?"":s[4];
+			final String subType=s[5]==null?"":s[5];
 			int depth=CMLib.materials().findResourceCode(compType,false);
 			if(depth>=0)
 				comp.setType(AbilityComponent.CompType.RESOURCE, Integer.valueOf(depth), subType);
@@ -381,9 +381,15 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				if(depth>=0)
 					comp.setType(AbilityComponent.CompType.MATERIAL, Integer.valueOf(depth), subType);
 				else
+				if(s[4]==null)
+					comp.setType(AbilityComponent.CompType.STRING, "", "");
+				else
 					comp.setType(AbilityComponent.CompType.STRING, s[4].toUpperCase().trim(), "");
 			}
-			comp.setMask(s[6]);
+			if(s[6] != null)
+				comp.setMask(s[6]);
+			else
+				comp.setMask("");
 		}
 	}
 
