@@ -132,7 +132,7 @@ public class AutoAwardData extends StdWebMacro
 		if(parms.containsKey("PMASK"))
 		{
 			String mask=httpReq.getUrlParameter("PMASK");
-			if((mask==null)&&(last!=null)&&(last.length()>0))
+			if((mask==null)&&(last!=null)&&(last.length()>0)&&(P!=null))
 				mask=P.getPlayerMask();
 			if(mask!=null)
 				str.append(CMStrings.replaceAll(mask,"\"","&quot;")+", ");
@@ -140,7 +140,7 @@ public class AutoAwardData extends StdWebMacro
 		if(parms.containsKey("DMASK"))
 		{
 			String mask=httpReq.getUrlParameter("DMASK");
-			if((mask==null)&&(last!=null)&&(last.length()>0))
+			if((mask==null)&&(last!=null)&&(last.length()>0)&&(P!=null))
 				mask=CMStrings.replaceAll(P.getDateMask(),"\\)",")");
 			if(mask!=null)
 				str.append(CMStrings.replaceAll(mask,"\"","&quot;")+", ");
@@ -148,7 +148,7 @@ public class AutoAwardData extends StdWebMacro
 		if(parms.containsKey("PMASKDESC"))
 		{
 			String mask=httpReq.getUrlParameter("PMASK");
-			if((mask==null)&&(last!=null)&&(last.length()>0))
+			if((mask==null)&&(last!=null)&&(last.length()>0)&&(P!=null))
 				mask=P.getPlayerMask();
 			if(mask!=null)
 				str.append(CMLib.masking().maskDesc(mask)+", ");
@@ -156,12 +156,12 @@ public class AutoAwardData extends StdWebMacro
 		if(parms.containsKey("DMASKDESC"))
 		{
 			String mask=httpReq.getUrlParameter("DMASK");
-			if((mask==null)&&(last!=null)&&(last.length()>0))
+			if((mask==null)&&(last!=null)&&(last.length()>0)&&(P!=null))
 				mask=CMStrings.replaceAll(P.getDateMask(),"\\)",")");
 			if(mask!=null)
 				str.append(CMLib.masking().maskDesc(mask)+", ");
 		}
-		if(parms.containsKey("PROPDESC"))
+		if(parms.containsKey("PROPDESC")&&(P!=null))
 		{
 			final List<Pair<String,String>> properties=Arrays.asList(P.getProps());
 			final StringBuilder p2 = new StringBuilder("");

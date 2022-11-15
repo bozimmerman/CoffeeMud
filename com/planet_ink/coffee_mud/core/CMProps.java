@@ -1835,6 +1835,12 @@ public class CMProps extends Properties
 				}
 				return false;
 			}
+			
+			@Override
+			public int hashCode()
+			{
+				return costType.hashCode() ^ costDefinition.hashCode() ^ currency.hashCode();
+			}
 		};
 	}
 

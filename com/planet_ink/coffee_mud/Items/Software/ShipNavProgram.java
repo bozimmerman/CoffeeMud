@@ -508,6 +508,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.target() instanceof SpaceShip)
@@ -568,7 +569,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		final List<ShipEngine> programEngines=track.getArg(List.class);
 		final SpaceObject targetObject=track.getArg(SpaceObject.class);
 
-		if(!confirmNavEnginesOK(ship, programEngines))
+		if((ship==null)||(!confirmNavEnginesOK(ship, programEngines)))
 			return;
 		if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 			Log.debugOut("Program state: "+track.state.toString());

@@ -309,7 +309,8 @@ public class Spell_Spellbinding extends Spell
 				}
 				if(!checkBindableAbility(mob,A,commands.get(v)))
 					return false;
-				V.addElement(A.ID(),Integer.valueOf(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
+				if(A!=null)
+					V.addElement(A.ID(),Integer.valueOf(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
 			}
 		}
 

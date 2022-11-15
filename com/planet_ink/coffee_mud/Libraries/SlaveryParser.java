@@ -671,7 +671,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 					return false;
 				bothering=null;
 				que.add(0,CMParms.parse("find150 \""+response+"\""));
-				subStepNum=0;;
+				subStepNum=0;
 				return true;
 			}
 			return false;
@@ -694,7 +694,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 			final List<String> cur=que.get(0);
 			if(cur.size()==0)
 			{
-				subStepNum=0;;
+				subStepNum=0;
 				que.remove(0);
 				return "HOLD";
 			}
@@ -710,7 +710,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				{
 					if(CMLib.beanCounter().getTotalAbsoluteNativeValue(me)>=(CMath.s_int(item)))
 					{
-						subStepNum=0;;
+						subStepNum=0;
 						que.remove(0);
 						CMLib.commands().postSay(me,null,CMLib.lang().L("I got the money!"),false,false);
 						return "HOLD";
@@ -723,7 +723,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				if((I!=null)
 				&&(CMLib.flags().canBeSeenBy(I,me)))
 				{
-					subStepNum=0;;
+					subStepNum=0;
 					if(!I.amWearingAt(Wearable.IN_INVENTORY))
 					{
 						CMLib.commands().postRemove(me,I,false);
@@ -743,7 +743,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				if((I!=null)
 				&&(CMLib.flags().canBeSeenBy(I,me)))
 				{
-					subStepNum=0;;
+					subStepNum=0;
 					CMLib.commands().postGet(me,null,I,false);
 					return "HOLD";
 				}
@@ -753,7 +753,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				&&(I.container()!=null)
 				&&(I.container().isOpen()))
 				{
-					subStepNum=0;;
+					subStepNum=0;
 					CMLib.commands().postGet(me,I.container(),I,false);
 					return "HOLD";
 				}
@@ -793,7 +793,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 							case 4:
 								{
 									CMLib.combat().postAttack(me,M,me.fetchWieldedItem());
-									subStepNum=0;;
+									subStepNum=0;
 									return "HOLD";
 								}
 							default:
@@ -812,13 +812,13 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 								if(price<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(me,M))
 								{
 									me.enqueCommand(CMParms.parse("BUY \""+E.name()+"\""),MUDCmdProcessor.METAFLAG_FORCED|MUDCmdProcessor.METAFLAG_ORDER,0);
-									subStepNum=0;;
+									subStepNum=0;
 									return "HOLD";
 								}
 								price=price-CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(me,M);
 								que.add(0,CMParms.parse("itemfind "+CMLib.beanCounter().nameCurrencyShort(M,price)));
 								CMLib.commands().postSay(me,null,CMLib.lang().L("Damn, I need @x1.",CMLib.beanCounter().nameCurrencyShort(M,price)),false,false);
-								subStepNum=0;;
+								subStepNum=0;
 								return "HOLD";
 							}
 						}
@@ -833,7 +833,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 					subStepNum = subStepNum+1;
 					return "HOLD";
 				}
-				subStepNum=0;;
+				subStepNum=0;
 				return "0Can you tell me where to find "+CMParms.combine(cur,1)+"?";
 			}
 			else
@@ -863,7 +863,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				{
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 						Log.debugOut("GEAS","MOBFIND-FOUND: "+name);
-					subStepNum=0;;
+					subStepNum=0;
 					que.remove(0);
 					return "HOLD";
 				}
@@ -879,7 +879,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 					subStepNum = subStepNum+1;
 					return "HOLD";
 				}
-				subStepNum=0;;
+				subStepNum=0;
 				int code=0;
 				if((targetM!=null)&&(targetM.name().equalsIgnoreCase(name)))
 					code=1;
@@ -909,7 +909,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				{
 					if(CMParms.parse(name).size()>1)
 						cur.set(1,CMParms.combine(CMParms.parse(name),1));
-					subStepNum=0;;
+					subStepNum=0;
 					que.remove(0);
 					CMLib.tracking().walk(me,dirCode,false,false);
 					return "HOLD";
@@ -919,7 +919,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				||CMLib.english().containsString(R.displayText(),name)
 				||CMLib.english().containsString(R.description(),name))
 				{
-					subStepNum=0;;
+					subStepNum=0;
 					que.remove(0);
 					return "HOLD";
 				}
@@ -928,7 +928,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				&&(M!=me)
 				&&(CMLib.flags().canBeSeenBy(M,me)))
 				{
-					subStepNum=0;;
+					subStepNum=0;
 					que.remove(0);
 					return "HOLD";
 				}
@@ -937,7 +937,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				if((I!=null)
 				&&(CMLib.flags().canBeSeenBy(I,me)))
 				{
-					subStepNum=0;;
+					subStepNum=0;
 					CMLib.commands().postGet(me,null,I,false);
 					return "HOLD";
 				}
@@ -948,7 +948,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 					if((--x)<0)
 					{
 						que.remove(0);
-						subStepNum=0;;
+						subStepNum=0;
 						return "HOLD";
 					}
 					cur.set(0,"find"+x);
@@ -963,7 +963,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 					subStepNum = subStepNum +1;
 					return "HOLD";
 				}
-				subStepNum=0;;
+				subStepNum=0;
 				if(s.length()>4)
 					return "0Can you tell me where to find "+name+"?";
 				return "MOVE";
@@ -982,12 +982,12 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 					subStepNum = subStepNum+1;
 					return "HOLD";
 				}
-				subStepNum=0;;
+				subStepNum=0;
 				return "0Can you help me "+CMParms.combine(cur,1)+"?";
 			}
 			else
 			{
-				subStepNum=0;;
+				subStepNum=0;
 				que.remove(0);
 				me.enqueCommand(cur,MUDCmdProcessor.METAFLAG_FORCED|MUDCmdProcessor.METAFLAG_ORDER,0);
 				return "HOLD";

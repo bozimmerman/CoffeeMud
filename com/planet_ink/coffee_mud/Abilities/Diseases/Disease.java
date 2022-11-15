@@ -369,7 +369,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 					R.show(target,null,CMMsg.MSG_OK_VISUAL,DISEASE_START());
 					final Disease dA=(Disease)maliciousAffect(mob,target,asLevel,DISEASE_TICKS(),-1);
 					success=dA!=null;
-					if(success)
+					if(dA!=null)
 						dA.setMiscText(text());
 				}
 				else

@@ -4665,8 +4665,10 @@ public class Import extends StdCommand
 					{
 						B=CMClass.getBehavior("Sounder");
 						if(B!=null)
+						{
 							I.addBehavior(B);
-						B.setParms(codeLine.substring(1).trim());
+							B.setParms(codeLine.substring(1).trim());
+						}
 					}
 					else
 					{
