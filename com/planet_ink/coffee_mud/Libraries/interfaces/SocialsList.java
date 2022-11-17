@@ -72,11 +72,12 @@ public interface SocialsList extends CMLibrary
 	 *
 	 * @param mob the mob editor
 	 * @param socials the social id or base name
+	 * @param name TODO
 	 * @param rest any extra terms used from command line
 	 * @return true if something was done
 	 * @throws IOException any i/o errors that occured, usually disconnect
 	 */
-	public boolean modifySocialInterface(MOB mob, List<Social> socials, String rest)
+	public boolean modifySocialInterface(MOB mob, List<Social> socials, String name, String rest)
 		throws IOException;
 
 	/**

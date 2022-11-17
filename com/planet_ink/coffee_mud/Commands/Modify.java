@@ -1826,7 +1826,7 @@ public class Modify extends StdCommand
 			final List<String> socEncV = new ArrayList<String>(socials.size());
 			for(final Social S : copy)
 				socEncV.add(S.getEncodedLine());
-			CMLib.socials().modifySocialInterface(mob, socials, rest);
+			CMLib.socials().modifySocialInterface(mob, socials, name, rest);
 			for(final Social copyS : copy)
 				if(!socials.contains(copyS))
 					CMLib.ableComponents().alterAbilityComponentFile(CMStrings.trimCRLF(copyS.getEncodedLine()), true);
@@ -1956,7 +1956,7 @@ public class Modify extends StdCommand
 			}
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around the idea of  @x1s.",S.name()));
 			final List<Social> copy=new XArrayList<Social>(socials);
-			CMLib.socials().modifySocialInterface(mob,socials, rest);
+			CMLib.socials().modifySocialInterface(mob,socials, sname, rest);
 			{
 				for(final Social copyS : copy)
 					if(!socials.contains(copyS))

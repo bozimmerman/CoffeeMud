@@ -58,7 +58,7 @@ public class Socials extends StdLibrary implements SocialsList
 			if(x>=0)
 			{
 				final Social socobj=(Social)CMClass.getCommon("DefaultSocial");
-				final String s=getline.substring(0,x).toUpperCase();
+				final String s=getline.substring(0,x).toUpperCase().trim();
 				if(s.length()>0)
 				{
 					boolean fail=false;
@@ -518,7 +518,7 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 	@Override
-	public boolean modifySocialInterface(final MOB mob, final List<Social> socials, String rest)
+	public boolean modifySocialInterface(final MOB mob, final List<Social> socials, final String name, String rest)
 		throws IOException
 	{
 		boolean resaveSocials=true;

@@ -1049,7 +1049,7 @@ public class Create extends StdCommand
 			final List<String> socEncV = new ArrayList<String>(socials.size());
 			for(final Social S : copy)
 				socEncV.add(S.getEncodedLine());
-			CMLib.socials().modifySocialInterface(mob, socials, rest);
+			CMLib.socials().modifySocialInterface(mob, socials, name, rest);
 			for(final Social copyS : copy)
 				if(!socials.contains(copyS))
 					CMLib.ableComponents().alterAbilityComponentFile(CMStrings.trimCRLF(copyS.getEncodedLine()), true);
@@ -1614,7 +1614,7 @@ public class Create extends StdCommand
 		if(socials==null)
 			socials=new Vector<Social>();
 		final List<Social> copy=new XArrayList<Social>();
-		CMLib.socials().modifySocialInterface(mob, socials, rest);
+		CMLib.socials().modifySocialInterface(mob, socials, name, rest);
 		for(final Social copyS : copy)
 			if(!socials.contains(copyS))
 				CMLib.socials().delSocial(copyS.name());
