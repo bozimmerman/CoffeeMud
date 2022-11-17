@@ -344,7 +344,7 @@ public class GrinderPlayers extends GrinderMobs
 				}
 				break;
 			}
-			case FOLLOWERNAMES:
+			case ACCOUNT:
 			{
 				if(M.playerStats()!=null)
 				{
@@ -367,7 +367,7 @@ public class GrinderPlayers extends GrinderMobs
 				}
 				break;
 			}
-			case ACCOUNT:
+			case FOLLOWERNAMES:
 				break;
 			}
 		}
