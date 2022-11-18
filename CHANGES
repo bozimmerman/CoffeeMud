@@ -12,6 +12,7 @@
  11. Decorating is now recipe driven, and has numerous new options
  12. Commands now support copying other player settings: 
      CONFIG COPY [playername] /CHANNELS COPY [playername]/COLORSET COPY [playername]
+ 13. New archon LIST option: Orphans, for rooms without incoming exits 
      
 # Build 5.10.0 Release 9/23/2022
   1. New Scriptable functions: ROOMPC and AREAPC

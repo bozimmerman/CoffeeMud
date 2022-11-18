@@ -2884,12 +2884,19 @@ public class ListCmd extends StdCommand
 		return msg;
 	}
 
-	protected String reallyFindOneWays(final Session viewerS, final List<String> commands)
+	protected String listOneWayDoors(final Session viewerS, final List<String> commands)
 	{
+		final boolean logFlag = CMParms.containsIgnoreCase(commands, "log");
+		final boolean areaFlag = CMParms.containsIgnoreCase(commands, "area");
 		final StringBuilder str=new StringBuilder("");
 		try
 		{
-			for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			final Enumeration<Room> r;
+			if(areaFlag && (viewerS.mob()!=null)&&(viewerS.mob().location()!=null))
+				r=viewerS.mob().location().getArea().getFilledProperMap();
+			else
+				r=CMLib.map().rooms();
+			for(;r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
 				if(R.roomID().length()>0)
@@ -2908,17 +2915,79 @@ public class ListCmd extends StdCommand
 		}
 		if(str.length()==0)
 			str.append(L("None!"));
-		if(CMParms.combine(commands,1).equalsIgnoreCase("log"))
+		if(logFlag)
 			Log.rawSysOut(str.toString());
 		return str.toString();
 	}
 
-	protected String unlinkedExits(final Session viewerS, final List<String> commands)
+	protected String listOrphans(final Session viewerS, final List<String> commands)
 	{
+		final boolean logFlag = CMParms.containsIgnoreCase(commands, "log");
+		final boolean areaFlag = CMParms.containsIgnoreCase(commands, "area");
 		final StringBuilder str=new StringBuilder("");
 		try
 		{
-			for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			Enumeration<Room> r;
+			if(areaFlag && (viewerS.mob()!=null)&&(viewerS.mob().location()!=null))
+				r=viewerS.mob().location().getArea().getFilledProperMap();
+			else
+				r=CMLib.map().rooms();
+			final HashSet<Room> linkedInto = new HashSet<Room>();
+			for(;r.hasMoreElements();)
+			{
+				final Room R=r.nextElement();
+				if(R.roomID().length()>0)
+				{
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					{
+						final Room R2=R.rawDoors()[d];
+						if((R2 != null)&&(!linkedInto.contains(R2)))
+						{
+							if((areaFlag)
+							&&(R.getArea()!=R2.getArea())
+							&&(R2.getRoomInDir(Directions.getOpDirectionCode(d))==R))
+								linkedInto.add(R);
+							else
+								linkedInto.add(R2);
+						}
+					}
+				}
+			}
+			if(areaFlag && (viewerS.mob()!=null)&&(viewerS.mob().location()!=null))
+				r=viewerS.mob().location().getArea().getFilledProperMap();
+			else
+				r=CMLib.map().rooms();
+			for(;r.hasMoreElements();)
+			{
+				final Room R=r.nextElement();
+				if((R.roomID().length()>0)
+				&&(!linkedInto.contains(R)))
+					str.append(L("@x1\n\r",R.roomID()));
+			}
+		}
+		catch (final NoSuchElementException e)
+		{
+		}
+		if(str.length()==0)
+			str.append(L("None!"));
+		if(logFlag)
+			Log.rawSysOut(str.toString());
+		return str.toString();
+	}
+
+	protected String listUnlinkedExits(final Session viewerS, final List<String> commands)
+	{
+		final boolean logFlag = CMParms.containsIgnoreCase(commands, "log");
+		final boolean areaFlag = CMParms.containsIgnoreCase(commands, "area");
+		final StringBuilder str=new StringBuilder("");
+		try
+		{
+			final Enumeration<Room> r;
+			if(areaFlag && (viewerS.mob()!=null)&&(viewerS.mob().location()!=null))
+				r=viewerS.mob().location().getArea().getFilledProperMap();
+			else
+				r=CMLib.map().rooms();
+			for(;r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -2935,7 +3004,7 @@ public class ListCmd extends StdCommand
 		}
 		if(str.length()==0)
 			str.append(L("None!"));
-		if(CMParms.combine(commands,1).equalsIgnoreCase("log"))
+		if(logFlag)
 			Log.rawSysOut(str.toString());
 		return str.toString();
 	}
@@ -4451,6 +4520,7 @@ public class ListCmd extends StdCommand
 		THREADS("THREADS",new SecFlag[]{SecFlag.LISTADMIN}),
 		RESOURCES("RESOURCES",new SecFlag[]{SecFlag.LOADUNLOAD}),
 		ONEWAYDOORS("ONEWAYDOORS",new SecFlag[]{SecFlag.CMDEXITS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
+		ORPHANS("ORPHANS",new SecFlag[]{SecFlag.CMDEXITS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
 		CHANTS("CHANTS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		SUPERPOWERS(new String[]{"SUPERPOWERS","POWERS"},new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		COMPONENTS("COMPONENTS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.COMPONENTS}),
@@ -5727,7 +5797,7 @@ public class ListCmd extends StdCommand
 			listCommands(mob,commands);
 			break;
 		case UNLINKEDEXITS:
-			s.wraplessPrintln(unlinkedExits(mob.session(), commands));
+			s.wraplessPrintln(listUnlinkedExits(mob.session(), commands));
 			break;
 		case ITEMS:
 			s.println("^HBasic Item IDs:^N");
@@ -5945,7 +6015,10 @@ public class ListCmd extends StdCommand
 			s.println(listResources(mob, CMParms.combine(commands, 1)));
 			break;
 		case ONEWAYDOORS:
-			s.wraplessPrintln(reallyFindOneWays(mob.session(), commands));
+			s.wraplessPrintln(listOneWayDoors(mob.session(), commands));
+			break;
+		case ORPHANS:
+			s.wraplessPrintln(listOrphans(mob.session(), commands));
 			break;
 		case CHANTS:
 			listAbilities(mob,s,commands,"Chant",Ability.ACODE_CHANT);
