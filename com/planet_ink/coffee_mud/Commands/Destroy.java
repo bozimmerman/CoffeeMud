@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.MQLException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -18,12 +19,15 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.UpdateSet;
 import com.planet_ink.coffee_mud.Libraries.interfaces.HelpLibrary.HelpSection;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 
 import java.util.*;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 
 /*
    Copyright 2004-2022 Bo Zimmerman
@@ -66,7 +70,7 @@ public class Destroy extends StdCommand
 			+ "SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, ACHIEVEMENT, CLASS, ABILITY, MANUFACTURER, "
 			+ "LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, "
 			+ "WEBSERVER, POLL, DEBUGFLAG, DISABLEFLAG, ENABLEFLAG, CRAFTSKILL, GATHERSKILL, CRON, "
-			+ "TRAP, WRIGHTSKILL, AWARD, or a ROOM";
+			+ "TRAP, WRIGHTSKILL, AWARD, DELETE:, or a ROOM";
 	}
 
 	public void awards(final MOB mob, final List<String> commands)
@@ -1008,6 +1012,195 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
+	public void destroyMQL(final MOB mob, final boolean areaFlag, final List<String> commands)
+	{
+		final StringBuilder lines = new StringBuilder("");
+		try
+		{
+			commands.add(1,".");
+			final String mql = CMParms.combineQuoted(commands, 0);
+			final List<Map<String,Object>> res=CMLib.percolator().doMQLSelectObjects(areaFlag?(mob.location().getArea()):null, mql);
+			if(res.size()==0)
+				mob.tell(L("(empty set)"));
+			else
+			{
+				final List<Environmental> delts = new LinkedList<Environmental>();
+				lines.append("Delete preview:\n\r");
+				for(final Map<String,Object> m : res)
+				{
+					for(final Map.Entry<String,Object> eo : m.entrySet())
+					{
+						if(eo.getValue() instanceof Environmental)
+						{
+							final Environmental E = (Environmental)eo.getValue();
+							lines.append(E.name()+" ("+E.ID()+") @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(E))+":\n\r");
+							delts.add(E);
+						}
+					}
+				}
+				final Runnable doDelete = new Runnable()
+				{
+					final List<Environmental> todo=delts;
+					public void run()
+					{
+						for(final Environmental E : todo)
+						{
+							final Room R=CMLib.map().roomLocation(E);
+							if((R!=null) && R.isSavable() && (R.roomID().length()>0))
+							{
+								Environmental saveE = null;
+								Environmental destroyE = null;
+								String roomID = null;
+								if(E instanceof Ability)
+								{
+									saveE=((Ability)E).affecting();
+									if(saveE != null)
+									{
+										Log.infoOut(mob.name()+" deleted "+E.name()+" from "+saveE.Name()+" in "+R.roomID());
+										((Physical)saveE).delEffect((Ability)E);
+									}
+								}
+								else
+								if(E instanceof Room)
+								{
+									Log.infoOut(mob.name()+" deleted room "+((Room)E).roomID());
+									roomID=((Room)E).roomID();
+									destroyE=E;
+								}
+								else
+								if(E instanceof Area)
+								{
+									Log.infoOut(mob.name()+" deleted area "+((Area)E).Name());
+									destroyE=E;
+								}
+								else
+								if(E instanceof Item)
+								{
+									final Item I=(Item)E;
+									if((I.owner() instanceof Room)
+									&&(I.databaseID().length()>0))
+									{
+										roomID=R.roomID();
+										Log.infoOut(mob.name()+" deleted "+E.name()+" in "+R.roomID());
+										destroyE=I;
+									}
+									else
+									if((I.owner() instanceof MOB)
+									&&(((MOB)I.owner()).databaseID().length()>0)
+									&&(((MOB)I.owner()).getStartRoom()!=null)
+									&&(((MOB)I.owner()).getStartRoom().roomID().length()>0))
+									{
+										roomID=((MOB)I.owner()).getStartRoom().roomID();
+										saveE=(I.owner());
+										Log.infoOut(mob.name()+" deleted "+E.name()+" from "+((MOB)I.owner()).Name()+" in "+R.roomID());
+									}
+								}
+								else
+								if((E instanceof MOB)
+								&&(((MOB)E).databaseID().length()>0))
+								{
+									roomID=R.roomID();
+									Log.infoOut(mob.name()+" deleted "+E.name()+" in "+R.roomID());
+									destroyE=E;
+								}
+								if((saveE != null)
+								&&(saveE.isSavable()))
+								{
+									if(saveE instanceof Item)
+									{
+										final Item I=(Item)saveE;
+										if((I.owner() instanceof Room)
+										&&(I.databaseID().length()>0))
+											CMLib.database().DBUpdateItem(R.roomID(), I);
+										else
+										if((I.owner() instanceof MOB)
+										&&(((MOB)I.owner()).databaseID().length()>0)
+										&&(((MOB)I.owner()).getStartRoom()!=null)
+										&&(((MOB)I.owner()).getStartRoom().roomID().length()>0))
+											CMLib.database().DBUpdateMOB(((MOB)I.owner()).getStartRoom().roomID(), (MOB)I.owner());
+									}
+									else
+									if((saveE instanceof MOB)
+									&&(((MOB)saveE).databaseID().length()>0))
+										CMLib.database().DBUpdateMOB(R.roomID(), (MOB)saveE);
+									else
+									if((saveE instanceof Room)
+									&&(((Room)saveE).roomID().length()>0))
+										CMLib.database().DBUpdateRoom((Room)saveE);
+									else
+									if(saveE instanceof Area)
+										CMLib.database().DBUpdateArea(saveE.Name(), (Area)saveE);
+								}
+								if((destroyE != null)
+								&&(destroyE.isSavable()))
+								{
+									if(destroyE instanceof Item)
+									{
+										if(((Item)destroyE).databaseID().length()>0)
+											CMLib.database().DBDeleteItem(roomID, (Item)destroyE);
+										destroyE.destroy();
+									}
+									else
+									if(destroyE instanceof MOB)
+									{
+										if(((MOB)destroyE).databaseID().length()>0)
+											CMLib.database().DBDeleteMOB(roomID, (MOB)destroyE);
+										destroyE.destroy();
+									}
+									else
+									if((destroyE instanceof Room)
+									&&(((Room)destroyE).roomID().length()>0))
+										CMLib.map().obliterateMapRoom((Room)destroyE);
+									else
+									if(destroyE instanceof Area)
+										CMLib.map().obliterateMapArea((Area)destroyE);
+								}
+							}
+						}
+						mob.tell(L("DELETE: completed."));
+					}
+				};
+				final Session session = mob.session();
+				if(session!=null)
+				{
+					final InputCallback callBack = new InputCallback(InputCallback.Type.CONFIRM,"N",0)
+					{
+						@Override
+						public void showPrompt()
+						{
+							session.promptPrint(L("\n\rSave the above deletions (y/N)? "));
+						}
+
+						@Override
+						public void timedOut()
+						{
+						}
+
+						@Override
+						public void callBack()
+						{
+							if(this.input.equals("Y"))
+							{
+								doDelete.run();
+							}
+						}
+					};
+					session.wraplessPrintln(lines.toString());
+					lines.setLength(0);
+					session.prompt(callBack);
+				}
+			}
+		}
+		catch(final MQLException e)
+		{
+			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
+			final PrintStream pw=new PrintStream(bout);
+			e.printStackTrace(pw);
+			pw.flush();
+			mob.tell(e.getMessage()+"\n\r"+bout.toString());
+		}
+	}
+
 	public boolean achievements(final MOB mob, final List<String> commands)
 	{
 		if(commands.size()<3)
@@ -1401,7 +1594,16 @@ public class Destroy extends StdCommand
 		if(commandType.equals("AREA"))
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
-			areas(mob,commands);
+			if((commands.size()>2)
+			&&(commands.get(2).equalsIgnoreCase("DELETE:"))
+			&&(CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.CMDAREAS)))
+			{
+				commands.remove(1);
+				commands.remove(0);
+				destroyMQL(mob, true, commands);
+			}
+			else
+				areas(mob,commands);
 		}
 		else
 		if(commandType.equals("ROOM"))
@@ -1501,6 +1703,14 @@ public class Destroy extends StdCommand
 				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			players(mob,commands);
+		}
+		else
+		if(commandType.equals("DELETE:"))
+		{
+			if((!CMSecurity.isASysOp(mob))&&(!CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.CMDAREAS)))
+				return errorOut(mob);
+			commands.remove(0);
+			destroyMQL(mob, false, commands);
 		}
 		else
 		if((commandType.equals("ACCOUNT"))&&(CMProps.isUsingAccountSystem()))

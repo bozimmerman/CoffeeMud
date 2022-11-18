@@ -70,6 +70,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		AREAS,
 		AREA,
 		NPROOMS,
+		ORPHROOMS,
 		ROOMS,
 		ROOM,
 		EXITS,
@@ -153,6 +154,52 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					return false;
 			}
 			return true;
+		}
+	};
+
+	private static class OrphanRoomFilterer implements Filterer<Room>
+	{
+		private final Set<Room> orphans = new HashSet<Room>();
+
+		public OrphanRoomFilterer(final Enumeration<Room> preCheck, final boolean areaFlag)
+		{
+			final LinkedList<Room> all=new LinkedList<Room>();
+			final HashSet<Room> linkedInto = new HashSet<Room>();
+			for(;preCheck.hasMoreElements();)
+			{
+				final Room R=preCheck.nextElement();
+				if(R!=null)
+				{
+					all.add(R);
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					{
+						final Room R2=R.rawDoors()[d];
+						if((R2 != null)&&(!linkedInto.contains(R2)))
+						{
+							if((areaFlag)
+							&&(R.getArea()!=R2.getArea())
+							&&(R2.getRoomInDir(Directions.getOpDirectionCode(d))==R))
+								linkedInto.add(R);
+							else
+								linkedInto.add(R2);
+						}
+					}
+				}
+			}
+			for(final Iterator<Room> r=all.iterator();r.hasNext();)
+			{
+				final Room R=r.next();
+				if((R.roomID().length()>0)
+				&&(!linkedInto.contains(R)))
+					orphans.add(R);
+			}
+		}
+		@Override
+		public boolean passesFilter(final Room obj)
+		{
+			if(obj == null)
+				return false;
+			return orphans.contains(obj);
 		}
 	};
 
@@ -5051,6 +5098,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					}
 					//$FALL-THROUGH$
 				case NPROOMS:
+				case ORPHROOMS:
 				case ROOMS:
 					{
 						if((from.size()==0)
@@ -5058,10 +5106,21 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							from.add(E);
 						if(from.size()==0)
 						{
-							if(set==MQLSpecialFromSet.NPROOMS)
+							switch(set)
+							{
+							case NPROOMS:
 								from.addAll(new XVector<Room>(new FilteredEnumeration<Room>(CMLib.map().rooms(),noPropertyFilter)));
-							else
+								break;
+							case ORPHROOMS:
+							{
+								final Filterer<Room> orphanRoomsFilter = new OrphanRoomFilterer(CMLib.map().rooms(),false);
+								from.addAll(new XVector<Room>(new FilteredEnumeration<Room>(CMLib.map().rooms(),orphanRoomsFilter)));
+								break;
+							}
+							default:
 								from.addAll(new XVector<Room>(CMLib.map().rooms()));
+								break;
+							}
 						}
 						else
 						{
@@ -5072,10 +5131,21 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								final Room R;
 								if(o instanceof Area)
 								{
-									if(set==MQLSpecialFromSet.NPROOMS)
+									switch(set)
+									{
+									case NPROOMS:
 										from.addAll(new XVector<Room>(new FilteredEnumeration<Room>(((Area)o).getProperMap(),noPropertyFilter)));
-									else
+										break;
+									case ORPHROOMS:
+									{
+										final Filterer<Room> orphanRoomsFilter = new OrphanRoomFilterer(((Area)o).getProperMap(),true);
+										from.addAll(new XVector<Room>(new FilteredEnumeration<Room>(((Area)o).getProperMap(),orphanRoomsFilter)));
+										break;
+									}
+									default:
 										from.addAll(new XVector<Room>(((Area)o).getProperMap()));
+										break;
+									}
 									continue;
 								}
 								if (o instanceof Environmental)
