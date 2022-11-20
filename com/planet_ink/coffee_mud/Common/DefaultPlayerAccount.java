@@ -108,7 +108,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	{
 		try
 		{
-			return getClass().newInstance();
+			return getClass().getDeclaredConstructor().newInstance();
 		}
 		catch(final Exception e)
 		{

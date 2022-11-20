@@ -83,7 +83,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 	{
 		try
 		{
-			return getClass().newInstance();
+			return getClass().getDeclaredConstructor().newInstance();
 		}
 		catch(final Exception e)
 		{

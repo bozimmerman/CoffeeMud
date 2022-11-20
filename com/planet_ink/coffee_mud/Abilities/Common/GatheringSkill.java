@@ -132,7 +132,7 @@ public class GatheringSkill extends CommonSkill
 			final Quad<Room,Integer,short[],Long> curRecord = roomSpamCounter.get(R);
 			if(curRecord == null)
 			{
-				final Long expirationTime = new Long(now + (30 * 60 * 1000)); // intentional
+				final Long expirationTime = Long.valueOf(now + (30 * 60 * 1000)); // intentional
 				final short[] first = new short[] {1};
 				final Quad<Room,Integer,short[],Long> record = new Quad<Room,Integer,short[],Long>(R,Integer.valueOf(R.myResource()),first,expirationTime);
 				roomSpamCounter.put(R, record);

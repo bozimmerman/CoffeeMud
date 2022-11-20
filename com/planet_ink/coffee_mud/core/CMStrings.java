@@ -3658,7 +3658,7 @@ public class CMStrings
 			if (testInside != null)
 			{
 				index[0] = i[0];
-				return new Boolean(!testInside.booleanValue());
+				return Boolean.valueOf(!testInside.booleanValue());
 			}
 		}
 		else
@@ -3711,15 +3711,15 @@ public class CMStrings
 		{
 		case '>':
 			if(token.value.length()==1)
-				result = new Boolean(compare > 0);
+				result = Boolean.valueOf(compare > 0);
 			else
 			switch(token.value.charAt(1))
 			{
 			case '=':
-				result = new Boolean(compare >= 0);
+				result = Boolean.valueOf(compare >= 0);
 				break;
 			case '<':
-				result = new Boolean(compare != 0);
+				result = Boolean.valueOf(compare != 0);
 				break;
 			default:
 				return null;
@@ -3727,15 +3727,15 @@ public class CMStrings
 			break;
 		case '<':
 			if(token.value.length()==1)
-				result = new Boolean(compare < 0);
+				result = Boolean.valueOf(compare < 0);
 			else
 			switch(token.value.charAt(1))
 			{
 			case '=':
-				result = new Boolean(compare <= 0);
+				result = Boolean.valueOf(compare <= 0);
 				break;
 			case '>':
-				result = new Boolean(compare != 0);
+				result = Boolean.valueOf(compare != 0);
 				break;
 			default:
 				return null;
@@ -3743,18 +3743,18 @@ public class CMStrings
 			break;
 		case '=':
 			if(token.value.length()==1)
-				result = new Boolean(compare == 0);
+				result = Boolean.valueOf(compare == 0);
 			else
 			switch(token.value.charAt(1))
 			{
 			case '=':
-				result = new Boolean(compare == 0);
+				result = Boolean.valueOf(compare == 0);
 				break;
 			case '<':
-				result = new Boolean(compare <= 0);
+				result = Boolean.valueOf(compare <= 0);
 				break;
 			case '>':
-				result = new Boolean(compare >= 0);
+				result = Boolean.valueOf(compare >= 0);
 				break;
 			default:
 				return null;
@@ -3767,13 +3767,13 @@ public class CMStrings
 			switch(token.value.charAt(1))
 			{
 			case '=':
-				result = new Boolean(compare != 0);
+				result = Boolean.valueOf(compare != 0);
 				break;
 			case '<':
-				result = new Boolean(compare > 0);
+				result = Boolean.valueOf(compare > 0);
 				break;
 			case '>':
-				result = new Boolean(compare < 0);
+				result = Boolean.valueOf(compare < 0);
 				break;
 			default:
 				return null;
@@ -3782,7 +3782,7 @@ public class CMStrings
 		case 'I':
 		case 'i':
 			if (token.value.equalsIgnoreCase("IN"))
-				result = new Boolean(rightValue.value.toUpperCase().indexOf(leftValue.value.toUpperCase())>=0);
+				result = Boolean.valueOf(rightValue.value.toUpperCase().indexOf(leftValue.value.toUpperCase())>=0);
 			else
 				return null;
 			break;
@@ -3817,7 +3817,7 @@ public class CMStrings
 			if (testInside != null)
 			{
 				index[0] = i[0];
-				leftExpression = new Boolean(!testInside.booleanValue());
+				leftExpression = Boolean.valueOf(!testInside.booleanValue());
 			}
 		}
 		else
@@ -3838,7 +3838,8 @@ public class CMStrings
 			i = index.clone();
 			leftExpression = matchValueEvaluation(tokens, i, variables);
 		}
-		if (leftExpression == null) return null;
+		if (leftExpression == null) 
+			return null;
 		final int[] i2 = i.clone();
 		token = nextToken(tokens, i2);
 		if ((token == null) || (token.type != StringExpTokenType.WORD))
@@ -3856,27 +3857,27 @@ public class CMStrings
 		case 'a':
 		case 'A':
 			if (token.value.equalsIgnoreCase("AND"))
-				result = new Boolean(leftExpression.booleanValue() && rightExpression.booleanValue());
+				result = Boolean.valueOf(leftExpression.booleanValue() && rightExpression.booleanValue());
 			else
 				throw new Exception("Parse Exception: Illegal expression evaluation combiner: " + token.value);
 			break;
 		case '&':
-			result = new Boolean(leftExpression.booleanValue() && rightExpression.booleanValue());
+			result = Boolean.valueOf(leftExpression.booleanValue() && rightExpression.booleanValue());
 			break;
 		case '|':
-			result = new Boolean(leftExpression.booleanValue() || rightExpression.booleanValue());
+			result = Boolean.valueOf(leftExpression.booleanValue() || rightExpression.booleanValue());
 			break;
 		case 'O':
 		case 'o':
 			if (token.value.equalsIgnoreCase("OR"))
-				result = new Boolean(leftExpression.booleanValue() || rightExpression.booleanValue());
+				result = Boolean.valueOf(leftExpression.booleanValue() || rightExpression.booleanValue());
 			else
 				throw new Exception("Parse Exception: Illegal expression evaluation combiner: " + token.value);
 			break;
 		case 'X':
 		case 'x':
 			if (token.value.equalsIgnoreCase("XOR"))
-				result = new Boolean(leftExpression.booleanValue() != rightExpression.booleanValue());
+				result = Boolean.valueOf(leftExpression.booleanValue() != rightExpression.booleanValue());
 			else
 				throw new Exception("Parse Exception: Illegal expression evaluation combiner: " + token.value);
 			break;

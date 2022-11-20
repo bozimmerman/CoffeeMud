@@ -1360,9 +1360,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				if(destroyTargetMob
 				&&(targetM!=null))
 				{
-					synchronized(target)
+					if(target != null)
 					{
-						targetM.setRiding(null);
+						synchronized(target)
+						{
+							targetM.setRiding(null);
+						}
 					}
 					targetM.destroy();
 				}

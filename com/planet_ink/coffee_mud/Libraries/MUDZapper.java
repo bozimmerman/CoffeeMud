@@ -477,7 +477,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			{
 				if(Ability.QUALITY_DESCS[d].startsWith(str)||Ability.QUALITY_DESCS[d].endsWith(str))
 				{
-					o=new Short(d);
+					o=Short.valueOf(d);
 					break;
 				}
 			}

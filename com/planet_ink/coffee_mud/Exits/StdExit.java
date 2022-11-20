@@ -302,7 +302,7 @@ public class StdExit implements Exit
 	{
 		try
 		{
-			return this.getClass().newInstance();
+			return this.getClass().getDeclaredConstructor().newInstance();
 		}
 		catch(final Exception e)
 		{

@@ -137,7 +137,7 @@ public class GenTrap extends StdTrap
 	{
 		try
 		{
-			final GenTrap A = this.getClass().newInstance();
+			final GenTrap A = this.getClass().getDeclaredConstructor().newInstance();
 			A.ID=ID;
 			getScripter();
 			A.scriptParmHash=scriptParmHash;

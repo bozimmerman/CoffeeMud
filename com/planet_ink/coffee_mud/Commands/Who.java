@@ -359,10 +359,13 @@ public class Who extends StdCommand
 		}
 
 		final String msg = getWho(mob,mobName!=null,mobFilter,mobSort, null);
-		if((mobName!=null)&&(msg.length()==0))
-			mob.tell(L("That person doesn't appear to be online.\n\r"));
-		else
-			mob.tell(msg);
+		if(mob != null)
+		{
+			if((mobName!=null)&&(msg.length()==0))
+				mob.tell(L("That person doesn't appear to be online.\n\r"));
+			else
+				mob.tell(msg);
+		}
 		return false;
 	}
 

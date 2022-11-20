@@ -46,7 +46,7 @@ public class StdLibrary implements CMLibrary, Tickable
 	{
 		try
 		{
-			return this.getClass().newInstance();
+			return this.getClass().getDeclaredConstructor().newInstance();
 		}
 		catch(final Exception e)
 		{

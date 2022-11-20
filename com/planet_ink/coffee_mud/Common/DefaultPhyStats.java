@@ -328,7 +328,7 @@ public class DefaultPhyStats implements PhyStats
 	{
 		try
 		{
-			return getClass().newInstance();
+			return getClass().getDeclaredConstructor().newInstance();
 		}
 		catch (final Exception e)
 		{

@@ -2023,7 +2023,7 @@ public class CMProps extends Properties
 			return Double.valueOf(0);
 		set.clear();
 		final List<String> V=CMParms.parseCommas(val,true);
-		Object endVal=new Double(0);
+		Object endVal=Double.valueOf(0);
 		for(final String s : V)
 		{
 			final Object simpleCost = getIndividualManaCostObject(s);

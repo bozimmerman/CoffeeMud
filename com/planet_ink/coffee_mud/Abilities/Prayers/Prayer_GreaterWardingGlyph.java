@@ -223,9 +223,10 @@ public class Prayer_GreaterWardingGlyph extends Prayer implements Trap
 			return;
 		if(!(affected instanceof Room))
 			return;
-		if((shooter==null)||(parameters==null))
+		if((shooter==null)||(parameters==null)||(mob==null))
 			return;
-		if((invoker()!=null)&&(mob!=null)&&(!invoker().mayIFight(mob)))
+		if((invoker()!=null)
+		&&(!invoker().mayIFight(mob)))
 			return;
 		if((!canInvokeTrapOn(invoker(),mob))
 		||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))

@@ -163,7 +163,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 	{
 		try
 		{
-			final GenWrightSkill A=this.getClass().newInstance();
+			final GenWrightSkill A=this.getClass().getDeclaredConstructor().newInstance();
 			A.ID=ID;
 			return A;
 		}

@@ -64,7 +64,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	{
 		try
 		{
-			return getClass().newInstance();
+			return getClass().getDeclaredConstructor().newInstance();
 		}
 		catch(final Exception e)
 		{

@@ -108,11 +108,11 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 		for(int v=0;v<V.size();v++)
 		{
 			s=V.elementAt(v);
-			c=new Character(s.charAt(0));
+			c=Character.valueOf(s.charAt(0));
 			if((s.charAt(0)=='-')||(s.charAt(0)=='+'))
 				s=s.substring(1);
 			else
-				c=new Character('+');
+				c=Character.valueOf('+');
 			if((s!=null)&&(s.startsWith("LEVEL")))
 			{
 				c=((Character)c).charValue()+" "+s.substring(5).trim();
@@ -220,7 +220,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 					if((O!=null)&&(O instanceof String)&&(((String)O).length()>3))
 					{
 						String lvl=(String)O;
-						foundPlusMinus=new Character(lvl.charAt(0));
+						foundPlusMinus=Character.valueOf(lvl.charAt(0));
 						lvl=lvl.substring(2).trim();
 						if((foundPlusMinus.charValue()=='-')&&(immune))
 						{

@@ -116,7 +116,9 @@ public class Conquerable extends Arrest
 	public String conquestInfo(final Area myArea)
 	{
 		final StringBuffer str=new StringBuffer("");
-		if((totalControlPoints<0)&&(myArea!=null))
+		if(myArea == null)
+			return "";
+		if(totalControlPoints<0)
 			recalculateControlPoints(myArea);
 		if((holdingClan.length()==0)||(totalControlPoints<0))
 			str.append(L("Area '@x1' is not currently controlled by any clan.\n\r",myArea.name()));

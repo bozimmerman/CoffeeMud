@@ -2209,25 +2209,25 @@ public class MUD extends Thread implements MudHost
 			{
 				if(new File("./restart.sh").exists())
 				{
-					r.exec("sh restart.sh");
+					r.exec("sh restart.sh".split(" "));
 					Log.sysOut("Attempted to execute 'restart.sh' in "+new File(".").getCanonicalPath());
 				}
 				else
 				if(new File(".\\restart.bat").exists())
 				{
-					r.exec("cmd.exe /c start \"\" restart.bat");
+					r.exec(new String[] {"cmd.exe","/c","start","","restart.bat"});
 					Log.sysOut("Attempted to execute 'restart.bat' in "+new File(".").getCanonicalPath());
 				}
 			}
 			else
 			if(System.getProperty("os.name").toLowerCase().indexOf("windows")>=0)
 			{
-				r.exec("cmd.exe /c start \"\" "+command);
+				r.exec(new String[] {"cmd.exe","/c","start","",command});
 				Log.sysOut("Attempted to execute '"+command+"' in "+new File(".").getCanonicalPath());
 			}
 			else
 			{
-				r.exec("sh "+command);
+				r.exec(new String[] {"sh",command});
 				Log.sysOut("Attempted to execute '"+command+"' in "+new File(".").getCanonicalPath());
 			}
 		}

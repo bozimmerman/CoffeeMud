@@ -165,7 +165,7 @@ public class DefaultSession implements Session
 	{
 		try
 		{
-			return getClass().newInstance();
+			return getClass().getDeclaredConstructor().newInstance();
 		}
 		catch (final Exception e)
 		{
@@ -3444,7 +3444,7 @@ public class DefaultSession implements Session
 		{
 			try
 			{
-				return getClass().newInstance();
+				return getClass().getDeclaredConstructor().newInstance();
 			}
 			catch (final Exception e)
 			{

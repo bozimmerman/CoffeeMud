@@ -463,7 +463,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 			try
 			{
 				stats.startProcessing(); // synchronization is not required, so long as endProcessing is always called
-				final SimpleServlet servletInstance = servletClass.newInstance(); // instantiate a new servlet instance!
+				final SimpleServlet servletInstance = servletClass.getDeclaredConstructor().newInstance(); // instantiate a new servlet instance!
 				if(request.getMethod() == HTTPMethod.GET)
 					servletInstance.doGet(servletRequest, servletResponse);
 				else
@@ -639,7 +639,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 				HTTPOutputConverter converter;
 				try
 				{
-					converter = converterClass.newInstance();
+					converter = converterClass.getDeclaredConstructor().newInstance();
 					return new CWDataBuffers(converter.convertOutput(config, request, pathFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), System.currentTimeMillis(), true);
 				}
 				catch (final Exception e)
@@ -729,7 +729,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 						try
 						{
 							HTTPOutputConverter converter;
-							converter = converterClass.newInstance();
+							converter = converterClass.getDeclaredConstructor().newInstance();
 							extraHeaders.put(HTTPHeader.Common.CACHE_CONTROL, "no-cache");
 							final long dateTime=System.currentTimeMillis();
 							if(dateTime >= 0)

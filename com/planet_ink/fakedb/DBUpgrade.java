@@ -256,7 +256,7 @@ public class DBUpgrade
 									try
 									{
 										C = Class.forName(value);
-										O = C.newInstance();
+										O = Class.forName(value).getDeclaredConstructor().newInstance();
 									}
 									catch (final Throwable t)
 									{

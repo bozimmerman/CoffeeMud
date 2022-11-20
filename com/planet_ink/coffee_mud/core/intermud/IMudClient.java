@@ -58,7 +58,7 @@ public class IMudClient implements I3Interface
 	{
 		try
 		{
-			return getClass().newInstance();
+			return getClass().getDeclaredConstructor().newInstance();
 		}
 		catch(final Exception e)
 		{

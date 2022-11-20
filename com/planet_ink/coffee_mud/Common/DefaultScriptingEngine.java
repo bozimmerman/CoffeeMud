@@ -536,7 +536,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		try
 		{
-			return this.getClass().newInstance();
+			return this.getClass().getDeclaredConstructor().newInstance();
 		}
 		catch(final Exception e)
 		{
@@ -15078,7 +15078,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					int targetTick=-1;
 					final Integer thisScriptIndexI=Integer.valueOf(thisScriptIndex);
 					final int[] delayProgCounter;
-					synchronized(thisScriptIndexI)
+					synchronized(delayTargetTimes)
 					{
 						if(delayTargetTimes.containsKey(thisScriptIndexI))
 							targetTick=delayTargetTimes.get(thisScriptIndexI).intValue();

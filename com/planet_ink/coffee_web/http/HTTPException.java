@@ -204,7 +204,7 @@ public class HTTPException extends Exception
 					final Class<? extends HTTPOutputConverter> converterClass=config.getConverters().findConverter(mimeType);
 					if(converterClass != null)
 					{
-						final HTTPOutputConverter converter=converterClass.newInstance();
+						final HTTPOutputConverter converter=converterClass.getDeclaredConstructor().newInstance();
 						finalBody=new CWDataBuffers(converter.convertOutput(config, request, errorFile, status, fileBytes.flushToBuffer()),0,true);
 					}
 					else

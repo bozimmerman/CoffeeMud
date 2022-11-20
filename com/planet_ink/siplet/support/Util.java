@@ -1241,7 +1241,7 @@ public class Util
 				if ((quotes.size() > 0) && (quotes.lastElement().charValue() == buf.charAt(i)))
 					quotes.removeElementAt(quotes.size() - 1);
 				else
-					quotes.addElement(new Character(buf.charAt(i)));
+					quotes.addElement(Character.valueOf(buf.charAt(i)));
 				break;
 			default:
 				if (bit != null)

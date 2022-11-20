@@ -172,6 +172,7 @@ public class HTTPSReader extends HTTPReader
 				    status=sslEngine.getHandshakeStatus();
 					break;
 				}
+				default:
 				case NEED_UNWRAP:
 					bytesRead= chan.read(sslIncomingBuffer);
 					if(sslIncomingBuffer.position()<=0)

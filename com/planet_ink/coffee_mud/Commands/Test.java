@@ -1502,7 +1502,7 @@ public class Test extends StdCommand
 					case DAMAGE: case EXPERIENCE: case HEIGHT: case HITPOINTS:
 					case MANA: case MATTRIB: case MOVES: case PRACTICES: case QUESTPOINTS:
 					case TRAINS: case WEIGHT: case WIMP:
-						newValue=new Integer(((Integer)oldValue).intValue()-1);
+						newValue=Integer.valueOf(((Integer)oldValue).intValue()-1);
 						break;
 					case CHARCLASS:
 						newValue = CMClass.getCharClass("Apprentice");

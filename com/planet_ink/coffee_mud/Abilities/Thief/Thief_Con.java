@@ -97,8 +97,7 @@ public class Thief_Con extends ThiefSkill
 	@Override
 	public boolean preInvoke(final MOB mob, List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int secondsElapsed, final double actionsRemaining)
 	{
-		if(commands!=null)
-			commands=new XVector<String>(commands);
+		commands=new XVector<String>(commands);
 		if(!conCheck(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		final Vector<String> V=new Vector<String>();
@@ -123,8 +122,7 @@ public class Thief_Con extends ThiefSkill
 
 	public boolean conCheck(final MOB mob, List<String> commands, final Environmental givenTarget, final boolean auto, final int asLevel)
 	{
-		if(commands!=null)
-			commands= new XVector<String>(commands);
+		commands= new XVector<String>(commands);
 		if(commands.size()<1)
 		{
 			mob.tell(L("Con whom into doing what?"));
@@ -198,8 +196,7 @@ public class Thief_Con extends ThiefSkill
 	@Override
 	public boolean invoke(final MOB mob, List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if(commands!=null)
-			commands=new XVector<String>(commands);
+		commands=new XVector<String>(commands);
 		if(!conCheck(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		final Vector<String> V=new Vector<String>();

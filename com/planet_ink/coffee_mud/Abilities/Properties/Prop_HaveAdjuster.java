@@ -359,8 +359,8 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		if((val.length()>0)
 		&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
 		{
-			charStatsV.add(new Character('G'));
-			charStatsV.add(new Character(val.charAt(0)));
+			charStatsV.add(Character.valueOf('G'));
+			charStatsV.add(Character.valueOf(val.charAt(0)));
 		}
 		val=getParmStr(ps,parameters[0],"cla","").toUpperCase();
 		if(val.length()>0)
@@ -368,20 +368,20 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			final CharClass C=CMClass.findCharClass(val);
 			if((C!=null)&&(C.availabilityCode()!=0))
 			{
-				charStatsV.add(new Character('C'));
+				charStatsV.add(Character.valueOf('C'));
 				charStatsV.add(C);
 			}
 		}
 		val=getParmStr(ps,parameters[0],"cls","").toUpperCase();
 		if(val.length()>0)
 		{
-			charStatsV.add(new Character('S'));
+			charStatsV.add(Character.valueOf('S'));
 			charStatsV.add(Integer.valueOf(CMath.s_int(val)));
 		}
 		val=getParmStr(ps,parameters[0],"rac","").toUpperCase();
 		if((val.length()>0)&&(CMClass.getRace(val)!=null))
 		{
-			charStatsV.add(new Character('R'));
+			charStatsV.add(Character.valueOf('R'));
 			charStatsV.add(CMClass.getRace(val));
 		}
 		for(final int i : CharStats.CODES.BASECODES())

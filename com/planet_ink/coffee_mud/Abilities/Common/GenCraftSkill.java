@@ -190,7 +190,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	{
 		try
 		{
-			final GenCraftSkill A=this.getClass().newInstance();
+			final GenCraftSkill A=this.getClass().getDeclaredConstructor().newInstance();
 			A.ID=ID;
 			return A;
 		}

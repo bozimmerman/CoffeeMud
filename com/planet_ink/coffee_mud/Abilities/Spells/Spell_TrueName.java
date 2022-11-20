@@ -104,7 +104,7 @@ public class Spell_TrueName extends Spell
 			{
 				if(mob.fetchEffect("Spell_Geas")!=null)
 				{
-					monsterAppearanceTime=new Long(tm.longValue()+4000);
+					monsterAppearanceTime=Long.valueOf(tm.longValue()+4000);
 					CMLib.threads().scheduleRunnable(periodicCheckToGoHome, 4000);
 				}
 				else

@@ -201,7 +201,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				return false;
 			return orphans.contains(obj);
 		}
-	};
+	}
 
 	private static final Converter<Session, MOB> sessionToMobConvereter= new Converter<Session, MOB>()
 	{
@@ -240,7 +240,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			try
 			{
-				return mgr.newInstance();
+				return mgr.getDeclaredConstructor().newInstance();
 			}
 			catch(final Exception e)
 			{
@@ -7177,6 +7177,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 	}
 
+	@Override
 	public List<UpdateSet> doMQLUpdateObjects(final Modifiable E, final String mql) throws MQLException
 	{
 		final Map<String,Object> defined=new TreeMap<String,Object>();

@@ -96,7 +96,7 @@ public class MultiValueMap<K,J> implements Map<K,J>
 			}
 			try
 			{
-				final List<J> newList = (List<J>)collectionClass.newInstance();
+				final List<J> newList = (List<J>)collectionClass.getDeclaredConstructor().newInstance();
 				newList.add(value);
 				map.put(key, newList);
 			}
@@ -246,7 +246,7 @@ public class MultiValueMap<K,J> implements Map<K,J>
 		List<J> newList;
 		try
 		{
-			newList = (List<J>)collectionClass.newInstance();
+			newList = (List<J>)collectionClass.getDeclaredConstructor().newInstance();
 		}
 		catch (final Exception e)
 		{

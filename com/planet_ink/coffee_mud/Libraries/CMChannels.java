@@ -997,7 +997,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		try
 		{
 			final Class<?> cbClass = Class.forName("twitter4j.conf.ConfigurationBuilder");
-			final Object cbObj = cbClass.newInstance();
+			final Object cbObj = cbClass.getDeclaredConstructor().newInstance();
 			final Method cbM1=cbClass.getMethod("setOAuthConsumerKey", String.class);
 			cbM1.invoke(cbObj,CMProps.getProp("TWITTER-OAUTHCONSUMERKEY"));
 			final Method cbM2=cbClass.getMethod("setOAuthConsumerSecret", String.class);
@@ -1016,7 +1016,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
 			final Class<?> auClass = Class.forName("twitter4j.auth.Authorization");
 			final Class<?> tfClass = Class.forName("twitter4j.TwitterFactory");
-			final Object tfObj = tfClass.newInstance();
+			final Object tfObj = tfClass.getDeclaredConstructor().newInstance();
 			final Method tfM1 = tfClass.getMethod("getInstance", auClass);
 			final Object twObj = tfM1.invoke(tfObj, auObj);
 

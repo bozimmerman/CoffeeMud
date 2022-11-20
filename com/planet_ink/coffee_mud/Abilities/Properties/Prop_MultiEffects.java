@@ -324,7 +324,7 @@ public class Prop_MultiEffects extends Property
 	{
 		try
 		{
-			final Prop_MultiEffects pA =this.getClass().newInstance();
+			final Prop_MultiEffects pA =this.getClass().getDeclaredConstructor().newInstance();
 			pA.setMiscText(text());
 			return pA;
 		}
