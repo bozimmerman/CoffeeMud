@@ -104,7 +104,7 @@ public class WhoIs extends Who
 		}
 
 		final int[] colWidths=getShortColWidths(mob);
-		final StringBuffer msg=new StringBuffer("");
+		final LinkedList<MOB> lst = new LinkedList<MOB>();
 		for(final Session S : CMLib.sessions().localOnlineIterable())
 		{
 			final MOB mob2=S.mob();
@@ -114,14 +114,21 @@ public class WhoIs extends Who
 					&&(mob.phyStats().level()>=mob2.phyStats().level())))
 			&&(mob2.phyStats().level()>0)
 			&&(mob2.name().toUpperCase().startsWith(mobName.toUpperCase())))
-				msg.append(showWhoShort(mob2,mob,colWidths));
+				lst.add(mob2);
 		}
-		if(msg.length()==0)
-			mob.tell(L("That person doesn't appear to be online.\n\r"));
+		final StringBuffer msg=new StringBuffer("");
+		if(lst.size()==0)
+			msg.append(L("That person doesn't appear to be online.\n\r"));
+		else
+		if(lst.size()==1)
+			msg.append(showWhoSingle(lst.getFirst(),mob,colWidths));
 		else
 		{
-			mob.tell(getHead(colWidths)+msg.toString());
+			msg.append(getHead(colWidths));
+			for(final MOB mob2 : lst)
+				msg.append(showWhoShort(mob2,mob,colWidths));
 		}
+		mob.tell(msg.toString());
 		return false;
 	}
 

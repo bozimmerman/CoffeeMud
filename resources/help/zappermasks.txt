@@ -42,6 +42,8 @@
 +MOOD -grumpy -normal (<WORD> only those with subtracted moods)
 -CLAN "+The Boyz" +Monkeys (<WORD> all except those in listed clan(s))
 +CLAN "-The Boyz(CHIEF)" (<WORD> only those in a listed clan w/role/func)
+-CLANLEVEL +clanname +>5 +* +<10 (<WORD> all except member clan level)
++CLANLEVEL -1 ->5 -clanname -<10 (<WORD> only these member clan levels)
 -DEITY +Apollo "+Grothon" (<WORD> all except worshippers of listed deity)
 +DEITY -God "-Rothon 1" (<WORD> only worshippers of a listed deity)
 -ANYCLASS +thief +ranger (<WORD> all except those with a multi-class)

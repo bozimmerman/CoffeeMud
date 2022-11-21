@@ -846,6 +846,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case ANYCLASSLEVEL: // +anyclasslevel
 				case _ANYCLASSLEVEL: // -anyclasslevel
+				case CLANLEVEL: // +clanlevel
+				case _CLANLEVEL: // -clanlevel
 					while(++v<V.size())
 					{
 						str=V.get(v);
@@ -2198,6 +2200,85 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 					}
 					break;
+				case _CLANLEVEL: // -clanlevel
+					{
+						String clanName = "";
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String s = V.get(v2);
+							if(getMaskCodes().containsKey(s))
+								break;
+							boolean getClan = true;
+							boolean found=false;
+							if(clanName.length()>0)
+							{
+								final StringBuilder lvlHelp = levelHelp(V.get(v2),'+',L(skipFirstWord?"Only "+clanName+" ":"Allows only "+clanName+" "));
+								if(lvlHelp.length()>0)
+								{
+									buf.append(lvlHelp);
+									getClan = false;
+									found=true;
+								}
+							}
+							if(getClan)
+							{
+								if((s.length()>1)&&(s.charAt(0)=='+'))
+								{
+									clanName = s.substring(1);
+									found=true;
+								}
+							}
+							if(!found)
+								break;
+						}
+					}
+					break;
+				case CLANLEVEL: // +clanlevel
+					{
+						String clanName = "";
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String s = V.get(v2);
+							if(getMaskCodes().containsKey(s))
+							{
+								v=v2-1;
+								break;
+							}
+							boolean getClan = true;
+							boolean found=false;
+							if(clanName.length()>0)
+							{
+								final StringBuilder lvlHelp = levelHelp(V.get(v2),'-',"Disallows "+clanName+" ");
+								if(lvlHelp.length()>0)
+								{
+									buf.append(lvlHelp);
+									getClan = false;
+									found = true;
+								}
+							}
+							if(getClan)
+							{
+								if((s.length()>1) && (s.charAt(0)=='-'))
+								{
+									clanName = s.substring(1);
+									found = true;
+								}
+							}
+							if(!found)
+							{
+								v=v2-1;
+								break;
+							}
+							else
+							if(v2==V.size()-1)
+							{
+								v=v2;
+								break;
+							}
+						}
+					}
+					break;
+
 				case _ANYCLASS: // -anyclass
 					{
 						buf.append(L((skipFirstWord?"L":"Requires l")+"evels in one of the following:  "));
@@ -3401,6 +3482,61 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
 					}
 					break;
+
+				case CLANLEVEL: // +clanlevel
+				case _CLANLEVEL: // -clanlevel
+					{
+						final char plusMinus = (entryType == ZapperKey.CLANLEVEL) ? '-' : '+';
+						String clanName = null;
+						final ArrayList<Object> parms=new ArrayList<Object>();
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+							{
+								v=v2-1;
+								break;
+							}
+							boolean getClan = true;
+							boolean found=false;
+							if(clanName!=null)
+							{
+								final CompiledZMaskEntry e = levelCompiledHelper(str2,plusMinus);
+								if(e!=null)
+								{
+									parms.add(clanName);
+									parms.add(e.maskType());
+									parms.add(e.parms()[0]);
+									getClan = false;
+									found=true;
+								}
+							}
+							if(getClan)
+							{
+								if((str2.length()>1)
+								&&(str2.charAt(0)==plusMinus))
+								{
+									clanName = str2.substring(1);
+									found=true;
+								}
+							}
+							if(!found)
+							{
+								v=v2-1;
+								break;
+							}
+							else
+							if(v2==V.size()-1)
+							{
+								v=v2;
+								break;
+							}
+						}
+						if(parms.size()>0)
+							buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
+					}
+					break;
+
 				case _EFFECT: // -Effect
 				case EFFECT: // +Effect
 					{
@@ -4709,6 +4845,36 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		}
 	}
 
+	protected boolean doZapperCompare(final CompiledZMaskEntry entry, final int cl, final int i)
+	{
+		switch((ZapperKey)entry.parms()[i])
+		{
+		case LVLGR: // +lvlgr
+			if(cl>((Integer)entry.parms()[i+1]).intValue())
+				return true;
+			break;
+		case LVLGE: // +lvlge
+			if(cl>=((Integer)entry.parms()[i+1]).intValue())
+				return true;
+			break;
+		case LVLLT: // +lvlt
+			if(cl<((Integer)entry.parms()[i+1]).intValue())
+				return true;
+			break;
+		case LVLLE: // +lvlle
+			if(cl<=((Integer)entry.parms()[i+1]).intValue())
+				return true;
+			break;
+		case LVLEQ: // +lvleq
+			if(cl==((Integer)entry.parms()[i+1]).intValue())
+				return true;
+			break;
+		default:
+			break;
+		}
+		return false;
+	}
+
 	protected boolean maskCheckSubEntries(final CompiledZMaskEntry[] set, final Environmental E, final boolean actual,
 										  final MOB mob, final Item item, final Room room, final Physical P)
 	{
@@ -4827,31 +4993,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						boolean found=false;
 						for(int v=0;v<entry.parms().length-1;v+=2)
 						{
-							switch((ZapperKey)entry.parms()[v])
-							{
-							case LVLGR: // +lvlgr
-								if(level>((Integer)entry.parms()[v+1]).intValue())
-									found=true;
-								break;
-							case LVLGE: // +lvlge
-								if(level>=((Integer)entry.parms()[v+1]).intValue())
-									found=true;
-								break;
-							case LVLLT: // +lvlt
-								if(level<((Integer)entry.parms()[v+1]).intValue())
-									found=true;
-								break;
-							case LVLLE: // +lvlle
-								if(level<=((Integer)entry.parms()[v+1]).intValue())
-									found=true;
-								break;
-							case LVLEQ: // +lvleq
-								if(level==((Integer)entry.parms()[v+1]).intValue())
-									found=true;
-								break;
-							default:
-								break;
-							}
+							if(doZapperCompare(entry,level,v))
+								found=true;
 						}
 						if(!found)
 							return false;
@@ -4864,31 +5007,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 									 :mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 						for(int v=0;v<entry.parms().length-1;v+=2)
 						{
-							switch((ZapperKey)entry.parms()[v])
-							{
-							case LVLGR: // +lvlgr
-								if(cl>((Integer)entry.parms()[v+1]).intValue())
-									found=true;
-								break;
-							case LVLGE: // +lvlge
-								if(cl>=((Integer)entry.parms()[v+1]).intValue())
-									found=true;
-								break;
-							case LVLLT: // +lvlt
-								if(cl<((Integer)entry.parms()[v+1]).intValue())
-									found=true;
-								break;
-							case LVLLE: // +lvlle
-								if(cl<=((Integer)entry.parms()[v+1]).intValue())
-									found=true;
-								break;
-							case LVLEQ: // +lvleq
-								if(cl==((Integer)entry.parms()[v+1]).intValue())
-									found=true;
-								break;
-							default:
-								break;
-							}
+							if(doZapperCompare(entry,cl,v))
+								found=true;
 						}
 						if(!found)
 							return false;
@@ -4906,31 +5026,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							if(cl < 0)
 								found = false;
 							else
-							switch((ZapperKey)entry.parms()[i+1])
-							{
-							case LVLGR: // +lvlgr
-								if(cl>((Integer)entry.parms()[i+2]).intValue())
-									found=true;
-								break;
-							case LVLGE: // +lvlge
-								if(cl>=((Integer)entry.parms()[i+2]).intValue())
-									found=true;
-								break;
-							case LVLLT: // +lvlt
-								if(cl<((Integer)entry.parms()[i+2]).intValue())
-									found=true;
-								break;
-							case LVLLE: // +lvlle
-								if(cl<=((Integer)entry.parms()[i+2]).intValue())
-									found=true;
-								break;
-							case LVLEQ: // +lvleq
-								if(cl==((Integer)entry.parms()[i+2]).intValue())
-									found=true;
-								break;
-							default:
-								break;
-							}
+							if(doZapperCompare(entry,cl,i+1))
+								found=true;
 							allFound = allFound || found;
 						}
 						if(!allFound)
@@ -4946,31 +5043,92 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 												:mob.charStats().getClassLevel(C);
 							if(cl >= 0)
 							{
-								switch((ZapperKey)entry.parms()[i+1])
+								if(!doZapperCompare(entry,cl,i+1))
+									return false;
+							}
+						}
+					}
+					break;
+				case _CLANLEVEL: // -clanlevel
+					{
+						boolean allFound = false;
+						for(int i=0;i<entry.parms().length;i+=3)
+						{
+							boolean found=false;
+							final String clanName = (String)entry.parms()[i];
+							if(clanName.equals("1"))
+							{
+								final Iterator<Pair<Clan,Integer>> ci=mob.clans().iterator();
+								if(!ci.hasNext())
+									continue; // not found
+								final int cl = ci.next().first.getClanLevel();
+								if(doZapperCompare(entry,cl,i+1))
+									found=true;
+							}
+							else
+							if(clanName.equals("*"))
+							{
+								for(final Iterator<Pair<Clan,Integer>> ci=mob.clans().iterator();ci.hasNext();)
 								{
-								case LVLGR: // lvlgr
-									if(cl>((Integer)entry.parms()[i+2]).intValue())
-										return false;
-									break;
-								case LVLGE: // lvlge
-									if(cl>=((Integer)entry.parms()[i+2]).intValue())
-										return false;
-									break;
-								case LVLLT: // lvlt
-									if(cl<((Integer)entry.parms()[i+2]).intValue())
-										return false;
-									break;
-								case LVLLE: // lvlle
-									if(cl<=((Integer)entry.parms()[i+2]).intValue())
-										return false;
-									break;
-								case LVLEQ: // +lvleq
-									if(cl==((Integer)entry.parms()[i+2]).intValue())
-										return false;
-									break;
-								default:
-									break;
+									final int cl=ci.next().first.getClanLevel();
+									if(doZapperCompare(entry,cl,i+1))
+									{
+										found=true;
+										break;
+									}
 								}
+							}
+							else
+							{
+								final Clan C = CMLib.clans().getClanExact(clanName);
+								if(C == null)
+									continue;
+								if(mob.getClanRole(C.clanID())==null)
+									continue;
+								final int cl = C.getClanLevel();
+								if(doZapperCompare(entry,cl,i+1))
+									found=true;
+							}
+							allFound = allFound || found;
+						}
+						if(!allFound)
+							return false;
+					}
+					break;
+				case CLANLEVEL: // +clanlevel
+					{
+						for(int i=0;i<entry.parms().length;i+=3)
+						{
+							final String clanName = (String)entry.parms()[i+0];
+							if(clanName.equals("1"))
+							{
+								final Iterator<Pair<Clan,Integer>> ci=mob.clans().iterator();
+								if(!ci.hasNext())
+									continue; // not found
+								final int cl = ci.next().first.getClanLevel();
+								if(doZapperCompare(entry,cl,i+1))
+									return false;
+							}
+							else
+							if(clanName.equals("*"))
+							{
+								for(final Iterator<Pair<Clan,Integer>> ci=mob.clans().iterator();ci.hasNext();)
+								{
+									final int cl=ci.next().first.getClanLevel();
+									if(doZapperCompare(entry,cl,i+1))
+										return false;
+								}
+							}
+							else
+							{
+								final Clan C = CMLib.clans().getClanExact(clanName);
+								if(C == null)
+									continue;
+								if(mob.getClanRole(C.clanID())==null)
+									continue;
+								final int cl = C.getClanLevel();
+								if(doZapperCompare(entry,cl,i+1))
+									return false;
 							}
 						}
 					}
@@ -5002,31 +5160,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 						for(int v=0;v<entry.parms().length-1;v+=2)
 						{
-							switch((ZapperKey)entry.parms()[v])
-							{
-							case LVLGR: // +lvlgr
-								if(cl>((Integer)entry.parms()[v+1]).intValue())
-									found=true;
-								break;
-							case LVLGE: // +lvlge
-								if(cl>=((Integer)entry.parms()[v+1]).intValue())
-									found=true;
-								break;
-							case LVLLT: // +lvlt
-								if(cl<((Integer)entry.parms()[v+1]).intValue())
-									found=true;
-								break;
-							case LVLLE: // +lvlle
-								if(cl<=((Integer)entry.parms()[v+1]).intValue())
-									found=true;
-								break;
-							case LVLEQ: // +lvleq
-								if(cl==((Integer)entry.parms()[v+1]).intValue())
-									found=true;
-								break;
-							default:
-								break;
-							}
+							if(doZapperCompare(entry,cl,v))
+								found=true;
 						}
 						if(!found)
 							return false;
@@ -7819,6 +7954,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _MAXCLASSLEVEL: // -maxclasslevel
 				case ANYCLASSLEVEL: // +anyclasslevel
 				case _ANYCLASSLEVEL: // -anyclasslevel
+				case CLANLEVEL: // +clanlevel
+				case _CLANLEVEL: // -clanlevel
 				case _TATTOO: // -tattoo
 				case TATTOO: // +tattoo
 				case _MOOD: // -mood

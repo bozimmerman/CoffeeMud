@@ -341,10 +341,12 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 						case _ANYCLASS:
 						case _ANYCLASSLEVEL:
 						case _CLASS:
+						case _CLANLEVEL:
 							level -= 9;
 							break;
 						case ANYCLASS:
 						case ANYCLASSLEVEL:
+						case CLANLEVEL:
 						case CLASS:
 							level -= entry.parms().length;
 							break;

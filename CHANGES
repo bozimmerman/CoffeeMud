@@ -16,7 +16,8 @@
  14. MODIFY command supports MQL with MODIFY UPDATE:...
  15. DESTROY command supports MQL with DESTROY DELETE: from ...
  16. Clan Government role 'CLAN_MOTD' changed to 'READ_MOTD'. 'CREATE_MOTD' added.
-     
+ 17. New Zappermask: +-CLANLEVEL, for filtering a members clan's level
+
 # Build 5.10.0 Release 9/23/2022
   1. New Scriptable functions: ROOMPC and AREAPC
   2. Caravans now have their own internal Directions (fore, back, right, left, up, down)

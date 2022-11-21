@@ -87,6 +87,53 @@ public class Who extends StdCommand
 		return tail.toString();
 	}
 
+	public StringBuffer showWhoSingle(final MOB who, final MOB viewerM, final int[] colWidths)
+	{
+		final StringBuffer msg=new StringBuffer("");
+		int datWidth=0;
+		for(int i=0;i<colWidths.length;i++)
+			datWidth += colWidths[i];
+		final int headCol = 1;
+		datWidth -= colWidths[headCol];
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
+		{
+			msg.append("^x[").append(CMStrings.padRight(L("Race"),colWidths[headCol])).append("]^.^N ");
+			if(who.charStats().getCurrentClass().raceless())
+				msg.append(CMStrings.limit(" ",datWidth));
+			else
+				msg.append(CMStrings.limit(who.charStats().raceName(),datWidth));
+			msg.append("\n\r");
+		}
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
+		{
+			msg.append("^x[").append(CMStrings.padRight(L("Class"),colWidths[headCol])).append("]^.^N ");
+			if(who.charStats().getMyRace().classless())
+				msg.append(CMStrings.limit(" ",datWidth));
+			else
+				msg.append(CMStrings.limit(who.charStats().displayClassName(),datWidth));
+			msg.append("\n\r");
+		}
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
+		{
+			msg.append("^x[").append(CMStrings.padRight(L("Level"),colWidths[headCol])).append("]^.^N ");
+			String levelStr=who.charStats().displayClassLevel(who,true).trim();
+			final int x=levelStr.lastIndexOf(' ');
+			if(x>=0)
+				levelStr=levelStr.substring(x).trim();
+			if(who.charStats().getMyRace().leveless()
+			||who.charStats().getCurrentClass().leveless())
+				msg.append(CMStrings.limit(" ",datWidth));
+			else
+				msg.append(CMStrings.limit(levelStr,datWidth));
+			msg.append("\n\r");
+		}
+		final String name=getWhoName(who, viewerM);
+		msg.append("^x[").append(CMStrings.padRight(L("Name"),colWidths[headCol])).append("]^.^N ");
+		msg.append(CMStrings.limit(name,datWidth));
+		msg.append("\n\r");
+		return msg;
+	}
+
 	public StringBuffer showWhoShort(final MOB who, final MOB viewerM, final int[] colWidths)
 	{
 		final StringBuffer msg=new StringBuffer("");
