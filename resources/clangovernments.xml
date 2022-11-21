@@ -11,7 +11,8 @@
             <POWER>SET_DONATE</POWER>
             <POWER>REJECT</POWER>
             <POWER>PREMISE</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>CREATE_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
             <POWER>DEPOSIT</POWER>
@@ -34,7 +35,7 @@
             <POWER>ACCEPT</POWER>
             <POWER>REJECT</POWER>
             <POWER>DEPOSIT</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
             <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>
             <POWER>CREATE_LAW</POWER>
@@ -162,7 +163,8 @@
             <POWER>EXILE</POWER>
             <POWER>REJECT</POWER>
             <POWER>PROPERTY_OWNER</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
+	        <POWER>CREATE_MOTD</POWER>
             <POWER>WITHDRAW</POWER>
             <POWER>DEPOSIT</POWER>
             <POWER>ORDER_UNDERLINGS</POWER>
@@ -185,7 +187,8 @@
             <POWER>ACCEPT</POWER>
             <POWER>REJECT</POWER>
             <POWER>PROPERTY_OWNER</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
+	        <POWER>CREATE_MOTD</POWER>
             <POWER>DEPOSIT</POWER>
             <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>
@@ -327,6 +330,7 @@
             <POWER>VOTE_OTHER</POWER>
             <POWER>DEPOSIT_LIST</POWER>
             <POWER>CREATE_LAW</POWER>
+	        <POWER>CREATE_MOTD</POWER>
             <POWER>CHANNEL</POWER>
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
@@ -339,7 +343,8 @@
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>DEPOSIT</POWER>
             <POWER>VOTE_ASSIGN</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
+	        <POWER>CREATE_MOTD</POWER>
             <POWER>DEPOSIT_LIST</POWER>
             <POWER>CHANNEL</POWER>
             <POWER>MORGUE</POWER>
@@ -480,8 +485,9 @@
             <POWER>VOTE_ASSIGN</POWER>
             <POWER>VOTE_OTHER</POWER>
             <POWER>DEPOSIT_LIST</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
             <POWER>CREATE_LAW</POWER>
+	        <POWER>CREATE_MOTD</POWER>
             <POWER>CHANNEL</POWER>
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
@@ -495,7 +501,8 @@
             <POWER>DEPOSIT</POWER>
             <POWER>VOTE_ASSIGN</POWER>
             <POWER>VOTE_OTHER</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
+	        <POWER>CREATE_MOTD</POWER>
             <POWER>CREATE_LAW</POWER>
             <POWER>DEPOSIT_LIST</POWER>
             <POWER>CHANNEL</POWER>
@@ -644,7 +651,8 @@
             <POWER>SET_DONATE</POWER>
             <POWER>REJECT</POWER>
             <POWER>PREMISE</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
+	        <POWER>CREATE_MOTD</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
             <POWER>DEPOSIT</POWER>
@@ -807,7 +815,8 @@
             <POWER>SET_DONATE</POWER>
             <POWER>REJECT</POWER>
             <POWER>PREMISE</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
+	        <POWER>CREATE_MOTD</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
             <POWER>DEPOSIT</POWER>
@@ -834,7 +843,8 @@
             <POWER>SET_DONATE</POWER>
             <POWER>REJECT</POWER>
             <POWER>PREMISE</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
+	        <POWER>CREATE_MOTD</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
             <POWER>DEPOSIT</POWER>
@@ -996,7 +1006,8 @@
             <POWER>SET_HOME</POWER>
             <POWER>SET_DONATE</POWER>
             <POWER>PREMISE</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
+	        <POWER>CREATE_MOTD</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
             <POWER>DEPOSIT</POWER>
@@ -1092,7 +1103,8 @@
             <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>
             <POWER>CREATE_LAW</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
+	        <POWER>CREATE_MOTD</POWER>
             <POWER>VOTE_ASSIGN</POWER>
             <POWER>VOTE_OTHER</POWER>
             <POWER>DEPOSIT_LIST</POWER>
@@ -1169,7 +1181,8 @@
             <POWER>SET_DONATE</POWER>
             <POWER>REJECT</POWER>
             <POWER>PREMISE</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
+	        <POWER>CREATE_MOTD</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
             <POWER>DEPOSIT</POWER>
@@ -1191,7 +1204,8 @@
             <POWER>SET_DONATE</POWER>
             <POWER>REJECT</POWER>
             <POWER>PREMISE</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
+	        <POWER>CREATE_MOTD</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
             <POWER>DEPOSIT</POWER>
@@ -1289,7 +1303,8 @@
             <POWER>SET_DONATE</POWER>
             <POWER>REJECT</POWER>
             <POWER>PREMISE</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
+	        <POWER>CREATE_MOTD</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
             <POWER>DEPOSIT</POWER>
@@ -1313,7 +1328,7 @@
             <POWER>ACCEPT</POWER>
             <POWER>REJECT</POWER>
             <POWER>ENCHANT</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
             <POWER>SET_HOME</POWER>
             <POWER>SET_DONATE</POWER>
             <POWER>MORGUE</POWER>
@@ -1439,7 +1454,8 @@
             <POWER>SET_DONATE</POWER>
             <POWER>REJECT</POWER>
             <POWER>PREMISE</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
+	        <POWER>CREATE_MOTD</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
             <POWER>DEPOSIT</POWER>
@@ -1460,7 +1476,7 @@
         <POSITION ID="MOGUL" ROLEID=4 RANK=1 NAME="MOGUL" PLURAL="MOGULS" MAX=3% INNERMASK="" PUBLIC="true">
             <POWER>DEPOSIT</POWER>
             <POWER>ENCHANT</POWER>
-            <POWER>CLAN_MOTD</POWER>
+            <POWER>READ_MOTD</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>
