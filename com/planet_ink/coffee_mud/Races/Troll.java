@@ -184,10 +184,14 @@ public class Troll extends StdRace
 		{
 			final MOB M=(MOB)ticking;
 			final Room room=M.location();
-			if((room!=null)&&(!M.amDead()))
+			if((room!=null)
+			&&(!M.amDead()))
 			{
-				if(M.curState().adjHitPoints((int)Math.round(CMath.div(M.phyStats().level(),2.0)),M.maxState()))
-					M.location().show(M,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> regenerate(s)."));
+				if(M.curState().getHitPoints() != M.maxState().getHitPoints())
+				{
+					if(M.curState().adjHitPoints((int)Math.round(CMath.div(M.phyStats().level(),2.0)),M.maxState()))
+						M.location().show(M,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> regenerate(s)."));
+				}
 				final Area A=room.getArea();
 				if(A!=null)
 				{
