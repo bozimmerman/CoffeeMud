@@ -1831,23 +1831,47 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		oldRoom = null;
 		clearVars();
 
+		MOB travelM = mob;
+		String planeName;
+		if(auto)
+		{
+			if(givenTarget instanceof MOB)
+				travelM = (MOB)givenTarget;
+			else
+				travelM = mob;
+			if((commands.size()>0)
+			&&((givenTarget==null)||(!commands.get(0).equalsIgnoreCase(givenTarget.Name())))
+			&&(CMParms.containsIgnoreCase(getAllPlaneKeys(),CMParms.combine(commands,0))))
+				planeName=CMParms.combine(commands,0);
+			else
+			if((text().length()>0)
+			&&(CMParms.containsIgnoreCase(getAllPlaneKeys(),text())))
+				planeName = text();
+			else
+			{
+				final List<String> allPlaneKeys = getAllPlaneKeys();
+				planeName = allPlaneKeys.get(CMLib.dice().roll(1, allPlaneKeys.size(), -1));
+			}
+		}
+		else
 		if(commands.size()<1)
 		{
-			mob.tell(L("Go where?"));
-			mob.tell(L("Known planes: @x1",listOfPlanes()+L("Prime Material")));
+			travelM.tell(L("Go where?"));
+			travelM.tell(L("Known planes: @x1",listOfPlanes()+L("Prime Material")));
 			return false;
 		}
-		String planeName=CMParms.combine(commands,0).trim().toUpperCase();
+		else
+			planeName=CMParms.combine(commands,0).trim().toUpperCase();
 		int planeNameCt=0;
 		if(planeName.toLowerCase().endsWith("prime material"))
 			planeName="Prime Material";
 		else
 		while((getPlanarVars(planeName)==null)&&(commands.size()>planeNameCt))
 			planeName=CMParms.combine(commands,++planeNameCt).trim().toUpperCase();
-		oldRoom=new WeakReference<Room>(mob.location());
-		Area cloneArea = mob.location().getArea();
+		oldRoom=new WeakReference<Room>(travelM.location());
+		Area cloneArea = travelM.location().getArea();
 		final Area mobArea = cloneArea;
-		String cloneRoomID=CMLib.map().getExtendedRoomID(mob.location());
+		String cloneRoomID=CMLib.map().getExtendedRoomID(travelM.location());
 		final PlanarAbility currentShift = getPlanarAbility(mobArea);
 		if(planeName.equalsIgnoreCase("Prime Material"))
 		{
@@ -1855,22 +1879,22 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 				return false;
 			if(currentShift == null)
 			{
-				mob.tell(L("You are already on the prime material plane."));
+				travelM.tell(L("You are already on the prime material plane."));
 				return false;
 			}
 			final boolean success=proficiencyCheck(mob,0,auto);
 			if(success)
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,null,auto),castingMessage(mob, auto));
-				if(mob.location().okMessage(mob,msg))
+				final CMMsg msg=CMClass.getMsg(travelM,null,this,CMMsg.MASK_MOVE|verbalCastCode(travelM,null,auto),castingMessage(travelM, auto));
+				if(travelM.location().okMessage(travelM,msg))
 				{
-					mob.location().send(mob,msg);
+					travelM.location().send(travelM,msg);
 					currentShift.unInvoke();
 				}
 			}
 			else
 			{
-				this.beneficialVisualFizzle(mob, null, failMessage(mob, auto));
+				this.beneficialVisualFizzle(travelM, null, failMessage(travelM, auto));
 			}
 			return true;
 		}
@@ -1881,13 +1905,13 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			if((A!=null)
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE))
 			&&(!CMSecurity.isAbilityDisabled(A.ID())))
-				A.invoke(mob, mob, true, 0);
+				A.invoke(mob, travelM, true, 0);
 		}
 		Map<String,String> planeFound = getPlanarVars(planeName);
 		if(planeFound == null)
 		{
-			mob.tell(L("There is no known plane '@x1'.",planeName));
-			mob.tell(L("Known planes: @x1",listOfPlanes()+L("Prime Material")));
+			travelM.tell(L("There is no known plane '@x1'.",planeName));
+			travelM.tell(L("Known planes: @x1",listOfPlanes()+L("Prime Material")));
 			return false;
 		}
 		planeName = planeFound.get(PlanarVar.ID.toString()).toUpperCase().trim();
@@ -1898,7 +1922,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((currentShift!=null)&&(currentShift.text().equalsIgnoreCase(planeName)))
 		{
-			this.beneficialVisualFizzle(mob, null, failMessage(mob, auto));
+			this.beneficialVisualFizzle(travelM, null, failMessage(travelM, auto));
 			return false;
 		}
 
@@ -1945,7 +1969,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		{
 			if(CMLib.dice().rollPercentage()>5)
 			{
-				this.beneficialVisualFizzle(mob, null, failMessage(mob, auto));
+				this.beneficialVisualFizzle(travelM, null, failMessage(travelM, auto));
 				return false;
 			}
 			else
@@ -2029,7 +2053,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			{
 				final Room room=CMLib.map().getRandomRoom();
 				if((room!=null)
-				&&(CMLib.flags().canAccess(mob,room))
+				&&(CMLib.flags().canAccess(travelM,room))
 				&&(CMLib.map().getExtendedRoomID(room).length()>0)
 				&&(room.getArea().numberOfProperIDedRooms()>2))
 				{
@@ -2087,15 +2111,15 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 
 		//CMLib.map().delArea(this.planeArea);
 		final Area oldPlaneArea=planeArea;
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),castingMessage(mob, auto));
-		if((mob.location().okMessage(mob,msg))
-		&&(target.okMessage(mob,msg)))
+		final CMMsg msg=CMClass.getMsg(travelM,target,this,CMMsg.MASK_MOVE|verbalCastCode(travelM,target,auto),castingMessage(travelM, auto));
+		if((travelM.location().okMessage(travelM,msg))
+		&&(target.okMessage(travelM,msg)))
 		{
-			mob.location().send(mob,msg);
+			travelM.location().send(travelM,msg);
 			target=(Room)msg.target();
 			planeArea = ((Room)msg.target()).getArea();
 
-			final List<MOB> h=properTargetList(mob,givenTarget,false);
+			final List<MOB> h=properTargetList(travelM,givenTarget,false);
 			if(h==null)
 				return false;
 
@@ -2111,7 +2135,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			}
 			else
 			{
-				A=(PlanarAbility)this.beneficialAffect(mob, planeArea, asLevel, 0);
+				A=(PlanarAbility)this.beneficialAffect(travelM, planeArea, asLevel, 0);
 				if(A!=null)
 				{
 					A.setHardBumpLevel(hardBumpLevel);
@@ -2119,7 +2143,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 				}
 			}
 
-			final Room thisRoom=mob.location();
+			final Room thisRoom=travelM.location();
 			for (final MOB follower : h)
 			{
 				final boolean invisible = !CMLib.flags().isSeeable(follower);
@@ -2143,7 +2167,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 					CMLib.commands().postLook(follower,true);
 				}
 				else
-				if(follower==mob)
+				if(follower==travelM)
 					break;
 			}
 			planeArea.addBlurbFlag("PLANEOFEXISTENCE {"+planeName+"}");

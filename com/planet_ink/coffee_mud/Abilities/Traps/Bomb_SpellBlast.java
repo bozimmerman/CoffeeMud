@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2022 Bo Zimmerman
+   Copyright 2022-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Trap_SpellBlast extends StdTrap
+public class Bomb_SpellBlast extends StdBomb
 {
 	@Override
 	public String ID()
 	{
-		return "Trap_SpellBlast";
+		return "Bomb_SpellBlast";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("spell blast");
+	private final static String	localizedName	= CMLib.lang().L("spell bomb");
 
 	@Override
 	public String name()
@@ -60,7 +60,7 @@ public class Trap_SpellBlast extends StdTrap
 		return 0;
 	}
 
-	public Trap_SpellBlast()
+	public Bomb_SpellBlast()
 	{
 		super();
 		trapLevel = 23;
@@ -135,60 +135,32 @@ public class Trap_SpellBlast extends StdTrap
 		return true;
 	}
 
-	protected boolean doesInnerExplosionDestroy(final int material)
-	{
-		switch(material&RawMaterial.MATERIAL_MASK)
-		{
-		case RawMaterial.MATERIAL_METAL:
-		case RawMaterial.MATERIAL_MITHRIL:
-		case RawMaterial.MATERIAL_GLASS:
-		case RawMaterial.MATERIAL_ROCK:
-		case RawMaterial.MATERIAL_LIQUID:
-		case RawMaterial.MATERIAL_ENERGY:
-		case RawMaterial.MATERIAL_SYNTHETIC:
-		case RawMaterial.MATERIAL_GAS:
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	protected boolean canExplodeOutOf(final int material)
-	{
-		switch(material&RawMaterial.MATERIAL_MASK)
-		{
-		case RawMaterial.MATERIAL_MITHRIL:
-		case RawMaterial.MATERIAL_ROCK:
-			return false;
-		}
-		return true;
-	}
-
 	@Override
 	public void spring(final MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
+			Ability A=CMClass.getAbility(miscText);
+			if(A==null)
+				A=CMClass.getAbility("Spell_Fireball");
 			if((!canInvokeTrapOn(invoker(),target))
 			||(isLocalExempt(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
-			||(doesSaveVsTraps(target)))
+			||(doesSaveVsTraps(target))
+			||(A==null))
 			{
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
-						getAvoidMsg(L("<S-NAME> avoid(s) setting off a trap!")));
+						getAvoidMsg(L("<S-NAME> avoid(s) the magic blast!")));
 			}
 			else
 			{
-				if(target.location().show(target,target,this,
-						CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,getTrigMsg(L("<S-NAME> set(s) off a trap!"))))
+				final String triggerMsg = getTrigMsg(L("@x1 invokes @x2 all over <T-NAME>!",affected.name(),A.name()));
+				if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,triggerMsg))
 				{
 					super.spring(target);
-					Ability A=CMClass.getAbility(miscText);
-					if(A==null)
-						A=CMClass.getAbility("Spell_Fireball");
-					if(A!=null)
-						A.invoke(invoker(),target,true,trapLevel()+abilityCode());
+					super.spring(target);
+					A.invoke(invoker(),target,true,trapLevel()+abilityCode());
 					if((canBeUninvoked())&&(affected instanceof Item))
 						disable();
 				}
