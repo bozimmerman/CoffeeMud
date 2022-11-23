@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -52,9 +53,10 @@ public class Prop_ClosedSeason extends Property
 		return Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS|Ability.CAN_ROOMS;
 	}
 
-	protected Vector<String> closedV=null;
-	boolean doneToday=false;
-	private Area exitArea=null;
+	protected Vector<String>	closedV		= null;
+	boolean						doneToday	= false;
+	private Area				exitArea	= null;
+	protected CompiledZMask		mask		= null;
 
 	@Override
 	public String accountForYourself()
@@ -69,9 +71,22 @@ public class Prop_ClosedSeason extends Property
 	}
 
 	@Override
-	public void setMiscText(final String text)
+	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
+		int x=text.toUpperCase().lastIndexOf("MASK=");
+		if(x<0)
+			x=text.toUpperCase().lastIndexOf("MASK =");
+		if(x>0)
+		{
+			String mask=text.substring(text.indexOf("=",x+1)+1).trim();
+			if(mask.startsWith("\"")&&(mask.endsWith("\"")))
+				mask = CMStrings.deEscape(mask.substring(1,mask.length()-1)).trim();
+			text=text.substring(0,x);
+			this.mask = CMLib.masking().getPreCompiledMask(mask);
+		}
+		else
+			this.mask = null;
 		closedV=CMParms.parse(text.toUpperCase());
 	}
 
@@ -87,9 +102,9 @@ public class Prop_ClosedSeason extends Property
 			exitArea=msg.source().location().getArea();
 	}
 
-	protected boolean closed(final Area A)
+	protected boolean closed(final Physical P, final Area A)
 	{
-		if(A==null)
+		if((A==null)||(P==null))
 			return false;
 
 		for(final Room.VariationCode code : Room.VariationCode.values())
@@ -99,15 +114,30 @@ public class Prop_ClosedSeason extends Property
 				{
 				case 'W':
 					if(A.getClimateObj().weatherType(null)==code.num)
+					{
+						if((this.mask != null)
+						&& (!CMLib.masking().maskCheck(mask, P, true)))
+							return false;
 						return true;
+					}
 					break;
 				case 'C':
 					if(A.getTimeObj().getTODCode().ordinal()==code.num)
+					{
+						if((this.mask != null)
+						&& (!CMLib.masking().maskCheck(mask, P, true)))
+							return false;
 						return true;
+					}
 					break;
 				case 'S':
 					if(A.getTimeObj().getSeasonCode().ordinal()==code.num)
+					{
+						if((this.mask != null)
+						&& (!CMLib.masking().maskCheck(mask, P, true)))
+							return false;
 						return true;
+					}
 					break;
 				}
 		}
@@ -123,7 +153,7 @@ public class Prop_ClosedSeason extends Property
 		{
 			final Room R=CMLib.map().roomLocation(affected);
 			if((R!=null)
-			&&(closed(R.getArea()))
+			&&(closed(affected,R.getArea()))
 			&&((!(affected instanceof MOB))||(!((MOB)affected).isInCombat())))
 			{
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
@@ -134,12 +164,12 @@ public class Prop_ClosedSeason extends Property
 			}
 		}
 		else
-		if((affected instanceof Room)&&(closed(((Room)affected).getArea())))
+		if((affected instanceof Room)&&(closed(affected,((Room)affected).getArea())))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_DARK);
 		else
 		if(affected instanceof Exit)
 		{
-			if(closed(exitArea==null?CMLib.map().getFirstArea():exitArea))
+			if(closed(affected,exitArea==null?CMLib.map().getFirstArea():exitArea))
 			{
 				if(!doneToday)
 				{

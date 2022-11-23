@@ -74,7 +74,7 @@ public class Prop_WearOverride extends Property
 		mask=null;
 		if(newText.length()>0)
 		{
-			mask=CMLib.masking().maskCompile(newText);
+			mask=CMLib.masking().getPreCompiledMask(newText);
 			maskDesc=CMLib.masking().maskDesc(newText,true);
 		}
 		super.setMiscText(newText);

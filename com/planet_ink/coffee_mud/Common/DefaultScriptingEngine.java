@@ -7387,12 +7387,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
 				int num=0;
-				MaskingLibrary.CompiledZMask MASK=null;
+				MaskingLibrary.CompiledZMask compiledMask=null;
 				if((arg1.toUpperCase().startsWith("MASK")&&(arg1.substring(4).trim().startsWith("="))))
 				{
 					arg1=arg1.substring(4).trim();
 					arg1=arg1.substring(1).trim();
-					MASK=CMLib.masking().maskCompile(arg1);
+					compiledMask=CMLib.masking().getPreCompiledMask(arg1);
 				}
 				for(final Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
@@ -7406,9 +7406,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final MOB M=R.fetchInhabitant(m);
 							if(M==null)
 								continue;
-							if(MASK!=null)
+							if(compiledMask!=null)
 							{
-								if(CMLib.masking().maskCheck(MASK,M,true))
+								if(CMLib.masking().maskCheck(compiledMask,M,true))
 									num++;
 							}
 							else

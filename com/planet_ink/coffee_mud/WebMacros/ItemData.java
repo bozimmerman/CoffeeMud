@@ -474,6 +474,9 @@ public class ItemData extends StdWebMacro
 						if(I instanceof LiquidHolder)
 							return "true";
 						return "false";
+					case POWLEVEL: // show power level
+						str.append(CMLib.itemBuilder().timsLevelCalculator(I));
+						break;
 					case QUENCHED: // quenched
 						if((firstTime)&&(I instanceof Drink))
 							old=""+((Drink)I).thirstQuenched();

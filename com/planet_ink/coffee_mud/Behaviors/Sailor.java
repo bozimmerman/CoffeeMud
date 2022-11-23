@@ -184,7 +184,7 @@ public class Sailor extends StdBehavior
 		aggressive = CMParms.getParmBool(newParms, "AGGRO", false);
 		aggrMobs = CMParms.getParmBool(newParms, "AGGROMOBS", false);
 		aggrLvlChk = CMParms.getParmBool(newParms, "AGGROLEVELCHECK", false);
-		aggrMask = CMLib.masking().maskCompile(CMParms.getParmStr(newParms, "AGGROMASK", ""));
+		aggrMask = CMLib.masking().getPreCompiledMask(CMParms.getParmStr(newParms, "AGGROMASK", ""));
 		wimpy = CMParms.getParmBool(newParms, "WIMPY", true);
 		loyalShipArea	= null;
 		loyalShipItem	= null;

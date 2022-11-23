@@ -76,7 +76,7 @@ public class GrinderItems
 		RECHARGERATE,OPENTICKS,ISCLOAK,ISBOOK,MAXPAGES,MAXCHARSPAGE,
 		STATESTR,STATESUBJSTR,RIDERSTR,ISRESOURCE,RSCSUBTYPE,
 		ISLIMB,RACEID,ENCHTYPE,ISAMMOWEAPON,ISSHIPDIRCOMP,
-		ISSOFT,SOFTPARENT,SOFTNAME,ISLIQUIDHOLDER
+		ISSOFT,SOFTPARENT,SOFTNAME,ISLIQUIDHOLDER,POWLEVEL
 		;
 		public boolean isGenField;
 		private ItemDataField(final boolean isGeneric)
@@ -436,6 +436,8 @@ public class GrinderItems
 				case ISPOTION: // is potion
 					break;
 				case ISLIQUIDHOLDER: // is liquidholder
+					break;
+				case POWLEVEL: // power level
 					break;
 				case LIQUIDTYPES: // liquid types
 					if((I instanceof LiquidHolder)&&(!(I instanceof Potion)))

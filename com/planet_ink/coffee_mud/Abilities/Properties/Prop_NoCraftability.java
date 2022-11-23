@@ -93,6 +93,6 @@ public class Prop_NoCraftability extends Property
 		active = null;
 		mask = null;
 		if(newMiscText.trim().length()>0)
-			mask = CMLib.masking().maskCompile(newMiscText);
+			mask = CMLib.masking().getPreCompiledMask(newMiscText);
 	}
 }

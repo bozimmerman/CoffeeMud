@@ -208,6 +208,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		level+=itemI.basePhyStats().ability()*5;
 		for(final Ability A : props)
 			level += CMath.s_int(A.getStat("STAT-LEVEL"));
+		if(!CMLib.flags().isRemovable(itemI))
+			level-=5;
 		//savedI.destroy();
 		//IworkI.destroy(); // this was a copy
 		return level;
@@ -320,29 +322,29 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			I.phyStats().setLevel(lvl);
 			final List<Ability> props=getTimsAdjResCast(I);
 			Map<Object,Integer> levelsMap=getItemLevels(I,props);
-			int TLVL=totalLevels(levelsMap);
-			final int OTLVL=TLVL;
+			int powLevel=totalLevels(levelsMap);
+			final int OTLVL=powLevel;
 			if(lvl<0)
 			{
-				if(TLVL<=0)
+				if(powLevel<=0)
 					lvl=1;
 				else
-					lvl=TLVL;
+					lvl=powLevel;
 				I.basePhyStats().setLevel(lvl);
 				I.recoverPhyStats();
 				fixRejuvItem(I);
 				if(CMLib.flags().isCataloged(I))
 					CMLib.catalog().updateCatalog(I);
-				reportChangesDestroyOldI(oldI,I,changes,OTLVL,TLVL);
+				reportChangesDestroyOldI(oldI,I,changes,OTLVL,powLevel);
 				return true;
 			}
-			if((TLVL>0)&&(TLVL>Math.round(CMath.mul(lvl,1.1))))
+			if((powLevel>0)&&(powLevel>Math.round(CMath.mul(lvl,1.1))))
 			{
 				//int FTLVL=TLVL;
 				final Set<Object> illegalThings=new HashSet<Object>();
 				//Log.sysOut("Reset",I.name()+"("+I.basePhyStats().level()+") "+TLVL+", "+I.basePhyStats().armor()+"/"+I.basePhyStats().attackAdjustment()+"/"+I.basePhyStats().damage()+"/"+((adjA!=null)?adjA.text():"null"));
 				final long timeOut=System.currentTimeMillis()+5000;
-				while((TLVL>Math.round(CMath.mul(lvl,1.1)))
+				while((powLevel>Math.round(CMath.mul(lvl,1.1)))
 				&&(illegalThings.size()<levelsMap.size())
 				&&(System.currentTimeMillis()<timeOut))
 				{
@@ -414,23 +416,23 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						illegalThings.add(highestObject);
 					}
 					levelsMap=getItemLevels(I,props);
-					TLVL=totalLevels(levelsMap);
+					powLevel=totalLevels(levelsMap);
 				}
 				//Log.sysOut("Reset",I.name()+"("+I.basePhyStats().level()+") "+FTLVL+"->"+TLVL+", "+I.basePhyStats().armor()+"/"+I.basePhyStats().attackAdjustment()+"/"+I.basePhyStats().damage()+"/"+((adjA!=null)?adjA.text():"null"));
 				fixRejuvItem(I);
 				if(CMLib.flags().isCataloged(I))
 					CMLib.catalog().updateCatalog(I);
-				reportChangesDestroyOldI(oldI,I,changes,OTLVL,TLVL);
+				reportChangesDestroyOldI(oldI,I,changes,OTLVL,powLevel);
 				return true;
 			}
 			else
-			if(TLVL<Math.round(CMath.mul(lvl,0.9)))
+			if(powLevel<Math.round(CMath.mul(lvl,0.9)))
 			{
 				//int FTLVL=TLVL;
 				final Set<Object> illegalThings=new HashSet<Object>();
 				//Log.sysOut("Reset",I.name()+"("+I.basePhyStats().level()+") "+TLVL+", "+I.basePhyStats().armor()+"/"+I.basePhyStats().attackAdjustment()+"/"+I.basePhyStats().damage()+"/"+((adjA!=null)?adjA.text():"null"));
 				final long timeOut=System.currentTimeMillis()+5000;
-				while((TLVL<Math.round(CMath.mul(lvl,0.9)))
+				while((powLevel<Math.round(CMath.mul(lvl,0.9)))
 				&&(illegalThings.size()<levelsMap.size())
 				&&(System.currentTimeMillis()<timeOut))
 				{
@@ -503,13 +505,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						illegalThings.add(lowestObject);
 					}
 					levelsMap=getItemLevels(I,props);
-					TLVL=totalLevels(levelsMap);
+					powLevel=totalLevels(levelsMap);
 				}
 				//Log.sysOut("Reset",I.name()+"("+I.basePhyStats().level()+") "+FTLVL+"->"+TLVL+", "+I.basePhyStats().armor()+"/"+I.basePhyStats().attackAdjustment()+"/"+I.basePhyStats().damage()+"/"+((adjA!=null)?adjA.text():"null"));
 				fixRejuvItem(I);
 				if(CMLib.flags().isCataloged(I))
 					CMLib.catalog().updateCatalog(I);
-				reportChangesDestroyOldI(oldI,I,changes,OTLVL,TLVL);
+				reportChangesDestroyOldI(oldI,I,changes,OTLVL,powLevel);
 				return true;
 			}
 		}

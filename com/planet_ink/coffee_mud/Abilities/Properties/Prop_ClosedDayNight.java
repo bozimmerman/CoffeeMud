@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -64,6 +65,8 @@ public class Prop_ClosedDayNight extends Property
 	protected String	shopMsg		= null;
 	protected Room		exitRoom	= null;
 
+	protected CompiledZMask mask	= null;
+
 	@Override
 	public String accountForYourself()
 	{
@@ -77,9 +80,22 @@ public class Prop_ClosedDayNight extends Property
 	}
 
 	@Override
-	public void setMiscText(final String text)
+	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
+		int x=text.toUpperCase().lastIndexOf("MASK=");
+		if(x<0)
+			x=text.toUpperCase().lastIndexOf("MASK =");
+		if(x>0)
+		{
+			String mask=text.substring(text.indexOf("=",x+1)+1).trim();
+			if(mask.startsWith("\"")&&(mask.endsWith("\"")))
+				mask = CMStrings.deEscape(mask.substring(1,mask.length()-1));
+			text=text.substring(0,x);
+			this.mask = CMLib.masking().getPreCompiledMask(mask);
+		}
+		else
+			this.mask = null;
 		final Vector<String> V=CMParms.parse(text);
 		dayFlag=false;
 		doneToday=false;
@@ -109,7 +125,7 @@ public class Prop_ClosedDayNight extends Property
 			if(s.startsWith("HOURS="))
 			{
 				s=s.substring(6);
-				final int x=s.indexOf('-');
+				x=s.indexOf('-');
 				if(x>=0)
 				{
 					openTime=CMath.s_int(s.substring(0,x));
@@ -135,10 +151,10 @@ public class Prop_ClosedDayNight extends Property
 			exitRoom=msg.source().location();
 	}
 
-	protected boolean closed(final Environmental E)
+	protected boolean closed(final Physical P)
 	{
 		boolean closed=false;
-		Room R=CMLib.map().roomLocation(E);
+		Room R=CMLib.map().roomLocation(P);
 		if(R==null)
 		{
 			if(CMLib.map().numRooms()<=0)
@@ -166,6 +182,10 @@ public class Prop_ClosedDayNight extends Property
 					&&(R.getArea().getTimeObj().getHourOfDay()<openTime);
 			}
 		}
+		if((closed)
+		&& (this.mask != null)
+		&& (!CMLib.masking().maskCheck(mask, P, true)))
+			closed = false;
 		return closed;
 	}
 

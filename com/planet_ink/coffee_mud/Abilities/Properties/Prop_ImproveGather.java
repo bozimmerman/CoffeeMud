@@ -72,7 +72,7 @@ public class Prop_ImproveGather extends Property
 		if((maskStr==null)||(maskStr.length()==0))
 			mask=null;
 		else
-			mask=CMLib.masking().maskCompile(maskStr);
+			mask=CMLib.masking().getPreCompiledMask(maskStr);
 		final String skillStr=CMParms.getParmStr(newText, "SKILLS", "ALL");
 		final List<String> skills=CMParms.parseCommas(skillStr.toUpperCase().trim(), true);
 		improves=skills.toArray(new String[skills.size()]);

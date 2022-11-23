@@ -312,59 +312,63 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 				{
 					for(final CompiledZMaskEntry entry : entries)
 					{
+						int lvlAdj = 0;
 						switch(entry.maskType())
 						{
 						case _PLAYER:
 						case _NPC:
-							level -=5;
+							lvlAdj -=5;
 							break;
 						case _ALIGNMENT:
-							level -= (9-entry.parms().length);
+							lvlAdj -= (9-entry.parms().length);
 							break;
 						case ALIGNMENT:
-							level -= entry.parms().length;
+							lvlAdj -= entry.parms().length;
 							break;
 						case _RACECAT:
 						case _RACE:
-							level -=9;
+							lvlAdj -=9;
 							break;
 						case RACECAT:
 						case RACE:
-							level -= entry.parms().length;
+							lvlAdj -= entry.parms().length;
 							break;
 						case _BASECLASS:
-							level -= (9-entry.parms().length);
+							lvlAdj -= (9-entry.parms().length);
 							break;
 						case BASECLASS:
-							level -= entry.parms().length;
+							lvlAdj -= entry.parms().length;
 							break;
 						case _ANYCLASS:
 						case _ANYCLASSLEVEL:
 						case _CLASS:
 						case _CLANLEVEL:
-							level -= 9;
+							lvlAdj -= 9;
 							break;
 						case ANYCLASS:
 						case ANYCLASSLEVEL:
 						case CLANLEVEL:
 						case CLASS:
-							level -= entry.parms().length;
+							lvlAdj -= entry.parms().length;
 							break;
 						case _GENDER:
-							level -= (9-(entry.parms().length*3));
+							lvlAdj -= (9-(entry.parms().length*3));
 							break;
 						case GENDER:
-							level -= (entry.parms().length*3);
+							lvlAdj -= (entry.parms().length*3);
 							break;
 						case TATTOO:
 						case _TATTOO:
 						case _FACTION:
 						case FACTION:
-							level -= 9;
+							lvlAdj -= 9;
 							break;
 						default:
 							break;
 						}
+						if(lvlAdj<-9)
+							lvlAdj=-9;
+						level += lvlAdj;
 					}
 				}
 			}

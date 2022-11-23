@@ -2394,6 +2394,7 @@ public class DefaultClan implements Clan
 							Log.sysOut("Clans","Clan '"+getName()+" had the following membership: "+buf.toString());
 							return true;
 						}
+						final List<String> warned = new ArrayList<String>();
 						setStatus(CLANSTATUS_FADING);
 						final List<Integer> topRoles=getTopRankedRoles(Function.ASSIGN);
 						for(final MemberRecord member : members)
@@ -2405,6 +2406,7 @@ public class DefaultClan implements Clan
 							{
 								if(CMLib.players().playerExists(name))
 								{
+									warned.add(name);
 									if(activeMembers<minimumMembers)
 									{
 										CMLib.smtp().emailIfPossible("AutoPurge",CMStrings.capitalizeAndLower(name),"AutoPurge: "+name(),
@@ -2419,11 +2421,18 @@ public class DefaultClan implements Clan
 								}
 							}
 						}
-
+						final String warnedList = CMParms.toListString(warned);
 						if(activeMembers<minimumMembers)
-							Log.sysOut("Clans","Clan '"+getName()+"' fading with only "+activeMembers+" having logged on lately.  Will purge on "+CMLib.time().date2String(this.lastStatusChange)+purgeDuration);
+						{
+							Log.sysOut("Clans","Clan '"+getName()+"' fading with only "+activeMembers+" having logged on lately.  "
+									+ "Will purge on "+CMLib.time().date2String(this.lastStatusChange+purgeDuration)+" "
+									+ "Warned: "+warnedList);
+						}
 						else
-							Log.sysOut("Clans","Clan '"+getName()+" fading, lacking leadership, with "+activeMembers+" having logged on lately.");
+						{
+							Log.sysOut("Clans","Clan '"+getName()+" fading, lacking leadership, with "+activeMembers+" having logged on lately. "
+									+ "Warned: "+warnedList);
+						}
 						clanAnnounce(""+getGovernmentName()+" "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
 						update();
 					}
