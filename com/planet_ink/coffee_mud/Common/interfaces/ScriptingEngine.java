@@ -205,13 +205,23 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 
 	/**
 	 * Calling this method forces this script to look for a trigger
-	 * dealing with the end of a quest (QUEST_TIME_PROG * -1).
+	 * dealing with the end of a quest (QUEST_TIME_PROG * -2).
 	 * @param hostObj the scripted object
 	 * @param mob a mob representation of the host object
 	 * @param quest the name of the quest being ended
 	 * @return true if a quest ending trigger was found and run
 	 */
 	public boolean endQuest(PhysicalAgent hostObj, MOB mob, String quest);
+
+	/**
+	 * Calling this method forces this script to look for a trigger
+	 * dealing with the end of a quest step (QUEST_TIME_PROG * -1).
+	 * @param hostObj the scripted object
+	 * @param mob a mob representation of the host object
+	 * @param quest the name of the quest being ended
+	 * @return true if a quest stepping trigger was found and run
+	 */
+	public boolean stepQuest(PhysicalAgent hostObj, MOB mob, String quest);
 
 	/**
 	 * Returns the script or load command(s).

@@ -89,6 +89,13 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
+	public boolean stepQuest(final PhysicalAgent hostObj, final MOB mob, final String quest)
+	{
+		engine().stepQuest(hostObj, mob, quest);
+		return false;
+	}
+
+	@Override
 	public CMObject copyOf()
 	{
 		try

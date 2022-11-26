@@ -4354,12 +4354,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							final MOB M=(MOB)P;
 							final ScriptingEngine B=(ScriptingEngine)M.fetchBehavior("Scriptable");
 							if(B!=null)
-								B.endQuest(M,M,name());
+								B.stepQuest(M,M,name());
 							for(final Enumeration<ScriptingEngine> se= M.scripts(); se.hasMoreElements();)
 							{
 								final ScriptingEngine SE=se.nextElement();
 								if(SE!=null)
-									SE.endQuest(M, M, name());
+									SE.stepQuest(M, M, name());
 							}
 						}
 						else
@@ -4372,7 +4372,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								{
 									final ScriptingEngine SE=se.nextElement();
 									if(SE!=null)
-										SE.endQuest(P, M, name());
+										SE.stepQuest(P, M, name());
 								}
 							}
 							finally

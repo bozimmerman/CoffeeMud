@@ -707,9 +707,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return newLine;
 	}
 
-	@Override
-	public boolean endQuest(final PhysicalAgent hostObj, final MOB mob, final String quest)
+	protected boolean stepEndQuest(final PhysicalAgent hostObj, final MOB mob, final String quest, final int reqCode)
 	{
+		boolean found=false;
 		if(mob!=null)
 		{
 			final List<SubScript> scripts=getScripts(hostObj);
@@ -727,18 +727,34 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(tt==null)
 							tt=parseBits(script,0,"CCC");
 						if((tt!=null)
-						&&((tt[1].equals(quest)||(tt[1].equals("*"))))
-						&&(CMath.s_int(tt[2])<0))
+						&&((tt[1].equals(quest)||(tt[1].equals("*")))))
 						{
-							oncesDone.add(Integer.valueOf(v));
-							execute(hostObj,mob,mob,mob,null,null,script,null,newObjs());
-							return true;
+							final int tmCode = CMath.s_int(tt[2]);
+							if((tmCode == reqCode)
+							||((reqCode<-1)&&(tmCode<-1)))
+							{
+								oncesDone.add(Integer.valueOf(v));
+								execute(hostObj,mob,mob,mob,null,null,script,null,newObjs());
+								found = true;
+							}
 						}
 					}
 				}
 			}
 		}
-		return false;
+		return found;
+	}
+
+	@Override
+	public boolean endQuest(final PhysicalAgent hostObj, final MOB mob, final String quest)
+	{
+		return stepEndQuest(hostObj, mob, quest, -2);
+	}
+
+	@Override
+	public boolean stepQuest(final PhysicalAgent hostObj, final MOB mob, final String quest)
+	{
+		return stepEndQuest(hostObj, mob, quest, -1);
 	}
 
 	@Override
@@ -12811,6 +12827,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						&&(S.defaultQuestName()!=null)
 						&&(S.defaultQuestName().equalsIgnoreCase(defaultQuestName)))
 						{
+							S.stepQuest(newTarget, (newTarget instanceof MOB)?((MOB)newTarget):monster, defaultQuestName);
 							newTarget.delScript(S);
 							S.endQuest(newTarget, (newTarget instanceof MOB)?((MOB)newTarget):monster, defaultQuestName);
 						}
@@ -12827,6 +12844,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						&&(S.defaultQuestName()!=null)
 						&&(S.defaultQuestName().equalsIgnoreCase(q)))
 						{
+							S.stepQuest(scripted, monster, S.defaultQuestName());
 							foundOne=true;
 							S.endQuest(scripted, monster, S.defaultQuestName());
 							scripted.delScript(S);

@@ -1723,6 +1723,7 @@ public class Quests extends StdLibrary implements QuestManager
 					Q=findQuest(SE.defaultQuestName());
 				if(Q==null)
 				{
+					SE.stepQuest(player, player, SE.defaultQuestName());
 					SE.endQuest(player, player, SE.defaultQuestName());
 					player.delScript(SE);
 				}

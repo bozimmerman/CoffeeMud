@@ -233,6 +233,7 @@ public class Questwins extends StdCommand
 			}
 			if(foundS!=null)
 			{
+				foundS.stepQuest(mob, mob, foundS.defaultQuestName());
 				foundS.endQuest(mob, mob, foundS.defaultQuestName());
 				mob.delScript(foundS);
 			}
@@ -263,6 +264,7 @@ public class Questwins extends StdCommand
 			if((!mob.isMonster()&&(mob.session().confirm(L("Drop the quest '@x1', are you sure (y/N)?",Q.name()),"N"))))
 			{
 				CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTDROPPED);
+				foundS.stepQuest(mob, mob, foundS.defaultQuestName());
 				foundS.endQuest(mob, mob, foundS.defaultQuestName());
 				mob.delScript(foundS);
 				mob.tell(L("Quest dropped."));

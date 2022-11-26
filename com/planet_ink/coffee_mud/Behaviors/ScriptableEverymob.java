@@ -163,6 +163,12 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
+	public boolean stepQuest(final PhysicalAgent hostObj, final MOB mob, final String quest)
+	{
+		return (sampleB==null)?false:sampleB.stepQuest(hostObj, mob, quest);
+	}
+
+	@Override
 	public boolean eval(final PhysicalAgent scripted, final MOB source,
 						final Environmental target, final MOB monster, final Item primaryItem,
 						final Item secondaryItem, final String msg, final Object[] tmp, final String[][] eval,

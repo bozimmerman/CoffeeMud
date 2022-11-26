@@ -2231,6 +2231,11 @@ quest is equal to the number of minutes specified. This is used as part
 of a quest plot line, to allow the mobs to give warnings about a quest
 that is running out of time. If the Scriptable behavior was granted as
 part of a Quest, then * may be substituted for the questname.</p>
+<p>The quest time minutes ranges from a positive number to 0. A 
+quest time minutes value of -1 will trigger whenever a quest Step 
+is completed, bearing in mind that *every* quest has at least one step.
+A quest time minutes value of -2 will trigger whenever the script is
+being removed, usually denoting the end of the quest over-all.</p>
 
       <p>EXAMPLES:</p>
 
