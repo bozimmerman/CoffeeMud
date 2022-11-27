@@ -734,7 +734,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		&&(!CMSecurity.isCommandDisabled(CMClass.classID(C).toUpperCase())))
 			return CMLib.leveler().deferCommandCheck(mob, C, commands);
 
-		social=CMLib.socials().fetchSocial(commands,false,true);
+		social=mob.triggerer().fetchSocial(commands,false,true);
+		if(social == null)
+			social=CMLib.socials().fetchSocial(commands,false,true);
 		if((social!=null)
 		&&(social.meetsCriteriaToUse(mob)))
 		{
