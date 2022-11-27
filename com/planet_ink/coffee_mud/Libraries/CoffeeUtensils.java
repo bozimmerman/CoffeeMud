@@ -1682,7 +1682,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						}
 					}
 					if(vdex>=vals.length)
-						vals = Arrays.copyOf(vals, vdex);
+						vals = Arrays.copyOf(vals, vdex+1);
 					vals[vdex++]=new Cost(amt,typ,curr);
 				}
 			}
