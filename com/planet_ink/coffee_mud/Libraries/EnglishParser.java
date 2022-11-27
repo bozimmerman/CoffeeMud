@@ -666,9 +666,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(getSkillInvokeWord(mob,firstWord)!=null)
 			return null;
 
-		Social social=mob.triggerer().fetchSocial(commands,true,true);
+		Social social=mob.triggerer().fetchSocial(commands,true, true);
 		if(social == null)
-			social=CMLib.socials().fetchSocial(commands,true,true);
+			social=CMLib.socials().fetchSocial(commands,true, true);
 		if((social!=null)
 		&&(social.meetsCriteriaToUse(mob)))
 			return social;
@@ -734,9 +734,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		&&(!CMSecurity.isCommandDisabled(CMClass.classID(C).toUpperCase())))
 			return CMLib.leveler().deferCommandCheck(mob, C, commands);
 
-		social=mob.triggerer().fetchSocial(commands,false,true);
+		social=mob.triggerer().fetchSocial(commands,false, true);
 		if(social == null)
-			social=CMLib.socials().fetchSocial(commands,false,true);
+			social=CMLib.socials().fetchSocial(commands,false, true);
 		if((social!=null)
 		&&(social.meetsCriteriaToUse(mob)))
 		{
