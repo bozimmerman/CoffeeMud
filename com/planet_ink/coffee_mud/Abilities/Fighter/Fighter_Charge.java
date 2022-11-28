@@ -200,6 +200,8 @@ public class Fighter_Charge extends FighterSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				if(mob.getVictim()==null)
+					mob.setVictim(target);
 				if(mob.getVictim()==target)
 				{
 					mob.setRangeToTarget(0);
