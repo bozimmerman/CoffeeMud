@@ -38,6 +38,7 @@ public class NonTriggerer implements Triggerer
 {
 	protected int version = -1;
 
+	private final static Map<String, List<Social>> emptyMap = new ReadOnlyMap<String, List<Social>>(new HashMap<String, List<Social>>());
 	private final static Object[]	trackingNothing	= new Object[0];
 	private final static MOB[]		trackingNoone	= new MOB[0];
 
@@ -193,8 +194,8 @@ public class NonTriggerer implements Triggerer
 	}
 
 	@Override
-	public Social fetchSocial(final List<String> commands, final boolean exactOnly, final boolean checkItemTargets)
+	public Map<String,List<Social>> getSocialSets()
 	{
-		return null;
+		return emptyMap;
 	}
 }

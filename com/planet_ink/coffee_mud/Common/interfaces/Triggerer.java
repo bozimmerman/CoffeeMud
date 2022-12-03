@@ -261,15 +261,11 @@ public interface Triggerer extends CMCommon
 	public MOB[] whosDoneWaiting();
 
 	/**
-	 * Given a parsed user command line entry, this will search the trigger internal
-	 * socials for a likely social object match, and return it.
+	 * Returns the internal socials applicable to this trigger.
 	 *
-	 * @param commands the parsed user command line
-	 * @param exactOnly true for exact base name match only
-	 * @param checkItemTargets true to consider I-NAME target socials
-	 * @return null, or the found social.
+	 * @return Map of social names and their variations applicable here
 	 */
-	public Social fetchSocial(List<String> commands, boolean exactOnly, boolean checkItemTargets);
+	public Map<String,List<Social>> getSocialSets();
 
 	/**
 	 * Returns the trigger keys for any triggers that the given

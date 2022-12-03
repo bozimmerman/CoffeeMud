@@ -632,6 +632,155 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			newParagraph.append(paragraph.substring(startDex));
 		return newParagraph.toString();
 	}
+	
+	public Social findSocial(final MOB mob, final List<String> commands, final boolean exactOnly)
+	{
+		if(commands.size()==0)
+			return null;
+		if(mob == null)
+			return CMLib.socials().fetchSocial(commands, exactOnly, true);
+		
+		final String socName = commands.get(0).toUpperCase().trim();
+		List<Social> socV = null;
+		final Map<String,List<Social>> trigSet = mob.triggerer().getSocialSets();
+		if(exactOnly)
+		{
+			if((trigSet != null)
+			&&(!trigSet.isEmpty()))
+				socV = trigSet.get(socName);
+			if(socV == null)
+				socV = CMLib.socials().getSocialsSet(socName);
+			if(socV == null)
+				return null;
+		}
+		else
+		{
+			if((trigSet != null)
+			&&(!trigSet.isEmpty()))
+			{
+				for(final Iterator<String> s = trigSet.keySet().iterator();s.hasNext();)
+				{
+					final String sn = s.next();
+					if(sn.startsWith(socName))
+					{
+						socV = trigSet.get(sn);
+						break;
+					}
+				}
+				if(socV == null)
+				{
+					for(final String sn : CMLib.socials().getSocialsBaseList())
+					{
+						if(sn.startsWith(socName))
+						{
+							socV = CMLib.socials().getSocialsSet(sn);
+							break;
+						}
+					}
+				}
+			}
+		}
+		if(socV == null)
+			return null;
+		final String targ1 = (commands.size()>1)?commands.get(1).toUpperCase().trim():"";
+		final String targn = (commands.size()>1)?CMParms.combine(commands,1).toUpperCase().trim():"";
+		final String argx  = (commands.size()>2)?CMParms.combine(commands,2).toUpperCase().trim():"";
+		// 1. easiest case: no target 
+		if(targ1.length()==0)
+		{
+			for(final Social S : socV)
+			{
+				if((S.targetName().length()==0)
+				&&(S.argumentName().length()==0)
+				&&(S.meetsCriteriaToUse(mob)))
+					return S;
+			}
+			return null;
+		}
+		// -- here on out, an target of some sort was given
+		
+		// 2. second easiest case: named target
+		for(final Social S : socV)
+		{
+			if(S.targetName().equalsIgnoreCase(targ1)
+			&&(S.argumentName().equalsIgnoreCase(argx)
+				||((!exactOnly) && S.argumentName().toUpperCase().startsWith(argx)))
+			&&(S.meetsCriteriaToUse(mob)))
+				return S;
+			if(S.targetName().equalsIgnoreCase(targn)
+			&&(S.argumentName().length()==0)
+			&&(S.meetsCriteriaToUse(mob)))
+				return S;
+		}
+		// 3. argument exists, and match is ONLY argument match.
+		if(argx.length()>0)
+		{
+			Social social = null;
+			for(final Social S : socV)
+			{
+				if((S.argumentName().length()>0)
+				&&(S.isTargetable())
+				&&(S.argumentName().equalsIgnoreCase(argx)
+					||((!exactOnly) && S.argumentName().toUpperCase().startsWith(argx)))
+				&&(S.meetsCriteriaToUse(mob)))
+				{
+					if(social != null)
+					{
+						social = null;
+						break;
+					}
+					social = S;
+				}
+			}
+			if(social != null)
+				return social;
+		}
+		// 4. now look for best match to actual target 
+		final Room R=mob.location();
+		if(R!=null)
+		{
+			Physical P = R.fetchFromMOBRoomFavorsMOBs(mob, null, targn, Wearable.FILTER_ANY);
+			if(P == null)
+				P = R.fetchFromMOBRoomFavorsMOBs(mob, null, targ1, Wearable.FILTER_ANY);
+			if(P != null)
+			{
+				for(final Social S : socV)
+				{
+					if(S.isTargetable()
+					&& S.targetable(P)
+					&&(S.argumentName().equalsIgnoreCase(argx)
+						||((!exactOnly) && S.argumentName().toUpperCase().startsWith(argx)))
+					&&(S.meetsCriteriaToUse(mob)))
+						return S;
+				}
+			}
+			// nothing at all matched, so just return something that can Not match
+			for(final Social S : socV)
+			{
+				if(S.targetName().equals("<T-NAME>")
+				&&(S.argumentName().equalsIgnoreCase(argx)
+					||((!exactOnly) && S.argumentName().toUpperCase().startsWith(argx)))
+				&&(S.meetsCriteriaToUse(mob)))
+					return S;
+			}
+			for(final Social S : socV)
+			{
+				if(S.isTargetable()
+				&&(S.argumentName().equalsIgnoreCase(argx)
+					||((!exactOnly) && S.argumentName().toUpperCase().startsWith(argx)))
+				&&(S.meetsCriteriaToUse(mob)))
+					return S;
+			}
+			for(final Social S : socV)
+			{
+				if((S.argumentName().equalsIgnoreCase(argx)
+					||((!exactOnly) && S.argumentName().toUpperCase().startsWith(argx)))
+				&&(S.meetsCriteriaToUse(mob)))
+					return S;
+			}
+		}
+		return null;
+	}
 
 	@Override
 	public CMObject findCommand(final MOB mob, final List<String> commands)
@@ -666,11 +815,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(getSkillInvokeWord(mob,firstWord)!=null)
 			return null;
 
-		Social social=mob.triggerer().fetchSocial(commands,true, true);
-		if(social == null)
-			social=CMLib.socials().fetchSocial(commands,true, true);
-		if((social!=null)
-		&&(social.meetsCriteriaToUse(mob)))
+		Social social=findSocial(mob, commands, true);
+		if(social!=null)
 			return social;
 
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
@@ -734,11 +880,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		&&(!CMSecurity.isCommandDisabled(CMClass.classID(C).toUpperCase())))
 			return CMLib.leveler().deferCommandCheck(mob, C, commands);
 
-		social=mob.triggerer().fetchSocial(commands,false, true);
-		if(social == null)
-			social=CMLib.socials().fetchSocial(commands,false, true);
-		if((social!=null)
-		&&(social.meetsCriteriaToUse(mob)))
+		social=findSocial(mob, commands, false);
+		if(social!=null)
 		{
 			commands.set(0,social.baseName());
 			return social;

@@ -1168,6 +1168,9 @@ public class DefaultTriggerer implements Triggerer
 			final Room R=CMLib.map().roomLocation(target);
 			if(R==null)
 				return "$"+target.Name()+"$";
+			if((target instanceof Item)
+			&&(((Item)target).owner() !=R))
+				return "$"+target.Name()+"$";
 			return R.getContextName(target);
 		}
 		else
@@ -1613,9 +1616,9 @@ public class DefaultTriggerer implements Triggerer
 	}
 
 	@Override
-	public Social fetchSocial(final List<String> commands, final boolean exactOnly, final boolean checkItemTargets)
+	public Map<String,List<Social>> getSocialSets()
 	{
-		return CMLib.socials().fetchSocialFromSet(socialsMap, commands, exactOnly, checkItemTargets);
+		return socialsMap;
 	}
 
 	@Override
