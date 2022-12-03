@@ -255,8 +255,11 @@ public class Spell_Clone extends Spell
 					((Wand)I).setSpell(null);
 				}
 				I.delEffect(I.fetchEffect("Prop_HaveZapper"));
-				final Ability A=CMClass.getAbility("Prop_HaveZapper");
+				Ability A=CMClass.getAbility("Prop_HaveZapper");
 				A.setMiscText("-NAMES");
+				I.addNonUninvokableEffect(A);
+				A=CMClass.getAbility("Prop_AbilityImmunity");
+				A.setMiscText("Spell_Disenchant;Prayer_Disenchant;Spell_Duplicate;Spell_Fabricate;Spell_PolymorphObject");
 				I.addNonUninvokableEffect(A);
 				I.setRawWornCode(ogI.rawWornCode());
 				I.setContainer(cloneC);
