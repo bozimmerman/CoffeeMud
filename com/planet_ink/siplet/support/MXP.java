@@ -492,6 +492,8 @@ public class MXP
 						parts.add(bit.toString());
 					bit = null;
 				}
+				else
+					bit.append(buf.charAt(i));
 				break;
 			default:
 				if ((quotes != '\0') || (Character.isLetter(buf.charAt(i))) || (bit.length() > 0))
