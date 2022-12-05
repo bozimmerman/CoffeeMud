@@ -279,14 +279,29 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		&&(CMClass.exits().hasMoreElements())
 		&&(CMClass.locales().hasMoreElements()))
 		{
-			if(A.canAffect(Ability.CAN_ITEMS)||A.canTarget(Ability.CAN_ITEMS))
-				prepend.append(L("Items "));
-			if(A.canAffect(Ability.CAN_MOBS)||A.canTarget(Ability.CAN_MOBS))
-				prepend.append(L("Creatures "));
-			if(A.canAffect(Ability.CAN_EXITS)||A.canTarget(Ability.CAN_EXITS))
-				prepend.append(L("Exits "));
-			if(A.canAffect(Ability.CAN_ROOMS)||A.canTarget(Ability.CAN_ROOMS))
-				prepend.append(L("Rooms "));
+			switch(A.classificationCode()&Ability.ALL_ACODES)
+			{
+			case Ability.ACODE_PROPERTY:
+				if(A.canAffect(Ability.CAN_ITEMS)||A.canTarget(Ability.CAN_ITEMS))
+					prepend.append(L("Items "));
+				if(A.canAffect(Ability.CAN_MOBS)||A.canTarget(Ability.CAN_MOBS))
+					prepend.append(L("Creatures "));
+				if(A.canAffect(Ability.CAN_EXITS)||A.canTarget(Ability.CAN_EXITS))
+					prepend.append(L("Exits "));
+				if(A.canAffect(Ability.CAN_ROOMS)||A.canTarget(Ability.CAN_ROOMS))
+					prepend.append(L("Rooms "));
+				break;
+			default:
+				if(A.canTarget(Ability.CAN_ITEMS))
+					prepend.append(L("Items "));
+				if(A.canTarget(Ability.CAN_MOBS))
+					prepend.append(L("Creatures "));
+				if(A.canTarget(Ability.CAN_EXITS))
+					prepend.append(L("Exits "));
+				if(A.canTarget(Ability.CAN_ROOMS))
+					prepend.append(L("Rooms "));
+				break;
+			}
 		}
 		else
 		if(A.abstractQuality()==Ability.QUALITY_INDIFFERENT)
