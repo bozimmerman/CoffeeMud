@@ -1,1 +1,4 @@
 roofie	FOOD	Poison_Slumberall	1	LAMPOIL	1	CHICKEN	1										
+poppy milk	DRINK	Poison_Slumberall	1	POPPY	1	MILK	1										
+theriac	FOOD	Prayer_CureLight	1	POPPY	1	LIQUOR	1										
+mandragora	FOOD	Prayer_CureLight	1	POPPY	1	LIQUOR	1										

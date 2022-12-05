@@ -665,6 +665,11 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			super.executeMsg(myHost,msg);
 	}
 
+	protected boolean canSellItem(final MOB mob, final Item item)
+	{
+		return true;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -685,7 +690,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		{
 			if(commands.size()==1)
 			{
-				commonTell(mob,L("Remove what item from the marketing list?"));
+				commonTell(mob,L("Remove what item from the list?"));
 				return false;
 			}
 			final String itemName=CMParms.combine(commands,1);
@@ -760,7 +765,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			if(I==null)
 				break;
 			if((I instanceof Container)
-			&&(((Container)I).getContents().size()>0))
+			&&(((Container)I).getContents().size()>0)
+			&&(!canSellItem(mob, I)))
 			{
 				commonTell(mob,I,null,L("You may not put <T-NAME> up for sale."));
 				return false;

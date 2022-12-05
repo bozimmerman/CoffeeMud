@@ -20,6 +20,7 @@
  18. New Bombs: Bomb_SpellBlast
  19. New Spell: Spell_DetonateBombs
  20. Prop_Closed* properties now support a zappermask for the object.
+ 21. New common skill: Black Marketeering, for Thieves, Burglars, and Gaolers
 
 # Build 5.10.0 Release 9/23/2022
   1. New Scriptable functions: ROOMPC and AREAPC

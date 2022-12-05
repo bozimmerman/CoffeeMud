@@ -217,6 +217,7 @@ public class Thief extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_Flank",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_ImprovedDistraction",false,CMParms.parseSemicolons("Thief_Distract",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"BlackMarketeering",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_Trap",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_Warrants",true);
