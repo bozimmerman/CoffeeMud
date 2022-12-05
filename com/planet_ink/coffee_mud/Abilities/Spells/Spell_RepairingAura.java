@@ -58,7 +58,7 @@ public class Spell_RepairingAura extends Spell
 	@Override
 	protected int canTargetCode()
 	{
-		return CAN_ITEMS;
+		return CAN_ITEMS|CAN_MOBS;
 	}
 
 	@Override
