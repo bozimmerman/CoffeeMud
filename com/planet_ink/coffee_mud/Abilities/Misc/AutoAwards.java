@@ -140,8 +140,12 @@ public class AutoAwards extends StdAbility
 		final Physical affected=this.affected;
 		if(affected != null)
 		{
+			TimeClock lastClock = this.lastClock;
 			if(lastClock == null)
+			{
 				lastClock = (TimeClock)CMClass.getCommon("DefaultTimeClock");
+				this.lastClock = lastClock;
+			}
 
 			final int astroHash = CMLib.awards().getAutoPropertiesHash();
 			if((savedHash==null)
