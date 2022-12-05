@@ -118,7 +118,7 @@ public class HoleInTheGround extends GenContainer
 						return false;
 					}
 				}
-				if((msg.tool() instanceof ClanItem))
+				if(msg.tool() instanceof ClanItem)
 				{
 					msg.source().tell(L("Go may not bury a clan item."));
 					return false;

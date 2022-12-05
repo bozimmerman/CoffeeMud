@@ -1471,7 +1471,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			""+item.basePhyStats().weight(),
 			""+item.basePhyStats().ability(),
 			""+item.basePhyStats().level(),
-			dispossessionTimeLeftString(item)+decayTime,
+			(dispossessionTimeLeftString(item)+decayTime)
+				+ (CMLib.flags().isSavable(item)?" (saveable)":" (NOT savable)"),
 			spells.toString(),
 			""+item.text().length(),
 			item.text()

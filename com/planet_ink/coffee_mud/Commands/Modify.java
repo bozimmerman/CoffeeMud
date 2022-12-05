@@ -226,6 +226,13 @@ public class Modify extends StdCommand
 			}
 		}
 		else
+		if(command.equals("SAVEABLE")
+		&&(CMath.isBool(restStr)))
+		{
+			CMLib.flags().setSavable(modItem, CMath.s_bool(restStr));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 shake(s) under the transforming power.",modItem.name()));
+		}
+		else
 		if(command.equals("MISC"))
 		{
 			if(modItem.isGeneric())
@@ -238,6 +245,7 @@ public class Modify extends StdCommand
 		if(CMLib.coffeeMaker().isAnyGenStat(modItem, command))
 		{
 			CMLib.coffeeMaker().setAnyGenStat(modItem,command, restStr);
+			modItem.recoverPhyStats();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 shake(s) under the transforming power.",modItem.name()));
 		}
 		else
