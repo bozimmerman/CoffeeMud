@@ -221,7 +221,7 @@ public interface ShopKeeper extends Environmental, Economics
 	public boolean doISellThis(Environmental thisThang);
 
 	/**
-	 * Sets the zapper mask which applies to items to determine whether they are bought and solid
+	 * Sets the zapper mask which applies to items to determine whether they are bought and sold
 	 * by this shopkeeper.
 	 * @see ShopKeeper#isSold(int)
 	 * @see ShopKeeper#getWhatIsSoldZappermask()
@@ -231,7 +231,7 @@ public interface ShopKeeper extends Environmental, Economics
 	public void setWhatIsSoldZappermask(String newSellMask);
 
 	/**
-	 * Returns the zapper mask which applies to items to determine whether they are bought and solid
+	 * Returns the zapper mask which applies to items to determine whether they are bought and sold
 	 * by this shopkeeper.
 	 * @see ShopKeeper#isSold(int)
 	 * @see ShopKeeper#setWhatIsSoldZappermask(String)

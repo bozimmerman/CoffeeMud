@@ -632,14 +632,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			newParagraph.append(paragraph.substring(startDex));
 		return newParagraph.toString();
 	}
-	
+
 	public Social findSocial(final MOB mob, final List<String> commands, final boolean exactOnly)
 	{
 		if(commands.size()==0)
 			return null;
 		if(mob == null)
 			return CMLib.socials().fetchSocial(commands, exactOnly, true);
-		
+
 		final String socName = commands.get(0).toUpperCase().trim();
 		List<Social> socV = null;
 		final Map<String,List<Social>> trigSet = mob.triggerer().getSocialSets();
@@ -685,7 +685,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		final String targ1 = (commands.size()>1)?commands.get(1).toUpperCase().trim():"";
 		final String targn = (commands.size()>1)?CMParms.combine(commands,1).toUpperCase().trim():"";
 		final String argx  = (commands.size()>2)?CMParms.combine(commands,2).toUpperCase().trim():"";
-		// 1. easiest case: no target 
+		// 1. easiest case: no target
 		if(targ1.length()==0)
 		{
 			for(final Social S : socV)
@@ -698,7 +698,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return null;
 		}
 		// -- here on out, an target of some sort was given
-		
+
 		// 2. second easiest case: named target
 		for(final Social S : socV)
 		{
@@ -735,7 +735,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			if(social != null)
 				return social;
 		}
-		// 4. now look for best match to actual target 
+		// 4. now look for best match to actual target
 		final Room R=mob.location();
 		if(R!=null)
 		{
@@ -1750,7 +1750,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(matchWords.size()>1)
 		{
 			final MOB M=mob.location().fetchInhabitant(matchWords.get(matchWords.size()-1));
-			if((M!=null)&&(CMLib.coffeeShops().getShopKeeper(M)!=null)&&(CMLib.flags().canBeSeenBy(M,mob)))
+			if((M!=null)
+			&&(CMLib.coffeeShops().getShopKeeper(M)!=null)
+			&&(CMLib.flags().canBeSeenBy(M,mob)))
 			{
 				shopkeeper=M;
 				matchWords.remove(matchWords.size()-1);
