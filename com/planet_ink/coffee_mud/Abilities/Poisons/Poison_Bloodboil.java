@@ -104,6 +104,12 @@ public class Poison_Bloodboil extends Poison
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_POTENTIALLY_DEADLY;
+	}
+
+	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if(affected instanceof MOB)

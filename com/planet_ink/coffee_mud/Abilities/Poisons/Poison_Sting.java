@@ -104,6 +104,12 @@ public class Poison_Sting extends Poison
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_POTENTIALLY_DEADLY;
+	}
+
+	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-1);
