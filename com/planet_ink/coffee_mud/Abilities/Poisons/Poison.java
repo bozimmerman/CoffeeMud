@@ -231,14 +231,20 @@ public class Poison extends StdAbility implements HealthCondition
 		if((--poisonTick)<=0)
 		{
 			poisonTick=POISON_DELAY();
-			if(POISON_AFFECT().length()>0)
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,POISON_AFFECT()+CMLib.protocol().msp("poisoned.wav",10));
-			final MOB invoker=(invoker()!=null) ? invoker() : mob;
-			if(POISON_DAMAGE()!=0)
+			final Room R=mob.location();
+			if(R!=null)
 			{
-				CMLib.combat().postDamage(invoker,mob,this,POISON_DAMAGE(),CMMsg.MASK_ALWAYS|CMMsg.TYP_POISON,-1,null);
-				if((!mob.isInCombat())&&(mob!=invoker)&&(mob.location()!=null)&&(mob.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,mob)))
-					CMLib.combat().postAttack(mob,invoker,mob.fetchWieldedItem());
+				if(POISON_AFFECT().length()>0)
+					R.show(mob,null,CMMsg.MSG_OK_VISUAL,POISON_AFFECT()+CMLib.protocol().msp("poisoned.wav",10));
+				final MOB invoker=(invoker()!=null) ? invoker() : mob;
+				if(POISON_DAMAGE()!=0)
+				{
+					CMLib.combat().postDamage(invoker,mob,this,POISON_DAMAGE(),CMMsg.MASK_ALWAYS|CMMsg.TYP_POISON,-1,null);
+					if((!mob.isInCombat())
+					&&(mob!=invoker)
+					&&(R.isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,mob)))
+						CMLib.combat().postAttack(mob,invoker,mob.fetchWieldedItem());
+				}
 			}
 		}
 		return true;

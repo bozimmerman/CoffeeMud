@@ -144,6 +144,7 @@ public class Gaoler extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"BodyPiercing",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Groin",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Searching",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"DrugCutting",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Blacksmithing",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Nippletwist",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Whipsmack",0,false);
@@ -380,9 +381,10 @@ public class Gaoler extends StdCharClass
 			&&(CMLib.map().getStartArea(host)!=null)
 			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
+			&&(msg.sourceMinor()!=CMMsg.TYP_NOISE)
 			&&(((MOB)host).charStats().getClassLevel(this)>0))
 			{
-				final CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,null,CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!@x1",CMLib.protocol().msp("scream.wav",40)));
+				final CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,msg.tool(),CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!@x1",CMLib.protocol().msp("scream.wav",40)));
 				if(((MOB)msg.target()).location().okMessage(msg.target(),msg2))
 				{
 					final MOB mob=(MOB)host;

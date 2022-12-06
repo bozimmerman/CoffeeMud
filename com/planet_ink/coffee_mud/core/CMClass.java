@@ -834,6 +834,16 @@ public class CMClass extends ClassLoader
 	}
 
 	/**
+	 * Returns a random available basic item prototype from your classloader
+	 *
+	 * @return a random available basic item prototype
+	 */
+	public static final Item randomBasicItemPrototype()
+	{
+		return c().items.elementAt((int) Math.round(Math.floor(Math.random() * (c().items.size()))));
+	}
+
+	/**
 	 * Returns a random available char class prototype from your classloader
 	 *
 	 * @return a random available char class prototype
