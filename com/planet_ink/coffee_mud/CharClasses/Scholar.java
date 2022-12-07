@@ -297,7 +297,8 @@ public class Scholar extends StdCharClass
 						}
 					}
 				}
-				if(bookDealer)
+				if((bookDealer)
+				||(CMLib.english().containsString(R.displayText(), "library")))
 				{
 					int xpGain=50;
 					if((xpGain=CMLib.leveler().postExperience((MOB)host,null,null,xpGain,true))>0)
