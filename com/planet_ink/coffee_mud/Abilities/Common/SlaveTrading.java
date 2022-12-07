@@ -77,8 +77,29 @@ public class SlaveTrading extends CommonSkill
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		commands.add(0,"SELL");
-		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Sell whom to whom?");
-		if(shopkeeper==null)
+		Environmental shopM= null;
+		if(commands.size()>2)
+		{
+			final String what=commands.get(commands.size()-1);
+			shopM=mob.location().fetchInhabitant(what);
+			if(shopM != null)
+			{
+				commands.remove(commands.size()-1);
+				if(shopM == mob)
+				{
+					mob.tell(L("You can't trade with yourself."));
+					return false;
+				}
+				if(!((MOB)shopM).isPlayer())
+				{
+					mob.tell(L("You can't trade with @x1.",shopM.Name()));
+					return false;
+				}
+			}
+		}
+		if(shopM==null)
+			shopM=CMLib.english().parseShopkeeper(mob,commands,"Sell whom to whom?");
+		if(shopM==null)
 			return false;
 		if(commands.size()==0)
 		{
@@ -87,43 +108,72 @@ public class SlaveTrading extends CommonSkill
 		}
 
 		final String str=CMParms.combine(commands,0);
-		final MOB M=mob.location().fetchInhabitant(str);
-		if(M!=null)
+		final MOB slaveM=mob.location().fetchInhabitant(str);
+		if(slaveM!=null)
 		{
-			if(!CMLib.flags().canBeSeenBy(M,mob))
+			if(!CMLib.flags().canBeSeenBy(slaveM,mob))
 			{
 				commonTell(mob,L("You don't see anyone called '@x1' here.",str));
 				return false;
 			}
-			if(!M.isMonster())
+			if(!slaveM.isMonster())
 			{
-				commonTell(mob,M,null,L("You can't sell <T-NAME> as a slave."));
+				commonTell(mob,slaveM,null,L("You can't sell <T-NAME> as a slave."));
 				return false;
 			}
-			if(CMLib.flags().isAnimalIntelligence(M))
+			if(CMLib.flags().isAnimalIntelligence(slaveM))
 			{
-				commonTell(mob,M,null,L("You can't sell <T-NAME> as a slave.  Animals are not slaves."));
+				commonTell(mob,slaveM,null,L("You can't sell <T-NAME> as a slave.  Animals are not slaves."));
 				return false;
 			}
 
-			final Ability oldEnslaveA=M.fetchEffect("Skill_Enslave");
-			if((oldEnslaveA==null)||(!oldEnslaveA.text().equals(mob.Name())))
+			if(!CMLib.flags().isASlave(slaveM, mob))
 			{
-				commonTell(mob,M,null,L("<T-NAME> do(es)n't seem to be your slave."));
+				commonTell(mob,slaveM,null,L("<T-NAME> do(es)n't seem to be your slave."));
 				return false;
 			}
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
+
 		if(proficiencyCheck(mob,0,auto))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,M,CMMsg.MSG_SELL,L("<S-NAME> sell(s) <O-NAME> to <T-NAME>."));
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
+			final ShopKeeper sk = CMLib.coffeeShops().getShopKeeper(shopM);
+			final CMMsg smsg=CMClass.getMsg(mob,slaveM,this,CMMsg.MSG_NOISYMOVEMENT,null);
+			if(mob.location().okMessage(mob, smsg))
+			{
+				mob.location().send(mob,smsg);
+				if((sk != null)
+				||(!(shopM instanceof MOB)))
+				{
+					final CMMsg msg=CMClass.getMsg(mob,shopM,slaveM,CMMsg.MSG_SELL,L("<S-NAME> sell(s) <O-NAME> to <T-NAME>."));
+					if(mob.location().okMessage(mob,msg))
+						mob.location().send(mob,msg);
+				}
+				else
+				{
+					final CMMsg msg=CMClass.getMsg(mob,shopM,slaveM,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> hand(s) <O-NAME> over to <T-NAME>."));
+					if(mob.location().okMessage(mob,msg))
+					{
+						mob.location().send(mob,msg);
+						final PrivateProperty P = CMLib.law().getPropertyRecord(slaveM);
+						if((P != null)
+						&&(shopM instanceof MOB))
+						{
+							P.setOwnerName(shopM.Name());
+							if(slaveM.amFollowing()!=null)
+								CMLib.commands().postFollow(slaveM, null, true);
+							CMLib.commands().postFollow(slaveM, (MOB)shopM , false);
+						}
+						else
+							mob.location().show(slaveM, null, CMMsg.MSG_OK_VISUAL, L("The trade fails."));
+					}
+				}
+			}
 		}
 		else
-			beneficialWordsFizzle(mob,shopkeeper,L("<S-NAME> <S-IS-ARE>n't able to strike a deal with <T-NAME>."));
+			beneficialWordsFizzle(mob,shopM,L("<S-NAME> <S-IS-ARE>n't able to strike a deal with <T-NAME>."));
 		return true;
 	}
 }

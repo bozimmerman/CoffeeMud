@@ -572,8 +572,6 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 			final Room locR=slaveM.location();
 			if(locR==null)
 				return;
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
-				Log.debugOut("GEAS","BEINGMOBILE: "+wander);
 			if(startR == null)
 			{
 				gridSize=5;
@@ -583,17 +581,38 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				botheredPlaces.add(slaveM.location());
 			final List<Room> curTrail = this.curTrail;
 			if((curTrail != null)
-			&&(curTrail.size()>0))
+			&&(curTrail.size()>0)
+			&&(locR != curTrail.get(0)))
 			{
 				final int nextDir = CMLib.tracking().trackNextDirectionFromHere(curTrail, locR, false);
 				if(nextDir >= 0)
 				{
+					final Room tgtR = locR.getRoomInDir(nextDir);
 					CMLib.tracking().walk(slaveM, nextDir, false, false);
-					if(slaveM.location( ) != locR)
+					if(slaveM.location( ) == tgtR)
 					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
+						{
+							final String dest = CMLib.map().getApproximateExtendedRoomID(curTrail.get(0));
+							final String dr = CMLib.map().getApproximateExtendedRoomID(tgtR);
+							Log.debugOut("GEAS","MOBILE: TRACKTO: "+dest+": ENTER: "+dr);
+						}
 						searchGrid.remove(slaveM.location());
 						return; // kaplah!
 					}
+					else
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
+					{
+						final String dest = CMLib.map().getApproximateExtendedRoomID(curTrail.get(0));
+						final String dr = CMLib.map().getApproximateExtendedRoomID(tgtR);
+						Log.debugOut("GEAS","MOBILE: TRACKTO: "+dest+": ENTER: "+dr+": FAIL!");
+					}
+				}
+				else
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
+				{
+					final String dest = CMLib.map().getApproximateExtendedRoomID(curTrail.get(0));
+					Log.debugOut("GEAS","MOBILE: TRACKTO: "+dest+": DIR: "+nextDir+": FAIL!");
 				}
 			}
 			this.curTrail = null;
@@ -610,8 +629,19 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 						CMLib.tracking().walk(slaveM, d, false, false);
 						if(slaveM.location() == nR)
 						{
+							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
+							{
+								final String dest = CMLib.map().getApproximateExtendedRoomID(nR);
+								Log.debugOut("GEAS","MOBILE: ENTER: "+dest);
+							}
 							searchGrid.remove(nR);
 							return;
+						}
+						else
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
+						{
+							final String dest = CMLib.map().getApproximateExtendedRoomID(nR);
+							Log.debugOut("GEAS","MOBILE: ENTER: "+dest+": FAIL");
 						}
 					}
 				}
@@ -627,6 +657,11 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				if(!wander)
 					flags.add(TrackingLibrary.TrackingFlag.AREAONLY);
 				this.curTrail = CMLib.tracking().findTrailToRoom(slaveM.location(), nR, flags, 12);
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
+				{
+					final String dest = CMLib.map().getApproximateExtendedRoomID(nR);
+					Log.debugOut("GEAS","MOBILE: TRACKING: "+dest);
+				}
 				return;
 			}
 			final TrackingFlags flags = CMLib.tracking().newFlags();
@@ -650,11 +685,16 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 						if(!botheredPlaces.contains(R2))
 							this.searchGrid.add(R2);
 					}
-					if(searchGrid.size()>1)
+					if(this.searchGrid.size()>1)
 					{
 						// just be random for now
 						if(!CMLib.tracking().beMobile(slaveM,true,true,wander,true,null,botheredPlaces))
 							CMLib.tracking().beMobile(slaveM,true,true,false,false,null,null);
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
+						{
+							final String dest = CMLib.map().getApproximateExtendedRoomID(slaveM.location());
+							Log.debugOut("GEAS","MOBILE: BLOCKING OUT: "+this.searchGrid.size()+": MOVETO: "+dest);
+						}
 						return;
 					}
 				}
@@ -664,6 +704,8 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 			else
 			{
 				gridSize += 5; // increase the size and try again.
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
+					Log.debugOut("GEAS","MOBILE: GRIDSIZE NOW: "+gridSize);
 				move(wander);
 			}
 		}
@@ -913,7 +955,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 								double price=CMLib.coffeeShops().sellingPrice(M,me,E,sk,sk.getShop(), true).absoluteGoldPrice;
 								if(price<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(me,M))
 								{
-									me.enqueCommand(CMParms.parse("BUY \""+E.name()+"\""),MUDCmdProcessor.METAFLAG_FORCED|MUDCmdProcessor.METAFLAG_ORDER,0);
+									me.enqueCommand(CMParms.parse("BUY \""+E.name()+"\" \""+M.name()+"\""),MUDCmdProcessor.METAFLAG_FORCED|MUDCmdProcessor.METAFLAG_ORDER,0);
 									subStepNum=0;
 									return "HOLD";
 								}

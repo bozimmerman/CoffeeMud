@@ -533,7 +533,8 @@ public class Skill_Enslave extends StdSkill implements PrivateProperty
 		if(affected instanceof MOB)
 			mob=(MOB)affected;
 		super.unInvoke();
-		if(this.masterMOB!=null)
+		if((this.masterMOB!=null)
+		&&(this.canBeUninvoked))
 			unMaster(mob);
 	}
 

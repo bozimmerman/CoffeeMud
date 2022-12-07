@@ -287,7 +287,8 @@ public class Scholar extends StdCharClass
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					M=R.fetchInhabitant(m);
-					if(M instanceof Librarian)
+					if((M instanceof Librarian)
+					&&(M.getStartRoom()==R))
 						bookDealer=true;
 					else
 					if((M instanceof ShopKeeper)
