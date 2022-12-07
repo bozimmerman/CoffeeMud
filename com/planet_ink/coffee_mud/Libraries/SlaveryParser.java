@@ -624,6 +624,8 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 					flags.add(TrackingLibrary.TrackingFlag.NOAIR);
 				if(!CMLib.flags().isSwimming(slaveM))
 					flags.add(TrackingLibrary.TrackingFlag.NOWATER);
+				if(!wander)
+					flags.add(TrackingLibrary.TrackingFlag.AREAONLY);
 				this.curTrail = CMLib.tracking().findTrailToRoom(slaveM.location(), nR, flags, 12);
 				return;
 			}
