@@ -2719,4 +2719,26 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return str.toString().substring(0,str.length()-2);
 		return str.toString();
 	}
+
+	@Override
+	public boolean isASlave(final MOB slaveM, final MOB masterM)
+	{
+		if(slaveM == null)
+			return false;
+		for(final Enumeration<Ability> eA=slaveM.effects();eA.hasMoreElements();)
+		{
+			final Ability A=eA.nextElement();
+			if(A instanceof PrivateProperty)
+			{
+				if(masterM != null)
+				{
+					if(CMLib.law().doesOwnThisProperty(masterM, (PrivateProperty)A))
+						return true;
+				}
+				else
+					return true;
+			}
+		}
+		return false;
+	}
 }

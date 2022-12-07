@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlags;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -462,6 +463,11 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 	{
 		public static final long	serialVersionUID	= Long.MAX_VALUE;
 
+		public List<Room> curTrail		= null;
+		public Set<Room>  searchGrid	= null;
+
+		public int		gridSize		= 5;
+		public Room		startR			= null;
 		public Set<Room>botheredPlaces	= new HashSet<Room>();
 		public Set<MOB>	botheredMOBs	= new HashSet<MOB>();
 		public boolean	done			= false;
@@ -500,41 +506,47 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 			GeasStep sg=null;
 
 			if(!done)
-			for(int s=0;s<size();s++)
 			{
-				final GeasStep G=elementAt(s);
-				ss=G.step();
-				if(ss.equalsIgnoreCase("DONE"))
+				for(int s=0;s<size();s++)
 				{
-					done=true;
-					break;
-				}
-				if(ss.equalsIgnoreCase("HOLD"))
-				{
-					removeElementAt(s);
-					insertElementAt(G,0);
-					holdFlag=true;
-					break;
-				}
-				else
-				if(ss.equalsIgnoreCase("MOVE"))
-					moveFlag=true;
-				else
-				if(ss.startsWith("1"))
-				{
-					say=ss;
-					sg=G;
-				}
-				else
-				if(ss.startsWith("0"))
-				{
-					if(say==null)
+					final GeasStep G=elementAt(s);
+					ss=G.step();
+					if(ss.equalsIgnoreCase("DONE"))
+					{
+						curTrail = null;
+						searchGrid = null;
+						startR = null;
+						botheredPlaces.clear();
+						botheredMOBs.clear();
+						done=true;
+						break;
+					}
+					if(ss.equalsIgnoreCase("HOLD"))
+					{
+						removeElementAt(s);
+						insertElementAt(G,0);
+						holdFlag=true;
+						break;
+					}
+					else
+					if(ss.equalsIgnoreCase("MOVE"))
+						moveFlag=true;
+					else
+					if(ss.startsWith("1"))
 					{
 						say=ss;
 						sg=G;
 					}
+					else
+					if(ss.startsWith("0"))
+					{
+						if(say==null)
+						{
+							say=ss;
+							sg=G;
+						}
+					}
 				}
-
 			}
 			if(!holdFlag)
 			{
@@ -557,13 +569,101 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		@Override
 		public void move(final boolean wander)
 		{
-			if(!botheredPlaces.contains(slaveM.location()))
-				botheredPlaces.add(slaveM.location());
+			final Room locR=slaveM.location();
+			if(locR==null)
+				return;
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 				Log.debugOut("GEAS","BEINGMOBILE: "+wander);
-			// this is bad, because it guarantees near misses and bottlenecks instead of thoroughness
-			if(!CMLib.tracking().beMobile(slaveM,true,true,wander,true,null,botheredPlaces))
-				CMLib.tracking().beMobile(slaveM,true,true,false,false,null,null);
+			if(startR == null)
+			{
+				gridSize=5;
+				startR = slaveM.location();
+			}
+			if(!botheredPlaces.contains(slaveM.location()))
+				botheredPlaces.add(slaveM.location());
+			final List<Room> curTrail = this.curTrail;
+			if((curTrail != null)
+			&&(curTrail.size()>0))
+			{
+				final int nextDir = CMLib.tracking().trackNextDirectionFromHere(curTrail, locR, false);
+				if(nextDir >= 0)
+				{
+					CMLib.tracking().walk(slaveM, nextDir, false, false);
+					if(slaveM.location( ) != locR)
+					{
+						searchGrid.remove(slaveM.location());
+						return; // kaplah!
+					}
+				}
+			}
+			this.curTrail = null;
+			final Set<Room> searchGrid = this.searchGrid;
+			if((searchGrid != null)
+			&&(searchGrid.size()>0))
+			{
+				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+				{
+					final Room nR=locR.getRoomInDir(d);
+					if((nR!=null)
+					&&(searchGrid.contains(nR)))
+					{
+						CMLib.tracking().walk(slaveM, d, false, false);
+						if(slaveM.location() == nR)
+						{
+							searchGrid.remove(nR);
+							return;
+						}
+					}
+				}
+				final Iterator<Room> nr = searchGrid.iterator();
+				final Room nR=nr.next();
+				nr.remove();
+				final TrackingFlags flags = CMLib.tracking().newFlags();
+				flags.add(TrackingLibrary.TrackingFlag.UNLOCKEDONLY);
+				if(!CMLib.flags().isFlying(slaveM))
+					flags.add(TrackingLibrary.TrackingFlag.NOAIR);
+				if(!CMLib.flags().isSwimming(slaveM))
+					flags.add(TrackingLibrary.TrackingFlag.NOWATER);
+				this.curTrail = CMLib.tracking().findTrailToRoom(slaveM.location(), nR, flags, 12);
+				return;
+			}
+			final TrackingFlags flags = CMLib.tracking().newFlags();
+			flags.add(TrackingLibrary.TrackingFlag.UNLOCKEDONLY);
+			if(!CMLib.flags().isFlying(slaveM))
+				flags.add(TrackingLibrary.TrackingFlag.NOAIR);
+			if(!CMLib.flags().isSwimming(slaveM))
+				flags.add(TrackingLibrary.TrackingFlag.NOWATER);
+			if(!wander)
+				flags.add(TrackingLibrary.TrackingFlag.AREAONLY);
+			final List<Room> Rs=CMLib.tracking().getRadiantRooms(startR, flags, gridSize);
+			for(final Room R : Rs)
+			{
+				if(!botheredPlaces.contains(R))
+				{
+					// winner!
+					final List<Room> Rfs=CMLib.tracking().getRadiantRooms(R, flags, 5);
+					this.searchGrid = new HashSet<Room>();
+					for(final Room R2 : Rfs)
+					{
+						if(!botheredPlaces.contains(R2))
+							this.searchGrid.add(R2);
+					}
+					if(searchGrid.size()>1)
+					{
+						// just be random for now
+						if(!CMLib.tracking().beMobile(slaveM,true,true,wander,true,null,botheredPlaces))
+							CMLib.tracking().beMobile(slaveM,true,true,false,false,null,null);
+						return;
+					}
+				}
+			}
+			if(!wander)
+				move(true);
+			else
+			{
+				gridSize += 5; // increase the size and try again.
+				move(wander);
+			}
 		}
 
 		@Override

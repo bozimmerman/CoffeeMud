@@ -34,15 +34,21 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class BlackMarketeering extends Merchant
+public class SlaveMarketeering extends Merchant
 {
 	@Override
 	public String ID()
 	{
-		return "BlackMarketeering";
+		return "SlaveMarketeering";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Black Marketeering");
+	public SlaveMarketeering()
+	{
+		super();
+		super.whatIsSoldMask = ShopKeeper.DEAL_SLAVES;
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Slave Marketeering");
 
 	@Override
 	public String name()
@@ -50,7 +56,7 @@ public class BlackMarketeering extends Merchant
 		return localizedName;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "BLACKMARKETEERING", "BMARKET" });
+	private static final String[]	triggerStrings	= I(new String[] { "SLAVEMARKETEERING", "SMARKET" });
 
 	@Override
 	public String[] triggerStrings()
@@ -60,11 +66,12 @@ public class BlackMarketeering extends Merchant
 
 	protected boolean canSell(final MOB mob, final Environmental E)
 	{
-		if(E instanceof Item)
+		if(E instanceof MOB)
 		{
-			if(CMLib.law().mayOwnThisItem(mob, (Item)E))
+			if((!CMLib.flags().isASlave((MOB)E, mob))
+			||(((MOB)E).isPlayer()))
 			{
-				mob.tell(L("@x1 is not a stolen item.",((Item)E).name(mob)));
+				mob.tell(L("@x1 is not your slave.",((MOB)E).name(mob)));
 				return false;
 			}
 			return true;
@@ -78,7 +85,7 @@ public class BlackMarketeering extends Merchant
 		makeActive(mob);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Black Market what? Enter \"bmarket list\" for a list or \"bmarket item value\" to sell something."));
+			commonTell(mob,L("Slave Market what? Enter \"smarket list\" for a list or \"smarket mob value\" to sell someone."));
 			return false;
 		}
 		return super.invoke(mob, commands, givenTarget, auto, asLevel);

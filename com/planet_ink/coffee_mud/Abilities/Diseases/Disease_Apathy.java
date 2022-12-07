@@ -131,7 +131,7 @@ public class Disease_Apathy extends Disease
 	@Override
 	public int spreadBitmap()
 	{
-		return DiseaseAffect.SPREAD_CONSUMPTION;
+		return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_HEARING;
 	}
 
 	@Override

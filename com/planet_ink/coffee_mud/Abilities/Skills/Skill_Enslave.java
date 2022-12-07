@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -9,8 +10,10 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.Basic.GenLantern;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Libraries.interfaces.SlaveryLibrary;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -32,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Enslave extends StdSkill
+public class Skill_Enslave extends StdSkill implements PrivateProperty
 {
 	@Override
 	public String ID()
@@ -93,9 +96,11 @@ public class Skill_Enslave extends StdSkill
 	protected MOB		masterMOB		= null;
 	protected int		masterAnger		= 0;
 	protected int		speedDown		= 0;
+	protected int		price			= 0;
 	protected int		hungerTickDown	= HUNGERTICKMAX;
 	protected Room		lastRoom		= null;
 
+	protected Pair<MOB,Long>			pimpedInfo 		= null;
 	protected List<Pair<Clan, Integer>>	oldClans		= null;
 	protected SlaveryLibrary.GeasSteps	steps			= null;
 
@@ -106,11 +111,28 @@ public class Skill_Enslave extends StdSkill
 	public void setMiscText(final String txt)
 	{
 		masterMOB=null;
-		masterName=txt;
+		if(txt.indexOf('=') < 0)
+		{
+			masterName=txt.trim();
+			price = 0;
+		}
+		else
+		{
+			masterName = CMParms.getParmStr(txt, "MASTER", "");
+			price = CMParms.getParmInt(txt, "PRICE", 0);
+		}
 		super.setMiscText(txt);
 	}
 
-	public MOB getMaster()
+	protected String getObeyName()
+	{
+		final Pair<MOB,Long> pimp = this.pimpedInfo;
+		if(pimp != null)
+			return pimp.first.Name();
+		return getOwnerName();
+	}
+
+	protected MOB getMaster()
 	{
 		if(masterMOB==null)
 		{
@@ -128,7 +150,9 @@ public class Skill_Enslave extends StdSkill
 
 	public void unMaster(final MOB mob)
 	{
-		if((masterMOB!=null) && (mob!=null))
+		this.pimpedInfo = null;
+		if((masterMOB!=null)
+		&& (mob!=null))
 		{
 			mob.setLiegeID(oldLeige);
 			mob.setClan("", Integer.MIN_VALUE);
@@ -138,9 +162,59 @@ public class Skill_Enslave extends StdSkill
 	}
 
 	@Override
+	public int getPrice()
+	{
+		if(price <= 0)
+		{
+			if(affected != null)
+				price = 100 * affected.phyStats().level();
+		}
+		return price;
+	}
+
+	@Override
+	public void setPrice(final int price)
+	{
+		this.price = price;
+		super.setMiscText("MASTER=\""+masterName+"\" PRICE="+price);
+	}
+
+	@Override
+	public String getOwnerName()
+	{
+		if(masterName == null)
+			return "";
+		return masterName;
+	}
+
+	@Override
+	public void setOwnerName(final String owner)
+	{
+		masterName = owner;
+		super.setMiscText("MASTER=\""+masterName+"\" PRICE="+price);
+	}
+
+	@Override
+	public boolean isProperlyOwned()
+	{
+		final String owner=getOwnerName();
+		if(owner.length()==0)
+			return false;
+		final Clan C=CMLib.clans().fetchClanAnyHost(owner);
+		if(C!=null)
+			return true;
+		return CMLib.players().playerExistsAllHosts(owner);
+	}
+
+	@Override
+	public String getTitleID()
+	{
+		return "SLAVE:"+affected;
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
 		final MOB mob=(MOB)affected;
@@ -171,7 +245,8 @@ public class Skill_Enslave extends StdSkill
 					if(response!=null)
 					{
 						if((msg.target()==mob)
-						&&(msg.source().Name().equals(mob.getLiegeID())))
+						&&(msg.source().Name().equals(mob.getLiegeID())
+							||msg.source().Name().equals(getObeyName())))
 						{
 							final Vector<String> V=CMParms.parse(response.toUpperCase());
 							if(V.contains("STOP")||V.contains("CANCEL"))
@@ -195,7 +270,8 @@ public class Skill_Enslave extends StdSkill
 					&&(mob.fetchAbility(msg.tool().ID())!=null)
 					&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)))
 				{
-					if(!msg.source().Name().equals(mob.getLiegeID()))
+					if(!msg.source().Name().equals(mob.getLiegeID())
+					&&(!msg.source().Name().equals(getObeyName())))
 					{
 						final String response=CMStrings.getSayFromMessage(msg.sourceMessage());
 						if(response!=null)
@@ -239,7 +315,8 @@ public class Skill_Enslave extends StdSkill
 			}
 		}
 		else
-		if((mob.location()!=null)&&(getMaster()!=null))
+		if((mob.location()!=null)
+		&&(getMaster()!=null))
 		{
 			final Room room=mob.location();
 			if((room!=lastRoom)
@@ -253,9 +330,48 @@ public class Skill_Enslave extends StdSkill
 		}
 		else
 		if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
-		||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&((msg.target()==mob.location())||(msg.target()==mob)||(msg.target()==mob.amFollowing())))
+		||((msg.targetMinor()==CMMsg.TYP_EXPIRE)
+			&&((msg.target()==mob.location())||(msg.target()==mob)||(msg.target()==mob.amFollowing())))
 		||((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.amISource(mob.amFollowing()))))
+		{
 			mob.setFollowing(null);
+			wanderBack(mob);
+		}
+	}
+
+	protected boolean wanderBackTo(final MOB mob, final MOB M)
+	{
+		if(M!=null)
+		{
+			if(CMLib.flags().isInTheGame(M, true))
+			{
+				if(M.location()==mob.location())
+					return true;
+				CMLib.tracking().wanderFromTo(mob, M.location(), false);
+				if(M.location() == mob.location())
+				{
+					if(mob.amFollowing() != M)
+						CMLib.commands().postFollow(mob, M, true);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	protected void wanderBack(final MOB mob)
+	{
+		final MOB M = mob.amFollowing();
+		if(wanderBackTo(mob, M))
+			return;
+		final Pair<MOB, Long> pimp = this.pimpedInfo;
+		if((pimp != null)
+		&&(wanderBackTo(mob,pimp.first)))
+			return;
+		final MOB mM = getMaster();
+		if(wanderBackTo(mob,mM))
+			return;
+		CMLib.tracking().wanderAway(mob,true,true);
 	}
 
 	@Override
@@ -271,21 +387,34 @@ public class Skill_Enslave extends StdSkill
 				for(int a=mob.numEffects()-1;a>=0;a--) // personal
 				{
 					final Ability A=mob.fetchEffect(a);
-					if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
+					if((A!=null)
+					&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 					{
 						if(!A.tick(ticking,tickID))
 							mob.delEffect(A);
 					}
 				}
 			}
-			if((--hungerTickDown)<=0)
+			final Pair<MOB,Long> pimpInfo = this.pimpedInfo;
+			if((pimpInfo != null)
+			&&(System.currentTimeMillis() > pimpInfo.second.longValue()))
+			{
+				this.pimpedInfo = null;
+				mob.setFollowing(null);
+				wanderBack(mob);
+			}
+			if((getObeyName().equals(mob.getLiegeID()))
+			&&((--hungerTickDown)<=0))
 			{
 				hungerTickDown=HUNGERTICKMAX;
 				CMLib.combat().expendEnergy(mob,false);
-				if((!mob.isInCombat())&&(CMLib.dice().rollPercentage()==1)&&(CMLib.dice().rollPercentage()<(masterAnger/10)))
+				if((!mob.isInCombat())
+				&&(CMLib.dice().rollPercentage()==1)
+				&&(CMLib.dice().rollPercentage()<(masterAnger/10)))
 				{
 					final MOB myMaster=getMaster();
-					if((myMaster!=null)&&(mob.location().isInhabitant(myMaster)))
+					if((myMaster!=null)
+					&&(mob.location().isInhabitant(myMaster)))
 					{
 						mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> rebel(s) against <T-NAMESELF>!"));
 						final MOB master=getMaster();
@@ -303,56 +432,56 @@ public class Skill_Enslave extends StdSkill
 						mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> escape(s) <T-NAMESELF>!"));
 						CMLib.tracking().beMobile(mob,true,true,false,false,null,null);
 					}
-				}
-				if(mob.curState().getHunger()<=0)
-				{
-					Food f=null;
-					for(int i=0;i<mob.numItems();i++)
+					if(mob.curState().getHunger()<=0)
 					{
-						final Item I=mob.getItem(i);
-						if(I instanceof Food)
+						Food f=null;
+						for(int i=0;i<mob.numItems();i++)
 						{
-							f = (Food) I;
-							break;
+							final Item I=mob.getItem(i);
+							if(I instanceof Food)
+							{
+								f = (Food) I;
+								break;
+							}
+						}
+						if(f==null)
+							CMLib.commands().postSay(mob,null,L("I am hungry."),false,false);
+						else
+						{
+							final Command C=CMClass.getCommand("Eat");
+							try
+							{
+								C.execute(mob, CMParms.parse("EAT \"" + f.Name() + "$\""), MUDCmdProcessor.METAFLAG_ORDER);
+							}
+							catch (final Exception e)
+							{
+							}
 						}
 					}
-					if(f==null)
-						CMLib.commands().postSay(mob,null,L("I am hungry."),false,false);
-					else
+					if(mob.curState().getThirst()<=0)
 					{
-						final Command C=CMClass.getCommand("Eat");
-						try
+						Drink d=null;
+						for(int i=0;i<mob.numItems();i++)
 						{
-							C.execute(mob, CMParms.parse("EAT \"" + f.Name() + "$\""), MUDCmdProcessor.METAFLAG_ORDER);
+							final Item I=mob.getItem(i);
+							if(I instanceof Drink)
+							{
+								d = (Drink) I;
+								break;
+							}
 						}
-						catch (final Exception e)
+						if(d==null)
+							CMLib.commands().postSay(mob,null,L("I am thirsty."),false,false);
+						else
 						{
-						}
-					}
-				}
-				if(mob.curState().getThirst()<=0)
-				{
-					Drink d=null;
-					for(int i=0;i<mob.numItems();i++)
-					{
-						final Item I=mob.getItem(i);
-						if(I instanceof Drink)
-						{
-							d = (Drink) I;
-							break;
-						}
-					}
-					if(d==null)
-						CMLib.commands().postSay(mob,null,L("I am thirsty."),false,false);
-					else
-					{
-						final Command C=CMClass.getCommand("Drink");
-						try
-						{
-							C.execute(mob, CMParms.parse("DRINK \"" + d.Name() + "$\""), MUDCmdProcessor.METAFLAG_ORDER);
-						}
-						catch (final Exception e)
-						{
+							final Command C=CMClass.getCommand("Drink");
+							try
+							{
+								C.execute(mob, CMParms.parse("DRINK \"" + d.Name() + "$\""), MUDCmdProcessor.METAFLAG_ORDER);
+							}
+							catch (final Exception e)
+							{
+							}
 						}
 					}
 				}
@@ -383,8 +512,8 @@ public class Skill_Enslave extends StdSkill
 				if((mob.isMonster())
 				&&(!mob.amDead())
 				&&(mob.location()!=null)
-				&&(mob.location()!=mob.getStartRoom()))
-					CMLib.tracking().wanderAway(mob,true,true);
+				&&(!canBeUninvoked()))
+					wanderBack(mob);
 				unInvoke();
 				steps=null;
 				return !canBeUninvoked();
@@ -464,7 +593,7 @@ public class Skill_Enslave extends StdSkill
 					A=(Ability)copyOf();
 					target.addNonUninvokableEffect(A);
 				}
-				A.setMiscText(mob.Name());
+				((PrivateProperty)A).setOwnerName(mob.Name());
 			}
 		}
 		else
@@ -472,5 +601,109 @@ public class Skill_Enslave extends StdSkill
 
 		// return whether it worked
 		return success;
+	}
+
+	private static String[]			CODES			= null;
+	private static final String[]	INTERNAL_CODES	= { "MASTER", "PRICE", "PIMP", "PIMPEXPIRE" };
+
+	@Override
+	public String[] getStatCodes()
+	{
+		if(CODES!=null)
+			return CODES;
+		final String[] MYCODES=CMProps.getStatCodesList(Skill_Enslave.INTERNAL_CODES,this);
+		final String[] superCodes=super.getStatCodes();
+		CODES=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			CODES[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			CODES[i]=MYCODES[x];
+		return CODES;
+	}
+
+	protected int getInternalCodeNum(final String code)
+	{
+		for(int i=0;i<INTERNAL_CODES.length;i++)
+		{
+			if(code.equalsIgnoreCase(INTERNAL_CODES[i]))
+				return i;
+		}
+		return -1;
+	}
+
+	@Override
+	public String getStat(final String code)
+	{
+		switch(getInternalCodeNum(code))
+		{
+		case 0:
+			return getOwnerName();
+		case 1:
+			return ""+getPrice();
+		case 2:
+		{
+			final Pair<MOB, Long> pimpInfo = this.pimpedInfo;
+			if(pimpInfo != null)
+				return pimpInfo.first.Name();
+			return "";
+		}
+		case 3:
+		{
+			final Pair<MOB, Long> pimpInfo = this.pimpedInfo;
+			if(pimpInfo != null)
+				return pimpInfo.second.toString();
+			return "";
+		}
+		default:
+			return super.getStat(code);
+		}
+	}
+
+	@Override
+	public void setStat(final String code, final String val)
+	{
+		switch(getInternalCodeNum(code))
+		{
+		case 0:
+			setOwnerName(val);
+			break;
+		case 1:
+			setPrice(CMath.s_int(val));
+			break;
+		case 2:
+			if(val.trim().length()==0)
+				this.pimpedInfo = null;
+			else
+			{
+				MOB M = CMLib.players().getPlayerAllHosts(val.trim());
+				if((M==null)
+				&&(affected instanceof MOB)
+				&&(((MOB)affected).location()!=null))
+					M = ((MOB)affected).location().fetchInhabitant(val.trim());
+				if(M != null)
+				{
+					if(this.pimpedInfo == null)
+						this.pimpedInfo = new Pair<MOB,Long>(M,Long.valueOf(Long.MAX_VALUE));
+					this.pimpedInfo.first = M;
+				}
+			}
+			break;
+		case 3:
+			if(this.pimpedInfo != null)
+				this.pimpedInfo.second=Long.valueOf(CMath.s_long(val));
+			break;
+		default:
+			super.setStat(code, val);
+			break;
+		}
+	}
+
+	@Override
+	public boolean sameAs(final Environmental E)
+	{
+		if(!(E instanceof Skill_Enslave))
+			return false;
+		return super.sameAs(E);
 	}
 }

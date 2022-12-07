@@ -1535,9 +1535,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			{
 				final MOB newMOB=(MOB)product.copyOf();
 				newMOB.setStartRoom(null);
-				final Ability A=newMOB.fetchEffect("Skill_Enslave");
+				final PrivateProperty A=CMLib.law().getPropertyRecord(newMOB);
 				if(A!=null)
-					A.setMiscText("");
+					A.setOwnerName("");
 				newMOB.setLiegeID("");
 				newMOB.setClan("", Integer.MIN_VALUE); // delete all sequence
 				shop.getShop().addStoreInventory(newMOB);
@@ -1651,29 +1651,29 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		product.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		product.recoverPhyStats();
 		product.setMiscText(product.text());
-		Ability slaveA=null;
+		PrivateProperty slaveA=null;
 		if(shop.isSold(ShopKeeper.DEAL_SLAVES))
 		{
-			slaveA=product.fetchEffect("Skill_Enslave");
+			slaveA=CMLib.law().getPropertyRecord(product);
 			if(slaveA!=null)
-				slaveA.setMiscText("");
+				slaveA.setOwnerName("");
 			else
 			if(!CMLib.flags().isAnimalIntelligence(product))
 			{
-				slaveA=CMClass.getAbility("Skill_Enslave");
+				slaveA=(PrivateProperty)CMClass.getAbility("Skill_Enslave");
 				if(slaveA!=null)
-					product.addNonUninvokableEffect(slaveA);
+					product.addNonUninvokableEffect((Ability)slaveA);
 			}
 		}
 		product.bringToLife(seller.location(),true);
 		if(slaveA!=null)
 		{
-			slaveA=product.fetchEffect("Skill_Enslave");
+			slaveA=CMLib.law().getPropertyRecord(product);
 			product.setLiegeID("");
 			product.setClan("", Integer.MIN_VALUE); // delete all sequence
 			product.setStartRoom(null);
 			if(slaveA!=null)
-				slaveA.setMiscText(mobFor.Name());
+				slaveA.setOwnerName(mobFor.Name());
 			product.text();
 		}
 		CMLib.commands().postFollow(product,mobFor,false);

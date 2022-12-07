@@ -200,6 +200,7 @@ public interface LegalLibrary extends CMLibrary
 	 * @see LegalLibrary#getPropertyRecord(Room)
 	 * @see LegalLibrary#getPropertyRecord(Area)
 	 * @see LegalLibrary#getPropertyRecord(Item)
+	 * @see LegalLibrary#getPropertyRecord(MOB)
 	 * @see LegalLibrary#getLandTitle(Room)
 	 *
 	 * @param area the area to check
@@ -214,6 +215,7 @@ public interface LegalLibrary extends CMLibrary
 	 * @see LegalLibrary#getPropertyRecord(Room)
 	 * @see LegalLibrary#getPropertyRecord(Area)
 	 * @see LegalLibrary#getPropertyRecord(Item)
+	 * @see LegalLibrary#getPropertyRecord(MOB)
 	 * @see LegalLibrary#getLandTitle(Area)
 	 *
 	 * @param room the room to check
@@ -228,6 +230,7 @@ public interface LegalLibrary extends CMLibrary
 	 *
 	 * @see LegalLibrary#getPropertyRecord(Room)
 	 * @see LegalLibrary#getPropertyRecord(Item)
+	 * @see LegalLibrary#getPropertyRecord(MOB)
 	 * @see LegalLibrary#getLandTitle(Area)
 	 * @see LegalLibrary#getLandTitle(Room)
 	 *
@@ -237,12 +240,29 @@ public interface LegalLibrary extends CMLibrary
 	public PrivateProperty getPropertyRecord(Area area);
 
 	/**
+	 * Returns the private property record of the given mob,
+	 * if one existsa.
+	 *
+	 * @see LegalLibrary#getPropertyRecord(Room)
+	 * @see LegalLibrary#getPropertyRecord(Item)
+	 * @see LegalLibrary#getPropertyRecord(Area)
+	 * @see LegalLibrary#getLandTitle(Area)
+	 * @see LegalLibrary#getLandTitle(Room)
+	 *
+	 * @param area the area to check
+	 * @return null, or the privateproperty record
+	 */
+	public PrivateProperty getPropertyRecord(MOB mob);
+
+
+	/**
 	 * Returns the private property record of the given room,
 	 * if one exists, or its area.
 	 * This could also be in a boardable.
 	 *
 	 * @see LegalLibrary#getPropertyRecord(Area)
 	 * @see LegalLibrary#getPropertyRecord(Item)
+	 * @see LegalLibrary#getPropertyRecord(MOB)
 	 * @see LegalLibrary#getLandTitle(Area)
 	 * @see LegalLibrary#getLandTitle(Room)
 	 *
@@ -258,6 +278,7 @@ public interface LegalLibrary extends CMLibrary
 	 *
 	 * @see LegalLibrary#getPropertyRecord(Area)
 	 * @see LegalLibrary#getPropertyRecord(Room)
+	 * @see LegalLibrary#getPropertyRecord(MOB)
 	 * @see LegalLibrary#getLandTitle(Area)
 	 * @see LegalLibrary#getLandTitle(Room)
 	 *

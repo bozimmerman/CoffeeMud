@@ -21,8 +21,8 @@
  19. New Spell: Spell_DetonateBombs
  20. Prop_Closed* properties now support a zappermask for the object.
  21. New common skill: Black Marketeering, for Thieves, Burglars, and Gaolers
- 22. New poisons: anesthesia, and hallucinogen
- 23. Gaolers now get Drug Cutting, and new Thief Skill: Roofie
+ 22. New poisons: anesthesia, and hallucinogen, and new Drug Cutting recipes
+ 23. Gaolers now get Drug Cutting, Slave Marketeering, and new Thief Skill: Roofie
 
 # Build 5.10.0 Release 9/23/2022
   1. New Scriptable functions: ROOMPC and AREAPC

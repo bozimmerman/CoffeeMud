@@ -206,6 +206,22 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
+	public PrivateProperty getPropertyRecord(final MOB mob)
+	{
+		if(mob==null)
+			return null;
+		if(mob instanceof PrivateProperty)
+			return (PrivateProperty)mob;
+		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if((A instanceof PrivateProperty))
+				return (PrivateProperty)A;
+		}
+		return null;
+	}
+
+	@Override
 	public LandTitle getLandTitle(final Room room)
 	{
 		if(room==null)

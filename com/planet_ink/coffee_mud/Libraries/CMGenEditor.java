@@ -4555,11 +4555,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							chosenOne=null;
 						if(chosenOne!=null)
 						{
-							String parms="?";
-							while(parms.equals("?"))
+							String parms="";
+							String s="?";
+							while(s.equals("?"))
 							{
 								parms=chosenOne.text();
-								final String s=mob.session().prompt(L("Enter any effect parameters (?)\n\r:@x1",parms));
+								s=mob.session().prompt(L("Enter any effect parameters (?)\n\r:@x1",parms));
 								if(s.equals("?"))
 								{
 									final String s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true);
