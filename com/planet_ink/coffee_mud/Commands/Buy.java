@@ -65,7 +65,7 @@ public class Buy extends StdCommand
 			mobFor=M;
 		}
 
-		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Buy what from whom?");
+		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"from", "Buy what from whom?");
 		if(shopkeeper==null)
 			return false;
 		if(commands.size()==0)

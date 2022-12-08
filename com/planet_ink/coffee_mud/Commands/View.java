@@ -50,7 +50,7 @@ public class View extends StdCommand
 		throws java.io.IOException
 	{
 		final Vector<String> origCmds=new XVector<String>(commands);
-		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"View what merchandise from whom?");
+		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"from", "View what merchandise from whom?");
 		if(shopkeeper==null)
 			return false;
 		if(commands.size()==0)

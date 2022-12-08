@@ -99,7 +99,7 @@ public class Skill_Haggle extends StdSkill
 			return false;
 		}
 
-		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,CMStrings.capitalizeAndLower(cmd)+" what to whom?");
+		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,null, CMStrings.capitalizeAndLower(cmd)+" what to whom?");
 		if(shopkeeper==null)
 			return false;
 		if(commands.size()==0)

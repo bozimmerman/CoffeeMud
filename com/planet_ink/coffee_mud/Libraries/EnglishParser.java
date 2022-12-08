@@ -1695,7 +1695,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public Environmental parseShopkeeper(final MOB mob, final List<String> matchWords, final String error)
+	public Environmental parseShopkeeper(final MOB mob, final List<String> matchWords, final String fromTo, final String error)
 	{
 		if(matchWords.isEmpty())
 		{
@@ -1712,7 +1712,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				mob.tell(error);
 			return null;
 		}
-		if(V.size()>1)
+		final int fromDex = (fromTo != null) ? CMParms.indexOfIgnoreCase(matchWords, fromTo):-1;
+		if((V.size()>1)
+		||((fromDex > 0)&&(fromDex < matchWords.size()-1)))
 		{
 			if(matchWords.size()<2)
 			{
@@ -1720,8 +1722,19 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					mob.tell(error);
 				return null;
 			}
+			if((fromDex > 0)
+			&&(fromDex < matchWords.size()-1))
+			{
+				final String s=CMParms.combine(matchWords,fromDex+1);
+				final Environmental shopkeeper=fetchEnvironmental(V,s,false);
+				if(shopkeeper != null)
+				{
+					while(matchWords.size()>fromDex)
+						matchWords.remove(matchWords.size()-1);
+					matchWords.add(s);
+				}
+			}
 			final String what=matchWords.get(matchWords.size()-1);
-
 			Environmental shopkeeper=fetchEnvironmental(V,what,false);
 			if((shopkeeper==null)&&(what.equals("shop")||what.equals("the shop")))
 			{

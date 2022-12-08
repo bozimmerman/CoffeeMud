@@ -50,7 +50,7 @@ public class Value extends StdCommand
 		throws java.io.IOException
 	{
 		final Vector<String> origCmds=new XVector<String>(commands);
-		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Value what with whom?");
+		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"with", "Value what with whom?");
 		if(shopkeeper==null)
 			return false;
 		if(commands.size()==0)

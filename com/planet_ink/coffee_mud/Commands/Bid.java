@@ -50,7 +50,7 @@ public class Bid extends StdCommand
 		throws java.io.IOException
 	{
 		final Vector<String> origCmds=new XVector<String>(commands);
-		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Bid how much, on what, with whom?");
+		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"with", "Bid how much, on what, with whom?");
 		if(shopkeeper==null)
 			return false;
 		if(commands.size()<2)

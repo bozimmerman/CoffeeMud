@@ -109,7 +109,7 @@ public class Thief_FenceLoot extends ThiefSkill
 		}
 
 		commands.add(0,"SELL"); // will be instantly deleted by parseshopkeeper
-		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,L("Fence what to whom?"));
+		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"to", L("Fence what to whom?"));
 		if(shopkeeper==null)
 			return false;
 		if(commands.size()==0)

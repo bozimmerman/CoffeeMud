@@ -98,7 +98,7 @@ public class SlaveTrading extends CommonSkill
 			}
 		}
 		if(shopM==null)
-			shopM=CMLib.english().parseShopkeeper(mob,commands,"Sell whom to whom?");
+			shopM=CMLib.english().parseShopkeeper(mob,commands,"to", "Sell whom to whom?");
 		if(shopM==null)
 			return false;
 		if(commands.size()==0)

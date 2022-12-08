@@ -800,10 +800,11 @@ public interface EnglishParsing extends CMLibrary
 	 *
 	 * @param mob the mob looking for a shopkeeper nearby
 	 * @param matchWords the search words, possibly modified
+	 * @param fromTo TODO
 	 * @param error the error message to send for bad arguments
 	 * @return a matched shopkeeper, with a modified matchWords list
 	 */
-	public Environmental parseShopkeeper(MOB mob, List<String> matchWords, String error);
+	public Environmental parseShopkeeper(MOB mob, List<String> matchWords, String fromTo, String error);
 
 	/**
 	 * For cases when a string input probably contains an amount of money,

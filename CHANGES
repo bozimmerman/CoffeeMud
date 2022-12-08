@@ -23,6 +23,7 @@
  21. New common skill: Black Marketeering, for Thieves, Burglars, and Gaolers
  22. New poisons: anesthesia, and hallucinogen, and new Drug Cutting recipes
  23. Gaolers now get Drug Cutting, Slave Marketeering, Pimping, and new Thief Skill: Roofie
+ 24. BUY/SELL/VALUE/BID/BORROW/etc... now supports with/to/from to designate shopkeepers
 
 # Build 5.10.0 Release 9/23/2022
   1. New Scriptable functions: ROOMPC and AREAPC
