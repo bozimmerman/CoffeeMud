@@ -58,13 +58,14 @@ public class BlackMarketeering extends Merchant
 		return triggerStrings;
 	}
 
+	@Override
 	protected boolean canSell(final MOB mob, final Environmental E)
 	{
 		if(E instanceof Item)
 		{
 			if(CMLib.law().mayOwnThisItem(mob, (Item)E))
 			{
-				mob.tell(L("@x1 is not a stolen item.",((Item)E).name(mob)));
+				commonTell(mob,L("@x1 is not a stolen item.",((Item)E).name(mob)));
 				return false;
 			}
 			return true;

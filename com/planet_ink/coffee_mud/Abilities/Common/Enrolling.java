@@ -289,7 +289,7 @@ public class Enrolling extends CommonSkill
 			if(beneficialAffect(mob,mob,asLevel,duration)!=null)
 			{
 				CMLib.beanCounter().subtractMoney(mob, cost);
-				mob.tell(L("The guild fees came to @x1.",CMLib.beanCounter().abbreviatedPrice(mob, cost)));
+				commonTell(mob,L("The guild fees came to @x1.",CMLib.beanCounter().abbreviatedPrice(mob, cost)));
 			}
 		}
 		return true;

@@ -186,7 +186,7 @@ public class Tanning extends CommonSkill
 		final LandTitle t=CMLib.law().getLandTitle(R);
 		if((t!=null)&&(!CMLib.law().doesHavePriviledgesHere(mob,R)))
 		{
-			mob.tell(L("You are not allowed to tan anything here."));
+			commonTell(mob,L("You are not allowed to tan anything here."));
 			return false;
 		}
 

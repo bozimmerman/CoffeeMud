@@ -164,12 +164,12 @@ public class Domesticating extends CommonSkill
 		{
 			if(newName.trim().length()==0)
 			{
-				mob.tell(L("You must specify a name."));
+				commonTell(mob,L("You must specify a name."));
 				return false;
 			}
 			if(newName.indexOf(' ')>=0)
 			{
-				mob.tell(L("The name may not contain a space."));
+				commonTell(mob,L("The name may not contain a space."));
 				return false;
 			}
 			newName=CMLib.coffeeFilter().secondaryUserInputFilter(newName);

@@ -87,19 +87,24 @@ public class Pimping extends CommonSkill
 				commands.remove(commands.size()-1);
 				if(johnM == mob)
 				{
-					mob.tell(L("You can't pimp to yourself."));
+					commonTell(mob,L("You can't pimp to yourself."));
 					return false;
 				}
 				if(!johnM.isPlayer())
 				{
-					mob.tell(L("You can't pimp to @x1.",johnM.Name()));
+					commonTell(mob,L("You can't pimp to @x1.",johnM.Name()));
 					return false;
 				}
+			}
+			else
+			{
+				commonTell(mob,L("Pimp whom to whom?"));
+				return false;
 			}
 		}
 		else
 		{
-			mob.tell(L("Pimp whom to whom?"));
+			commonTell(mob,L("Pimp whom to whom?"));
 			return false;
 		}
 		if(commands.size()==0)

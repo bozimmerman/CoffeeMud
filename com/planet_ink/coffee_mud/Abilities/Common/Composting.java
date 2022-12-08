@@ -317,7 +317,7 @@ public class Composting extends GatheringSkill
 			}
 			else
 			{
-				mob.tell(L("Compost how much of what?"));
+				commonTell(mob,L("Compost how much of what?"));
 				return false;
 			}
 		}

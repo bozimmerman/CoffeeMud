@@ -184,7 +184,7 @@ public class Shearing extends CommonSkill
 		}
 		else
 		if(commands.size()==0)
-			mob.tell(L("Shear what?"));
+			commonTell(mob,L("Shear what?"));
 		else
 			target=super.getTarget(mob,commands,givenTarget);
 

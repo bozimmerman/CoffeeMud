@@ -174,7 +174,7 @@ public class Baiting extends GatheringSkill
 			final StringBuilder str=new StringBuilder("Types of fishes:\n\r");
 			for(final int fishCode : RawMaterial.CODES.FISHES())
 				str.append(RawMaterial.CODES.NAME(fishCode)).append("\n\r");
-			mob.tell(str.toString());
+			commonTell(mob,str.toString());
 			return false;
 		}
 

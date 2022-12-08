@@ -64,6 +64,7 @@ public class SlaveMarketeering extends Merchant
 		return triggerStrings;
 	}
 
+	@Override
 	protected boolean canSell(final MOB mob, final Environmental E)
 	{
 		if(E instanceof MOB)
@@ -71,7 +72,7 @@ public class SlaveMarketeering extends Merchant
 			if((!CMLib.flags().isASlave((MOB)E, mob))
 			||(((MOB)E).isPlayer()))
 			{
-				mob.tell(L("@x1 is not your slave.",((MOB)E).name(mob)));
+				commonTell(mob,L("@x1 is not your slave.",((MOB)E).name(mob)));
 				return false;
 			}
 			return true;

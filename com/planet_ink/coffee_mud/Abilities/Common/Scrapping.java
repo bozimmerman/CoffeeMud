@@ -211,7 +211,7 @@ public class Scrapping extends CommonSkill
 		final LandTitle t=CMLib.law().getLandTitle(mob.location());
 		if((t!=null)&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 		{
-			mob.tell(L("You are not allowed to scrap anything here."));
+			commonTell(mob,L("You are not allowed to scrap anything here."));
 			return false;
 		}
 

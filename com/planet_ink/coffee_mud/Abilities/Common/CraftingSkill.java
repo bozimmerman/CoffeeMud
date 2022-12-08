@@ -173,6 +173,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 	};
 
 
+	@Override
 	public String getRecipeFilename()
 	{
 		return "";
@@ -1612,7 +1613,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 					if(!found)
 					{
 						if(mob!=null)
-							mob.tell(L("'@x1' is not a valid resource type for this skill.",possRsc));
+							commonTell(mob,L("'@x1' is not a valid resource type for this skill.",possRsc));
 						return null;
 					}
 					while(commands.size()>i)
@@ -2094,7 +2095,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				str=CMStrings.replaceAll(str,L(" on the ground"), ""); // this is implied
 				buf.append(str);
 			}
-			mob.tell(L("You lack the necessary materials to @x1, the requirements are: @x2.",doingWhat.toLowerCase(),buf.toString()));
+			commonTell(mob,L("You lack the necessary materials to @x1, the requirements are: @x2.",doingWhat.toLowerCase(),buf.toString()));
 			return null;
 		}
 		return new LinkedList<Object>();

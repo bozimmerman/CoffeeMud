@@ -695,7 +695,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		{
 			if(!CMLib.law().mayOwnThisItem(mob, (Item)E))
 			{
-				mob.tell(L("@x1 is a stolen item!",((Item)E).name(mob)));
+				commonTell(mob,L("@x1 is a stolen item!",((Item)E).name(mob)));
 				return false;
 			}
 			return true;
@@ -744,7 +744,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 						P.delEffect(meA);
 						((MOB)P).addPriorityEffect(meA);
 						if(mob != null)
-							mob.tell(L("^H@x1 is now your active store.",name()));
+							commonTell(mob,L("^H@x1 is now your active store.",name()));
 						return;
 					}
 				}
@@ -800,7 +800,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			mob.recoverCharStats();
 			mob.recoverPhyStats();
 			mob.recoverMaxState();
-			mob.tell(L("@x1 has been removed from your inventory list.",iname));
+			commonTell(mob,L("@x1 has been removed from your inventory list.",iname));
 			return true;
 		}
 

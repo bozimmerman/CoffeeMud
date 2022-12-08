@@ -233,7 +233,7 @@ public class Salvaging extends CommonSkill
 		final LandTitle t=CMLib.law().getLandTitle(mob.location());
 		if((t!=null)&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 		{
-			mob.tell(L("You are not allowed to salvage anything here."));
+			commonTell(mob,L("You are not allowed to salvage anything here."));
 			return false;
 		}
 
@@ -242,7 +242,7 @@ public class Salvaging extends CommonSkill
 		||((((NavigableItem)I).subjectToWearAndTear())&&(((NavigableItem)I).usesRemaining()>0))
 		||(((NavigableItem)I).getArea()==null))
 		{
-			mob.tell(L("You can only salvage large sunk sailing ships, which @x1 is not.",I.Name()));
+			commonTell(mob,L("You can only salvage large sunk sailing ships, which @x1 is not.",I.Name()));
 			return false;
 		}
 		final NavigableItem ship=(NavigableItem)I;
@@ -257,7 +257,7 @@ public class Salvaging extends CommonSkill
 			{
 				if(R.numInhabitants()>0)
 				{
-					mob.tell(L("There are still people aboard!"));
+					commonTell(mob,L("There are still people aboard!"));
 					return false;
 				}
 				for(final Enumeration<Item> i=R.items();i.hasMoreElements();)

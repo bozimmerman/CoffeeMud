@@ -500,12 +500,12 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 					{
 						if(spell.ID().equals(theSpell.ID()))
 						{
-							mob.tell(L("That spell is already scribed onto @x1.",buildingI.name()));
+							commonTell(mob,L("That spell is already scribed onto @x1.",buildingI.name()));
 							return false;
 						}
 						if((spell.classificationCode()&Ability.ALL_ACODES)!=theSpellType)
 						{
-							mob.tell(L("This scroll is not suitable for receiving that kind of writing."));
+							commonTell(mob,L("This scroll is not suitable for receiving that kind of writing."));
 							return false;
 						}
 					}
@@ -513,7 +513,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			}
 			if((CMath.bset(theSpell.flags(), Ability.FLAG_CLANMAGIC)))
 			{
-				mob.tell(L("That spell cannot be scribed onto a scroll."));
+				commonTell(mob,L("That spell cannot be scribed onto a scroll."));
 				return false;
 			}
 

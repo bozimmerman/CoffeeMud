@@ -87,12 +87,12 @@ public class SlaveTrading extends CommonSkill
 				commands.remove(commands.size()-1);
 				if(shopM == mob)
 				{
-					mob.tell(L("You can't trade with yourself."));
+					commonTell(mob,L("You can't trade with yourself."));
 					return false;
 				}
 				if(!((MOB)shopM).isPlayer())
 				{
-					mob.tell(L("You can't trade with @x1.",shopM.Name()));
+					commonTell(mob,L("You can't trade with @x1.",shopM.Name()));
 					return false;
 				}
 			}

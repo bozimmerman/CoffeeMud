@@ -1565,7 +1565,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			}
 			if(numAdjacentProperties>1)
 			{
-				mob.tell(L("You can not demolish a room if there is more than one room adjacent to it.  Demolish those first."));
+				commonTell(mob,L("You can not demolish a room if there is more than one room adjacent to it.  Demolish those first."));
 				return false;
 			}
 			dir=-1;

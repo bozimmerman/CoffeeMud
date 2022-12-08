@@ -175,7 +175,7 @@ public class Taxidermy extends CraftingSkill
 				if(PP.size()>1)
 					str.append((PP.get(0))+"\n");
 			}
-			mob.tell(str.toString());
+			commonTell(mob,str.toString());
 			return true;
 		}
 		else
