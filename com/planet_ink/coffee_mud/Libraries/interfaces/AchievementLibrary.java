@@ -102,7 +102,7 @@ public interface AchievementLibrary extends CMLibrary
 		CONQUEREDAREAS("Conquered an area",new String[]{"NUM","AREAMASK"}),
 		CONQUESTPOINTS("Conquest points",new String[]{"NUM","AREAMASK"}),
 		AREAVISIT("Visit an Area/Plane",new String[]{"AREAMASK","NUM", "PLAYERMASK","TIME_MINS", "ROOMMASK"}),
-		INSTANCEEXPIRE("An area instance expires",new String[]{"AREAMASK","NUM", "PLAYERMASK","TIME_MINS"}),
+		INSTANCEEXPIRE("An area instance expires",new String[]{"AREAMASK","NUM", "PLAYERMASK","TIME_MINS","VALUEEXP"}),
 		SHIPSSUNK("Ships sunk",new String[] {"NUM", "PLAYERMASK", "SHIPMASK"}),
 		CMDUSE("Using Commands",new String[]{"NUM","COMMANDID", "PLAYERMASK"}),
 		GROUPKILLS("Number of Group Kills",new String[]{"NUM","SIZE","ZAPPERMASK"}),
