@@ -21,6 +21,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import com.planet_ink.coffee_mud.core.CMStrings;
 import com.planet_ink.coffee_web.interfaces.HTTPIOHandler;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 import com.planet_ink.coffee_web.util.CWConfig;
@@ -1050,7 +1051,8 @@ public class CWHTTPRequest implements HTTPRequest
 			final int urlEncodeSeparator=url.indexOf('?');
 			if(urlEncodeSeparator >= 0)
 			{
-				uriPage = URLDecoder.decode(url.substring(0,urlEncodeSeparator),"UTF-8");
+				final String finalUrl=CMStrings.replaceAll(url.substring(0,urlEncodeSeparator),"%%","%25");
+				uriPage = URLDecoder.decode(finalUrl,"UTF-8");
 				queryString = url.substring(urlEncodeSeparator+1);
 				parseUrlEncodedKeypairs(queryString);
 			}
