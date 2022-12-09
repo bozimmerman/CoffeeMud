@@ -199,7 +199,7 @@ public class Thief_Roofie extends ThiefSkill
 			}
 			itemToRoofieWithStr = itemToRoofieFrom.name(mob);
 		}
-		if(roofieA==null)
+		if((roofieA == null) || (itemToRoofieFrom == null))
 		{
 			mob.tell(L("'@x1' is not a suitable thing to roofie with.",itemToRoofieWithStr));
 			return false;

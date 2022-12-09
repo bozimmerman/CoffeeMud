@@ -109,29 +109,32 @@ public class SlaveTrading extends CommonSkill
 
 		final String str=CMParms.combine(commands,0);
 		final MOB slaveM=mob.location().fetchInhabitant(str);
-		if(slaveM!=null)
+		if(slaveM==null)
 		{
-			if(!CMLib.flags().canBeSeenBy(slaveM,mob))
-			{
-				commonTell(mob,L("You don't see anyone called '@x1' here.",str));
-				return false;
-			}
-			if(!slaveM.isMonster())
-			{
-				commonTell(mob,slaveM,null,L("You can't sell <T-NAME> as a slave."));
-				return false;
-			}
-			if(CMLib.flags().isAnimalIntelligence(slaveM))
-			{
-				commonTell(mob,slaveM,null,L("You can't sell <T-NAME> as a slave.  Animals are not slaves."));
-				return false;
-			}
+			commonTell(mob,L("You don't see anyone called '@x1' here.",str));
+			return false;
+		}
+		
+		if(!CMLib.flags().canBeSeenBy(slaveM,mob))
+		{
+			commonTell(mob,L("You don't see anyone called '@x1' here.",str));
+			return false;
+		}
+		if(!slaveM.isMonster())
+		{
+			commonTell(mob,slaveM,null,L("You can't sell <T-NAME> as a slave."));
+			return false;
+		}
+		if(CMLib.flags().isAnimalIntelligence(slaveM))
+		{
+			commonTell(mob,slaveM,null,L("You can't sell <T-NAME> as a slave.  Animals are not slaves."));
+			return false;
+		}
 
-			if(!CMLib.flags().isASlave(slaveM, mob))
-			{
-				commonTell(mob,slaveM,null,L("<T-NAME> do(es)n't seem to be your slave."));
-				return false;
-			}
+		if(!CMLib.flags().isASlave(slaveM, mob))
+		{
+			commonTell(mob,slaveM,null,L("<T-NAME> do(es)n't seem to be your slave."));
+			return false;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
