@@ -1192,12 +1192,18 @@ public class DefaultTriggerer implements Triggerer
 		if(isIgnoring(msg.source()))
 			return null;
 		final Trigger[] triggers=rituals.get(key);
-		final TrigState state = getCreateTrigState(msg.source(), key);
-		if((triggers == null)||(state==null))
+		if(triggers == null)
 			return null;
-		if(state.completed>=triggers.length-1)
-			return state;
-		Trigger DT=triggers[state.completed+1];
+		TrigState state = getTrigState(msg.source(), key);
+		Trigger DT;
+		if(state != null)
+		{
+			if(state.completed>=triggers.length-1)
+				return state;
+			DT = triggers[state.completed+1];
+		}
+		else
+			DT=triggers[0];
 		boolean yup = false;
 		while((DT != null)&&(!yup))
 		{
@@ -1217,6 +1223,8 @@ public class DefaultTriggerer implements Triggerer
 							final int x=str.toUpperCase().indexOf(DT.parm1);
 							if(x>=0)
 								str=str.substring(x+DT.parm1.length()).trim();
+							if(state == null)
+								state = getCreateTrigState(msg.source(), key);
 							state.args().addAll(CMParms.parse(str));
 						}
 						yup=true;
@@ -1233,6 +1241,8 @@ public class DefaultTriggerer implements Triggerer
 					break;
 				case YOUSAY:
 					yup=true;
+					if(state == null)
+						state = getCreateTrigState(msg.source(), key);
 					try
 					{
 						if(DT.addArgs)
@@ -1250,6 +1260,8 @@ public class DefaultTriggerer implements Triggerer
 					final Room R=msg.source().location();
 					if(R!=null)
 					{
+						if(state == null)
+							state = getCreateTrigState(msg.source(), key);
 						if(DT.addArgs)
 							state.args().addAll(CMParms.parse(DT.parm1));
 						yup=true;
@@ -1278,6 +1290,8 @@ public class DefaultTriggerer implements Triggerer
 					final Room R=msg.source().location();
 					if(R!=null)
 					{
+						if(state == null)
+							state = getCreateTrigState(msg.source(), key);
 						if(DT.addArgs)
 							state.args().addAll(CMParms.parse(DT.parm1));
 						yup=true;
@@ -1303,7 +1317,9 @@ public class DefaultTriggerer implements Triggerer
 				}
 				case WAIT:
 				{
-					final long waitExpires=state.time+CMath.s_long(DT.parm1)*CMProps.getTickMillis();
+					if(state == null)
+						state = getCreateTrigState(msg.source(), key);
+					final long waitExpires=state.time + CMath.s_long(DT.parm1)*CMProps.getTickMillis();
 					if(System.currentTimeMillis()>waitExpires)
 					{
 						yup=true;
@@ -1321,6 +1337,8 @@ public class DefaultTriggerer implements Triggerer
 				case CHECK:
 					if(CMLib.masking().maskCheck(DT.parm1,msg.source(),true))
 					{
+						if(state == null)
+							state = getCreateTrigState(msg.source(), key);
 						if(DT.addArgs && (msg.target()!=null))
 							state.args().add(targName(msg.target()));
 						yup=true;
@@ -1332,6 +1350,8 @@ public class DefaultTriggerer implements Triggerer
 					&&(containsString(msg.tool().name(),DT.parm1))
 					&&(containsString(msg.target().name(),DT.parm2)))
 					{
+						if(state == null)
+							state = getCreateTrigState(msg.source(), key);
 						if(DT.addArgs && (msg.target()!=null))
 							state.args().add(targName(msg.target()));
 						yup=true;
@@ -1344,6 +1364,8 @@ public class DefaultTriggerer implements Triggerer
 					if((msg.target()!=null)
 					&&(DT.parm1.equals("0")||containsString(msg.target().name(),DT.parm1)))
 					{
+						if(state == null)
+							state = getCreateTrigState(msg.source(), key);
 						if(DT.addArgs && (msg.target()!=null))
 							state.args().add(targName(msg.target()));
 						yup=true;
@@ -1356,6 +1378,8 @@ public class DefaultTriggerer implements Triggerer
 					{
 						if((msg.tool() == DT.soc)||(DT.parm2.equals("*")))
 						{
+							if(state == null)
+								state = getCreateTrigState(msg.source(), key);
 							if(DT.addArgs && (msg.target()!=null))
 								state.args().add(targName(msg.target()));
 							yup=true;
@@ -1369,17 +1393,30 @@ public class DefaultTriggerer implements Triggerer
 						||DT.parm1.equalsIgnoreCase("unholy")
 						||DT.parm1.equalsIgnoreCase("balance"))
 						{
-							yup=(state.holyName!=null)
-								&&(state.holyName.equalsIgnoreCase(CMLib.law().getClericInfused(msg.source().location())));
-							if(yup)
+							final String infusedName = CMLib.law().getClericInfused(msg.source().location());
+							if((infusedName != null)
+							&&(infusedName.length()>0))
 							{
-								if(DT.addArgs)
-									state.args().add("here");
+								if(state == null)
+									yup=(holyName!=null) && holyName.equalsIgnoreCase(infusedName);
+								else
+									yup=(state.holyName!=null) && state.holyName.equalsIgnoreCase(infusedName);
+								if(yup)
+								{
+									if(DT.addArgs)
+									{
+										if(state == null)
+											state = getCreateTrigState(msg.source(), key);
+										state.args().add("here");
+									}
+								}
 							}
 						}
 						else
 						if(msg.source().location().roomID().equalsIgnoreCase(DT.parm1))
 						{
+							if(state == null)
+								state = getCreateTrigState(msg.source(), key);
 							yup=true;
 							if(DT.addArgs)
 								state.args().add("here");
@@ -1392,7 +1429,11 @@ public class DefaultTriggerer implements Triggerer
 					{
 						yup=true;
 						if(DT.addArgs)
+						{
+							if(state == null)
+								state = getCreateTrigState(msg.source(), key);
 							state.args().add(targName(msg.source().riding()));
+						}
 					}
 					break;
 				case CAST:
@@ -1402,7 +1443,11 @@ public class DefaultTriggerer implements Triggerer
 					{
 						yup=true;
 						if(DT.addArgs && (msg.target()!=null))
+						{
+							if(state == null)
+								state = getCreateTrigState(msg.source(), key);
 							state.args().add(targName(msg.target()));
+						}
 					}
 					break;
 				case EMOTE:
@@ -1414,6 +1459,8 @@ public class DefaultTriggerer implements Triggerer
 							final int x=msg.sourceMessage().indexOf(">");
 							if(DT.addArgs)
 							{
+								if(state == null)
+									state = getCreateTrigState(msg.source(), key);
 								state.args().add(CMStrings.removeColors(
 										(x>0)?msg.sourceMessage().substring(x+1):msg.sourceMessage()));
 							}
@@ -1428,7 +1475,11 @@ public class DefaultTriggerer implements Triggerer
 					{
 						yup=true;
 						if(DT.addArgs && (msg.target()!=null))
+						{
+							if(state == null)
+								state = getCreateTrigState(msg.source(), key);
 							state.args().add(targName(msg.target()));
+						}
 					}
 					break;
 				case PUTMATERIAL:
@@ -1440,7 +1491,11 @@ public class DefaultTriggerer implements Triggerer
 					{
 						yup=true;
 						if(DT.addArgs && (msg.target()!=null))
+						{
+							if(state == null)
+								state = getCreateTrigState(msg.source(), key);
 							state.args().add(targName(msg.target()));
+						}
 					}
 					break;
 				case BURNMATERIAL:
@@ -1450,7 +1505,11 @@ public class DefaultTriggerer implements Triggerer
 					{
 						yup=true;
 						if(DT.addArgs && (msg.target()!=null))
+						{
+							if(state == null)
+								state = getCreateTrigState(msg.source(), key);
 							state.args().add(targName(msg.target()));
+						}
 					}
 					break;
 				case BURNVALUE:
@@ -1459,7 +1518,11 @@ public class DefaultTriggerer implements Triggerer
 					{
 						yup=true;
 						if(DT.addArgs && (msg.target()!=null))
+						{
+							if(state == null)
+								state = getCreateTrigState(msg.source(), key);
 							state.args().add(targName(msg.target()));
+						}
 					}
 					break;
 				case SITTING:
@@ -1475,8 +1538,14 @@ public class DefaultTriggerer implements Triggerer
 			}
 			if(yup)
 			{
+				if(state == null)
+					state = getCreateTrigState(msg.source(), key);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.RITUALS))
-					Log.debugOut(msg.source().Name()+" completed "+DT.triggerCode.name()+" ("+(state.completed+1)+"/"+triggers.length+") ");
+				{
+					Log.debugOut(msg.source().Name()+" completed "
+							+DT.triggerCode.name()+" for "+key
+							+" ("+(state.completed+1)+"/"+triggers.length+") ");
+				}
 				state.setCompleted();
 				if(state.completed>=triggers.length-1)
 				{
@@ -1496,6 +1565,9 @@ public class DefaultTriggerer implements Triggerer
 			else
 				DT=DT.orConnect;
 		}
+		if((state != null)
+		&&(state.completed<0))
+			clearState(msg.source(), key);
 		return null;
 	}
 
