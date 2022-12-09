@@ -139,49 +139,75 @@ public class Gaoler extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Cooking",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Baking",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"FoodPrep",false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Butchering",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"GaolFood",true);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"BodyPiercing",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Groin",false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Searching",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"DrugCutting",false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Blacksmithing",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Nippletwist",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Whipsmack",0,false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Carpentry",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"BlackMarketeering",false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Tattooing",true);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_PrisonAssignment",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"LockSmith",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_Gutbuster",true);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Warrants",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_Roofie",false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_Hide",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_Informant",false);
 //  	  CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_MakeSomeoneSleeplessAndFatigued",false);
 //  	  CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_Waterboard",false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Brainwash",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_LegHold",false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_ArrestingSap",true);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_HandCuff",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_PrisonerTransfer",false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_TarAndFeather",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_ArmHold",false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_Flay",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_Whiplash",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_Headlock",false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Torturesmithing",false,CMParms.parseSemicolons("Carpentry,Blacksmithing(75)",true),"+INT 14");
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Leeching",false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_CollectBounty",true);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_Arrest",false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Fighter_Behead",true);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Stoning",false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"SlaveTrading",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_Lobotomizing",false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_Enslave",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Pimping",false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_JailKey",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"SlaveMarketeering",false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_Chirgury",false,CMParms.parseSemicolons("Butchering",true));
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Amputation",true);
 
 		// to separate from artisam
@@ -391,7 +417,7 @@ public class Gaoler extends StdCharClass
 				if(((MOB)msg.target()).location().okMessage(msg.target(),msg2))
 				{
 					final MOB mob=(MOB)host;
-					final int baseAmt = 10 + CMLib.ableMapper().qualifyingLevel(msg.source(), (Ability)msg.tool());
+					final int baseAmt = 20 + CMLib.ableMapper().qualifyingLevel(msg.source(), (Ability)msg.tool());
 					int xp=(int)Math.round(baseAmt*CMath.div(((MOB)msg.target()).phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
 					@SuppressWarnings("unchecked")
 					Map<String, int[]> mudHourMOBXPMap = (Map<String, int[]>)((mob.playerStats()==null)?null:mob.playerStats().getClassVariableMap(this).get("MUDHOURMOBXPMAP"));
