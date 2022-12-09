@@ -73,7 +73,8 @@ public class GrinderRoom
 			final Exit E2=R.getRawExit(d);
 			if(E2!=null)
 				D.exit=E2;
-			doors[d]=D;
+			if(d < doors.length)
+				doors[d]=D;
 		}
 	}
 

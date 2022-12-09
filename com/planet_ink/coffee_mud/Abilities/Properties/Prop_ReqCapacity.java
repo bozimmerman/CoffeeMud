@@ -416,7 +416,9 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 					{
 						msg.source().tell(L("No more MOBs can fit in there."));
 						final MOB M=msg.source().amUltimatelyFollowing();
-						if((!M.isMonster())&&(M.location()==(Room)msg.target()))
+						if((M!=null)
+						&&(!M.isMonster())
+						&&(M.location()==(Room)msg.target()))
 							M.tell(L("No more people can fit in here."));
 						return false;
 					}
