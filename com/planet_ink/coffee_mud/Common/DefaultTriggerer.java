@@ -115,6 +115,7 @@ public class DefaultTriggerer implements Triggerer
 		public Social		soc			= null;
 		public Social		socT		= null;
 		public int			cmmsgCode	= -1;
+		public int			reqCount	= 0;
 		public Trigger		orConnect	= null;
 		public boolean		addArgs		= false;
 	}
@@ -180,7 +181,7 @@ public class DefaultTriggerer implements Triggerer
 			return args;
 		}
 
-		public synchronized void setCompleted()
+		public synchronized void setCompleted(Trigger T)
 		{
 			completed++;
 			time=System.currentTimeMillis();
@@ -275,6 +276,13 @@ public class DefaultTriggerer implements Triggerer
 					{
 						DT.addArgs=true;
 						T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd.substring(0,cmd.length()-1));
+					}
+					else
+					if(cmd.indexOf('#')>0)
+					{
+						int x = cmd.indexOf('#');
+						DT.reqCount = CMath.s_int(cmd.substring(x+1).trim());
+						T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd.substring(0,x));
 					}
 					else
 						T = (TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd);
@@ -892,10 +900,10 @@ public class DefaultTriggerer implements Triggerer
 		case SAY:
 			return CMClass.getMsg(mob, CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK, L("^T<S-NAME> say(s) '@x1'.^N",DT.parm1));
 		case TIME:
-			trigState.setCompleted();
+			trigState.setCompleted(DT);
 			return null;
 		case RANDOM:
-			trigState.setCompleted();
+			trigState.setCompleted(DT);
 			return null;
 		case YOUSAY:
 			return null;
@@ -911,7 +919,7 @@ public class DefaultTriggerer implements Triggerer
 			return null;
 		}
 		case CHECK:
-			trigState.setCompleted();
+			trigState.setCompleted(DT);
 			return null;
 		case PUTTHING:
 		{
@@ -990,10 +998,10 @@ public class DefaultTriggerer implements Triggerer
 			return CMClass.getMsg(mob, I, null, DT.cmmsgCode, L("<S-NAME> eat(s) <T-NAME>."));
 		}
 		case INROOM:
-			trigState.setCompleted();
+			trigState.setCompleted(DT);
 			return null;
 		case RIDING:
-			trigState.setCompleted();
+			trigState.setCompleted(DT);
 			return null;
 		case CAST:
 		{
@@ -1546,7 +1554,10 @@ public class DefaultTriggerer implements Triggerer
 							+DT.triggerCode.name()+" for "+key
 							+" ("+(state.completed+1)+"/"+triggers.length+") ");
 				}
-				state.setCompleted();
+				final Room R=msg.source().location();
+				if(R!=null)
+					R.show(msg.source(),null,null,CMMsg.MSG_RITUAL, null, CMMsg.MSG_RITUAL, key.toString()+": "+state.completed+1, CMMsg.MSG_RITUAL, null);
+				state.setCompleted(DT);
 				if(state.completed>=triggers.length-1)
 				{
 					final TrigTracker tracker = getTrigTracker(msg.source());

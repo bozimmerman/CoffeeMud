@@ -1221,6 +1221,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_BODYDROP=142;
 	/** MINOR_MASK minor action code type, denoting a quick glance at something */
 	public static final int TYP_GLANCE=143;
+	/** MINOR_MASK minor action code type, denoting a ritual step */
+	public static final int TYP_RITUAL=144;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1251,7 +1253,7 @@ public interface CMMsg extends CMCommon
 		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER","ITEMSGENERATED",
 		"WROTE", "REWRITE", "WASREAD", "PREMOVE", "THINK", "STARTUP", "RPXPCHANGE",
 		"COMMANDREJECT","RECIPELEARNED", "GRAVITY", "LEGALSTATE", "NEWROOM","CAUSESINK",
-		"ENDQUEST","WINQUEST","HOLYEVENT","EMISSION", "BODYDROP", "GLANCE"
+		"ENDQUEST","WINQUEST","HOLYEVENT","EMISSION", "BODYDROP", "GLANCE", "RITUAL"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1597,6 +1599,8 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_BODYDROP=TYP_BODYDROP;
 	/** combined MAJOR and MINOR codes for useful event message type for a quick glance */
 	public static final int MSG_GLANCE=MASK_EYES|TYP_GLANCE;
+	/** combined MAJOR and MINOR codes for useful event message type for a quick glance */
+	public static final int MSG_RITUAL=MASK_ALWAYS|TYP_RITUAL;
 
 	/**
 	 * An enum to use for an external message check from inside
