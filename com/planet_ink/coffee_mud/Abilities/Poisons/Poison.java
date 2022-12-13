@@ -130,6 +130,11 @@ public class Poison extends StdAbility implements HealthCondition
 		return true;
 	}
 
+	protected int POISON_ADDICTION_CHANCE()
+	{
+		return 0;
+	}
+
 	protected String POISON_AFFECT()
 	{
 		return "<S-NAME> cringe(s) as the poison courses through <S-HIS-HER> blood.";
@@ -207,6 +212,21 @@ public class Poison extends StdAbility implements HealthCondition
 						&&(tvic == null)
 						&&(((MOB)target).getVictim()==poisoner))
 							((MOB)target).makePeace(true);
+					}
+					if(CMLib.dice().rollPercentage() <= this.POISON_ADDICTION_CHANCE())
+					{
+						if((affected instanceof Drink)
+						||(affected instanceof Food)
+						||(affected instanceof MagicDust))
+						{
+							Ability A=targetMOB.fetchEffect("Addictions");
+							if(A==null)
+							{
+								A=CMClass.getAbility("Addictions");
+								if(A!=null)
+									A.invoke(targetMOB,affected,true,0);
+							}
+						}
 					}
 					return true;
 				}

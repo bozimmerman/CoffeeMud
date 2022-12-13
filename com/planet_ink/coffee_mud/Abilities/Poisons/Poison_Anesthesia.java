@@ -165,6 +165,12 @@ public class Poison_Anesthesia extends Poison
 	}
 
 	@Override
+	protected int POISON_ADDICTION_CHANCE()
+	{
+		return 2;
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.source() == affected)

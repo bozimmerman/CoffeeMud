@@ -113,6 +113,12 @@ public class Poison_Hallucinogen extends Poison
 		return 0;
 	}
 
+	@Override
+	protected int POISON_ADDICTION_CHANCE()
+	{
+		return 5;
+	}
+
 	protected Map<Environmental, String> hallus = new Hashtable<Environmental, String>();
 
 	protected String getHalluName(final Environmental E)

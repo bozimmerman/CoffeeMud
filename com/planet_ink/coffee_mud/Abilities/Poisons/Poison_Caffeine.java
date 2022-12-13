@@ -111,6 +111,12 @@ public class Poison_Caffeine extends Poison {
 	}
 
 	@Override
+	protected int POISON_ADDICTION_CHANCE()
+	{
+		return 1;
+	}
+
+	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+1);

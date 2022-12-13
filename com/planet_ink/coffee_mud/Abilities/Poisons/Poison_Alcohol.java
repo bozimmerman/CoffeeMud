@@ -164,6 +164,12 @@ public class Poison_Alcohol extends Poison
 	}
 
 	@Override
+	protected int POISON_ADDICTION_CHANCE()
+	{
+		return (alcoholContribution()*alcoholContribution()*alcoholContribution()/10);
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)&&(canBeUninvoked()))
@@ -178,28 +184,6 @@ public class Poison_Alcohol extends Poison
 			CMLib.commands().postStand(mob,true, false);
 		}
 		super.unInvoke();
-	}
-
-	@Override
-	protected boolean catchIt(final MOB mob, final Physical target)
-	{
-		final boolean caughtIt=super.catchIt(mob,target);
-		if(!(affected instanceof Drink))
-			return caughtIt;
-		if(CMLib.dice().roll(1,1000,0)>(alcoholContribution()*alcoholContribution()*alcoholContribution()))
-			return caughtIt;
-		if((target!=null)&&(target instanceof MOB)&&(target.fetchEffect(ID())==null))
-		{
-			final MOB targetMOB=(MOB)target;
-			Ability A=targetMOB.fetchEffect("Addictions");
-			if(A==null)
-			{
-				A=CMClass.getAbility("Addictions");
-				if(A!=null)
-					A.invoke(targetMOB,affected,true,0);
-			}
-		}
-		return caughtIt;
 	}
 
 	@Override
