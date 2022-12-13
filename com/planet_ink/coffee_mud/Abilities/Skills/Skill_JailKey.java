@@ -136,33 +136,35 @@ public class Skill_JailKey extends StdSkill
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final String whatTounlock=CMParms.combine(commands,0);
-		Exit unlockThis=null;
+		Exit unlockExit=null;
+		Room unlockRoom = null;
 		final int dirCode=CMLib.directions().getGoodDirectionCode(whatTounlock);
-		if((dirCode>=0)&&(mob.location()!=null))
+		if((dirCode>=0)
+		&&(mob.location()!=null))
 		{
-			unlockThis=mob.location().getExitInDir(dirCode);
-			final Room unlockThat=mob.location().getRoomInDir(dirCode);
-			if(unlockThat==null)
-				unlockThis=null;
-			if((unlockThat != null)
-			&&(unlockThis != null)
-			&&(!isJailIshRoom(new XVector<Room>(mob.location(), unlockThat))))
+			unlockExit=mob.location().getExitInDir(dirCode);
+			unlockRoom=mob.location().getRoomInDir(dirCode);
+			if(unlockRoom==null)
+				unlockExit=null;
+			if((unlockRoom != null)
+			&&(unlockExit != null)
+			&&(!isJailIshRoom(new XVector<Room>(mob.location(), unlockRoom))))
 			{
 				LegalBehavior B=null;
 				final Area legalA=CMLib.law().getLegalObject(mob.location());
 				if(legalA!=null)
 					B=CMLib.law().getLegalBehavior(legalA);
 				if(B==null)
-					unlockThis=null;
+					unlockExit=null;
 				else
-				if((!B.isJailRoom(legalA,new XVector<Room>(mob.location(), unlockThat)))
+				if((!B.isJailRoom(legalA,new XVector<Room>(mob.location(), unlockRoom)))
 				&&(!isRightOutsideACell(mob.location(), B, legalA))
-				&&(!isRightOutsideACell(unlockThat, B, legalA)))
-					unlockThis=null;
+				&&(!isRightOutsideACell(unlockRoom, B, legalA)))
+					unlockExit=null;
 			}
 		}
 
-		if(unlockThis==null)
+		if(unlockExit==null)
 		{
 			if(dirCode<0)
 				mob.tell(L("You should specify a direction."));
@@ -186,15 +188,15 @@ public class Skill_JailKey extends StdSkill
 			return false;
 		}
 
-		if(!unlockThis.hasALock())
+		if(!unlockExit.hasALock())
 		{
-			mob.tell(L("There is no lock on @x1!",unlockThis.name()));
+			mob.tell(L("There is no lock on @x1!",unlockExit.name()));
 			return false;
 		}
 
-		if(unlockThis.isOpen())
+		if(unlockExit.isOpen())
 		{
-			mob.tell(L("@x1 is open!",unlockThis.name()));
+			mob.tell(L("@x1 is open!",unlockExit.name()));
 			return false;
 		}
 
@@ -204,17 +206,31 @@ public class Skill_JailKey extends StdSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) <S-HIS-HER> jailkey on @x1 and fail(s).",unlockThis.name()));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) <S-HIS-HER> jailkey on @x1 and fail(s).",unlockExit.name()));
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+			CMMsg msg=CMClass.getMsg(mob,unlockExit,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 			if(mob.location().okMessage(mob,msg))
 			{
-				if(!unlockThis.isLocked())
-					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?L("@x1 vibrate(s) and click(s).",unlockThis.name()):L("<S-NAME> use(s) <S-HIS-HER> jailkey and relock(s) @x1.",unlockThis.name()));
+				if(!unlockExit.isLocked())
+					msg=CMClass.getMsg(mob,unlockExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?L("@x1 vibrate(s) and click(s).",unlockExit.name()):L("<S-NAME> use(s) <S-HIS-HER> jailkey and relock(s) @x1.",unlockExit.name()));
 				else
-					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?L("@x1 vibrate(s) and click(s).",unlockThis.name()):L("<S-NAME> use(s) <S-HIS-HER> jailkey and unlock(s) @x1.",unlockThis.name()));
+					msg=CMClass.getMsg(mob,unlockExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?L("@x1 vibrate(s) and click(s).",unlockExit.name()):L("<S-NAME> use(s) <S-HIS-HER> jailkey and unlock(s) @x1.",unlockExit.name()));
 				CMLib.utensils().roomAffectFully(msg,mob.location(),dirCode);
+				if((unlockRoom != null)
+				&&(!unlockExit.isLocked()))
+				{
+					for(final Enumeration<MOB> m = unlockRoom.inhabitants();m.hasMoreElements();)
+					{
+						final MOB M = m.nextElement();
+						if(M != null)
+						{
+							final Ability A = M.fetchEffect("Prisoner");
+							if(A!=null)
+								A.unInvoke();
+						}
+					}
+				}
 			}
 		}
 

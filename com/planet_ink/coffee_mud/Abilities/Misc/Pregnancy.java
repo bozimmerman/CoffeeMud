@@ -559,6 +559,9 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								retainA.setMiscText(s);
 								babe.addNonUninvokableEffect(retainA);
 							}
+							final Ability racistA = mob.fetchEffect("Disease_Racism");
+							if(racistA != null)
+								babe.addNonUninvokableEffect((Ability)racistA.copyOf());
 							if (!CMLib.flags().isAnimalIntelligence(babe))
 							{
 								if (CMLib.dice().rollPercentage() > 50)

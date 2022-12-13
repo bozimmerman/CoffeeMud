@@ -357,4 +357,13 @@ public interface LegalBehavior extends Behavior
 	 * @param until the timeout for the suppression
 	 */
 	public void suppressCrime(String crime, final long until);
+
+	/**
+	 * Changes and/or reads the current loyalty bonus that this
+	 * populace has to their rulers.  Normally 0.
+	 *
+	 * @param delta 0, or an amount to change the loyalty bonus by
+	 * @return the current loyalty bonus.
+	 */
+	public int addGetLoyaltyBonus(final int delta);
 }

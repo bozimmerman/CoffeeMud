@@ -70,6 +70,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		return true;
 	}
 
+	@Override
+	public int addGetLoyaltyBonus(final int delta)
+	{
+		return 0;
+	}
+
 	protected String getLawParms()
 	{
 		final String parms=getParms();

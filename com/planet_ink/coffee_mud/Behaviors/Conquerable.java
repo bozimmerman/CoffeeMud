@@ -73,6 +73,7 @@ public class Conquerable extends Arrest
 	protected int				revoltFails			= 0;
 	protected long				waitToReload		= 0;
 	protected long				conquestDate		= 0;
+	protected volatile int		loyaltyBonus		= 0;
 	protected int				revoltDown			= REVOLTFREQ;
 	protected static final int	REVOLTFREQ			= (int) ((TimeManager.MILI_DAY) / CMProps.getTickMillis());
 	protected int				checkDown			= 0;
@@ -98,6 +99,13 @@ public class Conquerable extends Arrest
 	public String rulingOrganization()
 	{
 		return holdingClan;
+	}
+
+	@Override
+	public int addGetLoyaltyBonus(final int delta)
+	{
+		this.loyaltyBonus += delta;
+		return this.loyaltyBonus;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -209,7 +217,7 @@ public class Conquerable extends Arrest
 	public int revoltChance()
 	{
 		if(myArea==null)
-			return 100;
+			return 100 + loyaltyBonus;
 		final Clan C=CMLib.clans().getClanAnyHost(holdingClan);
 		if((C==null)||(C.isLoyaltyThroughItems()))
 			return calcRevoltChance(myArea);
@@ -449,6 +457,7 @@ public class Conquerable extends Arrest
 					chance -= ((Boardable)I).getArea().numberOfProperIDedRooms();
 			}
 		}
+		chance -=  loyaltyBonus;
 		if(chance<=0)
 			return 0;
 		return chance;
@@ -710,6 +719,7 @@ public class Conquerable extends Arrest
 					if((C==null)||(C.isLoyaltyThroughItems()))
 					{
 						final int chance=calcRevoltChance(A);
+						loyaltyBonus = 0;
 						if(CMLib.dice().rollPercentage()<chance)
 						{
 							if(revoltFails>0)
