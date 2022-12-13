@@ -2313,7 +2313,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			return;
 		}
 
-		if(isAnyKindOfOfficer(laws,msg.source())||(isTheJudge(laws,msg.source())))
+		if(isAnyKindOfOfficer(laws,msg.source())
+		||(isTheJudge(laws,msg.source())))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 			&&(msg.target() instanceof Room))
@@ -2330,6 +2331,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						testEntryLaw(laws,myArea,M,R);
 				}
 			}
+			//this is why we are testing for officers and judges.. so we can get out of here
 			return;
 		}
 
