@@ -1841,11 +1841,13 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 				travelM = mob;
 			if((commands.size()>0)
 			&&((givenTarget==null)||(!commands.get(0).equalsIgnoreCase(givenTarget.Name())))
-			&&(CMParms.containsIgnoreCase(getAllPlaneKeys(),CMParms.combine(commands,0))))
+			&&(CMParms.containsIgnoreCase(getAllPlaneKeys(),CMParms.combine(commands,0))
+				||CMParms.combine(commands,0).equalsIgnoreCase("prime material")))
 				planeName=CMParms.combine(commands,0);
 			else
 			if((text().length()>0)
-			&&(CMParms.containsIgnoreCase(getAllPlaneKeys(),text())))
+			&&(CMParms.containsIgnoreCase(getAllPlaneKeys(),text())
+				||text().equalsIgnoreCase("prime material")))
 				planeName = text();
 			else
 			{
