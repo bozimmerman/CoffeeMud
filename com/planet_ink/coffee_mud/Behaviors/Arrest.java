@@ -2498,7 +2498,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if((msg.targetMinor()==CMMsg.TYP_GET)
 			&&(msg.target() instanceof Item)
 			&&(laws.bannedItems().size()>0)
-			&&(CMLib.flags().isSeeable((Item)msg.target())))
+			&&(!CMath.bset(((Item)msg.target()).phyStats().sensesMask(), PhyStats.SENSE_UNLOCATABLE)))
 			{
 				final String rsc=RawMaterial.CODES.NAME(((Item)msg.target()).material()).toUpperCase();
 				String subType = null;
