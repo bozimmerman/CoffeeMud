@@ -2497,18 +2497,23 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		{
 			if((msg.targetMinor()==CMMsg.TYP_GET)
 			&&(msg.target() instanceof Item)
-			&&(laws.bannedSubstances().size()>0))
+			&&(laws.bannedItems().size()>0)
+			&&(CMLib.flags().isSeeable((Item)msg.target())))
 			{
 				final String rsc=RawMaterial.CODES.NAME(((Item)msg.target()).material()).toUpperCase();
-				for(int i=0;i<laws.bannedSubstances().size();i++)
+				String subType = null;
+				if((msg.target() instanceof RawMaterial)
+				&&(((RawMaterial)msg.target()).getSubType().length()>0))
+					subType = ((RawMaterial)msg.target()).getSubType().toUpperCase();
+				for(final Pair<List<String>,String[]> crime : laws.bannedItems())
 				{
-					final List<String> V=laws.bannedSubstances().get(i);
-					for(int v=0;v<V.size();v++)
+					for(final String word : crime.first)
 					{
-						if((CMLib.english().containsString(msg.target().name(),V.get(v)))
-						||rsc.equalsIgnoreCase(V.get(v)))
+						if((CMLib.english().containsString(msg.target().name(),word))
+						||rsc.equals(word)
+						||((subType != null) && word.equals(subType)))
 						{
-							final String[] info=laws.bannedBits().get(i);
+							final String[] info=crime.second;
 							fillOutWarrant(msg.source(),
 											laws,
 											myArea,

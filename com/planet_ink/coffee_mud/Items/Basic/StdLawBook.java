@@ -711,10 +711,11 @@ public class StdLawBook extends StdItem
 		{
 			final StringBuffer str=new StringBuffer("");
 			str.append(CMStrings.padRight(L("#  Items"),20)+" "+shortLawHeader()+"\n\r");
-			for(int x=0;x<theLaw.bannedSubstances().size();x++)
+			for(int x=0;x<theLaw.bannedItems().size();x++)
 			{
-				final String crime=CMParms.combineQuoted(theLaw.bannedSubstances().get(x),0);
-				final String[] set=theLaw.bannedBits().get(x);
+				final Pair<List<String>,String[]> P = theLaw.bannedItems().get(x);
+				final String crime=CMParms.combineQuoted(P.first,0);
+				final String[] set=P.second;
 				str.append(CMStrings.padRight(""+(x+1)+". "+crime,20)+" "+shortLawDesc(set)+"\n\r");
 			}
 			str.append(L("A. ADD A NEW ONE\n\r"));
@@ -747,7 +748,7 @@ public class StdLawBook extends StdItem
 								if(i<(newValue.length-1))
 									s2.append(";");
 							}
-							changeTheLaw(A,B,mob,theLaw,"BANNED"+(theLaw.bannedBits().size()+1),s2.toString());
+							changeTheLaw(A,B,mob,theLaw,"BANNED"+(theLaw.bannedItems().size()+1),s2.toString());
 							mob.tell(L("Added."));
 						}
 					}
@@ -756,25 +757,24 @@ public class StdLawBook extends StdItem
 			else
 			{
 				final int x=CMath.s_int(s);
-				if((x>0)&&(x<=theLaw.bannedSubstances().size()))
+				if((x>0)&&(x<=theLaw.bannedItems().size()))
 				{
-					final String[] crimeSet=theLaw.bannedBits().get(x-1);
+					final Pair<List<String>,String[]> P1 = theLaw.bannedItems().get(x-1);
+					final String[] crimeSet=P1.second;
 					final String[] oldLaw=crimeSet;
 					final String[] newValue=modifyLaw(A,B,theLaw,mob,crimeSet);
 					if(newValue!=oldLaw)
 					{
 						if(newValue!=null)
-							theLaw.bannedBits().set(x-1,newValue);
+							P1.second = newValue;
 						else
+							theLaw.bannedItems().remove(x-1);
+						final String[] newBits=new String[theLaw.bannedItems().size()];
+						for(int c=0;c<theLaw.bannedItems().size();c++)
 						{
-							theLaw.bannedSubstances().remove(x-1);
-							theLaw.bannedBits().remove(x-1);
-						}
-						final String[] newBits=new String[theLaw.bannedBits().size()];
-						for(int c=0;c<theLaw.bannedSubstances().size();c++)
-						{
-							final String crimeWords=CMParms.combineQuoted(theLaw.bannedSubstances().get(c),0);
-							final String[] thisLaw=theLaw.bannedBits().get(c);
+							final Pair<List<String>,String[]> P2 = theLaw.bannedItems().get(c);
+							final String crimeWords=CMParms.combineQuoted(P2.first,0);
+							final String[] thisLaw=P2.second;
 							final StringBuffer s2=new StringBuffer("");
 							for(int i=0;i<thisLaw.length;i++)
 							{

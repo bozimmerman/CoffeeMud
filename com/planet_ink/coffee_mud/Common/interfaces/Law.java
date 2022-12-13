@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import java.util.Map;
 
 /*
    Copyright 2003-2022 Bo Zimmerman
@@ -239,39 +238,19 @@ public interface Law extends CMCommon
 	public List<String[]> otherBits();
 
 	/**
-	 * Combined with bannedBits, this method returns the
-	 * definition of "illegal substance carrying" crimes.
-	 * This method in particular returns a list of raw
-	 * resource names or item names which, when encountered
-	 * in a player or mobs activity, denote the commission of an
-	 * "substance" crime.  This Vectors entries match one for one with
-	 * the list returned by bannedBits()
-	 *
-	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#bannedBits()
-	 *
-	 * @return a list of item or resource names
-	 */
-	public List<List<String>> bannedSubstances();
-
-	/**
-	 * Combined with bannedSubstances, this method returns the
-	 * definition of "substance" crimes involving manipulating
-	 * an illegal substance in public.  This method in particular
-	 * returns a list of String[] array objects definitioning
-	 * the various limitations, flags, and consequences of committing
-	 * each "substance" crime.  This Vectors entries match one for one with
-	 * the list returned by bannedSubstances()
-	 *
-	 * The entries in each String[] array are indexed by the
-	 * constants BIT_*
+	 * This method returns the definition of "illegal substance carrying"
+	 * crimes.  It returns a list of raw resource names or item names
+	 * which, when encountered in a player or mobs activity, denote the
+	 * commission of an "substance" crime.  This Vectors entries match
+	 * one for one with the String array bits. The entries in each
+	 * String[] array are indexed by the constants BIT_*
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#BIT_CRIMENAME
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#bannedSubstances()
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
 	 *
-	 * @return a list of String[] array bits of substance crime info
+	 * @return a list of item or resource crimes
 	 */
-	public List<String[]> bannedBits();
+	public List<Pair<List<String>, String[]>> bannedItems();
 
 	/**
 	 * Method for accessing the crimes, flags, and consequences

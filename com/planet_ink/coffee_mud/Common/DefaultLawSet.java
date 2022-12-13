@@ -93,11 +93,11 @@ public class DefaultLawSet implements Law
 
 	private final List<List<String>>	otherCrimes		= new Vector<List<String>>();
 	private final List<String[]>		otherBits		= new Vector<String[]>();
-	private final List<List<String>>	bannedSubstances= new Vector<List<String>>();
-	private final List<String[]>		bannedBits		= new Vector<String[]>();
 	private final Map<String, String[]>	abilityCrimes	= new Hashtable<String, String[]>();
 	private final Map<String, String[]>	basicCrimes		= new Hashtable<String, String[]>();
 	private final Map<String, Object>	taxLaws			= new Hashtable<String, Object>();
+
+	private final List<Pair<List<String>,String[]>>		bannedStuff= new Vector<Pair<List<String>,String[]>>();
 
 	private List<String>chitChat	= new Vector<String>();
 	private List<String>chitChat2	= new Vector<String>();
@@ -146,15 +146,9 @@ public class DefaultLawSet implements Law
 	}
 
 	@Override
-	public List<List<String>> bannedSubstances()
+	public List<Pair<List<String>, String[]>> bannedItems()
 	{
-		return bannedSubstances;
-	}
-
-	@Override
-	public List<String[]> bannedBits()
-	{
-		return bannedBits;
+		return bannedStuff;
 	}
 
 	@Override
@@ -798,8 +792,7 @@ public class DefaultLawSet implements Law
 		abilityCrimes.clear();
 		otherCrimes.clear();
 		otherBits.clear();
-		bannedSubstances.clear();
-		bannedBits.clear();
+		bannedStuff.clear();
 		for(final Enumeration<Object> e=laws.keys();e.hasMoreElements();)
 		{
 			final String key=(String)e.nextElement();
@@ -828,7 +821,7 @@ public class DefaultLawSet implements Law
 				else
 				if(key.startsWith("BANNED"))
 				{
-					bannedSubstances.add(CMParms.parse(words.substring(0,x)));
+					final List<String> wordsV = CMParms.parse(words.substring(0,x).toUpperCase().trim());
 					final String[] bits=new String[Law.BIT_NUMBITS];
 					final List<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
 					for(int i=0;i<Law.BIT_NUMBITS;i++)
@@ -842,7 +835,7 @@ public class DefaultLawSet implements Law
 							bits[i]="";
 						}
 					}
-					bannedBits.add(bits);
+					bannedStuff.add(new Pair<List<String>,String[]>(wordsV,bits));
 				}
 				else
 				if((key.startsWith("$")&&(CMClass.getAbility(key.substring(1))!=null))

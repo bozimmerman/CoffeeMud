@@ -127,9 +127,9 @@ public class Prayer_LowerLaw extends Prayer
 					}
 					if(L.taxLaws().containsKey("TAXEVASION"))
 						crimes.add(((String[])L.taxLaws().get("TAXEVASION"))[Law.BIT_CRIMENAME]);
-					for(int x=0;x<L.bannedSubstances().size();x++)
+					for(int x=0;x<L.bannedItems().size();x++)
 					{
-						final String name=L.bannedBits().get(x)[Law.BIT_CRIMENAME];
+						final String name=L.bannedItems().get(x).second[Law.BIT_CRIMENAME];
 						if(!crimes.contains(name))
 							crimes.add(name);
 					}

@@ -48,6 +48,14 @@ public class Poison_Hallucinogen extends Poison
 		return localizedName;
 	}
 
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Drugged)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
 	static final char[] PARENS={'(',')'};
 
 	private static final String[] triggerStrings =I(new String[] {"POISONHALLUCINOGEN"});
