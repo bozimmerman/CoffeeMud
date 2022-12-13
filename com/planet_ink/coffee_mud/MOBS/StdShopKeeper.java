@@ -285,6 +285,19 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return true;
 	}
 
+	/**
+	 * For bankers and stuff that override stdshopkeeper, but can't call
+	 * its okmess.
+	 *
+	 * @param myHost the host
+	 * @param msg the message
+	 * @return true or false
+	 */
+	protected boolean stdokMessage(final Environmental myHost, final CMMsg msg)
+	{
+		return super.okMessage(myHost, msg);
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

@@ -247,7 +247,7 @@ public class Disease_Hatred extends Disease
 						mood = CMClass.getAbility("Mood");
 						mood.setAffectedOne(affected);
 					}
-					final String newStr = moodTypes[CMLib.dice().roll(1, 3, 0)];
+					final String newStr = moodTypes[CMLib.dice().roll(1, moodTypes.length, -1)];
 					if(!mood.text().equals(newStr))
 						mood.setMiscText(newStr);
 					if(!mood.okMessage(msg.source(), msg))
@@ -262,7 +262,7 @@ public class Disease_Hatred extends Disease
 			&&(doIHate(msg.source())))
 			{
 				msg.source().tell(msg.source(),msg.target(),null,
-						L("<S-YOUPOSS> hatred of you prevents <T-HIM-HER> from dealing with you."));
+						L("<T-YOUPOSS> hatred of you prevents <T-HIM-HER> from dealing with you."));
 				return false;
 			}
 			else

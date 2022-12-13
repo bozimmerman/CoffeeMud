@@ -1126,7 +1126,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					&&(msg.source().getStartRoom().getArea()==getStartRoom().getArea()))
 					{
 						createBoxHere(msg.source().Name(),msg.source().Name());
-						return true;
+						return super.stdokMessage(myHost, msg);
 					}
 					final StringBuffer str=new StringBuffer("");
 					if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
@@ -1139,7 +1139,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					mob.tell(L("Use 'say \"@x1\" open' to open a box here@x2",name(),((feeForNewBox()<=0.0)?".":(" for "+CMLib.beanCounter().nameCurrencyShort(this,feeForNewBox())+"."))));
 					return false;
 				}
-				return true;
+				return super.stdokMessage(myHost, msg);
 			}
 			default:
 				break;

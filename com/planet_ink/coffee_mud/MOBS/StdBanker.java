@@ -1281,7 +1281,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					CMLib.commands().postSay(this,mob,str.toString()+"^T",true,false);
 					return false;
 				}
-				return true;
+				return super.stdokMessage(myHost, msg);
 			}
 			default:
 				break;
