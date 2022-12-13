@@ -24,6 +24,7 @@
  22. New poisons: anesthesia, and hallucinogen, and new Drug Cutting recipes
  23. Gaolers now get Drug Cutting, Slave Marketeering, Pimping, and new Thief Skill: Roofie
  24. BUY/SELL/VALUE/BID/BORROW/etc... now supports with/to/from to designate shopkeepers
+ 25. New Disease: Hatred
 
 # Build 5.10.0 Release 9/23/2022
   1. New Scriptable functions: ROOMPC and AREAPC
