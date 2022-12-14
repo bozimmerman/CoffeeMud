@@ -413,12 +413,48 @@ public class Gaoler extends StdCharClass
 			&&(msg.sourceMinor()!=CMMsg.TYP_NOISE)
 			&&(((MOB)host).charStats().getClassLevel(this)>0))
 			{
-				final CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,msg.tool(),CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!@x1",CMLib.protocol().msp("scream.wav",40)));
-				if(((MOB)msg.target()).location().okMessage(msg.target(),msg2))
+				final MOB mob = (MOB)host;
+				final MOB victiM = (MOB)msg.target();
+				final CMMsg msg2=CMClass.getMsg(victiM,null,msg.tool(),CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!@x1",CMLib.protocol().msp("scream.wav",40)));
+				if(victiM.location().okMessage(victiM,msg2))
 				{
-					final MOB mob=(MOB)host;
+					if((victiM.getStartRoom()!=null)
+					&&(!victiM.isPlayer())
+					&&(victiM.getStartRoom().getArea() == victiM.location().getArea())
+					&&(mob.charStats().getClassLevel(this)>19))
+					{
+						final LegalBehavior B = CMLib.law().getLegalBehavior(victiM.location());
+						if((B!=null)
+						&&(B.rulingOrganization().length()>0))
+						{
+							final Clan C = CMLib.clans().getClanExact(B.rulingOrganization());
+							if(C!=null)
+							{
+								if(mob.getClanRole(C.clanID())!=null)
+								{
+									if(B.addGetLoyaltyBonus(0)<50)
+									{
+										mob.tell(L("The screams make this area more loyal to @x1.",C.clanID()));
+										B.addGetLoyaltyBonus(1);
+									}
+								}
+								else
+								{
+									if(B.addGetLoyaltyBonus(0)>-50)
+									{
+										mob.tell(L("The screams make this area less loyal to @x1.",C.clanID()));
+										B.addGetLoyaltyBonus(-1);
+									}
+								}
+							}
+						}
+					}
 					final int baseAmt = 20 + CMLib.ableMapper().qualifyingLevel(msg.source(), (Ability)msg.tool());
-					int xp=(int)Math.round(baseAmt*CMath.div(((MOB)msg.target()).phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
+					int vicLevel = victiM.phyStats().level();
+					final Ability tortureA = mob.fetchAbility("Torturesmithing");
+					if(tortureA != null)
+						vicLevel +=  CMLib.expertises().getExpertiseLevelCached(mob, tortureA.ID(), ExpertiseLibrary.XType.LEVEL);
+					int xp=(int)Math.round(baseAmt*CMath.div(vicLevel,mob.charStats().getClassLevel(this)));
 					@SuppressWarnings("unchecked")
 					Map<String, int[]> mudHourMOBXPMap = (Map<String, int[]>)((mob.playerStats()==null)?null:mob.playerStats().getClassVariableMap(this).get("MUDHOURMOBXPMAP"));
 					if(mudHourMOBXPMap == null)
@@ -427,28 +463,28 @@ public class Gaoler extends StdCharClass
 						if(mob.playerStats() != null)
 							mob.playerStats().getClassVariableMap(this).put("MUDHOURMOBXPMAP",mudHourMOBXPMap);
 					}
-					int[] done=mudHourMOBXPMap.get(host.Name()+"/"+msg.tool().ID());
+					int[] done=mudHourMOBXPMap.get(mob.Name()+"/"+msg.tool().ID());
 					if (done == null)
 					{
 						done = new int[3];
-						mudHourMOBXPMap.put(host.Name() + "/" + msg.tool().ID(), done);
+						mudHourMOBXPMap.put(mob.Name() + "/" + msg.tool().ID(), done);
 					}
 					if(Calendar.getInstance().get(Calendar.SECOND)!=done[2])
 					{
-						final TimeClock clock =CMLib.map().getStartArea(host).getTimeObj();
+						final TimeClock clock =CMLib.map().getStartArea(mob).getTimeObj();
 						if(done[0]!=clock.getHourOfDay())
 							done[1]=0;
 						done[0]=clock.getHourOfDay();
 						done[2]=Calendar.getInstance().get(Calendar.SECOND);
 
-						if(done[1]<(90+(50*((MOB)host).phyStats().level())))
+						if(done[1]<(90+(50*mob.phyStats().level())))
 						{
-							xp=CMLib.leveler().postExperience((MOB)host,null,null,xp,true);
-							msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,L("The sweet screams of your victim earns you @x1 experience points.",""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+							xp=CMLib.leveler().postExperience(mob,null,null,xp,true);
+							msg2.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,L("The sweet screams of your victim earns you @x1 experience points.",""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 							done[1]+=xp;
 						}
 						else
-							msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,L("The screams of this victim bore you now."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+							msg2.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,L("The screams of this victim bore you now."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 						msg.addTrailerMsg(msg2);
 					}
 				}
@@ -548,6 +584,9 @@ public class Gaoler extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L("Gains experience when using certain skills, the screams of victims from certain skills per hr, sleeping by an occupied cell, feeding inmates bad food.");
+		return L("Gains experience when using certain skills, "
+				+ "screaming victims from certain skills per hour, "
+				+ "sleeping by an occupied cell, and feeding inmates bad food.  "
+				+ " After 20 levels, torturing locals also affects conquered area loyalty.");
 	}
 }

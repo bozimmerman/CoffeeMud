@@ -63,6 +63,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	protected Map<MOB, Double>		finesAssessed		= new Hashtable<MOB, Double>();
 	protected volatile Room			lastBanishR			= null;
 	protected Map<String, long[]>	suppressedCrimes	= Collections.synchronizedMap(new TreeMap<String, long[]>());
+	protected Map<String,Boolean>	bannedItemCache		= new LimitedTreeMap<String,Boolean>(99999,1000,false);
+	protected Set<String>			bannedMOBCheck		= new LimitedTreeSet<String>(60000,250,false);
 
 	@Override
 	public boolean isFullyControlled()
@@ -2133,6 +2135,50 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.ARREST)));
 	}
 
+	public boolean testBannedItem(final Law laws, final Area myArea, final MOB testMOB, final Item I)
+	{
+		if((I!=null)
+		&&(!CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_UNLOCATABLE)))
+		{
+			final Boolean B = bannedItemCache.get(I.Name());
+			if(B != null)
+			{
+				if(!B.booleanValue())
+					return false;
+			}
+			final String rsc=RawMaterial.CODES.NAME(I.material()).toUpperCase();
+			String subType = null;
+			if((I instanceof RawMaterial)
+			&&(((RawMaterial)I).getSubType().length()>0))
+				subType = ((RawMaterial)I).getSubType().toUpperCase();
+			for(final Pair<List<String>,String[]> crime : laws.bannedItems())
+			{
+				for(final String word : crime.first)
+				{
+					if((CMLib.english().containsString(I.name(),word))
+					||rsc.equals(word)
+					||((subType != null) && word.equals(subType)))
+					{
+						final String[] info=crime.second;
+						fillOutWarrant(testMOB,
+										laws,
+										myArea,
+										I,
+										info[Law.BIT_CRIMELOCS],
+										info[Law.BIT_CRIMEFLAGS],
+										info[Law.BIT_CRIMENAME],
+										info[Law.BIT_SENTENCE],
+										info[Law.BIT_WARNMSG]);
+						bannedItemCache.put(I.Name(), Boolean.TRUE);
+						return true;
+					}
+				}
+			}
+			bannedItemCache.put(I.Name(), Boolean.FALSE);
+		}
+		return false;
+	}
+
 	public void testEntryLaw(final Law laws, final Area myArea, final MOB testMOB, final Room R)
 	{
 		if((laws.basicCrimes().containsKey("NUDITY"))
@@ -2212,6 +2258,44 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						   info[Law.BIT_CRIMENAME],
 						   info[Law.BIT_SENTENCE],
 						   info[Law.BIT_WARNMSG]);
+		}
+		if(laws.bannedItems().size()>0)
+		{
+			if(!bannedMOBCheck.contains(testMOB.Name()))
+			{
+				if((!testMOB.isPlayer())
+				&&(testMOB.getStartRoom() != null)
+				&&(testMOB.getStartRoom().getArea()== R.getArea())
+				&&(CMLib.dice().rollPercentage()>1))
+				{
+					// locals get a pass almost all of the time.
+				}
+				else
+				{
+					bannedMOBCheck.add(testMOB.Name());
+					int total = testMOB.numItems() / 5;
+					if((total < 10) && (testMOB.numItems() >= 10))
+						total = 10;
+					for(int i=0;i<total;i++)
+					{
+						final Item I=testMOB.getRandomItem();
+						if(testBannedItem(laws, myArea, testMOB, I))
+							break;
+					}
+					final Set<? extends Rider> folMs=testMOB.getGroupMembersAndRideables(new HashSet<Rider>());
+					for(final Rider rid : folMs)
+					{
+						if(rid instanceof Container)
+						{
+							for(final Item I : ((Container)rid).getDeepContents())
+							{
+								if(testBannedItem(laws, myArea, testMOB, I))
+									break;
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -2497,37 +2581,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		{
 			if((msg.targetMinor()==CMMsg.TYP_GET)
 			&&(msg.target() instanceof Item)
-			&&(laws.bannedItems().size()>0)
-			&&(!CMath.bset(((Item)msg.target()).phyStats().sensesMask(), PhyStats.SENSE_UNLOCATABLE)))
-			{
-				final String rsc=RawMaterial.CODES.NAME(((Item)msg.target()).material()).toUpperCase();
-				String subType = null;
-				if((msg.target() instanceof RawMaterial)
-				&&(((RawMaterial)msg.target()).getSubType().length()>0))
-					subType = ((RawMaterial)msg.target()).getSubType().toUpperCase();
-				for(final Pair<List<String>,String[]> crime : laws.bannedItems())
-				{
-					for(final String word : crime.first)
-					{
-						if((CMLib.english().containsString(msg.target().name(),word))
-						||rsc.equals(word)
-						||((subType != null) && word.equals(subType)))
-						{
-							final String[] info=crime.second;
-							fillOutWarrant(msg.source(),
-											laws,
-											myArea,
-											msg.target(),
-											info[Law.BIT_CRIMELOCS],
-											info[Law.BIT_CRIMEFLAGS],
-											info[Law.BIT_CRIMENAME],
-											info[Law.BIT_SENTENCE],
-											info[Law.BIT_WARNMSG]);
-						}
-					}
-				}
+			&&(laws.bannedItems().size()>0))
+				testBannedItem(laws, myArea, msg.source(), (Item)msg.target());
 
-			}
 			if(msg.sourceMinor()==CMMsg.TYP_ENTER)
 				testEntryLaw(laws,myArea,msg.source(),R);
 

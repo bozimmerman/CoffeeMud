@@ -25,6 +25,9 @@
  23. Gaolers now get Drug Cutting, Slave Marketeering, Pimping, and new Thief Skill: Roofie
  24. BUY/SELL/VALUE/BID/BORROW/etc... now supports with/to/from to designate shopkeepers
  25. New Disease: Hatred
+ 26. New Thief skill: Smuggle.  Also, laws.ini has example banned item laws.
+ 27. Gaolers now affect conquered area loyalty via their torture techniques.
+ 28. New expertise: torturing
 
 # Build 5.10.0 Release 9/23/2022
   1. New Scriptable functions: ROOMPC and AREAPC
