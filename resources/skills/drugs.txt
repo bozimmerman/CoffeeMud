@@ -2,3 +2,4 @@ roofie	FOOD	Poison_Slumberall	1	CHAMOMILE	1	CHICKEN	1
 poppy milk	DRINK	Poison_Anesthesia	1	POPPY	1	MILK	1										
 theriac	FOOD	Prayer_CureLight	1	POPPY	1	LIQUOR	1										
 mandragora	FOOD	Poison_Hallucinogen	1	POPPY	1	LIQUOR	1										
+hazia	FOOD	Poison_Hazia	1	LAMP OIL	1	COAL	1										

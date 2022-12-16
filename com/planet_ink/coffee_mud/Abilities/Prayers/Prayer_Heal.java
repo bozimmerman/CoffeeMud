@@ -96,6 +96,17 @@ public class Prayer_Heal extends Prayer implements MendingSkill
 	}
 
 	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		if(((msg.targetMinor()==CMMsg.TYP_EAT)
+			||(msg.targetMinor()==CMMsg.TYP_DRINK))
+		&&(msg.target() == affected)
+		&&(affected instanceof Item)
+		&&(!(affected instanceof MiscMagic)))
+			invoke(anInvoker(msg.source()),new XVector<String>(),msg.source(),true,0);
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);

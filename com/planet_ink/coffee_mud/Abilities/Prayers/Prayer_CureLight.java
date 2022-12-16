@@ -80,6 +80,17 @@ public class Prayer_CureLight extends Prayer implements MendingSkill
 	}
 
 	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		if(((msg.targetMinor()==CMMsg.TYP_EAT)
+			||(msg.targetMinor()==CMMsg.TYP_DRINK))
+		&&(msg.target() == affected)
+		&&(affected instanceof Item)
+		&&(!(affected instanceof MiscMagic)))
+			invoke(anInvoker(msg.source()),new XVector<String>(),msg.source(),true,0);
+	}
+
+	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)

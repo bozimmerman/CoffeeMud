@@ -88,6 +88,13 @@ public class Prayer extends StdAbility
 		return Ability.ACODE_PRAYER;
 	}
 
+	protected MOB anInvoker(final MOB mob)
+	{
+		if(invoker() != null)
+			return invoker();
+		return mob;
+	}
+
 	/* These should be pre-localized, because of the damn deity names */
 	protected String prayWord(final MOB mob)
 	{
