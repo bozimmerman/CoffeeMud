@@ -205,7 +205,11 @@ public class Skill_ChildLabor extends StdSkill
 							shutdown();
 						else
 						{
-							kidTickMax = Math.max(kidTickMax / kids,2);
+							final int xlevel = super.getXLEVELLevel(invoker());
+							if(xlevel < kidTickMax)
+								kidTickMax = Math.max(kidTickMax-xlevel / kids,2);
+							else
+								kidTickMax = 2;
 							this.kidTickDown = kidTickMax;
 							final Room R=craftM.location();
 							if(R != null)
