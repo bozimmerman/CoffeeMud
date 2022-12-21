@@ -234,6 +234,18 @@ public class Age extends StdAbility
 		return following;
 	}
 
+	@Override
+	public void setMiscText(final String miscText)
+	{
+		super.setMiscText(miscText);
+		if((miscText.length()>0)
+		&&(miscText.startsWith("+")))
+		{
+			super.setMiscText(""+(System.currentTimeMillis()
+					- (CMProps.getMillisPerMudHour() * CMath.s_long(miscText.substring(1).trim()))));
+		}
+	}
+
 	protected void doAgeChangeCheck()
 	{
 		final Physical affected=this.affected;
