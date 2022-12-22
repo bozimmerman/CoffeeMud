@@ -108,7 +108,8 @@ public class Mood extends StdAbility
 		SCARED("","^yscared","scaredly"),
 		LONELY("","^Clonely","lonely"),
 		REFLECTIVE("","^Creflective","reflectively"),
-		SILLY("","^psilly","sillily")
+		SILLY("","^psilly","sillily"),
+		APATHETIC("","^kapathetic", "apathetically")
 		;
 		final String statChanges;
 		final String adj;
@@ -266,8 +267,37 @@ public class Mood extends StdAbility
 						}
 					}
 				}
+				break;
 			}
-			break;
+			case APATHETIC: // apathetic
+			{
+				final Physical affected=this.affected;
+				if(affected instanceof MOB)
+				{
+					if(counter<=0)
+						counter=CMLib.dice().roll(1, 35, 15);
+					else
+					if(--counter<=1)
+					{
+						counter=CMLib.dice().roll(1, 55, 15);
+						final Social social = CMLib.socials().fetchSocial("SIGH", true);
+						if(social != null)
+						{
+							counter=CMLib.dice().roll(1, 35, 15);
+							CMLib.threads().scheduleRunnable(new Runnable()
+							{
+								final MOB mob=(MOB)affected;
+								@Override
+								public void run()
+								{
+									mob.enqueCommand(new XVector<String>("SIGH"), 0, 0);
+								}
+							}, 500);
+						}
+					}
+				}
+				break;
+			}
 			default:
 				break;
 			}
@@ -279,7 +309,7 @@ public class Mood extends StdAbility
 	public void affectPhyStats(final Physical affected, final PhyStats stats)
 	{
 		super.affectPhyStats(affected,stats);
-		if(mood != null)
+		if((mood != null)&&(mood.adj.length()>0))
 			stats.addAmbiance(mood.adj.toLowerCase()+"^?");
 	}
 
@@ -556,7 +586,7 @@ public class Mood extends StdAbility
 							msg.source().doCommand(new XVector<String>("HANDSHAKE",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							lastOne=M;
 						}
-						switch(CMLib.dice().roll(1,5,0))
+						switch(CMLib.dice().roll(1,8,0))
 						{
 						case 1:
 							str = L("If you please, @x1", str);
@@ -607,6 +637,36 @@ public class Mood extends StdAbility
 							break;
 						case 4:
 							changeAllSays(msg, "politely say(s)");
+							break;
+						default:
+							break;
+						}
+						break;
+					}
+					case APATHETIC: // apathetic
+					{
+						switch(CMLib.dice().roll(1,10,0))
+						{
+						case 1:
+							str = L("Not like I care, but @x1", str);
+							break;
+						case 2:
+							str = L("@x1 or whatever, I don't care.", str);
+							break;
+						case 3:
+							str = L("@x1 or whatever.", str);
+							break;
+						case 4:
+							str = L("I don't care, but, @x1", str);
+							break;
+						case 5:
+							changeAllSays(msg, "apathetically say(s)");
+							break;
+						case 6:
+							changeAllSays(msg, "shrug(s)");
+							break;
+						case 7:
+							changeAllSays(msg, "passively say(s)");
 							break;
 						default:
 							break;

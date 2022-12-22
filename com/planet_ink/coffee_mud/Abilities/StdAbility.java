@@ -2073,7 +2073,7 @@ public class StdAbility implements Ability
 		return newOne;
 	}
 
-	protected void spreadImmunity(final MOB mob)
+	public void spreadImmunity(final MOB mob)
 	{
 		if((mob==null)||(mob.fetchEffect(ID())!=null))
 			return;

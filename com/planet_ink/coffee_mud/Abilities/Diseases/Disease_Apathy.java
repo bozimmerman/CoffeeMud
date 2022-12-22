@@ -140,6 +140,20 @@ public class Disease_Apathy extends Disease
 		return super.flags() | Ability.FLAG_MINDALTERING;
 	}
 
+	protected Ability mood = null;
+
+	protected Ability getMood()
+	{
+		if(mood == null)
+		{
+			mood = CMClass.getAbility("Mood");
+			mood.setAffectedOne(affected);
+			mood.setMiscText("APATHETIC");
+		}
+		mood.setAffectedOne(affected);
+		return mood;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -151,22 +165,33 @@ public class Disease_Apathy extends Disease
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((msg.amISource(mob))
-		&&(msg.tool() instanceof Ability)
-		&&(mob.fetchAbility(msg.tool().ID())==msg.tool())
-		&&((msg.target() == null)
-			||(msg.target() instanceof Physical))
-		&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+10)))
+		if(msg.amISource(mob))
 		{
-
-			switch(((Ability)msg.tool()).castingQuality(msg.source(), (Physical)msg.target()))
+			if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
+			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
+			&&(msg.sourceMessage()!=null)
+			&&((msg.tool()==null)||(msg.tool().ID().equals("Common"))))
 			{
-			case Ability.QUALITY_BENEFICIAL_OTHERS:
-			case Ability.QUALITY_BENEFICIAL_SELF:
-			{
-				mob.tell(L("You don't really feel like doing @x1!",msg.tool().name()));
-				return false;
+				if(!getMood().okMessage(msg.source(), msg))
+					return false;
 			}
+			else
+			if((msg.tool() instanceof Ability)
+			&&(mob.fetchAbility(msg.tool().ID())==msg.tool())
+			&&((msg.target() == null)
+				||(msg.target() instanceof Physical))
+			&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+10)))
+			{
+				switch(((Ability)msg.tool()).castingQuality(msg.source(), (Physical)msg.target()))
+				{
+				case Ability.QUALITY_BENEFICIAL_OTHERS:
+				case Ability.QUALITY_BENEFICIAL_SELF:
+				{
+					mob.tell(L("You don't really feel like doing @x1!",msg.tool().name()));
+					return false;
+				}
+				}
 			}
 		}
 		return super.okMessage(myHost,msg);
@@ -179,6 +204,7 @@ public class Disease_Apathy extends Disease
 			return false;
 		if(affected==null)
 			return false;
+		getMood().tick(ticking, tickID);
 		return true;
 	}
 }

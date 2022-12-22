@@ -243,10 +243,8 @@ public class Disease_Hatred extends Disease
 				&&(doIHate((MOB)msg.target())))
 				{
 					if(mood == null)
-					{
 						mood = CMClass.getAbility("Mood");
-						mood.setAffectedOne(affected);
-					}
+					mood.setAffectedOne(affected);
 					final String newStr = moodTypes[CMLib.dice().roll(1, moodTypes.length, -1)];
 					if(!mood.text().equals(newStr))
 						mood.setMiscText(newStr);

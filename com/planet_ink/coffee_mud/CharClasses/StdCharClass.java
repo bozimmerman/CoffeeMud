@@ -392,7 +392,8 @@ public class StdCharClass implements CharClass
 			&&(!multiClassSecondRule.equals("SUB"))
 			&&(!multiClassSecondRule.equals("MULTI"))
 			&&(!multiClassSecondRule.equals("MULTIAPP"))
-			&&(!multiClassSecondRule.equals("SUBONLY")))
+			&&(!multiClassSecondRule.equals("SUBONLY"))
+			&&(!CMath.isInteger(multiClassSecondRule)))
 			{
 				final CharClass possibleClass=CMClass.findCharClass(multiClassSecondRule);
 				if(possibleClass != null)
@@ -477,9 +478,11 @@ public class StdCharClass implements CharClass
 					return false;
 				if((canOnlyBeBaseClassID.length()>0)&&(!changeToBaseClassID.equals(canOnlyBeBaseClassID)))
 					return false;
-				if((multiClassRule.equals("NO"))||(multiClassRule.equals("MULTI")))
+				if((multiClassRule.equals("NO"))||(multiClassFirstRule.equals("MULTI")))
 					return true;
-				if((multiClassRule.equals("SUB")||multiClassFirstRule.equals("SUB")||multiClassSecondRule.equals("BASE"))
+				if((multiClassRule.equals("SUB")
+						||multiClassFirstRule.equals("SUB")
+						||multiClassSecondRule.equals("BASE"))
 				&&(changeToBaseClassID.equals(changeToClassID)||(changeToSubClassRule==SubClassRule.ANY)))
 					return true;
 				if((multiClassSecondRule.equals("SUBONLY"))
@@ -882,14 +885,14 @@ public class StdCharClass implements CharClass
 		return true;
 	}
 
-	protected boolean giveMobAbility(final MOB mob, final Ability A, 
-									 final int proficiency, final String defaultParm, 
+	protected boolean giveMobAbility(final MOB mob, final Ability A,
+									 final int proficiency, final String defaultParm,
 									 final boolean isBorrowedClass)
 	{
 		return giveMobAbility(mob,A,proficiency,defaultParm,isBorrowedClass,true);
 	}
 
-	protected boolean giveMobAbility(final MOB mob, Ability A, 
+	protected boolean giveMobAbility(final MOB mob, Ability A,
 									 final int proficiency, final String defaultParm,
 									 final boolean isBorrowedClass,
 									 final boolean autoInvoke)

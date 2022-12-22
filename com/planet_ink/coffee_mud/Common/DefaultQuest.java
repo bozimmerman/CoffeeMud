@@ -410,6 +410,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			if(CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS))
 				Log.debugOut("QuestScript#"+parseId+" Setting duration to "+newTicks);
 		}
+System.out.println(name()+" sets duration to "+newTicks+" ticks"); //TODO:BZ:DELME
 		duration = newTicks;
 	}
 
@@ -4189,9 +4190,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	public boolean spawnQuest(final String script, final List<?> baseVars, final boolean reTime)
 	{
 		final DefaultQuest Q2=(DefaultQuest)CMClass.getCommon("DefaultQuest");
+System.out.println(name()+" starts spawn"); //TODO:BZ:DELME
+
 		Q2.setCopy(true);
 		Q2.setVars(baseVars,0);
 		Q2.setScript(script,true);
+System.out.println(Q2.name()+" cont spawn"); //TODO:BZ:DELME
+System.out.println(Q2.duration()+" duration"); //TODO:BZ:DELME
 
 		Quest Q=CMLib.quests().fetchQuest(Q2.name());
 		int append=1;
@@ -4201,6 +4206,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			append++;
 			Q=CMLib.quests().fetchQuest(Q2.name());
 		}
+System.out.println(Q2.name()+" added"); //TODO:BZ:DELME
 		CMLib.quests().addQuest(Q2);
 		if(reTime)
 		{
@@ -4325,6 +4331,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				ticksRemaining=resetData[1];
 			else
 				ticksRemaining=duration();
+System.out.println(name()+" starts ticking for "+ticksRemaining+" ticks"); //TODO:BZ:DELME
 			CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
 		}
 		resetData=null;
@@ -6210,7 +6217,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			break;
 		default:
 			if((code.toUpperCase().trim().equalsIgnoreCase("REMAINING"))&&(running()))
+			{
 				ticksRemaining=CMLib.time().parseTickExpression(val);
+				System.out.println(name()+" starts ticking for "+ticksRemaining+" ticks"); //TODO:BZ:DELME
+			}
 			else
 				questState.vars.put(code.toUpperCase().trim(), val);
 			break;

@@ -496,6 +496,14 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
+	public List<Area> getRadiantAreas(final Area area, final int maxDepth)
+	{
+		final List<Area> V=new Vector<Area>();
+		getRadiantAreas(area,V,null,maxDepth,null);
+		return V;
+	}
+
+	@Override
 	public void getRadiantRooms(final Room room, final List<Room> rooms, TrackingFlags flags, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms)
 	{
 		if(flags == null)
@@ -572,6 +580,67 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 			min=size;
 			size=rooms.size();
+			if(min==size)
+				return;
+			depth++;
+		}
+	}
+
+	protected void getRadiantAreas(final Area area, final List<Area> areas, final Area radiateTo, final int maxDepth, final Set<Area> ignoreAreas)
+	{
+		int depth=0;
+		if(area==null)
+			return;
+		if(areas.contains(area))
+			return;
+		final HashSet<Area> H=new HashSet<Area>();
+		areas.add(area);
+		if(areas instanceof Vector<?>)
+			((Vector<Area>)areas).ensureCapacity(10);
+		if(ignoreAreas != null)
+			H.addAll(ignoreAreas);
+		for(int r=0;r<areas.size();r++)
+			H.add(areas.get(r));
+		int min=0;
+		int size=areas.size();
+		Area A1=null;
+		Room R1=null;
+		Room R=null;
+		Exit E=null;
+
+		int a=0;
+		int d=0;
+		final WorldMap map=CMLib.map();
+		while(depth<maxDepth)
+		{
+			for(a=min;a<size;a++)
+			{
+				A1=areas.get(a);
+				for(final Enumeration<Room> rs=A1.getProperMap();rs.hasMoreElements();)
+				{
+					R1 = rs.nextElement();
+					if(R1 == null)
+						continue;
+					for(d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					{
+						R=R1.getRoomInDir(d);
+						E=R1.getExitInDir(d);
+
+						if((R==null)||(E==null))
+							continue;
+						R=map.getRoom(R);
+						if((R==null)
+						||(H.contains(R.getArea())))
+							continue;
+						areas.add(R.getArea());
+						H.add(R.getArea());
+						if(R.getArea()==radiateTo) // R can't be null here, so if they are equal, time to go!
+							return;
+					}
+				}
+			}
+			min=size;
+			size=areas.size();
 			if(min==size)
 				return;
 			depth++;

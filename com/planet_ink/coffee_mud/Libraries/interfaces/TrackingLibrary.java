@@ -51,6 +51,7 @@ public interface TrackingLibrary extends CMLibrary
 	public void getRadiantRooms(final Room room, List<Room> rooms, final RFilters filters, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms);
 	public boolean getRadiantRoomsToTarget(final Room room, final List<Room> rooms, TrackingFlags flags, final RFilter radiateTo, final int maxDepth);
 	public List<Room> getRadiantRooms(Room room, TrackingFlags flags, int maxDepth);
+	public List<Area> getRadiantAreas(Area area, int maxDepth);
 	public Enumeration<Room> getRadiantRoomsEnum(final Room room, final RFilters filters, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms);
 	public Room getRadiantRoomTarget(final Room room, final RFilters filters, final RFilter radiateTo);
 	public boolean beMobile(MOB mob, boolean dooropen, boolean wander, boolean roomprefer, boolean roomobject, int[] status, Set<Room> rooms);
