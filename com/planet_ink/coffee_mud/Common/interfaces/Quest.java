@@ -781,14 +781,25 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 */
 	public void setFlags(long flags);
 
-	/** A quest spawn flag denoting that this quest does not spawn its steps */
-	public final static int SPAWN_NO=0;
-	/** A quest spawn flag denoting that this quest spawns only its first step */
-	public final static int SPAWN_FIRST=1;
-	/** A quest spawn flag denoting that this quest attempts to spawn every step at once */
-	public final static int SPAWN_ANY=2;
-	/** Descriptions of the several quest step spawn flags */
-	public final static String[] SPAWN_DESCS={"FALSE","TRUE","ALL"};
+	public static enum Spawn
+	{
+		/** A quest spawn flag denoting that this quest does not spawn its steps */
+		NO,
+		/** A quest spawn flag denoting that this quest spawns only its first step */
+		TRUE,
+		/** A quest spawn flag denoting that this quest spawns only its first step */
+		FIRST,
+		/** A quest spawn flag denoting that this quest attempts to spawn every step at the same time */
+		ALL,
+		/** A quest spawn flag denoting that this quest spawns only its first step, once */
+		ONCE,
+		/** A quest spawn flag denoting that this quest attempts to spawn every step, but only once */
+		ALLONCE,
+		/** A quest spawn flag denoting that this quest attempts to spawn one random step, once */
+		ANY,
+		/** A quest spawn flag denoting that this quest attempts to spawn one random step, once */
+		ANYONCE,
+	}
 
 	/** A quest flag @see {@link Quest#getFlags()} */
 	public final static int FLAG_SUSPENDED=1;
@@ -797,7 +808,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	public static enum QCODES
 	{
 		CLASS, NAME, DURATION, WAIT, MINPLAYERS, PLAYERMASK,
-		RUNLEVEL, DATE, MUDDAY, INTERVAL,SPAWNABLE,
+		RUNLEVEL, DATE, MUDDAY, INTERVAL, SPAWNABLE,
 		DISPLAY, INSTRUCTIONS, PERSISTANCE, AUTHOR, EXPIRATION,
 		QUESTTYPE, CATEGORY
 	}

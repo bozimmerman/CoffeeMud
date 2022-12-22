@@ -3106,14 +3106,19 @@ quest starts is WAIT + (random number between 1 and INTERVAL).
 for
 scheduled quests.</p>
       <span style="color: rgb(51, 102, 102);"></span>
-      <p style="color: rgb(51, 0, 0);"><span style="color: rgb(51, 102, 102);">SET SPAWNABLE <span style="color: rgb(102, 51, 102);">[TRUE/ALL]</span></span>
+      <p style="color: rgb(51, 0, 0);"><span style="color: rgb(51, 102, 102);">SET SPAWNABLE <span style="color: rgb(102, 51, 102);">[TRUE/ALL/ONCE/ALLONCE/ANY/ANYONCE]</span></span>
 - whether this quest will, when started, spawn a copy of itself and run
 the copy instead. This allows the same quest to run more than once at
 the same time, though it will share its name as well as its list of
 winners. If the ALL flag is given, the quest manager will attempt to
 spawn off every single STEP of the quest all at once. This can create
 chaos unless STEP BREAK is used instead of STEP. See information on the
-STEP and SET PRESERVE commands below.<br>
+STEP and SET PRESERVE commands below.  The ONCE and ALLONCE arguments are the
+same as TRUE and ALL except that only one spawned instance is allowed at
+any given time.  The ANY and ANYONCE arguments will spawn a random step.
+Spawned steps should immediately change their names for the ONCE limits to be
+properly applied.
+ <br>
       <span style="color: rgb(51, 102, 102);"><br>
 SET PERSISTANCE <span style="color: rgb(102, 51, 102);">[TRUE/FALSE]</span></span>-&nbsp;a
 quest with a scheduled WAIT/INTERVAL time will attempt to start after

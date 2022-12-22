@@ -682,7 +682,14 @@ public class StdAbility implements Ability
 					}
 				}
 			}
-			room.recoverRoomStats();
+			try
+			{
+				room.recoverRoomStats();
+			}
+			catch(Exception e)
+			{
+				Log.errOut(e);
+			}
 			if(invoker()!=affected)
 			{
 				for(int c=0;c<mob.charStats().numClasses();c++)

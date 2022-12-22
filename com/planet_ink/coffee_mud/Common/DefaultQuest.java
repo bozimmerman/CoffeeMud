@@ -69,7 +69,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	protected int		ticksRemaining		= -1;
 	protected long		lastStartDateTime	= System.currentTimeMillis();
 	private boolean		stoppingQuest		= false;
-	protected int		spawn				= SPAWN_NO;
+	protected int		spawn				= Quest.Spawn.NO.ordinal();
 	private QuestState	questState			= new QuestState();
 	private boolean		copy				= false;
 	public DVector		internalFiles		= null;
@@ -318,7 +318,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			case INTERVAL:
 				return "" + waitInterval();
 			case SPAWNABLE:
-				return SPAWN_DESCS[getSpawn()];
+				return Spawn.values()[getSpawn()].name();
 			case DISPLAY:
 				return displayName();
 			case INSTRUCTIONS:
@@ -489,7 +489,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		minWait=-1;
 		maxWait=-1;
 		minPlayers=-1;
-		spawn=SPAWN_NO;
+		spawn=Quest.Spawn.NO.ordinal();
 		playerMask="";
 		runLevel=-1;
 		internalFiles=null;
@@ -499,7 +499,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			return false;
 		setVars(questScripts,0);
 		if(isCopy())
-			spawn=SPAWN_NO;
+			spawn=Quest.Spawn.NO.ordinal();
 		return true;
 	}
 
@@ -4186,7 +4186,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
-	public boolean spawnQuest(final String script, final List<?> baseVars, final boolean reTime)
+	public boolean spawnQuest(final String script, final List<?> baseVars, final boolean reTime, boolean onceOnly)
 	{
 		final DefaultQuest Q=(DefaultQuest)CMClass.getCommon("DefaultQuest");
 		Q.setCopy(true);
@@ -4198,7 +4198,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			qName = qName.substring(0,x);
 		
 		Quest chkQ=CMLib.quests().fetchQuest(qName);
-		if((chkQ != null)&&(reTime)) // this prevents multiple respawns of individual steps when spawn=any
+		if((chkQ != null)&&(onceOnly)) // this prevents multiple respawns of individual steps when spawn=any
 			return false;
 		int append=1;
 		while((chkQ!=null)&&(chkQ!=Q))
@@ -4255,16 +4255,35 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		final List<Object> args=new ArrayList<Object>();
 		questState=new QuestState();
 		final List<Object> baseScript=parseLoadScripts(script(),new ArrayList<Object>(),args,true);
-		if((!isCopy())&&(getSpawn()!=SPAWN_NO))
+		if((!isCopy())
+		&&(getSpawn()!=Quest.Spawn.NO.ordinal()))
 		{
-			if(getSpawn()==SPAWN_FIRST)
-				spawnQuest(script(),baseScript,false);
-			else
-			if(getSpawn()==SPAWN_ANY)
+			final Spawn spawn = Quest.Spawn.values()[getSpawn()]; 
+			switch(spawn)
 			{
-				final List<String> parsed=CMLib.quests().parseQuestSteps(parseFinalQuestScript(baseScript),0,false);
-				for(int p=0;p<parsed.size();p++)
-					spawnQuest(parsed.get(p),baseScript,true);
+			case NO:
+				break;
+			case FIRST:
+			case TRUE:
+			case ONCE:
+				spawnQuest(script(),baseScript,false, spawn == Quest.Spawn.ONCE);
+				break;
+			case ANY:
+			case ANYONCE:
+				{
+					final List<String> parsed=CMLib.quests().parseQuestSteps(parseFinalQuestScript(baseScript),0,false);
+					final String stepScript = parsed.size()==0?"":parsed.get(CMLib.dice().roll(1, parsed.size(), -1));
+					spawnQuest(stepScript,baseScript,true, spawn == Quest.Spawn.ANYONCE);
+					break;
+				}
+			case ALL:
+			case ALLONCE:
+				{
+					final List<String> parsed=CMLib.quests().parseQuestSteps(parseFinalQuestScript(baseScript),0,false);
+					for(int p=0;p<parsed.size();p++)
+						spawnQuest(parsed.get(p),baseScript,true, spawn == Quest.Spawn.ALLONCE);
+					break;
+				}
 			}
 			lastStartDateTime=System.currentTimeMillis();
 			enterDormantState();
@@ -6182,8 +6201,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			setWaitInterval(CMLib.time().parseTickExpression(val));
 			break;
 		case 10:
-			setSpawn(CMParms.indexOf(SPAWN_DESCS, val.toUpperCase().trim()));
+		{
+			final Quest.Spawn s = (Quest.Spawn)CMath.s_valueOf(Quest.Spawn.class, val.toUpperCase().trim());
+			if(s != null)
+				setSpawn(s.ordinal());
 			break;
+		}
 		case 11:
 			setDisplayName(val);
 			break;
@@ -6258,7 +6281,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 9:
 			return "" + waitInterval();
 		case 10:
-			return SPAWN_DESCS[getSpawn()];
+			return Quest.Spawn.values()[getSpawn()].name();
 		case 11:
 			return displayName();
 		case 12:

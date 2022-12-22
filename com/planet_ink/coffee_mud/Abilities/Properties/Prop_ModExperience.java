@@ -63,6 +63,7 @@ public class Prop_ModExperience extends Property
 	protected String			operationFormula	= "";
 	protected boolean			selfXP				= false;
 	protected boolean			rideOK				= false;
+	protected boolean			targetOnly			= false;
 	protected DirectionCheck	dir					= DirectionCheck.POSITIVE;
 	protected CompiledFormula	operation			= null;
 	protected CompiledZMask		mask				= null;
@@ -96,6 +97,7 @@ public class Prop_ModExperience extends Property
 		operation = null;
 		mask=null;
 		selfXP=false;
+		targetOnly=false;
 		String s=newText.trim();
 		int x=s.indexOf(';');
 		if(x>=0)
@@ -109,6 +111,13 @@ public class Prop_ModExperience extends Property
 		{
 			selfXP=true;
 			s=s.substring(0,x)+s.substring(x+4);
+			us=s.toUpperCase();
+		}
+		x=us.indexOf("TARGET");
+		if(x>=0)
+		{
+			targetOnly=true;
+			s=s.substring(0,x)+s.substring(x+6);
 			us=s.toUpperCase();
 		}
 		x=us.indexOf("RIDEOK");
@@ -218,6 +227,12 @@ public class Prop_ModExperience extends Property
 		   ||(affected instanceof Room)
 		   ||(affected instanceof Area)))
 		{
+			
+			if((targetOnly)
+			&&((msg.target()==null)
+				||(msg.target()==msg.source())))
+				return super.okMessage(myHost,msg);
+				
 			switch(dir)
 			{
 			case POSITIVE:

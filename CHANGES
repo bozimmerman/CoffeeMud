@@ -28,7 +28,8 @@
  26. New Thief skill: Smuggle.  Also, laws.ini has example banned item laws.
  27. Gaolers now affect conquered area loyalty via their torture techniques.
  28. New expertise: torturing
- 29. New Gaoler skills: Child Labor, Track Criminal
+ 29. New Gaoler skills: Child Labor, Track Criminal, Spread Apathy, Spread Hatred
+ 30. Quest SPAWNABLE now supports ANY, ONCE, ALLONCE, and ANYONCE.  You should update your holiday.quest file if necc.
 
 # Build 5.10.0 Release 9/23/2022
   1. New Scriptable functions: ROOMPC and AREAPC

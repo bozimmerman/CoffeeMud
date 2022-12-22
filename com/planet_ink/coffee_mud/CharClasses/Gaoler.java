@@ -455,9 +455,11 @@ public class Gaoler extends StdCharClass
 					}
 					final int baseAmt = 20 + CMLib.ableMapper().qualifyingLevel(msg.source(), (Ability)msg.tool());
 					int vicLevel = victiM.phyStats().level();
+					int xLevel = 0;
 					final Ability tortureA = mob.fetchAbility("Torturesmithing");
 					if(tortureA != null)
-						vicLevel +=  CMLib.expertises().getExpertiseLevelCached(mob, tortureA.ID(), ExpertiseLibrary.XType.LEVEL);
+						xLevel =  CMLib.expertises().getExpertiseLevelCached(mob, tortureA.ID(), ExpertiseLibrary.XType.LEVEL);
+					vicLevel += xLevel;
 					int xp=(int)Math.round(baseAmt*CMath.div(vicLevel,mob.charStats().getClassLevel(this)));
 					@SuppressWarnings("unchecked")
 					Map<String, int[]> mudHourMOBXPMap = (Map<String, int[]>)((mob.playerStats()==null)?null:mob.playerStats().getClassVariableMap(this).get("MUDHOURMOBXPMAP"));
@@ -481,7 +483,7 @@ public class Gaoler extends StdCharClass
 						done[0]=clock.getHourOfDay();
 						done[2]=Calendar.getInstance().get(Calendar.SECOND);
 
-						if(done[1]<(90+(50*mob.phyStats().level())))
+						if(done[1]<((90+xLevel)+((50+xLevel)*mob.phyStats().level())))
 						{
 							xp=CMLib.leveler().postExperience(mob,null,null,xp,true);
 							msg2.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,L("The sweet screams of your victim earns you @x1 experience points.",""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));

@@ -681,6 +681,7 @@ public class Modify extends StdCommand
 					final Runnable doUpdate = new Runnable()
 					{
 						final List<UpdateSet> todo=res;
+						@Override
 						public void run()
 						{
 							for(final UpdateSet o : todo)
@@ -1203,7 +1204,9 @@ public class Modify extends StdCommand
 						else
 						{
 							Q.startQuest();
-							if((!Q.running())&&(Q.getSpawn()!=Quest.SPAWN_ANY))
+							if((!Q.running())
+							&&(Q.getSpawn() != Quest.Spawn.ANY.ordinal())
+							&&(Q.getSpawn() != Quest.Spawn.ALL.ordinal()))
 								mob.tell(L("Quest '@x1' NOT started -- check your mud.log for errors.",Q.name()));
 							else
 								mob.tell(L("Quest '@x1' started.",Q.name()));

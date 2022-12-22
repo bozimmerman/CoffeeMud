@@ -309,7 +309,8 @@ public class Mood extends StdAbility
 	public void affectPhyStats(final Physical affected, final PhyStats stats)
 	{
 		super.affectPhyStats(affected,stats);
-		if((mood != null)&&(mood.adj.length()>0))
+		if((mood != null)
+		&&(mood.adj.length()>0))
 			stats.addAmbiance(mood.adj.toLowerCase()+"^?");
 	}
 

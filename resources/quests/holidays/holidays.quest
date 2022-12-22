@@ -1,7 +1,7 @@
 set name holidays
 set wait 130
 set interval 1
-set spawnable all
+set spawnable allonce
 set duration 1
 step break
 
