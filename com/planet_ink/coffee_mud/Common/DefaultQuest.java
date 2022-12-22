@@ -410,7 +410,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			if(CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS))
 				Log.debugOut("QuestScript#"+parseId+" Setting duration to "+newTicks);
 		}
-System.out.println(name()+" sets duration to "+newTicks+" ticks"); //TODO:BZ:DELME
 		duration = newTicks;
 	}
 
@@ -4189,25 +4188,26 @@ System.out.println(name()+" sets duration to "+newTicks+" ticks"); //TODO:BZ:DEL
 
 	public boolean spawnQuest(final String script, final List<?> baseVars, final boolean reTime)
 	{
-		final DefaultQuest Q2=(DefaultQuest)CMClass.getCommon("DefaultQuest");
-System.out.println(name()+" starts spawn"); //TODO:BZ:DELME
-
-		Q2.setCopy(true);
-		Q2.setVars(baseVars,0);
-		Q2.setScript(script,true);
-System.out.println(Q2.name()+" cont spawn"); //TODO:BZ:DELME
-System.out.println(Q2.duration()+" duration"); //TODO:BZ:DELME
-
-		Quest Q=CMLib.quests().fetchQuest(Q2.name());
+		final DefaultQuest Q=(DefaultQuest)CMClass.getCommon("DefaultQuest");
+		Q.setCopy(true);
+		Q.setVars(baseVars,0);
+		Q.setScript(script,true);
+		String qName = Q.name();
+		int x=qName.lastIndexOf('#');
+		if(CMath.isInteger(qName.substring(x+1)))
+			qName = qName.substring(0,x);
+		
+		Quest chkQ=CMLib.quests().fetchQuest(qName);
+		if((chkQ != null)&&(reTime)) // this prevents multiple respawns of individual steps when spawn=any
+			return false;
 		int append=1;
-		while((Q!=null)&&(Q!=Q2))
+		while((chkQ!=null)&&(chkQ!=Q))
 		{
-			Q2.setName(name()+"#"+append);
+			Q.setName(qName+"#"+append);
 			append++;
-			Q=CMLib.quests().fetchQuest(Q2.name());
+			chkQ=CMLib.quests().fetchQuest(Q.name());
 		}
-System.out.println(Q2.name()+" added"); //TODO:BZ:DELME
-		CMLib.quests().addQuest(Q2);
+		CMLib.quests().addQuest(Q);
 		if(reTime)
 		{
 			Long ellapsed=stepEllapsedTimes.get(script);
@@ -4216,17 +4216,17 @@ System.out.println(Q2.name()+" added"); //TODO:BZ:DELME
 			stepEllapsedTimes.remove(script);
 			ellapsed=Long.valueOf(ellapsed.longValue()+(System.currentTimeMillis()-lastStartDateTime));
 			stepEllapsedTimes.put(script,ellapsed);
-			Q2.resetWaitRemaining(ellapsed.longValue());
-			if(Q2.startQuestOnTime())
+			Q.resetWaitRemaining(ellapsed.longValue());
+			if(Q.startQuestOnTime())
 			{
 				stepEllapsedTimes.remove(script);
 				return true;
 			}
 		}
 		else
-		if(Q2.startQuestInternal())
+		if(Q.startQuestInternal())
 			return true;
-		Q2.enterDormantState();
+		Q.enterDormantState();
 		return false;
 	}
 
@@ -4331,7 +4331,6 @@ System.out.println(Q2.name()+" added"); //TODO:BZ:DELME
 				ticksRemaining=resetData[1];
 			else
 				ticksRemaining=duration();
-System.out.println(name()+" starts ticking for "+ticksRemaining+" ticks"); //TODO:BZ:DELME
 			CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
 		}
 		resetData=null;
@@ -6217,10 +6216,7 @@ System.out.println(name()+" starts ticking for "+ticksRemaining+" ticks"); //TOD
 			break;
 		default:
 			if((code.toUpperCase().trim().equalsIgnoreCase("REMAINING"))&&(running()))
-			{
 				ticksRemaining=CMLib.time().parseTickExpression(val);
-				System.out.println(name()+" starts ticking for "+ticksRemaining+" ticks"); //TODO:BZ:DELME
-			}
 			else
 				questState.vars.put(code.toUpperCase().trim(), val);
 			break;
