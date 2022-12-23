@@ -117,6 +117,12 @@ public class Skill_SpreadApathy extends StdSkill
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
+		if((msg.source()==affected)
+		&&(msg.target() instanceof MOB)
+		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
+		&&(CMLib.flags().canBeHeardSpeakingBy(msg.source(), (MOB)msg.target()))
+		&&(!msg.source().mayIFight((MOB)msg.target())))
+			return;
 		getDisease().executeMsg(myHost, msg);
 	}
 

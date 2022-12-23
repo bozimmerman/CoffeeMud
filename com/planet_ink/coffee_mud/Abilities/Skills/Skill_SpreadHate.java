@@ -195,7 +195,8 @@ public class Skill_SpreadHate extends StdSkill
 		&&(msg.target() instanceof MOB)
 		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(msg.sourceMessage() != null)
-		&&(CMLib.flags().canBeHeardSpeakingBy(msg.source(), (MOB)msg.target())))
+		&&(CMLib.flags().canBeHeardSpeakingBy(msg.source(), (MOB)msg.target()))
+		&&(msg.source().mayIFight((MOB)msg.target())))
 		{
 			final String sayMsg = CMStrings.getSayFromMessage(msg.sourceMessage());
 			final String hatedMask = findHateable(sayMsg);

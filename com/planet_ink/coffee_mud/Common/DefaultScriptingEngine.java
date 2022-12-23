@@ -15320,14 +15320,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(que.size()>25)
 		{
 			final int hc = resp.hashCode();
-			final List<ScriptableResponse> removeables = new ArrayList<ScriptableResponse>(1);
-			for(final Iterator<ScriptableResponse> r=que.iterator();r.hasNext();)
+			ScriptableResponse SB=null;
+			for(int q=que.size()-1; q >= 0; q--)
 			{
-				final ScriptableResponse R = r.next();
-				if(hc == R.hashCode())
-					removeables.add(R);
+				try
+				{
+					SB = que.get(q);
+					if((SB != null)
+					&&(hc == SB.hashCode()))
+						que.remove(SB);
+				}
+				catch(final IndexOutOfBoundsException x)
+				{
+					continue;
+				}
 			}
-			que.removeAll(removeables);
 			if(que.size()>25)
 			{
 				if(triggerStr == null)
