@@ -95,7 +95,7 @@ public class Disease_Hatred extends Disease
 	public void setMiscText(String miscText)
 	{
 		final boolean plus = miscText.startsWith("+");
-		final boolean minus = miscText.startsWith("-");
+		final boolean minus = miscText.startsWith("<");
 		if(plus||minus)
 			miscText = miscText.substring(1);
 		else
