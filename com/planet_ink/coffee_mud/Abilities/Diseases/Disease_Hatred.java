@@ -258,8 +258,7 @@ public class Disease_Hatred extends Disease
 			if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
-			&&(msg.sourceMessage()!=null)
-			&&((msg.tool()==null)||(msg.tool().ID().equals("Common"))))
+			&&(msg.sourceMessage()!=null))
 			{
 				boolean doit;
 				if(msg.target() instanceof MOB)
