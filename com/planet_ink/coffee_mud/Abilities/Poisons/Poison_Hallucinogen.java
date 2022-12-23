@@ -132,7 +132,7 @@ public class Poison_Hallucinogen extends Poison
 		final String adj;
 		if(CMLib.dice().rollPercentage()<50)
 		{
-			final RecipeDriven P = ((RecipeDriven)CMClass.getCommon("Lacquerring"));
+			final RecipeDriven P = ((RecipeDriven)CMClass.getAbilityPrototype("Lacquerring"));
 			final int x = CMLib.dice().roll(1, P.fetchRecipes().size(),-1);
 			final List<String> pv = P.fetchRecipes().get(x);
 			adj = pv.get(3);
@@ -230,13 +230,25 @@ public class Poison_Hallucinogen extends Poison
 	{
 		if(affected instanceof MOB)
 		{
-			if((msg.source() == affected)
-			&&(msg.sourceMessage()!=null))
+			if(msg.source() == affected)
 			{
-				if((msg.target()!=null)&&(msg.target()!=affected))
-					msg.setSourceMessage(halluString(msg.sourceMessage(), "<T-NAME", msg.target()));
-				if(msg.tool() instanceof Physical)
-					msg.setSourceMessage(halluString(msg.sourceMessage(), "<O-NAME", msg.tool()));
+				if((msg.target() instanceof Room)
+				&&(msg.targetMinor()==CMMsg.TYP_LOOK))
+				{
+					final Room R = CMLib.map().getRandomRoom();
+					if(R!=null)
+					{
+						msg.setTarget(R);
+						//CMLib.commands().handleBeingLookedAt(msg);
+					}
+				}
+				if(msg.sourceMessage()!=null)
+				{
+					if((msg.target()!=null)&&(msg.target()!=affected))
+						msg.setSourceMessage(halluString(msg.sourceMessage(), "<T-NAME", msg.target()));
+					if(msg.tool() instanceof Physical)
+						msg.setSourceMessage(halluString(msg.sourceMessage(), "<O-NAME", msg.tool()));
+				}
 			}
 			if((msg.target()==affected)
 			&&(msg.targetMessage()!=null))
