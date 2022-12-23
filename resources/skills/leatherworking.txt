@@ -14,7 +14,7 @@
 % pouch	3	10	2	45	GenContainer		30	0	0	
 % sleeves	4	20	4	68	GenArmor	ARMS	0	2	0	
 % backpack	4	30	2	61	GenArmor	BACK	100	1	0	
-% greaves	4	49	2	61	GenArmor	S0:FEET	0	1	0	
+% greaves	4	49	2	61	GenArmor	S0:LEGS	0	1	0	
 % coif	4	10	4	68	GenArmor	HEAD	0	2	0	
 % mantle	4	20	2	61	GenArmor	1:NECK	0	1	0	
 % sheath belt	4	30	2	61	GenArmor	WAIST	100	1	32	
