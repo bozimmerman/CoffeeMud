@@ -189,6 +189,26 @@ public class Disease_Hatred extends Disease
 		return false;
 	}
 
+	protected boolean doIHate(final MOB srcM, final Room R)
+	{
+		if((R==null)||(srcM==null))
+			return false;
+		final Set<MOB> grp = srcM.getGroupMembers(new HashSet<MOB>());
+		boolean any=false;
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M = m.nextElement();
+			if((M != null)
+			&&(!grp.contains(M)))
+			{
+				if(!doIHate(M))
+					return false;
+				else
+					any=true;
+			}
+		}
+		return any;
+	}
 	protected String whatIHateAbout(final MOB M)
 	{
 		for(final String what : whats.keySet())
@@ -234,23 +254,22 @@ public class Disease_Hatred extends Disease
 					}
 					return false;
 				}
-				else
-				if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-				   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-				   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
-				&&(msg.sourceMessage()!=null)
-				&&((msg.tool()==null)||(msg.tool().ID().equals("Common")))
-				&&(doIHate((MOB)msg.target())))
-				{
-					if(mood == null)
-						mood = CMClass.getAbility("Mood");
-					mood.setAffectedOne(affected);
-					final String newStr = moodTypes[CMLib.dice().roll(1, moodTypes.length, -1)];
-					if(!mood.text().equals(newStr))
-						mood.setMiscText(newStr);
-					if(!mood.okMessage(msg.source(), msg))
-						return false;
-				}
+			}
+			if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
+			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
+			&&(msg.sourceMessage()!=null)
+			&&((msg.tool()==null)||(msg.tool().ID().equals("Common")))
+			&&(doIHate((MOB)msg.target())||doIHate(msg.source(), msg.source().location())))
+			{
+				if(mood == null)
+					mood = CMClass.getAbility("Mood");
+				mood.setAffectedOne(affected);
+				final String newStr = moodTypes[CMLib.dice().roll(1, moodTypes.length, -1)];
+				if(!mood.text().equals(newStr))
+					mood.setMiscText(newStr);
+				if(!mood.okMessage(msg.source(), msg))
+					return false;
 			}
 		}
 		else
