@@ -184,6 +184,8 @@ public class Config extends StdCommand
 									{
 										if(this.input.equals("Y"))
 										{
+											if((mob == null)||(M==null))
+												return;
 											try
 											{
 												for(final MOB.Attrib a : MOB.Attrib.values())

@@ -2025,6 +2025,8 @@ public class StdAbility implements Ability
 
 	protected boolean aPossibleAbuserOfCasterLevel(final MOB casterM)
 	{
+		if(casterM == null)
+			return false;
 		if(casterM.isPlayer())
 			return true;
 		final Room R=casterM.location();
