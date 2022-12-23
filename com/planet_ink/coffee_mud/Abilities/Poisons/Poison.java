@@ -213,7 +213,7 @@ public class Poison extends StdAbility implements HealthCondition
 						&&(((MOB)target).getVictim()==poisoner))
 							((MOB)target).makePeace(true);
 					}
-					if(CMLib.dice().rollPercentage() <= this.POISON_ADDICTION_CHANCE())
+					if(CMLib.dice().rollPercentage() <= POISON_ADDICTION_CHANCE())
 					{
 						if((affected instanceof Drink)
 						||(affected instanceof Food)
@@ -224,7 +224,7 @@ public class Poison extends StdAbility implements HealthCondition
 							{
 								A=CMClass.getAbility("Addictions");
 								if(A!=null)
-									A.invoke(targetMOB,affected,true,0);
+									A.invoke(mob, new XVector<String>("effect:"+ID()), null, true, 0);
 							}
 						}
 					}
