@@ -259,17 +259,24 @@ public class Disease_Hatred extends Disease
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
 			&&(msg.sourceMessage()!=null)
-			&&((msg.tool()==null)||(msg.tool().ID().equals("Common")))
-			&&(doIHate((MOB)msg.target())||doIHate(msg.source(), msg.source().location())))
+			&&((msg.tool()==null)||(msg.tool().ID().equals("Common"))))
 			{
-				if(mood == null)
-					mood = CMClass.getAbility("Mood");
-				mood.setAffectedOne(affected);
-				final String newStr = moodTypes[CMLib.dice().roll(1, moodTypes.length, -1)];
-				if(!mood.text().equals(newStr))
-					mood.setMiscText(newStr);
-				if(!mood.okMessage(msg.source(), msg))
-					return false;
+				boolean doit;
+				if(msg.target() instanceof MOB)
+					doit=doIHate((MOB)msg.target());
+				else
+					doit=doIHate(msg.source(), msg.source().location());
+				if(doit)
+				{
+					if(mood == null)
+						mood = CMClass.getAbility("Mood");
+					mood.setAffectedOne(affected);
+					final String newStr = moodTypes[CMLib.dice().roll(1, moodTypes.length, -1)];
+					if(!mood.text().equals(newStr))
+						mood.setMiscText(newStr);
+					if(!mood.okMessage(msg.source(), msg))
+						return false;
+				}
 			}
 		}
 		else
