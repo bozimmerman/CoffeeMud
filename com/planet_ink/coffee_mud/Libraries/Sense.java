@@ -1396,12 +1396,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		final Physical seenP=(Physical)seen;
 
 		if((!isSeeable(seenP))&&(seer!=null))
-		{
-			if((!(seenP instanceof MOB))
-			||(seenP.phyStats().level()>seer.phyStats().level())
-			||(!CMSecurity.isASysOp(seer)))
 				return false;
-		}
 
 		if((isInvisible(seenP))&&(!canSeeInvisible(seer)))
 			return false;
