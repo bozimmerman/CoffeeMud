@@ -134,7 +134,7 @@ public class Disease_Hatred extends Disease
 	@Override
 	protected int DISEASE_TICKS()
 	{
-		return 980;
+		return 98;
 	}
 
 	@Override
