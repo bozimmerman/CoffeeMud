@@ -142,7 +142,7 @@ public class Spell_AcidArrow extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> point(s) and conjur(s) at <T-NAMESELF>, but nothing more happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> point(s) and conjure(s) at <T-NAMESELF>, but nothing more happens."));
 
 		return success;
 	}

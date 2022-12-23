@@ -151,7 +151,7 @@ public class Prayer_TrueResurrection extends Prayer_Resurrect
 				for(final String key : lastCasts.keySet())
 				{
 					if(lastCasts.get(key).longValue() <= expires)
-						removeThese.remove(key);
+						removeThese.add(key);
 				}
 				for(final String key : removeThese)
 					lastCasts.remove(key);

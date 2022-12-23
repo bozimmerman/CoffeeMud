@@ -326,7 +326,7 @@ public class ItemData extends StdWebMacro
 							else
 								old=I.Name();
 						}
-						str.append(old);
+						str.append(htmlOutgoingFilter(old));
 						break;
 					case CLASSES: // classes
 						{
@@ -365,12 +365,12 @@ public class ItemData extends StdWebMacro
 					case DISPLAYTEXT: // displaytext
 						if(firstTime)
 							old=I.displayText();
-						str.append(old);
+						str.append(htmlOutgoingFilter(old));
 						break;
 					case DESCRIPTION: // description
 						if(firstTime)
 							old=I.description();
-						str.append(old);
+						str.append(htmlOutgoingFilter(old));
 						break;
 					case LEVEL: // level
 						if(firstTime)

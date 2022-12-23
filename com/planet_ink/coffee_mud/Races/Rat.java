@@ -166,7 +166,7 @@ public class Rat extends Rodent
 		}
 		final Vector<RawMaterial> rsc=new XVector<RawMaterial>(resources);
 		final RawMaterial meat=makeResource
-		(L("some @x1 flesh",name().toLowerCase()),RawMaterial.RESOURCE_MEAT);
+								(L("some @x1 flesh",name().toLowerCase()),RawMaterial.RESOURCE_MEAT);
 		if((CMLib.dice().rollPercentage()<10)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			final Ability A=CMClass.getAbility("Disease_SARS");

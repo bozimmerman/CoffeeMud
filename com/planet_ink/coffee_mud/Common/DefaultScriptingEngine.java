@@ -9539,7 +9539,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((I==null)&&(scripted instanceof Room))
 						I=((Room)scripted).findItem(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]));
 					if(I!=null)
+					{
+						final ItemPossessor p = I.owner();
 						I.destroy();
+						if(p != null)
+							p.recoverPhyStats();
+					}
 				}
 				break;
 			}
@@ -9651,7 +9656,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					try
 					{
-						final String value=((MOB)newTarget).session().prompt(promptStr,120000);
+						final String value=((MOB)newTarget).session().prompt(promptStr,360000);
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SCRIPTVARS))
 							Log.debugOut(CMStrings.padRight(scripted.Name(), 15)+": SETVAR: "+newTarget.Name()+"("+var+")="+value+"<");
 						setVar(newTarget.Name(),var,value);

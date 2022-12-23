@@ -804,7 +804,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
 		</DISPLAY>
 		<ALIGNMENT>0</ALIGNMENT>
-		<ABILITY condition="$mob_level &gt; 10 and 1?3=1" class="Disease" />
+		<ABILITY condition="$mob_level &gt; 10 and 1?3=1" class="Disease_SARS" />
 		<BEHAVIOR select="all">
 			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
 			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />

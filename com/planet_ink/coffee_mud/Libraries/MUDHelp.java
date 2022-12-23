@@ -1068,6 +1068,33 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 		}
 
+		if(helpText==null)
+		{
+			ChannelsLibrary.CMChannel C=CMLib.channels().getChannel(helpKey.trim());
+			boolean no=false;
+			if((C==null)
+			&&(helpKey.toLowerCase().startsWith("no")))
+			{
+				C=CMLib.channels().getChannel(helpKey.trim().substring(2));
+				no=true;
+			}
+			if(C!=null)
+			{
+				if(no)
+					helpText=normalizeHelpText(rHelpFile.getProperty("NOCHANNEL"),skip);
+				else
+					helpText=normalizeHelpText(rHelpFile.getProperty("CHANNEL"),skip);
+				if(helpText != null)
+				{
+					helpText=CMStrings.replaceAll(helpText,"[CHANNEL]",helpKey.toUpperCase());
+					helpText=CMStrings.replaceAll(helpText,"[channel]",helpKey.toLowerCase());
+					final String extra = no?"":CMLib.channels().getExtraChannelDesc(helpKey);
+					helpText=CMStrings.replaceAll(helpText,"[EXTRA]",extra);
+					return new Pair<String,String>(helpKey, helpText);
+				}
+			}
+		}
+
 		// INEXACT searches start here
 		if(helpText==null)
 		{
