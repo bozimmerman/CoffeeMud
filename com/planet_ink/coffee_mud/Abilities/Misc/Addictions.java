@@ -317,8 +317,8 @@ public class Addictions extends StdAbility
 			{
 				String cmdAdd = CMParms.combine(commands,0);
 				if((!cmdAdd.toLowerCase().startsWith("effect:"))
-				&&(CMClass.getAbility(cmdAdd)!=null))
-					cmdAdd = "effect:"+CMClass.getAbility(cmdAdd).ID();
+				&&(CMClass.getAbilityPrototype(cmdAdd)!=null))
+					cmdAdd = "effect:"+CMClass.getAbilityPrototype(cmdAdd).ID();
 				if(addiction.length()>0)
 					addiction += ";" + cmdAdd;
 				else
