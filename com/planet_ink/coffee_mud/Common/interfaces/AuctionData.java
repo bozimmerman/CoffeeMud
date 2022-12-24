@@ -68,6 +68,7 @@ public interface AuctionData extends CMCommon
 	/**
 	 * Get the mob auctioning the item
 	 * @see AuctionData#setAuctioningMob(MOB)
+	 * @see AuctionData#setAuctioningMobName(String)
 	 * @return the mob auctioning the item
 	 */
 	public MOB getAuctioningMob();
@@ -75,13 +76,23 @@ public interface AuctionData extends CMCommon
 	/**
 	 * Set the mob auctioning the item
 	 * @see AuctionData#getAuctioningMob()
+	 * @see AuctionData#setAuctioningMobName(String)
 	 * @param auctioningM the mob auctioning the item
 	 */
 	public void setAuctioningMob(MOB auctioningM);
 
 	/**
+	 * Set the mob auctioning the item
+	 * @see AuctionData#getAuctioningMob()
+	 * @see AuctionData#setAuctioningMob(MOB)
+	 * @param auctioningMName the mob auctioning the item
+	 */
+	public void setAuctioningMobName(final String auctioningMName);
+	
+	/**
 	 * Get the mob who is the high bidder in the auction.
 	 * @see AuctionData#setHighBidderMob(MOB)
+	 * @see AuctionData#setHighBidderMobName(String)
 	 * @return the mob who is the high bidder in the auction.
 	 */
 	public MOB getHighBidderMob();
@@ -89,10 +100,19 @@ public interface AuctionData extends CMCommon
 	/**
 	 * Set the mob who is the high bidder in the auction.
 	 * @see AuctionData#getHighBidderMob()
+	 * @see AuctionData#setHighBidderMobName(String)
 	 * @param highBidderM the mob who is the high bidder in the auction.
 	 */
 	public void setHighBidderMob(MOB highBidderM);
 
+	/**
+	 * Set the mob name who is the high bidder in the auction.
+	 * @see AuctionData#getHighBidderMob()
+	 * @see AuctionData#setHighBidderMob(MOB)
+	 * @param highBidderMName the mob who is the high bidder in the auction.
+	 */
+	public void setHighBidderMobName(final String highBidderMName);
+	
 	/**
 	 * Get the currency the auction is being held in.
 	 * @see AuctionData#setCurrency(String)

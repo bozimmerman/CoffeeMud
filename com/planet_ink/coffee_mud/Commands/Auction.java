@@ -111,10 +111,11 @@ public class Auction extends Channel implements Tickable
 			AD.setAuctionTickDown(AD.getAuctionTickDown()-1);
 			if(AD.getAuctionTickDown()<=0)
 			{
-				final MOB auctioneerM=AD.getAuctioningMob();
-				final MOB winnerM=AD.getHighBidderMob();
-				if((AD.getAuctionState()==STATE_START)&&((System.currentTimeMillis()-AD.getStartTime())<(5*15000)))
+				if((AD.getAuctionState()==STATE_START)
+				&&((System.currentTimeMillis()-AD.getStartTime())<(5*15000)))
 				{
+					final MOB auctioneerM=AD.getAuctioningMob();
+					final MOB winnerM=AD.getHighBidderMob();
 					if(((System.currentTimeMillis()-AD.getStartTime())>(3*15000))
 					&&((winnerM==null)||(winnerM==auctioneerM)))
 						setLiveAuctionState(STATE_RUNOUT);
@@ -143,6 +144,8 @@ public class Auction extends Channel implements Tickable
 					break;
 				case STATE_CLOSED:
 					{
+						final MOB auctioneerM=AD.getAuctioningMob();
+						final MOB winnerM=AD.getHighBidderMob();
 						if((winnerM!=null)&&(winnerM!=AD.getAuctioningMob()))
 						{
 							V.add(L("^[@x1^] SOLD to @x2 for @x3.",AD.getAuctionedItem().name(),winnerM.name(),
@@ -200,8 +203,10 @@ public class Auction extends Channel implements Tickable
 							auctioneerM.doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
 						}
 						AD.setAuctioningMob(null);
+						AD.setAuctioningMobName(null);
 						AD.setAuctionedItem(null);
 						AD.setHighBidderMob(null);
+						AD.setHighBidderMobName(null);
 						AD.setHighBid(0.0);
 						AD.setBid(0.0);
 						AD.setAuctionState(0);
@@ -209,6 +214,7 @@ public class Auction extends Channel implements Tickable
 					}
 					return false;
 				}
+				final MOB auctioneerM=AD.getAuctioningMob();
 				auctioneerM.doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
 			}
 		}
@@ -225,6 +231,7 @@ public class Auction extends Channel implements Tickable
 			if(!(target instanceof Item))
 				return false;
 			getLiveData().setAuctioningMob(mob);
+			getLiveData().setAuctioningMobName(null);
 			getLiveData().setAuctionedItem((Item)target);
 			final String sb=CMParms.combine(commands,0);
 			getLiveData().setCurrency(CMLib.english().parseNumPossibleGoldCurrency(mob,sb));
@@ -235,6 +242,7 @@ public class Auction extends Channel implements Tickable
 			getLiveData().setBid(CMath.mul(denomination,num));
 			getLiveData().setHighBid(getLiveData().getBid()-1);
 			getLiveData().setHighBidderMob(null);
+			getLiveData().setHighBidderMobName(null);
 			getLiveData().setStartTime(System.currentTimeMillis());
 			setLiveAuctionState(STATE_START);
 			CMLib.threads().startTickDown(this,Tickable.TICKID_LIVEAUCTION,1);
@@ -324,7 +332,7 @@ public class Auction extends Channel implements Tickable
 		{
 			commands.remove(0);
 			final StringBuffer buf=new StringBuffer("");
-			if((getLiveData().getAuctionedItem()!=null)&&(getLiveData().getAuctioningMob()!=null))
+			if(getLiveData().getAuctionedItem()!=null)
 			{
 				buf.append(L("\n\r^HCurrent *live* auction: ^N\n\r"));
 				buf.append(liveAuctionStatus()+"\n\r");
@@ -338,7 +346,7 @@ public class Auction extends Channel implements Tickable
 		if(cmd.equals("UP"))
 		{
 			commands.remove(0);
-			if((getLiveData().getAuctionedItem()!=null)&&(getLiveData().getAuctioningMob()!=null))
+			if(getLiveData().getAuctionedItem()!=null)
 			{
 				mob.tell(L("A live auction is already underway.  Do AUCTION LIST to see it."));
 				return false;
@@ -392,14 +400,17 @@ public class Auction extends Channel implements Tickable
 			CMLib.beanCounter().subtractMoney(mob, CMLib.beanCounter().getCurrency(mob), deposit);
 			doLiveAuction(mob,V,E);
 			if(getLiveData().getAuctionedItem()!=null)
+			{
 				getLiveData().setAuctioningMob(mob);
+				getLiveData().setAuctioningMobName(null);
+			}
 			return true;
 		}
 		else
 		if(cmd.equals("BID"))
 		{
 			commands.remove(0);
-			if((getLiveData().getAuctionedItem()==null)||(getLiveData().getAuctioningMob()==null))
+			if(getLiveData().getAuctionedItem()==null)
 			{
 				mob.tell(MESSAGE_NOAUCTION());
 				return false;
@@ -422,12 +433,14 @@ public class Auction extends Channel implements Tickable
 		if(cmd.equals("CLOSE"))
 		{
 			commands.remove(0);
-			if((getLiveData().getAuctionedItem()==null)||(getLiveData().getAuctioningMob()==null))
+			if((getLiveData().getAuctionedItem()==null)
+			||(getLiveData().getAuctioningMob()==null)) // must be non-null below
 			{
 				mob.tell(MESSAGE_NOAUCTION());
 				return false;
 			}
-			if((getLiveData().getAuctionedItem()==null)||(getLiveData().getAuctioningMob()!=mob))
+			if((getLiveData().getAuctionedItem()==null)
+			||(getLiveData().getAuctioningMob()!=mob))
 			{
 				mob.tell(L("You are not currently running a live auction."));
 				return false;
@@ -440,6 +453,7 @@ public class Auction extends Channel implements Tickable
 			if((getLiveData().getHighBid()>0.0)&&(getLiveData().getHighBidderMob()!=null))
 				CMLib.coffeeShops().returnMoney(getLiveData().getHighBidderMob(),getLiveData().getCurrency(),getLiveData().getHighBid());
 			getLiveData().setAuctioningMob(null);
+			getLiveData().setAuctioningMobName(null);
 			getLiveData().setAuctionedItem(null);
 			super.execute(mob,V,metaFlags);
 			return true;
@@ -469,7 +483,7 @@ public class Auction extends Channel implements Tickable
 				mob.tell(L("Channel what?"));
 				return false;
 			}
-			if((getLiveData().getAuctionedItem()==null)||(getLiveData().getAuctioningMob()==null))
+			if(getLiveData().getAuctionedItem()==null)
 			{
 				mob.tell(L("Channeling is only allowed during live auctions."));
 				return false;

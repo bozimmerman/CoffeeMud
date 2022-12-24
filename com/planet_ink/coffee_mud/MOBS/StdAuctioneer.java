@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -209,7 +210,11 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					final AuctionData data=a.nextElement();
 					if(thisTime>=data.getAuctionTickDown())
 					{
-						if((lastTime==null)||(data.getAuctionTickDown()>lastTime.longValue()))
+						if(thisTime > data.getAuctionTickDown() + TimeManager.MILI_MONTH)
+							CMLib.coffeeShops().cancelAuction(auctionHouse(), data);
+						else
+						if((lastTime==null)
+						||(data.getAuctionTickDown()>lastTime.longValue()))
 						{
 							if(data.getHighBidderMob()!=null)
 							{
@@ -354,6 +359,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					lastMsgData=(AuctionData)CMClass.getCommon("DefaultAuction");
 					lastMsgData.setAuctionedItem((Item)msg.tool());
 					lastMsgData.setAuctioningMob(msg.source());
+					lastMsgData.setAuctioningMobName(null);
 					lastMsgData.setCurrency(CMLib.beanCounter().getCurrency(msg.source()));
 					Area area=CMLib.map().getStartArea(this);
 					if(area==null)
@@ -565,7 +571,9 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					final AuctionData thisData=lastMsgData;
-					if((thisData==null)||(thisData.getAuctioningMob()!=msg.source())||(msg.source().isMonster()))
+					if((thisData==null)
+					||(msg.source().isMonster())
+					||(thisData.getAuctioningMob()!=msg.source()))
 					{
 						lastMsgData=null;
 						CMLib.commands().postSay(this,mob,L("I'm confused. Please try to SELL again."),true,false);

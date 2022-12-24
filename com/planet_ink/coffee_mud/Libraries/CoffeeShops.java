@@ -2285,8 +2285,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if((bid>auctionData.getHighBid())||((bid>auctionData.getBid())&&(auctionData.getHighBid()==0)))
 		{
 			final MOB oldHighBider=auctionData.getHighBidderMob();
-			if(auctionData.getHighBidderMob()!=null)
-				returnMoney(auctionData.getHighBidderMob(),auctionData.getCurrency(),auctionData.getHighBid());
+			if(oldHighBider!=null)
+				returnMoney(oldHighBider,auctionData.getCurrency(),auctionData.getHighBid());
 			auctionData.setHighBidderMob(mob);
 			if(auctionData.getHighBid()<=0.0)
 			{
@@ -2372,17 +2372,21 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		else
 			xml.append("<BIDDER />");
 		xml.append("<MAXBID>"+data.getHighBid()+"</MAXBID>");
+		xml.append("<CURRENCY>"+data.getCurrency()+"</CURRENCY>");
 		xml.append("<AUCTIONITEM>");
 		xml.append(CMLib.coffeeMaker().getItemXML(data.getAuctionedItem()).toString());
 		xml.append("</AUCTIONITEM>");
 		xml.append("</AUCTION>");
 		if(!updateOnly)
 		{
-			CMLib.database().DBWriteJournal("SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim(),
-											data.getAuctioningMob().Name(),
-											""+data.getAuctionTickDown(),
-											CMStrings.limit(data.getAuctionedItem().name(),38),
-											xml.toString());
+			if(data.getAuctioningMob()!=null)
+			{
+				CMLib.database().DBWriteJournal("SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim(),
+												data.getAuctioningMob().Name(),
+												""+data.getAuctionTickDown(),
+												CMStrings.limit(data.getAuctionedItem().name(),38),
+												xml.toString());
+			}
 		}
 		else
 			CMLib.database().DBUpdateJournal(data.getAuctionDBKey(), data.getAuctionedItem().Name(),xml.toString(), 0);
@@ -2408,6 +2412,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			data.setStartTime(auctionData.date());
 			data.setAuctionTickDown(CMath.s_long(to));
 			final String xml=auctionData.msg();
+			if(xml.length()==0)
+				continue;
 			List<XMLLibrary.XMLTag> xmlV=CMLib.xml().parseAllXML(xml);
 			xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
 			final String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");
@@ -2415,15 +2421,23 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			data.setBid(oldBid);
 			final String highBidder=CMLib.xml().getValFromPieces(xmlV,"BIDDER");
 			if(highBidder.length()>0)
-				data.setHighBidderMob(CMLib.players().getLoadPlayer(highBidder));
+			{
+				data.setHighBidderMobName(highBidder);
+				data.setHighBidderMob(null);
+			}
 			final String maxBid=CMLib.xml().getValFromPieces(xmlV,"MAXBID");
 			final double oldMaxBid=CMath.s_double(maxBid);
 			data.setHighBid(oldMaxBid);
 			data.setAuctionDBKey(key);
 			final String buyOutPrice=CMLib.xml().getValFromPieces(xmlV,"BUYOUT");
 			data.setBuyOutPrice(CMath.s_double(buyOutPrice));
-			data.setAuctioningMob(CMLib.players().getLoadPlayer(from));
-			data.setCurrency(CMLib.beanCounter().getCurrency(data.getAuctioningMob()));
+			data.setAuctioningMobName(from);
+			data.setAuctioningMob(null);
+			final String currency=CMLib.xml().getValFromPieces(xmlV,"CURRENCY",null);
+			if(currency != null)
+				data.setCurrency(currency);
+			else
+				data.setCurrency(CMLib.beanCounter().getCurrency(data.getAuctioningMob()));
 			for(int v=0;v<xmlV.size();v++)
 			{
 				final XMLTag X=xmlV.get(v);
@@ -2435,7 +2449,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			}
 			if((ofLike instanceof Item)&&(!((Item)ofLike).sameAs(data.getAuctionedItem())))
 				continue;
-			auctions.addElement(data);
+			auctions.add(data);
 		}
 		return auctions.elements();
 	}
@@ -2537,7 +2551,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			final MOB M=data.getHighBidderMob();
 			if(M!=null)
 			{
-				auctionNotify(M,"The auction for "+I.Name()+" was closed early.  You have been refunded your max bid.",I.Name());
+				if(System.currentTimeMillis() > data.getAuctionTickDown() + TimeManager.MILI_MONTH)
+					auctionNotify(M,"The auction for "+I.Name()+" was cancelled due to inactivity.  You have been refunded your max bid.",I.Name());
+				else
+					auctionNotify(M,"The auction for "+I.Name()+" was closed early.  You have been refunded your max bid.",I.Name());
 				CMLib.coffeeShops().returnMoney(M,data.getCurrency(),data.getHighBid());
 			}
 		}

@@ -53,7 +53,9 @@ public class DefaultAuction implements AuctionData
 
 	public Item		auctioningI		= null;
 	public MOB		auctioningM		= null;
+	public String	auctioningMName	= null;
 	public MOB		highBidderM		= null;
+	public String	highBidderMName	= null;
 	public String	currency		= "";
 	public double	highBid			= 0.0;
 	public double	bid				= 0.0;
@@ -141,6 +143,14 @@ public class DefaultAuction implements AuctionData
 	@Override
 	public MOB getAuctioningMob()
 	{
+		if(auctioningM==null)
+		{
+			if(auctioningMName != null)
+			{
+				auctioningM = CMLib.players().getLoadPlayerAllHosts(auctioningMName);
+				auctioningMName = null;
+			}
+		}
 		return auctioningM;
 	}
 
@@ -151,8 +161,22 @@ public class DefaultAuction implements AuctionData
 	}
 
 	@Override
+	public void setAuctioningMobName(final String auctioningMName)
+	{
+		this.auctioningMName = auctioningMName;
+	}
+
+	@Override
 	public MOB getHighBidderMob()
 	{
+		if(highBidderM==null)
+		{
+			if(highBidderMName != null)
+			{
+				highBidderM = CMLib.players().getLoadPlayerAllHosts(highBidderMName);
+				highBidderMName = null;
+			}
+		}
 		return highBidderM;
 	}
 
@@ -160,6 +184,12 @@ public class DefaultAuction implements AuctionData
 	public void setHighBidderMob(final MOB highBidderM)
 	{
 		this.highBidderM = highBidderM;
+	}
+
+	@Override
+	public void setHighBidderMobName(final String highBidderMName)
+	{
+		this.highBidderMName = highBidderMName;
 	}
 
 	@Override
