@@ -1553,22 +1553,22 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if((newArea!=null)&&(!newArea.getParents().hasMoreElements()))
 		{
-			Area defaultParentArea=null;
 			final String defaultParentAreaName=CMProps.getVar(CMProps.Str.DEFAULTPARENTAREA);
 			if((defaultParentAreaName!=null)&&(defaultParentAreaName.trim().length()>0))
 			{
-				defaultParentArea=CMLib.map().getArea(defaultParentAreaName.trim());
+				final Area defaultParentArea=CMLib.map().getArea(defaultParentAreaName.trim());
 				if(defaultParentArea==null)
-					Log.errOut("RoomLoader","Default parent area from coffeemud.ini '"+defaultParentAreaName.trim()+"' is unknown.");
-			}
-			if(defaultParentArea!=null)
-			{
-				if((newArea!=defaultParentArea)&&(newArea.getTimeObj()==CMLib.time().globalClock()))
+					Log.errOut("RoomLoader","Default parent area '"+defaultParentAreaName.trim()+"' was not found in the DB.");
+				else
 				{
-					if(defaultParentArea.canChild(newArea) && (newArea.canParent(defaultParentArea)))
+					if((newArea!=defaultParentArea)
+					&&(newArea.getTimeObj()==CMLib.time().globalClock()))
 					{
-						defaultParentArea.addChild(newArea);
-						newArea.addParent(defaultParentArea);
+						if(defaultParentArea.canChild(newArea) && (newArea.canParent(defaultParentArea)))
+						{
+							defaultParentArea.addChild(newArea);
+							newArea.addParent(defaultParentArea);
+						}
 					}
 				}
 			}
