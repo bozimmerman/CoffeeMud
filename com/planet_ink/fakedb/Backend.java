@@ -1008,25 +1008,53 @@ public class Backend
 					{
 						final ComparableValue[] rowIndexData = info.indexedData;
 						boolean somethingChanged = false;
+						ComparableValue[] keyChanges = null;
 						for (int sub = 0; sub < newCols.length; sub++)
 						{
 							if (!values[newCols[sub]].equals(updatedValues[sub]))
 							{
+								if((dupDangerTable != null)
+								&&(newCols[sub] < dupDangerTable.columns.length)
+								&&(dupDangerTable.columns[newCols[sub]].keyNumber >=0))
+								{
+									if(keyChanges == null)
+										keyChanges = new ComparableValue[newCols[sub]+1];
+									else
+									if(keyChanges.length<=newCols[sub])
+										keyChanges=Arrays.copyOf(keyChanges, newCols[sub]+1);
+									keyChanges[newCols[sub]] = updatedValues[sub];
+								}
+								else
+								{
+									for (int k = 0; k < rowIndexData.length; k++)
+										if (columnIndexesOfIndexed[k] == newCols[sub])
+											rowIndexData[k] = updatedValues[sub];
+								}
 								values[newCols[sub]] = updatedValues[sub];
 								somethingChanged = true;
 							}
-							for (int k = 0; k < rowIndexData.length; k++)
-								if (columnIndexesOfIndexed[k] == newCols[sub])
-									rowIndexData[k] = updatedValues[sub];
 						}
 						if (somethingChanged)
 						{
 							if(dupDangerTable != null)
 							{
-								final String[] vals = new String[values.length];
+								final String[] strVals = new String[values.length];
 								for(int x=0;x<values.length;x++)
-									vals[x]=values[x].getValue().toString();
-								backend.dupKeyCheck(dupDangerTable.name, dupDangerTable.columnNames, vals);
+									strVals[x]=values[x].getValue().toString();
+								if(keyChanges != null)
+								{
+									for(int i=0;i<keyChanges.length;i++)
+										strVals[i] = keyChanges[i].getValue().toString();
+									backend.dupKeyCheck(dupDangerTable.name, dupDangerTable.columnNames, strVals);
+									for(int i=0;i<keyChanges.length;i++)
+									{
+										for (int k = 0; k < rowIndexData.length; k++)
+										{
+											if (columnIndexesOfIndexed[k] == i)
+												rowIndexData[k] = keyChanges[i];
+										}
+									}
+								}
 							}
 							file.seek(info.offset);
 							file.write(new byte[] { (byte) '*' });
