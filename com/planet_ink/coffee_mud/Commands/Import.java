@@ -397,7 +397,10 @@ public class Import extends StdCommand
 		R=getRoom(hashedRoomSet,areaName,calledThis);
 		if(R!=null)
 			return R;
-		return CMLib.map().getRoom(areaName+"#"+calledThis);
+		R=CMLib.map().getRoom(areaName+"#"+calledThis);
+		if(R!=null)
+			return R;
+		return CMLib.map().getRoom(calledThis);
 	}
 
 	protected static void processRoomRelinks(final List<String> reLinkTable, final String areaName, final Map<String, Room> areaHashedRoomSet, final Map<String, Room> hashedRoomSet)
@@ -451,7 +454,8 @@ public class Import extends StdCommand
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						final Room dirR=R.rawDoors()[d];
-						if((dirR!=null)&&(dirR.getArea().Name().equalsIgnoreCase(areaName)))
+						if((dirR!=null)
+						&&(dirR.getArea().Name().equalsIgnoreCase(areaName)))
 							reLinkTable.add(R.roomID()+"/"+d+"/"+dirR.roomID());
 					}
 				}
@@ -459,6 +463,34 @@ public class Import extends StdCommand
 		}
 		catch(final NoSuchElementException e)
 		{
+		}
+		final Area A1=CMLib.map().getArea(areaName);
+		if(A1!=null)
+		{
+			final List<Room> allRooms=new LinkedList<Room>();
+			for(int i=0;i<2;i++)
+			{
+				try
+				{
+					for(final Enumeration<Room> e=A1.getProperMap();e.hasMoreElements();)
+					{
+						final Room R=e.nextElement();
+						if(R!=null)
+						{
+							allRooms.add(R);
+							CMLib.map().emptyRoom(R,null,false);
+							R.clearSky();
+						}
+					}
+				}
+				catch(final NoSuchElementException e)
+				{
+					Log.errOut(e);
+				}
+			}
+			CMLib.database().DBDeleteAreaAndRooms(A1);
+			for(final Room R : allRooms)
+				CMLib.map().obliterateMapRoom(R);
 		}
 		while(true)
 		{
@@ -475,18 +507,19 @@ public class Import extends StdCommand
 					}
 				}
 			}
-			catch (final NoSuchElementException e)
+			catch (final NoSuchElementException e1)
 			{
 			}
 			if(foundOne==null)
 				break;
 			CMLib.map().obliterateMapRoom(foundOne);
+			//CMLib.map().obliterateMapArea(null)
 		}
-		final Area A1=CMLib.map().getArea(areaName);
 		if(A1!=null)
 		{
 			CMLib.database().DBDeleteArea(A1);
 			CMLib.map().delArea(A1);
+			A1.destroy();
 		}
 		return true;
 	}
@@ -5500,6 +5533,7 @@ public class Import extends StdCommand
 									continue;
 								}
 							}
+							processRoomRelinks(reLinkTable,areaName,null,doneRooms);
 						}
 						else
 						if(error.length()>0)
@@ -5559,6 +5593,7 @@ public class Import extends StdCommand
 						error=CMLib.coffeeMaker().unpackAreaFromXML(areaD,session,areaType,true, true);
 						if(session!=null)
 							session.rawPrintln("!");
+						processRoomRelinks(reLinkTable,areaName,null,doneRooms);
 					}
 					if(error.length()>0)
 						return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,errorList);
@@ -5593,6 +5628,7 @@ public class Import extends StdCommand
 					if(error.startsWith("Room Exists: "))
 					{
 						final Room R=CMLib.map().getRoom(error.substring(13).trim());
+						final String areaName = (R==null)?null:R.getArea().Name();
 						if(R!=null)
 						{
 							if((nodelete)&&(!prompt))
@@ -5620,6 +5656,8 @@ public class Import extends StdCommand
 							CMLib.map().obliterateMapRoom(R);
 						}
 						error=CMLib.coffeeMaker().unpackRoomFromXML(buf.toString(),true);
+						if(areaName != null)
+							processRoomRelinks(reLinkTable,areaName,null,doneRooms);
 					}
 					if(error.length()>0)
 						return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,errorList);
