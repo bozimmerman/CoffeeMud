@@ -70,7 +70,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		protected Object[] args;
 		protected Class<?>[] types;
 		protected Map<Class<?>, Integer> classMap;
-		public ShipNavTrack(final ShipNavProcess proc, final Object... args)
+		protected ShipNavTrack(final ShipNavProcess proc, final Object... args)
 		{
 			this.proc = proc;
 			this.state = proc.initialState;
@@ -90,7 +90,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				}
 			}
 		}
-		public <T> T getArg(final Class<T> argT)
+		protected <T> T getArg(final Class<T> argT)
 		{
 			final Integer dexI = classMap.get(argT);
 			if(dexI != null)
@@ -102,7 +102,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			throw null;
 		}
 
-		public Object getArg(final int index)
+		protected Object getArg(final int index)
 		{
 			if((index>=0)&&(index < args.length))
 				return args[index];
@@ -294,13 +294,13 @@ public class ShipNavProgram extends ShipSensorProgram
 		return true;
 	}
 
-	public boolean flipForAllStop(final SpaceShip ship)
+	protected boolean flipForAllStop(final SpaceShip ship)
 	{
 		final double[] stopFacing = CMLib.space().getOppositeDir(ship.direction());
 		return changeFacing(ship, stopFacing);
 	}
 
-	public boolean changeFacing(final SpaceShip ship, final double[] newFacing)
+	protected boolean changeFacing(final SpaceShip ship, final double[] newFacing)
 	{
 		CMMsg msg;
 		final List<ShipEngine> engines = getEngines();
@@ -386,7 +386,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		return false;
 	}
 
-	public ShipEngine primeMainThrusters(final SpaceShip ship)
+	protected ShipEngine primeMainThrusters(final SpaceShip ship)
 	{
 		CMMsg msg;
 		final List<ShipEngine> engines = getEngines();
