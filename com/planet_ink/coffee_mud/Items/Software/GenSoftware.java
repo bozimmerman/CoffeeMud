@@ -170,7 +170,7 @@ public class GenSoftware extends StdProgram
 	public String getInternalName()
 	{
 		if(intName==null)
-			return ID();
+			return "";
 		return intName;
 	}
 

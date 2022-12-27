@@ -305,7 +305,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			}
 		}
 		delta[1]=(toPitch-fromPitch);
-		fixDirectionBounds(delta);
+		//fixDirectionBounds(delta); // normalizing directions makes NO SENSE for a delta!
 		return delta;
 	}
 
@@ -379,9 +379,13 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			dir[0] -= PI_TIMES_2;
 		while(dir[0] < 0)
 			dir[0] += PI_TIMES_2;
+		while(dir[1] >= PI_TIMES_2)
+			dir[1] -= PI_TIMES_2;
+		while(dir[1] < -PI_TIMES_2)
+			dir[1] += PI_TIMES_2;
 		while(dir[1] >= Math.PI)
 		{
-			dir[1] = Math.PI - dir[1] - Math.PI;
+			dir[1] = Math.PI - dir[1];
 			dir[0] = dir[0] + ((dir[0] <= Math.PI)?Math.PI:(-Math.PI));
 		}
 		while(dir[1] < 0)
@@ -408,14 +412,11 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	@Override
 	public double[] getOppositeDir(final double[] dir)
 	{
-		if((dir[1]<ZERO_ALMOST)||(dir[1]>PI_ALMOST))
-			return new double[]{dir[0], Math.PI-dir[1]};
+		fixDirectionBounds(dir);
 		final double[] newDir = new double[]{Math.PI+dir[0],Math.PI-dir[1]};
 		fixDirectionBounds(newDir);
 		return newDir;
 	}
-
-
 
 	@Override
 	public ShipDirectional.ShipDir getDirectionFromDir(final double[] facing, final double roll, final double[] direction)

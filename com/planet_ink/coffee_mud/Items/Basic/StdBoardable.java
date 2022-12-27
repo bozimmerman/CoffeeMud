@@ -771,6 +771,8 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		final Area boardedArea=getArea();
 		if(itemArea == boardedArea)
 		{
+			if(itemArea == null)
+				return true;
 			final Room srcR=(msg!=null && msg.source() != null) ? msg.source().location() : null;
 			if((srcR!=null)
 			&&(srcR != boardedArea))

@@ -692,7 +692,7 @@ public class RocketShipProgram extends ShipNavProgram
 					this.cancelNavigation();
 				}
 				final SpaceObject programPlanet=CMLib.space().getSpaceObject(ship.getIsDocked(), true);
-				final ShipEngine engineE =this.primeMainThrusters(ship,true);
+				final ShipEngine engineE =this.primeMainThrusters(ship);
 				if(engineE==null)
 				{
 					super.addScreenMessage(L("Error: Malfunctioning launch thrusters interface."));
@@ -736,7 +736,7 @@ public class RocketShipProgram extends ShipNavProgram
 					return;
 				}
 				else
-					engineE=this.primeMainThrusters(ship,ship.getIsDocked()!=null);
+					engineE=this.primeMainThrusters(ship);
 				if(engineE==null)
 				{
 					this.cancelNavigation();
@@ -820,7 +820,7 @@ public class RocketShipProgram extends ShipNavProgram
 					return;
 				}
 				else
-					engineE=this.primeMainThrusters(ship,true);
+					engineE=this.primeMainThrusters(ship);
 				if(engineE==null)
 				{
 					this.cancelNavigation();
@@ -1125,7 +1125,7 @@ public class RocketShipProgram extends ShipNavProgram
 					this.cancelNavigation();
 					return;
 				}
-				engineE=this.primeMainThrusters(ship,ship.getIsDocked()!=null);
+				engineE=this.primeMainThrusters(ship);
 				if(engineE==null)
 				{
 					this.cancelNavigation();
