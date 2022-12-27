@@ -81,7 +81,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				throw new IllegalArgumentException("Too many arguments ("+args.length+">"+types.length+")");
 			if(args.length<types.length)
 				throw new IllegalArgumentException("Too few arguments ("+args.length+"<"+types.length+")");
-			for(int i=0;i<args.length;i++)
+			for(int i=0;i <args.length;i++)
 			{
 				if(!types[i].isAssignableFrom(args[i].getClass()))
 				{
