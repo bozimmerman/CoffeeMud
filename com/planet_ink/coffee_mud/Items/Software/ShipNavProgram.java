@@ -753,7 +753,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			{
 				final String reason = "no target information";
 				this.cancelNavigation();
-				super.addScreenMessage(L("Launch program aborted with error ("+reason+")."));
+				super.addScreenMessage(L("Last program aborted with error ("+reason+")."));
 				return;
 			}
 			final Long deproachDistance = track.getArg(Long.class);
@@ -773,7 +773,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					if(!changeFacing(ship, desiredFacing))
 					{
 						this.cancelNavigation();
-						super.addScreenMessage(L("Stop program aborted with error (directional control failure)."));
+						super.addScreenMessage(L("Last program aborted with error (directional control failure)."));
 						return;
 					}
 					final double targetAcceleration = this.targetAcceleration.doubleValue();
@@ -836,7 +836,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			{
 				final String reason = "no target planetary information";
 				this.cancelNavigation();
-				super.addScreenMessage(L("Launch program aborted with error ("+reason+")."));
+				super.addScreenMessage(L("Landing program aborted with error ("+reason+")."));
 				return;
 			}
 			final double[] dirToPlanet = CMLib.space().getDirection(ship, targetObject);
@@ -906,7 +906,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				{
 					final String reason = "no target planetary information";
 					this.cancelNavigation();
-					super.addScreenMessage(L("Launch program aborted with error ("+reason+")."));
+					super.addScreenMessage(L("Landing program aborted with error ("+reason+")."));
 					return;
 				}
 				final long distance=CMLib.space().getDistanceFrom(ship, targetObject)
