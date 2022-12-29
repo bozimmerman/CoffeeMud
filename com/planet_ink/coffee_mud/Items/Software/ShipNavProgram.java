@@ -572,7 +572,7 @@ public class ShipNavProgram extends ShipSensorProgram
 	protected long calculateDeproachDistance(final SpaceObject ship, final SpaceObject targetObj)
 	{
 		long distance = CMLib.space().getDistanceFrom(ship, targetObj);
-		distance = (distance - ship.radius() - targetObj.radius());
+		distance = (distance - ship.radius() - Math.round(CMath.mul(targetObj.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 		if(ship.speed() < SpaceObject.VELOCITY_SOUND)
 			return distance/2;
 		else
@@ -652,7 +652,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				super.addScreenMessage(L("Approach program aborted with error ("+reason+")."));
 				return;
 			}
-			final long distance = (CMLib.space().getDistanceFrom(ship, targetObject)-ship.radius()-targetObject.radius());
+			final long distance = (CMLib.space().getDistanceFrom(ship, targetObject)-ship.radius()
+								-Math.round(CMath.mul(targetObject.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 			int safeDistance=100 + (int)Math.round(ship.speed());
 			final double[] dirTo = CMLib.space().getDirection(ship, targetObject);
 			final double[] diffDelta = CMLib.space().getFacingAngleDiff(ship.direction(), dirTo); // starboard is -, port is +
@@ -866,7 +867,9 @@ public class ShipNavProgram extends ShipSensorProgram
 			&&(track.state==ShipNavState.DEPROACH)
 			&&(targetObject != null))
 			{
-				final long distance = (CMLib.space().getDistanceFrom(ship, targetObject)-ship.radius()-targetObject.radius());
+				final long distance = (CMLib.space().getDistanceFrom(ship, targetObject)
+										-ship.radius()
+										-Math.round(CMath.mul(targetObject.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 				if(distance > 100)
 				{
 					track.state=ShipNavState.APPROACH;

@@ -50,7 +50,7 @@ public class BirdSpeak extends AnimalSpeak
 
 	private final static String[] animalSounds=
 	{
-		"chirrup","chirp","twitter","tweet","sing","whistle"
+		"chirrup","chirp","twitter","tweet","sing","whistle","warble","trill","cheep","click"
 	};
 
 	@Override

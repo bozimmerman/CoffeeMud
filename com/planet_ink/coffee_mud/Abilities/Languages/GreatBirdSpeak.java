@@ -50,7 +50,7 @@ public class GreatBirdSpeak extends AnimalSpeak
 
 	private final static String[] animalSounds=
 	{
-		"scream","squawk","mew","squeal"
+		"scream","squawk","mew","squeal","scream","squawk","mew","squeal","chirrup","chirp","twitter","tweet","sing","whistle","warble","trill","cheep","click"
 	};
 
 	@Override
