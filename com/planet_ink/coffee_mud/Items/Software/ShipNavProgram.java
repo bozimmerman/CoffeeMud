@@ -363,7 +363,10 @@ public class ShipNavProgram extends ShipSensorProgram
 							break;
 						angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 						if(isDebugging)
-							Log.debugOut("* Total Deltas now: "+angleDelta[0]+" + "+angleDelta[1] +"=="+((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))));
+						{
+							Log.debugOut("Turn Deltas now: "+(Math.round(angleDelta[0]*100)/100.0)+" + "+(Math.round(angleDelta[1]*100)/100.0) 
+									+"=="+(Math.round(Math.abs((angleDelta[0])+Math.abs(angleDelta[1]))*100)/100.0));
+						}
 						if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))<.01)
 							return true;
 					}
@@ -386,7 +389,10 @@ public class ShipNavProgram extends ShipSensorProgram
 							break;
 						angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 						if(isDebugging)
-							Log.debugOut("* Total Deltas now: "+angleDelta[0]+" + "+angleDelta[1] +"=="+((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))));
+						{
+							Log.debugOut("Turn Deltas now: "+(Math.round(angleDelta[0]*100)/100.0)+" + "+(Math.round(angleDelta[1]*100)/100.0) 
+									+"=="+(Math.round(Math.abs((angleDelta[0])+Math.abs(angleDelta[1]))*100)/100.0));
+						}
 					}
 					if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))<.01)
 						return true;
@@ -865,6 +871,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				{
 					track.state=ShipNavState.APPROACH;
 					track.setArg(Long.class, Long.valueOf(calculateDeproachDistance(ship, targetObject)));
+					primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
 				}
 			}
 			break;
