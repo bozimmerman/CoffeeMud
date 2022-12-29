@@ -66,7 +66,8 @@ public class StdDeity extends StdMOB implements Deity
 	protected final Set<Integer>	neverTriggers		= new XHashSet<Integer>(new Integer[] {
 		Integer.valueOf(CMMsg.TYP_ENTER),
 		Integer.valueOf(CMMsg.TYP_LEAVE),
-		Integer.valueOf(CMMsg.TYP_LOOK)
+		Integer.valueOf(CMMsg.TYP_LOOK),
+		Integer.valueOf(CMMsg.TYP_RITUAL)
 	});
 
 	public StdDeity()
