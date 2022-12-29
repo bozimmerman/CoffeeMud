@@ -2228,7 +2228,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	@Override
 	public void handleBeingGravitied(final MOB mob, final CMMsg msg)
 	{
-		if(msg.value() >= SpaceObject.ACCELERATION_PASSOUT)
+		if(msg.value() >= SpaceObject.ACCELERATION_UNCONSCIOUSNESS)
 		{
 			final Room R=mob.location();
 			if(R==null)
@@ -2250,7 +2250,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					R.show(mob,null,null,CMMsg.MSG_OK_ACTION, L("<S-NAME> fall(s) unconscious from extreme acceleration."));
 			}
 			else
-			if(msg.value() >= SpaceObject.ACCELERATION_PASSOUT)
+			if(msg.value() >= SpaceObject.ACCELERATION_UNCONSCIOUSNESS)
 			{
 				Ability A=mob.fetchEffect("Fighter_Whomp");
 				if(A==null)

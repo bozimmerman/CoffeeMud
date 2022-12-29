@@ -33,6 +33,7 @@ TECH TODO:
    *. Radiation Props: Alpha (damage), Beta (?!), Gamma (Mutation if in too long)
 
 NON-TECH (Long Term) TODO:
+   *. MudChat - integrate with Percolator for mood/attitude based adjective variety
    *. Builder Achievements, Archon Achievements
    *. Simple Desires quest behavior - see Tim's Wants and Needs doc
    *. Wants and Needs engine - similar to slavery system

@@ -102,6 +102,17 @@ public class ShipNavProgram extends ShipSensorProgram
 			throw null;
 		}
 
+		protected <T> T setArg(final Class<T> argT, final T t)
+		{
+			final Integer dexI = classMap.get(argT);
+			if(dexI != null)
+			{
+				args[dexI.intValue()] = t;
+				return t;
+			}
+			throw null;
+		}
+		
 		protected Object getArg(final int index)
 		{
 			if((index>=0)&&(index < args.length))
@@ -112,9 +123,7 @@ public class ShipNavProgram extends ShipSensorProgram
 
 	protected static enum ShipNavState
 	{
-		LAUNCHSEARCH(),
-		LAUNCHCHECK(),
-		LAUNCHCRUISE(),
+		LAUNCHING(),
 		STOP(),
 		PRE_LANDING_STOP(),
 		LANDING_APPROACH(),
@@ -130,7 +139,7 @@ public class ShipNavProgram extends ShipSensorProgram
 	protected static enum ShipNavProcess
 	{
 		STOP(ShipNavState.STOP, List.class),
-		LAUNCH(ShipNavState.LAUNCHSEARCH, SpaceObject.class, List.class),
+		LAUNCH(ShipNavState.LAUNCHING, SpaceObject.class, List.class),
 		LAND(ShipNavState.PRE_LANDING_STOP, SpaceObject.class, List.class),
 		ORBIT(ShipNavState.ORBITSEARCH, SpaceObject.class, List.class),
 		APPROACH(ShipNavState.APPROACH, SpaceObject.class, List.class, Long.class)
@@ -249,6 +258,15 @@ public class ShipNavProgram extends ShipSensorProgram
 		while((--tries)>0);
 		return newInject;
 	}
+	
+	protected boolean doCollisionDetection()
+	{
+		// generate a warning, or an alert
+		// warning = can be halted at max acceleration
+		// alert = can not
+		//TODO:BZ
+		return false;
+	}
 
 	protected void performSimpleThrust(final ShipEngine engineE, final Double thrustInject, final boolean alwaysThrust)
 	{
@@ -276,7 +294,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		}
 	}
 
-	protected boolean findTargetAcceleration(final ShipEngine E)
+	protected double findTargetAcceleration(final ShipEngine E)
 	{
 		boolean dampenerFound = false;
 		for(final TechComponent T : this.getDampeners())
@@ -286,12 +304,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				dampenerFound = true;
 		}
 		if(!dampenerFound)
-		{
-			this.targetAcceleration = Double.valueOf(SpaceObject.ACCELERATION_TYPICALSPACEROCKET);
-			return false;
-		}
-		this.targetAcceleration = Double.valueOf(30);
-		return true;
+			return SpaceObject.ACCELERATION_TYPICALSPACEROCKET;
+		return SpaceObject.ACCELERATION_DAMAGED;
 	}
 
 	protected boolean flipForAllStop(final SpaceShip ship)
@@ -386,21 +400,19 @@ public class ShipNavProgram extends ShipSensorProgram
 		return false;
 	}
 
-	protected ShipEngine primeMainThrusters(final SpaceShip ship)
+	protected ShipEngine primeMainThrusters(final SpaceShip ship, final double maxAceleration)
 	{
 		CMMsg msg;
 		final List<ShipEngine> engines = getEngines();
 		final MOB M=CMClass.getFactoryMOB();
 		final boolean isDocked = ship.getIsDocked()!=null;
-		final double targetAcceleration = SpaceObject.ACCELERATION_G;
 		try
 		{
 			for(final ShipEngine engineE : engines)
 			{
-				if((CMParms.contains(engineE.getAvailPorts(),ShipDirectional.ShipDir.AFT))
-				&&(engineE.getMaxThrust()>SpaceObject.ACCELERATION_G)
-				&&(engineE.getMinThrust()<SpaceObject.ACCELERATION_PASSOUT))
+				if(CMParms.contains(engineE.getAvailPorts(),ShipDirectional.ShipDir.AFT))
 				{
+					double targetAcceleration = findTargetAcceleration(engineE);
 					int tries=100;
 					double lastTryAmt;
 					if(this.injects.containsKey(engineE))
@@ -550,6 +562,35 @@ public class ShipNavProgram extends ShipSensorProgram
 		}
 		super.executeMsg(myHost, msg);
 	}
+	
+	protected long calculateDeproachDistance(final SpaceObject ship, final SpaceObject targetObj)
+	{
+		long distance = CMLib.space().getDistanceFrom(ship, targetObj);
+		distance = (distance - ship.radius() - targetObj.radius());
+		if(ship.speed() < SpaceObject.VELOCITY_SOUND)
+			return distance/2;
+		else
+		if(ship instanceof SpaceShip)
+		{
+			if(targetAcceleration == null)
+			{
+				final ShipEngine engineE = this.primeMainThrusters((SpaceShip)ship, SpaceObject.ACCELERATION_DAMAGED);
+				if(engineE != null)
+					this.targetAcceleration = Double.valueOf( findTargetAcceleration(engineE) );
+			}
+			if(targetAcceleration != null)
+			{
+				double ticksToZero = ship.speed() / targetAcceleration.doubleValue();
+				double distanceToZero = ticksToZero * (ship.speed()/2);
+				long d20 = Math.round(distanceToZero);
+				long baseDistance = distance - d20;
+				if(baseDistance < 0)
+					return distance;
+				return d20 + (baseDistance/2);
+			}
+		}
+		return distance; // begin deproach IMMEDIATELY!
+	}
 
 	protected boolean confirmNavEnginesOK(final SpaceShip ship, final Collection<ShipEngine> programEngines)
 	{
@@ -591,7 +632,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		if((ship==null)||(!confirmNavEnginesOK(ship, programEngines)))
 			return;
 		if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-			Log.debugOut("Program state: "+track.state.toString());
+			Log.debugOut("Program "+track.proc.name()+" state: "+track.state.toString());
 
 		// check pre-reqs and completions of the overall process first
 		switch(proc)
@@ -762,36 +803,39 @@ public class ShipNavProgram extends ShipSensorProgram
 			{
 				if(track.state == ShipNavState.APPROACH)
 					track.state=ShipNavState.DEPROACH;
-				final double[] desiredFacing;
-				if(track.state == ShipNavState.APPROACH)
-					desiredFacing = CMLib.space().getDirection(ship, targetObject);
-				else
-					desiredFacing = CMLib.space().getOppositeDir(ship.direction());
-				final double[] angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), desiredFacing); // starboard is -, port is +
-				if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))>.02)
+			}
+			else
+			{
+				if(track.state == ShipNavState.DEPROACH)
+					track.state=ShipNavState.APPROACH;
+			}
+			final double[] desiredFacing;
+			if(track.state == ShipNavState.APPROACH)
+				desiredFacing = CMLib.space().getDirection(ship, targetObject);
+			else
+				desiredFacing = CMLib.space().getOppositeDir(ship.direction());
+			final double[] angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), desiredFacing); // starboard is -, port is +
+			if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))>.02)
+			{
+				if(!changeFacing(ship, desiredFacing))
 				{
-					if(!changeFacing(ship, desiredFacing))
-					{
-						this.cancelNavigation();
-						super.addScreenMessage(L("Last program aborted with error (directional control failure)."));
-						return;
-					}
-					final double targetAcceleration = this.targetAcceleration.doubleValue();
-					if(this.lastInject != null)
-					{
-						if(ship.speed() < targetAcceleration)
-							this.lastInject = Double.valueOf(this.lastInject.doubleValue()/2.0);
-						else
-						if(ship.speed() < (targetAcceleration * 2))
-							this.lastInject = Double.valueOf(this.lastInject.doubleValue()/1.5);
-					}
+					this.cancelNavigation();
+					super.addScreenMessage(L("Last program aborted with error (directional control failure)."));
+					return;
+				}
+				final double targetAcceleration = this.targetAcceleration.doubleValue();
+				if(this.lastInject != null)
+				{
+					if(ship.speed() < targetAcceleration)
+						this.lastInject = Double.valueOf(this.lastInject.doubleValue()/2.0);
+					else
+					if(ship.speed() < (targetAcceleration * 2))
+						this.lastInject = Double.valueOf(this.lastInject.doubleValue()/1.5);
 				}
 			}
 			break;
 		}
-		case LAUNCHCHECK:
-		case LAUNCHCRUISE:
-		case LAUNCHSEARCH:
+		case LAUNCHING:
 		case ORBITSEARCH:
 		case ORBITCHECK:
 		case ORBITCRUISE:
@@ -812,10 +856,20 @@ public class ShipNavProgram extends ShipSensorProgram
 			newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
 			for(final ShipEngine engineE : programEngines)
 				performSimpleThrust(engineE,newInject, false);
+			if((ship.speed()<0.1)
+			&&(track.state==ShipNavState.DEPROACH)
+			&&(targetObject != null))
+			{
+				final long distance = (CMLib.space().getDistanceFrom(ship, targetObject)-ship.radius()-targetObject.radius());
+				if(distance > 100)
+				{
+					track.state=ShipNavState.APPROACH;
+					track.setArg(Long.class, Long.valueOf(calculateDeproachDistance(ship, targetObject)));
+				}
+			}
 			break;
 		}
-		case LAUNCHCHECK:
-		case LAUNCHSEARCH:
+		case LAUNCHING:
 		case ORBITSEARCH:
 		case ORBITCHECK:
 		{
@@ -823,7 +877,6 @@ public class ShipNavProgram extends ShipSensorProgram
 			newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
 		}
 		//$FALL-THROUGH$
-		case LAUNCHCRUISE:
 		case ORBITCRUISE:
 		{
 			for(final ShipEngine engineE : programEngines)
@@ -877,7 +930,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
 					if((targetAcceleration > 1.0) && (newInject.doubleValue()==0.0))
 					{
-						primeMainThrusters(ship);
+						primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
 						newInject = forceAccelerationAllProgramEngines(programEngines, targetAcceleration);
 					}
 					performSimpleThrust(engineE,newInject, false);
@@ -945,7 +998,7 @@ public class ShipNavProgram extends ShipSensorProgram
 						Log.debugOut("Landing Deccelerating @ "+  targetAcceleration +" because "+ticksToDecellerate+">"+ticksToDestinationAtCurrentSpeed+"  or "+distance+" < "+(ship.speed()*20));
 					if((targetAcceleration >= 1.0) && (newInject.doubleValue()==0.0))
 					{
-						primeMainThrusters(ship);
+						primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
 						Log.debugOut("Landing Deccelerating Check "+  Math.abs(this.lastAcceleration.doubleValue()-targetAcceleration));
 						newInject = forceAccelerationAllProgramEngines(programEngines, targetAcceleration);
 					}
@@ -960,7 +1013,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					newInject=calculateMarginalTargetInjection(this.lastInject, targetAcceleration);
 					if((targetAcceleration >= 1.0) && (newInject.doubleValue()==0.0))
 					{
-						primeMainThrusters(ship);
+						primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
 						Log.debugOut("Landing Accelerating Check "+  Math.abs(this.lastAcceleration.doubleValue()-targetAcceleration));
 						newInject = forceAccelerationAllProgramEngines(programEngines, targetAcceleration);
 					}

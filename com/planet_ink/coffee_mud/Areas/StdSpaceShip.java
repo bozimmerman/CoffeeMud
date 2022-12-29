@@ -660,7 +660,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 					msgStr=L("You no longer feel the pull of gravity.");
 				final CMMsg msg=CMClass.getMsg(floater.invoker(), spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.MSG_QUIETMOVEMENT,msgStr);
 				CMMsg gmsg;
-				if(lastEThrust >= (SpaceObject.ACCELERATION_PASSOUT-0.49))
+				if(lastEThrust >= (SpaceObject.ACCELERATION_UNCONSCIOUSNESS-0.49))
 				{
 					gmsg=CMClass.getMsg(floater.invoker(), null, me, CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null, CMMsg.MSG_GRAVITY, null);
 					gmsg.setValue((int)Math.round(lastEThrust));
@@ -677,7 +677,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 							cancelled=true;
 						if((gmsg != null)
 						&& ((!R.okMessage(gmsg.source(), gmsg))
-							||((gmsg.value() < (SpaceObject.ACCELERATION_PASSOUT-0.49)))))
+							||((gmsg.value() < (SpaceObject.ACCELERATION_UNCONSCIOUSNESS-0.49)))))
 							gmsg = null;
 					}
 				}

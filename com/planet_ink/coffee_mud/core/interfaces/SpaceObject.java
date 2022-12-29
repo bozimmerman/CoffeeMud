@@ -238,11 +238,11 @@ public interface SpaceObject extends Environmental, BoundedObject
 	/** acceleration at which you are happy, in decameters/s */
 	public static final long ACCELERATION_G=1;
 	/** acceleration at which you pass out, in decameters/s */
-	public static final long ACCELERATION_PASSOUT=ACCELERATION_G*5;
+	public static final long ACCELERATION_ROLLARCOASTER=ACCELERATION_G*5;
 	/** acceleration in atmosphere, in decameters/s */
 	public static final long ACCELERATION_TYPICALROCKET=ACCELERATION_G*2;
 	/** acceleration in space, in decameters/s */
-	public static final long ACCELERATION_TYPICALSPACEROCKET=ACCELERATION_G*3;
+	public static final long ACCELERATION_TYPICALSPACEROCKET=ACCELERATION_G*4;
 	/** acceleration at which you are unconscious, in decameters/s */
 	public static final long ACCELERATION_UNCONSCIOUSNESS=ACCELERATION_G*15;
 	/** acceleration at which you are severely damaged (40" fall), in decameters/s */

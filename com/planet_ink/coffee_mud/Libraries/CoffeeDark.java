@@ -375,6 +375,10 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 
 	protected void fixDirectionBounds(final double[] dir)
 	{
+		if(Double.isInfinite(dir[0]))
+			dir[0] = Math.PI;
+		if(Double.isInfinite(dir[1]))
+			dir[1] = Math.PI/2.0;
 		while(dir[0] >= PI_TIMES_2)
 			dir[0] -= PI_TIMES_2;
 		while(dir[0] < 0)

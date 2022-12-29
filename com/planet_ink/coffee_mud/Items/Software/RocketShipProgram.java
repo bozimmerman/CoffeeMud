@@ -201,6 +201,24 @@ public class RocketShipProgram extends ShipNavProgram
 			str.append("^N").append(CMStrings.padRight(facStr,15));
 		}
 		str.append("^.^N\n\r");
+		if((this.navTrack != null)
+		&&(this.navTrack.proc != null))
+		{
+			str.append("^H").append(CMStrings.padRight(L("Running"),10));
+			final StringBuilder nstr = new StringBuilder(navTrack.proc.name());
+			try
+			{
+				final SpaceObject obj = navTrack.getArg(SpaceObject.class);
+				if(obj != null)
+					nstr.append(" ").append(obj.name());
+			}
+			catch(NullPointerException npe)
+			{}
+			if(navTrack.state != null)
+				nstr.append(" (").append(navTrack.state.name()).append(")");
+			str.append("^N").append(CMStrings.padRight(nstr.toString(),50));
+			str.append("^.^N\n\r");
+		}
 		return trimColorsAndTrim(str.toString());
 	}
 
@@ -230,37 +248,42 @@ public class RocketShipProgram extends ShipNavProgram
 					if(localSensorReport.size()==0)
 						str.append("^R").append(L("No Report^.^N\n\r"));
 					else
-					for(final Object o : localSensorReport)
 					{
-						if(o == spaceObject)
-							continue;
-						if(o instanceof SpaceObject)
+						final SpaceObject spaceMe = ship;
+						final List<SpaceObject> sortedReport = new ArrayList<SpaceObject>(localSensorReport.size());
+						sortedReport.addAll(localSensorReport);
+						Collections.sort(sortedReport, new DistanceSorter(spaceMe));
+						for(final Object o : sortedReport)
 						{
-							final SpaceObject spaceMe = ship;
-							final SpaceObject obj = (SpaceObject)o;
-							final long distance = CMLib.space().getDistanceFrom(spaceMe.coordinates(), obj.coordinates()) - spaceMe.radius() - obj.radius();
-							final double[] direction = CMLib.space().getDirection(spaceMe, obj);
-							if((currentTarget!=null)
-							&&((currentTarget==o)||(currentTarget.ID().equals(obj.ID()))))
-								str.append("^r*^N ");
-							str.append("^W").append(obj.name());
-							if(obj.getMass()>0)
-								str.append("^N/^WMass: ^N").append(CMath.abbreviateLong(obj.getMass()));
-							if(!Arrays.equals(obj.direction(),emptyDirection))
-								str.append("^N/^WDir: ^N").append(CMLib.english().directionDescShortest(direction));
+							if(o == spaceObject)
+								continue;
+							if(o instanceof SpaceObject)
+							{
+								final SpaceObject obj = (SpaceObject)o;
+								final long distance = CMLib.space().getDistanceFrom(spaceMe.coordinates(), obj.coordinates()) - spaceMe.radius() - obj.radius();
+								final double[] direction = CMLib.space().getDirection(spaceMe, obj);
+								if((currentTarget!=null)
+								&&((currentTarget==o)||(currentTarget.ID().equals(obj.ID()))))
+									str.append("^r*^N ");
+								str.append("^W").append(obj.name());
+								if(obj.getMass()>0)
+									str.append("^N/^WMass: ^N").append(CMath.abbreviateLong(obj.getMass()));
+								if(!Arrays.equals(obj.direction(),emptyDirection))
+									str.append("^N/^WDir: ^N").append(CMLib.english().directionDescShortest(direction));
+								else
+								if(obj.radius()>0)
+									str.append("^N/^WSize: ^N").append(CMLib.english().distanceDescShort(obj.radius()));
+								if(!Arrays.equals(obj.coordinates(),emptyCoords))
+									str.append("^N/^WDist: ^N").append(CMLib.english().distanceDescShort(distance));
+							}
 							else
-							if(obj.radius()>0)
-								str.append("^N/^WSize: ^N").append(CMLib.english().distanceDescShort(obj.radius()));
-							if(!Arrays.equals(obj.coordinates(),emptyCoords))
-								str.append("^N/^WDist: ^N").append(CMLib.english().distanceDescShort(distance));
+							if(o instanceof CMObject)
+								str.append("^W").append(L("Found: ")).append("^N").append(((CMObject)o).name());
+							else
+							if(o instanceof String)
+								str.append("^W").append(L("Found: ")).append("^N").append(o.toString());
+							str.append("^.^N\n\r");
 						}
-						else
-						if(o instanceof CMObject)
-							str.append("^W").append(L("Found: ")).append("^N").append(((CMObject)o).name());
-						else
-						if(o instanceof String)
-							str.append("^W").append(L("Found: ")).append("^N").append(o.toString());
-						str.append("^.^N\n\r");
 					}
 				}
 				sensorNumber++;
@@ -692,14 +715,17 @@ public class RocketShipProgram extends ShipNavProgram
 					this.cancelNavigation();
 				}
 				final SpaceObject programPlanet=CMLib.space().getSpaceObject(ship.getIsDocked(), true);
-				final ShipEngine engineE =this.primeMainThrusters(ship);
+				final ShipEngine engineE =this.primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
 				if(engineE==null)
 				{
 					super.addScreenMessage(L("Error: Malfunctioning launch thrusters interface."));
 					return;
 				}
-				if(!findTargetAcceleration(engineE))
-					super.addScreenMessage(L("No inertial dampeners found.  Limiting acceleration to 3G."));
+				if(findTargetAcceleration(engineE) < SpaceObject.ACCELERATION_DAMAGED)
+				{
+					int gs = (int)Math.round(this.targetAcceleration.doubleValue()/SpaceObject.ACCELERATION_G);
+					super.addScreenMessage(L("No inertial dampeners found.  Limiting acceleration to "+gs+"Gs."));
+				}
 				final List<ShipEngine> programEngines=new XVector<ShipEngine>(engineE);
 				if(uword.equalsIgnoreCase("ORBIT"))
 					this.navTrack = new ShipNavTrack(ShipNavProcess.ORBIT, programPlanet, programEngines);
@@ -736,7 +762,7 @@ public class RocketShipProgram extends ShipNavProgram
 					return;
 				}
 				else
-					engineE=this.primeMainThrusters(ship);
+					engineE=this.primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
 				if(engineE==null)
 				{
 					this.cancelNavigation();
@@ -820,7 +846,7 @@ public class RocketShipProgram extends ShipNavProgram
 					return;
 				}
 				else
-					engineE=this.primeMainThrusters(ship);
+					engineE=this.primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
 				if(engineE==null)
 				{
 					this.cancelNavigation();
@@ -1110,13 +1136,14 @@ public class RocketShipProgram extends ShipNavProgram
 					return;
 				}
 				final SpaceObject approachTarget = targetObj;
-				final long distance = CMLib.space().getDistanceFrom(ship, targetObj);
-				final long deproachDistance = (distance - ship.radius() - targetObj.radius())/2;
-				if(deproachDistance < 100)
+				long distance = CMLib.space().getDistanceFrom(ship, targetObj);
+				distance = (distance - ship.radius() - targetObj.radius())/2;
+				if(distance < 100)
 				{
 					super.addScreenMessage(L("Can not approach @x1 due being too close.",targetObj.name()));
 					return;
 				}
+				long deproachDistance = calculateDeproachDistance(ship, targetObj);
 				ShipEngine engineE=null;
 				final double[] dirTo = CMLib.space().getDirection(ship, targetObj);
 				if(!this.changeFacing(ship, dirTo))
@@ -1125,7 +1152,7 @@ public class RocketShipProgram extends ShipNavProgram
 					this.cancelNavigation();
 					return;
 				}
-				engineE=this.primeMainThrusters(ship);
+				engineE=this.primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
 				if(engineE==null)
 				{
 					this.cancelNavigation();
