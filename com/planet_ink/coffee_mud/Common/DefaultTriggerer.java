@@ -1555,7 +1555,8 @@ public class DefaultTriggerer implements Triggerer
 							+" ("+(state.completed+1)+"/"+triggers.length+") ");
 				}
 				final Room R=msg.source().location();
-				if(R!=null)
+				if((R!=null)
+				&&(msg.sourceMinor()!=CMMsg.TYP_RITUAL))
 					R.show(msg.source(),null,null,CMMsg.MSG_RITUAL, null, CMMsg.MSG_RITUAL, key.toString()+": "+state.completed+1, CMMsg.MSG_RITUAL, null);
 				state.setCompleted(DT);
 				if(state.completed>=triggers.length-1)
