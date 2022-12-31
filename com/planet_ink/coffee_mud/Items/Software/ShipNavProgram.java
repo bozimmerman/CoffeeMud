@@ -584,6 +584,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				if(engineE != null)
 					this.targetAcceleration = Double.valueOf( findTargetAcceleration(engineE) );
 			}
+			final Double targetAcceleration = this.targetAcceleration;
 			if(targetAcceleration != null)
 			{
 				double ticksToZero = ship.speed() / targetAcceleration.doubleValue();
@@ -592,7 +593,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				long baseDistance = distance - d20;
 				if(baseDistance < 0)
 					return distance;
-				return d20 + (baseDistance/2);
+				return Math.round(ship.speed()) + d20 + (baseDistance/2);
 			}
 		}
 		return distance; // begin deproach IMMEDIATELY!

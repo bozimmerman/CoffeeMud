@@ -172,8 +172,7 @@ public class Concierge extends StdBehavior
 	{
 		super.setParms(newParm);
 		resetDefaults();
-		if((CMath.isInteger(newParm))
-		||(CMath.isDouble(newParm)))
+		if(CMath.isInteger(newParm) || CMath.isDouble(newParm))
 		{
 			basePrice=CMath.s_double(newParm);
 			return;
@@ -307,6 +306,12 @@ public class Concierge extends StdBehavior
 				}
 				else
 					price=CMath.s_double(numStr);
+			}
+			else
+			if(CMath.isInteger(s) || CMath.isDouble(s))
+			{
+				basePrice=CMath.s_double(s);
+				continue;
 			}
 			A=null;
 			R=CMLib.map().getRoom(s);
