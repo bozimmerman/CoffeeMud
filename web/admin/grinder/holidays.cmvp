@@ -11,7 +11,7 @@
     <!--
         function Holiday(action)
         {
-            if(document.RESOURCES.NEWHOLIDAY.value=='')
+            if(action=='' || action.startsWith('&NEWHOLIDAY'))
             {
                 window.alert('You must enter a name for the holiday.');
                 document.RESOURCES.NEWHOLIDAY.value='holiday number '+Math.random();

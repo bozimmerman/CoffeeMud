@@ -722,7 +722,9 @@ public class HolidayData extends StdWebMacro
 			return V;
 		int x=0;
 		A.setMiscText(""+x);
-		while((A.text().length()>0)&&(!V.contains(A.text())))
+		while((A.text().length()>0)
+		&&(!CMath.isInteger(A.text()))
+		&&(!V.contains(A.text().toUpperCase().trim())))
 		{
 			V.addElement(A.text().toUpperCase().trim());
 			x++;
