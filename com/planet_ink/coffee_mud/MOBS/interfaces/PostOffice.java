@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Vector;
 
 /*
-   Copyright 2005-2022 Bo Zimmerman
+   Copyright 2005-2023 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

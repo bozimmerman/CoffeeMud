@@ -40,7 +40,7 @@ import java.util.*;
 
 /*
 * <p>Portions Copyright (c) 2003 Jeremy Vyska</p>
-* <p>Portions Copyright (c) 2004-2022 Bo Zimmerman</p>
+* <p>Portions Copyright (c) 2004-2023 Bo Zimmerman</p>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

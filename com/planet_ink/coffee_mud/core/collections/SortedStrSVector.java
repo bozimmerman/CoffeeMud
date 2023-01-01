@@ -9,7 +9,7 @@ import java.util.ListIterator;
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 
 /*
-   Copyright 2012-2022 Bo Zimmerman
+   Copyright 2012-2023 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

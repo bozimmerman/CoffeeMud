@@ -1,5 +1,5 @@
 # Planes of Existence
-# (C) 2000-2022 Bo Zimmerman
+# (C) 2000-2023 Bo Zimmerman
 # The Format:  One plane per line, line must begin with quote ", then the 
 # name of the plane, then ending quote, a space, and one or more arguments,
 # separated by spaces.  Argument values can also be in quotes.  Argument

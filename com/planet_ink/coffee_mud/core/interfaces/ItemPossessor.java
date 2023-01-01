@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.planet_ink.coffee_mud.Items.interfaces.Item;
 /*
-   Copyright 2010-2022 Bo Zimmerman
+   Copyright 2010-2023 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

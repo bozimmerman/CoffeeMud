@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-	Copyright (c) 2005-2022 Bo Zimmerman
+	Copyright (c) 2005-2023 Bo Zimmerman
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
