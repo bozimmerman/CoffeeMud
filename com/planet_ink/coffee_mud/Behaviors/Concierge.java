@@ -48,6 +48,35 @@ public class Concierge extends StdBehavior
 	{
 		return Behavior.CAN_ITEMS | Behavior.CAN_MOBS | Behavior.CAN_ROOMS | Behavior.CAN_EXITS | Behavior.CAN_AREAS;
 	}
+	
+	protected static enum TrackWords
+	{
+		PORTAL(null,null),
+		MOBILE(null,null),
+		CLAN(null,null),
+		AREAONLY(null,TrackingFlag.AREAONLY),
+		NOCLIMB(TrackingFlag.NOCLIMB,null),
+		NOCRAWL(TrackingFlag.NOCRAWL,null),
+		NOWATER(TrackingFlag.NOWATER,null),
+		INDOOROK(TrackingFlag.OUTDOORONLY,null/*--TrackingFlag.OUTDOORONLY*/),
+		NOAIR(TrackingFlag.NOAIR,null),
+		NOLOCKS(TrackingFlag.UNLOCKEDONLY,null),
+		NOHOMES(TrackingFlag.NOHOMES,null),
+		NOINDOOR(TrackingFlag.OUTDOORONLY,null/*--TrackingFlag.OUTDOORONLY*/),
+		MAXRANGE(null,null),
+		GREETING(null,null),
+		ENTERMSG(null,null),
+		TALKERNAME(null,null),
+		PERROOM(null,null)
+		;
+		public TrackingFlag tf;
+		public TrackingFlag rf;
+		private TrackWords(TrackingFlag tf, TrackingFlag rf)
+		{
+			this.tf=tf;
+			this.rf=rf;
+		}
+	}
 
 	protected PairVector<Object, Double>		rates		= new PairVector<Object, Double>();
 	protected List<Room>						ratesVec	= null;
@@ -195,122 +224,66 @@ public class Concierge extends StdBehavior
 					numStr=numStr.substring(1,numStr.length()-1).trim();
 				s=s.substring(0,x).trim().toUpperCase();
 				final boolean isTrue=numStr.toLowerCase().startsWith("t");
-				if(s.equals("PORTAL"))
+				TrackWords tw = (TrackWords)CMath.s_valueOf(TrackWords.class, s);
+				if(tw == null)
 				{
+					if(CMath.isNumber(numStr))
+					{
+						price=CMath.s_double(numStr);
+						continue;
+					}
+				}
+				else
+				switch(tw)
+				{
+				case PORTAL:
 					portal=isTrue;
 					continue;
-				}
-				else
-				if(s.equals("MOBILE"))
-				{
+				case MOBILE:
 					mobile=isTrue;
 					continue;
-				}
-				else
-				if(s.equals("CLAN"))
-				{
+				case CLAN:
 					clanName=numStr;
 					continue;
-				}
-				else
-				if(s.equals("AREAONLY"))
-				{
-					if(isTrue)
-						roomRadiusFlags.add(TrackingFlag.AREAONLY);
-					continue;
-				}
-				else
-				if(s.equals("NOCLIMB"))
-				{
-					if(isTrue)
-						trackingFlags.add(TrackingFlag.NOCLIMB);
-					continue;
-				}
-				else
-				if(s.equals("NOWATER"))
-				{
-					if(isTrue)
-						trackingFlags.add(TrackingFlag.NOWATER);
-					continue;
-				}
-				else
-				if(s.equals("INDOOROK"))
-				{
-					if(isTrue)
-					{
-						trackingFlags.remove(TrackingFlag.OUTDOORONLY);
-						roomRadiusFlags.remove(TrackingFlag.OUTDOORONLY);
-					}
-					continue;
-				}
-				else
-				if(s.equals("NOAIR"))
-				{
-					if(isTrue)
-						trackingFlags.add(TrackingFlag.NOAIR);
-					continue;
-				}
-				else
-				if(s.equals("NOLOCKS"))
-				{
-					if(isTrue)
-						trackingFlags.add(TrackingFlag.UNLOCKEDONLY);
-					continue;
-				}
-				else
-				if(s.equals("NOHOMES"))
-				{
-					if(isTrue)
-						trackingFlags.add(TrackingFlag.NOHOMES);
-					continue;
-				}
-				else
-				if(s.equals("NOINDOOR"))
-				{
-					if(isTrue)
-					{
-						trackingFlags.add(TrackingFlag.OUTDOORONLY);
-						roomRadiusFlags.add(TrackingFlag.OUTDOORONLY);
-					}
-					continue;
-				}
-				else
-				if(s.equals("MAXRANGE"))
-				{
+				case MAXRANGE:
 					maxRange=CMath.s_int(numStr);
 					continue;
-				}
-				else
-				if(s.equals("GREETING"))
-				{
+				case GREETING:
 					greeting=numStr;
 					continue;
-				}
-				else
-				if(s.equals("ENTERMSG"))
-				{
+				case ENTERMSG:
 					mountStr=numStr;
 					continue;
-				}
-				else
-				if(s.equals("TALKERNAME"))
-				{
+				case TALKERNAME:
 					talkerName=numStr;
 					continue;
-				}
-				else
-				if(s.equals("PERROOM"))
-				{
+				case PERROOM:
 					perRoomPrice=CMath.s_double(numStr);
 					continue;
+				default:
+					if(tw.tf != null)
+					{
+						if(isTrue)
+						{
+							this.trackingFlags.add(tw.tf);
+							this.roomRadiusFlags.remove(tw.tf);
+						}
+					}
+					else
+					if(tw.rf != null)
+					{
+						if(isTrue)
+							this.roomRadiusFlags.add(tw.rf);
+					}
+					else
+						Log.errOut("Broken Concierge flag: "+tw);
+					break;
 				}
-				else
-					price=CMath.s_double(numStr);
 			}
 			else
-			if(CMath.isInteger(s) || CMath.isDouble(s))
+			if(CMath.isNumber(s))
 			{
-				basePrice=CMath.s_double(s);
+				price=CMath.s_double(s);
 				continue;
 			}
 			A=null;
