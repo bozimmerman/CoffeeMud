@@ -104,11 +104,6 @@ public class Griffon extends GreatBird
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
-	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
-	{
-	}
-
-	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
