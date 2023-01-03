@@ -147,6 +147,10 @@ public class GenCaravan extends GenNavigableBoardable
 			return true;
 		case Room.DOMAIN_INDOORS_CAVE:
 			return R.basePhyStats().weight()>3;
+		case Room.DOMAIN_INDOORS_STONE: // underground city street
+			return R.basePhyStats().weight()<=2
+				&& R.basePhyStats().weight()>0
+				&& R.basePhyStats().height()>=5;
 		}
 		return false;
 	}

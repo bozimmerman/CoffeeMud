@@ -44,5 +44,6 @@ public class UndergroundCityStreet extends LargeStoneRoom
 	{
 		super();
 		name="the street";
+		setMovementCost(2); // same as CityStreet/StdRoom
 	}
 }
