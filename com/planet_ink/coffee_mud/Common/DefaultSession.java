@@ -3287,6 +3287,9 @@ public class DefaultSession implements Session
 						executableCommands.add(parsedInput);
 					final double curActions = mob.actions();
 					mob.setActions(0.0);
+					int metaFlags = metaFlags();
+					if(executableCommands.size()>1)
+						metaFlags |= MUDCmdProcessor.METAFLAG_INORDER;
 					for(final Iterator<List<String>> i=executableCommands.iterator();i.hasNext();)
 					{
 						parsedInput=i.next();
@@ -3298,7 +3301,7 @@ public class DefaultSession implements Session
 							rawPrintln(CMParms.combineQuoted(parsedInput,0));
 						final List<List<String>> MORE_CMDS=CMLib.lang().preCommandParser(parsedInput);
 						for(int m=0;m<MORE_CMDS.size();m++)
-							mob.enqueCommand(MORE_CMDS.get(m),metaFlags()|MUDCmdProcessor.METAFLAG_INORDER,0);
+							mob.enqueCommand(MORE_CMDS.get(m),metaFlags,0);
 						lastStop=System.currentTimeMillis();
 					}
 					mob.setActions(curActions);
