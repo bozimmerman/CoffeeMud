@@ -212,6 +212,23 @@ public class Studying extends CommonSkill implements AbilityContainer
 		}
 	}
 
+	protected synchronized void checkedDistributeSkills(final MOB mob)
+	{
+		boolean doWorkOn = false;
+		synchronized(skillList)
+		{
+			if(!distributed)
+			{
+				distributed=true;
+				doWorkOn=true;
+			}
+		}
+		if(doWorkOn)
+		{
+			distributeSkills(mob);
+		}
+	}
+
 	protected boolean forget(final MOB mob, final String abilityID)
 	{
 		if(mob == null)
@@ -305,21 +322,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 			if((!distributed)
 			&&(affected instanceof MOB)
 			&&(isNowAnAutoEffect()))
-			{
-				boolean doWorkOn = false;
-				synchronized(skillList)
-				{
-					if(!distributed)
-					{
-						distributed=true;
-						doWorkOn=true;
-					}
-				}
-				if(doWorkOn)
-				{
-					distributeSkills(mob);
-				}
-			}
+				checkedDistributeSkills(mob);
 			if((this.teacherP != null)
 			&&(this.teachingA!=null)
 			&&(this.affected instanceof MOB))
@@ -391,8 +394,8 @@ public class Studying extends CommonSkill implements AbilityContainer
 				{
 					if(this.successfullyTaught)
 					{
-						final Ability A=mob.fetchAbility(ID());
-						final Ability fA=mob.fetchEffect(ID());
+						final Studying A=(Studying)mob.fetchAbility(ID());
+						final Studying fA=(Studying)mob.fetchEffect(ID());
 						final Ability mTeachingA=teacherM.fetchAbility(teachingA.ID());
 						if((A==null)||(fA==null)||(mTeachingA==null)||(!A.isSavable())||(!fA.isNowAnAutoEffect()))
 							aborted=true;
@@ -405,6 +408,8 @@ public class Studying extends CommonSkill implements AbilityContainer
 							str.append(mTeachingA.ID()).append(',').append(prof);
 							fA.setMiscText(str.toString()); // and this should do it.
 							A.setMiscText(str.toString()); // and this should be savable
+							if(fA.isNowAnAutoEffect())
+								fA.checkedDistributeSkills(mob);
 						}
 					}
 					else
