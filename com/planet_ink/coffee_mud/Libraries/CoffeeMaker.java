@@ -5154,8 +5154,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					}
 					continue;
 				}
-				newOne.setMiscText(xmlLib.restoreAngleBrackets(aparms));
 				((Physical)E).addNonUninvokableEffect(newOne);
+				newOne.setMiscText(xmlLib.restoreAngleBrackets(aparms));
 			}
 		}
 		final String[] codes=E.getStatCodes();
