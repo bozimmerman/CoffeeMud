@@ -748,7 +748,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			&&(id.trim().length()>0))
 			{
 				if(!abilitiesWithCompsWithTriggers.containsKey(id.toUpperCase()))
-					abilitiesWithCompsWithTriggers.put(id.toUpperCase(), new LinkedList<AbilityComponent>());
+					abilitiesWithCompsWithTriggers.put(id.toUpperCase(), new SLinkedList<AbilityComponent>());
 				abilitiesWithCompsWithTriggers.get(id.toUpperCase()).add(build);
 			}
 			parm.add(build);
