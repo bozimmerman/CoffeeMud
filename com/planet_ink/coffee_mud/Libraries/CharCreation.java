@@ -1190,6 +1190,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.state=LoginState.LOGIN_START;
 			return null;
 		}
+		loginObj.login = CMStrings.replaceAll(loginObj.login,"\\","").trim();
 		// this loop is for malformed ansi responses, it strips the trailing letters
 		for(int i=loginObj.login.length()-2;i>=0;i--)
 		{
@@ -1222,12 +1223,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(loginObj.login.indexOf('*')>=0)
 		{
 			loginObj.login = generateRandomName(3, 6);
-			while((!isOkName(loginObj.login,false)) || (CMLib.players().playerExistsAllHosts(loginObj.login)) || (CMLib.players().accountExistsAllHosts(loginObj.login)))
+			while((!isOkName(loginObj.login,false))
+			|| (CMLib.players().playerExistsAllHosts(loginObj.login))
+			|| (CMLib.players().accountExistsAllHosts(loginObj.login)))
 				loginObj.login = generateRandomName(3, 8);
 		}
-		if(loginObj.login.endsWith(" !"))
+		if(loginObj.login.endsWith("!"))
 		{
-			loginObj.login=loginObj.login.substring(0,loginObj.login.length()-2);
+			loginObj.login=loginObj.login.substring(0,loginObj.login.length()-1);
 			loginObj.login=loginObj.login.trim();
 			loginObj.wizi=true;
 		}
