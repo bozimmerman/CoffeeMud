@@ -402,7 +402,7 @@ public class TaxCollector extends StdBehavior
 					}
 					if(say.length()>0)
 					{
-						CMLib.commands().postSay(mob,M,L("@x1.  You must pay me immediately or face the consequences.",say.toString()),false,false);
+						CMLib.commands().postSay(mob,M,L("@x1.  You must GIVE this amount to me immediately or face the consequences.",say.toString()),false,false);
 						demanded.addElement(M,Long.valueOf(System.currentTimeMillis()));
 						if(M.isMonster())
 						{
