@@ -315,13 +315,18 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 					number=1;
 				if(number>=(I.basePhyStats().weight()-1))
 					number=I.basePhyStats().weight();
+				final List<Item> bundle=new XVector<Item>();
+				if(bundleSize >= I.basePhyStats().weight())
+				{
+					bundle.add(I);
+					return bundle;
+				}
 				I.basePhyStats().setWeight(I.basePhyStats().weight()); // wtf?
 				int loseValue=0;
 				int loseNourishment=0;
 				int loseThirstHeld=0;
 				int loseThirstRemain=0;
 				Item E=null;
-				final List<Item> bundle=new XVector<Item>();
 				for(int x=0;x<number;x+=bundleSize)
 				{
 					E=makeItemResource(I.material(),null,true,I.rawSecretIdentity(), ((RawMaterial)I).getSubType());
