@@ -112,7 +112,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			}
 			throw null;
 		}
-		
+
 		protected Object getArg(final int index)
 		{
 			if((index>=0)&&(index < args.length))
@@ -258,7 +258,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		while((--tries)>0);
 		return newInject;
 	}
-	
+
 	protected boolean doCollisionDetection()
 	{
 		// generate a warning, or an alert
@@ -319,85 +319,91 @@ public class ShipNavProgram extends ShipSensorProgram
 		CMMsg msg;
 		final List<ShipEngine> engines = getEngines();
 		final MOB M=CMClass.getFactoryMOB();
+		M.setName(ship.Name());
 		final boolean isDebugging = CMSecurity.isDebugging(DbgFlag.SPACESHIP);
-		CMLib.space().getOppositeDir(ship.facing());
+		CMLib.space().getOppositeDir(ship.facing()); // I think this is to normalize the facing dir
 		try
 		{
-			final double angleDiff = CMLib.space().getAngleDelta(ship.facing(), newFacing);
-			if(angleDiff < 0.0001)
-				return true;
-			// step one, face opposite direction of motion
-			if(isDebugging)
-				Log.debugOut(ship.Name()+" maneuvering to go from "+ship.facing()[0]+","+ship.facing()[1]+"  to  "+newFacing[0]+","+newFacing[1]);
-			for(final ShipEngine engineE : engines)
+			double angleDiff = CMLib.space().getAngleDelta(ship.facing(), newFacing);
+			int tries=100;
+			while((angleDiff > 0.0001)&&(--tries>0))
 			{
-				if((CMParms.contains(engineE.getAvailPorts(),ShipDirectional.ShipDir.STARBOARD))
-				&&(CMParms.contains(engineE.getAvailPorts(),ShipDirectional.ShipDir.PORT))
-				&&(CMParms.contains(engineE.getAvailPorts(),ShipDirectional.ShipDir.DORSEL))
-				&&(CMParms.contains(engineE.getAvailPorts(),ShipDirectional.ShipDir.VENTRAL)))
+				// step one, face opposite direction of motion
+				if(isDebugging)
+					Log.debugOut(ship.Name()+" maneuvering to go from "+ship.facing()[0]+","+ship.facing()[1]+"  to  "+newFacing[0]+","+newFacing[1]);
+				for(final ShipEngine engineE : engines)
 				{
-					msg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-					this.lastAngle = null;
-					final String code=TechCommand.THRUST.makeCommand(ShipDir.PORT,Double.valueOf(1));
-					msg.setTargetMessage(code);
-					this.trySendMsgToItem(M, engineE, msg);
-					if(this.lastAngle==null)
-						break;
-					final double angleAchievedPerPt = Math.abs(this.lastAngle.doubleValue()); //
-					double[] angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
-					for(int i=0;i<100;i++)
+					if((CMParms.contains(engineE.getAvailPorts(),ShipDirectional.ShipDir.STARBOARD))
+					&&(CMParms.contains(engineE.getAvailPorts(),ShipDirectional.ShipDir.PORT))
+					&&(CMParms.contains(engineE.getAvailPorts(),ShipDirectional.ShipDir.DORSEL))
+					&&(CMParms.contains(engineE.getAvailPorts(),ShipDirectional.ShipDir.VENTRAL)))
 					{
-						if(Math.abs(angleDelta[0]) > 0.00001)
+						msg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+						this.lastAngle = null;
+						final String code=TechCommand.THRUST.makeCommand(ShipDir.PORT,Double.valueOf(1));
+						msg.setTargetMessage(code);
+						this.trySendMsgToItem(M, engineE, msg);
+						if(this.lastAngle==null)
+							break;
+						final double angleAchievedPerPt = Math.abs(this.lastAngle.doubleValue()); //
+						double[] angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
+						for(int i=0;i<100;i++)
 						{
-							final ShipDirectional.ShipDir dir = angleDelta[0] < 0 ? ShipDir.PORT : ShipDir.STARBOARD;
-							final Double thrust = Double.valueOf(Math.abs(angleDelta[0]) / angleAchievedPerPt);
+							if(Math.abs(angleDelta[0]) > 0.00001)
+							{
+								final ShipDirectional.ShipDir dir = angleDelta[0] < 0 ? ShipDir.PORT : ShipDir.STARBOARD;
+								final Double thrust = Double.valueOf(Math.abs(angleDelta[0]) / angleAchievedPerPt);
+								if(isDebugging)
+									Log.debugOut("Thrusting "+thrust+"*"+angleAchievedPerPt+" to "+dir+" to achieve delta, and go from "+ship.facing()[0]+" to "+newFacing[0]);
+								msg.setTargetMessage(TechCommand.THRUST.makeCommand(dir,thrust));
+								this.lastAngle = null;
+								this.trySendMsgToItem(M, engineE, msg);
+								if(this.lastAngle==null)
+									break;
+							}
+							else
+								break;
+							angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 							if(isDebugging)
-								Log.debugOut("Thrusting "+thrust+"*"+angleAchievedPerPt+" to "+dir+" to achieve delta, and go from "+ship.facing()[0]+" to "+newFacing[0]);
-							msg.setTargetMessage(TechCommand.THRUST.makeCommand(dir,thrust));
-							this.lastAngle = null;
-							this.trySendMsgToItem(M, engineE, msg);
-							if(this.lastAngle==null)
+							{
+								Log.debugOut("Turn Deltas now: "+(Math.round(angleDelta[0]*100)/100.0)+" + "+(Math.round(angleDelta[1]*100)/100.0)
+										+"=="+(Math.round(Math.abs((angleDelta[0])+Math.abs(angleDelta[1]))*100)/100.0));
+							}
+							if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))<.01)
 								break;
 						}
-						else
-							break;
 						angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
-						if(isDebugging)
+						for(int i=0;i<100;i++)
 						{
-							Log.debugOut("Turn Deltas now: "+(Math.round(angleDelta[0]*100)/100.0)+" + "+(Math.round(angleDelta[1]*100)/100.0) 
-									+"=="+(Math.round(Math.abs((angleDelta[0])+Math.abs(angleDelta[1]))*100)/100.0));
+							if(Math.abs(angleDelta[1]) > 0.00001)
+							{
+								final ShipDirectional.ShipDir dir = angleDelta[1] < 0 ? ShipDir.VENTRAL : ShipDir.DORSEL;
+								final Double thrust = Double.valueOf(Math.abs(angleDelta[1]) / angleAchievedPerPt);
+								if(isDebugging)
+									Log.debugOut("Thrusting "+thrust+"*"+angleAchievedPerPt+" to "+dir+" to achieve delta, and go from "+ship.facing()[1]+" to "+newFacing[1]);
+								msg.setTargetMessage(TechCommand.THRUST.makeCommand(dir,thrust));
+								this.lastAngle = null;
+								this.trySendMsgToItem(M, engineE, msg);
+								if(this.lastAngle==null)
+									break;
+							}
+							else
+								break;
+							angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
+							if(isDebugging)
+							{
+								Log.debugOut("Turn Deltas now: "+(Math.round(angleDelta[0]*100)/100.0)+" + "+(Math.round(angleDelta[1]*100)/100.0)
+										+"=="+(Math.round(Math.abs((angleDelta[0])+Math.abs(angleDelta[1]))*100)/100.0));
+							}
 						}
 						if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))<.01)
-							return true;
-					}
-					angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
-					for(int i=0;i<100;i++)
-					{
-						if(Math.abs(angleDelta[1]) > 0.00001)
-						{
-							final ShipDirectional.ShipDir dir = angleDelta[1] < 0 ? ShipDir.VENTRAL : ShipDir.DORSEL;
-							final Double thrust = Double.valueOf(Math.abs(angleDelta[1]) / angleAchievedPerPt);
-							if(isDebugging)
-								Log.debugOut("Thrusting "+thrust+"*"+angleAchievedPerPt+" to "+dir+" to achieve delta, and go from "+ship.facing()[1]+" to "+newFacing[1]);
-							msg.setTargetMessage(TechCommand.THRUST.makeCommand(dir,thrust));
-							this.lastAngle = null;
-							this.trySendMsgToItem(M, engineE, msg);
-							if(this.lastAngle==null)
-								break;
-						}
-						else
 							break;
-						angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
-						if(isDebugging)
-						{
-							Log.debugOut("Turn Deltas now: "+(Math.round(angleDelta[0]*100)/100.0)+" + "+(Math.round(angleDelta[1]*100)/100.0) 
-									+"=="+(Math.round(Math.abs((angleDelta[0])+Math.abs(angleDelta[1]))*100)/100.0));
-						}
 					}
-					if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))<.01)
-						return true;
 				}
+				angleDiff = CMLib.space().getAngleDelta(ship.facing(), newFacing);
 			}
+			if(tries > 0)
+				return true;
 		}
 		finally
 		{
@@ -418,7 +424,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			{
 				if(CMParms.contains(engineE.getAvailPorts(),ShipDirectional.ShipDir.AFT))
 				{
-					double targetAcceleration = findTargetAcceleration(engineE);
+					final double targetAcceleration = findTargetAcceleration(engineE);
 					int tries=100;
 					double lastTryAmt;
 					if(this.injects.containsKey(engineE))
@@ -568,7 +574,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		}
 		super.executeMsg(myHost, msg);
 	}
-	
+
 	protected long calculateDeproachDistance(final SpaceObject ship, final SpaceObject targetObj)
 	{
 		long distance = CMLib.space().getDistanceFrom(ship, targetObj);
@@ -587,10 +593,10 @@ public class ShipNavProgram extends ShipSensorProgram
 			final Double targetAcceleration = this.targetAcceleration;
 			if(targetAcceleration != null)
 			{
-				double ticksToZero = ship.speed() / targetAcceleration.doubleValue();
-				double distanceToZero = ticksToZero * (ship.speed()/2);
-				long d20 = Math.round(distanceToZero);
-				long baseDistance = distance - d20;
+				final double ticksToZero = ship.speed() / targetAcceleration.doubleValue();
+				final double distanceToZero = ticksToZero * (ship.speed()/2);
+				final long d20 = Math.round(distanceToZero);
+				final long baseDistance = distance - d20;
 				if(baseDistance < 0)
 					return distance;
 				return Math.round(ship.speed()) + d20 + (baseDistance/2);
@@ -627,11 +633,11 @@ public class ShipNavProgram extends ShipSensorProgram
 		@SuppressWarnings("unchecked")
 		final List<ShipEngine> programEngines=track.getArg(List.class);
 		SpaceObject targetObject;
-		try 
+		try
 		{
 			targetObject=track.getArg(SpaceObject.class);
 		}
-		catch(NullPointerException npe)
+		catch(final NullPointerException npe)
 		{
 			targetObject=null;
 		}
