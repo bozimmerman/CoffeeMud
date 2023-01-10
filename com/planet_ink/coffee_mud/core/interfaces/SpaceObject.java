@@ -141,6 +141,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	public static enum Distance
 	{
 		Decameter("dm",1L),
+		Hectometer("hm",10L),
 		Kilometer("km",100L),
 		Megameter("Mm",100000L),
 		Gigameter("Gm",100000000L),
