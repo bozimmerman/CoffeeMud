@@ -227,21 +227,23 @@ public class Put extends StdCommand
 		}
 		boolean doBugFix = true;
 		if(V.size()==0)
-		while(doBugFix || ((allFlag)&&(addendum<=maxToPut)))
 		{
-			doBugFix=false;
-			putThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToPut+addendumStr);
-			if((allFlag)&&(!onlyGoldFlag)&&(putThis instanceof Coins)&&(thingToPut.equalsIgnoreCase("ALL")))
-				putThis=null;
-			else
+			while(doBugFix || ((allFlag)&&(addendum<=maxToPut)))
 			{
-				if(putThis==null)
-					break;
-				if((CMLib.flags().canBeSeenBy(putThis,mob))
-				&&(!V.contains(putThis)))
-					V.add(putThis);
+				doBugFix=false;
+				putThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToPut+addendumStr);
+				if((allFlag)&&(!onlyGoldFlag)&&(putThis instanceof Coins)&&(thingToPut.equalsIgnoreCase("ALL")))
+					putThis=null;
+				else
+				{
+					if(putThis==null)
+						break;
+					if((CMLib.flags().canBeSeenBy(putThis,mob))
+					&&(!V.contains(putThis)))
+						V.add(putThis);
+				}
+				addendumStr="."+(++addendum);
 			}
-			addendumStr="."+(++addendum);
 		}
 
 		if(V.contains(container))
