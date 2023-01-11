@@ -1593,8 +1593,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			return;
 		//TODO:
 		/*
-		The RESET command works like the LIST command, and can be used to reset groups of variables to 
-		their initial state. Most commonly RESET will be called with REPORTABLE_VARIABLES or 
+		The RESET command works like the LIST command, and can be used to reset groups of variables to
+		their initial state. Most commonly RESET will be called with REPORTABLE_VARIABLES or
 		REPORTED_VARIABLES as the argument, though any LIST option can be used.
 		client - IAC SB MSDP MSDP_VAR "RESET" MSDP_VAL "CHESS_MINIGAME" IAC SE	}
 		 */
@@ -1979,7 +1979,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						final StringBuilder doc=new StringBuilder("char.vitals {");
 						doc.append("\"hp\":").append(mob.curState().getHitPoints()).append(",");
 						doc.append("\"mana\":").append(mob.curState().getMana()).append(",");
-						doc.append("\"moves\":").append(mob.curState().getMovement());
+						doc.append("\"moves\":").append(mob.curState().getMovement()).append(",");
+						doc.append("\"maxhp\":").append(mob.maxState().getHitPoints()).append(",");
+						doc.append("\"maxmana\":").append(mob.maxState().getMana()).append(",");
+						doc.append("\"maxmoves\":").append(mob.maxState().getMovement());
 						doc.append("}");
 						return doc.toString();
 					}

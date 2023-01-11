@@ -7178,6 +7178,21 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	}
 
 	@Override
+	public List<Map<String,String>> doMQLSelectStrings(final Modifiable E, final String mql) throws MQLException
+	{
+		final Map<String,Object> defined=new TreeMap<String,Object>();
+		final XMLTag piece=CMLib.xml().createNewTag("tag", "value");
+		try
+		{
+			return doMQLSelectStrs(E,null,null,mql,piece,defined);
+		}
+		catch(final PostProcessException e)
+		{
+			throw new MQLException("Cannot post-process MQL.", e);
+		}
+	}
+
+	@Override
 	public List<UpdateSet> doMQLUpdateObjects(final Modifiable E, final String mql) throws MQLException
 	{
 		final Map<String,Object> defined=new TreeMap<String,Object>();

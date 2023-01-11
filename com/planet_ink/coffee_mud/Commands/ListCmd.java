@@ -3670,6 +3670,17 @@ public class ListCmd extends StdCommand
 							lines.append("    "+CMStrings.padRight(E.ID(), 10)+": "+E.name()+loc+"\n\r");
 						}
 						else
+						if((o instanceof List)
+						&&(((List<?>)o).size()==2)
+						&&(((List<?>)o).get(0) instanceof Modifiable)
+						&&(((List<?>)o).get(1) instanceof String))
+						{
+							final Modifiable M = (Modifiable)((List<?>)o).get(0);
+							final String parm = (String)((List<?>)o).get(1);
+							final String parmName = (key.equals(".")?parm:key);
+							lines.append("     "+CMStrings.padRight(parmName, 10)+": "+M.getStat(parm)+"\n\r");
+						}
+						else
 							lines.append("     "+CMStrings.padRight(key, 10)+": "+o.toString()+"\n\r");
 					}
 				}

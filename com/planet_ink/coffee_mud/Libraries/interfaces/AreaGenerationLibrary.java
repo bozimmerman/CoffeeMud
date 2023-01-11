@@ -243,6 +243,16 @@ public interface AreaGenerationLibrary extends CMLibrary
 	public List<UpdateSet> doMQLUpdateObjects(final Modifiable E, final String mql) throws MQLException;
 
 	/**
+	 * Returns the string output from an MQL query that begins with SELECT:
+	 *
+	 * @param E a random object you want to use as a base, or null
+	 * @param mql the MQL query
+	 * @return the list of maps that is the reqult of the query
+	 * @throws MQLException something went wrong
+	 */
+	public List<Map<String,String>> doMQLSelectStrings(final Modifiable E, final String mql) throws MQLException;
+
+	/**
 	 * Returns a flattened string result from an MQL query that begins with SELECT:
 	 *
 	 * @param E a random object you want to use as a base, or null

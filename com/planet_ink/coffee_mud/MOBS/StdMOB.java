@@ -3288,7 +3288,7 @@ public class StdMOB implements MOB
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		final Deity deity = charStats().getMyDeity();
-		if (deity != null)
+		if ((deity != null) && (deity != this))
 			deity.executeMsg(this, msg);
 
 		final CharStats cStats = charStats;
