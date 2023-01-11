@@ -73,24 +73,25 @@ public class Unlock extends StdCommand
 		if(unlockThis instanceof Exit)
 		{
 			final boolean locked=((Exit)unlockThis).isLocked();
-			if((mob.location().okMessage(msg.source(),msg))
+			final Room R=mob.location();
+			if((R!=null)
+			&&(R.okMessage(msg.source(),msg))
 			&&(locked))
 			{
-				mob.location().send(msg.source(),msg);
+				R.send(msg.source(),msg);
 				if(dirCode<0)
-				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					if(mob.location().getExitInDir(d)==unlockThis)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						dirCode=d;
-						break;
+						if(R.getExitInDir(d)==unlockThis)
+						{
+							dirCode=d;
+							break;
+						}
 					}
-
 				}
-				final Room R=mob.location();
-				final Room opR=(R==null)?null:R.getRoomInDir(dirCode);
+				final Room opR=R.getRoomInDir(dirCode);
 				if((dirCode>=0)
-				&&(R!=null)
 				&&(opR!=null))
 				{
 					final Exit opE=R.getPairedExit(dirCode);

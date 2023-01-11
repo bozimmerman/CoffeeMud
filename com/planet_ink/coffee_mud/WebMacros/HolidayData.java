@@ -227,7 +227,7 @@ public class HolidayData extends StdWebMacro
 						final String s=V.elementAt(v);
 						str.append("<OPTION VALUE=\""+s+"\" "+((old.trim().equalsIgnoreCase(s))?" SELECTED":"")+">"+s);
 					}
-					str.append(old+", ");
+					str.append(", ");
 				}
 				if(parms.containsKey("AGGRESSIVE"))
 				{

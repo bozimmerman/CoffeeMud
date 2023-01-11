@@ -258,6 +258,9 @@ public class Chant_SummonAnimal extends Chant
 			{
 				newMOB = CMClass.getMOB("GenMob");
 				newMOB.setName(CMLib.english().startWithAorAn(R.name()));
+				newMOB.setDisplayText(CMLib.lang().L("@x1 is here",CMLib.english().startWithAorAn(R.name())));
+				newMOB.baseCharStats().setMyRace(R);
+				R.startRacing(newMOB, false);
 				break;
 			}
 			text = mobIDs[CMLib.dice().roll(1, mobIDs.length, -1)];

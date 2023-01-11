@@ -57,15 +57,17 @@ public class Close extends StdCommand
 		if(closeThis instanceof Exit)
 		{
 			final boolean open=((Exit)closeThis).isOpen();
-			if((mob.location().okMessage(msg.source(),msg))
+			final Room R=mob.location();
+			if((R!=null)
+			&&(R.okMessage(msg.source(),msg))
 			&&(open))
 			{
-				mob.location().send(msg.source(),msg);
+				R.send(msg.source(),msg);
 				if(dirCode<0)
 				{
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						if(mob.location().getExitInDir(d)==closeThis)
+						if(R.getExitInDir(d)==closeThis)
 						{
 							dirCode = d;
 							break;
@@ -73,10 +75,8 @@ public class Close extends StdCommand
 					}
 				}
 
-				final Room R=mob.location();
-				final Room opR=(R==null)?null:R.getRoomInDir(dirCode);
+				final Room opR=R.getRoomInDir(dirCode);
 				if((dirCode>=0)
-				&&(R!=null)
 				&&(opR!=null))
 				{
 					final Exit opE=R.getPairedExit(dirCode);

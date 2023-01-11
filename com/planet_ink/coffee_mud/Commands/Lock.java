@@ -83,23 +83,25 @@ public class Lock extends StdCommand
 		if(lockThis instanceof Exit)
 		{
 			final boolean locked=((Exit)lockThis).isLocked();
-			if((mob.location().okMessage(msg.source(),msg))
+			final Room R=mob.location();
+			if((R!=null)
+			&&(R.okMessage(msg.source(),msg))
 			&&(!locked))
 			{
-				mob.location().send(msg.source(),msg);
+				R.send(msg.source(),msg);
 				if(dirCode<0)
-				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					if(mob.location().getExitInDir(d)==lockThis)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						dirCode=d;
-						break;
+						if(R.getExitInDir(d)==lockThis)
+						{
+							dirCode=d;
+							break;
+						}
 					}
 				}
-				final Room R=mob.location();
-				final Room opR=(R==null)?null:R.getRoomInDir(dirCode);
+				final Room opR=R.getRoomInDir(dirCode);
 				if((dirCode>=0)
-				&&(R!=null)
 				&&(opR!=null))
 				{
 					final Exit opE=R.getPairedExit(dirCode);
@@ -124,6 +126,18 @@ public class Lock extends StdCommand
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;
+	}
+
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
 	}
 
 	@Override

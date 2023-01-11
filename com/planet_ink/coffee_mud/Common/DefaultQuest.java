@@ -1366,7 +1366,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						if((choices!=null)&&(choices.size()>0))
 						{
-							q.mobGroup=Collections.synchronizedList(new ArrayList<MOB>(choices));
+							q.mobGroup=Collections.synchronizedList(new XArrayList<MOB>(choices));
 							if(reselect)
 								q.reselectable.addAll(choices);
 						}
@@ -1441,7 +1441,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						if((choices!=null)&&(choices.size()>0))
 						{
-							q.mobGroup=Collections.synchronizedList(new ArrayList<MOB>(choices));
+							q.mobGroup=Collections.synchronizedList(new XArrayList<MOB>(choices));
 							if(reselect)
 								q.reselectable.addAll(choices);
 						}
@@ -1518,13 +1518,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						{
 							if(reselect)
 								q.reselectable.addAll(choices);
-							q.itemGroup=Collections.synchronizedList(new ArrayList<Item>(choices));
+							q.itemGroup=Collections.synchronizedList(new XArrayList<Item>(choices));
 						}
 						else
 						{
 							if(optional)
 								continue;
-							errorOccurred(q,isQuiet,"Quest '"+name()+"', !itemgroup '"+itemName+":"+maskStr+"'.");
+							errorOccurred(q,isQuiet,"Quest '"+name()+"', !itemgroup '"+itemName+"':'"+maskStr+"'.");
 							break;
 						}
 						q.envObject=q.itemGroup;
@@ -1585,7 +1585,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						if((choices!=null)&&(choices.size()>0))
 						{
-							q.abilityGroup=Collections.synchronizedList(new ArrayList<Ability>(choices));
+							q.abilityGroup=Collections.synchronizedList(new XArrayList<Ability>(choices));
 						}
 						else
 						{
@@ -1821,7 +1821,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						if(cmd.equalsIgnoreCase("LOCALEGROUP")||cmd.equalsIgnoreCase("LOCALEGROUPAROUND"))
 						{
 							if(choices.size()>0)
-								q.roomGroup=Collections.synchronizedList(new ArrayList<Room>(choices));
+								q.roomGroup=Collections.synchronizedList(new XArrayList<Room>(choices));
 							else
 							{
 								if(optional)
@@ -1985,7 +1985,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						if(cmd.equalsIgnoreCase("ROOMGROUP")||cmd.equalsIgnoreCase("ROOMGROUPAROUND"))
 						{
 							if((choices!=null)&&(choices.size()>0))
-								q.roomGroup=Collections.synchronizedList(new ArrayList<Room>(choices));
+								q.roomGroup=Collections.synchronizedList(new XArrayList<Room>(choices));
 							else
 							{
 								if(optional)
@@ -2647,7 +2647,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						Room R=null;
 						if(cmd.equals("WHEREHAPPENEDGROUP"))
 						{
-							q.mysteryData.whereHappenedGroup=Collections.synchronizedList(new ArrayList<Room>(V2));
+							q.mysteryData.whereHappenedGroup=Collections.synchronizedList(V2);
 							R=q.mysteryData.whereHappened;
 						}
 						else
@@ -2722,12 +2722,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						final TimeClock NOW=getMysteryTimeNowFromState();
 						if(cmd.equals("WHENHAPPENEDGROUP"))
 						{
-							q.mysteryData.whenHappenedGroup=Collections.synchronizedList(new ArrayList<TimeClock>(V2));
+							q.mysteryData.whenHappenedGroup=Collections.synchronizedList(V2);
 							TC=q.mysteryData.whenHappened;
 						}
 						else
 						{
-							q.mysteryData.whenAtGroup=Collections.synchronizedList(new ArrayList<TimeClock>(V2));
+							q.mysteryData.whenAtGroup=Collections.synchronizedList(V2);
 							TC=q.mysteryData.whenAt;
 						}
 						for(int pi=2;pi<p.size();pi++)
@@ -2852,12 +2852,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						String Mstr=null;
 						if(cmd.equals("MOTIVEGROUP"))
 						{
-							q.mysteryData.motiveGroup=Collections.synchronizedList(new ArrayList<String>(V2));
+							q.mysteryData.motiveGroup=Collections.synchronizedList(V2);
 							Mstr=q.mysteryData.motive;
 						}
 						else
 						{
-							q.mysteryData.actionGroup=Collections.synchronizedList(new ArrayList<String>(V2));
+							q.mysteryData.actionGroup=Collections.synchronizedList(V2);
 							Mstr=q.mysteryData.action;
 						}
 						if(Mstr!=null)
@@ -3059,12 +3059,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						Environmental finalE=null;
 						if(cmd.equals("TARGETGROUP"))
 						{
-							q.mysteryData.targetGroup=Collections.synchronizedList(new ArrayList<Environmental>((List<Environmental>)V2));
+							q.mysteryData.targetGroup=Collections.synchronizedList((List<Environmental>)V2);
 							finalE=q.mysteryData.target;
 						}
 						else
 						{
-							q.mysteryData.toolGroup=Collections.synchronizedList(new ArrayList<Environmental>((List<Environmental>)V2));
+							q.mysteryData.toolGroup=Collections.synchronizedList((List<Environmental>)V2);
 							finalE=q.mysteryData.tool;
 						}
 						if(finalE!=null)
@@ -3517,7 +3517,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						else
 						{
 							itemsToDo.addAll(choices);
-							q.itemGroup=Collections.synchronizedList(new ArrayList<Item>(itemsToDo));
+							q.itemGroup=Collections.synchronizedList(itemsToDo);
 						}
 						while((itemsToDo.size()>maxToLoad)&&(maxToLoad>0))
 							itemsToDo.remove(CMLib.dice().roll(1,itemsToDo.size(),-1));
@@ -3608,7 +3608,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						else
 						{
 							itemsToDo.addAll(choices);
-							q.abilityGroup=Collections.synchronizedList(new ArrayList<Ability>(itemsToDo));
+							q.abilityGroup=Collections.synchronizedList(itemsToDo);
 						}
 						while((itemsToDo.size()>maxToLoad)&&(maxToLoad>0))
 							itemsToDo.remove(CMLib.dice().roll(1,itemsToDo.size(),-1));
@@ -4186,17 +4186,17 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
-	public boolean spawnQuest(final String script, final List<?> baseVars, final boolean reTime, boolean onceOnly)
+	public boolean spawnQuest(final String script, final List<?> baseVars, final boolean reTime, final boolean onceOnly)
 	{
 		final DefaultQuest Q=(DefaultQuest)CMClass.getCommon("DefaultQuest");
 		Q.setCopy(true);
 		Q.setVars(baseVars,0);
 		Q.setScript(script,true);
 		String qName = Q.name();
-		int x=qName.lastIndexOf('#');
+		final int x=qName.lastIndexOf('#');
 		if(CMath.isInteger(qName.substring(x+1)))
 			qName = qName.substring(0,x);
-		
+
 		Quest chkQ=CMLib.quests().fetchQuest(qName);
 		if((chkQ != null)&&(onceOnly)) // this prevents multiple respawns of individual steps when spawn=any
 			return false;
@@ -4258,7 +4258,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		if((!isCopy())
 		&&(getSpawn()!=Quest.Spawn.NO.ordinal()))
 		{
-			final Spawn spawn = Quest.Spawn.values()[getSpawn()]; 
+			final Spawn spawn = Quest.Spawn.values()[getSpawn()];
 			switch(spawn)
 			{
 			case NO:
