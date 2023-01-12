@@ -58,31 +58,31 @@ public class Arachnid extends StdRace
 	@Override
 	public int shortestMale()
 	{
-		return 35;
+		return 2;
 	}
 
 	@Override
 	public int shortestFemale()
 	{
-		return 35;
+		return 2;
 	}
 
 	@Override
 	public int heightVariance()
 	{
-		return 10;
+		return 0;
 	}
 
 	@Override
 	public int lightestWeight()
 	{
-		return 200;
+		return 1;
 	}
 
 	@Override
 	public int weightVariance()
 	{
-		return 50;
+		return 0;
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class Arachnid extends StdRace
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[] parts={2 ,99,0 ,1 ,0 ,0 ,0 ,1 ,8 ,8 ,0 ,0 ,1 ,0 ,0 ,0 };
+	private static final int[] parts={2 ,8 ,0 ,1 ,0 ,0 ,0 ,1 ,8 ,8 ,0 ,0 ,1 ,0 ,0 ,0 };
 
 	@Override
 	public int[] bodyMask()
@@ -136,6 +136,9 @@ public class Arachnid extends StdRace
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,3);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,3);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 
 	@Override
@@ -143,6 +146,12 @@ public class Arachnid extends StdRace
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)-100);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectedMOB.baseCharStats().getStat(CharStats.STAT_STRENGTH));
+		affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectedMOB.baseCharStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ));
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectedMOB.baseCharStats().getStat(CharStats.STAT_DEXTERITY));
+		affectableStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,affectedMOB.baseCharStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ));
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectedMOB.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE));
+		affectableStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,affectedMOB.baseCharStats().getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ));
 	}
 
 	@Override
