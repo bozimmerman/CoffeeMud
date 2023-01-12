@@ -2754,7 +2754,7 @@ public class StdArea implements Area
 			"CLASS", "CLIMATE", "DESCRIPTION", "TEXT", "THEME", "BLURBS",
 			"PREJUDICE", "BUDGET", "DEVALRATE", "INVRESETRATE", "IGNOREMASK",
 			"PRICEMASKS", "ATMOSPHERE",	"AUTHOR", "NAME", "PLAYERLEVEL", "PASSIVEMINS",
-			"CURRENCY"
+			"CURRENCY", "AFFBEHAV"
 			};
 	private static String[]			codes			= null;
 
@@ -2818,6 +2818,8 @@ public class StdArea implements Area
 			return Long.toString(this.passiveLapseMs / 60000);
 		case 17:
 			return this.getRawCurrency();
+		case 18:
+			return CMLib.coffeeMaker().getExtraEnvironmentalXML(this);
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -2913,6 +2915,11 @@ public class StdArea implements Area
 		}
 		case 17:
 			setCurrency(val);
+			break;
+		case 18:
+			delAllEffects(true);
+			delAllBehaviors();
+			CMLib.coffeeMaker().unpackExtraEnvironmentalXML(this, CMLib.xml().parseAllXML(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

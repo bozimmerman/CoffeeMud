@@ -1089,6 +1089,7 @@ public class GModify extends StdCommand
 		Log.sysOut("GModify",mob.Name()+" "+whole+".");
 		final Session sess=mob.session();
 
+		final Set<Area> areasSeen = new HashSet<Area>();
 		for(int r=0;r<placesToDo.size();r++)
 		{
 			Room R=(Room)placesToDo.get(r);
@@ -1103,6 +1104,13 @@ public class GModify extends StdCommand
 					return false;
 				final Room origR=R;
 				final Area A=R.getArea();
+				if(!areasSeen.contains(A))
+				{
+					areasSeen.add(A);
+					final Area possNewA = (Area)tryModfy(mob,sess,R,A,changes,onfields,noisy);
+					if(possNewA != null)
+						CMLib.database().DBUpdateArea(A.Name(), possNewA);
+				}
 				final Area.State oldFlag=A.getAreaState();
 				if(changes.size()==0)
 				{

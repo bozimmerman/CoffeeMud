@@ -5946,7 +5946,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 									{
 										final Ability A=r.nextElement();
 										if(A!=null)
-										from.add(A);
+											from.add(A);
 									}
 								}
 								else
@@ -6454,7 +6454,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					if(llhso.size()!=lrhso.size())
 						return (comp==MQLClause.WhereComparator.NEQ);
-					boolean allSame=true;
+					boolean allSame=llhso.size()==0 && lrhso.size()==0;
 					for(final Object o1 : llhso)
 					{
 						for(final Object o2 : lrhso)
@@ -6469,7 +6469,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					if(llhso.size()!=lrhso.size())
 						return (comp==MQLClause.WhereComparator.NOTLIKE);
-					boolean allSame=true;
+					boolean allSame=llhso.size()==0 && lrhso.size()==0;
 					for(final Object o1 : llhso)
 					{
 						for(final Object o2 : lrhso)
@@ -6484,7 +6484,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					if(llhso.size()!=lrhso.size())
 						return (comp==MQLClause.WhereComparator.NOTMATCH);
-					boolean allSame=true;
+					boolean allSame=llhso.size()==0 && lrhso.size()==0;
 					for(final Object o1 : llhso)
 					{
 						for(final Object o2 : lrhso)
@@ -6497,7 +6497,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				case IN:
 				case NOTIN:
 				{
-					boolean allIn=true;
+					boolean allIn=llhso.size()==0;
 					for(final Object o1 : llhso)
 						allIn = allIn || doMQLComparison(o1, MQLClause.WhereComparator.IN, lrhso, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
 					if(allIn)
@@ -6828,7 +6828,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final List<Object> froms=new LinkedList<Object>();
 		if(clause.update.length()==0)
 			throw new MQLException("Empty UPDATE clause in "+clause.mql);
-		final String[] from = new String[] {clause.update};
+		final String[] from = clause.update.split("\\\\");
 		froms.addAll(parseMQLFrom(from, clause.mql, E, ignoreStats, defPrefix, piece, defined,false));
 		final Map<String,Object> cache=new HashMap<String,Object>();
 		for(final Object o : flattenMQLObjectList(froms))
