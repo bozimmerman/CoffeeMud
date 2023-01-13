@@ -330,13 +330,15 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		// 350 and 10, diff = 340 + -360 = 20
 		if(yawDelta > Math.PI) // a delta is never more than 180 degrees
 			yawDelta=PI_TIMES_2-yawDelta;
+		if(Math.abs(yawDelta-PI_TIMES_2)<ZERO_ALMOST)
+			yawDelta=0.0;
 
 		double pitchDelta = (curDirectionPitch >  accelDirectionPitch) ? (curDirectionPitch - accelDirectionPitch) : (accelDirectionPitch - curDirectionPitch);
 		// 170 and 10 = 160, which is correct!
 		if(pitchDelta > Math.PI)
 			pitchDelta=Math.PI-pitchDelta;
 		if(Math.abs(pitchDelta-Math.PI)<ZERO_ALMOST)
-			yawDelta=0.0;
+			pitchDelta=0.0;
 
 		final double anglesDelta =  getAngleDelta(curDirection, accelDirection);
 		final double accelerationMultiplier = acceleration / currentSpeed;
