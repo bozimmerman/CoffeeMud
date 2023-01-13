@@ -212,7 +212,7 @@ public class RocketShipProgram extends ShipNavProgram
 				if(obj != null)
 					nstr.append(" ").append(obj.name());
 			}
-			catch(NullPointerException npe)
+			catch(final NullPointerException npe)
 			{}
 			if(navTrack.state != null)
 				nstr.append(" (").append(navTrack.state.name()).append(")");
@@ -723,7 +723,7 @@ public class RocketShipProgram extends ShipNavProgram
 				}
 				if(findTargetAcceleration(engineE) < SpaceObject.ACCELERATION_DAMAGED)
 				{
-					int gs = (int)Math.round(this.targetAcceleration.doubleValue()/SpaceObject.ACCELERATION_G);
+					final int gs = (int)Math.round(this.targetAcceleration.doubleValue()/SpaceObject.ACCELERATION_G);
 					super.addScreenMessage(L("No inertial dampeners found.  Limiting acceleration to "+gs+"Gs."));
 				}
 				final List<ShipEngine> programEngines=new XVector<ShipEngine>(engineE);
@@ -1143,16 +1143,16 @@ public class RocketShipProgram extends ShipNavProgram
 					super.addScreenMessage(L("Can not approach @x1 due being too close.",targetObj.name()));
 					return;
 				}
-				long deproachDistance = calculateDeproachDistance(ship, targetObj);
+				final long deproachDistance = calculateDeproachDistance(ship, targetObj);
 				ShipEngine engineE=null;
 				final double[] dirTo = CMLib.space().getDirection(ship, targetObj);
-				if(!this.changeFacing(ship, dirTo))
+				if(!changeFacing(ship, dirTo))
 				{
 					super.addScreenMessage(L("Warning. Approach program cancelled due to engine failure."));
 					this.cancelNavigation();
 					return;
 				}
-				engineE=this.primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
+				engineE=primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
 				if(engineE==null)
 				{
 					this.cancelNavigation();
