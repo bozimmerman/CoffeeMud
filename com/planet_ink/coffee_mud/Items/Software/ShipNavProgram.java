@@ -61,6 +61,8 @@ public class ShipNavProgram extends ShipSensorProgram
 	protected volatile Double		targetAcceleration	= Double.valueOf(SpaceObject.ACCELERATION_TYPICALSPACEROCKET);
 	protected volatile ShipNavTrack	navTrack			= null;
 
+	protected final LinkedList<Pair<Long,Long>> distTrackerDelme = new LinkedList<Pair<Long,Long>>(); //TODO:BZ:DELME
+
 	protected final Map<ShipEngine, Double[]>	injects	= new Hashtable<ShipEngine, Double[]>();
 
 	protected static class ShipNavTrack
@@ -579,8 +581,9 @@ public class ShipNavProgram extends ShipSensorProgram
 	{
 		long distance = CMLib.space().getDistanceFrom(ship, targetObj);
 		distance = (distance - ship.radius() - Math.round(CMath.mul(targetObj.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
+		final long targetDistance = distance; //TODO:BZ:DELTHIS:
 		if(ship.speed() < SpaceObject.VELOCITY_SOUND)
-			return distance/2;
+			distance = distance/2;
 		else
 		if(ship instanceof SpaceShip)
 		{
@@ -597,11 +600,38 @@ public class ShipNavProgram extends ShipSensorProgram
 				final double distanceToZero = ticksToZero * (ship.speed()/2);
 				final long d20 = Math.round(distanceToZero);
 				final long baseDistance = distance - d20;
-				if(baseDistance < 0)
-					return distance;
-				return Math.round(ship.speed()) + d20 + (baseDistance/2);
+				if(baseDistance >= 0)
+					distance = Math.round(ship.speed()) + d20 + (baseDistance/2);
 			}
 		}
+		//TODO:BZ:DEL ALL THIS BELOW:
+		if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+		{
+			double speed = ship.speed();
+			long distToGo = targetDistance;
+			distTrackerDelme.clear();
+			distTrackerDelme.add(new Pair<Long,Long>(Long.valueOf(distToGo),Long.valueOf(Math.round(speed))));
+			while(distToGo > 0)
+			{
+				if(distToGo < distance)
+				{
+					distToGo -= speed - 4;
+					speed -= 4;
+				}
+				else
+				{
+					distToGo -= speed + 4;
+					speed += 4;
+				}
+				distTrackerDelme.add(new Pair<Long,Long>(Long.valueOf(distToGo),Long.valueOf(Math.round(speed))));
+				if(speed <= 0)
+					break;
+			}
+		}
+		//TODO:BZ:DEL ALL THIS ABOVE:
+
+		if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+			Log.debugOut("Deproach calculated, distance= "+targetDistance+", deproach="+distance);
 		return distance; // begin deproach IMMEDIATELY!
 	}
 
@@ -812,7 +842,23 @@ public class ShipNavProgram extends ShipSensorProgram
 				return;
 			}
 			final Long deproachDistance = track.getArg(Long.class);
-			final long distance = (CMLib.space().getDistanceFrom(ship, targetObject)-ship.radius()-targetObject.radius());
+			final long distance = (CMLib.space().getDistanceFrom(ship, targetObject)-ship.radius()
+					-Math.round(CMath.mul(targetObject.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
+			if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+			{
+				if(distTrackerDelme.size()>0)//TODO:BZ:DELME
+				{
+					Pair<Long,Long> p = distTrackerDelme.removeFirst();
+					if((ship.speed()!=0) && (p.second.longValue()==0) && (distTrackerDelme.size()>0))
+						p = distTrackerDelme.removeFirst();
+					final String actual_d_s = distance+"="+Math.round(ship.speed());
+					final String expected_d_s = p.first+"="+p.second;
+					final long d1 = Math.abs(p.first.longValue()-distance);
+					final long d2 = Math.abs(p.second.longValue()-Math.round(ship.speed()));
+					final String diff_d_s = d1+"="+d2;
+					Log.debugOut("Track: act="+actual_d_s +" /****/ exp="+expected_d_s + " /****/ diff=" + diff_d_s);
+				}
+			}
 			if(distance < deproachDistance.longValue())
 			{
 				if(track.state == ShipNavState.APPROACH)
