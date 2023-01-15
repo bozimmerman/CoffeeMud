@@ -245,11 +245,12 @@ public class Spell_PhantomHound extends Spell
 				newMOB.basePhyStats().setAbility(100);
 				newMOB.baseState().setMana(100);
 				newMOB.baseState().setMovement(1000);
+				newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				newMOB.recoverPhyStats();
 				newMOB.recoverCharStats();
 				newMOB.recoverMaxState();
 				newMOB.resetToMaxState();
-				newMOB.text();
+				newMOB.setMiscText(newMOB.text());
 				newMOB.bringToLife(mob.location(),true);
 				CMLib.beanCounter().clearZeroMoney(newMOB,null);
 				newMOB.setMoneyVariation(0);

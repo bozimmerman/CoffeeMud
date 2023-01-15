@@ -243,7 +243,7 @@ public class Chant_SummonMount extends Chant
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
-		newMOB.text();
+		newMOB.setMiscText(newMOB.text());
 		return(newMOB);
 	}
 }

@@ -240,7 +240,7 @@ public class Spell_WatchfulHound extends Spell
 		newMOB.recoverMaxState();
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		newMOB.resetToMaxState();
-		newMOB.text();
+		newMOB.setMiscText(newMOB.text());
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.setMoneyVariation(0);

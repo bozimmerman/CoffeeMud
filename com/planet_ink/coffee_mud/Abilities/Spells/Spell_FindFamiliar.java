@@ -258,7 +258,7 @@ public class Spell_FindFamiliar extends Spell
 		newMOB.addPriorityEffect(A);
 		A.makeNonUninvokable();
 		A.makeLongLasting();
-		newMOB.text();
+		newMOB.setMiscText(newMOB.text());
 		return(newMOB);
 
 	}

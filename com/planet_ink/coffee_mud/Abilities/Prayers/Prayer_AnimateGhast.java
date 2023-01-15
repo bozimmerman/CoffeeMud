@@ -227,6 +227,7 @@ public class Prayer_AnimateGhast extends Prayer
 				newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
 				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 				newMOB.baseState().setMana(100);
+				newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				newMOB.recoverCharStats();
 				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();
@@ -244,7 +245,7 @@ public class Prayer_AnimateGhast extends Prayer
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Spell_CauseStink"));
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 				newMOB.addTattoo("SYSTEM_SUMMONED");
-				newMOB.text();
+				newMOB.setMiscText(newMOB.text());
 				newMOB.bringToLife(mob.location(),true);
 				CMLib.beanCounter().clearZeroMoney(newMOB,null);
 				newMOB.setMoneyVariation(0);

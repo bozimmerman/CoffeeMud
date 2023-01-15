@@ -198,11 +198,12 @@ public class Prayer_AnimateDead extends Prayer
 				}
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 				newMOB.addTattoo("SYSTEM_SUMMONED");
+				newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				newMOB.recoverCharStats();
 				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();
 				newMOB.resetToMaxState();
-				newMOB.text();
+				newMOB.setMiscText(newMOB.text());
 				newMOB.bringToLife(mob.location(),true);
 				CMLib.beanCounter().clearZeroMoney(newMOB,null);
 				newMOB.setMoneyVariation(0);

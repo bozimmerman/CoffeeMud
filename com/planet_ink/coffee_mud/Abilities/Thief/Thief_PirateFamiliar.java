@@ -341,7 +341,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 		{
 			newMOB.addBehavior(B);
 		}
-		newMOB.text();
+		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();

@@ -280,11 +280,12 @@ public class Prayer_SnakeStaff extends Prayer
 			newMOB.addAbility(A);
 		}
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
+		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
-		newMOB.text();
+		newMOB.setMiscText(newMOB.text());
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.setMoneyVariation(0);

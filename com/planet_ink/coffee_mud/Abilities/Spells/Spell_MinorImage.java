@@ -394,7 +394,7 @@ public class Spell_MinorImage extends Spell
 		newMOB.recoverMaxState();
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		newMOB.resetToMaxState();
-		newMOB.text();
+		newMOB.setMiscText(newMOB.text());
 		newMOB.bringToLife(target.location(),true);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

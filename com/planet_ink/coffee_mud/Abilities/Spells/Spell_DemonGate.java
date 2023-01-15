@@ -232,7 +232,7 @@ public class Spell_DemonGate extends Spell
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
-		newMOB.text();
+		newMOB.setMiscText(newMOB.text());
 		final Room R=caster.location();
 		if(R!=null)
 		{

@@ -294,7 +294,7 @@ public class Spell_Clone extends Spell
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
-		newMOB.text();
+		newMOB.setMiscText(newMOB.text());
 		newMOB.setSession(null);
 		newMOB.delAllBehaviors();
 		newMOB.bringToLife(caster.location(),true);

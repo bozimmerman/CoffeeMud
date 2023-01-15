@@ -159,6 +159,7 @@ public class Prayer_FaithfulHellhound extends Prayer
 				newMOB.setDescription(L("He looks like he likes his meat well done."));
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 				newMOB.addTattoo("SYSTEM_SUMMONED");
+				newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				newMOB.recoverCharStats();
 				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();
@@ -182,7 +183,7 @@ public class Prayer_FaithfulHellhound extends Prayer
 					fireA.setProficiency(100);
 					newMOB.addAbility(fireA);
 				}
-				newMOB.text();
+				newMOB.setMiscText(newMOB.text());
 				newMOB.bringToLife(caster.location(),true);
 				CMLib.beanCounter().clearZeroMoney(newMOB,null);
 				newMOB.setMoneyVariation(0);

@@ -303,7 +303,7 @@ public class Spell_Simulacrum extends Spell
 		newMOB.recoverMaxState();
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		newMOB.resetToMaxState();
-		newMOB.text();
+		newMOB.setMiscText(newMOB.text());
 		newMOB.bringToLife(caster.location(),true);
 		newMOB.addEffect(A);
 		A.setAffectedOne(newMOB);

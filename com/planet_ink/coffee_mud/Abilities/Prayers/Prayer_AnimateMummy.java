@@ -224,6 +224,7 @@ public class Prayer_AnimateMummy extends Prayer
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 				newMOB.addTattoo("SYSTEM_SUMMONED");
 				newMOB.baseState().setMana(100);
+				newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				newMOB.recoverCharStats();
 				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();
@@ -237,7 +238,7 @@ public class Prayer_AnimateMummy extends Prayer
 					B.setParms("+NAMES \"-"+mob.Name()+"\" -LEVEL +>"+newMOB.basePhyStats().level());
 					newMOB.addBehavior(B);
 				}
-				newMOB.text();
+				newMOB.setMiscText(newMOB.text());
 				newMOB.bringToLife(mob.location(),true);
 				CMLib.beanCounter().clearZeroMoney(newMOB,null);
 				newMOB.setMoneyVariation(0);

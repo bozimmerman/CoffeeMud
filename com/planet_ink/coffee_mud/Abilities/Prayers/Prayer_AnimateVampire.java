@@ -248,6 +248,7 @@ public class Prayer_AnimateVampire extends Prayer
 					B.setParms("+NAMES \"-"+mob.Name()+"\" -LEVEL +>"+newMOB.basePhyStats().level());
 					newMOB.addBehavior(B);
 				}
+				newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				newMOB.recoverCharStats();
 				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();
@@ -262,7 +263,7 @@ public class Prayer_AnimateVampire extends Prayer
 				newMOB.addAbility(CMClass.getAbility("Undead_EnergyDrain"));
 				B=CMClass.getBehavior("CombatAbilities");
 				newMOB.addBehavior(B);
-				newMOB.text();
+				newMOB.setMiscText(newMOB.text());
 				newMOB.bringToLife(mob.location(),true);
 				CMLib.beanCounter().clearZeroMoney(newMOB,null);
 				newMOB.setMoneyVariation(0);

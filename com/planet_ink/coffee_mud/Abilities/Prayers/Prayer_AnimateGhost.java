@@ -205,11 +205,12 @@ public class Prayer_AnimateGhost extends Prayer
 			if(B!=null)
 				newMOB.addBehavior(B);
 		}
+		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
-		newMOB.text();
+		newMOB.setMiscText(newMOB.text());
 		newMOB.bringToLife(R,true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.setMoneyVariation(0);
