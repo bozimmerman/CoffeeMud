@@ -245,7 +245,7 @@ public class Score extends Affect
 						statDesc=CMStrings.capitalizeAndLower(getExtremeValue(val-charStatList.length+1))+" "+CMStrings.capitalizeAndLower(charStatList[charStatList.length-1]);
 				}
 				else
-					statDesc=CMStrings.padRight(Integer.toString(CT.getStat(i)),2)+"/"+(CT.getMaxStat(i));
+					statDesc=CMStrings.padRightPreserve(Integer.toString(CT.getStat(i)),2)+"/"+CT.getMaxStat(i);
 				msg.append(CMStrings.padRight("^<HELP^>^N^!" + CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i))+"^</HELP^>",longest)
 						+"^N: ^H"+statDesc+"^?\n\r");
 			}
