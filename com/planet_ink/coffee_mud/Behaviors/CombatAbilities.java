@@ -53,9 +53,12 @@ public class CombatAbilities extends ActiveTicker
 	protected String			lastSpell			= null;
 	protected boolean			noStat				= false;
 	protected boolean			noCombatStat		= false;
+	protected boolean			useTurnBasedRule	= false;
 	protected StringBuffer		record				= null;
 	protected int				physicalDamageTaken	= 0;
 	protected InternalWeaponSet	weaponSet			= new InternalWeaponSet();
+
+	protected volatile boolean	actionOverride		= false;
 
 	public final static int COMBAT_RANDOM=0;
 	public final static int COMBAT_DEFENSIVE=1;
@@ -351,6 +354,21 @@ public class CombatAbilities extends ActiveTicker
 	}
 
 	@Override
+	public boolean okMessage(final Environmental host, final CMMsg msg)
+	{
+		if(useTurnBasedRule
+		&&(msg.source()==host)
+		&&(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&(!actionOverride)
+		&&(msg.source().actions()>=1.0))
+		{
+			actionOverride = true;
+			msg.source().setActions(msg.source().actions()-1.0);
+		}
+		return super.okMessage(host, msg);
+	}
+
+	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if(host instanceof MOB)
@@ -426,6 +444,7 @@ public class CombatAbilities extends ActiveTicker
 		skillsNever=null;
 		wandUseCheck[0]=false;
 		proficient=false;
+		useTurnBasedRule=(CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.CombatSystem.TURNBASED.ordinal());
 		final Vector<String> V=CMParms.parse(getParms());
 		String s=null;
 		Ability A=null;
@@ -580,8 +599,9 @@ public class CombatAbilities extends ActiveTicker
 		}
 
 		if((tryA!=null)
-		&&(mob.actions()>=CMProps.getSkillCombatActionCost(tryA.ID())))
+		&&(actionOverride||mob.actions()>=CMProps.getSkillCombatActionCost(tryA.ID())))
 		{
+			actionOverride=false;
 			if(CMath.bset(tryA.usageType(),Ability.USAGE_MANA))
 			{
 				if((Math.random()>CMath.div(mob.curState().getMana(), mob.maxState().getMana()))

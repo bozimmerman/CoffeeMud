@@ -303,10 +303,15 @@ public class CommonSkill extends StdAbility
 			&&(((MOB)affected).location()!=null))
 			{
 				final MOB mob=(MOB)affected;
-				if(aborted)
-					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> stop(s) @x1.",verb));
-				else
-					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> <S-IS-ARE> done @x1.",verb));
+				final String verb = this.verb;
+				if((verb != null)
+				&&(verb.length()>0))
+				{
+					if(aborted)
+						mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> stop(s) @x1.",verb));
+					else
+						mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> <S-IS-ARE> done @x1.",verb));
+				}
 				helping=false;
 				helpingAbility=null;
 			}

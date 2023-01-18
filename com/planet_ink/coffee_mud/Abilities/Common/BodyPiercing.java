@@ -282,7 +282,7 @@ public class BodyPiercing extends CommonSkill
 		if(wornName.toLowerCase().endsWith("s"))
 		{
 			writing=wearLocName+":Pierced "+wornName.toLowerCase();
-			verb=L("piercing @x1 on  @x2",target.name(),wornName);
+			verb=L("piercing @x1 on @x2",target.name(),wornName);
 		}
 		else
 		{

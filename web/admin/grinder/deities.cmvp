@@ -16,7 +16,7 @@
         	room=encodeURI(room);
         	mobcode=encodeURI(mobcode);
         	room=room.replace("#","%23");
-            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=700,alwaysRaised=yes,dependent=yes";
             w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&AREA="+area+"&ROOM="+room+"&MOB="+mobcode+"&SINGLEMOB=true",
             	"MAP",strFeatures, false);
         }
@@ -28,7 +28,7 @@
         	room=encodeURI(room);
         	var mobcode=encodeURI(mobcode);
         	room=room.replace("#","%23");
-            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=700,alwaysRaised=yes,dependent=yes";
             w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&NEWMOBNAME="+name+"&AREA="+area+"&ROOM="+room+"&MOB="+mobcode+"&SINGLEMOB=true",
             	"EDITDEITY",strFeatures, false);
         }
@@ -43,12 +43,12 @@
         	name=encodeURI(name);
 	    	if(location == '')
         	{
-	            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=200,width=650,alwaysRaised=yes,dependent=yes";
+	            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=200,width=700,alwaysRaised=yes,dependent=yes";
 	            w=window.open("pickroom.cmvp?REST="+name,"PICKROOM",strFeatures, false);
         	}
         	else 
         	{
-	            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+	            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=700,alwaysRaised=yes,dependent=yes";
         		var div=location.indexOf('~|~');
         		var room=location.substr(0,div);
         		var area=location.substr(div+3,location.length);

@@ -10564,8 +10564,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						if(Ms.get(i) instanceof MOB)
 						{
-							m=(MOB)((MOB)Ms.get(i)).copyOf();
-							m.text();
+							final MOB baseM = (MOB)Ms.get(i);
+							m=(MOB)baseM.copyOf();
+							if((baseM.location() != null)
+							&&(baseM.location().isInhabitant(baseM)))
+							{
+								baseM.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+								baseM.phyStats().setRejuv(PhyStats.NO_REJUV);
+							}
+							m.setMiscText(m.text());
 							m.recoverPhyStats();
 							m.recoverCharStats();
 							m.resetToMaxState();

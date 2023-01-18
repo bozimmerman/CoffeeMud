@@ -2819,13 +2819,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 	}
 
-	protected void subtickAttack(final MOB fighter, Item weapon, final int folrange)
+	protected boolean subtickAttack(final MOB fighter, Item weapon, final int folrange)
 	{
 		if((weapon!=null)
 		&&(weapon.amWearingAt(Wearable.IN_INVENTORY)))
 			weapon=fighter.fetchWieldedItem();
 		if((!fighter.isAttributeSet(MOB.Attrib.AUTOMELEE)))
-			postAttack(fighter,fighter.getVictim(),weapon);
+			return postAttack(fighter,fighter.getVictim(),weapon);
 		else
 		{
 			boolean inminrange=(fighter.rangeToTarget()>=minRangeWith(fighter, weapon));
@@ -2870,8 +2870,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if(inminrange
 			&&inmaxrange
 			&&((weapon!=null)||(fighter.rangeToTarget()==0)))
-				postAttack(fighter,fighter.getVictim(),weapon);
+				return postAttack(fighter,fighter.getVictim(),weapon);
 		}
+		return false;
 	}
 
 	protected void subtickBeforeAttack(final MOB fighter, final CombatSystem combatSystem)

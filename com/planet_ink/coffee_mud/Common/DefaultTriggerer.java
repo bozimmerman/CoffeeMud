@@ -181,7 +181,7 @@ public class DefaultTriggerer implements Triggerer
 			return args;
 		}
 
-		public synchronized void setCompleted(Trigger T)
+		public synchronized void setCompleted(final Trigger T)
 		{
 			completed++;
 			time=System.currentTimeMillis();
@@ -280,7 +280,7 @@ public class DefaultTriggerer implements Triggerer
 					else
 					if(cmd.indexOf('#')>0)
 					{
-						int x = cmd.indexOf('#');
+						final int x = cmd.indexOf('#');
 						DT.reqCount = CMath.s_int(cmd.substring(x+1).trim());
 						T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd.substring(0,x));
 					}
@@ -375,7 +375,7 @@ public class DefaultTriggerer implements Triggerer
 							Social soc = null;
 							if(DT.parm2.equals("*"))
 							{
-								List<Social> lst = socials.get(DT.parm1);
+								List<Social> lst = (socials==null)?null:socials.get(DT.parm1);
 								if((lst == null)||(lst.size()==0))
 									lst = CMLib.socials().getSocialsSet(DT.parm1);
 								if((lst != null)&&(lst.size()>0))
@@ -413,7 +413,7 @@ public class DefaultTriggerer implements Triggerer
 									break;
 								}
 							}
-							if(socials.containsKey(soc.baseName()))
+							if((socials!=null)&&(socials.containsKey(soc.baseName())))
 								socialsMap.put(soc.baseName(), socials.get(soc.baseName()));
 							DT.soc = soc;
 							break;

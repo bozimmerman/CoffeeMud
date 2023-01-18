@@ -94,7 +94,10 @@ public class BookEditing extends CommonSkill
 				{
 					final CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.TYP_REWRITE,L("<S-NAME> start(s) editing <T-NAME>."),pageNum,L("<S-NAME> start(s) editing <T-NAME>."));
 					if(mob.location().okMessage(mob,msg))
+					{
 						mob.location().send(mob,msg);
+						verb="";
+					}
 				}
 			}
 		}
