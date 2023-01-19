@@ -722,7 +722,7 @@ public class Clans extends StdLibrary implements ClanManager
 							final Integer roleID=votingRoles.get(i);
 							roleNames[i]=C.getRoleName(roleID.intValue(), true, true);
 						}
-						final String list = CMLib.english().toEnglishStringList(roleNames);
+						final String list = CMLib.english().toEnglishStringList(roleNames,true);
 						clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new matter to vote upon. "
 								+list+" should use CLANVOTE to participate.");
 					}
@@ -815,7 +815,7 @@ public class Clans extends StdLibrary implements ClanManager
 			for(int g=0;g<gtypes.size();g++)
 				typeNames[g]=CMStrings.capitalizeAndLower(gtypes.get(g).getName());
 			return "The "+name+" is a rank or position within the following clan types: "
-				   +CMLib.english().toEnglishStringList(typeNames)
+				   +CMLib.english().toEnglishStringList(typeNames, true)
 				   +".  Please see help on CLAN or on one of the listed clan types for more information. ";
 		}
 		return helpG.getHelpStr();

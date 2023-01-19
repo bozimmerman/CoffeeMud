@@ -172,10 +172,10 @@ public class Druid_KnowPlants extends StdAbility
 								CMLib.english().toEnglishStringList(foundIn)));
 					}
 				}
-				mob.tell(L("@x1 has a hardness of @x2 and a bouancy of @x3.",
+				mob.tell(L("@x1 has a hardness of @x2 and a buoyancy of @x3.",
 						CMStrings.capitalizeAndLower(rscName),
 						""+RawMaterial.CODES.HARDNESS(matI.intValue()),
-						""+RawMaterial.CODES.BOUANCY(matI.intValue())));
+						""+RawMaterial.CODES.BOUYANCY(matI.intValue())));
 			}
 		}
 		return success;

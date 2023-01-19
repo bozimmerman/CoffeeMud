@@ -325,7 +325,7 @@ public class MOBEater extends ActiveTicker
 													 L("<S-NAME> digest(s) <T-NAMESELF>!!"));
 				// no OKaffectS, since the dragon is not in his own stomach.
 				stomachR.send(mob,DigestMsg);
-				int damage=(int)Math.round(tastyMorselM.maxState().getHitPoints() * CMath.div(pctAcidHp, 100));
+				int damage=(int)Math.round(tastyMorselM.curState().getHitPoints() * CMath.div(pctAcidHp, 100));
 				if(damage<2)
 					damage=2;
 				if(DigestMsg.value()!=0)

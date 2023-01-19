@@ -10568,10 +10568,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							m=(MOB)baseM.copyOf();
 							if((baseM.location() != null)
 							&&(baseM.location().isInhabitant(baseM)))
-							{
-								baseM.basePhyStats().setRejuv(PhyStats.NO_REJUV);
-								baseM.phyStats().setRejuv(PhyStats.NO_REJUV);
-							}
+								baseM.setStartRoom(null);
 							m.setMiscText(m.text());
 							m.recoverPhyStats();
 							m.recoverCharStats();

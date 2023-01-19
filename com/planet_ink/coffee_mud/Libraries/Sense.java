@@ -1651,7 +1651,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			{
 				final Item I=V.get(v);
 				totalWeight+=I.basePhyStats().weight();
-				totalFloatilla+=totalWeight*codes.bouancy(I.material());
+				totalFloatilla+=totalWeight*codes.buoyancy(I.material());
 			}
 			if(P instanceof Container)
 			{

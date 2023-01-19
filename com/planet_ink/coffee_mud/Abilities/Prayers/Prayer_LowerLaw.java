@@ -139,7 +139,8 @@ public class Prayer_LowerLaw extends Prayer
 						if(!crimes.contains(name))
 							crimes.add(name);
 					}
-					mob.tell(L("The following lower crimes are divinely revealed to you: @x1.",CMLib.english().toEnglishStringList(crimes.toArray(new String[0]))));
+					mob.tell(L("The following lower crimes are divinely revealed to you: @x1.",
+							CMLib.english().toEnglishStringList(crimes.toArray(new String[0]),true)));
 				}
 			}
 		}

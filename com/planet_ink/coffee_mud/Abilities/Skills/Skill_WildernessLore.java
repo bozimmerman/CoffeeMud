@@ -272,7 +272,7 @@ public class Skill_WildernessLore extends StdSkill
 					conditions.add("cold");
 				if(CMath.bset(derivedClimate, Places.CLIMASK_WINDY))
 					conditions.add("windy");
-				str.append(CMLib.english().toEnglishStringList(conditions.toArray(new String[0])));
+				str.append(CMLib.english().toEnglishStringList(conditions.toArray(new String[0]),true));
 				str.append(L(" here."));
 				if(report)
 					CMLib.commands().postSay(mob, str.toString());

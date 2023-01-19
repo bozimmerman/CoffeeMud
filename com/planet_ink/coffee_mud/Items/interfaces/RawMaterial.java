@@ -827,7 +827,7 @@ public interface RawMaterial extends Item
 		VEGETABLE(RESOURCE_VEGETABLE	, 1, 5, 1, 540, "very healthy", "", null),
 
 		;//code, 						  v, freq, h, b, smell, effects, ResourceFlag flags
-		public final int			code, value, frequency, hardness, bouancy;
+		public final int			code, value, frequency, hardness, buoyancy;
 		public final String			smell, effect, desc;
 		public final ResourceFlag	flag;
 
@@ -848,7 +848,7 @@ public interface RawMaterial extends Item
 			value = val;
 			frequency = freq;
 			hardness = hard;
-			bouancy = bou;
+			buoyancy = bou;
 			smell = sniff;
 			effect = eff;
 			flag = flg;
@@ -894,7 +894,7 @@ public interface RawMaterial extends Item
 				for (final DefResource d : defaults)
 				{
 					final int material = d.code & MATERIAL_MASK;
-					add(material, d.desc, d.smell, d.value, d.frequency, d.hardness, d.bouancy, d.flag == ResourceFlag.FISH, d.flag == ResourceFlag.BERRY, d.flag == ResourceFlag.WOODY, d.effect);
+					add(material, d.desc, d.smell, d.value, d.frequency, d.hardness, d.buoyancy, d.flag == ResourceFlag.FISH, d.flag == ResourceFlag.BERRY, d.flag == ResourceFlag.WOODY, d.effect);
 				}
 				for (int i = 0; i < addExtra.length + repExtra.length; i++)
 				{
@@ -929,7 +929,7 @@ public interface RawMaterial extends Item
 					final int value = CMath.s_int(V.get(2));
 					final int frequ = CMath.s_int(V.get(3));
 					final int hardness = CMath.s_int(V.get(4));
-					final int bouancy = CMath.s_int(V.get(5));
+					final int buoyancy = CMath.s_int(V.get(5));
 					final boolean fish = V.get(6).equalsIgnoreCase("fish");
 					final boolean berry = V.get(6).equalsIgnoreCase("berry");
 					final boolean woody = V.get(6).equalsIgnoreCase("woody");
@@ -941,10 +941,10 @@ public interface RawMaterial extends Item
 						continue;
 					}
 					if (type.equalsIgnoreCase("ADD"))
-						add(material.mask(), stat, smell, value, frequ, hardness, bouancy, fish, berry, woody, abilityID);
+						add(material.mask(), stat, smell, value, frequ, hardness, buoyancy, fish, berry, woody, abilityID);
 					else
 					if (type.equalsIgnoreCase("REPLACE") && (oldResourceCode >= 0))
-						replace(oldResourceCode, material.mask(), stat, smell, value, frequ, hardness, bouancy, fish, berry, woody, abilityID);
+						replace(oldResourceCode, material.mask(), stat, smell, value, frequ, hardness, buoyancy, fish, berry, woody, abilityID);
 				}
 				final String[] sortedNames = descs.clone();
 				Arrays.sort(sortedNames);
@@ -1469,23 +1469,23 @@ public interface RawMaterial extends Item
 		}
 
 		/**
-		 * Returns the bouancy of the resource, from 0-20000
+		 * Returns the buoyancy of the resource, from 0-20000
 		 *
 		 * @param code the resource code
-		 * @return the bouancy of the resource
+		 * @return the buoyancy of the resource
 		 */
-		public static int BOUANCY(final int code)
+		public static int BOUYANCY(final int code)
 		{
 			return c().data[code & RESOURCE_MASK][4];
 		}
 
 		/**
-		 * Returns the bouancy of the resource, from 0-20000
+		 * Returns the buoyancy of the resource, from 0-20000
 		 *
 		 * @param code the resource code
-		 * @return the bouancy of the resource
+		 * @return the buoyancy of the resource
 		 */
-		public int bouancy(final int code)
+		public int buoyancy(final int code)
 		{
 			return data[code & RESOURCE_MASK][4];
 		}
@@ -1635,13 +1635,13 @@ public interface RawMaterial extends Item
 		 * @param value the value of the resource in base currency
 		 * @param frequ the frequency of the resource 0-10
 		 * @param hardness the hardness of the resource 0-10
-		 * @param bouancy the bouancy of the resource 0-10000
+		 * @param buoyancy the buoyancy of the resource 0-10000
 		 * @param fish true if its a fishy-type
 		 * @param berry true if its a berry type
 		 * @param woody true if its a wood-choppy type
 		 * @param abilityID effects list
 		 */
-		public synchronized void add(final int material, final String name, final String smell, final int value, final int frequ, final int hardness, final int bouancy, final boolean fish, final boolean berry, final boolean woody, final String abilityID)
+		public synchronized void add(final int material, final String name, final String smell, final int value, final int frequ, final int hardness, final int buoyancy, final boolean fish, final boolean berry, final boolean woody, final String abilityID)
 		{
 			final int newResourceCode = allCodes.length | material;
 			allCodes = Arrays.copyOf(allCodes, allCodes.length + 1);
@@ -1673,8 +1673,8 @@ public interface RawMaterial extends Item
 			effectAs[effectAs.length - 1] = null;
 
 			data = Arrays.copyOf(data, data.length + 1);
-			// full code, base value, frequency, hardness (1-10), bouancy
-			final int[] newRow = { newResourceCode, value, frequ, hardness, bouancy };
+			// full code, base value, frequency, hardness (1-10), buoyancy
+			final int[] newRow = { newResourceCode, value, frequ, hardness, buoyancy };
 			data[data.length - 1] = newRow;
 		}
 
@@ -1687,13 +1687,13 @@ public interface RawMaterial extends Item
 		 * @param value the value of the resource in base currency
 		 * @param frequ the frequency of the resource 0-10
 		 * @param hardness the hardness of the resource 0-10
-		 * @param bouancy the bouancy of the resource 0-10000
+		 * @param buoyancy the buoyancy of the resource 0-10000
 		 * @param fish true if its a fishy-type
 		 * @param berry true if its a berry type
 		 * @param woody true if its a wood-choppy type
 		 * @param abilityID effects list
 		 */
-		public synchronized void replace(final int resourceCode, final int material, final String name, final String smell, final int value, final int frequ, final int hardness, final int bouancy, final boolean fish, final boolean berry, final boolean woody, final String abilityID)
+		public synchronized void replace(final int resourceCode, final int material, final String name, final String smell, final int value, final int frequ, final int hardness, final int buoyancy, final boolean fish, final boolean berry, final boolean woody, final String abilityID)
 		{
 			final int resourceIndex = resourceCode & RESOURCE_MASK;
 			if ((berry) && (!CMParms.contains(berries, resourceCode)))
@@ -1751,7 +1751,7 @@ public interface RawMaterial extends Item
 			effects[resourceIndex] = abilityID;
 			effectAs[resourceIndex] = null;
 			descs[resourceIndex] = name;
-			final int[] newRow = { resourceCode, value, frequ, hardness, bouancy };
+			final int[] newRow = { resourceCode, value, frequ, hardness, buoyancy };
 			data[resourceIndex] = newRow;
 		}
 	}

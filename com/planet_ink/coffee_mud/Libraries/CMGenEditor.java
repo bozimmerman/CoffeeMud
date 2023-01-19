@@ -2573,7 +2573,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(conditions.size()==0)
 					conditions.add("normal");
 			}
-			mob.session().println(L("@x1. Climate: @x2",""+showNumber,CMLib.english().toEnglishStringList(conditions.toArray(new String[0]))));
+			mob.session().println(L("@x1. Climate: @x2",""+showNumber,
+					CMLib.english().toEnglishStringList(conditions.toArray(new String[0]), true)));
 			return;
 		}
 		String c="Q";

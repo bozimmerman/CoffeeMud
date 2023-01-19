@@ -69,7 +69,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public final static List<Environmental>	empty	= new ReadOnlyVector<Environmental>(1);
 
 	@Override
-	public String toEnglishStringList(final String[] V)
+	public String toEnglishStringList(final String[] V, final boolean andOr)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -84,7 +84,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				s.append(", ");
 			s.append(V[v]);
 		}
-		s.append(" and ");
+		s.append(andOr?" and ":" or ");
 		s.append(V[V.length-1]);
 		return s.toString();
 	}

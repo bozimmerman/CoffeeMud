@@ -103,7 +103,7 @@ public class HealthScanProgram extends GenSoftware
 				final List<String> spreadList=new ArrayList<String>();
 				for(final int i : spreadBits)
 					spreadList.add(DiseaseAffect.SPREAD_DESCS[i]);
-				str.append(CMLib.english().toEnglishStringList(spreadList.toArray(new String[0])));
+				str.append(CMLib.english().toEnglishStringList(spreadList.toArray(new String[0]),true));
 			}
 			str.append(".\n\r");
 		}

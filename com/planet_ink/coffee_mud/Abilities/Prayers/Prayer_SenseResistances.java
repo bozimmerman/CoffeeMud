@@ -105,7 +105,7 @@ public class Prayer_SenseResistances extends Prayer
 						codes.add(CMStrings.capitalizeAllFirstLettersAndLower(CharStats.CODES.NAME(saveCode))+"("+target.charStats().getStat(saveCode)+"%)");
 				}
 				if(codes.size()>0)
-					str.append(CMLib.english().toEnglishStringList(codes.toArray(new String[0]))).append(". ");
+					str.append(CMLib.english().toEnglishStringList(codes.toArray(new String[0]),true)).append(". ");
 				for(final Enumeration<Ability> e=target.effects();e.hasMoreElements();)
 				{
 					final Ability A=e.nextElement();

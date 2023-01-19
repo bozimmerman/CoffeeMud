@@ -647,7 +647,7 @@ public class StdCharClass implements CharClass
 				{
 					for(final Race R : qualRaces)
 						names.add(R.name());
-					str.append(CMLib.english().toEnglishStringList(names.toArray(new String[0])));
+					str.append(CMLib.english().toEnglishStringList(names.toArray(new String[0]),false));
 				}
 				/*
 				else

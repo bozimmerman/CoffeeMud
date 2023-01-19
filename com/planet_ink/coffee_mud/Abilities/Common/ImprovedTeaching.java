@@ -101,12 +101,15 @@ public class ImprovedTeaching extends StdAbility
 		&&(msg.tool() instanceof Ability))
 		{
 			final MOB mob=msg.source();
-			super.helpProficiency(mob, 0);
-			int bonus = 15;
-			if(mob.fetchAbility(ID())!=null)
-				bonus=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0), bonus));
-			bonus += super.getXLEVELLevel(mob);
-			msg.setValue(bonus);
+			if(super.proficiencyCheck(mob, 0, false))
+			{
+				super.helpProficiency(mob, 0);
+				int bonus = 15;
+				if(mob.fetchAbility(ID())!=null)
+					bonus=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0), bonus));
+				bonus += super.getXLEVELLevel(mob);
+				msg.setValue(bonus);
+			}
 		}
 		return true;
 	}

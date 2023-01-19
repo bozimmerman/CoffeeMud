@@ -248,9 +248,10 @@ public interface EnglishParsing extends CMLibrary
 	 * final entry will have an "and" prepended.  Oxford commas are used.
 	 *
 	 * @param V the collection of things to treat as strings
+	 * @param andOr true to connect with AND, false for OR
 	 * @return the comma-space delimited list
 	 */
-	public String toEnglishStringList(final String[] V);
+	public String toEnglishStringList(final String[] V, boolean andOr);
 
 	/**
 	 * Returns comma-space delimited list of the given emum names.  The

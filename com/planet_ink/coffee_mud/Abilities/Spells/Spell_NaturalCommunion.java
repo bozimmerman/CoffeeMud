@@ -141,7 +141,8 @@ public class Spell_NaturalCommunion extends Spell
 				communeWithThisRoom(mob,mob.location(),stuff);
 				for(final Room R : rooms)
 					communeWithThisRoom(mob,R,stuff);
-				mob.tell(L("Your surroundings show the following natural signs: @x1.",CMLib.english().toEnglishStringList(stuff.toArray(new String[0]))));
+				mob.tell(L("Your surroundings show the following natural signs: @x1.",
+						CMLib.english().toEnglishStringList(stuff.toArray(new String[0]),true)));
 			}
 		}
 		else

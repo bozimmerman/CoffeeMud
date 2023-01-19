@@ -740,7 +740,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						if((this.courseDirections.size()==0)||(getBottomCourse()>=0))
 							this.courseDirections.add(Integer.valueOf(-1));
 
-						this.announceToOuterViewers(msg.source(),L("<S-NAME> order(s) a course setting of @x1.",CMLib.english().toEnglishStringList(dirNames.toArray(new String[0]))));
+						this.announceToOuterViewers(msg.source(),L("<S-NAME> order(s) a course setting of @x1.",
+								CMLib.english().toEnglishStringList(dirNames.toArray(new String[0]),true)));
 					}
 					else
 					{

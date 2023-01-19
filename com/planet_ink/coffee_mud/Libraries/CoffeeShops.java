@@ -534,44 +534,34 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			return 0.0;
 		if(part.trim().indexOf(' ')<0)
 			return CMath.s_double(part.trim());
-		final Vector<String> V=CMParms.parse(part.trim());
+		final List<String> prejudiceBits=CMParms.parse(part.trim().toUpperCase());
 		double d=0.0;
 		boolean yes=false;
-		final List<String> VF=customer.fetchFactionRanges();
-		final String align=CMLib.flags().getAlignmentName(customer);
-		final String sex=customer.charStats().genderName();
-		final String className=customer.charStats().displayClassName();
-		final String raceName=customer.charStats().raceName();
-		final String raceCatName=customer.charStats().getMyRace().racialCategory();
-		final String displayClassName=customer.charStats().getCurrentClass().name(customer.charStats().getCurrentClassLevel());
-		for(int v=0;v<V.size();v++)
+		final Set<String> customerFlags=new XHashSet<String>();
+		for(final String range : customer.fetchFactionRanges())
+			customerFlags.add(range.toUpperCase());
+		for(final Enumeration<Tattoo> t = customer.tattoos();t.hasMoreElements();)
+			customerFlags.add(t.nextElement().name().toUpperCase());
+		customerFlags.add(CMLib.flags().getAlignmentName(customer).toUpperCase());
+		customerFlags.add(customer.charStats().genderName().toUpperCase());
+		customerFlags.add(customer.charStats().displayClassName().toUpperCase());
+		customerFlags.add(customer.charStats().raceName().toUpperCase());
+		customerFlags.add(customer.charStats().getMyRace().racialCategory().toUpperCase());
+		customerFlags.add(customer.charStats().getCurrentClass().name(customer.charStats().getCurrentClassLevel()).toUpperCase());
+		for(int v=0;v<prejudiceBits.size();v++)
 		{
-			final String bit = V.elementAt(v);
+			final String bit = prejudiceBits.get(v).toUpperCase();
 			if (CMath.s_double(bit) != 0.0)
 				d = CMath.s_double(bit);
-			if ((bit.equalsIgnoreCase(className))
-			||(bit.equalsIgnoreCase(displayClassName))
-			||(bit.equalsIgnoreCase(sex))
-			||(bit.equalsIgnoreCase(raceCatName))
-			||(bit.equalsIgnoreCase(raceName))
-			||(bit.equalsIgnoreCase(align)))
+			if(customerFlags.contains(bit))
 			{
-				yes = true;
+				yes=true;
 				break;
-			}
-			for (int vf = 0; vf < VF.size(); vf++)
-			{
-				if (bit.equalsIgnoreCase(VF.get(vf)))
-				{
-					yes = true;
-					break;
-				}
 			}
 		}
 		if(yes)
 			return d;
 		return 0.0;
-
 	}
 
 	protected double prejudiceFactor(final MOB customer, String factors, final boolean pawnTo)
