@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Druid;
+package com.planet_ink.coffee_mud.Races;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2014-2023 Bo Zimmerman
+   Copyright 2023-2023 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,61 +32,60 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Chant_Burrowspeak extends Chant_SpeakWithAnimals
+public class Otter extends Mustelid
 {
 	@Override
 	public String ID()
 	{
-		return "Chant_Burrowspeak";
+		return "Otter";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Burrowspeak");
+	private final static String localizedStaticName = CMLib.lang().L("Otter");
 
 	@Override
 	public String name()
 	{
-		return localizedName;
+		return localizedStaticName;
 	}
 
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Burrowspeak)");
+	private final String[]	racialAbilityNames			= { "Skill_Swim", "Skill_Longbreath", "Skill_Autoswim", "Skill_Burrow", "Skill_BurrowHide" };
+	private final int[]		racialAbilityLevels			= { 1, 2, 3, 1, 1 };
+	private final int[]		racialAbilityProficiencies	= { 100, 75, 100, 75, 100 };
+	private final boolean[]	racialAbilityQuals			= { false, false, false, false, false };
+	private final String[]	racialAbilityParms			= { "", "", "", "", "" };
 
 	@Override
-	public String displayText()
+	protected String[] racialAbilityNames()
 	{
-		return super.canBeUninvoked ? localizedStaticDisplay : "";
-	}
-
-	@Override
-	protected boolean canSpeakWithThis(final MOB mob)
-	{
-		if(CMLib.flags().isAnimalIntelligence(mob))
-		{
-			final Race R=mob.charStats().getMyRace();
-			if(R.racialCategory().equals("Rodent")
-			||R.racialCategory().equals("Ophidian")
-			||R.racialCategory().equals("Mustelid")
-			||R.racialCategory().equals("Worm"))
-				return true;
-		}
-		return false;
+		return racialAbilityNames;
 	}
 
 	@Override
-	protected String canSpeakWithWhat()
+	protected int[] racialAbilityLevels()
 	{
-		return "speak with burrowing creatures";
+		return racialAbilityLevels;
 	}
 
 	@Override
-	protected String canSpeakWithWhatNoun()
+	protected int[] racialAbilityProficiencies()
 	{
-		return "speech of burrowing creatures";
+		return racialAbilityProficiencies;
 	}
 
 	@Override
-	protected void sayYouAreDone(final MOB mob)
+	protected boolean[] racialAbilityQuals()
 	{
-		if((mob.location()!=null)&&(!mob.amDead()))
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> ability to speak with burrowing creatures has faded."));
+		return racialAbilityQuals;
 	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	protected List<RawMaterial> privateResources() { return resources; }
+
 }
+

@@ -440,7 +440,7 @@ public interface PhyStats extends CMCommon, Modifiable
 		"CANSEEVICTIM",
 		"CANSEEMETAL",
 		"CANNOTTHINK",
-		"CANNOTWORK",
+		"CANNOTTRACK",
 		"CANNOTAUTOATTACK",
 		"CANNOTBECAMPED",
 		"CANSEEITEMSHIDDEN",
@@ -466,9 +466,10 @@ public interface PhyStats extends CMCommon, Modifiable
 		"Can detect victims",
 		"Can detect metal",
 		"Can not concentrate",
-		"Is too busy",
+		"Is off the grid",
 		"Is not auto-attacking",
-		"Can not be camped on"
+		"Can not be camped on",
+		"Can see hidden items"
 	};
 
 	/** Descriptive verbs, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */
@@ -491,9 +492,10 @@ public interface PhyStats extends CMCommon, Modifiable
 		"Allows detect victims",
 		"Allows detect metal",
 		"Befuddles the mind",
-		"Occupies time",
+		"Makes un-trackable",
 		"Prevents auto attacking",
-		"Prevents camping"
+		"Prevents camping",
+		"Allows see hidden items",
 	};
 
 	// sensemask stuff not applicable to mobs

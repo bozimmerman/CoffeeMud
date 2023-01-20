@@ -120,6 +120,7 @@ public class Skill_BurrowHide extends StdSkill
 				final Race mR=M.charStats().getMyRace();
 				if(mR.racialCategory().equals("Rodent")
 				||mR.racialCategory().equals("Worm")
+				||mR.racialCategory().equals("Mustelid")
 				||mR.racialCategory().equals("Ophidian"))
 				{
 					return true;
