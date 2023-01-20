@@ -199,7 +199,10 @@ public class Factions extends StdLibrary implements FactionManager
 	public String makeFactionFilename(final String factionID)
 	{
 		String filename;
-		filename="factions/"+factionID+".ini";
+		if(factionID.endsWith(".ini"))
+			filename="factions/"+factionID;
+		else
+			filename="factions/"+factionID+".ini";
 		if(new CMFile(Resources.makeFileResourceName(filename),null).exists())
 			return filename;
 		filename="factions/"+factionID;
