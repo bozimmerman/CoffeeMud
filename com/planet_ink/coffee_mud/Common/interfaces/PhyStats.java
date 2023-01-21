@@ -619,7 +619,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int IS_UNATTACKABLE=2097152;
 	/** a bit setting, as from disposition(), flagging this object as a custom word for the above */
 	public final static int IS_CUSTOM=4194304;
-	/** a bit setting, as from disposition(), flagging this object as a non-helping follower */
+	/** a bit setting, as from disposition(), flagging this object as a non-helping follower, or non-useful exits */
 	public final static int IS_UNHELPFUL=8388608;
 
 	/** STAT codes, indexed by the 2nd root of the various IS_ disposition() bitmasks */

@@ -62,4 +62,12 @@ public class Impassable extends GenExit
 		}
 		return true;
 	}
+
+	@Override
+	public void recoverPhyStats()
+	{
+		basePhyStats.copyInto(phyStats);
+		eachEffect(affectPhyStats);
+		phyStats.setDisposition(phyStats.disposition() | PhyStats.IS_UNHELPFUL);
+	}
 }
