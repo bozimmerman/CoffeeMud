@@ -271,19 +271,21 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 
 	private void activateDegree(final CMMsg msg)
 	{
+		final boolean proficient = super.proficiencyCheck(msg.source(), 0, false);
 		synchronized(this)
 		{
 			if(this.eligibleC != null)
 			{
-				if(!super.proficiencyCheck(msg.source(), 0, false))
+				if(!proficient)
 					return;
 
 				this.activatedC = this.eligibleC;
-				msg.source().recoverCharStats();
+				// recover below this block
 			}
 			else
 				return;
 		}
+		msg.source().recoverCharStats();
 		final Skill_HonoraryDegreeCommoner me = this;
 		final MOB mob=msg.source();
 		msg.addTrailerRunnable(new Runnable()
@@ -294,8 +296,8 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 				synchronized(me)
 				{
 					me.activatedC = null;
-					mob.recoverCharStats();
 				}
+				mob.recoverCharStats();
 			}
 		});
 	}
@@ -326,8 +328,8 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 					synchronized(this)
 					{
 						this.activatedC = null;
-						mob.recoverCharStats();
 					}
+					mob.recoverCharStats();
 				}
 			}
 		}
