@@ -225,12 +225,13 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 					this.lastTitle="";
 				}
 				final PlayerStats pStats = mob.playerStats();
-				if((pStats!=null)
-				&&(lastTitle != pStats.getActiveTitle()))
+				final String title = (pStats!=null) ? pStats.getActiveTitle() : null;
+				if(title != null)
 				{
+					boolean help=false;
 					synchronized(this)
 					{
-						this.lastTitle=pStats.getActiveTitle();
+						this.lastTitle=title;
 						this.eligibleC = null;
 						if((this.lastTitle!=null)
 						&&(myTitles.contains(this.lastTitle)))
@@ -240,12 +241,14 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 								if(degree[DEG_TITLE].equals(this.lastTitle))
 								{
 									this.eligibleC = CMClass.getCharClass(degree[DEG_CID]);
-									this.helpProficiency(mob,0);
+									help=true;
 									break;
 								}
 							}
 						}
 					}
+					if(help)
+						this.helpProficiency(mob,0);
 				}
 			}
 		}
