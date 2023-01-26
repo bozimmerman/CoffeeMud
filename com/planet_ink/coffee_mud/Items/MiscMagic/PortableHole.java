@@ -30,7 +30,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class PortableHole extends BagOfHolding implements MiscMagic
+public class PortableHole extends BagOfHolding
 {
 	@Override
 	public String ID()

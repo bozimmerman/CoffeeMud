@@ -284,7 +284,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 
 		if(foundRecipe==null)
 		{
-			commonTell(mob,L("You don't know how to make a '@x1'.  Try \"make list\" for a list.",recipeName));
+			commonTell(mob,L("You don't know how to make a '@x1'.  Try \"papermake list\" for a list.",recipeName));
 			return false;
 		}
 
