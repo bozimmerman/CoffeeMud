@@ -266,6 +266,7 @@ public class Skill_TrackCriminal extends StdAbility
 		final boolean success=proficiencyCheck(mob,0,auto);
 		TrackingLibrary.TrackingFlags flags;
 		flags=CMLib.tracking().newFlags()
+			.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 			.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 			.plus(TrackingLibrary.TrackingFlag.NOAIR)
 			.plus(TrackingLibrary.TrackingFlag.NOWATER);

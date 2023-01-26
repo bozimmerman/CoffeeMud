@@ -219,8 +219,10 @@ public class Skill_InterceptShip extends StdSkill
 
 		Room targetR = null;
 		List<Room> trail = null;
-		final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
-														.plus(TrackingFlag.WATERSURFACEORSHOREONLY);
+		final TrackingFlags flags=CMLib.tracking().newFlags()
+									.plus(TrackingFlag.NOAIR)
+									.plus(TrackingFlag.PASSABLE)
+									.plus(TrackingFlag.WATERSURFACEORSHOREONLY);
 		final PhysicalAgent[] targetShipI=new PhysicalAgent[1];
 		final TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
 		{

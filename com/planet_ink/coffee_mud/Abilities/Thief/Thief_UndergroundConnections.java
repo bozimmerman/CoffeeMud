@@ -305,6 +305,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 
 		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 		flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+			 .plus(TrackingLibrary.TrackingFlag.PASSABLE)
 			 .plus(TrackingLibrary.TrackingFlag.NOAIR)
 			 .plus(TrackingLibrary.TrackingFlag.NOWATER);
 		final List<Room> trail=CMLib.tracking().getRadiantRooms(thisRoom,flags,30+(2*getXLEVELLevel(mob)));

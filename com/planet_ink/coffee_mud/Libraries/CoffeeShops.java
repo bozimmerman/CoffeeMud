@@ -1391,6 +1391,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		final String keyNum=key.getKey();
 		final TrackingFlags flags = CMLib.tracking().newFlags();
 		flags.add(TrackingFlag.AREAONLY);
+		flags.add(TrackingFlag.PASSABLE);
 		final List<Room> trail = CMLib.tracking().findTrailToAnyRoom(R, new RFilter()
 		{
 			@Override

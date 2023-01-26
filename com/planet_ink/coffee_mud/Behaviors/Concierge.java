@@ -48,7 +48,7 @@ public class Concierge extends StdBehavior
 	{
 		return Behavior.CAN_ITEMS | Behavior.CAN_MOBS | Behavior.CAN_ROOMS | Behavior.CAN_EXITS | Behavior.CAN_AREAS;
 	}
-	
+
 	protected static enum TrackWords
 	{
 		PORTAL(null,null),
@@ -71,7 +71,7 @@ public class Concierge extends StdBehavior
 		;
 		public TrackingFlag tf;
 		public TrackingFlag rf;
-		private TrackWords(TrackingFlag tf, TrackingFlag rf)
+		private TrackWords(final TrackingFlag tf, final TrackingFlag rf)
 		{
 			this.tf=tf;
 			this.rf=rf;
@@ -89,6 +89,7 @@ public class Concierge extends StdBehavior
 	protected final static TrackingLibrary.TrackingFlags defaultTrackingFlags	= CMLib.tracking().newFlags()
 																				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 																				.plus(TrackingLibrary.TrackingFlag.NOHOMES)
+																				.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 																				.plus(TrackingLibrary.TrackingFlag.NOHIDDENAREAS);
 	protected final static TrackingLibrary.TrackingFlags defaultRoomRadiusFlags	= CMLib.tracking().newFlags();
 
@@ -224,7 +225,7 @@ public class Concierge extends StdBehavior
 					numStr=numStr.substring(1,numStr.length()-1).trim();
 				s=s.substring(0,x).trim().toUpperCase();
 				final boolean isTrue=numStr.toLowerCase().startsWith("t");
-				TrackWords tw = (TrackWords)CMath.s_valueOf(TrackWords.class, s);
+				final TrackWords tw = (TrackWords)CMath.s_valueOf(TrackWords.class, s);
 				if(tw == null)
 				{
 					if(CMath.isNumber(numStr))

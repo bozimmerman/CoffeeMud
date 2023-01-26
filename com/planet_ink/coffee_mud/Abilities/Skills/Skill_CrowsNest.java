@@ -220,7 +220,9 @@ public class Skill_CrowsNest extends StdSkill
 									mob.tell(L("It is too foggy to see anything else."));
 									return;
 								}
-								final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.WATERSURFACEONLY);
+								final TrackingFlags flags=CMLib.tracking().newFlags()
+															.plus(TrackingFlag.PASSABLE)
+															.plus(TrackingFlag.WATERSURFACEONLY);
 								final int maxRadius=1+(selfA.adjustedLevel(mob, 0)/20)+(selfA.getXLEVELLevel(mob)/2)+selfA.getXMAXRANGELevel(mob);
 								final List<Room> Rs=CMLib.tracking().getRadiantRooms(shipR, flags, maxRadius);
 								for(final Room R2 : Rs)

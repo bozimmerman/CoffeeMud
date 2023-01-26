@@ -242,6 +242,7 @@ public class Skill_PrisonAssignment extends StdSkill
 		final Room jailR=CMLib.map().getRoom(text());
 		final TrackingLibrary.TrackingFlags flags=
 			CMLib.tracking().newFlags()
+			.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 			.plus(TrackingLibrary.TrackingFlag.NOAIR)
 			.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 			.plus(TrackingLibrary.TrackingFlag.NOWATER);

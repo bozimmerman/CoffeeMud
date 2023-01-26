@@ -114,6 +114,7 @@ public class Chant_SiftWrecks extends Chant
 				final int radius = (adjustedLevel(mob,asLevel))+(10*super.getXMAXRANGELevel(mob))+super.getXLEVELLevel(mob);
 				final TrackingLibrary.TrackingFlags filters=CMLib.tracking().newFlags()
 						.plus(TrackingLibrary.TrackingFlag.AREAONLY)
+						.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 						.plus(TrackingLibrary.TrackingFlag.UNDERWATERONLY);
 				final List<Room> siftables = CMLib.tracking().getRadiantRooms(mob.location(), filters, radius);
 				final StringBuilder msgStr=new StringBuilder("");

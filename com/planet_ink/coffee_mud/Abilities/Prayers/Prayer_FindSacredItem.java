@@ -100,7 +100,7 @@ public class Prayer_FindSacredItem extends Prayer
 		}
 		return null;
 	}
-	
+
 	public boolean itsHere(final MOB mob, final Room R, final String what, final boolean auto, final String deityName)
 	{
 		final Item I=getHere(mob,R,what,auto);
@@ -116,6 +116,7 @@ public class Prayer_FindSacredItem extends Prayer
 		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR)
+				.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 				.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		return flags;
 	}
@@ -124,6 +125,7 @@ public class Prayer_FindSacredItem extends Prayer
 	{
 		List<Room> rooms=new ArrayList<Room>();
 		TrackingLibrary.TrackingFlags flags = getTrackingFlags();
+		flags.plus(TrackingLibrary.TrackingFlag.PASSABLE);
 		final int range = 5+(adjustedLevel(mob,asLevel)/10)+(1*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mobRoom,flags,range);
 		for (final Room R : checkSet)
@@ -149,7 +151,7 @@ public class Prayer_FindSacredItem extends Prayer
 
 		if((commands.size()==0)&&(text().length()>0))
 			commands.add(text());
-		
+
 		if(commands.size()==0)
 		{
 			mob.tell(L("Find what sacred item?."));
@@ -169,7 +171,7 @@ public class Prayer_FindSacredItem extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		final boolean here=this.itsHere(mob, mob.location(), what, auto,deityName);
-		List<Room> theTrail = this.makeTheTrail(mob, mob.location(), what, asLevel, auto,deityName);
+		final List<Room> theTrail = this.makeTheTrail(mob, mob.location(), what, asLevel, auto,deityName);
 		if((success)&&((theTrail!=null)||(here)))
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),
@@ -186,7 +188,7 @@ public class Prayer_FindSacredItem extends Prayer
 					int direction = CMLib.tracking().trackNextDirectionFromHere(theTrail,R,false);
 					if(direction >=0)
 					{
-						StringBuilder str=new StringBuilder(L("First, thou shalt go "+CMLib.directions().getDirectionName(direction)));
+						final StringBuilder str=new StringBuilder(L("First, thou shalt go "+CMLib.directions().getDirectionName(direction)));
 						R=R.getRoomInDir(direction);
 						while((R!=null)&&(R!=theTrail.get(0)))
 						{

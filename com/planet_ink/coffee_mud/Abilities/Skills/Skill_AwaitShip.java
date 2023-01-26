@@ -124,8 +124,10 @@ public class Skill_AwaitShip extends StdSkill
 		List<Room> trail = null;
 		if(success)
 		{
-			final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
-															.plus(TrackingFlag.WATERSURFACEORSHOREONLY);
+			final TrackingFlags flags=CMLib.tracking().newFlags()
+											.plus(TrackingFlag.NOAIR)
+											.plus(TrackingFlag.PASSABLE)
+											.plus(TrackingFlag.WATERSURFACEORSHOREONLY);
 			final NavigableItem[] targetShipI=new NavigableItem[1];
 			final TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
 			{

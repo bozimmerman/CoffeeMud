@@ -196,6 +196,7 @@ public class Skill_MorseCode extends StdSkill
 					msgCode=CMMsg.MSG_OK_ACTION;
 				final CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,str,msgCode,null);
 				final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
+				flags.plus(TrackingLibrary.TrackingFlag.PASSABLE);
 				if(outDoorsI!=null)
 					flags.add(TrackingFlag.OUTDOORONLY);
 				else

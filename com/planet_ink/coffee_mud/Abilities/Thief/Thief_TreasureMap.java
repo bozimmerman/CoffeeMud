@@ -501,6 +501,7 @@ public class Thief_TreasureMap extends ThiefSkill
 		final int range = 50 + (10*super.getXLEVELLevel(mob));
 		final TrackingFlags flags=CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.AREAONLY)
+				.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
 		final List<Room> rooms=CMLib.tracking().getRadiantRooms(mob.location(), flags, range);
 		final Set<String> mapsDone=new TreeSet<String>();

@@ -203,7 +203,10 @@ public class Chant_Tsunami extends Chant
 		final String fromDir = CMLib.directions().getFromCompassDirectionName(waterDir);
 
 		//targetRooms.add(mobR);
-		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR).plus(TrackingFlag.OPENONLY).plus(TrackingFlag.NOWATER);
+		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags()
+				.plus(TrackingFlag.NOAIR)
+				.plus(TrackingFlag.OPENONLY)
+				.plus(TrackingFlag.NOWATER);
 		targetRooms.addAll(CMLib.tracking().getRadiantRooms(mobR, flags, 2));
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

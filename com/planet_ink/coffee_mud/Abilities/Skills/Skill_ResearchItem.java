@@ -223,6 +223,7 @@ public class Skill_ResearchItem extends StdSkill
 					}
 				}
 				final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
+				flags.plus(TrackingLibrary.TrackingFlag.PASSABLE);
 				final int range=25 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 				checkIter=checkSet.iterator();

@@ -86,6 +86,7 @@ public class Prayer_BirdsEye extends Prayer
 					TrackingLibrary.TrackingFlags flags;
 					flags = CMLib.tracking().newFlags()
 							.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+							.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 							.plus(TrackingLibrary.TrackingFlag.NOAIR);
 					CMLib.tracking().getRadiantRooms(mob.location(),set,flags,null,2,null);
 					final StringBuffer str=new StringBuffer("");

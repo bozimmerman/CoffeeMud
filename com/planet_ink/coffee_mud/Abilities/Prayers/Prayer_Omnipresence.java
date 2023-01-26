@@ -92,6 +92,7 @@ public class Prayer_Omnipresence extends Prayer
 				final Room thatRoom=mob.location();
 				final TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags()
 														.plus(TrackingLibrary.TrackingFlag.NOAIR)
+														.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 														.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 														.plus(TrackingLibrary.TrackingFlag.NOWATER);
 				mob.tell(L("Your mind is filled with visions as your presence expands...."));

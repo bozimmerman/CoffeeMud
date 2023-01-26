@@ -100,6 +100,7 @@ public class CargoLoading extends CommonSkill
 
 	final TrackingLibrary.TrackingFlags rflags = CMLib.tracking().newFlags()
 												.plus(TrackingLibrary.TrackingFlag.NOAIR)
+												.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 												.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 												.plus(TrackingLibrary.TrackingFlag.UNLOCKEDONLY);
 	public boolean canLoadCargoHere(final MOB mob, final Item I, final Room R)

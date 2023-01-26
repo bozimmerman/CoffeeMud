@@ -222,6 +222,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		TrackingLibrary.TrackingFlags flags;
 		flags = CMLib.tracking().newFlags()
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+					.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 					.plus(TrackingLibrary.TrackingFlag.NOAIR);
 		if(openOnly)
 			flags = flags.plus(TrackingLibrary.TrackingFlag.OPENONLY);

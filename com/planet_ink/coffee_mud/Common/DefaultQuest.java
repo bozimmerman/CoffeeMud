@@ -1785,6 +1785,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						{
 							TrackingLibrary.TrackingFlags flags;
 							flags = CMLib.tracking().newFlags()
+									.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 									.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 							useThese=CMLib.tracking().getRadiantRooms(q.room,flags,range);
 						}
@@ -1925,6 +1926,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						{
 							TrackingLibrary.TrackingFlags flags;
 							flags = CMLib.tracking().newFlags()
+									.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 									.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 							useThese=CMLib.tracking().getRadiantRooms(q.room,flags,range);
 						}

@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -131,6 +132,7 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 	protected boolean findWhatImLookingFor(final MOB mob, final String s)
 	{
 		final TrackingLibrary.TrackingFlags flags = getTrackingFlags();
+		flags.add(TrackingFlag.PASSABLE);
 		int limit = 50 - (super.getXLEVELLevel(mob) + super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,limit);
 		if((checkSet == null) || (checkSet.size() < limit))
@@ -190,6 +192,7 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 		}
 
 		final TrackingLibrary.TrackingFlags flags = getTrackingFlags();
+		flags.plus(TrackingLibrary.TrackingFlag.PASSABLE);
 		final List<Room> rooms=new XVector<Room>(theDriftroom);
 		final int limit = 50 - (super.getXLEVELLevel(mob));
 		if(rooms.size()>0)
@@ -219,7 +222,9 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 	protected TrackingLibrary.TrackingFlags getTrackingFlags()
 	{
 		TrackingLibrary.TrackingFlags flags;
-		flags = CMLib.tracking().newFlags().plus(TrackingLibrary.TrackingFlag.WATERSURFACEONLY);
+		flags = CMLib.tracking().newFlags()
+				.plus(TrackingLibrary.TrackingFlag.PASSABLE)
+				.plus(TrackingLibrary.TrackingFlag.WATERSURFACEONLY);
 		return flags;
 	}
 

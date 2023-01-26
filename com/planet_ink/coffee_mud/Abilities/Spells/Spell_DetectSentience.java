@@ -92,6 +92,7 @@ public class Spell_DetectSentience extends Spell
 				lines.append(CMStrings.padRight(L("Location"),17)+"^.^N\n\r");
 				TrackingLibrary.TrackingFlags flags;
 				flags = CMLib.tracking().newFlags()
+						.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,35+this.getXMAXRANGELevel(mob));
 				if(!checkSet.contains(mob.location()))

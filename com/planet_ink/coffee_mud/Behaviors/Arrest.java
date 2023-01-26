@@ -1438,6 +1438,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				flags = CMLib.tracking().newFlags()
 						.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 						.plus(TrackingLibrary.TrackingFlag.NOAIR)
+						.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 						.plus(TrackingLibrary.TrackingFlag.NOHOMES);
 				radiusRooms = CMLib.tracking().getRadiantRooms(mobR, (TrackingFlags)null, range);
 			}

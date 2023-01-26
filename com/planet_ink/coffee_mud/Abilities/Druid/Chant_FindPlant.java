@@ -221,6 +221,7 @@ public class Chant_FindPlant extends Chant
 		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR)
+				.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 				.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		return flags;
 	}
@@ -236,6 +237,7 @@ public class Chant_FindPlant extends Chant
 	{
 		final ArrayList<Room> rooms=new ArrayList<Room>();
 		TrackingLibrary.TrackingFlags flags = getTrackingFlags();
+		flags.plus(TrackingLibrary.TrackingFlag.PASSABLE);
 		final int range = 50+(2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mobRoom,flags,range);
 		for (final Room R : checkSet)

@@ -152,6 +152,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR)
+				.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 				.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		return flags;
 	}

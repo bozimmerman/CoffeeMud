@@ -358,6 +358,7 @@ public class Skill_AbandonShip extends StdSkill
 						}
 						final TrackingLibrary.TrackingFlags rflags = CMLib.tracking().newFlags()
 								.plus(TrackingLibrary.TrackingFlag.NOAIR)
+								.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 								.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 								.plus(TrackingLibrary.TrackingFlag.WATERSURFACEORSHOREONLY);
 						final List<Room> sailingRooms = CMLib.tracking().getRadiantRooms(myShipRoom, rflags, maxPaddle);

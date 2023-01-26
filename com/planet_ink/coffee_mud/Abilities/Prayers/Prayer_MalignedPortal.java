@@ -309,6 +309,7 @@ public class Prayer_MalignedPortal extends Prayer
 			if(zoneRooms.size()==0)
 			{
 				final TrackingLibrary.TrackingFlags rflags = CMLib.tracking().newFlags()
+						.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 				zoneRooms.addAll(CMLib.tracking().getRadiantRooms(newRoom, rflags,
 																	10+

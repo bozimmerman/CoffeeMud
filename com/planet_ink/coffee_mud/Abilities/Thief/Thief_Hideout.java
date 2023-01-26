@@ -196,6 +196,7 @@ public class Thief_Hideout extends ThiefSkill
 		}
 		TrackingLibrary.TrackingFlags flags;
 		flags = CMLib.tracking().newFlags()
+				.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR);
 		final List<Room> nearbyRooms=CMLib.tracking().getRadiantRooms(thisRoom, flags, 2);

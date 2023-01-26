@@ -264,6 +264,7 @@ public class Skill_TrackFriend extends StdAbility
 
 		TrackingLibrary.TrackingFlags flags;
 		flags=CMLib.tracking().newFlags()
+			.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 			.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 			.plus(TrackingLibrary.TrackingFlag.NOAIR)
 			.plus(TrackingLibrary.TrackingFlag.NOWATER);

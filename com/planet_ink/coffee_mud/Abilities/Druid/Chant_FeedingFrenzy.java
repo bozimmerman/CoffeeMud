@@ -144,6 +144,7 @@ public class Chant_FeedingFrenzy extends Chant
 
 	final TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags()
 			.plus(TrackingLibrary.TrackingFlag.AREAONLY)
+			.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 			.plus(TrackingLibrary.TrackingFlag.UNDERWATERONLY);
 
 	@Override

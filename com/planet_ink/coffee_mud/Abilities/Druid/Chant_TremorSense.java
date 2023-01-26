@@ -195,6 +195,7 @@ public class Chant_TremorSense extends Chant
 				TrackingLibrary.TrackingFlags flags;
 				flags = CMLib.tracking().newFlags()
 						.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+						.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 						.plus(TrackingLibrary.TrackingFlag.NOAIR)
 						.plus(TrackingLibrary.TrackingFlag.NOWATER);
 				final int range=5 +(super.getXMAXRANGELevel(mob)/2);

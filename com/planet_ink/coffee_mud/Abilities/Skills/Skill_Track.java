@@ -427,6 +427,7 @@ public class Skill_Track extends StdSkill
 		tickStatus=Tickable.STATUS_MISC6+3;
 		int radius=50 + (10*(super.getXMAXRANGELevel(mob)+super.getXLEVELLevel(mob)));
 		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
+		flags.plus(TrackingLibrary.TrackingFlag.PASSABLE);
 		if(commands != null)
 		{
 			while(commands.size()>1)

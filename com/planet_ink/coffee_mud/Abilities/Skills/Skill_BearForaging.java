@@ -405,6 +405,7 @@ public class Skill_BearForaging extends StdAbility
 		TrackingLibrary.TrackingFlags flags;
 		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+				.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR);
 		final int range=3 + (adjustedLevel(mob,asLevel)/15) + (super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);

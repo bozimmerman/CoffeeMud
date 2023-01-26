@@ -186,6 +186,7 @@ public class Prayer_HuntEvil extends Prayer
 
 		final ArrayList<Room> rooms=new ArrayList<Room>();
 		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
+		flags.plus(TrackingLibrary.TrackingFlag.PASSABLE);
 		final int range=50 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 		for (final Room R : checkSet)

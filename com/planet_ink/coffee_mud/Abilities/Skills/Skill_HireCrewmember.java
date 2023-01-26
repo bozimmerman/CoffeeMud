@@ -590,6 +590,7 @@ public class Skill_HireCrewmember extends StdSkill
 				return false;
 			}
 			final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
+			flags.plus(TrackingLibrary.TrackingFlag.PASSABLE);
 			final int roomRange = baseWaterRange + super.getXLEVELLevel(mob)+super.getXMAXRANGELevel(mob);
 			final List<Room> nearby=CMLib.tracking().findTrailToAnyRoom(R, TrackingFlag.WATERSURFACEONLY.myFilter, flags, roomRange);
 			if((nearby==null)||(nearby.size()==0))

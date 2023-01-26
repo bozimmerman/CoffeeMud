@@ -400,6 +400,7 @@ public class Patroller extends ActiveTicker
 					if((direction<0)||(thatRoom==null))
 					{
 						final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
+						flags.plus(TrackingLibrary.TrackingFlag.PASSABLE);
 						if(ticking instanceof Item)
 							flags.plus(TrackingLibrary.TrackingFlag.OPENONLY);
 						flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);

@@ -166,6 +166,7 @@ public class Skill_SeaNavigation extends StdSkill
 			}
 			chartPointIndex--;
 			final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
+															.plus(TrackingFlag.PASSABLE)
 															.plus(TrackingFlag.WATERSURFACEORSHOREONLY);
 			targetR=CMLib.map().getRoom(rooms.get(chartPointIndex));
 			if(targetR!=null)
@@ -174,7 +175,9 @@ public class Skill_SeaNavigation extends StdSkill
 		else
 		if(fullNav)
 		{
-			final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
+			final TrackingFlags flags=CMLib.tracking().newFlags()
+					.plus(TrackingFlag.NOAIR)
+					.plus(TrackingFlag.PASSABLE)
 					.plus(TrackingFlag.NOHOMES);
 			final TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
 			{

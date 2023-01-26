@@ -189,6 +189,7 @@ public class Chant_LocatePlants extends Chant
 		TrackingLibrary.TrackingFlags flags;
 		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOAIR)
+				.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 				.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		final ArrayList<Room> rooms=new ArrayList<Room>();
 		final int range=50 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));

@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlags;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -195,6 +196,7 @@ public class Thief_PetSpy extends ThiefSkill
 			{
 				final String roomName=CMParms.combine(commands,0).trim();
 				final TrackingFlags flags=CMLib.tracking().newFlags();
+				flags.add(TrackingFlag.PASSABLE);
 				final List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, range);
 				Room R2=(Room)CMLib.english().fetchEnvironmental(rooms,roomName,true);
 				if(R2 == null)

@@ -91,6 +91,7 @@ public class Chant_SenseSentience extends Chant
 				lines.append(CMStrings.padRight(L("Location"),17)+"^.^N\n\r");
 				TrackingLibrary.TrackingFlags flags;
 				flags = CMLib.tracking().newFlags()
+						.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 				final int range=50 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);

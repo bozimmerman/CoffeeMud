@@ -203,6 +203,7 @@ public class Publishing extends CommonSkill
 					final PairList<ShopKeeper,Room> shops=new PairVector<ShopKeeper,Room>();
 					final TrackingLibrary.TrackingFlags flags;
 					flags = CMLib.tracking().newFlags()
+							.plus(TrackingLibrary.TrackingFlag.PASSABLE)
 							.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 							.plus(TrackingLibrary.TrackingFlag.NOHIDDENAREAS)
 							.plus(TrackingLibrary.TrackingFlag.NOHOMES);

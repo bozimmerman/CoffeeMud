@@ -297,7 +297,9 @@ public class Skill_SeaCharting extends StdSkill
 					}
 
 					final List<Room> destRooms=new XVector<Room>(room);
-					final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.WATERSURFACEONLY);
+					final TrackingFlags flags=CMLib.tracking().newFlags()
+												.plus(TrackingFlag.PASSABLE)
+												.plus(TrackingFlag.WATERSURFACEONLY);
 					final List<Room> trail=CMLib.tracking().findTrailToAnyRoom(currentR, destRooms, flags, 100);
 					if((trail.size()==0)
 					||(trail.get(trail.size()-1)!=currentR)

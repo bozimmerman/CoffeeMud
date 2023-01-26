@@ -195,6 +195,7 @@ public class Thief_PubContacts extends ThiefSkill
 						}
 					}
 					final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
+					flags.plus(TrackingLibrary.TrackingFlag.PASSABLE);
 					final int range = baseWaterRange + super.getXLEVELLevel(mob)+super.getXMAXRANGELevel(mob);
 					final List<Room> nearby=CMLib.tracking().findTrailToAnyRoom(R, TrackingFlag.WATERSURFACEONLY.myFilter, flags, range);
 					Room shore=null;
@@ -368,6 +369,7 @@ public class Thief_PubContacts extends ThiefSkill
 				return false;
 			}
 			final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
+			flags.plus(TrackingLibrary.TrackingFlag.PASSABLE);
 			final int range = baseWaterRange + super.getXLEVELLevel(mob)+super.getXMAXRANGELevel(mob);
 			final List<Room> nearby=CMLib.tracking().findTrailToAnyRoom(R, TrackingFlag.WATERSURFACEONLY.myFilter, flags, range);
 			if((nearby==null)||(nearby.size()==0))
