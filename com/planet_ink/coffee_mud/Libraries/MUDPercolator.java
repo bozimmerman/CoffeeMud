@@ -6513,6 +6513,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				@SuppressWarnings("unchecked")
 				final List<Object> l=(List<Object>)lhso;
+				if((rhso instanceof String)
+				&&(l.size()==0))
+					return doMQLComparison("", comp, rhso, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
 				boolean allIn=true;
 				for(final Object o1 : l)
 					allIn = allIn && doMQLComparison(o1, comp, rhso, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
@@ -6858,7 +6861,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		return results;
 	}
-
 
 	protected List<Map<String,Object>> doSubObjSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix,
 													  final MQLClause clause, final String mql, final XMLTag piece, final Map<String,Object> defined)

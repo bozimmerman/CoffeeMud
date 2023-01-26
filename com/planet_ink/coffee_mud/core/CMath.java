@@ -424,7 +424,7 @@ public class CMath
 	 * and that the return is precisely double.
 	 * @param a the first number
 	 * @param b the second number
-	 * @return the retult of multiplying a and b
+	 * @return the result of multiplying a and b
 	 */
 	public final static double mul(final double a, final double b)
 	{
@@ -436,7 +436,7 @@ public class CMath
 	 * and that the return is precisely double.
 	 * @param a the first number
 	 * @param b the second number
-	 * @return the retult of multiplying a and b
+	 * @return the result of multiplying a and b
 	 */
 	public final static double mul(final double a, final int b)
 	{
@@ -448,7 +448,7 @@ public class CMath
 	 * and that the return is precisely double.
 	 * @param a the first number
 	 * @param b the second number
-	 * @return the retult of multiplying a and b
+	 * @return the result of multiplying a and b
 	 */
 	public final static double mul(final int a, final double b)
 	{
@@ -460,7 +460,7 @@ public class CMath
 	 * and that the return is precisely double.
 	 * @param a the first number
 	 * @param b the second number
-	 * @return the retult of multiplying a and b
+	 * @return the result of multiplying a and b
 	 */
 	public final static double mul(final double a, final long b)
 	{
@@ -468,11 +468,59 @@ public class CMath
 	}
 
 	/**
+	 * Returns the smaller of the two numbers that is
+	 * greater than or equal to 0.
+	 * @param a the first number
+	 * @param b the second number
+	 * @return the smaller of the two
+	 */
+	public final static long posMin(final long a, final long b)
+	{
+		if(a<0)
+			return b;
+		if(b<0)
+			return a;
+		return Math.min(a,b);
+	}
+
+	/**
+	 * Returns the smaller of the two numbers that is
+	 * greater than or equal to 0.
+	 * @param a the first number
+	 * @param b the second number
+	 * @return the smaller of the two
+	 */
+	public final static int posMin(final int a, final int b)
+	{
+		if(a<0)
+			return b;
+		if(b<0)
+			return a;
+		return Math.min(a,b);
+	}
+
+	/**
+	 * Returns the smaller of the two numbers that is
+	 * greater than or equal to 0.
+	 * @param a the first number
+	 * @param b the second number
+	 * @return the smaller of the two
+	 */
+	public final static double posMin(final double a, final double b)
+	{
+		if(a<0)
+			return b;
+		if(b<0)
+			return a;
+		return Math.min(a,b);
+	}
+
+	/**
 	 * Multiply a and b, making sure both are cast to doubles
 	 * and that the return is precisely double.
 	 * @param a the first number
 	 * @param b the second number
-	 * @return the retult of multiplying a and b
+	 * @return the result of multiplying a and b
 	 */
 	public final static double mul(final long a, final double b)
 	{
@@ -484,7 +532,7 @@ public class CMath
 	 * and that the return is precisely double.
 	 * @param a the first number
 	 * @param b the second number
-	 * @return the retult of multiplying a and b
+	 * @return the result of multiplying a and b
 	 */
 	public final static long mul(final long a, final long b)
 	{
@@ -496,7 +544,7 @@ public class CMath
 	 * and that the return is precisely double.
 	 * @param a the first number
 	 * @param b the second number
-	 * @return the retult of multiplying a and b
+	 * @return the result of multiplying a and b
 	 */
 	public final static int mul(final int a, final int b)
 	{

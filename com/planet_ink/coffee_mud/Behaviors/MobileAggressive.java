@@ -88,7 +88,23 @@ public class MobileAggressive extends Mobile
 		mobkill=V.contains("MOBKILL");
 		noGangUp=V.contains("NOGANG")||V.contains("NOGANGUP");
 		misbehave=V.contains("MISBEHAVE");
-		this.mask=CMLib.masking().getPreCompiledMask(newParms);
+		for(final Iterator<String> i=V.iterator();i.hasNext();)
+		{
+			final String s=i.next();
+			if(!(s.startsWith("+")||s.startsWith("-")))
+				i.remove();
+			else
+			if(s.equals("-ALL")||(s.equals("+ALL")))
+				i.remove();
+			else
+			{
+				final String ss=s.substring(1);
+				final String fKey = getLocaleMap().ceilingKey(ss);
+				if((fKey != null) && (fKey.startsWith(ss)))
+					i.remove();
+			}
+		}
+		this.mask=CMLib.masking().getPreCompiledMask(CMParms.combineQuoted(V,0).trim());
 	}
 
 	@Override

@@ -96,7 +96,13 @@ public class Aggressive extends StdBehavior
 		noGangUp=V.contains("NOGANG")||V.contains("NOGANGUP");
 		misbehave=V.contains("MISBEHAVE");
 		tickDown=tickWait;
-		this.mask=CMLib.masking().getPreCompiledMask(newParms);
+		for(final Iterator<String> i=V.iterator();i.hasNext();)
+		{
+			final String s=i.next();
+			if(!(s.startsWith("+")||s.startsWith("-")))
+				i.remove();
+		}
+		this.mask=CMLib.masking().getPreCompiledMask(CMParms.combineQuoted(V,0).trim());
 	}
 
 	public static boolean startFight(final MOB monster, final MOB mob, final boolean fightMOBs, final boolean misBehave, final String attackMsg)

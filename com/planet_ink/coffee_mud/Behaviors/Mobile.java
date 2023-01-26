@@ -63,6 +63,8 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 	protected int					tickStatus			= Tickable.STATUS_NOT;
 	protected int					ticksSuspended		= 0;
 
+	protected final static TreeMap<String,Integer> localeMap = new TreeMap<String,Integer>();
+
 	@Override
 	public String accountForYourself()
 	{
@@ -129,6 +131,20 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		return !restrictedLocales.contains(Integer.valueOf(newRoom.domainType()));
 	}
 
+	protected static final TreeMap<String,Integer> getLocaleMap()
+	{
+		if(Mobile.localeMap.size()==0)
+		{
+			final TreeMap<String,Integer> localeMap = new TreeMap<String,Integer>();
+			for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
+				localeMap.put(Room.DOMAIN_INDOORS_DESCS[i].toUpperCase(), Integer.valueOf(Room.INDOORS+i));
+			for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
+				localeMap.put(Room.DOMAIN_OUTDOOR_DESCS[i].toUpperCase(), Integer.valueOf(i));
+			Mobile.localeMap.putAll(localeMap);
+		}
+		return Mobile.localeMap;
+	}
+
 	@Override
 	public void setParms(final String newParms)
 	{
@@ -160,10 +176,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 				if(s.equalsIgnoreCase("-ALL"))
 				{
 					restrictedLocales.clear();
-					for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
-						restrictedLocales.add(Integer.valueOf(Room.INDOORS+i));
-					for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
-						restrictedLocales.add(Integer.valueOf(i));
+					restrictedLocales.addAll(getLocaleMap().values());
 				}
 				else
 				{

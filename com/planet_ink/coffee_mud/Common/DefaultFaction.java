@@ -110,8 +110,8 @@ public class DefaultFaction implements Faction, MsgListener
 	protected boolean    isInherited		= true;
 	protected boolean    destroyed			= false;
 
-	protected CList<String>   					defaults		 = new SVector<String>();
-	protected CList<String>   					autoDefaults	 = new SVector<String>();
+	protected CList<Pair<Integer,String>>		defaults		 = new SVector<Pair<Integer,String>>();
+	protected CList<Pair<Integer,String>>		autoDefaults	 = new SVector<Pair<Integer,String>>();
 	protected CMap<String,FRange> 				ranges			 = new SHashtable<String,FRange>();
 	protected Map<Integer,FRange> 				rangeRangeMap	 = new PrioritizingLimitedMap<Integer,FRange>(10,60000,600000,100);
 	protected CMap<String,String[]>   			affBehavs		 = new SHashtable<String,String[]>();
@@ -125,7 +125,7 @@ public class DefaultFaction implements Faction, MsgListener
 	protected CList<Faction.FAbilityUsage>		abilityUsages	 = new SVector<Faction.FAbilityUsage>();
 	protected Map<String,Faction.FAbilityUsage> abilityUseCache	 = new STreeMap<String,Faction.FAbilityUsage>();
 	protected Set<String> 						abilityUseMisses = new STreeSet<String>();
-	protected CList<String>   					choices			 = new SVector<String>();
+	protected CList<Pair<Integer,String>>		choices			 = new SVector<Pair<Integer,String>>();
 	protected CList<Faction.FReactionItem>		reactions		 = new SVector<Faction.FReactionItem>();
 	protected CMap<String,CList<FReactionItem>>	reactionHash	 = new SHashtable<String,CList<Faction.FReactionItem>>();
 
@@ -265,13 +265,13 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public Enumeration<String> defaults()
+	public Enumeration<Pair<Integer,String>> defaults()
 	{
 		return defaults.elements();
 	}
 
 	@Override
-	public Enumeration<String> autoDefaults()
+	public Enumeration<Pair<Integer,String>> autoDefaults()
 	{
 		return autoDefaults.elements();
 	}
@@ -307,7 +307,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public Enumeration<String> choices()
+	public Enumeration<Pair<Integer,String>> choices()
 	{
 		return choices.elements();
 	}
@@ -390,22 +390,47 @@ public class DefaultFaction implements Faction, MsgListener
 		showInFacCommand = truefalse;
 	}
 
+	protected CList<Pair<Integer,String>> parseChoifaults(final List<String> V)
+	{
+		final SVector<Pair<Integer,String>> fV = new SVector<Pair<Integer,String>>();
+		for(final String v : V)
+		{
+			String numStr = "";
+			final List<String> pV = CMParms.parse(v);
+			for(final String p : pV)
+			{
+				if(CMath.isInteger(p))
+				{
+					numStr=p;
+					break;
+				}
+			}
+			if(numStr.length()==0)
+				continue;
+			final int x=v.indexOf(numStr);
+			final String mask = v.substring(0,x)+v.substring(x+numStr.length());
+			final Pair<Integer,String> P = new Pair<Integer,String>(Integer.valueOf(CMath.s_int(numStr)),mask.trim());
+			fV.add(P);
+		}
+		return fV;
+	}
+
 	@Override
 	public void setChoices(final List<String> v)
 	{
-		choices = new SVector<String>(v);
+		choices = parseChoifaults(v);
 	}
 
 	@Override
 	public void setAutoDefaults(final List<String> v)
 	{
-		autoDefaults = new SVector<String>(v);
+		autoDefaults = parseChoifaults(v);
 	}
 
 	@Override
 	public void setDefaults(final List<String> v)
 	{
-		defaults = new SVector<String>(v);
+		defaults = parseChoifaults(v);
 	}
 
 	@Override
@@ -496,7 +521,7 @@ public class DefaultFaction implements Faction, MsgListener
 		difference=CMath.abs(maximum-minimum);
 		experienceFlag="EXTREME";
 		addRange("0;100;Sample Range;SAMPLE;");
-		defaults.add("0");
+		defaults.add(new Pair<Integer,String>(Integer.valueOf(0),""));
 	}
 
 	@Override
@@ -547,9 +572,9 @@ public class DefaultFaction implements Faction, MsgListener
 			isInherited=true;
 		else
 			isInherited=facProps.getBoolean("INHERITED");
-		defaults=new SVector<String>(CMParms.parseSemicolons(facProps.getStr("DEFAULT"),true));
-		autoDefaults =new SVector<String>(CMParms.parseSemicolons(facProps.getStr("AUTODEFAULTS"),true));
-		choices =new SVector<String>(CMParms.parseSemicolons(facProps.getStr("AUTOCHOICES"),true));
+		defaults=parseChoifaults(CMParms.parseSemicolons(facProps.getStr("DEFAULT"),true));
+		autoDefaults =parseChoifaults(CMParms.parseSemicolons(facProps.getStr("AUTODEFAULTS"),true));
+		choices =parseChoifaults(CMParms.parseSemicolons(facProps.getStr("AUTOCHOICES"),true));
 		useLightReactions=facProps.getBoolean("USELIGHTREACTIONS");
 		ranges=new SHashtable<String,FRange>();
 		changes=new SHashtable<String,FactionChangeEvent[]>();
@@ -907,22 +932,12 @@ public class DefaultFaction implements Faction, MsgListener
 	public List<Integer> findChoices(final MOB mob)
 	{
 		final List<Integer> mine=new Vector<Integer>();
-		String s;
-		for(final Enumeration<String> e=choices.elements();e.hasMoreElements();)
+		Pair<Integer,String> s;
+		for(final Enumeration<Pair<Integer,String>> e=choices.elements();e.hasMoreElements();)
 		{
 			s=e.nextElement();
-			if(CMath.isInteger(s))
-				mine.add(Integer.valueOf(CMath.s_int(s)));
-			else
-			if(CMLib.masking().maskCheck(s, mob,false))
-			{
-				final List<String> V=CMParms.parse(s);
-				for(int j=0;j<V.size();j++)
-				{
-					if(CMath.isInteger(V.get(j)))
-						mine.add(Integer.valueOf(CMath.s_int(V.get(j))));
-				}
-			}
+			if(CMLib.masking().maskCheck(s.second, mob,false))
+				mine.add(s.first);
 		}
 		return mine;
 	}
@@ -1148,22 +1163,12 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public int findDefault(final MOB mob)
 	{
-		String s;
-		for(final Enumeration<String> e=defaults.elements();e.hasMoreElements();)
+		Pair<Integer,String> s;
+		for(final Enumeration<Pair<Integer,String>> e=defaults.elements();e.hasMoreElements();)
 		{
 			s=e.nextElement();
-			if(CMath.isNumber(s))
-				return CMath.s_int(s);
-			else
-			if(CMLib.masking().maskCheck(s, mob,false))
-			{
-				final Vector<String> V=CMParms.parse(s);
-				for(int j=0;j<V.size();j++)
-				{
-					if(CMath.isNumber(V.elementAt(j)))
-						return CMath.s_int(V.elementAt(j));
-				}
-			}
+			if(CMLib.masking().maskCheck(s.second, mob,false))
+				return s.first.intValue();
 		}
 		return 0;
 	}
@@ -1171,22 +1176,14 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public int findAutoDefault(final MOB mob)
 	{
-		String s;
-		for(final Enumeration<String> e=autoDefaults.elements();e.hasMoreElements();)
+		Pair<Integer,String> p;
+		for(final Enumeration<Pair<Integer,String>> e=autoDefaults.elements();e.hasMoreElements();)
 		{
-			s=e.nextElement();
-			if(CMath.isNumber(s))
-				return CMath.s_int(s);
-			else
-			if(CMLib.masking().maskCheck(s, mob,false))
-			{
-				final Vector<String> V=CMParms.parse(s);
-				for(int j=0;j<V.size();j++)
-				{
-					if(CMath.isNumber(V.elementAt(j)))
-						return CMath.s_int(V.elementAt(j));
-				}
-			}
+			p=e.nextElement();
+			if(p.second.length()==0)
+				return p.first.intValue();
+			if(CMLib.masking().maskCheck(p.second, mob,false))
+				return p.first.intValue();
 		}
 		return Integer.MAX_VALUE;
 	}

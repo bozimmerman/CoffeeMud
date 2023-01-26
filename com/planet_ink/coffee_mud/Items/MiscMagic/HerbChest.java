@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -44,15 +45,15 @@ public class HerbChest extends BagOfHolding
 		setName("a small chest");
 		setDisplayText("a small chest with many tiny drawers stands here.");
 		setDescription("The most common magical item in the world, this carefully crafted chest is designed to help alchemists of the world carry their herbal supplies with them everywhere.");
-		secretIdentity="An Alchemist's Herb Chest";
+		secretIdentity = "An Alchemist's Herb Chest";
 		setContainTypes(RawMaterial.RESOURCE_HERBS);
-		capacity=500;
-		baseGoldValue=0;
-		material=RawMaterial.RESOURCE_REDWOOD;
-		final Ability A=CMClass.getAbility("Prop_HaveZapper");
-		if(A!=null)
+		capacity = 500;
+		baseGoldValue = 0;
+		material = RawMaterial.RESOURCE_REDWOOD;
+		final Ability A = CMClass.getAbility("Prop_HaveZapper");
+		if (A != null)
 		{
-			A.setMiscText("+SYSOP -MOB -anyclass +alchemist");
+			A.setMiscText("+SYSOP -MOB -skills +alchemy");
 			addNonUninvokableEffect(A);
 		}
 	}

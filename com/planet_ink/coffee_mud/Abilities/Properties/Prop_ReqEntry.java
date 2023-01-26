@@ -80,38 +80,31 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect, Deity.De
 		mask=null;
 		maskS=txt;
 		message="";
-		final Vector<String> parms=CMParms.parse(txt);
+		final Vector<String> parms=CMParms.parse(txt.toUpperCase());
 		String s;
+		final List<String> maskV = new ArrayList<String>();
 		for(final Enumeration<String> p=parms.elements();p.hasMoreElements();)
 		{
 			s=p.nextElement();
-			if("NOFOLLOW".startsWith(s.toUpperCase()))
-			{
-				maskS=CMStrings.replaceFirst(maskS, s, "");
+			if("NOFOLLOW".startsWith(s))
 				noFollow=true;
-			}
 			else
-			if(s.toUpperCase().startsWith("NOSNEAK"))
-			{
-				maskS=CMStrings.replaceFirst(maskS, s, "");
+			if(s.startsWith("NOSNEAK"))
 				noSneak=true;
-			}
 			else
-			if(s.toUpperCase().startsWith("ACTUAL"))
-			{
-				maskS=CMStrings.replaceFirst(maskS, s, "");
+			if(s.startsWith("ACTUAL"))
 				actual=true;
-			}
 			else
 			if((s.toUpperCase().startsWith("MESSAGE"))
 			&&(s.substring(7).trim().startsWith("=")))
-			{
 				message=s.substring(7).trim().substring(1);
-				maskS=CMStrings.replaceFirst(maskS, s, "");
-			}
+			else
+			if(s.startsWith("+")||s.startsWith("-"))
+				maskV.add(s);
 		}
-		if(maskS.trim().length()>0)
-			mask=CMLib.masking().getPreCompiledMask(maskS.trim());
+		maskS=CMParms.combineQuoted(maskV,0).trim();
+		if(maskS.length()>0)
+			mask=CMLib.masking().getPreCompiledMask(maskS);
 		super.setMiscText(txt);
 	}
 

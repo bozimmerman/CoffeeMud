@@ -340,7 +340,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 	 * @return the default faction mask/value list
 	 */
-	public Enumeration<String> defaults();
+	public Enumeration<Pair<Integer,String>> defaults();
 
 	/**
 	 * Returns the default faction value that applies to the given mob.
@@ -377,7 +377,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setAutoDefaults(List)
 	 * @return the automatic default faction mask/value list
 	 */
-	public Enumeration<String> autoDefaults();
+	public Enumeration<Pair<Integer,String>> autoDefaults();
 
 	/**
 	 * Returns the automatic default faction value that applies to the
@@ -426,7 +426,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setChoices(List)
 	 * @return the choosable faction mask/value list
 	 */
-	public Enumeration<String> choices();
+	public Enumeration<Pair<Integer,String>> choices();
 
 	/**
 	 * Returns a vector of Integer objects representing the choosable

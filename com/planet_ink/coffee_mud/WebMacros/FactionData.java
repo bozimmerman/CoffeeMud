@@ -232,7 +232,7 @@ public class FactionData extends StdWebMacro
 				|| parms.containsKey("PLAYERCHOICES"))
 				{
 					String prefix="";
-					Enumeration<String> Fset=null;
+					Enumeration<Pair<Integer,String>> Fset=null;
 					if(parms.containsKey("AUTOVALUES"))
 					{
 						prefix="AUTOVALUE";
@@ -258,28 +258,9 @@ public class FactionData extends StdWebMacro
 					{
 						for(;Fset.hasMoreElements();)
 						{
-							String def=Fset.nextElement();
-							int lastSp=0;
-							int spDex=def.indexOf(' ',lastSp+1);
-							int finalValue=-1;
-							while(spDex>0)
-							{
-								if(CMath.isInteger(def.substring(lastSp,spDex).trim()))
-								{
-									finalValue=CMath.s_int(def.substring(lastSp,spDex).trim());
-									def=def.substring(0,lastSp)+def.substring(spDex);
-									break;
-								}
-								lastSp=spDex;
-								spDex=def.indexOf(' ',lastSp+1);
-							}
-							if((finalValue<0)&&CMath.isInteger(def.substring(lastSp).trim()))
-							{
-								finalValue=CMath.s_int(def.substring(lastSp).trim());
-								def=def.substring(0,lastSp);
-							}
-							httpReq.addFakeUrlParameter(prefix+v,""+finalValue);
-							httpReq.addFakeUrlParameter(prefix+"MASK"+v,def);
+							final Pair<Integer,String> def=Fset.nextElement();
+							httpReq.addFakeUrlParameter(prefix+v,def.first.toString());
+							httpReq.addFakeUrlParameter(prefix+"MASK"+v,def.second);
 							v++;
 						}
 
