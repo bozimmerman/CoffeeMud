@@ -2523,9 +2523,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						final Environmental toWhat;
 						if(fromWhat instanceof RawMaterial)
 						{
-							toWhat=CMLib.materials().splitBundle((Item)fromWhat,maxToGive,null);
-							if(toWhat != null)
-								maxToGive = 1;
+							if(((RawMaterial) fromWhat).phyStats().weight()>=maxToGive)
+							{
+								toWhat=CMLib.materials().splitBundle((Item)fromWhat,maxToGive,null);
+								if(toWhat != null)
+									maxToGive = 1;
+							}
+							else
+								toWhat=fromWhat;
 						}
 						else
 							toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGive,null);
