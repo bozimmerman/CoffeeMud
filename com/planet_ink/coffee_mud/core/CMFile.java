@@ -1904,6 +1904,8 @@ public class CMFile extends File
 		if((!dir.exists())||(!dir.isDirectory())||(!dir.canRead()))
 			return null;
 		final List<CMFile> set=new ArrayList<CMFile>();
+if(dir.getVFSPathAndName().equals("resources/blah"))
+	System.out.println("dir:"+dir.getVFSPathAndName());
 		CMFile[] cset=dir.listFiles();
 		fixedName=fixedName.toUpperCase();
 		final boolean skipDirsSet = (skipDirs != null) && (skipDirs.size()>0);
@@ -1911,7 +1913,8 @@ public class CMFile extends File
 		{
 			if((recurse)
 			&&(element.isDirectory())
-			&&(element.canRead()))
+			&&(element.canRead())
+			&&(element.getName().length()>0))
 			{
 				if((skipDirsSet)
 				&&(skipDirs != null)
