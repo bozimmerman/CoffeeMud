@@ -687,7 +687,7 @@ mt	TICKLE <T-NAME>	You tickle <T-NAME> mercilessly.	<S-NAME> tickles <T-NAME> me
 ot	TICKLE SELF	You tickle yourself, how funny!	<S-NAME> tickles <S-HIM-HERSELF>.	<S-NAME> tickles <S-HIM-HERSELF>.				
 mo	TIE	You toy with a pair of handcuffs suggestively.	<S-NAME> toys suggestively with a pair of handcuffs.					
 ov	TIE <T-NAME>	You grab <T-NAMESELF> and tie <T-HIM-HER> to the bedposts.	<S-NAME> grabs <T-NAMESELF> and ties <T-HIM-HER> to a four poster bed.	<S-NAME> grabs you and ties you securely to a four poster bed.	Sorry, friend, I can`t see that person here.			
-mo	TIGHT <T-NAME>	You hold <T-HIM-HER> tightly in your arms.	<S-NAME> holds <T-NAMESELF> tightly in <S-HIM-HER> arms.	<S-NAME> holds you tightly in <S-HIS-HER> loving arms as if <S-he-she> will never let go.	Sorry, friend, I can't see that person here.		-IF "+A +B +C" -IF "+D +E +F"	
+mo	TIGHT <T-NAME>	You hold <T-HIM-HER> tightly in your arms.	<S-NAME> holds <T-NAMESELF> tightly in <S-HIM-HER> arms.	<S-NAME> holds you tightly in <S-HIS-HER> loving arms as if <S-he-she> will never let go.	Sorry, friend, I can't see that person here.			
 mv	TILT	You tilt your head inquisitively.	<S-NAME> tilts <S-HIS-HER> head with a look of inquiry.					
 mv	TILT <T-NAME>	You tilt <S-YOUPOSS> head inquisitively at <T-NAME>.	<S-NAME> tilts <S-HIS-HER> head at <T-NAME>, perplexed.	<S-NAME> tilts <S-HIS-HER> head at <T-NAME> with a look of inquiry.	You are even more perplexed now, than just a moment before.			
 mo	TIP	You tip your hat gallantly.	<S-NAME> gallantly tips <S-HIS-HER> hat.					
