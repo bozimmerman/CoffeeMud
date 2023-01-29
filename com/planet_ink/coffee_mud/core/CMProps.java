@@ -2547,6 +2547,8 @@ public class CMProps extends Properties
 			sysLstFileLists[lfVar.ordinal()]=null;
 			sysLstFileSet[lfVar.ordinal()]=null;
 		}
+		for(int i=0;i<genderDefs.length;i++)
+			genderDefs[i]=null;
 		setVar(Str.EMOTEFILTER,getStr("EMOTEFILTER"));
 		p().emoteFilter.clear();
 		p().emoteFilter.addAll(CMParms.parse((getStr("EMOTEFILTER")).toUpperCase()));
