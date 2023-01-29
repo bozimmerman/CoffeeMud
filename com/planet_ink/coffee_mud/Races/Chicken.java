@@ -303,7 +303,7 @@ public class Chicken extends StdRace
 			return false;
 		if((tickID==Tickable.TICKID_MOB)
 		&&(ticking instanceof MOB)
-		&&(((MOB)ticking).charStats().getStat(CharStats.STAT_GENDER)=='F'))
+		&&(((MOB)ticking).charStats().reproductiveCode()=='F'))
 		{
 			if((CMLib.dice().rollPercentage()>99)&&(((MOB)ticking).numItems()<9))
 			{

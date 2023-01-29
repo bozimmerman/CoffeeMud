@@ -4,6 +4,7 @@ import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.ListFile;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -1349,28 +1350,25 @@ public class MobData extends StdWebMacro
 					}
 					break;
 				case GENDER: // gender
+				{
 					if(firstTime)
 						old=""+((char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
-					if(old.toUpperCase().startsWith("M"))
+					for(final Object[][] gset : CMProps.getListFileGrid(ListFile.GENDERS))
 					{
-						str.append("<INPUT TYPE=RADIO NAME=GENDER CHECKED VALUE=M>Male");
-						str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO NAME=GENDER VALUE=F>Female");
-						str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
-					}
-					else
-					if(old.toUpperCase().startsWith("F"))
-					{
-						str.append("<INPUT TYPE=RADIO NAME=GENDER VALUE=M>Male");
-						str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO CHECKED NAME=GENDER VALUE=F>Female");
-						str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
-					}
-					else
-					{
-						str.append("<INPUT TYPE=RADIO NAME=GENDER VALUE=M>Male");
-						str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO NAME=GENDER VALUE=F>Female");
-						str.append("&nbsp;&nbsp; <INPUT CHECKED TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
+						if((gset.length>0)
+						&&(gset[0].length>0)
+						&&(gset[0][0].toString().length()>0))
+						{
+							char c= Character.toUpperCase(gset[0][0].toString().charAt(0));
+							String nm = gset[2][0].toString();
+							str.append("<INPUT TYPE=RADIO NAME=GENDER");
+							if(Character.toUpperCase(old.charAt(0)) == c)
+								str.append(" CHECKED ");
+							str.append("VALUE="+c+">"+CMStrings.capitalizeAndLower(nm));
+						}
 					}
 					break;
+				}
 				case HEIGHT: // height
 					if(firstTime)
 						old=""+M.basePhyStats().height();

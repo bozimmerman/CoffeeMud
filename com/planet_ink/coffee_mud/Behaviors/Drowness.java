@@ -71,7 +71,7 @@ public class Drowness extends StdBehavior
 		mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,15 + CMLib.dice().roll(1,6,0));
 		mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,12 + CMLib.dice().roll(1,6,0));
 		mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,13 + CMLib.dice().roll(1,6,0));
-		if(mob.baseCharStats().getStat(CharStats.STAT_GENDER)=='M')
+		if(mob.baseCharStats().reproductiveCode()=='M')
 		{
 			mob.baseCharStats().setCurrentClass(CMClass.getCharClass("Fighter"));
 			mob.recoverCharStats();
@@ -370,7 +370,7 @@ public class Drowness extends StdBehavior
 			final MOB mob=(MOB)ticking;
 			if((!mob.amDead())&&(tickID==Tickable.TICKID_MOB))
 			{
-				if(mob.baseCharStats().getStat(CharStats.STAT_GENDER)=='F')
+				if(mob.baseCharStats().reproductiveCode()=='F')
 				{
 					if (mob.isInCombat())
 					{

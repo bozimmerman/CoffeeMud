@@ -548,8 +548,8 @@ public class DefaultSocial implements Social
 					&& (mob.charStats().getStat(CharStats.STAT_CHARISMA) >= 16)
 					&& (mob.charStats().getMyRace().ID().equals(tmob.charStats().getMyRace().ID()))
 					&& (CMLib.dice().rollPercentage() == 1)
-					&& (mob.charStats().getStat(CharStats.STAT_GENDER) != ('N'))
-					&& (tmob.charStats().getStat(CharStats.STAT_GENDER) != ('N'))
+					&& (mob.charStats().reproductiveCode() != ('N'))
+					&& (tmob.charStats().reproductiveCode() != ('N'))
 					&& (mob.charStats().getStat(CharStats.STAT_GENDER) != tmob.charStats().getStat(CharStats.STAT_GENDER))
 					&& (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{

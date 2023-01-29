@@ -99,11 +99,11 @@ public class Chant_Fertility extends Chant
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 				||msg.tool().Name().equals("SEX <T-NAME>"))
 			&&(msg.sourceMinor()!=CMMsg.TYP_CHANNEL)
-			&&(myChar.charStats().getStat(CharStats.STAT_GENDER)!=mate.charStats().getStat(CharStats.STAT_GENDER))
-			&&((mate.charStats().getStat(CharStats.STAT_GENDER)==('M'))
-			   ||(mate.charStats().getStat(CharStats.STAT_GENDER)==('F')))
-			&&((myChar.charStats().getStat(CharStats.STAT_GENDER)==('M'))
-			   ||(myChar.charStats().getStat(CharStats.STAT_GENDER)==('F')))
+			&&(myChar.charStats().reproductiveCode()!=mate.charStats().reproductiveCode())
+			&&((mate.charStats().reproductiveCode()==('M'))
+			   ||(mate.charStats().reproductiveCode()==('F')))
+			&&((myChar.charStats().reproductiveCode()==('M'))
+			   ||(myChar.charStats().reproductiveCode()==('F')))
 			&&(mate.charStats().getMyRace().canBreedWith(myChar.charStats().getMyRace(),false))
 			&&(myChar.charStats().getMyRace().canBreedWith(mate.charStats().getMyRace(),false))
 			&&(myChar.location()==mate.location())
@@ -112,7 +112,7 @@ public class Chant_Fertility extends Chant
 			{
 				MOB female=myChar;
 				MOB male=mate;
-				if((mate.charStats().getStat(CharStats.STAT_GENDER)==('F')))
+				if((mate.charStats().reproductiveCode()==('F')))
 				{
 					female=mate;
 					male=myChar;

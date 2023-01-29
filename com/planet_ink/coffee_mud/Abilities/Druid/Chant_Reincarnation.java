@@ -137,7 +137,7 @@ public class Chant_Reincarnation extends Chant
 				if(newRace!=null)
 				{
 					mob.baseCharStats().setMyRace(newRace);
-					newRace.setHeightWeight(mob.basePhyStats(), (char)mob.charStats().getStat(CharStats.STAT_GENDER));
+					newRace.setHeightWeight(mob.basePhyStats(), mob.charStats().reproductiveCode());
 					mob.recoverPhyStats();
 					mob.recoverCharStats();
 					mob.recoverMaxState();

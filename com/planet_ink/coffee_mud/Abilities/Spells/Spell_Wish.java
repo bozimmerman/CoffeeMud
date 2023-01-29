@@ -1338,7 +1338,7 @@ public class Spell_Wish extends Spell
 					final int oldCat=((MOB)target).baseCharStats().ageCategory();
 					((MOB)target).baseCharStats().setMyRace(R);
 					((MOB)target).baseCharStats().getMyRace().startRacing(((MOB)target),true);
-					((MOB)target).baseCharStats().getMyRace().setHeightWeight(((MOB)target).basePhyStats(),(char)((MOB)target).baseCharStats().getStat(CharStats.STAT_GENDER));
+					((MOB)target).baseCharStats().getMyRace().setHeightWeight(((MOB)target).basePhyStats(),((MOB)target).baseCharStats().reproductiveCode());
 					((MOB)target).recoverCharStats();
 					((MOB)target).recoverPhyStats();
 					CMLib.utensils().confirmWearability((MOB)target);

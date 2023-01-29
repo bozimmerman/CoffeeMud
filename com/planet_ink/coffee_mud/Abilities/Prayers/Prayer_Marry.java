@@ -88,7 +88,7 @@ public class Prayer_Marry extends Prayer
 			mob.tell(L("You don't see @x1 here!",name2));
 			return false;
 		}
-		if(wife.charStats().getStat(CharStats.STAT_GENDER)=='M')
+		if(wife.charStats().reproductiveCode()=='M')
 		{
 			final MOB M=wife;
 			wife=husband;

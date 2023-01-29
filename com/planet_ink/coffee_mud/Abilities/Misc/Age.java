@@ -763,7 +763,7 @@ public class Age extends StdAbility
 				newMan.baseState().setHitPoints(CMProps.getIntVar(CMProps.Int.STARTHP));
 				newMan.baseState().setMana(CMProps.getIntVar(CMProps.Int.STARTMANA));
 				newMan.baseState().setMovement(CMProps.getIntVar(CMProps.Int.STARTMOVE));
-				newMan.baseCharStats().getMyRace().setHeightWeight(newMan.basePhyStats(),(char)newMan.baseCharStats().getStat(CharStats.STAT_GENDER));
+				newMan.baseCharStats().getMyRace().setHeightWeight(newMan.basePhyStats(),newMan.baseCharStats().reproductiveCode());
 				final int baseStat=(CMProps.getIntVar(CMProps.Int.BASEMINSTAT)+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT))/2;
 				for(final int  i : CharStats.CODES.BASECODES())
 					newMan.baseCharStats().setStat(i,baseStat);
@@ -929,7 +929,7 @@ public class Age extends StdAbility
 					babe.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,10);
 				babe.baseCharStats().setStat(CharStats.STAT_STRENGTH,10);
 				babe.baseCharStats().setStat(CharStats.STAT_WISDOM,10);
-				babe.baseCharStats().getMyRace().setHeightWeight(babe.basePhyStats(), (char)babe.baseCharStats().getStat(CharStats.STAT_GENDER));
+				babe.baseCharStats().getMyRace().setHeightWeight(babe.basePhyStats(), babe.baseCharStats().reproductiveCode());
 				babe.baseState().setHitPoints(15);
 				babe.baseState().setMana(25);
 				babe.baseState().setMovement(80);

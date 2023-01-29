@@ -347,83 +347,25 @@ public class StdRace implements Race
 	@Override
 	public String makeMobName(final char gender, final int age)
 	{
+		CharStats cs = (CharStats)CMClass.getCommon("DefaultCharStats");
+		cs.setStat(CharStats.STAT_GENDER, gender);
 		switch(age)
 		{
 			case Race.AGE_INFANT:
-			{
-				switch(gender)
-				{
-				case 'M':
-				case 'm':
-					return L("baby boy @x1", name().toLowerCase());
-				case 'F':
-				case 'f':
-					return L("baby girl @x1", name().toLowerCase());
-				default:
-					return L("baby @x1", name().toLowerCase());
-				}
-			}
+				return L("baby @x1",cs.boygirl()+" " + name().toLowerCase());
 			case Race.AGE_TODDLER:
-			{
-				switch(gender)
-				{
-				case 'M':
-				case 'm':
-					return L("baby boy @x1", name().toLowerCase());
-				case 'F':
-				case 'f':
-					return L("baby girl @x1", name().toLowerCase());
-				default:
-					return L("baby @x1", name().toLowerCase());
-				}
-			}
+				return L("baby @x1",cs.boygirl()+" " + name().toLowerCase());
 			case Race.AGE_CHILD:
-			{
-				switch(gender)
-				{
-				case 'M':
-				case 'm':
-					return L("little boy @x1", name().toLowerCase());
-				case 'F':
-				case 'f':
-					return L("little girl @x1", name().toLowerCase());
-				default:
-					return L("young @x1", name().toLowerCase());
-				}
-			}
+				return L("little @x1",cs.boygirl()+" " + name().toLowerCase());
 			case Race.AGE_YOUNGADULT:
 			case Race.AGE_MATURE:
 			case Race.AGE_MIDDLEAGED:
 			default:
-			{
-				switch(gender)
-				{
-				case 'M':
-				case 'm':
-					return L("male @x1", name().toLowerCase());
-				case 'F':
-				case 'f':
-					return L("female @x1", name().toLowerCase());
-				default:
-					return name().toLowerCase();
-				}
-			}
+				return cs.genderName()+" " + name().toLowerCase();
 			case Race.AGE_OLD:
 			case Race.AGE_VENERABLE:
 			case Race.AGE_ANCIENT:
-			{
-				switch(gender)
-				{
-				case 'M':
-				case 'm':
-					return L("old male @x1",name().toLowerCase());
-				case 'F':
-				case 'f':
-					return L("old female @x1",name().toLowerCase());
-				default:
-					return L("old @x1",name().toLowerCase());
-				}
-			}
+				return L("old @x1",cs.genderName()+" " + name().toLowerCase());
 		}
 	}
 
@@ -581,8 +523,8 @@ public class StdRace implements Race
 						||(msg.source().curState().getFatigue()>=CharState.FATIGUED_MILLIS));
 				final boolean meExhausted=((myChar.curState().getMovement()<(myChar.maxState().getMovement()/2))
 						||(myChar.curState().getFatigue()>=CharState.FATIGUED_MILLIS));
-				if((myChar.charStats().getStat(CharStats.STAT_GENDER)==('F'))
-				&&(msg.source().charStats().getStat(CharStats.STAT_GENDER)==('M'))
+				if((myChar.charStats().reproductiveCode()==('F'))
+				&&(msg.source().charStats().reproductiveCode()==('M'))
 				&&(myChar.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
 				&&(msg.source().fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
 				&&(msg.source().charStats().getMyRace().canBreedWith(this,false))
@@ -817,7 +759,7 @@ public class StdRace implements Race
 				mob.setPractices(mob.getPractices()+practicesAtFirstLevel());
 				mob.setTrains(mob.getTrains()+trainsAtFirstLevel());
 			}
-			setHeightWeight(mob.basePhyStats(),(char)mob.baseCharStats().getStat(CharStats.STAT_GENDER));
+			setHeightWeight(mob.basePhyStats(),mob.baseCharStats().reproductiveCode());
 			grantAbilities(mob,false);
 		}
 		else

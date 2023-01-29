@@ -1378,7 +1378,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 										replacement=((regarding instanceof MOB)?"someone":"something");
 									else
 									if(source==target)
-										replacement=((regarding instanceof MOB)?(((MOB)regarding).charStats().himher()+"self"):"itself");
+										replacement=((regarding instanceof MOB)?(((MOB)regarding).charStats().himherself()):"itself");
 									else
 									if(regarding instanceof PhysicalAgent)
 										replacement=((PhysicalAgent)regarding).name(mob);
@@ -1456,7 +1456,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 										replacement="yourself";
 									else
 									if(regarding instanceof MOB)
-										replacement=((MOB)regarding).charStats().himher()+"self";
+										replacement=((MOB)regarding).charStats().himherself();
 									else
 										replacement="itself";
 
@@ -1471,7 +1471,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 										replacement="yourself";
 									else
 									if(regarding instanceof MOB)
-										replacement=((MOB)regarding).charStats().hisher()+"self";
+										replacement=((MOB)regarding).charStats().hisherself();
 									else
 										replacement="itself";
 								}

@@ -261,17 +261,11 @@ public class Wolf extends StdRace
 			case Race.AGE_TODDLER:
 				return name().toLowerCase()+" pup";
 			case Race.AGE_CHILD:
-				switch(gender)
-				{
-				case 'M':
-				case 'm':
-					return "boy " + name().toLowerCase() + " pup";
-				case 'F':
-				case 'f':
-					return "girl " + name().toLowerCase() + " pup";
-				default:
-					return "young " + name().toLowerCase();
-				}
+			{
+				CharStats cs = (CharStats)CMClass.getCommon("DefaultCharStats");
+				cs.setStat(CharStats.STAT_GENDER, gender);
+				return cs.boygirl()+" " + name().toLowerCase() + " pup";
+			}
 			default:
 				return super.makeMobName(gender, age);
 		}

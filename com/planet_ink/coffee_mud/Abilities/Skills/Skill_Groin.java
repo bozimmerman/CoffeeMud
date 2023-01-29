@@ -234,7 +234,7 @@ public class Skill_Groin extends StdSkill implements HealthCondition
 					damage=target.curState().getHitPoints()-1;
 				CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,
 						L("^F^<FIGHT^>The crotch blow <DAMAGES> <T-NAME>!^</FIGHT^>^?@x1",CMLib.protocol().msp("bashed1.wav",30)));
-				if(target.charStats().getStat(CharStats.STAT_GENDER) == 'M')
+				if(target.charStats().reproductiveCode() == 'M')
 					success=maliciousAffect(mob,target,asLevel,2+super.getXLEVELLevel(mob),-1)!=null;
 				this.lastHit=new WeakReference<MOB>(target);
 			}

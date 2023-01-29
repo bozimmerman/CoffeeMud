@@ -69,6 +69,21 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public void initializeClass()
 	{
+		for(int i=0;i<genderData.length;i++)
+			genderData[i]=null;
+		for(final Object[][] gendSet : CMProps.getListFileGrid(CMProps.ListFile.GENDERS))
+		{
+			if((gendSet.length>0)
+			&&(gendSet[0].length>0)
+			&&(gendSet[0][0] instanceof String)
+			&&(((String)gendSet[0][0]).length()>0))
+			{
+				char cd = ((String)gendSet[0][0]).charAt(0);
+				genderData[cd] = new String[gendSet.length-1];
+				for(int i=1;i<gendSet.length;i++)
+					genderData[cd][i-1] = (String)gendSet[i][0];
+			}
+		}
 	}
 
 	// competency characteristics
@@ -89,7 +104,8 @@ public class DefaultCharStats implements CharStats
 	protected String		arriveStr			= null;
 	protected String		leaveStr			= null;
 
-	protected Map<String, Integer>	profAdj			= null;
+	protected Map<String, Integer>	profAdj		= null;
+	private static final String[][]	genderData	= new String[256][]; 
 
 	@SuppressWarnings("unchecked")
 	private static final DoubleFilterer<Item>[]	emptyFiltererArray	= new DoubleFilterer[0];
@@ -100,6 +116,20 @@ public class DefaultCharStats implements CharStats
 		reset();
 	}
 
+	private static int GEND_MNF    = 0;
+	private static int GEND_NOUN   = 1;
+	private static int GEND_HIMHER = 2;
+	private static int GEND_HISHER = 3;
+	private static int GEND_HESHE  = 4;
+	private static int GEND_SIRMDM = 5;
+	private static int GEND_MRMRS  = 6;
+	private static int GEND_MISMDM = 7;
+	private static int GEND_MANWOM = 8;
+	private static int GEND_SONDAT = 9;
+	private static int GEND_BOYGRL = 10;
+	private static int GEND_HIMHEF = 11;
+	private static int GEND_HISHEF = 12;
+	
 	@Override
 	public void setAllBaseValues(final int def)
 	{
@@ -910,19 +940,32 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
+	public char reproductiveCode() 
+	{
+		final char c=((genderName!=null)&&(genderName.length()>0))
+				? Character.toUpperCase(genderName.charAt(0))
+				: (char)getStat(STAT_GENDER);
+		final String[] set = DefaultCharStats.genderData[c];
+		if(set == null)
+			return c;
+		return set[GEND_MNF].charAt(0);
+	}
+
+	@Override
+	public String realGenderName()
+	{
+		final String[] set = DefaultCharStats.genderData[getStat(STAT_GENDER)];
+		if(set == null)
+			return CMLib.lang().L("unk");
+		return set[GEND_NOUN];
+	}
+
+	@Override
 	public String genderName()
 	{
 		if(genderName!=null)
 			return genderName;
-		switch(getStat(STAT_GENDER))
-		{
-		case 'M':
-			return CMLib.lang().L("male");
-		case 'F':
-			return CMLib.lang().L("female");
-		default:
-			return CMLib.lang().L("neuter");
-		}
+		return realGenderName();
 	}
 
 	@Override
@@ -931,15 +974,10 @@ public class DefaultCharStats implements CharStats
 		final char c=((genderName!=null)&&(genderName.length()>0))
 					? Character.toUpperCase(genderName.charAt(0))
 					: (char)getStat(STAT_GENDER);
-		switch(c)
-		{
-		case 'M':
-			return CMLib.lang().L("him");
-		case 'F':
-			return CMLib.lang().L("her");
-		default:
-			return CMLib.lang().L("it");
-		}
+		final String[] set = DefaultCharStats.genderData[c];
+		if(set == null)
+			return CMLib.lang().L("unk");
+		return set[GEND_HIMHER];
 	}
 
 	@Override
@@ -948,15 +986,34 @@ public class DefaultCharStats implements CharStats
 		final char c=((genderName!=null)&&(genderName.length()>0))
 					? Character.toUpperCase(genderName.charAt(0))
 					: (char)getStat(STAT_GENDER);
-		switch(c)
-		{
-		case 'M':
-			return CMLib.lang().L("his");
-		case 'F':
-			return CMLib.lang().L("her");
-		default:
-			return CMLib.lang().L("its");
-		}
+		final String[] set = DefaultCharStats.genderData[c];
+		if(set == null)
+			return CMLib.lang().L("unk");
+		return set[GEND_HISHER];
+	}
+
+	@Override
+	public String himherself()
+	{
+		final char c=((genderName!=null)&&(genderName.length()>0))
+					? Character.toUpperCase(genderName.charAt(0))
+					: (char)getStat(STAT_GENDER);
+		final String[] set = DefaultCharStats.genderData[c];
+		if(set == null)
+			return CMLib.lang().L("unk");
+		return set[GEND_HIMHEF];
+	}
+
+	@Override
+	public String hisherself()
+	{
+		final char c=((genderName!=null)&&(genderName.length()>0))
+					? Character.toUpperCase(genderName.charAt(0))
+					: (char)getStat(STAT_GENDER);
+		final String[] set = DefaultCharStats.genderData[c];
+		if(set == null)
+			return CMLib.lang().L("unk");
+		return set[GEND_HISHEF];
 	}
 
 	@Override
@@ -965,15 +1022,10 @@ public class DefaultCharStats implements CharStats
 		final char c=((genderName!=null)&&(genderName.length()>0))
 					? Character.toUpperCase(genderName.charAt(0))
 					: (char)getStat(STAT_GENDER);
-		switch(c)
-		{
-		case 'M':
-			return CMLib.lang().L("he");
-		case 'F':
-			return CMLib.lang().L("she");
-		default:
-			return CMLib.lang().L("it");
-		}
+		final String[] set = DefaultCharStats.genderData[c];
+		if(set == null)
+			return CMLib.lang().L("unk");
+		return set[GEND_HESHE];
 	}
 
 	@Override
@@ -982,15 +1034,10 @@ public class DefaultCharStats implements CharStats
 		final char c=((genderName!=null)&&(genderName.length()>0))
 					? Character.toUpperCase(genderName.charAt(0))
 					: (char)getStat(STAT_GENDER);
-		switch(c)
-		{
-		case 'M':
-			return CMLib.lang().L("sir");
-		case 'F':
-			return CMLib.lang().L("madam");
-		default:
-			return CMLib.lang().L("sir");
-		}
+		final String[] set = DefaultCharStats.genderData[c];
+		if(set == null)
+			return CMLib.lang().L("unk");
+		return set[GEND_SIRMDM];
 	}
 
 	@Override
@@ -999,15 +1046,10 @@ public class DefaultCharStats implements CharStats
 		final char c=((genderName!=null)&&(genderName.length()>0))
 					? Character.toUpperCase(genderName.charAt(0))
 					: (char)getStat(STAT_GENDER);
-		switch(c)
-		{
-		case 'M':
-			return CMLib.lang().L("Sir");
-		case 'F':
-			return CMLib.lang().L("Madam");
-		default:
-			return CMLib.lang().L("Sir");
-		}
+		final String[] set = DefaultCharStats.genderData[c];
+		if(set == null)
+			return CMLib.lang().L("unk");
+		return CMStrings.capitalizeFirstLetter(set[GEND_SIRMDM]);
 	}
 
 	@Override
@@ -1016,15 +1058,10 @@ public class DefaultCharStats implements CharStats
 		final char c=((genderName!=null)&&(genderName.length()>0))
 					? Character.toUpperCase(genderName.charAt(0))
 					: (char)getStat(STAT_GENDER);
-		switch(c)
-		{
-		case 'M':
-			return CMLib.lang().L("Mr.");
-		case 'F':
-			return CMLib.lang().L("Ms.");
-		default:
-			return CMLib.lang().L("Mr.");
-		}
+		final String[] set = DefaultCharStats.genderData[c];
+		if(set == null)
+			return CMLib.lang().L("unk");
+		return CMStrings.capitalizeFirstLetter(set[GEND_MRMRS]);
 	}
 
 	@Override
@@ -1033,15 +1070,46 @@ public class DefaultCharStats implements CharStats
 		final char c=((genderName!=null)&&(genderName.length()>0))
 					? Character.toUpperCase(genderName.charAt(0))
 					: (char)getStat(STAT_GENDER);
-		switch(c)
-		{
-		case 'M':
-			return CMLib.lang().L("Mister");
-		case 'F':
-			return CMLib.lang().L("Madam");
-		default:
-			return CMLib.lang().L("Mister");
-		}
+		final String[] set = DefaultCharStats.genderData[c];
+		if(set == null)
+			return CMLib.lang().L("unk");
+		return CMStrings.capitalizeAndLower(set[GEND_MISMDM]);
+	}
+
+	@Override
+	public String manwoman()
+	{
+		final char c=((genderName!=null)&&(genderName.length()>0))
+					? Character.toUpperCase(genderName.charAt(0))
+					: (char)getStat(STAT_GENDER);
+		final String[] set = DefaultCharStats.genderData[c];
+		if(set == null)
+			return CMLib.lang().L("unk");
+		return set[GEND_MANWOM];
+	}
+
+	@Override
+	public String sondaughter()
+	{
+		final char c=((genderName!=null)&&(genderName.length()>0))
+					? Character.toUpperCase(genderName.charAt(0))
+					: (char)getStat(STAT_GENDER);
+		final String[] set = DefaultCharStats.genderData[c];
+		if(set == null)
+			return CMLib.lang().L("unk");
+		return set[GEND_SONDAT];
+	}
+
+	@Override
+	public String boygirl()
+	{
+		final char c=((genderName!=null)&&(genderName.length()>0))
+					? Character.toUpperCase(genderName.charAt(0))
+					: (char)getStat(STAT_GENDER);
+		final String[] set = DefaultCharStats.genderData[c];
+		if(set == null)
+			return CMLib.lang().L("unk");
+		return set[GEND_BOYGRL];
 	}
 
 	@Override
@@ -1050,15 +1118,10 @@ public class DefaultCharStats implements CharStats
 		final char c=((genderName!=null)&&(genderName.length()>0))
 					? Character.toUpperCase(genderName.charAt(0))
 					: (char)getStat(STAT_GENDER);
-		switch(c)
-		{
-		case 'M':
-			return CMLib.lang().L("He");
-		case 'F':
-			return CMLib.lang().L("She");
-		default:
-			return CMLib.lang().L("It");
-		}
+		final String[] set = DefaultCharStats.genderData[c];
+		if(set == null)
+			return CMLib.lang().L("unk");
+		return CMStrings.capitalizeFirstLetter(set[GEND_HESHE]);
 	}
 
 	@Override

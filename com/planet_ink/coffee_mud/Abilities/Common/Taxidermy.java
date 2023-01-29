@@ -257,7 +257,7 @@ public class Taxidermy extends CraftingSkill
 			pose=CMStrings.replaceAll(pose,"<S-NAME>",buildingI.name());
 			pose=CMStrings.replaceAll(pose,"<S-HIS-HER>",C.hisher());
 			pose=CMStrings.replaceAll(pose,"<S-HIM-HER>",C.himher());
-			pose=CMStrings.replaceAll(pose,"<S-HIM-HERSELF>",C.himher()+"self");
+			pose=CMStrings.replaceAll(pose,"<S-HIM-HERSELF>",C.himherself());
 			buildingI.setDisplayText(pose);
 		}
 		buildingI.setDescription(desc);

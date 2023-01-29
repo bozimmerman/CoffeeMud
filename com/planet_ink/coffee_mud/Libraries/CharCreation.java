@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Int;
+import com.planet_ink.coffee_mud.core.CMProps.ListFile;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -2943,7 +2944,30 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	protected LoginResult charcrGenderStart(final LoginSessionImpl loginObj, final Session session)
 	{
-		session.promptPrint(L("\n\r^!What is your gender (M/F)?^N"));
+		StringBuilder str = new StringBuilder("");
+		for(final Object[][] gset : CMProps.getListFileGrid(ListFile.GENDERS))
+		{
+			if((gset.length>0)
+			&&(gset[0].length>0)
+			&&(gset[0][0].toString().length()>0)
+			&&(!gset[0][0].toString().equalsIgnoreCase("N")))
+			{
+				if(str.length()>0)
+					str.append("/");
+				str.append(gset[0][0].toString().charAt(0));
+			}
+		}
+		StringBuffer genderIntro=new CMFile(Resources.buildResourcePath("text")+"gender.txt",null,CMFile.FLAG_LOGERRORS).text();
+		try
+		{
+			genderIntro = CMLib.webMacroFilter().virtualPageFilter(genderIntro);
+		}
+		catch(final Exception ex)
+		{
+		}
+		if(genderIntro.toString().length()>0)
+			session.println(null,null,null,genderIntro.toString());
+		session.promptPrint(L("\n\r^!What is your gender (@x1)?^N",str.toString()));
 		loginObj.state=LoginState.CHARCR_GENDERDONE;
 		return LoginResult.INPUT_REQUIRED;
 	}
@@ -2954,7 +2978,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final PlayerAccount acct=loginObj.acct;
 
 		final String gender=loginObj.lastInput.toUpperCase().trim();
-		if((!gender.startsWith("M"))&&(!gender.startsWith("F")))
+		boolean found=false;
+		for(final Object[][] gset : CMProps.getListFileGrid(ListFile.GENDERS))
+		{
+			if((gset.length>0)
+			&&(gset[0].length>0)
+			&&(gset[0][0].toString().length()>0)
+			&&(gender.startsWith(""+gset[0][0].toString().charAt(0)))
+			&&(!gset[0][0].toString().equalsIgnoreCase("N")))
+				found=true;
+		}
+		if(!found)
 		{
 			loginObj.state=LoginState.CHARCR_GENDERSTART;
 			return null;

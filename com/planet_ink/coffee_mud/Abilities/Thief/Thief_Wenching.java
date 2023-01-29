@@ -146,7 +146,7 @@ public class Thief_Wenching extends ThiefSkill
 		if(R==null)
 			return false;
 
-		char gender=(char)mob.charStats().getStat(CharStats.STAT_GENDER);
+		char gender=mob.charStats().reproductiveCode();
 		switch(gender)
 		{
 		case 'M':

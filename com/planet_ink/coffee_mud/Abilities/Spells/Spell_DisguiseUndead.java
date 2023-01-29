@@ -178,7 +178,7 @@ public class Spell_DisguiseUndead extends Spell
 					String genderFormal;
 					String genderInformal;
 					String genderPersonal;
-					switch(target.charStats().getStat(CharStats.STAT_GENDER))
+					switch(target.charStats().reproductiveCode())
 					{
 					case 'M':
 						genderName = "male";

@@ -2302,7 +2302,7 @@ public class Reset extends StdCommand
 									else
 									{
 										M.baseCharStats().setMyRace(R2);
-										R2.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+										R2.setHeightWeight(M.basePhyStats(),M.baseCharStats().reproductiveCode());
 										M.recoverCharStats();
 										M.recoverPhyStats();
 										mob.tell(L(" @x1 Changed to @x2",M.Name(),R2.ID()));
@@ -2370,7 +2370,7 @@ public class Reset extends StdCommand
 										}
 										mob.tell(L(" Changed to @x1",R2.ID()));
 										M.baseCharStats().setMyRace(R2);
-										R2.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+										R2.setHeightWeight(M.basePhyStats(),M.baseCharStats().reproductiveCode());
 										M.recoverCharStats();
 										M.recoverPhyStats();
 										rememberM.put(M.name(),M.baseCharStats().getMyRace());

@@ -122,7 +122,8 @@ public class Chant_LoveMoon extends Chant
 					&&(M!=mob)
 					&&(CMLib.flags().canBeSeenBy(M,mob))
 					&&(M.charStats().getStat(CharStats.STAT_GENDER)!=mob.charStats().getStat(CharStats.STAT_GENDER))
-					&&(M.charStats().getStat(CharStats.STAT_GENDER)!='N')
+					&&(M.charStats().reproductiveCode()!='N')
+					&&(mob.charStats().reproductiveCode()!='N')
 					&&(M.charStats().getSave(CharStats.STAT_CHARISMA)>14))
 						choices.add(M);
 				}

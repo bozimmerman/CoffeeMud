@@ -161,7 +161,7 @@ public class Disease_Tourettes extends Disease
 				&&(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5)
 				&&(CMLib.flags().canBeHeardSpeakingBy(mob,target))
 				&&(CMLib.flags().canBeSeenBy(target,mob)))
-					say = "Noodle" + ((target.charStats().getStat(CharStats.STAT_GENDER) == 'M') ? "boy" : "girl") + "!";
+					say = "Noodle" + target.charStats().boygirl() + "!";
 				else
 					say = "NOODLE!!!!!";
 				break;
@@ -242,7 +242,7 @@ public class Disease_Tourettes extends Disease
 				&&(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5)
 				&&(CMLib.flags().canBeHeardSpeakingBy(mob,target))
 				&&(CMLib.flags().canBeSeenBy(target,mob)))
-					say = "Goop" + ((target.charStats().getStat(CharStats.STAT_GENDER) == 'M') ? "boy" : "girl") + "!";
+					say = "Goop" + target.charStats().boygirl() + "!";
 				else
 					say = "Goop!";
 				break;

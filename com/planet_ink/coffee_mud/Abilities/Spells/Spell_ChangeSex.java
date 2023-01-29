@@ -89,7 +89,8 @@ public class Spell_ChangeSex extends Spell
 	{
 		if(CMLib.flags().isChild(M))
 		{
-			if(M.charStats().getStat(CharStats.STAT_GENDER)=='F')
+			
+			if(M.charStats().reproductiveCode()=='F')
 			{
 				M.setDescription(CMStrings.replaceWord(M.description(), "son", "daughter"));
 				M.setName(CMStrings.replaceWord(M.Name(), "son", "daughter"));
@@ -222,7 +223,7 @@ public class Spell_ChangeSex extends Spell
 					{
 						M=((CagedAnimal)target).unCageMe();
 						char gender='M';
-						if(M.baseCharStats().getStat(CharStats.STAT_GENDER)!='F')
+						if(M.baseCharStats().reproductiveCode()!='F')
 							gender='F';
 						M.baseCharStats().setStat(CharStats.STAT_GENDER,gender);
 						M.recoverCharStats();

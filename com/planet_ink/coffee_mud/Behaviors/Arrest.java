@@ -3117,9 +3117,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					{
 						CMLib.tracking().stopTracking(officer);
 						W.setTravelAttemptTime(0);
-						String sirmaam="Sir";
-						if(Character.toString((char)judge.charStats().getStat(CharStats.STAT_GENDER)).equalsIgnoreCase("F"))
-							sirmaam="Ma'am";
+						final String sirmaam=judge.charStats().SirMadam();
 						CMLib.commands().postSay(officer,judge,L("@x1, @x2 has been arrested for @x3.",sirmaam,W.criminal().name(),restOfCharges(laws,W.criminal())),false,false);
 						final List<LegalWarrant> warrants=getRelevantWarrants(laws.warrants(),W,W.criminal());
 						for(int w2=0;w2<warrants.size();w2++)

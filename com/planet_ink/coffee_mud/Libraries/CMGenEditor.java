@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
+import com.planet_ink.coffee_mud.core.CMProps.ListFile;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -3935,25 +3936,27 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		mob.tell(L("@x1. Gender: '@x2'.",""+showNumber,""+Character.toUpperCase((char)E.baseCharStats().getStat(CharStats.STAT_GENDER))));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
-		final String newType=mob.session().choose(L("Enter a new gender (M/F/N)\n\r:"),L("MFN"),"");
-		int newValue=-1;
-		if(newType.length()>0)
-			newValue=("MFN").indexOf(newType.trim().toUpperCase());
-		if(newValue>=0)
+		StringBuilder str = new StringBuilder("");
+		StringBuilder cstr = new StringBuilder("");
+		for(final Object[][] gset : CMProps.getListFileGrid(ListFile.GENDERS))
 		{
-			switch(newValue)
+			if((gset.length>0)
+			&&(gset[0].length>0)
+			&&(gset[0][0].toString().length()>0))
 			{
-			case 0:
-				E.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
-				break;
-			case 1:
-				E.baseCharStats().setStat(CharStats.STAT_GENDER,'F');
-				break;
-			case 2:
-				E.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
-				break;
+				if(str.length()>0)
+					str.append("/");
+				char c = gset[0][0].toString().charAt(0);
+				str.append(c);
+				cstr.append(c);
 			}
 		}
+		final String newType=mob.session().choose(L("Enter a new gender (@x1)\n\r:",str.toString()),cstr.toString(),"");
+		int newValue=-1;
+		if(newType.length()>0)
+			newValue=cstr.toString().indexOf(newType.trim().toUpperCase());
+		if(newValue>=0)
+			E.baseCharStats().setStat(CharStats.STAT_GENDER,newType.trim().toUpperCase().charAt(0));
 		else
 			mob.tell(L("(no change)"));
 	}
@@ -4036,7 +4039,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					CMLib.database().registerRaceUsed(R);
 					M.baseCharStats().setMyRace(R);
 					M.baseCharStats().getMyRace().startRacing(M,false);
-					M.baseCharStats().getMyRace().setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+					M.baseCharStats().getMyRace().setHeightWeight(M.basePhyStats(),M.baseCharStats().reproductiveCode());
 				}
 				else
 					mob.tell(L("Unknown race! Try '?'."));

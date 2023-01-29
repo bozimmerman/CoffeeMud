@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.ListFile;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -260,7 +261,7 @@ public class PlayerData extends StdWebMacro
 			str.append(M.phyStats().weight() + ", ");
 			break;
 		case GENDERNAME:
-			str.append(CMStrings.capitalizeAndLower(M.baseCharStats().genderName()) + ", ");
+			str.append(CMStrings.capitalizeAndLower(M.baseCharStats().realGenderName()) + ", ");
 			break;
 		case LASTDATETIMEMILLIS:
 			if(M.playerStats()!=null)
@@ -624,9 +625,19 @@ public class PlayerData extends StdWebMacro
 				String old=httpReq.getUrlParameter("BASEGENDER");
 				if(firstTime)
 					old=""+(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
-				str.append("<OPTION VALUE=M "+((old.equalsIgnoreCase("M"))?"SELECTED":"")+">M");
-				str.append("<OPTION VALUE=F "+((old.equalsIgnoreCase("F"))?"SELECTED":"")+">F");
-				str.append("<OPTION VALUE=N "+((old.equalsIgnoreCase("N"))?"SELECTED":"")+">N");
+				for(final Object[][] gset : CMProps.getListFileGrid(ListFile.GENDERS))
+				{
+					if((gset.length>0)
+					&&(gset[0].length>0)
+					&&(gset[0][0].toString().length()>0))
+					{
+						char c= Character.toUpperCase(gset[0][0].toString().charAt(0));
+						str.append("<OPTION");
+						if(Character.toUpperCase(old.charAt(0)) == c)
+							str.append(" SELECTED ");
+						str.append("VALUE="+c+">"+c);
+					}
+				}
 			}
 			if(parms.containsKey("FLAGS"))
 			{

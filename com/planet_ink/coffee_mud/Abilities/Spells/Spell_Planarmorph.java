@@ -241,7 +241,7 @@ public class Spell_Planarmorph extends Spell
 					&& (mixRace.length()>0)
 					&& ((R=CMClass.getRace(mixRace)) != null))
 					{
-						final boolean mixWithMale = target.charStats().getStat(CharStats.STAT_GENDER) == 'M';
+						final boolean mixWithMale = target.charStats().reproductiveCode() == 'M';
 						final Race fatherR=mixWithMale?target.charStats().getMyRace():R;
 						final Race motherR=mixWithMale?R:target.charStats().getMyRace();
 						newRace=CMLib.utensils().getMixedRace(motherR.ID(), fatherR.ID(), false);
@@ -364,7 +364,7 @@ public class Spell_Planarmorph extends Spell
 			return false;
 		}
 
-		final boolean mixWithMale = target.charStats().getStat(CharStats.STAT_GENDER) == 'M';
+		final boolean mixWithMale = target.charStats().reproductiveCode() == 'M';
 		final Race fatherR=mixWithMale?target.charStats().getMyRace():motherR;
 		motherR=mixWithMale?motherR:target.charStats().getMyRace();
 		final Race R=CMLib.utensils().getMixedRace(motherR.ID(), fatherR.ID(), false);

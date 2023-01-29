@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.DefaultCharStats;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -613,6 +614,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	 * and the mobs real gender name will be displayed through the genderName method
 	 * instead of the one set here.
 	 * @see #genderName()
+	 * @see #realGenderName()
 	 * @param gname the name of the mobs gender to display
 	 */
 	public void setGenderName(String gname);
@@ -629,6 +631,21 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	public String genderName();
 
 	/**
+	 * Returns the gender of the mob.
+	 * @see #setGenderName(String)
+	 * @return the apparent gender of the mob
+	 */
+	public String realGenderName();
+
+	/**
+	 * Based on the gender of the mob, returns M, N, or F, reflective
+	 * of reproductive role.
+	 * 
+	 * @return M, N, or F
+	 */
+	public char reproductiveCode();
+	
+	/**
 	 * Based on the apparent gender of the mob, return the appropriate word "him", "her", or "it".
 	 * @return the gender-correct pronoun for this mob
 	 */
@@ -639,6 +656,18 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	 * @return the gender-correct pronoun for this mob
 	 */
 	public String hisher();
+
+	/**
+	 * Based on the apparent gender of the mob, return the appropriate word "himself", "herself", or "itself".
+	 * @return the gender-correct pronoun for this mob
+	 */
+	public String himherself();
+
+	/**
+	 * Based on the apparent gender of the mob, return the appropriate word "hisself", "herself", or "itself".
+	 * @return the gender-correct pronoun for this mob
+	 */
+	public String hisherself();
 
 	/**
 	 * Based on the apparent gender of the mob, return the appropriate word "he", "she", or "it".
@@ -664,6 +693,24 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	 */
 	public String SirMadam();
 
+	/**
+	 * Based on the apparent gender of the mob, return the appropriate word "Man", "Woman", or "Man".
+	 * @return the gender-correct term for this mob
+	 */
+	public String manwoman();
+
+	/**
+	 * Based on the apparent gender of the mob, return the appropriate word "Son", "Daughter", or "Child".
+	 * @return the gender-correct term for this young mob
+	 */
+	public String sondaughter();
+
+	/**
+	 * Based on the apparent gender of the mob, return the appropriate word "Boy", "Girl", or "Child".
+	 * @return the gender-correct term for this young mob
+	 */
+	public String boygirl();
+	
 	/**
 	 * Based on the apparent gender of the mob, return the appropriate word "Mr.", or "Ms.".
 	 * @return the gender-correct title for this mob

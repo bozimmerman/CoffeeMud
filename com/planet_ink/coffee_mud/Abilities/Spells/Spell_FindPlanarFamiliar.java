@@ -143,7 +143,7 @@ public class Spell_FindPlanarFamiliar extends Spell_FindFamiliar
 	protected MOB determineMonster(final MOB caster, final int level)
 	{
 		final MOB M=super.determineMonster(caster, level);
-		final boolean mixingWMale = M.charStats().getStat(CharStats.STAT_GENDER)=='M';
+		final boolean mixingWMale = M.charStats().reproductiveCode()=='M';
 		final Race motherR = mixingWMale?mixRace:M.charStats().getMyRace();
 		final Race fatherR = mixingWMale?M.charStats().getMyRace():mixRace;
 		final Race R=CMLib.utensils().getMixedRace(motherR.ID(), fatherR.ID(), false);

@@ -178,12 +178,7 @@ public class Score extends Affect
 		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)&&(mob.playerStats()!=null))
 			msg.append(L("Your account is Registered and Active until: @x1!\n\r",CMLib.time().date2String(mob.playerStats().getAccountExpiration())));
 
-		String genderName=L("^!neuter");
-		if(mob.charStats().getStat(CharStats.STAT_GENDER)=='M')
-			genderName=L("^!male");
-		else
-		if(mob.charStats().getStat(CharStats.STAT_GENDER)=='F')
-			genderName=L("^!female");
+		String genderName="^!"+mob.charStats().realGenderName();
 		msg.append(L("You are a "));
 		if((mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING)))
 			msg.append(L("^!@x1^? year old ",""+mob.baseCharStats().getStat(CharStats.STAT_AGE)));

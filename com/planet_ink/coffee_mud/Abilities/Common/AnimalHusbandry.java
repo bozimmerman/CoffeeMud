@@ -231,7 +231,7 @@ public class AnimalHusbandry extends CommonSkill
 					commonTell(mob,L("@x1 doesn't seem willing to cooperate.",M.name(mob)));
 					return false;
 				}
-				if(M.charStats().getStat(CharStats.STAT_GENDER)=='M')
+				if(M.charStats().reproductiveCode()=='M')
 				{
 					if(husbanding[0]!=null)
 					{
@@ -241,7 +241,7 @@ public class AnimalHusbandry extends CommonSkill
 					husbanding[0]=M;
 				}
 				else
-				if(M.charStats().getStat(CharStats.STAT_GENDER)=='F')
+				if(M.charStats().reproductiveCode()=='F')
 				{
 					//if(!M.isGeneric())
 					//{

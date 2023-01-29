@@ -205,17 +205,11 @@ public class Fido extends StdRace
 			case Race.AGE_TODDLER:
 				return name().toLowerCase()+" puppy";
 			case Race.AGE_CHILD:
-				switch(gender)
-				{
-				case 'M':
-				case 'm':
-					return "boy " + name().toLowerCase() + " puppy";
-				case 'F':
-				case 'f':
-					return "girl " + name().toLowerCase() + " puppy";
-				default:
-					return "young " + name().toLowerCase();
-				}
+			{
+				CharStats cs = (CharStats)CMClass.getCommon("DefaultCharStats");
+				cs.setStat(CharStats.STAT_GENDER, gender);
+				return cs.boygirl()+" " + name().toLowerCase() + " puppy";
+			}
 			default:
 				return super.makeMobName(gender, age);
 		}

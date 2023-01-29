@@ -79,8 +79,7 @@ public class HealthScanProgram extends GenSoftware
 		if(R==null)
 			return "";
 		final StringBuilder str=new StringBuilder("");
-		final char gender=(char)M.charStats().getStat(CharStats.STAT_GENDER);
-		final String genderName=(gender=='M')?"male":(gender=='F')?"female":"neuter";
+		final String genderName=M.charStats().realGenderName();
 		str.append(M.name(viewerM)+" is a "+genderName+" "+M.charStats().getMyRace().name()+".\n\r");
 		final String age=CMLib.flags().getAge(M);
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING))

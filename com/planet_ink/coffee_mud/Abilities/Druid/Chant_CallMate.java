@@ -242,7 +242,7 @@ public class Chant_CallMate extends Chant
 			level=1;
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(R);
-		final char casterGender = (char)caster.charStats().getStat(CharStats.STAT_GENDER);
+		final char casterGender = caster.charStats().reproductiveCode();
 		final char mobGender = casterGender == 'M' ? 'F' : 'M';
 		final int oldCat=caster.baseCharStats().ageCategory();
 		String name=R.makeMobName(mobGender, R.getAgingChart()[oldCat]);

@@ -1717,6 +1717,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			Resources.removeResource("text/doneacct.txt");
 		if(Resources.getResource("text/stats.txt")!=null)
 			Resources.removeResource("text/stats.txt");
+		if(Resources.getResource("text/gender.txt")!=null)
+			Resources.removeResource("text/gender.txt");
 		if(Resources.getResource("text/classes.txt")!=null)
 			Resources.removeResource("text/classes.txt");
 		if(Resources.getResource("text/alignment.txt")!=null)

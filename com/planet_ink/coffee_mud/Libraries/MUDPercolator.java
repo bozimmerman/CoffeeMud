@@ -1691,7 +1691,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							if(R!=null)
 							{
 								M.baseCharStats().setMyRace(R);
-								R.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+								R.setHeightWeight(M.basePhyStats(),M.baseCharStats().reproductiveCode());
 							}
 						}
 						return value;

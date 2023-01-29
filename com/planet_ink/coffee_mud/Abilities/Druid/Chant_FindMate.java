@@ -202,10 +202,10 @@ public class Chant_FindMate extends Chant
 			return false;
 		if((mate==null)||(forMe==null))
 			return false;
-		if(mate.charStats().getStat(CharStats.STAT_GENDER)==forMe.charStats().getStat(CharStats.STAT_GENDER))
+		if(mate.charStats().reproductiveCode()==forMe.charStats().reproductiveCode())
 			return false;
-		if((mate.charStats().getStat(CharStats.STAT_GENDER)!='M')
-		&&(mate.charStats().getStat(CharStats.STAT_GENDER)!='F'))
+		if((mate.charStats().reproductiveCode()!='M')
+		&&(mate.charStats().reproductiveCode()!='F'))
 			return false;
 		if(((mate.charStats().getMyRace().ID().equals("Human"))
 		   ||(mate.charStats().getMyRace().ID().equals("Human"))
@@ -222,8 +222,8 @@ public class Chant_FindMate extends Chant
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		if((target.charStats().getStat(CharStats.STAT_GENDER)!='M')
-		&&(target.charStats().getStat(CharStats.STAT_GENDER)!='F'))
+		if((target.charStats().reproductiveCode()!='M')
+		&&(target.charStats().reproductiveCode()!='F'))
 		{
 			mob.tell(L("@x1 is incapable of mating!",target.name(mob)));
 			return false;

@@ -120,7 +120,7 @@ public class Spell_Grow extends Spell
 		{
 			final MOB mob=(MOB)affected;
 			if(getOldWeight()<1)
-				mob.baseCharStats().getMyRace().setHeightWeight(mob.basePhyStats(),(char)mob.baseCharStats().getStat(CharStats.STAT_GENDER));
+				mob.baseCharStats().getMyRace().setHeightWeight(mob.basePhyStats(),mob.baseCharStats().reproductiveCode());
 			else
 				mob.basePhyStats().setWeight(getOldWeight());
 			if((mob.location()!=null)&&(!mob.amDead()))

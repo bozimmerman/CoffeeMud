@@ -144,7 +144,7 @@ public class Thief_Panhandling extends ThiefSkill
 						CMLib.commands().postSay(mob,mob2,L("A little something for a vet please?"),false,false);
 						break;
 					case 2:
-						CMLib.commands().postSay(mob,mob2,L("Spare a gold piece @x1",((mob2.charStats().getStat(CharStats.STAT_GENDER)=='M')?"mister?":"madam?")),false,false);
+						CMLib.commands().postSay(mob,mob2,L("Spare a gold piece @x1",mob2.charStats().MisterMadam().toLowerCase()),false,false);
 						break;
 					case 3:
 						CMLib.commands().postSay(mob,mob2,L("Spare some change?"),false,false);

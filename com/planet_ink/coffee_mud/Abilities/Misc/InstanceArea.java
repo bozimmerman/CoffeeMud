@@ -1102,7 +1102,7 @@ public class InstanceArea extends StdAbility
 							Log.errOut("InstanceArea","Unknown mixrace: "+mixRace);
 						else
 						{
-							final boolean mixWithMale = M.charStats().getStat(CharStats.STAT_GENDER) == 'M';
+							final boolean mixWithMale = M.charStats().reproductiveCode() == 'M';
 							final Race fatherR=mixWithMale?M.charStats().getMyRace():motherR;
 							motherR=mixWithMale?motherR:M.charStats().getMyRace();
 							final Race R=CMLib.utensils().getMixedRace(motherR.ID(),fatherR.ID(), false);

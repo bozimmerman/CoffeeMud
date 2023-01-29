@@ -209,7 +209,7 @@ public class Druid_ShapeShift extends StdAbility
 			final int raceCode = getRaceCode();
 			final int maxRaceLevel = getMaxCharLevel(myRaceLevel);
 			final int adjustedLevel = ((maxRaceLevel<affectableStats.level()) ? maxRaceLevel : affectableStats.level()) + xlvl;
-			newRace.setHeightWeight(stats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
+			newRace.setHeightWeight(stats,((MOB)affected).charStats().reproductiveCode());
 			if(oldAdd>0)
 				stats.setWeight(stats.weight()+oldAdd);
 			final ShiftShapeForm form=Druid_ShapeShift.getShapeData().get(raceCode);

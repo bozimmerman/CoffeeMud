@@ -611,7 +611,7 @@ public class Mood extends StdAbility
 							str = L("Humbly speaking, @x1", str);
 							break;
 						default:
-							if(msg.source().charStats().getStat(CharStats.STAT_GENDER)=='F')
+							if(msg.source().charStats().reproductiveCode()=='F')
 							{
 								if(M!=null)
 									msg.source().doCommand(new XVector<String>("CURTSEY",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);

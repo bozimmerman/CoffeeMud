@@ -100,7 +100,7 @@ public class Beggar extends StdBehavior
 					CMLib.commands().postSay(mob,mob2,L("A little something for a vet please?"),false,false);
 					break;
 				case 2:
-					CMLib.commands().postSay(mob,mob2,L("Spare a gold piece @x1",((mob2.charStats().getStat(CharStats.STAT_GENDER)=='M')?"mister?":"madam?")),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Spare a gold piece @x1",mob2.charStats().MisterMadam()+"?"),false,false);
 					break;
 				case 3:
 					CMLib.commands().postSay(mob,mob2,L("Spare some change?"),false,false);
@@ -108,7 +108,7 @@ public class Beggar extends StdBehavior
 				case 4:
 					CMLib.commands().postSay(mob,mob2,L("Please @x1, a little something for a(n) @x2 down on @x3 luck?",
 							mob2.charStats().MisterMadam(),
-							((mob.charStats().getStat(CharStats.STAT_GENDER)=='M')?"man":"woman"),
+							mob.charStats().manwoman(),
 							mob.charStats().hisher()),false,false);
 					break;
 				case 5:
@@ -117,7 +117,7 @@ public class Beggar extends StdBehavior
 					break;
 				case 6:
 					CMLib.commands().postSay(mob,mob2,L("Spread a little joy to a poor @x1?",
-							((mob.charStats().getStat(CharStats.STAT_GENDER)=='M')?"fella":"gal")),
+							((mob.charStats().reproductiveCode()=='M')?"fella":"gal")),
 							false,false);
 					break;
 				case 7:
@@ -132,7 +132,7 @@ public class Beggar extends StdBehavior
 				case 10:
 					CMLib.commands().postSay(mob,mob2,L("Gold piece for a poor @x2 down on @x1 luck?",
 														mob.charStats().hisher(),
-														((mob.charStats().getStat(CharStats.STAT_GENDER)=='M')?"fella":"gal")
+														((mob.charStats().reproductiveCode()=='M')?"fella":"gal")
 														),false,false);
 					break;
 				}
