@@ -632,9 +632,9 @@ public class PlayerData extends StdWebMacro
 					&&(gset[0][0].toString().length()>0))
 					{
 						char c= Character.toUpperCase(gset[0][0].toString().charAt(0));
-						str.append("<OPTION");
+						str.append("<OPTION ");
 						if(Character.toUpperCase(old.charAt(0)) == c)
-							str.append(" SELECTED ");
+							str.append("SELECTED ");
 						str.append("VALUE="+c+">"+c);
 					}
 				}
