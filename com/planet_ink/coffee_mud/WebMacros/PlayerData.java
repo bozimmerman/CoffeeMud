@@ -625,13 +625,12 @@ public class PlayerData extends StdWebMacro
 				String old=httpReq.getUrlParameter("BASEGENDER");
 				if(firstTime)
 					old=""+(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
-				for(final Object[][] gset : CMProps.getListFileGrid(ListFile.GENDERS))
+				for(final Object[] gset : CMProps.getListFileStringChoices(ListFile.GENDERS))
 				{
 					if((gset.length>0)
-					&&(gset[0].length>0)
-					&&(gset[0][0].toString().length()>0))
+					&&(gset[0].toString().length()>0))
 					{
-						char c= Character.toUpperCase(gset[0][0].toString().charAt(0));
+						char c= Character.toUpperCase(gset[0].toString().charAt(0));
 						str.append("<OPTION ");
 						if(Character.toUpperCase(old.charAt(0)) == c)
 							str.append("SELECTED ");

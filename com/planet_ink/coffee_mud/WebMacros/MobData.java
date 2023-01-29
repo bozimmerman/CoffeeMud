@@ -1353,14 +1353,13 @@ public class MobData extends StdWebMacro
 				{
 					if(firstTime)
 						old=""+((char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
-					for(final Object[][] gset : CMProps.getListFileGrid(ListFile.GENDERS))
+					for(final Object[] gset : CMProps.getListFileStringChoices(ListFile.GENDERS))
 					{
 						if((gset.length>0)
-						&&(gset[0].length>0)
-						&&(gset[0][0].toString().length()>0))
+						&&(gset[0].toString().length()>0))
 						{
-							char c= Character.toUpperCase(gset[0][0].toString().charAt(0));
-							String nm = gset[2][0].toString();
+							char c= Character.toUpperCase(gset[0].toString().charAt(0));
+							String nm = gset[2].toString();
 							str.append("<INPUT TYPE=RADIO NAME=GENDER");
 							if(Character.toUpperCase(old.charAt(0)) == c)
 								str.append(" CHECKED ");

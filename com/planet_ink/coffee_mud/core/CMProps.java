@@ -616,6 +616,7 @@ public class CMProps extends Properties
 	protected int				 pkillLevelDiff		= 26;
 	protected boolean			 loaded				= false;
 	protected byte[]			 promptSuffix		= new byte[0];
+	protected final String[][]	 genderDefs			= new String[256][];
 	protected long				 lastReset			= System.currentTimeMillis();
 	protected long  			 TIME_TICK			= 4000;
 	protected long  			 MILLIS_PER_MUDHOUR	= 600000;
@@ -2127,6 +2128,8 @@ public class CMProps extends Properties
 						p.sysLstFileLists[lfVar.ordinal()]=null;
 						p.sysLstFileSet[lfVar.ordinal()]=null;
 					}
+					for(int i=0;i<p.genderDefs.length;i++)
+						p.genderDefs[i]=null;
 				}
 			}
 		}
@@ -2136,6 +2139,50 @@ public class CMProps extends Properties
 		return val;
 	}
 
+	/**
+	 * Returns a pre-parsed version of the GENDER entry from the INI file 
+	 * corresponding to the given gender code, which must be an uppercase
+	 * letter.
+	 * 
+	 * @param index the uppercase letter code
+	 * @return the gender strings (pronouns, mostly)
+	 */
+	public static String[] getGenderDef(int index)
+	{
+		if((index < 0)||(index > 255))
+			index = 0;
+		final CMProps p=p();
+		if(p.genderDefs[index] == null)
+		{
+			int lastDex = -1;
+			for(final Object[] gendSet : CMProps.getListFileStringChoices(CMProps.ListFile.GENDERS))
+			{
+				if((gendSet.length>0)
+				&&(gendSet[0] instanceof String)
+				&&(((String)gendSet[0]).length()>0))
+				{
+					final char cd = Character.toUpperCase(((String)gendSet[0]).charAt(0));
+					p.genderDefs[cd] = new String[gendSet.length-1];
+					for(int i=1;i<gendSet.length;i++)
+						p.genderDefs[cd][i-1] = (String)gendSet[i];
+					lastDex = cd;
+				}
+			}
+			if(p.genderDefs[index] == null)
+			{
+				if(lastDex < 0)
+				{
+					p.genderDefs[index] = new String[20];
+					Arrays.fill(p.genderDefs, "UNK");
+				}
+				else
+					p.genderDefs[index] = p.genderDefs[lastDex];
+			}
+		}
+		return p.genderDefs[index];
+		
+	}
+	
 	/**
 	 * Returns the first integer in the integer array from the lists.ini file of
 	 * the given ListFile entry, for the callers thread group.
@@ -2207,7 +2254,7 @@ public class CMProps extends Properties
 	 * @param var the list entry to return
 	 * @return the two-dimensional list.
 	 */
-	private static final Object[][] getListFileStringChoices(final ListFile var)
+	public static final Object[][] getListFileStringChoices(final ListFile var)
 	{
 		if(var==null)
 			return new Object[0][];

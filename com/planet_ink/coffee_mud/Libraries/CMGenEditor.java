@@ -3938,15 +3938,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		StringBuilder str = new StringBuilder("");
 		StringBuilder cstr = new StringBuilder("");
-		for(final Object[][] gset : CMProps.getListFileGrid(ListFile.GENDERS))
+		for(final Object[] gset : CMProps.getListFileStringChoices(ListFile.GENDERS))
 		{
 			if((gset.length>0)
-			&&(gset[0].length>0)
-			&&(gset[0][0].toString().length()>0))
+			&&(gset[0].toString().length()>0))
 			{
 				if(str.length()>0)
 					str.append("/");
-				char c = gset[0][0].toString().charAt(0);
+				char c = gset[0].toString().charAt(0);
 				str.append(c);
 				cstr.append(c);
 			}

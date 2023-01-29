@@ -2945,16 +2945,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult charcrGenderStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		StringBuilder str = new StringBuilder("");
-		for(final Object[][] gset : CMProps.getListFileGrid(ListFile.GENDERS))
+		for(final Object[] gset : CMProps.getListFileStringChoices(ListFile.GENDERS))
 		{
 			if((gset.length>0)
-			&&(gset[0].length>0)
-			&&(gset[0][0].toString().length()>0)
-			&&(!gset[0][0].toString().equalsIgnoreCase("N")))
+			&&(gset[0].toString().length()>0)
+			&&(!gset[0].toString().trim().endsWith("-")))
 			{
 				if(str.length()>0)
 					str.append("/");
-				str.append(gset[0][0].toString().charAt(0));
+				str.append(gset[0].toString().charAt(0));
 			}
 		}
 		StringBuffer genderIntro=new CMFile(Resources.buildResourcePath("text")+"gender.txt",null,CMFile.FLAG_LOGERRORS).text();
@@ -2985,7 +2984,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			&&(gset[0].length>0)
 			&&(gset[0][0].toString().length()>0)
 			&&(gender.startsWith(""+gset[0][0].toString().charAt(0)))
-			&&(!gset[0][0].toString().equalsIgnoreCase("N")))
+			&&(!gset[0][0].toString().trim().endsWith("-")))
 				found=true;
 		}
 		if(!found)
