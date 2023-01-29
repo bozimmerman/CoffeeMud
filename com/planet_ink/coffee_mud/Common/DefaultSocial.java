@@ -635,52 +635,54 @@ public class DefaultSocial implements Social
 		int otherCode = fullCode;
 		int srcCode = srcMask | getSourceCode();
 
-		String You_see = getSourceMessage();
-		if ((You_see != null)
-		&& (You_see.trim().length() == 0))
+		String youSee = getSourceMessage();
+		if ((youSee != null)
+		&& (youSee.trim().length() == 0))
 		{
-			You_see = null;
+			youSee = null;
 			srcCode = CMMsg.NO_EFFECT;
 		}
 		else
-			You_see = str + You_see + end + mspFile;
-
-		String Third_party_sees = getOthersMessage();
-		if ((Third_party_sees != null)
-		&& (Third_party_sees.trim().length() == 0))
+			youSee = str + youSee + end + mspFile;
+		
+		String thirdPartySees = getOthersMessage();
+		if ((thirdPartySees != null)
+		&& (thirdPartySees.trim().length() == 0))
 		{
-			Third_party_sees = null;
+			thirdPartySees = null;
 			otherCode = CMMsg.NO_EFFECT;
 		}
 		else
-			Third_party_sees = str + Third_party_sees + end + mspFile;
-
-		String Target_sees = getTargetMessage();
-		if ((Target_sees != null)
-		&& (Target_sees.trim().length() == 0))
-		{
-			Target_sees = null;
-			targetCode = CMMsg.NO_EFFECT;
-		}
-		else
-			Target_sees = str + Target_sees + end + mspFile;
-
-		String See_when_no_target = getFailedTargetMessage();
-		if ((See_when_no_target != null)
-		&& (See_when_no_target.trim().length() == 0))
-			See_when_no_target = null;
-		else
-			See_when_no_target = str + See_when_no_target + end;
+			thirdPartySees = str + thirdPartySees + end + mspFile;
 
 		CMMsg msg = null;
 		if (((target == null) && (targetable(null)))
 		|| ((target != null) && (!targetable(target))))
-			msg = CMClass.getMsg(mob, null, this, srcCode, See_when_no_target, CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null);
+		{
+			String seeWhenNoTarget = getFailedTargetMessage();
+			if ((seeWhenNoTarget == null)
+			|| (seeWhenNoTarget.trim().length() == 0))
+				seeWhenNoTarget = null;
+			else
+				seeWhenNoTarget = str + seeWhenNoTarget + end;
+			msg = CMClass.getMsg(mob, null, this, srcCode, seeWhenNoTarget, CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null);
+		}
 		else
 		if (target == null)
-			msg = CMClass.getMsg(mob, null, this, srcCode, You_see, CMMsg.NO_EFFECT, null, otherCode, Third_party_sees);
+			msg = CMClass.getMsg(mob, null, this, srcCode, youSee, CMMsg.NO_EFFECT, null, otherCode, thirdPartySees);
 		else
-			msg = CMClass.getMsg(mob, target, this, srcCode, You_see, targetCode, Target_sees, otherCode, Third_party_sees);
+		{
+			String targetSees = getTargetMessage();
+			if ((targetSees != null)
+			&& (targetSees.trim().length() == 0))
+			{
+				targetSees = null;
+				targetCode = CMMsg.NO_EFFECT;
+			}
+			else
+				targetSees = str + targetSees + end + mspFile;
+			msg = CMClass.getMsg(mob, target, this, srcCode, youSee, targetCode, targetSees, otherCode, thirdPartySees);
+		}
 		return msg;
 	}
 
