@@ -9,7 +9,7 @@
 -BASECLASS +thief +mage (<WORD> all but excepted base char classes)
 +BASECLASS -thief -mage  -bard (<WORD> only listed base char classes)
 -RACE +elf +dwarf (<WORD> all but excepted races)
-+RACE -elf -dwarf -human -half -gnome (<WORD> only listed races)
++RACE -elf -dwarf -human -gnome (<WORD> only listed races)
 -RACECAT +elf +insect +humanoid (<WORD> all but listed racial categories)
 +RACECAT -elf -humanoid (<WORD> only listed racial categories)
 -ALIGNMENT +evil +neutral +good (<WORD> all but excepted alignments)
