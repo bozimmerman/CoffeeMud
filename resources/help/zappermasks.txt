@@ -7,7 +7,7 @@
 -CLASS +thief +mage +ranger (<WORD> all but excepted char classes)
 +CLASS -thief -mage  -ranger (<WORD> only listed classes)
 -BASECLASS +thief +mage (<WORD> all but excepted base char classes)
-+BASECLASS -thief -mage  -ranger (<WORD> only listed base char classes)
++BASECLASS -thief -mage  -bard (<WORD> only listed base char classes)
 -RACE +elf +dwarf (<WORD> all but excepted races)
 +RACE -elf -dwarf -human -half -gnome (<WORD> only listed races)
 -RACECAT +elf +insect +humanoid (<WORD> all but listed racial categories)
