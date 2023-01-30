@@ -201,10 +201,7 @@ public class Sleep extends StdCommand implements Tickable
 			}
 			if(wakeMeUp || (!isSleeping))
 			{
-				synchronized(untilMap)
-				{
-					untilMap.remove(M);
-				}
+				e.remove();
 			}
 			if(wakeMeUp && isSleeping)
 			{
