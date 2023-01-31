@@ -154,7 +154,9 @@ function PlaySound(key,playerName,url,repeats,volume,priority)
 			theSoundPlayer.stop();
 		document.childNodes[0].removeChild(theSoundPlayer);
 	}
-	theSoundPlayer=document.createElement('embed');
+	theSoundPlayer=document.createElement('audio');
+	if(!theSoundPlayer || !theSoundPlayer.play) 
+		theSoundPlayer=document.createElement('embed');
 	if(!theSoundPlayer) return;
 	sounders[playerName]=theSoundPlayer;
 	soundDates[playerName]=new Date();
