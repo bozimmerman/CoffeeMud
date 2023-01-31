@@ -53,6 +53,7 @@
 			@endif@
 			</TD></TR>
 			<TR><TD ALIGN=RIGHT>
+			<INPUT TYPE=BUTTON NAME=DEVIABUTT VALUE="Deviations" ONCLICK="Clicked('/grinder/deviations.cmvp');">
 			@if?CheckAuthCode?AUTH_EXPORT=true@
 			<INPUT TYPE=BUTTON NAME=EXPORT VALUE="Export Data" ONCLICK="Clicked('/AreaXML');">
 			@endif@

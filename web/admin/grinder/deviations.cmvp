@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+	<META CHARSET="utf-8"/>
+<head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/grinder/grinder.css">
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+	<title>CoffeeMud MUDGrinder</title>
+	<SCRIPT LANGUAGE=JavaScript>
+	<!--
+		function OpenUp(file,named)
+		{
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/"+file+"?HELPTOPIC="+named,
+			            "Help",strFeatures, false);
+		}
+		function EditBehavior(ME)
+		{
+			if(ME.selectedIndex==0)
+				ReShow();
+		}
+		function AddBehavior(ME)
+		{
+			if(ME.selectedIndex>0)
+				ReShow();
+		}
+		function EditAffect(ME)
+		{
+			if(ME.selectedIndex==0)
+				ReShow();
+		}
+		function AddAffect(ME)
+		{
+			if(ME.selectedIndex>0)
+				ReShow();
+		}
+        function EditSubOp(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddSubOp(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function EditAreaParent(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddAreaParent(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function EditAreaChild(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddAreaChild(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+		function ReShow()
+		{
+			document.AREAEDIT.action='/grinder/editareaform.cmvp';
+			document.AREAEDIT.target='MAP';
+			document.AREAEDIT.submit();
+		}
+	//-->
+	</SCRIPT>
+</head>
+<BODY>
+<CENTER>
+@if?CheckReqParm?ROOM=@
+<h3>Stat Deviations for items and mobs in '@AreaName@'.</H3>
+@else@
+<h3>Stat Deviations for items and mobs in '@RoomID@'.</H3>
+@endif@
+<BR>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/modarea.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaID@">
+<INPUT TYPE=HIDDEN NAME=ACTION VALUE="MODIFYAREA">
+<INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
+<INPUT TYPE=HIDDEN NAME=MAPLEVEL VALUE="@RequestParameter?MAPLEVEL@">
+<TABLE WIDTH=770 BORDER=1 CELLSPACING=0 CELLPADDIN=0>
+<TR>
+@if?CheckReqParm?ROOM=@
+	<TD WIDTH=170><FONT COLOR="#66FFFF"><B>Deviations from Normalized Stats:</B></FONT></TD>
+@endif@
+    <TD WIDTH=600 COLSPAN=2>
+	<PRE>
+	@if?CheckReqParm?ROOM=@
+		@AreaData?DEVIATIONS@
+	@else@
+		@RoomData?DEVIATIONS@
+	@endif@
+	</PRE>
+	</SELECT>
+	</TD>
+</TR>
+</TABLE>
+@if?CheckReqParm?ROOM=@
+	<INPUT TYPE=SUBMIT NAME="IRRELEVANT" VALUE="Finished">
+@else@
+	<INPUT TYPE=BUTTON NAME="IRRELEVANT" VALUE="Finished" ONCLICK="window.close();">
+@endif@
+</FORM>
+</CENTER>
+</BODY>
+</HTML>
+@endif@
+@endif@

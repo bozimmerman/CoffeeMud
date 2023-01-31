@@ -107,25 +107,39 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	@Override
 	public int getLevelAttack(final MOB mob)
 	{
+		//also update timsLevelCalculator(final MOB M)
 		return ((mob.basePhyStats().level()-1)*getAttackBonusNextLevel(mob)) + mob.basePhyStats().level();
 	}
 
 	@Override
 	public int getLevelMOBArmor(final MOB mob)
 	{
-		return 100-(int)Math.round(CMath.mul(mob.basePhyStats().level(),3.0));
+		//also update timsLevelCalculator(final MOB M)
+		return 103-(int)Math.round(CMath.mul(mob.basePhyStats().level(),3.0));
 	}
 
 	@Override
 	public int getLevelMOBDamage(final MOB mob)
 	{
+		//also update timsLevelCalculator(final MOB M)
 		return (mob.basePhyStats().level());
 	}
 
 	@Override
 	public double getLevelMOBSpeed(final MOB mob)
 	{
+		//also update timsLevelCalculator(final MOB M)
 		return 1.0+Math.floor(CMath.div(mob.basePhyStats().level(),30.0));
+	}
+
+	@Override
+	public int getPowerLevel(final MOB M)
+	{
+		final double dmgLevel = M.phyStats().damage();
+		final double speedLevel = 1.0 + (M.phyStats().speed()-1.0)*30.0;
+		final double armLevel = ((103 - M.phyStats().armor()) / 3.0);
+		final double attLevel = M.phyStats().attackAdjustment() / (1 + getAttackBonusNextLevel(M));
+		return (int)Math.round((dmgLevel+speedLevel+armLevel+attLevel)/4.0);
 	}
 
 	public int getMoveBonusNextLevel(final MOB mob)

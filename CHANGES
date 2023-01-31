@@ -2,7 +2,9 @@
   1. GMODIFY can now affect Areas.
   2. New Races; Mustalids, Badger, Otter, Wolverine
   3. Genders are now defined in lists.ini
-  4. Socials update  
+  4. Socials update
+  5. New Deviations features: mob power levels, sorting
+  6. New Deviations button in the MUDGrinder map and room editors
 
 # Build 5.10.1 Release 1/01/2023
   1. FasterRecovery expanded and new char stat REJUVRATE for Prop*Adjuster

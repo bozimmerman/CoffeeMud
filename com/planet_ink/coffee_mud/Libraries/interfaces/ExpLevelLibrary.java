@@ -301,6 +301,15 @@ public interface ExpLevelLibrary extends CMLibrary
 	public double getLevelMOBSpeed(MOB mob);
 
 	/**
+	 * Returns the combat power level of the mob based
+	 * on basic combat stats.
+	 *
+	 * @param M the mob to get the power level of
+	 * @return the power level
+	 */
+	public int getPowerLevel(final MOB M);
+
+	/**
 	 * Returns the amount of movement the given mob would have being their
 	 * current base class.
 	 * @see ExpLevelLibrary#getLevelMana(MOB)

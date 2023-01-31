@@ -39,6 +39,8 @@ public class Deviations extends StdCommand
 	{
 	}
 
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Area.class}, {Room.class}};
+
 	private final String[]	access	= I(new String[] { "DEVIATIONS" });
 
 	@Override
@@ -53,19 +55,201 @@ public class Deviations extends StdCommand
 		return true;
 	}
 
+	/** a constant used in the Deviations to filter on only items */
+	public static final Filterer<Environmental> FILTER_ITEMONLY=new Filterer<Environmental>()
+	{
+		@Override
+		public boolean passesFilter(final Environmental obj)
+		{
+			return (obj instanceof Item);
+		}
+	};
+
+	/** a constant used in the Deviations to filter on only items */
+	public static final Filterer<Environmental> FILTER_MOBONLY=new Filterer<Environmental>()
+	{
+		@Override
+		public boolean passesFilter(final Environmental obj)
+		{
+			return (obj instanceof MOB);
+		}
+	};
+
+	/** a constant used in the Deviations to filter on only items */
+	public static final Filterer<Environmental> FILTER_WEAPONONLY=new Filterer<Environmental>()
+	{
+		@Override
+		public boolean passesFilter(final Environmental obj)
+		{
+			return (obj instanceof Weapon);
+		}
+	};
+
+	/** a constant used in the Deviations to filter on only items */
+	public static final Filterer<Environmental> FILTER_ARMORONLY=new Filterer<Environmental>()
+	{
+		@Override
+		public boolean passesFilter(final Environmental obj)
+		{
+			return (obj instanceof Armor);
+		}
+	};
+
+	/** a constant used in the Deviations to filter on only items */
+	public static final Filterer<Environmental> FILTER_ALL=new Filterer<Environmental>()
+	{
+		@Override
+		public boolean passesFilter(final Environmental obj)
+		{
+			return true;
+		}
+	};
+
+	protected enum DeviationType
+	{
+		MOBS(FILTER_MOBONLY),
+		ITEMS(FILTER_ITEMONLY),
+		WEAPONS(FILTER_WEAPONONLY),
+		ARMORS(FILTER_ARMORONLY),
+		BOTH(FILTER_ALL)
+		;
+		public Filterer<Environmental> filter;
+		private DeviationType(final Filterer<Environmental> filter)
+		{
+			this.filter = filter;
+		}
+	}
+
+	/** a constant used in the Deviations to filter on only items */
+	public static final Comparator<Environmental> SORTBY_NAME=new Comparator<Environmental>()
+	{
+		@Override
+		public int compare(final Environmental o1, final Environmental o2)
+		{
+			return o1.Name().toUpperCase().compareTo(o2.Name().toUpperCase());
+		}
+	};
+
+	/** a constant used in the Deviations to filter on only items */
+	public static final Comparator<Environmental> SORTBY_LEVEL=new Comparator<Environmental>()
+	{
+		@Override
+		public int compare(final Environmental o1, final Environmental o2)
+		{
+			if(o1 instanceof Physical)
+			{
+				if(o2 instanceof Physical)
+				{
+					final int l1 = ((Physical)o1).phyStats().level();
+					final int l2 = ((Physical)o2).phyStats().level();
+					if(l1<l2) return -1;
+					if(l1 == l2) return 0;
+					return 1;
+				}
+				else
+					return 1;
+			}
+			else
+			if(o2 instanceof Physical)
+				return -1;
+			return 0;
+		}
+	};
+
+	/** a constant used in the Deviations to filter on only items */
+	public static final Comparator<Environmental> SORTBY_PLEVEL=new Comparator<Environmental>()
+	{
+		@Override
+		public int compare(final Environmental o1, final Environmental o2)
+		{
+			if(o1 instanceof Item)
+			{
+				if(o2 instanceof Item)
+				{
+					final int l1 = CMLib.itemBuilder().timsLevelCalculator((Item)o1);
+					final int l2 = CMLib.itemBuilder().timsLevelCalculator((Item)o2);
+					if(l1<l2) return -1;
+					if(l1 == l2) return 0;
+					return 1;
+				}
+				else
+				if(o2 instanceof MOB)
+					return -1;
+				else
+					return 1;
+			}
+			else
+			if(o1 instanceof MOB)
+			{
+				if(o2 instanceof MOB)
+				{
+					final int l1 = CMLib.leveler().getPowerLevel((MOB)o1);
+					final int l2 = CMLib.leveler().getPowerLevel((MOB)o2);
+					if(l1<l2) return -1;
+					if(l1 == l2) return 0;
+					return 1;
+				}
+				else
+				if(o2 instanceof Item)
+					return 1;
+				else
+					return -1;
+			}
+			else
+			if(o2 instanceof Physical)
+				return -1;
+			return 0;
+		}
+	};
+
+	/** a constant used in the Deviations to filter on only items */
+	public static final Comparator<Environmental> SORTBY_TYPE=new Comparator<Environmental>()
+	{
+		private Integer code(final Environmental o)
+		{
+			if(o instanceof MOB)
+				return Integer.valueOf(0);
+			if(o instanceof Armor)
+				return Integer.valueOf(1);
+			if(o instanceof Weapon)
+				return Integer.valueOf(2);
+			return Integer.valueOf(3);
+		}
+		@Override
+		public int compare(final Environmental o1, final Environmental o2)
+		{
+			return code(o1).compareTo(code(o2));
+		}
+	};
+
+	protected enum DevSortBy
+	{
+		NAME(SORTBY_NAME),
+		TYPE(SORTBY_TYPE),
+		LEVEL(SORTBY_LEVEL),
+		PLEVEL(SORTBY_PLEVEL)
+		;
+		Comparator<Environmental> comp;
+		private DevSortBy(final Comparator<Environmental> comp)
+		{
+			this.comp=comp;
+		}
+	}
+
 	protected String mobHeader(final Faction useFaction)
 	{
 		final StringBuffer str=new StringBuffer();
 		str.append("\n\r");
 		str.append(CMStrings.padRight(L("Name"),20)+" ");
-		str.append(CMStrings.padRight(L("Lvl"),4)+" ");
+		str.append(CMStrings.padRight(L("Lvl"),3)+" ");
+		str.append(CMStrings.padRight(L("Pwr"),3)+" ");
 		str.append(CMStrings.padRight(L("Att"),5)+" ");
 		str.append(CMStrings.padRight(L("Dmg"),5)+" ");
 		str.append(CMStrings.padRight(L("Armor"),5)+" ");
 		str.append(CMStrings.padRight(L("Speed"),5)+" ");
-		str.append(CMStrings.padRight(L("Rejuv"),5)+" ");
+		str.append(CMStrings.padRight(L("Rejv"),4)+" ");
 		if(useFaction!=null)
-			str.append(CMStrings.padRight(useFaction.name(),7)+" ");
+			str.append(CMStrings.padRight(useFaction.name(),5)+" ");
 		str.append(CMStrings.padRight(L("Money"),5)+" ");
 		str.append(CMStrings.padRight(L("Worn"),5));
 		str.append("\n\r");
@@ -78,7 +262,7 @@ public class Deviations extends StdCommand
 		str.append("\n\r");
 		str.append(CMStrings.padRight(L("Name"),20)+" ");
 		str.append(CMStrings.padRight(L("Type"),10)+" ");
-		str.append(CMStrings.padRight(L("Lvl"),3)+"--");
+		str.append(CMStrings.padRight(L("Lvl"),3)+" ");
 		str.append(CMStrings.padRight(L("Pwr"),4)+" ");
 		str.append(CMStrings.padRight(L("Att"),5)+" ");
 		str.append(CMStrings.padRight(L("Dmg"),5)+" ");
@@ -90,8 +274,12 @@ public class Deviations extends StdCommand
 		return str.toString();
 	}
 
-	public boolean alreadyDone(final Environmental E, final List<Environmental> itemsDone)
+	public boolean alreadyDone(final Environmental E, final Environmental actualE,
+							   final List<Environmental> itemsDone, final Map<Environmental,Set<String>> locMap)
 	{
+		if(!locMap.containsKey(E))
+			locMap.put(E, new TreeSet<String>());
+		locMap.get(E).add(CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(actualE)));
 		for(int i=0;i<itemsDone.size();i++)
 		{
 			if(itemsDone.get(i).sameAs(E))
@@ -113,88 +301,94 @@ public class Deviations extends StdCommand
 			}
 		}
 	}
-	
-	private void fillCheckDeviations(final Room R, final String type, final List<Environmental> check)
+
+	private void fillCheckDeviations(final Room R, final Filterer<Environmental> filter, final List<Environmental> check,
+			final Map<Environmental,Set<String>> locMap)
 	{
-		if(type.equalsIgnoreCase("mobs")||type.equalsIgnoreCase("both"))
+		for(int m=0;m<R.numInhabitants();m++)
 		{
-			for(int m=0;m<R.numInhabitants();m++)
-			{
-				final MOB M=R.fetchInhabitant(m);
-				if((M!=null)&&(M.isSavable())&&(!alreadyDone(M,check)))
-					check.add(M);
-			}
+			final MOB M=R.fetchInhabitant(m);
+			if((M!=null)
+			&&(!M.isPlayer())
+			&&(filter.passesFilter(M))
+			&&(M.isSavable())
+			&&(!alreadyDone(M,M,check,locMap)))
+				check.add(M);
 		}
-		if(type.equalsIgnoreCase("items")||type.equalsIgnoreCase("both"))
+		for(int i=0;i<R.numItems();i++)
 		{
-			for(int i=0;i<R.numItems();i++)
+			final Item I=R.getItem(i);
+			if((I!=null)
+			&&(filter.passesFilter(I))
+			&&((I instanceof Armor)||(I instanceof Weapon))
+			&&(!alreadyDone(I,I,check,locMap)))
 			{
-				final Item I=R.getItem(i);
-				if((I!=null)
-				&&((I instanceof Armor)||(I instanceof Weapon))
-				&&(!alreadyDone(I,check)))
+				final Item checkI=(Item)I.copyOf();
+				CMLib.threads().deleteAllTicks(checkI);
+				delAllEffects(checkI);
+				checkI.setContainer(null);
+				checkI.setOwner(null);
+				checkI.recoverPhyStats();
+				if(!alreadyDone(checkI,I,check,locMap))
 				{
-					final Item checkI=(Item)I.copyOf();
-					CMLib.threads().deleteAllTicks(checkI);
-					delAllEffects(checkI);
-					checkI.setContainer(null);
-					checkI.setOwner(null);
-					checkI.recoverPhyStats();
-					if(!alreadyDone(checkI,check))
-						check.add(checkI);
-					else
-						checkI.destroy();
+					check.add(checkI);
+				}
+				else
+				{
+					checkI.destroy();
 				}
 			}
-			for(int m=0;m<R.numInhabitants();m++)
+		}
+		for(int m=0;m<R.numInhabitants();m++)
+		{
+			final MOB M=R.fetchInhabitant(m);
+			if((M!=null)
+			&&(!M.isPlayer())
+			&&(M.getStartRoom()!=null))
 			{
-				final MOB M=R.fetchInhabitant(m);
-				if((M!=null)
-				&&(!M.isPlayer())
-				&&(M.getStartRoom()!=null))
+				for(int i=0;i<M.numItems();i++)
 				{
-					for(int i=0;i<M.numItems();i++)
+					final Item I=M.getItem(i);
+					if((I!=null)
+					&&(filter.passesFilter(I))
+					&&((I instanceof Armor)||(I instanceof Weapon))
+					&&(!alreadyDone(I,I,check,locMap)))
 					{
-						final Item I=M.getItem(i);
-						if((I!=null)
-						&&((I instanceof Armor)||(I instanceof Weapon))
-						&&(!alreadyDone(I,check)))
-						{
-							final Item checkI=(Item)I.copyOf();
-							CMLib.threads().deleteAllTicks(checkI);
-							delAllEffects(checkI);
-							checkI.setContainer(null);
-							checkI.setOwner(null);
-							checkI.recoverPhyStats();
-							if(!alreadyDone(checkI,check))
-								check.add(checkI);
-							else
-								checkI.destroy();
-						}
+						final Item checkI=(Item)I.copyOf();
+						CMLib.threads().deleteAllTicks(checkI);
+						delAllEffects(checkI);
+						checkI.setContainer(null);
+						checkI.setOwner(null);
+						checkI.recoverPhyStats();
+						if(!alreadyDone(checkI,I,check,locMap))
+							check.add(checkI);
+						else
+							checkI.destroy();
 					}
-					final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
-					if(SK!=null)
+				}
+				final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+				if(SK!=null)
+				{
+					for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 					{
-						for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+						final Environmental E2=i.next();
+						if((E2 instanceof Item)
+						&&(filter.passesFilter(E2)))
 						{
-							final Environmental E2=i.next();
-							if(E2 instanceof Item)
+							final Item I=(Item)E2;
+							if(((I instanceof Armor)||(I instanceof Weapon))
+							&&(!alreadyDone(I,I,check,locMap)))
 							{
-								final Item I=(Item)E2;
-								if(((I instanceof Armor)||(I instanceof Weapon))
-								&&(!alreadyDone(I,check)))
-								{
-									final Item checkI=(Item)I.copyOf();
-									CMLib.threads().deleteAllTicks(checkI);
-									delAllEffects(checkI);
-									checkI.setContainer(null);
-									checkI.setOwner(null);
-									checkI.recoverPhyStats();
-									if(!alreadyDone(checkI,check))
-										check.add(checkI);
-									else
-										checkI.destroy();
-								}
+								final Item checkI=(Item)I.copyOf();
+								CMLib.threads().deleteAllTicks(checkI);
+								delAllEffects(checkI);
+								checkI.setContainer(null);
+								checkI.setOwner(null);
+								checkI.recoverPhyStats();
+								if(!alreadyDone(checkI,I,check,locMap))
+									check.add(checkI);
+								else
+									checkI.destroy();
 							}
 						}
 					}
@@ -222,20 +416,66 @@ public class Deviations extends StdCommand
 		return "+"+pval+"%";
 	}
 
-	public StringBuffer deviations(final MOB mob, final String rest)
+	public String getColor(final Physical P)
+	{
+		final double lvl = P.phyStats().level();
+		final double plvl;
+		if(P instanceof Item)
+			plvl = CMLib.itemBuilder().timsLevelCalculator((Item)P);
+		else
+		if(P instanceof MOB)
+			plvl = CMLib.leveler().getPowerLevel((MOB)P);
+		else
+			return "";
+		if(plvl > (2.5 * lvl))
+			return "^r";
+		if(plvl > (2.0 * lvl))
+			return "^p";
+		if(plvl > (1.5 * lvl))
+			return "^b";
+		if(plvl > (1.2 * lvl))
+			return "^g";
+		if(plvl > (0.8 * lvl))
+			return "^w";
+		return "^W";
+	}
+
+	public StringBuffer deviations(final MOB mob, final Room mobR, final String rest)
 	{
 		final List<String> V=CMParms.parse(rest);
 		if((V.size()==0)
-		||((!V.get(0).equalsIgnoreCase("mobs"))
-		   &&(!V.get(0).equalsIgnoreCase("items"))
-		   &&(!V.get(0).equalsIgnoreCase("both"))))
-			return new StringBuffer("You must specify whether you want deviations on MOBS, ITEMS, or BOTH.");
+		||(CMath.s_valueOf(DeviationType.class, V.get(0).toUpperCase().trim())==null))
+		{
+			final String lst = CMLib.english().toEnglishStringList(DeviationType.class, false);
+			return new StringBuffer(L("You must specify whether you want deviations on @x1.",lst));
+		}
 
-		final String type=V.get(0).toLowerCase();
+		final DeviationType type=(DeviationType)CMath.s_valueOf(DeviationType.class, V.get(0).toUpperCase());
 		if(V.size()==1)
 			return new StringBuffer("You must also specify a mob or item name, or the word room, or the word area.");
+		DevSortBy sortBy = DevSortBy.TYPE;
+		if((V.size()>3)
+		&&(V.get(V.size()-2).equalsIgnoreCase("SORTBY")))
+		{
+			final String typ = V.get(V.size()-1);
+			final DevSortBy cd = (DevSortBy)CMath.s_valueOf(DevSortBy.class, typ.toUpperCase().trim());
+			if(cd == null)
+			{
+				final String lst = CMLib.english().toEnglishStringList(DevSortBy.class, false);
+				return new StringBuffer(L("'@x1' is not a valid sort arg, try '@x2'.",typ,lst));
+			}
+			V.remove(V.size()-1);
+			V.remove(V.size()-1);
+			sortBy = cd;
+		}
+		boolean map=false;
+		if((V.size()>1)
+		&&(V.get(V.size()-1).equalsIgnoreCase("LOCATIONS")))
+		{
+			map=true;
+			V.remove(V.size()-1);
+		}
 
-		final Room mobR=mob.location();
 		Faction useFaction=null;
 		for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 		{
@@ -243,18 +483,36 @@ public class Deviations extends StdCommand
 			if(F.showInSpecialReported())
 				useFaction=F;
 		}
+		final Map<Environmental,Set<String>> locMap = new HashMap<Environmental,Set<String>>();
 		final String where=V.get(1).toLowerCase();
 		final Environmental E=mobR.fetchFromMOBRoomFavorsItems(mob,null,where,Wearable.FILTER_ANY);
 		final List<Environmental> check=new ArrayList<Environmental>();
 		if(where.equalsIgnoreCase("room"))
-			fillCheckDeviations(mobR,type,check);
+			fillCheckDeviations(mobR,type.filter,check,locMap);
 		else
 		if(where.equalsIgnoreCase("area"))
 		{
 			for(final Enumeration<Room> r=mobR.getArea().getFilledCompleteMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
-				fillCheckDeviations(R,type,check);
+				fillCheckDeviations(R,type.filter,check,locMap);
+			}
+		}
+		else
+		if(where.equalsIgnoreCase("metro"))
+		{
+			final Stack<Area> areasToDo = new Stack<Area>();
+			areasToDo.add(mobR.getArea());
+			while(areasToDo.size()>0)
+			{
+				final Area A = areasToDo.pop();
+				for(final Enumeration<Room> r=A.getFilledCompleteMap();r.hasMoreElements();)
+				{
+					final Room R=r.nextElement();
+					fillCheckDeviations(R,type.filter,check,locMap);
+				}
+				for(final Enumeration<Area> a = A.getChildren();a.hasMoreElements();)
+					areasToDo.add(a.nextElement());
 			}
 		}
 		else
@@ -263,26 +521,15 @@ public class Deviations extends StdCommand
 			for(final Enumeration<Room> r=CMLib.map().roomsFilled();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
-				fillCheckDeviations(R,type,check);
+				fillCheckDeviations(R,type.filter,check,locMap);
 			}
 		}
 		else
 		if(E==null)
-			return new StringBuffer("'"+where+"' is an unknown item or mob name.");
+			return new StringBuffer(L("'@x1' is an unknown thing.",where));
 		else
-		if(type.equals("items")
-		&&(!(E instanceof Weapon))
-		&&(!(E instanceof Armor)))
-			return new StringBuffer("'"+where+"' is not a weapon or armor item.");
-		else
-		if(type.equals("mobs")
-		&&(!(E instanceof MOB)))
-			return new StringBuffer("'"+where+"' is not a MOB.");
-		else
-		if((!(E instanceof Weapon))
-		&&(!(E instanceof Armor))
-		&&(!(E instanceof MOB)))
-			return new StringBuffer("'"+where+"' is not a MOB, or Weapon, or Item.");
+		if(!type.filter.passesFilter(E))
+			return new StringBuffer(L("'@x1' is not '@x2'.",where,type.name()));
 		else
 		if(E instanceof Item)
 			check.add((Item)E.copyOf());
@@ -292,6 +539,7 @@ public class Deviations extends StdCommand
 		str.append(L("Deviations Report:\n\r"));
 		final StringBuffer itemResults = new StringBuffer();
 		final StringBuffer mobResults = new StringBuffer();
+		Collections.sort(check,sortBy.comp);
 		for(int c=0;c<check.size();c++)
 		{
 			if(check.get(c) instanceof Item)
@@ -312,10 +560,11 @@ public class Deviations extends StdCommand
 										(W==null)?0:W.weaponClassification(),
 										maxRange,
 										I.rawProperLocationBitmap());
+				itemResults.append(getColor(I));
 				itemResults.append(CMStrings.padRight(I.name(),20)+" ");
 				itemResults.append(CMStrings.padRight(I.ID(),10)+" ");
-				itemResults.append(CMStrings.padRight(""+I.phyStats().level(),4)+" ");
-				itemResults.append(CMStrings.padRight(""+CMLib.itemBuilder().timsLevelCalculator(I),4)+" ");
+				itemResults.append(CMStrings.padRight(""+I.phyStats().level(),4));
+				itemResults.append(CMStrings.padRight(""+CMLib.itemBuilder().timsLevelCalculator(I),4));
 				itemResults.append(CMStrings.padRight(""+getDeviation(
 												I.basePhyStats().attackAdjustment(),
 												vals,"ATTACK"),5)+" ");
@@ -343,13 +592,21 @@ public class Deviations extends StdCommand
 					itemResults.append(CMStrings.padRight(" - ",4)+" ");
 				*/
 				itemResults.append("\n\r");
+				if(map && locMap.containsKey(check.get(c)))
+				{
+					itemResults.append("     @");
+					for(final String s : locMap.get(check.get(c)))
+						itemResults.append(s).append("\n\r");
+				}
 				I.destroy(); // these are always copies, so all good
 			}
 			else
 			{
 				final MOB M=(MOB)check.get(c);
+				mobResults.append(getColor(M));
 				mobResults.append(CMStrings.padRight(M.name(),20)+" ");
-				mobResults.append(CMStrings.padRight(""+M.phyStats().level(),4)+" ");
+				mobResults.append(CMStrings.padRight(""+M.phyStats().level(),4));
+				mobResults.append(CMStrings.padRight(""+CMLib.leveler().getPowerLevel(M),4));
 				mobResults.append(CMStrings.padRight(""+getDeviation(
 												M.basePhyStats().attackAdjustment(),
 												CMLib.leveler().getLevelAttack(M)),5)+" ");
@@ -357,14 +614,14 @@ public class Deviations extends StdCommand
 												M.basePhyStats().damage(),
 												CMLib.leveler().getLevelMOBDamage(M)),5)+" ");
 				mobResults.append(CMStrings.padRight(""+getDeviation(
-												M.basePhyStats().armor(),
-												CMLib.leveler().getLevelMOBArmor(M)),5)+" ");
+												100.0-M.basePhyStats().armor(),
+												100.0-CMLib.leveler().getLevelMOBArmor(M)),5)+" ");
 				mobResults.append(CMStrings.padRight(""+getDeviation(
 												M.basePhyStats().speed(),
 												CMLib.leveler().getLevelMOBSpeed(M)),5)+" ");
-				mobResults.append(CMStrings.padRight(""+(((M.phyStats().rejuv()==PhyStats.NO_REJUV)||(M.phyStats().rejuv()==0))?" -  ":""+M.phyStats().rejuv()) ,5)+" ");
+				mobResults.append(CMStrings.padRight(""+(((M.phyStats().rejuv()==PhyStats.NO_REJUV)||(M.phyStats().rejuv()==0))?" -  ":""+M.phyStats().rejuv()) ,4)+" ");
 				if(useFaction!=null)
-					mobResults.append(CMStrings.padRight(""+(M.fetchFaction(useFaction.factionID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(useFaction.factionID())),7)+" ");
+					mobResults.append(CMStrings.padRight(""+(M.fetchFaction(useFaction.factionID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(useFaction.factionID())),5)+" ");
 				final double value = CMLib.beanCounter().getTotalAbsoluteNativeValue(M);
 				final double[] range = CMLib.leveler().getLevelMoneyRange(M);
 				if(value < range[0])
@@ -383,12 +640,18 @@ public class Deviations extends StdCommand
 				}
 				mobResults.append(CMStrings.padRight(""+reallyWornCount,5)+" ");
 				mobResults.append("\n\r");
+				if(map && locMap.containsKey(check.get(c)))
+				{
+					mobResults.append("     @");
+					for(final String s : locMap.get(check.get(c)))
+						mobResults.append(s).append("\n\r");
+				}
 			}
 		}
 		if(itemResults.length()>0)
-			str.append(itemHeader()+itemResults.toString());
+			str.append(itemHeader()+itemResults.toString()+"^N");
 		if(mobResults.length()>0)
-			str.append(mobHeader(useFaction)+mobResults.toString());
+			str.append(mobHeader(useFaction)+mobResults.toString()+"^N");
 		return str;
 	}
 
@@ -396,8 +659,38 @@ public class Deviations extends StdCommand
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		mob.tell(deviations(mob,CMParms.combine(commands,1)).toString());
+		mob.tell(deviations(mob,mob.location(),CMParms.combine(commands,1)).toString());
 		return false;
+	}
+
+	@Override
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE.toString();
+
+		Room R=null;
+		boolean roomTarget=false;
+		for(final Object o : args)
+		{
+			if(o instanceof Area)
+			{
+				R=((Area)o).getRandomProperRoom();
+			}
+			else
+			if(o instanceof Room)
+			{
+				roomTarget=true;
+				R=(Room)o;
+			}
+		}
+		if(R==null)
+			return "";
+		else
+		if(roomTarget)
+			return deviations(mob, R, "BOTH ROOM").toString();
+		else
+			return deviations(mob, R, "BOTH AREA LOCATIONS").toString();
 	}
 
 	@Override

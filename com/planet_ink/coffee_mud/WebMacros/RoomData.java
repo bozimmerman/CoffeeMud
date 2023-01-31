@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.Command;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -20,6 +21,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.grinder.GrinderRooms;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.util.*;
@@ -788,6 +790,29 @@ public class RoomData extends StdWebMacro
 				if((desc==null)||((desc.length()==0)&&(!multiFlag)))
 					desc=R.description();
 				str.append(desc);
+			}
+			if(parms.containsKey("DEVIATIONS"))
+			{
+				final Command C=CMClass.getCommand("Deviations");
+				if(C!=null)
+				{
+					final MOB mob=CMClass.getFactoryMOB();
+					StringBuffer str2;
+					try
+					{
+						mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
+						int ct=0;
+						while((mob.numItems()>0)&&(++ct<1000))
+							mob.delItem(mob.getItem(0));
+						str2 = new StringBuffer((String)C.executeInternal(mob, 0, R));
+					}
+					catch (final IOException e)
+					{
+						str2=new StringBuffer("");
+					}
+					str2=super.colorwebifyOnly(str2);
+					str.append(str2.toString()+"  ");
+				}
 			}
 			if(parms.containsKey("ATMOSPHERE"))
 			{
