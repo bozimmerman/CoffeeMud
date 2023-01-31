@@ -179,7 +179,7 @@
 </TR>
 <TR>
 	<TD WIDTH=600 COLSPAN=3 ALIGN=LEFT>
-		<a href="javascript:OpenDevs()"><FONT COLOR="#77FFFF">Deviations</FONT></a>
+		<a href="javascript:OpenDevs()"><FONT COLOR="#77FFFF"><B>Deviations</B></FONT></a>
     </TD>
 <TR>
     <TD WIDTH=600 COLSPAN=3 ALIGN=CENTER>
@@ -199,7 +199,6 @@
 	//-->
 	</SCRIPT>
 @endif@
-<SCRIPT
 </BODY>
 </HTML>
 @endif@
