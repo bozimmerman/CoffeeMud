@@ -186,6 +186,10 @@ public class Config extends StdCommand
 										{
 											if((mob == null)||(M==null))
 												return;
+											final PlayerStats opStats =mob.playerStats();
+											final PlayerStats mpStats =M.playerStats();
+											if((opStats == null)||(mpStats==null))
+												return;
 											try
 											{
 												for(final MOB.Attrib a : MOB.Attrib.values())
@@ -196,14 +200,14 @@ public class Config extends StdCommand
 														configC.execute(mob, newCmd, metaFlags);
 													}
 												}
-												if(mob.playerStats().getPageBreak()!=M.playerStats().getPageBreak())
+												if(opStats.getPageBreak()!=mpStats.getPageBreak())
 												{
-													final Vector<String> newCmd = new XVector<String>("CONFIG","QUIET","PAGEBREAK",""+M.playerStats().getPageBreak());
+													final Vector<String> newCmd = new XVector<String>("CONFIG","QUIET","PAGEBREAK",""+mpStats.getPageBreak());
 													configC.execute(mob, newCmd, metaFlags);
 												}
-												if(mob.playerStats().getWrap()!=M.playerStats().getWrap())
+												if(opStats.getWrap()!=mpStats.getWrap())
 												{
-													final Vector<String> newCmd = new XVector<String>("CONFIG","QUIET","LINEWRAP",""+M.playerStats().getWrap());
+													final Vector<String> newCmd = new XVector<String>("CONFIG","QUIET","LINEWRAP",""+mpStats.getWrap());
 													configC.execute(mob, newCmd, metaFlags);
 												}
 												mob.tell(L("Configuration copied and active."));
