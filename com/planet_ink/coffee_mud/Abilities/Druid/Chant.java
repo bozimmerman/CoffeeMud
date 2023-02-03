@@ -123,12 +123,14 @@ public class Chant extends StdAbility
 	}
 
 	// codes: -1=do nothing, 1=wind, 2=rain, 4=hot, 8=cold, 16=calm
-	public int weatherQue(final Room R)
+	public int weatherQue(Room R)
 	{
 		if(R==null)
 			return WEATHERQUE_NADA;
 		if((R.domainType()&Room.INDOORS)>0)
 			return WEATHERQUE_NADA;
+		if(R.getArea() instanceof Boardable)
+			R=CMLib.map().roomLocation(((Boardable)R.getArea()).getBoardableItem());
 		switch(R.getArea().getClimateObj().weatherType(R))
 		{
 		case Climate.WEATHER_BLIZZARD:

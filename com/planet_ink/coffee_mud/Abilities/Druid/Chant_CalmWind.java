@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.Rideable.Basis;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -57,7 +58,7 @@ public class Chant_CalmWind extends Chant
 	@Override
 	protected int canAffectCode()
 	{
-		return 0;
+		return CAN_ROOMS;
 	}
 
 	@Override
@@ -108,14 +109,86 @@ public class Chant_CalmWind extends Chant
 	}
 
 	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if((msg.source().riding() instanceof NavigableItem)
+		&&((msg.sourceMinor()==CMMsg.TYP_ADVANCE)
+			||((msg.targetMinor()==CMMsg.TYP_LEAVE)&&(msg.target() == affected)))
+		&&(msg.source().isMonster())
+		&&(((NavigableItem)msg.source().riding()).navBasis() == Basis.WATER_BASED)
+		&&(!(msg.source().riding() instanceof Technical))
+		&&(affected instanceof Room))
+		{
+			final Room R=(Room)affected;
+			final Item I = ((NavigableItem)msg.source().riding()).getBoardableItem();
+			if((R!=null)&&(I!=null))
+				R.show(msg.source(), I, CMMsg.MSG_OK_VISUAL, L("The still air prevents @x1 from going anywhere.",I.name()));
+			return false;
+		}
+		return super.okMessage(myHost, msg);
+	}
+
+	protected void sayToEveryoneInRoom(final Room R, final String say)
+	{
+		if(CMLib.map().hasASky(R))
+		{
+			for(int i=0;i<R.numInhabitants();i++)
+			{
+				final MOB mob=R.fetchInhabitant(i);
+				if((mob!=null)
+				&&(!mob.isMonster()))
+					mob.tell(say);
+			}
+		}
+		for(final Enumeration<Boardable> s =CMLib.map().ships();s.hasMoreElements();)
+		{
+			final Boardable ship = s.nextElement();
+			if((ship != null) && (R == CMLib.map().roomLocation(ship.getBoardableItem())))
+			{
+				final Area inA=ship.getArea();
+				if(inA!=null)
+				{
+					for(final Enumeration<Room> r=inA.getFilledProperMap();r.hasMoreElements();)
+						sayToEveryoneInRoom(r.nextElement(),say);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void unInvoke()
+	{
+		if(canBeUninvoked())
+		{
+			if(affected instanceof Room)
+				sayToEveryoneInRoom((Room)affected, L("The air moves normally again."));
+		}
+		super.unInvoke();
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
+		final Room R=mob.location();
+		if(R==null)
+			return false;
+		Area A = R.getArea();
+		if(A instanceof Boardable)
+			A=CMLib.map().areaLocation(((Boardable)A).getBoardableItem());
+		if(A==null)
+			return false;
+		if(A.fetchEffect(ID())!=null)
+		{
+			mob.tell(L("This air here is already as calm as it can get."));
+			return false;
+		}
+		if(((R.domainType()&Room.INDOORS)>0)&&(!auto))
 		{
 			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
-		switch(mob.location().getArea().getClimateObj().weatherType(mob.location()))
+		boolean stillWind = false;
+		switch(A.getClimateObj().weatherType(R))
 		{
 		case Climate.WEATHER_WINDY:
 		case Climate.WEATHER_THUNDERSTORM:
@@ -129,8 +202,8 @@ public class Chant_CalmWind extends Chant
 			mob.tell(L("The weather is nasty, but not especially windy any more."));
 			return false;
 		default:
-			mob.tell(L("It doesn't seem especially windy right now."));
-			return false;
+			stillWind = true;
+			break;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -143,13 +216,14 @@ public class Chant_CalmWind extends Chant
 		final boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("^JThe swirling sky changes color!^?"):L("^S<S-NAME> chant(s) into the swirling sky!^?"));
-			if(mob.location().okMessage(mob,msg))
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),
+					auto?L("^JThe swirling sky changes color!^?"):L("^S<S-NAME> chant(s) into the swirling sky!^?"));
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-				final Climate C=mob.location().getArea().getClimateObj();
+				R.send(mob,msg);
+				final Climate C=A.getClimateObj();
 				final Climate oldC=(Climate)C.copyOf();
-				switch(C.weatherType(mob.location()))
+				switch(C.weatherType(R))
 				{
 				case Climate.WEATHER_WINDY:
 					C.setNextWeatherType(Climate.WEATHER_CLEAR);
@@ -166,8 +240,19 @@ public class Chant_CalmWind extends Chant
 				default:
 					break;
 				}
-				C.forceWeatherTick(mob.location().getArea());
-				Chant_CalmWeather.xpWorthyChange(mob,mob.location().getArea(),oldC,C);
+				if(stillWind)
+				{
+					final int duration = 4;
+					int bonus = (int)Math.round(Math.floor(CMath.div(adjustedLevel(mob,asLevel),30.0)));
+					bonus += super.getXTIMELevel(mob);
+					if(beneficialAffect(mob, R, asLevel, duration + bonus) != null)
+						sayToEveryoneInRoom(R, L("The air becomes extremely still."));
+				}
+				else
+				{
+					C.forceWeatherTick(A);
+					Chant_CalmWeather.xpWorthyChange(mob,A,oldC,C);
+				}
 			}
 		}
 		else

@@ -83,6 +83,7 @@ public class Chant_WindSnatcher extends Chant
 	public String[] windSpells={
 		"Chant_WindGust",
 		"Chant_SummonWind",
+		"Chant_CalmWind",
 		"Prayer_HolyWind",
 		"Spell_GustOfWind"
 		};
