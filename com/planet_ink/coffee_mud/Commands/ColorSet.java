@@ -208,7 +208,11 @@ public class ColorSet extends StdCommand
 							@Override
 							public void callBack()
 							{
-								if(this.input.equals("Y"))
+								if(this.input.equals("Y")
+								&&(mob != null)
+								&&(M != null)
+								&&(mob.playerStats()!=null)
+								&&(M.playerStats() != null))
 								{
 									mob.playerStats().setColorStr(M.playerStats().getColorStr());
 									mob.tell(L("Color settings copied and active."));

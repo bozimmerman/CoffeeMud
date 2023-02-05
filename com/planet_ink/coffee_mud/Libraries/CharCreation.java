@@ -2956,7 +2956,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				str.append(gset[0].toString().charAt(0));
 			}
 		}
-		StringBuffer genderIntro=new CMFile(Resources.buildResourcePath("text")+"gender.txt",null,CMFile.FLAG_LOGERRORS).text();
+		StringBuffer genderIntro=new CMFile(Resources.buildResourcePath("text")+"gender.txt",null,0).text();
 		try
 		{
 			genderIntro = CMLib.webMacroFilter().virtualPageFilter(genderIntro);
