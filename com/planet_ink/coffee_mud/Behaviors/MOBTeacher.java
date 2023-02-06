@@ -437,8 +437,26 @@ public class MOBTeacher extends CombatAbilities
 					CMLib.commands().postSay(monster,student,L("You can't see me, so I can't teach you."),true,false);
 					return;
 				}
-				final Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),monster);
-				if(myAbility==null)
+				final AbilityMapper ableMapper = CMLib.ableMapper();
+				final List<Ability> possAs=new LinkedList<Ability>();
+				for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+				{
+					final Ability A1=a.nextElement();
+					if((ableMapper.qualifiesByLevel(student,A1))
+					&&(student.fetchAbility(A1.ID())==null))
+						possAs.add(A1);
+				}
+				Ability possA=null;
+				final String calledThis = s.trim().toUpperCase();
+				possA=(Ability)CMLib.english().fetchEnvironmental(possAs,calledThis,true);
+				if(possA==null)
+					possA=(Ability)CMLib.english().fetchEnvironmental(possAs,calledThis,false);
+				Ability teachA=null;
+				if(possA != null)
+					teachA=monster.fetchAbility(possA.ID());
+				if(teachA == null)
+					teachA=CMClass.findAbility(calledThis,monster);
+				if(teachA==null)
 				{
 					ExpertiseLibrary.ExpertiseDefinition theExpertise=null;
 					if(trainableExpertises==null)
@@ -514,9 +532,9 @@ public class MOBTeacher extends CombatAbilities
 					monster.recoverCharStats();
 				}
 
-				final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,myAbility.ID()),0.75));
-				myAbility.setProficiency(prof75/2);
-				CMLib.expertises().postTeach(monster,student,myAbility);
+				final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,teachA.ID()),0.75));
+				teachA.setProficiency(prof75/2);
+				CMLib.expertises().postTeach(monster,student,teachA);
 				monster.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,19);
 				monster.baseCharStats().setStat(CharStats.STAT_WISDOM,19);
 				monster.recoverCharStats();

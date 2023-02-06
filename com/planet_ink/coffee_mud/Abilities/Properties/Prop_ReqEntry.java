@@ -83,23 +83,43 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect, Deity.De
 		final Vector<String> parms=CMParms.parse(txt.toUpperCase());
 		String s;
 		final List<String> maskV = new ArrayList<String>();
-		for(final Enumeration<String> p=parms.elements();p.hasMoreElements();)
+		boolean lastWasMask=false;
+		for(int i=0;i<parms.size();i++)
 		{
-			s=p.nextElement();
+			s=parms.get(i);
 			if("NOFOLLOW".startsWith(s))
+			{
 				noFollow=true;
+				lastWasMask=false;
+			}
 			else
 			if(s.startsWith("NOSNEAK"))
+			{
 				noSneak=true;
+				lastWasMask=false;
+			}
 			else
 			if(s.startsWith("ACTUAL"))
+			{
 				actual=true;
+				lastWasMask=false;
+			}
 			else
-			if((s.toUpperCase().startsWith("MESSAGE"))
+			if((s.startsWith("MESSAGE"))
 			&&(s.substring(7).trim().startsWith("=")))
-				message=s.substring(7).trim().substring(1);
+			{
+				final Vector<String> ulparms=CMParms.parse(txt);
+				message=ulparms.get(i).substring(7).trim().substring(1);
+				lastWasMask=false;
+			}
 			else
 			if(s.startsWith("+")||s.startsWith("-"))
+			{
+				maskV.add(s);
+				lastWasMask=true;
+			}
+			else
+			if(lastWasMask)
 				maskV.add(s);
 		}
 		maskS=CMParms.combineQuoted(maskV,0).trim();

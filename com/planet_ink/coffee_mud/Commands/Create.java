@@ -1613,14 +1613,16 @@ public class Create extends StdCommand
 			return;
 		if(socials==null)
 			socials=new Vector<Social>();
-		final List<Social> copy=new XArrayList<Social>();
+		final List<Social> copy=new XArrayList<Social>(socials);
 		CMLib.socials().modifySocialInterface(mob, socials, name, rest);
 		for(final Social copyS : copy)
+		{
 			if(!socials.contains(copyS))
 				CMLib.socials().delSocial(copyS.name());
+		}
 		for(final Social newS : socials)
 		{
-			if(!socials.contains(newS))
+			if(!copy.contains(newS))
 				CMLib.socials().addSocial(newS);
 		}
 		CMLib.socials().save(mob);

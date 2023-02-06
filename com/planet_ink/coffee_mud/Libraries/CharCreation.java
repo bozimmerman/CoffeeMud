@@ -2978,13 +2978,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		final String gender=loginObj.lastInput.toUpperCase().trim();
 		boolean found=false;
-		for(final Object[][] gset : CMProps.getListFileGrid(ListFile.GENDERS))
+		for(final Object[] gset : CMProps.getListFileStringChoices(ListFile.GENDERS))
 		{
 			if((gset.length>0)
-			&&(gset[0].length>0)
-			&&(gset[0][0].toString().length()>0)
-			&&(gender.startsWith(""+gset[0][0].toString().charAt(0)))
-			&&(!gset[0][0].toString().trim().endsWith("-")))
+			&&(gset.length>0)
+			&&(gset[0].toString().length()>0)
+			&&(gender.startsWith(""+gset[0].toString().charAt(0)))
+			&&(!gset[0].toString().trim().endsWith("-")))
 				found=true;
 		}
 		if(!found)

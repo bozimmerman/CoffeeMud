@@ -137,7 +137,7 @@ public interface TrackingLibrary extends CMLibrary
 			@Override
 			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 			{
-				return !E.isOpen() && ((E.phyStats().disposition()&PhyStats.IS_UNHELPFUL)==0);
+				return (!E.isOpen()) || ((E.phyStats().disposition()&PhyStats.IS_UNHELPFUL)>0);
 			}
 		}),
 		UNLOCKEDONLY(new RFilter()
@@ -145,7 +145,7 @@ public interface TrackingLibrary extends CMLibrary
 			@Override
 			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 			{
-				return E.hasALock() && ((E.phyStats().disposition()&PhyStats.IS_UNHELPFUL)==0);
+				return (E.hasALock() && E.isLocked()) || ((E.phyStats().disposition()&PhyStats.IS_UNHELPFUL)>0);
 			}
 		}),
 		PASSABLE(new RFilter()
@@ -153,7 +153,7 @@ public interface TrackingLibrary extends CMLibrary
 			@Override
 			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 			{
-				return (E.phyStats().disposition()&PhyStats.IS_UNHELPFUL)==0;
+				return (E.phyStats().disposition()&PhyStats.IS_UNHELPFUL)>0;
 			}
 		}),
 		AREAONLY(new RFilter()
