@@ -104,6 +104,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected List<ScriptableResponse>que			 = Collections.synchronizedList(new ArrayList<ScriptableResponse>());
 	protected final AtomicInteger	recurseCounter	 = new AtomicInteger();
 	protected volatile Object		cachedRef		 = null;
+	protected boolean				runWithoutPCs	 = true;
 
 	protected final PrioritizingLimitedMap<String,Room> roomFinder=new PrioritizingLimitedMap<String,Room>(5,30*60000L,60*60000L,20);
 
@@ -9638,6 +9639,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(arg2.equals("PASSIVE"))
 					this.runInPassiveAreas = CMath.s_bool(arg3);
 				else
+				if(arg2.equals("NEEDPC"))
+					this.runWithoutPCs = !CMath.s_bool(arg3);
+				else
 					logError(scripted,"MPSETINTERNAL","Syntax","Unknown stat: "+arg2);
 				break;
 			}
@@ -15057,6 +15061,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				return true;
 			}
+		}
+		if(!runWithoutPCs)
+		{
+			if((lastKnownLocation !=null)
+			&&(lastKnownLocation.numPCInhabitants()==0))
+				return true;
 		}
 		if(defaultItem != null)
 		{

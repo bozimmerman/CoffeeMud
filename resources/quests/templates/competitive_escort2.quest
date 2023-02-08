@@ -286,6 +286,11 @@ SPEECH_PROG p i accept
 </DATA></FILE>
 <FILE><NAME>$QUEST_ID_escorted.script</NAME>
 <DATA>
+ONCE_PROG
+	MPSETINTERNAL PASSIVE false
+	MPSETINTERNAL NEEDPC false
+~
+
 QUEST_TIME_PROG * 1
 	if EVAL('$f' != '') AND VAR ($f $QUEST_ID_WARNED == '')
 		mpsetvar $f $QUEST_ID_WARNED 'WARNED'
