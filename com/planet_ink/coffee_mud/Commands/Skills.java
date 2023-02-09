@@ -95,7 +95,13 @@ public class Skills extends StdCommand
 				}
 			}
 		}
-		final Ability A=CMClass.findAbility(qual);
+		final List<Ability> ableVs = new XArrayList<Ability>(mob.allAbilities());
+		Ability A;
+		A=(Ability)CMLib.english().fetchEnvironmental(ableVs,qual,true);
+		if(A==null)
+			A=(Ability)CMLib.english().fetchEnvironmental(ableVs,qual,false);
+		if(A==null)
+			A=CMClass.findAbility(qual);
 		if((A!=null)
 		&&((acodes==null)||(acodes.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES)))))
 		{

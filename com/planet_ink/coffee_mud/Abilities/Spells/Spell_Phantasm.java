@@ -150,7 +150,7 @@ public class Spell_Phantasm extends Spell
 			}
 			else
 			if(msg.amITarget(mob)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
-				msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,L("@x1's attack somehow went THROUGH <T-NAMESELF>.",msg.source().name())));
+				msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,L("@x1's attack somehow went THROUGH <S-NAMESELF>.",msg.source().name())));
 		}
 	}
 
