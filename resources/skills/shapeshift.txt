@@ -35,7 +35,7 @@ SHAPES=Robin,Owl,Hawk,Eagle,Harpy
 RACES=Robin,Owl,Hawk,Eagle,Harpy
 
 [REPTILE FORM]
-NAME=Reptile form
+NAME=Snake form
 ATTADJ=0.3
 DMGADJ=0.4
 ARMADJ=1.0
@@ -97,3 +97,11 @@ SPEEDADJ=0.2
 SHAPES=Seal,Walrus,Dolphin,Whale,Selkie
 RACES=Seal,Walrus,Dolphin,Whale,Selkie
 
+[MUSTELID FORM]
+Name=Mustelid form
+ATTADJ=0.8
+DMGADJ=0.2
+ARMADJ=0.4
+SPEEDADJ=0.5
+SHAPES=Badger,Otter,Wolverine,Dire Otter,Mustie
+RACES=Badger,Otter,Wolverine,DireOtter,Mustie
