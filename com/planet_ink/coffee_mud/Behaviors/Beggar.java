@@ -40,7 +40,7 @@ public class Beggar extends StdBehavior
 	{
 		return "Beggar";
 	}
-	Vector<MOB> mobsHitUp=new Vector<MOB>();
+	Set<MOB> mobsHitUp=new LimitedTreeSet<MOB>(300000,1000,false);
 	int tickTock=0;
 
 	@Override
@@ -53,7 +53,7 @@ public class Beggar extends StdBehavior
 	public CMObject copyOf()
 	{
 		final Beggar obj=(Beggar)super.copyOf();
-		obj.mobsHitUp=new Vector<MOB>();
+		obj.mobsHitUp=new LimitedTreeSet<MOB>(300000,1000,false);
 		obj.mobsHitUp.addAll(mobsHitUp);
 		return obj;
 	}
@@ -65,8 +65,28 @@ public class Beggar extends StdBehavior
 		if((host==null)||(!(host instanceof MOB)))
 			return;
 		final MOB mob=(MOB)host;
-		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_GIVE))
+		if((msg.amITarget(mob))
+		&&(msg.targetMinor()==CMMsg.TYP_GIVE))
+		{
+			if(msg.tool() instanceof Coins)
+			{
+				final Coins C = (Coins)msg.tool();
+				final int namt = (int)Math.round(C.getTotalValue());
+				if(msg.source().isPlayer() && (namt > 0))
+					CMLib.achievements().possiblyBumpAchievement(msg.source(), AchievementLibrary.Event.CHARITY, namt, mob);
+				msg.addTrailerRunnable(new Runnable() {
+					final MOB M = mob;
+					final double amt = C.getTotalValue();
+					final String curr = C.getCurrency();
+					@Override
+					public void run()
+					{
+						CMLib.beanCounter().subtractMoney(M,curr,amt);
+					}
+				});
+			}
 			msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?")));
+		}
 	}
 
 	@Override
@@ -94,13 +114,17 @@ public class Beggar extends StdBehavior
 			   &&(!mobsHitUp.contains(mob2))
 			   &&(!mob2.isMonster()))
 			{
+				String cl = CMLib.beanCounter().nameCurrencyLong(mob, 1.0);
+				while((cl.length()>0)&&(Character.isDigit(cl.charAt(0))))
+					cl=cl.substring(1);
+				cl=cl.trim();
 				switch(CMLib.dice().roll(1,10,0))
 				{
 				case 1:
 					CMLib.commands().postSay(mob,mob2,L("A little something for a vet please?"),false,false);
 					break;
 				case 2:
-					CMLib.commands().postSay(mob,mob2,L("Spare a gold piece @x1",mob2.charStats().MisterMadam()+"?"),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Spare a @x1 @x2",cl,mob2.charStats().MisterMadam()+"?"),false,false);
 					break;
 				case 3:
 					CMLib.commands().postSay(mob,mob2,L("Spare some change?"),false,false);
@@ -127,21 +151,19 @@ public class Beggar extends StdBehavior
 					CMLib.commands().postSay(mob,mob2,L("Can you spare a little change?"),false,false);
 					break;
 				case 9:
-					CMLib.commands().postSay(mob,mob2,L("Can you spare a little gold?"),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Can you spare a @x1?",cl),false,false);
 					break;
 				case 10:
-					CMLib.commands().postSay(mob,mob2,L("Gold piece for a poor @x2 down on @x1 luck?",
-														mob.charStats().hisher(),
-														((mob.charStats().reproductiveCode()=='M')?"fella":"gal")
+					CMLib.commands().postSay(mob,mob2,L("@x1 for a poor soul down on @x2 luck?",
+														CMStrings.capitalizeAndLower(cl),
+														mob.charStats().hisher()
 														),false,false);
 					break;
 				}
-				mobsHitUp.addElement(mob2);
+				mobsHitUp.add(mob2);
 				break;
 			}
 		}
-		if(mobsHitUp.size()>0)
-			mobsHitUp.removeElementAt(0);
 		return true;
 	}
 }

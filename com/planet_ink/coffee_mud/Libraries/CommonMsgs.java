@@ -1286,6 +1286,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if((item instanceof Armor)
 			&&((mob==null)||mobInt>10))
 			{
+				if(item.rawWornCode() != Wearable.IN_INVENTORY)
+				{
+					if(item.phyStats().height()>0)
+						response.append(L(" It is a size @x1, and is being ",""+item.phyStats().height()));
+					else
+						response.append(L(" It is your size, and is being "));
+				}
+				else
 				if(item.phyStats().height()>0)
 					response.append(L(" It is a size @x1, and is ",""+item.phyStats().height()));
 				else

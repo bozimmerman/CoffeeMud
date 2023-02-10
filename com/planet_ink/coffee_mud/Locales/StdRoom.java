@@ -560,7 +560,7 @@ public class StdRoom implements Room
 			Exit upE=null;
 			final Exit dnE=CMClass.getExit("StdOpenDoorway");
 			if(CMProps.getIntVar(CMProps.Int.SKYSIZE)>0)
-				upE=dnE;
+				upE=CMClass.getExit("Skyway");
 			else
 				upE=CMClass.getExit("UnseenWalkway");
 

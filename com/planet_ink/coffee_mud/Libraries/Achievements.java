@@ -991,6 +991,163 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 			};
 			break;
+		case CHARITY:
+			A=new Achievement()
+			{
+				private int				num			= 0;
+				private CompiledZMask	npcMask		= null;
+
+				@Override
+				public Event getEvent()
+				{
+					return eventType;
+				}
+
+				@Override
+				public Agent getAgent()
+				{
+					return agent;
+				}
+
+				@Override
+				public boolean canApplyTo(final Agent agent)
+				{
+					return true;
+				}
+
+				@Override
+				public boolean canBeSeenBy(final MOB mob)
+				{
+					return ((seenMask==null)||(CMLib.masking().maskCheck(seenMask, mob, true)));
+				}
+
+				@Override
+				public String getTattoo()
+				{
+					return tattoo;
+				}
+
+				@Override
+				public int getDuration()
+				{
+					return duration;
+				}
+
+				@Override
+				public boolean isFlag(final AchievementFlag flag)
+				{
+					return flags.contains(flag);
+				}
+
+				@Override
+				public int getTargetCount()
+				{
+					return num;
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+
+				@Override
+				public String getDisplayStr()
+				{
+					return displayStr;
+				}
+
+				@Override
+				public Award[] getRewards()
+				{
+					return rewardList;
+				}
+
+				@Override
+				public String getRawParmVal(final String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
+				public Tracker getTracker(final int oldCount)
+				{
+					final Achievement me=this;
+					return new Tracker()
+					{
+						private volatile int count = oldCount;
+
+						@Override
+						public Achievement getAchievement()
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved(final Tattooable tracked)
+						{
+							return (num>=0) && (getCount(tracked) >= num);
+						}
+
+						@Override
+						public int getCount(final Tattooable tracked)
+						{
+							return count;
+						}
+
+						@Override
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
+						{
+							if(parms.length>0)
+							{
+								final MOB killed = (MOB)parms[0];
+								if((killed != null)
+								&&((npcMask==null)||(CMLib.masking().maskCheck(npcMask, killed, true)))
+								&&((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true))))
+								{
+									count+=bumpNum;
+									return true;
+								}
+							}
+							return false;
+						}
+
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(final Exception e)
+							{
+								return this;
+							}
+						}
+					};
+				}
+
+				@Override
+				public boolean isSavableTracker()
+				{
+					return true;
+				}
+
+				@Override
+				public String parseParms(final String parms)
+				{
+					final String numStr=CMParms.getParmStr(parms, "AMOUNT", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid AMOUNT parameter: "+numStr+"!";
+					num=CMath.s_int(numStr);
+					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ZAPPERMASK", ""));
+					if(zapperMask.trim().length()==0)
+						return "Error: Missing or invalid ZAPPERMASK parameter: "+zapperMask+"!";
+					this.npcMask = CMLib.masking().getPreCompiledMask(zapperMask);
+					return "";
+				}
+			};
+			break;
 		case GROUPKILLS:
 			A=new Achievement()
 			{

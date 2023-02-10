@@ -146,7 +146,7 @@ public class Chant_SummonSquall extends Chant
 			{
 				R.send(mob,msg);
 				final Chant_SummonSquall cA;
-				cA = (Chant_SummonSquall)super.beneficialAffect(mob, givenTarget, asLevel, 4);
+				cA = (Chant_SummonSquall)super.beneficialAffect(mob, A, asLevel, 4+super.getXTIMELevel(mob));
 				success = cA != null;
 				if(success)
 				{

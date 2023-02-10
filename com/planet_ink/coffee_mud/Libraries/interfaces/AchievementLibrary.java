@@ -72,6 +72,7 @@ public interface AchievementLibrary extends CMLibrary
 		FACTION("A Faction level",new String[]{"VALUE","ABOVEBELOW","ID"}),
 		FACTIONS("A group of factions",new String[]{"VALUE","ABOVEBELOW","IDMASK","NUM"}),
 		EXPLORE("Exploration",new String[]{"PERCENT","AREA"}),
+		CHARITY("Charity",new String[]{"AMOUNT","ZAPPERMASK"}),
 		ROOMENTER("Entering a Room",new String[]{"ROOMID"}),
 		CRAFTING("Crafting",new String[]{"NUM","ABILITYID","ITEMMASK"}),
 		MENDER("Mending",new String[]{"NUM","ABILITYID","ITEMMASK"}),
