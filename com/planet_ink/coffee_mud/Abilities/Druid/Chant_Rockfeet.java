@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -121,8 +122,12 @@ public class Chant_Rockfeet extends Chant
 			if(CMLib.dice().rollPercentage()>(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)*3))
 			{
 				msg.source().curState().adjMovement(-1,msg.source().maxState());
-				if(msg.source().maxState().getFatigue()>Long.MIN_VALUE/2)
-					msg.source().curState().adjFatigue(CMProps.getTickMillis(),msg.source().maxState());
+				if((!CMSecurity.isDisabled(DisFlag.FATIGUE))
+				&&(!msg.source().charStats().getMyRace().infatigueable()))
+				{
+					if(msg.source().maxState().getFatigue()>Long.MIN_VALUE/2)
+						msg.source().curState().adjFatigue(CMProps.getTickMillis(),msg.source().maxState());
+				}
 			}
 		}
 		return;

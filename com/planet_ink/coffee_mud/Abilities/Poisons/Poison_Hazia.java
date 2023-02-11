@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Poisons;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -146,7 +147,9 @@ public class Poison_Hazia extends Poison
 			mob.recoverMaxState();
 			if(mob.curState().getMana() > mob.maxState().getMana())
 				mob.curState().setMana(mob.maxState().getMana());
-			mob.curState().adjFatigue(CharState.FATIGUED_MILLIS, mob.maxState());
+			if((!CMSecurity.isDisabled(DisFlag.FATIGUE))
+			&&(!mob.charStats().getMyRace().infatigueable()))
+				mob.curState().adjFatigue(CharState.FATIGUED_MILLIS, mob.maxState());
 			if((mob.curState().getFatigue() >= CharState.FATIGUED_EXHAUSTED_MILLIS)
 			&&(CMLib.flags().isStanding(mob))
 			&&(CMLib.flags().isAliveAwakeMobile(mob, true)))

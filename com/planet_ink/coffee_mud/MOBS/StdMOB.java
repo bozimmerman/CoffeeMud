@@ -4018,7 +4018,9 @@ public class StdMOB implements MOB
 
 					tickStatus = Tickable.STATUS_OTHER;
 					if ((!isMonster)
-					&& (maxState().getFatigue() > Long.MIN_VALUE / 2))
+					&& (maxState().getFatigue() > Long.MIN_VALUE / 2)
+					&& (!CMSecurity.isDisabled(DisFlag.FATIGUE))
+					&& (!charStats().getMyRace().infatigueable()))
 					{
 						if (CMLib.flags().isSleeping(this))
 							curState().adjFatigue(-CharState.REST_PER_SLEEP, maxState());

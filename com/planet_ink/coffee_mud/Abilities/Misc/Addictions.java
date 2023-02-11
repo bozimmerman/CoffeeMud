@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -137,6 +138,7 @@ public class Addictions extends StdAbility
 				if((CMLib.dice().rollPercentage()<=(delta/TimeManager.MILI_HOUR))
 				&&(ticking instanceof MOB))
 				{
+					final MOB mob=(MOB)ticking;
 					final String name;
 					if(addictedStr.startsWith("effect:"))
 					{
@@ -150,11 +152,11 @@ public class Addictions extends StdAbility
 						name = addictedStr;
 					if(delta>WITHDRAW_TIME)
 					{
-						((MOB)ticking).tell(L("You've managed to kick your addiction to @x1.",name));
+						mob.tell(L("You've managed to kick your addiction to @x1.",name));
 						//TODO: incorrect_>
 						canBeUninvoked=true;
 						unInvoke();
-						((MOB)ticking).delEffect(this);
+						mob.delEffect(this);
 						return false;
 					}
 					final Item puffCreditI = puffCredit.get(addictedStr);
@@ -163,29 +165,31 @@ public class Addictions extends StdAbility
 						||puffCreditI.amWearingAt(Wearable.IN_INVENTORY)
 						||puffCreditI.owner()!=(MOB)affected))
 							this.puffCredit.remove(addictedStr);
-					((MOB)ticking).curState().adjFatigue(CMProps.getTickMillis(), ((MOB)ticking).maxState());
+					if((!CMSecurity.isDisabled(DisFlag.FATIGUE))
+					&&(!mob.charStats().getMyRace().infatigueable()))
+						mob.curState().adjFatigue(CMProps.getTickMillis(), mob.maxState());
 					switch(CMLib.dice().roll(1,7,0))
 					{
 					case 1:
-						((MOB) ticking).tell(L("Man, you could sure use some @x1.", name));
+						mob.tell(L("Man, you could sure use some @x1.", name));
 						break;
 					case 2:
-						((MOB) ticking).tell(L("Wouldn't some @x1 be great right about now?", name));
+						mob.tell(L("Wouldn't some @x1 be great right about now?", name));
 						break;
 					case 3:
-						((MOB) ticking).tell(L("You are seriously craving @x1.", name));
+						mob.tell(L("You are seriously craving @x1.", name));
 						break;
 					case 4:
-						((MOB) ticking).tell(L("There's got to be some @x1 around here somewhere.", name));
+						mob.tell(L("There's got to be some @x1 around here somewhere.", name));
 						break;
 					case 5:
-						((MOB) ticking).tell(L("You REALLY want some @x1.", name));
+						mob.tell(L("You REALLY want some @x1.", name));
 						break;
 					case 6:
-						((MOB) ticking).tell(L("You NEED some @x1, NOW!", name));
+						mob.tell(L("You NEED some @x1, NOW!", name));
 						break;
 					case 7:
-						((MOB) ticking).tell(L("Some @x1 would be lovely.", name));
+						mob.tell(L("Some @x1 would be lovely.", name));
 						break;
 					}
 				}

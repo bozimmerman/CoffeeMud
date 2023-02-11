@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -110,8 +111,12 @@ public class Spell_Exhaustion extends Spell
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> become(s) exhausted!"));
 					target.curState().setMovement(0);
-					if(target.maxState().getFatigue()>Long.MIN_VALUE/2)
-						target.curState().setFatigue(target.curState().getFatigue()+CharState.FATIGUED_MILLIS);
+					if((!CMSecurity.isDisabled(DisFlag.FATIGUE))
+					&&(!target.charStats().getMyRace().infatigueable()))
+					{
+						if(target.maxState().getFatigue()>Long.MIN_VALUE/2)
+							target.curState().setFatigue(target.curState().getFatigue()+CharState.FATIGUED_MILLIS);
+					}
 				}
 			}
 		}

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -88,9 +89,13 @@ public class Prayer_Enervate extends Prayer
 				if(msg.value()<=0)
 				{
 					final int harming=CMLib.dice().roll(10,adjustedLevel(mob,asLevel),50);
-					if((target.curState().getFatigue()<=CharState.FATIGUED_MILLIS)
-					&&(target.maxState().getFatigue()>Long.MIN_VALUE/2))
-						target.curState().setFatigue(CharState.FATIGUED_MILLIS+1);
+					if((!CMSecurity.isDisabled(DisFlag.FATIGUE))
+					&&(!target.charStats().getMyRace().infatigueable()))
+					{
+						if((target.curState().getFatigue()<=CharState.FATIGUED_MILLIS)
+						&&(target.maxState().getFatigue()>Long.MIN_VALUE/2))
+							target.curState().setFatigue(CharState.FATIGUED_MILLIS+1);
+					}
 					target.curState().adjMovement(-harming,target.maxState());
 					target.tell(L("You feel fatigued!"));
 				}

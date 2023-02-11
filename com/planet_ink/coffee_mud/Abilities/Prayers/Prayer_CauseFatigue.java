@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -88,8 +89,12 @@ public class Prayer_CauseFatigue extends Prayer
 				if(msg.value()<=0)
 				{
 					final int harming=CMLib.dice().roll(3,adjustedLevel(mob,asLevel),10);
-					if(target.maxState().getFatigue()>Long.MIN_VALUE/2)
-						target.curState().adjFatigue((target.curState().getFatigue()/2),target.maxState());
+					if((!CMSecurity.isDisabled(DisFlag.FATIGUE))
+					&&(!target.charStats().getMyRace().infatigueable()))
+					{
+						if(target.maxState().getFatigue()>Long.MIN_VALUE/2)
+							target.curState().adjFatigue((target.curState().getFatigue()/2),target.maxState());
+					}
 					target.curState().adjMovement(-harming,target.maxState());
 					target.tell(L("You feel slightly more fatigued!"));
 				}

@@ -358,6 +358,12 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	public boolean expless();
 
 	/**
+	 * Whether mobs of this race can gain fatigue points.
+	 * @return whether mobs of this race can gain fatigue points.
+	 */
+	public boolean infatigueable();
+
+	/**
 	 * Return a vector of skills, spells, and other ability ids granted to the given
 	 * mob when they are created as this race.  The entries are the ability id,
 	 * the default proficiency, the level, and whether it is auto-gained.

@@ -664,8 +664,12 @@ public class Pregnancy extends StdAbility implements HealthCondition
 				else
 				{
 					// pregnant folk get fatigued more often.
-					if (mob.maxState().getFatigue() > Long.MIN_VALUE / 2)
-						mob.curState().adjFatigue(monthsRemaining * 100, mob.maxState());
+					if((!CMSecurity.isDisabled(DisFlag.FATIGUE))
+					&&(!mob.charStats().getMyRace().infatigueable()))
+					{
+						if (mob.maxState().getFatigue() > Long.MIN_VALUE / 2)
+							mob.curState().adjFatigue(monthsRemaining * 100, mob.maxState());
+					}
 					if ((monthsRemaining <= 1)
 					&& (CMLib.dice().rollPercentage() == 1))
 					{

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -109,8 +110,12 @@ public class Spell_Fatigue extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					if(target.maxState().getFatigue()>Long.MIN_VALUE/2)
-						target.curState().adjFatigue(CharState.FATIGUED_MILLIS+((mob.phyStats().level()) * 5l * CMProps.getTickMillis()),target.maxState());
+					if((!CMSecurity.isDisabled(DisFlag.FATIGUE))
+					&&(!target.charStats().getMyRace().infatigueable()))
+					{
+						if(target.maxState().getFatigue()>Long.MIN_VALUE/2)
+							target.curState().adjFatigue(CharState.FATIGUED_MILLIS+((mob.phyStats().level()) * 5l * CMProps.getTickMillis()),target.maxState());
+					}
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) incredibly fatigued!"));
 				}
 			}

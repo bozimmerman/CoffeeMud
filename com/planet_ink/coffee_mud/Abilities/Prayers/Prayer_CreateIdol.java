@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -117,8 +118,12 @@ public class Prayer_CreateIdol extends Prayer
 		super.affectCharState(aff,affectableState);
 		if((affected instanceof Item)&&(((Item)affected).container()==null))
 		{
-			if(aff.maxState().getFatigue()>Long.MIN_VALUE/2)
-				aff.curState().setFatigue(CharState.FATIGUED_MILLIS+10);
+			if((!CMSecurity.isDisabled(DisFlag.FATIGUE))
+			&&(!aff.charStats().getMyRace().infatigueable()))
+			{
+				if(aff.maxState().getFatigue()>Long.MIN_VALUE/2)
+					aff.curState().setFatigue(CharState.FATIGUED_MILLIS+10);
+			}
 			affectableState.setMovement(20);
 		}
 	}

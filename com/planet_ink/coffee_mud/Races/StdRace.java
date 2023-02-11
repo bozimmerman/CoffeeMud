@@ -286,6 +286,7 @@ public class StdRace implements Race
 		return true;
 	}
 
+	@Override
 	public boolean infatigueable()
 	{
 		return false;
@@ -506,10 +507,15 @@ public class StdRace implements Race
 				&&(fertile())
 				&&(msg.source().fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0))
 				{
-					if(msg.source().maxState().getFatigue()>Long.MIN_VALUE/2)
-						msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
-					if(myChar.maxState().getFatigue()>Long.MIN_VALUE/2)
-						myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
+					if(!CMSecurity.isDisabled(DisFlag.FATIGUE))
+					{
+						if(!msg.source().charStats().getMyRace().infatigueable()
+						&&(msg.source().maxState().getFatigue()>Long.MIN_VALUE/2))
+							msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
+						if(!infatigueable()
+						&&(myChar.maxState().getFatigue()>Long.MIN_VALUE/2))
+							myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
+					}
 					final Ability A=CMClass.getAbility("Spell_Blindness");
 					if(A!=null)
 						A.invoke(myChar,myChar,true,myChar.phyStats().level());
@@ -540,8 +546,12 @@ public class StdRace implements Race
 						msg.source().tell(L("You are exhausted!"));
 					else
 					{
-						if(msg.source().maxState().getFatigue()>Long.MIN_VALUE/2)
-							msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
+						if((!CMSecurity.isDisabled(DisFlag.FATIGUE))
+						&&(!msg.source().charStats().getMyRace().infatigueable()))
+						{
+							if(msg.source().maxState().getFatigue()>Long.MIN_VALUE/2)
+								msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
+						}
 						msg.source().curState().adjMovement(-msg.source().maxState().getMovement()/2, msg.source().maxState());
 					}
 					if(meExhausted)
@@ -549,8 +559,12 @@ public class StdRace implements Race
 					else
 					if(msg.source().mayIFight(myChar))
 					{
-						if(myChar.maxState().getFatigue()>Long.MIN_VALUE/2)
-							myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
+						if((!CMSecurity.isDisabled(DisFlag.FATIGUE))
+						&&(!infatigueable()))
+						{
+							if(myChar.maxState().getFatigue()>Long.MIN_VALUE/2)
+								myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
+						}
 						myChar.curState().adjMovement(-myChar.maxState().getMovement()/2, myChar.maxState());
 					}
 					if(!srcExhausted && !meExhausted && (CMLib.dice().rollPercentage()<10))
@@ -598,9 +612,6 @@ public class StdRace implements Race
 	@Override
 	public boolean tick(final Tickable myChar, final int tickID)
 	{
-		if((infatigueable()||CMSecurity.isDisabled(DisFlag.FATIGUE))
-		&&(myChar instanceof MOB))
-			((MOB)myChar).curState().setFatigue(0);
 		return true;
 	}
 

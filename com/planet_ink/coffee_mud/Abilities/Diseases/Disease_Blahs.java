@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Diseases;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -175,10 +176,16 @@ public class Disease_Blahs extends Disease
 		if(!(affected instanceof MOB))
 			return true;
 
-		final MOB mob=(MOB)affected;
-		if((mob.curState().getFatigue()<CharState.FATIGUED_MILLIS)
-		&&(mob.maxState().getFatigue()>Long.MIN_VALUE/2))
-			mob.curState().setFatigue(CharState.FATIGUED_MILLIS);
+		if(!CMSecurity.isDisabled(DisFlag.FATIGUE))
+		{
+			final MOB mob=(MOB)affected;
+			if((mob!=null)&&(!mob.charStats().getMyRace().infatigueable()))
+			{
+				if((mob.curState().getFatigue()<CharState.FATIGUED_MILLIS)
+				&&(mob.maxState().getFatigue()>Long.MIN_VALUE/2))
+					mob.curState().setFatigue(CharState.FATIGUED_MILLIS);
+			}
+		}
 		return true;
 	}
 

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Diseases;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -145,8 +146,12 @@ public class Disease_Narcolepsy extends Disease
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
-			if(mob.maxState().getFatigue()>Long.MIN_VALUE/2)
-				mob.curState().adjFatigue(mob.curState().getFatigue()+CharState.FATIGUED_MILLIS,mob.maxState());
+			if((!CMSecurity.isDisabled(DisFlag.FATIGUE))
+			&&(!mob.charStats().getMyRace().infatigueable()))
+			{
+				if(mob.maxState().getFatigue()>Long.MIN_VALUE/2)
+					mob.curState().adjFatigue(mob.curState().getFatigue()+CharState.FATIGUED_MILLIS,mob.maxState());
+			}
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
 			if(!CMLib.flags().isSleeping(mob))
 			{

@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.CMath.CompiledFormula;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -1094,7 +1095,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 				if(((hpGain>0)||(manaGain>0)||(moveGain>0))
 				&&(!isSleeping)
-				&&(!isSittingOrRiding))
+				&&(!isSittingOrRiding)
+				&&(!CMSecurity.isDisabled(DisFlag.FATIGUE))
+				&&(!mob.charStats().getMyRace().infatigueable()))
 					mob.curState().adjFatigue(Math.round(CMProps.getTickMillis()), mob.maxState());
 			}
 		}
