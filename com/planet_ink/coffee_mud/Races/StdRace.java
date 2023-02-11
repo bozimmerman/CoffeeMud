@@ -347,7 +347,7 @@ public class StdRace implements Race
 	@Override
 	public String makeMobName(final char gender, final int age)
 	{
-		CharStats cs = (CharStats)CMClass.getCommon("DefaultCharStats");
+		final CharStats cs = (CharStats)CMClass.getCommon("DefaultCharStats");
 		cs.setStat(CharStats.STAT_GENDER, gender);
 		switch(age)
 		{
@@ -598,7 +598,8 @@ public class StdRace implements Race
 	@Override
 	public boolean tick(final Tickable myChar, final int tickID)
 	{
-		if((infatigueable())&&(myChar instanceof MOB))
+		if((infatigueable()||CMSecurity.isDisabled(DisFlag.FATIGUE))
+		&&(myChar instanceof MOB))
 			((MOB)myChar).curState().setFatigue(0);
 		return true;
 	}
@@ -608,15 +609,15 @@ public class StdRace implements Race
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
 
-	protected boolean giveMobAbility(final MOB mob, final Ability A, 
+	protected boolean giveMobAbility(final MOB mob, final Ability A,
 									 final int proficiency, final String defaultParm,
 									 final boolean isBorrowedRace)
 	{
 		return giveMobAbility(mob,A,proficiency,defaultParm,isBorrowedRace,true);
 	}
 
-	protected boolean giveMobAbility(final MOB mob, Ability A, 
-									 final int proficiency, final String defaultParm, 
+	protected boolean giveMobAbility(final MOB mob, Ability A,
+									 final int proficiency, final String defaultParm,
 									 final boolean isBorrowedRace, final boolean autoInvoke)
 	{
 		if(mob.fetchAbility(A.ID())==null)

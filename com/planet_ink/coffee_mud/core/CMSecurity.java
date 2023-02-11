@@ -2869,7 +2869,8 @@ public class CMSecurity
 		BADEXITS("unlinked exits"),
 		SPACETHREAD("space thread"),
 		CRONJOBS("cron jobs"),
-		AUTOAWARDS("auto-awards system")
+		AUTOAWARDS("auto-awards system"),
+		FATIGUE("fatigue system")
 		;
 		private final String desc;
 
