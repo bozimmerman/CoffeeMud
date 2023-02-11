@@ -57,8 +57,8 @@ public class VeryAggressive extends Aggressive
 	@Override
 	public String accountForYourself()
 	{
-		if(getParms().trim().length()>0)
-			return "surprising aggression against "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
+		if(this.maskStr.trim().length()>0)
+			return "surprising aggression against "+CMLib.masking().maskDesc(this.maskStr,true).toLowerCase();
 		else
 			return "surprising aggressiveness";
 	}
@@ -74,7 +74,7 @@ public class VeryAggressive extends Aggressive
 	@Override
 	public boolean grantsAggressivenessTo(final MOB M)
 	{
-		return CMLib.masking().maskCheck(getParms(),M,false);
+		return CMLib.masking().maskCheck(this.mask,M,false);
 	}
 
 	public void tickVeryAggressively(final Tickable ticking, final int tickID,

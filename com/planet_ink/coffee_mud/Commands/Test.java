@@ -2548,6 +2548,7 @@ public class Test extends StdCommand
 				R.recoverRoomStats();
 			}
 			if((what.equalsIgnoreCase("all_properties"))
+			||(what.equalsIgnoreCase("all_zappers"))
 			||(what.equalsIgnoreCase("Prop_HaveZapper"))
 			||what.equalsIgnoreCase("all"))
 			{
@@ -2573,6 +2574,7 @@ public class Test extends StdCommand
 			//if(what.equalsIgnoreCase("rsql")) CMLib.percolator().testMQLParsing();
 
 			if((what.equalsIgnoreCase("all_properties"))
+			||(what.equalsIgnoreCase("all_zappers"))
 			||(what.equalsIgnoreCase("Prop_RideZapper"))
 			||what.equalsIgnoreCase("all"))
 			{
@@ -2599,6 +2601,7 @@ public class Test extends StdCommand
 				}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
+			||(what.equalsIgnoreCase("all_zappers"))
 			||(what.equalsIgnoreCase("Prop_WearZapper"))
 			||what.equalsIgnoreCase("all"))
 			{

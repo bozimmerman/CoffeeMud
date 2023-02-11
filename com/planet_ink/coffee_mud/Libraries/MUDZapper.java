@@ -8232,9 +8232,88 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	}
 
 	@Override
+	public String separateZapperMask(final String newText)
+	{
+		if(newText == null)
+			return "";
+		final List<String> p = CMParms.parse(newText);
+		int start = 0;
+		for(start=0;start<p.size();start++)
+		{
+			final String s = p.get(start);
+			if(s.startsWith("+")||s.startsWith("-"))
+				break;
+		}
+		if(start>=p.size())
+			return "";
+		int end = p.size()-1;
+		for(end=p.size()-1;end>start;end--)
+		{
+			final String s = p.get(end);
+			if(s.startsWith("+")||s.startsWith("-"))
+				break;
+		}
+		if(end == start)
+			return p.get(start);
+		if(end == p.size()-1)
+			return CMParms.combineQuoted(p, start, end+1);
+		final Map<String,ZapperKey> zapCodes = this.getMaskCodes();
+		final ZapperKey key = zapCodes.get(p.get(end).toUpperCase());
+		if(key != null)
+		{
+			switch(key)
+			{
+			case IF:
+			case _IF:
+				end++;
+				break;
+			case _VALUE:
+			case VALUE:
+			case _ABILITY:
+			case ABILITY:
+			case _WEIGHT:
+			case WEIGHT:
+			case _ARMOR:
+			case ARMOR:
+			case _DAMAGE:
+			case DAMAGE:
+			case _ATTACK:
+			case ATTACK:
+			case _GROUPSIZE:
+			case GROUPSIZE:
+			case _STRENGTH:
+			case STRENGTH:
+			case _INTELLIGENCE:
+			case INTELLIGENCE:
+			case _WISDOM:
+			case WISDOM:
+			case _DEXTERITY:
+			case DEXTERITY:
+			case _CONSTITUTION:
+			case CONSTITUTION:
+			case _CHARISMA:
+			case CHARISMA:
+				while((end+1<p.size())
+				&&(CMath.isInteger(p.get(end+1))))
+					end++;
+				break;
+			default:
+				break;
+			}
+		}
+		return CMParms.combineQuoted(p, start, end+1);
+	}
+
+	@Override
 	public String[] separateMaskStrs(final String newText)
 	{
 		final String[] strs=new String[2];
+		if(newText == null)
+		{
+			strs[0]="";
+			strs[1]="";
+			return strs;
+		}
 		final int maskindex=newText.toUpperCase().lastIndexOf("MASK=");
 		if(maskindex>0)
 		{

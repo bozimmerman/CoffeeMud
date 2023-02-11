@@ -56,6 +56,7 @@ public class Aggressive extends StdBehavior
 	protected String	attackMessage		= null;
 	protected Room		lastRoom			= null;
 	protected int		lastRoomInhabCount	= 0;
+	protected String	maskStr				= "";
 	protected MaskingLibrary.CompiledZMask mask = null;
 
 	@Override
@@ -71,14 +72,14 @@ public class Aggressive extends StdBehavior
 	{
 		if(M==null)
 			return true;
-		return CMLib.masking().maskCheck(getParms(),M,false);
+		return CMLib.masking().maskCheck(this.mask,M,false);
 	}
 
 	@Override
 	public String accountForYourself()
 	{
-		if(getParms().trim().length()>0)
-			return "aggression against "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
+		if(maskStr.trim().length()>0)
+			return "aggression against "+CMLib.masking().maskDesc(maskStr,true).toLowerCase();
 		else
 			return "aggressiveness";
 	}
@@ -96,13 +97,10 @@ public class Aggressive extends StdBehavior
 		noGangUp=V.contains("NOGANG")||V.contains("NOGANGUP");
 		misbehave=V.contains("MISBEHAVE");
 		tickDown=tickWait;
-		for(final Iterator<String> i=V.iterator();i.hasNext();)
-		{
-			final String s=i.next();
-			if(!(s.startsWith("+")||s.startsWith("-")))
-				i.remove();
-		}
-		this.mask=CMLib.masking().getPreCompiledMask(CMParms.combineQuoted(V,0).trim());
+		maskStr = CMLib.masking().separateZapperMask(newParms);
+		this.mask=null;
+		if(maskStr.length()>0)
+			this.mask=CMLib.masking().getPreCompiledMask(maskStr);
 	}
 
 	public static boolean startFight(final MOB monster, final MOB mob, final boolean fightMOBs, final boolean misBehave, final String attackMsg)

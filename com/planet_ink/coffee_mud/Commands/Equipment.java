@@ -100,7 +100,6 @@ public class Equipment extends StdCommand
 		{
 			final long wornCode=codes.all_ordered()[l];
 			final Long wC = Long.valueOf(wornCode);
-			final String wornLocName=codes.name(wornCode);
 			final String wornLocHeader = headers.get(wC);
 			final StringBuilder msg = new StringBuilder("");
 			strs.put(wC, msg);

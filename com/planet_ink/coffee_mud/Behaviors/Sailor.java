@@ -47,6 +47,7 @@ public class Sailor extends StdBehavior
 	protected boolean		aggrMobs		= false;
 	protected boolean		aggrLvlChk		= false;
 	protected CompiledZMask aggrMask		= null;
+	protected String		aggrMaskStr		= "";
 	protected boolean		areaOnly		= true;
 	protected boolean		wimpy			= true;
 	protected volatile int complaintTick	= 0;
@@ -55,8 +56,8 @@ public class Sailor extends StdBehavior
 	@Override
 	public String accountForYourself()
 	{
-		if(getParms().trim().length()>0)
-			return "aggression against "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
+		if(aggrMaskStr.trim().length()>0)
+			return "aggression against "+CMLib.masking().maskDesc(aggrMaskStr,true).toLowerCase();
 		else
 			return "aggressiveness";
 	}
@@ -184,7 +185,8 @@ public class Sailor extends StdBehavior
 		aggressive = CMParms.getParmBool(newParms, "AGGRO", false);
 		aggrMobs = CMParms.getParmBool(newParms, "AGGROMOBS", false);
 		aggrLvlChk = CMParms.getParmBool(newParms, "AGGROLEVELCHECK", false);
-		aggrMask = CMLib.masking().getPreCompiledMask(CMParms.getParmStr(newParms, "AGGROMASK", ""));
+		aggrMaskStr = CMParms.getParmStr(newParms, "AGGROMASK", "");
+		aggrMask = CMLib.masking().getPreCompiledMask(aggrMaskStr);
 		wimpy = CMParms.getParmBool(newParms, "WIMPY", true);
 		loyalShipArea	= null;
 		loyalShipItem	= null;

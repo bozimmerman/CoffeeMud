@@ -55,6 +55,8 @@ public class Follower extends ActiveTicker
 	protected MOB		lastOwner		= null;
 	protected String	name			= null;
 
+	protected MaskingLibrary.CompiledZMask mask = null;
+
 	int direction=-1;
 
 	public Follower()
@@ -78,6 +80,10 @@ public class Follower extends ActiveTicker
 		noFollowers=V.contains("NOFOLLOWERS");
 		inventory=V.contains("INVENTORY")||V.contains("INV");
 		name=CMParms.getParmStr(newParms, "NAME", "");
+		final String maskStr = CMLib.masking().separateZapperMask(newParms);
+		this.mask=null;
+		if(maskStr.length()>0)
+			this.mask=CMLib.masking().getPreCompiledMask(maskStr);
 	}
 
 	@Override
@@ -158,7 +164,7 @@ public class Follower extends ActiveTicker
 				&&(msg.othersMessage()!=null)
 				&&((msg.targetMinor()==CMMsg.TYP_LEAVE)
 				 ||(msg.targetMinor()==CMMsg.TYP_FLEE))
-				&&((CMLib.masking().maskCheck(getParms(),mob,false))
+				&&((CMLib.masking().maskCheck(mask,mob,false))
 					||((name!=null)&&(name.length()>0)&&(mob.Name().equalsIgnoreCase(name))))
 				&&(CMLib.dice().rollPercentage()<=chance))
 				{
@@ -182,7 +188,7 @@ public class Follower extends ActiveTicker
 			||(msg.targetMinor()==CMMsg.TYP_FLEE)
 			||(msg.targetMinor()==CMMsg.TYP_RECALL)
 			||(msg.targetMinor()==CMMsg.TYP_ENTER))
-		&&((CMLib.masking().maskCheck(getParms(),mob,false))
+		&&((CMLib.masking().maskCheck(mask,mob,false))
 			||((name!=null)&&(name.length()>0)&&(mob.Name().equalsIgnoreCase(name))))
 		&&((!(affecting instanceof MOB))||CMLib.flags().canBeSeenBy(mob,(MOB)affecting))
 		&&(CMLib.dice().rollPercentage()<=chance))
@@ -208,7 +214,7 @@ public class Follower extends ActiveTicker
 				&&((name == null)||(name.length()==0)||(name.equalsIgnoreCase(M.Name())))
 				&&(!CMSecurity.isAllowed(M,room,CMSecurity.SecFlag.CMDMOBS))
 				&&(!CMSecurity.isAllowed(M,room,CMSecurity.SecFlag.CMDROOMS))
-				&&(CMLib.masking().maskCheck(getParms(),M,false)))
+				&&(CMLib.masking().maskCheck(mask,M,false)))
 					return M;
 			}
 		}
@@ -303,7 +309,7 @@ public class Follower extends ActiveTicker
 			final Item I=(Item)ticking;
 			if((I.owner()!=null)
 			&&(I.owner() instanceof MOB)
-			&&(CMLib.masking().maskCheck(getParms(),I.owner(),false))
+			&&(CMLib.masking().maskCheck(mask,I.owner(),false))
 			&&(!CMSecurity.isAllowed((MOB)I.owner(),((MOB)I.owner()).location(),CMSecurity.SecFlag.CMDMOBS))
 			&&(!CMSecurity.isAllowed((MOB)I.owner(),((MOB)I.owner()).location(),CMSecurity.SecFlag.CMDROOMS)))
 				lastOwner=(MOB)I.owner();

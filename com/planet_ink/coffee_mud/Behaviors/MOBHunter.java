@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -58,13 +59,15 @@ public class MOBHunter extends ActiveTicker
 	}
 
 	protected boolean debug=false;
+	protected MaskingLibrary.CompiledZMask mask = null;
+	protected String maskStr = "";
 	int radius=20;
 
 	@Override
 	public String accountForYourself()
 	{
-		if(getParms().length()>0)
-			return "hunters of  "+CMLib.masking().maskDesc(getParms());
+		if(maskStr.length()>0)
+			return "hunters of  "+CMLib.masking().maskDesc(maskStr);
 		else
 			return "creature hunting";
 	}
@@ -89,6 +92,10 @@ public class MOBHunter extends ActiveTicker
 	{
 		super.setParms(newParms);
 		radius=CMParms.getParmInt(newParms,"radius",radius);
+		maskStr = CMLib.masking().separateZapperMask(newParms);
+		this.mask=null;
+		if(maskStr.length()>0)
+			this.mask=CMLib.masking().getPreCompiledMask(maskStr);
 	}
 
 	protected MOB findPrey(final MOB mob)
@@ -109,7 +116,7 @@ public class MOBHunter extends ActiveTicker
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				final MOB M=R.fetchInhabitant(i);
-				if(CMLib.masking().maskCheck(getParms(),M,false))
+				if(CMLib.masking().maskCheck(mask,M,false))
 				{
 					prey=M;
 					break;

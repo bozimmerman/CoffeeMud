@@ -48,7 +48,7 @@ public class Hireling extends StdBehavior
 	protected long					onTheJobUntil	= 0;
 	protected double				price			= 100.0;
 	protected int					minutes			= 30;
-	protected String				zapperMask		= null;
+	protected MaskingLibrary.CompiledZMask zapperMask = null;
 
 	@Override
 	public String accountForYourself()
@@ -95,7 +95,7 @@ public class Hireling extends StdBehavior
 				setMinutes(newParms.substring(dex+1,dex2));
 				final String s=getParms().substring(dex2+1);
 				if(s.trim().length()>0)
-					zapperMask=s.trim();
+					zapperMask=CMLib.masking().maskCompile(s.trim());
 			}
 			else
 			{
@@ -120,7 +120,7 @@ public class Hireling extends StdBehavior
 		return minutes;
 	}
 
-	protected String zapper()
+	protected MaskingLibrary.CompiledZMask zapper()
 	{
 		return zapperMask;
 	}

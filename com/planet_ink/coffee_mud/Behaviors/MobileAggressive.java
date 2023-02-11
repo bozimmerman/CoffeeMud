@@ -57,6 +57,7 @@ public class MobileAggressive extends Mobile
 	protected boolean			levelcheck			= false;
 	protected VeryAggressive	veryA				= new VeryAggressive();
 	protected CompiledZMask		mask				= null;
+	protected String			maskStr				= "";
 
 	public MobileAggressive()
 	{
@@ -69,8 +70,8 @@ public class MobileAggressive extends Mobile
 	@Override
 	public String accountForYourself()
 	{
-		if(getParms().trim().length()>0)
-			return "wandering aggression against "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
+		if(maskStr.trim().length()>0)
+			return "wandering aggression against "+CMLib.masking().maskDesc(maskStr,true).toLowerCase();
 		else
 			return "wandering aggressiveness";
 	}
@@ -88,23 +89,10 @@ public class MobileAggressive extends Mobile
 		mobkill=V.contains("MOBKILL");
 		noGangUp=V.contains("NOGANG")||V.contains("NOGANGUP");
 		misbehave=V.contains("MISBEHAVE");
-		for(final Iterator<String> i=V.iterator();i.hasNext();)
-		{
-			final String s=i.next();
-			if(!(s.startsWith("+")||s.startsWith("-")))
-				i.remove();
-			else
-			if(s.equals("-ALL")||(s.equals("+ALL")))
-				i.remove();
-			else
-			{
-				final String ss=s.substring(1);
-				final String fKey = getLocaleMap().ceilingKey(ss);
-				if((fKey != null) && (fKey.startsWith(ss)))
-					i.remove();
-			}
-		}
-		this.mask=CMLib.masking().getPreCompiledMask(CMParms.combineQuoted(V,0).trim());
+		maskStr = CMLib.masking().separateZapperMask(newParms);
+		this.mask=null;
+		if(maskStr.length()>0)
+			this.mask=CMLib.masking().getPreCompiledMask(maskStr);
 	}
 
 	@Override
@@ -112,7 +100,7 @@ public class MobileAggressive extends Mobile
 	{
 		if(M==null)
 			return true;
-		return CMLib.masking().maskCheck(getParms(),M,false);
+		return CMLib.masking().maskCheck(mask,M,false);
 	}
 
 	@Override

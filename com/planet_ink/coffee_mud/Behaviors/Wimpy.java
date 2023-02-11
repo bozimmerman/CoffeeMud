@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -40,9 +41,11 @@ public class Wimpy extends StdBehavior
 		return "Wimpy";
 	}
 
-	protected int		tickWait	= 0;
-	protected int		tickDown	= 0;
-	protected boolean	veryWimpy	= false;
+	protected int			tickWait	= 0;
+	protected int			tickDown	= 0;
+	protected boolean		veryWimpy	= false;
+	protected String		maskStr		= "";
+	protected CompiledZMask	mask		= null;
 
 	@Override
 	public boolean grantsAggressivenessTo(final MOB M)
@@ -53,8 +56,8 @@ public class Wimpy extends StdBehavior
 	@Override
 	public String accountForYourself()
 	{
-		if(getParms().trim().length()>0)
-			return "wimpy fear of "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
+		if(maskStr.trim().length()>0)
+			return "wimpy fear of "+CMLib.masking().maskDesc(maskStr,true).toLowerCase();
 		else
 			return "wimpy fear of combat";
 	}
@@ -66,6 +69,10 @@ public class Wimpy extends StdBehavior
 		tickWait=CMParms.getParmInt(newParms,"delay",0);
 		tickDown=tickWait;
 		veryWimpy=CMParms.getParmInt(newParms,"very",0)==1;
+		maskStr = CMLib.masking().separateZapperMask(newParms);
+		this.mask=null;
+		if(maskStr.length()>0)
+			this.mask=CMLib.masking().getPreCompiledMask(maskStr);
 	}
 
 	@Override
@@ -86,7 +93,7 @@ public class Wimpy extends StdBehavior
 					final MOB M=mobR.fetchInhabitant(m);
 					if((M!=null)
 					&&(M!=monster)
-					&&(CMLib.masking().maskCheck(getParms(),M,false)))
+					&&(CMLib.masking().maskCheck(mask,M,false)))
 					{
 						if((M.getVictim()==monster)
 						&&(monster.isInCombat()))

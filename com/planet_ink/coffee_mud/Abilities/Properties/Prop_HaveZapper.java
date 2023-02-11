@@ -65,6 +65,7 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 	protected String[]	bonusAmbi	= null;
 
 	protected MaskingLibrary.CompiledZMask mask=null;
+	protected String maskStr = "";
 
 	@Override
 	public String getWorshipCharID()
@@ -161,8 +162,12 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 		mask=null;
 		bonus=0;
 		bonusAmbi=null;
+		maskStr = "";
 		if(msgStr.trim().length()>0)
-			mask=CMLib.masking().getPreCompiledMask(text);
+		{
+			maskStr = CMLib.masking().separateZapperMask(text);
+			mask=CMLib.masking().getPreCompiledMask(maskStr);
+		}
 		if(mask != null)
 		{
 			MaskingLibrary.ZapperKey key=MaskingLibrary.ZapperKey._DEITY;
@@ -232,7 +237,7 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 	@Override
 	public String accountForYourself()
 	{
-		return "Ownership restricted as follows: "+CMLib.masking().maskDesc(text());
+		return "Ownership restricted as follows: "+CMLib.masking().maskDesc(maskStr);
 	}
 
 	@Override

@@ -43,7 +43,7 @@ public class DoorwayGuardian extends StdBehavior
 
 	private boolean nosneak=false;
 	private boolean always=false;
-	private String mask=null;
+	private MaskingLibrary.CompiledZMask mask=null;
 	private static final String DEFAULT_MESSAGE="<S-NAME> won't let <T-NAME> through there.";
 	//private static final String CHALLENGE_SAY="Halt! Who goes there?!";
 	private String message=DEFAULT_MESSAGE;
@@ -103,7 +103,7 @@ public class DoorwayGuardian extends StdBehavior
 			}
 		}
 		if(V.size()>0)
-			mask=CMParms.combineQuoted(V,0);
+			mask=CMLib.masking().maskCompile(CMParms.combineQuoted(V,0));
 	}
 
 	public Exit[] getParmExits(final MOB monster)

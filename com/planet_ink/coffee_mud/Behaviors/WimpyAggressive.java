@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -57,8 +58,8 @@ public class WimpyAggressive extends Aggressive
 	@Override
 	public String accountForYourself()
 	{
-		if(getParms().trim().length()>0)
-			return "wimpy aggression against "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
+		if(maskStr.trim().length()>0)
+			return "wimpy aggression against "+CMLib.masking().maskDesc(maskStr,true).toLowerCase();
 		else
 			return "wimpy aggressiveness";
 	}
@@ -67,7 +68,7 @@ public class WimpyAggressive extends Aggressive
 	public boolean grantsAggressivenessTo(final MOB M)
 	{
 		return ((M!=null)&&(CMLib.flags().isSleeping(M)))&&
-			CMLib.masking().maskCheck(getParms(),M,false);
+			CMLib.masking().maskCheck(this.mask,M,false);
 	}
 
 	@Override
@@ -78,7 +79,7 @@ public class WimpyAggressive extends Aggressive
 		tickDown=tickWait;
 	}
 
-	public static void pickAWimpyFight(final MOB observer, final boolean mobKiller, final boolean misBehave, final String attackMsg, final String zapStr)
+	public static void pickAWimpyFight(final MOB observer, final boolean mobKiller, final boolean misBehave, final String attackMsg, final CompiledZMask zapMask)
 	{
 		if(!canFreelyBehaveNormal(observer))
 			return;
@@ -90,7 +91,7 @@ public class WimpyAggressive extends Aggressive
 			if((mob!=null)
 			&&(mob!=observer)
 			&&(CMLib.flags().isSleeping(mob))
-			&&(CMLib.masking().maskCheck(zapStr,observer,false)))
+			&&(CMLib.masking().maskCheck(zapMask,observer,false)))
 			{
 				startFight(observer,mob,mobKiller,misBehave,attackMsg);
 				if(observer.isInCombat())
@@ -99,7 +100,8 @@ public class WimpyAggressive extends Aggressive
 		}
 	}
 
-	public static void tickWimpyAggressively(final Tickable ticking, final boolean mobKiller, final boolean misBehave, final int tickID, final String attackMsg, final String zapStr)
+	public static void tickWimpyAggressively(final Tickable ticking, final boolean mobKiller, final boolean misBehave,
+											final int tickID, final String attackMsg, final CompiledZMask zapMask)
 	{
 		if(tickID!=Tickable.TICKID_MOB)
 			return;
@@ -108,7 +110,7 @@ public class WimpyAggressive extends Aggressive
 		if(!(ticking instanceof MOB))
 			return;
 
-		pickAWimpyFight((MOB)ticking,mobKiller,misBehave,attackMsg,zapStr);
+		pickAWimpyFight((MOB)ticking,mobKiller,misBehave,attackMsg,zapMask);
 	}
 
 	@Override
@@ -119,7 +121,7 @@ public class WimpyAggressive extends Aggressive
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;
-			tickWimpyAggressively(ticking,mobkill,misbehave,tickID,attackMessage,getParms());
+			tickWimpyAggressively(ticking,mobkill,misbehave,tickID,attackMessage,mask);
 		}
 		return true;
 	}

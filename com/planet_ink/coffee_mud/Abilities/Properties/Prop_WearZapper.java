@@ -55,7 +55,7 @@ public class Prop_WearZapper extends Prop_HaveZapper
 	@Override
 	public String accountForYourself()
 	{
-		return "Wearing restricted as follows: "+CMLib.masking().maskDesc(miscText);
+		return "Wearing restricted as follows: "+CMLib.masking().maskDesc(maskStr);
 	}
 
 	@Override
@@ -81,21 +81,21 @@ public class Prop_WearZapper extends Prop_HaveZapper
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_HOLD:
-			if((!CMLib.masking().maskCheck(text(),mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
+			if((!CMLib.masking().maskCheck(this.mask,mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
 			{
 				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,msgStr);
 				return false;
 			}
 			break;
 		case CMMsg.TYP_WEAR:
-			if((!CMLib.masking().maskCheck(text(),mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
+			if((!CMLib.masking().maskCheck(this.mask,mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
 			{
 				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,msgStr);
 				return false;
 			}
 			break;
 		case CMMsg.TYP_WIELD:
-			if((!CMLib.masking().maskCheck(text(),mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
+			if((!CMLib.masking().maskCheck(this.mask,mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
 			{
 				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,msgStr);
 				return false;

@@ -61,7 +61,7 @@ public class Prop_RideZapper extends Prop_HaveZapper
 	@Override
 	public String accountForYourself()
 	{
-		return "Mounting restricted as follows: "+CMLib.masking().maskDesc(miscText);
+		return "Mounting restricted as follows: "+CMLib.masking().maskDesc(maskStr);
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class Prop_RideZapper extends Prop_HaveZapper
 		case CMMsg.TYP_SLEEP:
 		case CMMsg.TYP_MOUNT:
 		case CMMsg.TYP_ENTER:
-			if((!CMLib.masking().maskCheck(text(),mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
+			if((!CMLib.masking().maskCheck(super.mask,mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
 			{
 				mob.location().show(mob,null,affected,CMMsg.MSG_OK_VISUAL,msgStr);
 				return false;

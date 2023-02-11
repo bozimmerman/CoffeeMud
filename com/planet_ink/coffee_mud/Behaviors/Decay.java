@@ -57,6 +57,7 @@ public class Decay extends ActiveTicker
 
 	protected boolean	activated	= false;
 	protected String	answer		= " vanishes!";
+	protected MaskingLibrary.CompiledZMask mask = null;
 
 	@Override
 	public String accountForYourself()
@@ -73,6 +74,10 @@ public class Decay extends ActiveTicker
 		answer=CMParms.getParmStr(parms,"answer"," vanishes!");
 		if(newParms.toUpperCase().indexOf("NOTRIGGER")>=0)
 			activated=true;
+		final String maskStr = CMLib.masking().separateZapperMask(newParms);
+		this.mask=null;
+		if(maskStr.length()>0)
+			this.mask=CMLib.masking().getPreCompiledMask(maskStr);
 	}
 
 	@Override
@@ -155,7 +160,7 @@ public class Decay extends ActiveTicker
 					||(msg.targetMinor()==CMMsg.TYP_MOUNT)
 					||(msg.targetMinor()==CMMsg.TYP_ENTER))
 				&&(!msg.source().isMonster())
-				&&(CMLib.masking().maskCheck(getParms(),msg.source(),true)))
+				&&(CMLib.masking().maskCheck(this.mask,msg.source(),true)))
 					activated=true;
 			}
 			else
@@ -163,7 +168,7 @@ public class Decay extends ActiveTicker
 			{
 				if((msg.targetMajor(CMMsg.MASK_MALICIOUS))
 				&&(!msg.source().isMonster())
-				&&(CMLib.masking().maskCheck(getParms(),msg.source(),true)))
+				&&(CMLib.masking().maskCheck(this.mask,msg.source(),true)))
 					activated=true;
 			}
 			else
@@ -173,14 +178,14 @@ public class Decay extends ActiveTicker
 				if(((msg.targetMinor()==CMMsg.TYP_WEAR)
 					||(msg.targetMinor()==CMMsg.TYP_HOLD)
 					||(msg.targetMinor()==CMMsg.TYP_WIELD))
-				&&(CMLib.masking().maskCheck(getParms(),msg.source(),true)))
+				&&(CMLib.masking().maskCheck(this.mask,msg.source(),true)))
 					activated=true;
 			}
 			else
 			if(affecting instanceof Item)
 			{
 				if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
-				&&(CMLib.masking().maskCheck(getParms(),msg.source(),true)))
+				&&(CMLib.masking().maskCheck(this.mask,msg.source(),true)))
 				{
 					activated=true;
 				}

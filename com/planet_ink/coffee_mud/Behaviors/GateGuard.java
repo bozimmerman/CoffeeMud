@@ -46,6 +46,8 @@ public class GateGuard extends StdBehavior
 	protected boolean	keepLocked	= false;
 	protected boolean	allnight	= false;
 
+	protected MaskingLibrary.CompiledZMask mask = null;
+
 	@Override
 	public String accountForYourself()
 	{
@@ -75,6 +77,10 @@ public class GateGuard extends StdBehavior
 				break;
 			}
 		}
+		final String maskStr = CMParms.combineQuoted(V, 0);
+		this.mask=null;
+		if(maskStr.length()>0)
+			this.mask=CMLib.masking().getPreCompiledMask(maskStr);
 	}
 
 	protected int findGate(final MOB mob)
@@ -128,7 +134,7 @@ public class GateGuard extends StdBehavior
 			if((M!=null)
 			&&(!M.isMonster())
 			&&(CMLib.flags().canBeSeenBy(M,mob))
-			&&(CMLib.masking().maskCheck(getParms(),M,false)))
+			&&(CMLib.masking().maskCheck(this.mask,M,false)))
 				num++;
 		}
 		return num;
@@ -188,7 +194,7 @@ public class GateGuard extends StdBehavior
 			{
 				final int dir=findGate(mob);
 				if((dir>=0)
-				&&(CMLib.masking().maskCheck(getParms(),msg.source(),false)))
+				&&(CMLib.masking().maskCheck(this.mask,msg.source(),false)))
 				{
 					final Exit e=mob.location().getExitInDir(dir);
 					if(msg.amITarget(e))
