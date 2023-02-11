@@ -105,7 +105,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 	public enum Stage
 	{
 		Designer     (30, 4,  1.0,  -16, 1.0),
-		Cuirbouli    (37, 5,  1.28, -24, 1.15),
+		Cuirboulli    (37, 5,  1.28, -24, 1.15),
 		Thick        (45, 6,  1.56, -30, 1.3),
 		Masterwork   (54, 7,  1.84, -36, 1.45),
 		Laminar      (63, 8,  2.12, -42, 1.60),

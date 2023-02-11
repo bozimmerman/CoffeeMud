@@ -3075,6 +3075,12 @@ public class Modify extends StdCommand
 				execute(mob,commands,metaFlags);
 			}
 			else
+			if((thang=CMLib.players().getLoadPlayer(allWord))!=null)
+			{
+				commands.add(1,"USER");
+				execute(mob,commands,metaFlags);
+			}
+			else
 			if(allWord.indexOf('@')>=0)
 			{
 				commands.add(1,"ITEM");

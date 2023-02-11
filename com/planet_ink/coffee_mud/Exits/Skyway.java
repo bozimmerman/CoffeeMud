@@ -40,6 +40,12 @@ public class Skyway extends Open
 		return "Skyway";
 	}
 
+	@Override
+	public String Name()
+	{
+		return "the sky";
+	}
+
 	public Skyway()
 	{
 		super();
