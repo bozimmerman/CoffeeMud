@@ -134,7 +134,7 @@ public class Spell_Thirstless extends Spell
 			return false;
 
 		// now see if it worked
-		final boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto)&& (!CMSecurity.isDisabled(DisFlag.THIRST));
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?"));

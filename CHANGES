@@ -9,7 +9,7 @@
   8. Looking UP into a generated sky now gives some basic info.
   9. New Exit type: Skyway -- for supporting the above.
  10. New Achievement type: CHARITY
- 11. New Disable flag: FATIGUE, acts like the racial infatiguable flag
+ 11. New Disable flag: FATIGUE
 
 # Build 5.10.1 Release 1/01/2023
   1. FasterRecovery expanded and new char stat REJUVRATE for Prop*Adjuster

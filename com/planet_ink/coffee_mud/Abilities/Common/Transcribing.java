@@ -99,9 +99,9 @@ public class Transcribing extends CommonSkill
 					final MOB factM=CMClass.getFactoryMOB(mob.Name(), mob.phyStats().level(), mob.location());
 					try
 					{
-						String tmsg="";
 						final CMMsg rmsg=CMClass.getMsg(mob,foundI,this,CMMsg.TYP_READ,null,pageNum,null);
 						foundI.executeMsg(foundI, rmsg);
+						String tmsg="";
 						if(rmsg.trailerMsgs() != null)
 						{
 							for(final CMMsg m2 : rmsg.trailerMsgs())
@@ -117,6 +117,14 @@ public class Transcribing extends CommonSkill
 						&&(targetI instanceof Recipe)
 						&&(CMClass.getAbilityPrototype(((Recipe)targetI).getCommonSkillID())==null))
 							((Recipe)targetI).setCommonSkillID(((Recipe)foundI).getCommonSkillID());
+						else
+						if(((!(targetI instanceof Book))||(((Book)targetI).getMaxPages()==1))
+						&&(tmsg.startsWith("::")))
+						{
+							final int x=tmsg.indexOf("::",2);
+							if(x>0)
+								tmsg = tmsg.substring(x+2).trim();
+						}
 
 						final CMMsg msg=CMClass.getMsg(mob,targetI,this,CMMsg.TYP_WRITE,
 								L("<S-NAME> transcribe(s) from @x1 into <T-NAME>.",foundI.name(mob)),

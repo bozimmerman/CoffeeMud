@@ -339,13 +339,12 @@ public class StdBook extends StdItem implements Book
 					if((newOnly)&&(msg.value()>0))
 						return;
 					final StringBuffer returnEntry;
+					String chName="";;
 					if(read.second.length()>0)
 					{
 						final int x=read.second.indexOf(":");
-						if(x>0)
-							returnEntry=new StringBuffer("::"+read.second.substring(x+1)+"::");
-						else
-							returnEntry=new StringBuffer("::"+read.second+"::");
+						chName = (x>0) ? read.second.substring(x+1) : read.second;
+						returnEntry=new StringBuffer("::"+chName+"::");
 					}
 					else
 						returnEntry=new StringBuffer("");
@@ -355,12 +354,24 @@ public class StdBook extends StdItem implements Book
 					{
 						final int x=eTrim.indexOf(":");
 						int eol=-1;
-						if((x>0)&&(CMath.isInteger(eTrim.substring(chStart.length(),x).trim())))
+						if(((x>0)&&(CMath.isInteger(eTrim.substring(chStart.length(),x).trim())))
+						||(eTrim.startsWith(chName)))
 						{
 							eol=eTrim.indexOf('\n');
 							if(eol < 0)
 								eol=eTrim.indexOf('\r');
 						}
+						if(eol>0)
+							returnEntry.append("\n"+eTrim.substring(eol).trim());
+						else
+							returnEntry.append(entry);
+					}
+					else
+					if(eTrim.startsWith(chStart))
+					{
+						int eol=eTrim.indexOf('\n');
+						if(eol < 0)
+							eol=eTrim.indexOf('\r');
 						if(eol>0)
 							returnEntry.append("\n"+eTrim.substring(eol).trim());
 						else

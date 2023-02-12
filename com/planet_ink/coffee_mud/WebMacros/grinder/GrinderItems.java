@@ -989,7 +989,7 @@ public class GrinderItems
 				}
 				else
 				{
-					if((shopItemCode.equals(mobNum)||shopItemCode.equals("NEW")) && (shopItemCode.length()>0))
+					if(shopItemCode.length()>0)
 					{
 						if(M instanceof Librarian)
 							((Librarian)M).getBaseLibrary().addStoreInventory(I);
@@ -1035,7 +1035,7 @@ public class GrinderItems
 				}
 				else
 				{
-					if((shopItemCode.equals(mobNum)||shopItemCode.equals("NEW")) && (shopItemCode.length()>0))
+					if(shopItemCode.length()>0)
 					{
 						if(M instanceof Librarian)
 						{
