@@ -2241,4 +2241,12 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	{
 		return 0;
 	}
+
+	@Override
+	public boolean securityCheck(final MOB mob)
+	{
+		if( getBoardableItem() instanceof Boardable)
+			return ((Boardable)getBoardableItem()).securityCheck(mob);
+		return true;
+	}
 }

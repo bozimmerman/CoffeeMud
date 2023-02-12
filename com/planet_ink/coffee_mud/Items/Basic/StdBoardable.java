@@ -588,7 +588,8 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		return failed;
 	}
 
-	protected boolean securityCheck(final MOB mob)
+	@Override
+	public boolean securityCheck(final MOB mob)
 	{
 		if(mob==null)
 			return false;

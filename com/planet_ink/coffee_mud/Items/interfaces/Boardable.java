@@ -67,7 +67,7 @@ public interface Boardable extends Environmental
 	public Room getIsDocked();
 
 	/**
-	 * Space ships are unique in having an Item stand-in for dirt-side access,
+	 * Ships are unique in having an Item stand-in for dirt-side access,
 	 * as well as an Area object.  This method returns the area object that
 	 * represents the contents of the ship.
 	 * @return the official area version of this ship
@@ -75,7 +75,7 @@ public interface Boardable extends Environmental
 	public Area getArea();
 
 	/**
-	 * Space ships are unique in having an Item stand-in for dirt-side access,
+	 * Ships are unique in having an Item stand-in for dirt-side access,
 	 * as well as an Area object.  This method sets the area object that
 	 * represents the contents of the ship.
 	 * @param xml area xml for the ship
@@ -103,17 +103,25 @@ public interface Boardable extends Environmental
 	/**
 	 * Ships are unique in having an Item stand-in for port-side access,
 	 * as well as an Area object.  This method returns that Item.
-	 * @return the official space version of this ship
+	 * @return the official item version of this ship
 	 */
 	public Item getBoardableItem();
-	
+
+	/**
+	 * Returns whether the given mob has control privileges
+	 * for this boardable item
+	 * @param mob
+	 * @return
+	 */
+	public boolean securityCheck(final MOB mob);
+
 	/**
 	 * Strings which can appear between markers in a boardable name to designate that it
 	 * can be renamed by the player.
 	 */
 	public static final String[] NAME_REPL_STRINGS=
 			new String[] { "NAME","NEWNAME","SHIPNAME","SHIP","name","newname","shipname","ship" };
-	
+
 	/**
 	 * Strings which can around replacement strings in a boardable name to designate that it
 	 * can be renamed by the player.

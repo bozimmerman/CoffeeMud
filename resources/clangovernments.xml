@@ -132,6 +132,7 @@
         <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
         <ABILITY ID="Spell_ClanWard" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_AwaitClanShip" PROFF=50 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_ImprovedClanWard" PROFF=0 LEVEL=20 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
@@ -298,6 +299,7 @@
         <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
         <ABILITY ID="Spell_ClanWard" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_AwaitClanShip" PROFF=50 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_ImprovedClanWard" PROFF=0 LEVEL=20 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
@@ -454,6 +456,7 @@
         <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
         <ABILITY ID="Spell_ClanWard" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_AwaitClanShip" PROFF=50 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_ImprovedClanWard" PROFF=0 LEVEL=20 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
@@ -617,6 +620,7 @@
         <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
         <ABILITY ID="Spell_ClanWard" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_AwaitClanShip" PROFF=50 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_ImprovedClanWard" PROFF=0 LEVEL=20 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
@@ -781,6 +785,7 @@
         <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
         <ABILITY ID="Spell_ClanWard" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_AwaitClanShip" PROFF=50 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_ImprovedClanWard" PROFF=0 LEVEL=20 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
@@ -976,6 +981,7 @@
         <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
         <ABILITY ID="Spell_ClanWard" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_AwaitClanShip" PROFF=50 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_ImprovedClanWard" PROFF=0 LEVEL=20 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
@@ -1060,6 +1066,7 @@
         <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
         <ABILITY ID="Spell_ClanWard" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_AwaitClanShip" PROFF=50 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_ImprovedClanWard" PROFF=0 LEVEL=20 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
@@ -1270,6 +1277,7 @@
         <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
         <ABILITY ID="Spell_ClanWard" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_AwaitClanShip" PROFF=50 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_ImprovedClanWard" PROFF=0 LEVEL=20 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
@@ -1420,6 +1428,7 @@
         <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
         <ABILITY ID="Spell_ClanWard" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_AwaitClanShip" PROFF=50 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_ImprovedClanWard" PROFF=0 LEVEL=20 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
@@ -1559,6 +1568,7 @@
         <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
         <ABILITY ID="Spell_ClanWard" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_AwaitClanShip" PROFF=50 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_ImprovedClanWard" PROFF=0 LEVEL=20 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
