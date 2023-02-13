@@ -1358,12 +1358,12 @@ public class MobData extends StdWebMacro
 						if((gset.length>0)
 						&&(gset[0].toString().length()>0))
 						{
-							char c= Character.toUpperCase(gset[0].toString().charAt(0));
-							String nm = gset[2].toString();
+							final char c= Character.toUpperCase(gset[0].toString().charAt(0));
+							final String nm = gset[2].toString();
 							str.append("<INPUT TYPE=RADIO NAME=GENDER");
 							if(Character.toUpperCase(old.charAt(0)) == c)
-								str.append(" CHECKED ");
-							str.append("VALUE="+c+">"+CMStrings.capitalizeAndLower(nm));
+								str.append(" CHECKED");
+							str.append(" VALUE="+c+">"+CMStrings.capitalizeAndLower(nm));
 						}
 					}
 					break;
