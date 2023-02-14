@@ -106,9 +106,10 @@ public class Archon extends StdCharClass implements ArchonOnly
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Scarring",100,"",true,SecretFlag.SECRET);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_MarkOOC",100,"",true,SecretFlag.SECRET);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_InstanceDisplay",100,"",true,SecretFlag.SECRET);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_AlterTime",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_MoveSky",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Fighter_Bulldog",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_AlterTime",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_Majesty",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_MoveSky",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Fighter_Bulldog",true);
 	}
 
 	@Override

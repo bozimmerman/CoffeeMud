@@ -1397,6 +1397,27 @@ public class Spell_Wish extends Spell
 				}
 			}
 
+			// change station
+			if((target instanceof MOB)
+			&&((myWish.indexOf(" BECOME ")>=0)
+				||(myWish.indexOf(" BE A ")>=0)
+				||(myWish.indexOf(" BE ")>=0))
+			&&((wishV.get(wishV.size()-1).equalsIgnoreCase("king"))
+				||(wishV.get(wishV.size()-1).equalsIgnoreCase("queen"))
+				||(wishV.get(wishV.size()-1).equalsIgnoreCase("monarch"))
+				||(wishV.get(wishV.size()-1).equalsIgnoreCase("prince"))
+				||(wishV.get(wishV.size()-1).equalsIgnoreCase("princess"))
+				||(wishV.get(wishV.size()-1).equalsIgnoreCase("emperer"))
+				||(wishV.get(wishV.size()-1).equalsIgnoreCase("empress"))
+				||(wishV.get(wishV.size()-1).equalsIgnoreCase("ruler"))))
+			{
+				wishDrain(mob,2000,true);
+				final Ability A = CMClass.getAbility("Spell_Majesty");
+				if(A!=null)
+					A.invoke(mob, mob, true, 0);
+				return true;
+			}
+
 			if(myWish.startsWith(" TO FORGET ")
 			||myWish.startsWith(" TO UNLEARN "))
 			{
