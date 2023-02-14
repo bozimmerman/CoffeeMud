@@ -85,11 +85,12 @@ public class MobileAggressive extends Mobile
 		tickDown=tickWait;
 		aggressiveTickDown=tickWait;
 		final Vector<String> V=CMParms.parse(newParms.toUpperCase());
-		levelcheck=V.contains("CHECKLEVEL");
-		mobkill=V.contains("MOBKILL");
-		noGangUp=V.contains("NOGANG")||V.contains("NOGANGUP");
-		misbehave=V.contains("MISBEHAVE");
-		maskStr = CMLib.masking().separateZapperMask(newParms);
+		levelcheck=V.remove("CHECKLEVEL");
+		mobkill=V.remove("MOBKILL");
+		noGangUp=V.remove("NOGANG")||V.remove("NOGANGUP");
+		misbehave=V.remove("MISBEHAVE");
+		V.removeAll(getMobileRemovables());
+		maskStr = CMLib.masking().separateZapperMask(CMParms.combineQuoted(V, 0));
 		this.mask=null;
 		if(maskStr.length()>0)
 			this.mask=CMLib.masking().getPreCompiledMask(maskStr);

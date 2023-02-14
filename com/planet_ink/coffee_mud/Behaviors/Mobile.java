@@ -63,7 +63,8 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 	protected int					tickStatus			= Tickable.STATUS_NOT;
 	protected int					ticksSuspended		= 0;
 
-	protected final static TreeMap<String,Integer> localeMap = new TreeMap<String,Integer>();
+	protected final static TreeMap<String, Integer>	localeMap	= new TreeMap<String, Integer>();
+	protected final static Collection<String>		localeTags	= new ArrayList<String>();
 
 	@Override
 	public String accountForYourself()
@@ -145,6 +146,33 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		return Mobile.localeMap;
 	}
 
+	public static Collection<String> getMobileRemovables()
+	{
+		if(localeTags.size()==0)
+		{
+			final List<String> rem = new ArrayList<String>(2+Room.DOMAIN_INDOORS_DESCS.length+Room.DOMAIN_OUTDOOR_DESCS.length);
+			rem.add("+ALL");
+			rem.add("-ALL");
+			for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
+			{
+				rem.add("+"+Room.DOMAIN_INDOORS_DESCS[i]);
+				rem.add("-"+Room.DOMAIN_INDOORS_DESCS[i]);
+			}
+			for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
+			{
+				rem.add("+"+Room.DOMAIN_OUTDOOR_DESCS[i]);
+				rem.add("-"+Room.DOMAIN_OUTDOOR_DESCS[i]);
+			}
+			synchronized(localeTags)
+			{
+				if(localeTags.size()==0)
+					localeTags.addAll(rem);
+			}
+		}
+		return localeTags;
+
+	}
+
 	@Override
 	public void setParms(final String newParms)
 	{
@@ -186,29 +214,31 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 					for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
 					{
 						if(Room.DOMAIN_INDOORS_DESCS[i].startsWith(s))
+						{
 							code=Room.INDOORS+i;
+							if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
+								restrictedLocales.remove(Integer.valueOf(code));
+							else
+							if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
+								restrictedLocales.add(Integer.valueOf(code));
+							break;
+						}
 					}
-					if(code>=0)
+					if(code < 0)
 					{
-						if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
-							restrictedLocales.remove(Integer.valueOf(code));
-						else
-						if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
-							restrictedLocales.add(Integer.valueOf(code));
-					}
-					code=-1;
-					for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
-					{
-						if(Room.DOMAIN_OUTDOOR_DESCS[i].startsWith(s))
-							code=i;
-					}
-					if(code>=0)
-					{
-						if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
-							restrictedLocales.remove(Integer.valueOf(code));
-						else
-						if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
-							restrictedLocales.add(Integer.valueOf(code));
+						for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
+						{
+							if(Room.DOMAIN_OUTDOOR_DESCS[i].startsWith(s))
+							{
+								code=i;
+								if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
+									restrictedLocales.remove(Integer.valueOf(code));
+								else
+								if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
+									restrictedLocales.add(Integer.valueOf(code));
+								break;
+							}
+						}
 					}
 
 				}
