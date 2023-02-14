@@ -1400,6 +1400,7 @@ public class Spell_Wish extends Spell
 			// change station
 			if((target instanceof MOB)
 			&&((myWish.indexOf(" BECOME ")>=0)
+				||(myWish.indexOf(" BECOME A ")>=0)
 				||(myWish.indexOf(" BE A ")>=0)
 				||(myWish.indexOf(" BE ")>=0))
 			&&((wishV.get(wishV.size()-1).equalsIgnoreCase("king"))
