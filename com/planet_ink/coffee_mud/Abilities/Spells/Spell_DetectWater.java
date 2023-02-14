@@ -237,9 +237,9 @@ public class Spell_DetectWater extends Spell
 		if((dirs.length()!=0)||(last.length()!=0))
 		{
 			if(dirs.length()==0)
-				mob.tell(L("Water smells are coming from @x1.",last));
+				commonTelL(mob,"Water smells are coming from @x1.",last);
 			else
-				mob.tell(L("Water smells are coming from @x1, and @x2.",dirs.substring(2),last));
+				commonTelL(mob,"Water smells are coming from @x1, and @x2.",dirs.substring(2),last);
 		}
 	}
 

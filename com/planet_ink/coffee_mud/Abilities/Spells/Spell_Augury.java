@@ -72,7 +72,7 @@ public class Spell_Augury extends Spell
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(L("Divine the fate of which direction?"));
+			commonTelL(mob,"Divine the fate of which direction?");
 			return false;
 		}
 		final String targetName=CMParms.combine(commands,0);
@@ -90,12 +90,12 @@ public class Spell_Augury extends Spell
 		}
 		else
 		{
-			mob.tell(L("Divine the fate of which direction?"));
+			commonTelL(mob,"Divine the fate of which direction?");
 			return false;
 		}
 		if((exit==null)||(room==null))
 		{
-			mob.tell(L("You couldn't go that way if you wanted to!"));
+			commonTelL(mob,"You couldn't go that way if you wanted to!");
 			return false;
 		}
 
@@ -131,9 +131,9 @@ public class Spell_Augury extends Spell
 				|| CMLib.flags().isDeadlyOrMaliciousEffect(room)
 				|| CMLib.flags().isDeadlyOrMaliciousEffect(exit)
 				||((opExit!=null)&&(CMLib.flags().isDeadlyOrMaliciousEffect(opExit))))
-					mob.tell(L("You feel going that way would be bad."));
+					commonTelL(mob,"You feel going that way would be bad.");
 				else
-					mob.tell(L("You feel going that way would be ok."));
+					commonTelL(mob,"You feel going that way would be ok.");
 			}
 		}
 		else

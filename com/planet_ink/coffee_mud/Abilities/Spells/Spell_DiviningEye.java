@@ -77,14 +77,14 @@ public class Spell_DiviningEye extends Spell
 	{
 		if(commands.size()==0)
 		{
-			mob.tell(L("You must specify a divining spell and any parameters for it."));
+			commonTelL(mob,"You must specify a divining spell and any parameters for it.");
 			return false;
 		}
 
 		final Ability pryingEyeA=mob.fetchEffect("Spell_PryingEye");
 		if(pryingEyeA==null)
 		{
-			mob.tell(L("This spell requires an active prying eye."));
+			commonTelL(mob,"This spell requires an active prying eye.");
 			return false;
 		}
 
@@ -93,13 +93,13 @@ public class Spell_DiviningEye extends Spell
 		final Ability A=CMLib.english().getSkillToInvoke(mob, commands);
 		if(A==null)
 		{
-			mob.tell(L("'@x1' does not refer to any diviner spell you know.",commandStr));
+			commonTelL(mob,"'@x1' does not refer to any diviner spell you know.",commandStr);
 			return false;
 		}
 		if(((A.classificationCode() & Ability.ALL_ACODES)!=Ability.ACODE_SPELL)
 		||((A.classificationCode() & Ability.ALL_DOMAINS)!=Ability.DOMAIN_DIVINATION))
 		{
-			mob.tell(L("'@x1' is not a diviner spell you know.",A.name()));
+			commonTelL(mob,"'@x1' is not a diviner spell you know.",A.name());
 			return false;
 		}
 

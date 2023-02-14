@@ -380,36 +380,6 @@ public class CommonSkill extends StdAbility
 			return L(ItemCraftor.CRAFTING_BRAND_STR_NAME,mob.Name());
 	}
 
-	protected void commonTell(final MOB mob, final Environmental target, final Environmental tool, String str)
-	{
-		if(mob.isMonster()&&(mob.amFollowing()!=null))
-		{
-			if(str.startsWith("You"))
-				str=L("I@x1",str.substring(3));
-			if(target!=null)
-				str=CMStrings.replaceAll(str,"<T-NAME>",target.name());
-			if(tool!=null)
-				str=CMStrings.replaceAll(str,"<O-NAME>",tool.name());
-			CMLib.commands().postSay(mob,null,str,false,false);
-		}
-		else
-			mob.tell(mob,target,tool,str);
-	}
-
-	protected void commonTell(final MOB mob, String str)
-	{
-		if(mob==null)
-			return;
-		if(mob.isMonster()&&(mob.amFollowing()!=null))
-		{
-			if(str.startsWith("You"))
-				str=L("I@x1",str.substring(3));
-			CMLib.commands().postSay(mob,null,str,false,false);
-		}
-		else
-			mob.tell(str);
-	}
-
 	protected void commonEmote(final MOB mob, final String str)
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
@@ -433,10 +403,10 @@ public class CommonSkill extends StdAbility
 	protected boolean dropAWinner(MOB mob, final Room R, final Item buildingI)
 	{
 		if(R==null)
-			commonTell(mob,L("You are NOWHERE?!"));
+			commonTelL(mob,"You are NOWHERE?!");
 		else
 		if(buildingI==null)
-			commonTell(mob,L("You have built NOTHING?!!"));
+			commonTelL(mob,"You have built NOTHING?!!");
 		else
 		if(mob == null)
 		{
@@ -470,7 +440,7 @@ public class CommonSkill extends StdAbility
 
 				if(!R.isContent(I))
 				{
-					commonTell(mob,L("You have won the common-skill-failure LOTTERY! Congratulations!"));
+					commonTelL(mob,"You have won the common-skill-failure LOTTERY! Congratulations!");
 					CMLib.leveler().postExperience(mob, null, null,50,false);
 				}
 				else
@@ -557,7 +527,7 @@ public class CommonSkill extends StdAbility
 		}
 		if((fire==null)||(!mob.location().isContent(fire)))
 		{
-			commonTell(mob,L("A fire will need to be built first."));
+			commonTelL(mob,"A fire will need to be built first.");
 			return null;
 		}
 		return fire;
@@ -908,12 +878,12 @@ public class CommonSkill extends StdAbility
 
 		if((!allowedInTheDark())&&(!auto)&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
 		{
-			commonTell(mob,L("<S-NAME> can't see to do that!"));
+			commonTelL(mob,"<S-NAME> can't see to do that!");
 			return false;
 		}
 		if((CMLib.flags().isSitting(mob)&&(!auto)&&(!canBeDoneSittingDown()))||CMLib.flags().isSleeping(mob))
 		{
-			commonTell(mob,L("You need to stand up!"));
+			commonTelL(mob,"You need to stand up!");
 			return false;
 		}
 		if(!auto)

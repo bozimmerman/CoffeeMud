@@ -366,7 +366,7 @@ public class GatheringSkill extends CommonSkill
 		if((what.size()<3)
 		||((!CMath.isNumber(what.get(1)))&&(!what.get(1).equalsIgnoreCase("ALL"))))
 		{
-			commonTell(mob,L("You must specify an amount to bundle, followed by what resource to bundle."));
+			commonTelL(mob,"You must specify an amount to bundle, followed by what resource to bundle.");
 			return false;
 		}
 		int amount=CMath.s_int(what.get(1));
@@ -374,7 +374,7 @@ public class GatheringSkill extends CommonSkill
 			amount=Integer.MAX_VALUE;
 		if(amount<=0)
 		{
-			commonTell(mob,L("@x1 is not an appropriate amount.",""+amount));
+			commonTelL(mob,"@x1 is not an appropriate amount.",""+amount);
 			return false;
 		}
 		int numHere=0;
@@ -441,21 +441,21 @@ public class GatheringSkill extends CommonSkill
 		if((numHere==0)||(foundResource<0))
 		{
 			if(foundAnyway!=null)
-				commonTell(mob,L("You can't bundle @x1 with this skill.",foundAnyway.name()));
+				commonTelL(mob,"You can't bundle @x1 with this skill.",foundAnyway.name());
 			else
-				commonTell(mob,L("You don't see any @x1 on the ground here.",name));
+				commonTelL(mob,"You don't see any @x1 on the ground here.",name);
 			return false;
 		}
 		if(amount==Integer.MAX_VALUE)
 			amount=numHere;
 		if(numHere<amount)
 		{
-			commonTell(mob,L("You only see @x1 pounds of @x2 on the ground here.",""+numHere,name));
+			commonTelL(mob,"You only see @x1 pounds of @x2 on the ground here.",""+numHere,name);
 			return false;
 		}
 		if(allFound.size()==1)
 		{
-			commonTell(mob,L("It appears that @x1 is already bundled as much as it can be.",allFound.get(0).Name()));
+			commonTelL(mob,"It appears that @x1 is already bundled as much as it can be.",allFound.get(0).Name());
 			return false;
 		}
 		if(lowestNonZeroFoodNumber==Long.MAX_VALUE)
@@ -463,7 +463,7 @@ public class GatheringSkill extends CommonSkill
 		final Item I=(Item)CMLib.materials().makeResource(foundResource,Integer.toString(mob.location().domainType()),true,foundSecret,foundSubType);
 		if(I==null)
 		{
-			commonTell(mob,L("You could not bundle @x1 due to @x2 being an invalid resource code.  Bug it!",name,""+foundResource));
+			commonTelL(mob,"You could not bundle @x1 due to @x2 being an invalid resource code.  Bug it!",name,""+foundResource);
 			return false;
 		}
 		I.basePhyStats().setWeight(amount);

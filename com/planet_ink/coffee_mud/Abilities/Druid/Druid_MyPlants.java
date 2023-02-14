@@ -295,7 +295,7 @@ public class Druid_MyPlants extends StdAbility
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			mob.tell(L("Your plant senses fail you."));
+			commonTelL(mob,"Your plant senses fail you.");
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_QUIETMOVEMENT|CMMsg.MASK_MAGIC,null);
@@ -329,9 +329,9 @@ public class Druid_MyPlants extends StdAbility
 					}
 				}
 				if(V.size()==0)
-					mob.tell(L("You don't sense that there are ANY plants which are attuned to you."));
+					commonTelL(mob,"You don't sense that there are ANY plants which are attuned to you.");
 				else
-					mob.tell(L("### Plant Name           Location\n\r@x1",yourPlants.toString()));
+					commonTelL(mob,"### Plant Name           Location\n\r@x1",yourPlants.toString());
 			}
 		}
 		return success;

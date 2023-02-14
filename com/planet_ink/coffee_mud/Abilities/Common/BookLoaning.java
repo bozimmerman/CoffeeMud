@@ -1555,7 +1555,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 		makeActive(mob);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Loan what book? Enter \"bookloan list\" for a list or \"bookloan item\" to loan something."));
+			commonTelL(mob,"Loan what book? Enter \"bookloan list\" for a list or \"bookloan item\" to loan something.");
 			return false;
 		}
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
@@ -1604,7 +1604,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 		{
 			if(commands.size()==1)
 			{
-				commonTell(mob,L("Remove what item from the loan list?"));
+				commonTelL(mob,"Remove what item from the loan list?");
 				return false;
 			}
 			final String itemName=CMParms.combine(commands,1);
@@ -1614,7 +1614,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			Item I=(Item)curShop.removeStock(itemName,mob);
 			if(I==null)
 			{
-				commonTell(mob,L("'@x1' is not on the list.",itemName));
+				commonTelL(mob,"'@x1' is not on the list.",itemName);
 				return false;
 			}
 			final String iname=I.name();
@@ -1692,7 +1692,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			if((I instanceof Container)
 			&&(((Container)I).getContents().size()>0))
 			{
-				commonTell(mob,I,null,L("You may not loan out <T-NAME>."));
+				commonTelL(mob,I,null,"You may not loan out <T-NAME>.");
 				return false;
 			}
 			if(target==null)
@@ -1707,13 +1707,13 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 
 		if(itemsV.size()==0)
 		{
-			commonTell(mob,L("You don't seem to be carrying '@x1'.",itemName));
+			commonTelL(mob,"You don't seem to be carrying '@x1'.",itemName);
 			return false;
 		}
 
 		if((getShop().numberInStock(target)<=0)&&(val<=0))
 		{
-			commonTell(mob,L("You failed to specify a value for '@x1'.",itemName));
+			commonTelL(mob,"You failed to specify a value for '@x1'.",itemName);
 			return false;
 		}
 
@@ -1722,7 +1722,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 
 		if(!proficiencyCheck(mob,0,auto))
 		{
-			commonTell(mob,target,null,L("You fail to make <T-NAME> available to borrow."));
+			commonTelL(mob,target,null,"You fail to make <T-NAME> available to borrow.");
 			return false;
 		}
 

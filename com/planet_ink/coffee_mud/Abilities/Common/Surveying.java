@@ -93,7 +93,7 @@ public class Surveying extends CommonSkill
 				final MOB mob=(MOB)affected;
 				final int expertise=super.getXLEVELLevel(mob);
 				if(catalogI==null)
-					commonTell(mob,L("You mess up your surveying."));
+					commonTelL(mob,"You mess up your surveying.");
 				else
 				{
 					final String subject;
@@ -358,18 +358,18 @@ public class Surveying extends CommonSkill
 		&&(I.material()!=RawMaterial.RESOURCE_HIDE))
 		{
 			if(!quiet)
-				commonTell(mob,L("You can't write in @x1.",I.name(mob)));
+				commonTelL(mob,"You can't write in @x1.",I.name(mob));
 			return false;
 		}
 		if(!CMLib.flags().isReadable(I))
 		{
 			if(!quiet)
-				commonTell(mob,L("@x1 is not even readable!",CMStrings.capitalizeFirstLetter(I.name(mob))));
+				commonTelL(mob,"@x1 is not even readable!",CMStrings.capitalizeFirstLetter(I.name(mob)));
 			return false;
 		}
 		if(I instanceof Recipe)
 		{
-			commonTell(mob,L("@x1 isn't a catalog!",CMStrings.capitalizeAndLower(I.name(mob))));
+			commonTelL(mob,"@x1 isn't a catalog!",CMStrings.capitalizeAndLower(I.name(mob)));
 			return false;
 		}
 		/*
@@ -377,7 +377,7 @@ public class Surveying extends CommonSkill
 		if((brand==null)||(brand.length()==0))
 		{
 			if(!quiet)
-				commonTell(mob,L("You aren't permitted to add surveying entries to @x1.",I.name(mob)));
+				commonTelL(mob,"You aren't permitted to add surveying entries to @x1.",I.name(mob));
 			return false;
 		}
 		*/
@@ -387,7 +387,7 @@ public class Surveying extends CommonSkill
 			if(!Titling.getCatalogType(I).equals(Titling.getCatalogEntryType(fullyE)))
 			{
 				if(!quiet)
-					commonTell(mob,L("@x1 is not a proper catalog for surveying!",CMStrings.capitalizeFirstLetter(I.name(mob)),fullyE.name()));
+					commonTelL(mob,"@x1 is not a proper catalog for surveying!",CMStrings.capitalizeFirstLetter(I.name(mob)),fullyE.name());
 			}
 		}
 		return true;
@@ -433,8 +433,8 @@ public class Surveying extends CommonSkill
 			return true;
 		if(commands.size()<1)
 		{
-			commonTell(mob,L("You must specify what you want to catalog ROOM or AREA, and, optionally, where to add the entry.  If you do "
-					+ "not specify the catalog, one prepared with the Titling skill will be automatically selected from your inventory."));
+			commonTelL(mob,"You must specify what you want to catalog ROOM or AREA, and, optionally, where to add the entry.  If you do "
+					+ "not specify the catalog, one prepared with the Titling skill will be automatically selected from your inventory.");
 			return false;
 		}
 		Physical physP=null;
@@ -445,7 +445,7 @@ public class Surveying extends CommonSkill
 			physP=mob.location().getArea();
 		else
 		{
-			commonTell(mob,L("'@x1' is neither the word ROOM nor AREA.",commands.get(0)));
+			commonTelL(mob,"'@x1' is neither the word ROOM nor AREA.",commands.get(0));
 			return false;
 		}
 		Item catalogI=null;
@@ -455,7 +455,7 @@ public class Surveying extends CommonSkill
 			catalogI=this.findCatalogBook(mob, physP);
 			if(catalogI==null)
 			{
-				commonTell(mob,L("You need to specify a proper catalog for '@x1'.",physP.name(mob)));
+				commonTelL(mob,"You need to specify a proper catalog for '@x1'.",physP.name(mob));
 				return false;
 			}
 		}
@@ -475,19 +475,19 @@ public class Surveying extends CommonSkill
 		}
 		if(physP==null)
 		{
-			commonTell(mob,L("You don't seem to have a '@x1'.",itemName));
+			commonTelL(mob,"You don't seem to have a '@x1'.",itemName);
 			return false;
 		}
 		if(catalogI==null)
 		{
-			commonTell(mob,L("You don't seem to have a proper catalog."));
+			commonTelL(mob,"You don't seem to have a proper catalog.");
 			return false;
 		}
 
 		final Ability writeA=mob.fetchAbility("Skill_Write");
 		if(writeA==null)
 		{
-			commonTell(mob,L("You must know how to write to entitle."));
+			commonTelL(mob,"You must know how to write to entitle.");
 			return false;
 		}
 

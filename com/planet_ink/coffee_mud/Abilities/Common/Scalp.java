@@ -112,7 +112,7 @@ public class Scalp extends CommonSkill
 					super.unInvoke();
 					body.addNonUninvokableEffect(this);
 					if((failed)||(!mob.location().isContent(body)))
-						commonTell(mob,L("You messed up your scalping completely."));
+						commonTelL(mob,"You messed up your scalping completely.");
 					else
 					{
 						mob.location().show(mob,body,this,getCompletedActivityMessageType(),L("<S-NAME> manage(s) to scalp <T-NAME>."));
@@ -173,12 +173,12 @@ public class Scalp extends CommonSkill
 		   ||(((DeadBody)I).charStats().getMyRace()==null)
 		   ||(((DeadBody)I).charStats().getMyRace().bodyMask()[Race.BODY_HEAD]==0))
 		{
-			commonTell(mob,L("You can't scalp @x1.",I.name(mob)));
+			commonTelL(mob,"You can't scalp @x1.",I.name(mob));
 			return false;
 		}
 		if(I.fetchEffect(ID())!=null)
 		{
-			commonTell(mob,L("@x1 has already been scalped.",I.name(mob)));
+			commonTelL(mob,"@x1 has already been scalped.",I.name(mob));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

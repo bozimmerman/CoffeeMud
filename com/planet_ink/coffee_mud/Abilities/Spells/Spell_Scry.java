@@ -171,9 +171,9 @@ public class Spell_Scry extends Spell
 					scryList.append(((e>0)?", ":"")+((MOB)scries.elementAt(e,1)).name());
 			}
 			if(scryList.length()>0)
-				mob.tell(L("Cast on or revoke from whom?  You currently have @x1 on the following: @x2.",name(),scryList.toString()));
+				commonTelL(mob,"Cast on or revoke from whom?  You currently have @x1 on the following: @x2.",name(),scryList.toString());
 			else
-				mob.tell(L("Cast on whom?"));
+				commonTelL(mob,"Cast on whom?");
 			return false;
 		}
 		final String mobName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -201,7 +201,7 @@ public class Spell_Scry extends Spell
 			newRoom=target.location();
 		else
 		{
-			mob.tell(L("You can't seem to focus on '@x1'.",mobName));
+			commonTelL(mob,"You can't seem to focus on '@x1'.",mobName);
 			return false;
 		}
 
@@ -214,7 +214,7 @@ public class Spell_Scry extends Spell
 		else
 		if((A!=null)||(scries.contains(target)))
 		{
-			mob.tell(L("You can't seem to focus on '@x1'.",mobName));
+			commonTelL(mob,"You can't seem to focus on '@x1'.",mobName);
 			return false;
 		}
 
@@ -239,7 +239,7 @@ public class Spell_Scry extends Spell
 				}
 			}
 			else
-				mob.tell(L("You attempt to invoke scrying, but fizzle the spell."));
+				commonTelL(mob,"You attempt to invoke scrying, but fizzle the spell.");
 
 		}
 		else

@@ -87,12 +87,12 @@ public class SlaveTrading extends CommonSkill
 				commands.remove(commands.size()-1);
 				if(shopM == mob)
 				{
-					commonTell(mob,L("You can't trade with yourself."));
+					commonTelL(mob,"You can't trade with yourself.");
 					return false;
 				}
 				if(!((MOB)shopM).isPlayer())
 				{
-					commonTell(mob,L("You can't trade with @x1.",shopM.Name()));
+					commonTelL(mob,"You can't trade with @x1.",shopM.Name());
 					return false;
 				}
 			}
@@ -103,7 +103,7 @@ public class SlaveTrading extends CommonSkill
 			return false;
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Sell whom?"));
+			commonTelL(mob,"Sell whom?");
 			return false;
 		}
 
@@ -111,29 +111,29 @@ public class SlaveTrading extends CommonSkill
 		final MOB slaveM=mob.location().fetchInhabitant(str);
 		if(slaveM==null)
 		{
-			commonTell(mob,L("You don't see anyone called '@x1' here.",str));
+			commonTelL(mob,"You don't see anyone called '@x1' here.",str);
 			return false;
 		}
-		
+
 		if(!CMLib.flags().canBeSeenBy(slaveM,mob))
 		{
-			commonTell(mob,L("You don't see anyone called '@x1' here.",str));
+			commonTelL(mob,"You don't see anyone called '@x1' here.",str);
 			return false;
 		}
 		if(!slaveM.isMonster())
 		{
-			commonTell(mob,slaveM,null,L("You can't sell <T-NAME> as a slave."));
+			commonTelL(mob,slaveM,null,"You can't sell <T-NAME> as a slave.");
 			return false;
 		}
 		if(CMLib.flags().isAnimalIntelligence(slaveM))
 		{
-			commonTell(mob,slaveM,null,L("You can't sell <T-NAME> as a slave.  Animals are not slaves."));
+			commonTelL(mob,slaveM,null,"You can't sell <T-NAME> as a slave.  Animals are not slaves.");
 			return false;
 		}
 
 		if(!CMLib.flags().isASlave(slaveM, mob))
 		{
-			commonTell(mob,slaveM,null,L("<T-NAME> do(es)n't seem to be your slave."));
+			commonTelL(mob,slaveM,null,"<T-NAME> do(es)n't seem to be your slave.");
 			return false;
 		}
 

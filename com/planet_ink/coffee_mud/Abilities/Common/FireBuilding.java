@@ -86,7 +86,7 @@ public class FireBuilding extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(failed)
-					commonTell(mob,L("You failed to get the fire started."));
+					commonTelL(mob,"You failed to get the fire started.");
 				else
 				{
 					if(lighting==null)
@@ -161,7 +161,7 @@ public class FireBuilding extends CommonSkill
 				commands.add("fire");
 			else
 			{
-				commonTell(mob,L("Light what?  Try light fire, or light torch..."));
+				commonTelL(mob,"Light what?  Try light fire, or light torch...");
 				return false;
 			}
 		}
@@ -174,7 +174,7 @@ public class FireBuilding extends CommonSkill
 			lighting=null;
 			if((mob.location().domainType()&Room.INDOORS)>0)
 			{
-				commonTell(mob,L("You can't seem to find any deadwood around here."));
+				commonTelL(mob,"You can't seem to find any deadwood around here.");
 				return false;
 			}
 			switch(mob.location().domainType())
@@ -186,7 +186,7 @@ public class FireBuilding extends CommonSkill
 			case Room.DOMAIN_OUTDOORS_WOODS:
 				break;
 			default:
-				commonTell(mob,L("You can't seem to find any dry deadwood around here."));
+				commonTelL(mob,"You can't seem to find any dry deadwood around here.");
 				return false;
 			}
 			duration=getDuration(25,mob,1,3);
@@ -204,7 +204,7 @@ public class FireBuilding extends CommonSkill
 			||(CMath.bset(lighting.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
 			||(!CMLib.flags().isGettable(lighting)))
 			{
-				commonTell(mob,L("For some reason, @x1 just won't catch.",lighting.name()));
+				commonTelL(mob,"For some reason, @x1 just won't catch.",lighting.name());
 				return false;
 			}
 			if(lighting instanceof Light)
@@ -212,11 +212,11 @@ public class FireBuilding extends CommonSkill
 				final Light l=(Light)lighting;
 				if(l.isLit())
 				{
-					commonTell(mob,L("@x1 is already lit!",l.name()));
+					commonTelL(mob,"@x1 is already lit!",l.name());
 					return false;
 				}
 				if(CMLib.flags().isGettable(lighting))
-					commonTell(mob,L("Just hold this item to light it."));
+					commonTelL(mob,"Just hold this item to light it.");
 				else
 				{
 					l.light(true);
@@ -228,7 +228,7 @@ public class FireBuilding extends CommonSkill
 
 			if(CMLib.flags().isOnFire(lighting))
 			{
-				commonTell(mob,L("@x1 is already on fire!",lighting.name()));
+				commonTelL(mob,"@x1 is already on fire!",lighting.name());
 				return false;
 			}
 
@@ -237,20 +237,20 @@ public class FireBuilding extends CommonSkill
 				final LandTitle t=CMLib.law().getLandTitle(mob.location());
 				if((t!=null)&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 				{
-					commonTell(mob,L("You are not allowed to burn anything here."));
+					commonTelL(mob,"You are not allowed to burn anything here.");
 					return false;
 				}
 			}
 			durationOfBurn=CMLib.materials().getBurnDuration(lighting);
 			if(durationOfBurn<0)
 			{
-				commonTell(mob,L("You need to cook that, if you can."));
+				commonTelL(mob,"You need to cook that, if you can.");
 				return false;
 			}
 			else
 			if(durationOfBurn==0)
 			{
-				commonTell(mob,L("That won't burn."));
+				commonTelL(mob,"That won't burn.");
 				return false;
 			}
 			if((lighting.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)

@@ -160,7 +160,7 @@ public class Spell_GreaterClaireaudience extends Spell
 		}
 		if(target == null)
 		{
-			mob.tell(L("You can't seem to focus on '@x1'.",targetName));
+			commonTelL(mob,"You can't seem to focus on '@x1'.",targetName);
 			return false;
 		}
 
@@ -173,7 +173,7 @@ public class Spell_GreaterClaireaudience extends Spell
 		else
 		if(A!=null)
 		{
-			mob.tell(L("You can't seem to focus on '@x1'.",targetName));
+			commonTelL(mob,"You can't seem to focus on '@x1'.",targetName);
 			return false;
 		}
 

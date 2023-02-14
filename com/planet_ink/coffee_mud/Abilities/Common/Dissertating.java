@@ -112,7 +112,7 @@ public class Dissertating extends CraftingSkill
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,L("You got writer`s block! Your dissertation on @x1 fails!",buildingI.name()));
+						commonTelL(mob,"You got writer`s block! Your dissertation on @x1 fails!",buildingI.name());
 					else
 					{
 						final int theSpellLevel=spellLevel(mob,theSpell);
@@ -318,7 +318,7 @@ public class Dissertating extends CraftingSkill
 				return false;
 			if(!mob.isMine(buildingI))
 			{
-				commonTell(mob,L("You'll need to pick that up first."));
+				commonTelL(mob,"You'll need to pick that up first.");
 				return false;
 			}
 			if((((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER))
@@ -326,28 +326,28 @@ public class Dissertating extends CraftingSkill
 			&&(buildingI.material()!=RawMaterial.RESOURCE_HEMP)
 			&&(buildingI.material() != RawMaterial.RESOURCE_SILK))
 			{
-				commonTell(mob,L("@x1 isn't even made of paper or silk!",buildingI.name(mob)));
+				commonTelL(mob,"@x1 isn't even made of paper or silk!",buildingI.name(mob));
 				return false;
 			}
 			if(((buildingI instanceof MiscMagic))
 			||(buildingI instanceof Recipe)
 			||(!buildingI.isGeneric()))
 			{
-				commonTell(mob,L("There's can't write a dissertation on @x1!",buildingI.name(mob)));
+				commonTelL(mob,"There's can't write a dissertation on @x1!",buildingI.name(mob));
 				return false;
 			}
 			if(buildingI instanceof Scroll)
 			{
 				if(((Scroll)buildingI).getSpells().size()>0)
 				{
-					commonTell(mob,L("You can only write on blank scrolls."));
+					commonTelL(mob,"You can only write on blank scrolls.");
 					return false;
 				}
 			}
 			else
 			if(buildingI.readableText().length()>0)
 			{
-				commonTell(mob,L("You can only write on blank paper."));
+				commonTelL(mob,"You can only write on blank paper.");
 				return false;
 			}
 			String recipeName=CMParms.combine(commands,0);
@@ -365,7 +365,7 @@ public class Dissertating extends CraftingSkill
 						theSpell=A;
 					else
 					{
-						commonTell(mob,L("You aren't ready to write a dissertation on '@x1' yet.",recipeName));
+						commonTelL(mob,"You aren't ready to write a dissertation on '@x1' yet.",recipeName);
 						return false;
 					}
 				}
@@ -384,19 +384,19 @@ public class Dissertating extends CraftingSkill
 						return false;
 					if(!mob.isMine(scrollFromI))
 					{
-						commonTell(mob,L("You'll need to pick that up first."));
+						commonTelL(mob,"You'll need to pick that up first.");
 						return false;
 					}
 					if((!(scrollFromI instanceof Scroll))
 					||(scrollFromI instanceof MiscMagic))
 					{
-						commonTell(mob,L("@x1 is not a scroll!",scrollFromI.name(mob)));
+						commonTelL(mob,"@x1 is not a scroll!",scrollFromI.name(mob));
 						return false;
 					}
 					if((!(scrollFromI instanceof Scroll))
 					||(((Scroll)scrollFromI).getSpells().size()==0))
 					{
-						commonTell(mob,L("@x1 has nothing on it!",scrollFromI.name(mob)));
+						commonTelL(mob,"@x1 has nothing on it!",scrollFromI.name(mob));
 						return false;
 					}
 					ingredient="";
@@ -409,14 +409,14 @@ public class Dissertating extends CraftingSkill
 								theSpell=A;
 							else
 							{
-								commonTell(mob,L("You aren't ready to write a dissertation on '@x1' yet.",recipeName));
+								commonTelL(mob,"You aren't ready to write a dissertation on '@x1' yet.",recipeName);
 								return false;
 							}
 						}
 					}
 					if(theSpell==null)
 					{
-						commonTell(mob,L("You can't copy the dissertation on '@x1' from the scroll @x2!",recipeName,scrollFromI.name(mob)));
+						commonTelL(mob,"You can't copy the dissertation on '@x1' from the scroll @x2!",recipeName,scrollFromI.name(mob));
 						return false;
 					}
 					fromTheScroll=(Scroll)scrollFromI;
@@ -424,7 +424,7 @@ public class Dissertating extends CraftingSkill
 				else
 				if(theSpell==null)
 				{
-					commonTell(mob,L("You don't know how to write a dissertation on '@x1'.  Try \"SKILLS\" for a list.",recipeName));
+					commonTelL(mob,"You don't know how to write a dissertation on '@x1'.  Try \"SKILLS\" for a list.",recipeName);
 					return false;
 				}
 				manaToLose+=spellLevel(mob,theSpell)*10;
@@ -459,7 +459,7 @@ public class Dissertating extends CraftingSkill
 
 			if(mob.curState().getMana()<manaToLose)
 			{
-				commonTell(mob,L("You need at least @x1 mana to accomplish that.",""+manaToLose));
+				commonTelL(mob,"You need at least @x1 mana to accomplish that.",""+manaToLose);
 			}
 
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -475,7 +475,7 @@ public class Dissertating extends CraftingSkill
 			{
 				experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 				experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-				commonTell(mob,L("You lose @x1 experience points for the effort.",""+experienceToLose));
+				commonTelL(mob,"You lose @x1 experience points for the effort.",""+experienceToLose);
 			}
 
 			final int duration=calculateDuration(mob,theSpell);

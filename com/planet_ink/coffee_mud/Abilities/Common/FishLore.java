@@ -83,8 +83,7 @@ public class FishLore extends CommonSkill
 			{
 				if(success==false)
 				{
-					final StringBuffer str=new StringBuffer(L("Your fish finding attempt failed.\n\r"));
-					commonTell(mob,str.toString());
+					commonTelL(mob,"Your fish finding attempt failed.\n\r");
 					unInvoke();
 				}
 
@@ -104,14 +103,15 @@ public class FishLore extends CommonSkill
 				final Room room=fishRoom;
 				if((success)&&(!aborted)&&(room!=null))
 				{
-					final StringBuffer str=new StringBuffer("");
+					boolean found=false;
 					int resource=room.myResource()&RawMaterial.RESOURCE_MASK;
 					if(RawMaterial.CODES.IS_VALID(resource))
 					{
 						if(CMParms.contains(RawMaterial.CODES.FISHES(),room.myResource()))
 						{
 							final String resourceStr=RawMaterial.CODES.NAME(room.myResource());
-							str.append(L("You think this spot would be good for @x1.\n\r",resourceStr.toLowerCase()));
+							commonTelL(mob,"You think this spot would be good for @x1.",resourceStr.toLowerCase());
+							found=true;
 						}
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						{
@@ -124,14 +124,14 @@ public class FishLore extends CommonSkill
 								if(RawMaterial.CODES.IS_VALID(resource) && CMParms.contains(RawMaterial.CODES.FISHES(),room2.myResource()))
 								{
 									final String resourceStr=RawMaterial.CODES.NAME(room2.myResource());
-									str.append(L("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),CMLib.directions().getInDirectionName(d)));
+									commonTelL(mob,"There looks like @x1 @x2.",resourceStr.toLowerCase(),CMLib.directions().getInDirectionName(d));
+									found=true;
 								}
 							}
 						}
-						commonTell(mob,str.toString());
 					}
-					if(str.length()==0)
-						commonTell(mob,L("You don't find any good fishing spots around here."));
+					if(!found)
+						commonTelL(mob,"You don't find any good fishing spots around here.");
 				}
 			}
 		}
@@ -150,7 +150,7 @@ public class FishLore extends CommonSkill
 
 		if((R.domainType()&Room.INDOORS)>0)
 		{
-			commonTell(mob,L("You can't do this indoors!"));
+			commonTelL(mob,"You can't do this indoors!");
 			return false;
 		}
 		if((mob.riding()!=null)&&(mob.riding().rideBasis()==Rideable.Basis.WATER_BASED))
@@ -165,7 +165,7 @@ public class FishLore extends CommonSkill
 
 		if(fishRoom==null)
 		{
-			this.commonTell(mob, L("You need to be on the water, or in a boat to use this skill."));
+			this.commonTelL(mob,"You need to be on the water, or in a boat to use this skill.");
 			return false;
 		}
 

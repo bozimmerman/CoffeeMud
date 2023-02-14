@@ -417,10 +417,10 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 	{
 		final Room R=mob.location();
 		if(R==null)
-			commonTell(mob,L("You are NOWHERE?!"));
+			commonTelL(mob,"You are NOWHERE?!");
 		else
 		if(buildingI==null)
-			commonTell(mob,L("You have built NOTHING?!!"));
+			commonTelL(mob,"You have built NOTHING?!!");
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.TYP_ITEMGENERATED|CMMsg.MASK_ALWAYS,null);
@@ -435,7 +435,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 					mob.location().send(mob,msg);
 					if(!R.isContent(builtI))
 					{
-						commonTell(mob,L("You have won the common-skill-failure LOTTERY! Congratulations!"));
+						commonTelL(mob,"You have won the common-skill-failure LOTTERY! Congratulations!");
 						CMLib.leveler().postExperience(mob, null, null,50,false);
 					}
 					else
@@ -766,11 +766,11 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 						final String rscName=CMLib.materials().makeResourceSimpleName(rscCode, subType);
 						if(rscName!=null)
 						{
-							commonTell(mob,L("There is no @x1 here to make anything from!  It might need to be put down first.",rscName));
+							commonTelL(mob,"There is no @x1 here to make anything from!  It might need to be put down first.",rscName);
 							return null;
 						}
 					}
-					commonTell(mob,L("There is no @x1 here to make anything from!  It might need to be put down first.",req1Desc.toLowerCase()));
+					commonTelL(mob,"There is no @x1 here to make anything from!  It might need to be put down first.",req1Desc.toLowerCase());
 				}
 				else
 				if((req1!=null)&&(req1.length>0))
@@ -779,7 +779,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 					final String rscName=CMLib.materials().makeResourceSimpleName(rscCode, "");
 					if(rscName!=null)
 					{
-						commonTell(mob,L("There is no @x1 here to make anything from!  It might need to be put down first.",rscName));
+						commonTelL(mob,"There is no @x1 here to make anything from!  It might need to be put down first.",rscName);
 						return null;
 					}
 				}
@@ -796,10 +796,10 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				||((req2==null)&&(req2Desc.length()>0)&&(data[1][FOUND_AMT]==0)))
 				{
 					if(req2Desc.equalsIgnoreCase("PRECIOUS"))
-						commonTell(mob,L("You need some sort of precious stones to make that.  There is not enough here.  Are you sure you set it all on the ground first?"));
+						commonTelL(mob,"You need some sort of precious stones to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
 					else
 					if(req2Desc.equalsIgnoreCase("WOODEN"))
-						commonTell(mob,L("You need some wood to make that.  There is not enough here.  Are you sure you set it all on the ground first?"));
+						commonTelL(mob,"You need some wood to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
 					else
 					{
 						final int x=req2Desc.indexOf('(');
@@ -810,11 +810,11 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 							final String rscName=CMLib.materials().makeResourceSimpleName(rscCode, subType);
 							if(rscName!=null)
 							{
-								commonTell(mob,L("There is no @x1 here to make anything from!  It might need to be put down first.",rscName));
+								commonTelL(mob,"There is no @x1 here to make anything from!  It might need to be put down first.",rscName);
 								return null;
 							}
 						}
-						commonTell(mob,L("You need some @x1 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",req2Desc.toLowerCase()));
+						commonTelL(mob,"You need some @x1 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",req2Desc.toLowerCase());
 					}
 					return null;
 				}
@@ -829,9 +829,9 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			if((firstWood != null)&&(firstWood.getSubType().length()>0))
 				req1MatName=firstWood.getSubType().toLowerCase();
 			if(req1Required>1)
-				commonTell(mob,L("You need a @x1 pound bundle of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req1Required,req1MatName));
+				commonTelL(mob,"You need a @x1 pound bundle of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req1Required,req1MatName);
 			else
-				commonTell(mob,L("You need a pound of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req1Required,req1MatName));
+				commonTelL(mob,"You need a pound of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req1Required,req1MatName);
 			return null;
 		}
 		data[0][FOUND_AMT]=req1Required;
@@ -841,9 +841,9 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			if((firstOther != null)&&(firstOther.getSubType().length()>0))
 				req2MatName=firstOther.getSubType().toLowerCase();
 			if(req2Required>1)
-				commonTell(mob,L("You need a @x1 pound bundle of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req2Required,req2MatName));
+				commonTelL(mob,"You need a @x1 pound bundle of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req2Required,req2MatName);
 			else
-				commonTell(mob,L("You need a pound of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req2Required,req2MatName));
+				commonTelL(mob,"You need a pound of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req2Required,req2MatName);
 			return null;
 		}
 		data[1][FOUND_AMT]=req2Required;
@@ -1099,14 +1099,14 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			}
 			if(matches.size() == 0)
 			{
-				commonTell(mob,L("You don't know how to make anything called '@x1'",recipeName));
+				commonTelL(mob,"You don't know how to make anything called '@x1'",recipeName);
 			}
 			else
 			{
 				final CraftedItem pair = craftItem(mob,recipe,material,false);
 				if(pair == null)
 				{
-					commonTell(mob,L("You don't know how to make anything called '@x1'",recipeName));
+					commonTelL(mob,"You don't know how to make anything called '@x1'",recipeName);
 				}
 				else
 				{
@@ -1119,9 +1119,9 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 						{
 							final long msduration = CMProps.getTickMillis() * pair.duration;
 							final String strDuration = CMLib.time().date2EllapsedTime(msduration, TimeUnit.SECONDS, false);
-							commonTell(mob,L("This will take approximately @x1 to complete.",strDuration));
+							commonTelL(mob,"This will take approximately @x1 to complete.",strDuration);
 						}
-						commonTell(mob,L("* The material type is an example only."));
+						commonTelL(mob,"* The material type is an example only.");
 					}
 					pair.item.destroy();
 					if(pair.key!=null)
@@ -1613,7 +1613,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 					if(!found)
 					{
 						if(mob!=null)
-							commonTell(mob,L("'@x1' is not a valid resource type for this skill.",possRsc));
+							commonTelL(mob,"'@x1' is not a valid resource type for this skill.",possRsc);
 						return null;
 					}
 					while(commands.size()>i)
@@ -1690,7 +1690,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			scanning=mob.location().fetchInhabitant(rest);
 			if((scanning==null)||(!CMLib.flags().canBeSeenBy(scanning,mob)))
 			{
-				commonTell(mob,L("You don't see anyone called '@x1' here.",rest));
+				commonTelL(mob,"You don't see anyone called '@x1' here.",rest);
 				return false;
 			}
 		}
@@ -1698,16 +1698,16 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		if(allStuff.size()==0)
 		{
 			if(mob==scanning)
-				commonTell(mob,L("You don't seem to have anything that needs mending with @x1.",name()));
+				commonTelL(mob,"You don't seem to have anything that needs mending with @x1.",name());
 			else
-				commonTell(mob,L("You don't see anything on @x1 that needs mending with @x2.",scanning.name(),name()));
+				commonTelL(mob,"You don't see anything on @x1 that needs mending with @x2.",scanning.name(),name());
 			return false;
 		}
-		final StringBuffer buf=new StringBuffer("");
 		if(scanning==mob)
-			buf.append(L("The following items could use some @x1:\n\r",name()));
+			commonTelL(mob,"The following items could use some @x1:",name());
 		else
-			buf.append(L("The following items on @x1 could use some @x2:\n\r",scanning.name(),name()));
+			commonTelL(mob,"The following items on @x1 could use some @x2:",scanning.name(),name());
+		final StringBuffer buf=new StringBuffer("");
 		for(int i=0;i<allStuff.size();i++)
 		{
 			final Item I=allStuff.get(i);
@@ -2013,20 +2013,20 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		if(!(E instanceof Item))
 		{
 			if(!quiet)
-				commonTell(mob,L("You can't mend @x1.",E.name()));
+				commonTelL(mob,"You can't mend @x1.",E.name());
 			return false;
 		}
 		final Item IE=(Item)E;
 		if(!IE.subjectToWearAndTear())
 		{
 			if(!quiet)
-				commonTell(mob,L("You can't mend @x1.",IE.name()));
+				commonTelL(mob,"You can't mend @x1.",IE.name());
 			return false;
 		}
 		if(IE.usesRemaining()>=100)
 		{
 			if(!quiet)
-				commonTell(mob,L("@x1 is in good condition already.",IE.name()));
+				commonTelL(mob,"@x1 is in good condition already.",IE.name());
 			return false;
 		}
 		return true;
@@ -2095,7 +2095,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				str=CMStrings.replaceAll(str,L(" on the ground"), ""); // this is implied
 				buf.append(str);
 			}
-			commonTell(mob,L("You lack the necessary materials to @x1, the requirements are: @x2.",doingWhat.toLowerCase(),buf.toString()));
+			commonTelL(mob,"You lack the necessary materials to @x1, the requirements are: @x2.",doingWhat.toLowerCase(),buf.toString());
 			return null;
 		}
 		return new LinkedList<Object>();
@@ -2156,14 +2156,14 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		recipeHolder=null;
 		if((!(this instanceof ItemCraftor))||(!((ItemCraftor)this).supportsDeconstruction()))
 		{
-			commonTell(mob,L("You don't know how to learn new recipes with this skill."));
+			commonTelL(mob,"You don't know how to learn new recipes with this skill.");
 			return false;
 		}
 		commands=new XVector<String>(commands);
 		commands.remove(0);
 		if(commands.size()<1)
 		{
-			commonTell(mob,L("You've failed to specify which item to deconstruct and learn."));
+			commonTelL(mob,"You've failed to specify which item to deconstruct and learn.");
 			return false;
 		}
 		buildingI=getTargetItemFavorMOB(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
@@ -2171,23 +2171,23 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			return false;
 		if(buildingI.owner() instanceof Room)
 		{
-			commonTell(mob,L("You need to pick that up first."));
+			commonTelL(mob,"You need to pick that up first.");
 			return false;
 		}
 		if((!mayILearnToCraft( mob, buildingI ))
 		||(this.getBrand(buildingI).length()>0))
 		{
-			commonTell(mob,L("You can't learn anything about @x1 with @x2.",buildingI.name(mob),name()));
+			commonTelL(mob,"You can't learn anything about @x1 with @x2.",buildingI.name(mob),name());
 			return false;
 		}
 		if(!buildingI.amWearingAt( Wearable.IN_INVENTORY ))
 		{
-			commonTell(mob,L("You need to remove @x1 first.",buildingI.name(mob)));
+			commonTelL(mob,"You need to remove @x1 first.",buildingI.name(mob));
 			return false;
 		}
 		if((buildingI instanceof Container)&&(((Container)buildingI).hasContent()))
 		{
-			commonTell(mob,L("You need to empty @x1 first.",buildingI.name(mob)));
+			commonTelL(mob,"You need to empty @x1 first.",buildingI.name(mob));
 			return false;
 		}
 		recipeHolder=null;
@@ -2207,7 +2207,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		}
 		if(recipeHolder==null)
 		{
-			commonTell(mob,L("You need to have either a blank recipe page or book, or one already containing recipes for @x1 that has blank pages.",name()));
+			commonTelL(mob,"You need to have either a blank recipe page or book, or one already containing recipes for @x1 that has blank pages.",name());
 			return false;
 		}
 		for(final String codeLines : recipeHolder.getRecipeCodeLines())
@@ -2219,7 +2219,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				if((buildingI.Name().indexOf(name)>=0)
 				||(CMStrings.removeColors(buildingI.Name()).indexOf(CMStrings.removeColors(name))>=0))
 				{
-					commonTell(mob,L("You appear to already have that recipe written down here."));
+					commonTelL(mob,"You appear to already have that recipe written down here.");
 					return false;
 				}
 			}

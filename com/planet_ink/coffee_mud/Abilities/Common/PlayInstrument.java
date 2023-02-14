@@ -247,24 +247,22 @@ public class PlayInstrument extends CommonSkill implements Wand.WandUsage
 
 		if((commands.size()>0)&&(commands.get(0).equalsIgnoreCase("LIST")))
 		{
-			final StringBuilder str = new StringBuilder(L("You have some musical proficiency with: "));
 			if(proficiencies.size()==0)
-				str.append(L("Nothing!"));
+				commonTelL(mob,"You have some musical proficiency with: Nothing!");
 			else
 			{
+				final StringBuilder str = new StringBuilder("");
 				for(final String s : proficiencies.keySet())
-				{
 					str.append(CMStrings.capitalizeAndLower(s)+" ("+proficiencies.get(s)[0]+"%), ");
-				}
 				str.delete(str.length()-2,str.length());
+				commonTelL(mob,"You have some musical proficiency with: @x1",str.toString());
 			}
-			commonTell(mob,str.toString());
 			return false;
 		}
 
 		if(mob.fetchEffect(ID())!=null)
 		{
-			commonTell(mob,L("You are already playing an instrument.  Use PLAYINSTRUMENT STOP to stop."));
+			commonTelL(mob,"You are already playing an instrument.  Use PLAYINSTRUMENT STOP to stop.");
 			return false;
 		}
 
@@ -273,7 +271,7 @@ public class PlayInstrument extends CommonSkill implements Wand.WandUsage
 		{
 			if(!usingInstrument((MusicalInstrument)mob.riding(),mob))
 			{
-				commonTell(mob,L("You need to free your hands to play @x1.",mob.riding().name()));
+				commonTelL(mob,"You need to free your hands to play @x1.",mob.riding().name());
 				return false;
 			}
 			target=(MusicalInstrument)mob.riding();
@@ -282,7 +280,7 @@ public class PlayInstrument extends CommonSkill implements Wand.WandUsage
 			target=this.getInstrumentPlayed(mob);
 		if(target==null)
 		{
-			commonTell(mob,L("You need an instrument to play one!"));
+			commonTelL(mob,"You need an instrument to play one!");
 			return false;
 		}
 

@@ -158,7 +158,7 @@ public class Salvaging extends CommonSkill
 				if((found!=null)&&(!aborted)&&(mob.location()!=null))
 				{
 					if(messedUp)
-						commonTell(mob,L("You've messed up salvaging @x1!",oldItemName));
+						commonTelL(mob,"You've messed up salvaging @x1!",oldItemName);
 					else
 					{
 						final Item baseShip=found;
@@ -194,7 +194,7 @@ public class Salvaging extends CommonSkill
 		final Item I=mob.location().findItem(null,str);
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
-			commonTell(mob,L("You don't see anything called '@x1' here.",str));
+			commonTelL(mob,"You don't see anything called '@x1' here.",str);
 			return false;
 		}
 		boolean okMaterial=true;
@@ -214,26 +214,26 @@ public class Salvaging extends CommonSkill
 		}
 		if(!okMaterial)
 		{
-			commonTell(mob,L("You don't know how to salvage @x1.",I.name(mob)));
+			commonTelL(mob,"You don't know how to salvage @x1.",I.name(mob));
 			return false;
 		}
 
 		if(I instanceof RawMaterial)
 		{
-			commonTell(mob,L("@x1 already looks like salvage.",I.name(mob)));
+			commonTelL(mob,"@x1 already looks like salvage.",I.name(mob));
 			return false;
 		}
 
 		if(CMLib.flags().isEnchanted(I))
 		{
-			commonTell(mob,L("@x1 is enchanted, and can't be salvaged.",I.name(mob)));
+			commonTelL(mob,"@x1 is enchanted, and can't be salvaged.",I.name(mob));
 			return false;
 		}
 
 		final LandTitle t=CMLib.law().getLandTitle(mob.location());
 		if((t!=null)&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 		{
-			commonTell(mob,L("You are not allowed to salvage anything here."));
+			commonTelL(mob,"You are not allowed to salvage anything here.");
 			return false;
 		}
 
@@ -242,7 +242,7 @@ public class Salvaging extends CommonSkill
 		||((((NavigableItem)I).subjectToWearAndTear())&&(((NavigableItem)I).usesRemaining()>0))
 		||(((NavigableItem)I).getArea()==null))
 		{
-			commonTell(mob,L("You can only salvage large sunk sailing ships, which @x1 is not.",I.Name()));
+			commonTelL(mob,"You can only salvage large sunk sailing ships, which @x1 is not.",I.Name());
 			return false;
 		}
 		final NavigableItem ship=(NavigableItem)I;
@@ -257,7 +257,7 @@ public class Salvaging extends CommonSkill
 			{
 				if(R.numInhabitants()>0)
 				{
-					commonTell(mob,L("There are still people aboard!"));
+					commonTelL(mob,"There are still people aboard!");
 					return false;
 				}
 				for(final Enumeration<Item> i=R.items();i.hasMoreElements();)

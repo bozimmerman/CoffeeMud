@@ -146,7 +146,7 @@ public class BodyPiercing extends CommonSkill
 			return true;
 		if(commands.size()<2)
 		{
-			commonTell(mob,L("You must specify remove and/or whom you want to pierce, and what body part to pierce."));
+			commonTelL(mob,"You must specify remove and/or whom you want to pierce, and what body part to pierce.");
 			return false;
 		}
 		String name=commands.get(0);
@@ -171,7 +171,7 @@ public class BodyPiercing extends CommonSkill
 		&&(CMLib.flags().isAliveAwakeMobile(target,true))
 		&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
-			commonTell(mob,L("@x1 doesn't want any piercings.",target.Name()));
+			commonTelL(mob,"@x1 doesn't want any piercings.",target.Name());
 			return false;
 		}
 
@@ -219,7 +219,7 @@ public class BodyPiercing extends CommonSkill
 		}
 		if((partNum<0)||(wearLocName==null))
 		{
-			commonTell(mob,L("'@x1' is not a valid location.  Valid locations include: @x2",part,allParts.toString().substring(2)));
+			commonTelL(mob,"'@x1' is not a valid location.  Valid locations include: @x2",part,allParts.toString().substring(2));
 			return false;
 		}
 		final long wornCode=codes.get(partNum);
@@ -228,12 +228,12 @@ public class BodyPiercing extends CommonSkill
 		if((target.getWearPositions(wornCode)<=0)
 		||(target.freeWearPositions(wornCode,(short)(Short.MIN_VALUE+1),(short)0)<=0))
 		{
-			commonTell(mob,L("That location is not available for piercing. Make sure no clothing is being worn there."));
+			commonTelL(mob,"That location is not available for piercing. Make sure no clothing is being worn there.");
 			return false;
 		}
 		if(target.curState().getHitPoints() < target.maxState().getHitPoints())
 		{
-			commonTell(mob,L("You need to wait until @x1 is at full health.",target.name(mob)));
+			commonTelL(mob,"You need to wait until @x1 is at full health.",target.name(mob));
 			return false;
 		}
 
@@ -248,14 +248,14 @@ public class BodyPiercing extends CommonSkill
 		{
 			if(numTattsDone<=0)
 			{
-				commonTell(mob,L("There is no piercing there to heal."));
+				commonTelL(mob,"There is no piercing there to heal.");
 				return false;
 			}
 		}
 		else
 		if(numTattsDone>=target.getWearPositions(codes.get(partNum)))
 		{
-			commonTell(mob,L("That location is already decorated."));
+			commonTelL(mob,"That location is already decorated.");
 			return false;
 		}
 
@@ -265,14 +265,14 @@ public class BodyPiercing extends CommonSkill
 			{
 				if(target.findTattoo(wearLocName+":Pierced "+wornName.toLowerCase())==null)
 				{
-					commonTell(mob,L("There is no piercing there to heal.  Did you use the full body part name?"));
+					commonTelL(mob,"There is no piercing there to heal.  Did you use the full body part name?");
 					return false;
 				}
 			}
 			else
 			if(target.findTattoo(wearLocName+":A pierced "+wornName.toLowerCase())==null)
 			{
-				commonTell(mob,L("There is no piercing there to heal.  Did you use the full body part name?"));
+				commonTelL(mob,"There is no piercing there to heal.  Did you use the full body part name?");
 				return false;
 			}
 		}

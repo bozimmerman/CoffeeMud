@@ -99,11 +99,10 @@ public class Trawling extends GatheringSkill
 			if(tickUp==6)
 			{
 				if(found!=null)
-					commonTell(mob,L("You feel your nets filling up!"));
+					commonTelL(mob,"You feel your nets filling up!");
 				else
 				{
-					final StringBuffer str=new StringBuffer(L("Nothing is coming up around here.\n\r"));
-					commonTell(mob,str.toString());
+					commonTelL(mob,"Nothing is coming up around here.\n\r");
 					unInvoke();
 				}
 			}
@@ -178,7 +177,7 @@ public class Trawling extends GatheringSkill
 
 		if(fishRoom==null)
 		{
-			this.commonTell(mob, L("You need to be on the deck of a ship to trawl."));
+			this.commonTelL(mob,"You need to be on the deck of a ship to trawl.");
 			return false;
 		}
 		for(final int fishCode : RawMaterial.CODES.FISHES())
@@ -195,7 +194,7 @@ public class Trawling extends GatheringSkill
 		}
 		if(!maybeFish)
 		{
-			commonTell(mob,L("The fishing doesn't look too good around here."));
+			commonTelL(mob,"The fishing doesn't look too good around here.");
 			return false;
 		}
 		verb=L("trawling");

@@ -133,14 +133,14 @@ public class Ranger_FindWater extends StdAbility
 			if(nextDirection==-1)
 			{
 				if(waterHere(mob,mob.location(),null).length()==0)
-					mob.tell(L("The water trail dries up here."));
+					commonTelL(mob,"The water trail dries up here.");
 				nextDirection=-999;
 				unInvoke();
 			}
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(L("The water trail seems to continue @x1.",CMLib.directions().getDirectionName(nextDirection)));
+				commonTelL(mob,"The water trail seems to continue @x1.",CMLib.directions().getDirectionName(nextDirection));
 				if(mob.isMonster())
 				{
 					final Room nextRoom=mob.location().getRoomInDir(nextDirection);
@@ -208,13 +208,13 @@ public class Ranger_FindWater extends StdAbility
 			if(((I instanceof Drink))
 			&&(((Drink)I).containsLiquid())
 			&&(CMLib.flags().canBeSeenBy(I,mob)))
-				msg.append(L("@x1 contains some sort of liquid.\n\r",I.name()));
+				commonTelL(mob,"@x1 contains some sort of liquid.\n\r",I.name());
 		}
 		else
 		if((I.container()!=null)&&(I.container().container()==container))
 		{
 			if(msg.toString().indexOf(I.container().name()+" contains some sort of liquid.")<0)
-				msg.append(L("@x1 contains some sort of liquid.\n\r",I.container().name()));
+				commonTelL(mob,"@x1 contains some sort of liquid.\n\r",I.container().name());
 		}
 		return msg.toString();
 	}
@@ -305,7 +305,7 @@ public class Ranger_FindWater extends StdAbility
 		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
-			mob.tell(L("You stop tracking."));
+			commonTelL(mob,"You stop tracking.");
 			if(commands.size()==0)
 				return true;
 		}

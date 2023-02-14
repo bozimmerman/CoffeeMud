@@ -142,7 +142,7 @@ public class Spell_DetectPoison extends Spell
 				else
 				for(int i=0;i<offensiveAffects.size();i++)
 					buf.append(offensiveAffects.get(i).name()+", ");
-				mob.tell(buf.toString().substring(0,buf.length()-2));
+				commonTell(mob,buf.toString().substring(0,buf.length()-2));
 			}
 		}
 		else

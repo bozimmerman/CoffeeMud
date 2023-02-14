@@ -127,7 +127,7 @@ public class Thief_WildernessSounds extends ThiefSkill
 			{
 				if(!super.proficiencyCheck(msg.source(), super.getXLEVELLevel(msg.source())*5, false))
 				{
-					msg.source().tell(L("You don't hear anything."));
+					commonTelL(msg.source(),"You don't hear anything.");
 					return false;
 				}
 				else

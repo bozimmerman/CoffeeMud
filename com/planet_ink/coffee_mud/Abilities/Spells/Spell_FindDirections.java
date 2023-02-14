@@ -110,7 +110,7 @@ public class Spell_FindDirections extends Spell
 
 		if(A==null)
 		{
-			mob.tell(L("You know of nowhere called \"@x1\".",CMParms.combine(commands)));
+			commonTelL(mob,"You know of nowhere called \"@x1\".",CMParms.combine(commands));
 			return false;
 		}
 
@@ -124,7 +124,7 @@ public class Spell_FindDirections extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell(L("The directions are taking shape in your mind: \n\r@x1",CMLib.tracking().getTrailToDescription(targetR, new Vector<Room>(), A.Name(), null, 100, null,1)));
+				commonTelL(mob,"The directions are taking shape in your mind: \n\r@x1",CMLib.tracking().getTrailToDescription(targetR, new Vector<Room>(), A.Name(), null, 100, null,1));
 			}
 		}
 		else

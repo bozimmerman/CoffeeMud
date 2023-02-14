@@ -88,7 +88,7 @@ public class Painting extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,L("<S-NAME> mess(es) up painting @x1.",building.name()));
+						commonTelL(mob,"<S-NAME> mess(es) up painting @x1.",building.name());
 					else
 						mob.location().addItem(building,ItemPossessor.Expire.Player_Drop);
 				}
@@ -106,7 +106,7 @@ public class Painting extends CommonSkill
 			return true;
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Paint on what? Enter \"paint [canvas name]\" or paint \"wall\"."));
+			commonTelL(mob,"Paint on what? Enter \"paint [canvas name]\" or paint \"wall\".");
 			return false;
 		}
 		String paintingKeyWords=null;
@@ -143,7 +143,7 @@ public class Painting extends CommonSkill
 			S=mob.amFollowing().session();
 		if(S==null)
 		{
-			commonTell(mob,L("I can't work! I need a player to follow!"));
+			commonTelL(mob,"I can't work! I need a player to follow!");
 			return false;
 		}
 
@@ -152,7 +152,7 @@ public class Painting extends CommonSkill
 		{
 			if(!CMLib.law().doesOwnThisProperty(mob,mob.location()))
 			{
-				commonTell(mob,L("You need the owners permission to paint the walls here."));
+				commonTelL(mob,"You need the owners permission to paint the walls here.");
 				return false;
 			}
 		}
@@ -161,7 +161,7 @@ public class Painting extends CommonSkill
 			canvasI=mob.location().findItem(null,str);
 			if((canvasI==null)||(!CMLib.flags().canBeSeenBy(canvasI,mob)))
 			{
-				commonTell(mob,L("You don't see any canvases called '@x1' sitting here.",str));
+				commonTelL(mob,"You don't see any canvases called '@x1' sitting here.",str);
 				return false;
 			}
 			if((canvasI.material()!=RawMaterial.RESOURCE_COTTON)
@@ -169,7 +169,7 @@ public class Painting extends CommonSkill
 			&&(!canvasI.Name().toUpperCase().endsWith("CANVAS"))
 			&&(!canvasI.Name().toUpperCase().endsWith("SILKSCREEN")))
 			{
-				commonTell(mob,L("You cannot paint on '@x1'.",str));
+				commonTelL(mob,"You cannot paint on '@x1'.",str);
 				return false;
 			}
 		}
@@ -371,7 +371,7 @@ public class Painting extends CommonSkill
 
 		if(building == null)
 		{
-			this.commonTell(mob, L("I have no idea what I'm doing."));
+			this.commonTelL(mob,"I have no idea what I'm doing.");
 			return false;
 		}
 

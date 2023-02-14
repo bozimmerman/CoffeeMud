@@ -414,10 +414,10 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		}
 		if(extras.length()>0)
 		{
-			commonTell(mob,L("You can use your expertises to enhance this skill by prepending one or more "
+			commonTelL(mob,  "You can use your expertises to enhance this skill by prepending one or more "
 							+ "of the following words to the name of the item you wish to craft"
-							+ ": @x1.",extras.substring(0,extras.length()-2)));
-			commonTell(mob,L("Put the word 'hide' before any enhancement you want hidden from the name."));
+							+ ": @x1.",extras.substring(0,extras.length()-2));
+			commonTelL(mob,"Put the word 'hide' before any enhancement you want hidden from the name.");
 		}
 	}
 
@@ -763,7 +763,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case DURACRAFT:
 				{
 					if((!(item instanceof Armor))||(item.basePhyStats().armor()==0))
-						commonTell(mob,L("@x1 only applies to protective armor.",def.getStageNames()[stage]));
+						commonTelL(mob,"@x1 only applies to protective armor.",def.getStageNames()[stage]);
 					else
 					switch(stage)
 					{
@@ -816,7 +816,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case LTHLCRAFT:
 				{
 					if(!(item instanceof Weapon))
-						commonTell(mob,L("@x1 only applies to weapons.",def.getStageNames()[stage]));
+						commonTelL(mob,"@x1 only applies to weapons.",def.getStageNames()[stage]);
 					else
 					switch(stage)
 					{
@@ -846,7 +846,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case CNTRCRAFT:
 				{
 					if(!(item instanceof Weapon))
-						commonTell(mob,L("@x1 only applies to weapons.",def.getStageNames()[stage]));
+						commonTelL(mob,"@x1 only applies to weapons.",def.getStageNames()[stage]);
 					else
 					switch(stage)
 					{

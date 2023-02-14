@@ -187,13 +187,13 @@ public class Branding extends CommonSkill implements PrivateProperty
 				{
 					final MOB animal=branding;
 					if((messedUp)||(animal==null))
-						commonTell(mob,L("You've failed to brand @x1!",branding.name()));
+						commonTelL(mob,"You've failed to brand @x1!",branding.name());
 					else
 					{
 						final Room room=animal.location();
 						final String ownerName=CMLib.law().getLandOwnerName(room);
 						if((messedUp)||(room==null)||(ownerName.length()==0))
-							commonTell(mob,L("You've messed up branding @x1!",branding.name()));
+							commonTelL(mob,"You've messed up branding @x1!",branding.name());
 						else
 						{
 							animal.delEffect(animal.fetchEffect("Branding"));
@@ -313,18 +313,18 @@ public class Branding extends CommonSkill implements PrivateProperty
 		branding=null;
 		if(!CMLib.flags().canBeSeenBy(M,mob))
 		{
-			commonTell(mob,L("You don't see anyone called '@x1' here.",str));
+			commonTelL(mob,"You don't see anyone called '@x1' here.",str);
 			return false;
 		}
 		if((!M.isMonster())
 		||(!CMLib.flags().isAnimalIntelligence(M)))
 		{
-			commonTell(mob,L("You can't brand @x1.",M.name(mob)));
+			commonTelL(mob,"You can't brand @x1.",M.name(mob));
 			return false;
 		}
 		if(!CMLib.law().doesOwnThisLand(mob, mob.location()))
 		{
-			commonTell(mob,L("You can't brand @x1 here.",M.name(mob)));
+			commonTelL(mob,"You can't brand @x1 here.",M.name(mob));
 			return false;
 		}
 		branding=M;

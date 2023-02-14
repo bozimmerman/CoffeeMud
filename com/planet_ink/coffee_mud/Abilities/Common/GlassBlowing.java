@@ -152,7 +152,7 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 						if(activity == CraftingActivity.LEARNING)
 							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
 						else
-							commonTell(mob,L("@x1 explodes!",CMStrings.capitalizeAndLower(buildingI.name(mob))));
+							commonTelL(mob,"@x1 explodes!",CMStrings.capitalizeAndLower(buildingI.name(mob)));
 						buildingI.destroy();
 					}
 					else
@@ -255,7 +255,7 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,L("That's not a glassblown item."));
+				commonTelL(mob,"That's not a glassblown item.");
 			return false;
 		}
 		return true;
@@ -291,8 +291,8 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"glassblow list\" for a list, \"glassblow info <item>\", \"glassblow learn <item>\" to gain recipes,"
-							+ " or \"glassblow stop\" to cancel."));
+			commonTelL(mob,"Make what? Enter \"glassblow list\" for a list, \"glassblow info <item>\", \"glassblow learn <item>\" to gain recipes,"
+							+ " or \"glassblow stop\" to cancel.");
 			return false;
 		}
 		if((!auto)
@@ -386,7 +386,7 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 		}
 		if(foundRecipe==null)
 		{
-			commonTell(mob,L("You don't know how to make a '@x1'.  Try \"glassblow list\" for a list.",recipeName));
+			commonTelL(mob,"You don't know how to make a '@x1'.  Try \"glassblow list\" for a list.",recipeName);
 			return false;
 		}
 
@@ -465,7 +465,7 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 		final Item buildingI=this.buildingI;
 		if(buildingI==null)
 		{
-			commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+			commonTelL(mob,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 			return false;
 		}
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

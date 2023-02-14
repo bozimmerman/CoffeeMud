@@ -86,8 +86,8 @@ public class MasterTailoring extends Tailoring
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Knit what? Enter \"mknit list\" for a list, \"mknit info <item>\", \"mknit refit <item>\" to resize,"
-						+ " \"mknit learn <item>\", \"mknit scan\", \"mknit mend <item>\", or \"mknit stop\" to cancel."));
+			commonTelL(mob,"Knit what? Enter \"mknit list\" for a list, \"mknit info <item>\", \"mknit refit <item>\" to resize,"
+						+ " \"mknit learn <item>\", \"mknit scan\", \"mknit mend <item>\", or \"mknit stop\" to cancel.");
 			return false;
 		}
 		return super.autoGenInvoke(mob,commands,givenTarget,auto,asLevel,autoGenerate,forceLevels,crafted);

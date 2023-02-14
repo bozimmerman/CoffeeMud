@@ -87,29 +87,29 @@ public class Pimping extends CommonSkill
 				commands.remove(commands.size()-1);
 				if(johnM == mob)
 				{
-					commonTell(mob,L("You can't pimp to yourself."));
+					commonTelL(mob,"You can't pimp to yourself.");
 					return false;
 				}
 				if(!johnM.isPlayer())
 				{
-					commonTell(mob,L("You can't pimp to @x1.",johnM.Name()));
+					commonTelL(mob,"You can't pimp to @x1.",johnM.Name());
 					return false;
 				}
 			}
 			else
 			{
-				commonTell(mob,L("Pimp whom to whom?"));
+				commonTelL(mob,"Pimp whom to whom?");
 				return false;
 			}
 		}
 		else
 		{
-			commonTell(mob,L("Pimp whom to whom?"));
+			commonTelL(mob,"Pimp whom to whom?");
 			return false;
 		}
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Pimp whom?"));
+			commonTelL(mob,"Pimp whom?");
 			return false;
 		}
 
@@ -118,7 +118,7 @@ public class Pimping extends CommonSkill
 			return false;
 		if(!CMLib.flags().isASlave(slaveM, mob))
 		{
-			commonTell(mob,slaveM,null,L("<T-NAME> do(es)n't seem to be your slave."));
+			commonTelL(mob,slaveM,null,"<T-NAME> do(es)n't seem to be your slave.");
 			return false;
 		}
 

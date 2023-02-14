@@ -408,7 +408,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		if((!(E instanceof Item))||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,L("That's not a "+name().toLowerCase()+" item."));
+				commonTelL(mob,"That's not a "+name().toLowerCase()+" item.");
 			return false;
 		}
 		return true;
@@ -452,10 +452,10 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("@x1 what? Enter \"@x2 list\" for a list, \"@x2 info <item>\", \"@x2 scan\","
+			commonTelL(mob,"@x1 what? Enter \"@x2 list\" for a list, \"@x2 info <item>\", \"@x2 scan\","
 						+ " \"@x2 learn <item>\", \"@x2 mend <item>\", \"@x2 title <text>\", \"@x2 desc <text>\","
 						+ " \"@x2 door <dir>\", \"@x2 demolish <dir>\", or \"@x2 stop\" to cancel.",
-							CMStrings.capitalizeFirstLetter(getIdentifierCommandWord()),getIdentifierCommandWord()));
+							CMStrings.capitalizeFirstLetter(getIdentifierCommandWord()),getIdentifierCommandWord());
 			return false;
 		}
 		if((!auto)
@@ -590,13 +590,13 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				return false;
 			if(targetMOB==mob)
 			{
-				commonTell(mob,L("You can not do that."));
+				commonTelL(mob,"You can not do that.");
 				return false;
 			}
 			helpingAbility=targetMOB.fetchEffect(ID());
 			if(helpingAbility==null)
 			{
-				commonTell(mob,L("@x1 is not building anything.",targetMOB.Name()));
+				commonTelL(mob,"@x1 is not building anything.",targetMOB.Name());
 				return false;
 			}
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -627,24 +627,24 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			if((R==null)
 			||(!CMLib.law().doesOwnThisProperty(mob,R)))
 			{
-				commonTell(mob,L("You are not permitted to do that here."));
+				commonTelL(mob,"You are not permitted to do that here.");
 				return false;
 			}
 			if(!(R.getArea() instanceof Boardable))
 			{
-				commonTell(mob,L("You don't know how to do that here."));
+				commonTelL(mob,"You don't know how to do that here.");
 				return false;
 			}
 
 			final String title=CMParms.combine(commands,1);
 			if(title.length()==0)
 			{
-				commonTell(mob,L("A title must be specified."));
+				commonTelL(mob,"A title must be specified.");
 				return false;
 			}
 			if(title.length()>250)
 			{
-				commonTell(mob,L("That title is too long."));
+				commonTelL(mob,"That title is too long.");
 				return false;
 			}
 			final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
@@ -654,7 +654,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				final Room R2=CMLib.map().getRoom(room2);
 				if(R2.displayText(mob).equalsIgnoreCase(title))
 				{
-					commonTell(mob,L("That title has already been taken.  Choose another."));
+					commonTelL(mob,"That title has already been taken.  Choose another.");
 					return false;
 				}
 			}
@@ -678,25 +678,25 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			if((R==null)
 			||(!CMLib.law().doesOwnThisProperty(mob,R)))
 			{
-				commonTell(mob,L("You are not permitted to do that here."));
+				commonTelL(mob,"You are not permitted to do that here.");
 				return false;
 			}
 			if(!(R.getArea() instanceof Boardable))
 			{
-				commonTell(mob,L("You don't know how to do that here."));
+				commonTelL(mob,"You don't know how to do that here.");
 				return false;
 			}
 
 			if(commands.size()<2)
 			{
-				commonTell(mob,L("You must specify a description for it."));
+				commonTelL(mob,"You must specify a description for it.");
 				return false;
 			}
 
 			final String newDescription=CMParms.combine(commands,1);
 			if(newDescription.length()==0)
 			{
-				commonTell(mob,L("A description must be specified."));
+				commonTelL(mob,"A description must be specified.");
 				return false;
 			}
 			reTitle=R.displayText();
@@ -719,12 +719,12 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			if((R==null)
 			||(!CMLib.law().doesOwnThisProperty(mob,R)))
 			{
-				commonTell(mob,L("You are not permitted to do that here."));
+				commonTelL(mob,"You are not permitted to do that here.");
 				return false;
 			}
 			if(!(R.getArea() instanceof Boardable))
 			{
-				commonTell(mob,L("You don't know how to do that here."));
+				commonTelL(mob,"You don't know how to do that here.");
 				return false;
 			}
 
@@ -732,20 +732,20 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			final int dir=CMLib.directions().getGoodShipDirectionCode(dirName);
 			if(dir <0)
 			{
-				commonTell(mob,L("You must specify a direction in which to build the door."));
+				commonTelL(mob,"You must specify a direction in which to build the door.");
 				return false;
 			}
 			if((dir<0)
 			||(dir==Directions.UP)
 			||(dir==Directions.DOWN))
 			{
-				commonTell(mob,L("A valid direction in which to build the door must be specified."));
+				commonTelL(mob,"A valid direction in which to build the door must be specified.");
 				return false;
 			}
 
 			if((R.domainType()&Room.INDOORS)==0)
 			{
-				commonTell(mob,L("You can only build a door below decks."));
+				commonTelL(mob,"You can only build a door below decks.");
 				return false;
 			}
 
@@ -753,12 +753,12 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			final Exit E1=R.getExitInDir(dir);
 			if((R1==null)||(E1==null))
 			{
-				commonTell(mob,L("There is nowhere to build a door that way."));
+				commonTelL(mob,"There is nowhere to build a door that way.");
 				return false;
 			}
 			if(E1.hasADoor())
 			{
-				commonTell(mob,L("There is already a door that way."));
+				commonTelL(mob,"There is already a door that way.");
 				return false;
 			}
 
@@ -799,12 +799,12 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			if((R==null)
 			||(!CMLib.law().doesOwnThisProperty(mob,R)))
 			{
-				commonTell(mob,L("You are not permitted to do that here."));
+				commonTelL(mob,"You are not permitted to do that here.");
 				return false;
 			}
 			if(!(R.getArea() instanceof Boardable))
 			{
-				commonTell(mob,L("You don't know how to do that here."));
+				commonTelL(mob,"You don't know how to do that here.");
 				return false;
 			}
 
@@ -812,20 +812,20 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			final int dir=CMLib.directions().getGoodShipDirectionCode(dirName);
 			if(dir <0)
 			{
-				commonTell(mob,L("You must specify a direction in which to demolish a door."));
+				commonTelL(mob,"You must specify a direction in which to demolish a door.");
 				return false;
 			}
 			if((dir<0)
 			||(dir==Directions.UP)
 			||(dir==Directions.DOWN))
 			{
-				commonTell(mob,L("A valid direction in which to demolish a door must be specified."));
+				commonTelL(mob,"A valid direction in which to demolish a door must be specified.");
 				return false;
 			}
 
 			if((R.domainType()&Room.INDOORS)==0)
 			{
-				commonTell(mob,L("You can only demolish a door below decks."));
+				commonTelL(mob,"You can only demolish a door below decks.");
 				return false;
 			}
 
@@ -833,12 +833,12 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			final Exit E1=R.getExitInDir(dir);
 			if((R1==null)||(E1==null))
 			{
-				commonTell(mob,L("There is nowhere to demolish a door that way."));
+				commonTelL(mob,"There is nowhere to demolish a door that way.");
 				return false;
 			}
 			if(!E1.hasADoor())
 			{
-				commonTell(mob,L("There is not a door that way to demolish."));
+				commonTelL(mob,"There is not a door that way to demolish.");
 				return false;
 			}
 
@@ -884,7 +884,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,L("You don't know how to make a '@x1'.  Try \"@x2 list\" for a list.",recipeName,getIdentifierCommandWord()));
+				commonTelL(mob,"You don't know how to make a '@x1'.  Try \"@x2 list\" for a list.",recipeName,getIdentifierCommandWord());
 				return false;
 			}
 
@@ -945,7 +945,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			}
 			if(buildingI==null)
 			{
-				commonTell(mob,L("There's no such thing as a @x1!!!","("+shipIndexStr)+")");
+				commonTelL(mob,"There's no such thing as a @x1!!!",shipIndexStr);
 				return false;
 			}
 			buildingI=(Item)buildingI.copyOf();

@@ -105,7 +105,7 @@ public class Digging extends GatheringSkill
 			{
 				if(found!=null)
 				{
-					commonTell(mob,L("You have found some @x1!",foundShortName));
+					commonTelL(mob,"You have found some @x1!",foundShortName);
 					displayText=L("You are digging out @x1",foundShortName);
 					verb=L("digging out @x1",foundShortName);
 					if((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
@@ -113,16 +113,14 @@ public class Digging extends GatheringSkill
 				}
 				else
 				{
-					final StringBuffer str=new StringBuffer(L("You can't seem to find anything worth digging up here.\n\r"));
 					int d=lookingForMat(RawMaterial.MATERIAL_PRECIOUS,mob.location());
 					if(d<0) d=lookingForMat(RawMaterial.MATERIAL_GLASS,mob.location());
 					if(d<0) d=lookingForRsc(RawMaterial.RESOURCE_SAND,mob.location());
 					if(d<0) d=lookingForRsc(RawMaterial.RESOURCE_STONE,mob.location());
 					if(d<0)
-						str.append(L("You might try elsewhere."));
+						commonTelL(mob,"You can't seem to find anything worth digging up here.\n\rYou might try elsewhere.");
 					else
-						str.append(L("You might try @x1.",CMLib.directions().getInDirectionName(d)));
-					commonTell(mob,str.toString());
+						commonTelL(mob,"You can't seem to find anything worth digging up here.\n\rYou might try @x1.",CMLib.directions().getInDirectionName(d));
 					unInvoke();
 				}
 
@@ -196,7 +194,7 @@ public class Digging extends GatheringSkill
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_SAND,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_STONE,mob.location())))
 		{
-			commonTell(mob,L("You don't think this is a good place to dig for gems."));
+			commonTelL(mob,"You don't think this is a good place to dig for gems.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

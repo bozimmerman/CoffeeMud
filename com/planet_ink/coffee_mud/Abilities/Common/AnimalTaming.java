@@ -114,11 +114,11 @@ public class AnimalTaming extends CommonSkill
 					if((taming!=null)&&(taming instanceof CagedAnimal))
 						animal=((CagedAnimal)taming).unCageMe();
 					if((messedUp)||(animal==null))
-						commonTell(mob,L("You've failed to tame @x1!",taming.name()));
+						commonTelL(mob,"You've failed to tame @x1!",taming.name());
 					else
 					{
 						if(animal.numBehaviors()==0)
-							commonTell(mob,L("@x1 is already tame.",taming.name()));
+							commonTelL(mob,"@x1 is already tame.",taming.name());
 						else
 						{
 							int amount=1;
@@ -172,18 +172,18 @@ public class AnimalTaming extends CommonSkill
 		{
 			if(!CMLib.flags().canBeSeenBy(M,mob))
 			{
-				commonTell(mob,L("You don't see anyone called '@x1' here.",str));
+				commonTelL(mob,"You don't see anyone called '@x1' here.",str);
 				return false;
 			}
 			if((!M.isMonster())
 			   ||(!CMLib.flags().isAnimalIntelligence(M)))
 			{
-				commonTell(mob,L("You can't tame @x1.",M.name(mob)));
+				commonTelL(mob,"You can't tame @x1.",M.name(mob));
 				return false;
 			}
 			if((CMLib.flags().canMove(M))&&(!CMLib.flags().isBoundOrHeld(M)))
 			{
-				commonTell(mob,L("@x1 doesn't seem willing to cooperate.",M.name(mob)));
+				commonTelL(mob,"@x1 doesn't seem willing to cooperate.",M.name(mob));
 				return false;
 			}
 			taming=M;
@@ -216,13 +216,13 @@ public class AnimalTaming extends CommonSkill
 			}
 			if(cage==null)
 			{
-				commonTell(mob,L("You don't see anyone called '@x1' here.",str));
+				commonTelL(mob,"You don't see anyone called '@x1' here.",str);
 				return false;
 			}
 			taming=mob.location().findItem(cage,CMParms.combine(commands,0));
 			if((taming==null)||(!CMLib.flags().canBeSeenBy(taming,mob))||(!(taming instanceof CagedAnimal)))
 			{
-				commonTell(mob,L("You don't see any creatures in @x1 called '@x2'.",cage.name(),CMParms.combine(commands,0)));
+				commonTelL(mob,"You don't see any creatures in @x1 called '@x2'.",cage.name(),CMParms.combine(commands,0));
 				return false;
 			}
 			M=((CagedAnimal)taming).unCageMe();

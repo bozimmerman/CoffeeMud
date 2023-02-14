@@ -139,11 +139,11 @@ public class BookNaming extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					commonTell(mob,L("You mess up your book naming."));
+					commonTelL(mob,"You mess up your book naming.");
 				else
 				{
 					found.setName(writing);
-					commonTell(mob,L("Your work has a new name."));
+					commonTelL(mob,"Your work has a new name.");
 				}
 			}
 		}
@@ -152,7 +152,7 @@ public class BookNaming extends CommonSkill
 
 	public boolean error(final MOB mob)
 	{
-		commonTell(mob,L("You must specify what book to name, the name form-number, and the simple name to insert. Use BNAME LIST to see the list of name-forms."));
+		commonTelL(mob,"You must specify what book to name, the name form-number, and the simple name to insert. Use BNAME LIST to see the list of name-forms.");
 		return false;
 	}
 
@@ -201,26 +201,26 @@ public class BookNaming extends CommonSkill
 			}
 			if(!ok)
 			{
-				commonTell(mob,L("You aren't allowed to work on '@x1'.",itemName));
+				commonTelL(mob,"You aren't allowed to work on '@x1'.",itemName);
 				return false;
 			}
 			*/
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,L("You don't seem to have a '@x1'.",itemName));
+			commonTelL(mob,"You don't seem to have a '@x1'.",itemName);
 			return false;
 		}
 		if(target.fetchEffect("Copyright")!=null)
 		{
-			commonTell(mob,L("This book is copyrighted, and can't be renamed."));
+			commonTelL(mob,"This book is copyrighted, and can't be renamed.");
 			return false;
 		}
 
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTell(mob,L("You must know how to write to name a book."));
+			commonTelL(mob,"You must know how to write to name a book.");
 			return false;
 		}
 
@@ -229,13 +229,13 @@ public class BookNaming extends CommonSkill
 		&&(target.material()!=RawMaterial.RESOURCE_SILK)
 		&&(target.material()!=RawMaterial.RESOURCE_HIDE))
 		{
-			commonTell(mob,L("You can't give a name to something like that."));
+			commonTelL(mob,"You can't give a name to something like that.");
 			return false;
 		}
 
 		if(!CMLib.flags().isReadable(target))
 		{
-			commonTell(mob,L("That's not even readable!"));
+			commonTelL(mob,"That's not even readable!");
 			return false;
 		}
 
@@ -243,20 +243,20 @@ public class BookNaming extends CommonSkill
 		||(CMath.s_int(nameType)<1)
 		||(CMath.s_int(nameType)>PREFIXES.length))
 		{
-			commonTell(mob,L("'@x1' is not a valid name form number.  Try BNAME LIST.",nameType));
+			commonTelL(mob,"'@x1' is not a valid name form number.  Try BNAME LIST.",nameType);
 			return false;
 		}
 		nameType = PREFIXES[CMath.s_int(nameType)-1];
 		final String nameWord = CMParms.combine(commands,2).trim();
 		if(nameWord.length()>20)
 		{
-			commonTell(mob,L("The name must be under 20 characters."));
+			commonTelL(mob,"The name must be under 20 characters.");
 			return false;
 		}
 
 		if(!target.isGeneric())
 		{
-			commonTell(mob,L("You aren't able to give that a name."));
+			commonTelL(mob,"You aren't able to give that a name.");
 			return false;
 		}
 

@@ -103,7 +103,7 @@ public class Druid_KnowPlants extends StdAbility
 		if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)
 		&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN))
 		{
-			mob.tell(L("Your plant knowledge can tell you nothing about @x1.",I.name(mob)));
+			commonTelL(mob,"Your plant knowledge can tell you nothing about @x1.",I.name(mob));
 			return false;
 		}
 
@@ -112,7 +112,7 @@ public class Druid_KnowPlants extends StdAbility
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			mob.tell(L("Your plant senses fail you."));
+			commonTelL(mob,"Your plant senses fail you.");
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,I,null,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|CMMsg.MASK_MAGIC,null);
@@ -137,11 +137,11 @@ public class Druid_KnowPlants extends StdAbility
 				if(!CMStrings.containsWord(name.toLowerCase(), matName.toLowerCase()))
 					str.append(L("@x1 is a type of @x2.  ",CMStrings.capitalizeAndLower(rscName),matName.toLowerCase()));
 				if(isPlant(I))
-					str.append(L("It was summoned by @x1.",I.rawSecretIdentity()));
+					str.append(L("It was summoned by @x1.  ",I.rawSecretIdentity()));
 				else
 				if(!(I instanceof RawMaterial))
-					str.append(L("It is either processed by hand, or found in the wild."));
-				mob.tell(str.toString());
+					str.append(L("It is either processed by hand, or found in the wild.  "));
+				commonTell(mob,str.toString().trim());
 				final Integer matI = Integer.valueOf(I.material());
 				final List<String> foundIn=new ArrayList<String>();
 				for(final Enumeration<Room> r=CMClass.locales();r.hasMoreElements();)
@@ -158,24 +158,35 @@ public class Druid_KnowPlants extends StdAbility
 					if(I instanceof RawMaterial)
 					{
 						if(((RawMaterial)I).getSubType().equalsIgnoreCase(RawMaterial.ResourceSubType.SEED.name()))
-							mob.tell(L("It can be grown in @x1.",CMLib.english().toEnglishStringList(foundIn)));
+							commonTelL(mob,"It can be grown in @x1.",CMLib.english().toEnglishStringList(foundIn));
 						else
 						if(CMParms.contains(RawMaterial.CODES.WOODIES(), I.material()))
-							mob.tell(L("It can be found in @x1.",CMLib.english().toEnglishStringList(foundIn)));
+							commonTelL(mob,"It can be found in @x1.",CMLib.english().toEnglishStringList(foundIn));
 						else
-							mob.tell(L("It can be foraged in @x1.",CMLib.english().toEnglishStringList(foundIn)));
+							commonTelL(mob,"It can be foraged in @x1.",CMLib.english().toEnglishStringList(foundIn));
 					}
 					else
 					{
-						mob.tell(L("@x1 can be found in @x2.",
+						commonTelL(mob,"@x1 can be found in @x2.",
 								CMStrings.capitalizeAndLower(rscName),
-								CMLib.english().toEnglishStringList(foundIn)));
+								CMLib.english().toEnglishStringList(foundIn));
 					}
 				}
-				mob.tell(L("@x1 has a hardness of @x2 and a buoyancy of @x3.",
+				commonTelL(mob,"@x1 has a hardness of @x2 and a buoyancy of @x3.",
 						CMStrings.capitalizeAndLower(rscName),
 						""+RawMaterial.CODES.HARDNESS(matI.intValue()),
-						""+RawMaterial.CODES.BOUYANCY(matI.intValue())));
+						""+RawMaterial.CODES.BOUYANCY(matI.intValue()));
+				if(I instanceof Food)
+				{
+					if(I.fetchEffect("Poison_Rotten")!=null)
+						commonTelL(mob,"It was edible, before it went rotten.");
+					else
+					if(I.fetchEffect("Prayer_Rot")!=null)
+						commonTelL(mob,"It is edible, but will eventually go bad.");
+					else
+						commonTelL(mob,"It is edible.");
+
+				}
 			}
 		}
 		return success;

@@ -109,13 +109,13 @@ public class Shrooming extends Farming
 		&&(A.getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAY))
 		{
 			if(!quiet)
-				commonTell(mob,L("You to be in a dark place to do shrooming.  Check the time and weather."));
+				commonTelL(mob,"You to be in a dark place to do shrooming.  Check the time and weather.");
 			return false;
 		}
 		if(A.getClimateObj().weatherType(R)==Climate.WEATHER_DROUGHT)
 		{
 			if(!quiet)
-				commonTell(mob,L("The current drought conditions make shrooming useless."));
+				commonTelL(mob,"The current drought conditions make shrooming useless.");
 			return false;
 		}
 		return true;

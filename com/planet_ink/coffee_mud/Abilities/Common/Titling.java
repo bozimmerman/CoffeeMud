@@ -209,7 +209,7 @@ public class Titling extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					commonTell(mob,L("You mess up your titling."));
+					commonTelL(mob,"You mess up your titling.");
 				else
 				{
 					if(writing.equalsIgnoreCase("remove"))
@@ -235,9 +235,9 @@ public class Titling extends CommonSkill
 			return true;
 		if(commands.size()<2)
 		{
-			commonTell(mob,L("You must specify what you want to entitle, and what you want the title to be.  Use a title of `remove` to remove "
+			commonTelL(mob,"You must specify what you want to entitle, and what you want the title to be.  Use a title of `remove` to remove "
 					+ "a previous title.  You can also designate a category for the word by making the last word of the title one of "
-					+ "these: "+CMParms.toListString(CATALOGS.getNames()))+".");
+					+ "these: "+CMParms.toListString(CATALOGS.getNames())+".");
 			return false;
 		}
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));
@@ -255,7 +255,7 @@ public class Titling extends CommonSkill
 			}
 			if(!ok)
 			{
-				commonTell(mob,L("You aren't allowed to work on '@x1'.",(commands.get(0))));
+				commonTelL(mob,"You aren't allowed to work on '@x1'.",(commands.get(0)));
 				return false;
 			}
 			*/
@@ -264,7 +264,7 @@ public class Titling extends CommonSkill
 			target=null;
 		if(target==null)
 		{
-			commonTell(mob,L("You don't seem to have a '@x1'.",(commands.get(0))));
+			commonTelL(mob,"You don't seem to have a '@x1'.",(commands.get(0)));
 			return false;
 		}
 		commands.remove(commands.get(0));
@@ -283,7 +283,7 @@ public class Titling extends CommonSkill
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTell(mob,L("You must know how to write to entitle."));
+			commonTelL(mob,"You must know how to write to entitle.");
 			return false;
 		}
 
@@ -292,12 +292,12 @@ public class Titling extends CommonSkill
 		&&(target.material()!=RawMaterial.RESOURCE_SILK)
 		&&(target.material()!=RawMaterial.RESOURCE_HIDE))
 		{
-			commonTell(mob,L("You can't give a title to something like that."));
+			commonTelL(mob,"You can't give a title to something like that.");
 			return false;
 		}
 		if(!CMLib.flags().isReadable(target))
 		{
-			commonTell(mob,L("That's not even readable!"));
+			commonTelL(mob,"That's not even readable!");
 			return false;
 		}
 
@@ -305,30 +305,30 @@ public class Titling extends CommonSkill
 		 *String brand = getBrand(target);
 		if((brand==null)||(brand.length()==0))
 		{
-			commonTell(mob,L("You aren't permitted to entitle that."));
+			commonTelL(mob,"You aren't permitted to entitle that.");
 			return false;
 		}
 		 */
 		if(!target.isGeneric())
 		{
-			commonTell(mob,L("You aren't able to give that a title."));
+			commonTelL(mob,"You aren't able to give that a title.");
 			return false;
 		}
 
 		if(BookNaming.isAlreadyNamed(target.Name()))
 		{
-			commonTell(mob,L("That already has a name."));
+			commonTelL(mob,"That already has a name.");
 			return false;
 		}
 		if(target.fetchEffect("Copyright")!=null)
 		{
-			commonTell(mob,L("This book is copyrighted, and can't be renamed."));
+			commonTelL(mob,"This book is copyrighted, and can't be renamed.");
 			return false;
 		}
 
 		if(CMParms.combine(commands, 0).length()>60)
 		{
-			commonTell(mob,L("That title is too long."));
+			commonTelL(mob,"That title is too long.");
 			return false;
 		}
 

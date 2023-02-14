@@ -153,7 +153,7 @@ public class Thief_SmugglersHold extends ThiefSkill
 				final int direction=this.direction;
 				if((messedUp)||(direction<0)||(fromRoom==null))
 				{
-					commonTell(mob,L("You've ruined the smuggler's hold!"));
+					commonTelL(mob,"You've ruined the smuggler's hold!");
 				}
 				else
 				{
@@ -163,7 +163,7 @@ public class Thief_SmugglersHold extends ThiefSkill
 						R.setRoomID(room.getArea().getNewRoomID(room,direction));
 						if(R.roomID().length()==0)
 						{
-							commonTell(mob,L("You've ruined the smuggler's hold!"));
+							commonTelL(mob,"You've ruined the smuggler's hold!");
 						}
 						else
 						{

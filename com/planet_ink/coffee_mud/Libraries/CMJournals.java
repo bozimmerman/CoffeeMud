@@ -914,7 +914,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					for(int i=items.size()-1;i>=0;i--)
 					{
 						final JournalEntry entry=items.get(i);
-						if(!CMath.bset(entry.attributes(), JournalEntry.ATTRIBUTE_PROTECTED))
+						if(!CMath.bset(entry.attributes(), JournalEntry.JournalAttrib.PROTECTED.bit))
 						{
 							final String from=entry.from();
 							final String message=entry.msg();

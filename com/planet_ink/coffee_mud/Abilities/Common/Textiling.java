@@ -202,7 +202,7 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 		if((!(E instanceof Item))||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,L("That's not a @x1 item.",CMLib.english().startWithAorAn(Name().toLowerCase())));
+				commonTelL(mob,"That's not a @x1 item.",CMLib.english().startWithAorAn(Name().toLowerCase()));
 			return false;
 		}
 		return true;
@@ -235,8 +235,8 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"textile list\" for a list, \"textile info <item>\","
-						+ " \"textile learn <item>\", or \"textile stop\" to cancel."));
+			commonTelL(mob,"Make what? Enter \"textile list\" for a list, \"textile info <item>\","
+						+ " \"textile learn <item>\", or \"textile stop\" to cancel.");
 			return false;
 		}
 		bundling=false;
@@ -333,7 +333,7 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,L("You don't know how to weave a '@x1'.  Try \"@x2 list\" for a list.",recipeName,triggerStrings()[0].toLowerCase()));
+				commonTelL(mob,"You don't know how to weave a '@x1'.  Try \"@x2 list\" for a list.",recipeName,triggerStrings()[0].toLowerCase());
 				return false;
 			}
 			final String realRecipeName=replacePercent(foundRecipe.get(RCP_FINALNAME),"");
@@ -373,7 +373,7 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 			final Item buildingI=this.buildingI;
 			if(buildingI==null)
 			{
-				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				commonTelL(mob,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

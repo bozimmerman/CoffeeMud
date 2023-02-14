@@ -327,7 +327,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 		if((!(E instanceof Item))||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,L("That's not a simple leatherworked item."));
+				commonTelL(mob,"That's not a simple leatherworked item.");
 			return false;
 		}
 		return true;
@@ -360,8 +360,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"leatherwork list\" for a list, \"leatherwork info <item>\", \"leatherwork refit <item>\" to resize,"
-							+ " \"leatherwork learn <item>\", \"leatherwork scan\", \"leatherwork mend <item>\", or \"leatherwork stop\" to cancel."));
+			commonTelL(mob,"Make what? Enter \"leatherwork list\" for a list, \"leatherwork info <item>\", \"leatherwork refit <item>\" to resize,"
+							+ " \"leatherwork learn <item>\", \"leatherwork scan\", \"leatherwork mend <item>\", or \"leatherwork stop\" to cancel.");
 			return false;
 		}
 		if((!auto)
@@ -464,17 +464,17 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				return false;
 			if((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)
 			{
-				commonTell(mob,L("That's not made of leather.  That can't be refitted."));
+				commonTelL(mob,"That's not made of leather.  That can't be refitted.");
 				return false;
 			}
 			if(!(buildingI instanceof Armor))
 			{
-				commonTell(mob,L("You don't know how to refit that sort of thing."));
+				commonTelL(mob,"You don't know how to refit that sort of thing.");
 				return false;
 			}
 			if(buildingI.phyStats().height()==0)
 			{
-				commonTell(mob,L("@x1 is already the right size.",buildingI.name(mob)));
+				commonTelL(mob,"@x1 is already the right size.",buildingI.name(mob));
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
@@ -523,7 +523,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,L("You don't know how to make a '@x1'.  Try \"leatherwork list\" for a list.",recipeName));
+				commonTelL(mob,"You don't know how to make a '@x1'.  Try \"leatherwork list\" for a list.",recipeName);
 				return false;
 			}
 			final int multiplier=recipeStage.multiplier;
@@ -574,7 +574,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			final Item buildingI=this.buildingI;
 			if(buildingI==null)
 			{
-				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				commonTelL(mob,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 				return false;
 			}
 			duration=getDuration(multiplier*CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

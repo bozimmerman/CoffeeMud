@@ -123,14 +123,14 @@ public class FoodPreserving extends CommonSkill
 			return true;
 		if(commands.size()<1)
 		{
-			commonTell(mob,L("You must specify what food you want to preserve."));
+			commonTelL(mob,"You must specify what food you want to preserve.");
 			return false;
 		}
 		final String what=commands.get(0);
 		final Item target = super.getTarget(mob, null, givenTarget, commands, Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,L("You don't seem to have a '@x1'.",what));
+			commonTelL(mob,"You don't seem to have a '@x1'.",what);
 			return false;
 		}
 		commands.remove(commands.get(0));
@@ -138,19 +138,19 @@ public class FoodPreserving extends CommonSkill
 		if(((target.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
 		||(!(target instanceof Food)))
 		{
-			commonTell(mob,L("You can't preserve that."));
+			commonTelL(mob,"You can't preserve that.");
 			return false;
 		}
 
 		if(target.fetchEffect("Poison_Rotten")!=null)
 		{
-			commonTell(mob,L("That's already rotten and can't be preserved."));
+			commonTelL(mob,"That's already rotten and can't be preserved.");
 			return false;
 		}
 
 		if(target.fetchEffect("Prayer_Purify")!=null)
 		{
-			commonTell(mob,L("That's already been preserved."));
+			commonTelL(mob,"That's already been preserved.");
 			return false;
 		}
 

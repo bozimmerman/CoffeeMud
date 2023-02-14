@@ -143,7 +143,7 @@ public class Tattooing extends CommonSkill
 	{
 		if(commands.size()<3)
 		{
-			commonTell(mob,L("You must specify whom you want to tattoo, what body part to tattoo, and what the tattoo looks like. Use 'REMOVE' as the description to remove a tattoo."));
+			commonTelL(mob,"You must specify whom you want to tattoo, what body part to tattoo, and what the tattoo looks like. Use 'REMOVE' as the description to remove a tattoo.");
 			return false;
 		}
 		final String whom=commands.get(0);
@@ -182,7 +182,7 @@ public class Tattooing extends CommonSkill
 		}
 		if(partNum<0)
 		{
-			commonTell(mob,L("'@x1' is not a valid location.  Valid locations include: @x2",part,allParts.toString().substring(2)));
+			commonTelL(mob,"'@x1' is not a valid location.  Valid locations include: @x2",part,allParts.toString().substring(2));
 			return false;
 		}
 		final long wornCode=codes.get(partNum);
@@ -200,23 +200,23 @@ public class Tattooing extends CommonSkill
 		&&(!CMLib.flags().isBoundOrHeld(target))
 		&&(!CMLib.flags().isSleeping(target)))
 		{
-			commonTell(mob,target,null,L("<T-NAME> seem(s) unwilling to cooperate."));
+			commonTelL(mob,target,null,"<T-NAME> seem(s) unwilling to cooperate.");
 			return false;
 		}
 
 		if(target.getWearPositions(wornCode)<=0)
 		{
-			commonTell(mob,L("That location is not available for tattooing."));
+			commonTelL(mob,"That location is not available for tattooing.");
 			return false;
 		}
 		if(target.freeWearPositions(wornCode,(short)(Short.MIN_VALUE+1),(short)0)<=0)
 		{
-			commonTell(mob,L("That location is currently covered by something."));
+			commonTelL(mob,"That location is currently covered by something.");
 			return false;
 		}
 		if(target.curState().getHitPoints() < target.maxState().getHitPoints())
 		{
-			commonTell(mob,L("You need to wait until @x1 is at full health.",target.name(mob)));
+			commonTelL(mob,"You need to wait until @x1 is at full health.",target.name(mob));
 			return false;
 		}
 
@@ -237,14 +237,14 @@ public class Tattooing extends CommonSkill
 		{
 			if(tatToRemove==null)
 			{
-				commonTell(mob,L("There is no tattoo there to remove."));
+				commonTelL(mob,"There is no tattoo there to remove.");
 				return false;
 			}
 		}
 		else
 		if(numTattsDone>=target.getWearPositions(codes.get(partNum)))
 		{
-			commonTell(mob,L("That location is already completely decorated."));
+			commonTelL(mob,"That location is already completely decorated.");
 			return false;
 		}
 

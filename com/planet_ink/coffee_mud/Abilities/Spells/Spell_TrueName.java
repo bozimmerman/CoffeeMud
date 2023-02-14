@@ -329,26 +329,26 @@ public class Spell_TrueName extends Spell
 
 		if(!CMLib.flags().canSpeak(mob))
 		{
-			mob.tell(L("You can't speak!"));
+			commonTelL(mob,"You can't speak!");
 			return false;
 		}
 
 		if((!auto)&&(!CMLib.flags().canBeHeardSpeakingBy(mob,target)))
 		{
-			mob.tell(L("@x1 can't hear your words.",target.charStats().HeShe()));
+			commonTelL(mob,"@x1 can't hear your words.",target.charStats().HeShe());
 			return false;
 		}
 
 		if(CMLib.flags().getPlaneOfExistence(target.getStartRoom())==null)
 		{
-			mob.tell(L("@x1 would not be affected by their true name.",target.charStats().HeShe()));
+			commonTelL(mob,"@x1 would not be affected by their true name.",target.charStats().HeShe());
 			return false;
 		}
 
 		if((target.fetchEffect("Spell_TrueName")!=null)
 		||(target.fetchEffect("Spell_Geas")!=null))
 		{
-			mob.tell(L("@x1 is already under a powerful geas.",target.charStats().HeShe()));
+			commonTelL(mob,"@x1 is already under a powerful geas.",target.charStats().HeShe());
 			return false;
 		}
 

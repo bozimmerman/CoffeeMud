@@ -96,7 +96,7 @@ public class Floristry extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(messedUp)
-					commonTell(mob,L("You lose your concentration on @x1.",found.name()));
+					commonTelL(mob,"You lose your concentration on @x1.",found.name());
 				else
 				{
 					final List<String> flowerList=Resources.getFileLineVector(Resources.getFileResource("skills/floristry.txt",true));
@@ -115,7 +115,7 @@ public class Floristry extends CommonSkill
 							found.setSecretIdentity("");
 						}
 
-						commonTell(mob,L("@x1 appears to be @x2.",found.name(),flower));
+						commonTelL(mob,"@x1 appears to be @x2.",found.name(),flower);
 						String name=found.Name();
 						name=name.substring(0,name.length()-8).trim();
 						if(name.startsWith("a pound of"))
@@ -178,14 +178,14 @@ public class Floristry extends CommonSkill
 			return true;
 		if(commands.size()<1)
 		{
-			commonTell(mob,L("You must specify what flower you want to identify."));
+			commonTelL(mob,"You must specify what flower you want to identify.");
 			return false;
 		}
 		final String finalName=CMParms.combine(commands,0);
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,finalName);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,L("You don't seem to have a '@x1'.",(commands.get(0))));
+			commonTelL(mob,"You don't seem to have a '@x1'.",(commands.get(0)));
 			return false;
 		}
 		commands.remove(commands.get(0));
@@ -197,7 +197,7 @@ public class Floristry extends CommonSkill
 		||(!(target instanceof RawMaterial))
 		||(!target.isGeneric()))
 		{
-			commonTell(mob,L("You can only identify unknown flowers."));
+			commonTelL(mob,"You can only identify unknown flowers.");
 			return false;
 		}
 		if(isLimitedToOne() && target.basePhyStats().weight()>1)

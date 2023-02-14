@@ -129,7 +129,7 @@ public class Spell_DetectAmbush extends Spell
 			lastRoom=R;
 			if(found)
 			{
-				mob.tell(L("Potential danger in that direction stops you for a second."));
+				commonTelL(mob,"Potential danger in that direction stops you for a second.");
 				return false;
 			}
 		}

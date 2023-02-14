@@ -141,7 +141,7 @@ public class Thief_SenseDigs extends ThiefSkill
 
 				if(buf.length()>0)
 				{
-					mob.tell(L("You sense: @x1",buf.toString().trim()));
+					commonTelL(mob,"You sense: @x1",buf.toString().trim());
 					helpProficiency(mob, 0);
 				}
 				lastRooms.add(R);

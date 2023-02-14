@@ -105,20 +105,18 @@ public class Chopping extends GatheringSkill
 			{
 				if(found!=null)
 				{
-					commonTell(mob,L("You have a good tree for @x1.",foundShortName));
+					commonTelL(mob,"You have a good tree for @x1.",foundShortName);
 					displayText=L("You are chopping up @x1",foundShortName);
 					verb=L("chopping @x1",foundShortName);
 					playSound="chopping.wav";
 				}
 				else
 				{
-					final StringBuffer str=new StringBuffer(L("You can't seem to find any trees worth cutting around here.\n\r"));
 					final int d=lookingForMat(RawMaterial.MATERIAL_WOODEN,mob.location());
 					if(d<0)
-						str.append(L("You might try elsewhere."));
+						commonTelL(mob,"You can't seem to find any trees worth cutting around here.\n\rYou might try elsewhere.");
 					else
-						str.append(L("You might try @x1.",CMLib.directions().getInDirectionName(d)));
-					commonTell(mob,str.toString());
+						commonTelL(mob,"You might try @x1.",CMLib.directions().getInDirectionName(d));
 					unInvoke();
 				}
 
@@ -184,7 +182,7 @@ public class Chopping extends GatheringSkill
 		if((!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_WOODEN,mob.location()))
 		&&(!CMParms.contains(RawMaterial.CODES.WOODIES(), mob.location().myResource())))
 		{
-			commonTell(mob,L("You can't find anything to chop here."));
+			commonTelL(mob,"You can't find anything to chop here.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -152,9 +152,9 @@ public class JournalFunction extends StdWebMacro
 			msg.parent((parent==null)?"":parent);
 			msg.msgIcon((icon==null)?"":icon);
 			if(flags.contains("STUCKY"))
-				msg.attributes(msg.attributes()|JournalEntry.ATTRIBUTE_STUCKY);
+				msg.attributes(msg.attributes()|JournalEntry.JournalAttrib.STUCKY.bit);
 			if(flags.contains("PROTECTED"))
-				msg.attributes(msg.attributes()|JournalEntry.ATTRIBUTE_PROTECTED);
+				msg.attributes(msg.attributes()|JournalEntry.JournalAttrib.PROTECTED.bit);
 			msg.data("");
 			msg.to(to);
 			// check for dups
@@ -405,10 +405,10 @@ public class JournalFunction extends StdWebMacro
 								if(ISSTUCKY==null)
 									ISSTUCKY=httpReq.getUrlParameter("ISSTUCKY"+fieldSuffix);
 								if((ISSTUCKY!=null)&&(ISSTUCKY.equalsIgnoreCase("on")))
-									attributes|=JournalEntry.ATTRIBUTE_STUCKY;
+									attributes|=JournalEntry.JournalAttrib.STUCKY.bit;
 								final String ISPROTECTED=httpReq.getUrlParameter("ISPROTECTED"+fieldSuffix);
 								if((ISPROTECTED!=null)&&(ISPROTECTED.equalsIgnoreCase("on")))
-									attributes|=JournalEntry.ATTRIBUTE_PROTECTED;
+									attributes|=JournalEntry.JournalAttrib.PROTECTED.bit;
 							}
 							CMLib.database().DBUpdateJournal(entry.key(), subj, clearWebMacros(text), attributes);
 							if(cardinalNumber==0)

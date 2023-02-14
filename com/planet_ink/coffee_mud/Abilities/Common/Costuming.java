@@ -326,7 +326,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 		if((!(E instanceof Item))||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,L("That's not a @x1 item.",CMLib.english().startWithAorAn(Name().toLowerCase())));
+				commonTelL(mob,"That's not a @x1 item.",CMLib.english().startWithAorAn(Name().toLowerCase()));
 			return false;
 		}
 		return true;
@@ -357,8 +357,8 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Costume what? Enter \"costume list\" for a list, \"costume info <item>\", \"costume refit <item>\" to resize,"
-					+ " \"costume learn <item>\", \"costume scan\", \"costume mend <item>\", or \"costume stop\" to cancel."));
+			commonTelL(mob,"Costume what? Enter \"costume list\" for a list, \"costume info <item>\", \"costume refit <item>\" to resize,"
+					+ " \"costume learn <item>\", \"costume scan\", \"costume mend <item>\", or \"costume stop\" to cancel.");
 			return false;
 		}
 		if((!auto)
@@ -461,17 +461,17 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 				return false;
 			if((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
 			{
-				commonTell(mob,L("That's not made of paper.  It can't be refitted."));
+				commonTelL(mob,"That's not made of paper.  It can't be refitted.");
 				return false;
 			}
 			if(!(buildingI instanceof Armor))
 			{
-				commonTell(mob,L("You don't know how to refit that sort of thing."));
+				commonTelL(mob,"You don't know how to refit that sort of thing.");
 				return false;
 			}
 			if(buildingI.phyStats().height()==0)
 			{
-				commonTell(mob,L("@x1 is already the right size.",buildingI.name(mob)));
+				commonTelL(mob,"@x1 is already the right size.",buildingI.name(mob));
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
@@ -511,7 +511,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,L("You don't know how to make a '@x1' costume. Have you LEARNed any recipes yet? Try \"@x2 list\" for a list.",recipeName,triggerStrings()[0].toLowerCase()));
+				commonTelL(mob,"You don't know how to make a '@x1' costume. Have you LEARNed any recipes yet? Try \"@x2 list\" for a list.",recipeName,triggerStrings()[0].toLowerCase());
 				return false;
 			}
 
@@ -554,7 +554,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 			final Item buildingI=this.buildingI;
 			if(buildingI==null)
 			{
-				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				commonTelL(mob,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

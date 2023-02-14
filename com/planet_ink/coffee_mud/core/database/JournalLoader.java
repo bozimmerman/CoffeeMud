@@ -269,7 +269,7 @@ public class JournalLoader
 			while(((cardinal < limit)||(limit==0)) && R.next())
 			{
 				entry = DBReadJournalEntry(R);
-				if((parent!=null)&&(CMath.bset(entry.attributes(),JournalEntry.ATTRIBUTE_STUCKY)))
+				if((parent!=null)&&(CMath.bset(entry.attributes(),JournalEntry.JournalAttrib.STUCKY.bit)))
 					continue;
 				if(searching)
 				{
@@ -301,7 +301,7 @@ public class JournalLoader
 				while(R.next())
 				{
 					final long attributes=R.getLong("CMATTR");
-					if(CMath.bset(attributes,JournalEntry.ATTRIBUTE_STUCKY))
+					if(CMath.bset(attributes,JournalEntry.JournalAttrib.STUCKY.bit))
 						continue;
 					journalV.lastElement().lastEntry(false);
 					break;
@@ -597,7 +597,7 @@ public class JournalLoader
 	public JournalEntry DBReadJournalEntry(String journal, String messageKey)
 	{
 		journal	= DB.injectionClean(journal);
-		messageKey		= DB.injectionClean(messageKey);
+		messageKey	= DB.injectionClean(messageKey);
 
 		if(journal==null)
 			return null;
@@ -800,7 +800,7 @@ public class JournalLoader
 				entry.subj		(metaData.shortIntro());
 				entry.msg		(metaData.longIntro());
 				entry.data		(metaData.imagePath());
-				entry.attributes(JournalEntry.ATTRIBUTE_PROTECTED);
+				entry.attributes(JournalEntry.JournalAttrib.PROTECTED.bit);
 				entry.date		(-1);
 				entry.update	(-1);
 				DBUpdateJournal(journal,entry);
@@ -813,7 +813,7 @@ public class JournalLoader
 				entry.data		(metaData.imagePath());
 				entry.to		("JOURNALINTRO");
 				entry.from		("");
-				entry.attributes(JournalEntry.ATTRIBUTE_PROTECTED);
+				entry.attributes(JournalEntry.JournalAttrib.PROTECTED.bit);
 				entry.date		(-1);
 				entry.update	(-1);
 				this.DBWrite(journal, entry);
@@ -858,7 +858,7 @@ public class JournalLoader
 					topTime=updateTime;
 					topKey=key;
 				}
-				if(CMath.bset(attributes,JournalEntry.ATTRIBUTE_STUCKY))
+				if(CMath.bset(attributes,JournalEntry.JournalAttrib.STUCKY.bit))
 				{
 					if(metaData.stuckyKeys()==null)
 						metaData.stuckyKeys(new Vector<String>());

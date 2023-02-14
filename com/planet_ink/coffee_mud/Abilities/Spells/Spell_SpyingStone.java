@@ -121,13 +121,13 @@ public class Spell_SpyingStone extends Spell
 
 		if(!(target instanceof Item))
 		{
-			mob.tell(L("You can't cast this spell on that."));
+			commonTelL(mob,"You can't cast this spell on that.");
 			return false;
 		}
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(L("@x1 is already a spying stone!",target.name(mob)));
+			commonTelL(mob,"@x1 is already a spying stone!",target.name(mob));
 			return false;
 		}
 

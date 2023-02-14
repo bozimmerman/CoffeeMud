@@ -144,7 +144,7 @@ public class Spell_GroupStatus extends Spell
 					&&(!affects.contains(A.ID())))
 					{
 						affects.add(A.ID());
-						invoker().tell(L("@x1 is now affected by @x2.",mob.Name(),A.name()));
+						commonTelL(invoker(),"@x1 is now affected by @x2.",mob.Name(),A.name());
 					}
 				}
 			}
@@ -162,7 +162,7 @@ public class Spell_GroupStatus extends Spell
 		{
 			if(!reporteds.contains("DEATH"))
 			{
-				invoker().tell(L("@x1 is dying.",affected.Name()));
+				commonTelL(invoker(),"@x1 is dying.",affected.Name());
 				reporteds.add("DEATH");
 			}
 		}

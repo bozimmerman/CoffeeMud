@@ -128,7 +128,7 @@ public class Shearing extends CommonSkill
 				if((sheep!=null)&&(!aborted)&&(mob.location()!=null))
 				{
 					if((failed)||(!mob.location().isInhabitant(sheep)))
-						commonTell(mob,L("You messed up your shearing completely."));
+						commonTelL(mob,"You messed up your shearing completely.");
 					else
 					{
 						final int yield=(baseYield()+abilityCode())<=0?1:(baseYield()+abilityCode());
@@ -184,7 +184,7 @@ public class Shearing extends CommonSkill
 		}
 		else
 		if(commands.size()==0)
-			commonTell(mob,L("Shear what?"));
+			commonTelL(mob,"Shear what?");
 		else
 			target=super.getTarget(mob,commands,givenTarget);
 
@@ -193,7 +193,7 @@ public class Shearing extends CommonSkill
 		if((getMyWool(target).size()<=0)
 		||(!target.okMessage(target,CMClass.getMsg(target,target,this,CMMsg.MSG_OK_ACTION,null))))
 		{
-			commonTell(mob,target,null,L("You can't shear <T-NAME>, there's no wool left on <T-HIM-HER>."));
+			commonTelL(mob,target,null,"You can't shear <T-NAME>, there's no wool left on <T-HIM-HER>.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

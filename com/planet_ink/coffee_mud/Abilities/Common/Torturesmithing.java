@@ -128,7 +128,7 @@ public class Torturesmithing extends EnhancedCraftingSkill implements ItemCrafto
 						if(activity == CraftingActivity.LEARNING)
 							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
 						else
-							commonTell(mob,L("You've ruined @x1!",buildingI.name(mob)));
+							commonTelL(mob,"You've ruined @x1!",buildingI.name(mob));
 						buildingI.destroy();
 					}
 					else
@@ -195,7 +195,7 @@ public class Torturesmithing extends EnhancedCraftingSkill implements ItemCrafto
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,L("That's not a torturesmithing item."));
+				commonTelL(mob,"That's not a torturesmithing item.");
 			return false;
 		}
 		return true;
@@ -228,9 +228,9 @@ public class Torturesmithing extends EnhancedCraftingSkill implements ItemCrafto
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"@x1 list\" for a list, \"@x2 info <item>\", \"@x2 learn <item>\" to gain recipes,"
+			commonTelL(mob,"Make what? Enter \"@x1 list\" for a list, \"@x2 info <item>\", \"@x2 learn <item>\" to gain recipes,"
 							+ " or \"@x3 stop\" to cancel.", triggerStrings()[0].toLowerCase(), triggerStrings()[0].toLowerCase(),
-							triggerStrings()[0].toLowerCase()));
+							triggerStrings()[0].toLowerCase());
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
@@ -303,7 +303,7 @@ public class Torturesmithing extends EnhancedCraftingSkill implements ItemCrafto
 		}
 		if(foundRecipe==null)
 		{
-			commonTell(mob,L("You don't know how to make a '@x1'.  Try \"@x2 list\" for a list.",recipeName,triggerStrings[0].toLowerCase()));
+			commonTelL(mob,"You don't know how to make a '@x1'.  Try \"@x2 list\" for a list.",recipeName,triggerStrings[0].toLowerCase());
 			return false;
 		}
 
@@ -365,7 +365,7 @@ public class Torturesmithing extends EnhancedCraftingSkill implements ItemCrafto
 		final Item buildingI=this.buildingI;
 		if(buildingI==null)
 		{
-			commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+			commonTelL(mob,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 			return false;
 		}
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

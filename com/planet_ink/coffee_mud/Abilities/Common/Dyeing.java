@@ -128,7 +128,7 @@ public class Dyeing extends PaintingSkill
 		List<String> finalRecipe = null;
 		if(writing.equalsIgnoreCase("list"))
 		{
-			final StringBuilder colors=new StringBuilder(L("^NColors you can choose: "));
+			final StringBuilder colors=new StringBuilder("");
 			for(final List<String> list : recipes)
 			{
 				final String name=list.get(RCP_COLOR);
@@ -138,18 +138,18 @@ public class Dyeing extends PaintingSkill
 				&&((exp<=super.getXLEVELLevel(mob))))
 					colors.append(name).append("^N, ");
 			}
-			commonTell(mob,colors.substring(0,colors.length()-2)+"^N.\n\r");
+			commonTelL(mob,"^NColors you can choose: @x1^N.\n\r",colors.substring(0,colors.length()-2));
 			return false;
 		}
 		if(commands.size()<2)
 		{
-			commonTell(mob,L("You must specify what you want to dye, and color to dye it or the word remove, or specify LIST."));
+			commonTelL(mob,"You must specify what you want to dye, and color to dye it or the word remove, or specify LIST.");
 			return false;
 		}
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,L("You don't seem to have a '@x1'.",(commands.get(0))));
+			commonTelL(mob,"You don't seem to have a '@x1'.",(commands.get(0)));
 			return false;
 		}
 		commands.remove(commands.get(0));
@@ -162,7 +162,7 @@ public class Dyeing extends PaintingSkill
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
 		||(!target.isGeneric()))
 		{
-			commonTell(mob,L("You can't dye that material."));
+			commonTelL(mob,"You can't dye that material.");
 			return false;
 		}
 		for(final List<String> list : recipes)
@@ -180,7 +180,7 @@ public class Dyeing extends PaintingSkill
 		}
 		if((finalRecipe == null) && (!writing.equalsIgnoreCase("remove")))
 		{
-			commonTell(mob,L("You can't dye anything '@x1'. Try DYEING LIST for a list or use REMOVE as the color.",writing));
+			commonTelL(mob,"You can't dye anything '@x1'. Try DYEING LIST for a list or use REMOVE as the color.",writing);
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

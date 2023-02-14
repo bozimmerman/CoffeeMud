@@ -79,7 +79,7 @@ public class Spell_SolveMaze extends Spell
 		final Room targetR=mob.location();
 		if((targetR==null) || (targetR.getGridParent()==null))
 		{
-			mob.tell(L("This spell only works when you are in a maze"));
+			commonTelL(mob,"This spell only works when you are in a maze");
 			return false;
 		}
 
@@ -134,7 +134,8 @@ public class Spell_SolveMaze extends Spell
 				if(outRoom instanceof GridLocale)
 					outRoom=((GridLocale)outRoom).prepareGridLocale(targetR,outRoom, direction);
 				final int radius = (grid.xGridSize()*grid.yGridSize())+2;
-				mob.tell(L("The directions are taking shape in your mind: \n\r@x1",CMLib.tracking().getTrailToDescription(targetR, new Vector<Room>(), CMLib.map().getExtendedRoomID(outRoom), null, radius, null,1)));
+				commonTelL(mob,"The directions are taking shape in your mind: \n\r@x1",
+						CMLib.tracking().getTrailToDescription(targetR, new Vector<Room>(), CMLib.map().getExtendedRoomID(outRoom), null, radius, null,1));
 			}
 		}
 		else

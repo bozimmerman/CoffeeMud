@@ -133,9 +133,9 @@ public class Spell_Claireaudience extends Spell
 					scryList.append(((e>0)?", ":"")+((MOB)scries.elementAt(e,1)).name());
 			}
 			if(scryList.length()>0)
-				mob.tell(L("Cast on or revoke from whom?  You currently have @x1 on the following: @x2.",name(),scryList.toString()));
+				commonTelL(mob,"Cast on or revoke from whom?  You currently have @x1 on the following: @x2.",name(),scryList.toString());
 			else
-				mob.tell(L("Cast on whom?"));
+				commonTelL(mob,"Cast on whom?");
 			return false;
 		}
 		final String mobName=CMParms.combine(commands,0).trim().toUpperCase();

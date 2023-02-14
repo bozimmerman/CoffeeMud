@@ -140,7 +140,7 @@ public class Spell_PryingEye extends Spell
 	{
 		if(commands.size()==0)
 		{
-			mob.tell(L("You must specify directions for the eye to follow."));
+			commonTelL(mob,"You must specify directions for the eye to follow.");
 			return false;
 		}
 
@@ -150,7 +150,7 @@ public class Spell_PryingEye extends Spell
 			final int dir=CMLib.directions().getDirectionCode(o.toString());
 			if(dir<0)
 			{
-				mob.tell(L("'@x1' is not a valid direction.",o.toString()));
+				commonTelL(mob,"'@x1' is not a valid direction.",o.toString());
 				return false;
 			}
 			directions.add(Integer.valueOf(dir));

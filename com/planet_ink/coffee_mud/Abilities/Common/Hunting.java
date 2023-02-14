@@ -161,10 +161,10 @@ public class Hunting extends GatheringSkill
 				{
 					super.adjustYieldBasedOnRoomSpam(1, mob.location());
 					if(CMLib.flags().isWateryRoom(mob.location()))
-						commonTell(mob,L("You have found some @x1 signs!",foundShortName));
+						commonTelL(mob,"You have found some @x1 signs!",foundShortName);
 					else
-						commonTell(mob,L("You have found some @x1 tracks!",foundShortName));
-					commonTell(mob,L("You need to find the @x1 nearby before the trail goes cold!",foundShortName));
+						commonTelL(mob,"You have found some @x1 tracks!",foundShortName);
+					commonTelL(mob,"You need to find the @x1 nearby before the trail goes cold!",foundShortName);
 					displayText=L("You are hunting for @x1",found.name());
 					verb=L("hunting for @x1",found.name());
 					found.basePhyStats().setLevel(mob.basePhyStats().level());
@@ -178,13 +178,11 @@ public class Hunting extends GatheringSkill
 				}
 				else
 				{
-					final StringBuffer str=new StringBuffer(L("You can't seem to find any game around here.\n\r"));
 					final int d=lookingForMat(RawMaterial.MATERIAL_FLESH,mob.location());
 					if(d<0)
-						str.append(L("You might try elsewhere."));
+						commonTelL(mob,"You can't seem to find any game around here.\n\rYou might try elsewhere.");
 					else
-						str.append(L("You might try @x1.",CMLib.directions().getInDirectionName(d)));
-					commonTell(mob,str.toString());
+						commonTelL(mob,"You can't seem to find any game around here.\n\rYou might try @x1.",CMLib.directions().getInDirectionName(d));
 					unInvoke();
 				}
 
@@ -324,7 +322,7 @@ public class Hunting extends GatheringSkill
 					}
 					if(stdM == null)
 					{
-						commonTell(mob,L("There are no signs of life here."));
+						commonTelL(mob,"There are no signs of life here.");
 						return false;
 					}
 					MOB genM=stdM;

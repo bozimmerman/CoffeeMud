@@ -122,7 +122,7 @@ public class Spell_DetectSentience extends Spell
 						}
 					}
 				}
-				mob.tell(lines.toString()+"^.");
+				commonTell(mob,lines.toString()+"^.");
 			}
 		}
 		else

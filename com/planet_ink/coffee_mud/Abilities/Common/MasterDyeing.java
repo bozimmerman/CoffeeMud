@@ -136,7 +136,7 @@ public class MasterDyeing extends MasterPaintingSkill
 		List<String> finalRecipe = null;
 		if(writing.equalsIgnoreCase("list"))
 		{
-			final StringBuilder colors=new StringBuilder(L("^NDesigns you can choose: "));
+			final StringBuilder colors=new StringBuilder();
 			final TreeSet<String> namesUsed = new TreeSet<String>();
 			for(final List<String> list : recipes)
 			{
@@ -149,13 +149,13 @@ public class MasterDyeing extends MasterPaintingSkill
 					colors.append(name).append("^N, ");
 				}
 			}
-			commonTell(mob,colors.substring(0,colors.length()-2)+"^N.  "+L("Use MASTERDYE COLORS to see what colors you can choose.\n\r"));
+			commonTelL(mob,"^NDesigns you can choose: @x1^N.  Use MASTERDYE COLORS to see what colors you can choose.\n\r",colors.substring(0,colors.length()-2));
 			return false;
 		}
 		else
 		if(writing.toLowerCase().startsWith("color"))
 		{
-			final StringBuilder colors=new StringBuilder(L("^NColors you can choose: "));
+			final StringBuilder colors=new StringBuilder();
 			final TreeSet<String> done=new TreeSet<String>();
 			for(final Enumeration<Color256> c=CMLib.color().getColors256();c.hasMoreElements();)
 			{
@@ -177,7 +177,7 @@ public class MasterDyeing extends MasterPaintingSkill
 					}
 				}
 			}
-			commonTell(mob,colors.substring(0,colors.length()-2)+"^N.\n\r");
+			commonTelL(mob,"^NColors you can choose: @x1^N.\n\r",colors.substring(0,colors.length()-2));
 			return false;
 		}
 		if((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("remove")))
@@ -188,7 +188,7 @@ public class MasterDyeing extends MasterPaintingSkill
 		else
 		if(commands.size()<4)
 		{
-			commonTell(mob,L("You must specify what you want to dye, the design to use, and two or three colors to dye it in, or the word REMOVE, or specify LIST or COLORS."));
+			commonTelL(mob,"You must specify what you want to dye, the design to use, and two or three colors to dye it in, or the word REMOVE, or specify LIST or COLORS.");
 			return false;
 		}
 		else
@@ -196,7 +196,7 @@ public class MasterDyeing extends MasterPaintingSkill
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,L("You don't seem to have a '@x1'.",(commands.get(0))));
+			commonTelL(mob,"You don't seem to have a '@x1'.",(commands.get(0)));
 			return false;
 		}
 		commands.remove(commands.get(0)); // remove item
@@ -231,19 +231,19 @@ public class MasterDyeing extends MasterPaintingSkill
 				}
 				if(colorsFound.size()==numFound)
 				{
-					commonTell(mob,L("The first color in '@x1' is unrecognized. Try MASTERDYE COLORS",workColors));
+					commonTelL(mob,"The first color in '@x1' is unrecognized. Try MASTERDYE COLORS",workColors);
 					return false;
 				}
 			}
 			if((colorsFound.size()<2)
 			&&(!writing.equalsIgnoreCase("remove")))
 			{
-				commonTell(mob,L("At least two colors is required."));
+				commonTelL(mob,"At least two colors is required.");
 				return false;
 			}
 			if(colorsFound.size()>3)
 			{
-				commonTell(mob,L("You may not list more than 3 colors."));
+				commonTelL(mob,"You may not list more than 3 colors.");
 				return false;
 			}
 			if((((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
@@ -253,7 +253,7 @@ public class MasterDyeing extends MasterPaintingSkill
 				&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
 			||(!target.isGeneric()))
 			{
-				commonTell(mob,L("You can't dye that material."));
+				commonTelL(mob,"You can't dye that material.");
 				return false;
 			}
 
@@ -281,7 +281,7 @@ public class MasterDyeing extends MasterPaintingSkill
 				if(name.equalsIgnoreCase(writing)
 				&&(level<=adjustedLevel(mob,asLevel)))
 				{
-					commonTell(mob,L("I'm afraid that recipe does not support @x1 colors.",""+colorsFound.size()));
+					commonTelL(mob,"I'm afraid that recipe does not support @x1 colors.",""+colorsFound.size());
 					return false;
 				}
 			}
@@ -289,7 +289,7 @@ public class MasterDyeing extends MasterPaintingSkill
 
 		if((finalRecipe == null) && (!writing.equalsIgnoreCase("remove")))
 		{
-			commonTell(mob,L("You can't dye anything '@x1'. Try MASTERDYEING LIST for a list or use REMOVE as the color.",writing));
+			commonTelL(mob,"You can't dye anything '@x1'. Try MASTERDYEING LIST for a list or use REMOVE as the color.",writing);
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

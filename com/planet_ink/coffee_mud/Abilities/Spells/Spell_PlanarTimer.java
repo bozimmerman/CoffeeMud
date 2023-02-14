@@ -117,13 +117,13 @@ public class Spell_PlanarTimer extends Spell
 						this.tickDown=planeTickDown;
 						final long secsRemain = (CMProps.getTickMillis() & this.tickDown) / 1000L;
 						if(secsRemain == (5 * 60))
-							((MOB)affected).tell(L("You feel that this place has but 5 minutes remaining."));
+							commonTelL((MOB)affected,"You feel that this place has but 5 minutes remaining.");
 						else
 						if(secsRemain == (1 * 60))
-							((MOB)affected).tell(L("You feel that this place has but 1 minute remaining."));
+							commonTelL((MOB)affected,"You feel that this place has but 1 minute remaining.");
 						else
 						if(secsRemain > (28)&&(secsRemain <=32))
-							((MOB)affected).tell(L("You feel that this place has but "+secsRemain+" seconds remaining."));
+							commonTelL((MOB)affected,"You feel that this place has but "+secsRemain+" seconds remaining.");
 						return super.tick(ticking, tickID);
 					}
 				}

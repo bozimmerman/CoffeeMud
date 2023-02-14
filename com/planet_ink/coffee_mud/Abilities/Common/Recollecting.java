@@ -84,8 +84,7 @@ public class Recollecting extends CommonSkill
 			{
 				if(success==false)
 				{
-					final StringBuffer str=new StringBuffer(L("Your recollection attempt failed.\n\r"));
-					commonTell(mob,str.toString());
+					commonTelL(mob,"Your recollection attempt failed.\n\r");
 					unInvoke();
 				}
 
@@ -196,9 +195,9 @@ public class Recollecting extends CommonSkill
 							}
 						}
 						if(founds.size() == 0)
-							commonTell(mob,L("You are pretty sure there is nothing here that mentions that."));
+							commonTelL(mob,"You are pretty sure there is nothing here that mentions that.");
 						else
-							commonTell(mob,L("You seem to recall reading that in @x1.",CMLib.english().toEnglishStringList(founds)));
+							commonTelL(mob,"You seem to recall reading that in @x1.",CMLib.english().toEnglishStringList(founds));
 					}
 					finally
 					{
@@ -219,12 +218,12 @@ public class Recollecting extends CommonSkill
 		success=false;
 		if(this.getApplicableItems(mob).size()==0)
 		{
-			commonTell(mob,L("There are no writings here!"));
+			commonTelL(mob,"There are no writings here!");
 			return false;
 		}
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Recollect something about what?"));
+			commonTelL(mob,"Recollect something about what?");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

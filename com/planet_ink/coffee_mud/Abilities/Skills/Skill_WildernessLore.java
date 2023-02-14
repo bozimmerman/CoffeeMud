@@ -320,7 +320,7 @@ public class Skill_WildernessLore extends StdSkill
 						rscNames.add(resourceName);
 				}
 				final String list=CMLib.english().toEnglishStringList(rscNames);
-				if(report)
+				if(report || mob.isMonster())
 					CMLib.commands().postSay(mob, L("This is the sort of place that one might find @x1.",list));
 				else
 					mob.tell(L("This is the sort of place that one might find @x1.",list));

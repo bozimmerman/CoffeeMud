@@ -112,9 +112,10 @@ public int castingQuality(final MOB mob, final Physical target)
 			if((mob.getVictim()==msg.source())
 			&&(mob.location()!=null))
 			{
-		final CMMsg msg2=CMClass.getMsg(mob,mob.getVictim(),CMMsg.MSG_RETREAT,L("<S-NAME> predict(s) <T-YOUPOSS> advance and retreat(s)."));
-		if(mob.location().okMessage(mob,msg2))
-			mob.location().send(mob,msg2);
+				final CMMsg msg2=CMClass.getMsg(mob,mob.getVictim(),CMMsg.MSG_RETREAT,
+						L("<S-NAME> predict(s) <T-YOUPOSS> advance and retreat(s)."));
+				if(mob.location().okMessage(mob,msg2))
+					mob.location().send(mob,msg2);
 			}
 		}
 		return true;

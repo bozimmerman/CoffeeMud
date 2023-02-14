@@ -695,7 +695,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		{
 			if(!CMLib.law().mayOwnThisItem(mob, (Item)E))
 			{
-				commonTell(mob,L("@x1 is a stolen item!",((Item)E).name(mob)));
+				commonTelL(mob,"@x1 is a stolen item!",((Item)E).name(mob));
 				return false;
 			}
 			return true;
@@ -744,7 +744,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 						P.delEffect(meA);
 						((MOB)P).addPriorityEffect(meA);
 						if(mob != null)
-							commonTell(mob,L("^H@x1 is now your active store.",name()));
+							commonTelL(mob,"^H@x1 is now your active store.",name());
 						return;
 					}
 				}
@@ -758,7 +758,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		makeActive(mob);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Market what? Enter \"market list\" for a list or \"market item value\" to sell something."));
+			commonTelL(mob,"Market what? Enter \"market list\" for a list or \"market item value\" to sell something.");
 			return false;
 		}
 		final Room R=mob.location();
@@ -776,14 +776,14 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		{
 			if(commands.size()==1)
 			{
-				commonTell(mob,L("Remove what item from the list?"));
+				commonTelL(mob,"Remove what item from the list?");
 				return false;
 			}
 			final String itemName=CMParms.combine(commands,1);
 			Environmental E=getShop().removeStock(itemName,mob);
 			if(E==null)
 			{
-				commonTell(mob,L("'@x1' is not on the list.",itemName));
+				commonTelL(mob,"'@x1' is not on the list.",itemName);
 				return false;
 			}
 			final String iname=E.name();
@@ -800,7 +800,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			mob.recoverCharStats();
 			mob.recoverPhyStats();
 			mob.recoverMaxState();
-			commonTell(mob,L("@x1 has been removed from your inventory list.",iname));
+			commonTelL(mob,"@x1 has been removed from your inventory list.",iname);
 			return true;
 		}
 
@@ -861,7 +861,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			if(((E instanceof Container)&&(((Container)E).getContents().size()>0))
 			||(!canSell(mob, E)))
 			{
-				commonTell(mob,E,null,L("You may not put <T-NAME> up for sale."));
+				commonTelL(mob,E,null,"You may not put <T-NAME> up for sale.");
 				return false;
 			}
 			if(target==null)
@@ -876,13 +876,13 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 		if(itemsV.size()==0)
 		{
-			commonTell(mob,L("You don't seem to be carrying '@x1'.",itemName));
+			commonTelL(mob,"You don't seem to be carrying '@x1'.",itemName);
 			return false;
 		}
 
 		if((getShop().numberInStock(target)<=0)&&(val<=0))
 		{
-			commonTell(mob,L("You failed to specify a price for '@x1'.",itemName));
+			commonTelL(mob,"You failed to specify a price for '@x1'.",itemName);
 			return false;
 		}
 
@@ -891,7 +891,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 		if(!proficiencyCheck(mob,0,auto))
 		{
-			commonTell(mob,target,null,L("You fail to put <T-NAME> up for sale."));
+			commonTelL(mob,target,null,"You fail to put <T-NAME> up for sale.");
 			return false;
 		}
 

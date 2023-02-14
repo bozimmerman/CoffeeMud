@@ -85,7 +85,7 @@ public class Lecturing extends CommonSkill
 			final List<MOB> students = this.getApplicableStudents(mob);
 			if(students.size()<3)
 			{
-				commonTell(mob,L("You don't have enough students to continue the lecture."));
+				commonTelL(mob,"You don't have enough students to continue the lecture.");
 				success=false;
 				unInvoke();
 				return false;
@@ -134,8 +134,7 @@ public class Lecturing extends CommonSkill
 			{
 				if(success==false)
 				{
-					final StringBuffer str=new StringBuffer(L("No one is paying attention. Your lecture failed.\n\r"));
-					commonTell(mob,str.toString());
+					commonTelL(mob,"No one is paying attention. Your lecture failed.\n\r");
 					unInvoke();
 				}
 			}
@@ -222,8 +221,7 @@ public class Lecturing extends CommonSkill
 
 					if(studentsWhoImproved == 0)
 					{
-						final StringBuffer str=new StringBuffer(L("You did your best, but none of your students learned a damn thing.\n\r"));
-						commonTell(mob,str.toString());
+						commonTelL(mob,"You did your best, but none of your students learned a damn thing.\n\r");
 					}
 					final Room R=mob.location();
 					final Area areA=(R!=null)?R.getArea():null;
@@ -236,16 +234,10 @@ public class Lecturing extends CommonSkill
 				}
 				else
 				if(!success)
-				{
-					final StringBuffer str=new StringBuffer(L("Your lecture just didn't go over well.\n\r"));
-					commonTell(mob,str.toString());
-				}
+					commonTelL(mob,"Your lecture just didn't go over well.\n\r");
 				else
 				if(!aborted)
-				{
-					final StringBuffer str=new StringBuffer(L("There aren't enough students. Your lecture failed.\n\r"));
-					commonTell(mob,str.toString());
-				}
+					commonTelL(mob,"There aren't enough students. Your lecture failed.\n\r");
 			}
 		}
 		super.unInvoke();
@@ -272,21 +264,21 @@ public class Lecturing extends CommonSkill
 			{
 				if(C.getMonth() <= lastPubC.getMonth())
 				{
-					commonTell(mob,L("You've already lectured this month."));
+					commonTelL(mob,"You've already lectured this month.");
 					return false;
 				}
 			}
 			else
 			if(C.getYear() < lastPubC.getYear())
 			{
-				commonTell(mob,L("You last lectured in the year @x1?!!",""+lastPubC.getYear()));
+				commonTelL(mob,"You last lectured in the year @x1?!!",""+lastPubC.getYear());
 				return false;
 			}
 		}
 
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Lecture about what? Try checking yoru SKILLS, SPELLS, PRAYERS, CHANTS, etc.."));
+			commonTelL(mob,"Lecture about what? Try checking yoru SKILLS, SPELLS, PRAYERS, CHANTS, etc..");
 			return false;
 		}
 		final String calledThis=CMParms.combine(commands,0);
@@ -300,16 +292,16 @@ public class Lecturing extends CommonSkill
 		{
 			A=CMClass.findAbility(calledThis);
 			if(A!=null)
-				commonTell(mob,L("You don't know anything about @x1, and can't lecture about it.",A.Name()));
+				commonTelL(mob,"You don't know anything about @x1, and can't lecture about it.",A.Name());
 			else
-				commonTell(mob,L("You don't know anything about '@x1', and can't lecture about it.",calledThis));
+				commonTelL(mob,"You don't know anything about '@x1', and can't lecture about it.",calledThis);
 			return false;
 		}
 		this.lectureID=A.ID();
 		this.lectureName=A.Name();
 		if(this.getApplicableStudents(mob).size()<3)
 		{
-			commonTell(mob,L("You'll need at least three students here who know @x1 to give a lecture.",A.Name()));
+			commonTelL(mob,"You'll need at least three students here who know @x1 to give a lecture.",A.Name());
 			return false;
 		}
 

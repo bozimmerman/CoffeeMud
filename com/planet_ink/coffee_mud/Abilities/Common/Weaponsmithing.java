@@ -304,7 +304,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,L("That's not @x1 item.",CMLib.english().startWithAorAn(Name().toLowerCase())));
+				commonTelL(mob,"That's not @x1 item.",CMLib.english().startWithAorAn(Name().toLowerCase()));
 			return false;
 		}
 		return true;
@@ -338,8 +338,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"weaponsmith list\" for a list, \"weaponsmith info <item>\", \"weaponsmith scan\","
-						+ " \"weaponsmith learn <item>\", \"weaponsmith mend <item>\", or \"weaponsmith stop\" to cancel."));
+			commonTelL(mob,"Make what? Enter \"weaponsmith list\" for a list, \"weaponsmith info <item>\", \"weaponsmith scan\","
+						+ " \"weaponsmith learn <item>\", \"weaponsmith mend <item>\", or \"weaponsmith stop\" to cancel.");
 			return false;
 		}
 		if((!auto)
@@ -469,7 +469,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,L("You don't know how to make a '@x1'.  Try 'list' instead.",recipeName));
+				commonTelL(mob,"You don't know how to make a '@x1'.  Try 'list' instead.",recipeName);
 				return false;
 			}
 
@@ -514,7 +514,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			final Item buildingI=this.buildingI;
 			if(buildingI==null)
 			{
-				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				commonTelL(mob,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

@@ -98,8 +98,8 @@ public class LegendaryWeaponsmithing extends Weaponsmithing implements ItemCraft
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"lweaponsmith list\" for a list, \"lweaponsmith info <item>\", \"lweaponsmith scan\","
-						+ " \"lweaponsmith learn <item>\", \"lweaponsmith mend <item>\", or \"lweaponsmith stop\" to cancel."));
+			commonTelL(mob,"Make what? Enter \"lweaponsmith list\" for a list, \"lweaponsmith info <item>\", \"lweaponsmith scan\","
+						+ " \"lweaponsmith learn <item>\", \"lweaponsmith mend <item>\", or \"lweaponsmith stop\" to cancel.");
 			return false;
 		}
 		return super.autoGenInvoke(mob,commands,givenTarget,auto,asLevel,autoGenerate,forceLevels,crafted);

@@ -86,8 +86,10 @@ public class Spell_DeathWarning extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.tell(mob,null,null,L("<S-YOUPOSS> death warning magic fades."));
+		}
 	}
 
 	@Override
@@ -103,7 +105,7 @@ public class Spell_DeathWarning extends Spell
 			final int hitPoints=mob.curState().getHitPoints();
 			mob.curState().setHitPoints(1);
 			final Room room=mob.location();
-			mob.tell(L("^SYou receive a warning of your impending death!!^N"));
+			commonTelL(mob,"^S You receive a warning of your impending death!!^N");
 			mob.doCommand(commands,0);
 			if(mob.location()!=room)
 			{
@@ -135,7 +137,7 @@ public class Spell_DeathWarning extends Spell
 				commands.add("FLEE");
 			else
 			{
-				mob.tell(L("You need to specify what you want to do should the warning arrives!"));
+				commonTelL(mob,"You need to specify what you want to do should the warning arrives!");
 				return false;
 			}
 		}

@@ -93,7 +93,7 @@ public class ClanShipwrighting extends Shipwright
 					if(role == null)
 					{
 						if(!quiet)
-							commonTell(mob,L("You aren't authorized to do that."));
+							commonTelL(mob,"You aren't authorized to do that.");
 						return false;
 					}
 				}
@@ -128,7 +128,7 @@ public class ClanShipwrighting extends Shipwright
 			}
 			if(foundC==null)
 			{
-				commonTell(mob,L("You aren't authorized to build ships for a clan."));
+				commonTelL(mob,"You aren't authorized to build ships for a clan.");
 				return false;
 			}
 		}

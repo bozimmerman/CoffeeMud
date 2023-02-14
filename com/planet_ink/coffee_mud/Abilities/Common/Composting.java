@@ -104,7 +104,7 @@ public class Composting extends GatheringSkill
 				||(mob==null)
 				||(mob.location()==null))
 				{
-					commonTell(mob,L("Your @x1 composting has failed.\n\r",foundShortName));
+					commonTelL(mob,"Your @x1 composting has failed.\n\r",foundShortName);
 					unInvoke();
 				}
 			}
@@ -157,7 +157,7 @@ public class Composting extends GatheringSkill
 		if((what.size()<3)
 		||((!CMath.isNumber(what.get(1)))&&(!what.get(1).equalsIgnoreCase("ALL"))))
 		{
-			commonTell(mob,L("You must specify an amount to bundle, followed by what to bundle."));
+			commonTelL(mob,"You must specify an amount to bundle, followed by what to bundle.");
 			return false;
 		}
 		int amount=CMath.s_int(what.get(1));
@@ -165,7 +165,7 @@ public class Composting extends GatheringSkill
 			amount=Integer.MAX_VALUE;
 		if(amount<=0)
 		{
-			commonTell(mob,L("@x1 is not an appropriate amount.",""+amount));
+			commonTelL(mob,"@x1 is not an appropriate amount.",""+amount);
 			return false;
 		}
 		int numHere=0;
@@ -209,7 +209,7 @@ public class Composting extends GatheringSkill
 			amount=numHere;
 		if(numHere<amount)
 		{
-			commonTell(mob,L("You only see @x1 pounds of @x2 on the ground here.",""+numHere,name));
+			commonTelL(mob,"You only see @x1 pounds of @x2 on the ground here.",""+numHere,name);
 			return false;
 		}
 		if(amount == 1)
@@ -274,7 +274,7 @@ public class Composting extends GatheringSkill
 			if(data[0][CraftingSkill.FOUND_AMT]==0)
 			{
 				if(req1Desc!=null)
-					commonTell(mob,L("There is no @x1 here to make anything from!  It might need to be put down first.",req1Desc.toLowerCase()));
+					commonTelL(mob,"There is no @x1 here to make anything from!  It might need to be put down first.",req1Desc.toLowerCase());
 				return null;
 			}
 			req1Required=fixResourceRequirement(data[0][CraftingSkill.FOUND_CODE],req1Required);
@@ -284,8 +284,8 @@ public class Composting extends GatheringSkill
 			req1Required = data[0][CraftingSkill.FOUND_AMT];
 		if(req1Required>data[0][CraftingSkill.FOUND_AMT])
 		{
-			commonTell(mob,L("You need @x1 pounds of @x2 to do that.  There is not enough here.  Are you sure you set it all on the ground first?",
-					""+req1Required,CMLib.materials().makeResourceSimpleName(first.material(), subType).toLowerCase()));
+			commonTelL(mob,"You need @x1 pounds of @x2 to do that.  There is not enough here.  Are you sure you set it all on the ground first?",
+					""+req1Required,CMLib.materials().makeResourceSimpleName(first.material(), subType).toLowerCase());
 			return null;
 		}
 		data[0][CraftingSkill.FOUND_AMT]=req1Required;
@@ -317,7 +317,7 @@ public class Composting extends GatheringSkill
 			}
 			else
 			{
-				commonTell(mob,L("Compost how much of what?"));
+				commonTelL(mob,"Compost how much of what?");
 				return false;
 			}
 		}
@@ -354,14 +354,14 @@ public class Composting extends GatheringSkill
 			}
 			if(mine==null)
 			{
-				commonTell(mob,L("You don't have anything you can compost."));
+				commonTelL(mob,"You don't have anything you can compost.");
 				return false;
 			}
 		}
 		else
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Compost how much of what?"));
+			commonTelL(mob,"Compost how much of what?");
 			return false;
 		}
 		int amount=CMath.s_int(commands.get(0));
@@ -384,12 +384,12 @@ public class Composting extends GatheringSkill
 		});
 		if(mine==null)
 		{
-			commonTell(mob,L("You'll need to have some @x1 on the ground first.",foundShortName));
+			commonTelL(mob,"You'll need to have some @x1 on the ground first.",foundShortName);
 			return false;
 		}
 		if(!isCompostable(mob,mine))
 		{
-			commonTell(mob,L("'@x1' is not suitable for composting.",mine.Name()));
+			commonTelL(mob,"'@x1' is not suitable for composting.",mine.Name());
 			return false;
 		}
 		foundShortName = mine.name();

@@ -154,7 +154,7 @@ public class MassMailer implements Runnable
 
 				// check email age
 				if((usePrivateRules)
-				&&(!CMath.bset(mail.attributes(), JournalEntry.ATTRIBUTE_PROTECTED))
+				&&(!CMath.bset(mail.attributes(), JournalEntry.JournalAttrib.PROTECTED.bit))
 				&&(deleteEmailIfOld(journalName, key, date, getEmailDays())))
 					continue;
 
@@ -257,7 +257,7 @@ public class MassMailer implements Runnable
 				catch(final BadEmailAddressException be)
 				{
 					if((!usePrivateRules)
-					&&(!CMath.bset(mail.attributes(), JournalEntry.ATTRIBUTE_PROTECTED)))
+					&&(!CMath.bset(mail.attributes(), JournalEntry.JournalAttrib.PROTECTED.bit)))
 					{
 						// email is a goner if its a list
 						CMLib.database().DBDeleteJournal(journalName,key);
@@ -273,7 +273,7 @@ public class MassMailer implements Runnable
 						oldEmailComplaints.add(toName);
 						Log.errOut("SMTPServer","Unable to send '"+toEmail+"' for '"+toName+"': "+ioe.getMessage());
 					}
-					if(!CMath.bset(mail.attributes(), JournalEntry.ATTRIBUTE_PROTECTED))
+					if(!CMath.bset(mail.attributes(), JournalEntry.JournalAttrib.PROTECTED.bit))
 						deleteEmailIfOld(journalName, key, date,getFailureDays());
 					continue;
 				}

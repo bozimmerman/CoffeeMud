@@ -137,7 +137,7 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,limit);
 		if((checkSet == null) || (checkSet.size() < limit))
 		{
-			mob.tell(L("You don't sense any driftwood around here.  Perhaps no wrecks have occurred?"));
+			commonTelL(mob,"You don't sense any driftwood around here.  Perhaps no wrecks have occurred?");
 			return false;
 		}
 		final int[] choices = new int[]{
@@ -240,7 +240,7 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 			return false;
 		if(!CMLib.flags().isWaterySurfaceRoom(R))
 		{
-			mob.tell(L("You must be on the surface of the water to find driftwood."));
+			commonTelL(mob,"You must be on the surface of the water to find driftwood.");
 			return false;
 		}
 		return super.invoke(mob, commands, givenTarget, auto, asLevel);

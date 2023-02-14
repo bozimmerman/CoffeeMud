@@ -147,14 +147,14 @@ public class Enrolling extends CommonSkill
 					final MOB M=enrollingM;
 					if((messedUp)||(M==null))
 					{
-						commonTell(mob,L("You've failed to enroll @x1!",enrollingM.name()));
+						commonTelL(mob,"You've failed to enroll @x1!",enrollingM.name());
 						CMLib.beanCounter().giveSomeoneMoney(mob, this.enrollCost(mob, M, 0));
 						mob.tell(L("You recover @x1 in fees from the guild.",CMLib.beanCounter().abbreviatedPrice(mob, this.enrollCost(mob, M, 0))));
 					}
 					else
 					{
 						if(M.charStats().getCurrentClass() != CMClass.getCharClass("StdCharClass"))
-							commonTell(mob,L("@x1 is already enrolled.",enrollingM.name()));
+							commonTelL(mob,"@x1 is already enrolled.",enrollingM.name());
 						else
 						{
 							mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to enroll @x1 in @x2.",M.name(),enrolledInC.name()));
@@ -203,7 +203,7 @@ public class Enrolling extends CommonSkill
 		enrolledInC=null;
 		if(commands.size()<2)
 		{
-			commonTell(mob,L("Enroll whom in what class?"));
+			commonTelL(mob,"Enroll whom in what class?");
 			return false;
 		}
 		final String s1=commands.get(commands.size()-1);
@@ -212,7 +212,7 @@ public class Enrolling extends CommonSkill
 			enrolledInC=CMClass.findCharClass(s1);
 		if(enrolledInC==null)
 		{
-			commonTell(mob,L("You don't know of a class called @x1.",s1));
+			commonTelL(mob,"You don't know of a class called @x1.",s1);
 			return false;
 		}
 		else
@@ -221,7 +221,7 @@ public class Enrolling extends CommonSkill
 		if((!(mob.charStats().getCharClasses().contains(enrolledInC)))
 		&&((mob.playerStats()==null)||(mob.playerStats().getActiveTitle().toLowerCase().indexOf(enrolledInC.name().toLowerCase())<0)))
 		{
-			commonTell(mob,L("You need to either be a @x1, or an honorary @x1 to enroll anyone in that.",enrolledInC.name()));
+			commonTelL(mob,"You need to either be a @x1, or an honorary @x1 to enroll anyone in that.",enrolledInC.name());
 			return false;
 		}
 
@@ -232,24 +232,24 @@ public class Enrolling extends CommonSkill
 		{
 			if(!CMLib.flags().canBeSeenBy(M,mob))
 			{
-				commonTell(mob,L("You don't see anyone called '@x1' here.",str));
+				commonTelL(mob,"You don't see anyone called '@x1' here.",str);
 				return false;
 			}
 			if(!M.isMonster())
 			{
-				commonTell(mob,L("You can't enroll @x1.",M.name(mob)));
+				commonTelL(mob,"You can't enroll @x1.",M.name(mob));
 				return false;
 			}
 			if(M.charStats().getCurrentClass()!=CMClass.getCharClass("StdCharClass"))
 			{
-				commonTell(mob,L("@x1 already has a career in @x2.",M.name(),M.charStats().getCurrentClass().name()));
+				commonTelL(mob,"@x1 already has a career in @x2.",M.name(),M.charStats().getCurrentClass().name());
 				return false;
 			}
 			if((!mob.getGroupMembers(new HashSet<MOB>()).contains(M))
 			&&(CMLib.flags().canMove(M))
 			&&(!CMLib.flags().isBoundOrHeld(M)))
 			{
-				commonTell(mob,L("@x1 doesn't seem willing to cooperate.",M.name(mob)));
+				commonTelL(mob,"@x1 doesn't seem willing to cooperate.",M.name(mob));
 				return false;
 			}
 			enrollingM=M;
@@ -259,14 +259,14 @@ public class Enrolling extends CommonSkill
 
 		if(!enrolledInC.qualifiesForThisClass(enrollingM, true))
 		{
-			commonTell(mob,L("@x1 does not qualify to become a @x2.",enrollingM.Name(),enrolledInC.name()));
+			commonTelL(mob,"@x1 does not qualify to become a @x2.",enrollingM.Name(),enrolledInC.name());
 			return false;
 		}
 
 		final int cost=enrollCost(mob,enrollingM,asLevel);
 		if(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob) < cost)
 		{
-			commonTell(mob,L("You don't have the @x1 to pay the guild fees.",CMLib.beanCounter().abbreviatedPrice(mob, cost)));
+			commonTelL(mob,"You don't have the @x1 to pay the guild fees.",CMLib.beanCounter().abbreviatedPrice(mob, cost));
 			return false;
 		}
 
@@ -289,7 +289,7 @@ public class Enrolling extends CommonSkill
 			if(beneficialAffect(mob,mob,asLevel,duration)!=null)
 			{
 				CMLib.beanCounter().subtractMoney(mob, cost);
-				commonTell(mob,L("The guild fees came to @x1.",CMLib.beanCounter().abbreviatedPrice(mob, cost)));
+				commonTelL(mob,"The guild fees came to @x1.",CMLib.beanCounter().abbreviatedPrice(mob, cost));
 			}
 		}
 		return true;

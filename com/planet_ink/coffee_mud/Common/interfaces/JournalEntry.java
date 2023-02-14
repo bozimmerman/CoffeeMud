@@ -286,13 +286,21 @@ public interface JournalEntry extends CMCommon, Cloneable
 	 */
 	public JournalEntry copyOf();
 
-	/**
-	 * Flagging this entry as stuck to the top
-	 */
-	public final static long ATTRIBUTE_STUCKY=2;
-
-	/**
-	 * Flatting this entry as protected from auto-purging
-	 */
-	public final static long ATTRIBUTE_PROTECTED=1;
+	public static enum JournalAttrib
+	{
+		/**
+		 * Flagging this entry as stuck to the top
+		 */
+		PROTECTED,
+		/**
+		 * Flagging this entry as protected from auto-purging
+		 */
+		STUCKY
+		;
+		public long bit;
+		private JournalAttrib()
+		{
+			bit = Math.round(Math.pow(2, ordinal()));
+		}
+	}
 }

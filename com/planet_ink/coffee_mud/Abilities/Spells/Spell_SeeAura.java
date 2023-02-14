@@ -75,7 +75,7 @@ public class Spell_SeeAura extends Spell
 			return false;
 		if(target==mob)
 		{
-			mob.tell(L("Um, you could just enter SCORE."));
+			commonTelL(mob,"Um, you could just enter SCORE.");
 			return false;
 		}
 
@@ -93,6 +93,8 @@ public class Spell_SeeAura extends Spell
 				final StringBuilder str=CMLib.commands().getScore(target);
 				if(!mob.isMonster())
 					mob.session().wraplessPrintln(str.toString());
+				else
+					commonTell(mob,str.toString());
 			}
 		}
 		else

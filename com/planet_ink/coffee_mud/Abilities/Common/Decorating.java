@@ -200,7 +200,7 @@ public class Decorating extends CommonSkill implements RecipeDriven
 				{
 					final Item I=mountingI;
 					if((messedUp)||(I==null))
-						commonTell(mob,L("You've failed to "+mountWord+"!"));
+						commonTelL(mob,"You've failed to "+mountWord+"!");
 					else
 					{
 						final Room room=CMLib.map().roomLocation(I);
@@ -208,7 +208,7 @@ public class Decorating extends CommonSkill implements RecipeDriven
 						if((messedUp)
 						||(room==null)
 						||(ownerName.length()==0))
-							commonTell(mob,L("You've messed up @x1!",verb));
+							commonTelL(mob,"You've messed up @x1!",verb);
 						else
 						{
 							I.delEffect(I.fetchEffect("Decorating"));
@@ -308,7 +308,7 @@ public class Decorating extends CommonSkill implements RecipeDriven
 			commands.add("hang");
 		if(commands.size()==0)
 		{
-			commonTell(mob, L("Decorate what, how?  Try DECORATE LIST."));
+			commonTelL(mob,"Decorate what, how?  Try DECORATE LIST.");
 			return false;
 		}
 		final List<List<String>> recipes = CMLib.utensils().addExtRecipes(mob,ID(),fetchRecipes());
@@ -341,12 +341,12 @@ public class Decorating extends CommonSkill implements RecipeDriven
 		}
 		if(matche == null)
 		{
-			commonTell(mob, L("Decorate what? '@x1' is unknown. Try DECORATE LIST.",word));
+			commonTelL(mob,"Decorate what? '@x1' is unknown. Try DECORATE LIST.",word);
 			return false;
 		}
 		if(commands.size()==0)
 		{
-			commonTell(mob, L("Decorate what, how?  Try DECORATE LIST."));
+			commonTelL(mob,"Decorate what, how?  Try DECORATE LIST.");
 			return false;
 		}
 		final Item I=super.getTarget(mob, null, givenTarget, commands, Wearable.FILTER_UNWORNONLY);
@@ -359,7 +359,7 @@ public class Decorating extends CommonSkill implements RecipeDriven
 
 		if(!CMLib.law().doesHavePriviledgesHere(mob, mob.location()))
 		{
-			commonTell(mob,L("You can't decorate here."));
+			commonTelL(mob,"You can't decorate here.");
 			return false;
 		}
 
@@ -371,7 +371,7 @@ public class Decorating extends CommonSkill implements RecipeDriven
 		case Room.DOMAIN_INDOORS_WOOD:
 			break;
 		default:
-			commonTell(mob,L("You can't mount anything here."));
+			commonTelL(mob,"You can't mount anything here.");
 			return false;
 		}
 

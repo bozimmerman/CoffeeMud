@@ -80,8 +80,7 @@ public class PlantLore extends CommonSkill
 			{
 				if(success==false)
 				{
-					final StringBuffer str=new StringBuffer(L("Your growth observation attempt failed.\n\r"));
-					commonTell(mob,str.toString());
+					commonTelL(mob,"Your growth observation attempt failed.\n\r");
 					unInvoke();
 				}
 			}
@@ -153,7 +152,7 @@ public class PlantLore extends CommonSkill
 						commonTell(mob,str.toString());
 					}
 					else
-						commonTell(mob,L("You don't find any good plant life around here."));
+						commonTelL(mob,"You don't find any good plant life around here.");
 				}
 			}
 		}

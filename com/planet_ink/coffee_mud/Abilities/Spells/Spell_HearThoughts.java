@@ -159,9 +159,9 @@ public class Spell_HearThoughts extends Spell
 						thoughts.append(prefix).append(accounting).append("  ");
 					}
 					if(thoughts.length()==0)
-						mob.tell(L("You don't detect any other thoughts.\n\r"));
+						commonTelL(mob,"You don't detect any other thoughts.\n\r");
 					else
-						mob.tell(thoughts.append("\n\r").toString());
+						commonTell(mob,thoughts.append("\n\r").toString());
 				}
 			}
 		}

@@ -89,7 +89,7 @@ public class BookEditing extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(found==null)
-					commonTell(mob,L("You mess up your book editing."));
+					commonTelL(mob,"You mess up your book editing.");
 				else
 				{
 					final CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.TYP_REWRITE,L("<S-NAME> start(s) editing <T-NAME>."),pageNum,L("<S-NAME> start(s) editing <T-NAME>."));
@@ -106,7 +106,7 @@ public class BookEditing extends CommonSkill
 
 	public boolean error(final MOB mob)
 	{
-		commonTell(mob,L("You must specify what book to edit, and the optional page/chapter number to edit."));
+		commonTelL(mob,"You must specify what book to edit, and the optional page/chapter number to edit.");
 		return false;
 	}
 
@@ -137,14 +137,14 @@ public class BookEditing extends CommonSkill
 			}
 			if(!ok)
 			{
-				commonTell(mob,L("You aren't allowed to work on '@x1'.",itemName));
+				commonTelL(mob,"You aren't allowed to work on '@x1'.",itemName);
 				return false;
 			}
 			*/
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,L("You don't seem to have a '@x1'.",itemName));
+			commonTelL(mob,"You don't seem to have a '@x1'.",itemName);
 			return false;
 		}
 
@@ -152,7 +152,7 @@ public class BookEditing extends CommonSkill
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTell(mob,L("You must know how to write."));
+			commonTelL(mob,"You must know how to write.");
 			return false;
 		}
 
@@ -161,19 +161,19 @@ public class BookEditing extends CommonSkill
 		&&(target.material()!=RawMaterial.RESOURCE_SILK)
 		&&(target.material()!=RawMaterial.RESOURCE_HIDE))
 		{
-			commonTell(mob,L("You can't edit something like that."));
+			commonTelL(mob,"You can't edit something like that.");
 			return false;
 		}
 
 		if(!CMLib.flags().isReadable(target))
 		{
-			commonTell(mob,L("That's not even readable!"));
+			commonTelL(mob,"That's not even readable!");
 			return false;
 		}
 
 		if(!target.isGeneric())
 		{
-			commonTell(mob,L("You aren't able to give that a name."));
+			commonTelL(mob,"You aren't able to give that a name.");
 			return false;
 		}
 

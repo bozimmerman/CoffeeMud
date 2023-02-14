@@ -524,7 +524,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 		{
 			if(!quiet)
 			{
-				commonTell(mob,L("That can't be mended with this skill."));
+				commonTelL(mob,"That can't be mended with this skill.");
 			}
 			return false;
 		}
@@ -550,7 +550,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 					if(role == null)
 					{
 						if(!quiet)
-							commonTell(mob,L("You aren't authorized to do that."));
+							commonTelL(mob,"You aren't authorized to do that.");
 						return false;
 					}
 				}
@@ -829,7 +829,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 				}
 				if(foundC==null)
 				{
-					commonTell(mob,L("You aren't authorized to build ships for a clan."));
+					commonTelL(mob,"You aren't authorized to build ships for a clan.");
 					return false;
 				}
 			}
@@ -858,7 +858,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 
 			cmdsList.append("or \"@x2 stop\" to cancel.");
 
-			commonTell(mob,L(cmdsList.toString(), CMStrings.capitalizeFirstLetter(getIdentifierCommandWord()),getIdentifierCommandWord()));
+			commonTelL(mob,cmdsList.toString(), CMStrings.capitalizeFirstLetter(getIdentifierCommandWord()),getIdentifierCommandWord());
 			return false;
 		}
 		final String verbing=V(ID,V_VERB).toString();
@@ -991,13 +991,13 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 				return false;
 			if(targetMOB==mob)
 			{
-				commonTell(mob,L("You can not do that."));
+				commonTelL(mob,"You can not do that.");
 				return false;
 			}
 			helpingAbility=targetMOB.fetchEffect(ID());
 			if(helpingAbility==null)
 			{
-				commonTell(mob,L("@x1 is not @x2 anything.",targetMOB.Name(),verbing));
+				commonTelL(mob,"@x1 is not @x2 anything.",targetMOB.Name(),verbing);
 				return false;
 			}
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -1028,24 +1028,24 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 			if((R==null)
 			||(!CMLib.law().doesOwnThisProperty(mob,R)))
 			{
-				commonTell(mob,L("You are not permitted to do that here."));
+				commonTelL(mob,"You are not permitted to do that here.");
 				return false;
 			}
 			if(!(R.getArea() instanceof Boardable))
 			{
-				commonTell(mob,L("You don't know how to do that here."));
+				commonTelL(mob,"You don't know how to do that here.");
 				return false;
 			}
 
 			final String title=CMParms.combine(commands,1);
 			if(title.length()==0)
 			{
-				commonTell(mob,L("A title must be specified."));
+				commonTelL(mob,"A title must be specified.");
 				return false;
 			}
 			if(title.length()>250)
 			{
-				commonTell(mob,L("That title is too long."));
+				commonTelL(mob,"That title is too long.");
 				return false;
 			}
 			final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
@@ -1055,7 +1055,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 				final Room R2=CMLib.map().getRoom(room2);
 				if(R2.displayText(mob).equalsIgnoreCase(title))
 				{
-					commonTell(mob,L("That title has already been taken.  Choose another."));
+					commonTelL(mob,"That title has already been taken.  Choose another.");
 					return false;
 				}
 			}
@@ -1079,25 +1079,25 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 			if((R==null)
 			||(!CMLib.law().doesOwnThisProperty(mob,R)))
 			{
-				commonTell(mob,L("You are not permitted to do that here."));
+				commonTelL(mob,"You are not permitted to do that here.");
 				return false;
 			}
 			if(!(R.getArea() instanceof Boardable))
 			{
-				commonTell(mob,L("You don't know how to do that here."));
+				commonTelL(mob,"You don't know how to do that here.");
 				return false;
 			}
 
 			if(commands.size()<2)
 			{
-				commonTell(mob,L("You must specify a description for it."));
+				commonTelL(mob,"You must specify a description for it.");
 				return false;
 			}
 
 			final String newDescription=CMParms.combine(commands,1);
 			if(newDescription.length()==0)
 			{
-				commonTell(mob,L("A description must be specified."));
+				commonTelL(mob,"A description must be specified.");
 				return false;
 			}
 			reTitle=R.displayText();
@@ -1120,12 +1120,12 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 			if((R==null)
 			||(!CMLib.law().doesOwnThisProperty(mob,R)))
 			{
-				commonTell(mob,L("You are not permitted to do that here."));
+				commonTelL(mob,"You are not permitted to do that here.");
 				return false;
 			}
 			if(!(R.getArea() instanceof Boardable))
 			{
-				commonTell(mob,L("You don't know how to do that here."));
+				commonTelL(mob,"You don't know how to do that here.");
 				return false;
 			}
 
@@ -1133,20 +1133,20 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 			final int dir=CMLib.directions().getGoodShipDirectionCode(dirName);
 			if(dir <0)
 			{
-				commonTell(mob,L("You must specify a direction in which to build the door."));
+				commonTelL(mob,"You must specify a direction in which to build the door.");
 				return false;
 			}
 			if((dir<0)
 			||(dir==Directions.UP)
 			||(dir==Directions.DOWN))
 			{
-				commonTell(mob,L("A valid direction in which to build the door must be specified."));
+				commonTelL(mob,"A valid direction in which to build the door must be specified.");
 				return false;
 			}
 
 			if((R.domainType()&Room.INDOORS)==0)
 			{
-				commonTell(mob,L("You can only build a door below decks."));
+				commonTelL(mob,"You can only build a door below decks.");
 				return false;
 			}
 
@@ -1154,12 +1154,12 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 			final Exit E1=R.getExitInDir(dir);
 			if((R1==null)||(E1==null))
 			{
-				commonTell(mob,L("There is nowhere to build a door that way."));
+				commonTelL(mob,"There is nowhere to build a door that way.");
 				return false;
 			}
 			if(E1.hasADoor())
 			{
-				commonTell(mob,L("There is already a door that way."));
+				commonTelL(mob,"There is already a door that way.");
 				return false;
 			}
 
@@ -1203,12 +1203,12 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 			if((R==null)
 			||(!CMLib.law().doesOwnThisProperty(mob,R)))
 			{
-				commonTell(mob,L("You are not permitted to do that here."));
+				commonTelL(mob,"You are not permitted to do that here.");
 				return false;
 			}
 			if(!(R.getArea() instanceof Boardable))
 			{
-				commonTell(mob,L("You don't know how to do that here."));
+				commonTelL(mob,"You don't know how to do that here.");
 				return false;
 			}
 
@@ -1216,20 +1216,20 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 			final int dir=CMLib.directions().getGoodShipDirectionCode(dirName);
 			if(dir <0)
 			{
-				commonTell(mob,L("You must specify a direction in which to demolish a door."));
+				commonTelL(mob,"You must specify a direction in which to demolish a door.");
 				return false;
 			}
 			if((dir<0)
 			||(dir==Directions.UP)
 			||(dir==Directions.DOWN))
 			{
-				commonTell(mob,L("A valid direction in which to demolish a door must be specified."));
+				commonTelL(mob,"A valid direction in which to demolish a door must be specified.");
 				return false;
 			}
 
 			if((R.domainType()&Room.INDOORS)==0)
 			{
-				commonTell(mob,L("You can only demolish a door below decks."));
+				commonTelL(mob,"You can only demolish a door below decks.");
 				return false;
 			}
 
@@ -1237,12 +1237,12 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 			final Exit E1=R.getExitInDir(dir);
 			if((R1==null)||(E1==null))
 			{
-				commonTell(mob,L("There is nowhere to demolish a door that way."));
+				commonTelL(mob,"There is nowhere to demolish a door that way.");
 				return false;
 			}
 			if(!E1.hasADoor())
 			{
-				commonTell(mob,L("There is not a door that way to demolish."));
+				commonTelL(mob,"There is not a door that way to demolish.");
 				return false;
 			}
 
@@ -1292,7 +1292,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,L("You don't know how to make a '@x1'.  Try \"@x2 list\" for a list.",recipeName,getIdentifierCommandWord()));
+				commonTelL(mob,"You don't know how to make a '@x1'.  Try \"@x2 list\" for a list.",recipeName,getIdentifierCommandWord());
 				return false;
 			}
 
@@ -1353,7 +1353,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 			}
 			if(buildingI==null)
 			{
-				commonTell(mob,L("There's no such thing as a @x1!!!","("+shipIndexStr)+")");
+				commonTelL(mob,"There's no such thing as a @x1!!!",shipIndexStr);
 				return false;
 			}
 			buildingI=(Item)buildingI.copyOf();

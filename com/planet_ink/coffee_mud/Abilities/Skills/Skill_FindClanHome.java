@@ -126,9 +126,9 @@ public class Skill_FindClanHome extends StdAbility
 			if(nextDirection==999)
 			{
 				if(isClanHome(mob,mob.location()))
-					mob.tell(L("You feel like this is home."));
+					commonTelL(mob,"You feel like this is home.");
 				else
-					mob.tell(L("The trail home dries up here."));
+					commonTelL(mob,"The trail home dries up here.");
 				nextDirection=-2;
 				unInvoke();
 			}
@@ -136,7 +136,7 @@ public class Skill_FindClanHome extends StdAbility
 			if(nextDirection==-1)
 			{
 				if(!isClanHome(mob,mob.location()))
-					mob.tell(L("The trail home dries up here."));
+					commonTelL(mob,"The trail home dries up here.");
 				nextDirection=-999;
 				unInvoke();
 			}
@@ -188,7 +188,7 @@ public class Skill_FindClanHome extends StdAbility
 			if((msg.tool()!=null)&&(msg.tool().ID().equals(ID())))
 			{
 				if(isClanHome((MOB)affected,(Room)msg.target()))
-					((MOB)affected).tell(L("This place feels very clan homey."));
+					commonTelL((MOB)affected,"This place feels very clan homey.");
 			}
 			else
 			if(isClanHome((MOB)affected,(Room)msg.target()))
@@ -224,7 +224,7 @@ public class Skill_FindClanHome extends StdAbility
 		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
-			mob.tell(L("You stop tracking."));
+			commonTelL(mob,"You stop tracking.");
 			if(commands.size()==0)
 				return true;
 		}
@@ -234,7 +234,7 @@ public class Skill_FindClanHome extends StdAbility
 
 		if(isClanHome(mob, mob.location()))
 		{
-			mob.tell(L("You already feel at home"));
+			commonTelL(mob,"You already feel at home");
 			return true;
 		}
 

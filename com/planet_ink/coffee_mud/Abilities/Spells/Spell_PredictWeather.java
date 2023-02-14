@@ -110,7 +110,7 @@ public class Spell_PredictWeather extends Spell
 		   if(!prediction.equals(lastPrediction))
 		   {
 			   lastPrediction=prediction;
-			   ((MOB)affected).tell(L("Your weather senses gaze into the future, you see: \n\r@x1",prediction));
+			   commonTelL((MOB)affected,"Your weather senses gaze into the future, you see: \n\r@x1",prediction);
 		   }
 		}
 		return true;

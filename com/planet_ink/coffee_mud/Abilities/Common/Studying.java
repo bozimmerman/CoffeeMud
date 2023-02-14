@@ -660,12 +660,12 @@ public class Studying extends CommonSkill implements AbilityContainer
 		{
 			if(!(target instanceof SpellHolder))
 			{
-				commonTell(mob,L("You aren't going to learn much from @x1.",target.Name()));
+				commonTelL(mob,"You aren't going to learn much from @x1.",target.Name());
 				return false;
 			}
 			if(target.ID().indexOf("issertation")<0)
 			{
-				commonTell(mob,L("You don't know how to learn from @x1.",target.Name()));
+				commonTelL(mob,"You don't know how to learn from @x1.",target.Name());
 				return false;
 			}
 			final SpellHolder aC=(SpellHolder)target;
@@ -674,7 +674,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 				possA=(Ability)CMLib.english().fetchEnvironmental(aC.getSpells(),skillName,false);
 			if(possA==null)
 			{
-				commonTell(mob,L("@x1 doesn't seem to be about '@x2'.",target.Name(),skillName));
+				commonTelL(mob,"@x1 doesn't seem to be about '@x2'.",target.Name(),skillName);
 				return false;
 			}
 			A=possA;
@@ -709,7 +709,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 		else
 		{
 			if(target != null)
-				commonTell(mob,L("You can't learn anything from '@x1'.",target.Name()));
+				commonTelL(mob,"You can't learn anything from '@x1'.",target.Name());
 			return false;
 		}
 		if(mob.fetchAbility(A.ID())!=null)

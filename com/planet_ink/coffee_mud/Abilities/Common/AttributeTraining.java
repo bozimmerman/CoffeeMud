@@ -143,7 +143,7 @@ public class AttributeTraining extends CommonSkill
 					if(trained instanceof MOB)
 						follower=(MOB)trained;
 					if((messedUp)||(follower==null)||(attribute<0))
-						commonTell(mob,L("You've failed to train @x1!",trained.name()));
+						commonTelL(mob,"You've failed to train @x1!",trained.name());
 					else
 					{
 						final String s=CMStrings.capitalizeAndLower(CharStats.CODES.DESC(attribute));
@@ -164,7 +164,7 @@ public class AttributeTraining extends CommonSkill
 								trainsRequired=c.first.intValue()*costMultiplier;
 							if(trainsRequired>=0)
 								trainsRequired+=costAdder;
-							commonTell(mob,L("The training cost @x1 @x2 training sessions.",follower.name(),""+trainsRequired));
+							commonTelL(mob,"The training cost @x1 @x2 training sessions.",follower.name(),""+trainsRequired);
 							if(trainsRequired > follower.getTrains())
 								follower.setTrains(0);
 							else
@@ -209,7 +209,7 @@ public class AttributeTraining extends CommonSkill
 			valid+=thingsToTrainFor.toString().substring(0,thingsToTrainFor.length()-2)+".";
 		if(commands.size()<2)
 		{
-			commonTell(mob,L("Train whom in what attribute? @x1",valid));
+			commonTelL(mob,"Train whom in what attribute? @x1",valid);
 			return false;
 		}
 		attribute=-1;
@@ -226,7 +226,7 @@ public class AttributeTraining extends CommonSkill
 		}
 		if(attribute<0)
 		{
-			commonTell(mob,L("Train whom in what attribute? @x1",valid));
+			commonTelL(mob,"Train whom in what attribute? @x1",valid);
 			return false;
 		}
 
@@ -237,27 +237,27 @@ public class AttributeTraining extends CommonSkill
 		{
 			if(!CMLib.flags().canBeSeenBy(M,mob))
 			{
-				commonTell(mob,L("You don't see anyone called '@x1' here.",str));
+				commonTelL(mob,"You don't see anyone called '@x1' here.",str);
 				return false;
 			}
 			if(!M.isMonster())
 			{
-				commonTell(mob,L("@x1 is perfectly capable of training on their own.",M.name(mob)));
+				commonTelL(mob,"@x1 is perfectly capable of training on their own.",M.name(mob));
 				return false;
 			}
 			if(CMLib.flags().isAnimalIntelligence(M))
 			{
-				commonTell(mob,L("You can't train with @x1.",M.name(mob)));
+				commonTelL(mob,"You can't train with @x1.",M.name(mob));
 				return false;
 			}
 			if((!CMLib.flags().canMove(M))&&(CMLib.flags().isBoundOrHeld(M)))
 			{
-				commonTell(mob,L("@x1 doesn't seem able to train.",M.name(mob)));
+				commonTelL(mob,"@x1 doesn't seem able to train.",M.name(mob));
 				return false;
 			}
 			if(!mob.getGroupMembers(new HashSet<MOB>()).contains(M))
 			{
-				commonTell(mob,L("@x1 doesn't seem willing to train with you.",M.name(mob)));
+				commonTelL(mob,"@x1 doesn't seem willing to train with you.",M.name(mob));
 				return false;
 			}
 			final int curStat=M.baseCharStats().getRacialStat(M, attribute);
@@ -270,20 +270,20 @@ public class AttributeTraining extends CommonSkill
 			final int teachStat=mob.charStats().getStat(attribute);
 			if(curStat>=teachStat)
 			{
-				commonTell(mob,L("@x1 can only train with someone whose score is higher than their own.",M.name(mob)));
+				commonTelL(mob,"@x1 can only train with someone whose score is higher than their own.",M.name(mob));
 				return false;
 			}
 			if(M.getTrains()<trainsRequired)
 			{
 				if(trainsRequired>1)
 				{
-					commonTell(mob,L("@x1 requires @x1 training session(s) to do that.",M.name(mob),""+trainsRequired));
+					commonTelL(mob,"@x1 requires @x1 training session(s) to do that.",M.name(mob),""+trainsRequired);
 					return false;
 				}
 				else
 				if(trainsRequired==1)
 				{
-					commonTell(mob,L("@x1 requires @x1 training session(s) to do that.",M.name(mob),""+trainsRequired));
+					commonTelL(mob,"@x1 requires @x1 training session(s) to do that.",M.name(mob),""+trainsRequired);
 					return false;
 				}
 			}

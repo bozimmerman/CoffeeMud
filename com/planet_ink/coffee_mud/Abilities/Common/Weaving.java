@@ -285,7 +285,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,L("That's not a weaved item."));
+				commonTelL(mob,"That's not a weaved item.");
 			return false;
 		}
 		return true;
@@ -318,8 +318,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Weave what? Enter \"weave list\" for a list, \"weave info <item>\", \"weave refit <item>\" to resize,"
-						+ " \"weave learn <item>\", \"weave scan\", \"weave mend <item>\", or \"weave stop\" to cancel."));
+			commonTelL(mob,"Weave what? Enter \"weave list\" for a list, \"weave info <item>\", \"weave refit <item>\" to resize,"
+						+ " \"weave learn <item>\", \"weave scan\", \"weave mend <item>\", or \"weave stop\" to cancel.");
 			return false;
 		}
 		if((!auto)
@@ -424,17 +424,17 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				return false;
 			if((!CMParms.contains(pm, buildingI.material())))
 			{
-				commonTell(mob,L("That's not made of any sort of weavable material.  It can't be refitted."));
+				commonTelL(mob,"That's not made of any sort of weavable material.  It can't be refitted.");
 				return false;
 			}
 			if(!(buildingI instanceof Armor))
 			{
-				commonTell(mob,L("You don't know how to refit that sort of thing."));
+				commonTelL(mob,"You don't know how to refit that sort of thing.");
 				return false;
 			}
 			if(buildingI.phyStats().height()==0)
 			{
-				commonTell(mob,L("@x1 is already the right size.",buildingI.name(mob)));
+				commonTelL(mob,"@x1 is already the right size.",buildingI.name(mob));
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
@@ -453,7 +453,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				label=commands.remove(0);
 				if((label.length()>7) || (label.indexOf(' ')>=0))
 				{
-					commonTell(mob,L("That's too much label."));
+					commonTelL(mob,"That's too much label.");
 					return false;
 				}
 			}
@@ -487,7 +487,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,L("You don't know how to weave a '@x1'.  Try \"weave list\" for a list.",recipeName));
+				commonTelL(mob,"You don't know how to weave a '@x1'.  Try \"weave list\" for a list.",recipeName);
 				return false;
 			}
 
@@ -531,7 +531,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			final Item buildingI=this.buildingI;
 			if(buildingI==null)
 			{
-				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				commonTelL(mob,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

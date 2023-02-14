@@ -209,8 +209,8 @@ public class InstrumentMaking extends EnhancedCraftingSkill implements ItemCraft
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what Instrument? Enter \"instrumentmake list\" for a list, \"instrumentmake info <item>\","
-							+ " \"instrumentmake learn <item>\" to gain recipes, or \"instrumentmake stop\" to cancel."));
+			commonTelL(mob,"Make what Instrument? Enter \"instrumentmake list\" for a list, \"instrumentmake info <item>\","
+							+ " \"instrumentmake learn <item>\" to gain recipes, or \"instrumentmake stop\" to cancel.");
 			return false;
 		}
 		if((!auto)
@@ -300,7 +300,7 @@ public class InstrumentMaking extends EnhancedCraftingSkill implements ItemCraft
 		}
 		if(foundRecipe==null)
 		{
-			commonTell(mob,L("You don't know how to make a '@x1'.  Try \"instrumentmake list\" for a list.",recipeName));
+			commonTelL(mob,"You don't know how to make a '@x1'.  Try \"instrumentmake list\" for a list.",recipeName);
 			return false;
 		}
 
@@ -349,7 +349,7 @@ public class InstrumentMaking extends EnhancedCraftingSkill implements ItemCraft
 		final Item buildingI=this.buildingI;
 		if(buildingI==null)
 		{
-			commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+			commonTelL(mob,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 			return false;
 		}
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

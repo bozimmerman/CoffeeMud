@@ -65,7 +65,7 @@ public class BlackMarketeering extends Merchant
 		{
 			if(CMLib.law().mayOwnThisItem(mob, (Item)E))
 			{
-				commonTell(mob,L("@x1 is not a stolen item.",((Item)E).name(mob)));
+				commonTelL(mob,"@x1 is not a stolen item.",((Item)E).name(mob));
 				return false;
 			}
 			return true;
@@ -79,7 +79,7 @@ public class BlackMarketeering extends Merchant
 		makeActive(mob);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Black Market what? Enter \"bmarket list\" for a list or \"bmarket item value\" to sell something."));
+			commonTelL(mob,"Black Market what? Enter \"bmarket list\" for a list or \"bmarket item value\" to sell something.");
 			return false;
 		}
 		return super.invoke(mob, commands, givenTarget, auto, asLevel);

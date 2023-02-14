@@ -118,7 +118,7 @@ public class Baiting extends GatheringSkill
 		&&(fishRoom!=null))
 		{
 			if(foundCode<0)
-				commonTell((MOB)aff,L("Your @x1 baiting has failed.\n\r",foundShortName));
+				commonTelL((MOB)aff,"Your @x1 baiting has failed.\n\r",foundShortName);
 			else
 			if((foundCode>0)&&(!isaborted))
 			{
@@ -191,7 +191,7 @@ public class Baiting extends GatheringSkill
 
 			if((fishRoom==null)||(!CMLib.flags().isWateryRoom(fishRoom)))
 			{
-				this.commonTell(mob, L("You need to be on the water, or in a boat to use this skill."));
+				this.commonTelL(mob,"You need to be on the water, or in a boat to use this skill.");
 				return false;
 			}
 		}
@@ -199,7 +199,7 @@ public class Baiting extends GatheringSkill
 			fishRoom=R;
 		if(fishRoom.fetchEffect(ID())!=null)
 		{
-			commonTell(mob,L("It looks like bait has already been dropped here."));
+			commonTelL(mob,"It looks like bait has already been dropped here.");
 			return false;
 		}
 
@@ -227,7 +227,7 @@ public class Baiting extends GatheringSkill
 		else
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Bait for what kind of fish?"));
+			commonTelL(mob,"Bait for what kind of fish?");
 			return false;
 		}
 		int code=-1;
@@ -260,25 +260,25 @@ public class Baiting extends GatheringSkill
 		}
 		if(code<0)
 		{
-			commonTell(mob,L("You've never heard of a fish called '@x1'.",CMParms.combine(commands,0)));
+			commonTelL(mob,"You've never heard of a fish called '@x1'.",CMParms.combine(commands,0));
 			return false;
 		}
 
 		if(mine==null)
 		{
-			commonTell(mob,L("You'll need to have some @x1 first if you want to use it as bait.",foundShortName));
+			commonTelL(mob,"You'll need to have some @x1 first if you want to use it as bait.",foundShortName);
 			return false;
 		}
 		final String mineName=mine.name();
 		mine=CMLib.materials().unbundle(mine,-1,null);
 		if(mine==null)
 		{
-			commonTell(mob,L("'@x1' is not suitable for use as bait.",mineName));
+			commonTelL(mob,"'@x1' is not suitable for use as bait.",mineName);
 			return false;
 		}
 		if(!(isPotentialCrop(fishRoom,code)))
 		{
-			commonTell(mob,L("'@x1' does not seem to be of any use as bait here.",mineName));
+			commonTelL(mob,"'@x1' does not seem to be of any use as bait here.",mineName);
 			return false;
 		}
 

@@ -117,7 +117,7 @@ public class AnimalTrapping extends GatheringSkill
 
 		if(R.fetchEffect(ID())!=null)
 		{
-			commonTell(mob,L("Animal traps have already been set here."));
+			commonTelL(mob,"Animal traps have already been set here.");
 			return false;
 		}
 
@@ -130,7 +130,7 @@ public class AnimalTrapping extends GatheringSkill
 		||(!(((Container)targetI).canContain(cI)))
 		||(!((Container)targetI).hasADoor()))
 		{
-			commonTell(mob,L("@x1 is not a proper animal cage!",targetI.name(mob)));
+			commonTelL(mob,"@x1 is not a proper animal cage!",targetI.name(mob));
 			return false;
 		}
 		boolean empty=true;
@@ -141,14 +141,14 @@ public class AnimalTrapping extends GatheringSkill
 		}
 		if(!empty)
 		{
-			commonTell(mob,L("@x1 is not a empty!",targetI.name(mob)));
+			commonTelL(mob,"@x1 is not a empty!",targetI.name(mob));
 			return false;
 		}
 		if(targetI.owner()==mob)
 			CMLib.commands().postDrop(mob, targetI, true, false, false);
 		if(targetI.owner() != R)
 		{
-			commonTell(mob,L("@x1 is not a working!",targetI.name(mob)));
+			commonTelL(mob,"@x1 is not a working!",targetI.name(mob));
 			return false;
 		}
 

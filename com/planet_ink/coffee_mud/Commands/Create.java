@@ -1569,7 +1569,7 @@ public class Create extends StdCommand
 		msg.update(System.currentTimeMillis()+tm);
 		msg.parent("");
 		msg.msgIcon("");
-		msg.attributes(msg.attributes()|JournalEntry.ATTRIBUTE_PROTECTED);
+		msg.attributes(msg.attributes()|JournalEntry.JournalAttrib.PROTECTED.bit);
 		msg.data("INTERVAL="+tm);
 		msg.to("ALL");
 		CMLib.database().DBWriteJournal("SYSTEM_CRON", msg);

@@ -118,14 +118,14 @@ public class Spell_Farsight extends Spell
 					final int dirCode=CMLib.directions().getGoodDirectionCode(whatToOpen);
 					if(limit<=0)
 					{
-						mob.tell(L("Your sight has reached its limit."));
+						commonTelL(mob,"Your sight has reached its limit.");
 						success=true;
 						break;
 					}
 					else
 					if(dirCode<0)
 					{
-						mob.tell(L("\n\r'@x1' is not a valid direction.",whatToOpen));
+						commonTelL(mob,"\n\r'@x1' is not a valid direction.",whatToOpen);
 						commands.clear();
 						success=false;
 					}
@@ -136,7 +136,7 @@ public class Spell_Farsight extends Spell
 
 						if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob))||(!exit.isOpen()))
 						{
-							mob.tell(L("\n\rSomething has obstructed your vision."));
+							commonTelL(mob,"\n\rSomething has obstructed your vision.");
 							success=false;
 							commands.clear();
 						}

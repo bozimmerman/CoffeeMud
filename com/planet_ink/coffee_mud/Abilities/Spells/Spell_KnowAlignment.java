@@ -88,11 +88,12 @@ public class Spell_KnowAlignment extends Spell
 					alignment = L("lawful "+goodEvilName);
 				else
 					alignment = L(goodEvilName);
-				mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> <T-IS-ARE> @x1.",alignment));
+				commonTelL(mob,target,(Environmental)null,"<T-NAME> seem(s) like <T-HE-SHE> <T-IS-ARE> @x1.",alignment);
 			}
 			else
 			{
-				mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> <T-IS-ARE> @x1.",Faction.Align.values()[CMLib.dice().roll(1,Faction.Align.values().length-1,0)].toString().toLowerCase()));
+				commonTelL(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> <T-IS-ARE> @x1.",
+						Faction.Align.values()[CMLib.dice().roll(1,Faction.Align.values().length-1,0)].toString().toLowerCase());
 			}
 		}
 

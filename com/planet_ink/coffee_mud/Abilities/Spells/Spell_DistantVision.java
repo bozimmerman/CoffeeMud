@@ -72,7 +72,7 @@ public class Spell_DistantVision extends Spell
 	{
 		if(commands.size()<1)
 		{
-			mob.tell(L("Divine a vision of where?"));
+			commonTelL(mob,"Divine a vision of where?");
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -89,7 +89,7 @@ public class Spell_DistantVision extends Spell
 
 		if(thisRoom==null)
 		{
-			mob.tell(L("You can't seem to fixate on a place called '@x1'.",CMParms.combine(commands,0)));
+			commonTelL(mob,"You can't seem to fixate on a place called '@x1'.",CMParms.combine(commands,0));
 			return false;
 		}
 

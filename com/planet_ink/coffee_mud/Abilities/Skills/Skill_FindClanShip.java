@@ -133,14 +133,14 @@ public class Skill_FindClanShip extends StdAbility
 			if(nextDirection==-1)
 			{
 				if(clanShipHere(mob,mob.location(),null).length()==0)
-					mob.tell(L("The trail to your clan ship dries up here."));
+					commonTelL(mob,"The trail to your clan ship dries up here.");
 				nextDirection=-999;
 				unInvoke();
 			}
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(L("The way to your clan ship seems to continue @x1.",CMLib.directions().getDirectionName(nextDirection)));
+				commonTelL(mob,"The way to your clan ship seems to continue @x1.",CMLib.directions().getDirectionName(nextDirection));
 				if(mob.isMonster())
 				{
 					final Room nextRoom=mob.location().getRoomInDir(nextDirection);
@@ -255,7 +255,7 @@ public class Skill_FindClanShip extends StdAbility
 		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
-			mob.tell(L("You stop tracking."));
+			commonTelL(mob,"You stop tracking.");
 			if(commands.size()==0)
 				return true;
 		}

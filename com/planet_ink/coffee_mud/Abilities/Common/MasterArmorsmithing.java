@@ -103,8 +103,8 @@ public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"marmorsmith list\" for a list, \"marmorsmith info <item>\", \"marmorsmith scan\", "
-						+ "\"marmorsmith learn <item>\", \"marmorsmith mend <item>\", or \"marmorsmith stop\" to cancel."));
+			commonTelL(mob,"Make what? Enter \"marmorsmith list\" for a list, \"marmorsmith info <item>\", \"marmorsmith scan\", "
+						+ "\"marmorsmith learn <item>\", \"marmorsmith mend <item>\", or \"marmorsmith stop\" to cancel.");
 			return false;
 		}
 		return super.autoGenInvoke(mob,commands,givenTarget,auto,asLevel,autoGenerate,forceLevels,crafted);

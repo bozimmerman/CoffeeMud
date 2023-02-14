@@ -163,18 +163,18 @@ public class Unbinding extends CommonSkill
 			return false;
 		if((!auto)&&(target==mob))
 		{
-			commonTell(mob,L("You can't unbind yourself!"));
+			commonTelL(mob,"You can't unbind yourself!");
 			return false;
 		}
 		if((!auto)&&mob.isInCombat())
 		{
-			commonTell(mob,L("Not while you are fighting!"));
+			commonTelL(mob,"Not while you are fighting!");
 			return false;
 		}
 		final List<Ability> affects=CMLib.flags().flaggedAffects(target,Ability.FLAG_BINDING);
 		if(affects.size()==0)
 		{
-			commonTell(mob,L("@x1 does not have any bindings you can remove.",target.name(mob)));
+			commonTelL(mob,"@x1 does not have any bindings you can remove.",target.name(mob));
 			return false;
 		}
 		final Ability A=affects.get(0);

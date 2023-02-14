@@ -98,8 +98,8 @@ public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"mweaponsmith list\" for a list, \"mweaponsmith info <item>\", \"mweaponsmith scan\","
-						+ " \"mweaponsmith learn <item>\", \"mweaponsmith mend <item>\", or \"mweaponsmith stop\" to cancel."));
+			commonTelL(mob,"Make what? Enter \"mweaponsmith list\" for a list, \"mweaponsmith info <item>\", \"mweaponsmith scan\","
+						+ " \"mweaponsmith learn <item>\", \"mweaponsmith mend <item>\", or \"mweaponsmith stop\" to cancel.");
 			return false;
 		}
 		return super.autoGenInvoke(mob,commands,givenTarget,auto,asLevel,autoGenerate,forceLevels,crafted);

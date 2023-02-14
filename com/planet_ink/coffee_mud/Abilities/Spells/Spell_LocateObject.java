@@ -204,13 +204,13 @@ public class Spell_LocateObject extends Spell
 						break;
 				}
 				if(itemsFound.size()==0)
-					mob.tell(L("Your magic fails to focus on anything called '@x1'.",what));
+					commonTelL(mob,"Your magic fails to focus on anything called '@x1'.",what);
 				else
 				{
 					while(itemsFound.size()>maxFound)
 						itemsFound.remove(CMLib.dice().roll(1,itemsFound.size(),-1));
 					for(final String found : itemsFound)
-						mob.tell(found);
+						commonTell(mob,found);
 				}
 			}
 

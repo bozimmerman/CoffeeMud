@@ -203,7 +203,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,L("That's not a @x1 item.",name()));
+				commonTelL(mob,"That's not a @x1 item.",name());
 			return false;
 		}
 		return true;
@@ -261,8 +261,8 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"@x1 list\" for a list, \"@x1 scan\", \"@x1 info <item>\", \"@x1 learn <item>\","
-							+ " \"@x1 mend <item>\", or \"@x1 stop\" to cancel.",commandWord()));
+			commonTelL(mob,"Make what? Enter \"@x1 list\" for a list, \"@x1 scan\", \"@x1 info <item>\", \"@x1 learn <item>\","
+							+ " \"@x1 mend <item>\", or \"@x1 stop\" to cancel.",commandWord());
 			return false;
 		}
 		if((!auto)
@@ -391,7 +391,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,L("You don't know how to make a '@x1'.  Try \"@x2 list\" for a list.",recipeName,commandWord()));
+				commonTelL(mob,"You don't know how to make a '@x1'.  Try \"@x2 list\" for a list.",recipeName,commandWord());
 				return false;
 			}
 
@@ -435,7 +435,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 					}
 					if((fire==null)||(!mob.location().isContent(fire)))
 					{
-						commonTell(mob,L("You'll need to build a fire first."));
+						commonTelL(mob,"You'll need to build a fire first.");
 						return false;
 					}
 				}
@@ -458,7 +458,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			final Item buildingI=this.buildingI;
 			if(buildingI==null)
 			{
-				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				commonTelL(mob,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

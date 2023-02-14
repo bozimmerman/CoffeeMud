@@ -308,7 +308,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"clancraft list\" for a list, or \"clancraft stop\" to cancel."));
+			commonTelL(mob,"Make what? Enter \"clancraft list\" for a list, or \"clancraft stop\" to cancel.");
 			return false;
 		}
 		String clanTypeName="Clan";
@@ -320,14 +320,14 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		{
 			if(!mob.clans().iterator().hasNext())
 			{
-				commonTell(mob,L("You must be a member of a clan to use this skill."));
+				commonTelL(mob,"You must be a member of a clan to use this skill.");
 				return false;
 			}
 			final Pair<Clan,Integer> p=CMLib.clans().findPrivilegedClan(mob, Clan.Function.ENCHANT);
 			if((p==null)
 			&&(!CMSecurity.isASysOp(mob)))
 			{
-				commonTell(mob,L("You are not authorized to draw from the power of your clan."));
+				commonTelL(mob,"You are not authorized to draw from the power of your clan.");
 				return false;
 			}
 			if(p!=null)
@@ -429,7 +429,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		}
 		if(foundRecipe==null)
 		{
-			commonTell(mob,L("You don't know how to make a '@x1'.  Try \"clancraft list\" for a list.",recipeName));
+			commonTelL(mob,"You don't know how to make a '@x1'.  Try \"clancraft list\" for a list.",recipeName);
 			return false;
 		}
 
@@ -456,7 +456,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		expRequired=getXPCOSTAdjustment(mob,expRequired);
 		if((clanC!=null)&&(clanC.getExp()<expRequired))
 		{
-			commonTell(mob,L("You need @x1 to do that, but your @x2 has only @x3 experience points.",""+expRequired,clanTypeName,""+clanC.getExp()));
+			commonTelL(mob,"You need @x1 to do that, but your @x2 has only @x3 experience points.",""+expRequired,clanTypeName,""+clanC.getExp());
 			return false;
 		}
 		final int[][] data=fetchFoundResourceData(mob,amt1,mat1,null,amt2,mat2,null,false,autoGenerate,null);
@@ -470,7 +470,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			final Ability A=CMClass.findAbility(reqskill.trim());
 			if((A!=null)&&(mob.fetchAbility(A.ID())==null))
 			{
-				commonTell(mob,L("You need to know @x1 to craft this item.",A.name()));
+				commonTelL(mob,"You need to know @x1 to craft this item.",A.name());
 				return false;
 			}
 		}
@@ -485,7 +485,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		final Item buildingI=this.buildingI;
 		if(buildingI==null)
 		{
-			commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+			commonTelL(mob,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 			return false;
 		}
 		final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
@@ -503,7 +503,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			||(!conqB.rulingOrganization().equalsIgnoreCase(clanC.clanID()))
 			||((!conqB.isFullyControlled())&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDROOMS))))
 			{
-				commonTell(mob, L("That can only be built in an area conquered by @x1.",clanName));
+				commonTelL(mob,"That can only be built in an area conquered by @x1.",clanName);
 				return false;
 			}
 			final Area A=CMLib.law().getLegalObject(R.getArea());
@@ -534,9 +534,9 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			{
 				final String areaName = (A==null)?"This Area":A.Name();
 				if(another)
-					commonTell(mob, L("@x1 does not have the population to support another such structure.",areaName));
+					commonTelL(mob,"@x1 does not have the population to support another such structure.",areaName);
 				else
-					commonTell(mob, L("@x1 does not have the population to support such a structure.",areaName));
+					commonTelL(mob,"@x1 does not have the population to support such a structure.",areaName);
 				return false;
 			}
 		}
@@ -571,12 +571,12 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			final Area A2=CMLib.law().getLegalObject(mob.location().getArea());
 			if((B==null)||(A2==null))
 			{
-				commonTell(mob,L("This area is controlled by the Archons -- you can't build that here."));
+				commonTelL(mob,"This area is controlled by the Archons -- you can't build that here.");
 				return false;
 			}
 			if((B.rulingOrganization().length()==0)||(mob.getClanRole(B.rulingOrganization())==null))
 			{
-				commonTell(mob,L("This area is not controlled by your clan -- you can't build that here."));
+				commonTelL(mob,"This area is not controlled by your clan -- you can't build that here.");
 				return false;
 			}
 

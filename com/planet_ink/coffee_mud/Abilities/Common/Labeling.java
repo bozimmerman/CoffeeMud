@@ -178,7 +178,7 @@ public class Labeling extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					commonTell(mob,L("You mess up your labeling."));
+					commonTelL(mob,"You mess up your labeling.");
 				else
 				{
 					String desc=found.description();
@@ -198,7 +198,7 @@ public class Labeling extends CommonSkill
 						writing=getNextTag(found);
 						found.setDescription(desc+getTagLabel()+writing);
 						found.setDisplayText(disp+"("+getTagLabel().trim()+writing+")");
-						commonTell(mob,L("The tag number is @x1.",writing));
+						commonTelL(mob,"The tag number is @x1.",writing);
 					}
 					else
 					{
@@ -232,7 +232,7 @@ public class Labeling extends CommonSkill
 		}
 		if(commands.size()<1)
 		{
-			commonTell(mob,L("You must specify what you want to label.  Start with the word remove to remove a tag label."));
+			commonTelL(mob,"You must specify what you want to label.  Start with the word remove to remove a tag label.");
 			return false;
 		}
 		final String what=CMParms.combine(commands);
@@ -252,7 +252,7 @@ public class Labeling extends CommonSkill
 				}
 				if(!ok)
 				{
-					commonTell(mob,L("You aren't allowed to work on '@x1'.",what));
+					commonTelL(mob,"You aren't allowed to work on '@x1'.",what);
 					return false;
 				}
 				*/
@@ -260,20 +260,20 @@ public class Labeling extends CommonSkill
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,L("You don't seem to have a '@x1'.",what));
+			commonTelL(mob,"You don't seem to have a '@x1'.",what);
 			return false;
 		}
 
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTell(mob,L("You must know how to write to label."));
+			commonTelL(mob,"You must know how to write to label.");
 			return false;
 		}
 
 		if(!target.isGeneric())
 		{
-			commonTell(mob,L("You can't label that."));
+			commonTelL(mob,"You can't label that.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

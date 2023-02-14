@@ -98,11 +98,11 @@ public class Domesticating extends CommonSkill
 				if((taming!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,L("You've failed to domesticate @x1!",taming.name()));
+						commonTelL(mob,"You've failed to domesticate @x1!",taming.name());
 					else
 					{
 						if(taming.amFollowing()==mob)
-							commonTell(mob,L("@x1 is already domesticated.",taming.name()));
+							commonTelL(mob,"@x1 is already domesticated.",taming.name());
 						else
 						{
 							CMLib.commands().postFollow(taming,mob,true);
@@ -134,29 +134,29 @@ public class Domesticating extends CommonSkill
 		final MOB M=mob.location().fetchInhabitant(str);
 		if((M==null)||(!CMLib.flags().canBeSeenBy(M,mob)))
 		{
-			commonTell(mob,L("You don't see anyone called '@x1' here.",str));
+			commonTelL(mob,"You don't see anyone called '@x1' here.",str);
 			return false;
 		}
 		if(!M.isMonster())
 		{
 			if(newName!=null)
-				commonTell(mob,M,null,L("You can't name <T-NAME>."));
+				commonTelL(mob,M,null,"You can't name <T-NAME>.");
 			else
-				commonTell(mob,M,null,L("You can't domesticate <T-NAME>."));
+				commonTelL(mob,M,null,"You can't domesticate <T-NAME>.");
 			return false;
 		}
 		if(!CMLib.flags().isAnimalIntelligence(M))
 		{
 			if(newName!=null)
-				commonTell(mob,M,null,L("You can't name <T-NAME>."));
+				commonTelL(mob,M,null,"You can't name <T-NAME>.");
 			else
-				commonTell(mob,M,null,L("You don't know how to domesticate <T-NAME>."));
+				commonTelL(mob,M,null,"You don't know how to domesticate <T-NAME>.");
 			return false;
 		}
 		final String theName=newName;
 		if((newName!=null)&&(M.amFollowing()==null))
 		{
-			commonTell(mob,L("You can only name someones pet."));
+			commonTelL(mob,"You can only name someones pet.");
 			return false;
 		}
 		else
@@ -164,12 +164,12 @@ public class Domesticating extends CommonSkill
 		{
 			if(newName.trim().length()==0)
 			{
-				commonTell(mob,L("You must specify a name."));
+				commonTelL(mob,"You must specify a name.");
 				return false;
 			}
 			if(newName.indexOf(' ')>=0)
 			{
-				commonTell(mob,L("The name may not contain a space."));
+				commonTelL(mob,"The name may not contain a space.");
 				return false;
 			}
 			newName=CMLib.coffeeFilter().secondaryUserInputFilter(newName);

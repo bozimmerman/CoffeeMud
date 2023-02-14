@@ -90,7 +90,7 @@ public class Taxidermy extends CraftingSkill
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,L("You've messed up stuffing @x1!",foundShortName));
+						commonTelL(mob,"You've messed up stuffing @x1!",foundShortName);
 					else
 					{
 						dropAWinner(mob,buildingI);
@@ -198,7 +198,7 @@ public class Taxidermy extends CraftingSkill
 		final Item I=mob.location().findItem(null,str);
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
-			commonTell(mob,L("You don't see anything called '@x1' here.",str));
+			commonTelL(mob,"You don't see anything called '@x1' here.",str);
 			return false;
 		}
 		foundShortName=I.Name();
@@ -206,7 +206,7 @@ public class Taxidermy extends CraftingSkill
 		||(((DeadBody)I).isPlayerCorpse())
 		||(((DeadBody)I).getMobName().length()==0))
 		{
-			commonTell(mob,L("You don't know how to stuff @x1.",I.name(mob)));
+			commonTelL(mob,"You don't know how to stuff @x1.",I.name(mob));
 			return false;
 		}
 		for(int i=0;i<mob.location().numItems();i++)
@@ -214,7 +214,7 @@ public class Taxidermy extends CraftingSkill
 			final Item I2=mob.location().getItem(i);
 			if(I2.container()==I)
 			{
-				commonTell(mob,L("You need to remove the contents of @x1 first.",I2.name(mob)));
+				commonTelL(mob,"You need to remove the contents of @x1 first.",I2.name(mob));
 				return false;
 			}
 		}

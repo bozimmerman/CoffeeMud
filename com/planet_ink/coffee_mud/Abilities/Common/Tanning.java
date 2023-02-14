@@ -112,7 +112,7 @@ public class Tanning extends CommonSkill
 				if((found!=null)&&(!aborted)&&(R!=null))
 				{
 					if(messedUp)
-						commonTell(mob,L("You've messed up tanning @x1!",oldItemName));
+						commonTelL(mob,"You've messed up tanning @x1!",oldItemName);
 					else
 					{
 						amount=amount*(baseYield()+abilityCode());
@@ -154,20 +154,20 @@ public class Tanning extends CommonSkill
 		final Item I=R.findItem(null,str);
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
-			commonTell(mob,L("You don't see anything called '@x1' here.",str));
+			commonTelL(mob,"You don't see anything called '@x1' here.",str);
 			return false;
 		}
 		final boolean okMaterial=I.material()==RawMaterial.RESOURCE_HIDE;
 		oldItemName=I.Name();
 		if(!okMaterial)
 		{
-			commonTell(mob,L("You don't know how to tan @x1.",I.name(mob)));
+			commonTelL(mob,"You don't know how to tan @x1.",I.name(mob));
 			return false;
 		}
 
 		if(CMLib.flags().isEnchanted(I))
 		{
-			commonTell(mob,L("@x1 is enchanted, and can't be tanned.",I.name(mob)));
+			commonTelL(mob,"@x1 is enchanted, and can't be tanned.",I.name(mob));
 			return false;
 		}
 
@@ -186,7 +186,7 @@ public class Tanning extends CommonSkill
 		final LandTitle t=CMLib.law().getLandTitle(R);
 		if((t!=null)&&(!CMLib.law().doesHavePriviledgesHere(mob,R)))
 		{
-			commonTell(mob,L("You are not allowed to tan anything here."));
+			commonTelL(mob,"You are not allowed to tan anything here.");
 			return false;
 		}
 
@@ -195,7 +195,7 @@ public class Tanning extends CommonSkill
 			final Item I2=R.getItem(i);
 			if((I2.container()!=null)&&(V.contains(I2.container())))
 			{
-				commonTell(mob,L("You need to remove the contents of @x1 first.",I2.name(mob)));
+				commonTelL(mob,"You need to remove the contents of @x1 first.",I2.name(mob));
 				return false;
 			}
 		}

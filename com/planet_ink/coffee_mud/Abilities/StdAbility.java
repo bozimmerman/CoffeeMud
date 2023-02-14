@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
-import com.planet_ink.coffee_mud.core.interfaces.CostDef;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -686,7 +685,7 @@ public class StdAbility implements Ability
 			{
 				room.recoverRoomStats();
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				Log.errOut(e);
 			}
@@ -708,6 +707,62 @@ public class StdAbility implements Ability
 			CMLib.threads().startTickDown(this,Tickable.TICKID_MOB,1);
 		}
 		tickDown=tickTime;
+	}
+
+	protected void commonTelL(final MOB mob, final Environmental target, final Environmental tool, String str, final String... vars)
+	{
+		if(mob.isMonster())
+		{
+			str = CMStrings.replaceWord(str, "you are", "I am");
+			str = CMStrings.replaceWord(str, "you", "I");
+			str = CMStrings.replaceWord(str, "your", "my");
+			str = CMStrings.replaceWord(str, "you've", "I've");
+			str = L(str,vars);
+			if(target!=null)
+				str=CMStrings.replaceAll(str,"<T-NAME>",target.name());
+			if(tool!=null)
+				str=CMStrings.replaceAll(str,"<O-NAME>",tool.name());
+			CMLib.commands().postSay(mob,null,str,false,false);
+			return;
+		}
+		mob.tell(mob,target,tool,L(str,vars));
+	}
+
+	protected void commonTelL(final MOB mob, String str, final String... vars)
+	{
+		if(mob==null)
+			return;
+
+		if(mob.isMonster())
+		{
+			str = CMStrings.replaceWord(str, "you are", "I am");
+			str = CMStrings.replaceWord(str, "you", "I");
+			str = CMStrings.replaceWord(str, "your", "my");
+			str = CMStrings.replaceWord(str, "you've", "I've");
+			str = L(str,vars);
+			CMLib.commands().postSay(mob,null,str,false,false);
+			return;
+		}
+
+		mob.tell(L(str,vars));
+	}
+
+	protected void commonTell(final MOB mob, String str)
+	{
+		if(mob==null)
+			return;
+
+		if(mob.isMonster())
+		{
+			str = CMStrings.replaceWord(str, "you are", "I am");
+			str = CMStrings.replaceWord(str, "you", "I");
+			str = CMStrings.replaceWord(str, "your", "my");
+			str = CMStrings.replaceWord(str, "you've", "I've");
+			CMLib.commands().postSay(mob,null,str,false,false);
+			return;
+		}
+
+		mob.tell(str);
 	}
 
 	public boolean disregardsArmorCheck(final MOB mob)

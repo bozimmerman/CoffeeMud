@@ -114,11 +114,11 @@ public class AnimalBonding extends CommonSkill
 				{
 					final MOB animal=bonding;
 					if((messedUp)||(animal==null))
-						commonTell(mob,L("You've failed to bond with @x1!",bonding.name()));
+						commonTelL(mob,"You've failed to bond with @x1!",bonding.name());
 					else
 					{
 						if(animal.fetchEffect("AnimalBonding")!=null)
-							commonTell(mob,L("@x1 is already bond.",bonding.name()));
+							commonTelL(mob,"@x1 is already bond.",bonding.name());
 						else
 						{
 							final AnimalBonding bonding=(AnimalBonding)this.copyOf();
@@ -176,19 +176,19 @@ public class AnimalBonding extends CommonSkill
 		bonding=null;
 		if(!CMLib.flags().canBeSeenBy(M,mob))
 		{
-			commonTell(mob,L("You don't see anyone called '@x1' here.",str));
+			commonTelL(mob,"You don't see anyone called '@x1' here.",str);
 			return false;
 		}
 		if((!M.isMonster())
 		||(!M.isMonster())
 		||(!CMLib.flags().isAnimalIntelligence(M)))
 		{
-			commonTell(mob,L("You can't bond with @x1.",M.name(mob)));
+			commonTelL(mob,"You can't bond with @x1.",M.name(mob));
 			return false;
 		}
 		if(M.amFollowing() != mob)
 		{
-			commonTell(mob,L("@x1 doesn't seem willing to cooperate.",M.name(mob)));
+			commonTelL(mob,"@x1 doesn't seem willing to cooperate.",M.name(mob));
 			return false;
 		}
 		bonding=M;

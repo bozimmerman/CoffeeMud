@@ -93,7 +93,7 @@ public class Transcribing extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if((foundI==null)||(targetI==null))
-					commonTell(mob,L("You mess up your transcribing."));
+					commonTelL(mob,"You mess up your transcribing.");
 				else
 				{
 					final MOB factM=CMClass.getFactoryMOB(mob.Name(), mob.phyStats().level(), mob.location());
@@ -145,7 +145,7 @@ public class Transcribing extends CommonSkill
 
 	public boolean error(final MOB mob)
 	{
-		commonTell(mob,L("You must specify what book to transcribe, what to transcribe to, and the optional page/chapter number to edit."));
+		commonTelL(mob,"You must specify what book to transcribe, what to transcribe to, and the optional page/chapter number to edit.");
 		return false;
 	}
 
@@ -167,16 +167,16 @@ public class Transcribing extends CommonSkill
 			if(!ok)
 			{
 				if(from)
-					commonTell(mob,L("You aren't allowed to copy from '@x1'.",I.name(mob)));
+					commonTelL(mob,"You aren't allowed to copy from '@x1'.",I.name(mob));
 				else
-					commonTell(mob,L("You aren't allowed to copy to '@x1'.",I.name(mob)));
+					commonTelL(mob,"You aren't allowed to copy to '@x1'.",I.name(mob));
 				return null;
 			}
 			*/
 		}
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
-			commonTell(mob,L("You don't seem to have a '@x1'.",itemName));
+			commonTelL(mob,"You don't seem to have a '@x1'.",itemName);
 			return null;
 		}
 		if((((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER))
@@ -185,21 +185,21 @@ public class Transcribing extends CommonSkill
 		&&(I.material()!=RawMaterial.RESOURCE_HIDE))
 		{
 			if(from)
-				commonTell(mob,L("You can't transcribe something like @x1.",I.name(mob)));
+				commonTelL(mob,"You can't transcribe something like @x1.",I.name(mob));
 			else
-				commonTell(mob,L("You can't transcribe onto something like @x1.",I.name(mob)));
+				commonTelL(mob,"You can't transcribe onto something like @x1.",I.name(mob));
 			return null;
 		}
 		if((!CMLib.flags().isReadable(I))
 		||(I instanceof Scroll))
 		{
-			commonTell(mob,L("@x1 isn't even readable!",CMStrings.capitalizeAndLower(I.name(mob))));
+			commonTelL(mob,"@x1 isn't even readable!",CMStrings.capitalizeAndLower(I.name(mob)));
 			return null;
 		}
 
 		if(!I.isGeneric())
 		{
-			commonTell(mob,L("You aren't able to transcribe @x1.",I.name(mob)));
+			commonTelL(mob,"You aren't able to transcribe @x1.",I.name(mob));
 			return null;
 		}
 		return I;
@@ -228,12 +228,12 @@ public class Transcribing extends CommonSkill
 		if((copyToI instanceof Recipe)
 		&&(((Recipe)copyToI).getTotalRecipePages() <= ((Recipe)copyToI).getRecipeCodeLines().length))
 		{
-			commonTell(mob,L("@x1 is full.",copyToI.name(mob)));
+			commonTelL(mob,"@x1 is full.",copyToI.name(mob));
 			return false;
 		}
 		if((copyToI instanceof Recipe) != (copyFromI instanceof Recipe))
 		{
-			commonTell(mob,L("@x1 can not be copied to @x2.",copyFromI.name(mob),copyToI.name(mob)));
+			commonTelL(mob,"@x1 can not be copied to @x2.",copyFromI.name(mob),copyToI.name(mob));
 			return false;
 		}
 		if((copyFromI instanceof Recipe)
@@ -242,13 +242,13 @@ public class Transcribing extends CommonSkill
 		&&(CMClass.getAbilityPrototype(((Recipe)copyToI).getCommonSkillID())!=null)
 		&&(CMClass.getAbilityPrototype(((Recipe)copyToI).getCommonSkillID())!=CMClass.getAbilityPrototype(((Recipe)copyFromI).getCommonSkillID())))
 		{
-			commonTell(mob,L("@x1 can not be copied to @x2, as it would break up the recipe types.",copyFromI.name(mob),copyToI.name(mob)));
+			commonTelL(mob,"@x1 can not be copied to @x2, as it would break up the recipe types.",copyFromI.name(mob),copyToI.name(mob));
 			return false;
 		}
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTell(mob,L("You must know how to write."));
+			commonTelL(mob,"You must know how to write.");
 			return false;
 		}
 

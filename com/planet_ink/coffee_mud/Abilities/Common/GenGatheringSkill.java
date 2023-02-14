@@ -492,7 +492,7 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 			{
 				if(found!=null)
 				{
-					commonTell(mob,L((String) V(ID, V_MSG2),foundShortName));
+					commonTelL(mob,(String) V(ID, V_MSG2),foundShortName);
 					if(!((Boolean) V(ID, V_COSM)).booleanValue())
 					{
 						displayText=L("You are @x1 @x2",(String)V(ID, V_VERB),foundShortName);
@@ -503,8 +503,7 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 				}
 				else
 				{
-					final StringBuffer str=new StringBuffer(L((String) V(ID, V_MSG3)+"\n\r"));
-					commonTell(mob,str.toString());
+					commonTelL(mob,(String) V(ID, V_MSG3)+"\n\r");
 					unInvoke();
 				}
 
@@ -740,7 +739,7 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 		&&(!auto)
 		&&(!CMLib.masking().maskCheck(playerMask, mob, true)))
 		{
-			commonTell(mob,L("To do this, you must meet these requirements:  @x1.",CMLib.masking().maskDesc(playerMask, false)));
+			commonTelL(mob,"To do this, you must meet these requirements:  @x1.",CMLib.masking().maskDesc(playerMask, false));
 			return false;
 		}
 

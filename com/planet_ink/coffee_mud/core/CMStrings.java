@@ -979,9 +979,10 @@ public class CMStrings
 		||(thisStr.length()==0))
 			return str;
 		final String uppercaseWithThisStr=withThisStr.toUpperCase();
+		final char firstLetter = Character.toLowerCase(thisStr.charAt(0));
 		for(int i=str.length()-1;i>=0;i--)
 		{
-			if((str.charAt(i)==thisStr.charAt(0))
+			if((Character.toLowerCase(str.charAt(i))==firstLetter)
 			&&((i==0)||(!Character.isLetter(str.charAt(i-1)))))
 			{
 				if((str.substring(i).toLowerCase().startsWith(thisStr.toLowerCase()))
@@ -3838,7 +3839,7 @@ public class CMStrings
 			i = index.clone();
 			leftExpression = matchValueEvaluation(tokens, i, variables);
 		}
-		if (leftExpression == null) 
+		if (leftExpression == null)
 			return null;
 		final int[] i2 = i.clone();
 		token = nextToken(tokens, i2);

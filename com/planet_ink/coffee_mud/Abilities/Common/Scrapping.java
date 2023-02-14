@@ -111,7 +111,7 @@ public class Scrapping extends CommonSkill
 				if((found!=null)&&(!aborted)&&(mob.location()!=null))
 				{
 					if(messedUp)
-						commonTell(mob,L("You've messed up scrapping @x1!",oldItemName));
+						commonTelL(mob,"You've messed up scrapping @x1!",oldItemName);
 					else
 					{
 						amount=amount*(baseYield()+abilityCode());
@@ -152,7 +152,7 @@ public class Scrapping extends CommonSkill
 		final Item I=mob.location().findItem(null,str);
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
-			commonTell(mob,L("You don't see anything called '@x1' here.",str));
+			commonTelL(mob,"You don't see anything called '@x1' here.",str);
 			return false;
 		}
 		boolean okMaterial=true;
@@ -174,25 +174,25 @@ public class Scrapping extends CommonSkill
 		}
 		if(!okMaterial)
 		{
-			commonTell(mob,L("You don't know how to scrap @x1.",I.name(mob)));
+			commonTelL(mob,"You don't know how to scrap @x1.",I.name(mob));
 			return false;
 		}
 
 		if(CMath.bset(I.phyStats().sensesMask(),PhyStats.SENSE_ITEMNOSCRAP))
 		{
-			commonTell(mob,L("@x1 can't be scrapped for some reason.",I.name(mob)));
+			commonTelL(mob,"@x1 can't be scrapped for some reason.",I.name(mob));
 			return false;
 		}
 
 		if(I instanceof RawMaterial)
 		{
-			commonTell(mob,L("@x1 already looks like scrap.",I.name(mob)));
+			commonTelL(mob,"@x1 already looks like scrap.",I.name(mob));
 			return false;
 		}
 
 		if(CMLib.flags().isEnchanted(I))
 		{
-			commonTell(mob,L("@x1 is enchanted, and can't be scrapped.",I.name(mob)));
+			commonTelL(mob,"@x1 is enchanted, and can't be scrapped.",I.name(mob));
 			return false;
 		}
 
@@ -211,7 +211,7 @@ public class Scrapping extends CommonSkill
 		final LandTitle t=CMLib.law().getLandTitle(mob.location());
 		if((t!=null)&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 		{
-			commonTell(mob,L("You are not allowed to scrap anything here."));
+			commonTelL(mob,"You are not allowed to scrap anything here.");
 			return false;
 		}
 
@@ -220,14 +220,14 @@ public class Scrapping extends CommonSkill
 			final Item I2=mob.location().getItem(i);
 			if((I2.container()!=null)&&(V.contains(I2.container())))
 			{
-				commonTell(mob,L("You need to remove the contents of @x1 first.",I2.name(mob)));
+				commonTelL(mob,"You need to remove the contents of @x1 first.",I2.name(mob));
 				return false;
 			}
 		}
 		amount=totalWeight/5;
 		if(amount<1)
 		{
-			commonTell(mob,L("You don't have enough here to get anything from."));
+			commonTelL(mob,"You don't have enough here to get anything from.");
 			return false;
 		}
 		fireRequired=false;
@@ -246,7 +246,7 @@ public class Scrapping extends CommonSkill
 		if(((prop != null)&&(!CMLib.law().doesHavePrivilegesWith(mob, prop)))
 		||(I instanceof NavigableItem))
 		{
-			commonTell(mob,L("@x1 can't be scrapped.",I.name(mob)));
+			commonTelL(mob,"@x1 can't be scrapped.",I.name(mob));
 			return false;
 		}
 

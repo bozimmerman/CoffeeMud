@@ -107,7 +107,7 @@ public class Organizing extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,L("<S-NAME> mess(es) up organizing @x1.",building.name()));
+						commonTelL(mob,"<S-NAME> mess(es) up organizing @x1.",building.name());
 					else
 					{
 						final List<Item> items=new ArrayList<Item>();
@@ -254,8 +254,8 @@ public class Organizing extends CommonSkill
 
 		if(commands.size()<2)
 		{
-			commonTell(mob,L("Organize what? Try ROOM or a container name, and also one of these: "
-					+CMLib.english().toEnglishStringList(OrganizeBy.class,false)));
+			commonTelL(mob,"Organize what? Try ROOM or a container name, and also one of these: "
+					+CMLib.english().toEnglishStringList(OrganizeBy.class,false));
 			return false;
 		}
 
@@ -263,8 +263,8 @@ public class Organizing extends CommonSkill
 		orgaType = (OrganizeBy)CMath.s_valueOf(OrganizeBy.class, orgaTypeName);
 		if(orgaType == null)
 		{
-			commonTell(mob,L("'@x1' is invalid. Try one of these: "
-					+CMLib.english().toEnglishStringList(OrganizeBy.class,false),orgaTypeName));
+			commonTelL(mob,"'@x1' is invalid. Try one of these: "
+					+CMLib.english().toEnglishStringList(OrganizeBy.class,false),orgaTypeName);
 			return false;
 		}
 
@@ -278,7 +278,7 @@ public class Organizing extends CommonSkill
 			if((CMLib.law().getLandTitle(mob.location())!=null)
 			&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 			{
-				commonTell(mob,L("You need the owners permission to organize stuff here."));
+				commonTelL(mob,"You need the owners permission to organize stuff here.");
 				return false;
 			}
 		}
@@ -287,14 +287,14 @@ public class Organizing extends CommonSkill
 			final Physical I=super.getAnyTarget(mob, commands, givenTarget, Wearable.FILTER_ANY, false);
 			if((!(I instanceof ItemPossessor)) && (!(I instanceof Container)))
 			{
-				commonTell(mob,L("You cannot organize the contents of '@x1'.",str));
+				commonTelL(mob,"You cannot organize the contents of '@x1'.",str);
 				return false;
 			}
 			if(I instanceof MOB)
 			{
 				if(!mob.getGroupMembers(new HashSet<MOB>()).contains(I))
 				{
-					commonTell(mob,L("You aren't allowed to organize stuff for @x1.",I.Name()));
+					commonTelL(mob,"You aren't allowed to organize stuff for @x1.",I.Name());
 					return false;
 				}
 			}
@@ -304,7 +304,7 @@ public class Organizing extends CommonSkill
 				if((CMLib.law().getLandTitle(mob.location())!=null)
 				&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 				{
-					commonTell(mob,L("You need the owners permission to organize stuff here."));
+					commonTelL(mob,"You need the owners permission to organize stuff here.");
 					return false;
 				}
 			}

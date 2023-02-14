@@ -91,10 +91,10 @@ public class Spell_Telepathy extends Spell
 				if((LB!=null)&&(AO!=null))
 				{
 					if(LB.isJudge(AO, target))
-						thoughts.append("You detect the legalese thoughts of a judge.  ");
+						thoughts.append(L("You detect the legalese thoughts of a judge.  "));
 					else
 					if(LB.isAnyOfficer(AO, target))
-						thoughts.append("You detect the stern thoughts of a law officer.  ");
+						thoughts.append(L("You detect the stern thoughts of a law officer.  "));
 				}
 				for(final Enumeration<Behavior> b=target.behaviors();b.hasMoreElements();)
 				{
@@ -118,7 +118,7 @@ public class Spell_Telepathy extends Spell
 						prefix = "You can see thoughts of ";
 						break;
 					}
-					thoughts.append(prefix).append(accounting).append(".  ");
+					thoughts.append(L(prefix+"@x1",accounting)).append(".  ");
 				}
 				String adjective="";
 				if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>=18)
@@ -157,11 +157,11 @@ public class Spell_Telepathy extends Spell
 				if(target.charStats().getStat(CharStats.STAT_WISDOM)<10)
 					adjective+="unwise, ";
 
-				mob.tell(L("@x1 is a @x2@x3 @x4.",target.Name(),adjective,target.charStats().getMyRace().name(),target.charStats().getCurrentClass().name()));
+				commonTelL(mob,"@x1 is a @x2@x3 @x4.",target.Name(),adjective,target.charStats().getMyRace().name(),target.charStats().getCurrentClass().name());
 				if(thoughts.length()==0)
-					mob.tell(L("You don't detect any other thoughts."));
+					commonTelL(mob,"You don't detect any other thoughts.");
 				else
-					mob.tell(thoughts.toString());
+					commonTell(mob,thoughts.toString());
 			}
 		}
 		else

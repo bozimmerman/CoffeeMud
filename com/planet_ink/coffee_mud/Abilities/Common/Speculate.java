@@ -80,8 +80,7 @@ public class Speculate extends CommonSkill
 			{
 				if(success==false)
 				{
-					final StringBuffer str=new StringBuffer(L("Your speculate attempt failed.\n\r"));
-					commonTell(mob,str.toString());
+					commonTelL(mob,"Your speculate attempt failed.\n\r");
 					unInvoke();
 				}
 
@@ -125,7 +124,7 @@ public class Speculate extends CommonSkill
 						commonTell(mob,str.toString());
 					}
 					else
-						commonTell(mob,L("You don't find any good resources around here."));
+						commonTelL(mob,"You don't find any good resources around here.");
 				}
 			}
 		}

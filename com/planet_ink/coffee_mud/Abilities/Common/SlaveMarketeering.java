@@ -72,7 +72,7 @@ public class SlaveMarketeering extends Merchant
 			if((!CMLib.flags().isASlave((MOB)E, mob))
 			||(((MOB)E).isPlayer()))
 			{
-				commonTell(mob,L("@x1 is not your slave.",((MOB)E).name(mob)));
+				commonTelL(mob,"@x1 is not your slave.",((MOB)E).name(mob));
 				return false;
 			}
 			return true;
@@ -86,7 +86,7 @@ public class SlaveMarketeering extends Merchant
 		makeActive(mob);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Slave Market what? Enter \"smarket list\" for a list or \"smarket mob value\" to sell someone."));
+			commonTelL(mob,"Slave Market what? Enter \"smarket list\" for a list or \"smarket mob value\" to sell someone.");
 			return false;
 		}
 		return super.invoke(mob, commands, givenTarget, auto, asLevel);

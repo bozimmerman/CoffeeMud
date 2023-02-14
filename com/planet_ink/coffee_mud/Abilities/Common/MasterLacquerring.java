@@ -136,7 +136,7 @@ public class MasterLacquerring extends MasterPaintingSkill
 		List<String> finalRecipe = null;
 		if(writing.equalsIgnoreCase("list"))
 		{
-			final StringBuilder colors=new StringBuilder(L("^NDesigns you can choose: "));
+			final StringBuilder colors=new StringBuilder();
 			final TreeSet<String> namesUsed = new TreeSet<String>();
 			for(final List<String> list : recipes)
 			{
@@ -149,13 +149,14 @@ public class MasterLacquerring extends MasterPaintingSkill
 					colors.append(name).append("^N, ");
 				}
 			}
-			commonTell(mob,colors.substring(0,colors.length()-2)+"^N.  "+L("Use MASTERLACQUER COLORS to see what colors you can choose.\n\r"));
+			commonTelL(mob,"^NDesigns you can choose: @x1^N.  Use MASTERLACQUER COLORS to see what colors you can choose.\n\r",
+					colors.substring(0,colors.length()-2));
 			return false;
 		}
 		else
 		if(writing.toLowerCase().startsWith("color"))
 		{
-			final StringBuilder colors=new StringBuilder(L("^NColors you can choose: "));
+			final StringBuilder colors=new StringBuilder("");
 			final TreeSet<String> done=new TreeSet<String>();
 			for(final Enumeration<Color256> c=CMLib.color().getColors256();c.hasMoreElements();)
 			{
@@ -177,7 +178,7 @@ public class MasterLacquerring extends MasterPaintingSkill
 					}
 				}
 			}
-			commonTell(mob,colors.substring(0,colors.length()-2)+"^N.\n\r");
+			commonTelL(mob,"^NColors you can choose: @x1^N.\n\r",colors.substring(0,colors.length()-2));
 			return false;
 		}
 		if((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("remove")))
@@ -185,7 +186,7 @@ public class MasterLacquerring extends MasterPaintingSkill
 		else
 		if(commands.size()<4)
 		{
-			commonTell(mob,L("You must specify what you want to lacqer, the design to use, and two or three colors to use, or the word REMOVE, or specify LIST."));
+			commonTelL(mob,"You must specify what you want to lacqer, the design to use, and two or three colors to use, or the word REMOVE, or specify LIST.");
 			return false;
 		}
 		else
@@ -202,13 +203,13 @@ public class MasterLacquerring extends MasterPaintingSkill
 			}
 			if(!ok)
 			{
-				commonTell(mob,L("You aren't allowed to work on '@x1'.",target.name(mob)));
+				commonTelL(mob,"You aren't allowed to work on '@x1'.",target.name(mob));
 				return false;
 			}
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,L("You don't seem to have a '@x1'.",(commands.get(0))));
+			commonTelL(mob,"You don't seem to have a '@x1'.",(commands.get(0)));
 			return false;
 		}
 		commands.remove(commands.get(0)); // remove item
@@ -243,18 +244,18 @@ public class MasterLacquerring extends MasterPaintingSkill
 				}
 				if(colorsFound.size()==numFound)
 				{
-					commonTell(mob,L("The first color in '@x1' is unrecognized. Try MASTERLACQUER COLORS",workColors));
+					commonTelL(mob,"The first color in '@x1' is unrecognized. Try MASTERLACQUER COLORS",workColors);
 					return false;
 				}
 			}
 			if(colorsFound.size()<2)
 			{
-				commonTell(mob,L("At least two colors is required."));
+				commonTelL(mob,"At least two colors is required.");
 				return false;
 			}
 			if(colorsFound.size()>3)
 			{
-				commonTell(mob,L("You may not list more than 3 colors."));
+				commonTelL(mob,"You may not list more than 3 colors.");
 				return false;
 			}
 		}
@@ -267,7 +268,7 @@ public class MasterLacquerring extends MasterPaintingSkill
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN))
 		||(!target.isGeneric()))
 		{
-			commonTell(mob,L("You can't lacquer that material."));
+			commonTelL(mob,"You can't lacquer that material.");
 			return false;
 		}
 
@@ -293,7 +294,7 @@ public class MasterLacquerring extends MasterPaintingSkill
 				if(name.equalsIgnoreCase(writing)
 				&&(level<=adjustedLevel(mob,asLevel)))
 				{
-					commonTell(mob,L("I'm afraid that recipe does not support @x1 colors.",""+colorsFound.size()));
+					commonTelL(mob,"I'm afraid that recipe does not support @x1 colors.",""+colorsFound.size());
 					return false;
 				}
 			}
@@ -301,7 +302,7 @@ public class MasterLacquerring extends MasterPaintingSkill
 
 		if((finalRecipe == null) && (!writing.equalsIgnoreCase("remove")))
 		{
-			commonTell(mob,L("You can't lacquer anything '@x1'. Try MASTERLACQUERING LIST for a list or use REMOVE as the color.",writing));
+			commonTelL(mob,"You can't lacquer anything '@x1'. Try MASTERLACQUERING LIST for a list or use REMOVE as the color.",writing);
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

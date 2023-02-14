@@ -244,7 +244,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
 						else
 						if(oldName.length()>0)
-							commonTell(mob,L("Something went wrong! @x1 explodes!",(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))));
+							commonTelL(mob,"Something went wrong! @x1 explodes!",(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1)));
 						buildingI.destroy();
 					}
 					else
@@ -318,7 +318,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		}
 		if(commands.size()<1)
 		{
-			commonTell(mob,L("Brew what? Enter \"hbrew list\" for a list, \"hbrew learn <item>\" to learn recipes, or \"hbrew stop\" to cancel."));
+			commonTelL(mob,"Brew what? Enter \"hbrew list\" for a list, \"hbrew learn <item>\" to learn recipes, or \"hbrew stop\" to cancel.");
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
@@ -387,7 +387,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		else
 		if(((commands.get(0))).equalsIgnoreCase("learn"))
 		{
-			commonTell(mob,L("You don't know how to do that with herbalism."));
+			commonTelL(mob,"You don't know how to do that with herbalism.");
 			// disabled because of inability to determine ingredients.
 			//return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
 			return false;
@@ -406,22 +406,22 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				return false;
 			if(!mob.isMine(buildingI))
 			{
-				commonTell(mob,L("You'll need to pick that up first."));
+				commonTelL(mob,"You'll need to pick that up first.");
 				return false;
 			}
 			if(!(buildingI instanceof Container))
 			{
-				commonTell(mob,L("There's nothing in @x1 to brew!",buildingI.name(mob)));
+				commonTelL(mob,"There's nothing in @x1 to brew!",buildingI.name(mob));
 				return false;
 			}
 			if(!(buildingI instanceof Drink))
 			{
-				commonTell(mob,L("You can't drink out of a @x1.",buildingI.name(mob)));
+				commonTelL(mob,"You can't drink out of a @x1.",buildingI.name(mob));
 				return false;
 			}
 			if(((Drink)buildingI).liquidRemaining()==0)
 			{
-				commonTell(mob,L("The @x1 contains no liquid base.  Water is probably fine.",buildingI.name(mob)));
+				commonTelL(mob,"The @x1 contains no liquid base.  Water is probably fine.",buildingI.name(mob));
 				return false;
 			}
 			final String recipeName=CMParms.combine(commands,0);
@@ -448,7 +448,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			}
 			if((theSpell==null)||(recipe==null))
 			{
-				commonTell(mob,L("You don't know how to brew '@x1'.  Try \"hbrew list\" for a list.",recipeName));
+				commonTelL(mob,"You don't know how to brew '@x1'.  Try \"hbrew list\" for a list.",recipeName);
 				return false;
 			}
 			int experienceToLose=10;
@@ -478,7 +478,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 					}
 					if(!ok)
 					{
-						commonTell(mob,L("This brew requires @x1.  Please place some inside the @x2 and try again.",ingredient.toLowerCase(),buildingI.name(mob)));
+						commonTelL(mob,"This brew requires @x1.  Please place some inside the @x2 and try again.",ingredient.toLowerCase(),buildingI.name(mob));
 						return false;
 					}
 				}
@@ -501,7 +501,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				}
 				if(!ok)
 				{
-					commonTell(mob,L("The @x1 must be removed from the @x2 before starting.",I.name(mob),buildingI.name(mob)));
+					commonTelL(mob,"The @x1 must be removed from the @x2 before starting.",I.name(mob),buildingI.name(mob));
 					return false;
 				}
 			}
@@ -514,7 +514,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-			commonTell(mob,L("You lose @x1 experience points for the effort.",""+experienceToLose));
+			commonTelL(mob,"You lose @x1 experience points for the effort.",""+experienceToLose);
 			oldName=buildingI.name();
 			buildingI.destroy();
 			buildingI=buildItem(theSpell, theLevel);
