@@ -114,6 +114,22 @@ public class Account extends StdCommand
 		final MOB mobOn = CMLib.players().getPlayer(who.name());
 		if((mobOn != null)&&(mobOn.session() != null)&&(!mobOn.session().isStopped()))
 			msg.append("^y*^N");
+		final MOB cachedWhoM = CMLib.players().getPlayer(who.name());
+		if((cachedWhoM != null)
+		&&(cachedWhoM.session() != null))
+		{
+			final PlayerStats pStats=cachedWhoM.playerStats();
+			final Session sess = cachedWhoM.session();
+			if((pStats != null)
+			&&(sess != null))
+			{
+				final int tells=pStats.queryTellStack(null, cachedWhoM.Name(), Long.valueOf(sess.getIdleMillis())).size();
+				final int gtells=pStats.queryGTellStack(null, cachedWhoM.Name(), Long.valueOf(sess.getIdleMillis())).size();
+				if((tells>0)||(gtells>0))
+					msg.append(" ^T(tells)^?");
+			}
+		}
+
 		msg.append("\n\r");
 		return msg;
 	}

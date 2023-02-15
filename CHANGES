@@ -10,10 +10,11 @@
   9. New Exit type: Skyway -- for supporting the above.
  10. New Achievement type: CHARITY
  11. New Disable flag: FATIGUE
- 12. New clan skill: Await Clan Ship
+ 12. New skill: Await Clan Ship
  13. The "Know Plants" skill will now report on edible-ness.
  14. Some divination spells are now more mob-follower-friendly. (e.g. Find Directions)
  15. New Spell "Majesty", the effects of which can only be wished for.
+ 16. Prop_ShortEffects expanded to include remotely-cast effects also.
 
 # Build 5.10.1 Release 1/01/2023
   1. FasterRecovery expanded and new char stat REJUVRATE for Prop*Adjuster

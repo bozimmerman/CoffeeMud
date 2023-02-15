@@ -50,10 +50,10 @@ public class Aquan extends AnimalSpeak
 
 	private final static String[] soundBase = new String[]
 	{
-		"gurgle","blub","eeeeeeeee","oioioi","glub",
-		"honk","glugglge","mrrr","wurrr","llllgl","gl","lb",
-		"llrrrwwwrrr","blip","flup","glglglll","wwwrrr","lllrr",
-		"glug","blubbablup","gurglflub","blubllll","splurt",
+		"gurgle","blub","chitter","oioioi","glub",
+		"honk","glugglge","mrrr","wurrr","squeel","gl","lb",
+		"squeek","blip","flup","glglglll","whirr","lllrr",
+		"glug","blubbablup","yrrrk","blubllll","splurt",
 		"oi","eeee","rrwwwll","onkglgl","bluggg","lrrr","lg"
 	};
 
