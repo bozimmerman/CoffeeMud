@@ -190,13 +190,26 @@ public class Copy extends StdCommand
 		{
 			if(E instanceof MOB)
 			{
+				final MOB srcM = (MOB)E;
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYMOBS))
 				{
 					mob.tell(L("You are not allowed to copy @x1",E.name()));
 					return false;
 				}
-				final MOB newMOB=(MOB)E.copyOf();
+				final MOB newMOB;
+				if(srcM.isPlayer())
+				{
+					if(E instanceof Rideable)
+						newMOB=CMClass.getMOB("GenRideable");
+					else
+						newMOB=CMClass.getMOB("GenMOB");
+					for(final String stat : CMLib.coffeeMaker().getAllGenStats(srcM))
+						newMOB.setStat(stat, CMLib.coffeeMaker().getAnyGenStat(srcM, stat));
+				}
+				else
+					newMOB=(MOB)E.copyOf();
 				newMOB.setSession(null);
+				newMOB.setPlayerStats(null);
 				newMOB.setStartRoom(room);
 				newMOB.setLocation(room);
 				newMOB.recoverCharStats();

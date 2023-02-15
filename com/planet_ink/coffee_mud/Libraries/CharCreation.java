@@ -1776,6 +1776,51 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				buf.append(" " + CMStrings.padRight(mob.baseCharStats().displayClassName(),15));
 			else
 				buf.append(" " + CMStrings.padRight(player.charClass(),15));
+			if((mob != null)
+			&&(mob.session() != null))
+			{
+				final PlayerStats pStats=mob.playerStats();
+				final Session sess = mob.session();
+				if((pStats != null)
+				&&(sess != null))
+				{
+					final int tells=pStats.queryTellStack(null, mob.Name(), Long.valueOf(sess.getIdleMillis())).size();
+					final int gtells=pStats.queryGTellStack(null, mob.Name(), Long.valueOf(sess.getIdleMillis())).size();
+					if((tells>0)||(gtells>0))
+						buf.append(" ^T(tells)^?");
+				}
+			}
+			if((player.email().length()>0)
+			&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0)
+			&&(CMLib.database().DBCountJournalMsgsNewerThan(CMProps.getVar(CMProps.Str.MAILBOX), player.name(), 0)>0))
+				buf.append(" ^H(mail)^?");
+			final List<String> postalChains=new ArrayList<String>();
+			PostOffice P=null;
+			boolean postFound=false;
+			for(final Enumeration<PostOffice> e=CMLib.city().postOffices();e.hasMoreElements();)
+			{
+				P=e.nextElement();
+				if((P!=null)
+				&&(!postalChains.contains(P.postalChain()))
+				&&(!postFound))
+				{
+					postalChains.add(P.postalChain());
+					final List<String> keys = CMLib.database().DBReadPlayerDataKeys(player.name(), P.postalChain());
+					for(String key : keys)
+					{
+						final int x=key.indexOf(';');
+						if(x<0)
+							continue;
+						key=key.substring(0,x);
+						final PostOffice P2=CMLib.city().getPostOffice(P.postalChain(),key);
+						if(P2==null)
+							continue;
+						buf.append(" ^r(post)^?");
+						postFound=true;
+						break;
+					}
+				}
+			}
 			buf.append("^.^N\n\r");
 		}
 		session.println(buf.toString());
@@ -2944,7 +2989,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	protected LoginResult charcrGenderStart(final LoginSessionImpl loginObj, final Session session)
 	{
-		StringBuilder str = new StringBuilder("");
+		final StringBuilder str = new StringBuilder("");
 		for(final Object[] gset : CMProps.getListFileStringChoices(ListFile.GENDERS))
 		{
 			if((gset.length>0)
