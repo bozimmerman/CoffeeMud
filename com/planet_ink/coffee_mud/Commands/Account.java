@@ -129,7 +129,37 @@ public class Account extends StdCommand
 					msg.append(" ^T(tells)^?");
 			}
 		}
-
+		if((who.email().length()>0)
+		&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0)
+		&&(CMLib.database().DBCountJournalMsgsNewerThan(CMProps.getVar(CMProps.Str.MAILBOX), who.name(), 0)>0))
+			msg.append(" ^H(mail)^?");
+		final List<String> postalChains=new ArrayList<String>();
+		PostOffice P=null;
+		boolean postFound=false;
+		for(final Enumeration<PostOffice> e=CMLib.city().postOffices();e.hasMoreElements();)
+		{
+			P=e.nextElement();
+			if((P!=null)
+			&&(!postalChains.contains(P.postalChain()))
+			&&(!postFound))
+			{
+				postalChains.add(P.postalChain());
+				List<String> keys = CMLib.database().DBReadPlayerDataKeys(who.name(), P.postalChain());
+				for(String key : keys)
+				{
+					final int x=key.indexOf(';');
+					if(x<0)
+						continue;
+					key=key.substring(0,x);
+					final PostOffice P2=CMLib.city().getPostOffice(P.postalChain(),key);
+					if(P2==null)
+						continue;
+					msg.append(" ^r(post)^?");
+					postFound=true;
+					break;
+				}
+			}
+		}
 		msg.append("\n\r");
 		return msg;
 	}

@@ -15,6 +15,7 @@
  14. Some divination spells are now more mob-follower-friendly. (e.g. Find Directions)
  15. New Spell "Majesty", the effects of which can only be wished for.
  16. Prop_ShortEffects expanded to include remotely-cast effects also.
+ 17. ACCOUNT command can now show chars with waiting mail, or missed tells.
 
 # Build 5.10.1 Release 1/01/2023
   1. FasterRecovery expanded and new char stat REJUVRATE for Prop*Adjuster

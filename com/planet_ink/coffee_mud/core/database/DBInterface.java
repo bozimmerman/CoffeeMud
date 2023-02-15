@@ -686,6 +686,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public int DBCountJournalMsgsNewerThan(final String journalID, final String to, final long olderDate)
+	{
+		return JournalLoader.DBCountJournalMsgsNewerThan(journalID, to, olderDate);
+	}
+
+	@Override
 	public List<JournalEntry> DBReadJournalMsgsOlderThan(final String journalID, final String to, final long newestDate)
 	{
 		return JournalLoader.DBReadJournalMsgsOlderThan(journalID, to, newestDate);
@@ -1020,6 +1026,12 @@ public class DBInterface implements DatabaseEngine
 		return DataLoader.DBCount(playerID, section);
 	}
 
+	@Override
+	public List<String> DBReadPlayerDataKeys(String playerID, String section)
+	{
+		return DataLoader.DBReadPlayerDataKeys(playerID, section);
+	}
+	
 	@Override
 	public int DBCountPlayerData(final String section)
 	{

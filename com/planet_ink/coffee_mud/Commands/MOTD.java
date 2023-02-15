@@ -233,12 +233,7 @@ public class MOTD extends StdCommand
 				if(CJseparator)
 					buf.append("\n\r--------------------------------------\n\r");
 
-				final boolean canReceiveRealEmail =
-						(pStats.getEmail().length()>0)
-					  &&(mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
-					  &&((pStats.getAccount()==null)
-						||(!pStats.getAccount().isSet(AccountFlag.NOAUTOFORWARD)));
-
+				final boolean canReceiveRealEmail =(pStats.getEmail().length()>0);
 				if(canReceiveRealEmail
 				&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 				{

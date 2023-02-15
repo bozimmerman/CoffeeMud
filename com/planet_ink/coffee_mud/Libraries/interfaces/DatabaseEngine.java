@@ -1534,6 +1534,18 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBJOURNALS
+	 * Counts all the messages optionally sent to the given user (or ALL) that
+	 * are newer than the given date.
+	 * @see DatabaseEngine#DBReadJournalMsgsOlderThan(String, String, long)
+	 * @param journalID the name/ID of the journal/forum
+	 * @param to NULL, ALL, or a user the messages were sent to
+	 * @param olderDate the date beyond which to return messages for
+	 * @return the count of messages that were found
+	 */
+	public int DBCountJournalMsgsNewerThan(final String journalID, final String to, final long olderDate);
+	
+	/**
+	 * Table category: DBJOURNALS
 	 * Returns all the messages optionally sent to the given user (or ALL) that
 	 * are older than the given date.
 	 * @see DatabaseEngine#DBReadJournalMsgsNewerThan(String, String, long)
@@ -1659,6 +1671,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBCountPlayerData(String, String)
 	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
 	 * @see DatabaseEngine#DBReadPlayerData(String, List)
+	 * @see DatabaseEngine#DBReadPlayerDataKeys(String, String)
 	 * @param playerID the user id for the player to read data for
 	 * @param section the section/type of data to read.
 	 * @return the data for the player in the section
@@ -1667,10 +1680,25 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERDATA
+	 * Read a specific set of keys for the given player, belonging
+	 * to the given section
+	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBCountPlayerData(String, String)
+	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
+	 * @see DatabaseEngine#DBReadPlayerData(String, List)
+	 * @param playerID the user id for the player to read data for
+	 * @param section the section/type of data to read.
+	 * @return the keys for the player in the section
+	 */
+	public List<String> DBReadPlayerDataKeys(String playerID, String section);
+
+	/**
+	 * Table category: DBPLAYERDATA
 	 * Counts the number of rows of data/entries
 	 * @see DatabaseEngine#DBReadPlayerData(String, String)
 	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
 	 * @see DatabaseEngine#DBReadPlayerData(String, List)
+	 * @see DatabaseEngine#DBReadPlayerDataKeys(String, String)
 	 * @param playerID the user id of the player to count the data of
 	 * @param section the section/type of data to count
 	 * @return the number of entries for the given player and section
@@ -1683,6 +1711,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBReadPlayerData(String, String)
 	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
 	 * @see DatabaseEngine#DBReadPlayerData(String, List)
+	 * @see DatabaseEngine#DBReadPlayerDataKeys(String, String)
 	 *
 	 * @param section the cross-player section of data
 	 * @return the number of entries for the given section

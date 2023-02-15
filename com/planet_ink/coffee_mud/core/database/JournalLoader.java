@@ -430,6 +430,32 @@ public class JournalLoader
 		}
 	}
 
+	public int DBCountJournalMsgsNewerThan(String journal, String to, final long olderDate)
+	{
+		journal	= DB.injectionClean(journal);
+		to		= DB.injectionClean(to);
+
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			String sql="SELECT CMJKEY FROM CMJRNL WHERE CMUPTM > " + olderDate+" AND CMJRNL='"+journal+"'";
+			if(to != null)
+				sql += " AND CMTONM='"+to+"'";
+			final ResultSet R=D.query(sql);
+			return D.getRecordCount(R);
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("Journal",sqle);
+			return 0;
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+	}
+	
 	public List<JournalEntry> DBReadJournalMsgsNewerThan(String journal, String to, final long olderDate)
 	{
 		journal	= DB.injectionClean(journal);

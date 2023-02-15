@@ -147,13 +147,14 @@ public class Chant_SummonSquall extends Chant
 				R.send(mob,msg);
 				final Chant_SummonSquall cA;
 				cA = (Chant_SummonSquall)super.beneficialAffect(mob, A, asLevel, 4+super.getXTIMELevel(mob));
-				success = cA != null;
-				if(success)
+				if(cA != null)
 				{
 					cA.oldClimate = C.nextWeatherType(R);
 					C.setNextWeatherType(Climate.WEATHER_THUNDERSTORM);
 					C.forceWeatherTick(A);
 				}
+				else
+					success=false;
 			}
 		}
 		else

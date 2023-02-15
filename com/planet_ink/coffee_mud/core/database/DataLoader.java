@@ -47,6 +47,32 @@ public class DataLoader
 		this.engine=engine;
 	}
 
+	public List<String> DBReadPlayerDataKeys(String playerID, String section)
+	{
+		DBConnection D=null;
+		final Vector<String> rows=new Vector<String>();
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=null;
+			playerID = DB.injectionClean(playerID);
+			section = DB.injectionClean(section);
+			R=D.query("SELECT CMPKEY FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'");
+			while(R.next())
+				rows.add(DBConnections.getRes(R,"CMPKEY"));
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		// log comment
+		return rows;
+	}
+	
 	public List<PlayerData> DBRead(String playerID, String section)
 	{
 		DBConnection D=null;

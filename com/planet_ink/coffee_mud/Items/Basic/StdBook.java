@@ -339,7 +339,7 @@ public class StdBook extends StdItem implements Book
 					if((newOnly)&&(msg.value()>0))
 						return;
 					final StringBuffer returnEntry;
-					String chName="";;
+					String chName="";
 					if(read.second.length()>0)
 					{
 						final int x=read.second.indexOf(":");
