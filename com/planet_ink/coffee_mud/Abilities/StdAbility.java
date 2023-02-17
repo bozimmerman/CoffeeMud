@@ -1190,7 +1190,8 @@ public class StdAbility implements Ability
 		return getTarget(mob, location, givenTarget, container, commands, filter, false);
 	}
 
-	protected Item evalTargetItem(final MOB mob, final Room location, final Environmental givenTarget, final Environmental target, final String targetName, final boolean quiet)
+	protected Item evalTargetItem(final MOB mob, final Room location, final Environmental givenTarget, final Environmental target,
+								  final String targetName, final String ogTargetName, final boolean quiet)
 	{
 		if((target==null)
 		||(!(target instanceof Item))
@@ -1209,12 +1210,12 @@ public class StdAbility implements Ability
 					if(!CMLib.flags().isSleeping(mob)) // no idea why this is here :(
 					{
 						if(location != null)
-							failureTell(mob,mob,false,L("You don't see anything called '@x1' here.",targetName));
+							failureTell(mob,mob,false,L("You don't see anything called '@x1' here.",ogTargetName));
 						else
-							failureTell(mob,mob,false,L("You don't have anything called '@x1'.",targetName));
+							failureTell(mob,mob,false,L("You don't have anything called '@x1'.",ogTargetName));
 					}
 					else // this was added for clan donate (and other things I'm sure) while sleeping.
-						failureTell(mob,mob,false,L("You don't see '@x1' in your dreams.",targetName));
+						failureTell(mob,mob,false,L("You don't see '@x1' in your dreams.",ogTargetName));
 				}
 				else
 					mob.tell(mob,target,null,L("You can't do that to <T-NAMESELF>."));
@@ -1228,6 +1229,7 @@ public class StdAbility implements Ability
 			final List<String> commands, final Filterer<Environmental> filter, final boolean quiet)
 	{
 		String targetName=CMParms.combine(commands,0);
+		final String ogTargetName = targetName;
 
 		Environmental target=null;
 		if((givenTarget!=null)&&(givenTarget instanceof Item))
@@ -1246,7 +1248,7 @@ public class StdAbility implements Ability
 		if(target!=null)
 			targetName=target.name();
 
-		return evalTargetItem(mob, location, givenTarget, target, targetName, quiet);
+		return evalTargetItem(mob, location, givenTarget, target, targetName, ogTargetName, quiet);
 
 	}
 
@@ -1266,6 +1268,7 @@ public class StdAbility implements Ability
 			final List<String> commands, final Filterer<Environmental> filter, final boolean quiet)
 	{
 		String targetName=CMParms.combine(commands,0);
+		final String ogTargetname = targetName;
 
 		Environmental target=null;
 		if((givenTarget!=null)&&(givenTarget instanceof Item))
@@ -1281,7 +1284,7 @@ public class StdAbility implements Ability
 		if(target!=null)
 			targetName=target.name();
 
-		return evalTargetItem(mob, location, givenTarget, target, targetName, quiet);
+		return evalTargetItem(mob, location, givenTarget, target, targetName, ogTargetname, quiet);
 	}
 
 	@Override
@@ -2037,7 +2040,7 @@ public class StdAbility implements Ability
 	protected boolean beneficialVisualFizzle(final MOB mob, final Environmental target, final String message)
 	{
 		// it didn't work, but tell everyone you tried.
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,message);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_HANDS,message);
 		final Room room=mob.location();
 		if(room==null)
 			return false;

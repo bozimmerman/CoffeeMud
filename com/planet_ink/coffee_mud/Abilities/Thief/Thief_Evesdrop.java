@@ -40,7 +40,7 @@ public class Thief_Evesdrop extends ThiefSkill
 		return "Thief_Evesdrop";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Evesdrop");
+	private final static String localizedName = CMLib.lang().L("Eavesdrop");
 
 	@Override
 	public String name()
@@ -79,7 +79,7 @@ public class Thief_Evesdrop extends ThiefSkill
 		return Ability.QUALITY_OK_OTHERS;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"EVESDROP"});
+	private static final String[] triggerStrings =I(new String[] {"EAVESDROP"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -139,7 +139,7 @@ public class Thief_Evesdrop extends ThiefSkill
 		if(canBeUninvoked())
 		{
 			if((invoker!=null)&&(affected!=null))
-				invoker.tell(L("You are no longer evesdropping on @x1.",affected.name()));
+				invoker.tell(L("You are no longer eavesdropping on @x1.",affected.name()));
 		}
 		super.unInvoke();
 	}
@@ -149,7 +149,7 @@ public class Thief_Evesdrop extends ThiefSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell(L("Evesdrop on whom?"));
+			mob.tell(L("Eavesdrop on whom?"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -157,7 +157,7 @@ public class Thief_Evesdrop extends ThiefSkill
 			return false;
 		if(target==mob)
 		{
-			mob.tell(L("You cannot evesdrop on yourself?!"));
+			mob.tell(L("You cannot eavesdrop on yourself?!"));
 			return false;
 		}
 		final Ability A=target.fetchEffect(ID());
@@ -167,7 +167,7 @@ public class Thief_Evesdrop extends ThiefSkill
 				A.unInvoke();
 			else
 			{
-				mob.tell(mob,target,null,L("It is too crowded to evesdrop on <T-NAME>."));
+				mob.tell(mob,target,null,L("It is too crowded to eavesdrop on <T-NAME>."));
 				return false;
 			}
 		}
@@ -190,13 +190,18 @@ public class Thief_Evesdrop extends ThiefSkill
 
 		if(!success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":L("Your attempt to evesdrop on <T-NAMESELF> fails; <T-NAME> spots you!"),CMMsg.MSG_OK_VISUAL,auto?"":L("You spot <S-NAME> trying to evesdrop on you."),CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,null,
+					CMMsg.MSG_OK_VISUAL,auto?"":L("Your attempt to eavesdrop on <T-NAMESELF> fails; <T-NAME> spots you!"),
+					CMMsg.MSG_OK_VISUAL,auto?"":L("You spot <S-NAME> trying to eavesdrop on you."),
+					CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,L("You are now evesdroping on <T-NAME>.  Enter 'evesdrop <targetname>' again to disengage."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,
+					auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,L("You are now eavesdroping on <T-NAME>.  Enter 'eavesdrop <targetname>' again to disengage."),
+					CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

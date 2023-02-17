@@ -11211,17 +11211,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				final String parm=tt[1];
 				final Environmental newTarget=getArgumentMOB(parm,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((newTarget!=null)&&(newTarget instanceof MOB)&&(lastKnownLocation!=null))
+				final Room lastR=lastKnownLocation;
+				if((newTarget!=null)
+				&&(newTarget instanceof MOB)
+				&&(lastR!=null))
 				{
 					if(newTarget==monster)
-						lastKnownLocation.showSource(monster,null,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
+						lastR.showSource(monster,null,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
 					else
-						lastKnownLocation.show(monster,newTarget,null,CMMsg.MSG_OK_ACTION,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]),CMMsg.NO_EFFECT,null);
+						lastR.show(monster,newTarget,null,CMMsg.MSG_OK_ACTION,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]),CMMsg.NO_EFFECT,null);
 				}
 				else
 				if(parm.equalsIgnoreCase("world"))
 				{
-					lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
+					lastR.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
 					for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 					{
 						final Room R=e.nextElement();
@@ -11230,10 +11233,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 				else
-				if(parm.equalsIgnoreCase("area")&&(lastKnownLocation!=null))
+				if(parm.equalsIgnoreCase("area")
+				&&(lastR!=null))
 				{
-					lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
-					for(final Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
+					lastR.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
+					for(final Enumeration<Room> e=lastR.getArea().getProperMap();e.hasMoreElements();)
 					{
 						final Room R=e.nextElement();
 						if(R.numInhabitants()>0)
@@ -11246,7 +11250,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				else
 				if(CMLib.map().findArea(parm)!=null)
 				{
-					lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
+					lastR.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
 					for(final Enumeration<Room> e=CMLib.map().findArea(parm).getMetroMap();e.hasMoreElements();)
 					{
 						final Room R=e.nextElement();
@@ -11266,10 +11270,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 				}
 				final Environmental newTarget=getArgumentMOB(tt[1],source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((newTarget!=null)&&(newTarget instanceof MOB)&&(lastKnownLocation!=null))
-				{
-					lastKnownLocation.showOthers((MOB)newTarget,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
-				}
+				final Room lastR=lastKnownLocation;
+				if((newTarget!=null)&&(newTarget instanceof MOB)&&(lastR!=null))
+					lastR.showOthers((MOB)newTarget,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
 				break;
 			}
 			case 9: // mpcast

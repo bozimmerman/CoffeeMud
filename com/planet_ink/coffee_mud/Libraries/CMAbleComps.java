@@ -491,7 +491,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		{
 			final Triggerer t = (Triggerer)CMClass.getCommon("DefaultTriggerer");
 			t.addTrigger(t, comp.getTriggererDef(), compSocials, null);
-			if(comp.getCompiledMask()!=null)
+			if((comp.getCompiledMask()!=null)&&(useConnector||(buf.length()>0)))
 				buf.append("then ");
 			buf.append(t.getTriggerDesc(t));
 		}

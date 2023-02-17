@@ -153,6 +153,7 @@ public class Spell_ImprovedRepairingAura extends Spell
 			I=owner.getItem(i);
 			if((I!=null)
 			&&(I.subjectToWearAndTear())
+			&&(!I.ID().equalsIgnoreCase("GlowingMageArmor"))
 			&&(I.fetchEffect("Spell_RepairingAura")==null)
 			&&(I.fetchEffect("Spell_MassRepairingAura")==null)
 			&&(I.fetchEffect(ID())==null))

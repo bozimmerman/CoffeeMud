@@ -2243,7 +2243,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					buf.append(L("Disallows mobs/npcs.  "));
 					break;
 				case PLAYER: // +Player
-					buf.append(L("Aallows players.  "));
+					buf.append(L("Allows players.  "));
 					break;
 				case NPC: // +MOB
 					buf.append(L("Allows mobs/npcs.  "));
