@@ -108,6 +108,12 @@ public class Thief_Lore extends ThiefSkill
 				}
 			}
 		}
+		boolean report=false;
+		if((commands.size()>1)&&(commands.get(commands.size()-1).equalsIgnoreCase("REPORT")))
+		{
+			commands.remove(commands.size()-1);
+			report=true;
+		}
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)
 			return false;
@@ -128,7 +134,10 @@ public class Thief_Lore extends ThiefSkill
 			{
 				mob.location().send(mob,msg);
 				final String identity=target.secretIdentity();
-				mob.tell(identity);
+				if(report)
+					CMLib.commands().postSay(mob, L("@x1 idenfies as @x2",target.name(),identity));
+				else
+					mob.tell(identity);
 
 			}
 		}
