@@ -404,6 +404,29 @@ public interface FactionManager extends CMLibrary, Tickable
 	public Faction makeReactionFaction(final String prefix, final String classID, final String Name, final String code, final String baseTemplateFilename);
 
 	/**
+	 * If area reactions are enabled, and the given area has one of them, then this
+	 * will return the areas faction.
+	 *
+	 * @see FactionManager#getSpecialFactions(MOB, Room)
+	 *
+	 * @param A the Area to check
+	 * @return a Faction object, or null
+	 */
+	public Faction getSpecialAreaFaction(final Area A);
+
+	/**
+	 * If reaction factions are enabled, and the given location has one of them,
+	 * then this will return the applicable faction.
+	 *
+	 * @see FactionManager#getSpecialAreaFaction(Area)
+	 *
+	 * @param mob the mob involved
+	 * @param R the mobs location
+	 * @return a Faction object, or null
+	 */
+	public Faction[] getSpecialFactions(final MOB mob, final Room R);
+
+	/**
 	 * Returns what type of ability mask is represented by the string,
 	 * as one of the FAbilityMaskType enums, which includes things like
 	 * the Ability Code, Domain, Ability Flag (usually prefixed with "!"),

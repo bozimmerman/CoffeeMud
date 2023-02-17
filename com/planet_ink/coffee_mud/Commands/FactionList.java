@@ -52,6 +52,18 @@ public class FactionList extends StdCommand
 		boolean none=true;
 		final String args = CMParms.combine(commands,1).toUpperCase();
 		final Enumeration<String> factions;
+		if(args.equals("HERE"))
+		{
+			final XVector<String> fs=new XVector<String>();
+			final Faction[] Fs = CMLib.factions().getSpecialFactions(mob, mob.location());
+			if(Fs != null)
+			{
+				for(final Faction F : Fs)
+					fs.add(F.factionID());
+			}
+			factions=fs.elements();
+		}
+		else
 		if(args.length()==0)
 			factions=mob.factions();
 		else

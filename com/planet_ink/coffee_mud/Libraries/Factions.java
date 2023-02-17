@@ -591,6 +591,23 @@ public class Factions extends StdLibrary implements FactionManager
 		return addFaction(F) ? F : null;
 	}
 
+	@Override
+	public Faction getSpecialAreaFaction(final Area A)
+	{
+		if((A!=null)
+		&&(!CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))
+		&&(!(A instanceof Boardable)))
+		{
+			final String areaCode = A.Name().toUpperCase().trim().replace(' ','_');
+			Faction F=getFaction("AREA_"+areaCode);
+			if(F==null)
+				F=makeReactionFaction("AREA_",A.ID(),A.Name(),areaCode,"examples/areareaction.ini");
+			return F;
+		}
+		return null;
+	}
+
+	@Override
 	public Faction[] getSpecialFactions(final MOB mob, final Room R)
 	{
 		if((mob==null)||(R==null))
@@ -624,17 +641,9 @@ public class Factions extends StdLibrary implements FactionManager
 				if(autoType.equals("AREA"))
 				{
 					final Area A=R.getArea();
-					if((A!=null)
-					&&(!CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))
-					&&(!(A instanceof Boardable)))
-					{
-						final String areaCode = A.Name().toUpperCase().trim().replace(' ','_');
-						F=getFaction("AREA_"+areaCode);
-						if(F==null)
-							F=makeReactionFaction("AREA_",A.ID(),A.Name(),areaCode,"examples/areareaction.ini");
-						if(F!=null)
-							Fs.add(F);
-					}
+					F=getSpecialAreaFaction(A);
+					if(F!=null)
+						Fs.add(F);
 				}
 				else
 				if(autoType.equals("NAME"))
@@ -750,8 +759,10 @@ public class Factions extends StdLibrary implements FactionManager
 		{
 			for(final Faction F : Fs)
 			{
-				if((F!=null)&&(!F.hasFaction(mob))&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
-					mob.addFaction(F.factionID(),F.findAutoDefault(mob));
+				if((F!=null)
+				&&(!F.hasFaction(mob))
+				&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
+					mob.addFaction(F.factionID(), F.findAutoDefault(mob));
 			}
 		}
 	}
