@@ -121,7 +121,8 @@ public class Account extends StdCommand
 			final PlayerStats pStats=cachedWhoM.playerStats();
 			final Session sess = cachedWhoM.session();
 			if((pStats != null)
-			&&(sess != null))
+			&&(sess != null)
+			&&(sess.isAfk()))
 			{
 				final int tells=pStats.queryTellStack(null, cachedWhoM.Name(), Long.valueOf(sess.getIdleMillis())).size();
 				final int gtells=pStats.queryGTellStack(null, cachedWhoM.Name(), Long.valueOf(sess.getIdleMillis())).size();
@@ -144,7 +145,7 @@ public class Account extends StdCommand
 			&&(!postFound))
 			{
 				postalChains.add(P.postalChain());
-				List<String> keys = CMLib.database().DBReadPlayerDataKeys(who.name(), P.postalChain());
+				final List<String> keys = CMLib.database().DBReadPlayerDataKeys(who.name(), P.postalChain());
 				for(String key : keys)
 				{
 					final int x=key.indexOf(';');

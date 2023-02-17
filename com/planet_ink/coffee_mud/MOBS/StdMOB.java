@@ -4392,6 +4392,18 @@ public class StdMOB implements MOB
 		return fetchFromInventory(goodLocation, itemName, filter, true);
 	}
 
+	@Override
+	public String getContextName(final Environmental E)
+	{
+		if(E instanceof Item)
+		{
+			final String ctxName=CMLib.english().getContextName(inventory,E);
+			if(ctxName!=null)
+				return ctxName;
+		}
+		return "nothing";
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List<Item> findItems(final String itemName)

@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -55,6 +56,8 @@ public class Prop_WearOverride extends Property
 
 	protected CompiledZMask		mask		= null;
 	protected String			maskDesc	= "";
+	protected boolean			forceDress	= false;
+	protected boolean			contentsOk	= false;
 	protected long				locMaskAdj	= Integer.MAX_VALUE;
 	protected volatile boolean	activated	= false;
 	protected volatile MOB		lastMob		= null;
@@ -70,12 +73,29 @@ public class Prop_WearOverride extends Property
 	@Override
 	public void setMiscText(final String newText)
 	{
-		maskDesc="";
-		mask=null;
+		maskDesc = "";
+		mask = null;
+		forceDress = false;
 		if(newText.length()>0)
 		{
-			mask=CMLib.masking().getPreCompiledMask(newText);
-			maskDesc=CMLib.masking().maskDesc(newText,true);
+			final List<String> ps = CMParms.parse(newText);
+			for(int p=ps.size()-1;p>=0;p--)
+			{
+				if(ps.get(p).equalsIgnoreCase("DRESS"))
+				{
+					forceDress = true;
+					ps.remove(p);
+				}
+				else
+				if(ps.get(p).equalsIgnoreCase("CONTENTS"))
+				{
+					contentsOk = true;
+					ps.remove(p);
+				}
+			}
+			final String maskStr = CMParms.combineQuoted(ps, 0);
+			mask=CMLib.masking().getPreCompiledMask(maskStr);
+			maskDesc=CMLib.masking().maskDesc(maskStr,true);
 		}
 		super.setMiscText(newText);
 	}
@@ -93,6 +113,74 @@ public class Prop_WearOverride extends Property
 			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap() & this.locMaskAdj);
 	}
 
+	protected boolean dress(final Room R, final MOB mob, final Environmental target, final Item I)
+	{
+		final Command C=CMClass.getCommand("Dress");
+		if(C!=null)
+		{
+			final String targetName = R.getContextName(target);
+			final String toolName = "$"+I.name()+"$";
+			try
+			{
+				C.execute(mob, new XVector<String>("Dress",targetName,toolName), 0);
+				return true;
+			}
+			catch (final IOException e)
+			{
+			}
+		}
+		return false;
+	}
+
+	protected boolean undress(final Room R, final MOB mob, final Environmental target, final Item I)
+	{
+		final Command C=CMClass.getCommand("Undress");
+		if(C!=null)
+		{
+			final String targetName = R.getContextName(target);
+			final String toolName = "$"+I.name()+"$";
+			try
+			{
+				C.execute(mob, new XVector<String>("Undress",targetName,toolName), 0);
+				return true;
+			}
+			catch (final IOException e)
+			{
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public void executeMsg(final Environmental host, final CMMsg msg)
+	{
+		if((contentsOk)
+		&&(affected instanceof Container)
+		&&((msg.source().riding()==null)||(msg.source().riding()==((Container)affected).owner())))
+		{
+			final Container itemC=(Container)affected;
+			if((msg.target() instanceof MOB)
+			&&(itemC!=null)
+			&&(itemC.owner() == msg.target())
+			&&(itemC.rawWornCode()!=Item.IN_INVENTORY)
+			&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
+			&&(CMLib.flags().canBeSeenBy(msg.target(),msg.source())))
+			{
+				msg.addTrailerRunnable(new Runnable() {
+					final MOB mob=msg.source();
+					final Container C=itemC;
+					final int srcCode = msg.targetCode();
+					@Override
+					public void run()
+					{
+						final CMMsg msg2=CMClass.getMsg(mob, C, srcCode, null);
+						CMLib.commands().handleBeingLookedAt(msg2);
+					}
+				});
+			}
+		}
+		super.executeMsg(host,msg);
+	}
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
@@ -134,6 +222,282 @@ public class Prop_WearOverride extends Property
 				lastMob = null;
 				msg.source().recoverCharStats();
 				msg.source().recoverCharStats();
+			}
+		}
+		else
+		if((forceDress||contentsOk)
+		&&(affected instanceof Container)
+		&&((msg.source().riding()==null)||(msg.source().riding()==((Container)affected).owner())))
+		{
+			final Item contI = (Item)affected;
+			if(forceDress
+			&&(msg.tool()==contI)
+			&&(msg.targetMinor()==CMMsg.TYP_PUT)
+			&&(msg.target() instanceof MOB))
+			{
+				final Room R=CMLib.map().roomLocation(msg.target());
+				if(dress(R,msg.source(),msg.target(),contI))
+					return false;
+			}
+			else
+			if(contentsOk
+			&&(msg.targetMinor()==CMMsg.TYP_PUT)
+			&&(msg.tool()!=contI)
+			&&(msg.target() instanceof MOB)
+			&&(contI!=null)
+			&&(contI.rawWornCode()!=Item.IN_INVENTORY)
+			&&(msg.target()==contI.owner()))
+			{
+				final MOB ownM=(MOB)msg.target();
+				final long rawWornCode=contI.rawWornCode();
+				try
+				{
+					msg.source().moveItemTo(contI);
+					final Command C=CMClass.getCommand("Put");
+					if(C!=null)
+					{
+						try
+						{
+							final List<String> V = new XVector<String>("PUT",msg.tool().Name(),contI.Name());
+							C.execute(msg.source(), V, 0);
+							return false;
+						}
+						catch (final IOException e)
+						{
+						}
+					}
+				}
+				finally
+				{
+					if(contI.owner() == msg.source())
+					{
+						ownM.moveItemTo(contI);
+						contI.setRawWornCode(rawWornCode);
+					}
+				}
+			}
+			else
+			if((msg.sourceMinor()==CMMsg.TYP_COMMANDFAIL)
+			&&(msg.targetMessage()!=null)
+			&&(msg.targetMessage().length()>0))
+			{
+				if(forceDress
+				&&(Character.toUpperCase(msg.targetMessage().charAt(0)) == 'D'))
+				{
+					final List<String> parsedFail = CMParms.parse(msg.targetMessage());
+					if(parsedFail.size()<3)
+						return true;
+					final String cmd=parsedFail.get(0).toUpperCase();
+					if(!("DRESS".startsWith(cmd)))
+						return true;
+					final Room R=CMLib.map().roomLocation(msg.source());
+					if(R==null)
+						return true;
+					final String what=parsedFail.get(parsedFail.size()-1);
+					parsedFail.remove(what);
+					final MOB mob=msg.source();
+					final Item item=mob.findItem(null,what);
+					if(item == contI)
+					{
+						final String whom=CMParms.combine(parsedFail,1);
+						final MOB target=R.fetchInhabitant(whom);
+						if(target != null)
+						{
+							if((!target.willFollowOrdersOf(mob))
+							&&(!CMLib.flags().isBoundOrHeld(target)))
+							{
+								final MOB oldFollowing=target.amFollowing();
+								try
+								{
+									target.setFollowing(mob);
+									if(dress(R,mob,target,item))
+										return false;
+								}
+								finally
+								{
+									target.setFollowing(oldFollowing);
+								}
+							}
+						}
+					}
+					return true;
+				}
+				else
+				if(forceDress
+				&&(contI!=null)
+				&&(contI.rawWornCode()!=Item.IN_INVENTORY)
+				&&(Character.toUpperCase(msg.targetMessage().charAt(0)) == 'U'))
+				{
+					final List<String> parsedFail = CMParms.parse(msg.targetMessage());
+					if(parsedFail.size()<3)
+						return true;
+					final String cmd=parsedFail.get(0).toUpperCase();
+					if(!("UNDRESS".startsWith(cmd)))
+						return true;
+					final Room R=CMLib.map().roomLocation(msg.source());
+					if(R==null)
+						return true;
+					final String what=parsedFail.get(parsedFail.size()-1);
+					parsedFail.remove(what);
+					final MOB mob=msg.source();
+					final Item item=mob.findItem(null,what);
+					if(item == contI)
+					{
+						final String whom=CMParms.combine(parsedFail,1);
+						final MOB target=R.fetchInhabitant(whom);
+						if(target != null)
+						{
+							if((!target.willFollowOrdersOf(mob))
+							&&(!CMLib.flags().isBoundOrHeld(target)))
+							{
+								final MOB oldFollowing=target.amFollowing();
+								try
+								{
+									target.setFollowing(mob);
+									if(dress(R,mob,target,item))
+										return false;
+								}
+								finally
+								{
+									target.setFollowing(oldFollowing);
+								}
+							}
+						}
+					}
+					return true;
+				}
+				else
+				if(contentsOk
+				&&(Character.toUpperCase(msg.targetMessage().charAt(0)) == 'G')
+				&&(contI!=null)
+				&&(contI.rawWornCode()!=Item.IN_INVENTORY)
+				&&(contI.owner() instanceof MOB)
+				&&(contI.owner() != msg.source()))
+				{
+					final List<String> parsedFail = CMParms.parse(msg.targetMessage());
+					if(parsedFail.size()<3)
+						return true;
+					final String cmd=parsedFail.get(0).toUpperCase();
+					if(!("GET".startsWith(cmd)))
+						return true;
+					final MOB ownM = (MOB)contI.owner();
+					final Room R=msg.source().location();
+					int fromWhomDex=-1;
+					int lastWhomDex=-1;
+					for(int i=parsedFail.size()-2;i>=2;i--)
+					{
+						if("FROM".startsWith(parsedFail.get(i).toUpperCase()))
+						{
+							lastWhomDex=i;
+							fromWhomDex=i+1;
+							break;
+						}
+					}
+					if(fromWhomDex<0)
+					{
+						fromWhomDex=parsedFail.size()-1;
+						lastWhomDex=fromWhomDex;
+					}
+					if((fromWhomDex<0)||(R==null)||(ownM==null)||(msg.source().isMine(contI)))
+						return true;
+					if(R.fetchInhabitant(CMParms.combine(parsedFail,fromWhomDex))!=(MOB)contI.owner())
+						return true;
+					final String getWhat = CMParms.combine(parsedFail,1,lastWhomDex);
+					if(ownM.fetchItem(contI, Wearable.FILTER_ANY, getWhat)!=null)
+					{
+						final long rawWornCode=contI.rawWornCode();
+						try
+						{
+							msg.source().moveItemTo(contI);
+							final Command C=CMClass.getCommand("Get");
+							if(C!=null)
+							{
+								while(parsedFail.size()>fromWhomDex)
+									parsedFail.remove(parsedFail.size()-1);
+								parsedFail.add(contI.Name());
+								try
+								{
+									C.execute(msg.source(), parsedFail, 0);
+									return false;
+								}
+								catch (final IOException e)
+								{
+								}
+							}
+						}
+						finally
+						{
+							ownM.moveItemTo(contI);
+							contI.setRawWornCode(rawWornCode);
+						}
+					}
+					else
+					{
+						msg.source().tell(L("You don't see @x1 in @x2 on @x3.",getWhat,contI.name(msg.source()),ownM.name(msg.source())));
+						return false;
+					}
+					return true;
+				}
+				else
+				if(contentsOk
+				&&(Character.toUpperCase(msg.targetMessage().charAt(0)) == 'P')
+				&&(contI!=null)
+				&&(contI.rawWornCode()!=Item.IN_INVENTORY)
+				&&(contI.owner() instanceof MOB))
+				{
+					final List<String> parsedFail = CMParms.parse(msg.targetMessage());
+					if(parsedFail.size()<3)
+						return true;
+					final String cmd=parsedFail.get(0).toUpperCase();
+					if(!("PUT".startsWith(cmd)))
+						return true;
+					final MOB ownM = (MOB)contI.owner();
+					final Room R=msg.source().location();
+					int intoWhomDex=-1;
+					for(int i=parsedFail.size()-2;i>=2;i--)
+					{
+						if("INTO".startsWith(parsedFail.get(i).toUpperCase()))
+						{
+							intoWhomDex=i+1;
+							break;
+						}
+					}
+					if(intoWhomDex<0)
+						intoWhomDex=parsedFail.size()-1;
+					if((intoWhomDex<0)||(R==null)||(ownM==null)||(msg.source().isMine(contI)))
+						return true;
+					if(R.fetchInhabitant(CMParms.combine(parsedFail,intoWhomDex))!=(MOB)contI.owner())
+						return true;
+					final long rawWornCode=contI.rawWornCode();
+					try
+					{
+						msg.source().moveItemTo(contI);
+						final Command C=CMClass.getCommand("Put");
+						if(C!=null)
+						{
+							while(parsedFail.size()>=intoWhomDex)
+								parsedFail.remove(parsedFail.size()-1);
+							parsedFail.add(contI.Name());
+							try
+							{
+								C.execute(msg.source(), parsedFail, 0);
+								return false;
+							}
+							catch (final IOException e)
+							{
+							}
+						}
+					}
+					finally
+					{
+						if(contI.owner() == msg.source())
+						{
+							ownM.moveItemTo(contI);
+							contI.setRawWornCode(rawWornCode);
+						}
+					}
+					return true;
+				}
 			}
 		}
 		return super.okMessage(host, msg);

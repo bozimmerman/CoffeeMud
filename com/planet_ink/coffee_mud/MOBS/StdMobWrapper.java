@@ -1388,6 +1388,12 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	}
 
 	@Override
+	public String getContextName(final Environmental E)
+	{
+		return "nothing";
+	}
+
+	@Override
 	public List<Item> fetchWornItems(final long wornCode, final short aboveOrAroundLayer, final short layerAttributes)
 	{
 		return new ArrayList<Item>(0);

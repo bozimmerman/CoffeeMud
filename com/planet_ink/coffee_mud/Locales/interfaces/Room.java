@@ -1128,19 +1128,6 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	public void bringMobHere(MOB mob, boolean andFollowers);
 
 	/**
-	 * Generates a specific search-string name for the given
-	 * object in this room.  Since items or mobs with the exact
-	 * same name can be in a given room, a context-number-suffix
-	 * (.1, .2, etc..) is used to specify which of the identical
-	 * objects to return in the list.  This method wil, given
-	 * an item or mob in this room, generate that search string
-	 * by returning the name plus the optional context suffix.
-	 * @param E the mob or item to return a search string for
-	 * @return the specific search string that returns the given object
-	 */
-	public String getContextName(Environmental E);
-
-	/**
 	 * Returns an enumeration of all the items in the room,
 	 * any items on any inhabitants also.
 	 * @return a more recursive item list

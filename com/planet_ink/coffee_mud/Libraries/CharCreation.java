@@ -1782,7 +1782,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				final PlayerStats pStats=mob.playerStats();
 				final Session sess = mob.session();
 				if((pStats != null)
-				&&(sess != null))
+				&&(sess != null)
+				&&(sess.isAfk()))
 				{
 					final int tells=pStats.queryTellStack(null, mob.Name(), Long.valueOf(sess.getIdleMillis())).size();
 					final int gtells=pStats.queryGTellStack(null, mob.Name(), Long.valueOf(sess.getIdleMillis())).size();

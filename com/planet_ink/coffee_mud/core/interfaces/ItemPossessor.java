@@ -60,6 +60,19 @@ public interface ItemPossessor extends PhysicalAgent, ItemCollection
 	 */
 	public void moveItemTo(Item container);
 
+	/**
+	 * Generates a specific search-string name for the given
+	 * object in this possessor.  Since items or mobs with the exact
+	 * same name can be in a given room, a context-number-suffix
+	 * (.1, .2, etc..) is used to specify which of the identical
+	 * objects to return in the list.  This method wil, given
+	 * an item or mob, will generate that search string
+	 * by returning the name plus the optional context suffix.
+	 * @param E the mob or item to return a search string for
+	 * @return the specific search string that returns the given object
+	 */
+	public String getContextName(Environmental E);
+
 	/** constants for the addItem methods to denote how long the item lives before expiring */
 	public enum Expire { Never, Monster_EQ, Player_Drop, Resource, Monster_Body, Player_Body, Inheret	}
 

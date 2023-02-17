@@ -237,7 +237,6 @@ public class GenGangline extends GenArmor
 				final String cmd=parsedFail.get(0).toUpperCase();
 				if((!("MOUNT".startsWith(cmd)))&&(!("PUT".startsWith(cmd))))
 					return true;
-
 			}
 		}
 		return true;
@@ -304,7 +303,6 @@ public class GenGangline extends GenArmor
 								R.bringMobHere(meM, true);
 							}
 						}
-
 					}, 1500);
 				}
 			}
