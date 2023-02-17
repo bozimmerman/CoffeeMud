@@ -124,8 +124,8 @@ public class Account extends StdCommand
 			&&(sess != null)
 			&&(sess.isAfk()))
 			{
-				final int tells=pStats.queryTellStack(null, cachedWhoM.Name(), Long.valueOf(sess.getIdleMillis())).size();
-				final int gtells=pStats.queryGTellStack(null, cachedWhoM.Name(), Long.valueOf(sess.getIdleMillis())).size();
+				final int tells=pStats.queryTellStack(null, cachedWhoM.Name(), Long.valueOf(System.currentTimeMillis()-sess.getIdleMillis())).size();
+				final int gtells=pStats.queryGTellStack(null, cachedWhoM.Name(), Long.valueOf(System.currentTimeMillis()-sess.getIdleMillis())).size();
 				if((tells>0)||(gtells>0))
 					msg.append(" ^T(tells)^?");
 			}

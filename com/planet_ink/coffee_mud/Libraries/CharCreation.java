@@ -1785,8 +1785,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				&&(sess != null)
 				&&(sess.isAfk()))
 				{
-					final int tells=pStats.queryTellStack(null, mob.Name(), Long.valueOf(sess.getIdleMillis())).size();
-					final int gtells=pStats.queryGTellStack(null, mob.Name(), Long.valueOf(sess.getIdleMillis())).size();
+					final int tells=pStats.queryTellStack(null, mob.Name(), Long.valueOf(System.currentTimeMillis()-sess.getIdleMillis())).size();
+					final int gtells=pStats.queryGTellStack(null, mob.Name(), Long.valueOf(System.currentTimeMillis()-sess.getIdleMillis())).size();
 					if((tells>0)||(gtells>0))
 						buf.append(" ^T(tells)^?");
 				}
