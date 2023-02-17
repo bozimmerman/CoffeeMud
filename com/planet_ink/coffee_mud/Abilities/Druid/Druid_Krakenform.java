@@ -123,8 +123,11 @@ public class Druid_Krakenform extends StdAbility
 				ship.setSavable(false);
 				ship.setAnchorDown(false);
 				ship.setUsesRemaining(100);
+				ship.setMaterial(RawMaterial.RESOURCE_SCALES);
 				if(ship instanceof Container)
 					((Container)ship).setCapacity(0);
+				if(ship instanceof PrivateProperty)
+					((PrivateProperty)ship).setOwnerName(mob.Name());
 				ship.setName("a kraken");
 				ship.setDisplayText("a kraken is here");
 				ship.setStat("SPECIAL_NOUN_SHIP", "kraken");

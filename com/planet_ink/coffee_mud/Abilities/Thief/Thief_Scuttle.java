@@ -125,10 +125,16 @@ public class Thief_Scuttle extends ThiefSkill
 			return false;
 		}
 
-		if(((!CMLib.combat().mayIAttackThisVessel(mob, boat))
-			&&(!CMLib.law().doesHavePriviledgesHere(mob, R))))
+		if((!CMLib.combat().mayIAttackThisVessel(mob, boat))
+		&&(!CMLib.law().doesHavePriviledgesHere(mob, R)))
 		{
 			mob.tell(L("You are not permitted to scuttle this boat."));
+			return false;
+		}
+		if((boat instanceof Item)
+		&&(((Item)boat).material()==RawMaterial.RESOURCE_SCALES))
+		{
+			mob.tell(L("You don't know how to scuttle this."));
 			return false;
 		}
 

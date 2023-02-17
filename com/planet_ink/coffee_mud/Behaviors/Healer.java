@@ -47,7 +47,7 @@ public class Healer extends ActiveTicker
 		return Behavior.CAN_MOBS;
 	}
 
-	protected static final List<Ability> healingVector=new Vector<Ability>();
+	protected static final List<String> healingVector=new Vector<String>();
 
 	public Healer()
 	{
@@ -56,12 +56,12 @@ public class Healer extends ActiveTicker
 		tickReset();
 		if(healingVector.size()==0)
 		{
-			healingVector.add(CMClass.getAbility("Prayer_CureBlindness"));
-			healingVector.add(CMClass.getAbility("Prayer_CureDisease"));
-			healingVector.add(CMClass.getAbility("Prayer_CureLight"));
-			healingVector.add(CMClass.getAbility("Prayer_RemoveCurse"));
-			healingVector.add(CMClass.getAbility("Prayer_Bless"));
-			healingVector.add(CMClass.getAbility("Prayer_Sanctuary"));
+			healingVector.add("Prayer_CureBlindness");
+			healingVector.add("Prayer_CureDisease");
+			healingVector.add("Prayer_CureLight");
+			healingVector.add("Prayer_RemoveCurse");
+			healingVector.add("Prayer_Bless");
+			healingVector.add("Prayer_Sanctuary");
 		}
 	}
 
@@ -97,11 +97,11 @@ public class Healer extends ActiveTicker
 				&&(followMOB.getVictim()!=mob)
 				&&(!followMOB.isMonster()))
 				{
-					final Ability tryThisOne=healingVector.get(CMLib.dice().roll(1,healingVector.size(),-1));
-					Ability thisOne=mob.fetchAbility(tryThisOne.ID());
+					final String tryID=healingVector.get(CMLib.dice().roll(1,healingVector.size(),-1));
+					Ability thisOne=mob.fetchAbility(tryID);
 					if(thisOne==null)
 					{
-						thisOne=(Ability)tryThisOne.copyOf();
+						thisOne=CMClass.getAbility(tryID);
 						thisOne.setSavable(false);
 						mob.addAbility(thisOne);
 					}
