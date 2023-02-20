@@ -32,6 +32,7 @@
 	<META CHARSET="utf-8"/>
 <head>
  	<link rel="grinder icon" href="/images/grinder.ico" >
+ 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
 </head>
 @if?RequestParameter?SINGLEMOB@
 	<FRAMESET ROWS=1%,99% FRAMEBORDER=NO FRAMESPACING=0>

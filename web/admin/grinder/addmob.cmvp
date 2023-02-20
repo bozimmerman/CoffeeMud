@@ -11,6 +11,7 @@
 <head>
 	<META CHARSET="utf-8"/>
  	<link rel="grinder icon" href="/images/grinder.ico" >
+ 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
 </head>
 	<FRAMESET ROWS=80%,20% FRAMEBORDER=NO FRAMESPACING=0>
 		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/editmobform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaIDEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@&MOB=NEW" NAME=MAP>

@@ -5,6 +5,11 @@ body
 	color: silver;
 }
 
+A
+{
+	text-decoration: none;
+}
+
 .cmAreaTblEntry
 {
 	text-align: center;

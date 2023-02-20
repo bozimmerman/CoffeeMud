@@ -5,6 +5,7 @@
 <head>
 	<META CHARSET="utf-8"/>
 	<link rel="coffeemud icon" href="images/coffeemud.ico" >
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
 	<title>Player Information</title>
 	<script language=JavaScript>
 	<!--

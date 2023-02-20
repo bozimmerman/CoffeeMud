@@ -3,6 +3,7 @@
 <head>
 	<META CHARSET="utf-8"/>
  	<link rel="grinder icon" href="/images/grinder.ico" >
+ 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="admin.css">
 	<title>MOB Stuff -- Behaviors/Properties</title>
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--

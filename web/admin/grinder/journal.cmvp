@@ -8,6 +8,7 @@
 <head>
 	<title>Journal Browser</title>
  	<link rel="grinder icon" href="/images/grinder.ico" >
+ 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
 	<script language=JavaScript>
 	<!--
 		function Clicked(action,message,journal,journalcardinal,page,fun)

@@ -31,6 +31,7 @@
 	<META CHARSET="utf-8"/>
 <head>
  	<link rel="grinder icon" href="/images/grinder.ico" >
+ 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
 </head>
 <SCRIPT LANGUAGE=JavaScript>
 <!--

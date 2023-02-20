@@ -6,6 +6,7 @@
 	<META CHARSET="utf-8"/>
 <head>
 	<link rel="coffeemud icon" href="images/coffeemud.ico" >
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
 	<title>Recovery Charts</title>
 	<Script language=JavaScript>

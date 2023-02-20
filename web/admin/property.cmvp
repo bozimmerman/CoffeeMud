@@ -3,6 +3,7 @@
 <HEAD>
 	<META CHARSET="utf-8"/>
  	<link rel="grinder icon" href="/images/grinder.ico" >
+ 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="admin.css">
 <meta name="robots" content="noindex,nofollow">
  	<link rel="grinder icon" href="/images/grinder.ico" >
 <TITLE>@AbilityName@</TITLE>

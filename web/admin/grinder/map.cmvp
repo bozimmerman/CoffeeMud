@@ -10,6 +10,7 @@
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<title>CoffeeMud MUDGrinder</title>
  	<link rel="grinder icon" href="/images/grinder.ico" >
+ 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
 	<SCRIPT LANGUAGE="JavaScript">
 	<!--
 		var shiftDown=true;

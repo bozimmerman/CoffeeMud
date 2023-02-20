@@ -3,6 +3,7 @@
 <HEAD>
 	<META CHARSET="utf-8"/>
 	<link rel="coffeemud icon" href="images/coffeemud.ico" >
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
 <meta name="robots" content="noindex,nofollow">
 <TITLE>@RequestParameter?TOPIC@</TITLE>
 </HEAD>

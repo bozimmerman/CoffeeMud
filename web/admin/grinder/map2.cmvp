@@ -9,6 +9,7 @@
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
  	<link rel="grinder icon" href="/images/grinder.ico" >
+ 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
 	<title>CoffeeMud MUDGrinder</title>
 	<SCRIPT LANGUAGE="JavaScript">
 	<!--

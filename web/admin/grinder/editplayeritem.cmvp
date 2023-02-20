@@ -11,6 +11,7 @@
 	<META CHARSET="utf-8"/>
 <head>
  	<link rel="grinder icon" href="/images/grinder.ico" >
+ 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
 </head>
 	<FRAMESET ROWS=90%,10% FRAMEBORDER=NO FRAMESPACING=0>
 		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/edititemform.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@RequestParameterEncoded?PLAYER@&ITEM=@RequestParameterEncoded?ITEM@" NAME=MAP>
