@@ -17,6 +17,7 @@
  16. Prop_ShortEffects expanded to include remotely-cast effects also.
  17. ACCOUNT command can now show chars with waiting mail, or missed tells.
  18. Prop_WearAdjuster allows dressing and content manipulation, from outside (saddlebags).
+ 19. New item: GenBagOfHolding
 
 # Build 5.10.1 Release 1/01/2023
   1. FasterRecovery expanded and new char stat REJUVRATE for Prop*Adjuster
