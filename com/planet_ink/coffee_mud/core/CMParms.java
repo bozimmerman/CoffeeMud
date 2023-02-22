@@ -59,6 +59,8 @@ public class CMParms
 	 */
 	public static final DelimiterChecker spaceDelimiter=new DelimiterChecker();
 
+	private static final int[] emptyIntArray = new int[0];
+
 	/**
 	 * An overrideable class for supplying a delimiter determination tool
 	 * @see CMParms#createDelimiter(char[])
@@ -2915,10 +2917,7 @@ public class CMParms
 	public final static int[] toIntArray(final List<?> V)
 	{
 		if((V==null)||(V.size()==0))
-		{
-			final int[] s=new int[0];
-			return s;
-		}
+			return emptyIntArray;
 		final int[] s=new int[V.size()];
 		for(int v=0;v<V.size();v++)
 			s[v]=CMath.s_int(V.get(v).toString());
@@ -4739,6 +4738,29 @@ public class CMParms
 				return i;
 		}
 		return -1;
+	}
+
+	/**
+	 * Returns the indexes of the string in the string array that ends with
+	 * the given string.  The search is case sensitive
+	 * @param theList the list of strings
+	 * @param str the string to look for
+	 * @return indexes of entry in the list that ends with the string, or []
+	 */
+	public final static int[] endsWiths(final String[] theList, final String str)
+	{
+		if(theList==null)
+			return emptyIntArray;
+		if(str==null)
+			return emptyIntArray;
+		final int[] found = new int[theList.length];
+		int fdex = 0;
+		for(int i=0;i<theList.length;i++)
+		{
+			if(theList[i].endsWith(str))
+				found[fdex++]=i;
+		}
+		return Arrays.copyOf(found, fdex);
 	}
 
 	/**

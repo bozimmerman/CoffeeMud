@@ -59,7 +59,8 @@ public class Remove extends StdCommand
 			return false;
 		}
 		commands.remove(0);
-		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_WORNONLY,false);
+		final List<Item> items = new ArrayList<Item>();
+		items.addAll(CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_WORNONLY,false));
 		if(items.size()==0)
 			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be wearing that."));
 		else

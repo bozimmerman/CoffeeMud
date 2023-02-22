@@ -598,6 +598,7 @@ public interface Wearable extends Environmental
 		private String[]	descs				= new String[0];
 		private String[]	updescs				= new String[0];
 		private String[]	usualNames			= new String[0];
+		private static final long[]	emptyLong	= new long[0];
 
 		/**
 		 * Returns total number of codes 0 - this-1
@@ -753,6 +754,7 @@ public interface Wearable extends Environmental
 				return x;
 			return -1;
 		}
+
 		/**
 		 * Returns the index of the names locations, or -1
 		 * @param rsc the resource name
@@ -768,6 +770,16 @@ public interface Wearable extends Environmental
 		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
+		public static long[] FIND_endsWiths(final String rsc)
+		{
+			return c().find_endsWiths(rsc);
+		}
+
+		/**
+		 * Returns the index of the names locations, or -1
+		 * @param rsc the loc name
+		 * @return the code of the wear locations, or -1
+		 */
 		public long find_endsWith(final String rsc)
 		{
 			if(rsc==null)
@@ -777,6 +789,27 @@ public interface Wearable extends Environmental
 				return allCodes[x];
 			return -1;
 		}
+
+		/**
+		 * Returns the index of the names locations, or []
+		 * @param rsc the loc name
+		 * @return the wear codes, or []
+		 */
+		public long[] find_endsWiths(final String rsc)
+		{
+			if(rsc==null)
+				return emptyLong;
+			final int[] xs=CMParms.endsWiths(descs, rsc.toLowerCase());
+			if(xs.length>0)
+			{
+				final long[] codes = new long[xs.length];
+				for(int i=0;i<xs.length;i++)
+					codes[i]=allCodes[xs[i]];
+				return codes;
+			}
+			return emptyLong;
+		}
+
 		/**
 		 * Returns a comma-delimited list of location names
 		 * represented by the given worn code.

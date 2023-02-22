@@ -1816,6 +1816,42 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			if(from instanceof MOB)
 			{
 				item=((MOB)from).fetchItem(container,filter,name+addendumStr);
+				if((item == null)
+				&&(filter == Wearable.FILTER_WORNONLY))
+				{
+					String locName = name.toUpperCase();
+					if(locName.startsWith("ALL ")||locName.startsWith("ALL."))
+						locName = locName.substring(4).trim();
+					if(locName.startsWith("FROM "))
+						locName = locName.substring(5).trim();
+					final long code = Wearable.CODES.FIND_ignoreCase(locName);
+					final List<Item> items=new ArrayList<Item>(2);
+					if(code>0)
+						items.addAll(((MOB)from).fetchWornItems(code,(short)-2048,(short)0));
+					else
+					{
+						final long[] codes = Wearable.CODES.FIND_endsWiths(" "+locName);
+						for(final long cd : codes)
+							items.addAll(((MOB)from).fetchWornItems(cd,(short)-2048,(short)0));
+					}
+					if(items.size()>0)
+					{
+						Collections.sort(items,new Comparator<Item>() {
+							@Override
+							public int compare(final Item o1, final Item o2)
+							{
+								final int layer1 = (o1 instanceof Armor)?((Armor)o1).getClothingLayer():0;
+								final int layer2 = (o2 instanceof Armor)?((Armor)o2).getClothingLayer():0;
+								if(layer1>layer2)
+									return -1;
+								else
+									return (layer1==layer2) ? 0 : 1;
+							}
+						});
+						if((addendum>0)&&(addendum <= items.size()))
+							item=items.get(addendum-1);
+					}
+				}
 				// all this for single underlayer items with the same name.. ugh...
 				if((item instanceof Armor)
 				&& (!allFlag)
@@ -2703,18 +2739,21 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return null;
 
 		boolean allFlag=false;
-		if(srchStr.startsWith("ALL "))
+		if(srchStr.startsWith("ALL"))
 		{
-			srchStr=srchStr.substring(4);
 			allFlag=true;
+			if(srchStr.length()>3)
+			{
+				if(srchStr.charAt(3)=='.')
+					srchStr=srchStr.substring(3);
+				else
+					srchStr=srchStr.substring(4);
+			}
 		}
-		else
-		if(srchStr.equals("ALL"))
-			allFlag=true;
 
 		int dot=srchStr.lastIndexOf('.');
 		int occurrance=0;
-		if(dot>0)
+		if(dot>=0)
 		{
 			String sub=srchStr.substring(dot+1);
 			occurrance=CMath.s_int(sub);
