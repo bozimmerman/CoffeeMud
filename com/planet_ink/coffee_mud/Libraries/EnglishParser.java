@@ -2741,14 +2741,22 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		boolean allFlag=false;
 		if(srchStr.startsWith("ALL"))
 		{
-			allFlag=true;
 			if(srchStr.length()>3)
 			{
 				if(srchStr.charAt(3)=='.')
+				{
 					srchStr=srchStr.substring(3);
+					allFlag=true;
+				}
 				else
+				if(srchStr.charAt(3)==' ')
+				{
 					srchStr=srchStr.substring(4);
+					allFlag=true;
+				}
 			}
+			else
+				allFlag=true;
 		}
 
 		int dot=srchStr.lastIndexOf('.');
