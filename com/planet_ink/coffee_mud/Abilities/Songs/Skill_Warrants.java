@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -110,19 +110,29 @@ public class Skill_Warrants extends BardSkill
 					mob.tell(L("No one is wanted for anything here."));
 					return false;
 				}
+				final String filter=CMParms.combine(commands,0).trim();
 				final StringBuffer buf=new StringBuffer("");
 				final int colWidth=CMLib.lister().fixColWidth(14,mob.session());
-				buf.append(L("@x1 @x2 @x3 Crime\n\r",CMStrings.padRight(L("Name"),colWidth),CMStrings.padRight(L("Victim"),colWidth),CMStrings.padRight(L("Witness"),colWidth)));
+				buf.append(L("^H@x1 @x2 @x3 Crime^N\n\r",
+						CMStrings.padRight(L("Name"),colWidth),
+						CMStrings.padRight(L("Victim"),colWidth),
+						CMStrings.padRight(L("Witness"),colWidth)));
+				final EnglishParsing eng = CMLib.english();
 				for(int v=0;v<V.size();v++)
 				{
 					final LegalWarrant W=V.get(v);
-					buf.append(CMStrings.padRight(W.criminal().Name(),colWidth)+" ");
-					buf.append(CMStrings.padRight(W.victim()!=null?W.victim().Name():L("N/A"),colWidth)+" ");
-					buf.append(CMStrings.padRight(W.witness()!=null?W.witness().Name():L("N/A"),colWidth)+" ");
-					buf.append(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,W.criminal(),W.victim(),null,W.crime(),false)+"\n\r");
+					final MOB criM = W.criminal();
+					if((criM != null)
+					&&((filter.length()==0)||(eng.containsString(criM.Name(),filter))))
+					{
+						buf.append("^W"+CMStrings.padRight(criM.Name(),colWidth)+"^N ");
+						buf.append(CMStrings.padRight((W.victim()!=null)?W.victim().Name():L("N/A"),colWidth)+" ");
+						buf.append(CMStrings.padRight((W.witness()!=null)?W.witness().Name():L("N/A"),colWidth)+" ");
+						buf.append(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,criM,W.victim(),null,W.crime(),false)+"\n\r");
+					}
 				}
 				if(!mob.isMonster())
-					mob.session().safeRawPrintln(buf.toString());
+					mob.session().colorOnlyPrintln(buf.toString());
 			}
 		}
 		else

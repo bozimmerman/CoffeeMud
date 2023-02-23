@@ -6229,6 +6229,8 @@ public class ListCmd extends StdCommand
 			}
 			final String what=CMParms.combine(commands,0);
 			final List<Environmental> V2=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
+			if(what.equalsIgnoreCase(mob.Name())||what.equalsIgnoreCase("self"))
+				V2.add(mob);
 			Environmental shopkeeper=CMLib.english().fetchEnvironmental(V2,what,false);
 			if((shopkeeper==null)&&(what.equals("shop")||what.equals("the shop")))
 			{

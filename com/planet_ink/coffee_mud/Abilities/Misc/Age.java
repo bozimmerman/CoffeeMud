@@ -131,7 +131,7 @@ public class Age extends StdAbility
 	protected long				lastSoiling		= 0;
 	protected long				lastFollowCheck	= 0;
 
-	public final static String happyBabyEmoter="min=1 max=500 chance=100;makes goo goo noises.;loves its mommy.;loves its daddy.;smiles.;makes a spit bubble.;wiggles its toes.;chews on their finger.;holds up a finger.;stretches its little body.";
+	public final static String happyBabyEmoter="min=1 mingrp=3 max=50 chance=100;makes goo goo noises.;loves its mommy.;loves its daddy.;smiles.;makes a spit bubble.;wiggles its toes.;chews on their finger.;holds up a finger.;stretches its little body.";
 	public final static String otherBabyEmoter="min=1 max=5 chance=10;wants its mommy.;wants its daddy.;cries.;doesnt like you.;cries for its mommy.;cries for its daddy.";
 	public final static String downBabyEmoter="min=1 max=2 chance=50;wants its mommy.;wants its daddy.;cries.;cries!;cries.";
 
@@ -1073,33 +1073,37 @@ public class Age extends StdAbility
 				}
 			}
 			if((affected instanceof Item)
-			&&(!(affected instanceof DeadBody))
 			&&((msg.target()==affected)||(msg.tool()==affected))
+			&&(!(affected instanceof DeadBody))
 			&&(CMLib.flags().isInTheGame((Item)affected,true)))
 			{
 				final Item baby=(Item)affected;
 				final Behavior B=baby.fetchBehavior("Emoter");
 				if(B!=null)
 				{
-					/*
-					B=CMClass.getBehavior("Emoter");
-					if(B!=null)
-						baby.addBehavior(B);
-					*/
-				//}
-				// no else please
-				//if(B!=null)
-				//{
-					if(baby.owner() instanceof Room)
+					Environmental o=baby.owner();
+					switch(msg.targetMinor())
+					{
+					case CMMsg.TYP_DROP:
+						if(msg.target() instanceof Room)
+							o=msg.target();
+						break;
+					case CMMsg.TYP_GET:
+						o=msg.source();
+						break;
+					}
+					if(o instanceof Room)
 					{
 						if(!B.getParms().equalsIgnoreCase(downBabyEmoter))
 							B.setParms(downBabyEmoter);
 					}
 					else
-					if(baby.owner()!=null)
+					if(o!=null)
 					{
-						final Environmental o=baby.owner();
-						if(baby.description().toUpperCase().indexOf(o.name().toUpperCase())<0)
+						final String desc = baby.description();
+						final int x = desc.indexOf(" "+o.Name());
+						if((x<0)
+						||(Character.isLetter(desc.charAt(x+1+o.Name().length()))))
 						{
 							if(!B.getParms().equalsIgnoreCase(otherBabyEmoter))
 								B.setParms(otherBabyEmoter);

@@ -1319,6 +1319,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				c="^x"+CMStrings.padRight(L("Item"),prodWidth);
 			}
 			else
+			if(seller == buyer)
+			{
+				prodWidth-=5;
+				c="^x["+CMStrings.padRight(L("Cost"),4+csize)+"] "
+						+CMStrings.padRight(L("[##]"),4)+" "
+						+CMStrings.padRight(L("Product"),prodWidth);
+			}
+			else
 				c="^x["+CMStrings.padRight(L("Cost"),4+csize)+"] "+CMStrings.padRight(L("Product"),prodWidth);
 			str.append(c+((totalCols>1)?c:"")+"^.^N^<!ENTITY shopkeeper \""+CMStrings.removeColors(seller.name())+"\"^>^.^N\n\r");
 			int colNum=0;
@@ -1341,6 +1349,16 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				}
 				else
 					col="";
+				if(seller == buyer)
+				{
+					int num = shop.getShop().numberInStock(E);
+					if(num > 9999)
+						num = 9999;
+					else
+					if(num < 1)
+						num = 1;
+					col += CMStrings.padRight(""+num,4)+" ";
+				}
 				col += CMStrings.padRightPreserve("^<SHOP^>"+E.name()+"^.^N^</SHOP^>",prodWidth);
 				if(E.name().length()>=prodWidth)
 				{
