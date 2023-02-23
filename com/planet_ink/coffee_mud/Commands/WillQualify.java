@@ -37,7 +37,7 @@ import java.util.*;
  * @author FR - Jeremy Vyska; CM - Bo Zimmerman
  * @version 1.0.0.0
  */
-public class WillQualify  extends Skills
+public class WillQualify extends Skills
 {
 	public WillQualify()
 	{
@@ -57,7 +57,9 @@ public class WillQualify  extends Skills
 											  final int startLevel,
 											  final int maxLevel,
 											  final String prefix,
-											  final Set<Object> types, final Set<Object> noTypes)
+											  final Set<Object> types,
+											  final Set<Object> noTypes,
+											  final boolean uniqueOnly)
 	{
 		final int highestLevel = maxLevel;
 		final StringBuffer msg = new StringBuffer("");
@@ -92,7 +94,8 @@ public class WillQualify  extends Skills
 					&&((noTypes.size()==0)
 						||((!noTypes.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES)))
 						&&(!noTypes.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS)))))
-					&&(CMLib.ableComponents().getSpecialSkillLimit(ableM, A).specificSkillLimit() > 0))
+					&&(CMLib.ableComponents().getSpecialSkillLimit(ableM, A).specificSkillLimit() > 0)
+					&&((!uniqueOnly)||isUnique(A.ID(),classID,raceID)))
 					{
 						if ( (++col) > 2)
 						{
@@ -107,35 +110,38 @@ public class WillQualify  extends Skills
 			}
 			ExpertiseLibrary.ExpertiseDefinition E=null;
 			Integer qualLevel=null;
-			for(final AbilityMapper.QualifyingID qID : DV)
+			if(!uniqueOnly)
 			{
-				qualLevel=Integer.valueOf(qID.qualifyingLevel());
-				E=CMLib.expertises().getDefinition(qID.ID());
-				if(E!=null)
+				for(final AbilityMapper.QualifyingID qID : DV)
 				{
-					int minLevel=E.getMinimumLevel();
-					if(minLevel<qualLevel.intValue())
-						minLevel=qualLevel.intValue();
-					if((minLevel==l)
-					&&((types.size()==0)
-						||types.contains("EXPERTISE")
-						||types.contains("EXPERTISES")
-						||types.contains(E.ID().toUpperCase())
-						||types.contains(E.name().toUpperCase()))
-					&&((noTypes.size()==0)
-						||((!noTypes.contains("EXPERTISE"))
-						&&(!noTypes.contains("EXPERTISES"))
-						&&(!noTypes.contains(E.ID().toUpperCase()))
-						&&(!noTypes.contains(E.name().toUpperCase())))))
+					qualLevel=Integer.valueOf(qID.qualifyingLevel());
+					E=CMLib.expertises().getDefinition(qID.ID());
+					if(E!=null)
 					{
-						if ( (++col) > 2)
+						int minLevel=E.getMinimumLevel();
+						if(minLevel<qualLevel.intValue())
+							minLevel=qualLevel.intValue();
+						if((minLevel==l)
+						&&((types.size()==0)
+							||types.contains("EXPERTISE")
+							||types.contains("EXPERTISES")
+							||types.contains(E.ID().toUpperCase())
+							||types.contains(E.name().toUpperCase()))
+						&&((noTypes.size()==0)
+							||((!noTypes.contains("EXPERTISE"))
+							&&(!noTypes.contains("EXPERTISES"))
+							&&(!noTypes.contains(E.ID().toUpperCase()))
+							&&(!noTypes.contains(E.name().toUpperCase())))))
 						{
-							thisLine.append("\n\r");
-							col = 1;
+							if ( (++col) > 2)
+							{
+								thisLine.append("\n\r");
+								col = 1;
+							}
+							thisLine.append("^N[^H" + CMStrings.padRight("" + l, COL_LEN1) + "^?] "
+									+ CMStrings.padRight("^<HELP^>"+E.name()+"^</HELP^>", COL_LEN2) + " "
+									+ CMStrings.padRight(E.costDescription(), (col == 2) ? COL_LEN3 : COL_LEN4));
 						}
-						thisLine.append("^N[^H" + CMStrings.padRight("" + l, COL_LEN1) + "^?] "
-								+ CMStrings.padRight("^<HELP^>"+E.name()+"^</HELP^>", COL_LEN2) + " "
-								+ CMStrings.padRight(E.costDescription(), (col == 2) ? COL_LEN3 : COL_LEN4));
 					}
 				}
 			}
@@ -250,6 +256,7 @@ public class WillQualify  extends Skills
 		final HashSet<Object> notypes=new HashSet<Object>();
 		if(commands.size()>0)
 			commands.remove(0);
+		boolean uniqueOnly=pickUniqueFlag(commands,false);
 		if((commands.size()>0)&&(commands.get(0).equalsIgnoreCase("NEXT")))
 		{
 			level=mob.charStats().getCurrentClassLevel()+1;
@@ -272,6 +279,7 @@ public class WillQualify  extends Skills
 				}
 				commands.remove(0);
 			}
+			uniqueOnly=pickUniqueFlag(commands,uniqueOnly);
 			if(commands.size()>0)
 			{
 				final CharClass C2=CMClass.findCharClass(commands.get(0));
@@ -282,6 +290,7 @@ public class WillQualify  extends Skills
 				}
 			}
 		}
+		uniqueOnly=pickUniqueFlag(commands,uniqueOnly);
 		while(commands.size()>0)
 		{
 			String str=commands.get(0).toUpperCase().trim();
@@ -329,7 +338,7 @@ public class WillQualify  extends Skills
 
 		msg.append(L("At level @x1 of class '@x2', you could qualify for:\n\r",""+level,C.name()));
 		final String raceID = mob.baseCharStats().getMyRace().ID();
-		msg.append(getQualifiedAbilities(mob,mob,C.ID(),raceID,minLevel,level,"", types, notypes));
+		msg.append(getQualifiedAbilities(mob,mob,C.ID(),raceID,minLevel,level,"", types, notypes, uniqueOnly));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

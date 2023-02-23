@@ -27,6 +27,9 @@ public class XHashSet<T> extends HashSet<T>
 {
 	private static final long serialVersionUID = 6687178785122563992L;
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static final ReadOnlySet empty = new ReadOnlySet(new HashSet());
+
 	public XHashSet(final List<T> V)
 	{
 		super();

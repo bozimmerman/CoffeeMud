@@ -932,6 +932,15 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
+	public Set<String> getQualifyingEntities(final String abilityID)
+	{
+		if (reverseAbilityMap.containsKey(abilityID))
+			return new ReadOnlySet<String>(reverseAbilityMap.get(abilityID).keySet());
+		return XHashSet.empty;
+	}
+
+	@Override
 	public boolean qualifiesByAnyCharClassOrRace(final String abilityID)
 	{
 		if(!this.qualifiesByAnyCharClass(abilityID))
@@ -1727,7 +1736,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		}
 		return theClass;
 	}
-	
+
 	@Override
 	public int qualifyingClassLevel(final MOB studentM, final Ability A)
 	{

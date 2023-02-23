@@ -243,6 +243,50 @@ public class Skills extends StdCommand
 			domainName[0]+=" ";
 	}
 
+	protected boolean pickUniqueFlag(final List<String> commands, final boolean uniqueOnly)
+	{
+		if(!uniqueOnly)
+		{
+			if((commands.size()>0)&&(commands.get(0).equalsIgnoreCase("UNIQUE")))
+			{
+				commands.remove(0);
+				return true;
+			}
+		}
+		return uniqueOnly;
+	}
+
+	protected boolean isUnique(final String abilityID, final String classID, final String raceID)
+	{
+		if(CMLib.ableMapper().getAllAbleMap(abilityID) != null)
+			return false;
+		final Set<String> quals = CMLib.ableMapper().getQualifyingEntities(abilityID);
+		if(quals.size()==0)
+			return true;
+		if(quals.contains(classID))
+		{
+			for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+			{
+				final CharClass C=c.nextElement();
+				if(quals.contains(C.ID())
+				&& (!C.ID().equals(classID))
+				&& (!C.ID().equals("Archon")))
+					return false;
+			}
+		}
+		if(quals.contains(raceID))
+		{
+			for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+			{
+				final Race R=r.nextElement();
+				if(quals.contains(R.ID())
+				&& (!R.ID().equals(raceID)))
+					return false;
+			}
+		}
+		return true;
+	}
+
 	protected void parseTypeInfo(final MOB mob, final List<String> commands, final int[] level, final int[] type, final String[] typeName)
 	{
 		level[0]=parseOutLevel(commands);
