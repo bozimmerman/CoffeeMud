@@ -186,7 +186,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 						int experienceToLose=1000;
 						experienceToLose+=(100*CMLib.ableMapper().lowestQualifyingLevel(targetAbility.ID()));
 						experienceToLose=getXPCOSTAdjustment(invokerM,experienceToLose);
-						experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+						experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 						mob.tell(L("You lose @x1 experience points for the success of the sacred imbuing quest.",""+experienceToLose));
 						lastUsed.add(mob.Name());
 					}
@@ -545,7 +545,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 				if(q1 == null)
 				{
 					experienceToLose=getXPCOSTAdjustment(mob,50);
-					experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+					experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 					mob.tell(L("You lose @x1 experience points for the failure.",""+experienceToLose));
 					beneficialWordsFizzle(mob,targetI,L("<S-NAME> fail(s) entirely.",super.prayWord(mob),targetM.Name()));
 					return false;
@@ -563,7 +563,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 		else
 		{
 			experienceToLose=getXPCOSTAdjustment(mob,50);
-			experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+			experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 			mob.tell(L("You lose @x1 experience points for the failure.",""+experienceToLose));
 			beneficialWordsFizzle(mob,targetI,L("<S-NAME> @x1 while pointing at <T-NAMESELF> on @x2, and looking very frustrated.",super.prayWord(mob),targetM.Name()));
 		}

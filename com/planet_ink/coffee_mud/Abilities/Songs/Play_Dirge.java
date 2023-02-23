@@ -168,7 +168,7 @@ public class Play_Dirge extends Play
 
 						// malicious songs must not affect the invoker!
 						if(CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(expGained>0))
-							CMLib.leveler().postExperience(follower,null,null,expGained,false);
+							CMLib.leveler().postExperience(follower,"ABILITY:"+ID(),null,null,expGained, false);
 					}
 					R.recoverRoomStats();
 					R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 fades away.",target.name()));

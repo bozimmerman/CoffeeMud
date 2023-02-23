@@ -58,7 +58,7 @@ public class AFK extends StdCommand
 			mob.session().setAFKMessage(CMParms.combine(commands,1));
 			mob.session().setAfkFlag(true);
 			if((mob.isPlayer())&&(CMProps.getIntVar(CMProps.Int.RP_GOAFK)!=0))
-				CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_GOAFK), false);
+				CMLib.leveler().postRPExperience(mob, "COMMAND:"+ID(), null, "", CMProps.getIntVar(CMProps.Int.RP_GOAFK), false);
 		}
 		return false;
 	}

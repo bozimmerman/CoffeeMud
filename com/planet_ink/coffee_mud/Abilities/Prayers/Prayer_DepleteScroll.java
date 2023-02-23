@@ -182,7 +182,7 @@ public class Prayer_DepleteScroll extends Prayer
 					}
 
 					((Scroll)target).setSpellList("");
-					CMLib.leveler().postExperience(mob, null, "", 25+(5*super.getXLEVELLevel(mob)), false);
+					CMLib.leveler().postExperience(mob, "ABILITY:"+ID(), null, "", 25+(5*super.getXLEVELLevel(mob)), false);
 				}
 				else
 					target.setReadableText("");

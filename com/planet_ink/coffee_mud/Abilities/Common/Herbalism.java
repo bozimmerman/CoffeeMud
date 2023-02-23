@@ -513,7 +513,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				return false;
 
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
-			experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+			experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 			commonTelL(mob,"You lose @x1 experience points for the effort.",""+experienceToLose);
 			oldName=buildingI.name();
 			buildingI.destroy();

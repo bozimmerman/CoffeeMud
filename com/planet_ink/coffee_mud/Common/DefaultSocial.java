@@ -535,12 +535,12 @@ public class DefaultSocial implements Social
 						if(tmob.isPlayer())
 						{
 							if((CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC)!=0)&&(awardRPXP(mob)))
-								CMLib.leveler().postRPExperience(mob, tmob, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC), false);
+								CMLib.leveler().postRPExperience(mob, "SOCIAL:"+socialFullID, tmob, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC), false);
 						}
 						else
 						{
 							if((CMProps.getIntVar(CMProps.Int.RP_SOCIAL_NPC)!=0)&&(awardRPXP(mob)))
-								CMLib.leveler().postRPExperience(mob, tmob, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_NPC), false);
+								CMLib.leveler().postRPExperience(mob, "SOCIAL:"+socialFullID, tmob, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_NPC), false);
 						}
 					}
 
@@ -561,7 +561,7 @@ public class DefaultSocial implements Social
 				else
 				{
 					if((CMProps.getIntVar(CMProps.Int.RP_SOCIAL_OTH)!=0)&&(awardRPXP(mob)))
-						CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_OTH), false);
+						CMLib.leveler().postRPExperience(mob, "SOCIAL:"+socialFullID, null, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_OTH), false);
 				}
 			}
 		}
@@ -644,7 +644,7 @@ public class DefaultSocial implements Social
 		}
 		else
 			youSee = str + youSee + end + mspFile;
-		
+
 		String thirdPartySees = getOthersMessage();
 		if ((thirdPartySees != null)
 		&& (thirdPartySees.trim().length() == 0))

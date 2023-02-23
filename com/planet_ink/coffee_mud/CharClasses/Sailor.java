@@ -284,7 +284,7 @@ public class Sailor extends StdCharClass
 					}
 				}
 				if(exp>0)
-					CMLib.leveler().postExperience(mob,null,null,exp,true);
+					CMLib.leveler().postExperience(mob,"CLASS:"+ID(),null,null,exp, true);
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -308,7 +308,7 @@ public class Sailor extends StdCharClass
 				CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.ROOMS_EXPLORED,1);
 				if(mob.playerStats().hasVisited(R))
 				{
-					CMLib.leveler().postExperience(mob, null, null, amt, false);
+					CMLib.leveler().postExperience(mob, "CLASS:"+ID(), null, null, amt, false);
 					final double totalCountableRooms=A.getAreaIStats()[Area.Stats.COUNTABLE_ROOMS.ordinal()];
 					if((totalCountableRooms > 0)
 					&&(CMath.div(A.getAreaIStats()[Area.Stats.WATER_ROOMS.ordinal()], totalCountableRooms)>.80))
@@ -322,7 +322,7 @@ public class Sailor extends StdCharClass
 							if(xp<50)
 								xp=50;
 							if((xp>0)
-							&&((xp=CMLib.leveler().postExperience(mob,null,null,xp,true))>0))
+							&&((xp=CMLib.leveler().postExperience(mob,"CLASS:"+ID(),null,null,xp, true))>0))
 								msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have familiarized yourself with '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 						}
 						else
@@ -334,7 +334,7 @@ public class Sailor extends StdCharClass
 							if(xp<125)
 								xp=125;
 							if((xp>0)
-							&&((xp=CMLib.leveler().postExperience(mob,null,null,xp,true))>0))
+							&&((xp=CMLib.leveler().postExperience(mob,"CLASS:"+ID(),null,null,xp, true))>0))
 								msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have explored '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 						}
 					}

@@ -91,7 +91,7 @@ public class Chant_CalmWeather extends Chant
 				||(newC.weatherType(null)==Climate.WEATHER_CLOUDY)))
 			{
 				mob.tell(CMLib.lang().L("^YYou have restored balance to the weather!^N"));
-				CMLib.leveler().postExperience(mob,null,null,25,false);
+				CMLib.leveler().postExperience(mob,"ABILITY:Chant_CalmWeather",null,null,25, false);
 				A=CMClass.getAbility("Chant_ControlWeather");
 				A.invoke(mob,area,true,0);
 				A=area.fetchEffect("Chant_ControlWeather");

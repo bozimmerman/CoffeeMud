@@ -430,8 +430,8 @@ public class GenCaravan extends GenNavigableBoardable
 			this.destroy();
 			return newI;
 		}
-		if(!CMLib.leveler().postExperienceToAllAboard(victorM.riding(), 500, this))
-			CMLib.leveler().postExperience(victorM, null, null, 500, false);
+		if(!CMLib.leveler().postExperienceToAllAboard(victorM.riding(), "SIEGE:"+ID(), 500, this))
+			CMLib.leveler().postExperience(victorM, "SIEGE:"+ID(), null, null, 500, false);
 		return null;
 	}
 

@@ -142,18 +142,18 @@ public class Emote extends StdCommand
 			if(mob.isPlayer() && R.numPCInhabitants() > 1)
 			{
 				if((CMProps.getIntVar(CMProps.Int.RP_EMOTE_PC)!=0)&&(awardRPXP(mob)))
-					CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_EMOTE_PC), false);
+					CMLib.leveler().postRPExperience(mob, "COMMAND:"+ID(), null, "", CMProps.getIntVar(CMProps.Int.RP_EMOTE_PC), false);
 			}
 			else
 			if(R.numInhabitants() > 1)
 			{
 				if((CMProps.getIntVar(CMProps.Int.RP_EMOTE_NPC)!=0)&&(awardRPXP(mob)))
-					CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_EMOTE_NPC), false);
+					CMLib.leveler().postRPExperience(mob, "COMMAND:"+ID(), null, "", CMProps.getIntVar(CMProps.Int.RP_EMOTE_NPC), false);
 			}
 			else
 			{
 				if((CMProps.getIntVar(CMProps.Int.RP_EMOTE_OTH)!=0)&&(awardRPXP(mob)))
-					CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_EMOTE_OTH), false);
+					CMLib.leveler().postRPExperience(mob, "COMMAND:"+ID(), null, "", CMProps.getIntVar(CMProps.Int.RP_EMOTE_OTH), false);
 			}
 
 		}

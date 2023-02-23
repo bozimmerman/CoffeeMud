@@ -1582,12 +1582,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if(me.isPlayer())
 			{
 				if(CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_PC)!=0)
-					CMLib.leveler().postRPExperience(speaker, me, L(""), CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_PC), false);
+					CMLib.leveler().postRPExperience(speaker, "INTRODUCTION:", me, L(""), CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_PC), false);
 			}
 			else
 			{
 				if(CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_NPC)!=0)
-					CMLib.leveler().postRPExperience(speaker, me, L(""), CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_NPC), false);
+					CMLib.leveler().postRPExperience(speaker, "INTRODUCTION:", me, L(""), CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_NPC), false);
 			}
 			if(me.playerStats()!=null)
 				me.playerStats().introduceTo(speaker.Name());
@@ -1610,7 +1610,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if(CMProps.getIntVar(CMProps.Int.RP_SAY_PC)!=0)
 				{
 					pStats.setLastRolePlayXPTime(System.currentTimeMillis());
-					CMLib.leveler().postRPExperience(speaker, me, "", CMProps.getIntVar(CMProps.Int.RP_SAY_PC), false);
+					CMLib.leveler().postRPExperience(speaker, "COMMAND:Say", me, "", CMProps.getIntVar(CMProps.Int.RP_SAY_PC), false);
 				}
 			}
 			else
@@ -1618,7 +1618,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if(CMProps.getIntVar(CMProps.Int.RP_SAY_NPC)!=0)
 				{
 					pStats.setLastRolePlayXPTime(System.currentTimeMillis());
-					CMLib.leveler().postRPExperience(speaker, me, "", CMProps.getIntVar(CMProps.Int.RP_SAY_NPC), false);
+					CMLib.leveler().postRPExperience(speaker, "COMMAND:Say", me, "", CMProps.getIntVar(CMProps.Int.RP_SAY_NPC), false);
 				}
 			}
 		}

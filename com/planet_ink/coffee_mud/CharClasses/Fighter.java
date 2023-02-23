@@ -327,7 +327,7 @@ public class Fighter extends StdCharClass
 				lastDuelWinner = now;
 			}
 			((MOB)host).tell(CMLib.lang().L("^YVictory!!^N"));
-			CMLib.leveler().postExperience((MOB)host,null,null,300,false);
+			CMLib.leveler().postExperience((MOB)host,"CLASS:"+C.ID(),null,null,300, false);
 		}
 	}
 
@@ -350,7 +350,7 @@ public class Fighter extends StdCharClass
 			if(xp>0)
 			{
 				((MOB)host).tell(CMLib.lang().L("^YVictory!!^N"));
-				CMLib.leveler().postExperience((MOB)host,null,null,xp,false);
+				CMLib.leveler().postExperience((MOB)host,"CLASS:"+C.ID(),null,null,xp, false);
 			}
 		}
 	}

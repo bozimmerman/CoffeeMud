@@ -110,7 +110,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 							||(target.charStats().getMyRace().expless()))
 								CMLib.leveler().level(target);
 							else
-								CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+								CMLib.leveler().postExperience(target,"MISC:"+ID(),null,null,target.getExpNeededLevel()+1, false);
 						}
 					}
 				}

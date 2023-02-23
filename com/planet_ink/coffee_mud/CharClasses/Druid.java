@@ -484,7 +484,7 @@ public class Druid extends StdCharClass
 				if(xp>0)
 				{
 					druidM.tell(CMLib.lang().L("Your stewardship has benefitted @x1.",msg.source().name(druidM)));
-					CMLib.leveler().postExperience(druidM,null,null,xp,false);
+					CMLib.leveler().postExperience(druidM,"CLASS:"+C.ID(),null,null,xp, false);
 				}
 			}
 		}
@@ -565,7 +565,7 @@ public class Druid extends StdCharClass
 				A.startTickDown((MOB)host, msg.source(), 20);
 				stuff[1]=Integer.valueOf(((Integer)stuff[1]).intValue()+1);
 				((MOB)host).tell(CMLib.lang().L("You have freed @x1 from @x2.",msg.source().name((MOB)host),(msg.source().getStartRoom().getArea().name())));
-				CMLib.leveler().postExperience((MOB)host,null,null,((Integer)stuff[1]).intValue(),false);
+				CMLib.leveler().postExperience((MOB)host,"CLASS:"+C.ID(),null,null,((Integer)stuff[1]).intValue(), false);
 				final boolean isPeace=((!msg.source().isInCombat()) && (!((MOB)host).isInCombat()));
 				for(final Ability A2 : CMLib.flags().flaggedAffects(msg.source(), Ability.FLAG_CHARMING))
 				{

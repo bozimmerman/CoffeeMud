@@ -317,7 +317,7 @@ public class Thief extends StdCharClass
 				||(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_STEALING))))
 			{
 				final int xp=CMLib.flags().isAliveAwakeMobileUnbound((MOB)msg.target(), true)?10:5;
-				CMLib.leveler().postExperience(myChar,(MOB)msg.target()," for a successful "+msg.tool().name(),xp,false);
+				CMLib.leveler().postExperience(myChar,"CLASS:"+ID(),(MOB)msg.target()," for a successful "+msg.tool().name(),xp, false);
 			}
 		}
 		super.executeMsg(myHost,msg);

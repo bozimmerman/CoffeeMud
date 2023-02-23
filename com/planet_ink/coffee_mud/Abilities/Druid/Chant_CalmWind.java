@@ -89,7 +89,7 @@ public class Chant_CalmWind extends Chant
 				||(newC.weatherType(null)==Climate.WEATHER_CLOUDY)))
 		{
 			mob.tell(CMLib.lang().L("^YYou have restored balance to the weather!^N"));
-			CMLib.leveler().postExperience(mob,null,null,25,false);
+			CMLib.leveler().postExperience(mob,"ABILITY:Chant_CalmWind",null,null,25, false);
 		}
 	}
 

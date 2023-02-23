@@ -183,7 +183,7 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 						final int targetXp = mob.getExpNextLevel()+1;
 						int tries = 100;
 						while((--tries>0)&&(mob.getExperience()<targetXp))
-								CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+								CMLib.leveler().postExperience(mob,"MISC:"+ID(),null,null,mob.getExpNeededLevel()+1, false);
 					}
 				}
 			}
@@ -232,7 +232,7 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 			CMLib.beanCounter().setMoney(mob,CMLib.beanCounter().getMoney(mob)+newMoney);
 		final int exp=CMParms.getParmPlus(readableText,"expe");
 		if(exp!=0)
-			CMLib.leveler().postExperience(mob,null,null,exp,false);
+			CMLib.leveler().postExperience(mob,ID(),null,null,exp, false);
 		mob.recoverCharStats();
 		mob.recoverPhyStats();
 		mob.recoverMaxState();

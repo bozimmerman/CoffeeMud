@@ -1469,7 +1469,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					if(XPLevel>=0)
 					{
 						int expLost=(CMath.s_int(whatToDo)+(2*XPLevel))/2;
-						expLost=CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
+						expLost=CMLib.leveler().postExperience(rejuvedMOB,"ABILITY:Prayer_Resurrect",null,null,expLost, false);
 						rejuvedMOB.tell(L("^*You regain @x1 experience points.^?^.",""+expLost));
 					}
 				}
@@ -1481,7 +1481,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				{
 					final int xp=CMath.s_parseIntExpression(whatToDo,vars);
 					int expLost=(xp+(2*XPLevel))/2;
-					expLost=CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
+					expLost=CMLib.leveler().postExperience(rejuvedMOB,"ABILITY:Prayer_Resurrect",null,null,expLost, false);
 					rejuvedMOB.tell(L("^*You regain @x1 experience points.^?^.",""+expLost));
 				}
 				else
@@ -1491,7 +1491,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					for(int l=body.phyStats().level();l<rejuvedMOB.phyStats().level();l++)
 						lvl=lvl/2.0;
 					int expRestored=(int)Math.round(((100.0+(2.0*(XPLevel)))*lvl)/2.0);
-					expRestored=CMLib.leveler().postExperience(rejuvedMOB,null,null,expRestored,false);
+					expRestored=CMLib.leveler().postExperience(rejuvedMOB,"ABILITY:Prayer_Resurrect",null,null,expRestored, false);
 					rejuvedMOB.tell(L("^*You regain @x1 experience points.^?^.",""+expRestored));
 				}
 			}
@@ -3088,7 +3088,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				switch(costType)
 				{
 				case XP:
-					CMLib.leveler().postExperience(student, null, "", -value.intValue(), true);
+					CMLib.leveler().postExperience(student, "COST:", null, "", -value.intValue(), true);
 					break;
 				case GOLD:
 					if(currency != null)

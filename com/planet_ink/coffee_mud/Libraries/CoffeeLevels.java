@@ -500,7 +500,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			if((sire!=null)&&(CMLib.flags().isInTheGame(sire,true)))
 			{
 				int sireShare=(int)Math.round(CMath.div(amount,10.0));
-				if((sireShare=-postExperience(sire,null,"",-sireShare,true))>0)
+				if((sireShare=-postExperience(sire,"LIEGE:"+mob.name(),null,"",-sireShare, true))>0)
 					sire.tell(L("^N^!You lose ^H@x1^N^! experience points from @x2.^N",""+sireShare,mob.Name()));
 				return amount - sireShare;
 			}
@@ -542,7 +542,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				int sireShare=(int)Math.round(CMath.div(amount,10.0));
 				if(sireShare<=0)
 					sireShare=1;
-				postExperience(sire,null," from "+mob.name(sire),sireShare,quiet);
+				postExperience(sire,"HOMAGE"+mob.Name(),null," from "+mob.name(sire),sireShare, quiet);
 				return amount-sireShare;
 			}
 		}
@@ -735,7 +735,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 
 	@Override
-	public int postExperience(final MOB mob,final MOB victim,final String homage,final int amount,final boolean quiet)
+	public int postExperience(final MOB mob,final String sourceID,final MOB victim,final String homage,final int amount, final boolean quiet)
 	{
 		if((mob==null)
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
@@ -766,7 +766,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 
 	@Override
-	public boolean postRPExperience(final MOB mob, final MOB target, final String homage, final int amount, final boolean quiet)
+	public boolean postRPExperience(final MOB mob, final String sourceID, final MOB target, final String homage, final int amount, final boolean quiet)
 	{
 		if((mob==null)
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
@@ -774,7 +774,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		||mob.charStats().getMyRace().expless()
 		||(CMProps.getIntVar(CMProps.Int.RP_AWARD_PCT)<=0))
 			return false;
-		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_RPXPCHANGE,null,CMMsg.NO_EFFECT,homage,CMMsg.NO_EFFECT,""+quiet);
+		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_RPXPCHANGE,sourceID,CMMsg.NO_EFFECT,homage,CMMsg.NO_EFFECT,""+quiet);
 		msg.setValue(amount);
 		final Room R=mob.location();
 		if(R!=null)
@@ -1320,7 +1320,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 
 	@Override
-	public boolean postExperienceToAllAboard(final Physical possibleShip, final int amount, final Physical target)
+	public boolean postExperienceToAllAboard(final Physical possibleShip, final String sourceID, final int amount, final Physical target)
 	{
 		boolean posted = false;
 		if(possibleShip instanceof Boardable)
@@ -1363,7 +1363,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 									targetM.basePhyStats().setLevel(M.phyStats().level());
 									targetM.phyStats().setLevel(M.phyStats().level());
 								}
-								posted = (postExperience(M, targetM, null, amount, false)>0) && posted;
+								posted = (postExperience(M, sourceID, targetM, null, amount, false)>0) && posted;
 							}
 						}
 					}

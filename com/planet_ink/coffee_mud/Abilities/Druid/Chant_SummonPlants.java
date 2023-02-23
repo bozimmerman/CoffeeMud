@@ -217,7 +217,7 @@ public class Chant_SummonPlants extends Chant
 					if(num[0]<19)
 					{
 						mob.tell(L("You have made this city greener."));
-						CMLib.leveler().postExperience(mob,null,null,(int)num[0],false);
+						CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,(int)num[0], false);
 					}
 				}
 			}

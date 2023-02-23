@@ -190,7 +190,7 @@ public class Prayer_UndeniableFaith extends Prayer
 				{
 					target.location().send(target,msg2);
 					if(mob!=target)
-						CMLib.leveler().postExperience(mob,target,null,25,false);
+						CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),target,null,25, false);
 					godName=mob.charStats().getWorshipCharID();
 					beneficialAffect(mob,target,asLevel,CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH));
 					convertStack.addElement(target,Long.valueOf(System.currentTimeMillis()));

@@ -128,7 +128,7 @@ public class Prayer_Bury extends Prayer
 					if(levelDiff>levelLimit)
 						exp=0.0;
 					if(exp>0.0)
-						CMLib.leveler().postExperience(mob,null,null,(int)Math.round(exp)+super.getXPCOSTLevel(mob),false);
+						CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,(int)Math.round(exp)+super.getXPCOSTLevel(mob), false);
 				}
 				if(hole==null)
 				{

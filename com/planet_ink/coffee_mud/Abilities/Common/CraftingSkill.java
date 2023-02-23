@@ -436,7 +436,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 					if(!R.isContent(builtI))
 					{
 						commonTelL(mob,"You have won the common-skill-failure LOTTERY! Congratulations!");
-						CMLib.leveler().postExperience(mob, null, null,50,false);
+						CMLib.leveler().postExperience(mob, "ABILITY:"+ID(), null,null,50, false);
 					}
 					else
 						return true;

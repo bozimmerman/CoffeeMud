@@ -171,7 +171,7 @@ public class Thief_KillLog extends ThiefSkill
 			{
 				final MOB mob=(MOB)affected;
 				mob.tell(L("Ah, a new one for your kill log."));
-				CMLib.leveler().postExperience(mob,null,null,mark.phyStats().level(),false);
+				CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,mark.phyStats().level(), false);
 			}
 			set[1]=""+mark.phyStats().level();
 			set[3]=Integer.toString(CMath.s_int(set[3])+1);

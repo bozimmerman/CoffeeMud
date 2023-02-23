@@ -7485,7 +7485,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				final AmountAward aaward=(AmountAward)award;
 				awardMessage.append(L("^HYou are awarded experience points!\n\r^?\n\r"));
-				CMLib.leveler().postExperience(mob, null, null, aaward.getAmount(), false);
+				CMLib.leveler().postExperience(mob, "ACHIEVE:"+ID(), null, null, aaward.getAmount(), false);
 				break;
 			}
 			default:

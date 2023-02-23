@@ -131,14 +131,14 @@ public class Prayer_FeedTheDead extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				amount=-CMLib.leveler().postExperience(mob,null,null,-amount,false);
+				amount=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-amount, false);
 				if((mob.phyStats().level()>target.phyStats().level())&&(target.isMonster()))
 				{
 					final int adjLevel = adjustedLevel(mob,asLevel);
 					amount+=(adjustedLevel(mob,asLevel)-target.phyStats().level())
 						  *(adjLevel/3);
 				}
-				amount=CMLib.leveler().postExperience(target,null,null,amount,false);
+				amount=CMLib.leveler().postExperience(target,"ABILITY:"+ID(),null,null,amount, false);
 				if((CMLib.dice().rollPercentage() < amount)
 				&&(target.isMonster())
 				&&(target.fetchEffect("Loyalty")==null)

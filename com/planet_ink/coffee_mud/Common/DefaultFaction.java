@@ -1815,9 +1815,9 @@ public class DefaultFaction implements Faction, MsgListener
 			}
 		}
 		if(event.getBonusXP()!=0)
-			CMLib.leveler().postExperience(source, target, "", event.getBonusXP(), false);
+			CMLib.leveler().postExperience(source, "FACTION:"+_factionID, target, "", event.getBonusXP(), false);
 		if(event.getBonusRoleplayXP()!=0)
-			CMLib.leveler().postRPExperience(source, target, "", event.getBonusRoleplayXP(), true);
+			CMLib.leveler().postRPExperience(source, "FACTION:"+_factionID, target, "", event.getBonusRoleplayXP(), true);
 
 		final String resetTimerEventID = event.getFlagValue("RESTIME");
 		if(resetTimerEventID.length()>0)

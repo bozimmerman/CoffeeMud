@@ -114,7 +114,7 @@ public class Chant_DruidicConnection extends Chant
 				invoker.tell(L("Your prolonged connection to this place fills you with harmony!"));
 				final int xp=(int)Math.round(5.0*CMath.mul(CMath.div(V.size(),((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()])
 											,((Area)affected).getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()]));
-				CMLib.leveler().postExperience(invoker(),null,null,xp,false);
+				CMLib.leveler().postExperience(invoker(),"ABILITY:"+ID(),null,null,xp, false);
 			}
 		}
 		return true;

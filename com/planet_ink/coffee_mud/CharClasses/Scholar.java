@@ -303,7 +303,8 @@ public class Scholar extends StdCharClass
 				||(CMLib.english().containsString(R.displayText(), "library")))
 				{
 					int xpGain=50;
-					if((xpGain=CMLib.leveler().postExperience((MOB)host,null,null,xpGain,true))>0)
+					final CharClass C = msg.source().charStats().getCurrentClass();
+					if((xpGain=CMLib.leveler().postExperience((MOB)host,"CLASS:"+C.ID(),null,null,xpGain, true))>0)
 						msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have discovered a new place of books and gain @x1 experience.^?",""+xpGain),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 				}
 			}
@@ -326,7 +327,7 @@ public class Scholar extends StdCharClass
 
 			if((msg.targetMinor()==CMMsg.TYP_TEACH)
 			&&(msg.target() instanceof MOB))
-				CMLib.leveler().postExperience(msg.source(), null, null, 100, false);
+				CMLib.leveler().postExperience(msg.source(), "ABILITY:"+ID(), null, null, 100, false);
 			else
 			if(((msg.targetMinor()==CMMsg.TYP_WRITE)
 				||(msg.targetMinor()==CMMsg.TYP_REWRITE)
@@ -370,7 +371,7 @@ public class Scholar extends StdCharClass
 						if(xpTrap[0] < maxLevel)
 						{
 							xpTrap[0]+=xp;
-							CMLib.leveler().postExperience(msg.source(), null, null, xp, false);
+							CMLib.leveler().postExperience(msg.source(), "ABILITY:"+ID(), null, null, xp, false);
 						}
 					}
 				}
@@ -379,7 +380,7 @@ public class Scholar extends StdCharClass
 				&&(msg.targetMinor()==CMMsg.TYP_WROTE)
 				&&(msg.tool().ID().equals("Dissertating")))
 				{
-					CMLib.leveler().postExperience(msg.source(), null, null, 25, false);
+					CMLib.leveler().postExperience(msg.source(), "ABILITY:"+ID(), null, null, 25, false);
 				}
 				else
 				{
@@ -408,7 +409,7 @@ public class Scholar extends StdCharClass
 								if(100-xpTrap[0]<xp)
 									xp=(int)(100-xpTrap[0]);
 								xpTrap[0]+=xp;
-								CMLib.leveler().postExperience(msg.source(), null, null, xp, false);
+								CMLib.leveler().postExperience(msg.source(), "ABILITY:"+ID(), null, null, xp, false);
 							}
 						}
 					}
@@ -441,7 +442,7 @@ public class Scholar extends StdCharClass
 					&&((homeL.toHoursSinceEpoc() - lastTime[0])>homeL.getHoursInDay()))
 					{
 						lastTime[0] = homeL.toHoursSinceEpoc();
-						CMLib.leveler().postExperience(msg.source(), null, null, 25, false);
+						CMLib.leveler().postExperience(msg.source(), "ABILITY:"+ID(), null, null, 25, false);
 					}
 				}
 			}

@@ -178,7 +178,7 @@ public class Spell_ClanExperience extends Spell
 				mob.location().send(mob, msg);
 				if(msg.value()>0)
 				{
-					CMLib.leveler().postExperience(mob, null, null, -amt, false);
+					CMLib.leveler().postExperience(mob, "ABILITY:"+ID(), null, null, -amt, false);
 					C.adjExp(mob, msg.value());
 					C.update();
 				}

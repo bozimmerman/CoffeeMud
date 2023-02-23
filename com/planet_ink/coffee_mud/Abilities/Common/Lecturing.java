@@ -208,7 +208,7 @@ public class Lecturing extends CommonSkill
 									amt=5;
 								if(A.proficiency() + amt > 100)
 									amt = 100 - A.proficiency();
-								CMLib.leveler().postExperience(mob, null, null, 10 * amt, false);
+								CMLib.leveler().postExperience(mob, "ABILITY:"+ID(), null, null, 10 * amt, false);
 								if(amt > 0)
 									studentsWhoImproved++;
 								A.setProficiency(A.proficiency() + amt);

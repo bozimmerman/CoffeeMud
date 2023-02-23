@@ -211,7 +211,7 @@ public class Spell_Fabricate extends Spell
 		// the reason this costs experience is to make it less valuable than Duplicate or Polymorph Object,
 		// but more valuable than Wish.
 		int experienceToLose=getXPCOSTAdjustment(mob,10+(intoI.basePhyStats().level()*2));
-		experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+		experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 		mob.tell(L("The effort causes you to lose @x1 experience.",""+experienceToLose));
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

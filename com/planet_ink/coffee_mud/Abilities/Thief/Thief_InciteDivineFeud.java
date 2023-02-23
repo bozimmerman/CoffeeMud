@@ -392,7 +392,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 				quest2.enterDormantState();
 				CMLib.quests().delQuest(quest2);
 				final int playerXP=(int)Math.round(CMath.mul((double)mob.getExpNextLevel(),0.20+(0.03 * super.getXLEVELLevel(mob))));
-				CMLib.leveler().postExperience(mob, null, "", playerXP, false);
+				CMLib.leveler().postExperience(mob, "ABILITY:"+ID(), null, "", playerXP, false);
 				final int deityFactionChange=100+(10*super.getXLEVELLevel(mob));
 				final Deity deity1M=CMLib.map().getDeity(data.getCheckedString("deity1"));
 				if(deity1M==null)

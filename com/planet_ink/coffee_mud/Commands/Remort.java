@@ -678,7 +678,7 @@ public class Remort extends StdCommand
 													||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
 														CMLib.leveler().level(mob);
 													else
-														CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+														CMLib.leveler().postExperience(mob,"REMORT:",null,null,mob.getExpNeededLevel()+1, false);
 												}
 											}
 											recoverEverything(mob);

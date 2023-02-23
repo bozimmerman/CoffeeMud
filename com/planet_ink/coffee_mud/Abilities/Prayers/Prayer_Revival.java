@@ -204,7 +204,7 @@ public class Prayer_Revival extends Prayer
 									{
 										final MOB M2=clerics.get(c);
 										if(M2!=mob)
-											CMLib.leveler().postExperience(M2,M,null,25,false);
+											CMLib.leveler().postExperience(M2,"ABILITY:"+ID(),M,null,25, false);
 									}
 								}
 							}

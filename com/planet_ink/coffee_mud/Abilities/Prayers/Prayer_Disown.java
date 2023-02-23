@@ -215,7 +215,7 @@ public class Prayer_Disown extends Prayer
 					target.basePhyStats().setAbility(0);
 					target.phyStats().setAbility(0);
 				}
-				CMLib.leveler().postExperience(mob,null,null,5,false);
+				CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,5, false);
 			}
 		}
 		else

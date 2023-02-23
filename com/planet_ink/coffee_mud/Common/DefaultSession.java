@@ -3349,7 +3349,7 @@ public class DefaultSession implements Session
 					{
 						setAfkFlag(true);
 						if((mob.isPlayer())&&(CMProps.getIntVar(CMProps.Int.RP_GOAFK)!=0))
-							CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_GOAFK), false);
+							CMLib.leveler().postRPExperience(mob, "GOAFK:", null, "", CMProps.getIntVar(CMProps.Int.RP_GOAFK), false);
 					}
 				}
 				else

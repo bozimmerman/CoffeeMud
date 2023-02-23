@@ -311,7 +311,7 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 					break;
 				}
 				case EXPE:
-					CMLib.leveler().postExperience(mob,null,null,((Integer)t.third).intValue(),false);
+					CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,((Integer)t.third).intValue(), false);
 					break;
 				case GENDER:
 					mob.baseCharStats().setStat(CharStats.STAT_GENDER,((Character)t.third).charValue());

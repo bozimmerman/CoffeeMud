@@ -2972,7 +2972,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			indiVars[3]=mob.phyStats().level();
 			final CompiledFormula indXPformula = getSessionMUDFight(mob.session()).individualCombatExpFormula;
 			final int myAmount=(int)Math.round(CMath.parseMathExpression(indXPformula, indiVars, 0.0));
-			CMLib.get(mob.session())._leveler().postExperience(mob,killed,"",myAmount,false);
+			CMLib.get(mob.session())._leveler().postExperience(mob,"COMBAT:"+killedLevel,killed,"",myAmount, false);
 		}
 	}
 
@@ -3275,7 +3275,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if((lostExperience[0]>0)
 				&&(!deadM.charStats().getCurrentClass().expless()))
 				{
-					lostExperience[0]=-CMLib.leveler().postExperience(deadM,null,null,-lostExperience[0],false);
+					lostExperience[0]=-CMLib.leveler().postExperience(deadM,"DEATH:",null,null,-lostExperience[0], false);
 					message=L(message,""+lostExperience[0]);
 					deadM.tell(message);
 				}
@@ -3287,7 +3287,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if((lostExperience[0]>0)
 				&&(!deadM.charStats().getCurrentClass().expless()))
 				{
-					lostExperience[0]=-CMLib.leveler().postExperience(deadM,null,null,-lostExperience[0],false);
+					lostExperience[0]=-CMLib.leveler().postExperience(deadM,"DEATH:",null,null,-lostExperience[0], false);
 					message=L(message,""+lostExperience[0]);
 					deadM.tell(message);
 				}

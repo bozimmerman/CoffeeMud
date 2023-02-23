@@ -1621,7 +1621,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(price.questPointPrice>0)
 			buyerM.setQuestPoint(buyerM.getQuestPoint()-price.questPointPrice);
 		if(price.experiencePrice>0)
-			CMLib.leveler().postExperience(buyerM,null,null,-price.experiencePrice,false);
+			CMLib.leveler().postExperience(buyerM,"COST:"+product.Name(),null,null,-price.experiencePrice, false);
 		buyerM.recoverPhyStats();
 	}
 

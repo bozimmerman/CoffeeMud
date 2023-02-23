@@ -255,7 +255,7 @@ public class Prayer_ImbueShield extends Prayer
 		if(success)
 		{
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
-			experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+			experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
 			setMiscText(imbuePrayerA.ID()); // important for reliquist discharge
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> @x1 while holding <T-NAMESELF> tightly.^?",super.prayWord(mob)));
@@ -269,7 +269,7 @@ public class Prayer_ImbueShield extends Prayer
 		else
 		{
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
-			experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+			experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
 			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 while holding <T-NAMESELF> tightly, and looking very frustrated.",super.prayWord(mob)));
 		}

@@ -111,7 +111,7 @@ public class Thief_FalseService extends ThiefSkill
 			&&(msg.othersMessage().equalsIgnoreCase(HolyEvent.SERVICE.toString())))
 			{
 				final MOB mob=(MOB)affected;
-				CMLib.leveler().postExperience(mob,null,null,250+((50 + (10+super.getXLEVELLevel(mob)))*msg.value()),false);
+				CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,250+((50 + (10+super.getXLEVELLevel(mob)))*msg.value()), false);
 				if(room != null)
 				{
 					final Deity trueD=mob.baseCharStats().getMyDeity();

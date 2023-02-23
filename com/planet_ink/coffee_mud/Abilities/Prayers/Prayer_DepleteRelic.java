@@ -157,7 +157,7 @@ public class Prayer_DepleteRelic extends Prayer
 				Prayer.setRelicCharges(target, 0);
 				Prayer.clearRelicMagic(target);
 				Prayer.clearInfusions(target);
-				CMLib.leveler().postExperience(mob, null, "", 25+(5*super.getXLEVELLevel(mob)), false);
+				CMLib.leveler().postExperience(mob, "ABILITY:"+ID(), null, "", 25+(5*super.getXLEVELLevel(mob)), false);
 			}
 			else
 				beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> wickedly sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but @x1 does not heed.",hisHerDiety(mob)));

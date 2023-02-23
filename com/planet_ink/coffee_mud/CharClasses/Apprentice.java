@@ -186,7 +186,7 @@ public class Apprentice extends StdCharClass
 			{
 				currentApprentices.remove(ticking);
 				((MOB)ticking).tell(L("\n\r\n\r^ZYou are no longer an apprentice!!!!^N\n\r\n\r"));
-				CMLib.leveler().postExperience((MOB)ticking,null,null,1000,false);
+				CMLib.leveler().postExperience((MOB)ticking,"CLASS:"+ID(),null,null,1000, false);
 			}
 		}
 		return super.tick(ticking,tickID);

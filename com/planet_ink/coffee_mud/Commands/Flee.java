@@ -152,7 +152,7 @@ public class Flee extends Go
 					&&((mob.session()==null)
 					   ||(fighting.session()==null)
 					   ||(!mob.session().getAddress().equals(fighting.session().getAddress()))))
-							CMLib.leveler().postExperience(fighting,null,null,gainedExperience,false);
+							CMLib.leveler().postExperience(fighting,"COMMAND:"+ID(),null,null,gainedExperience, false);
 				}
 			}
 		}

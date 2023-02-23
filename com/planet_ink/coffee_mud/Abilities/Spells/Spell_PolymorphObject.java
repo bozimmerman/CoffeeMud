@@ -276,7 +276,7 @@ public class Spell_PolymorphObject extends Spell
 		// the reason this costs experience is to make it less valuable than Duplicate
 		// but more valuable than Wish.
 		int experienceToLose=getXPCOSTAdjustment(mob,5+intoI.basePhyStats().level());
-		experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+		experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 		mob.tell(L("The effort causes you to lose @x1 experience.",""+experienceToLose));
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

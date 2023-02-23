@@ -772,7 +772,7 @@ public interface CombatLibrary extends CMLibrary
 	 * For a valid set of killers who are benefitting from having killed the given killed mob,
 	 * this method will make repeated postExperience calls after having calculated their
 	 * exp bounty for the kill.
-	 * @see ExpLevelLibrary#postExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#postExperience(MOB, String, MOB, String, int, boolean)
 	 * @param killers a set of mobs to benefit from the kill
 	 * @param dividers a set of mobs who must divide the xp.. usually subset of killers
 	 * @param killed the mob killed

@@ -441,7 +441,7 @@ public class CommonSkill extends StdAbility
 				if(!R.isContent(I))
 				{
 					commonTelL(mob,"You have won the common-skill-failure LOTTERY! Congratulations!");
-					CMLib.leveler().postExperience(mob, null, null,50,false);
+					CMLib.leveler().postExperience(mob, "ABILITY:"+ID(), null,null,50, false);
 				}
 				else
 					return true;

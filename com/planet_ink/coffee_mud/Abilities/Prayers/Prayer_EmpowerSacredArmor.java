@@ -99,7 +99,7 @@ public class Prayer_EmpowerSacredArmor extends Prayer
 			mob.tell(mob,target,null,L("You can't empower <T-NAME> with this prayer!"));
 			return false;
 		}
-		final long rawProp =((Armor)target).rawProperLocationBitmap(); 
+		final long rawProp =((Armor)target).rawProperLocationBitmap();
 		if((target instanceof Shield)
 		||((rawProp&okLocs)==0)
 		||((rawProp&(okLocs|Wearable.WORN_HELD))!=((Armor)target).rawProperLocationBitmap()))
@@ -136,7 +136,7 @@ public class Prayer_EmpowerSacredArmor extends Prayer
 			return false;
 
 		int experienceToLose=getXPCOSTAdjustment(mob,50);
-		experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+		experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 		mob.tell(L("The effort causes you to lose @x1 experience.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);

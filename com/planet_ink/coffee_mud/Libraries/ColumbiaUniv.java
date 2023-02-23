@@ -1052,7 +1052,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				student.tell(L("You failed to understand @x1.",theA.name()));
 			else
 			if((!teacher.isMonster()) && (!student.isMonster()))
-				CMLib.leveler().postExperience(teacher, null, null, 100, false);
+				CMLib.leveler().postExperience(teacher, "COMMAND:Teach", null, null, 100, false);
 			if((studentA!=null)
 			&& (!oldSkillSet.contains(theA.ID()))
 			&& (add!=0))
@@ -1075,7 +1075,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			theExpertise.spendCostRequirements(student);
 			student.addExpertise(theExpertise.ID());
 			if((!teacher.isMonster()) && (!student.isMonster()))
-				CMLib.leveler().postExperience(teacher, null, null, 100, false);
+				CMLib.leveler().postExperience(teacher, "COMMAND:Teach", null, null, 100, false);
 		}
 	}
 

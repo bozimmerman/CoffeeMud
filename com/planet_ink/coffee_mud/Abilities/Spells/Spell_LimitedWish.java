@@ -65,7 +65,7 @@ public class Spell_LimitedWish extends Spell_Wish
 		if((isTargetChanger) && (target instanceof MOB) && (target != mob))
 		{
 			int baseLoss=getXPCOSTAdjustment(mob,10);
-			baseLoss=-CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
+			baseLoss=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-baseLoss, false);
 			mob.tell(L("Your attempted wish has cost you @x1 experience points, but is beyond the power of limited wish.",""+baseLoss));
 			return false;
 		}

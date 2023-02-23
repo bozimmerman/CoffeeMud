@@ -366,9 +366,9 @@ public class Skill_Convert extends StdSkill
 				if(mob!=target)
 				{
 					if(target.isMonster())
-						CMLib.leveler().postExperience(mob,null,null,1,false);
+						CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,1, false);
 					else
-						CMLib.leveler().postExperience(mob,null,null,200,false);
+						CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,200, false);
 				}
 				if(target.isMonster())
 				{

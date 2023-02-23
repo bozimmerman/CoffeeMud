@@ -325,7 +325,7 @@ public class Artisan extends StdCharClass
 			 ||((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_EPICUREAN)
 			 ||((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_BUILDINGSKILL)))
 			{
-				CMLib.leveler().postExperience(msg.source(),null,null,msg.value(),false);
+				CMLib.leveler().postExperience(msg.source(),"CLASS:"+ID(),null,null,msg.value(), false);
 			}
 			else
 			if((msg.targetMinor() == CMMsg.TYP_RECIPELEARNED)
@@ -350,7 +350,7 @@ public class Artisan extends StdCharClass
 					&&((homeL.toHoursSinceEpoc() - lastTime[0])>0))
 					{
 						lastTime[0] = homeL.toHoursSinceEpoc();
-						CMLib.leveler().postExperience(msg.source(), null, null, msg.value(), false);
+						CMLib.leveler().postExperience(msg.source(), "ABILITY:"+ID(), null, null, msg.value(), false);
 					}
 				}
 			}
@@ -380,7 +380,7 @@ public class Artisan extends StdCharClass
 					exp=exp/2;
 					if(exp<1)
 						exp=1;
-					CMLib.leveler().postExperience(mob,null,null,exp,false);
+					CMLib.leveler().postExperience(mob,"CLASS:"+ID(),null,null,exp, false);
 				}
 			}
 		}

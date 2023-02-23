@@ -158,7 +158,7 @@ public class Skill_ScrollCopy extends StdSkill
 				{
 					final int xp=(int)Math.round(100.0*CMath.div(CMLib.ableMapper().lowestQualifyingLevel(thisSpell.ID()),CMLib.ableMapper().qualifyingClassLevel(mob,this)));
 					if(xp>=0)
-						CMLib.leveler().postExperience(mob,null,null,xp,false);
+						CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,xp, false);
 				}
 			}
 		}

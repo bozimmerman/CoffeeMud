@@ -161,7 +161,7 @@ public class Spell_MagicItem extends Spell
 		if(success)
 		{
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
-			experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+			experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
 			setMiscText(enchantSpellA.ID());
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
@@ -213,7 +213,7 @@ public class Spell_MagicItem extends Spell
 		else
 		{
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
-			experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+			experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
 			beneficialWordsFizzle(mob,target,L("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
 		}

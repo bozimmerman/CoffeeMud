@@ -303,10 +303,11 @@ public class Bard extends StdCharClass
 						}
 					}
 				}
+				final CharClass C=((MOB)host).charStats().getCurrentClass();
 				if(pub)
 				{
 					int xpGain=50;
-					if((xpGain=CMLib.leveler().postExperience((MOB)host,null,null,xpGain,true))>0)
+					if((xpGain=CMLib.leveler().postExperience((MOB)host,"CLASS:"+C.ID(),null,null,xpGain, true))>0)
 						msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have discovered a new pub, you gain @x1 experience.^?",""+xpGain),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 				}
 				if((!mob.playerStats().hasVisited(A))&&(mob.soulMate()==null))
@@ -318,7 +319,7 @@ public class Bard extends StdCharClass
 						if(xp>250)
 							xp=250;
 						if((xp>0)
-						&&((xp=CMLib.leveler().postExperience((MOB)host,null,null,xp,true))>0))
+						&&((xp=CMLib.leveler().postExperience((MOB)host,"CLASS:"+C.ID(),null,null,xp, true))>0))
 							msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have discovered '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 					}
 				}
@@ -335,7 +336,7 @@ public class Bard extends StdCharClass
 							if(xp>125)
 								xp=125;
 							if((xp>0)
-							&&((xp=CMLib.leveler().postExperience((MOB)host,null,null,xp,true))>0))
+							&&((xp=CMLib.leveler().postExperience((MOB)host,"CLASS:"+C.ID(),null,null,xp, true))>0))
 								msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have familiarized yourself with '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 						}
 						else
@@ -345,7 +346,7 @@ public class Bard extends StdCharClass
 							if(xp>250)
 								xp=250;
 							if((xp>0)
-							&&((xp=CMLib.leveler().postExperience((MOB)host,null,null,xp,true))>0))
+							&&((xp=CMLib.leveler().postExperience((MOB)host,"CLASS:"+C.ID(),null,null,xp, true))>0))
 								msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have explored '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 						}
 					}

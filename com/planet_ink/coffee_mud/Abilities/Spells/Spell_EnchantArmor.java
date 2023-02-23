@@ -101,7 +101,7 @@ public class Spell_EnchantArmor extends Spell
 			return false;
 
 		int experienceToLose=getXPCOSTAdjustment(mob,50);
-		experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+		experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 		mob.tell(L("The effort causes you to lose @x1 experience.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);

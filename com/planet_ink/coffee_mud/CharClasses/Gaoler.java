@@ -281,7 +281,7 @@ public class Gaoler extends StdCharClass
 						exp++;
 				}
 				if(exp>0)
-					CMLib.leveler().postExperience(mob,null,null,exp,true);
+					CMLib.leveler().postExperience(mob,"CLASS:"+ID(),null,null,exp, true);
 
 				if((CMLib.flags().isSleeping(mob))
 				&&(mob.playerStats()!=null)
@@ -291,7 +291,7 @@ public class Gaoler extends StdCharClass
 					final LegalBehavior legalBehavior=CMLib.law().getLegalBehavior(R);
 					final Area legalArea=CMLib.law().getLegalObject(R);
 					if(this.isRightOutsideAnOccupiedCell(R, legalBehavior, legalArea))
-						CMLib.leveler().postExperience(mob,null,null,5,false);
+						CMLib.leveler().postExperience(mob,"CLASS:"+ID(),null,null,5, false);
 				}
 			}
 		}
@@ -485,7 +485,7 @@ public class Gaoler extends StdCharClass
 
 						if(done[1]<((90+xLevel)+((50+xLevel)*mob.phyStats().level())))
 						{
-							xp=CMLib.leveler().postExperience(mob,null,null,xp,true);
+							xp=CMLib.leveler().postExperience(mob,"CLASS:"+ID(),null,null,xp, true);
 							msg2.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,L("The sweet screams of your victim earns you @x1 experience points.",""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 							done[1]+=xp;
 						}
@@ -545,7 +545,7 @@ public class Gaoler extends StdCharClass
 						}
 					}
 					if(qualifyingFood)
-						CMLib.leveler().postExperience((MOB)host,null,null,msg.source().phyStats().level(),false);
+						CMLib.leveler().postExperience((MOB)host,"ABILITY:"+ID(),null,null,msg.source().phyStats().level(), false);
 				}
 			}
 		}

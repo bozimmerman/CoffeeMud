@@ -79,7 +79,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * any sort of message and it will filter it.
 	 * @see ExpLevelLibrary#handleRPExperienceChange(CMMsg)
 	 * @see ExpLevelLibrary#adjustedExperience(MOB, MOB, int)
-	 * @see ExpLevelLibrary#postExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#postExperience(MOB, String, MOB, String, int, boolean)
 	 * @see ExpLevelLibrary#gainExperience(MOB, MOB, String, int, boolean)
 	 * @see ExpLevelLibrary#loseExperience(MOB, int)
 	 *
@@ -94,7 +94,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @see ExpLevelLibrary#handleExperienceChange(CMMsg)
 	 * @see ExpLevelLibrary#gainRPExperience(MOB, MOB, String, int, boolean)
 	 * @see ExpLevelLibrary#loseRPExperience(MOB, int)
-	 * @see ExpLevelLibrary#postRPExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#postRPExperience(MOB, String, MOB, String, int, boolean)
 	 *
 	 * @param msg the message to check and maybe handle
 	 */
@@ -106,7 +106,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * experience gain according to context, levels
 	 * and so forth
 	 * @see ExpLevelLibrary#handleExperienceChange(CMMsg)
-	 * @see ExpLevelLibrary#postExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#postExperience(MOB, String, MOB, String, int, boolean)
 	 *
 	 * @param mob the killer who gains xp
 	 * @param victim the victim
@@ -118,7 +118,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Called whenever a player actually loses RP experience.
 	 * @see ExpLevelLibrary#gainRPExperience(MOB, MOB, String, int, boolean)
-	 * @see ExpLevelLibrary#postRPExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#postRPExperience(MOB, String, MOB, String, int, boolean)
 	 * @see ExpLevelLibrary#handleRPExperienceChange(CMMsg)
 	 * @see ExpLevelLibrary#loseExperience(MOB, int)
 	 *
@@ -130,7 +130,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Called whenever a player actually gains RP experience.
 	 * @see ExpLevelLibrary#loseRPExperience(MOB, int)
-	 * @see ExpLevelLibrary#postRPExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#postRPExperience(MOB, String, MOB, String, int, boolean)
 	 * @see ExpLevelLibrary#handleRPExperienceChange(CMMsg)
 	 * @see ExpLevelLibrary#gainExperience(MOB, MOB, String, int, boolean)
 	 *
@@ -149,16 +149,17 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @see ExpLevelLibrary#loseRPExperience(MOB, int)
 	 * @see ExpLevelLibrary#gainRPExperience(MOB, MOB, String, int, boolean)
 	 * @see ExpLevelLibrary#handleRPExperienceChange(CMMsg)
-	 * @see ExpLevelLibrary#postExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#postExperience(MOB, String, MOB, String, int, boolean)
 	 *
 	 * @param mob the gainer of the rp xp
+	 * @param sourceID null, or arbitrary string that denotes source of the xp
 	 * @param target the target of the event that causes the xp to be gained
 	 * @param homage null, or person to credit the xp to (or clan, or a message, whatever)
 	 * @param amount the amount of xp to gain
 	 * @param quiet true to gain xp silently, false to be up front.
 	 * @return true if the xp was granted.
 	 */
-	public boolean postRPExperience(MOB mob, MOB target, String homage, int amount, boolean quiet);
+	public boolean postRPExperience(MOB mob, String sourceID, MOB target, String homage, int amount, boolean quiet);
 
 	/**
 	 * Generates and posts a normal experience gain message, allowing it to
@@ -166,16 +167,17 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @see ExpLevelLibrary#handleExperienceChange(CMMsg)
 	 * @see ExpLevelLibrary#gainExperience(MOB, MOB, String, int, boolean)
 	 * @see ExpLevelLibrary#loseExperience(MOB, int)
-	 * @see ExpLevelLibrary#postRPExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#postRPExperience(MOB, String, MOB, String, int, boolean)
 	 *
 	 * @param mob the gainer of the xp, usually the killer
+	 * @param sourceID arbitrary string denoting the source of the xp
 	 * @param victim the victim of the event that causes the xp to be gained
 	 * @param homage null, or person to credit the xp to (or clan, or a message, whatever)
 	 * @param amount the amount of xp to gain
 	 * @param quiet true to gain xp silently, false to be up front.
 	 * @return true if the xp was granted.
 	 */
-	public int postExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet);
+	public int postExperience(MOB mob, String sourceID, MOB victim, String homage, int amount, boolean quiet);
 
 	/**
 	 * Causes the given mob to gain a level, with all that entails
@@ -213,11 +215,12 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * amount of experience to all aboard.
 	 *
 	 * @param possibleShip the ship to give experience to
+	 * @param sourceID an abitrary string denoting the source of the xp
 	 * @param amount amount of experience to give to each person found
 	 * @param target the vanquished whatever that was the reason for the xp
 	 * @return true if experience is posted, false otherwise
 	 */
-	public boolean postExperienceToAllAboard(Physical possibleShip, int amount, Physical target);
+	public boolean postExperienceToAllAboard(Physical possibleShip, String sourceID, int amount, Physical target);
 
 	/**
 	 * This method fills in combat and rejuvenation related stats for the given
@@ -365,7 +368,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * call to level if necessary.
 	 * @see ExpLevelLibrary#level(MOB)
 	 * @see ExpLevelLibrary#handleExperienceChange(CMMsg)
-	 * @see ExpLevelLibrary#postExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#postExperience(MOB, String, MOB, String, int, boolean)
 	 * @see ExpLevelLibrary#loseExperience(MOB, int)
 	 * @see ExpLevelLibrary#gainRPExperience(MOB, MOB, String, int, boolean)
 	 *
@@ -385,7 +388,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * an unleveling if necessary.
 	 * @see ExpLevelLibrary#unLevel(MOB)
 	 * @see ExpLevelLibrary#handleExperienceChange(CMMsg)
-	 * @see ExpLevelLibrary#postExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#postExperience(MOB, String, MOB, String, int, boolean)
 	 * @see ExpLevelLibrary#gainExperience(MOB, MOB, String, int, boolean)
 	 * @see ExpLevelLibrary#loseRPExperience(MOB, int)
 	 *

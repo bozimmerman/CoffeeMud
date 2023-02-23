@@ -10271,7 +10271,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							t=thisLevelExpNeeded;
 					}
 					if(t!=0)
-						CMLib.leveler().postExperience((MOB)newTarget,null,null,t,false);
+						CMLib.leveler().postExperience((MOB)newTarget,"SCRIPT:"+defaultQuestName,null,null,t, false);
 				}
 				break;
 			}
@@ -10298,7 +10298,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 											CMath.div(CMath.s_int(amtStr.substring(0,amtStr.length()-1)),100.0)));
 					}
 					if(t!=0)
-						CMLib.leveler().postRPExperience((MOB)newTarget,null,null,t,false);
+						CMLib.leveler().postRPExperience((MOB)newTarget,"SCRIPT:"+defaultQuestName,null,null,t, false);
 				}
 				break;
 			}

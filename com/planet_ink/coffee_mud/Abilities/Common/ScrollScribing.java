@@ -552,7 +552,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			if(experienceToLose > 0)
 			{
 				experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
-				experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+				experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 				commonTelL(mob,"You lose @x1 experience points for the effort.",""+experienceToLose);
 			}
 

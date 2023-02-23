@@ -110,7 +110,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 								||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
 									CMLib.leveler().level(mob);
 								else
-									CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+									CMLib.leveler().postExperience(mob,"MISC:"+ID(),null,null,mob.getExpNeededLevel()+1, false);
 								if(mob.basePhyStats().level()==oldLevel)
 									break;
 							}

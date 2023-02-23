@@ -845,7 +845,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 					if(CMProps.getIntVar(CMProps.Int.RP_CHANNEL_NAMED)!=0)
 					{
 						pStats.setLastRolePlayXPTime(System.currentTimeMillis());
-						CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_CHANNEL_NAMED), false);
+						CMLib.leveler().postRPExperience(mob, "CHANNEL:"+channelName, null, "", CMProps.getIntVar(CMProps.Int.RP_CHANNEL_NAMED), false);
 					}
 				}
 				else
@@ -853,7 +853,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 					if(CMProps.getIntVar(CMProps.Int.RP_CHANNEL)!=0)
 					{
 						pStats.setLastRolePlayXPTime(System.currentTimeMillis());
-						CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_CHANNEL), false);
+						CMLib.leveler().postRPExperience(mob, "CHANNEL:"+channelName, null, "", CMProps.getIntVar(CMProps.Int.RP_CHANNEL), false);
 					}
 				}
 			}

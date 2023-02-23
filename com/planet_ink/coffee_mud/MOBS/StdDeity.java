@@ -712,7 +712,7 @@ public class StdDeity extends StdMOB implements Deity
 					}
 					else
 					{
-						xpwrath=-CMLib.leveler().postExperience(msg.source(),null,null,-xpwrath,false);
+						xpwrath=-CMLib.leveler().postExperience(msg.source(),"MISC:"+name(),null,null,-xpwrath, false);
 						msg.source().tell(L("@x1 takes @x2 of experience from you.",name(),""+xpwrath));
 					}
 					final Ability doubtA=CMClass.getAbility("Prayer_ReligiousDoubt");
@@ -1000,7 +1000,7 @@ public class StdDeity extends StdMOB implements Deity
 			if(M.charStats().getWorshipCharID().equals(mob.baseCharStats().getWorshipCharID()))
 			{
 				if((!M.isMonster())&&(M!=mob))
-					CMLib.leveler().postExperience(M,null,null,50,false);
+					CMLib.leveler().postExperience(M,"SERVICE:"+name(),null,null,50, false);
 				totalLevels+=M.phyStats().level();
 				if(!M.isMonster())
 					totalLevels+=(M.phyStats().level()*2);
@@ -1012,7 +1012,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		undoService(service.parishaners);
 		final int exp=(int)Math.round(CMath.div(totalLevels,mob.phyStats().level())*10.0);
-		CMLib.leveler().postExperience(mob,null,null,exp,false);
+		CMLib.leveler().postExperience(mob,"SERVICE:"+ID(),null,null,exp, false);
 		return true;
 	}
 
