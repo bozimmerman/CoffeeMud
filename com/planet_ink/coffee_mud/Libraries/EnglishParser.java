@@ -2749,9 +2749,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			if(srchStr.length()>3)
 			{
-				if(srchStr.charAt(3)=='.')
-					allFlag=true;
-				else
 				if(srchStr.charAt(3)==' ')
 				{
 					srchStr=srchStr.substring(4);
