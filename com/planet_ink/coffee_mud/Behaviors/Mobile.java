@@ -102,25 +102,25 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 				return false;
 			if(leashHash==null)
 				leashHash=new Hashtable<Room,Integer>();
-			Integer DISTNOW=leashHash.get(currentRoom);
-			Integer DISTLATER=leashHash.get(newRoom);
-			if(DISTNOW==null)
+			Integer distanceNow=leashHash.get(currentRoom);
+			Integer distanceLater=leashHash.get(newRoom);
+			if(distanceNow==null)
 			{
-				DISTNOW=Integer.valueOf(0);
-				leashHash.put(currentRoom,DISTNOW);
+				distanceNow=Integer.valueOf(0);
+				leashHash.put(currentRoom,distanceNow);
 			}
-			if(DISTLATER==null)
+			if(distanceLater==null)
 			{
-				DISTLATER=Integer.valueOf(DISTNOW.intValue()+1);
-				leashHash.put(newRoom,DISTLATER);
+				distanceLater=Integer.valueOf(distanceNow.intValue()+1);
+				leashHash.put(newRoom,distanceLater);
 			}
-			if(DISTLATER.intValue()>(DISTNOW.intValue()+1))
+			if(distanceLater.intValue()>(distanceNow.intValue()+1))
 			{
-				DISTLATER=Integer.valueOf(DISTNOW.intValue()+1);
+				distanceLater=Integer.valueOf(distanceNow.intValue()+1);
 				leashHash.remove(newRoom);
-				leashHash.put(newRoom,DISTLATER);
+				leashHash.put(newRoom,distanceLater);
 			}
-			if(DISTLATER.intValue()>leash)
+			if(distanceLater.intValue()>leash)
 				return false;
 		}
 		if((!ignoreAtmosphere)
