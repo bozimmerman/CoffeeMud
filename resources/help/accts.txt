@@ -2,9 +2,12 @@
 LIST                    : list your characters
 [CHARACTER NAME]        : log in as that character
 RETIRE [CHARACTER NAME] : delete one of your characters
-NEW [CHARACTER NAME]    : create a new character
-IMPORT [CHARACTER NAME] : import your unlisted characters
+NEW [CHARACTER NAME]    : create a new character@if?RequestParameter?CANEXPORT@
+EXPORT [CHARACTER NAME] : export a character from your account
+IMPORT [CHARACTER NAME] : import your unlisted characters@endif@
 PASSWORD                : change your account password
-ANSI [ON/OFF]           : toggle ansi color
-EMAIL                   : change your account email address
+ANSI [ON/OFF]           : toggle ansi color@if?RequestParameter?EMAILOK@
+EMAIL                   : change your account email address@endif@
 QUIT                    : log out of the system
+
+You have @x1 characters out of @x2 max.

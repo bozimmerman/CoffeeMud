@@ -1836,23 +1836,25 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final StringBuffer buf = new StringBuffer("");
 		if(!acct.isSet(PlayerAccount.AccountFlag.ACCOUNTMENUSOFF))
 		{
-			buf.append(L(" ^XAccount Menu^.^N\n\r"));
-			buf.append(L(" ^XL^.^w)^Hist characters\n\r"));
-			buf.append(L(" ^XN^.^w)^Hew character\n\r"));
-			if(acct.isSet(PlayerAccount.AccountFlag.CANEXPORT))
+			StringBuffer accountHelp=new CMFile(Resources.buildResourcePath("help")+"acctmenu.txt",null,CMFile.FLAG_LOGERRORS).text();
+			try
 			{
-				buf.append(L(" ^XI^.^w)^Hmport character\n\r"));
-				buf.append(L(" ^XE^.^w)^Hxport character\n\r"));
+				final Map<String,String> map=new HashMap<String,String>();
+				map.put("canexport", Boolean.toString((acct.isSet(PlayerAccount.AccountFlag.CANEXPORT))));
+				map.put("emailok", Boolean.toString(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE")));
+				accountHelp = CMLib.webMacroFilter().virtualPageFilter(accountHelp,map,new HashMap<String,Object>());
 			}
-			buf.append(L(" ^XD^.^w)^Helete/Retire character\n\r"));
-			buf.append(L(" ^XH^.^w)^Help\n\r"));
-			buf.append(L(" ^XM^.^w)^Henu OFF\n\r"));
-			buf.append(L(" ^XP^.^w)^Hassword change\n\r"));
-			if(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE"))
-				buf.append(L(" ^XE^.^w)^Hmail change\n\r"));
-			buf.append(L(" ^XQ^.^w)^Huit (logout)\n\r"));
-			buf.append(L("\n\r^H ^w(^HEnter your character name to login^w)^H"));
-			session.println(buf.toString());
+			catch(final Exception ex)
+			{
+			}
+			final int max = numAccountsAllowed(acct);
+			final String[] vars = new String[] {
+				""+loginObj.acct.numPlayers(),
+				(max==Integer.MAX_VALUE)?"Unlimited":(""+max),
+				(max==Integer.MAX_VALUE)?"Unlimited":(""+(max-loginObj.acct.numPlayers()))
+			};
+			final String accountMenuStr = CMStrings.replaceVariables(accountHelp.toString(), vars);
+			session.println(accountMenuStr);
 			buf.setLength(0);
 		}
 		loginObj.state=LoginState.ACCTMENU_PROMPT;
@@ -1930,12 +1932,22 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			StringBuffer accountHelp=new CMFile(Resources.buildResourcePath("help")+"accts.txt",null,CMFile.FLAG_LOGERRORS).text();
 			try
 			{
-				 accountHelp = CMLib.webMacroFilter().virtualPageFilter(accountHelp);
+				final Map<String,String> map=new HashMap<String,String>();
+				map.put("canexport", Boolean.toString((acct.isSet(PlayerAccount.AccountFlag.CANEXPORT))));
+				map.put("emailok", Boolean.toString(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE")));
+				accountHelp = CMLib.webMacroFilter().virtualPageFilter(accountHelp,map,new HashMap<String,Object>());
 			}
 			catch(final Exception ex)
 			{
 			}
-			session.println(null,null,null,"\n\r\n\r"+accountHelp.toString());
+			final int max = numAccountsAllowed(acct);
+			final String[] vars = new String[] {
+				""+loginObj.acct.numPlayers(),
+				(max==Integer.MAX_VALUE)?"Unlimited":(""+max),
+				(max==Integer.MAX_VALUE)?"Unlimited":(""+(max-loginObj.acct.numPlayers()))
+			};
+			final String accountHelpStr = CMStrings.replaceVariables(accountHelp.toString(), vars);
+			session.println(null,null,null,"\n\r\n\r"+accountHelpStr);
 			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 			return null;
 		}
@@ -4152,6 +4164,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 	}
 
+	public int numAccountsAllowed(final PlayerAccount acct)
+	{
+		int maxPlayersOnAccount = CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM);
+		if(maxPlayersOnAccount < Integer.MAX_VALUE)
+			maxPlayersOnAccount += acct.getBonusCharsLimit();
+		if(acct.isSet(PlayerAccount.AccountFlag.NUMCHARSOVERRIDE))
+			return Integer.MAX_VALUE;
+		return maxPlayersOnAccount;
+	}
+
 	public boolean newAccountsAllowed(final String login, final Session session, final PlayerAccount acct)
 	{
 		switch(newAccountNameCheck(login,session.getAddress()))
@@ -4175,13 +4197,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			if(acct!=null)
 			{
-				int maxPlayersOnAccount = CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM);
-				if(maxPlayersOnAccount < Integer.MAX_VALUE)
-					maxPlayersOnAccount += acct.getBonusCharsLimit();
-				if((maxPlayersOnAccount<=acct.numPlayers())
-				&&(!acct.isSet(PlayerAccount.AccountFlag.NUMCHARSOVERRIDE)))
+				final int max = numAccountsAllowed(acct);
+				if(max<=acct.numPlayers())
 				{
-					session.println(L("You may only have @x1 characters.  Please retire one to create another.",""+maxPlayersOnAccount));
+					session.println(L("You may only have @x1 characters.  Please retire one to create another.",""+max));
 					return false;
 				}
 			}

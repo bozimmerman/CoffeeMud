@@ -38,11 +38,12 @@ public interface WebMacroLibrary extends CMLibrary, HTTPOutputConverter
 	public byte [] virtualPageFilter(byte [] data) throws HTTPRedirectException;
 	public String virtualPageFilter(String s) throws HTTPRedirectException;
 	public StringBuffer virtualPageFilter(StringBuffer s) throws HTTPRedirectException;
+	public StringBuffer virtualPageFilter(final StringBuffer s, Map<String,String> parms, Map<String,Object> objs) throws HTTPRedirectException;
 	public StringBuffer virtualPageFilter(HTTPRequest request, Map<String, Object> objects, long[] processStartTime, String[] lastFoundMacro, StringBuffer s) throws HTTPRedirectException;
 	public String clearWebMacros(StringBuffer s);
 	public String parseFoundMacro(StringBuffer s, int i, boolean lookOnly);
 	public String clearWebMacros(String s);
-	
+
 	public String getWebCacheSuffix(final Environmental E);
 	public Collection<Item> contributeItemsToWebCache(final Collection<Item> items);
 	public boolean isAllNum(final String str);
@@ -61,7 +62,7 @@ public interface WebMacroLibrary extends CMLibrary, HTTPOutputConverter
 	public String findItemWebCacheCode(final Room R, final Item I);
 	public boolean isWebCachedItem(final Object I);
 	public Iterable<Item> getItemWebCacheIterable();
-	
+
 	public Collection<MOB> contributeMOBsToWebCache(final Collection<MOB> inhabs);
 	public MOB findMOBMatchInWebCache(final MOB M);
 	public MOB getMOBFromAnywhere(final Object allitems, final String MATCHING);

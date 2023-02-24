@@ -118,10 +118,16 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	@Override
 	public StringBuffer virtualPageFilter(final StringBuffer s) throws HTTPRedirectException
 	{
+		return virtualPageFilter(s,new HashMap<String,String>(),new HashMap<String,Object>());
+	}
+
+	@Override
+	public StringBuffer virtualPageFilter(final StringBuffer s, final Map<String,String> parms, final Map<String,Object> objs) throws HTTPRedirectException
+	{
 		return virtualPageFilter(new HTTPRequest()
 		{
-			public final Hashtable<String, String>	params	= new Hashtable<String, String>();
-			public final Hashtable<String, Object>	objects	= new Hashtable<String, Object>();
+			public final Map<String, String>	params	= parms;
+			public final Map<String, Object>	objects	= objs;
 
 			@Override
 			public String getHost()
@@ -1236,7 +1242,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		}
 		return true;
 	}
-	
+
 	private Collection<MOB> getMOBCache()
 	{
 		@SuppressWarnings("unchecked")

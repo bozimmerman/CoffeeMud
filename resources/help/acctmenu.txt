@@ -1,0 +1,13 @@
+ ^XAccount Menu^.^N
+ ^XL^.^w)^Hist characters
+ ^XN^.^w)^Hew character ^w(@x3 remaining)^N@if?RequestParameter?CANEXPORT@
+ ^XI^.^w)^Hmport character
+ ^XE^.^w)^Hxport character@endif@
+ ^XD^.^w)^Helete/Retire character
+ ^XH^.^w)^Help
+ ^XM^.^w)^Henu OFF
+ ^XP^.^w)^Hassword change@if?RequestParameter?EMAILOK@
+ ^XE^.^w)^Hmail change@endif@
+ ^XQ^.^w)^Huit (logout)
+
+^H ^w(^HEnter your character name to login^w)^H
