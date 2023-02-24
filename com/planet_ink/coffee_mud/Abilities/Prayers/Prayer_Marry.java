@@ -76,13 +76,13 @@ public class Prayer_Marry extends Prayer
 		}
 		final String name1=commands.get(commands.size()-1);
 		final String name2=CMParms.combine(commands,0,commands.size()-1);
-		MOB husband=mob.location().fetchInhabitant(name1);
+		MOB husband=getVisibleRoomTarget(mob,name1);
 		if((husband==null)||(!CMLib.flags().canBeSeenBy(mob,husband)))
 		{
 			mob.tell(L("You don't see @x1 here!",name1));
 			return false;
 		}
-		MOB wife=mob.location().fetchInhabitant(name2);
+		MOB wife=getVisibleRoomTarget(mob,name2);
 		if((wife==null)||(!CMLib.flags().canBeSeenBy(mob,wife)))
 		{
 			mob.tell(L("You don't see @x1 here!",name2));

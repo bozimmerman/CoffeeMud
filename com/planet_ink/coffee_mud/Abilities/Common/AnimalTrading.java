@@ -96,7 +96,7 @@ public class AnimalTrading extends CommonSkill
 		}
 
 		final String str=CMParms.combine(commands,0);
-		MOB M=mob.location().fetchInhabitant(str);
+		MOB M=getVisibleRoomTarget(mob,str);
 		if(M!=null)
 		{
 			if(!CMLib.flags().canBeSeenBy(M,mob))

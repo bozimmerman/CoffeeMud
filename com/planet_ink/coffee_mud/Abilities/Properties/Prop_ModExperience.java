@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpLevelLibrary.ModXP;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -55,209 +56,52 @@ public class Prop_ModExperience extends Property
 		return Ability.CAN_MOBS | Ability.CAN_ITEMS | Ability.CAN_AREAS | Ability.CAN_ROOMS;
 	}
 
-	protected enum DirectionCheck
-	{
-		POSITIVE, NEGATIVE, POSINEGA
-	}
-
-	protected String			operationFormula	= "";
-	protected boolean			selfXP				= false;
-	protected boolean			rideOK				= false;
-	protected boolean			targetOnly			= false;
-	protected DirectionCheck	dir					= DirectionCheck.POSITIVE;
-	protected CompiledFormula	operation			= null;
-	protected CompiledZMask		mask				= null;
+	protected ModXP[] mods = new ModXP[0];
 
 	@Override
 	public String accountForYourself()
 	{
-		return "Modifies experience gained: " + operationFormula;
-	}
-
-	public int translateAmount(int amount, final String val)
-	{
-		if(amount<0)
-			amount=-amount;
-		if(val.endsWith("%"))
-			return (int)Math.round(CMath.mul(amount,CMath.div(CMath.s_int(val.substring(0,val.length()-1)),100)));
-		return CMath.s_int(val);
-	}
-
-	public String translateNumber(final String val)
-	{
-		if(val.endsWith("%"))
-			return "( @x1 * (" + val.substring(0,val.length()-1) + " / 100) )";
-		return Integer.toString(CMath.s_int(val));
+		if(mods.length==0)
+			return "Does nothing";
+		final StringBuilder str=new StringBuilder("Modifies experience gained: ");
+		for(final ModXP m : mods)
+			str.append(m.operationFormula).append(", ");
+		return str.substring(0,str.length()-2);
 	}
 
 	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
-		operation = null;
-		mask=null;
-		selfXP=false;
-		targetOnly=false;
-		String s=newText.trim();
-		int x=s.indexOf(';');
-		if(x>=0)
-		{
-			mask=CMLib.masking().getPreCompiledMask(s.substring(x+1).trim());
-			s=s.substring(0,x).trim();
-		}
-		String us=s.toUpperCase();
-		x=us.indexOf("SELF");
-		if(x>=0)
-		{
-			selfXP=true;
-			s=s.substring(0,x)+s.substring(x+4);
-			us=s.toUpperCase();
-		}
-		x=us.indexOf("TARGET");
-		if(x>=0)
-		{
-			targetOnly=true;
-			s=s.substring(0,x)+s.substring(x+6);
-			us=s.toUpperCase();
-		}
-		x=us.indexOf("RIDEOK");
-		if(x>=0)
-		{
-			rideOK=true;
-			s=s.substring(0,x)+s.substring(x+6);
-			us=s.toUpperCase();
-		}
-		dir = DirectionCheck.POSITIVE;
-		for(final DirectionCheck d : DirectionCheck.values())
-		{
-			x=us.indexOf(d.name());
-			if(x>=0)
-			{
-				dir = d;
-				s=s.substring(0,x)+s.substring(x+d.name().length());
-				us=s.toUpperCase();
-			}
-		}
-
-		operationFormula="Amount "+s;
-		final List<String> ops = new ArrayList<String>();
-		int paren=0;
-		final StringBuilder curr=new StringBuilder("");
-		for(int i=0;i<s.length();i++)
-		{
-			if(paren > 0)
-			{
-				if(s.charAt('i')=='(')
-				{
-					if(paren == 0)
-					{
-						if(curr.length()>0)
-							ops.add(curr.toString().trim());
-						curr.setLength(0);
-					}
-					paren++;
-				}
-				else
-				if(s.charAt('i')==')')
-					paren--;
-				curr.append(s.charAt(i));
-			}
-			else
-			switch(s.charAt(i))
-			{
-			case '=':
-			case '+':
-			case '-':
-			case '*':
-			case '/':
-				if(curr.length()>0)
-					ops.add(curr.toString().trim());
-				curr.setLength(0);
-				curr.append(s.charAt(i));
-				break;
-			default:
-				curr.append(s.charAt(i));
-				break;
-			}
-		}
-		if(curr.length()>0)
-			ops.add(curr.toString().trim());
-		StringBuilder finalOps = new StringBuilder("");
-		for(final String op : ops)
-		{
-			if(op.startsWith("="))
-				finalOps = new StringBuilder(translateNumber(op.substring(1)).trim());
-			else
-			if(op.startsWith("(")&&(op.endsWith(")")))
-				finalOps = new StringBuilder(op);
-			else
-			if(op.startsWith("+")||op.startsWith("-")||op.startsWith("*")||op.startsWith("/"))
-			{
-				if(finalOps.length()==0)
-					finalOps.append("@x1");
-				finalOps.append(" ").append(op.charAt(0)).append(" ");
-				finalOps.append(translateNumber(op.substring(1)).trim());
-			}
-			else
-				finalOps=new StringBuilder(translateNumber(s.trim()));
-		}
-		if(finalOps.length()>0)
-			operation = CMath.compileMathExpression(finalOps.toString());
-		operationFormula=CMStrings.replaceAll(operationFormula, "@x1", "Amount");
+		this.mods = CMLib.leveler().parseXPMods(newText);
 	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(operation == null)
+		if(mods.length == 0)
 			setMiscText(text());
-		if(((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
-			||(msg.sourceMinor()==CMMsg.TYP_RPXPCHANGE))
-		&&(operation != null)
-		&&((((msg.target()==affected)||(selfXP && (msg.source()==affected)))&&(affected instanceof MOB))
-		   ||((affected instanceof Rideable)
-				&&(!rideOK)
-				&&(msg.target()!=null)
-				&&((msg.source().riding()==affected)
-					|| ((affected instanceof Item)&&(msg.target().Name().equals(affected.Name()))) // what the actual f?
-					||((msg.target() instanceof Rider)&&(((Rider)msg.target()).riding()==affected))))
-		   ||((affected instanceof Item)
-			   &&(msg.source()==((Item)affected).owner())
-			   &&(((Item)affected).amBeingWornProperly()))
-		   ||(affected instanceof Room)
-		   ||(affected instanceof Area)))
+		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+		||(msg.sourceMinor()==CMMsg.TYP_RPXPCHANGE))
 		{
-			
-			if((targetOnly)
-			&&((msg.target()==null)
-				||(msg.target()==msg.source())))
-				return super.okMessage(myHost,msg);
-				
-			switch(dir)
+			final boolean useTarget = ((affected instanceof Item)&&(msg.target() instanceof MOB));
+			final MOB target=(msg.target() instanceof MOB)?((MOB)msg.target()):null;
+			for(final ModXP m : mods)
 			{
-			case POSITIVE:
-				if(msg.value()<0)
-					return super.okMessage(myHost,msg);
-				break;
-			case NEGATIVE:
-				if(msg.value()>0)
-					return super.okMessage(myHost,msg);
-				break;
-			case POSINEGA:
-				break;
+				if((((msg.target()==affected)||(m.selfXP && (msg.source()==affected)))&&(affected instanceof MOB))
+				||((affected instanceof Rideable)
+					&&(!m.rideOK)
+					&&(msg.target()!=null)
+					&&((msg.source().riding()==affected)
+						|| ((affected instanceof Item)&&(msg.target().Name().equals(affected.Name()))) // what the actual f?
+						||((msg.target() instanceof Rider)&&(((Rider)msg.target()).riding()==affected))))
+				||((affected instanceof Item)
+					&&(msg.source()==((Item)affected).owner())
+					&&(((Item)affected).amBeingWornProperly()))
+				||(affected instanceof Room)
+				||(affected instanceof Area))
+					msg.setValue(CMLib.leveler().handleXPMods(msg.source(), target, m, msg.sourceMessage(), useTarget, msg.value()));
 			}
-			if(mask!=null)
-			{
-				if(affected instanceof Item)
-				{
-					if((msg.target()==null)||(!(msg.target() instanceof MOB))||(!CMLib.masking().maskCheck(mask,msg.target(),true)))
-						return super.okMessage(myHost,msg);
-				}
-				else
-				if(!CMLib.masking().maskCheck(mask,msg.source(),true))
-					return super.okMessage(myHost,msg);
-			}
-			msg.setValue((int)Math.round(CMath.parseMathExpression(operation, new double[]{msg.value()}, 0.0)));
 		}
 		return super.okMessage(myHost,msg);
 	}

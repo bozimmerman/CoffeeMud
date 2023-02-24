@@ -253,7 +253,8 @@ public class CMProps extends Properties
 		FORMULA_MAXITEMS,
 		FORMULA_MAXFOLLOW,
 		TRAINCOSTS,
-		DEFAULTABILITYARGS
+		DEFAULTABILITYARGS,
+		XPMOD
 	}
 
 	public final static int DEFAULT_MOB_HP_BASE = 11;
@@ -1837,7 +1838,7 @@ public class CMProps extends Properties
 				}
 				return false;
 			}
-			
+
 			@Override
 			public int hashCode()
 			{
@@ -2140,10 +2141,10 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Returns a pre-parsed version of the GENDER entry from the INI file 
+	 * Returns a pre-parsed version of the GENDER entry from the INI file
 	 * corresponding to the given gender code, which must be an uppercase
 	 * letter.
-	 * 
+	 *
 	 * @param index the uppercase letter code
 	 * @return the gender strings (pronouns, mostly)
 	 */
@@ -2180,9 +2181,9 @@ public class CMProps extends Properties
 			}
 		}
 		return p.genderDefs[index];
-		
+
 	}
-	
+
 	/**
 	 * Returns the first integer in the integer array from the lists.ini file of
 	 * the given ListFile entry, for the callers thread group.
@@ -2559,6 +2560,7 @@ public class CMProps extends Properties
 		setVar(Str.EXPDEFER,getStr("EXPDEFER",""));
 		parseXPDeferDetails(getVar(Str.EXPDEFER));
 		setVar(Str.RPAWARDS,getStr("RPAWARDS",""));
+		setVar(Str.XPMOD,getStr("XPMOD",""));
 		parseRPAwards(getVar(Str.RPAWARDS));
 		{
 			final String logoutMaskStr = getStr("LOGOUTMASK","").trim();

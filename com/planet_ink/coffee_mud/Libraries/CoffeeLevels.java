@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.CMProps.Bool;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpLevelLibrary.ModXP;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -41,6 +42,7 @@ import java.util.*;
 public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 {
 	protected final int[] experienceCaps = new int[256];
+	protected ModXP[] xpMods = null;
 
 	@Override
 	public String ID()
@@ -433,7 +435,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 
 	@Override
-	public void loseExperience(final MOB mob, int amount)
+	public void loseExperience(final MOB mob, final String sourceId, int amount)
 	{
 		if((mob==null)||(mob.soulMate()!=null))
 			return;
@@ -443,6 +445,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			final String mobName=mob.Name();
 			Log.killsOut("-EXP",room+":"+mobName+":"+amount);
 		}
+		amount = modGlobalExperience(mob,null,sourceId,amount);
 		amount = loseLeigeExperience(mob, amount);
 		amount = loseClanExperience(mob, amount);
 		mob.setExperience(mob.getExperience()-amount);
@@ -508,11 +511,28 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return amount;
 	}
 
+	protected int modGlobalExperience(final MOB mob, final MOB target, final String sourceId, int amount)
+	{
+		ModXP[] mods = this.xpMods;
+		if(mods == null)
+		{
+			mods = parseXPMods(CMProps.getVar(CMProps.Str.XPMOD));
+			this.xpMods=mods;
+		}
+		if(mods.length>0)
+		{
+			for(final ModXP m : mods)
+				amount = this.handleXPMods(mob, target, m, sourceId, false, amount);
+		}
+		return amount;
+	}
+
 	@Override
-	public void loseRPExperience(final MOB mob, int amount)
+	public void loseRPExperience(final MOB mob, final String sourceId, int amount)
 	{
 		if((mob==null)||(mob.soulMate()!=null))
 			return;
+		amount = modGlobalExperience(mob,null,sourceId,amount);
 		amount = loseLeigeExperience(mob, amount);
 		amount = loseClanExperience(mob, amount);
 		mob.setExperience(mob.getExperience()-amount);
@@ -574,8 +594,221 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 	}
 
+	protected int translateAmount(int amount, final String val)
+	{
+		if(amount<0)
+			amount=-amount;
+		if(val.endsWith("%"))
+			return (int)Math.round(CMath.mul(amount,CMath.div(CMath.s_int(val.substring(0,val.length()-1)),100)));
+		return CMath.s_int(val);
+	}
+
+	protected String translateNumber(final String val)
+	{
+		if(val.endsWith("%"))
+			return "( @x1 * (" + val.substring(0,val.length()-1) + " / 100) )";
+		return Integer.toString(CMath.s_int(val));
+	}
+
+	public int handleXPMods(final MOB mob, final MOB target,
+							final ModXP m,
+							final String sourceID, final boolean useTarget,
+							final int amount)
+	{
+		if(m==null)
+			return amount;
+		if((m.targetOnly)
+		&&((target==null)
+			||(target==mob)))
+			return amount;
+
+		if((m.tmask.length()>0)
+		&&(!CMStrings.matches(sourceID, m.tmask, false)))
+			return amount;
+
+		if(m.dir==ModXP.DirectionCheck.POSINEGA)
+		{
+			if(amount<0)
+				return amount;
+		}
+		else
+		if(m.dir==ModXP.DirectionCheck.NEGATIVE)
+		{
+			if(amount>0)
+				return amount;
+		}
+		if(m.mask!=null)
+		{
+			if(useTarget
+			&&(target != null))
+			{
+				if(!CMLib.masking().maskCheck(m.mask,target,true))
+					return amount;
+			}
+			else
+			if(!CMLib.masking().maskCheck(m.mask,mob,true))
+				return amount;
+		}
+		return (int)CMath.parseMathExpression(m.operation, new double[]{amount}, 0.0);
+	}
+
 	@Override
-	public void gainExperience(final MOB mob, final MOB victim, String homageMessage, int amount, final boolean quiet)
+	public ModXP[] parseXPMods(final String modStr)
+	{
+		final List<ModXP> newMods = new ArrayList<ModXP>();
+		String newText = modStr.trim();
+		while(newText.length()>0)
+		{
+			String s = newText;
+			if(newText.startsWith("["))
+			{
+				int x=newText.indexOf(']');
+				while(x>0)
+				{
+					final String ss=newText.substring(x+1);
+					if(ss.trim().startsWith(","))
+					{
+						s=newText.substring(1,x);
+						newText=newText.substring(newText.indexOf(',',x)+1).trim();
+						break;
+					}
+					else
+					if(ss.trim().length()==0)
+					{
+						s=newText.substring(1,x);
+						newText="";
+						break;
+					}
+					else
+						x=newText.indexOf(']',x+1);
+				}
+				if(x<0)
+					newText="";
+			}
+			else
+				newText="";
+			s=s.trim();
+			if(s.length()==0)
+				continue;
+			final ModXP m = new ModXP();
+			newMods.add(m);
+			int x=s.lastIndexOf(";;");
+			if(x>=0)
+			{
+				m.tmask=s.substring(x+2).trim();
+				s=s.substring(0,x).trim();
+			}
+			x=s.indexOf(';');
+			if(x>=0)
+			{
+				m.mask=CMLib.masking().getPreCompiledMask(s.substring(x+1).trim());
+				s=s.substring(0,x).trim();
+			}
+			String us=s.toUpperCase();
+			x=us.indexOf("SELF");
+			if(x>=0)
+			{
+				m.selfXP=true;
+				s=s.substring(0,x)+s.substring(x+4);
+				us=s.toUpperCase();
+			}
+			x=us.indexOf("TARGET");
+			if(x>=0)
+			{
+				m.targetOnly=true;
+				s=s.substring(0,x)+s.substring(x+6);
+				us=s.toUpperCase();
+			}
+			x=us.indexOf("RIDEOK");
+			if(x>=0)
+			{
+				m.rideOK=true;
+				s=s.substring(0,x)+s.substring(x+6);
+				us=s.toUpperCase();
+			}
+			m.dir = ModXP.DirectionCheck.POSITIVE;
+			for(final ModXP.DirectionCheck d : ModXP.DirectionCheck.values())
+			{
+				x=us.indexOf(d.name());
+				if(x>=0)
+				{
+					m.dir = d;
+					s=s.substring(0,x)+s.substring(x+d.name().length());
+					us=s.toUpperCase();
+				}
+			}
+
+			m.operationFormula="Amount "+s;
+			final List<String> ops = new ArrayList<String>();
+			int paren=0;
+			final StringBuilder curr=new StringBuilder("");
+			for(int i=0;i<s.length();i++)
+			{
+				if(paren > 0)
+				{
+					if(s.charAt('i')=='(')
+					{
+						if(paren == 0)
+						{
+							if(curr.length()>0)
+								ops.add(curr.toString().trim());
+							curr.setLength(0);
+						}
+						paren++;
+					}
+					else
+					if(s.charAt('i')==')')
+						paren--;
+					curr.append(s.charAt(i));
+				}
+				else
+				switch(s.charAt(i))
+				{
+				case '=':
+				case '+':
+				case '-':
+				case '*':
+				case '/':
+					if(curr.length()>0)
+						ops.add(curr.toString().trim());
+					curr.setLength(0);
+					curr.append(s.charAt(i));
+					break;
+				default:
+					curr.append(s.charAt(i));
+					break;
+				}
+			}
+			if(curr.length()>0)
+				ops.add(curr.toString().trim());
+			StringBuilder finalOps = new StringBuilder("");
+			for(final String op : ops)
+			{
+				if(op.startsWith("="))
+					finalOps = new StringBuilder(translateNumber(op.substring(1)).trim());
+				else
+				if(op.startsWith("(")&&(op.endsWith(")")))
+					finalOps = new StringBuilder(op);
+				else
+				if(op.startsWith("+")||op.startsWith("-")||op.startsWith("*")||op.startsWith("/"))
+				{
+					if(finalOps.length()==0)
+						finalOps.append("@x1");
+					finalOps.append(" ").append(op.charAt(0)).append(" ");
+					finalOps.append(translateNumber(op.substring(1)).trim());
+				}
+				else
+					finalOps=new StringBuilder(translateNumber(s.trim()));
+			}
+			if(finalOps.length()>0)
+				m.operation = CMath.compileMathExpression(finalOps.toString());
+			m.operationFormula=CMStrings.replaceAll(m.operationFormula, "@x1", "Amount");
+		}
+		return newMods.toArray(new ModXP[newMods.size()]);
+	}
+
+	@Override
+	public void gainExperience(final MOB mob, final String sourceId, final MOB victim, String homageMessage, int amount, final boolean quiet)
 	{
 		if(mob==null)
 			return;
@@ -588,6 +821,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			final String vicName=(victim!=null)?victim.Name():"null";
 			Log.killsOut("+EXP",room+":"+mobName+":"+vicName+":"+amount+":"+homageMessage);
 		}
+
+		amount = modGlobalExperience(mob,victim,sourceId,amount);
 
 		amount=adjustedExperience(mob,victim,amount);
 
@@ -662,11 +897,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 
 	@Override
-	public void gainRPExperience(final MOB mob, final MOB target, final String homageMessage, int amount, final boolean quiet)
+	public void gainRPExperience(final MOB mob, final String sourceId, final MOB target, final String homageMessage, int amount, final boolean quiet)
 	{
 		if(mob==null)
 			return;
 
+		amount=modGlobalExperience(mob,target,sourceId,amount);
 		amount=gainLeigeExperience(mob, amount, quiet);
 		amount=gainClanExperience(mob, amount);
 
@@ -745,7 +981,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		final Room R=mob.location();
 		if(R!=null)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,victim,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_EXPCHANGE,null,CMMsg.NO_EFFECT,homage,CMMsg.NO_EFFECT,""+quiet);
+			final CMMsg msg=CMClass.getMsg(mob,victim,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_EXPCHANGE,sourceID,CMMsg.NO_EFFECT,homage,CMMsg.NO_EFFECT,""+quiet);
 			msg.setValue(amount);
 			if(R.okMessage(mob,msg))
 			{
@@ -758,9 +994,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		else
 		{
 			if(amount>=0)
-				gainExperience(mob,victim,homage,amount,quiet);
+				gainExperience(mob,sourceID,victim,homage,amount, quiet);
 			else
-				loseExperience(mob,-amount);
+				loseExperience(mob,sourceID, -amount);
 			return amount;
 		}
 	}
@@ -786,9 +1022,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 		else
 		if(amount>=0)
-			gainRPExperience(mob,target,homage,amount,quiet);
+			gainRPExperience(mob,sourceID,target,homage,amount, quiet);
 		else
-			loseRPExperience(mob,-amount);
+			loseRPExperience(mob,sourceID, -amount);
 		return true;
 	}
 
@@ -1170,13 +1406,13 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			if(msg.value()>=0)
 			{
 				gainExperience(mob,
+							   msg.sourceMessage(),
 							   expFromKilledmob,
 							   msg.targetMessage(),
-							   msg.value(),
-							   CMath.s_bool(msg.othersMessage()));
+							   msg.value(), CMath.s_bool(msg.othersMessage()));
 			}
 			else
-				loseExperience(mob,-msg.value());
+				loseExperience(mob, msg.sourceMessage(), -msg.value());
 		}
 	}
 
@@ -1309,13 +1545,13 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			if(msg.value()>=0)
 			{
 				gainRPExperience(mob,
+							   msg.sourceMessage(),
 							   expFromTarget,
 							   msg.targetMessage(),
-							   msg.value(),
-							   CMath.s_bool(msg.othersMessage()));
+							   msg.value(), CMath.s_bool(msg.othersMessage()));
 			}
 			else
-				loseRPExperience(mob,-msg.value());
+				loseRPExperience(mob,msg.sourceMessage(), -msg.value());
 		}
 	}
 
@@ -1392,5 +1628,6 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public void propertiesLoaded()
 	{
 		Arrays.fill(experienceCaps, 0);
+		this.xpMods = null;
 	}
 }

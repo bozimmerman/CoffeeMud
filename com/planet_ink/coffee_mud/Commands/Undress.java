@@ -64,7 +64,7 @@ public class Undress extends StdCommand
 		final String what=commands.get(commands.size()-1);
 		commands.remove(what);
 		final String whom=CMParms.combine(commands,0);
-		final MOB target=mob.location().fetchInhabitant(whom);
+		final MOB target=getVisibleRoomTarget(mob,whom);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",whom));

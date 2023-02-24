@@ -437,18 +437,23 @@ public class MOBTeacher extends CombatAbilities
 					CMLib.commands().postSay(monster,student,L("You can't see me, so I can't teach you."),true,false);
 					return;
 				}
+				Ability possA=null;
+				final String calledThis = s.trim().toUpperCase();
 				final AbilityMapper ableMapper = CMLib.ableMapper();
 				final List<Ability> possAs=new LinkedList<Ability>();
 				for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 				{
 					final Ability A1=a.nextElement();
-					if((ableMapper.qualifiesByLevel(student,A1))
-					&&(student.fetchAbility(A1.ID())==null))
+					final boolean qualifies = ableMapper.qualifiesByLevel(student,A1);
+					if(qualifies  && (student.fetchAbility(A1.ID())==null))
 						possAs.add(A1);
+					if((A1.name().equalsIgnoreCase(calledThis)||A1.ID().equalsIgnoreCase(calledThis))
+					&&(qualifies || (possA == null))
+					&&(qualifies || ableMapper.qualifiesByAnyCharClassOrRace(A1.ID())))
+						possA=A1;
 				}
-				Ability possA=null;
-				final String calledThis = s.trim().toUpperCase();
-				possA=(Ability)CMLib.english().fetchEnvironmental(possAs,calledThis,true);
+				if(possA==null)
+					possA=(Ability)CMLib.english().fetchEnvironmental(possAs,calledThis,true);
 				if(possA==null)
 					possA=(Ability)CMLib.english().fetchEnvironmental(possAs,calledThis,false);
 				Ability teachA=null;

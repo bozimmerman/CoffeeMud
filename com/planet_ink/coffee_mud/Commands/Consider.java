@@ -211,7 +211,14 @@ public class Consider extends StdCommand
 		if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 			target=mob;
 		if(target==null)
+		{
 			target=mob.location().fetchFromMOBRoomFavorsMOBs(mob,null,targetName,Wearable.FILTER_ANY);
+			int ctr=1;
+			while ((target != null)
+			&& (!CMLib.flags().canBeSeenBy(target, mob))
+			&&(targetName.indexOf('.')<0))
+				target = mob.location().fetchFromMOBRoomFavorsMOBs(mob, null, targetName+"."+(++ctr), Wearable.FILTER_ANY);
+		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see '@x1' here.",targetName));

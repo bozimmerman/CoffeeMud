@@ -303,7 +303,7 @@ public class Train extends StdCommand
 
 		MOB teacher=null;
 		if(teacherName!=null)
-			teacher=mob.location().fetchInhabitant(teacherName);
+			teacher=getVisibleRoomTarget(mob,teacherName);
 		if(teacher==null)
 		{
 			for(int i=0;i<mob.location().numInhabitants();i++)

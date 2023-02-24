@@ -242,7 +242,7 @@ public class AnimalTraining extends CommonSkill
 		}
 
 		final String str=CMParms.combine(commands,0);
-		MOB M=mob.location().fetchInhabitant(str);
+		MOB M=getVisibleRoomTarget(mob,str);
 		trainingM=null;
 		if(M!=null)
 		{

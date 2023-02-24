@@ -358,13 +358,13 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer("");
+			final StringBuffer buf=new StringBuffer("^H");
 			buf.append(CMStrings.padRight(L("Item"),cols[0])+" "
 					   +CMStrings.padRight(L("Exp"),cols[1])+" "
 					   +CMStrings.padRight(L("Material#1"),cols[2])+" "
 					   +CMStrings.padRight(L("Amt#1"),cols[3])+" "
 					   +CMStrings.padRight(L("Material#2"),cols[4])+" "
-					   +CMStrings.padRight(L("Amt#2"),cols[5])+"\n\r");
+					   +CMStrings.padRight(L("Amt#2"),cols[5])+"^N\n\r");
 			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
 			for(int r=0;r<listRecipes.size();r++)
 			{
@@ -394,7 +394,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 							mat2=mat2.substring(0,m2).toLowerCase();
 							//amt2=""+adjustWoodRequired(CMath.s_int(amt2),mob);
 						}
-						buf.append(CMStrings.padRight(item,cols[0])+" "
+						buf.append("^w"+CMStrings.padRight(item,cols[0])+"^N "
 								   +CMStrings.padRight(""+exp,cols[1])+" "
 								   +CMStrings.padRight(mat1,cols[2])+" "
 								   +CMStrings.padRight(amt1,cols[3])+" "
@@ -412,7 +412,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		messedUp=false;
 		final String recipeName=CMParms.combine(commands,0);
 		List<String> foundRecipe=null;
-		final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+		final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
 		for(int r=0;r<matches.size();r++)
 		{
 			final List<String> V=matches.get(r);

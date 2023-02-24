@@ -198,7 +198,7 @@ public class AnimalHusbandry extends CommonSkill
 		int highestLevel=0;
 		for(final String name : names)
 		{
-			final MOB M=mob.location().fetchInhabitant(name);
+			final MOB M=getVisibleRoomTarget(mob,name);
 			if(M==null)
 			{
 				commonTelL(mob,"You don't see anyone called '@x1' here.",name);

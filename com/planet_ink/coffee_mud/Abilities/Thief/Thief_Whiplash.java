@@ -179,8 +179,7 @@ public class Thief_Whiplash extends ThiefSkill
 		if(commands.size()>0)
 		{
 			final String s=CMParms.combine(commands,0);
-			if(mob.location().fetchInhabitant(s)!=null)
-				target=mob.location().fetchInhabitant(s);
+			target=getVisibleRoomTarget(mob,s);
 			if((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob)))
 			{
 				mob.tell(L("You can't see '@x1' here.",s));

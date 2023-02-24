@@ -62,7 +62,7 @@ public class Display extends StdCommand
 			return false;
 		}
 
-		final MOB recipient=mob.location().fetchInhabitant(commands.get(commands.size()-1));
+		final MOB recipient=getVisibleRoomTarget(mob,commands.get(commands.size()-1));
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see anyone called @x1 here.",commands.get(commands.size()-1)));

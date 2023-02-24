@@ -248,7 +248,7 @@ public class Torturesmithing extends EnhancedCraftingSkill implements ItemCrafto
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer(L("@x1 Lvl Material required\n\r",CMStrings.padRight(L("Item"),16)));
+			final StringBuffer buf=new StringBuffer(L("^H@x1 Lvl Material required^N\n\r",CMStrings.padRight(L("Item"),16)));
 			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
 			for(int r=0;r<listRecipes.size();r++)
 			{
@@ -262,7 +262,7 @@ public class Torturesmithing extends EnhancedCraftingSkill implements ItemCrafto
 					if(wood.length()>5)
 						mat="";
 					if((level<=xlevel(mob))||allFlag)
-						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+wood+" "+mat.toLowerCase()+"\n\r");
+						buf.append("^w"+CMStrings.padRight(item,16)+"^N "+CMStrings.padRight(""+level,3)+" "+wood+" "+mat.toLowerCase()+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());
@@ -286,7 +286,7 @@ public class Torturesmithing extends EnhancedCraftingSkill implements ItemCrafto
 		}
 		final String recipeName=CMParms.combine(commands,0);
 		List<String> foundRecipe=null;
-		final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+		final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
 		for(int r=0;r<matches.size();r++)
 		{
 			final List<String> V=matches.get(r);

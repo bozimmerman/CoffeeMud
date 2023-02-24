@@ -61,7 +61,7 @@ public class Teach extends StdCommand
 		}
 		commands.remove(0);
 
-		final MOB student=mob.location().fetchInhabitant(commands.get(0));
+		final MOB student=getVisibleRoomTarget(mob,commands.get(0));
 		if((student==null)||(!CMLib.flags().canBeSeenBy(student,mob)))
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("That person doesn't seem to be here."));

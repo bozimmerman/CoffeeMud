@@ -904,6 +904,22 @@ public class StdAbility implements Ability
 		return true;
 	}
 
+	protected MOB getVisibleRoomTarget(final MOB mob, final String whom)
+	{
+		if(mob == null)
+			return null;
+		final Room R=mob.location();
+		if(R==null)
+			return null;
+		MOB target = R.fetchInhabitant(whom);
+		int ctr=1;
+		while ((target != null)
+		&& (!CMLib.flags().canBeSeenBy(target, mob))
+		&&(whom.indexOf('.')<0))
+			target = R.fetchInhabitant(whom+"."+(++ctr));
+		return target;
+	}
+
 	protected MOB getTarget(final MOB mob, final List<String> commands, final Environmental givenTarget, final boolean quiet, final boolean alreadyAffOk)
 	{
 		String targetName=CMParms.combine(commands,0);
@@ -942,7 +958,7 @@ public class StdAbility implements Ability
 		else
 		if(mob.location()!=null)
 		{
-			target=mob.location().fetchInhabitant(targetName);
+			target=getVisibleRoomTarget(mob,targetName);
 			if(target==null)
 			{
 				final Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName);

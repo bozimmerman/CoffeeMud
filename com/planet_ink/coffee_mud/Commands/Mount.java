@@ -84,7 +84,7 @@ public class Mount extends StdCommand
 			}
 			if(RI==null)
 			{
-				final MOB M=mob.location().fetchInhabitant(commands.get(0));
+				MOB M=getVisibleRoomTarget(mob,commands.get(0));
 				if(M!=null)
 				{
 					if(!CMLib.flags().canBeSeenBy(M,mob))

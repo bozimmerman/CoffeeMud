@@ -71,7 +71,7 @@ public class Wake extends StdCommand
 		else
 		{
 			final String whom=CMParms.combine(commands,0);
-			final MOB M=mob.location().fetchInhabitant(whom);
+			final MOB M=getVisibleRoomTarget(mob,whom);
 			if((M==null)||(!CMLib.flags().canBeSeenBy(M,mob)))
 			{
 				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",whom));

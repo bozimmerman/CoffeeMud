@@ -359,8 +359,8 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 						}
 						if((wood.length()>5)&&(mat.length()<5))
 						{
-							buf.append(
-									CMStrings.padRight(item,cols[0])+" "+
+							buf.append("^w"+
+									CMStrings.padRight(item,cols[0])+" ^N"+
 									CMStrings.padRight(""+level,cols[1])+" "+
 									CMStrings.padRight(""+wood+mat,cols[2]+cols[3])+"  "+
 									CMStrings.padRight(""+magic,cols[4])+
@@ -368,8 +368,8 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 						}
 						else
 						{
-							buf.append(
-								CMStrings.padRight(item,cols[0])+" "+
+							buf.append("^w"+
+								CMStrings.padRight(item,cols[0])+" ^N"+
 								CMStrings.padRight(""+level,cols[1])+" "+
 								CMStrings.padRight(""+wood,cols[2])+" "+
 								CMStrings.padRight(""+mat,cols[3])+" "+
@@ -432,7 +432,7 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
-			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
 			for(int r=0;r<matches.size();r++)
 			{
 				final List<String> V=matches.get(r);

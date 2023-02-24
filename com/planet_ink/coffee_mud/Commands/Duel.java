@@ -58,7 +58,7 @@ public class Duel extends StdCommand
 		}
 
 		final String whomToKill=CMParms.combine(commands,1);
-		target=mob.location().fetchInhabitant(whomToKill);
+		target=getVisibleRoomTarget(mob,whomToKill);
 		if(target==null)
 		{
 			if("accept".startsWith(whomToKill.toLowerCase()))

@@ -489,7 +489,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				CMLib.lister().fixColWidth(10,mob.session())
 			};
 			final StringBuffer buf=new StringBuffer(
-				L("@x1 @x2 @x3\n\r",
+				L("^H@x1 @x2 @x3^N\n\r",
 				CMStrings.padRight(L("Level"),cols[1]),
 				CMStrings.padRight(L("Item"),cols[0]),
 				CMStrings.padRight(L("Wood req."), cols[2])
@@ -507,8 +507,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 					{
 						buf.append(
 							CMStrings.padRight(""+level,cols[1])
-							+" "+CMStrings.padRight(item,cols[0])
-							+" "+CMStrings.padRight(wood,cols[2])
+							+" ^w"+CMStrings.padRight(item,cols[0])
+							+" ^N"+CMStrings.padRight(wood,cols[2])
 							+"\n\r"
 						);
 					}
@@ -867,7 +867,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				return false;
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
-			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
 			for(int r=0;r<matches.size();r++)
 			{
 				final List<String> V=matches.get(r);

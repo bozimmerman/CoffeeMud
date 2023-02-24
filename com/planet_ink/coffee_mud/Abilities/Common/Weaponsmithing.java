@@ -368,10 +368,10 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			final StringBuffer buf=new StringBuffer(L("Weapons <S-NAME> <S-IS-ARE> skilled at making:\n\r"));
 			int toggler=1;
 			final int toggleTop=displayColumns();
-			final int itemWidth=CMLib.lister().fixColWidth((78/toggleTop)-9,mob.session());
+			final int itemWidth=CMLib.lister().fixColWidth((78/toggleTop)-10,mob.session());
 			for(int r=0;r<toggleTop;r++)
-				buf.append(L("@x1 Lvl @x2@x3",CMStrings.padRight(L("Item"),itemWidth),CMStrings.padRight(L("Amt"),3),((r<(toggleTop-1)?" ":""))));
-			buf.append("\n\r");
+				buf.append("^H"+L("@x1 Lvl @x2@x3",CMStrings.padRight(L("Item"),itemWidth),CMStrings.padRight(L("Amt"),3),((r<(toggleTop-1)?" ":""))));
+			buf.append("^N\n\r");
 			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
 			for(int r=0;r<listRecipes.size();r++)
 			{
@@ -391,7 +391,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 								buf.append("\n\r");
 							toggler=toggleTop;
 						}
-						buf.append(CMStrings.padRight(item,itemWidth)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append("^w"+CMStrings.padRight(item,itemWidth)+"^N "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop)
 							toggler=1;
 					}
@@ -451,7 +451,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 				return false;
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
-			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
 			for(int r=0;r<matches.size();r++)
 			{
 				final List<String> V=matches.get(r);

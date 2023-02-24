@@ -314,13 +314,13 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 			int toggler=1;
 			final int toggleTop=2;
 			final int[] cols={
-				CMLib.lister().fixColWidth(28,mob.session()),
+				CMLib.lister().fixColWidth(27,mob.session()),
 				CMLib.lister().fixColWidth(3,mob.session()),
 				CMLib.lister().fixColWidth(5,mob.session())
 			};
 			for(int r=0;r<toggleTop;r++)
-				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Cloth"),cols[2]));
-			buf.append("\n\r");
+				buf.append("^H"+(r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Cloth"),cols[2]));
+			buf.append("^N\n\r");
 			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
 			for(int r=0;r<listRecipes.size();r++)
 			{
@@ -338,7 +338,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 								buf.append("\n\r");
 							toggler=toggleTop;
 						}
-						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRightPreserve(""+wood,cols[2])+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append("^w"+CMStrings.padRight(item,cols[0])+"^N "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRightPreserve(""+wood,cols[2])+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop)
 							toggler=1;
 					}
@@ -424,7 +424,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 				return false;
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
-			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
 			for(int r=0;r<matches.size();r++)
 			{
 				final List<String> V=matches.get(r);

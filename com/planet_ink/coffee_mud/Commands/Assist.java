@@ -56,7 +56,7 @@ public class Assist extends StdCommand
 			return false;
 		}
 		commands.remove(0);
-		final MOB recipientM=mob.location().fetchInhabitant(CMParms.combine(commands,0));
+		final MOB recipientM=getVisibleRoomTarget(mob,CMParms.combine(commands,0));
 		if((recipientM==null)||(!CMLib.flags().canBeSeenBy(recipientM,mob)))
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",CMParms.combine(commands,0)));

@@ -371,8 +371,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				CMLib.lister().fixColWidth(5,mob.session())
 			};
 			for(int r=0;r<toggleTop;r++)
-				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Metal"),cols[2]));
-			buf.append("\n\r");
+				buf.append("^H"+(r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Metal"),cols[2]));
+			buf.append("^N\n\r");
 			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
 			for(int r=0;r<listRecipes.size();r++)
 			{
@@ -395,7 +395,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 								buf.append("\n\r");
 							toggler=toggleTop;
 						}
-						buf.append(CMStrings.padRight(item,cols[0])+" "+
+						buf.append("^w"+CMStrings.padRight(item,cols[0])+"^N "+
 									CMStrings.padRight(""+level,cols[1])+" "+
 									CMStrings.padRightPreserve(""+wood,cols[2])
 									+((toggler!=toggleTop)?" ":"\n\r"));
@@ -581,7 +581,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				return false;
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
-			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
 			for(int r=0;r<matches.size();r++)
 			{
 				final List<String> V=matches.get(r);

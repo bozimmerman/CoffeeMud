@@ -242,7 +242,7 @@ public class InstrumentMaking extends EnhancedCraftingSkill implements ItemCraft
 				CMLib.lister().fixColWidth(3,mob.session()),
 				CMLib.lister().fixColWidth(10,mob.session())
 			};
-			final StringBuffer buf=new StringBuffer(L("@x1 @x2 @x3 Material required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1]),CMStrings.padRight(L("Type"),cols[2])));
+			final StringBuffer buf=new StringBuffer(L("^H@x1 @x2 @x3 Material required^N\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1]),CMStrings.padRight(L("Type"),cols[2])));
 			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
 			for(int r=0;r<listRecipes.size();r++)
 			{
@@ -259,7 +259,7 @@ public class InstrumentMaking extends EnhancedCraftingSkill implements ItemCraft
 					final String itype=CMStrings.capitalizeAndLower(V.get(RCP_TYPE).toLowerCase()).trim();
 					if(((level<=xlevel(mob))||allFlag)
 					&&((race.length()==0)||archon||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
-						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRight(itype,cols[2])+" "+wood+" "+type+"\n\r");
+						buf.append("^w"+CMStrings.padRight(item,cols[0])+"^N "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRight(itype,cols[2])+" "+wood+" "+type+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());
@@ -281,7 +281,7 @@ public class InstrumentMaking extends EnhancedCraftingSkill implements ItemCraft
 		}
 		final String recipeName=CMParms.combine(commands,0);
 		List<String> foundRecipe=null;
-		final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+		final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
 		for(int r=0;r<matches.size();r++)
 		{
 			final List<String> V=matches.get(r);

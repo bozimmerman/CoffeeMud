@@ -4101,7 +4101,7 @@ worse) armor, or NON-METAL armor. You should check the CharClass
 interface for any other ARMOR_* definitions which may be added from
 time to time.</p>
       <pre>  public int allowedArmorLevel()<br />  {<br />    return CharClass.ARMOR_CLOTH;<br />  }<br /><br />  protected int requiredArmorSourceMinor()<br />  {<br />    return -1;<br />  }<br /><br />  protected String armorFailMessage()<br />  {<br />    return "&lt;s-name&gt; fumble(s) &lt;s-his-her&gt; &lt;skill&gt; due to &lt;s-his-her&gt; armor!";<br />  }<br /></pre>
-      <p>The The StdCharClass will
+      <p>The StdCharClass will
 automaticallyy enforce armor
 requirements whenever a class skill is used, provided these methods are
 defined. The <code>allowedArmorLevel()</code>

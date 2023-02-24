@@ -1762,7 +1762,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		Environmental shopkeeper=V.get(0);
 		if(matchWords.size()>1)
 		{
-			final MOB M=mob.location().fetchInhabitant(matchWords.get(matchWords.size()-1));
+			final String whom=matchWords.get(matchWords.size()-1);
+			MOB M=mob.location().fetchInhabitant(whom);
+			int ctr=1;
+			while ((M != null)
+			&& (!CMLib.flags().canBeSeenBy(M, mob))
+			&&(whom.indexOf('.')<0))
+				M = mob.location().fetchInhabitant(whom+"."+(++ctr));
 			if((M!=null)
 			&&(CMLib.coffeeShops().getShopKeeper(M)!=null)
 			&&(CMLib.flags().canBeSeenBy(M,mob)))

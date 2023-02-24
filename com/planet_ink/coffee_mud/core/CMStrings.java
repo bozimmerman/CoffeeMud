@@ -3953,6 +3953,95 @@ public class CMStrings
 		return total;
 	}
 
+	public final static boolean matches(final String str, final String mask, final boolean caseSensitive)
+	{
+		if(str==null)
+			return false;
+		if((mask==null)||(mask.length()==0))
+			return true;
+		final char[] cstr=caseSensitive?str.toCharArray():str.toLowerCase().toCharArray();
+		final char[] mfix=caseSensitive?mask.toCharArray():mask.toLowerCase().toCharArray();
+		// mstr needs 'fixing'
+		final char[] macc=new char[mfix.length];
+		int adex=0;
+		for(int i=0;i<mfix.length;i++)
+		{
+			if((mfix[i]=='\\')
+			&&(i<mfix.length))
+				macc[adex++]=mfix[++i];
+			else
+			if(mfix[i]=='*')
+				macc[adex++]=(char)0;
+			else
+			if(mfix[i]=='?')
+				macc[adex++]=(char)1;
+			else
+				macc[adex++]=mfix[i];
+		}
+		final char[] mstr = Arrays.copyOf(macc, adex);
+
+		int cpos = 0;
+		int mpos = 0;
+		int cend = cstr.length-1;
+		int mend = mstr.length-1;
+		while((mend>=mpos)||(cend>=cpos))
+		{
+			for(;mpos<=mend;mpos++)
+			{
+				final char c = mstr[mpos];
+				if(c==(char)0)
+					break;
+				if(cpos>cend)
+					return false;
+				if((c!=(char)1)
+				&&(c != cstr[cpos]))
+					return false;
+				cpos++;
+			}
+			for(;mend>=mpos;mend--)
+			{
+				final char c = mstr[mend];
+				if(c==(char)0)
+					break;
+				if(cpos > cend)
+					return false;
+				if((c!=(char)1)
+				&&(c != cstr[cend]))
+					return false;
+				cend--;
+			}
+			if(mend<mpos)
+			{
+				if(cpos>cend)
+					return true;
+				return false;
+			}
+			if(mend==mpos) // it must be a *
+				return true;
+			if(mend<mpos-1) // it must be **
+				return true;
+			while((mpos<=mend)&&(mstr[mpos]==(char)0))
+				mpos++;
+			if(mend<mpos)
+				return true;
+			while((mpos<=mend)&&(mstr[mend]==(char)0))
+				mend--;
+			if(mend<mpos)
+				return true;
+			char c=mstr[mpos];
+			if(c!=(char)1)
+				cpos = String.valueOf(cstr).indexOf(c,cpos);
+			if((cpos<0)||(cpos>cend))
+				return false;
+			c=mstr[mend];
+			if(c!=(char)1)
+				cend = String.valueOf(cstr).lastIndexOf(c,cend);
+			if((cend<0)||(cpos>cend))
+				return false;
+		}
+		return true;
+	}
+
 	/**
 	 * Counts the number of times the given character appears in the given string.
 	 * @param str the string to search through

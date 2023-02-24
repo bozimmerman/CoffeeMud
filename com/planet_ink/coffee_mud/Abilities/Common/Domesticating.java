@@ -131,7 +131,7 @@ public class Domesticating extends CommonSkill
 			str=commands.get(1);
 			newName=CMParms.combine(commands,2);
 		}
-		final MOB M=mob.location().fetchInhabitant(str);
+		final MOB M=getVisibleRoomTarget(mob,str);
 		if((M==null)||(!CMLib.flags().canBeSeenBy(M,mob)))
 		{
 			commonTelL(mob,"You don't see anyone called '@x1' here.",str);

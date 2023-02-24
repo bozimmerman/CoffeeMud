@@ -113,7 +113,7 @@ public class Kill extends StdCommand
 
 		if(target==null)
 		{
-			target=mob.location().fetchInhabitant(whomToKill);
+			target=getVisibleRoomTarget(mob,whomToKill);
 			if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 			{
 				CMLib.commands().postCommandFail(mob,origCmds,L("I don't see '@x1' here.",whomToKill));

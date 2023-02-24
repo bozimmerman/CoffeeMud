@@ -202,7 +202,7 @@ public interface AbilityComponent extends CMCommon
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent#getAbilityID()
 	 *
-	 * @param ID the the ability ID
+	 * @param ID the ability ID
 	 */
 	public void setAbilityID(final String ID);
 

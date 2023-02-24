@@ -892,7 +892,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 				CMLib.lister().fixColWidth(10,mob.session()),
 				CMLib.lister().fixColWidth(10,mob.session())
 			};
-			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Mats required\n\r",
+			final StringBuffer buf=new StringBuffer(L("^H@x1 @x2 Mats required^N\n\r",
 					CMStrings.padRight(L("Item"),cols[0]),
 					CMStrings.padRight(L("Level"),cols[1])));
 			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
@@ -906,8 +906,8 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 					final String amountMats=getComponentDescription(mob,V,RCP_AMOUNTMATS);
 					if((level<=xlevel(mob))||allFlag)
 					{
-						buf.append(CMStrings.padRight(item,cols[0])
-								+" "+CMStrings.padRight(""+level,cols[1])
+						buf.append("^w"+CMStrings.padRight(item,cols[0])
+								+"^N "+CMStrings.padRight(""+level,cols[1])
 								+" "+amountMats+"\n\r");
 					}
 				}
@@ -1275,7 +1275,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 				return false;
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
-			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
 			for(int r=0;r<matches.size();r++)
 			{
 				final List<String> V=matches.get(r);

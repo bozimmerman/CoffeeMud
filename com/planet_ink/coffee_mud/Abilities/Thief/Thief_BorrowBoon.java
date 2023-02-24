@@ -279,7 +279,7 @@ public class Thief_BorrowBoon extends ThiefSkill
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
-			target=mob.location().fetchInhabitant(CMParms.combine(commands));
+			target=getVisibleRoomTarget(mob,CMParms.combine(commands));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,1)));

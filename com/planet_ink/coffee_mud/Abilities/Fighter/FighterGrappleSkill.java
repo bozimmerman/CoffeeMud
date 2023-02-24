@@ -400,7 +400,7 @@ public class FighterGrappleSkill extends FighterSkill
 				else
 				{
 					if(R!=null)
-						R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> <S-IS-ARE> released from the "+actName+""));
+						R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> <S-IS-ARE> released from the "+actName+"."));
 					else
 						mob.tell(L("You are released from the "+actName+"."));
 				}

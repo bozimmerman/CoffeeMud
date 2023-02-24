@@ -56,7 +56,7 @@ public class Serve extends StdCommand
 			return false;
 		}
 		commands.remove(0);
-		final MOB recipient=mob.location().fetchInhabitant(CMParms.combine(commands,0));
+		final MOB recipient=getVisibleRoomTarget(mob,CMParms.combine(commands,0));
 		if((recipient!=null)&&(recipient.isMonster())&&(!(recipient instanceof Deity)))
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("You may not serve @x1.",recipient.name()));

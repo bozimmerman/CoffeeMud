@@ -226,7 +226,7 @@ public class Enrolling extends CommonSkill
 		}
 
 		final String str=CMParms.combine(commands,0);
-		final MOB M=mob.location().fetchInhabitant(str);
+		final MOB M=getVisibleRoomTarget(mob,str);
 		enrollingM=null;
 		if(M!=null)
 		{

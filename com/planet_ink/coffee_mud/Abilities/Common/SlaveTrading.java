@@ -108,7 +108,7 @@ public class SlaveTrading extends CommonSkill
 		}
 
 		final String str=CMParms.combine(commands,0);
-		final MOB slaveM=mob.location().fetchInhabitant(str);
+		final MOB slaveM=getVisibleRoomTarget(mob,str);
 		if(slaveM==null)
 		{
 			commonTelL(mob,"You don't see anyone called '@x1' here.",str);

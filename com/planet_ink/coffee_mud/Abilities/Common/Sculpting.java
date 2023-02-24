@@ -276,7 +276,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 				CMLib.lister().fixColWidth(20,mob.session()),
 				CMLib.lister().fixColWidth(3,mob.session())
 			};
-			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Stone required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
+			final StringBuffer buf=new StringBuffer(L("^H@x1 @x2 Stone required^N\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
 			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
 			for(int r=0;r<listRecipes.size();r++)
 			{
@@ -287,7 +287,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					final String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if((level<=xlevel(mob))||allFlag)
-						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+wood+"\n\r");
+						buf.append("^w"+CMStrings.padRight(item,cols[0])+"^N "+CMStrings.padRight(""+level,cols[1])+" "+wood+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());
@@ -351,7 +351,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			String recipeName=CMParms.combine(commands,0);
 			String rest="";
 			List<String> foundRecipe=null;
-			List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+			List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
 			if(matches.size()==0)
 			{
 				matches=matchingRecipeNames(recipes,commands.get(0),true);

@@ -868,7 +868,7 @@ public class Test extends StdCommand
 					while(level==M.basePhyStats().level())
 					{
 						xp+=10;
-						CMLib.leveler().gainExperience(M,null,"",10,true);
+						CMLib.leveler().gainExperience(M,"TEST:",null,"",10, true);
 					}
 					mob.tell(s+xp);
 				}
@@ -4227,6 +4227,29 @@ public class Test extends StdCommand
 					mobs[1].setSession(null);
 					mobs[0].setPlayerStats(null);
 					mobs[1].setPlayerStats(null);
+				}
+			}
+			if(what.equalsIgnoreCase("matches"))
+			{
+				final Session S=mob.session();
+				String word="x";
+				while((word.length()>0)
+				&&(S!=null)
+				&&(!S.isStopped()))
+				{
+					word = S.prompt("Enter a word: ");
+					if(word.trim().length()==0)
+						break;
+					String match="x";
+					while((match.length()>0)
+					&&(S!=null)
+					&&(!S.isStopped()))
+					{
+						match = S.prompt("Enter a matcher: ");
+						if(match.trim().length()==0)
+							break;
+						S.println("match="+CMStrings.matches(word, match, false));
+					}
 				}
 			}
 			if(what.equalsIgnoreCase("citycheck"))

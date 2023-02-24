@@ -1087,7 +1087,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 
 			final String recipeName = CMParms.combine(recipe);
 			final List<List<String>> recipes=addRecipes(mob,loadRecipes());
-			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
 			if(matches.size()>0)
 			{
 				for(int i=matches.size()-1;i>=0;i--)
@@ -1477,7 +1477,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			}
 		}
 
-		if(beLoose && (matches.size()==0))
+		if(beLoose || (matches.size()==0))
 		{
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -1485,11 +1485,12 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				if(V.size()>0)
 				{
 					final String item=V.get(RCP_FINALNAME);
-					if((recipeName.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
+					if(((recipeName.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
+					&&(!matches.contains(V)))
 						matches.add(V);
 				}
 			}
-			if(matches.size()==0)
+			if(beLoose || matches.size()==0)
 			{
 				final Vector<String> rn=CMParms.parse(recipeName);
 				final String lastWord=rn.lastElement();
@@ -1501,8 +1502,9 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 						if(V.size()>0)
 						{
 							final String item=V.get(RCP_FINALNAME);
-							if((replacePercent(item,"").toUpperCase().indexOf(lastWord.toUpperCase())>=0)
-							||(lastWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
+							if(((replacePercent(item,"").toUpperCase().indexOf(lastWord.toUpperCase())>=0)
+								||(lastWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
+							&&(!matches.contains(V)))
 								matches.add(V);
 						}
 					}
@@ -1519,8 +1521,9 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 							if(V.size()>0)
 							{
 								final String item=V.get(RCP_FINALNAME);
-								if((replacePercent(item,"").toUpperCase().indexOf(firstWord.toUpperCase())>=0)
-								||(firstWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
+								if(((replacePercent(item,"").toUpperCase().indexOf(firstWord.toUpperCase())>=0)
+									||(firstWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
+								&&(!matches.contains(V)))
 									otherMatches.add(V);
 							}
 						}
@@ -1534,7 +1537,8 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			}
 		}
 
-		if(supportsWeapons() && (matches.size()==0))
+		if(supportsWeapons()
+		&& (beLoose || (matches.size()==0)))
 		{
 			int x=CMParms.indexOf(Weapon.CLASS_DESCS,recipeName.toUpperCase().trim());
 			if(x>=0)
@@ -1543,10 +1547,12 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				for(int r=0;r<recipes.size();r++)
 				{
 					final List<String> V=recipes.get(r);
-					if(V.contains(weaponClass))
+					if((V.contains(weaponClass))
+					&&(!matches.contains(V)))
 						matches.add(V);
 				}
-				return matches;
+				if(!beLoose)
+					return matches;
 			}
 			x=CMParms.indexOf(Weapon.TYPE_DESCS,recipeName.toUpperCase().trim());
 			if(x>=0)
@@ -1555,13 +1561,14 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				for(int r=0;r<recipes.size();r++)
 				{
 					final List<String> V=recipes.get(r);
-					if(V.contains(weaponType))
+					if((V.contains(weaponType))
+					&&(!matches.contains(V)))
 						matches.add(V);
 				}
 			}
 		}
 
-		if(supportsArmors() && (matches.size()==0))
+		if(supportsArmors() && (beLoose || (matches.size()==0)))
 		{
 			final long code=Wearable.CODES.FIND_ignoreCase(recipeName.toUpperCase().trim());
 			if(code > 0)
@@ -1572,7 +1579,8 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 					final List<String> V=recipes.get(r);
 					for(int v=0;v<V.size();v++)
 					{
-						if(V.get(v).toUpperCase().indexOf(wearLoc)>=0)
+						if((V.get(v).toUpperCase().indexOf(wearLoc)>=0)
+						&&(!matches.contains(V)))
 						{
 							matches.add(V);
 							break;
@@ -1687,7 +1695,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			scanning=mob.location();
 		else
 		{
-			scanning=mob.location().fetchInhabitant(rest);
+			scanning=getVisibleRoomTarget(mob,rest);
 			if((scanning==null)||(!CMLib.flags().canBeSeenBy(scanning,mob)))
 			{
 				commonTelL(mob,"You don't see anyone called '@x1' here.",rest);

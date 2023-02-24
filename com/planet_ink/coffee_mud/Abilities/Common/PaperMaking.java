@@ -216,7 +216,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 				CMLib.lister().fixColWidth(22,mob.session()),
 				CMLib.lister().fixColWidth(3,mob.session())
 			};
-			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Material required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
+			final StringBuffer buf=new StringBuffer(L("^H@x1 @x2 Material required^N\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
 			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
 			for(int r=0;r<listRecipes.size();r++)
 			{
@@ -238,7 +238,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 					else
 						material="pound of "+material;
 					if((level<=xlevel(mob))||allFlag)
-						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+wood+" "+material.toLowerCase()+"\n\r");
+						buf.append("^w"+CMStrings.padRight(item,cols[0])+"^N "+CMStrings.padRight(""+level,cols[1])+" "+wood+" "+material.toLowerCase()+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());
@@ -260,7 +260,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		String materialDesc="";
 		final String recipeName=CMParms.combine(commands,0);
 		List<String> foundRecipe=null;
-		final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+		final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
 		for(int r=0;r<matches.size();r++)
 		{
 			final List<String> V=matches.get(r);

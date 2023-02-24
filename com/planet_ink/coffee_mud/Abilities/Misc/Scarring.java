@@ -246,7 +246,8 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 		if(target!=null)
 			targetName=target.name();
 
-		if((target==null)||((!CMLib.flags().canBeSeenBy(target,mob))&&((!CMLib.flags().canBeHeardMovingBy(target,mob))||(!target.isInCombat()))))
+		if((target==null)
+		||((!CMLib.flags().canBeSeenBy(target,mob))&&((!CMLib.flags().canBeHeardMovingBy(target,mob))||(!target.isInCombat()))))
 		{
 			if(!quiet)
 			{

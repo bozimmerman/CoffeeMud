@@ -161,7 +161,7 @@ public class Thief_Roofie extends ThiefSkill
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
-			target=mob.location().fetchInhabitant(commands.get(0));
+			target=getVisibleRoomTarget(mob,commands.get(0));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,1)));

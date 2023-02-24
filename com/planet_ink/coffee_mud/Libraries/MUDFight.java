@@ -2972,7 +2972,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			indiVars[3]=mob.phyStats().level();
 			final CompiledFormula indXPformula = getSessionMUDFight(mob.session()).individualCombatExpFormula;
 			final int myAmount=(int)Math.round(CMath.parseMathExpression(indXPformula, indiVars, 0.0));
-			CMLib.get(mob.session())._leveler().postExperience(mob,"COMBAT:"+killedLevel,killed,"",myAmount, false);
+			final String playerFlag = (killed!=null)&&(killed.isPlayer())?"P":"";
+			CMLib.get(mob.session())._leveler().postExperience(mob,"COMBAT:"+killedLevel+playerFlag,killed,"",myAmount, false);
 		}
 	}
 

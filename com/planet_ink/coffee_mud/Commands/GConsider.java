@@ -90,7 +90,7 @@ public class GConsider extends StdCommand
 		}
 		commands.remove(0);
 		final String targetName=CMParms.combine(commands,0);
-		final MOB target=mob.location().fetchInhabitant(targetName);
+		final MOB target=getVisibleRoomTarget(mob,targetName);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell(L("I don't see '@x1' here.",targetName));

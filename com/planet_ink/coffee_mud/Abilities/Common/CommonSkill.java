@@ -232,6 +232,15 @@ public class CommonSkill extends StdAbility
 				unInvoke();
 				return false;
 			}
+			if(((!allowedWhileMounted())&&(mob.riding()!=null))
+			||((!allowedInTheDark())&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
+			||((!canBeDoneSittingDown())&&(CMLib.flags().isSitting(mob))))
+			{
+				aborted=true;
+				unInvoke();
+				return false;
+			}
+
 			if(tickDown==4)
 			{
 				if(!R.show(mob,null,getActivityMessageType(),getAlmostDoneMessage()))

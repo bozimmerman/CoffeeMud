@@ -79,7 +79,7 @@ public interface Software extends Item, Technical
 	public String getInternalName();
 
 	/**
-	 * The the internal name of this software.
+	 * The internal name of this software.
 	 *
 	 * @param name the internal name of this software.
 	 */

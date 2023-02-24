@@ -132,7 +132,7 @@ public class Thief_StripItem extends ThiefSkill
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
-			target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
+			target=getVisibleRoomTarget(mob,CMParms.combine(commands,1));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,1)));

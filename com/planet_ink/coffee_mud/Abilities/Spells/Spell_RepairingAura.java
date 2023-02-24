@@ -70,7 +70,7 @@ public class Spell_RepairingAura extends Spell
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_INDIFFERENT;
+		return Ability.QUALITY_OK_SELF;
 	}
 
 	@Override

@@ -301,11 +301,11 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			final int[] cols={
 				CMLib.lister().fixColWidth(23,mob.session()),
 				CMLib.lister().fixColWidth(3,mob.session()),
-				CMLib.lister().fixColWidth(10,mob.session())
+				CMLib.lister().fixColWidth(9,mob.session())
 			};
 			final StringBuffer buf=new StringBuffer("");
-			buf.append(L("@x1 @x2 @x3 ",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1]),CMStrings.padRight(L("Bone req"), cols[2])));
-			buf.append(L("@x1 @x2 @x3\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1]),L("Bone req")));
+			buf.append(L("^H@x1 @x2 @x3 ",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1]),CMStrings.padRight(L("Bone req"), cols[2])));
+			buf.append(L("@x1 @x2 @x3^N\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1]),L("Bone req")));
 			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
 			int col=0;
 			final int numCols=2;
@@ -322,11 +322,11 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 						col++;
 						if(col>=numCols)
 						{
-							buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+wood+"\n\r");
+							buf.append("^w"+CMStrings.padRight(item,cols[0])+"^N "+CMStrings.padRight(""+level,cols[1])+" "+wood+"\n\r");
 							col=0;
 						}
 						else
-							buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRight(wood,cols[2])+" ");
+							buf.append("^w"+CMStrings.padRight(item,cols[0])+"^N "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRight(wood,cols[2])+" ");
 					}
 				}
 			}
@@ -386,7 +386,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
-			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
 			for(int r=0;r<matches.size();r++)
 			{
 				final List<String> V=matches.get(r);

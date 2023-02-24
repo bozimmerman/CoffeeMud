@@ -1298,10 +1298,10 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			if(getInfo)
 			{
 				colWidth=CMLib.lister().fixColWidth(13,mob.session());
-				buf=new StringBuffer(CMStrings.padRight(L("Item"),colWidth) + L(" Description\n\r",this.getMainResourceName()));
+				buf=new StringBuffer("^H"+CMStrings.padRight(L("Item"),colWidth) + L(" Description^N\n\r",this.getMainResourceName()));
 			}
 			else
-				buf=new StringBuffer(CMStrings.padRight(L("Item"),colWidth) + L(" @x1 required\n\r",this.getMainResourceName()));
+				buf=new StringBuffer("^H"+CMStrings.padRight(L("Item"),colWidth) + L(" @x1 required^N\n\r",this.getMainResourceName()));
 			for(int r=0;r<data.length;r++)
 			{
 				if(((data[r][DAT_BUILDERMASK].length()==0)
@@ -1312,7 +1312,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 					||mask.equalsIgnoreCase("all")
 					||CMLib.english().containsString(CMStrings.padRight(data[r][RCP_FINALNAME],colWidth),mask)))
 				{
-					buf.append(CMStrings.padRight(data[r][RCP_FINALNAME],colWidth)+" ");
+					buf.append("^w"+CMStrings.padRight(data[r][RCP_FINALNAME],colWidth)+"^N ");
 					if(getInfo)
 					{
 						if(DAT_DESCRIPTION < data[r].length)

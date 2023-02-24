@@ -107,7 +107,7 @@ public class Thief_PlantItem extends ThiefSkill
 			mob.tell(L("What would you like to plant on whom?"));
 			return false;
 		}
-		final MOB target=mob.location().fetchInhabitant(commands.get(commands.size()-1));
+		final MOB target=getVisibleRoomTarget(mob,commands.get(commands.size()-1));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell(L("You don't see '@x1' here.",commands.get(commands.size()-1)));
