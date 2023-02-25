@@ -790,7 +790,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 						continue;
 					error=addAbilityComponent(s,H);
 					if(error!=null)
-						Log.errOut("CMAble",error);
+						Log.errOut("CMAble",error+" on line "+v);
 				}
 			}
 			Triggerer.TrigSignal.sig++;

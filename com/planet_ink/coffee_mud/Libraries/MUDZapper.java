@@ -4685,12 +4685,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 				if(!found)
 				{
-					for(final String start : getLooseCodes().keySet())
+					final TreeMap<String,CompiledZapperMaskEntryImpl> looseCodes = getLooseCodes();
+					for(final String start : looseCodes.keySet())
 					{
 						if(start.startsWith(str))
 						{
 							found=true;
-							buf.add(getLooseCodes().get(start));
+							buf.add(looseCodes.get(start));
 							break;
 						}
 					}
