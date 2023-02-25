@@ -11222,7 +11222,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						lastR.show(monster,newTarget,null,CMMsg.MSG_OK_ACTION,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]),CMMsg.NO_EFFECT,null);
 				}
 				else
-				if(parm.equalsIgnoreCase("world"))
+				if((parm.equalsIgnoreCase("world"))
+				&&(lastR!=null))
 				{
 					lastR.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
 					for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
@@ -11248,7 +11249,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(CMLib.map().getRoom(parm)!=null)
 					CMLib.map().getRoom(parm).show(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
 				else
-				if(CMLib.map().findArea(parm)!=null)
+				if((CMLib.map().findArea(parm)!=null)
+				&&(lastR!=null))
 				{
 					lastR.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
 					for(final Enumeration<Room> e=CMLib.map().findArea(parm).getMetroMap();e.hasMoreElements();)
