@@ -114,6 +114,21 @@ public class Spell_Grow extends Spell
 	}
 
 	@Override
+	public void executeMsg(final Environmental host, final CMMsg msg)
+	{
+		super.executeMsg(host,msg);
+		if(super.canBeUninvoked())
+		{
+			if((msg.source()==affected)
+			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+				unInvoke();
+			else
+			if(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+				unInvoke();
+		}
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)&&(super.canBeUninvoked()))
