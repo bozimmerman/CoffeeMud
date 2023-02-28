@@ -109,9 +109,12 @@ public class Fighter_Endurance extends FighterSkill
 			final CharState curState = mob.curState();
 			final CharState maxState = mob.maxState();
 			if((curState.getHitPoints() < maxState.getHitPoints())
-			&&(curState.getMana() < maxState.getMana())
-			&&(curState.getMovement() < maxState.getMovement()))
-				helpProficiency(mob, 0);
+			||(curState.getMana() < maxState.getMana())
+			||(curState.getMovement() < maxState.getMovement()))
+			{
+				if(CMLib.dice().rollPercentage()<3)
+					helpProficiency(mob, 0);
+			}
 		}
 		return super.tick(ticking,tickID);
 	}
