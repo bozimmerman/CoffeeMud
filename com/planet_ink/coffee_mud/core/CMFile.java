@@ -1716,11 +1716,15 @@ public class CMFile extends File
 				for (final File element : list)
 				{
 					F2=element;
-					final String thisPath=vfsifyFilename(thisDir)+"/"+F2.getName();
-					final String thisName=F2.getName();
-					final CMFile CF=new CMFile(prefix+thisPath,accessor);
+					final String fileName = F2.getName();
+					final String vfsPath;
+					if(thisDir.equals("."))
+						vfsPath = fileName;
+					else
+						vfsPath=vfsifyFilename(thisDir)+"/"+fileName;
+					final CMFile CF=new CMFile(prefix+vfsPath,accessor);
 					if((CF.canRead())
-					&&(!fcheck.contains(thisName.toUpperCase())))
+					&&(!fcheck.contains(fileName.toUpperCase())))
 						dir.addElement(CF);
 				}
 			}
