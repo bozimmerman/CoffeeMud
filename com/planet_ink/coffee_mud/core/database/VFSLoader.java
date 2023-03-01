@@ -53,7 +53,7 @@ public class VFSLoader
 			{
 				return null;
 			}
-			final ResultSet R=D.query("SELECT * FROM CMVFS");
+			final ResultSet R=D.query("SELECT * FROM CMVFS WHERE CMDTYP < "+CMFile.VFS_MASK_ATTACHMENT);
 			while(R.next())
 			{
 				final String fname = DBConnections.getRes(R,"CMFNAM");
@@ -74,6 +74,42 @@ public class VFSLoader
 		}
 		// log comment
 		return root;
+	}
+
+	public List<CMFile.CMVFSFile> DBReadLike(final String partialFilename, final int minMask)
+	{
+		DBConnection D=null;
+		CMFile.CMVFSFile row = null;
+		final List<CMFile.CMVFSFile> files = new Vector<CMFile.CMVFSFile>(3);
+		try
+		{
+			D=DB.DBFetch();
+			String query = "SELECT * FROM CMVFS WHERE CMFNAM LIKE '"+partialFilename+"'";
+			if(minMask > 0)
+				query += " AND CMDTYP >= "+minMask;
+			final ResultSet R=D.query(query);
+			while(R.next())
+			{
+				final String possFName=DBConnections.getRes(R,"CMFNAM");
+				final int bits=(int)DBConnections.getLongRes(R,"CMDTYP");
+				final long mod=DBConnections.getLongRes(R,"CMMODD");
+				final String author = DBConnections.getRes(R,"CMWHOM");
+				final String data=DBConnections.getRes(R,"CMDATA");
+				row = new CMFile.CMVFSFile(possFName,bits,mod,author);
+				row.setData(B64Encoder.B64decode(data));
+				files.add(row);
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("VFSLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		// log comment
+		return files;
 	}
 
 	public CMFile.CMVFSFile DBRead(final String filename)
@@ -204,6 +240,35 @@ public class VFSLoader
 			D=DB.DBFetch();
 			if(DB.queryRows("SELECT * FROM CMVFS WHERE CMFNAM='"+filename+"'")>0)
 				Log.errOut("Failed to delete virtual file "+filename+".");
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("VFSLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+	}
+
+	public void DBDeleteLike(final String partialFilename, final int minMask)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			String queryStr = "DELETE FROM CMVFS WHERE CMFNAM LIKE '"+partialFilename+"'";
+			if(minMask > 0)
+				queryStr += " AND CMDTYP >= "+minMask;
+			D.update(queryStr,0);
+			DB.DBDone(D);
+			CMLib.s_sleep(500);
+			D=DB.DBFetch();
+			queryStr = "SELECT * FROM CMVFS WHERE CMFNAM LIKE  '"+partialFilename+"'";
+			if(minMask > 0)
+				queryStr += " AND CMDTYP >= "+minMask;
+			if(DB.queryRows(queryStr)>0)
+				Log.errOut("Failed to delete virtual file "+partialFilename+".");
 		}
 		catch(final Exception sqle)
 		{

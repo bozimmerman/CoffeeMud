@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMFile.CMVFSFile;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -37,22 +38,23 @@ import java.util.*;
 */
 public class DefaultJournalEntry implements JournalEntry
 {
-	public String		key					= null;
-	public String		from;
-	public String		to;
-	public String		subj;
-	public String		msg;
-	public long			date				= 0;
-	public long			update				= 0;
-	public String		parent				= "";
-	public long			attributes			= 0;
-	public String		data				= "";
-	public int			cardinal			= 0;
-	public String		msgIcon				= "";
-	public int			replies				= 0;
-	public int			views				= 0;
-	public boolean		isLastEntry			= false;
-	public StringBuffer	derivedBuildMessage	= null;
+	public String			key					= null;
+	public String			from;
+	public String			to;
+	public String			subj;
+	public String			msg;
+	public long				date				= 0;
+	public long				update				= 0;
+	public String			parent				= "";
+	public long				attributes			= 0;
+	public String			data				= "";
+	public int				cardinal			= 0;
+	public String			msgIcon				= "";
+	public int				replies				= 0;
+	public int				views				= 0;
+	public boolean			isLastEntry			= false;
+	public List<CMVFSFile>	attachments			= null;
+	public StringBuffer		derivedBuildMessage	= null;
 
 	@Override
 	public String ID()
@@ -272,6 +274,23 @@ public class DefaultJournalEntry implements JournalEntry
 	{
 		this.views = views;
 		return this;
+	}
+
+	@Override
+	public synchronized List<CMFile.CMVFSFile> attachments()
+	{
+		if(attachments == null)
+		{
+			if(!CMath.bset(attributes(), JournalEntry.JournalAttrib.ATTACHMENT.bit))
+			{
+				@SuppressWarnings("unchecked")
+				final List<CMFile.CMVFSFile> empty = XVector.empty;
+				attachments = empty;
+			}
+			else
+				attachments =  CMLib.database().DBReadVFSFilesLike(this.key()+"/%", CMFile.VFS_MASK_ATTACHMENT);
+		}
+		return attachments;
 	}
 
 	@Override

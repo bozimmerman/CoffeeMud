@@ -62,6 +62,7 @@ public class CMFile extends File
 	private static final int VFS_MASK_NOREADVFS=64;
 	private static final int VFS_MASK_NOREADLOCAL=128;
 	private static final int VFS_MASK_NODELETEANY=256;
+	public  static final int VFS_MASK_ATTACHMENT=16777216;
 
 	private static final char		pathSeparator		= File.separatorChar;
 

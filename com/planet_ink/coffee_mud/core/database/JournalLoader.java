@@ -455,7 +455,7 @@ public class JournalLoader
 			DB.DBDone(D);
 		}
 	}
-	
+
 	public List<JournalEntry> DBReadJournalMsgsNewerThan(String journal, String to, final long olderDate)
 	{
 		journal	= DB.injectionClean(journal);
@@ -765,9 +765,10 @@ public class JournalLoader
 		{
 			D=DB.DBFetch();
 			final Vector<String> deletableEntriesV=new Vector<String>();
+			final Vector<String> deletableAttachmentsV=new Vector<String>();
 			final Vector<String[]> notifiableParentsV=new Vector<String[]>();
 			//Resources.submitResource("JOURNAL_"+journal);
-			final String sql="SELECT * FROM CMJRNL WHERE CMTONM='"+name+"'";
+			final String sql="SELECT CMJRNL,CMJKEY,CMPART,CMATTR FROM CMJRNL WHERE CMTONM='"+name+"'";
 			final ResultSet R=D.query(sql);
 			while(R.next())
 			{
@@ -777,9 +778,12 @@ public class JournalLoader
 					continue;
 				final String key=R.getString("CMJKEY");
 				final String parent=R.getString("CMPART");
+				final int attrib=R.getInt("CMATTR");
 				if((parent!=null)&&(parent.length()>0))
 					notifiableParentsV.add(new String[]{journalName,parent});
 				deletableEntriesV.add(key);
+				if(CMath.bset(attrib,(int)JournalEntry.JournalAttrib.ATTACHMENT.bit))
+					deletableAttachmentsV.add(key);
 			}
 			for(final String[] parentKey : notifiableParentsV)
 			{
@@ -792,6 +796,11 @@ public class JournalLoader
 			}
 			for(final String s : deletableEntriesV)
 				D.update("DELETE FROM CMJRNL WHERE CMJKEY='"+s+"' OR CMPART='"+s+"'",0);
+			for(final String s : deletableAttachmentsV)
+			{
+				CMLib.database().DBDeleteVFSFileLike(s+"/%", CMFile.VFS_MASK_ATTACHMENT);
+				CMLib.database().DBDeleteVFSFileLike("%/"+s+"/%", CMFile.VFS_MASK_ATTACHMENT);
+			}
 		}
 		catch(final Exception sqle)
 		{
@@ -939,6 +948,13 @@ public class JournalLoader
 
 		if(journal==null)
 			return;
+		if(messageKey != null)
+		{
+			CMLib.database().DBDeleteVFSFileLike(messageKey+"/%", CMFile.VFS_MASK_ATTACHMENT);
+			CMLib.database().DBDeleteVFSFileLike("%/"+messageKey+"/%", CMFile.VFS_MASK_ATTACHMENT);
+		}
+		else
+			CMLib.database().DBDeleteVFSFile(journal+'%');
 		synchronized(CMClass.getSync("JOURNAL_"+journal.toUpperCase()))
 		{
 			String sql;

@@ -1027,11 +1027,11 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<String> DBReadPlayerDataKeys(String playerID, String section)
+	public List<String> DBReadPlayerDataKeys(final String playerID, final String section)
 	{
 		return DataLoader.DBReadPlayerDataKeys(playerID, section);
 	}
-	
+
 	@Override
 	public int DBCountPlayerData(final String section)
 	{
@@ -1309,6 +1309,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public List<CMFile.CMVFSFile> DBReadVFSFilesLike(final String partialFilename, final int minMask)
+	{
+		return VFSLoader.DBReadLike(partialFilename, minMask);
+	}
+
+	@Override
 	public void DBCreateVFSFile(final String filename, final int bits, final String creator, final long updateTime, final Object data)
 	{
 		VFSLoader.DBCreate(filename, bits, creator, updateTime, data);
@@ -1324,6 +1330,12 @@ public class DBInterface implements DatabaseEngine
 	public void DBDeleteVFSFile(final String filename)
 	{
 		VFSLoader.DBDelete(filename);
+	}
+
+	@Override
+	public void DBDeleteVFSFileLike(final String partialFilename, final int minMask)
+	{
+		VFSLoader.DBDeleteLike(partialFilename, minMask);
 	}
 
 	@Override

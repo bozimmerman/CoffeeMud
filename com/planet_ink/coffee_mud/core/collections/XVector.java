@@ -26,6 +26,9 @@ public class XVector<T> extends Vector<T>
 {
 	private static final long	serialVersionUID	= 6687178785122563992L;
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static final ReadOnlyList empty = new ReadOnlyList(new ArrayList());
+
 	public XVector(final List<? extends T> V)
 	{
 		super((V==null)?0:V.size());

@@ -351,6 +351,9 @@ public class JournalInfo extends StdWebMacro
 			if(parms.containsKey("ISPROTECTED"))
 				return String.valueOf(CMath.bset(entry.attributes(), JournalEntry.JournalAttrib.PROTECTED.bit));
 			else
+			if(parms.containsKey("ISATTACHMENT"))
+				return String.valueOf(CMath.bset(entry.attributes(), JournalEntry.JournalAttrib.ATTACHMENT.bit));
+			else
 			if(parms.containsKey("MSGICON"))
 				return clearWebMacros(entry.msgIcon());
 			else
@@ -362,6 +365,8 @@ public class JournalInfo extends StdWebMacro
 					return "doclocked.gif";
 				if(CMath.bset(entry.attributes(), JournalEntry.JournalAttrib.PROTECTED.bit))
 					return "docstar.gif";
+				if(CMath.bset(entry.attributes(), JournalEntry.JournalAttrib.ATTACHMENT.bit))
+					return "docclip.gif";
 				return "docunknown.gif";
 			}
 			else

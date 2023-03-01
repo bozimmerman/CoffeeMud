@@ -1543,7 +1543,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @return the count of messages that were found
 	 */
 	public int DBCountJournalMsgsNewerThan(final String journalID, final String to, final long olderDate);
-	
+
 	/**
 	 * Table category: DBJOURNALS
 	 * Returns all the messages optionally sent to the given user (or ALL) that
@@ -2334,6 +2334,7 @@ public interface DatabaseEngine extends CMLibrary
 	 *
 	 * @see com.planet_ink.coffee_mud.core.CMFile.CMVFSFile
 	 * @see DatabaseEngine#DBReadVFSDirectory()
+	 * @see DatabaseEngine#DBDeleteVFSFileLike(String, int)
 	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBDeleteVFSFile(String)
@@ -2345,12 +2346,32 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBVFS
+	 * Reads the complete DBFS file records for the given files.  The
+	 * filename does not begin with a /, and is also case-insensitive
+	 * and partial/LIKE.
+	 * @param minMask TODO
+	 * @param filename the partial filename of the files to read
+	 *
+	 * @see com.planet_ink.coffee_mud.core.CMFile.CMVFSFile
+	 * @see DatabaseEngine#DBReadVFSDirectory()
+	 * @see DatabaseEngine#DBDeleteVFSFileLike(String, int)
+	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
+	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
+	 * @see DatabaseEngine#DBDeleteVFSFile(String)
+	 *
+	 * @return the complete file records, including data
+	 */
+	public List<CMFile.CMVFSFile> DBReadVFSFilesLike(final String partialFilename, int minMask);
+
+	/**
+	 * Table category: DBVFS
 	 * Creates a new file in the DBFS filesystem stored in the CBVFS table.
 	 * The filename does not begin with a /.  The data may be a String,
 	 * StringBuffer, or byte array.  The bits are found in CMFile.
 	 * @see CMFile#VFS_MASK_MASKSAVABLE
 	 *
 	 * @see DatabaseEngine#DBReadVFSDirectory()
+	 * @see DatabaseEngine#DBDeleteVFSFileLike(String, int)
 	 * @see DatabaseEngine#DBReadVFSFile(String)
 	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBDeleteVFSFile(String)
@@ -2371,6 +2392,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see CMFile#VFS_MASK_MASKSAVABLE
 	 *
 	 * @see DatabaseEngine#DBReadVFSDirectory()
+	 * @see DatabaseEngine#DBDeleteVFSFileLike(String, int)
 	 * @see DatabaseEngine#DBReadVFSFile(String)
 	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBDeleteVFSFile(String)
@@ -2390,12 +2412,29 @@ public interface DatabaseEngine extends CMLibrary
 	 *
 	 * @see DatabaseEngine#DBReadVFSDirectory()
 	 * @see DatabaseEngine#DBReadVFSFile(String)
+	 * @see DatabaseEngine#DBDeleteVFSFileLike(String, int)
 	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
 	 *
 	 * @param filename the full path filename of the file to kill
 	 */
 	public void DBDeleteVFSFile(String filename);
+
+	/**
+	 * Table category: DBVFS
+	 * Deletes file(s) from the DBFS in the DBVFS table.  The
+	 * path does not begin with a /.  The argument is a partial
+	 * case-insensitive filename.
+	 * @param minMask TODO
+	 * @param filename the partial case-insensitive filename
+	 *
+	 * @see DatabaseEngine#DBReadVFSDirectory()
+	 * @see DatabaseEngine#DBReadVFSFile(String)
+	 * @see DatabaseEngine#DBDeleteVFSFile(String)
+	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
+	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
+	 */
+	public void DBDeleteVFSFileLike(final String partialFilename, int minMask);
 
 	/**
 	 * Table category: DBBACKLOG

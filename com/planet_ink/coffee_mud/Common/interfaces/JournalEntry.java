@@ -279,6 +279,12 @@ public interface JournalEntry extends CMCommon, Cloneable
 	 */
 	public void setXML(final String xml);
 
+	/**
+	 * Returns any attachments for this entry.
+	 * @return any attachments for this entry.
+	 */
+	public List<CMFile.CMVFSFile> attachments();
+
 	@Override
 	/**
 	 * Returns a copy of the journal entry
@@ -295,7 +301,11 @@ public interface JournalEntry extends CMCommon, Cloneable
 		/**
 		 * Flagging this entry as protected from auto-purging
 		 */
-		STUCKY
+		STUCKY,
+		/**
+		 * Flagging this entry as having one or more attachments
+		 */
+		ATTACHMENT
 		;
 		public long bit;
 		private JournalAttrib()

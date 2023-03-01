@@ -155,6 +155,8 @@ public class JournalFunction extends StdWebMacro
 				msg.attributes(msg.attributes()|JournalEntry.JournalAttrib.STUCKY.bit);
 			if(flags.contains("PROTECTED"))
 				msg.attributes(msg.attributes()|JournalEntry.JournalAttrib.PROTECTED.bit);
+			if(flags.contains("ATTACHMENT"))
+				msg.attributes(msg.attributes()|JournalEntry.JournalAttrib.ATTACHMENT.bit);
 			msg.data("");
 			msg.to(to);
 			// check for dups
@@ -401,6 +403,7 @@ public class JournalFunction extends StdWebMacro
 							long attributes=0;
 							if((forum!=null)&&(forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 							{
+								attributes = entry.attributes() | JournalEntry.JournalAttrib.ATTACHMENT.bit;
 								String ISSTUCKY=httpReq.getUrlParameter("ISSTICKY"+fieldSuffix);
 								if(ISSTUCKY==null)
 									ISSTUCKY=httpReq.getUrlParameter("ISSTUCKY"+fieldSuffix);
