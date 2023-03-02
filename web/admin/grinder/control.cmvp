@@ -626,7 +626,6 @@
 						</FONT>
 					</td>
 					<tr>
-					<tr>
 					<td valign=top>
 						<FONT COLOR=WHITE>
 						Reply Mask (<A HREF="javascript:openUp2('ZAPPERMASKS')"><font color=cyan>?</font></A>):<br> <INPUT NAME="FORUMJOURNAL_@RequestParameter?NUM@_REPLY" SIZE=30 VALUE="@ForumInfo?REPLYMASK@">
@@ -637,6 +636,18 @@
 						Admin Mask (<A HREF="javascript:openUp2('ZAPPERMASKS')"><font color=cyan>?</font></A>):<br> <INPUT NAME="FORUMJOURNAL_@RequestParameter?NUM@_ADMIN" SIZE=30 VALUE="@ForumInfo?ADMINMASK@">
 						</FONT>
 					</td>
+					</tr>
+					<tr>
+					<td valign=top>
+						<FONT COLOR=WHITE>
+						Attach Mask (<A HREF="javascript:openUp2('ZAPPERMASKS')"><font color=cyan>?</font></A>):<br> <INPUT NAME="FORUMJOURNAL_@RequestParameter?NUM@_ATTACH" SIZE=30 VALUE="@ForumInfo?ATTACHMASK@">
+						</FONT>
+					</td>
+					<td valign=top>
+					</td>
+						<FONT COLOR=WHITE>
+						Max Attachments:<br> <INPUT NAME="FORUMJOURNAL_@RequestParameter?NUM@_MAXATTACH" SIZE=30 VALUE="@ForumInfo?MAXATTACH@">
+						</FONT>
 					</tr>
 					</table>
 				</TD>

@@ -722,32 +722,32 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBWriteJournal(final String journalID, final JournalEntry entry)
+	public String DBWriteJournal(final String journalID, final JournalEntry entry)
 	{
-		JournalLoader.DBWrite(journalID, entry);
+		return JournalLoader.DBWrite(journalID, entry);
 	}
 
 	@Override
-	public void DBWriteJournal(final String journalID, final String from, final String to, final String subject, final String message)
+	public String DBWriteJournal(final String journalID, final String from, final String to, final String subject, final String message)
 	{
-		JournalLoader.DBWrite(journalID, from, to, subject, message);
+		return JournalLoader.DBWrite(journalID, from, to, subject, message);
 	}
 
 	@Override
-	public void DBWriteJournalEmail(final String mailBoxID, final String journalSource, final String from, final String to, final String subject, final String message)
+	public String DBWriteJournalEmail(final String mailBoxID, final String journalSource, final String from, final String to, final String subject, final String message)
 	{
-		JournalLoader.DBWrite(mailBoxID, journalSource, from, to, subject, message);
+		return JournalLoader.DBWrite(mailBoxID, journalSource, from, to, subject, message);
 	}
 
 	@Override
-	public void DBWriteJournalChild(final String journalID, final String journalSource, final String from, final String to, final String parentKey, final String subject, final String message)
+	public String DBWriteJournalChild(final String journalID, final String journalSource, final String from, final String to, final String parentKey, final String subject, final String message)
 	{
-		JournalLoader.DBWrite(journalID, journalSource, from, to, parentKey, subject, message);
+		return JournalLoader.DBWrite(journalID, journalSource, from, to, parentKey, subject, message);
 	}
 
-	public void DBWrite(final String journalID, final JournalEntry entry)
+	public String DBWrite(final String journalID, final JournalEntry entry)
 	{
-		JournalLoader.DBWrite(journalID, entry);
+		return JournalLoader.DBWrite(journalID, entry);
 	}
 
 	@Override
@@ -1309,9 +1309,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<CMFile.CMVFSFile> DBReadVFSFilesLike(final String partialFilename, final int minMask)
+	public List<String> DBReadVFSKeysLike(final String partialFilename, final int minMask)
 	{
-		return VFSLoader.DBReadLike(partialFilename, minMask);
+		return VFSLoader.DBReadKeysLike(partialFilename, minMask);
 	}
 
 	@Override

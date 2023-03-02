@@ -708,6 +708,20 @@ public interface JournalsLibrary extends CMLibrary
 		public String replyMask();
 
 		/**
+		 * Returns the raw zapper mask for attaching
+		 *
+		 * @return the raw zapper mask for attaching
+		 */
+		public String attachMask();
+
+		/**
+		 * Returns the maximum attachments
+		 *
+		 * @return the maximum attachments
+		 */
+		public int maxAttach();
+
+		/**
 		 * Returns the raw zapper mask for administering
 		 *
 		 * @return the raw zapper mask for administering
@@ -786,6 +800,15 @@ public interface JournalsLibrary extends CMLibrary
 		/**
 		 * The category that the journal belongs to
 		 */
-		CATEGORY;
+		CATEGORY,
+		/**
+		 * The ZapperMask for those who can attach
+		 */
+		ATTACH,
+		/**
+		 * The maximum attachments per message
+		 */
+		MAXATTACH
+		;
 	}
 }

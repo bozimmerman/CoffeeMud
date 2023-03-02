@@ -280,10 +280,10 @@ public interface JournalEntry extends CMCommon, Cloneable
 	public void setXML(final String xml);
 
 	/**
-	 * Returns any attachments for this entry.
-	 * @return any attachments for this entry.
+	 * Returns any attachment vfs keys for this entry.
+	 * @return any attachment vfs keys for this entry.
 	 */
-	public List<CMFile.CMVFSFile> attachments();
+	public List<String> attachmentKeys();
 
 	@Override
 	/**

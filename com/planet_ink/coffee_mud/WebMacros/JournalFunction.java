@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
+import com.planet_ink.coffee_web.http.HTTPHeader;
+import com.planet_ink.coffee_web.http.MultiPartData;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -18,6 +20,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -155,8 +159,33 @@ public class JournalFunction extends StdWebMacro
 				msg.attributes(msg.attributes()|JournalEntry.JournalAttrib.STUCKY.bit);
 			if(flags.contains("PROTECTED"))
 				msg.attributes(msg.attributes()|JournalEntry.JournalAttrib.PROTECTED.bit);
-			if(flags.contains("ATTACHMENT"))
-				msg.attributes(msg.attributes()|JournalEntry.JournalAttrib.ATTACHMENT.bit);
+			final List<Pair<String,byte[]>> attachmentsV = new ArrayList<Pair<String,byte[]>>();
+			if((httpReq.getMultiParts().size()>0)
+			&&((forum==null)||(forum.authorizationCheck(M, ForumJournalFlags.ATTACH))))
+			{
+				String file="";
+				byte[] buf=null;
+				int maxFiles = 0;
+				for(final MultiPartData data : httpReq.getMultiParts())
+				{
+					if(data.getVariables().containsKey("filename"))
+					{
+						file=data.getVariables().get("filename");
+						if(file==null)
+							file="";
+						buf=data.getData();
+					}
+					if(file.length()==0)
+						return "File not uploaded -- no name!";
+					if(buf == null)
+						return "File not uploaded -- no buffer!";
+					if((forum.maxAttach()>0)&&(++maxFiles > forum.maxAttach()))
+						return "File not uploaded -- maximum "+forum.maxAttach()+" attachments!";
+					attachmentsV.add(new Pair<String,byte[]>(file,buf));
+				}
+				if(attachmentsV.size()>0)
+					msg.attributes(msg.attributes()|JournalEntry.JournalAttrib.ATTACHMENT.bit);
+			}
 			msg.data("");
 			msg.to(to);
 			// check for dups
@@ -170,11 +199,23 @@ public class JournalFunction extends StdWebMacro
 					return "";
 			}
 			CMLib.journals().notifyPosting(journalName, msg.from(), msg.to(), msg.subj());
-			CMLib.database().DBWriteJournal(journalName,msg);
+			final String newKey = CMLib.database().DBWriteJournal(journalName,msg);
+			if(newKey == null)
+				return "Post failed";
 			JournalInfo.clearJournalCache(httpReq, journalName);
 			if(parent!=null)
 				CMLib.database().DBTouchJournalMessage(parent);
 			CMLib.journals().clearJournalSummaryStats(forum);
+			if(attachmentsV.size()>0)
+			{
+				for(final Pair<String,byte[]> p : attachmentsV)
+				{
+					final String fileName = newKey+"/"+parent+"/"+p.first;
+					if(fileName.length()>252)
+						return "Post submitted.  Some attachments failed.";
+					CMLib.database().DBCreateVFSFile(fileName, CMFile.VFS_MASK_ATTACHMENT, from, System.currentTimeMillis(), p.second);
+				}
+			}
 			return "Post submitted.";
 		}
 		else

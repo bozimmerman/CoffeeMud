@@ -38,23 +38,23 @@ import java.util.*;
 */
 public class DefaultJournalEntry implements JournalEntry
 {
-	public String			key					= null;
-	public String			from;
-	public String			to;
-	public String			subj;
-	public String			msg;
-	public long				date				= 0;
-	public long				update				= 0;
-	public String			parent				= "";
-	public long				attributes			= 0;
-	public String			data				= "";
-	public int				cardinal			= 0;
-	public String			msgIcon				= "";
-	public int				replies				= 0;
-	public int				views				= 0;
-	public boolean			isLastEntry			= false;
-	public List<CMVFSFile>	attachments			= null;
-	public StringBuffer		derivedBuildMessage	= null;
+	public String		key					= null;
+	public String		from;
+	public String		to;
+	public String		subj;
+	public String		msg;
+	public long			date				= 0;
+	public long			update				= 0;
+	public String		parent				= "";
+	public long			attributes			= 0;
+	public String		data				= "";
+	public int			cardinal			= 0;
+	public String		msgIcon				= "";
+	public int			replies				= 0;
+	public int			views				= 0;
+	public boolean		isLastEntry			= false;
+	public List<String>	attachments			= null;
+	public StringBuffer	derivedBuildMessage	= null;
 
 	@Override
 	public String ID()
@@ -277,18 +277,18 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public synchronized List<CMFile.CMVFSFile> attachments()
+	public synchronized List<String> attachmentKeys()
 	{
 		if(attachments == null)
 		{
 			if(!CMath.bset(attributes(), JournalEntry.JournalAttrib.ATTACHMENT.bit))
 			{
 				@SuppressWarnings("unchecked")
-				final List<CMFile.CMVFSFile> empty = XVector.empty;
+				final List<String> empty = XVector.empty;
 				attachments = empty;
 			}
 			else
-				attachments =  CMLib.database().DBReadVFSFilesLike(this.key()+"/%", CMFile.VFS_MASK_ATTACHMENT);
+				attachments =  CMLib.database().DBReadVFSKeysLike(this.key()+"/%", CMFile.VFS_MASK_ATTACHMENT);
 		}
 		return attachments;
 	}

@@ -434,6 +434,44 @@ public class JournalInfo extends StdWebMacro
 				return String.valueOf(entry.update());
 			}
 			else
+			if(parms.containsKey("ATTACHNEXT"))
+			{
+				final String last=httpReq.getUrlParameter("ATTACHID");
+				if(parms.containsKey("RESET"))
+				{
+					if(last!=null)
+						httpReq.removeUrlParameter("ATTACHID");
+					return "";
+				}
+				String lastID="";
+				for(int i=0;i<entry.attachmentKeys().size();i++)
+				{
+					final String id = entry.attachmentKeys().get(i);
+					if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!id.equals(lastID))))
+					{
+						httpReq.addFakeUrlParameter("ATTACHID",id);
+						String anam = id;
+						if(anam.startsWith(entry.key()+"/"))
+						{
+							anam=anam.substring(entry.key().length()+1);
+							final int x = anam.indexOf('/');
+							if(x > 0)
+							{
+								httpReq.addFakeUrlParameter("ATTACHPATH",id.substring(0,x+entry.key().length()+1));
+								anam=anam.substring(x+1);
+							}
+						}
+						httpReq.addFakeUrlParameter("ATTACHNAME",anam);
+						return "";
+					}
+					lastID=id;
+				}
+				httpReq.addFakeUrlParameter("ATTACHID","");
+				if(parms.containsKey("EMPTYOK"))
+					return "<!--EMPTY-->";
+				return " @break@";
+			}
+			else
 			if(parms.containsKey("TO"))
 			{
 				if(to.toUpperCase().trim().startsWith("MASK="))

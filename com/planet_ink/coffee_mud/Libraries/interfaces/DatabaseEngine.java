@@ -1288,8 +1288,9 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBUpdateJournal(String, String, String, long)
 	 * @param journalID the name/id of the journal
 	 * @param entry the enttry to create
+	 * @return the new entry key or null
 	 */
-	public void DBWriteJournal(String journalID, JournalEntry entry);
+	public String DBWriteJournal(String journalID, JournalEntry entry);
 
 	/**
 	 * Table category: DBJOURNALS
@@ -1305,8 +1306,9 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param to who the message is to, such as ALL
 	 * @param subject the subject of the message
 	 * @param message the message to write
+	 * @return the new entry key or null
 	 */
-	public void DBWriteJournal(String journalID, String from, String to, String subject, String message);
+	public String DBWriteJournal(String journalID, String from, String to, String subject, String message);
 
 	/**
 	 * Table category: DBJOURNALS
@@ -1352,8 +1354,9 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param to the recipient
 	 * @param subject the subject of the message
 	 * @param message the email message
+	 * @return the new entry key or null
 	 */
-	public void DBWriteJournalEmail(String mailBoxID, String journalSource, String from, String to, String subject, String message);
+	public String DBWriteJournalEmail(String mailBoxID, String journalSource, String from, String to, String subject, String message);
 
 	/**
 	 * Table category: DBJOURNALS
@@ -1582,9 +1585,10 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param parentKey the message key of the parent message this is a reply to
 	 * @param subject the subject of the reply message
 	 * @param message the message text of the reply message
+	 * @return the new entry key or null
 	 */
-	public void DBWriteJournalChild(String journalID, String journalSource, String from, String to,
-									String parentKey, String subject, String message);
+	public String DBWriteJournalChild(String journalID, String journalSource, String from, String to,
+									  String parentKey, String subject, String message);
 
 	/**
 	 * Table category: DBJOURNALS
@@ -2346,10 +2350,10 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBVFS
-	 * Reads the complete DBFS file records for the given files.  The
+	 * Reads the vfs record keys for the given files.  The
 	 * filename does not begin with a /, and is also case-insensitive
 	 * and partial/LIKE.
-	 * @param minMask TODO
+	 * @param minMask 0, or minimum mask value
 	 * @param filename the partial filename of the files to read
 	 *
 	 * @see com.planet_ink.coffee_mud.core.CMFile.CMVFSFile
@@ -2361,7 +2365,7 @@ public interface DatabaseEngine extends CMLibrary
 	 *
 	 * @return the complete file records, including data
 	 */
-	public List<CMFile.CMVFSFile> DBReadVFSFilesLike(final String partialFilename, int minMask);
+	public List<String> DBReadVFSKeysLike(final String partialFilename, int minMask);
 
 	/**
 	 * Table category: DBVFS
@@ -2425,7 +2429,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Deletes file(s) from the DBFS in the DBVFS table.  The
 	 * path does not begin with a /.  The argument is a partial
 	 * case-insensitive filename.
-	 * @param minMask TODO
+	 * @param minMask 0, or minimum mask value
 	 * @param filename the partial case-insensitive filename
 	 *
 	 * @see DatabaseEngine#DBReadVFSDirectory()

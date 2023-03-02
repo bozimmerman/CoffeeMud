@@ -86,10 +86,23 @@ public class FileData extends StdWebMacro
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null)
 			return null;
-		final CMFile F=new CMFile(getFilename(httpReq,""),M);
-		if((!F.exists())||(!F.canRead()))
-			return null;
-		return F.raw();
+		if(httpReq.getUrlParameter("ATTACHMENT")!=null)
+		{
+			final CMFile.CMVFSFile F = CMLib.database().DBReadVFSFile(getFilename(httpReq,""));
+			if(F == null)
+				return null;
+			if(!CMath.bset(F.getMaskBits(null), CMFile.VFS_MASK_ATTACHMENT))
+				return null;
+			final Object o = F.readData();
+			return (byte[])o;
+		}
+		else
+		{
+			final CMFile F=new CMFile(getFilename(httpReq,""),M);
+			if((!F.exists())||(!F.canRead()))
+				return null;
+			return F.raw();
+		}
 	}
 
 	@Override

@@ -954,7 +954,7 @@ public class JournalLoader
 			CMLib.database().DBDeleteVFSFileLike("%/"+messageKey+"/%", CMFile.VFS_MASK_ATTACHMENT);
 		}
 		else
-			CMLib.database().DBDeleteVFSFile(journal+'%');
+			CMLib.database().DBDeleteVFSFileLike(journal+"/%", CMFile.VFS_MASK_ATTACHMENT);
 		synchronized(CMClass.getSync("JOURNAL_"+journal.toUpperCase()))
 		{
 			String sql;
@@ -1004,17 +1004,17 @@ public class JournalLoader
 		}
 	}
 
-	public void DBWrite(final String journal, final String from, final String to, final String subject, final String message)
+	public String DBWrite(final String journal, final String from, final String to, final String subject, final String message)
 	{
-		DBWrite(journal, "", from, to, subject, message);
+		return DBWrite(journal, "", from, to, subject, message);
 	}
 
-	public void DBWrite(final String journal, final String journalSource, final String from, final String to, final String subject, final String message)
+	public String DBWrite(final String journal, final String journalSource, final String from, final String to, final String subject, final String message)
 	{
-		DBWrite(journal,journalSource,from,to,"",subject,message);
+		return DBWrite(journal,journalSource,from,to,"",subject,message);
 	}
 
-	public void DBWrite(String journal, String journalSource, String from, String to, String parentKey, String subject, String message)
+	public String DBWrite(String journal, String journalSource, String from, String to, String parentKey, String subject, String message)
 	{
 		journal		  = DB.injectionClean(journal);
 		from		  = DB.injectionClean(from);
@@ -1034,10 +1034,10 @@ public class JournalLoader
 		entry.msg (message);
 		entry.update (System.currentTimeMillis());
 		entry.parent (parentKey);
-		DBWrite(journal, entry);
+		return DBWrite(journal, entry);
 	}
 
-	public void DBWrite(String journal, final JournalEntry entry)
+	public String DBWrite(String journal, final JournalEntry entry)
 	{
 		journal			=DB.injectionClean(journal);
 		entry.data		(DB.injectionClean(entry.data()));
@@ -1050,7 +1050,7 @@ public class JournalLoader
 		entry.to		(DB.injectionClean(entry.to()));
 
 		if(journal==null)
-			return;
+			return null;
 		synchronized(CMClass.getSync("JOURNAL_"+journal.toUpperCase()))
 		{
 			final long now=System.currentTimeMillis();
@@ -1105,5 +1105,6 @@ public class JournalLoader
 			if(System.currentTimeMillis()==now) // ensures unique keys.
 				CMLib.s_sleep(1);
 		}
+		return entry.key();
 	}
 }

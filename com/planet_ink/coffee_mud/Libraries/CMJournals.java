@@ -537,6 +537,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				final String replyMask=flagMap.containsKey(ForumJournalFlags.REPLY)?flagMap.get(ForumJournalFlags.REPLY).trim():"";
 				final String adminMask=flagMap.containsKey(ForumJournalFlags.ADMIN)?flagMap.get(ForumJournalFlags.ADMIN).trim():"";
 				final String category =flagMap.containsKey(ForumJournalFlags.CATEGORY)?flagMap.get(ForumJournalFlags.CATEGORY).trim():"";
+				final String attachMask=flagMap.containsKey(ForumJournalFlags.ATTACH)?flagMap.get(ForumJournalFlags.ATTACH).trim():"+SYSOP -NAMES";
+				final int maxAttach=CMath.s_int(flagMap.containsKey(ForumJournalFlags.MAXATTACH)?flagMap.get(ForumJournalFlags.MAXATTACH).trim():"3");
 
 				@Override
 				public String NAME()
@@ -560,6 +562,18 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				public String replyMask()
 				{
 					return replyMask;
+				}
+
+				@Override
+				public String attachMask()
+				{
+					return attachMask;
+				}
+
+				@Override
+				public int maxAttach()
+				{
+					return maxAttach;
 				}
 
 				@Override
@@ -601,6 +615,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					else
 					if(fl==ForumJournalFlags.ADMIN)
 						return maskCheck(M,adminMask);
+					else
+					if(fl==ForumJournalFlags.ATTACH)
+						return maskCheck(M,attachMask);
 					return false;
 				}
 

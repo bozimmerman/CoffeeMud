@@ -76,28 +76,21 @@ public class VFSLoader
 		return root;
 	}
 
-	public List<CMFile.CMVFSFile> DBReadLike(final String partialFilename, final int minMask)
+	public List<String> DBReadKeysLike(final String partialFilename, final int minMask)
 	{
 		DBConnection D=null;
-		CMFile.CMVFSFile row = null;
-		final List<CMFile.CMVFSFile> files = new Vector<CMFile.CMVFSFile>(3);
+		final List<String> files = new Vector<String>(3);
 		try
 		{
 			D=DB.DBFetch();
-			String query = "SELECT * FROM CMVFS WHERE CMFNAM LIKE '"+partialFilename+"'";
+			String query = "SELECT CMFNAM FROM CMVFS WHERE CMFNAM LIKE '"+partialFilename+"'";
 			if(minMask > 0)
 				query += " AND CMDTYP >= "+minMask;
 			final ResultSet R=D.query(query);
 			while(R.next())
 			{
 				final String possFName=DBConnections.getRes(R,"CMFNAM");
-				final int bits=(int)DBConnections.getLongRes(R,"CMDTYP");
-				final long mod=DBConnections.getLongRes(R,"CMMODD");
-				final String author = DBConnections.getRes(R,"CMWHOM");
-				final String data=DBConnections.getRes(R,"CMDATA");
-				row = new CMFile.CMVFSFile(possFName,bits,mod,author);
-				row.setData(B64Encoder.B64decode(data));
-				files.add(row);
+				files.add(possFName);
 			}
 		}
 		catch(final Exception sqle)
@@ -180,7 +173,7 @@ public class VFSLoader
 		 +"CMDATA"
 		 +") values ("
 		 +"'"+filename+"',"
-		 +""+(bits&CMFile.VFS_MASK_MASKSAVABLE)+","
+		 +""+(bits&(CMFile.VFS_MASK_MASKSAVABLE|CMFile.VFS_MASK_ATTACHMENT))+","
 		 +""+updateTime+","
 		 +"'"+creator+"',"
 		 +"?"
@@ -212,7 +205,7 @@ public class VFSLoader
 				}
 				DB.updateWithClobs(
 						 "UPDATE CMVFS SET " +
-						 "CMDTYP="+(bits&CMFile.VFS_MASK_MASKSAVABLE)+", " +
+						 "CMDTYP="+(bits&(CMFile.VFS_MASK_MASKSAVABLE|CMFile.VFS_MASK_ATTACHMENT))+", " +
 						 "CMMODD="+updateTime+","+
 						 "CMWHOM='"+creator+"', "+
 						 "CMDATA=? WHERE CMFNAM='"+filename+"'", buf);

@@ -101,7 +101,7 @@
 
 <body>
 <script language="JavaScript" type="text/javascript" src="textedit/nicEdit.js"></script>
-<FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top METHOD=POST ACTION="forumnew.cmvp">
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top ENCTYPE="MULTIPART/FORM-DATA" METHOD=POST ACTION="forumnew.cmvp">
 <INPUT TYPE=HIDDEN NAME=PLAINBOX VALUE="@RequestParameter?PLAINBOX@">
 @if?CheckReqParm?!JOURNALMESSAGE=@
 <INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
@@ -210,17 +210,22 @@
 		</script>
 	</TD>
 </TR>
-<TR BGCOLOR=LIGHTGREY><TD>&nbsp;</TD><TD ALIGN=LEFT>
-	@if?ForumInfo?CANADMIN@
+<TR BGCOLOR=LIGHTGREY><TD>&nbsp;</TD>
+	<TD ALIGN=LEFT>
 		<FONT COLOR=BLACK SIZE=-1>
-		@if?CheckReqParm?JOURNALPARENT=@ @if?CheckReqParm?!FUNCTION=REPLY@ 
-			<INPUT TYPE=CHECKBOX NAME=ISSTUCKY @if?JournalInfo?ISSTUCKY@checked@endif@>Sticky
-			&nbsp;&nbsp;&nbsp;&nbsp;
-		@endif@ @endif@
-		<INPUT TYPE=CHECKBOX NAME=ISPROTECTED @if?JournalInfo?ISPROTECTED@checked@endif@>Protected
+		@if?ForumInfo?CANADMIN@
+			@if?CheckReqParm?JOURNALPARENT=@ @if?CheckReqParm?!FUNCTION=REPLY@ 
+				<INPUT TYPE=CHECKBOX NAME=ISSTUCKY @if?JournalInfo?ISSTUCKY@checked@endif@>Sticky
+				&nbsp;&nbsp;&nbsp;&nbsp;
+			@endif@ @endif@
+			<INPUT TYPE=CHECKBOX NAME=ISPROTECTED @if?JournalInfo?ISPROTECTED@checked@endif@>Protected
+		@endif@
+		&nbsp;
+		@if?ForumInfo?CANATTACH@
+			&nbsp;&nbsp;Attachments:&nbsp;
+			<input type="file" id="attachments" name="attachments" multiple>
+		@endif@
 		</FONT>
-	@endif@
-	&nbsp;
 	</TD>
 </TR>
 <TR BGCOLOR=LIGHTGREY>

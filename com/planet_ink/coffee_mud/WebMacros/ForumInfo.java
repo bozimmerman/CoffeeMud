@@ -124,6 +124,9 @@ public class ForumInfo extends StdWebMacro
 		if(parms.containsKey("CANREPLY"))
 			str.append( ""+journal.authorizationCheck(M, ForumJournalFlags.REPLY)).append(", ");
 
+		if(parms.containsKey("CANATTACH"))
+			str.append( ""+journal.authorizationCheck(M, ForumJournalFlags.ATTACH)).append(", ");
+
 		if(parms.containsKey("ADMINMASK"))
 			str.append( ""+journal.adminMask()).append(", ");
 
@@ -135,6 +138,12 @@ public class ForumInfo extends StdWebMacro
 
 		if(parms.containsKey("REPLYMASK"))
 			str.append( ""+journal.replyMask()).append(", ");
+
+		if(parms.containsKey("ATTACHMASK"))
+			str.append( ""+journal.attachMask()).append(", ");
+
+		if(parms.containsKey("MAXATTACH"))
+			str.append( ""+journal.maxAttach()).append(", ");
 
 		if(parms.containsKey("ID"))
 			str.append( ""+journal.NAME()).append(", ");
