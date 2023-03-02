@@ -454,6 +454,34 @@ public class JournalFunction extends StdWebMacro
 								if((ISPROTECTED!=null)&&(ISPROTECTED.equalsIgnoreCase("on")))
 									attributes|=JournalEntry.JournalAttrib.PROTECTED.bit;
 							}
+							if((httpReq.getMultiParts().size()>0)
+							&&((forum==null)||(forum.authorizationCheck(M, ForumJournalFlags.ATTACH))))
+							{
+								String file="";
+								byte[] buf=null;
+								int maxFiles = entry.attachmentKeys().size();
+								for(final MultiPartData data : httpReq.getMultiParts())
+								{
+									if(data.getVariables().containsKey("filename"))
+									{
+										file=data.getVariables().get("filename");
+										if(file==null)
+											file="";
+										buf=data.getData();
+									}
+									if(file.length()==0)
+										return "File not uploaded -- no name!";
+									if(buf == null)
+										return "File not uploaded -- no buffer!";
+									if((forum.maxAttach()>0)&&(++maxFiles > forum.maxAttach()))
+										return "File not uploaded -- maximum "+forum.maxAttach()+" attachments!";
+									final String fileName = entry.key()+"/"+entry.parent()+"/"+file;
+									if(fileName.length()>252)
+										return "Reply not submitted.  Some attachments failed.";
+									CMLib.database().DBCreateVFSFile(fileName, CMFile.VFS_MASK_ATTACHMENT, from, System.currentTimeMillis(), buf);
+									attributes=attributes|JournalEntry.JournalAttrib.ATTACHMENT.bit;
+								}
+							}
 							CMLib.database().DBUpdateJournal(entry.key(), subj, clearWebMacros(text), attributes);
 							if(cardinalNumber==0)
 								cardinalNumber=entry.cardinal();

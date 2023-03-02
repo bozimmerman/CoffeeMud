@@ -257,6 +257,7 @@
 			@JournalInfo?MESSAGE@
 			</FONT>
 			@if?JournalInfo?ISATTACHMENT@
+			@if?Authenticate@ 
 				<BR CLEAR=BOTH><HR>
 				@JournalInfo?ATTACHNEXT&RESET@
 				@loop@
@@ -266,6 +267,7 @@
 					<IMG BORDER=0 src=images/msgclip.png>@RequestParameter?ATTACHNAME@<BR>
 					</a>
 				@back@
+			@endif@
 			@endif@
 			<P>
 			<TABLE WIDTH=100% BORDER=0 CELLSPACING=3 CELLPADDING=3>
@@ -336,6 +338,19 @@
 			@endif@
 			@JournalInfo?MESSAGE@
 			</FONT>
+			@if?JournalInfo?ISATTACHMENT@
+			@if?Authenticate@ 
+				<BR CLEAR=BOTH><HR>
+				@JournalInfo?ATTACHNEXT&RESET@
+				@loop@
+					@JournalInfo?ATTACHNEXT@
+					&nbsp;
+					<a href="/FileData?ATTACHMENT=TRUE&AUTH=@RequestParameterEncoded?AUTH@&PATH=@RequestParameterEncoded?ATTACHPATH@&FILE=@RequestParameterEncoded?ATTACHNAME@">
+					<IMG BORDER=0 src=images/msgclip.png>@RequestParameter?ATTACHNAME@<BR>
+					</a>
+				@back@
+			@endif@
+			@endif@
 		<P>
 		<TABLE WIDTH=100% BORDER=0 CELLSPACING=3 CELLPADDING=3>
 		<TR VALIGN=CENTER HEIGHT=15>
