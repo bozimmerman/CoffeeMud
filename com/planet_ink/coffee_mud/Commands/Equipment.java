@@ -246,7 +246,7 @@ public class Equipment extends StdCommand
 							else
 							{
 								String name=thisItem.name();
-								if((name.length()>shortWrap)&&(!allPlaces))
+								if((CMStrings.lengthMinusColors(name)>shortWrap)&&(!allPlaces))
 									name=CMStrings.ellipseColored(name,shortWrap);
 								if(mob==seer)
 									msg.append(wornLocHeader+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().getDispositionBlurbs(thisItem,seer).toString().trim()+"^?\n\r");
@@ -293,14 +293,14 @@ public class Equipment extends StdCommand
 						if(paragraphView)
 						{
 							tat=tat.toLowerCase();
-							if(tat.length()>wrap)
+							if((tat.length()>wrap)&&(!allPlaces))
 								tat=tat.substring(0,wrap)+"...";
 							msg.append(wornLocHeader+tat+"^?,");
 						}
 						else
 						{
 							tat=CMStrings.capitalizeAndLower(tat);
-							if(tat.length()>shortWrap)
+							if((tat.length()>shortWrap)&&(!allPlaces))
 								tat=tat.substring(0,shortWrap)+"...";
 							msg.append(wornLocHeader+tat+"^?\n\r");
 						}
