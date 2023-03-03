@@ -1215,6 +1215,44 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
+	public void postSiegeDamage(final MOB source, final PhysicalAgent attacker, final PhysicalAgent defender,
+								final Environmental weapon, final String oldHitString,
+								final int damageType, int damageInt)
+	{
+		final CMMsg msg=CMClass.getMsg(source,
+				defender,
+				weapon,
+				CMMsg.MSG_OK_VISUAL,
+				CMMsg.MSG_DAMAGE,
+				CMMsg.MSG_OK_VISUAL,
+				oldHitString);
+		CMLib.color().fixSourceFightColor(msg);
+		msg.setValue(damageInt);
+		// why was there no okaffect here?
+		final Room room=CMLib.map().roomLocation(attacker);
+		if((room!=null)&&(room.okMessage(source,msg)))
+		{
+			if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+			{
+				damageInt=msg.value();
+				msg.modify(msg.source(),
+						   msg.target(),
+						   msg.tool(),
+						   msg.sourceCode(),
+						   replaceDamageTag(msg.sourceMessage(),msg.value(),damageType,CMMsg.View.SOURCE),
+						   msg.targetCode(),
+						   replaceDamageTag(msg.targetMessage(),msg.value(),damageType,CMMsg.View.TARGET),
+						   msg.othersCode(),
+						   replaceDamageTag(msg.othersMessage(),msg.value(),damageType,CMMsg.View.OTHERS));
+			}
+			if(//(mayIAttack(source,attacker,defender))&&
+			(CMLib.map().roomLocation(attacker)==room)
+			&&(CMLib.map().roomLocation(defender)==room))
+				room.send(source,msg);
+		}
+	}
+
+	@Override
 	public void postSiegeWeaponAttackResult(final MOB source, final PhysicalAgent attacker, final PhysicalAgent defender, final Weapon weapon, final boolean success)
 	{
 		if(source==null)
@@ -1223,7 +1261,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		// if you are in combat, this needs to happen regardless
 		//if(!mayIAttack(source, attacker, defender))
 		//	return;
-		int damageInt=adjustedDamage(source,weapon,null,0,false,false);
+		final int damageInt=adjustedDamage(source,weapon,null,0,false,false);
 		int damageType=Weapon.TYPE_BASHING;
 		if(weapon != null)
 			damageType= weapon.weaponDamageType();
@@ -1234,37 +1272,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			final String oldHitString="^F^<FIGHT^>"+((weapon!=null)?
 								weapon.hitString(damageInt):
 								standardHitString(Weapon.TYPE_NATURAL,Weapon.CLASS_BLUNT,(int)Math.round(Math.pow(2,damageInt)),attacker.Name()))+"^</FIGHT^>^?";
-			final CMMsg msg=CMClass.getMsg(source,
-									defender,
-									weapon,
-									CMMsg.MSG_OK_VISUAL,
-									CMMsg.MSG_DAMAGE,
-									CMMsg.MSG_OK_VISUAL,
-									oldHitString);
-			CMLib.color().fixSourceFightColor(msg);
-
-			msg.setValue(damageInt);
-			// why was there no okaffect here?
-			if((room!=null)&&(room.okMessage(source,msg)))
-			{
-				if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-				{
-					damageInt=msg.value();
-					msg.modify(msg.source(),
-							   msg.target(),
-							   msg.tool(),
-							   msg.sourceCode(),
-							   replaceDamageTag(msg.sourceMessage(),msg.value(),damageType,CMMsg.View.SOURCE),
-							   msg.targetCode(),
-							   replaceDamageTag(msg.targetMessage(),msg.value(),damageType,CMMsg.View.TARGET),
-							   msg.othersCode(),
-							   replaceDamageTag(msg.othersMessage(),msg.value(),damageType,CMMsg.View.OTHERS));
-				}
-				if(//(mayIAttack(source,attacker,defender))&&
-				(CMLib.map().roomLocation(attacker)==room)
-				&&(CMLib.map().roomLocation(defender)==room))
-					room.send(source,msg);
-			}
+			postSiegeDamage(source, attacker, defender, weapon, oldHitString, damageType, damageInt);
 		}
 		else
 		{

@@ -1280,6 +1280,8 @@ public class CMath
 				case '+':
 				case '<':
 				case '>':
+				case '=':
+				case '!':
 				case '-':
 				case '%':
 				case '*':
@@ -1302,6 +1304,12 @@ public class CMath
 					break;
 				case '>':
 					finalValue = finalValue > curValue ? finalValue : curValue;
+					break;
+				case '=':
+					finalValue = finalValue == curValue ? 1 : 0;
+					break;
+				case '!':
+					finalValue = finalValue == curValue ? 0 : 1;
 					break;
 				case '+':
 					finalValue += curValue;
@@ -1541,6 +1549,8 @@ public class CMath
 				case '?':
 				case '<':
 				case '>':
+				case '=':
+				case '!':
 				case '^':
 				{
 					lastOperation=(char)c;
@@ -1559,6 +1569,8 @@ public class CMath
 				case '?':
 				case '<':
 				case '>':
+				case '=':
+				case '!':
 				case '^':
 					list.add(new CompiledOperation(lastOperation));
 					break;
@@ -1649,6 +1661,12 @@ public class CMath
 				case '>':
 					finalValue = finalValue > curValue ? finalValue : curValue;
 					break;
+				case '=':
+					finalValue = finalValue == curValue ? 1 : 0;
+					break;
+				case '!':
+					finalValue = finalValue == curValue ? 0 : 1;
+					break;
 				case '^':
 					finalValue = Math.pow(finalValue, curValue);
 					break;
@@ -1694,6 +1712,12 @@ public class CMath
 			break;
 		case '>':
 			finalValue = finalValue > curValue ? finalValue : curValue;
+			break;
+		case '=':
+			finalValue = finalValue == curValue ? 1 : 0;
+			break;
+		case '!':
+			finalValue = finalValue == curValue ? 0 : 1;
 			break;
 		case '^':
 			finalValue = Math.pow(finalValue, curValue);

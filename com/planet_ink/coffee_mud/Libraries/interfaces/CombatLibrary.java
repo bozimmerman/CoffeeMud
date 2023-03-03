@@ -377,6 +377,7 @@ public interface CombatLibrary extends CMLibrary
 	 * posts a miss. replaceDataTag is called to ensure a proper damage word.
 	 * Generates a CMMsg message and sends it to the common room.
 	 * @see CombatLibrary#replaceDamageTag(String, int, int, CMMsg.View)
+	 * @see CombatLibrary#postSiegeDamage(MOB, PhysicalAgent, PhysicalAgent, Environmental, String, int, int)
 	 * @param source the agent of the attack
 	 * @param attacker the attacker
 	 * @param defender the target
@@ -384,6 +385,22 @@ public interface CombatLibrary extends CMLibrary
 	 * @param success true if it was a hit with damage, false if it was a miss
 	 */
 	public void postSiegeWeaponAttackResult(MOB source, PhysicalAgent attacker, PhysicalAgent defender, Weapon weapon, boolean success);
+
+	/**
+	 * Posts damage to a boardable from a siege weapon (usually).
+	 * @see CombatLibrary#replaceDamageTag(String, int, int, CMMsg.View)
+	 * @see CombatLibrary#postSiegeWeaponAttackResult(MOB, PhysicalAgent, PhysicalAgent, Weapon, boolean)
+	 *
+	 * @param source the agent of the attack
+	 * @param attacker the attacker
+	 * @param defender the target
+	 * @param weapon the weapon used
+	 * @param oldHitString the &lt;DAMAGE&gt; message
+	 * @param damageType the type of damage
+	 * @param damageInt the amount of damage (pct?!)
+	 */
+	public void postSiegeDamage(final MOB source, final PhysicalAgent attacker, final PhysicalAgent defender,
+			final Environmental weapon, final String oldHitString, final int damageType, final int damageInt);
 
 	/**
 	 * This method handles an item taking damage.  If the item is subject

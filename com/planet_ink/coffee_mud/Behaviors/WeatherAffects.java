@@ -74,6 +74,7 @@ public class WeatherAffects extends PuddleMaker
 
 	protected CompiledFormula	boatDmgChanceFormula	= null;
 	protected CompiledFormula	boatDmgAmtFormula		= null;
+	protected String			boatDmgName				= null;
 	protected Set<Room>			roomExceptions			= new HashSet<Room>();
 
 	private static final long[]	ALL_COVERED_SPOTS	= { Wearable.WORN_FEET, Wearable.WORN_TORSO, Wearable.WORN_LEGS };
@@ -129,6 +130,8 @@ public class WeatherAffects extends PuddleMaker
 		exceptArea=null;
 		roomExceptions.clear();
 		parms=newParms;
+		boatDmgChanceFormula = null;
+		boatDmgAmtFormula = null;
 		puddlepct=CMParms.getParmInt(parms,"puddlepct",50);
 		windsheer=CMParms.getParmInt(parms,"windsheer",10);
 		rainSlipChance=CMParms.getParmInt(parms,"rainslipchance",1);
@@ -139,6 +142,17 @@ public class WeatherAffects extends PuddleMaker
 		boatSlipChance=CMParms.getParmInt(parms,"boatslipchance",20);
 		forceWeatherCode=getWeatherCodeParm(CMParms.getParmStr(parms, "weather", "").toUpperCase().trim());
 		forceSkyWeatherCode=getWeatherCodeParm(CMParms.getParmStr(parms, "skyweather", "").toUpperCase().trim());
+		final String dmgChanceStr = CMParms.getParmStr(parms, "shipdmgpct", "");
+		if(dmgChanceStr.length()>0)
+		{
+			boatDmgChanceFormula=CMath.compileMathExpression(dmgChanceStr);
+			final String dmgStr = CMParms.getParmStr(parms, "shipdmg", "");
+			boatDmgName = CMParms.getParmStr(parms, "dmgname", null);
+			if(dmgStr.length()>0)
+				boatDmgAmtFormula=CMath.compileMathExpression(dmgStr);
+			else
+				boatDmgChanceFormula=null;
+		}
 		resetBotherTicks();
 		resetDiseaseTicks();
 		resetRustTicks();
@@ -289,8 +303,75 @@ public class WeatherAffects extends PuddleMaker
 
 		final Room R=msg.source().location();
 		if((host instanceof Area)
-		&&(R!=null)&&(R.getArea()!=host))
+		&&((R==null)||(R.getArea()!=host)))
 			return true;
+
+		if((this.boatDmgChanceFormula != null)
+		&&(msg.source().riding() instanceof Item)
+		&&(msg.sourceMajor(CMMsg.MASK_MOVE))
+		&&(CMLib.flags().isWaterySurfaceRoom(R)))
+		{
+			final Item I=(Item)msg.source().riding();
+			final Rideable sR = msg.source().riding();
+			if(((sR.rideBasis()==Rideable.Basis.WATER_BASED)||(sR instanceof Boardable))
+			&&(!CMLib.flags().isABonusItems(sR))
+			&&(!sR.phyStats().isAmbiance("-ANTIWEATHER")))
+			{
+				int rooms = 0;
+				if(sR instanceof Boardable)
+					rooms = ((Boardable)sR).getArea().properSize();
+				final int weather=roomWeather(host,R);
+				int windLevel;
+				switch(weather)
+				{
+				case Climate.WEATHER_BLIZZARD:
+				case Climate.WEATHER_DUSTSTORM:
+				case Climate.WEATHER_THUNDERSTORM:
+				case Climate.WEATHER_WINDY:
+					windLevel=1+(CMath.bset(R.getClimateType(),Area.CLIMASK_WINDY)?1:0);
+					break;
+				default:
+					windLevel=0;
+					break;
+				}
+				int wetLevel;
+				switch(weather)
+				{
+				case Climate.WEATHER_BLIZZARD:
+				case Climate.WEATHER_THUNDERSTORM:
+					wetLevel=2+(CMath.bset(R.getClimateType(),Area.CLIMASK_WINDY)?1:0);
+					break;
+				case Climate.WEATHER_RAIN:
+				case Climate.WEATHER_SLEET:
+				case Climate.WEATHER_SNOW:
+					wetLevel=1;
+					break;
+				default:
+					wetLevel=0;
+					break;
+				}
+				final double[] vars = new double[] { rooms, windLevel, wetLevel };
+				if(CMLib.dice().rollPercentage() < (int)Math.round(CMath.parseMathExpression(boatDmgChanceFormula, vars, 0.0)))
+				{
+					final int damage = (int)Math.round(CMath.parseMathExpression(boatDmgAmtFormula, vars, 0.0));
+					if(damage > 0)
+					{
+						msg.addTrailerRunnable(new Runnable() {
+							@Override
+							public void run()
+							{
+								final String name = (boatDmgName != null) ? boatDmgName : Climate.WEATHER_DESCS[weather].toLowerCase();
+								final MOB M = CMClass.getFactoryMOB(name, 1, R);
+								final String msg = "<S-NAME> <DAMAGES> <T-NAME>.";
+								CMLib.combat().postSiegeDamage(M, M, I, R, msg, Weapon.TYPE_BASHING, damage);
+								M.destroy();
+							}
+						});
+					}
+				}
+			}
+		}
+
 		if(isOkishWeather(lastWeather))
 			return true;
 		final int weather=roomWeather(host,R);
