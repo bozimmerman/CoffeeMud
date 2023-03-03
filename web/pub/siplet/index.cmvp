@@ -1,6 +1,7 @@
 <head>
 	<META CHARSET="utf-8"/>
 	<link rel="coffeemud icon" href="../images/coffeemud.ico" >
+	<LINK REL=StyleSheet HREF="/siplet/term.css" TYPE="text/css">
 	<script language=JavaScript>
 	<!--
 		window.termurl='/siplet/term.cmvp';

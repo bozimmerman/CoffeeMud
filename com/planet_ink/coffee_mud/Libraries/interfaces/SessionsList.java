@@ -83,6 +83,7 @@ public interface SessionsList extends CMLibrary
 	 * @see SessionsList#sessions()
 	 * @see SessionsList#allIterableAllHosts()
 	 * @see SessionsList#localOnline()
+	 * @see SessionsList#localOnlineIterableAllHosts()
 	 * @see SessionsList#localOnlineIterable()
 	 *
 	 * @return the sessions for all the sessions
@@ -96,6 +97,7 @@ public interface SessionsList extends CMLibrary
 	 *
 	 * @see SessionsList#sessions()
 	 * @see SessionsList#allIterable()
+	 * @see SessionsList#localOnlineIterableAllHosts()
 	 * @see SessionsList#localOnline()
 	 * @see SessionsList#localOnlineIterable()
 	 *
@@ -110,6 +112,7 @@ public interface SessionsList extends CMLibrary
 	 * @see SessionsList#sessions()
 	 * @see SessionsList#allIterable()
 	 * @see SessionsList#allIterableAllHosts()
+	 * @see SessionsList#localOnlineIterableAllHosts()
 	 * @see SessionsList#localOnlineIterable()
 	 *
 	 * @return the sessions for all the online game chars
@@ -123,11 +126,27 @@ public interface SessionsList extends CMLibrary
 	 * @see SessionsList#sessions()
 	 * @see SessionsList#allIterable()
 	 * @see SessionsList#allIterableAllHosts()
+	 * @see SessionsList#localOnlineIterableAllHosts()
 	 * @see SessionsList#localOnline()
 	 *
 	 * @return the sessions for all the online game chars
 	 */
 	public Iterable<Session> localOnlineIterable();
+
+	/**
+	 * Returns the sessions for all the online game
+	 * characters that are on the map and playing on
+	 * a host that uses the given map library.
+	 *
+	 * @see SessionsList#sessions()
+	 * @see SessionsList#allIterable()
+	 * @see SessionsList#allIterableAllHosts()
+	 * @see SessionsList#localOnline()
+	 * @see SessionsList#localOnlineIterable()
+	 *
+	 * @return the sessions for all the online game chars
+	 */
+	public Iterable<Session> localOnlineIterableAllHosts();
 
 	/**
 	 * The number of char sessions being managed here.

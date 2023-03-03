@@ -79,6 +79,12 @@ public class Sessions extends StdLibrary implements SessionsList
 	}
 
 	@Override
+	public Iterable<Session> localOnlineIterableAllHosts()
+	{
+		return new FilteredIterable<Session>(allIterableAllHosts(),localOnlineFilter);
+	}
+
+	@Override
 	public int numSessions()
 	{
 		return all.size();

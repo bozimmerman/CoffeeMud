@@ -218,8 +218,8 @@ function getFrameHTML(wname,wnum)
     s+='<img src="/siplet/close.gif" id="'+wname+'close" onClick="closewindow(\''+wname+'\','+wnum+')">';
     s+='</td></tr></table>'
     s+='</div>';
-    s+='<div id="'+wname+'extracontent"></div>';
     s+='<iframe id="'+wname+'frame" src="" width=100% height=100%></iframe>';
+    s+='<div id="'+wname+'extracontent"></div>';
     s+='</div>';
     s+='</div>';
     return s;
