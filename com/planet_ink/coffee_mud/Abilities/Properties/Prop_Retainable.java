@@ -76,7 +76,7 @@ public class Prop_Retainable extends Property
 		}
 		return 0;
 	}
-	
+
 	private long findLong(final String str)
 	{
 		for(final String s : CMParms.parse(str))
@@ -86,9 +86,9 @@ public class Prop_Retainable extends Property
 		}
 		return 0;
 	}
-	
+
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
 		persist=false;
@@ -123,7 +123,7 @@ public class Prop_Retainable extends Property
 			miscText=payAmountPerPayPeriod+";"+payPeriodLengthInMudDays+";"+lastPayDayTimestamp;
 		return miscText;
 	}
-	
+
 	public void quit(final MOB mob, final String msg)
 	{
 	}
@@ -179,7 +179,7 @@ public class Prop_Retainable extends Property
 								return false;
 							}
 						}
-						final String owner=CMLib.law().getLandOwnerName(mob.location());
+						final String owner=CMLib.law().getPropertyOwnerName(mob.location());
 						if(owner.length()==0)
 						{
 							CMLib.commands().postSay(mob,null,L("Argh! I quit!"),false,false);

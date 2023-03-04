@@ -618,7 +618,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			}
 			else
 			{
-				final String str = CMLib.law().getLandOwnerName(R);
+				final String str = CMLib.law().getPropertyOwnerName(R);
 				if((str.length()>0)&&(CMLib.clans().getClanAnyHost(str)!=null))
 					return true;
 			}
@@ -629,7 +629,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			if(E instanceof MOB)
 				return CMLib.law().doesOwnThisLand(M, R) || CMLib.law().doesOwnThisProperty(M, R);
 			else
-				return CMLib.law().getLandOwnerName(R).length()>0;
+				return CMLib.law().getPropertyOwnerName(R).length()>0;
 		}
 		case PRIV:
 		{

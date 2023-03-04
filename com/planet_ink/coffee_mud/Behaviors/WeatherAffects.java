@@ -360,7 +360,8 @@ public class WeatherAffects extends PuddleMaker
 							@Override
 							public void run()
 							{
-								final String name = (boatDmgName != null) ? boatDmgName : Climate.WEATHER_DESCS[weather].toLowerCase();
+								final String name = (boatDmgName != null) ? boatDmgName :
+									L("the @x1",Climate.WEATHER_DESCS[weather].toLowerCase());
 								final MOB M = CMClass.getFactoryMOB(name, 1, R);
 								final String msg = "<S-NAME> <DAMAGES> <T-NAME>.";
 								CMLib.combat().postSiegeDamage(M, M, I, R, msg, Weapon.TYPE_BASHING, damage);

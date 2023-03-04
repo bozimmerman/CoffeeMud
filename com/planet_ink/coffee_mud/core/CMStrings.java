@@ -229,6 +229,28 @@ public class CMStrings
 	}
 
 	/**
+	 * Returns the number of letters in the second word that are
+	 * also found in the first word.
+	 * @param word the word to look in
+	 * @param str the word the count is based on
+	 * @return the final count
+	 */
+	public static final int sameLetterCount(final String word, final String str)
+	{
+		if((word==null)||(str==null))
+			return 0;
+		if((word.length()==0)||(str.length()==0))
+			return 0;
+		int i=0;
+		for(final char c : str.toCharArray())
+		{
+			if(word.indexOf(c)>=0)
+				i++;
+		}
+		return i;
+	}
+
+	/**
 	 * Puts a period at the end of the last viewable character in this string,
 	 * assuming there isn't already punctuation at the end.  Preserves any
 	 * trailing special color codes.
@@ -1766,8 +1788,6 @@ public class CMStrings
 	{
 		if(s==null)
 			return "";
-		if((s.indexOf('^')<0)&&(s.indexOf((char)27)<0))
-			return s;
 		final StringBuilder str=new StringBuilder(s);
 		int count = 0;
 		int colorStart=-1;

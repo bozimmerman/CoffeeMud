@@ -204,7 +204,7 @@ public class Decorating extends CommonSkill implements RecipeDriven
 					else
 					{
 						final Room room=CMLib.map().roomLocation(I);
-						final String ownerName=CMLib.law().getLandOwnerName(room);
+						final String ownerName=CMLib.law().getPropertyOwnerName(room);
 						if((messedUp)
 						||(room==null)
 						||(ownerName.length()==0))

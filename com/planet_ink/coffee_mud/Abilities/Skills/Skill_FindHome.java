@@ -210,7 +210,7 @@ public class Skill_FindHome extends StdAbility
 	{
 		if(CMLib.law().doesOwnThisLand(mob, room))
 		{
-			final String ownerName=CMLib.law().getLandOwnerName(room);
+			final String ownerName=CMLib.law().getPropertyOwnerName(room);
 			if(ownerName.equalsIgnoreCase(mob.Name()))
 				return true;
 			if(CMLib.players().playerExistsAllHosts(ownerName))

@@ -868,7 +868,7 @@ public class Age extends StdAbility
 		else
 		if((affected instanceof MOB)
 		&&(isBeingCaredForByAnNPC((MOB)affected) || hasUnnaturalParentage((MOB)affected))
-		&&(CMLib.law().getLandOwnerName(((MOB)affected).location()).length()>0))
+		&&(CMLib.law().getPropertyOwnerName(((MOB)affected).location()).length()>0))
 		{
 			final MOB babe=(MOB)affected;
 			if(getMyRace()==null)

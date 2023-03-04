@@ -215,7 +215,7 @@ public class Spell_ClanWard extends Spell
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		if(!CMLib.law().isLandOwnersName(C.clanID(), R))
+		if(!CMLib.law().isPropertyOwnersName(C.clanID(), R))
 		{
 			mob.tell(L("Your clan does not own this room."));
 			return false;

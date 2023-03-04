@@ -1823,7 +1823,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 								if(promptSub.startsWith(ccodes.name(code)))
 								{
 									c+=1+ccodes.name(code).length();
-									buf.append(mob.charStats().getStat(code));
+									int statVal=mob.charStats().getStat(code);
+									if((code>=CharStats.STAT_MAX_STRENGTH_ADJ)
+									&&(code<=CharStats.STAT_MAX_WISDOM_ADJ))
+										statVal+=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
+									buf.append(statVal);
 									isFound=true;
 									break;
 								}
@@ -1870,7 +1874,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 									break;
 								}
 							}
-							if(!isFound)
+							if(!isFound && (promptSub.startsWith("BASE ")))
 							{
 								for(final String s : mob.basePhyStats().getStatCodes())
 								{
@@ -1896,7 +1900,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 									break;
 								}
 							}
-							if(!isFound)
+							if(!isFound && (promptSub.startsWith("MAX ")))
 							{
 								for(final String s : mob.maxState().getStatCodes())
 								{
@@ -1909,7 +1913,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 									}
 								}
 							}
-							if(!isFound)
+							if(!isFound && (promptSub.startsWith("BASE ")))
 							{
 								for(final String s : mob.baseState().getStatCodes())
 								{
@@ -1917,6 +1921,21 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 									{
 										c+=6+s.length();
 										buf.append(mob.baseState().getStat(s));
+										isFound=true;
+										break;
+									}
+								}
+							}
+							if(!isFound && (promptSub.startsWith("MAX ")))
+							{
+								for(final String s : mob.charStats().getStatCodes())
+								{
+									if(promptSub.startsWith("MAX "+s))
+									{
+										c+=5+s.length();
+										final int max = CMath.s_int(mob.charStats().getStat("MAX"+s))
+												+  CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
+										buf.append(max);
 										isFound=true;
 										break;
 									}

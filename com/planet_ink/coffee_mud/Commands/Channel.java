@@ -194,10 +194,15 @@ public class Channel extends StdCommand
 			}
 		}
 
+		final String lfw = (commands.size()>1)?commands.get(0).toLowerCase():"";
 		if((commands.size()==2)
 		&&(mob.session()!=null)
-		&&(commands.get(0).equalsIgnoreCase("last"))
-		&&(CMath.isNumber(commands.get(commands.size()-1))))
+		&&(CMath.isNumber(commands.get(commands.size()-1)))
+		&&(lfw.length()>0)
+		&&(lfw.equals("last")
+			||("last".startsWith(lfw))
+			||("last".endsWith(lfw))
+			||(CMStrings.sameLetterCount("last",lfw))>2))
 		{
 			final long now=System.currentTimeMillis();
 			final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);

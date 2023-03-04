@@ -113,7 +113,7 @@ public class DefaultCharStats implements CharStats
 	private static int GEND_BOYGRL = 10;
 	private static int GEND_HIMHEF = 11;
 	private static int GEND_HISHEF = 12;
-	
+
 	@Override
 	public void setAllBaseValues(final int def)
 	{
@@ -924,7 +924,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public char reproductiveCode() 
+	public char reproductiveCode()
 	{
 		final char c=((genderName!=null)&&(genderName.length()>0))
 				? Character.toUpperCase(genderName.charAt(0))
