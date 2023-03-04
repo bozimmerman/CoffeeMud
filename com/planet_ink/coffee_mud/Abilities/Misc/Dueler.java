@@ -205,6 +205,13 @@ public class Dueler extends StdAbility
 		return true;
 	}
 
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_BE_CAMPED);
+	}
+
 	public void init(final MOB mob)
 	{
 		oldPVPStatus=mob.isAttributeSet(MOB.Attrib.PLAYERKILL);

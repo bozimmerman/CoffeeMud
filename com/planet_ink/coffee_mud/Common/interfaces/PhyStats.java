@@ -413,7 +413,8 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int CAN_NOT_TRACK=262144;
 	/** a bit setting, as from sensesMask(), flagging this mob as unable to engage in standard combat ticks*/
 	public final static int CAN_NOT_AUTO_ATTACK=524288;
-	/** a bit setting, as from sensesMask(), flagging this mob as not respawning when being camped*/
+	/** a bit setting, as from sensesMask(), flagging this mob as not respawning when being camped
+	 * , or is a player exempt from pvp level limits */
 	public final static int CAN_NOT_BE_CAMPED=1048576;
 	/** a bit setting, as from sensesMask(), flagging this mob being able to grunt, when sufficiently stupid */
 	public final static int CAN_GRUNT_WHEN_STUPID=2097152;
@@ -542,7 +543,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	/** a bit setting, as from sensesMask(), flagging this ...  */
 	//public final static int SENSE_ROOMCIRCUITED=524288;
 	/** a bit setting, as from sensesMask(), flagging this mob as not respawning when being camped*/
-	public final static int SENSE_UNCAMPABLE=1048576;
+	public final static int SENSE_UNCAMPABLE=1048576; // must match the normal mob version also
 
 	/** STAT codes list, indexed by the 2nd root of the various sensesMask() SENSE_ bitmasks */
 	public static final String[] SENSE_CODES={

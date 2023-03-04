@@ -3034,6 +3034,8 @@ public class StdMOB implements MOB
 				&& ((!CMLib.law().doesHavePriviledgesHere(srcM, location()))
 					|| (victim == null)
 					|| (srcM.isInCombat()))
+				&& (!CMLib.flags().canNotBeCamped(srcM))
+				&& (!CMLib.flags().canNotBeCamped(this))
 				&& ((!(msg.tool() instanceof Ability))
 					|| (((Ability) msg.tool()).classificationCode() & Ability.ALL_ACODES) != Ability.ACODE_DISEASE))
 				{
