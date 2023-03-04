@@ -145,13 +145,20 @@ public class WeatherAffects extends PuddleMaker
 		final String dmgChanceStr = CMParms.getParmStr(parms, "shipdmgpct", "");
 		if(dmgChanceStr.length()>0)
 		{
-			boatDmgChanceFormula=CMath.compileMathExpression(dmgChanceStr);
-			final String dmgStr = CMParms.getParmStr(parms, "shipdmg", "");
-			boatDmgName = CMParms.getParmStr(parms, "dmgname", null);
-			if(dmgStr.length()>0)
-				boatDmgAmtFormula=CMath.compileMathExpression(dmgStr);
-			else
-				boatDmgChanceFormula=null;
+			try
+			{
+				boatDmgChanceFormula=CMath.compileMathExpression(dmgChanceStr);
+				final String dmgStr = CMParms.getParmStr(parms, "dmgship", "");
+				boatDmgName = CMParms.getParmStr(parms, "dmgname", null);
+				if(dmgStr.length()>0)
+					boatDmgAmtFormula=CMath.compileMathExpression(dmgStr);
+				else
+					boatDmgChanceFormula=null;
+			}
+			catch(final Exception e)
+			{
+				Log.errOut("WeatherAffects",e.getMessage());
+			}
 		}
 		resetBotherTicks();
 		resetDiseaseTicks();
@@ -296,15 +303,13 @@ public class WeatherAffects extends PuddleMaker
 	}
 
 	@Override
-	public boolean okMessage(final Environmental host, final CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
-		if(!super.okMessage(host,msg))
-			return false;
-
+		super.executeMsg(host, msg);
 		final Room R=msg.source().location();
 		if((host instanceof Area)
 		&&((R==null)||(R.getArea()!=host)))
-			return true;
+			return;
 
 		if((this.boatDmgChanceFormula != null)
 		&&(msg.source().riding() instanceof Item)
@@ -356,22 +361,28 @@ public class WeatherAffects extends PuddleMaker
 					final int damage = (int)Math.round(CMath.parseMathExpression(boatDmgAmtFormula, vars, 0.0));
 					if(damage > 0)
 					{
-						msg.addTrailerRunnable(new Runnable() {
-							@Override
-							public void run()
-							{
-								final String name = (boatDmgName != null) ? boatDmgName :
-									L("the @x1",Climate.WEATHER_DESCS[weather].toLowerCase());
-								final MOB M = CMClass.getFactoryMOB(name, 1, R);
-								final String msg = "<S-NAME> <DAMAGES> <T-NAME>.";
-								CMLib.combat().postSiegeDamage(M, M, I, R, msg, Weapon.TYPE_BASHING, damage);
-								M.destroy();
-							}
-						});
+						final String name = (boatDmgName != null) ? boatDmgName :
+							L("the @x1",Climate.WEATHER_DESCS[weather].toLowerCase());
+						final MOB M = CMClass.getFactoryMOB(name, 1, R);
+						final String msgStr = "<S-NAME> <DAMAGES> <T-NAME>.";
+						CMLib.combat().postSiegeDamage(M, M, I, R, msgStr, Weapon.TYPE_BASHING, damage);
+						M.destroy();
 					}
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean okMessage(final Environmental host, final CMMsg msg)
+	{
+		if(!super.okMessage(host,msg))
+			return false;
+
+		final Room R=msg.source().location();
+		if((host instanceof Area)
+		&&((R==null)||(R.getArea()!=host)))
+			return true;
 
 		if(isOkishWeather(lastWeather))
 			return true;
