@@ -292,7 +292,7 @@ public class TemporaryAffects extends StdAbility
 			boolean imeanit=false;
 			if(txt.startsWith("+"))
 			{
-				if(txt.startsWith("++"))
+				if(txt.startsWith("++")||txt.startsWith("+#"))
 				{
 					imeanit=true;
 					txt=txt.substring(2);
@@ -308,6 +308,11 @@ public class TemporaryAffects extends StdAbility
 			}
 			else
 			{
+				if(txt.startsWith("#"))
+				{
+					imeanit=true;
+					txt=txt.substring(1);
+				}
 				for(final Pair<Object,int[]> p : affects)
 					unAffectAffected(p);
 				bindings.clear();
