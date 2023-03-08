@@ -98,7 +98,7 @@ public class Fox extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "DogSpeak" };
+	private final String[]	racialAbilityNames			= { "FoxSpeak" };
 	private final int[]		racialAbilityLevels			= { 1 };
 	private final int[]		racialAbilityProficiencies	= { 100 };
 	private final boolean[]	racialAbilityQuals			= { false };
@@ -204,7 +204,7 @@ public class Fox extends StdRace
 				return name().toLowerCase()+" puppy";
 			case Race.AGE_CHILD:
 			{
-				CharStats cs = (CharStats)CMClass.getCommon("DefaultCharStats");
+				final CharStats cs = (CharStats)CMClass.getCommon("DefaultCharStats");
 				cs.setStat(CharStats.STAT_GENDER, gender);
 				return cs.boygirl()+" " + name().toLowerCase() + " puppy";
 			}

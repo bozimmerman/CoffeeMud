@@ -26,6 +26,8 @@
  25. Common Account menu now configurable (help/acctmenu.txt)
  26. New forum posts now support attachments.
  27. WeatherAffects behavior can now be more independent of the actual weather.
+ 28. New language: FoxSpeak
+ 
 
 # Build 5.10.1 Release 1/01/2023
   1. FasterRecovery expanded and new char stat REJUVRATE for Prop*Adjuster
