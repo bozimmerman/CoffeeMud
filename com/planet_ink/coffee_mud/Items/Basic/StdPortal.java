@@ -423,9 +423,21 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 						R=thisRoom;
 					synchronized(CMClass.getSync(("GATE_"+CMLib.map().getExtendedTwinRoomIDs(thisRoom,R))))
 					{
-						final Exit oldE=thisRoom.getRawExit(Directions.GATE);
-						final Room oldR=thisRoom.rawDoors()[Directions.GATE];
-						final Exit oldE2=R.getRawExit(Directions.GATE);
+						final Exit oldE;
+						synchronized(thisRoom)
+						{
+							oldE=thisRoom.getRawExit(Directions.GATE);
+						}
+						final Exit oldE2;
+						synchronized(R)
+						{
+							oldE2=R.getRawExit(Directions.GATE);
+						}
+						final Room oldR;
+						synchronized(thisRoom.rawDoors())
+						{
+							oldR=thisRoom.rawDoors()[Directions.GATE];
+						}
 						try
 						{
 							thisRoom.rawDoors()[Directions.GATE]=R;
