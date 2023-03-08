@@ -114,7 +114,8 @@ public class MUD extends Thread implements MudHost
 	public void acceptConnection(final Socket sock) throws SocketException, IOException
 	{
 		setState(MudState.ACCEPTING);
-		serviceEngine.executeRunnable(threadGroup.getName(),new ConnectionAcceptor(sock));
+		final ConnectionAcceptor acceptor = new ConnectionAcceptor(sock, Thread.currentThread().getName());
+		serviceEngine.executeRunnable(threadGroup.getName(),acceptor);
 	}
 
 	@Override
@@ -140,10 +141,12 @@ public class MUD extends Thread implements MudHost
 	{
 		Socket sock;
 		long startTime=0;
+		String name = null;
 
-		public ConnectionAcceptor(final Socket sock) throws SocketException, IOException
+		public ConnectionAcceptor(final Socket sock, final String name) throws SocketException, IOException
 		{
 			this.sock=sock;
+			this.name = name;
 			sock.setSoLinger(true,3);
 		}
 
@@ -151,6 +154,13 @@ public class MUD extends Thread implements MudHost
 		public long getStartTime()
 		{
 			return startTime;
+		}
+
+		protected String name()
+		{
+			if(this.name == null)
+				return Thread.currentThread().getName();
+			return this.name;
 		}
 
 		@Override
@@ -245,7 +255,7 @@ public class MUD extends Thread implements MudHost
 						final int abusiveCount=numAtThisAddress-maxAtThisAddress+1;
 						final long rounder=Math.round(Math.sqrt(abusiveCount));
 						if(abusiveCount == (rounder*rounder))
-							Log.sysOut(Thread.currentThread().getName(),"Blocking a connection from "+address +" ("+numAtThisAddress+")");
+							Log.sysOut(name(),"Blocking a connection from "+address +" ("+numAtThisAddress+")");
 						try
 						{
 							final PrintWriter out = new PrintWriter(sock.getOutputStream());
@@ -279,7 +289,7 @@ public class MUD extends Thread implements MudHost
 					}
 					else
 					{
-						Log.sysOut(Thread.currentThread().getName(),"Connection from "+address);
+						Log.sysOut(name(),"Connection from "+address);
 						// also the intro page
 						final CMFile introDir=new CMFile(Resources.makeFileResourceName("text"),null,CMFile.FLAG_FORCEALLOW);
 						String introFilename="text/intro.txt";

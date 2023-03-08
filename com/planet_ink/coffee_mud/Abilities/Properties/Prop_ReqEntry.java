@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMaskEntry;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -53,12 +54,12 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect, Deity.De
 		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;
 	}
 
-	private boolean noFollow=false;
-	private boolean noSneak=false;
-	private boolean actual=false;
-	private String maskS = "";
-	private MaskingLibrary.CompiledZMask mask=null;
-	private String message="";
+	private boolean			noFollow	= false;
+	private boolean			noSneak		= false;
+	private boolean			actual		= false;
+	private String			maskS		= "";
+	private String			message		= "";
+	private CompiledZMask	mask		= null;
 
 	@Override
 	public long flags()
@@ -228,8 +229,8 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect, Deity.De
 				return false;
 			}
 			else
-			if((msg.target() instanceof Rideable)
-			&&(msg.amITarget(affected)))
+			if(((msg.target() instanceof Rideable)&&(msg.amITarget(affected))
+			||(msg.tool()==affected)))
 			{
 				switch(msg.targetMinor())
 				{

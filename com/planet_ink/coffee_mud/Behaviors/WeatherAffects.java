@@ -75,6 +75,7 @@ public class WeatherAffects extends PuddleMaker
 	protected CompiledFormula	boatDmgChanceFormula	= null;
 	protected CompiledFormula	boatDmgAmtFormula		= null;
 	protected String			boatDmgName				= null;
+	protected boolean			boatDmgCheck			= false;
 	protected Set<Room>			roomExceptions			= new HashSet<Room>();
 
 	private static final long[]	ALL_COVERED_SPOTS	= { Wearable.WORN_FEET, Wearable.WORN_TORSO, Wearable.WORN_LEGS };
@@ -132,6 +133,7 @@ public class WeatherAffects extends PuddleMaker
 		parms=newParms;
 		boatDmgChanceFormula = null;
 		boatDmgAmtFormula = null;
+		boatDmgCheck=false;
 		puddlepct=CMParms.getParmInt(parms,"puddlepct",50);
 		windsheer=CMParms.getParmInt(parms,"windsheer",10);
 		rainSlipChance=CMParms.getParmInt(parms,"rainslipchance",1);
@@ -151,7 +153,10 @@ public class WeatherAffects extends PuddleMaker
 				final String dmgStr = CMParms.getParmStr(parms, "dmgship", "");
 				boatDmgName = CMParms.getParmStr(parms, "dmgname", null);
 				if(dmgStr.length()>0)
+				{
 					boatDmgAmtFormula=CMath.compileMathExpression(dmgStr);
+					boatDmgCheck=boatDmgAmtFormula != null;
+				}
 				else
 					boatDmgChanceFormula=null;
 			}
@@ -306,15 +311,11 @@ public class WeatherAffects extends PuddleMaker
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host, msg);
-		final Room R=msg.source().location();
-		if((host instanceof Area)
-		&&((R==null)||(R.getArea()!=host)))
-			return;
-
-		if((this.boatDmgChanceFormula != null)
+		if((this.boatDmgCheck)
 		&&(msg.source().riding() instanceof Item)
 		&&(msg.sourceMajor(CMMsg.MASK_MOVE))
-		&&(CMLib.flags().isWaterySurfaceRoom(R)))
+		&&(CMLib.flags().isWaterySurfaceRoom(msg.source().location()))
+		&&((!(host instanceof Area))||(msg.source().location().getArea()!=host)))
 		{
 			final Item I=(Item)msg.source().riding();
 			final Rideable sR = msg.source().riding();
@@ -325,6 +326,7 @@ public class WeatherAffects extends PuddleMaker
 				int rooms = 0;
 				if(sR instanceof Boardable)
 					rooms = ((Boardable)sR).getArea().properSize();
+				final Room R=msg.source().location();
 				final int weather=roomWeather(host,R);
 				int windLevel;
 				switch(weather)
@@ -364,7 +366,7 @@ public class WeatherAffects extends PuddleMaker
 						final String name = (boatDmgName != null) ? boatDmgName :
 							L("the @x1",Climate.WEATHER_DESCS[weather].toLowerCase());
 						final MOB M = CMClass.getFactoryMOB(name, 1, R);
-						final String msgStr = "<S-NAME> <DAMAGES> <T-NAME>.";
+						final String msgStr = "^Z<S-NAME> <DAMAGES> <T-NAME>.^?";
 						CMLib.combat().postSiegeDamage(M, M, I, R, msgStr, Weapon.TYPE_BASHING, damage);
 						M.destroy();
 					}

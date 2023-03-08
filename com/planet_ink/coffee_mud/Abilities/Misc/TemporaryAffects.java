@@ -124,8 +124,6 @@ public class TemporaryAffects extends StdAbility
 		return Ability.ACODE_PROPERTY;
 	}
 
-	protected boolean			initialized	= false;
-
 	protected List<String>				bindings	= new SVector<String>();
 	protected List<Pair<Object, int[]>>	affects		= new SVector<Pair<Object, int[]>>();
 
@@ -238,8 +236,14 @@ public class TemporaryAffects extends StdAbility
 	}
 
 	@Override
-	public void setMiscText(String txt)
+	public synchronized void setMiscText(String txt)
 	{
+		final Physical affected = super.affected;
+		if((affected == null)||(txt.length()==0))
+		{
+			super.setMiscText(txt);
+			return;
+		}
 		super.setMiscText("");
 		if(txt.startsWith("-"))
 		{
@@ -337,7 +341,7 @@ public class TemporaryAffects extends StdAbility
 					final AmbianceAdder A=new AmbianceAdder();
 					A.setMiscText(parms);
 					affects.add(new Pair<Object,int[]>(A,new int[] { CMath.s_int(numTicksStr)}));
-					finishInit(A);
+					finishInit(affected, A);
 				}
 			}
 			else
@@ -357,7 +361,7 @@ public class TemporaryAffects extends StdAbility
 					if((A instanceof Behavior)
 					&& ((affected instanceof PhysicalAgent)||imeanit))
 						((Behavior)A).setParms(parms);
-					finishInit(A);
+					finishInit(affected, A);
 				}
 			}
 		}
@@ -367,18 +371,12 @@ public class TemporaryAffects extends StdAbility
 	public void setAffectedOne(final Physical P)
 	{
 		super.setAffectedOne(P);
-		if((affects!=null)
-		&&(!initialized))
-		{
-			for(final Pair<Object,int[]> p : affects)
-				finishInit(p.first);
-		}
+		if(text().length()>0)
+			this.setMiscText(text());
 	}
 
-	public void finishInit(final Object A)
+	public void finishInit(final Physical affected, final Object A)
 	{
-		if(affected == null)
-			return;
 		if(A instanceof Ability)
 		{
 			((Ability)A).makeNonUninvokable();
@@ -387,14 +385,12 @@ public class TemporaryAffects extends StdAbility
 		}
 		if((A instanceof Behavior) && (affected instanceof PhysicalAgent))
 			((Behavior)A).startBehavior((PhysicalAgent)affected);
-		if(affected != null)
-			affected.recoverPhyStats();
+		affected.recoverPhyStats();
 		if(affected instanceof MOB)
 		{
 			((MOB)affected).recoverCharStats();
 			((MOB)affected).recoverMaxState();
 		}
-		initialized=true;
 	}
 
 	public boolean destroyIfNecessary()
@@ -433,7 +429,7 @@ public class TemporaryAffects extends StdAbility
 		if((msg.target() instanceof Room)
 		&&((msg.targetMinor()==CMMsg.TYP_LEAVE)||(msg.sourceMinor()==CMMsg.TYP_RECALL)))
 		{
-			if((bindings.size()>0) && (affected != null) && initialized)
+			if((bindings.size()>0) && (affected != null))
 			{
 				final Room R=CMLib.map().roomLocation(affected);
 				if(R!=null)
@@ -486,7 +482,7 @@ public class TemporaryAffects extends StdAbility
 				}
 			}
 		}
-		if((bindings.size()>0) && (affected != null) && initialized)
+		if((bindings.size()>0) && (affected != null))
 		{
 			final Room R=CMLib.map().roomLocation(affected);
 			if(R!=null)
