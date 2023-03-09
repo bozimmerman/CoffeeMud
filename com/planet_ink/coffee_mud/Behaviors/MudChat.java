@@ -147,12 +147,14 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	protected static class ChattyResponse
 	{
 		public int				delay;
+		public boolean			combatFlag;
 		public List<String>		parsedCommand;
 
-		public ChattyResponse(final List<String> cmd, final int responseDelay)
+		public ChattyResponse(final List<String> cmd, final int responseDelay, final boolean combatFlag)
 		{
 			parsedCommand = cmd;
 			delay = responseDelay;
+			this.combatFlag=combatFlag;
 		}
 	}
 
@@ -166,9 +168,11 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	{
 		public String[] responses;
 		public int weight;
-		public ChattyTestResponse(final String resp)
+		public boolean combatFlag;
+		public ChattyTestResponse(final String resp, final boolean combatFlag)
 		{
 			weight=CMath.s_int(""+resp.charAt(0));
+			this.combatFlag=combatFlag;
 			responses=CMParms.parseSquiggleDelimited(resp.substring(1),true).toArray(new String[0]);
 		}
 	}
@@ -459,7 +463,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				case '8':
 				case '9':
 					if(currentChatEntry!=null)
-						currentChatEntryResponses.add(new ChattyTestResponse(str));
+						currentChatEntryResponses.add(new ChattyTestResponse(str,currentChatEntry.combatEntry));
 					break;
 				}
 			}
@@ -670,7 +674,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 					}
 				}
 				if(V!=null)
-					responseQue.add(new ChattyResponse(V,RESPONSE_DELAY));
+					responseQue.add(new ChattyResponse(V,RESPONSE_DELAY,selection.combatFlag));
 			}
 		}
 	}
@@ -1171,10 +1175,13 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 					if(R.delay<=0)
 					{
 						responseQue.remove(R);
-						((MOB)ticking).doCommand(R.parsedCommand,MUDCmdProcessor.METAFLAG_FORCED);
-						lastReactedTo=null;
-						// you've done one, so get out before doing another!
-						break;
+						if(R.combatFlag == ((MOB)ticking).isInCombat())
+						{
+							((MOB)ticking).doCommand(R.parsedCommand,MUDCmdProcessor.METAFLAG_FORCED);
+							lastReactedTo=null;
+							// you've done one, so get out before doing another!
+							break;
+						}
 					}
 				}
 			}
