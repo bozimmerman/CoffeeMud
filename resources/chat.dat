@@ -981,7 +981,6 @@
 9is that an accusation?
 9talk about yourself, not me
 
-
 (about )
 9could you be more precise?
 
@@ -1710,7 +1709,6 @@
 9what is it about girls that you like?
 9what do you do when you are alone with a girl?
 9what do you do when you are alone with a boy?
-
 
 (girls )
 9do you like girls?
@@ -2454,22 +2452,15 @@
 (1)
 9just one?
 
-
-
-
-
 (coca cola|soda pop|pepsi|mello yello)
 7Mello yello is pretty good.
 2Pepsi stinks.
 2Colas get boring.
 
-
 (larry is)
 8Why do you think larry is $r
 3I think Larry is $r
 2Are you sure he is $r
-
-
 
 (cbusch|busch|chris)
 9He is so wise.
@@ -2516,8 +2507,6 @@
 4Japanese/chinese they are all the same!
 5They are beating us the way it seems.
 
-
-
 (salad|mixed)
 3Sort of like Larry's programming style.
 2Salad shooter...
@@ -2547,7 +2536,6 @@
 1In your wet dreams!
 3I just wished I saw them naked  I )
 
-
 (bitch | cunt bag | whore) 
 1Bitches are annoying to be around.
 9If only annoying women were not annoying.
@@ -2571,13 +2559,10 @@
 3Best done with a woman.
 2Woman should be loved.
 
-
-
 (hello | hi)
 9Hello
 3Whats up?
 2hi
-
 
 (?)
 9I dont care for questions-- too much like a test
@@ -2678,7 +2663,20 @@
 4if you could change something in your life, what would it be?
 1you don't make any sense at all.  try fortran
 
-
+#matches anything, during combat
+*()
+9
+9
+9
+9
+1You can not defeat me!
+1I will vanquish you!
+1Take this, fiend!
+1DIE!
+1You were a fool to challenge me!
+1how is your health?
+1how do you feel about death?
+1i think you are sick, leave me alone
 
 ############################################################
 >dog fido beastly fido_dog wolf beagle puppy
