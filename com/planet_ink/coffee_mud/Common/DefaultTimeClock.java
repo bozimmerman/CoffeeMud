@@ -245,7 +245,7 @@ public class DefaultTimeClock implements TimeClock
 			x=x+((long)(getMonth()-1))*((long)getDaysInMonth());
 			x=x+getDayOfMonth();
 			final String[] weekNames = getWeekNames();
-			int weekDayIndex = (int)(x%getDaysInWeek());
+			final int weekDayIndex = (int)(x%getDaysInWeek());
 			if((weekDayIndex<0) || (weekDayIndex >= weekNames.length))
 			{
 				if(weekDayIndex < 0)
@@ -363,9 +363,16 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
+	public int getMonthsInSeason()
+	{
+		return (int)Math.round(Math.floor(CMath.div(getMonthsInYear(),4.0)));
+
+	}
+
+	@Override
 	public Season getSeasonCode()
 	{
-		final int div=(int)Math.round(Math.floor(CMath.div(getMonthsInYear(),4.0)));
+		final int div=getMonthsInSeason();
 		if(month<div)
 			return TimeClock.Season.WINTER;
 		if(month<(div*2))

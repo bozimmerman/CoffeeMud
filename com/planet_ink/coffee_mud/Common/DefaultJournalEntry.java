@@ -45,6 +45,7 @@ public class DefaultJournalEntry implements JournalEntry
 	public String		msg;
 	public long			date				= 0;
 	public long			update				= 0;
+	public long			expiration			= 0;
 	public String		parent				= "";
 	public long			attributes			= 0;
 	public String		data				= "";
@@ -52,6 +53,7 @@ public class DefaultJournalEntry implements JournalEntry
 	public String		msgIcon				= "";
 	public int			replies				= 0;
 	public int			views				= 0;
+	public int			hashCode			= 0;
 	public boolean		isLastEntry			= false;
 	public List<String>	attachments			= null;
 	public StringBuffer	derivedBuildMessage	= null;
@@ -182,6 +184,19 @@ public class DefaultJournalEntry implements JournalEntry
 	public JournalEntry update(final long update)
 	{
 		this.update = update;
+		return this;
+	}
+
+	@Override
+	public long expiration()
+	{
+		return expiration;
+	}
+
+	@Override
+	public JournalEntry expiration(final long expiration)
+	{
+		this.expiration = expiration;
 		return this;
 	}
 
@@ -352,6 +367,14 @@ public class DefaultJournalEntry implements JournalEntry
 		xml.append(xmlLib.parseOutAngleBrackets(msg));
 		xml.append("</JENTRY>");
 		return xml.toString();
+	}
+
+	@Override
+	public int hashCode()
+	{
+		if(hashCode == 0)
+			hashCode = getXML().hashCode();
+		return hashCode;
 	}
 
 	@Override

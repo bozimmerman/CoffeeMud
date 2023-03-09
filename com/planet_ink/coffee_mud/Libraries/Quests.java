@@ -47,6 +47,7 @@ public class Quests extends StdLibrary implements QuestManager
 	protected String holidayFilename="quests/holidays/holidays.quest";
 	protected String holidayDefinition="LOAD="+holidayFilename;
 	protected SVector<Quest> quests=new SVector<Quest>();
+	protected List<JournalEntry> cachedHolidayInfo = null;
 
 	@Override
 	public Quest objectInUse(final Environmental E)
@@ -203,72 +204,164 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public String listHolidays(final String areaName)
+	public List<JournalEntry> getHolidayEntries()
 	{
+		List<JournalEntry> holidayInfo;
+		synchronized(this)
+		{
+			holidayInfo = this.cachedHolidayInfo;
+			if(holidayInfo != null)
+				return holidayInfo;
+			else
+				holidayInfo = new Vector<JournalEntry>();
+		}
 		final List<String> steps;
 		try
 		{
 			steps=getHolidayFile();
+			List<String> V;
+			List<String> line;
+			String var;
+			for(int s=1;s<steps.size();s++)
+			{
+				final String step=steps.get(s);
+				V=Resources.getFileLineVector(new StringBuffer(step));
+				final List<List<String>> cmds=getNextQuestScriptCommands(V,"SET",0);
+				List<String> areaLine=null;
+				List<String> nameLine=null;
+				List<String> dateLine=null;
+				List<String> duraLine=null;
+				List<String> muddayLine=null;
+				for(int v=0;v<cmds.size();v++)
+				{
+					line=cmds.get(v);
+					if(line.size()>1)
+					{
+						var=line.get(1).toUpperCase();
+						if ((var.equals("AREAGROUP"))
+						||(var.equals("AREA")&&(areaLine == null)))
+						{
+							areaLine = line;
+							if((line.size()>1)&&(line.get(0).equalsIgnoreCase("ANY")))
+								line.remove(0);
+							else
+								areaLine = new XArrayList<String>(CMParms.combineQuoted(line, 0));
+						}
+						if (var.equals("NAME"))
+						{
+							nameLine = line;
+						}
+						if (var.equals("MUDDAY"))
+						{
+							muddayLine = line;
+						}
+						if (var.equals("DATE"))
+						{
+							dateLine = line;
+						}
+						if (var.equals("DURATION"))
+						{
+							duraLine = line;
+						}
+					}
+				}
+				if(nameLine!=null)
+				{
+					final JournalEntry entry = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
+					entry.subj(CMParms.combine(nameLine,2));
+					if(areaLine != null)
+						entry.to(CMParms.combineQuoted(areaLine, 2));
+					if(muddayLine != null)
+						entry.update(parseMudDay(CMParms.combine(muddayLine, 2)));
+					if(dateLine != null)
+						entry.update(parseRLDate(CMParms.combine(dateLine, 2)));
+					if((duraLine != null) && (entry.update() != 0))
+						entry.expiration(entry.update() + (CMProps.getTickMillis() * CMath.s_long(CMParms.combine(duraLine, 2))));
+					entry.from("Holiday");
+					holidayInfo.add(entry);
+				}
+			}
 		}
 		catch(final CMException e)
 		{
-			return e.getMessage();
 		}
-		final StringBuffer str=new StringBuffer(L("^xDefined Quest Holidays^?\n\r"));
-		List<String> line=null;
-		String var=null;
-		List<String> V=null;
-		str.append("^H#  "+CMStrings.padRight(L("Holiday Name"),20)+CMStrings.padRight(L("Area Name(s)"),50)+"^?\n\r");
-		for(int s=1;s<steps.size();s++)
+		synchronized(this)
 		{
-			final String step=steps.get(s);
-			V=Resources.getFileLineVector(new StringBuffer(step));
-			final List<List<String>> cmds=getNextQuestScriptCommands(V,"SET",0);
-			List<String> areaLine=null;
-			List<String> nameLine=null;
-			for(int v=0;v<cmds.size();v++)
+			if(this.cachedHolidayInfo == null)
+				this.cachedHolidayInfo = holidayInfo;
+			return this.cachedHolidayInfo;
+		}
+	}
+
+	protected long parseRLDate(final String str)
+	{
+		final int x=str.indexOf('-');
+		if(x<0)
+			return 0;
+		final int month=CMath.s_parseIntExpression(str.substring(0,x));
+		final int day=CMath.s_parseIntExpression(str.substring(x+1));
+		int year=Calendar.getInstance().get(Calendar.YEAR);
+		long distance=CMLib.time().string2Millis(month+"/"+day+"/"+year+" 12:00 AM");
+		final Calendar C=Calendar.getInstance();
+		final long today=CMLib.time().string2Millis((C.get(Calendar.MONTH)+1)+"/"+C.get(Calendar.DAY_OF_MONTH)+"/"+C.get(Calendar.YEAR)+" 12:00 AM");
+		while(distance<today)
+			distance=CMLib.time().string2Millis(month+"/"+day+"/"+(++year)+" 12:00 AM");
+		return distance;
+	}
+
+	protected long parseMudDay(final String str)
+	{
+		final int x=str.indexOf('-');
+		if(x<0)
+			return 0;
+		final int mudmonth=CMath.s_parseIntExpression(str.substring(0,x));
+		final int mudday=CMath.s_parseIntExpression(str.substring(x+1));
+		final TimeClock C=(TimeClock)CMClass.getCommon("DefaultTimeClock");
+		final TimeClock NOW=CMLib.time().globalClock();
+		C.setMonth(mudmonth);
+		C.setDayOfMonth(mudday);
+		C.setHourOfDay(0);
+		if((mudmonth<NOW.getMonth())
+		||((mudmonth==NOW.getMonth())&&(mudday<NOW.getDayOfMonth())))
+			C.setYear(NOW.getYear()+1);
+		else
+			C.setYear(NOW.getYear());
+		return System.currentTimeMillis() + C.deriveMillisAfter(NOW);
+	}
+
+	@Override
+	public String listHolidays(final String areaName)
+	{
+		final List<JournalEntry> entries = getHolidayEntries();
+		final StringBuffer str=new StringBuffer(L("^xDefined Quest Holidays^?\n\r"));
+		str.append("^H#  "+CMStrings.padRight(L("Holiday Name"),20)+CMStrings.padRight(L("Area Name(s)"),50)+"^?\n\r");
+		int index = 0;
+		final String uAreaName = (areaName == null) ? null : areaName.toUpperCase();
+		for(final JournalEntry entry : entries)
+		{
+			String aName = null;
+			if(entry.to().length()>0)
 			{
-				line=cmds.get(v);
-				if(line.size()>1)
-				{
-					var=line.get(1).toUpperCase();
-					if (var.equals("AREAGROUP"))
-					{
-						areaLine = line;
-					}
-					if (var.equals("NAME"))
-					{
-						nameLine = line;
-					}
-				}
-			}
-			if(nameLine!=null)
-			{
-				boolean contains=true;//(areaName==null);
-				if(areaLine!=null)
-				{
-					if((!contains) && (areaName != null))
-					for(int l=2;l<areaLine.size();l++)
-					{
-						if(areaName.equalsIgnoreCase(areaLine.get(l)))
-							{
-								contains = true;
-								break;
-							}
-					}
-				}
+				if((areaName == null)||(areaName.length()==0))
+					aName = entry.to();
 				else
 				{
-					areaLine=new XVector<String>("","","*special*");
-					contains=true;
+					final List<String> areas = CMParms.parse(entry.to().toUpperCase());
+					if(areas.contains(uAreaName)||areas.contains("ALL"))
+						aName = entry.to();
 				}
-				if(contains)
-				{
-					final String name=CMParms.combine(nameLine,2);
-					str.append(CMStrings.padRight(""+s,3)
-							+CMStrings.padRight(name,20)
-							+CMStrings.padRight(CMParms.combineQuoted(areaLine,2),30)+"\n\r");
-				}
+			}
+			else
+			{
+				aName = "*special*";
+			}
+			if(aName != null)
+			{
+				index++;
+				final String name=entry.subj();
+				str.append(CMStrings.padRight(""+index,3)
+						+CMStrings.padRight(name,20)
+						+CMStrings.padRight(aName,30)+"\n\r");
 			}
 		}
 		return str.toString();
@@ -396,6 +489,7 @@ public class Quests extends StdLibrary implements QuestManager
 		final Quest Q=fetchQuest("holidays");
 		if(Q!=null)
 			Q.setScript(holidayDefinition,true);
+		cachedHolidayInfo = null;
 		return "Holiday deleted.";
 	}
 
@@ -885,6 +979,7 @@ public class Quests extends StdLibrary implements QuestManager
 		final Quest Q=fetchQuest("holidays");
 		if(Q!=null)
 			Q.setScript(holidayDefinition,true);
+		cachedHolidayInfo = null;
 		return "";
 	}
 

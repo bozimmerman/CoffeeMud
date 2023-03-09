@@ -140,6 +140,19 @@ public interface JournalEntry extends CMCommon, Cloneable
 	public JournalEntry update(long update);
 
 	/**
+	 * The date/time, in ms, that the message will expire
+	 * @return the date/time, in ms, that the message will expire
+	 */
+	public long expiration();
+
+	/**
+	 * Sets the date/time, in ms, that the message will expire
+	 * @param update the date/time, in ms, that the message will expire
+	 * @return the journal entry
+	 */
+	public JournalEntry expiration(long update);
+
+	/**
 	 * The entry key of the entry that this entry is a reply to
 	 * @return the entry key of the entry that this entry is a reply to
 	 */

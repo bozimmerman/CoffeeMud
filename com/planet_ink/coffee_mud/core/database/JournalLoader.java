@@ -546,6 +546,137 @@ public class JournalLoader
 		}
 	}
 
+	public List<JournalEntry> DBReadJournalMsgsByTimeStamps(String journalID, String from, final long startRange, final long endRange)
+	{
+		journalID = DB.injectionClean(journalID);
+
+		final List<JournalEntry> entries = new Vector<JournalEntry>();
+		if(journalID==null)
+			return entries;
+		synchronized(CMClass.getSync("JOURNAL_"+journalID.toUpperCase()))
+		{
+			//Resources.submitResource("JOURNAL_"+journal);
+			DBConnection D=null;
+			String fromSQL = "";
+			if((from != null)&&(from.length()>0))
+			{
+				from = DB.injectionClean(from);
+				fromSQL += " AND CMFROM='"+from+"' ";
+			}
+			try
+			{
+				D=DB.DBFetch();
+				String sql="SELECT CMJKEY FROM CMJRNL WHERE CMJRNL='"+journalID+"' "
+						+ "AND CMEXPI >= "+startRange+" AND CMUPTM <= "+endRange+" ";
+				sql += fromSQL + " ORDER BY CMUPTM ASC";
+				ResultSet R = D.query(sql);
+				R = D.query(sql);
+				while(R.next())
+				{
+					final JournalEntry entry = DBReadJournalEntry(R);
+					if(entry != null)
+						entries.add(entry);
+				}
+				R.close();
+			}
+			catch(final Exception sqle)
+			{
+				Log.errOut("Journal",sqle);
+			}
+			finally
+			{
+				DB.DBDone(D);
+			}
+		}
+		return entries;
+	}
+
+	public List<JournalEntry> DBReadJournalMsgsByUpdateRange(String journalID, String from, final long startRange, final long endRange)
+	{
+		journalID = DB.injectionClean(journalID);
+
+		final List<JournalEntry> entries = new Vector<JournalEntry>();
+		if(journalID==null)
+			return entries;
+		synchronized(CMClass.getSync("JOURNAL_"+journalID.toUpperCase()))
+		{
+			//Resources.submitResource("JOURNAL_"+journal);
+			DBConnection D=null;
+			try
+			{
+				D=DB.DBFetch();
+				String sql="SELECT CMJKEY FROM CMJRNL WHERE CMJRNL='"+journalID+"' "
+						+ "AND CMUPTM >= "+startRange+" "
+						+ "AND CMUPTM <= "+endRange+" ";
+				if((from != null)&&(from.length()>0))
+				{
+					from = DB.injectionClean(from);
+					sql += " AND CMFROM='"+from+"' ";
+				}
+				sql += " ORDER BY CMUPTM ASC";
+				final ResultSet R = D.query(sql);
+				while(R.next())
+				{
+					final JournalEntry entry = DBReadJournalEntry(R);
+					if(entry != null)
+						entries.add(entry);
+				}
+			}
+			catch(final Exception sqle)
+			{
+				Log.errOut("Journal",sqle);
+			}
+			finally
+			{
+				DB.DBDone(D);
+			}
+		}
+		return entries;
+	}
+
+	public List<JournalEntry> DBReadJournalMsgsByExpiRange(String journalID, String from, final long startRange, final long endRange)
+	{
+		journalID = DB.injectionClean(journalID);
+
+		final List<JournalEntry> entries = new Vector<JournalEntry>();
+		if(journalID==null)
+			return entries;
+		synchronized(CMClass.getSync("JOURNAL_"+journalID.toUpperCase()))
+		{
+			//Resources.submitResource("JOURNAL_"+journal);
+			DBConnection D=null;
+			try
+			{
+				D=DB.DBFetch();
+				String sql="SELECT CMJKEY FROM CMJRNL WHERE CMJRNL='"+journalID+"' "
+						+ "AND CMEXPI >= "+startRange+" "
+						+ "AND CMEXPI <= "+endRange+" ";
+				if((from != null)&&(from.length()>0))
+				{
+					from = DB.injectionClean(from);
+					sql += " AND CMFROM='"+from+"' ";
+				}
+				sql += " ORDER BY CMUPTM ASC";
+				final ResultSet R = D.query(sql);
+				while(R.next())
+				{
+					final JournalEntry entry = DBReadJournalEntry(R);
+					if(entry != null)
+						entries.add(entry);
+				}
+			}
+			catch(final Exception sqle)
+			{
+				Log.errOut("Journal",sqle);
+			}
+			finally
+			{
+				DB.DBDone(D);
+			}
+		}
+		return entries;
+	}
+
 	public List<JournalEntry> DBReadJournalMsgsSorted(String journal, final boolean ascending, final long limit, final boolean useUpdateSort)
 	{
 		journal = DB.injectionClean(journal);
@@ -718,6 +849,7 @@ public class JournalLoader
 		  + "CMIMGP='"+entry.msgIcon()+"', "
 		  + "CMVIEW="+entry.views()+", "
 		  + "CMREPL="+entry.replies()+", "
+		  + "CMEXPI="+entry.expiration()+", "
 		  + "CMMSGT=? "
 		  + "WHERE CMJRNL='"+journal+"' AND CMJKEY='"+entry.key()+"'";
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
@@ -1076,7 +1208,8 @@ public class JournalLoader
 				+"CMIMGP, "
 				+"CMVIEW, "
 				+"CMREPL, "
-				+"CMMSGT "
+				+"CMMSGT, "
+				+"CMEXPI"
 				+") VALUES ('"
 				+entry.key()
 				+"','"+journal
@@ -1091,7 +1224,8 @@ public class JournalLoader
 				+",'"+entry.msgIcon()
 				+"',"+entry.views()
 				+","+entry.replies()
-				+",?)";
+				+",?"
+				+","+entry.expiration()+")";
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
 				Log.debugOut("JournalLoader",sql);
 			DB.updateWithClobs(sql , entry.subj(), entry.msg());

@@ -239,11 +239,26 @@ public interface QuestManager extends CMLibrary
 	 * its constituent steps, returning the list of sub-scripts.
 	 *
 	 * @see QuestManager#getEncodedHolidayData(String)
+	 * @see QuestManager#getHolidayEntries()
 	 *
 	 * @return the steps of the holiday file
 	 * @throws CMException a parsing error occurred
 	 */
 	public List<String> getHolidayFile() throws CMException;
+
+	/**
+	 * Returns the various holidays as journal entries, where
+	 * update is the start time, expiration is the end time,
+	 * from is the creator (usually Holidays), to is the
+	 * area list (unparsed) or ALL or "".  Subject is the
+	 * name of the holiday.
+	 *
+	 * @see QuestManager#getEncodedHolidayData(String)
+	 * @see QuestManager#getHolidayFile()
+	 *
+	 * @return the list of holidays as journal entries.
+	 */
+	public List<JournalEntry> getHolidayEntries();
 
 	/**
 	 * Given a quest script representing a Holiday, this will parse the script
@@ -252,6 +267,7 @@ public interface QuestManager extends CMLibrary
 	 * @see QuestManager.HolidayData
 	 * @see QuestManager#getHolidayFile()
 	 * @see QuestManager#alterHoliday(String, HolidayData)
+	 * @see QuestManager#getHolidayEntries()
 	 *
 	 * @param dataFromStepsFile the holiday quest script
 	 * @return the HolidayData structure

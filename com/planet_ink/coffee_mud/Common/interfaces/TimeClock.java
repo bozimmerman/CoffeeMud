@@ -196,6 +196,13 @@ public interface TimeClock extends Tickable, CMCommon
 	public Season getSeasonCode();
 
 	/**
+	 * Returns the number of months in a season.
+	 *
+	 * @return  the number of months in a season.
+	 */
+	public int getMonthsInSeason();
+
+	/**
 	 * Alters the time/day by the given number of hours (forward
 	 * or backward)
 	 *

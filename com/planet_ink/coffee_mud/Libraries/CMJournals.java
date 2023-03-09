@@ -912,6 +912,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					setThreadStatus(serviceClient,"command journal sweeping");
 				}
 			}
+			//TODO: do a sweep for calendar entries
 		}
 		catch(final NoSuchElementException nse)
 		{

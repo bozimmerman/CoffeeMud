@@ -4923,7 +4923,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	@Override
 	public boolean resetWaitRemaining(final long ellapsedTime)
 	{
-
 		if(resetData!=null)
 		{
 			waitRemaining=resetData[0];

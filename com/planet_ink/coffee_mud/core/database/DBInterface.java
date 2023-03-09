@@ -650,6 +650,24 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public List<JournalEntry> DBReadJournalMsgsByUpdateRange(final String journalID, final String from, final long startRange, final long endRange)
+	{
+		return JournalLoader.DBReadJournalMsgsByUpdateRange(journalID, from, startRange, endRange);
+	}
+
+	@Override
+	public List<JournalEntry> DBReadJournalMsgsByExpiRange(final String journalID, final String from, final long startRange, final long endRange)
+	{
+		return JournalLoader.DBReadJournalMsgsByExpiRange(journalID, from, startRange, endRange);
+	}
+
+	@Override
+	public List<JournalEntry> DBReadJournalMsgsByTimeStamps(final String journalID, final String from, final long startRange, final long endRange)
+	{
+		return JournalLoader.DBReadJournalMsgsByTimeStamps(journalID, from, startRange, endRange);
+	}
+
+	@Override
 	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(final String journalID, final boolean ascending, final int limit, final String[] tos)
 	{
 		return JournalLoader.DBReadJournalMsgsSorted(journalID, ascending, limit, tos, true);

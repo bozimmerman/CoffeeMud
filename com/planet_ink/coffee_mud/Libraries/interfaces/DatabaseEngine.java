@@ -1472,6 +1472,54 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBJOURNALS
+	 * Returns all messages from the given journal, in which the update time
+	 * lies within the given ranges.
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean)
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int, String[])
+	 * @see DatabaseEngine#DBReadJournalMsgsByTimeStamps(String, String, long, long)
+	 * @see DatabaseEngine#DBReadJournalMsgsByExpiRange(String, String, long, long)
+	 * @param journalID the journal to read all the messages from
+	 * @param from the source of the entry or null or ''
+	 * @param startRange the starting timestamp for the range of update times
+	 * @param endRange the ending timestamp for the range of update times
+	 * @return the list of the messages in this journal, an empty list, or null on error
+	 */
+	public List<JournalEntry> DBReadJournalMsgsByUpdateRange(String journalID, final String from, long startRange, long endRange);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Returns all messages from the given journal, in which the expiration time
+	 * lies within the given ranges.
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean)
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int, String[])
+	 * @see DatabaseEngine#DBReadJournalMsgsByTimeStamps(String, String, long, long)
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateRange(String, String, long, long)
+	 * @param journalID the journal to read all the messages from
+	 * @param from the source of the entry or null or ''
+	 * @param startRange the starting timestamp for the range of update times
+	 * @param endRange the ending timestamp for the range of update times
+	 * @return the list of the messages in this journal, an empty list, or null on error
+	 */
+	public List<JournalEntry> DBReadJournalMsgsByExpiRange(String journalID, final String from, long startRange, long endRange);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Returns all messages from the given journal, in which either the update time
+	 * starts within the given ranges or the expiration time ends within it.
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean)
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int, String[])
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateRange(String, String, long, long)
+	 * @see DatabaseEngine#DBReadJournalMsgsByExpiRange(String, String, long, long)
+	 * @param journalID the journal to read all the messages from
+	 * @param from the source of the entry or null or ''
+	 * @param startRange the starting timestamp for the range of times
+	 * @param endRange the ending timestamp for the range of times
+	 * @return the list of the messages in this journal, an empty list, or null on error
+	 */
+	public List<JournalEntry> DBReadJournalMsgsByTimeStamps(String journalID, final String from, long startRange, long endRange);
+
+	/**
+	 * Table category: DBJOURNALS
 	 * Returns a limited number of messages from the given journal, optionally sorted by update date,
 	 * ascending, but only those marked as TO the given string array.
 	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int)

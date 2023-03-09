@@ -176,7 +176,7 @@ public class JournalFunction extends StdWebMacro
 						buf=data.getData();
 					}
 					if(file.length()==0)
-						return "File not uploaded -- no name!";
+						continue;
 					if(buf == null)
 						return "File not uploaded -- no buffer!";
 					if((forum.maxAttach()>0)&&(++maxFiles > forum.maxAttach()))
