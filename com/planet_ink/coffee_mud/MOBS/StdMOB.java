@@ -3716,18 +3716,21 @@ public class StdMOB implements MOB
 			&& (msg.targetCode() == CMMsg.NO_EFFECT)) // group// tell
 				tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
 
-			if (((othersMinor == CMMsg.TYP_ADVANCE) || (othersMinor == CMMsg.TYP_ENTER))
-			&& (!isMonster())
-			&& (location() != null)
-			&& (location().getArea() instanceof Boardable)
-			&& (msg.source().riding() == ((Boardable) location().getArea()).getBoardableItem())
-			&& (CMLib.dice().rollPercentage() == 1)
-			&& (CMLib.flags().isWateryRoom(CMLib.map().roomLocation(((Boardable) location().getArea()).getBoardableItem())))
-			&& (CMLib.dice().rollPercentage() < 10))
+			if((!isMonster())
+			&&((othersMinor == CMMsg.TYP_ADVANCE) || (othersMinor == CMMsg.TYP_ENTER)))
 			{
-				final Ability A = CMClass.getAbility((CMLib.dice().rollPercentage() < 20) ? "Disease_Scurvy" : "Disease_SeaSickness");
-				if ((A != null) && (fetchEffect(ID()) == null) && (!CMSecurity.isAbilityDisabled(A.ID())))
-					A.invoke(this, this, true, 0);
+				final Room R = location();
+				if((R != null)
+				&& (R.getArea() instanceof Boardable)
+				&& (msg.source().riding() == ((Boardable)R).getBoardableItem())
+				&& (CMLib.dice().rollPercentage() == 1)
+				&& (CMLib.flags().isWateryRoom(CMLib.map().roomLocation(((Boardable)R).getBoardableItem())))
+				&& (CMLib.dice().rollPercentage() < 10))
+				{
+					final Ability A = CMClass.getAbility((CMLib.dice().rollPercentage() < 20) ? "Disease_Scurvy" : "Disease_SeaSickness");
+					if ((A != null) && (fetchEffect(ID()) == null) && (!CMSecurity.isAbilityDisabled(A.ID())))
+						A.invoke(this, this, true, 0);
+				}
 			}
 			else
 			if ((othersMinor == CMMsg.TYP_DEATH) && (location() != null))
