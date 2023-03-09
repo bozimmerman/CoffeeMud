@@ -3031,11 +3031,10 @@ public class StdMOB implements MOB
 				&& (CMath.abs(srcM.phyStats().level() - phyStats().level()) > CMProps.getPKillLevelDiff())
 				&& (!CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.PKILL))
 				&& (!CMSecurity.isAllowed(srcM, srcM.location(), CMSecurity.SecFlag.PKILL))
-				&& ((!CMLib.law().doesHavePriviledgesHere(srcM, location()))
+				&& ((!CMLib.law().doesHavePriviledgesHere(srcM, location())) // castle doctrine
 					|| (victim == null)
 					|| (srcM.isInCombat()))
-				&& (!CMLib.flags().canNotBeCamped(srcM))
-				&& (!CMLib.flags().canNotBeCamped(this))
+				&& ((!CMLib.flags().canNotBeCamped(srcM))||(!CMLib.flags().canNotBeCamped(this))) // duel exception
 				&& ((!(msg.tool() instanceof Ability))
 					|| (((Ability) msg.tool()).classificationCode() & Ability.ALL_ACODES) != Ability.ACODE_DISEASE))
 				{

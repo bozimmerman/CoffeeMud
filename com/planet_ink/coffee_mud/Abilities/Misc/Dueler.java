@@ -57,6 +57,7 @@ public class Dueler extends StdAbility
 	protected List<Ability>			oldEffects			= new LinkedList<Ability>();
 	protected Hashtable<Item, Item>	oldEq				= new Hashtable<Item, Item>();
 	protected int					autoWimp			= 0;
+	protected boolean				unfair				= false;
 
 	@Override
 	public String displayText()
@@ -141,6 +142,12 @@ public class Dueler extends StdAbility
 	}
 
 	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		unfair = CMParms.getParmBool(newMiscText, "UNFAIR", false);
+	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -209,7 +216,8 @@ public class Dueler extends StdAbility
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_BE_CAMPED);
+		if(unfair)
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_BE_CAMPED);
 	}
 
 	public void init(final MOB mob)

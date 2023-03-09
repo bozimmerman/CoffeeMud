@@ -51,6 +51,15 @@ public class Duel extends StdCommand
 		throws java.io.IOException
 	{
 		MOB target=null;
+		boolean unfair=false;
+		for(int i=commands.size()-1;i>=1;i--)
+		{
+			if(commands.get(i).equalsIgnoreCase("unfair"))
+			{
+				commands.remove(i);
+				unfair=true;
+			}
+		}
 		if(commands.size()<2)
 		{
 			mob.tell(L("Duel whom?"));
@@ -150,7 +159,10 @@ public class Duel extends StdCommand
 				}
 				final Ability A=CMClass.getAbility("Dueler");
 				if(A!=null)
+				{
+					A.setMiscText("UNFAIR="+unfair);
 					A.invoke(target, mob, true, 0);
+				}
 			}
 			else
 			if(uiT!=null)
