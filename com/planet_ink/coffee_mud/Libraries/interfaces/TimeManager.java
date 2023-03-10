@@ -260,6 +260,24 @@ public interface TimeManager extends CMLibrary
 	 */
 	public String date2String(long time);
 	/**
+	 * Converts a given date into a string of form:
+	 * YYYY/MM/DD HH:MM where HH is 24 hr
+	 *
+	 * Usage: date2String24(C)
+	 * @param C The time in calendar
+	 * @return String Formatted date/time
+	 */
+	public String date2String24(final Calendar C);
+	/**
+	 * Converts a given date into a string of form:
+	 * YYYY/MM/DD HH:MM where HH is 24 hr
+	 *
+	 * Usage: date2String24(time)
+	 * @param time The time in miliseconds
+	 * @return String Formatted date/time
+	 */
+	public String date2String24(final long time);
+	/**
 	 * Converts a given number of milliseconds,
 	 * into a number of rl years, months, days,
 	 * hours, minutes, and seconds.  If in short form,

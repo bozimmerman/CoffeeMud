@@ -331,30 +331,30 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	@Override
 	public String convertHour(String hours24)
 	{
-		int IntHour =  CMath.s_int(hours24);
-		if (IntHour > 12)
+		int hour =  CMath.s_int(hours24);
+		if (hour > 12)
 		{
-			IntHour = IntHour-12;
+			hour = hour-12;
 		}
 		else
-		if (IntHour == 0)
-			IntHour = 12;
+		if (hour == 0)
+			hour = 12;
 
-		hours24 = Integer.toString(IntHour);
+		hours24 = Integer.toString(hour);
 		return hours24;
 	}
 
 	@Override
 	public String getAMPM(final String TheHour)
 	{
-		String Stamp;
+		String stamp;
 
-		final int IntHour =  CMath.s_int(TheHour);
-		if (IntHour >= 12)
-			Stamp = "PM";
+		final int hour =  CMath.s_int(TheHour);
+		if (hour >= 12)
+			stamp = "PM";
 		else
-			Stamp = "AM";
-		return Stamp;
+			stamp = "AM";
+		return stamp;
 	}
 
 	@Override
@@ -458,10 +458,10 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	public String date2DayOfMonthString(final long time)
 	{
 		final Calendar C=makeCalendar(time);
-		String Day=Integer.toString(C.get(Calendar.DAY_OF_MONTH)).trim();
-		if (Day.length()==1)
-			Day = "0" + Day;
-		return Day;
+		String day=Integer.toString(C.get(Calendar.DAY_OF_MONTH)).trim();
+		if (day.length()==1)
+			day = "0" + day;
+		return day;
 	}
 
 	@Override
@@ -477,10 +477,10 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	public String date2YYYYString(final long time)
 	{
 		final Calendar C=makeCalendar(time);
-		String Year=Integer.toString(C.get(Calendar.YEAR)).trim();
-		if (Year.length()==2)
-			Year = "20" + Year;
-		return Year;
+		String year=Integer.toString(C.get(Calendar.YEAR)).trim();
+		if (year.length()==2)
+			year = "20" + year;
+		return year;
 	}
 
 	@Override
@@ -497,45 +497,45 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 
 	public String date2HRString(final Calendar C)
 	{
-		int IntHour = C.get(Calendar.HOUR);
-		if (IntHour==0)
-			IntHour=12;
+		int hour = C.get(Calendar.HOUR);
+		if (hour==0)
+			hour=12;
 
-		String StrHour=Integer.toString(IntHour);
-		if (StrHour.length()==1)
-			StrHour = "0" + StrHour;
-		return StrHour;
+		String hourStr=Integer.toString(hour);
+		if (hourStr.length()==1)
+			hourStr = "0" + hourStr;
+		return hourStr;
 	}
 
 	public String date2MINString(final Calendar C)
 	{
-		int IntMin = C.get(Calendar.MINUTE);
-		final int remainder = IntMin % 5;
+		int min = C.get(Calendar.MINUTE);
+		final int remainder = min % 5;
 		if (remainder != 0)
 		{
 			if (remainder >= 3)
 			{
-				IntMin = IntMin + (5 - remainder);
-				if (IntMin == 60)
-					IntMin = 55;
+				min = min + (5 - remainder);
+				if (min == 60)
+					min = 55;
 			}
 			else
-				IntMin = IntMin - remainder;
+				min = min - remainder;
 		}
-		String StrMin=Integer.toString(IntMin);
-		if (StrMin.length()==1)
-			StrMin = "0" + StrMin;
-		return StrMin;
+		String minStr=Integer.toString(min);
+		if (minStr.length()==1)
+			minStr = "0" + minStr;
+		return minStr;
 	}
 
 	@Override
 	public String date2ZoneString(final long time)
 	{
 		final Calendar C=makeCalendar(time);
-		TimeZone CurrentZone;
-		CurrentZone = C.getTimeZone();
-		String theID = CurrentZone.getID();
-		theID = getTheIntZoneID(CurrentZone.getRawOffset());
+		TimeZone curZone;
+		curZone = C.getTimeZone();
+		String theID = curZone.getID();
+		theID = getTheIntZoneID(curZone.getRawOffset());
 
 		return  theID;
 	}
@@ -585,28 +585,28 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	@Override
 	public String date2String(final Calendar C)
 	{
-		String MINUTE=Integer.toString(C.get(Calendar.MINUTE)).trim();
-		if(MINUTE.length()==1)
-			MINUTE="0"+MINUTE;
-		String AMPM="AM";
+		String minute=Integer.toString(C.get(Calendar.MINUTE)).trim();
+		if(minute.length()==1)
+			minute="0"+minute;
+		String ampm="AM";
 		if(C.get(Calendar.AM_PM)==Calendar.PM)
-			AMPM="PM";
-		int Hour=C.get(Calendar.HOUR);
-		if(Hour==0)
-			Hour=12;
-		String Year=Integer.toString(C.get(Calendar.YEAR));
-		if(Year.length()<4)
+			ampm="PM";
+		int hour=C.get(Calendar.HOUR);
+		if(hour==0)
+			hour=12;
+		String year=Integer.toString(C.get(Calendar.YEAR));
+		if(year.length()<4)
 		{
-			if(Year.length()<2)
-				Year=("0"+Year);
-			if(Year.length()<2)
-				Year=("0"+Year);
-			final int Yr=CMath.s_int(Year);
+			if(year.length()<2)
+				year=("0"+year);
+			if(year.length()<2)
+				year=("0"+year);
+			final int Yr=CMath.s_int(year);
 			if(Yr<50)
-				Year="20"+Year;
-			else Year="19"+Year;
+				year="20"+year;
+			else year="19"+year;
 		}
-		return (C.get(Calendar.MONTH)+1)+"/"+C.get(Calendar.DATE)+"/"+Year+" "+Hour+":"+MINUTE+" "+AMPM;
+		return (C.get(Calendar.MONTH)+1)+"/"+C.get(Calendar.DATE)+"/"+year+" "+hour+":"+minute+" "+ampm;
 	}
 
 	@Override
@@ -614,6 +614,37 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	{
 		final Calendar C=makeCalendar(time);
 		return date2String(C);
+	}
+
+	@Override
+	public String date2String24(final Calendar C)
+	{
+		String minute=Integer.toString(C.get(Calendar.MINUTE)).trim();
+		if(minute.length()==1)
+			minute="0"+minute;
+		int hour=C.get(Calendar.HOUR);
+		if(C.get(Calendar.AM_PM)==Calendar.PM)
+			hour += 12;
+		String year=Integer.toString(C.get(Calendar.YEAR));
+		if(year.length()<4)
+		{
+			if(year.length()<2)
+				year=("0"+year);
+			if(year.length()<2)
+				year=("0"+year);
+			final int Yr=CMath.s_int(year);
+			if(Yr<50)
+				year="20"+year;
+			else year="19"+year;
+		}
+		return year+"/"+(C.get(Calendar.MONTH)+1)+"/"+C.get(Calendar.DATE)+" "+hour+":"+minute;
+	}
+
+	@Override
+	public String date2String24(final long time)
+	{
+		final Calendar C=makeCalendar(time);
+		return date2String24(C);
 	}
 
 	@Override
@@ -730,28 +761,28 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	public String date2SecondsString(final long time)
 	{
 		final Calendar C=makeCalendar(time);
-		final String StrDate=date2String(C);
-		if(StrDate.length()<3)
-			return StrDate;
-		return (StrDate.substring(0,StrDate.length()-3)+":"+C.get(Calendar.SECOND)+" "+StrDate.substring(StrDate.length()-2));
+		final String dateStr=date2String(C);
+		if(dateStr.length()<3)
+			return dateStr;
+		return (dateStr.substring(0,dateStr.length()-3)+":"+C.get(Calendar.SECOND)+" "+dateStr.substring(dateStr.length()-2));
 	}
 
 	@Override
 	public String date2DateString(final long time)
 	{
-		String T=date2String(time);
-		if(T.indexOf(' ')>0)
-			T=T.substring(0,T.indexOf(' '));
-		return T.trim();
+		String dateStr=date2String(time);
+		if(dateStr.indexOf(' ')>0)
+			dateStr=dateStr.substring(0,dateStr.indexOf(' '));
+		return dateStr.trim();
 	}
 
 	@Override
 	public String date2Date2String(final long time)
 	{
-		String T=date2DateString(time);
-		final int x=T.lastIndexOf('/');
-		T=T.substring(0,x+1)+T.substring(x+3);
-		return T.trim();
+		String dateStr=date2DateString(time);
+		final int x=dateStr.lastIndexOf('/');
+		dateStr=dateStr.substring(0,x+1)+dateStr.substring(x+3);
+		return dateStr.trim();
 	}
 
 	@Override
@@ -760,8 +791,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		final Calendar senddate=makeCalendar(time);
 		String formatted = "hold";
 
-		final String Day[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-		final String Month[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"};
+		final String daysOfWeek[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+		final String monthsOfyear[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"};
 		final int dow=senddate.get(Calendar.DAY_OF_WEEK)-1;
 		final int date=senddate.get(Calendar.DAY_OF_MONTH);
 		final int m=senddate.get(Calendar.MONTH);
@@ -772,9 +803,9 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		int zof=senddate.get(Calendar.ZONE_OFFSET);
 		int dof=senddate.get(Calendar.DST_OFFSET);
 
-		formatted = Day[dow] + ", ";
+		formatted = daysOfWeek[dow] + ", ";
 		formatted = formatted + String.valueOf(date) + " ";
-		formatted = formatted + Month[m] + " ";
+		formatted = formatted + monthsOfyear[m] + " ";
 		formatted = formatted + String.valueOf(y) + " ";
 		if (h < 10) formatted = formatted + "0";
 		formatted = formatted + String.valueOf(h) + ":";
