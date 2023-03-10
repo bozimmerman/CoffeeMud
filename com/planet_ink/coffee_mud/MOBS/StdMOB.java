@@ -3722,7 +3722,7 @@ public class StdMOB implements MOB
 				final Room R = location();
 				if((R != null)
 				&& (R.getArea() instanceof Boardable)
-				&& (msg.source().riding() == ((Boardable)R).getBoardableItem())
+				&& (msg.source().riding() == ((Boardable)R.getArea()).getBoardableItem())
 				&& (CMLib.dice().rollPercentage() == 1)
 				&& (CMLib.flags().isWateryRoom(CMLib.map().roomLocation(((Boardable)R).getBoardableItem())))
 				&& (CMLib.dice().rollPercentage() < 10))
