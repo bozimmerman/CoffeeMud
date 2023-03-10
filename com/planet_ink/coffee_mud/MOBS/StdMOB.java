@@ -3724,7 +3724,7 @@ public class StdMOB implements MOB
 				&& (R.getArea() instanceof Boardable)
 				&& (msg.source().riding() == ((Boardable)R.getArea()).getBoardableItem())
 				&& (CMLib.dice().rollPercentage() == 1)
-				&& (CMLib.flags().isWateryRoom(CMLib.map().roomLocation(((Boardable)R).getBoardableItem())))
+				&& (CMLib.flags().isWateryRoom(CMLib.map().roomLocation(((Boardable)R.getArea()).getBoardableItem())))
 				&& (CMLib.dice().rollPercentage() < 10))
 				{
 					final Ability A = CMClass.getAbility((CMLib.dice().rollPercentage() < 20) ? "Disease_Scurvy" : "Disease_SeaSickness");
