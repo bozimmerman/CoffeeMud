@@ -1246,6 +1246,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 		CREATE_LAW,
 		/** constant for the clan function of writing a new clan motd. @see Clan#getAuthority(int,Function) */
 		CREATE_MOTD,
+		/** constant for the clan function of writing new calendar entries. @see Clan#getAuthority(int,Function) */
+		CREATE_CALENDAR,
 	}
 
 	/**

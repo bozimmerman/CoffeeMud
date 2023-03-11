@@ -19,6 +19,8 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.regex.*;
 
@@ -2858,6 +2860,72 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		catch (final java.lang.ArrayIndexOutOfBoundsException x)
 		{
+		}
+		return null;
+	}
+
+	@Override
+	public <T extends Object> T fetchReflective(final Iterable<T> list, String srchStr, final String methodName, final boolean exactOnly)
+	{
+		final FetchFlags flags=fetchFlags(srchStr);
+		if(flags==null)
+			return null;
+
+		srchStr=flags.srchStr;
+		int myOccurrance=flags.occurrance;
+		final boolean allFlag=flags.allFlag;
+		try
+		{
+			Method M = null;
+			for (final T E : list)
+			{
+				M=E.getClass().getMethod(methodName);
+				break;
+			}
+			if(M==null)
+				return null;
+			if(exactOnly)
+			{
+				srchStr=cleanExtraneousDollarMarkers(srchStr);
+				for (final T E : list)
+				{
+					if(E!=null)
+					{
+						final String compVal = (String)M.invoke(E);
+						if(compVal.equalsIgnoreCase(srchStr))
+						{
+							if(!allFlag)
+							{
+								if((--myOccurrance)<=0)
+									return E;
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				for (final T E : list)
+				{
+					if(E!=null)
+					{
+						final String compVal = (String)M.invoke(E);
+						if((containsString(compVal,srchStr))
+						&&(!allFlag))
+						{
+							if((--myOccurrance)<=0)
+								return E;
+						}
+					}
+				}
+			}
+		}
+		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		{
+		}
+		catch (final Exception e)
+		{
+			Log.errOut(e);
 		}
 		return null;
 	}

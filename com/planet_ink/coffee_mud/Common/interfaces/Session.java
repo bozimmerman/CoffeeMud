@@ -1096,7 +1096,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static abstract class InputCallback
 	{
 		/**
-		 * The threa different types of user input processing
+		 * The three different types of user input processing
 		 * supported by the abstract InputCallback class
 		 * @author Bo Zimmerman
 		 *

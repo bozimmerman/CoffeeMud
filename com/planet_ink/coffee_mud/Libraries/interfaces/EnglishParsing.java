@@ -594,6 +594,26 @@ public interface EnglishParsing extends CMLibrary
 	public Environmental fetchEnvironmental(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly);
 
 	/**
+	 * Returns a matching T object from an iterable collection of them
+	 * by using a search string to matching. The search string may include
+	 * things like counters 1.itemname, etc, or even all itemname.
+	 * The object matches are according to given methodName.  Exact
+	 * matches can be demanded using the anchor $ character on the front, back,
+	 * or both, of the match words.
+	 *
+	 * Matching may be exact or inexact.  Exact matching must include full
+	 * names, display texts, etc.  Inexact can include substrings.  Both are
+	 * case-insensitive, however.
+	 *
+	 * @param list the collection of environmental objects to search through
+	 * @param srchStr the search string
+	 * @param methodName the method to match against
+	 * @param exactOnly true for exact matching, false for inexact
+	 * @return a matching object, or null
+	 */
+	public <T extends Object> T fetchReflective(final Iterable<T> list, String srchStr, final String methodName, final boolean exactOnly);
+
+	/**
 	 * Returns a matching environmental object from an enumeration of them
 	 * by using a search string to matching. The search string may include
 	 * things like counters 1.itemname, etc, or even all itemname.
