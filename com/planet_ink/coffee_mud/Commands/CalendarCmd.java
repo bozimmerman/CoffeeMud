@@ -554,7 +554,7 @@ public class CalendarCmd extends StdCommand
 					||(!CMLib.clans().goForward(mob,clanC,commands,Clan.Function.CREATE_CALENDAR,false)))
 					{
 						mob.tell(L("You aren't in the right position to add to the calendar of your @x1.",C.getGovernmentName()));
-						return false;
+						return;
 					}
 					final JournalEntry entry = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
 					if(C != null)
