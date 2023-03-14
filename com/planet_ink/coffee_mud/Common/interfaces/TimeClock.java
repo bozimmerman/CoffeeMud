@@ -553,6 +553,14 @@ public interface TimeClock extends Tickable, CMCommon
 	public void handleTimeChange();
 
 	/**
+	 * Converts this TimeClock to an approximate real-life
+	 * millis since epoc.
+	 *
+	 * @return the real time of this clock.
+	 */
+	public long toTimestamp();
+
+	/**
 	 * Different time periods.
 	 * @author Bo Zimmerman
 	 */

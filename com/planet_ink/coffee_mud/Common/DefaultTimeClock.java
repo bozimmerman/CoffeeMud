@@ -533,6 +533,23 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
+	public long toTimestamp()
+	{
+		final long now = System.currentTimeMillis();
+		final TimeClock nowTC = deriveClock(now);
+		if(nowTC.compareTo(this) < 0)
+		{
+			final long diff = this.deriveMillisAfter(nowTC);
+			return now + diff;
+		}
+		else
+		{
+			final long diff = nowTC.deriveMillisAfter(this);
+			return now - diff;
+		}
+	}
+
+	@Override
 	public String deriveEllapsedTimeString(final long millis)
 	{
 		int hours=(int)(millis/CMProps.getMillisPerMudHour());

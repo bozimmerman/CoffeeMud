@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Function;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -498,12 +499,19 @@ public class CalendarCmd extends StdCommand
 			final String clanName=CMParms.combine(commands,0);
 			final String from = mob.Name();
 			boolean skipChecks=false;
+			Clan chkC=null;
+			skipChecks=mob.getClanRole(mob.Name())!=null;
+			if(skipChecks)
+				chkC=mob.getClanRole(mob.Name()).first;
+			if((chkC!=null)&&(commands.size()>1))
+			{
+				//TODO!!!!
+				//addClanMOTD(mob,C,CMParms.combine(commands,1));
+				return false;
+			}
+			else
 			if(clanName.length()>0)
 			{
-				Clan chkC=null;
-				skipChecks=mob.getClanRole(mob.Name())!=null;
-				if(skipChecks)
-					chkC=mob.getClanRole(mob.Name()).first;
 				if(clanName.equals("CLAN") && (mob.clans().iterator().hasNext()))
 					chkC=mob.clans().iterator().next().first;
 				if(chkC==null)
@@ -524,56 +532,385 @@ public class CalendarCmd extends StdCommand
 					mob.tell(L("You aren't allowed to add to the calendar of @x1.",clanName));
 					return false;
 				}
-
-				if((!skipChecks)
-				&&(!CMLib.clans().goForward(mob,C,commands,Clan.Function.CREATE_CALENDAR,false)))
-				{
-					mob.tell(L("You aren't in the right position to add to the calendar of your @x1.",C.getGovernmentName()));
-					return false;
-				}
-			}
-			if((skipChecks)&&(commands.size()>1))
-			{
-				//addClanMOTD(mob,C,CMParms.combine(commands,1));
-				return false;
 			}
 			final Session session=mob.session();
-			if(session==null)
-			{
-				return false;
-			}
-			session.prompt(new InputCallback(InputCallback.Type.PROMPT, "", 0)
-			{
-				@Override
-				public void showPrompt()
-				{
-					session.promptPrint(L("Describe your event (40 chars) : "));
-				}
+			final List<String> finalV;
+			if((skipChecks)||(session == null))
+				finalV = ogCommands;
+			else
+				finalV = new Vector<String>();
+			final boolean[] useRealTime = new boolean[] { false };
+			final Clan C=chkC;
+			final boolean doSkipAllSecurityChecks = skipChecks;
+			final Runnable createEvent = new Runnable() {
+				final boolean autoCreate = doSkipAllSecurityChecks;
+				final Clan clanC=C;
+				final Session S = session;
+				final MOB M = mob;
 
-				@Override
-				public void timedOut()
+				public void run()
 				{
-				}
-
-				@Override
-				public void callBack()
-				{
-					final String premise=this.input;
-					if(premise.length()==0)
+					if((!autoCreate)
+					||(!CMLib.clans().goForward(mob,clanC,commands,Clan.Function.CREATE_CALENDAR,false)))
 					{
+						mob.tell(L("You aren't in the right position to add to the calendar of your @x1.",C.getGovernmentName()));
+						return false;
+					}
+					final JournalEntry entry = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
+					if(C != null)
+						entry.from(clanC.clanID());
+					else
+						entry.from(mob.Name());
+					entry.to("ALL");
+					if(finalV.size()==4)
+					{
+						entry.subj(finalV.get(0));
+						if((finalV.get(1).startsWith("REPEAT:"))
+						&&(finalV.get(2).startsWith("DURATION/HOURS:"))
+						&&(finalV.get(3).startsWith("START:")
+							||(finalV.get(3).startsWith("REAL-START:"))))
+						{
+							final boolean useRealTimes = finalV.get(3).startsWith("R");
+							final String[] start = finalV.get(3).substring(useRealTimes?11:6).split("/");
+							if(start.length != 4)
+								return;
+							final long duration=CMath.s_long(finalV.get(2).substring(15));
+							final String[] repeat = finalV.get(1).substring(7).split(" ");
+							if(repeat.length != 2)
+								return;
+							if(useRealTimes)
+							{
+								final Calendar thenC = Calendar.getInstance();
+								thenC.set(Calendar.YEAR, CMath.s_int(start[0]));
+								thenC.set(Calendar.MONTH, CMath.s_int(start[1])-1);
+								thenC.set(Calendar.DAY_OF_MONTH, CMath.s_int(start[2]));
+								thenC.set(Calendar.HOUR_OF_DAY, CMath.s_int(start[3]));
+								thenC.set(Calendar.MINUTE, 0);
+								entry.date(thenC.getTimeInMillis());
+								entry.update(thenC.getTimeInMillis());
+							}
+							else
+							{
+								final TimeClock C = CMLib.time().localClock(M);
+								final TimeClock newC = C.deriveClock(System.currentTimeMillis());
+								newC.setYear(CMath.s_int(start[0]));
+								newC.setMonth(CMath.s_int(start[1]));
+								newC.setDayOfMonth(CMath.s_int(start[2]));
+								newC.setHourOfDay(CMath.s_int(start[3]));
+								entry.date(newC.toTimestamp());
+								entry.update(newC.toTimestamp());
+							}
+							if(useRealTimes)
+								entry.expiration(entry.update() + (TimeManager.MILI_HOUR * duration));
+							else
+								entry.expiration(entry.update() + (CMProps.getMillisPerMudHour() * duration));
+							if(repeat.length==2)
+							{
+								final TimePeriod P = (TimePeriod)CMath.s_valueOf(TimePeriod.class, repeat[1]);
+								final int n = CMath.s_int(repeat[0]);
+								if((n>0)&&(P!=null))
+									entry.msg("<DATA><PERIOD>"+n+" "+P.name()+"</PERIOD></DATA>");
+							}
+							CMLib.database().DBWriteJournal(from, entry);
+							return;
+						}
+					}
+					S.println(L("Unable to create event."));
+				}
+			};
+			if(session != null)
+			{
+				final InputCallback[] repeatCallback =new InputCallback[1];
+				repeatCallback[0] = new InputCallback(InputCallback.Type.PROMPT, "", 0)
+				{
+					final Session S = session;
+
+					@Override
+					public void showPrompt()
+					{
+						if(useRealTime[0])
+							S.promptPrint(L("(Optional) Repeating real-life period (e.g. 4 hours, 1 week, etc).\n\r: "));
+						else
+							S.promptPrint(L("(Optional) Repeating real-life period (e.g. 4 years, 1 week, etc).\n\r"));
+					}
+
+					@Override
+					public void timedOut()
+					{
+					}
+
+					@Override
+					public void callBack()
+					{
+						final String s=this.input;
+						if(s.length()==0)
+						{
+							finalV.add("REPEAT:");
+							createEvent.run();
+							return;
+						}
+						final String[] split=s.split(" ");
+						if((!CMath.isInteger(split[0]))
+						||(split.length!=2)
+						||(CMath.s_int(split[0])<1)
+						||(CMath.s_int(split[0])>999))
+						{
+							S.println(L("@x1 is not a valid repeat period.",s));
+							if(repeatCallback[0] != null)
+								S.prompt(repeatCallback[0]);
+							return;
+						}
+						final int n = CMath.s_int(split[0]);
+						TimePeriod timeP = null;
+						for(final TimePeriod P : TimePeriod.values())
+						{
+							if(split[1].toUpperCase().startsWith(P.name()))
+							{
+								timeP=P;
+								break;
+							}
+						}
+						if((timeP==null)||(timeP==TimePeriod.ALLTIME))
+						{
+							S.println(L("@x1 is not a valid repeat period. Try @x2",split[1],
+									CMLib.english().toEnglishStringList(TimePeriod.class, false)));
+							if(repeatCallback[0] != null)
+								S.prompt(repeatCallback[0]);
+							return;
+						}
+						finalV.add("REPEAT:"+n+" "+timeP.name());
+						createEvent.run();
+					}
+				};
+				final InputCallback[] durationCallback =new InputCallback[1];
+				durationCallback[0] = new InputCallback(InputCallback.Type.PROMPT, "", 0)
+				{
+					final Session S = session;
+					@Override
+					public void showPrompt()
+					{
+						if(useRealTime[0])
+							S.promptPrint(L("Duration of event in real-life hours: "));
+						else
+							S.promptPrint(L("Duration of event in game hours: "));
+					}
+
+					@Override
+					public void timedOut()
+					{
+					}
+
+					@Override
+					public void callBack()
+					{
+						final String s=this.input;
+						if(s.length()==0)
+						{
+							return;
+						}
+						if((!CMath.isInteger(s))
+						||(CMath.s_int(s)<1))
+						{
+							S.println(L("@x1 is not a valid number of hours.",s));
+							if(durationCallback[0] != null)
+								S.prompt(durationCallback[0]);
+							return;
+						}
+						final int n = CMath.s_int(s);
+						finalV.add("DURATION/HOURS:"+n);
+					}
+				};
+				final InputCallback[] startDateCallback = new InputCallback[1];
+				startDateCallback[0]=new InputCallback(InputCallback.Type.PROMPT, "", 0)
+				{
+					final Session S = session;
+					final MOB M = mob;
+
+					@Override
+					public void showPrompt()
+					{
+						final TimeClock C = (TimeClock)CMClass.getCommon("DefaultTimeClock");
+						C.deriveClock(System.currentTimeMillis());
+						final String dateStr = L("^HThe time is now: ^w@x1^H (System: ^w@x2^H)\n\r^N",
+								C.getShortestTimeDescription(),CMLib.time().date2String24(System.currentTimeMillis()));
+						final String tz = Calendar.getInstance().getTimeZone().getDisplayName();
+						S.promptPrint(dateStr+"\n\r"
+								+ L("Enter the event start date  in 'y/m/d/h' (number) format.  "
+								+ "Include the word REAL or RL to use real-world dates in @x1.\n\r: ", tz));
+					}
+
+					@Override
+					public void timedOut()
+					{
+					}
+
+					protected void showError(final Session S, final String msg, final String... args)
+					{
+						S.println(L(msg,args));
+						if(startDateCallback[0] != null)
+							S.prompt(startDateCallback[0]);
 						return;
 					}
-					final Vector<String> cmds=new Vector<String>();
-					cmds.add(getAccessWords()[0]);
-					cmds.add(premise);
-					/*
-					if(skipClanChecks||CMLib.clans().goForward(mob,C,cmds,Clan.Function.READ_MOTD,true))
+
+					@Override
+					public void callBack()
 					{
-						addClanMOTD(mob,C,premise);
+						final String premise=this.input;
+						if(premise.length()==0)
+						{
+							return;
+						}
+						int start;
+						for(start=0;start<premise.length();start++)
+						{
+							if(Character.isDigit(premise.charAt(start)))
+								break;
+						}
+						if(start >= premise.length())
+						{
+							if(startDateCallback[0] != null)
+								S.prompt(startDateCallback[0]);
+							return;
+						}
+						int end;
+						for(end = premise.length()-1; end >start; end--)
+						{
+							if(Character.isDigit(premise.charAt(end)))
+								break;
+						}
+						final String dateStr = premise.substring(start,end+1);
+						final String arg = premise.substring(0,start) + premise.substring(end);
+						if(arg.toUpperCase().trim().startsWith("R"))
+							useRealTime[0] = true;
+						else
+						{
+							showError(S,"Unknown chars '@x1'.",arg);
+							return;
+						}
+						final String[] dSplit = dateStr.split("/");
+						if((dSplit.length != 4)
+						||(!CMath.isInteger(dSplit[0]))
+						||(!CMath.isInteger(dSplit[1]))
+						||(!CMath.isInteger(dSplit[2]))
+						||(!CMath.isInteger(dSplit[3])))
+						{
+							showError(S,"^XBad format!^N");
+							return;
+						}
+						int y = CMath.s_int(dSplit[0]);
+						final int m = CMath.s_int(dSplit[1]);
+						final int d = CMath.s_int(dSplit[2]);
+						final int h = CMath.s_int(dSplit[3]);
+						if(useRealTime[0])
+						{
+							final Calendar nowC = Calendar.getInstance();
+							final int yremain = (nowC.get(Calendar.YEAR) % 100);
+							final int hunYear = nowC.get(Calendar.YEAR) - yremain;
+							if(y<100)
+							{
+								if(y <= yremain)
+									y += hunYear;
+								else
+									y += (hunYear-1);
+							}
+							final Calendar thenC = Calendar.getInstance();
+							if(y<nowC.get(Calendar.YEAR))
+							{
+								showError(S,"^XBad year (@x1)!^N",""+y);
+								return;
+							}
+							thenC.set(Calendar.YEAR, y);
+							if((m<1)||(m>12)
+							||((y==nowC.get(Calendar.YEAR))
+								&&(m<=nowC.get(Calendar.MONTH))))
+							{
+								showError(S,"^XBad month (@x1)!^N",""+m);
+								return;
+							}
+							int maxDay = 31;
+							thenC.set(Calendar.MONTH, m-1);
+							maxDay = thenC.getActualMaximum(Calendar.DAY_OF_MONTH);
+							if((d<1)||(d>maxDay)
+							||((m==nowC.get(Calendar.MONTH)-1)
+								&&(y==nowC.get(Calendar.YEAR))
+								&&(d<nowC.get(Calendar.DAY_OF_MONTH))))
+							{
+								showError(S,"^XBad day of the month (@x1)!^N",""+d);
+								return;
+							}
+							if((h<0)||(h>23)
+							||((m==nowC.get(Calendar.MONTH)-1)
+								&&(d==nowC.get(Calendar.DAY_OF_MONTH))
+								&&(y==nowC.get(Calendar.YEAR))
+								&&(h<nowC.get(Calendar.HOUR_OF_DAY))))
+							{
+								showError(S,"^XBad hour (@x1)! (0-23, and future only)^N",""+h);
+								return;
+							}
+							finalV.add("REAL-START:"+y+"/"+m+"/"+d+"/"+h);
+						}
+						else
+						{
+							final TimeClock C = CMLib.time().localClock(M);
+							if(y<C.getYear())
+							{
+								showError(S,"^XBad year (@x1)!^N",""+y);
+								return;
+							}
+							if((m<1)||(m>12)
+							||((y==C.getYear())
+								&&(m<C.getMonth())))
+							{
+								showError(S,"^XBad month (@x1)!^N",""+m);
+								return;
+							}
+							if((d<1)||(d>C.getDayOfMonth()))
+							{
+								showError(S,"^XBad day of the month (@x1)!^N",""+d);
+								return;
+							}
+							if((h<0)||(h>C.getHoursInDay()))
+							{
+								showError(S,"^XBad hour (@x1)! (0-@x2 only)^N",""+h,""+C.getHoursInDay());
+								return;
+							}
+							finalV.add("START:"+y+"/"+m+"/"+d+"/"+h);
+						}
+						if(durationCallback[0] != null)
+							S.prompt(durationCallback[0]);
 					}
-					*/
-				}
-			});
+				};
+				final InputCallback eventNameCallback =new InputCallback(InputCallback.Type.PROMPT, "", 0)
+				{
+					final Session S = session;
+
+					@Override
+					public void showPrompt()
+					{
+						S.promptPrint(L("Describe your event (40 chars) : "));
+					}
+
+					@Override
+					public void timedOut()
+					{
+					}
+
+					@Override
+					public void callBack()
+					{
+						final String premise=this.input;
+						if(premise.length()==0)
+						{
+							return;
+						}
+						//entry.subj(premise);
+						finalV.add(premise);
+						if(startDateCallback[0] != null)
+							S.prompt(startDateCallback[0]);
+					}
+				};
+				session.prompt(eventNameCallback);
+			}
 			break;
 		}
 		default:
