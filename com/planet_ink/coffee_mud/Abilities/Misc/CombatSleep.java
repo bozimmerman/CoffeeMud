@@ -209,7 +209,7 @@ public class CombatSleep extends StdAbility implements HealthCondition
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,auto?"":L("^S<S-NAME> tr(ys) to make <T-NAMESELF> go unconscious, but fails.^?"));
+			return maliciousFizzle(mob,target,auto?"":L("^S<S-NAME> tr(ys) to make <T-NAMESELF> go unconscious, but fail(s).^?"));
 
 		// return whether it worked
 		return success;

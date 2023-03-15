@@ -656,9 +656,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<JournalEntry> DBReadJournalMsgsByExpiRange(final String journalID, final String from, final long startRange, final long endRange)
+	public List<JournalEntry> DBReadJournalMsgsByExpiRange(final String journalID, final String from, final long startRange, final long endRange, final String searchStr)
 	{
-		return JournalLoader.DBReadJournalMsgsByExpiRange(journalID, from, startRange, endRange);
+		return JournalLoader.DBReadJournalMsgsByExpiRange(journalID, from, startRange, endRange, searchStr);
 	}
 
 	@Override
@@ -713,6 +713,12 @@ public class DBInterface implements DatabaseEngine
 	public List<JournalEntry> DBReadJournalMsgsOlderThan(final String journalID, final String to, final long newestDate)
 	{
 		return JournalLoader.DBReadJournalMsgsOlderThan(journalID, to, newestDate);
+	}
+
+	@Override
+	public List<JournalEntry> DBReadJournalMsgsExpiredBefore(final String journalID, final String to, final long newestDate)
+	{
+		return JournalLoader.DBReadJournalMsgsExpiredBefore(journalID, to, newestDate);
 	}
 
 	@Override

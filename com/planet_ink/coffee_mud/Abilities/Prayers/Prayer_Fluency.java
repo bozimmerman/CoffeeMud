@@ -209,7 +209,7 @@ public class Prayer_Fluency extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to pray fluently, but fails."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to pray fluently, but fail(s)."));
 
 		// return whether it worked
 		return success;

@@ -334,6 +334,12 @@ public interface JournalsLibrary extends CMLibrary
 	public void makeMessageASync(final MOB mob, final String messageTitle, final List<String> vbuf, final boolean autoAdd, final MsgMkrCallback back);
 
 	/**
+	 * Since Calendar events are also journal entries, whenever the calendar is changed,
+	 * this method must be called to make sure notifications for new events occurs.
+	 */
+	public void resetCalendarEvents();
+
+	/**
 	 * Non-Forum journal messages handle "replies" by tacking them to the end of the
 	 * main message.  This is the official boundary.
 	 */

@@ -243,9 +243,10 @@ public class Quests extends StdLibrary implements QuestManager
 						{
 							areaLine = line;
 							if((line.size()>1)&&(line.get(0).equalsIgnoreCase("ANY")))
+							{
 								line.remove(0);
-							else
 								areaLine = new XArrayList<String>(CMParms.combineQuoted(line, 0));
+							}
 						}
 						if (var.equals("NAME"))
 						{
@@ -272,11 +273,17 @@ public class Quests extends StdLibrary implements QuestManager
 					if(areaLine != null)
 						entry.to(CMParms.combineQuoted(areaLine, 2));
 					if(muddayLine != null)
-						entry.update(parseMudDay(CMParms.combine(muddayLine, 2)));
+					{
+						entry.date(parseMudDay(CMParms.combine(muddayLine, 2)));
+						entry.update(entry.date());
+					}
 					if(dateLine != null)
-						entry.update(parseRLDate(CMParms.combine(dateLine, 2)));
-					if((duraLine != null) && (entry.update() != 0))
-						entry.expiration(entry.update() + (CMProps.getTickMillis() * CMath.s_long(CMParms.combine(duraLine, 2))));
+					{
+						entry.date(parseRLDate(CMParms.combine(dateLine, 2)));
+						entry.update(entry.date());
+					}
+					if((duraLine != null) && (entry.date() != 0))
+						entry.expiration(entry.date() + (CMProps.getTickMillis() * CMath.s_long(CMParms.combine(duraLine, 2))));
 					entry.from("Holiday");
 					holidayInfo.add(entry);
 				}

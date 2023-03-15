@@ -77,9 +77,9 @@ public class CalendarCmd extends StdCommand
 		@Override
 		public int compare(final JournalEntry o1, final JournalEntry o2)
 		{
-			if(o1.update()==o2.update())
+			if(o1.date()==o2.date())
 				return 0;
-			if(o1.update()>o2.update())
+			if(o1.date()>o2.date())
 				return 1;
 			return -1;
 		}
@@ -90,7 +90,7 @@ public class CalendarCmd extends StdCommand
 		final List<JournalEntry> calendar = new Vector<JournalEntry>();
 		for(final JournalEntry holiday : CMLib.quests().getHolidayEntries())
 		{
-			if((holiday.update()>=fromTm)&&(holiday.update()<=toTm))
+			if((holiday.date()>=fromTm)&&(holiday.date()<=toTm))
 				calendar.add(holiday);
 		}
 		calendar.addAll(CMLib.database().DBReadJournalMsgsByUpdateRange("SYSTEM_CALENDAR", "SYSTEM", fromTm, toTm));
@@ -105,7 +105,7 @@ public class CalendarCmd extends StdCommand
 			if((holiday.expiration()>=fromTm)&&(holiday.expiration()<=toTm))
 				calendar.add(holiday);
 		}
-		calendar.addAll(CMLib.database().DBReadJournalMsgsByExpiRange("SYSTEM_CALENDAR", "SYSTEM", fromTm, toTm));
+		calendar.addAll(CMLib.database().DBReadJournalMsgsByExpiRange("SYSTEM_CALENDAR", "SYSTEM", fromTm, toTm, null));
 		return calendar;
 	}
 
@@ -114,7 +114,7 @@ public class CalendarCmd extends StdCommand
 		final List<JournalEntry> calendar = new Vector<JournalEntry>();
 		for(final JournalEntry holiday : CMLib.quests().getHolidayEntries())
 		{
-			if((fromTm>=holiday.update())&&(holiday.expiration()<=toTm))
+			if((fromTm>=holiday.date())&&(holiday.expiration()<=toTm))
 				calendar.add(holiday);
 		}
 		calendar.addAll(CMLib.database().DBReadJournalMsgsByTimeStamps("SYSTEM_CALENDAR", "SYSTEM", fromTm, toTm));
@@ -146,7 +146,7 @@ public class CalendarCmd extends StdCommand
 			for(final Pair<Clan,Integer> C : whoM.clans())
 			{
 				if(C.first.getAuthority(C.second.intValue(),Function.LIST_MEMBERS)!=Authority.CAN_NOT_DO)
-					entries.addAll(CMLib.database().DBReadJournalMsgsByExpiRange("SYSTEM_CALENDAR", C.first.clanID(), fromTm, toTm));
+					entries.addAll(CMLib.database().DBReadJournalMsgsByExpiRange("SYSTEM_CALENDAR", C.first.clanID(), fromTm, toTm, null));
 			}
 		}
 		Collections.sort(entries,calendarSort);
@@ -237,9 +237,9 @@ public class CalendarCmd extends StdCommand
 		boolean color=true;
 		for(final JournalEntry entry : entries)
 		{
-			final TimeClock sC = C.deriveClock(entry.update());
+			final TimeClock sC = C.deriveClock(entry.date());
 			String startDateStr = sC.getShortestTimeDescription();
-			startDateStr += " (" + CMLib.time().date2String24(entry.update()) + ")";
+			startDateStr += " (" + CMLib.time().date2String24(entry.date()) + ")";
 			str.append(color?"^w":"^W");
 			final String rest = entry.from()+": "+entry.to();
 			str.append(CMStrings.padRight(startDateStr, COLW)
@@ -289,9 +289,8 @@ public class CalendarCmd extends StdCommand
 		{
 		case NOW:
 		{
-			final TimeClock C = (TimeClock)CMClass.getCommon("DefaultTimeClock");
-			C.deriveClock(System.currentTimeMillis());
-			final String dateStr = L("^HThe time is now: ^w@x1^H (System: ^w@x2^H)\n\r^N",
+			final TimeClock C = CMLib.time().localClock(mob);
+			final String dateStr = L("^HThe time is now (y/m/d): ^w@x1^H (System: ^w@x2^H)\n\r^N",
 					C.getShortestTimeDescription(),CMLib.time().date2String24(System.currentTimeMillis()));
 			final long fromTm = System.currentTimeMillis() - CMProps.getTickMillis();
 			final long toTm = System.currentTimeMillis() + CMProps.getTickMillis();
@@ -321,7 +320,7 @@ public class CalendarCmd extends StdCommand
 				boolean found=false;
 				for(final JournalEntry N : all)
 				{
-					if(N.subj().equals(E.subj())&&(N.update()==E.update()))
+					if(N.subj().equals(E.subj())&&(N.date()==E.date()))
 					{
 						found=true;
 						break;
@@ -333,7 +332,7 @@ public class CalendarCmd extends StdCommand
 			if(all.size()==0)
 			{
 				if(CMLib.flags().isInTheGame(mob, true))
-					mob.tell(L("There are no Calendar events starting soon."));
+					mob.tell(L("There are no Calendar events running now, or starting soon."));
 				return false;
 			}
 			else
@@ -489,6 +488,7 @@ public class CalendarCmd extends StdCommand
 					{
 						CMLib.database().DBDeleteJournal("SYSTEM_CALENDAR", entry.key());
 						mob.tell(L("Calendar event deleted: '@x1'",entry.subj()));
+						CMLib.journals().resetCalendarEvents();
 					}
 				}
 			}
@@ -496,21 +496,21 @@ public class CalendarCmd extends StdCommand
 		}
 		case ADD:
 		{
+			String from = mob.Name();
+			final Session session = mob.session();
 			final String clanName=CMParms.combine(commands,0);
-			final String from = mob.Name();
 			boolean skipChecks=false;
 			Clan chkC=null;
 			skipChecks=mob.getClanRole(mob.Name())!=null;
 			if(skipChecks)
 				chkC=mob.getClanRole(mob.Name()).first;
-			if((chkC!=null)&&(commands.size()>1))
-			{
-				//TODO!!!!
-				//addClanMOTD(mob,C,CMParms.combine(commands,1));
-				return false;
-			}
+			if((chkC==null)
+			&&(clanName.equalsIgnoreCase("SYSTEM"))
+			&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.JOURNALS)))
+				from="SYSTEM";
 			else
-			if(clanName.length()>0)
+			if((chkC==null)
+			&&(clanName.length()>0))
 			{
 				if(clanName.equals("CLAN") && (mob.clans().iterator().hasNext()))
 					chkC=mob.clans().iterator().next().first;
@@ -526,23 +526,31 @@ public class CalendarCmd extends StdCommand
 						}
 					}
 				}
-				final Clan C=chkC;
-				if(C==null)
+				if(chkC==null)
 				{
 					mob.tell(L("You aren't allowed to add to the calendar of @x1.",clanName));
 					return false;
 				}
+				else
+				if(!CMLib.clans().goForward(mob,chkC,ogCommands,Clan.Function.CREATE_CALENDAR,false))
+				{
+					mob.tell(L("You aren't allowed to add to the calendar of @x1.",chkC.clanID()));
+					return false;
+				}
 			}
-			final Session session=mob.session();
+			if(chkC != null)
+				from = chkC.clanID();
 			final List<String> finalV;
 			if((skipChecks)||(session == null))
-				finalV = ogCommands;
+				finalV = commands;
 			else
 				finalV = new Vector<String>();
 			final boolean[] useRealTime = new boolean[] { false };
-			final Clan C=chkC;
 			final boolean doSkipAllSecurityChecks = skipChecks;
-			final Runnable createEvent = new Runnable() {
+			final Clan C = chkC;
+			final String runFrom = from;
+			final Runnable createEvent = new Runnable()
+			{
 				final boolean autoCreate = doSkipAllSecurityChecks;
 				final Clan clanC=C;
 				final Session S = session;
@@ -550,74 +558,91 @@ public class CalendarCmd extends StdCommand
 
 				public void run()
 				{
-					if((!autoCreate)
-					||(!CMLib.clans().goForward(mob,clanC,commands,Clan.Function.CREATE_CALENDAR,false)))
+					final List<String> voteCommands = new XVector<String>(finalV);
+					if(finalV.size()>0)
 					{
-						mob.tell(L("You aren't in the right position to add to the calendar of your @x1.",C.getGovernmentName()));
-						return;
+						voteCommands.add(0, "CALENDAR");
+						voteCommands.add(1, "ADD");
 					}
-					final JournalEntry entry = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
-					if(C != null)
-						entry.from(clanC.clanID());
-					else
-						entry.from(mob.Name());
-					entry.to("ALL");
-					if(finalV.size()==4)
+					if((autoCreate)
+					||(clanC==null)
+					||(CMLib.clans().goForward(mob,clanC,voteCommands,Clan.Function.CREATE_CALENDAR,true)))
 					{
-						entry.subj(finalV.get(0));
-						if((finalV.get(1).startsWith("REPEAT:"))
-						&&(finalV.get(2).startsWith("DURATION/HOURS:"))
-						&&(finalV.get(3).startsWith("START:")
-							||(finalV.get(3).startsWith("REAL-START:"))))
+						final JournalEntry entry = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
+						entry.from(runFrom);
+						entry.to("ALL");
+						if(finalV.size()==4)
 						{
-							final boolean useRealTimes = finalV.get(3).startsWith("R");
-							final String[] start = finalV.get(3).substring(useRealTimes?11:6).split("/");
-							if(start.length != 4)
+							entry.subj(finalV.get(0));
+							if((finalV.get(3).startsWith("REPEAT:"))
+							&&(finalV.get(2).startsWith("DURATION/HOURS:"))
+							&&(finalV.get(1).startsWith("START:")
+								||(finalV.get(1).startsWith("REAL-START:"))))
+							{
+								final boolean useRealTimes = finalV.get(1).startsWith("R");
+								final String[] start = finalV.get(1).substring(useRealTimes?11:6).split("/");
+								if(start.length != 4)
+									return;
+								final long duration=CMath.s_long(finalV.get(2).substring(15));
+								final String[] repeat = finalV.get(3).substring(7).split(" ");
+								if(useRealTimes)
+								{
+									final Calendar thenC = Calendar.getInstance();
+									thenC.set(Calendar.YEAR, CMath.s_int(start[0]));
+									thenC.set(Calendar.MONTH, CMath.s_int(start[1])-1);
+									thenC.set(Calendar.DAY_OF_MONTH, CMath.s_int(start[2]));
+									thenC.set(Calendar.HOUR_OF_DAY, CMath.s_int(start[3]));
+									thenC.set(Calendar.MINUTE, 0);
+									entry.date(thenC.getTimeInMillis());
+									entry.update(thenC.getTimeInMillis());
+								}
+								else
+								{
+									final TimeClock C = CMLib.time().localClock(M);
+									final TimeClock newC = C.deriveClock(System.currentTimeMillis());
+									newC.setYear(CMath.s_int(start[0]));
+									newC.setMonth(CMath.s_int(start[1]));
+									newC.setDayOfMonth(CMath.s_int(start[2]));
+									newC.setHourOfDay(CMath.s_int(start[3]));
+									entry.date(newC.toTimestamp(C));
+									entry.update(newC.toTimestamp(C));
+								}
+								if(useRealTimes)
+									entry.expiration(entry.date() + (TimeManager.MILI_HOUR * duration));
+								else
+									entry.expiration(entry.date() + (CMProps.getMillisPerMudHour() * duration));
+								if(repeat.length==2)
+								{
+									final TimePeriod P = (TimePeriod)CMath.s_valueOf(TimePeriod.class, repeat[1]);
+									final int n = CMath.s_int(repeat[0]);
+									if((n>0)&&(P!=null))
+									{
+										if(useRealTimes)
+											entry.msg("<DATA><PERIOD>"+n+" "+P.name()+"</PERIOD></DATA>");
+										else
+										{
+											final TimeClock C = CMLib.time().localClock(M);
+											entry.msg("<DATA><PERIOD>"+n+" "+P.name()+" "+C.getPeriodMillis(P)+"</PERIOD></DATA>");
+										}
+									}
+								}
+								S.println("Event created.");
+								CMLib.database().DBWriteJournal("SYSTEM_CALENDAR", entry);
+								CMLib.journals().resetCalendarEvents();
 								return;
-							final long duration=CMath.s_long(finalV.get(2).substring(15));
-							final String[] repeat = finalV.get(1).substring(7).split(" ");
-							if(repeat.length != 2)
-								return;
-							if(useRealTimes)
-							{
-								final Calendar thenC = Calendar.getInstance();
-								thenC.set(Calendar.YEAR, CMath.s_int(start[0]));
-								thenC.set(Calendar.MONTH, CMath.s_int(start[1])-1);
-								thenC.set(Calendar.DAY_OF_MONTH, CMath.s_int(start[2]));
-								thenC.set(Calendar.HOUR_OF_DAY, CMath.s_int(start[3]));
-								thenC.set(Calendar.MINUTE, 0);
-								entry.date(thenC.getTimeInMillis());
-								entry.update(thenC.getTimeInMillis());
 							}
-							else
-							{
-								final TimeClock C = CMLib.time().localClock(M);
-								final TimeClock newC = C.deriveClock(System.currentTimeMillis());
-								newC.setYear(CMath.s_int(start[0]));
-								newC.setMonth(CMath.s_int(start[1]));
-								newC.setDayOfMonth(CMath.s_int(start[2]));
-								newC.setHourOfDay(CMath.s_int(start[3]));
-								entry.date(newC.toTimestamp());
-								entry.update(newC.toTimestamp());
-							}
-							if(useRealTimes)
-								entry.expiration(entry.update() + (TimeManager.MILI_HOUR * duration));
-							else
-								entry.expiration(entry.update() + (CMProps.getMillisPerMudHour() * duration));
-							if(repeat.length==2)
-							{
-								final TimePeriod P = (TimePeriod)CMath.s_valueOf(TimePeriod.class, repeat[1]);
-								final int n = CMath.s_int(repeat[0]);
-								if((n>0)&&(P!=null))
-									entry.msg("<DATA><PERIOD>"+n+" "+P.name()+"</PERIOD></DATA>");
-							}
-							CMLib.database().DBWriteJournal(from, entry);
-							return;
 						}
+						S.println(L("Unable to create event."));
 					}
-					S.println(L("Unable to create event."));
 				}
 			};
+			if(doSkipAllSecurityChecks
+			&&(C!=null)
+			&&(commands.size()>1))
+			{
+				createEvent.run();
+				return true;
+			}
 			if(session != null)
 			{
 				final InputCallback[] repeatCallback =new InputCallback[1];
@@ -631,7 +656,7 @@ public class CalendarCmd extends StdCommand
 						if(useRealTime[0])
 							S.promptPrint(L("(Optional) Repeating real-life period (e.g. 4 hours, 1 week, etc).\n\r: "));
 						else
-							S.promptPrint(L("(Optional) Repeating real-life period (e.g. 4 years, 1 week, etc).\n\r"));
+							S.promptPrint(L("(Optional) Repeating game-time period (e.g. 4 years, 1 week, etc).\n\r: "));
 					}
 
 					@Override
@@ -709,7 +734,8 @@ public class CalendarCmd extends StdCommand
 							return;
 						}
 						if((!CMath.isInteger(s))
-						||(CMath.s_int(s)<1))
+						||(CMath.s_int(s)<1)
+						||(CMath.s_int(s)>(9999)))
 						{
 							S.println(L("@x1 is not a valid number of hours.",s));
 							if(durationCallback[0] != null)
@@ -718,6 +744,8 @@ public class CalendarCmd extends StdCommand
 						}
 						final int n = CMath.s_int(s);
 						finalV.add("DURATION/HOURS:"+n);
+						if(repeatCallback[0] != null)
+							S.prompt(repeatCallback[0]);
 					}
 				};
 				final InputCallback[] startDateCallback = new InputCallback[1];
@@ -729,9 +757,8 @@ public class CalendarCmd extends StdCommand
 					@Override
 					public void showPrompt()
 					{
-						final TimeClock C = (TimeClock)CMClass.getCommon("DefaultTimeClock");
-						C.deriveClock(System.currentTimeMillis());
-						final String dateStr = L("^HThe time is now: ^w@x1^H (System: ^w@x2^H)\n\r^N",
+						final TimeClock C = CMLib.time().localClock(mob);
+						final String dateStr = L("^HThe time is now (y/m/d): ^w@x1^H (System: ^w@x2^H)\n\r^N",
 								C.getShortestTimeDescription(),CMLib.time().date2String24(System.currentTimeMillis()));
 						final String tz = Calendar.getInstance().getTimeZone().getDisplayName();
 						S.promptPrint(dateStr+"\n\r"
@@ -778,11 +805,12 @@ public class CalendarCmd extends StdCommand
 							if(Character.isDigit(premise.charAt(end)))
 								break;
 						}
-						final String dateStr = premise.substring(start,end+1);
-						final String arg = premise.substring(0,start) + premise.substring(end);
+						final String dateStr = premise.substring(start,end+1).trim();
+						final String arg = (premise.substring(0,start) + premise.substring(end+1)).trim();
 						if(arg.toUpperCase().trim().startsWith("R"))
 							useRealTime[0] = true;
 						else
+						if(arg.length()>0)
 						{
 							showError(S,"Unknown chars '@x1'.",arg);
 							return;

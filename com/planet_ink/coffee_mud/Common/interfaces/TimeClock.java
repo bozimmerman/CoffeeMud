@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -449,6 +450,15 @@ public interface TimeClock extends Tickable, CMCommon
 	public long deriveMudHoursAfter(TimeClock C);
 
 	/**
+	 * Given a standard time period, returns this local clocks
+	 * elapsed millis for each period.
+	 *
+	 * @param P the TimePeriod to get a duration for
+	 * @return the millis for the TimePeriod
+	 */
+	public long getPeriodMillis(final TimePeriod P);
+
+	/**
 	 * Increase this clocks time by the given number of hours.
 	 * Does NOT move the sky.  Use tickTock for that.
 	 * @see TimeClock#tickTock(int)
@@ -555,10 +565,11 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Converts this TimeClock to an approximate real-life
 	 * millis since epoc.
+	 * @param now TODO
 	 *
 	 * @return the real time of this clock.
 	 */
-	public long toTimestamp();
+	public long toTimestamp(TimeClock now);
 
 	/**
 	 * Different time periods.

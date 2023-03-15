@@ -466,6 +466,7 @@ public interface ChannelsLibrary extends CMLibrary
 		ACCOUNTLOGOFFS,
 		NOMOOD,
 		FACTIONANNOUNCEMENTS,
-		PROFICIENT
+		PROFICIENT,
+		CALENDAR
 	}
 }

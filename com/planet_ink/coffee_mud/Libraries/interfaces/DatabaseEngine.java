@@ -1477,7 +1477,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean)
 	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int, String[])
 	 * @see DatabaseEngine#DBReadJournalMsgsByTimeStamps(String, String, long, long)
-	 * @see DatabaseEngine#DBReadJournalMsgsByExpiRange(String, String, long, long)
+	 * @see DatabaseEngine#DBReadJournalMsgsByExpiRange(String, String, long, long, String)
 	 * @param journalID the journal to read all the messages from
 	 * @param from the source of the entry or null or ''
 	 * @param startRange the starting timestamp for the range of update times
@@ -1498,9 +1498,10 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param from the source of the entry or null or ''
 	 * @param startRange the starting timestamp for the range of update times
 	 * @param endRange the ending timestamp for the range of update times
+	 * @param searchStr null, or a search str to match in the subj or msg
 	 * @return the list of the messages in this journal, an empty list, or null on error
 	 */
-	public List<JournalEntry> DBReadJournalMsgsByExpiRange(String journalID, final String from, long startRange, long endRange);
+	public List<JournalEntry> DBReadJournalMsgsByExpiRange(String journalID, final String from, long startRange, long endRange, String searchStr);
 
 	/**
 	 * Table category: DBJOURNALS
@@ -1509,7 +1510,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean)
 	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int, String[])
 	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateRange(String, String, long, long)
-	 * @see DatabaseEngine#DBReadJournalMsgsByExpiRange(String, String, long, long)
+	 * @see DatabaseEngine#DBReadJournalMsgsByExpiRange(String, String, long, long, String)
 	 * @param journalID the journal to read all the messages from
 	 * @param from the source of the entry or null or ''
 	 * @param startRange the starting timestamp for the range of times
@@ -1600,12 +1601,26 @@ public interface DatabaseEngine extends CMLibrary
 	 * Returns all the messages optionally sent to the given user (or ALL) that
 	 * are older than the given date.
 	 * @see DatabaseEngine#DBReadJournalMsgsNewerThan(String, String, long)
+	 * @see DatabaseEngine#DBReadJournalMsgsExpiredBefore(String, String, long)
 	 * @param journalID the name/ID of the journal/forum
 	 * @param to NULL, ALL, or a user the messages were sent to
 	 * @param newestDate the date before which to return messages for
 	 * @return the list of messages that were found
 	 */
 	public List<JournalEntry> DBReadJournalMsgsOlderThan(String journalID, String to, long newestDate);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Returns all the messages optionally sent to the given user (or ALL) that
+	 * are expired before the given date.
+	 * @see DatabaseEngine#DBReadJournalMsgsNewerThan(String, String, long)
+	 * @see DatabaseEngine#DBReadJournalMsgsOlderThan(String, String, long)
+	 * @param journalID the name/ID of the journal/forum
+	 * @param to NULL, ALL, or a user the messages were sent to
+	 * @param newestDate the date before which to return messages for
+	 * @return the list of messages that were found
+	 */
+	public List<JournalEntry> DBReadJournalMsgsExpiredBefore(final String journalID, final String to, final long newestDate);
 
 	/**
 	 * Table category: DBJOURNALS

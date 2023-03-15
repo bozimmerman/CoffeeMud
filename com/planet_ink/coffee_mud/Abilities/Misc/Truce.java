@@ -202,7 +202,7 @@ public class Truce extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,auto?"":L("^S<S-NAME> tr(ys) to make <T-NAMESELF> fall asleep, but fails.^?"));
+			return maliciousFizzle(mob,target,auto?"":L("^S<S-NAME> tr(ys) to make <T-NAMESELF> fall asleep, but fail(s).^?"));
 
 		// return whether it worked
 		return success;

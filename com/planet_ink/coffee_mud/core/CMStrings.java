@@ -429,7 +429,7 @@ public class CMStrings
 
 	public final static String scrunchWord(String s, final int len)
 	{
-		if(s.length()<=len)
+		if((s.length()<=len)||(len<0))
 			return s;
 		s=s.trim();
 		int x=s.lastIndexOf(' ');

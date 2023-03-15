@@ -193,6 +193,7 @@ public class JournalLoader
 		entry.views		(CMath.s_int(DBConnections.getRes(R, "CMVIEW")));
 		entry.replies	(CMath.s_int(DBConnections.getRes(R, "CMREPL")));
 		entry.msg		(DBConnections.getRes(R,"CMMSGT"));
+		entry.expiration(CMath.s_long(DBConnections.getRes(R, "CMEXPI")));
 
 		final int datestrdex=dateStr.indexOf('/');
 		if(datestrdex>=0)
@@ -519,6 +520,33 @@ public class JournalLoader
 		});
 	}
 
+	public List<JournalEntry> DBReadJournalMsgsExpiredBefore(String journal, String to, final long newestDate)
+	{
+		journal	= DB.injectionClean(journal);
+		to		= DB.injectionClean(to);
+
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			String sql="SELECT CMJKEY FROM CMJRNL WHERE CMEXPI < " + newestDate + " AND CMJRNL='"+journal+"'";
+			if(to != null)
+				sql += " AND CMTONM='"+to+"'";
+			sql += "ORDER BY CMEXPI ASC";
+			final ResultSet R=D.query(sql);
+			return makeJournalEntryList(journal,R);
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("Journal",sqle);
+			return null;
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+	}
+
 	public List<JournalEntry> DBReadJournalMsgsOlderThan(String journal, String to, final long newestDate)
 	{
 		journal	= DB.injectionClean(journal);
@@ -566,7 +594,7 @@ public class JournalLoader
 			try
 			{
 				D=DB.DBFetch();
-				String sql="SELECT CMJKEY FROM CMJRNL WHERE CMJRNL='"+journalID+"' "
+				String sql="SELECT * FROM CMJRNL WHERE CMJRNL='"+journalID+"' "
 						+ "AND CMEXPI >= "+startRange+" AND CMUPTM <= "+endRange+" ";
 				sql += fromSQL + " ORDER BY CMUPTM ASC";
 				ResultSet R = D.query(sql);
@@ -605,7 +633,7 @@ public class JournalLoader
 			try
 			{
 				D=DB.DBFetch();
-				String sql="SELECT CMJKEY FROM CMJRNL WHERE CMJRNL='"+journalID+"' "
+				String sql="SELECT * FROM CMJRNL WHERE CMJRNL='"+journalID+"' "
 						+ "AND CMUPTM >= "+startRange+" "
 						+ "AND CMUPTM <= "+endRange+" ";
 				if((from != null)&&(from.length()>0))
@@ -634,7 +662,7 @@ public class JournalLoader
 		return entries;
 	}
 
-	public List<JournalEntry> DBReadJournalMsgsByExpiRange(String journalID, String from, final long startRange, final long endRange)
+	public List<JournalEntry> DBReadJournalMsgsByExpiRange(String journalID, String from, final long startRange, final long endRange, String search)
 	{
 		journalID = DB.injectionClean(journalID);
 
@@ -648,9 +676,14 @@ public class JournalLoader
 			try
 			{
 				D=DB.DBFetch();
-				String sql="SELECT CMJKEY FROM CMJRNL WHERE CMJRNL='"+journalID+"' "
+				String sql="SELECT * FROM CMJRNL WHERE CMJRNL='"+journalID+"' "
 						+ "AND CMEXPI >= "+startRange+" "
 						+ "AND CMEXPI <= "+endRange+" ";
+				if((search != null)&&(search.length()>0))
+				{
+					search = DB.injectionClean(search);
+					sql += " AND CMMSG LIKE '%"+search+"'% ";
+				}
 				if((from != null)&&(from.length()>0))
 				{
 					from = DB.injectionClean(from);

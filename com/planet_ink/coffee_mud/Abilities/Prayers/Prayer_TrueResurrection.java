@@ -141,6 +141,8 @@ public class Prayer_TrueResurrection extends Prayer_Resurrect
 				return false;
 			}
 			givenTarget = corpseItem;
+			if(givenTarget != null)
+				argCorpseName = givenTarget.Name();
 			final Long lastTime;
 			synchronized(lastCasts)
 			{

@@ -417,7 +417,7 @@ public class Spell_TrueName extends Spell
 			}
 		}
 		if(!success)
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to divine <T-YOUPOSS> name, but fails."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to divine <T-YOUPOSS> name, but fail(s)."));
 
 		// return whether it worked
 		return success;

@@ -221,7 +221,7 @@ public class Spell_Geas extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to place a geas on <T-NAMESELF>, but fails."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to place a geas on <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

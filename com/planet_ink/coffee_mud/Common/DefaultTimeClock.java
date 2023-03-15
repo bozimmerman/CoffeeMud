@@ -533,19 +533,17 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public long toTimestamp()
+	public long toTimestamp(final TimeClock now)
 	{
-		final long now = System.currentTimeMillis();
-		final TimeClock nowTC = deriveClock(now);
-		if(nowTC.compareTo(this) < 0)
+		if(now.compareTo(this) < 0)
 		{
-			final long diff = this.deriveMillisAfter(nowTC);
-			return now + diff;
+			final long diff = this.deriveMillisAfter(now);
+			return System.currentTimeMillis() + diff;
 		}
 		else
 		{
-			final long diff = nowTC.deriveMillisAfter(this);
-			return now - diff;
+			final long diff = now.deriveMillisAfter(this);
+			return System.currentTimeMillis() - diff;
 		}
 	}
 
@@ -601,6 +599,29 @@ public class DefaultTimeClock implements TimeClock
 	public long deriveMillisAfter(final TimeClock C)
 	{
 		return deriveMudHoursAfter(C) *CMProps.getMillisPerMudHour();
+	}
+
+	@Override
+	public long getPeriodMillis(final TimePeriod P)
+	{
+		switch(P)
+		{
+		case DAY:
+			return CMProps.getMillisPerMudHour() * getHoursInDay();
+		case HOUR:
+			return CMProps.getMillisPerMudHour();
+		case MONTH:
+			return CMProps.getMillisPerMudHour() * getHoursInDay() * getDaysInMonth();
+		case SEASON:
+			return CMProps.getMillisPerMudHour() * getMonthsInSeason() * getHoursInDay() * getDaysInMonth();
+		case WEEK:
+			return CMProps.getMillisPerMudHour() * getDaysInWeek() * getHoursInDay();
+		case YEAR:
+			return CMProps.getMillisPerMudHour() * getMonthsInYear() * getHoursInDay() * getDaysInMonth();
+		case ALLTIME:
+		default:
+			return 0;
+		}
 	}
 
 	@Override

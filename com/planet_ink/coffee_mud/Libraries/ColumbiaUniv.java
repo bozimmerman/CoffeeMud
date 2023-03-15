@@ -1186,7 +1186,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		final Environmental tool=(teachObj instanceof Environmental)?(Environmental)teachObj:null;
 		final String teachWhat=teachObj.name();
 		final String ID=teachObj.ID();
-		msg=CMClass.getMsg(teacher,student,tool,CMMsg.MSG_TEACH,L("<S-NAME> teach(es) <T-NAMESELF> '@x1' ^<LEARN NAME=\"@x2\" /^>.",teachWhat,ID));
+		msg=CMClass.getMsg(teacher,student,tool,CMMsg.MSG_TEACH,L("<S-NAME> teach(es) <T-NAMESELF> '@x1'. ^<LEARN NAME=\"@x2\" /^>",teachWhat,ID));
 		if(!teacher.location().okMessage(teacher,msg))
 			return false;
 		teacher.location().send(teacher,msg);

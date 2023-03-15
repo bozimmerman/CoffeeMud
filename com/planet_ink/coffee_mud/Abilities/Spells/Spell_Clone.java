@@ -220,7 +220,7 @@ public class Spell_Clone extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to clone <S-HIM-HERSELF>, but fails."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to clone <S-HIM-HERSELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

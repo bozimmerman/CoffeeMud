@@ -504,6 +504,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 		}
 
+		C=CMClass.getCommand("CalendarCmd");
+		try
+		{
+			C.execute(mob, CMParms.parse("CALENDAR SOON"), 0);
+		}
+		catch (final Exception e)
+		{
+		}
+
 		C=CMClass.getCommand("Shutdown");
 		try
 		{

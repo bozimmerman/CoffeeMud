@@ -75,6 +75,8 @@ public interface Tickable extends CMObject
 	public final static int TICKID_LONGERMASK=256;
 	/** modifies a tickID to designate that this object should tick by itself.*/
 	public final static int TICKID_SOLITARYMASK=65536;
+	/** filters a tickid to remove modifiers.*/
+	public final static int TICKID_SHORTERMASK=255;
 
 	/** the most common tickid, representing the tick of a mob*/
 	public final static int TICKID_MOB=0;
@@ -130,6 +132,8 @@ public interface Tickable extends CMObject
 	public final static int TICKID_SPECIALCOMBAT=25;
 	/** the tickid for a beam weapon in motion*/
 	public final static int TICKID_BALLISTICK=26;
+	/** the tickid for a system calendar event*/
+	public final static int TICKID_EVENT=27;
 
 	/** a tick status constant representing  the state of waiting for tick access */
 	public static int STATUS_NOT=0;

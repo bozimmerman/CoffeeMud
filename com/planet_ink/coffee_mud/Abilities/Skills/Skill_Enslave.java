@@ -598,7 +598,7 @@ public class Skill_Enslave extends StdSkill implements PrivateProperty
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to enslave on <T-NAMESELF>, but fails."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to enslave on <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;
