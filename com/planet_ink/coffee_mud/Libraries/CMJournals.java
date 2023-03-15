@@ -891,6 +891,70 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		return touch;
 	}
 
+	protected boolean processCalendarExpiration(final JournalEntry expiredEntry)
+	{
+		boolean somethingDone=false;
+		if((expiredEntry.msg().length()>0)
+		&&(expiredEntry.msg().startsWith("<")))
+		{
+			final List<XMLTag> pieces = CMLib.xml().parseAllXML(expiredEntry.msg());
+			if(pieces.size()>0)
+			{
+				final XMLTag dataTag = pieces.get(0);
+				if(dataTag.tag().equalsIgnoreCase("DATA"))
+				{
+					final XMLTag periodTag = CMLib.xml().getPieceFromPieces(dataTag.contents(), "PERIOD");
+					if((periodTag != null)
+					&&(periodTag.value().trim().length()>0))
+					{
+						final String[] repeat = periodTag.value().trim().toUpperCase().split(" ");
+						if(repeat.length>1)
+						{
+							final JournalEntry newEntry = expiredEntry.copyOf();
+							final long n = CMath.s_long(repeat[0]);
+							final TimePeriod P = (TimePeriod)CMath.s_valueOf(TimePeriod.class, repeat[1]);
+							final long ogDiff = expiredEntry.expiration() - expiredEntry.date();
+							if(repeat.length == 3)
+							{
+								final long m = CMath.s_long(repeat[2]);
+								newEntry.date(expiredEntry.date() + (m * n));
+							}
+							else
+							{
+								final Calendar C = Calendar.getInstance();
+								C.setTimeInMillis(newEntry.date());
+								if(P == TimePeriod.SEASON)
+								{
+									C.add(Calendar.MONTH, 3*(int)n);
+									newEntry.date(C.getTimeInMillis());
+								}
+								else
+								if(P == TimePeriod.MONTH)
+								{
+									C.add(Calendar.MONTH, (int)n);
+									newEntry.date(C.getTimeInMillis());
+								}
+								else
+									newEntry.date(expiredEntry.date()+(n*P.getIncrement()));
+							}
+							newEntry.update(newEntry.date());
+							newEntry.expiration(ogDiff);
+							CMLib.database().DBWriteJournal("SYSTEM_CALENDAR", newEntry);
+							somethingDone=true;
+						}
+					}
+					dataTag.contents().remove(periodTag);
+					if(dataTag.contents().size()==0)
+						expiredEntry.msg("");
+					else
+						expiredEntry.msg(dataTag.toString());
+					CMLib.database().DBUpdateJournal("SYSTEM_CALENDAR", expiredEntry);
+				}
+			}
+		}
+		return somethingDone;
+	}
+
 	protected void expirationJournalSweep()
 	{
 		setThreadStatus(serviceClient,"expiration journal sweeping");
@@ -916,69 +980,10 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					setThreadStatus(serviceClient,"command journal sweeping");
 				}
 			}
-			boolean somethingDone = false;
+			boolean resetCalendar = false;
 			final List<JournalEntry> expired=CMLib.database().DBReadJournalMsgsByExpiRange("SYSTEM_CALENDAR",null,lastSweepTime, System.currentTimeMillis(), "<PERIOD>");
 			for(final JournalEntry expiredEntry : expired)
-			{
-				if((expiredEntry.msg().length()>0)
-				&&(expiredEntry.msg().startsWith("<")))
-				{
-					final List<XMLTag> pieces = CMLib.xml().parseAllXML(expiredEntry.msg());
-					if(pieces.size()>0)
-					{
-						final XMLTag dataTag = pieces.get(0);
-						if(dataTag.tag().equalsIgnoreCase("DATA"))
-						{
-							final XMLTag periodTag = CMLib.xml().getPieceFromPieces(dataTag.contents(), "PERIOD");
-							if((periodTag != null)
-							&&(periodTag.value().trim().length()>0))
-							{
-								final String[] repeat = periodTag.value().trim().toUpperCase().split(" ");
-								if(repeat.length>1)
-								{
-									final JournalEntry newEntry = expiredEntry.copyOf();
-									final long n = CMath.s_long(repeat[0]);
-									final TimePeriod P = (TimePeriod)CMath.s_valueOf(TimePeriod.class, repeat[1]);
-									final long ogDiff = expiredEntry.expiration() - expiredEntry.date();
-									if(repeat.length == 3)
-									{
-										final long m = CMath.s_long(repeat[2]);
-										newEntry.date(expiredEntry.date() + (m * n));
-									}
-									else
-									{
-										final Calendar C = Calendar.getInstance();
-										C.setTimeInMillis(newEntry.date());
-										if(P == TimePeriod.SEASON)
-										{
-											C.add(Calendar.MONTH, 3*(int)n);
-											newEntry.date(C.getTimeInMillis());
-										}
-										else
-										if(P == TimePeriod.MONTH)
-										{
-											C.add(Calendar.MONTH, (int)n);
-											newEntry.date(C.getTimeInMillis());
-										}
-										else
-											newEntry.date(expiredEntry.date()+(n*P.getIncrement()));
-									}
-									newEntry.update(newEntry.date());
-									newEntry.expiration(ogDiff);
-									CMLib.database().DBWriteJournal("SYSTEM_CALENDAR", newEntry);
-									somethingDone=true;
-								}
-							}
-							dataTag.contents().remove(periodTag);
-							if(dataTag.contents().size()==0)
-								expiredEntry.msg("");
-							else
-								expiredEntry.msg(dataTag.toString());
-							CMLib.database().DBUpdateJournal("SYSTEM_CALENDAR", expiredEntry);
-						}
-					}
-				}
-			}
+				resetCalendar = processCalendarExpiration(expiredEntry) || resetCalendar;
 			final long expirationDate = System.currentTimeMillis() - TimeManager.MILI_YEAR;
 			final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsOlderThan("SYSTEM_CALENDAR",null,expirationDate);
 			for(int i=items.size()-1;i>=0;i--)
@@ -989,7 +994,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				Log.sysOut(Thread.currentThread().getName(),"Expired event from "+from+": "+message);
 				CMLib.database().DBDeleteJournal("SYSTEM_CALENDAR",entry.key());
 			}
-			if(somethingDone)
+			if(resetCalendar)
 				resetCalendarEvents();
 		}
 		catch(final NoSuchElementException nse)
@@ -1066,7 +1071,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			}
 		}
 		long nextTime = endestTime+1000;
-		calendar.addAll(CMLib.database().DBReadJournalMsgsByUpdateRange("SYSTEM_CALENDAR", "SYSTEM", now, nextTime));
+		calendar.addAll(CMLib.database().DBReadJournalMsgsByUpdateRange("SYSTEM_CALENDAR", null, now, nextTime));
 		final List<JournalEntry> partials = new LinkedList<JournalEntry>();
 		for(final JournalEntry entry : calendar)
 		{
