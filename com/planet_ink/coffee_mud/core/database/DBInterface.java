@@ -787,6 +787,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public void DBDeleteJournalMessagesByFrom(final String journal, final String from)
+	{
+		JournalLoader.DBDeleteByFrom(journal, from);
+	}
+
+	@Override
 	public void DBUpdateJournal(final String key, final String subject, final String msg, final long newAttributes)
 	{
 		JournalLoader.DBUpdateJournal(key, subject, msg, newAttributes);

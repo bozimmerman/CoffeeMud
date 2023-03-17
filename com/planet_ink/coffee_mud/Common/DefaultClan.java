@@ -1000,6 +1000,7 @@ public class DefaultClan implements Clan
 		}
 		CMLib.database().DBDeleteJournal("a Journal of "+getGovernmentName()+" "+getName(), null);
 		CMLib.database().DBDeleteJournal("CLAN_MOTD"+clanID(), null);
+		CMLib.database().DBDeleteJournalMessagesByFrom("SYSTEM_CALENDAR", clanID());
 		CMLib.database().DBDeleteClan(this);
 		CMLib.clans().removeClan(this);
 	}

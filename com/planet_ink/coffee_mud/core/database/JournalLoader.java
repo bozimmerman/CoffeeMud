@@ -976,6 +976,7 @@ public class JournalLoader
 			}
 			for(final String s : deletableEntriesV)
 				D.update("DELETE FROM CMJRNL WHERE CMJKEY='"+s+"' OR CMPART='"+s+"'",0);
+			D.update("DELETE FROM CMJRNL WHERE CMJRNL='SYSTEM_CALENDAR' AND CMFROM='"+name+"'",0);
 			for(final String s : deletableAttachmentsV)
 			{
 				CMLib.database().DBDeleteVFSFileLike(s+"/%", CMFile.VFS_MASK_ATTACHMENT);
@@ -1143,6 +1144,22 @@ public class JournalLoader
 			{
 				sql="DELETE FROM CMJRNL WHERE CMJRNL='"+journal+"'";
 			}
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
+				Log.debugOut("JournalLoader",sql);
+			DB.update(sql);
+		}
+	}
+
+	public void DBDeleteByFrom(String journal, String from)
+	{
+		journal = DB.injectionClean(journal);
+		from = DB.injectionClean(from);
+
+		if(journal==null)
+			return;
+		synchronized(CMClass.getSync("JOURNAL_"+journal.toUpperCase()))
+		{
+			final String sql="DELETE FROM CMJRNL WHERE CMJRNL='"+journal+"' AND CMFROM='"+from+"'";
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
 				Log.debugOut("JournalLoader",sql);
 			DB.update(sql);

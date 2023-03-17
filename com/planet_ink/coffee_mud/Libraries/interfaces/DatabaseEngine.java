@@ -1374,6 +1374,14 @@ public interface DatabaseEngine extends CMLibrary
 	public JournalEntry DBWriteJournalReply(String journalID, String messageKey, String from, String to, String subject, String message);
 
 	/**
+	 * Deletes all messages in the given journal from the given source.
+	 *
+	 * @param journal the journal
+	 * @param from the source
+	 */
+	public void DBDeleteJournalMessagesByFrom(String journal, String from);
+
+	/**
 	 * Table category: DBJOURNALS
 	 * Searches all the messages in the journal for the search string as
 	 * a (typically) case-insensitive substring of either the subject
