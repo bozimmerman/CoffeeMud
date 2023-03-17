@@ -332,6 +332,37 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		return false;
 	}
 
+	protected Room getDestinationRoom(final Room fromRoom)
+	{
+		Room R=null;
+		final List<String> V=CMParms.parseSemicolons(readableText(),true);
+		if(V.size()>0)
+			R=CMLib.map().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
+		return R;
+	}
+
+	@Override
+	public Room lastRoomUsedFrom(final Room fromRoom)
+	{
+		return getDestinationRoom(fromRoom);
+	}
+
+	protected final Exit[] tempExitPairs = new Exit[2];
+	protected Exit[] getTemporaryExits()
+	{
+		synchronized(tempExitPairs)
+		{
+			if(tempExitPairs[0]==null)
+			{
+				tempExitPairs[0]=CMClass.getExit("OpenPrepositional");
+				tempExitPairs[1]=CMClass.getExit("OpenPrepositional");
+				tempExitPairs[0].setMiscText(name());
+				tempExitPairs[1].setMiscText(name());
+			}
+		}
+		return tempExitPairs;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -339,6 +370,18 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 			return false;
 		switch(msg.targetMinor())
 		{
+		case CMMsg.TYP_LEAVE:
+			if((msg.tool() == getTemporaryExits()[0])
+			&&(msg.target() instanceof Room))
+			{
+				final CMMsg msg2 = (CMMsg)msg.copyOf();
+				msg2.setTarget(this);
+				msg2.setSourceCode(CMMsg.MSG_ENTER);
+				msg2.setTargetCode(CMMsg.MSG_ENTER);
+				if(!super.okMessage(myHost, msg2))
+					return false;
+			}
+			break;
 		case CMMsg.TYP_DISMOUNT:
 			if(msg.amITarget(this))
 			{
@@ -389,21 +432,6 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		return true;
 	}
 
-	protected Room getDestinationRoom(final Room fromRoom)
-	{
-		Room R=null;
-		final List<String> V=CMParms.parseSemicolons(readableText(),true);
-		if(V.size()>0)
-			R=CMLib.map().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
-		return R;
-	}
-
-	@Override
-	public Room lastRoomUsedFrom(final Room fromRoom)
-	{
-		return getDestinationRoom(fromRoom);
-	}
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -421,42 +449,44 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 					Room R=getDestinationRoom(thisRoom);
 					if(R==null)
 						R=thisRoom;
-					synchronized(CMClass.getSync(("GATE_"+CMLib.map().getExtendedTwinRoomIDs(thisRoom,R))))
+					final Exit[] tempExits = getTemporaryExits();
+					final Exit E2=tempExits[0];
+					final Exit E=tempExits[1];
+					final Exit oldE=thisRoom.getRawExit(Directions.GATE);
+					final Room oldR=thisRoom.rawDoors()[Directions.GATE];
+					final Exit oldE2=R.getRawExit(Directions.GATE);
+					try
 					{
-						final Exit oldE;
-						synchronized(thisRoom)
-						{
-							oldE=thisRoom.getRawExit(Directions.GATE);
-						}
-						final Exit oldE2;
-						synchronized(R)
-						{
-							oldE2=R.getRawExit(Directions.GATE);
-						}
-						final Room oldR;
-						synchronized(thisRoom.rawDoors())
-						{
-							oldR=thisRoom.rawDoors()[Directions.GATE];
-						}
-						try
+						synchronized(CMClass.getSync(("GATE_"+CMLib.map().getExtendedTwinRoomIDs(thisRoom,R))))
 						{
 							thisRoom.rawDoors()[Directions.GATE]=R;
-							thisRoom.setRawExit(Directions.GATE,this);
-							R.setRawExit(Directions.GATE,this);
+							thisRoom.setRawExit(Directions.GATE,E);
+							E2.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN);
+							R.setRawExit(Directions.GATE,E2);
 							CMLib.tracking().walk(msg.source(),Directions.GATE,false,false,false);
 						}
-						finally
-						{
-							thisRoom.rawDoors()[Directions.GATE]=oldR;
-							thisRoom.setRawExit(Directions.GATE,oldE);
-							R.setRawExit(Directions.GATE,oldE2);
-						}
+					}
+					finally
+					{
+						thisRoom.rawDoors()[Directions.GATE]=oldR;
+						thisRoom.setRawExit(Directions.GATE,oldE);
+						R.setRawExit(Directions.GATE,oldE2);
 					}
 					msg.setTarget(null);
 				}
 			}
 			break;
 		case CMMsg.TYP_LEAVE:
+			if((msg.tool() == getTemporaryExits()[0])
+			&&(msg.target() instanceof Room))
+			{
+				final CMMsg msg2 = (CMMsg)msg.copyOf();
+				msg2.setTarget(this);
+				msg2.setSourceCode(CMMsg.MSG_ENTER);
+				msg2.setTargetCode(CMMsg.MSG_ENTER);
+				super.executeMsg(myHost, msg2);
+			}
+			break;
 		case CMMsg.TYP_FLEE:
 		case CMMsg.TYP_SLEEP:
 		case CMMsg.TYP_MOUNT:
