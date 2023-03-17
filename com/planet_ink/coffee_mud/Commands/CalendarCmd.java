@@ -155,10 +155,11 @@ public class CalendarCmd extends StdCommand
 
 	protected List<JournalEntry> getCalendarByTimeStamps(final MOB whoM, final long fromTm, final long toTm)
 	{
-		final List<JournalEntry> entries = getGlobalCalendarByStartRange(fromTm, toTm);
+		final List<JournalEntry> entries = getGlobalCalendarByTimeStamps(fromTm, toTm);
 		if(whoM != null)
 		{
-			entries.addAll(CMLib.database().DBReadJournalMsgsByUpdateRange("SYSTEM_CALENDAR", whoM.Name(), fromTm, toTm));
+			//System.out.println(CMLib.time().date2String24(fromTm)+"-"+CMLib.time().date2String24(toTm));
+			entries.addAll(CMLib.database().DBReadJournalMsgsByTimeStamps("SYSTEM_CALENDAR", whoM.Name(), fromTm, toTm));
 			for(final Pair<Clan,Integer> C : whoM.clans())
 			{
 				if(C.first.getAuthority(C.second.intValue(),Function.LIST_MEMBERS)!=Authority.CAN_NOT_DO)
@@ -228,23 +229,29 @@ public class CalendarCmd extends StdCommand
 		final int COLW=CMLib.lister().fixColWidth(36.0,M.session());
 		final int COLE=CMLib.lister().fixColWidth(36.0,M.session());
 		final StringBuilder str = new StringBuilder("");
-		str.append("\n\r^H"+CMStrings.padRight(L("When (y/m/d)"), COLW)
-					+CMStrings.padRight(L("Event"), COLE)
+		str.append("\n\r^H"
+					+ CMStrings.padRight(L("When (y/m/d)"), COLW)
+					+ CMStrings.padRight(L("Event"), COLE)
 					).append("^N\n\r");
 		TimeClock C = CMLib.time().homeClock(M);
 		if(C == null)
-			C=CMLib.time().globalClock();
+			C = CMLib.time().globalClock();
 		boolean color=true;
 		for(final JournalEntry entry : entries)
 		{
-			final TimeClock sC = C.deriveClock(entry.date());
+			TimeClock sC;
+			if((entry.getKnownClock() != null)
+			&&(entry.dateStr().indexOf('/')>0))
+				sC = C.fromTimePeriodCodeString(entry.dateStr());
+			else
+				sC = C.deriveClock(entry.date()+CMProps.getTickMillis());
 			String startDateStr = sC.getShortestTimeDescription();
 			startDateStr += " (" + CMLib.time().date2String24(entry.date()) + ")";
 			str.append(color?"^w":"^W");
 			final String rest = entry.from()+": "+entry.to();
 			str.append(CMStrings.padRight(startDateStr, COLW)
 					+ CMStrings.padRight(rest, COLE)).append("\n\r");
-			final TimeClock eC = C.deriveClock(entry.expiration());
+			final TimeClock eC = C.deriveClock(entry.expiration()+CMProps.getTickMillis());
 			String endDateStr = "-"+eC.getShortestTimeDescription();
 			endDateStr += " (" + CMLib.time().date2String24(entry.expiration())+")";
 			str.append(color?"^w":"^W");
@@ -585,6 +592,7 @@ public class CalendarCmd extends StdCommand
 									return;
 								final long duration=CMath.s_long(finalV.get(2).substring(15));
 								final String[] repeat = finalV.get(3).substring(7).split(" ");
+								final StringBuilder data = new StringBuilder("");
 								if(useRealTimes)
 								{
 									final Calendar thenC = Calendar.getInstance();
@@ -593,7 +601,7 @@ public class CalendarCmd extends StdCommand
 									thenC.set(Calendar.DAY_OF_MONTH, CMath.s_int(start[2]));
 									thenC.set(Calendar.HOUR_OF_DAY, CMath.s_int(start[3]));
 									thenC.set(Calendar.MINUTE, 0);
-									entry.date(thenC.getTimeInMillis());
+									entry.dateStr(""+thenC.getTimeInMillis());
 									entry.update(thenC.getTimeInMillis());
 								}
 								else
@@ -604,28 +612,22 @@ public class CalendarCmd extends StdCommand
 									newC.setMonth(CMath.s_int(start[1]));
 									newC.setDayOfMonth(CMath.s_int(start[2]));
 									newC.setHourOfDay(CMath.s_int(start[3]));
-									entry.date(newC.toTimestamp(C));
-									entry.update(newC.toTimestamp(C));
+									entry.dateStr(newC.toTimePeriodCodeString());
+									entry.update(entry.date());
 								}
 								if(useRealTimes)
 									entry.expiration(entry.date() + (TimeManager.MILI_HOUR * duration));
 								else
 									entry.expiration(entry.date() + (CMProps.getMillisPerMudHour() * duration));
+								data.append("<HOURS>"+duration+"</HOURS>");
 								if(repeat.length==2)
 								{
 									final TimePeriod P = (TimePeriod)CMath.s_valueOf(TimePeriod.class, repeat[1]);
 									final int n = CMath.s_int(repeat[0]);
 									if((n>0)&&(P!=null))
-									{
-										if(useRealTimes)
-											entry.msg("<DATA><PERIOD>"+n+" "+P.name()+"</PERIOD></DATA>");
-										else
-										{
-											final TimeClock C = CMLib.time().localClock(M);
-											entry.msg("<DATA><PERIOD>"+n+" "+P.name()+" "+C.getPeriodMillis(P)+"</PERIOD></DATA>");
-										}
-									}
+										data.append("<PERIOD>"+n+" "+P.name()+"</PERIOD>");
 								}
+								entry.data(data.toString());
 								S.println("Event created.");
 								CMLib.database().DBWriteJournal("SYSTEM_CALENDAR", entry);
 								CMLib.journals().resetCalendarEvents();
@@ -771,11 +773,11 @@ public class CalendarCmd extends StdCommand
 					{
 					}
 
-					protected void showError(final Session S, final String msg, final String... args)
+					protected void showError(final Session S, final InputCallback C, final String msg, final String... args)
 					{
 						S.println(L(msg,args));
-						if(startDateCallback[0] != null)
-							S.prompt(startDateCallback[0]);
+						if(C != null)
+							S.prompt(C);
 						return;
 					}
 
@@ -812,7 +814,7 @@ public class CalendarCmd extends StdCommand
 						else
 						if(arg.length()>0)
 						{
-							showError(S,"Unknown chars '@x1'.",arg);
+							showError(S,startDateCallback[0],"Unknown chars '@x1'.",arg);
 							return;
 						}
 						final String[] dSplit = dateStr.split("/");
@@ -822,7 +824,7 @@ public class CalendarCmd extends StdCommand
 						||(!CMath.isInteger(dSplit[2]))
 						||(!CMath.isInteger(dSplit[3])))
 						{
-							showError(S,"^XBad format!^N");
+							showError(S,startDateCallback[0],"^XBad format '@x1'!^N",dateStr);
 							return;
 						}
 						int y = CMath.s_int(dSplit[0]);
@@ -844,7 +846,7 @@ public class CalendarCmd extends StdCommand
 							final Calendar thenC = Calendar.getInstance();
 							if(y<nowC.get(Calendar.YEAR))
 							{
-								showError(S,"^XBad year (@x1)!^N",""+y);
+								showError(S,startDateCallback[0],"^XBad year (@x1)!^N",""+y);
 								return;
 							}
 							thenC.set(Calendar.YEAR, y);
@@ -852,7 +854,7 @@ public class CalendarCmd extends StdCommand
 							||((y==nowC.get(Calendar.YEAR))
 								&&(m<=nowC.get(Calendar.MONTH))))
 							{
-								showError(S,"^XBad month (@x1)!^N",""+m);
+								showError(S,startDateCallback[0],"^XBad month (@x1)!^N",""+m);
 								return;
 							}
 							int maxDay = 31;
@@ -863,16 +865,16 @@ public class CalendarCmd extends StdCommand
 								&&(y==nowC.get(Calendar.YEAR))
 								&&(d<nowC.get(Calendar.DAY_OF_MONTH))))
 							{
-								showError(S,"^XBad day of the month (@x1)!^N",""+d);
+								showError(S,startDateCallback[0],"^XBad day of the month (@x1/@x2)!^N",""+d,""+maxDay);
 								return;
 							}
 							if((h<0)||(h>23)
 							||((m==nowC.get(Calendar.MONTH)-1)
 								&&(d==nowC.get(Calendar.DAY_OF_MONTH))
 								&&(y==nowC.get(Calendar.YEAR))
-								&&(h<nowC.get(Calendar.HOUR_OF_DAY))))
+								&&(h<=nowC.get(Calendar.HOUR_OF_DAY))))
 							{
-								showError(S,"^XBad hour (@x1)! (0-23, and future only)^N",""+h);
+								showError(S,startDateCallback[0],"^XBad hour (@x1)! (0-23, and future only)^N",""+h);
 								return;
 							}
 							finalV.add("REAL-START:"+y+"/"+m+"/"+d+"/"+h);
@@ -882,24 +884,25 @@ public class CalendarCmd extends StdCommand
 							final TimeClock C = CMLib.time().localClock(M);
 							if(y<C.getYear())
 							{
-								showError(S,"^XBad year (@x1)!^N",""+y);
+								showError(S,startDateCallback[0],"^XBad year (@x1)!^N",""+y);
 								return;
 							}
 							if((m<1)||(m>12)
-							||((y==C.getYear())
-								&&(m<C.getMonth())))
+							||((y==C.getYear())&&(m<C.getMonth())))
 							{
-								showError(S,"^XBad month (@x1)!^N",""+m);
+								showError(S,startDateCallback[0],"^XBad month (@x1)!^N",""+m);
 								return;
 							}
-							if((d<1)||(d>C.getDayOfMonth()))
+							if((d<1)||(d>C.getDaysInMonth())
+							||((m==C.getMonth())&&(y==C.getYear())&&(d<C.getDayOfMonth())))
 							{
-								showError(S,"^XBad day of the month (@x1)!^N",""+d);
+								showError(S,startDateCallback[0],"^XBad day of the month (@x1)!^N",""+d);
 								return;
 							}
-							if((h<0)||(h>C.getHoursInDay()))
+							if((h<0)||(h>C.getHoursInDay())
+							||((m==C.getMonth())&&(y==C.getYear())&&(d==C.getDayOfMonth())&&(h<=C.getHourOfDay())))
 							{
-								showError(S,"^XBad hour (@x1)! (0-@x2 only)^N",""+h,""+C.getHoursInDay());
+								showError(S,startDateCallback[0],"^XBad hour (@x1)! (0-@x2 only)^N",""+h,""+C.getHoursInDay());
 								return;
 							}
 							finalV.add("START:"+y+"/"+m+"/"+d+"/"+h);

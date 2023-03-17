@@ -149,9 +149,9 @@ public class JournalFunction extends StdWebMacro
 			msg.subj(clearWebMacros(subject));
 			msg.msg(clearWebMacros(CMStrings.fixMudCRLF(text)));
 			if((date!=null) && (CMath.isLong(date)))
-				msg.date(CMath.s_long(date));
+				msg.dateStr(""+CMath.s_long(date));
 			else
-				msg.date(System.currentTimeMillis());
+				msg.dateStr(""+System.currentTimeMillis());
 			msg.update(System.currentTimeMillis());
 			msg.parent((parent==null)?"":parent);
 			msg.msgIcon((icon==null)?"":icon);

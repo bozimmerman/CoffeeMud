@@ -1498,10 +1498,26 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param from the source of the entry or null or ''
 	 * @param startRange the starting timestamp for the range of update times
 	 * @param endRange the ending timestamp for the range of update times
-	 * @param searchStr null, or a search str to match in the subj or msg
+	 * @param searchStr null, or a search str to match in the DATA (metadata)
 	 * @return the list of the messages in this journal, an empty list, or null on error
 	 */
 	public List<JournalEntry> DBReadJournalMsgsByExpiRange(String journalID, final String from, long startRange, long endRange, String searchStr);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Returns all messages from the given journal, in which the expiration time
+	 * is after the given range, and the date string contains the given search term.
+	 * !!NOTE!! - this method does not correct/fix update timestamp issues!
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean)
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int, String[])
+	 * @see DatabaseEngine#DBReadJournalMsgsByTimeStamps(String, String, long, long)
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateRange(String, String, long, long)
+	 * @param journalID the journal to read all the messages from
+	 * @param startRange the starting timestamp for the range of update times
+	 * @param searchStr null, or a search str to match in the DATA (metadata)
+	 * @return the list of the messages in this journal, an empty list, or null on error
+	 */
+	public List<JournalEntry> DBReadAllJournalMsgsByExpiDateStr(final String journalID, final long startRange, final String searchStr);
 
 	/**
 	 * Table category: DBJOURNALS

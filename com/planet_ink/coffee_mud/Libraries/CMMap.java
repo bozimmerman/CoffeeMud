@@ -62,6 +62,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	protected CMNSortSVec<Deity>		deitiesList				= new CMNSortSVec<Deity>();
 	protected List<Boardable>			shipList				= new SVector<Boardable>();
 	protected Map<String, Object>		SCRIPT_HOST_SEMAPHORES	= new Hashtable<String, Object>();
+	protected Map<String, TimeClock>	clockCache 				= new Hashtable<String, TimeClock>();
 
 	protected static final Comparator<Area>	areaComparator = new Comparator<Area>()
 	{
@@ -185,6 +186,12 @@ public class CMMap extends StdLibrary implements WorldMap
 		if((oneToDel instanceof SpaceObject)&&(CMLib.space().isObjectInSpace((SpaceObject)oneToDel)))
 			CMLib.space().delObjectInSpace((SpaceObject)oneToDel);
 		Resources.removeResource("SYSTEM_AREA_FINDER_CACHE");
+	}
+
+	@Override
+	public Map<String,TimeClock> getClockCache()
+	{
+		return this.clockCache;
 	}
 
 	@Override

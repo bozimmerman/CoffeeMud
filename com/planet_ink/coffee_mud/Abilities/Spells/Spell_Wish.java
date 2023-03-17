@@ -900,6 +900,7 @@ public class Spell_Wish extends Spell
 					}
 				}
 				else
+				if(A!=null)
 				{
 					long start=CMath.s_long(A.text());
 					long age=System.currentTimeMillis()-start;
@@ -938,7 +939,6 @@ public class Spell_Wish extends Spell
 						return true;
 					}
 				}
-
 			}
 
 			// temporary stat changes

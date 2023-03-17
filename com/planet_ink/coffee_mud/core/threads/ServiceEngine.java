@@ -1223,16 +1223,21 @@ public class ServiceEngine implements ThreadEngine
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...shutting down Service Engine: "+ID()+": thread shutdown");
 		CMLib.killThread(drivingThread,100,10);
 		// force final time tick!
-		final Vector<TimeClock> timeObjects=new Vector<TimeClock>();
+		final Set<TimeClock> timeObjects=new HashSet<TimeClock>();
 		for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 		{
 			final Area A=(e.nextElement());
-			if(!timeObjects.contains(A.getTimeObj()))
-				timeObjects.addElement(A.getTimeObj());
+			final TimeClock C = (A!=null)?A.getTimeObj():null;
+			if((C!=null)&&(!timeObjects.contains(C)))
+			{
+				C.tick(null, -1);
+				timeObjects.add(C);
+			}
 		}
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...shutting down Service Engine: "+ID()+": saving time objects");
-		for(int t=0;t<timeObjects.size();t++)
-			timeObjects.elementAt(t).save();
+		for(final TimeClock C : timeObjects)
+			C.save();
+		timeObjects.clear();
 		for(final CMThreadPoolExecutor pool : threadPools)
 		{
 			if(pool != null)

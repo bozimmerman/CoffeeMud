@@ -652,7 +652,7 @@ public class Test extends StdCommand
 			msg.from (author);
 			msg.subj (CMLib.webMacroFilter().clearWebMacros(subject));
 			msg.msg (CMLib.webMacroFilter().clearWebMacros(theMessage));
-			msg.date (dateLong);
+			msg.dateStr(""+dateLong);
 			msg.update (dateLong);
 			msg.parent (parent);
 			msg.msgIcon ("");

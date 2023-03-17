@@ -148,7 +148,7 @@ CREATE TABLE CMCHAR (
 	CMWIMP integer NULL,
 	CMQUES integer NULL,
 	CMROID nvarchar (100) NULL,
-	CMDATE nvarchar (50) NULL,
+	CMDATE nvarchar (70) NULL,
 	CMCHAN integer NULL,
 	CMATTA integer NULL,
 	CMAMOR integer NULL,

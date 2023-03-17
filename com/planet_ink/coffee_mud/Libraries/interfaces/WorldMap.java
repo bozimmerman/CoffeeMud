@@ -148,6 +148,8 @@ public interface WorldMap extends CMLibrary
 	public Deity getDeity(String calledThis);
 	public Enumeration<Deity> deities();
 
+	public Map<String,TimeClock> getClockCache();
+
 	/* ***********************************************************************/
 	/* *							 MESSAGES	 								*/
 	/* ***********************************************************************/

@@ -43,6 +43,7 @@ public class DefaultJournalEntry implements JournalEntry
 	public String		to;
 	public String		subj;
 	public String		msg;
+	public String		dateStr				= "";
 	public long			date				= 0;
 	public long			update				= 0;
 	public long			expiration			= 0;
@@ -57,6 +58,8 @@ public class DefaultJournalEntry implements JournalEntry
 	public boolean		isLastEntry			= false;
 	public List<String>	attachments			= null;
 	public StringBuffer	derivedBuildMessage	= null;
+
+	protected String knownClockName			= null;
 
 	@Override
 	public String ID()
@@ -167,11 +170,62 @@ public class DefaultJournalEntry implements JournalEntry
 		return date;
 	}
 
-	@Override
-	public JournalEntry date(final long date)
+	protected JournalEntry date(final long date)
 	{
 		this.date = date;
 		return this;
+	}
+
+	@Override
+	public String dateStr()
+	{
+		return dateStr;
+	}
+
+	@Override
+	public JournalEntry dateStr(String date)
+	{
+		knownClockName=null;
+		date = date.trim();
+		if(CMath.isInteger(date))
+		{
+			this.date = CMath.s_long(date);
+			this.dateStr = ""+date;
+		}
+		else
+		{
+			final int slashCount = CMStrings.countChars(date,'/');
+			if(slashCount == 1)
+			{
+				final int datestrdex=date.indexOf('/');
+				update(CMath.s_long(date.substring(datestrdex+1)));
+				date(CMath.s_long(date.substring(0,datestrdex)));
+				this.dateStr = ""+date();
+			}
+			else
+			if(slashCount == 3)
+			{
+				final int x = date.indexOf(' ');
+				TimeClock nowC = null;
+				if(x > 0)
+					nowC =CMLib.map().getClockCache().get(date.substring(x+1).trim());
+				if(nowC == null)
+					nowC = CMLib.time().globalClock();
+				knownClockName = nowC.name();
+				final TimeClock C = nowC.fromTimePeriodCodeString(date);
+				date(C.toTimestamp(nowC));
+				this.dateStr = date;
+			}
+		}
+		return this;
+	}
+
+	@Override
+	public TimeClock getKnownClock()
+	{
+		if((knownClockName != null)&&(knownClockName.length()>0))
+			return CMLib.map().getClockCache().get(knownClockName);
+		return null;
 	}
 
 	@Override

@@ -1565,7 +1565,7 @@ public class Create extends StdCommand
 		msg.from(mob.Name());
 		msg.subj(name);
 		msg.msg("");
-		msg.date(System.currentTimeMillis());
+		msg.dateStr(""+System.currentTimeMillis());
 		msg.update(System.currentTimeMillis()+tm);
 		msg.parent("");
 		msg.msgIcon("");

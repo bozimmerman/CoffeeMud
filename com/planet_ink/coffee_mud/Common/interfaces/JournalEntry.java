@@ -124,7 +124,29 @@ public interface JournalEntry extends CMCommon, Cloneable
 	 * @param date the date/time, in ms, that the message was posted
 	 * @return the journal entry
 	 */
-	public JournalEntry date(long date);
+	//public JournalEntry date(long date);
+
+	/**
+	 * If the dateStr for this message was set as an in-game clock,
+	 * then this will attempt to derive the specific clock used
+	 * and then return it.
+	 *
+	 * @return the clock derived from dateStr, or null
+	 */
+	public TimeClock getKnownClock();
+
+	/**
+	 * The date/time, in ms, coded, or "", that the message was posted
+	 * @return the date/time, in ms, coded, or "", that the message was posted
+	 */
+	public String dateStr();
+
+	/**
+	 * Sets the date/time, in ms, coded, or "", that the message was posted
+	 * @param date the date/time, in ms, coded, or "", that the message was posted
+	 * @return the journal entry
+	 */
+	public JournalEntry dateStr(String date);
 
 	/**
 	 * The date/time, in ms, that the message was updated

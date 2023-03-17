@@ -891,68 +891,77 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		return touch;
 	}
 
-	protected boolean processCalendarExpiration(final JournalEntry expiredEntry)
+	protected JournalEntry processCalendarExpiration(final JournalEntry expiredEntry)
 	{
-		boolean somethingDone=false;
-		if((expiredEntry.msg().length()>0)
-		&&(expiredEntry.msg().startsWith("<")))
+		JournalEntry nextStart = null;
+		if((expiredEntry != null)
+		&&(System.currentTimeMillis() >= expiredEntry.expiration())
+		&&(expiredEntry.data().length()>0)
+		&&(expiredEntry.data().startsWith("<")))
 		{
-			final List<XMLTag> pieces = CMLib.xml().parseAllXML(expiredEntry.msg());
-			if(pieces.size()>0)
+			final List<XMLTag> pieces = CMLib.xml().parseAllXML(expiredEntry.data());
+			final XMLTag periodTag = CMLib.xml().getPieceFromPieces(pieces, "PERIOD");
+			final XMLTag durationTag = CMLib.xml().getPieceFromPieces(pieces, "HOURS");
+			if((periodTag != null)&&(durationTag!=null))
 			{
-				final XMLTag dataTag = pieces.get(0);
-				if(dataTag.tag().equalsIgnoreCase("DATA"))
+				final String[] repeat = periodTag.value().trim().toUpperCase().split(" ");
+				if(repeat.length>1)
 				{
-					final XMLTag periodTag = CMLib.xml().getPieceFromPieces(dataTag.contents(), "PERIOD");
-					if((periodTag != null)
-					&&(periodTag.value().trim().length()>0))
+					final JournalEntry newEntry = expiredEntry.copyOf();
+					final long n = CMath.s_long(repeat[0]);
+					final TimePeriod P = (TimePeriod)CMath.s_valueOf(TimePeriod.class, repeat[1]);
+					final int hours = CMath.s_int(durationTag.value());
+					final TimeClock nowC = expiredEntry.getKnownClock();
+					TimeClock expiredC = null;
+					if(nowC != null)
+						expiredC = nowC.fromTimePeriodCodeString(expiredEntry.dateStr());
+					long multiplier = 0;
+					long durationMillis = 0;
+					while((newEntry.date()>0)
+					&&(newEntry.date()<=System.currentTimeMillis()))
 					{
-						final String[] repeat = periodTag.value().trim().toUpperCase().split(" ");
-						if(repeat.length>1)
+						multiplier += 1;
+						if(expiredC != null)
 						{
-							final JournalEntry newEntry = expiredEntry.copyOf();
-							final long n = CMath.s_long(repeat[0]);
-							final TimePeriod P = (TimePeriod)CMath.s_valueOf(TimePeriod.class, repeat[1]);
-							final long ogDiff = expiredEntry.expiration() - expiredEntry.date();
-							if(repeat.length == 3)
+							final TimeClock C = (TimeClock)expiredC.copyOf();
+							C.bump(P, (int)(n * multiplier));
+							newEntry.dateStr(C.toTimePeriodCodeString());
+							durationMillis = CMProps.getMillisPerMudHour() * hours;
+						}
+						else
+						{
+							durationMillis = TimeManager.MILI_HOUR * hours;
+							final Calendar C = Calendar.getInstance();
+							C.setTimeInMillis(newEntry.date());
+							if(P == TimePeriod.SEASON)
 							{
-								final long m = CMath.s_long(repeat[2]);
-								newEntry.date(expiredEntry.date() + (m * n));
+								C.add(Calendar.MONTH, 3*(int)(n*multiplier));
+								newEntry.dateStr(""+(C.getTimeInMillis()));
 							}
 							else
+							if(P == TimePeriod.MONTH)
 							{
-								final Calendar C = Calendar.getInstance();
-								C.setTimeInMillis(newEntry.date());
-								if(P == TimePeriod.SEASON)
-								{
-									C.add(Calendar.MONTH, 3*(int)n);
-									newEntry.date(C.getTimeInMillis());
-								}
-								else
-								if(P == TimePeriod.MONTH)
-								{
-									C.add(Calendar.MONTH, (int)n);
-									newEntry.date(C.getTimeInMillis());
-								}
-								else
-									newEntry.date(expiredEntry.date()+(n*P.getIncrement()));
+								C.add(Calendar.MONTH, (int)(n * multiplier));
+								newEntry.dateStr(""+(C.getTimeInMillis()));
 							}
-							newEntry.update(newEntry.date());
-							newEntry.expiration(ogDiff);
-							CMLib.database().DBWriteJournal("SYSTEM_CALENDAR", newEntry);
-							somethingDone=true;
+							else
+								newEntry.dateStr(""+(expiredEntry.date()+(n*P.getIncrement()*multiplier)));
 						}
 					}
-					dataTag.contents().remove(periodTag);
-					if(dataTag.contents().size()==0)
-						expiredEntry.msg("");
-					else
-						expiredEntry.msg(dataTag.toString());
-					CMLib.database().DBUpdateJournal("SYSTEM_CALENDAR", expiredEntry);
+					if(newEntry.date()>0)
+					{
+						newEntry.update(newEntry.date());
+						newEntry.expiration(newEntry.date() + durationMillis);
+						newEntry.key(null);
+						CMLib.database().DBWriteJournal("SYSTEM_CALENDAR", newEntry);
+						nextStart=newEntry;
+					}
 				}
 			}
+			expiredEntry.data("");
+			CMLib.database().DBUpdateJournal("SYSTEM_CALENDAR", expiredEntry);
 		}
-		return somethingDone;
+		return nextStart;
 	}
 
 	protected void expirationJournalSweep()
@@ -983,7 +992,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			boolean resetCalendar = false;
 			final List<JournalEntry> expired=CMLib.database().DBReadJournalMsgsByExpiRange("SYSTEM_CALENDAR",null,lastSweepTime, System.currentTimeMillis(), "<PERIOD>");
 			for(final JournalEntry expiredEntry : expired)
-				resetCalendar = processCalendarExpiration(expiredEntry) || resetCalendar;
+				resetCalendar = (processCalendarExpiration(expiredEntry) != null) || resetCalendar;
 			final long expirationDate = System.currentTimeMillis() - TimeManager.MILI_YEAR;
 			final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsOlderThan("SYSTEM_CALENDAR",null,expirationDate);
 			for(int i=items.size()-1;i>=0;i--)
@@ -1051,43 +1060,69 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			for(final JournalEntry E : jobs)
 				cronJobs.add(new Pair<Long,String>(Long.valueOf(E.update()),E.key()));
 		}
-		resetCalendarEvents();
+		initializeCalendarEvents();
 		return true;
 	}
 
-	protected synchronized void resetCalendarEvents(final long now)
+	protected void initializeCalendarEvents()
 	{
-		this.nextEvents.clear();
-		CMLib.threads().deleteTick(this, Tickable.TICKID_EVENT);
-		final List<JournalEntry> calendar = new Vector<JournalEntry>();
-		long endestTime = System.currentTimeMillis() + TimeManager.MILI_YEAR;
-		for(final JournalEntry holiday : CMLib.quests().getHolidayEntries())
+		final List<JournalEntry> entries=CMLib.database().DBReadAllJournalMsgsByExpiDateStr("SYSTEM_CALENDAR",System.currentTimeMillis(), "/");
+		for(final JournalEntry entry : entries)
 		{
-			if(holiday.date()>=now)
+			final long diff = Math.abs(entry.update()-entry.date());
+			if(diff >= CMProps.getMillisPerMudHour())
 			{
-				calendar.add(holiday);
-				if(holiday.date()<endestTime)
-					endestTime=holiday.date();
-			}
-		}
-		long nextTime = endestTime+1000;
-		calendar.addAll(CMLib.database().DBReadJournalMsgsByUpdateRange("SYSTEM_CALENDAR", null, now, nextTime));
-		final List<JournalEntry> partials = new LinkedList<JournalEntry>();
-		for(final JournalEntry entry : calendar)
-		{
-			if(entry.date() <= nextTime)
-			{
-				if(entry.date() < nextTime)
+				entry.update(entry.date());
+				final List<XMLTag> pieces = CMLib.xml().parseAllXML(entry.data());
+				final XMLTag durationTag = CMLib.xml().getPieceFromPieces(pieces, "HOURS");
+				if(durationTag != null)
 				{
-					partials.clear();
-					nextTime=entry.date();
+					final int num = CMath.s_int(durationTag.value());
+					entry.expiration(entry.date() + (CMProps.getMillisPerMudHour() * num));
 				}
-				partials.add(entry);
+				Log.debugOut("Fixing calendar entry "+entry.key());
+				CMLib.database().DBUpdateJournal("SYSTEM_CALENDAR", entry);
 			}
 		}
-		nextEvents.addAll(partials);
-		if(nextEvents.size()>0)
-			CMLib.threads().startTickDown(this, Tickable.TICKID_EVENT, nextTime-System.currentTimeMillis(), 1);
+		resetCalendarEvents();
+	}
+
+	protected void resetCalendarEvents(final long now)
+	{
+		synchronized(this.nextEvents)
+		{
+			this.nextEvents.clear();
+			CMLib.threads().deleteTick(this, Tickable.TICKID_EVENT);
+			final List<JournalEntry> calendar = new Vector<JournalEntry>();
+			long endestTime = System.currentTimeMillis() + TimeManager.MILI_YEAR;
+			for(final JournalEntry holiday : CMLib.quests().getHolidayEntries())
+			{
+				if(holiday.date()>=now)
+				{
+					calendar.add(holiday);
+					if(holiday.date()<endestTime)
+						endestTime=holiday.date();
+				}
+			}
+			long nextTime = endestTime+1000;
+			calendar.addAll(CMLib.database().DBReadJournalMsgsByUpdateRange("SYSTEM_CALENDAR", null, now, nextTime));
+			final List<JournalEntry> partials = new LinkedList<JournalEntry>();
+			for(final JournalEntry entry : calendar)
+			{
+				if(entry.date() <= nextTime)
+				{
+					if(entry.date() < nextTime)
+					{
+						partials.clear();
+						nextTime=entry.date();
+					}
+					partials.add(entry);
+				}
+			}
+			nextEvents.addAll(partials);
+			if(nextEvents.size()>0)
+				CMLib.threads().startTickDown(this, Tickable.TICKID_EVENT, nextTime-System.currentTimeMillis(), 1);
+		}
 	}
 
 	@Override
@@ -1096,12 +1131,63 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		resetCalendarEvents(System.currentTimeMillis());
 	}
 
-	protected String getCalendarEvent(final TimeClock localClock, final JournalEntry event)
+	protected String getCalendarEvent(TimeClock localClock, final JournalEntry event)
 	{
+		if(localClock == null)
+			localClock = event.getKnownClock();
+		if(localClock == null)
+			localClock = CMLib.time().globalClock();
 		final TimeClock eC = localClock.deriveClock(event.expiration());
-		String endDateStr = "-"+eC.getShortestTimeDescription();
+		String endDateStr = eC.getShortestTimeDescription();
 		endDateStr += " (" + CMLib.time().date2String24(event.expiration())+")";
-		return L("'@x1' is now started, and will end at @x2.",event.subj(),endDateStr);
+		final long expiresIn = event.expiration() - System.currentTimeMillis();
+		if((event.msg().trim().length()>0)
+		&&(event.msg().indexOf("<PERIOD>")>=0)
+		&&(!event.from().equalsIgnoreCase("Holiday"))
+		&&(expiresIn < (TimeManager.MILI_HOUR+CMProps.getTickMillis()))
+		&&(expiresIn > 0))
+		{
+			final CMJournals lib = this;
+			CMLib.threads().scheduleRunnable(new Runnable()
+			{
+				final String key = event.key();
+				final CMJournals me = lib;
+				@Override
+				public void run()
+				{
+					final JournalEntry entry = CMLib.database().DBReadJournalEntry("SYSTEM_CALENDAR", key);
+					final JournalEntry nextStart = processCalendarExpiration(entry);
+					if((nextStart!=null)&&(nextStart.date() > System.currentTimeMillis()))
+					{
+						synchronized(me.nextEvents)
+						{
+							if(me.nextEvents.size()>0)
+							{
+								final JournalEntry sampleE = me.nextEvents.get(0);
+								if(nextStart.date() < sampleE.date())
+								{
+									CMLib.threads().deleteTick(me, Tickable.TICKID_EVENT);
+									me.nextEvents.clear();
+									nextEvents.add(nextStart);
+									CMLib.threads().startTickDown(lib, Tickable.TICKID_EVENT, nextStart.date()-System.currentTimeMillis(), 1);
+								}
+								else
+								if(nextStart.date() == sampleE.date())
+									me.nextEvents.add(nextStart);
+							}
+							else
+							{
+								CMLib.threads().deleteTick(me, Tickable.TICKID_EVENT);
+								me.nextEvents.clear();
+								nextEvents.add(nextStart);
+								CMLib.threads().startTickDown(lib, Tickable.TICKID_EVENT, nextStart.date()-System.currentTimeMillis(), 1);
+							}
+						}
+					}
+				}
+			}, expiresIn);
+		}
+		return L("@x1 is now started, and will end at @x2.",event.subj(),endDateStr);
 	}
 
 	protected void postCalendarEventTo(final JournalEntry event, final List<Area> areas, final MOB M)
@@ -1144,58 +1230,61 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		}
 	}
 
-	protected synchronized void processCalendarEvents()
+	protected void processCalendarEvents()
 	{
-		final long resetTime =System.currentTimeMillis() + CMProps.getTickMillis();
-		final List<Area> areas = new LinkedList<Area>();
-		for(final JournalEntry event : nextEvents)
+		synchronized(this.nextEvents)
 		{
-			areas.clear();
-			if(event.to().length() > 0)
+			final long resetTime =System.currentTimeMillis() + CMProps.getTickMillis();
+			final List<Area> areas = new LinkedList<Area>();
+			for(final JournalEntry event : nextEvents)
 			{
-				final List<String> areaNames = CMParms.parse(event.to().toUpperCase().trim());
-				if((!areaNames.contains("ALL"))&&(!areaNames.contains("ANY")))
+				areas.clear();
+				if(event.to().length() > 0)
 				{
-					for(final String sA : areaNames)
+					final List<String> areaNames = CMParms.parse(event.to().toUpperCase().trim());
+					if((!areaNames.contains("ALL"))&&(!areaNames.contains("ANY")))
 					{
-						final Area A = CMLib.map().findArea(sA);
-						if(A!=null)
-							areas.add(A);
+						for(final String sA : areaNames)
+						{
+							final Area A = CMLib.map().findArea(sA);
+							if(A!=null)
+								areas.add(A);
+						}
 					}
 				}
-			}
-			if(event.from().equals("SYSTEM")||event.from().equals("Holiday"))
-			{
-				if(areas.size()==0)
+				if(event.from().equals("SYSTEM")||event.from().equals("Holiday"))
 				{
-					final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CALENDAR, null);
-					for(int i=0;i<channels.size();i++)
-						CMLib.commands().postChannel(channels.get(i),null,getCalendarEvent(CMLib.time().globalClock(),event),true);
+					if(areas.size()==0)
+					{
+						final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CALENDAR, null);
+						for(int i=0;i<channels.size();i++)
+							CMLib.commands().postChannel(channels.get(i),null,getCalendarEvent(null,event),true);
+					}
+					else
+					{
+						for(final Session S : CMLib.sessions().allIterableAllHosts())
+						{
+							final MOB M = (S!=null)?S.mob():null;
+							if(M!=null)
+								postCalendarEventTo(event, areas, M);
+						}
+					}
 				}
 				else
 				{
-					for(final Session S : CMLib.sessions().allIterableAllHosts())
+					final Clan C = CMLib.clans().fetchClanAnyHost(event.from());
+					if(C != null)
+						C.clanAnnounce(getCalendarEvent(null,event));
+					else
 					{
-						final MOB M = (S!=null)?S.mob():null;
+						final MOB M = CMLib.players().getPlayerAllHosts(event.from());
 						if(M!=null)
 							postCalendarEventTo(event, areas, M);
 					}
 				}
 			}
-			else
-			{
-				final Clan C = CMLib.clans().fetchClanAnyHost(event.from());
-				if(C != null)
-					C.clanAnnounce(getCalendarEvent(CMLib.time().globalClock(),event));
-				else
-				{
-					final MOB M = CMLib.players().getPlayerAllHosts(event.from());
-					if(M!=null)
-						postCalendarEventTo(event, areas, M);
-				}
-			}
+			resetCalendarEvents(resetTime);
 		}
-		resetCalendarEvents(resetTime);
 	}
 
 	@Override

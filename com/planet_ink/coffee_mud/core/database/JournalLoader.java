@@ -176,13 +176,12 @@ public class JournalLoader
 		return journals;
 	}
 
-	protected JournalEntry DBReadJournalEntry(final ResultSet R)
+	protected JournalEntry DBReadJournalEntry(final ResultSet R, final boolean fixUpdateTimestamp)
 	{
 		final JournalEntry entry=(JournalEntry)CMClass.getCommon("DefaultJournalEntry");
 		entry.key		(DBConnections.getRes(R,"CMJKEY"));
 		entry.from		(DBConnections.getRes(R,"CMFROM"));
 
-		final String dateStr = DBConnections.getRes(R,"CMDATE");
 		entry.to		(DBConnections.getRes(R,"CMTONM"));
 		entry.subj		(DBConnections.getRes(R,"CMSUBJ"));
 		entry.parent	(DBConnections.getRes(R,"CMPART"));
@@ -194,37 +193,30 @@ public class JournalLoader
 		entry.replies	(CMath.s_int(DBConnections.getRes(R, "CMREPL")));
 		entry.msg		(DBConnections.getRes(R,"CMMSGT"));
 		entry.expiration(CMath.s_long(DBConnections.getRes(R, "CMEXPI")));
-
-		final int datestrdex=dateStr.indexOf('/');
-		if(datestrdex>=0)
+		entry.dateStr   (DBConnections.getRes(R, "CMDATE"));
+		if(fixUpdateTimestamp)
 		{
-			entry.update(CMath.s_long(dateStr.substring(datestrdex+1)));
-			entry.date(CMath.s_long(dateStr.substring(0,datestrdex)));
-		}
-		else
-		{
-			entry.date(CMath.s_long(dateStr));
 			if(entry.update()<entry.date())
 				entry.update(entry.date());
-		}
 
-		final String subject=entry.subj().toUpperCase();
-		if((subject.startsWith("MOTD"))
-		||(subject.startsWith("MOTM"))
-		||(subject.startsWith("MOTY")))
-		{
-			final char c=subject.charAt(3);
-			entry.subj(entry.subj().substring(4));
-			long last=entry.date();
-			if(c=='D')
-				last=last+TimeManager.MILI_DAY;
-			else
-			if(c=='M')
-				last=last+TimeManager.MILI_MONTH;
-			else
-			if(c=='Y')
-				last=last+TimeManager.MILI_YEAR;
-			entry.update(last);
+			final String subject=entry.subj().toUpperCase();
+			if((subject.startsWith("MOTD"))
+			||(subject.startsWith("MOTM"))
+			||(subject.startsWith("MOTY")))
+			{
+				final char c=subject.charAt(3);
+				entry.subj(entry.subj().substring(4));
+				long last=entry.date();
+				if(c=='D')
+					last=last+TimeManager.MILI_DAY;
+				else
+				if(c=='M')
+					last=last+TimeManager.MILI_MONTH;
+				else
+				if(c=='Y')
+					last=last+TimeManager.MILI_YEAR;
+				entry.update(last);
+			}
 		}
 		return entry;
 	}
@@ -269,7 +261,7 @@ public class JournalLoader
 			final Map<String,JournalEntry> parentKeysDone=new HashMap<String,JournalEntry>();
 			while(((cardinal < limit)||(limit==0)) && R.next())
 			{
-				entry = DBReadJournalEntry(R);
+				entry = DBReadJournalEntry(R,true);
 				if((parent!=null)&&(CMath.bset(entry.attributes(),JournalEntry.JournalAttrib.STUCKY.bit)))
 					continue;
 				if(searching)
@@ -357,7 +349,7 @@ public class JournalLoader
 			boolean done=false;
 			while( (!done) && R.next())
 			{
-				entry = DBReadJournalEntry(R);
+				entry = DBReadJournalEntry(R,true);
 				if(searching)
 				{
 					final long updated=entry.update();
@@ -600,11 +592,7 @@ public class JournalLoader
 				ResultSet R = D.query(sql);
 				R = D.query(sql);
 				while(R.next())
-				{
-					final JournalEntry entry = DBReadJournalEntry(R);
-					if(entry != null)
-						entries.add(entry);
-				}
+					entries.add(DBReadJournalEntry(R,true));
 				R.close();
 			}
 			catch(final Exception sqle)
@@ -644,11 +632,45 @@ public class JournalLoader
 				sql += " ORDER BY CMUPTM ASC";
 				final ResultSet R = D.query(sql);
 				while(R.next())
+					entries.add(DBReadJournalEntry(R,true));
+			}
+			catch(final Exception sqle)
+			{
+				Log.errOut("Journal",sqle);
+			}
+			finally
+			{
+				DB.DBDone(D);
+			}
+		}
+		return entries;
+	}
+
+	public List<JournalEntry> DBReadAllJournalMsgsByExpiDateStr(String journalID, final long startRange, String searchStr)
+	{
+		journalID = DB.injectionClean(journalID);
+
+		final List<JournalEntry> entries = new Vector<JournalEntry>();
+		if(journalID==null)
+			return entries;
+		synchronized(CMClass.getSync("JOURNAL_"+journalID.toUpperCase()))
+		{
+			//Resources.submitResource("JOURNAL_"+journal);
+			DBConnection D=null;
+			try
+			{
+				D=DB.DBFetch();
+				String sql="SELECT * FROM CMJRNL WHERE CMJRNL='"+journalID+"' "
+						+ "AND CMEXPI >= "+startRange+" ";
+				if((searchStr != null)&&(searchStr.length()>0))
 				{
-					final JournalEntry entry = DBReadJournalEntry(R);
-					if(entry != null)
-						entries.add(entry);
+					searchStr = DB.injectionClean(searchStr);
+					sql += " AND CMDATE LIKE '%"+searchStr+"%' ";
 				}
+				sql += " ORDER BY CMUPTM ASC";
+				final ResultSet R = D.query(sql);
+				while(R.next())
+					entries.add(DBReadJournalEntry(R,false));
 			}
 			catch(final Exception sqle)
 			{
@@ -682,7 +704,7 @@ public class JournalLoader
 				if((search != null)&&(search.length()>0))
 				{
 					search = DB.injectionClean(search);
-					sql += " AND CMMSG LIKE '%"+search+"'% ";
+					sql += " AND CMDATA LIKE '%"+search+"%' ";
 				}
 				if((from != null)&&(from.length()>0))
 				{
@@ -692,11 +714,7 @@ public class JournalLoader
 				sql += " ORDER BY CMUPTM ASC";
 				final ResultSet R = D.query(sql);
 				while(R.next())
-				{
-					final JournalEntry entry = DBReadJournalEntry(R);
-					if(entry != null)
-						entries.add(entry);
-				}
+					entries.add(DBReadJournalEntry(R,true));
 			}
 			catch(final Exception sqle)
 			{
@@ -800,10 +818,7 @@ public class JournalLoader
 				final String sql="SELECT * FROM CMJRNL WHERE CMJKEY='"+messageKey+"' AND CMJRNL='"+journal+"'";
 				final ResultSet R=D.query(sql);
 				if(R.next())
-				{
-					final JournalEntry entry = DBReadJournalEntry(R);
-					return entry;
-				}
+					return DBReadJournalEntry(R,true);
 			}
 			catch(final Exception sqle)
 			{
@@ -866,16 +881,16 @@ public class JournalLoader
 
 		String sql="UPDATE CMJRNL SET "
 				  +"CMFROM='"+entry.from()+"' , "
-				  +"CMDATE='"+entry.date()+"' , "
+				  +"CMDATE='"+entry.dateStr()+"' , "
 				  +"CMTONM='"+entry.to()+"' , "
 				  +"CMSUBJ=? ,"
 				  +"CMPART='"+entry.parent()+"' ,"
 				  +"CMATTR="+entry.attributes()+" ,"
-				  +"CMDATA='"+entry.data()+"' "
+				  +"CMDATA=? "
 				  +"WHERE CMJRNL='"+journal+"' AND CMJKEY='"+entry.key()+"'";
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
 			Log.debugOut("JournalLoader",sql);
-		DB.updateWithClobs(sql,entry.subj());
+		DB.updateWithClobs(sql,entry.subj(),entry.data());
 
 		sql="UPDATE CMJRNL SET "
 		  + "CMUPTM="+entry.update()+", "
@@ -993,7 +1008,7 @@ public class JournalLoader
 			final ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+metaData.name()+"' AND CMTONM='JOURNALINTRO'");
 			JournalEntry entry = null;
 			if(R.next())
-				entry = this.DBReadJournalEntry(R);
+				entry = this.DBReadJournalEntry(R,false);
 			R.close();
 			if(entry!=null)
 			{
@@ -1001,7 +1016,7 @@ public class JournalLoader
 				entry.msg		(metaData.longIntro());
 				entry.data		(metaData.imagePath());
 				entry.attributes(JournalEntry.JournalAttrib.PROTECTED.bit);
-				entry.date		(-1);
+				entry.dateStr	("-1");
 				entry.update	(-1);
 				DBUpdateJournal(journal,entry);
 			}
@@ -1014,7 +1029,7 @@ public class JournalLoader
 				entry.to		("JOURNALINTRO");
 				entry.from		("");
 				entry.attributes(JournalEntry.JournalAttrib.PROTECTED.bit);
-				entry.date		(-1);
+				entry.dateStr	("-1");
 				entry.update	(-1);
 				this.DBWrite(journal, entry);
 			}
@@ -1085,14 +1100,11 @@ public class JournalLoader
 			final ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+metaData.name()+"' AND CMTONM='JOURNALINTRO'");
 			if(R.next())
 			{
-				final JournalEntry entry = this.DBReadJournalEntry(R);
-				if(entry != null)
-				{
-					metaData.introKey	(entry.key());
-					metaData.longIntro	(entry.msg());
-					metaData.shortIntro(entry.subj());
-					metaData.imagePath	(entry.data());
-				}
+				final JournalEntry entry = this.DBReadJournalEntry(R,false);
+				metaData.introKey	(entry.key());
+				metaData.longIntro	(entry.msg());
+				metaData.shortIntro(entry.subj());
+				metaData.imagePath	(entry.data());
 			}
 			R.close();
 		}
@@ -1193,7 +1205,7 @@ public class JournalLoader
 		entry.key (null);
 		entry.data (journalSource);
 		entry.from (from);
-		entry.date (System.currentTimeMillis());
+		entry.dateStr (""+System.currentTimeMillis());
 		entry.to (to);
 		entry.subj (subject);
 		entry.msg (message);
@@ -1224,7 +1236,7 @@ public class JournalLoader
 			if(entry.key()==null)
 				entry.key(journal+now+Math.random());
 			if(entry.date()==0)
-				entry.date(now);
+				entry.dateStr(""+now);
 			if(entry.update()==0)
 				entry.update(now);
 			final String sql = "INSERT INTO CMJRNL ("
@@ -1247,13 +1259,13 @@ public class JournalLoader
 				+entry.key()
 				+"','"+journal
 				+"','"+entry.from()
-				+"','"+entry.date()
+				+"','"+entry.dateStr()
 				+"','"+entry.to()
 				+"',?"
 				+",'"+entry.parent()
 				+"',"+entry.attributes()
-				+",'"+entry.data()
-				+"',"+entry.update()
+				+",?"
+				+","+entry.update()
 				+",'"+entry.msgIcon()
 				+"',"+entry.views()
 				+","+entry.replies()
@@ -1261,7 +1273,7 @@ public class JournalLoader
 				+","+entry.expiration()+")";
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
 				Log.debugOut("JournalLoader",sql);
-			DB.updateWithClobs(sql , entry.subj(), entry.msg());
+			DB.updateWithClobs(sql , entry.subj(), entry.data(), entry.msg());
 			if((entry.parent()!=null)&&(entry.parent().length()>0))
 			{
 				// this constitutes a threaded reply -- update the counter

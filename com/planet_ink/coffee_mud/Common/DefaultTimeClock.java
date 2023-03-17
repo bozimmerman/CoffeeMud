@@ -45,7 +45,7 @@ public class DefaultTimeClock implements TimeClock
 	@Override
 	public String name()
 	{
-		return "Time Object";
+		return loadName;
 	}
 
 	@Override
@@ -103,6 +103,8 @@ public class DefaultTimeClock implements TimeClock
 	protected int[]		dawnToDusk		= { 0, 1, 4, 6 };
 	protected String[]	weekNames		= {};
 	protected String[]	yearNames		= { "year #" };
+
+	protected long		clockCode		= -1;
 
 	@Override
 	public int getHoursInDay()
@@ -527,7 +529,6 @@ public class DefaultTimeClock implements TimeClock
 		}
 		catch(final CloneNotSupportedException e)
 		{
-
 		}
 		return CMLib.time().globalClock();
 	}
@@ -782,6 +783,34 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
+	public void bump(final TimePeriod P, final int num)
+	{
+		switch(P)
+		{
+		case DAY:
+			bumpDays(num);
+			break;
+		case HOUR:
+			bumpHours(num);
+			break;
+		case MONTH:
+			bumpMonths(num);
+			break;
+		case SEASON:
+			bumpMonths(getMonthsInSeason() * num);
+			break;
+		case WEEK:
+			bumpWeeks(num);
+			break;
+		case YEAR:
+			bumpYears(num);
+			break;
+		case ALLTIME:
+			break;
+		}
+	}
+
+	@Override
 	public long toHoursSinceEpoc()
 	{
 		final long hoursInDay = this.getHoursInDay();
@@ -841,6 +870,38 @@ public class DefaultTimeClock implements TimeClock
 			+"<YEARS>"+CMParms.toListString(getYearNames())+"</YEARS>"
 			);
 		}
+	}
+
+	@Override
+	public String toTimePeriodCodeString()
+	{
+		return getYear()+"/"+getMonth()+"/"+getDayOfMonth()+"/"+getHourOfDay()+" "+loadName;
+	}
+
+	@Override
+	public TimeClock fromTimePeriodCodeString(String period)
+	{
+		TimeClock C = null;
+		period = period.trim();
+		final int x = period.indexOf(' ');
+		String[] date;
+		if(x<0)
+			date = period.split("/");
+		else
+		{
+			date = period.substring(0,x).trim().split("/");
+			final String clockName =  period.substring(x+1).trim();
+			final TimeClock foundClock = CMLib.map().getClockCache().get(clockName);
+			if(foundClock != null)
+				C = (TimeClock)foundClock.copyOf();
+		}
+		if(C == null)
+			C = (TimeClock)this.copyOf();
+		C.setYear(CMath.s_int(date[0]));
+		C.setMonth(CMath.s_int(date[1]));
+		C.setDayOfMonth(CMath.s_int(date[2]));
+		C.setHourOfDay(CMath.s_int(date[3]));
+		return C;
 	}
 
 	@Override
@@ -905,6 +966,7 @@ public class DefaultTimeClock implements TimeClock
 					setYearNames(CMParms.toStringArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"YEARS"),true)));
 				}
 			}
+			CMLib.map().getClockCache().put(loadName, this);
 		}
 		if(timeToTick)
 			tickTock(1);

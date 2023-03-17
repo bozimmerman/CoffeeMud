@@ -662,6 +662,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public List<JournalEntry> DBReadAllJournalMsgsByExpiDateStr(final String journalID, final long startRange, final String searchStr)
+	{
+		return JournalLoader.DBReadAllJournalMsgsByExpiDateStr(journalID, startRange, searchStr);
+	}
+
+	@Override
 	public List<JournalEntry> DBReadJournalMsgsByTimeStamps(final String journalID, final String from, final long startRange, final long endRange)
 	{
 		return JournalLoader.DBReadJournalMsgsByTimeStamps(journalID, from, startRange, endRange);

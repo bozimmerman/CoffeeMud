@@ -203,7 +203,7 @@ public class Prayer_AnimateSpectre extends Prayer
 				newMOB.setDisplayText(L("@x1 spectre is here",race));
 				newMOB.basePhyStats().setLevel(getUndeadLevel(mob,9,body.phyStats().level()));
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
-				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
+				newMOB.baseCharStats().setMyRace(CMClass.getRace("Spirit"));
 				newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
 				final Ability P=CMClass.getAbility("Prop_StatTrainer");
 				if(P!=null)

@@ -466,6 +466,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @see TimeClock#bumpWeeks(int)
 	 * @see TimeClock#bumpMonths(int)
 	 * @see TimeClock#bumpYears(int)
+	 * @see TimeClock#bump(int)
 	 * @param num the number to bump
 	 */
 	public void bumpHours(int num);
@@ -478,6 +479,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @see TimeClock#bumpWeeks(int)
 	 * @see TimeClock#bumpMonths(int)
 	 * @see TimeClock#bumpYears(int)
+	 * @see TimeClock#bump(int)
 	 * @param num the number to bump
 	 */
 	public void bumpDays(int num);
@@ -490,6 +492,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @see TimeClock#bumpDays(int)
 	 * @see TimeClock#bumpMonths(int)
 	 * @see TimeClock#bumpYears(int)
+	 * @see TimeClock#bump(int)
 	 * @param num the number to bump
 	 */
 	public void bumpWeeks(int num);
@@ -502,6 +505,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @see TimeClock#bumpDays(int)
 	 * @see TimeClock#bumpWeeks(int)
 	 * @see TimeClock#bumpYears(int)
+	 * @see TimeClock#bump(int)
 	 * @param num the number to bump
 	 */
 	public void bumpMonths(int num);
@@ -514,9 +518,25 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @see TimeClock#bumpDays(int)
 	 * @see TimeClock#bumpWeeks(int)
 	 * @see TimeClock#bumpMonths(int)
+	 * @see TimeClock#bump(int)
 	 * @param num the number to bump
 	 */
 	public void bumpYears(int num);
+
+	/**
+	 * Increase this clocks time by the given number of
+	 * time periods.
+	 *
+	 * @see TimeClock#tickTock(int)
+	 * @see TimeClock#bumpHours(int)
+	 * @see TimeClock#bumpDays(int)
+	 * @see TimeClock#bumpWeeks(int)
+	 * @see TimeClock#bumpMonths(int)
+	 * @see TimeClock#bumpYears(int)
+	 * @param P the time period
+	 * @param num the number of periods to bump by
+	 */
+	public void bump(final TimePeriod P, final int num);
 
 	/**
 	 * Returns the total hours since epoc
@@ -570,6 +590,22 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @return the real time of this clock.
 	 */
 	public long toTimestamp(TimeClock now);
+
+	/**
+	 * Returns this clocks date/time, plus a brief
+	 * definition of the scale of the various time periods.
+	 *
+	 * @return the coded time
+	 */
+	public String toTimePeriodCodeString();
+
+	/**
+	 * Copies this clock and sets it accord to
+	 * the coded date/time.
+	 *
+	 * @param period the coded time
+	 */
+	public TimeClock fromTimePeriodCodeString(final String period);
 
 	/**
 	 * Different time periods.

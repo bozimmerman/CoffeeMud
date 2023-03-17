@@ -1787,6 +1787,16 @@ public class MUD extends Thread implements MudHost
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: readying for connections.");
 			try
 			{
+				// start all clocks
+				final TimeClock gC = CMLib.time().globalClock();
+				gC.tick(null, -1);
+				for(final Enumeration<Area> a = CMLib.map().areas();a.hasMoreElements();)
+				{
+					final Area A=a.nextElement();
+					final TimeClock C = A.getTimeObj();
+					if(C != gC)
+						C.tick(null, -1);
+				}
 				CMLib.activateLibraries();
 				Log.sysOut(Thread.currentThread().getName(),"Services and utilities started");
 			}

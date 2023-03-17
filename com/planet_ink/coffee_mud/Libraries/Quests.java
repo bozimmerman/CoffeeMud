@@ -47,7 +47,6 @@ public class Quests extends StdLibrary implements QuestManager
 	protected String holidayFilename="quests/holidays/holidays.quest";
 	protected String holidayDefinition="LOAD="+holidayFilename;
 	protected SVector<Quest> quests=new SVector<Quest>();
-	protected List<JournalEntry> cachedHolidayInfo = null;
 
 	@Override
 	public Quest objectInUse(final Environmental E)
@@ -203,13 +202,14 @@ public class Quests extends StdLibrary implements QuestManager
 		return steps;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<JournalEntry> getHolidayEntries()
 	{
 		List<JournalEntry> holidayInfo;
 		synchronized(this)
 		{
-			holidayInfo = this.cachedHolidayInfo;
+			holidayInfo = (List<JournalEntry>)Resources.getResource("HOLIDAY_CACHE_"+super.name);
 			if(holidayInfo != null)
 				return holidayInfo;
 			else
@@ -266,24 +266,29 @@ public class Quests extends StdLibrary implements QuestManager
 						}
 					}
 				}
-				if(nameLine!=null)
+				if((nameLine!=null)
+				&&((muddayLine!=null)||(dateLine!=null)))
 				{
 					final JournalEntry entry = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
 					entry.subj(CMParms.combine(nameLine,2));
 					if(areaLine != null)
 						entry.to(CMParms.combineQuoted(areaLine, 2));
+					else
+						entry.to("ALL");
 					if(muddayLine != null)
 					{
-						entry.date(parseMudDay(CMParms.combine(muddayLine, 2)));
+						entry.dateStr(""+parseMudDay(CMParms.combine(muddayLine, 2)));
 						entry.update(entry.date());
 					}
 					if(dateLine != null)
 					{
-						entry.date(parseRLDate(CMParms.combine(dateLine, 2)));
+						entry.dateStr(""+parseRLDate(CMParms.combine(dateLine, 2)));
 						entry.update(entry.date());
 					}
 					if((duraLine != null) && (entry.date() != 0))
 						entry.expiration(entry.date() + (CMProps.getTickMillis() * CMath.s_long(CMParms.combine(duraLine, 2))));
+					else
+						entry.expiration(entry.date() + CMProps.getMillisPerMudHour());
 					entry.from("Holiday");
 					holidayInfo.add(entry);
 				}
@@ -294,9 +299,9 @@ public class Quests extends StdLibrary implements QuestManager
 		}
 		synchronized(this)
 		{
-			if(this.cachedHolidayInfo == null)
-				this.cachedHolidayInfo = holidayInfo;
-			return this.cachedHolidayInfo;
+			if(!Resources.isResource("HOLIDAY_CACHE_"+super.name))
+				Resources.submitResource("HOLIDAY_CACHE_"+super.name, holidayInfo);
+			return holidayInfo;
 		}
 	}
 
@@ -496,7 +501,7 @@ public class Quests extends StdLibrary implements QuestManager
 		final Quest Q=fetchQuest("holidays");
 		if(Q!=null)
 			Q.setScript(holidayDefinition,true);
-		cachedHolidayInfo = null;
+		Resources.removeResource("HOLIDAY_CACHE_"+super.name);
 		return "Holiday deleted.";
 	}
 
@@ -986,7 +991,7 @@ public class Quests extends StdLibrary implements QuestManager
 		final Quest Q=fetchQuest("holidays");
 		if(Q!=null)
 			Q.setScript(holidayDefinition,true);
-		cachedHolidayInfo = null;
+		Resources.removeResource("HOLIDAY_CACHE_"+super.name);
 		return "";
 	}
 
