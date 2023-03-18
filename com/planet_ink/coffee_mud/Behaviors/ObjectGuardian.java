@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -41,6 +42,9 @@ public class ObjectGuardian extends StdBehavior
 	}
 
 	protected boolean sentinal=false;
+	protected boolean dropok=false;
+	protected CompiledZMask itemMask = null;
+	protected CompiledZMask mobMask = null;
 
 	@Override
 	public void setParms(final String parameters)
@@ -48,6 +52,9 @@ public class ObjectGuardian extends StdBehavior
 		super.setParms(parameters);
 		final List<String> parts=CMParms.parse(parameters.toUpperCase());
 		sentinal=parts.contains("SENTINAL")||parts.contains("SENTINEL");
+		dropok=parts.contains("DROPOK")||parts.contains("DROPOK");
+		itemMask = CMLib.masking().maskCompile(CMParms.getParmStr(parameters, "ITEMMASK", ""));
+		mobMask = CMLib.masking().maskCompile(CMParms.getParmStr(parameters, "MOBMASK", ""));
 	}
 
 	@Override
@@ -78,7 +85,10 @@ public class ObjectGuardian extends StdBehavior
 
 		if((mob!=monster)
 		&&(((msg.sourceMinor()==CMMsg.TYP_THROW)&&(monster.location()==CMLib.map().roomLocation(msg.target())))
-			||(msg.sourceMinor()==CMMsg.TYP_DROP)))
+			||(msg.sourceMinor()==CMMsg.TYP_DROP))
+		&&(!dropok)
+		&&((itemMask==null)||(!(msg.tool() instanceof Item))||CMLib.masking().maskCheck(itemMask, msg.tool(), false))
+		&&((mobMask==null)||CMLib.masking().maskCheck(mobMask, mob, false)))
 		{
 			final CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> won't let <T-NAME> drop that."));
 			if(monster.location().okMessage(monster,msgs))
@@ -90,7 +100,10 @@ public class ObjectGuardian extends StdBehavior
 		else
 		if((mob!=monster)
 		&&((msg.sourceMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
-		&&(!mob.isMine(msg.target())))
+		&&(msg.target() instanceof Item)
+		&&(!mob.isMine(msg.target()))
+		&&((itemMask==null)||CMLib.masking().maskCheck(itemMask, msg.target(), false))
+		&&((mobMask==null)||CMLib.masking().maskCheck(mobMask, mob, false)))
 		{
 			final CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> won't let <T-NAME> touch that."));
 			if(monster.location().okMessage(monster,msgs))

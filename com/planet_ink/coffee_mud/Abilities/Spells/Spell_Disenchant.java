@@ -41,7 +41,7 @@ public class Spell_Disenchant extends Spell
 		return "Spell_Disenchant";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Disenchant");
+	private final static String localizedName = CMLib.lang().L("Disenchant Item");
 
 	@Override
 	public String name()

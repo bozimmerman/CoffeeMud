@@ -426,15 +426,17 @@ public class CalendarCmd extends StdCommand
 				toTm = System.currentTimeMillis() + CMProps.getTickMillis();
 			}
 			final List<JournalEntry> all = getCalendarByExpirationRange(mob, fromTm, toTm);
+			final String perName = (rl[0]?L("real life "):"")+per.name().toLowerCase();
+
 			if(all.size()==0)
 			{
 				if(CMLib.flags().isInTheGame(mob, true))
-					mob.tell(L("There are no Calendar events within the "+cmd.name().toLowerCase()+" @x1 @x2.",""+num,""+per.name().toLowerCase()));
+					mob.tell(L("There are no Calendar events within the "+cmd.name().toLowerCase()+" @x1 @x2.",""+num,""+perName));
 				return false;
 			}
 			else
 			{
-				mob.tell(L("^HCalendar events within the "+cmd.name().toLowerCase()+" @x1 @x2.^?",""+num,""+per.name().toLowerCase()));
+				mob.tell(L("^HCalendar events within the "+cmd.name().toLowerCase()+" @x1 @x2.^?",""+num,""+perName));
 				mob.tell(getEvents(mob, all));
 			}
 			break;
