@@ -2,6 +2,9 @@ package com.planet_ink.coffee_mud.Items.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+
+import java.util.List;
+
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -176,5 +179,17 @@ public interface Software extends Item, Technical
 	 * @param key the circuit key
 	 */
 	public void setCircuitKey(String key);
+
+	/**
+	 * An internal interface for various software procedure
+	 * classes, allowing software to be more "plug and play".
+	 *  
+	 * @author BZ
+	 *
+	 */
+	public static interface SoftwareProcedure
+	{
+		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed);
+	}
 }
 

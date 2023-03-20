@@ -179,7 +179,7 @@ public class JournalFunction extends StdWebMacro
 						continue;
 					if(buf == null)
 						return "File not uploaded -- no buffer!";
-					if((forum.maxAttach()>0)&&(++maxFiles > forum.maxAttach()))
+					if((forum!=null)&&(forum.maxAttach()>0)&&(++maxFiles > forum.maxAttach()))
 						return "File not uploaded -- maximum "+forum.maxAttach()+" attachments!";
 					attachmentsV.add(new Pair<String,byte[]>(file,buf));
 				}
@@ -473,7 +473,7 @@ public class JournalFunction extends StdWebMacro
 										return "File not uploaded -- no name!";
 									if(buf == null)
 										return "File not uploaded -- no buffer!";
-									if((forum.maxAttach()>0)&&(++maxFiles > forum.maxAttach()))
+									if((forum!=null)&&(forum.maxAttach()>0)&&(++maxFiles > forum.maxAttach()))
 										return "File not uploaded -- maximum "+forum.maxAttach()+" attachments!";
 									final String fileName = entry.key()+"/"+entry.parent()+"/"+file;
 									if(fileName.length()>252)

@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.BasicTech.GenElecItem;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -12,6 +13,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -160,6 +162,32 @@ public class GenShipProgram extends GenSoftware
 		}
 	}
 
+	protected boolean sendMessage(final MOB mob, final Item E, final CMMsg msg, final String command)
+	{
+		if((E!=null) && (msg != null))
+		{
+			if(E.owner() instanceof Room)
+			{
+				if(((Room)E.owner()).okMessage(mob, msg))
+				{
+					((Room)E.owner()).send(mob, msg);
+					return true;
+				}
+			}
+			else
+			if(E.okMessage(mob, msg))
+			{
+				E.executeMsg(mob, msg);
+				return true;
+			}
+		}
+		else
+		{
+			super.addScreenMessage(L("Error: Unknown command '"+command+"'.   Try HELP."));
+		}
+		return false;
+	}
+	
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
@@ -417,4 +445,177 @@ public class GenShipProgram extends GenSoftware
 	{
 
 	}
+	
+	protected long[] convertStringToCoords(final String coordStr)
+	{
+		final List<String> coordCom = CMParms.parseCommas(coordStr,true);
+		if(coordCom.size()==3)
+		{
+			final long[] coords=new long[3];
+			for(int i=0;(i<coordCom.size()) && (i<3);i++)
+			{
+				final Long coord=CMLib.english().parseSpaceDistance(coordCom.get(i));
+				if(coord != null)
+					coords[i]=coord.longValue();
+				else
+					return null;
+			}
+			return coords;
+		}
+		return null;
+	}
+
+	protected long[] findCoordinates(final String name)
+	{
+		final String[] parms = new String[] {name};
+		final List<String[]> names = super.doServiceTransaction(SWServices.COORDQUERY, parms);
+		for(final String[] res : names)
+		{
+			for(final String r : res)
+			{
+				if(r.length()>0)
+				{
+					final long[] coords = convertStringToCoords(r);
+					if(coords !=null)
+						return coords;
+				}
+			}
+		}
+		return null;
+	}
+
+	protected SoftwareProcedure activateProcedure = new SoftwareProcedure()
+	{
+		@Override
+		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		{
+			CMMsg msg = null;
+			Electronics E;
+			final String rest = CMParms.combine(parsed,1).toUpperCase();
+			if(rest.equalsIgnoreCase("ALL"))
+			{
+				int num=0;
+				for(final TechComponent component : getTechComponents())
+				{
+					if((!getEngines().contains(component))
+					&&(component.getTechType()!=TechType.SHIP_WEAPON)
+					&&(component.getTechType()!=TechType.SHIP_TRACTOR)
+					&&(!component.activated()))
+					{
+						msg=CMClass.getMsg(mob, component, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+						if(component.owner() instanceof Room)
+						{
+							if(((Room)component.owner()).okMessage(mob, msg))
+								((Room)component.owner()).send(mob, msg);
+						}
+						else
+						if(component.okMessage(mob, msg))
+							component.executeMsg(mob, msg);
+						if(component.activated())
+							num++;
+					}
+				}
+				sw.addScreenMessage(L("@x1 systems activated..",""+num));
+				return false;
+			}
+			else
+			{
+				String code = null;
+				E=findEngineByName(rest);
+				if(E!=null)
+					code=TechCommand.THRUST.makeCommand(ShipDirectional.ShipDir.AFT,Double.valueOf(.0000001));
+				else
+				{
+					E=findSensorByName(rest);
+					if(E==null)
+						E=findShieldByName(rest);
+				}
+				if(E==null)
+				{
+					final List<TechComponent> others = new ArrayList<TechComponent>();
+					for(final TechComponent component : getTechComponents())
+					{
+						if((!getEngines().contains(component))
+						&&(!getShipShields().contains(component))
+						&&(!getShipSensors().contains(component)))
+							others.add(component);
+					}
+					E=findComponentByName(others,"SYSTEM",rest);
+				}
+				if(E!=null)
+				{
+					msg=CMClass.getMsg(mob, E, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+				}
+				else
+				{
+					sw.addScreenMessage(L("Error: Unknown system to activate '"+rest+"'."));
+					return false;
+				}
+			}
+			sendMessage(mob,E,msg,unparsed);
+			return false;
+		}
+	};
+	
+	protected SoftwareProcedure deactivateProcedure = new SoftwareProcedure()
+	{
+		@Override
+		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		{
+			CMMsg msg = null;
+			Electronics E;
+			final String rest = CMParms.combine(parsed,1).toUpperCase();
+			if(rest.equalsIgnoreCase("ALL"))
+			{
+				int num=0;
+				for(final TechComponent component : getTechComponents())
+				{
+					if((!getEngines().contains(component))
+					&&(component.getTechType()!=TechType.SHIP_WEAPON)
+					&&(component.getTechType()!=TechType.SHIP_TRACTOR)
+					&&(component.activated()))
+					{
+						msg=CMClass.getMsg(mob, component, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+						if(component.owner() instanceof Room)
+						{
+							if(((Room)component.owner()).okMessage(mob, msg))
+								((Room)component.owner()).send(mob, msg);
+						}
+						else
+						if(component.okMessage(mob, msg))
+							component.executeMsg(mob, msg);
+						if(!component.activated())
+							num++;
+					}
+				}
+				addScreenMessage(L("@x1 systems de-activated..",""+num));
+				return false;
+			}
+			else
+			{
+				E=findEngineByName(rest);
+				if(E==null)
+					E=findSensorByName(rest);
+				if(E==null)
+				{
+					final List<TechComponent> others = new ArrayList<TechComponent>();
+					for(final TechComponent component : getTechComponents())
+					{
+						if((!getEngines().contains(component))&&(!getShipSensors().contains(component)))
+							others.add(component);
+					}
+					E=findComponentByName(others,"SYSTEM",rest);
+				}
+				if(E!=null)
+					msg=CMClass.getMsg(mob, E, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+				else
+				{
+					addScreenMessage(L("Error: Unknown system to deactivate '"+rest+"'."));
+					return false;
+				}
+			}
+			sendMessage(mob,E,msg,unparsed);
+			return false;
+		}
+	};
 }

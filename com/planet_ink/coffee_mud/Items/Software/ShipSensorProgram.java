@@ -287,6 +287,51 @@ public class ShipSensorProgram extends GenShipProgram
 		super.executeMsg(host,msg);
 	}
 
+	protected SoftwareProcedure sensorProcedure = new SoftwareProcedure()
+	{
+		@Override
+		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		{
+			CMMsg msg = null;
+			Electronics E;
+			final TechComponent sensor = findSensorByName(uword);
+			if(sensor == null)
+			{
+				addScreenMessage(L("Error: Unknown sensor name or command word '"+uword+"'.   Try HELP."));
+				return false;
+			}
+			if(parsed.size()==1)
+			{
+				addScreenMessage(L("Error: No direction given."));
+				return false;
+			}
+			E=sensor;
+			final List<ShipDir> dirs = new ArrayList<ShipDir>();
+			parsed.remove(0);
+			for(final String dirStr : parsed)
+			{
+				final ShipDir dir=(ShipDir)CMath.s_valueOf(ShipDir.class, dirStr.toUpperCase().trim());
+				if(dir==null)
+				{
+					addScreenMessage(L("Error: Invalid direction given."));
+					return false;
+				}
+				dirs.add(dir);
+			}
+			String code;
+			code=TechCommand.DIRSET.makeCommand(dirs.get(0));
+			msg=CMClass.getMsg(mob, sensor, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+			for(int i=1;i<dirs.size();i++)
+			{
+				sendMessage(mob,E,msg,unparsed);
+				code=TechCommand.DIRSET.makeCommand(dirs.get(1));
+				msg=CMClass.getMsg(mob, sensor, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+			}
+			sendMessage(mob,E,msg,unparsed);
+			return false;
+		}
+	};
+
 	@Override
 	protected void provideService(final SWServices service, final Software S, final String[] parms, final CMMsg msg)
 	{

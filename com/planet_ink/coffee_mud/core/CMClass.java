@@ -2477,7 +2477,7 @@ public class CMClass extends ClassLoader
 				{
 					if(!checkAncestry(C,ancestorCl))
 					{
-						if(!quiet)
+						if((!quiet) && (ancestorCl.isAssignableFrom(Environmental.class)))
 							Log.sysOut("CMClass","WARNING: class failed ancestral check: "+packageName);
 					}
 					else
@@ -2485,7 +2485,7 @@ public class CMClass extends ClassLoader
 				}
 				if(O==null)
 				{
-					if(!quiet)
+					if((!quiet) && (ancestorCl.isAssignableFrom(Environmental.class)))
 						Log.sysOut("CMClass","Unable to create class '"+packageName+"'");
 				}
 				else

@@ -61,8 +61,6 @@ public class ShipNavProgram extends ShipSensorProgram
 	protected volatile Double		targetAcceleration	= Double.valueOf(SpaceObject.ACCELERATION_TYPICALSPACEROCKET);
 	protected volatile ShipNavTrack	navTrack			= null;
 
-	protected final LinkedList<Pair<Long,Long>> distTrackerDelme = new LinkedList<Pair<Long,Long>>(); //TODO:BZ:DELME
-
 	protected final Map<ShipEngine, Double[]>	injects	= new Hashtable<ShipEngine, Double[]>();
 
 	protected static class ShipNavTrack
@@ -144,7 +142,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		LAUNCH(ShipNavState.LAUNCHING, SpaceObject.class, List.class),
 		LAND(ShipNavState.PRE_LANDING_STOP, SpaceObject.class, List.class),
 		ORBIT(ShipNavState.ORBITSEARCH, SpaceObject.class, List.class),
-		APPROACH(ShipNavState.APPROACH, SpaceObject.class, List.class, Long.class)
+		APPROACH(ShipNavState.APPROACH, SpaceObject.class, List.class, LinkedList.class)
 		;
 
 		private final ShipNavState				initialState;
@@ -577,8 +575,9 @@ public class ShipNavProgram extends ShipSensorProgram
 		super.executeMsg(myHost, msg);
 	}
 
-	protected long calculateDeproachDistance(final SpaceObject ship, final SpaceObject targetObj)
+	protected LinkedList<Triad<double[],Long,Long>> calculateNavigation(final SpaceObject ship, final SpaceObject targetObj)
 	{
+		final LinkedList<Triad<double[],Long,Long>> navs = new LinkedList<Triad<double[],Long,Long>>();
 		long distance = CMLib.space().getDistanceFrom(ship, targetObj);
 		distance = (distance - ship.radius() - Math.round(CMath.mul(targetObj.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 		final long targetDistance = distance; //TODO:BZ:DELTHIS:
@@ -604,35 +603,34 @@ public class ShipNavProgram extends ShipSensorProgram
 					distance = Math.round(ship.speed()) + d20 + (baseDistance/2);
 			}
 		}
-		//TODO:BZ:DEL ALL THIS BELOW:
-		if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+		double speed = ship.speed();
+		long distToGo = targetDistance;
+		final double[] dir = CMLib.space().getDirection(ship,targetObj);
+		final double[] odir = CMLib.space().getOppositeDir(CMLib.space().getDirection(ship,targetObj));
+		navs.add(new Triad<double[],Long,Long>(dir,Long.valueOf(distToGo),Long.valueOf(Math.round(speed))));
+		while(distToGo > 0)
 		{
-			double speed = ship.speed();
-			long distToGo = targetDistance;
-			distTrackerDelme.clear();
-			distTrackerDelme.add(new Pair<Long,Long>(Long.valueOf(distToGo),Long.valueOf(Math.round(speed))));
-			while(distToGo > 0)
+			double[] d;
+			if(distToGo < distance)
 			{
-				if(distToGo < distance)
-				{
-					distToGo -= speed - 4;
-					speed -= 4;
-				}
-				else
-				{
-					distToGo -= speed + 4;
-					speed += 4;
-				}
-				distTrackerDelme.add(new Pair<Long,Long>(Long.valueOf(distToGo),Long.valueOf(Math.round(speed))));
-				if(speed <= 0)
-					break;
+				distToGo -= speed - SpaceObject.ACCELERATION_TYPICALSPACEROCKET;
+				speed -= SpaceObject.ACCELERATION_TYPICALSPACEROCKET;
+				d = odir;
 			}
+			else
+			{
+				distToGo -= speed + SpaceObject.ACCELERATION_TYPICALSPACEROCKET;
+				speed += SpaceObject.ACCELERATION_TYPICALSPACEROCKET;
+				d=dir;
+			}
+			navs.add(new Triad<double[],Long,Long>(d,Long.valueOf(distToGo),Long.valueOf(Math.round(speed))));
+			if(speed <= 0)
+				break;
 		}
-		//TODO:BZ:DEL ALL THIS ABOVE:
 
 		if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 			Log.debugOut("Deproach calculated, distance= "+targetDistance+", deproach="+distance);
-		return distance; // begin deproach IMMEDIATELY!
+		return navs;
 	}
 
 	protected boolean confirmNavEnginesOK(final SpaceShip ship, final Collection<ShipEngine> programEngines)
@@ -776,7 +774,9 @@ public class ShipNavProgram extends ShipSensorProgram
 		}
 
 		// now determine state pre-reqs and completion
-
+		double targetAcceleration = (this.targetAcceleration != null)?this.targetAcceleration.doubleValue():0;
+		if(targetAcceleration > ship.speed())
+			targetAcceleration = ship.speed();
 		switch(track.state)
 		{
 		case LANDING:
@@ -821,10 +821,10 @@ public class ShipNavProgram extends ShipSensorProgram
 					}
 					if(this.lastInject != null)
 					{
-						if(ship.speed() < targetAcceleration.doubleValue())
+						if(ship.speed() < targetAcceleration)
 							this.lastInject = Double.valueOf(this.lastInject.doubleValue()/2.0);
 						else
-						if(ship.speed() < (targetAcceleration.doubleValue() * 2))
+						if(ship.speed() < (targetAcceleration * 2))
 							this.lastInject = Double.valueOf(this.lastInject.doubleValue()/1.5);
 					}
 				}
@@ -841,25 +841,36 @@ public class ShipNavProgram extends ShipSensorProgram
 				super.addScreenMessage(L("Last program aborted with error ("+reason+")."));
 				return;
 			}
-			final Long deproachDistance = track.getArg(Long.class);
+			@SuppressWarnings("unchecked")
+			final LinkedList<Triad<double[],Long,Long>> navList = track.getArg(LinkedList.class);
 			final long distance = (CMLib.space().getDistanceFrom(ship, targetObject)-ship.radius()
 					-Math.round(CMath.mul(targetObject.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
-			if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+			Triad<double[],Long,Long> nav = null;
+			if(navList.size()>0)
 			{
-				if(distTrackerDelme.size()>0)//TODO:BZ:DELME
+				nav = navList.removeFirst();
+				if((ship.speed()!=0) && (nav.third.longValue()==0) && (navList.size()>0))
+					nav = navList.removeFirst();
+				final long distDiff = distance - nav.second.longValue();
+				final long veloDiff = Math.round(ship.speed())-nav.third.longValue();
+				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 				{
-					Pair<Long,Long> p = distTrackerDelme.removeFirst();
-					if((ship.speed()!=0) && (p.second.longValue()==0) && (distTrackerDelme.size()>0))
-						p = distTrackerDelme.removeFirst();
-					final String actual_d_s = distance+"="+Math.round(ship.speed());
-					final String expected_d_s = p.first+"="+p.second;
-					final long d1 = Math.abs(p.first.longValue()-distance);
-					final long d2 = Math.abs(p.second.longValue()-Math.round(ship.speed()));
-					final String diff_d_s = d1+"="+d2;
+					final String actual_d_s = distance+"d, "+Math.round(ship.speed())+"v";
+					final String expected_d_s = nav.second+"d, "+nav.third+"v";
+					final String diff_d_s = distDiff+"d, "+veloDiff+"v";
 					Log.debugOut("Track: act="+actual_d_s +" /****/ exp="+expected_d_s + " /****/ diff=" + diff_d_s);
 				}
 			}
-			if(distance < deproachDistance.longValue())
+			else
+			{
+				this.cancelNavigation();
+				super.addScreenMessage(L("Last program aborted with error."));
+				return;
+			}
+			final double[] desiredDirection = nav.first;
+			final double[] objDirection = CMLib.space().getDirection(ship.coordinates(), targetObject.coordinates());
+			final double[] dirDelta = CMLib.space().getFacingAngleDiff(desiredDirection, objDirection); // starboard is -, port is +
+			if((Math.abs(dirDelta[0])+Math.abs(dirDelta[1]))>.6)
 			{
 				if(track.state == ShipNavState.APPROACH)
 					track.state=ShipNavState.DEPROACH;
@@ -869,21 +880,48 @@ public class ShipNavProgram extends ShipSensorProgram
 				if(track.state == ShipNavState.DEPROACH)
 					track.state=ShipNavState.APPROACH;
 			}
-			final double[] desiredFacing;
-			if(track.state == ShipNavState.APPROACH)
-				desiredFacing = CMLib.space().getDirection(ship, targetObject);
-			else
-				desiredFacing = CMLib.space().getOppositeDir(ship.direction());
-			final double[] angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), desiredFacing); // starboard is -, port is +
+			if((ship.speed() > SpaceObject.ACCELERATION_TYPICALSPACEROCKET)
+			&&(Math.abs(dirDelta[0])+Math.abs(dirDelta[1]))<0.201)
+			{
+				if(track.state == ShipNavState.APPROACH)
+				{
+					// if we are approaching, and are closer to the target than we should be, then...
+					if(nav.second.longValue() - distance  > targetAcceleration)
+					{
+						Log.debugOut("----------------Too close, skipping"); //TODO:BZ:DELME
+						return ; // skip!
+					}
+					if(distance - nav.second.longValue()  > targetAcceleration)
+					{
+						Log.debugOut("----------------Too far, accel FASTER!"); //TODO:BZ:DELME
+						targetAcceleration += 1.0;
+					}
+				}
+				else
+				{
+					// if we are deproaching, and are farther from the target than we should be, then...
+					if(distance - nav.second.longValue()  > targetAcceleration)
+					{
+						Log.debugOut("----------------Too far, skipping"); //TODO:BZ:DELME
+						return ; // skip!
+					}
+					// if we are deproaching, and are closer to the target than we should be, then...
+					if(nav.second.longValue() - distance  > targetAcceleration)
+					{
+						Log.debugOut("----------------Too close, decel FASTER!"); //TODO:BZ:DELME
+						targetAcceleration += 1.0;
+					}
+				}
+			}
+			final double[] angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), desiredDirection); // starboard is -, port is +
 			if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))>.02)
 			{
-				if(!changeFacing(ship, desiredFacing))
+				if(!changeFacing(ship, desiredDirection))
 				{
 					this.cancelNavigation();
 					super.addScreenMessage(L("Last program aborted with error (directional control failure)."));
 					return;
 				}
-				final double targetAcceleration = this.targetAcceleration.doubleValue();
 				if(this.lastInject != null)
 				{
 					if(ship.speed() < targetAcceleration)
@@ -910,10 +948,9 @@ public class ShipNavProgram extends ShipSensorProgram
 		case DEPROACH:
 		case PRE_LANDING_STOP:
 		{
-			double targetAcceleration = this.targetAcceleration.doubleValue(); //
-			if(targetAcceleration > ship.speed())
-				targetAcceleration = ship.speed();
+			Double oldInject = newInject;
 			newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
+			Log.debugOut("Old inject = "+oldInject+", new="+newInject); //TODO:BZ:DELME
 			for(final ShipEngine engineE : programEngines)
 				performSimpleThrust(engineE,newInject, false);
 			if((ship.speed()<0.1)
@@ -926,7 +963,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				if(distance > 100)
 				{
 					track.state=ShipNavState.APPROACH;
-					track.setArg(Long.class, Long.valueOf(calculateDeproachDistance(ship, targetObject)));
+					track.setArg(LinkedList.class, calculateNavigation(ship, targetObject));
 					primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
 				}
 			}
@@ -935,10 +972,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		case LAUNCHING:
 		case ORBITSEARCH:
 		case ORBITCHECK:
-		{
-			final double targetAcceleration = this.targetAcceleration.doubleValue(); //
 			newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
-		}
 		//$FALL-THROUGH$
 		case ORBITCRUISE:
 		{
@@ -989,7 +1023,6 @@ public class ShipNavProgram extends ShipSensorProgram
 					else
 					if((ticksToDecellerate<50)||(diff > 10.0))
 						this.changeFacing(ship, dirToPlanet);
-					final double targetAcceleration = this.targetAcceleration.doubleValue(); //
 					newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
 					if((targetAcceleration > 1.0) && (newInject.doubleValue()==0.0))
 					{
@@ -1039,7 +1072,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				if((ticksToDecellerate > ticksToDestinationAtCurrentSpeed)
 				||(distance < ship.speed() * 20))
 				{
-					double targetAcceleration = 0.0;
+					targetAcceleration = 0.0;
 					if(ship.speed() > this.targetAcceleration.doubleValue())
 					{
 						if(ship.speed() < (this.targetAcceleration.doubleValue() + 1.0))
@@ -1072,7 +1105,6 @@ public class ShipNavProgram extends ShipSensorProgram
 					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 						Log.debugOut("Landing Accelerating because " +  distance +" > "+distanceToCritRadius+" and "+ship.speed()+"<"+Math.sqrt(distance));
 					this.changeFacing(ship, dirToPlanet);
-					final double targetAcceleration = this.targetAcceleration.doubleValue();
 					newInject=calculateMarginalTargetInjection(this.lastInject, targetAcceleration);
 					if((targetAcceleration >= 1.0) && (newInject.doubleValue()==0.0))
 					{
@@ -1103,4 +1135,587 @@ public class ShipNavProgram extends ShipSensorProgram
 			doNavigation(navTrack);
 		return super.checkPowerCurrent(value);
 	}
+	
+	protected SoftwareProcedure launchProcedure = new SoftwareProcedure()
+	{
+		@Override
+		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		{
+			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
+			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+			if(ship==null)
+			{
+				addScreenMessage(L("Error: Malfunctioning hull interface."));
+				return false;
+			}
+			if(ship.getIsDocked() == null)
+			{
+				addScreenMessage(L("Error: Ship is already launched."));
+				return false;
+			}
+			if(navTrack!=null)
+			{
+				addScreenMessage(L("Warning. Previous program cancelled."));
+				cancelNavigation();
+			}
+			final SpaceObject programPlanet=CMLib.space().getSpaceObject(ship.getIsDocked(), true);
+			final ShipEngine engineE =primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
+			if(engineE==null)
+			{
+				addScreenMessage(L("Error: Malfunctioning launch thrusters interface."));
+				return false;
+			}
+			if(findTargetAcceleration(engineE) < SpaceObject.ACCELERATION_DAMAGED)
+			{
+				final int gs = (int)Math.round(targetAcceleration.doubleValue()/SpaceObject.ACCELERATION_G);
+				addScreenMessage(L("No inertial dampeners found.  Limiting acceleration to "+gs+"Gs."));
+			}
+			final List<ShipEngine> programEngines=new XVector<ShipEngine>(engineE);
+			if(uword.equalsIgnoreCase("ORBIT"))
+				navTrack = new ShipNavTrack(ShipNavProcess.ORBIT, programPlanet, programEngines);
+			else
+				navTrack = new ShipNavTrack(ShipNavProcess.LAUNCH, programPlanet, programEngines);
+			addScreenMessage(L("Launch procedure initialized."));
+			return false;
+		}
+	};
+	
+	protected SoftwareProcedure orbitProcedure = launchProcedure;
+	
+	protected SoftwareProcedure stopProcedure = new SoftwareProcedure()
+	{
+		@Override
+		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		{
+			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
+			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+			if(ship==null)
+			{
+				addScreenMessage(L("Error: Malfunctioning hull interface."));
+				return false;
+			}
+			if((ship.getIsDocked() != null)||(ship.speed()==0.0))
+			{
+				addScreenMessage(L("Error: Ship is already stopped."));
+				return false;
+			}
+			if(navTrack!=null)
+			{
+				addScreenMessage(L("Warning. Previous program cancelled."));
+				cancelNavigation();
+			}
+			ShipEngine engineE=null;
+			if(!flipForAllStop(ship))
+			{
+				addScreenMessage(L("Warning. Stop program cancelled due to engine failure."));
+				cancelNavigation();
+				return false;
+			}
+			else
+				engineE=primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
+			if(engineE==null)
+			{
+				cancelNavigation();
+				addScreenMessage(L("Error: Malfunctioning thrusters interface."));
+				return false;
+			}
+			findTargetAcceleration(engineE);
+			final List<ShipEngine> programEngines=new XVector<ShipEngine>(engineE);
+			navTrack = new ShipNavTrack(ShipNavProcess.STOP, programEngines);
+			addScreenMessage(L("All Stop procedure initialized."));
+			return false;
+		}
+	};
+	
+	protected SoftwareProcedure landProcedure = new SoftwareProcedure()
+	{
+		@Override
+		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		{
+			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
+			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+			if(ship==null)
+			{
+				addScreenMessage(L("Error: Malfunctioning hull interface."));
+				return false;
+			}
+			if(ship.getIsDocked() != null)
+			{
+				addScreenMessage(L("Error: Ship is already landed."));
+				return false;
+			}
+			if(sensorReps.size()==0)
+			{
+				addScreenMessage(L("Error: no sensor data found to identify landing position."));
+				return false;
+			}
+			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
+			for(final TechComponent sensor : sensors)
+				allObjects.addAll(takeNewSensorReport(sensor));
+			Collections.sort(allObjects, new DistanceSorter(spaceObject));
+			SpaceObject landingPlanet = null;
+			for(final SpaceObject O : allObjects)
+			{
+				if((O.coordinates()!=null)&&(O.radius()!=0))
+				{
+					final List<LocationRoom> rooms=CMLib.space().getLandingPoints(ship, O);
+					if(rooms.size()>0)
+					{
+						landingPlanet=O;
+						break;
+					}
+				}
+			}
+			if(landingPlanet == null)
+			{
+				for(final SpaceObject O : allObjects)
+				{
+					if((O.coordinates()!=null)&&(O.radius()!=0))
+					{
+						if(O.getMass() > SpaceObject.MOONLET_MASS)
+						{
+							landingPlanet=O;
+							break;
+						}
+					}
+				}
+			}
+
+			if(landingPlanet == null)
+			{
+				addScreenMessage(L("No suitable landing target found within near sensor range."));
+				return false;
+			}
+
+			if(navTrack!=null)
+			{
+				addScreenMessage(L("Warning. Previous program cancelled."));
+				cancelNavigation();
+			}
+			ShipEngine engineE=null;
+			if(!flipForAllStop(ship))
+			{
+				addScreenMessage(L("Warning. Landing program cancelled due to engine failure."));
+				cancelNavigation();
+				return false;
+			}
+			else
+				engineE=primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
+			if(engineE==null)
+			{
+				cancelNavigation();
+				addScreenMessage(L("Error: Malfunctioning thrusters interface."));
+				return false;
+			}
+			findTargetAcceleration(engineE);
+			final SpaceObject programPlanet = landingPlanet;
+			final List<ShipEngine> programEngines=new XVector<ShipEngine>(engineE);
+			// this lands you at the nearest point, which will pick the nearest location room, if any
+			//TODO: picking the nearest landing zone, orbiting to it, and THEN landing would be better.
+			navTrack = new ShipNavTrack(ShipNavProcess.LAND, programPlanet, programEngines);
+			final long distance=CMLib.space().getDistanceFrom(ship.coordinates(),landingPlanet.coordinates());
+			if(distance > (ship.radius() + Math.round(landingPlanet.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
+				addScreenMessage(L("Landing approach procedure initialized."));
+			else
+				addScreenMessage(L("Landing procedure initialized."));
+			return false;
+		}
+	};
+	
+	protected SoftwareProcedure courseProcedure = new SoftwareProcedure()
+	{
+		@Override
+		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		{
+			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
+			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+			if(ship==null)
+			{
+				addScreenMessage(L("Error: Malfunctioning hull interface."));
+				return false;
+			}
+			if(parsed.size()<2)
+			{
+				addScreenMessage(L("Error: COURSE requires the name/coordinates of the target.   Try HELP."));
+				return false;
+			}
+			final String targetStr=CMParms.combine(parsed, 1);
+			long[] targetCoords = null;
+			if(sensorReps.size()>0)
+			{
+				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
+				for(final TechComponent sensor : sensors)
+					allObjects.addAll(takeNewSensorReport(sensor));
+				Collections.sort(allObjects, new DistanceSorter(spaceObject));
+				SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
+				if(targetObj == null)
+					targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, true);
+				if(targetObj != null)
+				{
+					if(targetObj.coordinates() == null)
+					{
+						addScreenMessage(L("Error: Can not plot course to @x1 due to lack of coordinate information.",targetObj.name()));
+						return false;
+					}
+					targetCoords = targetObj.coordinates();
+				}
+			}
+			if(targetCoords == null)
+				targetCoords = findCoordinates(targetStr);
+			if(targetCoords == null)
+			{
+				addScreenMessage(L("Error: Unable to find course target '@x1'.",targetStr));
+				return false;
+			}
+			else
+			{
+				// yes, it's cheating.  deal
+				final List<SpaceObject> objs = CMLib.space().getSpaceObjectsByCenterpointWithin(targetCoords, 0, 10);
+				for(final SpaceObject o1 : objs)
+				{
+					if(Arrays.equals(targetCoords, o1.coordinates()))
+						courseTargetRadius = o1.radius();
+				}
+			}
+			course.clear();
+			courseTargetCoords = targetCoords;
+			addScreenMessage(L("Plotting course to @x1.",CMParms.toListString(courseTargetCoords)));
+			return false;
+		}
+	};
+	
+	protected SoftwareProcedure faceProcedure = new SoftwareProcedure()
+	{
+		@Override
+		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		{
+			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
+			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+			if(ship==null)
+			{
+				addScreenMessage(L("Error: Malfunctioning hull interface."));
+				return false;
+			}
+			if(parsed.size()<2)
+			{
+				addScreenMessage(L("Error: FACE requires the name of the object.   Try HELP."));
+				return false;
+			}
+			if(sensorReps.size()==0)
+			{
+				addScreenMessage(L("Error: no sensor data found to identify object."));
+				return false;
+			}
+			final String targetStr=CMParms.combine(parsed, 1);
+			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
+			for(final TechComponent sensor : sensors)
+				allObjects.addAll(takeNewSensorReport(sensor));
+			Collections.sort(allObjects, new DistanceSorter(spaceObject));
+			SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
+			if(targetObj == null)
+				targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, true);
+			if(targetObj == null)
+			{
+				addScreenMessage(L("No suitable object @x1 found within sensor range.",targetStr));
+				return false;
+			}
+			if(targetObj.coordinates() == null)
+			{
+				addScreenMessage(L("Can not face @x1 due to lack of coordinate information.",targetObj.name()));
+				return false;
+			}
+			final double[] facing=ship.facing();
+			final double[] dirTo = CMLib.space().getDirection(spaceObject, targetObj);
+			double fdist1=(facing[0]>dirTo[0])?facing[0]-dirTo[0]:dirTo[0]-facing[0];
+			final double fdist2=(facing[1]>dirTo[1])?facing[1]-dirTo[1]:dirTo[1]-facing[1];
+			if(fdist1>Math.PI)
+				fdist1=(Math.PI*2)-fdist1;
+			final double deltaTo=fdist1+fdist2;
+			//final double deltaTo = CMLib.space().getAngleDelta(ship.facing(), dirTo);
+			if(deltaTo < 0.02)
+				addScreenMessage(L("Already facing @x1.",targetObj.name()));
+			else
+			{
+				ShipDirectional.ShipDir portDir;
+				if(facing[0]>dirTo[0])
+				{
+					if(fdist1 == facing[0]-dirTo[0])
+						portDir=ShipDirectional.ShipDir.PORT;
+					else
+						portDir=ShipDirectional.ShipDir.STARBOARD;
+				}
+				else
+				{
+					if(fdist1 == dirTo[0]-facing[0])
+						portDir=ShipDirectional.ShipDir.STARBOARD;
+					else
+						portDir=ShipDirectional.ShipDir.PORT;
+				}
+				final ShipEngine engineE=findEngineByPort(portDir);
+				if(engineE==null)
+				{
+					addScreenMessage(L("Error: Malfunctioning finding maneuvering engine."));
+					return false;
+				}
+				double[] oldFacing=Arrays.copyOf(ship.facing(),ship.facing().length);
+				String code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(Math.toDegrees(fdist1)));
+				CMMsg msg=CMClass.getMsg(mob, engineE, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+				if(sendMessage(mob, engineE, msg, unparsed))
+				{
+					if(oldFacing[0]==ship.facing()[0])
+					{
+						addScreenMessage(L("Error: Malfunctioning firing @x1 engines.",portDir.name()));
+						return false;
+					}
+					else
+					if(CMath.pctDiff(dirTo[0],ship.facing()[0],Math.PI*2.0)<.05)
+					{}
+					else
+					{
+						addScreenMessage(L("Error: Fired @x1 engines, but only got to within @x2 percent",
+								portDir.name(),""+Math.round(CMath.pctDiff(dirTo[0],ship.facing()[0],Math.PI*2.0)*100.0)));
+						return false;
+					}
+					if(facing[1]>dirTo[1])
+						portDir=ShipDirectional.ShipDir.VENTRAL;
+					else
+						portDir=ShipDirectional.ShipDir.DORSEL;
+					code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(Math.toDegrees(fdist2)));
+					oldFacing=Arrays.copyOf(ship.facing(),ship.facing().length);
+					msg=CMClass.getMsg(mob, engineE, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+					if(sendMessage(mob, engineE, msg, unparsed))
+					{
+						if(oldFacing[1]==ship.facing()[1])
+						{
+							addScreenMessage(L("Error: Malfunctioning firing @x1 engines.",portDir.name()));
+							return false;
+						}
+						else
+						if(CMath.pctDiff(dirTo[1],ship.facing()[1],Math.PI)<.05)
+							addScreenMessage(L("Now facing @x1.",targetObj.name()));
+						else
+						{
+							addScreenMessage(L("Error: Fired @x1 engines, but only got to within @x2 percent",
+									portDir.name(),""+Math.round(CMath.pctDiff(dirTo[1],ship.facing()[1],Math.PI)*100.0)));
+							return false;
+						}
+					}
+				}
+			}
+			return false;
+		}
+	};
+	
+	protected SoftwareProcedure cancelProcedure = new SoftwareProcedure()
+	{
+		@Override
+		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		{
+			if(navTrack == null)
+			{
+				addScreenMessage(L("Error: No programs running."));
+				return false;
+			}
+			final String name = CMStrings.capitalizeAndLower(navTrack.proc.name());
+			addScreenMessage(L("Confirmed: "+name+" program stopped."));
+			cancelNavigation();
+			return false;
+		}
+	};
+	
+	protected SoftwareProcedure approachProcedure = new SoftwareProcedure()
+	{
+		@Override
+		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		{
+			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
+			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+			if(ship==null)
+			{
+				addScreenMessage(L("Error: Malfunctioning hull interface."));
+				return false;
+			}
+			if(parsed.size()<2)
+			{
+				addScreenMessage(L("Error: APPROACH requires the name of the object.   Try HELP."));
+				return false;
+			}
+			if(sensorReps.size()==0)
+			{
+				addScreenMessage(L("Error: no sensor data found to identify object."));
+				return false;
+			}
+			final String targetStr=CMParms.combine(parsed, 1);
+			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
+			for(final TechComponent sensor : sensors)
+				allObjects.addAll(takeNewSensorReport(sensor));
+			Collections.sort(allObjects, new DistanceSorter(spaceObject));
+			SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
+			if(targetObj == null)
+				targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, true);
+			if(targetObj == null)
+			{
+				addScreenMessage(L("No suitable object @x1 found within sensor range.",targetStr));
+				return false;
+			}
+			if(targetObj.coordinates() == null)
+			{
+				addScreenMessage(L("Can not approach @x1 due to lack of coordinate information.",targetObj.name()));
+				return false;
+			}
+			final SpaceObject approachTarget = targetObj;
+			long distance = CMLib.space().getDistanceFrom(ship, targetObj);
+			distance = (distance - ship.radius() - targetObj.radius())/2;
+			if(distance < 100)
+			{
+				addScreenMessage(L("Can not approach @x1 due being too close.",targetObj.name()));
+				return false;
+			}
+			ShipEngine engineE=null;
+			final double[] dirTo = CMLib.space().getDirection(ship, targetObj);
+			if(!changeFacing(ship, dirTo))
+			{
+				addScreenMessage(L("Warning. Approach program cancelled due to engine failure."));
+				cancelNavigation();
+				return false;
+			}
+			engineE=primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
+			if(engineE==null)
+			{
+				cancelNavigation();
+				addScreenMessage(L("Error: Malfunctioning thrusters interface."));
+				return false;
+			}
+			findTargetAcceleration(engineE);
+			final List<ShipEngine> programEngines=new XVector<ShipEngine>(engineE);
+			final List<Triad<double[],Long,Long>> navs = calculateNavigation(ship, targetObj);
+			navTrack = new ShipNavTrack(ShipNavProcess.APPROACH, approachTarget, programEngines, navs);
+			addScreenMessage(L("Approach to @x1 procedure engaged.",targetObj.name()));
+			return false;
+		}
+	};
+	
+	protected SoftwareProcedure moonProcedure = new SoftwareProcedure()
+	{
+		@Override
+		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		{
+			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
+			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+			if(ship==null)
+			{
+				addScreenMessage(L("Error: Malfunctioning hull interface."));
+				return false;
+			}
+			if(parsed.size()<2)
+			{
+				addScreenMessage(L("Error: MOON requires the name of the object.   Try HELP."));
+				return false;
+			}
+			if(sensorReps.size()==0)
+			{
+				addScreenMessage(L("Error: no sensor data found to identify object."));
+				return false;
+			}
+			final String targetStr=CMParms.combine(parsed, 1);
+			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
+			for(final TechComponent sensor : sensors)
+				allObjects.addAll(takeNewSensorReport(sensor));
+			Collections.sort(allObjects, new DistanceSorter(spaceObject));
+			SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
+			if(targetObj == null)
+				targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, true);
+			if(targetObj == null)
+			{
+				addScreenMessage(L("No suitable object @x1 found within sensor range.",targetStr));
+				return false;
+			}
+			if(targetObj.coordinates() == null)
+			{
+				addScreenMessage(L("Can not moon @x1 due to lack of coordinate information.",targetObj.name()));
+				return false;
+			}
+			final double[] facing=ship.facing();
+			final double[] notDirTo=CMLib.space().getDirection(spaceObject, targetObj);
+			final double[] dirTo = CMLib.space().getOppositeDir(notDirTo);
+			double fdist1=(facing[0]>dirTo[0])?facing[0]-dirTo[0]:dirTo[0]-facing[0];
+			final double fdist2=(facing[1]>dirTo[1])?facing[1]-dirTo[1]:dirTo[1]-facing[1];
+			if(fdist1>Math.PI)
+				fdist1=(Math.PI*2)-fdist1;
+			final double deltaTo=fdist1+fdist2;
+			//final double deltaTo = CMLib.space().getAngleDelta(ship.facing(), dirTo);
+			if(deltaTo < 0.02)
+				addScreenMessage(L("Already mooning @x1.",targetObj.name()));
+			else
+			{
+				ShipDirectional.ShipDir portDir;
+				if(facing[0]>dirTo[0])
+				{
+					if(fdist1 == facing[0]-dirTo[0])
+						portDir=ShipDirectional.ShipDir.PORT;
+					else
+						portDir=ShipDirectional.ShipDir.STARBOARD;
+				}
+				else
+				{
+					if(fdist1 == dirTo[0]-facing[0])
+						portDir=ShipDirectional.ShipDir.STARBOARD;
+					else
+						portDir=ShipDirectional.ShipDir.PORT;
+				}
+				final ShipEngine engineE=findEngineByPort(portDir);
+				if(engineE==null)
+				{
+					addScreenMessage(L("Error: Malfunctioning finding maneuvering engine."));
+					return false;
+				}
+				double[] oldFacing=Arrays.copyOf(ship.facing(),ship.facing().length);
+				String code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(Math.toDegrees(fdist1)));
+				CMMsg msg=CMClass.getMsg(mob, engineE, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+				if(sendMessage(mob, engineE, msg, unparsed))
+				{
+					if(oldFacing[0]==ship.facing()[0])
+					{
+						addScreenMessage(L("Error: Malfunctioning firing @x1 engines.",portDir.name()));
+						return false;
+					}
+					else
+					if(CMath.pctDiff(dirTo[0],ship.facing()[0],Math.PI*2.0)<.05)
+					{}
+					else
+					{
+						addScreenMessage(L("Error: Fired @x1 engines, but only got to within @x2 percent",
+								portDir.name(),""+Math.round(CMath.pctDiff(dirTo[0],ship.facing()[0],Math.PI*2.0)*100.0)));
+						return false;
+					}
+					if(facing[1]>dirTo[1])
+						portDir=ShipDirectional.ShipDir.VENTRAL;
+					else
+						portDir=ShipDirectional.ShipDir.DORSEL;
+					code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(Math.toDegrees(fdist2)));
+					oldFacing=Arrays.copyOf(ship.facing(),ship.facing().length);
+					msg=CMClass.getMsg(mob, engineE, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+					if(sendMessage(mob, engineE, msg, unparsed))
+					{
+						if(oldFacing[1]==ship.facing()[1])
+						{
+							addScreenMessage(L("Error: Malfunctioning firing @x1 engines.",portDir.name()));
+							return false;
+						}
+						else
+						if(CMath.pctDiff(dirTo[1],ship.facing()[1],Math.PI)<.05)
+							addScreenMessage(L("Now mooning @x1.",targetObj.name()));
+						else
+						{
+							addScreenMessage(L("Error: Fired @x1 engines, but only got to within @x2 percent",
+									portDir.name(),""+Math.round(CMath.pctDiff(dirTo[1],ship.facing()[1],Math.PI)*100.0)));
+							return false;
+						}
+					}
+				}
+			}
+			return false;
+		}
+	};
+	
 }

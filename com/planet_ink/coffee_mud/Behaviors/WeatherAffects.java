@@ -1275,6 +1275,7 @@ public class WeatherAffects extends PuddleMaker
 					R=(M==null)?null:M.location();
 					if((R==null)
 					||(!isInHere(host,M))
+					||(M==null)
 					||(M.isMonster())
 					||((roomWeather(host,R,areaWeather)!=Climate.WEATHER_WINDY)
 						&&(roomWeather(host,R,areaWeather)!=Climate.WEATHER_BLIZZARD)
@@ -1305,6 +1306,7 @@ public class WeatherAffects extends PuddleMaker
 				final MOB M=S.mob();
 				final Room R=(M==null)?null:M.location();
 				if((R==null)
+				||(M==null)
 				||(!isInHere(host,M))
 				||(inATent(M))
 				||(M.isMonster()))
