@@ -1426,6 +1426,31 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
+			new AbilityParmEditorImpl("ZAPPERMASK","Zappermask",ParmType.STRINGORNULL)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+
+				@Override
+				public int appliesToClass(final Object o)
+				{
+					return 1;
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+			},
 			new AbilityParmEditorImpl("BUILDING_NOUN","Building noun",ParmType.STRING)
 			{
 				@Override

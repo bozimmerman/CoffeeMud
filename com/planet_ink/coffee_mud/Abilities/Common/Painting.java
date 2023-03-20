@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftorType;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -33,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Painting extends CommonSkill
+public class Painting extends CommonSkill implements RecipeDriven
 {
 	@Override
 	public String ID()
@@ -66,6 +67,71 @@ public class Painting extends CommonSkill
 	protected Item		building	= null;
 	protected boolean	messedUp	= false;
 
+	@Override
+	public String supportedResourceString()
+	{
+		return "LEATHER";
+	}
+
+	@Override
+	public String getRecipeFormat()
+	{
+		return
+		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
+		+"ITEM_CLASS_ID\tEXPERTISENUM\tZAPPERMASK\tCODED_SPELL_LIST";
+	}
+
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	protected static final int	RCP_TICKS		= 2;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_SPELL		= 6;
+
+	@Override
+	public List<List<String>> fetchRecipes()
+	{
+		@SuppressWarnings("unchecked")
+		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+getRecipeFilename());
+		if(V==null)
+		{
+			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+getRecipeFilename(),null,CMFile.FLAG_LOGERRORS).text();
+			V=new ReadOnlyList<List<String>>(CMLib.utensils().loadRecipeList(str.toString()));
+			if(V.size()==0)
+				Log.errOut(ID(),"Recipes not found!");
+			Resources.submitResource("PARSED_RECIPE: "+getRecipeFilename(),V);
+		}
+		return V;
+	}
+
+	@Override
+	public List<String> matchingRecipeNames(String recipeName, boolean beLoose)
+	{
+		final List<String> matches = new Vector<String>();
+		for(final List<String> list : fetchRecipes())
+		{
+			final String name=list.get(RecipeDriven.RCP_FINALNAME);
+			if(name.equalsIgnoreCase(recipeName)
+			||(beLoose && (name.toUpperCase().indexOf(recipeName.toUpperCase())>=0)))
+				matches.add(name);
+		}
+		return matches;
+	}
+
+	@Override
+	public Pair<String, Integer> getDecodedItemNameAndLevel(List<String> recipe)
+	{
+		return new Pair<String,Integer>(recipe.get( RecipeDriven.RCP_FINALNAME ),
+				Integer.valueOf(CMath.s_int(recipe.get( RecipeDriven.RCP_LEVEL ))));
+	}
+	
+	@Override
+	public String getRecipeFilename()
+	{
+		return "painting.txt";
+	}
+	
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
