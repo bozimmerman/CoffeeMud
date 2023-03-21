@@ -77,20 +77,19 @@ public class Painting extends CommonSkill implements RecipeDriven
 	public String getRecipeFormat()
 	{
 		return
-		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\tACTIVE_VERB\t"
+		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tITEM_BASE_VALUE\tACTIVE_VERB\t"
 		+"ITEM_CLASS_ID\tEXPERTISENUM\tZAPPERMASK\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	protected static final int	RCP_TICKS		= 2;
-	protected static final int	RCP_WOOD		= 3;
-	protected static final int	RCP_VALUE		= 4;
-	protected static final int	RCP_VERB		= 5;
-	protected static final int	RCP_CLASSTYPE	= 6;
-	protected static final int	RCP_XNUM		= 7;
-	protected static final int	RCP_ZAPPERMASK	= 8;
-	protected static final int	RCP_SPELL		= 9;
+	protected static final int	RCP_VALUE		= 3;
+	protected static final int	RCP_VERB		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_XNUM		= 6;
+	protected static final int	RCP_ZAPPERMASK	= 7;
+	protected static final int	RCP_SPELL		= 8;
 
 	@Override
 	public List<List<String>> fetchRecipes()
@@ -463,7 +462,7 @@ public class Painting extends CommonSkill implements RecipeDriven
 		{
 			if((paintingKeyWords!=null)&&(paintingDesc!=null)&&(foundRecipe!=null))
 			{
-				building=CMClass.getItem("GenItem");
+				building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 				final String name = CMLib.english().startWithAorAn(
 					foundRecipe.get(RCP_FINALNAME)
 				) + L(" of ") + paintingKeyWords;

@@ -4610,6 +4610,29 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
+			new AbilityParmEditorImpl("PAINTING_TYPE","PTyp",ParmType.CHOICES)
+			{
+				@Override
+				public void createChoices()
+				{
+					createChoices(new String[]
+					{
+						"PAINTING"
+					});
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "PAINTING";
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "PAINTING";
+				}
+			},
 			new AbilityParmEditorImpl("POTION_POWDER","P-type",ParmType.CHOICES)
 			{
 				@Override

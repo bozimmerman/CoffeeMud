@@ -1,2 +1,2 @@
-painting	1	15	0	5	painting	PAINTING	0		
-finger painting	1	15	0	5	finger painting	PAINTING	0		
+painting	1	15	5	painting	GenItem	0		
+finger painting	1	15	5	finger painting	GenItem	0		
