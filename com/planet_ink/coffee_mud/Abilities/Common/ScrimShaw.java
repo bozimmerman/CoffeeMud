@@ -306,7 +306,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			final StringBuffer buf=new StringBuffer("");
 			buf.append(L("^H@x1 @x2 @x3 ",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1]),CMStrings.padRight(L("Bone req"), cols[2])));
 			buf.append(L("@x1 @x2 @x3^N\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1]),L("Bone req")));
-			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
+			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipes(recipes, mask, true);
 			int col=0;
 			final int numCols=2;
 			for(int r=0;r<listRecipes.size();r++)
@@ -386,7 +386,9 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
-			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
+			final List<List<String>> matches=matchingRecipes(recipes,recipeName,false);
+			if(matches.size()==0)
+				matches.addAll(matchingRecipes(recipes,recipeName,true));
 			for(int r=0;r<matches.size();r++)
 			{
 				final List<String> V=matches.get(r);

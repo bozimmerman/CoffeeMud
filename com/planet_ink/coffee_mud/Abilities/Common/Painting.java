@@ -77,7 +77,7 @@ public class Painting extends CommonSkill implements RecipeDriven
 	public String getRecipeFormat()
 	{
 		return
-		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
+		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\tACTIVE_VERB\t"
 		+"ITEM_CLASS_ID\tEXPERTISENUM\tZAPPERMASK\tCODED_SPELL_LIST";
 	}
 
@@ -86,8 +86,11 @@ public class Painting extends CommonSkill implements RecipeDriven
 	protected static final int	RCP_TICKS		= 2;
 	protected static final int	RCP_WOOD		= 3;
 	protected static final int	RCP_VALUE		= 4;
-	protected static final int	RCP_CLASSTYPE	= 5;
-	protected static final int	RCP_SPELL		= 6;
+	protected static final int	RCP_VERB		= 5;
+	protected static final int	RCP_CLASSTYPE	= 6;
+	protected static final int	RCP_XNUM		= 7;
+	protected static final int	RCP_ZAPPERMASK	= 8;
+	protected static final int	RCP_SPELL		= 9;
 
 	@Override
 	public List<List<String>> fetchRecipes()
@@ -105,8 +108,13 @@ public class Painting extends CommonSkill implements RecipeDriven
 		return V;
 	}
 
+	public List<List<String>> matchingRecipes(final List<List<String>> recipes, final String recipeName, final boolean beLoose)
+	{
+		return new CraftingSkill().matchingRecipes(recipes, recipeName, beLoose);
+	}
+
 	@Override
-	public List<String> matchingRecipeNames(String recipeName, boolean beLoose)
+	public List<String> matchingRecipeNames(final String recipeName, final boolean beLoose)
 	{
 		final List<String> matches = new Vector<String>();
 		for(final List<String> list : fetchRecipes())
@@ -120,18 +128,18 @@ public class Painting extends CommonSkill implements RecipeDriven
 	}
 
 	@Override
-	public Pair<String, Integer> getDecodedItemNameAndLevel(List<String> recipe)
+	public Pair<String, Integer> getDecodedItemNameAndLevel(final List<String> recipe)
 	{
 		return new Pair<String,Integer>(recipe.get( RecipeDriven.RCP_FINALNAME ),
 				Integer.valueOf(CMath.s_int(recipe.get( RecipeDriven.RCP_LEVEL ))));
 	}
-	
+
 	@Override
 	public String getRecipeFilename()
 	{
 		return "painting.txt";
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -172,7 +180,7 @@ public class Painting extends CommonSkill implements RecipeDriven
 			return true;
 		if(commands.size()==0)
 		{
-			commonTelL(mob,"Paint on what? Enter \"paint [canvas name]\" or paint \"wall\".");
+			commonTelL(mob,"Paint what or on what? Enter \"paint list\", \"paint [type] [canvas name]\", or paint \"wall\".");
 			return false;
 		}
 		String paintingKeyWords=null;
@@ -201,7 +209,9 @@ public class Painting extends CommonSkill implements RecipeDriven
 				break;
 		}
 
-		final String str=CMParms.combine(commands,0);
+		final String str=CMParms.combine(commands,0).toLowerCase().trim();
+		final String word = commands.get(0).toLowerCase().trim();
+
 		building=null;
 		messedUp=false;
 		Session S=mob.session();
@@ -213,8 +223,9 @@ public class Painting extends CommonSkill implements RecipeDriven
 			return false;
 		}
 
+		List<String> foundRecipe = null;
 		Item canvasI=null;
-		if(str.equalsIgnoreCase("wall"))
+		if("wall".startsWith(str.toLowerCase()))
 		{
 			if(!CMLib.law().doesOwnThisProperty(mob,mob.location()))
 			{
@@ -223,11 +234,68 @@ public class Painting extends CommonSkill implements RecipeDriven
 			}
 		}
 		else
+		if("list".startsWith(word))
 		{
-			canvasI=mob.location().findItem(null,str);
+			final List<List<String>> recipes = new XVector<List<String>>(fetchRecipes());
+			CMLib.utensils().addExtRecipes(mob, ID(), recipes);
+			String mask=(commands.size()==1)?"":CMParms.combine(commands,1);
+			boolean allFlag=false;
+			if(mask.equalsIgnoreCase("all"))
+			{
+				allFlag=true;
+				mask="";
+			}
+			final StringBuffer buf=new StringBuffer("");
+			final int[] cols={
+				CMLib.lister().fixColWidth(29,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session())
+			};
+			int toggler=1;
+			final int toggleTop=2;
+			for(int i=0;i<toggleTop;i++)
+				buf.append(L("^H@x1 @x2 ",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
+			buf.append("^N\n\r");
+			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : matchingRecipes(recipes, mask, true);
+			for(int r=0;r<listRecipes.size();r++)
+			{
+				final List<String> V=listRecipes.get(r);
+				if(V.size()>0)
+				{
+					final String item=V.get(RCP_FINALNAME);
+					final int level=CMath.s_int(V.get(RCP_LEVEL));
+					final String zmask=V.get(RCP_ZAPPERMASK);
+					final int exp = CMath.s_int(V.get(RCP_XNUM));
+					if((item.trim().length()>0)
+					&&((exp<=super.getXLEVELLevel(mob))||allFlag)
+					&&((level<=xlevel(mob))||allFlag)
+					&&((zmask.trim().length()==0)||CMLib.masking().maskCheck(zmask, mob, true)))
+					{
+						buf.append("^w"+CMStrings.padRight(item,cols[0])+"^N "+CMStrings.padRight(""+level,cols[1])+((toggler!=toggleTop)?" ":"\n\r"));
+						if(++toggler>toggleTop)
+							toggler=1;
+					}
+				}
+			}
+			commonTell(mob,buf.toString());
+			return true;
+		}
+		else
+		if(commands.size()<2)
+		{
+			commonTelL(mob,"Paint what or on what? Enter \"paint list\", \"paint [type] [canvas name]\", or paint \"wall\".");
+			return false;
+		}
+		else
+		{
+			final String what=CMParms.combine(commands,1).toLowerCase().trim();
+			final String recipeName = word;
+			final List<List<String>> recipes = new XVector<List<String>>(fetchRecipes());
+			CMLib.utensils().addExtRecipes(mob, ID(), recipes);
+
+			canvasI=mob.location().findItem(null,what);
 			if((canvasI==null)||(!CMLib.flags().canBeSeenBy(canvasI,mob)))
 			{
-				commonTelL(mob,"You don't see any canvases called '@x1' sitting here.",str);
+				commonTelL(mob,"You don't see any canvases called '@x1' sitting here.",what);
 				return false;
 			}
 			if((canvasI.material()!=RawMaterial.RESOURCE_COTTON)
@@ -236,6 +304,30 @@ public class Painting extends CommonSkill implements RecipeDriven
 			&&(!canvasI.Name().toUpperCase().endsWith("SILKSCREEN")))
 			{
 				commonTelL(mob,"You cannot paint on '@x1'.",str);
+				return false;
+			}
+
+			final List<List<String>> matches=matchingRecipes(recipes,recipeName,false);
+			for(int r=0;r<matches.size();r++)
+			{
+				final List<String> V=matches.get(r);
+				if(V.size()>0)
+				{
+					final int level=CMath.s_int(V.get(RCP_LEVEL));
+					final String zmask=V.get(RCP_ZAPPERMASK);
+					final int exp = CMath.s_int(V.get(RCP_XNUM));
+					if(((exp<=super.getXLEVELLevel(mob)))
+					&&((level<=xlevel(mob)))
+					&&((zmask.trim().length()==0)||CMLib.masking().maskCheck(zmask, mob, true)))
+					{
+						foundRecipe=V;
+						break;
+					}
+				}
+			}
+			if(foundRecipe==null)
+			{
+				commonTelL(mob,"You don't know how to paint a '@x1'.  Try \"paint list\" for a list.",recipeName);
 				return false;
 			}
 		}
@@ -369,28 +461,34 @@ public class Painting extends CommonSkill implements RecipeDriven
 		else
 		if(canvasI!=null)
 		{
-			if((paintingKeyWords!=null)&&(paintingDesc!=null))
+			if((paintingKeyWords!=null)&&(paintingDesc!=null)&&(foundRecipe!=null))
 			{
 				building=CMClass.getItem("GenItem");
-				building.setName(L("a painting of @x1",paintingKeyWords));
-				building.setDisplayText(L("a painting of @x1 is here.",paintingKeyWords));
+				final String name = CMLib.english().startWithAorAn(
+					foundRecipe.get(RCP_FINALNAME)
+				) + L(" of ") + paintingKeyWords;
+				building.setName(name);
+				building.setDisplayText(L("@x1 is here.",name));
 				building.setDescription(paintingDesc);
 				building.basePhyStats().setWeight(canvasI.basePhyStats().weight());
-				building.setBaseValue(canvasI.baseGoldValue()*(CMLib.dice().roll(1,5,0)));
+				building.setBaseValue(canvasI.baseGoldValue()+(CMLib.dice().roll(1,CMath.s_int(foundRecipe.get(RCP_VALUE))+super.getXLEVELLevel(mob),0)));
 				building.setMaterial(canvasI.material());
 				building.basePhyStats().setLevel(canvasI.basePhyStats().level());
 				building.setSecretIdentity(getBrand(mob));
+				final String spell=foundRecipe.get(RCP_SPELL);
+				new CraftingSkill().addSpellsOrBehaviors(building,spell,new ArrayList<CMObject>(),new ArrayList<CMObject>());
 				canvasI.destroy();
 			}
 			else
-			if(session != null)
+			if((session != null)&&(foundRecipe!=null))
 			{
+				final String paintingName = foundRecipe.get(RCP_FINALNAME).toLowerCase();
 				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 				{
 					@Override
 					public void showPrompt()
 					{
-						session.promptPrint(L("\n\rIn brief, what is this a painting of?\n\r: "));
+						session.promptPrint(L("\n\rIn brief, what is this a @x1 of?\n\r: ",paintingName));
 					}
 
 					@Override
@@ -409,7 +507,7 @@ public class Painting extends CommonSkill implements RecipeDriven
 							@Override
 							public void showPrompt()
 							{
-								session.promptPrint(L("\n\rPlease describe this painting.\n\r: "));
+								session.promptPrint(L("\n\rPlease describe this @x1.\n\r: ",paintingName));
 							}
 
 							@Override
@@ -448,9 +546,12 @@ public class Painting extends CommonSkill implements RecipeDriven
 			return false;
 		}
 
-		final String startStr=L("<S-NAME> start(s) painting @x1.",building.name());
-		displayText=L("You are painting @x1",building.name());
-		verb=L("painting @x1",building.name());
+		String paintingName = L("painting");
+		if(foundRecipe != null)
+			paintingName = foundRecipe.get(RCP_VERB).toLowerCase();
+		final String startStr=L("<S-NAME> start(s) @x2 @x1.",building.name(),paintingName);
+		displayText=L("You are @x2 @x1",building.name(),paintingName);
+		verb=L("@x1 @x2",paintingName,building.name());
 		building.recoverPhyStats();
 		building.text();
 		building.recoverPhyStats();

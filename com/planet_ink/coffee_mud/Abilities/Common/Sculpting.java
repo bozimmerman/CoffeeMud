@@ -277,7 +277,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 				CMLib.lister().fixColWidth(3,mob.session())
 			};
 			final StringBuffer buf=new StringBuffer(L("^H@x1 @x2 Stone required^N\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
-			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
+			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipes(recipes, mask, true);
 			for(int r=0;r<listRecipes.size();r++)
 			{
 				final List<String> V=listRecipes.get(r);
@@ -351,10 +351,10 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			String recipeName=CMParms.combine(commands,0);
 			String rest="";
 			List<String> foundRecipe=null;
-			List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
+			List<List<String>> matches=matchingRecipes(recipes,recipeName,false);
 			if(matches.size()==0)
 			{
-				matches=matchingRecipeNames(recipes,commands.get(0),true);
+				matches=matchingRecipes(recipes,commands.get(0),true);
 				if(matches.size()>0)
 				{
 					recipeName=commands.get(0);

@@ -1093,7 +1093,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				,CMStrings.padRight(L("^xRecipe"),colWidth1)
 				,CMStrings.padRight(L("^xLvl"),colWidth2))
 			);
-			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? allRecipes : super.matchingRecipeNames(allRecipes, mask, true);
+			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? allRecipes : super.matchingRecipes(allRecipes, mask, true);
 			for(int r=0;r<listRecipes.size();r++)
 			{
 				final List<String> Vr=listRecipes.get(r);

@@ -477,7 +477,8 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		}
 	}
 
-	protected void addSpellsOrBehaviors(final PhysicalAgent P, String spells, final List<CMObject> otherSpells1, final List<CMObject> otherSpells2)
+	// do not make protected, because painting!
+	public void addSpellsOrBehaviors(final PhysicalAgent P, String spells, final List<CMObject> otherSpells1, final List<CMObject> otherSpells2)
 	{
 		if(spells.equalsIgnoreCase("bundle"))
 			return;
@@ -1087,7 +1088,9 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 
 			final String recipeName = CMParms.combine(recipe);
 			final List<List<String>> recipes=addRecipes(mob,loadRecipes());
-			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
+			final List<List<String>> matches=matchingRecipes(recipes,recipeName,false);
+			if(matches.size()==0)
+				matches.addAll(matchingRecipes(recipes,recipeName,true));
 			if(matches.size()>0)
 			{
 				for(int i=matches.size()-1;i>=0;i--)
@@ -1213,7 +1216,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 	@Override
 	public List<String> matchingRecipeNames(final String recipeName, final boolean beLoose)
 	{
-		final List<List<String>> recipes = matchingRecipeNames(fetchRecipes(),recipeName,beLoose);
+		final List<List<String>> recipes = matchingRecipes(fetchRecipes(),recipeName,beLoose);
 		final List<String> recipeNames=new Vector<String>(recipes.size());
 		for(final List<String> recipe : recipes)
 			recipeNames.add(recipe.get(RCP_FINALNAME));
@@ -1330,7 +1333,8 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		}
 	}
 
-	protected List<List<String>> matchingRecipeNames(final List<List<String>> recipes, String recipeName, final boolean beLoose)
+	// don't make protected?! Painting...
+	public List<List<String>> matchingRecipes(final List<List<String>> recipes, String recipeName, final boolean beLoose)
 	{
 		final List<List<String>> matches=new Vector<List<String>>();
 		if(recipeName.length()==0)
@@ -1462,6 +1466,9 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			}
 		}
 
+		if(!beLoose)
+			return matches;
+
 		if(matches.size()==0)
 		{
 			for(int r=0;r<recipes.size();r++)
@@ -1477,7 +1484,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			}
 		}
 
-		if(beLoose || (matches.size()==0))
+		if(matches.size()==0)
 		{
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -1490,7 +1497,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 						matches.add(V);
 				}
 			}
-			if(beLoose || matches.size()==0)
+			if(matches.size()==0)
 			{
 				final Vector<String> rn=CMParms.parse(recipeName);
 				final String lastWord=rn.lastElement();
@@ -1538,7 +1545,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		}
 
 		if(supportsWeapons()
-		&& (beLoose || (matches.size()==0)))
+		&& (matches.size()==0))
 		{
 			int x=CMParms.indexOf(Weapon.CLASS_DESCS,recipeName.toUpperCase().trim());
 			if(x>=0)
@@ -1551,8 +1558,6 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 					&&(!matches.contains(V)))
 						matches.add(V);
 				}
-				if(!beLoose)
-					return matches;
 			}
 			x=CMParms.indexOf(Weapon.TYPE_DESCS,recipeName.toUpperCase().trim());
 			if(x>=0)
@@ -1568,7 +1573,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			}
 		}
 
-		if(supportsArmors() && (beLoose || (matches.size()==0)))
+		if(supportsArmors() && (matches.size()==0))
 		{
 			final long code=Wearable.CODES.FIND_ignoreCase(recipeName.toUpperCase().trim());
 			if(code > 0)

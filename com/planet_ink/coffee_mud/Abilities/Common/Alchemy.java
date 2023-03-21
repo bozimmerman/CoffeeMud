@@ -339,7 +339,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		buf.append(CMStrings.padRight(L("Spell"),cols[0])+" "+CMStrings.padRight(L("Spell"),cols[0])+" "+CMStrings.padRight(L("Spell"),cols[0]));
 		int toggler=1;
 		final int toggleTop=3;
-		final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
+		final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipes(recipes, mask, true);
 		for(int r=0;r<listRecipes.size();r++)
 		{
 			final List<String> V=listRecipes.get(r);

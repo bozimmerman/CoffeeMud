@@ -356,7 +356,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			for(int r=0;r<toggleTop;r++)
 				buf.append("^H"+(r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Material"),cols[2]));
 			buf.append("^N\n\r");
-			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
+			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipes(recipes, mask, true);
 			for(int r=0;r<listRecipes.size();r++)
 			{
 				final List<String> V=listRecipes.get(r);
@@ -470,7 +470,9 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			}
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
-			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
+			final List<List<String>> matches=matchingRecipes(recipes,recipeName,false);
+			if(matches.size()==0)
+				matches.addAll(matchingRecipes(recipes,recipeName,true));
 			for(int r=0;r<matches.size();r++)
 			{
 				final List<String> V=matches.get(r);

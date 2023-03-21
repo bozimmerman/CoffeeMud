@@ -338,7 +338,7 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 			for(int r=0;r<toggleTop;r++)
 				buf.append(L("^H@x1 @x2 Amt",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1]))).append(" ");
 			buf.append("^N\n\r");
-			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
+			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipes(recipes, mask, true);
 			for(int r=0;r<listRecipes.size();r++)
 			{
 				final List<String> V=listRecipes.get(r);
@@ -385,7 +385,9 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 		}
 		final String recipeName=CMParms.combine(commands,0);
 		List<String> foundRecipe=null;
-		final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,false);
+		final List<List<String>> matches=matchingRecipes(recipes,recipeName,false);
+		if(matches.size()==0)
+			matches.addAll(matchingRecipes(recipes,recipeName,true));
 		for(int r=0;r<matches.size();r++)
 		{
 			final List<String> V=matches.get(r);
