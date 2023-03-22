@@ -147,6 +147,8 @@ public class Disease_Apathy extends Disease
 		if(mood == null)
 		{
 			mood = CMClass.getAbility("Mood");
+			if(mood == null)
+				return null;
 			mood.setAffectedOne(affected);
 			mood.setMiscText("APATHETIC");
 		}
@@ -173,7 +175,8 @@ public class Disease_Apathy extends Disease
 			&&(msg.sourceMessage()!=null)
 			&&((msg.tool()==null)||(msg.tool().ID().equals("Common"))))
 			{
-				if(!getMood().okMessage(msg.source(), msg))
+				final Ability mood = getMood();
+				if((mood != null)&&(!getMood().okMessage(msg.source(), msg)))
 					return false;
 			}
 			else
@@ -204,7 +207,9 @@ public class Disease_Apathy extends Disease
 			return false;
 		if(affected==null)
 			return false;
-		getMood().tick(ticking, tickID);
+		final Ability mood = getMood();
+		if(mood != null)
+			mood.tick(ticking, tickID);
 		return true;
 	}
 }

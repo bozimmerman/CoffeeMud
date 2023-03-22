@@ -109,12 +109,15 @@ public class Skill_SpreadHate extends StdSkill
 		{
 			if(mood == null)
 				mood = CMClass.getAbility("Mood");
-			mood.setAffectedOne(affected);
-			final String newStr = moodTypes[CMLib.dice().roll(1, moodTypes.length, -1)];
-			if(!mood.text().equals(newStr))
-				mood.setMiscText(newStr);
-			if(!mood.okMessage(msg.source(), msg))
-				return false;
+			if(mood != null)
+			{
+				mood.setAffectedOne(affected);
+				final String newStr = moodTypes[CMLib.dice().roll(1, moodTypes.length, -1)];
+				if(!mood.text().equals(newStr))
+					mood.setMiscText(newStr);
+				if(!mood.okMessage(msg.source(), msg))
+					return false;
+			}
 		}
 		return true;
 	}

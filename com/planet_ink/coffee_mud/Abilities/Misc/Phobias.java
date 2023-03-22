@@ -211,7 +211,8 @@ public class Phobias extends StdAbility implements HealthCondition
 			if((!didSomething)&&(this.oldMood!=null))
 			{
 				final Ability moodA=affected.fetchEffect("Mood");
-				if((moodA!=null)&&(moodA.text().equalsIgnoreCase("SCARED")))
+				if((moodA!=null)
+				&&(moodA.text().equalsIgnoreCase("SCARED")))
 				{
 					final Command C=CMClass.getCommand("Mood");
 					if(C!=null)
