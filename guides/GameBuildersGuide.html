@@ -521,7 +521,9 @@ invocation of this ability, a special trigger event will occur that can
 be handled by an IMASK_PROG p &lt;ability id&gt;. Such a script
 trigger
 would, for example, be the appropriate place to put damage commands for
-skills that do damage. Periodic actions can be placed in RAND_PROG
+skills that do damage. During un-invocation, a special trigger event
+will occur that can be handled by IMASK_PROG p UNINVOKE-&lt;ability
+id&gt;. &nbsp;Periodic actions can be placed in RAND_PROG
 triggers.</td>
           </tr>
           <tr>
