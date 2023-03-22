@@ -32,6 +32,8 @@
  30. Duelers can now engage in unfair fights.
  31. New command: Calendar, plus auto-notifications for the start of Holidays in channels.
  32. Painting skill now has recipes file.
+ 33. GenAbility affect adjustments now support variables.
+
 
 # Build 5.10.1 Release 1/01/2023
   1. FasterRecovery expanded and new char stat REJUVRATE for Prop*Adjuster

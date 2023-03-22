@@ -496,7 +496,9 @@ affect their targets (see
 Can Affect), this is the list of affects and their values. It is
 modelled on the same syntax and format of the property
 Prop_HereAdjuster, so enter HELP Prop_HereAdjuster for information on
-the syntax for this field. Entering ? will show you that help.</td>
+the syntax for this field. Entering ? will show you that help.  You can
+insert variables into the arguments, such as: @x1=caster level, @x2=target level, @x3=level expertise,
+@x4-@x8=x1-x5 expertise, @x9=adjusted caster level.</td>
           </tr>
           <tr>
             <td><em>Caster
@@ -640,7 +642,7 @@ or a range of healing which will be inflicted upon the target of this
 skill at invocation time. &nbsp;The syntax of this field is a
 formula.
 Use +-*/()?. @x1=caster level, @x2=target level, @x3=level expertise,
-@x4-@x8=x1-x5 expertise.&nbsp; Formula
+@x4-@x8=x1-x5 expertise, @x9=adjusted caster level.&nbsp; Formula
 evaluates &gt;0 for damage, &lt;0 for healing. Requires Can
 Target
 above! &nbsp;See help on MATH_FORMULA for more information on how

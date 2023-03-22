@@ -100,7 +100,7 @@ public class GenAbility extends StdAbility
 		O[V_CAFF]=Integer.valueOf(Ability.CAN_MOBS);
 		O[V_CTAR]=Integer.valueOf(Ability.CAN_MOBS);
 		O[V_QUAL]=Integer.valueOf(Ability.QUALITY_BENEFICIAL_OTHERS);
-		O[V_HERE]=CMClass.getAbility("Prop_HereAdjuster");
+		O[V_HERE]="";
 		O[V_SCRP]="";
 		O[V_CMSK]="";
 		O[V_TMSK]="";
@@ -152,10 +152,16 @@ public class GenAbility extends StdAbility
 	protected boolean		oneTimeChecked	= false;
 	protected List<Ability>	postEffects		= new Vector<Ability>(1);
 	protected Ability		quietEffect		= null;
+	protected Ability		hereEffect		= null;
 
 	public Ability getQuietAffect()
 	{
 		return quietEffect;
+	}
+
+	public Ability getHereAffect()
+	{
+		return hereEffect;
 	}
 
 	public ScriptingEngine getScripter()
@@ -586,6 +592,28 @@ public class GenAbility extends StdAbility
 					if((canAffectCode()!=0)&&(target!=null))
 					{
 						this.quietEffect=null;
+						this.hereEffect=null;
+						if(((String)V(ID(), V_HERE)).trim().length()>0)
+						{
+							this.hereEffect = CMClass.getAbility("Prop_HereAdjuster");
+							if(this.hereEffect != null)
+							{
+								final String[] vars = new String[] {
+									""+mob.phyStats().level(),
+									""+target.phyStats().level(),
+									""+super.getXLEVELLevel(mob),
+									""+super.getX1Level(mob),
+									""+super.getX2Level(mob),
+									""+super.getX3Level(mob),
+									""+super.getX4Level(mob),
+									""+super.getX5Level(mob),
+									""+adjustedLevel(mob,asLevel)
+								};
+								final String miscText= CMStrings.replaceVariables((String)V(ID,V_HERE), vars);
+								this.hereEffect.setMiscText(miscText);
+							}
+
+						}
 						final GenAbility affectA;
 						if(abstractQuality()==Ability.QUALITY_MALICIOUS)
 							affectA=(GenAbility)maliciousAffect(mob,target,asLevel,tickOverride(),-1);
@@ -686,7 +714,8 @@ public class GenAbility extends StdAbility
 									me.getX2Level(mob),
 									me.getX3Level(mob),
 									me.getX4Level(mob),
-									me.getX5Level(mob)
+									me.getX5Level(mob),
+									adjustedLevel(mob,asLevel)
 								});
 						}
 						if(((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
@@ -835,7 +864,7 @@ public class GenAbility extends StdAbility
 	@Override
 	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
-		final Ability A=(Ability)V(ID,V_HERE);
+		final Ability A=getHereAffect();
 		if(A!=null)
 			A.affectPhyStats(affectedEnv,affectableStats);
 		if(isChannelingSkill())
@@ -848,7 +877,7 @@ public class GenAbility extends StdAbility
 	@Override
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
-		final Ability A=(Ability)V(ID,V_HERE);
+		final Ability A=getHereAffect();
 		if(A!=null)
 			A.affectCharStats(affectedMob,affectableStats);
 		final Ability A2=this.getQuietAffect();
@@ -859,7 +888,7 @@ public class GenAbility extends StdAbility
 	@Override
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
-		final Ability A=(Ability)V(ID,V_HERE);
+		final Ability A=getHereAffect();
 		if(A!=null)
 			A.affectCharState(affectedMob,affectableMaxState);
 		final Ability A2=this.getQuietAffect();
@@ -1091,7 +1120,7 @@ public class GenAbility extends StdAbility
 		case 14:
 			return convert(Ability.QUALITY_DESCS, ((Integer) V(ID, V_QUAL)).intValue(), false);
 		case 15:
-			return ((Ability) V(ID, V_HERE)).text();
+			return ((String) V(ID, V_HERE));
 		case 16:
 			return (String) V(ID, V_CMSK);
 		case 17:
@@ -1217,7 +1246,7 @@ public class GenAbility extends StdAbility
 			SV(ID, V_QUAL, Integer.valueOf(convert(Ability.QUALITY_DESCS, val, false)));
 			break;
 		case 15:
-			((Ability) V(ID, V_HERE)).setMiscText(val);
+			SV(ID, V_HERE, val);
 			break;
 		case 16:
 			SV(ID, V_CMSK, val);
