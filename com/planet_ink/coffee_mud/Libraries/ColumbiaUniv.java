@@ -53,7 +53,6 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	@SuppressWarnings("unchecked")
 	protected Map<String, String[]>[]	completeUsageMaps	= new Hashtable[XType.values().length];
 	protected Map<String, String>		helpMap				= new TreeMap<String, String>();
-	protected DVector					rawDefinitions		= new DVector(7);
 
 	protected ExpertiseLibrary.ExpertiseDefinition addDefinition(final String ID, final String name, final String baseName, final String listMask, final String finalMask, final String[] costs, final String[] data)
 	{
