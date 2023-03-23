@@ -116,20 +116,22 @@ public class Chant_PlantMaze extends Chant
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if(affected==null)
-			return;
 		if(!(affected instanceof Room))
 			return;
 		final Room room=(Room)affected;
 		if(canBeUninvoked())
 		{
-			if((room instanceof GridLocale)
-			&&(oldRoom!=null))
+			super.unInvoke();
+			if(room.getGridParent() != null)
+				room.getGridParent().clearGrid(oldRoom);
+			else
+			if(room instanceof GridLocale)
 				((GridLocale)room).clearGrid(oldRoom);
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				room.setRawExit(d,null);
 		}
-		super.unInvoke();
+		else
+			super.unInvoke();
 		if(canBeUninvoked())
 			room.destroy();
 	}

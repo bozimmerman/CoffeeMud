@@ -90,11 +90,19 @@ public class Chant_Labyrinth extends Chant
 		if(!(affected instanceof Room))
 			return;
 		final Room room=(Room)affected;
-		if((canBeUninvoked())&&(room instanceof GridLocale)&&(oldRoom!=null))
-			((GridLocale)room).clearGrid(oldRoom);
-		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-			room.setRawExit(d,null);
-		super.unInvoke();
+		if(canBeUninvoked())
+		{
+			super.unInvoke();
+			if(room.getGridParent() != null)
+				room.getGridParent().clearGrid(oldRoom);
+			else
+			if(room instanceof GridLocale)
+				((GridLocale)room).clearGrid(oldRoom);
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				room.setRawExit(d,null);
+		}
+		else
+			super.unInvoke();
 		room.destroy();
 	}
 
