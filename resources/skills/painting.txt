@@ -1,2 +1,910 @@
-painting	1	15	5	painting	GenItem	0		
-finger painting	1	15	5	finger painting	GenItem	0		
+finger-painting	1	12	6	finger painting	GenItem	0		
+sketch	4	15	9	sketching	GenItem	0		
+drawing	7	18	12	drawing	GenItem	0		
+painting	10	21	15	painting	GenItem	0		
+color-painting	13	24	18	coloring	GenItem	0		
+scribble	16	27	21	sketching	GenItem	0		
+image	19	30	24	drawing	GenItem	0		
+portrait	22	34	27	painting	GenItem	0		
+watercolour-painting	25	37	30	coloring	GenItem	0		
+doodle	28	40	33	sketching	GenItem	0		
+contour	31	43	36	drawing	GenItem	0		
+panorama	34	46	39	painting	GenItem	0		
+pastel-painting	37	49	42	coloring	GenItem	0		
+outline	40	52	45	sketching	GenItem	0		
+cartoon	43	55	48	drawing	GenItem	0		
+fresco	47	60	52	painting	GenItem	0		
+shaded-panting	50	63	55	coloring	GenItem	0		
+caricature	53	66	58	sketching	GenItem	0		
+illustration	56	69	61	drawing	GenItem	0		
+mural	59	72	64	painting	GenItem	0		
+tinted-painting	62	75	67	coloring	GenItem	0		
+silhouette	65	78	70	sketching	GenItem	0		
+pen and ink	68	81	73	drawing	GenItem	0		
+ink wash	71	85	76	painting	GenItem	0		
+splatter-painting	74	88	79	coloring	GenItem	0		
+depiction	77	91	82	drawing	GenItem	0		
+elvish finger-painting	2	14	27	finger painting	GenItem	1	-RACECAT +ELF	
+elvish sketch	5	18	60	sketching	GenItem	1	-RACECAT +ELF	
+elvish drawing	8	22	93	drawing	GenItem	1	-RACECAT +ELF	
+elvish painting	11	27	126	painting	GenItem	1	-RACECAT +ELF	
+elvish color-painting	14	31	159	coloring	GenItem	1	-RACECAT +ELF	
+elvish scribble	17	35	192	sketching	GenItem	1	-RACECAT +ELF	
+elvish image	20	39	225	drawing	GenItem	1	-RACECAT +ELF	
+elvish portrait	23	44	258	painting	GenItem	1	-RACECAT +ELF	
+elvish watercolour-painting	26	48	291	coloring	GenItem	1	-RACECAT +ELF	
+elvish doodle	29	52	324	sketching	GenItem	1	-RACECAT +ELF	
+elvish contour	32	57	357	drawing	GenItem	1	-RACECAT +ELF	
+elvish panorama	35	61	390	painting	GenItem	1	-RACECAT +ELF	
+elvish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +ELF	
+elvish outline	41	70	456	sketching	GenItem	1	-RACECAT +ELF	
+elvish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +ELF	
+elvish fresco	48	80	533	painting	GenItem	1	-RACECAT +ELF	
+elvish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +ELF	
+elvish caricature	54	88	599	sketching	GenItem	1	-RACECAT +ELF	
+elvish illustration	57	93	632	drawing	GenItem	1	-RACECAT +ELF	
+elvish mural	60	97	665	painting	GenItem	1	-RACECAT +ELF	
+elvish tinted-painting	63	101	698	coloring	GenItem	1	-RACECAT +ELF	
+elvish silhouette	66	106	731	sketching	GenItem	1	-RACECAT +ELF	
+elvish pen and ink	69	110	764	drawing	GenItem	1	-RACECAT +ELF	
+elvish ink wash	72	114	797	painting	GenItem	1	-RACECAT +ELF	
+elvish splatter-painting	75	119	830	coloring	GenItem	1	-RACECAT +ELF	
+elvish depiction	78	123	863	drawing	GenItem	1	-RACECAT +ELF	
+humanist finger-painting	2	14	27	finger painting	GenItem	1	-RACECAT +HUMANOID	
+humanist sketch	5	18	60	sketching	GenItem	1	-RACECAT +HUMANOID	
+humanist drawing	8	22	93	drawing	GenItem	1	-RACECAT +HUMANOID	
+humanist painting	11	27	126	painting	GenItem	1	-RACECAT +HUMANOID	
+humanist color-painting	14	31	159	coloring	GenItem	1	-RACECAT +HUMANOID	
+humanist scribble	17	35	192	sketching	GenItem	1	-RACECAT +HUMANOID	
+humanist image	20	39	225	drawing	GenItem	1	-RACECAT +HUMANOID	
+humanist portrait	23	44	258	painting	GenItem	1	-RACECAT +HUMANOID	
+humanist watercolour-painting	26	48	291	coloring	GenItem	1	-RACECAT +HUMANOID	
+humanist doodle	29	52	324	sketching	GenItem	1	-RACECAT +HUMANOID	
+humanist contour	32	57	357	drawing	GenItem	1	-RACECAT +HUMANOID	
+humanist panorama	35	61	390	painting	GenItem	1	-RACECAT +HUMANOID	
+humanist pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +HUMANOID	
+humanist outline	41	70	456	sketching	GenItem	1	-RACECAT +HUMANOID	
+humanist cartoon	44	74	489	drawing	GenItem	1	-RACECAT +HUMANOID	
+humanist fresco	48	80	533	painting	GenItem	1	-RACECAT +HUMANOID	
+humanist shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +HUMANOID	
+humanist caricature	54	88	599	sketching	GenItem	1	-RACECAT +HUMANOID	
+humanist illustration	57	93	632	drawing	GenItem	1	-RACECAT +HUMANOID	
+humanist mural	60	97	665	painting	GenItem	1	-RACECAT +HUMANOID	
+humanist tinted-painting	63	101	698	coloring	GenItem	1	-RACECAT +HUMANOID	
+humanist silhouette	66	106	731	sketching	GenItem	1	-RACECAT +HUMANOID	
+humanist pen and ink	69	110	764	drawing	GenItem	1	-RACECAT +HUMANOID	
+humanist ink wash	72	114	797	painting	GenItem	1	-RACECAT +HUMANOID	
+humanist splatter-painting	75	119	830	coloring	GenItem	1	-RACECAT +HUMANOID	
+humanist depiction	78	123	863	drawing	GenItem	1	-RACECAT +HUMANOID	
+dwarvish finger-painting	2	14	27	finger painting	GenItem	1	-RACECAT +DWARF	
+dwarvish sketch	5	18	60	sketching	GenItem	1	-RACECAT +DWARF	
+dwarvish drawing	8	22	93	drawing	GenItem	1	-RACECAT +DWARF	
+dwarvish painting	11	27	126	painting	GenItem	1	-RACECAT +DWARF	
+dwarvish color-painting	14	31	159	coloring	GenItem	1	-RACECAT +DWARF	
+dwarvish scribble	17	35	192	sketching	GenItem	1	-RACECAT +DWARF	
+dwarvish image	20	39	225	drawing	GenItem	1	-RACECAT +DWARF	
+dwarvish portrait	23	44	258	painting	GenItem	1	-RACECAT +DWARF	
+dwarvish watercolour-painting	26	48	291	coloring	GenItem	1	-RACECAT +DWARF	
+dwarvish doodle	29	52	324	sketching	GenItem	1	-RACECAT +DWARF	
+dwarvish contour	32	57	357	drawing	GenItem	1	-RACECAT +DWARF	
+dwarvish panorama	35	61	390	painting	GenItem	1	-RACECAT +DWARF	
+dwarvish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +DWARF	
+dwarvish outline	41	70	456	sketching	GenItem	1	-RACECAT +DWARF	
+dwarvish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +DWARF	
+dwarvish fresco	48	80	533	painting	GenItem	1	-RACECAT +DWARF	
+dwarvish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +DWARF	
+dwarvish caricature	54	88	599	sketching	GenItem	1	-RACECAT +DWARF	
+dwarvish illustration	57	93	632	drawing	GenItem	1	-RACECAT +DWARF	
+dwarvish mural	60	97	665	painting	GenItem	1	-RACECAT +DWARF	
+dwarvish tinted-painting	63	101	698	coloring	GenItem	1	-RACECAT +DWARF	
+dwarvish silhouette	66	106	731	sketching	GenItem	1	-RACECAT +DWARF	
+dwarvish pen and ink	69	110	764	drawing	GenItem	1	-RACECAT +DWARF	
+dwarvish ink wash	72	114	797	painting	GenItem	1	-RACECAT +DWARF	
+dwarvish splatter-painting	75	119	830	coloring	GenItem	1	-RACECAT +DWARF	
+dwarvish depiction	78	123	863	drawing	GenItem	1	-RACECAT +DWARF	
+Aarakocranic finger-painting	2	14	27	finger painting	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic sketch	5	18	60	sketching	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic drawing	8	22	93	drawing	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic painting	11	27	126	painting	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic color-painting	14	31	159	coloring	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic scribble	17	35	192	sketching	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic image	20	39	225	drawing	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic portrait	23	44	258	painting	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic watercolour-painting	26	48	291	coloring	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic doodle	29	52	324	sketching	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic contour	32	57	357	drawing	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic panorama	35	61	390	painting	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic pastel-painting	38	65	423	coloring	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic outline	41	70	456	sketching	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic cartoon	44	74	489	drawing	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic fresco	48	80	533	painting	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic shaded-panting	51	84	566	coloring	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic caricature	54	88	599	sketching	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic illustration	57	93	632	drawing	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic mural	60	97	665	painting	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic tinted-painting	63	101	698	coloring	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic silhouette	66	106	731	sketching	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic pen and ink	69	110	764	drawing	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic ink wash	72	114	797	painting	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic splatter-painting	75	119	830	coloring	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic depiction	78	123	863	drawing	GenItem	1	-RACE +AARAKOCRAN	
+Centauran finger-painting	2	14	27	finger painting	GenItem	1	-RACE +CENTAUR	
+Centauran sketch	5	18	60	sketching	GenItem	1	-RACE +CENTAUR	
+Centauran drawing	8	22	93	drawing	GenItem	1	-RACE +CENTAUR	
+Centauran painting	11	27	126	painting	GenItem	1	-RACE +CENTAUR	
+Centauran color-painting	14	31	159	coloring	GenItem	1	-RACE +CENTAUR	
+Centauran scribble	17	35	192	sketching	GenItem	1	-RACE +CENTAUR	
+Centauran image	20	39	225	drawing	GenItem	1	-RACE +CENTAUR	
+Centauran portrait	23	44	258	painting	GenItem	1	-RACE +CENTAUR	
+Centauran watercolour-painting	26	48	291	coloring	GenItem	1	-RACE +CENTAUR	
+Centauran doodle	29	52	324	sketching	GenItem	1	-RACE +CENTAUR	
+Centauran contour	32	57	357	drawing	GenItem	1	-RACE +CENTAUR	
+Centauran panorama	35	61	390	painting	GenItem	1	-RACE +CENTAUR	
+Centauran pastel-painting	38	65	423	coloring	GenItem	1	-RACE +CENTAUR	
+Centauran outline	41	70	456	sketching	GenItem	1	-RACE +CENTAUR	
+Centauran cartoon	44	74	489	drawing	GenItem	1	-RACE +CENTAUR	
+Centauran fresco	48	80	533	painting	GenItem	1	-RACE +CENTAUR	
+Centauran shaded-panting	51	84	566	coloring	GenItem	1	-RACE +CENTAUR	
+Centauran caricature	54	88	599	sketching	GenItem	1	-RACE +CENTAUR	
+Centauran illustration	57	93	632	drawing	GenItem	1	-RACE +CENTAUR	
+Centauran mural	60	97	665	painting	GenItem	1	-RACE +CENTAUR	
+Centauran tinted-painting	63	101	698	coloring	GenItem	1	-RACE +CENTAUR	
+Centauran silhouette	66	106	731	sketching	GenItem	1	-RACE +CENTAUR	
+Centauran pen and ink	69	110	764	drawing	GenItem	1	-RACE +CENTAUR	
+Centauran ink wash	72	114	797	painting	GenItem	1	-RACE +CENTAUR	
+Centauran splatter-painting	75	119	830	coloring	GenItem	1	-RACE +CENTAUR	
+Centauran depiction	78	123	863	drawing	GenItem	1	-RACE +CENTAUR	
+Drowish finger-painting	2	14	27	finger painting	GenItem	1	-RACE +DROW +DRIDER	
+Drowish sketch	5	18	60	sketching	GenItem	1	-RACE +DROW +DRIDER	
+Drowish drawing	8	22	93	drawing	GenItem	1	-RACE +DROW +DRIDER	
+Drowish painting	11	27	126	painting	GenItem	1	-RACE +DROW +DRIDER	
+Drowish color-painting	14	31	159	coloring	GenItem	1	-RACE +DROW +DRIDER	
+Drowish scribble	17	35	192	sketching	GenItem	1	-RACE +DROW +DRIDER	
+Drowish image	20	39	225	drawing	GenItem	1	-RACE +DROW +DRIDER	
+Drowish portrait	23	44	258	painting	GenItem	1	-RACE +DROW +DRIDER	
+Drowish watercolour-painting	26	48	291	coloring	GenItem	1	-RACE +DROW +DRIDER	
+Drowish doodle	29	52	324	sketching	GenItem	1	-RACE +DROW +DRIDER	
+Drowish contour	32	57	357	drawing	GenItem	1	-RACE +DROW +DRIDER	
+Drowish panorama	35	61	390	painting	GenItem	1	-RACE +DROW +DRIDER	
+Drowish pastel-painting	38	65	423	coloring	GenItem	1	-RACE +DROW +DRIDER	
+Drowish outline	41	70	456	sketching	GenItem	1	-RACE +DROW +DRIDER	
+Drowish cartoon	44	74	489	drawing	GenItem	1	-RACE +DROW +DRIDER	
+Drowish fresco	48	80	533	painting	GenItem	1	-RACE +DROW +DRIDER	
+Drowish shaded-panting	51	84	566	coloring	GenItem	1	-RACE +DROW +DRIDER	
+Drowish caricature	54	88	599	sketching	GenItem	1	-RACE +DROW +DRIDER	
+Drowish illustration	57	93	632	drawing	GenItem	1	-RACE +DROW +DRIDER	
+Drowish mural	60	97	665	painting	GenItem	1	-RACE +DROW +DRIDER	
+Drowish tinted-painting	63	101	698	coloring	GenItem	1	-RACE +DROW +DRIDER	
+Drowish silhouette	66	106	731	sketching	GenItem	1	-RACE +DROW +DRIDER	
+Drowish pen and ink	69	110	764	drawing	GenItem	1	-RACE +DROW +DRIDER	
+Drowish ink wash	72	114	797	painting	GenItem	1	-RACE +DROW +DRIDER	
+Drowish splatter-painting	75	119	830	coloring	GenItem	1	-RACE +DROW +DRIDER	
+Drowish depiction	78	123	863	drawing	GenItem	1	-RACE +DROW +DRIDER	
+Duergarish finger-painting	2	14	27	finger painting	GenItem	1	-RACE +DUERGAR	
+Duergarish sketch	5	18	60	sketching	GenItem	1	-RACE +DUERGAR	
+Duergarish drawing	8	22	93	drawing	GenItem	1	-RACE +DUERGAR	
+Duergarish painting	11	27	126	painting	GenItem	1	-RACE +DUERGAR	
+Duergarish color-painting	14	31	159	coloring	GenItem	1	-RACE +DUERGAR	
+Duergarish scribble	17	35	192	sketching	GenItem	1	-RACE +DUERGAR	
+Duergarish image	20	39	225	drawing	GenItem	1	-RACE +DUERGAR	
+Duergarish portrait	23	44	258	painting	GenItem	1	-RACE +DUERGAR	
+Duergarish watercolour-painting	26	48	291	coloring	GenItem	1	-RACE +DUERGAR	
+Duergarish doodle	29	52	324	sketching	GenItem	1	-RACE +DUERGAR	
+Duergarish contour	32	57	357	drawing	GenItem	1	-RACE +DUERGAR	
+Duergarish panorama	35	61	390	painting	GenItem	1	-RACE +DUERGAR	
+Duergarish pastel-painting	38	65	423	coloring	GenItem	1	-RACE +DUERGAR	
+Duergarish outline	41	70	456	sketching	GenItem	1	-RACE +DUERGAR	
+Duergarish cartoon	44	74	489	drawing	GenItem	1	-RACE +DUERGAR	
+Duergarish fresco	48	80	533	painting	GenItem	1	-RACE +DUERGAR	
+Duergarish shaded-panting	51	84	566	coloring	GenItem	1	-RACE +DUERGAR	
+Duergarish caricature	54	88	599	sketching	GenItem	1	-RACE +DUERGAR	
+Duergarish illustration	57	93	632	drawing	GenItem	1	-RACE +DUERGAR	
+Duergarish mural	60	97	665	painting	GenItem	1	-RACE +DUERGAR	
+Duergarish tinted-painting	63	101	698	coloring	GenItem	1	-RACE +DUERGAR	
+Duergarish silhouette	66	106	731	sketching	GenItem	1	-RACE +DUERGAR	
+Duergarish pen and ink	69	110	764	drawing	GenItem	1	-RACE +DUERGAR	
+Duergarish ink wash	72	114	797	painting	GenItem	1	-RACE +DUERGAR	
+Duergarish splatter-painting	75	119	830	coloring	GenItem	1	-RACE +DUERGAR	
+Duergarish depiction	78	123	863	drawing	GenItem	1	-RACE +DUERGAR	
+Gith finger-painting	2	14	27	finger painting	GenItem	1	-RACE +GITHYANKI	
+Gith sketch	5	18	60	sketching	GenItem	1	-RACE +GITHYANKI	
+Gith drawing	8	22	93	drawing	GenItem	1	-RACE +GITHYANKI	
+Gith painting	11	27	126	painting	GenItem	1	-RACE +GITHYANKI	
+Gith color-painting	14	31	159	coloring	GenItem	1	-RACE +GITHYANKI	
+Gith scribble	17	35	192	sketching	GenItem	1	-RACE +GITHYANKI	
+Gith image	20	39	225	drawing	GenItem	1	-RACE +GITHYANKI	
+Gith portrait	23	44	258	painting	GenItem	1	-RACE +GITHYANKI	
+Gith watercolour-painting	26	48	291	coloring	GenItem	1	-RACE +GITHYANKI	
+Gith doodle	29	52	324	sketching	GenItem	1	-RACE +GITHYANKI	
+Gith contour	32	57	357	drawing	GenItem	1	-RACE +GITHYANKI	
+Gith panorama	35	61	390	painting	GenItem	1	-RACE +GITHYANKI	
+Gith pastel-painting	38	65	423	coloring	GenItem	1	-RACE +GITHYANKI	
+Gith outline	41	70	456	sketching	GenItem	1	-RACE +GITHYANKI	
+Gith cartoon	44	74	489	drawing	GenItem	1	-RACE +GITHYANKI	
+Gith fresco	48	80	533	painting	GenItem	1	-RACE +GITHYANKI	
+Gith shaded-panting	51	84	566	coloring	GenItem	1	-RACE +GITHYANKI	
+Gith caricature	54	88	599	sketching	GenItem	1	-RACE +GITHYANKI	
+Gith illustration	57	93	632	drawing	GenItem	1	-RACE +GITHYANKI	
+Gith mural	60	97	665	painting	GenItem	1	-RACE +GITHYANKI	
+Gith tinted-painting	63	101	698	coloring	GenItem	1	-RACE +GITHYANKI	
+Gith silhouette	66	106	731	sketching	GenItem	1	-RACE +GITHYANKI	
+Gith pen and ink	69	110	764	drawing	GenItem	1	-RACE +GITHYANKI	
+Gith ink wash	72	114	797	painting	GenItem	1	-RACE +GITHYANKI	
+Gith splatter-painting	75	119	830	coloring	GenItem	1	-RACE +GITHYANKI	
+Gith depiction	78	123	863	drawing	GenItem	1	-RACE +GITHYANKI	
+Gnollish finger-painting	2	14	27	finger painting	GenItem	1	-RACE +GNOLL	
+Gnollish sketch	5	18	60	sketching	GenItem	1	-RACE +GNOLL	
+Gnollish drawing	8	22	93	drawing	GenItem	1	-RACE +GNOLL	
+Gnollish painting	11	27	126	painting	GenItem	1	-RACE +GNOLL	
+Gnollish color-painting	14	31	159	coloring	GenItem	1	-RACE +GNOLL	
+Gnollish scribble	17	35	192	sketching	GenItem	1	-RACE +GNOLL	
+Gnollish image	20	39	225	drawing	GenItem	1	-RACE +GNOLL	
+Gnollish portrait	23	44	258	painting	GenItem	1	-RACE +GNOLL	
+Gnollish watercolour-painting	26	48	291	coloring	GenItem	1	-RACE +GNOLL	
+Gnollish doodle	29	52	324	sketching	GenItem	1	-RACE +GNOLL	
+Gnollish contour	32	57	357	drawing	GenItem	1	-RACE +GNOLL	
+Gnollish panorama	35	61	390	painting	GenItem	1	-RACE +GNOLL	
+Gnollish pastel-painting	38	65	423	coloring	GenItem	1	-RACE +GNOLL	
+Gnollish outline	41	70	456	sketching	GenItem	1	-RACE +GNOLL	
+Gnollish cartoon	44	74	489	drawing	GenItem	1	-RACE +GNOLL	
+Gnollish fresco	48	80	533	painting	GenItem	1	-RACE +GNOLL	
+Gnollish shaded-panting	51	84	566	coloring	GenItem	1	-RACE +GNOLL	
+Gnollish caricature	54	88	599	sketching	GenItem	1	-RACE +GNOLL	
+Gnollish illustration	57	93	632	drawing	GenItem	1	-RACE +GNOLL	
+Gnollish mural	60	97	665	painting	GenItem	1	-RACE +GNOLL	
+Gnollish tinted-painting	63	101	698	coloring	GenItem	1	-RACE +GNOLL	
+Gnollish silhouette	66	106	731	sketching	GenItem	1	-RACE +GNOLL	
+Gnollish pen and ink	69	110	764	drawing	GenItem	1	-RACE +GNOLL	
+Gnollish ink wash	72	114	797	painting	GenItem	1	-RACE +GNOLL	
+Gnollish splatter-painting	75	119	830	coloring	GenItem	1	-RACE +GNOLL	
+Gnollish depiction	78	123	863	drawing	GenItem	1	-RACE +GNOLL	
+Gnomish finger-painting	2	14	27	finger painting	GenItem	1	-RACECAT +GNOME	
+Gnomish sketch	5	18	60	sketching	GenItem	1	-RACECAT +GNOME	
+Gnomish drawing	8	22	93	drawing	GenItem	1	-RACECAT +GNOME	
+Gnomish painting	11	27	126	painting	GenItem	1	-RACECAT +GNOME	
+Gnomish color-painting	14	31	159	coloring	GenItem	1	-RACECAT +GNOME	
+Gnomish scribble	17	35	192	sketching	GenItem	1	-RACECAT +GNOME	
+Gnomish image	20	39	225	drawing	GenItem	1	-RACECAT +GNOME	
+Gnomish portrait	23	44	258	painting	GenItem	1	-RACECAT +GNOME	
+Gnomish watercolour-painting	26	48	291	coloring	GenItem	1	-RACECAT +GNOME	
+Gnomish doodle	29	52	324	sketching	GenItem	1	-RACECAT +GNOME	
+Gnomish contour	32	57	357	drawing	GenItem	1	-RACECAT +GNOME	
+Gnomish panorama	35	61	390	painting	GenItem	1	-RACECAT +GNOME	
+Gnomish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +GNOME	
+Gnomish outline	41	70	456	sketching	GenItem	1	-RACECAT +GNOME	
+Gnomish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +GNOME	
+Gnomish fresco	48	80	533	painting	GenItem	1	-RACECAT +GNOME	
+Gnomish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +GNOME	
+Gnomish caricature	54	88	599	sketching	GenItem	1	-RACECAT +GNOME	
+Gnomish illustration	57	93	632	drawing	GenItem	1	-RACECAT +GNOME	
+Gnomish mural	60	97	665	painting	GenItem	1	-RACECAT +GNOME	
+Gnomish tinted-painting	63	101	698	coloring	GenItem	1	-RACECAT +GNOME	
+Gnomish silhouette	66	106	731	sketching	GenItem	1	-RACECAT +GNOME	
+Gnomish pen and ink	69	110	764	drawing	GenItem	1	-RACECAT +GNOME	
+Gnomish ink wash	72	114	797	painting	GenItem	1	-RACECAT +GNOME	
+Gnomish splatter-painting	75	119	830	coloring	GenItem	1	-RACECAT +GNOME	
+Gnomish depiction	78	123	863	drawing	GenItem	1	-RACECAT +GNOME	
+Goblinish finger-painting	2	14	27	finger painting	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish sketch	5	18	60	sketching	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish drawing	8	22	93	drawing	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish painting	11	27	126	painting	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish color-painting	14	31	159	coloring	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish scribble	17	35	192	sketching	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish image	20	39	225	drawing	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish portrait	23	44	258	painting	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish watercolour-painting	26	48	291	coloring	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish doodle	29	52	324	sketching	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish contour	32	57	357	drawing	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish panorama	35	61	390	painting	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish outline	41	70	456	sketching	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish fresco	48	80	533	painting	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish caricature	54	88	599	sketching	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish illustration	57	93	632	drawing	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish mural	60	97	665	painting	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish tinted-painting	63	101	698	coloring	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish silhouette	66	106	731	sketching	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish pen and ink	69	110	764	drawing	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish ink wash	72	114	797	painting	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish splatter-painting	75	119	830	coloring	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish depiction	78	123	863	drawing	GenItem	1	-RACECAT +GOBLINOID	
+Halflingish finger-painting	2	14	27	finger painting	GenItem	1	-RACECAT +HALFLING	
+Halflingish sketch	5	18	60	sketching	GenItem	1	-RACECAT +HALFLING	
+Halflingish drawing	8	22	93	drawing	GenItem	1	-RACECAT +HALFLING	
+Halflingish painting	11	27	126	painting	GenItem	1	-RACECAT +HALFLING	
+Halflingish color-painting	14	31	159	coloring	GenItem	1	-RACECAT +HALFLING	
+Halflingish scribble	17	35	192	sketching	GenItem	1	-RACECAT +HALFLING	
+Halflingish image	20	39	225	drawing	GenItem	1	-RACECAT +HALFLING	
+Halflingish portrait	23	44	258	painting	GenItem	1	-RACECAT +HALFLING	
+Halflingish watercolour-painting	26	48	291	coloring	GenItem	1	-RACECAT +HALFLING	
+Halflingish doodle	29	52	324	sketching	GenItem	1	-RACECAT +HALFLING	
+Halflingish contour	32	57	357	drawing	GenItem	1	-RACECAT +HALFLING	
+Halflingish panorama	35	61	390	painting	GenItem	1	-RACECAT +HALFLING	
+Halflingish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +HALFLING	
+Halflingish outline	41	70	456	sketching	GenItem	1	-RACECAT +HALFLING	
+Halflingish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +HALFLING	
+Halflingish fresco	48	80	533	painting	GenItem	1	-RACECAT +HALFLING	
+Halflingish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +HALFLING	
+Halflingish caricature	54	88	599	sketching	GenItem	1	-RACECAT +HALFLING	
+Halflingish illustration	57	93	632	drawing	GenItem	1	-RACECAT +HALFLING	
+Halflingish mural	60	97	665	painting	GenItem	1	-RACECAT +HALFLING	
+Halflingish tinted-painting	63	101	698	coloring	GenItem	1	-RACECAT +HALFLING	
+Halflingish silhouette	66	106	731	sketching	GenItem	1	-RACECAT +HALFLING	
+Halflingish pen and ink	69	110	764	drawing	GenItem	1	-RACECAT +HALFLING	
+Halflingish ink wash	72	114	797	painting	GenItem	1	-RACECAT +HALFLING	
+Halflingish splatter-painting	75	119	830	coloring	GenItem	1	-RACECAT +HALFLING	
+Halflingish depiction	78	123	863	drawing	GenItem	1	-RACECAT +HALFLING	
+Reptiloidish finger-painting	2	14	27	finger painting	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish sketch	5	18	60	sketching	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish drawing	8	22	93	drawing	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish painting	11	27	126	painting	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish color-painting	14	31	159	coloring	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish scribble	17	35	192	sketching	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish image	20	39	225	drawing	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish portrait	23	44	258	painting	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish watercolour-painting	26	48	291	coloring	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish doodle	29	52	324	sketching	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish contour	32	57	357	drawing	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish panorama	35	61	390	painting	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish outline	41	70	456	sketching	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish fresco	48	80	533	painting	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish caricature	54	88	599	sketching	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish illustration	57	93	632	drawing	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish mural	60	97	665	painting	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish tinted-painting	63	101	698	coloring	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish silhouette	66	106	731	sketching	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish pen and ink	69	110	764	drawing	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish ink wash	72	114	797	painting	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish splatter-painting	75	119	830	coloring	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish depiction	78	123	863	drawing	GenItem	1	-RACECAT +REPTILE	
+Merfolky finger-painting	2	14	27	finger painting	GenItem	1	-RACE +MERFOLK	
+Merfolky sketch	5	18	60	sketching	GenItem	1	-RACE +MERFOLK	
+Merfolky drawing	8	22	93	drawing	GenItem	1	-RACE +MERFOLK	
+Merfolky painting	11	27	126	painting	GenItem	1	-RACE +MERFOLK	
+Merfolky color-painting	14	31	159	coloring	GenItem	1	-RACE +MERFOLK	
+Merfolky scribble	17	35	192	sketching	GenItem	1	-RACE +MERFOLK	
+Merfolky image	20	39	225	drawing	GenItem	1	-RACE +MERFOLK	
+Merfolky portrait	23	44	258	painting	GenItem	1	-RACE +MERFOLK	
+Merfolky watercolour-painting	26	48	291	coloring	GenItem	1	-RACE +MERFOLK	
+Merfolky doodle	29	52	324	sketching	GenItem	1	-RACE +MERFOLK	
+Merfolky contour	32	57	357	drawing	GenItem	1	-RACE +MERFOLK	
+Merfolky panorama	35	61	390	painting	GenItem	1	-RACE +MERFOLK	
+Merfolky pastel-painting	38	65	423	coloring	GenItem	1	-RACE +MERFOLK	
+Merfolky outline	41	70	456	sketching	GenItem	1	-RACE +MERFOLK	
+Merfolky cartoon	44	74	489	drawing	GenItem	1	-RACE +MERFOLK	
+Merfolky fresco	48	80	533	painting	GenItem	1	-RACE +MERFOLK	
+Merfolky shaded-panting	51	84	566	coloring	GenItem	1	-RACE +MERFOLK	
+Merfolky caricature	54	88	599	sketching	GenItem	1	-RACE +MERFOLK	
+Merfolky illustration	57	93	632	drawing	GenItem	1	-RACE +MERFOLK	
+Merfolky mural	60	97	665	painting	GenItem	1	-RACE +MERFOLK	
+Merfolky tinted-painting	63	101	698	coloring	GenItem	1	-RACE +MERFOLK	
+Merfolky silhouette	66	106	731	sketching	GenItem	1	-RACE +MERFOLK	
+Merfolky pen and ink	69	110	764	drawing	GenItem	1	-RACE +MERFOLK	
+Merfolky ink wash	72	114	797	painting	GenItem	1	-RACE +MERFOLK	
+Merfolky splatter-painting	75	119	830	coloring	GenItem	1	-RACE +MERFOLK	
+Merfolky depiction	78	123	863	drawing	GenItem	1	-RACE +MERFOLK	
+Illithidish finger-painting	2	14	27	finger painting	GenItem	1	-RACECAT +ILLITHID	
+Illithidish sketch	5	18	60	sketching	GenItem	1	-RACECAT +ILLITHID	
+Illithidish drawing	8	22	93	drawing	GenItem	1	-RACECAT +ILLITHID	
+Illithidish painting	11	27	126	painting	GenItem	1	-RACECAT +ILLITHID	
+Illithidish color-painting	14	31	159	coloring	GenItem	1	-RACECAT +ILLITHID	
+Illithidish scribble	17	35	192	sketching	GenItem	1	-RACECAT +ILLITHID	
+Illithidish image	20	39	225	drawing	GenItem	1	-RACECAT +ILLITHID	
+Illithidish portrait	23	44	258	painting	GenItem	1	-RACECAT +ILLITHID	
+Illithidish watercolour-painting	26	48	291	coloring	GenItem	1	-RACECAT +ILLITHID	
+Illithidish doodle	29	52	324	sketching	GenItem	1	-RACECAT +ILLITHID	
+Illithidish contour	32	57	357	drawing	GenItem	1	-RACECAT +ILLITHID	
+Illithidish panorama	35	61	390	painting	GenItem	1	-RACECAT +ILLITHID	
+Illithidish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +ILLITHID	
+Illithidish outline	41	70	456	sketching	GenItem	1	-RACECAT +ILLITHID	
+Illithidish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +ILLITHID	
+Illithidish fresco	48	80	533	painting	GenItem	1	-RACECAT +ILLITHID	
+Illithidish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +ILLITHID	
+Illithidish caricature	54	88	599	sketching	GenItem	1	-RACECAT +ILLITHID	
+Illithidish illustration	57	93	632	drawing	GenItem	1	-RACECAT +ILLITHID	
+Illithidish mural	60	97	665	painting	GenItem	1	-RACECAT +ILLITHID	
+Illithidish tinted-painting	63	101	698	coloring	GenItem	1	-RACECAT +ILLITHID	
+Illithidish silhouette	66	106	731	sketching	GenItem	1	-RACECAT +ILLITHID	
+Illithidish pen and ink	69	110	764	drawing	GenItem	1	-RACECAT +ILLITHID	
+Illithidish ink wash	72	114	797	painting	GenItem	1	-RACECAT +ILLITHID	
+Illithidish splatter-painting	75	119	830	coloring	GenItem	1	-RACECAT +ILLITHID	
+Illithidish depiction	78	123	863	drawing	GenItem	1	-RACECAT +ILLITHID	
+Gigantic finger-painting	2	14	27	finger painting	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic sketch	5	18	60	sketching	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic drawing	8	22	93	drawing	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic painting	11	27	126	painting	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic color-painting	14	31	159	coloring	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic scribble	17	35	192	sketching	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic image	20	39	225	drawing	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic portrait	23	44	258	painting	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic watercolour-painting	26	48	291	coloring	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic doodle	29	52	324	sketching	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic contour	32	57	357	drawing	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic panorama	35	61	390	painting	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic outline	41	70	456	sketching	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic cartoon	44	74	489	drawing	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic fresco	48	80	533	painting	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic caricature	54	88	599	sketching	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic illustration	57	93	632	drawing	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic mural	60	97	665	painting	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic tinted-painting	63	101	698	coloring	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic silhouette	66	106	731	sketching	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic pen and ink	69	110	764	drawing	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic ink wash	72	114	797	painting	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic splatter-painting	75	119	830	coloring	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic depiction	78	123	863	drawing	GenItem	1	-RACECAT "+GIANT-KIN"	
+Heavenly finger-painting	2	14	27	finger painting	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly sketch	5	18	60	sketching	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly drawing	8	22	93	drawing	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly painting	11	27	126	painting	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly color-painting	14	31	159	coloring	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly scribble	17	35	192	sketching	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly image	20	39	225	drawing	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly portrait	23	44	258	painting	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly watercolour-painting	26	48	291	coloring	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly doodle	29	52	324	sketching	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly contour	32	57	357	drawing	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly panorama	35	61	390	painting	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly outline	41	70	456	sketching	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly cartoon	44	74	489	drawing	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly fresco	48	80	533	painting	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly caricature	54	88	599	sketching	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly illustration	57	93	632	drawing	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly mural	60	97	665	painting	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly tinted-painting	63	101	698	coloring	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly silhouette	66	106	731	sketching	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly pen and ink	69	110	764	drawing	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly ink wash	72	114	797	painting	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly splatter-painting	75	119	830	coloring	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly depiction	78	123	863	drawing	GenItem	1	-RACECAT +CELESTIAL	
+Orcish finger-painting	2	14	27	finger painting	GenItem	1	-RACE +ORC	
+Orcish sketch	5	18	60	sketching	GenItem	1	-RACE +ORC	
+Orcish drawing	8	22	93	drawing	GenItem	1	-RACE +ORC	
+Orcish painting	11	27	126	painting	GenItem	1	-RACE +ORC	
+Orcish color-painting	14	31	159	coloring	GenItem	1	-RACE +ORC	
+Orcish scribble	17	35	192	sketching	GenItem	1	-RACE +ORC	
+Orcish image	20	39	225	drawing	GenItem	1	-RACE +ORC	
+Orcish portrait	23	44	258	painting	GenItem	1	-RACE +ORC	
+Orcish watercolour-painting	26	48	291	coloring	GenItem	1	-RACE +ORC	
+Orcish doodle	29	52	324	sketching	GenItem	1	-RACE +ORC	
+Orcish contour	32	57	357	drawing	GenItem	1	-RACE +ORC	
+Orcish panorama	35	61	390	painting	GenItem	1	-RACE +ORC	
+Orcish pastel-painting	38	65	423	coloring	GenItem	1	-RACE +ORC	
+Orcish outline	41	70	456	sketching	GenItem	1	-RACE +ORC	
+Orcish cartoon	44	74	489	drawing	GenItem	1	-RACE +ORC	
+Orcish fresco	48	80	533	painting	GenItem	1	-RACE +ORC	
+Orcish shaded-panting	51	84	566	coloring	GenItem	1	-RACE +ORC	
+Orcish caricature	54	88	599	sketching	GenItem	1	-RACE +ORC	
+Orcish illustration	57	93	632	drawing	GenItem	1	-RACE +ORC	
+Orcish mural	60	97	665	painting	GenItem	1	-RACE +ORC	
+Orcish tinted-painting	63	101	698	coloring	GenItem	1	-RACE +ORC	
+Orcish silhouette	66	106	731	sketching	GenItem	1	-RACE +ORC	
+Orcish pen and ink	69	110	764	drawing	GenItem	1	-RACE +ORC	
+Orcish ink wash	72	114	797	painting	GenItem	1	-RACE +ORC	
+Orcish splatter-painting	75	119	830	coloring	GenItem	1	-RACE +ORC	
+Orcish depiction	78	123	863	drawing	GenItem	1	-RACE +ORC	
+Fey finger-painting	2	14	27	finger painting	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey sketch	5	18	60	sketching	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey drawing	8	22	93	drawing	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey painting	11	27	126	painting	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey color-painting	14	31	159	coloring	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey scribble	17	35	192	sketching	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey image	20	39	225	drawing	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey portrait	23	44	258	painting	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey watercolour-painting	26	48	291	coloring	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey doodle	29	52	324	sketching	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey contour	32	57	357	drawing	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey panorama	35	61	390	painting	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey outline	41	70	456	sketching	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey cartoon	44	74	489	drawing	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey fresco	48	80	533	painting	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey caricature	54	88	599	sketching	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey illustration	57	93	632	drawing	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey mural	60	97	665	painting	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey tinted-painting	63	101	698	coloring	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey silhouette	66	106	731	sketching	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey pen and ink	69	110	764	drawing	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey ink wash	72	114	797	painting	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey splatter-painting	75	119	830	coloring	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey depiction	78	123	863	drawing	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Svirfneblinish finger-painting	2	14	27	finger painting	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish sketch	5	18	60	sketching	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish drawing	8	22	93	drawing	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish painting	11	27	126	painting	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish color-painting	14	31	159	coloring	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish scribble	17	35	192	sketching	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish image	20	39	225	drawing	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish portrait	23	44	258	painting	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish watercolour-painting	26	48	291	coloring	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish doodle	29	52	324	sketching	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish contour	32	57	357	drawing	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish panorama	35	61	390	painting	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish pastel-painting	38	65	423	coloring	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish outline	41	70	456	sketching	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish cartoon	44	74	489	drawing	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish fresco	48	80	533	painting	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish shaded-panting	51	84	566	coloring	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish caricature	54	88	599	sketching	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish illustration	57	93	632	drawing	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish mural	60	97	665	painting	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish tinted-painting	63	101	698	coloring	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish silhouette	66	106	731	sketching	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish pen and ink	69	110	764	drawing	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish ink wash	72	114	797	painting	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish splatter-painting	75	119	830	coloring	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish depiction	78	123	863	drawing	GenItem	1	-RACE +SVIRFNEBLIN	
+Fiendish finger-painting	2	14	27	finger painting	GenItem	1	-RACECAT +DEMON	
+Fiendish sketch	5	18	60	sketching	GenItem	1	-RACECAT +DEMON	
+Fiendish drawing	8	22	93	drawing	GenItem	1	-RACECAT +DEMON	
+Fiendish painting	11	27	126	painting	GenItem	1	-RACECAT +DEMON	
+Fiendish color-painting	14	31	159	coloring	GenItem	1	-RACECAT +DEMON	
+Fiendish scribble	17	35	192	sketching	GenItem	1	-RACECAT +DEMON	
+Fiendish image	20	39	225	drawing	GenItem	1	-RACECAT +DEMON	
+Fiendish portrait	23	44	258	painting	GenItem	1	-RACECAT +DEMON	
+Fiendish watercolour-painting	26	48	291	coloring	GenItem	1	-RACECAT +DEMON	
+Fiendish doodle	29	52	324	sketching	GenItem	1	-RACECAT +DEMON	
+Fiendish contour	32	57	357	drawing	GenItem	1	-RACECAT +DEMON	
+Fiendish panorama	35	61	390	painting	GenItem	1	-RACECAT +DEMON	
+Fiendish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +DEMON	
+Fiendish outline	41	70	456	sketching	GenItem	1	-RACECAT +DEMON	
+Fiendish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +DEMON	
+Fiendish fresco	48	80	533	painting	GenItem	1	-RACECAT +DEMON	
+Fiendish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +DEMON	
+Fiendish caricature	54	88	599	sketching	GenItem	1	-RACECAT +DEMON	
+Fiendish illustration	57	93	632	drawing	GenItem	1	-RACECAT +DEMON	
+Fiendish mural	60	97	665	painting	GenItem	1	-RACECAT +DEMON	
+Fiendish tinted-painting	63	101	698	coloring	GenItem	1	-RACECAT +DEMON	
+Fiendish silhouette	66	106	731	sketching	GenItem	1	-RACECAT +DEMON	
+Fiendish pen and ink	69	110	764	drawing	GenItem	1	-RACECAT +DEMON	
+Fiendish ink wash	72	114	797	painting	GenItem	1	-RACECAT +DEMON	
+Fiendish splatter-painting	75	119	830	coloring	GenItem	1	-RACECAT +DEMON	
+Fiendish depiction	78	123	863	drawing	GenItem	1	-RACECAT +DEMON	
+Devilish finger-painting	2	14	27	finger painting	GenItem	1	-RACECAT +DEVIL	
+Devilish sketch	5	18	60	sketching	GenItem	1	-RACECAT +DEVIL	
+Devilish drawing	8	22	93	drawing	GenItem	1	-RACECAT +DEVIL	
+Devilish painting	11	27	126	painting	GenItem	1	-RACECAT +DEVIL	
+Devilish color-painting	14	31	159	coloring	GenItem	1	-RACECAT +DEVIL	
+Devilish scribble	17	35	192	sketching	GenItem	1	-RACECAT +DEVIL	
+Devilish image	20	39	225	drawing	GenItem	1	-RACECAT +DEVIL	
+Devilish portrait	23	44	258	painting	GenItem	1	-RACECAT +DEVIL	
+Devilish watercolour-painting	26	48	291	coloring	GenItem	1	-RACECAT +DEVIL	
+Devilish doodle	29	52	324	sketching	GenItem	1	-RACECAT +DEVIL	
+Devilish contour	32	57	357	drawing	GenItem	1	-RACECAT +DEVIL	
+Devilish panorama	35	61	390	painting	GenItem	1	-RACECAT +DEVIL	
+Devilish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +DEVIL	
+Devilish outline	41	70	456	sketching	GenItem	1	-RACECAT +DEVIL	
+Devilish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +DEVIL	
+Devilish fresco	48	80	533	painting	GenItem	1	-RACECAT +DEVIL	
+Devilish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +DEVIL	
+Devilish caricature	54	88	599	sketching	GenItem	1	-RACECAT +DEVIL	
+Devilish illustration	57	93	632	drawing	GenItem	1	-RACECAT +DEVIL	
+Devilish mural	60	97	665	painting	GenItem	1	-RACECAT +DEVIL	
+Devilish tinted-painting	63	101	698	coloring	GenItem	1	-RACECAT +DEVIL	
+Devilish silhouette	66	106	731	sketching	GenItem	1	-RACECAT +DEVIL	
+Devilish pen and ink	69	110	764	drawing	GenItem	1	-RACECAT +DEVIL	
+Devilish ink wash	72	114	797	painting	GenItem	1	-RACECAT +DEVIL	
+Devilish splatter-painting	75	119	830	coloring	GenItem	1	-RACECAT +DEVIL	
+Devilish depiction	78	123	863	drawing	GenItem	1	-RACECAT +DEVIL	
+Draconish finger-painting	2	14	27	finger painting	GenItem	1	-RACECAT +DRAGON	
+Draconish sketch	5	18	60	sketching	GenItem	1	-RACECAT +DRAGON	
+Draconish drawing	8	22	93	drawing	GenItem	1	-RACECAT +DRAGON	
+Draconish painting	11	27	126	painting	GenItem	1	-RACECAT +DRAGON	
+Draconish color-painting	14	31	159	coloring	GenItem	1	-RACECAT +DRAGON	
+Draconish scribble	17	35	192	sketching	GenItem	1	-RACECAT +DRAGON	
+Draconish image	20	39	225	drawing	GenItem	1	-RACECAT +DRAGON	
+Draconish portrait	23	44	258	painting	GenItem	1	-RACECAT +DRAGON	
+Draconish watercolour-painting	26	48	291	coloring	GenItem	1	-RACECAT +DRAGON	
+Draconish doodle	29	52	324	sketching	GenItem	1	-RACECAT +DRAGON	
+Draconish contour	32	57	357	drawing	GenItem	1	-RACECAT +DRAGON	
+Draconish panorama	35	61	390	painting	GenItem	1	-RACECAT +DRAGON	
+Draconish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +DRAGON	
+Draconish outline	41	70	456	sketching	GenItem	1	-RACECAT +DRAGON	
+Draconish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +DRAGON	
+Draconish fresco	48	80	533	painting	GenItem	1	-RACECAT +DRAGON	
+Draconish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +DRAGON	
+Draconish caricature	54	88	599	sketching	GenItem	1	-RACECAT +DRAGON	
+Draconish illustration	57	93	632	drawing	GenItem	1	-RACECAT +DRAGON	
+Draconish mural	60	97	665	painting	GenItem	1	-RACECAT +DRAGON	
+Draconish tinted-painting	63	101	698	coloring	GenItem	1	-RACECAT +DRAGON	
+Draconish silhouette	66	106	731	sketching	GenItem	1	-RACECAT +DRAGON	
+Draconish pen and ink	69	110	764	drawing	GenItem	1	-RACECAT +DRAGON	
+Draconish ink wash	72	114	797	painting	GenItem	1	-RACECAT +DRAGON	
+Draconish splatter-painting	75	119	830	coloring	GenItem	1	-RACECAT +DRAGON	
+Draconish depiction	78	123	863	drawing	GenItem	1	-RACECAT +DRAGON	
+abstract finger-painting	3	16	68	finger painting	GenItem	2		
+abstract sketch	6	22	131	sketching	GenItem	2		
+abstract drawing	9	27	194	drawing	GenItem	2		
+abstract painting	12	33	257	painting	GenItem	2		
+abstract color-painting	15	38	320	coloring	GenItem	2		
+abstract scribble	18	44	383	sketching	GenItem	2		
+abstract image	21	49	446	drawing	GenItem	2		
+abstract portrait	24	55	509	painting	GenItem	2		
+abstract watercolour-painting	27	60	572	coloring	GenItem	2		
+abstract doodle	30	66	635	sketching	GenItem	2		
+abstract contour	33	71	698	drawing	GenItem	2		
+abstract panorama	36	77	761	painting	GenItem	2		
+abstract pastel-painting	39	82	824	coloring	GenItem	2		
+abstract outline	42	88	887	sketching	GenItem	2		
+abstract cartoon	45	93	950	drawing	GenItem	2		
+abstract fresco	49	101	1034	painting	GenItem	2		
+abstract shaded-panting	52	106	1097	coloring	GenItem	2		
+abstract caricature	55	112	1160	sketching	GenItem	2		
+abstract illustration	58	117	1223	drawing	GenItem	2		
+abstract mural	61	123	1286	painting	GenItem	2		
+abstract tinted-painting	64	128	1349	coloring	GenItem	2		
+abstract silhouette	67	134	1412	sketching	GenItem	2		
+abstract pen and ink	70	139	1475	drawing	GenItem	2		
+abstract ink wash	73	145	1538	painting	GenItem	2		
+abstract splatter-painting	76	151	1601	coloring	GenItem	2		
+abstract depiction	79	156	1664	drawing	GenItem	2		
+art deco finger-painting	4	20	129	finger painting	GenItem	3		
+art deco sketch	7	26	222	sketching	GenItem	3		
+art deco drawing	10	33	315	drawing	GenItem	3		
+art deco painting	13	40	408	painting	GenItem	3		
+art deco color-painting	16	47	501	coloring	GenItem	3		
+art deco scribble	19	53	594	sketching	GenItem	3		
+art deco image	22	60	687	drawing	GenItem	3		
+art deco portrait	25	67	780	painting	GenItem	3		
+art deco watercolour-painting	28	73	873	coloring	GenItem	3		
+art deco doodle	31	80	966	sketching	GenItem	3		
+art deco contour	34	87	1059	drawing	GenItem	3		
+art deco panorama	37	94	1152	painting	GenItem	3		
+art deco pastel-painting	40	100	1245	coloring	GenItem	3		
+art deco outline	43	107	1338	sketching	GenItem	3		
+art deco cartoon	46	114	1431	drawing	GenItem	3		
+art deco fresco	50	123	1555	painting	GenItem	3		
+art deco shaded-panting	53	129	1648	coloring	GenItem	3		
+art deco caricature	56	136	1741	sketching	GenItem	3		
+art deco illustration	59	143	1834	drawing	GenItem	3		
+art deco mural	62	150	1927	painting	GenItem	3		
+art deco tinted-painting	65	156	2020	coloring	GenItem	3		
+art deco silhouette	68	163	2113	sketching	GenItem	3		
+art deco pen and ink	71	170	2206	drawing	GenItem	3		
+art deco ink wash	74	176	2299	painting	GenItem	3		
+art deco splatter-painting	77	183	2392	coloring	GenItem	3		
+art deco depiction	80	190	2485	drawing	GenItem	3		
+figurative finger-painting	5	24	210	finger painting	GenItem	4		
+figurative sketch	8	32	333	sketching	GenItem	4		
+figurative drawing	11	40	456	drawing	GenItem	4		
+figurative painting	14	48	579	painting	GenItem	4		
+figurative color-painting	17	56	702	coloring	GenItem	4		
+figurative scribble	20	63	825	sketching	GenItem	4		
+figurative image	23	71	948	drawing	GenItem	4		
+figurative portrait	26	79	1071	painting	GenItem	4		
+figurative watercolour-painting	29	87	1194	coloring	GenItem	4		
+figurative doodle	32	95	1317	sketching	GenItem	4		
+figurative contour	35	103	1440	drawing	GenItem	4		
+figurative panorama	38	111	1563	painting	GenItem	4		
+figurative pastel-painting	41	119	1686	coloring	GenItem	4		
+figurative outline	44	127	1809	sketching	GenItem	4		
+figurative cartoon	47	135	1932	drawing	GenItem	4		
+figurative fresco	51	145	2096	painting	GenItem	4		
+figurative shaded-panting	54	153	2219	coloring	GenItem	4		
+figurative caricature	57	161	2342	sketching	GenItem	4		
+figurative illustration	60	169	2465	drawing	GenItem	4		
+figurative mural	63	177	2588	painting	GenItem	4		
+figurative tinted-painting	66	185	2711	coloring	GenItem	4		
+figurative silhouette	69	193	2834	sketching	GenItem	4		
+figurative pen and ink	72	201	2957	drawing	GenItem	4		
+figurative ink wash	75	209	3080	painting	GenItem	4		
+figurative splatter-painting	78	217	3203	coloring	GenItem	4		
+figurative depiction	81	225	3326	drawing	GenItem	4		
+feminist finger-painting	6	29	311	finger painting	GenItem	5	-GENDER +FEMALE	
+feminist sketch	9	38	464	sketching	GenItem	5	-GENDER +FEMALE	
+feminist drawing	12	47	617	drawing	GenItem	5	-GENDER +FEMALE	
+feminist painting	15	56	770	painting	GenItem	5	-GENDER +FEMALE	
+feminist color-painting	18	65	923	coloring	GenItem	5	-GENDER +FEMALE	
+feminist scribble	21	75	1076	sketching	GenItem	5	-GENDER +FEMALE	
+feminist image	24	84	1229	drawing	GenItem	5	-GENDER +FEMALE	
+feminist portrait	27	93	1382	painting	GenItem	5	-GENDER +FEMALE	
+feminist watercolour-painting	30	102	1535	coloring	GenItem	5	-GENDER +FEMALE	
+feminist doodle	33	111	1688	sketching	GenItem	5	-GENDER +FEMALE	
+feminist contour	36	120	1841	drawing	GenItem	5	-GENDER +FEMALE	
+feminist panorama	39	129	1994	painting	GenItem	5	-GENDER +FEMALE	
+feminist pastel-painting	42	138	2147	coloring	GenItem	5	-GENDER +FEMALE	
+feminist outline	45	147	2300	sketching	GenItem	5	-GENDER +FEMALE	
+feminist cartoon	48	157	2453	drawing	GenItem	5	-GENDER +FEMALE	
+feminist fresco	52	169	2657	painting	GenItem	5	-GENDER +FEMALE	
+feminist shaded-panting	55	178	2810	coloring	GenItem	5	-GENDER +FEMALE	
+feminist caricature	58	187	2963	sketching	GenItem	5	-GENDER +FEMALE	
+feminist illustration	61	196	3116	drawing	GenItem	5	-GENDER +FEMALE	
+feminist mural	64	205	3269	painting	GenItem	5	-GENDER +FEMALE	
+feminist tinted-painting	67	214	3422	coloring	GenItem	5	-GENDER +FEMALE	
+feminist silhouette	70	223	3575	sketching	GenItem	5	-GENDER +FEMALE	
+feminist pen and ink	73	233	3728	drawing	GenItem	5	-GENDER +FEMALE	
+feminist ink wash	76	242	3881	painting	GenItem	5	-GENDER +FEMALE	
+feminist splatter-painting	79	251	4034	coloring	GenItem	5	-GENDER +FEMALE	
+feminist depiction	82	260	4187	drawing	GenItem	5	-GENDER +FEMALE	
+masculine finger-painting	6	29	311	finger painting	GenItem	5	-GENDER +MALE	
+masculine sketch	9	38	464	sketching	GenItem	5	-GENDER +MALE	
+masculine drawing	12	47	617	drawing	GenItem	5	-GENDER +MALE	
+masculine painting	15	56	770	painting	GenItem	5	-GENDER +MALE	
+masculine color-painting	18	65	923	coloring	GenItem	5	-GENDER +MALE	
+masculine scribble	21	75	1076	sketching	GenItem	5	-GENDER +MALE	
+masculine image	24	84	1229	drawing	GenItem	5	-GENDER +MALE	
+masculine portrait	27	93	1382	painting	GenItem	5	-GENDER +MALE	
+masculine watercolour-painting	30	102	1535	coloring	GenItem	5	-GENDER +MALE	
+masculine doodle	33	111	1688	sketching	GenItem	5	-GENDER +MALE	
+masculine contour	36	120	1841	drawing	GenItem	5	-GENDER +MALE	
+masculine panorama	39	129	1994	painting	GenItem	5	-GENDER +MALE	
+masculine pastel-painting	42	138	2147	coloring	GenItem	5	-GENDER +MALE	
+masculine outline	45	147	2300	sketching	GenItem	5	-GENDER +MALE	
+masculine cartoon	48	157	2453	drawing	GenItem	5	-GENDER +MALE	
+masculine fresco	52	169	2657	painting	GenItem	5	-GENDER +MALE	
+masculine shaded-panting	55	178	2810	coloring	GenItem	5	-GENDER +MALE	
+masculine caricature	58	187	2963	sketching	GenItem	5	-GENDER +MALE	
+masculine illustration	61	196	3116	drawing	GenItem	5	-GENDER +MALE	
+masculine mural	64	205	3269	painting	GenItem	5	-GENDER +MALE	
+masculine tinted-painting	67	214	3422	coloring	GenItem	5	-GENDER +MALE	
+masculine silhouette	70	223	3575	sketching	GenItem	5	-GENDER +MALE	
+masculine pen and ink	73	233	3728	drawing	GenItem	5	-GENDER +MALE	
+masculine ink wash	76	242	3881	painting	GenItem	5	-GENDER +MALE	
+masculine splatter-painting	79	251	4034	coloring	GenItem	5	-GENDER +MALE	
+masculine depiction	82	260	4187	drawing	GenItem	5	-GENDER +MALE	
+art noveau finger-painting	6	29	311	finger painting	GenItem	5		
+art noveau sketch	9	38	464	sketching	GenItem	5		
+art noveau drawing	12	47	617	drawing	GenItem	5		
+art noveau painting	15	56	770	painting	GenItem	5		
+art noveau color-painting	18	65	923	coloring	GenItem	5		
+art noveau scribble	21	75	1076	sketching	GenItem	5		
+art noveau image	24	84	1229	drawing	GenItem	5		
+art noveau portrait	27	93	1382	painting	GenItem	5		
+art noveau watercolour-painting	30	102	1535	coloring	GenItem	5		
+art noveau doodle	33	111	1688	sketching	GenItem	5		
+art noveau contour	36	120	1841	drawing	GenItem	5		
+art noveau panorama	39	129	1994	painting	GenItem	5		
+art noveau pastel-painting	42	138	2147	coloring	GenItem	5		
+art noveau outline	45	147	2300	sketching	GenItem	5		
+art noveau cartoon	48	157	2453	drawing	GenItem	5		
+art noveau fresco	52	169	2657	painting	GenItem	5		
+art noveau shaded-panting	55	178	2810	coloring	GenItem	5		
+art noveau caricature	58	187	2963	sketching	GenItem	5		
+art noveau illustration	61	196	3116	drawing	GenItem	5		
+art noveau mural	64	205	3269	painting	GenItem	5		
+art noveau tinted-painting	67	214	3422	coloring	GenItem	5		
+art noveau silhouette	70	223	3575	sketching	GenItem	5		
+art noveau pen and ink	73	233	3728	drawing	GenItem	5		
+art noveau ink wash	76	242	3881	painting	GenItem	5		
+art noveau splatter-painting	79	251	4034	coloring	GenItem	5		
+art noveau depiction	82	260	4187	drawing	GenItem	5		
+modern finger-painting	7	35	432	finger painting	GenItem	6		
+modern sketch	10	45	615	sketching	GenItem	6		
+modern drawing	13	55	798	drawing	GenItem	6		
+modern painting	16	66	981	painting	GenItem	6		
+modern color-painting	19	76	1164	coloring	GenItem	6		
+modern scribble	22	86	1347	sketching	GenItem	6		
+modern image	25	97	1530	drawing	GenItem	6		
+modern portrait	28	107	1713	painting	GenItem	6		
+modern watercolour-painting	31	117	1896	coloring	GenItem	6		
+modern doodle	34	128	2079	sketching	GenItem	6		
+modern contour	37	138	2262	drawing	GenItem	6		
+modern panorama	40	148	2445	painting	GenItem	6		
+modern pastel-painting	43	159	2628	coloring	GenItem	6		
+modern outline	46	169	2811	sketching	GenItem	6		
+modern cartoon	49	179	2994	drawing	GenItem	6		
+modern fresco	53	193	3238	painting	GenItem	6		
+modern shaded-panting	56	203	3421	coloring	GenItem	6		
+modern caricature	59	214	3604	sketching	GenItem	6		
+modern illustration	62	224	3787	drawing	GenItem	6		
+modern mural	65	234	3970	painting	GenItem	6		
+modern tinted-painting	68	245	4153	coloring	GenItem	6		
+modern silhouette	71	255	4336	sketching	GenItem	6		
+modern pen and ink	74	265	4519	drawing	GenItem	6		
+modern ink wash	77	276	4702	painting	GenItem	6		
+modern splatter-painting	80	286	4885	coloring	GenItem	6		
+modern depiction	83	296	5068	drawing	GenItem	6		
+impressionist finger-painting	8	41	573	finger painting	GenItem	7		
+impressionist sketch	11	53	786	sketching	GenItem	7		
+impressionist drawing	14	64	999	drawing	GenItem	7		
+impressionist painting	17	76	1212	painting	GenItem	7		
+impressionist color-painting	20	87	1425	coloring	GenItem	7		
+impressionist scribble	23	99	1638	sketching	GenItem	7		
+impressionist image	26	111	1851	drawing	GenItem	7		
+impressionist portrait	29	122	2064	painting	GenItem	7		
+impressionist watercolour-painting	32	134	2277	coloring	GenItem	7		
+impressionist doodle	35	145	2490	sketching	GenItem	7		
+impressionist contour	38	157	2703	drawing	GenItem	7		
+impressionist panorama	41	168	2916	painting	GenItem	7		
+impressionist pastel-painting	44	180	3129	coloring	GenItem	7		
+impressionist outline	47	191	3342	sketching	GenItem	7		
+impressionist cartoon	50	203	3555	drawing	GenItem	7		
+impressionist fresco	54	218	3839	painting	GenItem	7		
+impressionist shaded-panting	57	230	4052	coloring	GenItem	7		
+impressionist caricature	60	241	4265	sketching	GenItem	7		
+impressionist illustration	63	253	4478	drawing	GenItem	7		
+impressionist mural	66	264	4691	painting	GenItem	7		
+impressionist tinted-painting	69	276	4904	coloring	GenItem	7		
+impressionist silhouette	72	287	5117	sketching	GenItem	7		
+impressionist pen and ink	75	299	5330	drawing	GenItem	7		
+impressionist ink wash	78	310	5543	painting	GenItem	7		
+impressionist splatter-painting	81	322	5756	coloring	GenItem	7		
+impressionist depiction	84	333	5969	drawing	GenItem	7		
+cubist finger-painting	9	49	734	finger painting	GenItem	8		
+cubist sketch	12	62	977	sketching	GenItem	8		
+cubist drawing	15	74	1220	drawing	GenItem	8		
+cubist painting	18	87	1463	painting	GenItem	8		
+cubist color-painting	21	100	1706	coloring	GenItem	8		
+cubist scribble	24	112	1949	sketching	GenItem	8		
+cubist image	27	125	2192	drawing	GenItem	8		
+cubist portrait	30	138	2435	painting	GenItem	8		
+cubist watercolour-painting	33	151	2678	coloring	GenItem	8		
+cubist doodle	36	163	2921	sketching	GenItem	8		
+cubist contour	39	176	3164	drawing	GenItem	8		
+cubist panorama	42	189	3407	painting	GenItem	8		
+cubist pastel-painting	45	201	3650	coloring	GenItem	8		
+cubist outline	48	214	3893	sketching	GenItem	8		
+cubist cartoon	51	227	4136	drawing	GenItem	8		
+cubist fresco	55	244	4460	painting	GenItem	8		
+cubist shaded-panting	58	257	4703	coloring	GenItem	8		
+cubist caricature	61	269	4946	sketching	GenItem	8		
+cubist illustration	64	282	5189	drawing	GenItem	8		
+cubist mural	67	295	5432	painting	GenItem	8		
+cubist tinted-painting	70	307	5675	coloring	GenItem	8		
+cubist silhouette	73	320	5918	sketching	GenItem	8		
+cubist pen and ink	76	333	6161	drawing	GenItem	8		
+cubist ink wash	79	346	6404	painting	GenItem	8		
+cubist splatter-painting	82	358	6647	coloring	GenItem	8		
+cubist depiction	85	371	6890	drawing	GenItem	8		
+expressionist finger-painting	10	57	915	finger painting	GenItem	9		
+expressionist sketch	13	71	1188	sketching	GenItem	9		
+expressionist drawing	16	85	1461	drawing	GenItem	9		
+expressionist painting	19	99	1734	painting	GenItem	9		
+expressionist color-painting	22	113	2007	coloring	GenItem	9		
+expressionist scribble	25	127	2280	sketching	GenItem	9		
+expressionist image	28	141	2553	drawing	GenItem	9		
+expressionist portrait	31	155	2826	painting	GenItem	9		
+expressionist watercolour-painting	34	168	3099	coloring	GenItem	9		
+expressionist doodle	37	182	3372	sketching	GenItem	9		
+expressionist contour	40	196	3645	drawing	GenItem	9		
+expressionist panorama	43	210	3918	painting	GenItem	9		
+expressionist pastel-painting	46	224	4191	coloring	GenItem	9		
+expressionist outline	49	238	4464	sketching	GenItem	9		
+expressionist cartoon	52	252	4737	drawing	GenItem	9		
+expressionist fresco	56	271	5101	painting	GenItem	9		
+expressionist shaded-panting	59	284	5374	coloring	GenItem	9		
+expressionist caricature	62	298	5647	sketching	GenItem	9		
+expressionist illustration	65	312	5920	drawing	GenItem	9		
+expressionist mural	68	326	6193	painting	GenItem	9		
+expressionist tinted-painting	71	340	6466	coloring	GenItem	9		
+expressionist silhouette	74	354	6739	sketching	GenItem	9		
+expressionist pen and ink	77	368	7012	drawing	GenItem	9		
+expressionist ink wash	80	382	7285	painting	GenItem	9		
+expressionist splatter-painting	83	396	7558	coloring	GenItem	9		
+expressionist depiction	86	410	7831	drawing	GenItem	9		
+surreal finger-painting	11	66	1116	finger painting	GenItem	10		
+surreal sketch	14	81	1419	sketching	GenItem	10		
+surreal drawing	17	96	1722	drawing	GenItem	10		
+surreal painting	20	111	2025	painting	GenItem	10		
+surreal color-painting	23	127	2328	coloring	GenItem	10		
+surreal scribble	26	142	2631	sketching	GenItem	10		
+surreal image	29	157	2934	drawing	GenItem	10		
+surreal portrait	32	172	3237	painting	GenItem	10		
+surreal watercolour-painting	35	187	3540	coloring	GenItem	10		
+surreal doodle	38	202	3843	sketching	GenItem	10		
+surreal contour	41	217	4146	drawing	GenItem	10		
+surreal panorama	44	232	4449	painting	GenItem	10		
+surreal pastel-painting	47	248	4752	coloring	GenItem	10		
+surreal outline	50	263	5055	sketching	GenItem	10		
+surreal cartoon	53	278	5358	drawing	GenItem	10		
+surreal fresco	57	298	5762	painting	GenItem	10		
+surreal shaded-panting	60	313	6065	coloring	GenItem	10		
+surreal caricature	63	328	6368	sketching	GenItem	10		
+surreal illustration	66	343	6671	drawing	GenItem	10		
+surreal mural	69	358	6974	painting	GenItem	10		
+surreal tinted-painting	72	374	7277	coloring	GenItem	10		
+surreal silhouette	75	389	7580	sketching	GenItem	10		
+surreal pen and ink	78	404	7883	drawing	GenItem	10		
+surreal ink wash	81	419	8186	painting	GenItem	10		
+surreal splatter-painting	84	434	8489	coloring	GenItem	10		
+surreal depiction	87	449	8792	drawing	GenItem	10		
