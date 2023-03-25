@@ -8903,13 +8903,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			int showNumber=0;
 			// id is bad to change.. make them delete it.
 			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
+			String varHelp = "You can insert variables into the arguments, such as: @x1=caster level, @x2=target level, @x3=level expertise, "
+					+ "@x4-@x8=x1-x5 expertise, @x9=adjusted caster level.";
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Ability/Skill name","NAME",false);
 			promptStatStr(mob,me,CMParms.toListString(Ability.ACODE_DESCS)+","+CMParms.toListString(Ability.DOMAIN_DESCS),++showNumber,showFlag,"Type, Domain","CLASSIFICATION",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
 			promptStatStr(mob,me,CMParms.toListString(Ability.RANGE_CHOICES),++showNumber,showFlag,"Minimum Range","MINRANGE",false);
 			promptStatStr(mob,me,CMParms.toListString(Ability.RANGE_CHOICES),++showNumber,showFlag,"Maximum Range","MAXRANGE",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Ticks Between Casts","TICKSBETWEENCASTS",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Duration Override (0=NO)","TICKSOVERRIDE",false);
+			promptStatStr(mob,me,varHelp,++showNumber,showFlag,"Duration Override (0=NO)","TICKSOVERRIDE",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Affect String","DISPLAY",true);
 			promptStatBool(mob,me,++showNumber,showFlag,"Is Auto-invoking","AUTOINVOKE");
 			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.FLAG_DESCS),++showNumber,showFlag,"Skill Flags (comma sep)","FLAGS",true);
@@ -8920,7 +8922,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,"Can Target","CANTARGETMASK",true);
 			promptStatStr(mob,me,CMParms.toListString(Ability.QUALITY_DESCS),++showNumber,showFlag,"Quality Code","QUALITY",true);
 			promptStatStr(mob,me,"The parameters for this field are LIKE the parameters for this property:\n\r\n\r"+
-					CMLib.help().getHelpText("Prop_HereAdjuster",mob,true).toString(),++showNumber,showFlag,"Affect Adjustments","HERESTATS",true);
+					CMLib.help().getHelpText("Prop_HereAdjuster",mob,true).toString() + "\n\r"+varHelp,++showNumber,showFlag,"Affect Adjustments","HERESTATS",true);
 			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Caster Mask","CASTMASK",true);
 			promptStatStr(mob,me,CMLib.help().getHelpText("Scriptable",mob,true).toString(),++showNumber,showFlag,"Scriptable Parm","SCRIPT",true);
 			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Target Mask","TARGETMASK",true);
@@ -8935,7 +8937,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					CMLib.help().getHelpText("Prop_HereSpellCast",mob,true).toString(),++showNumber,showFlag,"Public effects","POSTCASTAFFECT",true);
 			promptStatStr(mob,me,"The parameters for this field are LIKE the parameters for this property:\n\r\n\r"+
 					CMLib.help().getHelpText("Prop_HereSpellCast",mob,true).toString(),++showNumber,showFlag,"Extra castings","POSTCASTABILITY",true);
-			promptStatStr(mob,me,"Enter a damage or healing formula. Use +-*/()?. @x1=caster level, @x2=target level.  Formula evaluates >0 for damage, <0 for healing. Requires Can Target!",++showNumber,showFlag,"Damage/Healing Formula","POSTCASTDAMAGE",true);
+			promptStatStr(mob,me,"Enter a damage or healing formula. Use +-*/()?. "+varHelp+" Formula evaluates >0 for damage, <0 for healing. Requires Can Target!",++showNumber,showFlag,"Damage/Healing Formula","POSTCASTDAMAGE",true);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
 
 			if (showFlag < -900)

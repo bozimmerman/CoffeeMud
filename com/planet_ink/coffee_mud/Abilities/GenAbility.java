@@ -114,7 +114,7 @@ public class GenAbility extends StdAbility
 		O[V_PDMG]="0";
 		O[V_HELP]="<ABILITY>This ability is not yet documented.";
 		O[V_TKBC]=Integer.valueOf(0);
-		O[V_TKOV]=Integer.valueOf(0);
+		O[V_TKOV]="0";
 		O[V_TKAF]=Boolean.FALSE;
 		O[V_CHAN]=Boolean.FALSE;
 		O[V_UNIN]="";
@@ -272,11 +272,6 @@ public class GenAbility extends StdAbility
 	public int abstractQuality()
 	{
 		return ((Integer) V(ID, V_QUAL)).intValue();
-	}
-
-	public int tickOverride()
-	{
-		return ((Integer) V(ID, V_TKOV)).intValue();
 	}
 
 	@Override
@@ -587,6 +582,18 @@ public class GenAbility extends StdAbility
 					mob.location().send(mob, msg2);
 					this.executeMsg(mob, msg2);
 				}
+				final double[] dvars = new double[] {
+					mob.phyStats().level(),
+					(target==null)?0:target.phyStats().level(),
+					super.getXLEVELLevel(mob),
+					super.getX1Level(mob),
+					super.getX2Level(mob),
+					super.getX3Level(mob),
+					super.getX4Level(mob),
+					super.getX5Level(mob),
+					adjustedLevel(mob,asLevel)
+				};
+				final int tickOverride = CMath.parseIntExpression((String)V(ID, V_TKOV), dvars);
 				if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
 				{
 					if((canAffectCode()!=0)&&(target!=null))
@@ -616,9 +623,9 @@ public class GenAbility extends StdAbility
 						}
 						final GenAbility affectA;
 						if(abstractQuality()==Ability.QUALITY_MALICIOUS)
-							affectA=(GenAbility)maliciousAffect(mob,target,asLevel,tickOverride(),-1);
+							affectA=(GenAbility)maliciousAffect(mob,target,asLevel,tickOverride,-1);
 						else
-							affectA=(GenAbility)beneficialAffect(mob,target,asLevel,tickOverride());
+							affectA=(GenAbility)beneficialAffect(mob,target,asLevel,tickOverride);
 						success[0]=affectA!=null;
 						if(success[0])
 						{
@@ -680,8 +687,8 @@ public class GenAbility extends StdAbility
 												}
 											}
 											final int tickDown=(abstractQuality()==Ability.QUALITY_MALICIOUS)?
-													getMaliciousTickdownTime(mob,target,tickOverride(),asLevel):
-													getBeneficialTickdownTime(mob,target,tickOverride(),asLevel);
+													getMaliciousTickdownTime(mob,target,tickOverride,asLevel):
+													getBeneficialTickdownTime(mob,target,tickOverride,asLevel);
 											A.startTickDown(mob,target,tickDown);
 										}
 									}
@@ -1058,7 +1065,7 @@ public class GenAbility extends StdAbility
 										 "POSTCASTDAMAGE",//26I
 										 "HELP",//27I
 										 "TICKSBETWEENCASTS",//28I
-										 "TICKSOVERRIDE",//29I
+										 "TICKSOVERRIDE",//29S
 										 "TICKAFFECTS", //30B
 										 "CHANNELING", //31B
 										 "UNINVOKEMSG", //32S
@@ -1148,7 +1155,7 @@ public class GenAbility extends StdAbility
 		case 28:
 			return ((Integer) V(ID, V_TKBC)).toString();
 		case 29:
-			return ((Integer) V(ID, V_TKOV)).toString();
+			return ((String) V(ID, V_TKOV)).toString();
 		case 30:
 			return ((Boolean) V(ID, V_TKAF)).toString();
 		case 31:
@@ -1288,7 +1295,7 @@ public class GenAbility extends StdAbility
 			SV(ID, V_TKBC, Integer.valueOf(CMath.s_int(val)));
 			break;
 		case 29:
-			SV(ID, V_TKOV, Integer.valueOf(CMath.s_int(val)));
+			SV(ID, V_TKOV, val.trim());
 			break;
 		case 30:
 			SV(ID, V_TKAF, Boolean.valueOf(CMath.s_bool(val)));

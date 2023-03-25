@@ -193,8 +193,6 @@ public class TaxCollector extends StdBehavior
 				}
 
 				int numProperties = 0;
-				int numBackTaxesUnpaid = 0;
-				boolean paidBackTaxes = false;
 				for(int i=0;i<taxableProperties.size();i++)
 				{
 					final LandTitle T=taxableProperties.get(i);
@@ -204,7 +202,6 @@ public class TaxCollector extends StdBehavior
 						numProperties++;
 						if(T.backTaxes()>0)
 						{
-							numBackTaxesUnpaid++;
 							totalOwed += T.backTaxes();
 							if(paidAmount>=0)
 							{
@@ -214,8 +211,6 @@ public class TaxCollector extends StdBehavior
 									totalOwed-=T.backTaxes();
 									T.setBackTaxes(0);
 									T.updateTitle();
-									numBackTaxesUnpaid--;
-									paidBackTaxes=true;
 								}
 								else
 								{
