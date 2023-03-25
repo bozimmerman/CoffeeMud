@@ -168,8 +168,10 @@ public class TaxCollector extends StdBehavior
 					paid.removeElement(msg.source());
 				paid.addElement(msg.source(),Long.valueOf(System.currentTimeMillis()));
 
+				double totalOwed = 0.0;
 				if(owed[OWE_FINES]>0)
 				{
+					totalOwed += owed[OWE_FINES];
 					final LegalBehavior B=CMLib.law().getLegalBehavior(msg.source().location());
 					final Area A2=CMLib.law().getLegalObject(msg.source().location());
 					if((B!=null)&&(A2!=null))
@@ -177,11 +179,13 @@ public class TaxCollector extends StdBehavior
 						if(paidAmount>=owed[OWE_FINES])
 						{
 							paidAmount-=owed[OWE_FINES];
+							totalOwed -=owed[OWE_FINES];
 							B.modifyAssessedFines(0.0,msg.source());
 						}
 						else
 						{
 							owed[OWE_FINES]-=paidAmount;
+							totalOwed -=paidAmount;
 							paidAmount=0;
 							B.modifyAssessedFines(owed[OWE_FINES],msg.source());
 						}
@@ -201,11 +205,13 @@ public class TaxCollector extends StdBehavior
 						if(T.backTaxes()>0)
 						{
 							numBackTaxesUnpaid++;
+							totalOwed += T.backTaxes();
 							if(paidAmount>=0)
 							{
 								if(paidAmount>=T.backTaxes())
 								{
 									paidAmount-=T.backTaxes();
+									totalOwed-=T.backTaxes();
 									T.setBackTaxes(0);
 									T.updateTitle();
 									numBackTaxesUnpaid--;
@@ -214,6 +220,7 @@ public class TaxCollector extends StdBehavior
 								else
 								{
 									T.setBackTaxes(T.backTaxes()-(int)Math.round(paidAmount));
+									totalOwed-=paidAmount;
 									T.updateTitle();
 									paidAmount=0;
 									break;
@@ -222,18 +229,6 @@ public class TaxCollector extends StdBehavior
 						}
 					}
 				}
-				if((paidBackTaxes)
-				&&(numBackTaxesUnpaid==0)
-				&&(mob.location()!=null))
-				{
-					final LegalBehavior B=CMLib.law().getLegalBehavior(mob.location().getArea());
-					if((B!=null)&&(!msg.source().isMonster()))
-					{
-						final Area A2=CMLib.law().getLegalObject(mob.location().getArea());
-						B.aquit(A2,msg.source(),new String[]{"TAXEVASION"});
-					}
-				}
-
 				if((paidAmount>0)
 				&&(numProperties>0))
 				{
@@ -243,13 +238,32 @@ public class TaxCollector extends StdBehavior
 						if(((T.getOwnerName().equals(msg.source().Name())))
 						&&(paidAmount>0))
 						{
-							T.setBackTaxes(T.backTaxes()-(int)Math.round(CMath.div(paidAmount,numProperties)));
+							int backAmt = (int)Math.round(CMath.div(paidAmount,numProperties)); 
+							totalOwed -= backAmt;
+							T.setBackTaxes(T.backTaxes()-backAmt);
 							T.updateTitle();
-							paidAmount-=CMath.div(paidAmount,numProperties);
+							paidAmount-=backAmt;
 						}
 					}
 				}
-				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_SPEAK,L("<S-NAME> says 'Very good.  Your taxes are paid in full.' to <T-NAMESELF>.")));
+				if(mob.location()!=null)
+				{
+					if(totalOwed<=0)
+					{
+						final LegalBehavior B=CMLib.law().getLegalBehavior(mob.location().getArea());
+						if(B!=null)
+						{
+							final Area A2=CMLib.law().getLegalObject(mob.location().getArea());
+							B.aquit(A2,msg.source(),new String[]{"TAXEVASION"});
+						}
+						msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_SPEAK,L("<S-NAME> says 'Very good.  Your taxes are paid in full.' to <T-NAMESELF>.")));
+					}
+					else
+					{
+						final String amountDesc = CMLib.beanCounter().abbreviatedPrice(mob, totalOwed);
+						msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_SPEAK,L("<S-NAME> says 'Very good, but you still owe @x1.' to <T-NAMESELF>.",amountDesc)));
+					}
+				}
 			}
 		}
 	}
