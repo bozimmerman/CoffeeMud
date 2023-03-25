@@ -17,83 +17,83 @@
 	</SCRIPT>
 </head>
 
-<body BGCOLOR=#FFCCCC>
-<h3>CoffeeMud @MudServerVersion@ MOB Skills and Abilities</h3><P>
+<body BGCOLOR=#000066>
+<h3><FONT COLOR=WHITE>CoffeeMud @MudServerVersion@ MOB Skills and Abilities</FONT></h3><P>
 
 	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Thief Skills</H2></TD></TR>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=PURPLE ALIGN=CENTER><H2><FONT COLOR=WHITE>Thief Skills</FONT></H2></TD></TR>
 	@AbilityNext?reset@
 	@loop@
 	<TR>
-	@AbilityNext?THIEF SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&THIEF SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&THIEF SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&THIEF SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityNext?THIEF SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&THIEF SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&THIEF SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&THIEF SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
 	</TR>
 	@back@
 	</TABLE>
 	<P>
 	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Prayers</H2></TD></TR>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=PURPLE ALIGN=CENTER><H2><FONT COLOR=WHITE>Prayers</FONT></H2></TD></TR>
 	@AbilityNext?reset@
 	@loop@
 	<TR>
-	@AbilityNext?PRAYER@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&PRAYER@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&PRAYER@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&PRAYER@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityNext?PRAYER@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&PRAYER@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&PRAYER@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&PRAYER@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
 	</TR>
 	@back@
 	</TABLE>
 	<P>
 	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Chants</H2></TD></TR>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=PURPLE ALIGN=CENTER><H2><FONT COLOR=WHITE>Chants</FONT></H2></TD></TR>
 	@AbilityNext?reset@
 	@loop@
 	<TR>
-	@AbilityNext?CHANT@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&CHANT@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&CHANT@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&CHANT@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityNext?CHANT@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&CHANT@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&CHANT@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&CHANT@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
 	</TR>
 	@back@
 	</TABLE>
 	<P>
 	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Bard Songs</H2></TD></TR>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=PURPLE ALIGN=CENTER><H2><FONT COLOR=WHITE>Bard Songs</FONT></H2></TD></TR>
 	@AbilityNext?reset@
 	@loop@
 	<TR>
-	@AbilityNext?SONG@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&SONG@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&SONG@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&SONG@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityNext?SONG@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&SONG@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&SONG@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&SONG@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
 	</TR>
 	@back@
 	</TABLE>
 	<P>
 	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>General Skills</H2></TD></TR>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=PURPLE ALIGN=CENTER><H2><FONT COLOR=WHITE>General Skills</FONT></H2></TD></TR>
 	@AbilityNext?reset@
 	@loop@
 	<TR>
-	@AbilityNext?COMMON SKILL&SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&COMMON SKILL&SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&COMMON SKILL&SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&COMMON SKILL&SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityNext?COMMON SKILL&SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&COMMON SKILL&SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&COMMON SKILL&SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&COMMON SKILL&SKILL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
 	</TR>
 	@back@
 	</TABLE>
 	<P>
 	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Spells</H2></TD></TR>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=PURPLE ALIGN=CENTER><H2><FONT COLOR=WHITE>Spells</FONT></H2></TD></TR>
 	@AbilityNext?reset@
 	@loop@
 	<TR>
-	@AbilityNext?SPELL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&SPELL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&SPELL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
-	@AbilityNext?EMPTYOK&SPELL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><B>@AbilityID@</B></a></TD>
+	@AbilityNext?SPELL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&SPELL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&SPELL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+	@AbilityNext?EMPTYOK&SPELL@<TD WIDTH=25%><a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
 	</TR>
 	@back@
 	</TABLE>

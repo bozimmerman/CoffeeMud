@@ -17,17 +17,17 @@
 	</SCRIPT>
 </head>
 
-<body BGCOLOR=#FFCCCC>
-<h3>CoffeeMud @MudServerVersion@ Behaviors Information</h3><P>
+<body>
+<h3><FONT COLOR=WHITE>CoffeeMud @MudServerVersion@ Behaviors Information</FONT></h3><P>
 	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Behaviors</H2></TD></TR>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=PURPLE ALIGN=CENTER><H2><FONT COLOR=WHITE>Behaviors</FONT></H2></TD></TR>
 	@BehaviorNext?reset@
 	@loop@
 	<TR>
-	@BehaviorNext@<TD WIDTH=25%><a href="javascript:openUp('@BehaviorID@');"><B>@BehaviorID@</B></a></TD>
-	@BehaviorNext?EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@BehaviorID@');"><B>@BehaviorID@</B></a></TD>
-	@BehaviorNext?EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@BehaviorID@');"><B>@BehaviorID@</B></a></TD>
-	@BehaviorNext?EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@BehaviorID@');"><B>@BehaviorID@</B></a></TD>
+	@BehaviorNext@<TD WIDTH=25%><a href="javascript:openUp('@BehaviorID@');"><B><FONT COLOR=WHITE>@BehaviorID@</FONT></B></a></TD>
+	@BehaviorNext?EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@BehaviorID@');"><B><FONT COLOR=WHITE>@BehaviorID@</FONT></B></a></TD>
+	@BehaviorNext?EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@BehaviorID@');"><B><FONT COLOR=WHITE>@BehaviorID@</FONT></B></a></TD>
+	@BehaviorNext?EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@BehaviorID@');"><B><FONT COLOR=WHITE>@BehaviorID@</FONT></B></a></TD>
 	</TR>
 	@back@
 	</TABLE>
