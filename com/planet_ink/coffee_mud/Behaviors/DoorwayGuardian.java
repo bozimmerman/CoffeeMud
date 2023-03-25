@@ -47,8 +47,10 @@ public class DoorwayGuardian extends StdBehavior
 	private static final String DEFAULT_MESSAGE="<S-NAME> won't let <T-NAME> through there.";
 	//private static final String CHALLENGE_SAY="Halt! Who goes there?!";
 	private String message=DEFAULT_MESSAGE;
+	private Object object;
 	//private String challenge=CHALLENGE_SAY;
 	Vector<Integer> dirs=new Vector<Integer>();
+	private volatile Pair<Room,Set<Exit>> pexits = null;
 
 	@Override
 	public String accountForYourself()
@@ -106,37 +108,57 @@ public class DoorwayGuardian extends StdBehavior
 			mask=CMLib.masking().maskCompile(CMParms.combineQuoted(V,0));
 	}
 
-	public Exit[] getParmExits(final MOB monster)
+	public Set<Exit> getParmExits(final MOB monster)
 	{
 		if(monster==null)
 			return null;
-		if(monster.location()==null)
-			return null;
-		if(getParms().length()==0)
-			return null;
 		final Room room=monster.location();
-		if(dirs!=null)
+		if(room==null)
+			return null;
+		Pair<Room, Set<Exit>> p1 = this.pexits;
+		if((p1 == null)||(p1.first != room))
 		{
-			for (final Integer integer : dirs)
+			synchronized(this)
 			{
-				final int dir=integer.intValue();
-				if(room.getExitInDir(dir)!=null)
+				p1 = this.pexits;
+				if((p1 == null)||(p1.first != room))
 				{
-					final Exit[] exits={room.getExitInDir(dir),room.getReverseExit(dir)};
-					return exits;
+					final Set<Exit> exits = new HashSet<Exit>();
+					if((dirs!=null) && (dirs.size()>0))
+					{
+						for (final Integer integer : dirs)
+						{
+							final int dir=integer.intValue();
+							final Exit E1 = room.getExitInDir(dir);
+							if(E1!=null)
+							{
+								exits.add(E1);
+								final Exit E2 = room.getReverseExit(dir);
+								if(E2 != null)
+									exits.add(E2);
+							}
+						}
+					}
+					else
+					{
+						for(int dir=Directions.NUM_DIRECTIONS()-1;dir>=0;dir--)
+						{
+							final Exit E1=room.getExitInDir(dir);
+							if(E1!=null)
+							{
+								exits.add(E1);
+								final Exit E2 = room.getReverseExit(dir);
+								if(E2 != null)
+									exits.add(E2);
+							}
+						}
+					}
+					this.pexits = new Pair<Room,Set<Exit>>(room,exits);
 				}
 			}
 		}
-		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-		{
-			final Exit E=room.getExitInDir(d);
-			if((E!=null)&&(E.hasADoor()))
-			{
-				final Exit[] exits={E,room.getReverseExit(d)};
-				return exits;
-			}
-		}
-		return null;
+		final Pair<Room, Set<Exit>> p3 = this.pexits;
+		return (p3 == null) ? null : p3.second;
 	}
 
 	@Override
@@ -163,10 +185,8 @@ public class DoorwayGuardian extends StdBehavior
 			if(msg.target() instanceof Exit)
 			{
 				final Exit exit=(Exit)msg.target();
-				final Exit texit[]=getParmExits(monster);
-				if((texit!=null)
-				&&(texit[0]!=exit)
-				&&(texit[1]!=exit))
+				final Set<Exit> texit=getParmExits(monster);
+				if((texit!=null)&&(!texit.contains(exit)))
 					return true;
 
 				if((msg.targetMinor()!=CMMsg.TYP_CLOSE)
@@ -187,10 +207,8 @@ public class DoorwayGuardian extends StdBehavior
 			&&((mask==null)||CMLib.masking().maskCheck(mask,mob,false)))
 			{
 				final Exit exit=(Exit)msg.tool();
-				final Exit texit[]=getParmExits(monster);
-				if((texit!=null)
-				&&(texit[0]!=exit)
-				&&(texit[1]!=exit))
+				final Set<Exit> texit=getParmExits(monster);
+				if((texit!=null)&&(!texit.contains(exit)))
 					return true;
 
 				final CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,message);
