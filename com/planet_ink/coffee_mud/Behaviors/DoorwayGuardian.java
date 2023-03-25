@@ -47,7 +47,6 @@ public class DoorwayGuardian extends StdBehavior
 	private static final String DEFAULT_MESSAGE="<S-NAME> won't let <T-NAME> through there.";
 	//private static final String CHALLENGE_SAY="Halt! Who goes there?!";
 	private String message=DEFAULT_MESSAGE;
-	private Object object;
 	//private String challenge=CHALLENGE_SAY;
 	Vector<Integer> dirs=new Vector<Integer>();
 	private volatile Pair<Room,Set<Exit>> pexits = null;
