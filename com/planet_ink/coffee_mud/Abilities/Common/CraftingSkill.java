@@ -446,6 +446,41 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		return false;
 	}
 
+	protected boolean dropALoser(final MOB mob, final Item buildingI)
+	{
+		final Room R=mob.location();
+		if(R==null)
+		{
+			commonTelL(mob,"You are NOWHERE?!");
+			return false;
+		}
+		if(buildingI==null)
+		{
+			return false;
+		}
+		Item ruinedI = CMLib.utensils().ruinItem(buildingI);
+		final CMMsg msg=CMClass.getMsg(mob,ruinedI,this,CMMsg.TYP_ITEMGENERATED|CMMsg.MASK_ALWAYS,null);
+		setMsgXPValue(mob,msg);
+		if(mob.location().okMessage(mob,msg))
+		{
+			final Item builtI=(Item)msg.target();
+			if(builtI!=null)
+			{
+				R.addItem(builtI,ItemPossessor.Expire.Player_Drop);
+				R.recoverRoomStats();
+				mob.location().send(mob,msg);
+				if(!R.isContent(builtI))
+				{
+					commonTelL(mob,"You have won the common-skill-failure LOTTERY! Congratulations!");
+					CMLib.leveler().postExperience(mob, "ABILITY:"+ID(), null,null,50, false);
+				}
+				else
+					return true;
+			}
+		}
+		return false;
+	}
+
 	protected void addOtherThings(final PhysicalAgent P, final List<CMObject> otherThings)
 	{
 		if(otherThings == null)

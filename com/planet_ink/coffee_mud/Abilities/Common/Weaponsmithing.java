@@ -155,10 +155,14 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 						if(activity == CraftingActivity.LEARNING)
 						{
 							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
+							dropALoser(mob,buildingI);
 							buildingI.destroy();
 						}
 						else
+						{
+							dropALoser(mob,buildingI);
 							commonEmote(mob,L("<S-NAME> mess(es) up smithing @x1.",buildingI.name()));
+						}
 					}
 					else
 					if(activity==CraftingActivity.LEARNING)

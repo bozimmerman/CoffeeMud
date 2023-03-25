@@ -224,6 +224,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 					if(messedUp)
 					{
 						commonEmote(mob,L("<S-NAME> mess(es) up crafting @x1.",buildingI.name()));
+						dropALoser(mob,buildingI);
 						if(myClan!=null)
 						{
 							myClan.adjExp(mob, expRequired);

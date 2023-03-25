@@ -184,10 +184,14 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 						if(activity == CraftingActivity.LEARNING)
 						{
 							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
+							dropALoser(mob,buildingI);
 							buildingI.destroy();
 						}
 						else
+						{
 							commonEmote(mob,L("<S-NAME> mess(es) up carving @x1.",buildingI.name()));
+							dropALoser(mob,buildingI);
+						}
 					}
 					else
 					{

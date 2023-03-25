@@ -90,7 +90,10 @@ public class Taxidermy extends CraftingSkill
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
+					{
 						commonTelL(mob,"You've messed up stuffing @x1!",foundShortName);
+						dropALoser(mob,buildingI);
+					}
 					else
 					{
 						dropAWinner(mob,buildingI);

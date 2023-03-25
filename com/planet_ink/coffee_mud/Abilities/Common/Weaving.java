@@ -160,13 +160,17 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 						if(activity == CraftingActivity.LEARNING)
 						{
 							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
+							dropALoser(mob,buildingI);
 							buildingI.destroy();
 						}
 						else
 						if(activity == CraftingActivity.REFITTING)
 							commonEmote(mob,L("<S-NAME> mess(es) up refitting @x1.",buildingI.name()));
 						else
+						{
 							commonEmote(mob,L("<S-NAME> mess(es) up weaving @x1.",buildingI.name()));
+							dropALoser(mob,buildingI);
+						}
 					}
 					else
 					{

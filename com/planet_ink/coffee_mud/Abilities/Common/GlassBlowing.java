@@ -150,7 +150,10 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 					if(messedUp)
 					{
 						if(activity == CraftingActivity.LEARNING)
+						{
 							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
+							dropALoser(mob,buildingI);
+						}
 						else
 							commonTelL(mob,"@x1 explodes!",CMStrings.capitalizeAndLower(buildingI.name(mob)));
 						buildingI.destroy();

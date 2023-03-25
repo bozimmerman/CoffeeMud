@@ -463,7 +463,10 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 						if(activity == CraftingActivity.REFITTING)
 							commonEmote(mob,L("<S-NAME> mess(es) up refitting @x1.",buildingI.name()));
 						else
+						{
 							commonEmote(mob,L("<S-NAME> mess(es) up @x1 @x2.",((String)V(ID,V_VERB)),buildingI.name()));
+							dropALoser(mob,buildingI);
+						}
 					}
 					else
 					{

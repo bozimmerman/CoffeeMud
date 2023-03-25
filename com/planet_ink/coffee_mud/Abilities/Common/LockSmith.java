@@ -78,7 +78,10 @@ public class LockSmith extends CraftingSkill
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
+					{
 						commonTelL(mob,"You've ruined @x1!",buildingI.name(mob));
+						dropALoser(mob,buildingI);
+					}
 					else
 					if(!delock)
 					{

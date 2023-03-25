@@ -139,10 +139,14 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 						if(activity == CraftingActivity.LEARNING)
 						{
 							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
+							dropALoser(mob,buildingI);
 							buildingI.destroy();
 						}
 						else
+						{
 							commonTelL(mob,"<S-NAME> mess(es) up sculpting @x1.",buildingI.name(mob));
+							dropALoser(mob,buildingI);
+						}
 					}
 					else
 					{

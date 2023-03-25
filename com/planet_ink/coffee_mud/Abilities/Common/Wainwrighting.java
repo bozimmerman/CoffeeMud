@@ -186,6 +186,7 @@ public class Wainwrighting extends EnhancedCraftingSkill implements ItemCraftor
 							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
 						else
 							commonEmote(mob,L("<S-NAME> mess(es) up building @x1.",buildingI.name()));
+						dropALoser(mob,buildingI);
 						buildingI.destroy();
 					}
 					else

@@ -129,10 +129,14 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 						if(activity == CraftingActivity.LEARNING)
 						{
 							commonEmote(mob,L("<S-NAME> fail(s) to learn how to smelt @x1.",buildingI.name()));
+							// this space intentionally left blank
 							buildingI.destroy();
 						}
 						else
+						{
+							// this space intentionally left blank
 							commonEmote(mob,L("<S-NAME> mess(es) up smelting @x1.",buildingI.name()));
+						}
 					}
 					else
 					{

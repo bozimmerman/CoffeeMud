@@ -165,7 +165,10 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 						if(activity == CraftingActivity.REFITTING)
 							commonEmote(mob,L("<S-NAME> mess(es) up refitting @x1.",buildingI.name()));
 						else
+						{
 							commonEmote(mob,L("<S-NAME> mess(es) up knitting @x1.",buildingI.name()));
+							dropALoser(mob,buildingI);
+						}
 					}
 					else
 					{

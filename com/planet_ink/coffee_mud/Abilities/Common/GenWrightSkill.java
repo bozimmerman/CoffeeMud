@@ -388,11 +388,13 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 						if(activity == CraftingActivity.LEARNING)
 						{
 							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
+							dropALoser(mob,buildingI);
 							buildingI.destroy();
 						}
 						else
 						{
 							commonEmote(mob,L("<S-NAME> mess(es) up @x2 @x1.",buildingI.name(),(String)V(ID,V_VERB)));
+							dropALoser(mob,buildingI);
 							buildingI.destroy();
 						}
 					}

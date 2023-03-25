@@ -141,7 +141,10 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
+					{
 						commonTelL(mob,"<S-NAME> mess(es) up making @x1.",buildingI.name(mob));
+						dropALoser(mob,buildingI);
+					}
 					else
 					{
 						dropAWinner(mob,buildingI);

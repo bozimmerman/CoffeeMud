@@ -126,10 +126,14 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 						if(activity == CraftingActivity.LEARNING)
 						{
 							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
+							dropALoser(mob,buildingI);
 							buildingI.destroy();
 						}
 						else
+						{
 							commonEmote(mob,L("<S-NAME> mess(es) up making @x1.",buildingI.name()));
+							dropALoser(mob,buildingI);
+						}
 					}
 					else
 					{
