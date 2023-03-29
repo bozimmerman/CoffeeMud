@@ -14,7 +14,7 @@ Spiked % Banded Jacket	15	96	45	360	GenArmor	2:TORSO&&ARMS	0	16	0	Prop_WearAdjus
 Spiked % Banded Sabotons	18	42	10	80	GenArmor	3:FEET	0	2	0	Prop_WearAdjuster;Dam+1
 Spiked % Banded Boots	17	42	10	80	GenArmor	2:FEET	25	2	8	Prop_WearAdjuster;Dam+1
 Spiked % Banded Skirt	18	62	15	120	GenArmor	3:LEGS	0	8	0	Prop_WearAdjuster;Dam+1
-Spiked % Banded Greaves	17	66	15	120	GenArmor	S2:LEGS	0	8	0	Prop_WearAdjuster;Dam+1
+Spiked % Banded Greaves	17	40	8	175	GenArmor	S2:FEET	0	2	0	*Prop_WearAdjuster;Dam+1
 Spiked % Banded Gauntlets	18	44	5	40	GenArmor	2:HANDS	0	2	0	Prop_WearAdjuster;Dam+1
 Spiked % Banded Girdle	18	44	5	40	GenArmor	2:WAIST	100	2	32	Prop_WearAdjuster;Dam+1
 Spiked % Banded Lowerarm Cannon	18	32	3	24	GenArmor	3:LEFT WRIST||RIGHT WRIST	0	3	0	Prop_WearAdjuster;Dam+1
@@ -131,7 +131,7 @@ featherweight % chainmail barding	50	326	180	15210	GenArmor	2:BODY	0	52	0	prop_w
 % Doublemail Sleeves	60	200	15	1688	GenArmor	1:ARMS	0	15	0	
 % Battleplate Collar	62	172	5	563	GenArmor	S2:NECK	0	8	0	
 % Doublemail Collar	61	172	5	563	GenArmor	S1:NECK	0	8	0	
-% Battleplate Greaves	61	262	15	1688	GenArmor	S2:LEGS	0	30	0	
+% Battleplate Greaves	61	136	8	760	GenArmor	S2:FEET	0	7	0	
 % Doublemail Socks	61	174	10	1125	GenArmor	FEET	0	8	0	
 % Battleplate Mitts	62	174	5	563	GenArmor	3:HANDS	0	8	0	
 % Battleplate Rearbraces	62	204	15	1688	GenArmor	3:ARMS	0	15	0	
@@ -173,7 +173,7 @@ Ancient % Sleeves	73	224	15	1920	GenArmor	2:ARMS	0	16	0
 Ancient % Leggings	73	286	15	1920	GenArmor	2:LEGS	0	32	0	
 Ancient % Bracer	74	192	3	384	GenArmor	S2:LEFT WRIST||RIGHT WRIST	0	8	0	
 Ancient % Collar	74	194	5	640	GenArmor	S2:NECK	0	8	0	
-Ancient % Greaves	74	290	15	1920	GenArmor	S2:LEGS	0	32	0	
+Ancient % Greaves	74	191	8	940	GenArmor	S2:FEET	0	8	0	
 Ancient % Socks	75	196	10	1280	GenArmor	1:FEET	0	8	0	
 Ancient % Mitts	75	196	5	640	GenArmor	3:HANDS	0	8	0	
 Ancient % Helmet	75	228	10	1280	GenArmor	3:HEAD	0	16	0	

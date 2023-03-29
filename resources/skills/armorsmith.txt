@@ -60,7 +60,7 @@ small % shield	10	54	15	120	GenShield	HELD	0	12	0
 % banded bracer	10	36	3	74	GenArmor	S2:LEFT WRIST||RIGHT WRIST	0	4	0	
 % platemail armbands	11	58	15	480	GenArmor	S1:ARMS	0	8	0	
 % banded mitts	11	40	5	123	GenArmor	3:HANDS	0	4	0	
-% banded greaves	11	80	15	368	GenArmor	2:LEGS	0	14	0	
+% banded greaves	11	38	8	160	GenArmor	S2:FEET	0	3	0	
 % platemail mantle	11	40	5	160	GenArmor	2:NECK	0	4	0	
 % chainmail jerkin	11	98	30	540	GenArmor	1:TORSO	0	18	0	
 % chainmail belt	11	36	5	90	GenArmor	WAIST	100	3	32	
@@ -94,7 +94,7 @@ small % shield	10	54	15	120	GenShield	HELD	0	12	0
 % banded coat	16	144	45	1103	GenArmor	2:BODY	0	28	0	
 % platemail mitts	16	50	5	160	GenArmor	3:HANDS	0	4	0	
 % helmet	16	66	10	320	GenArmor	2:HEAD	0	8	0	
-% platemail greaves	16	96	15	480	GenArmor	2:LEGS	0	16	0	
+% platemail greaves	16	47	8	215	GenArmor	S2:FEET	0	4	0	
 heavy % gorget	16	46	5	123	GenArmor	3:NECK	0	4	0	
 % fieldplate armbands	17	72	15	608	GenArmor	S1:ARMS	0	9	0	
 % platemail boots	17	52	10	320	GenArmor	2:FEET	25	4	8	
@@ -125,7 +125,7 @@ heavy % gorget	16	46	5	123	GenArmor	3:NECK	0	4	0
 % platemail coat	21	168	45	1440	GenArmor	2:BODY	0	32	0	
 % platemail locking gauntlets	21	58	5	160	GenArmor	2:HANDS	0	5	0	*Prop_WearSpellCast;spell_irongrip
 % platemail chanfron	21	74	40	1280	GenArmor	2:HEAD	0	8	0	*prop_wearoverride;-racecat +equine
-% fieldplate greaves	21	114	10	405	GenArmor	2:LEGS	0	18	0	
+% fieldplate greaves	21	57	8	265	GenArmor	S2:FEET	0	4	0	
 % fieldplate collar	21	60	5	203	GenArmor	S2:NECK	0	5	0	
 % fieldplate pauldrons	22	84	15	608	GenArmor	S4:ARMS	0	9	0	
 % platemail Sabotons	22	62	10	320	GenArmor	3:FEET	0	4	0	
@@ -153,7 +153,7 @@ large % shield	23	108	15	480	GenShield	HELD	0	24	0
 % fullplate leggings	25	130	15	750	GenArmor	2:LEGS	0	20	0	
 % fieldplate jerkin	25	158	30	1215	GenArmor	3:TORSO	0	27	0	
 % fullplate handguards	26	72	5	250	GenArmor	2:HANDS	0	5	0	
-% fullplate greaves	26	134	15	750	GenArmor	2:LEGS	0	20	0	
+% fullplate greaves	26	69	8	385	GenArmor	S2:FEET	0	5	0	
 % fullplate collar	26	74	5	250	GenArmor	S2:NECK	0	5	0	
 % kite shield	26	126	15	608	GenShield	HELD	0	27	0	
 % fullplate shirt	26	170	30	1500	GenArmor	2:TORSO	0	30	0	
