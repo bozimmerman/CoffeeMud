@@ -135,7 +135,7 @@
             <FONT COLOR=WHITE SIZE=-1></FONT>
         </TD>
         <TD>
-            <INPUT TYPE=TEXT SIZE=60 NAME=DISPLAY VALUE="@AchievementData?VISIBLEMASK@">
+            <INPUT TYPE=TEXT SIZE=60 NAME=VISIBLEMASK VALUE="@AchievementData?VISIBLEMASK@">
             <BR><FONT COLOR=WHITE SIZE=-1>@AchievementData?HELP&FIELD=VISIBLEMASK@</FONT>
         </TD>
     </TR>
@@ -145,7 +145,7 @@
             <FONT COLOR=WHITE SIZE=-1></FONT>
         </TD>
         <TD>
-            <INPUT TYPE=TEXT SIZE=60 NAME=DISPLAY VALUE="@AchievementData?PLAYERMASK@">
+            <INPUT TYPE=TEXT SIZE=60 NAME=PLAYERMASK VALUE="@AchievementData?PLAYERMASK@">
             <BR><FONT COLOR=WHITE SIZE=-1>@AchievementData?HELP&FIELD=PLAYERMASK@</FONT>
         </TD>
     </TR>
