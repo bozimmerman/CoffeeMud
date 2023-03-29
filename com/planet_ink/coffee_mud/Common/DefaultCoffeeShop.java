@@ -759,7 +759,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			if(newOne==null)
 				newOne=CMClass.getMOB(itemi);
 			final List<XMLLibrary.XMLTag> idat=iblk.getContentsFromPieces("IDATA");
-			if((idat==null)||(newOne==null)||(!(newOne instanceof Item)))
+			if((idat==null)||(newOne==null))
 			{
 				Log.errOut("DefaultCoffeeShop","Error parsing 'INV' data.");
 				return;
