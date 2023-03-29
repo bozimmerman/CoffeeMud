@@ -128,16 +128,28 @@ public class Prayer_RemoveCurse extends Prayer implements MendingSkill
 					if(lastI==I)
 					{
 						alreadyDone.add(I);
-						final CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,L("<S-NAME> release(s) <T-NAME>."));
-						target.location().send(target,msg2);
+						final CMMsg msgb=CMClass.getMsg(mob,I,this,verbalCastCode(mob,target,auto), null);
+						if(target.location().okMessage(target, msgb))
+						{
+							target.location().send(target,msgb);
+							final CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,L("<S-NAME> release(s) <T-NAME>."));
+							target.location().send(target,msg2);
+							Prayer_Bless.endLowerCurses(I,adjustedLevel(mob,asLevel));
+							I.recoverPhyStats();
+						}
 					}
 					else
 					{
-						CMLib.flags().setRemovable(I,true);
-						CMLib.flags().setDroppable(I,true);
+						final CMMsg msgb=CMClass.getMsg(mob,I,this,verbalCastCode(mob,target,auto), null);
+						if(target.location().okMessage(target, msgb))
+						{
+							target.location().send(target,msgb);
+							CMLib.flags().setRemovable(I,true);
+							CMLib.flags().setDroppable(I,true);
+							Prayer_Bless.endLowerCurses(I,adjustedLevel(mob,asLevel));
+							I.recoverPhyStats();
+						}
 					}
-					Prayer_Bless.endLowerCurses(I,adjustedLevel(mob,asLevel));
-					I.recoverPhyStats();
 					lastI=I;
 					I=Prayer_Bless.getSomething(target,true);
 				}
