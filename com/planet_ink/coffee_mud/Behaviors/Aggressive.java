@@ -159,7 +159,7 @@ public class Aggressive extends StdBehavior
 					final MOB mob=R.fetchInhabitant(i);
 					if((mob!=null)
 					&&(mob!=observer)
-					&&((!levelCheck)||(observer.phyStats().level()<(mob.phyStats().level()+5)))
+					&&((!levelCheck)||(observer.phyStats().level()<(mob.phyStats().level()+CMProps.getIntVar(CMProps.Int.EXPRATE))))
 					&&((!mob.isMonster())||(mobKiller))
 					&&(CMLib.masking().maskCheck(mask,mob,false))
 					&&(!groupMembers.contains(mob))

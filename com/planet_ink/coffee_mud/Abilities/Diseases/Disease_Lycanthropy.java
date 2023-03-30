@@ -187,7 +187,7 @@ public class Disease_Lycanthropy extends Disease
 			&&(M!=mob)
 			&&(!CMLib.flags().isEvil(M))
 			&&(mob.mayIFight(M))
-			&&(M.phyStats().level()<(mob.phyStats().level()+5)))
+			&&(M.phyStats().level()<(mob.phyStats().level()+CMProps.getIntVar(CMProps.Int.EXPRATE))))
 				return M;
 		}
 		return null;

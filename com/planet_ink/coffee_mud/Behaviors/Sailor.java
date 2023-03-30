@@ -479,7 +479,7 @@ public class Sailor extends StdBehavior
 								&&(M!=mob)
 								&&(mob.mayPhysicallyAttack(M))
 								&&(grantsAggressivenessTo(M))
-								&&((!aggrLvlChk)||(mob.phyStats().level()<(M.phyStats().level()+5)))
+								&&((!aggrLvlChk)||(mob.phyStats().level()<(M.phyStats().level()+CMProps.getIntVar(CMProps.Int.EXPRATE))))
 								&&(CMLib.masking().maskCheck(aggrMask,M,false)))
 								{
 									if(CMLib.combat().postAttack(mob, M, mob.fetchWieldedItem()))
@@ -876,7 +876,7 @@ public class Sailor extends StdBehavior
 									if(captaiM==null)
 										captaiM=eligible.get(0);
 									if((captaiM!=null)
-									&&((!aggrLvlChk)||(mob.phyStats().level()<(captaiM.phyStats().level()+5)))
+									&&((!aggrLvlChk)||(mob.phyStats().level()<(captaiM.phyStats().level()+CMProps.getIntVar(CMProps.Int.EXPRATE))))
 									&&(CMLib.masking().maskCheck(aggrMask,captaiM,false)))
 										mob.enqueCommand(new XVector<String>(SiegableItem.SiegeCommand.TARGET.name(),mobRoom.getContextName(I)), 0, 0);
 								}

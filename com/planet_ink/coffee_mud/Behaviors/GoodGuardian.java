@@ -105,7 +105,7 @@ public class GoodGuardian extends StdBehavior
 			{
 				final MOB inhab=room.fetchInhabitant(i);
 				if((inhab != null)
-				&&((observer.phyStats().level()>(inhab.phyStats().level()+5))))
+				&&((observer.phyStats().level()>(inhab.phyStats().level()+CMProps.getIntVar(CMProps.Int.EXPRATE)))))
 				{
 					final MOB inhabV=inhab.getVictim();
 					if((inhabV!=null)

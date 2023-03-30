@@ -138,7 +138,7 @@ public class VeryAggressive extends Aggressive
 						if((inhab!=null)
 						&&((!inhab.isMonster())||(mobKiller))
 						&&(CMLib.flags().canSenseEnteringLeaving(inhab,mob))
-						&&((!levelCheck)||(mob.phyStats().level()<(inhab.phyStats().level()+5)))
+						&&((!levelCheck)||(mob.phyStats().level()<(inhab.phyStats().level()+CMProps.getIntVar(CMProps.Int.EXPRATE))))
 						&&(CMLib.masking().maskCheck(mask,inhab,false))
 						&&(((mask!=null)&&(mask.entries().length>0))
 							||((inhab.phyStats().level()<(mob.phyStats().level()+8))

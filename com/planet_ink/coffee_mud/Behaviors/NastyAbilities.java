@@ -48,10 +48,11 @@ public class NastyAbilities extends ActiveTicker
 		return Behavior.CAN_MOBS;
 	}
 
-	protected boolean		fightok	= false;
-	protected CompiledZMask	mask	= null;
+	protected boolean		fightok			= false;
+	protected CompiledZMask	mask			= null;
 	protected List<Ability>	mySkills		= null;
 	protected int			numAllSkills	= -1;
+	protected boolean		levelcheck		= false;
 
 	public NastyAbilities()
 	{
@@ -79,7 +80,9 @@ public class NastyAbilities extends ActiveTicker
 		}
 		super.setParms(parms);
 		super.parms = newParms;
-		fightok=parms.toUpperCase().indexOf("FIGHTOK")>=0;
+		final List<String> V = CMParms.parse(parms.toUpperCase());
+		fightok=V.contains("FIGHTOK");
+		levelcheck=V.contains("CHECKLEVEL");
 		this.mask = null;
 		if(mask.trim().length()>0)
 			this.mask = CMLib.masking().getPreCompiledMask(mask.trim());
@@ -103,39 +106,30 @@ public class NastyAbilities extends ActiveTicker
 			if(thisRoom.numPCInhabitants()>0)
 			{
 				MOB target=null;
-				if(mask == null)
+				final List<MOB> targets = new ArrayList<MOB>(1);
+				for(int i=0;i<thisRoom.numInhabitants();i++)
 				{
-					for(int i=0;(i<10) && (target==null);i++)
+					final MOB M=thisRoom.fetchInhabitant(i);
+					if((M!=null)
+					&&(M!=mob)
+					&&((mask==null)||CMLib.masking().maskCheck(mask, M, false))
+					&&((!levelcheck)||(M.phyStats().level()>=(mob.phyStats().level()-CMProps.getIntVar(CMProps.Int.EXPRATE)))))
 					{
-						target = thisRoom.fetchRandomInhabitant();
-						if((target == null)||(target==mob))
-							target = null;
-						else
+						if(mask == null)
 						{
-							MOB followMOB=target;
-							if(target.amFollowing()!=null)
-								followMOB=target.amUltimatelyFollowing();
+							MOB followMOB=M;
+							if(M.amFollowing()!=null)
+								followMOB=M.amUltimatelyFollowing();
 							if((followMOB.getVictim()==mob)
 							||(followMOB.isMonster()))
-								target = null;
+								continue;
 						}
+						targets.add(M);
 					}
 				}
-				else
-				{
-					final List<MOB> targets = new ArrayList<MOB>(1);
-					for(int i=0;i<thisRoom.numInhabitants();i++)
-					{
-						final MOB M=thisRoom.fetchInhabitant(i);
-						if((M!=null)
-						&&(M!=mob)
-						&&(CMLib.masking().maskCheck(mask, M, false)))
-							targets.add(M);
-					}
-					if(targets.size()==0)
-						return true;
-					target = targets.get(CMLib.dice().roll(1, targets.size(), -1));
-				}
+				if(targets.size()==0)
+					return true;
+				target = targets.get(CMLib.dice().roll(1, targets.size(), -1));
 				if(target!=null)
 				{
 					if((numAllSkills!=mob.numAllAbilities())||(mySkills==null))

@@ -120,7 +120,7 @@ public class ROMPatrolman extends StdBehavior
 				if((inhab!=null)
 				&&(inhab.isInCombat())
 				&&(inhab.getVictim().isInCombat())
-				&&((observer.phyStats().level()>(inhab.phyStats().level()+5))
+				&&((observer.phyStats().level()>(inhab.phyStats().level()+CMProps.getIntVar(CMProps.Int.EXPRATE)))
 				&&(!CMLib.flags().isEvil(observer))))
 				{
 					final String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();

@@ -94,7 +94,7 @@ public class Spell_DispelMagic extends Spell
 					if((basicQualifyingAbility(A))
 					&&(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
 					&&((A.invoker()==mob)
-						||(A.invoker().phyStats().level()<=mob.phyStats().level()+5)))
+						||(A.invoker().phyStats().level()<=mob.phyStats().level()+CMProps.getIntVar(CMProps.Int.EXPRATE))))
 						return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
 				}
 			}
@@ -109,11 +109,11 @@ public class Spell_DispelMagic extends Spell
 						if(((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
 							||(A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF))
 						&&(A.invoker()==((MOB)target))
-						&&(A.invoker().phyStats().level()<=mob.phyStats().level()+5))
+						&&(A.invoker().phyStats().level()<=mob.phyStats().level()+CMProps.getIntVar(CMProps.Int.EXPRATE)))
 							return super.castingQuality(mob, target,Ability.QUALITY_MALICIOUS);
 						if((A.abstractQuality()==Ability.QUALITY_MALICIOUS)
 						&&((A.invoker()==mob)
-							||(A.invoker().phyStats().level()<=mob.phyStats().level()+5)))
+							||(A.invoker().phyStats().level()<=mob.phyStats().level()+CMProps.getIntVar(CMProps.Int.EXPRATE))))
 							return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
 					}
 				}
@@ -142,7 +142,7 @@ public class Spell_DispelMagic extends Spell
 				foundSomethingAtLeast=true;
 				if((A.invoker()!=null)
 				&&((A.invoker()==mob)
-					||(A.invoker().phyStats().level()<=mob.phyStats().level()+5)
+					||(A.invoker().phyStats().level()<=mob.phyStats().level()+CMProps.getIntVar(CMProps.Int.EXPRATE))
 					||admin))
 					revokeThis=A;
 			}
