@@ -405,6 +405,9 @@ public class Prop_ItemSlot extends Property
 									levelDiff=slots[i].phyStats().level();
 							}
 						}
+						msg.source().recoverPhyStats();
+						msg.source().recoverCharStats();
+						msg.source().recoverMaxState();
 					}
 				}
 			}
