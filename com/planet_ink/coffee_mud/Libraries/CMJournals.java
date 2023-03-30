@@ -1137,11 +1137,14 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			localClock = event.getKnownClock();
 		if(localClock == null)
 			localClock = CMLib.time().globalClock();
+		if(event == null)
+			return "";
 		final TimeClock eC = localClock.deriveClock(event.expiration());
 		String endDateStr = eC.getShortestTimeDescription();
 		endDateStr += " (" + CMLib.time().date2String24(event.expiration())+")";
 		final long expiresIn = event.expiration() - System.currentTimeMillis();
-		if((event.msg().trim().length()>0)
+		if((event.msg() != null)
+		&&(event.msg().trim().length()>0)
 		&&(event.msg().indexOf("<PERIOD>")>=0)
 		&&(!event.from().equalsIgnoreCase("Holiday"))
 		&&(expiresIn < (TimeManager.MILI_HOUR+CMProps.getTickMillis()))

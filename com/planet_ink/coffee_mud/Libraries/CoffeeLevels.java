@@ -140,7 +140,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		final double dmgLevel = M.phyStats().damage();
 		final double speedLevel = 1.0 + (M.phyStats().speed()-1.0)*30.0;
 		final double armLevel = ((103 - M.phyStats().armor()) / 3.0);
-		final double attLevel = M.phyStats().attackAdjustment() / (1 + getAttackBonusNextLevel(M));
+		final double bonus = (1.0 + getAttackBonusNextLevel(M));
+		final double attLevel = (bonus!=0)?(M.phyStats().attackAdjustment() / bonus) : 0;
 		return (int)Math.round((dmgLevel+speedLevel+armLevel+attLevel)/4.0);
 	}
 
