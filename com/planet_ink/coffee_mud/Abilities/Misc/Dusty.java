@@ -175,6 +175,7 @@ public class Dusty extends StdAbility
 			final Area A=R.getArea();
 			if(A!=null)
 			{
+				final Physical affected = this.affected;
 				final int weather = A.getClimateObj().weatherType(R);
 				switch(weather)
 				{
@@ -187,7 +188,7 @@ public class Dusty extends StdAbility
 					if(affected != null)
 					{
 						affected.delEffect(this);
-						affected=null;
+						this.affected=null;
 					}
 					break;
 				case Climate.WEATHER_DUSTSTORM:
@@ -195,7 +196,7 @@ public class Dusty extends StdAbility
 					if(affected != null)
 					{
 						affected.delEffect(this);
-						affected=null;
+						this.affected=null;
 					}
 					break;
 				case Climate.WEATHER_CLEAR:
@@ -284,6 +285,7 @@ public class Dusty extends StdAbility
 		super.executeMsg(host,msg);
 		if(msg.target()==affected)
 		{
+			final Physical affected = this.affected;
 			if(msg.targetMinor()==CMMsg.TYP_GET)
 			{
 				final int choice=CMLib.dice().roll(1, 7, -1);
@@ -311,7 +313,7 @@ public class Dusty extends StdAbility
 				if(affected != null)
 				{
 					affected.delEffect(this);
-					affected=null;
+					this.affected=null;
 				}
 			}
 			else
@@ -320,7 +322,7 @@ public class Dusty extends StdAbility
 				if(affected != null)
 				{
 					affected.delEffect(this);
-					affected=null;
+					this.affected=null;
 				}
 			}
 		}
