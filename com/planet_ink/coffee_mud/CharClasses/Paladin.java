@@ -42,6 +42,8 @@ public class Paladin extends StdCharClass
 	}
 
 	private final static String localizedStaticName = CMLib.lang().L("Paladin");
+	//private final static String localizedStaticName2 = CMLib.lang().L("Fallen Paladin");
+	//private final static String localizedStaticName3 = CMLib.lang().L("Anti-Paladin");
 
 	@Override
 	public String name()
@@ -257,17 +259,19 @@ public class Paladin extends StdCharClass
 		{
 			if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
 			{
-				if(!CMLib.flags().isGood(mob))
+				if((!CMLib.flags().isGood(mob)))//&&(!CMLib.flags().isEvil(mob)))
 				{
 					mob.tell(L("You must be good to be a paladin."));
+					//mob.tell(L("You must be good or evil to be a paladin."));
 					return false;
 				}
 			}
 			if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
 			{
-				if(!CMLib.flags().isLawful(mob))
+				if((!CMLib.flags().isLawful(mob)))//&&(!CMLib.flags().isChaotic(mob)))
 				{
 					mob.tell(L("You must be lawful to be a paladin."));
+					//mob.tell(L("You must be lawful or chaotic to be a paladin."));
 					return false;
 				}
 			}
@@ -313,7 +317,8 @@ public class Paladin extends StdCharClass
 	@Override
 	public String getOtherLimitsDesc()
 	{
-		return L("Must remain good to avoid spell/skill failure chance.");
+		return L("Must remain lawful/good to avoid spell/skill failure chance.");
+		//return L("Must remain lawful/good or chaotic/evil to avoid spell/skill failure chance.");
 	}
 
 	@Override
@@ -328,6 +333,7 @@ public class Paladin extends StdCharClass
 		if(!(myHost instanceof MOB))
 			return super.okMessage(myHost,msg);
 		final MOB myChar=(MOB)myHost;
+		//TODO: ACCOMODATE ANTI-PALADINS HERE
 		if((msg.amISource(myChar))
 		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(((!CMLib.flags().isGood(myChar))&&(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)))
@@ -374,5 +380,63 @@ public class Paladin extends StdCharClass
 			outfitChoices.add(w);
 		}
 		return outfitChoices;
+	}
+
+	@Override
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		/*
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+		{
+			if(CMLib.flags().isGood(affectedMOB))
+			{
+				if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+				{
+					if(CMLib.flags().isLawful(affectedMOB))
+						return;
+					affectableStats.setDisplayClassLevel(localizedStaticName2);
+					return;
+				}
+			}
+			else
+			if(CMLib.flags().isEvil(affectedMOB))
+			{
+				if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+				{
+					if(CMLib.flags().isChaotic(affectedMOB))
+					{
+						affectableStats.setDisplayClassLevel(localizedStaticName3);
+						return;
+					}
+					affectableStats.setDisplayClassLevel(localizedStaticName2);
+					return;
+				}
+				else
+				{
+					affectableStats.setDisplayClassLevel(localizedStaticName3);
+					return;
+				}
+			}
+			else
+			{
+				affectableStats.setDisplayClassLevel(localizedStaticName2);
+				return;
+			}
+		}
+		else
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+		{
+			if(CMLib.flags().isLawful(affectedMOB))
+				return;
+			if(CMLib.flags().isChaotic(affectedMOB))
+			{
+				affectableStats.setDisplayClassLevel(localizedStaticName3);
+				return;
+			}
+			affectableStats.setDisplayClassLevel(localizedStaticName2);
+			return;
+		}
+		*/
 	}
 }
