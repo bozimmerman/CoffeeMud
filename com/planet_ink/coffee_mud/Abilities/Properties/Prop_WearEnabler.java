@@ -112,7 +112,8 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
-		if((affected instanceof Armor)&&(msg.source()==((Item)affected).owner()))
+		if((affected instanceof Armor)
+		&&(msg.source()==((Item)affected).owner()))
 		{
 			if((msg.targetMinor()==CMMsg.TYP_REMOVE)
 			||(msg.sourceMinor()==CMMsg.TYP_WEAR)
@@ -194,30 +195,4 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 			processing=false;
 		}
 	}
-
-	@Override
-	public String getStat(final String code)
-	{
-		if(code == null)
-			return "";
-		if(code.equalsIgnoreCase("STAT-LEVEL"))
-		{
-			int level = 0;
-			for(final Pair<Ability,Integer> p : this.getMySpellsV())
-			{
-				final Ability A=p.first;
-				if(A!=null)
-				{
-					final int mul=1;
-					level += (mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
-				}
-			}
-			return ""+level;
-		}
-		else
-		if(code.toUpperCase().startsWith("STAT-"))
-			return "";
-		return super.getStat(code);
-	}
-
 }
