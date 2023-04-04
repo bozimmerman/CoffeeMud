@@ -377,6 +377,31 @@ public class GenAbility extends StdAbility
 		return effects;
 	}
 
+	protected void prepHereAffect(final MOB mob, final Physical target, final int asLevel)
+	{
+		this.hereEffect=null;
+		if(((String)V(ID(), V_HERE)).trim().length()>0)
+		{
+			this.hereEffect = CMClass.getAbility("Prop_HereAdjuster");
+			if(this.hereEffect != null)
+			{
+				final String[] vars = new String[] {
+					""+mob.phyStats().level(),
+					""+target.phyStats().level(),
+					""+super.getXLEVELLevel(mob),
+					""+super.getX1Level(mob),
+					""+super.getX2Level(mob),
+					""+super.getX3Level(mob),
+					""+super.getX4Level(mob),
+					""+super.getX5Level(mob),
+					""+adjustedLevel(mob,asLevel)
+				};
+				final String miscText= CMStrings.replaceVariables((String)V(ID,V_HERE), vars);
+				this.hereEffect.setMiscText(miscText);
+			}
+		}
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -598,29 +623,8 @@ public class GenAbility extends StdAbility
 				{
 					if((canAffectCode()!=0)&&(target!=null))
 					{
-						this.quietEffect=null;
-						this.hereEffect=null;
-						if(((String)V(ID(), V_HERE)).trim().length()>0)
-						{
-							this.hereEffect = CMClass.getAbility("Prop_HereAdjuster");
-							if(this.hereEffect != null)
-							{
-								final String[] vars = new String[] {
-									""+mob.phyStats().level(),
-									""+target.phyStats().level(),
-									""+super.getXLEVELLevel(mob),
-									""+super.getX1Level(mob),
-									""+super.getX2Level(mob),
-									""+super.getX3Level(mob),
-									""+super.getX4Level(mob),
-									""+super.getX5Level(mob),
-									""+adjustedLevel(mob,asLevel)
-								};
-								final String miscText= CMStrings.replaceVariables((String)V(ID,V_HERE), vars);
-								this.hereEffect.setMiscText(miscText);
-							}
-
-						}
+						this.quietEffect = null;
+						prepHereAffect(mob, target, asLevel);
 						final GenAbility affectA;
 						if(abstractQuality()==Ability.QUALITY_MALICIOUS)
 							affectA=(GenAbility)maliciousAffect(mob,target,asLevel,tickOverride,-1);
@@ -1005,6 +1009,7 @@ public class GenAbility extends StdAbility
 	{
 		if(super.autoInvocation(mob, force))
 		{
+			prepHereAffect(mob, mob, 0);
 			final String SID=(String)V(ID,V_MOCK);
 			if(SID.length()>0)
 			{
@@ -1023,7 +1028,9 @@ public class GenAbility extends StdAbility
 					}
 				}
 			}
-
+			mob.recoverCharStats();
+			mob.recoverMaxState();
+			mob.recoverPhyStats();
 			return true;
 		}
 		return false;
