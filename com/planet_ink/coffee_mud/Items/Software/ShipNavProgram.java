@@ -56,6 +56,7 @@ public class ShipNavProgram extends ShipSensorProgram
 	protected volatile long[]		courseTargetCoords	= null;
 	protected volatile long			courseTargetRadius	= 0;
 	protected volatile Double		lastAcceleration	= null;
+	protected volatile Double		lastSpeedDelta		= null;
 	protected volatile Double		lastAngle			= null;
 	protected volatile Double		lastInject			= null;
 	protected volatile Double		targetAcceleration	= Double.valueOf(SpaceObject.ACCELERATION_TYPICALSPACEROCKET);
@@ -274,6 +275,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		try
 		{
 			this.lastAcceleration =null;
+			this.lastSpeedDelta=null;
 			if(thrustInject != null)
 			{
 				if((thrustInject != this.lastInject)
@@ -443,6 +445,7 @@ public class ShipNavProgram extends ShipSensorProgram
 						this.lastAcceleration =null;
 						final String code=TechCommand.THRUST.makeCommand(ShipDirectional.ShipDir.AFT, Double.valueOf(lastTryAmt));
 						msg.setTargetMessage(code);
+						ship.tick(M, Tickable.TICKID_PROPERTY_SPECIAL); // clear the speed ticker
 						this.trySendMsgToItem(M, engineE, msg);
 						final Double thisLastAccel=this.lastAcceleration ;
 						if(thisLastAccel!=null)
@@ -466,6 +469,7 @@ public class ShipNavProgram extends ShipSensorProgram
 							}
 							else
 							{
+								ship.tick(M, Tickable.TICKID_PROPERTY_SPECIAL); // clear the speed ticker
 								this.trySendMsgToItem(M, engineE, deactMsg);
 								lastTryAmt *= 1.1;
 								final double lastPct = (prevAcceleration.doubleValue()/thisLastAccel.doubleValue());
@@ -563,6 +567,8 @@ public class ShipNavProgram extends ShipSensorProgram
 					case FORWARD:
 						if(this.lastAcceleration==null)
 							this.lastAcceleration =(Double)parms[1];
+						if(this.lastSpeedDelta==null)
+							this.lastSpeedDelta =(Double)parms[3];
 						break;
 					default:
 						if(lastAngle==null)
@@ -948,7 +954,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		case DEPROACH:
 		case PRE_LANDING_STOP:
 		{
-			Double oldInject = newInject;
+			final Double oldInject = newInject;
 			newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
 			Log.debugOut("Old inject = "+oldInject+", new="+newInject); //TODO:BZ:DELME
 			for(final ShipEngine engineE : programEngines)
@@ -1012,9 +1018,11 @@ public class ShipNavProgram extends ShipSensorProgram
 					{
 						final Double oldInject=this.lastInject;
 						final Double oldAccel=this.lastAcceleration;
+						final Double oldDelta=this.lastSpeedDelta;
 						performSimpleThrust(engineE,Double.valueOf(0.0), false);
 						this.lastInject=oldInject;
 						this.lastAcceleration=oldAccel;
+						this.lastSpeedDelta=oldDelta;
 						break;
 					}
 					else
@@ -1135,11 +1143,11 @@ public class ShipNavProgram extends ShipSensorProgram
 			doNavigation(navTrack);
 		return super.checkPowerCurrent(value);
 	}
-	
+
 	protected SoftwareProcedure launchProcedure = new SoftwareProcedure()
 	{
 		@Override
-		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
 			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
 			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
@@ -1179,13 +1187,13 @@ public class ShipNavProgram extends ShipSensorProgram
 			return false;
 		}
 	};
-	
+
 	protected SoftwareProcedure orbitProcedure = launchProcedure;
-	
+
 	protected SoftwareProcedure stopProcedure = new SoftwareProcedure()
 	{
 		@Override
-		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
 			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
 			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
@@ -1226,11 +1234,11 @@ public class ShipNavProgram extends ShipSensorProgram
 			return false;
 		}
 	};
-	
+
 	protected SoftwareProcedure landProcedure = new SoftwareProcedure()
 	{
 		@Override
-		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
 			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
 			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
@@ -1321,11 +1329,11 @@ public class ShipNavProgram extends ShipSensorProgram
 			return false;
 		}
 	};
-	
+
 	protected SoftwareProcedure courseProcedure = new SoftwareProcedure()
 	{
 		@Override
-		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
 			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
 			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
@@ -1383,11 +1391,11 @@ public class ShipNavProgram extends ShipSensorProgram
 			return false;
 		}
 	};
-	
+
 	protected SoftwareProcedure faceProcedure = new SoftwareProcedure()
 	{
 		@Override
-		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
 			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
 			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
@@ -1505,11 +1513,11 @@ public class ShipNavProgram extends ShipSensorProgram
 			return false;
 		}
 	};
-	
+
 	protected SoftwareProcedure cancelProcedure = new SoftwareProcedure()
 	{
 		@Override
-		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
 			if(navTrack == null)
 			{
@@ -1522,11 +1530,11 @@ public class ShipNavProgram extends ShipSensorProgram
 			return false;
 		}
 	};
-	
+
 	protected SoftwareProcedure approachProcedure = new SoftwareProcedure()
 	{
 		@Override
-		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
 			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
 			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
@@ -1594,11 +1602,11 @@ public class ShipNavProgram extends ShipSensorProgram
 			return false;
 		}
 	};
-	
+
 	protected SoftwareProcedure moonProcedure = new SoftwareProcedure()
 	{
 		@Override
-		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
 			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
 			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
@@ -1717,5 +1725,5 @@ public class ShipNavProgram extends ShipSensorProgram
 			return false;
 		}
 	};
-	
+
 }

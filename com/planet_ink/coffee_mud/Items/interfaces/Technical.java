@@ -183,7 +183,7 @@ public interface Technical extends Item
 	public static enum TechCommand
 	{
 		THRUST(ShipDirectional.ShipDir.class, Double.class),
-		ACCELERATED(ShipDirectional.ShipDir.class, Double.class),
+		ACCELERATED(ShipDirectional.ShipDir.class, Double.class, Double.class, Double.class),
 		ACCELERATION(ShipDirectional.ShipDir.class, Double.class, Boolean.class),
 		COMPONENTFAILURE(Technical.TechType.class, String[].class),
 		SENSE(TechComponent.class, Boolean.class),

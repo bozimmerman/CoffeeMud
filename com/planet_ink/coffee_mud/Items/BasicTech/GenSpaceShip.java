@@ -120,7 +120,8 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if(tickID==Tickable.TICKID_AREA) // ticking from the area
+		if((tickID==Tickable.TICKID_AREA) // ticking from the area
+		||(tickID==Tickable.TICKID_PROPERTY_SPECIAL))
 		{
 			this.speedTick = 0.0;
 		}
@@ -268,6 +269,8 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 								final double amount=((Double)parms[1]).doubleValue();
 								final boolean isConst = ((Boolean)parms[2]).booleanValue();
 								double finalAcceleration = 0;
+								double effectiveAcceleration = 0;
+								final double prevSpeed = speed();
 								Room dockR = getIsDocked();
 								if(amount != 0)
 								{
@@ -277,6 +280,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 										if(dockR==null)
 										{
 											finalAcceleration = -CMath.mul(amount,0.017);
+											effectiveAcceleration = finalAcceleration;
 											CMLib.space().changeDirection(facing, finalAcceleration, 0.0);
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing[0]);
@@ -286,6 +290,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 										if(dockR==null)
 										{
 											finalAcceleration = CMath.mul(amount,0.017);
+											effectiveAcceleration = finalAcceleration;
 											CMLib.space().changeDirection(facing, finalAcceleration, 0.0);
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing[0]);
@@ -295,6 +300,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 										if(dockR==null)
 										{
 											finalAcceleration = -CMath.mul(amount,0.017);
+											effectiveAcceleration = finalAcceleration;
 											CMLib.space().changeDirection(facing, 0.0, finalAcceleration);
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing[1]);
@@ -304,6 +310,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 										if(dockR==null)
 										{
 											finalAcceleration = CMath.mul(amount,0.017);
+											effectiveAcceleration = finalAcceleration;
 											CMLib.space().changeDirection(facing, 0.0, finalAcceleration);
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing[1]);
@@ -336,21 +343,22 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 										}
 										//force/mass is the Gs felt by the occupants.. not force-mass
 										finalAcceleration = amount*inAirFactor;
-										if((dockR==null) && ((finalAcceleration-this.speedTick) > 0))
+										effectiveAcceleration = finalAcceleration-this.speedTick;
+										if((dockR==null) && (effectiveAcceleration > 0))
 										{
-											final double prevSpeed = speed();
 											final double[] moveDir = (dir == ShipDir.FORWARD) ? facing() : CMLib.space().getOppositeDir(facing());
-											CMLib.space().accelSpaceObject(this,moveDir,finalAcceleration-this.speedTick); // have to do this to know new speed
+											CMLib.space().accelSpaceObject(this,moveDir,effectiveAcceleration); // have to do this to know new speed
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" accelerates "+dir.toString()+" " +(finalAcceleration-this.speedTick));
-											this.speedTick += (finalAcceleration-this.speedTick);
+												Log.debugOut("SpaceShip "+name()+" accelerates "+dir.toString()+" " +effectiveAcceleration);
+											this.speedTick += effectiveAcceleration;
 											if((speed() < prevSpeed) && (this.speed() < 0.5)) // enough slowing down!
 												setSpeed(0.0);
 										}
 										break;
 									}
 									}
-									final String code=Technical.TechCommand.ACCELERATED.makeCommand(dir,Double.valueOf(finalAcceleration));
+									final String code=Technical.TechCommand.ACCELERATED.makeCommand(dir,
+											Double.valueOf(finalAcceleration), Double.valueOf(effectiveAcceleration), Double.valueOf(this.speed()-prevSpeed));
 									final MOB mob=CMClass.getFactoryMOB();
 									try
 									{

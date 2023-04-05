@@ -92,7 +92,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 	{
 		return super.isDeActivationString(word);
 	}
-	
+
 	@Override
 	public boolean isCommandString(final String word, final boolean isActive)
 	{
@@ -408,8 +408,6 @@ public class RocketShipProgram extends ShipTacticalProgram
 		return true;
 	}
 
-
-
 	@Override
 	protected void onTyping(final MOB mob, final String message)
 	{
@@ -447,7 +445,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 				final String secondWord = CMParms.combine(parsed,1).toUpperCase();
 				if(secondWord.startsWith("ENGINE"))
 				{
-					Electronics E  = findEngineByName(secondWord);
+					final Electronics E  = findEngineByName(secondWord);
 					if(E==null)
 					{
 						super.addScreenMessage(
@@ -490,7 +488,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 				else
 				if(secondWord.startsWith("SENSOR"))
 				{
-					Electronics E=this.findSensorByName(secondWord);
+					final Electronics E=this.findSensorByName(secondWord);
 					if(E==null)
 					{
 						super.addScreenMessage(L("^HINFO:^N\n\r^N"+"Specified sensor system not found.  No information available."));
@@ -519,7 +517,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 						&&(!getShipSensors().contains(component)))
 							others.add(component);
 					}
-					Electronics E=findComponentByName(others,"SYSTEM",secondWord);
+					final Electronics E=findComponentByName(others,"SYSTEM",secondWord);
 					if(E==null)
 					{
 						super.addScreenMessage(L("^HINFO:^N\n\r^N"+"Specified system not found.  No information available."));
@@ -642,7 +640,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 					super.addScreenMessage(L("Error: Unknown engine name or command word '"+uword+"'.   Try HELP."));
 					return;
 				}
-				Electronics E=engineE;
+				final Electronics E=engineE;
 				double amount=0;
 				ShipDirectional.ShipDir portDir=ShipDirectional.ShipDir.AFT;
 				if(parsed.size()>3)
