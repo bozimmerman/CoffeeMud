@@ -296,6 +296,17 @@ public class ShipNavProgram extends ShipSensorProgram
 		}
 	}
 
+	protected void performSingleThrust(final ShipEngine engineE, final Double thrustInject, final boolean alwaysThrust)
+	{
+		final Double oldInject=this.lastInject;
+		final Double oldAccel=this.lastAcceleration;
+		final Double oldDelta=this.lastSpeedDelta;
+		performSimpleThrust(engineE, thrustInject, alwaysThrust);
+		this.lastInject=oldInject;
+		this.lastAcceleration=oldAccel;
+		this.lastSpeedDelta=oldDelta;
+	}
+
 	protected double findTargetAcceleration(final ShipEngine E)
 	{
 		boolean dampenerFound = false;
@@ -581,12 +592,31 @@ public class ShipNavProgram extends ShipSensorProgram
 		super.executeMsg(myHost, msg);
 	}
 
+	@Override
+	protected void onDeactivate(final MOB mob, final String message)
+	{
+		if(message == null)
+		{
+			course.clear();
+			courseTargetCoords	= null;
+			courseTargetRadius	= 0;
+			lastAcceleration	= null;
+			lastSpeedDelta		= null;
+			lastAngle			= null;
+			lastInject			= null;
+			targetAcceleration	= Double.valueOf(SpaceObject.ACCELERATION_TYPICALSPACEROCKET);
+			navTrack			= null;
+			injects.clear();
+		}
+		super.onDeactivate(mob, message);
+	}
+
 	protected LinkedList<Triad<double[],Long,Long>> calculateNavigation(final SpaceObject ship, final SpaceObject targetObj)
 	{
 		final LinkedList<Triad<double[],Long,Long>> navs = new LinkedList<Triad<double[],Long,Long>>();
 		long distance = CMLib.space().getDistanceFrom(ship, targetObj);
 		distance = (distance - ship.radius() - Math.round(CMath.mul(targetObj.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
-		final long targetDistance = distance; //TODO:BZ:DELTHIS:
+		final long targetDistance = distance;
 		if(ship.speed() < SpaceObject.VELOCITY_SOUND)
 			distance = distance/2;
 		else
@@ -864,7 +894,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					final String actual_d_s = distance+"d, "+Math.round(ship.speed())+"v";
 					final String expected_d_s = nav.second+"d, "+nav.third+"v";
 					final String diff_d_s = distDiff+"d, "+veloDiff+"v";
-					Log.debugOut("Track: act="+actual_d_s +" /****/ exp="+expected_d_s + " /****/ diff=" + diff_d_s);
+					Log.debugOut("Track: act="+actual_d_s +" **** exp="+expected_d_s + " **** diff=" + diff_d_s);
 				}
 			}
 			else
@@ -876,6 +906,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			final double[] desiredDirection = nav.first;
 			final double[] objDirection = CMLib.space().getDirection(ship.coordinates(), targetObject.coordinates());
 			final double[] dirDelta = CMLib.space().getFacingAngleDiff(desiredDirection, objDirection); // starboard is -, port is +
+			final double[] angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), desiredDirection); // starboard is -, port is +
 			if((Math.abs(dirDelta[0])+Math.abs(dirDelta[1]))>.6)
 			{
 				if(track.state == ShipNavState.APPROACH)
@@ -887,39 +918,113 @@ public class ShipNavProgram extends ShipSensorProgram
 					track.state=ShipNavState.APPROACH;
 			}
 			if((ship.speed() > SpaceObject.ACCELERATION_TYPICALSPACEROCKET)
-			&&(Math.abs(dirDelta[0])+Math.abs(dirDelta[1]))<0.201)
+			&&(Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))<0.201)
 			{
+				final double velocityDeltaAmt = (ship.speed() - nav.third.doubleValue());
 				if(track.state == ShipNavState.APPROACH)
 				{
 					// if we are approaching, and are closer to the target than we should be, then...
-					if(nav.second.longValue() - distance  > targetAcceleration)
+					if((nav.second.longValue() - distance  > targetAcceleration)
+					||(velocityDeltaAmt > targetAcceleration))
 					{
-						Log.debugOut("----------------Too close, skipping"); //TODO:BZ:DELME
-						return ; // skip!
+						// strategy #1 -- just don't accelerate, so long as our speed is too fast
+						if((distance - nav.second.longValue()  > (targetAcceleration*2))
+						&&(velocityDeltaAmt > targetAcceleration))
+						{
+
+							if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+								Log.debugOut(ship.name()+" not accelerating for a tick, to slow down.");
+							for(final ShipEngine engineE : programEngines)
+								performSingleThrust(engineE,Double.valueOf(0), false);
+							return ; // skip!
+						}
+						else // strategy #2 -- if we are in range, AND our velocity is too fast, slow down
+						if(((nav.second.longValue() - distance  > targetAcceleration)
+							&&(velocityDeltaAmt > -targetAcceleration))
+						||(velocityDeltaAmt > targetAcceleration))
+						{
+							if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+								Log.debugOut(ship.name()+" forcing less acceleration to slow down.");
+							if(velocityDeltaAmt > targetAcceleration)
+								targetAcceleration -= 0.3;
+							final Double newInject = calculateMarginalTargetInjection(this.lastInject, targetAcceleration-1.0);
+							for(final ShipEngine engineE : programEngines)
+								performSingleThrust(engineE,newInject, false);
+							return;
+						}
+						else
+						{
+							// we are too close, but also too slow, so just wait it out...
+						}
 					}
-					if(distance - nav.second.longValue()  > targetAcceleration)
+					else
+					// if we are approaching, and are farther from the target than we should be, then...
+					if(((distance - nav.second.longValue()  > targetAcceleration)
+						&&(velocityDeltaAmt < targetAcceleration)) // .. AND we aren't going TOO fast to catch up, then ...
+					||(velocityDeltaAmt < -targetAcceleration))
 					{
-						Log.debugOut("----------------Too far, accel FASTER!"); //TODO:BZ:DELME
-						targetAcceleration += 1.0;
+						// speed up
+						if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+							Log.debugOut(ship.name()+" forcing more acceleration to speed up.");
+						final Double newInject = calculateMarginalTargetInjection(this.lastInject, targetAcceleration+1.0);
+						if(velocityDeltaAmt < -targetAcceleration)
+							targetAcceleration += 0.3;
+						for(final ShipEngine engineE : programEngines)
+							performSingleThrust(engineE,newInject, false);
+						return;
 					}
 				}
 				else
+				//if(track.state == ShipNavState.DEPROACH) /****************/
 				{
 					// if we are deproaching, and are farther from the target than we should be, then...
-					if(distance - nav.second.longValue()  > targetAcceleration)
+					// strategy #1, keep our 'faster' speed by doing nothing, so long as it is fast enough..
+					if((distance - nav.second.longValue()  > (targetAcceleration*2))
+					&&(velocityDeltaAmt < targetAcceleration))
 					{
-						Log.debugOut("----------------Too far, skipping"); //TODO:BZ:DELME
+						if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+							Log.debugOut(ship.name()+" not backward accelerating for a tick, to speed up.");
+						for(final ShipEngine engineE : programEngines)
+							performSingleThrust(engineE,Double.valueOf(0), false);
 						return ; // skip!
 					}
-					// if we are deproaching, and are closer to the target than we should be, then...
-					if(nav.second.longValue() - distance  > targetAcceleration)
+					else // strategy #2, decelerate SLOWER, so long as our velocity is slower than expected
+					if(((distance - nav.second.longValue()  > targetAcceleration)
+						&&(velocityDeltaAmt < targetAcceleration))
+					||(velocityDeltaAmt < -targetAcceleration))
 					{
-						Log.debugOut("----------------Too close, decel FASTER!"); //TODO:BZ:DELME
-						targetAcceleration += 1.0;
+						/**
+20230405.1625.59 debug Worker0#5      Track: act=1312d, 115v **** exp=565d, 69v **** diff=747d, 46v
+20230405.1625.59 debug Worker0#5      a BoltonTek acme rocket ship Galileo forcing less backward acceleration to speed up.
+20230405.1625.59 debug Worker0#5      SpaceShip a BoltonTek acme rocket ship Galileo accelerates FORWARD 2.78842424
+							 */
+						if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+							Log.debugOut(ship.name()+" forcing less backward acceleration to speed up.");
+						if(velocityDeltaAmt < -targetAcceleration)
+							targetAcceleration -= 0.3;
+						final Double newInject = calculateMarginalTargetInjection(this.lastInject, targetAcceleration-1.0);
+						for(final ShipEngine engineE : programEngines)
+							performSingleThrust(engineE,newInject, false);
+						return;
+					}
+					else
+					// if we are deproaching, and are closer to the target than we should be, then...
+					if(((nav.second.longValue() - distance  > targetAcceleration)
+						&&(velocityDeltaAmt > -targetAcceleration)) // .. AND we aren't slowing down TOO SLOWLY to fall back, then ...
+					||(velocityDeltaAmt > targetAcceleration))
+					{
+						// speed up
+						if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+							Log.debugOut(ship.name()+" forcing more backward acceleration to slow down.");
+						if(velocityDeltaAmt > targetAcceleration)
+							targetAcceleration -= -12.0;
+						final Double newInject = calculateMarginalTargetInjection(this.lastInject, targetAcceleration+1.0);
+						for(final ShipEngine engineE : programEngines)
+							performSingleThrust(engineE,newInject, false);
+						return;
 					}
 				}
 			}
-			final double[] angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), desiredDirection); // starboard is -, port is +
 			if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))>.02)
 			{
 				if(!changeFacing(ship, desiredDirection))
@@ -1016,13 +1121,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					final double diff = Math.abs(ticksToDecellerate-ticksToDestinationAtCurrentSpeed);
 					if((diff < 1) || (diff < Math.sqrt(ticksToDecellerate)))
 					{
-						final Double oldInject=this.lastInject;
-						final Double oldAccel=this.lastAcceleration;
-						final Double oldDelta=this.lastSpeedDelta;
-						performSimpleThrust(engineE,Double.valueOf(0.0), false);
-						this.lastInject=oldInject;
-						this.lastAcceleration=oldAccel;
-						this.lastSpeedDelta=oldDelta;
+						performSingleThrust(engineE,Double.valueOf(0.0), false);
 						break;
 					}
 					else

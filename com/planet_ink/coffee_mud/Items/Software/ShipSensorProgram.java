@@ -62,6 +62,17 @@ public class ShipSensorProgram extends GenShipProgram
 		activated.clear();
 	}
 
+	@Override
+	protected void onDeactivate(final MOB mob, final String message)
+	{
+		if(message == null)
+		{
+			sensorReps.clear();
+			activated.clear();
+		}
+		super.onDeactivate(mob, message);
+	}
+
 	protected Set<SpaceObject> getLocalSensorReport(final TechComponent sensor)
 	{
 		if(sensor==null)
@@ -290,7 +301,7 @@ public class ShipSensorProgram extends GenShipProgram
 	protected SoftwareProcedure sensorProcedure = new SoftwareProcedure()
 	{
 		@Override
-		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
 			CMMsg msg = null;
 			Electronics E;

@@ -137,6 +137,16 @@ public class GenShipProgram extends GenSoftware
 	@Override
 	protected void onDeactivate(final MOB mob, final String message)
 	{
+		if(message == null)
+		{
+			engines				= null;
+			sensors				= null;
+			weapons				= null;
+			shields				= null;
+			components			= null;
+			dampers				= null;
+			cachedComponents.clear();
+		}
 		super.onDeactivate(mob, message);
 	}
 
@@ -187,7 +197,7 @@ public class GenShipProgram extends GenSoftware
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
@@ -445,7 +455,7 @@ public class GenShipProgram extends GenSoftware
 	{
 
 	}
-	
+
 	protected long[] convertStringToCoords(final String coordStr)
 	{
 		final List<String> coordCom = CMParms.parseCommas(coordStr,true);
@@ -487,7 +497,7 @@ public class GenShipProgram extends GenSoftware
 	protected SoftwareProcedure activateProcedure = new SoftwareProcedure()
 	{
 		@Override
-		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
 			CMMsg msg = null;
 			Electronics E;
@@ -556,11 +566,11 @@ public class GenShipProgram extends GenSoftware
 			return false;
 		}
 	};
-	
+
 	protected SoftwareProcedure deactivateProcedure = new SoftwareProcedure()
 	{
 		@Override
-		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
 			CMMsg msg = null;
 			Electronics E;

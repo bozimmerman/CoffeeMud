@@ -270,6 +270,13 @@ public class Modify extends StdCommand
 				CMLib.database().DBUpdateItem("SPACE", modItem);
 			}
 		}
+		if((copyItem instanceof SpaceShip)
+		&&(((SpaceShip)copyItem).getArea().Name().equals(((SpaceShip)modItem).getArea().Name())))
+		{
+			copyItem.setName("DO NOT DE_REGISTER!!");
+			((SpaceShip)copyItem).getArea().setName("DO NOT DE_REGISTER!!");
+			((SpaceShip)copyItem).getArea().delBlurbFlag("REGISTRY");
+		}
 		copyItem.destroy();
 	}
 

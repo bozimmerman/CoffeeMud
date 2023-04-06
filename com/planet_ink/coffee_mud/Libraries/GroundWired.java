@@ -56,7 +56,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 
 	protected final Map<String,LinkedList<WeakReference<Electronics>>> sets=new Hashtable<String,LinkedList<WeakReference<Electronics>>>();
 
-	protected final Map<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>> currents	= new STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>>();
+	//protected final Map<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>> currents	= new STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>>();
 
 	protected final static List<PowerGenerator> emptyGeneratorList=new ArrayList<PowerGenerator>();
 
