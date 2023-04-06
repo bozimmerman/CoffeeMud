@@ -4039,7 +4039,8 @@ public class StdMOB implements MOB
 								if((curState().getFatigue() > 3 * CharState.FATIGUED_MILLIS)
 								&&smallChance
 								&&(curState().getHitPoints()>=maxState().getHitPoints())
-								&&(fetchEffect("Mood")==null))
+								&&(fetchEffect("Mood")==null)
+								&&(!CMSecurity.isDisabled(DisFlag.AUTOMOODS)))
 								{
 									final Ability moodA = CMClass.getAbility("Mood");
 									if (moodA != null)
