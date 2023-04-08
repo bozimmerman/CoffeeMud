@@ -191,6 +191,14 @@ public interface GalacticMap extends CMLibrary
 	public double getAngleDelta(final double[] fromAngle, final double[] toAngle);
 
 	/**
+	 * Given two angles, this returns the angle between them.
+	 * @param angle1 the first angle
+	 * @param angle2 the second angle
+	 * @return the middle angle
+	 */
+	public double[] getMiddleAngle(final double[] angle1, final double[] angle2);
+
+	/**
 	 * Given two angles, this returns the difference between them in pitch and yaw.
 	 *
 	 * @see GalacticMap#getAngleDelta(double[], double[])

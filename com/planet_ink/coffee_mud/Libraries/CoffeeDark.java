@@ -280,6 +280,26 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
+	public double[] getMiddleAngle(final double[] angle1, final double[] angle2)
+	{
+		final double x1=Math.sin(angle1[1])*Math.cos(angle1[0]);
+		final double y1=Math.sin(angle1[1])*Math.sin(angle1[0]);
+		final double z1=Math.cos(angle1[1]);
+		final double x2=Math.sin(angle2[1])*Math.cos(angle2[0]);
+		final double y2=Math.sin(angle2[1])*Math.sin(angle2[0]);
+		final double z2=Math.cos(angle2[1]);
+		final double xSum = (x1 + x2);
+		final double ySum = (y1 + y2);
+		final double zSum = (z1 + z2);
+		final double[] middleAngle = new double[] {0,0};
+		middleAngle[0] = Math.atan2(ySum, xSum);
+		if(middleAngle[0] < 0)
+			middleAngle[0] += PI_TIMES_2;
+		middleAngle[1] = Math.acos(zSum);
+		return middleAngle;
+	}
+
+	@Override
 	public double[] getFacingAngleDiff(final double[] fromAngle, final double[] toAngle)
 	{
 		final double fromYaw = fromAngle[0];

@@ -4093,6 +4093,48 @@ public class Test extends StdCommand
 				}
 			}
 			if((what.equalsIgnoreCase("all"))
+			||(what.equalsIgnoreCase("spacemotion2")))
+			{
+				for(double dir0 = 0; dir0 <=Math.PI*2; dir0 += (Math.PI/12.0))
+				{
+					if(dir0 == 0)
+						dir0 = 0.0001;
+					if(dir0 == (2*Math.PI))
+						dir0 = (2*Math.PI)-0.0001;
+					for(double dir1 = 0; dir1 <(Math.PI+(Math.PI/12)); dir1 += (Math.PI/12.0))
+					{
+						if(dir1 == 0)
+							dir1 = 0.0001;
+						if(dir1 == (Math.PI))
+							dir1 = (Math.PI)-0.0001;
+						for(double adir0 = 0; adir0 <=Math.PI*2; adir0 += (Math.PI/12.0))
+						{
+							if(adir0 == 0)
+								adir0 = 0.0001;
+							if(adir0 == (2*Math.PI))
+								adir0 = (2*Math.PI)-0.0001;
+							for(double adir1 = 0; adir1 <(Math.PI+(Math.PI/12)); adir1 += (Math.PI/12.0))
+							{
+								if(adir1 == 0)
+									adir1 = 0.0001;
+								if(adir1 == (Math.PI))
+									adir1 = (Math.PI)-0.0001;
+								if(dir1 > Math.PI)
+									dir1=Math.PI;
+								if(adir1 > Math.PI)
+									adir1=Math.PI;
+								final double[] angle1 = new double[] {dir0, dir1};
+								final double[] angle2 = new double[] {adir0, adir1};
+								final double[] mid = CMLib.space().getMiddleAngle(angle1, angle2);
+								Log.debugOut("Middle angle between "+Math.round(Math.toDegrees(angle1[0]))+"mk"+Math.round(Math.toDegrees(angle1[1]))
+								+"   and   "+Math.round(Math.toDegrees(angle2[0]))+"mk"+Math.round(Math.toDegrees(angle2[1]))
+								+"       is: "+Math.round(Math.toDegrees(mid[0]))+"mk"+Math.round(Math.toDegrees(mid[1])));
+							}
+						}
+					}
+				}
+			}
+			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("notrandom")))
 			{
 				mob.tell(""+CMath.NotRandomHigh.nextInt());
