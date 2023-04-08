@@ -49,7 +49,7 @@ public class Sleep extends StdCommand implements Tickable
 
 	private static enum WaitUntil
 	{
-		DAY, NIGHT, DAWN, DUSK, HEALED, FULL
+		DAY, NIGHT, DAWN, DUSK, HEALED, FULL, RESTED
 	}
 
 	private final Map<MOB, WaitUntil> untilMap = new Hashtable<MOB, WaitUntil>();
@@ -84,7 +84,7 @@ public class Sleep extends StdCommand implements Tickable
 					wait=WaitUntil.NIGHT;
 				else
 				{
-					mob.tell(L("Unknown until '@x1', try DAY, NIGHT, DAWN, DUSK, HEALED, or FULL",what));
+					mob.tell(L("Unknown until '@x1', try DAY, NIGHT, DAWN, DUSK, HEALED, RESTED, or FULL",what));
 					return false;
 				}
 			}
@@ -196,6 +196,9 @@ public class Sleep extends StdCommand implements Tickable
 					break;
 				case HEALED:
 					wakeMeUp = M.curState().getHitPoints() >= M.maxState().getHitPoints();
+					break;
+				case RESTED:
+					wakeMeUp = M.curState().getFatigue() <= 0;
 					break;
 				}
 			}

@@ -1,4 +1,4 @@
-# Build 5.10.2 Release ?/??/2023
+# Build 5.10.2 Release 4/08/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)
   1. GMODIFY can now affect Areas.
   2. New Races; Mustalids, Badger, Otter, Wolverine, Giant Otter, Dire Otter, Mustie
@@ -35,6 +35,7 @@
  33. GenAbility affect adjustments and tick override now support variables.
  34. Messing up a crafting skill results in a Ruined item instead of nothing.
  35. NastyAbilities now has CHECKLEVEL argument.
+ 36. Can now SLEEP UNTIL RESTED to remove fatigue
 
 # Build 5.10.1 Release 1/01/2023
   1. FasterRecovery expanded and new char stat REJUVRATE for Prop*Adjuster

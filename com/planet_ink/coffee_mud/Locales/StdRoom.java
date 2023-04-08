@@ -554,7 +554,7 @@ public class StdRoom implements Room
 		if((rawDoors()[Directions.UP]==null)
 		&&((domainType()&Room.INDOORS)==0)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR) // prevents InTheAir from having a sky
 		&&(CMProps.getIntVar(CMProps.Int.SKYSIZE)!=0))
 		{
 			Exit upE=null;
