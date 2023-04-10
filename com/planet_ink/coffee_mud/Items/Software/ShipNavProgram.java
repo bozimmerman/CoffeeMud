@@ -342,6 +342,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			int tries=100;
 			while((angleDiff > 0.0001)&&(--tries>0))
 			{
+Log.debugOut("---> Angle Diff: "+CMLib.space().getAngleDelta(ship.facing(), newFacing)); //TODO:BZ:DELME
 				// step one, face opposite direction of motion
 				if(isDebugging)
 					Log.debugOut(ship.Name()+" maneuvering to go from "+ship.facing()[0]+","+ship.facing()[1]+"  to  "+newFacing[0]+","+newFacing[1]);
@@ -768,6 +769,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		catch(final NullPointerException npe)
 		{
 			targetObject=null;
+			return;
 		}
 
 		if((ship==null)||(!confirmNavEnginesOK(ship, programEngines)))
@@ -849,40 +851,66 @@ public class ShipNavProgram extends ShipSensorProgram
 						-Math.round(CMath.mul(intTarget.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 				final double[] dirToITarget = CMLib.space().getDirection(ship.coordinates(), intTarget.coordinates());
 				final double[] opShipDir = CMLib.space().getOppositeDir(ship.direction());
-				final double[] opDirToTarget = CMLib.space().getOppositeDir(dirToITarget);
 				final double toDirDiff = CMLib.space().getAngleDelta(ship.direction(), dirToITarget);
-				//final double opDirDiff = CMLib.space().getAngleDelta(ship.direction(), opDir);
+				// if we are presently traveling towards the target, get detailed.
+Log.debugOut("-*_*_ Movement direction diff: "+CMath.div(Math.round(toDirDiff * 10000),10000.0));
 				if(toDirDiff < 0.08)
 				{
-					final double[] correctFacing;
 					// first, check if we should be approaching, or deproaching
 					if((ship.speed()>targetAcceleration)
 					&& (targetAcceleration > 0.0))
 					{
 						final double ticksToStop = ship.speed() / targetAcceleration;
-						if(ship.speed() * ticksToStop > distToITarget)
+						final double stopDistance = (ship.speed()/2.0) * (ticksToStop + 2);
+						if(stopDistance >= distToITarget)
 						{
-
-							//correctFacing = CMLib.space().getMiddleDirection(opShipDir, opDirToTarget);
+							if(ticksToStop > 1)
+							{
+								double overUnderDistance = stopDistance - distToITarget; 
+								if(overUnderDistance > targetAcceleration)
+									targetAcceleration += overUnderDistance / (ticksToStop - 1);
+								else
+								if(overUnderDistance < -targetAcceleration)
+									targetAcceleration -= overUnderDistance / (ticksToStop - 1);
+							}
 							track.state = ShipNavState.DEPROACH;
+							final double[] opDirToITarget = CMLib.space().getOppositeDir(dirToITarget);
+							if(CMLib.space().getAngleDelta(ship.facing(), opDirToITarget)>0.08)
+								changeFacing(ship, opDirToITarget);
 						}
 						else
 						{
 							track.state = ShipNavState.APPROACH;
+							if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>0.08)
+								changeFacing(ship, dirToITarget);
 						}
+					}
+					else // if we aren't moving, then approach.
+					{
+						track.state = ShipNavState.APPROACH;
+						if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>0.08)
+							changeFacing(ship, dirToITarget);
+					}
+				}
+				else
+				if(ship.speed() > (targetAcceleration * 10)) // are we moving a bit too fast to turn properly?
+				{
+					double[] facingDir;
+					if(toDirDiff < Math.PI)
+					{
+						track.state = ShipNavState.DEPROACH;
+						facingDir=CMLib.space().getOppositeDir(dirToITarget);
 					}
 					else
 					{
 						track.state = ShipNavState.APPROACH;
+						facingDir=CMLib.space().getOppositeDir(dirToITarget);
 					}
+					if(CMLib.space().getAngleDelta(ship.facing(), facingDir)>0.08)
+						changeFacing(ship, facingDir);
 				}
 				else
-				if(ship.speed() > (targetAcceleration * 3))
-				{
-					//double[] correctFacing = CMLib.space().getMiddleDirection(opDir, opDirToTarget)
-				}
-				else
-				if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>0.3)
+				if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>0.08)
 					changeFacing(ship, dirToITarget);
 			}
 			break;
@@ -903,10 +931,10 @@ public class ShipNavProgram extends ShipSensorProgram
 		case DEPROACH:
 		case PRE_LANDING_STOP:
 		{
-			final Double oldInject = newInject;
+			//final Double oldInject = newInject;
 			newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
-			if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-				Log.debugOut(ship.Name(),"Old engine inject value = "+oldInject+", new="+newInject); //TODO:BZ:DELME
+			//if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+			//	Log.debugOut(ship.Name(),"Old engine inject value = "+oldInject+", new="+newInject); //TODO:BZ:DELME
 			for(final ShipEngine engineE : programEngines)
 				performSimpleThrust(engineE,newInject, false);
 			break;

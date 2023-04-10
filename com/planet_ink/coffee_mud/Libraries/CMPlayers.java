@@ -458,6 +458,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		{
 			if(pLib2 != this)
 			{
+				final MOB chkM = pLib2.getPlayer(last);
+				if(chkM != null)
+					return chkM;
 				final char threadId = CMLib.getLibraryThreadID(pLib2);
 				final DatabaseEngine otherEngine = CMLib.get(threadId)._database();
 				if((!dbset.contains(otherEngine))

@@ -282,6 +282,18 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	@Override
 	public double[] getMiddleAngle(final double[] angle1, final double[] angle2)
 	{
+		final double[] middleAngle = new double[] {angle1[0], angle1[1]};
+		if(angle1[0] != angle2[0])
+		{
+			final double xy1 = Math.max(angle1[0], angle2[0]);
+			final double xy2 = (xy1 == angle1[0]) ? angle2[0] : angle1[0];
+			if(xy2<(xy1-Math.PI))
+				middleAngle[0] = ((PI_TIMES_2-xy1)+xy2)/2.0;
+			else
+				middleAngle[0] = (xy1 + xy2)/2.0;
+		}
+		middleAngle[1]=(angle1[1]+angle2[1])/2.0;
+		/*
 		final double x1=Math.sin(angle1[1])*Math.cos(angle1[0]);
 		final double y1=Math.sin(angle1[1])*Math.sin(angle1[0]);
 		final double z1=Math.cos(angle1[1]);
@@ -291,14 +303,54 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final double xSum = (x1 + x2);
 		final double ySum = (y1 + y2);
 		final double zSum = (z1 + z2);
-		final double[] middleAngle = new double[] {0,0};
 		middleAngle[0] = Math.atan2(ySum, xSum);
 		if(middleAngle[0] < 0)
 			middleAngle[0] += PI_TIMES_2;
 		middleAngle[1] = Math.acos(zSum);
+		}
+		*/
 		return middleAngle;
 	}
 
+	@Override
+	public double[] getOffsetAngle(final double[] correctAngle, final double[] wrongAngle)
+	{
+		final double[] offsetAngles = new double[] {0, 0};
+		if(correctAngle[0] != wrongAngle[0])
+		{
+			final double xy1 = Math.max(correctAngle[0], wrongAngle[0]);
+			final double xy2 = (xy1 == correctAngle[0]) ? wrongAngle[0] : correctAngle[0];
+			if(xy2<(xy1-Math.PI))
+				offsetAngles[0] = (PI_TIMES_2-xy1)+xy2;
+			else
+				offsetAngles[0] = xy1 - xy2;
+			if((wrongAngle[0] > correctAngle[0])
+			&&((wrongAngle[0]-correctAngle[0]) < Math.PI))
+			{
+				offsetAngles[0] = correctAngle[0] - offsetAngles[0];
+				if(offsetAngles[0] < 0)
+					offsetAngles[0] += PI_TIMES_2;
+			}
+			else
+			{
+				offsetAngles[0] = correctAngle[0] + offsetAngles[0];
+				if(offsetAngles[0] >= PI_TIMES_2)
+					offsetAngles[0] -= PI_TIMES_2;
+			}
+		}
+		if(correctAngle[1] != wrongAngle[1])
+		{
+			final double xy1 = Math.max(correctAngle[1], wrongAngle[1]);
+			final double xy2 = (xy1 == correctAngle[1]) ? wrongAngle[1] : correctAngle[1];
+			offsetAngles[1] = xy1 - xy2;
+			if(wrongAngle[1] > correctAngle[1])
+				offsetAngles[1] = correctAngle[1] - offsetAngles[1];
+			else
+				offsetAngles[1] = correctAngle[1] + offsetAngles[1];
+		}
+		return offsetAngles;
+	}
+	
 	@Override
 	public double[] getFacingAngleDiff(final double[] fromAngle, final double[] toAngle)
 	{

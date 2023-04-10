@@ -199,6 +199,16 @@ public interface GalacticMap extends CMLibrary
 	public double[] getMiddleAngle(final double[] angle1, final double[] angle2);
 
 	/**
+	 * Given a base 'correct' angle and another 'wrong' angle, this will return
+	 * the angle that it opposite to, but equal in distance.
+	 * 
+	 * @param correctAngle the base angle
+	 * @param wrongAngle the wrong angle
+	 * @return another wrong angle, on the other 'side' of the base
+	 */
+	public double[] getOffsetAngle(final double[] correctAngle, final double[] wrongAngle);
+	
+	/**
 	 * Given two angles, this returns the difference between them in pitch and yaw.
 	 *
 	 * @see GalacticMap#getAngleDelta(double[], double[])

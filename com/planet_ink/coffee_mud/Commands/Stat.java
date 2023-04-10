@@ -800,7 +800,7 @@ public class Stat  extends Skills
 	{
 		MOB target=getTarget(mob,MOBname,true);
 		if(target==null)
-			target=CMLib.players().getLoadPlayer(MOBname);
+			target=CMLib.players().getLoadPlayerAllHosts(MOBname);
 		if(target==null)
 		{
 			try
