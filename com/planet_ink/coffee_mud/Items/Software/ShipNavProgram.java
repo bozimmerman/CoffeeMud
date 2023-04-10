@@ -850,7 +850,7 @@ Log.debugOut("---> Angle Diff: "+CMLib.space().getAngleDelta(ship.facing(), newF
 				final long distToITarget = (CMLib.space().getDistanceFrom(ship, intTarget)-ship.radius()
 						-Math.round(CMath.mul(intTarget.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 				final double[] dirToITarget = CMLib.space().getDirection(ship.coordinates(), intTarget.coordinates());
-				final double[] opShipDir = CMLib.space().getOppositeDir(ship.direction());
+				//final double[] opShipDir = CMLib.space().getOppositeDir(ship.direction());
 				final double toDirDiff = CMLib.space().getAngleDelta(ship.direction(), dirToITarget);
 				// if we are presently traveling towards the target, get detailed.
 Log.debugOut("-*_*_ Movement direction diff: "+CMath.div(Math.round(toDirDiff * 10000),10000.0));
@@ -866,7 +866,7 @@ Log.debugOut("-*_*_ Movement direction diff: "+CMath.div(Math.round(toDirDiff * 
 						{
 							if(ticksToStop > 1)
 							{
-								double overUnderDistance = stopDistance - distToITarget; 
+								final double overUnderDistance = stopDistance - distToITarget;
 								if(overUnderDistance > targetAcceleration)
 									targetAcceleration += overUnderDistance / (ticksToStop - 1);
 								else

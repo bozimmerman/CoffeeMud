@@ -117,7 +117,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public int getLevelMOBArmor(final MOB mob)
 	{
 		//also update timsLevelCalculator(final MOB M)
-		return 103-(int)Math.round(CMath.mul(mob.basePhyStats().level(),3.0));
+		final double levelMid = CMath.mul(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL),0.44);
+		final double levelLow = levelMid / 2.0;
+		final double lvl = mob.basePhyStats().level();
+		return 102-(int)Math.round((lvl+levelMid)*(lvl/levelLow));
 	}
 
 	@Override
