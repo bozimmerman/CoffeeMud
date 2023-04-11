@@ -772,7 +772,6 @@ public class ShipNavProgram extends ShipSensorProgram
 		catch(final NullPointerException npe)
 		{
 			targetObject=null;
-			return;
 		}
 
 		if((ship==null)||(!confirmNavEnginesOK(ship, programEngines)))
@@ -818,8 +817,8 @@ public class ShipNavProgram extends ShipSensorProgram
 			if(ship.speed()  > 0.0)
 			{
 				final double[] stopFacing = CMLib.space().getOppositeDir(ship.direction());
-				final double[] angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
-				if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))>.02)
+				final double angleDelta = CMLib.space().getAngleDelta(ship.facing(), stopFacing); // starboard is -, port is +
+				if(angleDelta>.02)
 				{
 					if(!flipForAllStop(ship))
 					{
