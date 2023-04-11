@@ -53,6 +53,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	protected static final BigDecimal	ZERO					= BigDecimal.valueOf(0.0);
 	protected static final BigDecimal	ALMOST_ZERO				= BigDecimal.valueOf(ZERO_ALMOST);
 	protected static final BigDecimal	ONE						= BigDecimal.valueOf(1L);
+	protected static final BigDecimal	MIN_ONE					= BigDecimal.valueOf(-1L);
 	protected static final BigDecimal	TWO						= BigDecimal.valueOf(2L);
 	protected static final BigDecimal	FOUR					= BigDecimal.valueOf(4L);
 	protected static final BigDecimal	TEN						= BigDecimal.valueOf(10L);
@@ -259,22 +260,23 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	@Override
 	public double getAngleDelta(final double[] fromAngle, final double[] toAngle)
 	{
-		final double x1=Math.sin(fromAngle[1])*Math.cos(fromAngle[0]);
-		final double y1=Math.sin(fromAngle[1])*Math.sin(fromAngle[0]);
-		final double z1=Math.cos(fromAngle[1]);
-		final double x2=Math.sin(toAngle[1])*Math.cos(toAngle[0]);
-		final double y2=Math.sin(toAngle[1])*Math.sin(toAngle[0]);
-		final double z2=Math.cos(toAngle[1]);
-		double pitchDOTyaw=x1*x2+y1*y2+z1*z2;
-		if(pitchDOTyaw>1)
-			pitchDOTyaw=(2-pitchDOTyaw);
-		if(pitchDOTyaw<-1)
-			pitchDOTyaw=(-1*pitchDOTyaw)-2;
-		final double finalDelta=Math.acos(pitchDOTyaw);
+		if(Arrays.equals(fromAngle,  toAngle))
+			return 0.0;
+		final BigVector from = new BigVector(fromAngle).sphereToCartesian();
+		final BigVector to = new BigVector(toAngle).sphereToCartesian();
+		BigDecimal dotProd = from.dotProduct(to);
+		if(dotProd.compareTo(ONE)>0)
+			dotProd=TWO.subtract(dotProd);
+		if(dotProd.compareTo(MIN_ONE)<0)
+			dotProd=MIN_ONE.multiply(dotProd).subtract(TWO);
+		//final BigDecimal fromag = from.magnitude();
+		//final BigDecimal tomag = to.magnitude();
+		final double finalDelta = Math.acos(dotProd.doubleValue());
 		if(Double.isNaN(finalDelta) || Double.isInfinite(finalDelta))
 		{
-			Log.errOut("finalDelta = "+ finalDelta+"= ("+fromAngle[0]+","+fromAngle[1]+") -> ("+toAngle[0]+","+toAngle[1]+")");
-			Log.errOut("pitchDOTyaw = " + pitchDOTyaw+", x1 = "+ x1 + ", y1 = "+ y1 + ", z1 = "+ z1 + ", x2 = "+ x2 + ", y2 = "+ y2);
+			Log.errOut("NaN finalDelta = "+ finalDelta+"= ("+fromAngle[0]+","+fromAngle[1]+") -> ("+toAngle[0]+","+toAngle[1]+")");
+			Log.errOut("NaN dotprod = " + dotProd+", from = " + from + ", to=" +to);
+			throw new java.lang.IllegalArgumentException();
 		}
 		return finalDelta;
 	}
@@ -350,7 +352,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		}
 		return offsetAngles;
 	}
-	
+
 	@Override
 	public double[] getFacingAngleDiff(final double[] fromAngle, final double[] toAngle)
 	{
@@ -405,7 +407,9 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		if(Math.abs(yawDelta-PI_TIMES_2)<ZERO_ALMOST)
 			yawDelta=0.0;
 
-		double pitchDelta = (curDirectionPitch >  accelDirectionPitch) ? (curDirectionPitch - accelDirectionPitch) : (accelDirectionPitch - curDirectionPitch);
+		double pitchDelta = (curDirectionPitch >  accelDirectionPitch) ?
+							(curDirectionPitch - accelDirectionPitch) :
+							(accelDirectionPitch - curDirectionPitch);
 		// 170 and 10 = 160, which is correct!
 		if(pitchDelta > Math.PI)
 			pitchDelta=Math.PI-pitchDelta;
@@ -413,22 +417,42 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			pitchDelta=0.0;
 
 		final double anglesDelta =  getAngleDelta(curDirection, accelDirection);
-		final double accelerationMultiplier = acceleration / currentSpeed;
 		double newDirectionYaw;
-		if(yawDelta < 0.1)
-			newDirectionYaw = accelDirectionYaw;
+		double newDirectionPitch;
+		if(Math.abs(anglesDelta-Math.PI)<ZERO_ALMOST)
+		{
+			newDirectionYaw = curDirectionYaw;
+			newDirectionPitch = curDirectionPitch;
+		}
 		else
 		{
-			newDirectionYaw = curDirectionYaw + ((curDirectionYaw > accelDirectionYaw) ? -(accelerationMultiplier * Math.sin(yawDelta)) : (accelerationMultiplier * Math.sin(yawDelta)));
-			if((newDirectionYaw > 0.0) && ((PI_TIMES_2 - newDirectionYaw) < ZERO_ALMOST))
-				newDirectionYaw=0.0;
+			final double accelerationMultiplier = acceleration / currentSpeed;
+			if(yawDelta < 0.1)
+				newDirectionYaw = accelDirectionYaw;
+			else
+			{
+				newDirectionYaw = curDirectionYaw + ((curDirectionYaw > accelDirectionYaw) ?
+						-(accelerationMultiplier * Math.sin(yawDelta)) :
+						 (accelerationMultiplier * Math.sin(yawDelta)));
+				if((newDirectionYaw > 0.0) && ((PI_TIMES_2 - newDirectionYaw) < ZERO_ALMOST))
+					newDirectionYaw=0.0;
+			}
+			if(pitchDelta < 0.1)
+				newDirectionPitch = accelDirectionPitch;
+			else
+			{
+				newDirectionPitch = curDirectionPitch + ((curDirectionPitch > accelDirectionPitch) ?
+					-(accelerationMultiplier * Math.sin(pitchDelta)) :
+					(accelerationMultiplier * Math.sin(pitchDelta)));
+			}
 		}
-		double newDirectionPitch;
-		if(pitchDelta < 0.1)
-			newDirectionPitch = accelDirectionPitch;
-		else
-			newDirectionPitch = curDirectionPitch + ((curDirectionPitch > accelDirectionPitch) ? -(accelerationMultiplier * Math.sin(pitchDelta)) : (accelerationMultiplier * Math.sin(pitchDelta)));
-
+		/*
+		System.out.println("*"+anglesDelta+", speed*"+Math.cos(anglesDelta));
+		System.out.println("yaw="+yawDelta+"/"+Math.sin(yawDelta)+"/"+newDirectionYaw);
+		System.out.println("pitch="+pitchDelta+"/"+Math.sin(pitchDelta));
+		System.out.println("dirPitch="+curDirection[1]+"-"+accelDirectionPitch+"="+newDirectionPitch);
+		System.out.flush();
+		*/
 		double newSpeed = currentSpeed + (acceleration * Math.cos(anglesDelta));
 		if(newSpeed < 0)
 		{
@@ -587,9 +611,9 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			final double x1=Math.cos(O.direction()[0])*Math.sin(O.direction()[1]);
 			final double y1=Math.sin(O.direction()[0])*Math.sin(O.direction()[1]);
 			final double z1=Math.cos(O.direction()[1]);
-			moveSpaceObject(O,O.coordinates()[0]+Math.round(CMath.mul(O.speed(),x1)),
-							O.coordinates()[1]+Math.round(CMath.mul(O.speed(),y1)),
-							O.coordinates()[2]+Math.round(CMath.mul(O.speed(),z1)));
+			moveSpaceObject(O,Math.round(CMath.mul(O.speed(),x1)+O.coordinates()[0]),
+							Math.round(CMath.mul(O.speed(),y1)+O.coordinates()[1]),
+							Math.round(CMath.mul(O.speed(),z1))+O.coordinates()[2]);
 		}
 	}
 
@@ -672,7 +696,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	@Override
 	public long getRelativeSpeed(final SpaceObject O1, final SpaceObject O2)
 	{
-		return Math.round(Math.sqrt(( CMath.bigMultiply(O1.speed(),O1.coordinates()[0])
+		return Math.round(Math.sqrt((CMath.bigMultiply(O1.speed(),O1.coordinates()[0])
 										.subtract(CMath.bigMultiply(O2.speed(),O2.coordinates()[0]).multiply(CMath.bigMultiply(O1.speed(),O1.coordinates()[0])))
 										.subtract(CMath.bigMultiply(O2.speed(),O2.coordinates()[0])))
 									.add(CMath.bigMultiply(O1.speed(),O1.coordinates()[1])

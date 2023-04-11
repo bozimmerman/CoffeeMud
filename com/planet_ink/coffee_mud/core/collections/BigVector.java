@@ -196,6 +196,17 @@ public class BigVector
 
 	}
 
+	public BigVector sphereToCartesian()
+	{
+		if(b.length != 2)
+			throw new IllegalArgumentException("Different sphere dimensions");
+		final BigVector d = new BigVector(3);
+		d.b[0]=new BigDecimal(Math.sin(b[1].doubleValue())).multiply(new BigDecimal(Math.cos(b[0].doubleValue())));
+		d.b[1]=new BigDecimal(Math.sin(b[1].doubleValue())).multiply(new BigDecimal(Math.sin(b[0].doubleValue())));
+		d.b[2]=new BigDecimal(Math.cos(b[1].doubleValue()));
+		return d;
+	}
+
 	public BigDecimal dotRemainder(final BigVector v)
 	{
 		if(b.length != v.length())
