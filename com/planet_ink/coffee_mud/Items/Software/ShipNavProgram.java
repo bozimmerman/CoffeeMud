@@ -342,7 +342,6 @@ public class ShipNavProgram extends ShipSensorProgram
 			int tries=100;
 			while((angleDiff > 0.0001)&&(--tries>0))
 			{
-Log.debugOut("---> Angle Diff: "+CMLib.space().getAngleDelta(ship.facing(), newFacing)); //TODO:BZ:DELME
 				// step one, face opposite direction of motion
 				if(isDebugging)
 					Log.debugOut(ship.Name()+" maneuvering to go from "+ship.facing()[0]+","+ship.facing()[1]+"  to  "+newFacing[0]+","+newFacing[1]);
@@ -379,11 +378,13 @@ Log.debugOut("---> Angle Diff: "+CMLib.space().getAngleDelta(ship.facing(), newF
 							else
 								break;
 							angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
+							/*
 							if(isDebugging)
 							{
 								Log.debugOut("Turn Deltas now: "+(Math.round(angleDelta[0]*100)/100.0)+" + "+(Math.round(angleDelta[1]*100)/100.0)
 										+"=="+(Math.round(Math.abs((angleDelta[0])+Math.abs(angleDelta[1]))*100)/100.0));
 							}
+							*/
 							if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))<.01)
 								break;
 						}
@@ -405,11 +406,13 @@ Log.debugOut("---> Angle Diff: "+CMLib.space().getAngleDelta(ship.facing(), newF
 							else
 								break;
 							angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
+							/*
 							if(isDebugging)
 							{
 								Log.debugOut("Turn Deltas now: "+(Math.round(angleDelta[0]*100)/100.0)+" + "+(Math.round(angleDelta[1]*100)/100.0)
 										+"=="+(Math.round(Math.abs((angleDelta[0])+Math.abs(angleDelta[1]))*100)/100.0));
 							}
+							*/
 						}
 						if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))<.01)
 							break;
@@ -853,7 +856,8 @@ Log.debugOut("---> Angle Diff: "+CMLib.space().getAngleDelta(ship.facing(), newF
 				//final double[] opShipDir = CMLib.space().getOppositeDir(ship.direction());
 				final double toDirDiff = CMLib.space().getAngleDelta(ship.direction(), dirToITarget);
 				// if we are presently traveling towards the target, get detailed.
-Log.debugOut("-*_*_ Movement direction diff: "+CMath.div(Math.round(toDirDiff * 10000),10000.0));
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SPACESHIP))
+					Log.debugOut(ship.name(),"Nav direction diff: "+CMath.div(Math.round(toDirDiff * 10000),10000.0));
 				if(toDirDiff < 0.08)
 				{
 					// first, check if we should be approaching, or deproaching
@@ -861,17 +865,17 @@ Log.debugOut("-*_*_ Movement direction diff: "+CMath.div(Math.round(toDirDiff * 
 					&& (targetAcceleration > 0.0))
 					{
 						final double ticksToStop = ship.speed() / targetAcceleration;
-						final double stopDistance = (ship.speed()/2.0) * (ticksToStop + 2);
+						final double stopDistance = (ship.speed()/2.0) * ticksToStop;
 						if(stopDistance >= distToITarget)
 						{
-							if(ticksToStop > 1)
+							if(ticksToStop > 0)
 							{
 								final double overUnderDistance = stopDistance - distToITarget;
 								if(overUnderDistance > targetAcceleration)
-									targetAcceleration += overUnderDistance / (ticksToStop - 1);
+									targetAcceleration += CMath.div(overUnderDistance , ticksToStop);
 								else
 								if(overUnderDistance < -targetAcceleration)
-									targetAcceleration -= overUnderDistance / (ticksToStop - 1);
+									targetAcceleration -= CMath.div(overUnderDistance , ticksToStop);
 							}
 							track.state = ShipNavState.DEPROACH;
 							final double[] opDirToITarget = CMLib.space().getOppositeDir(dirToITarget);
@@ -893,13 +897,14 @@ Log.debugOut("-*_*_ Movement direction diff: "+CMath.div(Math.round(toDirDiff * 
 					}
 				}
 				else
-				if(ship.speed() > (targetAcceleration * 10)) // are we moving a bit too fast to turn properly?
+				if(ship.speed() > (targetAcceleration * 3)) // are we moving a bit too fast to turn properly?
 				{
 					double[] facingDir;
 					if(toDirDiff < Math.PI)
 					{
 						track.state = ShipNavState.DEPROACH;
-						facingDir=CMLib.space().getOppositeDir(dirToITarget);
+						facingDir=CMLib.space().getOffsetAngle(dirToITarget, ship.direction());
+						facingDir=CMLib.space().getOppositeDir(facingDir);
 					}
 					else
 					{

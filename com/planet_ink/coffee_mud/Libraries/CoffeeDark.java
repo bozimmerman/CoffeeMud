@@ -419,40 +419,26 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final double anglesDelta =  getAngleDelta(curDirection, accelDirection);
 		double newDirectionYaw;
 		double newDirectionPitch;
-		if(Math.abs(anglesDelta-Math.PI)<ZERO_ALMOST)
-		{
-			newDirectionYaw = curDirectionYaw;
-			newDirectionPitch = curDirectionPitch;
-		}
+		final double deltaMultiplier = Math.sin(anglesDelta);
+		final double accelerationMultiplier = acceleration / currentSpeed * deltaMultiplier;
+		if(yawDelta < 0.1)
+			newDirectionYaw = accelDirectionYaw;
 		else
 		{
-			final double accelerationMultiplier = acceleration / currentSpeed;
-			if(yawDelta < 0.1)
-				newDirectionYaw = accelDirectionYaw;
-			else
-			{
-				newDirectionYaw = curDirectionYaw + ((curDirectionYaw > accelDirectionYaw) ?
-						-(accelerationMultiplier * Math.sin(yawDelta)) :
-						 (accelerationMultiplier * Math.sin(yawDelta)));
-				if((newDirectionYaw > 0.0) && ((PI_TIMES_2 - newDirectionYaw) < ZERO_ALMOST))
-					newDirectionYaw=0.0;
-			}
-			if(pitchDelta < 0.1)
-				newDirectionPitch = accelDirectionPitch;
-			else
-			{
-				newDirectionPitch = curDirectionPitch + ((curDirectionPitch > accelDirectionPitch) ?
-					-(accelerationMultiplier * Math.sin(pitchDelta)) :
-					(accelerationMultiplier * Math.sin(pitchDelta)));
-			}
+			newDirectionYaw = curDirectionYaw + ((curDirectionYaw > accelDirectionYaw) ?
+					-(accelerationMultiplier * Math.sin(yawDelta)) :
+					 (accelerationMultiplier * Math.sin(yawDelta)));
+			if((newDirectionYaw > 0.0) && ((PI_TIMES_2 - newDirectionYaw) < ZERO_ALMOST))
+				newDirectionYaw=0.0;
 		}
-		/*
-		System.out.println("*"+anglesDelta+", speed*"+Math.cos(anglesDelta));
-		System.out.println("yaw="+yawDelta+"/"+Math.sin(yawDelta)+"/"+newDirectionYaw);
-		System.out.println("pitch="+pitchDelta+"/"+Math.sin(pitchDelta));
-		System.out.println("dirPitch="+curDirection[1]+"-"+accelDirectionPitch+"="+newDirectionPitch);
-		System.out.flush();
-		*/
+		if(pitchDelta < 0.1)
+			newDirectionPitch = accelDirectionPitch;
+		else
+		{
+			newDirectionPitch = curDirectionPitch + ((curDirectionPitch < accelDirectionPitch) ?
+				-(accelerationMultiplier * Math.sin(pitchDelta)) :
+				(accelerationMultiplier * Math.sin(pitchDelta)));
+		}
 		double newSpeed = currentSpeed + (acceleration * Math.cos(anglesDelta));
 		if(newSpeed < 0)
 		{
