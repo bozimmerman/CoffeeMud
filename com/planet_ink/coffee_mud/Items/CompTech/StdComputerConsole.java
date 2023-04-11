@@ -47,9 +47,9 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	protected float				installedFactor		= 1.0F;
 	protected volatile long		powerRemaining		= 0;
 	protected boolean			activated			= false;
-	protected volatile long		nextPowerCycleTmr	= System.currentTimeMillis() + (8 * 1000);
+	protected volatile long		nextPowerCycleTmr	= System.currentTimeMillis();
 	protected MOB				lastReader			= null;
-	protected volatile long		nextSoftwareCheck	= System.currentTimeMillis() + (10 * 1000);
+	protected volatile long		nextSoftwareCheck	= System.currentTimeMillis();
 	protected List<Software>	software			= null;
 	protected String			currentMenu			= "";
 	protected String			manufacturer		= "RANDOM";

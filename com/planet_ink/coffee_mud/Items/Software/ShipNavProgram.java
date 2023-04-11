@@ -665,16 +665,37 @@ public class ShipNavProgram extends ShipSensorProgram
 								-Math.round(CMath.mul(targetObject.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 			int safeDistance=100 + (int)Math.round(ship.speed());
 			final double[] dirTo = CMLib.space().getDirection(ship, targetObject);
-			final double[] diffDelta = CMLib.space().getFacingAngleDiff(ship.direction(), dirTo); // starboard is -, port is +
-			if((Math.abs(diffDelta[0])+Math.abs(diffDelta[1]))<.05)
+			final double diffDelta = CMLib.space().getAngleDelta(ship.direction(), dirTo); // starboard is -, port is +
+			if(diffDelta<0.08)
 				safeDistance += (int)Math.round(ship.speed());
 			if(distance < safeDistance)
 			{
-				for(final ShipEngine engineE : programEngines)
-					performSimpleThrust(engineE,Double.valueOf(0.0), true);
-				this.cancelNavigation();
-				super.addScreenMessage(L("Approach program completed."));
-				return false;
+				if(targetObject.speed()==0)
+				{
+					if(ship.speed()<1)
+					{
+						ship.setSpeed(0.0);
+						super.addScreenMessage(L("Approach program completed."));
+						for(final ShipEngine engineE : programEngines)
+							performSimpleThrust(engineE,Double.valueOf(0.0), true);
+						this.cancelNavigation();
+						return false;
+					}
+					else
+					if(track.state != ShipNavState.STOP)
+					{
+						super.addScreenMessage(L("Approach completed, stop initiated."));
+						track.state = ShipNavState.STOP;
+					}
+				}
+				else
+				{
+					for(final ShipEngine engineE : programEngines)
+						performSimpleThrust(engineE,Double.valueOf(0.0), true);
+					this.cancelNavigation();
+					super.addScreenMessage(L("Approach program completed."));
+					return false;
+				}
 			}
 			@SuppressWarnings("unchecked")
 			final LinkedList<SpaceObject> navList = track.getArg(LinkedList.class);
@@ -865,13 +886,14 @@ public class ShipNavProgram extends ShipSensorProgram
 					{
 						final double ticksToStop = ship.speed() / targetAcceleration;
 						final double stopDistance = (ship.speed()/2.0) * ticksToStop;
-						if(stopDistance >= distToITarget)
+						if((stopDistance >= distToITarget)
+						&&(ship.speed() > (targetObject.speed() * 2)))
 						{
 							if(ticksToStop > 0)
 							{
 								final double overUnderDistance = stopDistance - distToITarget;
 								if(overUnderDistance > targetAcceleration)
-									targetAcceleration += CMath.div(overUnderDistance , ticksToStop);
+									targetAcceleration += Math.min(CMath.div(overUnderDistance , ticksToStop), 1.0) ;
 								else
 								if(overUnderDistance < -targetAcceleration)
 									targetAcceleration -= CMath.div(overUnderDistance , ticksToStop);
@@ -899,11 +921,18 @@ public class ShipNavProgram extends ShipSensorProgram
 				if(ship.speed() > (targetAcceleration * 3)) // are we moving a bit too fast to turn properly?
 				{
 					double[] facingDir;
-					if(toDirDiff < Math.PI)
+					if(toDirDiff < Math.PI/2)
 					{
 						track.state = ShipNavState.DEPROACH;
 						facingDir=CMLib.space().getOffsetAngle(dirToITarget, ship.direction());
 						facingDir=CMLib.space().getOppositeDir(facingDir);
+					}
+					else
+					if(toDirDiff < Math.PI)
+					{
+						track.state = ShipNavState.DEPROACH;
+						facingDir=CMLib.space().getOppositeDir(ship.direction());
+						//facingDir=CMLib.space().getMiddleAngle(dirToITarget, CMLib.space().getOppositeDir(ship.direction()));
 					}
 					else
 					{
