@@ -317,7 +317,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	@Override
 	public double[] getOffsetAngle(final double[] correctAngle, final double[] wrongAngle)
 	{
-		final double[] offsetAngles = new double[] {0, 0};
+		final double[] offsetAngles = new double[] {correctAngle[0], correctAngle[1]};
 		if(correctAngle[0] != wrongAngle[0])
 		{
 			final double xy1 = Math.max(correctAngle[0], wrongAngle[0]);
@@ -471,7 +471,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			dir[1] -= PI_TIMES_2;
 		while(dir[1] < -PI_TIMES_2)
 			dir[1] += PI_TIMES_2;
-		while(dir[1] >= Math.PI)
+		while(dir[1] > Math.PI)
 		{
 			dir[1] = Math.PI - dir[1];
 			dir[0] = dir[0] + ((dir[0] <= Math.PI)?Math.PI:(-Math.PI));

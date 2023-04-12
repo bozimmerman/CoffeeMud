@@ -4038,8 +4038,7 @@ public class Test extends StdCommand
 					mob.tell(CMLib.space().getSectorName(coordinates) + ": "+in[0]+","+in[1]+","+in[2]);
 				}
 			}
-			if((what.equalsIgnoreCase("all"))
-			||(what.equalsIgnoreCase("spacemovereport1")))
+			if(what.equalsIgnoreCase("spacemovereport1"))
 			{
 				//List<double[]> results = new ArrayList<double[]>();
 				for(double dir0 = 0; dir0 <=Math.PI*2; dir0 += (Math.PI/12.0))
@@ -4112,8 +4111,7 @@ public class Test extends StdCommand
 					}
 				}
 			}
-			if((what.equalsIgnoreCase("all"))
-			||(what.equalsIgnoreCase("spacemovereport2")))
+			if(what.equalsIgnoreCase("spacemovereport2"))
 			{
 				for(double dir0 = 0; dir0 <=Math.PI*2; dir0 += (Math.PI/12.0))
 				{
@@ -4155,9 +4153,109 @@ public class Test extends StdCommand
 				}
 			}
 			if((what.equalsIgnoreCase("all"))
+			||(what.equalsIgnoreCase("spaceangles")))
+			{
+				final int[][][] diffsets = new int[][][] {
+					{ {90,90}, {80,90},  {10} },
+				};
+				final int[][][] opps = new int[][][] {
+					{ {180,0},       {180,180}, {360,0}, {0,0}, {0,180} },
+					{ {180,5},       {0,175}, {360,175} },
+					{ {90,15},       {270,165} },
+					{ {15,90},       {195,90} }
+				};
+				final int[][][] offsets = new int[][][] {
+					{ {90,45},{85,45},   {95,45} },
+				};
+				final int[][][] midsets = new int[][][] {
+					{ {90,45},{80,45},   {85,45} },
+				};
+				boolean success=true;
+				for(int i=0;i<diffsets.length;i++)
+				{
+					final int[] anglei1 = diffsets[i][0];
+					final double[] angle1 = new double[] {Math.toRadians(anglei1[0]), Math.toRadians(anglei1[1])};
+					final int[] anglei2 = diffsets[i][1];
+					final double[] angle2 = new double[] {Math.toRadians(anglei2[0]), Math.toRadians(anglei2[1])};
+					final double diff = CMLib.space().getAngleDelta(angle1, angle2);
+					final int[] an = diffsets[i][2];
+					final double and = Math.toRadians(an[0]);
+					final boolean found = Math.abs(diff - and) < 0.001;
+					success = success && found;
+					if(!found)
+						mob.tell("DIFF Test #"+(i+1)+" failed: "+Math.toDegrees(diff));
+				}
+				for(int i=0;i<opps.length;i++)
+				{
+					final int[] anglei = opps[i][0];
+					final double[] angle = new double[] {Math.toRadians(anglei[0]), Math.toRadians(anglei[1])};
+					final double[] op = CMLib.space().getOppositeDir(angle);
+					boolean found=false;
+					for(int x=1;x<opps[i].length;x++)
+					{
+						final int[] compi = opps[i][x];
+						final double[] comp = new double[] {Math.toRadians(compi[0]), Math.toRadians(compi[1])};
+						if((Math.abs(comp[0]-op[0])<0.001)&&(Math.abs(comp[1]-op[1])<0.001))
+							found=true;
+					}
+					success = success && found;
+					if(!found)
+						mob.tell("OP Test #"+(i+1)+" failed: "+Math.toDegrees(op[0])+","+Math.toDegrees(op[1]));
+				}
+				for(int i=0;i<offsets.length;i++)
+				{
+					final int[] anglei1 = offsets[i][0];
+					final double[] angle1 = new double[] {Math.toRadians(anglei1[0]), Math.toRadians(anglei1[1])};
+					final int[] anglei2 = offsets[i][1];
+					final double[] angle2 = new double[] {Math.toRadians(anglei2[0]), Math.toRadians(anglei2[1])};
+					final double[] off = CMLib.space().getOffsetAngle(angle1, angle2);
+					final int[] an = offsets[i][2];
+					final double[] and = new double[] {Math.toRadians(an[0]), Math.toRadians(an[1])};
+					final boolean found = (Math.abs(off[0] - and[0])<0.001) && (Math.abs(off[1] - and[1])<0.001);
+					success = success && found;
+					if(!found)
+						mob.tell("OF Test #"+(i+1)+" failed: "+Math.toDegrees(off[0])+","+Math.toDegrees(off[1]));
+				}
+				for(int i=0;i<midsets.length;i++)
+				{
+					final int[] anglei1 = midsets[i][0];
+					final double[] angle1 = new double[] {Math.toRadians(anglei1[0]), Math.toRadians(anglei1[1])};
+					final int[] anglei2 = midsets[i][1];
+					final double[] angle2 = new double[] {Math.toRadians(anglei2[0]), Math.toRadians(anglei2[1])};
+					final double[] mid = CMLib.space().getMiddleAngle(angle1, angle2);
+					final int[] an = midsets[i][2];
+					final double[] and = new double[] {Math.toRadians(an[0]), Math.toRadians(an[1])};
+					final boolean found = (Math.abs(mid[0] - and[0])<0.001) && (Math.abs(mid[1] - and[1])<0.001);
+					success = success && found;
+					if(!found)
+						mob.tell("MID Test #"+(i+1)+" failed: "+Math.toDegrees(mid[0])+","+Math.toDegrees(mid[1]));
+				}
+				if(!success)
+					return false;
+			}
+
+			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("spacemove")))
 			{
 				final SpaceShip o = (SpaceShip)CMClass.getItem("GenSpaceShip");
+				// timtest1
+				{
+					// pitches 45 & 135
+					final long[] startCoords = new long[] {0,0,0};
+					o.setCoords(Arrays.copyOf(startCoords, 3));
+					o.setDirection(new double[] {Math.PI/8.0, Math.PI*3.0/8.0});
+					o.setSpeed(100.0);
+					o.setFacing(o.direction());
+					CMLib.space().moveSpaceObject(o);
+					final long[] midCoord = Arrays.copyOf(o.coordinates(), 3);
+					mob.tell(CMParms.toListString(o.coordinates())+", dist="+CMLib.space().getDistanceFrom(startCoords, midCoord)+"");
+					o.setDirection(new double[] {Math.PI/8.0, Math.PI*5.0/8.0});
+					o.setSpeed(100.0);
+					o.setFacing(o.direction());
+					CMLib.space().moveSpaceObject(o);
+					mob.tell(CMParms.toListString(o.coordinates())+", dist="+CMLib.space().getDistanceFrom(midCoord, o.coordinates())+"");
+				}
+
 				final int accelMoves = 110;
 				final int slowMoves = accelMoves - 1;
 				final double accel = 3.0;

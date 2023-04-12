@@ -292,6 +292,7 @@ public class Chant_SummonAnimal extends Chant
 		genM.setMoney(0);
 		genM.setMoneyVariation(0);
 		genM.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+		genM.text();
 		genM.recoverCharStats();
 		genM.recoverPhyStats();
 		genM.recoverMaxState();
