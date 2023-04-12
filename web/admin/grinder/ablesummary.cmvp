@@ -36,7 +36,7 @@
         <TABLE WIDTH=50% BORDER=1>
         <TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
         <TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
-        <TR><TD><a href="javascript:Clicked('abilities');"><FONT COLOR=WHITE SIZE=-1><B>Ability Manager</B></FONT></A></TD></TR>
+        <TR><TD><a href="javascript:Clicked('abilities.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Ability Manager</B></FONT></A></TD></TR>
         <TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
         </TABLE>
 	</TD>
