@@ -570,11 +570,12 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						definedIDs.put(key.toUpperCase(),val);
 					}
 				}
+				final int levelBase = msg.source().basePhyStats().level(); // use highestLevel?
 				definedIDs.put("AREANAME", Name());
 				if(!definedIDs.containsKey("AREASIZE"))
 					definedIDs.put("AREASIZE", "50");
 				if(!definedIDs.containsKey("LEVEL_RANGE"))
-					definedIDs.put("LEVEL_RANGE", (msg.source().basePhyStats().level()-4)+"?"+(msg.source().basePhyStats().level()));
+					definedIDs.put("LEVEL_RANGE", (levelBase-4)+"?"+levelBase);
 				if(!definedIDs.containsKey("AGGROCHANCE"))
 					definedIDs.put("AGGROCHANCE", ""+msg.source().basePhyStats().level());
 				try
