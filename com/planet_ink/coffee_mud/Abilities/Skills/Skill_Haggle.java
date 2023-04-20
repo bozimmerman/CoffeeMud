@@ -126,8 +126,8 @@ public class Skill_Haggle extends StdSkill
 					mob.addEffect(A);
 					mob.recoverCharStats();
 					commands.add(0,CMStrings.capitalizeAndLower(cmd));
-					mob.doCommand(commands,MUDCmdProcessor.METAFLAG_FORCED);
 					commands.add(shopkeeper.name());
+					mob.doCommand(commands,MUDCmdProcessor.METAFLAG_FORCED);
 				}
 				finally
 				{
