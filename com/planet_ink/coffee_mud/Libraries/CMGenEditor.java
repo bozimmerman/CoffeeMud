@@ -3936,8 +3936,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		mob.tell(L("@x1. Gender: '@x2'.",""+showNumber,""+Character.toUpperCase((char)E.baseCharStats().getStat(CharStats.STAT_GENDER))));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
-		StringBuilder str = new StringBuilder("");
-		StringBuilder cstr = new StringBuilder("");
+		final StringBuilder str = new StringBuilder("");
+		final StringBuilder cstr = new StringBuilder("");
 		for(final Object[] gset : CMProps.getListFileStringChoices(ListFile.GENDERS))
 		{
 			if((gset.length>0)
@@ -3945,7 +3945,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				if(str.length()>0)
 					str.append("/");
-				char c = gset[0].toString().charAt(0);
+				final char c = gset[0].toString().charAt(0);
 				str.append(c);
 				cstr.append(c);
 			}
@@ -8903,7 +8903,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			int showNumber=0;
 			// id is bad to change.. make them delete it.
 			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
-			String varHelp = "You can insert variables into the arguments, such as: @x1=caster level, @x2=target level, @x3=level expertise, "
+			final String varHelp = "You can insert variables into the arguments, such as: @x1=caster level, @x2=target level, @x3=level expertise, "
 					+ "@x4-@x8=x1-x5 expertise, @x9=adjusted caster level.";
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Ability/Skill name","NAME",false);
 			promptStatStr(mob,me,CMParms.toListString(Ability.ACODE_DESCS)+","+CMParms.toListString(Ability.DOMAIN_DESCS),++showNumber,showFlag,"Type, Domain","CLASSIFICATION",false);
@@ -11118,22 +11118,27 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genSecurity(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
 			genScripts(mob,me,++showNumber,showFlag);
-			final String oldFlags = (me.playerStats()!=null)?me.playerStats().getStat("FLAGS"):"";
-			promptStatStr(mob,me.playerStats(),PlayerStats.PlayerFlag.getListString(),++showNumber,showFlag,"Flags (?)","FLAGS",true);
+			if(me.playerStats()!=null)
 			{
-				final String flags=(me.playerStats()!=null)?me.playerStats().getStat("FLAGS"):"";
-				if(((oldFlags.indexOf(PlayerFlag.NOTOP.name())>=0)&&(flags.indexOf(PlayerFlag.NOTOP.name())<0))
-				||((oldFlags.indexOf(PlayerFlag.NOSTATS.name())>=0)&&(flags.indexOf(PlayerFlag.NOSTATS.name())<0))
-				||((flags.indexOf(PlayerFlag.NOTOP.name())>=0)&&(oldFlags.indexOf(PlayerFlag.NOTOP.name())<0))
-				||((flags.indexOf(PlayerFlag.NOSTATS.name())>=0)&&(oldFlags.indexOf(PlayerFlag.NOSTATS.name())<0)))
-					CMLib.players().resetAllPrideStats();
+				final String oldFlags = (me.playerStats()!=null)?me.playerStats().getStat("FLAGS"):"";
+				promptStatStr(mob,me.playerStats(),PlayerStats.PlayerFlag.getListString(),++showNumber,showFlag,"Flags (?)","FLAGS",true);
+				{
+					final String flags=(me.playerStats()!=null)?me.playerStats().getStat("FLAGS"):"";
+					if(((oldFlags.indexOf(PlayerFlag.NOTOP.name())>=0)&&(flags.indexOf(PlayerFlag.NOTOP.name())<0))
+					||((oldFlags.indexOf(PlayerFlag.NOSTATS.name())>=0)&&(flags.indexOf(PlayerFlag.NOSTATS.name())<0))
+					||((flags.indexOf(PlayerFlag.NOTOP.name())>=0)&&(oldFlags.indexOf(PlayerFlag.NOTOP.name())<0))
+					||((flags.indexOf(PlayerFlag.NOSTATS.name())>=0)&&(oldFlags.indexOf(PlayerFlag.NOSTATS.name())<0)))
+						CMLib.players().resetAllPrideStats();
+				}
 			}
 			genNotes(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(me.playerStats()!=null)
-			for(int x=me.playerStats().getSaveStatIndex();x<me.playerStats().getStatCodes().length;x++)
-				me.playerStats().setStat(me.playerStats().getStatCodes()[x],prompt(mob,me.playerStats().getStat(me.playerStats().getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.playerStats().getStatCodes()[x])));
+			{
+				for(int x=me.playerStats().getSaveStatIndex();x<me.playerStats().getStatCodes().length;x++)
+					me.playerStats().setStat(me.playerStats().getStatCodes()[x],prompt(mob,me.playerStats().getStat(me.playerStats().getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.playerStats().getStatCodes()[x])));
+			}
 
 			if (showFlag < -900)
 			{
