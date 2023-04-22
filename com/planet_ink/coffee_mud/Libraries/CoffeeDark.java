@@ -400,44 +400,58 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final double currentSpeed = curSpeed;
 		final double acceleration = newAcceleration;
 
-		double yawDelta = (curDirectionYaw >  accelDirectionYaw) ? (curDirectionYaw - accelDirectionYaw) : (accelDirectionYaw - curDirectionYaw);
+		final double yawSign;
+		double yawDelta;
+		if(curDirectionYaw > accelDirectionYaw)
+		{
+			yawSign = -1.0;
+			yawDelta = (curDirectionYaw - accelDirectionYaw);
+		}
+		else
+		{
+			yawSign = 1.0;
+			yawDelta = (accelDirectionYaw - curDirectionYaw);
+		}
 		// 350 and 10, diff = 340 + -360 = 20
 		if(yawDelta > Math.PI) // a delta is never more than 180 degrees
 			yawDelta=PI_TIMES_2-yawDelta;
-		if(Math.abs(yawDelta-PI_TIMES_2)<ZERO_ALMOST)
-			yawDelta=0.0;
-
-		double pitchDelta = (curDirectionPitch >  accelDirectionPitch) ?
-							(curDirectionPitch - accelDirectionPitch) :
-							(accelDirectionPitch - curDirectionPitch);
-		// 170 and 10 = 160, which is correct!
-		if(pitchDelta > Math.PI)
-			pitchDelta=Math.PI-pitchDelta;
-		if(Math.abs(pitchDelta-Math.PI)<ZERO_ALMOST)
-			pitchDelta=0.0;
-
+		final double pitchSign;
+		final double pitchDelta;
+		if(curDirectionPitch > accelDirectionPitch)
+		{
+			pitchSign = -1.0;
+			pitchDelta = (curDirectionPitch - accelDirectionPitch);
+		}
+		else
+		{
+			pitchSign = 1.0;
+			pitchDelta = (accelDirectionPitch - curDirectionPitch);
+		}
 		final double anglesDelta =  getAngleDelta(curDirection, accelDirection);
 		double newDirectionYaw;
 		double newDirectionPitch;
+		final double min = 0.1;
 		final double deltaMultiplier = Math.sin(anglesDelta);
-		final double accelerationMultiplier = acceleration / currentSpeed * deltaMultiplier;
-		if(yawDelta < 0.1)
+		final double accelerationMultiplier = (acceleration / currentSpeed) * deltaMultiplier;
+		if(yawDelta < min)
 			newDirectionYaw = accelDirectionYaw;
 		else
 		{
-			newDirectionYaw = curDirectionYaw + ((curDirectionYaw > accelDirectionYaw) ?
-					-(accelerationMultiplier * Math.sin(yawDelta)) :
-					 (accelerationMultiplier * Math.sin(yawDelta)));
+			double finalYawDelta = Math.sin(yawDelta) * accelerationMultiplier * yawSign;
+			if((finalYawDelta < min)&&(yawDelta > min))
+				finalYawDelta = yawSign * min * deltaMultiplier;
+			newDirectionYaw = curDirectionYaw + finalYawDelta;
 			if((newDirectionYaw > 0.0) && ((PI_TIMES_2 - newDirectionYaw) < ZERO_ALMOST))
 				newDirectionYaw=0.0;
 		}
-		if(pitchDelta < 0.1)
+		if(pitchDelta <min)
 			newDirectionPitch = accelDirectionPitch;
 		else
 		{
-			newDirectionPitch = curDirectionPitch + ((curDirectionPitch < accelDirectionPitch) ?
-				-(accelerationMultiplier * Math.sin(pitchDelta)) :
-				(accelerationMultiplier * Math.sin(pitchDelta)));
+			double finalPitchDelta = Math.sin(pitchDelta) * accelerationMultiplier * pitchSign;
+			if((finalPitchDelta < min)&&(pitchDelta > min))
+				finalPitchDelta = pitchSign * min * deltaMultiplier;
+			newDirectionPitch = curDirectionPitch + finalPitchDelta;
 		}
 		double newSpeed = currentSpeed + (acceleration * Math.cos(anglesDelta));
 		if(newSpeed < 0)

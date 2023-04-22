@@ -4260,9 +4260,6 @@ public class Test extends StdCommand
 						return false;
 					}
 				}
-
-
-
 				final int accelMoves = 110;
 				final int slowMoves = accelMoves - 1;
 				final double accel = 3.0;
@@ -4308,6 +4305,10 @@ public class Test extends StdCommand
 							mob.tell(s);
 							return false;
 						}
+						if(Math.abs(traveledDistance - distanceTravelled)>1)
+						{
+							mob.tell(""+Math.abs(traveledDistance-distanceTravelled));
+						}
 						distanceTravelled=traveledDistance;
 					}
 					final double midTraveledDistance = CMLib.space().getDistanceFrom(startCoords, o.coordinates());
@@ -4345,14 +4346,48 @@ public class Test extends StdCommand
 					final double speedDiff = Math.abs(o.speed() - accel);
 					if((speedDiff>accel+1)
 					||(!Arrays.equals(dir, o.direction()))
-					||(distDiff > accel))
+					||(distDiff > slowMoves))
 					{
 						final String s = spaceMoveError("test "+i, o, dir, speedDiff, speed, distDiff, traveledDistance, predictedDistance, startCoords);
 						mob.tell(s);
-						//return false;
+						return false;
 					}
 				}
 			}
+
+			if((what.equalsIgnoreCase("all"))
+			||(what.equalsIgnoreCase("spaceturn")||what.equalsIgnoreCase("spaceturns")))
+			{
+				final double[][][] tests = new double[][][] {
+					{ {Math.PI, Math.PI/2.0}, {Math.PI/2.0, Math.PI/2.0} },
+					{ {Math.PI/2.0, Math.PI/2.0}, {Math.PI+Math.PI/2.0, Math.PI/2.0} },
+				};
+				final SpaceShip o = (SpaceShip)CMClass.getItem("GenSpaceShip");
+				for(final double[][] test : tests)
+				{
+					final double[] startDir = test[0];
+					final double[] accelDir = test[1];
+					final long[] startCoords = new long[] {0,0,0};
+					o.setCoords(Arrays.copyOf(startCoords, 3));
+					o.setDirection(startDir);
+					o.setSpeed(1000.0);
+					o.setFacing(accelDir);
+					int i=0;
+					for(i=0;i<1000;i++)
+					{
+						CMLib.space().accelSpaceObject(o,accelDir,3.0);
+						final double d = CMLib.space().getAngleDelta(o.direction(), accelDir);
+						mob.tell(Math.toDegrees(
+								 o.direction()[0])+","+Math.toDegrees(o.direction()[1])
+								+"  -->  "
+								+Math.toDegrees(accelDir[0])+","+Math.toDegrees(accelDir[1])
+								+" === "+d);
+						if(d<0.1)
+							break;
+					}
+				}
+			}
+
 			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("notrandom")))
 			{
