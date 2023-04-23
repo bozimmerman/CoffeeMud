@@ -5411,6 +5411,8 @@ public class Import extends StdCommand
 				if((buf==null)||(buf.length()==0))
 					return returnAnError(session,"File not found at: '"+areaFileName+"'!",compileErrors,errorList);
 			}
+			if(buf != null)
+				CMStrings.dikufyLineEndings(buf);
 			try
 			{
 				if((areaFileName!=null)&&(areaFileName.toUpperCase().trim().endsWith(".LST")))
@@ -5457,6 +5459,7 @@ public class Import extends StdCommand
 						buf=CF.textUnformatted();
 					if(buf == null)
 						buf = new StringBuffer("");
+					CMStrings.dikufyLineEndings(buf);
 					final List<List<XMLLibrary.XMLTag>> areas=new ArrayList<List<XMLLibrary.XMLTag>>();
 					if(session!=null)
 						session.rawPrint(L("Unpacking area(s) from file: '@x1'...",areaFileName));
@@ -5561,6 +5564,7 @@ public class Import extends StdCommand
 						buf=CF.textUnformatted();
 					if(buf == null)
 						buf = new StringBuffer("");
+					CMStrings.dikufyLineEndings(buf);
 					if(session!=null)
 						session.rawPrint(L("Unpacking area from file: '@x1'...",areaFileName));
 					final List<XMLLibrary.XMLTag> areaD=new ArrayList<XMLLibrary.XMLTag>();
@@ -5616,6 +5620,7 @@ public class Import extends StdCommand
 						buf=CF.textUnformatted();
 					if(buf == null)
 						buf = new StringBuffer("");
+					CMStrings.dikufyLineEndings(buf);
 					if(session!=null)
 						session.println(L("Unpacking room from file: '@x1'...",areaFileName));
 					String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
@@ -5682,6 +5687,7 @@ public class Import extends StdCommand
 						buf=CF.textUnformatted();
 					if(buf == null)
 						buf = new StringBuffer("");
+					CMStrings.dikufyLineEndings(buf);
 					if(session!=null)
 						session.rawPrint(L("Unpacking stuff from file: '@x1'...",areaFileName));
 					final List<XMLLibrary.XMLTag> xmlFirst=CMLib.xml().parseAllXML(buf);
@@ -5780,6 +5786,7 @@ public class Import extends StdCommand
 						buf=CF.textUnformatted();
 					if(buf == null)
 						buf = new StringBuffer("");
+					CMStrings.dikufyLineEndings(buf);
 					if(session!=null)
 						session.rawPrint(L("Unpacking mobs from file: '@x1'...",areaFileName));
 					final List<MOB> mobs=new ArrayList<MOB>();
@@ -5838,6 +5845,7 @@ public class Import extends StdCommand
 						buf=CF.textUnformatted();
 					if(buf == null)
 						buf = new StringBuffer("");
+					CMStrings.dikufyLineEndings(buf);
 					if(session!=null)
 						session.rawPrint(L("Unpacking players from file: '@x1'...",areaFileName));
 					final List<MOB> mobs=new ArrayList<MOB>();
@@ -5980,6 +5988,7 @@ public class Import extends StdCommand
 						buf=CF.textUnformatted();
 					if(buf == null)
 						buf = new StringBuffer("");
+					CMStrings.dikufyLineEndings(buf);
 					if(session!=null)
 						session.rawPrint(L("Unpacking items from file: '@x1'...",areaFileName));
 					final List<Item> items=new ArrayList<Item>();
