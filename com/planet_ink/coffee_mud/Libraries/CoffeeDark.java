@@ -430,28 +430,29 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final double anglesDelta =  getAngleDelta(curDirection, accelDirection);
 		double newDirectionYaw;
 		double newDirectionPitch;
-		final double min = 0.1;
 		final double deltaMultiplier = Math.sin(anglesDelta);
+		final double yawMin = (0.05 + (yawDelta * deltaMultiplier * (1.0-Math.sin(pitchDelta))));
 		final double accelerationMultiplier = (acceleration / currentSpeed) * deltaMultiplier;
-		if(yawDelta < min)
+		if(yawDelta < yawMin)
 			newDirectionYaw = accelDirectionYaw;
 		else
 		{
-			double finalYawDelta = Math.sin(yawDelta) * accelerationMultiplier * yawSign;
-			if((finalYawDelta < min)&&(yawDelta > min))
-				finalYawDelta = yawSign * min * deltaMultiplier;
-			newDirectionYaw = curDirectionYaw + finalYawDelta;
+			double nearFinalYawDelta = Math.sin(yawDelta) * accelerationMultiplier;
+			if((nearFinalYawDelta < yawMin)&&(yawDelta > yawMin))
+				nearFinalYawDelta = yawMin;
+			newDirectionYaw = curDirectionYaw + (nearFinalYawDelta * yawSign);
 			if((newDirectionYaw > 0.0) && ((PI_TIMES_2 - newDirectionYaw) < ZERO_ALMOST))
 				newDirectionYaw=0.0;
 		}
-		if(pitchDelta <min)
+		final double pitchMin = 0.1;
+		if(pitchDelta <pitchMin)
 			newDirectionPitch = accelDirectionPitch;
 		else
 		{
-			double finalPitchDelta = Math.sin(pitchDelta) * accelerationMultiplier * pitchSign;
-			if((finalPitchDelta < min)&&(pitchDelta > min))
-				finalPitchDelta = pitchSign * min * deltaMultiplier;
-			newDirectionPitch = curDirectionPitch + finalPitchDelta;
+			double nearFinalPitchDelta = Math.sin(pitchDelta) * accelerationMultiplier;
+			if((nearFinalPitchDelta < pitchMin)&&(pitchDelta > pitchMin))
+				nearFinalPitchDelta = pitchMin;
+			newDirectionPitch = curDirectionPitch + (nearFinalPitchDelta * pitchSign);
 		}
 		double newSpeed = currentSpeed + (acceleration * Math.cos(anglesDelta));
 		if(newSpeed < 0)

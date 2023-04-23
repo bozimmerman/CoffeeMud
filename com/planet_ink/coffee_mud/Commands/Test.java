@@ -4359,12 +4359,14 @@ public class Test extends StdCommand
 			||(what.equalsIgnoreCase("spaceturn")||what.equalsIgnoreCase("spaceturns")))
 			{
 				final double[][][] tests = new double[][][] {
+					{ {Math.PI, Math.PI-.2}, {Math.PI/2.0, Math.PI-.2} },
 					{ {Math.PI, Math.PI/2.0}, {Math.PI/2.0, Math.PI/2.0} },
-					{ {Math.PI/2.0, Math.PI/2.0}, {Math.PI+Math.PI/2.0, Math.PI/2.0} },
+					{ {Math.PI/2.0, Math.PI/2.0}, {Math.PI+Math.PI/2.0, Math.PI/2.0}},
 				};
 				final SpaceShip o = (SpaceShip)CMClass.getItem("GenSpaceShip");
-				for(final double[][] test : tests)
+				for(int t=0;t<tests.length;t++)
 				{
+					final double[][] test = tests[t];
 					final double[] startDir = test[0];
 					final double[] accelDir = test[1];
 					final long[] startCoords = new long[] {0,0,0};
@@ -4377,14 +4379,23 @@ public class Test extends StdCommand
 					{
 						CMLib.space().accelSpaceObject(o,accelDir,3.0);
 						final double d = CMLib.space().getAngleDelta(o.direction(), accelDir);
+						/*
 						mob.tell(Math.toDegrees(
 								 o.direction()[0])+","+Math.toDegrees(o.direction()[1])
 								+"  -->  "
 								+Math.toDegrees(accelDir[0])+","+Math.toDegrees(accelDir[1])
 								+" === "+d);
+						*/
 						if(d<0.1)
 							break;
 					}
+					if((test.length>2)&&(i!=test[2][0]))
+					{
+						mob.tell("Error: Space turn test "+t+", test failed: "+i+"!="+test[2][0]);
+						return false;
+					}
+					else
+						mob.tell("Info: Space turn test "+t+", test result: "+i);
 				}
 			}
 

@@ -3815,6 +3815,74 @@ public class CMStrings
 	}
 
 	/**
+	 * Normalizes line endings in the given stringbuilder by replacing
+	 * all carriage returns with only linefeeds.
+	 *
+	 * @param str the modified string
+	 */
+	public static void normalizeLineEndings(final StringBuffer str)
+	{
+		for(int i=0;i<str.length();i++)
+		{
+			// if contains even a single linefeed, destroy all crs
+			if(str.charAt(i)=='\n')
+			{
+				for(i=str.length()-1;i>=0;i--)
+				{
+					if(str.charAt(i)=='\r')
+						str.deleteCharAt(i);
+				}
+				return;
+			}
+		}
+		// otherwise, convert all crs to lfs
+		for(int i=0;i<str.length();i++)
+		{
+			if(str.charAt(i)=='\r')
+				str.setCharAt(i,'\n');
+		}
+	}
+
+
+	/**
+	 * Normalizes line endings in the given stringbuilder by replacing
+	 * all linefeeds with linefeed + carriage return.
+	 *
+	 * @param str the modified string
+	 */
+	public static void dikufyLineEndings(final StringBuffer str)
+	{
+		for(int i=0;i<str.length();i++)
+		{
+			final char c = str.charAt(i);
+			switch(c)
+			{
+			case '\n':
+				if((i < str.length()-1)
+				&&(str.charAt(i+1)=='\r')) // already normalized
+					return;
+				if(i == str.length()-1)
+				{
+					str.append('\r');
+					return;
+				}
+				str.insert(++i, '\r');
+				break;
+			case '\r':
+				if((i<str.length()-1)
+				&&(str.charAt(i+1)=='\n'))
+				{
+					str.setCharAt(i, '\n');
+					str.setCharAt(++i, '\r');
+				}
+				else
+					str.insert(i++, '\n');
+				break;
+			}
+		}
+	}
+
+	/**
 	 * Given a set of pre-parsed tokens from an Expression, this method evaluates the expression,
 	 * begining with the token at the given index, which may be modified.  Variables are substituted
 	 * at evaluation time.  Parsing errors throw an exception

@@ -1476,7 +1476,8 @@ public class CMFile extends File
 				charSet=outCharSet;
 			final File F=new File(getIOReadableLocalPathAndName());
 			FW=new OutputStreamWriter(new FileOutputStream(F,append),charSet);
-			FW.write(saveBufNormalize(O).toString());
+			CMStrings.normalizeLineEndings(O);
+			FW.write(O.toString());
 			FW.close();
 			vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADLOCAL);
 			return true;
@@ -1853,28 +1854,6 @@ public class CMFile extends File
 		while(filename.endsWith("\\"))
 			filename=filename.substring(0,filename.length()-1);
 		return filename.replace(pathSeparator,'/');
-	}
-
-	private final StringBuffer saveBufNormalize(final StringBuffer myRsc)
-	{
-		for(int i=0;i<myRsc.length();i++)
-		{
-			if(myRsc.charAt(i)=='\n')
-			{
-				for(i=myRsc.length()-1;i>=0;i--)
-				{
-					if(myRsc.charAt(i)=='\r')
-						myRsc.deleteCharAt(i);
-				}
-				return myRsc;
-			}
-		}
-		for(int i=0;i<myRsc.length();i++)
-		{
-			if(myRsc.charAt(i)=='\r')
-				myRsc.setCharAt(i,'\n');
-		}
-		return myRsc;
 	}
 
 	/**
