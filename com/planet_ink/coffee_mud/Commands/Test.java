@@ -4359,20 +4359,24 @@ public class Test extends StdCommand
 			||(what.equalsIgnoreCase("spaceturn")||what.equalsIgnoreCase("spaceturns")))
 			{
 				final double[][][] tests = new double[][][] {
-					{ {Math.PI, Math.PI-.2}, {Math.PI/2.0, Math.PI-.2} },
-					{ {Math.PI, Math.PI/2.0}, {Math.PI/2.0, Math.PI/2.0} },
-					{ {Math.PI/2.0, Math.PI/2.0}, {Math.PI+Math.PI/2.0, Math.PI/2.0}},
+					{ {1000.0}, {Math.PI, Math.PI-.2}, {Math.PI/2.0, Math.PI-.2} },
+					{ {1000.0}, {Math.PI, Math.PI/2.0}, {Math.PI/2.0, Math.PI/2.0} },
+					{ {1000.0}, {Math.PI/2.0, Math.PI/2.0}, {Math.PI+Math.PI/2.0, Math.PI/2.0}},
+					{ {100.0}, {Math.PI, Math.PI-.2}, {Math.PI/2.0, Math.PI-.2} },
+					{ {100.0}, {Math.PI, Math.PI/2.0}, {Math.PI/2.0, Math.PI/2.0} },
+					{ {100.0}, {Math.PI/2.0, Math.PI/2.0}, {Math.PI+Math.PI/2.0, Math.PI/2.0}},
 				};
 				final SpaceShip o = (SpaceShip)CMClass.getItem("GenSpaceShip");
 				for(int t=0;t<tests.length;t++)
 				{
 					final double[][] test = tests[t];
-					final double[] startDir = test[0];
-					final double[] accelDir = test[1];
+					final double speed = test[0][0];
+					final double[] startDir = test[1];
+					final double[] accelDir = test[2];
 					final long[] startCoords = new long[] {0,0,0};
 					o.setCoords(Arrays.copyOf(startCoords, 3));
 					o.setDirection(startDir);
-					o.setSpeed(1000.0);
+					o.setSpeed(speed);
 					o.setFacing(accelDir);
 					int i=0;
 					for(i=0;i<1000;i++)
@@ -4389,7 +4393,7 @@ public class Test extends StdCommand
 						if(d<0.1)
 							break;
 					}
-					if((test.length>2)&&(i!=test[2][0]))
+					if((test.length>3)&&(i!=test[3][0]))
 					{
 						mob.tell("Error: Space turn test "+t+", test failed: "+i+"!="+test[2][0]);
 						return false;

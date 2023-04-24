@@ -1550,6 +1550,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						((MOB)E).setBaseState((CharState)((MOB)o).baseState().copyOf());
 					}
 					fillOutCopyStats(E,copyFromE);
+					if(E instanceof MOB)
+					{
+						if(((MOB)E).basePhyStats().ability() <= 0)
+							((MOB)E).basePhyStats().setAbility(11);
+					}
 					if(E instanceof Physical)
 						((Physical)E).recoverPhyStats();
 					if(E instanceof MOB)
