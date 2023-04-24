@@ -80,7 +80,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	public int rollHP(final int level, int code)
 	{
 		if(code<=0)
-			code=11;
+			code=CMProps.getMobHPBase();
 		// new old style
 		if(code<32768)
 			return (int)Math.round(CMath.parseMathExpression(baseNpcHitpointsFormula, new double[]{level,code,0,0,0,0,0,0,0,0,0},0.0));

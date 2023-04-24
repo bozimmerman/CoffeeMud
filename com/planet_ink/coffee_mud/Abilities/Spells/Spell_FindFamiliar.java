@@ -167,7 +167,7 @@ public class Spell_FindFamiliar extends Spell
 	protected MOB determineMonster(final MOB caster, final int level)
 	{
 		final MOB newMOB=CMClass.getMOB("GenMOB");
-		newMOB.basePhyStats().setAbility(7);
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase()-4);
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');

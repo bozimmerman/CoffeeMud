@@ -116,7 +116,7 @@ public class Chant_VampireVine extends Chant_SummonVine
 		if(level<1)
 			level=1;
 		newMOB.basePhyStats().setLevel(level);
-		newMOB.basePhyStats().setAbility(19);
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase()+8);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
 		final String name="a vampire vine";
 		newMOB.setName(name);

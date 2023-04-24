@@ -239,7 +239,7 @@ public class Spell_Phantasm extends Spell
 	public MOB determineMonster(final MOB caster, final Race R, final int level)
 	{
 		final MOB newMOB=CMClass.getMOB("GenMob");
-		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());//normal
 		final CharClass C=CMClass.getCharClass("Fighter");
 		newMOB.baseCharStats().setCurrentClass(C);
 		newMOB.basePhyStats().setLevel(level);

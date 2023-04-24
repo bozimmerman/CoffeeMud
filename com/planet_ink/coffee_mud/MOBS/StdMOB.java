@@ -162,7 +162,7 @@ public class StdMOB implements MOB
 			R = CMClass.getRace("StdRace");
 		baseCharStats().setMyRace(R);
 		basePhyStats().setLevel(1);
-		basePhyStats().setAbility(11);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		speedAdj = CMProps.getSpeedAdjustment();
 		xtraValues = CMProps.getExtraStatCodesHolder(this);
 	}

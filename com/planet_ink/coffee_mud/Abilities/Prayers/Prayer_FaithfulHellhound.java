@@ -138,7 +138,7 @@ public class Prayer_FaithfulHellhound extends Prayer
 				mob.location().send(mob,msg);
 				final MOB caster=mob;
 				final MOB newMOB=CMClass.getMOB("GenMOB");
-				newMOB.basePhyStats().setAbility(newMOB.basePhyStats().ability()+(4*super.getXLEVELLevel(caster)));
+				newMOB.basePhyStats().setAbility(CMProps.getMobHPBase()+(4*super.getXLEVELLevel(caster)));
 				newMOB.basePhyStats().setLevel(mob.phyStats().level()+super.getXLEVELLevel(caster));
 				newMOB.basePhyStats().setWeight(500);
 				newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);

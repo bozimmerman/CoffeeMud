@@ -201,7 +201,7 @@ public class Spell_SummonFlyer extends Spell
 
 		final MOB newMOB=CMClass.getMOB("GenRideable");
 		final Rideable ride=(Rideable)newMOB;
-		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());//normal
 		newMOB.basePhyStats().setDisposition(newMOB.basePhyStats().disposition()|PhyStats.IS_FLYING);
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setWeight(500);

@@ -238,6 +238,7 @@ public class Chant_SaplingWorkers extends Chant
 		int level=adjustedLevel(caster,0)-6;
 		if(level<1)
 			level=1;
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());//normal
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("TreeGolem"));
 		final String resourceName=RawMaterial.CODES.NAME(material).toLowerCase();

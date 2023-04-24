@@ -254,7 +254,7 @@ public class Prayer_SnakeStaff extends Prayer
 	{
 
 		final MOB newMOB=CMClass.getMOB("GenMob");
-		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());//normal
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setWeight(500);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);

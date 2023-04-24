@@ -218,7 +218,7 @@ public class Spell_SummonMonster extends Spell
 			newMOB.setDescription(L("It's too difficult to describe what this thing looks like, but he/she/it is definitely angry!"));
 			CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 			newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
-			newMOB.baseState().setHitPoints(CMLib.dice().rollHP(level, 20));
+			newMOB.baseState().setHitPoints(CMLib.dice().rollHP(level, CMProps.getMobHPBase()*2));
 			newMOB.recoverMaxState();
 			newMOB.resetToMaxState();
 			newMOB.recoverPhyStats();

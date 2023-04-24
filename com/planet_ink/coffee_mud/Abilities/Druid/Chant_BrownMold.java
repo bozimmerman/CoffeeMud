@@ -202,7 +202,7 @@ public class Chant_BrownMold extends Chant
 		final MOB newMOB=CMClass.getMOB("GenMOB");
 		final int level=20;
 		newMOB.basePhyStats().setLevel(level);
-		newMOB.basePhyStats().setAbility(25);
+		newMOB.basePhyStats().setAbility(3+(CMProps.getMobHPBase()*2));
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Mold"));
 		final String name="a brown mold";
 		newMOB.setName(name);

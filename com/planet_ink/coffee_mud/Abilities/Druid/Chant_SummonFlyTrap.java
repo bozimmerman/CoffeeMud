@@ -217,6 +217,7 @@ public class Chant_SummonFlyTrap extends Chant
 		if(level<1)
 			level=1;
 		newMOB.basePhyStats().setLevel(level);
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());//normal
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
 		newMOB.setName(L("a large flytrap"));
 		newMOB.setDisplayText(L("@x1 is planted here",newMOB.Name()));

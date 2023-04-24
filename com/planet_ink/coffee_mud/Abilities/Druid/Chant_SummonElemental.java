@@ -242,7 +242,7 @@ public class Chant_SummonElemental extends Chant
 		}
 		newMOB.recoverPhyStats();
 		newMOB.recoverCharStats();
-		newMOB.basePhyStats().setAbility(newMOB.basePhyStats().ability()*2);
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase()*2);
 		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));

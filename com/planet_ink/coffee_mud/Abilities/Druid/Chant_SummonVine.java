@@ -249,7 +249,7 @@ public class Chant_SummonVine extends Chant
 		if(level<1)
 			level=1;
 		newMOB.basePhyStats().setLevel(level);
-		newMOB.basePhyStats().setAbility(13);
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase()+2);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
 		final String name="a vine";
 		newMOB.setName(name);

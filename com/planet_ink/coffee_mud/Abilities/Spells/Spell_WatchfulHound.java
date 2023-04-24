@@ -216,7 +216,7 @@ public class Spell_WatchfulHound extends Spell
 	{
 
 		final MOB newMOB=CMClass.getMOB("GenMob");
-		newMOB.basePhyStats().setAbility(5);
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase()/2);
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setWeight(500);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);

@@ -373,7 +373,7 @@ public class Spell_MinorImage extends Spell
 	{
 
 		final MOB newMOB=CMClass.getMOB("GenMob");
-		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());//normal
 		newMOB.basePhyStats().setLevel(target.basePhyStats().level());
 		newMOB.basePhyStats().setWeight(target.basePhyStats().weight());
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);

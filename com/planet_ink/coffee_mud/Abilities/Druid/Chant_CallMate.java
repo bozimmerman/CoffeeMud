@@ -257,7 +257,7 @@ public class Chant_CallMate extends Chant
 		newMOB.setVictim(victim);
 		newMOB.recoverPhyStats();
 		newMOB.recoverCharStats();
-		newMOB.basePhyStats().setAbility(newMOB.basePhyStats().ability()*2);
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase()*2);
 		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 		newMOB.basePhyStats().setAttackAdjustment((int)CMath.mul(CMLib.leveler().getLevelAttack(newMOB),0.8));
 		newMOB.basePhyStats().setDamage((int)CMath.mul(CMLib.leveler().getLevelMOBDamage(newMOB),0.9));

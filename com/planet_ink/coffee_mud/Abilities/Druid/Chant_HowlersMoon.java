@@ -301,7 +301,7 @@ public class Chant_HowlersMoon extends Chant
 	public MOB determineMonster(final MOB caster, final int level)
 	{
 		final MOB newMOB=CMClass.getMOB("GenMob");
-		newMOB.basePhyStats().setAbility(0);
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());
 		newMOB.basePhyStats().setLevel(level);
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		newMOB.basePhyStats().setWeight(350);

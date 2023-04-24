@@ -281,7 +281,7 @@ public class Spell_Simulacrum extends Spell
 	{
 
 		final MOB newMOB=CMClass.getMOB("GenMob");
-		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());//normal
 		newMOB.basePhyStats().setDisposition(newMOB.basePhyStats().disposition()|PhyStats.IS_FLYING);
 		newMOB.basePhyStats().setLevel(caster.basePhyStats().level());
 		newMOB.basePhyStats().setWeight(caster.basePhyStats().weight());

@@ -183,7 +183,7 @@ public class Prayer_SummonElemental extends Prayer
 	{
 		final MOB newMOB=CMClass.getMOB("GenRideable");
 		final Rideable ride=(Rideable)newMOB;
-		newMOB.basePhyStats().setAbility(13);
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase()+2);
 		int level=adjustedLevel(caster,asLevel);
 		final int altLevel = (caster.phyStats().level()-5)+(super.getXLEVELLevel(caster)/2);
 		if(altLevel > level)
