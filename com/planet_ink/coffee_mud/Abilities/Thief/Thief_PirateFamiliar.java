@@ -220,7 +220,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 	{
 
 		final MOB newMOB=CMClass.getMOB("GenMOB");
-		newMOB.basePhyStats().setAbility(super.getXLEVELLevel(caster));
+		newMOB.basePhyStats().setAbility(newMOB.basePhyStats().ability() + super.getXLEVELLevel(caster));
 		if(level < 1)
 			level=1;
 		newMOB.basePhyStats().setLevel(level);
