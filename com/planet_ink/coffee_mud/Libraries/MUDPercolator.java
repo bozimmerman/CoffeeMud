@@ -1553,7 +1553,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						&&(((MOB)E).baseState().getHitPoints()>20))
 						{
 							((MOB)E).basePhyStats().setAbility(1+(int)Math.round(
-								CMath.div(((MOB)E).baseState().getHitPoints(),((MOB)E).basePhyStats().level())));
+								CMath.div(((MOB)E).baseState().getHitPoints()*2,((MOB)E).basePhyStats().level())));
 						}
 					}
 					fillOutCopyStats(E,copyFromE);
