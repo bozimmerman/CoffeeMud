@@ -183,7 +183,10 @@ public class Specialization_Weapon extends StdAbility
 		&&((msg.targetMinor()==CMMsg.TYP_HOLD)||(msg.targetMinor()==CMMsg.TYP_WIELD))
 		&&(isWearableItem((Item)msg.target()))
 		&&(((Item)msg.target()).phyStats().level()>msg.source().phyStats().level()))
+		{
+			((Item)msg.target()).recoverPhyStats();
 			((Item)msg.target()).phyStats().setLevel(((Item)msg.target()).phyStats().level()-((1+getX4Level(msg.source()))/2));
+		}
 		return true;
 	}
 
