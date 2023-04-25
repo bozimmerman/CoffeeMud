@@ -96,7 +96,7 @@ public class ClanCreate extends StdCommand
 				@Override
 				public void showPrompt()
 				{
-					session.promptPrint(L("Are you sure you want to found a new clan (y/N)?"));
+					session.promptPrint(L("Founding a new clan costs @x1, are you sure (y/N)?",CMLib.beanCounter().nameCurrencyShort(mob,cost)));
 				}
 
 				@Override
