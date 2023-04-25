@@ -205,7 +205,7 @@ public class Thief_Forgery extends ThiefSkill
 					if(forgeI.Name().startsWith(name))
 						found=true;
 				}
-				if(found)
+				if(found || CMStrings.containsWord(forgeI.Name(), L("painting")))
 				{
 					newName=forgeI.name();
 					newDisplay=forgeI.displayText();
