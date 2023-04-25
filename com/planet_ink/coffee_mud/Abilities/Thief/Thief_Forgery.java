@@ -80,6 +80,23 @@ public class Thief_Forgery extends ThiefSkill
 		return triggerStrings;
 	}
 
+	protected String getBrand(final Item buildingI)
+	{
+		if(buildingI != null)
+		{
+			final int x=buildingI.secretIdentity().indexOf(ItemCraftor.CRAFTING_BRAND_STR_PREFIX);
+			if(x>=0)
+			{
+				final int y=buildingI.secretIdentity().indexOf('.',x+ItemCraftor.CRAFTING_BRAND_STR_PREFIX.length());
+				if(y>=0)
+				{
+					return buildingI.secretIdentity().substring(x,y);
+				}
+			}
+		}
+		return "";
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -168,6 +185,31 @@ public class Thief_Forgery extends ThiefSkill
 					newDescription=note.description();
 					newSecretIdentity=note.rawSecretIdentity();
 					break;
+				}
+			}
+		}
+		if(newName.length()==0)
+		{
+			final Item forgeI=mob.findItem(null, forgeWhat);
+			if((forgeI!=null)
+			&&(CMLib.flags().canBeSeenBy(target,mob))
+			&&(getBrand(forgeI).length()>0))
+			{
+				final RecipeDriven RA=(RecipeDriven)CMClass.getAbility("Painting");
+				boolean found=false;
+				for(final List<String> recipe : RA.fetchRecipes())
+				{
+					final String name = CMLib.english().startWithAorAn(
+							recipe.get(RecipeDriven.RCP_FINALNAME)
+						) + L(" of ");
+					if(forgeI.Name().startsWith(name))
+						found=true;
+				}
+				if(found)
+				{
+					newName=forgeI.name();
+					newDisplay=forgeI.displayText();
+					newDescription=forgeI.description();
 				}
 			}
 		}
