@@ -158,7 +158,8 @@ public class Painting extends CommonSkill implements RecipeDriven
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((building!=null)
+				&&(!aborted))
 				{
 					if(messedUp)
 						commonTelL(mob,"<S-NAME> mess(es) up painting @x1.",building.name());
@@ -554,6 +555,7 @@ public class Painting extends CommonSkill implements RecipeDriven
 		building.recoverPhyStats();
 		building.text();
 		building.recoverPhyStats();
+		setBrand(mob, building);
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 		duration=getDuration(25,mob,1,2);
