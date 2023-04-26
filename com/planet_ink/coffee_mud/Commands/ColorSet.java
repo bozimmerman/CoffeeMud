@@ -177,7 +177,7 @@ public class ColorSet extends StdCommand
 				mob.tell(L("Player '@x1' doesn't exist.",whomName));
 			else
 			{
-				final boolean unloadAfter = CMLib.players().isLoadedPlayer(whomName);
+				final boolean unloadAfter = !CMLib.players().isLoadedPlayer(whomName);
 				final MOB M=CMLib.players().getLoadPlayer(whomName);
 				final Session sess = mob.session();
 				if((M!=null)
