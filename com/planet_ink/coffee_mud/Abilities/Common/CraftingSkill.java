@@ -458,7 +458,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		{
 			return false;
 		}
-		Item ruinedI = CMLib.utensils().ruinItem(buildingI);
+		final Item ruinedI = CMLib.utensils().ruinItem(buildingI);
 		final CMMsg msg=CMClass.getMsg(mob,ruinedI,this,CMMsg.TYP_ITEMGENERATED|CMMsg.MASK_ALWAYS,null);
 		setMsgXPValue(mob,msg);
 		if(mob.location().okMessage(mob,msg))
@@ -1093,7 +1093,8 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				List<Integer> rscs=myResources();
 				if(rscs.size()==0)
 					rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
-				switch(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK)
+				final int rsc=rscs.get(0).intValue();
+				switch(rsc&RawMaterial.MATERIAL_MASK)
 				{
 				case RawMaterial.MATERIAL_CLOTH:
 					material = RawMaterial.RESOURCE_COTTON;
@@ -1109,7 +1110,10 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 					material = RawMaterial.RESOURCE_WOOD;
 					break;
 				case RawMaterial.MATERIAL_ROCK:
-					material = RawMaterial.RESOURCE_STONE;
+					if((rsc==RawMaterial.RESOURCE_BONE)||(rsc==RawMaterial.RESOURCE_IVORY))
+						material=rsc;
+					else
+						material = RawMaterial.RESOURCE_STONE;
 					break;
 				default:
 					if(((rscs.get(0).intValue()&RawMaterial.RESOURCE_MASK)>0)
