@@ -2130,6 +2130,19 @@ public class CMath
 	}
 
 	/**
+	 * Returns whether the given value is between the from and to values
+	 * (inclusive!).
+	 * @param val the value
+	 * @param from the lowest valid value
+	 * @param to the highest valid value
+	 * @return true if the val is between them
+	 */
+	public final static boolean between(final int val, final int from, final int to)
+	{
+		return (val >= from) && (val <= to);
+	}
+
+	/**
 	 * Replaces the internal Random object with the one
 	 * passed in.  Intended to be used for debugging purposes
 	 * only.

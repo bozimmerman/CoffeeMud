@@ -3702,18 +3702,32 @@ public class ListCmd extends StdCommand
 		final StringBuilder str=new StringBuilder("");
 		final int COL_LEN1=CMLib.lister().fixColWidth(5.0,viewerS);
 		final int COL_LEN2=CMLib.lister().fixColWidth(30.0,viewerS);
-		str.append(CMStrings.padRight(L("##"),COL_LEN1)+" ");
-		str.append(CMStrings.padRight(L("Name"),COL_LEN2)+" ");
-		str.append(L("Interval\n\r"));
 		final List<JournalEntry> jobs = CMLib.database().DBReadJournalMsgsByCreateDate("SYSTEM_CRON", true);
-		for(int i=0;i<jobs.size();i++)
+		if((CMath.isInteger(rest))
+		&&(CMath.between(CMath.s_int(rest),1,jobs.size())))
 		{
-			final JournalEntry E = jobs.get(i);
+			final JournalEntry E = jobs.get(CMath.s_int(rest)-1);
+			str.append(L("^HNAME      ^N: @x1\n\r",E.subj()));
 			final long interval = CMParms.getParmLong(E.data(), "INTERVAL", CMProps.getMillisPerMudHour());
-			str.append(CMStrings.padRight(""+(i+1),COL_LEN1+1));
-			str.append(CMStrings.padRight(E.subj(),COL_LEN2+1));
-			str.append(CMLib.time().date2EllapsedTime(interval, TimeUnit.SECONDS, false));
-			str.append("\n\r");
+			str.append(L("^HINTERVAL  ^N: @x1\n\r",CMLib.time().date2EllapsedTime(interval, TimeUnit.SECONDS, false)));
+			str.append(L("^HSCRIPT    ^N: \n\r"));
+			str.append(E.msg());
+			str.append("^N\n\r");
+		}
+		else
+		{
+			str.append(CMStrings.padRight(L("##"),COL_LEN1)+" ");
+			str.append(CMStrings.padRight(L("Name"),COL_LEN2)+" ");
+			str.append(L("Interval\n\r"));
+			for(int i=0;i<jobs.size();i++)
+			{
+				final JournalEntry E = jobs.get(i);
+				final long interval = CMParms.getParmLong(E.data(), "INTERVAL", CMProps.getMillisPerMudHour());
+				str.append(CMStrings.padRight(""+(i+1),COL_LEN1+1));
+				str.append(CMStrings.padRight(E.subj(),COL_LEN2+1));
+				str.append(CMLib.time().date2EllapsedTime(interval, TimeUnit.SECONDS, false));
+				str.append("\n\r");
+			}
 		}
 		return str.toString();
 	}
