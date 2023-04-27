@@ -60,7 +60,7 @@ public class GiantBat extends StdMOB
 
 		basePhyStats().setDamage(8);
 		basePhyStats().setSpeed(1.0);
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(4);
 		basePhyStats().setArmor(80);
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_FLYING);

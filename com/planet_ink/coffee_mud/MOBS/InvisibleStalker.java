@@ -58,7 +58,7 @@ public class InvisibleStalker extends StdMOB
 
 		basePhyStats().setDamage(16);
 		basePhyStats().setSpeed(1.0);
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(4);
 		basePhyStats().setArmor(0);
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_INVISIBLE);

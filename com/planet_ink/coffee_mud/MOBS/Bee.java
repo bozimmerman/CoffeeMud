@@ -59,7 +59,7 @@ public class Bee extends StdMOB
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 		baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		basePhyStats().setDisposition(PhyStats.IS_FLYING);
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(1);
 		basePhyStats().setArmor(80);
 

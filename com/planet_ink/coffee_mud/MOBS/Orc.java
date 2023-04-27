@@ -63,7 +63,7 @@ public class Orc extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Orc"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(1);
 		basePhyStats().setArmor(90);
 

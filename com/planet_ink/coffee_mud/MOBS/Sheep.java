@@ -52,7 +52,7 @@ public class Sheep extends StdMOB
 
 		basePhyStats().setDamage(1);
 		basePhyStats().setSpeed(1.0);
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(1);
 		basePhyStats().setArmor(90);
 		baseCharStats().setStat(CharStats.STAT_GENDER, CMLib.dice().rollPercentage()>50?'M':'F');

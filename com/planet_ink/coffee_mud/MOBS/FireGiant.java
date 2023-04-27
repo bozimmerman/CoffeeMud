@@ -60,7 +60,7 @@ public class FireGiant extends StdMOB
 
 		basePhyStats().setDamage(20);
 		basePhyStats().setSpeed(1.0);
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(15);
 		basePhyStats().setArmor(-10);
 

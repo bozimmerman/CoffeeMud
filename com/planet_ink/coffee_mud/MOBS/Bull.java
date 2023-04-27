@@ -52,7 +52,7 @@ public class Bull extends StdMOB
 
 		basePhyStats().setDamage(10);
 		basePhyStats().setSpeed(2.0);
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(7);
 		basePhyStats().setArmor(90);
 		baseCharStats().setStat(CharStats.STAT_GENDER, 'M');

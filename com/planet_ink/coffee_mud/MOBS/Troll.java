@@ -59,7 +59,7 @@ public class Troll extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Troll"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(8);
 		basePhyStats().setAttackAdjustment(basePhyStats().attackAdjustment()+20);
 		basePhyStats().setDamage(basePhyStats().damage()+5);

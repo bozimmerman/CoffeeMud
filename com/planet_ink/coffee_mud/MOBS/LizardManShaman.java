@@ -58,7 +58,7 @@ public class LizardManShaman extends LizardMan
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,18);
 
 		baseCharStats().setMyRace(CMClass.getRace("LizardMan"));
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setDamage(6);
 		basePhyStats().setSpeed(3.0);
 		basePhyStats().setLevel(3);

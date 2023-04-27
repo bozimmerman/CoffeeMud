@@ -69,7 +69,7 @@ public class Gnoll extends StdMOB
 		baseCharStats().setStat(CharStats.STAT_CHARISMA,2);
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,22);
 
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(2);
 		basePhyStats().setArmor(90);
 

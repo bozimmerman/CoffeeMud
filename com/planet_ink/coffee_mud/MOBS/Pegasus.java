@@ -64,7 +64,7 @@ public class Pegasus extends StdRideable
 
 		basePhyStats().setDamage(8);
 		basePhyStats().setSpeed(3.0);
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(4);
 		basePhyStats().setArmor(60);
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_FLYING);

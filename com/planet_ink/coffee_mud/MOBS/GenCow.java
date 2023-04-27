@@ -60,7 +60,7 @@ public class GenCow extends GenRideable implements Drink
 		super.riderCapacity=0;
 		basePhyStats().setDamage(1);
 		basePhyStats().setSpeed(1.0);
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(2);
 		basePhyStats().setArmor(90);
 		baseCharStats().setStat(CharStats.STAT_GENDER, 'F');

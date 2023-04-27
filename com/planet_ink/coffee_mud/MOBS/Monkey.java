@@ -55,7 +55,7 @@ public class Monkey extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Monkey"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(2);
 		basePhyStats().setArmor(90);
 

@@ -63,7 +63,7 @@ public class BlackBear extends StdMOB
 
 		basePhyStats().setDamage(6);
 		basePhyStats().setSpeed(1.0);
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(3);
 		basePhyStats().setArmor(80);
 

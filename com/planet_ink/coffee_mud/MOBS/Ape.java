@@ -55,7 +55,7 @@ public class Ape extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Ape"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(6);
 		basePhyStats().setArmor(70);
 

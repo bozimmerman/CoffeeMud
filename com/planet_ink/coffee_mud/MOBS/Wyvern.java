@@ -64,7 +64,7 @@ public class Wyvern extends StdMOB
 
 		basePhyStats().setDamage(16);
 		basePhyStats().setSpeed(2.0);
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(7);
 		basePhyStats().setArmor(70);
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_FLYING);

@@ -59,7 +59,7 @@ public class HeavenlyServent extends StdMOB
 
 		basePhyStats().setDamage(25);
 
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(10);
 		basePhyStats().setArmor(0);
 		baseCharStats().setMyRace(CMClass.getRace("Human"));

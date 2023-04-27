@@ -58,7 +58,7 @@ public class HillGiant extends StdMOB
 
 		basePhyStats().setDamage(19);
 		basePhyStats().setSpeed(1.0);
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(12);
 		basePhyStats().setArmor(0);
 

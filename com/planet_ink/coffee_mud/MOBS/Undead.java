@@ -55,7 +55,7 @@ public class Undead extends StdMOB
 		baseCharStats().getMyRace().startRacing(this,false);
 		basePhyStats().setDamage(8);
 
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(1);
 		basePhyStats().setArmor(90);
 		basePhyStats().setSpeed(1.0);

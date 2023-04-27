@@ -53,7 +53,7 @@ public class StoneGolem extends StdMOB
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(25);
 		basePhyStats().setArmor(-100);
 

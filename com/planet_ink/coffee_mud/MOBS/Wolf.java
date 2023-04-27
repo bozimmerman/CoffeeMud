@@ -62,7 +62,7 @@ public class Wolf extends StdMOB
 
 		basePhyStats().setDamage(6);
 		basePhyStats().setSpeed(1.0);
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(4);
 		basePhyStats().setArmor(80);
 

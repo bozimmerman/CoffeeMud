@@ -67,7 +67,7 @@ public class Puppy extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Puppy"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(1);
 		basePhyStats().setArmor(99);
 

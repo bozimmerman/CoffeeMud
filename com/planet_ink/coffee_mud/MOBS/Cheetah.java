@@ -63,7 +63,7 @@ public class Cheetah extends StdMOB
 
 		basePhyStats().setDamage(8);
 		basePhyStats().setSpeed(2.0);
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(3);
 		basePhyStats().setArmor(80);
 

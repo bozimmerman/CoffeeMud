@@ -56,7 +56,7 @@ public class Chimp extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Chimp"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		basePhyStats().setAbility(0);
+		basePhyStats().setAbility(CMProps.getMobHPBase());
 		basePhyStats().setLevel(4);
 		basePhyStats().setArmor(80);
 
