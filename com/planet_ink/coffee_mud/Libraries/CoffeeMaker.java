@@ -87,7 +87,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		mob.resetToMaxState();
 		if(mob.getWimpHitPoint()>0)
 			mob.setWimpHitPoint((int)Math.round(CMath.mul(mob.curState().getHitPoints(),.10)));
-		mob.setExperience(CMLib.leveler().getLevelExperience(mob, mob.phyStats().level()-1)+500);
+		mob.setExperience(CMLib.leveler().getLevelExperience(mob, mob.basePhyStats().level()-1)+500);
 	}
 
 	@Override

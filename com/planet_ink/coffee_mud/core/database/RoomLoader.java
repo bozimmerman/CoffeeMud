@@ -822,6 +822,12 @@ public class RoomLoader
 				newMOB.basePhyStats().setLevel(((int)DBConnections.getLongRes(R,"CMCHLV")));
 				newMOB.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMCHAB"));
 				newMOB.basePhyStats().setRejuv((int)DBConnections.getLongRes(R,"CMCHRE"));
+				if(!newMOB.isGeneric())
+				{
+					final int oldRejuv = newMOB.basePhyStats().rejuv();
+					CMLib.leveler().fillOutMOB(newMOB, newMOB.basePhyStats().level());
+					newMOB.basePhyStats().setRejuv(oldRejuv);
+				}
 				newMOB.recoverCharStats();
 				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();
@@ -1304,6 +1310,12 @@ public class RoomLoader
 							if(newMOB instanceof SpaceObject)
 							{
 								CMLib.space().addObjectToSpace((SpaceObject)newMOB, ((SpaceObject) newMOB).coordinates());
+							}
+							if(!newMOB.isGeneric())
+							{
+								final int oldRejuv = newMOB.basePhyStats().rejuv();
+								CMLib.leveler().fillOutMOB(newMOB, newMOB.basePhyStats().level());
+								newMOB.basePhyStats().setRejuv(oldRejuv);
 							}
 							newMOB.recoverCharStats();
 							newMOB.recoverPhyStats();

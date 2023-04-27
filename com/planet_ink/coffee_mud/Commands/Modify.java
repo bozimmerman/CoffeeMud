@@ -2267,6 +2267,7 @@ public class Modify extends StdCommand
 			mob.tell(L("@x1 is a player! Try MODIFY USER!",modMOB.Name()));
 			return;
 		}
+		final int oldLevel = modMOB.basePhyStats().level();
 		final MOB copyMOB=(MOB)modMOB.copyOf();
 		mob.location().showOthers(mob,modMOB,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>."));
 		if(command.equals("LEVEL"))
@@ -2328,6 +2329,17 @@ public class Modify extends StdCommand
 			set.addAll(CMLib.coffeeMaker().getAllGenStats(modMOB));
 			mob.tell(L("...but failed to specify an aspect.  Try one of: @x1",CMParms.toListString(set)));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+		}
+		if((!mob.isGeneric())
+		&&(modMOB.basePhyStats().level() != oldLevel))
+		{
+			final int oldRejuv = modMOB.basePhyStats().rejuv();
+			CMLib.leveler().fillOutMOB(modMOB, modMOB.basePhyStats().level());
+			modMOB.basePhyStats().setRejuv(oldRejuv);
+			modMOB.recoverCharStats();
+			modMOB.recoverPhyStats();
+			modMOB.recoverMaxState();
+			modMOB.resetToMaxState();
 		}
 		if(!modMOB.sameAs(copyMOB))
 			Log.sysOut("Mobs",mob.Name()+" modified mob "+modMOB.Name()+".");

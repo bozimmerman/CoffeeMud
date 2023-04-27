@@ -834,6 +834,8 @@ public class Create extends StdCommand
 		long rejuv=CMProps.getTicksPerMinute()+CMProps.getTicksPerMinute()+(CMProps.getTicksPerMinute()/2);
 		if(rejuv>(CMProps.getTicksPerMinute()*20))
 			rejuv=(CMProps.getTicksPerMinute()*20);
+		if(!newMOB.isGeneric())
+			CMLib.leveler().fillOutMOB(newMOB, newMOB.basePhyStats().level());
 		newMOB.phyStats().setRejuv((int)rejuv);
 		newMOB.baseCharStats().getMyRace().setHeightWeight(newMOB.basePhyStats(),newMOB.baseCharStats().reproductiveCode());
 		newMOB.recoverCharStats();

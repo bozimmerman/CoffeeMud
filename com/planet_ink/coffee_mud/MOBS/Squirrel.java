@@ -63,7 +63,7 @@ public class Squirrel extends StdMOB
 		basePhyStats().setLevel(1);
 		basePhyStats().setArmor(90);
 
-		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),CMProps.getMobHPBase(),basePhyStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),CMProps.getMobHPBase()*2,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

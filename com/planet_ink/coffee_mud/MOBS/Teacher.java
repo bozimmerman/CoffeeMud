@@ -66,7 +66,7 @@ public class Teacher extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Human"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		basePhyStats().setAbility(10);
+		basePhyStats().setAbility(50);
 		basePhyStats().setLevel(25);
 		basePhyStats().setArmor(-500);
 		setAttribute(MOB.Attrib.NOTEACH,false);
