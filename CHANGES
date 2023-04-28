@@ -1,4 +1,4 @@
-# Build 5.10.2 Release 4/??/2023
+# Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)
   1. GMODIFY can now affect Areas.
   2. New Races; Mustalids, Badger, Otter, Wolverine, Giant Otter, Dire Otter, Mustie
