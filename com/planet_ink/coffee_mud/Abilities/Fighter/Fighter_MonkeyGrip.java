@@ -160,9 +160,9 @@ public class Fighter_MonkeyGrip extends FighterSkill
 			else
 			{
 				final double pctLoss=0.75 - CMath.mul(.50 + (.05 * super.getXLEVELLevel(M)), CMath.div(proficiency(),100));
-				affectableStats.setDamage(affectableStats.damage()-(int)Math.round(CMath.div(affectableStats.damage(), pctLoss)));
+				affectableStats.setDamage(affectableStats.damage()-(int)Math.round(CMath.mul(affectableStats.damage(), pctLoss)));
 				if(affectableStats.attackAdjustment()>0)
-					affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(CMath.div(affectableStats.attackAdjustment(), pctLoss)));
+					affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(CMath.mul(affectableStats.attackAdjustment(), pctLoss)));
 			}
 		}
 		else
