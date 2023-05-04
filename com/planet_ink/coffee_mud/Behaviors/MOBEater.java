@@ -84,7 +84,7 @@ public class MOBEater extends ActiveTicker
 	@Override
 	public void startBehavior(final PhysicalAgent forMe)
 	{
-		if((forMe!=null)&&(forMe instanceof MOB))
+		if(forMe instanceof MOB)
 		{
 			if(stomachR==null)
 			{
@@ -134,7 +134,9 @@ public class MOBEater extends ActiveTicker
 								final String rest = CMParms.combine(parsedFail,1).toUpperCase().trim();
 								if("HERE".equals(rest)||"STOMACH".startsWith(rest)||"WALLS".startsWith(rest))
 								{
-									final Item I=msg.source().fetchWieldedItem();
+									Item I=msg.source().fetchWieldedItem();
+									if(I == null)
+										I=msg.source().getNaturalWeapon();
 									if((!(I instanceof Weapon))
 									||(I.minRange()>0))
 									{
@@ -146,17 +148,25 @@ public class MOBEater extends ActiveTicker
 										msg.source().tell(L("You are too busy trying to survive right now!"));
 										return false;
 									}
-									final Weapon weapon=(Weapon)I;
-									final int dmg = CMLib.combat().adjustedDamage(msg.source(), (Weapon)I, (MOB)forMe, 0, true, false)/10;
-									final MOB M=CMClass.getFactoryMOB(L("Someone inside @x1",forMe.name()), msg.source().phyStats().level(), ((MOB)forMe).location());
-									try
+									if(!CMLib.combat().rollToHit(msg.source(), (MOB)forMe))
 									{
-										if(stomachR.show(msg.source(), forMe, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> @x1 <T-YOUPOSS> stomach with @x2!",CMLib.combat().standardHitWord(weapon.weaponDamageType(),dmg),I.name(msg.source()))))
-											CMLib.combat().postDamage(M, (MOB)forMe, I, dmg, CMMsg.MSG_WEAPONATTACK, weapon.weaponDamageType(), L("<S-NAME> <DAMAGE> <T-HIM-HER>!"));
+										final Weapon weapon=(Weapon)I;
+										msg.source().tell(L("Your @x1 attack fails to penetrate the stomach.", weapon.name(msg.source())));
 									}
-									finally
+									else
 									{
-										M.destroy();
+										final Weapon weapon=(Weapon)I;
+										final int dmg = CMLib.combat().adjustedDamage(msg.source(), (Weapon)I, (MOB)forMe, 0, true, false)/10;
+										final MOB M=CMClass.getFactoryMOB(L("Someone inside @x1",forMe.name()), msg.source().phyStats().level(), ((MOB)forMe).location());
+										try
+										{
+											if(stomachR.show(msg.source(), forMe, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> @x1 <T-YOUPOSS> stomach with @x2!",CMLib.combat().standardHitWord(weapon.weaponDamageType(),dmg),I.name(msg.source()))))
+												CMLib.combat().postDamage(M, (MOB)forMe, I, dmg, CMMsg.MSG_WEAPONATTACK, weapon.weaponDamageType(), L("<S-NAME> <DAMAGE> <T-HIM-HER>!"));
+										}
+										finally
+										{
+											M.destroy();
+										}
 									}
 									return false;
 								}
@@ -171,6 +181,7 @@ public class MOBEater extends ActiveTicker
 
 	public void kill()
 	{
+		final Room stomachR = this.stomachR;
 		if((lastKnownLocationR==null)
 		||(stomachR==null))
 			return;
@@ -246,6 +257,19 @@ public class MOBEater extends ActiveTicker
 			digestDown=4;
 			digestTastyMorsels(mob);
 		}
+		final Room stomachR = this.stomachR;
+		if(stomachR != null)
+		{
+			final int morselCount = stomachR.numInhabitants();
+			for (int x=0;x<morselCount;x++)
+			{
+				// ===== let a tasty morsel
+				final MOB tastyMorselM = stomachR.fetchInhabitant(x);
+				if((tastyMorselM != null)
+				&&(tastyMorselM.isMonster()))
+					tastyMorselM.enqueCommand(new XVector<String>("ATTACK", "STOMACH"), MUDCmdProcessor.METAFLAG_FORCED, 1.0);
+			}
+		}
 
 		if((canAct(ticking,tickID))
 		&&(((MOB)ticking).isInCombat())
@@ -268,6 +292,7 @@ public class MOBEater extends ActiveTicker
 
 	protected boolean trySwallowWhole(final MOB mob)
 	{
+		final Room stomachR = this.stomachR;
 		if(stomachR==null)
 			return true;
 		if (CMLib.flags().isAliveAwakeMobile(mob,true)
@@ -277,7 +302,7 @@ public class MOBEater extends ActiveTicker
 			final MOB tastyMorselM = mob.getVictim();
 			if(tastyMorselM==null)
 				return true;
-			if (tastyMorselM.baseWeight()<(mob.phyStats().weight()/2))
+			if (tastyMorselM.baseWeight()<(mob.phyStats().weight()/3))
 			{
 				// ===== The player has been eaten.
 				// ===== move the tasty morsel to the stomach
@@ -290,16 +315,19 @@ public class MOBEater extends ActiveTicker
 												  L("<S-NAME> swallow(es) <T-NAMESELF> WHOLE!"));
 				if(mob.location().okMessage(tastyMorselM,eatMsg))
 				{
-					mob.location().send(tastyMorselM,eatMsg);
 					if(eatMsg.value()==0)
 					{
+						mob.location().send(tastyMorselM,eatMsg);
 						mob.curState().setHunger(mob.maxState().maxHunger(mob.baseWeight()));
 						stomachR.bringMobHere(tastyMorselM,false);
-						final CMMsg enterMsg=CMClass.getMsg(tastyMorselM,stomachR,null,CMMsg.MSG_ENTER,stomachR.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
+						final CMMsg enterMsg=CMClass.getMsg(tastyMorselM,stomachR,null,CMMsg.MSG_ENTER,stomachR.description(),
+								CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
 						stomachR.send(tastyMorselM,enterMsg);
 						if(tastyMorselM.isPlayer())
 							CMLib.achievements().possiblyBumpAchievement(tastyMorselM, Event.AREAVISIT, 1, new Object[] {stomachR.getArea(), stomachR});
 					}
+					else
+						tastyMorselM.location().show(tastyMorselM, null, CMMsg.MSG_OK_VISUAL, L("<S-NAME> avoid(s) being eaten!"));
 				}
 			}
 		}
@@ -318,17 +346,17 @@ public class MOBEater extends ActiveTicker
 			final MOB tastyMorselM = stomachR.fetchInhabitant(x);
 			if (tastyMorselM != null)
 			{
-				final CMMsg DigestMsg=CMClass.getMsg(mob,
+				final CMMsg digestMsg=CMClass.getMsg(mob,
 													 tastyMorselM,
 													 null,
 													 CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,
 													 L("<S-NAME> digest(s) <T-NAMESELF>!!"));
 				// no OKaffectS, since the dragon is not in his own stomach.
-				stomachR.send(mob,DigestMsg);
+				stomachR.send(mob,digestMsg);
 				int damage=(int)Math.round(tastyMorselM.curState().getHitPoints() * CMath.div(pctAcidHp, 100));
 				if(damage<2)
 					damage=2;
-				if(DigestMsg.value()!=0)
+				if(digestMsg.value()!=0)
 					damage=damage/2;
 				CMLib.combat().postDamage(mob,tastyMorselM,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,L("The stomach acid <DAMAGE> <T-NAME>!"));
 			}

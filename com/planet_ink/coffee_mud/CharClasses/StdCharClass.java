@@ -923,9 +923,15 @@ public class StdCharClass implements CharClass
 		return 0;
 	}
 
+	protected boolean allowedToAutoGain(final MOB mob, final Ability A)
+	{
+		return true;
+	}
+
 	@Override
 	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
+		final AbilityMapper mapper = CMLib.ableMapper();
 		if(CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ALLSKILLS)
 		&&(mob.soulMate()==null))
 		{
@@ -943,11 +949,11 @@ public class StdCharClass implements CharClass
 				final Ability A=mob.fetchAbility(a);
 				if(A!=null)
 				{
-					A.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
+					A.setProficiency(mapper.getMaxProficiency(mob,true,A.ID()));
 					A.setSavable(false);
 					final Ability A2=alreadyAff.get(A.ID());
 					if(A2!=null)
-						A2.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A2.ID()));
+						A2.setProficiency(mapper.getMaxProficiency(mob,true,A2.ID()));
 					else
 						A.autoInvocation(mob, false);
 					alreadyAble.put(A.ID(),A);
@@ -956,9 +962,9 @@ public class StdCharClass implements CharClass
 			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				final int lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+				final int lvl=mapper.lowestQualifyingLevel(A.ID());
 				if((lvl>=0)
-				&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
+				&&(mapper.qualifiesByAnyCharClass(A.ID()))
 				&&(!alreadyAble.containsKey(A.ID())))
 					giveMobAbility(mob,A,100,"",true,false);
 			}
@@ -974,11 +980,12 @@ public class StdCharClass implements CharClass
 			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				final AbilityMapping mapping = CMLib.ableMapper().getQualifyingMapping(ID(), true, A.ID());
+				final AbilityMapping mapping = mapper.getQualifyingMapping(ID(), true, A.ID());
 				if((mapping != null)
 				&&(mapping.qualLevel()>0)
 				&&(mapping.qualLevel()<=classLevel)
-				&&(mapping.autoGain()))
+				&&(mapping.autoGain())
+				&&(allowedToAutoGain(mob,A)))
 				{
 					final String extraMask=mapping.extraMask();
 					if((extraMask==null)

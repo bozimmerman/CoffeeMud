@@ -42,8 +42,8 @@ public class Paladin extends StdCharClass
 	}
 
 	private final static String localizedStaticName = CMLib.lang().L("Paladin");
-	//private final static String localizedStaticName2 = CMLib.lang().L("Fallen Paladin");
-	//private final static String localizedStaticName3 = CMLib.lang().L("Anti-Paladin");
+	private final static String localizedStaticName2 = CMLib.lang().L("Fallen Paladin");
+	private final static String localizedStaticName3 = CMLib.lang().L("Anti-Paladin");
 
 	@Override
 	public String name()
@@ -153,6 +153,7 @@ public class Paladin extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Bash",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Paladin_HolyStrike",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Paladin_UnholyStrike",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Paladin_SummonMount",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureLight",false);
@@ -254,56 +255,27 @@ public class Paladin extends StdCharClass
 	{
 		if(quiet)
 			return super.qualifiesForThisClass(mob, quiet);
-		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)
-		||CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+		if(!isPaladinAlignment(mob))
 		{
 			if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
 			{
-				if((!CMLib.flags().isGood(mob)))//&&(!CMLib.flags().isEvil(mob)))
-				{
-					mob.tell(L("You must be good to be a paladin."));
-					//mob.tell(L("You must be good or evil to be a paladin."));
-					return false;
-				}
+				if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+					mob.tell(L("You must be lawful/good or chaotic/evil to be a paladin."));
+				else
+					mob.tell(L("You must be good or evil to be a paladin."));
 			}
+			else
 			if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
-			{
-				if((!CMLib.flags().isLawful(mob)))//&&(!CMLib.flags().isChaotic(mob)))
-				{
-					mob.tell(L("You must be lawful to be a paladin."));
-					//mob.tell(L("You must be lawful or chaotic to be a paladin."));
-					return false;
-				}
-			}
-			return super.qualifiesForThisClass(mob, quiet);
+				mob.tell(L("You must be lawful or chaotic to be a paladin."));
+			return false;
 		}
-		return false;
+		return super.qualifiesForThisClass(mob, quiet);
 	}
 
 	@Override
-	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
+	protected boolean allowedToAutoGain(final MOB mob, final Ability A)
 	{
-		super.grantAbilities(mob,isBorrowedClass);
-		if(mob.playerStats()==null)
-		{
-			final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
-												mob.charStats().getClassLevel(ID()),
-												false,
-												false);
-			for(final AbilityMapper.AbilityMapping able : V)
-			{
-				final Ability A=CMClass.getAbility(able.abilityID());
-				if((A!=null)
-				&&(!CMLib.ableMapper().getAllQualified(ID(),true,A.ID()))
-				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
-				{
-					giveMobAbility(mob,A,
-								   CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),
-								   CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),
-								   isBorrowedClass);
-				}
-			}
-		}
+		return A.appropriateToMyFactions(mob);
 	}
 
 	@Override
@@ -317,8 +289,7 @@ public class Paladin extends StdCharClass
 	@Override
 	public String getOtherLimitsDesc()
 	{
-		return L("Must remain lawful/good to avoid spell/skill failure chance.");
-		//return L("Must remain lawful/good or chaotic/evil to avoid spell/skill failure chance.");
+		return L("Must remain lawful/good or chaotic/evil to avoid prayer/skill failure chance.");
 	}
 
 	@Override
@@ -327,17 +298,50 @@ public class Paladin extends StdCharClass
 		return L("Receives bonus conquest and duel experience.");
 	}
 
+	protected boolean isPaladinAlignment(final MOB mob)
+	{
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+		{
+			if(CMLib.flags().isGood(mob))
+			{
+				if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+				{
+					if(CMLib.flags().isLawful(mob))
+						return true;
+				}
+				else
+					return true;
+			}
+			else
+			if(CMLib.flags().isEvil(mob))
+			{
+				if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+				{
+					if(CMLib.flags().isChaotic(mob))
+						return true;
+				}
+				else
+					return true;
+			}
+		}
+		else
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+		{
+			if((CMLib.flags().isLawful(mob))||(CMLib.flags().isChaotic(mob)))
+				return true;
+		}
+		return false;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB))
 			return super.okMessage(myHost,msg);
 		final MOB myChar=(MOB)myHost;
-		//TODO: ACCOMODATE ANTI-PALADINS HERE
 		if((msg.amISource(myChar))
 		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-		&&(((!CMLib.flags().isGood(myChar))&&(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)))
-			||((!CMLib.flags().isLawful(myChar))&&(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))))
+		&&(!isPaladinAlignment(myChar))
 		&&((msg.tool()==null)||((CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())>0)
 								&&(myChar.isMine(msg.tool()))))
 		&&(CMLib.dice().rollPercentage()>myChar.charStats().getStat(CharStats.STAT_WISDOM)*2))
@@ -348,7 +352,7 @@ public class Paladin extends StdCharClass
 		return super.okMessage(myChar, msg);
 	}
 
-	private final String[] raceRequiredList=new String[]{"Human","Humanoid"};
+	private final String[] raceRequiredList=new String[]{"Human","Humanoid","Githyanki"};
 
 	@Override
 	public String[] getRequiredRaceList()
@@ -386,7 +390,6 @@ public class Paladin extends StdCharClass
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		/*
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
 		{
 			if(CMLib.flags().isGood(affectedMOB))
@@ -437,6 +440,5 @@ public class Paladin extends StdCharClass
 			affectableStats.setDisplayClassLevel(localizedStaticName2);
 			return;
 		}
-		*/
 	}
 }

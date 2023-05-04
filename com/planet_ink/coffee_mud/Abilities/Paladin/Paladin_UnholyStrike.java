@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2014-2023 Bo Zimmerman
+   Copyright 2023-2023 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Paladin_HolyStrike extends StdAbility
+public class Paladin_UnholyStrike extends StdAbility
 {
 	@Override
 	public String ID()
 	{
-		return "Paladin_HolyStrike";
+		return "Paladin_UnholyStrike";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Holy Strike");
+	private final static String	localizedName	= CMLib.lang().L("Unholy Strike");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class Paladin_HolyStrike extends StdAbility
 		return localizedName;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "HOLYSTRIKE" });
+	private static final String[]	triggerStrings	= I(new String[] { "UNHOLYSTRIKE" });
 
 	@Override
 	public int abstractQuality()
@@ -96,7 +96,7 @@ public class Paladin_HolyStrike extends StdAbility
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY;
+		return Ability.FLAG_UNHOLY;
 	}
 
 	@Override
@@ -121,9 +121,9 @@ public class Paladin_HolyStrike extends StdAbility
 			{
 				final String deityName=msg.source().charStats().getWorshipCharID();
 				if(deityName.length()>0)
-					mob.location().show(msg.source(),msg.target(),this,CMMsg.MSG_OK_VISUAL, L("A blinding holy light from @x1 comes down upon <T-NAME>!",deityName));
+					mob.location().show(msg.source(),msg.target(),this,CMMsg.MSG_OK_VISUAL, L("A dark unholy shadow from @x1 comes down upon <T-NAME>!",deityName));
 				else
-					mob.location().show(msg.source(),msg.target(),this,CMMsg.MSG_OK_VISUAL, L("A blinding holy light comes down upon <T-NAME>!"));
+					mob.location().show(msg.source(),msg.target(),this,CMMsg.MSG_OK_VISUAL, L("A dark unholy shadow comes down upon <T-NAME>!"));
 			}
 			msg.setValue((msg.value()*2)+super.getXLEVELLevel(invoker));
 			unInvoke();
@@ -136,7 +136,7 @@ public class Paladin_HolyStrike extends StdAbility
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
 			if(!quiet)
-			mob.tell(L("You are too far away to do a holy strike!"));
+			mob.tell(L("You are too far away to do an unholy strike!"));
 			return false;
 		}
 		if(!PaladinSkill.paladinAlignmentCheck(this, mob, false))
@@ -149,7 +149,7 @@ public class Paladin_HolyStrike extends StdAbility
 		||(((Weapon)w).weaponClassification()==Weapon.CLASS_THROWN))
 		{
 			if(!quiet)
-				mob.tell(L("You need a melee to perform a holy strike!"));
+				mob.tell(L("You need a melee to perform an unholy strike!"));
 			return false;
 		}
 		return true;
@@ -179,15 +179,15 @@ public class Paladin_HolyStrike extends StdAbility
 			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(L("@x1 already has a holy strike charged against @x2.",target.name(mob),target.charStats().himher()));
+			mob.tell(L("@x1 already has an unholy strike charged against @x2.",target.name(mob),target.charStats().himher()));
 			return false;
 		}
-		if((!CMLib.flags().isEvil(target))&&(!CMLib.flags().isChaotic(target)))
+		if((!CMLib.flags().isGood(target))&&(!CMLib.flags().isLawful(target)))
 		{
 			if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
-				mob.tell(L("But @x1 is not evil!",target.name(mob)));
+				mob.tell(L("But @x1 is not good!",target.name(mob)));
 			else
-				mob.tell(L("But @x1 is not chaotic!",target.name(mob)));
+				mob.tell(L("But @x1 is not lawful!",target.name(mob)));
 			return false;
 		}
 
@@ -213,7 +213,7 @@ public class Paladin_HolyStrike extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,L("<S-NAME> call(s) a holy strike against , but fail(s) <S-HIS-HER> attack."));
+			return maliciousFizzle(mob,null,L("<S-NAME> call(s) an unholy strike against , but fail(s) <S-HIS-HER> attack."));
 
 		// return whether it worked
 		return success;
