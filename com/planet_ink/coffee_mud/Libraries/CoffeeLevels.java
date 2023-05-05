@@ -287,11 +287,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return new double[]{2,mob.basePhyStats().level()+10};
 	}
 
-	protected String doBaseLevelAdjustment(final MOB mob, final int adjuster)
+	protected String doBaseLevelAdjustment(final MOB mob, final int[] costGains, final boolean gain)
 	{
 		synchronized(mob.basePhyStats())
 		{
-			mob.basePhyStats().setLevel(mob.basePhyStats().level()+adjuster);
+			mob.basePhyStats().setLevel(mob.basePhyStats().level()+(gain?1:-1));
 		}
 		synchronized(mob.phyStats())
 		{
@@ -303,11 +303,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		{
 			curClass=mob.baseCharStats().getCurrentClass();
 			oldClassLevel = mob.baseCharStats().getClassLevel(curClass);
-			mob.baseCharStats().setClassLevel(curClass,oldClassLevel+adjuster);
+			mob.baseCharStats().setClassLevel(curClass,oldClassLevel+(gain?1:-1));
 		}
 		synchronized(mob.charStats())
 		{
-			mob.charStats().setClassLevel(curClass,oldClassLevel+adjuster);
+			mob.charStats().setClassLevel(curClass,oldClassLevel+(gain?1:-1));
 		}
 		final int classLevel;
 		synchronized(mob.baseCharStats())
@@ -318,13 +318,15 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(gained<50)
 			gained=50;
 
+		costGains[CostDef.CostType.XP.ordinal()] = gained;
 		final StringBuilder theNews=new StringBuilder("");
 
 		mob.recoverCharStats();
 		mob.recoverPhyStats();
 		theNews.append("^HYou are now a "+mob.charStats().displayClassLevel(mob,false)+".^N\n\r");
 
-		final int newHitPointGain = getPlayerHPBonusNextLevel(mob) * adjuster;
+		final int oldHpCost = costGains[CostDef.CostType.HITPOINT.ordinal()];
+		final int newHitPointGain = (gain||oldHpCost==0)?getPlayerHPBonusNextLevel(mob) : -oldHpCost;
 		if(mob.getWimpHitPoint() > 0)
 		{
 			final double wimpPct = CMath.div(mob.getWimpHitPoint(), mob.baseState().getHitPoints());
@@ -334,30 +336,37 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(mob.baseState().getHitPoints()<CMProps.getIntVar(CMProps.Int.STARTHP))
 			mob.baseState().setHitPoints(CMProps.getIntVar(CMProps.Int.STARTHP));
 		mob.curState().setHitPoints(mob.curState().getHitPoints()+newHitPointGain);
+		costGains[CostDef.CostType.HITPOINT.ordinal()] = newHitPointGain;
 		theNews.append("^NYou have gained ^H"+newHitPointGain+"^? hit " +
 			(newHitPointGain!=1?"points":"point") + ", ^H");
 
-		final int mvGain = getMoveBonusNextLevel(mob) * adjuster;
+		final int oldMvCost = costGains[CostDef.CostType.MOVEMENT.ordinal()];
+		final int mvGain = (gain||oldMvCost==0)?getMoveBonusNextLevel(mob) : -oldMvCost;
 		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
+		costGains[CostDef.CostType.MOVEMENT.ordinal()] = mvGain;
 		theNews.append(mvGain+"^N move " + (mvGain!=1?"points":"point") + ", ^H");
 
-		final int attGain=getAttackBonusNextLevel(mob) * adjuster;
+		final int oldAttCost = costGains[CostDef.CostType.QP.ordinal()];
+		final int attGain=(gain||oldAttCost==0)?getAttackBonusNextLevel(mob) : -oldAttCost;
 		mob.basePhyStats().setAttackAdjustment(mob.basePhyStats().attackAdjustment()+attGain);
 		mob.phyStats().setAttackAdjustment(mob.phyStats().attackAdjustment()+attGain);
+		costGains[CostDef.CostType.QP.ordinal()] = attGain;
 		if(attGain>0)
 			theNews.append(attGain+"^N attack " + (attGain!=1?"points":"point") + ", ^H");
 
-		final int manaGain = getManaBonusNextLevel(mob) * adjuster;
+		final int oldManaCost = costGains[CostDef.CostType.MANA.ordinal()];
+		final int manaGain = (gain||oldManaCost==0)?getManaBonusNextLevel(mob) : -oldManaCost;
 		mob.baseState().setMana(mob.baseState().getMana()+manaGain);
+		costGains[CostDef.CostType.MANA.ordinal()] = manaGain;
 		theNews.append(manaGain+"^N " + (manaGain!=1?"points":"point") + " of mana,");
 
 		if(curClass.getLevelsPerBonusDamage()!=0)
 		{
-			if((adjuster<0)&&(((classLevel+1)%curClass.getLevelsPerBonusDamage())==0))
+			if((!gain)&&(((classLevel+1)%curClass.getLevelsPerBonusDamage())==0))
 				mob.basePhyStats().setDamage(mob.basePhyStats().damage()-1);
 			else
-			if((adjuster>0)&&((classLevel%curClass.getLevelsPerBonusDamage())==0))
+			if((gain)&&((classLevel%curClass.getLevelsPerBonusDamage())==0))
 				mob.basePhyStats().setDamage(mob.basePhyStats().damage()+1);
 		}
 		mob.recoverMaxState();
@@ -385,19 +394,27 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has just lost a level.",mob.Name()),true);
 		}
 
+		final int level = mob.basePhyStats().level();
 		final CharClass curClass=mob.baseCharStats().getCurrentClass();
 		final int oldClassLevel=mob.baseCharStats().getClassLevel(curClass);
-		doBaseLevelAdjustment(mob,-1);
+		int[] costGains = new int[CostDef.CostType.values().length];
+		if(mob.playerStats() != null)
+			costGains = Arrays.copyOf(mob.playerStats().leveledCostGains(level), costGains.length);
+		doBaseLevelAdjustment(mob,costGains,false);
 		int prac2Stat=mob.charStats().getStat(CharStats.STAT_WISDOM);
 		final int maxPrac2Stat=(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)));
 		if(prac2Stat>maxPrac2Stat)
 			prac2Stat=maxPrac2Stat;
 		int practiceGain=(int)Math.floor(CMath.div(prac2Stat,6.0))+curClass.getBonusPracLevel();
+		if(costGains[CostDef.CostType.PRACTICE.ordinal()]!=0)
+			practiceGain = costGains[CostDef.CostType.PRACTICE.ordinal()];
 		if(practiceGain<=0)
 			practiceGain=1;
 		mob.setPractices(mob.getPractices()-practiceGain);
 		int trainGain=0;
+		if(costGains[CostDef.CostType.TRAIN.ordinal()]!=0)
+			trainGain = costGains[CostDef.CostType.TRAIN.ordinal()];
 		if(trainGain<=0)
 			trainGain=1;
 		mob.setTrains(mob.getTrains()-trainGain);
@@ -1109,14 +1126,36 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			}
 		}
 
-		final String levelAdjustmentMsg = doBaseLevelAdjustment(mob,1);
+		final int[] costGains = new int[CostDef.CostType.values().length];
+		final String levelAdjustmentMsg = doBaseLevelAdjustment(mob,costGains,true);
 
 		final StringBuilder theNews=new StringBuilder("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMLib.protocol().msp("levelgain.wav",60));
 		CharClass curClass=mob.baseCharStats().getCurrentClass();
 		theNews.append(levelAdjustmentMsg);
+
+		int prac2Stat=mob.charStats().getStat(CharStats.STAT_WISDOM);
+		final int maxPrac2Stat=(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)
+					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)));
+		if(prac2Stat>maxPrac2Stat)
+			prac2Stat=maxPrac2Stat;
+		int practiceGain=(int)Math.floor(CMath.div(prac2Stat,6.0))+curClass.getBonusPracLevel();
+		if(practiceGain<=0)
+			practiceGain=1;
+		mob.setPractices(mob.getPractices()+practiceGain);
+		costGains[CostDef.CostType.PRACTICE.ordinal()] = practiceGain;
+		theNews.append(" ^H" + practiceGain+"^N practice " +
+			( practiceGain != 1? "points" : "point" ) + ", ");
+
+		int trainGain=1;
+		if(trainGain<=0)
+			trainGain=1;
+		mob.setTrains(mob.getTrains()+trainGain);
+		costGains[CostDef.CostType.TRAIN.ordinal()] = trainGain;
+		theNews.append("and ^H"+trainGain+"^N training "+ (trainGain != 1? "sessions" : "session" )+".\n\r^N");
+
 		if(mob.playerStats()!=null)
 		{
-			mob.playerStats().setLeveledDateTime(mob.basePhyStats().level(),mob.getAgeMinutes(),room);
+			mob.playerStats().recordLevelData(mob.basePhyStats().level(),mob.getAgeMinutes(),room, costGains);
 			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DETAILEDLEVELS, mob);
 			final List<String> channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LEVELS, mob);
 			channels2.removeAll(channels);
@@ -1131,24 +1170,6 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			for(final Pair<Clan,Integer> p : mob.clans())
 				p.first.bumpTrophyData(Trophy.PlayerLevelsGained, 1);
 		}
-
-		int prac2Stat=mob.charStats().getStat(CharStats.STAT_WISDOM);
-		final int maxPrac2Stat=(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)));
-		if(prac2Stat>maxPrac2Stat)
-			prac2Stat=maxPrac2Stat;
-		int practiceGain=(int)Math.floor(CMath.div(prac2Stat,6.0))+curClass.getBonusPracLevel();
-		if(practiceGain<=0)
-			practiceGain=1;
-		mob.setPractices(mob.getPractices()+practiceGain);
-		theNews.append(" ^H" + practiceGain+"^N practice " +
-			( practiceGain != 1? "points" : "point" ) + ", ");
-
-		int trainGain=1;
-		if(trainGain<=0)
-			trainGain=1;
-		mob.setTrains(mob.getTrains()+trainGain);
-		theNews.append("and ^H"+trainGain+"^N training "+ (trainGain != 1? "sessions" : "session" )+".\n\r^N");
 
 		mob.tell(theNews.toString());
 		curClass=mob.baseCharStats().getCurrentClass();
@@ -1276,7 +1297,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 	protected boolean fixMobStatsIfNecessary(final MOB mob, final int direction)
 	{
-		if((mob.playerStats()==null)&&(mob.baseCharStats().getCurrentClass().name().equals("mob"))) // mob leveling
+		if((mob.playerStats()==null)
+		&&(mob.baseCharStats().getCurrentClass().name().equals("mob"))) // mob leveling
 		{
 			mob.basePhyStats().setSpeed(getLevelMOBSpeed(mob));
 			mob.basePhyStats().setArmor(getLevelMOBArmor(mob));

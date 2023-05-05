@@ -70,7 +70,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	/**
 	 * The time, in milis since 1970, that the player gained the given level
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, long, Room)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#recordLevelData(int, long, Room, int)
 	 *
 	 * @param level the level to check for
 	 * @return the time, in milis since 1970, that the player gained the given level
@@ -80,7 +80,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	/**
 	 * The roomID that the player gained the given level
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, long, Room)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#recordLevelData(int, long, Room, int)
 	 *
 	 * @param level  the level to check for
 	 * @return roomID that the player gained the given level
@@ -90,12 +90,22 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	/**
 	 * The number of minutes played when the player gained the given level
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, long, Room)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#recordLevelData(int, long, Room, int)
 	 *
 	 * @param level the level to check for
 	 * @return the minutes played before the player gained the given level
 	 */
 	public long leveledMinutesPlayed(int level);
+
+	/**
+	 * The number of pracs gained when the player gained the given level
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#recordLevelData(int, long, Room, int)
+	 *
+	 * @param level the level to check for
+	 * @return the pracs gained before the player gained the given level
+	 */
+	public int[] leveledCostGains(final int level);
 
 	/**
 	 * Notifies the player records that, at the moment this method was called,
@@ -106,8 +116,9 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @param level the level to set up
 	 * @param ageHours the hours played at this point
 	 * @param R the room in which the level was gained
+	 * @param costGains the number of CostType[] gains at the level
 	 */
-	public void setLeveledDateTime(int level, long ageHours, Room R);
+	public void recordLevelData(final int level, final long ageHours, final Room R, final int[] costGains);
 
 	/**
 	 * Returns a bitmask of channels turned on/off. (32 channels supported)
