@@ -2112,10 +2112,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				case 'k':
 				{
 					MOB tank = mob;
-					if ((tank.getVictim() != null)
-					&& (tank.getVictim().getVictim() != null)
-					&& (tank.getVictim().getVictim() != mob))
-						tank = tank.getVictim().getVictim();
+					final MOB tvic = mob.getVictim();
+					if ((tvic != null)
+					&& (tvic.getVictim() != null)
+					&& (tvic.getVictim() != mob))
+						tank = tvic.getVictim();
 					if (((c + 1) < prompt.length()) && (tank != null))
 					{
 						switch (prompt.charAt(c + 1))

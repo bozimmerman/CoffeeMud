@@ -502,11 +502,17 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		if(msg.amISource(merchantM)
 		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{
-			Item I=(Item)getShop().removeStock("all",merchantM);
-			while(I!=null)
+			final Room R=merchantM.location();
+			Environmental E=getShop().removeStock("all",merchantM);
+			while(E!=null)
 			{
-				merchantM.addItem(I);
-				I=(Item)getShop().removeStock("all",merchantM);
+				if(E instanceof Item)
+					merchantM.addItem((Item)E);
+				else
+				if((E instanceof MOB)
+				&&(R!=null))
+					((MOB)E).bringToLife(R, true);
+				E=getShop().removeStock("all",merchantM);
 			}
 			merchantM.recoverPhyStats();
 		}
