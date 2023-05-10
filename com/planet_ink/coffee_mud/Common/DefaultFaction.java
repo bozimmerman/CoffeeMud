@@ -1211,8 +1211,8 @@ public class DefaultFaction implements Faction, MsgListener
 
 			if(usage.possibleAbilityID()
 			||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_ACODES)==usage.type()))
-				&&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
-				&&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
+				&&((usage.flagsBitmap()<0)||(CMath.bset(A.flags(),usage.flagsBitmap())))
+				&&((usage.notFlagsBitmap()<0)||(!CMath.bset(A.flags(),usage.notFlagsBitmap())))
 				&&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
 			{
 				abilityUseCache.put(A.ID(), usage);
@@ -1236,9 +1236,18 @@ public class DefaultFaction implements Faction, MsgListener
 		if(usage == null)
 			return true;
 		final int faction=mob.fetchFaction(_factionID);
-		if((faction < usage.low()) || (faction > usage.high()))
+		if(usage.notRange())
+		{
+			if((faction < usage.low()) || (faction > usage.high()))
+				return true;
 			return false;
-		return true;
+		}
+		else
+		{
+			if((faction < usage.low()) || (faction > usage.high()))
+				return false;
+			return true;
+		}
 	}
 
 	@Override
@@ -2004,14 +2013,31 @@ public class DefaultFaction implements Faction, MsgListener
 			for(final Enumeration<FRange> e=ranges();e.hasMoreElements();)
 			{
 				final FRange R=e.nextElement();
-				if((((R.high()<=usage.high())&&(R.high()>=usage.low()))
-					||((R.low()>=usage.low()))&&(R.low()<=usage.high()))
-				&&(!namesAdded.contains(R.name())))
+				if(!namesAdded.contains(R.name()))
 				{
-					namesAdded.add(R.name());
-					if(rangeStr.length()>0)
-						rangeStr.append(", ");
-					rangeStr.append(R.name());
+					final
+					boolean inRange = (((R.high()<=usage.high())&&(R.high()>=usage.low()))
+									 ||((R.low()>=usage.low()))&&(R.low()<=usage.high()));
+					if(usage.notRange())
+					{
+						if(!inRange)
+						{
+							namesAdded.add(R.name());
+							if(rangeStr.length()>0)
+								rangeStr.append(", ");
+							rangeStr.append(R.name());
+						}
+					}
+					else
+					{
+						if(inRange)
+						{
+							namesAdded.add(R.name());
+							if(rangeStr.length()>0)
+								rangeStr.append(", ");
+							rangeStr.append(R.name());
+						}
+					}
 				}
 			}
 		}
@@ -3317,16 +3343,17 @@ public class DefaultFaction implements Faction, MsgListener
 
 	}
 
-	public class DefaultFactionAbilityUsage implements Faction.FAbilityUsage
+	private class DefaultFactionAbilityUsage implements Faction.FAbilityUsage
 	{
-		public String	ID					= "";
-		public boolean	possibleAbilityID	= false;
-		public int		type				= -1;
-		public int		domain				= -1;
-		public long		flag				= -1;
-		public int		low					= 0;
-		public int		high				= 0;
-		public long		notflag				= -1;
+		private String	ID					= "";
+		private boolean	possibleAbilityID	= false;
+		private int		type				= -1;
+		private int		domain				= -1;
+		private long	flagsBitmap			= -1;
+		private long	notFlagsBitmap		= -1;
+		private boolean	notRange			= false;
+		private int		low					= 0;
+		private int		high				= 0;
 
 		@Override
 		public String abilityFlags()
@@ -3353,9 +3380,9 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public long flag()
+		public long flagsBitmap()
 		{
-			return flag;
+			return flagsBitmap;
 		}
 
 		@Override
@@ -3371,15 +3398,32 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public long notflag()
+		public long notFlagsBitmap()
 		{
-			return notflag;
+			return notFlagsBitmap;
 		}
 
 		@Override
-		public void setLow(final int newVal)
+		public boolean notRange()
 		{
-			low = newVal;
+			return notRange;
+		}
+
+		@Override
+		public void setLow(final String newVal)
+		{
+			if(newVal != null)
+			{
+				final String s = newVal.trim();
+				notRange=false;
+				if(s.startsWith("!"))
+				{
+					notRange=true;
+					low = CMath.s_int(s.substring(1).trim());
+				}
+				else
+					low = CMath.s_int(s);
+			}
 		}
 
 		@Override
@@ -3396,7 +3440,14 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 			final List<String> v = CMParms.parseSemicolons(key,false);
 			setAbilityFlag(v.get(0));
-			low = CMath.s_int( v.get(1));
+			notRange = false;
+			if(v.get(1).startsWith("!"))
+			{
+				notRange=true;
+				low = CMath.s_int( v.get(1).substring(1).trim());
+			}
+			else
+				low = CMath.s_int( v.get(1));
 			high = CMath.s_int( v.get(2));
 		}
 
@@ -3432,15 +3483,15 @@ public class DefaultFaction implements Faction, MsgListener
 					final int val=CMParms.indexOfIgnoreCase(Ability.FLAG_DESCS, strflag);
 					if(not)
 					{
-						if(notflag<0)
-							notflag=0;
-						notflag=notflag|CMath.pow(2,val);
+						if(notFlagsBitmap<0)
+							notFlagsBitmap=0;
+						notFlagsBitmap=notFlagsBitmap|CMath.pow(2,val);
 					}
 					else
 					{
-						if(flag<0)
-							flag=0;
-						flag=flag|CMath.pow(2,val);
+						if(flagsBitmap<0)
+							flagsBitmap=0;
+						flagsBitmap=flagsBitmap|CMath.pow(2,val);
 					}
 					break;
 				}
@@ -3449,7 +3500,7 @@ public class DefaultFaction implements Faction, MsgListener
 					break;
 				}
 			}
-			if((type<0)&&(domain<0)&&(flag<0))
+			if((type<0)&&(domain<0)&&(flagsBitmap<0))
 				possibleAbilityID=true;
 			return unknowns;
 		}

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Fighter;
+package com.planet_ink.coffee_mud.Abilities.Paladin;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2023 Bo Zimmerman
+   Copyright 2023-2023 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fighter_Berzerk extends FighterSkill
+public class Paladin_ChaosRage extends PaladinSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_Berzerk";
+		return "Paladin_ChaosRage";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Berzerk");
+	private final static String localizedName = CMLib.lang().L("Chaos Rage");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class Fighter_Berzerk extends FighterSkill
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Berzerk)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Chaos Rage)");
 
 	@Override
 	public String displayText()
@@ -57,7 +57,7 @@ public class Fighter_Berzerk extends FighterSkill
 		return localizedStaticDisplay;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"BERZERK"});
+	private static final String[] triggerStrings =I(new String[] {"CHAOSRAGE","RAGE"});
 	@Override
 	public int abstractQuality()
 	{
@@ -80,6 +80,12 @@ public class Fighter_Berzerk extends FighterSkill
 	protected int canTargetCode()
 	{
 		return 0;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
 	}
 
 	@Override
@@ -152,9 +158,9 @@ public class Fighter_Berzerk extends FighterSkill
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 
-		if((target.fetchEffect(this.ID())!=null)||(target.fetchEffect("Paladin_ChaosRage")!=null))
+		if((target.fetchEffect(this.ID())!=null)||(target.fetchEffect("Fighter_Berzerk")!=null))
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already berzerk."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already in a chaotic rage."));
 			return false;
 		}
 
@@ -170,7 +176,7 @@ public class Fighter_Berzerk extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,L("<T-NAME> get(s) a wild look in <T-HIS-HER> eyes!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,L("<T-NAME> get(s) a chaotic rage in <T-HIS-HER> eyes!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -181,7 +187,7 @@ public class Fighter_Berzerk extends FighterSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,L("<S-NAME> huff(s) and grunt(s), but can't get angry."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> huff(s) and grunt(s), but can't build enough rage."));
 		return success;
 	}
 }

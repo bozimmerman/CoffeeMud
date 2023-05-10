@@ -1501,7 +1501,7 @@ public class Factions extends StdLibrary implements FactionManager
 					{
 						list.append("    "+((char)('A'+numUsages)+") "));
 						list.append(CMStrings.padRight(CA.abilityFlags(),40)+" ");
-						list.append(CMStrings.padRight(CA.low()+"",10)+" ");
+						list.append(CMStrings.padRight((CA.notRange()?"!":"")+CA.low()+"",10)+" ");
 						list.append(CMStrings.padRight(CA.high()+"",10)+" ");
 						list.append("\n\r");
 						choices.append((char)('A'+numUsages));
@@ -1580,11 +1580,16 @@ public class Factions extends StdLibrary implements FactionManager
 							}
 						}
 					}
-					String newName=mob.session().prompt(L("Enter the minimum value to use the ability (@x1): ",""+CA.low()),""+CA.low());
-					if((!CMath.isInteger(newName))||(CA.low()==CMath.s_int(newName)))
+					final String curLowVal = (CA.notRange()?"!":"")+CA.low();
+					String newName=mob.session().prompt(L("Enter the minimum value to use the ability. Prefix with ! to negate the range.\n\r(@x1): ",""+curLowVal),""+curLowVal);
+					if(newName.equals(curLowVal)
+					||((!CMath.isInteger(newName))
+						&&((newName.length()==1)
+							||(!newName.startsWith("!"))
+							||(!CMath.isInteger(newName.substring(1))))))
 						mob.tell(L("(no change)"));
 					else
-						CA.setLow(CMath.s_int(newName));
+						CA.setLow(newName);
 					newName=mob.session().prompt(L("Enter the maximum value to use the ability (@x1): ",""+CA.high()),""+CA.high());
 					if((!CMath.isInteger(newName))||(CA.high()==CMath.s_int(newName)))
 						mob.tell(L("(no change)"));

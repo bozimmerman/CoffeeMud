@@ -589,7 +589,7 @@ public class FactionData extends StdWebMacro
 							}
 							else
 								httpReq.addFakeUrlParameter("ABILITYUSE"+v,CMClass.getAbility(E.abilityFlags()).ID());
-							httpReq.addFakeUrlParameter("ABILITYMIN"+v,""+E.low());
+							httpReq.addFakeUrlParameter("ABILITYMIN"+v,(E.notRange()?"!":"")+E.low());
 							httpReq.addFakeUrlParameter("ABILITYMAX"+v,""+E.high());
 						}
 					}

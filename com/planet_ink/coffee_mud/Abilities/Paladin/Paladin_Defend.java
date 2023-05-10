@@ -69,6 +69,12 @@ public class Paladin_Defend extends StdAbility
 	}
 
 	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
 	protected int canTargetCode()
 	{
 		return 0;

@@ -61,6 +61,12 @@ public class Paladin_Courage extends PaladinSkill
 	}
 
 	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

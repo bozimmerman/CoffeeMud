@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Paladin_Goodness extends PaladinSkill
+public class Paladin_Fear extends PaladinSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Paladin_Goodness";
+		return "Paladin_Fear";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Paladin`s Goodness");
+	private final static String localizedName = CMLib.lang().L("Paladin`s Fear");
 
 	@Override
 	public String name()
@@ -54,52 +54,70 @@ public class Paladin_Goodness extends PaladinSkill
 		return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;
 	}
 
-	@Override
-	public long flags()
-	{
-		return Ability.FLAG_HOLY;
-	}
-
-	protected boolean tickTock=false;
-	public Paladin_Goodness()
+	public Paladin_Fear()
 	{
 		super();
 		paladinsGroup=new SHashSet<MOB>();
 	}
 
 	@Override
-	public boolean tick(final Tickable ticking, final int tickID)
+	public long flags()
 	{
-		if(!super.tick(ticking,tickID))
-			return false;
-		tickTock=!tickTock;
-		if(tickTock)
-		{
-			final MOB mob=invoker;
-			final Room R=(mob!=null)?mob.location():null;
-			if((R!=null)
-			&&(appropriateToMyFactions(invoker)))
-			{
-				for(int m=0;m<R.numInhabitants();m++)
-				{
-					final MOB target=R.fetchInhabitant(m);
-					if((target!=null)
-					&&(CMLib.flags().isEvil(target))
-					&&((paladinsGroup!=null)&&(paladinsGroup.contains(target))
-						||((target.getVictim()==invoker)&&(target.rangeToTarget()==0)))
-					&&((invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
-					{
+		return Ability.FLAG_UNHOLY|Ability.FLAG_FEARING;
+	}
 
-						final MOB invoker=(invoker()!=null) ? invoker() : target;
-						final int harming=CMLib.dice().roll(1,(invoker!=null)?adjustedLevel(invoker,0):15,0);
-						if(CMLib.flags().isEvil(target))
-						{
-							CMLib.combat().postDamage(invoker,target,this,harming,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,
-									L("^SThe aura of goodness around <S-NAME> <DAMAGES> <T-NAME>!^?"));
-						}
-					}
-				}
-			}
+	protected volatile int fearDown = 5;
+
+	@Override
+	public boolean tick(final Tickable tickable, final int tickID)
+	{
+		if(!super.tick(tickable, tickID))
+			return false;
+		if(--fearDown>0)
+			return true;
+		fearDown = 5;
+		final Physical P = affected;
+		if(!(P instanceof MOB))
+			return true;
+		final MOB mob = (MOB)P;
+		final Room R=mob.location();
+		if((R==null)||(R.numInhabitants()<2))
+			return true;
+		final int chance = 10 + (adjustedLevel(mob,0)/5)+(2*super.getXLEVELLevel(mob));
+		if(CMLib.dice().rollPercentage()>chance)
+			return true;
+		final List<MOB> targets=new ArrayList<MOB>(R.numInhabitants());
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			if((M!=null)&&(!paladinsGroup.contains(M)))
+				targets.add(M);
+		}
+		if(targets.size()==0)
+			return true;
+		final MOB targetM =targets.get(CMLib.dice().roll(1, targets.size(), -1));
+		switch(CMLib.dice().roll(1, 4, 0))
+		{
+		case 1:
+			targetM.enqueCommand(new XVector<String>("CRINGE",targetM.name()), 0, 1.0);
+			break;
+		case 2:
+			targetM.enqueCommand(new XVector<String>("COWER",targetM.name()), 0, 1.0);
+			break;
+		case 3:
+		{
+			final Ability A=CMClass.getAbility("Spell_Spook");
+			if(A!=null)
+				A.invoke(mob, targetM, true, 0);
+			break;
+		}
+		case 4:
+		{
+			final Ability A=CMClass.getAbility("Spell_Nightmare");
+			if(A!=null)
+				A.startTickDown(mob, targetM, 2);
+			break;
+		}
 		}
 		return true;
 	}

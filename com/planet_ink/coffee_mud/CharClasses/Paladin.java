@@ -157,43 +157,69 @@ public class Paladin extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Paladin_SummonMount",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureLight",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CauseLight",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+		{
 			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_SenseEvil",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_SenseGood",true);
+		}
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_RelicUse",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_ReadPrayer",true);
-
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Paladin_DiseaseImmunity",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Paladin_PaladinsMount",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+		{
 			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtEvil",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtGood",false);
+		}
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+		{
 			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtChaos",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtLaw",false);
+		}
 
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+		{
 			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_SenseChaos",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_SenseLaw",false);
+		}
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_CureDeafness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_Deafness",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_CureSerious",false,CMParms.parseSemicolons("Prayer_CureLight",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_CauseSerious",false,CMParms.parseSemicolons("Prayer_CauseLight",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_HealMount",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Headlock",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_MountedCombat",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Paladin_Defend",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Paladin_ChaosRage",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_Bless",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_Curse",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_BlindFighting",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_Freedom",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_Paralyze",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Paladin_Courage",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Paladin_Fear",true);
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+		{
 			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_DispelEvil",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_DispelGood",false);
+		}
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+		{
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_DispelChaos",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_DispelLaw",false);
+		}
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_ClinchHold",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_RestoreVoice",false);

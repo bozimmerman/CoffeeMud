@@ -1554,11 +1554,11 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * Sets the ability usage masks and methods from an ability id, domain, flags, etc.
 		 * Parses the string sent to set many of the methods below.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#abilityFlags()
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#notflag()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#notFlagsBitmap()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#possibleAbilityID()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#type()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#domain()
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#flag()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#flagsBitmap()
 		 * @param str the ability usage mask
 		 * @return A vector of words inside the given string that are not valid or were not understood.
 		 */
@@ -1567,20 +1567,20 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		/**
 		 * A bitmask of ability flags that must NOT be set for this usage to apply to an ability
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#abilityFlags()
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#flag()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#flagsBitmap()
 		 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#FLAG_DESCS
 		 * @return a bitmask of Ability flags that must not be set by the ability
 		 */
-		public long notflag();
+		public long notFlagsBitmap();
 
 		/**
 		 * A bitmask of ability flags that MUST be set for this usage to apply to an ability
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#abilityFlags()
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#notflag()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#notFlagsBitmap()
 		 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#FLAG_DESCS
 		 * @return a bitmask of Ability flags that must be set by the ability
 		 */
-		public long flag();
+		public long flagsBitmap();
 
 		/**
 		 * Whether the abilityFlags() method is possibly a specific Ability ID
@@ -1607,10 +1607,18 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		public int domain();
 
 		/**
+		 * Returns whether the low()-high() ranges is negated or not.  Usually false.
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#low()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#high()
+		 * @return true to negate the range, false not to.
+		 */
+		public boolean notRange();
+
+		/**
 		 * The minimum value that a player must have in the faction to be able to use the selected
 		 * ability referred to by the ability flags of this usage criterium.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#abilityFlags()
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#setLow(int)
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#setLow(String)
 		 * @return a minimum faction value
 		 */
 		public int low();
@@ -1620,9 +1628,9 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * ability referred to by the ability flags of this usage criterium.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#abilityFlags()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#low()
-		 * @param newVal a new minimum faction value
+		 * @param newVal a new minimum faction value, optionally starting with "!" to negate range
 		 */
-		public void setLow(int newVal);
+		public void setLow(String newVal);
 
 		/**
 		 * Returns the maximum value that a player must have in the faction to be able to use the selected
