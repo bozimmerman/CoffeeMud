@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.DefaultFaction;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Faction.FRange;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -1479,6 +1480,12 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return this data objects parent faction.
 		 */
 		public Faction getFaction();
+
+		/**
+		 * Returns the current faction range for the current value.
+		 * @return the current faction range for the current value.
+		 */
+		public FRange getRange();
 
 		/**
 		 * Returns the actual value that the holding object has in this faction.

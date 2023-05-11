@@ -51,7 +51,7 @@ public class Paladin_Fear extends PaladinSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;
+		return Ability.ACODE_SKILL|Ability.DOMAIN_COMMUNING;
 	}
 
 	public Paladin_Fear()

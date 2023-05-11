@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.Align;
+import com.planet_ink.coffee_mud.Common.interfaces.Faction.FData;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -581,17 +582,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(M != null)
 		{
-			Faction F=null;
+			FData D=null;
 			Faction.FRange FR=null;
 			for(final Enumeration<String> e=M.factions();e.hasMoreElements();)
 			{
-				F=CMLib.factions().getFaction(e.nextElement());
-				if(F!=null)
-				{
-					FR=CMLib.factions().getRange(F.factionID(),M.fetchFaction(F.factionID()));
-					if((FR!=null)&&(FR.alignEquiv()==Faction.Align.EVIL))
-						return true;
-				}
+				D = M.fetchFactionData(e.nextElement());
+				FR = (D!=null)?D.getRange():null;
+				if((FR!=null)&&(FR.alignEquiv()==Faction.Align.EVIL))
+					return true;
 			}
 		}
 		return false;
@@ -641,17 +639,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(M != null)
 		{
-			Faction F=null;
+			FData D=null;
 			Faction.FRange FR=null;
 			for(final Enumeration<String> e=M.factions();e.hasMoreElements();)
 			{
-				F=CMLib.factions().getFaction(e.nextElement());
-				if(F!=null)
-				{
-					FR=CMLib.factions().getRange(F.factionID(),M.fetchFaction(F.factionID()));
-					if((FR!=null)&&(FR.alignEquiv()==Faction.Align.GOOD))
-						return true;
-				}
+				D = M.fetchFactionData(e.nextElement());
+				FR = (D!=null)?D.getRange():null;
+				if((FR!=null)&&(FR.alignEquiv()==Faction.Align.GOOD))
+					return true;
 			}
 		}
 		return false;
@@ -716,18 +711,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 		if(P instanceof FactionMember)
 		{
-			Faction F=null;
+			final FactionMember M = (FactionMember)P;
+			FData D=null;
 			Faction.FRange FR=null;
-			final FactionMember M=(FactionMember)P;
 			for(final Enumeration<String> e=M.factions();e.hasMoreElements();)
 			{
-				F=CMLib.factions().getFaction(e.nextElement());
-				if(F!=null)
-				{
-					FR=CMLib.factions().getRange(F.factionID(),M.fetchFaction(F.factionID()));
-					if((FR!=null)&&(FR.alignEquiv()==Faction.Align.LAWFUL))
-						return true;
-				}
+				D = M.fetchFactionData(e.nextElement());
+				FR = (D!=null)?D.getRange():null;
+				if((FR!=null)&&(FR.alignEquiv()==Faction.Align.LAWFUL))
+					return true;
 			}
 		}
 		return false;
@@ -740,18 +732,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 		if(P instanceof FactionMember)
 		{
-			Faction F=null;
+			final FactionMember M = (FactionMember)P;
+			FData D=null;
 			Faction.FRange FR=null;
-			final FactionMember M=(FactionMember)P;
 			for(final Enumeration<String> e=M.factions();e.hasMoreElements();)
 			{
-				F=CMLib.factions().getFaction(e.nextElement());
-				if(F!=null)
-				{
-					FR=CMLib.factions().getRange(F.factionID(),M.fetchFaction(F.factionID()));
-					if((FR!=null)&&(FR.alignEquiv()==Faction.Align.CHAOTIC))
-						return true;
-				}
+				D = M.fetchFactionData(e.nextElement());
+				FR = (D!=null)?D.getRange():null;
+				if((FR!=null)&&(FR.alignEquiv()==Faction.Align.CHAOTIC))
+					return true;
 			}
 		}
 		return false;
@@ -764,18 +753,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 		if(P instanceof FactionMember)
 		{
-			Faction F=null;
+			final FactionMember M = (FactionMember)P;
+			FData D=null;
 			Faction.FRange FR=null;
-			final FactionMember M=(FactionMember)P;
 			for(final Enumeration<String> e=M.factions();e.hasMoreElements();)
 			{
-				F=CMLib.factions().getFaction(e.nextElement());
-				if(F!=null)
-				{
-					FR=CMLib.factions().getRange(F.factionID(),M.fetchFaction(F.factionID()));
-					if((FR!=null)&&(FR.alignEquiv()==Faction.Align.MODERATE))
-						return true;
-				}
+				D = M.fetchFactionData(e.nextElement());
+				FR = (D!=null)?D.getRange():null;
+				if((FR!=null)&&(FR.alignEquiv()==Faction.Align.MODERATE))
+					return true;
 			}
 		}
 		return false;
@@ -882,15 +868,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(M != null)
 		{
-			Faction F=null;
+			FData D=null;
 			Faction.FRange FR=null;
 			for(final Enumeration<String> e=M.factions();e.hasMoreElements();)
 			{
-				F=CMLib.factions().getFaction(e.nextElement());
-				if(F!=null)
+				D = M.fetchFactionData(e.nextElement());
+				FR = (D!=null)?D.getRange():null;
+				if(FR!=null)
 				{
-					FR=CMLib.factions().getRange(F.factionID(),M.fetchFaction(F.factionID()));
-					if(FR!=null)
 					switch(FR.alignEquiv())
 					{
 						case NEUTRAL:

@@ -2858,6 +2858,12 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
+		public FRange getRange()
+		{
+			return currentRange;
+		}
+
+		@Override
 		public long getNextChangeTimers(final Faction.FactionChangeEvent event)
 		{
 			if(nextChangeTime.containsKey(event))

@@ -224,10 +224,12 @@ public class Paladin extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_RestoreVoice",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Paladin_Purity",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Paladin_Corruption",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_Cleave",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Climb",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_RemovePoison",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_Poison",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Paladin_Breakup",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_CureDisease",false);
