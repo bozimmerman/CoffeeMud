@@ -649,7 +649,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 							@Override
 							public String email()
 							{
-								return null;
+								return "";
 							}
 
 							@Override
