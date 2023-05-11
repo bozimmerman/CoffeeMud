@@ -2860,7 +2860,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			newM.setSession(session);
 			mob.setSession(null);
 			mob.destroy();
-			if(account!=null)
+			if((account!=null)
+			&&(account.findPlayer(mob.Name())!=null))
 			{
 				account.delPlayer(mob);
 				account.addNewPlayer(newM);
