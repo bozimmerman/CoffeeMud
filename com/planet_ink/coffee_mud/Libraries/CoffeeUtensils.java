@@ -1419,13 +1419,20 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			while(it<rejuvedMOB.location().numItems())
 			{
 				final Item item=rejuvedMOB.location().getItem(it);
-				if((item!=null)&&(item.container()==body))
+				if((item!=null)
+				&&(item.container()==body))
 				{
 					final CMMsg msg2=CMClass.getMsg(rejuvedMOB,body,item,CMMsg.MSG_GET,null);
 					rejuvedMOB.location().send(rejuvedMOB,msg2);
 					final CMMsg msg3=CMClass.getMsg(rejuvedMOB,item,null,CMMsg.MSG_GET,null);
 					rejuvedMOB.location().send(rejuvedMOB,msg3);
-					it=0;
+					if(item.container()==body)
+					{
+						item.setContainer(null);
+						it++;
+					}
+					else
+						it=0;
 				}
 				else
 					it++;
