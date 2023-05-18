@@ -8153,6 +8153,17 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		if(visibleMask == null)
 			visibleMask="";
 		parmTree.put("VISIBLEMASK", visibleMask);
+		String playerMask = A.getRawParmVal("PLAYERMASK");
+		if(playerMask == null)
+			playerMask="";
+		parmTree.put("PLAYERMASK", playerMask);
+		String flagsList = "";
+		for(final AchievementLibrary.AchievementFlag flag : AchievementLibrary.AchievementFlag.values())
+		{
+			if(A.isFlag(flag))
+				flagsList += flag.name() + " ";
+		}
+		parmTree.put("FLAGS", flagsList.trim());
 		for(final String s : A.getEvent().getParameters())
 		{
 			if(!CMParms.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS, s))

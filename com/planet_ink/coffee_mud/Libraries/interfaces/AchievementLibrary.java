@@ -54,8 +54,11 @@ public interface AchievementLibrary extends CMLibrary
 {
 	/**
 	 * The list of arguments/parameters common to all achievement event types
+	 * -- remember to also modify fillAchievementParmTree
 	 */
-	public final String[] BASE_ACHIEVEMENT_PARAMETERS = new String[] { "EVENT", "DISPLAY", "TITLE", "REWARDS", "VISIBLEMASK", "DURATION", "PLAYERMASK", "FLAGS" };
+	public final String[] BASE_ACHIEVEMENT_PARAMETERS = new String[] {
+		"EVENT", "DISPLAY", "TITLE", "REWARDS", "VISIBLEMASK", "DURATION", "PLAYERMASK", "FLAGS"
+	};
 
 	/**
 	 * Events define the type of achievement, describing specific arguments that
@@ -85,7 +88,7 @@ public interface AchievementLibrary extends CMLibrary
 		LEVELSGAINED("Gaining Levels",new String[]{"NUM"}),
 		CLASSLEVELSGAINED("Gaining Class Levels",new String[]{"NUM","CLASS"}),
 		TIMEPLAYED("Time Played",new String[]{"SECONDS"}),
-		JUSTBE("Character State",new String[]{"PLAYERMASK"}),
+		JUSTBE("Character State",new String[]{}),
 		DEATHS("Dieing",new String[]{"NUM","ZAPPERMASK"}),
 		REMORT("Remorting",new String[]{"NUM"}),
 		RETIRE("Retiring",new String[]{"NUM"}),
@@ -93,19 +96,19 @@ public interface AchievementLibrary extends CMLibrary
 		BIRTHS("Births",new String[]{"NUM","ZAPPERMASK"}),
 		RACEBIRTH("Race Creation",new String[]{"NUM","ZAPPERMASK"}),
 		PLAYERBORNPARENT("Being a Player Parent",new String[]{"NUM","ZAPPERMASK"}),
-		PLAYERBORN("Being a Player Born",new String[]{"PLAYERMASK"}),
-		CHARACTERS("Account size",new String[]{"NUM", "PLAYERMASK"}),
-		CLANMEMBERS("Membership size",new String[]{"NUM", "PLAYERMASK"}),
+		PLAYERBORN("Being a Player Born",new String[]{}),
+		CHARACTERS("Account size",new String[]{"NUM"}),
+		CLANMEMBERS("Membership size",new String[]{"NUM"}),
 		CLANKILLS("Killed a rival clan member",new String[]{"NUM","ZAPPERMASK"}),
 		CLANLEVELSGAINED("Clan levels",new String[]{"NUM"}),
 		CLANDECLARE("Declared a new relationship",new String[]{"NUM","RELATION"}),
 		CLANPROPERTY("Purchased property",new String[]{"NUM","AREAMASK"}),
 		CONQUEREDAREAS("Conquered an area",new String[]{"NUM","AREAMASK"}),
 		CONQUESTPOINTS("Conquest points",new String[]{"NUM","AREAMASK"}),
-		AREAVISIT("Visit an Area/Plane",new String[]{"AREAMASK","NUM", "PLAYERMASK","TIME_MINS", "ROOMMASK"}),
-		INSTANCEEXPIRE("An area instance expires",new String[]{"AREAMASK","NUM", "PLAYERMASK","TIME_MINS","VALUEEXP"}),
-		SHIPSSUNK("Ships sunk",new String[] {"NUM", "PLAYERMASK", "SHIPMASK"}),
-		CMDUSE("Using Commands",new String[]{"NUM","COMMANDID", "PLAYERMASK"}),
+		AREAVISIT("Visit an Area/Plane",new String[]{"AREAMASK","NUM","TIME_MINS", "ROOMMASK"}),
+		INSTANCEEXPIRE("An area instance expires",new String[]{"AREAMASK","NUM","TIME_MINS","VALUEEXP"}),
+		SHIPSSUNK("Ships sunk",new String[] {"NUM", "SHIPMASK"}),
+		CMDUSE("Using Commands",new String[]{"NUM","COMMANDID"}),
 		GROUPKILLS("Number of Group Kills",new String[]{"NUM","SIZE","ZAPPERMASK"}),
 		;
 		private final String[] parameters;
