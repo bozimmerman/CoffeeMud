@@ -231,6 +231,7 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_RemovePoison",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_Poison",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Paladin_Breakup",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Paladin_InciteFight",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_CureDisease",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Paladin_MountedCharge",false);
@@ -256,7 +257,10 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Paladin_CommandHorse",false);
 
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+		{
 			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_LightHammer",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_DarkHammer",false);
+		}
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_Sweep",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Paladin_Goodness",false);
@@ -266,7 +270,10 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Heal",false,CMParms.parseSemicolons("Prayer_CureCritical",true));
 
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+		{
 			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Paladin_CraftHolyAvenger",true,CMParms.parseSemicolons("Specialization_Sword;Weaponsmithing",true));
+			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Paladin_CraftUnholyReaver",true,CMParms.parseSemicolons("Specialization_Sword;Weaponsmithing",true));
+		}
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Paladin_PlanarDefiance", 0, "", false,
 												 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");

@@ -445,7 +445,7 @@ HELP_RUSHCRAFT2=<EXPERTISE>The ability to rush lower leveled crafted items with 
 HELP_RUSHCRAFT3=<EXPERTISE>The ability to rush lower leveled crafted items with sacrificed quality.. Items crafted "Crudy" are much lower level, and worth much less.
 DATA_=Hurried,Rushed,Crudy
 
-LITECRAFT@x1=Light Crafting @x2,3,X1,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Paladin_CraftHolyAvenger +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing +Weaving,-CLASS +Archon,+DEX {10+(4*@x1)},0,20,0,0,0
+LITECRAFT@x1=Light Crafting @x2,3,X1,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Paladin_CraftHolyAvenger +Paladin_CraftUnholyReaver +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing +Weaving,-CLASS +Archon,+DEX {10+(4*@x1)},0,20,0,0,0
 HELP_=<EXPERTISE>The ability to craft items using less material without sacrificing quality.
 HELP_LITECRAFT1=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Light" are a little lighter, and worth a little more in value.
 HELP_LITECRAFT2=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Supple" are lighter, and worth more in value.

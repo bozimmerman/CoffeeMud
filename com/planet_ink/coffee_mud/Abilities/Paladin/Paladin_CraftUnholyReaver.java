@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2023 Bo Zimmerman
+   Copyright 2023-2023 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -34,15 +34,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
+public class Paladin_CraftUnholyReaver extends EnhancedCraftingSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Paladin_CraftHolyAvenger";
+		return "Paladin_CraftUnholyReaver";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Craft Holy Avenger");
+	private final static String localizedName = CMLib.lang().L("Craft Unholy Reaver");
 
 	@Override
 	public String name()
@@ -50,7 +50,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		return localizedName;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"CRAFTHOLY","CRAFTHOLYAVENGER","CRAFTAVENGER"});
+	private static final String[] triggerStrings =I(new String[] {"CRAFTUNHOLY","CRAFTUNHOLYREAVER","CRAFTREAVER"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -90,7 +90,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonEmote(mob,L("<S-NAME> mess(es) up crafting the Holy Avenger."));
+						commonEmote(mob,L("<S-NAME> mess(es) up crafting the Unholy Reaver."));
 					else
 						mob.location().addItem(buildingI,ItemPossessor.Expire.Player_Drop);
 				}
@@ -161,16 +161,16 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 			w.setRanges(w.minRange(),1);
 			I.setRawLogicalAnd(true);
 		}
-		final String itemName="the Holy Avenger";
+		final String itemName="the Unholy Reaver";
 		I.setName(itemName);
 		I.setDisplayText(L("@x1 lies here",itemName));
 		I.setDescription(itemName+". ");
 		I.basePhyStats().setAbility(5);
 		I.basePhyStats().setWeight(woodRequired);
+		I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_EVIL);
 		I.setBaseValue(0);
 		I.setMaterial(material);
 		I.basePhyStats().setLevel(mob.phyStats().level());
-		I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_GOOD);
 		I.recoverPhyStats();
 		I.text();
 		I.recoverPhyStats();
@@ -210,11 +210,11 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		buildingI = getModel(mob, woodRequired, data[0][FOUND_CODE]);
 
 		Ability A=CMClass.getAbility("Prop_HaveZapper");
-		String mask="-CLASS +Paladin ";
+		String mask="-CLASS +Paladin +Anti-Paladin";
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
-			mask +="-ALIGNMENT +Good ";
+			mask +="-ALIGNMENT +Evil ";
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
-			mask +="-ALIGNMENT +Lawful ";
+			mask +="-ALIGNMENT +Chaotic ";
 		A.setMiscText(mask);
 		buildingI.addNonUninvokableEffect(A);
 		A=CMClass.getAbility("Prop_Doppleganger");

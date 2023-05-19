@@ -64,7 +64,7 @@ public class Prayer_ResurrectMount extends Prayer_Resurrect
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY;
+		return 0;
 	}
 
 	@Override

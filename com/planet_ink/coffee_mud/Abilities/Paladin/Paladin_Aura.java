@@ -61,7 +61,9 @@ public class Paladin_Aura extends PaladinSkill
 		paladinsGroup=new SHashSet<MOB>();
 	}
 
-	protected boolean pass=false;
+	protected volatile boolean pass=false;
+	protected volatile boolean isInvokerGood=false;
+	protected volatile boolean isInvokerEvil=false;
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -72,16 +74,22 @@ public class Paladin_Aura extends PaladinSkill
 		pass=(profAble==null)
 			||profAble.proficiencyCheck(null,0,false);
 		final Room R=CMLib.map().roomLocation(invoker != null ? invoker : (affected != null ? affected : (ticking instanceof Physical ? (Physical)ticking : null)));
-		if(pass && (R!=null))
+		if(pass
+		&& (R!=null))
 		{
+			isInvokerGood = (invoker==null)?true:super.isPaladinGoodSide(invoker);
+			isInvokerEvil = (invoker==null)?false:super.isPaladinAntiSide(invoker);
 			for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 			{
 				final MOB mob=m.nextElement();
-				if(paladinsGroup.contains(mob) && CMLib.flags().isEvil(mob))
+				if(paladinsGroup.contains(mob)
+				&& ((isInvokerGood && CMLib.flags().isEvil(mob))
+					||(isInvokerEvil && CMLib.flags().isGood(mob))))
 				{
 					final int damage=(int)Math.round(CMath.div(mob.phyStats().level()+(2*getXLEVELLevel(invoker)),3.0));
 					final MOB invoker=(invoker()!=null) ? invoker() : mob;
-					CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,L("^SThe aura around <S-NAME> <DAMAGES> <T-NAME>!^?"));
+					CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,
+							L("^SThe aura around <S-NAME> <DAMAGES> <T-NAME>!^?"));
 				}
 			}
 		}
@@ -109,15 +117,29 @@ public class Paladin_Aura extends PaladinSkill
 		{
 			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 			&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
-			&&(msg.tool() instanceof Ability)
-			&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
-			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
+			&&(msg.tool() instanceof Ability))
 			{
-				msg.source().location().show((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,L("The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of @x1.",msg.source().name()));
-				return false;
+				final long ableFlag=((Ability)msg.tool()).flags();
+				final boolean holy=CMath.bset(ableFlag,Ability.FLAG_HOLY);
+				final boolean unholy=CMath.bset(ableFlag,Ability.FLAG_UNHOLY);
+				if(((isInvokerGood)&&(unholy)&&(!holy))
+				||((isInvokerEvil)&&(!unholy)&&(holy)))
+				{
+					if(isInvokerGood)
+					{
+						msg.source().location().show((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,
+							L("The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of @x1.",msg.source().name()));
+					}
+					else
+					{
+						msg.source().location().show((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,
+							L("The aura around <S-NAME> protect(s) <S-HIM-HER> from the holy magic attack of @x1.",msg.source().name()));
+					}
+					return false;
+				}
 			}
 			if(((msg.targetMinor()==CMMsg.TYP_POISON)||(msg.targetMinor()==CMMsg.TYP_DISEASE))
-			&&(pass))
+			&&(pass)&&(isInvokerGood||isInvokerEvil))
 				return false;
 		}
 		return true;

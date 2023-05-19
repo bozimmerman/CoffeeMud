@@ -2670,8 +2670,10 @@ public class StdAbility implements Ability
 		{
 			final String factionID=e.nextElement();
 			final Faction F=CMLib.factions().getFaction(factionID);
-			if((F!=null)&&F.hasUsage(this))
-				return F.canUse(mob,this);
+			if((F!=null)
+			&&(F.hasUsage(this))
+			&&(!F.canUse(mob,this)))
+				return false;
 		}
 		return true;
 	}
