@@ -38,7 +38,7 @@ public class Paladin_InciteFight extends StdAbility
 	@Override
 	public String ID()
 	{
-		return "Paladin_Incite";
+		return "Paladin_InciteFight";
 	}
 
 	private final static String localizedName = CMLib.lang().L("Incite Fight");
