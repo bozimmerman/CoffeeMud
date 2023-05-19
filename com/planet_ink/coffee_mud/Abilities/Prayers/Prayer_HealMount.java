@@ -63,7 +63,7 @@ public class Prayer_HealMount extends Prayer implements MendingSkill
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;
+		return Ability.FLAG_HEALINGMAGIC;
 	}
 
 	@Override

@@ -116,9 +116,32 @@ public class Paladin_HealingHands extends StdAbility
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
+		int mask = 0;
+		boolean heal = true;
+		if(!auto)
+		{
+			if((mob != target)
+			&& (!PaladinSkill.isPaladinGoodSide(mob)))
+			{
+				mask = CMMsg.MASK_MALICIOUS;
+				heal=false;
+			}
+			else
+			if((mob == target)
+			&&(CMLib.flags().isUndead(mob)))
+				heal=false;
+		}
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,auto?L("A pair of celestial hands surround <T-NAME>"):L("^S<S-NAME> lay(s) <S-HIS-HER> healing hands onto <T-NAMESELF>.^?"));
+			String msgstr = L("A pair of celestial hands surround <T-NAME>");
+			if(!auto)
+			{
+				if(heal)
+					msgstr = L("^S<S-NAME> lay(s) <S-HIS-HER> healing hands onto <T-NAMESELF>.^?");
+				else
+					msgstr = L("^S<S-NAME> lay(s) <S-HIS-HER> hands onto <T-NAMESELF>.^?");
+			}
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_SOMANTIC_SPELL|mask,msgstr);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -126,13 +149,24 @@ public class Paladin_HealingHands extends StdAbility
 				if(manaLost>0)
 					manaLost=manaLost*-1;
 				mob.curState().adjMana(manaLost,mob.maxState());
-				CMLib.combat().postHealing(mob,target,this,healing,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,null);
-				target.tell(L("You feel a little better!"));
+				final int oldhp = target.curState().getHitPoints();
+				if(heal)
+				{
+					CMLib.combat().postHealing(mob,target,this,healing,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,null);
+					if(target.curState().getHitPoints() > oldhp)
+						target.tell(L("You feel a little better!"));
+				}
+				else
+					CMLib.combat().postDamage(mob,target,this,healing,CMMsg.MASK_ALWAYS|CMMsg.TYP_DEATH,
+							Weapon.TYPE_BURNING,L("The touch <DAMAGES> <T-NAME>!"));
 				lastCastHelp=System.currentTimeMillis();
 			}
 		}
 		else
+		if(heal)
 			return beneficialVisualFizzle(mob,mob,L("<S-NAME> lay(s) <S-HIS-HER> healing hands onto <T-NAMESELF>, but <S-HIS-HER> god does not heed."));
+		else
+			return maliciousFizzle(mob,mob,L("<S-NAME> lay(s) <S-HIS-HER> hands onto <T-NAMESELF>, but <S-HIS-HER> god does not heed."));
 
 		// return whether it worked
 		return success;

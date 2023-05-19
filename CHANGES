@@ -1,5 +1,6 @@
 # Build 5.10.3 Release ??/??/2023
   1. New Paladin skills: Unholy Strike, Chaos Rage, Paladin's Fear, Paladin's Corruption
+  2. New Paladin skills: Incite Fight
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

@@ -75,7 +75,6 @@ public class Paladin_Corruption extends PaladinSkill
 		&&(msg.source()==affected)
 		&&(msg.tool()!=null)
 		&&(!msg.source().isMine(msg.tool()))
-		&&(msg.value()<0)
 		&&(msg.othersMessage()!=null)
 		&&(msg.othersMessage().equalsIgnoreCase(CMLib.factions().getAlignmentID())
 			||msg.othersMessage().equalsIgnoreCase(CMLib.factions().getInclinationID()))

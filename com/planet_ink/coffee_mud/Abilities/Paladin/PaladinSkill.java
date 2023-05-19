@@ -121,6 +121,44 @@ public class PaladinSkill extends StdAbility
 		return true;
 	}
 
+	protected static boolean isPaladinGoodSide(final MOB mob)
+	{
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+		{
+			if(CMLib.flags().isGood(mob))
+			{
+				if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+					return CMLib.flags().isLawful(mob);
+				return true;
+			}
+			else
+				return false;
+		}
+		else
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			return CMLib.flags().isLawful(mob);
+		return false;
+	}
+
+	protected static boolean isPaladinAntiSide(final MOB mob)
+	{
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+		{
+			if(CMLib.flags().isEvil(mob))
+			{
+				if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+					return CMLib.flags().isChaotic(mob);
+				return true;
+			}
+			else
+				return false;
+		}
+		else
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			return CMLib.flags().isChaotic(mob);
+		return false;
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{

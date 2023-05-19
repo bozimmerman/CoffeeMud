@@ -42,7 +42,7 @@ public class Paladin extends StdCharClass
 	}
 
 	private final static String localizedStaticName = CMLib.lang().L("Paladin");
-	private final static String localizedStaticName2 = CMLib.lang().L("Fallen Paladin");
+	private final static String localizedStaticName2 = CMLib.lang().L("Fallen-Paladin");
 	private final static String localizedStaticName3 = CMLib.lang().L("Anti-Paladin");
 
 	@Override

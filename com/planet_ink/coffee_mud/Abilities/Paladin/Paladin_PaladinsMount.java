@@ -56,6 +56,9 @@ public class Paladin_PaladinsMount extends PaladinSkill
 	}
 
 	protected boolean pass=false;
+	protected static final long allGAlignFlags = Ability.FLAG_HOLY   + Ability.FLAG_LAW;
+	protected static final long allEAlignFlags = Ability.FLAG_UNHOLY + Ability.FLAG_CHAOS;
+	protected static final long allAlignFlags  = allGAlignFlags      + allEAlignFlags;
 
 	public Paladin_PaladinsMount()
 	{
@@ -77,7 +80,6 @@ public class Paladin_PaladinsMount extends PaladinSkill
 			final MOB affectedMob=(MOB)affected;
 			if((!((Rideable)affected).amRiding(invoker))
 			||(affectedMob.amDead())
-			||(CMLib.flags().isEvil(affectedMob))
 			||(!appropriateToMyFactions(invoker)))
 			{
 				affected.delEffect(this);
@@ -93,7 +95,6 @@ public class Paladin_PaladinsMount extends PaladinSkill
 		&&(invoker.riding()!=null)
 		&&(invoker.riding() instanceof MOB)
 		&&(((MOB)invoker.riding()).charStats().getMyRace().racialCategory().equals("Equine"))
-		&&(!CMLib.flags().isEvil(invoker.riding()))
 		&&(invoker.riding().fetchEffect(ID())==null))
 		{
 			invoker.riding().addEffect((Paladin_PaladinsMount)copyOf());
@@ -136,24 +137,31 @@ public class Paladin_PaladinsMount extends PaladinSkill
 				||(!(affected instanceof MOB)))
 					return true;
 
+				final long ableFlags = ((Ability)msg.tool()).flags();
 				if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
-				&&(CMath.bset(((Ability)msg.tool()).flags(), Ability.FLAG_FEARING))
 				&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
-				&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
-				&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
+				&&((ableFlags & allAlignFlags)>0)
 				&&(proficiencyCheck(invoker,0,false)))
 				{
-					msg.source().location().show((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,L("The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of @x1.",msg.source().name()));
-					return false;
-				}
-				if(proficiencyCheck(invoker,0,false))
-				{
-					final MOB mob=(MOB)msg.target();
-					mob.location().show(invoker,mob,CMMsg.MSG_OK_VISUAL,L("<T-YOUPOSS> courage protects you from the @x1 attack.",msg.tool().name()));
-					return false;
+					if(CMath.bset(ableFlags, Ability.FLAG_FEARING))
+					{
+						msg.source().location().show((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,L("The field around <S-NAME> protect(s) <S-HIM-HER> from the fearful magic attack of @x1.",msg.source().name()));
+						return false;
+					}
+					if((!CMath.bset(ableFlags, Ability.FLAG_NEUTRAL))
+					&&(!CMath.bset(ableFlags, Ability.FLAG_MODERATE))
+					&&((PaladinSkill.isPaladinGoodSide(invoker)&&((ableFlags & allEAlignFlags)>0))
+						||(PaladinSkill.isPaladinAntiSide(invoker)&&((ableFlags & allGAlignFlags)>0)))
+					&&(proficiencyCheck(invoker,0,false)))
+					{
+						final MOB mob=(MOB)msg.target();
+						mob.location().show(invoker,mob,CMMsg.MSG_OK_VISUAL,L("<T-YOUPOSS> courage protects <T-NAME> from the @x1 attack.",msg.tool().name()));
+						return false;
+					}
 				}
 			}
-			if(((msg.targetMinor()==CMMsg.TYP_POISON)||(msg.targetMinor()==CMMsg.TYP_DISEASE))&&(proficiencyCheck(invoker,0,false)))
+			if(((msg.targetMinor()==CMMsg.TYP_POISON)||(msg.targetMinor()==CMMsg.TYP_DISEASE))
+			&&(proficiencyCheck(invoker,0,false)))
 				return false;
 		}
 		return true;
