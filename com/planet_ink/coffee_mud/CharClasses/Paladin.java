@@ -433,7 +433,7 @@ public class Paladin extends StdCharClass
 				{
 					if(CMLib.flags().isLawful(affectedMOB))
 						return;
-					affectableStats.setDisplayClassLevel(localizedStaticName2);
+					affectableStats.setDisplayClassName(localizedStaticName2);
 					return;
 				}
 			}
@@ -444,21 +444,21 @@ public class Paladin extends StdCharClass
 				{
 					if(CMLib.flags().isChaotic(affectedMOB))
 					{
-						affectableStats.setDisplayClassLevel(localizedStaticName3);
+						affectableStats.setDisplayClassName(localizedStaticName3);
 						return;
 					}
-					affectableStats.setDisplayClassLevel(localizedStaticName2);
+					affectableStats.setDisplayClassName(localizedStaticName2);
 					return;
 				}
 				else
 				{
-					affectableStats.setDisplayClassLevel(localizedStaticName3);
+					affectableStats.setDisplayClassName(localizedStaticName3);
 					return;
 				}
 			}
 			else
 			{
-				affectableStats.setDisplayClassLevel(localizedStaticName2);
+				affectableStats.setDisplayClassName(localizedStaticName2);
 				return;
 			}
 		}
@@ -469,10 +469,10 @@ public class Paladin extends StdCharClass
 				return;
 			if(CMLib.flags().isChaotic(affectedMOB))
 			{
-				affectableStats.setDisplayClassLevel(localizedStaticName3);
+				affectableStats.setDisplayClassName(localizedStaticName3);
 				return;
 			}
-			affectableStats.setDisplayClassLevel(localizedStaticName2);
+			affectableStats.setDisplayClassName(localizedStaticName2);
 			return;
 		}
 	}
