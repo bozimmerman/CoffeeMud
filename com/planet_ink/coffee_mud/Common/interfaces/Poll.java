@@ -242,7 +242,7 @@ public interface Poll extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#getMyVote(MOB)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_VOTEBYIP
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ACTIVE
-	 * @param mob the mob to check for elligibility
+	 * @param mob the mob to check for eligibility
 	 * @return true if the given mob is allowed to vote in this poll, false otherwise.
 	 */
 	public boolean mayIVote(MOB mob);
@@ -251,7 +251,7 @@ public interface Poll extends CMCommon
 	 * Returns true if the given mob may not see the poll results, false otherwise.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_HIDERESULTS
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_PREVIEWRESULTS
-	 * @param mob the mob to check for elligibility
+	 * @param mob the mob to check for eligibility
 	 * @return true if the given mob can not see the poll results, false otherwise
 	 */
 	public boolean mayISeeResults(MOB mob);

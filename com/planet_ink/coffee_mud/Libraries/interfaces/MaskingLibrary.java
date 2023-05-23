@@ -506,7 +506,7 @@ public interface MaskingLibrary extends CMLibrary
 	 * A Compiled ZapperMask is a set of conditions, typically
 	 * of the form VALUE in SET, KEY=VALUE or VALUE, etc. These
 	 * masks are used to select among a stream of objects, in order
-	 * to determine the objects elligibility for some purpose.
+	 * to determine the objects eligibility for some purpose.
 	 * The most common use is as a mask to determine whether some
 	 * mob is able to do something, or will have something happen
 	 * to them.  ZapperMasks are made up of one or more entries,
