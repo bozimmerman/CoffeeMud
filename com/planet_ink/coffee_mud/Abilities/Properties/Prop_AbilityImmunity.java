@@ -141,7 +141,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 						((MOB)msg.target()).tell(L("You are immune to @x1.",msg.tool().name()));
 					if(msg.source()!=msg.target())
 					{
-						final String s=messages.get(i);
+						final String s=(messages.size()>i)?messages.get(i):"";
 						if(s.length()>0)
 							msg.source().tell(msg.source(),msg.target(),msg.tool(),s);
 						else

@@ -132,7 +132,7 @@ public class Fighter_Earbox extends FighterSkill
 		Ability A=getGrappleA(target);
 		if((A==null)||(A.invoker()!=mob))
 		{
-			mob.tell(L("You nee(s) to have @x1 in a close grapple for this to work!",target.name(mob)));
+			mob.tell(L("You need(s) to have @x1 in a close grapple for this to work!",target.name(mob)));
 			return false;
 		}
 

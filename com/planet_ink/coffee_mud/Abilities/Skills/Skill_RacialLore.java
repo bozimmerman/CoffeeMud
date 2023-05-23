@@ -242,7 +242,7 @@ public class Skill_RacialLore extends StdSkill
 			tidbits.add(L("they like to fight with @x1",targetR.myNaturalWeapon().name()));
 			for(final RawMaterial M : targetR.myResources())
 			{
-				final String str=L("their bodies can be butchered for @x1",M.name().endsWith("s")?M.name():CMLib.english().makePlural(M.name()));
+				final String str=L("their bodies can be butchered for @x1",M.name());
 				if(!tidbits.contains(str))
 					tidbits.add(str);
 			}

@@ -235,7 +235,7 @@ public class Mindflayer extends Humanoid
 				resources.add(makeResource
 				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				resources.add(makeResource
-				(L("a @x1 tenticle",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
+				(L("a @x1 tentacle",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 			}
 		}
 		return resources;
