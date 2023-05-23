@@ -87,6 +87,19 @@ public class Paladin_Breakup extends StdAbility
 	}
 
 	@Override
+	public boolean canBeTaughtBy(final MOB teacher, final MOB student)
+	{
+		if(!super.canBeTaughtBy(teacher, student))
+			return false;
+		if(!this.appropriateToMyFactions(student))
+		{
+			teacher.tell(L("@x1 lacks the moral disposition to learn '@x2'.",student.name(), name()));
+			student.tell(L("You lack the moral disposition to learn '@x1'.",name()));
+		}
+		return true;
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.isInCombat())

@@ -160,6 +160,19 @@ public class PaladinSkill extends StdAbility
 	}
 
 	@Override
+	public boolean canBeTaughtBy(final MOB teacher, final MOB student)
+	{
+		if(!super.canBeTaughtBy(teacher, student))
+			return false;
+		if(!this.appropriateToMyFactions(student))
+		{
+			teacher.tell(L("@x1 lacks the moral disposition to learn '@x2'.",student.name(), name()));
+			student.tell(L("You lack the moral disposition to learn '@x1'.",name()));
+		}
+		return true;
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
