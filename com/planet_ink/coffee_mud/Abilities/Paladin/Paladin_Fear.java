@@ -99,10 +99,10 @@ public class Paladin_Fear extends PaladinSkill
 		switch(CMLib.dice().roll(1, 4, 0))
 		{
 		case 1:
-			targetM.enqueCommand(new XVector<String>("CRINGE",targetM.name()), 0, 1.0);
+			targetM.enqueCommand(new XVector<String>("CRINGE",mob.name()), 0, 1.0);
 			break;
 		case 2:
-			targetM.enqueCommand(new XVector<String>("COWER",targetM.name()), 0, 1.0);
+			targetM.enqueCommand(new XVector<String>("COWER",mob.name()), 0, 1.0);
 			break;
 		case 3:
 		{
