@@ -2,6 +2,7 @@
   1. New Paladin skills: Unholy Strike, Chaos Rage, Paladin's Fear, Paladin's Corruption
   2. New Paladin skills: Incite Fight, Dark Hammer, Paladin's Wickedness, Crushing Aura
   3. New Paladin skills: Craft Unholy Reaver, Righteous Defense, Exploiting Aura
+  4. Paladin's can now be Anti-Paladins if they maintain chaotic evil.
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)
