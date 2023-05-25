@@ -63,7 +63,7 @@ public class Paladin_Courage extends PaladinSkill
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY;
+		return Ability.FLAG_HOLY|Ability.FLAG_LAW;
 	}
 
 	@Override

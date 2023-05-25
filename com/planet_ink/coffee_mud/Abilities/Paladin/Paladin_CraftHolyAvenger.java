@@ -223,7 +223,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		buildingI = getModel(mob, woodRequired, data[0][FOUND_CODE]);
 
 		Ability A=CMClass.getAbility("Prop_HaveZapper");
-		String mask="-CLASS +Paladin ";
+		String mask="ACTUAL -CLASS +Paladin ";
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
 			mask +="-ALIGNMENT +Good ";
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))

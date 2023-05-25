@@ -1186,6 +1186,14 @@ public interface CMFlagLibrary extends CMLibrary
 	public String getAlignmentName(Environmental E);
 
 	/**
+	 * Returns the simple word that would describe the inclination
+	 * of the given mob or item or whatever.
+	 * @param E the mob or item or whatever
+	 * @return the name of its alignment, e.g. lawful, chaotic, moderate
+	 */
+	public String getInclinationName(final Environmental E);
+
+	/**
 	 * Deprecated, but returns the total hide detection score
 	 * for the given mob.
 	 * @param seer the mob trying to see hidden

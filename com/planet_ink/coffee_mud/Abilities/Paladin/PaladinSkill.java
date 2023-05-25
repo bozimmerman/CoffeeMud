@@ -86,8 +86,8 @@ public class PaladinSkill extends StdAbility
 	}
 
 	protected Set<MOB>			paladinsGroup	= null;
-	protected long				paladinsHash	= 0;
 	protected final Set<MOB> 	buildGrp		= new HashSet<MOB>(); // can be hashset because its temp use
+	protected volatile boolean	rebuildGroup	= true;
 
 	@Override
 	public int classificationCode()
@@ -173,6 +173,23 @@ public class PaladinSkill extends StdAbility
 	}
 
 	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		switch(msg.sourceMinor())
+		{
+		case CMMsg.TYP_ENTER:
+		case CMMsg.TYP_LEAVE:
+		case CMMsg.TYP_RECALL:
+		case CMMsg.TYP_FOLLOW:
+		case CMMsg.TYP_REBUKE:
+		case CMMsg.TYP_LIFE:
+			rebuildGroup=true;
+			break;
+		}
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -185,11 +202,12 @@ public class PaladinSkill extends StdAbility
 		if(!appropriateToMyFactions(paladinMob))
 			return false;
 		final Set<MOB> paladinsGroup=this.paladinsGroup;
-		if(paladinsGroup!=null)
+		if((paladinsGroup!=null)
+		&&(rebuildGroup))
 		{
 			synchronized(buildGrp)
 			{
-				//TODO: it is a terrible idea to rebuild this hash Every Single Tick
+				rebuildGroup=false;
 				buildGrp.clear();
 				paladinMob.getGroupMembers(buildGrp);
 				for(final Iterator<MOB> i = buildGrp.iterator(); i.hasNext(); )

@@ -66,19 +66,19 @@ public class Paladin_CrushingAura extends PaladinSkill
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((affected instanceof MOB)
-		&&((invoker==null)||super.appropriateToMyFactions(invoker)))
+		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
 			if((mob!=null)
-			&&(mob.isInCombat()))
+			&&(mob.isInCombat())
+			&&(super.appropriateToMyFactions((MOB)affected)))
 			{
 				final MOB vicM=mob.getVictim();
 				if((vicM!=null)
 				&&(CMath.div(vicM.curState().getHitPoints(), vicM.maxState().getHitPoints())<=0.1)
 				&&(CMLib.dice().rollPercentage()>vicM.charStats().getSave(CharStats.STAT_SAVE_JUSTICE)))
 				{
-					if(mob.location().show(mob,vicM,this,CMMsg.MSG_OK_VISUAL, L("An aura around <S-NAME> crushes <T-NAME>.")))
+					if(mob.location().show(mob,vicM,this,CMMsg.MSG_OK_VISUAL, L("^SAn aura around <S-NAME> crushes <T-NAME>.^?")))
 						CMLib.combat().postDeath(mob, vicM, null);
 				}
 			}

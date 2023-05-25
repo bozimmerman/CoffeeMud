@@ -63,7 +63,7 @@ public class Paladin_Fear extends PaladinSkill
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_UNHOLY|Ability.FLAG_FEARING;
+		return Ability.FLAG_UNHOLY|Ability.FLAG_FEARING|Ability.FLAG_CHAOS;
 	}
 
 	protected volatile int fearDown = 5;
@@ -75,7 +75,7 @@ public class Paladin_Fear extends PaladinSkill
 			return false;
 		if(--fearDown>0)
 			return true;
-		fearDown = 5;
+		fearDown = 10;
 		final Physical P = affected;
 		if(!(P instanceof MOB))
 			return true;
@@ -84,13 +84,16 @@ public class Paladin_Fear extends PaladinSkill
 		if((R==null)||(R.numInhabitants()<2))
 			return true;
 		final int chance = 10 + (adjustedLevel(mob,0)/5)+(2*super.getXLEVELLevel(mob));
-		if(CMLib.dice().rollPercentage()>chance)
+		if((CMLib.dice().rollPercentage()>chance)
+		||((mob.fetchAbility(ID())!=null)&&(!super.proficiencyCheck(mob, 0, false))))
 			return true;
 		final List<MOB> targets=new ArrayList<MOB>(R.numInhabitants());
 		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 		{
 			final MOB M=m.nextElement();
-			if((M!=null)&&(!paladinsGroup.contains(M)))
+			if((M!=null)
+			&&(mob.mayIFight(M))
+			&&(!paladinsGroup.contains(M)))
 				targets.add(M);
 		}
 		if(targets.size()==0)
@@ -106,16 +109,36 @@ public class Paladin_Fear extends PaladinSkill
 			break;
 		case 3:
 		{
+			final HashMap<MOB,MOB> vicMap = new HashMap<MOB,MOB>();
+			for(final MOB M : mob.getGroupMembers(new HashSet<MOB>()))
+				vicMap.put(M, M.getVictim());
+			for(final MOB M : targetM.getGroupMembers(new HashSet<MOB>()))
+				vicMap.put(M, M.getVictim());
+			final Room rR=mob.location();
 			final Ability A=CMClass.getAbility("Spell_Spook");
 			if(A!=null)
+			{
 				A.invoke(mob, targetM, true, 0);
+				if((rR != mob.location())
+				&&(!CMLib.flags().isMobile(targetM)))
+					CMLib.tracking().markToWanderHomeLater(targetM);
+			}
+			for(final MOB M : vicMap.keySet())
+				M.setVictim(vicMap.get(M));
 			break;
 		}
 		case 4:
 		{
+			final HashMap<MOB,MOB> vicMap = new HashMap<MOB,MOB>();
+			for(final MOB M : mob.getGroupMembers(new HashSet<MOB>()))
+				vicMap.put(M, M.getVictim());
+			for(final MOB M : targetM.getGroupMembers(new HashSet<MOB>()))
+				vicMap.put(M, M.getVictim());
 			final Ability A=CMClass.getAbility("Spell_Nightmare");
 			if(A!=null)
 				A.startTickDown(mob, targetM, 2);
+			for(final MOB M : vicMap.keySet())
+				M.setVictim(vicMap.get(M));
 			break;
 		}
 		}

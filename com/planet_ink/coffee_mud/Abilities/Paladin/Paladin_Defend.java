@@ -71,7 +71,7 @@ public class Paladin_Defend extends StdAbility
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY;
+		return Ability.FLAG_HOLY|Ability.FLAG_LAW;
 	}
 
 	@Override

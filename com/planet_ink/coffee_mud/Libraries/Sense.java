@@ -864,6 +864,34 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public String getInclinationName(final Environmental E)
+	{
+		if(E instanceof Physical)
+		{
+			if(((Physical)E).phyStats().isAmbiance("#LAW"))
+				return Faction.Align.LAWFUL.toString();
+			if(((Physical)E).phyStats().isAmbiance("#CHAOS"))
+				return Faction.Align.CHAOTIC.toString();
+		}
+		if(E instanceof MOB)
+		{
+			Faction F=null;
+			Faction.FRange FR=null;
+			for(final Enumeration<String> e=((MOB)E).factions();e.hasMoreElements();)
+			{
+				F=CMLib.factions().getFaction(e.nextElement());
+				if(F!=null)
+				{
+					FR=CMLib.factions().getRange(F.factionID(),((MOB)E).fetchFaction(F.factionID()));
+					if((FR!=null)&&((FR.alignEquiv()==Align.LAWFUL)||(FR.alignEquiv()==Align.CHAOTIC)))
+						return FR.alignEquiv().toString();
+				}
+			}
+		}
+		return Faction.Align.MODERATE.toString();
+	}
+
+	@Override
 	public boolean isReallyNeutral(final FactionMember M)
 	{
 		if(M != null)

@@ -4944,7 +4944,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						return false;
 					break;
 				case _ALIGNMENT: // -alignment
-					if(!CMParms.contains(entry.parms(),CMLib.flags().getAlignmentName(mob)))
+					if((!CMParms.contains(entry.parms(),CMLib.flags().getAlignmentName(mob)))
+					&&(!CMParms.contains(entry.parms(),CMLib.flags().getInclinationName(mob))))
 						return false;
 					break;
 				case _GENDER: // -gender
@@ -7460,7 +7461,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 					break;
 				case ALIGNMENT: // +alignment
-					if(CMParms.contains(entry.parms(),CMLib.flags().getAlignmentName(mob)))
+					if((CMParms.contains(entry.parms(),CMLib.flags().getAlignmentName(mob)))
+					||(CMParms.contains(entry.parms(),CMLib.flags().getInclinationName(mob))))
 						return false;
 					break;
 				case GENDER: // +gender
@@ -7583,8 +7585,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
 		return maskCheck(getPreCompiledMask(text), E);
 	}
-
-
 
 	@Override
 	public boolean maskCheck(final CompiledZMask cset, final PlayerLibrary.ThinPlayer E)

@@ -82,7 +82,7 @@ public class Paladin_Corruption extends PaladinSkill
 		&&(proficiencyCheck(msg.source(), 0, false))
 		&&(msg.value()<0))
 		{
-			msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> corruption enhance(s) <S-HIM-HER> wicked influence."));
+			msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> corruption enhance(s) <S-HIS-HER> wicked influence."));
 			msg.setValue(msg.value()*2);
 			return false;
 		}

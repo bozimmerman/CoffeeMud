@@ -57,7 +57,7 @@ public class Paladin_Wickedness extends PaladinSkill
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_UNHOLY;
+		return Ability.FLAG_UNHOLY|Ability.FLAG_CHAOS;
 	}
 
 	protected boolean tickTock=false;

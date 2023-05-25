@@ -96,7 +96,7 @@ public class Paladin_UnholyStrike extends StdAbility
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_UNHOLY;
+		return Ability.FLAG_UNHOLY|Ability.FLAG_CHAOS;
 	}
 
 	@Override
@@ -162,7 +162,7 @@ public class Paladin_UnholyStrike extends StdAbility
 		||(((Weapon)w).weaponClassification()==Weapon.CLASS_THROWN))
 		{
 			if(!quiet)
-				mob.tell(L("You need a melee to perform an unholy strike!"));
+				mob.tell(L("You need a melee weapon to perform an unholy strike!"));
 			return false;
 		}
 		return true;

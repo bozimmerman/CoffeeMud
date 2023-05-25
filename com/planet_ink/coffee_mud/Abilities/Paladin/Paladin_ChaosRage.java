@@ -85,7 +85,7 @@ public class Paladin_ChaosRage extends StdAbility
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_UNHOLY;
+		return Ability.FLAG_UNHOLY|Ability.FLAG_CHAOS;
 	}
 
 	@Override

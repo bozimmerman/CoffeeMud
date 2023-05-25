@@ -119,7 +119,7 @@ public class Prayer_DarkHammer extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if((success)
-		&&(CMLib.flags().isEvil(target)))
+		&&(CMLib.flags().isGood(target)))
 		{
 			final String wname = getWeaponName(mob);
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,

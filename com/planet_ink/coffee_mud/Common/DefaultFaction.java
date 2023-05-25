@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.EnglishParsing;
+import com.planet_ink.coffee_mud.Libraries.interfaces.FactionManager.FAbilityMaskType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -3476,7 +3477,11 @@ public class DefaultFaction implements Faction, MsgListener
 				final boolean not=strflag.startsWith("!");
 				if(not)
 					strflag=strflag.substring(1);
-				switch(CMLib.factions().getAbilityFlagType(strflag))
+				final FAbilityMaskType flag = CMLib.factions().getAbilityFlagType(strflag);
+				if(flag == null)
+					Log.errOut("Error in faction "+ID+": unknown flag: "+strflag);
+				else
+				switch(flag)
 				{
 				case ACODE:
 					type=CMParms.indexOfIgnoreCase(Ability.ACODE_DESCS, strflag);

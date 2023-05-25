@@ -251,6 +251,8 @@ public class Paladin extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_CureBlindness",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_ResurrectMount",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Paladin_RighteousDefense",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Paladin_ExploitingAura",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_BladeBarrier",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CureFatigue",false);
@@ -263,10 +265,15 @@ public class Paladin extends StdCharClass
 		}
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_Sweep",true);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Paladin_Goodness",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+		{
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Paladin_Goodness",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Paladin_Wickedness",false);
+		}
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_MassFreedom",false,CMParms.parseSemicolons("Prayer_Freedom",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Paladin_AbidingAura",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Paladin_CrushingAura",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Heal",false,CMParms.parseSemicolons("Prayer_CureCritical",true));
 
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))

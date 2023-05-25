@@ -57,7 +57,7 @@ public class Paladin_Goodness extends PaladinSkill
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY;
+		return Ability.FLAG_HOLY|Ability.FLAG_LAW;
 	}
 
 	protected boolean tickTock=false;
