@@ -262,7 +262,17 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	{
 		if(Arrays.equals(fromAngle,  toAngle))
 			return 0.0;
-		final BigVector from = new BigVector(fromAngle).sphereToCartesian();
+		final BigVector from;
+		try
+		{
+			from = new BigVector(fromAngle).sphereToCartesian();
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("AngleDelta",(fromAngle[0]+","+fromAngle[1]));
+			Log.errOut("AngleDelta",e);
+			return 0.0;
+		}
 		final BigVector to = new BigVector(toAngle).sphereToCartesian();
 		BigDecimal dotProd = from.dotProduct(to);
 		if(dotProd.compareTo(ONE)>0)
