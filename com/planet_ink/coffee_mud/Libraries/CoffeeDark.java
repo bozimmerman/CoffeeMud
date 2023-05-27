@@ -442,7 +442,11 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		double newDirectionPitch;
 		final double deltaMultiplier = Math.sin(anglesDelta);
 		final double yawMin =  deltaMultiplier * (0.1 + (yawDelta * (1.01-Math.sin(curDirectionPitch))));
-		final double accelerationMultiplier = (acceleration * 10.0 / currentSpeed) * deltaMultiplier;
+		final double accelerationMultiplier;
+		if(currentSpeed == 0.0)
+			accelerationMultiplier = 1.0;
+		else
+			accelerationMultiplier = (acceleration * 10.0 / currentSpeed) * deltaMultiplier;
 		if(yawDelta < yawMin)
 			newDirectionYaw = accelDirectionYaw;
 		else
@@ -485,9 +489,9 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	protected void fixDirectionBounds(final double[] dir)
 	{
 		if(Double.isInfinite(dir[0])||Double.isNaN(dir[0]))
-			dir[0] = Math.PI;
+			throw new IllegalArgumentException("Broken direction in fixDirectionBounds: "+dir[0]);
 		if(Double.isInfinite(dir[1])||Double.isNaN(dir[1]))
-			dir[1] = Math.PI/2.0;
+			throw new IllegalArgumentException("Broken direction in fixDirectionBounds: "+dir[1]);
 		while(dir[0] >= PI_TIMES_2)
 			dir[0] -= PI_TIMES_2;
 		while(dir[0] < 0)
