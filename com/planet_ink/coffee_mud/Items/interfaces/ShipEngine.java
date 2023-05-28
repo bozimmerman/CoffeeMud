@@ -85,19 +85,19 @@ public interface ShipEngine extends TechComponent
 	 * Gets whether this engine, once thrust is engaged, will continue
 	 * to thrust at that speed, thus accelerating.  True if it does,
 	 * and false if whatever speed you get out of it is all you get.
-	 * @see ShipEngine#setConstantThruster(boolean)
+	 * @see ShipEngine#setReactionEngine(boolean)
 	 * @return true for an accelerator, false for one shot
 	 */
-	public boolean isConstantThruster();
+	public boolean isReactionEngine();
 
 	/**
 	 * Sets whether this engine, once thrust is engaged, will continue
 	 * to thrust at that speed, thus accelerating.  True if it does,
 	 * and false if whatever speed you get out of it is all you get.
-	 * @see ShipEngine#isConstantThruster()
+	 * @see ShipEngine#isReactionEngine()
 	 * @param isConstant true for an accelerator, false for one shot
 	 */
-	public void setConstantThruster(boolean isConstant);
+	public void setReactionEngine(boolean isConstant);
 
 	/**
 	 * Gets the current amount of thrust being emitted by this ShipEngine,

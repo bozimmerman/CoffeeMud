@@ -140,7 +140,7 @@ public class GenShipThruster extends StdShipThruster
 		case 16:
 			return "" + getMinThrust();
 		case 17:
-			return "" + isConstantThruster();
+			return "" + isReactionEngine();
 		case 18:
 			return CMParms.toListString(getAvailPorts());
 		case 19:
@@ -220,7 +220,7 @@ public class GenShipThruster extends StdShipThruster
 			setMinThrust(CMath.s_parseIntExpression(val));
 			break;
 		case 17:
-			this.setConstantThruster(CMath.s_bool(val));
+			this.setReactionEngine(CMath.s_bool(val));
 			break;
 		case 18:
 			this.setAvailPorts(CMParms.parseEnumList(ShipDirectional.ShipDir.class, val, ',').toArray(new ShipDirectional.ShipDir[0]));

@@ -1393,7 +1393,7 @@ public class ItemData extends StdWebMacro
 						break;
 					case ISCONSTTHRUST:
 						if(I instanceof ShipEngine)
-							str.append((firstTime) ? (((ShipEngine)I).isConstantThruster()?"CHECKED":"") : (old.equalsIgnoreCase("on")?"CHECKED":"")).append(", ");
+							str.append((firstTime) ? (((ShipEngine)I).isReactionEngine()?"CHECKED":"") : (old.equalsIgnoreCase("on")?"CHECKED":"")).append(", ");
 						break;
 					case MAXTHRUST:
 						if(I instanceof ShipEngine)

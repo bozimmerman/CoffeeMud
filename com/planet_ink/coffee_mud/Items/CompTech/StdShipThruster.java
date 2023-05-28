@@ -159,13 +159,13 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 	}
 
 	@Override
-	public boolean isConstantThruster()
+	public boolean isReactionEngine()
 	{
 		return constantThrust;
 	}
 
 	@Override
-	public void setConstantThruster(final boolean isConstant)
+	public void setReactionEngine(final boolean isConstant)
 	{
 		constantThrust = isConstant;
 	}
@@ -334,7 +334,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		if(me.consumeFuel(fuelToConsume))
 		{
 			final SpaceObject spaceObject=ship.getShipSpaceObject();
-			final String code=Technical.TechCommand.ACCELERATION.makeCommand(portDir.opposite(),Double.valueOf(acceleration),Boolean.valueOf(me.isConstantThruster()));
+			final String code=Technical.TechCommand.ACCELERATION.makeCommand(portDir.opposite(),Double.valueOf(acceleration),Boolean.valueOf(me.isReactionEngine()));
 			final CMMsg msg=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			if(spaceObject.okMessage(mob, msg))
 			{

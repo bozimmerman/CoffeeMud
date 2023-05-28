@@ -280,7 +280,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			if(thrustInject != null)
 			{
 				if((thrustInject != this.lastInject)
-				||(!engineE.isConstantThruster())
+				||(!engineE.isReactionEngine())
 				||((thrustInject.doubleValue()>0.0)&&(engineE.getThrust()==0.0)))
 				{
 					final CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
@@ -430,10 +430,14 @@ public class ShipNavProgram extends ShipSensorProgram
 		return false;
 	}
 
-	protected ShipEngine primeMainThrusters(final SpaceShip ship, final double maxAceleration)
+	protected ShipEngine primeMainThrusters(final SpaceShip ship, final double maxAceleration, final ShipEngine overrideE)
 	{
 		CMMsg msg;
-		final List<ShipEngine> engines = getEngines();
+		final List<ShipEngine> engines;
+		if(overrideE != null)
+			engines = new XVector<ShipEngine>(overrideE);
+		else
+			engines = getEngines();
 		final MOB M=CMClass.getFactoryMOB();
 		final boolean isDocked = ship.getIsDocked()!=null;
 		try
@@ -817,7 +821,8 @@ public class ShipNavProgram extends ShipSensorProgram
 		{
 			//TODO: Landing approach should check your speed, by determining the top speed you can be going
 			// and still reach a speed of 0, gravity included, at the distance from radius
-			if(track.state!=ShipNavState.LANDING)
+			if((track.state!=ShipNavState.LANDING)
+			&&(targetObject != null))
 			{
 				final long distance=CMLib.space().getDistanceFrom(ship.coordinates(),targetObject.coordinates());
 				if(distance < (ship.radius() + Math.round(targetObject.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
@@ -887,6 +892,7 @@ public class ShipNavProgram extends ShipSensorProgram
 						final double ticksToStop = ship.speed() / targetAcceleration;
 						final double stopDistance = (ship.speed()/2.0) * ticksToStop;
 						if((stopDistance >= distToITarget)
+						&&(targetObject != null)
 						&&(ship.speed() > (targetObject.speed() * 2)))
 						{
 							if(ticksToStop > 0)
@@ -1025,7 +1031,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
 					if((targetAcceleration > 1.0) && (newInject.doubleValue()==0.0))
 					{
-						primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
+						primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED, null);
 						newInject = forceAccelerationAllProgramEngines(programEngines, targetAcceleration);
 					}
 					performSimpleThrust(engineE,newInject, false);
@@ -1093,7 +1099,7 @@ public class ShipNavProgram extends ShipSensorProgram
 						Log.debugOut("Landing Deccelerating @ "+  targetAcceleration +" because "+ticksToDecellerate+">"+ticksToDestinationAtCurrentSpeed+"  or "+distance+" < "+(ship.speed()*20));
 					if((targetAcceleration >= 1.0) && (newInject.doubleValue()==0.0))
 					{
-						primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
+						primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED, null);
 						Log.debugOut("Landing Deccelerating Check "+  Math.abs(this.savedAcceleration.doubleValue()-targetAcceleration));
 						newInject = forceAccelerationAllProgramEngines(programEngines, targetAcceleration);
 					}
@@ -1107,7 +1113,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					newInject=calculateMarginalTargetInjection(this.lastInject, targetAcceleration);
 					if((targetAcceleration >= 1.0) && (newInject.doubleValue()==0.0))
 					{
-						primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
+						primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED, null);
 						Log.debugOut("Landing Accelerating Check "+  Math.abs(this.savedAcceleration.doubleValue()-targetAcceleration));
 						newInject = forceAccelerationAllProgramEngines(programEngines, targetAcceleration);
 					}
@@ -1158,7 +1164,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				cancelNavigation();
 			}
 			final SpaceObject programPlanet=CMLib.space().getSpaceObject(ship.getIsDocked(), true);
-			final ShipEngine engineE =primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
+			final ShipEngine engineE =primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED, null);
 			if(engineE==null)
 			{
 				addScreenMessage(L("Error: Malfunctioning launch thrusters interface."));
@@ -1211,7 +1217,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				return false;
 			}
 			else
-				engineE=primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
+				engineE=primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED, null);
 			if(engineE==null)
 			{
 				cancelNavigation();
@@ -1249,7 +1255,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				return false;
 			}
 			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
-			for(final TechComponent sensor : sensors)
+			for(final TechComponent sensor : getShipSensors())
 				allObjects.addAll(takeNewSensorReport(sensor));
 			Collections.sort(allObjects, new DistanceSorter(spaceObject));
 			SpaceObject landingPlanet = null;
@@ -1299,7 +1305,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				return false;
 			}
 			else
-				engineE=primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
+				engineE=primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED, null);
 			if(engineE==null)
 			{
 				cancelNavigation();
@@ -1343,7 +1349,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			if(sensorReps.size()>0)
 			{
 				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
-				for(final TechComponent sensor : sensors)
+				for(final TechComponent sensor : getShipSensors())
 					allObjects.addAll(takeNewSensorReport(sensor));
 				Collections.sort(allObjects, new DistanceSorter(spaceObject));
 				SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
@@ -1407,7 +1413,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			}
 			final String targetStr=CMParms.combine(parsed, 1);
 			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
-			for(final TechComponent sensor : sensors)
+			for(final TechComponent sensor : getShipSensors())
 				allObjects.addAll(takeNewSensorReport(sensor));
 			Collections.sort(allObjects, new DistanceSorter(spaceObject));
 			SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
@@ -1546,7 +1552,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			}
 			final String targetStr=CMParms.combine(parsed, 1);
 			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
-			for(final TechComponent sensor : sensors)
+			for(final TechComponent sensor : getShipSensors())
 				allObjects.addAll(takeNewSensorReport(sensor));
 			Collections.sort(allObjects, new DistanceSorter(spaceObject));
 			SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
@@ -1578,7 +1584,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				cancelNavigation();
 				return false;
 			}
-			engineE=primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED);
+			engineE=primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED, null);
 			if(engineE==null)
 			{
 				cancelNavigation();
@@ -1618,7 +1624,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			}
 			final String targetStr=CMParms.combine(parsed, 1);
 			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
-			for(final TechComponent sensor : sensors)
+			for(final TechComponent sensor : getShipSensors())
 				allObjects.addAll(takeNewSensorReport(sensor));
 			Collections.sort(allObjects, new DistanceSorter(spaceObject));
 			SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);

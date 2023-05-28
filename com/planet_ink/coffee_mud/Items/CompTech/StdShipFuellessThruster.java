@@ -148,13 +148,13 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	}
 
 	@Override
-	public boolean isConstantThruster()
+	public boolean isReactionEngine()
 	{
 		return constantThrust;
 	}
 
 	@Override
-	public void setConstantThruster(final boolean isConstant)
+	public void setReactionEngine(final boolean isConstant)
 	{
 		constantThrust = isConstant;
 	}

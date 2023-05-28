@@ -633,7 +633,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(xmlLib.convertXMLtoTag("SSIMPL",""+((ShipEngine)E).getSpecificImpulse()));
 			text.append(xmlLib.convertXMLtoTag("SSFEFF",""+((ShipEngine)E).getFuelEfficiency()));
 			text.append(xmlLib.convertXMLtoTag("SSNTHRUST",""+((ShipEngine)E).getMinThrust()));
-			text.append(xmlLib.convertXMLtoTag("SSCONST",""+((ShipEngine)E).isConstantThruster()));
+			text.append(xmlLib.convertXMLtoTag("SSCONST",""+((ShipEngine)E).isReactionEngine()));
 			text.append(xmlLib.convertXMLtoTag("SSAPORTS",CMParms.toListString(((ShipEngine)E).getAvailPorts())));
 		}
 		if(E instanceof ShipDirectional)
@@ -4011,7 +4011,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			((ShipEngine)E).setSpecificImpulse(xml.getIntFromPieces(buf,"SSIMPL"));
 			((ShipEngine)E).setFuelEfficiency(xml.getDoubleFromPieces(buf,"SSFEFF"));
 			((ShipEngine)E).setMinThrust(xml.getIntFromPieces(buf,"SSNTHRUST"));
-			((ShipEngine)E).setConstantThruster(xml.getBoolFromPieces(buf,"SSCONST",true));
+			((ShipEngine)E).setReactionEngine(xml.getBoolFromPieces(buf,"SSCONST",true));
 			final String portsStr = xml.getValFromPieces(buf, "SSAPORTS", "");
 			if(portsStr.length()==0)
 				((ShipEngine)E).setAvailPorts(ShipDirectional.ShipDir.values());

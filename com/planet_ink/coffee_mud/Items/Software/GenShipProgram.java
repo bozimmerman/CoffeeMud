@@ -63,6 +63,7 @@ public class GenShipProgram extends GenSoftware
 	protected volatile List<TechComponent>	shields				= null;
 	protected volatile List<TechComponent>	components			= null;
 	protected volatile List<TechComponent>	dampers				= null;
+	protected volatile List<TechComponent>	miscsystems			= null;
 
 	protected final static PrioritizingLimitedMap<String,TechComponent> cachedComponents = new PrioritizingLimitedMap<String,TechComponent>(1000,60000,600000,0);
 
@@ -243,6 +244,7 @@ public class GenShipProgram extends GenSoftware
 		shields		= null;
 		components	= null;
 		dampers		= null;
+		miscsystems = null;
 	}
 
 	protected synchronized List<TechComponent> getComponent(final TechType type)
@@ -314,6 +316,20 @@ public class GenShipProgram extends GenSoftware
 			}
 		}
 		return sensors;
+	}
+
+	protected synchronized List<TechComponent> getSystemMiscComponents()
+	{
+		if(miscsystems == null)
+		{
+			final List<TechComponent> all = new ArrayList<TechComponent>(this.getTechComponents());
+			all.removeAll(this.getShipSensors());
+			all.removeAll(this.getShipWeapons());
+			all.removeAll(this.getShipShields());
+			all.removeAll(this.getEngines());
+			miscsystems = new XVector<TechComponent>(all);
+		}
+		return miscsystems;
 	}
 
 	protected boolean isWeaponLauncher(final TechComponent E)
@@ -542,14 +558,7 @@ public class GenShipProgram extends GenSoftware
 				}
 				if(E==null)
 				{
-					final List<TechComponent> others = new ArrayList<TechComponent>();
-					for(final TechComponent component : getTechComponents())
-					{
-						if((!getEngines().contains(component))
-						&&(!getShipShields().contains(component))
-						&&(!getShipSensors().contains(component)))
-							others.add(component);
-					}
+					final List<TechComponent> others = getSystemMiscComponents();
 					E=findComponentByName(others,"SYSTEM",rest);
 				}
 				if(E!=null)
@@ -608,12 +617,7 @@ public class GenShipProgram extends GenSoftware
 					E=findSensorByName(rest);
 				if(E==null)
 				{
-					final List<TechComponent> others = new ArrayList<TechComponent>();
-					for(final TechComponent component : getTechComponents())
-					{
-						if((!getEngines().contains(component))&&(!getShipSensors().contains(component)))
-							others.add(component);
-					}
+					final List<TechComponent> others = getSystemMiscComponents();
 					E=findComponentByName(others,"SYSTEM",rest);
 				}
 				if(E!=null)

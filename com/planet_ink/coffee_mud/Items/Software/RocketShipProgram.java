@@ -337,24 +337,18 @@ public class RocketShipProgram extends ShipTacticalProgram
 				shieldNumber++;
 			}
 			int systemNumber=1;
-			for(final TechComponent component : components)
+			for(final TechComponent component : getSystemMiscComponents())
 			{
-				if((!engines.contains(component))
-				&&(!sensors.contains(component))
-				&&(!weapons.contains(component))
-				&&(!shields.contains(component)))
-				{
-					str.append("^H").append(CMStrings.padRight(L("SYSTEM@x1",""+systemNumber),9));
-					str.append(CMStrings.padRight(component.activated()?L("^gA"):L("^rI"),2));
-					str.append("^H").append(CMStrings.padRight(L("Pow."),5));
-					if(component instanceof Computer)
-						str.append("^N").append(CMStrings.padRight(Long.toString(component.powerTarget()),11));
-					else
-						str.append("^N").append(CMStrings.padRight(Long.toString(component.powerRemaining()),11));
-					str.append("^H").append(CMStrings.padRight(component.name(),31));
-					str.append("^.^N\n\r");
-					systemNumber++;
-				}
+				str.append("^H").append(CMStrings.padRight(L("SYSTEM@x1",""+systemNumber),9));
+				str.append(CMStrings.padRight(component.activated()?L("^gA"):L("^rI"),2));
+				str.append("^H").append(CMStrings.padRight(L("Pow."),5));
+				if(component instanceof Computer)
+					str.append("^N").append(CMStrings.padRight(Long.toString(component.powerTarget()),11));
+				else
+					str.append("^N").append(CMStrings.padRight(Long.toString(component.powerRemaining()),11));
+				str.append("^H").append(CMStrings.padRight(component.name(),31));
+				str.append("^.^N\n\r");
+				systemNumber++;
 			}
 			str.append("^.^N\n\r");
 		}
@@ -510,13 +504,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 				else
 				if(secondWord.startsWith("SYSTEM"))
 				{
-					final List<TechComponent> others = new ArrayList<TechComponent>();
-					for(final TechComponent component : getTechComponents())
-					{
-						if((!getEngines().contains(component))
-						&&(!getShipSensors().contains(component)))
-							others.add(component);
-					}
+					final List<TechComponent> others = getSystemMiscComponents();
 					final Electronics E=findComponentByName(others,"SYSTEM",secondWord);
 					if(E==null)
 					{
@@ -659,6 +647,26 @@ public class RocketShipProgram extends ShipTacticalProgram
 					return;
 				}
 				amount=CMath.s_double(parsed.get(parsed.size()-1));
+				if((engineE.isReactionEngine())
+				&&(CMParms.contains(engineE.getAvailPorts(),ShipDirectional.ShipDir.AFT))
+				&&(lastInject == null))
+				{
+					if(lastInject == null)
+					{
+						final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
+						final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+						if((primeMainThrusters(ship, amount, engineE) == engineE)
+						&&(lastInject != null))
+							amount = calculateMarginalTargetInjection(lastInject,amount).doubleValue();
+						else
+						{
+							super.addScreenMessage(L("Error: '@x1' priming failure.",engineE.name()));
+							return;
+						}
+					}
+					else
+						amount = calculateMarginalTargetInjection(lastInject,amount).doubleValue();
+				}
 				if(parsed.size()==3)
 				{
 					portDir=(ShipDirectional.ShipDir)CMath.s_valueOf(ShipDirectional.ShipDir.class, parsed.get(1).toUpperCase().trim());

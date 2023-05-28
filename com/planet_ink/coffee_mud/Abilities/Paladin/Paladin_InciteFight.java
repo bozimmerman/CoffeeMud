@@ -154,13 +154,14 @@ public class Paladin_InciteFight extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				final Paladin_InciteFight A = (Paladin_InciteFight)maliciousAffect(mob, target, asLevel, 0, CMMsg.TYP_MIND);
-				success = (A!=null);
-				if(success)
+				if(A!=null)
 				{
 					A.aggroB = CMClass.getBehavior("Aggressive");
 					A.aggroB.startBehavior(target);
 					A.aggroB.setParms("MOBKILL");
 				}
+				else
+					success = false;
 				if(makePeace)
 				{
 					target.makePeace(true);

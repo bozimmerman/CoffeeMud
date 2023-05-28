@@ -354,7 +354,7 @@ public class ShipSensorProgram extends GenShipProgram
 		{
 			final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
 			final List<SpaceObject> allObjects = new ArrayList<SpaceObject>();
-			for(final TechComponent sensor : sensors)
+			for(final TechComponent sensor : getShipSensors())
 				allObjects.addAll(takeNewSensorReport(sensor));
 			Collections.sort(allObjects, new DistanceSorter(spaceObject));
 			for(final String parm : parms)

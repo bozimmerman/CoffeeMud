@@ -844,7 +844,7 @@ public class GrinderItems
 					break;
 				case ISCONSTTHRUST:
 					if(I instanceof ShipEngine)
-						((ShipEngine)I).setConstantThruster(old.equalsIgnoreCase("on"));
+						((ShipEngine)I).setReactionEngine(old.equalsIgnoreCase("on"));
 					break;
 				case MAXTHRUST:
 					if(I instanceof ShipEngine)

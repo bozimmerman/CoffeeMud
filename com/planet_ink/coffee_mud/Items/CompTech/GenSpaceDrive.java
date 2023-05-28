@@ -112,7 +112,7 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 		case 8:
 			return "" + getMinThrust();
 		case 9:
-			return "" + isConstantThruster();
+			return "" + isReactionEngine();
 		case 10:
 			return CMParms.toListString(getAvailPorts());
 		case 11:
@@ -158,7 +158,7 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 			setMinThrust(CMath.s_parseIntExpression(val));
 			break;
 		case 9:
-			this.setConstantThruster(CMath.s_bool(val));
+			this.setReactionEngine(CMath.s_bool(val));
 			break;
 		case 10:
 			this.setAvailPorts(CMParms.parseEnumList(ShipDirectional.ShipDir.class, val, ',').toArray(new ShipDirectional.ShipDir[0]));

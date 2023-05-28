@@ -85,7 +85,7 @@ public class ShipTacticalProgram extends ShipNavProgram
 			}
 			final String targetStr=CMParms.combine(parsed, 1);
 			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
-			for(final TechComponent sensor : sensors)
+			for(final TechComponent sensor : getShipSensors())
 				allObjects.addAll(takeNewSensorReport(sensor));
 			Collections.sort(allObjects, new DistanceSorter(spaceObject));
 			SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
@@ -128,7 +128,7 @@ public class ShipTacticalProgram extends ShipNavProgram
 				return false;
 			}
 			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
-			for(final TechComponent sensor : sensors)
+			for(final TechComponent sensor : getShipSensors())
 				allObjects.addAll(takeNewSensorReport(sensor));
 			Collections.sort(allObjects, new DistanceSorter(spaceObject));
 			final SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, currentTarget.ID(), true);
