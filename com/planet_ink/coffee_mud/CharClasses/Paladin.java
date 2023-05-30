@@ -429,6 +429,7 @@ public class Paladin extends StdCharClass
 		if((msg.amISource(myChar))
 		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool() instanceof Ability)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 		&&((CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())>0)
 				&&(myChar.isMine(msg.tool())))
 		&&((!isPaladinAlignment(myChar))
