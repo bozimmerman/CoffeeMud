@@ -158,6 +158,19 @@ public class DatabaseProgram extends GenShipProgram
 	@Override
 	public boolean isCommandString(final String word, final boolean isActive)
 	{
+		final ItemPossessor owner = owner();
+		if((owner != null)
+		&&(isActive))
+		{
+			for(final Enumeration<Item> i = owner.items(); i.hasMoreElements();)
+			{
+				final Item I = i.nextElement();
+				if((I instanceof Software)
+				&&(I != this)
+				&&((Software)I).getParentMenu().equals(getParentMenu()))
+					return isActive && word.toLowerCase().startsWith("query ");
+			}
+		}
 		return isActive;
 	}
 
@@ -1140,6 +1153,7 @@ public class DatabaseProgram extends GenShipProgram
 				return; // done, one way or another
 			}
 			if((parsed.size()==0)
+			||(message.equalsIgnoreCase("QUERY"))
 			||(message.equalsIgnoreCase("HELP")))
 			{
 				final StringBuilder msg=new StringBuilder("");
@@ -1150,6 +1164,7 @@ public class DatabaseProgram extends GenShipProgram
 				msg.append(L("  Search for an object, e.g. Vulc*\n\r"));
 				msg.append(L(" * Use special object names HERE, or a sector name.\n\r"));
 				msg.append(L(" * Precede coordinates/name with the word NEAR\n\r"));
+				msg.append(L(" * May need to precede search terms with 'query'\n\r"));
 				if(!data.containsKey("DISABLED"))
 				{
 					msg.append(L("Setting names, notes, and fields:\n\r"));
@@ -1164,6 +1179,11 @@ public class DatabaseProgram extends GenShipProgram
 				addLineToReadableScreen(msg.toString());
 				super.addScreenMessage(msg.toString());
 				return;
+			}
+			if(uword.equalsIgnoreCase("QUERY"))
+			{
+				parsed.remove(0);
+				message = CMParms.combineQuoted(parsed,0);
 			}
 			final String query = doDBQuery(parsed,message);
 			final String queryStr = L("Query: @x1",message.toLowerCase());

@@ -602,19 +602,19 @@ public class RocketShipProgram extends ShipTacticalProgram
 					return;
 			}
 			else
-			if(uword.startsWith("WEAPON")) //TODO: OMG THIS IS A STARTSWITH!!
+			if(uword.startsWith("WEAPON"))
 			{
 				if(!weaponProcedure.execute(this, uword, mob, message, parsed))
 					return;
 			}
 			else
-			if(uword.startsWith("SHIELD")) //TODO: OMG THIS IS A STARTSWITH!!
+			if(uword.startsWith("SHIELD"))
 			{
 				if(!shieldProcedure.execute(this, uword, mob, message, parsed))
 					return;
 			}
 			else
-			if(uword.startsWith("SENSOR")) //TODO: OMG THIS IS A STARTSWITH!!
+			if(uword.startsWith("SENSOR"))
 			{
 				if(!sensorProcedure.execute(this, uword, mob, message, parsed))
 					return;
@@ -625,89 +625,11 @@ public class RocketShipProgram extends ShipTacticalProgram
 				final ShipEngine engineE=findEngineByName(uword);
 				if(engineE==null)
 				{
-					super.addScreenMessage(L("Error: Unknown engine name or command word '"+uword+"'.   Try HELP."));
+					addScreenMessage(L("Error: Unknown engine name or command word '"+uword+"'.   Try HELP."));
 					return;
 				}
-				final Electronics E=engineE;
-				double amount=0;
-				ShipDirectional.ShipDir portDir=ShipDirectional.ShipDir.AFT;
-				if(parsed.size()>3)
-				{
-					super.addScreenMessage(L("Error: Too many parameters."));
+				if(!engineProcedure.execute(this, uword, mob, message, parsed))
 					return;
-				}
-				if(parsed.size()==1)
-				{
-					super.addScreenMessage(L("Error: No thrust amount given."));
-					return;
-				}
-				if(!CMath.isNumber(parsed.get(parsed.size()-1)))
-				{
-					super.addScreenMessage(L("Error: '@x1' is not a valid amount.",parsed.get(parsed.size()-1)));
-					return;
-				}
-				amount=CMath.s_double(parsed.get(parsed.size()-1));
-				if((engineE.isReactionEngine())
-				&&(CMParms.contains(engineE.getAvailPorts(),ShipDirectional.ShipDir.AFT))
-				&&(lastInject == null))
-				{
-					if(lastInject == null)
-					{
-						final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
-						final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
-						if((primeMainThrusters(ship, amount, engineE) == engineE)
-						&&(lastInject != null))
-							amount = calculateMarginalTargetInjection(lastInject,amount).doubleValue();
-						else
-						{
-							super.addScreenMessage(L("Error: '@x1' priming failure.",engineE.name()));
-							return;
-						}
-					}
-					else
-						amount = calculateMarginalTargetInjection(lastInject,amount).doubleValue();
-				}
-				if(parsed.size()==3)
-				{
-					portDir=(ShipDirectional.ShipDir)CMath.s_valueOf(ShipDirectional.ShipDir.class, parsed.get(1).toUpperCase().trim());
-					if(portDir!=null)
-					{
-						if(!CMParms.contains(engineE.getAvailPorts(), portDir))
-						{
-							super.addScreenMessage(L("Error: '@x1' is not a valid direction for that engine.  Try: @x2.",parsed.get(1),CMParms.toListString(engineE.getAvailPorts())));
-							return;
-						}
-					}
-					else
-					if("aft".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ShipDirectional.ShipDir.AFT))
-						portDir=ShipDirectional.ShipDir.AFT;
-					else
-					if("port".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ShipDirectional.ShipDir.PORT))
-						portDir=ShipDirectional.ShipDir.PORT;
-					else
-					if("starboard".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ShipDirectional.ShipDir.STARBOARD))
-						portDir=ShipDirectional.ShipDir.STARBOARD;
-					else
-					if("ventral".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ShipDirectional.ShipDir.VENTRAL))
-						portDir=ShipDirectional.ShipDir.VENTRAL;
-					else
-					if("dorsel".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ShipDirectional.ShipDir.DORSEL))
-						portDir=ShipDirectional.ShipDir.DORSEL;
-					else
-					{
-						super.addScreenMessage(L("Error: '@x1' is not a valid direction for that engine.  Try: @x2.",parsed.get(1),CMParms.toListString(engineE.getAvailPorts())));
-						return;
-					}
-				}
-				CMMsg msg = null;
-				if(amount > 0)
-				{
-					final String code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(amount));
-					msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-				}
-				else
-					msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-				sendMessage(mob,E,msg,message);
 			}
 		}
 	}
