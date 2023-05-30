@@ -375,6 +375,51 @@ public class Paladin extends StdCharClass
 		return false;
 	}
 
+	protected boolean isPaladinInclined(final MOB mob, final Ability A)
+	{
+		if((CMath.bset(A.flags(), Ability.FLAG_MODERATE))
+		||((A.flags()&Ability.FLAG_MODERATE)==0))
+		{
+			//if((mob.fetchAbility(A.ID())!=null)
+			//&&(CMLib.ableMapper().qualifiesByLevel(mob, A)))
+			return true;
+		}
+		else
+		if(CMath.bset(A.flags(), Ability.FLAG_LAW))
+			return CMLib.flags().isLawful(mob);
+		else
+		if(CMath.bset(A.flags(), Ability.FLAG_CHAOS))
+			return CMLib.flags().isChaotic(mob);
+		return true;
+	}
+
+	protected boolean isPaladinAligned(final MOB mob, final Ability A)
+	{
+		if((CMath.bset(A.flags(), Ability.FLAG_NEUTRAL))
+		||((A.flags()&Ability.FLAG_NEUTRAL)==0))
+		{
+			//if((mob.fetchAbility(A.ID())!=null)
+			//&&(CMLib.ableMapper().qualifiesByLevel(mob, A)))
+			return true;
+		}
+		else
+		if(CMath.bset(A.flags(), Ability.FLAG_HOLY))
+			return CMLib.flags().isGood(mob);
+		else
+		if(CMath.bset(A.flags(), Ability.FLAG_UNHOLY))
+			return CMLib.flags().isEvil(mob);
+		return true;
+	}
+
+	protected boolean isPaladinAppropriate(final MOB mob, final Ability A)
+	{
+		if(!isPaladinAligned(mob, A))
+			return false;
+		if(!isPaladinInclined(mob, A))
+			return false;
+		return true;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -383,12 +428,15 @@ public class Paladin extends StdCharClass
 		final MOB myChar=(MOB)myHost;
 		if((msg.amISource(myChar))
 		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-		&&(!isPaladinAlignment(myChar))
-		&&((msg.tool()==null)||((CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())>0)
-								&&(myChar.isMine(msg.tool()))))
+		&&(msg.tool() instanceof Ability)
+		&&((CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())>0)
+				&&(myChar.isMine(msg.tool())))
+		&&((!isPaladinAlignment(myChar))
+			||(!((Ability)msg.tool()).appropriateToMyFactions(myChar))
+			||(!isPaladinAppropriate(myChar, (Ability)msg.tool())))
 		&&(CMLib.dice().rollPercentage()>myChar.charStats().getStat(CharStats.STAT_WISDOM)*2))
 		{
-			myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> angry god denies <S-HIS-HER> prayers!"));
+			myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> angry god denies <S-HIS-HER> prayer!"));
 			return false;
 		}
 		return super.okMessage(myChar, msg);
