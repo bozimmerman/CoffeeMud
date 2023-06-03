@@ -201,13 +201,13 @@ public interface GalacticMap extends CMLibrary
 	/**
 	 * Given a base 'correct' angle and another 'wrong' angle, this will return
 	 * the angle that it opposite to, but equal in distance.
-	 * 
+	 *
 	 * @param correctAngle the base angle
 	 * @param wrongAngle the wrong angle
 	 * @return another wrong angle, on the other 'side' of the base
 	 */
 	public double[] getOffsetAngle(final double[] correctAngle, final double[] wrongAngle);
-	
+
 	/**
 	 * Given two angles, this returns the difference between them in pitch and yaw.
 	 *
@@ -300,6 +300,30 @@ public interface GalacticMap extends CMLibrary
 	 * @return the opposite direction
 	 */
 	public double[] getOppositeDir(final double[] dir);
+
+	/**
+	 * Given an angle from origin, this will return the other
+	 * trivial angles that are 90 degrees from the given one.
+	 * Will NOT include the given one.
+	 *
+	 * @param angle the angle from origin
+	 * @return the set of angles (usually 4 of them).
+	 */
+	public double[][] getPerpendicularAngles(final double[] angle);
+
+	/**
+	 * Given the origin point and an angle from the origin, this
+	 * will return the other points that are 90 degrees from the
+	 * given one, at the given distance.
+	 *
+	 * @see GalacticMap#getPerpendicularAngles(double[])
+	 *
+	 * @param origin the origin points
+	 * @param angle the angle from origin
+	 * @param distance the distance from origin of the points to return
+	 * @return the set of points (usually 4 of them)
+	 */
+	public long[][] getPerpendicularPoints(final long[] origin, final double[] angle, final long distance);
 
 	/**
 	 * Changes the given direction by the given delta variables.  Corrects any

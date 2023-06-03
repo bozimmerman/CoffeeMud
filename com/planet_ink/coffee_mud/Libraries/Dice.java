@@ -117,6 +117,21 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 
 	@Override
+	public void scramble(final Object[] objs)
+	{
+		if(objs.length<2)
+			return;
+		final int sz=objs.length;
+		for(int i=0;i<sz;i++)
+		{
+			final int k=i+randomizer.nextInt(sz-i);
+			final Object o=objs[k];
+			objs[k]=objs[i];
+			objs[i]=o;
+		}
+	}
+
+	@Override
     public long plusOrMinus(final long range)
 	{
 		final long l=randomizer.nextLong() % range;

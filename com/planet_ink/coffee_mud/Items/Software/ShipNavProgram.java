@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Items.Software;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.BasicTech.GenElecItem;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -259,15 +260,6 @@ public class ShipNavProgram extends ShipSensorProgram
 		}
 		while((--tries)>0);
 		return newInject;
-	}
-
-	protected boolean doCollisionDetection()
-	{
-		// generate a warning, or an alert
-		// warning = can be halted at max acceleration
-		// alert = can not
-		//TODO:BZ
-		return false;
 	}
 
 	protected void performSimpleThrust(final ShipEngine engineE, final Double thrustInject, final boolean alwaysThrust)
@@ -622,12 +614,104 @@ public class ShipNavProgram extends ShipSensorProgram
 		super.onDeactivate(mob, message);
 	}
 
-	protected LinkedList<SpaceObject> calculateNavigation(final SpaceObject ship, final SpaceObject targetObj)
+	protected boolean checkDatabase(final long[] coords)
 	{
-		final LinkedList<SpaceObject> navs = new LinkedList<SpaceObject>();
-		//TODO: look for obsticles and make more complex nav
+		final String[] parms = new String[] {CMParms.toListString(coords)};
+		final List<String[]> names = super.doServiceTransaction(SWServices.IDENTIFICATION, parms);
+		for(final String[] res : names)
+		{
+			for(final String r : res)
+			{
+				if(r.length()>0)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	protected SpaceObject getCollision(final SpaceObject fromObj, final SpaceObject toObj, final long radius, final SpaceObject[] others)
+	{
+		final long distance = CMLib.space().getDistanceFrom(fromObj, toObj);
+		final double[] direction = CMLib.space().getDirection(fromObj, toObj);
+		BoundedCube cube=new BoundedCube(fromObj.coordinates(), radius);
+		cube=cube.expand(direction,distance);
+		SpaceObject collO = null;
+		long collDistance=Long.MAX_VALUE;
+		for(final SpaceObject O : CMLib.space().getSpaceObjectsInBound(cube))
+		{
+			if((O != others[0])&&(O != others[1])
+			&&(O != fromObj)&&(O != toObj)
+			&&(O.speed()==0.0))
+			{
+				final long dist = CMLib.space().getDistanceFrom(fromObj, O);
+				if((dist < collDistance) || (collO == null))
+				{
+					// it's legit, a real collision!
+					collDistance = dist;
+					collO = O;
+				}
+			}
+		}
+		return collO;
+	}
+
+	protected LinkedList<SpaceObject> calculateNavigation(final SpaceObject ship,
+														  final SpaceObject targetObj,
+														  final List<SpaceObject> sensorObjs)
+	{
+		final List<SpaceObject> navs = new ArrayList<SpaceObject>();
+
 		navs.add(targetObj);
-		return navs;
+		int navSize = 0;
+		final SpaceObject[] others = new SpaceObject[] { ship, targetObj };
+		while(navSize != navs.size())
+		{
+			navSize = navs.size();
+			SpaceObject fromObj = ship;
+			for(int i=0;i<navs.size();i++)
+			{
+				final SpaceObject toObj = navs.get(i);
+				final SpaceObject collO = getCollision(fromObj, toObj, ship.radius(), others);
+				if((collO != null)
+				&&((containsSameCoordinates(sensorObjs, collO.coordinates()))
+					||(checkDatabase(collO.coordinates()))))
+				{
+					final double[] angleFromOrigin = CMLib.space().getDirection(collO.coordinates(), fromObj.coordinates());
+					final long distAdd = Math.round(CMath.mul(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS, collO.radius())
+							- collO.radius());
+					final long collRadius = collO.radius() + (distAdd * 2) + 2;
+					final long[][] points = CMLib.space().getPerpendicularPoints(collO.coordinates(), angleFromOrigin, collRadius);
+					SpaceObject newObj = null;
+					// one of these is always behind the object, so we have to check
+					CMLib.dice().scramble(points);
+					long closestPoint = Long.MAX_VALUE;
+					for(final long[] p : points)
+					{
+						final SpaceObject winnerObj = (SpaceObject)CMClass.getBasicItem("Moonlet");
+						winnerObj.setRadius(ship.radius());
+						winnerObj.setCoords(p);
+						final SpaceObject coll2O = getCollision(fromObj, winnerObj, ship.radius(), others);
+						if(coll2O == null)
+						{
+							final long d = CMLib.space().getDistanceFrom(fromObj, winnerObj);
+							if((newObj == null)
+							||(d < closestPoint))
+							{
+								newObj = winnerObj;
+								closestPoint = d;
+							}
+						}
+					}
+					if(newObj == null)
+						return null;
+					navs.add(i, newObj);
+					fromObj = newObj;
+				}
+				else
+					fromObj = toObj;
+			}
+		}
+		return new XLinkedList<SpaceObject>(navs);
 	}
 
 	protected boolean confirmNavEnginesOK(final SpaceShip ship, final Collection<ShipEngine> programEngines)
@@ -1595,7 +1679,13 @@ public class ShipNavProgram extends ShipSensorProgram
 			}
 			findTargetAcceleration(engineE);
 			final List<ShipEngine> programEngines=new XVector<ShipEngine>(engineE);
-			final List<SpaceObject> navs = calculateNavigation(ship, targetObj);
+			final List<SpaceObject> navs = calculateNavigation(ship, targetObj, allObjects);
+			if(navs == null)
+			{
+				cancelNavigation();
+				addScreenMessage(L("Error: Unable to navigate to target."));
+				return false;
+			}
 			navTrack = new ShipNavTrack(ShipNavProcess.APPROACH, approachTarget, programEngines, navs);
 			addScreenMessage(L("Approach to @x1 procedure engaged.",targetObj.name()));
 			return false;

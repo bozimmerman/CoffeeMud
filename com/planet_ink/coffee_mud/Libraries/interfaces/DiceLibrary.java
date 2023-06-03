@@ -379,4 +379,13 @@ public interface DiceLibrary extends CMLibrary
 	 * @param objs the set to randomize
 	 */
 	public void scramble(int[] objs);
+
+	/**
+	 * Randomizes the contents of the set
+	 *
+	 * @see DiceLibrary#scramble(List)
+	 *
+	 * @param objs the set to randomize
+	 */
+	public void scramble(Object[] objs);
 }

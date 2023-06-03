@@ -148,6 +148,16 @@ public class ShipSensorProgram extends GenShipProgram
 		return localSensorReport;
 	}
 
+	protected boolean containsSameCoordinates(final List<SpaceObject> objs, final long[] coordinates)
+	{
+		for(final SpaceObject o : objs)
+		{
+			if(Arrays.equals(o.coordinates(), coordinates))
+				return true;
+		}
+		return false;
+	}
+
 	@Override
 	protected void onPowerTimer(final int value)
 	{

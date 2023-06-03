@@ -62,6 +62,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	protected static final double		PI_TIMES_2_ALMOST		= Math.PI * 2.0 - ZERO_ALMOST;
 	protected static final double		PI_TIMES_2				= Math.PI * 2.0;
 	protected static final double		PI_BY_2					= Math.PI / 2.0;
+	protected static final double		PI_BY_12				= Math.PI / 12.0;
 	protected static final double		PI_TIMES_1ANDAHALF		= Math.PI * 1.5;
 	protected final int					QUADRANT_WIDTH			= 10;
 
@@ -139,6 +140,39 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	public long getDistanceFrom(final SpaceObject O1, final SpaceObject O2)
 	{
 		return getDistanceFrom(O1.coordinates(),O2.coordinates());
+	}
+
+	@Override
+	public double[][] getPerpendicularAngles(final double[] angle)
+	{
+		final List<double[]> set = new ArrayList<double[]>(5);
+		if(angle[1]>PI_BY_2)
+			set.add(new double[] { angle[0], angle[1] - PI_BY_2 });
+		else
+		if(angle[1]<PI_BY_2)
+			set.add(new double[] { angle[0], angle[1] + PI_BY_2 });
+		double angle0 = angle[0];
+		for(int i = 0; i < 3; i++)
+		{
+			angle0 += PI_BY_2;
+			if(angle0 > PI_TIMES_2)
+				angle0 = PI_TIMES_2 - angle0;
+			set.add(new double[] {angle0, angle[1] });
+		}
+		return set.toArray(new double[set.size()][]);
+	}
+
+	@Override
+	public long[][] getPerpendicularPoints(final long[] origin, final double[] angle, final long distance)
+	{
+		final double[][] angles = getPerpendicularAngles(angle);
+		final long[][] points = new long[angles.length][3];
+		for(int i=0;i<angles.length;i++)
+		{
+			final double[] a = angles[i];
+			points[i] = moveSpaceObject(origin, a, distance);
+		}
+		return points;
 	}
 
 	protected BigDecimal getBigDistanceFrom(final long[] coord1, final long[] coord2)
