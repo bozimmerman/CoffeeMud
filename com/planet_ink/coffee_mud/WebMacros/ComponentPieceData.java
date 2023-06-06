@@ -142,7 +142,7 @@ public class ComponentPieceData extends StdWebMacro
 			if(parms.containsKey("CONNECTOR"))
 				str.append(httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+last));
 			if(parms.containsKey("RITUAL"))
-				str.append(httpReq.getUrlParameter(fixedCompID+"_PIECE_RITUAL_"+last));
+				str.append(CMStrings.emptyString(httpReq.getUrlParameter(fixedCompID+"_PIECE_RITUAL_"+last)));
 			if(parms.containsKey("CONNECTOREDIT"))
 			{
 				str.append("<OPTION VALUE=\"DELETE\">Delete Component");

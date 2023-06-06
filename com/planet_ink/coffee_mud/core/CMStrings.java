@@ -3126,6 +3126,16 @@ public class CMStrings
 		return thisStr;
 	}
 
+	/**
+	 * Returns the given string, unless it is null, in which
+	 * case it returns "".
+	 * @param str the string
+	 * @return the String, or ""
+	 */
+	public final static String emptyString(final String str)
+	{
+		return (str == null)?"":str;
+	}
 
 	/**
 	 * Pads the string to the right with three dots if the string is larger than

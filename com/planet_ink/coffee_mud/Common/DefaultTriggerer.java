@@ -267,7 +267,7 @@ public class DefaultTriggerer implements Triggerer
 			if(trig.length()>0)
 			{
 				final Vector<String> V=CMParms.parse(trig);
-				if(V.size()>1)
+				if(V.size()>0)
 				{
 					Trigger DT=new Trigger();
 					final String cmd=V.firstElement();
