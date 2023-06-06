@@ -552,12 +552,10 @@ public class Age extends StdAbility
 					babe.delEffect(A);
 				if(following != null)
 					CMLib.database().DBDeletePlayerData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
-
 				final List<MOB> parents=new ArrayList<MOB>(2);
 				PlayerLibrary players = CMLib.players();
 				DatabaseEngine database = CMLib.database();
 				ClanManager clans = CMLib.clans();
-				PlayerAccount account = null;
 				for(final Enumeration<Tattoo> e=babe.tattoos();e.hasMoreElements();)
 				{
 					final Tattoo T=e.nextElement();
@@ -589,11 +587,7 @@ public class Age extends StdAbility
 								}
 							}
 							if(M!=null)
-							{
-								if(M.playerStats().getAccount()!=null)
-									account=M.playerStats().getAccount();
 								parents.add(M);
-							}
 						}
 					}
 				}
@@ -740,13 +734,39 @@ public class Age extends StdAbility
 				newMan.setTrains(babe.getTrains());
 				newMan.setWimpHitPoint(babe.getWimpHitPoint());
 				newMan.baseCharStats().setWorshipCharID(babe.baseCharStats().getWorshipCharID());
+				PlayerAccount account = null;
+				if((babe.amFollowing()!=null)
+				&&(babe.amFollowing().isPlayer())
+				&&(parents.contains(babe.amFollowing())))
+				{
+					final PlayerStats P = babe.amFollowing().playerStats();
+					if((P!=null) && (P.getAccount()!=null))
+						account=P.getAccount();
+				}
+				if(account == null)
+				{
+					for(final MOB M : parents)
+					{
+						final PlayerStats P = M.playerStats();
+						if((P!=null) && (P.getAccount()!=null)
+						&&((account==null)||(M.location()==R)))
+							account=P.getAccount();
+					}
+				}
 				if(liege!=null)
 				{
-					newMan.playerStats().setPassword(liege.playerStats().getPasswordStr());
-					newMan.playerStats().setEmail(liege.playerStats().getEmail());
-					if(account == null)
-						account=liege.playerStats().getAccount();
+					final PlayerStats P = liege.playerStats();
+					if(P != null)
+					{
+						P.setPassword(P.getPasswordStr());
+						P.setEmail(P.getEmail());
+						if(account == null)
+							account=P.getAccount();
+					}
 				}
+				else
+				if(account != null)
+					newMan.playerStats().setPassword(account.getPasswordStr());
 				else
 					newMan.playerStats().setPassword(babe.Name());
 				newMan.playerStats().setAccount(account);
