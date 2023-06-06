@@ -230,7 +230,7 @@ public class DefaultAbilityComponent implements AbilityComponent
 	@Override
 	public void setTriggererDef(String def)
 	{
-		if(def == null)
+		if((def == null)||(def.trim().equalsIgnoreCase("null")))
 			def="";
 		triggerDef = def.trim();
 	}
