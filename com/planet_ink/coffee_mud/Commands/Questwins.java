@@ -233,6 +233,13 @@ public class Questwins extends StdCommand
 			}
 			if(foundS!=null)
 			{
+				if(foundS.isFunc("DO_DROP"))
+				{
+					final PhysicalAgent P=mob;
+					final MOB M=mob;
+					final Object[] objs = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
+					foundS.callFunc("DO_DROP", mob.Name(), P, mob, null, M, null, null, mob.Name(), objs);
+				}
 				foundS.stepQuest(mob, mob, foundS.defaultQuestName());
 				foundS.endQuest(mob, mob, foundS.defaultQuestName());
 				mob.delScript(foundS);
