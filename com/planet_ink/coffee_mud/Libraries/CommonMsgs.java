@@ -2501,7 +2501,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if(!isMine)
 					CMLib.achievements().possiblyBumpAchievement(mob, Event.GOTITEM, 1, item);
 				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
-					mob.location().recoverRoomStats();
+				{
+					final Room R=mob.location();
+					if(R!=null)
+						R.recoverRoomStats();
+				}
 				else
 					mob.phyStats().setWeight(mob.phyStats().weight()+item.recursiveWeight());
 			}
@@ -2510,7 +2514,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				item.setContainer(null);
 				item.unWear();
 				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
-					mob.location().recoverRoomStats();
+				{
+					final Room R=mob.location();
+					if(R!=null)
+						R.recoverRoomStats();
+				}
 			}
 		}
 		else

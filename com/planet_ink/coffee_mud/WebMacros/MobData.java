@@ -1353,6 +1353,7 @@ public class MobData extends StdWebMacro
 				{
 					if(firstTime)
 						old=""+((char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+					final char match = (old.length()>0) ? Character.toUpperCase(old.charAt(0)) : ' ';
 					for(final Object[] gset : CMProps.getListFileStringChoices(ListFile.GENDERS))
 					{
 						if((gset.length>0)
@@ -1361,7 +1362,7 @@ public class MobData extends StdWebMacro
 							final char c= Character.toUpperCase(gset[0].toString().charAt(0));
 							final String nm = gset[2].toString();
 							str.append("<INPUT TYPE=RADIO NAME=GENDER");
-							if(Character.toUpperCase(old.charAt(0)) == c)
+							if(match == c)
 								str.append(" CHECKED");
 							str.append(" VALUE="+c+">"+CMStrings.capitalizeAndLower(nm));
 						}
