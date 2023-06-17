@@ -1890,7 +1890,9 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
 					Log.debugOut("Clans","MBTrophy: "+((winnerC==null)?"No one":winnerC.clanID())+" won with "+winnerMembers);
-				if((winnerC!=null)&&(!CMath.bset(winnerC.getTrophies(),Trophy.Members.flagNum()))&&(winnerC.getExp()>0))
+				if((winnerC!=null)
+				&&(!CMath.bset(winnerC.getTrophies(),Trophy.Members.flagNum()))
+				&&(winnerC.getExp()>0))
 				{
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.Members.flagNum());
 					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for "+Trophy.Members.description+".",winnerC.getGovernmentName(),winnerC.name()));
@@ -1899,7 +1901,8 @@ public class Clans extends StdLibrary implements ClanManager
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
 					final Clan C=e.nextElement();
-					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.Members.flagNum())))
+					if((winnerC!=C)
+					&&(CMath.bset(C.getTrophies(),Trophy.Members.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.Members.flagNum());
 						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for "+Trophy.Members.description+".",C.getGovernmentName(),C.name()));
@@ -1928,7 +1931,9 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
 					Log.debugOut("DefaultClan","LVLTrophy: "+((winnerC==null)?"No one":winnerC.clanID())+" won with "+winnerLevel);
-				if((winnerC!=null)&&(!CMath.bset(winnerC.getTrophies(),Trophy.MemberLevel.flagNum()))&&(winnerC.getExp()>0))
+				if((winnerC!=null)
+				&&(!CMath.bset(winnerC.getTrophies(),Trophy.MemberLevel.flagNum()))
+				&&(winnerC.getExp()>0))
 				{
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.MemberLevel.flagNum());
 					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for "+Trophy.MemberLevel.description+".",winnerC.getGovernmentName(),winnerC.name()));
@@ -1937,7 +1942,8 @@ public class Clans extends StdLibrary implements ClanManager
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
 					final Clan C=e.nextElement();
-					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.MemberLevel.flagNum())))
+					if((winnerC!=C)
+					&&(CMath.bset(C.getTrophies(),Trophy.MemberLevel.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.MemberLevel.flagNum());
 						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for "+Trophy.MemberLevel.description+".",C.getGovernmentName(),C.name()));
@@ -1961,7 +1967,9 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
 					Log.debugOut("DefaultClan","EXPTrophy: "+((winnerC==null)?"No one":winnerC.clanID())+" won with "+((winnerC==null)?"0":""+winnerC.getExp()));
-				if((winnerC!=null)&&(!CMath.bset(winnerC.getTrophies(),Trophy.Experience.flagNum()))&&(winnerC.getExp()>0))
+				if((winnerC!=null)
+				&&(!CMath.bset(winnerC.getTrophies(),Trophy.Experience.flagNum()))
+				&&(winnerC.getExp()>0))
 				{
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.Experience.flagNum());
 					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for "+Trophy.Experience.description+".",winnerC.getGovernmentName(),winnerC.name()));
@@ -1970,7 +1978,8 @@ public class Clans extends StdLibrary implements ClanManager
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
 					final Clan C=e.nextElement();
-					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.Experience.flagNum())))
+					if((winnerC!=C)
+					&&(CMath.bset(C.getTrophies(),Trophy.Experience.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.Experience.flagNum());
 						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for "+Trophy.Experience.description+".",C.getGovernmentName(),C.name()));
@@ -2005,7 +2014,8 @@ public class Clans extends StdLibrary implements ClanManager
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
 					final Clan C=e.nextElement();
-					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.ClanKills.flagNum())))
+					if((winnerC!=C)
+					&&(CMath.bset(C.getTrophies(),Trophy.ClanKills.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.ClanKills.flagNum());
 						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for "+Trophy.ClanKills.description+".",C.getGovernmentName(),C.name()));
@@ -2040,7 +2050,8 @@ public class Clans extends StdLibrary implements ClanManager
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
 					final Clan C=e.nextElement();
-					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.PlayerLevelsGained.flagNum())))
+					if((winnerC!=C)
+					&&(CMath.bset(C.getTrophies(),Trophy.PlayerLevelsGained.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.PlayerLevelsGained.flagNum());
 						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for "+Trophy.PlayerLevelsGained.description+".",C.getGovernmentName(),C.name()));
@@ -2075,7 +2086,8 @@ public class Clans extends StdLibrary implements ClanManager
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
 					final Clan C=e.nextElement();
-					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.PlayerMinutes.flagNum())))
+					if((winnerC!=C)
+					&&(CMath.bset(C.getTrophies(),Trophy.PlayerMinutes.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.PlayerMinutes.flagNum());
 						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for "+Trophy.PlayerMinutes.description+".",C.getGovernmentName(),C.name()));
@@ -2198,7 +2210,8 @@ public class Clans extends StdLibrary implements ClanManager
 						for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 						{
 							final Clan C=e.nextElement();
-							if((winnerC!=C)&&(CMath.bset(C.getTrophies(),T.flagNum())))
+							if((winnerC!=C)
+							&&(CMath.bset(C.getTrophies(),T.flagNum())))
 							{
 								C.setTrophies(C.getTrophies()-T.flagNum());
 								C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for "+T.description+".",C.getGovernmentName(),C.name()));

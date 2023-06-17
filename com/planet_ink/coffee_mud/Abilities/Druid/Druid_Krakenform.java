@@ -354,7 +354,13 @@ public class Druid_Krakenform extends StdAbility
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
+		MOB targetM=mob;
+		if((auto)&&(givenTarget instanceof MOB))
+			targetM=(MOB)givenTarget;
+		final Room R=targetM.location();
+		if(R==null)
+			return false;
+		for(final Enumeration<Ability> a=targetM.personalEffects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)
@@ -382,15 +388,15 @@ public class Druid_Krakenform extends StdAbility
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_ACTION,null);
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> take(s) on Kraken form."));
-				final Druid_Krakenform form = (Druid_Krakenform)beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
+				R.send(mob,msg);
+				R.show(targetM,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> take(s) on Kraken form."));
+				final Druid_Krakenform form = (Druid_Krakenform)beneficialAffect(mob,targetM,asLevel,Ability.TICKS_FOREVER);
 				if(form != null)
 					form.getShip();
-				mob.recoverCharStats();
-				mob.recoverPhyStats();
+				targetM.recoverCharStats();
+				targetM.recoverPhyStats();
 			}
 		}
 		else

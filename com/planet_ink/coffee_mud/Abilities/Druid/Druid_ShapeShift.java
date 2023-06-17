@@ -376,7 +376,13 @@ public class Druid_ShapeShift extends StdAbility
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
+		MOB targetM=mob;
+		if((auto)&&(givenTarget instanceof MOB))
+			targetM=(MOB)givenTarget;
+		final Room R=targetM.location();
+		if(R==null)
+			return false;
+		for(final Enumeration<Ability> a=targetM.personalEffects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)
@@ -395,9 +401,9 @@ public class Druid_ShapeShift extends StdAbility
 		if((myRaceCode>=0)&&(myRaceCode<racesTaken.length))
 			racesTaken[myRaceCode]++;
 
-		for(int a=0;a<mob.numAbilities();a++)
+		for(int a=0;a<targetM.numAbilities();a++)
 		{
-			final Ability A=mob.fetchAbility(a);
+			final Ability A=targetM.fetchAbility(a);
 			if((A!=null)
 			&&((A instanceof Druid_ShapeShift)))
 			{
@@ -425,7 +431,7 @@ public class Druid_ShapeShift extends StdAbility
 		}
 		if(myRaceCode<0)
 		{
-			if(mob.isMonster())
+			if(targetM.isMonster() || (mob != targetM))
 			{
 				myRaceCode=CMLib.dice().roll(1,racesTaken.length,-1);
 				final long t=System.currentTimeMillis();
@@ -627,13 +633,13 @@ public class Druid_ShapeShift extends StdAbility
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_ACTION,null);
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> take(s) on @x1 form.",raceName.toLowerCase()));
-				beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
+				R.send(mob,msg);
+				R.show(targetM,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> take(s) on @x1 form.",raceName.toLowerCase()));
+				beneficialAffect(mob,targetM,asLevel,Ability.TICKS_FOREVER);
 				raceName=CMStrings.capitalizeAndLower(CMLib.english().startWithAorAn(raceName.toLowerCase()));
-				CMLib.utensils().confirmWearability(mob);
+				CMLib.utensils().confirmWearability(targetM);
 			}
 		}
 		else

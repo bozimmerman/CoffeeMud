@@ -125,7 +125,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 		return USAGE_MOVEMENT | USAGE_MANA;
 	}
 
-	public final static boolean[] validBrokens ={true,//antennea
+	public final static boolean[] validBrokens ={true,//antenna
 												 false,//eye
 												 false,//ear
 												 false,//head

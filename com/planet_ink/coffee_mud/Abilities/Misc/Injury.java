@@ -57,7 +57,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 	public int			lastHP			= -1;
 
 	//public final static String[] BODYPARTSTR={
-	//    "ANTENNEA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",
+	//    "ANTENNA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",
 	//    "NOSE","GILL","MOUTH","WAIST","TAIL","WING"};
 	public final static int[] INJURYCHANCE=
 	{

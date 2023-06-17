@@ -86,7 +86,7 @@ public class Disease_FrostBite extends Disease
 		return 1;
 	}
 
-	public int[] limbsAffectable={Race.BODY_EAR,Race.BODY_ANTENNEA,Race.BODY_FOOT,Race.BODY_HAND,Race.BODY_NOSE};
+	public int[] limbsAffectable={Race.BODY_EAR,Race.BODY_ANTENNA,Race.BODY_FOOT,Race.BODY_HAND,Race.BODY_NOSE};
 	@Override
 	protected int DISEASE_TICKS()
 	{

@@ -281,7 +281,13 @@ public class Druid_GolemForm extends StdAbility
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
+		MOB targetM=mob;
+		if((auto)&&(givenTarget instanceof MOB))
+			targetM=(MOB)givenTarget;
+		final Room R=targetM.location();
+		if(R==null)
+			return false;
+		for(final Enumeration<Ability> a=targetM.personalEffects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if((A instanceof Druid_GolemForm))
@@ -295,7 +301,9 @@ public class Druid_GolemForm extends StdAbility
 		int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
 		if(qualClassLevel<0)
 			classLevel=30;
-		final String choice=(mob.isMonster()||(commands.size()==0))?getRaceName(classLevel-1):CMParms.combine(commands,0);
+		final String choice=(mob.isMonster()||(commands.size()==0)||(mob != targetM))?
+				getRaceName(classLevel-1):
+				CMParms.combine(commands,0);
 		if(choice.trim().length()>0)
 		{
 			final StringBuffer buf=new StringBuffer(L("Golem Forms:\n\r"));
@@ -338,16 +346,16 @@ public class Druid_GolemForm extends StdAbility
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_ACTION,null);
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 				raceName=getRaceName(classLevel);
 				raceName=CMStrings.capitalizeAndLower(CMLib.english().startWithAorAn(raceName.toLowerCase()));
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> take(s) on @x1 form.",raceName.toLowerCase()));
+				R.show(targetM,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> take(s) on @x1 form.",raceName.toLowerCase()));
 				newRace=getRace(classLevel);
 				raceLevel=getRaceLevel(classLevel);
-				beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
-				CMLib.utensils().confirmWearability(mob);
+				beneficialAffect(mob,targetM,asLevel,Ability.TICKS_FOREVER);
+				CMLib.utensils().confirmWearability(targetM);
 			}
 		}
 		else

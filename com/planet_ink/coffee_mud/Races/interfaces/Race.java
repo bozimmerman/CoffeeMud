@@ -499,8 +499,8 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	/** Age in Years constant for an immortal thing */
 	public final static int YEARS_AGE_LIVES_FOREVER=Integer.MAX_VALUE;
 
-	/** body part constant representing antennea*/
-	public final static int BODY_ANTENNEA=0;
+	/** body part constant representing antenna*/
+	public final static int BODY_ANTENNA=0;
 	/** body part constant representing eyes */
 	public final static int BODY_EYE=1;
 	/** body part constant representing ears*/
@@ -536,7 +536,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	/** constant string list naming each of the BODY_* constants in the order of their value*/
 	public final static String[] BODYPARTSTR=
 	{
-		"ANTENNEA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",
+		"ANTENNA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",
 		"NOSE","GILL","MOUTH","WAIST","TAIL","WING"
 	};
 	/** constant hash of BODYPARTSTR */
@@ -586,7 +586,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	/** array mapping worn locations to body parts, indexed by body parts. */
 	public final static long[] BODY_WEARVECTOR=
 	{
-		Wearable.WORN_HEAD, // ANTENNEA, having any of these removes that pos
+		Wearable.WORN_HEAD, // ANTENNA, having any of these removes that pos
 		Wearable.WORN_EYES, // EYES, having any of these adds this position
 		Wearable.WORN_EARS, // EARS, gains a wear position here for every 2
 		Wearable.WORN_HEAD, // HEAD, gains a wear position here for every 1
@@ -611,7 +611,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 */
 	public final static long[][] BODY_WEARGRID=
 	{
-		{Wearable.WORN_HEAD,-1}, // ANTENNEA, having any of these removes that pos
+		{Wearable.WORN_HEAD,-1}, // ANTENNA, having any of these removes that pos
 		{Wearable.WORN_EYES,2}, // EYES, having any of these adds this position
 		{Wearable.WORN_EARS,2}, // EARS, gains a wear position here for every 2
 		{Wearable.WORN_HEAD,1}, // HEAD, gains a wear position here for every 1

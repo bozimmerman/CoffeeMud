@@ -4358,11 +4358,11 @@ method defines and returns an
 array of integers which defines the types and number of particular body
 parts normally retained by the race. Each position in the array is
 defined by the equates BODY_ in the Race interface. These equates are
-(starting from 0): BODY_ANTENNEA, BODY_EYE, BODY_EAR, BODY_HEAD,
+(starting from 0): BODY_ANTENNA, BODY_EYE, BODY_EAR, BODY_HEAD,
 BODY_NECK, BODY_ARM, BODY_HAND, BODY_TORSO, BODY_LEG, BODY_FOOT,
 BODY_NOSE, BODY_GILL, BODY_MOUTH, BODY_WAIST, BODY_TAIL, BODY_WING.
 Remember that these can be found in the Race interface for you to
-reference. In the above example, we find no antennea, 2 eyes, 2 ears, a
+reference. In the above example, we find no antenna, 2 eyes, 2 ears, a
 head, neck, no arms or hands, a torso, 4 legs, 4 feet, a nose, but no
 gill, and then a mouth, waist, tail, and 2 wings.</p>
       <pre>  private String[] racialAbilityNames = { "Skill_Trip", "Fighter_Whomp" };<br />  private int[] racialAbilityLevels = { 1, 3 };<br />  private int[] racialAbilityProficiencies = { 75, 50 };<br />  private boolean[] racialAbilityQuals = { false, false };<br /><br />  protected String[] racialAbilityNames()<br />  {<br />    return null;<br />  }<br /><br />  protected int[] racialAbilityLevels()<br />  {<br />    return null;<br />  }<br /><br />  protected int[] racialAbilityProficiencies()<br />  {<br />    return null;<br />  }<br /><br />  protected boolean[] racialAbilityQuals()<br />  {<br />    return null;<br />  }<br /><br />  public List&lt;Ability&gt; racialAbilities( MOB mob )<br />  {<br />    List V = super.racialAbilities( mob );<br />    return V;<br />  }<br /></pre>

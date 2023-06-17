@@ -93,7 +93,7 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 			limbsToRegrow.addElement("NOSE");
 			limbsToRegrow.addElement("TAIL");
 			limbsToRegrow.addElement("WING");
-			limbsToRegrow.addElement("ANTENNEA");
+			limbsToRegrow.addElement("ANTENNA");
 		}
 	}
 

@@ -415,7 +415,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 	}
 
-	public synchronized void bestowCurse(final MOB mob, final Ability Curse)
+	public synchronized void bestowCurse(final MOB mob, final Ability curseA)
 	{
 		final Room prevRoom;
 		synchronized(this)
@@ -428,16 +428,16 @@ public class StdDeity extends StdMOB implements Deity
 			targetRoom=mob.location();
 		}
 		targetRoom.bringMobHere(this,false);
-		if(Curse!=null)
+		if(curseA!=null)
 		{
 			final Vector<String> V=new Vector<String>();
-			if(Curse.canTarget(Ability.CAN_MOBS))
+			if(curseA.canTarget(Ability.CAN_MOBS))
 			{
 				V.addElement(mob.location().getContextName(mob));
-				Curse.invoke(this,V,mob,true,mob.phyStats().level());
+				curseA.invoke(this,V,mob,true,mob.phyStats().level());
 			}
 			else
-			if(Curse.canTarget(Ability.CAN_ITEMS))
+			if(curseA.canTarget(Ability.CAN_ITEMS))
 			{
 				Item I=mob.fetchWieldedItem();
 				if(I==null)
@@ -450,13 +450,13 @@ public class StdDeity extends StdMOB implements Deity
 					return;
 				V.addElement("$"+I.name()+"$");
 				addItem(I);
-				Curse.invoke(this,V,I,true,mob.phyStats().level());
+				curseA.invoke(this,V,I,true,mob.phyStats().level());
 				delItem(I);
 				if(!mob.isMine(I))
 					mob.addItem(I);
 			}
 			else
-				Curse.invoke(this,mob,true,mob.phyStats().level());
+				curseA.invoke(this,mob,true,mob.phyStats().level());
 		}
 		prevRoom.bringMobHere(this,false);
 		if((prevRoom != location())
@@ -497,17 +497,26 @@ public class StdDeity extends StdMOB implements Deity
 				{
 					for(int b=0;b<numBlessings();b++)
 					{
-						final Ability Blessing=fetchBlessing(b);
-						if(Blessing!=null)
-							bestowBlessing(mob,Blessing);
+						final Ability blessingA=fetchBlessing(b);
+						if(blessingA!=null)
+							bestowBlessing(mob,blessingA);
 					}
 				}
 				else
 				{
-					final int randNum=CMLib.dice().roll(1,numBlessings(),-1);
-					final Ability Blessing=fetchBlessing(randNum);
-					if((Blessing!=null)&&(!fetchBlessingCleric(randNum)))
-						bestowBlessing(mob,Blessing);
+					final List<Ability> nonClericBlessings = new ArrayList<Ability>(numBlessings());
+					for(int b=0;b<numBlessings();b++)
+					{
+						final Ability curseA=fetchBlessing(b);
+						if((curseA!=null)
+						&&(!fetchBlessingCleric(b)))
+							nonClericBlessings.add(curseA);
+					}
+					if(nonClericBlessings.size()>0)
+					{
+						final int randNum=CMLib.dice().roll(1,nonClericBlessings.size(),-1);
+						bestowBlessing(mob,nonClericBlessings.get(randNum));
+					}
 				}
 			}
 		}
@@ -559,22 +568,31 @@ public class StdDeity extends StdMOB implements Deity
 						CMMsg.NO_EFFECT, HolyEvent.CURSING.toString());
 				R.send(this, eventMsg);
 				R.show(this,mob,CMMsg.MSG_OK_VISUAL,L("You feel the wrath of <S-NAME> in <T-NAME>."));
-				if((mob.charStats().getStat(CharStats.STAT_FAITH)>=100)
-				||(mob.isPlayer() && mob.isAttributeSet(Attrib.SYSOPMSGS)))
+				if(mob.charStats().getStat(CharStats.STAT_FAITH)>=100)
 				{
 					for(int b=0;b<numCurses();b++)
 					{
-						final Ability Curse=fetchCurse(b);
-						if(Curse!=null)
-							bestowCurse(mob,Curse);
+						final Ability curseA=fetchCurse(b);
+						if(curseA!=null)
+							bestowCurse(mob,curseA);
 					}
 				}
 				else
 				{
-					final int randNum=CMLib.dice().roll(1,numCurses(),-1);
-					final Ability Curse=fetchCurse(randNum);
-					if((Curse!=null)&&(!fetchBlessingCleric(randNum)))
-						bestowCurse(mob,Curse);
+					final List<Ability> nonClericCurses = new ArrayList<Ability>(numCurses());
+					for(int b=0;b<numCurses();b++)
+					{
+						final Ability curseA=fetchCurse(b);
+						if((curseA!=null)
+						&&(!fetchCurseCleric(b)))
+							nonClericCurses.add(curseA);
+					}
+					if(nonClericCurses.size()>0)
+					{
+						final int randNum=CMLib.dice().roll(1,nonClericCurses.size(),-1);
+						final Ability curseA=nonClericCurses.get(randNum);
+						bestowCurse(mob,curseA);
+					}
 				}
 			}
 		}
