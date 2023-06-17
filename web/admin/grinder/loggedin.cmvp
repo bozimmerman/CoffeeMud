@@ -125,14 +125,14 @@
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=SELECTAREA METHOD=POST ACTION="" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 @block?AREAEDITOR@
-        <FONT SIZE=-1>
-         <INPUT TYPE=RADIO NAME=AREAMASKTYPE VALUE=AREA @if?CheckReqParm?AREAMASKTYPE=&||AREAMASKTYPE=AREA@CHECKED@endif@ ONCLICK="Refresh();">Areas
-	    @if?MUDGrinder?ISSPACE@
-         <INPUT TYPE=RADIO NAME=AREAMASKTYPE VALUE=PLANET @if?CheckReqParm?AREAMASKTYPE=PLANET@CHECKED@endif@ ONCLICK="Refresh();">Space
-	    @endif@
-         &nbsp;&nbsp;&nbsp;&nbsp;
-         <INPUT TYPE=RADIO NAME=AREAMASKTYPE VALUE=TREE @if?CheckReqParm?AREAMASKTYPE=TREE@CHECKED@endif@ ONCLICK="Refresh();">Tree
-        </FONT>
+    <FONT SIZE=-1>
+        <INPUT TYPE=RADIO NAME=AREAMASKTYPE VALUE=AREA @if?CheckReqParm?AREAMASKTYPE=&||AREAMASKTYPE=AREA@CHECKED@endif@ ONCLICK="Refresh();">Areas
+        @if?MUDGrinder?ISSPACE@
+            <INPUT TYPE=RADIO NAME=AREAMASKTYPE VALUE=PLANET @if?CheckReqParm?AREAMASKTYPE=PLANET@CHECKED@endif@ ONCLICK="Refresh();">Space
+        @endif@
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <INPUT TYPE=RADIO NAME=AREAMASKTYPE VALUE=TREE @if?CheckReqParm?AREAMASKTYPE=TREE@CHECKED@endif@ ONCLICK="Refresh();">Tree
+    </FONT>
     @if?CheckReqParm?AREAMASKTYPE=@
         @AddRequestParameter?AREAMASKTYPE=AREA@
     @endif@
@@ -147,35 +147,36 @@
 		@if?CheckAuthCode?AUTH_CMDAREAS=true@
 		<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="New" ONCLICK="Clicked('newarea.cmvp');">
 		@endif@
-	<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Edit" ONCLICK="Clicked('possmodarea.cmvp');">
-	<INPUT TYPE=BUTTON NAME=MAPAREA VALUE="Map" ONCLICK="Clicked('maparea.cmvp');">
-	<INPUT TYPE=BUTTON NAME=DELAREA VALUE="Del" ONCLICK="if(confirm('Are you sure you want to delete the area '+document.SELECTAREA.AREA.value+'?'))Clicked('areagone.cmvp');">
-	<br>
-	<INPUT TYPE=CHECKBOX NAME=MAPSTYLE VALUE=Z><FONT SIZE=-1 COLOR=WHITE>Use Z-Level Mapping</FONT>
-	<br>
-	<br>
-    <!--
-	</TD></TR>
-	<TR BGCOLOR=WHITE><TD ALIGN=CENTER><FONT COLOR=BLACK><B>Random Templates</B></FONT></TD></TR>
-	<TR><TD ALIGN=CENTER>
-		<SELECT NAME=RANDOMTEMPLATES HEIGHT=10>
-		@RandomAreaTemplates?NEXT&RESET@
-		@loop@
-			@RandomAreaTemplates?NEXT@
-			<OPTION VALUE="@RequestParameter?RTEMPLATE@">@RequestParameter?RTEMPLATE@
-		@back@
-		</SELECT>
+		<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Edit" ONCLICK="Clicked('possmodarea.cmvp');">
+		<INPUT TYPE=BUTTON NAME=MAPAREA VALUE="Map" ONCLICK="Clicked('maparea.cmvp');">
+		<INPUT TYPE=BUTTON NAME=DELAREA VALUE="Del" ONCLICK="if(confirm('Are you sure you want to delete the area '+document.SELECTAREA.AREA.value+'?'))Clicked('areagone.cmvp');">
 		<br>
-		<INPUT TYPE=BUTTON NAME=NEWTEMPLATE VALUE="New" ONCLICK="Clicked('rtemplatenew.cmvp');">
-		<INPUT TYPE=BUTTON NAME=MODTEMPLATE VALUE="Edit" ONCLICK="Clicked('rtemplateedit.cmvp');">
-		<INPUT TYPE=BUTTON NAME=DELTEMPLATE VALUE="Del" ONCLICK="if(confirm('Are you sure you want to delete this random template?'))Clicked('rtemplategone.cmvp');">
-	-->
-    </TD></TR>
-	<BR>
+		<INPUT TYPE=CHECKBOX NAME=MAPSTYLE VALUE=Z><FONT SIZE=-1 COLOR=WHITE>Use Z-Level Mapping</FONT>
+		<br>
+		<br>
+	    <!--
+		</TD></TR>
+		<TR BGCOLOR=WHITE><TD ALIGN=CENTER><FONT COLOR=BLACK><B>Random Templates</B></FONT></TD></TR>
+		<TR><TD ALIGN=CENTER>
+			<SELECT NAME=RANDOMTEMPLATES HEIGHT=10>
+			@RandomAreaTemplates?NEXT&RESET@
+			@loop@
+				@RandomAreaTemplates?NEXT@
+				<OPTION VALUE="@RequestParameter?RTEMPLATE@">@RequestParameter?RTEMPLATE@
+			@back@
+			</SELECT>
+			<br>
+			<INPUT TYPE=BUTTON NAME=NEWTEMPLATE VALUE="New" ONCLICK="Clicked('rtemplatenew.cmvp');">
+			<INPUT TYPE=BUTTON NAME=MODTEMPLATE VALUE="Edit" ONCLICK="Clicked('rtemplateedit.cmvp');">
+			<INPUT TYPE=BUTTON NAME=DELTEMPLATE VALUE="Del" ONCLICK="if(confirm('Are you sure you want to delete this random template?'))Clicked('rtemplategone.cmvp');">
+		-->
+	    </TD></TR>
+		<BR>
 	@else@
+		<INPUT TYPE=CHECKBOX NAME=MAPSTYLE VALUE=Z><FONT SIZE=-1 COLOR=WHITE>Use Z-Level Mapping</FONT>
+		<br>
 		<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="Clicked('modarea.cmvp');">
 	@endif@
-	
 @/block@ 
 
 @if?CheckAuthCode?SYSOP=true&||AUTH_LOADUNLOAD=true&||AUTH_LISTADMIN=true&||ANYFILEBROWSE=true&||AUTH_CMDPLAYERS=true&||AUTH_STAT=true&||AUTH_JOURNALS=true&||AUTH_CMDQUESTS=true&||AUTH_BAN=true@
