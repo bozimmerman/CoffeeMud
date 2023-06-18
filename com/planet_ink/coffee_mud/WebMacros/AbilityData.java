@@ -793,7 +793,7 @@ public class AbilityData extends StdWebMacro
 					String old=httpReq.getUrlParameter("HERESTATS");
 					if(old==null)
 						old=A.getStat("HERESTATS");
-					str.append(old+", ");
+					str.append(super.htmlOutgoingFilter(old)+", ");
 				}
 				if(parms.containsKey("SCRIPT"))
 				{

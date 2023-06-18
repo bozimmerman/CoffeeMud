@@ -46,6 +46,15 @@ public class MultiEnumeration<K> implements Enumeration<K>
 		enums.add(eset);
 	}
 
+	public MultiEnumeration(final Enumeration<? extends K>[] esets)
+	{
+		if(esets != null)
+		{
+			for(final Enumeration<? extends K> e: esets)
+				addEnumeration(e);
+		}
+	}
+
 	public MultiEnumeration<K> addEnumeration(final Enumeration<? extends K> set)
 	{
 		if(set != null)

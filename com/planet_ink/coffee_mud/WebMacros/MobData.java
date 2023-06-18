@@ -1218,9 +1218,9 @@ public class MobData extends StdWebMacro
 		&&(CMClass.getMOB(newClassID)!=null))
 			M=CMClass.getMOB(newClassID);
 
-		boolean changedClass=((httpReq.isUrlParameter("CHANGEDCLASS"))
-							 &&(httpReq.getUrlParameter("CHANGEDCLASS")).equals("true"));
-		changedClass=changedClass
+		boolean baseChangedClass=((httpReq.isUrlParameter("CHANGEDCLASS"))
+							 &&(httpReq.getUrlParameter("CHANGEDCLASS").equals("true")));
+		boolean changedClass=baseChangedClass
 					 &&(mobCode.equals("NEW")
 							 ||mobCode.equalsIgnoreCase("NEWDEITY")
 							 ||mobCode.startsWith("CATALOG-")
@@ -1230,15 +1230,24 @@ public class MobData extends StdWebMacro
 				||(!(httpReq.getUrlParameter("ACTION")).equals("MODIFYMOB"))
 				||(changedClass);
 
-		if(((changedLevel)||(changedClass))&&(M.isGeneric()))
+		if(((changedLevel)||(baseChangedClass && (!oldM.isGeneric())))
+		&&(M.isGeneric()))
 		{
-			CMLib.leveler().fillOutMOB(M,CMath.s_int(firstTime?"0":httpReq.getUrlParameter("LEVEL")));
+			final String level = httpReq.isUrlParameter("LEVEL")&&(!firstTime)?httpReq.getUrlParameter("LEVEL"):"0";
+			CMLib.leveler().fillOutMOB(M,CMath.s_int(level));
 			httpReq.addFakeUrlParameter("REJUV",""+M.basePhyStats().rejuv());
 			httpReq.addFakeUrlParameter("ARMOR",""+M.basePhyStats().armor());
 			httpReq.addFakeUrlParameter("DAMAGE",""+M.basePhyStats().damage());
 			httpReq.addFakeUrlParameter("SPEED",""+M.basePhyStats().speed());
+			httpReq.addFakeUrlParameter("GENDER",""+M.baseCharStats().getStat(CharStats.STAT_GENDER));
 			httpReq.addFakeUrlParameter("ATTACK",""+M.basePhyStats().attackAdjustment());
 			httpReq.addFakeUrlParameter("MONEY",""+CMLib.beanCounter().getMoney(M));
+			if(baseChangedClass && (!oldM.isGeneric()))
+			{
+				httpReq.addFakeUrlParameter("NAME",""+oldM.Name());
+				httpReq.addFakeUrlParameter("DISPLAYTEXT",""+oldM.displayText());
+				httpReq.addFakeUrlParameter("DESCRIPTION",""+oldM.description());
+			}
 		}
 
 		final StringBuffer str=new StringBuffer("");

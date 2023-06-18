@@ -713,6 +713,24 @@ public class CMClass extends ClassLoader
 	}
 
 	/**
+	 * An enumeration of all the stored Items in this classloader for this
+	 * thread, of all types and subtypes
+	 *
+	 * @return an enumeration of all the stored Items in this classloader
+	 *         for this thread
+	 */
+	@SuppressWarnings("unchecked")
+	public static final Enumeration<Item> allItems()
+	{
+		return new MultiEnumeration<Item>(new Enumeration[] {
+			c().items.elements(),
+			c().weapons.elements(),
+			c().armor.elements(),
+			c().miscMagic.elements()
+		});
+	}
+
+	/**
 	 * An enumeration of all the stored misc Magic in this classloader for this
 	 * thread
 	 *

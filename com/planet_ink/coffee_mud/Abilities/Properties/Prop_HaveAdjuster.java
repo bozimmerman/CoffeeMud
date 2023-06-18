@@ -199,11 +199,15 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 						if(amts.startsWith("+"))
 							amts=amts.substring(1);
 						if(CMath.isInteger(amts))
-							charStatsV.add(new Pair<String,Integer>(prefix+ableID.toUpperCase(),Integer.valueOf(CMath.s_int(amts))));
+						{
+							Pair<String,Integer> p = new Pair<String,Integer>(prefix+ableID.toUpperCase(),Integer.valueOf(CMath.s_int(amts))); 
+							charStatsV.add(p);
+							charStatsV.add(p); // have to add twice, because thats how charadjs work
+						}
 					}
 				}
 			}
-			if(charStatsV.size()-parts.size()!=size)
+			if(charStatsV.size()-(parts.size()*2)!=size)
 				errors.add("Unable to properly parse all "+parm+": "+ableProfs);
 		}
 	}

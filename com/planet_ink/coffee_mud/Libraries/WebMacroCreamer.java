@@ -1633,6 +1633,13 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			if((I!=null)
 			&&(!(I instanceof ArchonOnly)))
 				return I;
+			for(final Enumeration<Item> m=CMClass.allItems();m.hasMoreElements();)
+			{
+				final Item I2=m.nextElement();
+				if(CMClass.classID(I2).equals(MATCHING)
+				&&(!I2.isGeneric()))
+					return (Item)I2.copyOf();
+			}
 		}
 		return null;
 	}

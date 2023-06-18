@@ -1080,7 +1080,11 @@ public class ItemData extends StdWebMacro
 							}
 						}
 						else
-							A=CMClass.getAbility(httpReq.getUrlParameter("RECIPESKILL"));
+						{
+							final String rs = httpReq.getUrlParameter("RECIPESKILL");
+							if(rs != null)
+								A=CMClass.getAbility(rs);
+						}
 						if(A instanceof RecipeDriven)
 							str.append(((RecipeDriven)A).getRecipeFormat()).append(", ");
 						break;

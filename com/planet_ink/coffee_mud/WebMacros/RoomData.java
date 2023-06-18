@@ -1091,8 +1091,10 @@ public class RoomData extends StdWebMacro
 					str.append("</FONT></TD>");
 					str.append("<TD WIDTH=10%>");
 					if(!CMLib.flags().isCataloged(I))
+					{
 						str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT "
 								+ "ONCLICK=\"EditItem('"+CMLib.webMacroFilter().findItemWebCacheCode(classes,I)+"');\">");
+					}
 					str.append("</TD></TR>");
 				}
 				str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
