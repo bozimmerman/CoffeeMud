@@ -47,9 +47,11 @@ public class Pot extends StdDrink
 		capacity=25;
 		baseGoldValue=5;
 		setLiquidHeld(20);
+		setCapacity(20);
 		setThirstQuenched(1);
 		setLiquidRemaining(0);
 		setLiquidType(RawMaterial.RESOURCE_FRESHWATER);
+		this.setContainTypes(Container.CONTAIN_DRINKABLES|Container.CONTAIN_EATABLES);
 		setMaterial(RawMaterial.RESOURCE_IRON);
 		basePhyStats().setWeight(5);
 		recoverPhyStats();
