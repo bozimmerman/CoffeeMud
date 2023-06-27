@@ -102,6 +102,7 @@ public class GrinderAreas
 	public static String doBehavs(final PhysicalAgent E, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		E.delAllBehaviors();
+		String errors = "";
 		if(httpReq.isUrlParameter("BEHAV1"))
 		{
 			int num=1;
@@ -113,22 +114,34 @@ public class GrinderAreas
 				{
 					final Behavior B=CMClass.getBehavior(behav);
 					if(B==null)
-						return "Unknown behavior '"+behav+"'.";
-					B.setParms(theparm);
-					E.addBehavior(B);
-					B.startBehavior(E);
+						errors += "Unknown behavior '"+behav+"'.";
+					else
+					{
+						try
+						{
+							B.setParms(theparm);
+							E.addBehavior(B);
+							B.startBehavior(E);
+						}
+						catch(final Exception e)
+						{
+							if(e != null)
+								errors += e.getMessage();
+						}
+					}
 				}
 				num++;
 				behav=httpReq.getUrlParameter("BEHAV"+num);
 				theparm=httpReq.getUrlParameter("BDATA"+num);
 			}
 		}
-		return "";
+		return errors;
 	}
 
 	public static String doAffects(final Physical P, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		P.delAllEffects(false);
+		String errors = "";
 		if(httpReq.isUrlParameter("AFFECT1"))
 		{
 			int num=1;
@@ -140,16 +153,27 @@ public class GrinderAreas
 				{
 					final Ability B=CMClass.getAbility(aff);
 					if(B==null)
-						return "Unknown Effect '"+aff+"'.";
-					B.setMiscText(theparm);
-					P.addNonUninvokableEffect(B);
+						errors += "Unknown Effect '"+aff+"'.";
+					else
+					{
+						try
+						{
+							B.setMiscText(theparm);
+							P.addNonUninvokableEffect(B);
+						}
+						catch(final Exception e)
+						{
+							if(e != null)
+								errors += e.getMessage();
+						}
+					}
 				}
 				num++;
 				aff=httpReq.getUrlParameter("AFFECT"+num);
 				theparm=httpReq.getUrlParameter("ADATA"+num);
 			}
 		}
-		return "";
+		return errors;
 	}
 
 	public static String modifyArea(final HTTPRequest httpReq, final java.util.Map<String,String> parms)

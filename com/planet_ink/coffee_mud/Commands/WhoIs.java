@@ -39,7 +39,7 @@ public class WhoIs extends Who
 	{
 	}
 
-	private final String[] access=I(new String[]{"WHOIS"});
+	private final String[] access=I(new String[]{"WHOIS","FINGER"});
 	@Override
 	public String[] getAccessWords()
 	{
