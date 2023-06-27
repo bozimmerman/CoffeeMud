@@ -90,7 +90,7 @@ public class Spell_KnowProvince extends Spell
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(L("Your knowledge of the privinces fades."));
+			mob.tell(L("Your knowledge of the provinces fades."));
 	}
 
 	@Override
