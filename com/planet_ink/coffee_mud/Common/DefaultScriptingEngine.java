@@ -8939,7 +8939,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final JScriptEvent scope = new JScriptEvent(this,scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp);
 						cx.initStandardObjects(scope);
-						final String[] names = { "host", "source", "target", "monster", "item", "item2", "message" ,"getVar", "setVar", "toJavaString", "getCMType"};
+						final String[] names = { "host", "source", "target", "monster", "item", "item2", "message" ,"getVar", "setVar", "toJavaString", "getCMType", "objs"};
 						scope.defineFunctionProperties(names, JScriptEvent.class,
 													   ScriptableObject.DONTENUM);
 						cx.evaluateString(scope, jscript.toString(),"<cmd>", 1, null);
@@ -13685,13 +13685,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(Tool==null)
 						Tool=defaultItem;
 					String resp=null;
+					final Object[] objs = newObjs();
+					objs[0] = msg;
 					if(msg.target() instanceof MOB)
-						resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,newObjs());
+						resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,objs);
 					else
 					if(msg.target() instanceof Item)
-						resp=execute(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,str,newObjs());
+						resp=execute(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,str,objs);
 					else
-						resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,newObjs());
+						resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,objs);
 					if((resp!=null)&&(resp.equalsIgnoreCase("CANCEL")))
 						return false;
 				}
@@ -15497,6 +15499,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		public Item item2()
 		{
 			return si;
+		}
+
+		public Object[] objs()
+		{
+			return objs;
 		}
 
 		public String message()

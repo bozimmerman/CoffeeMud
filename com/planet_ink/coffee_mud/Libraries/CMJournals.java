@@ -1172,7 +1172,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 									CMLib.threads().deleteTick(me, Tickable.TICKID_EVENT);
 									me.nextEvents.clear();
 									nextEvents.add(nextStart);
-									CMLib.threads().startTickDown(lib, Tickable.TICKID_EVENT, nextStart.date()-System.currentTimeMillis(), 1);
+									CMLib.threads().startTickDown(me, Tickable.TICKID_EVENT, nextStart.date()-System.currentTimeMillis(), 1);
 								}
 								else
 								if(nextStart.date() == sampleE.date())
@@ -1183,7 +1183,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 								CMLib.threads().deleteTick(me, Tickable.TICKID_EVENT);
 								me.nextEvents.clear();
 								nextEvents.add(nextStart);
-								CMLib.threads().startTickDown(lib, Tickable.TICKID_EVENT, nextStart.date()-System.currentTimeMillis(), 1);
+								CMLib.threads().startTickDown(me, Tickable.TICKID_EVENT, nextStart.date()-System.currentTimeMillis(), 1);
 							}
 						}
 					}

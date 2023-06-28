@@ -1193,7 +1193,9 @@ to capture the HUH message as so:</p>
       <p>MULTIPLE PROGS: You can
 have more than one cnclmsg_prog, not
 only in the same script, but regarding the very same message codes if
-you like.</p>
+you like.</p><p>NOTE:
+When enclosing JavaScript inside a CNCLMSG_PROG, the actual message
+object can be found at index 0 of the context objects array.</p>
 
       <h3><a name="consume_prog">consume_prog</a></h3>
 
@@ -4666,7 +4668,7 @@ few small details to be aware of before getting started. One is that
 the Scriptable behavior will provide certain methods for accessing
 important event-related objects from inside your Javascript. These
 include the object functions source(), target(), host(), monster(),
-item1(), item2(), and message(). Another important detail is that
+item1(), item2(), [] objs(), and message(). Another important detail is that
 Javascript variables defined will be lost from execution to execution,
 even of the same script. For this reason, additional methods String
 getVar(String host, String variableName), and void setVar(String host,

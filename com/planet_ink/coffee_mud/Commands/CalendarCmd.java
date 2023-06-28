@@ -289,7 +289,7 @@ public class CalendarCmd extends StdCommand
 		}
 		if(cmd == null)
 		{
-			mob.tell(L("@x1 is an unknown argument.  Try: "+CMLib.english().toEnglishStringList(CalCmd.class, false)));
+			mob.tell(L("'@x1' is an unknown argument.  Try: @x2", cmdStr, CMLib.english().toEnglishStringList(CalCmd.class, false)));
 			return false;
 		}
 		switch(cmd)
