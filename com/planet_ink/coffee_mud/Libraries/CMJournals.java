@@ -1190,7 +1190,10 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				}
 			}, expiresIn);
 		}
-		return L("@x1 is now started, and will end at @x2.",event.subj(),endDateStr);
+		final String eventMessage = L("@x1 is now started, and will end at @x2.",event.subj(),endDateStr);
+		if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
+			Log.debugOut("Calendar generated message: "+eventMessage);
+		return eventMessage;
 	}
 
 	protected void postCalendarEventTo(final JournalEntry event, final List<Area> areas, final MOB M)
@@ -1221,6 +1224,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					final int chanNum = myChanLib.getChannelIndex(channelName);
 					if(chanNum >= 0)
 					{
+						if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
+							Log.debugOut("Calendar posting event to channel: "+channelName);
 						final String str="["+channelName+"] '"+getCalendarEvent(CMLib.time().localClock(M),event)+"'^</CHANNEL^>^?^.";
 						final CMMsg msg=CMClass.getMsg(M,null,null,
 								CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,"^Q^<CHANNEL \""+channelName+"\"^>"+str,
@@ -1259,6 +1264,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				{
 					if(areas.size()==0)
 					{
+						if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
+							Log.debugOut("Calendar "+event.from()+" announce: "+event.subj()+"@"+event.dateStr());
 						final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CALENDAR, null);
 						for(int i=0;i<channels.size();i++)
 							CMLib.commands().postChannel(channels.get(i),null,getCalendarEvent(null,event),true);
@@ -1269,7 +1276,11 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						{
 							final MOB M = (S!=null)?S.mob():null;
 							if(M!=null)
+							{
+								if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
+									Log.debugOut("Calendar session announce to "+M.name()+": "+event.subj()+"@"+event.dateStr());
 								postCalendarEventTo(event, areas, M);
+							}
 						}
 					}
 				}
@@ -1277,12 +1288,20 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				{
 					final Clan C = CMLib.clans().fetchClanAnyHost(event.from());
 					if(C != null)
+					{
+						if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
+							Log.debugOut("Calendar clan announce to "+C.name()+": "+event.subj()+"@"+event.dateStr());
 						C.clanAnnounce(getCalendarEvent(null,event));
+					}
 					else
 					{
 						final MOB M = CMLib.players().getPlayerAllHosts(event.from());
 						if(M!=null)
+						{
+							if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
+								Log.debugOut("Calendar npc announce to "+M.name()+": "+event.subj()+"@"+event.dateStr());
 							postCalendarEventTo(event, areas, M);
+						}
 					}
 				}
 			}
@@ -1297,7 +1316,11 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		try
 		{
 			if((tickID & Tickable.TICKID_SHORTERMASK)==Tickable.TICKID_EVENT)
+			{
+				if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
+					Log.debugOut("Starting calendar processing for "+name());
 				processCalendarEvents();
+			}
 
 			// here and below is the normal utilithread
 			if((--sweepTickDown)<=0)

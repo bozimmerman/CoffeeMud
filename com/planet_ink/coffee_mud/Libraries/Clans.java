@@ -1880,15 +1880,21 @@ public class Clans extends StdLibrary implements ClanManager
 				{
 					final Clan C=e.nextElement();
 					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
+					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+							Log.debugOut("Clans","MBTrophy: "+C.name()+" is winner, or not allowed.");
 						continue;
+					}
 					final int numMembers=C.getSize();
 					if(numMembers>winnerMembers)
 					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+							Log.debugOut("Clans","MBTrophy: "+C.name()+" has "+numMembers+">"+winnerMembers);
 						winnerC=C;
 						winnerMembers=numMembers;
 					}
 				}
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS)||CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
 					Log.debugOut("Clans","MBTrophy: "+((winnerC==null)?"No one":winnerC.clanID())+" won with "+winnerMembers);
 				if((winnerC!=null)
 				&&(!CMath.bset(winnerC.getTrophies(),Trophy.Members.flagNum()))
@@ -1921,15 +1927,21 @@ public class Clans extends StdLibrary implements ClanManager
 				{
 					final Clan C=e.nextElement();
 					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
+					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+							Log.debugOut("Clans","LVLTrophy: "+C.name()+" is winner, or not allowed.");
 						continue;
+					}
 					final int highestLevel=filterMedianLevel(C.getFullMemberList());
 					if(highestLevel>winnerLevel)
 					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+							Log.debugOut("Clans","LVLTrophy: "+C.name()+" has "+highestLevel+">"+winnerLevel);
 						winnerC=C;
 						winnerLevel=highestLevel;
 					}
 				}
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS)||CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
 					Log.debugOut("DefaultClan","LVLTrophy: "+((winnerC==null)?"No one":winnerC.clanID())+" won with "+winnerLevel);
 				if((winnerC!=null)
 				&&(!CMath.bset(winnerC.getTrophies(),Trophy.MemberLevel.flagNum()))
@@ -1961,11 +1973,19 @@ public class Clans extends StdLibrary implements ClanManager
 				{
 					final Clan C=e.nextElement();
 					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
+					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+							Log.debugOut("Clans","EXPTrophy: "+C.name()+" is winner, or not allowed.");
 						continue;
+					}
 					if((winnerC==null)||(C.getExp()>winnerC.getExp()))
+					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+							Log.debugOut("Clans","EXPTrophy: "+C.name()+" has "+C.getExp()+">"+((winnerC==null)?0:winnerC.getExp()));
 						winnerC=C;
+					}
 				}
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS)||CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
 					Log.debugOut("DefaultClan","EXPTrophy: "+((winnerC==null)?"No one":winnerC.clanID())+" won with "+((winnerC==null)?"0":""+winnerC.getExp()));
 				if((winnerC!=null)
 				&&(!CMath.bset(winnerC.getTrophies(),Trophy.Experience.flagNum()))
@@ -1997,11 +2017,19 @@ public class Clans extends StdLibrary implements ClanManager
 				{
 					final Clan C=e.nextElement();
 					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
+					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+							Log.debugOut("Clans","PKTrophy: "+C.name()+" is winner, or not allowed.");
 						continue;
+					}
 					if((winnerC==null)||(C.getCurrentClanKills(null)>winnerC.getCurrentClanKills(null)))
+					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+							Log.debugOut("Clans","PKTrophy: "+C.name()+" has "+C.getCurrentClanKills(null)+">"+((winnerC==null)?0:winnerC.getCurrentClanKills(null)));
 						winnerC=C;
+					}
 				}
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS)||CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
 					Log.debugOut("DefaultClan","PKTrophy: "+((winnerC==null)?"No one":winnerC.clanID())+" won with "+((winnerC==null)?"0":""+winnerC.getCurrentClanKills(null)));
 				if((winnerC!=null)
 				&&(!CMath.bset(winnerC.getTrophies(),Trophy.ClanKills.flagNum()))
@@ -2033,11 +2061,19 @@ public class Clans extends StdLibrary implements ClanManager
 				{
 					final Clan C=e.nextElement();
 					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
+					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+							Log.debugOut("Clans","PLTrophy: "+C.name()+" is winner, or not allowed.");
 						continue;
+					}
 					if((winnerC==null)||(C.getTrophyData(Trophy.PlayerLevelsGained)>winnerC.getTrophyData(Trophy.PlayerLevelsGained)))
+					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+							Log.debugOut("Clans","PLTrophy: "+C.name()+" has "+C.getTrophyData(Trophy.PlayerLevelsGained)+">"+((winnerC==null)?0:winnerC.getTrophyData(Trophy.PlayerLevelsGained)));
 						winnerC=C;
+					}
 				}
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS)||CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
 					Log.debugOut("DefaultClan","PLTrophy: "+((winnerC==null)?"No one":winnerC.clanID())+" won with "+((winnerC==null)?"0":""+winnerC.getTrophyData(Trophy.PlayerLevelsGained)));
 				if((winnerC!=null)
 				&&(!CMath.bset(winnerC.getTrophies(),Trophy.PlayerLevelsGained.flagNum()))
@@ -2069,12 +2105,20 @@ public class Clans extends StdLibrary implements ClanManager
 				{
 					final Clan C=e.nextElement();
 					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
+					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+							Log.debugOut("Clans","PMTrophy: "+C.name()+" is winner, or not allowed.");
 						continue;
+					}
 					if((winnerC==null)||(C.getTrophyData(Trophy.PlayerMinutes)>winnerC.getTrophyData(Trophy.PlayerMinutes)))
+					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+							Log.debugOut("Clans","PMTrophy: "+C.name()+" has "+C.getTrophyData(Trophy.PlayerMinutes)+">"+((winnerC==null)?0:winnerC.getTrophyData(Trophy.PlayerMinutes)));
 						winnerC=C;
+					}
 				}
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
-					Log.debugOut("DefaultClan","PLTrophy: "+((winnerC==null)?"No one":winnerC.clanID())+" won with "+((winnerC==null)?"0":""+winnerC.getTrophyData(Trophy.PlayerLevelsGained)));
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS)||CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+					Log.debugOut("DefaultClan","PMTrophy: "+((winnerC==null)?"No one":winnerC.clanID())+" won with "+((winnerC==null)?"0":""+winnerC.getTrophyData(Trophy.PlayerLevelsGained)));
 				if((winnerC!=null)
 				&&(!CMath.bset(winnerC.getTrophies(),Trophy.PlayerMinutes.flagNum()))
 				&&(winnerC.getTrophyData(Trophy.PlayerMinutes)>0))
@@ -2106,28 +2150,44 @@ public class Clans extends StdLibrary implements ClanManager
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
 					final Clan C=e.nextElement();
-					if((C!=winnerMostClansControlledC)&&(CMProps.getVar(CMProps.Str.CLANTROPAREA).length()>0))
+					if(CMProps.getVar(CMProps.Str.CLANTROPAREA).length()>0)
 					{
-						final int controlledAreas=C.getControlledAreas().size();
-						if(controlledAreas>mostClansControlled)
+						if((C!=winnerMostClansControlledC)&&(!C.isSet(ClanFlag.NOTROPHY)))
 						{
-							winnerMostClansControlledC=C;
-							mostClansControlled=controlledAreas;
+							final int controlledAreas=C.getControlledAreas().size();
+							if(controlledAreas>mostClansControlled)
+							{
+								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+									Log.debugOut("Clans","AREATrophy: "+C.name()+" has "+controlledAreas+">"+mostClansControlled);
+								winnerMostClansControlledC=C;
+								mostClansControlled=controlledAreas;
+							}
 						}
+						else
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+							Log.debugOut("Clans","AREATrophy: "+C.name()+" is winner, or not allowed.");
 					}
-					if((C!=winnerMostControlPointsC)&&(CMProps.getVar(CMProps.Str.CLANTROPCP).length()>0))
+					if(CMProps.getVar(CMProps.Str.CLANTROPCP).length()>0)
 					{
-						final long mapPoints=C.calculateMapPoints();
-						if(mapPoints>mostControlPoints)
+						if((C!=winnerMostControlPointsC)&&(!C.isSet(ClanFlag.NOTROPHY)))
 						{
-							winnerMostControlPointsC=C;
-							mostControlPoints=mapPoints;
+							final long mapPoints=C.calculateMapPoints();
+							if(mapPoints>mostControlPoints)
+							{
+								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+									Log.debugOut("Clans","CPTrophy: "+C.name()+" has "+mapPoints+">"+mostControlPoints);
+								winnerMostControlPointsC=C;
+								mostControlPoints=mapPoints;
+							}
 						}
+						else
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+							Log.debugOut("Clans","CPTrophy: "+C.name()+" is winner, or not allowed.");
 					}
 				}
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS)||CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
 					Log.debugOut("DefaultClan","AREATrophy: "+((winnerMostClansControlledC==null)?"No one":winnerMostClansControlledC.clanID())+" won with "+mostClansControlled);
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS)||CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
 					Log.debugOut("DefaultClan","CPTrophy: "+((winnerMostControlPointsC==null)?"No one":winnerMostControlPointsC.clanID())+" won with "+mostControlPoints);
 				if((winnerMostClansControlledC!=null)
 				&&(CMProps.getVar(CMProps.Str.CLANTROPAREA).length()>0)
@@ -2194,12 +2254,20 @@ public class Clans extends StdLibrary implements ClanManager
 						{
 							final Clan C=e.nextElement();
 							if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
+							{
+								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+									Log.debugOut("Clans",T.name()+" monthly trophy: "+C.name()+" is winner, or not allowed.");
 								continue;
+							}
 							if((winnerC==null)||(C.getTrophyData(T)>winnerC.getTrophyData(T)))
+							{
+								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+									Log.debugOut("Clans",T.name()+" monthly trophy: "+C.name()+" has "+C.getTrophyData(T)+">"+(winnerC==null?0:winnerC.getTrophyData(T)));
 								winnerC=C;
+							}
 						}
-						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
-							Log.debugOut("DefaultClan","PLTrophy: "+((winnerC==null)?"No one":winnerC.clanID())+" won with "+((winnerC==null)?"0":""+winnerC.getTrophyData(T)));
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS)||CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
+							Log.debugOut("DefaultClan",T.name()+" monthly trophy: "+((winnerC==null)?"No one":winnerC.clanID())+" won with "+((winnerC==null)?"0":""+winnerC.getTrophyData(T)));
 						if((winnerC!=null)
 						&&(!CMath.bset(winnerC.getTrophies(),T.flagNum()))
 						&&(winnerC.getTrophyData(T)>0))

@@ -398,7 +398,7 @@ public class CalendarCmd extends StdCommand
 			else
 			if(!CMath.isInteger(commands.get(0)))
 			{
-				mob.tell(L("'@x1' is neither a number, nor a proper time period."));
+				mob.tell(L("'@x1' is neither a number, nor a proper time period.",commands.get(0)));
 				return false;
 			}
 			else

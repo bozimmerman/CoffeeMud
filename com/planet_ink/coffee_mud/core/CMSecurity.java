@@ -2748,7 +2748,9 @@ public class CMSecurity
 		QUESTSCRIPTS("quest script parsing"),
 		SPACEMOVES("space object movement"),
 		RITUALS("rituals and services"),
-		CRONTRACE("cron job tracing")
+		CRONTRACE("cron job tracing"),
+		CALENDAR("calendar event tracing"),
+		TROPHIES("clan trophy logic tracing")
 		;
 		private final String desc;
 
