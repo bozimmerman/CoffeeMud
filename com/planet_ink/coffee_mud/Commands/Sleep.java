@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
    Copyright 2004-2023 Bo Zimmerman
@@ -92,8 +93,8 @@ public class Sleep extends StdCommand implements Tickable
 			{
 				if(untilMap.containsKey(mob))
 					untilMap.remove(mob);
+				untilMap.put(mob, wait);
 			}
-			untilMap.put(mob, wait);
 			if(!CMLib.threads().isTicking(this, Tickable.TICKID_MISCELLANEOUS))
 				CMLib.threads().startTickDown(this, Tickable.TICKID_MISCELLANEOUS, 1);
 		}
@@ -160,58 +161,57 @@ public class Sleep extends StdCommand implements Tickable
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		tickStatus = Tickable.STATUS_ALIVE;
-		final Iterator<Entry<MOB,WaitUntil>> e;
 		synchronized(untilMap)
 		{
+			final Iterator<Entry<MOB,WaitUntil>> e;
 			e = untilMap.entrySet().iterator();
-		}
-		final TimeManager mgr = CMLib.time();
-		for(;e.hasNext();)
-		{
-			final Entry<MOB,WaitUntil> E=e.next();
-			final MOB M=E.getKey();
-			final boolean isSleeping = CMLib.flags().isSleeping(M);
-			boolean wakeMeUp = false;
-			if(!wakeMeUp)
+			final TimeManager mgr = CMLib.time();
+			for(;e.hasNext();)
 			{
-				final TimeClock clock = mgr.localClock(M);
-				switch(E.getValue())
+				final Entry<MOB,WaitUntil> E=e.next();
+				final MOB M=E.getKey();
+				final boolean isSleeping = CMLib.flags().isSleeping(M);
+				boolean wakeMeUp = false;
+				if(!wakeMeUp)
 				{
-				case DAWN:
-					wakeMeUp = clock.getTODCode()==TimeOfDay.DAWN;
-					break;
-				case DAY:
-					wakeMeUp = clock.getTODCode()==TimeOfDay.DAY;
-					break;
-				case DUSK:
-					wakeMeUp = clock.getTODCode()==TimeOfDay.DUSK;
-					break;
-				case NIGHT:
-					wakeMeUp = clock.getTODCode()==TimeOfDay.NIGHT;
-					break;
-				case FULL:
-					wakeMeUp = M.curState().getHitPoints() >= M.maxState().getHitPoints();
-					wakeMeUp &= M.curState().getMana() >= M.maxState().getMana();
-					wakeMeUp &= M.curState().getMovement() >= M.maxState().getMovement();
-					break;
-				case HEALED:
-					wakeMeUp = M.curState().getHitPoints() >= M.maxState().getHitPoints();
-					break;
-				case RESTED:
-					wakeMeUp = M.curState().getFatigue() <= 0;
-					break;
+					final TimeClock clock = mgr.localClock(M);
+					switch(E.getValue())
+					{
+					case DAWN:
+						wakeMeUp = clock.getTODCode()==TimeOfDay.DAWN;
+						break;
+					case DAY:
+						wakeMeUp = clock.getTODCode()==TimeOfDay.DAY;
+						break;
+					case DUSK:
+						wakeMeUp = clock.getTODCode()==TimeOfDay.DUSK;
+						break;
+					case NIGHT:
+						wakeMeUp = clock.getTODCode()==TimeOfDay.NIGHT;
+						break;
+					case FULL:
+						wakeMeUp = M.curState().getHitPoints() >= M.maxState().getHitPoints();
+						wakeMeUp &= M.curState().getMana() >= M.maxState().getMana();
+						wakeMeUp &= M.curState().getMovement() >= M.maxState().getMovement();
+						break;
+					case HEALED:
+						wakeMeUp = M.curState().getHitPoints() >= M.maxState().getHitPoints();
+						break;
+					case RESTED:
+						wakeMeUp = M.curState().getFatigue() <= 0;
+						break;
+					}
+				}
+				if(wakeMeUp || (!isSleeping))
+				{
+					e.remove();
+				}
+				if(wakeMeUp && isSleeping)
+				{
+					M.enqueCommand(new XVector<String>("WAKE"),0, 1);
 				}
 			}
-			if(wakeMeUp || (!isSleeping))
-			{
-				e.remove();
-			}
-			if(wakeMeUp && isSleeping)
-			{
-				M.enqueCommand(new XVector<String>("WAKE"),0, 1);
-			}
 		}
-
 		tickStatus = Tickable.STATUS_NOT;
 		return untilMap.size()>0;
 	}
