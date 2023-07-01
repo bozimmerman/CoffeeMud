@@ -61,7 +61,7 @@ public class ResourceOverride extends ActiveTicker
 		return "resource overriding";
 	}
 
-	protected static Integer getRscTypeIfAny(final String which)
+	protected static Integer getRscTypeIfAny(String which)
 	{
 		int code=-1;
 		if(which.equalsIgnoreCase("none"))
@@ -70,6 +70,8 @@ public class ResourceOverride extends ActiveTicker
 			code=CMath.s_int(which);
 		if(code<0)
 			code = RawMaterial.CODES.FIND_IgnoreCase(which);
+		if(which.indexOf('_')>0)
+			which=which.replace('_',' ');
 		if(code<0)
 		{
 			final RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(which);
