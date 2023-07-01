@@ -107,7 +107,10 @@ public class Thief_FalseFaith extends ThiefSkill
 			if(text().equals("NONE"))
 				affectableStats.setWorshipCharID("");
 			else
+			{
 				affectableStats.setWorshipCharID(text());
+				affectableStats.setStat(CharStats.STAT_FAITH, affectableStats.getStat(CharStats.STAT_FAITH)+25); // just a little faith is ok
+			}
 		}
 	}
 

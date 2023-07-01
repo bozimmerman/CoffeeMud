@@ -96,6 +96,12 @@ public class Deities extends StdCommand
 		if(mob.charStats().getStat(CharStats.STAT_FAITH)>=100)
 			msg.append(D.getClericRequirementsDesc()+"\n\r");
 		else
+		if(mob.charStats().getStat(CharStats.STAT_FAITH)>=25)
+		{
+			msg.append(D.getClericRequirementsDesc()+"\n\r\n\r");
+			msg.append(D.getWorshipRequirementsDesc()+"\n\r");
+		}
+		else
 			msg.append(D.getWorshipRequirementsDesc()+"\n\r");
 		final Set<String> items = getWeapons(mob,D);
 		if(items.size()>0)
