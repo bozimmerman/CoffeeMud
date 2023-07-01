@@ -552,6 +552,11 @@ public class Shell extends StdCommand
 		}
 		case CHANGEDIRECTORY: // cd
 		{
+			if(commands.size()<2)
+			{
+				mob.tell(L("^xError  : a target directory must be specified!^N"));
+				return false;
+			}
 			final CMFile newDir=new CMFile(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
 			final String changeTo=newDir.getVFSPathAndName();
 			if(!newDir.exists())
@@ -572,6 +577,12 @@ public class Shell extends StdCommand
 		}
 		case DELETE: // delete
 		{
+			if(commands.size()<2)
+			{
+				mob.tell(L("^xError  : target file/path must be specified!^N"));
+				mob.tell(L("^xOptions: -r = recurse into directories.^N"));
+				return false;
+			}
 			final cp_options opts=new cp_options(commands);
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,opts.recurse,false,skipHash);
 			if(dirs==null)
@@ -611,6 +622,11 @@ public class Shell extends StdCommand
 		}
 		case TYPE: // type
 		{
+			if(commands.size()<2)
+			{
+				mob.tell(L("^xError  : file must be specified!^N"));
+				return false;
+			}
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,false,false,skipHash);
 			if(dirs==null)
 			{
@@ -647,6 +663,11 @@ public class Shell extends StdCommand
 		}
 		case JRUN: // jrun
 		{
+			if(commands.size()<2)
+			{
+				mob.tell(L("^xError  : file must be specified!^N"));
+				return false;
+			}
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,false,false,skipHash);
 			if(dirs==null)
 			{
@@ -692,6 +713,11 @@ public class Shell extends StdCommand
 		}
 		case MAKEDIRECTORY: // makedirectory
 		{
+			if(commands.size()<2)
+			{
+				mob.tell(L("^xError  : path must be specified!^N"));
+				return false;
+			}
 			final CMFile CF=new CMFile(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
 			if(CF.exists())
 			{
@@ -713,6 +739,11 @@ public class Shell extends StdCommand
 		}
 		case FINDFILE: // findfiles
 		{
+			if(commands.size()<2)
+			{
+				mob.tell(L("^xError  : file mask must be specified!^N"));
+				return false;
+			}
 			String substring=CMParms.combine(commands,1).trim();
 			if(substring.length()==0)
 				substring="*";
@@ -813,6 +844,11 @@ public class Shell extends StdCommand
 		}
 		case EDIT: // edit
 		{
+			if(commands.size()<2)
+			{
+				mob.tell(L("^xError  : target file must be specified!^N"));
+				return false;
+			}
 			final CMFile file=new CMFile(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
 			if((!file.canWrite())
 			||(file.isDirectory()))

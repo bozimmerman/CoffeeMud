@@ -4,12 +4,12 @@
 
 
 
-  <meta name="generator" content="HTML Tidy, see www.w3.org" />
+
+  <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Scripting in CoffeeMud 5.10</title>
   
 
 
-  <title>Scripting in CoffeeMud 5.10</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
-<body>
+  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head><body>
 
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
@@ -5093,7 +5093,7 @@ have the skill. Skills can be granted using the mpenable command.</p>
 
       <p>EXAMPLES:</p>
 
-      <pre>mpdisable $n fireball<br />mpdisable $n pass door<br />mpdisable $n STEALTHY3<br /></pre>
+      <pre>mpdisable $n fireball<br />mpdisable $n Spell_PassDoor<br />mpdisable $n STEALTHY3<br /></pre>
 
       <h3><a name="mpecho">mpecho</a></h3>
 
@@ -5180,7 +5180,7 @@ with the mpdisable command.</p>
 
       <p>EXAMPLES:</p>
 
-      <pre>mpenable $n Fireball 100<br />mpenable $n 'Summon Elemental' 0 EARTH<br />mpenable $n 'Summon Elemental' ++20<br />mpenable $n 'Summon Elemental' --5<br />mpenable $n STEALTHY3<br /><br /></pre>
+      <pre>mpenable $n Spell_Fireball 100<br />mpenable $n Chant_SummonElemental 0 EARTH<br />mpenable $n Chant_SummonElemental ++20<br />mpenable $n Chant_SummonElemental --5<br />mpenable $n STEALTHY3<br /><br /></pre>
 
       <h3><a name="mpendquest">mpendquest</a></h3>
 
@@ -5430,7 +5430,7 @@ hidden thing to sight.</p>
 
       <pre>mphit $n<br />mphit guardfour<br /></pre>
 
-      <p></p>
+      <p />
 
       <h3><a name="mpjunk">mpjunk</a></h3>
 

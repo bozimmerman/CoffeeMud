@@ -288,6 +288,9 @@ RAND_PROG 25
 ~
 
 QUEST_TIME_PROG * -1
+	if VAR($i  $QUEST_ID_ESCORTEE != '') AND INROOM($i == '$<$i $QUEST_ID_ESCORTEE>')
+		mppurge '$<$i $QUEST_ID_ESCORTEE>'
+	ENDIF
 	MPECHOAT $i The quest "$QUEST_NAME" has ended.
 ~
 
