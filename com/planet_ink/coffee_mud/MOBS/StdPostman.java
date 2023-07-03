@@ -627,7 +627,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 									{
 										final Item I=makeItem(data);
 										CMLib.database().DBDeletePlayerData(V2.who(),V2.section(),V2.key());
-										if(I!=null)
+										if((I!=null)&&(!(I instanceof ArchonOnly)))
 											getShop().addStoreInventory(I);
 									}
 								}

@@ -270,11 +270,32 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	@Override
 	public boolean canChangeToThisClass(final MOB mob, final CharClass thisClass, final int theme)
 	{
-		if(isAvailableCharClass(thisClass)
+		if((isAvailableCharClass(thisClass)||(isTattooedLike(mob,"CHARCLASS_"+thisClass.ID().toUpperCase())))
 		&&((theme<0)||(CMath.bset(thisClass.availabilityCode(),theme)))
 		&&((mob==null)||(thisClass.qualifiesForThisClass(mob,true))))
 			return true;
 		return false;
+	}
+	
+	protected boolean isTattooedLike(final MOB mob, final String fullID)
+	{
+		if(mob==null)
+			return false;
+		if(mob.findTattoo(fullID)!=null)
+			return true;
+		for(final Pair<Clan,Integer> p : mob.clans())
+		{
+			if((p.first.findTattoo(fullID)!=null)
+			&&(p.first.getAuthority(p.second.intValue(), Clan.Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO))
+				return true;
+		}
+		final PlayerStats pStats = mob.playerStats();
+		if(pStats == null)
+			return false;
+		final PlayerAccount acct = pStats.getAccount();
+		if(acct == null)
+			return false;
+		return acct.findTattoo(fullID) != null;
 	}
 
 	@Override
@@ -283,7 +304,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(C==null)
 			return false;
 		if((CMProps.isTheme(C.availabilityCode()))
-		&&((!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))||(CMSecurity.isCharClassEnabled(C.ID())))
+		&&((!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))
+			||(CMSecurity.isCharClassEnabled(C.ID())))
 		&&(!CMSecurity.isCharClassDisabled(C.ID())))
 			return true;
 		return false;
@@ -312,15 +334,22 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public boolean isAvailableRace(final Race R)
 	{
 		if((CMProps.isTheme(R.availabilityCode()))
-		&&((!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK))||(CMSecurity.isRaceEnabled(R.ID())))
+		&&((!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK))
+			||(CMSecurity.isRaceEnabled(R.ID())))
 		&&((!CMSecurity.isDisabled(CMSecurity.DisFlag.STDRACES))||(R.isGeneric()))
 		&&(!CMSecurity.isRaceDisabled(R.ID())))
 			return true;
 		return false;
 	}
 
+	protected boolean raceQualifies(final MOB mob, final Race R, final int theme)
+	{
+		return ((isAvailableRace(R)||(isTattooedLike(mob,"RACE_"+R.ID().toUpperCase())))
+				&&(CMath.bset(R.availabilityCode(),theme)));
+	}
+	
 	@Override
-	public List<Race> raceQualifies(final int theme)
+	public List<Race> raceQualifies(MOB mob, final int theme)
 	{
 		final Vector<Race> qualRaces = new Vector<Race>(); // return value
 		final HashSet<String> doneRaces=new HashSet<String>();
@@ -331,8 +360,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				continue;
 			R=CMClass.getRace(R.ID());
 			doneRaces.add(R.ID());
-			if(isAvailableRace(R)
-			&&(CMath.bset(R.availabilityCode(),theme)))
+			if(raceQualifies(mob, R, theme))
 				qualRaces.add(R);
 		}
 		return qualRaces;
@@ -1000,12 +1028,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		rpt.append("\r\n").append("CLASSES");
 		int numClasses = 0;
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
-			numClasses=CMLib.login().classQualifies(null, CMProps.getIntVar(CMProps.Int.MUDTHEME)&0x07).size();
+			numClasses=classQualifies(null, CMProps.getIntVar(CMProps.Int.MUDTHEME)&0x07).size();
 		rpt.append("\t").append(Long.toString(numClasses));
 		rpt.append("\r\n").append("RACES");
 		int numRaces = 0;
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
-			numRaces=CMLib.login().raceQualifies(CMProps.getIntVar(CMProps.Int.MUDTHEME)&0x07).size();
+			numRaces=raceQualifies(null, CMProps.getIntVar(CMProps.Int.MUDTHEME)&0x07).size();
 		rpt.append("\t").append(Long.toString(numRaces));
 		rpt.append("\r\n").append("SKILLS");
 		rpt.append("\t").append(Long.toString(CMLib.ableMapper().numMappedAbilities()));
@@ -2906,7 +2934,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		final StringBuffer listOfRaces=new StringBuffer("[");
 		boolean tmpFirst = true;
-		final List<Race> qualRaces = raceQualifies(loginObj.theme);
+		final List<Race> qualRaces = raceQualifies(mob, loginObj.theme);
 		for(final Race R : qualRaces)
 		{
 			if (!tmpFirst)
@@ -2933,8 +2961,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		{
 			Race newRace=CMClass.getRace(raceStr);
-			if((newRace!=null)&&((!CMLib.login().isAvailableRace(newRace))
-								||(!CMath.bset(newRace.availabilityCode(),loginObj.theme))))
+			if((newRace!=null)&&(!raceQualifies(mob, newRace, loginObj.theme)))
 				newRace=null;
 			if(newRace==null)
 			{
@@ -2942,8 +2969,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				{
 					final Race R=r.nextElement();
 					if((R.name().equalsIgnoreCase(raceStr))
-					&&(CMLib.login().isAvailableRace(R))
-					&&(CMath.bset(R.availabilityCode(),loginObj.theme)))
+					&&(raceQualifies(mob, R, loginObj.theme)))
 					{
 						newRace=R;
 						break;
@@ -2956,8 +2982,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				{
 					final Race R=r.nextElement();
 					if((R.name().toUpperCase().startsWith(raceStr.toUpperCase()))
-					&&(CMLib.login().isAvailableRace(R))
-					&&(CMath.bset(R.availabilityCode(),loginObj.theme)))
+					&&(raceQualifies(mob, R, loginObj.theme)))
 					{
 						newRace=R;
 						break;
@@ -3553,7 +3578,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				}
 			}
 		}
-		if((newClass!=null)&&(canChangeToThisClass(mob,newClass,loginObj.theme)))
+		if((newClass!=null)
+		&&(canChangeToThisClass(mob,newClass,loginObj.theme)))
 		{
 			final String str=CMLib.help().getHelpText(newClass.ID().toUpperCase(),mob,false,false);
 			if(str!=null)

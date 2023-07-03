@@ -631,6 +631,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return Integer.toString(CMath.s_int(val));
 	}
 
+	@Override
 	public int handleXPMods(final MOB mob, final MOB target,
 							final ModXP m,
 							final String sourceID, final boolean useTarget,
@@ -843,13 +844,21 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			Log.killsOut("+EXP",room+":"+mobName+":"+vicName+":"+amount+":"+homageMessage);
 		}
 
+		if(mob.charStats().getStat(CharStats.STAT_XP_ADJ_PCT)!=0)
+		{
+			amount += (int)Math.round(CMath.mul(CMath.div(mob.charStats().getStat(CharStats.STAT_XP_ADJ_PCT), 100.0),amount));
+			if(amount<0)
+				amount=0;
+		}
+
 		amount = modGlobalExperience(mob,victim,sourceId,amount);
 
 		amount=adjustedExperience(mob,victim,amount);
 
 		amount=gainClanExperience(mob, amount);
 
-		amount=gainLeigeExperience(mob, amount, quiet);
+		if((victim != null) && (victim != mob))
+			amount=gainLeigeExperience(mob, amount, quiet);
 
 		CMLib.get(mob.session())._players().bumpPrideStat(mob,PrideStat.EXPERIENCE_GAINED, amount);
 		if(homageMessage==null)
@@ -924,7 +933,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			return;
 
 		amount=modGlobalExperience(mob,target,sourceId,amount);
-		amount=gainLeigeExperience(mob, amount, quiet);
+		//amount=gainLeigeExperience(mob, amount, quiet);
 		amount=gainClanExperience(mob, amount);
 
 		CMLib.get(mob.session())._players().bumpPrideStat(mob,PrideStat.EXPERIENCE_GAINED, amount);
@@ -1357,7 +1366,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 		CharClass charClass=null;
 		Race charRace=null;
-
+		
 		for (final MOB allyMOB : group)
 		{
 			charClass = allyMOB.charStats().getCurrentClass();

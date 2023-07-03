@@ -626,7 +626,7 @@ public class Skill_HireCrewmember extends StdSkill
 			if(money > 0.0)
 				CMLib.beanCounter().subtractMoney(mob, money);
 			final MOB targetM=CMClass.getMOB("GenMob");
-			final List<Race> races=CMLib.login().raceQualifies(Area.THEME_FANTASY);
+			final List<Race> races=CMLib.login().raceQualifies(mob, Area.THEME_FANTASY);
 			final Race raceR=races.get(CMLib.dice().roll(1, races.size(), -1));
 			final String name=CMLib.login().generateRandomName(1, 5);
 			final String raceName=raceR.name();

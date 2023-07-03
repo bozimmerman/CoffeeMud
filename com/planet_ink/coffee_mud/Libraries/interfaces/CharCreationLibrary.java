@@ -196,11 +196,12 @@ public interface CharCreationLibrary extends CMLibrary
 	 * Returns the list of all races that the given mob can choose
 	 * into, given their currrent state, and the given theme.  The mob is
 	 * optional, at which point it is only checking base race rules and theme.
+	 * @param mob the mob who wants to do some racing
 	 * @param theme the theme to filter the races by
 	 * @see CharCreationLibrary#canChangeToThisClass(MOB, CharClass, int)
 	 * @return the list of races that the mob may choose.
 	 */
-	public List<Race> raceQualifies(int theme);
+	public List<Race> raceQualifies(MOB mob, int theme);
 
 	/**
 	 * Returns whether the given name is a valid,  legitimate,

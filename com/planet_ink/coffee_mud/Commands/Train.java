@@ -136,6 +136,12 @@ public class Train extends StdCommand
 	public Map<CharClass,Integer> getAvailableCharClasses(final MOB mob)
 	{
 		final Map<CharClass,Integer> classes = new HashMap<CharClass,Integer>();
+		final Area A = CMLib.map().areaLocation(mob);
+		final int theme;
+		if(A != null)
+			theme = A.getTheme();
+		else
+			theme = CMProps.getIntVar(CMProps.Int.MUDTHEME);
 		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
 			final CharClass C=c.nextElement();
@@ -148,7 +154,7 @@ public class Train extends StdCommand
 			}
 			if((trainCost >= 0)
 			&&(C.qualifiesForThisClass(mob,true))
-			&&(CMLib.login().isAvailableCharClass(C)))
+			&&(CMLib.login().canChangeToThisClass(mob,C,theme)))
 				classes.put(C, Integer.valueOf(trainCost));
 		}
 		return classes;
@@ -214,6 +220,12 @@ public class Train extends StdCommand
 				teacherName=null;
 		}
 
+		final Area A = CMLib.map().areaLocation(mob);
+		final int theme;
+		if(A != null)
+			theme = A.getTheme();
+		else
+			theme = CMProps.getIntVar(CMProps.Int.MUDTHEME);
 		final String abilityName=CMParms.combine(commands,0).toUpperCase();
 		final StringBuffer thingsToTrainFor=new StringBuffer("");
 		for(final int i: CharStats.CODES.BASECODES())
@@ -252,7 +264,7 @@ public class Train extends StdCommand
 				||(C.name(classLevel).toUpperCase().startsWith(abilityName.toUpperCase())))
 				{
 					if((C.qualifiesForThisClass(mob,false))
-					&&(CMLib.login().isAvailableCharClass(C)))
+					&&(CMLib.login().canChangeToThisClass(mob,C,theme)))
 					{
 						trainType = Trainable.CCLASS;
 						theClass=C;
@@ -264,7 +276,7 @@ public class Train extends StdCommand
 				}
 				else
 				if((C.qualifiesForThisClass(mob,true))
-				&&(CMLib.login().isAvailableCharClass(C)))
+				&&(CMLib.login().canChangeToThisClass(mob,C,theme)))
 					thingsToTrainFor.append(C.name()+", ");
 			}
 		}

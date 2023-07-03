@@ -1,16 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Builders FAQ</title>
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-05-05, fix valiadation problems, add index, hyperlink questions, remove duplicates, and fix spelling errors -->
-</head>
-<body>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title>Builders FAQ</title>
+  
+  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix valiadation problems, add index, hyperlink questions, remove duplicates, and fix spelling errors --></head><body>
 <center>
-<table border="1"
- bordercolor="gray" cellpadding="10" cellspacing="0">
+<table border="1" bordercolor="gray" cellpadding="10" cellspacing="0">
   <tbody>
     <tr>
       <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
@@ -132,7 +129,7 @@ questions, and
 bugs go?</a></h3>
       <p>Well, best bet for
 questions, suggestions, and bugs is to
-check out the <a href="http://coffeemud.net:27744/forum.cmvp?journal=Support&journalpage=0">CoffeeMud Support</a> forum.
+check out the <a href="http://coffeemud.net:27744/forum.cmvp?journal=Support&amp;journalpage=0">CoffeeMud Support</a> forum.
 Many times people will expand on suggestions or have fixes for bugs for
 you pretty quickly.</p>
       <h3><a name="q03" id="q03">Does CoffeeMud support
@@ -173,27 +170,22 @@ would have to have 30 levels in both
 translate it into other human languages?</a></h3>
       <p>Getting CoffeeMud 100% translated will be difficult, but
 here's a quick way to get you the first 90% of the way there. &nbsp;</p>
-      <p>First, copy the input parser file <span
- style="font-style: italic;">resources/parser_en_TX.properties</span>
-into the same folder with a different language name, such as <span
- style="font-style: italic;">resources/parser_fr_CA.properties</span>
+      <p>First, copy the input parser file <span style="font-style: italic;">resources/parser_en_TX.properties</span>
+into the same folder with a different language name, such as <span style="font-style: italic;">resources/parser_fr_CA.properties</span>
 for Canadian French. &nbsp;</p>
-      <p>Next copy the output translation file <span
- style="font-style: italic;">resources/translation_en_TX.properties</span>
+      <p>Next copy the output translation file <span style="font-style: italic;">resources/translation_en_TX.properties</span>
 and rename the copy, just like you did with the input parser file.</p>
       <p>Open up coffeemud.ini file, find the entries for LANGUAGE= and
 COUNTRY= and change them accordingly.</p>
       <p>Open up your copy of <span style="font-style: italic;">resources/parser_??_??.properties</span>
 and scroll down until you see [command-word-processor] and a line
 underneath it which says<span style="font-weight: bold;"> #autoignore
-9999</span>. &nbsp;Remove the hash mark # so that it says&nbsp;<span
- style="font-weight: bold;">autoignore 9999</span>. &nbsp;Save the
+9999</span>. &nbsp;Remove the hash mark # so that it says&nbsp;<span style="font-weight: bold;">autoignore 9999</span>. &nbsp;Save the
 file, we will edit it again later.</p>
       <p>Open up your copy of <span style="font-style: italic;">resources/translation_??_??.properties</span>
 and scroll down until you see [session-translation] and a line
 underneath it which says<span style="font-weight: bold;"> #autoignore
-9999</span>. &nbsp;Remove the hash mark # so that it says&nbsp;<span
- style="font-weight: bold;">autoignore 9999</span>. &nbsp;Save the
+9999</span>. &nbsp;Remove the hash mark # so that it says&nbsp;<span style="font-weight: bold;">autoignore 9999</span>. &nbsp;Save the
 file, we will edit it again later.</p>
       <p>Now log into your mud as your Archon and start entering
 commands.&nbsp;As you enter commands and do things, the parser and
@@ -284,8 +276,7 @@ or
 (regardless of online status). Clan bosses can
 also '<span style="font-weight: bold;">clanassign</span>' people roles,
 such as treasurer, lieutenant, or even
-boss. Clan bosses and lieutentants may, at any time, '<span
- style="font-weight: bold;">clanexile</span>' a
+boss. Clan bosses and lieutentants may, at any time, '<span style="font-weight: bold;">clanexile</span>' a
 member -
 as well as members can '<span style="font-weight: bold;">clanresign</span>'</p>
       <p>Once you're accepted into
@@ -296,8 +287,7 @@ location and the '<span style="font-weight: bold;">clandonate</span>'
 location
 can be set by bosses using the '<span style="font-weight: bold;">clanhomeset</span>'
 and '<span style="font-weight: bold;">clandonateset</span>'
-commands. Clan morgues can be designated with the '<span
- style="font-weight: bold;">clanmorgueset</span>'
+commands. Clan morgues can be designated with the '<span style="font-weight: bold;">clanmorgueset</span>'
 command. Bosses and treasurers may deal with any Clan bankers and Clan
 Postmen in your game. If MINCLANMEMBERS don't at least login in
 DAYSCLANDEATH days, then the clan will be purged automatically.</p>
@@ -328,15 +318,20 @@ talk/answer
 questions?</a></h3>
       <p>Luckily, a great document
 has already been provided for the
-useful things which can be accomplished with the MudChat behavior. <a
- href="MudChat.html">Here it is.</a></p>
+useful things which can be accomplished with the MudChat behavior. <a href="MudChat.html">Here it is.</a></p>
       <h3><a name="q11" id="q11">How do player Tattoos work?</a></h3>
-      <p>Tattoo's are intended to
+      <p>Tattoo's
+are intended to
 act as miscellaneous flags which
 players may obtain, like a quest point. These tattoo's can then be
 checked for as requirements to enter rooms or exits using
 Prop_ReqTattoo, or using Prop_ReqEntry. Prop_HaveZapper and
-Prop_WearZapper can also be used to check for tattoos.</p>
+Prop_WearZapper can also be used to check for tattoos.&nbsp; There are
+only two types of 'special' tattoos: those starting with RACE_ and
+those starting with CHARCLASS_, which are used to grant access to
+otherwise inaccessible races or classes for char creation (e.g.
+RACE_FIREMEPHIT), assuming all other rules allow.<br />
+</p>
       <p>An example would be like
 this: The completion of a specific
 quest occurs when Gunther defeats the evil sorcerer Nunder and enters
@@ -616,5 +611,4 @@ available, or available only from skills.</p>
   </tbody>
 </table>
 </center>
-</body>
-</html>
+</body></html>
