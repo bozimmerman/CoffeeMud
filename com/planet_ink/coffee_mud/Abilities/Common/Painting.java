@@ -303,7 +303,7 @@ public class Painting extends CommonSkill implements RecipeDriven
 			&&(!canvasI.Name().toUpperCase().endsWith("CANVAS"))
 			&&(!canvasI.Name().toUpperCase().endsWith("SILKSCREEN")))
 			{
-				commonTelL(mob,"You cannot paint on '@x1'.",str);
+				commonTelL(mob,"You cannot paint on '@x1'.",what);
 				return false;
 			}
 

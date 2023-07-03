@@ -837,11 +837,7 @@ public class CMStrings
 	 */
 	public final static String deEscape(final String str)
 	{
-		if(str==null)
-			return str;
-		if(str.indexOf('\\')<0)
-			return str;
-		return replaceAll(replaceAll(str,"\\\"","\""),"\\\\","\\");
+		return deEscape(str,'\"');
 	}
 
 	/**
@@ -851,13 +847,18 @@ public class CMStrings
 	 * @param quot the char to de-escape
 	 * @return the string, de-escaped
 	 */
-	public final static String deEscape(final String str, final char quot)
+	public final static String deEscape(String str, final char quot)
 	{
 		if(str==null)
 			return str;
 		if(str.indexOf('\\')<0)
 			return str;
-		return replaceAll(replaceAll(str,"\\"+quot,""+quot),"\\\\","\\");
+		for(int i=0;i<str.length()-1;i++)
+		{
+			if(str.charAt(i)=='\\')
+				str=str.substring(0,i)+str.substring(i+1);
+		}
+		return str;
 	}
 
 	/**

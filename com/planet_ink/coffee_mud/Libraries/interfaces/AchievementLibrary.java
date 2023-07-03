@@ -319,6 +319,7 @@ public interface AchievementLibrary extends CMLibrary
 		NOPURGE,
 		CLANXP,
 		CLANCURRENCY,
+		TATTOO
 		;
 	}
 
@@ -471,6 +472,21 @@ public interface AchievementLibrary extends CMLibrary
 		 * @return expertise granted by this award.
 		 */
 		public ExpertiseDefinition getExpertise();
+	}
+
+	/**
+	 * The TattooAward interface provides pre-parsed award information for those who
+	 * complete the achievement.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public interface TattooAward extends Award
+	{
+		/**
+		 * The tattoo to grant to the player or account.
+		 * @return the tattoo to grant to the player or account
+		 */
+		public String getTattoo();
 	}
 
 	/**

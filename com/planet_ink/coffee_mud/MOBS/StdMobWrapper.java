@@ -677,8 +677,9 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	}
 
 	@Override
-	public void delTattoo(final String of)
+	public boolean delTattoo(final String of)
 	{
+		return false;
 	}
 
 	@Override

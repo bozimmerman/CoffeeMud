@@ -99,11 +99,12 @@ public class DefaultTattooable implements Tattooable, CMCommon
 	}
 
 	@Override
-	public void delTattoo(final String of)
+	public boolean delTattoo(final String of)
 	{
 		final Tattoo T = findTattoo(of);
 		if (T != null)
-			tattoos.remove(T);
+			 return tattoos.remove(T);
+		return false;
 	}
 
 	@Override

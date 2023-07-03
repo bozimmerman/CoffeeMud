@@ -128,7 +128,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			playerMask = CMLib.masking().getPreCompiledMask(playerMaskStr);
 		else
 			playerMask = null;
-
+		
 		final List<Award> awardsList = new ArrayList<Award>();
 		if(titleStr.length()>0)
 		{
@@ -315,6 +315,72 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							public String getDescription()
 							{
 								return L("Protection from auto-purge");
+							}
+
+							@Override
+							public boolean isNotAwardedOnRemort()
+							{
+								return false;
+							}
+						});
+					}
+					else
+					if(thing.startsWith("TATTOO"))
+					{
+						final int y=thing.indexOf('(');
+						String parms="";
+						if((y>0) && thing.endsWith(")"))
+						{
+							parms=thing.substring(y+1,thing.length()-1).trim();
+							thing=thing.substring(0,y);
+						}
+						if(parms.length()==0)
+							return "Error: Invalid TATTOO award for "+eventStr+":  Missing () arguments.";
+						final String accttattoo;
+						final String desc;
+						if(parms.indexOf('=')<0)
+							return "Error: Invalid TATTOO award for "+eventStr+":  Missing (ID= DESC=) arguments.";
+						else
+						{
+							if(CMParms.getParmStr(parms, "ID", "").length()>0)
+								accttattoo=CMStrings.deEscape(CMParms.getParmStr(parms, "ID", ""));
+							else
+								return "Error: Invalid TATTOO award for "+eventStr+":  Missing ID= argument.";
+							if(CMParms.getParmStr(parms, "DESC", "").length()>0)
+								desc=CMStrings.deEscape(CMParms.getParmStr(parms, "DESC",""));
+							else
+							if(tattoo.startsWith("RACE_"))
+								desc=L("create a character of race '@x1'.",tattoo.toLowerCase().substring(5));
+							else
+							if(tattoo.startsWith("CHARCLASS_"))
+								desc=L("create a character of class '@x1'.",tattoo.toLowerCase().substring(9));
+							else
+								desc=tattoo.toLowerCase();
+						}
+						awardsList.add(new TattooAward()
+						{
+							@Override
+							public AwardType getType()
+							{
+								return AwardType.TATTOO;
+							}
+
+							@Override
+							public String getTattoo()
+							{
+								return accttattoo;
+							}
+
+							@Override
+							public boolean isPreAwarded()
+							{
+								return false;
+							}
+
+							@Override
+							public String getDescription()
+							{
+								return desc;
 							}
 
 							@Override
@@ -7481,6 +7547,20 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 				break;
 			}
+			case TATTOO:
+			{
+				final TattooAward taward=(TattooAward)award;
+				if(pStats != null)
+				{
+					String tattooStr = taward.getTattoo();
+					if(pStats instanceof PlayerAccount)
+						((PlayerAccount)taward).addTattoo(tattooStr);
+					else
+						mob.addTattoo(tattooStr);
+					awardMessage.append(L("^HYou are awarded: @x1!\n\r^?",taward.getDescription()));
+				}
+				break;
+			}
 			case XP:
 			{
 				final AmountAward aaward=(AmountAward)award;
@@ -7605,9 +7685,16 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				clan.adjExp(null, aaward.getAmount());
 				break;
 			}
+			case TATTOO:
+			{
+				final TattooAward taward=(TattooAward)award;
+				final MOB cM=CMLib.players().getLoadPlayer(clan.getResponsibleMemberName());
+				clan.addTattoo(taward.getTattoo());
+				CMLib.clans().clanAnnounce(cM,L("Your @x2 @x3 has been granted '@x1'.",""+taward.getDescription(),clan.getGovernmentName(),clan.name()));
+				break;
+			}
 			default:
 				break;
-
 			}
 		}
 	}
@@ -7817,6 +7904,28 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					{
 						pStats.delTitle(titleStr);
 						awardMessage.append(L("^HYou have lost the title: @x1!\n\r^?",CMStrings.replaceAll(titleStr,"*",mob.Name())));
+					}
+				}
+				break;
+			}
+			case TATTOO:
+			{
+				final TattooAward taward=(TattooAward)award;
+				if(pStats != null)
+				{
+					String tattooStr = taward.getTattoo();
+					boolean canRemove;
+					if(pStats instanceof PlayerAccount)
+						canRemove = ((PlayerAccount)pStats).findTattoo(tattooStr) != null;
+					else
+						canRemove = mob.findTattoo(tattooStr) != null;
+					if(canRemove && (!alsoAwardedElsewhere))
+					{
+						if(pStats instanceof PlayerAccount)
+							((PlayerAccount)pStats).delTattoo(tattooStr);
+						else
+							mob.delTattoo(tattooStr);
+						awardMessage.append(L("^HYou have lost: @x1!\n\r^?",taward.getDescription()));
 					}
 				}
 				break;
@@ -8127,6 +8236,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				break;
 			case NOPURGE:
 				awardStr.append(" 1 NOPURGE");
+				break;
+			case TATTOO:
+				awardStr.append("1 TATTOO(ID="+((TattooAward)award).getTattoo())
+						.append(" ").append("DESC="+CMStrings.escape("\""+CMStrings.escape(((TattooAward)award).getDescription()+"\"")));
 				break;
 			default:
 				break;

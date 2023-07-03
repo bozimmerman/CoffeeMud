@@ -24,6 +24,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.CurrencyAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.ExpertiseAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.StatAward;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.TattooAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.TitleAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary.AutoProperties;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
@@ -4157,6 +4158,9 @@ public class ListCmd extends StdCommand
 					case TITLE:
 						titleAward=(TitleAward)award;
 						break;
+					case TATTOO:
+						rewardDisplay.append((((TattooAward)award).getTattoo())+" ");
+						break;
 					case XP:
 						rewardDisplay.append(((AmountAward)award).getAmount()+"XP ");
 						break;
@@ -4516,6 +4520,7 @@ public class ListCmd extends StdCommand
 		SPELLS("SPELLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		SONGS("SONGS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		PRAYERS("PRAYERS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		TRAPS("TRAPS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		PROPERTIES("PROPERTIES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		THIEFSKILLS("THIEFSKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		COMMON("COMMON",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
@@ -5078,7 +5083,7 @@ public class ListCmd extends StdCommand
 			mob.session().rawPrint(str.toString());
 	}
 
-	public void listAbilities(final MOB mob, final Session s, final List<String> commands, String title, final int ofType)
+	public void listAbilities(final MOB mob, final Session s, final List<String> commands, String title, int ofType)
 	{
 		int domain=0;
 		Enumeration<Ability> enumA = CMClass.abilities();
@@ -5088,37 +5093,60 @@ public class ListCmd extends StdCommand
 			final String str=commands.get(i);
 			if(domain<=0)
 			{
-				int x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.toUpperCase().trim());
-				if((x<0)&&(str.toUpperCase().startsWith("DOMAIN_")))
-					x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.toUpperCase().substring(10).trim());
-				if(x>=0)
+				if((ofType == Ability.ALL_ACODES)
+				&&((CMParms.indexOfStartsWith(Ability.ACODE_DESCS,str.toUpperCase().trim())>=0)
+					||(CMParms.indexOfStartsWith2(Ability.ACODE_DESCS,str.toUpperCase().trim())>=0)))
 				{
-					domain = x << 5;
-					final String domainName=CMStrings.capitalizeAllFirstLettersAndLower(Ability.DOMAIN_DESCS[x].toLowerCase().replaceAll("_"," "));
+					ofType=CMParms.indexOf(Ability.ACODE_DESCS,str.toUpperCase().trim());
+					if(ofType < 0)
+						ofType=CMParms.indexOfStartsWith(Ability.ACODE_DESCS,str.toUpperCase().trim());
+					if(ofType < 0)
+						ofType=CMParms.indexOfStartsWith2(Ability.ACODE_DESCS,str.toUpperCase().trim());
+					final String domainName=CMStrings.capitalizeAllFirstLettersAndLower(Ability.ACODE_DESCS[ofType].toLowerCase().replaceAll("_"," "));
 					title=(domainName+" "+title).trim();
 				}
 				else
 				{
-					x=CMParms.indexOf(Ability.FLAG_DESCS,str.toUpperCase().trim());
-					if((x<0)&&(str.toUpperCase().startsWith("FLAG_")))
-						x=CMParms.indexOf(Ability.FLAG_DESCS,str.toUpperCase().substring(5).trim());
-					if(x >= 0)
+					int x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.toUpperCase().trim());
+					if((x<0)&&(str.toUpperCase().startsWith("DOMAIN_")))
+						x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.toUpperCase().substring(10).trim());
+					if(x < 0)
+						x=CMParms.indexOfStartsWith(Ability.DOMAIN_DESCS,str.toUpperCase().trim());
+					if(x < 0)
+						x=CMParms.indexOfStartsWith2(Ability.DOMAIN_DESCS,str.toUpperCase().trim());
+					if(x>=0)
 					{
-						final long mBit = CMath.pow(2, x);
-						title = (Ability.FLAG_DESCS[x]+" "+title).trim();
-						enumA = new FilteredEnumeration<Ability>(enumA, new Filterer<Ability>() {
-							final long mask = mBit;
-							@Override
-							public boolean passesFilter(final Ability obj)
-							{
-								return CMath.bset(obj.flags(), mask);
-							}
-						});
+						domain = x << 5;
+						final String domainName=CMStrings.capitalizeAllFirstLettersAndLower(Ability.DOMAIN_DESCS[x].toLowerCase().replaceAll("_"," "));
+						title=(domainName+" "+title).trim();
 					}
 					else
 					{
-						s.println("Unknown '"+str+"'");
-						return;
+						x=CMParms.indexOf(Ability.FLAG_DESCS,str.toUpperCase().trim());
+						if((x<0)&&(str.toUpperCase().startsWith("FLAG_")))
+							x=CMParms.indexOf(Ability.FLAG_DESCS,str.toUpperCase().substring(5).trim());
+						if(x < 0)
+							x=CMParms.indexOfStartsWith(Ability.FLAG_DESCS,str.toUpperCase().trim());
+						if(x < 0)
+							x=CMParms.indexOfStartsWith2(Ability.FLAG_DESCS,str.toUpperCase().trim());
+						if(x >= 0)
+						{
+							final long mBit = CMath.pow(2, x);
+							title = (Ability.FLAG_DESCS[x]+" "+title).trim();
+							enumA = new FilteredEnumeration<Ability>(enumA, new Filterer<Ability>() {
+								final long mask = mBit;
+								@Override
+								public boolean passesFilter(final Ability obj)
+								{
+									return CMath.bset(obj.flags(), mask);
+								}
+							});
+						}
+						else
+						{
+							s.println("Unknown '"+str+"'");
+							return;
+						}
 					}
 				}
 			}
@@ -5898,6 +5926,9 @@ public class ListCmd extends StdCommand
 			break;
 		case PRAYERS:
 			listAbilities(mob,s,commands,"Prayer",Ability.ACODE_PRAYER);
+			break;
+		case TRAPS:
+			listAbilities(mob,s,commands,"Trap",Ability.ACODE_TRAP);
 			break;
 		case PROPERTIES:
 			//s.println("^HProperty Ability IDs:^N");
