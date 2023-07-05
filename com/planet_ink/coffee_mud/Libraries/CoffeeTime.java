@@ -161,7 +161,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 
 			try
 			{
-				final DateFormat fmt=DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.SHORT);
+				final DateFormat fmt=DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.SHORT,Locale.US);
 				fmt.parse(dateTimeStr);
 				D=fmt.getCalendar();
 				D.set(Calendar.SECOND,0);
@@ -288,7 +288,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 				dateTimeStr=dateTimeStr+" 5:00 PM";
 			try
 			{
-				final DateFormat fmt=DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.SHORT);
+				final DateFormat fmt=DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.SHORT,Locale.US);
 				fmt.parse(dateTimeStr);
 			}
 			catch(final ParseException e)

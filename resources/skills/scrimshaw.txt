@@ -105,7 +105,7 @@ hardened skull-handled % sword	61	130	18	4166	GenWeapon	SWORD	50
 % statue	61	22	100	1275	GenItem	STATUE		
 reinforced small % club	62	90	14	3490	GenWeapon	BLUNT	44	Prop_Doppleganger;ASMATERIAL=IRON MIN=62 MAX=62
 reinforced % flail	62	120	21	5073	GenWeapon	FLAILED	57	Prop_Doppleganger;ASMATERIAL=IRON MIN=62 MAX=62
-% armor rack	62	85	80	4250	GenContainer	CLOTHES	1000	Prop_NoPurge
+% armor rack	62	85	80	4250	GenContainer	CLOTHES	1000	
 % throne	63	45	150	4200	GenChair	CHAIR	1	
 reinforced % sliver	64	120	3	2888	GenWeapon	EDGED	38	Prop_Doppleganger;ASMATERIAL=IRON MIN=64 MAX=64
 reinforced % spear	65	25	10	4813	GenSpear	THROWN	76	Prop_Doppleganger;ASMATERIAL=IRON MIN=65 MAX=65
@@ -117,7 +117,7 @@ ornate % table	68	40	60	1600	GenRideable	TABLE	200
 reinforced % bracers	69	50	4	69	GenArmor	S0:WRISTS	8	Prop_Doppleganger;ASMATERIAL=IRON MIN=69 MAX=69
 reinforced % breast plate	72	75	18	366	GenArmor	S0:TORSO	35	Prop_Doppleganger;ASMATERIAL=IRON MIN=72 MAX=72
 reinforced spiked % flail	72	120	26	7012	GenWeapon	FLAILED	67	Prop_Doppleganger;ASMATERIAL=IRON MIN=72 MAX=72
-% weapon rack	72	70	65	3300	GenContainer	SWORDS|OTHER WEAPONS|DAGGERS|ONE-HANDED WEAPONS	500	Prop_NoPurge
+% weapon rack	72	70	65	3300	GenContainer	SWORDS|OTHER WEAPONS|DAGGERS|ONE-HANDED WEAPONS	500	
 reinforced % sword	73	140	10	5415	GenWeapon	SWORD	57	Prop_Doppleganger;ASMATERIAL=IRON MIN=73 MAX=73
 reinforced wicked % sliver	74	120	4	3872	GenWeapon	EDGED	44	Prop_Doppleganger;ASMATERIAL=IRON MIN=74 MAX=74
 reinforced % club	74	90	14	5070	GenWeapon	BLUNT	53	Prop_Doppleganger;ASMATERIAL=IRON MIN=74 MAX=74
@@ -129,7 +129,7 @@ reinforced % body armor	78	100	37	870	GenArmor	S0:TORSO&&ARMS&&LEGS	74	Prop_Dopp
 reinforced wicked % short sword	79	150	12	6406	GenWeapon	SWORD	62	Prop_Doppleganger;ASMATERIAL=IRON MIN=79 MAX=79
 reinforced skull mace	80	100	25	6480	GenWeapon	BLUNT	60	Prop_Doppleganger;ASMATERIAL=IRON MIN=80 MAX=80
 reinforced crown of %	81	75	7	145	GenArmor	S0:HEAD	14	Prop_Doppleganger;ASMATERIAL=IRON MIN=81 MAX=81
-% hat rack	82	20	5	79	GenContainer	CLOTHES	10	Prop_NoPurge
+% hat rack	82	20	5	79	GenContainer	CLOTHES	10	
 reinforced % flail of skulls	82	130	30	9018	GenWeapon	FLAILED	76	Prop_Doppleganger;ASMATERIAL=IRON MIN=82 MAX=82
 spiked % throne	83	40	50	1650	GenChair	CHAIR	1	
 reinforced mask of %	84	100	4	15	GenArmor	3:EYES	5	Prop_Doppleganger;ASMATERIAL=IRON MIN=84 MAX=84

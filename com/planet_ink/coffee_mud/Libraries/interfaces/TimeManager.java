@@ -72,11 +72,11 @@ public interface TimeManager extends CMLibrary
 	public boolean isValidDateString(String dateTimeStr);
 
 	/**
-	 * Converts a string of some form into a Calendar object.
+	 * Converts a string of some form into a timestamp.
 	 *
 	 * Usage: string2Millis(GetRes(Results,"StartDateTime"));
 	 * @param dateTimeStr The string to retrieve from
-	 * @return Calendar Calendar object
+	 * @return timestamp
 	 */
 	public long string2Millis(String dateTimeStr);
 

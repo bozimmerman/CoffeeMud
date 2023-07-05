@@ -72,8 +72,8 @@ small % bench	39	20	10	130	GenChair	CHAIR	2
 % covered pot	41	40	4	110	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS|LID	30	
 % storage drum	41	10	10	61	GenEmptyDrink	LIQUID	250	
 % statue	41	120	450	37500	GenItem	STATUE		
-% potion rack	42	30	20	405	GenContainer	DRINKABLES	100	Prop_NoPurge
-plain % sarcophagus	42	40	200	5450	GenBed	BED	500	Prop_NoPurge
+% potion rack	42	30	20	405	GenContainer	DRINKABLES	100	
+plain % sarcophagus	42	40	200	5450	GenBed	BED	500	
 % stool	43	20	5	66	GenChair	CHAIR	1	
 % tub	43	60	100	4150	GenTub	CHAIR	2000	
 % brazier	43	40	125	2500	GenFixture			Spell_ContinualLight
@@ -91,7 +91,7 @@ small % chest	45	80	10	560	GenContainer	LOCK	100
 % peg leg	50	30	20	20	GenLimb			
 % dutch oven	51	45	5	168	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS|LID	35	
 % storage rack	51	25	50	910	GenContainer		500	
-% armor rack	52	30	75	1650	GenContainer	CLOTHES	2000	Prop_NoPurge
+% armor rack	52	30	75	1650	GenContainer	CLOTHES	2000	
 large % six-sided die	53	50	2	75	GenDice		6	
 % chandelier	53	90	500	10000	GenFixture			Spell_ContinualLight
 % serving tray	54	20	4	58	GenContainer		50	
@@ -111,7 +111,7 @@ large % bin	60	40	100	2910	GenContainer		5000
 large % twelve-sided die	61	80	2	119	GenDice		12	
 master % lumberjack saw	61	40	6	178	GenItem			*Prop_ImproveGather;amt=4 skills=Chopping,MasterChopping
 large % storage drum	61	20	20	283	GenEmptyDrink	LIQUID	1000	
-% weapon rack	62	30	50	1100	GenContainer	SWORDS|OTHER WEAPONS	1000	Prop_NoPurge
+% weapon rack	62	30	50	1100	GenContainer	SWORDS|OTHER WEAPONS	1000	
 % claw-foot tub	63	120	400	25000	GenTub	CHAIR	1000	
 % charger	64	20	2	30	GenContainer		10	
 % anchor	64	30	75	1650	GenItem			
@@ -126,7 +126,7 @@ large % chest	70	125	25	2500	GenContainer	LOCK	500
 % pail	71	40	3	96	GenEmptyDrink	LIQUID|EATABLES	40	
 % braiser	71	45	3	108	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	30	
 % thirty-sided die	72	90	1	74	GenDice		30	
-% hat rack	72	15	10	115	GenContainer	CLOTHES	20	Prop_NoPurge
+% hat rack	72	15	10	115	GenContainer	CLOTHES	20	
 % wall sconce	73	45	25	905	GenItem			Spell_ContinualLight
 % griddle	74	30	12	290	GenContainer	EATABLES	25	
 % hundred-sided die	75	100	1	84	GenDice		100	
@@ -138,7 +138,7 @@ huge % bin	80	45	250	9400	GenContainer	LID||EATABLES	25000
 % double dutch oven	81	50	7	305	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS|LID	40	
 huge % storage drum	81	30	40	1000	GenEmptyDrink	LIQUID	5000	
 % Colossus	81	4000	8000	26500000	GenItem	STATUE		Spell_Enlarge
-ornate % sarcophagus	82	80	300	21000	GenBed	BED	500	Prop_NoPurge
+ornate % sarcophagus	82	80	300	21000	GenBed	BED	500	
 % Throne	83	135	25	3000	GenChair	CHAIR	1	
 huge % chest	85	200	40	7200	GenContainer	LOCK	1000	
 great % stove	86	160	200	15000	GenContainer	LID	300	Burning

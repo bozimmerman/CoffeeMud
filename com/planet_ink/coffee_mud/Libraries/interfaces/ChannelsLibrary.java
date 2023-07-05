@@ -467,6 +467,7 @@ public interface ChannelsLibrary extends CMLibrary
 		NOMOOD,
 		FACTIONANNOUNCEMENTS,
 		PROFICIENT,
-		CALENDAR
+		CALENDAR,
+		SAMEHOST
 	}
 }

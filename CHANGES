@@ -8,6 +8,8 @@
   7. Tattoos like 'RACE_*" or "CHARCLASS_*" now open up otherwise skill-restricted options.
   8. Liege xp bonus can no longer be gained from non-combat or role-playing xp gains.
   9. New CharStat XPADJPCT - for adding bonus % xp (or loss if negative)
+ 10. Prop_NoPurge now supports an expiration date/timestamp
+ 11. New StdMob type: CombatDummy, for testing.
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

@@ -69,7 +69,7 @@ stoneware ewer	61	20	4	47	GenEmptyDrink	LIQUID	15
 huge stoneware jug	61	40	25	600	GenEmptyDrink	LIQUID|LID	250	
 % statue	61	120	175	13000	GenItem	STATUE		
 porcelain spoon	62	10	1	6	GenEmptyDrink	LIQUID	1	
-% coffin	62	60	100	3700	GenBed		500	Prop_NoPurge
+% coffin	62	60	100	3700	GenBed		500	
 porcelain coaster	63	5	1	3	GenContainer	DRINKABLES	5	
 porcelain plate	64	10	2	12	GenContainer	EATABLES	5	
 porcelain mug	65	10	2	12	GenEmptyDrink	LIQUID	5	

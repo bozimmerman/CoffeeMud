@@ -52,6 +52,22 @@ public class Prop_NoPurge extends Property
 		return Ability.CAN_ROOMS|Ability.CAN_ITEMS;
 	}
 
+	protected long expirationDate = 0;
+
+	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		expirationDate = 0;
+		super.setMiscText(newMiscText);
+		if((newMiscText!=null)&&(newMiscText.length()>0))
+		{
+			if(CMath.isLong(newMiscText))
+				expirationDate = CMath.s_long(newMiscText);
+			else
+				expirationDate = CMLib.time().string2Millis(newMiscText);
+		}
+	}
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -65,7 +81,7 @@ public class Prop_NoPurge extends Property
 				{
 					final Item I=R.getItem(i);
 					if(I!=null)
-						I.setExpirationDate(0);
+						I.setExpirationDate(expirationDate);
 				}
 			}
 			else
@@ -76,12 +92,12 @@ public class Prop_NoPurge extends Property
 					((Container)affected).setExpirationDate(0);
 					final List<Item> V=((Container)affected).getDeepContents();
 					for(int v=0;v<V.size();v++)
-						V.get(v).setExpirationDate(0);
+						V.get(v).setExpirationDate(expirationDate);
 				}
 			}
 			else
 			if(affected instanceof Item)
-				((Item)affected).setExpirationDate(0);
+				((Item)affected).setExpirationDate(expirationDate);
 		}
 	}
 
@@ -95,7 +111,7 @@ public class Prop_NoPurge extends Property
 			{
 				if((msg.targetMinor()==CMMsg.TYP_DROP)
 				&&(msg.target() instanceof Item))
-					((Item)msg.target()).setExpirationDate(0);
+					((Item)msg.target()).setExpirationDate(expirationDate);
 			}
 			else
 			if(affected instanceof Container)
@@ -106,8 +122,8 @@ public class Prop_NoPurge extends Property
 				&&(msg.target() instanceof Item)
 				&&(msg.tool() instanceof Item))
 				{
-					((Item)msg.target()).setExpirationDate(0);
-					((Item)msg.tool()).setExpirationDate(0);
+					((Item)msg.target()).setExpirationDate(expirationDate);
+					((Item)msg.tool()).setExpirationDate(expirationDate);
 				}
 			}
 			else
@@ -116,8 +132,11 @@ public class Prop_NoPurge extends Property
 				if((msg.targetMinor()==CMMsg.TYP_DROP)
 				&&(msg.target() instanceof Item)
 				&&(msg.target()==affected))
-					((Item)msg.target()).setExpirationDate(0);
+					((Item)msg.target()).setExpirationDate(expirationDate);
 			}
+			if((expirationDate > 0)
+			&&(System.currentTimeMillis()> expirationDate))
+				affected.delEffect(this);
 		}
 	}
 }

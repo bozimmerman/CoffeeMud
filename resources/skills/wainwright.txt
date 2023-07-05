@@ -52,4 +52,4 @@ fur-lined % sleigh	80	180	350	1570	GenRideable		2000	6	0		*Prop_RideSpellCast;Pr
 % portable aquarium	82	300	1000	4700	GenRideable		0	4	0		*Prop_RideSpellCast;Chant_BreatheAir
 % signal tower	84	120	350	930	GenRideable		0	1	0		*Prop_RideEnabler;Fighter_SmokeSignals
 portable % tower	86	90	150	1510	GenRideable		0	1	0		*Prop_RideEnabler;Skill_RegionalAwareness
-% prairie schooner	88	200	750	2550	GenRideable	LOCK	20000	12	0		Prop_NoPurge
+% prairie schooner	88	200	750	2550	GenRideable	LOCK	20000	12	0		

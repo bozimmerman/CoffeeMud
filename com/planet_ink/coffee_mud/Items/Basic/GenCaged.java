@@ -161,6 +161,8 @@ public class GenCaged extends GenItem implements CagedAnimal
 		M.setStartRoom(null);
 		if(M.isGeneric())
 			CMLib.coffeeMaker().resetGenMOB(M,M.text());
+		else
+			CMLib.coffeeMaker().resetGenMOB(M,null);
 		if((startr.length()>0)&&(!startr.equalsIgnoreCase("null")))
 		{
 			final Room R=CMLib.map().getRoom(startr);
