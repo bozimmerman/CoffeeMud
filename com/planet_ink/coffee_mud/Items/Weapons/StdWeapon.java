@@ -318,10 +318,11 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 					&&(CMLib.flags().isAliveAwakeMobile(msg.source(),true)))
 					{
 						lastReloadTime=msg.source().lastTickedDateTime();
+						final String name = CMStrings.replaceAll(name(), "\"", "\\\"");
 						if((!msg.source().isMonster())||inventoryAmmoCheck(msg.source()))
-							msg.source().enqueCommand(CMParms.parse("LOAD ALL \"$"+name()+"$\""), 0, 0);
+							msg.source().enqueCommand(CMParms.parse("LOAD ALL \"$"+name+"$\""), 0, 0);
 						else
-							msg.source().enqueCommand(CMParms.parse("REMOVE \"$"+name()+"$\""), 0, 0);
+							msg.source().enqueCommand(CMParms.parse("REMOVE \"$"+name+"$\""), 0, 0);
 					}
 				}
 				return false;

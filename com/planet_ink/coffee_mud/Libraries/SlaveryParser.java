@@ -955,7 +955,9 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 								double price=CMLib.coffeeShops().sellingPrice(M,me,E,sk,sk.getShop(), true).absoluteGoldPrice;
 								if(price<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(me,M))
 								{
-									me.enqueCommand(CMParms.parse("BUY \""+E.name()+"\" \""+M.name()+"\""),MUDCmdProcessor.METAFLAG_FORCED|MUDCmdProcessor.METAFLAG_ORDER,0);
+									final String ename = CMStrings.replaceAll(E.name(), "\"", "\\\"");
+									final String mname = CMStrings.replaceAll(M.name(), "\"", "\\\"");
+									me.enqueCommand(CMParms.parse("BUY \""+ename+"\" \""+mname+"\""),MUDCmdProcessor.METAFLAG_FORCED|MUDCmdProcessor.METAFLAG_ORDER,0);
 									subStepNum=0;
 									return "HOLD";
 								}
