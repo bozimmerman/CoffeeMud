@@ -10,6 +10,7 @@
   9. New CharStat XPADJPCT - for adding bonus % xp (or loss if negative)
  10. Prop_NoPurge now supports an expiration date/timestamp
  11. New StdMob type: CombatDummy, for testing.
+ 12. New spell: Wizard's Mark
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

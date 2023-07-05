@@ -899,7 +899,7 @@ public class Clans extends StdLibrary implements ClanManager
 		final String xml = makeGovernmentXML(govt);
 		if(!Resources.updateFileResource("clangovernments.xml", xml))
 		{
-			Log.errOut("Clans","Can't save clangovernments.xml");
+			Log.errOut(name(),"Can't save clangovernments.xml");
 		}
 		Resources.removeResource("parsed_clangovernments");
 		getStockGovernments();
@@ -996,7 +996,7 @@ public class Clans extends StdLibrary implements ClanManager
 		final ClanGovernment[] gvts=getStockGovernments();
 		if(gvts.length <= typeid)
 		{
-			Log.errOut("Clans","Someone mistakenly requested stock government typeid "+typeid);
+			Log.errOut(name(),"Someone mistakenly requested stock government typeid "+typeid);
 			return gvts[0];
 		}
 		return gvts[typeid];
@@ -1198,7 +1198,7 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 			else
 			{
-				Log.errOut("Clans","No CLANTYPES found in xml");
+				Log.errOut(name(),"No CLANTYPES found in xml");
 				return null;
 			}
 		}
@@ -1235,7 +1235,7 @@ public class Clans extends StdLibrary implements ClanManager
 						{
 							final Function power = (Function)CMath.s_valueOf(Clan.Function.values(),powerPiece.value());
 							if(power == null)
-								Log.errOut("Clans","Illegal power found in xml: "+powerPiece.value());
+								Log.errOut(name(),"Illegal power found in xml: "+powerPiece.value());
 							else
 							if(power == Function.VOTE_ASSIGN)
 								defaultAssignFunc = Authority.MUST_VOTE_ON;
@@ -1259,7 +1259,7 @@ public class Clans extends StdLibrary implements ClanManager
 						{
 							final Function power = (Function)CMath.s_valueOf(Clan.Function.values(),piece.value());
 							if(power == null)
-								Log.errOut("Clans","Illegal power found in xml: "+piece.value());
+								Log.errOut(name(),"Illegal power found in xml: "+piece.value());
 							else
 							if(power == Function.ASSIGN)
 								functionChart[power.ordinal()] = defaultAssignFunc;
@@ -1289,7 +1289,7 @@ public class Clans extends StdLibrary implements ClanManager
 						{
 							final Function power = (Function)CMath.s_valueOf(Clan.Function.values(),powerPiece.value());
 							if(power == null)
-								Log.errOut("Clans","Illegal power found in xml: "+powerPiece.value());
+								Log.errOut(name(),"Illegal power found in xml: "+powerPiece.value());
 							else
 								functionChart[power.ordinal()] = Authority.CAN_DO;
 						}
@@ -1315,7 +1315,7 @@ public class Clans extends StdLibrary implements ClanManager
 				{
 					if(posArray[pos.getRoleID()]!=null)
 					{
-						Log.errOut("Clans","Bad ROLEID "+pos.getRoleID()+" in positions list in "+typeName);
+						Log.errOut(name(),"Bad ROLEID "+pos.getRoleID()+" in positions list in "+typeName);
 						posArray=new ClanPosition[0];
 						break;
 					}
@@ -1327,7 +1327,7 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 			if(posArray.length==0)
 			{
-				Log.errOut("Clans","Missing positions in "+typeName);
+				Log.errOut(name(),"Missing positions in "+typeName);
 				continue;
 			}
 			final String	autoRoleStr=clanTypePieceTag.getValFromPieces( "AUTOPOSITION");
@@ -1339,7 +1339,7 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 			if(autoRole==null)
 			{
-				Log.errOut("Clans","Illegal role found in xml: "+autoRoleStr);
+				Log.errOut(name(),"Illegal role found in xml: "+autoRoleStr);
 				continue;
 			}
 			final String	acceptRoleStr=clanTypePieceTag.getValFromPieces( "ACCEPTPOSITION");
@@ -1351,7 +1351,7 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 			if(acceptRole==null)
 			{
-				Log.errOut("Clans","Illegal acceptRole found in xml: "+acceptRoleStr);
+				Log.errOut(name(),"Illegal acceptRole found in xml: "+acceptRoleStr);
 				continue;
 			}
 			final String requiredMaskStr=CMLib.xml().restoreAngleBrackets(clanTypePieceTag.getValFromPieces( "REQUIREDMASK"));
@@ -1363,7 +1363,7 @@ public class Clans extends StdLibrary implements ClanManager
 			final Clan.AutoPromoteFlag autoPromote = AutoPromoteFlag.valueOf(autoPromoteStr);
 			if(autoPromote==null)
 			{
-				Log.errOut("Clans","Illegal AUTOPROMOTEBY found in xml: "+autoPromoteStr);
+				Log.errOut(name(),"Illegal AUTOPROMOTEBY found in xml: "+autoPromoteStr);
 				continue;
 			}
 			final boolean isPublic=CMath.s_bool(clanTypePieceTag.getValFromPieces( "PUBLIC"));
@@ -1403,7 +1403,7 @@ public class Clans extends StdLibrary implements ClanManager
 			{
 				if(posArray[id] == null)
 				{
-					Log.errOut("Clans","Clan Position ID#"+id+" is not assigned to clan govt "+typeName);
+					Log.errOut(name(),"Clan Position ID#"+id+" is not assigned to clan govt "+typeName);
 					broken=true;
 				}
 
@@ -1473,7 +1473,7 @@ public class Clans extends StdLibrary implements ClanManager
 		{
 			if((govt.getID() < 0)||(govt.getID() >=governments.size()) || (govts[govt.getID()]!=null))
 			{
-				Log.errOut("Clans","Bad TYPEID "+govt.getID());
+				Log.errOut(name(),"Bad TYPEID "+govt.getID());
 				return new ClanGovernment[0];
 			}
 			else
@@ -1546,7 +1546,7 @@ public class Clans extends StdLibrary implements ClanManager
 						final String siteTemplatePath = new CMFile(s.substring(x+1).trim(),null).getAbsolutePath();
 						if(webPathClanMappings.containsKey(siteFilesPath.toLowerCase()))
 						{
-							Log.errOut("Clans","Multiple clans at same webclansites path: in coffeemud.ini: "+originalS);
+							Log.errOut(name(),"Multiple clans at same webclansites path: in coffeemud.ini: "+originalS);
 						}
 						else
 						{
@@ -1557,7 +1557,7 @@ public class Clans extends StdLibrary implements ClanManager
 					}
 					else
 					{
-						Log.errOut("Clans","Unparseable webclansites bit in coffeemud.ini: "+originalS);
+						Log.errOut(name(),"Unparseable webclansites bit in coffeemud.ini: "+originalS);
 					}
 				}
 			}
@@ -1882,20 +1882,20 @@ public class Clans extends StdLibrary implements ClanManager
 					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
 					{
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-							Log.debugOut("Clans","MBTrophy: "+C.name()+" is winner, or not allowed.");
+							Log.debugOut(name(),"MBTrophy: "+C.name()+" is winner, or not allowed.");
 						continue;
 					}
 					final int numMembers=C.getSize();
 					if(numMembers>winnerMembers)
 					{
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-							Log.debugOut("Clans","MBTrophy: "+C.name()+" has "+numMembers+">"+winnerMembers);
+							Log.debugOut(name(),"MBTrophy: "+C.name()+" has "+numMembers+">"+winnerMembers);
 						winnerC=C;
 						winnerMembers=numMembers;
 					}
 				}
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS)||CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-					Log.debugOut("Clans","MBTrophy: "+((winnerC==null)?"No one":winnerC.clanID())+" won with "+winnerMembers);
+					Log.debugOut(name(),"MBTrophy: "+((winnerC==null)?"No one":winnerC.clanID())+" won with "+winnerMembers);
 				if((winnerC!=null)
 				&&(!CMath.bset(winnerC.getTrophies(),Trophy.Members.flagNum()))
 				&&(winnerC.getExp()>0))
@@ -1929,14 +1929,14 @@ public class Clans extends StdLibrary implements ClanManager
 					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
 					{
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-							Log.debugOut("Clans","LVLTrophy: "+C.name()+" is winner, or not allowed.");
+							Log.debugOut(name(),"LVLTrophy: "+C.name()+" is winner, or not allowed.");
 						continue;
 					}
 					final int highestLevel=filterMedianLevel(C.getFullMemberList());
 					if(highestLevel>winnerLevel)
 					{
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-							Log.debugOut("Clans","LVLTrophy: "+C.name()+" has "+highestLevel+">"+winnerLevel);
+							Log.debugOut(name(),"LVLTrophy: "+C.name()+" has "+highestLevel+">"+winnerLevel);
 						winnerC=C;
 						winnerLevel=highestLevel;
 					}
@@ -1975,13 +1975,13 @@ public class Clans extends StdLibrary implements ClanManager
 					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
 					{
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-							Log.debugOut("Clans","EXPTrophy: "+C.name()+" is winner, or not allowed.");
+							Log.debugOut(name(),"EXPTrophy: "+C.name()+" is winner, or not allowed.");
 						continue;
 					}
 					if((winnerC==null)||(C.getExp()>winnerC.getExp()))
 					{
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-							Log.debugOut("Clans","EXPTrophy: "+C.name()+" has "+C.getExp()+">"+((winnerC==null)?0:winnerC.getExp()));
+							Log.debugOut(name(),"EXPTrophy: "+C.name()+" has "+C.getExp()+">"+((winnerC==null)?0:winnerC.getExp()));
 						winnerC=C;
 					}
 				}
@@ -2019,13 +2019,13 @@ public class Clans extends StdLibrary implements ClanManager
 					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
 					{
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-							Log.debugOut("Clans","PKTrophy: "+C.name()+" is winner, or not allowed.");
+							Log.debugOut(name(),"PKTrophy: "+C.name()+" is winner, or not allowed.");
 						continue;
 					}
 					if((winnerC==null)||(C.getCurrentClanKills(null)>winnerC.getCurrentClanKills(null)))
 					{
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-							Log.debugOut("Clans","PKTrophy: "+C.name()+" has "+C.getCurrentClanKills(null)+">"+((winnerC==null)?0:winnerC.getCurrentClanKills(null)));
+							Log.debugOut(name(),"PKTrophy: "+C.name()+" has "+C.getCurrentClanKills(null)+">"+((winnerC==null)?0:winnerC.getCurrentClanKills(null)));
 						winnerC=C;
 					}
 				}
@@ -2063,13 +2063,13 @@ public class Clans extends StdLibrary implements ClanManager
 					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
 					{
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-							Log.debugOut("Clans","PLTrophy: "+C.name()+" is winner, or not allowed.");
+							Log.debugOut(name(),"PLTrophy: "+C.name()+" is winner, or not allowed.");
 						continue;
 					}
 					if((winnerC==null)||(C.getTrophyData(Trophy.PlayerLevelsGained)>winnerC.getTrophyData(Trophy.PlayerLevelsGained)))
 					{
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-							Log.debugOut("Clans","PLTrophy: "+C.name()+" has "+C.getTrophyData(Trophy.PlayerLevelsGained)+">"+((winnerC==null)?0:winnerC.getTrophyData(Trophy.PlayerLevelsGained)));
+							Log.debugOut(name(),"PLTrophy: "+C.name()+" has "+C.getTrophyData(Trophy.PlayerLevelsGained)+">"+((winnerC==null)?0:winnerC.getTrophyData(Trophy.PlayerLevelsGained)));
 						winnerC=C;
 					}
 				}
@@ -2107,13 +2107,13 @@ public class Clans extends StdLibrary implements ClanManager
 					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
 					{
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-							Log.debugOut("Clans","PMTrophy: "+C.name()+" is winner, or not allowed.");
+							Log.debugOut(name(),"PMTrophy: "+C.name()+" is winner, or not allowed.");
 						continue;
 					}
 					if((winnerC==null)||(C.getTrophyData(Trophy.PlayerMinutes)>winnerC.getTrophyData(Trophy.PlayerMinutes)))
 					{
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-							Log.debugOut("Clans","PMTrophy: "+C.name()+" has "+C.getTrophyData(Trophy.PlayerMinutes)+">"+((winnerC==null)?0:winnerC.getTrophyData(Trophy.PlayerMinutes)));
+							Log.debugOut(name(),"PMTrophy: "+C.name()+" has "+C.getTrophyData(Trophy.PlayerMinutes)+">"+((winnerC==null)?0:winnerC.getTrophyData(Trophy.PlayerMinutes)));
 						winnerC=C;
 					}
 				}
@@ -2158,14 +2158,14 @@ public class Clans extends StdLibrary implements ClanManager
 							if(controlledAreas>mostClansControlled)
 							{
 								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-									Log.debugOut("Clans","AREATrophy: "+C.name()+" has "+controlledAreas+">"+mostClansControlled);
+									Log.debugOut(name(),"AREATrophy: "+C.name()+" has "+controlledAreas+">"+mostClansControlled);
 								winnerMostClansControlledC=C;
 								mostClansControlled=controlledAreas;
 							}
 						}
 						else
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-							Log.debugOut("Clans","AREATrophy: "+C.name()+" is winner, or not allowed.");
+							Log.debugOut(name(),"AREATrophy: "+C.name()+" is winner, or not allowed.");
 					}
 					if(CMProps.getVar(CMProps.Str.CLANTROPCP).length()>0)
 					{
@@ -2175,14 +2175,14 @@ public class Clans extends StdLibrary implements ClanManager
 							if(mapPoints>mostControlPoints)
 							{
 								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-									Log.debugOut("Clans","CPTrophy: "+C.name()+" has "+mapPoints+">"+mostControlPoints);
+									Log.debugOut(name(),"CPTrophy: "+C.name()+" has "+mapPoints+">"+mostControlPoints);
 								winnerMostControlPointsC=C;
 								mostControlPoints=mapPoints;
 							}
 						}
 						else
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-							Log.debugOut("Clans","CPTrophy: "+C.name()+" is winner, or not allowed.");
+							Log.debugOut(name(),"CPTrophy: "+C.name()+" is winner, or not allowed.");
 					}
 				}
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS)||CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
@@ -2256,13 +2256,13 @@ public class Clans extends StdLibrary implements ClanManager
 							if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
 							{
 								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-									Log.debugOut("Clans",T.name()+" monthly trophy: "+C.name()+" is winner, or not allowed.");
+									Log.debugOut(name(),T.name()+" monthly trophy: "+C.name()+" is winner, or not allowed.");
 								continue;
 							}
 							if((winnerC==null)||(C.getTrophyData(T)>winnerC.getTrophyData(T)))
 							{
 								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TROPHIES))
-									Log.debugOut("Clans",T.name()+" monthly trophy: "+C.name()+" has "+C.getTrophyData(T)+">"+(winnerC==null?0:winnerC.getTrophyData(T)));
+									Log.debugOut(name(),T.name()+" monthly trophy: "+C.name()+" has "+C.getTrophyData(T)+">"+(winnerC==null?0:winnerC.getTrophyData(T)));
 								winnerC=C;
 							}
 						}
