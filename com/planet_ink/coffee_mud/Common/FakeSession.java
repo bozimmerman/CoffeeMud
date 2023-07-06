@@ -3,7 +3,9 @@ package com.planet_ink.coffee_mud.Common;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -50,6 +52,7 @@ public class FakeSession implements Session
 	protected boolean				stripSnoop	= false;
 	protected boolean				stripCRLF	= false;
 	protected Vector<String>		inputV		= new Vector<String>();
+	protected Set<Integer>			telnet		= new HashSet<Integer>();
 
 	protected final static char[]	COLOR_CRLF	= new char[] { '\n', '\r' };
 	protected String 				stripStr	= null;
@@ -737,11 +740,17 @@ public class FakeSession implements Session
 	@Override
 	public void setClientTelnetMode(final int telnetCode, final boolean onOff)
 	{
+		if(onOff)
+			telnet.add(Integer.valueOf(telnetCode));
+		else
+			telnet.remove(Integer.valueOf(telnetCode));
 	}
 
 	@Override
 	public boolean getClientTelnetMode(final int telnetCode)
 	{
+		if(telnet.contains(Integer.valueOf(telnetCode)))
+			return true;
 		return false;
 	}
 

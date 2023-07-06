@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CommonCommands.LookView;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -482,9 +483,14 @@ public class Painting extends CommonSkill implements RecipeDriven
 			else
 			if((session != null)&&(foundRecipe!=null))
 			{
+				final Item oldCanvasI = canvasI;
 				final String paintingName = foundRecipe.get(RCP_FINALNAME).toLowerCase();
 				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 				{
+					final MOB M = session.mob();
+					final Room R = (M!=null)?M.location():null;
+					final Item canvasI = oldCanvasI;
+
 					@Override
 					public void showPrompt()
 					{
@@ -499,34 +505,107 @@ public class Painting extends CommonSkill implements RecipeDriven
 					@Override
 					public void callBack()
 					{
-						final String name=this.input.trim();
-						if(name.length()==0)
+						if(this.input.trim().length()==0)
 							return;
-						session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
+						final String name;
+						String desc = null;
+						if(R!=null)
 						{
-							@Override
-							public void showPrompt()
+							final String word = this.input.trim().toLowerCase();
+							if((word.equals(CMLib.lang().rawInputParser("room")))
+							||(word.equals(CMLib.lang().rawInputParser("the room")))
+							||(word.equals(CMLib.lang().rawInputParser(R.name(mob).toLowerCase())))
+							||(CMStrings.containsWord(CMLib.lang().rawInputParser(R.name(mob).toLowerCase()),word))
+							||(word.equals(CMLib.lang().rawInputParser("here"))))
 							{
-								session.promptPrint(L("\n\rPlease describe this @x1.\n\r: ",paintingName));
+								name = R.displayText(mob);
+								final CommonCommands.LookView lookCode=mob.isAttributeSet(MOB.Attrib.COMPRESS)?
+										LookView.LOOK_BRIEFOK:LookView.LOOK_NORMAL;
+								final int disp =canvasI.basePhyStats().disposition();
+								canvasI.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN);
+								canvasI.phyStats().setDisposition(PhyStats.IS_NOT_SEEN);
+								desc = CMLib.commands().getFullRoomView(mob, R, lookCode, false);
+								canvasI.basePhyStats().setDisposition(disp);
+								canvasI.phyStats().setDisposition(disp);
 							}
+							else
+							{
+								final Physical P = R.fetchFromRoomFavorMOBs(null, word);
+								if(P == null)
+									name = this.input.trim();
+								else
+								{
+									name = P.displayText(mob);
+									desc = P.description(mob);
+								}
+							}
+						}
+						else
+							name = this.input.trim();
+						if(desc == null)
+						{
+							session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
+							{
+								@Override
+								public void showPrompt()
+								{
+									session.promptPrint(L("\n\rPlease describe this @x1.\n\r: ",paintingName));
+								}
 
-							@Override
-							public void timedOut()
-							{
-							}
+								@Override
+								public void timedOut()
+								{
+								}
 
-							@Override
-							public void callBack()
+								@Override
+								public void callBack()
+								{
+									final String desc=this.input.trim();
+									if(desc.length()==0)
+										return;
+									final Vector<String> newCommands=new XVector<String>(originalCommands);
+									newCommands.add("PAINTINGKEYWORDS="+name);
+									newCommands.add("PAINTINGDESC="+desc);
+									me.invoke(mob, newCommands, target, auto, asLevel);
+								}
+							});
+						}
+						else
+						{
+							final String description = desc;
+							session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"",0)
 							{
-								final String desc=this.input.trim();
-								if(desc.length()==0)
-									return;
-								final Vector<String> newCommands=new XVector<String>(originalCommands);
-								newCommands.add("PAINTINGKEYWORDS="+name);
-								newCommands.add("PAINTINGDESC="+desc);
-								me.invoke(mob, newCommands, target, auto, asLevel);
-							}
-						});
+								final String desc = description;
+
+								@Override
+								public void showPrompt()
+								{
+									session.println("^HName       :^N " + name);
+									session.println("^HDescription:^N " + desc);
+									session.promptPrint(L("\n\rIs this correct (Y/n)? "));
+								}
+
+								@Override
+								public void timedOut()
+								{
+								}
+
+								@Override
+								public void callBack()
+								{
+									if(this.input.trim().equalsIgnoreCase("Y"))
+									{
+										final Vector<String> newCommands=new XVector<String>(originalCommands);
+										newCommands.add("PAINTINGKEYWORDS="+name);
+										final Session sess = (Session)CMClass.getCommon("FakeSession");
+										sess.setClientTelnetMode(Session.TELNET_ANSI, true);
+										final String descFiltered = CMLib.coffeeFilter().colorOnlyFilter(desc, sess);
+										newCommands.add("PAINTINGDESC="+descFiltered);
+										me.invoke(mob, newCommands, target, auto, asLevel);
+									}
+								}
+							});
+						}
 					}
 				});
 				return true;

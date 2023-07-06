@@ -45,10 +45,6 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return "CommonMsgs";
 	}
 
-	protected final static int LOOK_LONG=0;
-	protected final static int LOOK_NORMAL=1;
-	protected final static int LOOK_BRIEFOK=2;
-
 	// this needs to be global to work right
 	protected final List<WeakReference<MsgMonitor>>
 			globalMonitors = new SLinkedList<WeakReference<MsgMonitor>>();
@@ -1698,25 +1694,16 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			msg.source().tell(smell.toString());
 	}
 
-	protected void handleBeingRoomLookedAt(final CMMsg msg)
+	@Override
+	public String getFullRoomView(final MOB mob, final Room room, final LookView lookCode, final boolean doMXP)
 	{
-		final MOB mob=msg.source();
-		final Session sess = mob.session();
-		if(sess==null)
-			return; // no need for monsters to build all this data
-
+		if((mob == null) || (room == null))
+			return "";
 		final CMFlagLibrary flags = CMLib.flags();
-		final Room room=(Room)msg.target();
-		int lookCode=LOOK_LONG;
-		if(msg.targetMinor()!=CMMsg.TYP_EXAMINE)
-			lookCode=((msg.sourceMessage()==null)||mob.isAttributeSet(MOB.Attrib.COMPRESS))?LOOK_BRIEFOK:LOOK_NORMAL;
-
-		sess.setStat("ROOMLOOK", ""+room.hashCode()); // for gmcp/protocol notifications
-
 		final StringBuilder finalLookStr=new StringBuilder("");
 		boolean sysmsgs=mob.isAttributeSet(MOB.Attrib.SYSOPMSGS);
 		final boolean compress=mob.isAttributeSet(MOB.Attrib.COMPRESS) || (CMath.bset(room.phyStats().sensesMask(), PhyStats.SENSE_ALWAYSCOMPRESSED));
-		final boolean useName = (lookCode==LOOK_BRIEFOK) && compress && mob.isAttributeSet(MOB.Attrib.BRIEF);
+		final boolean useName = (lookCode==LookView.LOOK_BRIEFOK) && compress && mob.isAttributeSet(MOB.Attrib.BRIEF);
 		if(sysmsgs && (!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.SYSMSGS)))
 		{
 			mob.setAttribute(MOB.Attrib.SYSOPMSGS,false);
@@ -1755,10 +1742,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(flags.canBeSeenBy(room,mob))
 		{
 			finalLookStr.append("^O^<RName^>" + room.displayText(mob)+"^</RName^>"+flags.getDispositionBlurbs(room,mob)+"^L\n\r");
-			if((lookCode!=LOOK_BRIEFOK)||(!mob.isAttributeSet(MOB.Attrib.BRIEF)))
+			if((lookCode!=LookView.LOOK_BRIEFOK)||(!mob.isAttributeSet(MOB.Attrib.BRIEF)))
 			{
 				String roomDesc=room.description(mob);
-				if(lookCode==LOOK_LONG)
+				if(lookCode==LookView.LOOK_LONG)
 				{
 					Vector<String> keyWords=null;
 					String word=null;
@@ -1811,7 +1798,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					roomDesc += getRoomExitsParagraph(mob,room);
 				finalLookStr.append("^L^<RDesc^>" + roomDesc+"^</RDesc^>");
 
-				if((!mob.isMonster())&&(sess.getClientTelnetMode(Session.TELNET_MXP)))
+				if((!mob.isMonster())&&(doMXP))
 					finalLookStr.append(CMLib.protocol().mxpImage(room," ALIGN=RIGHT H=70 W=70"));
 				if(compress)
 					finalLookStr.append("^N  ");
@@ -1828,7 +1815,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			notItem=null;
 
 		final List<Item> viewItems=new ArrayList<Item>(room.numItems());
-		final List<Item> compressedItems=(lookCode==LOOK_LONG) ? null :  new ArrayList<Item>(1);
+		final List<Item> compressedItems=(lookCode==LookView.LOOK_LONG) ? null :  new ArrayList<Item>(1);
 		int itemsInTheDarkness=0;
 		for(int c=0;c<room.numItems();c++)
 		{
@@ -1874,11 +1861,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				finalLookStr.append(itemStr);
 		}
 		if(flags.canBeSeenBy(room,mob)
-		&&((lookCode!=LOOK_BRIEFOK)
+		&&((lookCode!=LookView.LOOK_BRIEFOK)
 			||(!mob.isAttributeSet(MOB.Attrib.BRIEF))
 			||(hadCompressedItems)))
 				finalLookStr.append("^N\n\r\n\r");
-		final String itemStr=CMLib.lister().lister(mob,viewItems,useName,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
+		final String itemStr=CMLib.lister().lister(mob,viewItems,useName,"RItem"," \"*\"",lookCode==LookView.LOOK_LONG,compress);
 		if(itemStr.length()>0)
 			finalLookStr.append(itemStr);
 
@@ -1903,7 +1890,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				{
 					if(flags.canBeSeenBy(mob2,mob))
 					{
-						if((!compress)&&(!mob.isMonster())&&(sess.getClientTelnetMode(Session.TELNET_MXP)))
+						if((!compress)&&(!mob.isMonster())&&(doMXP))
 							finalLookStr.append(CMLib.protocol().mxpImage(mob2," H=10 W=10",""," "));
 						if(mob2 instanceof ShopKeeper)
 							finalLookStr.append("^M^<RShopM \""+CMStrings.removeColors(mob2.name())+"\"^>");
@@ -1935,20 +1922,50 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				}
 			}
 		}
+		if(finalLookStr.length()>0)
+		{
+			if(itemsInTheDarkness>0)
+				finalLookStr.append(L("      ^IThere is something here, but it's too dark to make out.^?\n\r"));
+			if(mobsInTheDarkness>1)
+				finalLookStr.append(L("^MThe darkness conceals several others.^?\n\r"));
+			else
+			if(mobsInTheDarkness>0)
+				finalLookStr.append(L("^MYou are not alone, but it's too dark to tell.^?\n\r"));
+		}
+		else
+		if(compress)
+			finalLookStr.append("\n\r");
+		return finalLookStr.toString();
+	}
+
+	protected void handleBeingRoomLookedAt(final CMMsg msg)
+	{
+		final MOB mob=msg.source();
+		final Session sess = mob.session();
+		if(sess==null)
+			return; // no need for monsters to build all this data
+
+		final Room room=(Room)msg.target();
+		LookView lookCode=LookView.LOOK_LONG;
+		if(msg.targetMinor()!=CMMsg.TYP_EXAMINE)
+			lookCode=((msg.sourceMessage()==null)||mob.isAttributeSet(MOB.Attrib.COMPRESS))?LookView.LOOK_BRIEFOK:LookView.LOOK_NORMAL;
+
+		sess.setStat("ROOMLOOK", ""+room.hashCode()); // for gmcp/protocol notifications
+
+		final String finalLookStr=getFullRoomView(mob, room, lookCode, sess.getClientTelnetMode(Session.TELNET_MXP));
 
 		if(finalLookStr.length()==0)
 			mob.tell(L("You can't see anything!"));
 		else
 		{
-			if(compress)
-				finalLookStr.append("\n\r");
 			mob.tell(finalLookStr.toString());
 			if((CMProps.getIntVar(CMProps.Int.AWARERANGE)>0)
 			&&(!mob.isAttributeSet(MOB.Attrib.AUTOMAP)))
 			{
 				if(awarenessA==null)
 					awarenessA=CMClass.getAbility("Skill_RegionalAwareness");
-				if(awarenessA!=null)
+				final Room mobLocR=mob.location();
+				if((awarenessA!=null)&&(mobLocR != null))
 				{
 					sess.colorOnlyPrintln("", true);
 					final Vector<String> list=new Vector<String>();
@@ -1961,13 +1978,6 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					sess.colorOnlyPrintln("\n\r", true);
 				}
 			}
-			if(itemsInTheDarkness>0)
-				mob.tell(L("      ^IThere is something here, but it's too dark to make out.^?\n\r"));
-			if(mobsInTheDarkness>1)
-				mob.tell(L("^MThe darkness conceals several others.^?\n\r"));
-			else
-			if(mobsInTheDarkness>0)
-				mob.tell(L("^MYou are not alone, but it's too dark to tell.^?\n\r"));
 		}
 	}
 

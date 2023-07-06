@@ -784,14 +784,13 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		final Session CS=S;
 		//if(CS==null) CS=(Session)CMClass.getCommon("DefaultSession");
 		int loop=0;
-
+		final boolean doMXP = ((S!=null) &&(S.getClientTelnetMode(Session.TELNET_MXP)));
 		while(buf.length()>loop)
 		{
 			switch(buf.charAt(loop))
 			{
 			case '>':
-				if((S!=null)
-				&&(S.getClientTelnetMode(Session.TELNET_MXP)))
+				if(doMXP)
 				{
 					buf.delete(loop,loop+1);
 					buf.insert(loop,"&gt;".toCharArray());
@@ -799,8 +798,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				}
 				break;
 			case '"':
-				if((S!=null)
-				&&(S.getClientTelnetMode(Session.TELNET_MXP)))
+				if(doMXP)
 				{
 					buf.delete(loop,loop+1);
 					buf.insert(loop,"&quot;".toCharArray());
@@ -808,8 +806,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				}
 				break;
 			case '&':
-				if((S!=null)
-				&&(S.getClientTelnetMode(Session.TELNET_MXP)))
+				if(doMXP)
 				{
 					if((!buf.substring(loop+1,loop+4).equalsIgnoreCase("lt;"))
 					&&(buf.substring(loop+1,loop+4).equalsIgnoreCase("gt;")))
@@ -833,8 +830,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				}
 				break;
 			case '<':
-				if((S!=null)
-				&&(S.getClientTelnetMode(Session.TELNET_MXP)))
+				if(doMXP)
 				{
 					buf.delete(loop,loop+1);
 					buf.insert(loop,"&lt;".toCharArray());

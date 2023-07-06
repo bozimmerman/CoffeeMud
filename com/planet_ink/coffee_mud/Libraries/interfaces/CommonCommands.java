@@ -590,6 +590,18 @@ public interface CommonCommands extends CMLibrary
 	public StringBuilder getScore(MOB mob);
 
 	/**
+	 * Builds the complete room view for the given mob.  This includes all the items,
+	 * and mobs, and is dependent on the mobs view attributes.
+	 *
+	 * @param mob the player to view the room
+	 * @param room the room to be viewed
+	 * @param lookCode the look view code for viewing options
+	 * @param doMXP true to add MXP where needed
+	 * @return the full room view MXP
+	 */
+	public String getFullRoomView(final MOB mob, final Room room, final LookView lookCode, final boolean doMXP);
+
+	/**
 	 * Builds a string list of the things the given mob is
 	 * wearing.
 	 *
@@ -656,4 +668,27 @@ public interface CommonCommands extends CMLibrary
 	 * @return remaining manaConsumeCounter
 	 */
 	public int tickManaConsumption(MOB mob, int manaConsumeCounter);
+
+	/**
+	 * Enum for special mob room view settings, decoded from
+	 * player mob attributes.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static enum LookView
+	{
+		/**
+		 * The longest 'Examine' view flag
+		 */
+		LOOK_LONG,
+		/**
+		 * The normal glance flag
+		 */
+		LOOK_NORMAL,
+		/**
+		 * The even briefer glance flag
+		 */
+		LOOK_BRIEFOK,
+	}
 }
