@@ -103,7 +103,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonEmote(mob,L("<S-NAME> mess(es) up crafting the Holy Avenger."));
+						commonEmote(mob,L("<S-NAME> mess(es) up crafting @x1.",buildingI.name(mob)));
 					else
 						mob.location().addItem(buildingI,ItemPossessor.Expire.Player_Drop);
 				}
@@ -117,10 +117,12 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 	{
 		if(!(I instanceof Weapon))
 			return null;
+		/*
 		if((I.material() & RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 			return I;
 		if((I.material() & RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)
 			return I;
+		*/
 		return null;
 	}
 
@@ -139,7 +141,12 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 			set.add(I);
 	}
 
-	protected Item getModel(final MOB mob, final int woodRequired, final int material)
+	protected String getItemName(final MOB mob, final Item I)
+	{
+		return L("the Holy Avenger");
+	}
+
+	protected Item getBaseModel(final MOB mob)
 	{
 		final Deity D = mob.charStats().getMyDeity();
 		Item I=null;
@@ -174,7 +181,12 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 			w.setRanges(w.minRange(),1);
 			I.setRawLogicalAnd(true);
 		}
-		final String itemName="the Holy Avenger";
+		return I;
+	}
+
+	protected void finishModel(final MOB mob, final Item I, final int woodRequired, final int material)
+	{
+		final String itemName=getItemName(mob,I);
 		I.setName(itemName);
 		I.setDisplayText(L("@x1 lies here",itemName));
 		I.setDescription(itemName+". ");
@@ -187,7 +199,23 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		I.recoverPhyStats();
 		I.text();
 		I.recoverPhyStats();
-		return I;
+	}
+
+	protected void applyItemRestrictions(final Item buildingI)
+	{
+		Ability A=CMClass.getAbility("Prop_HaveZapper");
+		String mask="ACTUAL -CLASS +Paladin ";
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			mask +="-ALIGNMENT +Good ";
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			mask +="-ALIGNMENT +Lawful ";
+		A.setMiscText(mask);
+		buildingI.addNonUninvokableEffect(A);
+		A=CMClass.getAbility("Prop_Doppleganger");
+		A.setMiscText("120%");
+		buildingI.addNonUninvokableEffect(A);
+		buildingI.basePhyStats().setDisposition(buildingI.basePhyStats().disposition()|PhyStats.IS_GOOD);
+		buildingI.phyStats().setDisposition(buildingI.phyStats().disposition()|PhyStats.IS_GOOD);
 	}
 
 	@Override
@@ -204,36 +232,70 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		final int recipeLevel = 1;
 		buildingI=null;
 		messedUp=false;
-		int woodRequired=50;
-		final int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
+		final Item baseI = getBaseModel(mob);
+		int woodRequired=baseI.basePhyStats().weight()*2;
+		final int[] pm;
+		final int defResource;
+		switch(baseI.material()&RawMaterial.MATERIAL_MASK)
+		{
+		case RawMaterial.MATERIAL_CLOTH:
+			defResource = RawMaterial.RESOURCE_COTTON;
+			pm=new int[]{baseI.material()&RawMaterial.MATERIAL_MASK};
+			break;
+		case RawMaterial.MATERIAL_LEATHER:
+			defResource = RawMaterial.RESOURCE_LEATHER;
+			pm=new int[]{baseI.material()&RawMaterial.MATERIAL_MASK};
+			break;
+		case RawMaterial.MATERIAL_METAL:
+		case RawMaterial.MATERIAL_MITHRIL:
+			defResource = RawMaterial.MATERIAL_MITHRIL;
+			pm=new int[]{RawMaterial.MATERIAL_METAL, RawMaterial.MATERIAL_MITHRIL};
+			break;
+		case RawMaterial.MATERIAL_WOODEN:
+			defResource = RawMaterial.RESOURCE_WOOD;
+			pm=new int[]{baseI.material()&RawMaterial.MATERIAL_MASK};
+			break;
+		case RawMaterial.MATERIAL_ROCK:
+			if((baseI.material()==RawMaterial.RESOURCE_BONE)||(baseI.material()==RawMaterial.RESOURCE_IVORY))
+			{
+				defResource=baseI.material();
+				pm=new int[]{RawMaterial.RESOURCE_BONE, RawMaterial.RESOURCE_IVORY};
+			}
+			else
+			{
+				defResource = RawMaterial.RESOURCE_STONE;
+				pm=new int[]{baseI.material()&RawMaterial.MATERIAL_MASK};
+			}
+			break;
+		default:
+			defResource = RawMaterial.MATERIAL_MITHRIL;
+			pm=new int[]{RawMaterial.MATERIAL_METAL, RawMaterial.MATERIAL_MITHRIL};
+			break;
+		}
+		final String typeName = RawMaterial.CODES.MAT_NAME(pm[0]).toLowerCase().trim();
 		final int[][] data=fetchFoundResourceData(mob,
-											woodRequired,"metal",pm,
-											0,null,null,
-											false,
-											auto?RawMaterial.RESOURCE_MITHRIL:0,
-											enhancedTypes);
+												  woodRequired,typeName,pm,
+												  0,null,null,
+												  false,
+												  auto?defResource:0,
+												  enhancedTypes);
 		if(data==null)
+		{
+			baseI.destroy();
 			return false;
+		}
 		woodRequired=data[0][FOUND_AMT];
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+		{
+			baseI.destroy();
 			return false;
+		}
 		if(!auto)
 			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],data[0][FOUND_SUB],0,0);
-		buildingI = getModel(mob, woodRequired, data[0][FOUND_CODE]);
-
-		Ability A=CMClass.getAbility("Prop_HaveZapper");
-		String mask="ACTUAL -CLASS +Paladin ";
-		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
-			mask +="-ALIGNMENT +Good ";
-		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
-			mask +="-ALIGNMENT +Lawful ";
-		A.setMiscText(mask);
-		buildingI.addNonUninvokableEffect(A);
-		A=CMClass.getAbility("Prop_Doppleganger");
-		A.setMiscText("120%");
-		buildingI.addNonUninvokableEffect(A);
-
+		buildingI = baseI;
+		finishModel(mob, buildingI, woodRequired, woodRequired);
+		applyItemRestrictions(buildingI);
 		buildingI.recoverPhyStats();
 		buildingI.text();
 		buildingI.recoverPhyStats();
