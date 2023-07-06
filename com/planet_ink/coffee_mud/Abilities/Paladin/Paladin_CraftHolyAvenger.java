@@ -272,7 +272,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 			pm=new int[]{RawMaterial.MATERIAL_METAL, RawMaterial.MATERIAL_MITHRIL};
 			break;
 		}
-		final String typeName = RawMaterial.CODES.MAT_NAME(pm[0]).toLowerCase().trim();
+		final String typeName = RawMaterial.CODES.MAT_DESC(pm[0]).toLowerCase().trim();
 		final int[][] data=fetchFoundResourceData(mob,
 												  woodRequired,typeName,pm,
 												  0,null,null,

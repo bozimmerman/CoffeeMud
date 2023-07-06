@@ -1275,10 +1275,10 @@ public interface RawMaterial extends Item
 		}
 
 		/**
-		 * Returns the short descriptive name of the material in the code
+		 * Returns the short descriptive noun of the material in the code
 		 *
 		 * @param code the code to get material from
-		 * @return the description of the material in the code
+		 * @return the noun of the material in the code
 		 */
 		public static String MAT_DESC(final int code)
 		{
