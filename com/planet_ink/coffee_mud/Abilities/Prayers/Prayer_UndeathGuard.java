@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2014-2023 Bo Zimmerman
+   Copyright 2023-2023 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_DeathGuard extends Prayer
+public class Prayer_UndeathGuard extends Prayer
 {
 	@Override
 	public String ID()
 	{
-		return "Prayer_DeathGuard";
+		return "Prayer_UndeathGuard";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Death Guard");
+	private final static String	localizedName	= CMLib.lang().L("Undeath Guard");
 
 	@Override
 	public String name()
@@ -48,7 +48,7 @@ public class Prayer_DeathGuard extends Prayer
 		return localizedName;
 	}
 
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Death Guard)");
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Undeath Guard)");
 
 	@Override
 	public String displayText()
@@ -71,7 +71,7 @@ public class Prayer_DeathGuard extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY;
+		return Ability.FLAG_UNHOLY;
 	}
 
 	@Override
@@ -84,6 +84,29 @@ public class Prayer_DeathGuard extends Prayer
 	protected int canTargetCode()
 	{
 		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int modifyCastCode(final int castCode, final MOB mob, final Physical target, final boolean auto)
+	{
+		if((target instanceof MOB)
+		&&(!CMLib.flags().isUndead((MOB)target)))
+			return castCode|CMMsg.MASK_MALICIOUS;
+		return castCode;
+	}
+
+	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(!CMLib.flags().isUndead((MOB)target))
+					return Ability.QUALITY_MALICIOUS;
+			}
+		}
+		return super.castingQuality(mob,target);
 	}
 
 	@Override
@@ -104,13 +127,13 @@ public class Prayer_DeathGuard extends Prayer
 			&&(mob.location()!=null)
 			&&(mob.location().isHere(clericM)))
 			{
-				Ability A=clericM.fetchAbility("Prayer_Heal");
+				Ability A=clericM.fetchAbility("Prayer_Harm");
 				if(A==null)
-					A=clericM.fetchAbility("Prayer_CureCritical");
+					A=clericM.fetchAbility("Prayer_CauseCritical");
 				if(A==null)
-					A=clericM.fetchAbility("Prayer_CureSerious");
+					A=clericM.fetchAbility("Prayer_CauseSerious");
 				if(A==null)
-					A=clericM.fetchAbility("Prayer_CureLight");
+					A=clericM.fetchAbility("Prayer_CauseLight");
 				if(A!=null)
 				{
 					final int[][] abilityUsageCache = mob.getAbilityUsageCache(A.ID());
@@ -128,29 +151,6 @@ public class Prayer_DeathGuard extends Prayer
 	}
 
 	@Override
-	public int castingQuality(final MOB mob, final Physical target)
-	{
-		if(mob!=null)
-		{
-			if(target instanceof MOB)
-			{
-				if(!CMLib.flags().isUndead((MOB)target))
-					return Ability.QUALITY_MALICIOUS;
-			}
-		}
-		return super.castingQuality(mob,target);
-	}
-
-	@Override
-	protected int modifyCastCode(final int castCode, final MOB mob, final Physical target, final boolean auto)
-	{
-		if((target instanceof MOB)
-		&&(CMLib.flags().isUndead((MOB)target)))
-			return castCode|CMMsg.MASK_MALICIOUS;
-		return castCode;
-	}
-
-	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -161,7 +161,7 @@ public class Prayer_DeathGuard extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(L("Your death guard fades."));
+			mob.tell(L("Your undeath guard fades."));
 	}
 
 	@Override
@@ -178,7 +178,7 @@ public class Prayer_DeathGuard extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) protected by a death guard!"):L("^S<S-NAME> @x1 for a death guard over <T-NAMESELF>!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) protected by an undeath guard!"):L("^S<S-NAME> @x1 for a death guard over <T-NAMESELF>!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -186,7 +186,7 @@ public class Prayer_DeathGuard extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for a death guard over <T-NAMESELF>, but there is no answer.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for an undeath guard over <T-NAMESELF>, but there is no answer.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

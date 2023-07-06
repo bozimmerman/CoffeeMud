@@ -2429,6 +2429,11 @@ public class StdAbility implements Ability
 		}
 	}
 
+	protected int modifyCastCode(final int castCode, final MOB mob, final Physical target, final boolean auto)
+	{
+		return castCode;
+	}
+
 	protected int verbalCastCode(final MOB mob, final Physical target, final boolean auto)
 	{
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
@@ -2436,7 +2441,7 @@ public class StdAbility implements Ability
 			affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
 		if(auto)
 			affectType=affectType|CMMsg.MASK_ALWAYS;
-		return affectType;
+		return modifyCastCode(affectType, mob, target, auto);
 	}
 
 	protected int verbalSpeakCode(final MOB mob, final Physical target, final boolean auto)
@@ -2446,7 +2451,7 @@ public class StdAbility implements Ability
 			affectType=CMMsg.MSG_NOISE|CMMsg.MASK_MOUTH|CMMsg.MASK_MALICIOUS;
 		if(auto)
 			affectType=affectType|CMMsg.MASK_ALWAYS;
-		return affectType;
+		return modifyCastCode(affectType, mob, target, auto);
 	}
 
 	protected int verbalCastMask(final MOB mob,final Physical target, final boolean auto)
