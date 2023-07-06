@@ -294,7 +294,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		if(!auto)
 			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],data[0][FOUND_SUB],0,0);
 		buildingI = baseI;
-		finishModel(mob, buildingI, woodRequired, woodRequired);
+		finishModel(mob, buildingI, woodRequired, data[0][FOUND_CODE]);
 		applyItemRestrictions(buildingI);
 		buildingI.recoverPhyStats();
 		buildingI.text();
