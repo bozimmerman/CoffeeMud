@@ -11497,11 +11497,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if((newTarget!=null)&&(B!=null))
 				{
-					if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
-						Log.sysOut("Scripting",newTarget.Name()+" was MPBEHAVED with "+B.name());
-					B.setParms(m2);
 					if(newTarget.fetchBehavior(B.ID())==null)
 					{
+						B.setParms(m2);
+						if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
+							Log.sysOut("Scripting",newTarget.Name()+" was MPBEHAVED with "+B.name());
 						newTarget.addBehavior(B);
 						if((defaultQuestName()!=null)&&(defaultQuestName().length()>0))
 							B.registerDefaultQuest(defaultQuestName());
