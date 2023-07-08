@@ -64,7 +64,7 @@ public class ShipTacticalProgram extends ShipNavProgram
 	protected SoftwareProcedure targetProcedure = new SoftwareProcedure()
 	{
 		@Override
-		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
 			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
 			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
@@ -106,11 +106,11 @@ public class ShipTacticalProgram extends ShipNavProgram
 			return false;
 		}
 	};
-	
+
 	protected SoftwareProcedure fireProcedure = new SoftwareProcedure()
 	{
 		@Override
-		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
 			CMMsg msg = null;
 			Electronics E = null;
@@ -214,11 +214,14 @@ public class ShipTacticalProgram extends ShipNavProgram
 							if(targetO != null)
 							{
 								// use initial direction to calculate starting position
-								final double futureAccellerationInSameDirectionAsAmmo = 4.0; //TODO: magic number
-								//TODO: adding ship.speed() here is still wrong because you could be firing aft.
-								//The initial position of a launched object is tricky.
+								final double futureAccellerationInSameDirectionAsAmmo;
+								final double angleDiff = Math.cos(CMLib.space().getAngleDelta(ship.direction(), targetDirection));
+								if(angleDiff > 0.0)
+									futureAccellerationInSameDirectionAsAmmo=1.0 + CMath.mul(angleDiff,ship.speed());
+								else
+									futureAccellerationInSameDirectionAsAmmo=0.0;
 								ammoO.setCoords(CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection,
-										(int)Math.round(ship.radius()+ammoO.radius()+ship.speed()
+										(int)Math.round(ship.radius()+ammoO.radius()+1.0
 										+futureAccellerationInSameDirectionAsAmmo)));
 								final long maxChaseTimeMs = 300000; //TODO: magic numbers suck
 								final int maxTicks = (int)(maxChaseTimeMs/CMProps.getTickMillis());
@@ -249,11 +252,11 @@ public class ShipTacticalProgram extends ShipNavProgram
 			return false;
 		}
 	};
-	
+
 	protected SoftwareProcedure weaponProcedure = new SoftwareProcedure()
 	{
 		@Override
-		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
 			CMMsg msg = null;
 			Electronics E;
@@ -288,11 +291,11 @@ public class ShipTacticalProgram extends ShipNavProgram
 			return false;
 		}
 	};
-	
+
 	protected SoftwareProcedure shieldProcedure = new SoftwareProcedure()
 	{
 		@Override
-		public boolean execute(final Software sw, String uword, final MOB mob, final String unparsed, final List<String> parsed)
+		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
 			CMMsg msg = null;
 			Electronics E = null;
@@ -373,7 +376,7 @@ public class ShipTacticalProgram extends ShipNavProgram
 			return false;
 		}
 	};
-	
+
 	// **********************************************************************************************************************************
 	@Override
 	protected void provideService(final SWServices service, final Software S, final String[] parms, final CMMsg msg)
@@ -414,5 +417,5 @@ public class ShipTacticalProgram extends ShipNavProgram
 		super.decache();
 		currentTarget = null;
 	}
-	
+
 }

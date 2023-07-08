@@ -4157,6 +4157,9 @@ public class Test extends StdCommand
 			{
 				final int[][][] diffsets = new int[][][] {
 					{ {90,90}, {80,90},  {10} },
+					{ {90,90}, {180,90},  {90} },
+					{ {0,90}, {80,90},  {80} },
+					{ {90,10}, {90,100},  {90} },
 				};
 				final int[][][] opps = new int[][][] {
 					{ {180,0},       {180,180}, {360,0}, {0,0}, {0,180} },
@@ -4184,6 +4187,10 @@ public class Test extends StdCommand
 					success = success && found;
 					if(!found)
 						mob.tell("DIFF Test #"+(i+1)+" failed: "+Math.toDegrees(diff));
+					else
+						mob.tell("DIFF Test #"+(i+1)+": "+
+								CMLib.english().directionDescShort(angle1)+"-"+CMLib.english().directionDescShort(angle2)
+									+"="+Math.toDegrees(diff));
 				}
 				for(int i=0;i<opps.length;i++)
 				{

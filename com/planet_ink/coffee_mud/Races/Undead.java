@@ -266,7 +266,8 @@ public class Undead extends StdRace
 						final int amount=msg.value();
 						if(amount>0)
 						{
-							msg.modify(msg.source(),mob,msg.tool(),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,CMMsg.MSG_HEALING,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,L("The harming magic heals <T-NAMESELF>."));
+							msg.modify(msg.source(),mob,msg.tool(),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,CMMsg.MSG_HEALING,
+									CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,L("The harming magic heals <T-NAME>."));
 							msg.addTrailerRunnable(new Runnable()
 							{
 								private final MOB me = mob;

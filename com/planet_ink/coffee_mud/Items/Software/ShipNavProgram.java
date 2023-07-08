@@ -1059,7 +1059,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			//final Double oldInject = newInject;
 			newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
 			//if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-			//	Log.debugOut(ship.Name(),"Old engine inject value = "+oldInject+", new="+newInject); //TODO:BZ:DELME
+			//	Log.debugOut(ship.Name(),"Old engine inject value = "+oldInject+", new="+newInject);
 			for(final ShipEngine engineE : programEngines)
 				performSimpleThrust(engineE,newInject, false);
 			break;

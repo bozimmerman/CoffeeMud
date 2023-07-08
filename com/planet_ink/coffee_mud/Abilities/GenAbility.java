@@ -480,7 +480,7 @@ public class GenAbility extends StdAbility
 		&&(!CMLib.masking().maskCheck((String)V(ID,V_TMSK), target,true)))
 		{
 			if(((String)V(ID,V_TMSF)).length()>0)
-				mob.tell(CMLib.masking().maskDesc((String)V(ID,V_TMSF)));
+				mob.tell(mob,target,null,(String)V(ID,V_TMSF));
 			else
 				mob.tell(L("The target is invalid: @x1",CMLib.masking().maskDesc((String)V(ID,V_TMSK))));
 			return false;
