@@ -202,7 +202,7 @@ public class ShootWeb extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,L("<S-NAME> shoot(s) a web at <T-NAME> and miss(es)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> shoot(s) a web at <T-NAME> and miss(es)."));
 
 		// return whether it worked
 		return success;

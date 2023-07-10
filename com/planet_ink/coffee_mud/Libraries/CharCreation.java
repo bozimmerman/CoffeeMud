@@ -271,12 +271,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public boolean canChangeToThisClass(final MOB mob, final CharClass thisClass, final int theme)
 	{
 		if((isAvailableCharClass(thisClass)||(isTattooedLike(mob,"CHARCLASS_"+thisClass.ID().toUpperCase())))
-		&&((theme<0)||(CMath.bset(thisClass.availabilityCode(),theme)))
+		&&((theme<0)||((thisClass.availabilityCode()&theme)>0))
 		&&((mob==null)||(thisClass.qualifiesForThisClass(mob,true))))
 			return true;
 		return false;
 	}
-	
+
 	protected boolean isTattooedLike(final MOB mob, final String fullID)
 	{
 		if(mob==null)
@@ -345,11 +345,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected boolean raceQualifies(final MOB mob, final Race R, final int theme)
 	{
 		return ((isAvailableRace(R)||(isTattooedLike(mob,"RACE_"+R.ID().toUpperCase())))
-				&&(CMath.bset(R.availabilityCode(),theme)));
+				&&((R.availabilityCode()&theme)>0));
 	}
-	
+
 	@Override
-	public List<Race> raceQualifies(MOB mob, final int theme)
+	public List<Race> raceQualifies(final MOB mob, final int theme)
 	{
 		final Vector<Race> qualRaces = new Vector<Race>(); // return value
 		final HashSet<String> doneRaces=new HashSet<String>();
