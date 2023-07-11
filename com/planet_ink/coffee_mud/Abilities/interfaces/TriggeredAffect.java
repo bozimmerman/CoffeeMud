@@ -57,6 +57,19 @@ public interface TriggeredAffect extends Ability
 	/** denotes a property whose affects are triggered by hitting somethign with the thing*/
 	public final static int TRIGGER_HITTING_WITH=128;
 
+	public final static String[] TRIGGER_DESC = new String[] {
+		"ALWAYS",
+		"ENTER",
+		"BEING_HIT",
+		"WEAR_WIELD",
+		"GET",
+		"USE",
+		"PUT",
+		"MOUNT",
+		"DROP_PUTIN",
+		"HITTING_WITH"
+	};
+
 	/**
 	 * This method returns a mask of TRIGGER_* constants denoting what triggers the properties
 	 * @see TriggeredAffect#TRIGGER_ALWAYS

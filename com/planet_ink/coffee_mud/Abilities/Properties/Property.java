@@ -56,7 +56,6 @@ public class Property extends ThinAbility
 		return "a Property";
 	}
 
-
 	/**
 	 * Designates whether, when used as a property/effect, what sort of objects
 	 * this ability can affect. Uses the Ability.CAN_* constants.
