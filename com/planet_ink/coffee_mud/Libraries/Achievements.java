@@ -128,7 +128,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			playerMask = CMLib.masking().getPreCompiledMask(playerMaskStr);
 		else
 			playerMask = null;
-		
+
 		final List<Award> awardsList = new ArrayList<Award>();
 		if(titleStr.length()>0)
 		{
@@ -4068,8 +4068,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case GOTITEM:
 			A=new Achievement()
 			{
-				private CompiledZMask	itemMask	= null;
+				private CompiledZMask[]	itemMasks	= null;
 				private int				num			= 1;
+				private boolean			allFlag		= false;
 
 				@Override
 				public Event getEvent()
@@ -4149,6 +4150,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final Achievement me=this;
 					return new Tracker()
 					{
+						private volatile int count = -1;
 						@Override
 						public Achievement getAchievement()
 						{
@@ -4158,28 +4160,58 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean isAchieved(final Tattooable tracked)
 						{
-							return (num>=0) && (getCount(tracked) >= num);
+							if(num <= 0)
+								return false;
+							return getCount(tracked) >= num;
 						}
 
 						@Override
 						public int getCount(final Tattooable tracked)
 						{
+							if(count >= 0)
+								return count;
+							count=0;
 							if(tracked instanceof MOB)
 							{
 								if((playerMask==null)||(CMLib.masking().maskCheck(playerMask, (MOB)tracked, true)))
 								{
-									int count = 0;
-									final boolean noMask=(itemMask==null);
+									int x;
+									final boolean noMask=(itemMasks==null)||(itemMasks.length==0);
+									final int[] found=new int[noMask?0:itemMasks.length];
 									for(final Enumeration<Item> i=((MOB)tracked).items();i.hasMoreElements();)
 									{
 										final Item I=i.nextElement();
-										if(noMask || (CMLib.masking().maskCheck(itemMask, I, true)))
+										if(noMask)
 											count++;
+										else
+										for(x=0;x<itemMasks.length;x++)
+										{
+											if(CMLib.masking().maskCheck(itemMasks[x], I, true))
+											{
+												found[x]=I.numberOfItems();
+												break;
+											}
+										}
 									}
-									return count;
+									if((count <= 0)&&(!noMask))
+									{
+										if(allFlag)
+										{
+											for(x=0;x<itemMasks.length;x++)
+											{
+												if(found[x]>0)
+													count++;
+											}
+											if(count < itemMasks.length)
+												return count;
+										}
+										count=0;
+										for(x=0;x<itemMasks.length;x++)
+											count += found[x];
+									}
 								}
 							}
-							return 0;
+							return count;
 						}
 
 						@Override
@@ -4187,10 +4219,22 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						{
 							if((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
 							{
-								if((parms[0] instanceof Item)
-								&&((itemMask==null)||(CMLib.masking().maskCheck(itemMask, (Item)parms[0], true))))
+								if(parms[0] instanceof Item)
 								{
-									return true;
+									if((itemMasks==null)||(itemMasks.length==0))
+									{
+										count=-1;
+										return true;
+									}
+									final Item I = (Item)parms[0];
+									for(int x=0;x<itemMasks.length;x++)
+									{
+										if(CMLib.masking().maskCheck(itemMasks[x], I, true))
+										{
+											count=-1;
+											return true;
+										}
+									}
 								}
 							}
 							return false;
@@ -4228,11 +4272,24 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						return "Error: Invalid NUM parameter!";
 					else
 						num=CMath.s_int(numStr);
-					final String itemZapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ITEMMASK", ""));
-					if(itemZapperMask.trim().length()>0)
-						this.itemMask = CMLib.masking().getPreCompiledMask(itemZapperMask);
-					else
+					final String[] maskStrs = CMParms.getParmStrs(parms, "ITEMMASK", "");
+					final List<CompiledZMask> masks = new ArrayList<CompiledZMask>(maskStrs.length);
+					for(final String maskStr : maskStrs)
+					{
+						if(maskStr.trim().length()>0)
+						{
+							final CompiledZMask itemMask = CMLib.masking().getPreCompiledMask(CMStrings.deEscape(maskStr));
+							if(itemMask == null)
+								return "Error: Missing or invalid ITEMMASK parameter: '"+maskStr+"'!";
+							masks.add(itemMask);
+						}
+					}
+					this.allFlag=false;
+					if(CMParms.getParmBool(parms, "ALL", false))
+						this.allFlag=true;
+					if(masks.size()==0)
 						return "Error: Missing or invalid ITEMMASK parameter!";
+					this.itemMasks = masks.toArray(new CompiledZMask[masks.size()]);
 					return "";
 				}
 			};
@@ -7552,7 +7609,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				final TattooAward taward=(TattooAward)award;
 				if(pStats != null)
 				{
-					String tattooStr = taward.getTattoo();
+					final String tattooStr = taward.getTattoo();
 					if(pStats instanceof PlayerAccount)
 						((PlayerAccount)taward).addTattoo(tattooStr);
 					else
@@ -7913,7 +7970,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				final TattooAward taward=(TattooAward)award;
 				if(pStats != null)
 				{
-					String tattooStr = taward.getTattoo();
+					final String tattooStr = taward.getTattoo();
 					boolean canRemove;
 					if(pStats instanceof PlayerAccount)
 						canRemove = ((PlayerAccount)pStats).findTattoo(tattooStr) != null;

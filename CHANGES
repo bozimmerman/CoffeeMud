@@ -12,6 +12,7 @@
  11. New StdMob type: CombatDummy, for testing.
  12. New spell: Wizard's Mark
  13. New prayer: Undeath Guard
+ 14. GOTITEM Achievment type now supports multiple item masks.
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

@@ -1415,6 +1415,123 @@ public class CMParms
 		return defaultVal;
 	}
 
+
+	/**
+	 * This method is a sloppy, forgiving method doing KEY=VALUE value searches in a string.
+	 * Returns the value of the given key when the parameter is formatted in the given text
+	 * in the format [KEY]=[VALUE] or [KEY]="[VALUE]".  If the key is not found, it will
+	 * return the given defaultVal.  The key is case insensitive, and start-partial.  For
+	 * example, a key of NAME will match NAMEY or NAME12.
+	 * No assumptions are made about the given text.  It could have other garbage data of
+	 * any format around it.  For example, if BOB is the key, then a text string like:
+	 * 'joe larry bibob=hoo moe="uiuiui bob=goo lou", bob="yoo"' will still return "goo".
+	 * If the key is found, but followed by a + or -, the default value is always returned.
+	 * The value ends when either an end quote is encountered, or a whitespace, semicolon, or
+	 * comma.
+	 * @param text the string to search
+	 * @param key the key to search for, case insensitive, starts_with rules
+	 * @param defaultVal the value to return if the key is not found
+	 * @return the values, or String[1] { defaultVal }
+	 */
+	public final static String[] getParmStrs(final String text, final String key, final String defaultVal)
+	{
+		final List<String> vals = new ArrayList<String>(3);
+		int x=text.toUpperCase().indexOf(key.toUpperCase());
+		while(x>=0)
+		{
+			final int startx=x;
+			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			{
+				while((x<text.length())&&(text.charAt(x)!='='))
+				{
+					if((text.charAt(x)=='+')||(text.charAt(x)=='-'))
+					{
+						vals.add(defaultVal);
+						continue;
+					}
+					x++;
+				}
+				if(x<text.length())
+				{
+					if(hasPunctuation(text.substring(startx, x)))
+					{
+						x=text.toUpperCase().indexOf(key.toUpperCase(),startx+1);
+						continue;
+					}
+					boolean endWithQuote=false;
+					while((x<text.length())
+					&&(!Character.isLetterOrDigit(text.charAt(x)))
+					&&(text.charAt(x)!='*'))
+					{
+						if(text.charAt(x)=='\"')
+						{
+							endWithQuote=true;
+							x++;
+							break;
+						}
+						x++;
+					}
+					if(x<text.length())
+					{
+						final int valStart=x;
+						if(endWithQuote)
+						{
+							while(x<text.length())
+							{
+								if((text.charAt(x)=='\"')&&(text.charAt(x-1)!='\\'))
+								{
+									vals.add(text.substring(valStart,x));
+									x++;
+									break;
+								}
+								x++;
+							}
+							x=text.toUpperCase().indexOf(key.toUpperCase(),x);
+							continue;
+						}
+						else
+						{
+							final int sz = vals.size();
+							while(x<text.length())
+							{
+								switch(text.charAt(x))
+								{
+								case ' ':
+								case '\n':
+								case '\r':
+								case '\t':
+								case ':':
+								case ';':
+								{
+									vals.add(text.substring(valStart,x));
+									x++;
+									break;
+								}
+								}
+								if(sz < vals.size())
+									break;
+								x++;
+							}
+							if(x<text.length())
+							{
+								x=text.toUpperCase().indexOf(key.toUpperCase(),x);
+								continue;
+							}
+						}
+						vals.add(text.substring(valStart));
+						break;
+					}
+				}
+				x=-1;
+			}
+			else
+				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+		}
+		if(vals.size()==0)
+			vals.add(defaultVal);
+		return vals.toArray(new String[vals.size()]);
+	}
+
 	/**
 	 * This method is a sloppy, forgiving method removing KEY=VALUE value pair from a string.
 	 * @param text the string to search
@@ -3880,7 +3997,7 @@ public class CMParms
 	}
 
 	/**
-	 * Returns the index of the string in the given string array that the given string 
+	 * Returns the index of the string in the given string array that the given string
 	 * starts with. The search is case sensitive.
 	 * @param stringList the string array
 	 * @param str the string to find a starter for
@@ -3922,7 +4039,7 @@ public class CMParms
 	}
 
 	/**
-	 * Returns the index of the string in the given string array that the given string 
+	 * Returns the index of the string in the given string array that the given string
 	 * ends with. The search is case sensitive.
 	 * @param stringList the string array
 	 * @param str the string to find an ender for
