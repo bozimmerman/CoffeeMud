@@ -52,7 +52,7 @@ public class Torch extends LightSource
 	{
 		super();
 		setName("a torch");
-		setDisplayText("a small straw torch sits here.");
+		setDisplayText("a small torch sits here.");
 		setDescription("It looks like it is lightly covered in oil near the end.");
 		durationTicks=200;
 
