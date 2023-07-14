@@ -244,6 +244,8 @@ public class StoneGolem extends StdRace
 					(L("a pound of stone"),RawMaterial.RESOURCE_STONE));
 				resources.addElement(makeResource
 					(L("essence of golem"),RawMaterial.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+					(L("a pound of stone"),RawMaterial.RESOURCE_STONE));
 			}
 		}
 		return resources;

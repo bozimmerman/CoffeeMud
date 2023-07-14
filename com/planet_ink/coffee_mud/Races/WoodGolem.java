@@ -236,6 +236,8 @@ public class WoodGolem extends StdRace
 					(L("a pound of wood"),RawMaterial.RESOURCE_WOOD));
 				resources.addElement(makeResource
 					(L("essence of golem"),RawMaterial.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+					(L("a pound of wood"),RawMaterial.RESOURCE_WOOD));
 			}
 		}
 		return resources;

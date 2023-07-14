@@ -272,6 +272,8 @@ public class Treant extends StdRace
 					(L("a pound of wood"),RawMaterial.RESOURCE_WOOD));
 				resources.addElement(makeResource
 					(L("a pound of leaves"),RawMaterial.RESOURCE_GREENS));
+				resources.addElement(makeResource
+					(L("a pound of wood"),RawMaterial.RESOURCE_WOOD));
 			}
 		}
 		return resources;
