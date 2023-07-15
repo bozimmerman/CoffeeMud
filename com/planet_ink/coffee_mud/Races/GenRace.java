@@ -651,7 +651,6 @@ public class GenRace extends StdRace
 			Log.errOut("GenRace","Not able to parse: "+parms);
 			return;
 		}
-
 		String rcat=CMLib.xml().getValFromPieces(raceData,"CAT");
 		if((rcat==null)||(rcat.length()==0))
 		{

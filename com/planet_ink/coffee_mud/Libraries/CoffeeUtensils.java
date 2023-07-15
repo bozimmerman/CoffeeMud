@@ -2827,6 +2827,38 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
 		}
 		Race R=null;
+		if(motherRaceID.equalsIgnoreCase("Lich")||fatherRaceID.equalsIgnoreCase("Lich"))
+		{
+			final String halfRace=(motherRaceID.equalsIgnoreCase("Lich")?fatherRaceID:motherRaceID);
+			// this is wrong, but liches can NOT procreate, so its OK
+			if(halfRace.toLowerCase().endsWith("lich"))
+				return CMClass.getRace(halfRace);
+			final Race halfR=CMClass.getRace(halfRace);
+			if(halfR==null)
+				return CMClass.getRace("Lich");
+			final String mixRaceID=halfRace+"Lich";
+			final String mixRaceName=halfR.name().substring(0,halfRace.length()-1)+"lich";
+			R=CMClass.getRace(mixRaceID);
+			if(R!=null)
+				return R;
+			R=(Race)halfR.makeGenRace().copyOf();
+			final Race lichR = CMClass.getRace("Lich");
+			final Race glichR = lichR.makeGenRace();
+			R.setStat("ID", mixRaceID);
+			R.setStat("NAME", mixRaceName);
+			R.setStat("CAT",lichR.racialCategory());
+			R.setStat("EVENTRACE",CMClass.classID(lichR));
+			R.setStat("HEALTHRACE",CMClass.classID(lichR));
+			R.setStat("ESTATS",glichR.getStat("ESTATS"));
+			R.setStat("ASTATS",glichR.getStat("ASTATS"));
+			R.setStat("CSTATS",glichR.getStat("CSTATS"));
+			R.setStat("ASTATE",glichR.getStat("ASTATE"));
+			R.setStat("DISFLAGS",glichR.getStat("DISFLAGS"));
+			R.setStat("BWEIGHT", ""+(CMath.s_double(R.getStat("BWEIGHT"))*0.6));
+			CMClass.addRace(R);
+			CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+		}
+		else
 		if(motherRaceID.equalsIgnoreCase("Human")||fatherRaceID.equalsIgnoreCase("Human"))
 		{
 			String halfRace=(motherRaceID.equalsIgnoreCase("Human")?fatherRaceID:motherRaceID);
