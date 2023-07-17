@@ -1068,6 +1068,7 @@ public class MUD extends Thread implements MudHost
 	{
 		try
 		{
+			final String oldStatus = CMProps.getVar(CMProps.Str.MUDSTATUS);
 			for(int i=0;i<webServers.size();i++)
 			{
 				final WebServer webServerThread=webServers.get(i);
@@ -1080,7 +1081,7 @@ public class MUD extends Thread implements MudHost
 					webServerThread.close();
 					Log.sysOut(Thread.currentThread().getName(),"Web server "+webServerThread.getName()+" stopped.");
 					webServers.remove(webServerThread);
-					CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"OK");
+					CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,oldStatus);
 					return true;
 				}
 			}
@@ -1816,7 +1817,7 @@ public class MUD extends Thread implements MudHost
 			}
 			CMProps.setVar(CMProps.Str.MUDPORTS,str.toString());
 			CMProps.setBoolAllVar(CMProps.Bool.MUDSTARTED,true);
-			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"OK");
+			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Online");
 			Log.sysOut(Thread.currentThread().getName(),"Host#"+threadCode+" initializated.");
 			return true;
 		}
