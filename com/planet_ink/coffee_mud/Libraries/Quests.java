@@ -333,7 +333,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return 0;
 		final int mudmonth=CMath.s_parseIntExpression(str.substring(0,x));
 		final int mudday=CMath.s_parseIntExpression(str.substring(x+1));
-		final TimeClock C=(TimeClock)CMClass.getCommon("DefaultTimeClock");
+		final TimeClock C=(TimeClock)CMLib.time().globalClock().copyOf();
 		final TimeClock NOW=CMLib.time().globalClock();
 		C.setMonth(mudmonth);
 		C.setDayOfMonth(mudday);

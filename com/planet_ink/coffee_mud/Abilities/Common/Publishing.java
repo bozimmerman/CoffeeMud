@@ -592,7 +592,7 @@ public class Publishing extends CommonSkill
 			try
 			{
 				final Long L=obj.getCheckedLong("lastpub");
-				final TimeClock lastPubC=(TimeClock)CMClass.getCommon("DefaultTimeClock");
+				final TimeClock lastPubC=(TimeClock)C.copyOf();
 				lastPubC.setFromHoursSinceEpoc(L.longValue());
 				if(C.getYear() == lastPubC.getYear())
 				{

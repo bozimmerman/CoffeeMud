@@ -658,7 +658,7 @@ public class DefaultTimeClock implements TimeClock
 	{
 		if(getYear()!=C.getYear())
 			return false;
-		if(getMonth()!=C.getYear())
+		if(getMonth()!=C.getMonth())
 			return false;
 		if(getDayOfMonth()!=C.getDayOfMonth())
 			return false;
@@ -677,21 +677,22 @@ public class DefaultTimeClock implements TimeClock
 		final long me = (long)((getDayOfYear()-1)*getHoursInDay()) + getHourOfDay();
 		final long ot = (long)((C.getDayOfYear()-1)*C.getHoursInDay()) + C.getHourOfDay();
 		final long hoursInYear = (getHoursInDay()*getDaysInMonth()*getMonthsInYear());
+		final long yearDiff = getYear()-C.getYear();
 		long numMudHours=0;
 		if(me>ot)
 		{
 			numMudHours = me-ot;
-			numMudHours+=hoursInYear*(getYear()-C.getYear());
+			numMudHours+=hoursInYear*yearDiff;
 		}
 		else
 		if(me==ot)
-			numMudHours=hoursInYear*(getYear()-C.getYear());
+			numMudHours=hoursInYear*yearDiff;
 		else
 		{
 			numMudHours+=(hoursInYear-ot)+me;
-			numMudHours+=hoursInYear*(getYear()-C.getYear()-1);
+			numMudHours+=hoursInYear*(yearDiff-1);
 		}
-		return numMudHours+getHoursInDay()+1;
+		return numMudHours;
 	}
 
 	@Override

@@ -258,7 +258,7 @@ public class Lecturing extends CommonSkill
 		if((this.lastLecture != 0)&&(areA!=null))
 		{
 			final TimeClock C=areA.getTimeObj();
-			final TimeClock lastPubC=(TimeClock)CMClass.getCommon("DefaultTimeClock");
+			final TimeClock lastPubC=(TimeClock)C.copyOf();
 			lastPubC.setFromHoursSinceEpoc(this.lastLecture);
 			if(C.getYear() == lastPubC.getYear())
 			{

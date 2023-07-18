@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Properties.Prop_HaveAdjuster.ItemSetDef;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.BribeGateGuard;
@@ -173,4 +174,64 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 	{
 		super.affectPhyStats(affected, affectableStats);
 	}
+
+	@Override
+	public void executeMsg(final Environmental host, final CMMsg msg)
+	{
+		boolean	 reeval  = false;
+		switch(msg.sourceMinor())
+		{
+		case CMMsg.TYP_REMOVE:
+		case CMMsg.TYP_WEAR:
+		case CMMsg.TYP_WIELD:
+		case CMMsg.TYP_HOLD:
+			reeval = (CMath.bset(trigger, TRIGGER_WEAR_WIELD)&&(msg.target()==affected));
+			break;
+		case CMMsg.TYP_DROP:
+		case CMMsg.TYP_GET:
+			reeval = CMath.banyset(trigger, TRIGGER_WEAR_WIELD|TRIGGER_GET|TRIGGER_DROP_PUTIN)&&(msg.target()==affected);
+			break;
+		case CMMsg.TYP_PUT:
+			reeval = (CMath.banyset(trigger, TRIGGER_PUT|TRIGGER_GET)
+					&&(msg.target()==affected));
+			break;
+		case CMMsg.TYP_MOUNT:
+		case CMMsg.TYP_DISMOUNT:
+			reeval = (CMath.bset(trigger, TRIGGER_PUT)
+					&&(msg.target()==affected));
+			break;
+		case CMMsg.TYP_ENTER:
+		case CMMsg.TYP_LEAVE:
+			reeval = CMath.bset(trigger, TRIGGER_ENTER);
+			break;
+		case CMMsg.TYP_DAMAGE:
+			if( CMath.bset(trigger, TRIGGER_BEING_HIT)&&(msg.target()==affected))
+				reeval = true;
+			else
+			if( CMath.bset(trigger, TRIGGER_HITTING_WITH)&&(msg.source()==affected))
+				reeval = true;
+			break;
+		case CMMsg.TYP_FILL:
+			reeval = (CMath.bset(trigger, TRIGGER_USE)
+					&&(msg.target()==affected));
+			break;
+		case CMMsg.TYP_DRINK:
+			reeval = (CMath.bset(trigger, TRIGGER_USE)
+					&&(msg.target()==affected));
+			break;
+		case CMMsg.TYP_POUR:
+			reeval = (CMath.bset(trigger, TRIGGER_USE)
+					&&(msg.tool()==affected));
+			break;
+		case CMMsg.TYP_EAT:
+			reeval = (CMath.bset(trigger, TRIGGER_USE)
+					&&(msg.target()==affected));
+			break;
+		}
+		if(reeval)
+		{
+			msg.addTrailerRunnable(null);
+		}
+	}
+
 }

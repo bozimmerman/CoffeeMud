@@ -4949,7 +4949,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					return false;
 				final int mudmonth=CMath.s_parseIntExpression(sd2.substring(0,x));
 				final int mudday=CMath.s_parseIntExpression(sd2.substring(x+1));
-				final TimeClock C=(TimeClock)CMClass.getCommon("DefaultTimeClock");
+				final TimeClock C=(TimeClock)CMLib.time().globalClock().copyOf();
 				final TimeClock NOW=CMLib.time().globalClock();
 				C.setMonth(mudmonth);
 				C.setDayOfMonth(mudday);

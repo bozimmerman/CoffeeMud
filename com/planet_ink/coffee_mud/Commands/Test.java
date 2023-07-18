@@ -1224,7 +1224,7 @@ public class Test extends StdCommand
 				final int x=startDate.indexOf('-');
 				final int mudmonth=CMath.s_int(startDate.substring(0,x));
 				final int mudday=CMath.s_int(startDate.substring(x+1));
-				final TimeClock C=(TimeClock)CMClass.getCommon("DefaultTimeClock");
+				final TimeClock C=mob.location().getArea().getTimeObj();
 				final TimeClock NOW=mob.location().getArea().getTimeObj();
 				C.setMonth(mudmonth);
 				C.setDayOfMonth(mudday);
@@ -1236,6 +1236,10 @@ public class Test extends StdCommand
 					C.setYear(NOW.getYear());
 				final long millidiff=C.deriveMillisAfter(NOW);
 				mob.tell(L("MilliDiff=@x1",""+millidiff));
+				final long time = System.currentTimeMillis() + millidiff;
+				final TimeClock C2=(TimeClock)NOW.copyOf();
+				C2.deriveClock(time);
+				mob.tell(L("Backport=@x1",""+C2.toTimePeriodCodeString()));
 				return true;
 			}
 			else
@@ -3062,6 +3066,21 @@ public class Test extends StdCommand
 				{
 					mob.tell(L("Error:"+what+"-9"));
 					return false;
+				}
+			}
+			if((what.equalsIgnoreCase("clock_conversion"))
+			||what.equalsIgnoreCase("all"))
+			{
+				for(int h=1;h<65536;h*=2)
+				{
+					final TimeClock NOW = (TimeClock)CMLib.time().globalClock().copyOf();
+					final TimeClock C1 = (TimeClock)NOW.copyOf();
+					final TimeClock C2 = (TimeClock)NOW.copyOf();
+					C1.tickTock(h);
+					final long millis = System.currentTimeMillis()+C2.deriveMillisAfter(NOW);
+					final TimeClock C3 = C1.deriveClock(millis);
+					if(!C1.isEqual(C3))
+						mob.tell("Error: "+C1.getShortestTimeDescription()+"!="+C3.getShortestTimeDescription());
 				}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
