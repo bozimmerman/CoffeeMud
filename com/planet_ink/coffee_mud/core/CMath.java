@@ -2523,6 +2523,86 @@ public class CMath
 	}
 
 	/**
+	 * Converts a primitive array to an object array of the
+	 * same object type
+	 * @param xs the primitive array
+	 * @return the object array of the appropriate type
+	 */
+	public final static List<? extends Object> asList(final int[] xs)
+	{
+		if(xs==null)
+			return new Vector<Object>(0);
+		final List<Object> Xs = new Vector<Object>(xs.length);
+		for(int i=0;i<xs.length;i++)
+			Xs.add(Integer.valueOf(xs[i]));
+		return Xs;
+	}
+
+	/**
+	 * Converts a primitive array to an object array of the
+	 * same object type
+	 * @param xs the primitive array
+	 * @return the object array of the appropriate type
+	 */
+	public final static List<? extends Object> asList(final long[] xs)
+	{
+		if(xs==null)
+			return new Vector<Object>(0);
+		final List<Object> Xs = new Vector<Object>(xs.length);
+		for(int i=0;i<xs.length;i++)
+			Xs.add(Long.valueOf(xs[i]));
+		return Xs;
+	}
+
+	/**
+	 * Converts a primitive array to an object array of the
+	 * same object type
+	 * @param xs the primitive array
+	 * @return the object array of the appropriate type
+	 */
+	public final static List<? extends Object> asList(final float[] xs)
+	{
+		if(xs==null)
+			return new Vector<Object>(0);
+		final List<Object> Xs = new Vector<Object>(xs.length);
+		for(int i=0;i<xs.length;i++)
+			Xs.add(Float.valueOf(xs[i]));
+		return Xs;
+	}
+
+	/**
+	 * Converts a primitive array to an object array of the
+	 * same object type
+	 * @param xs the primitive array
+	 * @return the object array of the appropriate type
+	 */
+	public final static List<? extends Object> asList(final double[] xs)
+	{
+		if(xs==null)
+			return new Vector<Object>(0);
+		final List<Object> Xs = new Vector<Object>(xs.length);
+		for(int i=0;i<xs.length;i++)
+			Xs.add(Double.valueOf(xs[i]));
+		return Xs;
+	}
+
+	/**
+	 * Converts a primitive array to an object array of the
+	 * same object type
+	 * @param xs the primitive array
+	 * @return the object array of the appropriate type
+	 */
+	public final static List<? extends Object> asList(final boolean[] xs)
+	{
+		if(xs==null)
+			return new Vector<Object>(0);
+		final List<Object> Xs = new Vector<Object>(xs.length);
+		for(int i=0;i<xs.length;i++)
+			Xs.add(Boolean.valueOf(xs[i]));
+		return Xs;
+	}
+
+	/**
 	 * Returns greater of two numbers
 	 * @param a first number
 	 * @param b second number

@@ -88,7 +88,7 @@ public class CalendarCmd extends StdCommand
 	protected List<JournalEntry> getGlobalCalendarByStartRange(final long fromTm, final long toTm)
 	{
 		final List<JournalEntry> calendar = new Vector<JournalEntry>();
-		for(final JournalEntry holiday : CMLib.quests().getHolidayEntries())
+		for(final JournalEntry holiday : CMLib.quests().getHolidayEntries(true))
 		{
 			if((holiday.date()>=fromTm)&&(holiday.date()<=toTm))
 				calendar.add(holiday);
@@ -100,7 +100,7 @@ public class CalendarCmd extends StdCommand
 	protected List<JournalEntry> getGlobalCalendarByExpirationRange(final long fromTm, final long toTm)
 	{
 		final List<JournalEntry> calendar = new Vector<JournalEntry>();
-		for(final JournalEntry holiday : CMLib.quests().getHolidayEntries())
+		for(final JournalEntry holiday : CMLib.quests().getHolidayEntries(true))
 		{
 			if((holiday.expiration()>=fromTm)&&(holiday.expiration()<=toTm))
 				calendar.add(holiday);
@@ -112,7 +112,7 @@ public class CalendarCmd extends StdCommand
 	protected List<JournalEntry> getGlobalCalendarByTimeStamps(final long fromTm, final long toTm)
 	{
 		final List<JournalEntry> calendar = new Vector<JournalEntry>();
-		for(final JournalEntry holiday : CMLib.quests().getHolidayEntries())
+		for(final JournalEntry holiday : CMLib.quests().getHolidayEntries(true))
 		{
 			if((fromTm>=holiday.date())&&(holiday.expiration()<=toTm))
 				calendar.add(holiday);

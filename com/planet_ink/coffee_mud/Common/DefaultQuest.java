@@ -380,7 +380,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	@Override
 	public void setStartDate(final String newDate)
 	{
-		final int x=newDate.indexOf('-');
+		int x=newDate.indexOf('-');
+		if(x<0)
+			x=newDate.indexOf('/');
 		if((x>0)
 		&&(CMath.isMathExpression(newDate.substring(0,x)))
 		&&(CMath.isMathExpression(newDate.substring(x+1))))
@@ -4940,7 +4942,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			if(startDate().toUpperCase().startsWith("MUDDAY"))
 			{
 				final String sd2=startDate().substring("MUDDAY".length()).trim();
-				final int x=sd2.indexOf('-');
+				int x=sd2.indexOf('-');
+				if(x<0)
+					x=sd2.indexOf('/');
 				if(x<0)
 					return false;
 				final int mudmonth=CMath.s_parseIntExpression(sd2.substring(0,x));
@@ -4960,7 +4964,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			}
 			else
 			{
-				final int x=startDate.indexOf('-');
+				int x=startDate.indexOf('-');
+				if(x<0)
+					x=startDate.indexOf('/');
 				if(x<0)
 					return false;
 				final int month=CMath.s_parseIntExpression(startDate.substring(0,x));

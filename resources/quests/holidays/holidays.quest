@@ -5,17 +5,17 @@ set spawnable allonce
 set duration 1
 step break
 
-set name drought
-set wait 800
+SET NAME drought
+SET WAIT 800
 set interval 1
-set duration 900+(1?400)
+SET DURATION 900+(1?400)
 quiet
 set room any mask=-SEASON +SUMMER -WEATHER +DROUGHT
 set room
-set mobgroup RESELECT mask=+INT 3
-give behavior MudChat +(water | thirst | drought)\;5yes, the drought affects us all\;5we're all so thirsty\;5please don't speak of the drought\;5hopefully there will be more rain soon\;\;(price | prices)\;9the famine has put a premium on water prices
+SET MOBGROUP RESELECT MASK=+INT 3
+GIVE BEHAVIOR MUDCHAT +(water | thirst | drought)\;5yes, the drought affects us all\;5we're all so thirsty\;5please don't speak of the drought\;5hopefully there will be more rain soon\;\;(price | prices)\;9the famine has put a premium on water prices\;\;
 set mobgroup RESELECT  mask=-JAVACLASS +StdShopkeeper +GenShopkeeper
-give stat PRICEMASKS 20.0 -JAVACLASS +StdDrink +GenDrink +GenLiquidResource +GenPotion +StdPotion
+GIVE STAT PRICEMASKS 20.0 -JAVACLASS +StdDrink +GenDrink +GenLiquidResource +GenPotion +StdPotion
 STEP BREAK
 
 set name famine
@@ -42,5 +42,17 @@ set mobgroup RESELECT mask=+INT 3
 give behavior MudChat +(cold | freezing | winter | blizzard | snow)\;5yes, the harsh winter affects us all\;5we're all freezing! its been so cold!\;5please don't speak of the winter, it will kill us all\;5spring cant come too soon can it?\;\;(prices | price | wood | cloth )\;9the harsh winter has put a premium on wood and warm clothing
 set mobgroup RESELECT  mask=-JAVACLASS +StdShopKeeper +GenShopKeeper
 give stat PRICEMASKS 10.0 -MATERIAL +WOODEN -RESOURCE +COAL,5.0 -MATERIAL +CLOTH +LEATHER -CLASS +GenArmor
+STEP BREAK
+
+SET NAME newyear
+SET MUDDAY 1-1
+SET DURATION 900+(1?400)
+quiet
+set room
+SET MOBGROUP RESELECT MASK=+INT 3
+GIVE BEHAVIOR MUDCHAT +()\;9Happy New Year!\;9Happy New Year!\;9Happy New Year!\;9Happy New Year!\;9Happy New Year!\;\;(year | new year)\;9Happy New Year!\;\;
+GIVE AFFECT MOOD happy
+set mobgroup RESELECT  mask=-JAVACLASS +StdShopkeeper +GenShopkeeper
+GIVE STAT PRICEMASKS 0.9 +JAVACLASS -WandArchon
 STEP BREAK
 

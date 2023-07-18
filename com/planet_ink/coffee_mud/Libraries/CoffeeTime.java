@@ -839,7 +839,10 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		{
 			globalClock=(TimeClock)CMClass.getCommon("DefaultTimeClock");
 			if(globalClock!=null)
+			{
 				globalClock.setLoadName("GLOBAL");
+				globalClock.tick(null, TICKID_AREA);
+			}
 		}
 		return globalClock;
 	}

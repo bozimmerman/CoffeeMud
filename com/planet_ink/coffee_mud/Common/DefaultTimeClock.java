@@ -626,34 +626,72 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
+	public boolean isAfter(final TimeClock C)
+	{
+		if(getYear()!=C.getYear())
+			return getYear()>C.getYear();
+		if(getMonth()!=C.getYear())
+			return getMonth()>C.getMonth();
+		if(getDayOfMonth()!=C.getDayOfMonth())
+			return getDayOfMonth()>C.getDayOfMonth();
+		if(getHourOfDay()!=C.getHourOfDay())
+			return getHourOfDay()>C.getHourOfDay();
+		return false;
+	}
+
+	@Override
+	public boolean isBefore(final TimeClock C)
+	{
+		if(getYear()!=C.getYear())
+			return getYear()<C.getYear();
+		if(getMonth()!=C.getYear())
+			return getMonth()<C.getMonth();
+		if(getDayOfMonth()!=C.getDayOfMonth())
+			return getDayOfMonth()<C.getDayOfMonth();
+		if(getHourOfDay()!=C.getHourOfDay())
+			return getHourOfDay()<C.getHourOfDay();
+		return false;
+	}
+
+	@Override
+	public boolean isEqual(final TimeClock C)
+	{
+		if(getYear()!=C.getYear())
+			return false;
+		if(getMonth()!=C.getYear())
+			return false;
+		if(getDayOfMonth()!=C.getDayOfMonth())
+			return false;
+		if(getHourOfDay()!=C.getHourOfDay())
+			return false;
+		return true;
+	}
+
+	@Override
 	public long deriveMudHoursAfter(final TimeClock C)
 	{
-		long numMudHours=0;
-		if(C.getYear()>getYear())
+		if(isEqual(C))
+			return 0;
+		if(isBefore(C))
 			return -1;
-		else
-		if(C.getYear()==getYear())
+		final long me = (long)((getDayOfYear()-1)*getHoursInDay()) + getHourOfDay();
+		final long ot = (long)((C.getDayOfYear()-1)*C.getHoursInDay()) + C.getHourOfDay();
+		final long hoursInYear = (getHoursInDay()*getDaysInMonth()*getMonthsInYear());
+		long numMudHours=0;
+		if(me>ot)
 		{
-			if(C.getMonth()>getMonth())
-				return -1;
-			else
-			if(C.getMonth()==getMonth())
-			{
-				if(C.getDayOfMonth()>getDayOfMonth())
-					return -1;
-				else
-				if(C.getDayOfMonth()==getDayOfMonth())
-				{
-					if(C.getHourOfDay()>getHourOfDay())
-						return -1;
-				}
-			}
+			numMudHours = me-ot;
+			numMudHours+=hoursInYear*(getYear()-C.getYear());
 		}
-		numMudHours+=(getYear()-C.getYear())*(getHoursInDay()*getDaysInMonth()*getMonthsInYear());
-		numMudHours+=(getMonth()-C.getMonth())*(getHoursInDay()*getDaysInMonth());
-		numMudHours+=(getDayOfMonth()-C.getDayOfMonth())*getHoursInDay();
-		numMudHours+=(getHourOfDay()-C.getHourOfDay());
-		return numMudHours;
+		else
+		if(me==ot)
+			numMudHours=hoursInYear*(getYear()-C.getYear());
+		else
+		{
+			numMudHours+=(hoursInYear-ot)+me;
+			numMudHours+=hoursInYear*(getYear()-C.getYear()-1);
+		}
+		return numMudHours+getHoursInDay()+1;
 	}
 
 	@Override

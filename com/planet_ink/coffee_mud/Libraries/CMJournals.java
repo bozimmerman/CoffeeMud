@@ -1095,7 +1095,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			CMLib.threads().deleteTick(this, Tickable.TICKID_EVENT);
 			final List<JournalEntry> calendar = new Vector<JournalEntry>();
 			long endestTime = System.currentTimeMillis() + TimeManager.MILI_YEAR;
-			for(final JournalEntry holiday : CMLib.quests().getHolidayEntries())
+			for(final JournalEntry holiday : CMLib.quests().getHolidayEntries(true))
 			{
 				if(holiday.date()>=now)
 				{

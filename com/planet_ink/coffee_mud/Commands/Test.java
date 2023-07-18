@@ -3666,16 +3666,38 @@ public class Test extends StdCommand
 			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("racemixing")))
 			{
-				final String mixRace = "Troll";
-				final Race firstR=CMClass.getRace(mixRace);
-				if(firstR!=null)
+				if((commands.size()<4)||what.equalsIgnoreCase("all"))
 				{
-					final Race secondR=CMClass.getRace("Human");
-					final Race R1=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID(), false);
-					if(R1!=null)
+					final String mixRace = "Troll";
+					final Race firstR=CMClass.getRace(mixRace);
+					if(firstR!=null)
 					{
-						// well, it didn't crash
-						mob.tell(R1.name()+" generated");
+						final Race secondR=CMClass.getRace("Human");
+						final Race R1=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID(), false);
+						if(R1!=null)
+						{
+							// well, it didn't crash
+							mob.tell(R1.name()+" generated");
+						}
+					}
+				}
+				else
+				{
+					final String mixRace1 = commands.get(2);
+					final String mixRace2 = commands.get(3);
+					final Race firstR=CMClass.getRace(mixRace1);
+					if(firstR!=null)
+					{
+						final Race secondR=CMClass.getRace(mixRace2);
+						if(secondR!=null)
+						{
+							final Race R1=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID(), false);
+							if(R1!=null)
+							{
+								// well, it didn't crash
+								mob.tell(R1.name()+" generated");
+							}
+						}
 					}
 				}
 			}

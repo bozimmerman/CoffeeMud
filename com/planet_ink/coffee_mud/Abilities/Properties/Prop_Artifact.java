@@ -576,7 +576,7 @@ public class Prop_Artifact extends Property
 									else
 									{
 										destroyArtifact(newItemMinusArtifact);
-										Log.errOut("Prop_Artifact","Unable to reset: "+getItemID()+" to "+MOBname+" in "+CMLib.map().getDescriptiveExtendedRoomID(R));
+										Log.errOut("Prop_Artifact","Unable to find artifact NPC: "+getItemID()+" from "+MOBname+" in "+CMLib.map().getDescriptiveExtendedRoomID(R));
 										waitToReload=System.currentTimeMillis()+10*60000;
 										return true;
 									}

@@ -2833,28 +2833,54 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			// this is wrong, but liches can NOT procreate, so its OK
 			if(halfRace.toLowerCase().endsWith("lich"))
 				return CMClass.getRace(halfRace);
+			final Race lichR = CMClass.getRace("Lich");
 			final Race halfR=CMClass.getRace(halfRace);
 			if(halfR==null)
-				return CMClass.getRace("Lich");
+				return lichR;
 			final String mixRaceID=halfRace+"Lich";
 			final String mixRaceName=halfR.name().substring(0,halfRace.length()-1)+"lich";
 			R=CMClass.getRace(mixRaceID);
 			if(R!=null)
 				return R;
-			R=(Race)halfR.makeGenRace().copyOf();
-			final Race lichR = CMClass.getRace("Lich");
+			/*
+			boolean bodyMatch = lichR.forbiddenWornBits() == halfR.forbiddenWornBits();
+			for(int i=0;i<lichR.bodyMask().length;i++)
+				bodyMatch = bodyMatch && (lichR.bodyMask()[i] == halfR.bodyMask()[i]);
+			if(bodyMatch)
+				return lichR;
+			*/
 			final Race glichR = lichR.makeGenRace();
+			R=(Race)glichR.makeGenRace().copyOf();
+			final Race gR=halfR.makeGenRace();
+
 			R.setStat("ID", mixRaceID);
 			R.setStat("NAME", mixRaceName);
 			R.setStat("CAT",lichR.racialCategory());
-			R.setStat("EVENTRACE",CMClass.classID(lichR));
-			R.setStat("HEALTHRACE",CMClass.classID(lichR));
-			R.setStat("ESTATS",glichR.getStat("ESTATS"));
-			R.setStat("ASTATS",glichR.getStat("ASTATS"));
-			R.setStat("CSTATS",glichR.getStat("CSTATS"));
-			R.setStat("ASTATE",glichR.getStat("ASTATE"));
-			R.setStat("DISFLAGS",glichR.getStat("DISFLAGS"));
 			R.setStat("BWEIGHT", ""+(CMath.s_double(R.getStat("BWEIGHT"))*0.6));
+			R.setStat("FHEIGHT", ""+(CMath.s_double(R.getStat("FHEIGHT"))*0.6));
+			R.setStat("MHEIGHT", ""+(CMath.s_double(R.getStat("MHEIGHT"))*0.6));
+			R.setStat("CANRIDE",halfR.getStat("CANRIDE"));
+			R.setStat("BODY",halfR.getStat("BODY"));
+			R.setStat("WEAR",halfR.getStat("WEAR"));
+			for(final String stat : new String[] { "ASTATS", "CSTATS", "ASTATE" } )
+			{
+				final long[] lichBits = CMParms.toLongArray(Arrays.asList(R.getStat(stat).split("\\|")));
+				final long[] myBits = CMParms.toLongArray(Arrays.asList(gR.getStat(stat).split("\\|")));
+				boolean didSomething=false;
+				if((myBits.length>1)||(myBits[0]!=0))
+				{
+					for(int i=0;i<myBits.length;i++)
+					{
+						if((myBits[i] != 0)&&(lichBits.length>i))
+						{
+							lichBits[i] += myBits[i];
+							didSomething=true;
+						}
+					}
+				}
+				if(didSomething)
+					R.setStat(stat,CMParms.combineWith(CMath.asList(lichBits), '|'));
+			}
 			CMClass.addRace(R);
 			CMLib.database().DBCreateRace(R.ID(),R.racialParms());
 		}

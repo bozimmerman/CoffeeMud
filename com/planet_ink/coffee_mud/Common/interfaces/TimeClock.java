@@ -459,6 +459,40 @@ public interface TimeClock extends Tickable, CMCommon
 	public long getPeriodMillis(final TimePeriod P);
 
 	/**
+	 * Returns whether this time clock represents the
+	 * exact same hour as the given one, timezones
+	 * notwithstanding.
+	 *
+	 * @see TimeClock#isBefore(TimeClock)
+	 * @see TimeClock#isEqual(TimeClock)
+	 * @see TimeClock#isAfter(TimeClock)
+	 *
+	 * @param C the clock to compare to
+	 * @return true if they are the same
+	 */
+	public boolean isEqual(final TimeClock C);
+
+	/**
+	 * Returns whether this time clock represents an
+	 * earlier hour than the given one, timezones
+	 * notwithstanding.
+	 *
+	 * @param C the clock to compare to
+	 * @return true if this is before
+	 */
+	public boolean isBefore(final TimeClock C);
+
+	/**
+	 * Returns whether this time clock represents an
+	 * earlier later than the given one, timezones
+	 * notwithstanding.
+	 *
+	 * @param C the clock to compare to
+	 * @return true if this is later
+	 */
+	public boolean isAfter(final TimeClock C);
+
+	/**
 	 * Increase this clocks time by the given number of hours.
 	 * Does NOT move the sky.  Use tickTock for that.
 	 * @see TimeClock#tickTock(int)

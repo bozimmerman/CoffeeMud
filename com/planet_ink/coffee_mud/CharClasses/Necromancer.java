@@ -244,12 +244,12 @@ public class Necromancer extends Cleric
 		&&(!myChar.isMonster())
 		&&(msg.sourceMinor()==CMMsg.TYP_DEATH)
 		&&(myChar.baseCharStats().getClassLevel(this)>=30)
-		&&(!myChar.baseCharStats().getMyRace().ID().equals("Lich")))
+		&&(myChar.baseCharStats().getMyRace().ID().indexOf("Lich")<0))
 		{
-			final Race newRace=CMClass.getRace("Lich");
+			final Race newRace=CMLib.utensils().getMixedRace("Lich", myChar.baseCharStats().getMyRace().ID(),false);
 			if(newRace!=null)
 			{
-				myChar.tell(L("The dark powers are transforming you into a @x1!!",newRace.name()));
+				myChar.tell(L("The dark powers are transforming you into @x1!!",CMLib.english().startWithAorAn(newRace.name())));
 				myChar.baseCharStats().setMyRace(newRace);
 				myChar.recoverCharStats();
 				final String[] cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.get(myChar.session()).getStr(CMProps.Str.PLAYERDEATH),true));

@@ -204,12 +204,13 @@ public class Quests extends StdLibrary implements QuestManager
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<JournalEntry> getHolidayEntries()
+	public List<JournalEntry> getHolidayEntries(final boolean datedOnly)
 	{
 		List<JournalEntry> holidayInfo;
+		final String resourceKey = "HOLIDAY_CACHE_"+super.name+"("+datedOnly+")";
 		synchronized(this)
 		{
-			holidayInfo = (List<JournalEntry>)Resources.getResource("HOLIDAY_CACHE_"+super.name);
+			holidayInfo = (List<JournalEntry>)Resources.getResource(resourceKey);
 			if(holidayInfo != null)
 				return holidayInfo;
 			else
@@ -267,7 +268,7 @@ public class Quests extends StdLibrary implements QuestManager
 					}
 				}
 				if((nameLine!=null)
-				&&((muddayLine!=null)||(dateLine!=null)))
+				&&((muddayLine!=null)||(dateLine!=null)||(!datedOnly)))
 				{
 					final JournalEntry entry = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
 					entry.subj(CMParms.combine(nameLine,2));
@@ -299,15 +300,17 @@ public class Quests extends StdLibrary implements QuestManager
 		}
 		synchronized(this)
 		{
-			if(!Resources.isResource("HOLIDAY_CACHE_"+super.name))
-				Resources.submitResource("HOLIDAY_CACHE_"+super.name, holidayInfo);
+			if(!Resources.isResource(resourceKey))
+				Resources.submitResource(resourceKey, holidayInfo);
 			return holidayInfo;
 		}
 	}
 
 	protected long parseRLDate(final String str)
 	{
-		final int x=str.indexOf('-');
+		int x=str.indexOf('-');
+		if(x<0)
+			x=str.indexOf('/');
 		if(x<0)
 			return 0;
 		final int month=CMath.s_parseIntExpression(str.substring(0,x));
@@ -323,7 +326,9 @@ public class Quests extends StdLibrary implements QuestManager
 
 	protected long parseMudDay(final String str)
 	{
-		final int x=str.indexOf('-');
+		int x=str.indexOf('-');
+		if(x<0)
+			x=str.indexOf('/');
 		if(x<0)
 			return 0;
 		final int mudmonth=CMath.s_parseIntExpression(str.substring(0,x));
@@ -344,8 +349,8 @@ public class Quests extends StdLibrary implements QuestManager
 	@Override
 	public String listHolidays(final String areaName)
 	{
-		final List<JournalEntry> entries = getHolidayEntries();
-		final StringBuffer str=new StringBuffer(L("^xDefined Quest Holidays^?\n\r"));
+		final List<JournalEntry> entries = getHolidayEntries(false);
+		final StringBuffer str=new StringBuffer(L("^xDefined Quest Holidays for @x1^?\n\r",areaName==null?"All":areaName));
 		str.append("^H#  "+CMStrings.padRight(L("Holiday Name"),20)+CMStrings.padRight(L("Area Name(s)"),50)+"^?\n\r");
 		int index = 0;
 		final String uAreaName = (areaName == null) ? null : areaName.toUpperCase();
@@ -501,7 +506,8 @@ public class Quests extends StdLibrary implements QuestManager
 		final Quest Q=fetchQuest("holidays");
 		if(Q!=null)
 			Q.setScript(holidayDefinition,true);
-		Resources.removeResource("HOLIDAY_CACHE_"+super.name);
+		Resources.removeResource("HOLIDAY_CACHE_"+super.name+"(true)");
+		Resources.removeResource("HOLIDAY_CACHE_"+super.name+"(false)");
 		return "Holiday deleted.";
 	}
 
@@ -739,10 +745,8 @@ public class Quests extends StdLibrary implements QuestManager
 				int showNumber=0;
 				promptText(mob,settings,"NAME",++showNumber,showFlag,"Holiday Name","It's, well, a name.",false);
 				showNumber=promptDuration(mob,settings,showNumber,showFlag);
-				if(settings.indexOfFirst("AREAGROUP")>=0)
-					promptText(mob,settings,"AREAGROUP",++showNumber,showFlag,"Areas List (?)","Area names are space separated, and words grouped using double-quotes",false);
-				if(settings.indexOfFirst("MOBGROUP")>=0)
-					promptText(mob,settings,"MOBGROUP",++showNumber,showFlag,"Mask for mobs that apply (?)",CMLib.masking().maskHelp("\n\r","disallow"),false);
+				promptText(mob,settings,"AREAGROUP",++showNumber,showFlag,"Areas List (?)","Area names are space separated, and words grouped using double-quotes",false);
+				promptText(mob,settings,"MOBGROUP",++showNumber,showFlag,"Mask for mobs that apply (?)",CMLib.masking().maskHelp("\n\r","disallow"),false);
 				promptText(mob,properties,"MOOD",++showNumber,showFlag,"Mood setting (?)","NULL/Empty (to not use a Mood), or one of: FORMAL, POLITE, HAPPY, SAD, ANGRY, RUDE, MEAN, PROUD, GRUMPY, EXCITED, SCARED, LONELY",true);
 				promptText(mob,behaviors,"AGGRESSIVE",++showNumber,showFlag,"Aggressive setting (?)",CMLib.help().getHelpText("Aggressive",mob,true)+"\n\r\n\r** NULL/Empty (to not use Aggressive **",true);
 				showNumber=genPricing(mob,stats,++showNumber,showFlag);
@@ -991,7 +995,8 @@ public class Quests extends StdLibrary implements QuestManager
 		final Quest Q=fetchQuest("holidays");
 		if(Q!=null)
 			Q.setScript(holidayDefinition,true);
-		Resources.removeResource("HOLIDAY_CACHE_"+super.name);
+		Resources.removeResource("HOLIDAY_CACHE_"+super.name+"(true)");
+		Resources.removeResource("HOLIDAY_CACHE_"+super.name+"(false)");
 		return "";
 	}
 
