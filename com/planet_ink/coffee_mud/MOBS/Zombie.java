@@ -49,7 +49,7 @@ public class Zombie extends Undead
 		setDisplayText("a zombie slowly moves about.");
 		setMoney(10);
 		basePhyStats.setWeight(30);
-		baseCharStats().setMyRace(CMClass.getRace("Undead"));
+		baseCharStats().setMyRace(CMClass.getRace("Zombie"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
 		basePhyStats().setDamage(8);
