@@ -12,8 +12,8 @@
  11. New StdMob type: CombatDummy, for testing.
  12. New spell: Wizard's Mark
  13. New prayer: Undeath Guard
- 14. GOTITEM Achievment type now supports multiple item masks.
- 15. New standard races: Ghast, Ghost, Mummy, Spectre, Vampire, and Zombie
+ 14. GOTITEM Achievement type now supports multiple item masks.
+ 15. New standard races: Ghast, Ghoul, Ghost, Mummy, Spectre, Vampire, and Zombie
  16. Undead race mixing now has its own special rules, which Prayer_Animate* will use
 
 # Build 5.10.2 Release 4/28/2023

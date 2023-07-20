@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /*
    Copyright 2023-2023 Bo Zimmerman
@@ -101,6 +102,7 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 	@Override
 	public void setMiscText(final String newMiscText)
 	{
+		super.setMiscText(newMiscText);
 		changes.clear();
 		previous.clear();
 		changes.putAll(CMParms.parseEQParms(newMiscText));
@@ -134,27 +136,81 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 	protected void finalize() throws Throwable
 	{
 		if(previous.size()>0)
-			undoEffect(null);
+			undoEffect(null, null);
 		super.finalize();
 	}
 
-	protected void undoEffect(final Integer identity)
+	protected Integer makeIdentity(final Physical affected)
+	{
+		if(affected == null)
+			return null;
+		if(affected instanceof MOB)
+		{
+			final MOB M = (MOB)affected;
+			if(M.isPlayer())
+				return Integer.valueOf(affected.Name().hashCode());
+		}
+		if(affected instanceof DBIdentifiable)
+		{
+			final DBIdentifiable id = (DBIdentifiable)affected;
+			if(id.databaseID().length()>0)
+				return Integer.valueOf(id.databaseID().hashCode());
+		}
+		return Integer.valueOf(affected.getClass().getName().hashCode());
+	}
+
+	protected void undoEffect(final Integer identity, final Physical affected)
 	{
 		if(previous.size()>0)
 		{
-			for(final Iterator<Quad<Integer,Modifiable,String,String>> q = previous.iterator();q.hasNext();)
+			synchronized(previous)
 			{
-				final Quad<Integer, Modifiable,String,String> Q = q.next();
-				if((identity == null)||(Q.first.equals(identity)))
+				if(previous.size()>0)
 				{
-					Q.second.setStat(Q.third, Q.fourth);
-					q.remove();
+					for(final Iterator<Quad<Integer,Modifiable,String,String>> q = previous.iterator();q.hasNext();)
+					{
+						final Quad<Integer, Modifiable,String,String> Q = q.next();
+						if((identity == null)||(Q.first.equals(identity)))
+						{
+							Q.second.setStat(Q.third, Q.fourth);
+							q.remove();
+						}
+					}
+					if(identity == null)
+						previous.clear();
+					if((previous.size()==0)&&(affected != null))
+						affected.delEffect(this);
 				}
 			}
-			if(identity == null)
-				previous.clear();
-			if((previous.size()==0)&&(affected != null))
-				affected.delEffect(this);
+		}
+	}
+
+	protected void addEffect(final Integer identity, final Physical affected)
+	{
+		if((changes.size()>0)
+		&&(affected != null)
+		&&(identity != null))
+		{
+
+			synchronized(previous)
+			{
+				for(final String changeStat : changes.keySet())
+				{
+					boolean found=false;
+					for(final Iterator<Quad<Integer,Modifiable,String,String>> q = previous.iterator();q.hasNext();)
+					{
+						final Quad<Integer, Modifiable,String,String> Q = q.next();
+						if(((identity == null)||(Q.first.equals(identity)))
+						&&(Q.third.equals(changeStat)))
+							found=true;
+					}
+					if(!found)
+					{
+						//Q.second.setStat(Q.third, Q.fourth);
+						//q.remove();
+					}
+				}
+			}
 		}
 	}
 
@@ -208,7 +264,7 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 			if( CMath.bset(trigger, TRIGGER_BEING_HIT)&&(msg.target()==affected))
 				reeval = true;
 			else
-			if( CMath.bset(trigger, TRIGGER_HITTING_WITH)&&(msg.source()==affected))
+			if( CMath.bset(trigger, TRIGGER_HITTING_WITH)&&(msg.tool()==affected))
 				reeval = true;
 			break;
 		case CMMsg.TYP_FILL:
