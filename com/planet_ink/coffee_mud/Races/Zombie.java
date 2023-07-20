@@ -48,42 +48,6 @@ public class Zombie extends Undead
 		return localizedStaticName;
 	}
 
-	private final String[]	racialAbilityNames			= { "WeakParalysis" };
-	private final int[]		racialAbilityLevels			= { 1 };
-	private final int[]		racialAbilityProficiencies	= { 100 };
-	private final boolean[]	racialAbilityQuals			= { false };
-	private final String[]	racialAbilityParms			= { "" };
-
-	@Override
-	protected String[] racialAbilityNames()
-	{
-		return racialAbilityNames;
-	}
-
-	@Override
-	protected int[] racialAbilityLevels()
-	{
-		return racialAbilityLevels;
-	}
-
-	@Override
-	protected int[] racialAbilityProficiencies()
-	{
-		return racialAbilityProficiencies;
-	}
-
-	@Override
-	protected boolean[] racialAbilityQuals()
-	{
-		return racialAbilityQuals;
-	}
-
-	@Override
-	public String[] racialAbilityParms()
-	{
-		return racialAbilityParms;
-	}
-
 	private final String[]	racialEffectNames			= { "Spell_CauseStink" };
 	private final int[]		racialEffectLevels			= { 1 };
 	private final String[]	racialEffectParms			= { "" };
