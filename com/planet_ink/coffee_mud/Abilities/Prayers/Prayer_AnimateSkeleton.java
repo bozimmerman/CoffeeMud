@@ -93,7 +93,8 @@ public class Prayer_AnimateSkeleton extends Prayer
 		super.unInvoke();
 		if((P instanceof MOB)&&(this.canBeUninvoked)&&(this.unInvoked))
 		{
-			if((!P.amDestroyed())&&(((MOB)P).amFollowing()==null))
+			if((!P.amDestroyed())
+			&&(((MOB)P).amFollowing()==null))
 			{
 				final Room R=CMLib.map().roomLocation(P);
 				if(!CMLib.law().doesHavePriviledgesHere(invoker(), R))
@@ -144,42 +145,27 @@ public class Prayer_AnimateSkeleton extends Prayer
 		return (int)Math.round(lvl);
 	}
 
-	public void makeSkeletonFrom(final Room R, final DeadBody body, final MOB mob, final int level)
+	protected MOB makeUndeadFrom(final Room R, final DeadBody body, final Race bodyR, final MOB mob, final int level)
 	{
-		String race="a";
-		if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
-		{
-			final Race oldRace=body.charStats().getMyRace();
-			race=CMLib.english().startWithAorAn(oldRace.name()).toLowerCase();
-		}
 		String description=body.getMobDescription();
 		final String undeadDesc=L("In undeath, only its bones and a few tiny clinging bits of flesh remain.");
 		if(description.trim().length()==0)
 			description=undeadDesc;
 		else
 			description+="\n\r"+undeadDesc;
-		final String undeadRace = ((body.charStats()!=null) && (body.charStats().getMyRace() != null) && (body.charStats().getMyRace().useRideClass())) ?
-				"GenRideableUndead" : "GenUndead";
-		final MOB newMOB=CMClass.getMOB(undeadRace);
-		if(body.name().indexOf(L("skeleton"))<0)
-		{
-			newMOB.setName(L("@x1 skeleton",race));
-			newMOB.setDescription(description);
-			newMOB.setDisplayText(L("@x1 skeleton is here",race));
-		}
-		if(mob == null)
-			newMOB.basePhyStats().setLevel(body.phyStats().level()+level);
-		else
-			newMOB.basePhyStats().setLevel(getUndeadLevel(mob,level,body.phyStats().level()));
+
+		final String undeadMobClassId = bodyR.useRideClass() ?"GenRideableUndead" : "GenUndead";
+		final MOB newMOB=CMClass.getMOB(undeadMobClassId);
+		newMOB.setDescription(description);
+		newMOB.basePhyStats().setLevel(level);
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
-		newMOB.baseCharStats().setMyRace(CMClass.getRace("Skeleton"));
-		newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
-		final Ability P=CMClass.getAbility("Prop_StatTrainer");
-		if(P!=null)
-		{
-			P.setMiscText("NOTEACH STR=16 INT=10 WIS=10 CON=10 DEX=15 CHA=2");
-			newMOB.addNonUninvokableEffect(P);
-		}
+		//newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
+		final Race undeadR = CMLib.utensils().getMixedRace(bodyR.ID(), "Skeleton", false);
+		newMOB.setName(CMLib.english().startWithAorAn(undeadR.name()));
+		newMOB.setDisplayText(L("@x1 is here",newMOB.name()));
+		newMOB.baseCharStats().setMyRace(undeadR);
+		newMOB.charStats().setMyRace(undeadR);
+		undeadR.startRacing(newMOB, false);
 		newMOB.recoverCharStats();
 		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
@@ -187,20 +173,23 @@ public class Prayer_AnimateSkeleton extends Prayer
 		newMOB.baseState().setHitPoints(15*newMOB.basePhyStats().level());
 		newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
 		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
+		newMOB.baseState().setMana(100);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 		newMOB.addTattoo("SYSTEM_SUMMONED");
-		newMOB.baseState().setMana(0);
-		final Behavior B=CMClass.getBehavior("Aggressive");
-		if((mob!=null)&&(B!=null))
-		{
-			B.setParms("+NAMES \"-"+mob.Name()+"\" -LEVEL +>"+newMOB.basePhyStats().level());
-			newMOB.addBehavior(B);
-		}
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
+		Behavior B=CMClass.getBehavior("CombatAbilities");
+		if(B!=null)
+			newMOB.addBehavior(B);
+		B=CMClass.getBehavior("Aggressive");
+		if((B!=null)&&(mob!=null))
+		{
+			B.setParms("CHECKLEVEL +NAMES \"-"+mob.Name()+"\"");
+			newMOB.addBehavior(B);
+		}
 		newMOB.setMiscText(newMOB.text());
 		newMOB.bringToLife(R,true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
@@ -226,16 +215,8 @@ public class Prayer_AnimateSkeleton extends Prayer
 			else
 				it++;
 		}
-		body.destroy();
 		newMOB.setStartRoom(null);
-		MOB invokerM = mob;
-		if(invokerM == null)
-			invokerM = invoker();
-		if(invokerM == null)
-			invokerM = newMOB;
-		beneficialAffect(invokerM,newMOB,0,0);
-		R.show(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> begin(s) to rise!"));
-		R.recoverRoomStats();
+		return newMOB;
 	}
 
 	@Override
@@ -257,8 +238,10 @@ public class Prayer_AnimateSkeleton extends Prayer
 		}
 
 		final DeadBody body=(DeadBody)target;
-		if(body.isPlayerCorpse()||(body.getMobName().length()==0)
-		||((body.charStats()!=null)&&(body.charStats().getMyRace()!=null)&&(body.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))))
+		final Race bodyR = (body.charStats()!=null) && (body.charStats().getMyRace() != null) ? body.charStats().getMyRace() : CMClass.getRace("Human");
+		if(body.isPlayerCorpse()
+		||(body.getMobName().length()==0)
+		||(bodyR.racialCategory().equalsIgnoreCase("Undead")))
 		{
 			mob.tell(L("You can't animate that."));
 			return false;
@@ -274,7 +257,12 @@ public class Prayer_AnimateSkeleton extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				makeSkeletonFrom(mob.location(),body,mob,1);
+				final int undeadLevel = getUndeadLevel(mob,1,body.phyStats().level());
+				final MOB newMOB=this.makeUndeadFrom(mob.location(), body, bodyR, mob, undeadLevel);
+				beneficialAffect(mob,newMOB,0,0);
+				body.destroy();
+				mob.location().show(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> begin(s) to rise!"));
+				mob.location().recoverRoomStats();
 			}
 		}
 		else

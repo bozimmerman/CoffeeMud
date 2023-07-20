@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2023 Bo Zimmerman
+   Copyright 2023-2023 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skeleton extends Undead
+public class Zombie extends Undead
 {
 	@Override
 	public String ID()
 	{
-		return "Skeleton";
+		return "Zombie";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Skeleton");
+	private final static String localizedStaticName = CMLib.lang().L("Zombie");
 
 	@Override
 	public String name()
@@ -48,25 +48,78 @@ public class Skeleton extends Undead
 		return localizedStaticName;
 	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	private final String[]	racialAbilityNames			= { "WeakParalysis" };
+	private final int[]		racialAbilityLevels			= { 1 };
+	private final int[]		racialAbilityProficiencies	= { 100 };
+	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "" };
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
+	private final String[]	racialEffectNames			= { "Spell_CauseStink" };
+	private final int[]		racialEffectLevels			= { 1 };
+	private final String[]	racialEffectParms			= { "" };
+
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
+	}
 
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_SAVE_PIERCE, affectableStats.getStat(CharStats.STAT_SAVE_PIERCE)+50);
-		affectableStats.setStat(CharStats.STAT_SAVE_SLASH, affectableStats.getStat(CharStats.STAT_SAVE_SLASH)+50);
-		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,16);
-		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,15);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,20);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,3);
 		affectableStats.setRacialStat(CharStats.STAT_CHARISMA,2);
+		affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING)+50);
 	}
 
 	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_SAVE_PIERCE, affectableStats.getStat(CharStats.STAT_SAVE_PIERCE)-50);
-		affectableStats.setStat(CharStats.STAT_SAVE_SLASH, affectableStats.getStat(CharStats.STAT_SAVE_SLASH)-50);
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectedMOB.baseCharStats().getStat(CharStats.STAT_STRENGTH));
 		affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectedMOB.baseCharStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ));
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectedMOB.baseCharStats().getStat(CharStats.STAT_DEXTERITY));
@@ -76,34 +129,10 @@ public class Skeleton extends Undead
 	}
 
 	@Override
-	public DeadBody getCorpseContainer(final MOB mob, final Room room)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		final DeadBody body = super.getCorpseContainer(mob, room);
-		if(body != null)
-		{
-			body.setMaterial(RawMaterial.RESOURCE_BONE);
-		}
-		return body;
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 	}
 
-	@Override
-	public List<RawMaterial> myResources()
-	{
-		synchronized(resources)
-		{
-			if(resources.size()==0)
-			{
-				for(int i=0;i<2;i++)
-				{
-					resources.addElement(makeResource
-						(L("knuckle bone"),RawMaterial.RESOURCE_BONE));
-				}
-				resources.addElement(makeResource
-						(L("a skull"),RawMaterial.RESOURCE_BONE));
-				resources.addElement(makeResource
-						(L("a bone"),RawMaterial.RESOURCE_BONE));
-			}
-		}
-		return resources;
-	}
 }

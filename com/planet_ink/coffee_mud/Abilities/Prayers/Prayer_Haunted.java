@@ -114,21 +114,30 @@ public class Prayer_Haunted extends Prayer
 		{
 			final Room R=(Room)affected;
 			DeadBody B=null;
+			Race bR= null;
 			for(int i=0;i<R.numItems();i++)
 			{
 				final Item I=R.getItem(i);
 				if((I instanceof DeadBody)
 				&&(I.container()==null)
 				&&(!((DeadBody)I).isPlayerCorpse())
+				&&((((DeadBody)I).charStats()!=null))
 				&&(((DeadBody)I).getMobName().length()>0))
 				{
 					B=(DeadBody)I;
+					bR=((DeadBody)I).charStats().getMyRace();
 					break;
 				}
 			}
 			if(B!=null)
 			{
-				new Prayer_AnimateGhost().makeGhostFrom(R,B,null,level);
+				final Prayer_AnimateGhost ghostA=(Prayer_AnimateGhost)CMClass.getAbility("Prayer_AnimateGhost");
+				final MOB newMOB = ghostA.makeUndeadFrom(R,B,bR,null,level);
+				ghostA.beneficialAffect(invoker(), newMOB, 0, 0);
+				newMOB.basePhyStats().setDisposition(PhyStats.IS_INVISIBLE);
+				final Behavior B1=CMClass.getBehavior("Thiefness");
+				if(B1!=null)
+					newMOB.addBehavior(B1);
 				B.destroy();
 				level+=5;
 				numDone++;

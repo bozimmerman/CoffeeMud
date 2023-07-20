@@ -118,6 +118,36 @@ public class CMStrings
 	}
 
 	/**
+	 * Splits a string into single spaceless word lengths where each
+	 * entry starts with a capital letter of the alphabet.
+	 *
+	 * @param str the string to split
+	 * @return the capitalized word-lengths, minus spaces
+	 */
+	public final static String[] splitByCapitals(final String str)
+	{
+		if((str == null)||(str.length()==0))
+			return new String[0];
+		final List<String> caps = new ArrayList<String>();
+		final StringBuilder word = new StringBuilder(str.charAt(0));
+		for(int i=1;i<str.length();i++)
+		{
+			final char c = str.charAt(i);
+			if(Character.isLetter(c) && Character.isUpperCase(c))
+			{
+				if(word.length()>0)
+					caps.add(word.toString());
+				word.setLength(0);
+			}
+			if(!Character.isWhitespace(c))
+				word.append(c);
+		}
+		if(word.length()>0)
+			caps.add(word.toString());
+		return caps.toArray(new String[caps.size()]);
+	}
+
+	/**
 	 * Builds a string consisting entirely of the given character,
 	 * the given number of times in a row.
 	 * @param chr1 the character to repeat

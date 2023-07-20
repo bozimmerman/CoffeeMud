@@ -93,7 +93,8 @@ public class Prayer_AnimateGhost extends Prayer
 		super.unInvoke();
 		if((P instanceof MOB)&&(this.canBeUninvoked)&&(this.unInvoked))
 		{
-			if((!P.amDestroyed())&&(((MOB)P).amFollowing()==null))
+			if((!P.amDestroyed())
+			&&(((MOB)P).amFollowing()==null))
 			{
 				final Room R=CMLib.map().roomLocation(P);
 				if(!CMLib.law().doesHavePriviledgesHere(invoker(), R))
@@ -144,11 +145,8 @@ public class Prayer_AnimateGhost extends Prayer
 		return (int)Math.round(lvl);
 	}
 
-	public void makeGhostFrom(final Room R, final DeadBody body, final MOB mob, final int level)
+	protected MOB makeUndeadFrom(final Room R, final DeadBody body, final Race bodyR, final MOB mob, final int level)
 	{
-		String race="a";
-		if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
-			race=CMLib.english().startWithAorAn(body.charStats().getMyRace().name()).toLowerCase();
 		String description=body.getMobDescription();
 		final String undeadDesc=L("In undeath, it become a barely visible incorporeal spirit whose cold evil lets it touch the material world.");
 		if(description.trim().length()==0)
@@ -157,26 +155,18 @@ public class Prayer_AnimateGhost extends Prayer
 			description+="\n\r"+undeadDesc;
 
 		final MOB newMOB=CMClass.getMOB("GenUndead");
-		newMOB.setName(race+((mob==null)?" poltergeist":" ghost"));
 		newMOB.setDescription(description);
-		newMOB.setDisplayText(L("@x1 is here",newMOB.Name()));
-		if(mob == null)
-			newMOB.basePhyStats().setLevel(body.phyStats().level());
-		else
-			newMOB.basePhyStats().setLevel(getUndeadLevel(mob,level,body.phyStats().level()));
+		newMOB.basePhyStats().setLevel(level);
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
-		newMOB.baseCharStats().setMyRace(CMClass.getRace("Spirit"));
-		newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
-		final Ability P=CMClass.getAbility("Prop_StatTrainer");
-		if(P!=null)
-		{
-			P.setMiscText("NOTEACH STR=2 INT=10 WIS=10 CON=10 DEX=35 CHA=2");
-			newMOB.addNonUninvokableEffect(P);
-		}
+		//newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
+		final Race undeadR = CMLib.utensils().getMixedRace(bodyR.ID(), "Ghost", false);
+		newMOB.setName(CMLib.english().startWithAorAn(undeadR.name()));
+		newMOB.setDisplayText(L("@x1 is here",newMOB.name()));
+		newMOB.baseCharStats().setMyRace(undeadR);
+		newMOB.charStats().setMyRace(undeadR);
+		undeadR.startRacing(newMOB, false);
 		newMOB.recoverCharStats();
 		newMOB.basePhyStats().setAttackAdjustment(10);
-		newMOB.basePhyStats().setDisposition(PhyStats.IS_FLYING|((mob==null)?PhyStats.IS_INVISIBLE:0));
-		newMOB.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_INVISIBLE);
 		newMOB.basePhyStats().setDamage(4);
 		CMLib.factions().setAlignment(newMOB,Faction.Align.EVIL);
 		newMOB.baseState().setHitPoints(10*newMOB.basePhyStats().level());
@@ -185,40 +175,29 @@ public class Prayer_AnimateGhost extends Prayer
 		newMOB.baseState().setMana(100);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 		newMOB.addTattoo("SYSTEM_SUMMONED");
-		final Ability A=CMClass.getAbility("Immunities");
-		if(A!=null)
-		{
-			A.setMiscText("all");
-			newMOB.addNonUninvokableEffect(A);
-		}
-		Behavior B=CMClass.getBehavior("Aggressive");
-		if((B!=null)&&(mob!=null))
-		{
-			B.setParms("+NAMES \"-"+mob.Name()+"\" -LEVEL +>"+newMOB.basePhyStats().level());
-			newMOB.addBehavior(B);
-		}
-		newMOB.recoverCharStats();
-		newMOB.recoverPhyStats();
-		if(mob==null)
-		{
-			B=CMClass.getBehavior("Thiefness");
-			if(B!=null)
-				newMOB.addBehavior(B);
-		}
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
+		Behavior B=CMClass.getBehavior("CombatAbilities");
+		if(B!=null)
+			newMOB.addBehavior(B);
+		B=CMClass.getBehavior("Aggressive");
+		if((B!=null)&&(mob!=null))
+		{
+			B.setParms("CHECKLEVEL +NAMES \"-"+mob.Name()+"\"");
+			newMOB.addBehavior(B);
+		}
 		newMOB.setMiscText(newMOB.text());
 		newMOB.bringToLife(R,true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.setMoneyVariation(0);
 		//R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 		int it=0;
-		while(it<newMOB.location().numItems())
+		while(it<R.numItems())
 		{
-			final Item item=newMOB.location().getItem(it);
+			final Item item=R.getItem(it);
 			if((item!=null)&&(item.container()==body))
 			{
 				final CMMsg msg2=CMClass.getMsg(newMOB,body,item,CMMsg.MSG_GET,null);
@@ -235,11 +214,8 @@ public class Prayer_AnimateGhost extends Prayer
 			else
 				it++;
 		}
-		body.destroy();
 		newMOB.setStartRoom(null);
-		beneficialAffect(mob,newMOB,0,0);
-		R.show(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> begin(s) to rise!"));
-		R.recoverRoomStats();
+		return newMOB;
 	}
 
 	@Override
@@ -261,8 +237,10 @@ public class Prayer_AnimateGhost extends Prayer
 		}
 
 		final DeadBody body=(DeadBody)target;
-		if(body.isPlayerCorpse()||(body.getMobName().length()==0)
-		||((body.charStats()!=null)&&(body.charStats().getMyRace()!=null)&&(body.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))))
+		final Race bodyR = (body.charStats()!=null) && (body.charStats().getMyRace() != null) ? body.charStats().getMyRace() : CMClass.getRace("Human");
+		if(body.isPlayerCorpse()
+		||(body.getMobName().length()==0)
+		||(bodyR.racialCategory().equalsIgnoreCase("Undead")))
 		{
 			mob.tell(L("You can't animate that."));
 			return false;
@@ -284,7 +262,13 @@ public class Prayer_AnimateGhost extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				makeGhostFrom(mob.location(),body,mob,14);
+				final int undeadLevel = this.getUndeadLevel(mob, 14, body.phyStats().level());
+				final MOB newMOB = makeUndeadFrom(mob.location(),body,bodyR,mob,undeadLevel);
+				body.destroy();
+				beneficialAffect(mob,newMOB,0,0);
+				body.destroy();
+				mob.location().show(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> begin(s) to rise!"));
+				mob.location().recoverRoomStats();
 			}
 		}
 		else

@@ -165,15 +165,18 @@ public class Prayer_AnimateDead extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final String undeadRace = ((body.charStats()!=null) && (body.charStats().getMyRace() != null) && (body.charStats().getMyRace().useRideClass())) ?
+				final String mobRaceID = (body.charStats()!=null) && (body.charStats().getMyRace() != null) ? body.charStats().getMyRace().ID() : "Human";
+				final String undeadMobID = ((body.charStats()!=null) && (body.charStats().getMyRace() != null) && (body.charStats().getMyRace().useRideClass())) ?
 						"GenRideableUndead" : "GenUndead";
-				final MOB newMOB=CMClass.getMOB(undeadRace);
+				final Race undeadR = CMLib.utensils().getMixedRace(mobRaceID, "Undead", false);
+				final MOB newMOB=CMClass.getMOB(undeadMobID);
 				newMOB.setName(L("@x1 zombie",realName));
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("");
 				newMOB.basePhyStats().setLevel(body.phyStats().level()+((super.getX1Level(mob)+super.getXLEVELLevel(mob))/2));
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
-				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
+				newMOB.baseCharStats().setMyRace(undeadR);
+				newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 				newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
 				final Ability P=CMClass.getAbility("Prop_StatTrainer");
 				if(P!=null)
@@ -191,9 +194,9 @@ public class Prayer_AnimateDead extends Prayer
 				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 				newMOB.baseState().setMana(0);
 				final Behavior B=CMClass.getBehavior("Aggressive");
-				if(B!=null)
+				if((B!=null)&&(mob!=null))
 				{
-					B.setParms("+NAMES \"-"+mob.Name()+"\" -LEVEL +>"+newMOB.basePhyStats().level());
+					B.setParms("CHECKLEVEL +NAMES \"-"+mob.Name()+"\"");
 					newMOB.addBehavior(B);
 				}
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));

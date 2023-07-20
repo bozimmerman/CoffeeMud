@@ -93,7 +93,8 @@ public class Prayer_AnimateVampire extends Prayer
 		super.unInvoke();
 		if((P instanceof MOB)&&(this.canBeUninvoked)&&(this.unInvoked))
 		{
-			if((!P.amDestroyed())&&(((MOB)P).amFollowing()==null))
+			if((!P.amDestroyed())
+			&&(((MOB)P).amFollowing()==null))
 			{
 				final Room R=CMLib.map().roomLocation(P);
 				if(!CMLib.law().doesHavePriviledgesHere(invoker(), R))
@@ -161,6 +162,80 @@ public class Prayer_AnimateVampire extends Prayer
 		return (int)Math.round(lvl);
 	}
 
+	protected MOB makeUndeadFrom(final Room R, final DeadBody body, final Race bodyR, final MOB mob, final int level)
+	{
+		String description=body.getMobDescription();
+		final String undeadDesc=L("In undeath, it appears much as it did in life, but with slightly paler skin, and soulless eyes.");
+		if(description.trim().length()==0)
+			description=undeadDesc;
+		else
+			description+="\n\r"+undeadDesc;
+
+		final String undeadMobClassId = bodyR.useRideClass() ?"GenRideableUndead" : "GenUndead";
+		final MOB newMOB=CMClass.getMOB(undeadMobClassId);
+		newMOB.setDescription(description);
+		newMOB.basePhyStats().setLevel(level);
+		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
+		//newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
+		final Race undeadR = CMLib.utensils().getMixedRace(bodyR.ID(), "Vampire", false);
+		newMOB.setName(CMLib.english().startWithAorAn(undeadR.name()));
+		newMOB.setDisplayText(L("@x1 is here",newMOB.name()));
+		newMOB.baseCharStats().setMyRace(undeadR);
+		newMOB.charStats().setMyRace(undeadR);
+		undeadR.startRacing(newMOB, false);
+		newMOB.recoverCharStats();
+		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
+		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
+		CMLib.factions().setAlignment(newMOB,Faction.Align.EVIL);
+		newMOB.baseState().setHitPoints(30*newMOB.basePhyStats().level());
+		newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
+		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
+		newMOB.baseState().setMana(100);
+		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+		newMOB.addTattoo("SYSTEM_SUMMONED");
+		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+		newMOB.recoverCharStats();
+		newMOB.recoverPhyStats();
+		newMOB.recoverMaxState();
+		newMOB.resetToMaxState();
+		Behavior B=CMClass.getBehavior("CombatAbilities");
+		if(B!=null)
+			newMOB.addBehavior(B);
+		B=CMClass.getBehavior("Aggressive");
+		if((B!=null)&&(mob!=null))
+		{
+			B.setParms("CHECKLEVEL +NAMES \"-"+mob.Name()+"\"");
+			newMOB.addBehavior(B);
+		}
+		newMOB.setMiscText(newMOB.text());
+		newMOB.bringToLife(R,true);
+		CMLib.beanCounter().clearZeroMoney(newMOB,null);
+		newMOB.setMoneyVariation(0);
+		//R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
+		int it=0;
+		while(it<R.numItems())
+		{
+			final Item item=R.getItem(it);
+			if((item!=null)&&(item.container()==body))
+			{
+				final CMMsg msg2=CMClass.getMsg(newMOB,body,item,CMMsg.MSG_GET,null);
+				newMOB.location().send(newMOB,msg2);
+				final CMMsg msg4=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_GET,null);
+				newMOB.location().send(newMOB,msg4);
+				final CMMsg msg3=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_WEAR,null);
+				newMOB.location().send(newMOB,msg3);
+				if(!newMOB.isMine(item))
+					it++;
+				else
+					it=0;
+			}
+			else
+				it++;
+		}
+		newMOB.setStartRoom(null);
+		return newMOB;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -180,21 +255,14 @@ public class Prayer_AnimateVampire extends Prayer
 		}
 
 		final DeadBody body=(DeadBody)target;
-		if(body.isPlayerCorpse()||(body.getMobName().length()==0)
-		||((body.charStats()!=null)&&(body.charStats().getMyRace()!=null)&&(body.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))))
+		final Race bodyR = (body.charStats()!=null) && (body.charStats().getMyRace() != null) ? body.charStats().getMyRace() : CMClass.getRace("Human");
+		if(body.isPlayerCorpse()
+		||(body.getMobName().length()==0)
+		||(bodyR.racialCategory().equalsIgnoreCase("Undead")))
 		{
 			mob.tell(L("You can't animate that."));
 			return false;
 		}
-		String race="a";
-		if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
-			race=CMLib.english().startWithAorAn(body.charStats().getMyRace().name()).toLowerCase();
-		String description=body.getMobDescription();
-		final String undeadDesc=L("In undeath, it appears much as it did in life, but with slightly paler skin, and soulless eyes.");
-		if(description.trim().length()==0)
-			description=undeadDesc;
-		else
-			description+="\n\r"+undeadDesc;
 
 		if(body.basePhyStats().level()<25)
 		{
@@ -214,83 +282,10 @@ public class Prayer_AnimateVampire extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final String undeadRace = ((body.charStats()!=null) && (body.charStats().getMyRace() != null) && (body.charStats().getMyRace().useRideClass())) ?
-						"GenRideableUndead" : "GenUndead";
-				final MOB newMOB=CMClass.getMOB(undeadRace);
-				newMOB.setName(L("@x1 vampire",race));
-				newMOB.setDescription(description);
-				newMOB.setDisplayText(L("@x1 vampire is here",race));
-				newMOB.basePhyStats().setLevel(getUndeadLevel(mob,19,body.basePhyStats().level()));
-				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
-				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
-				newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
-				final Ability P=CMClass.getAbility("Prop_StatTrainer");
-				if(P!=null)
-				{
-					P.setMiscText("NOTEACH STR=22 INT=15 WIS=15 CON=10 DEX=22 CHA=20");
-					newMOB.addNonUninvokableEffect(P);
-				}
-				newMOB.basePhyStats().setDisposition(PhyStats.IS_FLYING);
-				newMOB.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_INVISIBLE);
-				newMOB.recoverCharStats();
-				newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
-				newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
-				CMLib.factions().setAlignment(newMOB,Faction.Align.EVIL);
-				newMOB.baseState().setHitPoints(30*newMOB.basePhyStats().level());
-				newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
-				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
-				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
-				newMOB.addTattoo("SYSTEM_SUMMONED");
-				newMOB.baseState().setMana(100);
-				Behavior B=CMClass.getBehavior("Aggressive");
-				if(B!=null)
-				{
-					B.setParms("+NAMES \"-"+mob.Name()+"\" -LEVEL +>"+newMOB.basePhyStats().level());
-					newMOB.addBehavior(B);
-				}
-				newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
-				newMOB.recoverCharStats();
-				newMOB.recoverPhyStats();
-				newMOB.recoverMaxState();
-				newMOB.resetToMaxState();
-
-				final Ability A=CMClass.getAbility("Prop_WeaponImmunity");
-				if(A!=null)
-				{
-					A.setMiscText("+ALL -WOODEN -MAGICSKILLS");
-					newMOB.addNonUninvokableEffect(A);
-				}
-				newMOB.addAbility(CMClass.getAbility("Undead_EnergyDrain"));
-				B=CMClass.getBehavior("CombatAbilities");
-				newMOB.addBehavior(B);
-				newMOB.setMiscText(newMOB.text());
-				newMOB.bringToLife(mob.location(),true);
-				CMLib.beanCounter().clearZeroMoney(newMOB,null);
-				newMOB.setMoneyVariation(0);
-				//newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
-				int it=0;
-				while(it<newMOB.location().numItems())
-				{
-					final Item item=newMOB.location().getItem(it);
-					if((item!=null)&&(item.container()==body))
-					{
-						final CMMsg msg2=CMClass.getMsg(newMOB,body,item,CMMsg.MSG_GET,null);
-						newMOB.location().send(newMOB,msg2);
-						final CMMsg msg4=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_GET,null);
-						newMOB.location().send(newMOB,msg4);
-						final CMMsg msg3=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_WEAR,null);
-						newMOB.location().send(newMOB,msg3);
-						if(!newMOB.isMine(item))
-							it++;
-						else
-							it=0;
-					}
-					else
-						it++;
-				}
-				body.destroy();
-				newMOB.setStartRoom(null);
+				final int undeadLevel = getUndeadLevel(mob,19,body.phyStats().level());
+				final MOB newMOB = this.makeUndeadFrom(mob.location(), body, bodyR, mob, undeadLevel);
 				beneficialAffect(mob,newMOB,0,0);
+				body.destroy();
 				mob.location().show(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> begin(s) to rise!"));
 				mob.location().recoverRoomStats();
 			}

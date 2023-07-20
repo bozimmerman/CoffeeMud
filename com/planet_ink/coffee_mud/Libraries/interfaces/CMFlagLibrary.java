@@ -854,6 +854,13 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isUndead(MOB mob);
 
 	/**
+	 * Returns whether the given race is of an undead race type.
+	 * @param R the race to check
+	 * @return true if it is an undead type, false otherwise
+	 */
+	public boolean isUndead(final Race R);
+
+	/**
 	 * Returns whether the given race is of an egg-laying type
 	 * @param race the race to check
 	 * @return true if it lays eggs, false otherwise

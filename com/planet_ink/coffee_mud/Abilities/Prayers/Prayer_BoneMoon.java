@@ -110,23 +110,26 @@ public class Prayer_BoneMoon extends Prayer
 		{
 			final Room R=(Room)affected;
 			DeadBody B=null;
+			Race rB=null;
 			for(int i=0;i<R.numItems();i++)
 			{
 				final Item I=R.getItem(i);
 				if((I instanceof DeadBody)
 				&&(I.container()==null)
 				&&(!((DeadBody)I).isPlayerCorpse())
+				&&(((DeadBody)I).charStats()!=null)
 				&&(((DeadBody)I).getMobName().length()>0))
 				{
 					B=(DeadBody)I;
+					rB=((DeadBody)I).charStats().getMyRace();
 					break;
 				}
 			}
 			if(B!=null)
 			{
-				Prayer_AnimateSkeleton skA = (Prayer_AnimateSkeleton)CMClass.getAbility("Prayer_AnimateSkeleton");
-				skA.setInvoker(invoker());
-				skA.makeSkeletonFrom(R,B,null,level);
+				final Prayer_AnimateSkeleton skA = (Prayer_AnimateSkeleton)CMClass.getAbility("Prayer_AnimateSkeleton");
+				final MOB newMOB=skA.makeUndeadFrom(R, B, rB, invoker(), level);
+				skA.beneficialAffect(invoker(), newMOB, 0, 0);
 				B.destroy();
 				level+=3;
 			}

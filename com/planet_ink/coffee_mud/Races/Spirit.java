@@ -171,31 +171,31 @@ public class Spirit extends Undead
 	private final String[]	racialAbilityParms			= { "", "" };
 
 	@Override
-	public String[] racialAbilityNames()
+	protected String[] racialAbilityNames()
 	{
 		return racialAbilityNames;
 	}
 
 	@Override
-	public int[] racialAbilityLevels()
+	protected int[] racialAbilityLevels()
 	{
 		return racialAbilityLevels;
 	}
 
 	@Override
-	public int[] racialAbilityProficiencies()
+	protected int[] racialAbilityProficiencies()
 	{
 		return racialAbilityProficiencies;
 	}
 
 	@Override
-	public boolean[] racialAbilityQuals()
+	protected boolean[] racialAbilityQuals()
 	{
 		return racialAbilityQuals;
 	}
 
 	@Override
-	public String[] racialAbilityParms()
+	protected String[] racialAbilityParms()
 	{
 		return racialAbilityParms;
 	}

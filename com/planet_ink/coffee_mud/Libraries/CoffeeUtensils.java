@@ -2765,11 +2765,23 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	@Override
 	public Race getMixedRace(final String motherRaceID, final String fatherRaceID, final boolean ignoreRules)
 	{
-		if(motherRaceID.indexOf(fatherRaceID)>=0)
-			return CMClass.getRace(motherRaceID);
+		final Race motherR=CMClass.getRace(motherRaceID);
+		final Race fatherR=CMClass.getRace(fatherRaceID);
+		if(motherR != null)
+		{
+			if((fatherR == null) || (motherRaceID.indexOf(fatherRaceID)>=0))
+				return motherR;
+		}
 		else
-		if(fatherRaceID.indexOf(motherRaceID)>=0)
-			return CMClass.getRace(fatherRaceID);
+		if(fatherR != null)
+			return fatherR;
+		if(fatherR != null)
+		{
+			if(fatherRaceID.indexOf(motherRaceID)>=0)
+				return fatherR;
+		}
+		else
+			return motherR;
 
 		if(!ignoreRules)
 		{
@@ -2811,9 +2823,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 								return R;
 							else
 							{
-								final Race FIRSTR=CMClass.getRace(motherRaceID);
-								final Race SECONDR=CMClass.getRace(fatherRaceID);
-								R=FIRSTR.mixRace(SECONDR,raceID,chk);
+								R=motherR.mixRace(fatherR,raceID,chk);
 								if(R.isGeneric() && (!R.ID().equals(motherRaceID))&& (!R.ID().equals(fatherRaceID)))
 								{
 									CMClass.addRace(R);
@@ -2827,59 +2837,68 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
 		}
 		Race R=null;
-		if(motherRaceID.equalsIgnoreCase("Lich")||fatherRaceID.equalsIgnoreCase("Lich"))
+		final boolean motherIsUndead = CMLib.flags().isUndead(motherR);
+		final boolean fatherIsUndead = CMLib.flags().isUndead(fatherR);
+		if(motherIsUndead || fatherIsUndead)
 		{
-			final String halfRace=(motherRaceID.equalsIgnoreCase("Lich")?fatherRaceID:motherRaceID);
-			// this is wrong, but liches can NOT procreate, so its OK
-			if(halfRace.toLowerCase().endsWith("lich"))
-				return CMClass.getRace(halfRace);
-			final Race lichR = CMClass.getRace("Lich");
-			final Race halfR=CMClass.getRace(halfRace);
+			if(motherIsUndead && fatherIsUndead)
+				return CMClass.getRace("Undead"); // this is basically undefined
+			final String halfRaceID=(motherIsUndead?fatherRaceID:motherRaceID);
+			// this is wrong, but undead can NOT procreate, so its OK
+			Race undeadR = motherIsUndead?motherR:fatherR;
+			final Race halfR = fatherIsUndead?motherR:fatherR;
 			if(halfR==null)
-				return lichR;
-			final String mixRaceID=halfRace+"Lich";
-			final String mixRaceName=halfR.name().substring(0,halfRace.length()-1)+"lich";
+				return undeadR;
+			if(halfR.racialCategory().equalsIgnoreCase("Humanoid"))
+				return undeadR;
+			final String mixRaceID=undeadR.ID()+halfRaceID;
+			final String mixRaceName;
+			if(undeadR.ID().equals("Lich"))
+				mixRaceName=halfR.name().substring(0,halfR.name().length()-1)+"lich";
+			else
+				mixRaceName=undeadR.name()+"-"+halfR.name();
 			R=CMClass.getRace(mixRaceID);
 			if(R!=null)
 				return R;
 			/*
-			boolean bodyMatch = lichR.forbiddenWornBits() == halfR.forbiddenWornBits();
-			for(int i=0;i<lichR.bodyMask().length;i++)
-				bodyMatch = bodyMatch && (lichR.bodyMask()[i] == halfR.bodyMask()[i]);
+			boolean bodyMatch = undeadR.forbiddenWornBits() == halfR.forbiddenWornBits();
+			for(int i=0;i<undeadR.bodyMask().length;i++)
+				bodyMatch = bodyMatch && (undeadR.bodyMask()[i] == halfR.bodyMask()[i]);
 			if(bodyMatch)
-				return lichR;
+				return undeadR;
 			*/
-			final Race glichR = lichR.makeGenRace();
-			R=(Race)glichR.makeGenRace().copyOf();
+			undeadR = undeadR.makeGenRace();
+			R=(Race)undeadR.copyOf();
 			final Race gR=halfR.makeGenRace();
 
 			R.setStat("ID", mixRaceID);
 			R.setStat("NAME", mixRaceName);
-			R.setStat("CAT",lichR.racialCategory());
+			R.setStat("CAT",undeadR.racialCategory());
 			R.setStat("BWEIGHT", ""+(CMath.s_double(R.getStat("BWEIGHT"))*0.6));
 			R.setStat("FHEIGHT", ""+(CMath.s_double(R.getStat("FHEIGHT"))*0.6));
 			R.setStat("MHEIGHT", ""+(CMath.s_double(R.getStat("MHEIGHT"))*0.6));
 			R.setStat("CANRIDE",halfR.getStat("CANRIDE"));
+			R.setStat("WEAPONRACE",halfR.getStat("WEAPONRACE"));
 			R.setStat("BODY",halfR.getStat("BODY"));
 			R.setStat("WEAR",halfR.getStat("WEAR"));
 			for(final String stat : new String[] { "ASTATS", "CSTATS", "ASTATE" } )
 			{
-				final long[] lichBits = CMParms.toLongArray(Arrays.asList(R.getStat(stat).split("\\|")));
+				final long[] undeadBits = CMParms.toLongArray(Arrays.asList(R.getStat(stat).split("\\|")));
 				final long[] myBits = CMParms.toLongArray(Arrays.asList(gR.getStat(stat).split("\\|")));
 				boolean didSomething=false;
 				if((myBits.length>1)||(myBits[0]!=0))
 				{
 					for(int i=0;i<myBits.length;i++)
 					{
-						if((myBits[i] != 0)&&(lichBits.length>i))
+						if((myBits[i] != 0)&&(undeadBits.length>i))
 						{
-							lichBits[i] += myBits[i];
+							undeadBits[i] += myBits[i];
 							didSomething=true;
 						}
 					}
 				}
 				if(didSomething)
-					R.setStat(stat,CMParms.combineWith(CMath.asList(lichBits), '|'));
+					R.setStat(stat,CMParms.combineWith(CMath.asList(undeadBits), '|'));
 			}
 			CMClass.addRace(R);
 			CMLib.database().DBCreateRace(R.ID(),R.racialParms());

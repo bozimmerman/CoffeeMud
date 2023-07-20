@@ -473,10 +473,16 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public boolean isUndead(final Race R)
+	{
+		return (R != null)
+				&& CMProps.getListFileVarSet(CMProps.ListFile.RACIAL_CATEGORY_IS_UNDEAD).contains(R.racialCategory());
+	}
+
+	@Override
 	public boolean isUndead(final MOB mob)
 	{
-		return (mob != null)
-				&& CMProps.getListFileVarSet(CMProps.ListFile.RACIAL_CATEGORY_IS_UNDEAD).contains(mob.charStats().getMyRace().racialCategory());
+		return (mob != null) ? isUndead(mob.charStats().getMyRace()) : false;
 	}
 
 	@Override
