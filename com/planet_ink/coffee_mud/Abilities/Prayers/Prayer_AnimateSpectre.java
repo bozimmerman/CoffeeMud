@@ -78,7 +78,7 @@ public class Prayer_AnimateSpectre extends Prayer
 		return CAN_ITEMS;
 	}
 
-	private final static String	localizedDiplayText	= CMLib.lang().L("Newly animate dead");
+	private final static String	localizedDiplayText	= CMLib.lang().L("Newly animated spectre");
 
 	@Override
 	public String displayText()

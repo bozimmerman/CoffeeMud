@@ -78,7 +78,7 @@ public class Prayer_AnimateVampire extends Prayer
 		return CAN_ITEMS;
 	}
 
-	private final static String	localizedDiplayText	= CMLib.lang().L("Newly animate dead");
+	private final static String	localizedDiplayText	= CMLib.lang().L("Newly animated vampire");
 
 	@Override
 	public String displayText()

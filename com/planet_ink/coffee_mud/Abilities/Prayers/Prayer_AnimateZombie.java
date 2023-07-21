@@ -78,7 +78,7 @@ public class Prayer_AnimateZombie extends Prayer
 		return CAN_ITEMS;
 	}
 
-	private final static String	localizedDiplayText	= CMLib.lang().L("Newly animate dead");
+	private final static String	localizedDiplayText	= CMLib.lang().L("Newly animated zombie");
 
 	@Override
 	public String displayText()
