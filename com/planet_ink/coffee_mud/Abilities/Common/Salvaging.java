@@ -272,7 +272,14 @@ public class Salvaging extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int duration=getDuration(45,mob,1,10);
-		amount=I.phyStats().weight();
+		double pct = .1 +
+				CMath.mul(0.05, super.getXLEVELLevel(mob)) +
+				CMath.mul(CMath.div(adjustedLevel(mob,asLevel),15.0),0.05);
+		if(pct > 1)
+			pct = 1;
+		amount=(int)Math.round(CMath.mul(pct, I.phyStats().weight()));
+		if(amount < 1)
+			amount = 1;
 		messedUp=!proficiencyCheck(mob,0,auto);
 		found=CMLib.materials().makeItemResource(I.material());
 		playSound="ripping.wav";
