@@ -5043,8 +5043,15 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case _GENDER: // -gender
 				{
-					base=getBaseCharStats(base,mob);
-					if(!CMParms.contains(entry.parms(),actual?(""+((char)base.getStat(CharStats.STAT_GENDER))):(""+(Character.toUpperCase(mob.charStats().genderName().charAt(0))))))
+					final String genderName;
+					if(actual)
+					{
+						base=getBaseCharStats(base,mob);
+						genderName = base.realGenderName().toUpperCase();
+					}
+					else
+						genderName=mob.charStats().genderName().toUpperCase();
+					if((!CMParms.contains(entry.parms(),""+genderName.charAt(0)))&&(!CMParms.contains(entry.parms(),genderName)))
 						return false;
 					break;
 				}
@@ -7559,10 +7566,19 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						return false;
 					break;
 				case GENDER: // +gender
-					base=getBaseCharStats(base,mob);
-					if(CMParms.contains(entry.parms(),actual?(""+((char)base.getStat(CharStats.STAT_GENDER))):(""+Character.toUpperCase(mob.charStats().genderName().charAt(0)))))
+				{
+					final String genderName;
+					if(actual)
+					{
+						base=getBaseCharStats(base,mob);
+						genderName = base.realGenderName().toUpperCase();
+					}
+					else
+						genderName=mob.charStats().genderName().toUpperCase();
+					if((CMParms.contains(entry.parms(),""+genderName.charAt(0)))||(CMParms.contains(entry.parms(),genderName)))
 						return false;
 					break;
+				}
 				case LVLGR: // +lvlgr
 					if((entry.parms().length>0)
 					&&(P!=null)
