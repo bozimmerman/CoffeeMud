@@ -11832,7 +11832,23 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			int showNumber=0;
 			if(showFlag<0)
 				mob.tell(L("*. Class: @x1",myArea.ID()));
+			final String oldName = myArea.Name();
 			genName(mob,myArea,++showNumber,showFlag);
+			if(!oldName.equals(myArea.Name()))
+			{
+				for(final Enumeration<Area> a = myArea.getParents();a.hasMoreElements();)
+				{
+					final Area A=a.nextElement();
+					if((A!=myArea)&&(alsoUpdateAreas!=null))
+						alsoUpdateAreas.add(A);
+				}
+				for(final Enumeration<Area> a = myArea.getChildren();a.hasMoreElements();)
+				{
+					final Area A=a.nextElement();
+					if((A!=myArea)&&(alsoUpdateAreas!=null))
+						alsoUpdateAreas.add(A);
+				}
+			}
 			if(myArea instanceof Boardable)
 				genDisplayText(mob,myArea,++showNumber,showFlag);
 			genDescription(mob,myArea,++showNumber,showFlag);

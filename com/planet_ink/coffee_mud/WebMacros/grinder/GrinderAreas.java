@@ -227,9 +227,15 @@ public class GrinderAreas
 			CMLib.map().delArea(A);
 			oldName=A.Name();
 			CMLib.database().DBDeleteArea(A);
+			//final Area oldA=A;
 			A=CMClass.getAreaType(A.ID());
 			A.setName(name);
 			CMLib.map().addArea(A);
+			// next 3 lines prob unnecc since the whole purpose
+			// of this code is to fill it from the webgrinder page...
+			//A.setMiscText(oldA.text());
+			//A.setClimateType(oldA.getClimateTypeCode());
+			//A.setSubOpList(oldA.getSubOpList());
 			CMLib.map().registerWorldObjectLoaded(A, null, A);
 			CMLib.database().DBCreateArea(A);
 			redoAllMyDamnRooms=true;

@@ -2739,7 +2739,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					final String aName=ablk.getValFromPieces("PARENTNAMED");
 					final Area A=CMLib.map().getArea(aName);
 					if(A==null)
-						Log.warnOut("CoffeeMaker","Unknown parent area '"+aName+"' of "+identifier(E,null));
+					{
+						if(aName.trim().length()>0)
+							Log.warnOut("CoffeeMaker","Unknown parent area '"+aName+"' of "+identifier(E,null));
+					}
 					else
 					{
 						((Area)E).addParent(A);
@@ -2761,7 +2764,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					final String aName=ablk.getValFromPieces("CHILDNAMED");
 					final Area A=CMLib.map().getArea(aName);
 					if(A==null)
-						Log.warnOut("CoffeeMaker","Unknown child area '"+aName+"' of "+identifier(E,null));
+					{
+						if(aName.trim().length()>0)
+							Log.warnOut("CoffeeMaker","Unknown child area '"+aName+"' of "+identifier(E,null));
+					}
 					else
 					{
 						((Area)E).addChild(A);

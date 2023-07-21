@@ -144,6 +144,10 @@ public class AutoAwards extends StdAbility
 			if(lastClock == null)
 			{
 				lastClock = (TimeClock)CMLib.time().globalClock().copyOf();
+				lastClock.setYear(1);
+				lastClock.setMonth(1);
+				lastClock.setDayOfMonth(1);
+				lastClock.setHourOfDay(1);
 				this.lastClock = lastClock;
 			}
 
