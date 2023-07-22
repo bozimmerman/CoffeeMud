@@ -33,7 +33,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Lich extends Skeleton
+public class Lich extends Undead
 {
 	@Override
 	public String ID()
@@ -53,6 +53,8 @@ public class Lich extends Skeleton
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STAT_SAVE_PIERCE, affectableStats.getStat(CharStats.STAT_SAVE_PIERCE)+50);
+		affectableStats.setStat(CharStats.STAT_SAVE_SLASH, affectableStats.getStat(CharStats.STAT_SAVE_SLASH)+50);
 		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,-4);
 		affectableStats.adjStat(CharStats.STAT_CHARISMA,6);
 	}
@@ -61,8 +63,21 @@ public class Lich extends Skeleton
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STAT_SAVE_PIERCE, affectableStats.getStat(CharStats.STAT_SAVE_PIERCE)-50);
+		affectableStats.setStat(CharStats.STAT_SAVE_SLASH, affectableStats.getStat(CharStats.STAT_SAVE_SLASH)-50);
 		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,+4);
 		affectableStats.adjStat(CharStats.STAT_CHARISMA,-6);
+	}
+
+	@Override
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
+	{
+		final DeadBody body = super.getCorpseContainer(mob, room);
+		if(body != null)
+		{
+			body.setMaterial(RawMaterial.RESOURCE_BONE);
+		}
+		return body;
 	}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
