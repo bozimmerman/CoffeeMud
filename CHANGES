@@ -15,6 +15,7 @@
  14. GOTITEM Achievement type now supports multiple item masks.
  15. New standard races: Ghast, Ghoul, Ghost, Mummy, Spectre, Vampire, and Zombie
  16. Undead race mixing now has its own special rules, which Prayer_Animate* will use
+ 17. WaterCurrents messaging can now be customized.
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

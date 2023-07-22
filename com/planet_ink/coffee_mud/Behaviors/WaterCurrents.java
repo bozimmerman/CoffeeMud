@@ -50,8 +50,17 @@ public class WaterCurrents extends ActiveTicker
 		return Behavior.CAN_ROOMS | Behavior.CAN_AREAS;
 	}
 
+	protected static String DEFAULT_MINCOMING_MSG = "<S-NAME> <S-IS-ARE> swept in from @x1 by the current."; 
+	protected static String DEFAULT_MOUTGOING_MSG = "<S-NAME> <S-IS-ARE> swept @x1 by the current."; 
+	protected static String DEFAULT_IINCOMING_MSG = "@x2 is swept in from @x1 by the current."; 
+	protected static String DEFAULT_IOUTGOING_MSG = "@x2 is swept @x1 by the current."; 
+	
 	protected String	dirs	= "";
 	protected boolean	doBoats = false;
+	protected String	minMsg	= DEFAULT_MINCOMING_MSG;
+	protected String	moutMsg	= DEFAULT_MOUTGOING_MSG;
+	protected String	iinMsg	= DEFAULT_IINCOMING_MSG;
+	protected String	ioutMsg	= DEFAULT_IOUTGOING_MSG;
 
 	public WaterCurrents()
 	{
@@ -70,19 +79,27 @@ public class WaterCurrents extends ActiveTicker
 	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
-		final Vector<String> V=CMParms.parse(newParms);
+		final Map<String,String> parms = super.getCleanedParms();
 		dirs="";
-		for(int v=0;v<V.size();v++)
+		this.doBoats=parms.containsKey("BOATS");
+		parms.remove("BOATS");
+		this.minMsg=parms.containsKey("INMSG")?parms.get("INMSG"):WaterCurrents.DEFAULT_MINCOMING_MSG;
+		if(this.minMsg.equals(WaterCurrents.DEFAULT_MINCOMING_MSG))
+			this.iinMsg = WaterCurrents.DEFAULT_IINCOMING_MSG;
+		else
+			this.iinMsg = CMStrings.replaceAll(CMStrings.replaceAll(this.minMsg, "<S-NAME>", "@x2"),"<S-IS-ARE>","is");
+		parms.remove("INMSG");
+		this.moutMsg=parms.containsKey("OUTMSG")?parms.get("OUTMSG"):WaterCurrents.DEFAULT_MOUTGOING_MSG;
+		if(this.moutMsg.equals(WaterCurrents.DEFAULT_MOUTGOING_MSG))
+			this.ioutMsg = WaterCurrents.DEFAULT_IOUTGOING_MSG;
+		else
+			this.ioutMsg = CMStrings.replaceAll(CMStrings.replaceAll(this.moutMsg, "<S-NAME>", "@x2"),"<S-IS-ARE>","is");
+		parms.remove("OUTMSG");
+		for(final String key : parms.keySet())
 		{
-			final String str=V.get(v);
-			if(str.equalsIgnoreCase("BOATS"))
-				this.doBoats=true;
-			else
-			{
-				final int dir=CMLib.directions().getGoodDirectionCode(str);
-				if(dir>=0)
-					dirs=dirs+CMLib.directions().getDirectionChar(dir);
-			}
+			final int dir=CMLib.directions().getGoodDirectionCode(key);
+			if(dir>=0)
+				dirs=dirs+CMLib.directions().getDirectionChar(dir);
 		}
 		if(dirs.length()==0)
 			dirs="NE";
@@ -167,13 +184,13 @@ public class WaterCurrents extends ActiveTicker
 					if(todo.elementAt(m) instanceof MOB)
 					{
 						M=(MOB)todo.elementAt(m);
-						final CMMsg themsg=CMClass.getMsg(M,R,new AWaterCurrent(),CMMsg.MASK_ALWAYS|CMMsg.MSG_LEAVE,L("<T-NAME> <T-IS-ARE> swept @x1 by the current.",
+						final CMMsg themsg=CMClass.getMsg(M,R,new AWaterCurrent(),CMMsg.MASK_ALWAYS|CMMsg.MSG_LEAVE,L(moutMsg,
 								CMLib.directions().getDirectionName(dir).toLowerCase()));
 						if(R.okMessage(M,themsg))
 						{
 							R.send(M,themsg);
 							R2.bringMobHere(M,true);
-							R2.showOthers(M,R,new AWaterCurrent(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L("<T-NAME> <T-IS-ARE> swept in from @x1 by the current.",
+							R2.showOthers(M,R,new AWaterCurrent(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L(minMsg,
 									CMLib.directions().getFromCompassDirectionName(R.getReverseDir(dir)).toLowerCase()));
 							CMLib.commands().postLook(M,true);
 						}
@@ -182,8 +199,8 @@ public class WaterCurrents extends ActiveTicker
 					if(todo.elementAt(m) instanceof Item)
 					{
 						I=(Item)todo.elementAt(m);
-						if(R.show(srcM,I,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L("@x1 is swept @x2 by the current.",
-								I.name(),CMLib.directions().getDirectionName(dir).toLowerCase())))
+						if(R.show(srcM,I,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L(ioutMsg,
+								CMLib.directions().getDirectionName(dir).toLowerCase(),I.name())))
 						{
 							if(I instanceof Boardable)
 							{
@@ -191,12 +208,12 @@ public class WaterCurrents extends ActiveTicker
 								{
 									final Room R3=r.nextElement();
 									if((R3!=null)&&((R3.domainType()&Room.INDOORS)==0))
-										R3.showHappens(CMMsg.MSG_OK_ACTION, L("@x1 is swept @x2 by the current.",I.name(),CMLib.directions().getDirectionName(dir).toLowerCase()));
+										R3.showHappens(CMMsg.MSG_OK_ACTION, L(ioutMsg,CMLib.directions().getDirectionName(dir).toLowerCase(),I.name()));
 								}
 							}
 							R2.moveItemTo(I,ItemPossessor.Expire.Inheret,Move.Optimize);
-							R2.showOthers(srcM,I,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L("@x1 is swept in from @x2 by the current.",
-									I.name(),CMLib.directions().getFromCompassDirectionName(R.getReverseDir(dir)).toLowerCase()));
+							R2.showOthers(srcM,I,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L(iinMsg,
+									CMLib.directions().getFromCompassDirectionName(R.getReverseDir(dir)).toLowerCase(),I.name()));
 						}
 					}
 				}

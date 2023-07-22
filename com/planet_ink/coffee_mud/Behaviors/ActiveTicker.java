@@ -80,6 +80,16 @@ public class ActiveTicker extends StdBehavior
 		minGroup=CMParms.getParmInt(parms,"mingrp",minGroup);
 		tickReset();
 	}
+	
+	protected Map<String,String> getCleanedParms()
+	{
+		final Map<String,String> ps = CMParms.parseEQParms(parms);
+		ps.remove("MIN");
+		ps.remove("MAX");
+		ps.remove("CHANCE");
+		ps.remove("MINGRP");
+		return ps;
+	}
 
 	public String rebuildParms()
 	{
