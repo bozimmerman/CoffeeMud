@@ -191,7 +191,6 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 		&&(affected != null)
 		&&(identity != null))
 		{
-
 			synchronized(previous)
 			{
 				for(final String changeStat : changes.keySet())
@@ -253,7 +252,7 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 			break;
 		case CMMsg.TYP_MOUNT:
 		case CMMsg.TYP_DISMOUNT:
-			reeval = (CMath.bset(trigger, TRIGGER_PUT)
+			reeval = (CMath.bset(trigger, TRIGGER_MOUNT)
 					&&(msg.target()==affected));
 			break;
 		case CMMsg.TYP_ENTER:

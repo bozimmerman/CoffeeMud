@@ -48,7 +48,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	protected double	postagePerPound		= 1.0;
 	protected double	holdFeePerPound		= 1.0;
 	protected double	feeForNewBox		= 50.0;
-	protected int		maxMudMonthsHeld	= 12;
+	protected int		maxMudMonthsHeld	= 40;
 	private long		postalWaitTime		= -1;
 
 	protected static Map<String,Long>	postalTimes	= new Hashtable<String,Long>();

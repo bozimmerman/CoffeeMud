@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
@@ -67,7 +68,20 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public final static String[]	fnouns		= { "bison", "buffalo", "carpcod", "deer", "fish", "moose", "pike", "salmon", "sheep", "shrimp", "squid", "trout", "ore" };
 	public final static String[]	feewords1	= { "foot", "goose", "louse", "dormouse", "man", "mouse", "tooth", "woman", "ox", "child", "brother" };
 	public final static String[]	feewords2	= { "feet", "geese", "lice", "dormice", "men", "mice", "teeth", "women", "oxen", "children", "brethren" };
-
+	public final static String[]    num_words 	= {
+													"zero", "one", "two", "three", "four",
+													"five", "six", "seven", "eight", "nine",
+													"ten", "eleven", "twelve", "thirteen", "fourteen",
+													"fifteen", "sixteen", "seventeen", "eighteen", "nineteen"
+												  };
+	public final static String[]    num_words_10= {
+													"", "ten", "twenty", "thirty", "fourty",
+													"fifty", "sixty", "seventy", "eighty", "ninety"
+												  };
+	public final static String[]    num_words_x	= {
+													"thousand", "million", "billion", "trillion",
+													"quadrillion", "quintillion", "sextillion"
+												  };
 	public final static List<Environmental>	empty	= new ReadOnlyVector<Environmental>(1);
 
 	@Override
@@ -142,6 +156,94 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			s.append(O.toString());
 		}
 		return s.toString();
+	}
+
+	protected String makeLowNumberWords(short num, final boolean and)
+	{
+		final StringBuilder str = new StringBuilder("");
+		if(num > 999)
+			num = (short)(num % 1000);
+		if(num >= 100)
+		{
+			final short h = (short)Math.floor(num / 100);
+			str.append(num_words[h]);
+			num = (short)(num % 100);
+			str.append(" hundred");
+			if((num > 0)&&(and))
+				str.append(" and");
+			str.append(" ");
+		}
+		if(num >= 20)
+		{
+			final short h = (short)Math.floor(num / 10);
+			str.append(num_words_10[h]);
+			num = (short)(num % 10);
+			if(num > 0)
+				str.append("-");
+			else
+				str.append(" ");
+		}
+		if(num > 0)
+		{
+			str.append(num_words[num]);
+			str.append(" ");
+		}
+		return str.toString().trim();
+	}
+
+	@Override
+	public String makeNumberWords(final double num, int precision)
+	{
+		if(num < 0)
+			return "negative " + makeNumberWords(-num, precision);
+		final double point=Math.round(Math.floor(num));
+		if(num == point)
+		{
+			long n = Math.round(num);
+			if(num<1000)
+				return makeLowNumberWords((short)Math.round(num),false);
+			final int digCap = (int)Math.round(Math.floor(((""+n).length()-1)/3.0));
+			final StringBuilder s = new StringBuilder();
+			for(int dgn=digCap;dgn>=1;dgn--)
+			{
+				final long grpcap = Math.round(Math.pow(1000, dgn));
+				final long modn = n % grpcap;
+				final long grpn = Math.round((n - modn)/grpcap);
+				n = modn;
+				if(grpn > 0)
+					s.append(makeLowNumberWords((short)grpn,false))
+					.append(" ")
+					.append(num_words_x[dgn-1])
+					.append(" ");
+			}
+			s.append(makeLowNumberWords((short)n,true));
+			return s.toString().trim();
+		}
+		else
+		{
+			final StringBuilder s = new StringBuilder(makeNumberWords(point, 0));
+			if(precision > 0)
+			{
+				double remain = num - point;
+				final short[] ds = new short[precision];
+				for(int i=0;i<precision;i++)
+				{
+					remain = remain * 10.0;
+					final double fl = Math.floor(remain);
+					remain = remain - fl;
+					ds[i] = (short)Math.round(fl);
+				}
+				while(precision>0 && ds[precision-1]==(short)0)
+					precision--;
+				if(precision > 0)
+				{
+					s.append(" point ");
+					for(int i=0;i<precision;i++)
+						s.append(num_words[ds[i]]).append(" ");
+				}
+			}
+			return s.toString().trim();
+		}
 	}
 
 	@Override

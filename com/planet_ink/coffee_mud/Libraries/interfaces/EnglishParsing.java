@@ -273,6 +273,14 @@ public interface EnglishParsing extends CMLibrary
 	public String toEnglishStringList(final Collection<? extends Object> V);
 
 	/**
+	 * Returns the english representation of the given number
+	 * @param num the number
+	 * @param precision the number of digits less than 0
+	 * @return the number in english
+	 */
+	public String makeNumberWords(final double num, int precision);
+
+	/**
 	 * Inserts the given adjective before a given word or noun phrase, replacing any
 	 * indefinite articles with the new correct one, and removing any "color"
 	 * characters from the final phrase.

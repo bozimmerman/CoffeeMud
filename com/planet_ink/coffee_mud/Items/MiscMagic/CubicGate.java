@@ -54,16 +54,21 @@ public class CubicGate extends StdItem implements MiscMagic
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 	}
-	
-	protected final static String[] ACT_WORDS = new String[] { "zero", "one", "two", "three", "four", "five", "six" };
+
+	protected final List<String> allWords=new ArrayList<String>(6);
 	protected final List<String> planes = new ArrayList<String>(6);
-	
+
 	protected void setCubeDescription()
 	{
 		setDescription(L("This three-inch cube is of some unearthly metal. each face is engraved it alien-looking sigils, as well as a @x1 pips (dots).",""+planes.size()));
-		secretIdentity=L("A cubic gate.  Hold, and say 'one' to '@x1' to activate.", ACT_WORDS[planes.size()]);
+		final EnglishParsing elib = CMLib.english();
+		allWords.clear();
+		for(int x=1;x<=planes.size();x++)
+			allWords.add((elib == null)?(""+planes.size()):L(elib.makeNumberWords(x, 0)));
+		final String word = (allWords.size()>0)?allWords.get(allWords.size()-1):L("zero");
+		secretIdentity=L("A cubic gate.  Hold, and say 'one' to '@x1' to activate.", word);
 	}
-	
+
 	protected void resetCube()
 	{
 		planes.clear();
@@ -71,7 +76,7 @@ public class CubicGate extends StdItem implements MiscMagic
 		final PlanarAbility planeA =(PlanarAbility)CMClass.getAbility("StdPlanarAbility");
 		if(planeA != null)
 		{
-			int numPlanes = CMLib.dice().roll(1, 5, 1);
+			final int numPlanes = CMLib.dice().roll(1, 5, 1);
 			int tries = 1000;
 			while((planes.size() < numPlanes) && (--tries>0))
 			{
@@ -83,14 +88,14 @@ public class CubicGate extends StdItem implements MiscMagic
 		}
 		setCubeDescription();
 	}
-	
+
 	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if((newMiscText != null) && (newMiscText.trim().length()>0))
 		{
-			
+
 			planes.clear();
 			planes.addAll(CMParms.parseAny(newMiscText, ',', true));
 			if(planes.contains(L("Prime Material")))
@@ -101,7 +106,7 @@ public class CubicGate extends StdItem implements MiscMagic
 		else
 			resetCube();
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -149,7 +154,7 @@ public class CubicGate extends StdItem implements MiscMagic
 				&&(said.indexOf(' ')<0)
 				&&(this.rawWornCode() != Wearable.IN_INVENTORY))
 				{
-					int x = CMParms.indexOf(ACT_WORDS, said.toLowerCase().trim());
+					final int x = allWords.indexOf(said.toLowerCase().trim());
 					if((x>=1)&&(x<=planes.size()))
 					{
 						final String plane = planes.get(x-1);

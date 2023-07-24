@@ -3149,6 +3149,18 @@ public class Test extends StdCommand
 					return false;
 				}
 			}
+
+			if(what.equalsIgnoreCase("numwords")||what.equalsIgnoreCase("all"))
+			{
+				final double[] nums = new double[] {
+					8, 12, 38, 87, 100, 112, 356, 34000, 45721,
+					100000, 871231, 1000000, 12000231, 23982100,
+					54.3223
+				};
+				for(final double n : nums)
+					mob.tell(n +" = " + CMLib.english().makeNumberWords(n, 9));
+			}
+
 			if((what.equalsIgnoreCase("all_properties"))
 			||(what.equalsIgnoreCase("Prop_HereAdjuster"))
 			||what.equalsIgnoreCase("all"))
