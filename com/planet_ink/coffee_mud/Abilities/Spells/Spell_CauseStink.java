@@ -82,7 +82,7 @@ public class Spell_CauseStink extends Spell
 	}
 
 	public int	cycle	= 1;
-	public int pct = 10;
+	public int pct = 20;
 
 	@Override
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
@@ -97,7 +97,7 @@ public class Spell_CauseStink extends Spell
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
-		pct = CMParms.getParmInt(newMiscText, "PCT", 10);
+		pct = CMParms.getParmInt(newMiscText, "PCT", 20);
 	}
 
 	@Override

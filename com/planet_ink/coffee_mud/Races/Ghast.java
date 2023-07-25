@@ -50,7 +50,7 @@ public class Ghast extends Undead
 
 	private final String[]	racialEffectNames			= { "Spell_CauseStink" };
 	private final int[]		racialEffectLevels			= { 1 };
-	private final String[]	racialEffectParms			= { "" };
+	private final String[]	racialEffectParms			= { "PCT=5" };
 
 	@Override
 	protected String[] racialEffectNames()
