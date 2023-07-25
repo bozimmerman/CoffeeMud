@@ -72,7 +72,6 @@ public class StdRace implements Race
 	protected Map<Integer,SearchIDList<Ability>> racialEffectMap	= null;
 
 	private final static String localizedStaticName = CMLib.lang().L("StdRace");
-	private static Weapon[] humanoidWeaps 			= new Weapon[0];
 
 	@Override
 	public String name()
@@ -815,68 +814,61 @@ public class StdRace implements Race
 
 	protected final Weapon[] getHumanoidWeapons()
 	{
-		if(humanoidWeaps.length==0)
+		final List<Weapon> weaps = new ArrayList<Weapon>();
+		for(int i=1;i<11;i++)
 		{
-			synchronized(this)
+			final Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
+			naturalWeapon.setMaterial(RawMaterial.RESOURCE_LEATHER);
+			switch (i)
 			{
-				if(humanoidWeaps.length==0)
-				{
-					final List<Weapon> weaps = new ArrayList<Weapon>();
-					for(int i=1;i<11;i++)
-					{
-						final Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
-						naturalWeapon.setMaterial(RawMaterial.RESOURCE_LEATHER);
-						switch (i)
-						{
-						case 1:
-						case 2:
-						case 3:
-							naturalWeapon.setName(L("a quick punch"));
-							naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
-							break;
-						case 4:
-							naturalWeapon.setName(L("fingernails and teeth"));
-							naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
-							break;
-						case 5:
-							naturalWeapon.setName(L("an elbow"));
-							naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
-							break;
-						case 6:
-							naturalWeapon.setName(L("a backhand"));
-							naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
-							break;
-						case 7:
-							naturalWeapon.setName(L("a strong jab"));
-							naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
-							break;
-						case 8:
-							naturalWeapon.setName(L("a stinging punch"));
-							naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
-							break;
-						case 9:
-							if(bodyMask()[Race.BODY_LEG]>0)
-								naturalWeapon.setName(L("a knee"));
-							else
-							if(bodyMask()[Race.BODY_GILL]>0)
-								naturalWeapon.setName(L("a fin"));
-							else
-								naturalWeapon.setName(L("a limb"));
-							naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
-							break;
-						case 10:
-							naturalWeapon.setName(L("a head butt"));
-							naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
-							break;
-						}
-						naturalWeapon.setUsesRemaining(1000);
-						weaps.add(naturalWeapon);
-					}
-					humanoidWeaps = weaps.toArray(new Weapon[weaps.size()]);
-				}
+			case 1:
+			case 2:
+			case 3:
+				naturalWeapon.setName(L("a quick punch"));
+				naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+				break;
+			case 4:
+				naturalWeapon.setName(L("fingernails and teeth"));
+				naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
+				break;
+			case 5:
+				naturalWeapon.setName(L("an elbow"));
+				naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
+				break;
+			case 6:
+				naturalWeapon.setName(L("a backhand"));
+				naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+				break;
+			case 7:
+				naturalWeapon.setName(L("a strong jab"));
+				naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+				break;
+			case 8:
+				naturalWeapon.setName(L("a stinging punch"));
+				naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+				break;
+			case 9:
+				if(bodyMask()[Race.BODY_LEG]>0)
+					naturalWeapon.setName(L("a knee"));
+				else
+				if(bodyMask()[Race.BODY_GILL]>0)
+					naturalWeapon.setName(L("a fin"));
+				else
+					naturalWeapon.setName(L("a limb"));
+				naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+				break;
+			case 10:
+				if(CMLib.flags().isUndead(this))
+					naturalWeapon.setName(L("a bite"));
+				else
+					naturalWeapon.setName(L("a head butt"));
+				naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
+				break;
 			}
+			naturalWeapon.setUsesRemaining(1000);
+			weaps.add(naturalWeapon);
 		}
-		return humanoidWeaps;
+		return weaps.toArray(new Weapon[weaps.size()]);
 	}
 
 	@Override

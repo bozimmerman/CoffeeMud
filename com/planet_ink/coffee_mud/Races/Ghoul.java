@@ -48,40 +48,22 @@ public class Ghoul extends Undead
 		return localizedStaticName;
 	}
 
-	private final String[]	racialAbilityNames			= { "WeakParalysis" };
-	private final int[]		racialAbilityLevels			= { 1 };
-	private final int[]		racialAbilityProficiencies	= { 100 };
-	private final boolean[]	racialAbilityQuals			= { false };
-	private final String[]	racialAbilityParms			= { "" };
-
 	@Override
-	protected String[] racialAbilityNames()
+	public Weapon[] getNaturalWeapons()
 	{
-		return racialAbilityNames;
-	}
-
-	@Override
-	protected int[] racialAbilityLevels()
-	{
-		return racialAbilityLevels;
-	}
-
-	@Override
-	protected int[] racialAbilityProficiencies()
-	{
-		return racialAbilityProficiencies;
-	}
-
-	@Override
-	protected boolean[] racialAbilityQuals()
-	{
-		return racialAbilityQuals;
-	}
-
-	@Override
-	public String[] racialAbilityParms()
-	{
-		return racialAbilityParms;
+		if(this.naturalWeaponChoices.length==0)
+		{
+			final Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
+			naturalWeapon.setName(L("wicked claws"));
+			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
+			naturalWeapon.setUsesRemaining(1000);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
+			final Ability A=CMClass.getAbility("Prop_FightSpellCast");
+			naturalWeapon.addNonUninvokableEffect(A);
+			A.setMiscText("20%;WeakParalysis;NOOWN");
+			this.naturalWeaponChoices = new Weapon[] { naturalWeapon };
+		}
+		return super.getNaturalWeapons();
 	}
 
 	private final String[]	racialEffectNames			= { "Spell_CauseStink" };

@@ -82,6 +82,7 @@ public class Spell_CauseStink extends Spell
 	}
 
 	public int	cycle	= 1;
+	public int pct = 10;
 
 	@Override
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
@@ -93,13 +94,20 @@ public class Spell_CauseStink extends Spell
 	}
 
 	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		pct = CMParms.getParmInt(newMiscText, "PCT", 10);
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
 		if(tickID==Tickable.TICKID_MOB)
 		{
-			if(CMLib.dice().rollPercentage()>20)
+			if(CMLib.dice().rollPercentage()>pct)
 				return true;
 			if(!(affected instanceof MOB))
 				return false;

@@ -74,6 +74,7 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 	protected boolean allItems = false;
 	protected boolean onlyMobs = false;
 	protected boolean onlyItems = false;
+	protected boolean noOwn = false;
 
 	@Override
 	public void setMiscText(final String text)
@@ -82,6 +83,7 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 		allItems = false;
 		onlyMobs = false;
 		onlyItems = false;
+		noOwn = false;
 		super.setMiscText(text);
 	}
 
@@ -106,6 +108,11 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 		if(var.startsWith("ONLYITEM"))
 		{
 			onlyItems=true;
+			return true;
+		}
+		if(var.startsWith("NOOWN"))
+		{
+			noOwn=true;
 			return true;
 		}
 		return false;
@@ -138,18 +145,18 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 				&&(msg.target() instanceof MOB))
 					addMeIfNeccessary(msg.source(),(MOB)msg.target(),false,0,maxTicks);
 				else
-				if((myItem.amBeingWornProperly())
-				&&(myItem.owner() instanceof MOB)
+				if((noOwn||myItem.amBeingWornProperly())
+				&&(noOwn||myItem.owner() instanceof MOB)
 				&&(msg.target() instanceof MOB))
 				{
-					final MOB mob=(MOB)myItem.owner();
+					final MOB mob=noOwn?msg.source():(MOB)myItem.owner();
 					if((mob.isInCombat())
 					&&(mob.location()!=null)
 					&&(!mob.amDead()))
 					{
 						if((myItem instanceof Weapon)
 						&&(msg.tool()==myItem)
-						&&(myItem.amWearingAt(Wearable.WORN_WIELD))
+						&&(noOwn||myItem.amWearingAt(Wearable.WORN_WIELD))
 						&&(msg.amISource(mob)))
 							addMeIfNeccessary(msg.source(),(MOB)msg.target(),false,0,maxTicks);
 						else

@@ -221,6 +221,14 @@ public class Undead extends StdRace
 	}
 
 	@Override
+	public Weapon[] getNaturalWeapons()
+	{
+		if(this.naturalWeaponChoices.length==0)
+			this.naturalWeaponChoices = super.getHumanoidWeapons();
+		return super.getNaturalWeapons();
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(myHost instanceof MOB)

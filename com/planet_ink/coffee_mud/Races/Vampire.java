@@ -84,6 +84,38 @@ public class Vampire extends Undead
 		return racialAbilityParms;
 	}
 
+	@Override
+	public Weapon[] getNaturalWeapons()
+	{
+		if(this.naturalWeaponChoices.length==0)
+		{
+			final List<Weapon> newList = new XVector<Weapon>(super.getHumanoidWeapons());
+			// remove dups
+			final Set<String> names = new TreeSet<String>();
+			for(int i=newList.size()-1;i>=0;i--)
+			{
+				final Weapon W = newList.get(i);
+				if(!names.contains(W.Name()))
+				{
+					names.add(W.Name());
+					final Weapon W1 = (Weapon)W.copyOf();
+					if(CMStrings.containsWordIgnoreCase(W.Name(), L("teeth"))
+					||CMStrings.containsWordIgnoreCase(W.Name(), L("bite")))
+					{
+						final Ability A=CMClass.getAbility("Prop_FightSpellCast");
+						W1.addNonUninvokableEffect(A);
+						A.setMiscText("20%;Undead_EnergyDrain;NOOWN");
+					}
+					newList.set(i, W1);
+				}
+				else
+					newList.remove(i);
+			}
+			this.naturalWeaponChoices = newList.toArray(new Weapon[newList.size()]);
+		}
+		return super.getNaturalWeapons();
+	}
+
 	private final String[]	racialEffectNames			= { "Prop_WeaponImmunity" , "Disease_Vampirism" };
 	private final int[]		racialEffectLevels			= { 1 , 1};
 	private final String[]	racialEffectParms			= { "+ALL -WOODEN -MAGICSKILLS", "" };

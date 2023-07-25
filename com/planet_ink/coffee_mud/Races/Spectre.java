@@ -48,40 +48,22 @@ public class Spectre extends Spirit
 		return localizedStaticName;
 	}
 
-	private final String[]	racialAbilityNames			= { "Undead_WeakEnergyDrain" };
-	private final int[]		racialAbilityLevels			= { 1 };
-	private final int[]		racialAbilityProficiencies	= { 100 };
-	private final boolean[]	racialAbilityQuals			= { false };
-	private final String[]	racialAbilityParms			= { "" };
-
 	@Override
-	protected String[] racialAbilityNames()
+	public Weapon[] getNaturalWeapons()
 	{
-		return racialAbilityNames;
-	}
-
-	@Override
-	protected int[] racialAbilityLevels()
-	{
-		return racialAbilityLevels;
-	}
-
-	@Override
-	protected int[] racialAbilityProficiencies()
-	{
-		return racialAbilityProficiencies;
-	}
-
-	@Override
-	protected boolean[] racialAbilityQuals()
-	{
-		return racialAbilityQuals;
-	}
-
-	@Override
-	public String[] racialAbilityParms()
-	{
-		return racialAbilityParms;
+		if(this.naturalWeaponChoices.length==0)
+		{
+			final Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
+			naturalWeapon.setName(L("ghostly touch"));
+			naturalWeapon.setMaterial(RawMaterial.RESOURCE_ENERGY);
+			naturalWeapon.setUsesRemaining(1000);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_DISRUPTING);
+			final Ability A=CMClass.getAbility("Prop_FightSpellCast");
+			naturalWeapon.addNonUninvokableEffect(A);
+			A.setMiscText("20%;Undead_WeakEnergyDrain;NOOWN");
+			this.naturalWeaponChoices = new Weapon[] { naturalWeapon };
+		}
+		return super.getNaturalWeapons();
 	}
 
 	@Override
@@ -89,7 +71,6 @@ public class Spectre extends Spirit
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,15);
-		affectableStats.setRacialStat(CharStats.STAT_CHARISMA,2);
 	}
 
 	@Override
@@ -98,8 +79,6 @@ public class Spectre extends Spirit
 		super.unaffectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectedMOB.baseCharStats().getStat(CharStats.STAT_DEXTERITY));
 		affectableStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,affectedMOB.baseCharStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ));
-		affectableStats.setStat(CharStats.STAT_CHARISMA,affectedMOB.baseCharStats().getStat(CharStats.STAT_CHARISMA));
-		affectableStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,affectedMOB.baseCharStats().getStat(CharStats.STAT_MAX_CHARISMA_ADJ));
 	}
 
 	@Override

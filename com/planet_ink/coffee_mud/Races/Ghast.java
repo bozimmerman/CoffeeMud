@@ -48,42 +48,6 @@ public class Ghast extends Undead
 		return localizedStaticName;
 	}
 
-	private final String[]	racialAbilityNames			= { "Paralysis" };
-	private final int[]		racialAbilityLevels			= { 1 };
-	private final int[]		racialAbilityProficiencies	= { 100 };
-	private final boolean[]	racialAbilityQuals			= { false };
-	private final String[]	racialAbilityParms			= { "" };
-
-	@Override
-	protected String[] racialAbilityNames()
-	{
-		return racialAbilityNames;
-	}
-
-	@Override
-	protected int[] racialAbilityLevels()
-	{
-		return racialAbilityLevels;
-	}
-
-	@Override
-	protected int[] racialAbilityProficiencies()
-	{
-		return racialAbilityProficiencies;
-	}
-
-	@Override
-	protected boolean[] racialAbilityQuals()
-	{
-		return racialAbilityQuals;
-	}
-
-	@Override
-	public String[] racialAbilityParms()
-	{
-		return racialAbilityParms;
-	}
-
 	private final String[]	racialEffectNames			= { "Spell_CauseStink" };
 	private final int[]		racialEffectLevels			= { 1 };
 	private final String[]	racialEffectParms			= { "" };
@@ -107,12 +71,30 @@ public class Ghast extends Undead
 	}
 
 	@Override
+	public Weapon[] getNaturalWeapons()
+	{
+		if(this.naturalWeaponChoices.length==0)
+		{
+			final Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
+			naturalWeapon.setName(L("wicked claws"));
+			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
+			naturalWeapon.setUsesRemaining(1000);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
+			final Ability A=CMClass.getAbility("Prop_FightSpellCast");
+			naturalWeapon.addNonUninvokableEffect(A);
+			A.setMiscText("20%;Paralysis;NOOWN");
+			this.naturalWeaponChoices = new Weapon[] { naturalWeapon };
+		}
+		return super.getNaturalWeapons();
+	}
+
+	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,20);
-		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,15);
-		affectableStats.setRacialStat(CharStats.STAT_CHARISMA,2);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+3);
+		affectableStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,affectableStats.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)+3);
 	}
 
 	@Override
@@ -121,10 +103,6 @@ public class Ghast extends Undead
 		super.unaffectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectedMOB.baseCharStats().getStat(CharStats.STAT_STRENGTH));
 		affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectedMOB.baseCharStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ));
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectedMOB.baseCharStats().getStat(CharStats.STAT_DEXTERITY));
-		affectableStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,affectedMOB.baseCharStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ));
-		affectableStats.setStat(CharStats.STAT_CHARISMA,affectedMOB.baseCharStats().getStat(CharStats.STAT_CHARISMA));
-		affectableStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,affectedMOB.baseCharStats().getStat(CharStats.STAT_MAX_CHARISMA_ADJ));
 	}
 
 	@Override
