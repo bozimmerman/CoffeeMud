@@ -465,6 +465,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		{
 			if(((MOB)product).phyStats().level()>buyer.phyStats().level())
 				return false;
+			if(!CMLib.flags().canBeSeenBy(product,buyer))
+				return false;
 		}
 		if(product instanceof Ability)
 		{

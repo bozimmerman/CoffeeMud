@@ -7641,42 +7641,64 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		final StringBuilder parts=new StringBuilder("");
-		Item I=CMClass.getItem(E.getStat("WEAPONCLASS"));
-		if(I!=null)
-		{
-			I.setMiscText(E.getStat("WEAPONXML"));
-			I.recoverPhyStats();
-			parts.append(I.name());
-		}
-		mob.tell(L("@x1. Natural Weapon: @x2.",""+showNumber,parts.toString()));
+		final String xmlStr = E.getStat("WEAPONXML");
+		final List<Item> iV = new ArrayList<Item>();
+		for(final Weapon W : E.getNaturalWeapons())
+			iV.add(W);
+		for(final Item I : iV)
+			parts.append(I.name()).append(", ");
+		if(parts.length()>0)
+			parts.delete(parts.length()-2, parts.length());
+		mob.tell(L("@x1. Natural Weapon(s): @x2.",""+showNumber,parts.toString()));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
-		final String newName=mob.session().prompt(L("Enter a weapon name from your inventory to change, or 'null' for human\n\r:"),"");
-		if(newName.equalsIgnoreCase("null"))
+		String newName=mob.session().prompt(L("Enter a weapon name to add (from inv) or remove\n\r:"),"");
+		while(newName.trim().length()>0)
 		{
-			E.setStat("WEAPONCLASS","");
-			mob.tell(L("Human weapons set."));
-		}
-		else
-		if(newName.length()>0)
-		{
-			I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,newName);
-			if(I==null)
+			Item delI=null;
+			for(final Item I : iV)
 			{
-				mob.tell(L("'@x1' is not in your inventory.",newName));
-				mob.tell(L("(no change)"));
-				return;
+				if(I.name().equalsIgnoreCase(newName))
+					delI=I;
 			}
-			I=(Item)I.copyOf();
-			E.setStat("WEAPONCLASS",I.ID());
-			E.setStat("WEAPONXML",I.text());
-			I.destroy();
+			if(delI!=null)
+			{
+				iV.remove(delI);
+				mob.tell(delI.name()+" deleted.");
+			}
+			else
+			{
+				final Item addI=mob.findItem(null, newName);
+				if(addI instanceof Weapon)
+				{
+					iV.add((Item)addI.copyOf());
+					mob.tell(addI.name()+" added.");
+				}
+				else
+				if(addI != null)
+					mob.tell("Item in inventory is not a weapon: '"+newName+"'");
+				else
+					mob.tell("Item not found in the list, or in inventory: '"+newName+"'");
+			}
+			parts.setLength(0);
+			for(final Item I : iV)
+				parts.append(I.name()).append(", ");
+			if(parts.length()>0)
+				parts.delete(parts.length()-2, parts.length());
+			mob.tell(L("@x1. Natural Weapon(s): @x2.",""+showNumber,parts.toString()));
+			newName=mob.session().prompt(L("Enter a weapon name to add (from inv) or remove\n\r:"),"");
 		}
-		else
+		final StringBuilder x = new StringBuilder("");
+		x.append("<ITEMS>");
+		for(final Item I : iV)
+			x.append(CMLib.coffeeMaker().getItemXML(I));
+		x.append("</ITEMS>");
+		if(x.toString().equalsIgnoreCase(xmlStr))
 		{
 			mob.tell(L("(no change)"));
 			return;
 		}
+		E.setStat("WEAPONXML", x.toString());
 	}
 
 	protected void modifyDField(final DVector fields, final String fieldName, final String value)

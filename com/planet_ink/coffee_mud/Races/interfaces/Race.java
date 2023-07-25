@@ -218,9 +218,19 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * race fights with when unarmed.  This method may change what it
 	 * returns on every call to mix things up a bit.
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.Weapon
+	 * @see Race#getNaturalWeapons()
 	 * @return a Weapon object representing claws or teeth, etc..
 	 */
-	public Weapon myNaturalWeapon();
+	public Weapon getNaturalWeapon();
+
+	/**
+	 * Returns all Weapon objects representing what a member of this
+	 * race fights with when unarmed.
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.Weapon
+	 * @see Race#getNaturalWeapon()
+	 * @return a Weapon object representing claws or teeth, etc..
+	 */
+	public Weapon[] getNaturalWeapons();
 
 	/**
 	 * Returns resource codes of what this race can breathe as

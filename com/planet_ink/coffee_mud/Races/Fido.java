@@ -206,7 +206,7 @@ public class Fido extends StdRace
 				return name().toLowerCase()+" puppy";
 			case Race.AGE_CHILD:
 			{
-				CharStats cs = (CharStats)CMClass.getCommon("DefaultCharStats");
+				final CharStats cs = (CharStats)CMClass.getCommon("DefaultCharStats");
 				cs.setStat(CharStats.STAT_GENDER, gender);
 				return cs.boygirl()+" " + name().toLowerCase() + " puppy";
 			}
@@ -216,17 +216,18 @@ public class Fido extends StdRace
 	}
 
 	@Override
-	public Weapon myNaturalWeapon()
+	public Weapon[] getNaturalWeapons()
 	{
-		if(naturalWeapon==null)
+		if(this.naturalWeaponChoices.length==0)
 		{
-			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			final Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
 			naturalWeapon.setName(L("sharp teeth"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
+			this.naturalWeaponChoices = new Weapon[] { naturalWeapon };
 		}
-		return naturalWeapon;
+		return super.getNaturalWeapons();
 	}
 
 	@Override

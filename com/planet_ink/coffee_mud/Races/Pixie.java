@@ -263,9 +263,11 @@ public class Pixie extends SmallElfKin
 	}
 
 	@Override
-	public Weapon myNaturalWeapon()
+	public Weapon[] getNaturalWeapons()
 	{
-		return funHumanoidWeapon();
+		if(naturalWeaponChoices.length==0)
+			naturalWeaponChoices = getHumanoidWeapons();
+		return super.getNaturalWeapons();
 	}
 
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();

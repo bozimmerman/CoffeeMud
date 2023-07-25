@@ -2771,9 +2771,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final List<Item> raceWeapons=getRaceItems(E,"WEAPON","RACE_WEAPON_",piece,defined);
 		if(raceWeapons.size()>0)
 		{
-			final Item I=raceWeapons.get(CMLib.dice().roll(1, raceWeapons.size(), -1));
-			R.setStat("WEAPONCLASS", I.ID());
-			R.setStat("WEAPONXML", I.text());
+			final StringBuilder x = new StringBuilder("");
+			x.append("<ITEMS>");
+			for(final Item I : raceWeapons)
+				x.append(CMLib.coffeeMaker().getItemXML(I));
+			x.append("</ITEMS>");
+			R.setStat("WEAPONXML", x.toString());
 		}
 		ignoreStats.addAll(Arrays.asList(new String[]{"WEAPONCLASS","WEAPONXML"}));
 

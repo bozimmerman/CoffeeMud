@@ -244,7 +244,7 @@ public class Necromancer extends Cleric
 		&&(!myChar.isMonster())
 		&&(msg.sourceMinor()==CMMsg.TYP_DEATH)
 		&&(myChar.baseCharStats().getClassLevel(this)>=30)
-		&&(myChar.baseCharStats().getMyRace().ID().indexOf("Lich")<0))
+		&&(!CMLib.flags().isUndead(myChar.baseCharStats().getMyRace())))
 		{
 			final Race newRace=CMLib.utensils().getMixedRace("Lich", myChar.baseCharStats().getMyRace().ID(),false);
 			if(newRace!=null)

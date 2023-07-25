@@ -4,7 +4,8 @@
 
   <meta content="HTML Tidy, see www.w3.org" name="generator" /><title>Programming for CoffeeMud 5.10</title>
   
-  <link media="screen" type="text/css" href="style.css" rel="StyleSheet" /><!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors --></head><body>
+  <link media="screen" type="text/css" href="style.css" rel="StyleSheet" /><!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors --></head>
+<body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0">
   <tbody>
@@ -4435,10 +4436,9 @@ of the mob or player which must be set due to their being this race,
 this would be the appropriate method in which to do so. This method is
 not called for Polymorph, Shape Shift, or similar changes in race, but
 only for those whose permanent race is this one.</p>
-      <pre>  public Weapon myNaturalWeapon()<br />  {<br />    if( naturalWeapon == null )<br />    {<br />      naturalWeapon = CMClass.getWeapon( "StdWeapon" );<br />      naturalWeapon.setName( "huge claws" );<br />      naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);<br />      naturalWeapon.setUsesRemaining(1000);<br />      naturalWeapon.setWeaponDamageType( Weapon.TYPE_PIERCING );<br />    }<br />    return naturalWeapon;<br />  }<br /></pre>
+      <pre>  public Weapon[] getNaturalWeapons()<br />  {<br />    if( naturalWeaponChoices.length == 0 )<br />    {<br />      naturalWeapon = CMClass.getWeapon( "StdWeapon" );<br />      naturalWeapon.setName( "huge claws" );<br />      naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);<br />      naturalWeapon.setUsesRemaining(1000);<br />      naturalWeapon.setWeaponDamageType( Weapon.TYPE_PIERCING );<br />      naturalWeaponChoices = new Weapon[] { naturalWeapon };<br />    }<br />    return super.getNaturalWeapons();<br />  }<br /></pre>
       <p>This method allows you to
-create (see item creation above) a
-special weapon to serve the creature whenever they are not wielding
+create (see item creation above)&nbsp;special weapons to serve the creature whenever they are not wielding
 something. Since our Grumbler cannot wield weapons anyway, it is
 important to give them some big piercing claws.</p>
       <pre>  public String healthText( MOB viewer, MOB mob )<br />  {<br />    double pct = ( CMath.div( mob.curState().getHitPoints(), mob.maxState().getHitPoints() ) );<br />    if( pct &lt; .10 )<br />    {<br />      return "^r" + mob.displayName(viewer) + "^ris raging in bloody pain!^N";<br />    }<br />    else <br />    if( pct &lt; .20 )<br />    {<br />      return "^r" + mob.displayName(viewer) + "^ris covered in blood.^N";<br />    }<br />    else if( pct &lt; .30 )<br />    {<br />      return "^r" + mob.displayName(viewer) + "^r is bleeding badly from lots of wounds.^N";<br />    }<br />    else if( pct &lt; .50 )<br />    {<br />      return "^y" + mob.displayName(viewer) + "^y has some bloody wounds and gashed scales.^N";<br />    }<br />    else if( pct &lt; .60 )<br />    {<br />      return "^p" + mob.displayName(viewer) + "^p has a few bloody wounds.^N";<br />    }<br />    else if( pct &lt; .70 )<br />    {<br />      return "^p" + mob.displayName(viewer) + "^p is cut and bruised heavily.^N";<br />    }<br />    else if( pct &lt; .90 )<br />    {<br />      return "^g" + mob.displayName(viewer) + "^g has a few bruises and scratched scales.^N";<br />    }<br />    else if( pct &lt; .99 )<br />    {<br />      return "^g" + mob.displayName(viewer) + "^g has a few small bruises.^N";<br />    }<br />    else<br />    {<br />      return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";\<br />    }<br />  }<br /></pre>

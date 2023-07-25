@@ -232,35 +232,35 @@
 		</TR>
 		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>PhysStat Adjustments: </FONT></TD>
-			<TD WIDTH=66%>@RaceData?ESTATS@></TD>
+			<TD WIDTH=66%>@RaceData?ESTATS@</TD>
 		</TR>
 		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>CharStat Adjustments: </FONT></TD>
-			<TD WIDTH=66%>@RaceData?ASTATS@></TD>
+			<TD WIDTH=66%>@RaceData?ASTATS@</TD>
 		</TR>
 		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>CharStat Settings: </FONT></TD>
-			<TD WIDTH=66%>@RaceData?CSTATS@></TD>
+			<TD WIDTH=66%>@RaceData?CSTATS@</TD>
 		</TR>
 		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>CharState Adjustments: </FONT></TD>
-			<TD WIDTH=66%>@RaceData?ASTATE@></TD>
+			<TD WIDTH=66%>@RaceData?ASTATE@</TD>
 		</TR>
 		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Starting CharState Adj: </FONT></TD>
-			<TD WIDTH=66%>@RaceData?STARTASTATE@></TD>
+			<TD WIDTH=66%>@RaceData?STARTASTATE@</TD>
 		</TR>
 		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Resources: </FONT></TD>
-			<TD WIDTH=66%>@RaceData?RESOURCES@></TD>
+			<TD WIDTH=66%>@RaceData?RESOURCES@</TD>
 		</TR>
 		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Outfit: </FONT></TD>
-			<TD WIDTH=66%>@RaceData?OUTFIT@></TD>
+			<TD WIDTH=66%>@RaceData?OUTFIT@</TD>
 		</TR>
 		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Natural Weapon: </FONT></TD>
-			<TD WIDTH=66%>@RaceData?WEAPON@></TD>
+			<TD WIDTH=66%>@RaceData?WEAPON@</TD>
 		</TR>
 		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Weapons Race: </FONT></TD>

@@ -1095,7 +1095,7 @@ public class RaceData extends StdWebMacro
 				if(parms.containsKey("PLAYABLE"))
 					str.append(Area.THEME_PHRASE_EXT[R.availabilityCode()]+", ");
 				if(parms.containsKey("NATURALWEAPON"))
-					str.append(R.myNaturalWeapon().name()+", ");
+					str.append(R.getNaturalWeapon().name()+", ");
 
 				if(parms.containsKey("STATS"))
 					str.append(R.getStatAdjDesc()+", ");
@@ -1160,8 +1160,8 @@ public class RaceData extends StdWebMacro
 					str.append(itemList(R.outfit(null),'O',httpReq,parms,0,false)+", ");
 				if(parms.containsKey("WEAPON"))
 				{
-					final List<Item> V=new XVector<Item>(R.myNaturalWeapon());
-					str.append(itemList(V,'W',httpReq,parms,0,true)+", ");
+					final List<Item> V=new XVector<Item>(R.getNaturalWeapons());
+					str.append(itemList(V,'W',httpReq,parms,0,false)+", ");
 				}
 				if(parms.containsKey("RESOURCES"))
 					str.append(itemList(R.myResources(),'R',httpReq,parms,0,false)+", ");

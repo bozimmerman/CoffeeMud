@@ -224,9 +224,11 @@ public class Gnoll extends StdRace
 	}
 
 	@Override
-	public Weapon myNaturalWeapon()
+	public Weapon[] getNaturalWeapons()
 	{
-		return funHumanoidWeapon();
+		if(naturalWeaponChoices.length==0)
+			naturalWeaponChoices = getHumanoidWeapons();
+		return super.getNaturalWeapons();
 	}
 
 	@Override
@@ -239,7 +241,7 @@ public class Gnoll extends StdRace
 				return name().toLowerCase()+" puppy";
 			case Race.AGE_CHILD:
 			{
-				CharStats cs = (CharStats)CMClass.getCommon("DefaultCharStats");
+				final CharStats cs = (CharStats)CMClass.getCommon("DefaultCharStats");
 				cs.setStat(CharStats.STAT_GENDER, gender);
 				return cs.boygirl()+" " + name().toLowerCase() + " puppy";
 			}

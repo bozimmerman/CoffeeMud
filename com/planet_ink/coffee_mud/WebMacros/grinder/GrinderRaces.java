@@ -402,13 +402,17 @@ public class GrinderRaces
 			R.setStat("GETOFTID"+l,((Environmental)V.get(l)).ID());
 			R.setStat("GETOFTPARM"+l,((Environmental)V.get(l)).text());
 		}
-		V=itemList(new XVector<Item>(oldR.myNaturalWeapon()),'W',httpReq,true);
+		V=itemList(Arrays.asList(oldR.getNaturalWeapons()),'W',httpReq,false);
 		if(V.size()==0)
-			R.setStat("WEAPONCLASS","StdWeapon");
+			R.setStat("WEAPONXML","");
 		else
 		{
-			R.setStat("WEAPONCLASS",((Environmental)V.get(0)).ID());
-			R.setStat("WEAPONXML",((Environmental)V.get(0)).text());
+			final StringBuilder x = new StringBuilder("");
+			x.append("<ITEMS>");
+			for(final Item I : V)
+				x.append(CMLib.coffeeMaker().getItemXML(I));
+			x.append("</ITEMS>");
+			R.setStat("WEAPONXML",x.toString());
 		}
 		int breathe=CMath.s_int(httpReq.getUrlParameter("BREATHES"));
 		final List<Integer> l=new Vector<Integer>();

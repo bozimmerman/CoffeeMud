@@ -1773,7 +1773,7 @@ public class StdMOB implements MOB
 	{
 		final Weapon W;
 		if ((charStats() != null) && (charStats().getMyRace() != null))
-			W = charStats().getMyRace().myNaturalWeapon();
+			W = charStats().getMyRace().getNaturalWeapon();
 		else
 			W = CMClass.getWeapon("Natural");
 		if (W.subjectToWearAndTear())

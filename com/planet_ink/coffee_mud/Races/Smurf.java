@@ -119,14 +119,14 @@ public class Smurf extends StdRace
 	}
 
 	@Override
-	protected Weapon funHumanoidWeapon()
+	public Weapon[] getNaturalWeapons()
 	{
-		if(naturalWeaponChoices==null)
+		if(naturalWeaponChoices.length==0)
 		{
-			naturalWeaponChoices=new Vector<Weapon>();
+			final List<Weapon> weaps = new ArrayList<Weapon>();
 			for(int i=1;i<11;i++)
 			{
-				naturalWeapon=CMClass.getWeapon("StdWeapon");
+				final Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
 				switch(i)
 				{
 					case 1:
@@ -166,16 +166,11 @@ public class Smurf extends StdRace
 				}
 				naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 				naturalWeapon.setUsesRemaining(1000);
-				naturalWeaponChoices.add(naturalWeapon);
+				weaps.add(naturalWeapon);
 			}
+			naturalWeaponChoices = weaps.toArray(new Weapon[weaps.size()]);
 		}
-		return naturalWeaponChoices.get(CMLib.dice().roll(1,naturalWeaponChoices.size(),-1));
-	}
-
-	@Override
-	public Weapon myNaturalWeapon()
-	{
-		return funHumanoidWeapon();
+		return super.getNaturalWeapons();
 	}
 
 	@Override

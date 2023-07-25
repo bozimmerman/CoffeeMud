@@ -336,13 +336,11 @@ public class GenRace extends StdRace
 	}
 
 	@Override
-	public Weapon myNaturalWeapon()
+	public Weapon getNaturalWeapon()
 	{
 		if(weaponBuddy!=null)
-			return weaponBuddy.myNaturalWeapon();
-		if(naturalWeapon!=null)
-			return naturalWeapon;
-		return funHumanoidWeapon();
+			return weaponBuddy.getNaturalWeapon();
+		return super.getNaturalWeapon();
 	}
 
 	@Override
@@ -536,13 +534,12 @@ public class GenRace extends StdRace
 			}
 			str.append("</OUTFIT>");
 		}
-		if(naturalWeapon==null)
+		if(this.getNaturalWeapons().length==0)
 			str.append("<WEAPON/>");
 		else
 		{
 			str.append("<WEAPON>");
-			str.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(naturalWeapon)));
-			str.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.xml().parseOutAngleBrackets(naturalWeapon.text())));
+			str.append(getStat("WEAPONCLASS"));
 			str.append("</WEAPON>");
 		}
 		if((racialAbilityNames==null)||(racialAbilityNames.length==0))
@@ -800,16 +797,33 @@ public class GenRace extends StdRace
 			}
 		}
 
-		naturalWeapon=null;
-		final List<XMLLibrary.XMLTag> wblk=CMLib.xml().getContentsFromPieces(raceData,"WEAPON");
+		this.naturalWeaponChoices = new Weapon[0];
+		final XMLLibrary.XMLTag wblk=CMLib.xml().getPieceFromPieces(raceData,"WEAPON");
 		if(wblk!=null)
 		{
-			naturalWeapon=CMClass.getWeapon(CMLib.xml().getValFromPieces(wblk,"ICLASS"));
-			final String idat=CMLib.xml().getValFromPieces(wblk,"IDATA");
-			if((idat!=null)&&(naturalWeapon!=null))
+			final Weapon naturalWeapon=CMClass.getWeapon(CMLib.xml().getValFromPieces(wblk.contents(),"ICLASS"));
+			if(naturalWeapon != null)
 			{
-				naturalWeapon.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
-				naturalWeapon.recoverPhyStats();
+				final String idat=CMLib.xml().getValFromPieces(wblk.contents(),"IDATA");
+				if((idat!=null)&&(naturalWeapon!=null))
+				{
+					naturalWeapon.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
+					naturalWeapon.recoverPhyStats();
+					this.naturalWeaponChoices = new Weapon[] {naturalWeapon};
+				}
+			}
+			else
+			if(wblk.contents().size()>0)
+			{
+				final List<Item> items=new ArrayList<Item>();
+				CMLib.coffeeMaker().addItemsFromXML(wblk.contents(), items, null);
+				final List<Weapon> weaps = new ArrayList<Weapon>();
+				for(final Item I : items)
+				{
+					if(I instanceof Weapon)
+						weaps.add((Weapon)I);
+				}
+				this.naturalWeaponChoices = weaps.toArray(new Weapon[weaps.size()]);
 			}
 		}
 		xV=CMLib.xml().getContentsFromPieces(raceData,"RABILITIES");
@@ -982,10 +996,18 @@ public class GenRace extends StdRace
 			return "" + ((Item) myResources().get(num)).ID();
 		case 20:
 			return "" + ((Item) myResources().get(num)).text();
-		case 21:
-			return (naturalWeapon == null) ? "" : naturalWeapon.ID();
+		case 21: // weaponclass / weaponxml
 		case 22:
-			return (naturalWeapon == null) ? "" : naturalWeapon.text();
+		{
+			if(this.getNaturalWeapons().length==0)
+				return "";
+			final StringBuilder x=new StringBuilder("");
+			x.append("<ITEMS>");
+			for(final Weapon W : this.getNaturalWeapons())
+				x.append(CMLib.coffeeMaker().getItemXML(W));
+			x.append("</ITEMS>");
+			return x.toString();
+		}
 		case 23:
 			return (racialAbilityNames == null) ? "0" : ("" + racialAbilityNames.length);
 		case 24:
@@ -1298,19 +1320,30 @@ public class GenRace extends StdRace
 			}
 			break;
 		}
-		case 21:
-		{
-			naturalWeapon=null;
-			if(val.length()>0)
-				naturalWeapon=CMClass.getWeapon(val);
-			break;
-		}
+		case 21: // weaponclass / weaponxml
 		case 22:
 		{
-			if(naturalWeapon!=null)
+			if(val.trim().length()==0)
+				this.naturalWeaponChoices = new Weapon[0];
+			else
+			if(val.trim().toUpperCase().startsWith("<ITEMS>"))
 			{
-				naturalWeapon.setMiscText(val);
-				naturalWeapon.recoverPhyStats();
+				final List<Item> items = new Vector<Item>();
+				CMLib.coffeeMaker().addItemsFromXML(val, items, null);
+				this.naturalWeaponChoices = new Weapon[0];
+				final List<Weapon> weaps = new ArrayList<Weapon>();
+				for(final Item I : items)
+				{
+					if(I instanceof Weapon)
+						weaps.add((Weapon)I);
+				}
+				this.naturalWeaponChoices = weaps.toArray(new Weapon[weaps.size()]);
+			}
+			else
+			{
+				final Weapon W=CMClass.getWeapon(val);
+				if(W!=null)
+					this.naturalWeaponChoices = new Weapon[] {W};
 			}
 			break;
 		}

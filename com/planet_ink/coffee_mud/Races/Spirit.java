@@ -81,14 +81,14 @@ public class Spirit extends Undead
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
-	protected Weapon funHumanoidWeapon()
+	public Weapon[] getNaturalWeapons()
 	{
-		if(naturalWeaponChoices==null)
+		if(naturalWeaponChoices.length==0)
 		{
 			final Vector<Weapon> naturalWeaponChoices=new Vector<Weapon>();
 			for(int i=1;i<11;i++)
 			{
-				naturalWeapon=CMClass.getWeapon("StdWeapon");
+				final Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
 				switch(i)
 				{
 					case 1:
@@ -130,9 +130,9 @@ public class Spirit extends Undead
 				naturalWeapon.setUsesRemaining(1000);
 				naturalWeaponChoices.add(naturalWeapon);
 			}
-			this.naturalWeaponChoices = naturalWeaponChoices;
+			this.naturalWeaponChoices = naturalWeaponChoices.toArray(new Weapon[naturalWeaponChoices.size()]);
 		}
-		return naturalWeaponChoices.get(CMLib.dice().roll(1,naturalWeaponChoices.size(),-1));
+		return super.getNaturalWeapons();
 	}
 
 	@Override
@@ -212,12 +212,6 @@ public class Spirit extends Undead
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)-100);
-	}
-
-	@Override
-	public Weapon myNaturalWeapon()
-	{
-		return funHumanoidWeapon();
 	}
 
 	@Override

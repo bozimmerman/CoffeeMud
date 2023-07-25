@@ -62,10 +62,9 @@ public class StdRace implements Race
 	protected String		dispChgDesc				= null;
 	protected String		abilitiesDesc			= null;
 	protected String		languagesDesc			= null;
-	protected Weapon		naturalWeapon			= null;
 	protected boolean		mappedCulturalAbilities	= false;
 	protected List<Item>	outfitChoices			= null;
-	protected List<Weapon>	naturalWeaponChoices	= null;
+	protected Weapon[]		naturalWeaponChoices	= new Weapon[0];
 	protected Set<String>	naturalAbilImmunities	= new HashSet<String>();
 	protected int			usageCount				= 0;
 
@@ -73,11 +72,17 @@ public class StdRace implements Race
 	protected Map<Integer,SearchIDList<Ability>> racialEffectMap	= null;
 
 	private final static String localizedStaticName = CMLib.lang().L("StdRace");
+	private static Weapon[] humanoidWeaps 			= new Weapon[0];
 
 	@Override
 	public String name()
 	{
 		return localizedStaticName;
+	}
+
+	public StdRace()
+	{
+		super();
 	}
 
 	@Override
@@ -781,11 +786,19 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public Weapon myNaturalWeapon()
+	public Weapon getNaturalWeapon()
 	{
-		if(naturalWeapon==null)
-			naturalWeapon=CMClass.getWeapon("Natural");
-		return naturalWeapon;
+		if(getNaturalWeapons().length==1)
+			return getNaturalWeapons()[0];
+		return getNaturalWeapons()[CMLib.dice().roll(1, getNaturalWeapons().length, -1)];
+	}
+
+	@Override
+	public Weapon[] getNaturalWeapons()
+	{
+		if(naturalWeaponChoices.length==0)
+			naturalWeaponChoices = new Weapon[] { CMClass.getWeapon("Natural") };
+		return naturalWeaponChoices;
 	}
 
 	@Override
@@ -800,67 +813,70 @@ public class StdRace implements Race
 		return CMLib.combat().standardMobCondition(viewer,mob);
 	}
 
-	protected Weapon funHumanoidWeapon()
+	protected final Weapon[] getHumanoidWeapons()
 	{
-		if(naturalWeaponChoices==null)
+		if(humanoidWeaps.length==0)
 		{
-			naturalWeaponChoices=new Vector<Weapon>();
-			for(int i=1;i<11;i++)
+			synchronized(this)
 			{
-				naturalWeapon=CMClass.getWeapon("StdWeapon");
-				if(naturalWeapon==null)
-					continue;
-				naturalWeapon.setMaterial(RawMaterial.RESOURCE_LEATHER);
-				switch (i)
+				if(humanoidWeaps.length==0)
 				{
-				case 1:
-				case 2:
-				case 3:
-					naturalWeapon.setName(L("a quick punch"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
-					break;
-				case 4:
-					naturalWeapon.setName(L("fingernails and teeth"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
-					break;
-				case 5:
-					naturalWeapon.setName(L("an elbow"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
-					break;
-				case 6:
-					naturalWeapon.setName(L("a backhand"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
-					break;
-				case 7:
-					naturalWeapon.setName(L("a strong jab"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
-					break;
-				case 8:
-					naturalWeapon.setName(L("a stinging punch"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
-					break;
-				case 9:
-					if(bodyMask()[Race.BODY_LEG]>0)
-						naturalWeapon.setName(L("a knee"));
-					else
-					if(bodyMask()[Race.BODY_GILL]>0)
-						naturalWeapon.setName(L("a fin"));
-					else
-						naturalWeapon.setName(L("a limb"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
-					break;
-				case 10:
-					naturalWeapon.setName(L("a head butt"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
-					break;
+					final List<Weapon> weaps = new ArrayList<Weapon>();
+					for(int i=1;i<11;i++)
+					{
+						final Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
+						naturalWeapon.setMaterial(RawMaterial.RESOURCE_LEATHER);
+						switch (i)
+						{
+						case 1:
+						case 2:
+						case 3:
+							naturalWeapon.setName(L("a quick punch"));
+							naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+							break;
+						case 4:
+							naturalWeapon.setName(L("fingernails and teeth"));
+							naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
+							break;
+						case 5:
+							naturalWeapon.setName(L("an elbow"));
+							naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
+							break;
+						case 6:
+							naturalWeapon.setName(L("a backhand"));
+							naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+							break;
+						case 7:
+							naturalWeapon.setName(L("a strong jab"));
+							naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+							break;
+						case 8:
+							naturalWeapon.setName(L("a stinging punch"));
+							naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+							break;
+						case 9:
+							if(bodyMask()[Race.BODY_LEG]>0)
+								naturalWeapon.setName(L("a knee"));
+							else
+							if(bodyMask()[Race.BODY_GILL]>0)
+								naturalWeapon.setName(L("a fin"));
+							else
+								naturalWeapon.setName(L("a limb"));
+							naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+							break;
+						case 10:
+							naturalWeapon.setName(L("a head butt"));
+							naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
+							break;
+						}
+						naturalWeapon.setUsesRemaining(1000);
+						weaps.add(naturalWeapon);
+					}
+					humanoidWeaps = weaps.toArray(new Weapon[weaps.size()]);
 				}
-				naturalWeapon.setUsesRemaining(1000);
-				naturalWeaponChoices.add(naturalWeapon);
 			}
 		}
-		if(naturalWeaponChoices.size()>0)
-			return naturalWeaponChoices.get(CMLib.dice().roll(1,naturalWeaponChoices.size(),-1));
-		return CMClass.getWeapon("Natural");
+		return humanoidWeaps;
 	}
 
 	@Override
@@ -1256,24 +1272,14 @@ public class StdRace implements Race
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
 			GR.bodyMask()[i]=bodyMask()[i];
 
-		Weapon W=myNaturalWeapon();
-		final Weapon NW=CMClass.getWeapon("Natural");
-		if((W!=null)&&(W!=NW))
+		final StringBuilder weaponXML = new StringBuilder("");
+		if(this.getNaturalWeapons().length>0)
 		{
-			if(!W.isGeneric())
-			{
-				final Weapon W2=CMClass.getWeapon("GenWeapon");
-				W2.setName(W.name());
-				W2.setWeaponClassification(W.weaponClassification());
-				W2.setWeaponDamageType(W.weaponDamageType());
-				W2.basePhyStats().setDamage(W.phyStats().damage());
-				W2.basePhyStats().setAttackAdjustment(W.phyStats().attackAdjustment());
-				W2.recoverPhyStats();
-				W2.text();
-				W=W2;
-			}
-			GR.setStat("WEAPONCLASS",W.ID());
-			GR.setStat("WEAPONXML",W.text());
+			weaponXML.append("<ITEMS>");
+			for(final Item I : this.getNaturalWeapons())
+				weaponXML.append(CMLib.coffeeMaker().getItemXML(I));
+			weaponXML.append("</ITEMS>");
+			GR.setStat("WEAPONXML",weaponXML.toString());
 		}
 		GR.setStat("WEAPONRACE",getClass().getName());
 
@@ -1511,14 +1517,10 @@ public class StdRace implements Race
 		}
 
 		GR.setStat("WEAR",""+finalWear);
-		Weapon W=otherRace.myNaturalWeapon();
-		if(W==null)
-			W=nonHuman.myNaturalWeapon();
-		if(W!=null)
-		{
-			GR.setStat("WEAPONCLASS",W.ID());
-			GR.setStat("WEAPONXML",W.text());
-		}
+		Race wR=otherRace;
+		if(otherRace.getNaturalWeapons().length<nonHuman.getNaturalWeapons().length)
+			wR=nonHuman;
+		GR.setStat("WEAPONXML", wR.getStat("WEAPONXML"));
 
 		final int xpAdj1=CMath.s_int(GR.getStat("XPADJ"));
 		final int xpAdj2=CMath.s_int(otherRace.getStat("XPADJ"));

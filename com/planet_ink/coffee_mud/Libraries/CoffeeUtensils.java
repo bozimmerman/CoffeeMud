@@ -2878,7 +2878,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			R.setStat("FHEIGHT", ""+(CMath.s_double(R.getStat("FHEIGHT"))*0.6));
 			R.setStat("MHEIGHT", ""+(CMath.s_double(R.getStat("MHEIGHT"))*0.6));
 			R.setStat("CANRIDE",halfR.getStat("CANRIDE"));
-			R.setStat("WEAPONRACE",halfR.getStat("WEAPONRACE"));
+			R.setStat("WEAPONRACE","");
+			//TODO: mix undead weapon effects with halfr natural weapons
+			R.setStat("WEAPONXML","");
 			R.setStat("BODY",halfR.getStat("BODY"));
 			R.setStat("WEAR",halfR.getStat("WEAR"));
 			for(final String stat : new String[] { "ASTATS", "CSTATS", "ASTATE" } )

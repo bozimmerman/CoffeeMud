@@ -44,7 +44,7 @@ public class CubicGate extends StdItem implements MiscMagic
 	{
 		super();
 
-		setName("a cube of stange metal");
+		setName("a cube of strange metal");
 		setDisplayText("a strange, metallic cube sits here.");
 		resetCube();
 		basePhyStats().setLevel(1);
