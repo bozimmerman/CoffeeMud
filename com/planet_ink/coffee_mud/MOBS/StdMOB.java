@@ -2439,6 +2439,11 @@ public class StdMOB implements MOB
 		final MOB srcM = msg.source();
 		if ((msg.sourceCode() != CMMsg.NO_EFFECT) && (msg.amISource(this)))
 		{
+			if((msg.tool() instanceof Item)
+			&&(((Item)msg.tool()).owner()==null)
+			&&(!((Item)msg.tool()).okMessage(myHost, msg)))
+				return false;
+
 			if ((msg.sourceMinor() == CMMsg.TYP_DEATH)
 			&& (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.IMMORT)))
 			{
@@ -3361,6 +3366,9 @@ public class StdMOB implements MOB
 		// now go on to source activities
 		if ((msg.sourceCode() != CMMsg.NO_EFFECT) && (msg.amISource(this)))
 		{
+			if((msg.tool() instanceof Item)
+			&&(((Item)msg.tool()).owner()==null))
+				((Item)msg.tool()).executeMsg(myHost, msg);
 			if ((CMath.bset(msg.sourceMajor(), CMMsg.MASK_MALICIOUS))
 			&& (msg.target() instanceof MOB)
 			&& (getVictim() != msg.target())

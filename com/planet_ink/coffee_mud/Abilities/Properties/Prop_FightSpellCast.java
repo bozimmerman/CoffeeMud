@@ -141,6 +141,7 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&((msg.value())>0))
 			{
+				getMySpellsV(); // ensure props are loaded
 				if(CMLib.combat().isASiegeWeapon(myItem)
 				&&(msg.target() instanceof MOB))
 					addMeIfNeccessary(msg.source(),(MOB)msg.target(),false,0,maxTicks);

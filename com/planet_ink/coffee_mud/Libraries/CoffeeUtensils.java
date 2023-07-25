@@ -2890,7 +2890,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				for(final Enumeration<Ability> e=I.effects();e.hasMoreElements();)
 					aV.add((Ability)e.nextElement().copyOf());
 			}
-			R.setStat("WEAPONXML",halfR.getStat("WEAPONXML"));
+			R.setStat("WEAPONXML",gR.getStat("WEAPONXML"));
 			for(final Item I : R.getNaturalWeapons())
 			{
 				final String key = CMLib.english().getContextName(R.getNaturalWeapons(), I).toLowerCase();
@@ -2935,8 +2935,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						weaponProps.remove(key);
 				}
 			}
-			R.setStat("BODY",halfR.getStat("BODY"));
-			R.setStat("WEAR",halfR.getStat("WEAR"));
+			R.setStat("BODY",gR.getStat("BODY"));
+			R.setStat("WEAR",gR.getStat("WEAR"));
 			for(final String stat : new String[] { "ASTATS", "CSTATS", "ASTATE" } )
 			{
 				final long[] undeadBits = CMParms.toLongArray(Arrays.asList(R.getStat(stat).split("\\|")));

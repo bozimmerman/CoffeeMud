@@ -2699,6 +2699,23 @@ public class Test extends StdCommand
 					return false;
 				}
 			}
+			if(what.equalsIgnoreCase("raceweaps"))
+			{
+				final StringBuffer buf=new StringBuffer("");
+				for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+				{
+					final Race R1=r.nextElement();
+					if((R1!=null)&&(!R1.isGeneric()))
+					{
+						buf.append(CMStrings.padRight(R1.ID(), 13)).append(" : ");
+						buf.append(R1.getNaturalWeapons().length).append(": ");
+						for(int i=0;i<R1.getNaturalWeapons().length && i<2;i++)
+							buf.append(R1.getNaturalWeapons()[i].name()).append(": ");
+						buf.append("\r\n");
+					}
+				}
+				mob.tell(buf.toString());
+			}
 			if(what.equalsIgnoreCase("racelangs"))
 			{
 				for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
