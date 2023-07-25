@@ -6,7 +6,7 @@
   5. New StdItem: CubicGate
   6. New Achievement reward type: Tattoo
   7. Tattoos like 'RACE_*" or "CHARCLASS_*" now open up otherwise skill-restricted options.
-  8. Liege xp bonus can no longer be gained from non-combat or role-playing xp gains.
+  8. Liege xp bonus can no longer be gained from non-combat or role-playing xp vassel gains.
   9. New CharStat XPADJPCT - for adding bonus % xp (or loss if negative)
  10. Prop_NoPurge now supports an expiration date/timestamp
  11. New StdMob type: CombatDummy, for testing.
@@ -17,7 +17,7 @@
  16. Undead race mixing now has its own special rules, which Prayer_Animate* will use
  17. WaterCurrents messaging can now be customized.
  18. Default days/month is now 24, default months/yr now 7.  Postmen retain mail for 40 months.
- 19. Leiges will only receive XP from vassals combat/targeted XP, as opposed to passive xp.
+ 19. GenRaces now support multiple natural weapon choices, better reflecting StdRaces.
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

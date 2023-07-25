@@ -60,7 +60,9 @@ public class CubicGate extends StdItem implements MiscMagic
 
 	protected void setCubeDescription()
 	{
-		setDescription(L("This three-inch cube is of some unearthly metal. each face is engraved it alien-looking sigils, as well as a @x1 pips (dots).",""+planes.size()));
+		setDescription(L("This three-inch cube is of some unearthly metal. "
+				+ "Each face is engraved in alien-looking sigils, as well "
+				+ "as an incrementing number of pips (dots), from one to @x1.",""+planes.size()));
 		final EnglishParsing elib = CMLib.english();
 		allWords.clear();
 		for(int x=1;x<=planes.size();x++)
