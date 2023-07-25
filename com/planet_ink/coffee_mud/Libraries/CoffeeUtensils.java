@@ -2879,8 +2879,62 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			R.setStat("MHEIGHT", ""+(CMath.s_double(R.getStat("MHEIGHT"))*0.6));
 			R.setStat("CANRIDE",halfR.getStat("CANRIDE"));
 			R.setStat("WEAPONRACE","");
-			//TODO: mix undead weapon effects with halfr natural weapons
-			R.setStat("WEAPONXML","");
+			final Map<String,List<Ability>> weaponProps = new TreeMap<String,List<Ability>>();
+			for(final Item I : undeadR.getNaturalWeapons())
+			{
+				if(!I.effects().hasMoreElements())
+					continue;
+				final List<Ability> aV=new ArrayList<Ability>();
+				final String key = CMLib.english().getContextName(undeadR.getNaturalWeapons(), I).toLowerCase();
+				weaponProps.put(key, aV);
+				for(final Enumeration<Ability> e=I.effects();e.hasMoreElements();)
+					aV.add((Ability)e.nextElement().copyOf());
+			}
+			R.setStat("WEAPONXML",halfR.getStat("WEAPONXML"));
+			for(final Item I : R.getNaturalWeapons())
+			{
+				final String key = CMLib.english().getContextName(R.getNaturalWeapons(), I).toLowerCase();
+				I.delAllEffects(true);
+				final List<Ability> as = weaponProps.get(key);
+				if(as != null)
+				{
+					for(final Ability A : as)
+					{
+						I.addNonUninvokableEffect(A);
+						A.setMiscText(A.text());
+					}
+					weaponProps.remove(key);
+				}
+			}
+			if((weaponProps.size()>0)
+			&&(undeadR.getNaturalWeapons().length>0))
+			{
+				final double pct = CMath.div(weaponProps.size(), undeadR.getNaturalWeapons().length);
+				int numToDo=(int)Math.round(CMath.mul(pct,R.getNaturalWeapons().length));
+				if(pct > 0 && numToDo < 1)
+					numToDo = 1;
+				for(int i=0;(i<numToDo*5) & weaponProps.size()>0;i++)
+				{
+					final String key = weaponProps.keySet().iterator().next();
+					final List<Ability> as = weaponProps.get(key);
+					if(as.size()>0)
+					{
+						final Item I=R.getNaturalWeapons()[CMLib.dice().roll(1, R.getNaturalWeapons().length, -1)];
+						for(final Iterator<Ability> a=as.iterator();a.hasNext();)
+						{
+							final Ability A=a.next();
+							if(I.fetchEffect(A.ID())==null)
+							{
+								I.addNonUninvokableEffect(A);
+								A.setMiscText(A.text());
+								a.remove();
+							}
+						}
+					}
+					if(as.size()==0)
+						weaponProps.remove(key);
+				}
+			}
 			R.setStat("BODY",halfR.getStat("BODY"));
 			R.setStat("WEAR",halfR.getStat("WEAR"));
 			for(final String stat : new String[] { "ASTATS", "CSTATS", "ASTATE" } )
