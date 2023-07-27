@@ -60,13 +60,14 @@ public class CubicGate extends StdItem implements MiscMagic
 
 	protected void setCubeDescription()
 	{
+		final EnglishParsing elib = CMLib.english();
 		setDescription(L("This three-inch cube is of some unearthly metal. "
 				+ "Each face is engraved in alien-looking sigils, as well "
-				+ "as an incrementing number of pips (dots), from one to @x1.",""+planes.size()));
-		final EnglishParsing elib = CMLib.english();
+				+ "as an incrementing number of pips (dots), from one to @x1.",
+				(elib == null)?(""+planes.size()):L(elib.makeNumberWords(planes.size(), 0))));
 		allWords.clear();
 		for(int x=1;x<=planes.size();x++)
-			allWords.add((elib == null)?(""+planes.size()):L(elib.makeNumberWords(x, 0)));
+			allWords.add((elib == null)?(""+x):L(elib.makeNumberWords(x, 0)));
 		final String word = (allWords.size()>0)?allWords.get(allWords.size()-1):L("zero");
 		secretIdentity=L("A cubic gate.  Hold, and say 'one' to '@x1' to activate.", word);
 	}

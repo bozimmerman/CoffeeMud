@@ -88,7 +88,7 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 	@Override
 	public boolean bubbleAffect()
 	{
-		return true;
+		return bubble;
 	}
 
 	@Override
@@ -105,18 +105,30 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 		super.setMiscText(newMiscText);
 		changes.clear();
 		previous.clear();
-		changes.putAll(CMParms.parseEQParms(newMiscText));
+		final int x = newMiscText.indexOf("<PREVIOUS>");
+		String parms = newMiscText;
+		String xml = "";
+		if(x>0)
+		{
+			parms = newMiscText.substring(0,x);
+			xml = newMiscText.substring(x);
+		}
+		changes.putAll(CMParms.parseEQParms(parms));
 		if(changes.containsKey("TRIGGER"))
 		{
 			trigger = 0;
-			final String chtr  = changes.remove("TRIGGER").toUpperCase().trim();
-			final String chtru = chtr+"_";
-			final String uchtr = "_"+chtr;
-			for(int i=0;i<TRIGGER_DESC.length;i++)
+			final String[] chtrs  = changes.remove("TRIGGER").toUpperCase().trim().split("|");
+			for(String chtr : chtrs)
 			{
-				final String tds = TRIGGER_DESC[i];
-				if(tds.equals(chtr) || tds.startsWith(chtru) || tds.endsWith(uchtr))
-					trigger|=Math.round(CMath.pow(2,i));
+				chtr = chtr.trim();
+				final String chtru = chtr+"_";
+				final String uchtr = "_"+chtr;
+				for(int i=0;i<TRIGGER_DESC.length;i++)
+				{
+					final String tds = TRIGGER_DESC[i];
+					if(tds.equals(chtr) || tds.startsWith(chtru) || tds.endsWith(uchtr))
+						trigger|=Math.round(CMath.pow(2,i));
+				}
 			}
 			if(trigger==0)
 				trigger = TRIGGER_ALWAYS;
@@ -126,9 +138,21 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 		bubble=false;
 		if(changes.containsKey("BUBBLE"))
 			bubble = CMath.s_bool(changes.get("BUBBLE"));
-		if(changes.containsKey("SETTEDFLAG") && CMath.s_bool(changes.get("SETTEDFLAG")))
+		previous.clear();
+		if(xml.length()>0)
 		{
-			//TODO: move all the changes to "previous", restore modifiable object
+			final List<XMLLibrary.XMLTag> tags = CMLib.xml().parseAllXML(xml);
+			for(final XMLLibrary.XMLTag tag : tags)
+			{
+				if((tag.getParmValue("STAT")!=null)
+				&&(tag.getParmValue("ID")!=null))
+				{
+					final String changeStat = tag.getParmValue("STAT");
+					final String changeValue = CMLib.xml().restoreAngleBrackets(tag.value());
+					final Integer identifier = Integer.valueOf(CMath.s_int(tag.getParmValue("ID")));
+					previous.add(new Quad<Integer,Modifiable,String,String>(identifier,null,changeStat,changeValue));
+				}
+			}
 		}
 	}
 
@@ -159,6 +183,50 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 		return Integer.valueOf(affected.getClass().getName().hashCode());
 	}
 
+	protected Modifiable findModifiable(final Physical affected, final String changeStat)
+	{
+		Modifiable M = null;
+		if(affected.isStat(changeStat))
+			M = affected;
+		else
+		if(affected.basePhyStats().isStat(changeStat))
+			M = affected.basePhyStats();
+		else
+		if((affected instanceof MOB)
+		&&(((MOB)affected).baseCharStats().isStat(changeStat)))
+			M = ((MOB)affected).baseCharStats();
+		else
+		if((affected instanceof MOB)
+		&&(((MOB)affected).baseState().isStat(changeStat)))
+			M = ((MOB)affected).baseState();
+		return M;
+	}
+
+	protected Modifiable findLostModifiable(final Physical affected, final Integer identity, final String changeStat)
+	{
+		if(affected != null)
+		{
+			if(identity.equals(this.makeIdentity(affected)))
+				return findModifiable(affected, changeStat);
+		}
+		if(this.affected != null)
+		{
+			if(identity.equals(this.makeIdentity(this.affected)))
+				return findModifiable(this.affected, changeStat);
+		}
+		if(affected instanceof Item)
+		{
+			if(identity.equals(this.makeIdentity(((Item)affected).owner())))
+				return findModifiable(((Item)affected).owner(), changeStat);
+		}
+		if(this.affected instanceof Item)
+		{
+			if(identity.equals(this.makeIdentity(((Item)affected).owner())))
+				return findModifiable(((Item)affected).owner(), changeStat);
+		}
+		return null;
+	}
+
 	protected void undoEffect(final Integer identity, final Physical affected)
 	{
 		if(previous.size()>0)
@@ -172,7 +240,10 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 						final Quad<Integer, Modifiable,String,String> Q = q.next();
 						if((identity == null)||(Q.first.equals(identity)))
 						{
-							Q.second.setStat(Q.third, Q.fourth);
+							if(Q.second==null)
+								Q.second = this.findLostModifiable(affected, Q.first, Q.third);
+							if(Q.second != null)
+								Q.second.setStat(Q.third, Q.fourth);
 							q.remove();
 						}
 					}
@@ -196,6 +267,7 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 				for(final String changeStat : changes.keySet())
 				{
 					boolean found=false;
+					final String value = changes.get(changeStat);
 					for(final Iterator<Quad<Integer,Modifiable,String,String>> q = previous.iterator();q.hasNext();)
 					{
 						final Quad<Integer, Modifiable,String,String> Q = q.next();
@@ -205,8 +277,19 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 					}
 					if(!found)
 					{
-						//Q.second.setStat(Q.third, Q.fourth);
-						//q.remove();
+						final Modifiable M = findModifiable(affected, changeStat);
+						if(M != null)
+						{
+							final String oldValue = M.getStat(changeStat);
+							previous.add(new Quad<Integer,Modifiable,String,String>(identity,M,changeStat,oldValue));
+							M.setStat(changeStat, value);
+							affected.recoverPhyStats();
+							if(affected instanceof MOB)
+							{
+								((MOB)affected).recoverMaxState();
+								((MOB)affected).recoverCharStats();
+							}
+						}
 					}
 				}
 			}
@@ -233,58 +316,77 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
-		boolean	 reeval  = false;
-		switch(msg.sourceMinor())
+		Boolean	reeval = null;
+		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_REMOVE:
+			if(!CMath.bset(trigger, TRIGGER_WEAR_WIELD)&&(msg.target()==affected))
+				reeval = Boolean.FALSE;
+			break;
 		case CMMsg.TYP_WEAR:
 		case CMMsg.TYP_WIELD:
 		case CMMsg.TYP_HOLD:
-			reeval = (CMath.bset(trigger, TRIGGER_WEAR_WIELD)&&(msg.target()==affected));
+			if(CMath.bset(trigger, TRIGGER_WEAR_WIELD)&&(msg.target()==affected))
+				reeval = Boolean.TRUE;
 			break;
 		case CMMsg.TYP_DROP:
+			if(CMath.banyset(trigger, TRIGGER_WEAR_WIELD|TRIGGER_GET)&&(msg.target()==affected))
+				reeval = Boolean.FALSE;
+			else
+			if(CMath.banyset(trigger, TRIGGER_DROP_PUTIN)&&(msg.target()==affected))
+				reeval = Boolean.TRUE;
+			break;
 		case CMMsg.TYP_GET:
-			reeval = CMath.banyset(trigger, TRIGGER_WEAR_WIELD|TRIGGER_GET|TRIGGER_DROP_PUTIN)&&(msg.target()==affected);
+			if(CMath.banyset(trigger, TRIGGER_GET)&&(msg.target()==affected))
+				reeval = Boolean.TRUE;
+			else
+			if(CMath.banyset(trigger, TRIGGER_DROP_PUTIN|TRIGGER_PUT)&&(msg.target()==affected))
+				reeval = Boolean.FALSE;
 			break;
 		case CMMsg.TYP_PUT:
-			reeval = (CMath.banyset(trigger, TRIGGER_PUT|TRIGGER_GET)
-					&&(msg.target()==affected));
+			if(CMath.banyset(trigger, TRIGGER_PUT)
+			&&((msg.target()==affected)||(msg.target()==affected)))
+				reeval = Boolean.TRUE;
 			break;
 		case CMMsg.TYP_MOUNT:
+			if((CMath.bset(trigger, TRIGGER_MOUNT)&&(msg.target()==affected)))
+				reeval = Boolean.TRUE;
+			break;
 		case CMMsg.TYP_DISMOUNT:
-			reeval = (CMath.bset(trigger, TRIGGER_MOUNT)
-					&&(msg.target()==affected));
+			if((CMath.bset(trigger, TRIGGER_MOUNT)&&(msg.target()==affected)))
+				reeval = Boolean.FALSE;
 			break;
 		case CMMsg.TYP_ENTER:
+			if(CMath.bset(trigger, TRIGGER_ENTER))
+				reeval = Boolean.TRUE;
+			break;
 		case CMMsg.TYP_LEAVE:
-			reeval = CMath.bset(trigger, TRIGGER_ENTER);
+			if(CMath.bset(trigger, TRIGGER_ENTER))
+				reeval = Boolean.FALSE;
 			break;
 		case CMMsg.TYP_DAMAGE:
 			if( CMath.bset(trigger, TRIGGER_BEING_HIT)&&(msg.target()==affected))
-				reeval = true;
+				reeval = Boolean.TRUE;
 			else
 			if( CMath.bset(trigger, TRIGGER_HITTING_WITH)&&(msg.tool()==affected))
-				reeval = true;
+				reeval = Boolean.TRUE;
 			break;
 		case CMMsg.TYP_FILL:
-			reeval = (CMath.bset(trigger, TRIGGER_USE)
-					&&(msg.target()==affected));
-			break;
 		case CMMsg.TYP_DRINK:
-			reeval = (CMath.bset(trigger, TRIGGER_USE)
-					&&(msg.target()==affected));
+		case CMMsg.TYP_EAT:
+			if((CMath.bset(trigger, TRIGGER_USE)&&(msg.target()==affected)))
+				reeval = Boolean.TRUE;
 			break;
 		case CMMsg.TYP_POUR:
-			reeval = (CMath.bset(trigger, TRIGGER_USE)
-					&&(msg.tool()==affected));
+			if((CMath.bset(trigger, TRIGGER_USE)&&(msg.tool()==affected)))
+				reeval = Boolean.TRUE;
 			break;
-		case CMMsg.TYP_EAT:
-			reeval = (CMath.bset(trigger, TRIGGER_USE)
-					&&(msg.target()==affected));
+		default:
 			break;
 		}
-		if(reeval)
+		if(reeval != null)
 		{
+			final Modifiable mod = (bubble) ? msg.source() : affected;
 			msg.addTrailerRunnable(null);
 		}
 	}
