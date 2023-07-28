@@ -105,6 +105,20 @@ public interface LandTitle extends PrivateProperty
 	public void setRentalProperty(boolean truefalse);
 
 	/**
+	 * Returns whether theft is allowed or monitored in this room by
+	 * Arrest behaviors.
+	 * @return true to allow theft, false for default behavior
+	 */
+	public boolean allowTheft();
+
+	/**
+	 * Sets whether theft is allowed or monitored in this room by
+	 * Arrest behaviors.
+	 * @param allow true to allow theft, false for default behavior
+	 */
+	public void setAllowTheft(final boolean allow);
+
+	/**
 	 * If back taxes is owned on this property, this is how the value is set.  The
 	 * value should be in base coffeemud currency
 	 * @param amount the back taxes owed

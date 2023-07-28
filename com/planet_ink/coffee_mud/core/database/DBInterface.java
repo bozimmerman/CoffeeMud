@@ -422,6 +422,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public Set<String> getAffectedRoomIDs(final Area parentA, final boolean metro, final String[] propIDs)
+	{
+		return RoomLoader.getAffectedRoomIDs(parentA, metro, propIDs);
+	}
+
+	@Override
 	public Room DBReadRoomObject(final String roomIDtoLoad, final boolean reportStatus)
 	{
 		return RoomLoader.DBReadRoomObject(roomIDtoLoad, reportStatus);

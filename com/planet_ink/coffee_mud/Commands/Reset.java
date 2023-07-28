@@ -580,8 +580,15 @@ public class Reset extends StdCommand
 				mob.tell(L("Done."));
 			}
 			else
+			if(s.equalsIgnoreCase("world"))
 			{
-				mob.tell(L("Rejuv this ROOM, or the whole AREA?"));
+				for(final Enumeration<Room> a=CMLib.map().rooms();a.hasMoreElements();)
+					CMLib.threads().rejuv(a.nextElement(),tickID);
+				mob.tell(L("Done."));
+			}
+			else
+			{
+				mob.tell(L("Rejuv this ROOM, or the whole AREA, or the WORLD?"));
 				return false;
 			}
 		}
@@ -967,7 +974,7 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("INIFILE")||s.equalsIgnoreCase("coffeemud.ini"))
 		{
-			CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
+			final CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 			if((ipage!=null)&&(ipage.isLoaded()))
 			{
 				CMProps.instance().resetSecurityVars();

@@ -118,9 +118,10 @@ public class Reply extends StdCommand
 				break;
 			}
 		}
-		if((pstats.getReplyToMOB().session()!=null)
-		&&(pstats.getReplyToMOB().session().isAfk()))
-			mob.tell(pstats.getReplyToMOB().session().getAfkMessage());
+		final MOB rM = pstats.getReplyToMOB();
+		final Session aSess =  (rM != null) ? rM.session() : null;
+		if((aSess!=null)&&(aSess.isAfk()))
+			mob.tell(aSess.getAfkMessage());
 		return false;
 	}
 

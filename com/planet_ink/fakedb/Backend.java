@@ -137,7 +137,7 @@ public class Backend
 							chk = s.startsWith(lowStr.substring(1));
 					}
 					else
-					if (lowStr.charAt(lowStr.length() - 1) == '%')
+					if (x==lowStr.length() - 1)
 						chk = s.endsWith(lowStr.substring(0, lowStr.length() - 1));
 					else
 						chk = s.startsWith(lowStr.substring(0, x)) && s.endsWith(lowStr.substring(x + 1));

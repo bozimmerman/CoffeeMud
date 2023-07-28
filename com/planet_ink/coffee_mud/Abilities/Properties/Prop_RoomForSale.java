@@ -102,11 +102,12 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return getAllTitledRooms();
 	}
 
-	protected void saveData(final String owner, final int price, final boolean rental, final int backTaxes, final boolean grid)
+	protected void saveData(final String owner, final int price, final boolean rental, final int backTaxes, final boolean grid, final boolean allowTheft)
 	{
 		setMiscText(owner+"/"
 				+(rental?"RENTAL ":"")
 				+(grid?"GRID ":"")
+				+(allowTheft?"":"NOTHEFT ")
 				+((backTaxes>0)?"TAX"+backTaxes+"X ":"")
 				+price);
 	}
@@ -114,7 +115,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@Override
 	public void setPrice(final int price)
 	{
-		saveData(getOwnerName(), price, rentalProperty(), backTaxes(), gridLayout());
+		saveData(getOwnerName(), price, rentalProperty(), backTaxes(), gridLayout(), allowTheft());
 	}
 
 	@Override
@@ -143,7 +144,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 		if((owner.length()==0)&&(getOwnerName().length()>0))
 			scheduleReset=true;
-		saveData(owner, getPrice(), rentalProperty(), backTaxes(), gridLayout());
+		saveData(owner, getPrice(), rentalProperty(), backTaxes(), gridLayout(), allowTheft());
 	}
 
 	@Override
@@ -162,7 +163,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@Override
 	public void setBackTaxes(final int tax)
 	{
-		saveData(getOwnerName(), getPrice(), rentalProperty(), tax, gridLayout());
+		saveData(getOwnerName(), getPrice(), rentalProperty(), tax, gridLayout(), allowTheft());
 	}
 
 	@Override
@@ -178,7 +179,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@Override
 	public void setRentalProperty(final boolean truefalse)
 	{
-		saveData(getOwnerName(), getPrice(), truefalse, backTaxes(), gridLayout());
+		saveData(getOwnerName(), getPrice(), truefalse, backTaxes(), gridLayout(), allowTheft());
 	}
 
 	@Override
@@ -194,7 +195,23 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@Override
 	public void setGridLayout(final boolean layout)
 	{
-		saveData(getOwnerName(), getPrice(), rentalProperty(), backTaxes(), layout);
+		saveData(getOwnerName(), getPrice(), rentalProperty(), backTaxes(), layout, allowTheft());
+	}
+
+	@Override
+	public boolean allowTheft()
+	{
+		final String upperText=text().toUpperCase();
+		final int dex=upperText.indexOf('/');
+		if(dex<0)
+			return upperText.indexOf("NOTHEFT")<0;
+		return upperText.indexOf("NOTHEFT",dex)<0;
+	}
+
+	@Override
+	public void setAllowTheft(final boolean allow)
+	{
+		saveData(getOwnerName(), getPrice(), rentalProperty(), backTaxes(), gridLayout(), allow);
 	}
 
 	// update title, since it may affect clusters, worries about ALL involved

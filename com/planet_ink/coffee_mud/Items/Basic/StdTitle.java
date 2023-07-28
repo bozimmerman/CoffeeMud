@@ -148,6 +148,24 @@ public class StdTitle extends StdItem implements LandTitle
 		return A.backTaxes();
 	}
 
+	public boolean allowTheft()
+	{
+		final LandTitle A=fetchALandTitle();
+		if(A==null)
+			return false;
+		return A.allowTheft();
+	}
+
+	@Override
+	public void setAllowTheft(final boolean allow)
+	{
+		final LandTitle A=fetchALandTitle();
+		if(A==null)
+			return;
+		A.setAllowTheft(allow);
+		A.updateTitle();
+	}
+
 	@Override
 	public void setGridLayout(final boolean layout)
 	{

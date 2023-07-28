@@ -812,6 +812,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			&&((msg.tool()==null)||(CMLib.coffeeShops().getShopKeeper(msg.tool()))==null) // getting from a shopkeeper is not stealing...
 			&&(!doesHavePriviledgesHere(msg.source(),R)))
 			{
+				final LandTitle title = CMLib.law().getLandTitle(R);
+				if((title != null) && (title.allowTheft()))
+					return true;
 				if((!canAttackThisProperty(msg.source(), record))
 				&&(!msg.source().isAttributeSet(Attrib.PLAYERKILL)))
 				{

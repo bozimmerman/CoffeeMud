@@ -3265,7 +3265,8 @@ public class DefaultSession implements Session
 				lastKeystroke=System.currentTimeMillis();
 				if(input.trim().length()>0)
 					prevMsgs.add(input);
-				setAfkFlag(false);
+				if(this.afkMessage==null)
+					setAfkFlag(false);
 				List<String> parsedInput=CMParms.parse(input);
 				final MOB mob=mob();
 				if((parsedInput.size()>0)&&(mob!=null))

@@ -55,7 +55,10 @@ public class AFK extends StdCommand
 			mob.session().setAfkFlag(false);
 		else
 		{
-			mob.session().setAFKMessage(CMParms.combine(commands,1));
+			final String str = CMParms.combine(commands,1);
+			mob.session().setAFKMessage(str);
+			if(str.trim().length()>0)
+				mob.session().setAFKMessage(L("AFK: @x1",CMParms.combine(commands,1)));
 			mob.session().setAfkFlag(true);
 			if((mob.isPlayer())&&(CMProps.getIntVar(CMProps.Int.RP_GOAFK)!=0))
 				CMLib.leveler().postRPExperience(mob, "COMMAND:"+ID(), null, "", CMProps.getIntVar(CMProps.Int.RP_GOAFK), false);

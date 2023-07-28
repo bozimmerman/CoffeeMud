@@ -18,6 +18,9 @@
  17. WaterCurrents messaging can now be customized.
  18. Default days/month is now 24, default months/yr now 7.  Postmen retain mail for 40 months.
  19. GenRaces now support multiple natural weapon choices, better reflecting StdRaces.
+ 20. AFK status produced from the AFK command is now sticky until explicitly toggled.
+ 21. Prop_RoomForSale now allows disabling the robbery laws on a property-by-property basis.
+ 22. SAVE= rooms will properly rejuv before saving, Thin areas now allow property taxes
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

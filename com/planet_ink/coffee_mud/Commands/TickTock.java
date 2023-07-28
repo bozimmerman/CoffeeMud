@@ -80,6 +80,24 @@ public class TickTock extends StdCommand
 						mob.tell(L(CMLib.host().executeCommand("TICK SMTP")));
 				}
 				else
+				if(s.startsWith("propertytax"))
+				{
+					final boolean debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST);
+					for(final Enumeration<Area> a = CMLib.map().areas();a.hasMoreElements();)
+					{
+						final Area A=a.nextElement();
+						final LegalBehavior B=CMLib.law().getLegalBehavior(A);
+						if(B != null)
+						{
+							final Law L=B.legalInfo(A);
+							if((L!=null)&&(L.lawIsActivated()))
+								L.propertyTaxTick(A,debugging);
+						}
+					}
+					mob.tell(L("Done."));
+					return false;
+				}
+				else
 				{
 					for(final Enumeration<CMLibrary> e=CMLib.libraries();e.hasMoreElements();)
 					{

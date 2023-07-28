@@ -480,6 +480,24 @@ public class CMStrings
 	}
 
 	/**
+	 * Returns whether the given string contains any of the given strings in the
+	 * array, and if so, which one.  Case sensitive.
+	 *
+	 * @param text the text to search
+	 * @param any the list of things to search for in the text
+	 * @return index into the any array that was found.
+	 */
+	public final static int indexOfAny(final String text, final String[] any)
+	{
+		if((text==null)||(any==null)||(any.length==0))
+			return -1;
+		for(int a=0;a<any.length;a++)
+			if(text.indexOf(any[a])>=0)
+				return a;
+		return -1;
+	}
+
+	/**
 	 * Returns the value of any digits at the end of the given string.
 	 * If no digits are found, returns -1.
 	 * @param s the string to look for digits at the end of

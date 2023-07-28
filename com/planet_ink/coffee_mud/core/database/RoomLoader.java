@@ -348,6 +348,77 @@ public class RoomLoader
 		newRoom.setMiscText(DBConnections.getRes(R,"CMROTX"));
 	}
 
+	public Set<String> getAffectedRoomIDs(final Area parentA, final boolean metro, final String[] propIDs)
+	{
+		final Set<String> ids = Collections.synchronizedSet(new TreeSet<String>());
+		if((propIDs==null)||(propIDs.length==0))
+			return ids;
+		String commonPrefix = propIDs[0].toLowerCase();
+		String commonSuffix = propIDs[0].toLowerCase();
+		for(int i=1;i<propIDs.length;i++)
+		{
+			while((commonPrefix.length()>0)&&(!propIDs[i].toLowerCase().startsWith(commonPrefix)))
+				commonPrefix = commonPrefix.substring(0,commonPrefix.length()-1);
+			while((commonSuffix.length()>0)&&(!propIDs[i].toLowerCase().endsWith(commonSuffix)))
+				commonSuffix = commonSuffix.substring(1);
+		}
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			final StringBuilder sql = new StringBuilder("SELECT CMROID,CMROTX FROM CMROOM WHERE ");
+			if(parentA!=null)
+			{
+				sql.append("(");
+				final Stack<Area> areasToDo = new Stack<Area>();
+				areasToDo.add(parentA);
+				while(areasToDo.size()>0)
+				{
+					final Area A1 = areasToDo.pop();
+					if(A1 != parentA)
+						sql.append(" OR ");
+					sql.append("CMAREA = '"+DB.injectionClean(A1.Name())+"'");
+					if(metro)
+					{
+						for(final Enumeration<Area> ac = A1.getChildren();ac.hasMoreElements();)
+							areasToDo.push(ac.nextElement());
+					}
+				}
+				sql.append(") ");
+				if((commonPrefix.length()>0)||(commonSuffix.length()>0))
+					sql.append("AND ");
+			}
+			if((commonPrefix.length()>0)||(commonSuffix.length()>0))
+			{
+				if(commonPrefix.length()>0)
+				{
+					sql.append("CMROTX LIKE '%<ACLASS>"+commonPrefix+"%'");
+					if(commonSuffix.length()>0)
+						sql.append(" AND CMROTX LIKE '%"+commonSuffix+"</ACLASS>%'");
+				}
+				else
+				if(commonSuffix.length()>0)
+					sql.append("CMROTX LIKE '%"+commonSuffix+"%'");
+			}
+			final ResultSet R=D.query(sql.toString());
+			while(R.next())
+			{
+				final String text = R.getString("CMROTX");
+				if(CMStrings.indexOfAny(text, propIDs)>=0)
+					ids.add(R.getString("CMROID"));
+			}
+		}
+		catch(final SQLException sqle)
+		{
+			Log.errOut("Room",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return ids;
+	}
+
 	private List<Room> buildRoomObjects(final DBConnection D, final ResultSet R, final boolean reportStatus) throws SQLException
 	{
 		recordCount=DB.getRecordCount(D,R);

@@ -369,6 +369,18 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBMAP
+	 * Reads all the room ids that are affected by the given array of
+	 * Ability IDs as properties/affects.
+	 *
+	 * @param parentA the parent area to limit yourself to
+	 * @param metro true to also search children
+	 * @param propIDs the list of Ability IDs.
+	 * @return the list of room ids
+	 */
+	public Set<String> getAffectedRoomIDs(final Area parentA, final boolean metro, final String[] propIDs);
+
+	/**
+	 * Table category: DBMAP
 	 * Reads the room description of the given room id and
 	 * returns it.
 	 * @param roomID the room id of the description to read

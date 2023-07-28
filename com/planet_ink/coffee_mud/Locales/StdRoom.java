@@ -1136,6 +1136,8 @@ public class StdRoom implements Room
 					final ArrayList<Item> bodies=new ArrayList<Item>(1);
 					if(CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMMOBS))
 					{
+						if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+							CMLib.threads().rejuv(this,Tickable.TICKID_MOB);
 						eachInhabitant(new EachApplicable<MOB>()
 						{
 							@Override
@@ -1153,6 +1155,8 @@ public class StdRoom implements Room
 					else
 					if(CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMSHOPS))
 					{
+						if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+							CMLib.threads().rejuv(this,Tickable.TICKID_MOB);
 						eachInhabitant(new EachApplicable<MOB>()
 						{
 							@Override
@@ -1167,8 +1171,11 @@ public class StdRoom implements Room
 						if(!shopmobs.isEmpty())
 							CMLib.database().DBUpdateTheseMOBs(this,shopmobs);
 					}
+					// never else
 					if(CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMITEMS))
 					{
+						if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+							CMLib.threads().rejuv(this,Tickable.TICKID_ROOM_ITEM_REJUV);
 						eachItem(new EachApplicable<Item>()
 						{
 							@Override public final void apply(final Item I)

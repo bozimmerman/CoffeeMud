@@ -4761,6 +4761,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				&&(A.isSavable()))
 				{
 					affectstr.append("<AFF>");
+					// if you change this, be aware of roomloader usage
 					affectstr.append(xmlLib.convertXMLtoTag("ACLASS",CMClass.classID(A)));
 					affectstr.append(xmlLib.convertXMLtoTag("ATEXT",xmlLib.parseOutAngleBrackets(A.text())));
 					affectstr.append("</AFF>");

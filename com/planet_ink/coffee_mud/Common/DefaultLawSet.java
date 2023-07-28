@@ -395,7 +395,50 @@ public class DefaultLawSet implements Law
 			if(tax==0.0)
 				return;
 			tax=CMath.div(tax,100.0);
-			List<LandTitle> titles=CMLib.law().getAllUniqueLandTitles(A.getMetroMap(),"*",false);
+			final Enumeration<Room> mape;
+			if(CMath.bset(A.flags(),Area.FLAG_THIN))
+			{
+				final Stack<Area> areasToCheck = new Stack<Area>();
+				areasToCheck.add(A);
+				final List<Room> l = new LinkedList<Room>();
+				while(areasToCheck.size()>0)
+				{
+					final Area A1=areasToCheck.pop();
+					if(CMLib.law().getLandTitle(A)!=null)
+					{
+						final Room R = A1.getRandomProperRoom();
+						if(R!=null)
+							l.add(R);
+					}
+					for(final Enumeration<Area> ca = A1.getChildren();ca.hasMoreElements();)
+						areasToCheck.push(ca.nextElement());
+				}
+				String[] titleProps = (String[])Resources.getResource("SYSTEM_TITLE_PROPERTY_IDS");
+				if(titleProps == null)
+				{
+					final List<String> ids = new ArrayList<String>();
+					for(final Enumeration<Ability> a = CMClass.abilities();a.hasMoreElements();)
+					{
+						final Ability tA=a.nextElement();
+						if(tA instanceof LandTitle)
+							ids.add(tA.ID());
+					}
+					titleProps = ids.toArray(new String[ids.size()]);
+					Resources.submitResource("SYSTEM_TITLE_PROPERTY_IDS", titleProps);
+				}
+				final Set<String> ids = CMLib.database().getAffectedRoomIDs(A, true, titleProps);
+				for(final Iterator<String> i=ids.iterator();i.hasNext();)
+				{
+					final String id = i.next();
+					final Room R=CMLib.map().getRoom(id);
+					if(R!=null)
+						l.add(R);
+				}
+				mape = new IteratorEnumeration<Room>(l.iterator());
+			}
+			else
+				mape = A.getMetroMap();
+			List<LandTitle> titles=CMLib.law().getAllUniqueLandTitles(mape,"*",false);
 			final Map<String,List<LandTitle>> owners=new HashMap<String,List<LandTitle>>();
 			for(final LandTitle T : titles)
 			{
