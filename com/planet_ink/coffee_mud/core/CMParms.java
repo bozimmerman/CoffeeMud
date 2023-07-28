@@ -3835,6 +3835,34 @@ public class CMParms
 	}
 
 	/**
+	 * Append items from an enumerator to a list
+	 * @param <K> anything you want
+	 * @param lst the list to add to
+	 * @param e the enumerator to add from
+	 */
+	public final static <K> void appendToList(final List<K> lst, final Enumeration<K> e)
+	{
+		if((lst==null)||(e==null))
+			return;
+		for(;e.hasMoreElements();)
+			lst.add(e.nextElement());
+	}
+
+	/**
+	 * Append items from an iterator to a list
+	 * @param <K> anything you want
+	 * @param lst the list to add to
+	 * @param e the iterator to add from
+	 */
+	public final static <K> void appendToList(final List<K> lst, final Iterator<K> e)
+	{
+		if((lst==null)||(e==null))
+			return;
+		for(;e.hasNext();)
+			lst.add(e.next());
+	}
+
+	/**
 	 * Parses the given string of the form KEY=VALUE/KEY=VALUE/etc into a new
 	 * String key/value map.
 	 * @param s the slash-keyvalue pairs
