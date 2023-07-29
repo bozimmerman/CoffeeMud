@@ -123,19 +123,67 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return CMath.div(A.getAreaIStats()[Area.Stats.CITY_ROOMS.ordinal()],A.getAreaIStats()[Area.Stats.COUNTABLE_ROOMS.ordinal()]) > .60;
 	}
 
-	@Override
-	public List<LandTitle> getAllUniqueLandTitles(final Enumeration<Room> e, final String owner, final boolean includeRentals)
+	protected List<Room> getAllMetroTitledRooms(final Area A)
 	{
-		final Vector<LandTitle> V=new Vector<LandTitle>();
+		// might need this later...
+		String[] titleProps = (String[])Resources.getResource("SYSTEM_TITLE_PROPERTY_IDS");
+		if(titleProps == null)
+		{
+			final List<String> ids = new ArrayList<String>();
+			for(final Enumeration<Ability> a = CMClass.abilities();a.hasMoreElements();)
+			{
+				final Ability tA=a.nextElement();
+				if(tA instanceof LandTitle)
+					ids.add(tA.ID());
+			}
+			titleProps = ids.toArray(new String[ids.size()]);
+			Resources.submitResource("SYSTEM_TITLE_PROPERTY_IDS", titleProps);
+		}
+		// first step is to build the correct list of rooms to find legal props for:
+		final Stack<Area> areasToCheck = new Stack<Area>();
+		areasToCheck.add(A);
+		final List<Room> roomList = new LinkedList<Room>();
+		while(areasToCheck.size()>0)
+		{
+			final Area A1=areasToCheck.pop();
+			if(CMLib.law().getLandTitle(A1)!=null)
+			{
+				final Room R = A1.getRandomProperRoom();
+				if(R!=null)
+					roomList.add(R);
+			}
+			else
+			if(CMath.bset(A1.flags(), Area.FLAG_THIN))
+			{
+				final Set<String> ids = CMLib.database().getAffectedRoomIDs(A1, false, titleProps);
+				for(final Iterator<String> i=ids.iterator();i.hasNext();)
+				{
+					final String id = i.next();
+					final Room R=A1.getRoom(id);
+					if(R!=null)
+						roomList.add(R);
+				}
+			}
+			else
+				CMParms.appendToList(roomList, A1.getProperMap());
+			for(final Enumeration<Area> ca = A1.getChildren();ca.hasMoreElements();)
+				areasToCheck.push(ca.nextElement());
+		}
+		return roomList;
+	}
+
+	@Override
+	public List<LandTitle> getAllUniqueLandTitles(final Area A, final String owner, final boolean includeRentals)
+	{
+		final List<Room> roomsList = getAllMetroTitledRooms(A);
+		final Vector<LandTitle> allUniqueLandTitles=new Vector<LandTitle>();
 		final HashSet<Room> roomsDone=new HashSet<Room>();
 		final Set<String> titlesDone = new HashSet<String>();
-		Room R=null;
-		for(;e.hasMoreElements();)
+		for(final Room R : roomsList)
 		{
-			R=e.nextElement();
 			LandTitle T=getLandTitle(R);
 			if((T!=null)
-			&&(!V.contains(T))
+			&&(!allUniqueLandTitles.contains(T))
 			&&(!titlesDone.contains(T.getTitleID()))
 			&&(includeRentals||(!T.rentalProperty()))
 			&&((owner==null)
@@ -145,10 +193,11 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			{
 				titlesDone.add(T.getTitleID());
 				int price = T.getPrice();
-				final List<Room> V2=T.getAllTitledRooms();
-				for(int v=0;v<V2.size();v++)
+				//TODO: this is very frustrating!
+				final List<Room> allTitledRooms=T.getAllTitledRooms();
+				for(int v=0;v<allTitledRooms.size();v++)
 				{
-					final Room R2=V2.get(v);
+					final Room R2=allTitledRooms.get(v);
 					if(R2 != null)
 					{
 						if(!roomsDone.contains(R2))
@@ -164,10 +213,10 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 						}
 					}
 				}
-				V.addElement(T); // should be the best taxable title
+				allUniqueLandTitles.addElement(T); // should be the best taxable title
 			}
 		}
-		return V;
+		return allUniqueLandTitles;
 	}
 
 	@Override

@@ -570,15 +570,15 @@ public interface LegalLibrary extends CMLibrary
 	public boolean canAttackThisProperty(MOB mob, PrivateProperty record);
 
 	/**
-	 * Scans the given set of rooms for property titles, returning only the
+	 * Scans the given area metro for property titles, returning only the
 	 * unique ones (so rooms groups under one title return only the 1 title).
 	 *
-	 * @param e the rooms to scan for titles
+	 * @param A the area whose rooms and children to scan for titles
 	 * @param owner null for all titles, * for all owned titles, or owner name
 	 * @param includeRentals true to include rental property, false otherwise
 	 * @return the list of titles found
 	 */
-	public List<LandTitle> getAllUniqueLandTitles(Enumeration<Room> e, String owner, boolean includeRentals);
+	public List<LandTitle> getAllUniqueLandTitles(Area A, String owner, boolean includeRentals);
 
 	/**
 	 * Cleric Infusion is actually more a part of Divine Law

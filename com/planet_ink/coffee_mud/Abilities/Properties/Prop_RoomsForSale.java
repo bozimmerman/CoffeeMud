@@ -51,13 +51,18 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 	protected void fillCluster(final Room R, final List<Room> V)
 	{
 		V.add(R);
+		final Area baseA =R.getArea();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			final Room R2=R.getRoomInDir(d);
-			if((R2!=null)&&(R2.roomID().length()>0)&&(!V.contains(R2)))
+			if((R2!=null)
+			&&(R2.roomID().length()>0)
+			&&(!V.contains(R2)))
 			{
+				final Area baseA2=R2.getArea();
 				final Ability A=R2.fetchEffect(ID());
-				if((R2.getArea()==R.getArea())&&(A!=null))
+				if((baseA2==baseA)
+				&&(A!=null))
 					fillCluster(R2,V);
 				else
 				{
@@ -69,14 +74,19 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 	}
 
 	@Override
+	public Room getATitledRoom()
+	{
+		if(affected instanceof Room)
+			return (Room)affected;
+		else
+			return CMLib.map().getRoom(landPropertyID());
+	}
+
+	@Override
 	public List<Room> getAllTitledRooms()
 	{
 		final List<Room> V=new ArrayList<Room>();
-		Room R=null;
-		if(affected instanceof Room)
-			R=(Room)affected;
-		else
-			R=CMLib.map().getRoom(landPropertyID());
+		final Room R = getATitledRoom();
 		if(R!=null)
 			fillCluster(R,V);
 		return V;

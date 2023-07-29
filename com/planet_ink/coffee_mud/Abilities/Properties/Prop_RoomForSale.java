@@ -318,18 +318,21 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	@Override
+	public Room getATitledRoom()
+	{
+		if(affected instanceof Room)
+			return (Room)affected;
+		else
+			return CMLib.map().getRoom(landPropertyID());
+	}
+
+	@Override
 	public List<Room> getAllTitledRooms()
 	{
-		final List<Room> V=new Vector<Room>();
-		if(affected instanceof Room)
-			V.add((Room)affected);
-		else
-		{
-			final Room R=CMLib.map().getRoom(landPropertyID());
-			if(R!=null)
-				V.add(R);
-		}
-		return V;
+		final Room R = getATitledRoom();
+		if(R!=null)
+			return new XVector<Room>(R);
+		return new Vector<Room>(1);
 	}
 
 	public static int[] updateLotWithThisData(Room R,

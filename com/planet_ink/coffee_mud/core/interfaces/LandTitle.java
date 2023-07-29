@@ -77,6 +77,13 @@ public interface LandTitle extends PrivateProperty
 	public List<Room> getAllTitledRooms();
 
 	/**
+	 * A room object represented by this title
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
+	 * @return A Room object represented by this title
+	 */
+	public Room getATitledRoom();
+
+	/**
 	 * The complete set of room objects that are tied together by one or more titles.
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @return a list of the complete set of Room objects represented by property

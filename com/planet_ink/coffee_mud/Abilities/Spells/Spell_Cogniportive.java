@@ -82,7 +82,7 @@ public class Spell_Cogniportive extends Spell
 	public String establishHome(final MOB mob, final Item me, final boolean beLoose)
 	{
 		if(me instanceof LandTitle)
-			return ((LandTitle)me).getAllTitledRooms().get(0).roomID();
+			return CMLib.map().getExtendedRoomID(((LandTitle)me).getATitledRoom());
 		// check mobs worn items first!
 		final String srchStr="$"+me.Name()+"$";
 		List<Item> mobInventory=new Vector<Item>(1);

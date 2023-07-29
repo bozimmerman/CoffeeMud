@@ -305,6 +305,23 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	}
 
 	@Override
+	public Room getATitledRoom()
+	{
+		if(affected instanceof Area)
+			return ((Area)affected).getRandomProperRoom();
+		else
+		if(affected instanceof Room)
+			return (Room)affected;
+		else
+		{
+			final Area A=CMLib.map().getArea(landPropertyID());
+			if(A!=null)
+				return A.getRandomProperRoom();
+		}
+		return null;
+	}
+
+	@Override
 	public List<Room> getAllTitledRooms()
 	{
 		final List<Room> V=new Vector<Room>();

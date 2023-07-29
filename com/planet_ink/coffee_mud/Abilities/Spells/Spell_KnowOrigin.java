@@ -76,7 +76,7 @@ public class Spell_KnowOrigin extends Spell
 	public Room origin(final MOB mob, final Environmental meThang)
 	{
 		if(meThang instanceof LandTitle)
-			return ((LandTitle)meThang).getAllTitledRooms().get(0);
+			return ((LandTitle)meThang).getATitledRoom();
 		else
 		if(meThang instanceof MOB)
 			return ((MOB)meThang).getStartRoom();

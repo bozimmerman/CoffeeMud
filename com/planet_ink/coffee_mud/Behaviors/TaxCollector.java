@@ -233,7 +233,7 @@ public class TaxCollector extends StdBehavior
 						if(((T.getOwnerName().equals(msg.source().Name())))
 						&&(paidAmount>0))
 						{
-							int backAmt = (int)Math.round(CMath.div(paidAmount,numProperties)); 
+							final int backAmt = (int)Math.round(CMath.div(paidAmount,numProperties));
 							totalOwed -= backAmt;
 							T.setBackTaxes(T.backTaxes()-backAmt);
 							T.updateTitle();
@@ -334,7 +334,7 @@ public class TaxCollector extends StdBehavior
 				&&(taxs.length()>0)
 				&&(CMath.s_double(taxs)>0))
 				{
-					taxableProperties=CMLib.law().getAllUniqueLandTitles(A2.getMetroMap(),"*",false);
+					taxableProperties=CMLib.law().getAllUniqueLandTitles(A2,"*",false);
 					for(int v=0;v<taxableProperties.size();v++)
 					{
 						T=taxableProperties.get(v);
