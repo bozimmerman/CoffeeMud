@@ -82,6 +82,15 @@ public class StdThinGridArea extends StdGridArea
 	}
 
 	@Override
+	public boolean isRoomCached(String roomID)
+	{
+		if(!isRoom(roomID))
+			return false;
+		Room R=super.getRoom(roomID); // *NOT* this.getRoom
+		return (((R!=null)&&(!R.amDestroyed()))&&(roomID!=null));
+	}
+	
+	@Override
 	public int getPercentRoomsCached()
 	{
 		final double totalRooms=getProperRoomnumbers().roomCountAllAreas();

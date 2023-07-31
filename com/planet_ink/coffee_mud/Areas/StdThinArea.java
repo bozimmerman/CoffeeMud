@@ -97,7 +97,7 @@ public class StdThinArea extends StdArea
 	{
 		if(!isRoom(roomID))
 			return null;
-		Room R=super.getRoom(roomID);
+		Room R=super.getRoomBase(roomID);
 		if(((R==null)||(R.amDestroyed()))&&(roomID!=null))
 		{
 			if(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#"))
@@ -116,6 +116,15 @@ public class StdThinArea extends StdArea
 		return R;
 	}
 
+	@Override
+	public boolean isRoomCached(String roomID)
+	{
+		if(!isRoom(roomID))
+			return false;
+		Room R=super.getRoom(roomID); // *NOT* this.getRoom
+		return (((R!=null)&&(!R.amDestroyed()))&&(roomID!=null));
+	}
+	
 	@Override
 	public Enumeration<Room> getProperMap()
 	{

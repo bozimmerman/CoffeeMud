@@ -97,9 +97,17 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	@Override
-	public List<Room> getConnectedPropertyRooms()
+	public Room getAConnectedPropertyRoom()
 	{
-		return getAllTitledRooms();
+		if(affected instanceof Room)
+			return (Room)affected;
+		return CMLib.map().getRoom(landPropertyID());
+	}
+
+	@Override
+	public int getNumConnectedPropertyRooms()
+	{
+		return (getAConnectedPropertyRoom()!=null)?1:0;
 	}
 
 	protected void saveData(final String owner, final int price, final boolean rental, final int backTaxes, final boolean grid, final boolean allowTheft)
@@ -324,6 +332,69 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			return (Room)affected;
 		else
 			return CMLib.map().getRoom(landPropertyID());
+	}
+
+	protected void fillCluster(final Room startR, final List<Room> roomList, final String owner, boolean forceCache)
+	{
+		roomList.add(startR);
+		int start =0;
+		final Area baseA =startR.getArea();
+		boolean foundEntrance=false;
+		boolean dontCache = CMath.bset(baseA.flags(), Area.FLAG_THIN) && (!CMath.bset(baseA.flags(), Area.FLAG_INSTANCE_CHILD));
+		final Set<String> validRoomIds;
+		if(dontCache)
+		{
+			String[] args = null;
+			if(owner != null)
+				args = new String[] { ">"+owner+"/" };
+			validRoomIds = CMLib.database().getAffectedRoomIDs(baseA, false, new String[] { ID() }, args);
+		}
+		else
+			validRoomIds = null;
+		Set<String> roomIDs = new TreeSet<String>();
+		roomIDs.add(startR.roomID());
+		while(start < roomList.size())
+		{
+			final Room dR = roomList.get(start++);
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			{
+				final Room nR=(dontCache?dR.rawDoors()[d]:dR.getRoomInDir(d));
+				if((nR!=null)
+				&&(nR.roomID().length()>0)
+				&&(!roomIDs.contains(nR.roomID())))
+				{
+					roomIDs.add(nR.roomID());
+					boolean thinRoom = false;
+					if(nR.ID().equals("ThinRoom"))
+					{
+						if(!forceCache)
+							continue;
+						thinRoom = dontCache;
+					}
+					boolean isValidTitled;
+					if(thinRoom)
+						isValidTitled = (validRoomIds != null) && validRoomIds.contains(nR.roomID());
+					else
+					{
+						final Area baseA2=nR.getArea();
+						final Ability A=nR.fetchEffect(ID());
+						isValidTitled = ((baseA2==baseA)
+										&&(A!=null)
+										&&((owner==null)||((Prop_LotsForSale)A).getOwnerName().equals(owner)));
+					}
+					//TODO: nR here is wrong for things, because its links are likely wrong.
+					if(isValidTitled)
+						roomList.add(nR);
+					else
+					if(!foundEntrance)
+					{
+						foundEntrance=true;
+						roomList.remove(dR);// purpose here is to put the "front" door up front.
+						roomList.add(0,dR);// purpose here is to put the "front" door up front.
+					}
+				}
+			}
+		}
 	}
 
 	@Override

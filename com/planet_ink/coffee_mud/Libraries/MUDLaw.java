@@ -155,11 +155,11 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			else
 			if(CMath.bset(A1.flags(), Area.FLAG_THIN))
 			{
-				final Set<String> ids = CMLib.database().getAffectedRoomIDs(A1, false, titleProps);
+				final Set<String> ids = CMLib.database().getAffectedRoomIDs(A1, false, titleProps, null);
 				for(final Iterator<String> i=ids.iterator();i.hasNext();)
 				{
 					final String id = i.next();
-					final Room R=A1.getRoom(id);
+					final Room R=A1.getRoom(id); //TODO:BZ: Do we really really have to do this?  this uncaches!
 					if(R!=null)
 						roomList.add(R);
 				}
@@ -805,6 +805,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				CMLib.flags().setReadable(I,true);
 				I.setName(("id"));
 				final StringBuilder txt = new StringBuilder("");
+				//not super important whether this size is correct, as it won't be later anyway.
 				final int size = title.getAllTitledRooms().size();
 				txt.append(CMLib.lang().L("This room is @x1.  ",CMLib.map().getExtendedRoomID(R)));
 				if(size > 1)

@@ -278,6 +278,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		&&((System.currentTimeMillis()-lastMobSave)>360000))
 		{
 			lastMobSave=System.currentTimeMillis();
+			//this should only for cached rooms, so thin-safe.
 			final List<Room> V=getAllTitledRooms();
 			for(int v=0;v<V.size();v++)
 			{
@@ -342,9 +343,25 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	}
 
 	@Override
-	public List<Room> getConnectedPropertyRooms()
+	public Room getAConnectedPropertyRoom()
 	{
-		return getAllTitledRooms();
+		return getATitledRoom();
+	}
+
+	@Override
+	public int getNumConnectedPropertyRooms()
+	{
+		Area A=null;
+		if(affected instanceof Area)
+			A=(Area)affected;
+		else
+		if(affected instanceof Room)
+			return 1;
+		else
+			A=CMLib.map().getArea(landPropertyID());
+		if(A!=null)
+			return A.numberOfProperIDedRooms();
+		return 0;
 	}
 
 	// update lot, since its called by the savethread, ONLY worries about itself
@@ -354,6 +371,8 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		if(((System.currentTimeMillis()-lastCall)>360000)
 		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 		{
+			// in this case, we definitely only care about rooms actually existing
+			// thin rooms can safely be skipped
 			final List<Room> V=getAllTitledRooms();
 			for(int v=0;v<V.size();v++)
 			{

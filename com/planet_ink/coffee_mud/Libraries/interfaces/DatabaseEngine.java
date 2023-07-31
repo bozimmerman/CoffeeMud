@@ -375,9 +375,10 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param parentA the parent area to limit yourself to
 	 * @param metro true to also search children
 	 * @param propIDs the list of Ability IDs.
+	 * @param propArgs TODO
 	 * @return the list of room ids
 	 */
-	public Set<String> getAffectedRoomIDs(final Area parentA, final boolean metro, final String[] propIDs);
+	public Set<String> getAffectedRoomIDs(final Area parentA, final boolean metro, final String[] propIDs, String[] propArgs);
 
 	/**
 	 * Table category: DBMAP
@@ -434,6 +435,17 @@ public interface DatabaseEngine extends CMLibrary
 	 */
 	public void DBReadRoomExits(String roomID, Room room, boolean reportStatus);
 
+	/**
+	 * Table category: DBMAP
+	 * Reads the exits of the room with the given room id
+	 * and populates them into the pair array, indexed by 
+	 * direction.  The pair is exit class id, next room id
+	 *
+	 * @param roomID the room id
+	 * @return the pair of exit class id, next room id, indexed by direction
+	 */
+	public Pair<String,String>[] DBReadRoomExitIDs(final String roomID);
+	
 	/**
 	 * Table category: DBMAP
 	 * Resaves the given rooms exit objects, and

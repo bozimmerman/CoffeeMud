@@ -422,9 +422,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public Set<String> getAffectedRoomIDs(final Area parentA, final boolean metro, final String[] propIDs)
+	public Set<String> getAffectedRoomIDs(final Area parentA, final boolean metro, final String[] propIDs, final String[] propArgs)
 	{
-		return RoomLoader.getAffectedRoomIDs(parentA, metro, propIDs);
+		return RoomLoader.getAffectedRoomIDs(parentA, metro, propIDs, propArgs);
 	}
 
 	@Override
@@ -443,6 +443,12 @@ public class DBInterface implements DatabaseEngine
 	public void DBReadRoomExits(final String roomID, final Room room, final boolean reportStatus)
 	{
 		RoomLoader.DBReadRoomExits(roomID, room, reportStatus);
+	}
+	
+	@Override
+	public Pair<String,String>[] DBReadRoomExitIDs(final String roomID)
+	{
+		return RoomLoader.getRoomExitIDs(roomID);
 	}
 
 	@Override

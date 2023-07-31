@@ -348,25 +348,64 @@ public class RoomLoader
 		newRoom.setMiscText(DBConnections.getRes(R,"CMROTX"));
 	}
 
-	public Set<String> getAffectedRoomIDs(final Area parentA, final boolean metro, final String[] propIDs)
+	public Pair<String,String>[] getRoomExitIDs(final String roomID)
+	{
+		@SuppressWarnings("unchecked")
+		Pair<String,String>[] exits = new Pair[Directions.NUM_DIRECTIONS()];
+		DBConnection D=null;
+		// now grab the exits
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT CMDIRE, CMNRID, CMEXID FROM CMROEX WHERE CMROID='"+DB.injectionClean(roomID)+"'");
+			while(R.next())
+			{
+				final int direction=(int)DBConnections.getLongRes(R,"CMDIRE");
+				final String exitID=DBConnections.getRes(R,"CMEXID");
+				final String nextRoomID=DBConnections.getRes(R,"CMNRID");
+				if((direction>=0)&&(direction<Directions.NUM_DIRECTIONS()))
+					exits[direction] = new Pair<String,String>(exitID,nextRoomID);
+			}
+		}
+		catch(final SQLException sqle)
+		{
+			Log.errOut("Room",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return exits;
+	}
+	
+	public Set<String> getAffectedRoomIDs(final Area parentA, final boolean metro, final String[] propIDs, final String[] propArgs)
 	{
 		final Set<String> ids = Collections.synchronizedSet(new TreeSet<String>());
-		if((propIDs==null)||(propIDs.length==0))
-			return ids;
-		String commonPrefix = propIDs[0].toLowerCase();
-		String commonSuffix = propIDs[0].toLowerCase();
-		for(int i=1;i<propIDs.length;i++)
+		String commonPrefix;
+		String commonSuffix;
+		if((propIDs != null)&&(propIDs.length>0))
 		{
-			while((commonPrefix.length()>0)&&(!propIDs[i].toLowerCase().startsWith(commonPrefix)))
-				commonPrefix = commonPrefix.substring(0,commonPrefix.length()-1);
-			while((commonSuffix.length()>0)&&(!propIDs[i].toLowerCase().endsWith(commonSuffix)))
-				commonSuffix = commonSuffix.substring(1);
+			commonPrefix = propIDs[0].toLowerCase();
+			commonSuffix = propIDs[0].toLowerCase();
+			for(int i=1;i<propIDs.length;i++)
+			{
+				while((commonPrefix.length()>0)&&(!propIDs[i].toLowerCase().startsWith(commonPrefix)))
+					commonPrefix = commonPrefix.substring(0,commonPrefix.length()-1);
+				while((commonSuffix.length()>0)&&(!propIDs[i].toLowerCase().endsWith(commonSuffix)))
+					commonSuffix = commonSuffix.substring(1);
+			}
+		}
+		else
+		{
+			commonPrefix="";
+			commonSuffix="";
 		}
 		DBConnection D=null;
 		try
 		{
 			D=DB.DBFetch();
 			final StringBuilder sql = new StringBuilder("SELECT CMROID,CMROTX FROM CMROOM WHERE ");
+			boolean needAnd = false;
 			if(parentA!=null)
 			{
 				sql.append("(");
@@ -385,26 +424,37 @@ public class RoomLoader
 					}
 				}
 				sql.append(") ");
-				if((commonPrefix.length()>0)||(commonSuffix.length()>0))
-					sql.append("AND ");
 			}
 			if((commonPrefix.length()>0)||(commonSuffix.length()>0))
 			{
+				if(needAnd)
+					sql.append("AND ");
 				if(commonPrefix.length()>0)
 				{
-					sql.append("CMROTX LIKE '%<ACLASS>"+commonPrefix+"%'");
+					sql.append("CMROTX LIKE '%<ACLASS>"+DB.injectionClean(commonPrefix)+"%'");
 					if(commonSuffix.length()>0)
-						sql.append(" AND CMROTX LIKE '%"+commonSuffix+"</ACLASS>%'");
+						sql.append(" AND CMROTX LIKE '%"+DB.injectionClean(commonSuffix)+"</ACLASS>%'");
 				}
 				else
 				if(commonSuffix.length()>0)
-					sql.append("CMROTX LIKE '%"+commonSuffix+"%'");
+					sql.append("CMROTX LIKE '%"+DB.injectionClean(commonSuffix)+"%'");
+				needAnd = true;
+			}
+			if(propArgs != null)
+			{
+				for(int i=0;i<propArgs.length;i++)
+				{
+					if(needAnd)
+						sql.append("AND ");
+					sql.append("CMROTX LIKE '%"+DB.injectionClean(propArgs[i])+"%'");
+					needAnd = true;
+				}
 			}
 			final ResultSet R=D.query(sql.toString());
 			while(R.next())
 			{
 				final String text = R.getString("CMROTX");
-				if(CMStrings.indexOfAny(text, propIDs)>=0)
+				if((propIDs!=null) && (CMStrings.indexOfAny(text, propIDs)>=0))
 					ids.add(R.getString("CMROID"));
 			}
 		}

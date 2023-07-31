@@ -2822,6 +2822,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							if(R!=null)
 								return R;
 							else
+							if(motherR != null)
 							{
 								R=motherR.mixRace(fatherR,raceID,chk);
 								if(R.isGeneric() && (!R.ID().equals(motherRaceID))&& (!R.ID().equals(fatherRaceID)))
@@ -2849,6 +2850,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			final Race halfR = fatherIsUndead?motherR:fatherR;
 			if(halfR==null)
 				return undeadR;
+			if(undeadR==null)
+				return halfR;
 			if(halfR.racialCategory().equalsIgnoreCase("Humanoid"))
 				return undeadR;
 			final String mixRaceID=undeadR.ID()+halfRaceID;

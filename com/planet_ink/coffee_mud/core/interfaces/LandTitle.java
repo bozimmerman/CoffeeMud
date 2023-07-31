@@ -70,7 +70,8 @@ public interface LandTitle extends PrivateProperty
 	public void updateTitle();
 
 	/**
-	 * The complete set of room objects represented by this title
+	 * The complete set of room objects represented by this title.
+	 * Will represent cached-rooms only, so thin uncached rooms not included.
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @return a list of the complete set of Room objects represented by this title
 	 */
@@ -84,14 +85,22 @@ public interface LandTitle extends PrivateProperty
 	public Room getATitledRoom();
 
 	/**
-	 * The complete set of room objects that are tied together by one or more titles.
+	 * The size of the complete set of room objects that are tied together by one or more titles.
+	 * Includes uncached rooms, as this method helps enforce room limits.
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
-	 * @return a list of the complete set of Room objects represented by property
+	 * @return the size of the complete set of Room objects represented by property
 	 */
-	public List<Room> getConnectedPropertyRooms();
+	public int getNumConnectedPropertyRooms();
 
 	/**
-	 * Returns a unique identifier corresponding to getConnectedPropertyRooms.
+	 * A room objects that are tied together by one or more titles.
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
+	 * @return a Room object represented by property
+	 */
+	public Room getAConnectedPropertyRoom();
+
+	/**
+	 * Returns a unique identifier corresponding to the connected property rooms.
 	 * An identifier that uniquely identifies all the connected lots of this property,
 	 * even if they are unowned, or owned by different people.  Think of it as a "subdivision"
 	 * when lots are variously owned, or a "mansion id" when lots are owned by one person.

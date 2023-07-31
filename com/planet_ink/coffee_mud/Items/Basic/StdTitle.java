@@ -148,6 +148,7 @@ public class StdTitle extends StdItem implements LandTitle
 		return A.backTaxes();
 	}
 
+	@Override
 	public boolean allowTheft()
 	{
 		final LandTitle A=fetchALandTitle();
@@ -285,13 +286,16 @@ public class StdTitle extends StdItem implements LandTitle
 	{
 		if(!_name.startsWith("the title to"))
 		{
-			final List<Room> roomsV=getAllTitledRooms();
-			if((roomsV.size()<2)
+			final int num = getNumConnectedPropertyRooms();
+			if((num<2)
 			||(CMLib.map().getArea(landPropertyID())!=null)
 			||(CMLib.map().getShip(landPropertyID())!=null))
 				setName("the title to "+landPropertyID());
 			else
-				setName("the title to rooms around "+CMLib.map().getExtendedRoomID(roomsV.get(0)));
+			{
+				final Room R = this.getATitledRoom();
+				setName("the title to rooms around "+CMLib.map().getExtendedRoomID(R));
+			}
 		}
 	}
 
@@ -343,12 +347,21 @@ public class StdTitle extends StdItem implements LandTitle
 	}
 
 	@Override
-	public List<Room> getConnectedPropertyRooms()
+	public Room getAConnectedPropertyRoom()
 	{
 		final LandTitle T = getLandTitleObject();
 		if(T!=null)
-			return T.getConnectedPropertyRooms();
-		return new Vector<Room>(1);
+			return T.getAConnectedPropertyRoom();
+		return null;
+	}
+
+	@Override
+	public int getNumConnectedPropertyRooms()
+	{
+		final LandTitle T = getLandTitleObject();
+		if(T!=null)
+			return T.getNumConnectedPropertyRooms();
+		return 0;
 	}
 
 	@Override
@@ -641,7 +654,7 @@ public class StdTitle extends StdItem implements LandTitle
 					msg.source().tell(L("This property is a rental.  Your rent will be paid every mud-month out of your bank account."));
 				else
 				{
-					final Room R=getATitledRoom();;
+					final Room R=getATitledRoom();
 					final LegalBehavior B=CMLib.law().getLegalBehavior(R);
 					if(B!=null)
 					{

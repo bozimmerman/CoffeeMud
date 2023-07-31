@@ -802,14 +802,12 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			LandTitle newTitle=CMLib.law().getLandTitle(room);
 			if((newTitle!=null)&&(CMLib.law().getLandTitle(newRoom)==null))
 			{
-				final List<Room> allRooms = newTitle.getConnectedPropertyRooms();
-				if(allRooms.size()>0)
+				final Room testRoom = newTitle.getAConnectedPropertyRoom();
+				if(testRoom != null)
 				{
-					final Ability cap = allRooms.get(0).fetchEffect("Prop_ReqCapacity");
+					final Ability cap = testRoom.fetchEffect("Prop_ReqCapacity");
 					if(cap != null)
-					{
 						newRoom.addNonUninvokableEffect((Ability)cap.copyOf());
-					}
 				}
 				newTitle = newTitle.generateNextRoomTitle();
 				newTitle.setLandPropertyID(newRoom.roomID());
@@ -1370,8 +1368,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		else
 		if(("SURVEY").startsWith(str.toUpperCase()))
 		{
-			//TODO: finish this
-			//TODO: OK, but what's this do again?
+			//TODO: finish this, but what's this do again?
 		}
 
 		designTitle="";
@@ -1673,17 +1670,21 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				return false;
 			}
 
-			final List<Room> allRooms = title.getConnectedPropertyRooms();
-			if(allRooms.size()>0)
+			final int numRooms = title.getNumConnectedPropertyRooms();
+			if(numRooms>0)
 			{
-				final Ability cap = allRooms.get(0).fetchEffect("Prop_ReqCapacity");
-				if(cap != null)
+				final Room R = title.getAConnectedPropertyRoom();
+				if(R != null)
 				{
-					final int roomLimit = CMParms.getParmInt(cap.text(),"rooms",Integer.MAX_VALUE);
-					if(allRooms.size() >= roomLimit)
+					final Ability cap = R.fetchEffect("Prop_ReqCapacity");
+					if(cap != null)
 					{
-						commonTelL(mob,"You are not allowed to add more rooms.");
-						return false;
+						final int roomLimit = CMParms.getParmInt(cap.text(),"rooms",Integer.MAX_VALUE);
+						if(numRooms >= roomLimit)
+						{
+							commonTelL(mob,"You are not allowed to add more rooms.");
+							return false;
+						}
 					}
 				}
 			}

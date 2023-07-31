@@ -62,13 +62,9 @@ public class Prop_LotForSale extends Prop_LotsForSale
 	}
 
 	@Override
-	protected void fillCluster(final Room R, final List<Room> roomsV)
+	protected void fillLotsCluster(final Room R, final List<Room> roomsV)
 	{
-		final Set<Room> roomsS=new HashSet<Room>();
-		final boolean[] foundEntrance=new boolean[1];
-		foundEntrance[0] = false;
-		roomsS.add(R);
-		fillCluster(R, roomsV, roomsS, foundEntrance, null);
+		fillCluster(R, roomsV, getOwnerName(), true);
 	}
 
 	@Override

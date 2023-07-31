@@ -431,6 +431,7 @@ public class DefaultLawSet implements Law
 					if(p>0)
 						properties.append(", ");
 					T=(particulars.get(p));
+					//the message below is thin-safe
 					final List<Room> propertyRooms=T.getAllTitledRooms();
 					if((propertyRooms.size()<2)
 					||(CMLib.map().getArea(T.landPropertyID())!=null))

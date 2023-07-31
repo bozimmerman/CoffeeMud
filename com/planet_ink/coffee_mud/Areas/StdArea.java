@@ -2232,8 +2232,7 @@ public class StdArea implements Area
 		}
 	}
 
-	@Override
-	public Room getRoom(String roomID)
+	protected Room getRoomBase(String roomID)
 	{
 		final Map<String,Room> prooms;
 		synchronized (properRooms)
@@ -2249,7 +2248,19 @@ public class StdArea implements Area
 			roomID = Name() + roomID.substring(Name().length()); // for case sensitive situations
 		return prooms.get(roomID);
 	}
+	
+	@Override
+	public Room getRoom(String roomID)
+	{
+		return getRoomBase(roomID);
+	}
 
+	@Override
+	public boolean isRoomCached(String roomID)
+	{
+		return this.getRoomBase(roomID)!=null;
+	}
+	
 	@Override
 	public int metroSize()
 	{

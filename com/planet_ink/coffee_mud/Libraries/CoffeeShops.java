@@ -242,6 +242,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			if(E instanceof LandTitle)
 			{
 				final LandTitle T=(LandTitle)E;
+				// not crazy important how accurate this size is, so call it thin area safe
 				str.append(L("\n\rSize       : ")+L("@x1 room(s)",""+(T.getAllTitledRooms().size()
 												  + (lie?plus(T.getAllTitledRooms().size(),lieHash):0))));
 				final StringBuilder features = new StringBuilder("");
@@ -1841,6 +1842,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
 				boolean skipThisOne=false;
 				final WorldMap map=CMLib.map();
+				// it is OK if this is in a thin area, since is part is only checking
+				// if this cached titled room is adjacent to one owned by someone else,
+				// and therefore should not be shown.  In this case, it will force-cache
+				// the adjacent rooms for this purpose.
 				for(final Room R : T.getAllTitledRooms())
 				{
 					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)

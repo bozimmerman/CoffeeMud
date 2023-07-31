@@ -1661,6 +1661,13 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	}
 
 	@Override
+	public boolean isRoomCached(String roomID)
+	{
+		Room R=getRoom(roomID); // *NOT* this.getRoom
+		return (((R!=null)&&(!R.amDestroyed()))&&(roomID!=null));
+	}
+	
+	@Override
 	public int metroSize()
 	{
 		return properSize();

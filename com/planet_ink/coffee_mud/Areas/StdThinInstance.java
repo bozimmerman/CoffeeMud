@@ -105,7 +105,7 @@ public class StdThinInstance extends StdThinArea implements SubArea
 
 		if(!isRoom(roomID))
 			return null;
-		final Room existingR=super.getRoom(roomID);
+		final Room existingR=super.getRoomBase(roomID);
 		if(((existingR==null)||(existingR.amDestroyed()))&&(roomID!=null))
 		{
 			final Area parentA=getSuperArea();

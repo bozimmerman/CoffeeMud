@@ -237,6 +237,15 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public boolean isRoom(Room R);
 
 	/**
+	 * Returns whether the given room id object belongs to this Area, and has been
+	 * loaded into the memory cache.
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
+	 * @param roomID the Room id to check for
+	 * @return whether it belongs to this Area or no, and is cached
+	 */
+	public boolean isRoomCached(String roomID);
+
+	/**
 	 * Returns a random room from this area, loading it if necessary.
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @return a reference to a random room from this area.

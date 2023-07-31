@@ -89,38 +89,37 @@ public class Prop_RoomPlusForSale extends Prop_RoomForSale implements LandTitle
 		return uniqueLotID;
 	}
 
-	protected void fillCluster(final Room R, final List<Room> V)
+	@Override
+	public Room getAConnectedPropertyRoom()
 	{
-		V.add(R);
-		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-		{
-			final Room R2=R.getRoomInDir(d);
-			if((R2!=null)&&(R2.roomID().length()>0)&&(!V.contains(R2)))
-			{
-				final Ability A=R2.fetchEffect(ID());
-				if((R2.getArea()==R.getArea())&&(A!=null))
-					fillCluster(R2,V);
-				else
-				{
-					V.remove(R); // purpose here is to put the "front" door up front.
-					V.add(0,R);
-				}
-			}
-		}
+		if(affected instanceof Room)
+			return (Room)affected;
+		return CMLib.map().getRoom(landPropertyID());
 	}
 
 	@Override
-	public List<Room> getConnectedPropertyRooms()
+	public int getNumConnectedPropertyRooms()
+	{
+		final Room R = getAConnectedPropertyRoom();
+		if(R==null)
+			return 0;
+		final Area A=R.getArea();
+		if(A==null)
+			return 0;
+		if(CMath.bset(A.flags(),Area.FLAG_THIN))
+		{
+			
+		}
+		return getConnectedPropertyRooms().size();
+	}
+	
+	protected List<Room> getConnectedPropertyRooms()
 	{
 		final List<Room> V=new ArrayList<Room>();
-		Room R=null;
-		if(affected instanceof Room)
-			R=(Room)affected;
-		else
-			R=CMLib.map().getRoom(landPropertyID());
+		Room R=getAConnectedPropertyRoom();
 		if(R!=null)
 		{
-			fillCluster(R,V);
+			super.fillCluster(R,V,null,true);
 			String uniqueID="LOTS_PROPERTY_"+this;
 			if(V.size()>0)
 				uniqueID="LOTS_PROPERTY_"+CMLib.map().getExtendedRoomID(V.get(0));

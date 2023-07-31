@@ -58,57 +58,29 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		return true;
 	}
 
-	protected void fillCluster(final Room R, final List<Room> roomsV)
+	@Override
+	public Room getAConnectedPropertyRoom()
 	{
-		final Set<Room> roomsS=new HashSet<Room>();
-		final boolean[] foundEntrance=new boolean[1];
-		foundEntrance[0] = false;
-		roomsS.add(R);
-		fillCluster(R, roomsV, roomsS, foundEntrance, getOwnerName());
-	}
-
-	protected void fillCluster(final Room R, final List<Room> roomsV,
-							   final Set<Room> visitedS, final boolean[] foundEntrance,
-							   final String owner)
-	{
-		roomsV.add(R);
-		final WorldMap map=CMLib.map();
-		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-		{
-			final Room R2=map.getRoom(R.getRoomInDir(d));
-			if((R2!=null)
-			&&(R2.roomID().length()>0)
-			&&(!visitedS.contains(R2)))
-			{
-				visitedS.add(R2);
-				final Ability A=R2.fetchEffect(ID());
-				if((R2.getArea()==R.getArea())
-				&&(A!=null)
-				&&((owner==null)
-					||((Prop_LotsForSale)A).getOwnerName().equals(getOwnerName())))
-				{
-					fillCluster(R2,roomsV, visitedS, foundEntrance, owner);
-				}
-				else
-				if(!foundEntrance[0])
-				{
-					roomsV.remove(R); // purpose here is to put the "front" door up front.
-					roomsV.add(0,R);
-					foundEntrance[0] = true;
-				}
-			}
-		}
+		if(affected instanceof Room)
+			return (Room)affected;
+		return CMLib.map().getRoom(landPropertyID());
 	}
 
 	@Override
-	public List<Room> getConnectedPropertyRooms()
+	public int getNumConnectedPropertyRooms()
+	{
+		return getConnectedPropertyRooms().size();
+	}
+	
+	protected void fillLotsCluster(final Room R, final List<Room> roomsV)
+	{
+		fillCluster(R, roomsV, null, true);
+	}
+	
+	protected List<Room> getConnectedPropertyRooms()
 	{
 		final List<Room> roomsV=new ArrayList<Room>();
-		Room R=null;
-		if(affected instanceof Room)
-			R=(Room)affected;
-		else
-			R=CMLib.map().getRoom(landPropertyID());
+		Room R=getAConnectedPropertyRoom();
 		if(R!=null)
 		{
 			final Area A=R.getArea();
@@ -117,7 +89,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				roomsV.addAll(this.lastRoomsV);
 			else
 			{
-				fillCluster(R,roomsV);
+				fillLotsCluster(R,roomsV);
 				String uniqueID="LOTS_PROPERTY_"+this;
 				if(roomsV.size()>0)
 					uniqueID="LOTS_PROPERTY_"+CMLib.map().getExtendedRoomID(roomsV.get(0));
@@ -327,7 +299,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 
 	public boolean expandRooms(final Room R, final List<Runnable> postWork)
 	{
-		int numberOfPeers = -1;//getConnectedPropertyRooms().size();
+		int numberOfPeers = -1;//was: get Connected Property Rooms.size();
 		final boolean doGrid=super.gridLayout();
 		long roomLimit = 300; // default limit
 		final Set<Room> updateExits=new HashSet<Room>();

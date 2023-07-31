@@ -48,31 +48,6 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 
 	protected String	uniqueLotID	= null;
 
-	protected void fillCluster(final Room R, final List<Room> V)
-	{
-		V.add(R);
-		final Area baseA =R.getArea();
-		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-		{
-			final Room R2=R.getRoomInDir(d);
-			if((R2!=null)
-			&&(R2.roomID().length()>0)
-			&&(!V.contains(R2)))
-			{
-				final Area baseA2=R2.getArea();
-				final Ability A=R2.fetchEffect(ID());
-				if((baseA2==baseA)
-				&&(A!=null))
-					fillCluster(R2,V);
-				else
-				{
-					V.remove(R); // purpose here is to put the "front" door up front.
-					V.add(0,R);
-				}
-			}
-		}
-	}
-
 	@Override
 	public Room getATitledRoom()
 	{
@@ -85,11 +60,11 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 	@Override
 	public List<Room> getAllTitledRooms()
 	{
-		final List<Room> V=new ArrayList<Room>();
+		final List<Room> roomsV=new ArrayList<Room>();
 		final Room R = getATitledRoom();
-		if(R!=null)
-			fillCluster(R,V);
-		return V;
+		if(R!=null) // only return cached rooms here!
+			fillCluster(R,roomsV,null,false);
+		return roomsV;
 	}
 
 	@Override
@@ -143,6 +118,13 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		if(uniqueLotID==null)
 			updateTitle();
 		return uniqueLotID;
+	}
+
+	@Override
+	public int getNumConnectedPropertyRooms()
+	{
+		//TODO: WRONG! AllTitledRooms can include the Uncached.  So, wrong.
+		return getAllTitledRooms().size();
 	}
 
 	// update lot, since its called by the savethread, ONLY worries about itself
