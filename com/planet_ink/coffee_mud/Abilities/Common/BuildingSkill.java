@@ -1670,21 +1670,18 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				return false;
 			}
 
-			final int numRooms = title.getNumConnectedPropertyRooms();
-			if(numRooms>0)
+			final Room R = title.getAConnectedPropertyRoom();
+			if(R != null)
 			{
-				final Room R = title.getAConnectedPropertyRoom();
-				if(R != null)
+				final Ability cap = R.fetchEffect("Prop_ReqCapacity");
+				if(cap != null)
 				{
-					final Ability cap = R.fetchEffect("Prop_ReqCapacity");
-					if(cap != null)
+					final int numRooms = title.getNumConnectedPropertyRooms();
+					final int roomLimit = CMParms.getParmInt(cap.text(),"rooms",Integer.MAX_VALUE);
+					if(numRooms >= roomLimit)
 					{
-						final int roomLimit = CMParms.getParmInt(cap.text(),"rooms",Integer.MAX_VALUE);
-						if(numRooms >= roomLimit)
-						{
-							commonTelL(mob,"You are not allowed to add more rooms.");
-							return false;
-						}
+						commonTelL(mob,"You are not allowed to add more rooms.");
+						return false;
 					}
 				}
 			}

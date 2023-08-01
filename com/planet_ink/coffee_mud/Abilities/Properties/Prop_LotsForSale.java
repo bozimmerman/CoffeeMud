@@ -71,12 +71,12 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	{
 		return getConnectedPropertyRooms().size();
 	}
-	
+
 	protected void fillLotsCluster(final Room R, final List<Room> roomsV)
 	{
 		fillCluster(R, roomsV, null, true);
 	}
-	
+
 	protected List<Room> getConnectedPropertyRooms()
 	{
 		final List<Room> roomsV=new ArrayList<Room>();
@@ -305,6 +305,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		final Set<Room> updateExits=new HashSet<Room>();
 		Prop_ReqCapacity cap = null;
 		boolean didAnything = false;
+		List<Room> allRooms = null;
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 		{
 			if((d==Directions.UP)||(d==Directions.DOWN)||(d==Directions.GATE))
@@ -313,7 +314,8 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			if((chkR==null)&&(numberOfPeers < 0))
 			{
 				//TODO: this is ridiculously inefficient for thin areas
-				final List<Room> allRooms = getConnectedPropertyRooms();
+				if(allRooms == null)
+					allRooms = getConnectedPropertyRooms();
 				if(allRooms.size()>0)
 				{
 					cap = (Prop_ReqCapacity)allRooms.get(0).fetchEffect("Prop_ReqCapacity");

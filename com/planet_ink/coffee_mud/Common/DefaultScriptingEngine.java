@@ -3962,13 +3962,26 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tlen==1)
 						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-					final String arg2;
+					String arg2;
 					if(tt[t+1].equals("$$r"))
 						arg2=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(monster));
 					else
 						arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-					final List<String> V=CMParms.parse(arg1.toUpperCase());
-					returnable=V.contains(arg2.toUpperCase());
+					if(arg2.startsWith("*"))
+					{
+						if(arg2.endsWith("*")&&(!arg2.endsWith("\\*")))
+							returnable = arg1.toUpperCase().indexOf(CMStrings.replaceAll(arg2.substring(1,arg2.length()-1).toUpperCase(), "\\*", "*"))>=0;
+						else
+							returnable = arg1.toUpperCase().endsWith(CMStrings.replaceAll(arg2.substring(1).toUpperCase(), "\\*", "*"));
+					}
+					else
+					if(arg2.endsWith("*")&&(!arg2.endsWith("\\*")))
+						returnable = arg1.toUpperCase().startsWith(CMStrings.replaceAll(arg2.substring(0,arg2.length()-1).toUpperCase(), "\\*", "*"));
+					else
+					{
+						arg2 = CMStrings.replaceAll(arg2, "\\*", "*");
+						returnable=CMParms.parse(arg1.toUpperCase()).contains(arg2.toUpperCase());
+					}
 					break;
 				}
 				case 62: // callfunc

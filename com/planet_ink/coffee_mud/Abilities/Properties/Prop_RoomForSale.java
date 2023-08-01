@@ -334,57 +334,68 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			return CMLib.map().getRoom(landPropertyID());
 	}
 
-	protected void fillCluster(final Room startR, final List<Room> roomList, final String owner, boolean forceCache)
+	protected void fillCluster(final Room startR, final List<Room> roomList, final String owner, final boolean forceCache)
 	{
 		roomList.add(startR);
 		int start =0;
 		final Area baseA =startR.getArea();
 		boolean foundEntrance=false;
-		boolean dontCache = CMath.bset(baseA.flags(), Area.FLAG_THIN) && (!CMath.bset(baseA.flags(), Area.FLAG_INSTANCE_CHILD));
-		final Set<String> validRoomIds;
-		if(dontCache)
-		{
-			String[] args = null;
-			if(owner != null)
-				args = new String[] { ">"+owner+"/" };
-			validRoomIds = CMLib.database().getAffectedRoomIDs(baseA, false, new String[] { ID() }, args);
-		}
-		else
-			validRoomIds = null;
-		Set<String> roomIDs = new TreeSet<String>();
+		final boolean dontCache = CMath.bset(baseA.flags(), Area.FLAG_THIN) && (!CMath.bset(baseA.flags(), Area.FLAG_INSTANCE_CHILD));
+		final Set<String> roomIDs = new TreeSet<String>();
 		roomIDs.add(startR.roomID());
+		final DatabaseEngine db = CMLib.database();
+		Exit openE = null;
 		while(start < roomList.size())
 		{
 			final Room dR = roomList.get(start++);
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				final Room nR=(dontCache?dR.rawDoors()[d]:dR.getRoomInDir(d));
+				Room nR=(dontCache?dR.rawDoors()[d]:dR.getRoomInDir(d));
 				if((nR!=null)
 				&&(nR.roomID().length()>0)
 				&&(!roomIDs.contains(nR.roomID())))
 				{
 					roomIDs.add(nR.roomID());
-					boolean thinRoom = false;
 					if(nR.ID().equals("ThinRoom"))
 					{
 						if(!forceCache)
 							continue;
-						thinRoom = dontCache;
+						nR=db.DBReadRoomObject(nR.roomID(), false);
+						if(nR==null)
+							continue;
+						final Pair<String,String>[] exits = db.DBReadRoomExitIDs(nR.roomID());
+						for(int nd=0;nd<exits.length;nd++)
+						{
+							final Pair<String,String> p = exits[nd];
+							if(p != null)
+							{
+								final String exitId = p.second;
+								final Room nnR = CMLib.map().getCachedRoom(exitId);
+								if(nnR != null)
+									nR.rawDoors()[nd]=nnR;
+								else
+								{
+									final Area A = CMLib.map().getRoomAreaGuess(exitId);
+									final Room tR = CMClass.getLocale("ThinRoom");
+									tR.setRoomID(exitId);
+									tR.setArea(A);
+									nR.rawDoors()[nd]=tR;
+								}
+								if((p.first!=null)&&(p.first.length()>0))
+								{
+									if(openE == null)
+										openE = CMClass.getExit("Open");
+									nR.setRawExit(nd, openE);
+								}
+							}
+						}
 					}
-					boolean isValidTitled;
-					if(thinRoom)
-						isValidTitled = (validRoomIds != null) && validRoomIds.contains(nR.roomID());
-					else
-					{
-						final Area baseA2=nR.getArea();
-						final Ability A=nR.fetchEffect(ID());
-						isValidTitled = ((baseA2==baseA)
-										&&(A!=null)
-										&&((owner==null)||((Prop_LotsForSale)A).getOwnerName().equals(owner)));
-					}
-					//TODO: nR here is wrong for things, because its links are likely wrong.
-					if(isValidTitled)
-						roomList.add(nR);
+					final Area baseA2=nR.getArea();
+					final Ability A=nR.fetchEffect(ID());
+					if(((baseA2==baseA)
+					&&(A!=null)
+					&&((owner==null)||((Prop_LotsForSale)A).getOwnerName().equals(owner))))
+						roomList.add(nR); // this will keep the list growing, as well as grow the list
 					else
 					if(!foundEntrance)
 					{
@@ -398,12 +409,18 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	@Override
-	public List<Room> getAllTitledRooms()
+	public List<Room> getTitledRooms()
 	{
 		final Room R = getATitledRoom();
 		if(R!=null)
 			return new XVector<Room>(R);
 		return new Vector<Room>(1);
+	}
+
+	@Override
+	public int getNumTitledRooms()
+	{
+		return getATitledRoom() != null ? 1 : 0;
 	}
 
 	public static int[] updateLotWithThisData(Room R,

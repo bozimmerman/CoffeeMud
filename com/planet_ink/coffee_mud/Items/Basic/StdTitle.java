@@ -309,10 +309,8 @@ public class StdTitle extends StdItem implements LandTitle
 	@Override
 	public void updateLot(final Set<String> optPlayerList)
 	{
-		final List<Room> roomsV=getAllTitledRooms();
-		for(int v=0;v<roomsV.size();v++)
+		for(final Room R : getTitledRooms())
 		{
-			final Room R=roomsV.get(v);
 			final LandTitle T=CMLib.law().getLandTitle(R);
 			if(T!=null)
 				T.updateLot(optPlayerList);
@@ -365,12 +363,21 @@ public class StdTitle extends StdItem implements LandTitle
 	}
 
 	@Override
-	public List<Room> getAllTitledRooms()
+	public List<Room> getTitledRooms()
 	{
 		final LandTitle T = getLandTitleObject();
 		if(T!=null)
-			return T.getAllTitledRooms();
+			return T.getTitledRooms();
 		return new Vector<Room>(1);
+	}
+
+	@Override
+	public int getNumTitledRooms()
+	{
+		final LandTitle T = getLandTitleObject();
+		if(T!=null)
+			return T.getNumTitledRooms();
+		return 0;
 	}
 
 	@Override

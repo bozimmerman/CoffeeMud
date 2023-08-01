@@ -639,7 +639,34 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Room getRoom(final Enumeration<Room> roomSet, final String calledThis)
+	public Area getRoomAreaGuess(final String roomID)
+	{
+		final int x=roomID.indexOf('#');
+		if(x>=0)
+		{
+			final Area A=getArea(roomID.substring(0,x));
+			if((A!=null)
+			&&(A.getProperRoomnumbers().contains(roomID)))
+				return A;
+		}
+		for(final Enumeration<Area> e=this.areas();e.hasMoreElements();)
+		{
+			final Area A = e.nextElement();
+			if((A!=null)
+			&&(A.getProperRoomnumbers().contains(roomID)))
+				return A;
+		}
+		for(final Enumeration<Area> e=shipAreaEnumerator(null);e.hasMoreElements();)
+		{
+			final Area A = e.nextElement();
+			if((A!=null)
+			&&(A.getProperRoomnumbers().contains(roomID)))
+				return A;
+		}
+		return null;
+	}
+
+	protected Room getRoom(final Enumeration<Room> roomSet, final String calledThis, final boolean cachedOnly)
 	{
 		try
 		{
@@ -668,20 +695,27 @@ public class CMMap extends StdLibrary implements WorldMap
 				if(x>=0)
 				{
 					final Area A=getArea(calledThis.substring(0,x));
-					if(A!=null)
+					if((A!=null)
+					&&((!cachedOnly)||(A.isRoomCached(calledThis))))
 						R=A.getRoom(calledThis);
 					if(R!=null)
 						return R;
 				}
 				for(final Enumeration<Area> e=this.areas();e.hasMoreElements();)
 				{
-					R = e.nextElement().getRoom(calledThis);
+					final Area A = e.nextElement();
+					if((A!=null)
+					&&((!cachedOnly)||(A.isRoomCached(calledThis))))
+						R = A.getRoom(calledThis);
 					if(R!=null)
 						return R;
 				}
 				for(final Enumeration<Area> e=shipAreaEnumerator(null);e.hasMoreElements();)
 				{
-					R = e.nextElement().getRoom(calledThis);
+					final Area A = e.nextElement();
+					if((A!=null)
+					&&((!cachedOnly)||(A.isRoomCached(calledThis))))
+						R = A.getRoom(calledThis);
 					if(R!=null)
 						return R;
 				}
@@ -700,6 +734,12 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 		}
 		return null;
+	}
+
+	@Override
+	public Room getRoom(final Enumeration<Room> roomSet, final String calledThis)
+	{
+		return getRoom(roomSet, calledThis, false);
 	}
 
 	@Override
@@ -1212,6 +1252,12 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Room getRoom(final String calledThis)
 	{
 		return getRoom(null,calledThis);
+	}
+
+	@Override
+	public Room getCachedRoom(final String calledThis)
+	{
+		return getRoom(null,calledThis,true);
 	}
 
 	@Override

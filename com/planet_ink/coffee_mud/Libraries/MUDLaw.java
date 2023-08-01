@@ -159,7 +159,11 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				for(final Iterator<String> i=ids.iterator();i.hasNext();)
 				{
 					final String id = i.next();
-					final Room R=A1.getRoom(id); //TODO:BZ: Do we really really have to do this?  this uncaches!
+					final Room R;
+					if(A1.isRoomCached(id))
+						R=A1.getRoom(id);
+					else
+						R=CMLib.database().DBReadRoomObject(id, false);
 					if(R!=null)
 						roomList.add(R);
 				}
@@ -194,10 +198,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				titlesDone.add(T.getTitleID());
 				int price = T.getPrice();
 				//TODO: this is very frustrating!
-				final List<Room> allTitledRooms=T.getAllTitledRooms();
-				for(int v=0;v<allTitledRooms.size();v++)
+				for(final Room R2 : T.getTitledRooms())
 				{
-					final Room R2=allTitledRooms.get(v);
 					if(R2 != null)
 					{
 						if(!roomsDone.contains(R2))
@@ -806,7 +808,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				I.setName(("id"));
 				final StringBuilder txt = new StringBuilder("");
 				//not super important whether this size is correct, as it won't be later anyway.
-				final int size = title.getAllTitledRooms().size();
+				final int size = title.getNumTitledRooms();
 				txt.append(CMLib.lang().L("This room is @x1.  ",CMLib.map().getExtendedRoomID(R)));
 				if(size > 1)
 					txt.append(CMLib.lang().L("There are @x1 rooms in this lot.  ",""+size));

@@ -444,7 +444,7 @@ public class DBInterface implements DatabaseEngine
 	{
 		RoomLoader.DBReadRoomExits(roomID, room, reportStatus);
 	}
-	
+
 	@Override
 	public Pair<String,String>[] DBReadRoomExitIDs(final String roomID)
 	{

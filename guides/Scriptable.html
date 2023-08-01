@@ -9,7 +9,8 @@
   
 
 
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head><body>
+  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
+<body>
 
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
@@ -4315,9 +4316,12 @@ information.</td>
             <td>STRIN([string]
 [string])</td>
 
-            <td>Returns the word
+            <td>Returns
+the word
 number (0..n) where the second string
-appears in the first. This function deals in whole words only.</td>
+appears in the first. This function deals in whole words only, unless
+the second string begins and/or ends with *. &nbsp;Astrisks may be
+escaped with backslash..</td>
 
           </tr>
 
@@ -5430,9 +5434,9 @@ hidden thing to sight.</p>
 
       <pre>mphit $n<br />mphit guardfour<br /></pre>
 
-      <p />
+      <p>
 
-      <h3><a name="mpjunk">mpjunk</a></h3>
+      </p><h3><a name="mpjunk">mpjunk</a></h3>
 
       <p>Usage:</p>
 
@@ -8540,8 +8544,7 @@ parenthesis to group word checks together.</p>
       <p>This
 function searches
 the first string to see if the second
-string appears as a whole word within it. If so, this function returns
-true.&nbsp;</p>
+string appears as a whole word within it. If&nbsp;the second string begins and/or ends with *, it becomes a substring search. &nbsp;Astrisks may be escaped with a backslash..</p>
 
       <p>&nbsp;The
 first string can also be grouped into phrases using

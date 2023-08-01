@@ -351,6 +351,7 @@ public class RoomLoader
 	public Pair<String,String>[] getRoomExitIDs(final String roomID)
 	{
 		@SuppressWarnings("unchecked")
+		final
 		Pair<String,String>[] exits = new Pair[Directions.NUM_DIRECTIONS()];
 		DBConnection D=null;
 		// now grab the exits
@@ -377,7 +378,7 @@ public class RoomLoader
 		}
 		return exits;
 	}
-	
+
 	public Set<String> getAffectedRoomIDs(final Area parentA, final boolean metro, final String[] propIDs, final String[] propArgs)
 	{
 		final Set<String> ids = Collections.synchronizedSet(new TreeSet<String>());
@@ -424,6 +425,7 @@ public class RoomLoader
 					}
 				}
 				sql.append(") ");
+				needAnd = true;
 			}
 			if((commonPrefix.length()>0)||(commonSuffix.length()>0))
 			{

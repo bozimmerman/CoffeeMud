@@ -164,19 +164,26 @@ public class ListCmd extends StdCommand
 		final Map<String,Map<String,AbilityMapper.AbilityMapping>> map=CMLib.ableMapper().getAllQualifiesMap(null);
 		str.append("<<EACH CLASS>>\n\r");
 		Map<String,AbilityMapper.AbilityMapping> subMap=map.get("EACH");
-		str.append(CMStrings.padRight(L("Skill ID"), CMLib.lister().fixColWidth(20.0,viewerS)));
-		str.append(CMStrings.padRight(L("Lvl"), CMLib.lister().fixColWidth(4.0,viewerS)));
-		str.append(CMStrings.padRight(L("Gain"), CMLib.lister().fixColWidth(5.0,viewerS)));
-		str.append(CMStrings.padRight(L("Prof"), CMLib.lister().fixColWidth(5.0,viewerS)));
-		str.append(CMStrings.padRight(L("Mask"), CMLib.lister().fixColWidth(40.0,viewerS)));
+		final int[] colWidths = new int[] {
+			CMLib.lister().fixColWidth(20.0,viewerS),
+			CMLib.lister().fixColWidth(4.0,viewerS),
+			CMLib.lister().fixColWidth(5.0,viewerS),
+			CMLib.lister().fixColWidth(5.0,viewerS),
+			CMLib.lister().fixColWidth(40.0,viewerS),
+		};
+		str.append(CMStrings.padRight(L("Skill ID"), colWidths[0]));
+		str.append(CMStrings.padRight(L("Lvl"), colWidths[1]));
+		str.append(CMStrings.padRight(L("Gain"), colWidths[2]));
+		str.append(CMStrings.padRight(L("Prof"), colWidths[3]));
+		str.append(CMStrings.padRight(L("Mask"), colWidths[4]));
 		str.append("\n\r");
 		for(final AbilityMapper.AbilityMapping mapped : subMap.values())
 		{
-			str.append(CMStrings.padRight(mapped.abilityID(), CMLib.lister().fixColWidth(20.0,viewerS)));
-			str.append(CMStrings.padRight(""+mapped.qualLevel(), CMLib.lister().fixColWidth(4.0,viewerS)));
-			str.append(CMStrings.padRight(mapped.autoGain()?L("yes"):L("no"), CMLib.lister().fixColWidth(5.0,viewerS)));
-			str.append(CMStrings.padRight(""+mapped.defaultProficiency(), CMLib.lister().fixColWidth(5.0,viewerS)));
-			str.append(CMStrings.padRight(mapped.extraMask(), CMLib.lister().fixColWidth(40.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.abilityID(), colWidths[0]));
+			str.append(CMStrings.padRight(""+mapped.qualLevel(), colWidths[1]));
+			str.append(CMStrings.padRight(mapped.autoGain()?L("yes"):L("no"), colWidths[2]));
+			str.append(CMStrings.padRight(""+mapped.defaultProficiency(), colWidths[3]));
+			str.append(CMStrings.padRight(mapped.extraMask(), colWidths[4]));
 			str.append("\n\r");
 		}
 		str.append("\n\r");
@@ -257,47 +264,142 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder roomPropertyDetails(final Session viewerS, final Area A, final String rest)
-	{
-		if(rest.trim().length()==0)
-			return roomPropertyDetails(viewerS, A.getMetroMap(), null);
-		else
-		if(rest.trim().equalsIgnoreCase("area"))
-			return roomPropertyDetails(viewerS, A.getMetroMap(), null);
-		else
-		if(rest.trim().equalsIgnoreCase("world"))
-			return roomPropertyDetails(viewerS, CMLib.map().rooms(), null);
-		else
-		if(rest.trim().toLowerCase().startsWith("area "))
-			return roomPropertyDetails(viewerS, A.getMetroMap(), rest.trim().substring(5).trim());
-		else
-		if(rest.trim().toLowerCase().startsWith("world "))
-			return roomPropertyDetails(viewerS, CMLib.map().rooms(), rest.trim().substring(6).trim());
-		else
-			return new StringBuilder("Illegal parameters... try LIST REALESTATE AREA/WORLD (USERNAME/CLANNAME)");
-	}
-
-	public StringBuilder roomPropertyDetails(final Session viewerS, final Enumeration<Room> these, final String owner)
+	public StringBuilder roomPropertyDetails(final Session viewerS, final Enumeration<Room> these, final String owner, final boolean taxes)
 	{
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
 			return lines;
 		LandTitle t=null;
-		Room thisThang=null;
-		String thisOne=null;
-		for(final Enumeration<Room> r=these;r.hasMoreElements();)
+		Room R=null;
+		String roomID=null;
+		if(taxes)
 		{
-			thisThang=r.nextElement();
-			t=CMLib.law().getLandTitle(thisThang);
-			if(t!=null)
+			final Set<Area> areas = new HashSet<Area>();
+			for(final Enumeration<Room> r=these;r.hasMoreElements();)
 			{
-				thisOne=thisThang.roomID();
-				if((thisOne.length()>0)&&((owner==null)||(t.getOwnerName().equalsIgnoreCase(owner))))
-					lines.append(CMStrings.padRightPreserve("^N^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+CMStrings.limit(thisThang.displayText(),23)+CMStrings.limit(" ^.^N("+t.getOwnerName()+", $"+t.getPrice()+")",20)+"\n\r");
+				R=r.nextElement();
+				if((R!=null)&&(!areas.contains(R.getArea())))
+				{
+					Area A = R.getArea();
+					final Behavior B = (A!=null)?CMLib.law().getLegalBehavior(A):null;
+					A = (B!=null)?CMLib.law().getLegalObject(A):null;
+					if(A!=null)
+						areas.add(A);
+				}
+			}
+			final int[] colWidths = new int[] {
+				CMLib.lister().fixColWidth(13.0,viewerS),
+				CMLib.lister().fixColWidth(8.0,viewerS),
+				CMLib.lister().fixColWidth(27.0,viewerS),
+				CMLib.lister().fixColWidth(23.0,viewerS)
+			};
+			for(final Area A : areas)
+			{
+				final List<LandTitle> titles = CMLib.law().getAllUniqueLandTitles(A, owner, false);
+				final Map<String,List<LandTitle>> owners=new TreeMap<String,List<LandTitle>>();
+				for(final LandTitle T : titles)
+				{
+					if(T.getOwnerName().length()==0)
+						continue;
+					List<LandTitle> D=owners.get(T.getOwnerName());
+					if(D==null)
+					{
+						D=new Vector<LandTitle>();
+						owners.put(T.getOwnerName(),D);
+					}
+					D.add(T);
+				}
+				if(titles.size()==0)
+					continue;
+				lines.append("\n\r^H" + A.Name()+"^.^N\n\r");
+				for(final String ownr : owners.keySet())
+				{
+					final List<LandTitle> particulars=owners.get(ownr);
+					double totalValue=0;
+					double owed=0;
+					int rooms = 0;
+					LandTitle T=null;
+					for(int p=0;p<particulars.size();p++)
+					{
+						T=(particulars.get(p));
+						totalValue+=T.getPrice();
+						if(T.backTaxes()>0)
+						{
+							totalValue+=T.backTaxes();
+							owed+=T.backTaxes();
+						}
+						rooms += T.getNumTitledRooms();
+					}
+					String uniqueID = T.getUniqueLotID();
+					if(uniqueID.startsWith("LOTS_PROPERTY_"))
+						uniqueID = uniqueID.substring(14);
+					if(uniqueID.startsWith("ROOM_PROPERTY_"))
+						uniqueID = uniqueID.substring(14);
+					lines.append(CMStrings.padRight(ownr, colWidths[0])+": "+
+								CMStrings.padRightPreserve("("+rooms+")",colWidths[1])+": "+
+								 "^N^<LSTROOMID^>"+CMStrings.padRight(uniqueID,colWidths[2])+"^</LSTROOMID^>"+": "+
+								 "^.^N"+CMStrings.limit("($"+totalValue+", -$"+owed+")",colWidths[3])+
+								 "\n\r");
+				}
+			}
+		}
+		else
+		{
+			for(final Enumeration<Room> r=these;r.hasMoreElements();)
+			{
+				R=r.nextElement();
+				t=CMLib.law().getLandTitle(R);
+				if(t!=null)
+				{
+					roomID=R.roomID();
+					if((roomID.length()>0)
+					&&((owner==null)||(t.getOwnerName().equalsIgnoreCase(owner))))
+						lines.append(CMStrings.padRightPreserve("^N^<LSTROOMID^>"+roomID+"^</LSTROOMID^>",30)+": "
+									+CMStrings.limit(R.displayText(),23)
+									+CMStrings.limit(" ^.^N("+t.getOwnerName()+", $"+t.getPrice()+")",20)+"\n\r");
+				}
 			}
 		}
 		lines.append("\n\r");
 		return lines;
+	}
+
+	public StringBuilder roomPropertyDetails(final Session viewerS, final Area A, String rest)
+	{
+		rest = rest.trim();
+		final int x = rest.lastIndexOf(' ');
+		boolean taxes = false;
+		if(x > 0)
+		{
+			final String lastWord = rest.substring(x+1).toLowerCase().trim();
+			if(lastWord.equals("taxes")||lastWord.equals("taxed")||lastWord.equals("tax"))
+			{
+				taxes = true;
+				rest = rest.substring(0,x).trim();
+			}
+		}
+		Enumeration<Room> e = A.getMetroMap();
+		if((rest+" ").startsWith("world "))
+		{
+			e = CMLib.map().rooms();
+			rest = rest.substring(5).trim();
+		}
+		else
+		if((rest+" ").startsWith("area "))
+		{
+			e = A.getProperMap();
+			rest = rest.substring(4).trim();
+		}
+		else
+		if((rest+" ").startsWith("metro "))
+		{
+			e = A.getMetroMap();
+			rest = rest.substring(5).trim();
+		}
+		else
+			return new StringBuilder("Illegal parameters... try LIST REALESTATE AREA/WORLD/METRO (USERNAME/CLANNAME) (TAXES)");
+		final String who = (rest.length()==0) ? null : rest;
+		return roomPropertyDetails(viewerS, e, who, taxes);
 	}
 
 	public String cataMark(final Environmental E)
@@ -4683,7 +4785,8 @@ public class ListCmd extends StdCommand
 		ROOMS("Rooms", 6),
 		STATE("State", 10),
 		HIDDEN("Hiddn", 6),
-		PIETY("Piety",50)
+		PIETY("Piety",50),
+		CACHED("Cached", 6)
 		;
 
 		public String	shortName;
@@ -4705,6 +4808,8 @@ public class ListCmd extends StdCommand
 				return "" + CMLib.flags().isHidden(A);
 			case ROOMS:
 				return Integer.valueOf(A.getProperRoomnumbers().roomCountAllAreas());
+			case CACHED:
+				return Integer.valueOf(A.getCachedRoomnumbers().roomCountAllAreas());
 			case STATE:
 				return A.getAreaState().name();
 			case AUTHOR:

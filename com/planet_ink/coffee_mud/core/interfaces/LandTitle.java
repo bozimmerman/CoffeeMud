@@ -70,12 +70,20 @@ public interface LandTitle extends PrivateProperty
 	public void updateTitle();
 
 	/**
+	 * The size of the complete set of room objects that are tied together by one or more titles.
+	 * Includes uncached rooms.
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
+	 * @return the size of the complete set of Room objects represented by property
+	 */
+	public int getNumTitledRooms();
+
+	/**
 	 * The complete set of room objects represented by this title.
 	 * Will represent cached-rooms only, so thin uncached rooms not included.
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @return a list of the complete set of Room objects represented by this title
 	 */
-	public List<Room> getAllTitledRooms();
+	public List<Room> getTitledRooms();
 
 	/**
 	 * A room object represented by this title

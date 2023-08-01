@@ -279,10 +279,8 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		{
 			lastMobSave=System.currentTimeMillis();
 			//this should only for cached rooms, so thin-safe.
-			final List<Room> V=getAllTitledRooms();
-			for(int v=0;v<V.size();v++)
+			for(Room R : getTitledRooms())
 			{
-				Room R=V.get(v);
 				synchronized(CMClass.getSync("SYNC"+R.roomID()))
 				{
 					R=CMLib.map().getRoom(R);
@@ -323,7 +321,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	}
 
 	@Override
-	public List<Room> getAllTitledRooms()
+	public List<Room> getTitledRooms()
 	{
 		final List<Room> V=new Vector<Room>();
 		Area A=null;
@@ -336,10 +334,27 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			A=CMLib.map().getArea(landPropertyID());
 		if(A!=null)
 		{
+			// this is ok for thin areas, because the title covers them all anyway
 			for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 				V.add(e.nextElement());
 		}
 		return V;
+	}
+
+	@Override
+	public int getNumTitledRooms()
+	{
+		Area A=null;
+		if(affected instanceof Area)
+			A=(Area)affected;
+		else
+		if(affected instanceof Room)
+			return 1;
+		else
+			A=CMLib.map().getArea(landPropertyID());
+		if(A!=null)
+			return A.numberOfProperIDedRooms();
+		return 0;
 	}
 
 	@Override
@@ -373,10 +388,9 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		{
 			// in this case, we definitely only care about rooms actually existing
 			// thin rooms can safely be skipped
-			final List<Room> V=getAllTitledRooms();
-			for(int v=0;v<V.size();v++)
+			final List<Room> V=getTitledRooms();
+			for(final Room R : V)
 			{
-				final Room R=V.get(v);
 				lastCall=System.currentTimeMillis();
 				int[] pair=lastItemNums.get(R);
 				if(pair == null)

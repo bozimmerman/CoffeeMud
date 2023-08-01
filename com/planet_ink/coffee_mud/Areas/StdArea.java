@@ -2248,19 +2248,19 @@ public class StdArea implements Area
 			roomID = Name() + roomID.substring(Name().length()); // for case sensitive situations
 		return prooms.get(roomID);
 	}
-	
+
 	@Override
-	public Room getRoom(String roomID)
+	public Room getRoom(final String roomID)
 	{
 		return getRoomBase(roomID);
 	}
 
 	@Override
-	public boolean isRoomCached(String roomID)
+	public boolean isRoomCached(final String roomID)
 	{
 		return this.getRoomBase(roomID)!=null;
 	}
-	
+
 	@Override
 	public int metroSize()
 	{
@@ -2299,7 +2299,13 @@ public class StdArea implements Area
 	{
 		if (isProperlyEmpty())
 			return null;
-		String roomID = getProperRoomnumbers().random();
+		String roomID;
+		if((CMath.bset(flags(), Area.FLAG_THIN))
+		&&(getCachedRoomnumbers().roomCountAllAreas()>0)
+		&&(CMLib.dice().rollPercentage()<66))
+			roomID = getCachedRoomnumbers().random();
+		else
+			roomID = getProperRoomnumbers().random();
 		if ((roomID != null)
 		&& (!roomID.startsWith(Name()))
 		&& (roomID.startsWith(Name().toUpperCase())))
@@ -2310,8 +2316,7 @@ public class StdArea implements Area
 		Room R = getRoom(roomID);
 		if (R == null)
 		{
-			R = CMLib.map().getRoom(roomID); // BUT... it's ok to hit
-												// CMLib.map() if you fail.
+			R = CMLib.map().getRoom(roomID); // BUT... it's ok to hit CMLib.map() if you fail.
 			if (R == null)
 			{
 				if (this.properRooms.size() > 0)

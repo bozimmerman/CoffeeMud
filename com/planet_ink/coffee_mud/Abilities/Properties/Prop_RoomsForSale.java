@@ -58,13 +58,20 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 	}
 
 	@Override
-	public List<Room> getAllTitledRooms()
+	public List<Room> getTitledRooms()
 	{
 		final List<Room> roomsV=new ArrayList<Room>();
 		final Room R = getATitledRoom();
 		if(R!=null) // only return cached rooms here!
 			fillCluster(R,roomsV,null,false);
 		return roomsV;
+	}
+
+	@Override
+	public int getNumTitledRooms()
+	{
+		//TODO: make this faster, maybe?
+		return getTitledRooms().size();
 	}
 
 	@Override
@@ -77,7 +84,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 	@Override
 	public void updateTitle()
 	{
-		final List<Room> V=getAllTitledRooms();
+		final List<Room> V=getTitledRooms();
 		final String owner=getOwnerName();
 		final int price=getPrice();
 		final boolean rental=rentalProperty();
@@ -124,7 +131,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 	public int getNumConnectedPropertyRooms()
 	{
 		//TODO: WRONG! AllTitledRooms can include the Uncached.  So, wrong.
-		return getAllTitledRooms().size();
+		return getTitledRooms().size();
 	}
 
 	// update lot, since its called by the savethread, ONLY worries about itself
@@ -141,7 +148,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 			{
 				final Room R=(Room)affected;
 				lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
-				final List<Room> V=getAllTitledRooms();
+				final List<Room> V=getTitledRooms();
 				for(int v=0;v<V.size();v++)
 				{
 					final Room R2=V.get(v);

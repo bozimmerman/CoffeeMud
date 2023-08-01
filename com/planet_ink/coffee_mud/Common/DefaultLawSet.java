@@ -432,12 +432,13 @@ public class DefaultLawSet implements Law
 						properties.append(", ");
 					T=(particulars.get(p));
 					//the message below is thin-safe
-					final List<Room> propertyRooms=T.getAllTitledRooms();
-					if((propertyRooms.size()<2)
-					||(CMLib.map().getArea(T.landPropertyID())!=null))
+					final int size = T.getNumTitledRooms();
+					if((size<2)
+					|| (CMLib.map().getArea(T.landPropertyID())!=null)
+					|| (CMLib.map().getShip(T.landPropertyID())!=null))
 						properties.append(T.landPropertyID());
 					else
-						properties.append("around "+CMLib.map().getExtendedRoomID(propertyRooms.get(0)));
+						properties.append("around "+CMLib.map().getExtendedRoomID(T.getATitledRoom()));
 					totalValue+=T.getPrice();
 					if(T.backTaxes()>0)
 					{
