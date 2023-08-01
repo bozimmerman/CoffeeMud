@@ -1286,7 +1286,7 @@ public class StdRace implements Race
 		GR.setStat("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(RS));
 
 		final CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");
-		S1.setAllValues(100);
+		S1.setAllValues(100); // because charStats.adjStat respects boundaries, but here we do not
 		S1.setStat(CharStats.STAT_GENDER, 'M');
 
 		final CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats");
@@ -1323,7 +1323,7 @@ public class StdRace implements Race
 					&&(S1.getStat(max)!=100))
 					{
 						SETSTAT.setStat(i,S2.getStat(i));
-						S1.setStat(max,100);
+						S1.setStat(max,100); // because charStats.adjStat respects boundaries, but here we do not
 						S2.setStat(max,0);
 						S3.setStat(max,0);
 					}
