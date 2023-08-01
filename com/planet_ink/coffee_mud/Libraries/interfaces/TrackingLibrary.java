@@ -164,6 +164,15 @@ public interface TrackingLibrary extends CMLibrary
 				return (R!=null)&&(hostR!=null)&&(hostR.getArea()!=R.getArea());
 			}
 		}),
+		NOTHINAREAS(new RFilter()
+		{
+			@Override
+			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+			{
+				return (R!=null)&&(hostR!=null)&&(R.getArea()!=null)
+				&&(CMath.bset(R.getArea().flags(), Area.FLAG_THIN));
+			}
+		}),
 		NOHIDDENAREAS(new RFilter()
 		{
 			@Override

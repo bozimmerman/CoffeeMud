@@ -2861,6 +2861,15 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			else
 				mixRaceName=undeadR.name()+"-"+halfR.name();
 			R=CMClass.getRace(mixRaceID);
+			if((R!=null)&&(R.isGeneric()))
+			{
+				if(CMLib.database().isRaceExpired(mixRaceID))
+				{
+					CMLib.database().DBDeleteRace(mixRaceID);
+					CMClass.delRace(R);
+					R=null;
+				}
+			}
 			if(R!=null)
 				return R;
 			/*

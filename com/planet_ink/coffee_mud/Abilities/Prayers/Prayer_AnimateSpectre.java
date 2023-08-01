@@ -199,12 +199,16 @@ public class Prayer_AnimateSpectre extends Prayer
 			final Item item=R.getItem(it);
 			if((item!=null)&&(item.container()==body))
 			{
-				final CMMsg msg2=CMClass.getMsg(newMOB,body,item,CMMsg.MSG_GET,null);
-				newMOB.location().send(newMOB,msg2);
-				final CMMsg msg4=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_GET,null);
-				newMOB.location().send(newMOB,msg4);
-				final CMMsg msg3=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_WEAR,null);
-				newMOB.location().send(newMOB,msg3);
+				CMMsg msg;
+				msg=CMClass.getMsg(newMOB,body,item,CMMsg.MSG_GET,null);
+				if(R.okMessage(newMOB, msg))
+					R.send(newMOB,msg);
+				msg=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_GET,null);
+				if(R.okMessage(newMOB, msg))
+					R.send(newMOB,msg);
+				msg=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_WEAR,null);
+				if(R.okMessage(newMOB, msg))
+					R.send(newMOB,msg);
 				if(!newMOB.isMine(item))
 					it++;
 				else

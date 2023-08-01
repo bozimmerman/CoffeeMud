@@ -1286,7 +1286,7 @@ public class StdRace implements Race
 		GR.setStat("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(RS));
 
 		final CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");
-		S1.setAllValues(0);
+		S1.setAllValues(100);
 		S1.setStat(CharStats.STAT_GENDER, 'M');
 
 		final CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats");
@@ -1320,18 +1320,18 @@ public class StdRace implements Race
 				{
 					final int max = CharStats.CODES.toMAXBASE(i);
 					if((Math.abs(S2.getStat(i)-10) != Math.abs(S3.getStat(i)-14))
-					&&(S1.getStat(max)!=0))
+					&&(S1.getStat(max)!=100))
 					{
 						SETSTAT.setStat(i,S2.getStat(i));
-						S1.setStat(max,0);
+						S1.setStat(max,100);
 						S2.setStat(max,0);
 						S3.setStat(max,0);
 					}
 					else
-						ADJSTAT.setStat(i,S1.getStat(i));
+						ADJSTAT.setStat(i,S1.getStat(i)-100);
 				}
 				else
-					ADJSTAT.setStat(i,S1.getStat(i));
+					ADJSTAT.setStat(i,S1.getStat(i)-100);
 			}
 		}
 		GR.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT));
@@ -1596,22 +1596,34 @@ public class StdRace implements Race
 					SETSTAT.setStat(i,setStat1);
 			}
 			else
-			if(CharStats.CODES.isBASE(i))
+			if(CharStats.CODES.isBASE(i)||(CMParms.contains(CharStats.CODES.MAXCODES(),i)))
 			{
 				final int newStat=((ADJSTAT1.getStat(i)+ADJSTAT2.getStat(i))/2);
 				if(newStat>5)
-					ADJSTAT.setStat(i,5);
+					ADJSTAT.setStat(i,ADJSTAT.getStat(i)+5);
 				else
-					ADJSTAT.setStat(i,newStat);
+					ADJSTAT.setStat(i,ADJSTAT.getStat(i)+newStat);
 				int setStat1=SETSTAT1.getStat(i);
 				int setStat2=SETSTAT2.getStat(i);
+				if((setStat1>0)&&(setStat2>0))
+					SETSTAT.setStat(i,((setStat1 + setStat2)/2));
+				else
 				if((setStat1>0)||(setStat2>0))
 				{
-					if(setStat1 == 0)
-						setStat1 = 10;
-					if(setStat2 == 0)
-						setStat2 = 10;
-					SETSTAT.setStat(i,(setStat1 + setStat2)/2);
+					if(setStat1 != 0)
+						setStat1 = setStat1 - 10;
+					if(setStat2 != 0)
+						setStat2 = setStat2 - 10;
+					ADJSTAT.setStat(i,ADJSTAT.getStat(i)+((setStat1 + setStat2)/2));
+					if(CharStats.CODES.isBASE(i)
+					&&(ADJSTAT.getStat(CharStats.STAT_MAX_STRENGTH_ADJ+i)==0)
+					&&(SETSTAT1.getStat(CharStats.STAT_MAX_STRENGTH_ADJ+i)==0)
+					&&(SETSTAT2.getStat(CharStats.STAT_MAX_STRENGTH_ADJ+i)==0))
+					{
+						ADJSTAT.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,
+								ADJSTAT.getStat(CharStats.STAT_MAX_STRENGTH_ADJ+i)
+								+((setStat1 + setStat2)/2));
+					}
 				}
 			}
 			else

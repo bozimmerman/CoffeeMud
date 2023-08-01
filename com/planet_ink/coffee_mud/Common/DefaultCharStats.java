@@ -1155,6 +1155,8 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public void setStat(final int abilityCode, final int value)
 	{
+		// needs to support all kinds of crazy values here because this is also
+		// a work-container
 		if(abilityCode<stats.length)
 			stats[abilityCode]=(short)value;
 	}

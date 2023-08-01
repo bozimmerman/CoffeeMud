@@ -161,7 +161,7 @@ public class Prayer_AnimateDead extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for dark powers over <T-NAMESELF>.^?",prayWord(mob)));
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for dark powers over <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -207,7 +207,8 @@ public class Prayer_AnimateDead extends Prayer
 				newMOB.recoverMaxState();
 				newMOB.resetToMaxState();
 				newMOB.setMiscText(newMOB.text());
-				newMOB.bringToLife(mob.location(),true);
+				final Room R = mob.location();
+				newMOB.bringToLife(R,true);
 				CMLib.beanCounter().clearZeroMoney(newMOB,null);
 				newMOB.setMoneyVariation(0);
 				//newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
@@ -217,12 +218,15 @@ public class Prayer_AnimateDead extends Prayer
 					final Item item=newMOB.location().getItem(it);
 					if((item!=null)&&(item.container()==body))
 					{
-						final CMMsg msg2=CMClass.getMsg(newMOB,body,item,CMMsg.MSG_GET,null);
-						newMOB.location().send(newMOB,msg2);
-						final CMMsg msg4=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_GET,null);
-						newMOB.location().send(newMOB,msg4);
-						final CMMsg msg3=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_WEAR,null);
-						newMOB.location().send(newMOB,msg3);
+						msg=CMClass.getMsg(newMOB,body,item,CMMsg.MSG_GET,null);
+						if(R.okMessage(newMOB, msg))
+							R.send(newMOB,msg);
+						msg=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_GET,null);
+						if(R.okMessage(newMOB, msg))
+							R.send(newMOB,msg);
+						msg=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_WEAR,null);
+						if(R.okMessage(newMOB, msg))
+							R.send(newMOB,msg);
 						if(!newMOB.isMine(item))
 							it++;
 						else
