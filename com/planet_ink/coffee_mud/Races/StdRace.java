@@ -1285,8 +1285,9 @@ public class StdRace implements Race
 		RS.setRejuv(PhyStats.NO_REJUV);
 		GR.setStat("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(RS));
 
+		final int ADJUSTMENT_MAX = 100;
 		final CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");
-		S1.setAllValues(100); // because charStats.adjStat respects boundaries, but here we do not
+		S1.setAllValues(ADJUSTMENT_MAX); // because charStats.adjStat respects boundaries, but here we do not
 		S1.setStat(CharStats.STAT_GENDER, 'M');
 
 		final CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats");
@@ -1320,18 +1321,18 @@ public class StdRace implements Race
 				{
 					final int max = CharStats.CODES.toMAXBASE(i);
 					if((Math.abs(S2.getStat(i)-10) != Math.abs(S3.getStat(i)-14))
-					&&(S1.getStat(max)!=100))
+					&&(S1.getStat(max)!=ADJUSTMENT_MAX))
 					{
 						SETSTAT.setStat(i,S2.getStat(i));
-						S1.setStat(max,100); // because charStats.adjStat respects boundaries, but here we do not
+						S1.setStat(max,ADJUSTMENT_MAX); // because charStats.adjStat respects boundaries, but here we do not
 						S2.setStat(max,0);
 						S3.setStat(max,0);
 					}
 					else
-						ADJSTAT.setStat(i,S1.getStat(i)-100);
+						ADJSTAT.setStat(i,S1.getStat(i)-ADJUSTMENT_MAX);
 				}
 				else
-					ADJSTAT.setStat(i,S1.getStat(i)-100);
+					ADJSTAT.setStat(i,S1.getStat(i)-ADJUSTMENT_MAX);
 			}
 		}
 		GR.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT));
