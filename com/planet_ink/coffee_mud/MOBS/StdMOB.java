@@ -2437,7 +2437,7 @@ public class StdMOB implements MOB
 		}
 
 		final MOB srcM = msg.source();
-		if ((msg.sourceCode() != CMMsg.NO_EFFECT) && (msg.amISource(this)))
+		if ((msg.sourceCode() != CMMsg.NO_EFFECT) && (srcM==this))
 		{
 			if((msg.tool() instanceof Item)
 			&&(((Item)msg.tool()).owner()==null)
@@ -3330,12 +3330,12 @@ public class StdMOB implements MOB
 		}
 
 		final MOB srcM = msg.source();
-
-		final boolean asleep = CMLib.flags().isSleeping(this);
-		final boolean canseesrc = CMLib.flags().canBeSeenBy(srcM, this);
+		final CMFlagLibrary flagLib = CMLib.flags();
+		final boolean asleep = flagLib.isSleeping(this);
+		final boolean canseesrc = flagLib.canBeSeenBy(srcM, this);
 		final boolean canhearsrc = (msg.targetMinor() == CMMsg.TYP_SPEAK) ?
-									CMLib.flags().canBeHeardSpeakingBy(srcM, this) :
-										CMLib.flags().canBeHeardMovingBy(srcM, this);
+									flagLib.canBeHeardSpeakingBy(srcM, this) :
+										flagLib.canBeHeardMovingBy(srcM, this);
 
 		// first do special cases...
 		if (msg.amITarget(this) && (!amDead))
@@ -3353,7 +3353,7 @@ public class StdMOB implements MOB
 				break;
 			case CMMsg.TYP_TEACH:
 				if (msg.target() instanceof MOB)
-					CMLib.expertises().handleBeingTaught(msg.source(), (MOB) msg.target(), msg.tool(), msg.targetMessage(), msg.value());
+					CMLib.expertises().handleBeingTaught(srcM, (MOB) msg.target(), msg.tool(), msg.targetMessage(), msg.value());
 				break;
 			case CMMsg.TYP_GRAVITY:
 				CMLib.combat().handleBeingGravitied(this, msg);
@@ -3377,7 +3377,7 @@ public class StdMOB implements MOB
 				CMLib.combat().establishRange(this, (MOB) msg.target(), msg.tool());
 				if ((msg.tool() instanceof Weapon)
 				|| (msg.sourceMinor() == CMMsg.TYP_WEAPONATTACK)
-				|| (!CMLib.flags().isAliveAwakeMobileUnbound((MOB) msg.target(), true)))
+				|| (!flagLib.isAliveAwakeMobileUnbound((MOB) msg.target(), true)))
 					setVictim((MOB) msg.target());
 			}
 
@@ -3447,7 +3447,7 @@ public class StdMOB implements MOB
 						CMLib.commands().handleBeingLookedAt(msg);
 					break;
 				case CMMsg.TYP_READ:
-					if ((CMLib.flags().canBeSeenBy(this, srcM)) && (msg.amITarget(this)))
+					if ((flagLib.canBeSeenBy(this, srcM)) && (msg.amITarget(this)))
 						srcM.tell(L("There is nothing written on @x1", name(srcM)));
 					break;
 				case CMMsg.TYP_SIT:
@@ -3548,7 +3548,7 @@ public class StdMOB implements MOB
 				break;
 			case CMMsg.TYP_LOOK:
 			case CMMsg.TYP_EXAMINE:
-				if (CMLib.flags().canBeSeenBy(this, srcM))
+				if (flagLib.canBeSeenBy(this, srcM))
 					CMLib.commands().handleBeingLookedAt(msg);
 				break;
 			case CMMsg.TYP_REBUKE:
@@ -3609,7 +3609,7 @@ public class StdMOB implements MOB
 					&& (srcM != null)
 					&& (playerStats() != null)
 					&& (!srcM.isMonster())
-					&& (CMLib.flags().canBeHeardSpeakingBy(srcM, this)))
+					&& (flagLib.canBeHeardSpeakingBy(srcM, this)))
 						playerStats().setReplyTo(srcM, PlayerStats.REPLY_SAY);
 					tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
 				}
@@ -3659,7 +3659,7 @@ public class StdMOB implements MOB
 			|| (othersMinor == CMMsg.TYP_FLEE) || (othersMinor == CMMsg.TYP_LEAVE))
 			{
 				if (((!asleep) || (msg.othersMinor() == CMMsg.TYP_ENTER))
-				&& (CMLib.flags().canSenseEnteringLeaving(srcM, this)))
+				&& (flagLib.canSenseEnteringLeaving(srcM, this)))
 				{
 					tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
 					if ((mySession != null)
@@ -3672,7 +3672,7 @@ public class StdMOB implements MOB
 				&& (riding.rideBasis() == Rideable.Basis.WATER_BASED)
 				&& (CMLib.dice().rollPercentage() == 1)
 				&& (CMLib.dice().rollPercentage() < 10)
-				&& (CMLib.flags().isWateryRoom(location()))
+				&& (flagLib.isWateryRoom(location()))
 				&& (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 				{
 					final Ability A = CMClass.getAbility("Disease_SeaSickness");
@@ -3702,7 +3702,7 @@ public class StdMOB implements MOB
 			else
 			if (othersMinor == CMMsg.TYP_AROMA)
 			{
-				if (CMLib.flags().canSmell(this))
+				if (flagLib.canSmell(this))
 					tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
 			}
 			else
@@ -3731,9 +3731,9 @@ public class StdMOB implements MOB
 				final Room R = location();
 				if((R != null)
 				&& (R.getArea() instanceof Boardable)
-				&& (msg.source().riding() == ((Boardable)R.getArea()).getBoardableItem())
+				&& (srcM.riding() == ((Boardable)R.getArea()).getBoardableItem())
 				&& (CMLib.dice().rollPercentage() == 1)
-				&& (CMLib.flags().isWateryRoom(CMLib.map().roomLocation(((Boardable)R.getArea()).getBoardableItem())))
+				&& (flagLib.isWateryRoom(CMLib.map().roomLocation(((Boardable)R.getArea()).getBoardableItem())))
 				&& (CMLib.dice().rollPercentage() < 10))
 				{
 					final Ability A = CMClass.getAbility((CMLib.dice().rollPercentage() < 20) ? "Disease_Scurvy" : "Disease_SeaSickness");
