@@ -1009,12 +1009,14 @@ public class GenAbility extends StdAbility
 	{
 		if(super.autoInvocation(mob, force))
 		{
-			prepHereAffect(mob, mob, 0);
-			final String SID=(String)V(ID,V_MOCK);
-			if(SID.length()>0)
+			final GenAbility affectA=(GenAbility)mob.fetchEffect(ID());
+			if(affectA!=null)
 			{
-				final GenAbility affectA=(GenAbility)mob.fetchEffect(ID());
-				if(affectA!=null)
+				final String hereParms=(String)V(ID,V_HERE);
+				if((hereParms!=null)&&(hereParms.length()>0))
+					affectA.prepHereAffect(mob, mob, 0);
+				final String SID=(String)V(ID,V_MOCK);
+				if(SID.length()>0)
 				{
 					final Ability A=CMClass.getAbility(SID);
 					if(A!=null)
@@ -1027,10 +1029,10 @@ public class GenAbility extends StdAbility
 						affectA.quietEffect=A;
 					}
 				}
+				mob.recoverCharStats();
+				mob.recoverMaxState();
+				mob.recoverPhyStats();
 			}
-			mob.recoverCharStats();
-			mob.recoverMaxState();
-			mob.recoverPhyStats();
 			return true;
 		}
 		return false;
