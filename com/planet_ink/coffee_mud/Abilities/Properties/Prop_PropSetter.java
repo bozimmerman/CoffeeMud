@@ -249,14 +249,12 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 					}
 					if(identity == null)
 						previous.clear();
-					if((previous.size()==0)&&(affected != null))
-						affected.delEffect(this);
 				}
 			}
 		}
 	}
 
-	protected void addEffect(final Integer identity, final Physical affected)
+	protected void addEffect(final Integer identity, final Physical affected, final boolean perm)
 	{
 		if((changes.size()>0)
 		&&(affected != null)
@@ -281,8 +279,23 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 						if(M != null)
 						{
 							final String oldValue = M.getStat(changeStat);
-							previous.add(new Quad<Integer,Modifiable,String,String>(identity,M,changeStat,oldValue));
-							M.setStat(changeStat, value);
+							if(!perm)
+								previous.add(new Quad<Integer,Modifiable,String,String>(identity,M,changeStat,oldValue));
+							String finalVal = value;
+							if((value != null) && (value.indexOf('@')>=0))
+							{
+								if(CMath.isMathExpression(value))
+								{
+									final double[] vars = new double[] {
+										CMath.s_double(oldValue),
+									};
+									if((value.indexOf('.')>=0)||((oldValue!=null)&&(oldValue.indexOf('.')>=0)))
+										finalVal = "" + CMath.parseMathExpression(value,vars);
+									else
+										finalVal = "" + CMath.parseIntExpression(value,vars);
+								}
+							}
+							M.setStat(changeStat, finalVal);
 							affected.recoverPhyStats();
 							if(affected instanceof MOB)
 							{
@@ -311,83 +324,139 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
+		if(CMath.bset(trigger, TRIGGER_ALWAYS))
+		{
+			final Integer identity = makeIdentity(affected);
+			addEffect(identity, affected,  false);
+		}
+	}
+
+	private class RunAdder implements Runnable
+	{
+		final Physical affected;
+		final boolean perm;
+
+		public RunAdder(final Physical affected, final boolean perm)
+		{
+			this.affected=affected;
+			this.perm=perm;
+		}
+
+		@Override
+		public void run()
+		{
+			final Integer identity = makeIdentity( this.affected);
+			addEffect(identity, this.affected,  this.perm);
+		}
+	};
+
+	private class RunDeler implements Runnable
+	{
+		final Physical affected;
+
+		public RunDeler(final Physical affected)
+		{
+			this.affected=affected;
+		}
+
+		@Override
+		public void run()
+		{
+			final Integer identity = makeIdentity( this.affected);
+			if(identity != null)
+				undoEffect(identity,  this.affected);
+		}
+	};
+
+	public Physical properTarget(final MOB srcM)
+	{
+		if(!bubble)
+			return affected;
+		if(affected instanceof MOB)
+			return srcM;
+		if(affected instanceof Item)
+		{
+			final ItemPossessor P = ((Item)affected).owner();
+			if(P instanceof MOB)
+				return P;
+			if(srcM != null)
+				return srcM;
+			return P;
+		}
+		return affected;
 	}
 
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
-		Boolean	reeval = null;
+		if(changes.size()==0)
+			return;
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_REMOVE:
 			if(!CMath.bset(trigger, TRIGGER_WEAR_WIELD)&&(msg.target()==affected))
-				reeval = Boolean.FALSE;
+				msg.addTrailerRunnable(new RunDeler(properTarget(msg.source())));
 			break;
 		case CMMsg.TYP_WEAR:
 		case CMMsg.TYP_WIELD:
 		case CMMsg.TYP_HOLD:
 			if(CMath.bset(trigger, TRIGGER_WEAR_WIELD)&&(msg.target()==affected))
-				reeval = Boolean.TRUE;
+				msg.addTrailerRunnable(new RunAdder(properTarget(msg.source()),false));
 			break;
 		case CMMsg.TYP_DROP:
 			if(CMath.banyset(trigger, TRIGGER_WEAR_WIELD|TRIGGER_GET)&&(msg.target()==affected))
-				reeval = Boolean.FALSE;
+				msg.addTrailerRunnable(new RunDeler(properTarget(msg.source())));
 			else
 			if(CMath.banyset(trigger, TRIGGER_DROP_PUTIN)&&(msg.target()==affected))
-				reeval = Boolean.TRUE;
+				msg.addTrailerRunnable(new RunAdder(properTarget(msg.source()),false));
 			break;
 		case CMMsg.TYP_GET:
 			if(CMath.banyset(trigger, TRIGGER_GET)&&(msg.target()==affected))
-				reeval = Boolean.TRUE;
+				msg.addTrailerRunnable(new RunAdder(properTarget(msg.source()),false));
 			else
 			if(CMath.banyset(trigger, TRIGGER_DROP_PUTIN|TRIGGER_PUT)&&(msg.target()==affected))
-				reeval = Boolean.FALSE;
+				msg.addTrailerRunnable(new RunDeler(properTarget(msg.source())));
 			break;
 		case CMMsg.TYP_PUT:
 			if(CMath.banyset(trigger, TRIGGER_PUT)
 			&&((msg.target()==affected)||(msg.target()==affected)))
-				reeval = Boolean.TRUE;
+				msg.addTrailerRunnable(new RunAdder(properTarget(msg.source()),false));
 			break;
 		case CMMsg.TYP_MOUNT:
 			if((CMath.bset(trigger, TRIGGER_MOUNT)&&(msg.target()==affected)))
-				reeval = Boolean.TRUE;
+				msg.addTrailerRunnable(new RunAdder(properTarget(msg.source()),false));
 			break;
 		case CMMsg.TYP_DISMOUNT:
 			if((CMath.bset(trigger, TRIGGER_MOUNT)&&(msg.target()==affected)))
-				reeval = Boolean.FALSE;
+				msg.addTrailerRunnable(new RunDeler(properTarget(msg.source())));
 			break;
 		case CMMsg.TYP_ENTER:
 			if(CMath.bset(trigger, TRIGGER_ENTER))
-				reeval = Boolean.TRUE;
+				msg.addTrailerRunnable(new RunAdder(properTarget(msg.source()),false));
 			break;
 		case CMMsg.TYP_LEAVE:
 			if(CMath.bset(trigger, TRIGGER_ENTER))
-				reeval = Boolean.FALSE;
+				msg.addTrailerRunnable(new RunDeler(properTarget(msg.source())));
 			break;
 		case CMMsg.TYP_DAMAGE:
-			if( CMath.bset(trigger, TRIGGER_BEING_HIT)&&(msg.target()==affected))
-				reeval = Boolean.TRUE;
+			if( CMath.bset(trigger, TRIGGER_BEING_HIT)&&(msg.target()==affected)&&(msg.target() instanceof MOB))
+				msg.addTrailerRunnable(new RunAdder(properTarget((MOB)msg.target()),true));
 			else
 			if( CMath.bset(trigger, TRIGGER_HITTING_WITH)&&(msg.tool()==affected))
-				reeval = Boolean.TRUE;
+				msg.addTrailerRunnable(new RunAdder(properTarget(msg.source()),true));
 			break;
 		case CMMsg.TYP_FILL:
 		case CMMsg.TYP_DRINK:
 		case CMMsg.TYP_EAT:
 			if((CMath.bset(trigger, TRIGGER_USE)&&(msg.target()==affected)))
-				reeval = Boolean.TRUE;
+				msg.addTrailerRunnable(new RunAdder(properTarget(msg.source()),true));
 			break;
 		case CMMsg.TYP_POUR:
 			if((CMath.bset(trigger, TRIGGER_USE)&&(msg.tool()==affected)))
-				reeval = Boolean.TRUE;
+				msg.addTrailerRunnable(new RunAdder(properTarget(msg.source()),true));
 			break;
 		default:
 			break;
-		}
-		if(reeval != null)
-		{
-			final Modifiable mod = (bubble) ? msg.source() : affected;
-			msg.addTrailerRunnable(null);
 		}
 	}
 
