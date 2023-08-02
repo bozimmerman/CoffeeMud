@@ -33,6 +33,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*
    Copyright 2015-2023 Bo Zimmerman
@@ -6984,6 +6986,183 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					this.areaMask = null;
 					if(areaMaskStr.trim().length()>0)
 						this.areaMask = CMLib.masking().getPreCompiledMask(areaMaskStr);
+					return "";
+				}
+			};
+			break;
+		case ENTITLED:
+			A=new Achievement()
+			{
+				private int	num	= -1;
+				private Pattern pattern = null;
+
+				@Override
+				public Event getEvent()
+				{
+					return eventType;
+				}
+
+				@Override
+				public Agent getAgent()
+				{
+					return agent;
+				}
+
+				@Override
+				public boolean canBeSeenBy(final MOB mob)
+				{
+					return ((seenMask==null)||(CMLib.masking().maskCheck(seenMask, mob, true)));
+				}
+
+				@Override
+				public boolean canApplyTo(final Agent agent)
+				{
+					return (agent == Agent.ACCOUNT) || (agent == Agent.PLAYER);
+				}
+
+				@Override
+				public String getTattoo()
+				{
+					return tattoo;
+				}
+
+				@Override
+				public int getDuration()
+				{
+					return duration;
+				}
+
+				@Override
+				public boolean isFlag(final AchievementFlag flag)
+				{
+					return flags.contains(flag);
+				}
+
+				@Override
+				public int getTargetCount()
+				{
+					return num;
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+
+				@Override
+				public String getDisplayStr()
+				{
+					return displayStr;
+				}
+
+				@Override
+				public Award[] getRewards()
+				{
+					return rewardList;
+				}
+
+				@Override
+				public String getRawParmVal(final String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
+				public Tracker getTracker(final int oldCount)
+				{
+					final Achievement me=this;
+					return new Tracker()
+					{
+						private volatile int lastTotal = -1;
+						private volatile int lastCount = -1;
+
+						@Override
+						public Achievement getAchievement()
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved(final Tattooable tracked)
+						{
+							if((tracked instanceof MOB)
+							&& (num>=0)
+							&& (getCount(tracked) >= num)
+							&&((playerMask==null)||(CMLib.masking().maskCheck(playerMask, (MOB)tracked, true))))
+								return true;
+							return false;
+						}
+
+						@Override
+						public int getCount(final Tattooable tracked)
+						{
+							if((tracked instanceof MOB)
+							&&(((MOB)tracked).isPlayer()))
+							{
+								final PlayerStats P = ((MOB)tracked).playerStats();
+								if(P != null)
+								{
+									if(pattern == null)
+										return P.getTitles().size();
+									if(lastTotal  != P.getTitles().size())
+									{
+										lastCount = 0;
+										for(final String title : P.getTitles())
+										{
+											if(pattern.matcher(title).matches())
+												lastCount++;
+										}
+										lastTotal = P.getTitles().size();
+									}
+									return lastCount;
+								}
+							}
+							return 0;
+						}
+
+						@Override
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
+						{
+							if((parms.length>0)
+							&&(parms[0] instanceof MOB)
+							&&((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true))))
+								return true;
+							return false;
+						}
+
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(final Exception e)
+							{
+								return this;
+							}
+						}
+					};
+				}
+
+				@Override
+				public boolean isSavableTracker()
+				{
+					return false;
+				}
+
+				@Override
+				public String parseParms(final String parms)
+				{
+					final String numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+					num=CMath.s_int(numStr);
+					this.pattern = null;
+					final String pattStr = CMParms.getParmStr(parms, "TITLEMASK", "");
+					if((pattStr != null)&&(pattStr.trim().length()>0))
+						this.pattern = Pattern.compile(pattStr);
 					return "";
 				}
 			};

@@ -110,6 +110,7 @@ public interface AchievementLibrary extends CMLibrary
 		SHIPSSUNK("Ships sunk",new String[] {"NUM", "SHIPMASK"}),
 		CMDUSE("Using Commands",new String[]{"NUM","COMMANDID"}),
 		GROUPKILLS("Number of Group Kills",new String[]{"NUM","SIZE","ZAPPERMASK"}),
+		ENTITLED("Number of titles",new String[]{"NUM","TITLEMASK"})
 		;
 		private final String[] parameters;
 		private final String displayName;

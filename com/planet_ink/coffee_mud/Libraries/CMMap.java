@@ -2816,7 +2816,6 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 		}
 		return playersHere;
-
 	}
 
 	@Override
@@ -2824,6 +2823,29 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		final Area.State oldFlag=area.getAreaState();
 		area.setAreaState(Area.State.FROZEN);
+		if(area instanceof AutoGenArea)
+		{
+			Room returnR = null;
+			for(final Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
+			{
+				final Room R = r.nextElement();
+				if((R!=null)
+				&&(returnR == null))
+				{
+					for(final Room nR : R.rawDoors())
+					{
+						if((nR!=null)&&(nR.getArea()!=area))
+							returnR = nR;
+					}
+				}
+			}
+			if(returnR == null)
+				returnR = getRandomRoom();
+			((AutoGenArea)area).resetInstance(returnR);
+			area.setAreaState(oldFlag);
+			return;
+		}
+
 		final PairVector<MOB,String> playersHere=getAllPlayersHere(area,true);
 		final PairVector<PrivateProperty, String> propertyHere=new PairVector<PrivateProperty, String>();
 		for(int p=0;p<playersHere.size();p++)
@@ -2846,7 +2868,6 @@ public class CMMap extends StdLibrary implements WorldMap
 				propertyHere.add((PrivateProperty)ship,getExtendedRoomID(R));
 			}
 		}
-
 		for(final Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
 			resetRoom(r.nextElement());
 		area.fillInAreaRooms();

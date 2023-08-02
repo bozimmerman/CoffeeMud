@@ -286,6 +286,65 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	}
 
 	@Override
+	public boolean resetInstance(final Room returnToRoom)
+	{
+		final Area A=this.getParentArea();
+		if(A instanceof StdAutoGenInstance)
+		{
+			final StdAutoGenInstance parentA=(StdAutoGenInstance)A;
+			AreaInstanceChild rec = null;
+			final List<MOB> mobsToNotify=new ArrayList<MOB>();
+			synchronized(parentA.instanceChildren)
+			{
+				for(int i=parentA.instanceChildren.size()-1;i>=0;i--)
+				{
+					if(parentA.instanceChildren.get(i).A==this)
+					{
+						rec = parentA.instanceChildren.get(i);
+						for(final WeakReference<MOB> wm : rec.mobs)
+						{
+							final MOB M=wm.get();
+							if(M!=null)
+								mobsToNotify.add(M);
+						}
+						break;
+					}
+				}
+			}
+			if(rec != null)
+			{
+				final List<MOB> list = getAreaPlayerMOBs(rec);
+				for(final MOB M : list)
+					safePlayerMOBMove(M,rec.A,returnToRoom);
+				synchronized(parentA.instanceChildren)
+				{
+					parentA.instanceChildren.remove(rec);
+				}
+				final MOB smob=CMClass.sampleMOB();
+				final CMMsg xmsg=CMClass.getMsg(smob,this,null,CMMsg.MSG_EXPIRE,null);
+				xmsg.setTarget(this);
+				for(final MOB M : mobsToNotify)
+				{
+					xmsg.setSource(M);
+					M.executeMsg(M, xmsg);
+				}
+				final LinkedList<Room> propRooms = new LinkedList<Room>();
+				for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
+					propRooms.add(r.nextElement());
+				for(final Iterator<Room> e=propRooms.iterator();e.hasNext();)
+				{
+					final Room R=e.next();
+					R.executeMsg(smob,CMClass.getMsg(smob,R,null,CMMsg.MSG_EXPIRE,null));
+				}
+				CMLib.map().delArea(this);
+				destroy();
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
@@ -293,7 +352,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			&&(msg.sourceMessage()!=null)
-			&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0))
+			&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0)
+			&&(CMath.s_bool(getAutoGenVariables().get("NORESET"))))
 			{
 				final String said=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if("RESET INSTANCE".equalsIgnoreCase(said))
@@ -314,61 +374,10 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_ACTION,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT, L("You must be at an entrance to reset the area.")));
 						return;
 					}
-					final Area A=this.getParentArea();
-					if(A instanceof StdAutoGenInstance)
-					{
-						final StdAutoGenInstance parentA=(StdAutoGenInstance)A;
-						AreaInstanceChild rec = null;
-						final List<MOB> mobsToNotify=new ArrayList<MOB>();
-						synchronized(parentA.instanceChildren)
-						{
-							for(int i=parentA.instanceChildren.size()-1;i>=0;i--)
-							{
-								if(parentA.instanceChildren.get(i).A==this)
-								{
-									rec = parentA.instanceChildren.get(i);
-									for(final WeakReference<MOB> wm : rec.mobs)
-									{
-										final MOB M=wm.get();
-										if(M!=null)
-											mobsToNotify.add(M);
-									}
-									break;
-								}
-							}
-						}
-						if(rec != null)
-						{
-							final List<MOB> list = getAreaPlayerMOBs(rec);
-							for(final MOB M : list)
-								safePlayerMOBMove(M,rec.A,returnToRoom);
-							synchronized(parentA.instanceChildren)
-							{
-								parentA.instanceChildren.remove(rec);
-							}
-							final MOB mob=CMClass.sampleMOB();
-							final CMMsg xmsg=CMClass.getMsg(mob,this,null,CMMsg.MSG_EXPIRE,null);
-							xmsg.setTarget(this);
-							for(final MOB M : mobsToNotify)
-							{
-								xmsg.setSource(M);
-								M.executeMsg(M, xmsg);
-							}
-							final LinkedList<Room> propRooms = new LinkedList<Room>();
-							for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
-								propRooms.add(r.nextElement());
-							for(final Iterator<Room> e=propRooms.iterator();e.hasNext();)
-							{
-								final Room R=e.next();
-								R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
-							}
-							msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance has been reset.")));
-							CMLib.map().delArea(this);
-							destroy();
-							return;
-						}
-					}
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance failed to reset.")));
+					if(this.resetInstance(returnToRoom))
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance has been reset.")));
+					else
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance failed to reset.")));
 				}
 			}
 			else
@@ -770,6 +779,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	@Override
 	public void setAutoGenVariables(final String vars)
 	{
+		passiveLapseMs = DEFAULT_TIME_PASSIVE_LAPSE;
 		setAutoGenVariables(CMParms.parseEQParms(vars));
 		for(final String key : varMap.keySet())
 		{

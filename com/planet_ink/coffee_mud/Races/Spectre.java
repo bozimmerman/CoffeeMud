@@ -48,6 +48,42 @@ public class Spectre extends Spirit
 		return localizedStaticName;
 	}
 
+	private final String[]	racialAbilityNames			= { };
+	private final int[]		racialAbilityLevels			= { };
+	private final int[]		racialAbilityProficiencies	= { };
+	private final boolean[]	racialAbilityQuals			= { };
+	private final String[]	racialAbilityParms			= { };
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
+	@Override
+	protected String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
 	@Override
 	public Weapon[] getNaturalWeapons()
 	{

@@ -3,8 +3,8 @@
   2. New Paladin skills: Incite Fight, Dark Hammer, Paladin's Wickedness, Crushing Aura
   3. New Paladin skills: Craft Unholy Reaver, Righteous Defense, Exploiting Aura
   4. Paladin's can now be Anti-Paladins if they maintain chaotic evil.
-  5. New StdItem: CubicGate
-  6. New Achievement reward type: Tattoo
+  5. New Items: CubicGate, GenGiftContainer
+  6. New Achievement stuff: Tattoo reward type, ENTITLED achieve type
   7. Tattoos like 'RACE_*" or "CHARCLASS_*" now open up otherwise skill-restricted options.
   8. Liege xp bonus can no longer be gained from non-combat or role-playing xp vassel gains.
   9. New CharStat XPADJPCT - for adding bonus % xp (or loss if negative)
@@ -21,6 +21,8 @@
  20. AFK status produced from the AFK command is now sticky until explicitly toggled.
  21. Prop_RoomForSale now allows disabling the robbery laws on a property-by-property basis.
  22. SAVE= rooms will properly rejuv before saving, Thin areas now allow property taxes
+ 23. Prop_Teleport now supports redirection, and custom messages
+ 24. Mirrors now act like LOOK SELF
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

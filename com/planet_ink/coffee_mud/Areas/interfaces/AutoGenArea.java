@@ -60,4 +60,11 @@ public interface AutoGenArea extends Area
 	 * @param vars the variable mappings
 	 */
 	public void setAutoGenVariables(String vars);
+
+	/**
+	 * Resets the instance, sending all players back to the given room.
+	 * @param returnToRoom the room to return all players to
+	 * @return true if reset was successful, false otherwise
+	 */
+	public boolean resetInstance(final Room returnToRoom);
 }

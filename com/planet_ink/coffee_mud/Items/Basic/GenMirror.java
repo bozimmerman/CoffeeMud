@@ -55,15 +55,43 @@ public class GenMirror extends GenItem
 		setMaterial(RawMaterial.RESOURCE_GLASS);
 	}
 
+	private volatile MOB lastLooker = null;
+	private volatile long timeout = 0;
+
 	@Override
 	public String description()
 	{
+		if((System.currentTimeMillis()-timeout)>1000)
+			this.lastLooker=null;
+		final MOB lastLooker = this.lastLooker;
+		if(lastLooker != null)
+		{
+			final MOB looker = CMClass.getFactoryMOB("someone", 1, CMLib.map().roomLocation(lastLooker));
+			looker.basePhyStats().setSensesMask(lastLooker.phyStats().sensesMask());
+			final CMMsg msg = CMClass.getMsg(looker, lastLooker, null, CMMsg.TYP_LOOK, null);
+			final Session fakeS=(Session)CMClass.getCommon("FakeSession");
+			fakeS.initializeSession(null,Thread.currentThread().getThreadGroup().getName(),"MEMORY");
+			fakeS.setMob(looker);
+			looker.setSession(fakeS);
+			CMLib.commands().handleBeingLookedAt(msg);
+			fakeS.setMob(null);
+			looker.setSession(null);
+			looker.destroy();
+			//this.lastLooker=null;
+			return L("In @x1, you see:\n\r^H@x2.",name(),fakeS.getAfkMessage());
+		}
 		return "You see yourself in it!";
 	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		if((msg.target()==this)
+		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
+		{
+			timeout = System.currentTimeMillis();
+			lastLooker = msg.source();
+		}
 		if((owner==null)
 		||(!(owner instanceof MOB))
 		||(!amBeingWornProperly()))

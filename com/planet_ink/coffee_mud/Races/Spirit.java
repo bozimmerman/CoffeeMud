@@ -201,6 +201,13 @@ public class Spirit extends Undead
 	}
 
 	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectedStats)
+	{
+		super.affectPhyStats(affected,affectedStats);
+		affectedStats.setHeight(-1);
+	}
+
+	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);

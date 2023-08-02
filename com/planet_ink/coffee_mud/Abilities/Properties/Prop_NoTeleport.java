@@ -44,6 +44,8 @@ public class Prop_NoTeleport extends Property
 	protected List<String>	exceptionRooms	= new ArrayList<String>(1);
 	protected boolean		nosummon		= false;
 	protected boolean		interAreaOK		= true;
+	protected String		redirectID		= null;
+	protected String		message			= null;
 
 	@Override
 	public String name()
@@ -70,6 +72,8 @@ public class Prop_NoTeleport extends Property
 		exceptionRooms=CMParms.parseCommas(CMParms.getParmStr(newMiscText.toLowerCase(), "EXCEPTIONS", ""), true);
 		nosummon=CMParms.getParmBool(newMiscText, "NOSUMMON", false);
 		interAreaOK=CMParms.getParmBool(newMiscText, "INTERAREAOK", true);
+		redirectID=CMParms.getParmStr(newMiscText, "REDIRECT", null);
+		message=CMParms.getParmStr(newMiscText, "MESSAGE", null);
 	}
 
 	@Override
@@ -115,7 +119,7 @@ public class Prop_NoTeleport extends Property
 					||((msg.tool() instanceof PlanarAbility)&&(exceptionRooms.contains("planarability"))))
 						return true;
 				}
-	
+
 				if(((!shere)&&(!summon)&&(teleport))
 				   ||((shere)&&(summon)))
 				{
@@ -124,7 +128,23 @@ public class Prop_NoTeleport extends Property
 					||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 					||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 					||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
-						R.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
+					{
+						if(redirectID != null)
+						{
+							final Room redirectRoom = CMLib.map().getRoom(redirectID);
+							if(redirectRoom != null)
+							{
+								if((message != null)&&(message.length()>0))
+									R.showHappens(CMMsg.MSG_OK_VISUAL,message);
+								msg.setTarget(redirectRoom);
+								return true;
+							}
+						}
+						if((message != null)&&(message.length()>0))
+							R.showHappens(CMMsg.MSG_OK_VISUAL,message);
+						else
+							R.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
+					}
 					return false;
 				}
 			}
