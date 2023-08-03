@@ -98,6 +98,8 @@ public class Skills extends StdCommand
 		final List<Ability> ableVs = new XArrayList<Ability>(mob.allAbilities());
 		Ability A;
 		A=(Ability)CMLib.english().fetchEnvironmental(ableVs,qual,true);
+		if((A==null)&&(qual.indexOf('$')<0))
+			A=(Ability)CMLib.english().fetchEnvironmental(ableVs,"$"+qual,false);
 		if(A==null)
 			A=(Ability)CMLib.english().fetchEnvironmental(ableVs,qual,false);
 		if(A==null)
@@ -127,13 +129,13 @@ public class Skills extends StdCommand
 				if(useWords)
 				{
 					final String message = CMLib.help().getRPProficiencyStr(proficiency);
-					line.append(CMStrings.padRight("^<HELP^>"+A2.name()+"^</HELP^>",19));
+					line.append("^<HELP^>"+A2.name()+"^</HELP^>");
 					line.append(" ("+CMStrings.padRight(message,3)+")");
 				}
 				else
 				{
 					line.append("^N[^H"+CMStrings.padRight(Integer.toString(proficiency),3)+"%^?]^N ");
-					line.append(CMStrings.padRight("^<HELP^>"+A2.name()+"^</HELP^>",19));
+					line.append("^<HELP^>"+A2.name()+"^</HELP^>");
 				}
 				line.append("^?\n\r");
 				if(mob.session()!=null)
