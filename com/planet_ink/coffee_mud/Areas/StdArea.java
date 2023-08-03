@@ -89,10 +89,10 @@ public class StdArea implements Area
 	protected TimeClock					myClock			= null;
 	protected Climate					climateObj		= (Climate) CMClass.getCommon("DefaultClimate");
 
-	protected String[]				itemPricingAdjustments	= new String[0];
-	protected final static int[]	emptyStats				= new int[Area.Stats.values().length];
-	protected final static String[]	empty					= new String[0];
-	protected static volatile Area	lastComplainer			= null;
+	protected String[]					itemPricingAdjs	= new String[0];
+	protected final static int[]		emptyStats		= new int[Area.Stats.values().length];
+	protected final static String[]		empty			= new String[0];
+	protected static volatile Area		lastComplainer	= null;
 
 	protected final static Map<String,int[]>	emptyPiety	= new TreeMap<String,int[]>();
 
@@ -669,8 +669,8 @@ public class StdArea implements Area
 		for (int i = lowest; i <= highest + 1000; i++)
 		{
 			if ((!set.contains(i))
-			&& (CMLib.map().getRoom(Name() + "#" + i) == null)
-			&& (getRoom(Name() + "#" + i) == null))
+			&& (!isRoomID(Name() + "#" + i))
+			&& (CMLib.map().findRoomIDArea(Name() + "#" + i) == null))
 				return Name() + "#" + i;
 		}
 		return Name() + "#" + (int) Math.round(Math.random() * Integer.MAX_VALUE);
@@ -844,13 +844,13 @@ public class StdArea implements Area
 	@Override
 	public String[] getRawItemPricingAdjustments()
 	{
-		return itemPricingAdjustments;
+		return itemPricingAdjs;
 	}
 
 	@Override
 	public void setItemPricingAdjustments(final String[] factors)
 	{
-		itemPricingAdjustments = factors;
+		itemPricingAdjs = factors;
 	}
 
 	@Override
@@ -2182,13 +2182,25 @@ public class StdArea implements Area
 		}
 	}
 
+	protected boolean isRoomID(final String roomID)
+	{
+		if (roomID.length() > 0)
+		{
+			final int grid = roomID.lastIndexOf("#(");
+			if(grid > 0)
+				return isRoomID(roomID.substring(0,grid));
+			return getProperRoomnumbers().contains(roomID);
+		}
+		return false;
+	}
+
 	@Override
 	public boolean isRoom(final Room R)
 	{
 		if (R == null)
 			return false;
 		if (R.roomID().length() > 0)
-			return getProperRoomnumbers().contains(R.roomID());
+			return isRoomID(R.roomID());
 		return properRooms.containsValue(R);
 	}
 

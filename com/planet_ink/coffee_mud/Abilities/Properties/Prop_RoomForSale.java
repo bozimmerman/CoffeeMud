@@ -375,7 +375,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 									nR.rawDoors()[nd]=nnR;
 								else
 								{
-									final Area A = CMLib.map().getRoomAreaGuess(exitId);
+									final Area A = CMLib.map().findRoomIDArea(exitId);
 									final Room tR = CMClass.getLocale("ThinRoom");
 									tR.setRoomID(exitId);
 									tR.setArea(A);

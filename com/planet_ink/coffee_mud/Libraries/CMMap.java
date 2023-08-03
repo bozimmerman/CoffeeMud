@@ -639,8 +639,11 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Area getRoomAreaGuess(final String roomID)
+	public Area findRoomIDArea(final String roomID)
 	{
+		final int grid = roomID.lastIndexOf("#(");
+		if(grid > 0)
+			return findRoomIDArea(roomID.substring(0,grid));
 		final int x=roomID.indexOf('#');
 		if(x>=0)
 		{

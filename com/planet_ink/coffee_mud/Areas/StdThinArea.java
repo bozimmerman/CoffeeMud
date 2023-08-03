@@ -96,9 +96,9 @@ public class StdThinArea extends StdArea
 	@Override
 	public Room getRoom(String roomID)
 	{
-		final int child=(roomID==null)?0:roomID.lastIndexOf("#(");
-		if(child>1)
-			roomID = roomID.substring(0,child);
+		final int grid=(roomID==null)?0:roomID.lastIndexOf("#(");
+		if(grid>1)
+			roomID = roomID.substring(0,grid);
 		if(!isRoom(roomID))
 			return null;
 		Room R=super.getRoomBase(roomID);

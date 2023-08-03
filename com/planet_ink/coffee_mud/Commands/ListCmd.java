@@ -5714,6 +5714,7 @@ public class ListCmd extends StdCommand
 			for(final Enumeration<Area> as=CMLib.map().areas();as.hasMoreElements();)
 			{
 				final Area A=as.nextElement();
+				A.getAreaIStats();
 				if((filter!=null)&&(!filter.passesFilter(A)))
 					continue;
 				sorted.add(A);
@@ -5767,6 +5768,7 @@ public class ListCmd extends StdCommand
 			final Area A=a.nextElement();
 			if((filter!=null)&&(!filter.passesFilter(A)))
 				continue;
+			A.getAreaIStats();
 			if(wiki==WikiFlag.WIKILIST)
 			{
 				str.append("*[["+A.name()+"|"+A.name()+"]]");

@@ -48,7 +48,7 @@ public interface WorldMap extends CMLibrary
 	public Area findAreaStartsWith(String calledThis);
 	public Area findArea(String calledThis);
 	public Area getDefaultParentArea();
-	public Area getRoomAreaGuess(final String roomID);
+	public Area findRoomIDArea(final String roomID);
 	public Enumeration<Area> areas();
 	public Enumeration<Area> mundaneAreas();
 	public Enumeration<Area> topAreas();

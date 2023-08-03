@@ -226,7 +226,8 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			if(d==Directions.GATE)
 				continue;
 			final Room R2=R.rawDoors()[d];
-			if((R2!=null)&&((!R2.isSavable())||(R2.roomID().length()==0)))
+			if((R2!=null)
+			&&((!R2.isSavable())||(R2.roomID().length()==0)))
 				continue;
 			Exit E=R.getRawExit(d);
 			if(checkedRetractRooms != null)
@@ -310,11 +311,10 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		{
 			if((d==Directions.UP)||(d==Directions.DOWN)||(d==Directions.GATE))
 				continue;
-			final Room chkR=R.getRoomInDir(d);
+			final Room chkR=R.rawDoors()[d];
 			if((chkR==null)&&(numberOfPeers < 0))
 			{
-				//TODO: this is ridiculously inefficient for thin areas
-				if(allRooms == null)
+				if(allRooms == null) // this is now only mildly inefficient for thin areas
 					allRooms = getConnectedPropertyRooms();
 				if(allRooms.size()>0)
 				{
@@ -427,6 +427,8 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		if(!(EV instanceof Room))
 			return;
 		Room R=(Room)EV;
+		if(!R.isSavable()) // not thin!
+			return;
 		boolean didAnything=false;
 		try
 		{
@@ -434,7 +436,8 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			synchronized(CMClass.getSync("SYNC"+R.roomID()))
 			{
 				R=CMLib.map().getRoom(R);
-				if(R!=null)
+				if((R!=null)
+				&&(R.isSavable())) // not thin!
 				{
 					final int[] data=updateLotWithThisData(R,this,true,scheduleReset,optPlayerList,lastItemNums,daysWithNoChange);
 					if(data != null)
