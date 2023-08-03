@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Areas;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -95,36 +96,50 @@ public class StdThinArea extends StdArea
 	@Override
 	public Room getRoom(String roomID)
 	{
+		final int child=(roomID==null)?0:roomID.lastIndexOf("#(");
+		if(child>1)
+			roomID = roomID.substring(0,child);
 		if(!isRoom(roomID))
 			return null;
 		Room R=super.getRoomBase(roomID);
 		if(((R==null)||(R.amDestroyed()))&&(roomID!=null))
 		{
-			if(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#"))
+			if((roomID.length()>Name().length())
+			&&(roomID.charAt(Name().length())=='#')
+			&&(!roomID.startsWith(Name()))
+			&&(roomID.toUpperCase().startsWith(Name().toUpperCase())))
 				roomID=Name()+roomID.substring(Name().length()); // for case sensitive situations
-			R=CMLib.database().DBReadRoomObject(roomID,false);
-			if(R!=null)
+			synchronized(CMClass.getSync("SYNC"+roomID))
 			{
-				R.setArea(this);
-				addProperRoom(R);
-				CMLib.database().DBReadRoomExits(roomID,R,false);
-				CMLib.database().DBReadContent(roomID,R,true);
-				fillInAreaRoom(R);
-				R.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
+				R=super.getRoomBase(roomID);
+				if((R==null)||(R.amDestroyed()))
+				{
+					final DatabaseEngine dbe =(DatabaseEngine)CMLib.library(threadId, Library.DATABASE);
+					R=dbe.DBReadRoomObject(roomID,false);
+					if(R!=null)
+					{
+						R.setArea(this);
+						addProperRoom(R);
+						dbe.DBReadRoomExits(roomID,R,false);
+						dbe.DBReadContent(roomID,R,true);
+						fillInAreaRoom(R);
+						R.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
+					}
+				}
 			}
 		}
 		return R;
 	}
 
 	@Override
-	public boolean isRoomCached(String roomID)
+	public boolean isRoomCached(final String roomID)
 	{
 		if(!isRoom(roomID))
 			return false;
-		Room R=super.getRoom(roomID); // *NOT* this.getRoom
+		final Room R=super.getRoom(roomID); // *NOT* this.getRoom
 		return (((R!=null)&&(!R.amDestroyed()))&&(roomID!=null));
 	}
-	
+
 	@Override
 	public Enumeration<Room> getProperMap()
 	{

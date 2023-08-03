@@ -471,27 +471,37 @@ public class RoomLoader
 		return ids;
 	}
 
+	private Room buildRoomObject(final ResultSet R) throws SQLException
+	{
+		final String roomID=DBConnections.getRes(R,"CMROID");
+		final String localeID=DBConnections.getRes(R,"CMLOID");
+		//String areaName=DBConnections.getRes(R,"CMAREA");
+		final Room newRoom=CMClass.getLocale(localeID);
+		if(newRoom==null)
+			Log.errOut("Room","Couldn't load room '"+roomID+"', localeID '"+localeID+"'.");
+		else
+		{
+			newRoom.setRoomID(roomID);
+			populateRoomInnerFields(R,newRoom);
+		}
+		return newRoom;
+	}
+
 	private List<Room> buildRoomObjects(final DBConnection D, final ResultSet R, final boolean reportStatus) throws SQLException
 	{
-		recordCount=DB.getRecordCount(D,R);
-		updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
-		String roomID=null;
+		if(reportStatus)
+		{
+			recordCount=DB.getRecordCount(D,R);
+			updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
+		}
 		final List<Room> rooms=new Vector<Room>();
 		while(R.next())
 		{
-			currentRecordPos=R.getRow();
-			roomID=DBConnections.getRes(R,"CMROID");
-			final String localeID=DBConnections.getRes(R,"CMLOID");
-			//String areaName=DBConnections.getRes(R,"CMAREA");
-			final Room newRoom=CMClass.getLocale(localeID);
-			if(newRoom==null)
-				Log.errOut("Room","Couldn't load room '"+roomID+"', localeID '"+localeID+"'.");
-			else
-			{
-				newRoom.setRoomID(roomID);
-				populateRoomInnerFields(R,newRoom);
+			if(reportStatus)
+				currentRecordPos=R.getRow();
+			final Room newRoom = this.buildRoomObject(R);
+			if(newRoom != null)
 				rooms.add(newRoom);
-			}
 			if(((currentRecordPos%updateBreak)==0)&&(reportStatus))
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading Rooms ("+currentRecordPos+" of "+recordCount+")");
 		}
@@ -533,9 +543,8 @@ public class RoomLoader
 			if(reportStatus)
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Counting Rooms");
 			final ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+roomIDtoLoad+"'");
-			final List<Room> rooms=buildRoomObjects(D,R,reportStatus);
-			if(rooms.size()>0)
-				return rooms.get(0);
+			if(R.next())
+				return buildRoomObject(R);
 		}
 		catch(final SQLException sqle)
 		{

@@ -23,6 +23,7 @@
  22. SAVE= rooms will properly rejuv before saving, Thin areas now allow property taxes
  23. Prop_Teleport now supports redirection, and custom messages
  24. Mirrors now act like LOOK SELF
+ 25. STAT commands supports new POBJECT (player objects) arg.
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

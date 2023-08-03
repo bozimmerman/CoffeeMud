@@ -2882,8 +2882,12 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_CAST_SPELL:
 					if (charStats().getStat(CharStats.STAT_INTELLIGENCE) < 5)
 					{
-						tell(L("You aren't smart enough to do magic."));
-						return false;
+						if((!(msg.tool() instanceof Ability)) // racial ability exemption
+						||(charStats().getMyRace().racialAbilities(this).find((Ability)msg.tool())==null))
+						{
+							tell(L("You aren't smart enough to do magic."));
+							return false;
+						}
 					}
 					break;
 				default:

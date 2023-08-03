@@ -11408,6 +11408,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							tA.makeLongLasting();
 							tA.setMiscText("+"+A.ID()+" "+ticks+" "+m2);
 						}
+						newTarget.recoverPhyStats();
+						if(newTarget instanceof MOB)
+						{
+							((MOB)newTarget).recoverCharStats();
+							((MOB)newTarget).recoverMaxState();
+						}
 					}
 					else
 					{

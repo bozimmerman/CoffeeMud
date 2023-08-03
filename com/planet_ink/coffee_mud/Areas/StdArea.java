@@ -71,6 +71,7 @@ public class StdArea implements Area
 	protected String	prejudiceFactors	= "";
 	protected int		invResetRate		= 0;
 	protected boolean	amDestroyed			= false;
+	protected final char threadId;
 	protected PhyStats	phyStats			= (PhyStats) CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats	basePhyStats		= (PhyStats) CMClass.getCommon("DefaultPhyStats");
 
@@ -343,6 +344,7 @@ public class StdArea implements Area
 		super();
 		// CMClass.bumpCounter(this,CMClass.CMObjectType.AREA);//removed for mem
 		// & perf
+		threadId = Thread.currentThread().getThreadGroup().getName().charAt(0);
 		xtraValues = CMProps.getExtraStatCodesHolder(this);
 	}
 
