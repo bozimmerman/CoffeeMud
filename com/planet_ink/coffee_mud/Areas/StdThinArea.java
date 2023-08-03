@@ -141,6 +141,32 @@ public class StdThinArea extends StdArea
 	}
 
 	@Override
+	public Room getRandomProperRoom()
+	{
+		if (isProperlyEmpty())
+			return null;
+		String roomID;
+		final double cn = getCachedRoomnumbers().roomCountAllAreas();
+		final double pn = getProperRoomnumbers().roomCountAllAreas();
+		if((cn > 0) && (pn > cn) && ((cn / pn) > 0.3))
+			roomID = getCachedRoomnumbers().random();
+		else
+			roomID = getProperRoomnumbers().random();
+		if ((roomID != null)
+		&& (!roomID.startsWith(Name()))
+		&& (roomID.startsWith(Name().toUpperCase())))
+			roomID = Name() + roomID.substring(Name().length());
+		// looping back through CMMap is unnecc because the roomID comes
+		// directly from getProperRoomnumbers()
+		// which means it will never be a grid sub-room.
+		final Room R = getRoom(roomID);
+		if (R == null)
+			return super.getRandomProperRoom();
+		if (R instanceof GridLocale)
+			return ((GridLocale) R).getRandomGridChild();
+		return R;
+	}
+	@Override
 	public Enumeration<Room> getProperMap()
 	{
 		return new IteratorEnumeration<Room>(properRooms.values().iterator());

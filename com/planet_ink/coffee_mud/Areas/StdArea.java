@@ -2313,13 +2313,7 @@ public class StdArea implements Area
 	{
 		if (isProperlyEmpty())
 			return null;
-		String roomID;
-		if((CMath.bset(flags(), Area.FLAG_THIN))
-		&&(getCachedRoomnumbers().roomCountAllAreas()>0)
-		&&(CMLib.dice().rollPercentage()<66))
-			roomID = getCachedRoomnumbers().random();
-		else
-			roomID = getProperRoomnumbers().random();
+		String roomID = getProperRoomnumbers().random();
 		if ((roomID != null)
 		&& (!roomID.startsWith(Name()))
 		&& (roomID.startsWith(Name().toUpperCase())))

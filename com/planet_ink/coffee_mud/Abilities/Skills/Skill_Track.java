@@ -551,18 +551,41 @@ public class Skill_Track extends StdSkill
 					targetRoomsV.add(M1.location());
 				else
 				{
-					final List<Room> checkSet=CMLib.tracking().getRadiantRooms(startRoom,flags,radius);
-					for (final Room room : checkSet)
+					int startRadius = radius;
+					if(startRadius > 8)
+						startRadius = 4;
+					final TrackingFlags[] tflagSets;
+					if(!flags.contains(TrackingFlag.AREAONLY))
 					{
-						final Room R=CMLib.map().getRoom(room);
-						if(R!=null)
+						final TrackingFlags areaFlags = flags.copyOf();
+						areaFlags.add(TrackingFlag.AREAONLY);
+						tflagSets = new TrackingFlags[] { areaFlags, flags };
+					}
+					else
+						tflagSets = new TrackingFlags[] { flags };
+					for(int r=startRadius;r<=radius;r*=2)
+					{
+						for(final TrackingFlags useFlags : tflagSets)
 						{
-							final MOB M=R.fetchInhabitant(mobName);
-							if((M!=null)
-							&&(CMLib.flags().canAccess(mob, R))
-							&&(CMLib.flags().isSeeable(M)))
-								targetRoomsV.add(R);
+							final List<Room> checkSet=CMLib.tracking().getRadiantRooms(startRoom,useFlags,r);
+							for (final Room room : checkSet)
+							{
+								final Room R=CMLib.map().getRoom(room);
+								if(R!=null)
+								{
+									final MOB M=R.fetchInhabitant(mobName);
+									if((M!=null)
+									&&(CMLib.flags().canAccess(mob, R))
+									&&(CMLib.flags().isSeeable(M))
+									&&(!targetRoomsV.contains(R)))
+										targetRoomsV.add(R);
+								}
+							}
+							if(targetRoomsV.size()>0)
+								break;
 						}
+						if(targetRoomsV.size()>0)
+							break;
 					}
 				}
 			}

@@ -396,7 +396,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			pick=CMLib.dice().roll(1,destRooms.size(),-1);
 			destRoom=destRooms.get(pick);
 			destRooms.remove(pick);
-			final List<Room> thisTrail=findTrailToRoom(location,destRoom,flags,maxRadius,radiant);
+			final TrackingFlags finalFlags = flags.copyOf();
+			if(destRoom.getArea() == location.getArea())
+				finalFlags.add(TrackingFlag.AREAONLY);
+			List<Room> thisTrail=findTrailToRoom(location,destRoom,finalFlags,maxRadius,radiant);
+			if((destRoom.getArea() == location.getArea())
+			&&((thisTrail==null)||(thisTrail.size()==0)))
+				thisTrail=findTrailToRoom(location,destRoom,flags,maxRadius,radiant);
 			if((thisTrail!=null)
 			&&((finalTrail==null)||(thisTrail.size()<finalTrail.size())))
 				finalTrail=thisTrail;
