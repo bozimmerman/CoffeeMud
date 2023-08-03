@@ -41,7 +41,7 @@ public class Spell_Mend extends Spell
 		return "Spell_Mend";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Mend");
+	private final static String localizedName = CMLib.lang().L("Lesser Mend");
 
 	@Override
 	public String name()

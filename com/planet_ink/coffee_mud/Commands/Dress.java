@@ -70,7 +70,13 @@ public class Dress extends StdCommand
 			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",whom));
 			return false;
 		}
-		final Item item=mob.findItem(null,what);
+		final List<Item> items = new ArrayList<Item>();
+		items.addAll(CMLib.english().fetchItemList(mob,mob,null,new XVector<String>(what),Wearable.FILTER_UNWORNONLY,true));
+		final Item item;
+		if(items.size()>0)
+			item = items.get(0);
+		else
+			item = null;
 		if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",what));

@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /*
    Copyright 2002-2023 Bo Zimmerman
@@ -53,6 +54,14 @@ public class Chant_Hibernation extends Chant
 	@Override
 	public String displayText()
 	{
+		final int rounds = roundsHibernating;
+		if((rounds<10)
+		&&(!this.deepHibernation))
+		{
+			return localizedStaticDisplay+" ^N"+
+				CMLib.time().date2EllapsedTime(((10 - rounds)*CMProps.getTickMillis())
+					, TimeUnit.SECONDS, true)+"^?";
+		}
 		return localizedStaticDisplay;
 	}
 

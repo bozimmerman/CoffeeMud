@@ -173,8 +173,10 @@ public class Spell_ImprovedRepairingAura extends Spell
 	}
 
 	@Override
-	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		if((commands.size()==0)&&(givenTarget==null))
+			givenTarget=mob;
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null)
 			return false;

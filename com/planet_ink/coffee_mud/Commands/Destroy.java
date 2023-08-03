@@ -1298,6 +1298,8 @@ public class Destroy extends StdCommand
 		final CMMsg msg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_NOISYMOVEMENT,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MASK_ALWAYS|CMMsg.MSG_DEATH,CMMsg.MSG_NOISYMOVEMENT,msgstr);
 		if(mob.location().okMessage(mob,msg))
 		{
+			if(dropThis instanceof Container)
+				((Container)dropThis).emptyPlease(false);
 			mob.location().send(mob,msg);
 			return true;
 		}

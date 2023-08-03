@@ -94,7 +94,7 @@ public class Gaoler extends StdCharClass
 	@Override
 	public int allowedArmorLevel()
 	{
-		return CharClass.ARMOR_CLOTH;
+		return CharClass.ARMOR_LEATHER;
 	}
 
 	@Override

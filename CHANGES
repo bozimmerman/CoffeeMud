@@ -24,6 +24,8 @@
  23. Prop_Teleport now supports redirection, and custom messages
  24. Mirrors now act like LOOK SELF
  25. STAT commands supports new POBJECT (player objects) arg.
+ 26. New command: MEND, for invoking the proper common skill.  Mend spell renamed to Lesser Mend.
+ 27. Gaoler can now wear leather.
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

@@ -51,24 +51,25 @@ public class Mend extends StdCommand
 		throws java.io.IOException
 	{
 		final Vector<String> origCmds=new XVector<String>(commands);
-		final String whatToOpen=CMParms.combine(commands,1);
-		if(whatToOpen.length()==0)
+		final String whatToMend=CMParms.combine(commands,1);
+		if(whatToMend.length()==0)
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("Mend what?"));
 			return false;
 		}
-		final Item mendThis=mob.findItem(null,whatToOpen);
-		if((mendThis==null)||(!CMLib.flags().canBeSeenBy(mendThis,mob))||(mendThis.container()!=null))
+		final Physical mendThis=mob.location().fetchFromMOBRoomFavorsItems(mob, null, whatToMend, Wearable.FILTER_UNWORNONLY);
+		if((mendThis==null)
+		||(!CMLib.flags().canBeSeenBy(mendThis,mob)))
 		{
-			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to have '@x1'.",whatToOpen));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to have '@x1'.",whatToMend));
 			return false;
 		}
-		if(mendThis.amBeingWornProperly())
+		if((mendThis instanceof Item) && ((Item)mendThis).amBeingWornProperly())
 		{
-			CMLib.commands().postCommandFail(mob,origCmds,L("You need to remove '@x1' first.",whatToOpen));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You need to remove '@x1' first.",whatToMend));
 			return false;
 		}
-		MendingSkill skillA = null;
+		final List<MendingSkill> choices = new ArrayList<MendingSkill>();
 		for(final Enumeration<Ability> a = mob.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A = a.nextElement();
@@ -76,15 +77,20 @@ public class Mend extends StdCommand
 			{
 				final MendingSkill cA = (MendingSkill)A;
 				if(cA.supportsMending(mendThis))
-					skillA = cA;
+					choices.add(cA);
 			}
 		}
+		final MendingSkill skillA = (choices.size()==0)?null:choices.get(CMLib.dice().roll(1, choices.size(), -1));
 		if(skillA == null)
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("You don't know how to mend @x1.", mendThis.name(mob)));
 			return false;
 		}
-		final List<String> mendCmds = new XVector<String>("MEND", mob.getContextName(mendThis));
+		final List<String> mendCmds;
+		if(skillA instanceof CraftorAbility)
+			mendCmds = new XVector<String>("MEND", mob.getContextName(mendThis));
+		else
+			mendCmds = new XVector<String>(mob.getContextName(mendThis));
 		return skillA.invoke(mob, mendCmds, mendThis, false, 0);
 	}
 
@@ -115,6 +121,6 @@ public class Mend extends StdCommand
 	@Override
 	public boolean securityCheck(final MOB mob)
 	{
-		return CMSecurity.isASysOp(mob);
+		return true;
 	}
 }

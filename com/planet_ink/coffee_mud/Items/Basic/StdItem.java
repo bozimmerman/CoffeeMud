@@ -1227,7 +1227,7 @@ public class StdItem implements Item
 				return false;
 			if(phyStats().level()>mob.phyStats().level())
 			{
-				mob.tell(L("That looks too advanced for you."));
+				mob.tell(L("@x1 looks too advanced for you.",name(msg.source())));
 				return false;
 			}
 			if((!rawLogicalAnd())||(properWornBitmap==0))
@@ -1267,7 +1267,7 @@ public class StdItem implements Item
 				return false;
 			if(phyStats().level()>mob.phyStats().level())
 			{
-				mob.tell(L("That looks too advanced for you."));
+				mob.tell(L("@x1 looks too advanced for you.",name(msg.source())));
 				return false;
 			}
 			return canWearComplete(mob,(msg.value()<=0)?0:((long)(1<<msg.value())/2),msg.othersMessage()==null);
@@ -1281,7 +1281,7 @@ public class StdItem implements Item
 				return false;
 			if(phyStats().level()>mob.phyStats().level())
 			{
-				mob.tell(L("That looks too advanced for you."));
+				mob.tell(L("@x1 looks too advanced for you.",name(msg.source())));
 				return false;
 			}
 			if((!rawLogicalAnd())||(properWornBitmap==0))
