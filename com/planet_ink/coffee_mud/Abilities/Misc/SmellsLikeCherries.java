@@ -92,21 +92,27 @@ public class SmellsLikeCherries extends StdAbility
 		&&(msg.source().charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
 		{
 			final MOB target=(MOB)msg.target();
+			final Room R = msg.source().location();
 			if((!target.isInCombat())
-			&&(msg.source().location()==target.location())
+			&&(R==target.location())
 			&&(msg.source().getVictim()!=target)
 			&&(CMLib.dice().rollPercentage()>((msg.source().phyStats().level()-(target.phyStats().level()+(2*getXLEVELLevel(invoker()))))*10))
 			&&(!CMSecurity.isAllowed(msg.source(), target.location(), CMSecurity.SecFlag.KILLDEAD))
 			&&(!CMLib.law().isLegalOfficerHere(msg.source()))
 			&&(!CMLib.law().isLegalJudgeHere(msg.source())))
 			{
-				msg.source().tell(L("@x1 smells terrible, and you are too repulsed to do that.",target.name(msg.source())));
-				if(target.getVictim()==msg.source())
+				final CMMsg sniffMsg = CMClass.getMsg((MOB)msg.target(), msg.source(), this, CMMsg.MASK_ALWAYS|CMMsg.TYP_AROMA,null,
+						L("<S-NAME> smells terrible, and you are too repulsed to do that.",target.name(msg.source())),null);
+				if(R.okMessage(msg.source(), sniffMsg))
 				{
-					target.makePeace(true);
-					target.setVictim(null);
+					R.send(msg.source(), sniffMsg);
+					if(target.getVictim()==msg.source())
+					{
+						target.makePeace(true);
+						target.setVictim(null);
+					}
+					return false;
 				}
-				return false;
 			}
 		}
 		return super.okMessage(myHost,msg);

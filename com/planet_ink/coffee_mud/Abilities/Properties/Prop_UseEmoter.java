@@ -425,6 +425,8 @@ public class Prop_UseEmoter extends Property
 			return;
 		}
 		msg=CMClass.getMsg(emoter,null,CMMsg.MSG_EMOTE,str);
+		if(emote.type==EMOTE_TYPE.EMOTE_SMELL)
+			msg.setSourceCode(CMMsg.MASK_ALWAYS|CMMsg.TYP_AROMA);
 		if(room.okMessage(emoter,msg))
 		{
 			for(int i=0;i<room.numInhabitants();i++)
@@ -443,7 +445,9 @@ public class Prop_UseEmoter extends Property
 						break;
 					case EMOTE_SMELL:
 						if(CMLib.flags().canSmell(M))
+						{
 							M.executeMsg(M,msg);
+						}
 						break;
 					case EMOTE_SOCIAL:
 						// handled above

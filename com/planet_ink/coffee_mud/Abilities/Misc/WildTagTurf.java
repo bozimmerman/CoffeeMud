@@ -112,7 +112,8 @@ public class WildTagTurf extends StdAbility
 		&&(!msg.tool().ID().equals("WildTagTurf"))
 		&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ANIMALAFFINITY)
 			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_RACIALABILITY))
-		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
+		&&(CMLib.flags().canSmell(msg.source(),affected)))
 		{
 			msg.source().tell(L("You definitely aren't allowed to do that on @x1's turf.",text()));
 			return false;

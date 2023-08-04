@@ -796,7 +796,10 @@ public class StdRace implements Race
 	public Weapon[] getNaturalWeapons()
 	{
 		if(naturalWeaponChoices.length==0)
-			naturalWeaponChoices = new Weapon[] { CMClass.getWeapon("Natural") };
+		{
+			final Weapon natI = CMClass.getWeapon("Natural");
+			naturalWeaponChoices = new Weapon[] { natI };
+		}
 		return naturalWeaponChoices;
 	}
 

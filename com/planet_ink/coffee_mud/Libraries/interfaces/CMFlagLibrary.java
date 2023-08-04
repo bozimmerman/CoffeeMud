@@ -205,6 +205,15 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean canSmell(MOB M);
 
 	/**
+	 * Returns whether the given mob can smell the given
+	 * target, by issueing a test 'sniff' message to it.
+	 * @param M the mob
+	 * @param target the target
+	 * @return true if the mob can smell the target
+	 */
+	public boolean canSmell(final MOB M, final Physical target);
+
+	/**
 	 * Return whether the given mob is able to eat or
 	 * drink due to the lack of strictly personal defects.
 	 * @param M the mob to check

@@ -2056,7 +2056,12 @@ public class StdAbility implements Ability
 	protected boolean beneficialVisualFizzle(final MOB mob, final Environmental target, final String message)
 	{
 		// it didn't work, but tell everyone you tried.
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_HANDS,message);
+
+		final CMMsg msg;
+		if(mob.charStats().getBodyPart(Race.BODY_HAND)>0)
+			msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_HANDS,message);
+		else
+			msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,message);
 		final Room room=mob.location();
 		if(room==null)
 			return false;

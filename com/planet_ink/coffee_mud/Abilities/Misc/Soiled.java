@@ -212,7 +212,8 @@ public class Soiled extends StdAbility
 			{
 				final Physical target=(affected==null)?((myHost instanceof Physical)?(Physical)myHost:msg.source()):affected;
 				final String smell=getDiaperSmell(false);
-				if((smell!=null)&&(CMLib.flags().canSmell(msg.source())))
+				if((smell!=null)
+				&&(CMLib.flags().canSmell(msg.source(),target)))
 					msg.source().tell(msg.source(),target,null,smell);
 			}
 			else

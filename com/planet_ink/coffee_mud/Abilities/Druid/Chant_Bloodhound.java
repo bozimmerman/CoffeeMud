@@ -88,12 +88,14 @@ public class Chant_Bloodhound extends Chant
 		if(!super.tick(ticking, tickID))
 			return false;
 		final Physical affected = this.affected;
-		if((affected instanceof MOB) // because senses are diff on mobs
-		&&(CMath.bset(affected.phyStats().sensesMask(), PhyStats.CAN_NOT_SEE)))
+		if(affected instanceof MOB) // because senses are diff on mobs
 		{
-			affected.delEffect(this);
-			affected.addEffect(this);
-			affected.recoverPhyStats();
+			if(CMath.bset(affected.phyStats().sensesMask(), PhyStats.CAN_NOT_SEE))
+			{
+				affected.delEffect(this);
+				affected.addEffect(this);
+				affected.recoverPhyStats();
+			}
 		}
 		return true;
 	}

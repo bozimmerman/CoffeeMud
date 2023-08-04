@@ -318,7 +318,8 @@ public class RaceData extends StdWebMacro
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=10%>");
-			str.append("<INPUT TYPE=BUTTON NAME="+c+"EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+CMLib.webMacroFilter().findItemWebCacheCode(classes,I)+"','"+c+"ITEM"+(numItems)+"');\">");
+			if(I.isGeneric())
+				str.append("<INPUT TYPE=BUTTON NAME="+c+"EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+CMLib.webMacroFilter().findItemWebCacheCode(classes,I)+"','"+c+"ITEM"+(numItems)+"');\">");
 			str.append("</TD></TR>");
 		}
 		str.append("<TR><TD WIDTH=90%>");

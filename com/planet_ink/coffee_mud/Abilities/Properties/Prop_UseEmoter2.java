@@ -68,7 +68,7 @@ public class Prop_UseEmoter2 extends Prop_UseEmoter
 				return;
 			if((msg.amITarget(affected))
 			&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
-			&&(CMLib.flags().canSmell(msg.source()))
+			&&(CMLib.flags().canSmell(msg.source(),myItem))
 			&&(smells!=null))
 			{
 				processing=false;

@@ -16,6 +16,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /*
@@ -108,6 +110,7 @@ public class Skill_TrackFriend extends StdAbility
 	}
 
 	protected List<Room>	theTrail		= null;
+	protected Reference<MOB>mobr			= null;
 	public int				nextDirection	= -2;
 
 	@Override
@@ -134,7 +137,8 @@ public class Skill_TrackFriend extends StdAbility
 				unInvoke();
 			}
 			else
-			if(nextDirection==-1)
+			if((nextDirection==-1)
+			||((mobr!=null)&&(mobr.get()!=null)&&(!CMLib.flags().canSmell(mob,mobr.get()))))
 			{
 				mob.tell(L("The trail dries up here."));
 				nextDirection=-999;
@@ -251,7 +255,8 @@ public class Skill_TrackFriend extends StdAbility
 		boolean possible=false;
 		for(final MOB M : H)
 		{
-			if(M.name().toUpperCase().startsWith(mobName.toUpperCase()) && (M!=mob))
+			if(M.name().toUpperCase().startsWith(mobName.toUpperCase())
+			&& (M!=mob))
 				possible=true;
 		}
 		if(!possible)
@@ -278,7 +283,8 @@ public class Skill_TrackFriend extends StdAbility
 			if((M!=null)
 			&&(H.contains(M))
 			&&(CMLib.flags().canAccess(mob, room))
-			&&(CMLib.flags().isSeeable(M)))
+			&&(CMLib.flags().isSeeable(M))
+			&& (CMLib.flags().canSmell(mob,M)))
 				rooms.add(R);
 		}
 
@@ -304,6 +310,7 @@ public class Skill_TrackFriend extends StdAbility
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverPhyStats();
+				newOne.mobr = new WeakReference<MOB>(target);
 				newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 			}
 		}

@@ -227,6 +227,7 @@ public class Areas extends StdCommand
 						final Map<String,Object> H=new Hashtable<String,Object>();
 						for(int i=0;i<stats.length;i++)
 							H.put(Area.Stats.values()[i].name(),Integer.toString(stats[i]));
+						H.put("AUTHOR", A.getAuthorID());
 						try
 						{
 							if(!CMStrings.parseStringExpression(expression, H,false))
@@ -235,7 +236,11 @@ public class Areas extends StdCommand
 						catch(final Exception e)
 						{
 							if(mob!=null)
-								mob.tell(L("There was an error in your AREA qualifier parameters. See help on AREA for more information. The error was: @x1",e.getMessage()));
+							{
+								mob.tell(L("There was an error in your AREA qualifier parameters. See help on AREA for more information. "
+										+ "The error was: @x1", (e.getMessage()!=null)?e.getMessage():
+											L("bad syntax (did you forget quotes?)")));
+							}
 							return false;
 						}
 					}

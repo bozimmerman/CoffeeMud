@@ -185,7 +185,7 @@ public class Thief_LocateAlcohol extends ThiefSkill
 
 			final MOB mob=(MOB)affected;
 
-			if(!CMLib.flags().canSmell(mob))
+			if(!CMLib.flags().canSmell(mob,affected))
 			{
 				mob.tell(L("The alcohol trail fizzles out here."));
 				nextDirection=-999;
@@ -327,7 +327,8 @@ public class Thief_LocateAlcohol extends ThiefSkill
 
 		if((success)&&(theTrail!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,auto?L("<T-NAME> begin(s) to sense alcohol!"):L("^S<S-NAME> sniff(s) around for signs of a stiff drink.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,
+					auto?L("<T-NAME> begin(s) to sense alcohol!"):L("^S<S-NAME> sniff(s) around for signs of a stiff drink.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -10,7 +10,7 @@
   9. New CharStat XPADJPCT - for adding bonus % xp (or loss if negative)
  10. Prop_NoPurge now supports an expiration date/timestamp
  11. New StdMob type: CombatDummy, for testing.
- 12. New spell: Wizard's Mark
+ 12. New spells: Wizard's Mark, Suppress Aroma
  13. New prayers: Undeath Guard, Animate Shadow
  14. GOTITEM Achievement type now supports multiple item masks.
  15. New standard races: Ghast, Ghoul, Ghost, Mummy, Spectre, Vampire, and Zombie

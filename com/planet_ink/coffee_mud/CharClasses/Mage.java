@@ -298,6 +298,7 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_HeatMetal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Weaken",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_MirrorImage",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_SuppressAroma",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_ChangeSex",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_ImprovedRepairingAura",0,false,CMParms.parseSemicolons("Spell_RepairingAura(100)",true));
 		// level 12

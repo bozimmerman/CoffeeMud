@@ -190,6 +190,30 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public boolean canSmell(final MOB M, final Physical target)
+	{
+		if(!canSmell(M))
+			return false;
+		if(target==null)
+			return true;
+		final MOB aromaSourceM;
+		if(target instanceof MOB)
+			aromaSourceM = (MOB)target;
+		else
+			aromaSourceM = CMClass.getFactoryMOB(target.Name(), 1, CMLib.map().roomLocation(target));
+		final Room R = aromaSourceM.location();
+		boolean aromaMade=true;
+		if(R!=null)
+		{
+			final CMMsg msg = CMClass.getMsg((MOB)target, null, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_AROMA, null);
+			aromaMade = R.okMessage(M, msg);
+		}
+		if(aromaSourceM != target)
+			aromaSourceM.destroy();
+		return aromaMade;
+	}
+
+	@Override
 	public boolean canTaste(final MOB M)
 	{
 		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_NOT_TASTE) == 0);
