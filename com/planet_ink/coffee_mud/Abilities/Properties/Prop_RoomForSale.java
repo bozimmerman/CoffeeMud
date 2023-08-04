@@ -350,19 +350,23 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			final Room dR = roomList.get(start++);
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				Room nR=(dontCache?dR.rawDoors()[d]:dR.getRoomInDir(d));
+				final Room nR=(dontCache?dR.rawDoors()[d]:dR.getRoomInDir(d));
 				if((nR!=null)
 				&&(nR.roomID().length()>0)
 				&&(!roomIDs.contains(nR.roomID())))
 				{
 					roomIDs.add(nR.roomID());
-					if(nR.ID().equals("ThinRoom"))
+					final Area nRarea=nR.getArea();
+					Ability lotA=null;
+					if(nR.ID().equals("ThinRoom")
+					&&(nRarea == baseA))
 					{
 						if(!forceCache)
 							continue;
-						nR=db.DBReadRoomObject(nR.roomID(), false);
-						if(nR==null)
+						final Room nAR=db.DBReadRoomObject(nR.roomID(), false); // wont have an area!
+						if(nAR==null)
 							continue;
+						lotA=nAR.fetchEffect(ID());
 						final Pair<String,String>[] exits = db.DBReadRoomExitIDs(nR.roomID());
 						for(int nd=0;nd<exits.length;nd++)
 						{
@@ -370,6 +374,12 @@ public class Prop_RoomForSale extends Property implements LandTitle
 							if(p != null)
 							{
 								final String exitId = p.second;
+								if((p.first!=null)&&(p.first.length()>0))
+								{
+									if(openE == null)
+										openE = CMClass.getExit("Open");
+									nR.setRawExit(nd, openE); // this makes the thin room modifiable
+								}
 								final Room nnR = CMLib.map().getCachedRoom(exitId);
 								if(nnR != null)
 									nR.rawDoors()[nd]=nnR;
@@ -381,20 +391,14 @@ public class Prop_RoomForSale extends Property implements LandTitle
 									tR.setArea(A);
 									nR.rawDoors()[nd]=tR;
 								}
-								if((p.first!=null)&&(p.first.length()>0))
-								{
-									if(openE == null)
-										openE = CMClass.getExit("Open");
-									nR.setRawExit(nd, openE);
-								}
 							}
 						}
 					}
-					final Area baseA2=nR.getArea();
-					final Ability A=nR.fetchEffect(ID());
-					if(((baseA2==baseA)
-					&&(A!=null)
-					&&((owner==null)||((Prop_LotsForSale)A).getOwnerName().equals(owner))))
+					else
+						lotA=nR.fetchEffect(ID());
+					if(((nRarea==baseA)
+					&&(lotA!=null)
+					&&((owner==null)||((LandTitle)lotA).getOwnerName().equals(owner))))
 						roomList.add(nR); // this will keep the list growing, as well as grow the list
 					else
 					if(!foundEntrance)

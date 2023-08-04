@@ -108,11 +108,15 @@ public class ThinRoom implements Room
 		return Tickable.STATUS_NOT;
 	}
 
-	protected String						roomID	= "";
-	protected Area							myArea	= null;
-	protected static final Vector<Integer>	empty	= new ReadOnlyVector<Integer>(1);
-	protected static final Exit[]			exits	= new Exit[Directions.NUM_DIRECTIONS()];
-	protected static final Room[]			rooms	= new Room[Directions.NUM_DIRECTIONS()];
+
+	protected String	roomID	= "";
+	protected Area		myArea	= null;
+	protected Exit[]	exits	= sexits;
+	protected Room[]	rooms	= srooms;
+
+	protected static final Exit[]		sexits	= new Exit[Directions.NUM_DIRECTIONS()];
+	protected static final Room[]		srooms	= new Room[Directions.NUM_DIRECTIONS()];
+	protected static final List<Integer>empty	= new ReadOnlyVector<Integer>(1);
 
 	@Override
 	public String roomID()
@@ -222,6 +226,11 @@ public class ThinRoom implements Room
 	@Override
 	public void setRawExit(final int direction, final Exit E)
 	{
+		if(exits == sexits)
+		{
+			exits=Arrays.copyOf(sexits, exits.length);
+			rooms=Arrays.copyOf(srooms, srooms.length);
+		}
 		if(E != null)
 			exits[direction]=E;
 		else

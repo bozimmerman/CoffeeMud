@@ -586,6 +586,8 @@ public class Skill_Track extends StdSkill
 						}
 						if(targetRoomsV.size()>0)
 							break;
+						if((r<radius)&&(r*2>radius))
+							r = radius/2;
 					}
 				}
 			}

@@ -149,9 +149,17 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				final Room R=theRoom.rawDoors()[d];
 				if((R!=null)
 				&&(R!=fromRoom)
-				&&(R.roomID().length()>0))
+				&&(R.roomID().length()>0)
+				&&(!R.roomID().equals(fromRoom.roomID())))
 				{
-					final LandTitle theTitle=theLaw.getLandTitle(theRoom);
+					final LandTitle theTitle;
+					if(!R.isSavable())
+					{
+						final Room chkR=CMLib.database().DBReadRoomObject(R.roomID(), false);
+						theTitle=(chkR != null)?theLaw.getLandTitle(chkR):null;
+					}
+					else
+						theTitle=theLaw.getLandTitle(theRoom);
 					if((theTitle==null)
 					||(theTitle.getOwnerName().length()>0))
 						return false;
@@ -167,6 +175,8 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				&&(R!=fromRoom)
 				&&(R.roomID().length()>0))
 				{
+					if(!R.isSavable())
+						return false; // if its not cached, it can't be retracted
 					if(recurseChkRooms.containsKey(R))
 					{
 						final boolean[] B=recurseChkRooms.get(R);
@@ -304,24 +314,32 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		final boolean doGrid=super.gridLayout();
 		long roomLimit = 300; // default limit
 		final Set<Room> updateExits=new HashSet<Room>();
-		Prop_ReqCapacity cap = null;
+		Prop_ReqCapacity capA = null;
 		boolean didAnything = false;
 		List<Room> allRooms = null;
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 		{
 			if((d==Directions.UP)||(d==Directions.DOWN)||(d==Directions.GATE))
 				continue;
-			final Room chkR=R.rawDoors()[d];
+			final Room chkR;
+			synchronized(R)
+			{
+				synchronized(R.rawDoors())
+				{
+					chkR=R.rawDoors()[d];
+				}
+			}
 			if((chkR==null)&&(numberOfPeers < 0))
 			{
 				if(allRooms == null) // this is now only mildly inefficient for thin areas
 					allRooms = getConnectedPropertyRooms();
 				if(allRooms.size()>0)
 				{
-					cap = (Prop_ReqCapacity)allRooms.get(0).fetchEffect("Prop_ReqCapacity");
-					if(cap != null)
+					final Room capRoom = this.getAConnectedPropertyRoom();
+					capA = (Prop_ReqCapacity)((capRoom!=null)?capRoom.fetchEffect("Prop_ReqCapacity"):null);
+					if(capA != null)
 					{
-						roomLimit = cap.roomLimit;
+						roomLimit = capA.roomLimit;
 					}
 				}
 				numberOfPeers = allRooms.size();
@@ -371,8 +389,8 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				updateExits.add(R2);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
 					Log.debugOut("Lots4Sale",R2.roomID()+" created and put up for sale.");
-				if(cap != null)
-					R2.addNonUninvokableEffect((Ability)cap.copyOf());
+				if(capA != null)
+					R2.addNonUninvokableEffect((Ability)capA.copyOf());
 				postWork.add(new Runnable()
 				{
 					final Room room = R2;

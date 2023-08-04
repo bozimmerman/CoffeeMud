@@ -782,8 +782,8 @@ public class RoomLoader
 							((GridLocale)thisRoom).addOuterExit(CE);
 							if((!CE.out)&&(!(newRoom instanceof GridLocale)))
 							{
-								newRoom.rawDoors()[CE.dir]=thisRoom;
 								newRoom.setRawExit(CE.dir,CMClass.getExit("Open"));
+								newRoom.rawDoors()[CE.dir]=thisRoom;
 							}
 						}
 					}
@@ -798,8 +798,8 @@ public class RoomLoader
 							Log.errOut("RoomLoader",CMLib.map().getExtendedRoomID(thisRoom)+" has an invalid direction #"+direction);
 						else
 						{
-							thisRoom.rawDoors()[direction]=newRoom;
 							thisRoom.setRawExit(direction,newExit);
+							thisRoom.rawDoors()[direction]=newRoom;
 							CMLib.map().registerWorldObjectLoaded(thisRoom.getArea(), newRoom, newExit);
 						}
 					}
