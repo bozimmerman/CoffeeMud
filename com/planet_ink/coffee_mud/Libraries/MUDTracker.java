@@ -2624,6 +2624,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						T=CMLib.law().getLandTitle(R);
 					if((R==null)
 					||(T==null)
+					||((ownerName!=null)&&(!T.getOwnerName().equalsIgnoreCase(ownerName)))
 					||(H.contains(R))
 					||(R.roomID().length()==0))
 						continue;

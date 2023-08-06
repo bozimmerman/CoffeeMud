@@ -562,7 +562,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			final LandTitle title = CMLib.law().getLandTitle(room);
 			if((title!=null)&&(title.gridLayout()))
 			{
-				final PairVector<Room,int[]> rooms=CMLib.tracking().buildGridList(R, title.getOwnerName(), 100);
+				final PairVector<Room,int[]> rooms=CMLib.tracking().buildGridList(R, null, 100);
 				for(int dir=0;dir<Directions.NUM_DIRECTIONS();dir++)
 				{
 					if(dir==Directions.GATE)
@@ -875,7 +875,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			{
 				if(newTitle.gridLayout())
 				{
-					final PairVector<Room,int[]> rooms=CMLib.tracking().buildGridList(newRoom, newTitle.getOwnerName(), 100);
+					final PairVector<Room,int[]> rooms=CMLib.tracking().buildGridList(newRoom, null, 100);
 					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 					{
 						if(d==Directions.GATE)
