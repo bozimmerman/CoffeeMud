@@ -726,7 +726,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		{
 			if(d==Directions.GATE)
 				continue;
-			final Room dirRoom=rawDoors()[d];
+			final Room dirRoom=doors[d];
 			Exit dirExit=getRawExit(d);
 			if((dirExit==null)||(dirExit.hasADoor()))
 				dirExit=ox;

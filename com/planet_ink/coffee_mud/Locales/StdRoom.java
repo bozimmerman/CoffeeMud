@@ -551,7 +551,7 @@ public class StdRoom implements Room
 		&&(getGridParent().roomID().length()==0))
 			return;
 
-		if((rawDoors()[Directions.UP]==null)
+		if((doors[Directions.UP]==null)
 		&&((domainType()&Room.INDOORS)==0)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR) // prevents InTheAir from having a sky
@@ -567,19 +567,19 @@ public class StdRoom implements Room
 			final GridLocale sky=(GridLocale)CMClass.getLocale("EndlessThinSky");
 			sky.setRoomID("");
 			sky.setArea(getArea());
-			rawDoors()[Directions.UP]=sky;
+			doors[Directions.UP]=sky;
 			setRawExit(Directions.UP,upE);
 			sky.rawDoors()[Directions.DOWN]=this;
 			sky.setRawExit(Directions.DOWN,dnE);
 
 			if(!(getArea() instanceof Boardable))
 			{
-				for(int d=rawDoors().length-1;d>=0;d--)
+				for(int d=doors.length-1;d>=0;d--)
 				{
 					if((d!=Directions.UP)
 					&&(d!=Directions.DOWN))
 					{
-						Room thatRoom=rawDoors()[d];
+						Room thatRoom=doors[d];
 						if((thatRoom!=null)&&(getRawExit(d)!=null))
 						{
 							thatRoom=CMLib.map().getRoom(thatRoom);
@@ -625,7 +625,7 @@ public class StdRoom implements Room
 		final List<Room> skys = new Vector<Room>(1);
 		if(!skyedYet)
 			return skys;
-		final Room skyGridRoom=rawDoors()[Directions.UP];
+		final Room skyGridRoom=doors[Directions.UP];
 		if(skyGridRoom!=null)
 		{
 			if(((skyGridRoom.roomID()==null)||(skyGridRoom.roomID().length()==0))
@@ -640,14 +640,14 @@ public class StdRoom implements Room
 	{
 		if(!skyedYet)
 			return;
-		final Room skyGridRoom=rawDoors()[Directions.UP];
+		final Room skyGridRoom=doors[Directions.UP];
 		if(skyGridRoom!=null)
 		{
 			if(((skyGridRoom.roomID()==null)||(skyGridRoom.roomID().length()==0))
 			&&((skyGridRoom instanceof EndlessSky)||(skyGridRoom instanceof EndlessThinSky)))
 			{
 				((GridLocale)skyGridRoom).clearGrid(null);
-				rawDoors()[Directions.UP]=null;
+				doors[Directions.UP]=null;
 				setRawExit(Directions.UP,null);
 				for(int d=0;d<skyGridRoom.rawDoors().length;d++)
 				{
@@ -700,7 +700,7 @@ public class StdRoom implements Room
 				final List<Integer> preferredChoices=new ArrayList<Integer>();
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				{
-					final Room R=rawDoors()[d];
+					final Room R=doors[d];
 					if((R!=null)
 					&&(R.ID().equals(ID()))
 					&&(R.resourceChoices()==resourceChoices())
@@ -772,7 +772,7 @@ public class StdRoom implements Room
 					return false;
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					final Room R2=rawDoors()[d];
+					final Room R2=doors[d];
 					if((R2!=null)&&(!CMLib.map().isClearableRoom(R2)))
 						return false;
 				}
@@ -1671,7 +1671,7 @@ public class StdRoom implements Room
 	{
 		if((direction<0)||(direction>=doors.length)||(amDestroyed))
 			return null;
-		Room nextRoom=rawDoors()[direction];
+		Room nextRoom=doors[direction];
 		if(gridParent!=null)
 			nextRoom=gridParent.prepareGridLocale(this,nextRoom,direction);
 		if(nextRoom!=null)
@@ -1961,12 +1961,12 @@ public class StdRoom implements Room
 		if(this instanceof GridLocale)
 			((GridLocale)this).clearGrid(null);
 		clearSky();
-		if((roomID().length()==0)&&(rawDoors()!=null))
+		if((roomID().length()==0)&&(doors!=null))
 		{
 			Room roomDir=null;
-			for(int d=rawDoors().length-1;d>=0;d--)
+			for(int d=doors.length-1;d>=0;d--)
 			{
-				roomDir=rawDoors()[d];
+				roomDir=doors[d];
 				if((roomDir!=null)&&(roomDir.rawDoors()!=null))
 				{
 					for(int d2=roomDir.rawDoors().length-1;d2>=0;d2--)

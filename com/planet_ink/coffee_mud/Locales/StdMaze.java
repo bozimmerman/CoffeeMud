@@ -61,7 +61,9 @@ public class StdMaze extends StdGrid
 	@Override
 	protected Room findCenterRoom(final int dirCode)
 	{
-		final Room dirRoom=rawDoors()[dirCode];
+		if((dirCode<0)||(dirCode >= doors.length))
+			return null;
+		final Room dirRoom=doors[dirCode];
 		if(dirRoom!=null)
 		{
 			final Room altR=super.findCenterRoom(dirCode);
