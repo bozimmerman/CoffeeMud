@@ -442,6 +442,8 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * always call {@link Room#getExitInDir(int)} if you want the final
 	 * Exit object in the given direction.  This method returns null if
 	 * there is no exit in the given direction.
+	 * @see Room#getRawRoom(int)
+	 * @see Room#setRawDoor(int, Room)
 	 * @see Room#setRawExit(int, Exit)
 	 * @see Room#getExitInDir(int)
 	 * @see Room#getReverseExit(int)
@@ -456,6 +458,8 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 
 	/**
 	 * Sets the Exit object found in this room in the given direction.
+	 * @see Room#getRawRoom(int)
+	 * @see Room#setRawDoor(int, Room)
 	 * @see Room#getRawExit(int)
 	 * @see Room#getExitInDir(int)
 	 * @see Room#getReverseExit(int)
@@ -467,6 +471,42 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @param E the raw Exit object in that direction, or null
 	 */
 	public void setRawExit(int direction, Exit E);
+
+	/**
+	 * Returns the raw unresolved room link found in this room in the given
+	 * direction.  This method should only be called by internal engine
+	 * systems, as it may return a temporary object.  Instead, you should
+	 * always call {@link Room#getRoomInDir(int)} if you want the final
+	 * Room link in the given direction.  This method returns null if
+	 * there is no link in the given direction.
+	 * @see Room#setRawDoor(int, Room)
+	 * @see Room#setRawExit(int, Exit)
+	 * @see Room#getExitInDir(int)
+	 * @see Room#getReverseExit(int)
+	 * @see Room#getPairedExit(int)
+	 * @see Room#fetchExit(String)
+	 * @see Directions
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit
+	 * @param direction the direction in this room to look for an exit in
+	 * @return the raw Exit object in that direction, or null
+	 */
+	public Room getRawDoor(int direction);
+
+	/**
+	 * Sets the Room link from in this room to the other
+	 * in the given direction.
+	 * @see Room#getRawRoom(int)
+	 * @see Room#getRawExit(int)
+	 * @see Room#getExitInDir(int)
+	 * @see Room#getReverseExit(int)
+	 * @see Room#getPairedExit(int)
+	 * @see Room#fetchExit(String)
+	 * @see Directions
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit
+	 * @param direction the direction in this room to look for an exit in
+	 * @param R the Room link in that direction, or null
+	 */
+	public void setRawDoor(int direction, Room R);
 
 	/**
 	 * Returns the Exit opposite this one, in the Room in the given direction.

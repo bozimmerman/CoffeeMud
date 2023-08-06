@@ -376,6 +376,32 @@ public class ThinRoom implements Room
 	}
 
 	@Override
+	public Room getRawDoor(final int direction)
+	{
+		if(direction<rooms.length)
+			return rooms[direction];
+		return null;
+	}
+
+	@Override
+	public void setRawDoor(final int direction, final Room R)
+	{
+		if(rooms == srooms)
+		{
+			synchronized(this)
+			{
+				if(rooms == srooms)
+				{
+					rooms=Arrays.copyOf(srooms, srooms.length);
+					exits=Arrays.copyOf(sexits, sexits.length);
+				}
+			}
+		}
+		if(direction<rooms.length)
+			rooms[direction] = R;
+	}
+
+	@Override
 	public int getReverseDir(final int direction)
 	{
 		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS()))

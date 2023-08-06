@@ -1917,6 +1917,21 @@ public class StdRoom implements Room
 	}
 
 	@Override
+	public Room getRawDoor(final int direction)
+	{
+		if(direction<doors.length)
+			return doors[direction];
+		return null;
+	}
+
+	@Override
+	public void setRawDoor(final int direction, final Room R)
+	{
+		if(direction<doors.length)
+			doors[direction] = R;
+	}
+
+	@Override
 	public boolean isSavable()
 	{
 		return ((roomID().length()>0)
