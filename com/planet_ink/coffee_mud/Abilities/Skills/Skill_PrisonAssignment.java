@@ -248,7 +248,7 @@ public class Skill_PrisonAssignment extends StdSkill
 			.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		if((jailR == null)
 		||(jailR.amDestroyed())
-		||(!CMLib.tracking().getRadiantRooms(R, flags, 50).contains(jailR)))
+		||(!CMLib.tracking().findTrailToRoom(R, jailR, flags, 50).contains(jailR)))
 		{
 			mob.tell(L("@x1 doesn't know how to get to your jail.",target.name(mob)));
 			return false;

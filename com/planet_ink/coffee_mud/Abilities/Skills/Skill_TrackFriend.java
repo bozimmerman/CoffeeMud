@@ -275,18 +275,23 @@ public class Skill_TrackFriend extends StdAbility
 			.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		final ArrayList<Room> rooms=new ArrayList<Room>();
 		final int range=50 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
-		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
-		for (final Room room : checkSet)
-		{
-			final Room R=CMLib.map().getRoom(room);
-			final MOB M=R.fetchInhabitant(mobName);
-			if((M!=null)
-			&&(H.contains(M))
-			&&(CMLib.flags().canAccess(mob, room))
-			&&(CMLib.flags().isSeeable(M))
-			&& (CMLib.flags().canSmell(mob,M)))
-				rooms.add(R);
-		}
+		final List<Room> trashRooms = new ArrayList<Room>();
+		if(CMLib.tracking().getRadiantRoomsToTarget(mob.location(), trashRooms, flags, new TrackingLibrary.RFilter() {
+			@Override
+			public boolean isFilteredOut(final Room hostR, Room R, final Exit E, final int dir)
+			{
+				R=CMLib.map().getRoom(R);
+				final MOB M=R.fetchInhabitant(mobName);
+				if((M!=null)
+				&&(H.contains(M))
+				&&(CMLib.flags().canAccess(mob, R))
+				&&(CMLib.flags().isSeeable(M))
+				&& (CMLib.flags().canSmell(mob,M)))
+					return false;
+				return true;
+			}
+		}, range))
+			rooms.add(trashRooms.get(trashRooms.size()-1));
 
 		if(rooms.size()>0)
 			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,range);

@@ -127,13 +127,18 @@ public class Prayer_FindSacredItem extends Prayer
 		TrackingLibrary.TrackingFlags flags = getTrackingFlags();
 		flags.plus(TrackingLibrary.TrackingFlag.PASSABLE);
 		final int range = 5+(adjustedLevel(mob,asLevel)/10)+(1*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
-		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mobRoom,flags,range);
-		for (final Room R : checkSet)
-		{
-			if(this.itsHere(mob, R, what, auto, deityName))
-				rooms.add(R);
-		}
-
+		final List<Room> trashRooms = new ArrayList<Room>();
+		if(CMLib.tracking().getRadiantRoomsToTarget(mobRoom, trashRooms, flags, new TrackingLibrary.RFilter() {
+			@Override
+			public boolean isFilteredOut(final Room hostR, Room R, final Exit E, final int dir)
+			{
+				R=CMLib.map().getRoom(R);
+				if(itsHere(mob, R, what, auto, deityName))
+					return false;
+				return true;
+			}
+		}, range))
+			rooms.add(trashRooms.get(trashRooms.size()-1));
 		flags = getTrackingFlags();
 		if(rooms.size()>0)
 		{

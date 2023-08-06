@@ -113,8 +113,16 @@ public class CargoLoading extends CommonSkill
 			final CMMsg msg=CMClass.getMsg(dropM, I, null, CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP, CMMsg.MSG_DROP, CMMsg.NO_EFFECT, null);
 			if( R.okMessage(dropM, msg) )
 			{
-				final List<Room> radiusRooms=CMLib.tracking().getRadiantRooms(R, rflags, 5+super.getXLEVELLevel(mob));
-				return radiusRooms.contains(mob.location());
+				final List<Room> trashRooms = new ArrayList<Room>();
+				return (CMLib.tracking().getRadiantRoomsToTarget(R, trashRooms, rflags, new TrackingLibrary.RFilter() {
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R1, final Exit E, final int dir)
+					{
+						if(R1==R)
+							return false;
+						return true;
+					}
+				}, 5+super.getXLEVELLevel(mob)));
 			}
 			return false;
 		}
@@ -131,8 +139,16 @@ public class CargoLoading extends CommonSkill
 		final MOB dropM=CMClass.getFactoryMOB("cargo loader",I.phyStats().level(),R);
 		try
 		{
-			final List<Room> radiusRooms=CMLib.tracking().getRadiantRooms(R, rflags, 5+super.getXLEVELLevel(mob));
-			return radiusRooms.contains(mob.location());
+			final List<Room> trashRooms = new ArrayList<Room>();
+			return (CMLib.tracking().getRadiantRoomsToTarget(R, trashRooms, rflags, new TrackingLibrary.RFilter() {
+				@Override
+				public boolean isFilteredOut(final Room hostR, final Room R1, final Exit E, final int dir)
+				{
+					if(R1==R)
+						return false;
+					return true;
+				}
+			}, 5+super.getXLEVELLevel(mob)));
 		}
 		finally
 		{
