@@ -184,14 +184,19 @@ public class Chant_LocateAnimals extends Chant
 		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 		flags.plus(TrackingLibrary.TrackingFlag.PASSABLE);
 		final int range=20 + super.getXLEVELLevel(mob) + (2*super.getXMAXRANGELevel(mob));
-		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
-		for (final Room room : checkSet)
-		{
-			final Room R=CMLib.map().getRoom(room);
-			if(animalHere(R)!=null)
-				rooms.add(R);
-		}
+		final List<Room> trashRooms = new ArrayList<Room>();
+		if(CMLib.tracking().getRadiantRoomsToTarget(mob.location(), trashRooms, flags, new TrackingLibrary.RFilter() {
+			@Override
+			public boolean isFilteredOut(final Room hostR, Room R, final Exit E, final int dir)
+			{
+				R=CMLib.map().getRoom(R);
+				if(animalHere(R)!=null)
+					return false;
+				return true;
+			}
 
+		}, range))
+			rooms.add(trashRooms.get(trashRooms.size()-1));
 		while(rooms.size()>10)
 			rooms.remove(CMLib.dice().roll(1,rooms.size(),-1));
 

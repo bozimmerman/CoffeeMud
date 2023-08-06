@@ -22,6 +22,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.GridLocale.CrossExit;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -1849,8 +1850,25 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		try
 		{
-
-			final List<Pair<Room,Integer>> roomsToDo=new LinkedList<Pair<Room,Integer>>();
+			final Map<Room,Set<Integer>> roomsToDo=new HashMap<Room,Set<Integer>>();
+			if(deadRoom.roomID().length()>0)
+			{
+				final Map<Integer,Pair<String,String>> exitIntoMap = CMLib.database().DBReadIncomingRoomExitIDsMap(deadRoom.roomID());
+				for(final Integer key : exitIntoMap.keySet())
+				{
+					final Pair<String,String> p = exitIntoMap.get(key);
+					if(p.first.trim().length()>0)
+					{
+						final Room R = this.getCachedRoom(p.first);
+						if(R != null)
+						{
+							if(!roomsToDo.containsKey(R))
+								roomsToDo.put(R, new TreeSet<Integer>());
+							roomsToDo.get(R).add(key);
+						}
+					}
+				}
+			}
 			final Enumeration<Room> r;
 			if(linkInRooms != null)
 				r=new IteratorEnumeration<Room>(linkInRooms.iterator());
@@ -1863,23 +1881,61 @@ public class CMMap extends StdLibrary implements WorldMap
 				{
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						final Room thatRoom=R.rawDoors()[d];
-						if(thatRoom==deadRoom)
-							roomsToDo.add(new Pair<Room,Integer>(R,Integer.valueOf(d)));
+						final Room linkR=R.rawDoors()[d];
+						if(linkR != null)
+						{
+							if((linkR==deadRoom)
+							||(linkR.roomID().equalsIgnoreCase(deadRoom.roomID())&&(linkR.roomID().length()>0)))
+							{
+								if(R.roomID().trim().length()==0)
+									R.rawDoors()[d]=null;
+								else
+								{
+									final Set<Integer> dirs;
+									if(roomsToDo.containsKey(R))
+										dirs = roomsToDo.get(R);
+									else
+									{
+										dirs=new TreeSet<Integer>();
+										roomsToDo.put(R, dirs);
+									}
+									dirs.add(Integer.valueOf(d));
+								}
+							}
+						}
 					}
 				}
 			}
-			for(final Pair<Room,Integer> p : roomsToDo)
+			for(final Room R : roomsToDo.keySet())
 			{
-				final Room R=p.first;
-				final int d=p.second.intValue();
+				final Set<Integer> dirOs = roomsToDo.get(R);
 				synchronized(CMClass.getSync("SYNC"+R.roomID()))
 				{
-					R.rawDoors()[d]=null;
-					if((R.getRawExit(d)!=null)&&(R.getRawExit(d).isGeneric()))
+					for(final Integer dirO : dirOs)
 					{
-						final Exit GE=R.getRawExit(d);
-						GE.setTemporaryDoorLink(deadRoom.roomID());
+						final int d = dirO.intValue();
+						if(d<Directions.NUM_DIRECTIONS())
+						{
+							R.rawDoors()[d]=null;
+							if((R.getRawExit(d)!=null)
+							&&(R.getRawExit(d).isGeneric()))
+							{
+								final Exit GE=R.getRawExit(d);
+								GE.setTemporaryDoorLink(deadRoom.roomID());
+							}
+						}
+						else
+						if(R instanceof GridLocale)
+						{
+							final GridLocale rG = (GridLocale)R;
+							for(final Iterator<CrossExit> i = rG.outerExits();i.hasNext();)
+							{
+								final CrossExit cE = i.next();
+								if(cE.destRoomID.equalsIgnoreCase(deadRoom.roomID())
+								&&(deadRoom.roomID().length()>0))
+									i.remove();
+							}
+						}
 					}
 					if(includeDB)
 						CMLib.database().DBUpdateExits(R);

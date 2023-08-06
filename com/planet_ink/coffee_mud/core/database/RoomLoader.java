@@ -348,11 +348,9 @@ public class RoomLoader
 		newRoom.setMiscText(DBConnections.getRes(R,"CMROTX"));
 	}
 
-	public Pair<String,String>[] getRoomExitIDs(final String roomID)
+	protected Map<Integer,Pair<String,String>> readRoomExitIDsMap(final String roomID)
 	{
-		@SuppressWarnings("unchecked")
-		final
-		Pair<String,String>[] exits = new Pair[Directions.NUM_DIRECTIONS()];
+		final Map<Integer,Pair<String,String>> exitIDs = new TreeMap<Integer,Pair<String,String>>();
 		DBConnection D=null;
 		// now grab the exits
 		try
@@ -364,8 +362,7 @@ public class RoomLoader
 				final int direction=(int)DBConnections.getLongRes(R,"CMDIRE");
 				final String exitID=DBConnections.getRes(R,"CMEXID");
 				final String nextRoomID=DBConnections.getRes(R,"CMNRID");
-				if((direction>=0)&&(direction<Directions.NUM_DIRECTIONS()))
-					exits[direction] = new Pair<String,String>(exitID,nextRoomID);
+				exitIDs.put(Integer.valueOf(direction), new Pair<String,String>(exitID,nextRoomID));
 			}
 		}
 		catch(final SQLException sqle)
@@ -376,10 +373,52 @@ public class RoomLoader
 		{
 			DB.DBDone(D);
 		}
+		return exitIDs;
+	}
+
+	public Map<Integer,Pair<String,String>> DBReadIncomingRoomExitIDsMap(final String roomID)
+	{
+		final Map<Integer,Pair<String,String>> exitIDs = new TreeMap<Integer,Pair<String,String>>();
+		DBConnection D=null;
+		// now grab the exits
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT CMDIRE, CMEXID, CMROID FROM CMROEX WHERE CMNRID='"+DB.injectionClean(roomID)+"'");
+			while(R.next())
+			{
+				final int direction=(int)DBConnections.getLongRes(R,"CMDIRE");
+				final String exitID=DBConnections.getRes(R,"CMEXID");
+				final String froomID=DBConnections.getRes(R,"CMROID");
+				exitIDs.put(Integer.valueOf(direction), new Pair<String,String>(froomID,exitID));
+			}
+		}
+		catch(final SQLException sqle)
+		{
+			Log.errOut("Room",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return exitIDs;
+	}
+
+	protected Pair<String,String>[] getRoomExitIDs(final String roomID)
+	{
+		@SuppressWarnings("unchecked")
+		final Pair<String,String>[] exits = new Pair[Directions.NUM_DIRECTIONS()];
+		final Map<Integer,Pair<String,String>> ids = readRoomExitIDsMap(roomID);
+		for(final Integer dirI : ids.keySet())
+		{
+			if((dirI.intValue()>=0)
+			&&(dirI.intValue()<Directions.NUM_DIRECTIONS()))
+				exits[dirI.intValue()] = ids.get(dirI);
+		}
 		return exits;
 	}
 
-	public Set<String> getAffectedRoomIDs(final Area parentA, final boolean metro, final String[] propIDs, final String[] propArgs)
+	public Set<String> DBReadAffectedRoomIDs(final Area parentA, final boolean metro, final String[] propIDs, final String[] propArgs)
 	{
 		final Set<String> ids = Collections.synchronizedSet(new TreeSet<String>());
 		String commonPrefix;
@@ -1870,182 +1909,17 @@ public class RoomLoader
 		DBUpdateTheseItems(room,DBGetContents(room));
 	}
 
-	public void DBUpdateExitsNEW(final Room room)
-	{
-		if((!room.isSavable())||(room.amDestroyed()))
-			return;
-		final String baseRoomID = room.roomID();
-		if(baseRoomID.length()==0)
-			return;
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROEX)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
-			Log.debugOut("RoomLoader","Starting exit update for room "+baseRoomID);
-		DBConnection D=null;
-		final Set<Integer> dirs = new HashSet<Integer>();
-		try
-		{
-			D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT CMDIRE FROM CMROEX WHERE CMROID = '"+baseRoomID+"'");
-			while(R.next())
-				dirs.add(Integer.valueOf(R.getInt("CMDIRE")));
-			R.close();
-		}
-		catch(final SQLException sqle)
-		{
-			Log.errOut("RoomLoader",sqle);
-		}
-		finally
-		{
-			DB.DBDone(D);
-		}
-		final List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
-		final boolean useBulkInserts = DB.useBulkInserts();
-		final StringBuilder bulkSQL = new StringBuilder("");
-		final List<String> bulkClobs = new ArrayList<String>();
-		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-		{
-			Exit linkE=room.getRawExit(d);
-			Room linkR=room.rawDoors()[d];
-
-			if((linkE!=null)&&(!linkE.isSavable()))
-				linkE=null;
-			if((linkR!=null)&&(!linkR.isSavable()))
-				linkR=null;
-			if((linkR!=null)||(linkE!=null))
-			{
-				CMLib.map().registerWorldObjectLoaded(room.getArea(), room, linkE);
-				final String fullSQL;
-				final String exitText = (linkE==null)?" ":linkE.text();
-				if(dirs.contains(Integer.valueOf(d)))
-				{
-					fullSQL ="UPDATE CMROEX SET "
-							+"CMEXID='"+((linkE==null)?" ":linkE.ID())+"', "
-							+"CMEXTX=?, "
-							+"CMNRID='"+((linkR==null)?" ":linkR.roomID())+"'"
-							+" WHERE CMROID='"+baseRoomID+"' and CMDIRE="+d;
-					dirs.remove(Integer.valueOf(d));
-					statements.add(new DBPreparedBatchEntry(fullSQL,exitText));
-				}
-				else
-				{
-					fullSQL ="INSERT INTO CMROEX ("
-							+"CMROID, "
-							+"CMDIRE, "
-							+"CMEXID, "
-							+"CMEXTX, "
-							+"CMNRID"
-							+") values ("
-							+"'"+baseRoomID+"',"
-							+d+","
-							+"'"+((linkE==null)?" ":linkE.ID())+"',"
-							+"?,"
-							+"'"+((linkR==null)?" ":linkR.roomID())+"')";
-					if(!useBulkInserts)
-						statements.add(new DBPreparedBatchEntry(fullSQL,exitText));
-					else
-					{
-						final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,fullSQL,exitText);
-						if(entry != null)
-							statements.add(entry);
-					}
-				}
-			}
-		}
-		if(room instanceof GridLocale)
-		{
-			final HashSet<String> done=new HashSet<String>();
-			int ordinal=0;
-			for(final Iterator<GridLocale.CrossExit> i=((GridLocale)room).outerExits();i.hasNext();)
-			{
-				final GridLocale.CrossExit CE=i.next();
-				Room R=CMLib.map().getRoom(CE.destRoomID);
-				if(R==null)
-					continue;
-				if(R.getGridParent()!=null)
-					R=R.getGridParent();
-				if((R!=null)&&(R.isSavable())&&(!done.contains(R.roomID())))
-				{
-					done.add(R.roomID());
-					final HashSet<String> oldStrs=new HashSet<String>();
-					for(final Iterator<GridLocale.CrossExit> i2=((GridLocale)room).outerExits();i2.hasNext();)
-					{
-						final GridLocale.CrossExit CE2=i2.next();
-						if((CE2.destRoomID.equals(R.roomID())
-						||(CE2.destRoomID.startsWith(R.roomID()+"#("))))
-						{
-							final String str=CE2.x+" "+CE2.y+" "+((CE2.out?256:512)|CE2.dir)+" "+CE2.destRoomID.substring(R.roomID().length())+";";
-							if(!oldStrs.contains(str))
-								oldStrs.add(str);
-						}
-					}
-					final StringBuffer exitStr=new StringBuffer("");
-					for (final String string : oldStrs)
-						exitStr.append(string);
-					final String fullSQL;
-					final int d = (256+(++ordinal));
-					final String exitText = exitStr.toString();
-					if(dirs.contains(Integer.valueOf(d)))
-					{
-						fullSQL ="UPDATE CMROEX SET "
-								+"CMEXID='Open', "
-								+"CMEXTX=?, "
-								+"CMNRID='"+R.roomID()+"'"
-								+" WHERE CMROID='"+baseRoomID+"' and CMDIRE="+d;
-						dirs.remove(Integer.valueOf(d));
-						statements.add(new DBPreparedBatchEntry(fullSQL,exitText));
-					}
-					else
-					{
-						fullSQL =
-						"INSERT INTO CMROEX ("
-						+"CMROID, "
-						+"CMDIRE, "
-						+"CMEXID, "
-						+"CMEXTX, "
-						+"CMNRID"
-						+") values ("
-						+"'"+baseRoomID+"',"
-						+d+","
-						+"'Open',"
-						+"?,"
-						+"'"+R.roomID()+"')";
-						if(!useBulkInserts)
-							statements.add(new DBPreparedBatchEntry(fullSQL,exitText));
-						else
-						{
-							final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,fullSQL,exitText);
-							if(entry != null)
-								statements.add(entry);
-						}
-					}
-				}
-			}
-		}
-		if((bulkSQL.length()>0) && useBulkInserts)
-			statements.add(new DBPreparedBatchEntry(bulkSQL.toString(),bulkClobs.toArray(new String[0])));
-		for(final Integer d : dirs)
-		{
-			final String fullSQL;
-			fullSQL = "DELETE FROM CMROEX  WHERE CMROID='"+baseRoomID+"' and CMDIRE="+d;
-			statements.add(new DBPreparedBatchEntry(fullSQL));
-		}
-		DB.updateWithClobs(statements);
-		if(Log.debugChannelOn()
-		&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROEX)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
-			Log.debugOut("RoomLoader","Finished exit update for room "+baseRoomID);
-	}
-
 	public void DBUpdateExits(final Room room)
 	{
 		if((!room.isSavable())||(room.amDestroyed()))
 			return;
 
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROEX)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
+		if(Log.debugChannelOn()
+		&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROEX)
+			||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Starting exit update for room "+room.roomID());
 		final List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
-		final boolean useBulkInserts = DB.useBulkInserts();
-		final StringBuilder bulkSQL = new StringBuilder("");
-		final List<String> bulkClobs = new ArrayList<String>();
-		statements.add(new DBPreparedBatchEntry("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'"));
+		final Map<Integer,Pair<String,String>> existingExits = this.readRoomExitIDsMap(room.roomID());
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			Exit linkE=room.getRawExit(d);
@@ -2057,31 +1931,41 @@ public class RoomLoader
 			&&(!linkR.isSavable())
 			&&(!linkR.ID().equals("ThinRoom")))
 				linkR=null;
+			final Integer dirO = Integer.valueOf(d);
 			if((linkR!=null)||(linkE!=null))
 			{
 				CMLib.map().registerWorldObjectLoaded(room.getArea(), room, linkE);
-				final String fullSQL ="INSERT INTO CMROEX ("
-						+"CMROID, "
-						+"CMDIRE, "
-						+"CMEXID, "
-						+"CMEXTX, "
-						+"CMNRID"
-						+") values ("
-						+"'"+room.roomID()+"',"
-						+d+","
-						+"'"+((linkE==null)?" ":linkE.ID())+"',"
-						+"?,"
-						+"'"+((linkR==null)?" ":linkR.roomID())+"')";
-				final String exitText = (linkE==null)?" ":linkE.text();
-				if(!useBulkInserts)
-					statements.add(new DBPreparedBatchEntry(fullSQL,exitText));
+				final String fullSQL;
+				if(!existingExits.containsKey(dirO))
+				{
+					fullSQL ="INSERT INTO CMROEX ("
+							+"CMROID, "
+							+"CMDIRE, "
+							+"CMEXID, "
+							+"CMEXTX, "
+							+"CMNRID"
+							+") values ("
+							+"'"+room.roomID()+"',"
+							+d+","
+							+"'"+((linkE==null)?" ":linkE.ID())+"',"
+							+"?,"
+							+"'"+((linkR==null)?" ":linkR.roomID())+"')";
+				}
 				else
 				{
-					final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,fullSQL,exitText);
-					if(entry != null)
-						statements.add(entry);
+					fullSQL ="UPDATE CMROEX "
+							+"SET CMEXID='"+((linkE==null)?" ":linkE.ID())+"',"
+							+"CMEXTX=?,"
+							+"CMNRID='"+((linkR==null)?" ":linkR.roomID())+"' "
+							+"WHERE CMROID='"+room.roomID()+"' AND CMDIRE="+d;
 				}
+				final String exitText = (linkE==null)?" ":linkE.text();
+				statements.add(new DBPreparedBatchEntry(fullSQL,exitText));
 			}
+			else
+			if(existingExits.containsKey(dirO))
+				statements.add(new DBPreparedBatchEntry("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"' AND CMDIRE="+d));
+			existingExits.remove(dirO);
 		}
 		if(room instanceof GridLocale)
 		{
@@ -2095,7 +1979,9 @@ public class RoomLoader
 					continue;
 				if(R.getGridParent()!=null)
 					R=R.getGridParent();
-				if((R!=null)&&(R.isSavable())&&(!done.contains(R.roomID())))
+				if((R!=null)
+				&&(R.isSavable())
+				&&(!done.contains(R.roomID())))
 				{
 					done.add(R.roomID());
 					final HashSet<String> oldStrs=new HashSet<String>();
@@ -2113,35 +1999,43 @@ public class RoomLoader
 					final StringBuffer exitStr=new StringBuffer("");
 					for (final String string : oldStrs)
 						exitStr.append(string);
-					final String fullSQL =
-					"INSERT INTO CMROEX ("
-					+"CMROID, "
-					+"CMDIRE, "
-					+"CMEXID, "
-					+"CMEXTX, "
-					+"CMNRID"
-					+") values ("
-					+"'"+room.roomID()+"',"
-					+(256+(++ordinal))+","
-					+"'Open',"
-					+"?,"
-					+"'"+R.roomID()+"')";
-					final String exitText = exitStr.toString();
-					if(!useBulkInserts)
-						statements.add(new DBPreparedBatchEntry(fullSQL,exitText));
+					final Integer dirO = Integer.valueOf(256+(++ordinal));
+					final String fullSQL;
+					if(!existingExits.containsKey(dirO))
+					{
+						fullSQL ="INSERT INTO CMROEX ("
+								+"CMROID, "
+								+"CMDIRE, "
+								+"CMEXID, "
+								+"CMEXTX, "
+								+"CMNRID"
+								+") values ("
+								+"'"+room.roomID()+"',"
+								+dirO.intValue()+","
+								+"'Open',"
+								+"?,"
+								+"'"+R.roomID()+"')";
+					}
 					else
 					{
-						final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,fullSQL,exitText);
-						if(entry != null)
-							statements.add(entry);
+						fullSQL ="UPDATE CMROEX "
+								+"SET CMEXID='Open',"
+								+"CMEXTX=?,"
+								+"CMNRID='"+R.roomID()+"' "
+								+"WHERE CMROID='"+room.roomID()+"' AND CMDIRE="+dirO.intValue();
 					}
+					existingExits.remove(dirO);
+					final String exitText = exitStr.toString();
+						statements.add(new DBPreparedBatchEntry(fullSQL,exitText));
 				}
 			}
+			for(final Integer dir : existingExits.keySet())
+				statements.add(new DBPreparedBatchEntry("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"' AND CMDIRE="+dir.intValue()));
 		}
-		if((bulkSQL.length()>0) && useBulkInserts)
-			statements.add(new DBPreparedBatchEntry(bulkSQL.toString(),bulkClobs.toArray(new String[0])));
 		DB.updateWithClobs(statements);
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROEX)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
+		if(Log.debugChannelOn()
+		&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROEX)
+			||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Finished exit update for room "+room.roomID());
 	}
 
@@ -2476,9 +2370,21 @@ public class RoomLoader
 	protected List<String> getRoomDeleteStrings(final String roomID)
 	{
 		return new XVector<String>(
-			"DELETE FROM CMROEX WHERE CMROID='"+roomID+"'",
-			"DELETE FROM CMROCH WHERE CMROID='"+roomID+"'",
-			"DELETE FROM CMROIT WHERE CMROID='"+roomID+"'"
+			"DELETE FROM CMROEX WHERE CMROID='"+roomID+"';",
+			"DELETE FROM CMROEX WHERE CMNRID='"+roomID+"';",
+			"DELETE FROM CMROCH WHERE CMROID='"+roomID+"';",
+			"DELETE FROM CMROIT WHERE CMROID='"+roomID+"';"
+		);
+	}
+
+	protected List<String> getRoomDeleteQueries(final String roomID)
+	{
+		return new XVector<String>(
+			"SELECT * FROM CMROCH WHERE CMROID='"+roomID+"';",
+			"SELECT * FROM CMROEX WHERE CMROID='"+roomID+"';",
+			"SELECT * FROM CMROEX WHERE CMNRID='"+roomID+"';",
+			"SELECT * FROM CMROIT WHERE CMROID='"+roomID+"';",
+			"SELECT * FROM CMROOM WHERE CMROID='"+roomID+"';"
 		);
 	}
 
@@ -2486,12 +2392,28 @@ public class RoomLoader
 	{
 		if(!room.isSavable())
 			return;
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
+		if(Log.debugChannelOn()
+		&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)
+				||CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROEX)
+				||CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROIT)
+				||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Destroying room "+room.roomID());
-		DB.update(getRoomDeleteStrings(room.roomID()).toArray(new String[0]));
-		DB.update("DELETE FROM CMROOM WHERE CMROID='"+room.roomID()+"'");
+		int total = 1;
+		while(total>0)
+		{
+			for(final String update : getRoomDeleteStrings(room.roomID()))
+				DB.update(update);
+			DB.update("DELETE FROM CMROOM WHERE CMROID='"+room.roomID()+"';");
+			total = 0;
+			for(final String query : getRoomDeleteQueries(room.roomID()))
+				total += (DB.queryRows(query)>0?1:0);
+		}
 		room.destroy();
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
+		if(Log.debugChannelOn()
+		&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)
+				||CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROEX)
+				||CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROIT)
+				||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Done gestroying room "+room.roomID());
 	}
 

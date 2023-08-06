@@ -272,15 +272,24 @@ public class Skill_TrackCriminal extends StdAbility
 			.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		final ArrayList<Room> rooms=new ArrayList<Room>();
 		final int range=50 + (10*super.getXLEVELLevel(mob))+(20*super.getXMAXRANGELevel(mob));
-		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
-		for (final MOB M : mobs)
-		{
-			if((M!=null)
-			&&(checkSet.contains(M.location()))
-			&&(CMLib.flags().canAccess(mob, M.location()))
-			&&(CMLib.flags().isSeeable(M)))
-				rooms.add(M.location());
-		}
+		final List<Room> trashRooms = new ArrayList<Room>();
+		if(CMLib.tracking().getRadiantRoomsToTarget(mob.location(), trashRooms, flags, new TrackingLibrary.RFilter() {
+			@Override
+			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+			{
+				for (final MOB M : mobs)
+				{
+					if((M!=null)
+					&&(M.location()==R)
+					&&(CMLib.flags().canAccess(mob, M.location()))
+					&&(CMLib.flags().isSeeable(M)))
+						return false;
+				}
+				return true;
+			}
+
+		}, range))
+			rooms.add(trashRooms.get(trashRooms.size()-1));
 		if(rooms.size()>0)
 			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,range);
 

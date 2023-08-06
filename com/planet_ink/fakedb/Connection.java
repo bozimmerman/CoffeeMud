@@ -210,7 +210,6 @@ public class Connection implements java.sql.Connection
 	@Override
 	public void setAutoCommit(final boolean autoCommit) throws java.sql.SQLException
 	{
-		log("setAutoCommit");
 		if (!autoCommit)
 			throw new java.sql.SQLException("Cannot disable AUTO_COMMIT", "08003");
 		return;

@@ -343,13 +343,9 @@ public class Thief_Assassinate extends ThiefSkill
 					 .plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 					 .plus(TrackingLibrary.TrackingFlag.NOAIR)
 					 .plus(TrackingLibrary.TrackingFlag.NOWATER);
-				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
-				for (final Room room : checkSet)
-				{
-					final Room R=CMLib.map().getRoom(room);
-					if(R.fetchInhabitant(mobName)!=null)
-						rooms.add(R);
-				}
+				final List<Room> trashRooms = new ArrayList<Room>();
+				if(CMLib.tracking().getRadiantRoomsToTarget(mob.location(), trashRooms, flags, new TrackingLibrary.FilterMOBName(null, mobName), range))
+					rooms.add(trashRooms.get(trashRooms.size()-1));
 			}
 			catch(final NoSuchElementException nse)
 			{

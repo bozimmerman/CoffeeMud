@@ -380,6 +380,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 										openE = CMClass.getExit("Open");
 									nR.setRawExit(nd, openE); // this makes the thin room modifiable
 								}
+								else
+									nR.setRawExit(nd, null); // this makes the thin room modifiable
 								final Room nnR = CMLib.map().getCachedRoom(exitId);
 								if(nnR != null)
 									nR.rawDoors()[nd]=nnR;

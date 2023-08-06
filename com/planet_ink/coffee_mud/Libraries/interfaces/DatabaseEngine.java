@@ -378,7 +378,15 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param propArgs TODO
 	 * @return the list of room ids
 	 */
-	public Set<String> getAffectedRoomIDs(final Area parentA, final boolean metro, final String[] propIDs, String[] propArgs);
+	public Set<String> DBReadAffectedRoomIDs(final Area parentA, final boolean metro, final String[] propIDs, String[] propArgs);
+
+	/**
+	 * Table category: DBMAP
+	 * Reads all the room ids and exits that link to the given room id
+	 * @param roomID the room id to find links to
+	 * @return the map of directions to a pair of outgoing room ids and exit ids
+	 */
+	public Map<Integer,Pair<String,String>> DBReadIncomingRoomExitIDsMap(final String roomID);
 
 	/**
 	 * Table category: DBMAP
@@ -438,14 +446,14 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBMAP
 	 * Reads the exits of the room with the given room id
-	 * and populates them into the pair array, indexed by 
+	 * and populates them into the pair array, indexed by
 	 * direction.  The pair is exit class id, next room id
 	 *
 	 * @param roomID the room id
 	 * @return the pair of exit class id, next room id, indexed by direction
 	 */
 	public Pair<String,String>[] DBReadRoomExitIDs(final String roomID);
-	
+
 	/**
 	 * Table category: DBMAP
 	 * Resaves the given rooms exit objects, and

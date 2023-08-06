@@ -114,19 +114,22 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 
 	}
 
-	protected boolean isRetractableLink(final Map<Room,boolean[]> recurseChkRooms, final Room fromRoom, final Room theRoom)
+	protected boolean isRetractableGridLink(final Map<Room,boolean[]> recurseChkRooms, final Room fromRoom, final Room theRoom)
 	{
 		// the only potentially retractable rooms are those that ARE for sale, and NOT owned
 		if(theRoom==null)
 			return true;
 
-		if((recurseChkRooms != null)
-		&&(recurseChkRooms.containsKey(theRoom)))
+		if(recurseChkRooms.containsKey(theRoom))
 		{
 			final boolean[] B=recurseChkRooms.get(theRoom);
 			if(B.length>0)
 				return B[0];
 		}
+
+		// never retract across areas!
+		if((fromRoom != null)&&(theRoom.getArea()!=fromRoom.getArea()))
+			return false;
 
 		final LegalLibrary theLaw=CMLib.law();
 
@@ -142,59 +145,31 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			}
 		}
 
-		if(recurseChkRooms == null)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			final Room R=theRoom.rawDoors()[d];
+			if((R!=null)
+			&&(R!=fromRoom)
+			&&(R.roomID().length()>0))
 			{
-				final Room R=theRoom.rawDoors()[d];
-				if((R!=null)
-				&&(R!=fromRoom)
-				&&(R.roomID().length()>0)
-				&&(!R.roomID().equals(fromRoom.roomID())))
+				if(!R.isSavable())
+					return false; // if its not cached, it can't be retracted
+				if(recurseChkRooms.containsKey(R))
 				{
-					final LandTitle theTitle;
-					if(!R.isSavable())
-					{
-						final Room chkR=CMLib.database().DBReadRoomObject(R.roomID(), false);
-						theTitle=(chkR != null)?theLaw.getLandTitle(chkR):null;
-					}
-					else
-						theTitle=theLaw.getLandTitle(theRoom);
-					if((theTitle==null)
-					||(theTitle.getOwnerName().length()>0))
-						return false;
+					final boolean[] B=recurseChkRooms.get(R);
+					if(B.length>0)
+						return B[0];
+					continue;
+				}
+				recurseChkRooms.put(R, new boolean[0]);
+				if(!isRetractableGridLink(recurseChkRooms,theRoom,R))
+				{
+					recurseChkRooms.put(theRoom, new boolean[]{false});
+					return false;
 				}
 			}
 		}
-		else
-		{
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-			{
-				final Room R=theRoom.rawDoors()[d];
-				if((R!=null)
-				&&(R!=fromRoom)
-				&&(R.roomID().length()>0))
-				{
-					if(!R.isSavable())
-						return false; // if its not cached, it can't be retracted
-					if(recurseChkRooms.containsKey(R))
-					{
-						final boolean[] B=recurseChkRooms.get(R);
-						if(B.length>0)
-							return B[0];
-						continue;
-					}
-					recurseChkRooms.put(R, new boolean[0]);
-					if(!isRetractableLink(recurseChkRooms,theRoom,R))
-					{
-						recurseChkRooms.put(theRoom, new boolean[]{false});
-						return false;
-					}
-				}
-			}
-		}
-		if(recurseChkRooms != null)
-			recurseChkRooms.put(theRoom, new boolean[]{true});
+		recurseChkRooms.put(theRoom, new boolean[]{true});
 		return true;
 	}
 
@@ -221,7 +196,103 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		return getOwnerName().length()>0;
 	}
 
+	/**
+	 * Given a room that is 1. this land title, and 2. has no owner (or otherwise can't expand),
+	 * this will see if the room qualifies for deletion, and do so if it can.
+	 * @param R the room to work on
+	 * @param postWork a set of runnables that do the actual deleting.
+	 * @return true if the room is schedules for deletion.
+	 */
 	protected boolean retractRooms(final Room R, final List<Runnable> postWork)
+	{
+		if(super.gridLayout())
+			return retractGridRooms(R, postWork);
+		int linksToOtherLotForSaleRoomsThatAreForSale = 0;
+		int numDoors = 0;
+		Room linkBackRoom = null;
+		int linkBackDir = -1;
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+		{
+			if(d==Directions.GATE)
+				continue;
+			final Room R2=R.rawDoors()[d];
+			if(R2==null)
+				continue;
+			if(R2.roomID().length()==0) // skys and underwater don't count
+				continue;
+			numDoors++;
+			// check for exceptions that protect Room R FOREVER!
+			if(R2.getArea() != R.getArea())
+				return false;
+			// check the loop back, and whether this is an actual peer
+			final Room RR2 = R2.rawDoors()[Directions.getOpDirectionCode(d)];
+			if((RR2 != null)
+			&&((RR2!=R)
+			&&(!RR2.roomID().equalsIgnoreCase(R2.roomID()))))
+				return false; // if links to a room that doesn't link back, protect it!
+			if(canGenerateAdjacentRooms(R2))
+				return false;
+			// loop back passed; area check passed; so now check the title
+			final LandTitle lotA;
+			if((!R2.isSavable())&&(R2.numEffects()==0)) // might be thin
+			{
+				final Room realR2=CMLib.database().DBReadRoomObject(R2.roomID(), false);
+				lotA = (realR2 != null) ? (LandTitle)realR2.fetchEffect(ID()) : null;
+			}
+			else
+				lotA = (LandTitle)R2.fetchEffect(ID());
+			if(lotA != null)
+			{
+				if((lotA.getOwnerName()!=null)
+				&&(lotA.getOwnerName().trim().length()==0))
+				{
+					linksToOtherLotForSaleRoomsThatAreForSale++;
+					linkBackRoom = R2;
+					linkBackDir = Directions.getOpDirectionCode(d);
+				}
+				else
+					return false; // linked to an owned room means R is safe
+			}
+			else
+			if(CMLib.law().getLandTitle(R2)!=null)
+				return false; // linked to another titled room means R is safe
+		}
+		if((linksToOtherLotForSaleRoomsThatAreForSale == 1)
+		||(numDoors == 0))
+		{
+			final Room lbR=linkBackRoom;
+			if((lbR!=null)
+			&&(lbR.rawDoors()[linkBackDir]==R))
+			{
+				// this might help obliterate,
+				// and with future work on the same thread
+				lbR.setRawExit(linkBackDir, null);
+				lbR.rawDoors()[linkBackDir]=null;
+			}
+			postWork.add(new Runnable()
+			{
+				final Room room=R;
+				final Room lbroom=lbR;
+				@Override
+				public void run()
+				{
+					final Room obliteR = CMLib.map().getRoom(room);
+					if(obliteR != null)
+						CMLib.map().obliterateMapRoom(obliteR);
+					final Room updateR = CMLib.map().getRoom(lbroom);
+					if((updateR != null)
+					&&(updateR.getArea()!=null))
+					{
+						CMLib.database().DBUpdateExits(updateR);
+						updateR.getArea().fillInAreaRoom(updateR);
+					}
+				}
+			});
+		}
+		return false;
+	}
+
+	protected boolean retractGridRooms(final Room R, final List<Runnable> postWork)
 	{
 		boolean updateExits=false;
 		boolean foundOne=false;
@@ -238,18 +309,29 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			final Room R2=R.rawDoors()[d];
 			if((R2!=null)
 			&&((!R2.isSavable())||(R2.roomID().length()==0)))
+			{
+				if((R2.roomID().length()>0)
+				&&(R2.ID().equalsIgnoreCase("ThinRoom")))
+				{
+					foundOne=true;
+					updateExits=false;
+					break;
+				}
 				continue;
+			}
 			Exit E=R.getRawExit(d);
 			if(checkedRetractRooms != null)
 				checkedRetractRooms.clear();
-			if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(d)]==R))
+			final Room doorR2 =(R2!=null)?R2.rawDoors()[Directions.getOpDirectionCode(d)]:null;
+			if((doorR2!=null)
+			&&((doorR2==R)||(doorR2.roomID().equalsIgnoreCase(R.roomID()))))
 				foundOne=true;
 			else
 			if((R2!=null)
-			&&(isRetractableLink(checkedRetractRooms,R,R2)))
+			&&(isRetractableGridLink(checkedRetractRooms,R,R2)))
 			{
-				R.rawDoors()[d]=null;
 				R.setRawExit(d,null);
+				R.rawDoors()[d]=null;
 				updateExits=true;
 				postWork.add(new Runnable()
 				{
@@ -462,14 +544,13 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					{
 						lastItemNums=data[0];
 						daysWithNoChange=data[1];
-						if(getOwnerName().length()==0)
-						{
-							didAnything = retractRooms(R,postWork) || didAnything;
-						}
-						else
 						if(canGenerateAdjacentRooms(R))
 						{
 							didAnything = expandRooms(R,postWork) || didAnything;
+						}
+						else
+						{
+							didAnything = retractRooms(R,postWork) || didAnything;
 						}
 					}
 				}

@@ -231,16 +231,10 @@ public class Ranger_Track extends StdAbility
 			.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		final ArrayList<Room> rooms=new ArrayList<Room>();
 		final int range=50 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
-		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
-		for (final Room room : checkSet)
-		{
-			final Room R=CMLib.map().getRoom(room);
-			final MOB M=R.fetchInhabitant(mobName);
-			if((M!=null)
-			&&(CMLib.flags().canAccess(mob, R))
-			&&(CMLib.flags().isSeeable(M)))
-				rooms.add(R);
-		}
+		final List<Room> trashRooms = new ArrayList<Room>();
+		final TrackingLibrary.RFilter targetFilter = new TrackingLibrary.FilterMOBName(mob,mobName);
+		if(CMLib.tracking().getRadiantRoomsToTarget(mob.location(), trashRooms, flags, targetFilter, range))
+			rooms.add(trashRooms.get(trashRooms.size()-1));
 
 		if(rooms.size()>0)
 			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,range);

@@ -247,21 +247,22 @@ public class Chant_FindMate extends Chant
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY);
 		final ArrayList<Room> rooms=new ArrayList<Room>();
 		final int radius = 50 + (10*super.getXMAXRANGELevel(mob)) + super.getXLEVELLevel(mob);
-		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,radius);
-		for (final Room R : checkSet)
-		{
-			if(R!=null)
-			for(int i=0;i<R.numInhabitants();i++)
+		final List<Room> trashRooms = new ArrayList<Room>();
+		if(CMLib.tracking().getRadiantRoomsToTarget(mob.location(), trashRooms, flags, new TrackingLibrary.RFilter() {
+			@Override
+			public boolean isFilteredOut(final Room hostR, Room R, final Exit E, final int dir)
 			{
-				final MOB M=R.fetchInhabitant(i);
-				if(isSuitableMate(M,target))
+				R=CMLib.map().getRoom(R);
+				for(int i=0;i<R.numInhabitants();i++)
 				{
-					rooms.add(R);
-					break;
+					final MOB M=R.fetchInhabitant(i);
+					if(isSuitableMate(M,target))
+						return false;
 				}
+				return true;
 			}
-		}
-		checkSet=null;
+		}, radius))
+			rooms.add(trashRooms.get(trashRooms.size()-1));
 		//TrackingLibrary.TrackingFlags flags;
 		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY)

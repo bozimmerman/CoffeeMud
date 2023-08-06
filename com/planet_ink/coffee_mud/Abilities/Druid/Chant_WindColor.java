@@ -269,7 +269,7 @@ public class Chant_WindColor extends Chant
 				}
 
 				int done=0;
-				if(M.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
+				if(CMLib.flags().isUndead(M))
 				{
 					done++;
 					colors[0]++;

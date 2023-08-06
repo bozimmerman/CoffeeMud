@@ -149,21 +149,6 @@ public class Skill_Track extends StdSkill
 		super.unInvoke();
 	}
 
-	private static class TargetFilter implements RFilter
-	{
-		final MOB M;
-		public TargetFilter(final MOB M)
-		{
-			this.M = M;
-		}
-		@Override
-		public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-		{
-			if((R==M.location())||(hostR==M.location()))
-				return false;
-			return true;
-		}
-	}
 
 	public synchronized boolean bePersistant(final MOB mob)
 	{
@@ -543,53 +528,15 @@ public class Skill_Track extends StdSkill
 			{
 				final List<Room> trashRooms = new ArrayList<Room>();
 				final MOB M1=CMLib.players().findPlayerOnline(mobName, true);
+				final RFilter targetFilter;
 				if((M1!=null)
 				&&(CMLib.flags().canAccess(mob, M1.location()))
-				&&(CMLib.flags().isSeeable(M1))
-				// if this fails, we just give up on the player target and poke around
-				&&(CMLib.tracking().getRadiantRoomsToTarget(startRoom, trashRooms, flags, new TargetFilter(M1), radius)))
-					targetRoomsV.add(M1.location());
+				&&(CMLib.flags().isSeeable(M1)))
+					targetFilter = new TrackingLibrary.FilterMOB(M1);
 				else
-				{
-					int startRadius = radius;
-					if(startRadius > 8)
-						startRadius = 4;
-					final TrackingFlags[] tflagSets;
-					if(!flags.contains(TrackingFlag.AREAONLY))
-					{
-						final TrackingFlags areaFlags = flags.copyOf();
-						areaFlags.add(TrackingFlag.AREAONLY);
-						tflagSets = new TrackingFlags[] { areaFlags, flags };
-					}
-					else
-						tflagSets = new TrackingFlags[] { flags };
-					for(int r=startRadius;r<=radius;r*=2)
-					{
-						for(final TrackingFlags useFlags : tflagSets)
-						{
-							final List<Room> checkSet=CMLib.tracking().getRadiantRooms(startRoom,useFlags,r);
-							for (final Room room : checkSet)
-							{
-								final Room R=CMLib.map().getRoom(room);
-								if(R!=null)
-								{
-									final MOB M=R.fetchInhabitant(mobName);
-									if((M!=null)
-									&&(CMLib.flags().canAccess(mob, R))
-									&&(CMLib.flags().isSeeable(M))
-									&&(!targetRoomsV.contains(R)))
-										targetRoomsV.add(R);
-								}
-							}
-							if(targetRoomsV.size()>0)
-								break;
-						}
-						if(targetRoomsV.size()>0)
-							break;
-						if((r<radius)&&(r*2>radius))
-							r = radius/2;
-					}
-				}
+					targetFilter = new TrackingLibrary.FilterMOBName(mob,mobName);
+				if(CMLib.tracking().getRadiantRoomsToTarget(startRoom, trashRooms, flags, targetFilter, radius))
+					targetRoomsV.add(trashRooms.get(trashRooms.size()-1));
 			}
 			catch (final NoSuchElementException nse)
 			{

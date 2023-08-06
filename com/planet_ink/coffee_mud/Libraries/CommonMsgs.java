@@ -843,12 +843,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			final int bday=birthDay[PlayerStats.BIRTHDEX_DAY];
 			final int bmonth=birthDay[PlayerStats.BIRTHDEX_MONTH];
 			while((currYear>birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED])
-			||((currYear==birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED])&&((month>bmonth)||((month==bmonth)&&(day>=bday)))))
+			||((currYear==birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED])
+				&&((month>bmonth)||((month==bmonth)&&(day>=bday)))))
 			{
 				if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMMORT))
-				{
 					birthDay[PlayerStats.BIRTHDEX_YEAR]++;
-				}
 				else
 				{
 					if((month==bmonth)
@@ -860,7 +859,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					mob.recoverPhyStats();
 					mob.recoverMaxState();
 				}
-				if(CMSecurity.isDisabled(CMSecurity.DisFlag.SLOW_AGEING) || (birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]==currYear))
+				if(CMSecurity.isDisabled(CMSecurity.DisFlag.SLOW_AGEING)
+				|| (birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]==currYear))
 					birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]++;
 				else
 					birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]=currYear;

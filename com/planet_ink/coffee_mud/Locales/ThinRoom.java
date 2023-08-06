@@ -228,8 +228,14 @@ public class ThinRoom implements Room
 	{
 		if(exits == sexits)
 		{
-			exits=Arrays.copyOf(sexits, exits.length);
-			rooms=Arrays.copyOf(srooms, srooms.length);
+			synchronized(this)
+			{
+				if(exits == sexits)
+				{
+					rooms=Arrays.copyOf(srooms, srooms.length);
+					exits=Arrays.copyOf(sexits, sexits.length);
+				}
+			}
 		}
 		if(E != null)
 			exits[direction]=E;

@@ -155,7 +155,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			else
 			if(CMath.bset(A1.flags(), Area.FLAG_THIN))
 			{
-				final Set<String> ids = CMLib.database().getAffectedRoomIDs(A1, false, titleProps, null);
+				final Set<String> ids = CMLib.database().DBReadAffectedRoomIDs(A1, false, titleProps, null);
 				for(final Iterator<String> i=ids.iterator();i.hasNext();)
 				{
 					final String id = i.next();

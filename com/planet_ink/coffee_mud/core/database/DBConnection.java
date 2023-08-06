@@ -135,6 +135,8 @@ public class DBConnection
 		myConnection=DriverManager.getConnection(dbService,p);
 		if(useTransactions)
 			myConnection.setAutoCommit(false);
+		else
+			myConnection.setAutoCommit(true);
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 			Log.debugOut("New connection made to :"+dbService+" using "+dbClass);
 		sqlserver=false;

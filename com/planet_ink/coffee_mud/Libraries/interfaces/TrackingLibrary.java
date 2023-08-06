@@ -122,6 +122,48 @@ public interface TrackingLibrary extends CMLibrary
 		AREANAMES
 	}
 
+	public static class FilterMOB implements RFilter
+	{
+		final MOB M;
+		public FilterMOB(final MOB M)
+		{
+			this.M = M;
+		}
+		@Override
+		public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+		{
+			if((R==M.location())||(hostR==M.location()))
+				return false;
+			return true;
+		}
+	}
+
+	public static class FilterMOBName implements RFilter
+	{
+		final String mobName;
+		final MOB viewerM;
+		public FilterMOBName(final MOB viewerM, final String mobName)
+		{
+			this.viewerM=viewerM;
+			this.mobName=mobName;
+		}
+		@Override
+		public boolean isFilteredOut(final Room hostR, Room R, final Exit E, final int dir)
+		{
+			R=CMLib.map().getRoom(R);
+			if(R!=null)
+			{
+				final MOB M=R.fetchInhabitant(mobName);
+				if((M!=null)
+				&&((viewerM==null)||(CMLib.flags().canAccess(viewerM, R)))
+				&&((viewerM==null)||(CMLib.flags().isSeeable(M))))
+					return false;
+			}
+			return true;
+		}
+	}
+
+
 	public static enum TrackingFlag
 	{
 		NOHOMES(new RFilter()

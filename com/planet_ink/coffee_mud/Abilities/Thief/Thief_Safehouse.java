@@ -201,19 +201,23 @@ public class Thief_Safehouse extends ThiefSkill
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 					.plus(TrackingLibrary.TrackingFlag.NOAIR)
 					.plus(TrackingLibrary.TrackingFlag.NOWATER);
-			List<Room> V=CMLib.tracking().getRadiantRooms(target,flags,50+(2*getXLEVELLevel(mob)));
 			Room R=null;
-			int v=0;
-			for(;v<V.size();v++)
-			{
-				R=V.get(v);
-				if((isGoodSafehouse(R))&&(!isLawHere(R)))
-					break;
-			}
+			final List<Room> trashRooms = new ArrayList<Room>();
+			if(CMLib.tracking().getRadiantRoomsToTarget(mob.location(), trashRooms, flags, new TrackingLibrary.RFilter() {
+				@Override
+				public boolean isFilteredOut(final Room hostR, Room R, final Exit E, final int dir)
+				{
+					R=CMLib.map().getRoom(R);
+					if((isGoodSafehouse(R))&&(!isLawHere(R)))
+						return false;
+					return true;
+				}
+			}, 50+(2*getXLEVELLevel(mob))))
+				R=trashRooms.get(trashRooms.size()-1);
 			mob.tell(L("A place like this can't be a safehouse."));
 			if((isGoodSafehouse(R))&&(!isLawHere(R)))
 			{
-				V=CMLib.tracking().findTrailToAnyRoom(target,new XVector<Room>(R),flags,50+(2*getXLEVELLevel(mob)));
+				final List<Room> V=CMLib.tracking().findTrailToAnyRoom(target,new XVector<Room>(R),flags,50+(2*getXLEVELLevel(mob)));
 				final StringBuffer trail=new StringBuffer("");
 				int dir=CMLib.tracking().trackNextDirectionFromHere(V,target,true);
 				while(target!=R)
