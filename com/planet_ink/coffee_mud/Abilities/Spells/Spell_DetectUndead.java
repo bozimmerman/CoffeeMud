@@ -109,7 +109,9 @@ public class Spell_DetectUndead extends Spell
 			for(int i=0;i<lastRoom.numInhabitants();i++)
 			{
 				final MOB mob=lastRoom.fetchInhabitant(i);
-				if((mob!=null)&&(mob!=affected)&&(mob.charStats()!=null)&&(mob.charStats().getMyRace()!=null)&&(mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead")))
+				if((mob!=null)
+				&&(mob!=affected)
+				&&(CMLib.flags().isUndead(mob)))
 					commonTelL((MOB)affected,mob,null,"<T-NAME> gives off a cold dark vibe.");
 			}
 		}

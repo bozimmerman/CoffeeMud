@@ -104,7 +104,7 @@ public class Prayer_AntiUndeadField extends Prayer
 
 		if((msg.target() == affected)
 		&& msg.isTarget(CMMsg.MASK_MALICIOUS)
-		&&(msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
+		&&(CMLib.flags().isUndead(msg.source()))
 		&&(affected instanceof MOB)
 		&&(pointsRemaining >= 0))
 		{
@@ -175,7 +175,7 @@ public class Prayer_AntiUndeadField extends Prayer
 		if(msg.isSource(CMMsg.TYP_ADVANCE)
 		&&(msg.source() == affected)
 		&& (msg.source().getVictim()==msg.target())
-		&& (((MOB)msg.target()).charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
+		&& (CMLib.flags().isUndead((MOB)msg.target()))
 		&& (pointsRemaining >=0)
 		&& (msg.source().rangeToTarget() == 1))
 		{

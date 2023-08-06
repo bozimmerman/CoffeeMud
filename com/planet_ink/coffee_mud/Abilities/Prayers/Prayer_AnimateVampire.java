@@ -262,7 +262,7 @@ public class Prayer_AnimateVampire extends Prayer
 		final Race bodyR = (body.charStats()!=null) && (body.charStats().getMyRace() != null) ? body.charStats().getMyRace() : CMClass.getRace("Human");
 		if(body.isPlayerCorpse()
 		||(body.getMobName().length()==0)
-		||(bodyR.racialCategory().equalsIgnoreCase("Undead")))
+		||(CMLib.flags().isUndead(bodyR)))
 		{
 			mob.tell(L("You can't animate that."));
 			return false;

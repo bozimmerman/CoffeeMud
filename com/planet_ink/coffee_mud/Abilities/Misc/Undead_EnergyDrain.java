@@ -223,7 +223,7 @@ public class Undead_EnergyDrain extends StdAbility
 					else
 					{
 						direction=1;
-						if(target.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
+						if(CMLib.flags().isUndead(target))
 							direction=-1;
 						success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 

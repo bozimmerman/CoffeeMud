@@ -70,7 +70,7 @@ public class Prayer_HealUndead extends Prayer implements MendingSkill
 	public boolean supportsMending(final Physical item)
 	{
 		return (item instanceof MOB)
-			&&(((MOB)item).charStats()).getMyRace().racialCategory().equalsIgnoreCase("Undead")
+			&&(CMLib.flags().isUndead((MOB)item))
 			&&((((MOB)item).curState()).getHitPoints()<(((MOB)item).maxState()).getHitPoints());
 	}
 

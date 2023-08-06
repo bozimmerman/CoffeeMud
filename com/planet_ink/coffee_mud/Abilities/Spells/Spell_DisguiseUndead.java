@@ -138,7 +138,7 @@ public class Spell_DisguiseUndead extends Spell
 				return Ability.QUALITY_INDIFFERENT;
 			if(target instanceof MOB)
 			{
-				if((!((MOB)target).charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
+				if((!CMLib.flags().isUndead((MOB)target))
 				||(((MOB)target).charStats().raceName().equalsIgnoreCase("Human")))
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -153,7 +153,7 @@ public class Spell_DisguiseUndead extends Spell
 		if(target==null)
 			return false;
 
-		if((!target.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
+		if((!CMLib.flags().isUndead(target))
 		||(target.charStats().raceName().equalsIgnoreCase("Human")))
 		{
 			mob.tell(L("This spell only works on the undead."));
