@@ -342,6 +342,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 						R3=CMLib.tracking().getCalculatedAdjacentRoom(rooms, R, d);
 						if(R3!=null)
 						{
+							R3=CMLib.map().getRoom(R3);
 							final int opd = Directions.getOpDirectionCode(d);
 							R.setRawDoor(d,R3);
 							R3.setRawDoor(opd,R);
