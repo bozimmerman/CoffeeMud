@@ -1372,23 +1372,23 @@ public class Test extends StdCommand
 						break;
 					case INVENTORY:
 					{
-						Item I=CMClass.getItem("GenShirt");
+						Item I=CMClass.getArmor("GenShirt");
 						I.basePhyStats().setLevel(1);
 						I.text();
 						M.addItem(I);
-						I=CMClass.getItem("GenWeapon");
+						I=CMClass.getWeapon("GenWeapon");
 						I.basePhyStats().setLevel(1);
 						M.addItem(I);
 						I.text();
-						I=CMClass.getItem("GenArmor");
+						I=CMClass.getArmor("GenArmor");
 						I.basePhyStats().setLevel(1);
 						M.addItem(I);
 						I.text();
-						I=CMClass.getItem("GenShirt");
+						I=CMClass.getArmor("GenShirt");
 						I.basePhyStats().setLevel(1);
 						M.addItem(I);
 						I.text();
-						I=CMClass.getItem("GenWeapon");
+						I=CMClass.getWeapon("GenWeapon");
 						I.basePhyStats().setLevel(1);
 						M.addItem(I);
 						I.text();

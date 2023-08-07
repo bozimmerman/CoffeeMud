@@ -139,6 +139,7 @@ public class Necromancer extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_Poison",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_AnimateLimb",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_Plague",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",false);

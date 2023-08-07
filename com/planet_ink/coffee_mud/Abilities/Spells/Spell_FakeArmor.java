@@ -152,7 +152,7 @@ public class Spell_FakeArmor extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final Armor armor=(Armor)CMClass.getItem("GenArmor");
+				final Armor armor=CMClass.getArmor("GenArmor");
 				armor.basePhyStats().setArmor(0);
 				armor.basePhyStats().setDisposition(armor.basePhyStats().disposition()|PhyStats.IS_BONUS);
 				armor.setMaterial(RawMaterial.RESOURCE_COTTON);

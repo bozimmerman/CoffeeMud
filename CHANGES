@@ -11,7 +11,7 @@
  10. Prop_NoPurge now supports an expiration date/timestamp
  11. New StdMob type: CombatDummy, for testing.
  12. New spells: Wizard's Mark, Suppress Aroma
- 13. New prayers: Undeath Guard, Animate Shadow
+ 13. New prayers: Undeath Guard, Animate Shadow, Animate Limb
  14. GOTITEM Achievement type now supports multiple item masks.
  15. New standard races: Ghast, Ghoul, Ghost, Mummy, Spectre, Vampire, and Zombie
  16. Undead race mixing now has its own special rules, which Prayer_Animate* will use

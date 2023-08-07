@@ -161,7 +161,7 @@ public class Spell_FakeWeapon extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final Weapon weapon=(Weapon)CMClass.getItem("GenWeapon");
+				final Weapon weapon=CMClass.getWeapon("GenWeapon");
 				weapon.basePhyStats().setAttackAdjustment(100 +(10 * super.getXLEVELLevel(mob)));
 				weapon.basePhyStats().setDamage(75+(3 * super.getXLEVELLevel(mob)));
 				weapon.basePhyStats().setDisposition(weapon.basePhyStats().disposition()|PhyStats.IS_BONUS);
