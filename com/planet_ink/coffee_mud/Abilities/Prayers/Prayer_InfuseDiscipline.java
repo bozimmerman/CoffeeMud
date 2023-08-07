@@ -182,7 +182,7 @@ public class Prayer_InfuseDiscipline extends Prayer implements Deity.DeityWorshi
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.addAmbiance("#LAW");
+		affectableStats.addAmbiance(PhyStats.Ambiance.SEEMS_LAWFUL.code());
 	}
 
 	@Override

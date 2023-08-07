@@ -83,7 +83,7 @@ public class GenCastle extends GenSiegableBoardable
 	{
 		if(!super.canViewOuterRoom(R))
 			return false;
-		return R.phyStats().isAmbiance("@DECK_ROOM");
+		return R.phyStats().isAmbiance(PhyStats.Ambiance.IS_DECK_ROOM);
 	}
 
 	@Override

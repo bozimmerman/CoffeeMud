@@ -140,9 +140,9 @@ public class Prayer_EmpowerModestWeapon extends Prayer
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glows!"));
 				target.basePhyStats().setAbility(target.basePhyStats().ability()+1);
 				target.basePhyStats().setLevel(target.basePhyStats().level()+3);
-				target.basePhyStats().delAmbiance("#CHAOS");
-				target.basePhyStats().addAmbiance("#MODERATE");
-				target.basePhyStats().delAmbiance("#LAW");
+				target.basePhyStats().delAmbiance(PhyStats.Ambiance.SEEMS_CHAOTIC.code());
+				target.basePhyStats().addAmbiance(PhyStats.Ambiance.SEEMS_MODERATE.code());
+				target.basePhyStats().delAmbiance(PhyStats.Ambiance.SEEMS_LAWFUL.code());
 				target.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS);
 				final Ability zappA=target.fetchEffect("Prop_WearZapper");
 				if(zappA==null)

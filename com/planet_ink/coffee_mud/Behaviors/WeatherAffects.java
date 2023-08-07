@@ -321,7 +321,7 @@ public class WeatherAffects extends PuddleMaker
 			final Rideable sR = msg.source().riding();
 			if(((sR.rideBasis()==Rideable.Basis.WATER_BASED)||(sR instanceof Boardable))
 			&&(!CMLib.flags().isABonusItems(sR))
-			&&(!sR.phyStats().isAmbiance("-ANTIWEATHER")))
+			&&(!sR.phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_WEATHER)))
 			{
 				int rooms = 0;
 				if(sR instanceof Boardable)
@@ -468,7 +468,7 @@ public class WeatherAffects extends PuddleMaker
 				if((riding!=null)
 				&&((riding.rideBasis()==Rideable.Basis.WATER_BASED)||(riding instanceof Boardable))
 				&&(!CMLib.flags().isABonusItems(riding))
-				&&(!riding.phyStats().isAmbiance("-ANTIWEATHER")))
+				&&(!riding.phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_WEATHER)))
 				{
 					String what=null;
 					switch(weather)

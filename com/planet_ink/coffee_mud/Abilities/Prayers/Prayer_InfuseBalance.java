@@ -186,8 +186,8 @@ public class Prayer_InfuseBalance extends Prayer implements Deity.DeityWorshippe
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_GOOD);
 		if(CMath.bset(affectableStats.disposition(),PhyStats.IS_EVIL))
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_EVIL);
-		affectableStats.addAmbiance("#GOOD");
-		affectableStats.addAmbiance("#EVIL");
+		affectableStats.addAmbiance(PhyStats.Ambiance.SEEMS_GOOD.code());
+		affectableStats.addAmbiance(PhyStats.Ambiance.SEEMS_EVIL.code());
 	}
 
 	@Override

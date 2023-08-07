@@ -185,7 +185,7 @@ public class Prayer_InfuseHoliness extends Prayer implements Deity.DeityWorshipp
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOOD);
 		if(CMath.bset(affectableStats.disposition(),PhyStats.IS_EVIL))
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_EVIL);
-		affectableStats.addAmbiance("#GOOD");
+		affectableStats.addAmbiance(PhyStats.Ambiance.SEEMS_GOOD.code());
 	}
 
 	@Override

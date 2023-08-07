@@ -186,7 +186,7 @@ public class Prayer_InfuseUnholiness extends Prayer implements Deity.DeityWorshi
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_EVIL);
 		if(CMath.bset(affectableStats.disposition(),PhyStats.IS_GOOD))
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_GOOD);
-		affectableStats.addAmbiance("#EVIL");
+		affectableStats.addAmbiance(PhyStats.Ambiance.SEEMS_EVIL.code());
 	}
 
 	@Override

@@ -182,9 +182,9 @@ public class Prayer_InfuseModeration extends Prayer implements Deity.DeityWorshi
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.delAmbiance("#LAW");
-		affectableStats.delAmbiance("#CHAOS");
-		affectableStats.addAmbiance("#MODERATE");
+		affectableStats.delAmbiance(PhyStats.Ambiance.SEEMS_LAWFUL.code());
+		affectableStats.delAmbiance(PhyStats.Ambiance.SEEMS_CHAOTIC.code());
+		affectableStats.addAmbiance(PhyStats.Ambiance.SEEMS_MODERATE.code());
 	}
 
 	@Override

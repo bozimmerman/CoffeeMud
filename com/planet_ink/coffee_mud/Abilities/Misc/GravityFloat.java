@@ -165,9 +165,8 @@ public class GravityFloat extends StdAbility
 	{
 		super.affectPhyStats(affected, affectableStats);
 		affectableStats.setWeight(1);
-		affectableStats.addAmbiance(L("Floating"));
+		affectableStats.addAmbiance(PhyStats.Ambiance.IS_FLOATING.code());
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
-		affectableStats.addAmbiance("-FLYING");
 	}
 
 	public boolean showFailedToMove(final MOB mob)
@@ -249,14 +248,14 @@ public class GravityFloat extends StdAbility
 					if((msg.target() instanceof Item)
 					&&(!msg.source().isMine(msg.target()))
 					&&(CMLib.dice().rollPercentage()>20)
-					&&(msg.source().phyStats().isAmbiance(L("Floating"))))
+					&&(CMLib.flags().isFloatingFreely(msg.source())))
 					{
 						showFailedToTouch(msg.source(),(Physical)msg.target());
 						return false;
 					}
 					if((msg.target() instanceof MOB)
 					&&(CMLib.dice().rollPercentage()>20)
-					&&(msg.source().phyStats().isAmbiance(L("Floating"))))
+					&&(CMLib.flags().isFloatingFreely(msg.source())))
 					{
 						showFailedToTouch(msg.source(),(Physical)msg.target());
 						return false;
@@ -268,7 +267,7 @@ public class GravityFloat extends StdAbility
 			case CMMsg.TYP_MOUNT:
 			case CMMsg.TYP_SIT:
 			{
-				if(msg.source().phyStats().isAmbiance(L("Floating"))
+				if((CMLib.flags().isFloatingFreely(msg.source()))
 				&& (!flyingAllowed)
 				&&(!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS))
 				&&(msg.target()!=null))
@@ -338,7 +337,7 @@ public class GravityFloat extends StdAbility
 				}
 				//$FALL-THROUGH$
 			case CMMsg.TYP_THROW:
-				if(msg.source().phyStats().isAmbiance(L("Floating")))
+				if(CMLib.flags().isFloatingFreely(msg.source()))
 				{
 					final String sourceMessage = CMStrings.removeColors(CMLib.english().stripPunctuation(msg.sourceMessage()));
 					final List<String> words=CMParms.parseSpaces(sourceMessage, true);

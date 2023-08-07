@@ -102,13 +102,13 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean canSeeChaos(final Physical P)
 	{
-		return (P != null) && P.phyStats().isAmbiance("@CHAOS");
+		return (P != null) && P.phyStats().isAmbiance(PhyStats.Ambiance.CAN_SEE_CHAOS);
 	}
 
 	@Override
 	public boolean canSeeLaw(final Physical P)
 	{
-		return (P != null) && P.phyStats().isAmbiance("@LAW");
+		return (P != null) && P.phyStats().isAmbiance(PhyStats.Ambiance.CAN_SEE_LAW);
 	}
 
 	@Override
@@ -737,7 +737,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isLawful(final Physical P)
 	{
-		if((P != null) && (P.phyStats().isAmbiance("#LAW")))
+		if((P != null) && (P.phyStats().isAmbiance(PhyStats.Ambiance.SEEMS_LAWFUL)))
 			return true;
 		if(P instanceof FactionMember)
 		{
@@ -758,7 +758,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isChaotic(final Physical P)
 	{
-		if((P != null) && (P.phyStats().isAmbiance("#CHAOS")))
+		if((P != null) && (P.phyStats().isAmbiance(PhyStats.Ambiance.SEEMS_CHAOTIC)))
 			return true;
 		if(P instanceof FactionMember)
 		{
@@ -779,7 +779,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isModerate(final Physical P)
 	{
-		if((P != null) && (P.phyStats().isAmbiance("#MODERATE")))
+		if((P != null) && (P.phyStats().isAmbiance(PhyStats.Ambiance.SEEMS_MODERATE)))
 			return true;
 		if(P instanceof FactionMember)
 		{
@@ -870,9 +870,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				return Faction.Align.GOOD.toString();
 			if((((Physical)E).phyStats().disposition()&PhyStats.IS_EVIL)==PhyStats.IS_EVIL)
 				return Faction.Align.EVIL.toString();
-			if(((Physical)E).phyStats().isAmbiance("#GOOD"))
+			if(((Physical)E).phyStats().isAmbiance(PhyStats.Ambiance.SEEMS_GOOD))
 				return Faction.Align.GOOD.toString();
-			if(((Physical)E).phyStats().isAmbiance("#EVIL"))
+			if(((Physical)E).phyStats().isAmbiance(PhyStats.Ambiance.SEEMS_EVIL))
 				return Faction.Align.EVIL.toString();
 		}
 		if(E instanceof MOB)
@@ -898,9 +898,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(E instanceof Physical)
 		{
-			if(((Physical)E).phyStats().isAmbiance("#LAW"))
+			if(((Physical)E).phyStats().isAmbiance(PhyStats.Ambiance.SEEMS_LAWFUL))
 				return Faction.Align.LAWFUL.toString();
-			if(((Physical)E).phyStats().isAmbiance("#CHAOS"))
+			if(((Physical)E).phyStats().isAmbiance(PhyStats.Ambiance.SEEMS_CHAOTIC))
 				return Faction.Align.CHAOTIC.toString();
 		}
 		if(E instanceof MOB)
@@ -1374,7 +1374,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isFloatingFreely(final Physical P)
 	{
-		return ((P.fetchEffect("GravityFloat")!=null)&&(P.phyStats().isAmbiance(L("Floating"))));
+		return ((P.fetchEffect("GravityFloat")!=null)
+				&&(P.phyStats().isAmbiance(PhyStats.Ambiance.IS_FLOATING)));
 	}
 
 	@Override
@@ -2390,31 +2391,39 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(pStats == null)
 			return ""; // an exit?
 		final String[] ambiances=pStats.ambiances();
-		if(!pStats.isAmbiance("-ALL"))
+		if(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_ALL))
 		{
 			final StringBuilder say=new StringBuilder("^N");
-			if(!pStats.isAmbiance("-MOST"))
+			if(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_MOST))
 			{
 				if((seer!=null)
 				&&(seer.phyStats().sensesMask()>0))
 				{
-					if((canSeeEvil(seer))&&(isEvil(seen))&&(!pStats.isAmbiance("-EVIL")))
+					if((canSeeEvil(seer))&&(isEvil(seen))&&(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_AMBIANCE_EVIL)))
 						say.append(" (glowing ^rred^?)");
-					if((canSeeGood(seer))&&(isGood(seen))&&(!pStats.isAmbiance("-GOOD")))
+					if((canSeeGood(seer))&&(isGood(seen))&&(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_AMBIANCE_GOOD)))
 						say.append(" (glowing ^bblue^?)");
-					if((canSeeInvisible(seer))&&(isInvisible(seen))&&(!pStats.isAmbiance("-INVISIBLE")))
+					if((canSeeInvisible(seer))&&(isInvisible(seen))&&(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_AMBIANCE_INVISIBLE)))
 						say.append(" (^yinvisible^?)");
-					if((canSeeSneakers(seer))&&(isSneaking(seen))&&(!pStats.isAmbiance("-SNEAKING")))
+					if((canSeeSneakers(seer))&&(isSneaking(seen))&&(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_AMBIANCE_SNEAKING)))
 						say.append(" (^ysneaking^?)");
 					if((isHidden(seen))
 					&&(canSeeHidden(seer)||((seen instanceof Item)&&(canSeeHiddenItems(seer))))
-					&&(!pStats.isAmbiance("-HIDDEN")))
+					&&(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_AMBIANCE_HIDDEN)))
 						say.append(" (^yhidden^?)");
-					if((canSeeInfrared(seer))&&(!isGolem(seen))&&(seen instanceof MOB)&&(isInDark(seer.location()))&&(!pStats.isAmbiance("-HEAT")))
+					if((canSeeInfrared(seer))
+					&&(!isGolem(seen))
+					&&(seen instanceof MOB)
+					&&(isInDark(seer.location()))
+					&&(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_AMBIANCE_HEAT)))
 						say.append(" (^rheat aura^?)");
-					if((canSeeBonusItems(seer))&&(isABonusItems(seen))&&(!pStats.isAmbiance("-MAGIC")))
+					if((canSeeBonusItems(seer))
+					&&(isABonusItems(seen))
+					&&(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_AMBIANCE_MAGIC)))
 						say.append(" (^wmagical aura^?)");
-					if((canSeeMetal(seer))&&(seen instanceof Item)&&(!pStats.isAmbiance("-METAL")))
+					if((canSeeMetal(seer))
+					&&(seen instanceof Item)
+					&&(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_AMBIANCE_METAL)))
 					{
 						if((((Item)seen).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 							say.append(" (^wmetallic aura^?)");
@@ -2424,13 +2433,21 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					}
 				}
 
-				if((isGlowing(seen))&&(!(seen instanceof Room))&&(!pStats.isAmbiance("-GLOWING")))
+				if((isGlowing(seen))
+				&&(!(seen instanceof Room))
+				&&(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_AMBIANCE_GLOWING)))
 					say.append(" (^gglowing^?)");
-				if((seen instanceof MOB) && isRunningLongCommand((MOB)seen)&&(!pStats.isAmbiance("-BUSY")))
+				if((seen instanceof MOB)
+				&& isRunningLongCommand((MOB)seen)
+				&&(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_AMBIANCE_BUSY)))
 					say.append(" (^gbusy^?)");
-				if((canSeeChaos(seer))&&(isChaotic(seen))&&(!pStats.isAmbiance("-CHAOS")))
+				if((canSeeChaos(seer))
+				&&(isChaotic(seen))
+				&&(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_AMBIANCE_CHAOS)))
 					say.append(" (glowing ^ppurple^?)");
-				if((canSeeLaw(seer))&&(isLawful(seen))&&(!pStats.isAmbiance("-LAW")))
+				if((canSeeLaw(seer))
+				&&(isLawful(seen))
+				&&(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_AMBIANCE_LAW)))
 					say.append(" (glowing ^wwhite^?)");
 				for(int i=0;i<ambiances.length;i++)
 				{
@@ -2468,11 +2485,17 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					}
 				}
 			}
-			if(isBound(seen)&&(!pStats.isAmbiance("-BOUND")))
+			if(isBound(seen)
+			&&(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_AMBIANCE_BOUND)))
 				say.append(" (^Wbound^?)");
-			if(isFlying(seen)&&(!(seen instanceof Exit))&&(!pStats.isAmbiance("-FLYING")))
+			if(isFloatingFreely(seen)) // these are mutually exclusive
+				say.append(" (^pfloating^?)");
+			else
+			if(isFlying(seen)&&(!(seen instanceof Exit))
+			&&(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_AMBIANCE_FLYING)))
 				say.append(" (^pflying^?)");
-			if((isFalling(seen))&&(!pStats.isAmbiance("-FALLING")))
+			if((isFalling(seen))
+			&&(!pStats.isAmbiance(PhyStats.Ambiance.SUPPRESS_AMBIANCE_FALLING)))
 			{
 				final Room R=roomLocation(seen);
 				switch(R.domainType())

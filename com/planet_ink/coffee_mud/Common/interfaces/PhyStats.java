@@ -263,10 +263,24 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#addAmbiance(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#delAmbiance(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#ambiances()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#Ambiance
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#isAmbiance(Ambiance)
 	 * @param ambiance the ambiance to look for
 	 * @return true if its in there, false otherwise
 	 */
 	public boolean isAmbiance(String ambiance);
+
+	/**
+	 * Check to see if the given ambiance exists in the list.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#addAmbiance(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#delAmbiance(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#ambiances()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#Ambiance
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#isAmbiance(String)
+	 * @param ambiance the ambiance to look for
+	 * @return true if its in there, false otherwise
+	 */
+	public boolean isAmbiance(final PhyStats.Ambiance ambiance);
 
 	/**
 	 * Adds an ambiance (extra word, visible field) to the list that are tacked
@@ -274,6 +288,8 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#ambiances()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#delAmbiance(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#isAmbiance(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#isAmbiance(Ambiance)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#Ambiance
 	 * @param ambiance a new ambiance string
 	 */
 	public void addAmbiance(String ambiance);
@@ -707,4 +723,54 @@ public interface PhyStats extends CMCommon, Modifiable
 		"Causes something...",
 		"Prevents helpful attacks",
 	};
+
+	/**
+	 * Official Ambiance system strings, since this is the only
+	 * open ended modifiable system.
+	 * @see PhyStats#isAmbiance(String)
+	 * @see PhyStats#addAmbiance(String)
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static enum Ambiance
+	{
+		CAN_SEE_CHAOS("@CHAOS"),
+		CAN_SEE_LAW("@LAW"),
+		IS_DECK_ROOM("@DECK_ROOM"),
+		IS_FLOATING("@FLOATING"),
+		SUPPRESS_WEATHER("-ANTIWEATHER"),
+		SEEMS_GOOD("#GOOD"),
+		SEEMS_EVIL("#EVIL"),
+		SEEMS_NEUTRAL("#NEUTRAL"),
+		SEEMS_LAWFUL("#LAW"),
+		SEEMS_CHAOTIC("#CHAOS"),
+		SEEMS_MODERATE("#MODERATE"),
+		SUPPRESS_ALL("-ALL"),
+		SUPPRESS_MOST("-MOST"),
+		SUPPRESS_AMBIANCE_EVIL("-EVIL"),
+		SUPPRESS_AMBIANCE_GOOD("-GOOD"),
+		SUPPRESS_AMBIANCE_INVISIBLE("-INVISIBLE"),
+		SUPPRESS_AMBIANCE_SNEAKING("-SNEAKING"),
+		SUPPRESS_AMBIANCE_HIDDEN("-HIDDEN"),
+		SUPPRESS_AMBIANCE_HEAT("-HEAT"),
+		SUPPRESS_AMBIANCE_MAGIC("-MAGIC"),
+		SUPPRESS_AMBIANCE_METAL("-METAL"),
+		SUPPRESS_AMBIANCE_GLOWING("-GLOWING"),
+		SUPPRESS_AMBIANCE_BUSY("-BUSY"),
+		SUPPRESS_AMBIANCE_CHAOS("-CHAOS"),
+		SUPPRESS_AMBIANCE_LAW("-LAW"),
+		SUPPRESS_AMBIANCE_BOUND("-BOUND"),
+		SUPPRESS_AMBIANCE_FLYING("-FLYING"),
+		SUPPRESS_AMBIANCE_FALLING("-FALLING"),
+		;
+		private final String code;
+		private Ambiance(final String code)
+		{
+			this.code = code;
+		}
+		public String code()
+		{
+			return code;
+		}
+	}
 }

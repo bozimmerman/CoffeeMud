@@ -98,7 +98,7 @@ public class Skill_Diving extends StdSkill
 		super.affectPhyStats(affected, affectableStats);
 		if((affected instanceof MOB)&&(isDiving!=null)&&(isDiving.booleanValue()))
 		{
-			affectableStats.addAmbiance("-FALLING");
+			affectableStats.addAmbiance(PhyStats.Ambiance.SUPPRESS_AMBIANCE_FALLING.code());
 			affectableStats.addAmbiance(L("Diving"));
 		}
 	}

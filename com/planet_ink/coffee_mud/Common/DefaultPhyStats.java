@@ -312,6 +312,15 @@ public class DefaultPhyStats implements PhyStats
 	}
 
 	@Override
+	public boolean isAmbiance(final PhyStats.Ambiance ambiance)
+	{
+		final String[] ambiances=this.ambiances;
+		if((ambiances==null)||(ambiance==null))
+			return false;
+		return Arrays.binarySearch(ambiances, ambiance.code(), ambiComp) >=0;
+	}
+
+	@Override
 	public int movesReqToPull()
 	{
 		return 1 + (weight() / 3);

@@ -99,7 +99,7 @@ public class Prayer_SenseLaw extends Prayer
 		if(invoker==null)
 			return;
 
-		affectableStats.addAmbiance("@LAW");
+		affectableStats.addAmbiance(PhyStats.Ambiance.CAN_SEE_LAW.code());
 	}
 
 	@Override

@@ -182,7 +182,7 @@ public class Prayer_InfuseImpunity extends Prayer implements Deity.DeityWorshipp
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.addAmbiance("#CHAOS");
+		affectableStats.addAmbiance(PhyStats.Ambiance.SEEMS_CHAOTIC.code());
 	}
 
 	@Override

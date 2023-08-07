@@ -103,7 +103,7 @@ public class Thief_DampenAuras extends ThiefSkill
 		if(unInvoked)
 			host.delEffect(this);
 		else
-			stats.addAmbiance("-MOST");
+			stats.addAmbiance(PhyStats.Ambiance.SUPPRESS_MOST.code());
 	}
 
 	@Override

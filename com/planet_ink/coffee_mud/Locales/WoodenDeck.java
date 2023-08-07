@@ -45,7 +45,7 @@ public class WoodenDeck extends StdRoom
 		super();
 		name="a wooden deck";
 		setMovementCost(1);
-		basePhyStats.addAmbiance("@DECK_ROOM");
+		basePhyStats.addAmbiance(PhyStats.Ambiance.IS_DECK_ROOM.code());
 		recoverPhyStats();
 	}
 

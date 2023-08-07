@@ -99,7 +99,7 @@ public class Prayer_SenseChaos extends Prayer
 		if(invoker==null)
 			return;
 
-		affectableStats.addAmbiance("@CHAOS");
+		affectableStats.addAmbiance(PhyStats.Ambiance.CAN_SEE_CHAOS.code());
 	}
 
 	@Override
