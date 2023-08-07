@@ -4059,7 +4059,8 @@ public class StdMOB implements MOB
 								&&smallChance
 								&&(curState().getHitPoints()>=maxState().getHitPoints())
 								&&(fetchEffect("Mood")==null)
-								&&(!CMSecurity.isDisabled(DisFlag.AUTOMOODS)))
+								&&(!CMSecurity.isDisabled(DisFlag.AUTOMOODS))
+								&&(!phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_MOOD)))
 								{
 									final Ability moodA = CMClass.getAbility("Mood");
 									if (moodA != null)

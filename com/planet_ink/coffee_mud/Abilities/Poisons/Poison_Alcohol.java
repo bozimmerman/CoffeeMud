@@ -206,7 +206,10 @@ public class Poison_Alcohol extends Poison
 			return true;
 
 		final Room room=mob.location();
-		if((CMLib.dice().rollPercentage()<(4*drunkness))&&(CMLib.flags().isAliveAwakeMobile(mob,true))&&(room!=null))
+		if((CMLib.dice().rollPercentage()<(4*drunkness))
+		&&(CMLib.flags().isAliveAwakeMobile(mob,true))
+		&&(!mob.phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_DRUNKENNESS))
+		&&(room!=null))
 		{
 			if(CMLib.flags().isEvil(mob))
 			switch(CMLib.dice().roll(1,9,-1))
@@ -325,7 +328,8 @@ public class Poison_Alcohol extends Poison
 			&&(drunkness>=5)
 			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))))
+			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
+			&&(!msg.source().phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_DRUNKENNESS)))
 			{
 				final Ability A=CMClass.getAbility("Drunken");
 				if(A!=null)
@@ -340,7 +344,8 @@ public class Poison_Alcohol extends Poison
 			else
 			if((!msg.targetMajor(CMMsg.MASK_ALWAYS))
 			&&(CMLib.dice().rollPercentage()<(drunkness*20))
-			&&(msg.targetMajor()>0))
+			&&(msg.targetMajor()>0)
+			&&(!msg.source().phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_DRUNKENNESS)))
 			{
 
 				final Room room=msg.source().location();

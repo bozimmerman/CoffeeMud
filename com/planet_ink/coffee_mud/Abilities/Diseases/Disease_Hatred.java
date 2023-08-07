@@ -269,7 +269,8 @@ public class Disease_Hatred extends Disease
 				{
 					if(mood == null)
 						mood = CMClass.getAbility("Mood");
-					if(mood != null)
+					if((mood != null)
+					&&((affected==null) || (!affected.phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_MOOD))))
 					{
 						mood.setAffectedOne(affected);
 						final String newStr = moodTypes[CMLib.dice().roll(1, moodTypes.length, -1)];

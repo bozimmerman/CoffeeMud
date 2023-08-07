@@ -109,7 +109,8 @@ public class Skill_SpreadHate extends StdSkill
 		{
 			if(mood == null)
 				mood = CMClass.getAbility("Mood");
-			if(mood != null)
+			if((mood != null)
+			&&(!msg.source().phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_MOOD)))
 			{
 				mood.setAffectedOne(affected);
 				final String newStr = moodTypes[CMLib.dice().roll(1, moodTypes.length, -1)];

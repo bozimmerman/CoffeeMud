@@ -147,7 +147,8 @@ public class Disease_Apathy extends Disease
 		if(mood == null)
 		{
 			mood = CMClass.getAbility("Mood");
-			if(mood == null)
+			if((mood == null)
+			||((affected!=null) && affected.phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_MOOD)))
 				return null;
 			mood.setAffectedOne(affected);
 			mood.setMiscText("APATHETIC");

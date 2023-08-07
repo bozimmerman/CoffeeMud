@@ -81,7 +81,8 @@ public class Prayer_ReligiousDoubt extends Prayer
 	public Ability getMood()
 	{
 		if((moodA==null)
-		&&(this.affected!=null))
+		&&(this.affected!=null)
+		&&(!affected.phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_MOOD)))
 		{
 			moodA=CMClass.getAbility("Mood");
 			moodA.setAffectedOne(this.affected);

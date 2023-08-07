@@ -708,13 +708,16 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public boolean isAnyKindOfOfficer(final Law laws, final MOB M)
 	{
+		if((laws.officerNames().size()<=0)
+		||(laws.officerNames().get(0).equals("@")))
+			return false;
 		if((M.isMonster())
 		&&(M.location()!=null)
-		&&(CMLib.flags().isMobile(M)))
+		&&(CMLib.flags().isMobile(M))
+		&&(!M.phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_OFFICIALDOM)))
 		{
-			if((laws.officerNames().size()<=0)
-			||(laws.officerNames().get(0).equals("@")))
-				return false;
+			if(M.phyStats().isAmbiance(PhyStats.Ambiance.IS_OFFICER))
+				return true;
 			for(int i=0;i<laws.officerNames().size();i++)
 			{
 				if((CMLib.english().containsString(M.displayText(),laws.officerNames().get(i))
@@ -1168,13 +1171,17 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public boolean isTheJudge(final Law laws, final MOB M)
 	{
+		if((laws.judgeNames().size()<=0)
+		||(laws.judgeNames().get(0).equals("@")))
+			return false;
 		if((M!=null)
 		&&((M.isMonster()||M.soulMate()!=null))
 		&&(!CMLib.flags().isMobile(M))
-		&&(M.location()!=null))
+		&&(M.location()!=null)
+		&&(!M.phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_OFFICIALDOM)))
 		{
-			if((laws.judgeNames().size()<=0)||(laws.judgeNames().get(0).equals("@")))
-				return false;
+			if(M.phyStats().isAmbiance(PhyStats.Ambiance.IS_JUDGE))
+				return true;
 			for(int i=0;i<laws.judgeNames().size();i++)
 			{
 				if((CMLib.english().containsString(M.displayText(),laws.judgeNames().get(i)))

@@ -405,7 +405,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 				daysRemaining = (end - System.currentTimeMillis()) / divisor; // down to days
 				monthsRemaining = daysRemaining / C.getDaysInMonth(); // down to months
 				if ((CMLib.dice().roll(1, 200, 0) == 1)
-				&&(!CMSecurity.isDisabled(DisFlag.AUTOMOODS)))
+				&&(!CMSecurity.isDisabled(DisFlag.AUTOMOODS))
+				&&(!mob.phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_MOOD)))
 				{
 					final Ability A = CMClass.getAbility("Mood");
 					if (A != null)

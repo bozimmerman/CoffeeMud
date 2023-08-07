@@ -232,10 +232,13 @@ public class Mood extends StdAbility
 			else
 			if(ticking instanceof Physical)
 				((Physical)ticking).delEffect(this);
+			return true;
 		}
 		if((!(affected instanceof MOB))
 		||(CMLib.flags().isAliveAwakeMobileUnbound((MOB)affected, true)))
 		{
+			if(((MOB)affected).phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_MOOD))
+				return true;
 			switch(mood)
 			{
 			case SILLY: // silly
@@ -310,7 +313,9 @@ public class Mood extends StdAbility
 	{
 		super.affectPhyStats(affected,stats);
 		if((mood != null)
-		&&(mood.adj.length()>0))
+		&&(mood.adj.length()>0)
+		&&(!stats.isAmbiance(PhyStats.Ambiance.SUPPRESS_MOOD))
+		&&(!affected.phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_MOOD)))
 			stats.addAmbiance(mood.adj.toLowerCase()+"^?");
 	}
 
@@ -391,7 +396,8 @@ public class Mood extends StdAbility
 			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
-			&&(mood != null))
+			&&(mood != null)
+			&&(msg.source().phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_MOOD)))
 			{
 				String str=CMStrings.getSayFromMessage(msg.othersMessage());
 				if(str==null)
@@ -1108,115 +1114,120 @@ public class Mood extends StdAbility
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		switch(mood)
+		if((mood != null)
+		&&(affected != null)
+		&&(!affected.phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_MOOD)))
 		{
-		case SILLY: // silly
-		{
-			if((msg.source()==affected)
-			&&(msg.sourceMessage()!=null)
-			&&((msg.tool()==null)||(msg.tool().ID().equals("Common")))
-			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
-			&&(CMLib.dice().rollPercentage()<33))
+			switch(mood)
 			{
-				final int sillySocialIndex=CMLib.dice().roll(1, sillySocials.length, -1);
-				final String socialName = sillySocials[sillySocialIndex];
-				final Social social = CMLib.socials().fetchSocial(socialName, true);
-				if(social != null)
+			case SILLY: // silly
+			{
+				if((msg.source()==affected)
+				&&(msg.sourceMessage()!=null)
+				&&((msg.tool()==null)||(msg.tool().ID().equals("Common")))
+				&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+				   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
+				   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
+				&&(CMLib.dice().rollPercentage()<33))
 				{
-					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
+					final int sillySocialIndex=CMLib.dice().roll(1, sillySocials.length, -1);
+					final String socialName = sillySocials[sillySocialIndex];
+					final Social social = CMLib.socials().fetchSocial(socialName, true);
+					if(social != null)
 					{
-						CMLib.threads().scheduleRunnable(new Runnable()
+						if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 						{
-							final MOB mob=msg.source();
-							final int channelCode = msg.othersMinor() - CMMsg.TYP_CHANNEL;
-							@Override
-							public void run()
+							CMLib.threads().scheduleRunnable(new Runnable()
 							{
-								final CMChannel chan = CMLib.channels().getChannel(channelCode);
-								if(chan != null)
+								final MOB mob=msg.source();
+								final int channelCode = msg.othersMinor() - CMMsg.TYP_CHANNEL;
+								@Override
+								public void run()
 								{
-									final String channelName = chan.name();
-									mob.enqueCommand(new XVector<String>(channelName,","+socialName), 0, 0);
+									final CMChannel chan = CMLib.channels().getChannel(channelCode);
+									if(chan != null)
+									{
+										final String channelName = chan.name();
+										mob.enqueCommand(new XVector<String>(channelName,","+socialName), 0, 0);
+									}
 								}
-							}
-						}, 500);
-					}
-					else
-					if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-					||(msg.sourceMinor()==CMMsg.TYP_TELL))
-					{
-						CMLib.threads().scheduleRunnable(new Runnable()
+							}, 500);
+						}
+						else
+						if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+						||(msg.sourceMinor()==CMMsg.TYP_TELL))
 						{
-							final MOB mob=msg.source();
-							@Override
-							public void run()
+							CMLib.threads().scheduleRunnable(new Runnable()
 							{
-								mob.enqueCommand(new XVector<String>(socialName), 0, 0);
-							}
-						}, 500);
+								final MOB mob=msg.source();
+								@Override
+								public void run()
+								{
+									mob.enqueCommand(new XVector<String>(socialName), 0, 0);
+								}
+							}, 500);
+						}
 					}
 				}
+				break;
 			}
-			break;
-		}
-		case PROUD: // proud
-		{
-			if((msg.sourceMinor()==CMMsg.TYP_DEATH)
-			&&(msg.tool()==affected)
-			&&(this.lastOne!=msg.source()))
+			case PROUD: // proud
 			{
-				lastOne=msg.source();
-				int channelIndex=-1;
-				int channelC=-1;
-				final String[] CHANNELS=CMLib.channels().getChannelNames();
-				for(int c=0;c<CHANNELS.length;c++)
+				if((msg.sourceMinor()==CMMsg.TYP_DEATH)
+				&&(msg.tool()==affected)
+				&&(this.lastOne!=msg.source()))
 				{
-					if(CMStrings.contains(BOAST_CHANNELS,CHANNELS[c]))
+					lastOne=msg.source();
+					int channelIndex=-1;
+					int channelC=-1;
+					final String[] CHANNELS=CMLib.channels().getChannelNames();
+					for(int c=0;c<CHANNELS.length;c++)
 					{
-						channelIndex=CMLib.channels().getChannelIndex(CHANNELS[c]);
-						channelC=c;
-						if(channelIndex>=0)
+						if(CMStrings.contains(BOAST_CHANNELS,CHANNELS[c]))
+						{
+							channelIndex=CMLib.channels().getChannelIndex(CHANNELS[c]);
+							channelC=c;
+							if(channelIndex>=0)
+								break;
+						}
+					}
+					if(channelIndex>=0)
+					{
+						String addOn=".";
+						switch(CMLib.dice().roll(1,10,0))
+						{
+						case 1:
+							addOn = ", but that`s not suprising, is it?";
 							break;
+						case 2:
+							addOn = ". I rock.";
+							break;
+						case 3:
+							addOn = ". I am **POWERFUL**.";
+							break;
+						case 4:
+							addOn = ". I am sooo cool.";
+							break;
+						case 5:
+							addOn = ". You can`t touch me.";
+							break;
+						case 6:
+							addOn = ".. never had a chance, either.";
+							break;
+						case 7:
+							addOn = ", with my PINKEE!";
+							break;
+						default:
+							break;
+						}
+						((MOB)affected).doCommand(new XVector<String>(CHANNELS[channelC],"*I* just killed "+msg.source().Name()+addOn),MUDCmdProcessor.METAFLAG_FORCED);
 					}
 				}
-				if(channelIndex>=0)
-				{
-					String addOn=".";
-					switch(CMLib.dice().roll(1,10,0))
-					{
-					case 1:
-						addOn = ", but that`s not suprising, is it?";
-						break;
-					case 2:
-						addOn = ". I rock.";
-						break;
-					case 3:
-						addOn = ". I am **POWERFUL**.";
-						break;
-					case 4:
-						addOn = ". I am sooo cool.";
-						break;
-					case 5:
-						addOn = ". You can`t touch me.";
-						break;
-					case 6:
-						addOn = ".. never had a chance, either.";
-						break;
-					case 7:
-						addOn = ", with my PINKEE!";
-						break;
-					default:
-						break;
-					}
-					((MOB)affected).doCommand(new XVector<String>(CHANNELS[channelC],"*I* just killed "+msg.source().Name()+addOn),MUDCmdProcessor.METAFLAG_FORCED);
-				}
+				break;
 			}
-			break;
-		}
-		default:
-			break;
+			default:
+				break;
+			}
 		}
 		super.executeMsg(myHost,msg);
 	}

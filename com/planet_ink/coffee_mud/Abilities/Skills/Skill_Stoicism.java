@@ -90,6 +90,8 @@ public class Skill_Stoicism extends StdSkill
 		return false;
 	}
 
+	private volatile boolean activated = false;
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -99,7 +101,6 @@ public class Skill_Stoicism extends StdSkill
 		&&(affected instanceof MOB)
 		&&(super.proficiencyCheck((MOB)affected, 0, false)))
 		{
-			super.helpProficiency((MOB)affected, 0);
 			msg.source().tell(msg.source(),msg.target(),null,L("<T-YOUPOSS> stoicism level(s) <T-HIS-HER> mood."));
 			return false;
 		}
@@ -113,11 +114,41 @@ public class Skill_Stoicism extends StdSkill
 	}
 
 	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking,tickID))
+			return false;
+
+		if(!(affected instanceof MOB))
+			return true;
+		if(super.proficiencyCheck((MOB)affected, 0, false))
+		{
+			super.helpProficiency((MOB)affected, 0);
+			if(!activated)
+			{
+				activated=true;
+				((MOB)affected).recoverPhyStats();
+			}
+		}
+		else
+		if(activated)
+		{
+			activated=false;
+			((MOB)affected).recoverPhyStats();
+		}
+		return true;
+	}
+
+
+	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		//affectableStats.isAmbiance(localizedName);
-		//affectableStats.addAmbiance(localizedName);
+		if(activated)
+		{
+			affectableStats.addAmbiance(PhyStats.Ambiance.SUPPRESS_MOOD.code());
+			affectableStats.addAmbiance(PhyStats.Ambiance.SUPPRESS_DRUNKENNESS.code());
+		}
 	}
 
 }
