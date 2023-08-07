@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -88,6 +89,89 @@ public class Alias extends StdCommand
 				mob.tell(L("Alias @x1 defined.",key));
 				return false;
 			}
+		}
+		if((commands.size()>2)
+		&&("COPY".equalsIgnoreCase(commands.get(1))))
+		{
+			final String whomName=(commands.size()>2)?CMParms.combine(commands,2):"";
+			if(whomName.length()==0)
+				mob.tell(L("Copy whose aliases?"));
+			else
+			if(!CMLib.players().playerExists(whomName))
+				mob.tell(L("Player '@x1' doesn't exist.",whomName));
+			else
+			{
+				final boolean unloadAfter = CMLib.players().isLoadedPlayer(whomName);
+				final MOB M=CMLib.players().getLoadPlayer(whomName);
+				if((M!=null)
+				&&(M!=mob)
+				&&(!mob.isMonster()))
+				{
+					try
+					{
+						final Session sess = mob.session();
+						final java.util.List<String> changes = new ArrayList<String>();
+						final PlayerStats opStats =mob.playerStats();
+						final PlayerStats mpStats =M.playerStats();
+						if((opStats == null)||(mpStats==null))
+							return false;
+						for(final String alias : mpStats.getAliasNames())
+						{
+							if(opStats.getAlias(alias).length()==0)
+								changes.add(alias);
+						}
+						final MOB M1=mob;
+						final MOB M2=M;
+						if(changes.size()==0)
+							mob.tell(L("Your aliases already match @x1s, at least in key words.",M.name()));
+						else
+						sess.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)
+						{
+							final Session S=sess;
+							final MOB mob=M1;
+							final MOB M=M2;
+							@Override
+							public void showPrompt()
+							{
+								S.promptPrint(L("\n\rCopy the aliases '@x1' from player @x2 (y/N)? ",
+										CMLib.english().toEnglishStringList(changes),
+										M.name()));
+							}
+							@Override
+							public void timedOut()
+							{
+							}
+							@Override
+							public void callBack()
+							{
+								if(this.input.equals("Y"))
+								{
+									if((mob == null)||(M==null))
+										return;
+									final PlayerStats opStats =mob.playerStats();
+									final PlayerStats mpStats =M.playerStats();
+									if((opStats == null)||(mpStats==null))
+										return;
+									for(final String alias : mpStats.getAliasNames())
+									{
+										if(opStats.getAlias(alias).length()==0)
+											mpStats.setAlias(alias,mpStats.getAlias(alias));
+									}
+									mob.tell(L("Aliases copied and active."));
+								}
+							}
+						});
+					}
+					finally
+					{
+						if(unloadAfter
+						&&(M!=null)
+						&&((M.session()==null)||(M.session().isStopped())))
+							CMLib.players().unloadOfflinePlayer(M);
+					}
+				}
+			}
+			return true;
 		}
 		if((commands.size()>2)
 		&&("TEST".equals(commands.get(1).toUpperCase())))
