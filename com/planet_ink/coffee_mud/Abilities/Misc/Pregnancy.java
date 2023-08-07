@@ -691,7 +691,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 						if (CMLib.dice().rollPercentage() > 25)
 							mob.tell(L("You feel really sick this morning."));
 						else
-							mob.location().show(mob, null, CMMsg.MSG_NOISYMOVEMENT, L("**BLEH** <S-NAME> just threw up."));
+							mob.location().show(mob, null, CMMsg.MSG_NOISYMOVEMENT, L("^G**BLEH** <S-NAME> just threw up.^?"));
 					}
 				}
 			}

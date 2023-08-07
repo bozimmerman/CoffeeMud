@@ -97,7 +97,7 @@ public class StdThinArea extends StdArea
 	public Room getRoom(String roomID)
 	{
 		final int grid=(roomID==null)?0:roomID.lastIndexOf("#(");
-		if(grid>1)
+		if((grid>1)&&(roomID!=null))
 			roomID = roomID.substring(0,grid);
 		if(!isRoom(roomID))
 			return null;

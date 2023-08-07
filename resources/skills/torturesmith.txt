@@ -7,4 +7,7 @@
 % Garucha Gallows	20	150	200	500	GenRideable	TABLE	1		WOOD	*Prop_RideSpellCast;Thief_Bind;Spell_LimbRack(/ARMSONLY);Spell_Torture
 % Garotte Bed	21	150	200	500	GenRideable	TABLE	1		WOOD	*Prop_RideSpellCast;Thief_Bind;Spell_LimbRack;Spell_Torture
 % Brank Helmet	22	150	200	500	GenArmor	HEAD	0	0	METAL	*Prop_WearSpellCast;Spell_Blademouth
+% Armbreaker Table	23	200	200	1000	GenTable	TABLE	1		WOOD	*Prop_RideSpellCast;Thief_Bind;Spell_Torture;BrokenLimbs(ARM)
+% Legbreaker Table	23	200	200	1000	GenTable	TABLE	1		WOOD	*Prop_RideSpellCast;Thief_Bind;Spell_Torture;BrokenLimbs(LEG)
+% Maiden	24	200	200	1000	GenTent	LID	1		METAL	*Prop_RideSpellCast;ONCLOSED;Spell_Torture;Bleeding
 The Machine	25	250	5000	2000	GenBed	BED	1		WOOD	*Prop_RideSpellCast;Spell_Torture(/<S-NAME> let(s) out a scream of ultimate suffering!)

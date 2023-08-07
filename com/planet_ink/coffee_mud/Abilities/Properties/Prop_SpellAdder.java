@@ -57,6 +57,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	protected boolean		uninvocable		= true;
 	protected short			level			= -1;
 	protected short			maxTicks		= -1;
+	protected boolean		onClosed		= false;
 	protected short			chanceToHappen	= -1;
 
 	protected PairList<Ability, Integer>	spellV		= null;
@@ -112,6 +113,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		compiledMask=null;
 		lastMOB=null;
 		chanceToHappen=-1;
+		onClosed=false;
 		maxTicks=-1;
 		final String maskString=getMaskString(newText);
 		if(maskString.length()>0)
@@ -138,6 +140,11 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			if(thisOne.equalsIgnoreCase("NOUNINVOKE"))
 			{
 				this.uninvocable=false;
+				continue;
+			}
+			if(thisOne.equalsIgnoreCase("ONCLOSED"))
+			{
+				this.onClosed=true;
 				continue;
 			}
 			if(thisOne.toUpperCase().startsWith("LEVEL"))
@@ -299,6 +306,10 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		||((compiledMask!=null)
 			&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
 				return false;
+		if((affected instanceof Container)
+		&&(((Container)affected).isOpen())
+		&&onClosed)
+			return false;
 		final List<Triad<Ability, List<String>, Integer>> VTOO=convertToV2(V,target);
 		if(VTOO.size()==0)
 			return false;

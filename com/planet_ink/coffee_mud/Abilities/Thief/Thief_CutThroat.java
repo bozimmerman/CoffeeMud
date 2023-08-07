@@ -131,7 +131,8 @@ public class Thief_CutThroat extends ThiefSkill
 			final Ability A2=CMClass.getAbility("Bleeding");
 			if(A2!=null)
 			{
-				A2.invoke(msg.source(),(MOB)msg.target(),true,0);
+				if(((MOB)msg.target()).phyStats().level()>=CMProps.getIntVar(CMProps.Int.INJBLEEDMINLEVEL))
+					A2.invoke(msg.source(),(MOB)msg.target(),true,0);
 				if((msg.trailerMsgs()==null)||(msg.trailerMsgs().size()==0))
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_ACTION, L("<S-NAME> cut(s) <T-YOUPOSS> throat with <O-NAME>! Blood starts running...")));
 			}

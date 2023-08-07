@@ -674,15 +674,23 @@ public class StdRideable extends StdContainer implements Rideable
 			else
 			if(riding()!=msg.source())
 			{
-				if(msg.amITarget(this)
-				&&(numRiders()>=riderCapacity())
+				if((msg.amITarget(this))
 				&&(!amRiding(msg.source())))
 				{
-					// for items
-					msg.source().tell(L("@x1 is full.",name(msg.source())));
-					// for mobs
-					// msg.source().tell(L("No more can fit on @x1.",name(msg.source())));
-					return false;
+					if(numRiders()>=riderCapacity())
+					{
+						// for items
+						msg.source().tell(L("@x1 is full.",name(msg.source())));
+						// for mobs
+						// msg.source().tell(L("No more can fit on @x1.",name(msg.source())));
+						return false;
+					}
+					if((rideBasis()==Rideable.Basis.ENTER_IN)
+					&&(super.hasALid && !super.isOpen))
+					{
+						msg.source().tell(L("@x1 is closed.",name(msg.source())));
+						return false;
+					}
 				}
 				return true;
 			}
@@ -718,6 +726,11 @@ public class StdRideable extends StdContainer implements Rideable
 				&&(numRiders()>=riderCapacity())
 				&&(!amRiding(msg.source())))
 				{
+					if(super.hasALid && !super.isOpen)
+					{
+						msg.source().tell(L("@x1 is closed.",name(msg.source())));
+						return false;
+					}
 					// for items
 					msg.source().tell(L("@x1 is full.",name(msg.source())));
 					// for mobs

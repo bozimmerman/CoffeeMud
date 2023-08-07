@@ -187,8 +187,6 @@ public class Bleeding extends StdAbility implements HealthCondition
 			return false;
 		if(CMLib.flags().isGolem(target))
 			return false;
-		if(((MOB)target).phyStats().level()<CMProps.getIntVar(CMProps.Int.INJBLEEDMINLEVEL))
-			return false;
 		if(((MOB)target).fetchEffect(ID())!=null)
 			return false;
 		if(((MOB)target).location()==null)

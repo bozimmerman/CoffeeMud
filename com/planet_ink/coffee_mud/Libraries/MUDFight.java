@@ -2352,7 +2352,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				else
 				{
 					if((Math.round(CMath.div(dmg,target.maxState().getHitPoints())*100.0)>=CMProps.getIntVar(CMProps.Int.INJBLEEDPCTHP))
-					&&bleedableWeapon(msg.tool()))
+					&&bleedableWeapon(msg.tool())
+					&&(target.phyStats().level()>=CMProps.getIntVar(CMProps.Int.INJBLEEDMINLEVEL)))
 					{
 						final Ability A2=CMClass.getAbility("Bleeding");
 						if(A2!=null)

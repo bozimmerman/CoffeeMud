@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -95,6 +96,7 @@ public class Skills extends StdCommand
 				}
 			}
 		}
+		final boolean isSysOp = CMSecurity.isAllowedEverywhere(mob, SecFlag.ALLSKILLS); 
 		final List<Ability> ableVs = new XArrayList<Ability>(mob.allAbilities());
 		Ability A;
 		A=(Ability)CMLib.english().fetchEnvironmental(ableVs,qual,true);
@@ -133,9 +135,15 @@ public class Skills extends StdCommand
 					line.append(" ("+CMStrings.padRight(message,3)+")");
 				}
 				else
+				if(A.isSavable()||isSysOp)
 				{
 					line.append("^N[^H"+CMStrings.padRight(Integer.toString(proficiency),3)+"%^?]^N ");
 					line.append("^<HELP^>"+A2.name()+"^</HELP^>");
+				}
+				else
+				{
+					line.append("^N[^k"+CMStrings.padRight(Integer.toString(proficiency),3)+"%^?]^N ");
+					line.append("^<HELP^>^k"+A2.name()+"^^?</HELP^>");
 				}
 				line.append("^?\n\r");
 				if(mob.session()!=null)
@@ -378,6 +386,7 @@ public class Skills extends StdCommand
 		final int lowestLevel=ableM.phyStats().level()+1;
 		final StringBuilder msg=new StringBuilder("");
 		final Integer allAcodes = Integer.valueOf(Ability.ALL_ACODES);
+		final boolean isSysOp = CMSecurity.isAllowedEverywhere(ableM, SecFlag.ALLSKILLS); 
 		for(final Enumeration<Ability> a=ableM.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -426,28 +435,39 @@ public class Skills extends StdCommand
 					proficiency += ableM.charStats().getAbilityAdjustment("PROF+*");
 					if(proficiency>100)
 						proficiency=100;
+					String tagOpen="^<HELP^>";
+					String tagClose="^</HELP^>";
+					if(!A.isSavable()&&!isSysOp)
+					{
+						tagOpen+="^k";
+						tagClose="^?"+tagClose;
+					}
 					if(!useWords)
 					{
-						thisLine.append("^N[^H").append(CMStrings.padRight(Integer.toString(proficiency),COL_LEN1));
+						if(A.isSavable()||isSysOp)
+							thisLine.append("^N[^H").append(CMStrings.padRight(Integer.toString(proficiency),COL_LEN1));
+						else
+							thisLine.append("^N[^k").append(CMStrings.padRight(Integer.toString(proficiency),COL_LEN1));
 						thisLine.append("%^?]^N");
 						thisLine.append(" ");//+(A.isAutoInvoked()?"^H.^N":" ")
 						if(col < MAX_COLS)
-							thisLine.append(CMStrings.padRight("^<HELP^>",A.name(),"^</HELP^>",COL_LEN2));
+							thisLine.append(CMStrings.padRight(tagOpen,A.name(),tagClose,COL_LEN2));
 						else
 						{
-							thisLine.append(CMStrings.limit("^<HELP^>",A.name(),"^</HELP^>\n\r",COL_LEN3));
+							thisLine.append(CMStrings.limit(tagOpen,A.name(),tagClose+"\n\r",COL_LEN3));
 							col=0;
 						}
 					}
 					else
 					{
-						thisLine.append(CMStrings.padRight("^<HELP^>",A.name(),"^</HELP^>",COL_LEN2));
+						final String color = (A.isSavable()||isSysOp)?"^H":"^k";
+						thisLine.append(CMStrings.padRight(tagOpen,A.name(),tagClose,COL_LEN2));
 						final String message = CMLib.help().getRPProficiencyStr(proficiency);
 						if(col < MAX_COLS)
-							thisLine.append(CMStrings.padRight("^N(^H",message,"^?)^N",COL_LEN3));
+							thisLine.append(CMStrings.padRight("^N("+color,message,"^?)^N",COL_LEN3));
 						else
 						{
-							thisLine.append(CMStrings.limit("^N(^H",message,"^?)^N\n\r",COL_LEN3));
+							thisLine.append(CMStrings.limit("^N("+color,message,"^?)^N\n\r",COL_LEN3));
 							col=0;
 						}
 					}

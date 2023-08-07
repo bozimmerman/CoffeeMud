@@ -221,8 +221,8 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 		}
 		if(this.affected instanceof Item)
 		{
-			if(identity.equals(this.makeIdentity(((Item)affected).owner())))
-				return findModifiable(((Item)affected).owner(), changeStat);
+			if(identity.equals(this.makeIdentity(((Item)this.affected).owner())))
+				return findModifiable(((Item)this.affected).owner(), changeStat);
 		}
 		return null;
 	}
@@ -315,6 +315,7 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 	 *
 	 * @return  a mask of TRIGGER_* constants denoting what triggers the properties
 	 */
+	@Override
 	public int triggerMask()
 	{
 		return trigger;
@@ -348,7 +349,7 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 			final Integer identity = makeIdentity( this.affected);
 			addEffect(identity, this.affected,  this.perm);
 		}
-	};
+	}
 
 	private class RunDeler implements Runnable
 	{
@@ -366,7 +367,7 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 			if(identity != null)
 				undoEffect(identity,  this.affected);
 		}
-	};
+	}
 
 	public Physical properTarget(final MOB srcM)
 	{

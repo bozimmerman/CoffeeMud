@@ -631,7 +631,8 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 		}
 
 		if((affected instanceof MOB)
-		&&(CMLib.dice().roll(1,100,0)<=CMProps.getIntVar(CMProps.Int.INJBLEEDPCTCHANCE)))
+		&&(CMLib.dice().roll(1,100,0)<=CMProps.getIntVar(CMProps.Int.INJBLEEDPCTCHANCE))
+		&&(((MOB)affected).phyStats().level()>=CMProps.getIntVar(CMProps.Int.INJBLEEDMINLEVEL)))
 		{
 			final Ability A2=CMClass.getAbility("Bleeding");
 			if(A2!=null)

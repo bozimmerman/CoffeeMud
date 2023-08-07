@@ -2529,6 +2529,12 @@ public class StdMOB implements MOB
 								tell(L("You can't make sounds!"));
 								return false;
 							}
+							if ((!flags.canBreatheHere(this, location))
+							&&(!CMSecurity.isAllowed(this,location,CMSecurity.SecFlag.ALLSKILLS)))
+							{
+								tell(L("You can't make sounds due to being unable to breathe!"));
+								return false;
+							}
 							if ((flags.isAnimalIntelligence(this)) && (!CMath.bset(phyStats().sensesMask(), PhyStats.CAN_GRUNT_WHEN_STUPID)))
 							{
 								tell(L("You aren't smart enough to speak."));

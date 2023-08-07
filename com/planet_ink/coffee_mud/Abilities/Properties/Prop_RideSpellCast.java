@@ -74,7 +74,17 @@ public class Prop_RideSpellCast extends Prop_HaveSpellCast
 	}
 
 	@Override
-	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);	
+		if((onClosed)
+		&&(msg.targetMinor()==CMMsg.TYP_CLOSE)
+		&&(msg.target()==affected)
+		&&(affected instanceof Rideable))
+			processRideSpellCast();
+	}
+	
+	protected void processRideSpellCast()
 	{
 		if(processing)
 			return;
@@ -114,5 +124,11 @@ public class Prop_RideSpellCast extends Prop_HaveSpellCast
 		{
 			processing=false;
 		}
+	}
+	
+	@Override
+	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
+	{
+		processRideSpellCast();
 	}
 }

@@ -330,7 +330,7 @@ public class ListCmd extends StdCommand
 						}
 						rooms += T.getNumTitledRooms();
 					}
-					String uniqueID = T.getUniqueLotID();
+					String uniqueID = (T!=null)?T.getUniqueLotID():"";
 					if(uniqueID.startsWith("LOTS_PROPERTY_"))
 						uniqueID = uniqueID.substring(14);
 					if(uniqueID.startsWith("ROOM_PROPERTY_"))

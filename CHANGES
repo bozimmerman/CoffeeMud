@@ -3,7 +3,7 @@
   2. New Paladin skills: Incite Fight, Dark Hammer, Paladin's Wickedness, Crushing Aura
   3. New Paladin skills: Craft Unholy Reaver, Righteous Defense, Exploiting Aura
   4. Paladin's can now be Anti-Paladins if they maintain chaotic evil.
-  5. New Items: CubicGate, GenGiftContainer
+  5. New Items: CubicGate, GenGiftContainer, GenTent
   6. New Achievement stuff: Tattoo reward type, ENTITLED achieve type
   7. Tattoos like 'RACE_*" or "CHARCLASS_*" now open up otherwise skill-restricted options.
   8. Liege xp bonus can no longer be gained from non-combat or role-playing xp vassel gains.
@@ -26,6 +26,8 @@
  25. STAT commands supports new POBJECT (player objects) arg.
  26. New command: MEND, for invoking the proper common skill.  Mend spell renamed to Lesser Mend.
  27. Gaoler can now wear leather.
+ 28. Temporary skills now show up in the SKILLS/SPELLS/etc command as dark grey.
+ 29. You can no longer cast speak or cast verbal spells unless you can breathe where you are.
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)
