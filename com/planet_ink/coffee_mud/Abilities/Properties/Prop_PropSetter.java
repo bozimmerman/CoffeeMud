@@ -52,7 +52,7 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 	@Override
 	protected int canAffectCode()
 	{
-		return Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS|Ability.CAN_MOBS|Ability.CAN_EXITS;
+		return 0;//Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS|Ability.CAN_MOBS|Ability.CAN_EXITS;
 	}
 
 	@Override
