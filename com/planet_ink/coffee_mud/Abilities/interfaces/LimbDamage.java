@@ -56,9 +56,10 @@ public interface LimbDamage extends Ability
 	 * It will generate messages if necessary, toss the piece on the ground
 	 * if that is appropriate, and do all thats needed.
 	 * @param limbName the name of the limb to mangle, fully qualified.
+	 * @param intentional true if intentional, false if incidental
 	 * @return the item object representing the newly damaged part, if applicable.
 	 */
-	public Item damageLimb(String limbName);
+	public Item damageLimb(String limbName, boolean intentional);
 
 	/**
 	 * Returns whether the limb of the given name has been damaged.

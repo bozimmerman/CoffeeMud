@@ -31,6 +31,7 @@
  30. ALIAS now supports a copy command.
  31. New skill: Stoicism
  32. Pregnant people now get food addictions, and Addictions can now include resource name
+ 33. Amputation now works on corpses.
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

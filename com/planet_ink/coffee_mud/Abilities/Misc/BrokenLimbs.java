@@ -586,7 +586,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 	}
 
 	@Override
-	public Item damageLimb(final String brokenLimbName)
+	public Item damageLimb(final String brokenLimbName, final boolean intentional)
 	{
 		if(affected!=null)
 		{
@@ -746,7 +746,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 						brokenA.makeLongLasting();
 						target.addEffect(brokenA);
 					}
-					brokenA.damageLimb(brokeStr);
+					brokenA.damageLimb(brokeStr, (!auto) && (givenTarget==null));
 					target.recoverCharStats();
 					target.recoverPhyStats();
 					target.recoverMaxState();

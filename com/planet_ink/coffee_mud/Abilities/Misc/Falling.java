@@ -170,7 +170,7 @@ public class Falling extends StdAbility
 							mob.addEffect(damage);
 							damage.makeLongLasting();
 						}
-						damage.damageLimb(limbs.get(CMLib.dice().roll(1, limbs.size(), -1)));
+						damage.damageLimb(limbs.get(CMLib.dice().roll(1, limbs.size(), -1)), false);
 					}
 				}
 			}

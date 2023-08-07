@@ -120,7 +120,7 @@ public class Spell_LimbRack extends Spell
 				}
 				boolean success=true;
 				for(int i=0;i<limbsToRemove.size();i++)
-					success=success && (ampuA.damageLimb(limbsToRemove.get(i))!=null);
+					success=success && (ampuA.damageLimb(limbsToRemove.get(i), true)!=null);
 				if(success)
 				{
 					if(mob.fetchEffect(ampuA.ID())==null)

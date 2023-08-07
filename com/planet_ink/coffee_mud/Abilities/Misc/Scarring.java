@@ -444,7 +444,7 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 	}
 
 	@Override
-	public Item damageLimb(final String scarredLimbName)
+	public Item damageLimb(final String scarredLimbName, final boolean intentional)
 	{
 		final Physical affected = this.affected;
 		if(affected!=null)
@@ -614,7 +614,7 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 						scarrednA.makeLongLasting();
 						target.addEffect(scarrednA);
 					}
-					scarrednA.damageLimb(scarredStr);
+					scarrednA.damageLimb(scarredStr, (!auto) && (givenTarget==null));
 					target.recoverCharStats();
 					target.recoverPhyStats();
 					target.recoverMaxState();

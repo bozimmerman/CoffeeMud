@@ -112,7 +112,7 @@ public class Fighter_CalledStrike extends FighterSkill
 			A=(LimbDamage)CMClass.getAbility("Amputation");
 			A.setAffectedOne(mob);
 		}
-		if(A.damageLimb(gone)!=null)
+		if(A.damageLimb(gone, true)!=null)
 		{
 			if(mob.fetchEffect(A.ID())==null)
 				mob.addNonUninvokableEffect(A);

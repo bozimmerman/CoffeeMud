@@ -108,7 +108,7 @@ public class Tattooing extends CommonSkill
 						injuryA=target.fetchEffect("Injury");
 						if(injuryA!=null)
 						{
-							((LimbDamage)injuryA).damageLimb(bodyPart);
+							((LimbDamage)injuryA).damageLimb(bodyPart, true);
 						}
 					}
 				}

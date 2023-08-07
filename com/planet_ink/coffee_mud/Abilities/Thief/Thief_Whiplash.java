@@ -131,7 +131,7 @@ public class Thief_Whiplash extends ThiefSkill
 				if(scarredA!=null)
 				{
 					mob.location().show(mob, msg.target(), CMMsg.MSG_OK_VISUAL, L("<S-YOUPOSS> attack scar(s) <T-NAME>."));
-					scarredA.damageLimb(gone);
+					scarredA.damageLimb(gone, false);
 				}
 			}
 			else

@@ -336,7 +336,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 	}
 
 	@Override
-	public Item damageLimb(final String limbName)
+	public Item damageLimb(final String limbName, final boolean intentional)
 	{
 		if(affected!=null)
 		{
@@ -751,7 +751,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 											@Override
 											public void run()
 											{
-												if(amputationA.damageLimb(bodyPartName)!=null)
+												if(amputationA.damageLimb(bodyPartName, false)!=null)
 												{
 													if(mob.fetchEffect(amputationA.ID())==null)
 													{
