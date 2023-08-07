@@ -349,8 +349,6 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 							Exit E = R.getRawExit(d);
 							if(E == null)
 								E = R3.getRawExit(opd);
-							if(E==null)
-								E=CMClass.getExit("Open");
 							if(R.getRawExit(d)==null)
 								R.setRawExit(d, E);
 							if(R3.getRawExit(opd)==null)

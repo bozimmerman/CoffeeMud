@@ -54,6 +54,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 
 	protected long	monthsRemaining	= -1;
 	protected long	daysRemaining	= -1;
+	protected Ability addictions	= null;
 
 	@Override
 	public String getHealthConditionDesc()
@@ -384,6 +385,30 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		{
 			msg.addTrailerMsg(CMClass.getMsg((MOB)affected, null, null, CMMsg.MSG_OK_VISUAL, L("\n\r<S-NAME> <S-IS-ARE> obviously with child.\n\r"), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
 		}
+
+		if((addictions != null)
+		&&(affected instanceof MOB))
+			addictions.executeMsg(affected, msg);
+		else
+		if((msg.source()==affected)
+		&&(msg.targetMinor()==CMMsg.TYP_EAT)
+		&&(addictions == null)
+		&&(msg.target() instanceof Food)
+		&&(!CMSecurity.isAbilityDisabled("Addictions")))
+		{
+			addictions = CMClass.getAbility("Addictions");
+			if(addictions != null)
+			{
+				addictions.setAffectedOne(affected);
+				if(msg.target() instanceof RawMaterial)
+					addictions.setMiscText(RawMaterial.CODES.NAME(((RawMaterial)msg.target()).material()));
+				else
+				if(CMLib.dice().rollPercentage()>75)
+					addictions.setMiscText(RawMaterial.CODES.NAME(((RawMaterial)msg.target()).material()));
+				else
+					addictions.setMiscText(msg.target().Name());
+			}
+		}
 		super.executeMsg(host, msg);
 	}
 
@@ -396,6 +421,9 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		&& (affected instanceof MOB)
 		&& (CMLib.flags().isInTheGame((MOB) affected, true)))
 		{
+			if((addictions != null)
+			&&(!addictions.tick(ticking, tickID)))
+				addictions = null;
 			final MOB mob = (MOB) affected;
 			final long end=this.getPregnancyEndTime();
 			if(end != -1)

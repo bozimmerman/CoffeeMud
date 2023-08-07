@@ -98,6 +98,7 @@ public class Mood extends StdAbility
 		FORMAL("+ADJCHA 17","^Bformal","formally"),
 		POLITE("+ADJCHA 13","^Bpolite","politely"),
 		HAPPY("","^Yhappy","happily"),
+		HAPPYSILLY("","^Yhappy","happily"),
 		SAD("","^Csad","sadly"),
 		ANGRY("","^rangry","angrily"),
 		RUDE("","^grude","rudely"),
@@ -174,7 +175,7 @@ public class Mood extends StdAbility
 		"CONSPIRE","CONTEMPLATE","COUGH","COZY","CURTSEY","DANCE","DISCODANCE","DOH",
 		"DROOL","DUCK","EARPLUG","EMBRACE","EYEBROW","FART","FIDGET","FLASH","FLEX",
 		"FLIRT","FLUTTER","FOOTSIE","FPALM","FROLICK","GIGGLE","GOOSE","GREET","GROUPHUG",
-		"HICCIP","HIGHFIVE","HOMEWORK","HOP","HOWL","HUSH","INNOCENT","JIG","KISS","LAUGH",
+		"HICCUP","HIGHFIVE","HOMEWORK","HOP","HOWL","HUSH","INNOCENT","JIG","KISS","LAUGH",
 		"LAUGH","LAUGH","LICK","MOO","MOON","MOSH","NIBBLE","NOOGIE","NTWIST","NUDGE",
 		"NUZZLE","PANT","PAT","PATPAT","PECK","PET","PIE","PILLOW","PINCH","POINT","POKE",
 		"POUNCE","PRANCE","PRAY","PURR","RASPBERRY","ROAR","ROFL","ROFL","ROFL","ROFL",
@@ -183,6 +184,15 @@ public class Mood extends StdAbility
 		"SQUEEL","SQUIRM","SSMILE","STRUT","SWEET","SWOON","TEASE","TEASE","THANK","THANK",
 		"THANK","TICKLE","TICKLE","TONGUE","TWERK","TWIDDLE","WHEW","WIGGY","WIGGY","WIGGY",
 		"WINK","WINK","WONDER","WORM","YEEHAW","ZERBERT"
+	};
+
+	public static String[] happySillySocials = new String[] {
+		"AGREE","ANGELIC","APPLAUD","BEAM","BEARHUG","BEER","BKISS","BOW","CHEER",
+		"CHUCKLE","CLAP","COZY","CURTSEY","DROOL","EMBRACE","EYEBROW",
+		"FLIRT","FLUTTER","GIGGLE","GREET","GROUPHUG","HIGHFIVE","JIG",
+		"LAUGH","PAT","PECK","PET","ROFL","ROFLMAO","SERENADE","SHAKE","SLOBBER",
+		"SMILE","SMILE","SMILE","SMILE","SQUEEL","SSMILE","SSMILE","THANK","THANK",
+		"THANK","TICKLE"
 	};
 
 	@Override
@@ -681,6 +691,7 @@ public class Mood extends StdAbility
 						break;
 					}
 					case HAPPY: // happy
+					case HAPPYSILLY: // happysilly
 					{
 						if((M!=null)
 						&&(lastOne!=M))
@@ -1132,6 +1143,57 @@ public class Mood extends StdAbility
 				{
 					final int sillySocialIndex=CMLib.dice().roll(1, sillySocials.length, -1);
 					final String socialName = sillySocials[sillySocialIndex];
+					final Social social = CMLib.socials().fetchSocial(socialName, true);
+					if(social != null)
+					{
+						if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
+						{
+							CMLib.threads().scheduleRunnable(new Runnable()
+							{
+								final MOB mob=msg.source();
+								final int channelCode = msg.othersMinor() - CMMsg.TYP_CHANNEL;
+								@Override
+								public void run()
+								{
+									final CMChannel chan = CMLib.channels().getChannel(channelCode);
+									if(chan != null)
+									{
+										final String channelName = chan.name();
+										mob.enqueCommand(new XVector<String>(channelName,","+socialName), 0, 0);
+									}
+								}
+							}, 500);
+						}
+						else
+						if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+						||(msg.sourceMinor()==CMMsg.TYP_TELL))
+						{
+							CMLib.threads().scheduleRunnable(new Runnable()
+							{
+								final MOB mob=msg.source();
+								@Override
+								public void run()
+								{
+									mob.enqueCommand(new XVector<String>(socialName), 0, 0);
+								}
+							}, 500);
+						}
+					}
+				}
+				break;
+			}
+			case HAPPYSILLY: // happysilly
+			{
+				if((msg.source()==affected)
+				&&(msg.sourceMessage()!=null)
+				&&((msg.tool()==null)||(msg.tool().ID().equals("Common")))
+				&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+				   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
+				   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
+				&&(CMLib.dice().rollPercentage()<33))
+				{
+					final int sillySocialIndex=CMLib.dice().roll(1, happySillySocials.length, -1);
+					final String socialName = happySillySocials[sillySocialIndex];
 					final Social social = CMLib.socials().fetchSocial(socialName, true);
 					if(social != null)
 					{

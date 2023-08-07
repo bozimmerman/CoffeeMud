@@ -250,6 +250,9 @@ public class Addictions extends StdAbility
 			if(CMLib.english().containsString(name,addictedStr))
 				lastFix.get(addictedStr)[0] = System.currentTimeMillis();
 			else
+			if((E instanceof Item) && addictedStr.equalsIgnoreCase(RawMaterial.CODES.NAME(((Item)E).material())))
+				lastFix.get(addictedStr)[0] = System.currentTimeMillis();
+			else
 			if(this.puffCredit.containsKey(addictedStr))
 				lastFix.get(addictedStr)[0] = System.currentTimeMillis();
 		}
@@ -262,7 +265,8 @@ public class Addictions extends StdAbility
 		{
 			if(msg.source()==affected)
 			{
-				if(((msg.targetMinor()==CMMsg.TYP_EAT)||(msg.targetMinor()==CMMsg.TYP_DRINK))
+				if(((msg.targetMinor()==CMMsg.TYP_EAT)
+					||(msg.targetMinor()==CMMsg.TYP_DRINK))
 				&&((msg.target() instanceof Food)
 					||(msg.target() instanceof Drink)
 					||(msg.target() instanceof Pill)

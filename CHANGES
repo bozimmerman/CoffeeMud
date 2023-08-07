@@ -30,6 +30,7 @@
  29. You can no longer cast speak or cast verbal spells unless you can breathe where you are.
  30. ALIAS now supports a copy command.
  31. New skill: Stoicism
+ 32. Pregnant people now get food addictions, and Addictions can now include resource name
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

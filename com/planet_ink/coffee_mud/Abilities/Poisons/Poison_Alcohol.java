@@ -148,6 +148,31 @@ public class Poison_Alcohol extends Poison
 		drunkness=newCode;
 	}
 
+	protected Ability mood = null;
+
+	protected Ability getMood()
+	{
+		if(mood == null)
+		{
+			final Physical affected=this.affected;
+			if(affected == null)
+				return null;
+			mood = CMClass.getAbility("Mood");
+			if((mood == null)
+			||(affected.phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_MOOD))
+			||(affected.phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_DRUNKENNESS)))
+				return null;
+			final String moods[] = {"HAPPY","MEAN","SILLY","ANGRY","SAD",""};
+			final String moodStr = moods[Math.abs(affected.Name().hashCode())%moods.length];
+			if(moodStr.length()==0)
+				return null;
+			mood.setMiscText(moodStr);
+			mood.setAffectedOne(affected);
+		}
+		mood.setAffectedOne(affected);
+		return mood;
+	}
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -204,6 +229,11 @@ public class Poison_Alcohol extends Poison
 		final MOB mob=(MOB)affected;
 		if(mob==null)
 			return true;
+
+		final Ability mood = getMood();
+		if((mood != null)
+		&&(CMLib.dice().rollPercentage()<(4*drunkness)))
+			mood.tick(mob, Tickable.TICKID_MOB);
 
 		final Room room=mob.location();
 		if((CMLib.dice().rollPercentage()<(4*drunkness))
@@ -321,6 +351,11 @@ public class Poison_Alcohol extends Poison
 				return true;
 			if(msg.source().location()==null)
 				return true;
+
+			final Ability mood = getMood();
+			if((mood != null)
+			&&(!mood.okMessage(msg.source(), msg)))
+				return false;
 
 			if((msg.amISource((MOB)affected))
 			&&(msg.sourceMessage()!=null)
