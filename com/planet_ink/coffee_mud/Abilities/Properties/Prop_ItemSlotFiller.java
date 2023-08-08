@@ -114,6 +114,15 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		if((P==this.affected)||(affected==null))
 		{
 			super.setAffectedOne(P);
+			for(final Ability A : getAffects())
+			{
+				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
+				{
+					final Physical oldP=A.affecting();
+					A.setAffectedOne(null); // helps reset the effect
+					A.setAffectedOne(oldP);
+				}
+			}
 		}
 		else
 		{

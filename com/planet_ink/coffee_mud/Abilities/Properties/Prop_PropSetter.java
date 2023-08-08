@@ -52,7 +52,7 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 	@Override
 	protected int canAffectCode()
 	{
-		return 0;//Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS|Ability.CAN_MOBS|Ability.CAN_EXITS;
+		return Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS|Ability.CAN_MOBS|Ability.CAN_EXITS;
 	}
 
 	@Override
@@ -67,8 +67,8 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 		return 0;
 	}
 
-	protected SLinkedList<Quad<Integer,Modifiable,String,String>> previous =
-			new SLinkedList<Quad<Integer,Modifiable,String,String>>();
+	protected LinkedList<Quad<Integer,Modifiable,String,String>> previous =
+			new LinkedList<Quad<Integer,Modifiable,String,String>>();
 
 	protected Map<String,String> changes = new SHashtable<String,String>();
 	protected int				 trigger = TRIGGER_ALWAYS;
@@ -80,7 +80,7 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 	{
 		final Prop_PropSetter obj=(Prop_PropSetter)super.copyOf();
 		obj.changes = new SHashtable<String,String>();
-		obj.previous= new SLinkedList<Quad<Integer,Modifiable,String,String>>();
+		obj.previous= new LinkedList<Quad<Integer,Modifiable,String,String>>();
 		obj.identity = Integer.valueOf(0);
 		return obj;
 	}
@@ -94,6 +94,8 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 	@Override
 	public void setAffectedOne(final Physical P)
 	{
+		if((P == null)&&(affected != null))
+			this.undoEffect(this.makeIdentity(affected), affected);
 		super.setAffectedOne(P);
 		if((identity==null)||(identity.intValue() == 0))
 			identity = Integer.valueOf(P.hashCode());
@@ -104,7 +106,10 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 	{
 		super.setMiscText(newMiscText);
 		changes.clear();
-		previous.clear();
+		synchronized(previous)
+		{
+			previous.clear();
+		}
 		final int x = newMiscText.indexOf("<PREVIOUS>");
 		String parms = newMiscText;
 		String xml = "";
@@ -117,7 +122,7 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 		if(changes.containsKey("TRIGGER"))
 		{
 			trigger = 0;
-			final String[] chtrs  = changes.remove("TRIGGER").toUpperCase().trim().split("|");
+			final String[] chtrs  = changes.remove("TRIGGER").toUpperCase().trim().split("\\|");
 			for(String chtr : chtrs)
 			{
 				chtr = chtr.trim();
@@ -137,20 +142,23 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 			identity = Integer.valueOf(CMath.s_int(changes.get("IDENTITY")));
 		bubble=false;
 		if(changes.containsKey("BUBBLE"))
-			bubble = CMath.s_bool(changes.get("BUBBLE"));
-		previous.clear();
-		if(xml.length()>0)
+			bubble = CMath.s_bool(changes.remove("BUBBLE"));
+		synchronized(previous)
 		{
-			final List<XMLLibrary.XMLTag> tags = CMLib.xml().parseAllXML(xml);
-			for(final XMLLibrary.XMLTag tag : tags)
+			previous.clear();
+			if(xml.length()>0)
 			{
-				if((tag.getParmValue("STAT")!=null)
-				&&(tag.getParmValue("ID")!=null))
+				final List<XMLLibrary.XMLTag> tags = CMLib.xml().parseAllXML(xml);
+				for(final XMLLibrary.XMLTag tag : tags)
 				{
-					final String changeStat = tag.getParmValue("STAT");
-					final String changeValue = CMLib.xml().restoreAngleBrackets(tag.value());
-					final Integer identifier = Integer.valueOf(CMath.s_int(tag.getParmValue("ID")));
-					previous.add(new Quad<Integer,Modifiable,String,String>(identifier,null,changeStat,changeValue));
+					if((tag.getParmValue("STAT")!=null)
+					&&(tag.getParmValue("ID")!=null))
+					{
+						final String changeStat = tag.getParmValue("STAT");
+						final String changeValue = CMLib.xml().restoreAngleBrackets(tag.value());
+						final Integer identifier = Integer.valueOf(CMath.s_int(tag.getParmValue("ID")));
+						previous.add(new Quad<Integer,Modifiable,String,String>(identifier,null,changeStat,changeValue));
+					}
 				}
 			}
 		}
@@ -186,6 +194,81 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 	protected Modifiable findModifiable(final Physical affected, final String changeStat)
 	{
 		Modifiable M = null;
+		if(changeStat.equalsIgnoreCase("NAME"))
+		{
+			M = new Modifiable() {
+				final Physical P = affected;
+				@Override
+				public String ID()
+				{
+					return "Modifiable";
+				}
+
+				@Override
+				public String name()
+				{
+					return P.name();
+				}
+
+				@Override
+				public CMObject newInstance()
+				{
+					return this;
+				}
+
+				@Override
+				public CMObject copyOf()
+				{
+					return this;
+				}
+
+				@Override
+				public void initializeClass()
+				{
+				}
+
+				@Override
+				public int compareTo(final CMObject o)
+				{
+					return 0;
+				}
+
+				@Override
+				public String[] getStatCodes()
+				{
+					return new String[] {"NAME"};
+				}
+
+				@Override
+				public int getSaveStatIndex()
+				{
+					return 0;
+				}
+
+				@Override
+				public String getStat(final String code)
+				{
+					return P.basePhyStats().newName();
+				}
+
+				@Override
+				public boolean isStat(final String code)
+				{
+					return code.equalsIgnoreCase("NAME");
+				}
+
+				@Override
+				public void setStat(final String code, final String val)
+				{
+					if(code.equalsIgnoreCase("NAME"))
+					{
+						P.basePhyStats().setName(val);
+						P.recoverPhyStats();
+					}
+				}
+			};
+		}
+		else
 		if(affected.isStat(changeStat))
 			M = affected;
 		else
@@ -199,6 +282,77 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 		if((affected instanceof MOB)
 		&&(((MOB)affected).baseState().isStat(changeStat)))
 			M = ((MOB)affected).baseState();
+		else
+		if(CMLib.coffeeMaker().isAnyGenStat(affected, changeStat))
+		{
+			M = new Modifiable() {
+				final Physical P = affected;
+				@Override
+				public String ID()
+				{
+					return "Modifiable";
+				}
+
+				@Override
+				public String name()
+				{
+					return P.name();
+				}
+
+				@Override
+				public CMObject newInstance()
+				{
+					return this;
+				}
+
+				@Override
+				public CMObject copyOf()
+				{
+					return this;
+				}
+
+				@Override
+				public void initializeClass()
+				{
+				}
+
+				@Override
+				public int compareTo(final CMObject o)
+				{
+					return 0;
+				}
+
+				@Override
+				public String[] getStatCodes()
+				{
+					return CMLib.coffeeMaker().getAllGenStats(P).toArray(new String[0]);
+				}
+
+				@Override
+				public int getSaveStatIndex()
+				{
+					return 0;
+				}
+
+				@Override
+				public String getStat(final String code)
+				{
+					return CMLib.coffeeMaker().getAnyGenStat(P, code);
+				}
+
+				@Override
+				public boolean isStat(final String code)
+				{
+					return CMLib.coffeeMaker().isAnyGenStat(P, code);
+				}
+
+				@Override
+				public void setStat(final String code, final String val)
+				{
+					CMLib.coffeeMaker().setAnyGenStat(P, code, val);
+				}
+			};
+		}
 		return M;
 	}
 
