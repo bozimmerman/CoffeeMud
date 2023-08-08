@@ -1771,7 +1771,12 @@ public class CMParms
 		{
 			final int spx=val.indexOf(' ');
 			if(spx>0)
-				val=val.substring(0,spx).trim();
+			{
+				final String trimmed =val.substring(0,spx).trim();
+				if(!trimmed.startsWith(eqParm+"")
+				||(CMath.isMathExpression(trimmed.substring(1))))
+					val=trimmed;
+			}
 			if(val.endsWith(";"))
 				val=val.substring(0,val.length()-1).trim();
 			if(val.length()>2)
@@ -1853,6 +1858,21 @@ public class CMParms
 		char lastEQChar='=';
 		for(int x=1;x<str.length();x++)
 		{
+			if((x>2)
+			&&((str.charAt(x)=='`')||(str.charAt(x)=='\''))
+			&&(lastParm!=null)
+			&&(lastEQ>0))
+			{
+				int y=x+1;
+				for(;y<str.length();y++)
+					if(str.charAt(y)==str.charAt(x))
+						break;
+				if(y<str.length())
+				{
+					x=y;
+					continue;
+				}
+			}
 			if("+-=".indexOf(str.charAt(x))>=0)
 			{
 				int startParm=x-1;
