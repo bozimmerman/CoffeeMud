@@ -78,6 +78,8 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	protected boolean		removeOnDeath		= false;
 	protected String[]		parameters			= new String[] { "", "" };
 	protected ItemSetDef	allSet				= null;
+	protected Set<String>	ambianceAdd			= null;
+	protected Set<String>	ambianceDel			= null;
 
 	private static String[]	allParms			= null;
 
@@ -130,24 +132,6 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 				return true;
 			}
 			else
-			if(val.startsWith("+'")
-			&& val.endsWith("'")
-			&&(CMath.isMathExpression(val.substring(2,val.length()-1))))
-			{
-				addTo.add(Integer.valueOf(parmCode));
-				addTo.add(Integer.valueOf(CMath.s_parseIntExpression(val.substring(2,val.length()-1))));
-				return true;
-			}
-			else
-			if(val.startsWith("-'")
-			&& val.endsWith("'")
-			&&(CMath.isMathExpression("-"+val.substring(2,val.length()-1))))
-			{
-				addTo.add(Integer.valueOf(parmCode));
-				addTo.add(Integer.valueOf(CMath.s_parseIntExpression("-"+val.substring(2,val.length()-1))));
-				return true;
-			}
-			else
 			if(errors!=null)
 				errors.add("Argument "+parm+": expected +-, got '"+val+"' in '"+newText+"'");
 		}
@@ -180,6 +164,30 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		return Boolean.valueOf(def);
 	}
 
+	protected void addPlusMinusAmbiances(final Map<String, String> ps, final String parameters, final List<String> errors)
+	{
+		int num = 1;
+		String numKey = "AMBIANCE";
+		while(ps.containsKey(numKey))
+		{
+			final String val = ps.get(numKey);
+			if(val.startsWith("+"))
+			{
+				if(this.ambianceAdd == null)
+					this.ambianceAdd = new TreeSet<String>();
+				this.ambianceAdd.add(val.substring(1));
+			}
+			else
+			if(val.startsWith("-"))
+			{
+				if(this.ambianceDel == null)
+					this.ambianceDel = new TreeSet<String>();
+				this.ambianceDel.add(val.substring(1));
+			}
+			numKey = "AMBIANCE"+(++num);
+		}
+	}
+
 	private final void addAbleAdjustments(final Map<String,String> ps, final String newText, final String parm, final String prefix, final List<Object> charStatsV, final List<String> errors)
 	{
 		final String ableProfs=this.getParmStr(ps, parameters[0], parm, "");
@@ -200,7 +208,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 							amts=amts.substring(1);
 						if(CMath.isInteger(amts))
 						{
-							Pair<String,Integer> p = new Pair<String,Integer>(prefix+ableID.toUpperCase(),Integer.valueOf(CMath.s_int(amts))); 
+							final Pair<String,Integer> p = new Pair<String,Integer>(prefix+ableID.toUpperCase(),Integer.valueOf(CMath.s_int(amts)));
 							charStatsV.add(p);
 							charStatsV.add(p); // have to add twice, because thats how charadjs work
 						}
@@ -301,7 +309,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 				"MULTIPLYPH", "MULTIPLYCH", "abi", "arm", "att", "dam", "dis", "lev",
 				"rej", "sen", "spe", "wei", "hei", "gen", "cla", "cls", "rac", "hit",
 				"hun", "man", "mov", "thi", "ALLSAVES", "ABLEPROFS", "ABLELVLS","chr","hp",
-				"ALLSET","RONDEATH"
+				"ALLSET","RONDEATH","AMBIANCE"
 			}));
 			for(final int i : CharStats.CODES.BASECODES())
 			{
@@ -340,6 +348,10 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		multiplyPhyStats = getParmBool(ps, parameters[0],"MULTIPLYPH",false,errors).booleanValue();
 		multiplyCharStates = getParmBool(ps, parameters[0],"MULTIPLYCH",false,errors).booleanValue();
 
+		this.ambianceAdd= null;
+		this.ambianceDel= null;
+		if(ps.containsKey("AMBIANCE"))
+			addPlusMinusAmbiances(ps,parameters[0],errors);
 		final ArrayList<Object> phyStatsV=new ArrayList<Object>();
 		addIfPlussed(ps,parameters[0],"abi",PhyStats.STAT_ABILITY,phyStatsV,errors);
 		addIfPlussed(ps,parameters[0],"arm",PhyStats.STAT_ARMOR,phyStatsV,errors);
@@ -464,6 +476,12 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 
 	public void phyStuff(final Object[] changes, final Physical host, final PhyStats phyStats)
 	{
+		if(this.ambianceAdd != null)
+			for(final String ambiance : this.ambianceAdd)
+				phyStats.addAmbiance(ambiance);
+		if(this.ambianceDel != null)
+			for(final String ambiance : this.ambianceDel)
+				phyStats.delAmbiance(ambiance);
 		if(changes==null)
 			return;
 		if(multiplyPhyStats)

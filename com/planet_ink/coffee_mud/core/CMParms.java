@@ -1774,12 +1774,25 @@ public class CMParms
 				val=val.substring(0,spx).trim();
 			if(val.endsWith(";"))
 				val=val.substring(0,val.length()-1).trim();
+			if(val.length()>2)
+			{
+				for(final char c : "\"'`".toCharArray())
+				{
+					if((val.charAt(0)==eqParm)
+					&&(val.charAt(1)==c)
+					&&(val.charAt(val.length()-1)==c))
+						return eqParm + val.substring(2,val.length()-1).trim();
+				}
+			}
 		}
-		if(val.startsWith("\"")&&(val.endsWith("\"")))
-			val=val.substring(1,val.length()-1).trim();
-		else
-		if(val.startsWith("'")&&(val.endsWith("'")))
-			val=val.substring(1,val.length()-1).trim();
+		if(val.length()>1)
+		{
+			for(final char c : "\"'`".toCharArray())
+			{
+				if((val.charAt(0)==c)&&(val.charAt(val.length()-1)==c))
+					return val.substring(0,val.length()-1).trim();
+			}
+		}
 		return val;
 	}
 
@@ -1900,7 +1913,16 @@ public class CMParms
 					{
 						final String midBit=str.substring(lastEQ+1,startParm).trim();
 						final String val=cleanArgVal(midBit,lastEQChar,errors);
-						h.put(uMap.get(lastParm),val);
+						final String uKey = uMap.get(lastParm);
+						if(h.containsKey(uKey))
+						{
+							int i=2;
+							for(;h.containsKey(uKey+i);i++)
+							{}
+							h.put(uKey+i, val);
+						}
+						else
+							h.put(uKey,val);
 					}
 					lastParm=possParm;
 					lastEQChar=str.charAt(x);
@@ -1917,7 +1939,16 @@ public class CMParms
 		if((lastParm!=null)&&(lastEQ>0))
 		{
 			final String val=cleanArgVal(str.substring(lastEQ+1).trim(),lastEQChar,errors);
-			h.put(uMap.get(lastParm),val);
+			final String uKey = uMap.get(lastParm);
+			if(h.containsKey(uKey))
+			{
+				int i=2;
+				for(;h.containsKey(uKey+i);i++)
+				{}
+				h.put(uKey+i, val);
+			}
+			else
+				h.put(uKey,val);
 		}
 		@SuppressWarnings("unchecked")
 		final Map<String,String> hCopy=(Map<String,String>)h.clone();
