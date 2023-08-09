@@ -1475,17 +1475,17 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		final Object[] whichTracking = trigs.whichTracking(msg);
 		if(whichTracking.length>0)
 		{
-			final Pair<Object,List<String>> comps = trigs.getCompleted(msg.source(), whichTracking, msg);
+			final Triad<MOB,Object,List<String>> comps = trigs.getCompleted(msg.source(), whichTracking, msg);
 			if(comps != null)
 			{
-				final Ability A=msg.source().fetchAbility(comps.first.toString());
+				final Ability A=msg.source().fetchAbility(comps.second.toString());
 				if(A!=null)
 				{
 					mob.setActions(mob.actions()-CMProps.getSkillCombatActionCost(A.ID()));
 					msg.addTrailerRunnable(new Runnable()
 					{
-						final MOB mob = msg.source();
-						final List<String> args = new XVector<String>(comps.second);
+						final MOB mob = comps.first;
+						final List<String> args = new XVector<String>(comps.third);
 						final Ability ableA = A;
 						@Override
 						public void run()

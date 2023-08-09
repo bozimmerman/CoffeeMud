@@ -1737,7 +1737,7 @@ public class DefaultTriggerer implements Triggerer
 	}
 
 	@Override
-	public Pair<Object,List<String>> getCompleted(final MOB hostM, final Object[] keys, final CMMsg msg)
+	public Triad<MOB, Object, List<String>> getCompleted(final MOB hostM, final Object[] keys, final CMMsg msg)
 	{
 		if(isIgnoring(msg.source()))
 			return null;
@@ -1745,7 +1745,7 @@ public class DefaultTriggerer implements Triggerer
 		{
 			final TrigState state = stepGetCompleted(hostM, key, msg);
 			if(state != null)
-				return new Pair<Object,List<String>>(key, state.args());
+				return new Triad<MOB,Object,List<String>>(hostM,key, state.args());
 			if((assisting.first==key)
 			&&(hostM == msg.source()))
 			{
@@ -1762,32 +1762,15 @@ public class DefaultTriggerer implements Triggerer
 					{
 						assisting.first=null;
 						assisting.second=null;
-						this.setObsolete();
 						continue;
 					}
 				}
-				final Pair<Object,List<String>> comps = trig.getCompleted(M, new Object[] { key }, msg);
-				if(comps!=null)
+				final Triad<MOB,Object,List<String>> comps = trig.getCompleted(M, new Object[] { key }, msg);
+				if(comps != null)
 				{
-					final Ability A=msg.source().fetchAbility(comps.first.toString());
-					if(A!=null)
-					{
-						M.setActions(M.actions()-CMProps.getSkillCombatActionCost(A.ID()));
-						msg.addTrailerRunnable(new Runnable()
-						{
-							final MOB mob = M;
-							final List<String> args = new XVector<String>(comps.second);
-							final Ability ableA = A;
-							@Override
-							public void run()
-							{
-								ableA.invoke(mob, args, null, false, 0);
-							}
-						});
-					}
 					assisting.first=null;
 					assisting.second=null;
-					this.setObsolete();
+					return comps;
 				}
 			}
 		}

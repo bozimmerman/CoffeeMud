@@ -260,7 +260,7 @@ public interface Triggerer extends CMCommon
 	 *
 	 * @return null, or the key and arguments pair
 	 */
-	public Pair<Object,List<String>> getCompleted(MOB hostM, final Object[] keys, final CMMsg msg);
+	public Triad<MOB, Object, List<String>> getCompleted(MOB hostM, final Object[] keys, final CMMsg msg);
 
 	/**
 	 * If any triggers are currently in a wait state, this will return

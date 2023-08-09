@@ -170,7 +170,7 @@ public class NonTriggerer implements Triggerer
 	}
 
 	@Override
-	public Pair<Object, List<String>> getCompleted(MOB hostM, final Object[] keys, final CMMsg msg)
+	public Triad<MOB, Object, List<String>> getCompleted(MOB hostM, final Object[] keys, final CMMsg msg)
 	{
 		return null;
 	}
