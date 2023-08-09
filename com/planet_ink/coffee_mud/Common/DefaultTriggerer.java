@@ -1750,9 +1750,10 @@ public class DefaultTriggerer implements Triggerer
 			&&(hostM == msg.source()))
 			{
 				final Triggerer trig;
+				final MOB M;
 				synchronized(assisting)
 				{
-					final MOB M = assisting.second;
+					M = assisting.second;
 					if((M==null)||(assisting.first!=key))
 						continue;
 					trig = M.triggerer();
@@ -1761,10 +1762,33 @@ public class DefaultTriggerer implements Triggerer
 					{
 						assisting.first=null;
 						assisting.second=null;
+						this.setObsolete();
 						continue;
 					}
 				}
-				trig.getCompleted(assisting.second, new Object[] { key }, msg);
+				final Pair<Object,List<String>> comps = trig.getCompleted(M, new Object[] { key }, msg);
+				if(comps!=null)
+				{
+					final Ability A=msg.source().fetchAbility(comps.first.toString());
+					if(A!=null)
+					{
+						M.setActions(M.actions()-CMProps.getSkillCombatActionCost(A.ID()));
+						msg.addTrailerRunnable(new Runnable()
+						{
+							final MOB mob = M;
+							final List<String> args = new XVector<String>(comps.second);
+							final Ability ableA = A;
+							@Override
+							public void run()
+							{
+								ableA.invoke(mob, args, null, false, 0);
+							}
+						});
+					}
+					assisting.first=null;
+					assisting.second=null;
+					this.setObsolete();
+				}
 			}
 		}
 		return null;
