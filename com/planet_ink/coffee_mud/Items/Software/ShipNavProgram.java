@@ -1256,7 +1256,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				addScreenMessage(L("Error: Malfunctioning launch thrusters interface."));
 				return false;
 			}
-			if(findTargetAcceleration(engineE) < SpaceObject.ACCELERATION_DAMAGED)
+			targetAcceleration= Double.valueOf(findTargetAcceleration(engineE));
+			if(targetAcceleration.doubleValue() < SpaceObject.ACCELERATION_DAMAGED)
 			{
 				final int gs = (int)Math.round(targetAcceleration.doubleValue()/SpaceObject.ACCELERATION_G);
 				addScreenMessage(L("No inertial dampeners found.  Limiting acceleration to "+gs+"Gs."));
@@ -1398,7 +1399,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				addScreenMessage(L("Error: Malfunctioning thrusters interface."));
 				return false;
 			}
-			findTargetAcceleration(engineE);
+			targetAcceleration=Double.valueOf(findTargetAcceleration(engineE));
 			final SpaceObject programPlanet = landingPlanet;
 			final List<ShipEngine> programEngines=new XVector<ShipEngine>(engineE);
 			// this lands you at the nearest point, which will pick the nearest location room, if any
@@ -1677,7 +1678,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				addScreenMessage(L("Error: Malfunctioning thrusters interface."));
 				return false;
 			}
-			findTargetAcceleration(engineE);
+			targetAcceleration=Double.valueOf(findTargetAcceleration(engineE));
 			final List<ShipEngine> programEngines=new XVector<ShipEngine>(engineE);
 			final List<SpaceObject> navs = calculateNavigation(ship, targetObj, allObjects);
 			if(navs == null)

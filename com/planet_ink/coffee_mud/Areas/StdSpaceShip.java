@@ -430,9 +430,12 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 							{
 								if((staleAirList.size()==0)
 								&&(msg.tool() instanceof Item)
-								&&(((Item)msg.tool()).owner() instanceof Room)
-								&&(((Room)((Item)msg.tool()).owner()).getAtmosphere()<=0))
-									doStaleCheck();
+								&&(((Item)msg.tool()).owner() instanceof Room))
+								{
+									final Room R = (Room)((Item)msg.tool()).owner();
+									if(R.getAtmosphere()<=0)
+										doStaleCheck();
+								}
 								if(staleAirList.size()>0)
 								{
 									final double pct=((Double)parms[0]).doubleValue();
@@ -586,7 +589,8 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			final Room R=r.nextElement();
 			if(!staleAirList.contains(R.roomID()))
 			{
-				if(R.numInhabitants()>0)
+				if((R.numInhabitants()>0)
+				||(R.getAtmosphere()==0))
 					staleAirList.add(R.roomID());
 			}
 			else
