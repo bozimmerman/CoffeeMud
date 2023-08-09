@@ -1476,7 +1476,9 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		if(whichTracking.length>0)
 		{
 			final Triad<MOB,Object,List<String>> comps = trigs.getCompleted(msg.source(), whichTracking, msg);
-			if(comps != null)
+			if((comps != null)
+			&&(comps.first!=null)
+			&&(comps.first.location()==msg.source().location()))
 			{
 				final Ability A=msg.source().fetchAbility(comps.second.toString());
 				if(A!=null)

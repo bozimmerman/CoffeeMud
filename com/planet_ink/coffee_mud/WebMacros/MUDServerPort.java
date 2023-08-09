@@ -44,7 +44,10 @@ public class MUDServerPort extends StdWebMacro
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
-		return CMProps.getVar(CMProps.Str.MUDPORTS);
+		final java.util.Map<String,String> parms=parseParms(parm);
+		if(parms.containsKey("LOCAL"))
+			return CMProps.getVar(CMProps.Str.LOCALMUDPORTS);
+		return CMProps.getVar(CMProps.Str.ALLMUDPORTS);
 	}
 
 }

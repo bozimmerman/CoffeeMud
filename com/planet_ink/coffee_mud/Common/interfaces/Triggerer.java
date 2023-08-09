@@ -81,7 +81,8 @@ public interface Triggerer extends CMCommon
 		OTHERSAY(String.class),
 		ALLSAY(String.class),
 		SOCIAL(Social.class, String.class),
-		INCLUDE(Integer.class, String.class)
+		INCLUDE(Integer.class, String.class),
+		TIMEOUT(Integer.class),
 		;
 		public Class<?>[] parmTypes;
 		private TriggerCode(final Class<?>... parms)

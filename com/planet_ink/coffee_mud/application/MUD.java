@@ -429,6 +429,10 @@ public class MUD extends Thread implements MudHost
 			if (bindAddr != null)
 				Log.sysOut(Thread.currentThread().getName(),"MUD Server bound to: "+bindAddr.toString());
 			CMLib.hosts().add(this);
+			String oldPorts = CMProps.getVar(CMProps.Str.LOCALMUDPORTS);
+			if(oldPorts == null)
+				oldPorts = "";
+			CMProps.setVar(CMProps.Str.LOCALMUDPORTS,(oldPorts+" "+this.getPort()).trim());
 			while(servsock!=null)
 			{
 				setState(MudState.WAITING);
@@ -1815,7 +1819,7 @@ public class MUD extends Thread implements MudHost
 				final MudHost mud=CMLib.hosts().get(m);
 				str.append(" "+mud.getPort());
 			}
-			CMProps.setVar(CMProps.Str.MUDPORTS,str.toString());
+			CMProps.setVar(CMProps.Str.ALLMUDPORTS,str.toString());
 			CMProps.setBoolAllVar(CMProps.Bool.MUDSTARTED,true);
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Online");
 			Log.sysOut(Thread.currentThread().getName(),"Host#"+threadCode+" initializated.");

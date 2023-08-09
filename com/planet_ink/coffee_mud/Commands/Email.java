@@ -315,7 +315,7 @@ public class Email extends StdCommand
 					  mob.Name(),
 					  mob.Name(),
 					  "Password for "+mob.Name(),
-					  "Your new password for "+mob.Name()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.");
+					  "Your new password for "+mob.Name()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.ALLMUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.");
 			mob.tell(L("You will receive an email with your new password shortly.  Goodbye."));
 			if(mob.session()!=null)
 			{

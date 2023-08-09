@@ -367,7 +367,7 @@ public final class IMC2Driver extends Thread
 		this_imcmud.autoconnect=true;
 		imc_siteinfo.name=CMProps.getVar(CMProps.Str.MUDNAME);
 		imc_siteinfo.host=host;
-		imc_siteinfo.port=CMath.s_int(CMParms.parse(CMProps.getVar(CMProps.Str.MUDPORTS)).elementAt(0));
+		imc_siteinfo.port=CMath.s_int(CMParms.parse(CMProps.getVar(CMProps.Str.ALLMUDPORTS)).elementAt(0));
 		imc_siteinfo.email=email;
 		imc_siteinfo.base="CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER);
 		imc_siteinfo.details="Custom Java-based Mud";

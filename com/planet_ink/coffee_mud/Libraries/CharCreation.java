@@ -707,7 +707,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				L("Your password for @x1 is '@x2'.\n\r"
 				+ "You can login by pointing your mud client at @x3 port(s): @x4.\n\r"
 				+ "After creating a character, you may use the PASSWORD command to change it once you are online.",
-				acct.getAccountName(),password,CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.MUDPORTS)));
+				acct.getAccountName(),password,CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.ALLMUDPORTS)));
 			session.println(L("Your account has been created.  You will receive an email with your password shortly."));
 			CMLib.s_sleep(2000);
 			session.stopSession(false,false,false);
@@ -2261,7 +2261,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					L("Your password for @x1 is: @x2\n\r"
 					+ "You can login by pointing your mud client at @x3 port(s): @x4.\n\r"
 					+ "After creating a character, you may use the PASSWORD command to change it once you are online.",
-					acct.getAccountName(),password,CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.MUDPORTS)));
+					acct.getAccountName(),password,CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.ALLMUDPORTS)));
 				session.println(L("Your account email address has been updated.  You will receive an email with your new password shortly."));
 				session.stopSession(false,false,false);
 				CMLib.s_sleep(1000);
@@ -3961,7 +3961,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				L("Your password for @x1 is: @x2\n\r"
 				+ "You can login by pointing your mud client at @x3 port(s): @x4.\n\r"
 				+ "You may use the PASSWORD command to change it once you are online.",
-				mob.Name(),password,CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.MUDPORTS)));
+				mob.Name(),password,CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.ALLMUDPORTS)));
 			session.println(L("Your character has been created.  You will receive an email with your password shortly."));
 			CMLib.s_sleep(1000);
 			if(mob==session.mob())

@@ -259,7 +259,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		else
 			unSubUrl = null;
 		message+=L("\n\r\n\rThis message was sent to "+to+" through the @x1 mail server at @x2, port @x3.  ",
-				CMProps.getVar(CMProps.Str.MUDNAME), CMProps.getVar(CMProps.Str.MUDDOMAIN), CMProps.getVar(CMProps.Str.MUDPORTS))+
+				CMProps.getVar(CMProps.Str.MUDNAME), CMProps.getVar(CMProps.Str.MUDDOMAIN), CMProps.getVar(CMProps.Str.ALLMUDPORTS))+
 				L("Please contact the administrators regarding any abuse of this system.\n\r")+
 				((unSubUrl == null) ? "" : L("To unsubscribe, visit: @x1  \n\r",unSubUrl));
 		if(!emailIfPossible(smtpServerInfo, fromEmail, replyToEmail, toEmail, subject, message))

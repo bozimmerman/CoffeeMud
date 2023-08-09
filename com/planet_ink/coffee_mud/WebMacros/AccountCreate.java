@@ -264,7 +264,7 @@ public class AccountCreate extends StdWebMacro
 					L("Password for @x1",acct.getAccountName()),
 					L("Your password for @x1 is '@x2'.\n\r",acct.getAccountName(),password)+
 					L("You can login by pointing your mud client at @x1 port(s): @x2.\n\r",
-							CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.MUDPORTS))+
+							CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.ALLMUDPORTS))+
 					L("After creating a character, you may use the PASSWORD command to change it once you are online."));
 		}
 		if(parms.containsKey("LOGIN"))

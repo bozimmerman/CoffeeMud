@@ -38,7 +38,7 @@ public class DefaultTriggerer implements Triggerer
 	protected final static Map<String,Trigger[]> ritualCache = new Hashtable<String,Trigger[]>();
 
 	protected Map<String, TrigTracker>	trackers	= new Hashtable<String, TrigTracker>();
-	protected Pair<Object, MOB>			assisting	= new Pair<Object, MOB>();
+	protected Map<Object, MOB>			assisting	= new Hashtable<Object, MOB>();
 	protected Map<Object, Trigger[]>	rituals		= new SHashtable<Object, Trigger[]>();
 	protected List<TrigState>			waitingFor	= Collections.synchronizedList(new LinkedList<TrigState>());
 	protected Set<String>				ignoreOf	= new LimitedTreeSet<String>();
@@ -144,7 +144,13 @@ public class DefaultTriggerer implements Triggerer
 				return null;
 			}
 			if(states.containsKey(key))
+			{
+				final TrigState T = states.get(key);
+				if((T.timeout > 0)
+				&&(System.currentTimeMillis()>T.time + T.timeout))
+					return null;
 				return states.get(key);
+			}
 			return null;
 		}
 
@@ -165,8 +171,9 @@ public class DefaultTriggerer implements Triggerer
 		private volatile int			completed	= -1;
 		private final String			holyName;
 		private final Reference<MOB>	charM;
-		private volatile long			time		= System.currentTimeMillis();
+		private volatile long			time		= System.currentTimeMillis(); // last time a completed occurred
 		public volatile long			waitExpire	= -1;
+		public long						timeout		= -1;
 		public final Object				key;
 		public List<String>				args		= null;
 		public List<MOB>				assistants	= null;
@@ -550,6 +557,12 @@ public class DefaultTriggerer implements Triggerer
 							DT.parm1=CMParms.combine(V,1);
 							break;
 						}
+						case TIMEOUT:
+						{
+							DT.triggerCode=T;
+							DT.parm1=""+CMath.s_long(CMParms.combine(V,1));
+							break;
+						}
 						case INCLUDE:
 						{
 							if(V.size()<3)
@@ -847,6 +860,8 @@ public class DefaultTriggerer implements Triggerer
 				case CHECK:
 					buf.append(CMLib.masking().maskDesc(DT.parm1));
 					break;
+				case TIMEOUT:
+					break;
 				case INCLUDE:
 					if(CMath.s_int(DT.parm1)<=0)
 						buf.append(L("requires one or more assistants like @x1",CMLib.masking().maskDesc(DT.parm2)));
@@ -926,17 +941,14 @@ public class DefaultTriggerer implements Triggerer
 	{
 		if((hostM == null)||(hostM.amDead())||(mob==null)||(mob.amDead()))
 			return null;
-		if((this.assisting.first==key)&&(hostM==mob))
+		if((this.assisting.containsKey(key))&&(hostM==mob))
 		{
 			synchronized(assisting)
 			{
-				final MOB M = this.assisting.second;
+				final MOB M = this.assisting.get(key);
 				if((M==null)
 				||(M.triggerer().isObsolete()))
-				{
-					this.assisting.first=null;
-					this.assisting.second=null;
-				}
+					assisting.remove(key);
 				else
 				{
 					final CMMsg msg = M.triggerer().genNextAbleTrigger(M, mob, key, force);
@@ -995,6 +1007,10 @@ public class DefaultTriggerer implements Triggerer
 			trigState.setCompleted(DT);
 			return null;
 		case INCLUDE:
+			trigState.setCompleted(DT);
+			return null;
+		case TIMEOUT:
+			trigState.timeout = CMath.s_long(DT.parm1) * 1000L;
 			trigState.setCompleted(DT);
 			return null;
 		case PUTTHING:
@@ -1173,6 +1189,7 @@ public class DefaultTriggerer implements Triggerer
 		case RANDOM:
 		case CHECK:
 		case INCLUDE:
+		case TIMEOUT:
 		case WAIT:
 		case YOUSAY:
 		case OTHERSAY:
@@ -1241,14 +1258,14 @@ public class DefaultTriggerer implements Triggerer
 				readyList.add(key);
 			}
 		}
-		if(this.assisting.first!=null)
+		if(this.assisting.size()>0)
 		{
 			if(readyList == null)
 				readyList = new ArrayList<Object>(1);
 			synchronized(assisting)
 			{
-				if(this.assisting.first!=null)
-					readyList.add(assisting.first);
+				for(final Object key : this.assisting.keySet())
+					readyList.add(key);
 			}
 		}
 		if(readyList != null)
@@ -1309,7 +1326,8 @@ public class DefaultTriggerer implements Triggerer
 
 				if(((DT.other<0)&&(hostM != msg.source()))
 				||((DT.other==0)&&(hostM == msg.source()))
-				||((DT.other>0)&&(state!=null)&&(state.assistants!=null)&&(DT.other-1 != state.assistants.indexOf(msg.source()))))
+				||((DT.other>0)&&(state!=null)&&(state.assistants!=null)&&(DT.other-1 != state.assistants.indexOf(msg.source())))
+				||(hostM.location()!=msg.source().location()))
 					yup = false;
 				else
 				switch(DT.triggerCode)
@@ -1444,6 +1462,12 @@ public class DefaultTriggerer implements Triggerer
 							state.args().add(targName(msg.target()));
 						yup=true;
 					}
+					break;
+				case TIMEOUT:
+					if(state == null)
+						state = getCreateTrigState(hostM, key);
+					state.time = CMath.s_long(DT.parm1) * 1000L;
+					yup=true;
 					break;
 				case INCLUDE:
 					{
@@ -1746,30 +1770,28 @@ public class DefaultTriggerer implements Triggerer
 			final TrigState state = stepGetCompleted(hostM, key, msg);
 			if(state != null)
 				return new Triad<MOB,Object,List<String>>(hostM,key, state.args());
-			if((assisting.first==key)
+			if((assisting.containsKey(key))
 			&&(hostM == msg.source()))
 			{
 				final Triggerer trig;
 				final MOB M;
 				synchronized(assisting)
 				{
-					M = assisting.second;
-					if((M==null)||(assisting.first!=key))
+					M = assisting.get(key);
+					if(M==null)
 						continue;
 					trig = M.triggerer();
 					if((trig==null)
 					||(trig.isObsolete()))
 					{
-						assisting.first=null;
-						assisting.second=null;
+						assisting.remove(key);
 						continue;
 					}
 				}
 				final Triad<MOB,Object,List<String>> comps = trig.getCompleted(M, new Object[] { key }, msg);
 				if(comps != null)
 				{
-					assisting.first=null;
-					assisting.second=null;
+					assisting.remove(key);
 					return comps;
 				}
 			}
@@ -1864,20 +1886,14 @@ public class DefaultTriggerer implements Triggerer
 	{
 		synchronized(assisting)
 		{
-			if(assisting.first==null)
-			{
-				assisting.first=key;
-				assisting.second=assistingM;
-			}
+			if(!assisting.containsKey(key))
+				assisting.put(key, assistingM);
 			else
 			{
-				final MOB M = assisting.second;
+				final MOB M = assisting.get(key);
 				final Triggerer triggerer = (M!=null)?M.triggerer():null;
 				if((triggerer==null)||(triggerer.isObsolete()))
-				{
-					assisting.first=key;
-					assisting.second=assistingM;
-				}
+					assisting.put(key, assistingM);
 			}
 		}
 	}
@@ -1890,7 +1906,7 @@ public class DefaultTriggerer implements Triggerer
 		{
 			me = (DefaultTriggerer) this.clone();
 			me.trackers	= new Hashtable<String, TrigTracker>();
-			me.assisting = new Pair<Object, MOB>();
+			me.assisting = new HashMap<Object, MOB>();
 			me.rituals = new SHashtable<Object, Trigger[]>();
 			me.rituals.putAll(rituals);
 			me.socialsMap = new SHashtable<String,List<Social>>();
