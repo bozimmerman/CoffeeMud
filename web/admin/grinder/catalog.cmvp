@@ -213,7 +213,10 @@
                 </TR>
             @back@
             <TR>
-            <TD COLSPAN=6><a href="javascript:NewCatalogMob('NEWCATA-'+document.RESOURCES.NEWOBJECT.value,document.RESOURCES.NEWOBJECT.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWOBJECT SIZE=70></B></FONT></TD>
+            <TD COLSPAN=6>
+            	<a href="javascript:NewCatalogMob('NEWCATA-'+document.RESOURCES.NEWOBJECT.value,document.RESOURCES.NEWOBJECT.value)">
+            	<FONT COLOR=CYAN><B><U>Create New:</U></a> <INPUT TYPE=TEXT NAME=NEWOBJECT SIZE=70></B></FONT>
+            </TD>
             </TR>
             </TABLE>
         </TD></TR>
@@ -291,7 +294,10 @@
                 </TR>
             @back@
             <TR>
-            <TD COLSPAN=7><a href="javascript:NewCatalogItem('NEWCATA-'+document.RESOURCES.NEWOBJECT.value,document.RESOURCES.NEWOBJECT.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWOBJECT SIZE=70></B></FONT></TD>
+            <TD COLSPAN=7>
+            	<a href="javascript:NewCatalogItem('NEWCATA-'+document.RESOURCES.NEWOBJECT.value,document.RESOURCES.NEWOBJECT.value)">
+            	<FONT COLOR=WHITE><B><U>Create New:</U></a> <INPUT TYPE=TEXT NAME=NEWOBJECT SIZE=70></B></FONT>
+            </TD>
             </TR>
             </TABLE>
         </TD></TR>

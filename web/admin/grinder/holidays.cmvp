@@ -72,7 +72,10 @@
     </TR>
     @back@
     <TR>
-    <TD COLSPAN=4><a href="javascript:Holiday(document.RESOURCES.NEWHOLIDAY.value+'&NEWHOLIDAY='+document.RESOURCES.NEWHOLIDAY.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWHOLIDAY SIZE=70></B></FONT></TD>
+    <TD COLSPAN=4>
+    	<a href="javascript:Holiday(document.RESOURCES.NEWHOLIDAY.value+'&NEWHOLIDAY='+document.RESOURCES.NEWHOLIDAY.value)">
+    	<FONT COLOR=CYAN><B><U>Create New:</U></a> <INPUT TYPE=TEXT NAME=NEWHOLIDAY SIZE=70></B></FONT>
+    </TD>
     </TR>
     </TABLE>
     <P>

@@ -1310,7 +1310,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		return null;
 	}
 
-	protected Triggerer confirmAbilityComponentTriggers(final MOB mob)
+	protected Triggerer getActiveTriggerer(final MOB mob)
 	{
 		final Triggerer triggerer = mob.triggerer();
 		if(abilitiesWithCompsWithTriggers.size()==0)
@@ -1324,6 +1324,26 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		}
 		if(!triggerer.isObsolete())
 			return triggerer;
+		return null;
+	}
+
+	@Override
+	public void addAssistingTriggerer(final MOB mob, final MOB assistingM, final Object key)
+	{
+		Triggerer activeTriggerer = getActiveTriggerer(mob);
+		if(activeTriggerer == null)
+		{
+			activeTriggerer = (Triggerer)CMClass.getCommon("DefaultTriggerer");
+			mob.setTriggerer(activeTriggerer);
+		}
+		activeTriggerer.addTriggerAssist(assistingM, key);
+	}
+
+	protected Triggerer confirmAbilityComponentTriggers(final MOB mob)
+	{
+		final Triggerer activeTriggerer = getActiveTriggerer(mob);
+		if(activeTriggerer != null)
+			return activeTriggerer;
 		final MaskingLibrary mlib = CMLib.masking();
 		Triggerer trig = null;
 		for(final Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
@@ -1374,7 +1394,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		final Triggerer trigs = getAbilityComponentTriggers(mob, A);
 		if(trigs.getInProgress(mob).length>0) // one at a time, plz
 			return;
-		final CMMsg msg = trigs.genNextAbleTrigger(mob, A.ID().toUpperCase().trim(), true);
+		final CMMsg msg = trigs.genNextAbleTrigger(mob, mob, A.ID().toUpperCase().trim(), true);
 		try
 		{
 			if(R.okMessage(R, msg))
@@ -1424,7 +1444,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			return;
 		for(final Object key : keys)
 		{
-			final CMMsg msg = trigs.genNextAbleTrigger(mob, key, false);
+			final CMMsg msg = trigs.genNextAbleTrigger(mob, mob, key, false);
 			try
 			{
 				if(R.okMessage(R, msg))
@@ -1455,7 +1475,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		final Object[] whichTracking = trigs.whichTracking(msg);
 		if(whichTracking.length>0)
 		{
-			final Pair<Object,List<String>> comps = trigs.getCompleted(whichTracking, msg);
+			final Pair<Object,List<String>> comps = trigs.getCompleted(msg.source(), whichTracking, msg);
 			if(comps != null)
 			{
 				final Ability A=msg.source().fetchAbility(comps.first.toString());

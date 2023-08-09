@@ -98,7 +98,10 @@
         </TR>
     @back@
     <TR>
-    <TD COLSPAN=5><a href="javascript:if(document.RESOURCES.NEWFACTION.value!='')NewFaction(document.RESOURCES.NEWFACTION.value,'&NEWFACTION='+document.RESOURCES.NEWFACTION.value)"><FONT COLOR=WHITE><B>Load/Create New Faction ini file:</a> <INPUT TYPE=TEXT NAME=NEWFACTION SIZE=70></B></FONT></TD>
+    <TD COLSPAN=5>
+    	<a href="javascript:if(document.RESOURCES.NEWFACTION.value!='')NewFaction(document.RESOURCES.NEWFACTION.value,'&NEWFACTION='+document.RESOURCES.NEWFACTION.value)">
+    	<FONT COLOR=CYAN><B><U>Load/Create New Faction ini file:</U></a> <INPUT TYPE=TEXT NAME=NEWFACTION SIZE=70></B></FONT>
+   	</TD>
     </TR>
     </TABLE>
     <P>

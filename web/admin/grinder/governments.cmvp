@@ -64,7 +64,9 @@
 	</TR>
 	@back@
 	<TR>
-	<TD COLSPAN=5><a href="javascript:if(document.RESOURCES.GOVTNAME.value!='')Government('_NEWONE_&NAME='+document.RESOURCES.GOVTNAME.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=GOVTNAME SIZE=70></B></FONT></TD>
+	<TD COLSPAN=5><a href="javascript:if(document.RESOURCES.GOVTNAME.value!='')Government('_NEWONE_&NAME='+document.RESOURCES.GOVTNAME.value)">
+		<FONT COLOR=CYAN><B><U>Create New:</U></a> <INPUT TYPE=TEXT NAME=GOVTNAME SIZE=70></B></FONT>
+	</TD>
 	</TR>
 	</TABLE>
 	<P>

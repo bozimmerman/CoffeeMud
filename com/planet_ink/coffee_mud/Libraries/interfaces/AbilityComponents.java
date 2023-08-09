@@ -222,6 +222,18 @@ public interface AbilityComponents extends CMLibrary
 	public void startAbilityComponentTrigger(final MOB mob, final Ability A);
 
 	/**
+	 * If a component trigger allows otherwise non-qualifying participants,
+	 * this will allow it to add other participants to the message
+	 * listener for their main triggerer and key, using the INCLUDE
+	 * trigger directive.
+	 *
+	 * @param mob the mob to be an assistant
+	 * @param assistingM the mob being assisted, with their triggerer
+	 * @param key the key to the trigger
+	 */
+	public void addAssistingTriggerer(final MOB mob, final MOB assistingM, final Object key);
+
+	/**
 	 * Creates a new blank ability component object
 	 * @param abilityID the ability id to based this component on
 	 * @return a new blank ability component object

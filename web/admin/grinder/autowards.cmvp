@@ -74,7 +74,9 @@
         </TR>
     @back@
     <TR>
-    <TD COLSPAN=4><a href="javascript:NewAward()"><FONT COLOR=WHITE><B>Create New</a></B></FONT></TD>
+    <TD COLSPAN=4>
+    	<a href="javascript:NewAward()"><FONT COLOR=CYAN><B><U>Create New</U></B></FONT></a>
+    </TD>
     </TR>
     </TABLE>
     <P>

@@ -65,7 +65,7 @@
     <TR>
         <TD COLSPAN=6>
                 <a href="javascript:Plane(document.RESOURCES.NEWPLANENAME.value)">
-                <FONT COLOR=WHITE><B>Create New:</a>
+                <FONT COLOR=CYAN><B><U>Create New:</U></a>
                 <INPUT TYPE=TEXT NAME="NEWPLANENAME" SIZE=20 VALUE="">
                 </B></FONT>
         </TD>

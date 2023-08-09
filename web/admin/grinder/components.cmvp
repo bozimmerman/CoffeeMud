@@ -77,7 +77,7 @@
     <TR>
         <TD COLSPAN=6>
                 <a href="javascript:Component(document.RESOURCES.NEW.options[document.RESOURCES.NEW.selectedIndex].value)">
-                <FONT COLOR=WHITE><B>Create New Component:</a>
+                <FONT COLOR=CYAN><B><U>Create New Component:</U></a>
                 <SELECT NAME=NEW>
                     @AbilityNext?RESET@
                     @loop@
@@ -91,7 +91,7 @@
     <TR>
         <TD COLSPAN=6>
                 <a href="javascript:Social(document.RESOURCES.NEWSOCIAL.value,document.RESOURCES.NEWSOCIAL.value)">
-                <FONT COLOR=WHITE><B>Create New Comp. Social:</a>
+                <FONT COLOR=CYAN><B><U>Create New Comp. Social:</U></a>
                 <INPUT TYPE=TEXT NAME=NEWSOCIAL SIZE=20 VALUE="">
                 </B></FONT>
         </TD>

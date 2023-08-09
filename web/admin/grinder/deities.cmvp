@@ -112,7 +112,9 @@
     </TR>
     @back@
     <TR>
-    <TD COLSPAN=5><a href="javascript:if(document.RESOURCES.NEWDEITYID.value!='')NewDeity(document.RESOURCES.LOCATION,''+document.RESOURCES.NEWDEITYID.value)"><FONT COLOR=WHITE><B>Create New:</a>
+    <TD COLSPAN=5>
+    	<a href="javascript:if(document.RESOURCES.NEWDEITYID.value!='')NewDeity(document.RESOURCES.LOCATION,''+document.RESOURCES.NEWDEITYID.value)">
+    	<FONT COLOR=CYAN><B><U>Create New:</U></a>
     &nbsp;<INPUT TYPE=TEXT NAME=NEWDEITYID SIZE=70>
     &nbsp;in
     <SELECT NAME=LOCATION>

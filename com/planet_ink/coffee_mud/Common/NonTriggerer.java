@@ -107,7 +107,7 @@ public class NonTriggerer implements Triggerer
 	}
 
 	@Override
-	public void addTrigger(final Object key, final String encodedTrigger, Map<String, List<Social>> socials, final List<String> errors)
+	public void addTrigger(final Object key, final String encodedTrigger, final Map<String, List<Social>> socials, final List<String> errors)
 	{
 	}
 
@@ -124,7 +124,7 @@ public class NonTriggerer implements Triggerer
 	}
 
 	@Override
-	public CMMsg genNextAbleTrigger(final MOB mob, final Object key, final boolean force)
+	public CMMsg genNextAbleTrigger(MOB hostM, final MOB mob, final Object key, final boolean force)
 	{
 		return null;
 	}
@@ -170,7 +170,7 @@ public class NonTriggerer implements Triggerer
 	}
 
 	@Override
-	public Pair<Object, List<String>> getCompleted(final Object[] keys, final CMMsg msg)
+	public Pair<Object, List<String>> getCompleted(MOB hostM, final Object[] keys, final CMMsg msg)
 	{
 		return null;
 	}
@@ -197,5 +197,10 @@ public class NonTriggerer implements Triggerer
 	public Map<String,List<Social>> getSocialSets()
 	{
 		return emptyMap;
+	}
+
+	@Override
+	public void addTriggerAssist(final MOB assistingM, final Object key)
+	{
 	}
 }

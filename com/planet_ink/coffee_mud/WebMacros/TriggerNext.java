@@ -78,18 +78,29 @@ public class TriggerNext extends StdWebMacro
 				{
 					String cmd=V.firstElement().toUpperCase().trim();
 					TriggerCode T;
-					if(cmd.endsWith("+"))
-						T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd.substring(0,cmd.length()-1));
+					String tcmd=cmd;
+					if(tcmd.startsWith("ASSIST"))
+					{
+						int x = 6;
+						while((x<tcmd.length())&&Character.isDigit(tcmd.charAt(x)))
+							x++;
+						tcmd = tcmd.substring(x).trim();
+					}
+					if(tcmd.endsWith("+"))
+						T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, tcmd.substring(0,cmd.length()-1));
 					else
-						T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd);
+						T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, tcmd);
 					if(T==null)
 					{
 						for(final TriggerCode RT : TriggerCode.values())
 						{
-							if(RT.name().startsWith(cmd))
+							if(RT.name().startsWith(tcmd))
 							{
 								T=RT;
-								cmd = RT.name();
+								if((!tcmd.equals(cmd))&&(cmd.endsWith(tcmd)))
+									cmd=cmd.substring(0,cmd.length()-tcmd.length())+RT.name();
+								else
+									cmd = RT.name();
 								break;
 							}
 						}
@@ -125,6 +136,8 @@ public class TriggerNext extends StdWebMacro
 		VALUE("VAL"),
 		PARMTYPE("PARM"),
 		ARG("ARG"),
+		ASSIST("ASS"),
+		ASSISTNUM("ANUM"),
 		;
 		public String str;
 		private TrigMGField(final String fieldPostdex)
@@ -166,6 +179,13 @@ public class TriggerNext extends StdWebMacro
 					{
 						final String connStr=httpReq.getUrlParameter("TRIG"+trigDex+TrigMGField.CONNECTOR.str);
 						buildStr.append(connStr);
+					}
+					if("on".equalsIgnoreCase(httpReq.getUrlParameter("TRIG"+trigDex+TrigMGField.ASSIST.str)))
+					{
+						buildStr.append("ASSIST");
+						final int anum = CMath.s_int(httpReq.getUrlParameter("TRIG"+trigDex+TrigMGField.ASSISTNUM.str));
+						if(anum>0)
+							buildStr.append(anum);
 					}
 					buildStr.append(cmd);
 					if("on".equalsIgnoreCase(httpReq.getUrlParameter("TRIG"+trigDex+TrigMGField.ARG.str)))
@@ -215,11 +235,24 @@ public class TriggerNext extends StdWebMacro
 					trigDex--;
 					continue;
 				}
+				String cmd = td[1].toUpperCase();
 				TriggerCode T;
-				if(td[1].endsWith("+"))
-					T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, td[1].substring(0,td[1].length()-1));
+				httpReq.addFakeUrlParameter("TRIG"+trigDex+TrigMGField.ASSIST.str, "");
+				httpReq.addFakeUrlParameter("TRIG"+trigDex+TrigMGField.ASSISTNUM.str, "0");
+				if(cmd.startsWith("ASSIST"))
+				{
+					int x = 6;
+					while((x<cmd.length())&&Character.isDigit(cmd.charAt(x)))
+						x++;
+					httpReq.addFakeUrlParameter("TRIG"+trigDex+TrigMGField.ASSIST.str, "on");
+					final String rest = cmd.substring(6,x);
+					httpReq.addFakeUrlParameter("TRIG"+trigDex+TrigMGField.ASSISTNUM.str, rest);
+					cmd = cmd.substring(x).trim();
+				}
+				if(cmd.endsWith("+"))
+					T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd.substring(0,cmd.length()-1));
 				else
-					T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, td[1]);
+					T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd);
 				final StringBuilder newSubTrigger = new StringBuilder("");
 				httpReq.addFakeUrlParameter("TRIG"+trigDex+TrigMGField.ARG.str, td[1].endsWith("+")?"on":"");
 				httpReq.addFakeUrlParameter("TRIG"+trigDex+TrigMGField.PARMCOUNT.str, Integer.toString(T.parmTypes.length));

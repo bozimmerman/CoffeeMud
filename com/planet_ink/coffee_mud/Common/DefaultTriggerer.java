@@ -38,12 +38,14 @@ public class DefaultTriggerer implements Triggerer
 	protected final static Map<String,Trigger[]> ritualCache = new Hashtable<String,Trigger[]>();
 
 	protected Map<String, TrigTracker>	trackers	= new Hashtable<String, TrigTracker>();
+	protected Pair<Object, MOB>			assisting	= new Pair<Object, MOB>();
 	protected Map<Object, Trigger[]>	rituals		= new SHashtable<Object, Trigger[]>();
 	protected List<TrigState>			waitingFor	= Collections.synchronizedList(new LinkedList<TrigState>());
 	protected Set<String>				ignoreOf	= new LimitedTreeSet<String>();
 	protected String					holyName	= "Unknown";
 	protected int						version		= 0;
 	protected Map<String,List<Social>>	socialsMap	= new Hashtable<String,List<Social>>();
+
 
 	private final static Object[]	trackingNothing	= new Object[0];
 	private final static MOB[]		trackingNoone	= new MOB[0];
@@ -118,6 +120,7 @@ public class DefaultTriggerer implements Triggerer
 		public int			reqCount	= 0;
 		public Trigger		orConnect	= null;
 		public boolean		addArgs		= false;
+		public int			other		= -1;
 	}
 
 	protected final class TrigTracker
@@ -166,6 +169,7 @@ public class DefaultTriggerer implements Triggerer
 		public volatile long			waitExpire	= -1;
 		public final Object				key;
 		public List<String>				args		= null;
+		public List<MOB>				assistants	= null;
 
 		public TrigState(final MOB charM, final Object key, final String holyName)
 		{
@@ -272,25 +276,35 @@ public class DefaultTriggerer implements Triggerer
 					Trigger DT=new Trigger();
 					final String cmd=V.firstElement();
 					TriggerCode T;
-					if(cmd.endsWith("+"))
+					String trigCmd = cmd.toUpperCase();
+					if(trigCmd.startsWith("ASSIST"))
+					{
+						int x = 6;
+						while((x<trigCmd.length())&&Character.isDigit(trigCmd.charAt(x)))
+							x++;
+						final String rest = trigCmd.substring(6,x);
+						DT.other=CMath.s_int(rest);
+						trigCmd = trigCmd.substring(x).trim();
+					}
+					if(trigCmd.endsWith("+"))
 					{
 						DT.addArgs=true;
-						T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd.substring(0,cmd.length()-1));
+						T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, trigCmd.substring(0,trigCmd.length()-1));
 					}
 					else
-					if(cmd.indexOf('#')>0)
+					if(trigCmd.indexOf('#')>0)
 					{
-						final int x = cmd.indexOf('#');
-						DT.reqCount = CMath.s_int(cmd.substring(x+1).trim());
-						T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd.substring(0,x));
+						final int x = trigCmd.indexOf('#');
+						DT.reqCount = CMath.s_int(trigCmd.substring(x+1).trim());
+						T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, trigCmd.substring(0,x));
 					}
 					else
-						T = (TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd);
+						T = (TriggerCode)CMath.s_valueOf(TriggerCode.class, trigCmd);
 					if(T==null)
 					{
 						for(final TriggerCode RT : TriggerCode.values())
 						{
-							if(RT.name().startsWith(cmd))
+							if(RT.name().startsWith(trigCmd))
 							{
 								T=RT;
 								break;
@@ -536,6 +550,27 @@ public class DefaultTriggerer implements Triggerer
 							DT.parm1=CMParms.combine(V,1);
 							break;
 						}
+						case INCLUDE:
+						{
+							if(V.size()<3)
+							{
+								if(errors!=null)
+									errors.add("Illegal trigger: "+trig);
+								DT=null;
+								break;
+							}
+							if(CMath.s_int(V.get(1))<1)
+							{
+								if(errors!=null)
+									errors.add("Unknown num: "+trig);
+								DT=null;
+								break;
+							}
+							DT.triggerCode=T;
+							DT.parm1=V.get(1);
+							DT.parm2=CMParms.combine(V,2);
+							break;
+						}
 						case DRINK:
 						{
 							DT.triggerCode=T;
@@ -716,75 +751,83 @@ public class DefaultTriggerer implements Triggerer
 			Trigger DT=triggers[v];
 			while(DT != null)
 			{
+				final String playerRef;
+				if(DT.other<0)
+					playerRef = "the player";
+				else
+				if(DT.other==0)
+					playerRef = "any assister";
+				else
+					playerRef = "the "+CMLib.english().makeNumberthWords(DT.other)+" assister ";
 				if(v>0)
 					buf.append(", "+((DT==triggers[v])?L("and "):L("or ")));
 				switch(DT.triggerCode)
 				{
 				case SAY:
-					buf.append(L("the player should say '@x1'",DT.parm1.toLowerCase()));
+					buf.append(L(playerRef+" should say '@x1'",DT.parm1.toLowerCase()));
 					break;
 				case READING:
 					if(DT.parm1.equals("0"))
-						buf.append(L("the player should read something"));
+						buf.append(L(playerRef+" should read something"));
 					else
-						buf.append(L("the player should read '@x1'",DT.parm1.toLowerCase()));
+						buf.append(L(playerRef+" should read '@x1'",DT.parm1.toLowerCase()));
 					break;
 				case SOCIAL:
 				{
 					if(DT.soc == null)
-						buf.append(L("the player should do the impossible"));
+						buf.append(L(playerRef+" should do the impossible"));
 					else
 					if(DT.parm2.equals("*"))
-						buf.append(L("the player should @x1",DT.soc.baseName().toLowerCase()));
+						buf.append(L(playerRef+" should @x1",DT.soc.baseName().toLowerCase()));
 					else
-						buf.append(L("the player should @x1",(DT.soc.baseName().toLowerCase()+" "+DT.soc.getTargetDesc()).trim()));
+						buf.append(L(playerRef+" should @x1",(DT.soc.baseName().toLowerCase()+" "+DT.soc.getTargetDesc()).trim()));
 					break;
 				}
 				case TIME:
 					buf.append(L("the hour of the day is @x1",DT.parm1.toLowerCase()));
 					break;
 				case PUTTHING:
-					buf.append(L("the player should put @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase()));
+					buf.append(L(playerRef+" should put @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase()));
 					break;
 				case BURNTHING:
-					buf.append(L("the player should burn @x1",DT.parm1.toLowerCase()));
+					buf.append(L(playerRef+" should burn @x1",DT.parm1.toLowerCase()));
 					break;
 				case DRINK:
-					buf.append(L("the player should drink @x1",DT.parm1.toLowerCase()));
+					buf.append(L(playerRef+" should drink @x1",DT.parm1.toLowerCase()));
 					break;
 				case EAT:
-					buf.append(L("the player should eat @x1",DT.parm1.toLowerCase()));
+					buf.append(L(playerRef+" should eat @x1",DT.parm1.toLowerCase()));
 					break;
 				case INROOM:
 					{
 					if(DT.parm1.equalsIgnoreCase("holy")
 					||DT.parm1.equalsIgnoreCase("unholy")
 					||DT.parm1.equalsIgnoreCase("balance"))
-						buf.append(L("the player should be in the deities room of infused @x1-ness.",DT.parm1.toLowerCase()));
+						buf.append(L(playerRef+" should be in the deities room of infused @x1-ness.",DT.parm1.toLowerCase()));
 					else
 					{
 						final Room R=CMLib.map().getRoom(DT.parm1);
 						if(R==null)
-							buf.append(L("the player should be in some unknown place"));
+							buf.append(L(playerRef+" should be in some unknown place"));
 						else
-							buf.append(L("the player should be in '@x1'",R.displayText(null)));
+							buf.append(L(playerRef+" should be in '@x1'",R.displayText(null)));
 					}
 					}
 					break;
 				case RIDING:
-					buf.append(L("the player should be on @x1",DT.parm1.toLowerCase()));
+					buf.append(L(playerRef+" should be on @x1",DT.parm1.toLowerCase()));
 					break;
 				case CAST:
 					{
 					final Ability A=CMClass.findAbility(DT.parm1);
 					if(A==null)
-						buf.append(L("the player should cast '@x1'",DT.parm1));
+						buf.append(L(playerRef+" should cast '@x1'",DT.parm1));
 					else
-						buf.append(L("the player should cast '@x1'",A.name()));
+						buf.append(L(playerRef+" should cast '@x1'",A.name()));
 					}
 					break;
 				case EMOTE:
-					buf.append(L("the player should emote '@x1'",DT.parm1.toLowerCase()));
+					buf.append(L(playerRef+" should emote '@x1'",DT.parm1.toLowerCase()));
 					break;
 				case RANDOM:
 					buf.append(DT.parm1+"% of the time");
@@ -804,8 +847,14 @@ public class DefaultTriggerer implements Triggerer
 				case CHECK:
 					buf.append(CMLib.masking().maskDesc(DT.parm1));
 					break;
+				case INCLUDE:
+					if(CMath.s_int(DT.parm1)<=0)
+						buf.append(L("requires one or more assistants like @x1",CMLib.masking().maskDesc(DT.parm2)));
+					else
+						buf.append(L("requires at least @x1 assistants like @x2",DT.parm1,CMLib.masking().maskDesc(DT.parm2)));
+					break;
 				case PUTVALUE:
-					buf.append(L("the player should put an item worth at least @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase()));
+					buf.append(L(playerRef+" should put an item worth at least @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase()));
 					break;
 				case PUTMATERIAL:
 					{
@@ -818,7 +867,7 @@ public class DefaultTriggerer implements Triggerer
 						else
 						if(RawMaterial.CODES.IS_VALID(t))
 							material=RawMaterial.CODES.NAME(t).toLowerCase();
-						buf.append(L("the player puts an item made of @x1 in @x2",material,DT.parm2.toLowerCase()));
+						buf.append(L(playerRef+" puts an item made of @x1 in @x2",material,DT.parm2.toLowerCase()));
 					}
 					break;
 				case BURNMATERIAL:
@@ -832,20 +881,20 @@ public class DefaultTriggerer implements Triggerer
 						else
 						if(RawMaterial.CODES.IS_VALID(t))
 							material=RawMaterial.CODES.NAME(t).toLowerCase();
-						buf.append(L("the player should burn an item made of @x1",material));
+						buf.append(L(playerRef+" should burn an item made of @x1",material));
 					}
 					break;
 				case BURNVALUE:
-					buf.append(L("the player should burn an item worth at least @x1",DT.parm1.toLowerCase()));
+					buf.append(L(playerRef+" should burn an item worth at least @x1",DT.parm1.toLowerCase()));
 					break;
 				case SITTING:
-					buf.append(L("the player should sit down"));
+					buf.append(L(playerRef+" should sit down"));
 					break;
 				case STANDING:
-					buf.append(L("the player should stand up"));
+					buf.append(L(playerRef+" should stand up"));
 					break;
 				case SLEEPING:
-					buf.append(L("the player should go to sleep"));
+					buf.append(L(playerRef+" should go to sleep"));
 					break;
 				}
 				DT=DT.orConnect;
@@ -873,14 +922,33 @@ public class DefaultTriggerer implements Triggerer
 	}
 
 	@Override
-	public CMMsg genNextAbleTrigger(final MOB mob, final Object key, final boolean force)
+	public CMMsg genNextAbleTrigger(final MOB hostM, final MOB mob, final Object key, final boolean force)
 	{
-		if((mob == null)||(mob.amDead()))
+		if((hostM == null)||(hostM.amDead())||(mob==null)||(mob.amDead()))
 			return null;
+		if((this.assisting.first==key)&&(hostM==mob))
+		{
+			synchronized(assisting)
+			{
+				final MOB M = this.assisting.second;
+				if((M==null)
+				||(M.triggerer().isObsolete()))
+				{
+					this.assisting.first=null;
+					this.assisting.second=null;
+				}
+				else
+				{
+					final CMMsg msg = M.triggerer().genNextAbleTrigger(M, mob, key, force);
+					if(msg != null)
+						return msg;
+				}
+			}
+		}
 		final Trigger[] triggers = rituals.get(key);
 		if((triggers==null)||(triggers.length==0))
 			return null;
-		final TrigTracker tracker = this.getCreateTrigTracker(mob);
+		final TrigTracker tracker = this.getCreateTrigTracker(hostM);
 		if(tracker == null)
 			return null;
 		final TrigState trigState;
@@ -895,6 +963,11 @@ public class DefaultTriggerer implements Triggerer
 			return null;
 		final Trigger DT=triggers[completed+1];
 		// in an OR-condition, we always just do the first one....
+		if((DT==null)
+		||((DT.other<0)&&(hostM != mob))
+		||((DT.other==0)&&(hostM == mob))
+		||((trigState!=null)&&(trigState.assistants!=null)&&(DT.other-1 != trigState.assistants.indexOf(mob))))
+			return null;
 		switch(DT.triggerCode)
 		{
 		case SAY:
@@ -919,6 +992,9 @@ public class DefaultTriggerer implements Triggerer
 			return null;
 		}
 		case CHECK:
+			trigState.setCompleted(DT);
+			return null;
+		case INCLUDE:
 			trigState.setCompleted(DT);
 			return null;
 		case PUTTHING:
@@ -1096,6 +1172,7 @@ public class DefaultTriggerer implements Triggerer
 		case SLEEPING:
 		case RANDOM:
 		case CHECK:
+		case INCLUDE:
 		case WAIT:
 		case YOUSAY:
 		case OTHERSAY:
@@ -1164,6 +1241,16 @@ public class DefaultTriggerer implements Triggerer
 				readyList.add(key);
 			}
 		}
+		if(this.assisting.first!=null)
+		{
+			if(readyList == null)
+				readyList = new ArrayList<Object>(1);
+			synchronized(assisting)
+			{
+				if(this.assisting.first!=null)
+					readyList.add(assisting.first);
+			}
+		}
 		if(readyList != null)
 			return readyList.toArray();
 		return trackingNothing;
@@ -1195,14 +1282,14 @@ public class DefaultTriggerer implements Triggerer
 		return CMLib.english().containsString(toSrchStr, srchForStr);
 	}
 
-	protected TrigState stepGetCompleted(final Object key, final CMMsg msg)
+	protected TrigState stepGetCompleted(final MOB hostM, final Object key, final CMMsg msg)
 	{
-		if(isIgnoring(msg.source()))
+		if(isIgnoring(msg.source())||(msg.targetMinor()==CMMsg.TYP_RITUAL))
 			return null;
 		final Trigger[] triggers=rituals.get(key);
 		if(triggers == null)
 			return null;
-		TrigState state = getTrigState(msg.source(), key);
+		TrigState state = getTrigState(hostM, key);
 		Trigger DT;
 		if(state != null)
 		{
@@ -1219,6 +1306,12 @@ public class DefaultTriggerer implements Triggerer
 			||(DT.cmmsgCode==-999)
 			||((DT.triggerCode==TriggerCode.SOCIAL)&&(msg.tool() instanceof Social)))
 			{
+
+				if(((DT.other<0)&&(hostM != msg.source()))
+				||((DT.other==0)&&(hostM == msg.source()))
+				||((DT.other>0)&&(state!=null)&&(state.assistants!=null)&&(DT.other-1 != state.assistants.indexOf(msg.source()))))
+					yup = false;
+				else
 				switch(DT.triggerCode)
 				{
 				case SAY:
@@ -1232,7 +1325,7 @@ public class DefaultTriggerer implements Triggerer
 							if(x>=0)
 								str=str.substring(x+DT.parm1.length()).trim();
 							if(state == null)
-								state = getCreateTrigState(msg.source(), key);
+								state = getCreateTrigState(hostM, key);
 							state.args().addAll(CMParms.parse(str));
 						}
 						yup=true;
@@ -1250,7 +1343,7 @@ public class DefaultTriggerer implements Triggerer
 				case YOUSAY:
 					yup=true;
 					if(state == null)
-						state = getCreateTrigState(msg.source(), key);
+						state = getCreateTrigState(hostM, key);
 					try
 					{
 						if(DT.addArgs)
@@ -1269,7 +1362,7 @@ public class DefaultTriggerer implements Triggerer
 					if(R!=null)
 					{
 						if(state == null)
-							state = getCreateTrigState(msg.source(), key);
+							state = getCreateTrigState(hostM, key);
 						if(DT.addArgs)
 							state.args().addAll(CMParms.parse(DT.parm1));
 						yup=true;
@@ -1299,7 +1392,7 @@ public class DefaultTriggerer implements Triggerer
 					if(R!=null)
 					{
 						if(state == null)
-							state = getCreateTrigState(msg.source(), key);
+							state = getCreateTrigState(hostM, key);
 						if(DT.addArgs)
 							state.args().addAll(CMParms.parse(DT.parm1));
 						yup=true;
@@ -1326,7 +1419,7 @@ public class DefaultTriggerer implements Triggerer
 				case WAIT:
 				{
 					if(state == null)
-						state = getCreateTrigState(msg.source(), key);
+						state = getCreateTrigState(hostM, key);
 					final long waitExpires=state.time + CMath.s_long(DT.parm1)*CMProps.getTickMillis();
 					if(System.currentTimeMillis()>waitExpires)
 					{
@@ -1346,10 +1439,44 @@ public class DefaultTriggerer implements Triggerer
 					if(CMLib.masking().maskCheck(DT.parm1,msg.source(),true))
 					{
 						if(state == null)
-							state = getCreateTrigState(msg.source(), key);
+							state = getCreateTrigState(hostM, key);
 						if(DT.addArgs && (msg.target()!=null))
 							state.args().add(targName(msg.target()));
 						yup=true;
+					}
+					break;
+				case INCLUDE:
+					{
+						final Room R = msg.source().location();
+						if(R!=null)
+						{
+							final int required = CMath.s_int(DT.parm1);
+							final List<MOB> found = new ArrayList<MOB>(required);
+							for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+							{
+								final MOB M = m.nextElement();
+								if((M!=null)
+								&&(M != msg.source())
+								&&(CMLib.masking().maskCheck(DT.parm2,M,true)))
+									found.add(M);
+							}
+							if(found.size()>=required)
+							{
+								if(state == null)
+									state = getCreateTrigState(hostM, key);
+								if(DT.addArgs)
+									state.args().add(targName(found.get(0)));
+								if(state.assistants==null)
+									state.assistants = new ArrayList<MOB>();
+								// MUST add this info to every other mobs triggerer so they can participate
+								for(final MOB M : found)
+								{
+									CMLib.ableComponents().addAssistingTriggerer(M, hostM, key);
+									state.assistants.add(M);
+								}
+								yup=true;
+							}
+						}
 					}
 					break;
 				case PUTTHING:
@@ -1359,7 +1486,7 @@ public class DefaultTriggerer implements Triggerer
 					&&(containsString(msg.target().name(),DT.parm2)))
 					{
 						if(state == null)
-							state = getCreateTrigState(msg.source(), key);
+							state = getCreateTrigState(hostM, key);
 						if(DT.addArgs && (msg.target()!=null))
 							state.args().add(targName(msg.target()));
 						yup=true;
@@ -1373,7 +1500,7 @@ public class DefaultTriggerer implements Triggerer
 					&&(DT.parm1.equals("0")||containsString(msg.target().name(),DT.parm1)))
 					{
 						if(state == null)
-							state = getCreateTrigState(msg.source(), key);
+							state = getCreateTrigState(hostM, key);
 						if(DT.addArgs && (msg.target()!=null))
 							state.args().add(targName(msg.target()));
 						yup=true;
@@ -1387,7 +1514,7 @@ public class DefaultTriggerer implements Triggerer
 						if((msg.tool() == DT.soc)||(DT.parm2.equals("*")))
 						{
 							if(state == null)
-								state = getCreateTrigState(msg.source(), key);
+								state = getCreateTrigState(hostM, key);
 							if(DT.addArgs && (msg.target()!=null))
 								state.args().add(targName(msg.target()));
 							yup=true;
@@ -1414,7 +1541,7 @@ public class DefaultTriggerer implements Triggerer
 									if(DT.addArgs)
 									{
 										if(state == null)
-											state = getCreateTrigState(msg.source(), key);
+											state = getCreateTrigState(hostM, key);
 										state.args().add("here");
 									}
 								}
@@ -1424,7 +1551,7 @@ public class DefaultTriggerer implements Triggerer
 						if(msg.source().location().roomID().equalsIgnoreCase(DT.parm1))
 						{
 							if(state == null)
-								state = getCreateTrigState(msg.source(), key);
+								state = getCreateTrigState(hostM, key);
 							yup=true;
 							if(DT.addArgs)
 								state.args().add("here");
@@ -1439,7 +1566,7 @@ public class DefaultTriggerer implements Triggerer
 						if(DT.addArgs)
 						{
 							if(state == null)
-								state = getCreateTrigState(msg.source(), key);
+								state = getCreateTrigState(hostM, key);
 							state.args().add(targName(msg.source().riding()));
 						}
 					}
@@ -1453,7 +1580,7 @@ public class DefaultTriggerer implements Triggerer
 						if(DT.addArgs && (msg.target()!=null))
 						{
 							if(state == null)
-								state = getCreateTrigState(msg.source(), key);
+								state = getCreateTrigState(hostM, key);
 							state.args().add(targName(msg.target()));
 						}
 					}
@@ -1468,7 +1595,7 @@ public class DefaultTriggerer implements Triggerer
 							if(DT.addArgs)
 							{
 								if(state == null)
-									state = getCreateTrigState(msg.source(), key);
+									state = getCreateTrigState(hostM, key);
 								state.args().add(CMStrings.removeColors(
 										(x>0)?msg.sourceMessage().substring(x+1):msg.sourceMessage()));
 							}
@@ -1485,7 +1612,7 @@ public class DefaultTriggerer implements Triggerer
 						if(DT.addArgs && (msg.target()!=null))
 						{
 							if(state == null)
-								state = getCreateTrigState(msg.source(), key);
+								state = getCreateTrigState(hostM, key);
 							state.args().add(targName(msg.target()));
 						}
 					}
@@ -1501,7 +1628,7 @@ public class DefaultTriggerer implements Triggerer
 						if(DT.addArgs && (msg.target()!=null))
 						{
 							if(state == null)
-								state = getCreateTrigState(msg.source(), key);
+								state = getCreateTrigState(hostM, key);
 							state.args().add(targName(msg.target()));
 						}
 					}
@@ -1515,7 +1642,7 @@ public class DefaultTriggerer implements Triggerer
 						if(DT.addArgs && (msg.target()!=null))
 						{
 							if(state == null)
-								state = getCreateTrigState(msg.source(), key);
+								state = getCreateTrigState(hostM, key);
 							state.args().add(targName(msg.target()));
 						}
 					}
@@ -1528,7 +1655,7 @@ public class DefaultTriggerer implements Triggerer
 						if(DT.addArgs && (msg.target()!=null))
 						{
 							if(state == null)
-								state = getCreateTrigState(msg.source(), key);
+								state = getCreateTrigState(hostM, key);
 							state.args().add(targName(msg.target()));
 						}
 					}
@@ -1547,7 +1674,7 @@ public class DefaultTriggerer implements Triggerer
 			if(yup)
 			{
 				if(state == null)
-					state = getCreateTrigState(msg.source(), key);
+					state = getCreateTrigState(hostM, key);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.RITUALS))
 				{
 					Log.debugOut(msg.source().Name()+" completed "
@@ -1561,10 +1688,10 @@ public class DefaultTriggerer implements Triggerer
 				state.setCompleted(DT);
 				if(state.completed>=triggers.length-1)
 				{
-					final TrigTracker tracker = getTrigTracker(msg.source());
+					final TrigTracker tracker = getTrigTracker(hostM);
 					if(tracker != null)
 						tracker.compl.add(key);
-					clearState(msg.source(),key);
+					clearState(hostM,key);
 					return state;
 				}
 				else
@@ -1579,14 +1706,14 @@ public class DefaultTriggerer implements Triggerer
 		}
 		if((state != null)
 		&&(state.completed<0))
-			clearState(msg.source(), key);
+			clearState(hostM, key);
 		return null;
 	}
 
 	@Override
 	public boolean isCompleted(final Object key, final CMMsg msg)
 	{
-		return stepGetCompleted(key, msg) != null;
+		return stepGetCompleted(msg.source(), key, msg) != null;
 	}
 
 	@Override
@@ -1610,15 +1737,35 @@ public class DefaultTriggerer implements Triggerer
 	}
 
 	@Override
-	public Pair<Object,List<String>> getCompleted(final Object[] keys, final CMMsg msg)
+	public Pair<Object,List<String>> getCompleted(final MOB hostM, final Object[] keys, final CMMsg msg)
 	{
 		if(isIgnoring(msg.source()))
 			return null;
 		for(final Object key : keys)
 		{
-			final TrigState state = stepGetCompleted(key, msg);
+			final TrigState state = stepGetCompleted(hostM, key, msg);
 			if(state != null)
 				return new Pair<Object,List<String>>(key, state.args());
+			if((assisting.first==key)
+			&&(hostM == msg.source()))
+			{
+				final Triggerer trig;
+				synchronized(assisting)
+				{
+					final MOB M = assisting.second;
+					if((M==null)||(assisting.first!=key))
+						continue;
+					trig = M.triggerer();
+					if((trig==null)
+					||(trig.isObsolete()))
+					{
+						assisting.first=null;
+						assisting.second=null;
+						continue;
+					}
+				}
+				trig.getCompleted(assisting.second, new Object[] { key }, msg);
+			}
 		}
 		return null;
 	}
@@ -1706,6 +1853,29 @@ public class DefaultTriggerer implements Triggerer
 	}
 
 	@Override
+	public void addTriggerAssist(final MOB assistingM, final Object key)
+	{
+		synchronized(assisting)
+		{
+			if(assisting.first==null)
+			{
+				assisting.first=key;
+				assisting.second=assistingM;
+			}
+			else
+			{
+				final MOB M = assisting.second;
+				final Triggerer triggerer = (M!=null)?M.triggerer():null;
+				if((triggerer==null)||(triggerer.isObsolete()))
+				{
+					assisting.first=key;
+					assisting.second=assistingM;
+				}
+			}
+		}
+	}
+
+	@Override
 	public CMObject copyOf()
 	{
 		final DefaultTriggerer me;
@@ -1713,6 +1883,7 @@ public class DefaultTriggerer implements Triggerer
 		{
 			me = (DefaultTriggerer) this.clone();
 			me.trackers	= new Hashtable<String, TrigTracker>();
+			me.assisting = new Pair<Object, MOB>();
 			me.rituals = new SHashtable<Object, Trigger[]>();
 			me.rituals.putAll(rituals);
 			me.socialsMap = new SHashtable<String,List<Social>>();

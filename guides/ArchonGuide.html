@@ -10396,11 +10396,12 @@ tasks on either side of the "|" is sufficient, or a "&amp;" to mean
 that both of the tasks on either side of the "&amp;" is required and in
 that order.
 The first task should be one of: SAY, PUTTHING, BURNMATERIAL, BURNTHING,
-EAT, DRINK, CAST, EMOTE, PUTVALUE, PUTMATERIAL, BURNVALUE, READING, or
-SOCIAL.<br>The
-tasks themselves must be of one of the following forms:<br>
-
-
+EAT, DRINK, CAST, EMOTE, PUTVALUE, PUTMATERIAL, BURNVALUE, READING, CHECK, or
+INCLUDE, SOCIAL.<br>
+If a task requires assistance from the from others defined by the INCLUDE task, it should be 
+prefixed with ASSIST or ASSIST#, where # is which (1..n) assistant must do the task.
+<br>
+The tasks themselves must be of one of the following forms:<br>
       
       <ul>
 
@@ -10495,12 +10496,17 @@ example: RANDOM 10</li>
         <li>CHECK [REQUIREMENT
 STRING] - Use this with care. This
 allows masks to be entered which the player must meet. The mask is of
-the same format as described in Cleric Requirements above.</li><li>SOCIAL
-[SOCIAL NAME] [SOCIAL TARGET] - the player does the specific social
+the same format as described in Cleric Requirements above.</li>
+
+        <li>INCLUDE [MIN] [REQUIREMENT
+STRING] -  Use this with care. This allows [MIN] other nps, who match 
+the mask to assist with ASSIST: tasks.  The mask is of
+the same format as described in Cleric Requirements above.</li>
+
+<li>SOCIAL [SOCIAL NAME] [SOCIAL TARGET] - the player does the specific social
 with the specific target (or none). &nbsp; For example SOCIAL SMILE
 &lt;T-NAME&gt;, or just SOCIAL SMILE, or SOCIAL SMILE * for all
 versions of the smile social.</li>
-
 
         <li>SITTING 0 - the player
 must be sitting (the 0 is required!)</li>

@@ -81,6 +81,7 @@ public interface Triggerer extends CMCommon
 		OTHERSAY(String.class),
 		ALLSAY(String.class),
 		SOCIAL(Social.class, String.class),
+		INCLUDE(Integer.class, String.class)
 		;
 		public Class<?>[] parmTypes;
 		private TriggerCode(final Class<?>... parms)
@@ -133,13 +134,14 @@ public interface Triggerer extends CMCommon
 	 * Generates a message for the next step in the
 	 * tracked trigger denoted by the given trigger
 	 * key.
-	 *
+	 * @param hostM TODO
 	 * @param mob the mob to check
 	 * @param key the arbitrary but unique key object
 	 * @param force true to force even an unstarted trigger
+	 *
 	 * @return null, or a message for the given mob to do
 	 */
-	public CMMsg genNextAbleTrigger(final MOB mob, final Object key, boolean force);
+	public CMMsg genNextAbleTrigger(MOB hostM, final MOB mob, final Object key, boolean force);
 
 	/**
 	 * Sets the given mob as being ignored for the purpose of
@@ -168,6 +170,17 @@ public interface Triggerer extends CMCommon
 	 * @return true if tracking is happening, false otherwise
 	 */
 	public boolean isTracking(final MOB mob, final Object key);
+
+	/**
+	 * If a trigger allows otherwise non-qualifying participants,
+	 * this will allow it to add other participants to the message
+	 * listener for their main triggerer and key, using the INCLUDE
+	 * trigger directive.
+	 *
+	 * @param assistingM the mob being assisted, the main triggerer mob
+	 * @param key the key to the trigger
+	 */
+	public void addTriggerAssist(final MOB assistingM, final Object key);
 
 	/**
 	 * Given a message and a trigger key, this will see if
@@ -237,16 +250,17 @@ public interface Triggerer extends CMCommon
 	 * completed by the given message, this will progress them, and
 	 * then return the first one which , because of the message, is
 	 * now in a completed state, along with any args accumulated.
+	 * @param hostM normally the msg.source(), but who is the trigger host
+	 * @param keys the arbitrary but unique keys to apply the message to
+	 * @param msg the message which may cause triggers to complete
 	 *
 	 * @see Triggerer#isCompleted(Object, CMMsg)
 	 * @see Triggerer#whichTracking(CMMsg)
 	 * @see Triggerer#isTracking(Object, CMMsg)
 	 *
-	 * @param keys the arbitrary but unique keys to apply the message to
-	 * @param msg the message which may cause triggers to complete
 	 * @return null, or the key and arguments pair
 	 */
-	public Pair<Object,List<String>> getCompleted(final Object[] keys, final CMMsg msg);
+	public Pair<Object,List<String>> getCompleted(MOB hostM, final Object[] keys, final CMMsg msg);
 
 	/**
 	 * If any triggers are currently in a wait state, this will return

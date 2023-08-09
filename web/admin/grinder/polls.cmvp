@@ -73,7 +73,10 @@
     </TR>
     @back@
     <TR>
-    <TD COLSPAN=5><a href="javascript:if(document.RESOURCES.NEWPOLL.value!='')Poll(document.RESOURCES.NEWPOLL.value+'&NEWPOLL='+document.RESOURCES.NEWPOLL.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWPOLL SIZE=70></B></FONT></TD>
+    <TD COLSPAN=5>
+    	<a href="javascript:if(document.RESOURCES.NEWPOLL.value!='')Poll(document.RESOURCES.NEWPOLL.value+'&NEWPOLL='+document.RESOURCES.NEWPOLL.value)">
+    	<FONT COLOR=CYAN><B><U>Create New:</U></a> <INPUT TYPE=TEXT NAME=NEWPOLL SIZE=70></B></FONT>
+    </TD>
     </TR>
     </TABLE>
     <P>

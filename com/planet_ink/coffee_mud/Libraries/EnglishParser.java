@@ -82,6 +82,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 													"thousand", "million", "billion", "trillion",
 													"quadrillion", "quintillion", "sextillion"
 												  };
+	public final static String[]	numth_words	= { "", "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth" };
+
 	public final static List<Environmental>	empty	= new ReadOnlyVector<Environmental>(1);
 
 	@Override
@@ -189,6 +191,20 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			str.append(" ");
 		}
 		return str.toString().trim();
+	}
+
+	@Override
+	public String makeNumberthWords(int num)
+	{
+		if(num < 0)
+			return "";
+		if(num < 10)
+			return numth_words[num];
+		if(num < 20)
+			return makeNumberWords(num, 0)+"th";
+		final String lowest=numth_words[num%10];
+		num = num - (num%10);
+		return makeNumberWords(num, 0)+"-"+lowest;
 	}
 
 	@Override

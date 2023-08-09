@@ -77,7 +77,10 @@
        @endif@
     @back@
     <TR>
-    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWRACE.value!='')Race(document.RESOURCES.NEWRACE.value,'&NEWRACE='+document.RESOURCES.NEWRACE.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWRACE SIZE=70></B></FONT></TD>
+    <TD COLSPAN=4>
+    	<a href="javascript:if(document.RESOURCES.NEWRACE.value!='')Race(document.RESOURCES.NEWRACE.value,'&NEWRACE='+document.RESOURCES.NEWRACE.value)">
+    	<FONT COLOR=CYAN><B><U>Create New:</U></a> <INPUT TYPE=TEXT NAME=NEWRACE SIZE=70></B></FONT>
+    </TD>
     </TR>
     </TABLE>
     <P>

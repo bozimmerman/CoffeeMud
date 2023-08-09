@@ -2,11 +2,6 @@ BUGS/UNTESTED STUFF:
   *.
 
 TECH TODO:
-   *. navigation course system testing.
-   *. make inertia battery that alter ships inertia overall for dir change 
-      (Kinetic Energy (inertia) KE=0.5*mass*velocity*velocity)
-      discharge of all stored inertial power to stop the ship entirely
-   *. Make SMAC that alters the ships mass, which has huge effects on drives
    *. make ship impulse and warp engines -- see tech doc
    *. make orbit ability, integrate with navigation: 1. go dir, 2. adjust point same dist from planet. 3. plot course.
    *. make ship active scanners
@@ -18,6 +13,7 @@ TECH TODO:
    *. entry systems for ships (default entry key card, voice code, identifying scanner)
    *. Implement inertia/acceleration damage to the people on-board. (See StdSpaceShip gravity code)
    *. work on automatic component values ??
+   *. navigation course system testing.
    *. Talk to Tim: Space Tech power consumption depends on tech level of generator, panel, or interaction damage?
    *. make food generators, and refrigerators, water recycler, 
    *. turbo lift -- moveable rooms
@@ -25,6 +21,10 @@ TECH TODO:
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
    *. make transporter systems
    *. damaged systems should sometimes require random parts, from particular manufacturers, that repair respects
+   *. make inertia battery that alter ships inertia overall for dir change 
+      (Kinetic Energy (inertia) KE=0.5*mass*velocity*velocity)
+      discharge of all stored inertial power to stop the ship entirely
+   *. Make SMAC that alters the ships mass, which has huge effects on drives
    *. make tech builders/players guides, how to make a ship, how to build space, etc, details about tech
    *. add spaceobject mapper system to MG
    *. keep reviewing and updating the GameOverview.html doc

@@ -281,6 +281,14 @@ public interface EnglishParsing extends CMLibrary
 	public String makeNumberWords(final double num, int precision);
 
 	/**
+	 * Returns the english representation of the given numberst,
+	 * numberth, number-numberth, etc.
+	 * @param num the num to translate
+	 * @return the th words
+	 */
+	public String makeNumberthWords(final int num);
+
+	/**
 	 * Inserts the given adjective before a given word or noun phrase, replacing any
 	 * indefinite articles with the new correct one, and removing any "color"
 	 * characters from the final phrase.

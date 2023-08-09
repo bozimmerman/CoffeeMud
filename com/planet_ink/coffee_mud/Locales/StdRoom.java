@@ -978,6 +978,7 @@ public class StdRoom implements Room
 			}
 		}
 
+		// should this really be here?  maybe in space ship area?
 		if((msg.othersMinor() == CMMsg.TYP_GRAVITY)
 		&&(msg.targetMinor() == CMMsg.NO_EFFECT)
 		&&(numInhabitants()>0))

@@ -191,7 +191,10 @@
     </TR>
     @back@
     <TR>
-    <TD COLSPAN=5><a href="javascript:if(document.RESOURCES.NEWSOCIAL.value!='')Social(document.RESOURCES.NEWSOCIAL.value+'&NEWSOCIAL='+document.RESOURCES.NEWSOCIAL.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWSOCIAL SIZE=70></B></FONT></TD>
+    <TD COLSPAN=5>
+    	<a href="javascript:if(document.RESOURCES.NEWSOCIAL.value!='')Social(document.RESOURCES.NEWSOCIAL.value+'&NEWSOCIAL='+document.RESOURCES.NEWSOCIAL.value)">
+    	<FONT COLOR=CYAN><B><U>Create New:</U></a> <INPUT TYPE=TEXT NAME=NEWSOCIAL SIZE=70></B></FONT>
+    </TD>
     </TR>
     </TABLE>
     <P>

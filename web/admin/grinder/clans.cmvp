@@ -68,7 +68,10 @@
 	</TR>
 	@back@
 	<TR>
-	<TD COLSPAN=5><a href="javascript:if(document.RESOURCES.NEWCLANID.value!='')Clan('_NEWONE_&NEWCLANID='+document.RESOURCES.NEWCLANID.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWCLANID SIZE=70></B></FONT></TD>
+	<TD COLSPAN=5>
+		<a href="javascript:if(document.RESOURCES.NEWCLANID.value!='')Clan('_NEWONE_&NEWCLANID='+document.RESOURCES.NEWCLANID.value)">
+		<FONT COLOR=CYAN><B><U>Create New:</U></a> <INPUT TYPE=TEXT NAME=NEWCLANID SIZE=70></B></FONT>
+	</TD>
 	</TR>
 	</TABLE>
 	<P>

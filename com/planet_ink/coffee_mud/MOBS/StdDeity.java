@@ -750,7 +750,7 @@ public class StdDeity extends StdMOB implements Deity
 					{
 					case SERVICE:
 						{
-							final CMMsg msg2=rituals.genNextAbleTrigger(msg.source(), RitualType.SERVICE, true);
+							final CMMsg msg2=rituals.genNextAbleTrigger(msg.source(), msg.source(), RitualType.SERVICE, true);
 							if(msg2 != null)
 								msg.addTrailerMsg(msg2);
 							break;

@@ -177,7 +177,10 @@
                 </TR>
             @back@
 	            <TR>
-	            <TD COLSPAN=4><a href="javascript:NewAchievement('PLAYER')"><FONT COLOR=YELLOW><B>Create New Player Achievement</a></B></FONT></TD>
+	            <TD COLSPAN=4>
+	            	<a href="javascript:NewAchievement('PLAYER')">
+            		<FONT COLOR=CYAN><B><U>Create New Player Achievement</U></a></B></FONT>
+	            </TD>
 	            </TR>
             @if?IsAccountSystem@
 	            <TR><TD WIDTH=100% COLSPAN=7 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Account Achievements Manager</H2></FONT></TD></TR>
@@ -203,7 +206,10 @@
 	                </TR>
 	            @back@
 	            <TR>
-	            <TD COLSPAN=4><a href="javascript:NewAchievement('ACCOUNT')"><FONT COLOR=YELLOW><B>Create New Account Achievement</a></B></FONT></TD>
+	            <TD COLSPAN=4>
+	            	<a href="javascript:NewAchievement('ACCOUNT')">
+	            	<FONT COLOR=CYAN><B><U>Create New Account Achievement</U></a></B></FONT>
+	            </TD>
 	            </TR>
             @endif@
             <TR><TD WIDTH=100% COLSPAN=7 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Clan Achievements Manager</H2></FONT></TD></TR>
@@ -229,7 +235,9 @@
                 </TR>
             @back@
             <TR>
-            <TD COLSPAN=4><a href="javascript:NewAchievement('CLAN')"><FONT COLOR=YELLOW><B>Create New Clan Achievement</a></B></FONT></TD>
+            <TD COLSPAN=4><a href="javascript:NewAchievement('CLAN')">
+            	<FONT COLOR=CYAN><B><U>Create New Clan Achievement</U></a></B></FONT>
+            </TD>
             </TR>
             </TABLE>
             </FORM>
@@ -268,7 +276,9 @@
                 </TR>
             @back@
             <TR>
-            <TD COLSPAN=4><a href="javascript:NewTitle()"><FONT COLOR=YELLOW><B>Create New</a></B></FONT></TD>
+            <TD COLSPAN=4>
+            	<a href="javascript:NewTitle()"><FONT COLOR=CYAN><B><U>Create New</U></a></B></FONT>
+            </TD>
             </TR>
             <CENTER>
             </CENTER>
@@ -309,7 +319,9 @@
                 </TR>
             @back@
             <TR>
-            <TD COLSPAN=4><a href="javascript:NewAward()"><FONT COLOR=YELLOW><B>Create New</a></B></FONT></TD>
+            <TD COLSPAN=4>
+            	<a href="javascript:NewAward()"><FONT COLOR=YELLOW><B><U>Create New</U></a></B></FONT>
+            </TD>
             </TR>
             <CENTER>
             </CENTER>
