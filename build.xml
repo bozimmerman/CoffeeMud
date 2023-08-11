@@ -8,14 +8,14 @@
 		<echo>clean removes all compiled code from this directory and below</echo>
 	</target>
 	<target name="compile">
-		<javac srcdir="." classpath=".;./lib/js.jar;./lib/jzlib.jar" nowarn="yes" deprecation="on" target="1.6" source="1.6" debug="on" memoryMaximumSize="1024m" fork="on">
+		<javac srcdir="." classpath=".;./lib/js.jar;./lib/jzlib.jar" nowarn="yes" deprecation="on" target="1.8" source="1.8" debug="on" memoryMaximumSize="1024m" fork="on">
 			<compilerarg value="-Xlint:unchecked" />
     	</javac>
 		<echo>Compiliation done.</echo>
 	</target>
 	<target name="doc">
 		<echo>Beginning Javadoc generation</echo>
-		<javadoc sourcepath="." classpath=".;./lib/js.jar;./lib/jzlib.jar" destdir=".\docs" packagenames="com\planet_ink\coffee_mud.*" maxmemory="1024m" verbose="on" linksource="yes" source="1.6" author="true" version="true" use="true"/>
+		<javadoc sourcepath="." classpath=".;./lib/js.jar;./lib/jzlib.jar" destdir=".\docs" packagenames="com\planet_ink\coffee_mud.*" maxmemory="1024m" verbose="on" linksource="yes" source="1.8" author="true" version="true" use="true"/>
 		<echo>Javadoc generation complete.</echo>
 	</target>
 	<target name="clean">

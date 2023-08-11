@@ -1,4 +1,5 @@
 # Build 5.10.3 Release ??/??/2023
+  *. Changing CoffeeMud to official require jdk 1.8.  It will still compile in 1.6 tho.
   1. New Paladin skills: Unholy Strike, Chaos Rage, Paladin's Fear, Paladin's Corruption
   2. New Paladin skills: Incite Fight, Dark Hammer, Paladin's Wickedness, Crushing Aura
   3. New Paladin skills: Craft Unholy Reaver, Righteous Defense, Exploiting Aura
