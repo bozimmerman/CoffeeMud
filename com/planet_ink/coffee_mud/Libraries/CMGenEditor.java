@@ -2367,14 +2367,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.session().println(L("    C) Is Removable  : @x1",""+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE))));
 			mob.session().println(L("    D) Non-Locatable : @x1",(((I.basePhyStats().sensesMask()&PhyStats.SENSE_UNLOCATABLE)>0)?"true":"false")));
 			mob.session().println(L("    E) Blend Display : @x1",(((I.basePhyStats().sensesMask()&PhyStats.SENSE_ALWAYSCOMPRESSED)>0)?"true":"false")));
+			mob.session().println(L("    F) Semi-Hidden   : @x1",(((I.basePhyStats().sensesMask()&PhyStats.SENSE_HIDDENINPLAINSIGHT)>0)?"true":"false")));
 			if(I instanceof Container)
-				mob.session().println(L("    F) Contents Acces: @x1",(((I.basePhyStats().sensesMask()&PhyStats.SENSE_INSIDEACCESSIBLE)>0)?"true":"false")));
+				mob.session().println(L("    G) Contents Acces: @x1",(((I.basePhyStats().sensesMask()&PhyStats.SENSE_INSIDEACCESSIBLE)>0)?"true":"false")));
 			else
 			if(I instanceof Weapon)
-				mob.session().println(L("    F) Is Two-Handed : @x1",""+I.rawLogicalAnd()));
+				mob.session().println(L("    G) Is Two-Handed : @x1",""+I.rawLogicalAnd()));
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
-			c=mob.session().choose(L("Enter one to change, or ENTER when done:"),L("ABCDEF\n"),"\n").toUpperCase();
+			c=mob.session().choose(L("Enter one to change, or ENTER when done:"),L("ABCDEFG\n"),"\n").toUpperCase();
 			switch(Character.toUpperCase(c.charAt(0)))
 			{
 			case 'A':
@@ -2403,6 +2404,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				break;
 			}
 			case 'F':
+			{
+				if((I.basePhyStats().sensesMask()&PhyStats.SENSE_HIDDENINPLAINSIGHT)>0)
+					I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()-PhyStats.SENSE_HIDDENINPLAINSIGHT);
+				else
+					I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()|PhyStats.SENSE_HIDDENINPLAINSIGHT);
+				break;
+			}
+			case 'G':
 			{
 				if(I instanceof Container)
 				{

@@ -76,12 +76,15 @@ public class Decorating extends CommonSkill implements RecipeDriven
 	protected static final int	RCP_VERB		= 3;
 	protected static final int	RCP_DISPLAY		= 4;
 	protected static final int	RCP_XLEVEL		= 5;
+	protected static final int	RCP_MISC		= 6;
 
 	protected String	mountWord		= "mounted";
 	protected String	mountedPhrase	= "@x1 is mounted here.";
 	protected Item		mountingI		= null;
 	protected Room		mountingR		= null;
 	protected boolean	messedUp		= false;
+	protected boolean	blended			= true;
+	protected boolean	hips			= false;
 
 	@Override
 	public List<List<String>> fetchRecipes()
@@ -94,7 +97,7 @@ public class Decorating extends CommonSkill implements RecipeDriven
 	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\t"
-		+ "ACTIVE_VERB\tDISPLAY_MASK\tXLEVEL";
+		+ "ACTIVE_VERB\tDISPLAY_MASK\tXLEVEL\tDECORATION_FLAG";
 	}
 
 	@Override
@@ -213,13 +216,18 @@ public class Decorating extends CommonSkill implements RecipeDriven
 						{
 							I.delEffect(I.fetchEffect("Decorating"));
 							final Decorating mount=(Decorating)this.copyOf();
-							mount.setMiscText(I.displayText());
+							final StringBuilder str = new StringBuilder(";");
+							str.append(" BLENDED=").append(blended);
+							str.append(" HIPS=").append(hips);
+							str.append(" ;").append(I.displayText());
+							mount.setMiscText(str.toString());
 							mount.canBeUninvoked = false;
 							I.addNonUninvokableEffect(mount);
 							if(mountedPhrase.trim().length()>0)
 								I.setDisplayText(L(mountedPhrase,I.name()));
 							room.moveItemTo(I, Expire.Never);
 							room.show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to "+mountWord+" @x1.",I.name()));
+							room.recoverRoomStats();
 						}
 					}
 				}
@@ -259,6 +267,38 @@ public class Decorating extends CommonSkill implements RecipeDriven
 	}
 
 	@Override
+	public void setMiscText(final String text)
+	{
+		super.setMiscText(text);
+		blended = true;
+		hips = false;
+		if((text!=null)&&(text.startsWith(";")))
+		{
+			blended = false;
+			final int x = text.indexOf(';',1);
+			if(x>1)
+			{
+				final String parms = text.substring(1,x);
+				blended = CMParms.getParmBool(parms, "BLENDED", false);
+				hips = CMParms.getParmBool(parms, "HIPS", false);
+			}
+		}
+	}
+
+	protected String getOldDisplayText()
+	{
+		if(text().startsWith(";"))
+		{
+			final int x = text().indexOf(';',1);
+			if(x<0)
+				return text();
+			return text().substring(x+1);
+		}
+		else
+			return text();
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((!super.canBeUninvoked)
@@ -274,7 +314,7 @@ public class Decorating extends CommonSkill implements RecipeDriven
 					final Room R=CMLib.map().roomLocation(affected);
 					R.show(msg.source(), affected, CMMsg.MSG_DELICATE_HANDS_ACT, L("<S-NAME> remove(s) <T-NAME> from the wall."));
 					if(text().length()>0)
-						affected.setDisplayText(text());
+						affected.setDisplayText(this.getOldDisplayText());
 					affected.delEffect(this);
 					this.destroy();
 				}
@@ -293,8 +333,11 @@ public class Decorating extends CommonSkill implements RecipeDriven
 		super.affectPhyStats(affected, affectableStats);
 		if(affected instanceof Item)
 		{
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ALWAYSCOMPRESSED);
-			affectableStats.setName(affected.name());
+			if(blended)
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ALWAYSCOMPRESSED);
+			if(hips)
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_HIDDENINPLAINSIGHT);
+			affectableStats.setName(affected.name()); //??
 		}
 	}
 
@@ -356,6 +399,14 @@ public class Decorating extends CommonSkill implements RecipeDriven
 		this.mountWord = word;
 		this.mountedPhrase=matche.get(RCP_DISPLAY);
 		this.verb=L(matche.get(RCP_VERB),I.name());
+		this.blended = true;
+		this.hips = false;
+		if(matche.size()>RCP_MISC)
+		{
+			final String misc=matche.get(RCP_MISC);
+			blended = (misc.toUpperCase().indexOf("BLENDED")>=0);
+			hips = (misc.toUpperCase().indexOf("HIPS")>=0);
+		}
 
 		if(!CMLib.law().doesHavePriviledgesHere(mob, mob.location()))
 		{

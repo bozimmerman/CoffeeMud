@@ -1847,7 +1847,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			{
 				if(flags.canBarelyBeSeenBy(item,mob))
 					itemsInTheDarkness++;
-				if((compressedItems!=null)&&(compress || CMath.bset(item.phyStats().sensesMask(), PhyStats.SENSE_ALWAYSCOMPRESSED)))
+
+				if(flags.isHiddenInPlainSight(item)
+				&&(!flags.canSeeHidden(mob))
+				&&(lookCode != LookView.LOOK_LONG))
+					continue;
+
+				if((compressedItems!=null)
+				&&(compress || CMath.bset(item.phyStats().sensesMask(), PhyStats.SENSE_ALWAYSCOMPRESSED)))
 					compressedItems.add(item);
 				else
 					viewItems.add(item);

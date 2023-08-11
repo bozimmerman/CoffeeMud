@@ -37,7 +37,8 @@
  35. New property: Prop_PropSetter, for potentially permanent object changes.
  36. Rituals now support TIMEOUT, INCLUDE and ASSIST tasks for cooperative magic!
  37. PROMPT now supports group size / max group members
- 38. MG Journal browser now supports Journal Limit / pages. 
+ 38. MG Journal browser now supports Journal Limit / pages.
+ 39. Decoration now supports hiding items in plain sight/semi-hidden. 
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

@@ -337,6 +337,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public boolean isHiddenInPlainSight(final Physical P)
+	{
+		return (P != null)
+			&&(P instanceof Item)
+			&&(((Item)P).owner() instanceof Room)
+			&&((P.phyStats().sensesMask() & PhyStats.SENSE_HIDDENINPLAINSIGHT) >0);
+	}
+
+	@Override
 	public boolean isSavable(final Physical P)
 	{
 		if((P==null)||((P.phyStats().disposition()&PhyStats.IS_UNSAVABLE)==0))

@@ -4000,6 +4000,32 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "0";
 				}
 			},
+			new AbilityParmEditorImpl("DECORATION_FLAG","Flag",ParmType.CHOICES)
+			{
+				@Override
+				public int appliesToClass(final Object o)
+				{
+					return 1;
+				}
+
+				@Override
+				public void createChoices()
+				{
+					createChoices(new String[] { "", "BLENDED", "HIPS", "BLENDED+HIPS" });
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "BLENDED";
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+			},
 			new AbilityParmEditorImpl("LID_LOCK","Lid.",ParmType.CHOICES)
 			{
 				@Override

@@ -1,13 +1,14 @@
-HANG	1	5	hanging @x1	@x1 is hanging here.	0
-MOUNT	1	5	mounting @x1	@x1 is mounted here.	0
-STICK	1	5	sticking up @x1		0
-LAY	1	5	laying @x1	@x1 lies here.	1
-STAND	1	6	standing up @x1	@x1 stands here.	2
-PLACE	1	7	placing @x1	@x1 is placed here.	3
-DISPLAY	1	8	displaying @x1	@x1 is displayed here.	4
-ARRANGE	1	9	arranging @x1	@x1 is arranged here.	5
-FIX	1	10	fixing @x1	@x1 is fixed here.	6
-BUILDIN	1	11	building-in @x1	@x1 is built-in here.	7
-CENTER	1	12	centering @x1	@x1 is centered here.	8
-ONLEFT	1	15	placing @x1 to the left	@x1 is on the left.	9
-ONRIGHT	1	15	placing @x1 to the right	@x1 is on the right.	9
+HANG	1	5	hanging @x1	@x1 is hanging here.	0	BLENDED
+MOUNT	1	5	mounting @x1	@x1 is mounted here.	0	BLENDED
+STICK	1	5	sticking up @x1		0	BLENDED
+LAY	1	5	laying @x1	@x1 lies here.	1	BLENDED
+STAND	1	6	standing up @x1	@x1 stands here.	2	BLENDED
+PLACE	1	7	placing @x1	@x1 is placed here.	3	BLENDED
+DISPLAY	1	8	displaying @x1	@x1 is displayed here.	4	BLENDED
+ARRANGE	1	9	arranging @x1	@x1 is arranged here.	5	BLENDED
+FIX	1	10	fixing @x1	@x1 is fixed here.	6	BLENDED
+BUILDIN	1	11	building-in @x1	@x1 is built-in here.	7	BLENDED
+CENTER	1	12	centering @x1	@x1 is centered here.	8	BLENDED
+ONLEFT	1	15	placing @x1 to the left	@x1 is on the left.	9	BLENDED
+ONRIGHT	1	15	placing @x1 to the right	@x1 is on the right.	9	BLENDED
+HIPS	1	1	hiding @x1 in plain sight		9	HIPS

@@ -506,6 +506,16 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isWithSeenContents(Physical P);
 
 	/**
+	 * Returns whether the given item can not be seen
+	 * at a simple look around, but requires either
+	 * the ability to see hidden, or a very careful
+	 * look (longlook) around.
+	 * @param P the item to check
+	 * @return true if it is hard to spot.
+	 */
+	public boolean isHiddenInPlainSight(final Physical P);
+
+	/**
 	 * Returns whether the given item is a container which,
 	 * when open, has accessible contents, and is also open.
 	 * @param I the item to check

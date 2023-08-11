@@ -557,7 +557,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	/** a bit setting, as from sensesMask(), flagging this as being unscrappable ...  */
 	public final static int SENSE_ITEMNOSCRAP=262144;
 	/** a bit setting, as from sensesMask(), flagging this ...  */
-	//public final static int SENSE_ROOMCIRCUITED=524288;
+	public final static int SENSE_HIDDENINPLAINSIGHT=524288;
 	/** a bit setting, as from sensesMask(), flagging this mob as not respawning when being camped*/
 	public final static int SENSE_UNCAMPABLE=1048576; // must match the normal mob version also
 
@@ -582,7 +582,7 @@ public interface PhyStats extends CMCommon, Modifiable
 		"UNDESTROYABLE",
 		"INSIDEACCESSIBLE",
 		"ITEMNOSCRAP",
-		"UNUSEDMASK",
+		"HIDDENINPLAINSIGHT",
 		"UNCAMPABLE"
 	};
 
