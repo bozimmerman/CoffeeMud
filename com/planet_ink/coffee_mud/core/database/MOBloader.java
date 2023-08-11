@@ -2598,6 +2598,17 @@ public class MOBloader
 		}
 	}
 
+	public int DBRaceCheck(String raceID)
+	{
+		if((raceID==null)||(raceID.trim().length()==0))
+			return 0;
+		raceID = DB.injectionClean(raceID);
+		int ct = DB.queryRows("SELECT RACEID FROM CMCHAR WHERE CMRACE='"+raceID+"'");
+		ct += DB.queryRows("SELECT RACEID FROM CMROCH WHERE CMROID='"+raceID+"' OR CMROTX LIKE '%RACE>"+raceID+"</%");
+		ct += DB.queryRows("SELECT RACEID FROM CMCHFO WHERE CMFOID='"+raceID+"' OR CMFOTX LIKE '%RACE>"+raceID+"</%");
+		return ct;
+	}
+
 	public void DBUpdateFollowers(final MOB mob)
 	{
 		if((mob==null)||(mob.Name().length()==0))
