@@ -398,31 +398,24 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public double[] getFacingAngleDiff(final double[] fromAngle, final double[] toAngle)
+	public void applyAngleDiff(final double[] angle, final double[] delta)
 	{
-		final double fromYaw = fromAngle[0];
-		final double fromPitch = (fromAngle[1] > Math.PI) ? Math.abs(Math.PI-fromAngle[1]) : fromAngle[1];
+		angle[0] += delta[0];
+		angle[1] += delta[1];
+		fixDirectionBounds(angle); // normalizing directions makes NO SENSE for a delta!
+	}
 
-		final double toYaw = toAngle[0];
-		final double toPitch = (toAngle[1] > Math.PI) ? Math.abs(Math.PI-toAngle[1]) : toAngle[1];
-
+	@Override
+	public double[] getAngleDiff(final double[] fromAngle, final double[] toAngle)
+	{
 		final double[] delta = new double[2];
-		if(toYaw != fromYaw)
-		{
-			if(toYaw > fromYaw)
-			{
-				delta[0]=(toYaw-fromYaw);
-				if(delta[0] > Math.PI)
-					delta[0] = -((PI_TIMES_2-toYaw)+fromYaw);
-			}
-			else
-			{
-				delta[0]=(toYaw-fromYaw);
-				if(delta[0] < -Math.PI)
-					delta[0] = -((PI_TIMES_2-fromYaw)+toYaw);
-			}
-		}
-		delta[1]=(toPitch-fromPitch);
+		delta[0] = toAngle[0] - fromAngle[0];
+		if(delta[0] > Math.PI)
+			delta[0] = -(CoffeeDark.PI_TIMES_2 - delta[0]);
+		else
+		if(delta[0] < -Math.PI)
+			delta[0] = (CoffeeDark.PI_TIMES_2 + delta[1]);
+		delta[1] = toAngle[1] - fromAngle[1];
 		//fixDirectionBounds(delta); // normalizing directions makes NO SENSE for a delta!
 		return delta;
 	}

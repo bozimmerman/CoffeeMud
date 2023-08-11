@@ -352,7 +352,7 @@ public class ShipNavProgram extends ShipSensorProgram
 						if(this.savedAngle==null)
 							break;
 						final double angleAchievedPerPt = Math.abs(this.savedAngle.doubleValue()); //
-						double[] angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
+						double[] angleDelta = CMLib.space().getAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 						for(int i=0;i<100;i++)
 						{
 							if(Math.abs(angleDelta[0]) > 0.00001)
@@ -369,7 +369,7 @@ public class ShipNavProgram extends ShipSensorProgram
 							}
 							else
 								break;
-							angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
+							angleDelta = CMLib.space().getAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 							/*
 							if(isDebugging)
 							{
@@ -380,7 +380,7 @@ public class ShipNavProgram extends ShipSensorProgram
 							if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))<.01)
 								break;
 						}
-						angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
+						angleDelta = CMLib.space().getAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 						for(int i=0;i<100;i++)
 						{
 							if(Math.abs(angleDelta[1]) > 0.00001)
@@ -397,7 +397,7 @@ public class ShipNavProgram extends ShipSensorProgram
 							}
 							else
 								break;
-							angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
+							angleDelta = CMLib.space().getAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 							/*
 							if(isDebugging)
 							{

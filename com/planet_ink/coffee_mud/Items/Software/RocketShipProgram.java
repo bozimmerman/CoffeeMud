@@ -348,6 +348,14 @@ public class RocketShipProgram extends ShipTacticalProgram
 					str.append("^N").append(CMStrings.padRight(Long.toString(component.powerRemaining()),11));
 				str.append("^H").append(CMStrings.padRight(component.name(),31));
 				str.append("^.^N\n\r");
+				if(component instanceof FuelConsumer)
+				{
+					str.append("^H").append(CMStrings.padRight(" ",9));
+					str.append(CMStrings.padRight("  ",2));
+					str.append("^H").append(CMStrings.padRight(L("Fuel"),5));
+					str.append("^N").append(CMStrings.padRight(Long.toString(((FuelConsumer)component).getFuelRemaining()),11));
+					str.append("^.^N\n\r");
+				}
 				systemNumber++;
 			}
 			str.append("^.^N\n\r");

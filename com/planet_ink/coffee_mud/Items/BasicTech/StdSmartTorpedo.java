@@ -91,8 +91,8 @@ public class StdSmartTorpedo extends StdTorpedo
 							this.setSpeed(intercept.second.longValue());
 					}
 				}
-				final double[] diffDelta = space.getFacingAngleDiff(direction(), targetDir); // starboard is -, port is +
-				if((Math.abs(diffDelta[0])+Math.abs(diffDelta[1]))>.0001)
+				final double diffDelta = space.getAngleDelta(direction(), targetDir);
+				if(diffDelta>.0001)
 				{
 					double accel=this.speed()/8.0; // try to turn by accel 1/8 current speed
 					if(accel < 1)

@@ -181,7 +181,7 @@ public interface GalacticMap extends CMLibrary
 	/**
 	 * Given two angles, this returns the difference between them as a single angle.
 	 *
-	 * @see GalacticMap#getFacingAngleDiff(double[], double[])
+	 * @see GalacticMap#getAngleDiff(double[], double[])
 	 *
 	 * @param fromAngle the first angle
 	 * @param toAngle the second angle
@@ -217,7 +217,16 @@ public interface GalacticMap extends CMLibrary
 	 * @param toAngle the second angle
 	 * @return the angle delta
 	 */
-	public double[] getFacingAngleDiff(final double[] fromAngle, final double[] toAngle);
+	public double[] getAngleDiff(final double[] fromAngle, final double[] toAngle);
+
+	/**
+	 * Given an angle and a simple delta, with positive and negative values,
+	 * this will add the delta to the angle and normalize the angle.
+	 *
+	 * @param angle the angle to modify
+	 * @param delta the delta
+	 */
+	public void applyAngleDiff(final double[] angle, final double[] delta);
 
 	/**
 	 * Given two space objects, this will return the direction in radians

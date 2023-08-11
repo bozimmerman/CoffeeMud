@@ -319,7 +319,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 			if(acceleration < me.getMinThrust())
 				return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s loudly, but nothing happens.",me.name(mob)), lang.L("Failure: @x1: insufficient thrust.",me.name(mob)));
 		}
-		else
+		else // if we ever make multi-directional thrusters that don't care about facing, change this
 			acceleration = thrust;
 
 		//if((amount > 1)&&((portDir!=ShipDirComponent.ShipDir.AFT) || (me.getThrust() > (oldThrust * 10))))
@@ -412,8 +412,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 					&& (CMParms.contains(me.getAvailPorts(),ShipDirectional.ShipDir.AFT)))
 					{
 						final Manufacturer manufacturer=me.getFinalManufacturer();
-						//TODO: isn't there a method for this fuel thing?
-						final int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))/getFuelDivisor()));
+						final int fuelToConsume=getFuelToConsume(me, manufacturer, ShipDirectional.ShipDir.AFT, me.getThrust());
 						if(me.consumeFuel(fuelToConsume))
 						{
 							final SpaceObject obj=CMLib.space().getSpaceObject(me, true);
