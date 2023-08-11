@@ -3,7 +3,6 @@
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
   
   <title>The CoffeeMud Web Server</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation errors, fix format of code sections, add index, and fix spelling errors --></head>
-
 <body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
@@ -374,7 +373,7 @@ name of the random file.</td>
 names and values. For example
 @AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@. This is usually used
 to provide literal data for other macros which may require certain
-Request parameter data.</td>
+Request parameter data.<br />Special values for VALUE are:<br />++ to increment the variable numerically<br />-- to decrement the variable numerically<br />** to multiply the variable by 2<br />##( ... ) to apply the value to the variable as a math formula found between the ().</td>
           </tr>
           <tr>
             <td>AreaData</td>
@@ -646,13 +645,19 @@ normally of no use unless customising the error page.</td>
           </tr>
           <tr>
             <td>if</td>
-            <td>The Single, Required parameter for this macro is
+            <td>The
+Single, Required parameter for this macro is
 another macro name which evaluates to the words "true" or something
 else (which is defined as false). That macro does not follow the
 embedding rules above. This macro requires an @endif@ macro, and may
-optionally have an @else@ macro. The "!" character may follow the "?"
-to negate the value of the expression. For example:
-@if?CheckReqParm?PARM=VALUE@ @if?!CheckReqParm?PARM=VALUE@ would return
+optionally have an @else@ macro. The "!" character may follow either
+"?"
+characters to negate the value of the expression, or the comparison
+respectively. &nbsp;Multiple expressions must all be true for the
+overall expression to be true, unless an expression macro name begins
+with ||, which will evaluate as "or". &nbsp;Starting the macro name
+with "&lt;" will evaluate as less than or starts with, "&gt;" as
+greater than or ends with, and "*" as substring match.<br />For example:&nbsp;<br />@if?!CheckReqParm?PARM=VALUE@ would return
 true and false (or vis-versa) depending whether the request parameter
 PARM was equal to VALUE.</td>
           </tr>

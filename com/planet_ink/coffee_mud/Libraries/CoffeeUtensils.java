@@ -2115,6 +2115,14 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					c++;
 					break;
 				}
+				case 'j':
+					buf.append(mob.numFollowers());
+					c++;
+					break;
+				case 'J':
+					buf.append(mob.maxFollowers());
+					c++;
+					break;
 				case 'K':
 				case 'k':
 				{

@@ -211,6 +211,7 @@
 	</TR>
 	<TR>
 		<TD WIDTH=100% COLSPAN=17 ALIGN=LEFT>
+			@if?CheckReqParm?!AREARPT=AREARPT&!QUESTRPT=QUESTRPT&!SOCRPT=SOCRPT&!CMDRPT=CMDRPT&!CRIMERPT=CRIMERPT&!SKILLRPT=SKILLRPT@
 			<FONT COLOR=WHITE>Filter:</FONT>
 			<SELECT NAME=CODEPART ONCHANGE="SelCombo(document.CONTROL.CODE,'*'); Clicked('/grinder/stats.cmvp');">
 			<OPTION VALUE="BASECLASS">chars of class type ...
@@ -387,6 +388,7 @@
 			//-->
 			</SCRIPT>
 		</TD>
+		@endif@
 	</TR>
 	@if?CheckReqParm?SKILLRPT=SKILLRPT@
 		<TR><TD WIDTH=100% COLSPAN=17><FONT COLOR=WHITE>

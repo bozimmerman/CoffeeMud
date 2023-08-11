@@ -63,7 +63,9 @@ public class AddRequestParameter extends StdWebMacro
 				else
 				if((val.equals("**")&&(httpReq.isUrlParameter(key))))
 					val=""+(CMath.s_int(httpReq.getUrlParameter(key))*2);
-
+				else
+				if(val.startsWith("##(")&&(val.endsWith(")")))
+					val=""+CMath.parseIntExpression(val.substring(3,val.length()-1),null);
 				httpReq.addFakeUrlParameter(key,val);
 			}
 		}

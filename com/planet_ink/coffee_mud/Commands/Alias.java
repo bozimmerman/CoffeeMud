@@ -111,13 +111,13 @@ public class Alias extends StdCommand
 					{
 						final Session sess = mob.session();
 						final java.util.List<String> changes = new ArrayList<String>();
-						final PlayerStats opStats =mob.playerStats();
-						final PlayerStats mpStats =M.playerStats();
+						final PlayerStats opStats =M.playerStats();
+						final PlayerStats mpStats =mob.playerStats();
 						if((opStats == null)||(mpStats==null))
 							return false;
-						for(final String alias : mpStats.getAliasNames())
+						for(final String alias : opStats.getAliasNames())
 						{
-							if(opStats.getAlias(alias).length()==0)
+							if(mpStats.getAlias(alias).length()==0)
 								changes.add(alias);
 						}
 						final MOB M1=mob;
@@ -148,14 +148,14 @@ public class Alias extends StdCommand
 								{
 									if((mob == null)||(M==null))
 										return;
-									final PlayerStats opStats =mob.playerStats();
-									final PlayerStats mpStats =M.playerStats();
-									if((opStats == null)||(mpStats==null))
+									final PlayerStats opStats1 =M.playerStats();
+									final PlayerStats mpStats1 =mob.playerStats();
+									if((opStats1 == null)||(mpStats1==null))
 										return;
-									for(final String alias : mpStats.getAliasNames())
+									for(final String alias : opStats1.getAliasNames())
 									{
-										if(opStats.getAlias(alias).length()==0)
-											mpStats.setAlias(alias,mpStats.getAlias(alias));
+										if(mpStats1.getAlias(alias).length()==0)
+											mpStats1.setAlias(alias,opStats1.getAlias(alias));
 									}
 									mob.tell(L("Aliases copied and active."));
 								}
