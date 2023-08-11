@@ -121,7 +121,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	@Override
 	public String data()
 	{
-		final StringBuffer data=new StringBuffer("");
+		final StringBuilder data=new StringBuilder("");
 		final XMLLibrary xml=CMLib.xml();
 		if(xml != null)
 		{
@@ -138,7 +138,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 			{
 				final String s=e.next();
 				final long[] l=stats.get(s);
-				data.append(xml.convertXMLtoTag(s,CMParms.toListString(l)));
+				data.append(xml.convertXMLtoTag(s,CMParms.toTightListString(l)));
 			}
 			data.append("</STATS>");
 		}
@@ -188,7 +188,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	@Override
 	public void bumpVal(final CMObject E, final int type)
 	{
-		if((E instanceof MOB)&&(((MOB)E).isMonster()))
+		if((E instanceof MOB)&&(!((MOB)E).isPlayer()))
 			return;
 
 		if(type==STAT_SPECIAL_NUMONLINE)
@@ -207,7 +207,8 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 						final MOB M=S.mob();
 						final PlayerStats ps = (M!=null)?M.playerStats():null;
 						final PlayerAccount pa = (ps!=null)?ps.getAccount():null;
-						if((pa!=null)&&(!A.contains(pa.getAccountName())))
+						if((pa!=null)
+						&&(!A.contains(pa.getAccountName())))
 						{
 							A.add(pa.getAccountName());
 							pct++;
@@ -241,7 +242,8 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 			final MOB mob=(MOB)E;
 			final Room R=mob.location();
 			Area A=(R==null) ? null : R.getArea();
-			if((A!=null) && (CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
+			if((A!=null)
+			&&(CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 				A=CMLib.map().getModelArea(A);
 			if(A!=null)
 				bumpVal("X"+tagFix(A.Name()),type);
@@ -282,19 +284,20 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	@Override
 	public void populate(final long start, final long end, final String data)
 	{
+		final XMLLibrary xmlLib = CMLib.xml();
 		synchronized(stats)
 		{
 			startTime=start;
 			endTime=end;
-			final List<XMLLibrary.XMLTag> all=CMLib.xml().parseAllXML(data);
+			final List<XMLLibrary.XMLTag> all=xmlLib.parseAllXML(data);
 			if((all==null)||(all.size()==0))
 				return;
-			highestOnline=CMLib.xml().getIntFromPieces(all,"HIGH");
-			numberOnlineTotal=CMLib.xml().getIntFromPieces(all,"NUMONLINE");
-			highestPOnline=CMLib.xml().getIntFromPieces(all,"HIGHP");
-			numberPOnlineTotal=CMLib.xml().getIntFromPieces(all,"NUMPONLINE");
-			numberOnlineCounter=CMLib.xml().getIntFromPieces(all,"NUMCOUNT");
-			final XMLTag X=CMLib.xml().getPieceFromPieces(all,"STATS");
+			highestOnline=xmlLib.getIntFromPieces(all,"HIGH");
+			numberOnlineTotal=xmlLib.getIntFromPieces(all,"NUMONLINE");
+			highestPOnline=xmlLib.getIntFromPieces(all,"HIGHP");
+			numberPOnlineTotal=xmlLib.getIntFromPieces(all,"NUMPONLINE");
+			numberOnlineCounter=xmlLib.getIntFromPieces(all,"NUMCOUNT");
+			final XMLTag X=xmlLib.getPieceFromPieces(all,"STATS");
 			if((X==null)||(X.contents()==null)||(X.contents().size()==0)||(!X.tag().equals("STATS")))
 				return;
 			stats.clear();

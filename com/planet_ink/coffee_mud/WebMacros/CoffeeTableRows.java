@@ -48,8 +48,10 @@ public class CoffeeTableRows extends StdWebMacro
 	public String runMacro(final HTTPRequest httpReq, String parm, final HTTPResponse httpResp)
 	{
 		if(parm.length()==0)
+		{
 			parm="DATERANGE&LOGINS&MOSTONLINE&AVERAGEONLINE&MOSTPONLINE&AVERAGEPONLINE&TOTALHOURS"
 				+ "&NEWPLAYERS&DEATHS&PKDEATHS&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES";
+		}
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final PairSVector<String,String> orderedParms=parseOrderedParms(parm,false);
 		String header=parms.get("HEADER");
