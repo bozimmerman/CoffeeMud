@@ -53,6 +53,7 @@ public class AreaNext extends StdWebMacro
 			return "";
 		}
 		final boolean all=parms.containsKey("SPACE")||parms.containsKey("ALL");
+		final boolean hiddenOk = parms.containsKey("HIDDENOK");
 		String lastID="";
 		for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 		{
@@ -62,7 +63,8 @@ public class AreaNext extends StdWebMacro
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.Name().equals(lastID))))
 				{
 					httpReq.addFakeUrlParameter("AREA",A.Name());
-					if((!CMLib.flags().isHidden(A))&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
+					if((hiddenOk||(!CMLib.flags().isHidden(A)))
+					&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 						return "";
 					last=A.Name();
 				}
