@@ -40,12 +40,22 @@ public interface TrackingLibrary extends CMLibrary
 	public List<Room> findTrailToRoom(Room location, Room destRoom, TrackingFlags flags, int maxRadius, List<Room> radiant);
 	public List<Room> findTrailToAnyRoom(Room location, List<Room> destRooms, TrackingFlags flags, int maxRadius);
 	public List<Room> findTrailToAnyRoom(Room location, RFilter destFilter, TrackingFlags flags, int maxRadius);
+	public List<Integer> getShortestTrail(final List<List<Integer>> finalSets);
+	public List<List<Integer>> findAllTrails(Room from, Room to, List<Room> radiantTrail);
+	public List<List<Integer>> findAllTrails(Room from, List<Room> tos, List<Room> radiantTrail);
+	public String getTrailToDescription(Room R1, List<Room> set, String where, Set<TrailFlag> trailFlags, int radius, Set<Room> ignoreRooms, int maxMins);
+
 	public int trackNextDirectionFromHere(List<Room> theTrail, Room location, boolean openOnly);
 	public void stopTracking(MOB mob);
+	public boolean autoTrack(MOB mob, Room destR);
+
 	public boolean makeFall(Physical P, Room room, boolean reverseFall);
 	public void makeSink(Physical P, Room room, boolean reverseSink);
 	public CheckedMsgResponse isOkWaterSurfaceAffect(final Room room, final CMMsg msg);
+
 	public int radiatesFromDir(Room room, List<Room> rooms);
+	public boolean areNearEachOther(final MOB whichM, final MOB nearM);
+
 	public void getRadiantRooms(Room room, List<Room> rooms, TrackingFlags flags, Room radiateTo, int maxDepth, Set<Room> ignoreRooms);
 	public List<Room> getRadiantRooms(final Room room, final RFilters filters, final int maxDepth);
 	public void getRadiantRooms(final Room room, List<Room> rooms, final RFilters filters, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms);
@@ -54,22 +64,24 @@ public interface TrackingLibrary extends CMLibrary
 	public List<Area> getRadiantAreas(Area area, int maxDepth);
 	public Enumeration<Room> getRadiantRoomsEnum(final Room room, final RFilters filters, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms);
 	public Room getRadiantRoomTarget(final Room room, final RFilters filters, final RFilter radiateTo);
-	public boolean beMobile(MOB mob, boolean dooropen, boolean wander, boolean roomprefer, boolean roomobject, int[] status, Set<Room> rooms);
-	public boolean areNearEachOther(final MOB whichM, final MOB nearM);
+
 	public boolean wanderCheckedAway(MOB M, boolean mindPCs, boolean andGoHome);
 	public boolean wanderCheckedFromTo(MOB M, Room toHere, boolean mindPCs);
 	public void wanderAway(MOB M, boolean mindPCs, boolean andGoHome);
 	public void wanderFromTo(MOB M, Room toHere, boolean mindPCs);
 	public void wanderIn(MOB M, Room toHere);
+
+	public boolean beMobile(MOB mob, boolean dooropen, boolean wander, boolean roomprefer, boolean roomobject, int[] status, Set<Room> rooms);
 	public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook);
 	public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders);
-	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders);
 	public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always);
-	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always);
+	public void walkForced(MOB M, Room fromHere, Room toHere, boolean andFollowers, boolean forceLook, String msg);
 	public boolean walk(Item I, int directionCode);
+	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders);
+	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always);
+
 	public void forceRecall(final MOB mob, boolean includeFollowers);
 	public void forceEntry(MOB M, Room toHere, boolean andFollowers, boolean forceLook, String msg);
-	public void walkForced(MOB M, Room fromHere, Room toHere, boolean andFollowers, boolean forceLook, String msg);
 	public boolean doFallenOffCheck(final MOB mob);
 	public int findExitDir(MOB mob, Room R, String desc);
 	public int findRoomDir(MOB mob, Room R);
@@ -77,17 +89,14 @@ public interface TrackingLibrary extends CMLibrary
 	public boolean isAnAdminHere(Room R, boolean sysMsgsOnly);
 	public Set<Physical> getAllGroupRiders(final Physical P, final Room hereOnlyR);
 	public void markToWanderHomeLater(MOB M);
-	public List<Integer> getShortestTrail(final List<List<Integer>> finalSets);
-	public List<List<Integer>> findAllTrails(Room from, Room to, List<Room> radiantTrail);
-	public List<List<Integer>> findAllTrails(Room from, List<Room> tos, List<Room> radiantTrail);
 	public boolean canValidTrail(Room R1, List<Room> set, String where, int radius, Set<Room> ignoreRooms, int maxMins);
-	public String getTrailToDescription(Room R1, List<Room> set, String where, Set<TrailFlag> trailFlags, int radius, Set<Room> ignoreRooms, int maxMins);
+
 	public Rideable findALadder(MOB mob, Room room);
 	public void postMountLadder(MOB mob, Rideable ladder);
+
 	public TrackingFlags newFlags();
 	public Room getCalculatedAdjacentRoom(PairVector<Room,int[]> rooms, Room R, int dir);
 	public PairVector<Room,int[]> buildGridList(Room room, String ownerName, int maxDepth);
-	public boolean autoTrack(MOB mob, Room destR);
 
 	public static interface RFilter
 	{
@@ -166,218 +175,28 @@ public interface TrackingLibrary extends CMLibrary
 
 	public static enum TrackingFlag
 	{
-		NOHOMES(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return CMLib.law().getLandTitle(R) != null;
-			}
-		}),
-		OPENONLY(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return (!E.isOpen()) || ((E.phyStats().disposition()&PhyStats.IS_UNHELPFUL)>0);
-			}
-		}),
-		UNLOCKEDONLY(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return (E.hasALock() && E.isLocked()) || ((E.phyStats().disposition()&PhyStats.IS_UNHELPFUL)>0);
-			}
-		}),
-		PASSABLE(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return (E.phyStats().disposition()&PhyStats.IS_UNHELPFUL)>0;
-			}
-		}),
-		AREAONLY(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return (R!=null)&&(hostR!=null)&&(hostR.getArea()!=R.getArea());
-			}
-		}),
-		NOTHINAREAS(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return (R!=null)&&(hostR!=null)&&(R.getArea()!=null)
-				&&(CMath.bset(R.getArea().flags(), Area.FLAG_THIN));
-			}
-		}),
-		NOHIDDENAREAS(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return ((R!=null)&&(CMLib.flags().isHidden(R)))
-					|| ((R!=null)&&(R.getArea()!=null)&&(CMLib.flags().isHidden(R.getArea())));
-			}
-		}),
-		NOEMPTYGRIDS(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return (R.getGridParent() != null) && (R.getGridParent().roomID().length() == 0);
-			}
-		}),
-		NOAIR(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return (R.domainType() == Room.DOMAIN_INDOORS_AIR) || (R.domainType() == Room.DOMAIN_OUTDOORS_AIR);
-			}
-		}),
-		NOPRIVATEPROPERTY(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				final LegalLibrary law=CMLib.law();
-				final LandTitle title = law.getLandTitle(R);
-				return  (title == null) || (title.getOwnerName() == null) || (title.getOwnerName().length()==0);
-			}
-		}),
-		NOWATER(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return CMLib.flags().isWateryRoom(R);
-			}
-		}),
-		WATERSURFACEONLY(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return !CMLib.flags().isWaterySurfaceRoom(R);
-			}
-		}),
-		WATERSURFACEORSHOREONLY(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				if(R==null)
-					return true;
-				if((R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
-				||(R.domainType()==Room.DOMAIN_INDOORS_AIR))
-					return true;
-				if(CMLib.flags().isWaterySurfaceRoom(R)
-				|| (R.ID().equals("Shore"))
-				|| (R.domainType() == Room.DOMAIN_OUTDOORS_SEAPORT)
-				|| (R.domainType() == Room.DOMAIN_INDOORS_SEAPORT)
-				|| (R.domainType() == Room.DOMAIN_INDOORS_CAVE_SEAPORT))
-					return false;
-				boolean foundWater=false;
-				for(final int dir2 : Directions.CODES())
-				{
-					final Room R2=R.getRoomInDir(dir2);
-					if((R2!=null)&&(CMLib.flags().isWaterySurfaceRoom(R2)))
-						foundWater=true;
-				}
-				return (!foundWater);
-			}
-		}),
-		SHOREONLY(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				if(R==null)
-					return true;
-				if((R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
-				|| (R.domainType()==Room.DOMAIN_INDOORS_AIR)
-				|| (CMLib.flags().isWaterySurfaceRoom(R) ))
-					return true;
-				if((R.ID().equals("Shore"))
-				|| (R.domainType() == Room.DOMAIN_OUTDOORS_SEAPORT)
-				|| (R.domainType() == Room.DOMAIN_INDOORS_SEAPORT)
-				|| (R.domainType() == Room.DOMAIN_INDOORS_CAVE_SEAPORT))
-					return false;
-				boolean foundWater=false;
-				for(final int dir2 : Directions.CODES())
-				{
-					final Room R2=R.getRoomInDir(dir2);
-					if((R2!=null)&&(CMLib.flags().isWaterySurfaceRoom(R2)))
-						foundWater=true;
-				}
-				return (!foundWater);
-			}
-		}),
-		UNDERWATERONLY(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return !CMLib.flags().isUnderWateryRoom(R);
-			}
-		}),
-		FLOORSONLY(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return (R.getRoomInDir(Directions.DOWN)!=null);
-			}
-		}),
-		CEILINGSSONLY(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return (R.getRoomInDir(Directions.UP)!=null);
-			}
-		}),
-		NOCLIMB(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return (CMLib.flags().isClimbing(R) || CMLib.flags().isClimbing(E));
-			}
-		}),
-		NOCRAWL(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return (CMLib.flags().isCrawlable(R) || CMLib.flags().isCrawlable(E));
-			}
-		}),
-		OUTDOORONLY(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return (R.domainType() & Room.INDOORS) != 0;
-			}
-		}),
-		INDOORONLY(new RFilter()
-		{
-			@Override
-			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
-			{
-				return (R.domainType() & Room.INDOORS) == 0;
-			}
-		});
-		public RFilter myFilter;
-		private TrackingFlag(final RFilter filter)
-		{
-			this.myFilter=filter;
-		}
+		NOHOMES,
+		OPENONLY,
+		UNLOCKEDONLY,
+		PASSABLE,
+		AREAONLY,
+		NOTHINAREAS,
+		NOHIDDENAREAS,
+		NOEMPTYGRIDS,
+		NOAIR,
+		NOPRIVATEPROPERTY,
+		NOWATER,
+		WATERSURFACEONLY,
+		WATERSURFACEORSHOREONLY,
+		SHOREONLY,
+		UNDERWATERONLY,
+		FLOORSONLY,
+		CEILINGSSONLY,
+		NOCLIMB,
+		NOCRAWL,
+		OUTDOORONLY,
+		INDOORONLY
+		;
+		public RFilter myFilter=null;
 	}
 }

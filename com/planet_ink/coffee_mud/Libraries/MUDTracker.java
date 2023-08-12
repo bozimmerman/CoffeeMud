@@ -2653,4 +2653,244 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		return null;
 	}
+
+	@Override
+	public void initializeClass()
+	{
+		for(final TrackingFlag tf : TrackingFlag.values())
+		{
+			switch(tf)
+			{
+			case NOHOMES: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return CMLib.law().getLandTitle(R) != null;
+					}
+				};
+				break;
+			case OPENONLY: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return (!E.isOpen()) || ((E.phyStats().disposition()&PhyStats.IS_UNHELPFUL)>0);
+					}
+				};
+				break;
+			case UNLOCKEDONLY: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return (E.hasALock() && E.isLocked()) || ((E.phyStats().disposition()&PhyStats.IS_UNHELPFUL)>0);
+					}
+				};
+				break;
+			case PASSABLE: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return (E.phyStats().disposition()&PhyStats.IS_UNHELPFUL)>0;
+					}
+				};
+				break;
+			case AREAONLY: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return (R!=null)&&(hostR!=null)&&(hostR.getArea()!=R.getArea());
+					}
+				};
+				break;
+			case NOTHINAREAS: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return (R!=null)&&(hostR!=null)&&(R.getArea()!=null)
+						&&(CMath.bset(R.getArea().flags(), Area.FLAG_THIN));
+					}
+				};
+				break;
+			case NOHIDDENAREAS: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return ((R!=null)&&(CMLib.flags().isHidden(R)))
+							|| ((R!=null)&&(R.getArea()!=null)&&(CMLib.flags().isHidden(R.getArea())));
+					}
+				};
+				break;
+			case NOEMPTYGRIDS: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return (R.getGridParent() != null) && (R.getGridParent().roomID().length() == 0);
+					}
+				};
+				break;
+			case NOAIR: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return (R.domainType() == Room.DOMAIN_INDOORS_AIR) || (R.domainType() == Room.DOMAIN_OUTDOORS_AIR);
+					}
+				};
+				break;
+			case NOPRIVATEPROPERTY: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						final LegalLibrary law=CMLib.law();
+						final LandTitle title = law.getLandTitle(R);
+						return  (title == null) || (title.getOwnerName() == null) || (title.getOwnerName().length()==0);
+					}
+				};
+				break;
+			case NOWATER: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return CMLib.flags().isWateryRoom(R);
+					}
+				};
+				break;
+			case WATERSURFACEONLY: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return !CMLib.flags().isWaterySurfaceRoom(R);
+					}
+				};
+				break;
+			case WATERSURFACEORSHOREONLY: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						if(R==null)
+							return true;
+						if((R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+						||(R.domainType()==Room.DOMAIN_INDOORS_AIR))
+							return true;
+						if(CMLib.flags().isWaterySurfaceRoom(R)
+						|| (R.ID().equals("Shore"))
+						|| (R.domainType() == Room.DOMAIN_OUTDOORS_SEAPORT)
+						|| (R.domainType() == Room.DOMAIN_INDOORS_SEAPORT)
+						|| (R.domainType() == Room.DOMAIN_INDOORS_CAVE_SEAPORT))
+							return false;
+						boolean foundWater=false;
+						for(final int dir2 : Directions.CODES())
+						{
+							final Room R2=R.getRoomInDir(dir2);
+							if((R2!=null)&&(CMLib.flags().isWaterySurfaceRoom(R2)))
+								foundWater=true;
+						}
+						return (!foundWater);
+					}
+				};
+				break;
+			case SHOREONLY: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						if(R==null)
+							return true;
+						if((R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+						|| (R.domainType()==Room.DOMAIN_INDOORS_AIR)
+						|| (CMLib.flags().isWaterySurfaceRoom(R) ))
+							return true;
+						if((R.ID().equals("Shore"))
+						|| (R.domainType() == Room.DOMAIN_OUTDOORS_SEAPORT)
+						|| (R.domainType() == Room.DOMAIN_INDOORS_SEAPORT)
+						|| (R.domainType() == Room.DOMAIN_INDOORS_CAVE_SEAPORT))
+							return false;
+						boolean foundWater=false;
+						for(final int dir2 : Directions.CODES())
+						{
+							final Room R2=R.getRoomInDir(dir2);
+							if((R2!=null)&&(CMLib.flags().isWaterySurfaceRoom(R2)))
+								foundWater=true;
+						}
+						return (!foundWater);
+					}
+				};
+				break;
+			case UNDERWATERONLY: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return !CMLib.flags().isUnderWateryRoom(R);
+					}
+				};
+				break;
+			case FLOORSONLY: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return (R.getRoomInDir(Directions.DOWN)!=null);
+					}
+				};
+				break;
+			case CEILINGSSONLY: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return (R.getRoomInDir(Directions.UP)!=null);
+					}
+				};
+				break;
+			case NOCLIMB: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return (CMLib.flags().isClimbing(R) || CMLib.flags().isClimbing(E));
+					}
+				};
+				break;
+			case NOCRAWL: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return (CMLib.flags().isCrawlable(R) || CMLib.flags().isCrawlable(E));
+					}
+				};
+				break;
+			case OUTDOORONLY: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return (R.domainType() & Room.INDOORS) != 0;
+					}
+				};
+				break;
+			case INDOORONLY: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return (R.domainType() & Room.INDOORS) == 0;
+					}
+				};
+				break;
+			}
+		}
+	}
 }
