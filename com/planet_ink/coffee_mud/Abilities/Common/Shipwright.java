@@ -126,7 +126,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				shipPrototypes=new Vector<Item>();
 				CMLib.coffeeMaker().addItemsFromXML(F.textUnformatted().toString(), shipPrototypes, null);
 				for(final Item I : shipPrototypes)
-					CMLib.threads().deleteAllTicks(I);
+					CMLib.threads().unTickAll(I);
 				if(shipPrototypes.size()>0)
 					Resources.submitResource(allItemID, shipPrototypes);
 			}

@@ -214,7 +214,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 					itemPrototypes=new Vector<Item>();
 					CMLib.coffeeMaker().addItemsFromXML(F.textUnformatted().toString(), itemPrototypes, null);
 					for(final Item I : itemPrototypes)
-						CMLib.threads().deleteAllTicks(I);
+						CMLib.threads().unTickAll(I);
 					if(itemPrototypes.size()>0)
 						Resources.submitResource(allItemID, itemPrototypes);
 				}

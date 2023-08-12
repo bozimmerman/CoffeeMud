@@ -145,7 +145,7 @@ public class Prayer_ResurrectMount extends Prayer_Resurrect
 						final Rideable copyR=(Rideable)lastRider.copyOf();
 						R.delInhabitant((MOB)copyR);
 						((MOB)copyR).setLocation(null);
-						CMLib.threads().deleteAllTicks(copyR);
+						CMLib.threads().unTickAll(copyR);
 						addMe=new Pair<Integer,Rideable>(Integer.valueOf(lastRider.hashCode()),copyR);
 					}
 					ridden.add(addMe);

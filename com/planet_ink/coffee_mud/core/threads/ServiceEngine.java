@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.threads;
 import com.planet_ink.coffee_mud.core.database.DBInterface;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.TickableGroup.LocalType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
@@ -991,7 +992,7 @@ public class ServiceEngine implements ThreadEngine
 	}
 
 	@Override
-	public boolean deleteAllTicks(final Tickable ticker)
+	public boolean unTickAll(final Tickable ticker)
 	{
 		if(ticker==null)
 			return false;
@@ -1103,7 +1104,7 @@ public class ServiceEngine implements ThreadEngine
 				break;
 			}
 		}
-		if(which.equalsIgnoreCase("tickGroupSize"))
+		if(which.equalsIgnoreCase("tickgroupsize"))
 			return ""+allTicks.size();
 		else
 		if(which.toLowerCase().startsWith("tickerssize"))
@@ -1265,32 +1266,32 @@ public class ServiceEngine implements ThreadEngine
 	}
 
 	@Override
-	public synchronized void clearDebri(final Room room, final int taskCode)
+	public synchronized void clearDebri(final Room room, final LocalType typeCode)
 	{
-		TickableGroup almostTock=null;
-		TickClient C=null;
-		ItemTicker  I=null;
+		TickableGroup almostTock = null;
+		TickClient C = null;
+		ItemTicker I = null;
+		MOB mob = null;
 		Iterator<TickClient> roomSet;
-		MOB mob=null;
 		for(final Iterator<TickableGroup> e=tickGroups();e.hasNext();)
 		{
-			almostTock=e.next();
-			roomSet=almostTock.getLocalItems(taskCode,room);
-			if(roomSet!=null)
+			almostTock = e.next();
+			roomSet = almostTock.getLocalItems(typeCode,room);
+			if(roomSet != null)
 			{
 				for(;roomSet.hasNext();)
 				{
-					C=roomSet.next();
+					C = roomSet.next();
 					if(C.getClientObject() instanceof ItemTicker)
 					{
-						I=(ItemTicker)C.getClientObject();
+						I = (ItemTicker)C.getClientObject();
 						almostTock.delTicker(C);
 						I.setProperLocation(null);
 					}
 					else
 					if(C.getClientObject() instanceof MOB)
 					{
-						mob=(MOB)C.getClientObject();
+						mob = (MOB)C.getClientObject();
 						if((mob.isMonster())
 						&&(!room.isInhabitant(mob))
 						&&((mob.amFollowing()==null)

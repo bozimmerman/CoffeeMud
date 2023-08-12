@@ -586,7 +586,7 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 						error="Gathering skill "+ID+" had bad data: "+xml;
 					else
 					{
-						CMLib.threads().deleteAllTicks(I);
+						CMLib.threads().unTickAll(I);
 						choices.add(I);
 					}
 				}

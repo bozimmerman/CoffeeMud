@@ -285,7 +285,7 @@ public class Spell_PlanarDistortion extends Spell
 							if(planarA.isPlanarMob(M))
 							{
 								final MOB M1=(MOB)M.copyOf();
-								CMLib.threads().deleteAllTicks(M1);
+								CMLib.threads().unTickAll(M1);
 								planarA.applyMobPrefix(M1, null);
 								M1.setVictim(M.getVictim());
 								R.addInhabitant(M1);

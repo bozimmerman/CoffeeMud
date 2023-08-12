@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.TickableGroup.LocalType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -7669,7 +7670,7 @@ public class Import extends StdCommand
 					saveRoom.setRawExit(d,E2);
 				}
 			}
-			CMLib.threads().clearDebri(saveRoom,0);
+			CMLib.threads().clearDebri(saveRoom,LocalType.MOBS_OR_ITEMS);
 			CMLib.database().DBUpdateExits(saveRoom);
 			CMLib.database().DBUpdateMOBs(saveRoom);
 			CMLib.database().DBUpdateItems(saveRoom);

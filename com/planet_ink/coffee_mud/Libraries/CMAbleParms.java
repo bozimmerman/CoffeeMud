@@ -5936,7 +5936,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							&&(madeItem.size()>0))
 							{
 								I=madeItem.get(0);
-								CMLib.threads().deleteAllTicks(I);
+								CMLib.threads().unTickAll(I);
 							}
 						}
 						else
@@ -6008,7 +6008,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						&&(madeItem.size()>0))
 						{
 							I=madeItem.get(0);
-							CMLib.threads().deleteAllTicks(I);
+							CMLib.threads().unTickAll(I);
 						}
 					}
 					else

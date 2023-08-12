@@ -1003,7 +1003,7 @@ public class RoomLoader
 				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();
 				newMOB.resetToMaxState();
-				CMLib.threads().deleteAllTicks(newMOB);
+				CMLib.threads().unTickAll(newMOB);
 				return newMOB;
 			}
 		}
@@ -1044,7 +1044,7 @@ public class RoomLoader
 						newItem.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
 						newItem.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 						newItem.recoverPhyStats();
-						CMLib.threads().deleteAllTicks(newItem);
+						CMLib.threads().unTickAll(newItem);
 						return newItem;
 					}
 					catch (final Exception e)

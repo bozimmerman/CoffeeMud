@@ -3250,7 +3250,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							M.basePhyStats().setDisposition(M.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
 							M.recoverPhyStats();
 							M.text();
-							CMLib.threads().deleteAllTicks(M);
+							CMLib.threads().unTickAll(M);
 						}
 					}
 					else

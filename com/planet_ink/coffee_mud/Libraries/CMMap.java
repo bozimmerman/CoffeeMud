@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.collections.MultiEnumeration.MultiEnumeratorBuilder;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
+import com.planet_ink.coffee_mud.core.interfaces.TickableGroup.LocalType;
 import com.planet_ink.coffee_mud.core.interfaces.LandTitle;
 import com.planet_ink.coffee_mud.core.interfaces.MsgListener;
 import com.planet_ink.coffee_mud.core.interfaces.PrivateProperty;
@@ -2225,7 +2226,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		room.clearSky();
 		 // clear debri only clears things by their start rooms, not location, so only roomid matters.
 		if(room.roomID().length()>0)
-			CMLib.threads().clearDebri(room,0);
+			CMLib.threads().clearDebri(room,LocalType.MOBS_OR_ITEMS);
 		if(room instanceof GridLocale)
 		{
 			for(final Iterator<Room> r=((GridLocale)room).getExistingRooms();r.hasNext();)

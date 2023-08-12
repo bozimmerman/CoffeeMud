@@ -1320,7 +1320,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				for(final Object O : monsters)
 				{
 					if(O instanceof MOB)
-						CMLib.threads().deleteAllTicks((MOB)O);
+						CMLib.threads().unTickAll((MOB)O);
 				}
 			}
 			else

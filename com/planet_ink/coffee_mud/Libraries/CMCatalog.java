@@ -464,7 +464,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		||(!(P instanceof DBIdentifiable))
 		||(!((DBIdentifiable)P).canSaveDatabaseID()))
 			return;
-		CMLib.threads().deleteAllTicks(P);
+		CMLib.threads().unTickAll(P);
 		synchronized(getSync(P))
 		{
 			if(getCatalogObj(P)!=null)

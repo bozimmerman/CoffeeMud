@@ -872,7 +872,7 @@ public class MobData extends StdWebMacro
 						mobClasses.add((MOB)O);
 					if(O instanceof Physical)
 						CMLib.catalog().updateCatalogIntegrity((Physical)O);
-					CMLib.threads().deleteAllTicks(O);
+					CMLib.threads().unTickAll(O);
 					theclasses.add(O);
 					theparms.add(""+shop.numberInStock(O));
 					theprices.add(""+shop.stockPrice(O));

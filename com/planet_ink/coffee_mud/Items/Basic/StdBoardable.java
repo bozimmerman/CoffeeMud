@@ -332,7 +332,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	{
 		if(area!=null)
 		{
-			CMLib.threads().deleteAllTicks(area);
+			CMLib.threads().unTickAll(area);
 			final String key=CMLib.tech().getElectronicsKey(area);
 			CMLib.tech().unregisterAllElectronics(key);
 		}

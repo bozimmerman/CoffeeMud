@@ -142,7 +142,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			{
 				CMLib.coffeeMaker().addItemsFromXML(F.textUnformatted().toString(), castlePrototypes, null);
 				for(final Item I : castlePrototypes)
-					CMLib.threads().deleteAllTicks(I);
+					CMLib.threads().unTickAll(I);
 				if(castlePrototypes.size()>0)
 					Resources.submitResource(allItemID, castlePrototypes);
 			}

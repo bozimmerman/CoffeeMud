@@ -2248,7 +2248,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						{
 							final Item I=CMLib.materials().makeItemResource(resourceCode);
 							if(I.numBehaviors()>0 || I.numScripts()>0)
-								CMLib.threads().deleteAllTicks(I);
+								CMLib.threads().unTickAll(I);
 							contents.add(I);
 						}
 					}
@@ -2260,7 +2260,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						{
 							final Item I=(Item)coll.get(CMLib.dice().roll(1, coll.size(), -1)).copyOf();
 							if(I.numBehaviors()>0 || I.numScripts()>0)
-								CMLib.threads().deleteAllTicks(I);
+								CMLib.threads().unTickAll(I);
 							contents.add(I);
 						}
 					}
@@ -2309,7 +2309,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							{
 								final Item I=CMLib.materials().makeItemResource(rsc.intValue());
 								if(I.numBehaviors()>0 || I.numScripts()>0)
-									CMLib.threads().deleteAllTicks(I);
+									CMLib.threads().unTickAll(I);
 								contents.add(I);
 							}
 						}
@@ -2321,7 +2321,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								{
 									final Item I=CMLib.materials().makeItemResource(rsc);
 									if(I.numBehaviors()>0 || I.numScripts()>0)
-										CMLib.threads().deleteAllTicks(I);
+										CMLib.threads().unTickAll(I);
 									contents.add(I);
 								}
 							}
@@ -2335,7 +2335,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						final Item I2=(Item)I.copyOf();
 						if(I2.numBehaviors()>0 || I2.numScripts()>0)
-							CMLib.threads().deleteAllTicks(I2);
+							CMLib.threads().unTickAll(I2);
 						contents.add(I2);
 					}
 				}
@@ -3272,7 +3272,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					final List<MOB> objs = this.findMobs(E, valPiece, defined, null);
 					for(final MOB M : objs)
 					{
-						CMLib.threads().deleteAllTicks(M);
+						CMLib.threads().unTickAll(M);
 						M.setSavable(false);
 						M.setDatabaseID("DELETE");
 					}
@@ -3285,7 +3285,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					final List<Item> objs = this.findItems(E, valPiece, defined, null);
 					for(final Item I : objs)
 					{
-						CMLib.threads().deleteAllTicks(I);
+						CMLib.threads().unTickAll(I);
 						I.setSavable(false);
 						I.setDatabaseID("DELETE");
 					}
@@ -4949,7 +4949,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				throw new MQLException("CMFile "+F.getAbsolutePath()+" failed mob parsing '"+err+"' in "+mql);
 			for(final MOB M : mobList)
 			{
-				CMLib.threads().deleteAllTicks(M);
+				CMLib.threads().unTickAll(M);
 				M.setSavable(false);
 				M.setDatabaseID("DELETE");
 			}
@@ -4964,7 +4964,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				throw new MQLException("CMFile "+F.getAbsolutePath()+" failed item parsing '"+err+"' in "+mql);
 			for(final Item I : itemList)
 			{
-				CMLib.threads().deleteAllTicks(I);
+				CMLib.threads().unTickAll(I);
 				I.setSavable(false);
 				I.setDatabaseID("DELETE");
 			}
@@ -4982,7 +4982,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				err=CMLib.coffeeMaker().unpackAreaFromXML(area, null, null, true, false);
 			for(final Area A : areaList)
 			{
-				CMLib.threads().deleteAllTicks(A);
+				CMLib.threads().unTickAll(A);
 				A.setSavable(false);
 				A.setAreaState(State.STOPPED);
 			}
@@ -5001,7 +5001,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			roomList.add(dumbArea.getProperMap().nextElement());
 			for(final Room R : roomList)
 			{
-				CMLib.threads().deleteAllTicks(R);
+				CMLib.threads().unTickAll(R);
 				dumbArea.delProperRoom(R);
 				R.setSavable(false);
 			}
@@ -5832,7 +5832,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 									if(RawMaterial.CODES.IS_VALID(resource))
 									{
 										final Item I=CMLib.materials().makeItemResource(resource);
-										CMLib.threads().deleteAllTicks(I);
+										CMLib.threads().unTickAll(I);
 										I.setSavable(false);
 										I.setDatabaseID("DELETE");
 										from.add(I);
@@ -5846,7 +5846,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								for(final Item I : R.myResources())
 								{
 									final Item I2=(Item)I.copyOf();
-									CMLib.threads().deleteAllTicks(I2);
+									CMLib.threads().unTickAll(I2);
 									I2.setSavable(false);
 									I2.setDatabaseID("DELETE");
 									from.add(I2);
@@ -5859,7 +5859,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								if(RawMaterial.CODES.IS_VALID(resource))
 								{
 									final Item I=CMLib.materials().makeItemResource(resource);
-									CMLib.threads().deleteAllTicks(I);
+									CMLib.threads().unTickAll(I);
 									I.setSavable(false);
 									I.setDatabaseID("DELETE");
 									from.add(I);
@@ -6319,7 +6319,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							{
 								final Object o =findObject(E,ignoreStats,defPrefix,"OBJECT",tag,defined);
 								if(o instanceof Tickable)
-									CMLib.threads().deleteAllTicks((Tickable)o);
+									CMLib.threads().unTickAll((Tickable)o);
 								if(o instanceof List)
 								{
 									@SuppressWarnings({ "unchecked" })
@@ -6327,7 +6327,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 									for(final Object o2 : l)
 									{
 										if(o2 instanceof Tickable)
-											CMLib.threads().deleteAllTicks((Tickable)o2);
+											CMLib.threads().unTickAll((Tickable)o2);
 									}
 								}
 								val=o;
@@ -7633,7 +7633,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						{
 							final Item I=(Item)P;
 							if((I.numBehaviors()>0)||(I.numScripts()>0))
-								CMLib.threads().deleteAllTicks(I);
+								CMLib.threads().unTickAll(I);
 							coll.add(I);
 						}
 						else
@@ -7647,7 +7647,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								{
 									final Item I2=(Item)I.copyOf();
 									if((I2.numBehaviors()>0)||(I2.numScripts()>0))
-										CMLib.threads().deleteAllTicks(I2);
+										CMLib.threads().unTickAll(I2);
 									coll.add(I2);
 								}
 							}

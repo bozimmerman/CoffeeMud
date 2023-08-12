@@ -2411,7 +2411,7 @@ public class MUD extends Thread implements MudHost
 				if(smtpServerThread!=null)
 				{
 					smtpServerThread.shutdown();
-					serviceEngine.deleteAllTicks(smtpServerThread);
+					serviceEngine.unTickAll(smtpServerThread);
 					smtpServerThread = null;
 					return "Done";
 				}

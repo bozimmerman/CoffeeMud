@@ -942,7 +942,7 @@ public class StdRace implements Race
 				||((ultFollow != null) && (!ultFollow.isMonster()))))
 			{
 				final MOB M=(MOB)mob.copyOf();
-				CMLib.threads().deleteAllTicks(M);
+				CMLib.threads().unTickAll(M);
 				M.setStartRoom(null);
 				bodyI.setSavedMOB(M, false);
 			}

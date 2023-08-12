@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
+import com.planet_ink.coffee_mud.core.interfaces.TickableGroup.LocalType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
@@ -1324,7 +1325,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				return err;
 		}
 		// equivalent to clear debriandrestart
-		CMLib.threads().clearDebri(newRoom,0);
+		CMLib.threads().clearDebri(newRoom,LocalType.MOBS_OR_ITEMS);
 		if(andSave)
 			CMLib.database().DBUpdateItems(newRoom);
 		newRoom.startItemRejuv();
@@ -4183,7 +4184,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						final String err=addMOBsFromXML("<MOBS>"+mobsXML+"</MOBS>",V,null);
 						if((err.length()==0)&&(V.size()>0))
 						{
-							CMLib.threads().deleteAllTicks(V.get(0));
+							CMLib.threads().unTickAll(V.get(0));
 							((DeadBody)E).setSavedMOB(V.get(0), false);
 						}
 

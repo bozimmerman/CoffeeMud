@@ -324,7 +324,7 @@ public class Deviations extends StdCommand
 			&&(!alreadyDone(I,I,check,locMap)))
 			{
 				final Item checkI=(Item)I.copyOf();
-				CMLib.threads().deleteAllTicks(checkI);
+				CMLib.threads().unTickAll(checkI);
 				delAllEffects(checkI);
 				checkI.setContainer(null);
 				checkI.setOwner(null);
@@ -355,7 +355,7 @@ public class Deviations extends StdCommand
 					&&(!alreadyDone(I,I,check,locMap)))
 					{
 						final Item checkI=(Item)I.copyOf();
-						CMLib.threads().deleteAllTicks(checkI);
+						CMLib.threads().unTickAll(checkI);
 						delAllEffects(checkI);
 						checkI.setContainer(null);
 						checkI.setOwner(null);
@@ -380,7 +380,7 @@ public class Deviations extends StdCommand
 							&&(!alreadyDone(I,I,check,locMap)))
 							{
 								final Item checkI=(Item)I.copyOf();
-								CMLib.threads().deleteAllTicks(checkI);
+								CMLib.threads().unTickAll(checkI);
 								delAllEffects(checkI);
 								checkI.setContainer(null);
 								checkI.setOwner(null);

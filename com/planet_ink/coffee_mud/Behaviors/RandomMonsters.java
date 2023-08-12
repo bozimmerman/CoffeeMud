@@ -239,7 +239,7 @@ public class RandomMonsters extends ActiveTicker
 				return null;
 			}
 			for(final MOB M : monsters)
-				CMLib.threads().deleteAllTicks(M);
+				CMLib.threads().unTickAll(M);
 			Resources.submitResource("RANDOMMONSTERS-XML/"+filename.length()+"/"+filename.hashCode(),monsters);
 		}
 		else
@@ -277,7 +277,7 @@ public class RandomMonsters extends ActiveTicker
 					return null;
 				}
 				for(final MOB M : monsters)
-					CMLib.threads().deleteAllTicks(M);
+					CMLib.threads().unTickAll(M);
 				Resources.submitResource("RANDOMMONSTERS-"+filename,monsters);
 			}
 		}

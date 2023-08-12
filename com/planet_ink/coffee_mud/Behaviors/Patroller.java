@@ -308,7 +308,7 @@ public class Patroller extends ActiveTicker
 						thisRoom = CMLib.map().getRoom(thisRoom);
 						if((ticking instanceof Physical)&&(((Physical)ticking).amDestroyed()))
 						{
-							CMLib.threads().deleteAllTicks(ticking);
+							CMLib.threads().unTickAll(ticking);
 							((Physical)ticking).destroy();
 							Log.errOut("Patroller","'"+nxt+"' for "+ticking.name()+" at "+CMLib.map().getDescriptiveExtendedRoomID(thisRoom)+" is destroyed!");
 						}

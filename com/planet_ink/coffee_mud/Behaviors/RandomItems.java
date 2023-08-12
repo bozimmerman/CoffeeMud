@@ -270,7 +270,7 @@ public class RandomItems extends ActiveTicker
 			}
 			Resources.submitResource("RANDOMITEMS-XML/"+filename.length()+"/"+filename.hashCode(),items);
 			for(final Item I : items)
-				CMLib.threads().deleteAllTicks(I);
+				CMLib.threads().unTickAll(I);
 		}
 		else
 		{
@@ -309,7 +309,7 @@ public class RandomItems extends ActiveTicker
 
 				Resources.submitResource("RANDOMITEMS-"+filename,items);
 				for(final Item I : items)
-					CMLib.threads().deleteAllTicks(I);
+					CMLib.threads().unTickAll(I);
 			}
 		}
 		return items;
