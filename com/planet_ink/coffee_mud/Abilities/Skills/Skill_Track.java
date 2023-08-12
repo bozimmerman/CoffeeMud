@@ -361,6 +361,47 @@ public class Skill_Track extends StdSkill
 		}
 	}
 
+	private static class FilterMOBName implements RFilter
+	{
+		final String mobName;
+		final MOB viewerM;
+		public FilterMOBName(final MOB viewerM, final String mobName)
+		{
+			this.viewerM=viewerM;
+			this.mobName=mobName;
+		}
+		@Override
+		public boolean isFilteredOut(final Room hostR, Room R, final Exit E, final int dir)
+		{
+			R=CMLib.map().getRoom(R);
+			if(R!=null)
+			{
+				final MOB M=R.fetchInhabitant(mobName);
+				if((M!=null)
+				&&((viewerM==null)||(CMLib.flags().canAccess(viewerM, R)))
+				&&((viewerM==null)||(CMLib.flags().isSeeable(M))))
+					return false;
+			}
+			return true;
+		}
+	}
+
+	private static class FilterMOB implements RFilter
+	{
+		final MOB M;
+		public FilterMOB(final MOB M)
+		{
+			this.M = M;
+		}
+		@Override
+		public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+		{
+			if((R==M.location())||(hostR==M.location()))
+				return false;
+			return true;
+		}
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -532,9 +573,9 @@ public class Skill_Track extends StdSkill
 				if((M1!=null)
 				&&(CMLib.flags().canAccess(mob, M1.location()))
 				&&(CMLib.flags().isSeeable(M1)))
-					targetFilter = new TrackingLibrary.FilterMOB(M1);
+					targetFilter = new FilterMOB(M1);
 				else
-					targetFilter = new TrackingLibrary.FilterMOBName(mob,mobName);
+					targetFilter = new FilterMOBName(mob,mobName);
 				if(CMLib.tracking().getRadiantRoomsToTarget(startRoom, trashRooms, flags, targetFilter, radius))
 					targetRoomsV.add(trashRooms.get(trashRooms.size()-1));
 			}

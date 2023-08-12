@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.RFilter;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -181,6 +182,31 @@ public class Ranger_Track extends StdAbility
 			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
+	private class FilterMOBName implements RFilter
+	{
+		final String mobName;
+		final MOB viewerM;
+		public FilterMOBName(final MOB viewerM, final String mobName)
+		{
+			this.viewerM=viewerM;
+			this.mobName=mobName;
+		}
+		@Override
+		public boolean isFilteredOut(final Room hostR, Room R, final Exit E, final int dir)
+		{
+			R=CMLib.map().getRoom(R);
+			if(R!=null)
+			{
+				final MOB M=R.fetchInhabitant(mobName);
+				if((M!=null)
+				&&((viewerM==null)||(CMLib.flags().canAccess(viewerM, R)))
+				&&((viewerM==null)||(CMLib.flags().isSeeable(M))))
+					return false;
+			}
+			return true;
+		}
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -232,7 +258,7 @@ public class Ranger_Track extends StdAbility
 		final ArrayList<Room> rooms=new ArrayList<Room>();
 		final int range=50 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
 		final List<Room> trashRooms = new ArrayList<Room>();
-		final TrackingLibrary.RFilter targetFilter = new TrackingLibrary.FilterMOBName(mob,mobName);
+		final TrackingLibrary.RFilter targetFilter = new FilterMOBName(mob,mobName);
 		if(CMLib.tracking().getRadiantRoomsToTarget(mob.location(), trashRooms, flags, targetFilter, range))
 			rooms.add(trashRooms.get(trashRooms.size()-1));
 
