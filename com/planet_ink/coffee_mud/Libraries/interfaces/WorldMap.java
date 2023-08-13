@@ -90,29 +90,6 @@ public interface WorldMap extends CMLibrary
 	public Room getTargetRoom(Room from, Exit to);
 
 	/* ***********************************************************************/
-	/* *								SEARCH TOOLS 							*/
-	/* ***********************************************************************/
-	public List<Room> findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, long maxMillis);
-	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, long maxMillis);
-	public List<Room> findAreaRoomsLiberally(MOB mob, Area A, String cmd, String srchWhatAERIPMVK, int timePct);
-	public Room findAreaRoomLiberally(MOB mob, Area A, String cmd, String srchWhatAERIPMVK, int timePct);
-	public List<Room> findRooms(Enumeration<Room> rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
-	public Room findFirstRoom(Enumeration<Room> rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
-	public MOB findFirstInhabitant(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
-	public List<MOB> findInhabitantsFavorExact(Enumeration<Room> rooms, MOB mob, String srchStr, boolean returnFirst, int timePct);
-	public List<MOB> findInhabitants(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
-	public List<Item> findRoomItems(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, int timePct);
-	public Item findFirstRoomItem(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, int timePct);
-	public List<Environmental> findShopStock(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
-	public Environmental findFirstShopStock(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
-	public List<Environmental> findShopStockers(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
-	public Environmental findFirstShopStocker(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
-	public List<Item> findInventory(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
-	public Item findFirstInventory(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
-	public boolean isHere(CMObject E2, Area here);
-	public boolean isHere(CMObject E2, Room here);
-
-	/* ***********************************************************************/
 	/* *							 ROOM-AREA-UTILITIES						*/
 	/* ***********************************************************************/
 	public void resetArea(Area area);
@@ -140,6 +117,7 @@ public interface WorldMap extends CMLibrary
 	public Boardable getShip(String calledThis);
 	public Boardable findShip(final String s, final boolean exactOnly);
 	public Enumeration<Boardable> ships();
+	public Enumeration<Room> shipsRoomEnumerator(final Area inA);
 	public int numShips();
 
 	public Room getSafeRoomToMovePropertyTo(Room room, PrivateProperty I);

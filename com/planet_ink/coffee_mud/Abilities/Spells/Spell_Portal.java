@@ -146,7 +146,7 @@ public class Spell_Portal extends Spell
 		{
 			try
 			{
-				final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
+				final List<Room> rooms=CMLib.hunt().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
 				if(rooms.size()>0)
 				{
 					tries=0;

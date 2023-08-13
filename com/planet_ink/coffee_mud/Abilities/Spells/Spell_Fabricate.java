@@ -176,9 +176,9 @@ public class Spell_Fabricate extends Spell
 		if(intoI == null)
 			intoI = mob.findItem(intoWhat);
 		if(intoI == null)
-			intoI = CMLib.map().findFirstRoomItem(mob.location().getArea().getCompleteMap(), mob, intoWhat, true, 5);
+			intoI = CMLib.hunt().findFirstRoomItem(mob.location().getArea().getCompleteMap(), mob, intoWhat, true, 5);
 		if(intoI == null)
-			intoI = CMLib.map().findFirstRoomItem(CMLib.map().rooms(), mob, intoWhat, true, 5);
+			intoI = CMLib.hunt().findFirstRoomItem(CMLib.map().rooms(), mob, intoWhat, true, 5);
 
 		if(intoI == null)
 		{

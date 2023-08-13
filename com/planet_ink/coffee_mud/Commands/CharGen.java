@@ -409,9 +409,9 @@ public class CharGen extends StdCommand
 					}
 				}
 				if((M==null)&&(room.getArea()!=null))
-					M=CMLib.map().findFirstInhabitant(room.getArea().getMetroMap(), mob, mobName, 10);
+					M=CMLib.hunt().findFirstInhabitant(room.getArea().getMetroMap(), mob, mobName, 10);
 				if(M==null)
-					M=CMLib.map().findFirstInhabitant(CMLib.map().rooms(), mob, mobName, 10);
+					M=CMLib.hunt().findFirstInhabitant(CMLib.map().rooms(), mob, mobName, 10);
 				if(M==null)
 				{
 					mob.tell(L("Unknown mob '@x1'",mobName));

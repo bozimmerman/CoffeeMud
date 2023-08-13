@@ -79,7 +79,7 @@ public class Link extends At
 			thisRoom=CMLib.map().roomLocation(((Boardable)mob.location().getArea()).getBoardableItem());
 		if(thisRoom==null)
 		{
-			thisRoom=CMLib.map().findWorldRoomLiberally(mob,roomID,"R",100,120000);
+			thisRoom=CMLib.hunt().findWorldRoomLiberally(mob,roomID,"R",100,120000);
 			if(thisRoom==null)
 			{
 				mob.tell(L("Room \"@x1\" is unknown.  Try again.",roomID));

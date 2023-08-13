@@ -230,7 +230,7 @@ public class Skill_TrackCriminal extends StdAbility
 		final MultiEnumeration<Room> allRooms = new MultiEnumeration<Room>();
 		for(final Area A : areas)
 			allRooms.addEnumeration(A.getFilledProperMap());
-		final List<MOB> mobs = CMLib.map().findInhabitants(allRooms, mob, mobName, 20);
+		final List<MOB> mobs = CMLib.hunt().findInhabitants(allRooms, mob, mobName, 20);
 		final LegalLibrary law = CMLib.law();
 		final Map<LegalBehavior,Area> map = new HashMap<LegalBehavior,Area>();
 		for(final Area A : areas)

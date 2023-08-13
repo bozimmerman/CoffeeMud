@@ -602,7 +602,7 @@ public class StdThinInstance extends StdThinArea implements SubArea
 				}
 			}
 			else
-			if((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(CMLib.map().isHere(msg.source(), this)))
+			if((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(CMLib.hunt().isHere(msg.source(), this)))
 			{
 				final MOB mob = msg.source();
 				CMLib.tracking().forceRecall(mob, true);

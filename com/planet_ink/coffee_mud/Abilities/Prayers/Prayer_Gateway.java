@@ -117,7 +117,7 @@ public class Prayer_Gateway extends Prayer
 		newRoom=null;
 		try
 		{
-			final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName,true,10);
+			final List<Room> rooms=CMLib.hunt().findRooms(CMLib.map().rooms(), mob, areaName,true,10);
 			if(rooms.size()>0)
 				newRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
 		}

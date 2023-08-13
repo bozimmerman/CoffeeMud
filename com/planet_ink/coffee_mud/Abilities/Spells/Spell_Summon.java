@@ -164,7 +164,7 @@ public class Spell_Summon extends Spell
 			}
 			if(oldRoom==null)
 			{
-				target=CMLib.map().findFirstInhabitant(CMLib.map().rooms(), mob,areaName,10);
+				target=CMLib.hunt().findFirstInhabitant(CMLib.map().rooms(), mob,areaName,10);
 				if(target != null)
 					oldRoom=target.location();
 			}

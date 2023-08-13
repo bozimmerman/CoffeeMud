@@ -394,10 +394,10 @@ public class Spell_Wish extends Spell
 			try
 			{
 				final List<Environmental> items=new LinkedList<Environmental>();
-				items.addAll(CMLib.map().findRoomItems(CMLib.map().rooms(), mob,objectWish,true,10));
-				items.addAll(CMLib.map().findInhabitants(CMLib.map().rooms(), mob,objectWish,10));
-				items.addAll(CMLib.map().findInventory(CMLib.map().rooms(), mob,objectWish,10));
-				items.addAll(CMLib.map().findShopStock(CMLib.map().rooms(), mob,objectWish,10));
+				items.addAll(CMLib.hunt().findRoomItems(CMLib.map().rooms(), mob,objectWish,true,10));
+				items.addAll(CMLib.hunt().findInhabitants(CMLib.map().rooms(), mob,objectWish,10));
+				items.addAll(CMLib.hunt().findInventory(CMLib.map().rooms(), mob,objectWish,10));
+				items.addAll(CMLib.hunt().findShopStock(CMLib.map().rooms(), mob,objectWish,10));
 				for(final Environmental O : items)
 				{
 					if(O instanceof Physical)
@@ -795,7 +795,7 @@ public class Spell_Wish extends Spell
 				{
 					try
 					{
-						final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, locationWish.trim(), true, 10);
+						final List<Room> rooms=CMLib.hunt().findRooms(CMLib.map().rooms(), mob, locationWish.trim(), true, 10);
 						if(rooms.size()>0)
 							newRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
 					}

@@ -88,7 +88,7 @@ public class Spell_Cogniportive extends Spell
 		List<Item> mobInventory=new Vector<Item>(1);
 		try
 		{
-			mobInventory=CMLib.map().findInventory(CMLib.map().rooms(),null, srchStr, 10);
+			mobInventory=CMLib.hunt().findInventory(CMLib.map().rooms(),null, srchStr, 10);
 			for(final Item I : mobInventory)
 			{
 				final Environmental owner=I.owner();
@@ -106,7 +106,7 @@ public class Spell_Cogniportive extends Spell
 		}
 		try
 		{
-			final List<Environmental> all=CMLib.map().findShopStockers(CMLib.map().rooms(), mob, srchStr, 10);
+			final List<Environmental> all=CMLib.hunt().findShopStockers(CMLib.map().rooms(), mob, srchStr, 10);
 			for(final Environmental O : all)
 			{
 				if(O instanceof ShopKeeper)
@@ -146,7 +146,7 @@ public class Spell_Cogniportive extends Spell
 		try
 		{
 			// check room stuff last
-			final List<Item> targets=CMLib.map().findRoomItems(CMLib.map().rooms(), mob, me.Name(), false,10);
+			final List<Item> targets=CMLib.hunt().findRoomItems(CMLib.map().rooms(), mob, me.Name(), false,10);
 			for(final Item I : targets)
 			{
 				final Room R=CMLib.map().roomLocation(I);

@@ -88,13 +88,13 @@ public class Spell_KnowOrigin extends Spell
 			{
 				// check mobs worn items first!
 				final String srchStr="$"+me.Name()+"$";
-				Environmental E=CMLib.map().findFirstShopStocker(CMLib.map().rooms(), mob, srchStr, 10);
+				Environmental E=CMLib.hunt().findFirstShopStocker(CMLib.map().rooms(), mob, srchStr, 10);
 				if(E!=null)
 					return CMLib.map().getStartRoom(E);
-				E=CMLib.map().findFirstInventory(CMLib.map().rooms(), mob, srchStr, 10);
+				E=CMLib.hunt().findFirstInventory(CMLib.map().rooms(), mob, srchStr, 10);
 				if(E!=null)
 					return CMLib.map().getStartRoom(E);
-				return CMLib.map().findWorldRoomLiberally(mob,srchStr, "I",10,600000);
+				return CMLib.hunt().findWorldRoomLiberally(mob,srchStr, "I",10,600000);
 			}
 			catch(final NoSuchElementException nse)
 			{

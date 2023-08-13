@@ -87,7 +87,7 @@ public class Chant_DistantIngrowth extends Chant
 		Room newRoom=null;
 		try
 		{
-			final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
+			final List<Room> rooms=CMLib.hunt().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
 			for(final Room R : rooms)
 			{
 				anyRoom=R;

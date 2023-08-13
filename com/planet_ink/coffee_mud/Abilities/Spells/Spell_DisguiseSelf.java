@@ -167,11 +167,11 @@ public class Spell_DisguiseSelf extends Spell
 
 		final String whomName=CMParms.combine(commands);
 
-		MOB targetM = CMLib.map().findFirstInhabitant(new XVector<Room>(mob.location()).elements(), mob, whomName, 5);
+		MOB targetM = CMLib.hunt().findFirstInhabitant(new XVector<Room>(mob.location()).elements(), mob, whomName, 5);
 		if(targetM == null)
-			targetM=CMLib.map().findFirstInhabitant(mob.location().getArea().getCompleteMap(), mob, whomName, 5);
+			targetM=CMLib.hunt().findFirstInhabitant(mob.location().getArea().getCompleteMap(), mob, whomName, 5);
 		if(targetM == null)
-			targetM=CMLib.map().findFirstInhabitant(CMLib.map().rooms(), mob, whomName, 5);
+			targetM=CMLib.hunt().findFirstInhabitant(CMLib.map().rooms(), mob, whomName, 5);
 		if(targetM == null)
 		{
 			mob.tell(L("You can't seem to picture '@x1' in your mind.  Perhaps if you saw them again?",whomName));

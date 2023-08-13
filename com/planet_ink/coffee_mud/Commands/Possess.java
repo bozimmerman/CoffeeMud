@@ -118,7 +118,7 @@ public class Possess extends StdCommand
 				{
 					try
 					{
-						final List<MOB> inhabs=CMLib.map().findInhabitantsFavorExact(targetRooms, mob,MOBname,false,100);
+						final List<MOB> inhabs=CMLib.hunt().findInhabitantsFavorExact(targetRooms, mob,MOBname,false,100);
 						for(final MOB mob2 : inhabs)
 						{
 							if((mob2.isMonster())&&(CMSecurity.isAllowed(mob,mob2.location(),CMSecurity.SecFlag.POSSESS)))
@@ -153,7 +153,7 @@ public class Possess extends StdCommand
 			{
 				try
 				{
-					final List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
+					final List<MOB> inhabs=CMLib.hunt().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
 					for(final MOB mob2 : inhabs)
 					{
 						if((mob2.isMonster())&&(CMSecurity.isAllowed(mob,mob2.location(),CMSecurity.SecFlag.POSSESS)))

@@ -86,7 +86,7 @@ public class Chant_GroveWalk extends Chant
 		final boolean hereok=mob.location().findItem(null,"DruidicMonument")!=null;
 		try
 		{
-			final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob,areaName,true,10);
+			final List<Room> rooms=CMLib.hunt().findRooms(CMLib.map().rooms(), mob,areaName,true,10);
 			for(final Room R : rooms)
 			{
 				for(int i=0;i<R.numItems();i++)

@@ -660,16 +660,16 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			final boolean isMob=(cataP instanceof MOB);
 			if(cataP instanceof MOB)
 			{
-				all.addAll(CMLib.map().findInhabitants(CMLib.map().rooms(),null, srchStr, 50));
-				all.addAll(CMLib.map().findShopStock(CMLib.map().rooms(),null, srchStr, 50));
+				all.addAll(CMLib.hunt().findInhabitants(CMLib.map().rooms(),null, srchStr, 50));
+				all.addAll(CMLib.hunt().findShopStock(CMLib.map().rooms(),null, srchStr, 50));
 			}
 			else
 			{
-				all.addAll(CMLib.map().findRoomItems(CMLib.map().rooms(),null, srchStr, true, 50));
-				all.addAll(CMLib.map().findInventory(CMLib.map().rooms(),null, srchStr, 50));
-				all.addAll(CMLib.map().findInventory(null,null, srchStr, 50));
-				all.addAll(CMLib.map().findShopStockers(CMLib.map().rooms(),null, srchStr, 50));
-				all.addAll(CMLib.map().findShopStockers(null,null, srchStr, 50));
+				all.addAll(CMLib.hunt().findRoomItems(CMLib.map().rooms(),null, srchStr, true, 50));
+				all.addAll(CMLib.hunt().findInventory(CMLib.map().rooms(),null, srchStr, 50));
+				all.addAll(CMLib.hunt().findInventory(null,null, srchStr, 50));
+				all.addAll(CMLib.hunt().findShopStockers(CMLib.map().rooms(),null, srchStr, 50));
+				all.addAll(CMLib.hunt().findShopStockers(null,null, srchStr, 50));
 			}
 			final HashSet<ShopKeeper> doneShops=new HashSet<ShopKeeper>();
 			ShopKeeper SK=null;

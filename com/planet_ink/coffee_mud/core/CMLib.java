@@ -149,6 +149,7 @@ public class CMLib
 		ABLECOMP(AbilityComponents.class),
 		GALACTIC(GalacticMap.class),
 		CITY(CityMap.class),
+		WORLDHUNT(WorldHuntLibrary.class)
 		;
 
 		public final Class<?> ancestor;
@@ -679,6 +680,17 @@ public class CMLib
 	{
 		return (WorldMap)l().libraries[Library.MAP.ordinal()];
 	}
+
+	/**
+	 * Returns a reference to this threads areas and rooms searching library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.WorldHuntLibrary
+	 * @return a reference to this threads areas and rooms searching library.
+	 */
+	public static final WorldHuntLibrary hunt()
+	{
+		return (WorldHuntLibrary)l().libraries[Library.WORLDHUNT.ordinal()];
+	}
+
 
 	/**
 	 * Returns a reference to this threads quest collection/management library.

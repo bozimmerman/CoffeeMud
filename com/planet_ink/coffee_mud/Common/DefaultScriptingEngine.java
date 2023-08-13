@@ -1137,12 +1137,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 		List<Room> rooms=new ArrayList<Room>(1);
 		if((imHere!=null)&&(imHere.getArea()!=null))
-			rooms=CMLib.map().findAreaRoomsLiberally(null, imHere.getArea(), thisName, "RIEPM",100);
+			rooms=CMLib.hunt().findAreaRoomsLiberally(null, imHere.getArea(), thisName, "RIEPM",100);
 		if(rooms.size()==0)
 		{
 			if(debugBadScripts)
 				Log.debugOut("ScriptingEngine","World room search called for: "+thisName);
-			rooms=CMLib.map().findWorldRoomsLiberally(null,thisName, "RIEPM",100,2000);
+			rooms=CMLib.hunt().findWorldRoomsLiberally(null,thisName, "RIEPM",100,2000);
 		}
 		if(rooms.size()>0) // this could be people, or items, so no caching.
 			return rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
@@ -1644,9 +1644,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final List<Environmental> all=Collections.synchronizedList(new ArrayList<Environmental>());
 					if(mob)
 					{
-						all.addAll(CMLib.map().findInhabitants(A.getProperMap(),null,thisName,100));
+						all.addAll(CMLib.hunt().findInhabitants(A.getProperMap(),null,thisName,100));
 						if(all.size()==0)
-							all.addAll(CMLib.map().findShopStock(A.getProperMap(), null, thisName,100));
+							all.addAll(CMLib.hunt().findShopStock(A.getProperMap(), null, thisName,100));
 						for(int a=all.size()-1;a>=0;a--)
 						{
 							if(!(all.get(a) instanceof MOB))
@@ -1656,9 +1656,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							areaThing=all.get(CMLib.dice().roll(1,all.size(),-1));
 						else
 						{
-							all.addAll(CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(),null,thisName,false,100));
+							all.addAll(CMLib.hunt().findInhabitantsFavorExact(CMLib.map().rooms(),null,thisName,false,100));
 							if(all.size()==0)
-								all.addAll(CMLib.map().findShopStock(CMLib.map().rooms(), null, thisName,100));
+								all.addAll(CMLib.hunt().findShopStock(CMLib.map().rooms(), null, thisName,100));
 							for(int a=all.size()-1;a>=0;a--)
 							{
 								if(!(all.get(a) instanceof MOB))
@@ -1670,20 +1670,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					if(all.size()==0)
 					{
-						all.addAll(CMLib.map().findRoomItems(A.getProperMap(), null,thisName,true,100));
+						all.addAll(CMLib.hunt().findRoomItems(A.getProperMap(), null,thisName,true,100));
 						if(all.size()==0)
-							all.addAll(CMLib.map().findInventory(A.getProperMap(), null,thisName,100));
+							all.addAll(CMLib.hunt().findInventory(A.getProperMap(), null,thisName,100));
 						if(all.size()==0)
-							all.addAll(CMLib.map().findShopStock(A.getProperMap(), null,thisName,100));
+							all.addAll(CMLib.hunt().findShopStock(A.getProperMap(), null,thisName,100));
 						if(all.size()>0)
 							areaThing=all.get(CMLib.dice().roll(1,all.size(),-1));
 						else
 						{
-							all.addAll(CMLib.map().findRoomItems(CMLib.map().rooms(), null,thisName,true,100));
+							all.addAll(CMLib.hunt().findRoomItems(CMLib.map().rooms(), null,thisName,true,100));
 							if(all.size()==0)
-								all.addAll(CMLib.map().findInventory(CMLib.map().rooms(), null,thisName,100));
+								all.addAll(CMLib.hunt().findInventory(CMLib.map().rooms(), null,thisName,100));
 							if(all.size()==0)
-								all.addAll(CMLib.map().findShopStock(CMLib.map().rooms(), null,thisName,100));
+								all.addAll(CMLib.hunt().findShopStock(CMLib.map().rooms(), null,thisName,100));
 							if(all.size()>0)
 								thing=all.get(CMLib.dice().roll(1,all.size(),-1));
 						}

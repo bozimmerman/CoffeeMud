@@ -155,21 +155,21 @@ public class Copy extends StdCommand
 		{
 			try
 			{
-				E=CMLib.map().findFirstInhabitant(mob.location().getArea().getMetroMap(), mob, name, 50);
+				E=CMLib.hunt().findFirstInhabitant(mob.location().getArea().getMetroMap(), mob, name, 50);
 				if(E==null)
-					E=CMLib.map().findFirstInhabitant(CMLib.map().rooms(), mob, name, 50);
+					E=CMLib.hunt().findFirstInhabitant(CMLib.map().rooms(), mob, name, 50);
 				if(E==null)
-					E=CMLib.map().findFirstRoomItem(mob.location().getArea().getMetroMap(), mob, name, true, 50);
+					E=CMLib.hunt().findFirstRoomItem(mob.location().getArea().getMetroMap(), mob, name, true, 50);
 				if(E==null)
-					E=CMLib.map().findFirstRoomItem(CMLib.map().rooms(), mob, name, true, 50);
+					E=CMLib.hunt().findFirstRoomItem(CMLib.map().rooms(), mob, name, true, 50);
 				if(E==null)
-					E=CMLib.map().findFirstInventory(null, mob, name, 50);
+					E=CMLib.hunt().findFirstInventory(null, mob, name, 50);
 				if(E==null)
-					E=CMLib.map().findFirstShopStock(null, mob, name, 50);
+					E=CMLib.hunt().findFirstShopStock(null, mob, name, 50);
 				if(E==null)
-					E=CMLib.map().findFirstInventory(CMLib.map().rooms(), mob, name, 50);
+					E=CMLib.hunt().findFirstInventory(CMLib.map().rooms(), mob, name, 50);
 				if(E==null)
-					E=CMLib.map().findFirstShopStock(CMLib.map().rooms(), mob, name, 50);
+					E=CMLib.hunt().findFirstShopStock(CMLib.map().rooms(), mob, name, 50);
 			}
 			catch (final NoSuchElementException e)
 			{

@@ -88,7 +88,7 @@ public class At extends StdCommand
 			{
 				Room room=CMLib.map().getRoom(cmd.toString());
 				if(room == null)
-					room=CMLib.map().findWorldRoomLiberally(mob,cmd,"APMIR",100,120000);
+					room=CMLib.hunt().findWorldRoomLiberally(mob,cmd,"APMIR",100,120000);
 				if(room != null)
 					finalRooms.add(room);
 			}

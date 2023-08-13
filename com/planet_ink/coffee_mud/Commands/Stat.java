@@ -807,9 +807,9 @@ public class Stat  extends Skills
 		{
 			try
 			{
-				final List<MOB> inhabs=CMLib.map().findInhabitantsFavorExact(mob.location().getArea().getProperMap(), mob,MOBname,false,100);
+				final List<MOB> inhabs=CMLib.hunt().findInhabitantsFavorExact(mob.location().getArea().getProperMap(), mob,MOBname,false,100);
 				if(inhabs.size()==0)
-					inhabs.addAll(CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob,MOBname,false,100));
+					inhabs.addAll(CMLib.hunt().findInhabitantsFavorExact(CMLib.map().rooms(), mob,MOBname,false,100));
 				for(final MOB mob2 : inhabs)
 				{
 					final Room R=mob2.location();
@@ -838,9 +838,9 @@ public class Stat  extends Skills
 		{
 			try
 			{
-				final List<Item> items=CMLib.map().findRoomItems(mob.location().getArea().getProperMap(), mob,itemName,true,100);
+				final List<Item> items=CMLib.hunt().findRoomItems(mob.location().getArea().getProperMap(), mob,itemName,true,100);
 				if(items.size()==0)
-					items.addAll(CMLib.map().findRoomItems(CMLib.map().rooms(), mob,itemName,true,100));
+					items.addAll(CMLib.hunt().findRoomItems(CMLib.map().rooms(), mob,itemName,true,100));
 				for(final Item item2 : items)
 				{
 					final Room R=CMLib.map().roomLocation(item2);
@@ -859,9 +859,9 @@ public class Stat  extends Skills
 		{
 			try
 			{
-				final List<Item> items=CMLib.map().findInventory(mob.location().getArea().getProperMap(), mob,itemName,100);
+				final List<Item> items=CMLib.hunt().findInventory(mob.location().getArea().getProperMap(), mob,itemName,100);
 				if(items.size()==0)
-					items.addAll(CMLib.map().findInventory(CMLib.map().rooms(), mob,itemName,100));
+					items.addAll(CMLib.hunt().findInventory(CMLib.map().rooms(), mob,itemName,100));
 				for(final Item item2 : items)
 				{
 					final Room R=CMLib.map().roomLocation(item2);
@@ -1570,13 +1570,13 @@ public class Stat  extends Skills
 					Environmental itarget = null;
 					try
 					{
-						final List<Room> rooms=CMLib.map().findRooms(mob.location().getArea().getProperMap(), mob,restWords,true,100);
+						final List<Room> rooms=CMLib.hunt().findRooms(mob.location().getArea().getProperMap(), mob,restWords,true,100);
 						if(rooms.size()==0)
-							rooms.addAll(CMLib.map().findRooms(mob.location().getArea().getProperMap(), mob,restWords,false,100));
+							rooms.addAll(CMLib.hunt().findRooms(mob.location().getArea().getProperMap(), mob,restWords,false,100));
 						if(rooms.size()==0)
-							rooms.addAll(CMLib.map().findRooms(CMLib.map().rooms(), mob,restWords,true,100));
+							rooms.addAll(CMLib.hunt().findRooms(CMLib.map().rooms(), mob,restWords,true,100));
 						if(rooms.size()==0)
-							rooms.addAll(CMLib.map().findRooms(CMLib.map().rooms(), mob,restWords,false,100));
+							rooms.addAll(CMLib.hunt().findRooms(CMLib.map().rooms(), mob,restWords,false,100));
 						for(final Room room : rooms)
 						{
 							final Room R=CMLib.map().roomLocation(room);
@@ -1659,13 +1659,13 @@ public class Stat  extends Skills
 							{
 								try
 								{
-									final List<Room> rooms=CMLib.map().findRooms(mob.location().getArea().getProperMap(), mob,mobName,true,100);
+									final List<Room> rooms=CMLib.hunt().findRooms(mob.location().getArea().getProperMap(), mob,mobName,true,100);
 									if(rooms.size()==0)
-										rooms.addAll(CMLib.map().findRooms(mob.location().getArea().getProperMap(), mob,mobName,false,100));
+										rooms.addAll(CMLib.hunt().findRooms(mob.location().getArea().getProperMap(), mob,mobName,false,100));
 									if(rooms.size()==0)
-										rooms.addAll(CMLib.map().findRooms(CMLib.map().rooms(), mob,mobName,true,100));
+										rooms.addAll(CMLib.hunt().findRooms(CMLib.map().rooms(), mob,mobName,true,100));
 									if(rooms.size()==0)
-										rooms.addAll(CMLib.map().findRooms(CMLib.map().rooms(), mob,mobName,false,100));
+										rooms.addAll(CMLib.hunt().findRooms(CMLib.map().rooms(), mob,mobName,false,100));
 									for(final Room room : rooms)
 									{
 										final Room R=CMLib.map().roomLocation(room);

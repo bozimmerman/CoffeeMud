@@ -469,7 +469,7 @@ public class Concierge extends StdBehavior
 		if(roomR==null)
 		{
 			roomsInRange=getRoomsInRange(centerRoom,roomsInRange,roomRadiusFlags);
-			roomR=CMLib.map().findFirstRoom(new IteratorEnumeration<Room>(roomsInRange.iterator()), mob, where, false, 5);
+			roomR=CMLib.hunt().findFirstRoom(new IteratorEnumeration<Room>(roomsInRange.iterator()), mob, where, false, 5);
 			if((roomR != null)
 			&&(!isAllowedPlace(roomR)))
 				roomR=null;

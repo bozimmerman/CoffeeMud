@@ -2379,7 +2379,7 @@ public class Quests extends StdLibrary implements QuestManager
 						if (R != null)
 							found = true;
 						if (!found)
-							found = CMLib.map().findWorldRoomLiberally(null, s, "R", 50, 30000) != null;
+							found = CMLib.hunt().findWorldRoomLiberally(null, s, "R", 50, 30000) != null;
 						if (!found)
 							throw new CMException("'" + (V.elementAt(v)) + "' is not a valid room name, id, or description.");
 					}

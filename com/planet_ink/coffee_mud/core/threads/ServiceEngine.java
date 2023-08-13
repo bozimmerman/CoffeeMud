@@ -899,7 +899,7 @@ public class ServiceEngine implements ThreadEngine
 		TickableGroup almostTock=null;
 		TickClient C=null;
 		Tickable E2=null;
-		final WorldMap map=CMLib.map();
+		final WorldHuntLibrary hunt = CMLib.hunt();
 		for(final Iterator<TickableGroup> e=tickGroups();e.hasNext();)
 		{
 			almostTock=e.next();
@@ -915,14 +915,14 @@ public class ServiceEngine implements ThreadEngine
 							almostTock.delTicker(C);
 					}
 					else
-					if(map.isHere(E2,here))
+					if(hunt.isHere(E2,here))
 					{
 						if(C.tickTicker(false))
 							almostTock.delTicker(C);
 					}
 					else
 					if((E2 instanceof Ability)
-					&&(map.isHere(((Ability)E2).affecting(),here)))
+					&&(hunt.isHere(((Ability)E2).affecting(),here)))
 					{
 						if(C.tickTicker(false))
 							almostTock.delTicker(C);
@@ -997,7 +997,7 @@ public class ServiceEngine implements ThreadEngine
 		if(ticker==null)
 			return false;
 		deleteTick(ticker, -1);
-		final WorldMap map=CMLib.map();
+		final WorldHuntLibrary hunt=CMLib.hunt();
 		boolean deleted = false;
 		if(ticker instanceof MOB)
 		{
@@ -1026,11 +1026,11 @@ public class ServiceEngine implements ThreadEngine
 					{
 						C=i.next();
 						E2=C.getClientObject();
-						if(map.isHere(E2,(Room)ticker))
+						if(hunt.isHere(E2,(Room)ticker))
 							deleted = almostTock.delTicker(C) || deleted;
 						else
 						if((E2 instanceof Ability)
-						&&(map.isHere(((Ability)E2).affecting(),(Room)ticker)))
+						&&(hunt.isHere(((Ability)E2).affecting(),(Room)ticker)))
 							deleted = almostTock.delTicker(C) || deleted;
 						else
 							continue;
@@ -1065,11 +1065,11 @@ public class ServiceEngine implements ThreadEngine
 					{
 						C=i.next();
 						E2=C.getClientObject();
-						if(map.isHere(E2,(Area)ticker))
+						if(hunt.isHere(E2,(Area)ticker))
 							deleted = almostTock.delTicker(C) || deleted;
 						else
 						if((E2 instanceof Ability)
-						&&(map.isHere(((Ability)E2).affecting(),(Area)ticker)))
+						&&(hunt.isHere(((Ability)E2).affecting(),(Area)ticker)))
 							deleted = almostTock.delTicker(C) || deleted;
 						else
 							continue;

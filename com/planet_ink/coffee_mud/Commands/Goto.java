@@ -94,9 +94,9 @@ public class Goto extends At
 				room=CMLib.map().findArea(cmd.toString()).getRandomProperRoom();
 			else
 			if(cmd.toString().toUpperCase().startsWith("AREA "))
-				room=CMLib.map().findAreaRoomLiberally(mob,curRoom.getArea(),CMParms.combine(commands,1),"RIPM",100);
+				room=CMLib.hunt().findAreaRoomLiberally(mob,curRoom.getArea(),CMParms.combine(commands,1),"RIPM",100);
 			else
-				room=CMLib.map().findWorldRoomLiberally(mob,cmd.toString(),"RIPMA",100,120000);
+				room=CMLib.hunt().findWorldRoomLiberally(mob,cmd.toString(),"RIPMA",100,120000);
 		}
 		if(room==null)
 		{

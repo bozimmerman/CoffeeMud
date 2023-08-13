@@ -122,14 +122,14 @@ public class Prayer_TrueResurrection extends Prayer_Resurrect
 			}
 			argCorpseName=CMParms.combine(commands,0).trim().toUpperCase();
 
-			List<Item> candidates=CMLib.map().findRoomItems(mob.location().getArea().getProperMap(), mob, argCorpseName, false, 5);
+			List<Item> candidates=CMLib.hunt().findRoomItems(mob.location().getArea().getProperMap(), mob, argCorpseName, false, 5);
 			Item corpseItem=this.findCorpseRoom(candidates);
 			Room newRoom = null;
 			if(corpseItem != null)
 				newRoom=CMLib.map().roomLocation(corpseItem);
 			if(newRoom == null)
 			{
-				candidates=CMLib.map().findRoomItems(CMLib.map().rooms(), mob, argCorpseName, false, 5);
+				candidates=CMLib.hunt().findRoomItems(CMLib.map().rooms(), mob, argCorpseName, false, 5);
 				corpseItem=this.findCorpseRoom(candidates);
 				if(corpseItem != null)
 					newRoom=CMLib.map().roomLocation(corpseItem);

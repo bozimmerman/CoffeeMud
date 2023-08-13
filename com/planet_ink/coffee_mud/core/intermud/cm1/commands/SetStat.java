@@ -378,7 +378,7 @@ public class SetStat extends GetStat
 						{
 							MOB M=CMLib.players().getPlayer(restValue);
 							if(M==null)
-								M=CMLib.map().findFirstInhabitant(((Room)mod).getArea().getMetroMap(), null, restValue, 10);
+								M=CMLib.hunt().findFirstInhabitant(((Room)mod).getArea().getMetroMap(), null, restValue, 10);
 							if(M==null)
 								M=CMClass.getMOB(restValue);
 							if(M!=null)
