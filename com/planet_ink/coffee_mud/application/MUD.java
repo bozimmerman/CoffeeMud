@@ -383,10 +383,10 @@ public class MUD extends Thread implements MudHost
 		final String lang = CMProps.instance().getStr("LANGUAGE").toUpperCase().trim();
 		if(lang.length()==0)
 			return "English";
-		for (final String[] element : LanguageLibrary.ISO_LANG_CODES)
+		for (final Pair<String,String> element : CMProps.getListFileStringPairsList(CMProps.ListFile.ISO_LANG_CODES))
 		{
-			if(lang.equals(element[0]))
-				return element[1];
+			if(lang.equals(element.first))
+				return element.second;
 		}
 		return "English";
 	}

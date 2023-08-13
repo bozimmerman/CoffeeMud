@@ -545,6 +545,7 @@ public class CMProps extends Properties
 		ARMOR_CONDITION_METAL,
 		ARMOR_CONDITION_OTHER,
 		GENDERS,
+		ISO_LANG_CODES,
 		WEATHER_CLEAR, // try to always and forever keep these at the end...
 		WEATHER_CLOUDY, // try to always and forever keep these at the end...
 		WEATHER_WINDY, // try to always and forever keep these at the end...
@@ -2216,6 +2217,36 @@ public class CMProps extends Properties
 			p.sysLstFileSet[var.ordinal()]=null;
 		}
 		return ((String[])objs[var.ordinal()]);
+	}
+
+	/**
+	 * Returns the entire string list from the lists.ini file of the
+	 * given ListFile entry, for the callers thread group.  These
+	 * are in pairs, comma separated, and semicolon groups.
+	 * @param var the ListFile entry to return the string list from
+	 * @return the string pair list from the lists.ini file
+	 */
+	@SuppressWarnings("unchecked")
+	public static final Pair<String,String>[] getListFileStringPairsList(final ListFile var)
+	{
+		if(var==null)
+			return new Pair[0];
+		final CMProps p=p();
+		final Object[] objs=p.sysLstFileLists;
+		if(objs[var.ordinal()]==null)
+		{
+			final List<List<String>> pairStrs = CMParms.parseDoubleDelimited(getRawListFileEntry(var.getKey()), ';', ',');
+			final List<Pair<String,String>> finalPairs = new ArrayList<Pair<String,String>>();
+			for(int i=0;i<pairStrs.size();i++)
+			{
+				List<String> pair = pairStrs.get(i);
+				if(pair.size()==2)
+					finalPairs.add(new Pair<String,String>(pair.get(0).trim(), pair.get(1).trim()));
+			}
+			objs[var.ordinal()]=finalPairs.toArray(new Pair[pairStrs.size()]);
+			p.sysLstFileSet[var.ordinal()]=null;
+		}
+		return ((Pair[])objs[var.ordinal()]);
 	}
 
 	/**
