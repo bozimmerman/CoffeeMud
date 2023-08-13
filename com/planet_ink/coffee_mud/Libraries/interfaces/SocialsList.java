@@ -72,7 +72,7 @@ public interface SocialsList extends CMLibrary
 	 *
 	 * @param mob the mob editor
 	 * @param socials the social id or base name
-	 * @param name TODO
+	 * @param name the social name
 	 * @param rest any extra terms used from command line
 	 * @return true if something was done
 	 * @throws IOException any i/o errors that occured, usually disconnect

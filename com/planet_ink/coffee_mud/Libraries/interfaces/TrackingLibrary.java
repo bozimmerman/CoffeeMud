@@ -1072,7 +1072,7 @@ public interface TrackingLibrary extends CMLibrary
 
 	/**
 	 * A Tracking Flag is a form of RFiler that is an enum that
-	 * includes various pre-confiered rfilters used 
+	 * includes various pre-configured rfilters used 
 	 * throughout the engine.
 	 * 
 	 * @author Bo Zimmerman

@@ -94,7 +94,7 @@ public interface HelpLibrary extends CMLibrary
 	 * will find any other help keys that might be relevant to the search, returning
 	 * the list of also-matching results.
 	 * @param mob the mob who wants more options
-	 * @param rHelpFile TODO
+	 * @param rHelpFile the help files to base see also on
 	 * @param helpSearch the original search words
 	 * @param helpKey the officially found help key
 	 * @param helpText the officially processed and found help text

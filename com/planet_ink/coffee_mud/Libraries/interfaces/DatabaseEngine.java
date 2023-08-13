@@ -375,7 +375,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param parentA the parent area to limit yourself to
 	 * @param metro true to also search children
 	 * @param propIDs the list of Ability IDs.
-	 * @param propArgs TODO
+	 * @param propArgs the list of ability arguments to search for
 	 * @return the list of room ids
 	 */
 	public Set<String> DBReadAffectedRoomIDs(final Area parentA, final boolean metro, final String[] propIDs, String[] propArgs);
