@@ -570,7 +570,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 					Room R3=R.getRoomInDir(dir);
 					if(R3 == null)
 					{
-						R3=CMLib.tracking().getCalculatedAdjacentRoom(rooms, R3, dir);
+						R3=CMLib.tracking().getCalculatedAdjacentGridRoom(rooms, R3, dir);
 						if(R3!=null)
 						{
 							R.rawDoors()[dir]=R3;
@@ -883,7 +883,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 						Room R3=newRoom.getRoomInDir(d);
 						if(R3 == null)
 						{
-							R3=CMLib.tracking().getCalculatedAdjacentRoom(rooms, R3, d);
+							R3=CMLib.tracking().getCalculatedAdjacentGridRoom(rooms, R3, d);
 							if(R3!=null)
 							{
 								newRoom.rawDoors()[d]=R3;

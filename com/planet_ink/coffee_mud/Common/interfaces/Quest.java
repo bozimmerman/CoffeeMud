@@ -332,10 +332,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	/**
 	 * Sets the flag denoting whether this quest spawns new ones
 	 * from its several steps and if so, by what method.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#SPAWN_ANY
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#SPAWN_FIRST
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#SPAWN_NO
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#SPAWN_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest.Spawn
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getSpawn()
 	 * @param spawnFlag the quest spawn flag info
 	 */
@@ -344,10 +341,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	/**
 	 * Returns the flag denoting whether this quest spawns new ones
 	 * from its several steps and if so, by what method.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#SPAWN_ANY
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#SPAWN_FIRST
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#SPAWN_NO
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#SPAWN_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest.Spawn
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setSpawn(int)
 	 * @return the quest spawn flag info
 	 */

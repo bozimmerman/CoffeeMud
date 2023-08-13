@@ -215,7 +215,7 @@ public class Skill_CollectBounty extends StdSkill
 				mob.location().send(mob,msg);
 				final MOB officer=findEligibleOfficer(mob.location().getArea(),legalA);
 				if((officer!=null)&&(!mob.location().isInhabitant(officer)))
-					CMLib.tracking().wanderFromTo(officer,mob.location(),true);
+					CMLib.tracking().wanderFromTo(officer,mob.location(),false);
 				if((officer==null)||(!mob.location().isInhabitant(officer)))
 				{
 					CMLib.commands().postSay(judge,mob,L("I'm sorry, there are no free officers to take care of this one right now."),false,false);

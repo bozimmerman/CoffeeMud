@@ -147,7 +147,7 @@ public class TrailTo extends StdCommand
 				&&((sess==null)||(!sess.isStopped()))
 				&&(A.properSize() > minSize))
 				{
-					String trail = CMLib.tracking().getTrailToDescription(R1,set,A.name(),trailFlags,radius,ignoreRooms,5);
+					String trail = CMLib.tracking().getTrailToDescription(R1,set,A.name(),trailFlags,radius,ignoreRooms,300);
 					if(fallback && (trail.startsWith("Unable to determine")||trail.startsWith("You can't")))
 					{
 						final TrackingLibrary.TrackingFlags workFlags = flags.copyOf();
@@ -158,7 +158,7 @@ public class TrailTo extends StdCommand
 							final ArrayList<Room> set2=new ArrayList<Room>(set.size());
 							workFlags.minus(removables.remove(0));
 							CMLib.tracking().getRadiantRooms(R1,set2,workFlags,null,radius,ignoreRooms);
-							trail = CMLib.tracking().getTrailToDescription(R1,set2,A.name(),trailFlags,radius,ignoreRooms,5);
+							trail = CMLib.tracking().getTrailToDescription(R1,set2,A.name(),trailFlags,radius,ignoreRooms,300);
 						}
 						if(trail.startsWith("Unable to determine") ||trail.startsWith("You can't"))
 							continue;

@@ -339,7 +339,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					Room R3=R.getRoomInDir(d);
 					if(R3 == null)
 					{
-						R3=CMLib.tracking().getCalculatedAdjacentRoom(rooms, R, d);
+						R3=CMLib.tracking().getCalculatedAdjacentGridRoom(rooms, R, d);
 						if(R3!=null)
 						{
 							R3=CMLib.map().getRoom(R3);

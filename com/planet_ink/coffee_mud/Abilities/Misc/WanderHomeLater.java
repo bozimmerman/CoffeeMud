@@ -134,7 +134,9 @@ public class WanderHomeLater extends StdAbility
 			if(M.amDead() && (once))
 				unInvoke();
 			else
-			if(respectFollow && (M.amFollowing()!=null) && (M.amFollowing().location()==M.location()))
+			if(respectFollow 
+			&& (M.amFollowing()!=null) 
+			&& (M.amFollowing().location()==M.location()))
 				unInvoke();
 			else
 			if(CMLib.flags().canActAtAll(M)

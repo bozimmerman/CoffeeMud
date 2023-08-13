@@ -339,7 +339,7 @@ public interface ThreadEngine extends CMLibrary, Runnable
 	 * @see TickableGroup.LocalType
 	 *
 	 * @param room the mob to delete objects from
-	 * @param taskCode the type of objects
+	 * @param typeCode the type of objects
 	 */
 	public void clearDebri(Room room, LocalType typeCode);
 

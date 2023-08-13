@@ -97,7 +97,7 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 		if((P == null)&&(affected != null))
 			this.undoEffect(this.makeIdentity(affected), affected);
 		super.setAffectedOne(P);
-		if((identity==null)||(identity.intValue() == 0))
+		if((P!=null)&&((identity==null)||(identity.intValue() == 0)))
 			identity = Integer.valueOf(P.hashCode());
 	}
 

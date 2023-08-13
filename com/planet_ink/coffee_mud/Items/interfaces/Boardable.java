@@ -110,8 +110,8 @@ public interface Boardable extends Environmental
 	/**
 	 * Returns whether the given mob has control privileges
 	 * for this boardable item
-	 * @param mob
-	 * @return
+	 * @param mob the mob to check
+	 * @return true if the mob is a captain
 	 */
 	public boolean securityCheck(final MOB mob);
 

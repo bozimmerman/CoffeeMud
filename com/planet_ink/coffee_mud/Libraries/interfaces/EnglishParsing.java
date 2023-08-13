@@ -625,6 +625,7 @@ public interface EnglishParsing extends CMLibrary
 	 * @param srchStr the search string
 	 * @param methodName the method to match against
 	 * @param exactOnly true for exact matching, false for inexact
+	 * @param <T> the matching T object
 	 * @return a matching object, or null
 	 */
 	public <T extends Object> T fetchReflective(final Iterable<T> list, String srchStr, final String methodName, final boolean exactOnly);

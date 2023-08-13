@@ -70,7 +70,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	/**
 	 * The time, in milis since 1970, that the player gained the given level
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#recordLevelData(int, long, Room, int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#recordLevelData(int, long, Room, int[])
 	 *
 	 * @param level the level to check for
 	 * @return the time, in milis since 1970, that the player gained the given level
@@ -80,7 +80,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	/**
 	 * The roomID that the player gained the given level
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#recordLevelData(int, long, Room, int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#recordLevelData(int, long, Room, int[])
 	 *
 	 * @param level  the level to check for
 	 * @return roomID that the player gained the given level
@@ -90,7 +90,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	/**
 	 * The number of minutes played when the player gained the given level
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#recordLevelData(int, long, Room, int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#recordLevelData(int, long, Room, int[])
 	 *
 	 * @param level the level to check for
 	 * @return the minutes played before the player gained the given level
@@ -100,7 +100,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	/**
 	 * The number of pracs gained when the player gained the given level
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#recordLevelData(int, long, Room, int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#recordLevelData(int, long, Room, int[])
 	 *
 	 * @param level the level to check for
 	 * @return the pracs gained before the player gained the given level

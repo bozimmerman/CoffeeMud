@@ -500,7 +500,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @see TimeClock#bumpWeeks(int)
 	 * @see TimeClock#bumpMonths(int)
 	 * @see TimeClock#bumpYears(int)
-	 * @see TimeClock#bump(int)
+	 * @see TimeClock#bump(TimePeriod, int)
 	 * @param num the number to bump
 	 */
 	public void bumpHours(int num);
@@ -513,7 +513,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @see TimeClock#bumpWeeks(int)
 	 * @see TimeClock#bumpMonths(int)
 	 * @see TimeClock#bumpYears(int)
-	 * @see TimeClock#bump(int)
+	 * @see TimeClock#bump(TimePeriod, int)
 	 * @param num the number to bump
 	 */
 	public void bumpDays(int num);
@@ -526,7 +526,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @see TimeClock#bumpDays(int)
 	 * @see TimeClock#bumpMonths(int)
 	 * @see TimeClock#bumpYears(int)
-	 * @see TimeClock#bump(int)
+	 * @see TimeClock#bump(TimePeriod, int)
 	 * @param num the number to bump
 	 */
 	public void bumpWeeks(int num);
@@ -539,7 +539,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @see TimeClock#bumpDays(int)
 	 * @see TimeClock#bumpWeeks(int)
 	 * @see TimeClock#bumpYears(int)
-	 * @see TimeClock#bump(int)
+	 * @see TimeClock#bump(TimePeriod, int)
 	 * @param num the number to bump
 	 */
 	public void bumpMonths(int num);
@@ -552,7 +552,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @see TimeClock#bumpDays(int)
 	 * @see TimeClock#bumpWeeks(int)
 	 * @see TimeClock#bumpMonths(int)
-	 * @see TimeClock#bump(int)
+	 * @see TimeClock#bump(TimePeriod, int)
 	 * @param num the number to bump
 	 */
 	public void bumpYears(int num);
@@ -638,6 +638,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * the coded date/time.
 	 *
 	 * @param period the coded time
+	 * @param the TimeClock object copy
 	 */
 	public TimeClock fromTimePeriodCodeString(final String period);
 
@@ -656,6 +657,7 @@ public interface TimeClock extends Tickable, CMCommon
 		ALLTIME(0)
 		;
 		private final long increment;
+		
 		private TimePeriod(final long increment)
 		{
 			this.increment=increment;

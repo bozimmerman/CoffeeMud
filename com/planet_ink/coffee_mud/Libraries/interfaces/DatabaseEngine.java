@@ -2473,7 +2473,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * filename does not begin with a /, and is also case-insensitive
 	 * and partial/LIKE.
 	 * @param minMask 0, or minimum mask value
-	 * @param filename the partial filename of the files to read
+	 * @param partialFilename the partial filename of the files to read
 	 *
 	 * @see com.planet_ink.coffee_mud.core.CMFile.CMVFSFile
 	 * @see DatabaseEngine#DBReadVFSDirectory()
@@ -2549,7 +2549,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * path does not begin with a /.  The argument is a partial
 	 * case-insensitive filename.
 	 * @param minMask 0, or minimum mask value
-	 * @param filename the partial case-insensitive filename
+	 * @param partialFilename the partial case-insensitive filename
 	 *
 	 * @see DatabaseEngine#DBReadVFSDirectory()
 	 * @see DatabaseEngine#DBReadVFSFile(String)

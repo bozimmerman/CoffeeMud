@@ -174,7 +174,7 @@ public class Prop_Retainable extends Property
 							{
 								CMLib.commands().postSay(mob,null,L("Hey, I'm not a crook!"),false,false);
 								mob.setFollowing(null);
-								CMLib.tracking().wanderAway(mob,true,false);
+								CMLib.tracking().wanderAway(mob,false,false);
 								mob.destroy();
 								return false;
 							}
@@ -184,7 +184,7 @@ public class Prop_Retainable extends Property
 						{
 							CMLib.commands().postSay(mob,null,L("Argh! I quit!"),false,false);
 							mob.setFollowing(null);
-							CMLib.tracking().wanderAway(mob,true,false);
+							CMLib.tracking().wanderAway(mob,false,false);
 							mob.destroy();
 							return false;
 						}
@@ -198,7 +198,7 @@ public class Prop_Retainable extends Property
 						{
 							CMLib.commands().postSay(mob,null,L("I don't work for free!  I quit!"),false,false);
 							mob.setFollowing(null);
-							CMLib.tracking().wanderAway(mob,true,false);
+							CMLib.tracking().wanderAway(mob,false,false);
 							mob.destroy();
 							return false;
 						}

@@ -263,7 +263,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#addAmbiance(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#delAmbiance(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#ambiances()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#Ambiance
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats.Ambiance
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#isAmbiance(Ambiance)
 	 * @param ambiance the ambiance to look for
 	 * @return true if its in there, false otherwise
@@ -275,7 +275,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#addAmbiance(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#delAmbiance(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#ambiances()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#Ambiance
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats.Ambiance
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#isAmbiance(String)
 	 * @param ambiance the ambiance to look for
 	 * @return true if its in there, false otherwise
@@ -289,7 +289,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#delAmbiance(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#isAmbiance(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#isAmbiance(Ambiance)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#Ambiance
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats.Ambiance
 	 * @param ambiance a new ambiance string
 	 */
 	public void addAmbiance(String ambiance);

@@ -146,7 +146,7 @@ public class Loyalty extends StdAbility
 					&& (player.location()!=null)
 					&& (!M.isAttributeSet(Attrib.AUTOGUARD))
 					&& teleport)
-						CMLib.tracking().wanderCheckedFromTo(M, player.location(), true);
+						CMLib.tracking().wanderCheckedFromTo(M, player.location(), false);
 				}
 			}
 			if((watchForMaster)

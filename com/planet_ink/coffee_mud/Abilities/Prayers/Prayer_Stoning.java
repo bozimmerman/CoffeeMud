@@ -115,7 +115,7 @@ public class Prayer_Stoning extends Prayer
 				final MOB M=cits.elementAt(i);
 				if((M.location()!=mob.location())||(mob.amDead()))
 				{
-					CMLib.tracking().wanderAway(M,true,false);
+					CMLib.tracking().wanderAway(M,false,false);
 					M.destroy();
 					M.setLocation(null);
 				}

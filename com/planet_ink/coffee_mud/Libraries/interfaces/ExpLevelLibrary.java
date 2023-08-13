@@ -126,7 +126,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @see ExpLevelLibrary#loseExperience(MOB, String, int)
 	 *
 	 * @param mob the mob to take experience from
-	 * @param sourceID an arbitrary string denoting the xp source
+	 * @param sourceId an arbitrary string denoting the xp source
 	 * @param amount the amount of experience to lose
 	 */
 	public void loseRPExperience(MOB mob, String sourceId, int amount);
@@ -139,7 +139,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @see ExpLevelLibrary#gainExperience(MOB, String, MOB, String, int, boolean)
 	 *
 	 * @param mob the mob to distribute experience to
-	 * @param sourceID an arbitrary string denoting the xp source
+	 * @param sourceId an arbitrary string denoting the xp source
 	 * @param victim the mob killed, if any, to cause the experience gain
 	 * @param homageMessage the name, if any, of another mob whose gain experience is
 	 *            causing this gain

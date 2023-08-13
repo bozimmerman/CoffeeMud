@@ -663,7 +663,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		&&(officer.getStartRoom()==officer.location()))
 			return;
 		if(officer.isMonster())
-			CMLib.tracking().wanderAway(officer,true,true);
+			CMLib.tracking().wanderAway(officer,false,true);
 	}
 
 	public MOB getAWitnessHere(final Area myArea, final Room R, final MOB accused)
@@ -3257,7 +3257,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						W.setArrestingOfficer(myArea,null);
 						W.criminal().tell(L("\n\r\n\r"));
 						if(W.criminal().isMonster())
-							CMLib.tracking().wanderAway(W.criminal(),true,true);
+							CMLib.tracking().wanderAway(W.criminal(),false,true);
 					}
 					else
 					{

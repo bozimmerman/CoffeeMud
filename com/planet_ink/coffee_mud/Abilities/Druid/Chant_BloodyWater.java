@@ -115,7 +115,7 @@ public class Chant_BloodyWater extends Chant
 				{
 					mob.tell(L("You are no longer sensing the bloody water."));
 					if(!mob.amDead())
-						CMLib.tracking().wanderAway(mob,true,false);
+						CMLib.tracking().wanderAway(mob,false,false);
 				}
 			}
 			else

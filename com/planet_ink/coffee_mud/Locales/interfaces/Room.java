@@ -442,7 +442,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * always call {@link Room#getExitInDir(int)} if you want the final
 	 * Exit object in the given direction.  This method returns null if
 	 * there is no exit in the given direction.
-	 * @see Room#getRawRoom(int)
+	 * @see Room#getRawDoor(int)
 	 * @see Room#setRawDoor(int, Room)
 	 * @see Room#setRawExit(int, Exit)
 	 * @see Room#getExitInDir(int)
@@ -458,7 +458,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 
 	/**
 	 * Sets the Exit object found in this room in the given direction.
-	 * @see Room#getRawRoom(int)
+	 * @see Room#getRawDoor(int)
 	 * @see Room#setRawDoor(int, Room)
 	 * @see Room#getRawExit(int)
 	 * @see Room#getExitInDir(int)
@@ -495,7 +495,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	/**
 	 * Sets the Room link from in this room to the other
 	 * in the given direction.
-	 * @see Room#getRawRoom(int)
+	 * @see Room#getRawDoor(int)
 	 * @see Room#getRawExit(int)
 	 * @see Room#getExitInDir(int)
 	 * @see Room#getReverseExit(int)

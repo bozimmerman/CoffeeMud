@@ -4454,7 +4454,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									if(debug)
 										Log.debugOut("QuestScript#"+parseId+": Destroying "+P.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(P)));
 									M.setFollowing(null);
-									CMLib.tracking().wanderAway(M,true,false);
+									CMLib.tracking().wanderAway(M,false,false);
 									if(M.location()!=null)
 										M.location().delInhabitant(M);
 									M.setLocation(null);

@@ -115,7 +115,7 @@ public class DefaultArrestWarrant implements LegalWarrant
 		&& (legalArea != null)
 		&& (arrestingOfficer.getStartRoom().getArea() != arrestingOfficer.location().getArea())
 		&& (!legalArea.inMyMetroArea(arrestingOfficer.location().getArea())))
-			CMLib.tracking().wanderAway(arrestingOfficer, true, true);
+			CMLib.tracking().wanderAway(arrestingOfficer, false, true);
 
 		if ((mob == null) && (arrestingOfficer != null))
 			CMLib.tracking().stopTracking(arrestingOfficer);

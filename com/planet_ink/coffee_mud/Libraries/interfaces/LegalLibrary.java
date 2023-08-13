@@ -241,7 +241,7 @@ public interface LegalLibrary extends CMLibrary
 
 	/**
 	 * Returns the private property record of the given mob,
-	 * if one existsa.
+	 * if one exists.  Slaves happen.
 	 *
 	 * @see LegalLibrary#getPropertyRecord(Room)
 	 * @see LegalLibrary#getPropertyRecord(Item)
@@ -249,7 +249,7 @@ public interface LegalLibrary extends CMLibrary
 	 * @see LegalLibrary#getLandTitle(Area)
 	 * @see LegalLibrary#getLandTitle(Room)
 	 *
-	 * @param area the area to check
+	 * @param mob the mob to check
 	 * @return null, or the privateproperty record
 	 */
 	public PrivateProperty getPropertyRecord(MOB mob);
