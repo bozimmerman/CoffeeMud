@@ -638,7 +638,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * the coded date/time.
 	 *
 	 * @param period the coded time
-	 * @param the TimeClock object copy
+	 * @return the TimeClock object copy
 	 */
 	public TimeClock fromTimePeriodCodeString(final String period);
 
