@@ -34,6 +34,12 @@ import java.util.Map.Entry;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * Utility library for global map searches.
+ * 
+ * @author Bo Zimmerman
+ *
+ */
 public interface WorldHuntLibrary extends CMLibrary
 {
 	public List<Room> findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, long maxMillis);
@@ -53,6 +59,46 @@ public interface WorldHuntLibrary extends CMLibrary
 	public Environmental findFirstShopStocker(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
 	public List<Item> findInventory(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
 	public Item findFirstInventory(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
+	
+	/**
+	 * Returns whether the given object is in the given area.
+	 * 
+	 * @see WorldHuntLibrary#isHere(CMObject, Room)
+	 * 
+	 * @param E2 the object to look for
+	 * @param here the room to see if its in
+	 * @return true if the object is in the area
+	 */
 	public boolean isHere(CMObject E2, Area here);
+	
+	/**
+	 * Returns whether the given object is in the given room.
+	 * 
+	 * @see WorldHuntLibrary#isHere(CMObject, Area)
+	 * 
+	 * @param E2 the object to look for
+	 * @param here the room to see if its in
+	 * @return true if the object is in the room
+	 */
 	public boolean isHere(CMObject E2, Room here);
+	
+	/**
+	 * Returns whether an authorized room or mob editor
+	 * is in the room, optionally with sysmsgs turned on.
+	 *  
+	 * @param R the room to check
+	 * @param sysMsgsOnly true to return true only if sysmsgs are on
+	 * @return true if admin mode is in effect for the room
+	 */
+	public boolean isAnAdminHere(Room R, boolean sysMsgsOnly);
+
+	/**
+	 * Gets the entire party -- group members, ridden things,
+	 * followed and things riding them, etc, etc.
+	 * 
+	 * @param P the starting point for the group
+	 * @param hereOnlyR null, or the room they must all ne present in
+	 * @return the entire happy family
+	 */
+	public Set<Physical> getAllGroupRiders(final Physical P, final Room hereOnlyR);
 }

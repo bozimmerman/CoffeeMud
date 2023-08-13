@@ -1130,7 +1130,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 			||(msg.source().numFollowers()>0)
 			||((msg.source() instanceof Rideable)&&((Rideable)msg.source()).numRiders()>0)))
 		{
-			final Set<Physical> grp=CMLib.tracking().getAllGroupRiders(msg.source(), msg.source().location());
+			final Set<Physical> grp=CMLib.hunt().getAllGroupRiders(msg.source(), msg.source().location());
 			if(grp.contains(this)
 			&&(this.amInTacticalMode()))
 			{

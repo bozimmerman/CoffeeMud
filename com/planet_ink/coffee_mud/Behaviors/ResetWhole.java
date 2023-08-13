@@ -124,7 +124,7 @@ public class ResetWhole extends StdBehavior
 	{
 		if(CMLib.flags().canNotBeCamped(R)
 		&& (R.numPCInhabitants() > 0)
-		&& (!CMLib.tracking().isAnAdminHere(R,false)))
+		&& (!CMLib.hunt().isAnAdminHere(R,false)))
 		{
 			return true;
 		}

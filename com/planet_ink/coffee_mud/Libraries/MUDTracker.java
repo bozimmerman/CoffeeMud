@@ -867,31 +867,6 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public boolean isAnAdminHere(final Room R, final boolean sysMsgsOnly)
-	{
-		final Set<MOB> mobsThere=CMLib.players().getPlayersHere(R);
-		if(mobsThere.size()>0)
-		{
-			try
-			{
-				for(final MOB inhab : mobsThere)
-				{
-					if((inhab.session()!=null)
-					&&(CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDROOMS))
-					&&(CMLib.flags().isInTheGame(inhab, true))
-					&&((!sysMsgsOnly) || inhab.isAttributeSet(MOB.Attrib.SYSOPMSGS)))
-						return true;
-				}
-			}
-			catch(final java.util.ConcurrentModificationException e)
-			{
-				return isAnAdminHere(R,sysMsgsOnly);
-			}
-		}
-		return false;
-	}
-
-	@Override
 	public boolean beMobile(final MOB mob,
 							final boolean dooropen,
 							final boolean wander,
@@ -929,7 +904,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 		Room oldRoom=mob.location();
 
-		if(isAnAdminHere(oldRoom, true))
+		if(CMLib.hunt().isAnAdminHere(oldRoom, true))
 		{
 			if(status!=null)
 				status[0]=Tickable.STATUS_NOT;
@@ -971,7 +946,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			final Exit nextExit=oldRoom.getExitInDir(direction);
 			if((nextRoom!=null)&&(nextExit!=null))
 			{
-				if(isAnAdminHere(nextRoom, true))
+				if(CMLib.hunt().isAnAdminHere(nextRoom, true))
 				{
 					direction=-1;
 					continue;
@@ -2579,44 +2554,6 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				}
 			}
 		}
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected Set<Physical> getAllGroupRiders(final Physical P, final Set<Physical> set)
-	{
-		if((P==null)||(set.contains(P)))
-			return set;
-		set.add(P);
-		if(P instanceof Followable)
-		{
-			getAllGroupRiders(((Followable)P).amFollowing(), set);
-			for(final Enumeration<Pair<MOB,Short>> f=((Followable)P).followers();f.hasMoreElements();)
-				getAllGroupRiders(f.nextElement().first, set);
-		}
-		if(P instanceof Rider)
-			getAllGroupRiders(((Rider)P).riding(), set);
-		if(P instanceof Rideable)
-		{
-			for(final Enumeration<Rider> r=((Rideable)P).riders();r.hasMoreElements();)
-				getAllGroupRiders(r.nextElement(), set);
-		}
-		return set;
-	}
-
-	@Override
-	public Set<Physical> getAllGroupRiders(final Physical P, final Room hereOnlyR)
-	{
-		final Set<Physical> set=getAllGroupRiders(P, new HashSet<Physical>());
-		if(hereOnlyR == null)
-			return set;
-		final WorldMap map=CMLib.map();
-		for(final Iterator<Physical> p=set.iterator();p.hasNext();)
-		{
-			final Room R=map.roomLocation(p.next());
-			if(R!=hereOnlyR)
-				p.remove();
-		}
-		return set;
 	}
 
 	@Override

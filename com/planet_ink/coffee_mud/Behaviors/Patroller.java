@@ -447,7 +447,7 @@ public class Patroller extends ActiveTicker
 			}
 
 			tickStatus=Tickable.STATUS_MISC+14;
-			if(CMLib.tracking().isAnAdminHere(thisRoom, true))
+			if(CMLib.hunt().isAnAdminHere(thisRoom, true))
 				return true;
 
 			tickStatus=Tickable.STATUS_MISC+15;

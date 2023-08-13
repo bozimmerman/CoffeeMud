@@ -893,26 +893,6 @@ public interface TrackingLibrary extends CMLibrary
 	 * @return the nearest valid room
 	 */
 	public Room getNearestValidIDRoom(final Room R);
-	
-	/**
-	 * Returns whether an authorized room or mob editor
-	 * is in the room, optionally with sysmsgs turned on.
-	 *  
-	 * @param R the room to check
-	 * @param sysMsgsOnly true to return true only if sysmsgs are on
-	 * @return true if admin mode is in effect for the room
-	 */
-	public boolean isAnAdminHere(Room R, boolean sysMsgsOnly);
-
-	/**
-	 * Gets the entire party -- group members, ridden things,
-	 * followed and things riding them, etc, etc.
-	 * 
-	 * @param P the starting point for the group
-	 * @param hereOnlyR null, or the room they must all ne present in
-	 * @return the entire happy family
-	 */
-	public Set<Physical> getAllGroupRiders(final Physical P, final Room hereOnlyR);
 
 	/**
 	 * Constructs a new set of TrackingFlags, which are filters for 

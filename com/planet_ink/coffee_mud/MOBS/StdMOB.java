@@ -3838,7 +3838,7 @@ public class StdMOB implements MOB
 							{
 								if ((CMLib.flags().canNotBeCamped(this) || CMLib.flags().canNotBeCamped(startRoom))
 								&& (startRoom.numPCInhabitants() > 0)
-								&& (!CMLib.tracking().isAnAdminHere(startRoom, false)))
+								&& (!CMLib.hunt().isAnAdminHere(startRoom, false)))
 								{
 									phyStats().setRejuv(0);
 									tickStatus = Tickable.STATUS_NOT;

@@ -389,7 +389,7 @@ public class Sailor extends StdBehavior
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBILITY))
 		&&(loyalShipItem.owner() instanceof Room)
 		&&(((Room)loyalShipItem.owner()).getMobility())
-		&&(!CMLib.tracking().isAnAdminHere((Room)loyalShipItem.owner(), true)));
+		&&(!CMLib.hunt().isAnAdminHere((Room)loyalShipItem.owner(), true)));
 	}
 
 	@Override

@@ -268,7 +268,7 @@ public class Follower extends ActiveTicker
 			if(direction<0)
 				return;
 
-			if(!CMLib.tracking().isAnAdminHere(room, true))
+			if(!CMLib.hunt().isAnAdminHere(room, true))
 				CMLib.tracking().walk(mob,direction,false,false);
 			direction=-1;
 		}

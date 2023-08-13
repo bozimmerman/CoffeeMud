@@ -224,7 +224,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 			}
 			if((CMLib.flags().canNotBeCamped(item)||CMLib.flags().canNotBeCamped(R))
 			&& (R.numPCInhabitants() > 0)
-			&& (!CMLib.tracking().isAnAdminHere(R,false)))
+			&& (!CMLib.hunt().isAnAdminHere(R,false)))
 			{
 				CMLib.threads().setTickPending(ticking,Tickable.TICKID_ROOM_ITEM_REJUV);
 				return true; // it will just come back next time
