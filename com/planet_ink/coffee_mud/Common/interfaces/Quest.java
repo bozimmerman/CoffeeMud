@@ -774,7 +774,22 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param flags the flag bitmap
 	 */
 	public void setFlags(long flags);
-
+	
+	
+	/**
+	 * If errors occured on the last start of this quest, this will
+	 * return those messages.  Works regardless of whether log 
+	 * reporting is turned on.
+	 * 
+	 * @return "" or some errors.
+	 */
+	public String getLastErrors();
+	
+	/**
+	 * Quest step spawning options
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static enum Spawn
 	{
 		/** A quest spawn flag denoting that this quest does not spawn its steps */

@@ -717,6 +717,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		else
 		if(CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS))
 			Log.debugOut("Quest",prefix+msg);
+		q.errors.append(msg).append("\n\r");
 		q.error=true;
 	}
 
@@ -4672,7 +4673,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			cleanQuestStep(0);
 			ticksRemaining=-1;
 			setDuration(-1);
-
+			questState.errors.setLength(0);
 			final List<Object> args=new ArrayList<Object>();
 			final List<Object> script=parseLoadScripts(script(),new ArrayList<Object>(),args,true);
 			try
@@ -5690,6 +5691,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
+	@Override
+	public String getLastErrors()
+	{
+		if(questState != null)
+			return questState.errors.toString();
+		return "";
+	}
+
 	public Environmental getQuestThing(final Iterator<? extends Environmental> e, final int dex, final CMClass.CMObjectType type, final int[] num)
 	{
 		if(e==null)
@@ -6432,6 +6441,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		public int			lastLine				= 0;
 		public int			stepNumber				= 1;
 		public int			startLine;
+		public StringBuffer	errors					= new StringBuffer("");
 		// contains a set of vectors, vectors are formatted as such:
 		// key 1=vector, below.  key 2=preserveState
 		// 0=environmental item/mob/etc
