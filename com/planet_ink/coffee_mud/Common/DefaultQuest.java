@@ -3890,6 +3890,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						for(int i=0;i<toSet.size();i++)
 						{
 							final Environmental E2=toSet.get(i);
+							if(stat.equalsIgnoreCase("SUPPRESSLAW") && (E2 instanceof Area))
+							{
+								final LegalBehavior B = CMLib.law().getLegalBehavior((Area)E2);
+								if(B != null)
+									B.suppressCrime(val, this);
+							}
+							else
 							if(stat.equalsIgnoreCase("KEYPLAYER") && (E2 instanceof Physical))
 							{
 								final Ability A=((Physical)E2).fetchEffect("QuestBound");
