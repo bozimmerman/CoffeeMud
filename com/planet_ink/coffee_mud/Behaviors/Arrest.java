@@ -564,7 +564,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	}
 
 	@Override
-	public void suppressCrime(String crime, final Object until)
+	public void suppressLaws(String crime, final Object until)
 	{
 		if(crime == null)
 			return;

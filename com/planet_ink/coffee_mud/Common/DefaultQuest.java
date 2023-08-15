@@ -3894,7 +3894,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							{
 								final LegalBehavior B = CMLib.law().getLegalBehavior((Area)E2);
 								if(B != null)
-									B.suppressCrime(val, this);
+									B.suppressLaws(val, this);
 							}
 							else
 							if(stat.equalsIgnoreCase("KEYPLAYER") && (E2 instanceof Physical))

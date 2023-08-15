@@ -357,7 +357,7 @@ public interface LegalBehavior extends Behavior
 	 * @param crime the crime to suppress
 	 * @param until the Object expiration for the suppression
 	 */
-	public void suppressCrime(String crime, final Object until);
+	public void suppressLaws(String crime, final Object until);
 
 	/**
 	 * Changes and/or reads the current loyalty bonus that this
