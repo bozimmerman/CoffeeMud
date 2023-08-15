@@ -246,7 +246,7 @@ public class GrinderRooms
 					else
 					if(MATCHING.indexOf('@')>0)
 					{
-						final MOB M2=CMLib.webMacroFilter().getMOBFromAnywhere(null,MATCHING);
+						final MOB M2=CMLib.webMacroFilter().getMOBFromAnywhere(MATCHING);
 						if(M2 != null)
 							happilyAddMob((MOB)M2.copyOf(),R);
 					}

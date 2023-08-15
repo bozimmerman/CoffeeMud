@@ -914,7 +914,7 @@ public class RoomData extends StdWebMacro
 						else
 						if(MATCHING.indexOf('@')>0)
 						{
-							final MOB M2=CMLib.webMacroFilter().getMOBFromAnywhere(null,MATCHING);
+							final MOB M2=CMLib.webMacroFilter().getMOBFromAnywhere(MATCHING);
 							if(M2 != null)
 								classes.add(M2);
 						}

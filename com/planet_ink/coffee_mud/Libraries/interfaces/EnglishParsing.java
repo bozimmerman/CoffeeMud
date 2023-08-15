@@ -838,7 +838,7 @@ public interface EnglishParsing extends CMLibrary
 	 *
 	 * @param mob the mob looking for a shopkeeper nearby
 	 * @param matchWords the search words, possibly modified
-	 * @param fromTo TODO
+	 * @param fromTo whether from or to is the proper separator
 	 * @param error the error message to send for bad arguments
 	 * @return a matched shopkeeper, with a modified matchWords list
 	 */

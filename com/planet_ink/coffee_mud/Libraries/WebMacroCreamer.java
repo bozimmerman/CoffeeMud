@@ -336,10 +336,15 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						i += (foundMacro.length() + 2);
 					else
 					if ((foundMacro.startsWith("if?"))
+					|| (foundMacro.startsWith("block"))
+					|| (foundMacro.startsWith("/block"))
 					|| (foundMacro.startsWith("elif?"))
+					|| (foundMacro.startsWith("for?"))
+					|| (foundMacro.startsWith("insert?"))
 					|| (foundMacro.equalsIgnoreCase("else"))
 					|| (foundMacro.equalsIgnoreCase("loop"))
 					|| (foundMacro.equalsIgnoreCase("back"))
+					|| (foundMacro.equalsIgnoreCase("next"))
 					|| (foundMacro.equalsIgnoreCase("endif"))
 					|| (foundMacro.equalsIgnoreCase("/jscript"))
 					|| (foundMacro.equalsIgnoreCase("jscript")))
@@ -1646,10 +1651,10 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public MOB getMOBFromAnywhere(final Object allitems, final String MATCHING)
+	public MOB getMOBFromAnywhere(final String MATCHING)
 	{
 		if(isAllNum(MATCHING))
-			return getMOBFromWebCache((Collection)allitems,MATCHING);
+			return getMOBFromWebCache((Collection)null,MATCHING);
 		else
 		if(MATCHING.startsWith("CATALOG-"))
 			return getMOBFromCatalog(MATCHING);
@@ -1699,7 +1704,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			if(M.isGeneric() || true)
 			{
 				if((findMOBMatchInWebCache(M)==null)
-				&&((M.isSavable())||((M.location()!=null)&&(!M.location().isSavable()))))
+				&&((M.isSavable())
+					||((M.location()!=null)&&(!M.location().isSavable()))))
 				{
 					final MOB M3=(MOB)M.copyOf();
 					M3.setExpirationDate(System.currentTimeMillis());

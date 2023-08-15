@@ -986,7 +986,7 @@ public class GrinderMobs
 						else
 						if(MATCHING.indexOf('@')>0)
 						{
-							Environmental O=CMLib.webMacroFilter().getMOBFromAnywhere(null,MATCHING);
+							Environmental O=CMLib.webMacroFilter().getMOBFromAnywhere(MATCHING);
 							if(O==null)
 								O=CMLib.webMacroFilter().findItemInAnything(null,MATCHING);
 							if(O!=null)

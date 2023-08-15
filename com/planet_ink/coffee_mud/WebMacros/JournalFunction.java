@@ -469,17 +469,18 @@ public class JournalFunction extends StdWebMacro
 											file="";
 										buf=data.getData();
 									}
-									if(file.length()==0)
-										return "File not uploaded -- no name!";
-									if(buf == null)
-										return "File not uploaded -- no buffer!";
-									if((forum!=null)&&(forum.maxAttach()>0)&&(++maxFiles > forum.maxAttach()))
-										return "File not uploaded -- maximum "+forum.maxAttach()+" attachments!";
-									final String fileName = entry.key()+"/"+entry.parent()+"/"+file;
-									if(fileName.length()>252)
-										return "Reply not submitted.  Some attachments failed.";
-									CMLib.database().DBCreateVFSFile(fileName, CMFile.VFS_MASK_ATTACHMENT, from, System.currentTimeMillis(), buf);
-									attributes=attributes|JournalEntry.JournalAttrib.ATTACHMENT.bit;
+									if(file.length()>0)
+									{
+										if(buf == null)
+											return "File not uploaded -- no buffer!";
+										if((forum!=null)&&(forum.maxAttach()>0)&&(++maxFiles > forum.maxAttach()))
+											return "File not uploaded -- maximum "+forum.maxAttach()+" attachments!";
+										final String fileName = entry.key()+"/"+entry.parent()+"/"+file;
+										if(fileName.length()>252)
+											return "Reply not submitted.  Some attachments failed.";
+										CMLib.database().DBCreateVFSFile(fileName, CMFile.VFS_MASK_ATTACHMENT, from, System.currentTimeMillis(), buf);
+										attributes=attributes|JournalEntry.JournalAttrib.ATTACHMENT.bit;
+									}
 								}
 							}
 							CMLib.database().DBUpdateJournal(entry.key(), subj, clearWebMacros(text), attributes);
