@@ -237,26 +237,29 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			return "chattiness";
 	}
 
+	protected void addChatEntries(final String addParms)
+	{
+		final List<String> V=CMParms.parseSemicolons(addParms,false);
+		final StringBuffer rsc=new StringBuffer("");
+		for(int v=0;v<V.size();v++)
+			rsc.append(V.get(v)+"\n\r");
+		final ChattyGroup[] addGroups=parseChatData(rsc);
+		final ArrayList<ChattyEntry> newList=new ArrayList<ChattyEntry>(addedChatEntries.length);
+		for(final ChattyEntry CE : addedChatEntries)
+			newList.add(CE);
+		for(final ChattyGroup CG : addGroups)
+		{
+			for(final ChattyEntry CE : CG.entries)
+				newList.add(CE);
+		}
+		addedChatEntries = newList.toArray(new ChattyEntry[0]);
+	}
+
 	@Override
 	public void setParms(final String newParms)
 	{
 		if(newParms.startsWith("+"))
-		{
-			final List<String> V=CMParms.parseSemicolons(newParms.substring(1),false);
-			final StringBuffer rsc=new StringBuffer("");
-			for(int v=0;v<V.size();v++)
-				rsc.append(V.get(v)+"\n\r");
-			final ChattyGroup[] addGroups=parseChatData(rsc);
-			final ArrayList<ChattyEntry> newList=new ArrayList<ChattyEntry>(addedChatEntries.length);
-			for(final ChattyEntry CE : addedChatEntries)
-				newList.add(CE);
-			for(final ChattyGroup CG : addGroups)
-			{
-				for(final ChattyEntry CE : CG.entries)
-					newList.add(CE);
-			}
-			addedChatEntries = newList.toArray(new ChattyEntry[0]);
-		}
+			addChatEntries(newParms.substring(1));
 		else
 		{
 			super.setParms(newParms);
@@ -566,13 +569,24 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			return myChatGroup;
 		myOldName=forMe.Name();
 		ChattyGroup matchedCG=null;
-		if(getParms().length()>0)
+		final String parms=getParms();
+		if(parms.length()>0)
 		{
-			final int x=getParms().indexOf('=');
+			String plusParms=null;
+			String basicParms = parms;
+			final int plusParmsX = parms.indexOf("+");
+			if(plusParmsX>=0)
+			{
+				basicParms=parms.substring(0,plusParmsX);
+				plusParms=parms.substring(plusParmsX+1);
+			}
+			final int x=basicParms.indexOf('=');
 			if(x<0)
 				matchedCG=matchChatGroup(forMe,getParms(),chatGroups);
 			else
 				matchedCG=matchChatGroup(forMe,getParms().substring(x+1).trim(),chatGroups);
+			if(plusParms != null)
+				this.addChatEntries(plusParms);
 		}
 		if(matchedCG!=null)
 			return matchedCG;

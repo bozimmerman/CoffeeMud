@@ -215,6 +215,23 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 	}
 
+	protected void doBudgetReset()
+	{
+		budgetTickDown = 100;
+		budgetRemaining = Long.MAX_VALUE / 2;
+		final Pair<Long,TimeClock.TimePeriod> budget = getFinalBudget();
+		if(budget != null)
+		{
+			budgetRemaining = budget.first.longValue();
+			budgetTickDown = 100;
+			TimeClock C=CMLib.time().homeClock(this);
+			if(C==null)
+				C=CMLib.time().globalClock();
+			budgetTickDown = (int) (CMProps.getTicksPerMudHour() * C.getHoursPer(budget.second));
+		}
+		budgetMax = budgetRemaining;
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -223,64 +240,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		if ((tickID == Tickable.TICKID_MOB) && (isGeneric()))
 		{
 			if ((--invResetTickDown) <= 0)
-			{
 				doInventoryReset();
-			}
 			if ((--budgetTickDown) <= 0)
-			{
-				budgetTickDown = 100;
-				budgetRemaining = Long.MAX_VALUE / 2;
-				final Pair<Long,TimeClock.TimePeriod> budget = getFinalBudget();
-				if(budget != null)
-				{
-					budgetRemaining = budget.first.longValue();
-					budgetTickDown = 100;
-
-					final Room R=location();
-					final TimeClock C=((R != null) && (R.getArea() != null)) ? R.getArea().getTimeObj() : null;
-					final int ticksPerDay = CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
-					int hoursInDay = 1;
-					int daysInMonth = 1;
-					int monthsInYear = 1;
-					int daysInWeek = 1;
-					if(C!=null)
-					{
-						if(C.getHoursInDay()>0)
-							hoursInDay=C.getHoursInDay();
-						if(C.getDaysInMonth()>0)
-							daysInMonth=C.getDaysInMonth();
-						if(C.getMonthsInYear()>0)
-							monthsInYear=C.getMonthsInYear();
-						if(C.getDaysInWeek()>0)
-							daysInWeek=C.getDaysInWeek();
-					}
-					switch(budget.second)
-					{
-					case ALLTIME:
-						budgetTickDown = 100;
-						break;
-					case DAY:
-						budgetTickDown = ticksPerDay;
-						break;
-					case HOUR:
-						budgetTickDown = ticksPerDay / hoursInDay;
-						break;
-					case MONTH:
-						budgetTickDown = ticksPerDay * daysInMonth;
-						break;
-					case SEASON:
-						budgetTickDown = ticksPerDay * (daysInMonth * monthsInYear / 4);
-						break;
-					case WEEK:
-						budgetTickDown = ticksPerDay * daysInWeek;
-						break;
-					case YEAR:
-						budgetTickDown = ticksPerDay * (daysInMonth * monthsInYear);
-						break;
-					}
-				}
-				budgetMax = budgetRemaining;
-			}
+				doBudgetReset();
 		}
 		return true;
 	}

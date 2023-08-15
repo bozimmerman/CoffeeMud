@@ -78,6 +78,7 @@ public class Alterer extends SpecialistMage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_MassFeatherfall",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_IncreaseGravity",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_StoreAromas",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_AlterSubstance",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_ImprovedHarden",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_SlowProjectiles",25,true);

@@ -166,7 +166,9 @@ public interface GenericBuilder extends CMLibrary
 		MATTRIB,
 		CLAN,
 		CLANROLE,
-		OBJATTRIB
+		OBJATTRIB,
+		BUDGETRESETDATE,
+		INVENTORYRESETDATE
 	}
 
 	/**

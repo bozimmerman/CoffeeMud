@@ -62,7 +62,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	protected boolean				loadAttempt			= false;
 	protected Map<MOB, Double>		finesAssessed		= new Hashtable<MOB, Double>();
 	protected volatile Room			lastBanishR			= null;
-	protected Map<String, long[]>	suppressedCrimes	= Collections.synchronizedMap(new TreeMap<String, long[]>());
+	protected Map<String, Object>	suppressedCrimes	= Collections.synchronizedMap(new TreeMap<String, Object>());
 	protected Map<String,Boolean>	bannedItemCache		= new LimitedTreeMap<String,Boolean>(99999,1000,false);
 	protected Set<String>			bannedMOBCheck		= new LimitedTreeSet<String>(60000,250,false);
 
@@ -335,19 +335,43 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		return V;
 	}
 
+	protected boolean isCrimeSuppressed(final String crime)
+	{
+		synchronized(suppressedCrimes)
+		{
+			if(suppressedCrimes.containsKey(crime))
+			{
+				final Object obj = suppressedCrimes.get(crime);
+				if(obj instanceof Long)
+				{
+					if(System.currentTimeMillis()<((Long)obj).longValue())
+						return true;
+				}
+				else
+				if(obj instanceof Ability)
+				{
+					if((((Ability)obj).affecting() != null)
+					&&(((Ability)obj).canBeUninvoked()))
+						return true;
+				}
+				else
+				if(obj instanceof Quest)
+				{
+					if(((Quest)obj).running())
+						return true;
+				}
+				suppressedCrimes.remove(crime);
+			}
+		}
+		return false;
+	}
+
 	public boolean addWarrant(final Law laws, final LegalWarrant W)
 	{
 		if(!theLawIsEnabled())
 			return false;
-		synchronized(suppressedCrimes)
-		{
-			if(suppressedCrimes.containsKey(W.crime()))
-			{
-				if(System.currentTimeMillis()<suppressedCrimes.get(W.crime())[0])
-					return false;
-				suppressedCrimes.remove(W.crime());
-			}
-		}
+		if(isCrimeSuppressed(W.crime()) || isCrimeSuppressed("ALL"))
+			return false;
 		if((laws!=null)&&(!laws.warrants().contains(W)))
 		{
 			final Room R=CMLib.map().roomLocation(W.criminal());
@@ -540,17 +564,22 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	}
 
 	@Override
-	public void suppressCrime(String crime, final long until)
+	public void suppressCrime(String crime, final Object until)
 	{
 		if(crime == null)
 			return;
 		crime = crime.toUpperCase().trim();
 		synchronized(suppressedCrimes)
 		{
-			if(suppressedCrimes.containsKey(crime))
-				suppressedCrimes.get(crime)[0] = until;
+			if(until == null)
+			{
+				if(crime.equalsIgnoreCase("ALL"))
+					suppressedCrimes.clear();
+				else
+					suppressedCrimes.remove(crime);
+			}
 			else
-				suppressedCrimes.put(crime, new long[] { System.currentTimeMillis() });
+				suppressedCrimes.put(crime, until);
 		}
 	}
 

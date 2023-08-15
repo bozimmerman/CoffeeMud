@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_SuppressAroma extends Spell
+public class Spell_StoreAromas extends Spell
 {
 
 	@Override
 	public String ID()
 	{
-		return "Spell_SuppressAroma";
+		return "Spell_StoreAromas";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Suppress Aroma");
+	private final static String localizedName = CMLib.lang().L("Store Aromas");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class Spell_SuppressAroma extends Spell
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Suppress Aroma)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Store Aromas)");
 
 	@Override
 	public String displayText()
@@ -81,16 +81,21 @@ public class Spell_SuppressAroma extends Spell
 		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
 	}
 
+	protected Set<String> aromas = new TreeSet<String>();
+
 	@Override
 	public void unInvoke()
 	{
+		final Physical affected = canBeUninvoked()?this.affected:null;
+		super.unInvoke();
 		// undo the affects of this spell
-		if(canBeUninvoked())
+		if(affected!=null)
 		{
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				if((mob.location()!=null)&&(!mob.amDead()))
+				if((mob.location()!=null)
+				&&(!mob.amDead()))
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> regain(s) <S-HIS-HER> normal scent."));
 			}
 			else
@@ -100,16 +105,46 @@ public class Spell_SuppressAroma extends Spell
 				if(item.owner()!=null)
 				{
 					if(item.owner() instanceof Room)
-						((Room)item.owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 regains its normal scent.",item.name()));
-					else
-					if(item.owner() instanceof MOB)
 					{
-						((MOB)item.owner()).tell(L("@x1 regains its normal scent.",item.name()));
+						if(aromas.size()==0)
+							((Room)item.owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 regains its normal scent.",item.name()));
+						else
+						{
+							final MOB M = CMClass.getFactoryMOB(item.name(),1,(Room)item.owner());
+							try
+							{
+								for(final String str : aromas)
+									((Room)item.owner()).show(M,null,null,CMMsg.TYP_AROMA,str);
+							}
+							finally
+							{
+								M.destroy();
+							}
+						}
+					}
+					else
+					if((item.owner() instanceof MOB)
+					&&(((CMLib.flags()).canSmell((MOB)item.owner()))))
+					{
+						if(aromas.size()==0)
+							((MOB)item.owner()).tell(L("@x1 regains its normal scent.",item.name()));
+						else
+						{
+							final MOB M = CMClass.getFactoryMOB(item.name(),1,(Room)item.owner());
+							try
+							{
+								for(final String str : aromas)
+									((MOB)item.owner()).tell(M,null,null,str);
+							}
+							finally
+							{
+								M.destroy();
+							}
+						}
 					}
 				}
 			}
 		}
-		super.unInvoke();
 	}
 
 	@Override
@@ -129,8 +164,13 @@ public class Spell_SuppressAroma extends Spell
 	{
 		if(((msg.source()==affected)
 			||((!(affected instanceof MOB))&&(msg.source().Name().equals(affected.Name()))))
-		&&(msg.sourceMinor()==CMMsg.TYP_AROMA))
+		&&(msg.sourceMinor()==CMMsg.TYP_AROMA)
+		&&(msg.othersMessage()!=null)
+		&&(msg.othersMessage().length()>0))
+		{
+			aromas.add(msg.othersMessage());
 			return false;
+		}
 		if((msg.sourceMinor()==CMMsg.TYP_SNIFF)
 		&&(msg.target()==affected))
 		{
@@ -168,15 +208,14 @@ public class Spell_SuppressAroma extends Spell
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		if((success)
-		&&((target instanceof MOB)||(target instanceof Item)))
+		if((success)&&((target instanceof MOB)||(target instanceof Item)))
 		{
-			int castCode = verbalCastCode(mob,target,auto);
+			int castCode = somanticCastCode(mob,target,auto);
 			if((mob!=target)
 			&&(target instanceof MOB)
 			&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 				castCode |= CMMsg.MASK_MALICIOUS;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,castCode,auto?L("<T-NAME> feel(s) less smelly."):L("^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,castCode,auto?L("<T-NAME> seem(s) less smelly."):L("^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

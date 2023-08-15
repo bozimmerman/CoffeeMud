@@ -351,12 +351,13 @@ public interface LegalBehavior extends Behavior
 
 	/**
 	 * Suppresses warrants for the given crime until the given
-	 * RL timestamp.
+	 * RL timestamp, or Ability is uninvoked, or Quest is
+	 * ended. "ALL" will suppress all crimes.
 	 *
 	 * @param crime the crime to suppress
-	 * @param until the timeout for the suppression
+	 * @param until the Object expiration for the suppression
 	 */
-	public void suppressCrime(String crime, final long until);
+	public void suppressCrime(String crime, final Object until);
 
 	/**
 	 * Changes and/or reads the current loyalty bonus that this

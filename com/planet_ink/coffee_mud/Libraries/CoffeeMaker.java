@@ -3414,6 +3414,22 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					}
 					break;
 				}
+				case BUDGETRESETDATE:
+					if(P instanceof ShopKeeper)
+					{
+						final ShopKeeper SK =(ShopKeeper)P;
+						if(SK.isGeneric())
+							return P.getStat("BUDGETRESETDATE");
+					}
+					return "";
+				case INVENTORYRESETDATE:
+					if(P instanceof ShopKeeper)
+					{
+						final ShopKeeper SK =(ShopKeeper)P;
+						if(SK.isGeneric())
+							return P.getStat("INVRESETDATE");
+					}
+					return "";
 				case INCLINATION:
 				{
 					final Faction F=CMLib.factions().getFaction(CMLib.factions().getInclinationID());
@@ -3773,6 +3789,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						((MOB)P).setAttribute(attrib, !((MOB)P).isAttributeSet(attrib));
 					break;
 				}
+				case BUDGETRESETDATE:
+				case INVENTORYRESETDATE:
 				case OBJATTRIB:
 					break;
 				default:

@@ -893,6 +893,28 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
+	public int getHoursPer(final TimePeriod period)
+	{
+		switch(period)
+		{
+		case DAY:
+			return this.getHoursInDay();
+		case MONTH:
+			return this.getHoursInDay() * this.getDaysInMonth();
+		case SEASON:
+			return this.getHoursInDay() * this.getDaysInMonth() * this.getMonthsInSeason();
+		case WEEK:
+			return this.getHoursInDay() * this.getDaysInWeek();
+		case YEAR:
+			return this.getHoursInDay() * this.getDaysInYear();
+		default:
+		case ALLTIME:
+		case HOUR:
+			return 1;
+		}
+	}
+
+	@Override
 	public void save()
 	{
 		if((loaded)&&(loadName!=null))

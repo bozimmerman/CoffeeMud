@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -131,6 +132,19 @@ public class GenShopkeeper extends StdShopKeeper
 		case 8:
 			return CMParms.toListString(viewFlags());
 		default:
+			if(code.equalsIgnoreCase("BUDGETRESETDATE"))
+			{
+				final TimeClock C = (TimeClock)CMLib.time().homeClock(this).copyOf();
+				C.bump(TimePeriod.HOUR, (int)(this.budgetTickDown/CMProps.getTicksPerMudHour()));
+				return C.getShortTimeDescription();
+			}
+			else
+			if(code.equalsIgnoreCase("INVRESETDATE"))
+			{
+				final TimeClock C = (TimeClock)CMLib.time().homeClock(this).copyOf();
+				C.bump(TimePeriod.HOUR, (int)(this.invResetTickDown/CMProps.getTicksPerMudHour()));
+				return C.getShortTimeDescription();
+			}
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}

@@ -643,6 +643,15 @@ public interface TimeClock extends Tickable, CMCommon
 	public TimeClock fromTimePeriodCodeString(final String period);
 
 	/**
+	 * Given a time period, returns the number of mud hours
+	 * contained in each, based on this clock.
+	 *
+	 * @param period the period you are curious about
+	 * @return the number of mud hours.
+	 */
+	public int getHoursPer(final TimePeriod period);
+
+	/**
 	 * Different time periods.
 	 * @author Bo Zimmerman
 	 */
@@ -657,7 +666,7 @@ public interface TimeClock extends Tickable, CMCommon
 		ALLTIME(0)
 		;
 		private final long increment;
-		
+
 		private TimePeriod(final long increment)
 		{
 			this.increment=increment;
