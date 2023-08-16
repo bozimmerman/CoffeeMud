@@ -262,11 +262,20 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		{
 			String mask=CMParms.combine(commands,1);
 			boolean allFlag=false;
+			String uses="";
 			if(mask.equalsIgnoreCase("all"))
 			{
 				allFlag=true;
 				mask="";
 			}
+			else
+			if((commands.size()>1)
+			&&(commands.get(1).equalsIgnoreCase("uses")))
+			{
+				mask="";
+				uses=CMParms.combine(commands,2);
+			}
+
 			final StringBuffer buf=new StringBuffer("");
 			final int[] cols={
 				CMLib.lister().fixColWidth(25,mob.session()),
@@ -276,6 +285,7 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			buf.append("^H"+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Resources"),cols[2]));
 			buf.append("^N\n\r");
 			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipes(recipes, mask, true);
+			boolean everyOther = false;
 			for(int r=0;r<listRecipes.size();r++)
 			{
 				final List<String> V=listRecipes.get(r);
@@ -286,13 +296,28 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 					String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(wood.length()<5)
 						wood=L("@x1 pounds of metal",wood);
+					if((uses.length()>0)
+					&&(!CMLib.english().containsString(wood, uses)))
+						continue;
 					if(wood.length()>cols[2])
 					{
-						final int x=wood.lastIndexOf(' ',cols[2]);
-						wood=wood.substring(0,x)+"\n\r"+CMStrings.repeat(' ',cols[0]+cols[1]+2)+wood.substring(x+1);
+						String wp = wood;
+						wood = "";
+						while(wp.length()>cols[2])
+						{
+							final int x=wp.lastIndexOf(' ',cols[2]);
+							wood+=wp.substring(0,x)+"\n\r"+CMStrings.repeat(' ',cols[0]+cols[1]+2);
+							wp=wp.substring(x+1);
+						}
+						wood += wp;
 					}
 					if((level<=xlevel(mob))||allFlag)
-						buf.append("^w"+CMStrings.padRight(item,cols[0])+"^N "+CMStrings.padRight(""+level,cols[1])+" "+wood+"\n\r");
+					{
+						buf.append(everyOther?"^W":"^w");
+						buf.append(CMStrings.padRight(item,cols[0]));
+						everyOther=!everyOther;
+						buf.append(" "+CMStrings.padRight(""+level,cols[1])+" "+wood+"\n\r");
+					}
 				}
 			}
 			commonTell(mob,buf.toString());
