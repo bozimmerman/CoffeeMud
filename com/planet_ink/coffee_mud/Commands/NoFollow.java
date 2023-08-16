@@ -91,12 +91,12 @@ public class NoFollow extends Follow
 		{
 			mob.setAttribute(MOB.Attrib.NOFOLLOW,true);
 			//unfollow(mob,false);
-			mob.tell(L("You are no longer accepting new followers."));
+			mob.tell(L("You are no longer accepting new followers or vassals."));
 		}
 		else
 		{
 			mob.setAttribute(MOB.Attrib.NOFOLLOW,false);
-			mob.tell(L("You are now accepting new followers."));
+			mob.tell(L("You are now accepting new followers and vassals."));
 		}
 		return false;
 	}

@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -57,10 +58,22 @@ public class Serve extends StdCommand
 		}
 		commands.remove(0);
 		final MOB recipient=getVisibleRoomTarget(mob,CMParms.combine(commands,0));
-		if((recipient!=null)&&(recipient.isMonster())&&(!(recipient instanceof Deity)))
+		if(recipient!=null)
 		{
-			CMLib.commands().postCommandFail(mob,origCmds,L("You may not serve @x1.",recipient.name()));
-			return false;
+			if(recipient.isPlayer())
+			{
+				if(!recipient.isAttributeSet(Attrib.NOFOLLOW))
+				{
+					CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is not accepting service.",recipient.name()));
+					return false;
+				}
+			}
+			else
+			if(!(recipient instanceof Deity))
+			{
+				CMLib.commands().postCommandFail(mob,origCmds,L("You may not serve @x1.",recipient.name()));
+				return false;
+			}
 		}
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{

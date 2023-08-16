@@ -1772,7 +1772,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		int c=0;
 		while(c<prompt.length())
 		{
-			if((prompt.charAt(c)=='%')&&(c<(prompt.length()-1)))
+			if((prompt.charAt(c)=='%')
+			&&(c<(prompt.length()-1)))
 			{
 				switch(prompt.charAt(++c))
 				{
@@ -1801,6 +1802,36 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							c++;
 					}
 					c++;
+					break;
+				case '<':
+					{
+						c++;
+						final int start = c;
+						int end = c;
+						while((end<prompt.length()-1)
+						&&(Character.isLetter(prompt.charAt(end))))
+							end++;
+						if(end<prompt.length()-2)
+						{
+							final boolean success = prompt.charAt(end)!='!';
+							final String attrib = prompt.substring(start,end);
+							final MOB.Attrib A = (MOB.Attrib)CMath.s_valueOf(MOB.Attrib.class,attrib.toUpperCase().trim());
+							if(A!=null)
+							{
+								c=end+1;
+								if(mob.isAttributeSet(A)!=success)
+								{
+									while((c<prompt.length()-1)
+									&&((prompt.charAt(c)!='%')||(prompt.charAt(c+1)!='<')))
+										c++;
+									if((c<prompt.length()-1)
+									&&(prompt.charAt(c-1)=='%')
+									&&(prompt.charAt(c)=='<'))
+										c++;
+								}
+							}
+						}
+					}
 					break;
 				case '-':
 					if(c<(prompt.length()-2))

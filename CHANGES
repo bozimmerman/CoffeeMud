@@ -36,7 +36,7 @@
  34. Prop_*Adjusters now support ambiance+- arguments.
  35. New property: Prop_PropSetter, for potentially permanent object changes.
  36. Rituals now support TIMEOUT, INCLUDE and ASSIST tasks for cooperative magic!
- 37. PROMPT now supports group size / max group members
+ 37. PROMPT now supports group size / max group members, and CONFIG/Attribute blocks
  38. MG Journal browser now supports Journal Limit / pages.
  39. Decoration now supports hiding items in plain sight/semi-hidden.
  40. Quests can now suppress local laws while they are running. 
@@ -45,6 +45,7 @@
  43. Loyalty will report itself when you the leader looks at the loyal follower.
  45. EXAMINE/LONGLOOK at mobs will now show wear positions like EQ LONG
  46. CATALOG now supports spawn caps, random (masked) room spawns, and mob spawns.
+ 47. SERVEing another player now requires that their NOFOLLOW flag be off.
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)
