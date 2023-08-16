@@ -2232,6 +2232,11 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			commonTelL(mob,"You can't learn anything about @x1 with @x2.",buildingI.name(mob),name());
 			return false;
 		}
+		if(buildingI.basePhyStats().level()>mob.phyStats().level())
+		{
+			commonTelL(mob,"You aren't advanced enough to learn about @x1.",buildingI.name(mob));
+			return false;
+		}
 		if(!buildingI.amWearingAt( Wearable.IN_INVENTORY ))
 		{
 			commonTelL(mob,"You need to remove @x1 first.",buildingI.name(mob));

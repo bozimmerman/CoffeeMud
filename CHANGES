@@ -46,6 +46,7 @@
  45. EXAMINE/LONGLOOK at mobs will now show wear positions like EQ LONG
  46. CATALOG now supports spawn caps, random (masked) room spawns, and mob spawns.
  47. SERVEing another player now requires that their NOFOLLOW flag be off.
+ 48. ACHIEVEMENTS command now always supporting including awards in lists.
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

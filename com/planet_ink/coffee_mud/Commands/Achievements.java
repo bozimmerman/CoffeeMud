@@ -61,7 +61,7 @@ public class Achievements extends StdCommand
 
 	private enum ValidParms
 	{
-		ANNOUNCE, ALL, WON, NOW, PLAYER, ACCOUNT, CHARACTER, CLAN
+		ANNOUNCE, ALL, WON, NOW, PLAYER, ACCOUNT, CHARACTER, CLAN, AWARDS
 	}
 
 	private Tattooable getTattooable(final Agent agent, final MOB mob)
@@ -213,9 +213,9 @@ public class Achievements extends StdCommand
 					for(final Achievement A : awards)
 					{
 						if(A.getRewards().length>0)
-							str.append(L("\n\rFrom the achievement '@x1':",A.getDisplayStr()));
+							str.append(L("\n\r^HFrom the achievement ^w'@x1'^N:",A.getDisplayStr()));
 						for(final Award award : A.getRewards())
-							str.append("\n\r"+(i++)+") "+CMLib.achievements().fixAwardDescription(A, award, whoM, whoM));
+							str.append("\n\r  "+(i++)+") "+CMLib.achievements().fixAwardDescription(A, award, whoM, whoM));
 					}
 					str.append("\n\r");
 					mob.tell(mob,whoM,null,str.toString());
@@ -253,9 +253,9 @@ public class Achievements extends StdCommand
 				for(final Achievement A : awards)
 				{
 					if(A.getRewards().length>0)
-						str.append(L("\n\rFrom the achievement '@x1':",A.getDisplayStr()));
+						str.append(L("\n\r^HFrom the achievement ^w'@x1'^N:",A.getDisplayStr()));
 					for(final Award award : A.getRewards())
-						str.append("\n\r"+(i++)+") "+CMLib.achievements().fixAwardDescription(A, award, whoM, whoM));
+						str.append("\n\r  "+(i++)+") "+CMLib.achievements().fixAwardDescription(A, award, whoM, whoM));
 				}
 				str.append("\n\r");
 				mob.tell(whoM,null,null,str.toString());
@@ -271,10 +271,10 @@ public class Achievements extends StdCommand
 					if(A != null)
 					{
 						if(A.getRewards().length>0)
-							str.append(L("\n\rFrom the achievement '@x1':",A.getDisplayStr()));
+							str.append(L("\n\r^HFrom the achievement ^w'@x1'^N:",A.getDisplayStr()));
 						for(final Award award : A.getRewards())
 						{
-							str.append("\n\r"+(i++)+") "+CMLib.achievements().fixAwardDescription(A, award, whoM, whoM));
+							str.append("\n\r  "+(i++)+") "+CMLib.achievements().fixAwardDescription(A, award, whoM, whoM));
 						}
 					}
 				}
@@ -295,6 +295,7 @@ public class Achievements extends StdCommand
 		final List<AccountStats.Agent> agents = new LinkedList<AccountStats.Agent>();
 		boolean announce=false;
 		ValidLists list = ValidLists.WON;
+		boolean addAwards = false;
 		for(int p=parms.size()-1;p>=0;p--)
 		{
 			final ValidParms V = (ValidParms)CMath.s_valueOf(ValidParms.class,parms.get(p).toUpperCase().trim());
@@ -302,6 +303,9 @@ public class Achievements extends StdCommand
 			{
 				switch(V)
 				{
+				case AWARDS:
+					addAwards = true;
+					break;
 				case ANNOUNCE:
 					announce=true;
 					break;
@@ -448,9 +452,15 @@ public class Achievements extends StdCommand
 							if(A.getEvent()==Event.STATVALUE)
 								targetScore=A.isTargetFloor()?targetScore+1:targetScore-1;
 							if(targetScore == Integer.MIN_VALUE)
-								achievedList.add(CMStrings.padRight("^w", padding)+"^?: "+A.getDisplayStr());
+								achievedList.add(CMStrings.padRight("^w", padding)+"^N: "+A.getDisplayStr());
 							else
-								achievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
+								achievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^N: "+A.getDisplayStr());
+							if(addAwards)
+							{
+								for(final Award award : A.getRewards())
+									achievedList.add(" ^k"+CMStrings.padLeft("awards", padding-1)+": "+
+											CMLib.achievements().fixAwardDescription(A, award, whoM, whoM));
+							}
 						}
 					}
 					break;
@@ -497,9 +507,15 @@ public class Achievements extends StdCommand
 								if(A.getEvent()==Event.STATVALUE)
 									targetScore=A.isTargetFloor()?targetScore+1:targetScore-1;
 								if(targetScore != Integer.MIN_VALUE)
-									achievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
+									achievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^N: "+A.getDisplayStr());
 								else
-									achievedList.add(CMStrings.padRight("^w", padding)+"^?: "+A.getDisplayStr());
+									achievedList.add(CMStrings.padRight("^w", padding)+"^N: "+A.getDisplayStr());
+								if(addAwards)
+								{
+									for(final Award award : A.getRewards())
+										achievedList.add(" ^k"+CMStrings.padLeft("awards", padding-1)+": "+
+												CMLib.achievements().fixAwardDescription(A, award, whoM, whoM));
+								}
 							}
 						}
 					}
@@ -513,7 +529,13 @@ public class Achievements extends StdCommand
 						if((wonList.contains(A.getTattoo()))
 						&&(A.canBeSeenBy(whoM)))
 						{
-							achievedList.add(A.getDisplayStr());
+							achievedList.add("^w"+A.getDisplayStr());
+							if(addAwards)
+							{
+								for(final Award award : A.getRewards())
+									achievedList.add("  ^kawards: ^N"+
+											CMLib.achievements().fixAwardDescription(A, award, whoM, whoM));
+							}
 						}
 					}
 					break;
@@ -527,7 +549,7 @@ public class Achievements extends StdCommand
 				else
 				{
 					finalResponse.append("^H"+prefix+L(CMStrings.capitalizeAndLower(agent.name())+" Achievements"+subName+":")+"^w\n\r");
-					finalResponse.append(CMLib.lister().buildNColTable(mob, achievedList, null, 2).toString()+"^w\n\r\n\r");
+					finalResponse.append(CMLib.lister().buildNColTable(mob, achievedList, null, 1).toString()+"^w\n\r\n\r");
 				}
 			}
 		}
