@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataSpawn;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -1162,24 +1163,47 @@ public class ItemData extends StdWebMacro
 						str.append(""+CMLib.flags().isCataloged(I));
 						break;
 					case CATARATE: // catarate
-						if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+						if((firstTime)
+						&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
 						{
 							final String name=itemCode.substring(8);
 							final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
 							if(data!=null)
 								old=CMath.toPct(data.getRate());
 						}
+						if((old==null)||(old.trim().length()==0))
+							old="10%";
 						str.append(old+", ");
 						break;
-					case CATALIVE: // catalive
-						if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+					case CATACAP: // catacap
+						if((firstTime)
+						&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
 						{
 							final String name=itemCode.substring(8);
 							final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
 							if(data!=null)
-								old=data.getWhenLive()?"on":"";
+								old=""+data.getCap();
 						}
-						str.append(((old.equalsIgnoreCase("on"))?"CHECKED":"")+", ");
+						if((old==null)||(old.trim().length()==0))
+							old="9";
+						str.append(old+", ");
+						break;
+					case CATALIVE: // catalive
+						if((firstTime)
+						&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+						{
+							final String name=itemCode.substring(8);
+							final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
+							if(data!=null)
+								old=data.getSpawn().name();
+						}
+						for(final CataSpawn c : CataSpawn.values())
+						{
+							str.append("<OPTION VALUE=\""+c.name()+"\" ");
+							if(c.name().equalsIgnoreCase(old))
+								str.append("SELECTED");
+							str.append(">").append(c.name());
+						}
 						break;
 					case CATAMASK: // catamask
 						if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))

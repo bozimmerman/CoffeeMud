@@ -351,8 +351,8 @@ public interface LegalBehavior extends Behavior
 
 	/**
 	 * Suppresses warrants for the given crime until the given
-	 * RL timestamp, or Ability is uninvoked, or Quest is
-	 * ended. "ALL" will suppress all crimes.
+	 * Long timestamp, or Ability is uninvoked, or Quest is
+	 * ended. A crime of "ALL" will suppress all crimes.
 	 *
 	 * @param crime the crime to suppress
 	 * @param until the Object expiration for the suppression

@@ -187,13 +187,14 @@
             <TD WIDTH=30%><a href="javascript:Refresh('NAME');"><B><FONT COLOR=YELLOW>Name</FONT></b></a></TD>
             <TD WIDTH=10%><a href="javascript:Refresh('LEVEL');"><B><FONT COLOR=YELLOW>Level</FONT></b></a></TD>
             <TD WIDTH=10%><a href="javascript:Refresh('CLASS');"><B><FONT COLOR=YELLOW>Class</FONT></b></a></TD>
-            <TD WIDTH=10%><a href="javascript:Refresh('RACE');"><B><FONT COLOR=YELLOW>Race</FONT></b></a></TD>
+            <TD WIDTH=15%><a href="javascript:Refresh('AREA');"><B><FONT COLOR=YELLOW>Area</FONT></b></a></TD>
             @if?CheckReqParm?OPTIONALCOLUMN=@
-	            <TD WIDTH=10%><a href="javascript:Refresh('GENDER');"><B><FONT COLOR=YELLOW>Gender</FONT></b></a></TD>
+	            <TD WIDTH=5%><a href="javascript:Refresh('LIVE');"><B><FONT COLOR=YELLOW>Spawn</FONT></b></a></TD>
+	            <TD WIDTH=5%><a href="javascript:Refresh('RATE');"><B><FONT COLOR=YELLOW>Rate</FONT></b></a></TD>
+	            <TD WIDTH=20%><a href="javascript:Refresh('MASK');"><B><FONT COLOR=YELLOW>Spawn Mask</FONT></b></a></TD>
 	        @else@
-	            <TD WIDTH=10%><a href="javascript:Refresh('@RequestParameter?OPTIONALCOLUMN@');"><B><I><FONT COLOR=YELLOW>@RequestParameter?OPTIONALCOLUMN@</FONT></I></b></a></TD>
+	            <TD WIDTH=30% COLSPAN=3><a href="javascript:Refresh('@RequestParameter?OPTIONALCOLUMN@');"><B><I><FONT COLOR=YELLOW>@RequestParameter?OPTIONALCOLUMN@</FONT></I></b></a></TD>
 	        @endif@
-            <TD WIDTH=25%><a href="javascript:Refresh('AREA');"><B><FONT COLOR=YELLOW>Area</FONT></b></a></TD>
             </TR>
             @CatalogMobNext?RESET@
             @loop@
@@ -203,13 +204,18 @@
                 <TD><a href="javascript:CatalogMob('@RequestParameter?MOB@','')"><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_NAME@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_LEVEL@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_CLASS@</B></FONT></a></TD>
-                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_RACE@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_AREA@</B></FONT></a></TD>
 	            @if?CheckReqParm?OPTIONALCOLUMN=@
-	                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_GENDER@</B></FONT></a></TD>
+	                @if?CheckReqParm?CATALOG_MOB_LIVE=NONE@
+	                    <TD COLSPAN=3><FONT COLOR=WHITE>N/A</FONT></a></TD>
+	                @else@
+	                    <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_LIVE@</B></FONT></a></TD>
+	                    <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_RATE@</B></FONT></a></TD>
+	                    <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_MASK@</B></FONT></a></TD>
+	                @endif@
 	            @else@
 	                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_@@RequestParameter?OPTIONALCOLUMN@@ @</B></FONT></a></TD>
 	            @endif@
-                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_AREA@</B></FONT></a></TD>
                 </TR>
             @back@
             <TR>
@@ -263,9 +269,9 @@
             <TD WIDTH=5%><a href="javascript:Refresh('VALUE');"><B><FONT COLOR=YELLOW>Value</FONT></b></a></TD>
             <TD WIDTH=20%><a href="javascript:Refresh('AREA');"><B><FONT COLOR=YELLOW>Area</FONT></b></a></TD>
             @if?CheckReqParm?OPTIONALCOLUMN=@
+	            <TD WIDTH=5%><a href="javascript:Refresh('LIVE');"><B><FONT COLOR=YELLOW>Spawn</FONT></b></a></TD>
 	            <TD WIDTH=5%><a href="javascript:Refresh('RATE');"><B><FONT COLOR=YELLOW>Rate</FONT></b></a></TD>
-	            <TD WIDTH=5%><a href="javascript:Refresh('LIVE');"><B><FONT COLOR=YELLOW>State</FONT></b></a></TD>
-	            <TD WIDTH=20%><a href="javascript:Refresh('MASK');"><B><FONT COLOR=YELLOW>MOB Mask</FONT></b></a></TD>
+	            <TD WIDTH=20%><a href="javascript:Refresh('MASK');"><B><FONT COLOR=YELLOW>Spawn Mask</FONT></b></a></TD>
 	        @else@
 	            <TD COLSPAN=3 WIDTH=30%><a href="javascript:Refresh('@RequestParameter?OPTIONALCOLUMN@');"><B><I><FONT COLOR=YELLOW>@RequestParameter?OPTIONALCOLUMN@</FONT></I></b></a></TD>
             @endif@
@@ -281,11 +287,11 @@
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_VALUE@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_AREA@</B></FONT></a></TD>
 	            @if?CheckReqParm?OPTIONALCOLUMN=@
-	                @if?CheckReqParm?CATALOG_ITEM_RATE=@
+	                @if?CheckReqParm?CATALOG_ITEM_LIVE=NONE@
 	                    <TD COLSPAN=3><FONT COLOR=WHITE>N/A</FONT></a></TD>
 	                @else@
+	                    <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_LIVE@</B></FONT></a></TD>
 	                    <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_RATE@</B></FONT></a></TD>
-	                    <TD><FONT COLOR=WHITE><B>@if?RequestParameter?CATALOG_ITEM_LIVE@Live@else@Dead@endif@</B></FONT></a></TD>
 	                    <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_MASK@</B></FONT></a></TD>
 	                @endif@
 	            @else@

@@ -755,6 +755,40 @@
     </TD>
 </TR>
 @endif@
+@if?CheckReqParm?<MOB=CATALOG-@
+	<TR><TD WIDTH=600 COLSPAN=3><FONT COLOR="#66FFFF"><B>* Edit this mob later to set Auto-Spawn information.</B></FONT></TD></TR>
+	@if?MobData?ISGENERIC@
+		<TR>
+		    <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spawn Setting:</B></FONT></TD>
+		    <TD WIDTH=450 COLSPAN=2>
+		        <SELECT NAME=CATALIVE ONCHANGE="ReShow();">
+		        @MobData?CATALIVE@
+		        </SELECT>
+		    </TD>
+		</TR>
+		@if?CheckReqParm?!CATALIVE=NONE@
+			<TR>
+			    <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spawn Rate %:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=CATARATE SIZE=5 VALUE="@MobData?CATARATE@">
+			    </TD>
+			</TR>
+			<TR>
+			    <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Max objects:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=CATACAP SIZE=5 VALUE="@MobData?CATACAP@">
+			    </TD>
+			</TR>
+			<TR>
+			    <TD WIDTH=150>
+			        <FONT COLOR="#66FFFF"><B>Zapper Mask:</B></FONT>
+			        <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></FONT></TD>
+			    </TD>
+			    <TD WIDTH=450 COLSPAN=2>
+			        <INPUT TYPE=TEXT NAME=CATAMASK SIZE=60 VALUE="@MobData?CATAMASK@">
+			    </TD>
+			</TR>
+		@endif@
+	@endif@
+@endif@
 <TR>
 	@if?RequestParameter?SINGLEMOB@
 		@if?CheckReqParm?<MOB=NEW@

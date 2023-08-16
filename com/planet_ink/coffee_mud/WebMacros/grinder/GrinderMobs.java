@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataSpawn;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -61,7 +62,7 @@ public class GrinderMobs
 		LIBMAXDAYS,LIBMAXBORROW,ISLIBRARIAN,LIBCMASK,
 		STATESTR,STATESUBJSTR,RIDERSTR,MOUNTSTR,DISMOUNTSTR,
 		ISDRINK, LIQUIDHELD, QUENCHED, LIQUIDTYPES, SIVIEWTYPES,
-		CURRENCIES, CURRENCY
+		CURRENCIES, CURRENCY,CATARATE,CATALIVE,CATAMASK,CATACAP
 		;
 
 		public boolean isGenField;
@@ -562,6 +563,38 @@ public class GrinderMobs
 				case SELLIMASK: // sell item mask
 					if(M instanceof ShopKeeper)
 						((ShopKeeper)M).setWhatIsSoldZappermask(old.trim());
+					break;
+				case CATARATE: // catarate
+					if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
+					{
+						if(cataData==null)
+							cataData=CMLib.catalog().sampleCataData("");
+						cataData.setRate(CMath.s_pct(old));
+					}
+					break;
+				case CATACAP:
+					if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
+					{
+						if(cataData==null)
+							cataData=CMLib.catalog().sampleCataData("");
+						cataData.setCap(CMath.s_int(old));
+					}
+					break;
+				case CATALIVE: // catalive
+					if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
+					{
+						if(cataData==null)
+							cataData=CMLib.catalog().sampleCataData("");
+						cataData.setSpawn((CataSpawn)CMath.s_valueOf(CataSpawn.class,old));
+					}
+					break;
+				case CATAMASK: // catamask
+					if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
+					{
+						if(cataData==null)
+							cataData=CMLib.catalog().sampleCataData("");
+						cataData.setMaskStr(old);
+					}
 					break;
 				case SHOPKEEPERTYPE: // shopkeeper type
 					if(M instanceof ShopKeeper)

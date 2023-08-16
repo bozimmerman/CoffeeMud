@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataSpawn;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -55,12 +56,16 @@ public class CatalogMobNext extends StdWebMacro
 							   ,"CATALOG_MOB_GENDER"
 							   ,"CATALOG_MOB_LEVEL"
 							   ,"CATALOG_MOB_CLASS"
+							   ,"CATALOG_MOB_RATE"
+							   ,"CATALOG_MOB_MASK"
+							   ,"CATALOG_MOB_LIVE"
 	};
 
 	public static String getCataStat(final MOB M, final CatalogLibrary.CataData data, final int x, final String optionalColumn)
 	{
 		if((M==null)||(data==null))
 			return "";
+		final boolean dataRate=data.getSpawn() != CataSpawn.NONE;
 		switch(x)
 		{
 		case 0:
@@ -77,6 +82,12 @@ public class CatalogMobNext extends StdWebMacro
 			return "" + M.basePhyStats().level();
 		case 6:
 			return M.ID();
+		case 7:
+			return (dataRate) ? CMath.toPct(data.getRate()) : "";
+		case 8:
+			return (dataRate) ? (data.getMaskStr() == null ? "" : data.getMaskStr()) : "";
+		case 9:
+			return data.getSpawn().name();
 		default:
 			if((optionalColumn!=null)&&(optionalColumn.length()>0))
 			{

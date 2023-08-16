@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataSpawn;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -63,7 +64,7 @@ public class CatalogItemNext extends StdWebMacro
 	{
 		if((I==null)||(data==null))
 			return "";
-		final boolean dataRate=(data.getRate()>0.0);
+		final boolean dataRate=data.getSpawn() != CataSpawn.NONE;
 		switch(x)
 		{
 		case 0:
@@ -81,7 +82,7 @@ public class CatalogItemNext extends StdWebMacro
 		case 6:
 			return (dataRate) ? (data.getMaskStr() == null ? "" : data.getMaskStr()) : "";
 		case 7:
-			return (dataRate) ? ("" + data.getWhenLive()) : "";
+			return data.getSpawn().name();
 		case 8:
 			return "" + data.mostPopularArea();
 		default:

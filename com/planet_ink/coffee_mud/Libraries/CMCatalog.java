@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.RoomContent;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -918,10 +919,10 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				for(int d=0;d<icatalog.size();d++)
 				{
 					data=(CatalogLibrary.CataData)icatalog.elementAt(d,2);
-					if((data.getRate()>0.0)
-					&&(data.getWhenLive()==live)
+					if((data.getSpawn()==(live?CataSpawn.LIVE:CataSpawn.DROP))
 					&&(Math.random() <= data.getRate())
-					&&(CMLib.masking().maskCheck(data.getMaskV(),M,true)))
+					&&(CMLib.masking().maskCheck(data.getMaskV(),M,true))
+					&&(data.numReferences()<data.getCap()))
 					{
 						if(selections==null)
 							selections=new ArrayList<Item>();
@@ -954,8 +955,49 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		{
 			name="THCatalog"+Thread.currentThread().getThreadGroup().getName().charAt(0);
 			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
+			this.tick(null, TICKID_SUPPORT);
 		}
 		return true;
+	}
+
+	protected Room getSpawnRoom(final CataData data, final List<Room> choiceCache, final Map<String,List<Room>> cacheSets)
+	{
+		final CMFlagLibrary flags = CMLib.flags();
+		if((data.getMaskV()==null)||(data.getMaskV().empty()))
+		{
+			for(int i=0;i<10;i++)
+			{
+				final Room R = CMLib.map().getRandomRoom();
+				if((R!=null)&&(flags.isHidden(R)))
+					return R;
+			}
+			return null;
+		}
+		final String maskStr = data.getMaskStr().toLowerCase().trim();
+		if(choiceCache.size()==0)
+		{
+			if(cacheSets.containsKey(maskStr)
+			&&(cacheSets.get(maskStr).size()>0))
+				choiceCache.addAll(cacheSets.get(maskStr));
+			else
+			{
+				final CompiledZMask mask = data.getMaskV();
+				final MaskingLibrary masker = CMLib.masking();
+				for(final Enumeration<Room> r=CMLib.map().roomsFilled();r.hasMoreElements();)
+				{
+					final Room R = r.nextElement();
+					if((!flags.isHidden(R))
+					&&(masker.maskCheck(mask, R, true)))
+						choiceCache.add(R);
+				}
+			}
+		}
+		if(choiceCache.size()==0)
+			choiceCache.add(null);
+		if(cacheSets.containsKey(maskStr)
+		&&(cacheSets.get(maskStr).size()==0))
+			cacheSets.put(maskStr, choiceCache);
+		return choiceCache.get(CMLib.dice().roll(1, choiceCache.size(), -1));
 	}
 
 	@Override
@@ -966,19 +1008,102 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CATALOGTHREAD))
 			{
 				tickStatus=Tickable.STATUS_ALIVE;
-				isDebugging=CMSecurity.isDebugging(DbgFlag.CATALOGTHREAD);
-				setThreadStatus(serviceClient,"checking catalog references.");
+				final Map<String,int[]> cacheSetsPreview = new HashMap<String,int[]>();
 				String[] names = getCatalogItemNames();
 				for (final String name2 : names)
 				{
 					final CataData data=getCatalogItemData(name2);
-					data.cleanHouse();
+					if((data.getSpawn()==CataSpawn.ROOM)
+					&&(data.getCap()>0)
+					&&(data.numReferences()<data.getCap()))
+					{
+						final String mask = data.getMaskStr().toLowerCase().trim();
+						if(!cacheSetsPreview.containsKey(mask))
+							cacheSetsPreview.put(mask,new int[] {1});
+						else
+							cacheSetsPreview.get(mask)[0]++;
+					}
 				}
 				names = getCatalogMobNames();
 				for (final String name2 : names)
 				{
 					final CataData data=getCatalogMobData(name2);
 					data.cleanHouse();
+					if((data.getSpawn()==CataSpawn.ROOM)
+					&&(data.getCap()>0)
+					&&(data.numReferences()<data.getCap()))
+					{
+						final String mask = data.getMaskStr().toLowerCase().trim();
+						if(!cacheSetsPreview.containsKey(mask))
+							cacheSetsPreview.put(mask,new int[] {1});
+						else
+							cacheSetsPreview.get(mask)[0]++;
+					}
+				}
+				final Map<String,List<Room>> cacheSets = new HashMap<String,List<Room>>();
+				for(final String mask : cacheSetsPreview.keySet())
+				{
+					if(cacheSetsPreview.get(mask)[0]>1)
+						cacheSets.put(mask, new ArrayList<Room>());
+				}
+
+				names = getCatalogItemNames();
+				isDebugging=CMSecurity.isDebugging(DbgFlag.CATALOGTHREAD);
+				setThreadStatus(serviceClient,"catalog item references.");
+				for (final String name2 : names)
+				{
+					final CataData data=getCatalogItemData(name2);
+					data.cleanHouse();
+					if((data.getSpawn()==CataSpawn.ROOM)
+					&&(data.getCap()>0)
+					&&(data.numReferences()<data.getCap())
+					&&(Math.random()<data.getRate()))
+					{
+						final List<Room> choiceCache = new ArrayList<Room>();
+						int maxFails = (data.getCap() - data.numReferences()) * 10;
+						while((--maxFails > 0)
+						&&(data.numReferences()<data.getCap()))
+						{
+							final Room R = getSpawnRoom(data, choiceCache, cacheSets);
+							if(R != null)
+							{
+								final Item I = (Item)getCatalogItem(name2).copyOf();
+								I.setSavable(false);
+								R.addItem(I);
+								changeCatalogUsage(I,true);
+								data.addReference(I);
+							}
+						}
+					}
+				}
+				setThreadStatus(serviceClient,"catalog mob references.");
+				names = getCatalogMobNames();
+				for (final String name2 : names)
+				{
+					final CataData data=getCatalogMobData(name2);
+					data.cleanHouse();
+					if((data.getSpawn()==CataSpawn.ROOM)
+					&&(data.getCap()>0)
+					&&(data.numReferences()<data.getCap())
+					&&(Math.random()<data.getRate()))
+					{
+						final List<Room> choiceCache = new ArrayList<Room>();
+						int maxFails = (data.getCap() - data.numReferences()) * 10;
+						while((--maxFails > 0)
+						&&(data.numReferences()<data.getCap()))
+						{
+							final Room R = getSpawnRoom(data, choiceCache, cacheSets);
+							if(R != null)
+							{
+								final MOB M = (MOB)getCatalogMob(name2).copyOf();
+								M.bringToLife(R, true);
+								M.setSavable(false);
+								M.setStartRoom(R);
+								changeCatalogUsage(M,true);
+								data.addReference(M);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -1060,8 +1185,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	{
 		public String 		lmaskStr			= null;
 		public String		category			= "";
-		public boolean 		live				= false;
+		public CataSpawn 	spawn				= CataSpawn.NONE;
 		public double 		rate				= 0.0;
+		public int			cap					= 0;
 		public volatile int deathPickup			= 0;
 		public SVector<WeakReference<Physical>>
 							refs				= new SVector<WeakReference<Physical>>(1);
@@ -1234,8 +1360,19 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				for(int r=0;r<refs.size();r++)
 				{
 					o=refs.elementAt(r).get();
-					if((o!=null)&&(CMLib.flags().isInTheGame(o,true)))
-						return o;
+					if(o != null)
+					{
+						if(CMLib.flags().isInTheGame(o,true))
+							return o;
+						if(o instanceof MOB)
+						{
+							final MOB M = (MOB)o;
+							if(M.amDead()
+							&&(!M.amDestroyed())
+							&&(M.basePhyStats().rejuv()>0))
+								return M;
+						}
+					}
 				}
 			}
 			catch (final Exception e)
@@ -1292,14 +1429,14 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			}
 		}
 
-		protected CataDataImpl(final String _lmask, final String _rate, final boolean _live)
+		protected CataDataImpl(final String _lmask, final String _rate, final CataSpawn _spawn, final int cap)
 		{
-			this(_lmask,CMath.s_pct(_rate),_live);
+			this(_lmask,CMath.s_pct(_rate),_spawn, cap);
 		}
 
-		protected CataDataImpl(final String _lmask, final double _rate, final boolean _live)
+		protected CataDataImpl(final String _lmask, final double _rate, final CataSpawn _spawn, final int cap)
 		{
-			live=_live;
+			spawn=_spawn;
 			lmaskStr=_lmask;
 			lmaskV=null;
 			if(lmaskStr.length()>0)
@@ -1320,9 +1457,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 
 		@Override
-		public boolean getWhenLive()
+		public CataSpawn getSpawn()
 		{
-			return live;
+			return spawn;
 		}
 
 		@Override
@@ -1342,9 +1479,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 
 		@Override
-		public void setWhenLive(final boolean l)
+		public void setSpawn(final CataSpawn spawn)
 		{
-			live = l;
+			this.spawn = spawn;
 		}
 
 		@Override
@@ -1363,7 +1500,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			buf.append("CATAGORY=\""+CMLib.xml().parseOutAngleBracketsAndQuotes(category)+"\">");
 			buf.append("<RATE>"+CMath.toPct(rate)+"</RATE>");
 			buf.append("<LMASK>"+CMLib.xml().parseOutAngleBrackets(lmaskStr)+"</LMASK>");
-			buf.append("<LIVE>"+live+"</LIVE>");
+			buf.append("<SPAWN>"+spawn.name()+"</SPAWN>");
+			buf.append("<CAP>"+cap+"</CAP>");
+			//buf.append("<LIVE>"+live+"</LIVE>");
 			buf.append("</CATALOGDATA>");
 			return buf.toString();
 		}
@@ -1387,16 +1526,49 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 					lmaskV=null;
 					if(lmaskStr.length()>0)
 						lmaskV=CMLib.masking().maskCompile(lmaskStr);
-					live=CMath.s_bool(piece.getValFromPieces("LIVE"));
+					if(piece.getValFromPieces("LIVE").length()>0)
+					{
+						if(rate == 0.0)
+						{
+							spawn = CataSpawn.NONE;
+							cap=0;
+						}
+						else
+						{
+							final boolean live = CMath.s_bool(piece.getValFromPieces("LIVE"));
+							spawn = live?CataSpawn.LIVE:CataSpawn.DROP;
+							cap=9999;
+						}
+					}
+					else
+					{
+						cap=piece.getIntFromPieces("CAP");
+						spawn = (CataSpawn)CMath.s_valueOf(CataSpawn.class, piece.getValFromPieces("SPAWN"));
+						if(spawn == null)
+							spawn = CataSpawn.NONE;
+					}
 				}
 			}
 			else
 			{
 				lmaskV=null;
 				lmaskStr="";
-				live=false;
+				spawn=CataSpawn.NONE;
 				rate=0.0;
+				cap=0;
 			}
+		}
+
+		@Override
+		public void setCap(final int max)
+		{
+			cap = max;
+		}
+
+		@Override
+		public int getCap()
+		{
+			return cap;
 		}
 	}
 

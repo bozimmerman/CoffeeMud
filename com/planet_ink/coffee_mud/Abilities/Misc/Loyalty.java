@@ -127,6 +127,18 @@ public class Loyalty extends StdAbility
 	}
 
 	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+
+		if((msg.target()==affected)
+		&&((msg.targetMinor()==CMMsg.TYP_LOOK)
+			||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
+		&&(msg.source().Name().equals(loyaltyName)))
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,affected,CMMsg.MSG_OK_VISUAL,L("^H<O-NAME> is loyal to you.^?"),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((ticking instanceof MOB)

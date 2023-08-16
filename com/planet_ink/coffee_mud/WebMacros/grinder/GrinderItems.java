@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataSpawn;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -63,7 +64,7 @@ public class GrinderItems
 		IMAGE,ISEXIT,EXITNAME,EXITCLOSEDTEXT,NUMCOINS,
 		CURRENCY,DENOM,ISRECIPE,RECIPESKILL,RECIPEDATA,
 		LAYER,SEETHRU,MULTIWEAR,ISCATALOGED,CATARATE,
-		CATALIVE,CATAMASK,BITE,MAXUSES,ISELECTRONIC,
+		CATALIVE,CATAMASK,CATACAP,BITE,MAXUSES,ISELECTRONIC,
 		CATACAT,ISPORTAL,PUTSTR,MOUNTSTR,DISMOUNTSTR,
 		DEFAULTSCLOSED,DEFAULTSLOCKED,ISWEARANDTEAR,
 		ISBOARDABLEITEM, ISPRIVATEPROPERTY, OWNER,
@@ -671,12 +672,20 @@ public class GrinderItems
 						cataData.setRate(CMath.s_pct(old));
 					}
 					break;
+				case CATACAP:
+					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
+					{
+						if(cataData==null)
+							cataData=CMLib.catalog().sampleCataData("");
+						cataData.setCap(CMath.s_int(old));
+					}
+					break;
 				case CATALIVE: // catalive
 					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 					{
 						if(cataData==null)
 							cataData=CMLib.catalog().sampleCataData("");
-						cataData.setWhenLive((old.equalsIgnoreCase("on")));
+						cataData.setSpawn((CataSpawn)CMath.s_valueOf(CataSpawn.class,old));
 					}
 					break;
 				case CATAMASK: // catamask

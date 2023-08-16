@@ -498,8 +498,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(P==null)
 			return false;
 		final boolean isInHide=((P.phyStats().disposition()&PhyStats.IS_HIDDEN)==PhyStats.IS_HIDDEN);
-		if((P instanceof MOB)
-		&&(isInHide)
+		if(isInHide
+		&&(P instanceof MOB)
 		&&(((MOB)P).isInCombat()))
 			return false;
 		return isInHide;

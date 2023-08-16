@@ -46,7 +46,12 @@ public class Equipment extends StdCommand
 		return access;
 	}
 
-	private final static Class<?>[][] internalParameters=new Class<?>[][]{{MOB.class},{Boolean.class},{}};
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{
+		{MOB.class},
+		{Boolean.class},
+		{},
+		{MOB.class, Boolean.class}
+	};
 
 	public StringBuilder getEquipment(final MOB seer, final MOB mob, final boolean allPlaces)
 	{
@@ -381,6 +386,9 @@ public class Equipment extends StdCommand
 		if(!super.checkArguments(internalParameters, args))
 			return null;
 
+		if((args.length>1)&&(args[0] instanceof MOB)&&(args[1] instanceof Boolean))
+			return getEquipment((MOB)args[0],mob,((Boolean)args[1]).booleanValue());
+		else
 		if((args.length>0)&&(args[0] instanceof MOB))
 			return getEquipment((MOB)args[0],mob,false);
 		else

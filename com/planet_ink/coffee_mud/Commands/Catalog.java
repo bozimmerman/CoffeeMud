@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataSpawn;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CatalogKind;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -442,7 +443,6 @@ public class Catalog extends StdCommand
 				final CatalogKind whatKind=getObjectType(commands);
 				final String ID=CMParms.combine(commands,0);
 				final StringBuffer list=new StringBuffer("");
-				int col=0;
 				MOB M=null;
 				Item I=null;
 				CatalogLibrary.CataData data;
@@ -463,8 +463,8 @@ public class Catalog extends StdCommand
 					list.append("^HMobs ("+(cat)+")\n\r^N");
 					list.append(CMStrings.padRight(L("Name"),34)+" ");
 					list.append(CMStrings.padRight("#",3));
-					list.append(CMStrings.padRight(L("Name"),34)+" ");
-					list.append(CMStrings.padRight("#",3));
+					list.append(CMStrings.padRight(L("Spawn"),8)+" ");
+					list.append(CMStrings.padRight(L("Mask"),29)+" ");
 					list.append("\n\r"+CMStrings.repeat('-',78)+"\n\r");
 					final String[] names=CMLib.catalog().getCatalogMobNames(cat);
 					for (final String name : names)
@@ -477,15 +477,18 @@ public class Catalog extends StdCommand
 							{
 								list.append(CMStrings.padRight(M.Name(),34)).append(" ");
 								list.append(CMStrings.padRight(Integer.toString(data.numReferences()),3));
-								if(col==0)
+								if(data.getSpawn() == CataSpawn.NONE)
 								{
-									col++;
+									list.append("N/A   ");
+									list.append(CMStrings.padRight(" ",31));
 								}
 								else
 								{
-									col++;
-									list.append("\n\r");
+									list.append(data.getSpawn().name().charAt(0)+" ");
+									list.append(CMStrings.padRight(CMath.toPct(data.getRate()),6)+" ");
+									list.append(CMStrings.padRight(data.getMaskStr(),29));
 								}
+								list.append("\n\r");
 							}
 						}
 					}
@@ -497,8 +500,8 @@ public class Catalog extends StdCommand
 					list.append("^HItems ("+(cat)+")\n\r^N");
 					list.append(CMStrings.padRight(L("Name"),34)+" ");
 					list.append(CMStrings.padRight("#",3)+" ");
-					list.append(CMStrings.padRight(L("Rate"),6)+" ");
-					list.append(CMStrings.padRight(L("Mask"),31)+" ");
+					list.append(CMStrings.padRight(L("Spawn"),8)+" ");
+					list.append(CMStrings.padRight(L("Mask"),29)+" ");
 					list.append("\n\r"+CMStrings.repeat('-',78)+"\n\r");
 					final String[] names=CMLib.catalog().getCatalogItemNames(cat);
 					for (final String name : names)
@@ -511,15 +514,15 @@ public class Catalog extends StdCommand
 							{
 								list.append(CMStrings.padRight(I.Name(),34)+" ");
 								list.append(CMStrings.padRight(Integer.toString(data.numReferences()),3)+" ");
-								if(data.getRate()<=0.0)
+								if(data.getSpawn() == CataSpawn.NONE)
 								{
 									list.append("N/A   ");
 									list.append(CMStrings.padRight(" ",31));
 								}
 								else
 								{
+									list.append(data.getSpawn().name().charAt(0)+" ");
 									list.append(CMStrings.padRight(CMath.toPct(data.getRate()),6)+" ");
-									list.append(data.getWhenLive()?"L ":"D ");
 									list.append(CMStrings.padRight(data.getMaskStr(),29));
 								}
 								list.append("\n\r");
@@ -604,45 +607,83 @@ public class Catalog extends StdCommand
 					return false;
 				}
 				final CatalogLibrary.CataData data=CMLib.catalog().getCatalogData(P);
-				if(P instanceof MOB)
+				if(mob.session()!=null)
 				{
-					mob.tell(L("There is no extra mob data to edit. See help on CATALOG."));
-				}
-				else
-				if(P instanceof Item)
-				{
-					if(mob.session()!=null)
+					final String choice;
+					if(P instanceof MOB)
 					{
-						Double newPct=null;
-						while(newPct == null)
+						choice=mob.session().choose(L("Auto-Spawn: N)o, R)oom,  (@x1): ",
+								""+data.getSpawn().name().charAt(0)),L("NR"), ""+data.getSpawn().name().charAt(0));
+					}
+					else
+					{
+						choice=mob.session().choose(L("Auto-Spawn: N)o, L)ive mobs,  D)ead mobs, R)oom,  (@x1): ",
+								""+data.getSpawn().name().charAt(0)),L("NLDR"), ""+data.getSpawn().name().charAt(0));
+					}
+					if(choice.trim().length()>0)
+					{
+						for(final CataSpawn s : CataSpawn.values())
 						{
-							final String newRate=mob.session().prompt(L("Enter a new Drop Rate or 0% to disable (@x1): ",CMath.toPct(data.getRate())), CMath.toPct(data.getRate()));
+							if(s.name().startsWith(choice.toUpperCase().trim()))
+								data.setSpawn(s);
+						}
+					}
+					if(data.getSpawn()==CataSpawn.NONE)
+					{
+						data.setMaskStr("");
+						data.setRate(0.0);
+						data.setCap(0);
+					}
+					else
+					{
+						Integer newCap=null;
+						while(newCap == null)
+						{
+							final String newRate=mob.session().prompt(L("Enter a new Max number in world (@x1): ",
+									""+data.getCap()), ""+data.getCap());
 							if(newRate.trim().length()==0)
 								return false;
 							else
-							if(CMath.isPct(newRate))
+							if(CMath.isInteger(newRate) && (CMath.s_int(newRate)>0))
+								newCap=Integer.valueOf(CMath.s_int(newRate));
+							else
+								mob.tell(L("'@x1' is not a valid maximum.  Try something like 10",newRate));
+						}
+						data.setCap(newCap.intValue());
+
+						Double newPct=null;
+						while(newPct == null)
+						{
+							final String newRate=mob.session().prompt(L("Enter a new Drop Rate (@x1): ",
+									CMath.toPct(data.getRate())), CMath.toPct(data.getRate()));
+							if(newRate.trim().length()==0)
+								return false;
+							else
+							if(CMath.isPct(newRate) && (CMath.s_pct(newRate)>0.0))
 								newPct=Double.valueOf(CMath.s_pct(newRate));
 							else
 								mob.tell(L("'@x1' is not a valid percentage value.  Try something like 10%",newRate));
 						}
 						data.setRate(newPct.doubleValue());
-						if(data.getRate()<=0.0)
-						{
-							data.setMaskStr("");
-							data.setRate(0.0);
-							CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)P);
-							Log.sysOut("Catalog",mob.Name()+" modified catalog item "+P.Name());
-							mob.tell(L("No drop item."));
-							return false;
-						}
-						final String choice=mob.session().choose(L("Is this for L)ive mobs or D)ead ones (@x1): ",(data.getWhenLive()?"L":"D")),L("LD"), (data.getWhenLive()?"L":"D"));
-						data.setWhenLive(choice.equalsIgnoreCase("L"));
 						String newMask="?";
-						while(newMask.equalsIgnoreCase("?"))
+						if(data.getSpawn()==CataSpawn.ROOM)
 						{
-							newMask=mob.session().prompt(L("Enter new MOB selection mask, or NULL (@x1)\n\r: ",data.getMaskStr()),data.getMaskStr());
-							if(newMask.equalsIgnoreCase("?"))
-								mob.tell(CMLib.masking().maskHelp("\n","disallow"));
+							while(newMask.equalsIgnoreCase("?"))
+							{
+								newMask=mob.session().prompt(L("Enter new Room selection mask, or NULL (@x1)\n\r: ",data.getMaskStr()),data.getMaskStr());
+								if(newMask.equalsIgnoreCase("?"))
+									mob.tell(CMLib.masking().maskHelp("\n","disallow"));
+							}
+						}
+						else
+						if((data.getSpawn()==CataSpawn.LIVE) || (data.getSpawn()==CataSpawn.DROP))
+						{
+							while(newMask.equalsIgnoreCase("?"))
+							{
+								newMask=mob.session().prompt(L("Enter new MOB selection mask, or NULL (@x1)\n\r: ",data.getMaskStr()),data.getMaskStr());
+								if(newMask.equalsIgnoreCase("?"))
+									mob.tell(CMLib.masking().maskHelp("\n","disallow"));
+							}
 						}
 						if((newMask.length()==0)||(newMask.equalsIgnoreCase("null")))
 						{
@@ -654,9 +695,18 @@ public class Catalog extends StdCommand
 						{
 							data.setMaskStr(newMask);
 						}
+					}
+					if(P instanceof Item)
+					{
 						CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)P);
 						Log.sysOut("Catalog",mob.Name()+" modified catalog item "+P.Name());
-						mob.tell(L("Item '@x1 has been updated.",P.Name()));
+						mob.tell(L("Item '@x1' has been updated.",P.Name()));
+					}
+					else
+					{
+						CMLib.database().DBUpdateMOB("CATALOG_MOBS",(MOB)P);
+						Log.sysOut("Catalog",mob.Name()+" modified catalog mob "+P.Name());
+						mob.tell(L("Mob '@x1' has been updated.",P.Name()));
 					}
 				}
 			}

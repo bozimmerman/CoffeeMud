@@ -250,6 +250,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	}
 
 	@Override
+	public StringBuilder getEquipmentLong(final MOB viewer, final MOB mob)
+	{
+		return (StringBuilder)forceInternalCommand(mob,"Equipment",viewer,Boolean.TRUE);
+	}
+
+	@Override
 	public StringBuilder getInventory(final MOB viewer, final MOB mob)
 	{
 		return new StringBuilder(forceInternalCommand(mob,"Inventory",viewer).toString());
@@ -2380,7 +2386,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			myDescription.append(CMStrings.capitalizeFirstLetter(viewedmob.healthText(viewermob))+"\n\r\n\r");
 			myDescription.append(CMStrings.capitalizeFirstLetter(viewedmob.description(viewermob))+"\n\r\n\r");
 
-			final StringBuilder eq=CMLib.commands().getEquipment(viewermob,viewedmob);
+			final StringBuilder eq;
+			if(longlook)
+				eq=CMLib.commands().getEquipmentLong(viewermob,viewedmob);
+			else
+				eq=CMLib.commands().getEquipment(viewermob,viewedmob);
 			if(eq.length() > 0)
 			{
 				if((CMProps.getIntVar(CMProps.Int.EQVIEW)>CMProps.Int.EQVIEW_MIXED)

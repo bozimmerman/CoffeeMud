@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataSpawn;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.FRange;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -1218,9 +1219,9 @@ public class MobData extends StdWebMacro
 		&&(CMClass.getMOB(newClassID)!=null))
 			M=CMClass.getMOB(newClassID);
 
-		boolean baseChangedClass=((httpReq.isUrlParameter("CHANGEDCLASS"))
+		final boolean baseChangedClass=((httpReq.isUrlParameter("CHANGEDCLASS"))
 							 &&(httpReq.getUrlParameter("CHANGEDCLASS").equals("true")));
-		boolean changedClass=baseChangedClass
+		final boolean changedClass=baseChangedClass
 					 &&(mobCode.equals("NEW")
 							 ||mobCode.equalsIgnoreCase("NEWDEITY")
 							 ||mobCode.startsWith("CATALOG-")
@@ -1432,6 +1433,59 @@ public class MobData extends StdWebMacro
 						CMLib.beanCounter().clearInventoryMoney(M,null);
 					}
 					str.append(old);
+					break;
+				case CATARATE: // catarate
+					if((firstTime)
+					&&(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-")))
+					{
+						final String name=mobCode.substring(8);
+						final CatalogLibrary.CataData data=CMLib.catalog().getCatalogMobData(name);
+						if(data!=null)
+							old=CMath.toPct(data.getRate());
+					}
+					if((old==null)||(old.trim().length()==0))
+						old="10%";
+					str.append(old+", ");
+					break;
+				case CATACAP: // catacap
+					if((firstTime)
+					&&(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-")))
+					{
+						final String name=mobCode.substring(8);
+						final CatalogLibrary.CataData data=CMLib.catalog().getCatalogMobData(name);
+						if(data!=null)
+							old=""+data.getCap();
+					}
+					if((old==null)||(old.trim().length()==0))
+						old="9";
+					str.append(old+", ");
+					break;
+				case CATALIVE: // catalive
+					if((firstTime)
+					&&(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-")))
+					{
+						final String name=mobCode.substring(8);
+						final CatalogLibrary.CataData data=CMLib.catalog().getCatalogMobData(name);
+						if(data!=null)
+							old=data.getSpawn().name();
+					}
+					for(final CataSpawn c : new CataSpawn[] { CataSpawn.NONE, CataSpawn.ROOM } )
+					{
+						str.append("<OPTION VALUE=\""+c.name()+"\" ");
+						if(c.name().equalsIgnoreCase(old))
+							str.append("SELECTED");
+						str.append(">").append(c.name());
+					}
+					break;
+				case CATAMASK: // catamask
+					if((firstTime)&&(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-")))
+					{
+						final String name=mobCode.substring(8);
+						final CatalogLibrary.CataData data=CMLib.catalog().getCatalogMobData(name);
+						if(data!=null)
+							old=""+data.getMaskStr();
+					}
+					str.append(htmlOutgoingFilter(old)+", ");
 					break;
 				case ISRIDEABLE: // is rideable
 					if(M instanceof Rideable)

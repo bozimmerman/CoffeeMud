@@ -612,6 +612,16 @@ public interface CommonCommands extends CMLibrary
 	public StringBuilder getEquipment(MOB viewer, MOB mob);
 
 	/**
+	 * Builds a string list of the things the given mob is
+	 * wearing, in long view, which includes wear slots.
+	 *
+	 * @param viewer the viewer of the worn stuff
+	 * @param mob the mob wearing the stuff
+	 * @return the list of stuff being worn, and wear slots
+	 */
+	public StringBuilder getEquipmentLong(final MOB viewer, final MOB mob);
+
+	/**
 	 * Builds a string list of the things the given viewer can
 	 * see in the given mobs inventory.
 	 *

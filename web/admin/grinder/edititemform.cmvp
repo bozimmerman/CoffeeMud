@@ -1112,34 +1112,43 @@
 @endif@
 @endif@
 @endif@
-@if?CheckReqParm?<ITEM=NEWCATA-@
-<TR><TD WIDTH=600 COLSPAN=3><FONT COLOR="#66FFFF"><B>* Edit this item later to set Auto-Drop rate information!</B></FONT></TD></TR>
-@endif@
 @if?CheckReqParm?<ITEM=CATALOG-@
-@if?ItemData?ISGENERIC@
-<TR>
-    <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Auto-Drop Rate %:</B></FONT></TD>
-    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=CATARATE SIZE=5 VALUE="@ItemData?CATARATE@">
-    </TD>
-</TR>
-<TR>
-    <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Drop Live-MOBS:</B></FONT></TD>
-    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=CATALIVE @ItemData?CATALIVE@></TD>
-</TR>
-<TR>
-    <TD WIDTH=150>
-        <FONT COLOR="#66FFFF"><B>Drop MOB Mask:</B></FONT>
-        <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></FONT></TD>
-    </TD>
-    <TD WIDTH=450 COLSPAN=2>
-        <INPUT TYPE=TEXT NAME=CATAMASK SIZE=60 VALUE="@ItemData?CATAMASK@">
-    </TD>
-</TR>
-@endif@
+	<TR><TD WIDTH=600 COLSPAN=3><FONT COLOR="#66FFFF"><B>* Edit this item later to set Auto-Spawn information.</B></FONT></TD></TR>
+	@if?ItemData?ISGENERIC@
+		<TR>
+		    <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spawn Setting:</B></FONT></TD>
+		    <TD WIDTH=450 COLSPAN=2>
+		        <SELECT NAME=CATALIVE ONCHANGE="ReShow();">
+		        @ItemData?CATALIVE@
+		        </SELECT>
+		    </TD>
+		</TR>
+		@if?CheckReqParm?!CATALIVE=NONE@
+			<TR>
+			    <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spawn Rate %:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=CATARATE SIZE=5 VALUE="@ItemData?CATARATE@">
+			    </TD>
+			</TR>
+			<TR>
+			    <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Max objects:</B></FONT></TD>
+			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=CATACAP SIZE=5 VALUE="@ItemData?CATACAP@">
+			    </TD>
+			</TR>
+			<TR>
+			    <TD WIDTH=150>
+			        <FONT COLOR="#66FFFF"><B>Zapper Mask:</B></FONT>
+			        <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></FONT></TD>
+			    </TD>
+			    <TD WIDTH=450 COLSPAN=2>
+			        <INPUT TYPE=TEXT NAME=CATAMASK SIZE=60 VALUE="@ItemData?CATAMASK@">
+			    </TD>
+			</TR>
+		@endif@
+	@endif@
 @endif@
 <TR>
 <TD WIDTH=600 COLSPAN=3 ALIGN=CENTER>
-    @if?CheckReqParm?<ITEM=NEWCATA-@
+    @if?CheckReqParm?<ITEM=CATALOG-@
         <TABLE WIDTH=100% BORDER=0>
             <TD WIDTH=50% ALIGN=CENTER>
                 <INPUT TYPE=SUBMIT NAME=FINISHED VALUE="Finished">
@@ -1149,19 +1158,18 @@
             </TD>
         </TABLE>
     @else@
-        @if?CheckReqParm?<ITEM=CATALOG-@
-        
-        <TABLE WIDTH=100% BORDER=0>
-            <TD WIDTH=33% ALIGN=CENTER>
-                <INPUT TYPE=SUBMIT NAME=FINISHED VALUE="Finished">
-            </TD>
-            <TD ALIGN=CENTER WIDTH=33%>
-                <INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="DelItem()">
-            </TD>
-            <TD WIDTH=33% ALIGN=CENTER>
-                <INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="window.close();">
-            </TD>
-        </TABLE>
+	    @if?CheckReqParm?<ITEM=CATALOG-@
+	        <TABLE WIDTH=100% BORDER=0>
+	            <TD WIDTH=33% ALIGN=CENTER>
+	                <INPUT TYPE=SUBMIT NAME=FINISHED VALUE="Finished">
+	            </TD>
+	            <TD ALIGN=CENTER WIDTH=33%>
+	                <INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="DelItem()">
+	            </TD>
+	            <TD WIDTH=33% ALIGN=CENTER>
+	                <INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="window.close();">
+	            </TD>
+	        </TABLE>
         @else@
         	<INPUT TYPE=SUBMIT NAME=FINISHED VALUE="Finished">
         @endif@

@@ -534,6 +534,35 @@ public interface CatalogLibrary extends CMLibrary
 	}
 
 	/**
+	 * The spawn conditions for mobs or items.
+	 * Items qualify for all 3, but mobs can
+	 * only do the random room spawn.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static enum CataSpawn
+	{
+		/**
+		 * No drop or spawning rules
+		 */
+		NONE,
+		/**
+		 * Item spawns with mob as equipment
+		 */
+		LIVE,
+		/**
+		 * Item spawns only on corpses at death
+		 */
+		DROP,
+		/**
+		 * Item or mob spawns randomly in a room
+		 */
+		ROOM
+	}
+
+
+	/**
 	 * CataData is the metadata about each entry in the
 	 * catalog.  It stores information for features like
 	 * the random drop, for instances of the cataloged items
@@ -546,21 +575,27 @@ public interface CatalogLibrary extends CMLibrary
 	{
 		/**
 		 * A compiled zapper mask that is applied to mobs to
-		 * determine if this particular item is potentially
-		 * a random drop.  The mask is only applied if it is
-		 * non-null, so null means it is NOT a random drop.
+		 * determine if a particular item is potentially
+		 * a random drop.  If getCap() is set, the mask is
+		 * applied to rooms to determine if a room is potentially a
+		 * random spawn point. The mask is only applied if it is
+		 * non-null, so null means it is NOT a random drop, but
+		 * still might be a room spawn point.
 		 * @see CataData#getMaskStr()
-		 * @see CataData#getWhenLive()
+		 * @see CataData#getSpawn()
 		 * @see CataData#getRate()
-		 * @return a compiled zapper mask for dead mobs
+		 * @return a compiled zapper mask for mobs or rooms
 		 */
 		public MaskingLibrary.CompiledZMask getMaskV();
 
 		/**
-		 * A zapper mask string that is applied to mobs to
-		 * determine if this particular item is potentially
-		 * a random drop.  The mask is only applied if it is
-		 * non-empty, so empty means it is NOT a random drop.
+		 * A zapper mask that is applied to mobs to
+		 * determine if a particular item is potentially
+		 * a random drop.  If getCap() is set, the mask is
+		 * applied to rooms to determine if a room is potentially a
+		 * random spawn point. The mask is only applied if it is
+		 * non-null, so null means it is NOT a random drop, but
+		 * still might be a room spawn point.
 		 * @see CataData#getMaskV()
 		 * @see CataData#getRate()
 		 * @see CataData#setMaskStr(String)
@@ -569,15 +604,14 @@ public interface CatalogLibrary extends CMLibrary
 		public String getMaskStr();
 
 		/**
-		 * If this item is a random drop, this flag will
-		 * return true if it is random equipment for a live
-		 * mob, and false if it is random drop for a corpse.
+		 * If this item is a random drop or spawn, this will
+		 * describe how and when the spawn occurs.
 		 * @see CataData#getMaskV()
 		 * @see CataData#getRate()
-		 * @see CataData#setWhenLive(boolean)
-		 * @return true for equipment, false for live mob
+		 * @see CataData#setSpawn(CataSpawn)
+		 * @return the catalog sawning rule
 		 */
-		public boolean getWhenLive();
+		public CataSpawn getSpawn();
 
 		/**
 		 * If this item is a random drop, then this is the pct
@@ -586,7 +620,7 @@ public interface CatalogLibrary extends CMLibrary
 		 * means it is not a random drop at all.
 		 * @see CataData#getMaskV()
 		 * @see CataData#setRate(double)
-		 * @see CataData#getWhenLive()
+		 * @see CataData#getSpawn()
 		 * @return pct chance that the item is a potential selection
 		 */
 		public double getRate();
@@ -604,15 +638,14 @@ public interface CatalogLibrary extends CMLibrary
 		public void setMaskStr(String s);
 
 		/**
-		 * If this item is a random drop, this flag will
-		 * be true if it is random equipment for a live
-		 * mob, and false if it is random drop for a corpse.
+		 * If this item is a random drop or spawn, this flag will
+		 * describe how it spawns.
 		 * @see CataData#getMaskV()
 		 * @see CataData#getRate()
-		 * @see CataData#getWhenLive()
-		 * @param l true for equipment, false for live mob
+		 * @see CataData#getSpawn()
+		 * @param spawn The catalog spawn type
 		 */
-		public void setWhenLive(boolean l);
+		public void setSpawn(CataSpawn spawn);
 
 		/**
 		 * If this item is a random drop, then this is the pct
@@ -621,10 +654,30 @@ public interface CatalogLibrary extends CMLibrary
 		 * means it is not a random drop at all.
 		 * @see CataData#getMaskV()
 		 * @see CataData#setRate(double)
-		 * @see CataData#getWhenLive()
+		 * @see CataData#getSpawn()
 		 * @param r pct chance that the item is a potential selection
 		 */
 		public void setRate(double r);
+
+		/**
+		 * If this item or mob is a random room spawn, then this is the
+		 * maximum number that can spawn and remain live.  The cap
+		 * also applies to item drops.  Making this non zero will
+		 * enable the room spawn system and change the meaning
+		 * of the mask.
+		 * @param max the maximum number to spawn and remain live
+		 */
+		public void setCap(int max);
+
+		/**
+		 * If this item or mob is a random room spawn, then this is the
+		 * maximum number that can spawn and remain live.  The cap
+		 * also applies to item drops.  Making this non zero will
+		 * enable the room spawn system and change the meaning
+		 * of the mask.
+		 * @return the maximum number to spawn and remain live
+		 */
+		public int getCap();
 
 		/**
 		 * Creates and returns an enumeration of all the instances of
