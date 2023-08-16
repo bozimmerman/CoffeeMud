@@ -713,8 +713,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						prepend.append(L("\n\rAvailable: "));
 					final CharClass C=CMClass.getCharClass(avail.getFirst(c));
 					final Integer I=avail.getSecond(c);
-					prepend.append((C!=null)?C.name(I.intValue()):avail.getFirst(c)).append(" ");
+					prepend.append((C!=null)?C.name(I.intValue()):avail.getFirst(c))
+							.append("(").append(avail.getSecond(c)).append("), ");
 				}
+				if(avail.size()>0)
+					prepend.delete(prepend.length()-2, prepend.length());
 
 				DVector preReqs;
 				if(forM==null)

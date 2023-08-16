@@ -2622,7 +2622,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	public PairList<String,Integer> getAvailabilityList(final Ability A, final int abbreviateAt)
 	{
 		final PairList<String,Integer> avail=new PairVector<String,Integer>();
-		final Hashtable<Integer,int[]> sortedByLevel=new Hashtable<Integer,int[]>();
+		final Map<Integer,int[]> sortedByLevel=new TreeMap<Integer,int[]>();
 		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
 			final CharClass C=c.nextElement();
@@ -2638,21 +2638,31 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 				avail.add(C.ID(),Integer.valueOf(lvl));
 			}
 		}
-		for(final Enumeration<Integer> e=sortedByLevel.keys();e.hasMoreElements();)
+		for(final Iterator<Integer> e=sortedByLevel.keySet().iterator();e.hasNext();)
 		{
-			final Integer I=e.nextElement();
+			final Integer I=e.next();
 			final int[] count=sortedByLevel.get(I);
 			if(count[0]>abbreviateAt)
 			{
+				if(sortedByLevel.size()==1)
+				{
+					while(avail.size()>=abbreviateAt)
+					{
+						avail.remove(avail.size()-1);
+						count[0]--;
+					}
+				}
+				else
 				for(int i=avail.size()-1;i>=0;i--)
 				{
 					if(avail.get(i).second.intValue()==I.intValue())
 						avail.remove(i);
 				}
-				if(count[0]>=(abbreviateAt*3))
+				//if(count[0]>=(abbreviateAt*3))
+				if(avail.size()==0)
 					avail.add("Numerous Classes",I);
 				else
-					avail.add("Several Classes",I);
+					avail.add("+Other Classes",I);
 			}
 		}
 		return avail;
