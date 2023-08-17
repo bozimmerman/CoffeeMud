@@ -400,7 +400,7 @@ public class Milkable extends StdAbility implements Drink
 	}
 
 	@Override
-	public int amountTakenToFillMe(final Drink theSource)
+	public int amountTakenToFillMe(final LiquidHolder theSource)
 	{
 		return 0;
 	}

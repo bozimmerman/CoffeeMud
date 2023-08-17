@@ -100,5 +100,5 @@ public interface LiquidHolder extends Environmental
 	 * @param theSource the liquid source to fill up from
 	 * @return the amount to take from the liquid source
 	 */
-	public int amountTakenToFillMe(Drink theSource);
+	public int amountTakenToFillMe(LiquidHolder theSource);
 }

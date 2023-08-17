@@ -263,7 +263,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 	}
 
 	@Override
-	public int amountTakenToFillMe(final Drink theSource)
+	public int amountTakenToFillMe(final LiquidHolder theSource)
 	{
 		int amountToTake=amountOfLiquidHeld-totalDrinkContained();
 		if(amountOfLiquidHeld>=500000)

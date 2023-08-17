@@ -208,7 +208,7 @@ public class GenLantern extends GenLightSource implements LiquidHolder
 	}
 
 	@Override
-	public int amountTakenToFillMe(final Drink theSource)
+	public int amountTakenToFillMe(final LiquidHolder theSource)
 	{
 		return amountOfLiquidHeld - amountOfLiquidRemaining;
 	}

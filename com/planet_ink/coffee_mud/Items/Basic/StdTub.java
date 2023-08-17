@@ -330,7 +330,7 @@ public class StdTub extends StdRideable implements Drink
 	}
 
 	@Override
-	public int amountTakenToFillMe(final Drink theSource)
+	public int amountTakenToFillMe(final LiquidHolder theSource)
 	{
 		int amountToTake=amountOfLiquidHeld-amountOfLiquidRemaining;
 		if(amountOfLiquidHeld>=500000)
