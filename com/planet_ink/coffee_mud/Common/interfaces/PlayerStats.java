@@ -244,7 +244,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#delTitle(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addTitle(String)
 	 *
-	 * @return  a list of modifiable title definitions
+	 * @return a list of modifiable title definitions
 	 */
 	public List<String> getTitles();
 
@@ -257,9 +257,19 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTitles()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#delTitle(String)
 	 *
-	 * @param s the new title
+	 * @param title the new title
 	 */
-	public void addTitle(String s);
+	public void addTitle(String title);
+
+	/**
+	 * Gets or changes whether the given title is part
+	 * of the 'random' list.
+	 *
+	 * @param title the title to read or change
+	 * @param changeTF null to read, or a value to change
+	 * @return the new random flag for the title
+	 */
+	public boolean getTitleRandom(final String title, final Boolean changeTF);
 
 	/**
 	 * Removes new title definition.  These are things

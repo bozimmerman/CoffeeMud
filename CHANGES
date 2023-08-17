@@ -49,7 +49,7 @@
  48. ACHIEVEMENTS command now always supporting including awards in lists.
  49. Channels now support SEARCH:
  50. Subscribe now supports channels and their backlogs
- 
+ 51. Titles now support random selection lists. 
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

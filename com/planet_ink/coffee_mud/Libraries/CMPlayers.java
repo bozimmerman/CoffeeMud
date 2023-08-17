@@ -2343,6 +2343,22 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			Log.debugOut(ID()+": No C");
 	}
 
+	protected void selectRandomTitle(final PlayerStats pStats)
+	{
+		if(pStats == null)
+			return;
+		final List<String> randomSelections = new ArrayList<String>();
+		for(final String title : pStats.getTitles())
+		{
+			if(pStats.getTitleRandom(title, null))
+				randomSelections.add(title);
+		}
+		if(randomSelections.size()==0)
+			return;
+		final String choice = randomSelections.get(CMLib.dice().roll(1, randomSelections.size(), -1));
+		pStats.addTitle(choice);
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -2373,6 +2389,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 								CMLib.achievements().evaluateAccountAchievements(M);// || didSomething;
 								//if(didSomething)&&(!CMLib.flags().isInTheGame(M,true)))
 								//	CMLib.database().DBUpdatePlayerMOBOnly(M);
+								selectRandomTitle(M.playerStats());
 							}
 						}
 						autoPurge();

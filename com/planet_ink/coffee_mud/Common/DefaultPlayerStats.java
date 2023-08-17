@@ -105,7 +105,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected Set<String>	 subscriptions	= new SHashSet<String>();
 	protected List<TellMsg>	 tellStack		= new SVector<TellMsg>();
 	protected List<TellMsg>	 gtellStack		= new SVector<TellMsg>();
-	protected List<String>	 titles			= new SVector<String>();
+	protected List<Title>	 titles			= new SVector<Title>();
 	protected Set<String>	 autoInvokeSet	= new TreeSet<String>();
 	protected PlayerAccount  account		= null;
 	protected SecGroup		 securityFlags	= new SecGroup(new CMSecurity.SecFlag[]{});
@@ -132,13 +132,34 @@ public class DefaultPlayerStats implements PlayerStats
 	protected Map<String, ExpertiseDefinition>	experMap	= new SHashtable<String, ExpertiseDefinition>();
 	protected Map<CharClass,Map<String,Object>>	classMap	= new STreeMap<CharClass,Map<String,Object>>();
 
+	private class Title
+	{
+		public String	s;
+		public boolean	r	= false;
+
+		protected Title(final String s)
+		{
+			this.s=s;
+		}
+	}
+
+	private static final Converter<Title, String> titleConverter = new Converter<Title, String>()
+	{
+		@Override
+		public String convert(final Title obj)
+		{
+			return obj.s;
+		}
+
+	};
+
 	private class LevelInfo
 	{
-		public int level;
-		public long time;
-		public String roomID;
-		public long mins;
-		public int[] costGains = new int[CostDef.CostType.values().length];
+		public int		level;
+		public long		time;
+		public String	roomID;
+		public long		mins;
+		public int[]	costGains	= new int[CostDef.CostType.values().length];
 	}
 
 	public DefaultPlayerStats()
@@ -185,7 +206,7 @@ public class DefaultPlayerStats implements PlayerStats
 			O.subscriptions=new SHashSet<String>(subscriptions);
 			O.tellStack=new SVector<TellMsg>(tellStack);
 			O.gtellStack=new SVector<TellMsg>(gtellStack);
-			O.titles=new SVector<String>(titles);
+			O.titles=new SVector<Title>(titles);
 			O.alias=new SHashtable<String,String>(alias);
 			O.legacy=new SHashtable<String,Integer>(legacy);
 			O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
@@ -707,6 +728,22 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
+	public boolean getTitleRandom(final String title, final Boolean changeTF)
+	{
+		for(final Iterator<Title> t = titles.iterator();t.hasNext();)
+		{
+			final Title T = t.next();
+			if(T.s.equals(title))
+			{
+				if(changeTF != null)
+					T.r = changeTF.booleanValue();
+				return T.r;
+			}
+		}
+		return false;
+	}
+
+	@Override
 	public String getActiveTitle()
 	{
 		if(titles.size()==0)
@@ -718,26 +755,26 @@ public class DefaultPlayerStats implements PlayerStats
 				return oActiveTitle;
 		}
 
-		final String s=titles.get(0);
+		final String s=titles.get(0).s;
 		if((s.length()>2)&&(s.charAt(0)=='{')&&(s.charAt(s.length()-1)=='}'))
 			this.actTitle = s.substring(1,s.length()-1);
 		else
 		if((titles.size()==1)
 		||(s.equals("*"))
 		||(!s.endsWith("*"))
-		||(titles.get(1).length()==0)
-		||(titles.get(1).equals("*"))
-		||(!titles.get(1).startsWith("*")))
+		||(titles.get(1).s.length()==0)
+		||(titles.get(1).s.equals("*"))
+		||(!titles.get(1).s.startsWith("*")))
 			this.actTitle = s;
 		else
-			this.actTitle=s.substring(0,s.length()-1)+titles.get(1);
+			this.actTitle=s.substring(0,s.length()-1)+titles.get(1).s;
 		return this.actTitle;
 	}
 
 	@Override
 	public List<String> getTitles()
 	{
-		return new ReadOnlyList<String>(titles);
+		return new ConvertingList<Title,String>(titles,titleConverter);
 	}
 
 	@Override
@@ -747,15 +784,20 @@ public class DefaultPlayerStats implements PlayerStats
 		{
 			if((titles.size()==0)||(s.equals("*")))
 				return false;
-			if(titles.contains(s))
+			for(final Iterator<Title> t = titles.iterator();t.hasNext();)
 			{
-				this.actTitle = null;
-				return titles.remove(s);
+				final Title T = t.next();
+				if(T.s.equals(s))
+				{
+					this.actTitle = null;
+					t.remove();
+					return true;
+				}
 			}
-			for(final Iterator<String> i=titles.iterator();i.hasNext();)
+			for(final Iterator<Title> i=titles.iterator();i.hasNext();)
 			{
-				final String s1=i.next();
-				if(s1.equalsIgnoreCase(s))
+				final Title s1=i.next();
+				if(s1.s.equalsIgnoreCase(s))
 				{
 					i.remove();
 					this.actTitle = null;
@@ -774,8 +816,8 @@ public class DefaultPlayerStats implements PlayerStats
 			if(titles.size()==0)
 			{
 				if(!s.equals("*"))
-					titles.add("*");
-				titles.add(s);
+					titles.add(new Title("*"));
+				titles.add(new Title(s));
 				this.actTitle=null;
 			}
 			else
@@ -783,7 +825,8 @@ public class DefaultPlayerStats implements PlayerStats
 				final int oldTitleSize = titles.size();
 				for(int i=0;i<titles.size();i++)
 				{
-					final String s1=titles.get(i);
+					final Title t1 = titles.get(i);
+					final String s1 = t1.s;
 					if(s1.equalsIgnoreCase(s))
 					{
 						if(i==0)
@@ -791,21 +834,21 @@ public class DefaultPlayerStats implements PlayerStats
 						this.actTitle = null;
 						titles.remove(i);
 						if(s.endsWith("*"))
-							titles.add(0, s);
+							titles.add(0, t1);
 						else
 						if(s.startsWith("*")
 						&&(s.length()>1)
-						&&(titles.get(0).endsWith("*"))
-						&&(titles.get(0).length()>1))
-							titles.add(1, s);
+						&&(titles.get(0).s.endsWith("*"))
+						&&(titles.get(0).s.length()>1))
+							titles.add(1, t1);
 						else
-							titles.add(0, s);
+							titles.add(0, t1);
 						if(titles.size()!=oldTitleSize)
 							Log.errOut("DefaultPlayerStats", titles.size()+"!="+oldTitleSize);
 						return;
 					}
 				}
-				titles.add(s);
+				titles.add(new Title(s));
 				this.actTitle = null;
 			}
 		}
@@ -817,15 +860,16 @@ public class DefaultPlayerStats implements PlayerStats
 			return "";
 		for(int t=titles.size()-1;t>=0;t--)
 		{
-			final String s=titles.get(t);
+			final String s=titles.get(t).s;
 			if(s.length()==0)
 				titles.remove(t);
 		}
 		final StringBuilder str=new StringBuilder("");
 		for(int t=0;t<titles.size();t++)
 		{
-			final String s=titles.get(t);
-			str.append("<TITLE>"+CMLib.xml().parseOutAngleBrackets(CMLib.coffeeFilter().safetyInFilter(s))+"</TITLE>");
+			final Title T=titles.get(t);
+			final String titleXMLStr = CMLib.xml().parseOutAngleBrackets(CMLib.coffeeFilter().safetyInFilter(T.s));
+			str.append("<TITLE").append(T.r?" RAND=1":"").append(">").append(titleXMLStr).append("</TITLE>");
 		}
 		return str.toString();
 	}
@@ -1080,18 +1124,30 @@ public class DefaultPlayerStats implements PlayerStats
 	private void setTitleXML(final List<XMLTag> xml)
 	{
 		titles.clear();
+		final XMLLibrary xmlLib = CMLib.xml();
 		for (final XMLTag piece : xml)
 		{
 			if(piece.tag().equals("TITLE"))
-				titles.add(CMLib.xml().restoreAngleBrackets(piece.value()));
+			{
+				final Title T = new Title(xmlLib.restoreAngleBrackets(piece.value()));
+				if(piece.parms().containsKey("RAND"))
+					T.r=true;
+				titles.add(T);
+			}
 		}
 		int t=-1;
 		while((++t)>=0)
 		{
-			final String title=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xml,"TITLE"+t));
+			final XMLLibrary.XMLTag tag = xmlLib.getPieceFromPieces(xml,"TITLE"+t);
+			if(tag == null)
+				break;
+			final String title=xmlLib.restoreAngleBrackets(tag.value());
 			if(title.length()==0)
 				break;
-			titles.add(title);
+			final Title T = new Title(title);
+			if(tag.parms().containsKey("RAND"))
+				T.r=true;
+			titles.add(T);
 		}
 		this.actTitle = null;
 	}
