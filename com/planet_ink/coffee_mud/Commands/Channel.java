@@ -195,6 +195,30 @@ public class Channel extends StdCommand
 		}
 
 		final String lfw = (commands.size()>1)?commands.get(0).toLowerCase():"";
+		if((commands.size()>1)
+		&&(mob.session()!=null)
+		&&(lfw.startsWith("search:")))
+		{
+			final String searchTerm = (lfw.substring(7)+" "+CMParms.combine(commands,1)).trim();
+			boolean showedAny=false;
+			final int max=CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.JOURNALS)?Integer.MAX_VALUE/2:100;
+			final List<ChannelsLibrary.ChannelMsg> q=CMLib.channels().searchChannelQue(mob, channelInt, searchTerm, max);
+			final ChannelsLibrary clib=CMLib.channels();
+			final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
+			final long now=System.currentTimeMillis();
+			for(int i=0;i<q.size();i++)
+			{
+				final ChannelsLibrary.ChannelMsg m=q.get(i);
+				if(clib.mayReadThisChannel(m.msg().source(), areareq, mob, channelInt))
+					showedAny=this.showBacklogMsg(mob,now,channelInt,areareq,m)||showedAny;
+			}
+			if(!showedAny)
+			{
+				mob.tell(L("No messages matching '@x1' found on this channel.",searchTerm));
+				return false;
+			}
+		}
+		else
 		if((commands.size()==2)
 		&&(mob.session()!=null)
 		&&(CMath.isNumber(commands.get(commands.size()-1)))
@@ -239,7 +263,7 @@ public class Channel extends StdCommand
 					}
 					else
 						skippedSome=true;
-					CMLib.s_sleep(10);
+					//CMLib.s_sleep(10); //?!
 				}
 			}
 			page=lastPage;

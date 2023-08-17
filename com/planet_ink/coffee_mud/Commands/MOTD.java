@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
@@ -324,48 +325,67 @@ public class MOTD extends StdCommand
 					{
 						for(String sub : pStats.getSubscriptions())
 						{
-							if(!sub.startsWith(" P :"))
-								continue;
-							sub=sub.substring(4).trim();
-							final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsNewerThan(sub, null, pStats.getLastDateTime());
-							int newPosts = 0;
-							int newReplies=0;
-							final Map<String,JournalEntry> newEntries = new HashMap<String,JournalEntry>();
-							for(final JournalEntry J : items)
-								newEntries.put(J.key(), J);
-							for(final JournalEntry J : items)
+							if(sub.startsWith(" P :"))
 							{
-								if((J.to().equalsIgnoreCase(mob.Name())||J.to().equalsIgnoreCase("ALL"))
-								&&(!J.from().equalsIgnoreCase(mob.Name())))
+								sub=sub.substring(4).trim();
+								final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsNewerThan(sub, null, pStats.getLastDateTime());
+								int newPosts = 0;
+								int newReplies=0;
+								final Map<String,JournalEntry> newEntries = new HashMap<String,JournalEntry>();
+								for(final JournalEntry J : items)
+									newEntries.put(J.key(), J);
+								for(final JournalEntry J : items)
 								{
-									if((J.parent()==null)
-									||(J.parent().length()==0))
-										newPosts++;
-									else
+									if((J.to().equalsIgnoreCase(mob.Name())||J.to().equalsIgnoreCase("ALL"))
+									&&(!J.from().equalsIgnoreCase(mob.Name())))
 									{
-										if(!newEntries.containsKey(J.parent()))
+										if((J.parent()==null)
+										||(J.parent().length()==0))
+											newPosts++;
+										else
 										{
-											final JournalEntry E=CMLib.database().DBReadJournalEntry(sub, J.parent());
-											if(E!=null)
-												newEntries.put(E.key(), E);
+											if(!newEntries.containsKey(J.parent()))
+											{
+												final JournalEntry E=CMLib.database().DBReadJournalEntry(sub, J.parent());
+												if(E!=null)
+													newEntries.put(E.key(), E);
+											}
+											final JournalEntry E=newEntries.get(J.parent());
+											if((E!=null)&&(E.from().equalsIgnoreCase(mob.Name())))
+												newReplies++;
 										}
-										final JournalEntry E=newEntries.get(J.parent());
-										if((E!=null)&&(E.from().equalsIgnoreCase(mob.Name())))
-											newReplies++;
 									}
 								}
+								if((session!=null)
+								&&(!session.isStopped()))
+								{
+									if((newPosts > 0) && (newReplies > 0))
+										session.println(L("The journal @x1 has @x2 new entries and @x3 replies for you.",sub,""+newPosts,""+newReplies));
+									else
+									if(newPosts > 0)
+										session.println(L("The journal @x1 has @x2 new entries.",sub,""+newPosts));
+									else
+									if(newReplies > 0)
+										session.println(L("The journal @x1 has @x2 new replies for you.",sub,""+newReplies));
+								}
 							}
-							if((session!=null)
-							&&(!session.isStopped()))
+							else
+							if(sub.startsWith(" C :"))
 							{
-								if((newPosts > 0) && (newReplies > 0))
-									session.println(L("The journal @x1 has @x2 new entries and @x3 replies for you.",sub,""+newPosts,""+newReplies));
-								else
-								if(newPosts > 0)
-									session.println(L("The journal @x1 has @x2 new entries.",sub,""+newPosts));
-								else
-								if(newReplies > 0)
-									session.println(L("The journal @x1 has @x2 new replies for you.",sub,""+newReplies));
+								sub=sub.substring(4).trim();
+								final int cn = CMLib.channels().getChannelIndex(sub);
+								final int lowestIndex = CMLib.channels().getChannelQueIndex(cn, mob, pStats.getLastDateTime());
+								if(lowestIndex >= 0)
+								{
+									final String channelName = CMLib.channels().getChannel(cn).name();
+									final int lastIndex = CMLib.channels().getChannelQuePageEnd(cn, mob);
+									session.println(L("You missed the last @x1 message(s) on the @x2 channel.",""+(lastIndex-lowestIndex)+1,channelName));
+									/*
+									final Command C = CMClass.getCommand("Channel");
+									final List<String> cmd = new XVector<String>(channelName,"LAST",(""+(lastIndex-lowestIndex)));
+									C.execute(mob, cmd, metaFlags);
+									*/
+								}
 							}
 						}
 					}

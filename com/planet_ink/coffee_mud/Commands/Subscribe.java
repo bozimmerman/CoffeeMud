@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -95,6 +96,7 @@ public class Subscribe extends StdCommand
 			name=CMStrings.capitalizeAndLower(name);
 			final PhysicalAgent A=mob.location().fetchFromMOBRoomFavorsItems(mob, null, name, Wearable.FILTER_UNWORNONLY);
 			String journalName=null;
+			String channelName=null;
 			if(A!=null)
 			{
 				if((A==null)||(!CMLib.flags().canBeSeenBy(A, mob)))
@@ -151,6 +153,21 @@ public class Subscribe extends StdCommand
 				}
 				if(!found)
 				{
+					for(int cn = 0; cn < CMLib.channels().getNumChannels(); cn++)
+					{
+						final CMChannel F=CMLib.channels().getChannel(cn);
+						if((F!=null)
+						&&(F.name().equalsIgnoreCase(name))
+						&&(CMLib.channels().mayReadThisChannel(mob, cn, false)))
+						{
+							found=true;
+							channelName=F.name().toUpperCase().trim();
+							break;
+						}
+					}
+				}
+				if(!found)
+				{
 					for(final Enumeration<ForumJournal> f=CMLib.journals().forumJournals();f.hasMoreElements();)
 					{
 						final ForumJournal F=f.nextElement();
@@ -180,53 +197,49 @@ public class Subscribe extends StdCommand
 						}
 					}
 				}
-			}
-			if((journalName==null)||(journalName.trim().length()==0))
-			{
-				mob.tell(L("You don't see the journal '@x1' here.",name));
-				return false;
-			}
-			if(h.contains(" E :"+journalName) && h.contains(" P :"+journalName) )
-			{
-				mob.tell(L("That journal is already on your subscription list."));
-				return false;
-			}
-			h.add(" P :"+journalName);
-			//final Session session=mob.session();
-			//final String jName=journalName;
-			/*
-			if((!h.contains(" E :"+journalName))
-			&&(session!=null))
-			{
-				mob.session().prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)
+				if(!found)
 				{
-					private final String journalName = jName;
-					@Override
-					public void showPrompt()
+					for(int cn = 0; cn < CMLib.channels().getNumChannels(); cn++)
 					{
-						session.promptPrint(L("Would you also like to receive email notifications (y/N)? "));
+						final CMChannel F=CMLib.channels().getChannel(cn);
+						if((F!=null)
+						&&(CMLib.english().containsString(F.name(),name))
+						&&(CMLib.channels().mayReadThisChannel(mob, cn, false)))
+						{
+							found=true;
+							channelName=F.name().toUpperCase().trim();
+							break;
+						}
 					}
-
-					@Override
-					public void timedOut()
-					{
-					}
-
-					@Override
-					public void callBack()
-					{
-						if(this.input.equals("Y"))
-							h.add(" E :"+journalName);
-						mob.tell(L("The Journal '@x1' has been subscribed to.",journalName));
-					}
-				});
+				}
 			}
-			else
-			*/
+			if((journalName!=null)&&(journalName.trim().length()>0))
 			{
-				//h.add(" E :"+journalName);
+				if(h.contains(" E :"+journalName) && h.contains(" P :"+journalName) )
+				{
+					mob.tell(L("That journal is already on your subscription list."));
+					return false;
+				}
+				h.add(" P :"+journalName);
 				mob.tell(L("The journal '@x1' has been subscribed to for notifications.",journalName));
 			}
+			else
+			if((channelName!=null)&&(channelName.trim().length()>0))
+			{
+				if(h.contains(" C :"+channelName) )
+				{
+					mob.tell(L("That channel is already on your subscription list."));
+					return false;
+				}
+				h.add(" C :"+channelName);
+				mob.tell(L("The channel '@x1' has been subscribed to for notifications.",channelName));
+			}
+			else
+			{
+				mob.tell(L("You don't see the journal '@x1' here, or know of a '@x1' forum or channel.",name));
+				return false;
+			}
+
 		}
 		else
 		if(commands.get(1).equalsIgnoreCase("REMOVE"))
@@ -234,17 +247,20 @@ public class Subscribe extends StdCommand
 			final String name=CMParms.combine(commands,2).toUpperCase().trim();
 			if(name.length()==0)
 			{
-				mob.tell(L("Remove which journal?"));
+				mob.tell(L("Remove which?"));
 				return false;
 			}
-			if((!h.contains(" E :"+name))&&(!h.contains(" P :"+name)))
+			if((!h.contains(" E :"+name))
+			&&(!h.contains(" P :"+name))
+			&&(!h.contains(" C :"+name)))
 			{
-				mob.tell(L("That journal '@x1' does not appear on your list.",name));
+				mob.tell(L("@x1 does not appear on your list.",name));
 				return false;
 			}
 			h.remove(" E :"+name);
 			h.remove(" P :"+name);
-			mob.tell(L("The journal '@x1' has been un-subscribed from.",name));
+			h.remove(" C :"+name);
+			mob.tell(L("@x1 has been un-subscribed from.",name));
 		}
 		else
 		{

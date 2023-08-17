@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelMsg;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -81,6 +82,20 @@ public interface ChannelsLibrary extends CMLibrary
 	public List<ChannelMsg> getChannelQue(int channelNumber, int numNewToSkip, int numToReturn, MOB mob);
 
 	/**
+	 * Searches the list of previous channel messages, in ChannelMsg
+	 * object format.  This will always want to hit the database.
+	 * @see ChannelsLibrary#getChannelIndex(String)
+	 * @see ChannelsLibrary.ChannelMsg
+	 * @see ChannelsLibrary#getChannelQuePageEnd(int, MOB)
+	 * @param mob the channel reader
+	 * @param channelNumber the channel id number/index
+	 * @param searchTerms the string to search for
+	 * @param numToReturn max number of messages to return
+	 * @return the list of messages found
+	 */
+	public List<ChannelMsg> searchChannelQue(final MOB mob, final int channelNumber, final String srchTerms, final int maxReturn);
+
+	/**
 	 * Returns the highest page index for messages in the given channel, for the given reader.
 	 *
 	 * @see ChannelsLibrary#getChannelIndex(String)
@@ -92,6 +107,15 @@ public interface ChannelsLibrary extends CMLibrary
 	 * @return the highest page index for messages in the given channel, for the given reader.
 	 */
 	public int getChannelQuePageEnd(final int channelNumber, final MOB mob);
+
+	/**
+	 * Returns the lowest page index to messages in the given channel after the given date
+	 * @param channelNumber the channel id number/index
+	 * @param mob the channel reader
+	 * @param oldestDateMs the oldest date timestamp
+	 * @return the lowest index, or -1
+	 */
+	public int getChannelQueIndex(final int channelNumber, final MOB mob, final long oldestDateMs);
 
 	/**
 	 * Returns whether the given Mob can read a channel message from the given sender, on

@@ -1,5 +1,5 @@
 # Build 5.10.3 Release ??/??/2023
-  *. Changing CoffeeMud to official require jdk 1.8.  It will still compile in 1.6 tho.
+  *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.
   1. New Paladin skills: Unholy Strike, Chaos Rage, Paladin's Fear, Paladin's Corruption
   2. New Paladin skills: Incite Fight, Dark Hammer, Paladin's Wickedness, Crushing Aura
   3. New Paladin skills: Craft Unholy Reaver, Righteous Defense, Exploiting Aura
@@ -47,6 +47,9 @@
  46. CATALOG now supports spawn caps, random (masked) room spawns, and mob spawns.
  47. SERVEing another player now requires that their NOFOLLOW flag be off.
  48. ACHIEVEMENTS command now always supporting including awards in lists.
+ 49. Channels now support SEARCH:
+ 50. Subscribe now supports channels and their backlogs
+ 
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

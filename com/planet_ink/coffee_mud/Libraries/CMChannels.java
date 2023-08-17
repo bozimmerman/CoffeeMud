@@ -65,6 +65,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return channelList.size();
 	}
 
+	protected Enumeration<CMChannel> channels()
+	{
+		return new IteratorEnumeration<CMChannel>(channelList.iterator());
+	}
+
 	@Override
 	public CMChannel getChannel(final int channelNumber)
 	{
@@ -156,6 +161,106 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	}
 
 	@Override
+	public int getChannelQueIndex(final int channelNumber, final MOB mob, final long oldestDateMs)
+	{
+		if((channelNumber>=0)
+		&&(channelNumber<channelList.size()))
+		{
+			final CMChannel channel = channelList.get(channelNumber);
+			final int subNameField = this.getExtraChannelDataField(mob, channel);
+			return CMLib.database().getLowestBackLogIndex(channel.name(), subNameField, oldestDateMs);
+		}
+		return -1;
+	}
+
+	@Override
+	public List<ChannelMsg> searchChannelQue(final MOB mob, final int channelNumber, final String srchTerms, final int maxReturn)
+	{
+		if((channelNumber>=0)
+		&&(channelNumber<channelList.size()))
+		{
+			final String srch = srchTerms.toLowerCase().trim();
+			final CMChannel channel = channelList.get(channelNumber);
+			if(channel.flags().contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
+			{
+				final LinkedList<ChannelMsg> msgs=new LinkedList<ChannelMsg>();
+				for(final ChannelMsg msg : channel.queue())
+				{
+					if(msg.msg().othersMessage().toLowerCase().indexOf(srch)>=0)
+					{
+						msgs.add(msg);
+						if(msgs.size()>=maxReturn)
+							return msgs;
+					}
+				}
+				return msgs;
+			}
+			final int subNameField = this.getExtraChannelDataField(mob, channel);
+			final List<Triad<String,Integer,Long>> backLog=CMLib.database().searchBackLogEntries(channel.name(), subNameField, srch, maxReturn);
+			return this.convertBackLogEntries(mob, channel, subNameField, backLog);
+		}
+		return emptyQueue;
+	}
+
+	protected List<ChannelMsg> convertBackLogEntries(final MOB mob, final CMChannel channel, final int subNameField, final List<Triad<String,Integer,Long>> backLog)
+	{
+		final List<ChannelMsg> allMsgs = new XVector<ChannelMsg>();
+		for(int x=0;x<backLog.size();x++)
+		{
+			final Triad<String,Integer,Long> p = backLog.get(x);
+			final CMMsg msg=CMClass.getMsg();
+			final String codedMsgStr;
+			if(p.first.startsWith("<EXTRA>"))
+			{
+				final int y=p.first.indexOf("</EXTRA>");
+				if(y<0)
+					continue;
+				codedMsgStr = p.first.substring(y+8);
+			}
+			else
+				codedMsgStr = p.first;
+			msg.parseFlatString(codedMsgStr);
+			if((subNameField != 0)
+			&&(msg.source().isMonster()))
+			{
+				if((channel.flags().contains(ChannelFlag.CLANALLYONLY)||(channel.flags().contains(ChannelFlag.CLANONLY)))
+				&&(msg.source().isMonster())
+				&&(!msg.source().clans().iterator().hasNext()))
+				{
+					for(final Pair<Clan,Integer> c : mob.clans())
+						msg.source().setClan(c.first.clanID(), c.second.intValue());
+				}
+				else
+				if(channel.flags().contains(ChannelFlag.SAMEAREA))
+					msg.source().setLocation(mob.location());
+			}
+
+			final long time = p.third.longValue();
+			allMsgs.add(new ChannelMsg()
+			{
+				@Override
+				public CMMsg msg()
+				{
+					return msg;
+				}
+
+				@Override
+				public long sentTimeMillis()
+				{
+					return time;
+				}
+
+				@Override
+				public int subNameField()
+				{
+					return subNameField;
+				}
+			});
+		}
+		return allMsgs;
+	}
+
+	@Override
 	public List<ChannelMsg> getChannelQue(final int channelNumber, final int numNewToSkip, final int numToReturn, final MOB mob)
 	{
 		if((channelNumber>=0)
@@ -181,59 +286,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			final List<Triad<String,Integer,Long>> backLog=CMLib.database().getBackLogEntries(channel.name(), subNameField, numNewToSkip, numToReturn);
 			if(backLog.size()<=msgs.size())
 				return msgs;
-			final List<ChannelMsg> allMsgs = new XVector<ChannelMsg>();
-			for(int x=0;x<backLog.size()-msgs.size();x++)
-			{
-				final Triad<String,Integer,Long> p = backLog.get(x);
-				final CMMsg msg=CMClass.getMsg();
-				final String codedMsgStr;
-				if(p.first.startsWith("<EXTRA>"))
-				{
-					final int y=p.first.indexOf("</EXTRA>");
-					if(y<0)
-						continue;
-					codedMsgStr = p.first.substring(y+8);
-				}
-				else
-					codedMsgStr = p.first;
-				msg.parseFlatString(codedMsgStr);
-				if((subNameField != 0)
-				&&(msg.source().isMonster()))
-				{
-					if((channel.flags().contains(ChannelFlag.CLANALLYONLY)||(channel.flags().contains(ChannelFlag.CLANONLY)))
-					&&(msg.source().isMonster())
-					&&(!msg.source().clans().iterator().hasNext()))
-					{
-						for(final Pair<Clan,Integer> c : mob.clans())
-							msg.source().setClan(c.first.clanID(), c.second.intValue());
-					}
-					else
-					if(channel.flags().contains(ChannelFlag.SAMEAREA))
-						msg.source().setLocation(mob.location());
-				}
 
-				final long time = p.third.longValue();
-				allMsgs.add(new ChannelMsg()
-				{
-					@Override
-					public CMMsg msg()
-					{
-						return msg;
-					}
+			for(int i=backLog.size()-msgs.size();i<backLog.size();i++)  // we already have these, so just cut them.
+				backLog.remove(backLog.size()-1);
 
-					@Override
-					public long sentTimeMillis()
-					{
-						return time;
-					}
-
-					@Override
-					public int subNameField()
-					{
-						return subNameField;
-					}
-				});
-			}
+			final List<ChannelMsg> allMsgs = this.convertBackLogEntries(mob, channel, subNameField, backLog);
 			allMsgs.addAll(msgs);
 			return allMsgs;
 		}
@@ -715,7 +772,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		{
 			Log.errOut("CMChannels", "Too many channels defined: "+channelList.size()+".");
 		}
-		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELAUCTION))
+		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELAUCTION))
+		&&(this.getChannel("AUCTION")==null))
 		{
 			channelList.add(this.createNewChannel("AUCTION"));
 		}

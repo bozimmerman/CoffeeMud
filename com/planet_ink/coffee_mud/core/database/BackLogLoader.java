@@ -343,6 +343,66 @@ public class BackLogLoader
 		return getCounter(channelName, true);
 	}
 
+	public List<Triad<String,Integer,Long>> searchBackLogEntries(String channelName, final int subNameField, final String search, final int numToReturn)
+	{
+		final List<Triad<String,Integer,Long>> list=new Vector<Triad<String,Integer,Long>>();
+		if(channelName == null)
+			return list;
+		channelName = channelName.toUpperCase().trim();
+		final String searchString = '%'+DB.injectionClean(search)+'%';
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			final StringBuilder sql=new StringBuilder("SELECT CMDATA,CMINDX,CMDATE FROM CMBKLG WHERE CMNAME='"+channelName+"' AND CMDATA LIKE ? ");
+			if(subNameField != 0)
+				sql.append(" AND CMSNAM = "+subNameField);
+			sql.append(" ORDER BY CMINDX");
+			D=DB.DBFetchPrepared(sql.toString());
+			D.setPreparedClobs(new String[]{searchString});
+			final ResultSet R = D.query(sql.toString());
+			while((R.next())&&(list.size()<numToReturn))
+				list.add(new Triad<String,Integer,Long>(DB.getRes(R, "CMDATA"),Integer.valueOf((int)DB.getLongRes(R,"CMINDX")),Long.valueOf(DB.getLongRes(R, "CMDATE"))));
+			R.close();
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("BackLog",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return list;
+	}
+
+	public int getLowestBackLogIndex(final String channelName, final int subNameField, final long afterDate)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			final StringBuilder sql=new StringBuilder("SELECT CMINDX FROM CMBKLG WHERE CMNAME='"+channelName+"'");
+			if(subNameField != 0)
+				sql.append(" AND CMSNAM = "+subNameField);
+			sql.append(" AND CMDATE >= "+afterDate);
+			sql.append(" ORDER BY CMINDX");
+			final ResultSet R = D.query(sql.toString());
+			if(R.next())
+				return R.getInt("CMINDX");
+			return -1;
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("BackLog",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return -1;
+	}
+
 	public List<Triad<String,Integer,Long>> getBackLogEntries(String channelName, final int subNameField, final int newestToSkip, final int numToReturn)
 	{
 		final List<Triad<String,Integer,Long>> list=new Vector<Triad<String,Integer,Long>>();

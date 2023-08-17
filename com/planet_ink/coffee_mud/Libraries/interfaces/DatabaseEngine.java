@@ -2607,6 +2607,37 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBBACKLOG
+	 * Returns the lowest backlog index number of messages after the given timestamp
+	 *
+	 * @param channelName the unique name of the channel to return messages from
+	 * @param subNameField any extra query field, or 0
+	 * @param afterDate the date after which we want the lowest index
+	 * @return the lowest index, or -1
+	 */
+	public int getLowestBackLogIndex(final String channelName, final int subNameField, final long afterDate);
+
+	/**
+	 * Table category: DBBACKLOG
+	 * Returns matching channel messages for the given channel and criteria.
+	 * The list returned includes the message, index, and the timestamp of the
+	 * message.  The list is date-sorted, so list returns can ge "paged"
+	 * by setting the number to skip and the number to return.
+	 *
+	 * @see DatabaseEngine#addBackLogEntry(String, int, long, String)
+	 * @see DatabaseEngine#delBackLogEntry(String, long)
+	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
+	 * @see DatabaseEngine#getBackLogPageEnd(String, int)
+	 *
+	 * @param channelName the unique name of the channel to return messages from
+	 * @param subNameField any extra query field, or 0
+	 * @param search the substring to search for
+	 * @param numToReturn the number of total messages to return
+	 * @return a list of applicable messages, coded as string,timestamp
+	 */
+	public List<Triad<String, Integer, Long>> searchBackLogEntries(final String channelName, final int subNameField, final String search, final int numToReturn);
+
+	/**
+	 * Table category: DBBACKLOG
 	 * Returns the highest page index for the given channel in the backlog table
 	 *
 	 * @see DatabaseEngine#addBackLogEntry(String, int, long, String)

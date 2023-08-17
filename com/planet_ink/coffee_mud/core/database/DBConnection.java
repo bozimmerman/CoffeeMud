@@ -473,6 +473,9 @@ public class DBConnection
 			{
 				sqlserver=true;
 				lastQueryTime=System.currentTimeMillis();
+				if(myPreparedStatement!=null)
+					R=myPreparedStatement.executeQuery();
+				else
 				if(myStatement!=null)
 					R=myStatement.executeQuery(queryString);
 				else

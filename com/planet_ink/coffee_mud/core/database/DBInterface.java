@@ -1399,6 +1399,18 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public int getLowestBackLogIndex(final String channelName, final int subNameField, final long afterDate)
+	{
+		return BackLogLoader.getLowestBackLogIndex(channelName, subNameField, afterDate);
+	}
+
+	@Override
+	public List<Triad<String, Integer, Long>> searchBackLogEntries(final String channelName, final int subNameField, final String search, final int numToReturn)
+	{
+		return BackLogLoader.searchBackLogEntries(channelName, subNameField, search, numToReturn);
+	}
+
+	@Override
 	public int getBackLogPageEnd(final String channelName, final int subNameField)
 	{
 		return BackLogLoader.getBackLogPageEnd(channelName, subNameField);
