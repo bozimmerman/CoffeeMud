@@ -100,7 +100,7 @@ public class Title extends StdCommand
 			{
 				mob.tell(menu.toString());
 				if (mob.session() != null)
-					mob.session().promptPrint(L("Enter a selection, or (R) to add random: "));
+					mob.session().promptPrint(L("Enter a selection, or toggle R)andom: "));
 			}
 
 			@Override
