@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -59,6 +60,7 @@ public class Prop_UseEmoter extends Property
 	protected boolean			broadcast	= false;
 	protected int				chance		= 100;
 	protected List<String>		inroomIDs	= new XVector<String>(0, true);
+	protected CompiledZMask		mask		= null;
 
 	protected static class EmoteObj
 	{
@@ -190,7 +192,8 @@ public class Prop_UseEmoter extends Property
 			if((msg.amITarget(affected))
 			&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
 			&&(CMLib.flags().canSmell(msg.source()))
-			&&(smells!=null))
+			&&(smells!=null)
+			&&((mask==null)||(CMLib.masking().maskCheck(mask, msg.source(), true))))
 			{
 				final EmoteObj emote=smells.get(CMLib.dice().roll(1,smells.size(),-1));
 				MOB emoter=null;
@@ -221,7 +224,9 @@ public class Prop_UseEmoter extends Property
 					}
 				}
 			}
-			if(msg.amISource((MOB)myItem.owner()))
+			if((msg.amISource((MOB)myItem.owner()))
+			&&((mask==null)||(CMLib.masking().maskCheck(mask, msg.source(), true))))
+			{
 				switch(msg.sourceMinor())
 				{
 				case CMMsg.TYP_FILL:
@@ -250,6 +255,7 @@ public class Prop_UseEmoter extends Property
 						this.emoteNow(msg);
 					break;
 				}
+			}
 		}
 		finally
 		{
@@ -265,6 +271,7 @@ public class Prop_UseEmoter extends Property
 		chance=CMParms.getParmInt(newMiscText,"chance",100);
 		emotes=null;
 		smells=null;
+		mask=null;
 	}
 
 	protected boolean setEmoteType(String str)
@@ -321,6 +328,7 @@ public class Prop_UseEmoter extends Property
 		if(emotes!=null)
 			return emotes;
 		broadcast=false;
+		mask=null;
 		emoteType=EMOTE_TYPE.EMOTE_VISUAL;
 		emotes=new Vector<EmoteObj>();
 		String newParms=text();
@@ -334,6 +342,9 @@ public class Prop_UseEmoter extends Property
 		if(x>0)
 		{
 			final String oldParms=newParms.substring(0,x);
+			final String maskStr = CMParms.getParmStr(oldParms, "MASK", null);
+			if(maskStr != null)
+				this.mask=CMLib.masking().maskCompile(maskStr);
 			setEmoteTypes(CMParms.parse(oldParms),false);
 			newParms=newParms.substring(x+1);
 		}

@@ -69,36 +69,40 @@ public class Prop_UseEmoter2 extends Prop_UseEmoter
 			if((msg.amITarget(affected))
 			&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
 			&&(CMLib.flags().canSmell(msg.source(),myItem))
-			&&(smells!=null))
+			&&(smells!=null)
+			&&((mask==null)||(CMLib.masking().maskCheck(mask, msg.source(), true))))
 			{
 				processing=false;
 				super.executeMsg(myHost, msg);
 			}
 			else
-			switch(msg.sourceMinor())
+			if((mask==null)||(CMLib.masking().maskCheck(mask, msg.source(), true)))
 			{
-			case CMMsg.TYP_DRINK:
-				if((myItem instanceof Drink)
-				&&(msg.amITarget(myItem)))
-					super.emoteNow(msg);
-				break;
-			case CMMsg.TYP_POUR:
-				if((myItem instanceof Drink)
-				&&(msg.tool()==myItem)
-				&&(msg.target() instanceof Physical))
-					super.emoteNow(msg);
-				break;
-			case CMMsg.TYP_EAT:
-				if((myItem instanceof Food)
-				&&(msg.amITarget(myItem)))
-					super.emoteNow(msg);
-				break;
-			case CMMsg.TYP_GET:
-				if((!(myItem instanceof Drink))
-				&&(!(myItem instanceof Food))
-				&&(msg.amITarget(myItem)))
-					super.emoteNow(msg);
-				break;
+				switch(msg.sourceMinor())
+				{
+				case CMMsg.TYP_DRINK:
+					if((myItem instanceof Drink)
+					&&(msg.amITarget(myItem)))
+						super.emoteNow(msg);
+					break;
+				case CMMsg.TYP_POUR:
+					if((myItem instanceof Drink)
+					&&(msg.tool()==myItem)
+					&&(msg.target() instanceof Physical))
+						super.emoteNow(msg);
+					break;
+				case CMMsg.TYP_EAT:
+					if((myItem instanceof Food)
+					&&(msg.amITarget(myItem)))
+						super.emoteNow(msg);
+					break;
+				case CMMsg.TYP_GET:
+					if((!(myItem instanceof Drink))
+					&&(!(myItem instanceof Food))
+					&&(msg.amITarget(myItem)))
+						super.emoteNow(msg);
+					break;
+				}
 			}
 		}
 		finally

@@ -9,7 +9,7 @@ crushed %	2	15	1	1	GenResource
 chipped %	7	15	1	1	GenResource				
 % weight	8	10	14	1	GenItem				
 % ornament	9	20	2	2	GenItem				
-% bird bath	10	100	200	2000	GenEmptyDrink		100	1	
+% bird bath	10	100	200	2000	GenEmptyDrink		100	1	*Prop_Sounder;PORTAL_ENTER_ROOM $n hop(s) around in the bird bath. MASK=-PLAYER -RACECAT +Avian
 % cup	11	20	2	3	GenEmptyDrink		5	1	
 % bowl	11	20	3	4	GenEmptyDrink		6	131073	
 small % flower pot	12	15	5	5	GenEmptyDrink		5	65537	

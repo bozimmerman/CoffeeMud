@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -60,6 +61,7 @@ public class Prop_Sounder extends Property
 
 	protected int[]			triggers		= null;
 	protected String[]		strings			= null;
+	protected CompiledZMask[] masks			= null;
 	protected static int	UNDER_MASK		= 1023;
 	protected static int	ROOM_MASK		= 32768;
 	protected CMMsg			lastMsg			= null;
@@ -83,6 +85,7 @@ public class Prop_Sounder extends Property
 		final List<String> emote=CMParms.parseSemicolons(newMiscText,true);
 		triggers=new int[emote.size()];
 		strings=new String[emote.size()];
+		masks=new CompiledZMask[emote.size()];
 
 		if(emote.size()>0)
 		{
@@ -96,217 +99,225 @@ public class Prop_Sounder extends Property
 				s=CMStrings.replaceAll(s,"$E","<S-HE-SHE>");
 				s=CMStrings.replaceAll(s,"$s","<S-HIS-HER>");
 				s=CMStrings.replaceAll(s,"$S","<S-HIS-HER>");
-				if((s.toUpperCase().startsWith("GET ")))
+				String upS = s.toUpperCase();
+				final int maskX = upS.indexOf("MASK=");
+				if(maskX > 4)
+				{
+					masks[v] = CMLib.masking().maskCompile(s.substring(maskX+5));
+					s=s.substring(0,maskX);
+					upS = upS.substring(0,maskX);
+				}
+				if((upS.startsWith("GET ")))
 				{
 					triggers[v]=CMMsg.TYP_GET;
 					strings[v]=s.substring(4).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("GET_ROOM ")))
+				if((upS.startsWith("GET_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_GET|ROOM_MASK;
 					strings[v]=s.substring(9).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("EAT_ROOM ")))
+				if((upS.startsWith("EAT_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_EAT|ROOM_MASK;
 					strings[v]=s.substring(9).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("EAT ")))
+				if((upS.startsWith("EAT ")))
 				{
 					triggers[v]=CMMsg.TYP_EAT;
 					strings[v]=s.substring(4).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("PUSH_ROOM ")))
+				if((upS.startsWith("PUSH_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_PUSH|ROOM_MASK;
 					strings[v]=s.substring(10).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("PUSH ")))
+				if((upS.startsWith("PUSH ")))
 				{
 					triggers[v]=CMMsg.TYP_PUSH;
 					strings[v]=s.substring(5).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("PULL_ROOM ")))
+				if((upS.startsWith("PULL_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_PULL|ROOM_MASK;
 					strings[v]=s.substring(10).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("PULL ")))
+				if((upS.startsWith("PULL ")))
 				{
 					triggers[v]=CMMsg.TYP_PULL;
 					strings[v]=s.substring(5).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("SIT ")))
+				if((upS.startsWith("SIT ")))
 				{
 					triggers[v]=CMMsg.TYP_SIT;
 					strings[v]=s.substring(4).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("SIT_ROOM ")))
+				if((upS.startsWith("SIT_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_SIT|ROOM_MASK;
 					strings[v]=s.substring(9).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("DROP ")))
+				if((upS.startsWith("DROP ")))
 				{
 					triggers[v]=CMMsg.TYP_DROP;
 					strings[v]=s.substring(5).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("DROP_ROOM ")))
+				if((upS.startsWith("DROP_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_DROP|ROOM_MASK;
 					strings[v]=s.substring(10).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("WEAR ")))
+				if((upS.startsWith("WEAR ")))
 				{
 					triggers[v]=CMMsg.TYP_WEAR;
 					strings[v]=s.substring(5).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("WEAR_ROOM ")))
+				if((upS.startsWith("WEAR_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_WEAR|ROOM_MASK;
 					strings[v]=s.substring(10).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("OPEN ")))
+				if((upS.startsWith("OPEN ")))
 				{
 					triggers[v]=CMMsg.TYP_OPEN;
 					strings[v]=s.substring(5).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("OPEN_ROOM ")))
+				if((upS.startsWith("OPEN_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_OPEN|ROOM_MASK;
 					strings[v]=s.substring(10).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("CLOSE ")))
+				if((upS.startsWith("CLOSE ")))
 				{
 					triggers[v]=CMMsg.TYP_CLOSE;
 					strings[v]=s.substring(6).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("CLOSE_ROOM ")))
+				if((upS.startsWith("CLOSE_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_CLOSE|ROOM_MASK;
 					strings[v]=s.substring(11).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("HOLD ")))
+				if((upS.startsWith("HOLD ")))
 				{
 					triggers[v]=CMMsg.TYP_HOLD;
 					strings[v]=s.substring(5).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("HOLD_ROOM ")))
+				if((upS.startsWith("HOLD_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_HOLD|ROOM_MASK;
 					strings[v]=s.substring(10).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("WIELD ")))
+				if((upS.startsWith("WIELD ")))
 				{
 					triggers[v]=CMMsg.TYP_WIELD;
 					strings[v]=s.substring(6).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("WIELD_ROOM ")))
+				if((upS.startsWith("WIELD_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_WIELD|ROOM_MASK;
 					strings[v]=s.substring(11).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("DRINK ")))
+				if((upS.startsWith("DRINK ")))
 				{
 					triggers[v]=CMMsg.TYP_DRINK;
 					strings[v]=s.substring(6).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("DRINK_ROOM ")))
+				if((upS.startsWith("DRINK_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_DRINK|ROOM_MASK;
 					strings[v]=s.substring(11).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("MOUNT ")))
+				if((upS.startsWith("MOUNT ")))
 				{
 					triggers[v]=CMMsg.TYP_MOUNT;
 					strings[v]=s.substring(6).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("MOUNT_ROOM ")))
+				if((upS.startsWith("MOUNT_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_MOUNT|ROOM_MASK;
 					strings[v]=s.substring(11).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("REMOVE ")))
+				if((upS.startsWith("REMOVE ")))
 				{
 					triggers[v]=CMMsg.TYP_REMOVE;
 					strings[v]=s.substring(7).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("REMOVE_ROOM ")))
+				if((upS.startsWith("REMOVE_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_REMOVE|ROOM_MASK;
 					strings[v]=s.substring(12).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("PORTAL_ENTER ")))
+				if((upS.startsWith("PORTAL_ENTER ")))
 				{
 					triggers[v]=CMMsg.TYP_ENTER;
 					strings[v]=s.substring(13).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("PORTAL_ENTER_ROOM ")))
+				if((upS.startsWith("PORTAL_ENTER_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_ENTER|ROOM_MASK;
 					strings[v]=s.substring(18).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("PORTAL_EXIT ")))
+				if((upS.startsWith("PORTAL_EXIT ")))
 				{
 					triggers[v]=CMMsg.TYP_LEAVE;
 					strings[v]=s.substring(12).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("PORTAL_EXIT_ROOM ")))
+				if((upS.startsWith("PORTAL_EXIT_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_LEAVE|ROOM_MASK;
 					strings[v]=s.substring(17).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("DAMAGE ")))
+				if((upS.startsWith("DAMAGE ")))
 				{
 					triggers[v]=CMMsg.TYP_DAMAGE;
 					strings[v]=s.substring(7).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("DAMAGE_ROOM ")))
+				if((upS.startsWith("DAMAGE_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_DAMAGE|ROOM_MASK;
 					strings[v]=s.substring(12).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("FIGHT ")))
+				if((upS.startsWith("FIGHT ")))
 				{
 					triggers[v]=CMMsg.TYP_WEAPONATTACK;
 					strings[v]=s.substring(6).trim();
 				}
 				else
-				if((s.toUpperCase().startsWith("FIGHT_ROOM ")))
+				if((upS.startsWith("FIGHT_ROOM ")))
 				{
 					triggers[v]=CMMsg.TYP_WEAPONATTACK|ROOM_MASK;
 					strings[v]=s.substring(11).trim();
@@ -394,60 +405,63 @@ public class Prop_Sounder extends Property
 		// this will work because, for items, behaviors
 		// get the first tick.
 		int lookFor=-1;
-		if((msg!=lastMsg)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.EMOTERS)))
-		switch(msg.targetMinor())
+		if((msg!=lastMsg)
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.EMOTERS)))
 		{
-		case CMMsg.TYP_OPEN:
-		case CMMsg.TYP_CLOSE:
-			if((msg.target()==host)
-			||((!(host instanceof Item))&&(!(host instanceof Exit))))
-				lookFor=msg.targetMinor();
-			break;
-		case CMMsg.TYP_GET:
-		case CMMsg.TYP_PUSH:
-		case CMMsg.TYP_PULL:
-		case CMMsg.TYP_REMOVE:
-		case CMMsg.TYP_WEAR:
-		case CMMsg.TYP_HOLD:
-		case CMMsg.TYP_WIELD:
-		case CMMsg.TYP_EAT:
-		case CMMsg.TYP_DRINK:
-		case CMMsg.TYP_SIT:
-		case CMMsg.TYP_SLEEP:
-		case CMMsg.TYP_MOUNT:
-			if((msg.target()==host)||(!(host instanceof Item)))
-				lookFor=msg.targetMinor();
-			break;
-		case CMMsg.TYP_DROP:
-			if(((!(host instanceof Item))||(msg.target()==host))
-			&&(msg.target() instanceof Item))
-				lookFor=CMMsg.TYP_DROP;
-			break;
-		case CMMsg.TYP_ENTER:
-			if((msg.target()!=null)
-			&&((msg.target()==CMLib.map().roomLocation(host))
-				||((host instanceof Exit)&&(msg.tool()==host))))
-				lookFor=CMMsg.TYP_ENTER;
-			break;
-		case CMMsg.TYP_LEAVE:
-			if((msg.target()!=null)
-			&&((msg.target()==CMLib.map().roomLocation(host))
-				||((host instanceof Exit)&&(msg.tool()==host))))
-				lookFor=CMMsg.TYP_LEAVE;
-			break;
-		case CMMsg.TYP_WEAPONATTACK:
-			if((msg.target()!=null)
-			&&(msg.target()!=host)
-			&&((msg.source()==host)||(msg.tool()==host)||(host instanceof Room)||(host instanceof Exit))
-			&&(!oncePerRound1))
-				lookFor=CMMsg.TYP_WEAPONATTACK;
-			break;
-		case CMMsg.TYP_DAMAGE:
-			if((msg.target()!=null)
-			&&(msg.source()!=host)
-			&&((msg.target()==host)||(msg.tool()==host)||(host instanceof Room)||(host instanceof Exit)))
-				lookFor=CMMsg.TYP_DAMAGE;
-			break;
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_OPEN:
+			case CMMsg.TYP_CLOSE:
+				if((msg.target()==host)
+				||((!(host instanceof Item))&&(!(host instanceof Exit))))
+					lookFor=msg.targetMinor();
+				break;
+			case CMMsg.TYP_GET:
+			case CMMsg.TYP_PUSH:
+			case CMMsg.TYP_PULL:
+			case CMMsg.TYP_REMOVE:
+			case CMMsg.TYP_WEAR:
+			case CMMsg.TYP_HOLD:
+			case CMMsg.TYP_WIELD:
+			case CMMsg.TYP_EAT:
+			case CMMsg.TYP_DRINK:
+			case CMMsg.TYP_SIT:
+			case CMMsg.TYP_SLEEP:
+			case CMMsg.TYP_MOUNT:
+				if((msg.target()==host)||(!(host instanceof Item)))
+					lookFor=msg.targetMinor();
+				break;
+			case CMMsg.TYP_DROP:
+				if(((!(host instanceof Item))||(msg.target()==host))
+				&&(msg.target() instanceof Item))
+					lookFor=CMMsg.TYP_DROP;
+				break;
+			case CMMsg.TYP_ENTER:
+				if((msg.target()!=null)
+				&&((msg.target()==CMLib.map().roomLocation(host))
+					||((host instanceof Exit)&&(msg.tool()==host))))
+					lookFor=CMMsg.TYP_ENTER;
+				break;
+			case CMMsg.TYP_LEAVE:
+				if((msg.target()!=null)
+				&&((msg.target()==CMLib.map().roomLocation(host))
+					||((host instanceof Exit)&&(msg.tool()==host))))
+					lookFor=CMMsg.TYP_LEAVE;
+				break;
+			case CMMsg.TYP_WEAPONATTACK:
+				if((msg.target()!=null)
+				&&(msg.target()!=host)
+				&&((msg.source()==host)||(msg.tool()==host)||(host instanceof Room)||(host instanceof Exit))
+				&&(!oncePerRound1))
+					lookFor=CMMsg.TYP_WEAPONATTACK;
+				break;
+			case CMMsg.TYP_DAMAGE:
+				if((msg.target()!=null)
+				&&(msg.source()!=host)
+				&&((msg.target()==host)||(msg.tool()==host)||(host instanceof Room)||(host instanceof Exit)))
+					lookFor=CMMsg.TYP_DAMAGE;
+				break;
+			}
 		}
 		lastMsg=msg;
 		final Room room=msg.source().location();
@@ -459,7 +473,8 @@ public class Prop_Sounder extends Property
 		{
 			for(int v=0;v<triggers.length;v++)
 			{
-				if((triggers[v]&UNDER_MASK)==lookFor)
+				if(((triggers[v]&UNDER_MASK)==lookFor)
+				&&((masks[v]==null)||(CMLib.masking().maskCheck(masks[v],msg.source(),true))))
 				{
 					if(CMath.bset(triggers[v],ROOM_MASK))
 					{
