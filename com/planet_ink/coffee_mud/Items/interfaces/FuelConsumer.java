@@ -40,7 +40,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface FuelConsumer extends Electronics, Container
+public interface FuelConsumer extends Container
 {
 	/**
 	 * Gets an array of RawMaterial codes representing the

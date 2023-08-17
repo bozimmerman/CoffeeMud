@@ -57,14 +57,14 @@ public class GenLightSource extends LightSource
 	@Override
 	public void setDuration(final int duration)
 	{
-		readableText=""+duration;
+		readableText=""+duration;	// required because lazy way back when
 		super.setDuration(duration);
 	}
 
 	@Override
 	public int getDuration()
 	{
-		durationTicks = CMath.s_int(readableText);
+		durationTicks = CMath.s_int(readableText);	// required because lazy way back when
 		return super.getDuration();
 	}
 
@@ -90,7 +90,7 @@ public class GenLightSource extends LightSource
 	public void setReadableText(final String text)
 	{
 		readableText=text;
-		if(CMath.isInteger(text))
+		if(CMath.isInteger(text))	// required because lazy way back when
 			super.setDuration(CMath.s_int(text));
 	}
 

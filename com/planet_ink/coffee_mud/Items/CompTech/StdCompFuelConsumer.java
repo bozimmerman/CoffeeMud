@@ -123,7 +123,8 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements FuelCon
 		int amt=0;
 		for(final Item I : getFuel())
 		{
-			if(I instanceof RawMaterial)
+			if((I instanceof RawMaterial)
+			&&CMParms.contains(this.getConsumedFuelTypes(), ((RawMaterial)I).material()))
 				amt+=I.phyStats().weight();
 		}
 		return amt;

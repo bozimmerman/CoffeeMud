@@ -215,7 +215,8 @@ public class FireBuilding extends CommonSkill
 					commonTelL(mob,"@x1 is already lit!",l.name());
 					return false;
 				}
-				if(CMLib.flags().isGettable(lighting))
+				if(CMLib.flags().isGettable(lighting)
+				&&(lighting.owner() instanceof MOB))
 					commonTelL(mob,"Just hold this item to light it.");
 				else
 				{
