@@ -2353,7 +2353,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			if(pStats.getTitleRandom(title, null))
 				randomSelections.add(title);
 		}
-		if(randomSelections.size()==0)
+		if(randomSelections.size()<2)
 			return;
 		final String choice = randomSelections.get(CMLib.dice().roll(1, randomSelections.size(), -1));
 		pStats.addTitle(choice);
