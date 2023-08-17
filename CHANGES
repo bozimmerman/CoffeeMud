@@ -42,11 +42,11 @@
  40. Quests can now suppress local laws while they are running. 
  41. Prop_ClosedDayNight can now generate near-closing greetings.
  42. MudChat now how syntax for adding marginal entries over the chat.dat entries.
- 43. Loyalty will report itself when you the leader looks at the loyal follower.
+ 43. Loyalty will report itself when the leader looks at the loyal follower.
  45. EXAMINE/LONGLOOK at mobs will now show wear positions like EQ LONG
  46. CATALOG now supports spawn caps, random (masked) room spawns, and mob spawns.
  47. SERVEing another player now requires that their NOFOLLOW flag be off.
- 48. ACHIEVEMENTS command now always supporting including awards in lists.
+ 48. ACHIEVEMENTS command now always supports including awards in lists.
  49. Channels now support SEARCH:
  50. Subscribe now supports channels and their backlogs
  51. Titles now support random selection lists.
