@@ -263,6 +263,7 @@ public class Burning extends StdAbility
 								ash.basePhyStats().setWeight(1);
 								ash.recoverPhyStats();
 								room.addItem(ash,ItemPossessor.Expire.Monster_EQ);
+								ash.setContainer(affI.container());
 								((RawMaterial)ash).rebundle();
 								if((affI instanceof RawMaterial)
 								&&(affI.basePhyStats().weight()>1)

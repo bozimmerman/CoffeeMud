@@ -61,7 +61,7 @@ public class GenStove extends GenContainer implements Light, FuelConsumer
 		setMaterial(RawMaterial.RESOURCE_IRON);
 		destroyedWhenBurnedOut	= false;
 		goesOutInTheRain		= false;
-		generatedFuelTypes = new int[] { RawMaterial.RESOURCE_OAK };
+		generatedFuelTypes = new int[] { RawMaterial.RESOURCE_WOOD, RawMaterial.RESOURCE_COAL };
 	}
 
 	@Override
@@ -137,14 +137,26 @@ public class GenStove extends GenContainer implements Light, FuelConsumer
 		generatedFuelTypes = resources;
 	}
 
+	protected boolean isFuel(final Item I)
+	{
+		if(!(I instanceof RawMaterial))
+			return false;
+		final int[] types = this.getConsumedFuelTypes();
+		if(CMParms.contains(types, I.material()))
+			return true;
+		if(CMParms.contains(types, RawMaterial.RESOURCE_WOOD)
+		&&((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN))
+			return true;
+		return false;
+	}
+
 	@Override
 	public int getFuelRemaining()
 	{
 		int amt=0;
 		for(final Item I : getFuel())
 		{
-			if((I instanceof RawMaterial)
-			&&CMParms.contains(this.getConsumedFuelTypes(), ((RawMaterial)I).material()))
+			if(isFuel(I))
 				amt+=I.phyStats().weight();
 		}
 		return amt;
@@ -155,8 +167,7 @@ public class GenStove extends GenContainer implements Light, FuelConsumer
 		final List<Item> fuel = new ArrayList<Item>();
 		for(final Item I : getContents())
 		{
-			if((I instanceof RawMaterial)
-			&&CMParms.contains(this.getConsumedFuelTypes(), ((RawMaterial)I).material()))
+			if(isFuel(I))
 				fuel.add(I);
 		}
 		return fuel;
@@ -206,16 +217,82 @@ public class GenStove extends GenContainer implements Light, FuelConsumer
 	}
 
 	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		final MOB mob=msg.source();
+		if(!msg.amITarget(this))
+			return super.okMessage(myHost,msg);
+		switch(msg.targetMinor())
+		{
+		case CMMsg.TYP_EXTINGUISH:
+			if(!isLit())
+			{
+				mob.tell(L("@x1 is not lit!",name()));
+				return false;
+			}
+			return true;
+		}
+		return super.okMessage(myHost,msg);
+	}
+
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		final MOB mob=msg.source();
+		if(mob==null)
+			return;
+		final Room room=mob.location();
+		if(room==null)
+			return;
+		if(msg.amITarget(this))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_EXTINGUISH:
+				if(isLit())
+				{
+					light(false);
+					recoverPhyStats();
+					room.recoverRoomStats();
+				}
+				break;
+			}
+		}
+	}
+
+	@Override
 	public void light(final boolean isLit)
 	{
 		lit = isLit;
 		if((owner() instanceof Room)||(owner() instanceof MOB))
 		{
+			final Ability bA = fetchEffect("Burning");
 			final List<Item> fuel = getFuel();
 			if(lit && (fuel.size()>0))
+			{
 				CMLib.threads().startTickDown(this, Tickable.TICKID_LIGHT_FLICKERS, 1);
+				if(bA==null)
+				{
+					Ability B=CMClass.getAbility("Burning");
+					B.setAbilityCode(1024|2048|4096); // not destroyed, no spread, not extinguished by rain
+					final MOB mob=CMClass.getFactoryMOB();
+					B.invoke(mob,this,true, Integer.MAX_VALUE/2);
+					mob.destroy();
+					B=fetchEffect("Burning");
+					if(B!=null)
+						B.makeLongLasting();
+				}
+			}
 			else
+			{
 				CMLib.threads().deleteTick(me, Tickable.TICKID_LIGHT_FLICKERS);
+				if(bA!=null)
+				{
+					bA.unInvoke();
+					delEffect(bA);
+				}
+			}
 			for(final Item fI : fuel)
 			{
 				final Ability A = fI.fetchEffect("Burning");
@@ -223,6 +300,7 @@ public class GenStove extends GenContainer implements Light, FuelConsumer
 				{
 					if(isLit)
 						return; // nothing to do!
+					A.setAbilityCode(1024); // not destroyed, no spread, not extinguished by rain
 					A.unInvoke();
 					fI.delEffect(A);
 				}

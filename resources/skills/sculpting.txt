@@ -31,7 +31,7 @@ small % plate	24	20	2	8	GenContainer		3	131072
 % four-sided die	25	50	1	13	GenDice		4		
 % gravy boat	25	30	2	14	GenEmptyDrink		5	1	
 % pillar	25	30	50	350	GenItem				
-% stove	26	40	100	1000	GenRideable	TABLE	100	0	Burning
+% stove	26	40	100	1000	GenStove		100	0	
 small % bed	26	25	100	600	GenBed	BED	1	0	
 % eight-sided die	27	50	1	13	GenDice		8		
 % ten-sided die	29	60	1	17	GenDice		10		

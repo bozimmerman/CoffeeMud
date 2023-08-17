@@ -82,7 +82,7 @@ plain % sarcophagus	42	40	200	5450	GenBed	BED	500
 % blacksmithing tongs	45	20	3	41	GenItem			
 small % chest	45	80	10	560	GenContainer	LOCK	100	
 % bed	46	30	50	1035	GenBed	BED	2	
-% stove	46	130	125	8000	GenContainer	LID	75	Burning
+% stove	46	130	125	8000	GenStove	LID	75	
 % twenty-sided die	47	80	1	58	GenDice		20	
 % bench	49	40	20	560	GenChair	CHAIR	4	
 % ladle	50	15	1	11	GenEmptyDrink	LIQUID	2	
