@@ -2,7 +2,6 @@
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
 @if?!CheckAuthCode?AUTH_JOURNALS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
-@AddRequestParameter?JOURNALPAGELIMIT=10@
 <html>
 	<META CHARSET="utf-8"/>
 <head>
@@ -193,7 +192,6 @@
 				@endif@
 				<!-- page support -->
 				@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
-				@AddRequestParameter?OLDCARDINAL=@@RequestParameter?JOURNALCARDINAL@@ @
 				@if?CheckReqParm?JOURNALPAGE=@
 					@AddRequestParameter?JOURNALPAGE=@@JournalMessageNext?LASTPAGE@@ @
 				@endif@
@@ -205,9 +203,11 @@
 				@endif@
 				<!-- /page support -->
 				<UL>
+				@AddRequestParameter?FIRSTCARDINAL=@
 				@loop@
 					@JournalMessageNext?REVERSE@
 					<LI><a href="javascript:Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@','@RequestParameter?JOURNALCARDINAL@')">
+					@if?CheckReqParm?FIRSTCARDINAL=@ @AddRequestParameter?FIRSTCARDINAL=@@RequestParameter?JOURNALCARDINAL@@ @ @endif@
 					<FONT COLOR=YELLOW>@RequestParameter?JOURNALCARDINAL@</FONT>
 					@AddRequestParameter?TEMPFROM=@@JournalInfo?FROM@@ @
 					@AddRequestParameter?TEMPTO=@@JournalInfo?TO@@ @
@@ -225,7 +225,7 @@
 				@back@
 				</UL>
 				<!-- page support -->
-				@if?!CheckReqParm?JOURNALPAGE=0&||JOURNALPAGE=@
+				@if?!CheckReqParm?FIRSTCARDINAL=1&||FIRSTCARDINAL=@
 					<a href="javascript:FirstPage()"><FONT COLOR=WHITE>&lt;&lt;</FONT></a>&nbsp;&nbsp;
 					<a href="javascript:PrevPage()"><FONT COLOR=WHITE>&lt;</FONT></a>
 				@endif@
@@ -563,7 +563,7 @@
 				@if?!CheckReqParm?CHANNELBACK=@
 				@if?CheckReqParm?CHANNELBACK=@@RequestParameter?CHANNEL@@ @
 					@AddRequestParameter?CHANNEL=@@RequestParameter?CHANNELBACK@@ @
-					@AddRequestParameter?CHANNELBACKLOGPAGESIZE=10@
+					@AddRequestParameter?CHANNELBACKLOGPAGESIZE=100@
 					<INPUT TYPE=HIDDEN NAME=CHANNELBACKLOGPAGE VALUE="@RequestParameter?CHANNELBACKLOGPAGE@">
 					<P>
 					<B>Back logs for @RequestParameter?CHANNEL@</B><BR>

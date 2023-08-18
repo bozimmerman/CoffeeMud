@@ -159,7 +159,9 @@ public class GenCageRideable extends StdCageRideable
 		case 5:
 		{
 			final Rideable.Basis bas = (Rideable.Basis)CMath.s_valueOf(Rideable.Basis.class, val);
-			if(bas == null)
+			if(bas != null)
+				setRideBasis(bas);
+			else
 			{
 				final int x=CMath.s_parseListIntExpression(Rideable.Basis.getStrings(), val);
 				if((x>=0)&&(x<Rideable.Basis.values().length))

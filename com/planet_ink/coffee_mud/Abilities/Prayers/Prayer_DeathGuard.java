@@ -134,7 +134,7 @@ public class Prayer_DeathGuard extends Prayer
 		{
 			if(target instanceof MOB)
 			{
-				if(!CMLib.flags().isUndead((MOB)target))
+				if(CMLib.flags().isUndead((MOB)target))
 					return Ability.QUALITY_MALICIOUS;
 			}
 		}
