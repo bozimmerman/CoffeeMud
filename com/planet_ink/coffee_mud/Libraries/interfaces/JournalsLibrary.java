@@ -266,6 +266,14 @@ public interface JournalsLibrary extends CMLibrary
 	public boolean subscribeToJournal(String journalName, String userName, boolean saveMailingList);
 
 	/**
+	 * Unsubscribes the given user/account from every mailing list.
+	 *
+	 * @param username the user/account
+	 * @return true if an unsubscribe happened
+	 */
+	public boolean unsubscribeFromAll(final String username);
+
+	/**
 	 * Called to remove a user from the subscription list for a journal.
 	 *
 	 * @param journalName the name of the journal

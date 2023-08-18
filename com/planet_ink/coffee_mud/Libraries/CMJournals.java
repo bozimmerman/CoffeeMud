@@ -2141,6 +2141,24 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
+	public boolean unsubscribeFromAll(final String username)
+	{
+		final Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
+		boolean updateMailingLists=false;
+		if(lists != null)
+		{
+			for(final String journalName : lists.keySet())
+			{
+				final List<String> mylist=lists.get(journalName);
+				updateMailingLists = mylist.remove(username) || updateMailingLists;
+			}
+		}
+		if(updateMailingLists)
+			Resources.updateCachedMultiLists("mailinglists.txt");
+		return updateMailingLists;
+	}
+
+	@Override
 	public boolean subscribeToJournal(final String journalName, final String userName, final boolean saveMailingList)
 	{
 		boolean updateMailingLists=false;

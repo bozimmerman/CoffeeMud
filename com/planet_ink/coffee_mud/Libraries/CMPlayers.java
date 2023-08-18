@@ -838,6 +838,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			deadMOB=getPlayer(deadMOB.Name());
 			delPlayer(deadMOB);
 		}
+		CMLib.journals().unsubscribeFromAll(deadMOB.Name());
 		for(final Session S : CMLib.sessions().allIterable())
 		{
 			if((!S.isStopped())&&(S.mob()!=null)&&(S.mob().Name().equals(deadMOB.Name())))
@@ -1003,6 +1004,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				Resources.updateFileResource("::protectedplayers.ini",newNoPurge);
 		}
 
+		CMLib.journals().unsubscribeFromAll(deadAccount.getAccountName());
 		CMLib.database().DBDeleteAccount(deadAccount);
 		Log.sysOut(deadAccount.getAccountName()+" has been deleted.");
 	}
