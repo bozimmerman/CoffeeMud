@@ -514,7 +514,6 @@ public class BackLogLoader
 						}
 						if(chansToDo.size()>0)
 						{
-							Log.sysOut("Processing backlog clan table upgrades...");
 							final Map<String, Boolean> isPlayerCache=new TreeMap<String, Boolean>();
 							final Map<String, MOB> playerCache=new TreeMap<String, MOB>();
 							int amountDone = 0;
@@ -608,7 +607,8 @@ public class BackLogLoader
 									done = msgs.size()  < 50;
 								}
 							}
-							Log.sysOut("Backlog clan table upgrades completed. "+amountDone+"/"+(amountDone+amountSkipped)+" messages altered in "+chansToDo.size()+" channels.");
+							if((amountDone>0)||(amountSkipped>0))
+								Log.sysOut("Backlog table initialization completed. "+amountDone+"/"+(amountDone+amountSkipped)+" messages altered in "+chansToDo.size()+" channels.");
 						}
 						checkSetBacklogTableVersion(Integer.valueOf(1));
 					}
