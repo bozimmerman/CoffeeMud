@@ -53,6 +53,7 @@ public class StdShipInertialBattery extends StdElecCompItem
 		setName("an inertial battery");
 		setDisplayText("an inertial battery sits here.");
 		setDescription("");
+		super.listenForCmds = new TechCommand[] { TechCommand.ACCELERATION } ;
 		super.setPowerCapacity(SpaceObject.VELOCITY_LIGHT/2);
 	}
 

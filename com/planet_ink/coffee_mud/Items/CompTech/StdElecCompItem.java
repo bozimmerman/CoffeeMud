@@ -45,6 +45,7 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 
 	protected float				installedFactor	= 1.0f;
 	protected volatile String	circuitKey		= null;
+	protected TechCommand[]		listenForCmds	= null;
 
 	public StdElecCompItem()
 	{
@@ -158,8 +159,8 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 		super.setOwner(newOwner);
 		if(prevOwner != newOwner)
 		{
-			if(newOwner instanceof Room)
-				circuitKey=CMLib.tech().registerElectrics(this,circuitKey);
+			if(newOwner instanceof Room) //TODO: this shouldn't be enough -- installation should be required!
+				circuitKey=CMLib.tech().registerElectrics(this,circuitKey,listenForCmds);
 			else
 			{
 				CMLib.tech().unregisterElectronics(this,circuitKey);

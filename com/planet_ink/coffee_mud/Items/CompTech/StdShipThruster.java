@@ -326,7 +326,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		//	tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a "+rumbleWord+" and hear the blast of @x1.",me.name(mob)));
 		if(acceleration == 0.0)
 		{
-			final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure: "+me.name()+": insufficient_thrust_capacity.");
+			final String code=TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure: "+me.name()+": insufficient_thrust_capacity.");
 			sendComputerMessage(me,circuitKey,mob,controlI,code);
 			return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s very loudly, but nothing is happening.",me.name(mob)), lang.L("Failure: @x1: insufficient engine thrust capacity.",me.name(mob)));
 		}
@@ -334,17 +334,19 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		if(me.consumeFuel(fuelToConsume))
 		{
 			final SpaceObject spaceObject=ship.getShipSpaceObject();
-			final String code=Technical.TechCommand.ACCELERATION.makeCommand(portDir.opposite(),Double.valueOf(acceleration),Boolean.valueOf(me.isReactionEngine()));
+			final String code=TechCommand.ACCELERATION.makeCommand(portDir.opposite(),Double.valueOf(acceleration),Boolean.valueOf(me.isReactionEngine()));
 			final CMMsg msg=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-			if(spaceObject.okMessage(mob, msg))
+			if(spaceObject.okMessage(mob, msg)
+			&& (CMLib.tech().okMessage(circuitKey, TechCommand.ACCELERATION, mob, msg)))
 			{
 				spaceObject.executeMsg(mob, msg);
+				CMLib.tech().executeMsg(circuitKey, TechCommand.ACCELERATION, mob, msg);
 				return true;
 			}
 		}
 		else
 		{
-			final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure:_"+me.name().replace(' ','_')+":_insufficient_fuel.");
+			final String code=TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure:_"+me.name().replace(' ','_')+":_insufficient_fuel.");
 			sendComputerMessage(me,circuitKey,mob,controlI,code);
 			return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s loudly, then sputters down.",me.name(mob)), lang.L("Failure: @x1: insufficient fuel.",me.name(mob)));
 		}
@@ -395,10 +397,14 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 						final MOB mob=msg.source();
 						final SpaceShip ship=(SpaceShip)obj;
 						final SpaceObject spaceObject=ship.getShipSpaceObject();
-						final String code=Technical.TechCommand.ACCELERATION.makeCommand(ShipDirectional.ShipDir.AFT,Double.valueOf(0),Boolean.valueOf(true));
+						final String code=TechCommand.ACCELERATION.makeCommand(ShipDirectional.ShipDir.AFT,Double.valueOf(0),Boolean.valueOf(true));
 						final CMMsg msg2=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-						if(spaceObject.okMessage(mob, msg2))
+						if(spaceObject.okMessage(mob, msg2)
+						&&(CMLib.tech().okMessage(circuitKey, TechCommand.ACCELERATION, myHost, msg)))
+						{
+							CMLib.tech().executeMsg(circuitKey, TechCommand.ACCELERATION, myHost, msg);
 							spaceObject.executeMsg(mob, msg2);
+						}
 					}
 				}
 				me.setThrust(0);
@@ -419,7 +425,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 							if(obj instanceof SpaceShip)
 							{
 								final SpaceObject ship=((SpaceShip)obj).getShipSpaceObject();
-								final String code=Technical.TechCommand.THRUST.makeCommand(ShipDirectional.ShipDir.AFT,Double.valueOf(me.getThrust()));
+								final String code=TechCommand.THRUST.makeCommand(ShipDirectional.ShipDir.AFT,Double.valueOf(me.getThrust()));
 								final CMMsg msg2=CMClass.getMsg(msg.source(), me, null, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 								if(me.owner() instanceof Room)
 								{
@@ -444,7 +450,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 						else
 						if(me.okMessage(msg.source(), msg2))
 							me.executeMsg(msg.source(), msg2);
-						final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure: "+me.name()+": insufficient_fuel.");
+						final String code=TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure: "+me.name()+": insufficient_fuel.");
 						sendComputerMessage(me,circuitKey,msg.source(),null,code);
 					}
 				}

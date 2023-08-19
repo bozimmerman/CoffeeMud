@@ -50,11 +50,23 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return "GroundWired";
 	}
 
+	protected final static class ElecList extends LinkedList<WeakReference<Electronics>>
+	{
+		private static final long serialVersionUID = -8313278188033918238L;
+
+	}
+
+	protected final static class WireHookups
+	{
+		ElecList set = new ElecList();
+		Map<TechCommand, ElecList> listeners = new Hashtable<TechCommand, ElecList>();
+	}
+
 	protected Manufacturer defaultManufacturer=null; // must always be DefaultManufacturer, w/o changes.
 
 	protected final Map<String,Manufacturer> manufacturers = new SHashtable<String,Manufacturer>();
 
-	protected final Map<String,LinkedList<WeakReference<Electronics>>> sets=new Hashtable<String,LinkedList<WeakReference<Electronics>>>();
+	protected final Map<String,WireHookups> sets=new Hashtable<String,WireHookups>();
 
 	//protected final Map<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>> currents	= new STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>>();
 
@@ -155,6 +167,12 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public synchronized String registerElectrics(final Electronics E, final String oldKey)
 	{
+		return registerElectrics(E, oldKey, null);
+	}
+
+	@Override
+	public String registerElectrics(final Electronics E, final String oldKey, final TechCommand[] listenFors)
+	{
 		final boolean debugging = CMSecurity.isDebugging(DbgFlag.ELECTRICTHREAD);
 		final ItemPossessor possessor=(E==null)?null:E.owner();
 		if((E != null) && (possessor instanceof Room))
@@ -176,15 +194,37 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					return oldKey.toLowerCase();
 				unregisterElectronics(E,oldKey);
 			}
-			LinkedList<WeakReference<Electronics>> set=sets.get(newKey);
-			if(set==null)
+			WireHookups hookups;
+			final WeakReference<Electronics> ref;
+			synchronized(this)
 			{
-				set=new LinkedList<WeakReference<Electronics>>();
-				sets.put(newKey, set);
+				hookups = sets.get(newKey);
+				if(hookups==null)
+				{
+					hookups=new WireHookups();
+					sets.put(newKey, hookups);
+				}
+				ref = new WeakReference<Electronics>(E);
+				if(!hookups.set.contains(ref))
+					hookups.set.add(ref);
 			}
-			final WeakReference<Electronics> ref = new WeakReference<Electronics>(E);
-			if(!set.contains(ref))
-				set.add(ref);
+			if(listenFors != null)
+			{
+				for(final TechCommand command : listenFors)
+				{
+					ElecList refs = hookups.listeners.get(command);
+					if(refs == null)
+					{
+						refs = new ElecList();
+						hookups.listeners.put(command, refs);
+					}
+					synchronized(refs)
+					{
+						if(!refs.contains(ref))
+							refs.add(ref);
+					}
+				}
+			}
 			if(debugging)
 				Log.debugOut("GroundWired","Registered: "+E.Name()+": "+newKey+", was: "+oldKey);
 			return newKey;
@@ -201,10 +241,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		final LinkedList<Electronics> list=new LinkedList<Electronics>();
 		if(key == null)
 			return list;
-		final LinkedList<WeakReference<Electronics>> set=sets.get(key.toLowerCase());
+		final WireHookups set=sets.get(key.toLowerCase());
 		if(set==null)
 			return list;
-		for(final WeakReference<Electronics> e : set)
+		for(final WeakReference<Electronics> e : set.set)
 		{
 			if(e.get()!=null)
 				list.add(e.get());
@@ -221,29 +261,105 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	}
 
 	@Override
-	public synchronized void unregisterElectronics(final Electronics E, final String oldKey)
+	public boolean okMessage(final String oldKey, final TechCommand command, final Environmental myHost, final CMMsg msg)
+	{
+		if((oldKey!=null)&&(command!=null))
+		{
+			ElecList refs = null;
+			synchronized(this)
+			{
+				final WireHookups oldSet=sets.get(oldKey.toLowerCase());
+				if(oldSet!=null)
+					refs = oldSet.listeners.get(command);
+			}
+			if(refs != null)
+			{
+				synchronized(refs)
+				{
+					for(final WeakReference<Electronics> ref : refs)
+					{
+						final Electronics E = ref.get();
+						if((E != null) && (!E.okMessage(myHost, msg)))
+							return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public void executeMsg(final String oldKey, final TechCommand command, final Environmental myHost, final CMMsg msg)
+	{
+		if((oldKey!=null)&&(command!=null))
+		{
+			ElecList refs = null;
+			synchronized(this)
+			{
+				final WireHookups oldSet=sets.get(oldKey.toLowerCase());
+				if(oldSet!=null)
+					refs = oldSet.listeners.get(command);
+			}
+			if(refs != null)
+			{
+				synchronized(refs)
+				{
+					for(final WeakReference<Electronics> ref : refs)
+					{
+						final Electronics E = ref.get();
+						if(E != null)
+							E.executeMsg(myHost, msg);
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void unregisterElectronics(final Electronics E, final String oldKey)
 	{
 		if((oldKey!=null)&&(E!=null))
 		{
-			final LinkedList<WeakReference<Electronics>> oldSet=sets.get(oldKey.toLowerCase());
-			if(oldSet!=null)
+			final WireHookups oldSet;
+			WeakReference<Electronics> ref = null;
+			synchronized(this)
 			{
-				for(final Iterator<WeakReference<Electronics>> e=oldSet.iterator();e.hasNext();)
+				oldSet=sets.get(oldKey.toLowerCase());
+				if(oldSet!=null)
 				{
-					final WeakReference<Electronics> w=e.next();
-					if(w.get()==E)
+					for(final Iterator<WeakReference<Electronics>> e=oldSet.set.iterator();e.hasNext();)
+					{
+						final WeakReference<Electronics> w=e.next();
+						if(w.get()==E)
+						{
+							ref = w;
+							if(CMSecurity.isDebugging(DbgFlag.ELECTRICTHREAD))
+								Log.debugOut("GroundWired","Unegistered: "+E.Name());
+							e.remove();
+							break;
+						}
+					}
+					if(oldSet.set.size()==0)
 					{
 						if(CMSecurity.isDebugging(DbgFlag.ELECTRICTHREAD))
-							Log.debugOut("GroundWired","Unegistered: "+E.Name());
-						e.remove();
-						break;
+							Log.debugOut("GroundWired","Unegistered: "+oldKey);
+						sets.remove(oldKey);
+						ref = null;
 					}
 				}
-				if(oldSet.size()==0)
+			}
+			if((ref != null) && (oldSet != null))
+			{
+				for(final Iterator<TechCommand> e=oldSet.listeners.keySet().iterator();e.hasNext();)
 				{
-					if(CMSecurity.isDebugging(DbgFlag.ELECTRICTHREAD))
-						Log.debugOut("GroundWired","Unegistered: "+oldKey);
-					sets.remove(oldKey);
+					final ElecList refs = oldSet.listeners.get(e.next());
+					if(refs != null)
+					{
+						synchronized(refs)
+						{
+							refs.remove(ref);
+						}
+					}
 				}
 			}
 		}
@@ -254,10 +370,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	{
 		if(oldKey!=null)
 		{
-			final LinkedList<WeakReference<Electronics>> oldSet=sets.get(oldKey.toLowerCase());
+			final WireHookups oldSet=sets.get(oldKey.toLowerCase());
 			if(oldSet!=null)
 			{
-				sets.remove(oldKey);
+				sets.remove(oldKey.toLowerCase());
 				if(CMSecurity.isDebugging(DbgFlag.ELECTRICTHREAD))
 					Log.debugOut("GroundWired","Unegistered: "+oldKey);
 			}
@@ -289,6 +405,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		{
 		}
 	};
+
 	protected final static Iterator<Room> emptyComputerRoomIterator= new Iterator<Room>()
 	{
 		@Override
@@ -339,10 +456,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public synchronized Iterator<Computer> getComputers(final String key)
 	{
-		final LinkedList<WeakReference<Electronics>> oldSet=sets.get(key.toLowerCase());
+		final WireHookups oldSet=sets.get(key.toLowerCase());
 		if(oldSet==null)
 			return emptyComputerIterator;
-		return new ConvertingIterator<WeakReference<Electronics>,Computer>(new FilteredIterator<WeakReference<Electronics>>(oldSet.iterator(), computerFilterer),computerConverter);
+		return new ConvertingIterator<WeakReference<Electronics>,Computer>(
+				new FilteredIterator<WeakReference<Electronics>>(oldSet.set.iterator(), computerFilterer),computerConverter);
 	}
 
 	@Override
@@ -619,11 +737,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		Area areaLocation=null;
 		synchronized(this)
 		{
-			final LinkedList<WeakReference<Electronics>> rawSet=sets.get(key.toLowerCase());
+			final WireHookups rawSet=sets.get(key.toLowerCase());
 			if(rawSet!=null)
 			{
 				final Set<Electronics> rawSetSet = new HashSet<Electronics>();
-				for(final Iterator<WeakReference<Electronics>> w=rawSet.iterator(); w.hasNext(); )
+				for(final Iterator<WeakReference<Electronics>> w=rawSet.set.iterator(); w.hasNext(); )
 				{
 					final WeakReference<Electronics> W=w.next();
 					final Electronics E=W.get();
@@ -632,7 +750,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					else
 						rawSetSet.add(E);
 				}
-				for(final Iterator<WeakReference<Electronics>> w=rawSet.iterator(); w.hasNext(); )
+				for(final Iterator<WeakReference<Electronics>> w=rawSet.set.iterator(); w.hasNext(); )
 				{
 					final WeakReference<Electronics> W=w.next();
 					final Electronics E=W.get();
@@ -665,7 +783,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 							areaLocation=CMLib.map().areaLocation(E);
 					}
 				}
-				if(rawSet.size()==0)
+				if(rawSet.set.size()==0)
 					sets.remove(key);
 			}
 		}
@@ -679,10 +797,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		{
 			synchronized(this)
 			{
-				final LinkedList<WeakReference<Electronics>> rawSet=sets.get(key.toLowerCase());
+				final WireHookups rawSet=sets.get(key.toLowerCase());
 				if(rawSet!=null)
 				{
-					for(final Iterator<WeakReference<Electronics>> w=rawSet.iterator(); w.hasNext(); )
+					for(final Iterator<WeakReference<Electronics>> w=rawSet.set.iterator(); w.hasNext(); )
 					{
 						final WeakReference<Electronics> W=w.next();
 						final Electronics E=W.get();
@@ -695,7 +813,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 								return A.getAreaState()==Area.State.ACTIVE;
 						}
 					}
-					if(rawSet.size()==0)
+					if(rawSet.set.size()==0)
 						sets.remove(key);
 				}
 			}
@@ -755,19 +873,26 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					{
 						synchronized(this)
 						{
-							final LinkedList<WeakReference<Electronics>> rawSet=sets.get(key.toLowerCase());
-							if((rawSet!=null) && (rawSet.size()>0) && (rawSet.getLast().get() != S))
+							final WireHookups rawSet=sets.get(key.toLowerCase());
+							if((rawSet!=null)
+							&& (rawSet.set.size()>0)
+							&& (rawSet.set.getLast().get() != S))
 							{
-								for(final Iterator<WeakReference<Electronics>> w=rawSet.iterator(); w.hasNext(); )
+								WeakReference<Electronics> ref = null;
+								for(final Iterator<WeakReference<Electronics>> w=rawSet.set.iterator(); w.hasNext(); )
 								{
 									final WeakReference<Electronics> W=w.next();
 									if(W.get()==S)
 									{
+										ref = W;
 										w.remove();
 										break;
 									}
 								}
-								rawSet.addLast(new WeakReference<Electronics>(S));
+								if(ref != null)
+									rawSet.set.addLast(ref);
+								else
+									rawSet.set.addLast(new WeakReference<Electronics>(S));
 							}
 						}
 					}
