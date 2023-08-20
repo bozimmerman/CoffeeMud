@@ -790,7 +790,7 @@ public class DefaultPlayerStats implements PlayerStats
 				if(T.s.equals(s))
 				{
 					this.actTitle = null;
-					t.remove();
+					titles.remove(T);
 					return true;
 				}
 			}
@@ -799,8 +799,8 @@ public class DefaultPlayerStats implements PlayerStats
 				final Title s1=i.next();
 				if(s1.s.equalsIgnoreCase(s))
 				{
-					i.remove();
 					this.actTitle = null;
+					titles.remove(s1);
 					return true;
 				}
 			}
