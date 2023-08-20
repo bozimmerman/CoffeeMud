@@ -1000,7 +1000,7 @@ public class StdMOB implements MOB
 	@Override
 	public PlayerStats playerStats()
 	{
-		if ((playerStats == null) && (soulMate != null))
+		if ((playerStats == null) && (soulMate != null) && (soulMate != this))
 			return soulMate.playerStats();
 		return playerStats;
 	}

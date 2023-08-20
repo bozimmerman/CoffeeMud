@@ -194,7 +194,12 @@ public class CMSecurity
 	public static final void setSysOp(String zapCheck)
 	{
 		if((zapCheck==null)||(zapCheck.trim().length()==0))
-			zapCheck="-ANYCLASS +Archon";
+		{
+			if(CMClass.getCharClass("Archon")!=null)
+				zapCheck="-ANYCLASS +Archon";
+			else
+				zapCheck="-LEVEL +>30";
+		}
 		instance().compiledSysop=CMLib.masking().maskCompile(zapCheck);
 	}
 
@@ -471,8 +476,8 @@ public class CMSecurity
 			}
 			else
 			{
-				instance().compiledSysop=maskLib.maskCompile("-ANYCLASS +Archon");
 				Log.errOut("Compiled Archon Mask was not set! Using core default.");
+				setSysOp(null);
 			}
 			return isASysOp(mob);
 		}
@@ -518,8 +523,8 @@ public class CMSecurity
 			}
 			else
 			{
-				instance().compiledSysop=CMLib.masking().maskCompile("-ANYCLASS +Archon");
 				Log.errOut("Compiled Archon Mask was not set! Using core default.");
+				setSysOp(null);
 			}
 			return isASysOp(mob);
 		}
@@ -527,6 +532,7 @@ public class CMSecurity
 				||((mob!=null)
 					&&(mob.soulMate()!=null)
 					&&(mob.soulMate().isAttributeSet(MOB.Attrib.SYSOPMSGS))
+					&&(mob.soulMate()!=mob)
 					&&(isASysOp(mob.soulMate())));
 	}
 
@@ -566,7 +572,7 @@ public class CMSecurity
 			else
 			{
 				Log.errOut("Compiled Archon Mask was not set! Setting default.");
-				instance().compiledSysop=CMLib.masking().maskCompile("-ANYCLASS +Archon");
+				setSysOp(null);
 			}
 			return isASysOp(mob);
 		}

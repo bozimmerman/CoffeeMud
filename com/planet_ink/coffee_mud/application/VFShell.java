@@ -34,6 +34,7 @@ import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.XVector;
 import com.planet_ink.coffee_mud.core.CMFile;
 import com.planet_ink.coffee_mud.core.CMLib;
+import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.CMParms;
 import com.planet_ink.coffee_mud.core.CMProps;
 import com.planet_ink.coffee_mud.core.CMSecurity;
@@ -178,36 +179,179 @@ public class VFShell
 				CMClass.initialize();
 				Resources.initialize();
 				CMSecurity.instance();
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.AutoAwards());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMJournals());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.BeanCounter());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CharCreation());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.Clans());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMAbleMap());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMAbleParms());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMCatalog());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMChannels());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.Brown());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMMap());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CoffeeMaker());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.MUDPercolator());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.EnglishParser());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CoffeeUtensils());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMEncoder());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMGenEditor());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CoffeeFilter());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMLister());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.Dice());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.DirtyLanguage());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.Sense());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.XMLManager());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.MUDZapper());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CoffeeTime());
+				for(final Library L : CMLib.Library.values())
+				{
+					switch(L)
+					{
+					case ABLECOMP:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMAbleComps());
+						break;
+					case ABLEMAP:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMAbleMap());
+						break;
+					case ABLEPARMS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMAbleParms());
+						break;
+					case ACHIEVEMENTS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.Achievements());
+						break;
+					case AREAGEN:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.MUDPercolator());
+						break;
+					case AUTOAWARDS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.AutoAwards());
+						break;
+					case CATALOG:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMCatalog());
+						break;
+					case CHANNELS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMChannels());
+						break;
+					case CITY:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CityCafe());
+						break;
+					case CLANS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.Clans());
+						break;
+					case COLOR:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.Brown());
+						break;
+					case COMBAT:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.MUDFight());
+						break;
+					case COMMANDS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CommonMsgs());
+						break;
+					case DATABASE:
+						break;
+					case DICE:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.Dice());
+						break;
+					case ENCODER:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMEncoder());
+						break;
+					case ENGLISH:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.EnglishParser());
+						break;
+					case EXPERTISES:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.ColumbiaUniv());
+						break;
+					case FACTIONS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.Factions());
+						break;
+					case FLAGS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.Sense());
+						break;
+					case GALACTIC:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CoffeeDark());
+						break;
+					case GENEDITOR:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMGenEditor());
+						break;
+					case HELP:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.MUDHelp());
+						break;
+					case INTERMUD:
+						break;
+					case JOURNALS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMJournals());
+						break;
+					case LANGUAGE:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.DirtyLanguage());
+						break;
+					case LEGAL:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.MUDLaw());
+						break;
+					case LEVELS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CoffeeLevels());
+						break;
+					case LISTER:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMLister());
+						break;
+					case LOGIN:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CharCreation());
+						break;
+					case MAP:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMMap());
+						break;
+					case MASKING:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.MUDZapper());
+						break;
+					case MATERIALS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.RawCMaterial());
+						break;
+					case MONEY:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.BeanCounter());
+						break;
+					case OBJBUILDERS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CoffeeMaker());
+						break;
+					case PLAYERS:
+						break;
+					case POLLS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.Polls());
+						break;
+					case PROTOCOL:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMProtocols());
+						break;
+					case QUEST:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.Quests());
+						break;
+					case SESSIONS:
+						break;
+					case SHOPS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CoffeeShops());
+						break;
+					case SLAVERY:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.SlaveryParser());
+						break;
+					case SMTP:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.SMTPclient());
+						break;
+					case SOCIALS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.Socials());
+						break;
+					case STATS:
+						break;
+					case TECH:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.GroundWired());
+						break;
+					case TELNET:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CoffeeFilter());
+						break;
+					case THREADS:
+						break;
+					case TIME:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CoffeeTime());
+						break;
+					case TIMS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.TimsLibrary());
+						break;
+					case TRACKING:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.MUDTracker());
+						break;
+					case UTENSILS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CoffeeUtensils());
+						break;
+					case WEBMACS:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.WebMacroCreamer());
+						break;
+					case WORLDHUNT:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.WorldHuntUtils());
+						break;
+					case XML:
+						CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.XMLManager());
+						break;
+					}
+				}
 				CMClass.addClass(CMObjectType.COMMON, new com.planet_ink.coffee_mud.Common.DefaultCharState());
 				CMClass.addClass(CMObjectType.COMMON, new com.planet_ink.coffee_mud.Common.DefaultCharStats());
 				CMClass.addClass(CMObjectType.COMMON, new com.planet_ink.coffee_mud.Common.DefaultPhyStats());
+				CMSecurity.setSysOp("-LEVEL +>30");
 
 				final MOB fakeMob = new StdMOB();
+				fakeMob.basePhyStats().setLevel(101);
+				fakeMob.phyStats().setLevel(101);
 
 				final Session session = new Session()
 				{
