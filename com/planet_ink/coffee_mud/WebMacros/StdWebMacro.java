@@ -118,6 +118,7 @@ public class StdWebMacro implements WebMacro
 			return null;
 		int i=0;
 		final String[] lookup=CMLib.color().standardHTMLlookups();
+		boolean priorFont = false;
 		while(i<s.length())
 		{
 			if(s.charAt(i)=='^')
@@ -130,6 +131,16 @@ public class StdWebMacro implements WebMacro
 					if(code!=null)
 					{
 						s.delete(i,i+2);
+						if(code.startsWith("<FONT"))
+						{
+							if(priorFont)
+								s.insert(i,"</FONT>"+code+">");
+							else
+								s.insert(i,code+">");
+							priorFont=true;
+							i+=code.length();
+						}
+						else
 						if(code.startsWith("<"))
 						{
 							s.insert(i,code+">");
@@ -152,6 +163,8 @@ public class StdWebMacro implements WebMacro
 			}
 			i++;
 		}
+		if(priorFont)
+			s.append("</FONT>");
 		return s;
 	}
 
@@ -233,6 +246,7 @@ public class StdWebMacro implements WebMacro
 			int count=0;
 			x=0;
 			int lastSpace=0;
+			boolean priorFont = false;
 			//TODO: limit should adjust or lastspace should -- something is wrong RIGHT HERE!
 			while((x>=0)&&(x<s.length()))
 			{
@@ -353,6 +367,16 @@ public class StdWebMacro implements WebMacro
 						if(code!=null)
 						{
 							s.delete(x,x+2);
+							if(code.startsWith("<FONT"))
+							{
+								if(priorFont)
+									s.insert(x,"</FONT>"+code+">");
+								else
+									s.insert(x,code+">");
+								priorFont = true;
+								x+=code.length();
+							}
+							else
 							if(code.startsWith("<"))
 							{
 								s.insert(x,code+">");
@@ -380,6 +404,8 @@ public class StdWebMacro implements WebMacro
 				else
 					x++;
 			}
+			if(priorFont)
+				s.append("</FONT>");
 			return s.toString();
 		}
 		return "";

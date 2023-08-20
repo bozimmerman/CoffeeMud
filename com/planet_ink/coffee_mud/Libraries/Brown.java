@@ -33,12 +33,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CMColor extends StdLibrary implements ColorLibrary
+public class Brown extends StdLibrary implements ColorLibrary
 {
 	@Override
 	public String ID()
 	{
-		return "CMColor";
+		return "Brown";
 	}
 
 	protected String[]		clookup		= null;
