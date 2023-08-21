@@ -160,10 +160,10 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 		if(prevOwner != newOwner)
 		{
 			if(newOwner instanceof Room) //TODO: this shouldn't be enough -- installation should be required!
-				circuitKey=CMLib.tech().registerElectrics(this,circuitKey,listenForCmds);
+				circuitKey=CMLib.tech().registerElectrics(this, circuitKey, listenForCmds);
 			else
 			{
-				CMLib.tech().unregisterElectronics(this,circuitKey);
+				CMLib.tech().unregisterElectronics(this, circuitKey);
 				circuitKey=null;
 			}
 		}
