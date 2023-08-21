@@ -349,6 +349,24 @@ public interface AbilityParameters extends CMLibrary
 	public String makeRecipeFromItem(final ItemCraftor C, final Item I) throws CMException;
 
 	/**
+	 * Return the generic class type that most closely matches the
+	 * given ability.
+	 * 
+	 * @param A the Ability to look
+	 * @return the class id
+	 */
+	public String getGenericClassID(final Ability A);
+	
+	/**
+	 * Attempts to convert a coded Ability into a generic one.
+	 * It does a terrible job.
+	 * 
+	 * @param A the Ability to convert
+	 * @return the generic "version"
+	 */
+	public Ability convertAbilityToGeneric(final Ability A);
+	
+	/**
 	 * An AbilityParameters interface for passing around a completely decoded CraftorAbility
 	 * (Common Skill) recipe list, ready for manipulation by users.
 	 *

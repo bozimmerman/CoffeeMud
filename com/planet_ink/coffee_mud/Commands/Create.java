@@ -1242,8 +1242,17 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final Ability CR=(Ability)CMClass.getAbility("GenAbility").copyOf();
-		CR.setStat("CLASS",classD);
+		final Ability CR;
+		if(A != null)
+		{
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill @x1 already exists, and will be over-ridden.",classD));
+			CR=CMLib.ableParms().convertAbilityToGeneric(A);
+		}
+		else
+		{
+			CR=(Ability)CMClass.getAbility("GenAbility").copyOf();
+			CR.setStat("CLASS",classD);
+		}
 		CMLib.genEd().modifyGenAbility(mob,CR,-1);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenAbility",CR.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
@@ -1272,9 +1281,18 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final Ability CR=(Ability)CMClass.getAbility("GenTrap").copyOf();
-		CR.setStat("CLASS",classD);
-		CR.setStat("LEVEL","1");
+		final Ability CR;
+		if(A != null)
+		{
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill @x1 already exists, and will be over-ridden.",classD));
+			CR=CMLib.ableParms().convertAbilityToGeneric(A);
+		}
+		else
+		{
+			CR=(Ability)CMClass.getAbility("GenTrap").copyOf();
+			CR.setStat("CLASS",classD);
+			CR.setStat("LEVEL","1");
+		}
 		CMLib.genEd().modifyGenTrap(mob,(Trap)CR,-1);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenTrap",CR.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
@@ -1348,8 +1366,17 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final Language CR=(Language)CMClass.getAbility("GenLanguage").copyOf();
-		CR.setStat("CLASS",classD);
+		final Language CR;
+		if(A != null)
+		{
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill @x1 already exists, and will be over-ridden.",classD));
+			CR=(Language)CMLib.ableParms().convertAbilityToGeneric(A);
+		}
+		else
+		{
+			CR=(Language)CMClass.getAbility("GenLanguage").copyOf();
+			CR.setStat("CLASS",classD);
+		}
 		CMLib.genEd().modifyGenLanguage(mob,CR,-1);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenLanguage",CR.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
@@ -1378,8 +1405,17 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final Ability CR=(Ability)CMClass.getAbility("GenCraftSkill").copyOf();
-		CR.setStat("CLASS",classD);
+		final Ability CR;
+		if(A != null)
+		{
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill @x1 already exists, and will be over-ridden.",classD));
+			CR=CMLib.ableParms().convertAbilityToGeneric(A);
+		}
+		else
+		{
+			CR=(Ability)CMClass.getAbility("GenCraftSkill").copyOf();
+			CR.setStat("CLASS",classD);
+		}
 		CMLib.genEd().modifyGenCraftSkill(mob,CR,-1);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenCraftSkill",CR.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
@@ -1408,8 +1444,17 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final Ability CR=(Ability)CMClass.getAbility("GenWrightSkill").copyOf();
-		CR.setStat("CLASS",classD);
+		final Ability CR;
+		if(A != null)
+		{
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill @x1 already exists, and will be over-ridden.",classD));
+			CR=CMLib.ableParms().convertAbilityToGeneric(A);
+		}
+		else
+		{
+			CR=(Ability)CMClass.getAbility("GenWrightSkill").copyOf();
+			CR.setStat("CLASS",classD);
+		}
 		CMLib.genEd().modifyGenWrightSkill(mob,CR,-1);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenWrightSkill",CR.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
@@ -1438,8 +1483,17 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final Ability CR=(Ability)CMClass.getAbility("GenGatheringSkill").copyOf();
-		CR.setStat("CLASS",classD);
+		final Ability CR;
+		if(A != null)
+		{
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill @x1 already exists, and will be over-ridden.",classD));
+			CR=CMLib.ableParms().convertAbilityToGeneric(A);
+		}
+		else
+		{
+			CR=(Ability)CMClass.getAbility("GenGatheringSkill").copyOf();
+			CR.setStat("CLASS",classD);
+		}
 		CMLib.genEd().modifyGenGatheringSkill(mob,CR,-1);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenGatheringSkill",CR.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));

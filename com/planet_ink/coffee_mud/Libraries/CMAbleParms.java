@@ -63,6 +63,117 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		super();
 	}
 
+	
+	
+	@Override
+	public String getGenericClassID(final Ability A)
+	{
+		if(A==null)
+			return null;
+		if(A instanceof Trap)
+			return "GenTrap";
+		else
+		if(A instanceof ItemCraftor)
+		{
+			if((((ItemCraftor)A).getRecipeFilename()!=null)
+			&&(((ItemCraftor)A).getRecipeFilename().toLowerCase().endsWith(".cmare")))
+				return "GenWrightSkill";
+			else
+				return "GenCraftSkill";
+		}
+		else
+		if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
+			return "GenGatheringSkill";
+		else
+		if((A instanceof Language)
+		&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
+			return "GenLanguage";
+		else
+			return "GenAbility";
+	}
+	
+	@Override
+	public Ability convertAbilityToGeneric(final Ability A)
+	{
+		if(A==null)
+			return null;
+		if(A.isGeneric())
+			return A;
+		final Ability CR;
+		if(A instanceof Trap)
+			CR=(Ability)CMClass.getAbility("GenTrap").copyOf();
+		else
+		if(A instanceof ItemCraftor)
+		{
+			if((((ItemCraftor)A).getRecipeFilename()!=null)
+			&&(((ItemCraftor)A).getRecipeFilename().toLowerCase().endsWith(".cmare")))
+				CR=(Ability)CMClass.getAbility("GenWrightSkill").copyOf();
+			else
+				CR=(Ability)CMClass.getAbility("GenCraftSkill").copyOf();
+			CR.setStat("FILENAME", ((ItemCraftor)A).getRecipeFilename());
+		}
+		else
+		if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
+			CR=(Ability)CMClass.getAbility("GenGatheringSkill").copyOf();
+		else
+		if((A instanceof Language)
+		&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
+		{
+			CR=(Ability)CMClass.getAbility("GenLanguage").copyOf();
+			final List<String[]> lists=((Language)A).translationLists(A.ID());
+			final StringBuilder str = new StringBuilder("");
+			for (final String[] wset : lists)
+			{
+				if (str.length() > 0)
+					str.append("/");
+				str.append(CMParms.toListString(wset));
+			}
+			CR.setStat("WORDS", str.toString());
+			CR.setStat("HASHEDWORDS", CMParms.toKeyValueSlashListString(((Language)A).translationHash(A.ID())));
+			CR.setStat("NATURALLANG", ""+((Language)A).isANaturalLanguage());
+			CR.setStat("INTERPRETS", CMParms.combineWith(((Language)A).languagesSupported(),','));
+		}
+		else
+			CR=(Ability)CMClass.getAbility("GenAbility").copyOf();
+		CR.setStat("CLASS",A.ID());
+		CR.setStat("LEVEL","1");
+		CR.setStat("NAME", A.Name());
+		CR.setStat("CLASSIFICATION", ""+A.classificationCode());
+		CR.setStat("DISPLAY", A.displayText());
+		CR.setStat("TRIGSTR", CMParms.toListString(A.triggerStrings()));
+		CR.setStat("MAXRANGE", ""+A.maxRange());
+		CR.setStat("MINRANGE", ""+A.minRange());
+		CR.setStat("FLAGS", ""+A.flags());
+		CR.setStat("AUTOINVOKE", ""+A.isAutoInvoked());
+		CR.setStat("CLASSIFICATION", ""+A.isAutoInvoked());
+		//CR.setStat("OVERRIDEMANA", ""+A.);
+		CR.setStat("USAGEMASK", ""+A.usageType());
+		int canAffect=0;
+		for(int i=0;i<Ability.CAN_DESCS.length;i++)
+		{
+			if(A.canAffect(Math.round(CMath.pow(2, i))))
+				canAffect |= Math.round(CMath.pow(2, i));
+		}
+		CR.setStat("CANAFFECTMASK", ""+canAffect);
+		int canTarget=0;
+		for(int i=0;i<Ability.CAN_DESCS.length;i++)
+		{
+			if(A.canTarget(Math.round(CMath.pow(2, i))))
+				canTarget |= Math.round(CMath.pow(2, i));
+		}
+		CR.setStat("CANTARGETMASK", ""+canTarget);
+		CR.setStat("USAGEMASK", ""+A.usageType());
+		CR.setStat("QUALITY", ""+A.abstractQuality());
+		if(canAffect!=0)
+		{
+			CR.setStat("MOCKABILITY", ""+A.ID());
+			CR.setStat("MOCKABLETEXT", ""+A.text());
+		}
+		CR.setStat("POSTCASTABILITY", ""+A.ID());
+		CR.setStat("HELP", CMLib.help().getHelpText(A.ID(), null, false, true));
+		return CR;
+	}
+	
 	protected String parseLayers(final short[] layerAtt, final short[] clothingLayers, String misctype)
 	{
 		final int colon=misctype.indexOf(':');

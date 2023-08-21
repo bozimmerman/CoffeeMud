@@ -50,7 +50,8 @@
  49. Channels now support SEARCH:
  50. Subscribe now supports channels and their backlogs
  51. Titles now support random selection lists.
- 52. Prop_UseEmoter* and Prop_Sounder support trigger mob masks now. 
+ 52. Prop_UseEmoter* and Prop_Sounder support trigger mob masks now.
+ 53. Generic Abilities can now be COPYed, and Standard ones badly. CREATE will now convert.
 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

@@ -292,7 +292,10 @@ public class GenLanguage extends StdLanguage
 				final String[] allSets = val.split("/");
 				final List<String[]> wordSets = new Vector<String[]>();
 				for (final String wordList : allSets)
-					wordSets.add(CMParms.parseCommas(wordList, true).toArray(new String[0]));
+				{
+					if(wordList.trim().length()>0)
+						wordSets.add(CMParms.parseCommas(wordList, true).toArray(new String[0]));
+				}
 				SV(ID, V_WSETS, wordSets);
 			}
 			else

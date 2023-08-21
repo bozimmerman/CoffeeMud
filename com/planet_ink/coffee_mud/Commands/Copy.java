@@ -54,7 +54,7 @@ public class Copy extends StdCommand
 		commands.remove(0); // copy
 		if(commands.size()<1)
 		{
-			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is COPY (NUMBER) ([ITEM NAME]/[MOB NAME][ROOM ID] [DIRECTIONS]/[DIRECTIONS])\n\r"));
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is COPY (NUMBER) ([ITEM NAME]/[MOB NAME]/[ROOM ID] [DIRECTIONS]/[DIRECTIONS]/[ABILITY ID] [NEW ABILITY ID])\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -179,9 +179,35 @@ public class Copy extends StdCommand
 		{
 			E=CMLib.map().getArea(name);
 		}
+		if((E == null)
+		&&(commands.size()>1))
+		{
+			E = CMClass.getAbility(commands.get(0));
+			if(E != null)
+			{
+				final String newID = CMParms.combine(commands,1);
+				if(CMClass.getAbility(newID)!=null)
+				{
+					mob.tell(L("The ability ID '@x1' already exists.\n\r",newID));
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+					return false;
+				}
+				final Ability CR;
+				if(E.isGeneric())
+					CR = (Ability)E.copyOf();
+				else
+					CR=CMLib.ableParms().convertAbilityToGeneric((Ability)E);
+				CR.setStat("CLASS", newID);
+				CR.setStat("LEVEL","1");
+				CR.setStat("NAME", newID);
+				CMLib.database().DBCreateAbility(CR.ID(),CMLib.ableParms().getGenericClassID((Ability)E),CR.getStat("ALLXML"));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
+				return true;
+			}
+		}
 		if(E==null)
 		{
-			mob.tell(L("There's no such thing in the living world as a '@x1'.\n\r",name));
+			mob.tell(L("There's no such thing as a '@x1'.\n\r",name));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
