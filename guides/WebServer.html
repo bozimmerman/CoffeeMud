@@ -1,11 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
+
 <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>The CoffeeMud Web Server</title>
 
-<link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-05-05, fix validation errors, fix format of code sections, add index, and fix spelling errors -->
-</head>
-<body>
+<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation errors, fix format of code sections, add index, and fix spelling errors --></head><body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
 <tbody>
@@ -171,7 +169,7 @@ there
 other useful values for this?)</span><b><br />
 SSLKEYMANAGERENCODING=</b>SunX509 <span style="font-style: italic;">(are
 there other useful values for this?)</span><b><br />
-<span style="font-style: italic;"></span></b>
+<span style="font-style: italic;" /></b>
 <p>Allows you to turn on support for SSLv3 via a java
 keystore file (SSLKEYSTOREPATH), but you can&nbsp;specify any key
 file
@@ -716,6 +714,15 @@ all qualifying skill definition. The MacParm RESET will reset. Returns
 @break@ after the skill.
 </td>
 </tr>
+          <tr>
+            <td style="vertical-align: top;">AreaChildNext<br />
+            </td>
+            <td style="vertical-align: top;">Requires ReqParm PARENTAREA to be set to a valid area name.&nbsp; Sets the ReqParm AREA to the next child Area. Returns
+@break@
+when the list has been completed, or "" if MacParm "EMPTYOK" found.
+Accepts MacParm of RESET to restart listing. MacParm HIDDENOK includes
+hidden areas.</td>
+          </tr>
 <tr>
 <td>AreaData</td>
 <td>Requires ReqParm AREA be set to a valid area
@@ -771,15 +778,18 @@ hidden areas.</td>
 </tr>
 <tr>
 <td>AreaScriptData</td>
-<td></td>
+<td><br />
+</td>
 </tr>
 <tr>
 <td>AreaScriptKey</td>
-<td></td>
+<td><br />
+</td>
 </tr>
 <tr>
 <td>AreaScriptNext</td>
-<td></td>
+<td><br />
+</td>
 </tr>
 <tr>
 <td>AreaTbl</td>
@@ -795,7 +805,8 @@ table containing a game-not-running message is returned.</td>
 </tr>
 <tr>
 <td>AreaXML</td>
-<td></td>
+<td><br />
+</td>
 </tr>
 <tr>
 <td>Authenticate</td>
@@ -807,27 +818,33 @@ specified, will return the encrypted login data. Otherwise, returns
 </tr>
 <tr>
 <td>AutoAwardData</td>
-<td></td>
+<td><br />
+</td>
 </tr>
 <tr>
 <td>AutoAwardID</td>
-<td></td>
+<td><br />
+</td>
 </tr>
 <tr>
 <td>AutoAwardNext</td>
-<td></td>
+<td><br />
+</td>
 </tr>
 <tr>
 <td>AutoTitleData</td>
-<td></td>
+<td><br />
+</td>
 </tr>
 <tr>
 <td>AutoTitleID</td>
-<td></td>
+<td><br />
+</td>
 </tr>
 <tr>
 <td>AutoTitleNext</td>
-<td></td>
+<td><br />
+</td>
 </tr>
 <tr>
 <td>back</td>
@@ -892,6 +909,7 @@ id. Returns that ID.</td>
 <tr>
 <td>BehaviorNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -915,16 +933,19 @@ macros as a means of creating breaks in loops.</td>
 <tr>
 <td>CatalogCatNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>CatalogItemNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>CatalogMobNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -939,11 +960,13 @@ MacParm EMPTYOK is given.</td>
 <tr>
 <td>ChannelFunction</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>ChannelInfo</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -986,11 +1009,13 @@ MacParm of RESET to restart listing.</td>
 <tr>
 <td>CheckAuthCode</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>CheckFactionLoaded</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -1025,16 +1050,19 @@ MEMBERSTART/MEMBERNEXT use)</td>
 <tr>
 <td>ClanGovernmentData</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>ClanGovernmentID</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>ClanGovernmentNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -1060,56 +1088,67 @@ MacParm "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
 <tr>
 <td>CoffeeTableRows</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>CommandJournalInfo</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>CommandJournalNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>ComponentData</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>ComponentID</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>ComponentNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>ComponentPieceData</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>ComponentPieceID</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>ComponentPieceNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>ControlPanel</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>CrossBaseClassAbilities</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -1183,51 +1222,61 @@ Returns @break@ when the list has been completed, or "" if MacParm
 <tr>
 <td>FactionData</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>FactionID</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>FactionName</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>FactionNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>FileData</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>FileInfo</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>FileMgr</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>FileNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>ForumInfo</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>ForumJournalNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -1266,16 +1315,20 @@ DATA returns the help text denoted by ReqParm HELPTOPIC.</td>
 <tr>
 <td>HolidayData</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>HolidayID</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
-<td></td>
+<td><br />
+</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -1318,21 +1371,25 @@ PARM was equal to VALUE.</td>
 <tr>
 <td>ImageVerificationImage</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>INIEntry</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>INIModify</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>INIValue</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -1485,16 +1542,19 @@ return the number of accounts in the database. </td>
 <tr>
 <td>PlanarData</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>PlanarID</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>PlaneNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -1554,51 +1614,61 @@ also ban the player.</td>
 <tr>
 <td>PlayerPortrait</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>PollData</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>PollID</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>PollNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>PostalBoxInfo</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>PostOfficeBoxNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>PostOfficeBranchNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>PostOfficeName</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>PostOfficeNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>PrideStat</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -1612,6 +1682,7 @@ REMAINING, WAITLEFT, WINNERS, SCRIPT.</td>
 <tr>
 <td>QuestMaker</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -1633,6 +1704,7 @@ found. Accepts MacParm of RESET to restart listing.</td>
 <tr>
 <td>RaceCatNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -1671,11 +1743,13 @@ found. Accepts MacParm of RESET to restart listing.</td>
 <tr>
 <td>RandomAreaTemplates</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>RebuildReferenceDocs</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -1723,26 +1797,31 @@ ReqParm ROOM.</td>
 <tr>
 <td>RoomNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>SipletInterface</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>SocialData</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>SocialID</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>SocialNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -1753,6 +1832,7 @@ listing all the socials.</td>
 <tr>
 <td>StatRejuvCharts</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -1764,6 +1844,7 @@ purpose.</td>
 <tr>
 <td>SystemConfig</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -1783,26 +1864,31 @@ use this macro.</td>
 <tr>
 <td>ThinPlayerData</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>TimsItemTable</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>TriggerData</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>TriggerNext</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>Unsubscribe</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
@@ -1821,11 +1907,13 @@ on.</td>
 <tr>
 <td>WebSock</td>
 <td>
+            <br />
 </td>
 </tr>
 <tr>
 <td>WhiteListMgr</td>
 <td>
+            <br />
 </td>
 </tr>
 </tbody>
