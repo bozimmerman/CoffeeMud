@@ -860,7 +860,7 @@ public class StdDeity extends StdMOB implements Deity
 			final CMMsg msg=CMClass.getMsg(this,mob,null,
 					CMMsg.MSG_HOLYEVENT, L("<T-NAME> begin(s) to hold services for @x1 here.",mob.Name()),
 					CMMsg.MSG_HOLYEVENT,null,
-					CMMsg.MSG_HOLYEVENT,HolyEvent.SERVICE_BEGIN.toString());
+					CMMsg.NO_EFFECT,HolyEvent.SERVICE_BEGIN.toString());
 			if(!room.okMessage(this, msg))
 				return;
 			room.send(this, msg);
@@ -1056,7 +1056,7 @@ public class StdDeity extends StdMOB implements Deity
 		final CMMsg msg=CMClass.getMsg(this,mob,null,
 				CMMsg.MSG_HOLYEVENT, L("The service conducted by @x1 has been cancelled.",mob.Name()),
 				CMMsg.MSG_HOLYEVENT, null,
-				CMMsg.MSG_HOLYEVENT, HolyEvent.SERVICE_CANCEL.toString());
+				CMMsg.NO_EFFECT, HolyEvent.SERVICE_CANCEL.toString());
 		final CMMsg msg2=CMClass.getMsg(this,null,null,
 				CMMsg.NO_EFFECT, null,CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_ACTION,L("The service conducted by @x1 has been cancelled.",mob.Name()));
 		if(room.okMessage(this, msg)
