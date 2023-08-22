@@ -53,7 +53,6 @@ public class StdShipInertialBattery extends StdElecCompItem
 		setName("an inertial battery");
 		setDisplayText("an inertial battery sits here.");
 		setDescription("");
-		super.listenForCmds = new TechCommand[] { TechCommand.ACCELERATION } ;
 		super.setPowerCapacity(SpaceObject.VELOCITY_LIGHT/2);
 	}
 
@@ -68,8 +67,14 @@ public class StdShipInertialBattery extends StdElecCompItem
 	@Override
 	public void setOwner(final ItemPossessor container)
 	{
+		if((owner instanceof Room)
+		&&(((Room)owner).getArea() instanceof SpaceShip))
+			((SpaceShip)((Room)owner).getArea()).unregisterListener(TechCommand.ACCELERATION, this);
 		super.setOwner(container);
 		myShip = null;
+		if((container instanceof Room)
+		&&(((Room)container).getArea() instanceof SpaceShip))
+			((SpaceShip)((Room)container).getArea()).registerListener(TechCommand.ACCELERATION, this);
 	}
 
 	protected synchronized SpaceShip getMyShip()

@@ -3,9 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
-import com.planet_ink.coffee_mud.core.interfaces.Places;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -60,7 +58,6 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	protected Set<String> 	staleAirList	= new HashSet<String>();
 	protected Ability 		gravityFloaterA = null;
 	protected volatile int	gravLossDown	= 0;
-
 
 	@Override
 	public String ID()
@@ -510,6 +507,23 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			}
 		}
 	}
+
+	@Override
+	public void registerListener(final TechCommand command, final MsgListener listener)
+	{
+		final Item I = this.getBoardableItem();
+		if(I instanceof SpaceShip)
+			((SpaceShip)I).registerListener(command, listener);
+	}
+
+	@Override
+	public void unregisterListener(final TechCommand command, final MsgListener listener)
+	{
+		final Item I = this.getBoardableItem();
+		if(I instanceof SpaceShip)
+			((SpaceShip)I).unregisterListener(command, listener);
+	}
+
 
 	public int[] addMaskAndReturn(final int[] one, final int[] two)
 	{

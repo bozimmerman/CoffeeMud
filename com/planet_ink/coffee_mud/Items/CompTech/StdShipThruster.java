@@ -336,11 +336,9 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 			final SpaceObject spaceObject=ship.getShipSpaceObject();
 			final String code=TechCommand.ACCELERATION.makeCommand(portDir.opposite(),Double.valueOf(acceleration),Boolean.valueOf(me.isReactionEngine()));
 			final CMMsg msg=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-			if(spaceObject.okMessage(mob, msg)
-			&& (CMLib.tech().okMessage(circuitKey, TechCommand.ACCELERATION, mob, msg)))
+			if(spaceObject.okMessage(mob, msg))
 			{
 				spaceObject.executeMsg(mob, msg);
-				CMLib.tech().executeMsg(circuitKey, TechCommand.ACCELERATION, mob, msg);
 				return true;
 			}
 		}
@@ -399,12 +397,8 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 						final SpaceObject spaceObject=ship.getShipSpaceObject();
 						final String code=TechCommand.ACCELERATION.makeCommand(ShipDirectional.ShipDir.AFT,Double.valueOf(0),Boolean.valueOf(true));
 						final CMMsg msg2=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-						if(spaceObject.okMessage(mob, msg2)
-						&&(CMLib.tech().okMessage(circuitKey, TechCommand.ACCELERATION, myHost, msg)))
-						{
-							CMLib.tech().executeMsg(circuitKey, TechCommand.ACCELERATION, myHost, msg);
+						if(spaceObject.okMessage(mob, msg2))
 							spaceObject.executeMsg(mob, msg2);
-						}
 					}
 				}
 				me.setThrust(0);

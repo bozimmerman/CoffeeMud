@@ -64,6 +64,8 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	protected volatile double				speedTick	= 0;
 	protected volatile List<TechComponent>	sensors		= null;
 
+	protected Map<TechCommand,List<MsgListener>> extListeners = new SHashtable<TechCommand,List<MsgListener>>();
+
 	public GenSpaceShip()
 	{
 		super();
@@ -219,6 +221,25 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		if((msg.targetMinor() == CMMsg.TYP_ACTIVATE)
+		&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
+		&&(msg.targetMessage()!=null))
+		{
+			final TechCommand command=TechCommand.findCommand(msg.targetMessage());
+			if(command!=null)
+			{
+				final List<MsgListener> listeners = extListeners.get(command);
+				if(listeners != null)
+				{
+					for(final MsgListener listener : listeners)
+					{
+						if(!listener.okMessage(myHost, msg))
+							return false;
+					}
+				}
+			}
+		}
+
 		if(msg.amITarget(this))
 		{
 			switch(msg.targetMinor())
@@ -248,6 +269,22 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 		{
 			for(final TechComponent sensor : getShipSensors())
 				sensor.executeMsg(myHost, msg);
+		}
+
+		if((msg.targetMinor() == CMMsg.TYP_ACTIVATE)
+		&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
+		&&(msg.targetMessage()!=null))
+		{
+			final TechCommand command=TechCommand.findCommand(msg.targetMessage());
+			if(command!=null)
+			{
+				final List<MsgListener> listeners = extListeners.get(command);
+				if(listeners != null)
+				{
+					for(final MsgListener listener : listeners)
+						listener.executeMsg(myHost, msg);
+				}
+			}
 		}
 
 		if(msg.amITarget(this))
@@ -914,6 +951,38 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	{
 		if (area instanceof SpaceShip)
 			((SpaceShip)area).setOMLCoeff(coeff);
+	}
+
+	@Override
+	public void registerListener(final TechCommand command, final MsgListener listener)
+	{
+		synchronized(extListeners)
+		{
+			List<MsgListener> list = extListeners.get(command);
+			if(list == null)
+			{
+				list = new LinkedList<MsgListener>();
+				extListeners.put(command, list);
+			}
+			if(!list.contains(listener))
+				list.add(listener);
+		}
+	}
+
+	@Override
+	public void unregisterListener(final TechCommand command, final MsgListener listener)
+	{
+		synchronized(extListeners)
+		{
+			final List<MsgListener> list = extListeners.get(command);
+			if(list == null)
+				return;
+			if(list.remove(listener))
+			{
+				if(list.size()==0)
+					extListeners.remove(command);
+			}
+		}
 	}
 
 	private final static String[] MYCODES=

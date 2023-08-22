@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -110,4 +111,26 @@ public interface SpaceShip extends SpaceObject, Boardable
 	 * @param dir radian for the direction of orientation
 	 */
 	public void setRoll(double dir);
+
+	/**
+	 * Register a global ship listener.
+	 *
+	 * @see SpaceShip#unregisterListener(TechCommand, MsgListener)
+	 *
+	 * @param command command which should be listened for
+	 * @param listener the listener
+	 */
+	public void registerListener(final TechCommand command, final MsgListener listener);
+
+	/**
+	 * Register a global ship listener.
+	 *
+	 * @see SpaceShip#registerListener(TechCommand, MsgListener)
+	 *
+	 * @param command command which should be listened for
+	 * @param listener the listener
+	 */
+	public void unregisterListener(final TechCommand command, final MsgListener listener);
+
+
 }

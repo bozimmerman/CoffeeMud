@@ -168,6 +168,7 @@ public class PaladinSkill extends StdAbility
 		{
 			teacher.tell(L("@x1 lacks the moral disposition to learn '@x2'.",student.name(), name()));
 			student.tell(L("You lack the moral disposition to learn '@x1'.",name()));
+			return false;
 		}
 		return true;
 	}
