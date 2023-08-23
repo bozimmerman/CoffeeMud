@@ -140,7 +140,7 @@ public class Cavalier extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Hammer",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Unbinding",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Fighter_RacialFavoredMount",true); //TODO
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Fighter_RacialMount",true); //TODO
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_Rescue",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Skill_MountedCombat",false);
@@ -157,7 +157,6 @@ public class Cavalier extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_SetPolearm",true); //TODO
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Branding",false);
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_FindHome",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Herding",false); //TODO
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_BefriendMount",false); //TODO
@@ -189,14 +188,14 @@ public class Cavalier extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_MountedTactics",false); //TODO
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_TameMount",false); //TODO
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_FavoredMount2",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_FavoredMount2",true); //TODO
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_Vanguard",false); //TODO
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_Ridethrough",false); //TODO
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_MountedRetreat",false); //TODO
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_ConfidentVanity",false); //TODO
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_Wrangling",false); //TODO
-		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_ArmHold",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_ArmHold",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Climb",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_CriticalShot",false);
@@ -219,7 +218,7 @@ public class Cavalier extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_HoldTheLine",true); //TODO
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_FaithfulMount",false); //TODO
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Fighter_HalfAttack",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_BreakMount",false); //TODO
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_WagonTrain",false); //TODO
 
@@ -301,6 +300,22 @@ public class Cavalier extends StdCharClass
 		final MOB myChar=(MOB)myHost;
 
 		return super.okMessage(myChar,msg);
+	}
+
+	@Override
+	public boolean isValidClassDivider(final MOB killer, final MOB killed, final MOB mob, final Set<MOB> followers)
+	{
+		if((mob!=null)
+		&&(mob!=killed)
+		&&(!mob.amDead())
+		&&((!mob.isMonster())
+			||(!CMLib.flags().isAnimalIntelligence(mob))
+			||(!(mob instanceof Rideable)))
+		&&((mob.getVictim()==killed)
+		 ||(followers.contains(mob))
+		 ||(mob==killer)))
+			return true;
+		return false;
 	}
 
 	@Override

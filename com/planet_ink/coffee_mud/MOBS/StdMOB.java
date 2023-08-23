@@ -110,7 +110,6 @@ public class StdMOB implements MOB
 	public CharState			baseState			= (CharState) CMClass.getCommon("DefaultCharState");
 	private long				lastTickedTime		= 0;
 	private long				lastCommandTime		= System.currentTimeMillis();
-
 	protected Room				possStartRoom		= null;
 	protected String			liegeID				= "";
 	protected int				wimpHitPoint		= 0;
@@ -811,12 +810,13 @@ public class StdMOB implements MOB
 		eachEffect(affectPhyStats);
 		for (final Enumeration<FData> e = factions.elements(); e.hasMoreElements();)
 			e.nextElement().affectPhyStats(this, phyStats);
-		/* the follower light exception */
-		if (!CMLib.flags().isLightSource(this))
+		/* the follower light exception -- BUT WHY?  This is WEIRD! And location doesn't matter?! */
+		if((numFollowers()>0)&&(!CMLib.flags().isLightSource(this)))
 		{
 			for (final Enumeration<Pair<MOB, Short>> f = followers(); f.hasMoreElements();)
 			{
-				if (CMLib.flags().isLightSource(f.nextElement().first))
+				final Pair<MOB, Short> F = f.nextElement();
+				if (CMLib.flags().isLightSource(F.first))
 					phyStats.setDisposition(phyStats().disposition() | PhyStats.IS_LIGHTSOURCE);
 			}
 		}
@@ -3655,7 +3655,6 @@ public class StdMOB implements MOB
 				CMLib.combat().makeFollowersFight(this, (MOB) msg.target(), srcM);
 
 			// String othersMessage = msg.othersMessage(); // see comment below
-			// TODO: unravel this into a switch statement somehow...
 			if (isAttributeSet(Attrib.NOBATTLESPAM)
 			&& (((msg.targetMinor() == CMMsg.TYP_DAMAGE)
 					&& (msg.target() instanceof Physical)

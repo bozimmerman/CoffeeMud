@@ -1,0 +1,20 @@
+#Race	Mount Racial Category	Default Mount Race
+*	Equine	Horse
+Human	Equine	Horse
+Drow	Arachnid	GiantSpider
+Duergar	Porcine	DireBoar
+Dwarf	Ursine	DireBear
+Elf	Feline	DireCat
+Githyanki	Equine	Horse
+Gnoll	Canine	DireWolf
+Gnome	Mustelid	DireOtter
+Goblin	Rodent	DireRat
+HalfElf	Equine	Horse
+Halfling	Equine	Horse
+LizardMan	Reptile	GiantTurtle
+Merfolk	Fish	GiantSeahorse
+Ogre	Pachyderm	Elephant
+Orc	Canine	DireWolf
+Pixie	Feline	GreatCat
+Svirfneblin	Elemental	EarthElemental
+Tiefling	Equine	Horse

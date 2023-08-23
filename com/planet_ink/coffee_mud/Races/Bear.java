@@ -75,13 +75,13 @@ public class Bear extends StdRace
 	@Override
 	public int lightestWeight()
 	{
-		return 350;
+		return 650;
 	}
 
 	@Override
 	public int weightVariance()
 	{
-		return 10;
+		return 500;
 	}
 
 	@Override

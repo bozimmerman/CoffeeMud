@@ -4,7 +4,7 @@
   2. New Paladin skills: Incite Fight, Dark Hammer, Paladin's Wickedness, Crushing Aura
   3. New Paladin skills: Craft Unholy Reaver, Righteous Defense, Exploiting Aura
   4. Paladin's can now be Anti-Paladins if they maintain chaotic evil.
-  5. New Items: CubicGate, GenGiftContainer, GenTent, GenStove
+  5. New Items: CubicGate, GenGiftContainer, GenTent, GenStove, Spear (polearm)
   6. New Achievement stuff: Tattoo reward type, ENTITLED achieve type
   7. Tattoos like 'RACE_*" or "CHARCLASS_*" now open up otherwise skill-restricted options.
   8. Liege xp bonus can no longer be gained from non-combat or role-playing xp vassel gains.
@@ -52,7 +52,9 @@
  51. Titles now support random selection lists.
  52. Prop_UseEmoter* and Prop_Sounder support trigger mob masks now.
  53. Generic Abilities can now be COPYed, and Standard ones badly. CREATE will now convert.
-
+ 54. New standard races: GiantBear, GiantBoar, DireBear, DireBoar, DireCat
+ 55. New fighter skills: Racial Mount 
+ 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)
   1. GMODIFY can now affect Areas.
