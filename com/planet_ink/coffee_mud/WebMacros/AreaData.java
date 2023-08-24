@@ -676,6 +676,12 @@ public class AreaData extends StdWebMacro
 					str.append("</TABLE>\n");
 				}
 
+
+				if(parms.containsKey("HASCHILD"))
+					str.append(A.getChildren().hasMoreElements()+", ");
+				if(parms.containsKey("HASPARENT"))
+					str.append(A.getParents().hasMoreElements()+", ");
+				if(parms.containsKey("CHILDREN"))
 				if(parms.containsKey("CHILDREN"))
 				{
 					final Area defaultParentArea=CMLib.map().getDefaultParentArea();
