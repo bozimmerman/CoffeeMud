@@ -83,7 +83,7 @@ public class Title extends StdCommand
 			if(i==0)
 				menu.append("**: ");
 			else
-				menu.append(CMStrings.padRight("" + (i + 1), 2)).append(": ");
+				menu.append(CMStrings.padRight("" + (i + 1), 3)).append(": ");
 			if(ps.getTitleRandom(ogTitle, null))
 				menu.append("^r");
 			if (title.equalsIgnoreCase("*"))

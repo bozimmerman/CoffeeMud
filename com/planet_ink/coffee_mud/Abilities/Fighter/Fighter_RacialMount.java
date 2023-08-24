@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.Abilities.Properties.Prop_RideResister;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -17,6 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
    Copyright 2023-2023 Bo Zimmerman
@@ -113,6 +115,18 @@ public class Fighter_RacialMount extends StdAbility
 		return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;
 	}
 
+	@Override
+	public String text()
+	{
+		if(affected instanceof MOB)
+		{
+			final Pair<String, String> p = getMountInfo((MOB)affected);
+			if (p != null)
+				return p.first+","+p.second;
+		}
+		return super.text();
+	}
+
 	protected String getRacialCategory(final String str)
 	{
 		for(final Enumeration<Race> r = CMClass.races();r.hasMoreElements();)
@@ -194,28 +208,72 @@ public class Fighter_RacialMount extends StdAbility
 			&&(getMountInfo(mob).first.equals(P.baseCharStats().getMyRace().racialCategory()));
 	}
 
+	private volatile long lastLeave = 0;
+
 	@Override
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		if((msg.source() instanceof Rideable)
-		&&(msg.sourceMinor() == CMMsg.TYP_ENTER)
-		&&(msg.target() instanceof Room)
-		&&(affected instanceof MOB)
-		&&isMount((MOB)affected,msg.source()))
+		super.affectPhyStats(affected,affectableStats);
+		if((lastLeave != 0) && ((System.currentTimeMillis() - lastLeave)<250))
+			affectableStats.setSpeed(affectableStats.speed()*4.0);
+	}
+
+	protected boolean isGoCommand(final MOB mob)
+	{
+		final Pair<Object,List<String>> top = mob.getTopCommand();
+		if(top != null)
 		{
-			final MOB rider=(MOB)affected;
-			final int mv = msg.source().curState().getMovement();
-			final Room R = (Room)msg.target();
-			if((mv<=msg.source().maxState().getMovement()-R.pointsPerMove())
-			&&(proficiencyCheck(rider,0,false)))
+			final Object O = top.first;
+			if(O instanceof Command)
 			{
-				final int gain = (int)Math.round(CMath.mul(R.pointsPerMove(),0.5 + CMath.div(super.getXLEVELLevel(rider), 10.0)));
-				if(gain <= 0)
-					msg.source().curState().adjMovement(1, msg.source().maxState());
-				else
-					msg.source().curState().adjMovement(gain, msg.source().maxState());
+				final Command goC = CMClass.getCommand("Go");
+				if((goC!=null)&&(goC.getClass().isInstance(O)))
+					return true;
 			}
 		}
-		super.executeMsg(myHost, msg);
+		return false;
+	}
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if((msg.source() instanceof Rideable)
+		&&(affected instanceof MOB))
+		{
+			final MOB mob = (MOB)this.affected;
+			if((msg.targetMinor() == CMMsg.TYP_LEAVE)
+			&&(msg.target() instanceof Room)
+			&&(mob.commandQueSize()>0)
+			&&(isGoCommand(mob))
+			&&(isMount(mob,msg.source()))
+			&&(proficiencyCheck(mob,0,false)))
+			{
+				lastLeave = System.currentTimeMillis();
+				mob.recoverPhyStats();
+			}
+			else
+			if(lastLeave != 0)
+			{
+				lastLeave = 0;
+				mob.recoverPhyStats();
+			}
+		}
+		return super.okMessage(myHost, msg);
+	}
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking,tickID))
+			return false;
+		if((lastLeave != 0)
+		&&((System.currentTimeMillis() - lastLeave)>=250))
+		{
+			lastLeave=0;
+			final Physical affected = this.affected;
+			if(affected instanceof MOB)
+				((MOB)affected).recoverPhyStats();
+		}
+		return true;
 	}
 }

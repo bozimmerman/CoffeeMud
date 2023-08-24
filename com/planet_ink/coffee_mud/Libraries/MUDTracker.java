@@ -1070,10 +1070,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			final List<String> V=getDirectionCommandSet(direction);
 			if(A.proficiency()<50)
 				A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
-			final CharState oldState=(CharState)mob.curState().copyOf();
+			final CharState state = mob.curState();
+			final int[] oldStateVals = new int[] {state.getMana(), state.getMovement() } ;
 			A.invoke(mob,V,null,false,0);
-			mob.curState().setMana(oldState.getMana());
-			mob.curState().setMovement(oldState.getMovement());
+			state.setMana(oldStateVals[0]);
+			state.setMovement(oldStateVals[1]);
 		}
 		else
 		if(((nextRoom.ID().indexOf("Surface")>0)
@@ -1089,10 +1090,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			final List<String> V=getDirectionCommandSet(direction);
 			if(A.proficiency()<50)
 				A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
-			final CharState oldState=(CharState)mob.curState().copyOf();
+			final CharState state = mob.curState();
+			final int[] oldStateVals = new int[] {state.getMana(), state.getMovement() } ;
 			A.invoke(mob,V,null,false,0);
-			mob.curState().setMana(oldState.getMana());
-			mob.curState().setMovement(oldState.getMovement());
+			state.setMana(oldStateVals[0]);
+			state.setMovement(oldStateVals[1]);
 		}
 		else
 		if((mob.fetchAbility("Thief_Sneak")!=null)
@@ -1107,11 +1109,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				if(A2!=null)
 					A2.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 			}
-			final int oldMana=mob.curState().getMana();
-			final int oldMove=mob.curState().getMovement();
+			final CharState state = mob.curState();
+			final int[] oldStateVals = new int[] {state.getMana(), state.getMovement() } ;
 			A.invoke(mob,V,null,false,0);
-			mob.curState().setMana(oldMana);
-			mob.curState().setMovement(oldMove);
+			state.setMana(oldStateVals[0]);
+			state.setMovement(oldStateVals[1]);
 		}
 		else
 		{
@@ -1708,7 +1710,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				for(int i=0;i<expense;i++)
 					CMLib.combat().expendEnergy(mob,true);
 			}
-			if((!flee)&&(!always)&&(mob.curState().getMovement()<=0)&&(!gotoAllowed))
+			if((!flee)
+			&&(!always)
+			&&(mob.curState().getMovement()<=0)
+			&&(!gotoAllowed))
 			{
 				mob.tell(L("You are too tired."));
 				return false;
@@ -2160,7 +2165,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public boolean canValidTrail(final Room startR, final List<Room> radiantV, final String where, final int radius, 
+	public boolean canValidTrail(final Room startR, final List<Room> radiantV, final String where, final int radius,
 								 final Set<Room> ignoreRooms, final int maxSecs)
 	{
 		final Room R2=getWhere(where,radiantV);
@@ -2202,8 +2207,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public String getTrailToDescription(final Room startR, final List<Room> radiantV, final String where, 
-										final Set<TrailFlag> trailFlags, final int radius, final Set<Room> ignoreRooms, 
+	public String getTrailToDescription(final Room startR, final List<Room> radiantV, final String where,
+										final Set<TrailFlag> trailFlags, final int radius, final Set<Room> ignoreRooms,
 										final int maxSecs)
 	{
 		final Room R2=getWhere(where,radiantV);

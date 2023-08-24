@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class DireCat extends StdRace
+public class DireCat extends GreatCat
 {
 	@Override
 	public String ID()

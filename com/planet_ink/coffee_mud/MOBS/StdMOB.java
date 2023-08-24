@@ -2079,7 +2079,8 @@ public class StdMOB implements MOB
 				final double diff = actions() - cmd.actionCost;
 				if (diff >= 0.0)
 				{
-					final long nextTime = lastCommandTime + Math.round(cmd.actionCost / phyStats().speed() * CMProps.getTickMillisD());
+					final long reqEllapse = Math.round(cmd.actionCost / phyStats().speed() * CMProps.getTickMillisD());
+					final long nextTime = lastCommandTime + reqEllapse;
 					if ((System.currentTimeMillis() < nextTime) && (session() != null))
 						return false;
 					cmd = commandQue.removeFirst();
@@ -2936,18 +2937,24 @@ public class StdMOB implements MOB
 			else
 			if (msg.targetMinor() == CMMsg.TYP_RETREAT)
 			{
-				if (curState().getMovement() < 25)
+				final int retreatCost;
+				if (location() != null)
 				{
-					tell(L("You are too tired."));
-					return false;
+					retreatCost = location().pointsPerMove()*5;
+					if (curState().getMovement() < retreatCost)
+					{
+						tell(L("You are too tired."));
+						return false;
+					}
+					if (rangeToTarget() >= location().maxRange())
+					{
+						tell(L("You cannot retreat any further."));
+						return false;
+					}
 				}
-				if ((location() != null)
-				&& (rangeToTarget() >= location().maxRange()))
-				{
-					tell(L("You cannot retreat any further."));
-					return false;
-				}
-				curState().adjMovement(-25, maxState());
+				else
+					retreatCost=10;
+				curState().adjMovement(-retreatCost, maxState());
 				setRangeToTarget(rangeToTarget() + 1);
 				if (victim != null)
 				{

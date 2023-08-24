@@ -2071,6 +2071,19 @@ public class StdAbility implements Ability
 		return false;
 	}
 
+	protected boolean beneficialSoundFizzle(final MOB mob, final Environmental target, final String message)
+	{
+		// it didn't work, but tell everyone you tried.
+
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,message);
+		final Room room=mob.location();
+		if(room==null)
+			return false;
+		if(room.okMessage(mob,msg))
+			room.send(mob,msg);
+		return false;
+	}
+
 	protected boolean maliciousFizzle(final MOB mob, final Environmental target, final String message)
 	{
 		// it didn't work, but tell everyone you tried.

@@ -169,7 +169,9 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 			if(set.size()>0)
 			{
 				final List<Item> V = new XVector<Item>(set);
-				I=(Item)V.get(CMLib.dice().roll(1, V.size(), -1)).copyOf();
+				I=V.get(CMLib.dice().roll(1, V.size(), -1));
+				if(I!=null)
+					I=(Item)I.copyOf();
 			}
 		}
 		if(I == null)

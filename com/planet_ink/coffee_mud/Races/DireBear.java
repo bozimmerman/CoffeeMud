@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class DireBear extends Bear
+public class DireBear extends GiantBear
 {
 	@Override
 	public String ID()
