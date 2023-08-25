@@ -53,7 +53,7 @@
  52. Prop_UseEmoter* and Prop_Sounder support trigger mob masks now.
  53. Generic Abilities can now be COPYed, and Standard ones badly. CREATE will now convert.
  54. New standard races: GiantBear, GiantBoar, DireBear, DireBoar, DireCat
- 55. New fighter skills: Racial Mount 
+ 55. New fighter skills: Racial Mount, Call Steed, Rope Tricks
  
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

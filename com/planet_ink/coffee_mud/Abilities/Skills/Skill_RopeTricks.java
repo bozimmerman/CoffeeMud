@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Thief;
+package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2023 Bo Zimmerman
+   Copyright 2023-2023 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Panhandling extends ThiefSkill
+public class Skill_RopeTricks extends StdSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_Panhandling";
+		return "Skill_RopeTricks";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Panhandling");
+	private final static String localizedName = CMLib.lang().L("Rope Tricks");
 
 	@Override
 	public String name()
@@ -48,7 +48,7 @@ public class Thief_Panhandling extends ThiefSkill
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Panhandling)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Doing Rope Tricks)");
 
 	@Override
 	public String displayText()
@@ -74,7 +74,7 @@ public class Thief_Panhandling extends ThiefSkill
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"PANHANDLE","PANHANDLING"});
+	private static final String[] triggerStrings =I(new String[] {"ROPETRICKS"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -90,7 +90,7 @@ public class Thief_Panhandling extends ThiefSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;
+		return Ability.ACODE_SKILL|Ability.DOMAIN_ROPEUSE;
 	}
 
 	Vector<MOB> mobsHitUp=new Vector<MOB>();
@@ -112,8 +112,23 @@ public class Thief_Panhandling extends ThiefSkill
 				unInvoke();
 			else
 			if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_GIVE))
-				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?")));
+				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Thank you!' to <T-NAME> ^?")));
 		}
+	}
+
+	protected boolean isARope(final Item I)
+	{
+		if(I==null)
+			return false;
+		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
+			return false;
+		if((I instanceof Rideable)
+		&&(((Rideable)I).rideBasis()==Rideable.Basis.LADDER))
+			return true;
+		if((I instanceof Weapon)
+		&&(((Weapon)I).weaponClassification()==Weapon.CLASS_THROWN))
+			return true;
+		return false;
 	}
 
 	@Override
@@ -129,16 +144,30 @@ public class Thief_Panhandling extends ThiefSkill
 				return true;
 			tickTock=0;
 			final MOB mob=(MOB)affected;
-			if((CMLib.flags().isStanding(mob))
+			final Room R = (mob==null)?null:mob.location();
+			if(R==null)
+				return false;
+			if((!CMLib.flags().isStanding(mob))
 			||(!CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 			||(mob.isInCombat()))
 			{
 				unInvoke();
 				return false;
 			}
-			for(int i=0;i<mob.location().numInhabitants();i++)
+			final Item ropeI;
+			if(isARope(mob.fetchWieldedItem()))
+				ropeI=mob.fetchWieldedItem();
+			else
+			if(isARope(mob.fetchHeldItem()))
+				ropeI=mob.fetchHeldItem();
+			else
 			{
-				final MOB mob2=mob.location().fetchInhabitant(i);
+				unInvoke();
+				return false;
+			}
+			for(int i=0;i<R.numInhabitants();i++)
+			{
+				final MOB mob2=R.fetchInhabitant(i);
 				if((mob2!=null)
 				&&(CMLib.flags().canBeSeenBy(mob2,mob))
 				&&(mob2!=mob)
@@ -148,34 +177,44 @@ public class Thief_Panhandling extends ThiefSkill
 					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:
-						CMLib.commands().postSay(mob,mob2,L("A little something for a vet please?"),false,false);
+						R.show(mob, null, ropeI, CMMsg.MSG_NOISYMOVEMENT,
+								L("<S-NAME> whirl(s) <S-HIS-HER> <O-NAME> above <S-HIS-HER> head."));
 						break;
 					case 2:
-						CMLib.commands().postSay(mob,mob2,L("Spare a gold piece @x1",mob2.charStats().MisterMadam().toLowerCase()),false,false);
+						R.show(mob, null, ropeI, CMMsg.MSG_NOISYMOVEMENT,
+								L("<S-NAME> whirl(s) <S-HIS-HER> <O-NAME> above <random audience member-POSS> head."));
 						break;
 					case 3:
-						CMLib.commands().postSay(mob,mob2,L("Spare some change?"),false,false);
+						R.show(mob, null, ropeI, CMMsg.MSG_NOISYMOVEMENT,
+								L("<S-NAME> whirl(s) <S-HIS-HER> <O-NAME> around <S-HIS-HER> body."));
 						break;
 					case 4:
-						CMLib.commands().postSay(mob,mob2,L("Please @x1, a little something for a poor soul down on @x2 luck?",mob2.charStats().MisterMadam(),mob.charStats().hisher()),false,false);
+						R.show(mob, null, ropeI, CMMsg.MSG_NOISYMOVEMENT,
+								L("<S-NAME> whirl(s) <S-HIS-HER> <O-NAME> around <random audience member-POSS> body."));
 						break;
 					case 5:
-						CMLib.commands().postSay(mob,mob2,L("Hey, I lost my 'Will Work For Food' sign.  Can you spare me the money to buy one?"),false,false);
+						R.show(mob, null, ropeI, CMMsg.MSG_NOISYMOVEMENT,
+								L("<S-NAME> dance(s) with <S-HIS-HER> his <O-NAME>."));
 						break;
 					case 6:
-						CMLib.commands().postSay(mob,mob2,L("Spread a little joy to an poor soul?"),false,false);
+						R.show(mob, null, ropeI, CMMsg.MSG_NOISYMOVEMENT,
+								L("<S-NAME> toss(es) <S-HIS-HER> his <O-NAME> in the air and catch(es) it."));
 						break;
 					case 7:
-						CMLib.commands().postSay(mob,mob2,L("Change?"),false,false);
+						R.show(mob, null, ropeI, CMMsg.MSG_NOISYMOVEMENT,
+								L("<S-NAME> use(s) <S-HIS-HER> his <O-NAME> to grab a small item."));
 						break;
 					case 8:
-						CMLib.commands().postSay(mob,mob2,L("Can you spare a little change?"),false,false);
+						R.show(mob, null, ropeI, CMMsg.MSG_NOISYMOVEMENT,
+								L("<S-NAME> use(s) <S-HIS-HER> his <O-NAME> to form a circle in the air."));
 						break;
 					case 9:
-						CMLib.commands().postSay(mob,mob2,L("Can you spare a little gold?"),false,false);
+						R.show(mob, null, ropeI, CMMsg.MSG_NOISYMOVEMENT,
+								L("<S-NAME> use(s) <S-HIS-HER> his <O-NAME> to form a circle on the ground."));
 						break;
 					case 10:
-						CMLib.commands().postSay(mob,mob2,L("Gold piece for a poor soul down on @x1 luck?",mob.charStats().hisher()),false,false);
+						R.show(mob, null, ropeI, CMMsg.MSG_NOISYMOVEMENT,
+								L("<S-NAME> do(es) <O-NAME> jig."));
 						break;
 					}
 					if(CMLib.dice().rollPercentage()>(mob2.charStats().getSave(CharStats.STAT_SAVE_JUSTICE)+(CMLib.flags().isGood(mob)?10:0)))
@@ -202,7 +241,7 @@ public class Thief_Panhandling extends ThiefSkill
 					break;
 				}
 			}
-			if((mobsHitUp.size()>0)&&(CMLib.dice().rollPercentage()<10))
+			if((mobsHitUp.size()>0)&&(CMLib.dice().rollPercentage()<5))
 				mobsHitUp.removeElementAt(0);
 		}
 		return true;
@@ -218,7 +257,7 @@ public class Thief_Panhandling extends ThiefSkill
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(mob.location()!=null))
-			mob.tell(L("You stop panhandling."));
+			mob.tell(L("You stop doing rope tricks."));
 	}
 
 	@Override
@@ -229,13 +268,13 @@ public class Thief_Panhandling extends ThiefSkill
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already panhandling."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already doing rope tricks!"));
 			return false;
 		}
 
-		if(!CMLib.flags().isSitting(mob))
+		if(!CMLib.flags().isStanding(mob))
 		{
-			mob.tell(L("You must be sitting!"));
+			mob.tell(L("You must be standing!"));
 			return false;
 		}
 		if(!CMLib.flags().isACityRoom(mob))
@@ -244,14 +283,27 @@ public class Thief_Panhandling extends ThiefSkill
 			return false;
 		}
 
+		final Item ropeI;
+		if(isARope(mob.fetchWieldedItem()))
+			ropeI=mob.fetchWieldedItem();
+		else
+		if(isARope(mob.fetchHeldItem()))
+			ropeI=mob.fetchHeldItem();
+		else
+		{
+			mob.tell(L("You aren't wielding or holding a rope or lasso!"));
+			return false;
+		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":L("<S-NAME> start(s) panhandling."));
+		final CMMsg msg=CMClass.getMsg(mob,ropeI,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,
+				auto?"":L("<S-NAME> start(s) doing rope tricks with <T-NAME>."));
 		if(!success)
-			return beneficialVisualFizzle(mob,null,auto?"":L("<S-NAME> can't seem to get <S-HIS-HER> panhandling act started."));
+			return beneficialVisualFizzle(mob,null,auto?"":L("<S-NAME> can't seem to get <S-HIS-HER> rope tricks started."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{

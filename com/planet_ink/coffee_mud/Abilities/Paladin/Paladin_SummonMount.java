@@ -82,6 +82,12 @@ public class Paladin_SummonMount extends StdAbility
 	}
 
 	@Override
+	public long flags()
+	{
+		return Ability.FLAG_SUMMONING;
+	}
+
+	@Override
 	protected int canTargetCode()
 	{
 		return 0;

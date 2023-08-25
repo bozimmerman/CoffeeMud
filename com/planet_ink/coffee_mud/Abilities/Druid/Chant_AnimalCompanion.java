@@ -160,10 +160,18 @@ public class Chant_AnimalCompanion extends Chant
 				for(final Enumeration<Ability> a=target.personalEffects();a.hasMoreElements();)
 				{
 					final Ability A=a.nextElement();
-					if((A!=null)&&((A.flags()&Ability.FLAG_CHARMING)!=0)&&(A.canBeUninvoked()))
+					if((A!=null)
+					&&((A.flags()&Ability.FLAG_CHARMING)!=0)
+					&&(A.canBeUninvoked()))
 					{
 						affects.remove(A);
+						// in case there is wandering off...
+						final Room oldR = target.location();
+						oldR.delInhabitant(target);
+						target.setLocation(null);
 						A.unInvoke();
+						oldR.addInhabitant(mob);
+						target.setLocation(oldR);
 						mob.makePeace(true);
 						target.makePeace(true);
 						if((target.amFollowing()!=mob)
