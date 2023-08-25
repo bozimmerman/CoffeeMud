@@ -82,7 +82,7 @@ public class Fighter_RacialMount extends StdAbility
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_BENEFICIAL_SELF;
+		return Ability.QUALITY_INDIFFERENT;
 	}
 
 	@Override

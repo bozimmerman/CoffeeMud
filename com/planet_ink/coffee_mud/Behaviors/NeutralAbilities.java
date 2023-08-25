@@ -51,6 +51,7 @@ public class NeutralAbilities extends ActiveTicker
 	protected CompiledZMask	mask			= null;
 	protected List<Ability>	mySkills		= null;
 	protected int			numAllSkills	= -1;
+	protected List<String>	setSkills		= null;
 
 	public NeutralAbilities()
 	{
@@ -75,6 +76,13 @@ public class NeutralAbilities extends ActiveTicker
 		{
 			parms = newParms.substring(0,x);
 			mask = newParms.substring(x+1);
+		}
+		setSkills = null;
+		final String skills = CMParms.getParmStr(parms, "SKILLS", null);
+		if((skills != null) && (skills.trim().length()>0))
+		{
+			setSkills = new Vector<String>();
+			setSkills.addAll(CMParms.parseCommas(skills, true));
 		}
 		super.setParms(parms);
 		super.parms = newParms;
@@ -119,19 +127,32 @@ public class NeutralAbilities extends ActiveTicker
 					target = targets.get(CMLib.dice().roll(1, targets.size(), -1));
 				}
 				if((target != null)
-				&&((numAllSkills!=mob.numAllAbilities())||(mySkills==null)))
+				&&(((numAllSkills!=mob.numAllAbilities())&&(setSkills==null))
+					||(mySkills==null)))
 				{
 					numAllSkills=mob.numAbilities();
 					mySkills=new ArrayList<Ability>();
-					for(final Enumeration<Ability> e=mob.allAbilities(); e.hasMoreElements();)
+					if((setSkills!=null)&&(setSkills.size()>0))
 					{
-						final Ability tryThisOne=e.nextElement();
-						if((tryThisOne!=null)
-						&&(tryThisOne.abstractQuality()==Ability.QUALITY_INDIFFERENT)
-						&&(((tryThisOne.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PRAYER)
-							||tryThisOne.appropriateToMyFactions(mob)))
+						for(final String id : setSkills)
 						{
-							mySkills.add(tryThisOne);
+							final Ability A = mob.fetchAbility(id);
+							if(A != null)
+								mySkills.add(A);
+						}
+					}
+					else
+					{
+						for(final Enumeration<Ability> e=mob.allAbilities(); e.hasMoreElements();)
+						{
+							final Ability tryThisOne=e.nextElement();
+							if((tryThisOne!=null)
+							&&(tryThisOne.abstractQuality()==Ability.QUALITY_INDIFFERENT)
+							&&(((tryThisOne.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PRAYER)
+								||tryThisOne.appropriateToMyFactions(mob)))
+							{
+								mySkills.add(tryThisOne);
+							}
 						}
 					}
 				}

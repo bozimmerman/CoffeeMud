@@ -108,7 +108,8 @@ public class Paladin_CommandHorse extends StdAbility
 			}
 		}
 
-		if(!target.charStats().getMyRace().racialCategory().equals("Equine"))
+		if((!target.charStats().getMyRace().racialCategory().equals("Equine"))
+		||(!CMLib.flags().isAnimalIntelligence(target)))
 		{
 			mob.tell(L("@x1 is not a horse!",target.name(mob)));
 			return false;

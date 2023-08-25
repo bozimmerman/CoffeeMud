@@ -4758,7 +4758,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			for(final Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
 			{
 				final Behavior B=e.nextElement();
-				if(B!=null)
+				if((B!=null)
+				&& (B.isSavable())) // why was there no saveable check?!
 				{
 					behaviorstr.append("<BHAVE>");
 					behaviorstr.append(xmlLib.convertXMLtoTag("BCLASS",CMClass.classID(B)));

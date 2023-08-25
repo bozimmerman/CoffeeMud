@@ -695,7 +695,8 @@ public class StdRace implements Race
 				if(CMParms.contains(alreadyAbilitied, mapping.abilityID()))
 				{
 					final Ability A=mob.fetchAbility(mapping.abilityID());
-					if((A!=null)&&(mob.fetchEffect(A.ID())==null))
+					if((A!=null)
+					&&(mob.fetchEffect(A.ID())==null))
 					{
 						A.setProficiency(mapping.defaultProficiency());
 						A.autoInvocation(mob, false);

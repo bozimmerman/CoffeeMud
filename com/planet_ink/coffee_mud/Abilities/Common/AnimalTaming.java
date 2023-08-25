@@ -129,6 +129,7 @@ public class AnimalTaming extends CommonSkill
 							if(amount>1)
 								s="of "+amount+" ";
 							s+="of "+animal.charStats().hisher()+" behaviors";
+							animal.basePhyStats().addAmbiance("@TAMED");
 							mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to tame @x1 @x2.",animal.name(),s));
 							for(int i=0;i<amount;i++)
 							{

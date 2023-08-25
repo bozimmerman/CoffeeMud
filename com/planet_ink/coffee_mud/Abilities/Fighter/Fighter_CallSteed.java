@@ -195,10 +195,20 @@ public class Fighter_CallSteed extends StdAbility
 		}
 	}
 
-	protected final static String[] steedSkills = new String[] { "Fighter_RacialMount", "Fighter_FavoredMount1", "Fighter_FavoredMount2", "Fighter_FavoredMount3", "Fighter_FavoredMount4", "Fighter_FavoredMount5",
-			"Fighter_FavoredMount6", "Fighter_FavoredMount7" };
+	protected final static String[] steedSkills = new String[] {
+		"Fighter_RacialMount",
+		"Fighter_FavoredMount1",
+		"Fighter_FavoredMount2",
+		"Fighter_FavoredMount3",
+		"Fighter_FavoredMount4",
+		"Fighter_FavoredMount5",
+		"Fighter_FavoredMount6",
+		"Fighter_FavoredMount7"
+	};
 
-	protected Pair<Race, String> getOnlyChoice(final MOB mob, final String aID)
+	protected final static Pair<Race, String> defaultMount = new Pair<Race, String>(CMClass.getRace("Horse"), "Equine");
+
+	protected static Pair<Race, String> getMountChoice(final MOB mob, final String aID)
 	{
 		final Ability A = mob.fetchEffect(aID);
 		if (A != null)
@@ -212,6 +222,20 @@ public class Fighter_CallSteed extends StdAbility
 			}
 		}
 		return null;
+	}
+
+	protected static PairList<Race, String> getMountChoices(final MOB mob)
+	{
+		final PairVector<Race, String> pV = new PairVector<Race, String>(5);
+		for (final String aID : steedSkills)
+		{
+			final Pair<Race, String> pR = getMountChoice(mob, aID);
+			if (pR != null)
+				pV.add(pR);
+		}
+		if (pV.size() == 0)
+			pV.add(defaultMount);
+		return pV;
 	}
 
 	protected volatile MOB	lastSteedM	= null;
@@ -268,20 +292,6 @@ public class Fighter_CallSteed extends StdAbility
 			}
 		}
 		return favored;
-	}
-
-	protected PairList<Race, String> getChoices(final MOB mob)
-	{
-		final PairVector<Race, String> pV = new PairVector<Race, String>(5);
-		for (final String aID : steedSkills)
-		{
-			final Pair<Race, String> pR = getOnlyChoice(mob, aID);
-			if (pR != null)
-				pV.add(pR);
-		}
-		if (pV.size() == 0)
-			pV.add(new Pair<Race, String>(CMClass.getRace("Horse"), "Equine"));
-		return pV;
 	}
 
 	public boolean isValidRoom(final Race raceR, final Room R)
@@ -396,11 +406,11 @@ public class Fighter_CallSteed extends StdAbility
 	{
 		Race raceR = null;
 		MOB pickedM = null;
-		final PairList<Race, String> choices = this.getChoices(mob);
+		final PairList<Race, String> choices = Fighter_CallSteed.getMountChoices(mob);
 		final MOB lastSteedM = getLastSteed();
 		if (commands.size() == 0)
 		{
-			final Pair<Race, String> choice = this.getOnlyChoice(mob, "Fighter_RacialMount");
+			final Pair<Race, String> choice = Fighter_CallSteed.getMountChoice(mob, "Fighter_RacialMount");
 			if (choice != null)
 				raceR = choice.first;
 			else

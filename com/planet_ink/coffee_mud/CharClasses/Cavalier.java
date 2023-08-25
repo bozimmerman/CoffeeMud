@@ -151,8 +151,8 @@ public class Cavalier extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Bash",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Fighter_ArmorTweaking",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_BroncoBusting",false); //TODO
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_AweMounts",false); //TODO
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_ResistBuck",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Fighter_AweMounts",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_SetPolearm",true); //TODO
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Branding",false);
