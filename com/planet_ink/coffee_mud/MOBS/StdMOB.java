@@ -2201,7 +2201,7 @@ public class StdMOB implements MOB
 				Log.errOut("StdMOB", io.getMessage());
 			else
 				Log.errOut("StdMOB", io);
-			tell(L("Oops!"));
+			tell(L("Oops-- you ran into a game bug! Please inform the administrators."));
 		}
 		catch (final Exception e)
 		{
@@ -2209,7 +2209,7 @@ public class StdMOB implements MOB
 			if ((e!=null)&&(e.getMessage() != null))
 				Log.errOut("StdMOB", e.getMessage());
 			Log.errOut("StdMOB", e);
-			tell(L("Oops!"));
+			tell(L("Oops-- you ran into a game bug! Please inform the administrators."));
 		}
 	}
 

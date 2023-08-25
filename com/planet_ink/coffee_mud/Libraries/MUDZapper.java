@@ -1362,7 +1362,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case _ACCCHIEVE: // -accchieves
 					{
-						buf.append(L((skipFirstWord?"The":"Requires")+" the following account achievement"+(multipleQuals(V,v,"+")?"s":"")+": "));
+						buf.append(L((skipFirstWord?"The":"Requires the")+" following account achievement"+(multipleQuals(V,v,"+")?"s":"")+": "));
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							final String str2=V.get(v2);
