@@ -208,6 +208,8 @@ public class Branding extends CommonSkill implements PrivateProperty
 								final MOB oldAnimal=animal;
 								animal=(MOB)animal.copyOf();
 								oldAnimal.killMeDead(false); // start the rejuv
+								animal.basePhyStats().setRejuv(0);
+								animal.phyStats().setRejuv(0);
 								animal.bringToLife(room, false);
 							}
 							bonding.setMiscText("OWNER=\""+ownerName+"\"");
