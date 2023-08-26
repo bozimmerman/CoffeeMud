@@ -185,7 +185,7 @@ public class Branding extends CommonSkill implements PrivateProperty
 				final MOB mob=(MOB)affected;
 				if((branding!=null)&&(!aborted))
 				{
-					final MOB animal=branding;
+					MOB animal=branding;
 					if((messedUp)||(animal==null))
 						commonTelL(mob,"You've failed to brand @x1!",branding.name());
 					else
@@ -198,6 +198,18 @@ public class Branding extends CommonSkill implements PrivateProperty
 						{
 							animal.delEffect(animal.fetchEffect("Branding"));
 							final Branding bonding=(Branding)this.copyOf();
+							if((animal.isMonster())
+							&&(!animal.isPlayer())
+							&&(animal.getStartRoom()!=null)
+							&&(animal.isSavable())
+							&&(animal.basePhyStats().rejuv()!=0)
+							&&(animal.basePhyStats().rejuv()!=Integer.MAX_VALUE))
+							{
+								final MOB oldAnimal=animal;
+								animal=(MOB)animal.copyOf();
+								oldAnimal.killMeDead(false); // start the rejuv
+								animal.bringToLife(room, false);
+							}
 							bonding.setMiscText("OWNER=\""+ownerName+"\"");
 							bonding.canBeUninvoked = false;
 							animal.addNonUninvokableEffect(bonding);
