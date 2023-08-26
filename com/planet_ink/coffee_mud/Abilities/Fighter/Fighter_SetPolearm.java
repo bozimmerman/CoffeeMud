@@ -216,6 +216,12 @@ public class Fighter_SetPolearm extends FighterSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		final Ability oldA = mob.fetchEffect(ID());
+		if(oldA != null)
+		{
+			unInvoke();
+			return false;
+		}
 		final Room R=mob.location();
 		final Weapon polearmI = getPolearm(mob);
 		if((polearmI == null)&&(!auto))

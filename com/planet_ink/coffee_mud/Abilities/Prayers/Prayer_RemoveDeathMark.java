@@ -118,6 +118,9 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 		E=target.fetchEffect("Thief_ContractHit");
 		if(E!=null)
 			remove.put(E,target);
+		E=target.fetchEffect("Fighter_UnwaveringMark");
+		if(E!=null)
+			remove.put(E,target);
 		for(final Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 		{
 			final MOB M=e.nextElement();
@@ -144,7 +147,6 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 					A.unInvoke();
 					M.delEffect(A);
 				}
-
 			}
 		}
 		else
