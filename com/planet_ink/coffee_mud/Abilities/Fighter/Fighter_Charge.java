@@ -103,7 +103,7 @@ public class Fighter_Charge extends FighterSkill
 	@Override
 	public int maxRange()
 	{
-		return adjustedMaxInvokerRange(2);
+		return adjustedMaxInvokerRange(5) + super.getXLEVELLevel(invoker);
 	}
 
 	protected int	code	= 0;
@@ -182,7 +182,8 @@ public class Fighter_Charge extends FighterSkill
 			return false;
 		}
 
-		if((CMLib.flags().isSitting(mob))||(mob.riding()!=null))
+		if((CMLib.flags().isSitting(mob))
+		||(mob.riding()!=null))
 		{
 			mob.tell(L("You must be on your feet to charge!"));
 			return false;
@@ -195,7 +196,8 @@ public class Fighter_Charge extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,L("^F^<FIGHT^><S-NAME> charge(s) at <T-NAMESELF>!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,
+											L("^F^<FIGHT^><S-NAME> charge(s) at <T-NAMESELF>!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -204,21 +206,30 @@ public class Fighter_Charge extends FighterSkill
 					mob.setVictim(target);
 				if(mob.getVictim()==target)
 				{
-					mob.setRangeToTarget(0);
-					target.setRangeToTarget(0);
-					beneficialAffect(mob,mob,asLevel,2);
-					mob.recoverPhyStats();
-					if(notInCombat)
+					msg.setSourceMessage(null);
+					msg.setTargetMessage(null);
+					msg.setOthersMessage(null);
+					for(int i=mob.rangeToTarget()-1;i>=0;i--)
 					{
-						done=true;
-						CMLib.combat().postAttack(mob,target,mob.fetchWieldedItem());
+						if(mob.location().okMessage(mob, msg))
+							mob.location().send(mob, msg);
 					}
-					else
-						done=false;
-					if (mob.getVictim() == null)
-						mob.setVictim(null); // correct range
-					if (target.getVictim() == null)
-						target.setVictim(null); // correct range
+					if(mob.rangeToTarget()==0)
+					{
+						beneficialAffect(mob,mob,asLevel,2);
+						mob.recoverPhyStats();
+						if(notInCombat)
+						{
+							done=true;
+							CMLib.combat().postAttack(mob,target,mob.fetchWieldedItem());
+						}
+						else
+							done=false;
+						if (mob.getVictim() == null)
+							mob.setVictim(null); // correct range
+						if (target.getVictim() == null)
+							target.setVictim(null); // correct range
+					}
 				}
 			}
 		}

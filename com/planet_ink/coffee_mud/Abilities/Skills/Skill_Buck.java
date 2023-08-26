@@ -214,8 +214,9 @@ public class Skill_Buck extends StdSkill implements Behavior
 					for(int f=0;f<rideR.numRiders();f++)
 					{
 						final Rider R = rideR.fetchRider(f);
-						if((R!=null)
+						if((R instanceof MOB)
 						&&(grp.contains(R)
+							||(((MOB)R).getStartRoom()==mob.getStartRoom())
 							||((prop!=null)&&(CMLib.law().doesHavePriviledgesHere(mob, startR)))))
 							proceed=false;
 					}
@@ -257,10 +258,8 @@ public class Skill_Buck extends StdSkill implements Behavior
 		final int adj = ((mob.charStats().getStat(CharStats.STAT_STRENGTH)*2) - (avgDex*3)) + (2*getXLEVELLevel(mob));
 		final boolean success=proficiencyCheck(mob,adj,auto);
 
-		String str=null;
 		if(success)
 		{
-			str=auto?L("<T-NAME> is bucked!"):L("<S-NAME> buck(s) <T-NAME> off <S-NAMESELF>!");
 			final Room roomR=CMLib.map().roomLocation(mob);
 			final List<Rider> targets=new ArrayList<Rider>(R.numRiders());
 			for(int r=0;r<R.numRiders();r++)
@@ -275,14 +274,15 @@ public class Skill_Buck extends StdSkill implements Behavior
 						roomR.send(mob,msg);
 						if(msg.value() <=0)
 						{
-							roomR.show(mob, target, CMMsg.MSG_OK_ACTION, str);
-							target.setRiding(null);
+							roomR.show((MOB)target, R, CMMsg.MASK_ALWAYS|CMMsg.MSG_DISMOUNT,
+									auto?L("<S-NAME> is bucked!"):L("<T-NAME> buck(s) <S-NAME> off <T-NAMESELF>!"));
 						}
 					}
 				}
 				else
 				{
-					roomR.show(mob, target, CMMsg.MSG_OK_ACTION, str);
+					roomR.show(mob, target, CMMsg.MSG_OK_ACTION,
+							auto?L("<T-NAME> is bucked!"):L("<S-NAME> buck(s) <T-NAME> off <S-NAMESELF>!"));
 					target.setRiding(null);
 				}
 			}

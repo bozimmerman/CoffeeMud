@@ -183,19 +183,32 @@ public class Paladin_MountedCharge extends StdAbility
 				mob.location().send(mob,msg);
 				if(mob.getVictim()==target)
 				{
-					mob.setRangeToTarget(0);
-					target.setRangeToTarget(0);
-					beneficialAffect(mob,mob,asLevel,2);
-					mob.recoverPhyStats();
-					if(notInCombat)
+					msg.setSourceMessage(null);
+					msg.setTargetMessage(null);
+					msg.setOthersMessage(null);
+					msg.setTool(null);
+					for(int i=mob.rangeToTarget()-1;i>=0;i--)
 					{
-						done=true;
-						CMLib.combat().postAttack(mob,target,mob.fetchWieldedItem());
+						if(mob.location().okMessage(mob, msg))
+							mob.location().send(mob, msg);
 					}
-					else
-						done=false;
-					if(mob.getVictim()==null) mob.setVictim(null); // correct range
-					if(target.getVictim()==null) target.setVictim(null); // correct range
+					if(mob.rangeToTarget()==0)
+					{
+						target.setRangeToTarget(0);
+						beneficialAffect(mob,mob,asLevel,2);
+						mob.recoverPhyStats();
+						if(notInCombat)
+						{
+							done=true;
+							CMLib.combat().postAttack(mob,target,mob.fetchWieldedItem());
+						}
+						else
+							done=false;
+						if(mob.getVictim()==null)
+							mob.setVictim(null); // correct range
+						if(target.getVictim()==null)
+							target.setVictim(null); // correct range
+					}
 				}
 			}
 		}
