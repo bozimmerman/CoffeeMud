@@ -135,11 +135,10 @@ public class Herding extends CommonSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		int resourceType=R.myResource();
-		if((resourceType&RawMaterial.RESOURCE_MASK)>=RawMaterial.CODES.NAMES().length)
+		
+		if(mob.riding() != null)
 		{
-			resourceType=0;
-			Log.errOut("Hurding","Room "+CMLib.map().getExtendedRoomID(R)+" had resource code "+R.myResource());
+			
 		}
 
 		if(proficiencyCheck(mob,0,auto))
