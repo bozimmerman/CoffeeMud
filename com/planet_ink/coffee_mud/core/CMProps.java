@@ -3422,12 +3422,12 @@ public class CMProps extends Properties
 		}
 		if((!CMath.isNumber(s)) && (!CMath.isPct(s)))
 		{
-			Log.errOut("Malformed award definition (no or bad pct): "+ln);
+			Log.errOut("Malformed RPAWARDS definition (no or bad pct): "+ln);
 			return;
 		}
 		if(!CMath.isInteger(s2))
 		{
-			Log.errOut("Malformed award definition (no or bad time): "+ln);
+			Log.errOut("Malformed RPAWARDS definition (no or bad time): "+ln);
 			return;
 		}
 		double awardXPPct;
@@ -3449,7 +3449,7 @@ public class CMProps extends Properties
 				Log.errOut("Incomplete award definition ("+s+")");
 			else
 			if(!CMath.isInteger(s.substring(x+1).trim()))
-				Log.errOut("Malformed award amount definition ("+s+")");
+				Log.errOut("Malformed RPAWARDS amount definition ("+s+")");
 			else
 			if(s.startsWith("CHANNEL-NAMED(") && s.endsWith(")"))
 			{
@@ -3461,7 +3461,7 @@ public class CMProps extends Properties
 			{
 				final Int code=(Int)CMath.s_valueOf(Int.class, "RP_"+s.substring(0,x).replace('-','_'));
 				if(code == null)
-					Log.errOut("Malformed award type definition ("+s+")");
+					Log.errOut("Malformed RPAWARDS type definition ("+s+")");
 				else
 					CMProps.setIntVar(code, CMath.s_int(s.substring(x+1).trim()));
 			}
