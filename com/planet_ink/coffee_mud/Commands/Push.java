@@ -49,22 +49,22 @@ public class Push extends Go
 
 	public Ability getStrAdjuster(final int adjustment)
 	{
-		ExtAbility A=(ExtAbility)CMClass.getAbility("ExtAbility");
+		final ExtAbility A=(ExtAbility)CMClass.getAbility("ExtAbility");
 		return A.setStatsAffector(new StatsAffecting() {
 			private final int strAdj = adjustment;
 			@Override
-			public void affectPhyStats(Physical affected, PhyStats affectableStats)
+			public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 			{
 			}
 
 			@Override
-			public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+			public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 			{
 				affectableStats.adjStat(CharStats.STAT_STRENGTH, strAdj);
 			}
 
 			@Override
-			public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+			public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 			{
 			}
 		});
@@ -144,7 +144,7 @@ public class Push extends Go
 		}
 		return new Quad<Physical,String,Integer,Environmental>(pushThis, dir, Integer.valueOf(dirCode), E);
 	}
-	
+
 	protected List<Pair<MOB,Quad<Physical,String,Integer,Environmental>>> getHelpers(final MOB mob, final Physical targetObj)
 	{
 		final List<Pair<MOB,Quad<Physical,String,Integer,Environmental>>> lst = new ArrayList<Pair<MOB,Quad<Physical,String,Integer,Environmental>>>();
@@ -173,7 +173,7 @@ public class Push extends Go
 		}
 		return lst;
 	}
-	
+
 	protected Pair<Integer,Integer> getHelpAmounts(final MOB mob, final Physical targetObj, final Environmental targetDir)
 	{
 		final Room R=(mob==null)?null:mob.location();
@@ -209,7 +209,7 @@ public class Push extends Go
 		}
 		return adj;
 	}
-	
+
 	public void clearAdjustment(final MOB mob, final Ability adjA)
 	{
 		if(adjA != null)
@@ -218,7 +218,7 @@ public class Push extends Go
 			mob.recoverCharStats();
 		}
 	}
-	
+
 
 	@Override
 	public boolean preExecute(final MOB mob, final List<String> commands, final int metaFlags, final int secondsElapsed, final double actionsRemaining)
@@ -324,7 +324,7 @@ public class Push extends Go
 								expense = CMProps.getIntVar(CMProps.Int.RUNCOST);
 							for(int i=0;i<expense;i++)
 								CMLib.combat().expendEnergy(mob,true);
-							for(Pair<MOB,Quad<Physical,String,Integer,Environmental>> p : helpers)
+							for(final Pair<MOB,Quad<Physical,String,Integer,Environmental>> p : helpers)
 							{
 								p.first.clearCommandQueue();
 								if(movesRequired > 0)
@@ -342,7 +342,17 @@ public class Push extends Go
 								R.moveItemTo((Item)pushThis,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
 							else
 							if(pushThis instanceof MOB)
-								CMLib.tracking().walk((MOB)pushThis,dirCode,((MOB)pushThis).isInCombat(),false,true,true);
+							{
+								final MOB pM = (MOB)pushThis;
+								if(CMLib.tracking().walk(pM,dirCode,pM.isInCombat(),false,true,true)
+								&&(!pM.isPlayer())
+								&&(pM.isMonster())
+								&&(pM.basePhyStats().rejuv() != 0)
+								&&(pM.basePhyStats().rejuv() != Integer.MAX_VALUE)
+								&&(pM.getStartRoom()==R)
+								&&(pM.isSavable()))
+									CMLib.tracking().markToWanderHomeLater(pM, (int)CMProps.getTicksPerHour());
+							}
 						}
 					}
 				}

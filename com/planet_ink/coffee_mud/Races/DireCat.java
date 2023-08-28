@@ -81,7 +81,6 @@ public class DireCat extends GreatCat
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
-		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,22);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,22);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);

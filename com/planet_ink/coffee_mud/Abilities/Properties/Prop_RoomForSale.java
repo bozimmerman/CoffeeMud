@@ -374,7 +374,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 							if(p != null)
 							{
 								final String exitId = p.second;
-								if((p.first!=null)&&(p.first.length()>0))
+								if((p.first!=null)
+								&&(p.first.length()>0))
 								{
 									if(openE == null)
 										openE = CMClass.getExit("Open");
@@ -451,7 +452,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				for(int i=R.numItems()-1;i>=0;i--)
 				{
 					I=R.getItem(i);
-					if((I==null)||(I.Name().equalsIgnoreCase("id")))
+					if((I==null)
+					||(I.Name().equalsIgnoreCase("id")))
 						continue;
 					CMLib.catalog().updateCatalogIntegrity(I);
 					if(clearAllItems)
@@ -481,7 +483,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 					{
 						A=a.nextElement();
-						if(((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY)))
+						if(((A!=null)
+						&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY)))
 						{
 							A.unInvoke();
 							R.delEffect(A);
@@ -493,7 +496,9 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				{
 					final Room R2=R.rawDoors()[d];
 					Exit E=R.getRawExit(d);
-					if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
+					if((E!=null)
+					&&(E.hasALock())
+					&&(E.isGeneric()))
 					{
 						E.setKeyName("");
 						E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
@@ -501,7 +506,9 @@ public class Prop_RoomForSale extends Property implements LandTitle
 						if(R2!=null)
 						{
 							E=R2.getRawExit(Directions.getOpDirectionCode(d));
-							if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
+							if((E!=null)
+							&&(E.hasALock())
+							&&(E.isGeneric()))
 							{
 								E.setKeyName("");
 								E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);

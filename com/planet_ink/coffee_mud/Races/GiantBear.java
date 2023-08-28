@@ -83,8 +83,9 @@ public class GiantBear extends Bear
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
-		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,20);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,10);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 
 	@Override

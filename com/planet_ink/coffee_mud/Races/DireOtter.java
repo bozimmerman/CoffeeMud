@@ -81,9 +81,9 @@ public class DireOtter extends Otter
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
-		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,18);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,10);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();

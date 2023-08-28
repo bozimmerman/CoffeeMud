@@ -363,16 +363,19 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public void markToWanderHomeLater(final MOB M)
+	public void markToWanderHomeLater(final MOB M, final int ticks)
 	{
-		final Ability A=CMClass.getAbility("WanderHomeLater");
-		if(A!=null)
+		Ability A=M.fetchEffect("WanderHomeLater");
+		if(A == null)
 		{
-			A.setMiscText("ONCE=true");
+			A=CMClass.getAbility("WanderHomeLater");
+			A.setMiscText("ONCE=true MINTICKS="+ticks+" MAXTICKS="+ticks);
 			M.addEffect(A);
 			A.setSavable(false);
 			A.makeLongLasting();
 		}
+		else
+			A.setMiscText("ONCE=true MINTICKS="+ticks+" MAXTICKS="+ticks);
 	}
 
 	@Override

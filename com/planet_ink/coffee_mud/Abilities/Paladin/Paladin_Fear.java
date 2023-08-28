@@ -121,7 +121,7 @@ public class Paladin_Fear extends PaladinSkill
 				A.invoke(mob, targetM, true, 0);
 				if((rR != mob.location())
 				&&(!CMLib.flags().isMobile(targetM)))
-					CMLib.tracking().markToWanderHomeLater(targetM);
+					CMLib.tracking().markToWanderHomeLater(targetM,0);
 			}
 			for(final MOB M : vicMap.keySet())
 				M.setVictim(vicMap.get(M));

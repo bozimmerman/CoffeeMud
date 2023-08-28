@@ -117,8 +117,9 @@ public class DireBear extends GiantBear
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
-		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,25);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,10);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 
 	@Override

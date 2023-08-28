@@ -49,22 +49,22 @@ public class Pull extends Go
 
 	public Ability getStrAdjuster(final int adjustment)
 	{
-		ExtAbility A=(ExtAbility)CMClass.getAbility("ExtAbility");
+		final ExtAbility A=(ExtAbility)CMClass.getAbility("ExtAbility");
 		return A.setStatsAffector(new StatsAffecting() {
 			private final int strAdj = adjustment;
 			@Override
-			public void affectPhyStats(Physical affected, PhyStats affectableStats)
+			public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 			{
 			}
 
 			@Override
-			public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+			public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 			{
 				affectableStats.adjStat(CharStats.STAT_STRENGTH, strAdj);
 			}
 
 			@Override
-			public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+			public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 			{
 			}
 		});
@@ -173,7 +173,7 @@ public class Pull extends Go
 		}
 		return lst;
 	}
-	
+
 	protected Pair<Integer,Integer> getHelpAmounts(final MOB mob, final Physical targetObj, final Environmental targetDir)
 	{
 		final Room R=(mob==null)?null:mob.location();
@@ -209,7 +209,7 @@ public class Pull extends Go
 		}
 		return adj;
 	}
-	
+
 	public void clearAdjustment(final MOB mob, final Ability adjA)
 	{
 		if(adjA != null)
@@ -318,7 +318,7 @@ public class Pull extends Go
 							expense = CMProps.getIntVar(CMProps.Int.RUNCOST);
 						for(int i=0;i<expense;i++)
 							CMLib.combat().expendEnergy(mob,true);
-						for(Pair<MOB,Quad<Physical,String,Integer,Environmental>> p : helpers)
+						for(final Pair<MOB,Quad<Physical,String,Integer,Environmental>> p : helpers)
 						{
 							p.first.clearCommandQueue();
 							CMLib.tracking().walk(p.first,dirCode,false,false,false,false);
@@ -336,7 +336,17 @@ public class Pull extends Go
 							R.moveItemTo((Item)pullThis,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
 						else
 						if(pullThis instanceof MOB)
-							CMLib.tracking().walk((MOB)pullThis,dirCode,((MOB)pullThis).isInCombat(),false,true,true);
+						{
+							final MOB pM = (MOB)pullThis;
+							if(CMLib.tracking().walk(pM,dirCode,pM.isInCombat(),false,true,true)
+							&&(!pM.isPlayer())
+							&&(pM.isMonster())
+							&&(pM.basePhyStats().rejuv() != 0)
+							&&(pM.basePhyStats().rejuv() != Integer.MAX_VALUE)
+							&&(pM.getStartRoom()==R)
+							&&(pM.isSavable()))
+								CMLib.tracking().markToWanderHomeLater(pM, (int)CMProps.getTicksPerHour());
+						}
 					}
 				}
 			}

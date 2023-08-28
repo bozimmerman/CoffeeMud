@@ -125,7 +125,7 @@ public class GiantWolf extends Wolf
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
-		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,13);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,13);
 	}
