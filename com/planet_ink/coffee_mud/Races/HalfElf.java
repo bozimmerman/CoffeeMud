@@ -172,6 +172,7 @@ public class HalfElf extends StdRace
 			outfitChoices.add(p1);
 			final Armor s3=CMClass.getArmor("GenBelt");
 			outfitChoices.add(s3);
+			cleanOutfit(outfitChoices);
 		}
 		return outfitChoices;
 	}

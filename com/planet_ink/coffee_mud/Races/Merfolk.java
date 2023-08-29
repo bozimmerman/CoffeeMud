@@ -242,6 +242,7 @@ public class Merfolk extends StdRace
 
 			final Armor s3=CMClass.getArmor("GenBelt");
 			outfitChoices.add(s3);
+			cleanOutfit(outfitChoices);
 		}
 		return outfitChoices;
 	}

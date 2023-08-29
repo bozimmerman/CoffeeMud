@@ -146,6 +146,7 @@ public class Troglodyte extends StdRace
 		if(outfitChoices==null)
 		{
 			outfitChoices = new Vector<Item>();
+			cleanOutfit(outfitChoices);
 		}
 		return outfitChoices;
 	}

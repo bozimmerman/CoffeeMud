@@ -332,6 +332,7 @@ public class Centaur extends StdRace
 			s3.addNonUninvokableEffect(a1);
 			s3.text();
 			outfitChoices.add(s3);
+			cleanOutfit(outfitChoices);
 		}
 		return outfitChoices;
 	}

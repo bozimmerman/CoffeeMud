@@ -532,6 +532,7 @@ public class Cleric extends StdCharClass
 				return new Vector<Item>();
 			outfitChoices.add(w);
 		}
+		cleanOutfit(outfitChoices);
 		return outfitChoices;
 	}
 }

@@ -275,6 +275,7 @@ public class Birdman extends StdRace
 			s4.setName(L("a crash helmet"));
 			s4.setDisplayText(L("a crash helmet has been left here"));
 			outfitChoices.add(s4);
+			cleanOutfit(outfitChoices);
 		}
 		return outfitChoices;
 	}

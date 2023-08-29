@@ -332,6 +332,7 @@ public class Purist extends Cleric
 				return new Vector<Item>();
 			outfitChoices=new Vector<Item>();
 			outfitChoices.add(w);
+			cleanOutfit(outfitChoices);
 		}
 		return outfitChoices;
 	}

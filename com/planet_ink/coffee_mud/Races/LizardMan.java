@@ -245,6 +245,7 @@ public class LizardMan extends StdRace
 			((Container)p1).setContainTypes(Container.CONTAIN_DAGGERS|Container.CONTAIN_ONEHANDWEAPONS|Container.CONTAIN_SWORDS|Container.CONTAIN_OTHERWEAPONS);
 			p1.text();
 			outfitChoices.add(p1);
+			cleanOutfit(outfitChoices);
 		}
 		return outfitChoices;
 	}

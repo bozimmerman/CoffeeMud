@@ -545,6 +545,7 @@ public class Mage extends StdCharClass
 				return new Vector<Item>();
 			outfitChoices=new Vector<Item>();
 			outfitChoices.add(w);
+			cleanOutfit(outfitChoices);
 		}
 		return outfitChoices;
 	}

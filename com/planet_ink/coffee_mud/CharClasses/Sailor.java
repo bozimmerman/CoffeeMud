@@ -438,6 +438,7 @@ public class Sailor extends StdCharClass
 				w.basePhyStats().setAttackAdjustment(0);
 				w.recoverPhyStats();
 				outfitChoices.add(w);
+				cleanOutfit(outfitChoices);
 			}
 		}
 		return outfitChoices;

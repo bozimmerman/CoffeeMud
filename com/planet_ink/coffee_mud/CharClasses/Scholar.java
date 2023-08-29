@@ -512,6 +512,7 @@ public class Scholar extends StdCharClass
 			I.setName(L("Scholar`s Logbook"));
 			I.setDisplayText(L("A Scholar`s Logbook has been left here."));
 			outfitChoices.add(I);
+			cleanOutfit(outfitChoices);
 		}
 		return outfitChoices;
 	}

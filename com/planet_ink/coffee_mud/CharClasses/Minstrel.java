@@ -348,6 +348,7 @@ public class Minstrel extends StdCharClass
 				i.recoverPhyStats();
 				outfitChoices.add(i);
 			}
+			cleanOutfit(outfitChoices);
 		}
 		return outfitChoices;
 	}

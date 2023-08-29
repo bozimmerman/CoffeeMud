@@ -782,6 +782,14 @@ public class StdCharClass implements CharClass
 		return str.toString();
 	}
 
+	protected void cleanOutfit(final List<Item> items)
+	{
+		for(final Item I : items)
+		{
+			I.setBaseValue(0);
+		}
+	}
+
 	protected Set<Integer> buildDisallowedWeaponClasses()
 	{
 		return buildDisallowedWeaponClasses(allowedWeaponLevel());

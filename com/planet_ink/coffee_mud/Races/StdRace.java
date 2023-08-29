@@ -804,9 +804,18 @@ public class StdRace implements Race
 		return naturalWeaponChoices;
 	}
 
+	protected void cleanOutfit(final List<Item> items)
+	{
+		for(final Item I : items)
+		{
+			I.setBaseValue(0);
+		}
+	}
+
 	@Override
 	public List<Item> outfit(final MOB myChar)
 	{
+		cleanOutfit(outfitChoices);
 		return outfitChoices;
 	}
 
