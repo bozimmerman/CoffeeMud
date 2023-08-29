@@ -155,6 +155,8 @@ public class Spell_Shove extends Spell
 						thisRoom.send(target,leaveMsg);
 						((Room)enterMsg.target()).bringMobHere(target,false);
 						((Room)enterMsg.target()).send(target,enterMsg);
+						if(target.isMonster() && target.getStartRoom()!=null)
+							CMLib.tracking().markToWanderHomeLater(target, (int)CMProps.getTicksPerHour());
 						target.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(target,true);
 					}

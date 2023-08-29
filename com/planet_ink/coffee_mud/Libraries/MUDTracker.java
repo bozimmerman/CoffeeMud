@@ -365,6 +365,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	@Override
 	public void markToWanderHomeLater(final MOB M, final int ticks)
 	{
+		if((M == null)||(M.getStartRoom()==null))
+			return;
 		Ability A=M.fetchEffect("WanderHomeLater");
 		if(A == null)
 		{

@@ -55,7 +55,7 @@
  54. New standard races: GiantBear, GiantBoar, DireBear, DireBoar, DireCat
  55. New skills: Racial Mount, Call Steed, Rope Tricks, Awe Mounts, Bronco Busting
  56. The racial skill "Buck" will now invoke automatically for certain races of mobs
- 57. New skills: Set Polearm, Dismounting Blow
+ 57. New skills: Set Polearm, Dismounting Blow, Herding, Shepherding
  
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

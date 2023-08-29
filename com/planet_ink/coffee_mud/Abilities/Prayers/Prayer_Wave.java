@@ -154,7 +154,8 @@ public class Prayer_Wave extends Prayer
 							if((roll!=1)&&(roll>chanceToStay))
 							{
 								CMLib.tracking().walk(target,dir,true,false);
-								if((!R.isInhabitant(target))&&(target.isMonster()))
+								if((!R.isInhabitant(target))
+								&&(target.isMonster()))
 									CMLib.tracking().markToWanderHomeLater(target,0);
 							}
 						}

@@ -32,22 +32,22 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Herding extends CommonSkill
+public class Shepherding extends CommonSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Herding";
+		return "Shepherding";
 	}
 
-	public Herding()
+	public Shepherding()
 	{
 		super();
-		displayText=L("You are herding...");
-		verb=L("herding");
+		displayText=L("You are shepherding...");
+		verb=L("shepherding");
 	}
 
-	private final static String localizedName = CMLib.lang().L("Herding");
+	private final static String localizedName = CMLib.lang().L("Shepherding");
 
 	@Override
 	public String name()
@@ -55,7 +55,7 @@ public class Herding extends CommonSkill
 		return localizedName;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"HERD","HERDING"});
+	private static final String[] triggerStrings =I(new String[] {"SHEPHERD","SHEPHERDING"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -73,33 +73,6 @@ public class Herding extends CommonSkill
 	protected boolean	failed			= false;
 	protected String	foundShortName	= "";
 
-	protected void playerRides(final Rider M, final Set<Rider> rides)
-	{
-		if((M!=null)
-		&&(!rides.contains(M)))
-		{
-			rides.add(M);
-			if(M.riding() != null)
-				playerRides(M.riding(),rides);
-			if(M instanceof Rideable)
-			{
-				final Rideable R = (Rideable)M;
-				for(final Enumeration<Rider> r = R.riders();r.hasMoreElements();)
-					playerRides(r.nextElement(), rides);
-			}
-		}
-	}
-
-	protected int playerGroupWeight(final Rider M)
-	{
-		final Set<Rider> set = new HashSet<Rider>();
-		playerRides(M,set);
-		int weight = 0;
-		for(final Rider R : set)
-			weight += R.phyStats().weight();
-		return weight;
-	}
-
 	@Override
 	protected boolean canBeDoneSittingDown()
 	{
@@ -109,18 +82,10 @@ public class Herding extends CommonSkill
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((affected instanceof MOB)
-		&&(tickID==Tickable.TICKID_MOB))
+		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			final MOB mob=(MOB)affected;
-			if(activityRoom == null)
-				activityRoom=mob.location();
-			if((mob.riding()==null)
-			||(mob.location()!=activityRoom))
-			{
-				unInvoke();
-				return false;
-			}
+			activityRoom=mob.location();
 			if((tickUp==0)
 			&&(herdDir >= 0))
 			{
@@ -156,27 +121,23 @@ public class Herding extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
+
 		if(commands.size()<2)
 		{
-			super.commonTelL(mob,"Herd which race in what direction?");
+			super.commonTelL(mob,"Shepherd which race in what direction?");
 			return false;
 		}
 
 		herd=new Vector<MOB>();
-		verb=L("herding");
+		verb=L("shepherding");
 		activityRoom=null;
 		final Room R=mob.location();
 		if(R==null)
 			return false;
 
-		if(mob.riding() == null)
-		{
-			super.commonTelL(mob,"You need to be mounted to do this.");
-			return false;
-		}
-
 		final String raceName = CMParms.combine(commands,0,commands.size()-1);
 		MOB exampleM = null;
+		MOB errorM = null;
 		// first look for simple match
 		for(final Enumeration<MOB> m = R.inhabitants();m.hasMoreElements();)
 		{
@@ -188,10 +149,13 @@ public class Herding extends CommonSkill
 			&&((raceName.toLowerCase().startsWith(M.charStats().getMyRace().name().toLowerCase()))
 				||CMLib.english().containsString(M.charStats().getMyRace().name(),raceName)))
 			{
-				exampleM = M;
+				if(M.phyStats().weight()<mob.phyStats().weight()/2)
+					exampleM = M;
+				errorM = M;
 				break;
 			}
 		}
+
 		if(exampleM == null) // if simple match fails, do name match
 		{
 			exampleM = R.fetchInhabitant(raceName);
@@ -201,10 +165,21 @@ public class Herding extends CommonSkill
 			||(mob.riding()==exampleM)
 			||(!CMLib.flags().isAnimalIntelligence(exampleM)))
 				exampleM = null;
+			else
+			{
+				errorM = exampleM;
+				if((exampleM != null)
+				&&(exampleM.phyStats().weight()>mob.phyStats().weight()/2))
+					exampleM = null;
+			}
 		}
+
 		if(exampleM == null)
 		{
-			super.commonTelL(mob,"You don't see any '@x1' you can herd here.",raceName);
+			if(errorM != null)
+				super.commonTelL(mob,"The '@x1' here seem too large to be shepherded normally.",raceName);
+			else
+				super.commonTelL(mob,"You don't see any '@x1' you can shepherd here.",raceName);
 			return false;
 		}
 
@@ -215,6 +190,7 @@ public class Herding extends CommonSkill
 			&&(CMLib.flags().isAnimalIntelligence(M))
 			&&(CMLib.flags().canBeSeenBy(M, mob))
 			&&(mob.riding()!=M)
+			&&(M.phyStats().weight()<mob.phyStats().weight()/2)
 			&&(M.charStats().getMyRace()==exampleM.charStats().getMyRace()))
 				herd.add(M);
 		}
@@ -233,7 +209,7 @@ public class Herding extends CommonSkill
 		||(nR==null)
 		||(!nE.isOpen()))
 		{
-			super.commonTell(mob, "You can't herd them that way.");
+			super.commonTell(mob, "You can't shepherd them that way.");
 			return false;
 		}
 
@@ -242,14 +218,11 @@ public class Herding extends CommonSkill
 
 		this.failed = proficiencyCheck(mob,0,auto);
 		final Race herdRace = exampleM.charStats().getMyRace();
-		final double avgWeight = herdRace.lightestWeight()+(herdRace.weightVariance()/2);
-		final double totalWeight = this.playerGroupWeight(mob);
-		final int total = Math.max(1, (int)Math.round(totalWeight / avgWeight * (1.0+super.getXLEVELLevel(mob))));
-
-		final String pluralRaces = CMLib.english().makePlural(exampleM.charStats().getMyRace().name());
+		final int total = Math.max(1,3 * (mob.numFollowers()+(adjustedLevel(mob,asLevel)/10) * (1+super.getXLEVELLevel(mob))));
+		final String pluralRaces = CMLib.english().makePlural(herdRace.name());
 		final String finalDirName = CMLib.directions().getDirectionName(direction);
 		final CMMsg msg=CMClass.getMsg(mob,exampleM,this,getActivityMessageType(),
-				L("<S-NAME> start(s) herding @x1 @x2.",pluralRaces,finalDirName));
+				L("<S-NAME> start(s) shepherding @x1 @x2.",pluralRaces,finalDirName));
 		int ct = 0;
 		for(final Iterator<MOB> m = herd.iterator();m.hasNext();)
 		{
@@ -269,7 +242,7 @@ public class Herding extends CommonSkill
 			commonTelL(mob,"No one seems to be paying attention to you.");
 			return false;
 		}
-		verb=L("herding @x1 @x2",pluralRaces,finalDirName);
+		verb=L("shepherding @x1 @x2",pluralRaces,finalDirName);
 		activityRoom=R;
 		herdDir = direction;
 		final int duration=herd.size();

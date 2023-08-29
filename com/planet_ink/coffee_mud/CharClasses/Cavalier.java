@@ -158,7 +158,7 @@ public class Cavalier extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Branding",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_FindHome",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Herding",false); //TODO
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Herding",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_BefriendMount",false); //TODO
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Dodge",false);

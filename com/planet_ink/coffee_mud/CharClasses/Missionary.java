@@ -154,6 +154,7 @@ public class Missionary extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Etherealness",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SenseParish",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Herding",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindsight",true);

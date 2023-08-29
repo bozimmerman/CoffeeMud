@@ -83,6 +83,7 @@
 5 Weaponsmithing MASK=+STR 12 REQUIRES=Blacksmithing(75) Specialization_* 
 
 6 Skill_FindHome MASK=+WIS 8 
+6 Shepherding MASK=+CON 9 
 
 7 MeatCuring MASK=+INT 8 
 
