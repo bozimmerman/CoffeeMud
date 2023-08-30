@@ -455,10 +455,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	@Override
 	public void makePeaceInGroup(final MOB mob)
 	{
-		final Set<MOB> myGroup=mob.getGroupMembers(new HashSet<MOB>());
+		final Set<MOB> myGroup=mob.getGroupMembers(new XTreeSet<MOB>());
 		for (final MOB mob2 : myGroup)
 		{
-			if(mob2.isInCombat()&&(myGroup.contains(mob2.getVictim())))
+			if(mob2.isInCombat()
+			&&(myGroup.contains(mob2.getVictim())))
 				mob2.makePeace(true);
 		}
 	}

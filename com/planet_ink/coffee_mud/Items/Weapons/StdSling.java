@@ -54,8 +54,7 @@ public class StdSling extends StdWeapon
 		setAmmoRemaining(10);
 		baseGoldValue=150;
 		recoverPhyStats();
-		minRange=1;
-		maxRange=2;
+		setRanges(1, 2);
 		weaponDamageType=Weapon.TYPE_BASHING;
 		material=RawMaterial.RESOURCE_LEATHER;
 		weaponClassification=Weapon.CLASS_RANGED;

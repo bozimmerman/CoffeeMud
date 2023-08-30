@@ -3424,7 +3424,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final String defaultAmmo=(AW.requiresAmmunition())?"Y":"N";
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			mob.tell(L("@x1. Ammo required: @x2 (@x3/@x4)",""+showNumber,""+AW.requiresAmmunition(),""+AW.ammunitionCapacity(),""+AW.ammunitionType()));
+			mob.tell(L("@x1. Ammo required: @x2 (@x3/@x4)",""+showNumber,
+					""+AW.requiresAmmunition(),
+					""+AW.rawAmmunitionCapacity(),
+					""+AW.ammunitionType()));
 			return;
 		}
 
@@ -3439,13 +3442,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 				mob.tell(L("(no change)"));
-			mob.tell(L("\n\rAmmo capacity: '@x1'.)",""+AW.ammunitionCapacity()));
+			mob.tell(L("\n\rAmmo capacity: '@x1'.)",""+AW.rawAmmunitionCapacity()));
 			final int newValue=CMath.s_int(mob.session().prompt(L("Enter a new value\n\r:"),""));
 			if(newValue>0)
 				AW.setAmmoCapacity(newValue);
 			else
 				mob.tell(L("(no change)"));
-			AW.setAmmoRemaining(AW.ammunitionCapacity());
+			AW.setAmmoRemaining(AW.rawAmmunitionCapacity());
 		}
 		else
 		{

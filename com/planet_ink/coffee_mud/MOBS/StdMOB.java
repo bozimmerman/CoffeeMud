@@ -3437,6 +3437,8 @@ public class StdMOB implements MOB
 					else
 						setRangeToTarget(-1);
 					recoverPhyStats();
+					if(msg.sourceMessage() != null)
+						tell(this, msg.target(), msg.tool(), msg.sourceMessage());
 					break;
 				case CMMsg.TYP_ADVANCE:
 					if(rangeToTarget()>=1)
@@ -3450,6 +3452,8 @@ public class StdMOB implements MOB
 						else
 							setRangeToTarget(-1);
 						recoverPhyStats();
+						if(msg.sourceMessage() != null)
+							tell(this, msg.target(), msg.tool(), msg.sourceMessage());
 					}
 					break;
 				case CMMsg.TYP_FACTIONCHANGE:

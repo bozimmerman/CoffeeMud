@@ -806,6 +806,8 @@ public class StdRace implements Race
 
 	protected void cleanOutfit(final List<Item> items)
 	{
+		if((items == null)||(items.size()==0))
+			return;
 		for(final Item I : items)
 		{
 			I.setBaseValue(0);

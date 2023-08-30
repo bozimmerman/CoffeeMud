@@ -35,15 +35,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fighter_RacialMount extends StdAbility
+public class Fighter_FavoredMount extends StdAbility
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_RacialMount";
+		return "Fighter_FavoredMount";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Racial Mount");
+	private final static String localizedName = CMLib.lang().L("Favored Mount");
 
 	@Override
 	public String name()
@@ -53,6 +53,7 @@ public class Fighter_RacialMount extends StdAbility
 
 
 	private String desc = null;
+	private Pair<String, String> pair = null;
 
 	@Override
 	public String displayText()
@@ -67,9 +68,9 @@ public class Fighter_RacialMount extends StdAbility
 			}
 		}
 		if(desc == null)
-			return L("(Affinity for a mount)");
+			return L("(Favor for a mount)");
 		else
-			return L("(Affinity for "+desc+" mounts)");
+			return L("(Favoring "+desc+" mounts)");
 	}
 
 	@Override
@@ -118,100 +119,61 @@ public class Fighter_RacialMount extends StdAbility
 	@Override
 	public String text()
 	{
-		if(affected instanceof MOB)
-		{
-			final Pair<String, String> p = getMountInfo((MOB)affected);
-			if (p != null)
-				return p.first+","+p.second;
-		}
-		return super.text();
-	}
-
-	protected static String getRacialCategory(final String str)
-	{
-		for(final Enumeration<Race> r = CMClass.races();r.hasMoreElements();)
-		{
-			final Race R = r.nextElement();
-			if(R.racialCategory().equalsIgnoreCase(str))
-				return R.racialCategory();
-		}
-		return null;
+		if(!(affected instanceof MOB))
+			return super.miscText;
+		return super.miscText;
 	}
 
 	final static Pair<String, String> defaultMount = new Pair<String,String>("Equine","Horse");
 
-	protected static Map<String,Pair<String,String>> getRacialMountChoices()
-	{
-		@SuppressWarnings("unchecked")
-		Map<String,Pair<String,String>> mapH=(Map<String,Pair<String,String>>)Resources.getResource("PARSED_RECIPE: racialmounts.txt");
-		if(mapH==null)
-		{
-			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+"racialmounts.txt",null,CMFile.FLAG_LOGERRORS).text();
-			mapH = new Hashtable<String,Pair<String,String>>();
-			for(final String lstr :  Resources.getFileLineVector(str) )
-			{
-				if(lstr.startsWith("#"))
-					continue;
-				final List<String> V = CMParms.parseTabs(lstr, true);
-				if(V.size()>=3)
-				{
-					final String key;
-					final String posskey = V.get(0);
-					if(posskey.equals("*"))
-						key = "*";
-					else
-					{
-						final Race sR = CMClass.getRace(posskey);
-						if(sR != null)
-							key = sR.ID();
-						else
-							key = getRacialCategory(posskey);
-					}
-					if(key == null)
-						Log.errOut("Fighter_RacialMount","Unknown racial mount host key "+posskey);
-					else
-					{
-						final String cat = getRacialCategory(V.get(1));
-						final Race rR = CMClass.getRace(V.get(2));
-						if (rR == null)
-							Log.errOut("Fighter_RacialMount","Unknown racial mount race "+V.get(2));
-						else
-						if (cat == null)
-							Log.errOut("Fighter_RacialMount","Unknown racial mount category "+V.get(1));
-						else
-							mapH.put(key, new Pair<String,String>(cat,rR.ID()));
-					}
-				}
-			}
-			Resources.submitResource("PARSED_RECIPE: racialmounts.txt",mapH);
-		}
-		return mapH;
-	}
-
-	protected static Pair<String, String> getMountInfo(final MOB mob)
+	protected Pair<String,String> pickMount(final MOB mob)
 	{
 		if(mob == null)
-			return null;
-		final Race R = mob.baseCharStats().getMyRace();
-		final Map<String,Pair<String,String>> mapH = Fighter_RacialMount.getRacialMountChoices();
-		Pair<String,String> p = mapH.get(R.ID());
-		if(p == null)
+			return defaultMount;
+		final Map<String,Pair<String,String>> mapH=Fighter_RacialMount.getRacialMountChoices();
+		final Pair<String,String> racialMount = Fighter_RacialMount.getMountInfo(mob);
+		final Set<String> alreadyChosens = new XTreeSet<String>();
+		if(racialMount != null)
+			alreadyChosens.add(racialMount.first+","+racialMount.second);
+		for(final Pair<Race,String> choice : Fighter_CallSteed.getMountChoices(mob))
+			alreadyChosens.add(choice.first.ID()+","+choice.second);
+		final PairList<String,String> choices = new PairArrayList<String,String>();
+		for(final String key : mapH.keySet())
 		{
-			p = mapH.get(R.racialCategory());
-			if(p == null)
-			{
-				p = mapH.get("*");
-				if(p == null)
-					p = defaultMount;
-			}
+			final Pair<String, String> p = mapH.get(key);
+			if(!alreadyChosens.contains(p.first+","+p.second))
+				choices.add(p);
 		}
-		return p;
+		if(choices.size()>0)
+			return choices.get(CMLib.dice().roll(1, choices.size(), -1));
+		return defaultMount;
+	}
+
+	protected Pair<String, String> getMountInfo(final MOB mob)
+	{
+		if(pair != null)
+			return pair;
+		if(super.miscText.indexOf(',')<=0)
+		{
+			final Pair<String,String> p  = pickMount((MOB)affected);
+			if (p != null)
+				super.setMiscText(p.first+","+p.second);
+		}
+		if(pair == null)
+		{
+			final int x = super.miscText.indexOf(',');
+			if(x>0)
+				pair = new Pair<String,String>(super.miscText.substring(0,x),super.miscText.substring(x+1));
+		}
+		if(pair != null)
+			return pair;
+		return defaultMount;
 	}
 
 	protected boolean isMount(final MOB mob, final MOB P)
 	{
 		return (mob.riding()==P)
-			&&(getMountInfo(mob).first.equals(P.baseCharStats().getMyRace().racialCategory()));
+				&&(getMountInfo(mob).first.equals(P.baseCharStats().getMyRace().racialCategory()));
 	}
 
 	private volatile long lastLeave = 0;
@@ -220,7 +182,8 @@ public class Fighter_RacialMount extends StdAbility
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if((lastLeave != 0) && ((System.currentTimeMillis() - lastLeave)<250))
+		if((lastLeave != 0)
+		&& ((System.currentTimeMillis() - lastLeave)<250))
 			affectableStats.setSpeed(affectableStats.speed()*4.0);
 	}
 
@@ -233,7 +196,8 @@ public class Fighter_RacialMount extends StdAbility
 			if(O instanceof Command)
 			{
 				final Command goC = CMClass.getCommand("Go");
-				if((goC!=null)&&(goC.getClass().isInstance(O)))
+				if((goC!=null)
+				&&(goC.getClass().isInstance(O)))
 					return true;
 			}
 		}

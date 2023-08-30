@@ -52,6 +52,12 @@ public class Fighter_AweMounts extends FighterSkill
 	}
 
 	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_BENEFICIAL_SELF;

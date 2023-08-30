@@ -63,8 +63,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		super();
 	}
 
-	
-	
+
+
 	@Override
 	public String getGenericClassID(final Ability A)
 	{
@@ -91,7 +91,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		else
 			return "GenAbility";
 	}
-	
+
 	@Override
 	public Ability convertAbilityToGeneric(final Ability A)
 	{
@@ -173,7 +173,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		CR.setStat("HELP", CMLib.help().getHelpText(A.ID(), null, false, true));
 		return CR;
 	}
-	
+
 	protected String parseLayers(final short[] layerAtt, final short[] clothingLayers, String misctype)
 	{
 		final int colon=misctype.indexOf(':');
@@ -5087,7 +5087,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if(I instanceof Ammunition)
 						return ""+((Ammunition)I).ammunitionRemaining();
 					if((I instanceof AmmunitionWeapon)&&(((AmmunitionWeapon)I).requiresAmmunition()))
-						return ""+((AmmunitionWeapon)I).ammunitionCapacity();
+						return ""+((AmmunitionWeapon)I).rawAmmunitionCapacity();
 					return "";
 				}
 			},

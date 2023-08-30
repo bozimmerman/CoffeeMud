@@ -53,8 +53,7 @@ public class StdNet extends StdWeapon
 		basePhyStats().setDamage(0);
 		baseGoldValue=10;
 		recoverPhyStats();
-		minRange=1;
-		maxRange=1;
+		setRanges(1, 1);
 		weaponDamageType=Weapon.TYPE_NATURAL;
 		material=RawMaterial.RESOURCE_HEMP;
 		weaponClassification=Weapon.CLASS_THROWN;

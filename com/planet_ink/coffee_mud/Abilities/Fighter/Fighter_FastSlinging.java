@@ -105,9 +105,10 @@ public class Fighter_FastSlinging extends FighterSkill
 			if((w instanceof AmmunitionWeapon)
 			&&(((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
 			&&(((AmmunitionWeapon)w).ammunitionType().length()>0)
-			&&((mob.rangeToTarget()>=w.minRange())||((w.phyStats().sensesMask()&PhyStats.SENSE_ITEMNOMINRANGE)==PhyStats.SENSE_ITEMNOMINRANGE))
+			&&((mob.rangeToTarget()>=w.minRange()) || (w.minRange()==0))
 			&&(w.name().toLowerCase().indexOf("sling")>=0)
-			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
+			&&((mob.fetchAbility(ID())==null)
+				||proficiencyCheck(null,0,false)))
 			{
 				helpProficiency(mob, 0);
 				final int extraAttacks=1+(int)Math.round(Math.floor(CMath.div(adjustedLevel(mob,0),16.0)));

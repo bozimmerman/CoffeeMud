@@ -1,4 +1,6 @@
-package com.planet_ink.coffee_mud.Items.Weapons;
+package com.planet_ink.coffee_mud.Abilities.Fighter;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.Abilities.Properties.Prop_RideResister;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,6 +17,9 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /*
    Copyright 2023-2023 Bo Zimmerman
 
@@ -30,40 +35,19 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spear extends StdWeapon
+public class Fighter_FavoredMount2 extends Fighter_FavoredMount
 {
 	@Override
 	public String ID()
 	{
-		return "Spear";
+		return "Fighter_FavoredMount2";
 	}
 
-	public Spear()
-	{
-		super();
-		setName("a spear");
-		setDisplayText("a spear has been left here.");
-		setDescription("It looks like it is sharp!");
-		basePhyStats().setAbility(0);
-		basePhyStats().setLevel(0);
-		basePhyStats.setWeight(8);
-		basePhyStats().setAttackAdjustment(0);
-		basePhyStats().setDamage(5);
-		baseGoldValue=10;
-		recoverPhyStats();
-		setRanges(0, 1);
-		weaponDamageType=Weapon.TYPE_PIERCING;
-		material=RawMaterial.RESOURCE_WOOD;
-		weaponClassification=Weapon.CLASS_POLEARM;
-		setRawLogicalAnd(true);
-	}
+	private final static String localizedName = CMLib.lang().L("Favored Mount 2");
 
 	@Override
-	public String genericName()
+	public String name()
 	{
-		if(CMLib.english().startsWithAnIndefiniteArticle(name())&&(CMStrings.numWords(name())<4))
-			return CMStrings.removeColors(name());
-		return L("a spear");
+		return localizedName;
 	}
-
 }

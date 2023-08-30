@@ -50,8 +50,7 @@ public class Javelin extends StdWeapon
 		basePhyStats.setWeight(2);
 		basePhyStats().setAttackAdjustment(0);
 		basePhyStats().setDamage(6);
-		maxRange=10;
-		minRange=0;
+		setRanges(0, 10);
 		baseGoldValue=1;
 		setUsesRemaining(1);
 		recoverPhyStats();

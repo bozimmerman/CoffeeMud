@@ -55,8 +55,7 @@ public class Arquebus extends StdWeapon
 		setAmmunitionType("bullets");
 		setAmmoCapacity(1);
 		setAmmoRemaining(1);
-		minRange=0;
-		maxRange=5;
+		setRanges(0, 5);
 		baseGoldValue=500;
 		recoverPhyStats();
 		wornLogicalAnd=true;

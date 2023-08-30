@@ -72,6 +72,7 @@ public class AutoInvoke extends StdCommand
 					foundA=mob.fetchEffect(foundA.ID());
 					if(foundA!=null)
 					{
+						foundA.unInvoke();
 						mob.delEffect(foundA);
 						if(mob.fetchEffect(foundA.ID())!=null)
 							mob.tell(L("@x1 failed to successfully deactivate.",foundA.name()));

@@ -1,7 +1,8 @@
-package com.planet_ink.coffee_mud.Abilities.Fighter;
+package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Fighter.Fighter_FarShot;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -18,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2023 Bo Zimmerman
+   Copyright 2023-2023 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fighter_PointBlank extends FighterSkill
+public class Skill_LongReach extends StdSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_PointBlank";
+		return "Skill_LongReach";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Point Blank Shot");
+	private final static String	localizedName	= CMLib.lang().L("Long Reach");
 
 	@Override
 	public String name()
@@ -57,19 +58,25 @@ public class Fighter_PointBlank extends FighterSkill
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_INDIFFERENT;
+		return Ability.QUALITY_OK_SELF;
 	}
 
 	@Override
 	protected int canAffectCode()
 	{
-		return Ability.CAN_MOBS;
+		return CAN_MOBS;
 	}
 
 	@Override
-	protected int canTargetCode()
+	public boolean putInCommandlist()
 	{
-		return 0;
+		return false;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_RACIALABILITY;
 	}
 
 	@Override
@@ -84,13 +91,8 @@ public class Fighter_PointBlank extends FighterSkill
 		return false;
 	}
 
-	@Override
-	public int classificationCode()
-	{
-		return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;
-	}
-
 	public int checkDown=4;
+	public int reachBonus = 1;
 
 	protected List<Weapon> qualifiedWeapons=new Vector<Weapon>();
 
@@ -98,25 +100,28 @@ public class Fighter_PointBlank extends FighterSkill
 	protected void cloneFix(final Ability E)
 	{
 		super.cloneFix(E);
-		qualifiedWeapons=new XVector<Weapon>(((Fighter_PointBlank)E).qualifiedWeapons);
+		qualifiedWeapons=new XVector<Weapon>(((Skill_LongReach)E).qualifiedWeapons);
 	}
 
 	@Override
-	public void setMiscText(final String newText)
+	public void setMiscText(final String newMiscText)
 	{
-		super.setMiscText(newText);
+		super.setMiscText(newMiscText);
 		qualifiedWeapons=new Vector<Weapon>();
+		reachBonus=1;
+		if(CMath.isInteger(newMiscText))
+			reachBonus=CMath.s_int(newMiscText);
 	}
 
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);
-		if(affected instanceof Weapon)
+		if((affected instanceof Weapon)
+		&&((Weapon)affected).amWearingAt(Wearable.IN_INVENTORY))
 		{
 			final Weapon targetW=(Weapon)affected;
-			if((targetW != null)
-			&&(targetW.amWearingAt(Wearable.IN_INVENTORY)))
+			if(targetW != null)
 			{
 				qualifiedWeapons.remove(targetW);
 				targetW.delEffect(targetW.fetchEffect(ID()));
@@ -125,33 +130,35 @@ public class Fighter_PointBlank extends FighterSkill
 		}
 		else
 		if((msg.source()==affected)
-		&&(msg.target() instanceof AmmunitionWeapon))
+		&&(msg.target() instanceof Weapon))
 		{
-			final AmmunitionWeapon W=(AmmunitionWeapon)msg.target();
-			if((W.weaponClassification()==Weapon.CLASS_RANGED)
-			&&(W.ammunitionType().length()>0))
+			final Weapon targetW=(Weapon)msg.target();
+			if((targetW.weaponClassification()!=Weapon.CLASS_RANGED)
+			&&(targetW.weaponClassification()!=Weapon.CLASS_THROWN))
 			{
 				if(((msg.targetMinor()==CMMsg.TYP_WEAR)
-				   ||(msg.targetMinor()==CMMsg.TYP_WIELD)
-				   ||(msg.targetMinor()==CMMsg.TYP_HOLD))
-				&&(!qualifiedWeapons.contains(W))
-				&&((msg.source().fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
+					||(msg.targetMinor()==CMMsg.TYP_WIELD)
+					||(msg.targetMinor()==CMMsg.TYP_HOLD))
+				&&(!qualifiedWeapons.contains(msg.target()))
+				&&((msg.source().fetchAbility(ID())==null)
+					||proficiencyCheck(null,0,false)))
 				{
-					qualifiedWeapons.add(W);
+					qualifiedWeapons.add(targetW);
 					final Ability A=(Ability)this.copyOf();
-					A.setInvoker(invoker());
 					A.setSavable(false);
-					W.addEffect(A);
-					W.recoverPhyStats();
+					A.setInvoker(invoker());
+					targetW.addEffect(A);
+					A.makeLongLasting();
+					targetW.recoverPhyStats();
 				}
 				else
 				if(((msg.targetMinor()==CMMsg.TYP_REMOVE)
 					||(msg.targetMinor()==CMMsg.TYP_DROP))
-				&&(qualifiedWeapons.contains(msg.target())))
+				&&(qualifiedWeapons.contains(targetW)))
 				{
-					qualifiedWeapons.remove(msg.target());
-					W.delEffect(W.fetchEffect(ID()));
-					W.recoverPhyStats();
+					qualifiedWeapons.remove(targetW);
+					targetW.delEffect(targetW.fetchEffect(ID()));
+					targetW.recoverPhyStats();
 				}
 			}
 		}
@@ -163,8 +170,9 @@ public class Fighter_PointBlank extends FighterSkill
 		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof Weapon)
 		{
-			affectableStats.setArmor((affectableStats.armor()&Weapon.MASK_MINRANGEZERO)
-									|Weapon.MASK_MINRANGEFLAG); // sets armor min-range bits to 0
+			affectableStats.setArmor((affectableStats.armor()&Weapon.MASK_MAXRANGEZERO)
+									+Weapon.MASK_MAXRANGEFLAG
+									+((Weapon)affected).getRanges()[1]+1); // sets armor max-range bits
 		}
 	}
 
@@ -181,22 +189,24 @@ public class Fighter_PointBlank extends FighterSkill
 		{
 			checkDown=5;
 			final Item w=mob.fetchWieldedItem();
-			if((w!=null)
-			&&(w instanceof AmmunitionWeapon)
-			&&(((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
-			&&(((AmmunitionWeapon)w).ammunitionType().length()>0)
-			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
+			if((w instanceof Weapon)
+			&&(((Weapon)w).weaponClassification()!=Weapon.CLASS_RANGED)
+			&&(((Weapon)w).weaponClassification()!=Weapon.CLASS_THROWN)
+			&&((mob.fetchAbility(ID())==null)
+				||proficiencyCheck(null,0,false)))
 			{
-				if((CMLib.dice().rollPercentage()<5)&&(mob.isInCombat())&&(mob.rangeToTarget() == 0))
+				if((CMLib.dice().rollPercentage()<10)
+				&& (mob.isInCombat())
+				&& (mob.rangeToTarget() > 0))
 					helpProficiency(mob, 0);
-				if(w.fetchEffect(ID())==null)
+				if(!qualifiedWeapons.contains(w))
 				{
-					if(!qualifiedWeapons.contains(w))
-						qualifiedWeapons.add((Weapon)w);
+					qualifiedWeapons.add((Weapon)w);
 					final Ability A=(Ability)this.copyOf();
 					A.setSavable(false);
 					A.setInvoker(invoker());
 					w.addEffect(A);
+					A.makeLongLasting();
 					w.recoverPhyStats();
 				}
 			}

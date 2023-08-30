@@ -455,7 +455,7 @@ public class GrinderItems
 					if((I instanceof AmmunitionWeapon)&&(!(I instanceof Wand)))
 					{
 						((AmmunitionWeapon)I).setAmmoCapacity(CMath.s_int(old));
-						if((((AmmunitionWeapon)I).requiresAmmunition())||(((AmmunitionWeapon)I).ammunitionCapacity()>0))
+						if((((AmmunitionWeapon)I).requiresAmmunition())||(((AmmunitionWeapon)I).rawAmmunitionCapacity()>0))
 							((AmmunitionWeapon)I).setAmmoRemaining(CMath.s_int(old));
 					}
 					break;

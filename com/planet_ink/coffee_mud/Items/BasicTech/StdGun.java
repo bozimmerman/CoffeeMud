@@ -171,11 +171,12 @@ public class StdGun extends StdTechItem implements Weapon, AmmunitionWeapon
 				{
 					boolean recover=false;
 					final Ammunition I=(Ammunition)msg.tool();
-					int howMuchToTake=ammunitionCapacity();
+					final int ammoCapacity = ammunitionCapacity();
+					int howMuchToTake=ammoCapacity;
 					if(I.ammunitionRemaining()<howMuchToTake)
 						howMuchToTake=I.ammunitionRemaining();
-					if(this.ammunitionCapacity() - this.ammunitionRemaining() < howMuchToTake)
-						howMuchToTake=this.ammunitionCapacity() - this.ammunitionRemaining();
+					if(ammoCapacity - this.ammunitionRemaining() < howMuchToTake)
+						howMuchToTake=ammoCapacity - this.ammunitionRemaining();
 					setAmmoRemaining(this.ammunitionRemaining() + howMuchToTake);
 					I.setAmmoRemaining(I.ammunitionRemaining()-howMuchToTake);
 					final LinkedList<Ability> removeThese=new LinkedList<Ability>();
@@ -343,16 +344,16 @@ public class StdGun extends StdTechItem implements Weapon, AmmunitionWeapon
 	@Override
 	public int minRange()
 	{
-		if(CMath.bset(phyStats().sensesMask(),PhyStats.SENSE_ITEMNOMINRANGE))
-			return 0;
+		if(CMath.bset(phyStats().armor(),Weapon.MASK_MINRANGEFLAG))
+			return (phyStats().armor()&Weapon.MASK_MINRANGEBITS)>>Weapon.MASK_MINRANGESHFT;
 		return minRange;
 	}
 
 	@Override
 	public int maxRange()
 	{
-		if(CMath.bset(phyStats().sensesMask(),PhyStats.SENSE_ITEMNOMAXRANGE))
-			return 100;
+		if(CMath.bset(phyStats().armor(),Weapon.MASK_MAXRANGEFLAG))
+			return (phyStats().armor()&Weapon.MASK_MAXRANGEBITS)>>Weapon.MASK_MAXRANGESHFT;
 		return maxRange;
 	}
 
@@ -431,6 +432,14 @@ public class StdGun extends StdTechItem implements Weapon, AmmunitionWeapon
 
 	@Override
 	public int ammunitionCapacity()
+	{
+		if(CMath.bset(phyStats().armor(),Weapon.MASK_MOAMMOFLAG))
+			return (phyStats().armor()&Weapon.MASK_MOAMMOBITS) >> Weapon.MASK_MOAMMOSHFT;
+		return ammoCapacity;
+	}
+
+	@Override
+	public int rawAmmunitionCapacity()
 	{
 		return ammoCapacity;
 	}

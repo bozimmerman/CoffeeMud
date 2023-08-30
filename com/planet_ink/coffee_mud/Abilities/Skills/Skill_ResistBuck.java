@@ -52,6 +52,12 @@ public class Skill_ResistBuck extends StdSkill
 	}
 
 	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_BENEFICIAL_SELF;

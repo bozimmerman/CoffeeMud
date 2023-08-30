@@ -179,6 +179,31 @@ public interface Weapon extends Item
 		"THROWN"
 	};
 
+	/** One of the Weapon "armor" mask bits: is max range overridden */
+	public final static int MASK_MAXRANGEFLAG = 0x00000080;
+	/** One of the Weapon "armor" mask bits: new max range value mask */
+	public final static int MASK_MAXRANGEBITS = 0x0000007f;
+	/** One of the Weapon "armor" mask bits: zero-out max range */
+	public final static int MASK_MAXRANGEZERO = 0xffffff00;
+	/** One of the Weapon "armor" mask bits: max range left-shift */
+	public final static int MASK_MAXRANGESHFT = 0;
+	/** One of the Weapon "armor" mask bits: is min range overridden */
+	public final static int MASK_MINRANGEFLAG = 0x00008000;
+	/** One of the Weapon "armor" mask bits: new min range value mask */
+	public final static int MASK_MINRANGEBITS = 0x00007f00;
+	/** One of the Weapon "armor" mask bits: zero-out min range */
+	public final static int MASK_MINRANGEZERO = 0xffff00ff;
+	/** One of the Weapon "armor" mask bits: min range left-shift */
+	public final static int MASK_MINRANGESHFT = 8;
+	/** One of the Weapon "armor" mask bits: is min range overridden */
+	public final static int MASK_MOAMMOFLAG = 0x00800000;
+	/** One of the Weapon "armor" mask bits: new more ammo value mask */
+	public final static int MASK_MOAMMOBITS = 0x007f0000;
+	/** One of the Weapon "armor" mask bits: zero-out more ammo */
+	public final static int MASK_MOAMMOZERO = 0xff00ffff;
+	/** One of the Weapon "armor" mask bits: more ammo left-shift */
+	public final static int MASK_MOAMMOSHFT = 16;
+
 	/**
 	 * Gets the type of damage this weapon does, from the weapon damage
 	 * type list of codes.
@@ -223,11 +248,11 @@ public interface Weapon extends Item
 	 * @param max the maximum range 0=melee
 	 */
 	public void setRanges(int min, int max);
-	
+
 	/**
 	 * Gets the raw minimum and maximum range of this weapon.
 	 * The array returned is in format min/max;
-	 * 
+	 *
 	 * @see Weapon#setRanges(int, int)
 	 * @see Environmental#maxRange()
 	 * @see Environmental#minRange()

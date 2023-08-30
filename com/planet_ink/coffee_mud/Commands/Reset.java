@@ -209,7 +209,7 @@ public class Reset extends StdCommand
 		if(I instanceof AmmunitionWeapon)
 		{
 			final AmmunitionWeapon W=(AmmunitionWeapon)I;
-			if((W.requiresAmmunition())&&(W.ammunitionCapacity()>0))
+			if((W.requiresAmmunition())&&(W.rawAmmunitionCapacity()>0))
 			{
 				String str=mob.session().prompt(L("@x1@x2 requires (@x3): ",lead,I.Name(),W.ammunitionType()));
 				if(str.length()>0)

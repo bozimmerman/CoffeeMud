@@ -162,8 +162,11 @@ public class Fighter_FarShot extends FighterSkill
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected instanceof Item)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ITEMNOMAXRANGE);
+		if(affected instanceof Weapon)
+		{
+			affectableStats.setArmor((affectableStats.armor()&Weapon.MASK_MAXRANGEZERO)
+					+Weapon.MASK_MAXRANGEFLAG+100); // sets armor max-range bits to 100
+		}
 	}
 
 	@Override

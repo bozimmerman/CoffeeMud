@@ -501,7 +501,12 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 				if(CMLib.flags().canBeSeenBy(this,msg.source()))
 				{
 					if(requiresAmmunition())
-						msg.source().tell(L("@x1 remaining: @x2/@x3.",CMStrings.capitalizeAndLower(ammunitionType()),""+ammunitionRemaining(),""+ammunitionCapacity()));
+					{
+						msg.source().tell(L("@x1 remaining: @x2/@x3.",
+								CMStrings.capitalizeAndLower(ammunitionType()),
+								""+ammunitionRemaining(),
+								""+ammunitionCapacity()));
+					}
 					if((subjectToWearAndTear())&&(usesRemaining()<100))
 						msg.source().tell(weaponHealth());
 				}
@@ -1203,16 +1208,12 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 	@Override
 	public int minRange()
 	{
-		if(CMath.bset(phyStats().sensesMask(),PhyStats.SENSE_ITEMNOMINRANGE))
-			return 0;
 		return minRange;
 	}
 
 	@Override
 	public int maxRange()
 	{
-		if(CMath.bset(phyStats().sensesMask(),PhyStats.SENSE_ITEMNOMAXRANGE))
-			return 100;
 		return maxRange;
 	}
 
@@ -1284,6 +1285,14 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 
 	@Override
 	public int ammunitionCapacity()
+	{
+		if(CMath.bset(phyStats().armor(),Weapon.MASK_MOAMMOFLAG))
+			return (phyStats().armor()&Weapon.MASK_MOAMMOBITS) >> Weapon.MASK_MOAMMOSHFT;
+		return ammoCapacity;
+	}
+
+	@Override
+	public int rawAmmunitionCapacity()
 	{
 		return ammoCapacity;
 	}

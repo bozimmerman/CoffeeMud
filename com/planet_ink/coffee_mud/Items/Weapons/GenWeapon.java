@@ -122,7 +122,7 @@ public class GenWeapon extends StdWeapon
 		case 4:
 			return W.ammunitionType();
 		case 5:
-			return "" + W.ammunitionCapacity();
+			return "" + W.rawAmmunitionCapacity();
 		default:
 			return "";
 		}

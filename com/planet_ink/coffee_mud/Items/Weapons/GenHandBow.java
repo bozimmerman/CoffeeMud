@@ -50,8 +50,7 @@ public class GenHandBow extends StdBow
 		setAmmunitionType("bolts");
 		setAmmoCapacity(1);
 		setAmmoRemaining(1);
-		minRange=1;
-		maxRange=2;
+		setRanges(1, 2);
 		setRawLogicalAnd(false);
 		recoverPhyStats();
 	}

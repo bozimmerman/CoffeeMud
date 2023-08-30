@@ -732,7 +732,7 @@ public class ItemData extends StdWebMacro
 						break;
 					case AMMOCAP: // ammo capacity
 						if((firstTime)&&(I instanceof AmmunitionWeapon))
-							old=""+((AmmunitionWeapon)I).ammunitionCapacity();
+							old=""+((AmmunitionWeapon)I).rawAmmunitionCapacity();
 						str.append(old);
 						break;
 					case READABLESPELL: // readable spell
