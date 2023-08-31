@@ -323,6 +323,7 @@ public class Fighter_CallSteed extends StdAbility
 		else
 		{
 			final StringBuilder str = new StringBuilder("<MOBS>");
+			/*
 			for (final MOB M : favored)
 			{
 				if((M != null)
@@ -332,6 +333,7 @@ public class Fighter_CallSteed extends StdAbility
 					|| (M.baseCharStats().getMyRace() != lastSteedM.baseCharStats().getMyRace())))
 					str.append(CMLib.coffeeMaker().getMobXML(M));
 			}
+			*/
 			final MOB M = getLastSteed();
 			if((M != null)
 			&& (!M.amDead())
@@ -387,10 +389,11 @@ public class Fighter_CallSteed extends StdAbility
 					lastSteedM.destroy();
 				else
 				{
+					lastSteedM.destroy();
 					// store among the favored few
-					lastSteedR.delInhabitant(lastSteedM);
-					lastSteedM.setLocation(null);
-					getNames(mob).add(lastSteedM);
+					//lastSteedR.delInhabitant(lastSteedM);
+					//lastSteedM.setLocation(null);
+					//getNames(mob).add(lastSteedM);
 				}
 			}
 			else

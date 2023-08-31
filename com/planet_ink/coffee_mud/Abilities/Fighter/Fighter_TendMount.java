@@ -166,7 +166,7 @@ public class Fighter_TendMount extends FighterSkill implements MendingSkill
 			if((mob.curState().getHitPoints()<mob.maxState().getHitPoints())
 			&&(this.maxTick != this.tickDown))
 			{
-				final double pct = 2.0 + CMath.mul(xlevel,0.5);
+				final double pct = 0.02 + CMath.mul(xlevel,0.005);
 				int amtToHeal = (int)Math.round(CMath.mul(mob.maxState().getHitPoints(), pct));
 				final int amtNeed = mob.maxState().getHitPoints() - mob.curState().getHitPoints();
 				if(amtToHeal > amtNeed)
