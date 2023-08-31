@@ -5412,6 +5412,12 @@ public class ListCmd extends StdCommand
 				else
 				if(CMath.bset(A.flags(), Ability.FLAG_HOLY))
 					alignment="Evil";
+				final DVector DV = CMLib.ableMapper().getCommonPreRequisites(A);
+				final String prereqs;
+				if((DV==null)||(DV.size()==0))
+					prereqs="";
+				else
+					prereqs=CMLib.ableMapper().formatPreRequisites(DV);
 				str.append("\n\r==="+A.name()+"===\n\r");
 				str.append("{{"+templateName
 						+ "|ID="+A.ID()
@@ -5419,6 +5425,7 @@ public class ListCmd extends StdCommand
 						+ "|Domain=[["+domainID+"(Domain)|"+domainName+"]]"
 						+ "|Available="+availStr.toString()
 						+ "|Allows="+allowsStr.toString()
+						+ "|Requires="+prereqs
 						+ "|Align="+alignment
 						+ "|UseCost="+cost
 						+ "|Quality="+quality
