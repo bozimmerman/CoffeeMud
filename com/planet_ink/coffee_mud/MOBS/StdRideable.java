@@ -671,6 +671,18 @@ public class StdRideable extends StdMOB implements Rideable
 						||(CMLib.flags().isWateryRoom(targetRoom))
 						||(targetRoom.domainType()==Room.DOMAIN_INDOORS_AIR))
 							ok=false;
+						else
+						if((!ok)
+						&&(phyStats().weight() < 200)
+						&&(!(amFollowing() instanceof Item)))
+						{
+							ok=true;
+							for(final Rider R : riders)
+							{
+								if(R instanceof Item)
+									ok=false;
+							}
+						}
 						break;
 					case AIR_FLYING:
 						break;

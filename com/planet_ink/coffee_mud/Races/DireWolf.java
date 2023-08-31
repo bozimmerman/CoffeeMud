@@ -51,6 +51,36 @@ public class DireWolf extends GiantWolf
 	private final static String localizedStaticRacialCat = CMLib.lang().L("Canine");
 
 	@Override
+	public int shortestMale()
+	{
+		return 56;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 56;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 12;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 1800;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 160;
+	}
+
+	@Override
 	public String racialCategory()
 	{
 		return localizedStaticRacialCat;

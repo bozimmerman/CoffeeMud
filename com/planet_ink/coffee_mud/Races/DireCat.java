@@ -69,7 +69,7 @@ public class DireCat extends GreatCat
 	@Override
 	public int lightestWeight()
 	{
-		return 300;
+		return 600;
 	}
 
 	@Override

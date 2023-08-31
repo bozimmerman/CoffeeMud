@@ -58,6 +58,36 @@ public class DireRat extends GiantRat
 		return localizedStaticRacialCat;
 	}
 
+	@Override
+	public int shortestMale()
+	{
+		return 24;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 24;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 12;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 450;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 50;
+	}
+
 	private final String[]	racialAbilityNames			= { "RodentSpeak", "Skill_Swim", "Thief_AvoidTraps" };
 	private final int[]		racialAbilityLevels			= { 1, 21, 1 };
 	private final int[]		racialAbilityProficiencies	= { 100, 100, 100 };

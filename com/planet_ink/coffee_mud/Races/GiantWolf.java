@@ -69,7 +69,7 @@ public class GiantWolf extends Wolf
 	@Override
 	public int lightestWeight()
 	{
-		return 80;
+		return 200;
 	}
 
 	@Override

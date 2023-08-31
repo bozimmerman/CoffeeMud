@@ -177,14 +177,18 @@ public interface PhyStats extends CMCommon, Modifiable
 	public void setHeight(int newHeight);
 
 	/**
-	 * Returns the defensive capability number of this Physical.
+	 * Returns the defensive capability number of this Physical, unless the item
+	 * is a weapon, in which case this is a 32 bit masked flag representing
+	 * min/max range, and ammo capacity.  See {@link Weapon#MASK_MAXRANGEBITS}
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setArmor(int)
 	 * @return the raw defensive capability of this Physical
 	 */
 	public int armor(); // armor items, mobs
 
 	/**
-	 * Sets the defensive capability number of this Physical.
+	 * Sets the defensive capability number of this Physical, unless the item
+	 * is a weapon, in which case this is a 32 bit masked flag representing
+	 * min/max range, and ammo capacity.  See {@link Weapon#MASK_MAXRANGEBITS}
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#armor()
 	 * @param newArmor the defensive capability number of this Physical
 	 */

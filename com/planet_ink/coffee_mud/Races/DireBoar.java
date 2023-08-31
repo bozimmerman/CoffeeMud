@@ -69,7 +69,7 @@ public class DireBoar extends GiantBoar
 	@Override
 	public int lightestWeight()
 	{
-		return 900;
+		return 1900;
 	}
 
 	@Override
