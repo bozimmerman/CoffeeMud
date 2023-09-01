@@ -859,6 +859,8 @@ public interface Ability extends Environmental
 	public static final int DOMAIN_COSMOLOGY=79<<5;
 	/** constant mask returned by classificationCode() designating this ability as being a rope using skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int DOMAIN_ROPEUSE=80<<5;
+	/** constant mask returned by classificationCode() designating this ability as being a land travel skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_TRAVEL=81<<5;
 	/** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int ALL_DOMAINS=(255<<5);
 	/** array of string describtions for the DOMAIN_* constants, indexed by their values */
@@ -882,7 +884,8 @@ public interface Ability extends Environmental
 		"RACIAL_ABILITY","ARTISTIC","ANATOMY","ARMOR_USE",
 		"SHIELD_USE","CRIMINAL","LEGAL","FITNESS","THEATRE",
 		"BUILDING","WATER_LORE","WATER_CONTROL","SEA_TRAVEL",
-		"EDUCATION_LORE","EPICUREAN","COSMOLOGY","ROPE_USE"
+		"EDUCATION_LORE","EPICUREAN","COSMOLOGY","ROPE_USE",
+		"TRAVEL"
 	};
 	/** array of string verbs for the DOMAIN_* constants, indexed by their values */
 	public static final String[] DOMAIN_VERBS={
