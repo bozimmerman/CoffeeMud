@@ -130,23 +130,29 @@ public class Fighter_FavoredMount extends StdAbility
 	{
 		if(mob == null)
 			return defaultMount;
-		final Map<String,Pair<String,String>> mapH=Fighter_RacialMount.getRacialMountChoices();
-		final Pair<String,String> racialMount = Fighter_RacialMount.getMountInfo(mob);
-		final Set<String> alreadyChosens = new XTreeSet<String>();
-		if(racialMount != null)
-			alreadyChosens.add(racialMount.first+","+racialMount.second);
-		for(final Pair<Race,String> choice : Fighter_CallSteed.getMountChoices(mob))
-			alreadyChosens.add(choice.first.ID()+","+choice.second);
-		final PairList<String,String> choices = new PairArrayList<String,String>();
-		for(final String key : mapH.keySet())
+		synchronized(("MOUNTS_"+mob).intern())
 		{
-			final Pair<String, String> p = mapH.get(key);
-			if(!alreadyChosens.contains(p.first+","+p.second))
-				choices.add(p);
+			final Map<String,Pair<String,String>> mapH=Fighter_RacialMount.getRacialMountChoices();
+			final Pair<String,String> racialMount = Fighter_RacialMount.getMountInfo(mob);
+			final Set<String> alreadyChosens = new XTreeSet<String>();
+			if(racialMount != null)
+				alreadyChosens.add(racialMount.first+","+racialMount.second);
+			for(final Pair<String, Race> choice : Fighter_CallSteed.getMountChoices(mob))
+				alreadyChosens.add(choice.first+","+choice.second.ID());
+			final PairList<String,String> choices = new PairArrayList<String,String>();
+			for(final String key : mapH.keySet())
+			{
+				final Pair<String, String> p = mapH.get(key);
+				if(!alreadyChosens.contains(p.first+","+p.second))
+					choices.add(p);
+			}
+			if(choices.size()>0)
+			{
+				final Pair<String,String> chosen = choices.get(CMLib.dice().roll(1, choices.size(), -1));
+				return chosen;
+			}
+			return defaultMount;
 		}
-		if(choices.size()>0)
-			return choices.get(CMLib.dice().roll(1, choices.size(), -1));
-		return defaultMount;
 	}
 
 	protected Pair<String, String> getMountInfo(final MOB mob)

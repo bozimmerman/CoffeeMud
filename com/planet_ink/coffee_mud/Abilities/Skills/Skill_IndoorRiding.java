@@ -1,6 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.Abilities.Properties.Prop_RideResister;
+package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +16,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
    Copyright 2023-2023 Bo Zimmerman
@@ -35,15 +32,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fighter_AweMounts extends FighterSkill
+public class Skill_IndoorRiding extends StdSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_AweMounts";
+		return "Skill_IndoorRiding";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Awe Mounts");
+	private final static String localizedName = CMLib.lang().L("Indoor Riding");
 
 	@Override
 	public String name()
@@ -60,7 +57,7 @@ public class Fighter_AweMounts extends FighterSkill
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_BENEFICIAL_SELF;
+		return Ability.QUALITY_INDIFFERENT;
 	}
 
 	@Override
@@ -93,40 +90,44 @@ public class Fighter_AweMounts extends FighterSkill
 		return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;
 	}
 
-	protected boolean isAMount(final MOB mob, final MOB possMountM)
+	@Override
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
-		final PairList<String, Race> choices = Fighter_CallSteed.getMountChoices(mob);
-		return choices.containsSecond(possMountM.baseCharStats().getMyRace());
+		super.executeMsg(host,msg);
+		if((msg.source() == affected)
+		&&(msg.source().riding() instanceof MOB)
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(msg.source().riding().rideBasis()==Rideable.Basis.LAND_BASED)
+		&&(msg.target() instanceof Room)
+		&&(CMath.bset(((Room)msg.target()).domainType(),Room.INDOORS))
+		&&(msg.source().riding().phyStats().weight()>199))
+		{
+			((MOB)msg.source().riding()).curState().adjMovement(-(11-super.getXLEVELLevel((MOB)affected)),
+					((MOB)msg.source().riding()).maxState());
+		}
 	}
 
 	@Override
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
-		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
-		&&(affected instanceof MOB)
-		&&(msg.target() instanceof MOB)
-		&&(msg.source().getVictim()!=msg.target())
-		)
+		if(!super.okMessage(host, msg))
+			return false;
+		if((msg.source() == affected)
+		&&(msg.source().riding() instanceof MOB)
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(msg.source().riding().rideBasis()==Rideable.Basis.LAND_BASED)
+		&&(msg.target() instanceof Room)
+		&&(CMath.bset(((Room)msg.target()).domainType(),Room.INDOORS))
+		&&(msg.source().riding().phyStats().weight()>199))
 		{
-			final MOB target=(MOB)msg.target();
-			final MOB mob=(MOB)affected;
-			if((!target.isInCombat())
-			&&((target==mob)||(mob.getGroupMembersAndRideables(new HashSet<Rider>()).contains(target)))
-			&&(msg.source().location()==target.location())
-			&&(CMLib.dice().rollPercentage()>((msg.source().phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob))))*10))
-			&&(isAMount(mob, msg.source())))
-			{
-				msg.source().tell(L("You are too much in awe of @x1",mob.name(msg.source())));
-				if(target.getVictim()==msg.source())
-				{
-					target.makePeace(true);
-					target.setVictim(null);
-				}
-				return false;
-			}
+			msg.source().riding().phyStats().setWeight(100); // simulates squeezing through a door
 		}
-		return super.okMessage(myHost,msg);
+		return true;
 	}
 
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+	}
 }

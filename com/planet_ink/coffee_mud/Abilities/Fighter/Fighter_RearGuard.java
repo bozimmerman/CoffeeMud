@@ -90,7 +90,6 @@ public class Fighter_RearGuard extends FighterSkill
 	protected SHashtable<MOB,Integer> rearGuards = null;
 
 	protected volatile Room lastCaravanRoom = null;
-	protected volatile List<Room> caravanRadiant = null;
 	protected volatile long lastAttack = 0;
 
 	protected final static TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags()
@@ -110,15 +109,15 @@ public class Fighter_RearGuard extends FighterSkill
 			unInvoke();
 			return false;
 		}
+		final boolean combatRun = ((System.currentTimeMillis()-lastAttack)<4000);
 		if((lastCaravanRoom==null)
-		||(caravanRadiant==null)
-		||(R != lastCaravanRoom))
+		||(R != lastCaravanRoom)
+		||(combatRun))
 		{
 			lastCaravanRoom = R;
 			int max = 0;
 			if(rearGuards!=null)
 			{
-				final boolean combatRun = ((System.currentTimeMillis()-lastAttack)<4000);
 				if(!combatRun)
 				{
 					for(final Integer x : rearGuards.values())
@@ -127,6 +126,7 @@ public class Fighter_RearGuard extends FighterSkill
 							max = x.intValue();
 					}
 				}
+				List<Room> caravanRadiant = null;
 				if(max == 0)
 					caravanRadiant = new XVector<Room>(R);
 				else
@@ -160,7 +160,7 @@ public class Fighter_RearGuard extends FighterSkill
 							else
 								myRadiant = CMLib.tracking().getRadiantRooms(R, flags, x);
 						}
-						final List<Room> trail = CMLib.tracking().findTrailToAnyRoom(M.location(), myRadiant, flags, 10);
+						final List<Room> trail = CMLib.tracking().findTrailToAnyRoom(M.location(), new XVector<Room>(myRadiant), flags, 10);
 						if(trail == null)
 						{
 							if(rearGuards.size()==1)
@@ -200,7 +200,7 @@ public class Fighter_RearGuard extends FighterSkill
 									break;
 								}
 							}
-							final String dirName = CMLib.directions().getDirectionName(max, CMLib.flags().getDirType(M.location()));
+							final String dirName = CMLib.directions().getDirectionName(dir, CMLib.flags().getDirType(M.location()));
 							final boolean flee = M.isInCombat();
 							final List<String> cmds;
 							if(flee)
@@ -214,8 +214,6 @@ public class Fighter_RearGuard extends FighterSkill
 					}
 				}
 			}
-			else
-				caravanRadiant = new XVector<Room>(R);
 		}
 		return true;
 	}
@@ -333,7 +331,7 @@ public class Fighter_RearGuard extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SPEAK,auto?"":L("^S<S-NAME> volunteer(s) to be a rearguard for <T-NAME>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,auto?"":L("^S<S-NAME> volunteer(s) to be a rearguard for <T-NAME>^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

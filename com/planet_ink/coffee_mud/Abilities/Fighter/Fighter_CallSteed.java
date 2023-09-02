@@ -197,6 +197,7 @@ public class Fighter_CallSteed extends StdAbility
 
 	protected final static String[] steedSkills = new String[] {
 		"Fighter_RacialMount",
+		"Fighter_FavoredMount",
 		"Fighter_FavoredMount1",
 		"Fighter_FavoredMount2",
 		"Fighter_FavoredMount3",
@@ -206,9 +207,9 @@ public class Fighter_CallSteed extends StdAbility
 		"Fighter_FavoredMount7"
 	};
 
-	protected final static Pair<Race, String> defaultMount = new Pair<Race, String>(CMClass.getRace("Horse"), "Equine");
+	protected final static Pair<String,Race> defaultMount = new Pair<String,Race>("Equine",CMClass.getRace("Horse"));
 
-	protected static Pair<Race, String> getMountChoice(final MOB mob, final String aID)
+	protected static Pair<String,Race> getMountChoice(final MOB mob, final String aID)
 	{
 		final Ability A = mob.fetchEffect(aID);
 		if (A != null)
@@ -218,18 +219,18 @@ public class Fighter_CallSteed extends StdAbility
 			{
 				final Race R = CMClass.getRace(aP.get(1));
 				final String cat = aP.get(0);
-				return new Pair<Race, String>(R, cat);
+				return new Pair<String,Race>(cat,R);
 			}
 		}
 		return null;
 	}
 
-	protected static PairList<Race, String> getMountChoices(final MOB mob)
+	protected static PairList<String,Race> getMountChoices(final MOB mob)
 	{
-		final PairVector<Race, String> pV = new PairVector<Race, String>(5);
+		final PairVector<String,Race> pV = new PairVector<String,Race>(5);
 		for (final String aID : steedSkills)
 		{
-			final Pair<Race, String> pR = getMountChoice(mob, aID);
+			final Pair<String,Race> pR = getMountChoice(mob, aID);
 			if (pR != null)
 				pV.add(pR);
 		}
@@ -409,13 +410,13 @@ public class Fighter_CallSteed extends StdAbility
 	{
 		Race raceR = null;
 		MOB pickedM = null;
-		final PairList<Race, String> choices = Fighter_CallSteed.getMountChoices(mob);
+		final PairList<String,Race> choices = Fighter_CallSteed.getMountChoices(mob);
 		final MOB lastSteedM = getLastSteed();
 		if (commands.size() == 0)
 		{
-			final Pair<Race, String> choice = Fighter_CallSteed.getMountChoice(mob, "Fighter_RacialMount");
+			final Pair<String,Race> choice = Fighter_CallSteed.getMountChoice(mob, "Fighter_RacialMount");
 			if (choice != null)
-				raceR = choice.first;
+				raceR = choice.second;
 			else
 			{
 				mob.tell(L("You have no default choices available.  Try LIST."));
@@ -425,15 +426,15 @@ public class Fighter_CallSteed extends StdAbility
 		else
 		{
 			final Map<String, Object> trueChoices = new HashMap<String, Object>();
-			for (final Pair<Race, String> p : choices)
+			for (final Pair<String, Race> p : choices)
 			{
-				if ((lastSteedM == null) || (lastSteedM.baseCharStats().getMyRace() != p.first))
+				if ((lastSteedM == null) || (lastSteedM.baseCharStats().getMyRace() != p.second))
 				{
 					boolean found = false;
 					for (final MOB M : this.getNames(mob))
-						found = (M.baseCharStats().getMyRace()==p.first) || found;
+						found = (M.baseCharStats().getMyRace()==p.second) || found;
 					if(!found)
-						trueChoices.put(p.first.name(), p);
+						trueChoices.put(p.second.name(), p);
 				}
 			}
 			for (final MOB M : this.getNames(mob))
@@ -451,8 +452,8 @@ public class Fighter_CallSteed extends StdAbility
 					if (o instanceof Pair)
 					{
 						@SuppressWarnings("unchecked")
-						final Pair<Race, String> p = (Pair<Race, String>) o;
-						str.append("^w"+CMStrings.padRight(p.first.name(), 10) + "^N (" + p.second + ")\n\r");
+						final Pair<String, Race> p = (Pair<String, Race>) o;
+						str.append("^w"+CMStrings.padRight(p.second.name(), 10) + "^N (" + p.first + ")\n\r");
 					}
 					else
 					if (o instanceof MOB)
@@ -480,8 +481,8 @@ public class Fighter_CallSteed extends StdAbility
 						if (o instanceof Pair)
 						{
 							@SuppressWarnings("unchecked")
-							final Pair<Race, String> p = (Pair<Race, String>) o;
-							raceR = p.first;
+							final Pair<String, Race> p = (Pair<String, Race>) o;
+							raceR = p.second;
 							break;
 						}
 						else if (o instanceof MOB)

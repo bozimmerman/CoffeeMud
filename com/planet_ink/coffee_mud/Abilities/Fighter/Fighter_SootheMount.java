@@ -145,9 +145,9 @@ public class Fighter_SootheMount extends FighterSkill
 			return false;
 		}
 
-		final PairList<Race,String> choices = Fighter_CallSteed.getMountChoices(mob);
-		if(((!choices.containsFirst(target.baseCharStats().getMyRace()))
-			&&(!choices.containsSecond(target.baseCharStats().getMyRace().racialCategory())))
+		final PairList<String, Race> choices = Fighter_CallSteed.getMountChoices(mob);
+		if(((!choices.containsSecond(target.baseCharStats().getMyRace()))
+			&&(!choices.containsFirst(target.baseCharStats().getMyRace().racialCategory())))
 		||(!CMLib.flags().isAnimalIntelligence(target)))
 		{
 			mob.tell(L("@x1 is not the sort that would heed you.",target.name(mob)));

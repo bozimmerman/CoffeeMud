@@ -94,13 +94,18 @@ public class Paladin_PaladinsMount extends PaladinSkill
 		&&(appropriateToMyFactions(invoker))
 		&&(invoker.riding()!=null)
 		&&(invoker.riding() instanceof MOB)
-		&&(((MOB)invoker.riding()).charStats().getMyRace().racialCategory().equals("Equine"))
 		&&(invoker.riding().fetchEffect(ID())==null))
 		{
-			invoker.riding().addEffect((Paladin_PaladinsMount)copyOf());
-			invoker.riding().recoverPhyStats();
-			((MOB)invoker.riding()).recoverCharStats();
-			((MOB)invoker.riding()).recoverMaxState();
+			final PrivateProperty P = CMLib.law().getPropertyRecord((MOB)invoker.riding());
+			if((P!=null)
+			&&(P.getOwnerName().equals(invoker.Name()))
+			&&(P instanceof Paladin_SummonMount))
+			{
+				invoker.riding().addEffect((Paladin_PaladinsMount)copyOf());
+				invoker.riding().recoverPhyStats();
+				((MOB)invoker.riding()).recoverCharStats();
+				((MOB)invoker.riding()).recoverMaxState();
+			}
 		}
 		return true;
 	}

@@ -69,13 +69,13 @@ public class DireBear extends GiantBear
 	@Override
 	public int lightestWeight()
 	{
-		return 6000;
+		return 4000;
 	}
 
 	@Override
 	public int weightVariance()
 	{
-		return 2000;
+		return 1000;
 	}
 
 	private final String[]	racialAbilityNames			= { "BearSpeak", "Scavenge", "Skill_BearForaging", "Skill_Climb" };

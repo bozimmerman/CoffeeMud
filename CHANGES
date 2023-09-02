@@ -57,6 +57,7 @@
  56. The racial skill "Buck" will now invoke automatically for certain races of mobs
  57. New skills: Set Polearm, Dismounting Blow, Herding, Shepherding, Long Reach
  58. New skills: Soothe Mount, Tend Mount, Favored Mount 1...4, Forceback, Rearguard
+ 59. New skills: Indoor Riding, Command Mount
  
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

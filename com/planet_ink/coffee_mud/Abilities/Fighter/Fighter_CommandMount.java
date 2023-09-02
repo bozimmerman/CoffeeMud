@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Paladin;
+package com.planet_ink.coffee_mud.Abilities.Fighter;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2014-2023 Bo Zimmerman
+   Copyright 2023-2023 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Paladin_CommandHorse extends StdAbility
+public class Fighter_CommandMount extends StdAbility
 {
 	@Override
 	public String ID()
 	{
-		return "Paladin_CommandHorse";
+		return "Fighter_CommandMount";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Command Horse");
+	private final static String localizedName = CMLib.lang().L("Command Mount");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class Paladin_CommandHorse extends StdAbility
 		return localizedName;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"COMMANDHORSE"});
+	private static final String[] triggerStrings =I(new String[] {"COMMANDMOUNT"});
 	@Override
 	public int abstractQuality()
 	{
@@ -83,8 +83,6 @@ public class Paladin_CommandHorse extends StdAbility
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if(!PaladinSkill.paladinAlignmentCheck(this, mob, auto))
-			return false;
 		final List<String> V=new Vector<String>();
 		if(commands.size()>0)
 		{
@@ -108,12 +106,12 @@ public class Paladin_CommandHorse extends StdAbility
 			}
 		}
 
-		final PrivateProperty P = CMLib.law().getPropertyRecord(target);
-		if((P==null)
-		||(!P.getOwnerName().equals(invoker.Name()))
-		||(!(P instanceof Paladin_SummonMount)))
+		final PairList<String, Race> choices = Fighter_CallSteed.getMountChoices(mob);
+		if(((!choices.containsSecond(target.baseCharStats().getMyRace()))
+			&&(!choices.containsFirst(target.baseCharStats().getMyRace().racialCategory())))
+		||(!CMLib.flags().isAnimalIntelligence(target)))
 		{
-			mob.tell(L("@x1 is not your holy mount!",target.name(mob)));
+			mob.tell(L("@x1 is not the sort that would heed you.",target.name(mob)));
 			return false;
 		}
 
