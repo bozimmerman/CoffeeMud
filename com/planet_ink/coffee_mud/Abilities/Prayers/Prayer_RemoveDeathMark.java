@@ -78,12 +78,23 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 		return Ability.FLAG_HOLY;
 	}
 
+	public static String[] markSkillIDs = new String[] {
+		"Thief_Mark",
+		"Fighter_UnwaveringMark",
+		"Thief_ContractHit"
+	};
+
 	@Override
 	public boolean supportsMending(final Physical item)
 	{
 		if(!(item instanceof MOB))
 			return false;
-		return (item.fetchEffect("Thief_Mark")!=null)||(item.fetchEffect("Thief_ContractHit")!=null);
+		for(final String id : markSkillIDs)
+		{
+			if(item.fetchEffect(id)!=null)
+				return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -112,23 +123,24 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 		final Hashtable<Ability,MOB> remove=new Hashtable<Ability,MOB>();
-		Ability E=target.fetchEffect("Thief_Mark");
-		if(E!=null)
-			remove.put(E,target);
-		E=target.fetchEffect("Thief_ContractHit");
-		if(E!=null)
-			remove.put(E,target);
-		E=target.fetchEffect("Fighter_UnwaveringMark");
-		if(E!=null)
-			remove.put(E,target);
+		for(final String id : markSkillIDs)
+		{
+			final Ability E=target.fetchEffect(id);
+			if(E != null)
+				remove.put(E,target);
+		}
 		for(final Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 		{
 			final MOB M=e.nextElement();
-			if((M!=null)&&(M!=target))
+			if((M!=null)
+			&&(M!=target))
 			{
-				E=M.fetchEffect("Thief_Mark");
-				if((E!=null)&&(E.text().startsWith(target.Name()+"/")))
-					remove.put(E,M);
+				for(final String id : markSkillIDs)
+				{
+					final Ability E=M.fetchEffect(id);
+					if((E!=null)&&(E.text().startsWith(target.Name()+"/")))
+						remove.put(E,M);
+				}
 			}
 		}
 

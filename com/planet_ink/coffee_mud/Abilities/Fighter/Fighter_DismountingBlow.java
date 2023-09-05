@@ -252,6 +252,7 @@ public class Fighter_DismountingBlow extends FighterSkill
 					auto?L("<T-NAME> <T-IS-ARE> dismounted!"):L("^F^<FIGHT^><S-NAME> dismount(s) <T-NAMESELF> with @x1!^</FIGHT^>^?",polearmI.name(mob)));
 			final CMMsg dismountMsg = CMClass.getMsg(target,target.riding(),null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DISMOUNT,null);
 			CMLib.color().fixSourceFightColor(msg);
+			msg.setValue(0);
 			if(mob.location().okMessage(mob,msg)
 			&&mob.location().okMessage(target,dismountMsg))
 			{
