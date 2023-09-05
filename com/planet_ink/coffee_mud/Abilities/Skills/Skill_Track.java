@@ -444,7 +444,16 @@ public class Skill_Track extends StdSkill
 
 			final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
 			for(final Ability A : V)
+			{
+				if((A.ID().equals(ID()))
+				&&(A.text().length()>0)
+				&&(A.text().equals(CMParms.combine(commands,0))))
+				{
+					mob.tell(L("You are already tracking that!"));
+					return false;
+				}
 				A.unInvoke();
+			}
 			if(V.size()>0)
 			{
 				mob.tell(L("You stop tracking."));
