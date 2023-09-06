@@ -268,14 +268,25 @@ public class Skill_Buck extends StdSkill implements Behavior
 			{
 				if(target instanceof MOB)
 				{
-					final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
+					final MOB tmob = (MOB)target;
+					final CMMsg msg=CMClass.getMsg(mob,tmob,this,CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 					if(roomR.okMessage(mob,msg))
 					{
 						roomR.send(mob,msg);
 						if(msg.value() <=0)
 						{
-							roomR.show((MOB)target, R, CMMsg.MASK_ALWAYS|CMMsg.MSG_DISMOUNT,
+							roomR.show(tmob, R, CMMsg.MASK_ALWAYS|CMMsg.MSG_DISMOUNT,
 									auto?L("<S-NAME> is bucked!"):L("<T-NAME> buck(s) <S-NAME> off <T-NAMESELF>!"));
+							if(tmob.riding() == null)
+							{
+								final Ability trippedA = CMClass.getAbility("Skill_Trip");
+								if(trippedA != null)
+								{
+									trippedA.startTickDown(mob, tmob, 2);
+									tmob.recoverPhyStats();
+									tmob.tell(L("You hit the ground!"));
+								}
+							}
 						}
 					}
 				}

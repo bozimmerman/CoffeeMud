@@ -90,7 +90,8 @@ public class Fighter_GracefulDismount extends FighterSkill
 		return false;
 	}
 
-	protected volatile boolean	mounted	= false;
+	protected volatile int		lastRideLvl	= 0;
+	protected volatile boolean	mounted		= false;
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -106,12 +107,20 @@ public class Fighter_GracefulDismount extends FighterSkill
 			return;
 		final boolean amRiding = mob.riding() instanceof MOB;
 		if(!mounted)
+		{
 			mounted = amRiding;
+			if(mounted)
+			{
+				final Rideable ri = mob.riding();
+				this.lastRideLvl = (ri != null) ? ri.phyStats().level() : 0;
+			}
+		}
 		else
 		if(!amRiding)
 		{
 			mounted=false;
-			if(!super.proficiencyCheck(mob, 0, false))
+			final int nerf = (mob.phyStats().level() - lastRideLvl) * 5;
+			if(!super.proficiencyCheck(mob, nerf > 0 ? 0 : nerf, false))
 				return;
 			final Runnable grace = new Runnable()
 			{
