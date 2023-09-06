@@ -167,7 +167,11 @@ public class AnimalTaming extends CommonSkill
 		taming=null;
 		Item cage=null;
 		final String str=CMParms.combine(commands,0);
-		MOB M=getVisibleRoomTarget(mob,str);
+		MOB M;
+		if(givenTarget instanceof MOB)
+			M=(MOB)givenTarget;
+		else
+			M=getVisibleRoomTarget(mob,str);
 		taming=null;
 		if(M!=null)
 		{
