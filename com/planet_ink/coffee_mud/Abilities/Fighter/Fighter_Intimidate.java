@@ -118,7 +118,7 @@ public class Fighter_Intimidate extends FighterSkill
 					if(B.isAnyOfficer(A, attackerM))
 						return super.okMessage(myHost, msg);
 				}
-				attackerM.tell(L("You are too intimidated by @x1",targetM.name(attackerM)));
+				attackerM.tell(L("You are too intimidated by @x1.",targetM.name(attackerM)));
 				if(targetM.location()!=lastRoom)
 				{
 					lastRoom=targetM.location();

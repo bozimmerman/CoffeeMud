@@ -133,3 +133,4 @@ public class Spell_GreaterInvisibility extends Spell
 		return success;
 	}
 }
+

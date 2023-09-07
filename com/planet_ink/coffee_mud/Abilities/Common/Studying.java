@@ -368,6 +368,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 			this.teachingA=null;
 			this.activityRoom=null;
 			this.tickDown=Integer.MAX_VALUE/2;
+			this.tickUp=0;
 			final MOB teacherM;
 			if(this.teacherP instanceof MOB)
 				teacherM=(MOB)this.teacherP;
@@ -827,6 +828,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 							oA.teachingA=tA;
 							oA.teacherP=tP;
 							oA.successfullyTaught=ss;
+							oA.tickUp=0;
 							//oA.activityRoom=mR;
 							int ticks=duration;
 							if(ticks < 1)

@@ -1056,7 +1056,9 @@ public class StdAbility implements Ability
 		if((targetName.length()==0)&&(mob.isInCombat())&&(castingQuality(mob,mob.getVictim())==Ability.QUALITY_MALICIOUS))
 			target=mob.getVictim();
 		else
-		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))
+		if(targetName.equalsIgnoreCase("self")
+		||targetName.equalsIgnoreCase("me")
+		||((targetName.length()==0)&&(castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF)))
 			target=mob;
 		else
 		if((targetName.length()==0)&&(mob.isInCombat())&&(abstractQuality()==Ability.QUALITY_MALICIOUS))

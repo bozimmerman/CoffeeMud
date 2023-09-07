@@ -1482,7 +1482,9 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 
 		if(supportsArmors() && (matches.size()==0))
 		{
-			final long code=Wearable.CODES.FIND_ignoreCase(recipeName.toUpperCase().trim());
+			long code=Wearable.CODES.FIND_ignoreCase(recipeName.toUpperCase().trim());
+			if(code < 0)
+				code=Wearable.CODES.FIND_endsWith(" "+recipeName.toUpperCase().trim());
 			if(code > 0)
 			{
 				final String wearLoc = Wearable.CODES.NAMEUP(code);

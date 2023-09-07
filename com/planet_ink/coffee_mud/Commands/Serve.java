@@ -62,7 +62,7 @@ public class Serve extends StdCommand
 		{
 			if(recipient.isPlayer())
 			{
-				if(!recipient.isAttributeSet(Attrib.NOFOLLOW))
+				if(recipient.isAttributeSet(Attrib.NOFOLLOW))
 				{
 					CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is not accepting service.",recipient.name()));
 					return false;

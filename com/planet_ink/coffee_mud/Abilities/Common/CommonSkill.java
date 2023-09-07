@@ -874,29 +874,32 @@ public class CommonSkill extends StdAbility
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		aborted=false;
-		if(mob.isInCombat()&&(!auto))
-		{
-			commonEmote(mob,L("<S-NAME> <S-IS-ARE> in combat!"));
-			return false;
-		}
-		if((!allowedWhileMounted())&&(mob.riding()!=null)&&(!auto))
-		{
-			commonEmote(mob,L("You can't do that while @x1 @x2.",mob.riding().stateString(mob),mob.riding().name()));
-			return false;
-		}
-
-		if((!allowedInTheDark())&&(!auto)&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
-		{
-			commonTelL(mob,"<S-NAME> can't see to do that!");
-			return false;
-		}
-		if((CMLib.flags().isSitting(mob)&&(!auto)&&(!canBeDoneSittingDown()))||CMLib.flags().isSleeping(mob))
-		{
-			commonTelL(mob,"You need to stand up!");
-			return false;
-		}
 		if(!auto)
 		{
+			if(mob.isInCombat())
+			{
+				commonEmote(mob,L("<S-NAME> <S-IS-ARE> in combat!"));
+				return false;
+			}
+			if((!allowedWhileMounted())
+			&&(mob.riding()!=null))
+			{
+				commonEmote(mob,L("You can't do that while @x1 @x2.",mob.riding().stateString(mob),mob.riding().name()));
+				return false;
+			}
+
+			if((!allowedInTheDark())
+			&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
+			{
+				commonTelL(mob,"<S-NAME> can't see to do that!");
+				return false;
+			}
+			if((CMLib.flags().isSitting(mob)&&(!canBeDoneSittingDown()))
+			||CMLib.flags().isSleeping(mob))
+			{
+				commonTelL(mob,"You need to stand up!");
+				return false;
+			}
 			for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
@@ -910,12 +913,12 @@ public class CommonSkill extends StdAbility
 					A.unInvoke();
 				}
 			}
+			// if you can't move, you can't do anything!
+			if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
+				return false;
 		}
 		isAnAutoEffect=false;
 
-		// if you can't move, you can't do anything!
-		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
-			return false;
 		final int[] consumed=usageCost(mob,false);
 		if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
 		{

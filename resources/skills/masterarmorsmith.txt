@@ -98,7 +98,7 @@ featherweight % chainmail chanfron	50	164	40	3380	GenArmor	2:HEAD	0	13	0	prop_we
 % fayum	50	218	15	1268	GenShield	HELD	0	39	0	
 featherweight % chainmail barding	50	326	180	15210	GenArmor	2:BODY	0	52	0	prop_wearoverride;-racecat +equine
 % Mempo	52	142	5	490	GenArmor	2:EYES	0	7	0	
-% manica lamminata	51	144	3	294	GenArmor	2:LEFT WRIST||RIGHT WRIST	0	7	0	
+% manica laminata	51	144	3	294	GenArmor	2:LEFT WRIST||RIGHT WRIST	0	7	0	
 % Haidate	51	230	15	1470	GenArmor	2:LEGS	0	28	0	
 % Ude-Ate	52	148	3	294	GenArmor	S2:LEFT WRIST||RIGHT WRIST	0	7	0	
 % Haramaki-Do	51	286	30	2940	GenArmor	2:TORSO	0	42	0	
