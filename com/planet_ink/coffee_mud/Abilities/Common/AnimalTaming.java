@@ -158,6 +158,11 @@ public class AnimalTaming extends CommonSkill
 		super.unInvoke();
 	}
 
+	protected boolean mayITame(final MOB mob, final MOB M, final String str)
+	{
+		return true;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -233,6 +238,9 @@ public class AnimalTaming extends CommonSkill
 			M=((CagedAnimal)taming).unCageMe();
 		}
 		else
+			return false;
+
+		if(!mayITame(mob,M,str))
 			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -137,7 +137,7 @@ public class Fighter_FavoredMount extends StdAbility
 			final Set<String> alreadyChosens = new XTreeSet<String>();
 			if(racialMount != null)
 				alreadyChosens.add(racialMount.first+","+racialMount.second);
-			for(final Pair<String, Race> choice : Fighter_CallSteed.getMountChoices(mob))
+			for(final Pair<String, Race> choice : CMLib.utensils().getFavoredMounts(mob))
 				alreadyChosens.add(choice.first+","+choice.second.ID());
 			final PairList<String,String> choices = new PairArrayList<String,String>();
 			for(final String key : mapH.keySet())

@@ -145,7 +145,7 @@ public class Fighter_SootheMount extends FighterSkill
 			return false;
 		}
 
-		final PairList<String, Race> choices = Fighter_CallSteed.getMountChoices(mob);
+		final PairList<String, Race> choices = CMLib.utensils().getFavoredMounts(mob);
 		if(((!choices.containsSecond(target.baseCharStats().getMyRace()))
 			&&(!choices.containsFirst(target.baseCharStats().getMyRace().racialCategory())))
 		||(!CMLib.flags().isAnimalIntelligence(target)))

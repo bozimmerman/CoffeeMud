@@ -195,18 +195,6 @@ public class Fighter_CallSteed extends StdAbility
 		}
 	}
 
-	protected final static String[] steedSkills = new String[] {
-		"Fighter_RacialMount",
-		"Fighter_FavoredMount",
-		"Fighter_FavoredMount1",
-		"Fighter_FavoredMount2",
-		"Fighter_FavoredMount3",
-		"Fighter_FavoredMount4",
-		"Fighter_FavoredMount5",
-		"Fighter_FavoredMount6",
-		"Fighter_FavoredMount7"
-	};
-
 	protected final static Pair<String,Race> defaultMount = new Pair<String,Race>("Equine",CMClass.getRace("Horse"));
 
 	protected static Pair<String,Race> getMountChoice(final MOB mob, final String aID)
@@ -223,20 +211,6 @@ public class Fighter_CallSteed extends StdAbility
 			}
 		}
 		return null;
-	}
-
-	protected static PairList<String,Race> getMountChoices(final MOB mob)
-	{
-		final PairVector<String,Race> pV = new PairVector<String,Race>(5);
-		for (final String aID : steedSkills)
-		{
-			final Pair<String,Race> pR = getMountChoice(mob, aID);
-			if (pR != null)
-				pV.add(pR);
-		}
-		if (pV.size() == 0)
-			pV.add(defaultMount);
-		return pV;
 	}
 
 	protected volatile MOB	lastSteedM	= null;
@@ -410,7 +384,7 @@ public class Fighter_CallSteed extends StdAbility
 	{
 		Race raceR = null;
 		MOB pickedM = null;
-		final PairList<String,Race> choices = Fighter_CallSteed.getMountChoices(mob);
+		final PairList<String,Race> choices = CMLib.utensils().getFavoredMounts(mob);
 		final MOB lastSteedM = getLastSteed();
 		if (commands.size() == 0)
 		{

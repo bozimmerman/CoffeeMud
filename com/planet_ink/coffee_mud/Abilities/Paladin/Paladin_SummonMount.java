@@ -248,35 +248,6 @@ public class Paladin_SummonMount extends StdAbility implements PrivateProperty
 
 	protected WeakReference<MOB> lastHorse = null;
 
-	protected final static String[] steedSkills = new String[] {
-		"Fighter_RacialMount",
-		"Fighter_FavoredMount",
-		"Fighter_FavoredMount1",
-		"Fighter_FavoredMount2",
-		"Fighter_FavoredMount3",
-		"Fighter_FavoredMount4",
-		"Fighter_FavoredMount5",
-		"Fighter_FavoredMount6",
-		"Fighter_FavoredMount7"
-	};
-	protected PairList<String,String> getSteeds(final MOB mob)
-	{
-		final PairList<String, String> steeds = new PairVector<String, String>();
-		for(final String aID : steedSkills)
-		{
-			final Ability A = mob.fetchEffect(aID);
-			if (A != null)
-			{
-				final List<String> aP = CMParms.parseCommas(A.text(), true);
-				if (aP.size() == 2)
-					steeds.add(aP.get(0),aP.get(1));
-			}
-		}
-		if(steeds.size()==0)
-			steeds.add("Equine", "Horse");
-		return steeds;
-	}
-
 	public MOB determineMonster(final MOB caster, final int level)
 	{
 		final MOB newMOB=CMClass.getMOB("GenRideable");
@@ -287,9 +258,9 @@ public class Paladin_SummonMount extends StdAbility implements PrivateProperty
 		CMLib.factions().setAlignment(newMOB,Faction.Align.GOOD);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		final Deity deity = caster.charStats().getMyDeity();
-		final PairList<String, String> steeds = getSteeds(deity);
-		final Pair<String,String> steed = steeds.get(CMLib.dice().roll(1, steeds.size(), -1));
-		final Race steedR = CMClass.getRace(steed.second);
+		final PairList<String, Race> steeds = CMLib.utensils().getFavoredMounts(deity);
+		final Pair<String,Race> steed = steeds.get(CMLib.dice().roll(1, steeds.size(), -1));
+		final Race steedR = steed.second;
 		newMOB.baseCharStats().setMyRace(steedR);
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);

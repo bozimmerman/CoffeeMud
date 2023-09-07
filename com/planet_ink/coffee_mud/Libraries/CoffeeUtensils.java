@@ -3111,6 +3111,52 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return R;
 	}
 
+	protected final static String[] steedSkills = new String[] {
+		"Fighter_RacialMount",
+		"Fighter_FavoredMount",
+		"Fighter_FavoredMount1",
+		"Fighter_FavoredMount2",
+		"Fighter_FavoredMount3",
+		"Fighter_FavoredMount4",
+		"Fighter_FavoredMount5",
+		"Fighter_FavoredMount6",
+		"Fighter_FavoredMount7"
+	};
+
+	protected Pair<String,Race> defaultSteed = null;
+
+	@Override
+	public PairList<String,Race> getFavoredMounts(final MOB mob)
+	{
+		final PairList<String, Race> steeds = new PairVector<String, Race>();
+		for(final String aID : steedSkills)
+		{
+			final Ability A = mob.fetchEffect(aID);
+			if (A != null)
+			{
+				final List<String> aP = CMParms.parseCommas(A.text(), true);
+				if (aP.size() == 2)
+				{
+					final Race R = CMClass.getRace(aP.get(1));
+					if(R != null)
+						steeds.add(aP.get(0), R);
+				}
+			}
+		}
+		if(steeds.size()==0)
+		{
+			if(defaultSteed == null)
+			{
+				final Race R = CMClass.getRace("Horse");
+				if(R == null)
+					return steeds;
+				defaultSteed = new Pair<String, Race>(R.racialCategory(), R);
+			}
+			steeds.add(defaultSteed);
+		}
+		return steeds;
+	}
+
 	@Override
 	public boolean isItemInState(final Room R, final MOB mob, final ItemState state, final Item I)
 	{

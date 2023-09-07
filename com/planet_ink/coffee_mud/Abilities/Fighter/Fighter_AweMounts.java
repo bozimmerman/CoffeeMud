@@ -95,7 +95,7 @@ public class Fighter_AweMounts extends FighterSkill
 
 	protected boolean isAMount(final MOB mob, final MOB possMountM)
 	{
-		final PairList<String, Race> choices = Fighter_CallSteed.getMountChoices(mob);
+		final PairList<String, Race> choices = CMLib.utensils().getFavoredMounts(mob);
 		return choices.containsSecond(possMountM.baseCharStats().getMyRace());
 	}
 

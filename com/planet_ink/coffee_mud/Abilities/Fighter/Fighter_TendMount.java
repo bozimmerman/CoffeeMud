@@ -89,7 +89,7 @@ public class Fighter_TendMount extends FighterSkill implements MendingSkill
 			if(!(target instanceof MOB))
 				return Ability.QUALITY_INDIFFERENT;
 			final MOB tmob = (MOB)target;
-			final PairList<String, Race> choices = Fighter_CallSteed.getMountChoices(mob);
+			final PairList<String, Race> choices = CMLib.utensils().getFavoredMounts(mob);
 			if(((!choices.containsSecond(tmob.baseCharStats().getMyRace()))
 				&&(!choices.containsFirst(tmob.baseCharStats().getMyRace().racialCategory())))
 			||(!CMLib.flags().isAnimalIntelligence(tmob)))
@@ -218,7 +218,7 @@ public class Fighter_TendMount extends FighterSkill implements MendingSkill
 			return false;
 		}
 
-		final PairList<String, Race> choices = Fighter_CallSteed.getMountChoices(mob);
+		final PairList<String, Race> choices = CMLib.utensils().getFavoredMounts(mob);
 		if(((!choices.containsSecond(target.baseCharStats().getMyRace()))
 			&&(!choices.containsFirst(target.baseCharStats().getMyRace().racialCategory())))
 		||(!CMLib.flags().isAnimalIntelligence(target)))

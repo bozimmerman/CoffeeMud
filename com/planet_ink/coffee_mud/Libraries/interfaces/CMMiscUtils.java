@@ -328,6 +328,16 @@ public interface CMMiscUtils extends CMLibrary
 	public List<DeadBody> getDeadBodies(Environmental container);
 
 	/**
+	 * Returns any favored mounts, usually based on cavalier skills,
+	 * but returns a horse otherwise.  The pairs are the racial
+	 * category, followed by the race proper.
+	 *
+	 * @param M the mob to find favored mounts for
+	 * @return the favored mounts, at least 1
+	 */
+	public PairList<String,Race> getFavoredMounts(final MOB M);
+
+	/**
 	 * Resurrects the given body according to all system rules.
 	 *
 	 * @param tellMob if the corpse could not be resurrected, tell this mob.
