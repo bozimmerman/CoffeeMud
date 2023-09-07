@@ -450,7 +450,7 @@ public class Skill_Track extends StdSkill
 				&&(A.text().equals(CMParms.combine(commands,0))))
 				{
 					mob.tell(L("You are already tracking that!"));
-					return false;
+					return true;
 				}
 				A.unInvoke();
 			}
