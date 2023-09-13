@@ -381,6 +381,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		||(mob.charStats().getCurrentClass().leveless())
 		||(mob.charStats().getMyRace().leveless()))
 			return;
+		int xpOverLast = mob.getExpNeededDelevel();
+		if(xpOverLast < 0)
+			xpOverLast = 0;
 		final CMMsg msg=CMClass.getMsg(mob,CMMsg.MSG_LEVEL,null,mob.basePhyStats().level()-1);
 		if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LEVEL,msg))
 			return;
@@ -395,6 +398,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 
 		final int level = mob.basePhyStats().level();
+		mob.setExperience(mob.getExperience() - mob.getExpNeededDelevel());
 		final CharClass curClass=mob.baseCharStats().getCurrentClass();
 		final int oldClassLevel=mob.baseCharStats().getClassLevel(curClass);
 		int[] costGains = new int[CostDef.CostType.values().length];
@@ -447,6 +451,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			}
 		}
 		fixMobStatsIfNecessary(mob,-1);
+		mob.setExperience(mob.getExperience()-mob.getExpNeededDelevel()+xpOverLast);
 		mob.delExpertise(null); // clears the cache
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.LEVELSGAINED, -1, mob);
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLASSLEVELSGAINED, -1, mob);
