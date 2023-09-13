@@ -214,6 +214,11 @@ public class StdAbility implements Ability
 		return CMProps.getNormalSkillGainCost(ID());
 	}
 
+	public void setTickDown(final int down)
+	{
+		this.tickDown = down;
+	}
+
 	@Override
 	public CostManager getTrainingCost(final MOB mob)
 	{

@@ -828,13 +828,13 @@ public class Studying extends CommonSkill implements AbilityContainer
 							oA.teachingA=tA;
 							oA.teacherP=tP;
 							oA.successfullyTaught=ss;
-							oA.tickUp=0;
+							oA.setTickUp(0);
 							//oA.activityRoom=mR;
 							int ticks=duration;
 							if(ticks < 1)
 								ticks = 1;
 							ticks = getBeneficialTickdownTime(mob,mob,ticks,asLevel);
-							oA.tickDown=ticks;
+							oA.setTickDown(ticks);
 						}
 					}
 				}

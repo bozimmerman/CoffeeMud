@@ -173,6 +173,11 @@ public class CommonSkill extends StdAbility
 		return L("<S-NAME> <S-IS-ARE> almost done @x1.@x2",verb,sound);
 	}
 
+	public void setTickUp(final int up)
+	{
+		this.tickUp = up;
+	}
+
 	protected String getYouContinueMessage()
 	{
 		final int total=tickUp+tickDown;
