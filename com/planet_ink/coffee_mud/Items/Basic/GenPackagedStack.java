@@ -45,12 +45,14 @@ public class GenPackagedStack extends GenPackagedItems implements PackagedItems
 	@Override
 	public String name()
 	{
-		return "a stack of " + numberOfItemsInPackage() + " " + Name().trim() + "(s)";
+		if(numberOfItemsInPackage()!=1)
+			return L("a stack of @x1 @x2",""+numberOfItemsInPackage(), CMLib.english().makePlural(Name().trim()));
+		return L("a stack of @x1 @x2",""+numberOfItemsInPackage(), Name().trim());
 	}
 
 	@Override
 	public String displayText()
 	{
-		return "a stack of " + numberOfItemsInPackage() + " " + Name().trim() + "(s) is here.";
+		return L("@x1 sits here.",name());
 	}
 }

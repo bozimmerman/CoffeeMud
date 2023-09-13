@@ -648,7 +648,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		&&(!CMStrings.matches(sourceID, m.tmask, false)))
 			return amount;
 
-		if(m.dir==ModXP.DirectionCheck.POSINEGA)
+		if(m.dir==ModXP.DirectionCheck.POSITIVE)
 		{
 			if(amount<0)
 				return amount;
@@ -1366,7 +1366,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 		CharClass charClass=null;
 		Race charRace=null;
-		
+
 		for (final MOB allyMOB : group)
 		{
 			charClass = allyMOB.charStats().getCurrentClass();

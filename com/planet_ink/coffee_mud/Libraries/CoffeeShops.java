@@ -1119,10 +1119,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
 	@Override
 	public boolean sellEvaluation(final MOB sellerShopM,
-										 final MOB buyerCustM,
-										 final Environmental product,
-										 final ShopKeeper shop,
-										 final boolean buyNotView)
+								  final MOB buyerCustM,
+								  final Environmental product,
+								  final ShopKeeper shop,
+								  final boolean buyNotView)
 	{
 		if((product!=null)
 		&&(shop.getShop().doIHaveThisInStock("$"+product.Name()+"$",buyerCustM)))
@@ -1147,7 +1147,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					return false;
 				}
 			}
-			if(product instanceof Item)
+			if((product instanceof Item)
+			&&(buyNotView))
 			{
 				if(((Item)product).phyStats().level()>buyerCustM.phyStats().level())
 				{

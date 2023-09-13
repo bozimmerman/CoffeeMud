@@ -335,8 +335,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		return V;
 	}
 
-	protected boolean isCrimeSuppressed(final String crime)
+	protected boolean isCrimeSuppressed(String crime)
 	{
+		if(crime == null)
+			return false;
+		crime = crime.toUpperCase().trim();
 		synchronized(suppressedCrimes)
 		{
 			if(suppressedCrimes.containsKey(crime))

@@ -379,6 +379,12 @@ public class DefaultSocial implements Social
 			&& (!CMLib.flags().canBeSeenBy(targetP, mob))
 			&&(targetStr.indexOf('.')<0))
 				targetP = R.fetchFromMOBRoomFavorsMOBs(mob, null, targetStr+"."+(++ctr), Wearable.FILTER_ANY);
+			if ((targetP instanceof Exit)
+			&& (!this.isTargetable)
+			&& (this.socialTarget != null)
+			&& (CMLib.directions().getGoodDirectionCode(this.socialTarget)>=0)
+			&& (R.getExitInDir(CMLib.directions().getGoodDirectionCode(this.socialTarget))==targetP))
+				targetP = null;
 			if ((targetP != null) && (!targetable(targetP)))
 			{
 				final Social S = CMLib.socials().fetchSocial(baseName(), targetP, restArg, true);

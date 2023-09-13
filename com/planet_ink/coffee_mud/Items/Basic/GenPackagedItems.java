@@ -75,14 +75,13 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	{
 		if(numberOfItemsInPackage()!=1)
 			return L("a package of @x1 @x2",""+numberOfItemsInPackage(), CMLib.english().makePlural(Name().trim()));
-		else
-			return L("a package of @x1 @x2",""+numberOfItemsInPackage(), Name().trim());
+		return L("a package of @x1 @x2",""+numberOfItemsInPackage(), Name().trim());
 	}
 
 	@Override
 	public String displayText()
 	{
-		return L("a package of @x1 @x2(s) sit here.",""+numberOfItemsInPackage(), CMLib.english().makePlural(Name().trim()));
+		return L("@x1 sits here.",name());
 	}
 
 	@Override
