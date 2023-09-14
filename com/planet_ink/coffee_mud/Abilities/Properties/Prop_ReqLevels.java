@@ -55,7 +55,7 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 	private boolean			noFollow	= false;
 	private boolean			noSneak		= false;
 	private boolean			allFlag		= false;
-	private final boolean	sysopFlag	= false;
+	private boolean			sysopFlag	= false;
 	private String			message		= L("You are not allowed to go that way.");
 	private int[]			lvls		= new int[0];
 
@@ -93,7 +93,7 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 				allFlag=true;
 			else
 			if("SYSOP".equals(s))
-				noSneak=true;
+				sysopFlag=true;
 		}
 		message=CMParms.getParmStr(txt, "MESSAGE", message);
 		int lastPlace=0;
@@ -157,10 +157,6 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 	{
 		if(mob==null)
 			return false;
-		if(CMLib.flags().isATrackingMonster(mob))
-			return true;
-		if(CMLib.flags().isSneaking(mob)&&(!noSneak))
-			return true;
 
 		if((allFlag)
 		||(text().length()==0)
@@ -170,6 +166,12 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 
 		if(sysopFlag)
 			return false;
+
+		if(CMLib.flags().isATrackingMonster(mob))
+			return true;
+
+		if(CMLib.flags().isSneaking(mob)&&(!noSneak))
+			return true;
 
 		final int lvl=mob.phyStats().level();
 		for(int i=0;i<lvls.length;i+=2)
@@ -190,8 +192,6 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 				break;
 			}
 		}
-
-
 		return false;
 	}
 
