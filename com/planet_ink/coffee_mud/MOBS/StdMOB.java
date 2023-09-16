@@ -2753,6 +2753,29 @@ public class StdMOB implements MOB
 						return false;
 					}
 					break;
+				case CMMsg.TYP_RETREAT:
+				{
+					final int retreatCost;
+					if(location() != null)
+					{
+						retreatCost = location().pointsPerMove()*5;
+						if(curState().getMovement() < retreatCost)
+						{
+							tell(L("You are too tired."));
+							return false;
+						}
+						if(rangeToTarget() >= location().maxRange())
+						{
+							tell(L("You cannot retreat any further."));
+							return false;
+						}
+					}
+					else
+						retreatCost=10;
+					curState().adjMovement(-retreatCost, maxState());
+					recoverPhyStats();
+					break;
+				}
 				case CMMsg.TYP_THROW:
 					if(charStats().getBodyPart(Race.BODY_ARM) == 0)
 					{
@@ -2913,90 +2936,63 @@ public class StdMOB implements MOB
 				default:
 					break;
 				}
-			}
-		}
 
-		if((msg.sourceCode() != CMMsg.NO_EFFECT)
-		&& (msg.amISource(this))
-		&& (msg.target() instanceof MOB)
-		&& (msg.target() != this)
-		&& (!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS))
-		&& (location() != null)
-		&& (location() == ((MOB) msg.target()).location()))
-		{
-			final MOB trgM = (MOB) msg.target();
-			final int srcMinor = msg.sourceMinor();
-			// and now, the consequences of range
-			if(((msg.targetMinor() == CMMsg.TYP_WEAPONATTACK)
-				&& (rangeToTarget() > maxRangeWith(msg.tool())))
-			|| ((srcMinor == CMMsg.TYP_THROW)
-				&& (rangeToTarget() > 2)
-				&& (maxRangeWith(msg.tool()) <= 0)))
-			{
-				msg.modify(this, trgM, null, CMMsg.MSG_ADVANCE, L("<S-NAME> advance(s) at <T-NAME>."));
-				return location().okMessage(this, msg);
-			}
-			else
-			if(msg.targetMinor() == CMMsg.TYP_RETREAT)
-			{
-				final int retreatCost;
-				if(location() != null)
+				if((msg.target() instanceof MOB)
+				&& (msg.target() != this)
+				&& (location() != null)
+				&& (location() == ((MOB) msg.target()).location()))
 				{
-					retreatCost = location().pointsPerMove()*5;
-					if(curState().getMovement() < retreatCost)
+					final MOB trgM = (MOB) msg.target();
+					// and now, the consequences of range
+					if(((msg.targetMinor() == CMMsg.TYP_WEAPONATTACK)
+						&& (rangeToTarget() > maxRangeWith(msg.tool())))
+					|| ((srcMinor == CMMsg.TYP_THROW)
+						&& (rangeToTarget() > 2)
+						&& (maxRangeWith(msg.tool()) <= 0)))
 					{
-						tell(L("You are too tired."));
-						return false;
+						msg.modify(this, trgM, null, CMMsg.MSG_ADVANCE, L("<S-NAME> advance(s) at <T-NAME>."));
+						return location().okMessage(this, msg);
 					}
-					if(rangeToTarget() >= location().maxRange())
-					{
-						tell(L("You cannot retreat any further."));
-						return false;
-					}
-				}
-				else
-					retreatCost=10;
-				curState().adjMovement(-retreatCost, maxState());
-				recoverPhyStats();
-			}
-			else
-			if((msg.tool() != null)
-			&& (srcMinor != CMMsg.TYP_BUY)
-			&& (srcMinor != CMMsg.TYP_BID)
-			&& (srcMinor != CMMsg.TYP_SELL)
-			&& (srcMinor != CMMsg.TYP_VIEW))
-			{
-				// this reason this is here and not in stdability protecting
-				// mana usage is because the target must be determined for
-				// last second ranging, which stdability invoke won't know.
-				int useRange = -1;
-				final Environmental tool = msg.tool();
-				if(getVictim() != null)
-				{
-					if(getVictim() == trgM)
-						useRange = rangeToTarget();
 					else
+					if((msg.tool() != null)
+					&& (srcMinor != CMMsg.TYP_BUY)
+					&& (srcMinor != CMMsg.TYP_BID)
+					&& (srcMinor != CMMsg.TYP_SELL)
+					&& (srcMinor != CMMsg.TYP_VIEW))
 					{
-						if(trgM.getVictim() == this)
-							useRange = trgM.rangeToTarget();
+						// this reason this is here and not in stdability protecting
+						// mana usage is because the target must be determined for
+						// last second ranging, which stdability invoke won't know.
+						int useRange = -1;
+						final Environmental tool = msg.tool();
+						if(getVictim() != null)
+						{
+							if(getVictim() == trgM)
+								useRange = rangeToTarget();
+							else
+							{
+								if(trgM.getVictim() == this)
+									useRange = trgM.rangeToTarget();
+								else
+									useRange = maxRangeWith(tool);
+							}
+						}
+						if((useRange >= 0) && (maxRangeWith(tool) < useRange))
+						{
+							srcM.tell(L("You are too far away from @x1 to use @x2.", trgM.name(srcM), tool.name()));
+							return false;
+						}
 						else
-							useRange = maxRangeWith(tool);
+						if((useRange >= 0) && (minRangeWith(tool) > useRange))
+						{
+							srcM.tell(L("You are too close to @x1 to use @x2.", trgM.name(srcM), tool.name()));
+							if((msg.targetMinor() == CMMsg.TYP_WEAPONATTACK)
+							&& (tool instanceof Weapon)
+							&& (!((Weapon) tool).amWearingAt(Wearable.IN_INVENTORY)))
+								CMLib.commands().postRemove(this, (Weapon) msg.tool(), false);
+							return false;
+						}
 					}
-				}
-				if((useRange >= 0) && (maxRangeWith(tool) < useRange))
-				{
-					srcM.tell(L("You are too far away from @x1 to use @x2.", trgM.name(srcM), tool.name()));
-					return false;
-				}
-				else
-				if((useRange >= 0) && (minRangeWith(tool) > useRange))
-				{
-					srcM.tell(L("You are too close to @x1 to use @x2.", trgM.name(srcM), tool.name()));
-					if((msg.targetMinor() == CMMsg.TYP_WEAPONATTACK)
-					&& (tool instanceof Weapon)
-					&& (!((Weapon) tool).amWearingAt(Wearable.IN_INVENTORY)))
-						CMLib.commands().postRemove(this, (Weapon) msg.tool(), false);
-					return false;
 				}
 			}
 		}

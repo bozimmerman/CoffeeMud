@@ -164,9 +164,9 @@ public class Paladin_MountedCharge extends StdAbility
 			return false;
 
 		final Rideable mount=mob.riding();
-		if(mount==null)
+		if(!CMLib.flags().isMobileMounted(mob))
 		{
-			mob.tell(L("You must be mounted to use this skill."));
+			mob.tell(L("You must be riding a mount to use this skill."));
 			return false;
 		}
 

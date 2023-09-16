@@ -398,6 +398,14 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean canBarelyBeSeenBy(Environmental seen , MOB seer);
 
 	/**
+	 * Returns whether the given mob is mounted on a small portable
+	 * movable, such as a horse, or boat on water.
+	 * @param mob the mob to check
+	 * @return true if mounted
+	 */
+	public boolean isMobileMounted(final MOB mob);
+
+	/**
 	 * Returns whether the given item is marked as being readable.
 	 * @see CMFlagLibrary#setReadable(Item, boolean)
 	 * @param I the item to check

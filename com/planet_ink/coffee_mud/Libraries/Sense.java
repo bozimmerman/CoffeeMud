@@ -2811,4 +2811,18 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 		return false;
 	}
+
+	@Override
+	public boolean isMobileMounted(final MOB mob)
+	{
+		final Rideable mount=mob.riding();
+		if(mount == null)
+			return false;
+		if((mount.rideBasis()!=Rideable.Basis.LAND_BASED)
+			&&(mount.rideBasis()!=Rideable.Basis.LAND_BASED)
+			&&(mount.rideBasis()!=Rideable.Basis.AIR_FLYING)
+			&&((mount.rideBasis()!=Rideable.Basis.WATER_BASED)||(CMLib.flags().isWateryRoom(mob.location()))))
+				return false;
+		return true;
+	}
 }
