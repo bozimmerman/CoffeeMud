@@ -342,9 +342,21 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		crime = crime.toUpperCase().trim();
 		synchronized(suppressedCrimes)
 		{
-			if(suppressedCrimes.containsKey(crime))
+			if(suppressedCrimes.size()>0)
 			{
+				for(final String key : suppressedCrimes.keySet())
+				{
+					if((crime.indexOf(key)>=0)&&(!key.equals("ALL")))
+					{
+						crime=key;
+						break;
+					}
+				}
+				if((!suppressedCrimes.containsKey(crime)) && (suppressedCrimes.containsKey("ALL")))
+					crime="ALL";
 				final Object obj = suppressedCrimes.get(crime);
+				if(obj == null)
+					return false;
 				if(obj instanceof Long)
 				{
 					if(System.currentTimeMillis()<((Long)obj).longValue())
@@ -576,7 +588,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		{
 			if(until == null)
 			{
-				if(crime.equalsIgnoreCase("ALL"))
+				if(crime.equalsIgnoreCase("NONE"))
 					suppressedCrimes.clear();
 				else
 					suppressedCrimes.remove(crime);

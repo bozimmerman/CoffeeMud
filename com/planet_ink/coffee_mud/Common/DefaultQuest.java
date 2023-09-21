@@ -3865,7 +3865,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					else
 					if(cmd.equals("STAT"))
 					{
-						if(q.envObject==null)
+						final Object o = (q.envObject==null)?q.area:q.envObject;
+						if(o == null)
 						{
 							if(optional)
 								continue;
@@ -3882,11 +3883,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						final String stat=p.get(2);
 						final String val=CMParms.rest(s,3);
 						List<Environmental> toSet=new ArrayList<Environmental>();
-						if(q.envObject instanceof List)
-							toSet=(List<Environmental>)q.envObject;
+						if(o instanceof List)
+							toSet=(List<Environmental>)o;
 						else
-						if(q.envObject!=null)
-							toSet.add((Environmental)q.envObject);
+						if(o!=null)
+							toSet.add((Environmental)o);
 						for(int i=0;i<toSet.size();i++)
 						{
 							final Environmental E2=toSet.get(i);
