@@ -149,7 +149,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if((inhab!=null)
 			&&(inhab!=mob)
 			&&(!h1.contains(inhab))
-			&&(CMLib.flags().isSeeable(inhab)||(CMLib.flags().canMove(inhab)&&(!CMLib.flags().isCloaked(inhab))))
+			&&(CMLib.flags().isSeeable(inhab)
+				||(CMLib.flags().canMove(inhab)&&(!CMLib.flags().isCloaked(inhab))))
 			&&((includePlayers)||inhab.isMonster()||mob.isMonster()))
 				h.addUnsafe(inhab);
 		}
@@ -438,15 +439,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
 			final MOB inhab=thisRoom.fetchInhabitant(m);
-			if((inhab!=null)
-			&&(inhab!=mob)
-			&&((inhab==mob.getVictim())
+			if((inhab!=null) && (inhab!=mob))
+			{
+				if((inhab==mob.getVictim())
 				||((inhab!=mob)
-					&&(inhab.getVictim()!=mob.getVictim())
-					&&(CMLib.flags().isSeeable(inhab)||(!CMLib.flags().isCloaked(inhab)))
-					&&(CMLib.flags().canMove(inhab)||CMLib.flags().isSeeable(inhab))
-					&&(!h1.contains(inhab)))))
-				 h.addUnsafe(inhab);
+					&&(inhab.getVictim() != mob.getVictim())
+					&&(CMLib.flags().isSeeable(inhab)
+						||(CMLib.flags().canMove(inhab)&&(!CMLib.flags().isCloaked(inhab))))
+					&&(!h1.contains(inhab))))
+						h.addUnsafe(inhab);
+			}
 		}
 		return h;
 

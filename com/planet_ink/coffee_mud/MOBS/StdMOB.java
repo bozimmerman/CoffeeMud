@@ -5069,22 +5069,18 @@ public class StdMOB implements MOB
 		final List<Ability> affects = this.affects;
 		if(affects != null)
 		{
-			try
+			for(int a = 0; a < affects.size(); a++)
 			{
-				for(int a = 0; a < affects.size(); a++)
+				try
 				{
-					try
-					{
-						applier.apply(affects.get(a));
-					}
-					catch(final Exception e)
-					{
-						Log.errOut(e);
-					}
+					applier.apply(affects.get(a));
 				}
-			}
-			catch (final java.lang.IndexOutOfBoundsException x)
-			{
+				catch(final IndexOutOfBoundsException e)
+				{ break;  /** this happens **/ }
+				catch(final Exception e)
+				{
+					Log.errOut(e);
+				}
 			}
 		}
 		final List<Ability> racialEffects = racialEffects();
@@ -5268,22 +5264,18 @@ public class StdMOB implements MOB
 		final List<Behavior> behaviors = this.behaviors;
 		if(behaviors != null)
 		{
-			try
+			for(int a = 0; a < behaviors.size(); a++)
 			{
-				for(int a = 0; a < behaviors.size(); a++)
+				try
 				{
-					try
-					{
-						applier.apply(behaviors.get(a));
-					}
-					catch(final Exception e)
-					{
-						Log.errOut(e);
-					}
+					applier.apply(behaviors.get(a));
 				}
-			}
-			catch (final java.lang.IndexOutOfBoundsException x)
-			{
+				catch(final IndexOutOfBoundsException e)
+				{ break;  /** this happens **/ }
+				catch(final Exception e)
+				{
+					Log.errOut(e);
+				}
 			}
 		}
 	}

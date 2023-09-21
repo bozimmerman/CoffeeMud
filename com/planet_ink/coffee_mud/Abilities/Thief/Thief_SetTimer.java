@@ -118,7 +118,7 @@ public class Thief_SetTimer extends ThiefSkill
 				return false;
 			}
 			timer=CMath.s_int(commands.remove(0));
-			if((!CMath.isInteger(commands.get(0)))||(timer<0))
+			if(timer<0)
 			{
 				mob.tell(L("@x1 is not a valid amount of time.",commands.get(0)));
 				return false;

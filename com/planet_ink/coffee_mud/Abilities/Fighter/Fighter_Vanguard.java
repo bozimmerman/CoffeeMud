@@ -34,8 +34,6 @@ import java.util.*;
 */
 public class Fighter_Vanguard extends FighterSkill
 {
-	private Pair<MOB, Integer> pair;
-
 	@Override
 	public String ID()
 	{
@@ -286,6 +284,15 @@ public class Fighter_Vanguard extends FighterSkill
 		{
 			mob.tell(L("@x1 does not appear to be a navagable caravan or wagon.",target.name(mob)));
 			return false;
+		}
+		final Fighter_RearGuard fA=(Fighter_RearGuard)target.fetchEffect("Fighter_RearGuard");
+		if(fA != null)
+		{
+			if(fA.rearGuards.containsKey(mob))
+			{
+				mob.tell(L("You can't be both vanguard AND rearguard!"));
+				return false;
+			}
 		}
 
 		if(!(mob.riding() instanceof MOB))

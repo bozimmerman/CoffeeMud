@@ -2758,7 +2758,10 @@ public class StdRoom implements Room
 					found=null;
 			}
 		}
-		if((mob!=null)&&(!favorItems)&&(filter!=Wearable.FILTER_WORNONLY))
+		if((found==null)
+		&&(mob!=null)
+		&&(!favorItems)
+		&&(filter!=Wearable.FILTER_WORNONLY))
 		{
 			found=mob.fetchItem(goodLocation, new Filterer<Environmental>()
 			{
@@ -2769,7 +2772,9 @@ public class StdRoom implements Room
 				}
 			}, thingName);
 		}
-		if((mob!=null)&&(found==null)&&(filter!=Wearable.FILTER_UNWORNONLY))
+		if((mob!=null)
+		&&(found==null)
+		&&(filter!=Wearable.FILTER_UNWORNONLY))
 		{
 			found=mob.fetchItem(null, new Filterer<Environmental>()
 			{

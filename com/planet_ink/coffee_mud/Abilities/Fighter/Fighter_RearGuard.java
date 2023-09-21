@@ -324,6 +324,15 @@ public class Fighter_RearGuard extends FighterSkill
 			mob.tell(L("You must be mounted to be an effective rearguard."));
 			return false;
 		}
+		final Fighter_Vanguard fA=(Fighter_Vanguard)target.fetchEffect("Fighter_Vanguard");
+		if(fA != null)
+		{
+			if((fA.vanGuard != null)&&(fA.vanGuard.first == mob))
+			{
+				mob.tell(L("You can't be both vanguard AND rearguard!"));
+				return false;
+			}
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
