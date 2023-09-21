@@ -1466,6 +1466,37 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				}
 			}
 		}
+		if(supportsWeapons()
+		&& (matches.size()==0)
+		&&(recipeName.length()>2)
+		&&(recipeName.toUpperCase().endsWith("S")))
+		{
+			recipeName=recipeName.substring(0,recipeName.length()-1);
+			int x=CMParms.indexOf(Weapon.CLASS_DESCS,recipeName.toUpperCase().trim());
+			if(x>=0)
+			{
+				final String weaponClass = Weapon.CLASS_DESCS[x];
+				for(int r=0;r<recipes.size();r++)
+				{
+					final List<String> V=recipes.get(r);
+					if((V.contains(weaponClass))
+					&&(!matches.contains(V)))
+						matches.add(V);
+				}
+			}
+			x=CMParms.indexOf(Weapon.TYPE_DESCS,recipeName.toUpperCase().trim());
+			if(x>=0)
+			{
+				final String weaponType = Weapon.TYPE_DESCS[x];
+				for(int r=0;r<recipes.size();r++)
+				{
+					final List<String> V=recipes.get(r);
+					if((V.contains(weaponType))
+					&&(!matches.contains(V)))
+						matches.add(V);
+				}
+			}
+		}
 		if(matches.size()==0)
 		{
 			for(int r=0;r<recipes.size();r++)
