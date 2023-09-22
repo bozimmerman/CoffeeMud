@@ -344,17 +344,20 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		{
 			if(suppressedCrimes.size()>0)
 			{
-				for(final String key : suppressedCrimes.keySet())
+				Object obj = suppressedCrimes.get(crime);
+				if((obj == null)
+				&&(!crime.equals("ALL")))
 				{
-					if((crime.indexOf(key)>=0)&&(!key.equals("ALL")))
+					for(final String key : suppressedCrimes.keySet())
 					{
-						crime=key;
-						break;
+						if((crime.indexOf(key)>=0)&&(!key.equals("ALL")))
+						{
+							obj = suppressedCrimes.get(key);
+							crime=key;
+							break;
+						}
 					}
 				}
-				if((!suppressedCrimes.containsKey(crime)) && (suppressedCrimes.containsKey("ALL")))
-					crime="ALL";
-				final Object obj = suppressedCrimes.get(crime);
 				if(obj == null)
 					return false;
 				if(obj instanceof Long)
@@ -586,9 +589,21 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		crime = crime.toUpperCase().trim();
 		synchronized(suppressedCrimes)
 		{
+			if((this.lastAreaName != null)
+			&&(!crime.equals("ALL")))
+			{
+				final Area A = CMLib.map().getArea(this.lastAreaName);
+				final Law laws = this.getLaws(A, true);
+				if(laws != null)
+				{
+					final String[] crimeSet = laws.basicCrimes().get(crime);
+					if(crimeSet != null)
+						crime = crimeSet[Law.BIT_CRIMENAME].toUpperCase().trim();
+				}
+			}
 			if(until == null)
 			{
-				if(crime.equalsIgnoreCase("NONE"))
+				if(crime.equals("ALL"))
 					suppressedCrimes.clear();
 				else
 					suppressedCrimes.remove(crime);
