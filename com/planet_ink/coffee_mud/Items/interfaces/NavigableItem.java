@@ -102,4 +102,14 @@ public interface NavigableItem extends Boardable, Item, Rideable, SiegableItem
 	 * @return the Basis* enum describing how this is navigated
 	 */
 	public Basis navBasis();
+
+	/**
+	 * Returns whether the given mob is allowed to steer the
+	 * craft from the given internal room.
+	 *
+	 * @param mob the mob in the navigable area
+	 * @param R the room in the navigable area
+	 * @return true if steering can happen
+	 */
+	public boolean canSteer(final MOB mob, final Room R);
 }

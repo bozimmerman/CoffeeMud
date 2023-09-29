@@ -186,7 +186,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		return true;
 	}
 
-	protected boolean canSteer(final MOB mob, final Room R)
+	@Override
+	public boolean canSteer(final MOB mob, final Room R)
 	{
 		if((R.domainType()&Room.INDOORS)!=0)
 		{
@@ -1504,7 +1505,10 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			}
 			else
 			{
-				announceToAllAboard(L("As there is no where to "+verb_sail+" @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction)));
+				if(CMLib.flags().isWateryRoom(thisRoom))
+					announceToAllAboard(L("As there is no where to "+verb_sail+" @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction)));
+				else
+					announceToAllAboard(L("There is no where to "+verb_sail+" @x1.",CMLib.directions().getInDirectionName(direction)));
 				courseDirections.clear();
 				return NavResult.CANCEL;
 			}

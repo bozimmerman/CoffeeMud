@@ -208,8 +208,9 @@ public class GenCaravan extends GenNavigableBoardable
 		}
 		return super.displayText(viewerMob);
 	}
+
 	@Override
-	protected boolean canSteer(final MOB mob, final Room R)
+	public boolean canSteer(final MOB mob, final Room R)
 	{
 		return true;
 	}

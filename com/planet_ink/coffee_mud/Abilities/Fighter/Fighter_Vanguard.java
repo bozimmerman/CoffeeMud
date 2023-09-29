@@ -89,8 +89,10 @@ public class Fighter_Vanguard extends FighterSkill
 
 	protected Pair<MOB,Integer> vanGuard = null;
 
-	protected volatile Room lastCaravanRoom = null;
-	protected volatile long lastAttack = 0;
+	protected volatile MOB		lastDriverM		= null;
+	protected volatile Room		lastCaravanRoom	= null;
+	protected volatile long		lastAttack		= 0;
+	protected volatile boolean	warned			= false;
 
 	protected final static TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags()
 												.plus(TrackingLibrary.TrackingFlag.PASSABLE);
@@ -109,81 +111,122 @@ public class Fighter_Vanguard extends FighterSkill
 			unInvoke();
 			return false;
 		}
-		final boolean combatRun = ((System.currentTimeMillis()-lastAttack)<4000);
-		if((lastCaravanRoom==null)
-		||(R != lastCaravanRoom)
-		||(combatRun))
+		final Pair<MOB,Integer> vanGuard = this.vanGuard;
+		if(vanGuard == null)
 		{
-			lastCaravanRoom = R;
-			int max = 0;
-			if(vanGuard!=null)
+			unInvoke();
+			return false;
+		}
+		final MOB M = vanGuard.first;
+		final Room vR = M.location();
+		lastCaravanRoom = R;
+		if((System.currentTimeMillis()-lastAttack)<4000)
+		{
+			final int max = 0;
+			final List<Room> caravanRadiant = new XVector<Room>(R);
 			{
-				if(!combatRun)
+				if((!(M.riding() instanceof MOB))
+				&&(vR!=R))
 				{
-					if(vanGuard.second.intValue() > max)
-						max = vanGuard.second.intValue();
+					M.tell(L("You resign from *mounted* vanguard duty."));
+					unInvoke();
+					return false;
 				}
-				List<Room> caravanRadiant = null;
-				if(max == 0)
-					caravanRadiant = new XVector<Room>(R);
-				else
-					caravanRadiant = CMLib.tracking().getRadiantRooms(R, flags, max);
-				final MOB M = vanGuard.first;
+				if((vR!=R)
+				&&(!caravanRadiant.contains(vR)))
 				{
-					if((!(M.riding() instanceof MOB))
-					&&(M.location()!=R))
+					List<Room> myRadiant = caravanRadiant;
+					final int x = vanGuard.second.intValue();
+					if(x != max)
+						myRadiant = new XVector<Room>(R);
+					final List<Room> trail = CMLib.tracking().findTrailToAnyRoom(vR, new XVector<Room>(myRadiant), flags, 10);
+					if(trail == null)
 					{
-						M.tell(L("You resign from *mounted* vanguard duty."));
 						unInvoke();
 						return false;
 					}
-					if((M.location()!=R)
-					&&(!caravanRadiant.contains(M.location())))
+					M.tell(L("@x1 is under attack!",I.name(M)));
+					int tries = 10;
+					while((M.actions() > 0.0)
+					&& (--tries>=0)
+					&& (!myRadiant.contains(vR)))
 					{
-						List<Room> myRadiant = caravanRadiant;
-						final int x = vanGuard.second.intValue();
-						if(x != max)
-						{
-							if((max == 0)||(combatRun))
-								myRadiant = new XVector<Room>(R);
-							else
-								myRadiant = CMLib.tracking().getRadiantRooms(R, flags, x);
-						}
-						final List<Room> trail = CMLib.tracking().findTrailToAnyRoom(M.location(), new XVector<Room>(myRadiant), flags, 10);
-						if(trail == null)
+						final int dir = CMLib.tracking().trackNextDirectionFromHere(trail, vR, false);
+						if(dir == 999) // arrival!
+							break;
+						else
+						if((dir<0)||(dir > Directions.NUM_DIRECTIONS()))
 						{
 							unInvoke();
 							return false;
 						}
-						if(combatRun)
-							M.tell(L("@x1 is under attack!",I.name(M)));
-						int tries = 10;
-						while((M.actions() > 0.0)
-						&& (--tries>=0)
-						&& (!myRadiant.contains(M.location())))
-						{
-							final int dir = CMLib.tracking().trackNextDirectionFromHere(trail, M.location(), false);
-							if(dir == 999) // arrival!
-								break;
-							else
-							if((dir<0)||(dir > Directions.NUM_DIRECTIONS()))
-							{
-								unInvoke();
-								return false;
-							}
-							final String dirName = CMLib.directions().getDirectionName(dir, CMLib.flags().getDirType(M.location()));
-							final boolean flee = M.isInCombat();
-							final List<String> cmds;
-							if(flee)
-								cmds = new XVector<String>("FLEE",dirName);
-							else
-								cmds = new XVector<String>(dirName);
-							M.clearCommandQueue();
-							M.enqueCommands(new XVector<List<String>>(cmds), 0);
-							M.dequeCommand();
-						}
+						final String dirName = CMLib.directions().getDirectionName(dir, CMLib.flags().getDirType(vR));
+						final boolean flee = M.isInCombat();
+						final List<String> cmds;
+						if(flee)
+							cmds = new XVector<String>("FLEE",dirName);
+						else
+							cmds = new XVector<String>(dirName);
+						M.clearCommandQueue();
+						M.enqueCommands(new XVector<List<String>>(cmds), 0);
+						M.dequeCommand();
 					}
 				}
+			}
+		}
+		else
+		if((R != vR)
+		&&(vR != null)
+		&&((!(affected instanceof Boardable))||(vR.getArea() != ((Boardable)affected).getArea())))
+		{
+			final NavigableItem B = (affected instanceof NavigableItem)?(NavigableItem)affected:null;
+			if((B != null)
+			&&((this.lastDriverM==null)
+				||(this.lastDriverM.location()==null)
+				||(this.lastDriverM.location().getArea()!=B.getArea())
+				||(!B.canSteer(this.lastDriverM,this.lastDriverM.location()))))
+			{
+				M.tell(L("Your driver has left their post."));
+				unInvoke();
+				return false;
+			}
+			final List<Room> trail = CMLib.tracking().findTrailToAnyRoom(R, new XVector<Room>(vR), flags, vanGuard.second.intValue());
+			if(trail == null)
+			{
+				unInvoke();
+				return false;
+			}
+			final List<String> dirs = new ArrayList<String>();
+			Room tR = R;
+			int dir = CMLib.tracking().trackNextDirectionFromHere(trail, tR, false);
+			while((dir>=0)&&(dir < Directions.NUM_DIRECTIONS()))
+			{
+				final Room nR = tR.getRoomInDir(dir);
+				if(nR == null)
+					dir = -1;
+				else
+				{
+					dirs.add(CMLib.directions().getDirectionName(dir, CMLib.flags().getDirType(tR)));
+					tR = nR;
+					dir = CMLib.tracking().trackNextDirectionFromHere(trail, tR, false);
+				}
+			}
+			if((dir != 999) // arrival!
+			&&((dir<0)||(dir > Directions.NUM_DIRECTIONS())))
+			{
+				unInvoke();
+				return false;
+			}
+			if(!M.isInCombat())
+			{
+				List<String> cmds;
+				if(affected instanceof NavigableItem)
+					cmds = new XVector<String>("COURSE",CMParms.toListString(dirs));
+				else
+					cmds = new XVector<String>("GO",CMParms.toListString(dirs));
+				this.lastDriverM.clearCommandQueue();
+				this.lastDriverM.enqueCommands(new XVector<List<String>>(cmds), 0);
+				this.lastDriverM.dequeCommand();
 			}
 		}
 		return true;
@@ -271,20 +314,62 @@ public class Fighter_Vanguard extends FighterSkill
 				oldA.unInvoke();
 			return false;
 		}
+		MOB driver = null;
 		if((target instanceof Rideable)
+		&&(!(target instanceof Boardable))
 		&&((((Rideable)target).rideBasis() == Rideable.Basis.LAND_BASED)
 			||(((Rideable)target).rideBasis() == Rideable.Basis.WAGON)))
-		{} // yay!
+		{
+			// yay!
+			for(final Enumeration<Rider> r= ((Rideable)target).riders(); r.hasMoreElements();)
+			{
+				final Rider R = r.nextElement();
+				if((R instanceof MOB)
+				&&(!CMLib.flags().isAnimalIntelligence((MOB)R)))
+				{
+					driver = (MOB)R;
+					break;
+				}
+			}
+		}
 		else
 		if((target instanceof NavigableItem)
 		&&((((NavigableItem)target).navBasis() == Rideable.Basis.LAND_BASED)
 			||(((NavigableItem)target).navBasis() == Rideable.Basis.WAGON)))
-		{} // yay!
+		{
+			// yay!
+			final NavigableItem nI = (NavigableItem)target;
+			final Area A = nI.getArea();
+			for(final Enumeration<Room> r = A.getProperMap();r.hasMoreElements();)
+			{
+				final Room R = r.nextElement();
+				if((R != null) && (R.numInhabitants()>0) && (driver == null))
+				{
+					for(final Enumeration<MOB> m = R.inhabitants();m.hasMoreElements();)
+					{
+						final MOB M = m.nextElement();
+						if((!CMLib.flags().isAnimalIntelligence(M))
+						&&nI.canSteer(M,R))
+						{
+							driver = M;
+							break;
+						}
+					}
+				}
+			}
+		}
 		else
 		{
 			mob.tell(L("@x1 does not appear to be a navagable caravan or wagon.",target.name(mob)));
 			return false;
 		}
+
+		if(driver == null)
+		{
+			mob.tell(L("@x1 lacks anyone on board who is driving.",target.name(mob)));
+			return false;
+		}
+
 		final Fighter_RearGuard fA=(Fighter_RearGuard)target.fetchEffect("Fighter_RearGuard");
 		if(fA != null)
 		{
@@ -317,12 +402,13 @@ public class Fighter_Vanguard extends FighterSkill
 				final int myTime = super.getBeneficialTickdownTime(mob, target, 0, asLevel);
 				if(myTime > oldA.tickDown)
 					oldA.tickDown = myTime;
-				final int distance = (int)Math.round(Math.floor(CMath.div(super.getXLEVELLevel(mob), 4.0)));
+				final int distance = 2+(int)Math.round(Math.floor(CMath.div(super.getXLEVELLevel(mob), 4.0)));
 				oldA.vanGuard = new Pair<MOB,Integer>(mob, Integer.valueOf(distance));
+				oldA.lastDriverM = driver;
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,auto?"":L("<S-NAME> thought about being the vanguard, lose(s) <S-HIS-HER> nerve."));
+			beneficialWordsFizzle(mob,null,auto?"":L("<S-NAME> thought about being the vanguard, but lose(s) <S-HIS-HER> nerve."));
 
 		// return whether it worked
 		return success;

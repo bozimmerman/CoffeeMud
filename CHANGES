@@ -58,7 +58,7 @@
  57. New skills: Set Polearm, Dismounting Blow, Herding, Shepherding, Long Reach
  58. New skills: Soothe Mount, Tend Mount, Favored Mount 1...4, Forceback, Rearguard
  59. New skills: Indoor Riding, Command Mount, Unwavering Mark, Graceful Dismount
- 60. New skills: Mount Taming, Mounted Tactics
+ 60. New skills: Mount Taming, Mounted Tactics, Ridethrough, Vanguard
  
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

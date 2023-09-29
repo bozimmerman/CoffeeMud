@@ -305,6 +305,7 @@ public class Fighter_RearGuard extends FighterSkill
 			return false;
 		}
 		if((target instanceof Rideable)
+		&&(!(target instanceof Boardable))
 		&&((((Rideable)target).rideBasis() == Rideable.Basis.LAND_BASED)
 			||(((Rideable)target).rideBasis() == Rideable.Basis.WAGON)))
 		{} // yay!
