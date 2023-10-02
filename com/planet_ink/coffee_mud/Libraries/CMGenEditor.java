@@ -1922,7 +1922,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				return;
 			}
 			else
-			if(genGenericPrompt(mob,"Is this door ",E.isReadable()))
+			if(genGenericPrompt(mob,"Is this door readable ",E.isReadable()))
 			{
 				E.setReadable(true);
 				mob.tell(L("\n\rText: '@x1'.",E.readableText()));
