@@ -304,7 +304,7 @@ public class Spell_HelpingHand extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms around, incanting.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms around, incanting.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

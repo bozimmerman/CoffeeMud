@@ -252,7 +252,7 @@ public class Dance_Swords extends Dance
 			{
 				final Room R=commonRoomSet.get(v);
 				final String msgStr=getCorrectMsgString(R,str,v);
-				final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
+				final CMMsg msg=CMClass.getMsg(mob,null,this,somaticCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
 				{
 					if(originRoom==R)

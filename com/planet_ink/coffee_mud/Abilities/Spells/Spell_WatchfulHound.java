@@ -197,7 +197,7 @@ public class Spell_WatchfulHound extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> conjure(s) up a watchful hound.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somaticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> conjure(s) up a watchful hound.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

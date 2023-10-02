@@ -127,7 +127,7 @@ public class Spell_AcidSpray extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L(auto?"<T-NAME> <T-IS-ARE> sprayed with acid.":"^S<S-NAME> reach(es) for <T-NAMESELF>, spraying acid all over <T-HIM-HER>!^?")+CMLib.protocol().msp("spelldam1.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),L(auto?"<T-NAME> <T-IS-ARE> sprayed with acid.":"^S<S-NAME> reach(es) for <T-NAMESELF>, spraying acid all over <T-HIM-HER>!^?")+CMLib.protocol().msp("spelldam1.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_ACID|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{

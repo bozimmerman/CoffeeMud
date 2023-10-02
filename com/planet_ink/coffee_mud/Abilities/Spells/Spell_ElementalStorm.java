@@ -109,7 +109,7 @@ public class Spell_ElementalStorm extends Spell
 			final Room R=target.location();
 			for(int i=0;(i<numMissiles) && (target.location()==R);i++)
 			{
-				final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),(i==0)?L((auto?"An elemental storm assaults <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, evoking an elemental storm!^?")+CMLib.protocol().msp("spelldam1.wav",40)):null);
+				final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),(i==0)?L((auto?"An elemental storm assaults <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, evoking an elemental storm!^?")+CMLib.protocol().msp("spelldam1.wav",40)):null);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);

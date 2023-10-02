@@ -99,7 +99,7 @@ public class Spell_Frost extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L((auto?"A ":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>. A ")+"blast of frost erupts!^?")+CMLib.protocol().msp("spelldam1.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),L((auto?"A ":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>. A ")+"blast of frost erupts!^?")+CMLib.protocol().msp("spelldam1.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_COLD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((R.okMessage(mob,msg))&&(R.okMessage(mob,msg2)))
 			{

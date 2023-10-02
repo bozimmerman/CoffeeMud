@@ -1327,15 +1327,15 @@ public interface CMMsg extends CMCommon
 	public static final int MSK_CAST_VERBAL=MASK_SOUND|MASK_MOUTH|MASK_MAGIC;
 	/** Useful MAJOR_MASK shortcut combining other MASK_ constants related to casting verbal malicious magic */
 	public static final int MSK_CAST_MALICIOUS_VERBAL=MASK_SOUND|MASK_MOUTH|MASK_MAGIC|MASK_MALICIOUS;
-	/** Useful MAJOR_MASK shortcut combining other MASK_ constants related to casting somantic magic */
+	/** Useful MAJOR_MASK shortcut combining other MASK_ constants related to casting somatic magic */
 	public static final int MSK_CAST_SOMANTIC=MASK_HANDS|MASK_MAGIC;
-	/** Useful MAJOR_MASK shortcut combining other MASK_ constants related to casting somantic malicious magic */
+	/** Useful MAJOR_MASK shortcut combining other MASK_ constants related to casting somatic malicious magic */
 	public static final int MSK_CAST_MALICIOUS_SOMANTIC=MASK_HANDS|MASK_MAGIC|MASK_MALICIOUS;
 	/** Useful MAJOR_MASK shortcut combining other MASK_ constants related to haggling over price */
 	public static final int MSK_HAGGLE=MASK_HANDS|MASK_SOUND|MASK_MOUTH;
-	/** Useful MAJOR_MASK shortcut combining other MASK_ constants related to casting both verbal and somantic */
+	/** Useful MAJOR_MASK shortcut combining other MASK_ constants related to casting both verbal and somatic */
 	public static final int MSK_CAST=MSK_CAST_VERBAL|MSK_CAST_SOMANTIC;
-	/** Useful MAJOR_MASK shortcut combining other MASK_ constants related to casting both verbal and somantic maliciously */
+	/** Useful MAJOR_MASK shortcut combining other MASK_ constants related to casting both verbal and somatic maliciously */
 	public static final int MSK_CAST_MALICIOUS=MSK_CAST_MALICIOUS_VERBAL|MSK_CAST_MALICIOUS_SOMANTIC;
 	/** Useful MAJOR_MASK shortcut combining other MASK_ constants related to malicious noisy movements */
 	public static final int MSK_MALICIOUS_MOVE=MASK_MALICIOUS|MASK_MOVE|MASK_SOUND;
@@ -1427,9 +1427,9 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_FLEE=MASK_MOVE|MASK_SOUND|TYP_FLEE;
 	/** combined MAJOR and MINOR codes for useful event message type for a flee event */
 	public static final int MSG_CRAWLFLEE=MASK_HANDS|MASK_SOUND|TYP_FLEE;
-	/** combined MAJOR and MINOR codes for useful event message type for a somantic spellcasting event */
+	/** combined MAJOR and MINOR codes for useful event message type for a somatic spellcasting event */
 	public static final int MSG_CAST_SOMANTIC_SPELL=MSK_CAST_SOMANTIC|TYP_CAST_SPELL;
-	/** combined MAJOR and MINOR codes for useful event message type for a malicious somantic spellcasting event */
+	/** combined MAJOR and MINOR codes for useful event message type for a malicious somatic spellcasting event */
 	public static final int MSG_CAST_ATTACK_SOMANTIC_SPELL=MSK_CAST_MALICIOUS_SOMANTIC|TYP_CAST_SPELL;
 	/** combined MAJOR and MINOR codes for useful event message type for a spellcasting event */
 	public static final int MSG_CAST=MSK_CAST|TYP_CAST_SPELL;

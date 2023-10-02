@@ -69,6 +69,11 @@ public class Enter extends Go
 			{
 				if(enterThis instanceof Rideable)
 				{
+					if(CMLib.flags().isSitting(mob))
+					{
+						CMLib.commands().postCommandFail(mob,origCmds,L("You need to stand up!"));
+						return false;
+					}
 					final Command C=CMClass.getCommand("Sit");
 					if(C!=null)
 						return C.execute(mob,commands,metaFlags);

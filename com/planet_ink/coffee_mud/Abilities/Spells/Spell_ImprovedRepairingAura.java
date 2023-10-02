@@ -212,8 +212,8 @@ public class Spell_ImprovedRepairingAura extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
-			final CMMsg msg2=(target==realTarget)?null:CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
+			final CMMsg msg2=(target==realTarget)?null:CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),null);
 			if(mob.location().okMessage(mob,msg)
 			&&(realTarget!=null)
 			&&((msg2==null)||mob.location().okMessage(mob,msg2)))

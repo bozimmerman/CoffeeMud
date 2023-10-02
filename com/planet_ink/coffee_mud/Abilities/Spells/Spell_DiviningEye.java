@@ -110,7 +110,7 @@ public class Spell_DiviningEye extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> invoke(s) a remote divination!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somaticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> invoke(s) a remote divination!^?"));
 			final Room room=mob.location();
 			if(room.okMessage(mob,msg))
 			{

@@ -222,7 +222,7 @@ public class Spell_Fabricate extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,intoI,this,somanticCastCode(mob,intoI,auto),L("^S<S-NAME> wave(s) <S-HIS-HER> hands around, fabricating a @x1.^?",intoI.name()));
+			final CMMsg msg=CMClass.getMsg(mob,intoI,this,somaticCastCode(mob,intoI,auto),L("^S<S-NAME> wave(s) <S-HIS-HER> hands around, fabricating a @x1.^?",intoI.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

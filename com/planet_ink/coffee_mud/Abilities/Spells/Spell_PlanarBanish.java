@@ -126,14 +126,14 @@ public class Spell_PlanarBanish extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			if(R.show(mob,null,this,somanticCastCode(mob,null,auto),L(auto?"":"^S<S-NAME> flail(s) <S-HIS-HER> arms(s) around.^?")))
+			if(R.show(mob,null,this,somaticCastCode(mob,null,auto),L(auto?"":"^S<S-NAME> flail(s) <S-HIS-HER> arms(s) around.^?")))
 			{
 				final Set<MOB> set=target.getGroupMembers(new HashSet<MOB>());
 				for (final Object element : set)
 				{
 					final MOB targetM=(MOB)element;
 
-					final CMMsg msg=CMClass.getMsg(mob,targetM,this,somanticCastCode(mob,targetM,auto),null);
+					final CMMsg msg=CMClass.getMsg(mob,targetM,this,somaticCastCode(mob,targetM,auto),null);
 					if((R==targetM.location())
 					&&(R.okMessage(mob,msg))
 					&&(mob.mayIFight(targetM))

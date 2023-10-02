@@ -2484,7 +2484,7 @@ public class StdAbility implements Ability
 		return verbalCastCode(mob,target,auto)&CMMsg.MAJOR_MASK;
 	}
 
-	protected int somanticCastCode(final MOB mob, final Physical target, final boolean auto)
+	protected int somaticCastCode(final MOB mob, final Physical target, final boolean auto)
 	{
 		int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 		if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
@@ -2494,9 +2494,9 @@ public class StdAbility implements Ability
 		return affectType;
 	}
 
-	protected int somanticCastMask(final MOB mob, final Physical target, final boolean auto)
+	protected int somaticCastMask(final MOB mob, final Physical target, final boolean auto)
 	{
-		return somanticCastCode(mob,target,auto)&CMMsg.MAJOR_MASK;
+		return somaticCastCode(mob,target,auto)&CMMsg.MAJOR_MASK;
 	}
 
 	@Override

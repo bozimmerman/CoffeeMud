@@ -145,7 +145,7 @@ public class Spell_KnowProvince extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),
 				auto?"":
 				L("^S<S-NAME> wave(s) <S-HIS-HER> arms around <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))

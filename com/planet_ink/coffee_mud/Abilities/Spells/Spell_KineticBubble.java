@@ -149,7 +149,7 @@ public class Spell_KineticBubble extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?L("<T-NAME> <T-IS-ARE> surrounded by a Kinetic Bubble!"):L("^S<S-NAME> invoke(s) a Kinetic Bubble around <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),auto?L("<T-NAME> <T-IS-ARE> surrounded by a Kinetic Bubble!"):L("^S<S-NAME> invoke(s) a Kinetic Bubble around <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

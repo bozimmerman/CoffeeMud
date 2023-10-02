@@ -194,7 +194,7 @@ public class Spell_Timeport extends Spell
 		{
 
 			final CMMsg msg = CMClass.getMsg(mob, target, this,
-											 somanticCastCode(mob,target,auto) | maliciousMask,
+											 somaticCastCode(mob,target,auto) | maliciousMask,
 											 L(auto?"":"^S<S-NAME> speak(s) and gesture(s)")+"!^?");
 			if(mob.location().okMessage(mob,msg))
 			{

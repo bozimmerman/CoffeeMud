@@ -148,7 +148,7 @@ public class Spell_FakeArmor extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somaticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

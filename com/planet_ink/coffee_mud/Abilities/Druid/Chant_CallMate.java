@@ -211,7 +211,7 @@ public class Chant_CallMate extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s), calling for <S-HIS-HER> mate.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somaticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s), calling for <S-HIS-HER> mate.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

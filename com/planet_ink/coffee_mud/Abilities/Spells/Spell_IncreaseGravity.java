@@ -224,7 +224,7 @@ public class Spell_IncreaseGravity extends Spell
 		if(success)
 		{
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, somanticCastCode(mob,target,auto), L((auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to increase!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, somaticCastCode(mob,target,auto), L((auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to increase!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

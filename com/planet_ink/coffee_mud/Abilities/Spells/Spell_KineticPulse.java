@@ -99,7 +99,7 @@ public class Spell_KineticPulse extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,super.somanticCastCode(mob,target,auto),
+			final CMMsg msg=CMClass.getMsg(mob,target,this,super.somaticCastCode(mob,target,auto),
 					L("<S-NAME> point(s) at <T-NAMESELF> and send(s) an invisible wave of force towards <T-HIM-HER>."));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
@@ -119,7 +119,7 @@ public class Spell_KineticPulse extends Spell
 				final int percentage = CMLib.dice().roll(1, 100, 0);
 				if(percentage < 10)
 				{
-					final CMMsg msg3=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L("<T-NAME> get(s) shoved backwards by an unseen force."));
+					final CMMsg msg3=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),L("<T-NAME> get(s) shoved backwards by an unseen force."));
 					if(mob.location().okMessage(mob,msg3))
 					{
 						mob.location().send(mob, msg3);

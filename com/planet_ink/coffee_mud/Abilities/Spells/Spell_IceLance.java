@@ -94,7 +94,7 @@ public class Spell_IceLance extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L((auto?"A ":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>. A ")+"long shard of ice streaks through the air!^?")+CMLib.protocol().msp("spelldam2.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),L((auto?"A ":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>. A ")+"long shard of ice streaks through the air!^?")+CMLib.protocol().msp("spelldam2.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_COLD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{

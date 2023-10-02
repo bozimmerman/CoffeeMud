@@ -184,7 +184,7 @@ public class Spell_ColorSpray extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wiggle(s) <S-HIS-HER> fingers, spraying a blast of colors!^?")))
+			if(mob.location().show(mob,null,this,somaticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wiggle(s) <S-HIS-HER> fingers, spraying a blast of colors!^?")))
 			{
 				for (final Object element : h)
 				{
@@ -194,7 +194,7 @@ public class Spell_ColorSpray extends Spell
 					// won't happen
 					if((target.charStats().getBodyPart(Race.BODY_EYE)>0) && CMLib.flags().canSee(target))
 					{
-						final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),null);
+						final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),null);
 						if((mob.location().okMessage(mob,msg)) && (target.fetchEffect(this.ID())==null))
 						{
 							mob.location().send(mob,msg);

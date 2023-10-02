@@ -401,7 +401,7 @@ public class Spell_PlanarBubble extends Spell
 
 		if(success)
 		{
-			final CMMsg msg = CMClass.getMsg(mob, target, this, somanticCastCode(mob,target,auto), auto?"":L("^S<S-NAME> speak(s) and gesture(s) ominously!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, somaticCastCode(mob,target,auto), auto?"":L("^S<S-NAME> speak(s) and gesture(s) ominously!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

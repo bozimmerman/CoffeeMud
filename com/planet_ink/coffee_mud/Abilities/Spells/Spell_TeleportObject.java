@@ -171,7 +171,7 @@ public class Spell_TeleportObject extends Spell
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L("^S<S-NAME> invoke(s) a teleportation spell upon <T-NAME>.^?"));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),L("^S<S-NAME> invoke(s) a teleportation spell upon <T-NAME>.^?"));
 		if(oldRoom.okMessage(mob,msg))
 		{
 			oldRoom.send(mob,msg);

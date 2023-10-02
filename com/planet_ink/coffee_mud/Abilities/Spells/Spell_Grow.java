@@ -171,7 +171,7 @@ public class Spell_Grow extends Spell
 		if(success)
 		{
 			final int malicious = maliciousFlag ? CMMsg.MASK_MALICIOUS : 0;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto)|malicious,
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto)|malicious,
 					auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

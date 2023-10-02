@@ -127,7 +127,7 @@ public class Spell_SolveMaze extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success && (outRoom !=null) )
 		{
-			final CMMsg msg=CMClass.getMsg(mob,targetR,this,somanticCastCode(mob,targetR,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around, pointing in different directions.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,targetR,this,somaticCastCode(mob,targetR,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around, pointing in different directions.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

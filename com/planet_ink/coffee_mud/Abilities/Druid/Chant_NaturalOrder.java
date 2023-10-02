@@ -227,7 +227,7 @@ public class Chant_NaturalOrder extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),L("^S<S-NAME> begin(s) to commune with the natural order...^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somaticCastCode(mob,null,auto),L("^S<S-NAME> begin(s) to commune with the natural order...^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

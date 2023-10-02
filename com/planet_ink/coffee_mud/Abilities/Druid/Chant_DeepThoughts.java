@@ -225,7 +225,7 @@ public class Chant_DeepThoughts extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),L("^S<S-NAME> grow(s) very still and begin(s) to think deep thoughts...^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somaticCastCode(mob,null,auto),L("^S<S-NAME> grow(s) very still and begin(s) to think deep thoughts...^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

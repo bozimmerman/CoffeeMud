@@ -221,7 +221,7 @@ public class Spell_PlanarWard extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?L("<T-NAME> seem(s) cosmically protected."):L("^S<S-NAME> invoke(s) a planar ward upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),auto?L("<T-NAME> seem(s) cosmically protected."):L("^S<S-NAME> invoke(s) a planar ward upon <T-NAMESELF>.^?"));
 			if(target instanceof Room)
 				quality=Ability.QUALITY_MALICIOUS;
 			if(mob.location().okMessage(mob,msg))

@@ -151,7 +151,7 @@ public class Quills extends StdAbility
 			{
 				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.STAT_DEXTERITY)*3)))
 				{
-					final CMMsg msg2=CMClass.getMsg(mob,source,this,somanticCastCode(mob,source,true),null);
+					final CMMsg msg2=CMClass.getMsg(mob,source,this,somaticCastCode(mob,source,true),null);
 					if(source.location().okMessage(mob,msg2))
 					{
 						source.location().send(mob,msg2);

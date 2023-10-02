@@ -123,7 +123,7 @@ public class Spell_Shockshield extends Spell
 			{
 				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.STAT_DEXTERITY)*3)))
 				{
-					final CMMsg msg2=CMClass.getMsg(mob,source,this,somanticCastCode(mob,source,true),null);
+					final CMMsg msg2=CMClass.getMsg(mob,source,this,somaticCastCode(mob,source,true),null);
 					if(source.location().okMessage(source,msg2))
 					{
 						source.location().send(mob,msg2);
@@ -171,7 +171,7 @@ public class Spell_Shockshield extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L((auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of sparks erupt(s) around <T-NAME>!^?")+CMLib.protocol().msp("lightning.wav",10));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),L((auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of sparks erupt(s) around <T-NAME>!^?")+CMLib.protocol().msp("lightning.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

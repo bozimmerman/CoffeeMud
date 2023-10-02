@@ -264,7 +264,7 @@ public class Prayer_MassGrave extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somaticCastCode(mob,null,auto),
 					auto?"":L("^S<S-NAME> @x1 for an immediate burial.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -281,7 +281,7 @@ public class Prayer_MassGrave extends Prayer
 				{
 					final MOB follower=(MOB)element;
 					final CMMsg enterMsg=CMClass.getMsg(follower,shelter,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> <S-IS-ARE> buried here."));
-					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,somanticCastCode(mob,shelter,auto),L("<S-NAME> <S-IS-ARE> buried underground."));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,somaticCastCode(mob,shelter,auto),L("<S-NAME> <S-IS-ARE> buried underground."));
 					if(thisRoom.okMessage(follower,leaveMsg)&&shelter.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())

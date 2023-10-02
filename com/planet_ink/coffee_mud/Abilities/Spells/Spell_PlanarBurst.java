@@ -132,10 +132,10 @@ public class Spell_PlanarBurst extends Spell
 				{
 					final MOB target=(MOB)element;
 					if(mob.mayIFight(target))
-						mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),null);
+						mob.location().show(mob,null,this,somaticCastCode(mob,null,auto),null);
 				}
 			}
-			return mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),
+			return mob.location().show(mob,null,this,somaticCastCode(mob,null,auto),
 					auto?"":L("^S<S-NAME> begin(s) to evoke(s) the @x1 plane.^?",opposedPlane));
 		}
 		return true;
@@ -181,7 +181,7 @@ public class Spell_PlanarBurst extends Spell
 			if((planeA.getOpposed()!=null)
 			&&(planeA.getOpposed().size()>0))
 				opposedPlane=planeA.getOpposed().get(CMLib.dice().roll(1, planeA.getOpposed().size(), -1));
-			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),
+			if(mob.location().show(mob,null,this,somaticCastCode(mob,null,auto),
 					auto?L("A burst of @x1 energy occurs!",opposedPlane)
 						:L("^S<S-NAME> evoke(s) a burst of energy from the @x1 plane.^?",opposedPlane)))
 			{
@@ -189,7 +189,7 @@ public class Spell_PlanarBurst extends Spell
 				{
 					final MOB target=(MOB)element;
 
-					final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),null);
+					final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),null);
 					final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_CAST_SPELL|(auto?CMMsg.MASK_ALWAYS:0),null);
 					if(mob.location().okMessage(mob,msg)&&mob.location().okMessage(mob,msg2))
 					{

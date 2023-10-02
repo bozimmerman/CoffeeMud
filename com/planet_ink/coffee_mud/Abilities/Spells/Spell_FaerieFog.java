@@ -181,7 +181,7 @@ public class Spell_FaerieFog extends Spell
 		if(success)
 		{
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, somanticCastCode(mob,target,auto),L((auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"sparkling fog envelopes the area.^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, somaticCastCode(mob,target,auto),L((auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"sparkling fog envelopes the area.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

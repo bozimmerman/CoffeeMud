@@ -210,7 +210,7 @@ public class Spell_StoreAromas extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&((target instanceof MOB)||(target instanceof Item)))
 		{
-			int castCode = somanticCastCode(mob,target,auto);
+			int castCode = somaticCastCode(mob,target,auto);
 			if((mob!=target)
 			&&(target instanceof MOB)
 			&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))

@@ -180,13 +180,13 @@ public class Spell_FlamingEnsnarement extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers at the ground.^?")))
+			if(mob.location().show(mob,null,this,somaticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers at the ground.^?")))
 			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
 
-					final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),null);
+					final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),null);
 					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
 						mob.location().send(mob,msg);

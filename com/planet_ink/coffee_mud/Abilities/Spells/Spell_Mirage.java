@@ -166,7 +166,7 @@ public class Spell_Mirage extends Spell
 		if(success)
 		{
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, somanticCastCode(mob,target,auto), auto?"":L("^S<S-NAME> speak(s) and gesture(s) dramatically!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, somaticCastCode(mob,target,auto), auto?"":L("^S<S-NAME> speak(s) and gesture(s) dramatically!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

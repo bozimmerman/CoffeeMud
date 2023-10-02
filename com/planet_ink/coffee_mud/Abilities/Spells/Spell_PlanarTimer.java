@@ -157,7 +157,7 @@ public class Spell_PlanarTimer extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) insight into planar entropy."):L("^S<S-NAME> invoke(s) an insight into planar entry inside <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) insight into planar entropy."):L("^S<S-NAME> invoke(s) an insight into planar entry inside <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

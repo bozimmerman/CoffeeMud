@@ -128,7 +128,7 @@ public class Spell_PlanarExtension extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,targetA,this,somanticCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) victory over planar entropy."):L("^S<S-NAME> invoke(s) a slowing of planar entry inside <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,targetA,this,somaticCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) victory over planar entropy."):L("^S<S-NAME> invoke(s) a slowing of planar entry inside <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

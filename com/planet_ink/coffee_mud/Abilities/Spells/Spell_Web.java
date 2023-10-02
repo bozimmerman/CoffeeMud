@@ -171,13 +171,13 @@ public class Spell_Web extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),L(auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms.^?")+CMLib.protocol().msp("web.wav",40)))
+			if(mob.location().show(mob,null,this,somaticCastCode(mob,null,auto),L(auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms.^?")+CMLib.protocol().msp("web.wav",40)))
 			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
 
-					final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),null);
+					final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),null);
 					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
 						mob.location().send(mob,msg);

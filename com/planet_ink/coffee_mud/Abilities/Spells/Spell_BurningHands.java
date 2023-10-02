@@ -90,7 +90,7 @@ public class Spell_BurningHands extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_HANDS|somanticCastCode(mob,target,auto),L((auto?"":"^S<S-NAME> incant(s) and reach(es) for <T-NAMESELF>.  ")+"A fan of flames erupts!^?")+CMLib.protocol().msp("fireball.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_HANDS|somaticCastCode(mob,target,auto),L((auto?"":"^S<S-NAME> incant(s) and reach(es) for <T-NAMESELF>.  ")+"A fan of flames erupts!^?")+CMLib.protocol().msp("fireball.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{

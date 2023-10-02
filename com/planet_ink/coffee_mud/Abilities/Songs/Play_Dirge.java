@@ -148,7 +148,7 @@ public class Play_Dirge extends Play
 			{
 				final Room R=commonRoomSet.get(v);
 				final String msgStr=getCorrectMsgString(R,str,v);
-				final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
+				final CMMsg msg=CMClass.getMsg(mob,null,this,somaticCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
 				{
 					final Set<MOB> h=super.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);

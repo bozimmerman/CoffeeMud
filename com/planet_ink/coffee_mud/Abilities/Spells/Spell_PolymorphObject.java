@@ -287,7 +287,7 @@ public class Spell_PolymorphObject extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,targetI,this,somanticCastCode(mob,targetI,auto),L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAME> polymorphing it into @x1.^?",intoI.name()));
+			final CMMsg msg=CMClass.getMsg(mob,targetI,this,somaticCastCode(mob,targetI,auto),L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAME> polymorphing it into @x1.^?",intoI.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

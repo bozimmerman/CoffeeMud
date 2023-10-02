@@ -247,7 +247,7 @@ public class Spell_Imprisonment extends Spell
 		&&(CMLib.flags().getPlaneOfExistence(R)==null))
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> swipe(s) <S-HIS-HER> hands at <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> swipe(s) <S-HIS-HER> hands at <T-NAMESELF>.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_GENERAL|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((R.okMessage(mob,msg))

@@ -106,7 +106,7 @@ public class Spell_Augury extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> point(s) <S-HIS-HER> finger @x1, incanting.^?",CMLib.directions().getDirectionName(dirCode)));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somaticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> point(s) <S-HIS-HER> finger @x1, incanting.^?",CMLib.directions().getDirectionName(dirCode)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				boolean aggressiveMonster=false;

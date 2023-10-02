@@ -135,7 +135,7 @@ public class Spell_ShapeObject extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,targetI,this,somanticCastCode(mob,targetI,auto),L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAME> shaping it like @x1.^?",likeWhat));
+			final CMMsg msg=CMClass.getMsg(mob,targetI,this,somaticCastCode(mob,targetI,auto),L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAME> shaping it like @x1.^?",likeWhat));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

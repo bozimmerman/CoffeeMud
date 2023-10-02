@@ -176,7 +176,7 @@ public class Spell_ChanneledMissiles extends Spell
 			final Room R=target.location();
 			if(R!=null)
 			{
-				final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),null);
+				final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),null);
 				if(R.okMessage(mob,msg))
 				{
 					R.send(mob,msg);
@@ -195,7 +195,7 @@ public class Spell_ChanneledMissiles extends Spell
 							{
 								for(int i=0;(i<numMissiles) && (targetM.location()==R);i++)
 								{
-									final CMMsg msg=CMClass.getMsg(mob,targetM,thisSpellA,somanticCastCode(mob,targetM,auto),(i==0)?L((auto?"Magic missiles appear hurling full speed at <T-NAME>!":"^S<S-NAME> channel(s) magic missiles toward(s) <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam2.wav",40)):null);
+									final CMMsg msg=CMClass.getMsg(mob,targetM,thisSpellA,somaticCastCode(mob,targetM,auto),(i==0)?L((auto?"Magic missiles appear hurling full speed at <T-NAME>!":"^S<S-NAME> channel(s) magic missiles toward(s) <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam2.wav",40)):null);
 									if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))
 									{
 										mob.location().send(mob,msg);

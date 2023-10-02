@@ -100,7 +100,7 @@ public class Spell_Dismissal extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a dismissive spell!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|somaticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a dismissive spell!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

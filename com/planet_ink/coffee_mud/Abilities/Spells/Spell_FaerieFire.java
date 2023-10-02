@@ -131,7 +131,7 @@ public class Spell_FaerieFire extends Spell
 		if(success)
 		{
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, somanticCastCode(mob,target,auto),L((auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"twinkling fire envelopes <T-NAME>.^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, somaticCastCode(mob,target,auto),L((auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"twinkling fire envelopes <T-NAME>.^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);

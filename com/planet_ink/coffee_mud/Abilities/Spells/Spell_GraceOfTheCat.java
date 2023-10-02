@@ -127,7 +127,7 @@ public class Spell_GraceOfTheCat extends Spell
 		final Room R=target.location();
 		if((success)&&(R!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> speak(s) and gesture(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> speak(s) and gesture(s) to <T-NAMESELF>.^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);

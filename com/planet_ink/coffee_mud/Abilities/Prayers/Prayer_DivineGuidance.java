@@ -140,7 +140,7 @@ public class Prayer_DivineGuidance extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),
 					L(auto?"<T-NAME> await(s) divine guidance!":
 							"^S<S-NAME> @x1 to give <T-NAME> divine guidance.^?",prayForWord(mob))+CMLib.protocol().msp("bless.wav",10));
 			if(mob.location().okMessage(mob,msg))

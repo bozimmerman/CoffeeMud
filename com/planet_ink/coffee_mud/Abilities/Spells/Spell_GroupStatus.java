@@ -212,7 +212,7 @@ public class Spell_GroupStatus extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> point(s) at <S-HIS-HER> group members and knowingly cast(s) a spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> point(s) at <S-HIS-HER> group members and knowingly cast(s) a spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

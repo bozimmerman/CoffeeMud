@@ -173,7 +173,7 @@ public class Spell_FeignDeath extends Spell
 			return maliciousFizzle(mob,mob.location(),L("<S-NAME> point(s) to <T-NAMESELF> and yell(s), but nothing happens."));
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> point(s) to <T-NAMESELF> and yell(s) for death!^?"));
+		CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> point(s) to <T-NAMESELF> and yell(s) for death!^?"));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

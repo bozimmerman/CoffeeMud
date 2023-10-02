@@ -399,7 +399,7 @@ public class Spell_PlanarDistortion extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg = CMClass.getMsg(mob, target, this, somanticCastCode(mob,target,auto), auto?"":L("^S<S-NAME> gesture(s) ominously around <T-NAMESELF>!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, somaticCastCode(mob,target,auto), auto?"":L("^S<S-NAME> gesture(s) ominously around <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

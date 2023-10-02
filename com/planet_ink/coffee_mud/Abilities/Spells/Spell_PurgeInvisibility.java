@@ -152,7 +152,7 @@ public class Spell_PurgeInvisibility extends Spell
 		{
 
 			final Room R=mob.location();
-			final CMMsg msg = CMClass.getMsg(mob, null, this, somanticCastCode(mob,null,auto),L((auto?"S":"^S<S-NAME> gesture(s) and a s")+"upressive magic falls over the area.^?"));
+			final CMMsg msg = CMClass.getMsg(mob, null, this, somaticCastCode(mob,null,auto),L((auto?"S":"^S<S-NAME> gesture(s) and a s")+"upressive magic falls over the area.^?"));
 			if((R!=null)&&(R.okMessage(mob,msg)))
 			{
 				R.send(mob,msg);

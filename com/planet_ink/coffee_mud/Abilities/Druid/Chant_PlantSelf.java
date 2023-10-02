@@ -243,7 +243,7 @@ public class Chant_PlantSelf extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),L("^S<S-NAME> plant(s) <S-HIM-HERSELF> in the earth while chanting softly...^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somaticCastCode(mob,null,auto),L("^S<S-NAME> plant(s) <S-HIM-HERSELF> in the earth while chanting softly...^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);

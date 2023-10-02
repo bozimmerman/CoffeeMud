@@ -196,7 +196,7 @@ public class Spell_TimeStop extends Spell
 		if(success)
 		{
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,somanticCastCode(mob,target,auto),L((auto?"T":"^S<S-NAME> speak(s) and gesture(s) and t")+"ime suddenly STOPS!^?"));
+			CMMsg msg = CMClass.getMsg(mob, target, this,somaticCastCode(mob,target,auto),L((auto?"T":"^S<S-NAME> speak(s) and gesture(s) and t")+"ime suddenly STOPS!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

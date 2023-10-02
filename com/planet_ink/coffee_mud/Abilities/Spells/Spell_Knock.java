@@ -143,7 +143,7 @@ public class Spell_Knock extends Spell
 			beneficialVisualFizzle(mob,openThis,auto?L("Nothing happens to @x1.",openThis.name()):L("<S-NAME> point(s) at @x1 and shout(s) incoherently, but nothing happens.",openThis.name()));
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,openThis,this,somanticCastCode(mob,openThis,auto),(auto?L("@x1 begin(s) to glow!",openThis.name()):L("^S<S-NAME> point(s) at <T-NAMESELF>.^?"))+CMLib.protocol().msp("knock.wav",10));
+			CMMsg msg=CMClass.getMsg(mob,openThis,this,somaticCastCode(mob,openThis,auto),(auto?L("@x1 begin(s) to glow!",openThis.name()):L("^S<S-NAME> point(s) at <T-NAMESELF>.^?"))+CMLib.protocol().msp("knock.wav",10));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);

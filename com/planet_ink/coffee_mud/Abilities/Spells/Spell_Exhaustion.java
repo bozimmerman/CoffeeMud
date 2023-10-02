@@ -102,7 +102,7 @@ public class Spell_Exhaustion extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L(auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and shout(s)!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),L(auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and shout(s)!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

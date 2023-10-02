@@ -121,7 +121,7 @@ public class Spell_PlanarEnthrall extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> smile(s) powerfully and wave(s) <S-HIS-HER> arms.^?")))
+			if(mob.location().show(mob,null,this,somaticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> smile(s) powerfully and wave(s) <S-HIS-HER> arms.^?")))
 			{
 				for (final Object element : h)
 				{
@@ -130,7 +130,7 @@ public class Spell_PlanarEnthrall extends Spell
 					&&(CMLib.flags().getPlaneOfExistence(target.getStartRoom())!=null))
 					{
 						final MOB oldVictim=mob.getVictim();
-						final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),null);
+						final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),null);
 						if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 						{
 							mob.location().send(mob,msg);
