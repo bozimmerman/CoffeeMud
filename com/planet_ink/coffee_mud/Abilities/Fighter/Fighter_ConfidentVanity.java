@@ -33,15 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fighter_BlindFighting extends FighterSkill
+public class Fighter_ConfidentVanity extends FighterSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_BlindFighting";
+		return "Fighter_ConfidentVanity";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Blind Fighting");
+	private final static String localizedName = CMLib.lang().L("Confident Vanity");
 
 	@Override
 	public String name()
@@ -88,21 +88,49 @@ public class Fighter_BlindFighting extends FighterSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;
+		return Ability.ACODE_SKILL|Ability.DOMAIN_INFLUENTIAL;
 	}
 
-	protected volatile boolean seeEnabled = false;
+	protected volatile double bonus = -1;
+	protected volatile boolean enabled = false;
+
+	protected void calculateBonus(final MOB mob)
+	{
+		double bonus = 0;
+		if(mob==null)
+			return;
+		int max = 1 + super.getXLEVELLevel(mob);
+		for(final Enumeration<Item> i = mob.items();i.hasMoreElements();)
+		{
+			final Item I = i.nextElement();
+			if((I instanceof Armor)
+			&&(max>0)
+			&& (I.amBeingWornProperly())
+			&& (!I.amWearingAt(Item.WORN_FLOATING_NEARBY)))
+			{
+				final AbilityContainer wearCastA = (AbilityContainer)I.fetchEffect("Prop_WearSpellCast");
+				if((wearCastA != null)
+				&&(wearCastA.fetchAbility("Spell_WellDressed")!=null)
+				&&((--max)>=0))
+					bonus += 0.1;
+			}
+		}
+		if((bonus > 0)&&(proficiency()<100))
+			this.bonus = bonus * CMath.div(proficiency(), 100.0);
+		else
+			this.bonus = bonus;
+	}
 
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null)
+		if((!(affected instanceof MOB))||(!enabled))
 			return;
-		if(!(affected instanceof MOB))
-			return;
-		if(seeEnabled)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_VICTIM);
+		if(bonus < 0)
+			calculateBonus((MOB)affected);
+		if(bonus > 0)
+			affectableStats.setAttackAdjustment((int)Math.round(CMath.mul(affectableStats.attackAdjustment(), 1.0+bonus)));
 	}
 
 	@Override
@@ -110,20 +138,66 @@ public class Fighter_BlindFighting extends FighterSkill
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		seeEnabled = false;
 		if(!(ticking instanceof MOB))
 			return true;
 		final MOB mob=(MOB)ticking;
 		if(!mob.isInCombat())
+		{
+			if(enabled)
+			{
+				enabled = false;
+				mob.recoverPhyStats();
+			}
 			return true;
-		if((!CMLib.flags().canBeSeenBy(mob.getVictim(),mob))
-		&&(CMLib.flags().canBeHeardMovingBy(mob.getVictim(),mob))
+		}
+		if((CMLib.flags().canBeSeenBy(mob.getVictim(),mob))
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))
 		{
-			seeEnabled=true;
-			if(CMLib.dice().rollPercentage()<10)
+			if(!enabled)
+			{
+				enabled = true;
+				mob.recoverPhyStats();
+			}
+			if((bonus>0)&&(CMLib.dice().rollPercentage()==1))
 				helpProficiency(mob, 0);
 		}
+		else
+		{
+			if(enabled)
+			{
+				enabled = false;
+				mob.recoverPhyStats();
+			}
+		}
 		return true;
+	}
+
+	public Runnable reRun = new Runnable()
+	{
+		@Override
+		public void run()
+		{
+			bonus = -1;
+		}
+	};
+
+	@Override
+	public void executeMsg(final Environmental affecting, final CMMsg msg)
+	{
+		super.executeMsg(affecting, msg);
+		if((msg.source()==affected)
+		&&(msg.target() instanceof Item))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_WEAR:
+			case CMMsg.TYP_WIELD:
+			case CMMsg.TYP_HOLD:
+			case CMMsg.TYP_REMOVE:
+				if(msg.trailerRunnables()==null)
+					msg.addTrailerRunnable(reRun);
+				break;
+			}
+		}
 	}
 }
