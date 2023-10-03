@@ -108,6 +108,13 @@ public interface ItemBalanceLibrary extends CMLibrary
 	public void balanceItemByLevel(Item I);
 
 	/**
+	 * Calculates the base value of this armor or weapon.
+	 * @param I the armor or weapon
+	 * @return the base value.
+	 */
+	public int calculateBaseValue(final Item I);
+
+	/**
 	 * Given an item and a new level or 0, this will adjust the stats of the given item
 	 * to reflect the desired level or its existing one.  It will return a description
 	 * of the changes if you send a stringbuffer.

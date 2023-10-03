@@ -688,17 +688,19 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		&&(activity == CraftingActivity.CRAFTING)
 		&&(item!=null))
 		{
+			final ExpertiseLibrary exLib = CMLib.expertises();
 			for(int t=0;t<types.size();t++)
 			{
 				final EnhancedExpertise type=types.elementAt(t).first;
-				final int stage=types.elementAt(t).second.intValue()  & STAGE_MASK;
-				final boolean hide=(types.elementAt(t).second.intValue()  & HIDE_MASK) > 0;
-				final String expertiseID=CMLib.expertises().getApplicableExpertise(ID(),type.flag);
-				ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(expertiseID+CMath.convertToRoman(1));
+				final int typeStageCode = types.elementAt(t).second.intValue();
+				final int stage=typeStageCode  & STAGE_MASK;
+				final boolean hide=(typeStageCode  & HIDE_MASK) > 0;
+				final String expertiseID=exLib.getApplicableExpertise(ID(),type.flag);
+				ExpertiseLibrary.ExpertiseDefinition def = exLib.getDefinition(expertiseID+CMath.convertToRoman(1));
 				if(def==null)
-					def = CMLib.expertises().getDefinition(expertiseID+1);
+					def = exLib.getDefinition(expertiseID+1);
 				if(def==null)
-					def = CMLib.expertises().getDefinition(expertiseID);
+					def = exLib.getDefinition(expertiseID);
 				if(def==null)
 					continue;
 				int addToStat = CharState.STAT_MOVE;

@@ -626,10 +626,11 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(determineDescription(itemName, buildingI.material(), deadMats, deadComps));
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],data[1][FOUND_CODE], bundling));
-			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))*multiplier);
+			buildingI.setBaseValue((int)Math.round(
+					CMath.mul(CMath.s_int(foundRecipe.get(RCP_VALUE)), 1.0+CMath.mul(multiplier-4,.3))));
 			setBrand(mob, buildingI);
 			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-2;
-			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+hardness);
+			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)) + hardness);
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 			final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 			if(bundling)

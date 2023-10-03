@@ -585,6 +585,74 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		}
 	}
 
+	protected int[] getArmorMaterialPointsArray(final int materialCode)
+	{
+		final int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
+		final int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
+		final int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
+		int[] useArray=null;
+		switch(materialCode & RawMaterial.MATERIAL_MASK)
+		{
+		case RawMaterial.MATERIAL_METAL:
+		case RawMaterial.MATERIAL_MITHRIL:
+		case RawMaterial.MATERIAL_PRECIOUS:
+		case RawMaterial.MATERIAL_ENERGY:
+			useArray=metalPoints;
+			break;
+		case RawMaterial.MATERIAL_SYNTHETIC:
+		case RawMaterial.MATERIAL_LEATHER:
+		case RawMaterial.MATERIAL_GLASS:
+		case RawMaterial.MATERIAL_ROCK:
+		case RawMaterial.MATERIAL_WOODEN:
+			useArray=leatherPoints;
+			break;
+		default:
+			useArray=clothPoints;
+			break;
+		}
+		return useArray;
+	}
+
+	@Override
+	public int calculateBaseValue(final Item I)
+	{
+		final int materialvalue=RawMaterial.CODES.VALUE(I.material());
+		final int level = I.basePhyStats().level();
+		final int hands = I.rawLogicalAnd()?2:1;
+		if(I instanceof Weapon)
+		{
+			final int baseattack=I.basePhyStats().attackAdjustment();
+			final int reach=((Weapon)I).maxRange();
+			final int wclass = ((Weapon)I).weaponClassification();
+			final int thrown = (wclass == Weapon.CLASS_THROWN) ? 1 : 0;
+			final int weight = I.basePhyStats().weight();
+			final int damage=I.basePhyStats().damage();
+			final int cost=(int)Math.round(2.0*(((double)weight*(double)materialvalue)+((2.0*damage)+baseattack+(reach*10.0))*damage)/((hands+1.0)*(thrown+1.0)));
+			return cost;
+		}
+		else
+		if(I instanceof Armor)
+		{
+			double pts=0.0;
+			final int[] useArray = getArmorMaterialPointsArray(I.material());
+			if(level>=useArray[useArray.length-1])
+				pts=useArray.length-2 + ((level-useArray[useArray.length-1])/(useArray[useArray.length-1]-useArray[useArray.length-2]));
+			else
+			for(int i=0;i<useArray.length;i++)
+			{
+				final int lvl=useArray[i];
+				if(lvl>level)
+				{
+					pts=i-1;
+					break;
+				}
+			}
+			final int cost=(int)Math.round(((pts*pts) + materialvalue) * ( I.basePhyStats().weight() / 2.0));
+			return cost;
+		}
+		return I.baseGoldValue();
+	}
+
 	@Override
 	public Map<String, String> timsItemAdjustments(final Item I,
 												 int level,
@@ -801,33 +869,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		else
 		if(I instanceof Armor)
 		{
-			final int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
-			final int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
-			final int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
 			double pts=0.0;
 			if(level<0)
 				level=0;
-			final int materialCode=material&RawMaterial.MATERIAL_MASK;
-			int[] useArray=null;
-			switch(materialCode)
-			{
-			case RawMaterial.MATERIAL_METAL:
-			case RawMaterial.MATERIAL_MITHRIL:
-			case RawMaterial.MATERIAL_PRECIOUS:
-			case RawMaterial.MATERIAL_ENERGY:
-				useArray=metalPoints;
-				break;
-			case RawMaterial.MATERIAL_SYNTHETIC:
-			case RawMaterial.MATERIAL_LEATHER:
-			case RawMaterial.MATERIAL_GLASS:
-			case RawMaterial.MATERIAL_ROCK:
-			case RawMaterial.MATERIAL_WOODEN:
-				useArray=leatherPoints;
-				break;
-			default:
-				useArray=clothPoints;
-				break;
-			}
+			final int[] useArray = getArmorMaterialPointsArray(I.material());
 			if(level>=useArray[useArray.length-1])
 				pts=useArray.length-2 + ((level-useArray[useArray.length-1])/(useArray[useArray.length-1]-useArray[useArray.length-2]));
 			else
@@ -844,6 +889,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			double totalpts=0.0;
 			double weightpts=0.0;
 			final Wearable.CODES codes = Wearable.CODES.instance();
+			final int materialCode=material&RawMaterial.MATERIAL_MASK;
 			for(int i=0;i<codes.location_strength_points().length-1;i++)
 			{
 				if(CMath.isSet(worndata,i))
@@ -1086,31 +1132,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						break;
 				}
 			}
-			final int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
-			final int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
-			final int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
-			final int materialCode=I.material()&RawMaterial.MATERIAL_MASK;
-			int[] useArray=null;
-			switch(materialCode)
-			{
-			case RawMaterial.MATERIAL_METAL:
-			case RawMaterial.MATERIAL_MITHRIL:
-			case RawMaterial.MATERIAL_PRECIOUS:
-			case RawMaterial.MATERIAL_ENERGY:
-				useArray=metalPoints;
-				break;
-			case RawMaterial.MATERIAL_SYNTHETIC:
-			case RawMaterial.MATERIAL_LEATHER:
-			case RawMaterial.MATERIAL_GLASS:
-			case RawMaterial.MATERIAL_ROCK:
-			case RawMaterial.MATERIAL_WOODEN:
-				useArray=leatherPoints;
-				break;
-			case RawMaterial.MATERIAL_GAS:
-			default:
-				useArray=clothPoints;
-				break;
-			}
+			final int[] useArray = getArmorMaterialPointsArray(I.material());
 			int which=(int)Math.round(CMath.div(curArmor,weightpts)+1);
 			if(which<0)
 				which=0;

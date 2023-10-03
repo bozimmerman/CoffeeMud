@@ -86,12 +86,12 @@ public class Archon_Metacraft extends ArchonSkill
 	{
 		if(craftingSkills.size()==0)
 		{
-			final Vector<Ability> V=new Vector<Ability>();
+			final ArrayList<Ability> V=new ArrayList<Ability>();
 			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
 				final Ability A=e.nextElement();
 				if(A instanceof ItemCraftor)
-					V.addElement((Ability)A.copyOf());
+					V.add((Ability)A.copyOf());
 			}
 			while(V.size()>0)
 			{
@@ -99,7 +99,7 @@ public class Archon_Metacraft extends ArchonSkill
 				Ability lowestA=null;
 				for(int i=0;i<V.size();i++)
 				{
-					final Ability A=V.elementAt(i);
+					final Ability A=V.get(i);
 					final int ii=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 					if(ii<lowest)
 					{
@@ -108,10 +108,10 @@ public class Archon_Metacraft extends ArchonSkill
 					}
 				}
 				if(lowestA==null)
-					lowestA=V.firstElement();
+					lowestA=V.get(0);
 				if(lowestA!=null)
 				{
-					V.removeElement(lowestA);
+					V.remove(lowestA);
 					craftingSkills.add(lowestA);
 				}
 				else

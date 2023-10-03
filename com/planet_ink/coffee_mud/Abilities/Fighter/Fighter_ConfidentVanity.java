@@ -104,16 +104,11 @@ public class Fighter_ConfidentVanity extends FighterSkill
 		{
 			final Item I = i.nextElement();
 			if((I instanceof Armor)
-			&&(max>0)
 			&& (I.amBeingWornProperly())
-			&& (!I.amWearingAt(Item.WORN_FLOATING_NEARBY)))
-			{
-				final AbilityContainer wearCastA = (AbilityContainer)I.fetchEffect("Prop_WearSpellCast");
-				if((wearCastA != null)
-				&&(wearCastA.fetchAbility("Spell_WellDressed")!=null)
-				&&((--max)>=0))
-					bonus += 0.1;
-			}
+			&& (!I.amWearingAt(Item.WORN_FLOATING_NEARBY))
+			&& (CMLib.itemBuilder().calculateBaseValue(I)*3<I.baseGoldValue())
+			&& ((--max)>=0))
+				bonus += 0.1;
 		}
 		if((bonus > 0)&&(proficiency()<100))
 			this.bonus = bonus * CMath.div(proficiency(), 100.0);

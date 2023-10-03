@@ -601,7 +601,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(determineDescription(itemName, buildingI.material(), deadMats, deadComps));
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],data[1][FOUND_CODE], bundling));
-			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))*multiplier);
+			buildingI.setBaseValue((int)Math.round(CMath.mul(CMath.s_int(foundRecipe.get(RCP_VALUE)),0.5+CMath.div(multiplier,2.0))));
 			setBrand(mob, buildingI);
 			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-2;
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness/2));
