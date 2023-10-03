@@ -5,46 +5,46 @@
 % cuff	1	20	4	17	GenArmor	LEFT WRIST||RIGHT WRIST	0	1	0	
 % armbands	2	30	2	34	GenArmor	S0:ARMS	0	2	0	
 % slippers	2	10	4	32	GenArmor	FEET	0	1	0	
-% headband	2	20	1	30	GenArmor	-2:HEAD	0	0	0	
+% headband	2	20	1	14	GenArmor	-2:HEAD	0	0	0	
 % chaps	2	30	8	94	GenArmor	S1:LEGS	0	2	0	
 % choker	2	20	2	31	GenArmor	NECK	0	1	0	
-% bracer	3	30	2	46	GenArmor	LEFT WRIST||RIGHT WRIST	0	1	0	
-% sandals	3	10	2	46	GenArmor	S0:FEET	0	1	0	
+% bracer	3	30	2	21	GenArmor	LEFT WRIST||RIGHT WRIST	0	1	0	
+% sandals	3	10	2	21	GenArmor	S0:FEET	0	1	0	
 % skirt	3	30	8	109	GenArmor	S1:LEGS	0	3	0	
 % pouch	3	10	2	45	GenContainer		30	0	0	
 % sleeves	4	20	4	68	GenArmor	ARMS	0	2	0	
-% backpack	4	30	2	61	GenArmor	BACK	100	1	0	
-% greaves	4	49	2	61	GenArmor	S0:FEET	0	1	0	
+% backpack	4	30	2	21	GenArmor	BACK	100	1	0	
+% greaves	4	49	2	21	GenArmor	S0:FEET	0	1	0	
 % coif	4	10	4	68	GenArmor	HEAD	0	2	0	
-% mantle	4	20	2	61	GenArmor	1:NECK	0	1	0	
-% sheath belt	4	30	2	61	GenArmor	WAIST	100	1	32	
-% shoes	5	20	2	76	GenArmor	FEET	0	1	0	
+% mantle	4	20	2	21	GenArmor	1:NECK	0	1	0	
+% sheath belt	4	30	2	21	GenArmor	WAIST	100	1	32	
+% shoes	5	20	2	29	GenArmor	FEET	0	1	0	
 % skullcap	5	10	6	102	GenArmor	HEAD	0	3	0	
-% battleharness	5	20	9	237	GenArmor	S-2:TORSO	100	5	20	
-% girdle	5	40	2	76	GenArmor	WAIST	100	1	12	
-% vambrace	5	40	2	76	GenArmor	LEFT WRIST||RIGHT WRIST	25	1	8	
+% battleharness	5	20	9	95	GenArmor	S-2:TORSO	100	5	20	
+% girdle	5	40	2	29	GenArmor	WAIST	100	1	12	
+% vambrace	5	40	2	29	GenArmor	LEFT WRIST||RIGHT WRIST	25	1	8	
 % whip	6	10	10	120	GenWeapon	FLAILED	1	6	1	
-% pants	6	20	12	306	GenArmor	LEGS	5	4	2	
-% bandolier	6	25	2	91	GenArmor	S5:BODY	40	1	0	
+% pants	6	20	12	124	GenArmor	LEGS	5	4	2	
+% bandolier	6	25	2	29	GenArmor	S5:BODY	40	1	0	
 small % waterskin	6	10	5	90	GenEmptyDrink		25		1	
-% gloves	7	30	2	106	GenArmor	HANDS	0	1	0	
+% gloves	7	30	2	29	GenArmor	HANDS	0	1	0	
 % cap	7	10	6	132	GenArmor	HEAD	0	3	0	
-% halter top	7	20	8	205	GenArmor	S-1:TORSO	0	4	0	
-% boots	8	30	2	121	GenArmor	1:FEET	20	1	8	
-% sombrero	8	20	6	147	GenArmor	1:HEAD	0	3	0	
-% bikini top	8	10	2	120	GenArmor	S-3:TORSO	0	3	0	
-% gauntlets	9	40	2	136	GenArmor	1:HANDS	0	1	0	
-% vest	9	30	18	864	GenArmor	S0:TORSO	0	6	0	
-% pauldrons	10	40	8	214	GenArmor	ARMS	0	3	0	
-% jerkin	10	40	24	1878	GenArmor	TORSO	0	6	0	
-% leggings	11	20	16	677	GenArmor	LEGS	0	5	0	
-% jacket	11	30	24	1893	GenArmor	1:TORSO	5	7	0	
-% trenchcoat	12	30	32	4276	GenArmor	1:BODY	20	2	0	
-% hauberk	12	40	24	1908	GenArmor	1:TORSO	0	7	0	
-% coat	13	40	24	1923	GenArmor	1:TORSO	5	7	0	
-% saddle	19	60	32	1309	GenArmor	S4:BACK	0	4	0	prop_wearoverride;DRESS -racecat +equine
-% barding	17	120	128	16639	GenArmor	2:BODY	0	32	0	prop_wearoverride;DRESS -racecat +equine
-% chanfron	18	90	32	1249	GenArmor	2:HEAD	0	4	0	prop_wearoverride;DRESS -racecat +equine
+% halter top	7	20	8	86	GenArmor	S-1:TORSO	0	4	0	
+% boots	8	30	2	29	GenArmor	1:FEET	20	1	8	
+% sombrero	8	20	6	67	GenArmor	1:HEAD	0	3	0	
+% bikini top	8	10	2	29	GenArmor	S-3:TORSO	0	3	0	
+% gauntlets	9	40	2	29	GenArmor	1:HANDS	0	1	0	
+% vest	9	30	18	181	GenArmor	S0:TORSO	0	6	0	
+% pauldrons	10	40	8	99	GenArmor	ARMS	0	3	0	
+% jerkin	10	40	24	325	GenArmor	TORSO	0	6	0	
+% leggings	11	20	16	221	GenArmor	LEGS	0	5	0	
+% jacket	11	30	24	325	GenArmor	1:TORSO	5	7	0	
+% trenchcoat	12	30	32	429	GenArmor	1:BODY	20	2	0	
+% hauberk	12	40	24	325	GenArmor	1:TORSO	0	7	0	
+% coat	13	40	24	325	GenArmor	1:TORSO	5	7	0	
+% saddle	19	60	32	578	GenArmor	S4:BACK	0	4	0	prop_wearoverride;DRESS -racecat +equine
+% barding	17	120	128	2258	GenArmor	2:BODY	0	32	0	prop_wearoverride;DRESS -racecat +equine
+% chanfron	18	90	32	578	GenArmor	2:HEAD	0	4	0	prop_wearoverride;DRESS -racecat +equine
 % saddlebags	15	30	8	225	GenArmor	S2:BACK	250	0	0	prop_wearoverride;DRESS CONTENTS -racecat +equine
 large % waterskin	9	20	8	130	GenEmptyDrink		50		1	
 % loincloth	1	15	3	21	GenArmor	S0:WAIST	0	2	0	

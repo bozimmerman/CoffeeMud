@@ -7,65 +7,65 @@ lead-shod staff	6	35	10	213	GenStaff	7	8	lead	2	prop_itemslot;num=1 type=crown r
 zinc-shod staff	7	35	10	270	GenStaff	7	9	zinc	2	prop_itemslot;num=1 type=crown removable=false level=high	
 walking staff	8	20	14	333	GenStaff	8	10			prop_itemslot;num=1 type=crown removable=false level=high	
 gnarly staff	10	25	18	563	GenStaff	10	13			prop_itemslot;num=1 type=crown removable=false level=high	
-crooked staff	12	30	20	750	GenStaff	11	15			prop_itemslot;num=1 type=crown removable=false level=high	
-brass-shod staff	13	40	10	480	GenStaff	11	12	brass	2	prop_itemslot;num=1 type=crown removable=false level=high	
-iron-shod staff	14	40	10	480	GenStaff	12	12	iron	2	prop_itemslot;num=1 type=crown removable=false level=high	
-copper-core staff	15	105	10	653	GenStaff	12	14	copper	4	prop_itemslot;num=1 type=crown removable=false level=high	
-bronze-core staff	16	105	10	653	GenStaff	13	14	bronze	4	prop_itemslot;num=1 type=crown removable=false level=high	
-tin-core staff	17	105	10	750	GenStaff	13	15	tin	4	prop_itemslot;num=1 type=crown removable=false level=high	
-lead-core staff	18	105	10	750	GenStaff	14	15	lead	4	prop_itemslot;num=1 type=crown removable=false level=high	
-zinc-core staff	19	105	10	853	GenStaff	14	16	zinc	4	prop_itemslot;num=1 type=crown removable=false level=high	
-bent staff	20	25	8	563	GenStaff	15	13			prop_itemslot;num=1 type=crown removable=false level=high	
-hooked staff	21	30	12	853	GenStaff	15	16			prop_itemslot;num=1 type=crown removable=false level=high	
-quartz-tipped staff	22	50	12	963	GenStaff	16	17	quartz	2	prop_itemslot;num=1 type=crown removable=false level=high	
-forked staff	23	40	20	1470	GenStaff	16	21			prop_itemslot;num=1 type=crown removable=false level=high	
-curved staff	24	35	15	1203	GenStaff	17	19			prop_itemslot;num=1 type=crown removable=false level=high	
-silver-shod staff	25	55	10	1080	GenStaff	17	18	silver	2	prop_itemslot;num=1 type=crown removable=false level=high	
-orator staff	26	40	18	1470	GenStaff	18	21			prop_itemslot;num=1 type=crown removable=false level=high	
-priestly staff	27	45	20	1763	GenStaff	18	23			prop_itemslot;num=1 type=crown removable=false level=high	
-magely staff	28	40	12	1203	GenStaff	19	19			prop_itemslot;num=1 type=crown removable=false level=high	
-brass-core staff	29	115	10	1470	GenStaff	19	21	brass	4	prop_itemslot;num=1 type=crown removable=false level=high	
-massive staff	30	55	25	2430	GenStaff	20	27			prop_itemslot;num=1 type=crown removable=false level=high	
-iron-core staff	31	120	10	1613	GenStaff	20	22	iron	4	prop_itemslot;num=1 type=crown removable=false level=high	
-druidic staff	32	45	14	1613	GenStaff	21	22			prop_itemslot;num=1 type=crown removable=false level=high	
-reinforced staff	33	45	12	1613	GenStaff	21	22			prop_itemslot;num=1 type=crown removable=false level=high	
-jade-tipped staff	34	65	12	1763	GenStaff	22	23	jade	2	prop_itemslot;num=1 type=crown removable=false level=high	
-aquamarine-tipped staff	35	65	12	1920	GenStaff	22	24	aquamarine	2	prop_itemslot;num=1 type=crown removable=false level=high	
-chrysoberyl-tipped staff	36	65	12	1920	GenStaff	23	24	chrysoberyl	2	prop_itemslot;num=1 type=crown removable=false level=high	
-silver-core staff	39	125	10	2253	GenStaff	24	26	silver	4	prop_itemslot;num=1 type=crown removable=false level=high	
-peridot-tipped staff	42	70	12	2430	GenStaff	26	27	peridot	2	prop_itemslot;num=1 type=crown removable=false level=high	
-garnet-tipped staff	44	75	12	2613	GenStaff	27	28	garnet	2	prop_itemslot;num=1 type=crown removable=false level=high	
-onyx-tipped staff	45	75	12	2803	GenStaff	27	29	onyx	2	prop_itemslot;num=1 type=crown removable=false level=high	
-turquoise-tipped staff	46	75	12	2803	GenStaff	28	29	turquoise	2	prop_itemslot;num=1 type=crown removable=false level=high	
-lapis-tipped staff	47	75	12	3000	GenStaff	28	30	lapis	2	prop_itemslot;num=1 type=crown removable=false level=high	
-steel-shod staff	48	75	10	2803	GenStaff	29	29	steel	2	prop_itemslot;num=1 type=crown removable=false level=high	
-chromium-shod staff	49	75	10	3000	GenStaff	29	30	chromium	2	prop_itemslot;num=1 type=crown removable=false level=high	
-opal-tipped staff	50	80	12	3203	GenStaff	30	31	opal	2	prop_itemslot;num=1 type=crown removable=false level=high	
-amber-tipped staff	51	80	12	3413	GenStaff	30	32	amber	2	prop_itemslot;num=1 type=crown removable=false level=high	
-bloodstone-tipped staff	52	80	12	3413	GenStaff	31	32	bloodstone	2	prop_itemslot;num=1 type=crown removable=false level=high	
-moonstone-tipped staff	53	85	12	3630	GenStaff	31	33	moonstone	2	prop_itemslot;num=1 type=crown removable=false level=high	
-alexandrite-tipped staff	54	85	12	3630	GenStaff	32	33	alexandrite	2	prop_itemslot;num=1 type=crown removable=false level=high	
-ornate % quarterstaff	55	75	20	4563	GenStaff	32	37			prop_itemslot;num=1 type=crown removable=false level=high	
-agate-tipped staff	56	85	12	3853	GenStaff	33	34	agate	2	prop_itemslot;num=1 type=crown removable=false level=high	
-citrine-tipped staff	58	90	12	4083	GenStaff	34	35	citrine	2	prop_itemslot;num=1 type=crown removable=false level=high	
-gold-shod staff	60	90	10	4083	GenStaff	35	35	gold	2	prop_itemslot;num=1 type=crown removable=false level=high	
-steel-core staff	62	150	10	4563	GenStaff	36	37	steel	4	prop_itemslot;num=1 type=crown removable=false level=high	
-chromium-core staff	64	150	10	4813	GenStaff	37	38	chromium	4	prop_itemslot;num=1 type=crown removable=false level=high	
-sapphire-tipped staff	66	95	12	5070	GenStaff	38	39	sapphire	2	prop_itemslot;num=1 type=crown removable=false level=high	
-topaz-tipped staff	68	100	12	5333	GenStaff	39	40	topaz	2	prop_itemslot;num=1 type=crown removable=false level=high	
-emerald-tipped staff	70	100	12	5603	GenStaff	40	41	emerald	2	prop_itemslot;num=1 type=crown removable=false level=high	
-amethyst-tipped staff	72	100	12	5880	GenStaff	41	42	amethyst	2	prop_itemslot;num=1 type=crown removable=false level=high	
-ruby-tipped staff	74	105	12	6163	GenStaff	42	43	ruby	2	prop_itemslot;num=1 type=crown removable=false level=high	
-gold-core staff	76	165	10	6453	GenStaff	43	44	gold	4	prop_itemslot;num=1 type=crown removable=false level=high	
-pearl-tipped staff	78	110	12	6750	GenStaff	44	45	pearl	2	prop_itemslot;num=1 type=crown removable=false level=high	
-diamond-tipped staff	79	110	12	7053	GenStaff	44	46	diamond	2	prop_itemslot;num=1 type=crown removable=false level=high	
+crooked staff	12	30	20	370	GenStaff	11	15			prop_itemslot;num=1 type=crown removable=false level=high	
+brass-shod staff	13	40	10	229	GenStaff	11	12	brass	2	prop_itemslot;num=1 type=crown removable=false level=high	
+iron-shod staff	14	40	10	229	GenStaff	12	12	iron	2	prop_itemslot;num=1 type=crown removable=false level=high	
+copper-core staff	15	105	10	298	GenStaff	12	14	copper	4	prop_itemslot;num=1 type=crown removable=false level=high	
+bronze-core staff	16	105	10	298	GenStaff	13	14	bronze	4	prop_itemslot;num=1 type=crown removable=false level=high	
+tin-core staff	17	105	10	337	GenStaff	13	15	tin	4	prop_itemslot;num=1 type=crown removable=false level=high	
+lead-core staff	18	105	10	337	GenStaff	14	15	lead	4	prop_itemslot;num=1 type=crown removable=false level=high	
+zinc-core staff	19	105	10	378	GenStaff	14	16	zinc	4	prop_itemslot;num=1 type=crown removable=false level=high	
+bent staff	20	25	8	255	GenStaff	15	13			prop_itemslot;num=1 type=crown removable=false level=high	
+hooked staff	21	30	12	385	GenStaff	15	16			prop_itemslot;num=1 type=crown removable=false level=high	
+quartz-tipped staff	22	50	12	429	GenStaff	16	17	quartz	2	prop_itemslot;num=1 type=crown removable=false level=high	
+forked staff	23	40	20	658	GenStaff	16	21			prop_itemslot;num=1 type=crown removable=false level=high	
+curved staff	24	35	15	535	GenStaff	17	19			prop_itemslot;num=1 type=crown removable=false level=high	
+silver-shod staff	25	55	10	469	GenStaff	17	18	silver	2	prop_itemslot;num=1 type=crown removable=false level=high	
+orator staff	26	40	18	651	GenStaff	18	21			prop_itemslot;num=1 type=crown removable=false level=high	
+priestly staff	27	45	20	775	GenStaff	18	23			prop_itemslot;num=1 type=crown removable=false level=high	
+magely staff	28	40	12	525	GenStaff	19	19			prop_itemslot;num=1 type=crown removable=false level=high	
+brass-core staff	29	115	10	625	GenStaff	19	21	brass	4	prop_itemslot;num=1 type=crown removable=false level=high	
+massive staff	30	55	25	1059	GenStaff	20	27			prop_itemslot;num=1 type=crown removable=false level=high	
+iron-core staff	31	120	10	682	GenStaff	20	22	iron	4	prop_itemslot;num=1 type=crown removable=false level=high	
+druidic staff	32	45	14	695	GenStaff	21	22			prop_itemslot;num=1 type=crown removable=false level=high	
+reinforced staff	33	45	12	689	GenStaff	21	22			prop_itemslot;num=1 type=crown removable=false level=high	
+jade-tipped staff	34	65	12	749	GenStaff	22	23	jade	2	prop_itemslot;num=1 type=crown removable=false level=high	
+aquamarine-tipped staff	35	65	12	811	GenStaff	22	24	aquamarine	2	prop_itemslot;num=1 type=crown removable=false level=high	
+chrysoberyl-tipped staff	36	65	12	811	GenStaff	23	24	chrysoberyl	2	prop_itemslot;num=1 type=crown removable=false level=high	
+silver-core staff	39	125	10	938	GenStaff	24	26	silver	4	prop_itemslot;num=1 type=crown removable=false level=high	
+peridot-tipped staff	42	70	12	1015	GenStaff	26	27	peridot	2	prop_itemslot;num=1 type=crown removable=false level=high	
+garnet-tipped staff	44	75	12	1089	GenStaff	27	28	garnet	2	prop_itemslot;num=1 type=crown removable=false level=high	
+onyx-tipped staff	45	75	12	1165	GenStaff	27	29	onyx	2	prop_itemslot;num=1 type=crown removable=false level=high	
+turquoise-tipped staff	46	75	12	1165	GenStaff	28	29	turquoise	2	prop_itemslot;num=1 type=crown removable=false level=high	
+lapis-tipped staff	47	75	12	1243	GenStaff	28	30	lapis	2	prop_itemslot;num=1 type=crown removable=false level=high	
+steel-shod staff	48	75	10	1158	GenStaff	29	29	steel	2	prop_itemslot;num=1 type=crown removable=false level=high	
+chromium-shod staff	49	75	10	1237	GenStaff	29	30	chromium	2	prop_itemslot;num=1 type=crown removable=false level=high	
+opal-tipped staff	50	80	12	1325	GenStaff	30	31	opal	2	prop_itemslot;num=1 type=crown removable=false level=high	
+amber-tipped staff	51	80	12	1409	GenStaff	30	32	amber	2	prop_itemslot;num=1 type=crown removable=false level=high	
+bloodstone-tipped staff	52	80	12	1409	GenStaff	31	32	bloodstone	2	prop_itemslot;num=1 type=crown removable=false level=high	
+moonstone-tipped staff	53	85	12	1495	GenStaff	31	33	moonstone	2	prop_itemslot;num=1 type=crown removable=false level=high	
+alexandrite-tipped staff	54	85	12	1495	GenStaff	32	33	alexandrite	2	prop_itemslot;num=1 type=crown removable=false level=high	
+ornate % quarterstaff	55	75	20	1895	GenStaff	32	37			prop_itemslot;num=1 type=crown removable=false level=high	
+agate-tipped staff	56	85	12	1585	GenStaff	33	34	agate	2	prop_itemslot;num=1 type=crown removable=false level=high	
+citrine-tipped staff	58	90	12	1677	GenStaff	34	35	citrine	2	prop_itemslot;num=1 type=crown removable=false level=high	
+gold-shod staff	60	90	10	1670	GenStaff	35	35	gold	2	prop_itemslot;num=1 type=crown removable=false level=high	
+steel-core staff	62	150	10	1862	GenStaff	36	37	steel	4	prop_itemslot;num=1 type=crown removable=false level=high	
+chromium-core staff	64	150	10	1962	GenStaff	37	38	chromium	4	prop_itemslot;num=1 type=crown removable=false level=high	
+sapphire-tipped staff	66	95	12	2071	GenStaff	38	39	sapphire	2	prop_itemslot;num=1 type=crown removable=false level=high	
+topaz-tipped staff	68	100	12	2177	GenStaff	39	40	topaz	2	prop_itemslot;num=1 type=crown removable=false level=high	
+emerald-tipped staff	70	100	12	2285	GenStaff	40	41	emerald	2	prop_itemslot;num=1 type=crown removable=false level=high	
+amethyst-tipped staff	72	100	12	2395	GenStaff	41	42	amethyst	2	prop_itemslot;num=1 type=crown removable=false level=high	
+ruby-tipped staff	74	105	12	2509	GenStaff	42	43	ruby	2	prop_itemslot;num=1 type=crown removable=false level=high	
+gold-core staff	76	165	10	2618	GenStaff	43	44	gold	4	prop_itemslot;num=1 type=crown removable=false level=high	
+pearl-tipped staff	78	110	12	2743	GenStaff	44	45	pearl	2	prop_itemslot;num=1 type=crown removable=false level=high	
+diamond-tipped staff	79	110	12	2865	GenStaff	44	46	diamond	2	prop_itemslot;num=1 type=crown removable=false level=high	
 the % staff	80	110	30	9720	GenStaff	45	54			prop_itemslot;num=1 type=crown removable=false level=high	
-platinum-shod staff	81	110	10	7053	GenStaff	45	46	platinum	2	prop_itemslot;num=1 type=crown removable=false level=high	
-mithril-shod staff	82	110	10	7053	GenStaff	46	46	mithril	2	prop_itemslot;num=1 type=crown removable=false level=high	
-platinum-core staff	84	170	10	7680	GenStaff	47	48	platinum	4	prop_itemslot;num=1 type=crown removable=false level=high	
-adamantite-shod staff	86	115	10	7680	GenStaff	48	48	adamantite	2	prop_itemslot;num=1 type=crown removable=false level=high	
-mithril-core staff	88	175	10	8333	GenStaff	49	50	mithril	4	prop_itemslot;num=1 type=crown removable=false level=high	
-adamantite-core staff	90	180	10	8670	GenStaff	50	51	adamantite	4	prop_itemslot;num=1 type=crown removable=false level=high	
+platinum-shod staff	81	110	10	2858	GenStaff	45	46	platinum	2	prop_itemslot;num=1 type=crown removable=false level=high	
+mithril-shod staff	82	110	10	2858	GenStaff	46	46	mithril	2	prop_itemslot;num=1 type=crown removable=false level=high	
+platinum-core staff	84	170	10	3109	GenStaff	47	48	platinum	4	prop_itemslot;num=1 type=crown removable=false level=high	
+adamantite-shod staff	86	115	10	3109	GenStaff	48	48	adamantite	2	prop_itemslot;num=1 type=crown removable=false level=high	
+mithril-core staff	88	175	10	3370	GenStaff	49	50	mithril	4	prop_itemslot;num=1 type=crown removable=false level=high	
+adamantite-core staff	90	180	10	3505	GenStaff	50	51	adamantite	4	prop_itemslot;num=1 type=crown removable=false level=high	
 brittle % staff crown	1	15	1	100	GenItem					prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+10)	
 porous % staff crown	3	15	1	100	GenItem					prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+20)	
 sturdy % staff crown	5	15	1	100	GenItem					prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+30)	

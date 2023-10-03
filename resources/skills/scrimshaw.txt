@@ -17,18 +17,18 @@ small skull mace	8	30	10	86	GenWeapon	BLUNT	7
 % ear trumpet	10	60	4	23	GenLimb		0	
 % twelve-sided die	11	70	1	8	GenDice		12	
 drinking horn	11	10	4	2	GenEmptyDrink	LIQUID	10	
-% breast plate	12	45	7	204	GenArmor	S0:TORSO	14	
+% breast plate	12	45	7	65	GenArmor	S0:TORSO	14	
 spiked % flail	12	80	18	360	GenWeapon	FLAILED	15	
 small % stool	13	5	5	1	GenChair	CHAIR	1	
 % sword	13	30	6	166	GenWeapon	SWORD	10	
 wicked % sliver	14	40	2	128	GenWeapon	EDGED	8	
 % club	14	30	10	216	GenWeapon	BLUNT	11	
-% greaves	15	30	4	104	GenArmor	S0:LEGS	10	
+% greaves	15	30	4	40	GenArmor	S0:LEGS	10	
 wicked % spear	15	10	12	368	GenSpear	THROWN	21	
 % knife	16	40	2	75	GenWeapon	DAGGER	5	
 small % bed	16	25	30	100	GenBed	BED	1	
 % twenty-sided die	17	80	1	14	GenDice		20	
-% body armor	18	60	18	624	GenArmor	S0:TORSO&&ARMS&&LEGS	32	
+% body armor	18	60	18	240	GenArmor	S0:TORSO&&ARMS&&LEGS	32	
 wicked % short sword	19	50	8	375	GenWeapon	SWORD	15	
 small % bench	19	10	10	11	GenChair	CHAIR	2	
 % wind chimes	19	35	10	63	GenItem			Prop_MOBEmoter;Sounder PORTAL_ENTER_ROOM clanks hollowly in the breeze.
@@ -49,7 +49,7 @@ large % club	26	35	30	1016	GenWeapon	BLUNT	24
 % bed	26	30	60	430	GenBed	BED	2	
 large % eight-sided die	27	60	2	32	GenDice		8	
 small % shield	27	60	8	121	GenShield	S0:HELD	22	Prop_Doppleganger;ASMATERIAL=IRON MIN=27 MAX=27
-spiked % full armor	27	100	19	888	GenArmor	TORSO&&ARMS&&LEGS	38	
+spiked % full armor	27	100	19	350	GenArmor	TORSO&&ARMS&&LEGS	38	
 % ladder	27	40	20	210	GenRideable	LADDER	0	
 % table	28	30	50	390	GenRideable	TABLE	150	
 large % ten-sided die	29	70	2	41	GenDice		10	

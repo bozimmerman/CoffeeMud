@@ -7,7 +7,7 @@ Hair Ribbons	3	5	1	1	GenArmor	MS-4:HEAD	0	0	0
 % Lasso	5	30	10	20	GenLasso	THROWN	0	0		
 Small % Sack	5	20	10	10	GenContainer		30		0	
 % Hammock	6	40	30	10	GenRideable	BED	50		0	
-% Whip	7	10	10	272	GenWeapon	FLAILED	0	6		
+% Whip	7	10	10	102	GenWeapon	FLAILED	0	6		
 % Boa	8	20	5	10	GenArmor	1:NECK	0	0	0	
 Regular % Bag	9	20	10	10	GenContainer		40		0	
 % Net	10	50	20	15	GenNet	THROWN	0	0		*Prop_ItemNoRuin;

@@ -36,14 +36,14 @@ small % waterskin	6	10	5	90	GenEmptyDrink		31		1
 % gauntlets	9	40	2	136	GenArmor	1:HANDS	0	4	0	
 % vest	9	30	18	864	GenArmor	S0:TORSO	0	19	0	
 % pauldrons	10	40	8	214	GenArmor	ARMS	0	8	0	
-% jerkin	10	40	24	1878	GenArmor	TORSO	0	20	0	
+% jerkin	10	40	24	925	GenArmor	TORSO	0	20	0	
 % leggings	11	20	16	677	GenArmor	LEGS	0	14	0	
-% jacket	11	30	24	1893	GenArmor	1:TORSO	5	21	0	
-% trenchcoat	12	30	32	4276	GenArmor	1:BODY	26	10	0	
-% hauberk	12	40	24	1908	GenArmor	1:TORSO	0	21	0	
-% coat	13	40	24	1923	GenArmor	1:TORSO	5	21	0	
+% jacket	11	30	24	925	GenArmor	1:TORSO	5	21	0	
+% trenchcoat	12	30	32	1221	GenArmor	1:BODY	26	10	0	
+% hauberk	12	40	24	925	GenArmor	1:TORSO	0	21	0	
+% coat	13	40	24	925	GenArmor	1:TORSO	5	21	0	
 % saddle	19	60	32	1309	GenArmor	S4:BACK	0	5	0	prop_wearoverride;DRESS -racecat +equine
-% barding	17	120	128	16639	GenArmor	2:BODY	0	11	0	prop_wearoverride;DRESS -racecat +equine
+% barding	17	120	128	5870	GenArmor	2:BODY	0	11	0	prop_wearoverride;DRESS -racecat +equine
 % chanfron	18	90	32	1249	GenArmor	2:HEAD	0	7	0	prop_wearoverride;DRESS -racecat +equine
 % saddlebags	15	30	8	225	GenArmor	S2:BACK	256	0	0	prop_wearoverride;DRESS CONTENTS -racecat +equine
 large % waterskin	9	20	8	130	GenEmptyDrink		56		1	

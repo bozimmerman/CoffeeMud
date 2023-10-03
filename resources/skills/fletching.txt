@@ -7,10 +7,10 @@ crude % blowgun	2	30	5	25	GenSling	darts	6	1	2
 basic % blowgun	7	40	5	60	GenSling	darts	6	2	2			
 expert % blowgun	31	50	5	960	GenSling	darts	8	12	2			
 master % blowgun	55	60	5	2860	GenSling	darts	10	22	2			
-legendary % blowgun	79	70	5	5760	GenSling	darts	12	32	2			
+legendary % blowgun	79	70	5	2718	GenSling	darts	12	32	2			
 % hand crossbow	23	150	5	1600	GenHandBow	darts	5	16	2			
-% pistol crossbow	47	180	5	7980	GenHandBow	darts	5	38	2			
-% marksman hand crossbow	71	210	5	12420	GenHandBow	darts	5	46	4			
+% pistol crossbow	47	180	5	3678	GenHandBow	darts	5	38	2			
+% marksman hand crossbow	71	210	5	6102	GenHandBow	darts	5	46	4			
 crude sling	1	10	0	40	GenSling	bullets	10	2	1	LEATHER		
 basic sling	13	20	2	80	GenSling	bullets	20	2	3	LEATHER		
 staff-sling	25	30	10	640	GenSling	bullets	10	8	4	LEATHER		
@@ -38,14 +38,14 @@ simple light % crossbow	5	80	15	640	GenBow	bolts	2	12	2
 basic light % crossbow	17	90	15	3150	GenBow	bolts	2	27	4			
 light % siege crossbow	29	100	20	8550	GenBow	bolts	2	45	6			
 light % repeating siege crossbow	41	160	20	2917	GenBow	bolts	30	25	5			
-master light % crossbow	53	120	15	14880	GenBow	bolts	3	62	5			
+master light % crossbow	53	120	15	7245	GenBow	bolts	3	62	5			
 master light % repeating crossbow	65	180	15	6370	GenBow	bolts	30	39	5			
-legendary light % crossbow	77	140	15	31280	GenBow	bolts	3	92	5			
-legendary light % repeating crossbow	89	200	15	11520	GenBow	bolts	30	54	5			
-basic heavy % crossbow	11	90	25	6133	GenBow	bolts	1	40	3			
-expert heavy % crossbow	35	120	25	36000	GenBow	bolts	1	100	4			
-master heavy % crossbow	59	150	25	83093	GenBow	bolts	1	152	6			
-legendary heavy % crossbow	83	180	25	148240	GenBow	bolts	1	204	7			
+legendary light % crossbow	77	140	15	14405	GenBow	bolts	3	92	5			
+legendary light % repeating crossbow	89	200	15	5741	GenBow	bolts	30	54	5			
+basic heavy % crossbow	11	90	25	3020	GenBow	bolts	1	40	3			
+expert heavy % crossbow	35	120	25	16087	GenBow	bolts	1	100	4			
+master heavy % crossbow	59	150	25	36972	GenBow	bolts	1	152	6			
+legendary heavy % crossbow	83	180	25	65095	GenBow	bolts	1	204	7			
 pack of 20 arrows	3	5	2	3	GenAmmunition	arrows	20					
 pack of 50 arrows	6	6	5	18	GenAmmunition	arrows	50					
 pack of 20 flint arrows	9	6	2	11	GenAmmunition	arrows	20			FLINT	PROP_ADDDAMAGE;15% PIERCING	
