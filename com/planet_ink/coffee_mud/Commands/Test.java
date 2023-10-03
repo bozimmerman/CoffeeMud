@@ -4766,13 +4766,13 @@ public class Test extends StdCommand
 							final int oldValue = I.baseGoldValue();
 							I.setBaseValue(CMLib.itemBuilder().calculateBaseValue(I));
 							boolean modified = false;
+							if(CMLib.itemBuilder().calculateBaseValue(I)*3<oldValue)
+							{
+								mob.tell(I.name()+" is "+oldValue+" which is > 3 * "+I.baseGoldValue());
+							}
+
 							if(oldValue > I.baseGoldValue() *2)
 							{
-								if(I.baseGoldValue()<=0)
-								{
-									System.out.println("FAIL!");
-									continue;
-								}
 								String findName = CMLib.english().removeArticleLead(
 										CMStrings.replaceAll(I.name(), rscName+" ", "% "));
 								if(findName.startsWith("designer "))
@@ -4807,14 +4807,7 @@ public class Test extends StdCommand
 						}
 					}
 				}
-				for(final Enumeration<Room> r = CMLib.map().rooms();r.hasMoreElements();)
-				{
-					final Room tR = r.nextElement();
-
-				}
 			}
-
-
 			reset(mobs,backups,R,IS,R2);
 			CMLib.map().emptyRoom(R2,null,true);
 			R2.destroy();
