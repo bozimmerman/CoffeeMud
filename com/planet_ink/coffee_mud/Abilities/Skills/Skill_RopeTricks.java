@@ -116,21 +116,6 @@ public class Skill_RopeTricks extends StdSkill
 		}
 	}
 
-	protected boolean isARope(final Item I)
-	{
-		if(I==null)
-			return false;
-		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
-			return false;
-		if((I instanceof Rideable)
-		&&(((Rideable)I).rideBasis()==Rideable.Basis.LADDER))
-			return true;
-		if((I instanceof Weapon)
-		&&(((Weapon)I).weaponClassification()==Weapon.CLASS_THROWN))
-			return true;
-		return false;
-	}
-
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -155,10 +140,10 @@ public class Skill_RopeTricks extends StdSkill
 				return false;
 			}
 			final Item ropeI;
-			if(isARope(mob.fetchWieldedItem()))
+			if(CMLib.flags().isARope(mob.fetchWieldedItem()))
 				ropeI=mob.fetchWieldedItem();
 			else
-			if(isARope(mob.fetchHeldItem()))
+			if(CMLib.flags().isARope(mob.fetchHeldItem()))
 				ropeI=mob.fetchHeldItem();
 			else
 			{
@@ -284,10 +269,10 @@ public class Skill_RopeTricks extends StdSkill
 		}
 
 		final Item ropeI;
-		if(isARope(mob.fetchWieldedItem()))
+		if(CMLib.flags().isARope(mob.fetchWieldedItem()))
 			ropeI=mob.fetchWieldedItem();
 		else
-		if(isARope(mob.fetchHeldItem()))
+		if(CMLib.flags().isARope(mob.fetchHeldItem()))
 			ropeI=mob.fetchHeldItem();
 		else
 		{

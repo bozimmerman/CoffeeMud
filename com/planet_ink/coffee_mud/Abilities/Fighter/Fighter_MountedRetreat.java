@@ -184,12 +184,11 @@ public class Fighter_MountedRetreat extends FighterSkill
 			CMLib.commands().postFlee(mob,where);
 		}
 		else
+		if(R.show(mob,  null,  CMMsg.MSG_RETREAT, L("<S-NAME> perform(s) a mounted retreat from battle.")))
 		{
+			mob.makePeace(true);
 			if(!where.equals("NOWHERE"))
-			{
-				mob.makePeace(true);
 				CMLib.tracking().walk(mob,directionCode,true,false);
-			}
 		}
 		return success;
 	}

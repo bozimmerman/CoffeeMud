@@ -1191,6 +1191,14 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isEnchanted(Item I);
 
 	/**
+	 * Returns whether the given item can be classified as a 'rope' for
+	 * various purposes.
+	 * @param I the item to check
+	 * @return true if its a rope, and false otherwise
+	 */
+	public boolean isARope(final Item I);
+
+	/**
 	 * Returns whether the given invoker mob is controlling the
 	 * given mob, who is following the invoker, optionally using
 	 * the given Ability.

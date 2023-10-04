@@ -2392,6 +2392,23 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public boolean isARope(final Item I)
+	{
+		if(I==null)
+			return false;
+		if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
+		&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION))
+			return false;
+		if((I instanceof Rideable)
+		&&(((Rideable)I).rideBasis()==Rideable.Basis.LADDER))
+			return true;
+		if((I instanceof Weapon)
+		&&(((Weapon)I).weaponClassification()==Weapon.CLASS_THROWN))
+			return true;
+		return false;
+	}
+
+	@Override
 	public String getDispositionBlurbs(final Physical seen, final MOB seer)
 	{
 		if(seen == null)

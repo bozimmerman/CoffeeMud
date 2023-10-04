@@ -1361,6 +1361,9 @@ public class StdAbility implements Ability
 			pctChance += charStats.getAbilityAdjustment("PROF+*");
 		}
 
+		final int xlevel = getXLEVELLevel(mob);
+		pctChance += (2*xlevel);
+
 		if(!CMSecurity.isDisabled(DisFlag.DIS955RULE))
 		{
 			if(pctChance>95)
@@ -1368,6 +1371,8 @@ public class StdAbility implements Ability
 			if(pctChance<5)
 				pctChance=5;
 		}
+
+		pctChance += xlevel/2;
 
 		if(adjustment>=0)
 			pctChance+=adjustment;

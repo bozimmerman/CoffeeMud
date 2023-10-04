@@ -59,7 +59,8 @@
  58. New skills: Soothe Mount, Tend Mount, Favored Mount 1...4, Forceback, Rearguard
  59. New skills: Indoor Riding, Command Mount, Unwavering Mark, Graceful Dismount
  60. New skills: Mount Taming, Mounted Tactics, Ridethrough, Vanguard, Mounted Retreat
- 61. New skills: Confident Vanity
+ 61. New skills: Confident Vanity, Lassoing
+ 62. (Power) LEVEL expertises now grant 3X points to proficiency on all skills/spells/etc.
  
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

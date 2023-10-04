@@ -4,7 +4,6 @@ Small % Bag	2	10	5	5	GenContainer		20		0
 % Quilt	2	20	30	5	GenArmor	3:BODY	0	1	0	*Prop_HaveResister;Cold 10%
 Hair Ribbons	3	5	1	1	GenArmor	MS-4:HEAD	0	0	0	
 % Rope	4	20	10	15	GenRideable	LADDER	1		0	
-% Lasso	5	30	10	20	GenLasso	THROWN	0	0		
 Small % Sack	5	20	10	10	GenContainer		30		0	
 % Hammock	6	40	30	10	GenRideable	BED	50		0	
 % Whip	7	10	10	102	GenWeapon	FLAILED	0	6		
