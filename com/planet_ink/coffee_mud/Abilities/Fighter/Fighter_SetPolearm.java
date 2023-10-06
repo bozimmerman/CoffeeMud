@@ -214,6 +214,28 @@ public class Fighter_SetPolearm extends FighterSkill
 	}
 
 	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if(!(target instanceof MOB))
+				return Ability.QUALITY_INDIFFERENT;
+			if(CMLib.flags().isSleeping(target))
+				return Ability.QUALITY_INDIFFERENT;
+			if(!CMLib.flags().isAliveAwakeMobile(mob,true))
+				return Ability.QUALITY_INDIFFERENT;
+			if((target instanceof MOB)&&(((MOB)target).riding()==null))
+				return Ability.QUALITY_INDIFFERENT;
+			final Item polearmI = getPolearm(mob);
+			if(polearmI == null)
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.riding()!=null)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Ability oldA = mob.fetchEffect(ID());
@@ -242,7 +264,8 @@ public class Fighter_SetPolearm extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,polearmI,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":L("^F<S-NAME> set(s) <T-NAME>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,polearmI,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":
+				L("^F^<FIGHT^><S-NAME> set(s) <T-NAME>!^?^<FIGHT^>"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);

@@ -2832,6 +2832,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isMobileMounted(final MOB mob)
 	{
+		if(mob == null)
+			return false;
 		final Rideable mount=mob.riding();
 		if(mount == null)
 			return false;

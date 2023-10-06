@@ -71,7 +71,7 @@ public class Fighter_Ridethrough extends StdAbility
 	@Override
 	protected int canTargetCode()
 	{
-		return Ability.CAN_MOBS;
+		return 0;
 	}
 
 	@Override
@@ -114,7 +114,8 @@ public class Fighter_Ridethrough extends StdAbility
 			return false;
 		}
 
-		if(mob.rangeToTarget()>0)
+		if((!auto)
+		&&(mob.rangeToTarget()>0))
 		{
 			mob.tell(L("You must be in melee range of your target to ride through them."));
 			return false;
@@ -125,7 +126,7 @@ public class Fighter_Ridethrough extends StdAbility
 
 		// now see if it worked
 		final int oldRange = mob.rangeToTarget();
-		final boolean success=proficiencyCheck(mob,0,auto) && (!CMLib.flags().isMobileMounted(target));
+		final boolean success=proficiencyCheck(mob,0,auto) && (auto||(!CMLib.flags().isMobileMounted(target)));
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,mob.getVictim(),this,CMMsg.MSG_RETREAT,null);
@@ -143,7 +144,8 @@ public class Fighter_Ridethrough extends StdAbility
 			}
 		}
 		if((success) && (mob.rangeToTarget() > oldRange))
-			return mob.location().show(mob, target, this, CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> "+mount.rideString(mob)+" through <T-NAMESELF> to a range of @x1!",""+mob.rangeToTarget()));
+			return mob.location().show(mob, target, this, CMMsg.MSG_NOISYMOVEMENT,
+					L("^F^<FIGHT^><S-NAME> "+mount.rideString(mob)+" through <T-NAMESELF> to a range of @x1!^?^</FIGHT^>",""+mob.rangeToTarget()));
 		else
 			return beneficialVisualFizzle(mob,mob.getVictim(),L("<S-NAME> attempt(s) to "+mount.rideString(mob)+" through <T-NAMESELF>, but <S-IS-ARE> disrupted."));
 	}

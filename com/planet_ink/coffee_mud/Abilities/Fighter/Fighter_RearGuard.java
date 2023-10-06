@@ -59,7 +59,7 @@ public class Fighter_RearGuard extends FighterSkill
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_BENEFICIAL_OTHERS;
+		return Ability.QUALITY_OK_OTHERS;
 	}
 
 	private static final String[] triggerStrings =I(new String[] {"REARGUARD"});

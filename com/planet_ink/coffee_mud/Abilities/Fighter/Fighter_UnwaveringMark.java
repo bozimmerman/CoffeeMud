@@ -63,7 +63,7 @@ public class Fighter_UnwaveringMark extends FighterSkill
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_INDIFFERENT;
+		return Ability.QUALITY_MALICIOUS;
 	}
 
 	private static final String[] triggerStrings =I(new String[] {"UMARK"});
@@ -244,7 +244,7 @@ public class Fighter_UnwaveringMark extends FighterSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISE,L("<S-NAME> challenge(s) <T-NAMESELF> with <S-HIS-HER> unwavering mark."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISE,L("<S-NAME> challenge(s) <T-NAMESELF> with <S-HIS-HER> unwavering mark."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

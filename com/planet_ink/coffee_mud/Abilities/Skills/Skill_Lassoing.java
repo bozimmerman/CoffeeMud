@@ -248,20 +248,8 @@ public class Skill_Lassoing extends StdSkill
 			super.executeMsg(myHost,msg);
 	}
 
-	@Override
-	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
+	protected Item getLasso(final MOB mob, final boolean auto)
 	{
-		final MOB targetM = super.getTarget(mob, commands, givenTarget, false, true);
-		if(targetM == null)
-			return false;
-
-		final Room R = targetM.location();
-		if(R == null)
-			return false;
-
-		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob, false))
-			return false;
-
 		Item lasso = mob.fetchHeldItem();
 		if(!CMLib.flags().isARope(lasso))
 			lasso=null;
@@ -286,7 +274,36 @@ public class Skill_Lassoing extends StdSkill
 			lasso.setName("a lasso");
 			lasso.setDisplayText("a lasso is here");
 		}
+		return lasso;
+	}
 
+	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			final Item lasso = getLasso(mob, false);
+			if(lasso == null)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+
+	@Override
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
+	{
+		final MOB targetM = super.getTarget(mob, commands, givenTarget, false, true);
+		if(targetM == null)
+			return false;
+
+		final Room R = targetM.location();
+		if(R == null)
+			return false;
+
+		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob, false))
+			return false;
+
+		final Item lasso = getLasso(mob, auto);
 		if(lasso == null)
 		{
 			mob.tell(L("You don't seem to have a suitable rope handy."));

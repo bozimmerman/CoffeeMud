@@ -2,7 +2,6 @@ package com.planet_ink.coffee_mud.Abilities.Fighter;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.Abilities.Skills.StdSkill;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -33,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fighter_DismountingBlow extends FighterSkill
+public class Fighter_RopeTrip extends FighterSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_DismountingBlow";
+		return "Fighter_RopeTrip";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Dismounting Blow");
+	private final static String	localizedName	= CMLib.lang().L("Rope Trip");
 
 	@Override
 	public String name()
@@ -49,7 +48,7 @@ public class Fighter_DismountingBlow extends FighterSkill
 		return localizedName;
 	}
 
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Dazed)");
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Tripped)");
 
 	@Override
 	public String displayText()
@@ -75,7 +74,7 @@ public class Fighter_DismountingBlow extends FighterSkill
 		return Ability.QUALITY_MALICIOUS;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "FORCEDISMOUNT" });
+	private static final String[]	triggerStrings	= I(new String[] { "ROPETRIP", "RTRIP" });
 
 	@Override
 	public String[] triggerStrings()
@@ -86,7 +85,7 @@ public class Fighter_DismountingBlow extends FighterSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_DIRTYFIGHTING;
+		return Ability.ACODE_SKILL | Ability.DOMAIN_ROPEUSE;
 	}
 
 	@Override
@@ -165,50 +164,60 @@ public class Fighter_DismountingBlow extends FighterSkill
 		}
 	}
 
-	protected Weapon getPolearm(final MOB mob)
-	{
-		final Item I = mob.fetchWieldedItem();
-		if((I instanceof Weapon)
-		&&(((Weapon)I).weaponClassification()==Weapon.CLASS_POLEARM)
-		&&(((Weapon)I).maxRange()>0))
-			return (Weapon)I;
-		return null;
-	}
-
 	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if((mob!=null)&&(target!=null))
 		{
-			if(!(target instanceof MOB))
+			if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 				return Ability.QUALITY_INDIFFERENT;
-			if(CMLib.flags().isSleeping(target))
+			if((!CMLib.flags().isAliveAwakeMobile(mob,true)||(CMLib.flags().isSitting(mob))))
 				return Ability.QUALITY_INDIFFERENT;
-			if(!CMLib.flags().isAliveAwakeMobile(mob,true))
+			if(mob.isInCombat()&&(mob.rangeToTarget()>2))
 				return Ability.QUALITY_INDIFFERENT;
-			if((target instanceof MOB)&&(((MOB)target).riding()==null))
+			if((target instanceof MOB)&&(((MOB)target).riding()!=null))
 				return Ability.QUALITY_INDIFFERENT;
-			final Item polearmI = getPolearm(mob);
-			if(polearmI == null)
+			if(CMLib.flags().isInFlight(target))
+				return Ability.QUALITY_INDIFFERENT;
+			if(getRope(mob,false)==null)
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
 	}
 
-	@Override
-	public int minRange()
+	protected Item getRope(final MOB mob, final boolean auto)
 	{
-		return 0;
+		Item lasso = mob.fetchHeldItem();
+		if(!CMLib.flags().isARope(lasso))
+			lasso=null;
+		if(lasso == null)
+		{
+			for(final Enumeration<Item> i = mob.items();i.hasMoreElements();)
+			{
+				final Item I = i.nextElement();
+				if(CMLib.flags().isARope(I)
+				&&(I.container()==null))
+				{
+					lasso = I;
+					break;
+				}
+			}
+		}
+		if((lasso == null) && (auto))
+		{
+			lasso = CMClass.getBasicItem("GenRideable");
+			lasso.setMaterial(RawMaterial.RESOURCE_HEMP);
+			((Rideable)lasso).setRideBasis(Rideable.Basis.LADDER);
+			lasso.setName("a lasso");
+			lasso.setDisplayText("a lasso is here");
+		}
+		return lasso;
 	}
-
-	int rangeAdjust = -1;
 
 	@Override
 	public int maxRange()
 	{
-		if(rangeAdjust <0)
-			rangeAdjust=5;
-		return adjustedMaxInvokerRange(rangeAdjust) + super.getXLEVELLevel(invoker);
+		return adjustedMaxInvokerRange(2);
 	}
 
 	@Override
@@ -218,24 +227,37 @@ public class Fighter_DismountingBlow extends FighterSkill
 		if(target==null)
 			return false;
 
-		final Item polearmI = getPolearm(mob);
-		if((polearmI == null)&&(!auto))
+		if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 		{
-			mob.tell(L("You aren't wielding a polearm!"));
+			failureTell(mob,target,auto,L("<S-NAME> is already on the floor!"));
 			return false;
 		}
 
-		rangeAdjust = polearmI.maxRange();
-
-		if(target.riding()==null)
-		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE>n't mounted on anything!"));
-			return false;
-		}
-
-		if((!auto)&&(!CMLib.flags().isAliveAwakeMobile(mob,true)||(!CMLib.flags().isStanding(mob))))
+		if((!CMLib.flags().isAliveAwakeMobile(mob,true)||(!CMLib.flags().isStanding(mob))))
 		{
 			mob.tell(L("You need to stand up!"));
+			return false;
+		}
+		final Item lasso = getRope(mob, auto);
+		if(lasso == null)
+		{
+			mob.tell(L("You don't seem to have a suitable rope handy."));
+			return false;
+		}
+
+		if(mob.isInCombat()&&(mob.rangeToTarget()>2))
+		{
+			mob.tell(L("You are too far away to trip!"));
+			return false;
+		}
+		if(target.riding()!=null)
+		{
+			mob.tell(L("You can't trip someone @x1 @x2!",target.riding().stateString(target),target.riding().name()));
+			return false;
+		}
+		if(CMLib.flags().isInFlight(target))
+		{
+			mob.tell(L("@x1 is flying and can't be tripped!",target.name(mob)));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -248,31 +270,25 @@ public class Fighter_DismountingBlow extends FighterSkill
 			levelDiff=0;
 		levelDiff-=(abilityCode()*mob.charStats().getStat(CharStats.STAT_DEXTERITY));
 		final int adjustment=(-levelDiff)+(-(35+((int)Math.round((target.charStats().getStat(CharStats.STAT_DEXTERITY)-9.0)*3.0))));
-		final boolean success=proficiencyCheck(mob,adjustment,auto);
+		boolean success=proficiencyCheck(mob,adjustment,auto);
+		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
-					auto?L("<T-NAME> <T-IS-ARE> dismounted!"):L("^F^<FIGHT^><S-NAME> dismount(s) <T-NAMESELF> with @x1!^</FIGHT^>^?",polearmI.name(mob)));
-			final CMMsg dismountMsg = CMClass.getMsg(target,target.riding(),null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DISMOUNT,null);
+					auto?L("<T-NAME> trip(s)!"):L("^F^<FIGHT^><S-NAME> trip(s) <T-NAMESELF> with @x1!^</FIGHT^>^?",lasso.name(mob)));
 			CMLib.color().fixSourceFightColor(msg);
-			msg.setValue(0);
-			if(mob.location().okMessage(mob,msg)
-			&&mob.location().okMessage(target,dismountMsg))
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().send(target,dismountMsg);
-					if(target.riding()==null)
-					{
-						maliciousAffect(mob,target,asLevel,2,-1);
-						target.tell(L("You hit the ground!"));
-					}
+					maliciousAffect(mob,target,asLevel,2,-1);
+					target.tell(L("You hit the floor!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to dismount <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to trip <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

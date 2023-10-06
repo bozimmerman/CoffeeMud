@@ -85,6 +85,26 @@ public class Fighter_Forceback extends FighterSkill
 	}
 
 	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if(!mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			final Item I = mob.fetchWieldedItem();
+			if(!(I instanceof Weapon))
+				return Ability.QUALITY_INDIFFERENT;
+			final Weapon W = (Weapon)I;
+			if((!W.rawLogicalAnd())
+			|| (W.maxRange()<1)
+			|| (!W.amBeingWornProperly())
+			|| (W.weaponClassification()!=Weapon.CLASS_POLEARM))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target = mob.getVictim();
