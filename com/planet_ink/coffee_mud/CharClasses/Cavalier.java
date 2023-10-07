@@ -156,6 +156,7 @@ public class Cavalier extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_SetPolearm",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Branding",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_DismountingBlow",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_FindHome",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Herding",false);
@@ -202,13 +203,13 @@ public class Cavalier extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_Jousting",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_RopeTrip",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_FierceMount",false); //TODO
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_MountedCharge",false); //TODO
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_RopeGrab",false); //TODO
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_FierceMount",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Paladin_MountedCharge",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_RopeDisarm",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Trip",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_FarShot",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_ArmoredVanity",false); //TODO
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_ArmoredVanity",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Fighter_FavoredMount3",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Fighter_Sweep",false);

@@ -66,7 +66,21 @@ public class StdRideable extends StdContainer implements Rideable
 	@Override
 	public boolean subjectToWearAndTear()
 	{
-		return (rideBasis() == Rideable.Basis.WATER_BASED);
+		switch(rideBasis())
+		{
+		case WATER_BASED:
+		case LADDER:
+		case AIR_FLYING:
+		{
+			final int material=material()&RawMaterial.MATERIAL_MASK;
+			if((material==RawMaterial.MATERIAL_WOODEN)
+			||(material==RawMaterial.MATERIAL_VEGETATION))
+				return true;
+			return false;
+		}
+		default:
+			return false;
+		}
 	}
 
 	@Override
@@ -946,11 +960,9 @@ public class StdRideable extends StdContainer implements Rideable
 				if((numRiders()>0)
 				&&(CMLib.flags().canBeSeenBy(this,msg.source())))
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,displayText(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
-				if((this.subjectToWearAndTear())
-				&& (this.rideBasis() == Rideable.Basis.WATER_BASED)
-				&& (CMath.bset(material(), RawMaterial.MATERIAL_WOODEN)))
+				if(subjectToWearAndTear())
 				{
-					// this is for the small rideable boats
+					// this is for the small rideable boats or ropes
 					final StringBuilder visualCondition = new StringBuilder("");
 					if(this.subjectToWearAndTear() && (usesRemaining() <= 100))
 					{

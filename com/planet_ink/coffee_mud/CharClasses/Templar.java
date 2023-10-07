@@ -177,6 +177,7 @@ public class Templar extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindness",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_BoneMoon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_GracefulDismount",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Tithe",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Enervate",false);

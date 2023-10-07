@@ -152,8 +152,11 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Fighter_ArmorTweaking",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Bash",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Paladin_HolyStrike",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Paladin_UnholyStrike",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+		{
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Paladin_HolyStrike",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Paladin_UnholyStrike",false);
+		}
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Paladin_SummonMount",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureLight",false);
@@ -207,6 +210,8 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_BlindFighting",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_Freedom",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_Paralyze",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_GracefulDismount",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_MountedTactics",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Paladin_Courage",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Paladin_Fear",true);
@@ -235,6 +240,11 @@ public class Paladin extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_CureDisease",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Paladin_MountedCharge",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+		{
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Paladin_HolyMount",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Paladin_UnholyMount",false);
+		}
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Paladin_PoisonImmunity",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Sanctuary",false);

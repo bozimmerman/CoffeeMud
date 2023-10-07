@@ -100,12 +100,14 @@ public class Trapper extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_SneakAttack",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_Listen",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_WildernessSounds",false,CMParms.parseSemicolons("Thief_Listen", true),null);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Fighter_RopeTrip",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_AutoMarkTraps",false,CMParms.parseSemicolons("Thief_MarkTrapped;Thief_DetectTraps", true),null);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_AutoDetectTraps",false,CMParms.parseSemicolons("Thief_DetectTraps", true),null);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_TrueShot",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Parry",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_ResistBuck",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Ranger_Track",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_Autocaltrops",false,CMParms.parseSemicolons("Thief_Caltrops", true),null);

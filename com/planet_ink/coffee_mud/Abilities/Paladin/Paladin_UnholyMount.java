@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Fighter;
+package com.planet_ink.coffee_mud.Abilities.Paladin;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -33,15 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fighter_FierceMount extends FighterSkill
+public class Paladin_UnholyMount extends PaladinSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_FierceMount";
+		return "Paladin_UnholyMount";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Fierce Mount");
+	private final static String localizedName = CMLib.lang().L("Unholy Mount");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class Fighter_FierceMount extends FighterSkill
 		return localizedName;
 	}
 
-	private final static String localizedDisplayText = CMLib.lang().L("(Fierce Mount)");
+	private final static String localizedDisplayText = CMLib.lang().L("(Unholy Mount)");
 
 	@Override
 	public String displayText()
@@ -94,12 +94,35 @@ public class Fighter_FierceMount extends FighterSkill
 	}
 
 	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY|Ability.FLAG_LAW;
+	}
+
+	@Override
+	public boolean canBeTaughtBy(final MOB teacher, final MOB student)
+	{
+		if(!super.canBeTaughtBy(teacher, student))
+			return false;
+		if(!this.appropriateToMyFactions(student))
+		{
+			teacher.tell(L("@x1 lacks the moral disposition to learn '@x2'.",student.name(), name()));
+			student.tell(L("You lack the moral disposition to learn '@x1'.",name()));
+		}
+		return true;
+	}
+
+	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(canBeUninvoked()
 		&& (affected instanceof Rideable)
-		&&(((Rideable)affected).numRiders()>0))
+		&&(((Rideable)affected).numRiders()>0)
+		&& (affected instanceof MOB)
+		&& (((MOB)affected).getVictim()!=null)
+		&& (CMLib.flags().isGood(((MOB)affected).getVictim())
+			||CMLib.flags().isLawful(((MOB)affected).getVictim())))
 		{
 			final int level;
 			if(invoker() != null)
@@ -113,6 +136,9 @@ public class Fighter_FierceMount extends FighterSkill
 			final double attBonus=CMath.mul(CMath.div(proficiency(),100.0),2*level);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(attBonus));
 			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(damBonus));
+			affectableStats.setArmor(affectableStats.armor()-(int)Math.round(attBonus));
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_EVIL);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GLOWING);
 		}
 	}
 
@@ -133,20 +159,28 @@ public class Fighter_FierceMount extends FighterSkill
 				if(M.isInCombat())
 				{
 					final MOB rideM = (MOB)M.riding();
-					if(CMLib.dice().rollPercentage()==1)
-						super.helpProficiency((MOB)affected, 0);
-					if(rideM.fetchEffect(ID())==null)
+					if((rideM!=null)
+					&&(rideM.getVictim()!=null)
+					&& (CMLib.flags().isGood(rideM.getVictim())
+						||CMLib.flags().isLawful(rideM.getVictim()))
+					&&(super.paladinAlignmentCheck(this, M, false)))
 					{
-						final Ability fierceA = CMClass.getAbility(ID());
-						fierceA.setInvoker(M);
-						rideM.addEffect(fierceA);
-						fierceA.makeLongLasting();
-						rideM.recoverPhyStats();
+						if(CMLib.dice().rollPercentage()==1)
+							super.helpProficiency((MOB)affected, 0);
+						if(rideM.fetchEffect(ID())==null)
+						{
+							final Ability fierceA = CMClass.getAbility(ID());
+							fierceA.setInvoker(M);
+							rideM.addEffect(fierceA);
+							fierceA.makeLongLasting();
+							rideM.recoverPhyStats();
+						}
 					}
 				}
 			}
 			else
 			if((M instanceof Rideable)
+			&&(M instanceof MOB)
 			&&(canBeUninvoked())
 			&&(invoker()!=null))
 			{
@@ -154,6 +188,13 @@ public class Fighter_FierceMount extends FighterSkill
 				if((rideMeM.numRiders()==0)
 				||(!invoker().isInCombat())
 				||(!rideMeM.amRiding(invoker())))
+				{
+					unInvoke();
+					return false;
+				}
+				if((((MOB)rideMeM).getVictim()==null)
+				|| ((!CMLib.flags().isGood(((MOB)rideMeM).getVictim()))
+					&&(!CMLib.flags().isLawful(((MOB)rideMeM).getVictim()))))
 				{
 					unInvoke();
 					return false;

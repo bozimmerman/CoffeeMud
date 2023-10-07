@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Skills;
+package com.planet_ink.coffee_mud.Abilities.Fighter;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2023 Bo Zimmerman
+   Copyright 2023-2023 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Disarm extends StdSkill
+public class Fighter_RopeDisarm extends FighterSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Skill_Disarm";
+		return "Fighter_RopeDisarm";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Disarm");
+	private final static String localizedName = CMLib.lang().L("Rope Disarm");
 
 	@Override
 	public String name()
@@ -66,7 +66,7 @@ public class Skill_Disarm extends StdSkill
 		return Ability.QUALITY_MALICIOUS;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"DISARM"});
+	private static final String[] triggerStrings =I(new String[] {"RDISARM","ROPEDISARM"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -108,6 +108,32 @@ public class Skill_Disarm extends StdSkill
 		return super.castingQuality(mob,target);
 	}
 
+	protected Item getRope(final MOB mob, final boolean auto)
+	{
+		Item lasso = mob.fetchHeldItem();
+		if(CMLib.flags().isARope(lasso))
+			return lasso;
+		lasso = mob.fetchWieldedItem();
+		if(CMLib.flags().isARope(lasso))
+			return lasso;
+		if(auto)
+		{
+			lasso = CMClass.getBasicItem("GenRideable");
+			lasso.setMaterial(RawMaterial.RESOURCE_HEMP);
+			((Rideable)lasso).setRideBasis(Rideable.Basis.LADDER);
+			lasso.setName("a lasso");
+			lasso.setDisplayText("a lasso is here");
+			return lasso;
+		}
+		return null;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(1);
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -119,15 +145,16 @@ public class Skill_Disarm extends StdSkill
 		final MOB victim=super.getTarget(mob, commands, givenTarget);
 		if(victim==null)
 			return false;
-		if(((victim==mob.getVictim())&&(mob.rangeToTarget()>0))
-		||((victim.getVictim()==mob)&&(victim.rangeToTarget()>0)))
+		if(((victim==mob.getVictim())&&(mob.rangeToTarget()>1))
+		||((victim.getVictim()==mob)&&(victim.rangeToTarget()>1)))
 		{
 			mob.tell(L("You are too far away to disarm!"));
 			return false;
 		}
-		if(mob.fetchWieldedItem()==null)
+		final Item lasso = getRope(mob, auto);
+		if(lasso == null)
 		{
-			mob.tell(L("You need a weapon to disarm someone!"));
+			mob.tell(L("You don't seem to have a suitable rope in hand."));
 			return false;
 		}
 		Item hisWeapon=victim.fetchWieldedItem();
@@ -152,8 +179,8 @@ public class Skill_Disarm extends StdSkill
 		final boolean hit=(auto)||CMLib.combat().rollToHit(mob,victim);
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto)&&(hit);
 		if((success)
-		&&((hisWeapon.fitsOn(Wearable.WORN_WIELD))
-			||hisWeapon.fitsOn(Wearable.WORN_WIELD|Wearable.WORN_HELD)))
+		   &&((hisWeapon.fitsOn(Wearable.WORN_WIELD))
+			  ||hisWeapon.fitsOn(Wearable.WORN_WIELD|Wearable.WORN_HELD)))
 		{
 			if(mob.location().show(mob,victim,this,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_MALICIOUS,null))
 			{
@@ -161,7 +188,15 @@ public class Skill_Disarm extends StdSkill
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(victim,msg);
-					mob.location().show(mob,victim,CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> is disarmed!"):L("<S-NAME> disarm(s) <T-NAMESELF>!"));
+					mob.location().show(mob,victim,CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> is disarmed!"):L("<S-NAME> disarm(s) <T-NAMESELF> with @x1!",lasso.name(mob)));
+					if((hisWeapon instanceof Weapon)
+					&&(((Weapon)hisWeapon).weaponDamageType()==Weapon.TYPE_SLASHING))
+					{
+						CMLib.combat().postItemDamage(victim, lasso, hisWeapon,
+								victim.charStats().getStat(CharStats.STAT_STRENGTH),
+								CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_NOISYMOVEMENT,
+								L("<O-NAME> cuts <T-NAME>!",hisWeapon.name()));
+					}
 				}
 			}
 		}

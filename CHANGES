@@ -59,8 +59,10 @@
  58. New skills: Soothe Mount, Tend Mount, Favored Mount 1...4, Forceback, Rearguard
  59. New skills: Indoor Riding, Command Mount, Unwavering Mark, Graceful Dismount
  60. New skills: Mount Taming, Mounted Tactics, Ridethrough, Vanguard, Mounted Retreat
- 61. New skills: Confident Vanity, Lassoing, Jousting, Rope Trip
- 62. (Power) LEVEL expertises now grant 3X points to proficiency on all skills/spells/etc.
+ 61. New skills: Confident Vanity, Lassoing, Jousting, Rope Trip, Fierce Mount
+ 62. (Power) LEVEL expertises now grant points to proficiency on all skills/spells/etc.
+ 63. New skills: Holy Mount, Unholy Mount, Rope Disarm, Armored Vanity
+ 64. TEAR/DESTROY can now be used to tear cloth into strips for bandaging or whatever
  
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

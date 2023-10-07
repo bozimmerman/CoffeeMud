@@ -251,30 +251,21 @@ public class Skill_Lassoing extends StdSkill
 	protected Item getLasso(final MOB mob, final boolean auto)
 	{
 		Item lasso = mob.fetchHeldItem();
-		if(!CMLib.flags().isARope(lasso))
-			lasso=null;
-		if(lasso == null)
-		{
-			for(final Enumeration<Item> i = mob.items();i.hasMoreElements();)
-			{
-				final Item I = i.nextElement();
-				if(CMLib.flags().isARope(I)
-				&&(I.container()==null))
-				{
-					lasso = I;
-					break;
-				}
-			}
-		}
-		if((lasso == null) && (auto))
+		if(CMLib.flags().isARope(lasso))
+			return lasso;
+		lasso = mob.fetchWieldedItem();
+		if(CMLib.flags().isARope(lasso))
+			return lasso;
+		if(auto)
 		{
 			lasso = CMClass.getBasicItem("GenRideable");
 			lasso.setMaterial(RawMaterial.RESOURCE_HEMP);
 			((Rideable)lasso).setRideBasis(Rideable.Basis.LADDER);
 			lasso.setName("a lasso");
 			lasso.setDisplayText("a lasso is here");
+			return lasso;
 		}
-		return lasso;
+		return null;
 	}
 
 	@Override
@@ -306,7 +297,7 @@ public class Skill_Lassoing extends StdSkill
 		final Item lasso = getLasso(mob, auto);
 		if(lasso == null)
 		{
-			mob.tell(L("You don't seem to have a suitable rope handy."));
+			mob.tell(L("You don't seem to have a suitable rope in hand."));
 			return false;
 		}
 

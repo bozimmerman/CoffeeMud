@@ -33,15 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fighter_ConfidentVanity extends FighterSkill
+public class Fighter_ArmoredVanity extends FighterSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_ConfidentVanity";
+		return "Fighter_ArmoredVanity";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Confident Vanity");
+	private final static String localizedName = CMLib.lang().L("Armored Vanity");
 
 	@Override
 	public String name()
@@ -91,7 +91,7 @@ public class Fighter_ConfidentVanity extends FighterSkill
 		return Ability.ACODE_SKILL|Ability.DOMAIN_INFLUENTIAL;
 	}
 
-	protected volatile double bonus = -1;
+	protected volatile int bonus = -1;
 	protected volatile boolean enabled = false;
 
 	protected void calculateBonus(final MOB mob)
@@ -106,14 +106,15 @@ public class Fighter_ConfidentVanity extends FighterSkill
 			if((I instanceof Armor)
 			&& (I.amBeingWornProperly())
 			&& (!I.amWearingAt(Item.WORN_FLOATING_NEARBY))
+			&& (I.basePhyStats().armor()>1)
 			&& (CMLib.itemBuilder().calculateBaseValue(I)*3<I.baseGoldValue())
 			&& ((--max)>=0))
-				bonus += 0.1;
+				bonus += CMath.div(I.basePhyStats().armor(),2.0);
 		}
 		if((bonus > 0)&&(proficiency()<100))
-			this.bonus = bonus * CMath.div(proficiency(), 100.0);
+			this.bonus = (int)Math.round(bonus * CMath.div(proficiency(), 100.0));
 		else
-			this.bonus = bonus;
+			this.bonus = (int)bonus;
 	}
 
 	@Override
@@ -122,10 +123,10 @@ public class Fighter_ConfidentVanity extends FighterSkill
 		super.affectPhyStats(affected,affectableStats);
 		if((!(affected instanceof MOB))||(!enabled))
 			return;
-		if(bonus < 0)
+		if(bonus <= 0)
 			calculateBonus((MOB)affected);
 		if(bonus > 0)
-			affectableStats.setAttackAdjustment((int)Math.round(CMath.mul(affectableStats.attackAdjustment(), 1.0+bonus)));
+			affectableStats.setArmor(affectableStats.armor()-bonus);
 	}
 
 	@Override

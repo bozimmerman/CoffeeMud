@@ -50,7 +50,7 @@ public class Destroy extends StdCommand
 	{
 	}
 
-	private final String[] access=I(new String[]{"DESTROY","JUNK"});
+	private final String[] access=I(new String[]{"DESTROY","JUNK","TEAR"});
 
 	@Override
 	public String[] getAccessWords()
@@ -1276,31 +1276,67 @@ public class Destroy extends StdCommand
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The happiness of all mankind has just increased!"));
 	}
 
-	public boolean destroyItem(final MOB mob, final Environmental dropThis, final boolean quiet, final boolean optimize)
+	public boolean destroyItem(final MOB mob, final Physical dropThis, final boolean quiet, final boolean optimize)
 	{
 		String msgstr=null;
 		final int material=(dropThis instanceof Item)?((Item)dropThis).material():-1;
 		if(!quiet)
-		switch(material&RawMaterial.MATERIAL_MASK)
 		{
-		case RawMaterial.MATERIAL_LIQUID:
-			msgstr=L("<S-NAME> pour(s) out <T-NAME>.");
-			break;
-		case RawMaterial.MATERIAL_PAPER:
-			msgstr=L("<S-NAME> tear(s) up <T-NAME>.");
-			break;
-		case RawMaterial.MATERIAL_GLASS:
-			msgstr=L("<S-NAME> smash(es) <T-NAME>.");
-			break;
-		default:
-			return false;
+			switch(material&RawMaterial.MATERIAL_MASK)
+			{
+			case RawMaterial.MATERIAL_LIQUID:
+				msgstr=L("<S-NAME> pour(s) out <T-NAME>.");
+				break;
+			case RawMaterial.MATERIAL_PAPER:
+			case RawMaterial.MATERIAL_CLOTH:
+				msgstr=L("<S-NAME> tear(s) up <T-NAME>.");
+				break;
+			case RawMaterial.MATERIAL_GLASS:
+				msgstr=L("<S-NAME> smash(es) <T-NAME>.");
+				break;
+			default:
+				return false;
+			}
 		}
-		final CMMsg msg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_NOISYMOVEMENT,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MASK_ALWAYS|CMMsg.MSG_DEATH,CMMsg.MSG_NOISYMOVEMENT,msgstr);
+		final String oldName = dropThis.Name();
+		final int weight = dropThis.phyStats().weight();
+		final ItemPossessor oldOwner = (dropThis instanceof Item)?((Item)dropThis).owner():null;
+		final CMMsg msg;
+		msg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_NOISYMOVEMENT,
+				(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MASK_ALWAYS|CMMsg.MSG_DEATH,
+				CMMsg.MSG_NOISYMOVEMENT,msgstr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			if(dropThis instanceof Container)
 				((Container)dropThis).emptyPlease(false);
 			mob.location().send(mob,msg);
+			if((material&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)
+			{
+				if(dropThis.amDestroyed())
+				{
+					final String matName = RawMaterial.CODES.NAME(material).toLowerCase();
+					final Item bitTemplateI = CMClass.getItem("GenItem");
+					bitTemplateI.setMaterial(material);
+					bitTemplateI.basePhyStats().setWeight(1);
+					bitTemplateI.setName(L("a strip of @x1",matName));
+					bitTemplateI.setDisplayText(L("@x1 has been dropped here.",bitTemplateI.name()));
+					bitTemplateI.setDescription(L("It looks like it used to be part of @x1.",oldName));
+					final Item pkgI;
+					if(weight > 1)
+					{
+						pkgI = CMClass.getItem("GenPackagedStack");
+						((PackagedItems)pkgI).packageMe(bitTemplateI, weight);
+					}
+					else
+						pkgI = bitTemplateI;
+					pkgI.recoverPhyStats();
+					if(oldOwner == null)
+						mob.location().addItem(pkgI, ItemPossessor.Expire.Player_Drop);
+					else
+						oldOwner.addItem(pkgI, ItemPossessor.Expire.Player_Drop);
+					pkgI.recoverPhyStats();
+				}
+			}
 			return true;
 		}
 		if(dropThis instanceof Coins)
@@ -1350,9 +1386,20 @@ public class Destroy extends StdCommand
 		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.NOPURGE))
 		&&(!((commands.size()>1)&&(CMSecurity.isJournalAccessAllowed(mob, commands.get(1))))))
 		{
-			commands.remove(0);
+			final char cmd = Character.toUpperCase(commands.size()>0?commands.get(0).charAt(0):'D');
+			if(commands.size()>0)
+				commands.remove(0);
 			if(commands.size()==0)
 			{
+				for(final String a : access)
+				{
+					if(Character.toUpperCase(a.charAt(0)) == cmd)
+					{
+						final String cmdW = CMStrings.capitalizeAndLower(a);
+						mob.tell(L(cmdW+" what?"));
+						return false;
+					}
+				}
 				mob.tell(L("Destroy what?"));
 				return false;
 			}
@@ -1384,58 +1431,69 @@ public class Destroy extends StdCommand
 			while(doBugFix || ((allFlag)&&(addendum<=maxToDrop)))
 			{
 				doBugFix=false;
-				Item dropThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,whatToDrop+addendumStr);
-				if((dropThis==null)
+				Item trashI=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,whatToDrop+addendumStr);
+				if((trashI==null)
 				&&(V.size()==0)
 				&&(addendumStr.length()==0)
 				&&(!allFlag))
+					trashI=mob.fetchItem(null,Wearable.FILTER_WORNONLY,whatToDrop);
+
+				if(trashI!=null)
 				{
-					dropThis=mob.fetchItem(null,Wearable.FILTER_WORNONLY,whatToDrop);
-					if(dropThis!=null)
+					final int matType=trashI.material()&RawMaterial.MATERIAL_MASK;
+					if(matType==RawMaterial.MATERIAL_CLOTH)
 					{
-						final int matType=dropThis.material()&RawMaterial.MATERIAL_MASK;
-						if((matType!=RawMaterial.MATERIAL_GLASS)
-						&&(matType!=RawMaterial.MATERIAL_LIQUID)
-						&&(matType!=RawMaterial.MATERIAL_PAPER))
+						if((trashI instanceof RawMaterial)
+						||(trashI.phyStats().weight()<1))
 						{
-							mob.tell(L("@x1 can not be easily destroyed.",dropThis.Name()));
+							mob.tell(L("@x1 is already in small pieces.",trashI.Name()));
 							return false;
-						}
-						else
-						if((!dropThis.amWearingAt(Wearable.WORN_HELD))&&(!dropThis.amWearingAt(Wearable.WORN_WIELD)))
-						{
-							mob.tell(L("You must remove that first."));
-							return false;
-						}
-						else
-						{
-							final CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
-							if(mob.location().okMessage(mob,newMsg))
-								mob.location().send(mob,newMsg);
-							else
-								return false;
 						}
 					}
+					else
+					if((matType!=RawMaterial.MATERIAL_GLASS)
+					&&(matType!=RawMaterial.MATERIAL_LIQUID)
+					&&(matType!=RawMaterial.MATERIAL_PAPER))
+					{
+						mob.tell(L("@x1 can not be easily destroyed.",trashI.Name()));
+						return false;
+					}
+					else
+					if((!trashI.amWearingAt(Wearable.WORN_HELD))
+					&&(!trashI.amWearingAt(Wearable.WORN_WIELD)))
+					{
+						mob.tell(L("You must remove that first."));
+						return false;
+					}
+					else
+					{
+						final CMMsg newMsg=CMClass.getMsg(mob,trashI,null,CMMsg.MSG_REMOVE,null);
+						if(mob.location().okMessage(mob,newMsg))
+							mob.location().send(mob,newMsg);
+						else
+							return false;
+					}
 				}
-				if(dropThis==null)
+				if(trashI==null)
 					break;
-				if((CMLib.flags().canBeSeenBy(dropThis,mob))
-				&&(!V.contains(dropThis)))
-					V.add(dropThis);
+				if((CMLib.flags().canBeSeenBy(trashI,mob))
+				&&(!V.contains(trashI)))
+					V.add(trashI);
 				addendumStr="."+(++addendum);
 			}
 
 			boolean didAnything=false;
 			for(int i=0;i<V.size();i++)
 			{
-				if(destroyItem(mob,V.get(i),false,true))
+				final Item I = V.get(i);
+				if(destroyItem(mob,I,false,true))
 					didAnything=true;
 				else
-				if(V.get(i) instanceof Coins)
-					((Coins)V.get(i)).putCoinsBack();
+				if(I instanceof Coins)
+					((Coins)I).putCoinsBack();
 				else
-				if(V.get(i) instanceof RawMaterial)
-					((RawMaterial)V.get(i)).rebundle();
+				if(I instanceof RawMaterial)
+					((RawMaterial)I).rebundle();
 			}
 			if(!didAnything)
 			{

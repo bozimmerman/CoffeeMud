@@ -168,6 +168,7 @@ public class Jester extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_Prestidigitation",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_GracefulDismount",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_UsePoison",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_Distract",false);
@@ -175,6 +176,7 @@ public class Jester extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_Peek",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_FireBreathing",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Fighter_RopeTrip",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_Joke",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_Sneak",false);
@@ -196,6 +198,7 @@ public class Jester extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Song_Mercy",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_DetectTraps",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_RopeDisarm",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_Stability",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_ReadMagic",false);

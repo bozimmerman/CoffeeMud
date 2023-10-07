@@ -160,8 +160,8 @@ public class Paladin_MountedCharge extends StdAbility
 			return false;
 		}
 
-		if(!PaladinSkill.paladinAlignmentCheck(this, mob, false))
-			return false;
+		//if(!PaladinSkill.paladinAlignmentCheck(this, mob, false))
+		//	return false;
 
 		final Rideable mount=mob.riding();
 		if(!CMLib.flags().isMobileMounted(mob))
