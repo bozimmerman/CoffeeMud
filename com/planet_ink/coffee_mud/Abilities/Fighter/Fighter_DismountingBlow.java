@@ -165,7 +165,7 @@ public class Fighter_DismountingBlow extends FighterSkill
 		}
 	}
 
-	protected Weapon getPolearm(final MOB mob)
+	protected static Weapon getPolearm(final MOB mob)
 	{
 		final Item I = mob.fetchWieldedItem();
 		if((I instanceof Weapon)
@@ -251,8 +251,13 @@ public class Fighter_DismountingBlow extends FighterSkill
 		final boolean success=proficiencyCheck(mob,adjustment,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
-					auto?L("<T-NAME> <T-IS-ARE> dismounted!"):L("^F^<FIGHT^><S-NAME> dismount(s) <T-NAMESELF> with @x1!^</FIGHT^>^?",polearmI.name(mob)));
+			final String msgStr;
+			if(auto
+			&&((mob == target)||(polearmI == null)))
+				msgStr = L("<T-NAME> <T-IS-ARE> dismounted!");
+			else
+				msgStr = L("^F^<FIGHT^><S-NAME> dismount(s) <T-NAMESELF> with @x1!^</FIGHT^>^?",polearmI.name(mob));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0), msgStr);
 			final CMMsg dismountMsg = CMClass.getMsg(target,target.riding(),null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DISMOUNT,null);
 			CMLib.color().fixSourceFightColor(msg);
 			msg.setValue(0);

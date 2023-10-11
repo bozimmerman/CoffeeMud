@@ -121,8 +121,20 @@ public class Fighter_Jousting extends FighterSkill
 				&&(targetM.riding().isMobileRideBasis())
 				&&(CMLib.dice().rollPercentage()<25+(5*this.getXLEVELLevel(msg.source()))))
 				{
-					final CMMsg msg2=CMClass.getMsg(targetM,targetM.riding(),null,CMMsg.MSG_DISMOUNT,L("<S-NAME> @x1 <T-NAMESELF>.",targetM.riding().dismountString(targetM)));
-					msg.addTrailerMsg(msg2);
+					msg.addTrailerRunnable(new Runnable() {
+						final MOB joustM = msg.source();
+						final MOB disM = targetM;
+						@Override
+						public void run()
+						{
+							if(disM.riding() != null)
+							{
+								final Ability disA = CMClass.getAbility("Fighter_DismountingBlow");
+								disA.setProficiency(100);
+								disA.invoke(joustM, disM, true, 0);
+							}
+						}
+					});
 				}
 				done=true;
 				if(hits < 2)
@@ -189,34 +201,37 @@ public class Fighter_Jousting extends FighterSkill
 			return false;
 		}
 
-		if(inCombat
-		&&(mob.rangeToTarget()<=0))
-		{
-			mob.tell(L("You can not joust while in melee!"));
-			return false;
-		}
-
+		Item polearmI = null;
 		final Rideable mount=mob.riding();
-		if(!CMLib.flags().isMobileMounted(mob))
+		if(!auto)
 		{
-			mob.tell(L("You must be riding a mount to use this skill."));
-			return false;
-		}
+			if(inCombat
+			&&(mob.rangeToTarget()<=0)
+			&&(!auto))
+			{
+				mob.tell(L("You can not joust while in melee!"));
+				return false;
+			}
 
-		final Item I = mob.fetchWieldedItem();
-		if((!(I instanceof Weapon))
-		||(((Weapon)I).weaponClassification() == Weapon.CLASS_RANGED)
-		||(((Weapon)I).maxRange()<=0))
-		{
-			mob.tell(L("You must have a melee weapon with range to do that."));
-			return false;
-		}
-		if(inCombat
-		&&(target==mob.getVictim())
-		&&(mob.rangeToTarget()<=((Weapon)I).maxRange()))
-		{
-			mob.tell(L("You must be further from your enemy to do that."));
-			return false;
+			if(!CMLib.flags().isMobileMounted(mob))
+			{
+				mob.tell(L("You must be riding a mount to use this skill."));
+				return false;
+			}
+
+			polearmI = Fighter_DismountingBlow.getPolearm(mob);
+			if(polearmI == null)
+			{
+				mob.tell(L("You must have an appropriate melee weapon with range to do that."));
+				return false;
+			}
+			if(inCombat
+			&&(target==mob.getVictim())
+			&&(mob.rangeToTarget()<=((Weapon)polearmI).maxRange()))
+			{
+				mob.tell(L("You must be further from your enemy to do that."));
+				return false;
+			}
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -226,8 +241,12 @@ public class Fighter_Jousting extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,
-					L("^F^<FIGHT^><S-NAME> "+mount.rideString(mob)+" hard at <T-NAMESELF> in a Joust!^?^</FIGHT^>"));
+			final String msgStr;
+			if(mount != null)
+				msgStr = L("^F^<FIGHT^><S-NAME> "+mount.rideString(mob)+" hard at <T-NAMESELF> in a Joust!^?^</FIGHT^>");
+			else
+				msgStr = L("^F^<FIGHT^><S-NAME> joust(s) <T-NAMESELF>!^?^</FIGHT^>");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE, msgStr);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -243,12 +262,12 @@ public class Fighter_Jousting extends FighterSkill
 					msg.setTargetMessage(null);
 					msg.setOthersMessage(null);
 					msg.setTool(null);
-					for(int i=mob.rangeToTarget()-1;i>=((Weapon)I).maxRange();i--)
+					for(int i=mob.rangeToTarget()-1;i>=((Weapon)polearmI).maxRange();i--)
 					{
 						if(mob.location().okMessage(mob, msg))
 							mob.location().send(mob, msg);
 					}
-					if(mob.rangeToTarget()<=((Weapon)I).maxRange())
+					if(mob.rangeToTarget()<=((Weapon)polearmI).maxRange())
 					{
 						done=false;
 						hits=0;
@@ -265,7 +284,10 @@ public class Fighter_Jousting extends FighterSkill
 			}
 		}
 		else
+		if(mount != null)
 			return beneficialVisualFizzle(mob,target,L("<S-NAME> "+mount.rideString(mob)+" at <T-NAMESELF> in a Joust, but miss(es)."));
+		else
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> joust(s) at <T-NAMESELF> in a Joust, but miss(es)."));
 
 		// return whether it worked
 		return success;
