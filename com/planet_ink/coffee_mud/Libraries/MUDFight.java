@@ -2192,6 +2192,38 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
+	public void fixDependentRanges(final MOB mob)
+	{
+		final Rideable riddenM = mob.riding();
+		if((riddenM instanceof MOB)
+		&&(((MOB)riddenM).getVictim()==mob.getVictim()))
+		{
+			if(((MOB)riddenM).rangeToTarget() != mob.rangeToTarget())
+			{
+				((MOB)riddenM).setRangeToTarget(mob.rangeToTarget());
+				((MOB)riddenM).recoverPhyStats();
+			}
+		}
+		if((this instanceof Rideable)
+		&&(((Rideable)this).numRiders()>0))
+		{
+			for(final Enumeration<Rider> r = ((Rideable)this).riders();r.hasMoreElements();)
+			{
+				final Rider R = r.nextElement();
+				if((R instanceof MOB)
+				&&(((MOB)R).getVictim()==mob.getVictim()))
+				{
+					if(((MOB)R).rangeToTarget() != mob.rangeToTarget())
+					{
+						((MOB)R).setRangeToTarget(mob.rangeToTarget());
+						((MOB)R).recoverPhyStats();
+					}
+				}
+			}
+		}
+	}
+
+	@Override
 	public boolean checkSavingThrows(final MOB mob, final CMMsg msg)
 	{
 		if ((msg.targetMinor() != CMMsg.TYP_WEAPONATTACK) && (msg.value() <= 0))

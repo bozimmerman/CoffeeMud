@@ -58,15 +58,15 @@ public class Fighter_LightningStrike extends MonkSkill
 
 	private static final String[] triggerStrings =I(new String[] {"LIGHTNINGSTRIKE","LSTRIKE"});
 	@Override
-	public int abstractQuality()
-	{
-		return Ability.QUALITY_MALICIOUS;
-	}
-
-	@Override
 	public String[] triggerStrings()
 	{
 		return triggerStrings;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
 	}
 
 	@Override

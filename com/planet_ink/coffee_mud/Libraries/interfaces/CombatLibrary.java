@@ -814,6 +814,16 @@ public interface CombatLibrary extends CMLibrary
 	public boolean isASiegeWeapon(Item I);
 
 	/**
+	 * If a mobs range to target changes, then any ridden
+	 * mobs, or mobs riding the given mob, should also change.
+	 * This method forces all dependent mobs to be at the
+	 * same range as the given mob.
+	 *
+	 * @param mob the mob whose range matters
+	 */
+	public void fixDependentRanges(final MOB mob);
+
+	/**
 	 * Checks to see if the given message gets a saving throw
 	 * for the given mob and, if so, applies it.
 	 * @param mob the mob to save

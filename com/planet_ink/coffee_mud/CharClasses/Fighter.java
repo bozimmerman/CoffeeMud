@@ -204,6 +204,7 @@ public class Fighter extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_Endurance",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_PointBlank",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_HoldTheLine",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Fighter_Tumble",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Fighter_AutoBash",false,CMParms.parseSemicolons("Skill_Bash",true));

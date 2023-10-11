@@ -1524,6 +1524,7 @@ public class StdMOB implements MOB
 	public void setRangeToTarget(final int newRange)
 	{
 		atRange = newRange;
+		CMLib.combat().fixDependentRanges(this);
 	}
 
 	@Override
@@ -3424,17 +3425,19 @@ public class StdMOB implements MOB
 					CMLib.leveler().handleRPExperienceChange(msg);
 					break;
 				case CMMsg.TYP_RETREAT:
-					setRangeToTarget(rangeToTarget() + 1);
-					if(victim != null)
 					{
-						victim.setRangeToTarget(rangeToTarget());
-						victim.recoverPhyStats();
+						setRangeToTarget(rangeToTarget() + 1);
+						if(victim != null)
+						{
+							victim.setRangeToTarget(rangeToTarget());
+							victim.recoverPhyStats();
+						}
+						else
+							setRangeToTarget(-1);
+						recoverPhyStats();
+						if(msg.sourceMessage() != null)
+							tell(this, msg.target(), msg.tool(), msg.sourceMessage());
 					}
-					else
-						setRangeToTarget(-1);
-					recoverPhyStats();
-					if(msg.sourceMessage() != null)
-						tell(this, msg.target(), msg.tool(), msg.sourceMessage());
 					break;
 				case CMMsg.TYP_ADVANCE:
 					if(rangeToTarget()>=1)

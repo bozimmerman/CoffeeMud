@@ -23,7 +23,7 @@ small % stool	13	5	5	1	GenChair	CHAIR	1
 % sword	13	30	6	166	GenWeapon	SWORD	10	
 wicked % sliver	14	40	2	128	GenWeapon	EDGED	8	
 % club	14	30	10	216	GenWeapon	BLUNT	11	
-% greaves	15	30	4	40	GenArmor	S0:LEGS	10	
+% greaves	15	30	4	40	GenArmor	S0:FEET	2	
 wicked % spear	15	10	12	368	GenSpear	THROWN	21	
 % knife	16	40	2	75	GenWeapon	DAGGER	5	
 small % bed	16	25	30	100	GenBed	BED	1	

@@ -255,6 +255,7 @@ public class Paladin extends StdCharClass
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Paladin_Aura",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_HolyAura",false,CMParms.parseSemicolons("Prayer_Bless",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_HoldTheLine",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_Calm",false);

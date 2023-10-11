@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2018-2023 Bo Zimmerman
+   Copyright 2023-2023 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_HighJump extends StdSkill
+public class Skill_MountedLeap extends StdSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Skill_HighJump";
+		return "Skill_MountedLeap";
 	}
 
-	private final static String localizedName = CMLib.lang().L("High Jump");
+	private final static String localizedName = CMLib.lang().L("Mounted Leap");
 
 	@Override
 	public String name()
@@ -66,7 +66,7 @@ public class Skill_HighJump extends StdSkill
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	private static final String[] triggerStrings = I(new String[] { "HIGHJUMP" });
+	private static final String[] triggerStrings = I(new String[] { "MLEAP" });
 
 	@Override
 	public String[] triggerStrings()
@@ -81,15 +81,9 @@ public class Skill_HighJump extends StdSkill
 	}
 
 	@Override
-	public boolean putInCommandlist()
-	{
-		return false;
-	}
-
-	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_RACIALABILITY;
+		return Ability.ACODE_SKILL | Ability.DOMAIN_ANIMALAFFINITY;
 	}
 
 	@Override
@@ -108,7 +102,27 @@ public class Skill_HighJump extends StdSkill
 		int dirCode=-1;
 		Physical target=givenTarget;
 		if(commands.size()==0)
-			commands.add("UP");
+		{
+			if(mob.isMonster())
+			{
+				for(int i=0;i<20;i++)
+				{
+					final int dir = CMLib.dice().roll(1, Directions.NUM_DIRECTIONS(), -1);
+					final Room nR = R.getRoomInDir(dir);
+					final Exit nE = R.getExitInDir(dir);
+					if((nR!=null)&&(nE!=null)&&(nE.isOpen()))
+					{
+						commands.add(CMLib.directions().getDirectionName(dir));
+						break;
+					}
+				}
+			}
+			else
+			{
+				mob.tell(L("Leap what direction?"));
+				return false;
+			}
+		}
 		if(mob.isInCombat())
 		{
 			mob.tell(L("Not while you are fighting!"));
@@ -154,44 +168,81 @@ public class Skill_HighJump extends StdSkill
 
 		if(dirCode<0)
 		{
-			mob.tell(L("Jump where?"));
+			mob.tell(L("Leap where?"));
 			return false;
 		}
 		else
-		if((dirCode>=0)
-		&&((R.getRoomInDir(dirCode)==null)
-		||(R.getExitInDir(dirCode)==null)))
 		{
-			mob.tell(L("You can't jump that way."));
-			return false;
+			final Room nR = R.getRoomInDir(dirCode);
+			final Exit nE = R.getExitInDir(dirCode);
+			if((nR==null)||(nE==null))
+			{
+				mob.tell(L("You can't leap that way."));
+				return false;
+			}
+			if(!nE.isOpen())
+			{
+				mob.tell(L("That way looks blocked."));
+				return false;
+			}
+			if((dirCode==Directions.UP)
+			&&(nR.domainType()==Room.DOMAIN_OUTDOORS_AIR)||(nR.domainType()==Room.DOMAIN_INDOORS_AIR))
+			{
+				mob.tell(L("You can't leap that high."));
+				return false;
+			}
 		}
 
-		if(CMLib.flags().isSitting(mob)
-		||CMLib.flags().isSleeping(mob))
+		final MOB riddenM;
+		if((mob instanceof Rideable)
+		&&(((Rideable)mob).isMobileRideBasis())
+		&&(mob.riding()==null))
 		{
-			mob.tell(L("You need to stand up first!"));
+			riddenM=null;
+			if(CMLib.flags().isSitting(mob)
+			||CMLib.flags().isSleeping(mob))
+			{
+				mob.tell(L("You need to stand up first!"));
+				return false;
+			}
+			if((mob.charStats().getBodyPart(Race.BODY_LEG)==0)
+			||(mob.charStats().getBodyPart(Race.BODY_FOOT)==0)
+			||CMLib.flags().isFalling(mob))
+			{
+				mob.tell(L("You can't seem to jump right now."));
+				return false;
+			}
+		}
+		else
+		if((!CMLib.flags().isMobileMounted(mob))
+		||(!(mob.riding() instanceof MOB)))
+		{
+			mob.tell(L("You need to be mounted to do that."));
 			return false;
 		}
-
-		if(mob.riding()!=null)
+		else
 		{
-			mob.tell(L("You need to get off @x1 first.",mob.riding().name(mob)));
-			return false;
-		}
-
-		if((mob.charStats().getBodyPart(Race.BODY_LEG)==0)
-		||(mob.charStats().getBodyPart(Race.BODY_FOOT)==0)
-		||CMLib.flags().isFalling(mob))
-		{
-			mob.tell(L("You can't seem to jump right now."));
-			return false;
+			riddenM = (MOB)mob.riding();
+			if(CMLib.flags().isSitting(riddenM)
+			||CMLib.flags().isSleeping(riddenM))
+			{
+				mob.tell(L("Your mount needs to stand up first!"));
+				return false;
+			}
+			if((riddenM.charStats().getBodyPart(Race.BODY_LEG)==0)
+			||(riddenM.charStats().getBodyPart(Race.BODY_FOOT)==0)
+			||CMLib.flags().isFalling(riddenM))
+			{
+				mob.tell(L("Your mount can't seem to leap right now."));
+				return false;
+			}
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> jump(s) @x1!",targetName));
+		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> leap(s) @x1!",targetName));
 		int jumps=1;
 		if((target==null)&&(dirCode>=0))
 			jumps+=(int)Math.round(super.getXLEVELLevel(mob)/2.5);
@@ -203,14 +254,22 @@ public class Skill_HighJump extends StdSkill
 				R.send(mob,msg);
 				success=proficiencyCheck(mob,0,auto);
 
-				if(mob.fetchEffect(ID())==null)
+				if((mob.fetchEffect(ID())==null)
+				&&(riddenM.fetchEffect(ID())==null))
 				{
 					final Ability A=(Ability)this.copyOf();
 					A.setSavable(false);
+					final Ability rA=(Ability)this.copyOf();
+					rA.setSavable(false);
 					try
 					{
 						mob.addEffect(A);
 						mob.recoverPhyStats();
+						if(riddenM != null)
+						{
+							riddenM.addEffect(rA);
+							riddenM.recoverPhyStats();
+						}
 						if(dirCode>=0)
 							CMLib.tracking().walk(mob,dirCode,false,false);
 						else
@@ -220,6 +279,8 @@ public class Skill_HighJump extends StdSkill
 					finally
 					{
 						mob.delEffect(A);
+						if(riddenM != null)
+							riddenM.delEffect(rA);
 					}
 				}
 				else
@@ -242,6 +303,11 @@ public class Skill_HighJump extends StdSkill
 					break;
 				msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> fl(ys) @x1!",targetName));
 			}
+		}
+		if(riddenM != null)
+		{
+			riddenM.recoverPhyStats();
+			mob.location().executeMsg(riddenM,CMClass.getMsg(riddenM,mob.location(),CMMsg.MASK_MOVE|CMMsg.TYP_GENERAL,null));
 		}
 		mob.recoverPhyStats();
 		mob.location().executeMsg(mob,CMClass.getMsg(mob,mob.location(),CMMsg.MASK_MOVE|CMMsg.TYP_GENERAL,null));
