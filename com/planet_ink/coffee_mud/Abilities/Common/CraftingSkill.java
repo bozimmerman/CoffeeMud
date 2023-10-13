@@ -1504,18 +1504,27 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			if((x<0)&&(!recipeName.toLowerCase().trim().endsWith("s")))
 				x=CMParms.indexOf(Wearable.CODES.NAMES(),recipeName.toLowerCase().trim()+"s");
 			if(x<0)
-				x=CMParms.indexOfEndsWith(Wearable.CODES.NAMES()," "+recipeName.toUpperCase().trim());
+				x=CMParms.indexOfEndsWith(Wearable.CODES.NAMES()," "+recipeName.toLowerCase().trim());
 			if((x<0)&&(!recipeName.toLowerCase().trim().endsWith("s")))
-				x=CMParms.indexOfEndsWith(Wearable.CODES.NAMES()," "+recipeName.toUpperCase().trim()+"s");
+				x=CMParms.indexOfEndsWith(Wearable.CODES.NAMES()," "+recipeName.toLowerCase().trim()+"s");
 			if(x>=0)
 			{
-				final String wearLoc = Wearable.CODES.NAMES()[x];
+				final String wearLoc = Wearable.CODES.NAMESUP()[x];
 				for(int r=0;r<recipes.size();r++)
 				{
 					final List<String> V=recipes.get(r);
-					if((V.contains(wearLoc))
-					&&(!matches.contains(V)))
-						matches.add(V);
+					for(int i=0;i<V.size();i++)
+					{
+						final String str = V.get(i).toUpperCase();
+						if(str.equals(wearLoc)
+						||str.endsWith(":"+wearLoc)
+						||str.indexOf("||"+wearLoc)>0)
+						{
+							if(!matches.contains(V))
+								matches.add(V);
+							break;
+						}
+					}
 				}
 			}
 		}
