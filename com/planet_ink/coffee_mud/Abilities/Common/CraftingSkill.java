@@ -1497,6 +1497,28 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				}
 			}
 		}
+		if((matches.size()==0)
+		&&(recipeName.length()>2))
+		{
+			int x=CMParms.indexOf(Wearable.CODES.NAMES(),recipeName.toLowerCase().trim());
+			if((x<0)&&(!recipeName.toLowerCase().trim().endsWith("s")))
+				x=CMParms.indexOf(Wearable.CODES.NAMES(),recipeName.toLowerCase().trim()+"s");
+			if(x<0)
+				x=CMParms.indexOfEndsWith(Wearable.CODES.NAMES()," "+recipeName.toUpperCase().trim());
+			if((x<0)&&(!recipeName.toLowerCase().trim().endsWith("s")))
+				x=CMParms.indexOfEndsWith(Wearable.CODES.NAMES()," "+recipeName.toUpperCase().trim()+"s");
+			if(x>=0)
+			{
+				final String wearLoc = Wearable.CODES.NAMES()[x];
+				for(int r=0;r<recipes.size();r++)
+				{
+					final List<String> V=recipes.get(r);
+					if((V.contains(wearLoc))
+					&&(!matches.contains(V)))
+						matches.add(V);
+				}
+			}
+		}
 		if(matches.size()==0)
 		{
 			for(int r=0;r<recipes.size();r++)
