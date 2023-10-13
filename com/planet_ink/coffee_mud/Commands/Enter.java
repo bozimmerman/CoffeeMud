@@ -87,6 +87,8 @@ public class Enter extends Go
 					final CMMsg msg=CMClass.getMsg(mob,enterThis,null,CMMsg.MSG_SIT,enterStr);
 					if(mob.location().okMessage(mob,msg))
 						mob.location().send(mob,msg);
+					else
+						CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 					return true;
 				}
 			}

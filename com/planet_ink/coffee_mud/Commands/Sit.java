@@ -95,6 +95,8 @@ public class Sit extends StdCommand
 		final CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SIT,mountStr);
 		if(R.okMessage(mob,msg))
 			R.send(mob,msg);
+		else
+			CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 		return false;
 	}
 

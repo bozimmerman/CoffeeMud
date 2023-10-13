@@ -186,6 +186,8 @@ public class Order extends StdCommand
 					if((msg.targetMinor()==CMMsg.TYP_ORDER)&&(msg.target()==target))
 						doV.add(target);
 				}
+				else
+					CMLib.commands().postCommandRejection(mob,target, null,origCmds);
 			}
 		}
 		for(int v=0;v<doV.size();v++)

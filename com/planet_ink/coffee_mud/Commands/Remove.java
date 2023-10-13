@@ -67,9 +67,12 @@ public class Remove extends StdCommand
 		for(int i=0;i<items.size();i++)
 		{
 			final Item item=items.get(i);
-			final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,L("<S-NAME> remove(s) <T-NAME>."));
-			if(mob.location().okMessage(mob,newMsg))
-				mob.location().send(mob,newMsg);
+			final CMMsg msg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,L("<S-NAME> remove(s) <T-NAME>."));
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
+			else
+			if(items.size()==1)
+				CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 		}
 		return false;
 	}

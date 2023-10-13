@@ -213,12 +213,16 @@ public class Draw extends Get
 							final CMMsg newMsg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_HOLD,null);
 							if(mob.location().okMessage(mob,newMsg))
 								mob.location().send(mob,newMsg);
+							else
+								CMLib.commands().postCommandRejection(newMsg.source(),newMsg.target(),newMsg.tool(),origCmds);
 						}
 						else
 						{
 							final CMMsg newMsg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_WIELD,null);
 							if(mob.location().okMessage(mob,newMsg))
 								mob.location().send(mob,newMsg);
+							else
+								CMLib.commands().postCommandRejection(newMsg.source(),newMsg.target(),newMsg.tool(),origCmds);
 						}
 					}
 				}

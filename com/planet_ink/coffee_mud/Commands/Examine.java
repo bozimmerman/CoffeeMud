@@ -150,6 +150,8 @@ public class Examine extends StdCommand
 				final CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,L("@x1@x2 closely.",textMsg,name));
 				if(R.okMessage(mob,msg))
 					R.send(mob,msg);
+				else
+					CMLib.commands().postCommandRejection(msg.source(),msg.target(), msg.tool(),origCmds);
 				if((mob.isAttributeSet(MOB.Attrib.AUTOEXITS))&&(thisThang instanceof Room))
 					msg.addTrailerMsg(CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_LOOK_EXITS,null));
 			}
@@ -163,6 +165,8 @@ public class Examine extends StdCommand
 				msg.addTrailerMsg(CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null));
 			if(R.okMessage(mob,msg))
 				R.send(mob,msg);
+			else
+				CMLib.commands().postCommandRejection(msg.source(),msg.target(), msg.tool(),origCmds);
 		}
 		return false;
 	}

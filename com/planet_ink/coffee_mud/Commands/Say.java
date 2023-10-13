@@ -381,6 +381,8 @@ public class Say extends StdCommand
 				}
 			}
 		}
+		else
+			CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 		if(langSwap!=null)
 		{
 			if(langSwap[0]!=null)

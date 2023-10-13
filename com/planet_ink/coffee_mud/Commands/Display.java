@@ -121,12 +121,15 @@ public class Display extends StdCommand
 		for(int i=0;i<V.size();i++)
 		{
 			final Environmental giveThis=V.get(i);
-			final CMMsg newMsg=CMClass.getMsg(recipient,giveThis,mob,CMMsg.MSG_LOOK,L("<O-NAME> show(s) <T-NAME> to <S-NAMESELF>."));
-			if(mob.location().okMessage(recipient,newMsg))
+			final CMMsg msg=CMClass.getMsg(recipient,giveThis,mob,CMMsg.MSG_LOOK,L("<O-NAME> show(s) <T-NAME> to <S-NAMESELF>."));
+			if(mob.location().okMessage(recipient,msg))
 			{
 				recipient.tell(recipient,giveThis,mob,L("<O-NAME> show(s) <T-NAME> to <S-NAMESELF>."));
-				mob.location().send(recipient,newMsg);
+				mob.location().send(recipient,msg);
 			}
+			else
+			if(V.size()==1)
+				CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 
 		}
 		return false;

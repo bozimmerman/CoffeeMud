@@ -49,6 +49,7 @@ public class Stand extends StdCommand
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
+		final List<String> origCmds = new XVector<String>(commands);
 		boolean ifnecessary=false;
 		boolean quietly=(CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_QUIETLY));
 		for(int i=1;i<commands.size();i++)
@@ -72,6 +73,8 @@ public class Stand extends StdCommand
 			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_STAND,(quietly || mob.amDead())?null:L("<S-NAME> stand(s) up."));
 			if(room.okMessage(mob,msg))
 				room.send(mob,msg);
+			else
+				CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 		}
 		return false;
 	}

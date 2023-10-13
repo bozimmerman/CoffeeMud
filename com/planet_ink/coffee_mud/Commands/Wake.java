@@ -65,6 +65,8 @@ public class Wake extends StdCommand
 					msg.modify(mob, CMMsg.MSG_STAND, null);
 					if(mob.location().okMessage(mob,msg))
 						mob.location().send(mob,msg);
+					else
+						CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 				}
 			}
 		}
@@ -88,6 +90,8 @@ public class Wake extends StdCommand
 				mob.location().send(mob,msg);
 				execute(M,null,metaFlags|MUDCmdProcessor.METAFLAG_ORDER);
 			}
+			else
+				CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 		}
 		return false;
 	}

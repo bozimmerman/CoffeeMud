@@ -71,13 +71,13 @@ public class Hold extends StdCommand
 			if((items.size()==1)||(items.get(i).canWear(mob,Wearable.WORN_HELD)))
 			{
 				final Item item=items.get(i);
-				hold(mob,item,CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_QUIETLY));
+				hold(mob,item,CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_QUIETLY),origCmds);
 			}
 		}
 		return false;
 	}
 
-	public boolean hold(final MOB mob, final Item item, final boolean quiet)
+	public boolean hold(final MOB mob, final Item item, final boolean quiet, final List<String> origCmds)
 	{
 		int msgType=CMMsg.MSG_HOLD;
 		String str=L("<S-NAME> hold(s) <T-NAME>.");
@@ -94,6 +94,8 @@ public class Hold extends StdCommand
 			mob.location().send(mob,newMsg);
 			return true;
 		}
+		else
+			CMLib.commands().postCommandRejection(newMsg.source(),newMsg.target(), newMsg.tool(),origCmds);
 		return false;
 	}
 
@@ -111,7 +113,7 @@ public class Hold extends StdCommand
 				quietly = ((Boolean)args[i]).booleanValue();
 			}
 		}
-		return Boolean.valueOf(hold(mob,targetWearI,quietly));
+		return Boolean.valueOf(hold(mob,targetWearI,quietly,new XVector<String>("HOLD")));
 	}
 
 	@Override

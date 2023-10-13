@@ -48,7 +48,7 @@ public class Open extends StdCommand
 
 	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Environmental.class,Boolean.class}};
 
-	public boolean open(final MOB mob, final Environmental openThis, final String openableWord, int dirCode, final boolean quietly)
+	public boolean open(final MOB mob, final Environmental openThis, final String openableWord, int dirCode, final boolean quietly, final List<String> origCmds)
 	{
 		final String openWord=(!(openThis instanceof Exit))?"open":((Exit)openThis).openWord();
 		final String openMsg=quietly?null:("<S-NAME> "+((openWord.indexOf('(')>0)?openWord:(openWord+"(s)"))+" <T-NAMESELF>.")+CMLib.protocol().msp("dooropen.wav",10);
@@ -103,6 +103,8 @@ public class Open extends StdCommand
 			mob.location().send(mob,msg);
 			return true;
 		}
+		else
+			CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 		return false;
 	}
 
@@ -129,7 +131,7 @@ public class Open extends StdCommand
 			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatToOpen));
 			return false;
 		}
-		open(mob,openThis,whatToOpen,dirCode,false);
+		open(mob,openThis,whatToOpen,dirCode,false,origCmds);
 		return false;
 	}
 
@@ -138,7 +140,7 @@ public class Open extends StdCommand
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
-		return Boolean.valueOf(open(mob,(Environmental)args[0],((Environmental)args[0]).name(),-1,((Boolean)args[1]).booleanValue()));
+		return Boolean.valueOf(open(mob,(Environmental)args[0],((Environmental)args[0]).name(),-1,((Boolean)args[1]).booleanValue(),new XVector<String>("OPEN")));
 	}
 
 	@Override

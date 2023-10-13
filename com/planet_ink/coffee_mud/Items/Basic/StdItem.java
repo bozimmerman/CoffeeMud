@@ -1169,6 +1169,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_EMOTE:
 		case CMMsg.TYP_WEATHER:
 		case CMMsg.TYP_SNIFF:
+		case CMMsg.TYP_COMMANDREJECT:
 			return true;
 		case CMMsg.TYP_SIT:
 			if((this instanceof DeadBody)

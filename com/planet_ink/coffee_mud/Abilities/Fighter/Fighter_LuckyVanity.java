@@ -33,15 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fighter_ConfidentVanity extends FighterSkill implements Runnable
+public class Fighter_LuckyVanity extends FighterSkill implements Runnable
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_ConfidentVanity";
+		return "Fighter_LuckyVanity";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Confident Vanity");
+	private final static String localizedName = CMLib.lang().L("Lucky Vanity");
 
 	@Override
 	public String name()
@@ -91,41 +91,75 @@ public class Fighter_ConfidentVanity extends FighterSkill implements Runnable
 		return Ability.ACODE_SKILL|Ability.DOMAIN_INFLUENTIAL;
 	}
 
+	protected volatile double gearBonus = -1;
 	protected volatile double bonus = -1;
-	protected volatile boolean enabled = false;
 
 	protected void calculateBonus(final MOB mob)
 	{
 		double bonus = 0;
 		if(mob==null)
 			return;
+		final Room R = mob.location();
+		if((R==null)||(R.numInhabitants()<((mob.riding() instanceof MOB)?3:2)))
+		{
+			this.bonus=0;
+			return;
+		}
+		boolean seen = false;
+		final CMFlagLibrary flagLib = CMLib.flags();
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M = m.nextElement();
+			if((M != mob)
+			&&(M != mob.riding())
+			&&(flagLib.canBeSeenBy(mob, M)))
+			{
+				seen=true;
+				break;
+			}
+		}
+		if(!seen)
+		{
+			this.bonus=0;
+			return;
+		}
+		if(this.gearBonus>=0)
+		{
+			this.bonus = this.gearBonus;
+			return;
+		}
 		int max = 1 + super.getXLEVELLevel(mob);
 		for(final Enumeration<Item> i = mob.items();i.hasMoreElements();)
 		{
 			final Item I = i.nextElement();
 			if((I instanceof Armor)
+			&&(I.rawWornCode() != 0)
 			&& (I.amBeingWornProperly())
 			&& (!I.amWearingAt(Item.WORN_FLOATING_NEARBY))
 			&& (CMLib.itemBuilder().calculateBaseValue(I)*3<I.baseGoldValue())
 			&& ((--max)>=0))
-				bonus += 0.1;
+				bonus += 5;
 		}
 		if((bonus > 0)&&(proficiency()<100))
 			this.bonus = bonus * CMath.div(proficiency(), 100.0);
 		else
 			this.bonus = bonus;
+		this.gearBonus = bonus;
 	}
 
 	@Override
-	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats charStats)
 	{
-		super.affectPhyStats(affected,affectableStats);
-		if((!(affected instanceof MOB))||(!enabled))
-			return;
 		if(bonus < 0)
-			calculateBonus((MOB)affected);
+			calculateBonus(affectedMob);
 		if(bonus > 0)
-			affectableStats.setAttackAdjustment((int)Math.round(CMath.mul(affectableStats.attackAdjustment(), 1.0+bonus)));
+		{
+			charStats.setStat(CharStats.STAT_SAVE_MIND, charStats.getStat(CharStats.STAT_SAVE_MIND)+(int)bonus);
+			charStats.setStat(CharStats.STAT_SAVE_POISON, charStats.getStat(CharStats.STAT_SAVE_POISON)+(int)bonus);
+			charStats.setStat(CharStats.STAT_SAVE_PARALYSIS, charStats.getStat(CharStats.STAT_SAVE_PARALYSIS)+(int)bonus);
+			charStats.setStat(CharStats.STAT_SAVE_DISEASE, charStats.getStat(CharStats.STAT_SAVE_DISEASE)+(int)bonus);
+			charStats.setStat(CharStats.STAT_SAVE_TRAPS, charStats.getStat(CharStats.STAT_SAVE_TRAPS)+(int)bonus);
+		}
 	}
 
 	@Override
@@ -136,34 +170,8 @@ public class Fighter_ConfidentVanity extends FighterSkill implements Runnable
 		if(!(ticking instanceof MOB))
 			return true;
 		final MOB mob=(MOB)ticking;
-		if(!mob.isInCombat())
-		{
-			if(enabled)
-			{
-				enabled = false;
-				mob.recoverPhyStats();
-			}
-			return true;
-		}
-		if((CMLib.flags().canBeSeenBy(mob.getVictim(),mob))
-		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))
-		{
-			if(!enabled)
-			{
-				enabled = true;
-				mob.recoverPhyStats();
-			}
-			if((bonus>0)&&(CMLib.dice().rollPercentage()==1))
-				helpProficiency(mob, 0);
-		}
-		else
-		{
-			if(enabled)
-			{
-				enabled = false;
-				mob.recoverPhyStats();
-			}
-		}
+		if((bonus>0)&&(CMLib.dice().rollPercentage()==1))
+			helpProficiency(mob, 0);
 		return true;
 	}
 
@@ -171,6 +179,9 @@ public class Fighter_ConfidentVanity extends FighterSkill implements Runnable
 	public void run()
 	{
 		this.bonus = -1;
+		final MOB mob = (affecting() instanceof MOB)?(MOB)affecting():null;
+		if(mob != null)
+			mob.recoverPhyStats();
 		// if you really need to recover in here, it's ok
 	}
 
@@ -187,10 +198,20 @@ public class Fighter_ConfidentVanity extends FighterSkill implements Runnable
 			case CMMsg.TYP_WIELD:
 			case CMMsg.TYP_HOLD:
 			case CMMsg.TYP_REMOVE:
+			{
+				this.gearBonus = -1;
 				if(msg.trailerRunnables()==null)
 					msg.addTrailerRunnable(this);
 				break;
 			}
+			}
+		}
+		else
+		if((msg.target() instanceof Room)
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER))
+		{
+			if(msg.trailerRunnables()==null)
+				msg.addTrailerRunnable(this);
 		}
 	}
 }

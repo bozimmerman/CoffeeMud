@@ -133,6 +133,9 @@ public class Whisper extends StdCommand
 							}
 							if(R.okMessage(mob,msg))
 								R.sendOthers(mob,msg);
+							else
+							if(targets.size()==1)
+								CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 						}
 					}
 				}
@@ -146,6 +149,8 @@ public class Whisper extends StdCommand
 				CMMsg.MSG_QUIETMOVEMENT,L("^T<S-NAME> whisper(s) something to <T-NAMESELF>.^?@x1",CMLib.protocol().msp("whisper.wav",40)));
 			if(R.okMessage(mob,msg))
 				R.send(mob,msg);
+			else
+				CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 		}
 		return false;
 	}

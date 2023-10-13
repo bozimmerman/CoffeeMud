@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fighter_ArmoredVanity extends FighterSkill
+public class Fighter_ArmoredVanity extends FighterSkill implements Runnable
 {
 	@Override
 	public String ID()
@@ -168,14 +168,12 @@ public class Fighter_ArmoredVanity extends FighterSkill
 		return true;
 	}
 
-	public Runnable reRun = new Runnable()
+	@Override
+	public void run()
 	{
-		@Override
-		public void run()
-		{
-			bonus = -1;
-		}
-	};
+		this.bonus = -1;
+		// if you really need to recover in here, it's ok
+	}
 
 	@Override
 	public void executeMsg(final Environmental affecting, final CMMsg msg)
@@ -191,7 +189,7 @@ public class Fighter_ArmoredVanity extends FighterSkill
 			case CMMsg.TYP_HOLD:
 			case CMMsg.TYP_REMOVE:
 				if(msg.trailerRunnables()==null)
-					msg.addTrailerRunnable(reRun);
+					msg.addTrailerRunnable(this);
 				break;
 			}
 		}

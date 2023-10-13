@@ -80,17 +80,19 @@ public class Deposit extends StdCommand
 		else
 		if(((Coins)thisThang).getNumberOfCoins()<CMLib.english().parseNumPossibleGold(mob,thisName))
 			return false;
-		CMMsg newMsg=null;
+		CMMsg msg=null;
 		if(SHOP instanceof Librarian)
-			newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,L("<S-NAME> deposit(s) <O-NAME> with <T-NAMESELF>."));
+			msg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,L("<S-NAME> deposit(s) <O-NAME> with <T-NAMESELF>."));
 		else
 		if(SHOP instanceof Banker)
-			newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,L("<S-NAME> deposit(s) <O-NAME> into <S-HIS-HER> account with <T-NAMESELF>."));
+			msg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,L("<S-NAME> deposit(s) <O-NAME> into <S-HIS-HER> account with <T-NAMESELF>."));
 		else
 		if(SHOP instanceof PostOffice)
-			newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,L("<S-NAME> mail(s) <O-NAME>."));
-		if(mob.location().okMessage(mob,newMsg))
-			mob.location().send(mob,newMsg);
+			msg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,L("<S-NAME> mail(s) <O-NAME>."));
+		if(mob.location().okMessage(mob,msg))
+			mob.location().send(mob,msg);
+		else
+			CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 		return false;
 	}
 

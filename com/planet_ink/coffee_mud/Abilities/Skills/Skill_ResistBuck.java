@@ -93,22 +93,65 @@ public class Skill_ResistBuck extends StdSkill
 		return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS;
 	}
 
+	protected volatile MOB curMount = null;
+	protected volatile int mountTicks = 0;
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if((curMount != null)
+		&&(affected instanceof MOB))
+		{
+			final MOB mountM = curMount;
+			final MOB mob=(MOB)affected;
+			if((mob.riding() == mountM)
+			&&(mountTicks>0))
+			{
+				if(--mountTicks <= 0)
+				{
+					if(!mountM.basePhyStats().isAmbiance("@NOAUTOBUCK"))
+						mountM.basePhyStats().addAmbiance("@NOAUTOBUCK");
+					final Behavior B = mountM.fetchBehavior("Skill_Buck");
+					if(B != null)
+						mountM.delBehavior(B);
+					mountM.recoverPhyStats();
+				}
+			}
+			else
+			{
+				curMount = null;
+				mountTicks = 0;
+			}
+		}
+		return true;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.target()==affected)
 		&&(msg.tool() instanceof Ability)
 		&&(((Ability)msg.tool()).ID().equals("Skill_Buck"))
-		&&(affected instanceof MOB)
-		)
+		&&(affected instanceof MOB))
 		{
-			final int chance = super.getXLEVELLevel((MOB)affected) + (int)Math.round(100.0*CMath.mul(proficiency(), 0.9));
+			final MOB mob = (MOB)affected;
+			final int chance = super.getXLEVELLevel(mob) + (int)Math.round(100.0*CMath.mul(proficiency(), 0.9));
 			if(CMLib.dice().rollPercentage()<=chance)
 			{
-				final Room R =((MOB)affected).location();
+				final Room R =(mob).location();
 				if(R != null)
 				{
-					if(R.show((MOB)affected, msg.source(), CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> resist(s) <T-YOUPOSS> attempt to buck <S-HIM-HER>.")))
+					if((this.curMount != msg.source())
+					&&(msg.source() instanceof Rideable)
+					&&(((Rideable)msg.source()).amRiding(mob)))
+					{
+						this.curMount = msg.source();
+						this.mountTicks = 30 - super.getXLEVELLevel(mob);
+					}
+					super.helpProficiency(mob, 0);
+					if(R.show(mob, msg.source(), CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> resist(s) <T-YOUPOSS> attempt to buck <S-HIM-HER>.")))
 						return false;
 				}
 			}

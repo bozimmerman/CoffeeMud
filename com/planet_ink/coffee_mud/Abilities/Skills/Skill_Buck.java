@@ -241,7 +241,6 @@ public class Skill_Buck extends StdSkill implements Behavior
 			mob.tell(L("There is no one on you to buck!"));
 			return false;
 		}
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

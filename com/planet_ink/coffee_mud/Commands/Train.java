@@ -430,7 +430,10 @@ public class Train extends StdCommand
 
 		final CMMsg msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> train(s) with <T-NAMESELF>."));
 		if(!mob.location().okMessage(mob,msg))
+		{
+			CMLib.commands().postCommandRejection(teacher,mob, null,origCmds);
 			return false;
+		}
 		mob.location().send(mob,msg);
 		finalCost.doSpend(mob);
 		switch(trainType)

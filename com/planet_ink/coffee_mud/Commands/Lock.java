@@ -125,6 +125,8 @@ public class Lock extends StdCommand
 		else
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
+		else
+			CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 		return false;
 	}
 

@@ -48,7 +48,7 @@ public class Close extends StdCommand
 
 	private final static Class<?>[][]	internalParameters	= new Class<?>[][] { { Environmental.class, String.class, Integer.class } };
 
-	public boolean closeMe(final MOB mob, final Environmental closeThis, final String whatToClose, int dirCode)
+	public boolean closeMe(final MOB mob, final Environmental closeThis, final String whatToClose, int dirCode, final List<String> origCmds)
 	{
 		final Directions.DirType dirType=CMLib.flags().getInDirType(mob);
 		final String closeWord=(!(closeThis instanceof Exit))?"close":((Exit)closeThis).closeWord();
@@ -100,6 +100,8 @@ public class Close extends StdCommand
 			mob.location().send(mob,msg);
 			return true;
 		}
+		else
+			CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 		return false;
 	}
 
@@ -126,7 +128,7 @@ public class Close extends StdCommand
 			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatToClose));
 			return false;
 		}
-		return closeMe(mob,closeThis,whatToClose,dirCode);
+		return closeMe(mob,closeThis,whatToClose,dirCode,origCmds);
 	}
 
 	@Override
@@ -134,7 +136,7 @@ public class Close extends StdCommand
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
-		return Boolean.valueOf(closeMe(mob, (Environmental)args[0], (String)args[1], ((Integer)args[2]).intValue()));
+		return Boolean.valueOf(closeMe(mob, (Environmental)args[0], (String)args[1], ((Integer)args[2]).intValue(), new XVector<String>("CLOSE")));
 	}
 
 	@Override

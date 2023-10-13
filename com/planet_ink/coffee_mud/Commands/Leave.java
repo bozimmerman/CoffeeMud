@@ -116,6 +116,8 @@ public class Leave extends StdCommand
 			final CMMsg msg=CMClass.getMsg(mob,riding,null,CMMsg.MSG_DISMOUNT,L("<S-NAME> @x1 <T-NAMESELF>.",riding.dismountString(mob)));
 			if(R.okMessage(mob,msg))
 				R.send(mob,msg);
+			else
+				CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 		}
 		return false;
 	}

@@ -284,6 +284,8 @@ public class Look extends StdCommand
 				}
 				if(R.okMessage(mob,msg))
 					R.send(mob,msg);
+				else
+					CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 			}
 			else
 				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see that here!"));
@@ -318,10 +320,14 @@ public class Look extends StdCommand
 					else
 						R.send(mob,msg);
 				}
+				else
+					CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 			}
 			else
 			if(R.okMessage(mob,msg))
 				((Room)msg.target()).send(mob,msg);
+			else
+				CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 		}
 		return false;
 	}

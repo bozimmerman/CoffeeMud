@@ -163,7 +163,21 @@ public class Fighter_FavoredMount extends StdAbility
 		{
 			final Pair<String,String> p  = pickMount((MOB)affected);
 			if (p != null)
+			{
 				super.setMiscText(p.first+","+p.second);
+				if(this.isNowAnAutoEffect())
+				{
+					final Ability A = mob.fetchAbility(ID());
+					if(A!=null)
+						A.setMiscText(p.first+","+p.second);
+				}
+				else
+				{
+					final Ability A = mob.fetchEffect(ID());
+					if(A!=null)
+						A.setMiscText(p.first+","+p.second);
+				}
+			}
 		}
 		if(pair == null)
 		{

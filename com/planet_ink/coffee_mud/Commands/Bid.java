@@ -116,12 +116,15 @@ public class Bid extends StdCommand
 		for(int v=0;v<V.size();v++)
 		{
 			final Environmental thisThang=V.get(v);
-			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,
+			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,thisThang,
 					CMMsg.MSG_BID,L("<S-NAME> bid(s) @x1 on <O-NAME> with <T-NAMESELF>.",bidStr),
 					CMMsg.MSG_BID,L("<S-NAME> bid(s) '@x1' on <O-NAME> with <T-NAMESELF>.",bidStr),
 					CMMsg.MSG_BID,L("<S-NAME> place(s) a bid with <T-NAMESELF>."));
-			if(mob.location().okMessage(mob,newMsg))
-				mob.location().send(mob,newMsg);
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
+			else
+			if(V.size()==1)
+				CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 		}
 		return false;
 	}

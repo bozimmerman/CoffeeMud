@@ -66,6 +66,7 @@ public class Emote extends StdCommand
 		final Room R=mob.location();
 		if(R==null)
 			return false;
+		final List<String> origCmds = new XVector<String>(commands);
 		if(commands.size()<2)
 		{
 			if((commands.size()>0)&&(commands.get(0).equalsIgnoreCase(",")))
@@ -157,6 +158,8 @@ public class Emote extends StdCommand
 			}
 
 		}
+		else
+			CMLib.commands().postCommandRejection(msg.source(),msg.target(), msg.tool(),origCmds);
 		return false;
 	}
 

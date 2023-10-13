@@ -68,6 +68,8 @@ public class Disembark extends StdCommand
 		final CMMsg msg=CMClass.getMsg(mob,mob.riding(),null,CMMsg.MSG_DISMOUNT,L("<S-NAME> @x1 <T-NAMESELF>.",mob.riding().dismountString(mob)));
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
+		else
+			CMLib.commands().postCommandRejection(msg.source(),msg.target(), msg.tool(),origCmds);
 		return false;
 	}
 

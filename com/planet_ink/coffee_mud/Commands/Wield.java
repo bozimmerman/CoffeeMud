@@ -64,7 +64,7 @@ public class Wield extends StdCommand
 		return false;
 	}
 
-	protected boolean wield(final List<Item> items, final MOB mob, final boolean quietly)
+	protected boolean wield(final List<Item> items, final MOB mob, final boolean quietly, final List<String> origCmds)
 	{
 		for(int i=0;i<items.size();i++)
 		{
@@ -73,6 +73,9 @@ public class Wield extends StdCommand
 				final Item item=items.get(i);
 				if(wield(mob, item, quietly))
 					return true;
+				else
+				if(items.size()==1)
+					CMLib.commands().postCommandRejection(mob, item, null,origCmds);
 			}
 		}
 		return false;
@@ -93,7 +96,7 @@ public class Wield extends StdCommand
 		if(items.size()==0)
 			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
-			wield(items,mob,CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_QUIETLY));
+			wield(items,mob,CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_QUIETLY),origCmds);
 		return false;
 	}
 

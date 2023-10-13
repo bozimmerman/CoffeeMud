@@ -160,6 +160,8 @@ public class Dress extends StdCommand
 						CMLib.commands().postCommandFail(mob,origCmds,L("You cannot seem to get @x1 to @x2.",item.name(),target.name(mob)));
 				}
 			}
+			else
+				CMLib.commands().postCommandRejection(mob,target,item,origCmds);
 		}
 		return false;
 	}

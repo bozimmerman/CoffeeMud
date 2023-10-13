@@ -1099,6 +1099,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', unknown area '"+CMParms.combine(p,2)+"'.");
 							break;
 						}
+						else
+							q.envObject = q.area;
 					}
 					else
 					if(cmd.equals("AREAGROUP"))
@@ -1298,7 +1300,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						q.envObject=q.mob;
 						runtimeRegisterObject(q.mob);
 						if(q.room!=null)
-						{
+ 						{
 							q.area=q.room.getArea();
 							q.room.recoverRoomStats();
 							q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
@@ -3865,14 +3867,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					else
 					if(cmd.equals("STAT"))
 					{
-						final Object o = (q.envObject==null)?q.area:q.envObject;
-						if(o == null)
-						{
-							if(optional)
-								continue;
-							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give stat, no mob or item set.");
-							break;
-						}
 						if(p.size()<3)
 						{
 							if(optional)
@@ -3881,6 +3875,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							break;
 						}
 						final String stat=p.get(2);
+						final Object o = (q.envObject==null)?q.area:q.envObject;
+						if(o == null)
+						{
+							if(optional)
+								continue;
+							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give stat, no mob or item set.");
+							break;
+						}
 						final String val=CMParms.rest(s,3);
 						List<Environmental> toSet=new ArrayList<Environmental>();
 						if(o instanceof List)
@@ -3891,11 +3893,17 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						for(int i=0;i<toSet.size();i++)
 						{
 							final Environmental E2=toSet.get(i);
-							if(stat.equalsIgnoreCase("SUPPRESSLAW") && (E2 instanceof Area))
+							if(stat.equalsIgnoreCase("SUPPRESSLAW"))
 							{
-								final LegalBehavior B = CMLib.law().getLegalBehavior((Area)E2);
-								if(B != null)
-									B.suppressLaws(val, this);
+								if(E2 instanceof Area)
+								{
+									final Area A = (Area)E2;
+									final LegalBehavior B = CMLib.law().getLegalBehavior(A);
+									if(B != null)
+										B.suppressLaws(val, this);
+								}
+								else
+									errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give suppresslaw to "+E2.name()+".");
 							}
 							else
 							if(stat.equalsIgnoreCase("KEYPLAYER") && (E2 instanceof Physical))

@@ -220,10 +220,10 @@ public class Cavalier extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_FaithfulMount",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_BreakMount",false); //TODO
-		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_WagonTrain",false); //TODO
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_BreakMount",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_WagonTrain",false); //TODO
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_CaravanTactics",false); //TODO
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_CaravanTactics",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_LuckyVanity",false); //TODO
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_PolearmSweep",false); //TODO

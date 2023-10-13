@@ -84,7 +84,7 @@ public class Mount extends StdCommand
 			}
 			if(RI==null)
 			{
-				MOB M=getVisibleRoomTarget(mob,commands.get(0));
+				final MOB M=getVisibleRoomTarget(mob,commands.get(0));
 				if(M!=null)
 				{
 					if(!CMLib.flags().canBeSeenBy(M,mob))
@@ -148,6 +148,8 @@ public class Mount extends StdCommand
 		final CMMsg msg=CMClass.getMsg(mob,recipient,RI,CMMsg.MSG_MOUNT,mountStr);
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
+		else
+			CMLib.commands().postCommandRejection(msg.source(), msg.target(), msg.tool(), origCmds);
 		return false;
 	}
 

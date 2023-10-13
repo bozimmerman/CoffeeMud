@@ -101,9 +101,12 @@ public class Value extends StdCommand
 		for(int v=0;v<itemsV.size();v++)
 		{
 			final Item thisThang=itemsV.get(v);
-			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_VALUE,null);
-			if(mob.location().okMessage(mob,newMsg))
-				mob.location().send(mob,newMsg);
+			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_VALUE,null);
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
+			else
+			if(itemsV.size()==1)
+				CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 		}
 		return false;
 	}

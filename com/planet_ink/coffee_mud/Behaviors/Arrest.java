@@ -598,7 +598,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				{
 					final String[] crimeSet = laws.basicCrimes().get(crime);
 					if(crimeSet != null)
+					{
 						crime = crimeSet[Law.BIT_CRIMENAME].toUpperCase().trim();
+					}
 				}
 			}
 			if(until == null)
