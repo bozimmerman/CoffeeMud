@@ -1524,7 +1524,8 @@ public class StdMOB implements MOB
 	public void setRangeToTarget(final int newRange)
 	{
 		atRange = newRange;
-		CMLib.combat().fixDependentRanges(this);
+		if(newRange >=0)
+			CMLib.combat().fixDependentRanges(this);
 	}
 
 	@Override
@@ -1617,7 +1618,6 @@ public class StdMOB implements MOB
 	{
 		if(other == null)
 		{
-			setRangeToTarget(-1);
 			if(victim != null)
 			{
 				synchronized(commandQue)
@@ -1631,6 +1631,8 @@ public class StdMOB implements MOB
 		if(other == this)
 			return;
 		victim = other;
+		if(other == null)
+			setRangeToTarget(-1);
 		recoverPhyStats();
 		recoverCharStats();
 		recoverMaxState();

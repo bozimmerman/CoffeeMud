@@ -268,6 +268,7 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_BladeBarrier",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CureFatigue",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Paladin_CommandHorse",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_RideToTheRescue",false);
 
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
 		{

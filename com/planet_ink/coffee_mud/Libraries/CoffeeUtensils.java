@@ -3129,17 +3129,20 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	public PairList<String,Race> getFavoredMounts(final MOB mob)
 	{
 		final PairList<String, Race> steeds = new PairVector<String, Race>();
-		for(final String aID : steedSkills)
+		if(mob != null)
 		{
-			final Ability A = mob.fetchEffect(aID);
-			if (A != null)
+			for(final String aID : steedSkills)
 			{
-				final List<String> aP = CMParms.parseCommas(A.text(), true);
-				if (aP.size() == 2)
+				final Ability A = mob.fetchEffect(aID);
+				if (A != null)
 				{
-					final Race R = CMClass.getRace(aP.get(1));
-					if(R != null)
-						steeds.add(aP.get(0), R);
+					final List<String> aP = CMParms.parseCommas(A.text(), true);
+					if (aP.size() == 2)
+					{
+						final Race R = CMClass.getRace(aP.get(1));
+						if(R != null)
+							steeds.add(aP.get(0), R);
+					}
 				}
 			}
 		}

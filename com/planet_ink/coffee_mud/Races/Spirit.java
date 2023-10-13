@@ -138,6 +138,8 @@ public class Spirit extends Undead
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		if(!super.okMessage(myHost, msg))
+			return false;
 		if(((msg.targetMinor()==CMMsg.TYP_UNDEAD)
 			||(msg.sourceMinor()==CMMsg.TYP_UNDEAD))
 		&&((!(myHost instanceof MOB))
@@ -159,6 +161,18 @@ public class Spirit extends Undead
 				else
 					R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,L("<T-NAME> seem(s) immune to @x1.",immunityName));
 			}
+			return false;
+		}
+		else
+		if((msg.target()==myHost)
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
+		&&(myHost instanceof MOB)
+		&&(msg.tool() instanceof Ability)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ROPEUSE))
+		{
+			final Room R=CMLib.map().roomLocation(msg.target());
+			R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,
+					L("The @x1 attack from <S-NAME> doesn't seem useful against <T-NAME>.",msg.tool().name()));
 			return false;
 		}
 		return true;

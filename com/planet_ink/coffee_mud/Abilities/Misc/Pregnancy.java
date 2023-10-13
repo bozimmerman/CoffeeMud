@@ -404,7 +404,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 					addictions.setMiscText(RawMaterial.CODES.NAME(((RawMaterial)msg.target()).material()));
 				else
 				if(CMLib.dice().rollPercentage()>75)
-					addictions.setMiscText(RawMaterial.CODES.NAME(((RawMaterial)msg.target()).material()));
+					addictions.setMiscText(RawMaterial.CODES.NAME(((Food)msg.target()).material()));
 				else
 					addictions.setMiscText(msg.target().Name());
 			}

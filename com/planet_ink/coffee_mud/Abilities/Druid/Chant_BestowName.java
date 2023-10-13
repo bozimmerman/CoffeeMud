@@ -117,8 +117,7 @@ public class Chant_BestowName extends Chant
 			mob.tell(L("You must specify the animal, and a name to give him."));
 			return false;
 		}
-		String myName=(commands.get(commands.size()-1)).trim();
-		commands.remove(commands.size()-1);
+		String myName=CMStrings.capitalizeAndLower(commands.remove(commands.size()-1)).trim();
 		if(myName.length()==0)
 		{
 			mob.tell(L("You must specify a name."));
