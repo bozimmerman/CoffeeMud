@@ -294,7 +294,7 @@ public class Directions
 	/**
 	 * Returns a string list of all of the permitted direction names. Either 6 or 10.
 	 * @param dirType the type/flavor of direction names to use
-	 * 
+	 *
 	 * @return a string list of all of the permitted direction names. Either 6 or 10.
 	 */
 	public static final String NAMES_LIST(final DirType dirType)
@@ -308,11 +308,11 @@ public class Directions
 		case COMPASS:
 		default:
 			return d().DIRECTION_NAMES;
-		
+
 		}
 	}
 
-	
+
 	/**
 	 * Returns the formal direction name of the partial direction given.
 	 * @param theDir the partial direction name, case insensitive
@@ -482,10 +482,10 @@ public class Directions
 		return "";
 	}
 
-	/** 
+	/**
 	 * Given the direction code, and the type/flavor of direction, this
 	 * will return the normal direction name.
-	 * 
+	 *
 	 * @param code the direction code
 	 * @param typ true the direction type/flavor to use
 	 * @return the name of the direction, normal-style
@@ -503,7 +503,7 @@ public class Directions
 			return getDirectionName(code);
 		}
 	}
-	
+
 	/**
 	 * Given the direction code, returns the formal name of that direction, capitalized.
 	 * @param code the direction code
@@ -835,7 +835,7 @@ public class Directions
 	 * string and return the direction it probably represents.  It gives
 	 * preference to actual direction names, such as port and north, but
 	 * if all fail, it will try prefixes, such as por, nor, etc.
-	 * 
+	 *
 	 * @param theDir the ship-talk direction search string
 	 * @param typ the direction type/flavor code
 	 * @return the direction code it represents, or -1 if no match at ALL
@@ -853,7 +853,7 @@ public class Directions
 			return getGoodDirectionCode(theDir);
 		}
 	}
-	
+
 	/**
 	 * Given a string which is technically supposed to be a ship-talk direction name,
 	 * this method will make a case-insensitive check against the given
@@ -1016,13 +1016,13 @@ public class Directions
 			return DIRECTIONS_COMPASS_FROM_INDEXED[code];
 		return "";
 	}
-	
+
 
 	/**
 	 * Returns the proper english compass direction name to follow the preposition
 	 * "from" when talking about something or someone coming FROM the given direction
 	 * code.  Completes the following sentence: "Joe arrived from ..."
-	 * 
+	 *
 	 * @param code the direction code
 	 * @param typ the type/flavor of direction
 	 * @return the name of the direction phrase
@@ -1082,13 +1082,13 @@ public class Directions
 	}
 
 
-	/** 
+	/**
 	 * Given the direction code, and the type/flavor of direction, this
 	 * returns the proper english compass direction name to follow the preposition
 	 * "happens" when talking about something happening in the given direction
 	 * code.  Completes the following sentence: "You hear something happen ..."
 	 * Usually begins with "to the", such as "to the north", "to the northeast", etc.
-	 * 
+	 *
 	 * @param code the direction code
 	 * @param typ true the direction type/flavor to use
 	 * @return the name of the direction, normal-style
@@ -1106,7 +1106,7 @@ public class Directions
 			return getInDirectionName(code);
 		}
 	}
-	
+
 	/**
 	 * Returns the proper english compass direction name to follow the preposition
 	 * "happens" when talking about something happening in the given direction
@@ -1186,6 +1186,83 @@ public class Directions
 			return GATE;
 		}
 		return -1;
+	}
+
+	/**
+	 * Given two coordinates in x,y, this will return the set of directional moves
+	 * required to get from the first to the second.
+	 * @param curXY the current coordinates
+	 * @param tgtXY the target coordinates
+	 * @return an array of the directions to go from one to the other
+	 */
+	public static final int[] getGradualCourse(final int[] curXY, final int[] tgtXY)
+	{
+		int xdiff = Math.abs(curXY[0]-tgtXY[0]);
+		int ydiff = Math.abs(curXY[1]-tgtXY[1]);
+		final List<Integer> lst = new ArrayList<Integer>(xdiff+ydiff);
+		if((Directions.NUM_DIRECTIONS() == 11)
+		&&(xdiff != 0)
+		&&(ydiff != 0))
+		{
+			int nwdir;
+			if(curXY[0] > tgtXY[0])
+			{
+				if(curXY[1] > tgtXY[1])
+					nwdir = Directions.NORTHWEST;
+				else
+					nwdir = Directions.SOUTHWEST;
+			}
+			else
+			if(curXY[1] > tgtXY[1])
+				nwdir = Directions.NORTHEAST;
+			else
+				nwdir = Directions.SOUTHEAST;
+			final int diff = Math.abs(xdiff - ydiff);
+			for(int i=0;i<diff;i++)
+				lst.add(Integer.valueOf(nwdir));
+			xdiff -= diff;
+			ydiff -= diff;
+		}
+		if(xdiff > ydiff)
+		{
+			if(curXY[0] != tgtXY[0])
+			{
+				int xdir;
+				if(curXY[0] > tgtXY[0])
+					xdir = Directions.WEST;
+				else
+					xdir = Directions.EAST;
+				for(int i=0;i<xdiff;i++)
+					lst.add(Integer.valueOf(xdir));
+			}
+		}
+		if(curXY[1] != tgtXY[1])
+		{
+			int ydir;
+			if(curXY[1] > tgtXY[1])
+				ydir = Directions.NORTH;
+			else
+				ydir = Directions.SOUTH;
+			for(int i=0;i<ydiff;i++)
+				lst.add(Integer.valueOf(ydir));
+		}
+		if(xdiff >= ydiff)
+		{
+			if(curXY[0] != tgtXY[0])
+			{
+				int xdir;
+				if(curXY[0] > tgtXY[0])
+					xdir = Directions.WEST;
+				else
+					xdir = Directions.EAST;
+				for(int i=0;i<xdiff;i++)
+					lst.add(Integer.valueOf(xdir));
+			}
+		}
+		final int[] ret = new int[lst.size()];
+		for(int i=0;i<lst.size();i++)
+			ret[i] = lst.get(i).intValue();
+		return ret;
 	}
 
 	/**

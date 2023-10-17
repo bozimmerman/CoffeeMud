@@ -54,6 +54,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 	protected volatile Item			tenderItem			= null;
 	protected List<Item>			smallTenderRequests	= new SLinkedList<Item>();
 	protected volatile Room			prevItemRoom		= null;
+	protected volatile Item			following			= null;
 	protected int					ticksPerTurn		= 1;
 
 	protected String	verb_sail		= "navigate";
@@ -104,7 +105,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		TENDER,
 		RAISE,
 		LOWER,
-		JUMP
+		JUMP,
+		FOLLOW
 		;
 	}
 
@@ -198,6 +200,23 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		return true;
 	}
 
+	protected void stopFollowing(final MOB mob)
+	{
+		final Item old;
+		synchronized(this)
+		{
+			old = this.following;
+		}
+		if(old != null)
+		{
+			this.following = null;
+			if(mob != null)
+				mob.tell(L("@x1 is no longer following @x2.",name(),old.name()));
+			courseDirection = -1;
+			courseDirections.clear();
+		}
+	}
+
 	protected boolean canJumpFromHere(final Room R)
 	{
 		if(((R.domainType()&Room.INDOORS)!=0)
@@ -223,6 +242,9 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			{
 				switch(cmd)
 				{
+				case FOLLOW:
+					// handled by command-fail
+					break;
 				case TENDER:
 				{
 					if(cmds.size()==1)
@@ -482,6 +504,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						msg.source().tell(L("The captain does not permit you."));
 						return false;
 					}
+					stopFollowing(msg.source());
 					if(safetyMove())
 					{
 						msg.source().tell(L("The "+noun_word+" has moved!"));
@@ -510,6 +533,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						msg.source().tell(L("The captain does not permit you."));
 						return false;
 					}
+					stopFollowing(msg.source());
 					if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
 					{
 						msg.source().tell(L("The "+noun_word+" won't seem to move!"));
@@ -580,6 +604,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						msg.source().tell(L("The captain does not permit you."));
 						return false;
 					}
+					stopFollowing(msg.source());
 					if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
 					{
 						msg.source().tell(L("The "+noun_word+" won't seem to move!"));
@@ -653,6 +678,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						msg.source().tell(L("The captain does not permit you."));
 						return false;
 					}
+					stopFollowing(msg.source());
 					if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
 					{
 						msg.source().tell(L("The "+noun_word+" won't seem to move!"));
@@ -795,6 +821,69 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				msg.source().enqueCommand(cmds, MUDCmdProcessor.METAFLAG_ASMESSAGE, speed);
 				return false;
 			}
+		}
+		else
+		if((msg.sourceMinor()==CMMsg.TYP_COMMANDFAIL)
+		&&(msg.targetMessage()!=null)
+		&&(msg.targetMessage().length()>0)
+		&&(Character.toUpperCase(msg.targetMessage().charAt(0))=='F')
+		&&(area == CMLib.map().areaLocation(msg.source())))
+		{
+			final List<String> cmds=CMParms.parse(msg.targetMessage());
+			if(cmds.size()<2)
+				return true;
+			final String word=cmds.get(0).toUpperCase();
+			final NavigatingCommand cmd=this.findNavCommand(word, "");
+			if(cmd == NavigatingCommand.FOLLOW)
+			{
+				final String arg=CMParms.combine(cmds,1);
+				final Room R=CMLib.map().roomLocation(this);
+				if((R==null)||(msg.source().location()==null))
+				{
+					msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
+					return false;
+				}
+				stopFollowing(msg.source());
+				final Item I = R.findItem(null, arg);
+				if((I==null)||(!CMLib.flags().canBeSeenBy(I, msg.source())))
+					return true;
+				if(I==this)
+				{
+					msg.source().tell(L("@x1 can't follow itself.",name()));
+					return false;
+				}
+				if((I instanceof NavigableItem)
+				&&(((NavigableItem)I).rideBasis() == rideBasis())
+				&&(((NavigableItem)I).navBasis() == navBasis()))
+				{ /* yeah */ }
+				else
+				if((I instanceof Rideable)
+				&&(((Rideable)I).mobileRideBasis())
+				&&(((Rideable)I).rideBasis() == navBasis()))
+				{ /* yeah */ }
+				else
+				{
+					msg.source().tell(L("@x1 is not something @x2 can follow.",I.name(msg.source()),name()));
+					return false;
+				}
+				if(!canSteer(msg.source(), msg.source().location()))
+					return false;
+				if(anchorDown)
+					msg.source().tell(L("The "+anchor_name+" is "+anchor_verbed+"."));
+				else
+				if(amInTacticalMode())
+				{
+					msg.source().tell(L("Not while @x1 is in combat!",name()));
+					return false;
+				}
+				else
+				{
+					msg.source().tell(L("@x2 is now following @x1.",I.name(msg.source()),name()));
+					this.following = I;
+				}
+				return false;
+			}
+			return true;
 		}
 		else
 		if((msg.sourceMinor()==CMMsg.TYP_COMMAND)
@@ -1040,6 +1129,78 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		return coords;
 	}
 
+	protected List<Integer> getFollowingCourse(final Item followingI)
+	{
+		final ItemPossessor tgtP;
+		final ItemPossessor curP;
+		synchronized(followingI)
+		{
+			tgtP = followingI.owner();
+		}
+		synchronized(this)
+		{
+			curP = owner();
+		}
+		if((tgtP instanceof Room)
+		&&(curP instanceof Room))
+		{
+			final int speed=getMaxSpeed();
+			final List<Integer> newCourse = new Vector<Integer>();
+			if(amInTacticalMode())
+			{
+				return null;
+				/*
+				if (tgtP != curP)
+					return null;
+				if(!(followingI instanceof SiegableItem))
+					return null;
+				final int[] tacticalCoords =super.getTacticalCoords();
+				final int[] targetCoords = super.getTacticalCoordinates((SiegableItem)followingI);
+				final int[] course = Directions.getGradualCourse(tacticalCoords, targetCoords);
+				if(course.length==0)
+					return newCourse;
+				int facing = getDirectionFacing(course[0]);
+				for(int i=0;i<course.length;i++)
+				{
+					while(facing != course[i])
+					{
+						final int steer = Directions.getGradualDirectionCode(facing, course[i]);
+						newCourse.add(Integer.valueOf(steer | COURSE_STEER_MASK));
+						facing = steer;
+					}
+					newCourse.add(Integer.valueOf(course[i]));
+				}
+				 */
+			}
+			else
+			{
+				if (tgtP == curP)
+					return newCourse;
+				int dir = CMLib.map().getRoomDir((Room)curP, (Room)tgtP);
+				if(dir >= 0)
+				{
+					newCourse.add(Integer.valueOf(dir));
+					return newCourse;
+				}
+				final List<Room> trl = CMLib.tracking().findTrailToRoom((Room)curP, (Room)tgtP, null, speed+1);
+				if(trl == null)
+					return null;
+				Room lastRoom = (Room)curP;
+				for(int i=trl.size()-2;i>=0;i--)
+				{
+					final Room R = trl.get(i);
+					dir = CMLib.map().getRoomDir(lastRoom, R);
+					if(dir < 0)
+						return null;
+					newCourse.add(Integer.valueOf(dir));
+					lastRoom = R;
+				}
+			}
+			return newCourse;
+		}
+		return null;
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -1071,12 +1232,28 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				}
 			}
 		}
-		if(tickID == navTickID)
+		if((tickID == navTickID)
+		&& (area != null))
 		{
 			ticksSinceMove++;
 			ticksSinceLastTurn++;
+			final Item followingI = this.following;
+			if(followingI != null)
+			{
+				this.courseDirections.clear();
+				this.courseDirection=-1;
+				final List<Integer> newCourse = this.getFollowingCourse(followingI);
+				if(newCourse == null)
+					stopFollowing(null);
+				else
+				if(newCourse.size()>0)
+				{
+					this.courseDirections.addAll(newCourse);
+					this.courseDirection = this.courseDirections.remove(0).intValue();
+
+				}
+			}
 			if((!this.anchorDown)
-			&& (area != null)
 			&& (courseDirection != -1) )
 			{
 				final int speed=getMaxSpeed();
@@ -1149,7 +1326,6 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						}
 					}
 				}
-
 			}
 		}
 		return super.tick(ticking, tickID);

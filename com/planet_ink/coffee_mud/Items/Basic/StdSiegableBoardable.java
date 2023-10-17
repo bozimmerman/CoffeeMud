@@ -343,23 +343,36 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 		return this.aimings;
 	}
 
-	protected int getTacticalDistance(final SiegableItem targetI)
+	protected int[] getTacticalCoordinates(final SiegableItem targetI)
 	{
-		if(targetI==null)
-			return CMLib.map().roomLocation(this).maxRange() + 1;
 		final int[] fromCoords = this.getTacticalCoords();
+		if(this == targetI)
+			return fromCoords;
 		final PairList<Item,int[]> coords = this.getCombatField(); // might not yet be set.
-		int lowest = Integer.MAX_VALUE;
 		if((coords != null) && (fromCoords != null))
 		{
 			final int p = coords.indexOfFirst(targetI);
 			if(p >=0)
 			{
 				final Pair<Item,int[]> P=coords.get(p);
-				final int distance = (int)Math.round(Math.ceil(Math.sqrt(Math.pow(P.second[0]-fromCoords[0],2.0) + Math.pow(P.second[1]-fromCoords[1],2.0))));
-				if(distance < lowest)
-					lowest=distance;
+				return P.second;
 			}
+		}
+		return null;
+	}
+
+	protected int getTacticalDistance(final SiegableItem targetI)
+	{
+		if(targetI==null)
+			return CMLib.map().roomLocation(this).maxRange() + 1;
+		final int[] fromCoords = this.getTacticalCoords();
+		final int[] targetCoords = getTacticalCoordinates(targetI);
+		int lowest = Integer.MAX_VALUE;
+		if((targetCoords != null) && (fromCoords != null))
+		{
+			final int distance = (int)Math.round(Math.ceil(Math.sqrt(Math.pow(targetCoords[0]-fromCoords[0],2.0) + Math.pow(targetCoords[1]-fromCoords[1],2.0))));
+			if(distance < lowest)
+				lowest=distance;
 		}
 		if(lowest == Integer.MAX_VALUE)
 			return CMLib.map().roomLocation(this).maxRange() + 1;
