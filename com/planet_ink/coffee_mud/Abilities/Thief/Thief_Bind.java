@@ -117,7 +117,7 @@ public class Thief_Bind extends ThiefSkill
 		return affected instanceof Room;
 	}
 
-	public int			amountRemaining	= 500;
+	public int			amountRemaining	= 1000;
 	public String		ropeName		= "the ropes";
 	protected boolean	sit				= false;
 	protected boolean	allowBreak		= false;
@@ -287,8 +287,9 @@ public class Thief_Bind extends ThiefSkill
 						double prof=0.0;
 						final Ability A=mob.fetchAbility("Specialization_Ranged");
 						if(A!=null)
-							prof=CMath.div(A.proficiency(),20);
-						amountRemaining=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.phyStats().level()+(2*getXLEVELLevel(mob)))*((int)Math.round(5.0+prof));
+							prof=CMath.div(A.proficiency(),10);
+						amountRemaining=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+(2*getXLEVELLevel(mob)))
+								*((int)Math.round(25.0+prof));
 					}
 					else
 						amountRemaining=(adjustedLevel(mob,asLevel))*25;

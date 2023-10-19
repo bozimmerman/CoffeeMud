@@ -221,7 +221,7 @@ public class Cavalier extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_BreakMount",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_WagonTrain",false); //TODO
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_WagonTrain",false); //FOLLOW done instead
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_CaravanTactics",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_LuckyVanity",false);
@@ -230,7 +230,7 @@ public class Cavalier extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_RideToTheRescue",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_FavoredMount4",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_Roping",false); //TODO
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_RopeDismount",false,new XVector<String>("Skill_Lassoing")); //TODO
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_Runover",false); //TODO
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_RegionalAwareness",false);

@@ -230,9 +230,10 @@ public class Skill_Befriend extends BardSkill
 		&&((text().length()==0)||(text().indexOf('=')<0)))
 		{
 			final MOB mob=(MOB)ticking;
-			if((mob.amFollowing()==null)
-			||(mob.amFollowing().isMonster())
-			||(!CMLib.flags().isInTheGame(mob.amFollowing(), true)))
+			final MOB masterM = mob.amFollowing();
+			if((masterM==null)
+			||(masterM.isMonster())
+			||(!CMLib.flags().isInTheGame(masterM, true)))
 			{
 				if(mob.getStartRoom()==null)
 					mob.destroy();

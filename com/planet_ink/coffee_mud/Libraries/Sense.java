@@ -2091,25 +2091,35 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
-	public boolean isInTheGame(final MOB E, final boolean reqInhabitation)
+	public boolean isInTheGame(final MOB M, final boolean reqInhabitation)
 	{
-		return (E.location()!=null)
-				&& E.amActive()
-				&&((!reqInhabitation)||E.location().isInhabitant(E));
+		final Room R;
+		synchronized(M)
+		{
+			R=M.location();
+		}
+		return (R!=null)
+				&& M.amActive()
+				&&((!reqInhabitation)||R.isInhabitant(M));
 	}
 
 	@Override
-	public boolean isInTheGame(final Item E, final boolean reqInhabitation)
+	public boolean isInTheGame(final Item I, final boolean reqInhabitation)
 	{
-		if(E.owner() instanceof MOB)
+		final ItemPossessor iP;
+		synchronized(I)
 		{
-			return isInTheGame((MOB)E.owner(),reqInhabitation);
+			iP = I.owner();
+		}
+		if(iP instanceof MOB)
+		{
+			return isInTheGame((MOB)iP,reqInhabitation);
 		}
 		else
-		if(E.owner() instanceof Room)
+		if(iP instanceof Room)
 		{
-			return ((!E.amDestroyed())
-					&&((!reqInhabitation)||(((Room)E.owner()).isContent(E))));
+			return ((!I.amDestroyed())
+					&&((!reqInhabitation)||(((Room)iP).isContent(I))));
 		}
 		return false;
 	}

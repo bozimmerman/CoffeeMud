@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -106,7 +107,16 @@ public class Skill_Lassoing extends StdSkill
 					boundM.location().show(boundM,I,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-HAS-HAVE> been freed from <T-NAME>."));
 			}
 			if(boundM.isMine(I))
+			{
 				CMLib.commands().postDrop(boundM, I, true, false, false);
+				final Room R = boundM.location();
+				if((R!=null)
+				&&(R.getArea() instanceof Boardable)
+				&&(invoker() != null)
+				&&(invoker() != boundM)
+				&&(invoker().location() != R))
+					invoker().moveItemTo(I);
+			}
 		}
 	}
 
@@ -142,6 +152,11 @@ public class Skill_Lassoing extends StdSkill
 							msg2.addTrailerMsg(CMClass.getMsg(boundM,lasso,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,null));
 						if(!binder.isMine(lasso))
 							msg2.addTrailerMsg(CMClass.getMsg(binder,lasso,CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,null));
+						if((R.getArea() instanceof Boardable)
+						&&(invoker() != null)
+						&&(invoker() != boundM)
+						&&(invoker().location() != R))
+							invoker().moveItemTo(lasso);
 					}
 					R.send(binder, msg2);
 				}
@@ -240,8 +255,14 @@ public class Skill_Lassoing extends StdSkill
 				A.unInvoke();
 				unInvoke();
 				if(M.isMine(affected))
-					msg.addTrailerMsg(CMClass.getMsg(M,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,null));
+					msg.addTrailerMsg(CMClass.getMsg(M,affected,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,null));
 				msg.addTrailerMsg(CMClass.getMsg(invoker(),affected,CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,null));
+				final Room R = M.location();
+				if((R!=null)
+				&&(R.getArea() instanceof Boardable)
+				&&(invoker() != M)
+				&&(invoker().location() != R))
+					invoker().moveItemTo((Item)affected);
 			}
 		}
 		else
@@ -280,15 +301,64 @@ public class Skill_Lassoing extends StdSkill
 		return super.castingQuality(mob,target);
 	}
 
+	protected static MOB fetchExposedInhabitant(final MOB mob, final List<String> commands, final Filterer<MOB> filter)
+	{
+		if(mob==null)
+			return null;
+		final Room R = mob.location();
+		if(R == null)
+			return null;
+		final String srchName = CMParms.combine(commands,0);
+		for(final Enumeration<Item> i = R.items();i.hasMoreElements();)
+		{
+			final Item I = i.nextElement();
+			if(I instanceof NavigableItem)
+			{
+				final Rideable.Basis rb = ((NavigableItem)I).navBasis();
+				if((rb == Rideable.Basis.LAND_BASED)
+				||(rb == Rideable.Basis.WAGON)
+				||(rb == Rideable.Basis.WATER_BASED))
+				{
+					for(final Enumeration<Room> r = ((NavigableItem)I).getArea().getFilledProperMap();r.hasMoreElements();)
+					{
+						final Room iR = r.nextElement();
+						if((iR != null)
+						&&((iR.domainType()&Room.INDOORS)==0))
+						{
+							final MOB M = iR.fetchInhabitant(srchName);
+							if((M != null)
+							&&(CMLib.flags().canBeSeenBy(M, mob))
+							&&((filter==null)||(filter.passesFilter(M))))
+								return M;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final MOB targetM = super.getTarget(mob, commands, givenTarget, false, true);
+
+		MOB targetM = super.getTarget(mob, commands, givenTarget, true, true);
 		if(targetM == null)
+		{
+			targetM = fetchExposedInhabitant(mob, commands, null);
+			if(targetM == null)
+			{
+				super.getTarget(mob, commands, givenTarget, true, true);
+				return false;
+			}
+		}
+
+		final Room srcR = mob.location();
+		if(srcR == null)
 			return false;
 
-		final Room R = targetM.location();
-		if(R == null)
+		final Room tgtR = mob.location();
+		if(tgtR == null)
 			return false;
 
 		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob, false))
@@ -318,45 +388,68 @@ public class Skill_Lassoing extends StdSkill
 		if(success)
 			lasso.unWear();
 		final CMMsg dropMsg = CMClass.getMsg(mob,lasso,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,null);
-		success = success && R.okMessage(mob, dropMsg);
+		success = success && srcR.okMessage(mob, dropMsg);
 		success = success && CMLib.combat().rollToHit(mob,targetM);
 		if(success)
-			R.send(mob, dropMsg);
+			srcR.send(mob, dropMsg);
 		success = success && (lasso.owner() instanceof Room);
-		final CMMsg getMsg = CMClass.getMsg(targetM,lasso,CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,null);
-		success = success && R.okMessage(targetM, getMsg);
-		boolean anyCombatants=false;
-		final Set<MOB> allMyFam=mob.getGroupMembers(new HashSet<MOB>());
-		if(success) // now, if lassoing an animal, make sure combat is NOT started
+		if(success)
 		{
-			if(CMLib.flags().isAnimalIntelligence(targetM))
+			if((srcR.isContent(lasso))
+			&&(!tgtR.isContent(lasso)))
+				tgtR.moveItemTo(lasso, Expire.Player_Body);
+			final CMMsg getMsg = CMClass.getMsg(targetM,lasso,CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,null);
+			success = success && tgtR.okMessage(targetM, getMsg);
+			if(success)
+				tgtR.executeMsg(targetM, getMsg);
+		}
+		boolean anyCombatants=mob.isInCombat();
+		final Set<MOB> allMyFam=mob.getGroupMembers(new HashSet<MOB>());
+		if(mob.riding() instanceof MOB)
+			allMyFam.add((MOB)mob.riding());
+		if(!anyCombatants && success)
+		{
+			for(final Enumeration<MOB> m=srcR.inhabitants();m.hasMoreElements();)
 			{
-				for(final MOB M : allMyFam)
+				final MOB M = m.nextElement();
+				if(M!=null)
 				{
-					if(M.isInCombat())
+					if(allMyFam.contains(M))
+						anyCombatants=anyCombatants||M.isInCombat();
+					else
+					if(M.isInCombat() && allMyFam.contains(M.getVictim()))
 						anyCombatants=true;
 				}
 			}
 		}
-		success = success && R.show(mob, targetM, this, CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT, L("^F<S-NAME> lasso(s) <T-NAME>!^N"));
-		if(success)
-			R.send(targetM, getMsg);
+		if((srcR!=tgtR)
+		&&(tgtR.getArea() instanceof Boardable))
+		{
+			success = success && srcR.show(mob, targetM, this, CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT, L("^F<S-NAME> lasso(s) <T-NAME> on @x1!^N",tgtR.getArea().name(mob)));
+			success = success && tgtR.show(mob, targetM, this, CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT, null);
+		}
+		else
+			success = success && srcR.show(mob, targetM, this, CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT, L("^F<S-NAME> lasso(s) <T-NAME>!^N"));
 		success = success && (lasso.owner() == targetM);
 		if(success) // now, if lassoing an animal, make sure combat is NOT started
 		{
-			if(!anyCombatants && (CMLib.flags().isAnimalIntelligence(targetM)))
+			if(!anyCombatants)
 			{
-				if(CMLib.law().doesHavePriviledgesHere(mob, R))
+				targetM.makePeace(false);
+				for(final Enumeration<MOB> m=srcR.inhabitants();m.hasMoreElements();)
 				{
-					targetM.makePeace(false);
-					for(final MOB M : allMyFam)
+					final MOB M = m.nextElement();
+					if(M!=null)
 					{
-						if(M.getVictim()==targetM)
-							M.makePeace(true);
+						if(allMyFam.contains(M))
+							M.makePeace(false);
+						else
+						if(M.isInCombat() && allMyFam.contains(M.getVictim()))
+							M.makePeace(false);
 					}
 				}
 			}
-			if(this.beneficialAffect(mob, lasso, 0, -1)!=null)
+			if(beneficialAffect(mob, lasso, 0, -1)!=null)
 			{
 				final Ability A=CMClass.getAbility("Thief_Bind");
 				if(A!=null)
@@ -368,11 +461,13 @@ public class Skill_Lassoing extends StdSkill
 			}
 		}
 		else
+		if((srcR!=tgtR)
+		&&(tgtR.getArea() instanceof Boardable))
+			maliciousFizzle(mob,targetM,L("<S-NAME> attempt(s) to lasso <T-NAME> on @x1, but miss(es).",tgtR.getArea().name(mob)));
+		else
 			maliciousFizzle(mob,targetM,L("<S-NAME> attempt(s) to lasso <T-NAME>, but miss(es)."));
-
 		// return whether it worked
 		return success;
 	}
-
 }
 

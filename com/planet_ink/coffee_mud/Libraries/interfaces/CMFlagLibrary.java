@@ -1158,20 +1158,20 @@ public interface CMFlagLibrary extends CMLibrary
 	/**
 	 * Returns whether the given Item is actually in the game, and in
 	 * a room, or is just temporary or cached.
-	 * @param E the Item to check
+	 * @param I the Item to check
 	 * @param reqInhabitation true if it must be a in room, false otherwise
 	 * @return true if it is in the game, false otherwise
 	 */
-	public boolean isInTheGame(Item E, boolean reqInhabitation);
+	public boolean isInTheGame(Item I, boolean reqInhabitation);
 
 	/**
 	 * Returns whether the given MOB is actually in the game, and in
 	 * a room, or is just temporary or cached.
-	 * @param E the MOB to check
+	 * @param M the MOB to check
 	 * @param reqInhabitation true if it must be a in room, false otherwise
 	 * @return true if it is in the game, false otherwise
 	 */
-	public boolean isInTheGame(MOB E, boolean reqInhabitation);
+	public boolean isInTheGame(MOB M, boolean reqInhabitation);
 
 	/**
 	 * Returns whether the given mob, item, room, area, whatever is actually

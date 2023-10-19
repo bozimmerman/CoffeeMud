@@ -13941,7 +13941,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					break;
 				case 47: // speak_prog
-					if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)||(msg.targetMinor()==CMMsg.TYP_SPEAK))&&canTrigger(47)
+					if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)||(msg.targetMinor()==CMMsg.TYP_SPEAK))
+					&&canTrigger(47)
 					&&(msg.amISource(monster)||(!(affecting instanceof MOB)))
 					&&(!msg.othersMajor(CMMsg.MASK_CHANNEL))
 					&&((msg.sourceMessage()!=null)
@@ -13999,11 +14000,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					break;
 				case 3: // speech_prog
-					if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)||(msg.targetMinor()==CMMsg.TYP_SPEAK))&&canTrigger(3)
+					if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)||(msg.targetMinor()==CMMsg.TYP_SPEAK))
+					&&canTrigger(3)
 					&&(!msg.amISource(monster))
 					&&(!msg.othersMajor(CMMsg.MASK_CHANNEL))
-					&&(((msg.othersMessage()!=null)&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)))
-					   ||((msg.target()==monster)&&(msg.targetMessage()!=null)&&(msg.tool()==null)))
+					&&(((msg.othersMessage()!=null)
+						&&((msg.tool()==null)
+						  ||(!(msg.tool() instanceof Ability))
+						  ||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)))
+					  ||((msg.target()==monster)
+					    &&(msg.targetMessage()!=null)
+					    &&(msg.tool()==null)))
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
 						if(t==null)
