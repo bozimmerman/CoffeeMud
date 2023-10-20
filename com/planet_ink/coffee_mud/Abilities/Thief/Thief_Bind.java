@@ -288,8 +288,10 @@ public class Thief_Bind extends ThiefSkill
 						final Ability A=mob.fetchAbility("Specialization_Ranged");
 						if(A!=null)
 							prof=CMath.div(A.proficiency(),10);
-						amountRemaining=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+(2*getXLEVELLevel(mob)))
-								*((int)Math.round(25.0+prof));
+						amountRemaining=(mob.charStats().getStat(CharStats.STAT_STRENGTH)
+											+(mob.phyStats().level())
+											+(2*getXLEVELLevel(mob)))
+										*((int)Math.round(5.0+prof));
 					}
 					else
 						amountRemaining=(adjustedLevel(mob,asLevel))*25;

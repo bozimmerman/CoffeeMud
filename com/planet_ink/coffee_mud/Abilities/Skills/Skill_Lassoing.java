@@ -105,6 +105,9 @@ public class Skill_Lassoing extends StdSkill
 				A.unInvoke();
 				if((boundM.location()!=null)&&(!boundM.amDead()))
 					boundM.location().show(boundM,I,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-HAS-HAVE> been freed from <T-NAME>."));
+				if((binderM != null)
+				&&(binderM.location() != boundM.location()))
+					binderM.tell(boundM,I,null,L("<S-NAME> <S-HAS-HAVE> been freed from <T-NAME>."));
 			}
 			if(boundM.isMine(I))
 			{
@@ -357,7 +360,7 @@ public class Skill_Lassoing extends StdSkill
 		if(srcR == null)
 			return false;
 
-		final Room tgtR = mob.location();
+		final Room tgtR = targetM.location();
 		if(tgtR == null)
 			return false;
 
@@ -425,11 +428,13 @@ public class Skill_Lassoing extends StdSkill
 		if((srcR!=tgtR)
 		&&(tgtR.getArea() instanceof Boardable))
 		{
-			success = success && srcR.show(mob, targetM, this, CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT, L("^F<S-NAME> lasso(s) <T-NAME> on @x1!^N",tgtR.getArea().name(mob)));
+			success = success && srcR.show(mob, targetM, this, CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,
+					L("^F<S-NAME> lasso(s) <T-NAME> on @x1!^N",tgtR.getArea().name(mob)));
 			success = success && tgtR.show(mob, targetM, this, CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT, null);
 		}
 		else
-			success = success && srcR.show(mob, targetM, this, CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT, L("^F<S-NAME> lasso(s) <T-NAME>!^N"));
+			success = success && srcR.show(mob, targetM, this, CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,
+					L("^F<S-NAME> lasso(s) <T-NAME>!^N"));
 		success = success && (lasso.owner() == targetM);
 		if(success) // now, if lassoing an animal, make sure combat is NOT started
 		{
