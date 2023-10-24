@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Thief;
+package com.planet_ink.coffee_mud.Abilities.Fighter;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2023 Bo Zimmerman
+   Copyright 2023-2023 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_RunningFight extends ThiefSkill
+public class Fighter_RidingFight extends FighterSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_RunningFight";
+		return "Fighter_RidingFight";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Running Fight");
+	private final static String localizedName = CMLib.lang().L("Riding Fight");
 
 	@Override
 	public String name()
@@ -133,18 +133,18 @@ public class Thief_RunningFight extends ThiefSkill
 		if(msg.amISource(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
 		&&(mob.isInCombat())
-		&&(msg.source().riding()==null))
+		&&(msg.source().riding() instanceof MOB))
 		{
 			final MOB vic = mob.getVictim();
 			if((vic!=null)
-			&&(msg.source().getVictim().riding()==null)
 			&&(msg.target() instanceof Room)
 			&&(msg.tool() instanceof Exit)
+			&&(mob.getVictim().riding() instanceof MOB)
 			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false))
-			&&((CMLib.dice().rollPercentage()+mob.phyStats().level()+(2*getXLEVELLevel(mob)))>vic.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
-			&&((CMLib.dice().rollPercentage()+mob.phyStats().level()+(2*getXLEVELLevel(mob)))>vic.charStats().getSave(CharStats.STAT_SAVE_MIND)))
+			&&((CMLib.dice().rollPercentage()+mob.phyStats().level()+(2*getXLEVELLevel(mob)))>mob.getVictim().charStats().getSave(CharStats.STAT_SAVE_TRAPS))
+			&&((CMLib.dice().rollPercentage()+mob.phyStats().level()+(2*getXLEVELLevel(mob)))>mob.getVictim().charStats().getSave(CharStats.STAT_SAVE_MIND)))
 			{
-				final MOB M=vic;
+				final MOB M=mob.getVictim();
 				final Room R = (Room)msg.target();
 				if((M==null)||(M.getVictim()!=mob))
 				{

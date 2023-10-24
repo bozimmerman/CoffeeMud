@@ -231,11 +231,11 @@ public class Cavalier extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_FavoredMount4",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_RopeDismount",false,new XVector<String>("Skill_Lassoing")); //TODO
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_Runover",false); //TODO
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_Runover",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_RegionalAwareness",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_PlainsTactics",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_RidingFight",false); //TODO
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_RidingFight",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_CalledShot",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_ProtectedMount",true); //TODO

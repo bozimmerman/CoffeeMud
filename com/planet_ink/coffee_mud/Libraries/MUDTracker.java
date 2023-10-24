@@ -1484,7 +1484,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				final Item rItem=(Item)rider;
 				if((rItem.owner()==sourceRoom)
 				||(rItem.owner()==destRoom))
-					destRoom.moveItemTo(rItem);
+				{
+					if(rider instanceof NavigableItem)
+						((NavigableItem)rider).navigate(directionCode);
+					else
+						destRoom.moveItemTo(rItem);
+				}
 				else
 					rItem.setRiding(null);
 			}
@@ -1510,6 +1515,32 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 		}
 		return riders;
+	}
+
+	@Override
+	public MOB createNavigationMob(final NavigableItem ship)
+	{
+		if(ship == null)
+			return null;
+		final Room thisR = CMLib.map().roomLocation(ship.getBoardableItem());
+		final MOB mob = CMClass.getFactoryMOB(ship.name(),ship.phyStats().level(),thisR);
+		if(thisR == null)
+			return null;
+		mob.setRiding(ship);
+		if(ship.navBasis() == Rideable.Basis.WATER_BASED)
+		{
+			mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+			mob.phyStats().setDisposition(mob.basePhyStats().disposition());
+		}
+		if((ship instanceof PrivateProperty)
+		&&(((PrivateProperty)ship).getOwnerName()!=null)
+		&&(((PrivateProperty)ship).getOwnerName().length()>0))
+		{
+			final Clan clan = CMLib.clans().fetchClanAnyHost(((PrivateProperty)ship).getOwnerName());
+			if(clan != null)
+				mob.setClan(clan.name(), clan.getAutoPosition());
+		}
+		return mob;
 	}
 
 	public List<Rider> ridersAhead(final Rider theRider, final Room sourceRoom, final Room destRoom, final int directionCode, final boolean flee, final boolean running)
@@ -1543,7 +1574,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			riding=r.next();
 			if((riding instanceof Item)
 			&&((sourceRoom).isContent((Item)riding)))
-				destRoom.moveItemTo((Item)riding);
+			{
+				if(riding instanceof NavigableItem)
+					((NavigableItem)riding).navigate(directionCode);
+				else
+					destRoom.moveItemTo((Item)riding);
+			}
 			else
 			if((riding instanceof MOB)
 			&&((sourceRoom).isInhabitant((MOB)riding)))

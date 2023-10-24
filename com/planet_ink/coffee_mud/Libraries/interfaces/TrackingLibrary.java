@@ -927,6 +927,16 @@ public interface TrackingLibrary extends CMLibrary
 	 */
 	public void postMountLadder(MOB mob, Rideable ladder);
 
+	/**
+	 * When large sailing ships or caravans navigate from room to room,
+	 * a fake temporary mob is used to represent the agency of the ship
+	 * per se.  This will create that mob.  The mob MUST be destroyed
+	 * after use.
+	 *
+	 * @param ship the navigable ship
+	 * @return the mob to use, then destroy
+	 */
+	public MOB createNavigationMob(final NavigableItem ship);
 
 	/**
 	 * A filtering interface for rooms, or for moving from a host room

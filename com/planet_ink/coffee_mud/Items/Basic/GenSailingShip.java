@@ -220,15 +220,6 @@ public class GenSailingShip extends GenNavigableBoardable
 	}
 
 	@Override
-	protected MOB createNavMob(final Room thisRoom)
-	{
-		final MOB mob = super.createNavMob(thisRoom);
-		mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
-		mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
-		return mob;
-	}
-
-	@Override
 	protected boolean requiresSafetyMove()
 	{
 		final Room R=CMLib.map().roomLocation(this);

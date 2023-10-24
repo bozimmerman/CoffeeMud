@@ -273,7 +273,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 							msg.source().tell(L("Not while @x1 is in in combat!",tenderToI.Name()));
 							return false;
 						}
-						final MOB mob = createNavMob(thisRoom);
+						final MOB mob = CMLib.tracking().createNavigationMob(this);
 						try
 						{
 							if(tenderToI.tenderItem == this)
@@ -1047,7 +1047,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						}
 						final Room R=CMLib.map().roomLocation(msg.source());
 						if((R!=null)
-						&&(R.show(msg.source(), this, CMMsg.TYP_ADVANCE, L("<S-NAME> tender(s) @x1 alonside <T-NAME>, waiting to be raised on board.",msg.source().riding().name()))))
+						&&(R.show(msg.source(), this, CMMsg.TYP_ADVANCE,
+								L("<S-NAME> tender(s) @x1 alonside <T-NAME>, waiting to be raised on board.",msg.source().riding().name()))))
 						{
 							for(final Iterator<Item> i=smallTenderRequests.iterator();i.hasNext();)
 							{
@@ -1303,9 +1304,10 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					final Room combatRoom=this.siegeCombatRoom;
 					if(combatRoom != null)
 					{
-						final MOB mob = createNavMob(null);
+						final MOB mob = CMLib.tracking().createNavigationMob(this);
 						try
 						{
+							mob.setLocation(null);
 							combatRoom.show(mob, this, CMMsg.MSG_ACTIVATE|CMMsg.MASK_MALICIOUS, null);
 						}
 						finally
@@ -1518,17 +1520,10 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		return true;
 	}
 
-	protected MOB createNavMob(final Room thisRoom)
+	@Override
+	public boolean navigate(final int direction)
 	{
-		final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),thisRoom);
-		mob.setRiding(this);
-		if((getOwnerName()!=null)&&(getOwnerName().length()>0))
-		{
-			final Clan clan = CMLib.clans().fetchClanAnyHost(getOwnerName());
-			if(clan != null)
-				mob.setClan(clan.name(), clan.getAutoPosition());
-		}
-		return mob;
+		return navMove(direction) != NavResult.CANCEL;
 	}
 
 	protected NavResult navMove(final int direction)
@@ -1562,7 +1557,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			}
 			if(tacticalCoords != null)
 			{
-				final MOB mob = createNavMob(thisRoom);
+				final MOB mob = CMLib.tracking().createNavigationMob(this);
 				try
 				{
 					if(directionFacing == direction)
@@ -1633,11 +1628,13 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			{
 				if(!preNavigateCheck(thisRoom, direction, destRoom))
 					return NavResult.CANCEL;
+				if(CMLib.map().roomLocation(this)==destRoom)
+					return NavResult.CONTINUE;
 				final int oppositeDirectionFacing=thisRoom.getReverseDir(direction);
 				final String directionName=CMLib.directions().getDirectionName(direction);
 				final String otherDirectionName=CMLib.directions().getDirectionName(oppositeDirectionFacing);
 				final Exit opExit=destRoom.getExitInDir(oppositeDirectionFacing);
-				final MOB mob = createNavMob(CMLib.map().roomLocation(this));
+				final MOB mob = CMLib.tracking().createNavigationMob(this);
 				try
 				{
 					final boolean isSneaking = CMLib.flags().isSneaking(this);

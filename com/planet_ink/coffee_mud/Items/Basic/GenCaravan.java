@@ -249,6 +249,31 @@ public class GenCaravan extends GenNavigableBoardable
 	}
 
 	@Override
+	public Set<MOB> getRideBuddies(final Set<MOB> list)
+	{
+		if(list==null)
+			return list;
+		if(riding()==null)
+			return list;
+		final Rideable baseRide = this.riding();
+		Physical rideLeader = baseRide;
+		final WorldMap map=CMLib.map();
+		final Room thisRoom = map.roomLocation(this);
+		while((rideLeader!=null)
+		&&(map.roomLocation(rideLeader) == thisRoom))
+		{
+			if(rideLeader instanceof MOB)
+				list.add((MOB)rideLeader);
+			if((rideLeader instanceof Rideable)
+			&&(((Rideable)rideLeader).riding()!=null))
+				rideLeader=((Rideable)rideLeader).riding();
+			else
+				break;
+		}
+		return list;
+	}
+
+	@Override
 	protected boolean preNavigateCheck(final Room thisRoom, final int direction, final Room destRoom)
 	{
 		if(!isDrivableRoom(destRoom))
@@ -262,7 +287,8 @@ public class GenCaravan extends GenNavigableBoardable
 		final Set<Physical> allPullers = new HashSet<Physical>();
 		final WorldMap map=CMLib.map();
 		while((rideLeader!=null)
-		&&(map.roomLocation(rideLeader) == thisRoom))
+		&&((map.roomLocation(rideLeader) == thisRoom)
+			||(map.roomLocation(rideLeader) == destRoom)))
 		{
 			allPullers.add(rideLeader);
 			if((rideLeader instanceof Rideable)
@@ -290,7 +316,8 @@ public class GenCaravan extends GenNavigableBoardable
 			{
 				isDriving=true;
 				final MOB leadM=(MOB)rideLeader;
-				if(!CMLib.tracking().walk(leadM, direction, false, false, false))
+				if((leadM.location() != destRoom)
+				&&(!CMLib.tracking().walk(leadM, direction, false, false, false)))
 				{
 					announceToAllAboard(L("@x1 can't seem to "+verb_sail+" you @x2, <S-NAME> go(es) nowhere.",rideLeader.name(), CMLib.directions().getInDirectionName(direction)));
 					courseDirections.clear();

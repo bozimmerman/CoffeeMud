@@ -112,4 +112,14 @@ public interface NavigableItem extends Boardable, Item, Rideable, SiegableItem
 	 * @return true if steering can happen
 	 */
 	public boolean canSteer(final MOB mob, final Room R);
+
+	/**
+	 * Forces a normal navigation move from the ships
+	 * current location to the location in the given
+	 * direction.  This will also do tactical moves.
+	 *
+	 * @param direction the direction to move
+	 * @return true if it worked, false otherwise
+	 */
+	public boolean navigate(final int direction);
 }

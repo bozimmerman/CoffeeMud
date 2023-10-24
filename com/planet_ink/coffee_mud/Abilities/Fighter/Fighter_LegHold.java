@@ -48,12 +48,15 @@ public class Fighter_LegHold extends FighterGrappleSkill
 		return localizedName;
 	}
 
+	private final static String displayName1 = CMLib.lang().L("(Leg-Hold)");
+	private final static String displayName2 = CMLib.lang().L("(Leg-Held)");
+
 	@Override
 	public String displayText()
 	{
 		if(affected==invoker)
-			return "(Leg-Hold)";
-		return "(Leg-Held)";
+			return displayName1;
+		return displayName2;
 	}
 
 	private static final String[] triggerStrings =I(new String[] {"LEGHOLD"});
