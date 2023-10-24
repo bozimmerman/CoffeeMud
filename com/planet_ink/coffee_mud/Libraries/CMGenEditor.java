@@ -2206,7 +2206,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genRecipe(final MOB mob, final Recipes E, final int showNumber, final int showFlag)
+	protected void genRecipe(final MOB mob, final RecipesBook E, final int showNumber, final int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -10106,8 +10106,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genDrinkType(mob,(LiquidHolder)me,++showNumber,showFlag);
 				genDrinkHeld(mob,(LiquidHolder)me,++showNumber,showFlag);
 			}
-			if(me instanceof Recipes)
-				genRecipe(mob,(Recipes)me,++showNumber,showFlag);
+			if(me instanceof RecipesBook)
+				genRecipe(mob,(RecipesBook)me,++showNumber,showFlag);
 			if(me instanceof Light)
 				genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);

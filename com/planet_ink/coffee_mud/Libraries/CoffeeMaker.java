@@ -4069,18 +4069,18 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			((Coins)E).setCurrency(xml.getValFromPieces(buf,"CRNC"));
 			((Coins)E).setDenomination(xml.getDoubleFromPieces(buf,"DENOM"));
 		}
-		if(E instanceof Recipes)
+		if(E instanceof RecipesBook)
 		{
-			((Recipes)E).setCommonSkillID(xml.getValFromPieces(buf,"SKILLID"));
+			((RecipesBook)E).setCommonSkillID(xml.getValFromPieces(buf,"SKILLID"));
 			int numSupported = xml.getIntFromPieces(buf,"NUMRECIPES");
 			if(numSupported<=0)
 				numSupported=1;
-			((Recipes)E).setTotalRecipePages(numSupported);
+			((RecipesBook)E).setTotalRecipePages(numSupported);
 			final List<XMLTag> allRecipes = xml.getPiecesFromPieces(buf, "RECIPE");
 			final List<String> allRecipeStrings=new ArrayList<String>(allRecipes.size());
 			for(final XMLTag piece : allRecipes)
 				allRecipeStrings.add(piece.value());
-			((Recipes)E).setRecipeCodeLines(allRecipeStrings.toArray(new String[0]));
+			((RecipesBook)E).setRecipeCodeLines(allRecipeStrings.toArray(new String[0]));
 		}
 		if(E instanceof Light)
 		{

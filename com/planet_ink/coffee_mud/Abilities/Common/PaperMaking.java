@@ -390,8 +390,8 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		if(((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 		||(data[0][FOUND_CODE]==RawMaterial.RESOURCE_RICE))
 			buildingI.setMaterial(RawMaterial.RESOURCE_PAPER);
-		if(buildingI instanceof Recipes)
-			((Recipes)buildingI).setTotalRecipePages(CMath.s_int(woodRequiredStr));
+		if(buildingI instanceof RecipesBook)
+			((RecipesBook)buildingI).setTotalRecipePages(CMath.s_int(woodRequiredStr));
 		final int capacity;
 		if(buildingI instanceof Book)
 		{

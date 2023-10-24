@@ -1,6 +1,7 @@
-package com.planet_ink.coffee_mud.core.interfaces;
+package com.planet_ink.coffee_mud.Items.interfaces;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.interfaces.Recipes;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -31,47 +32,30 @@ import java.util.Vector;
    limitations under the License.
 */
 /**
- * Recipes add to the recipes available to construction-type common skills, such
+ * A Recipes Book is a special readable item that, merely by having, adds
+ * to the recipes available to construction-type common skills, such
  * as tailoring, weaponsmithing, etc.
  *
  * @author Bo Zimmerman
  */
-public interface Recipes extends Environmental
+public interface RecipesBook extends Recipes, Item
 {
 	/**
-	 * Gets the Ability ID of the skill that
-	 * this Recipe item adds a new recipe to.
-	 * @see Recipes#setCommonSkillID(String)
-	 * @return the Ability ID this enhances
+	 * Gets the number of pages in this recipe
+	 * book, denoting how many recipes it has, or at
+	 * least how many it will hold.
+	 * @see RecipesBook#setTotalRecipePages(int)
+	 * @return the number of pages in this recipe
 	 */
-	public String getCommonSkillID();
+	public int getTotalRecipePages();
 
 	/**
-	 * Sets the Ability ID of the skill that
-	 * this Recipe item adds a new recipe to.
-	 * @see Recipes#getCommonSkillID()
-	 * @param ID the Ability ID this enhances
+	 * Sets the number of pages in this recipe
+	 * book, denoting how many recipes it has, or at
+	 * least how many it will hold.
+	 * @see RecipesBook#getTotalRecipePages()
+	 * @param numRemaining the number of pages in this recipe
 	 */
-	public void setCommonSkillID(String ID);
-
-	/**
-	 * Gets all the recipes written on this Recipe item,
-	 * one on each line/page, and each line encoded
-	 * according to the specific common skill it
-	 * applies to.
-	 * @see Recipes#setRecipeCodeLines(String[])
-	 * @return all the recipes written on this Recipe item
-	 */
-	public String[] getRecipeCodeLines();
-
-	/**
-	 * Sets all the recipes written on this Recipe item,
-	 * one on each line/page, and each line encoded
-	 * according to the specific common skill it
-	 * applies to.
-	 * @see Recipes#getRecipeCodeLines()
-	 * @param lines all the recipes written on this Recipe item
-	 */
-	public void setRecipeCodeLines(String[] lines);
+	public void setTotalRecipePages(int numRemaining);
 }
 

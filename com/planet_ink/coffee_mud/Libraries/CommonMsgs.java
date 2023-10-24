@@ -1041,13 +1041,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				response.append(L("It is mostly made of @x1.  ",((RawMaterial)item).getSubType().toLowerCase()));
 			else
 				response.append(L("It is mostly made of @x1.  ",RawMaterial.CODES.NAME(item.material()).toLowerCase()));
-			if(item instanceof Recipes)
+			if(item instanceof RecipesBook)
 			{
-				final String[] recipeCodeLines = ((Recipes)item).getRecipeCodeLines();
+				final String[] recipeCodeLines = ((RecipesBook)item).getRecipeCodeLines();
 				final int usedPages = (recipeCodeLines == null) ? 0 : recipeCodeLines.length;
-				final int totalRecipePages = ((Recipes)item).getTotalRecipePages();
+				final int totalRecipePages = ((RecipesBook)item).getTotalRecipePages();
 				final int remainingRecipePages = totalRecipePages - usedPages;
-				if(((Recipes)item).getTotalRecipePages()>1)
+				if(((RecipesBook)item).getTotalRecipePages()>1)
 					response.append( L("There are @x1 blank pages remaining out of @x2 total.  ",""+remainingRecipePages,""+totalRecipePages));
 			}
 			if((item instanceof Container)

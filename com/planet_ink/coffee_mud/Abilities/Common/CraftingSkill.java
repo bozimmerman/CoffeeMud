@@ -68,9 +68,9 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		return name() + " requires: " + supportedResourceString();
 	}
 
-	protected Item		buildingI		= null;
-	protected Recipes	recipeHolder	= null;
-	protected boolean	fireRequired	= true;
+	protected Item			buildingI		= null;
+	protected RecipesBook	recipeHolder	= null;
+	protected boolean		fireRequired	= true;
 
 	protected LinkedList<String> last25items = new LinkedList<String>();
 
@@ -1849,7 +1849,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		return false;
 	}
 
-	protected boolean deconstructRecipeInto(final MOB mob, final Item I, final Recipes R)
+	protected boolean deconstructRecipeInto(final MOB mob, final Item I, final RecipesBook R)
 	{
 		if((I==null)||(R==null))
 			return false;
@@ -2316,10 +2316,10 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		for(int i=0;i<mob.numItems();i++)
 		{
 			final Item I=mob.getItem( i );
-			if((I instanceof Recipes)
+			if((I instanceof RecipesBook)
 			&&(I.container()==null))
 			{
-				final Recipes R=(Recipes)I;
+				final RecipesBook R=(RecipesBook)I;
 				if(((R.getCommonSkillID().length()==0)||(R.getCommonSkillID().equalsIgnoreCase( ID() )))
 				&&(R.getTotalRecipePages() > R.getRecipeCodeLines().length))
 				{

@@ -225,8 +225,8 @@ public class Transcribing extends CommonSkill
 		final Item copyToI=this.getBrandedItem(mob, copyToName, false);
 		if(copyToI == null)
 			return false;
-		if((copyToI instanceof Recipes)
-		&&(((Recipes)copyToI).getTotalRecipePages() <= ((Recipes)copyToI).getRecipeCodeLines().length))
+		if((copyToI instanceof RecipesBook)
+		&&(((RecipesBook)copyToI).getTotalRecipePages() <= ((RecipesBook)copyToI).getRecipeCodeLines().length))
 		{
 			commonTelL(mob,"@x1 is full.",copyToI.name(mob));
 			return false;
