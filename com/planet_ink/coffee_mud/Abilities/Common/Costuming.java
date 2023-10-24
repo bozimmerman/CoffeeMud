@@ -201,7 +201,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 	}
 
 	@Override
-	protected boolean deconstructRecipeInto(final MOB mob, final Item I, final Recipe R)
+	protected boolean deconstructRecipeInto(final MOB mob, final Item I, final Recipes R)
 	{
 
 		if((I==null)||(R==null))

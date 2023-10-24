@@ -595,13 +595,13 @@ public class GrinderItems
 				case ISRECIPE: // isrecipe
 					break;
 				case RECIPESKILL: // recipeskill
-					if(I instanceof Recipe)
-						((Recipe)I).setCommonSkillID(old);
+					if(I instanceof Recipes)
+						((Recipes)I).setCommonSkillID(old);
 					break;
 				case RECIPESKILLHELP: // recipeskillhelp
 					break;
 				case RECIPEDATA: // recipedata
-					if(I instanceof Recipe)
+					if(I instanceof Recipes)
 					{
 						final String recipeFieldName="RECIPEDATA###";
 						int x=0;
@@ -635,7 +635,7 @@ public class GrinderItems
 								return cme.getMessage();
 							}
 						}
-						((Recipe)I).setRecipeCodeLines(finalData.toArray(new String[0]));
+						((Recipes)I).setRecipeCodeLines(finalData.toArray(new String[0]));
 					}
 					break;
 				case LAYER: // layer

@@ -1961,7 +1961,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			CMLib.flags().setReadable(E,false);
 		else
 		if((CMClass.classID(E).endsWith("Readable"))
-		||(E instanceof Recipe)
+		||(E instanceof Recipes)
 		||(E instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap))
 			CMLib.flags().setReadable(E,true);
 		else
@@ -2058,7 +2058,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(E.isReadable()
 		||(E instanceof SpellHolder)
 		||(E instanceof Ammunition)
-		||(E instanceof Recipe)
+		||(E instanceof Recipes)
 		||(E instanceof Exit)
 		||(E instanceof Wand)
 		||(E instanceof ClanItem)
@@ -2206,7 +2206,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genRecipe(final MOB mob, final Recipe E, final int showNumber, final int showFlag)
+	protected void genRecipe(final MOB mob, final Recipes E, final int showNumber, final int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -10106,8 +10106,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genDrinkType(mob,(LiquidHolder)me,++showNumber,showFlag);
 				genDrinkHeld(mob,(LiquidHolder)me,++showNumber,showFlag);
 			}
-			if(me instanceof Recipe)
-				genRecipe(mob,(Recipe)me,++showNumber,showFlag);
+			if(me instanceof Recipes)
+				genRecipe(mob,(Recipes)me,++showNumber,showFlag);
 			if(me instanceof Light)
 				genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);

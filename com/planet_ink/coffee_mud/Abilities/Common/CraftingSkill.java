@@ -69,7 +69,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 	}
 
 	protected Item		buildingI		= null;
-	protected Recipe	recipeHolder	= null;
+	protected Recipes	recipeHolder	= null;
 	protected boolean	fireRequired	= true;
 
 	protected LinkedList<String> last25items = new LinkedList<String>();
@@ -1849,9 +1849,8 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		return false;
 	}
 
-	protected boolean deconstructRecipeInto(final MOB mob, final Item I, final Recipe R)
+	protected boolean deconstructRecipeInto(final MOB mob, final Item I, final Recipes R)
 	{
-
 		if((I==null)||(R==null))
 			return false;
 		if(!(this instanceof ItemCraftor))
@@ -2254,10 +2253,12 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			else
 				componentsRequirements=CMLib.ableComponents().getAbilityComponentMap().get(ID);
 			if(componentsRequirements!=null)
+			{
 				return CMStrings.replaceAll(
 						CMLib.ableComponents().getAbilityComponentDesc(mob, componentsRequirements),
 						L(" on the ground"),
 						"");
+			}
 		}
 		return "?";
 	}
@@ -2315,9 +2316,10 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		for(int i=0;i<mob.numItems();i++)
 		{
 			final Item I=mob.getItem( i );
-			if((I instanceof Recipe)&&(I.container()==null))
+			if((I instanceof Recipes)
+			&&(I.container()==null))
 			{
-				final Recipe R=(Recipe)I;
+				final Recipes R=(Recipes)I;
 				if(((R.getCommonSkillID().length()==0)||(R.getCommonSkillID().equalsIgnoreCase( ID() )))
 				&&(R.getTotalRecipePages() > R.getRecipeCodeLines().length))
 				{

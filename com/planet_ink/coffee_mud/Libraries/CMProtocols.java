@@ -804,7 +804,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				image=getHashedMXPImage(H,"POTION_*");
 		}
 		else
-		if(O instanceof Recipe)
+		if(O instanceof Recipes)
 			image=getHashedMXPImage(H,"ITEM_RECIPE");
 		else
 		if(O instanceof Scroll)

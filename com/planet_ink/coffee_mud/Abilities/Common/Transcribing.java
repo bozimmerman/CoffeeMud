@@ -113,10 +113,10 @@ public class Transcribing extends CommonSkill
 									tmsg+=m2.targetMessage();
 							}
 						}
-						if((foundI instanceof Recipe)
-						&&(targetI instanceof Recipe)
-						&&(CMClass.getAbilityPrototype(((Recipe)targetI).getCommonSkillID())==null))
-							((Recipe)targetI).setCommonSkillID(((Recipe)foundI).getCommonSkillID());
+						if((foundI instanceof Recipes)
+						&&(targetI instanceof Recipes)
+						&&(CMClass.getAbilityPrototype(((Recipes)targetI).getCommonSkillID())==null))
+							((Recipes)targetI).setCommonSkillID(((Recipes)foundI).getCommonSkillID());
 						else
 						if(((!(targetI instanceof Book))||(((Book)targetI).getMaxPages()==1))
 						&&(tmsg.startsWith("::")))
@@ -225,22 +225,22 @@ public class Transcribing extends CommonSkill
 		final Item copyToI=this.getBrandedItem(mob, copyToName, false);
 		if(copyToI == null)
 			return false;
-		if((copyToI instanceof Recipe)
-		&&(((Recipe)copyToI).getTotalRecipePages() <= ((Recipe)copyToI).getRecipeCodeLines().length))
+		if((copyToI instanceof Recipes)
+		&&(((Recipes)copyToI).getTotalRecipePages() <= ((Recipes)copyToI).getRecipeCodeLines().length))
 		{
 			commonTelL(mob,"@x1 is full.",copyToI.name(mob));
 			return false;
 		}
-		if((copyToI instanceof Recipe) != (copyFromI instanceof Recipe))
+		if((copyToI instanceof Recipes) != (copyFromI instanceof Recipes))
 		{
 			commonTelL(mob,"@x1 can not be copied to @x2.",copyFromI.name(mob),copyToI.name(mob));
 			return false;
 		}
-		if((copyFromI instanceof Recipe)
-		&&(copyToI instanceof Recipe)
-		&&(CMClass.getAbilityPrototype(((Recipe)copyFromI).getCommonSkillID())!=null)
-		&&(CMClass.getAbilityPrototype(((Recipe)copyToI).getCommonSkillID())!=null)
-		&&(CMClass.getAbilityPrototype(((Recipe)copyToI).getCommonSkillID())!=CMClass.getAbilityPrototype(((Recipe)copyFromI).getCommonSkillID())))
+		if((copyFromI instanceof Recipes)
+		&&(copyToI instanceof Recipes)
+		&&(CMClass.getAbilityPrototype(((Recipes)copyFromI).getCommonSkillID())!=null)
+		&&(CMClass.getAbilityPrototype(((Recipes)copyToI).getCommonSkillID())!=null)
+		&&(CMClass.getAbilityPrototype(((Recipes)copyToI).getCommonSkillID())!=CMClass.getAbilityPrototype(((Recipes)copyFromI).getCommonSkillID())))
 		{
 			commonTelL(mob,"@x1 can not be copied to @x2, as it would break up the recipe types.",copyFromI.name(mob),copyToI.name(mob));
 			return false;

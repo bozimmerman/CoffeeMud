@@ -340,7 +340,7 @@ public interface AbilityParameters extends CMLibrary
 	 * might have crafted, this method will construct a single Recipe text line coded for use
 	 * by a Recipe object.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor
-	 * @see com.planet_ink.coffee_mud.Items.interfaces.Recipe
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Recipes
 	 * @param C the ItemCraftor skill
 	 * @param I the Item to return a recipe for
 	 * @return the recipe line for that ItemCraftor Item

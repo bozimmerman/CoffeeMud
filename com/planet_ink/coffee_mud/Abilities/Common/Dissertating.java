@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.core.interfaces.CostDef;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -330,7 +329,7 @@ public class Dissertating extends CraftingSkill
 				return false;
 			}
 			if(((buildingI instanceof MiscMagic))
-			||(buildingI instanceof Recipe)
+			||(buildingI instanceof Recipes)
 			||(!buildingI.isGeneric()))
 			{
 				commonTelL(mob,"There's can't write a dissertation on @x1!",buildingI.name(mob));

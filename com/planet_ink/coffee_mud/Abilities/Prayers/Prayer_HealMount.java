@@ -77,7 +77,7 @@ public class Prayer_HealMount extends Prayer implements MendingSkill
 	{
 		return (item instanceof MOB)
 				&&(item instanceof Rideable)
-				&&(((Rideable)item).numRiders()>0);
+				&&(((Rideable)item).riderCapacity()>0);
 	}
 
 	@Override

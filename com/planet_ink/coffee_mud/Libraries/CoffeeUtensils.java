@@ -159,21 +159,55 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return date;
 	}
 
+	protected void addExtRecipe(final MOB mob, final Recipes R, final List<List<String>> recipes)
+	{
+		final StringBuffer allRecipeLines=new StringBuffer("");
+		List<String> lastRecipeV;
+		if(R.getRecipeCodeLines().length>0)
+		{
+			for(final String recipeLine : R.getRecipeCodeLines())
+			{
+				allRecipeLines.append(recipeLine);
+				allRecipeLines.append( "\n" );
+			}
+		}
+		final List<List<String>> V=loadRecipeList(allRecipeLines.toString());
+		for(int v=0;v<V.size();v++)
+		{
+			final List<String> V2=V.get(v);
+			if(recipes.size()==0)
+				recipes.add(V2);
+			else
+			{
+				lastRecipeV=recipes.get(recipes.size()-1);
+				if((recipes.size()==0)||lastRecipeV.size()<=V2.size())
+					recipes.add(V2);
+				else
+				{
+					//Log.errOut(ID,"Not enough parms ("+lastRecipeV.size()+"<="+V2.size()+"): "+CMParms.combine(V2));
+					while(V2.size()<lastRecipeV.size())
+						V2.add("");
+					while(V2.size()>lastRecipeV.size())
+						V2.remove(V2.size()-1);
+					recipes.add(V2);
+				}
+			}
+			if(V2 instanceof Vector)
+				((Vector<?>)V2).trimToSize();
+		}
+	}
+
 	@Override
 	public List<List<String>> addExtRecipes(final MOB mob, final String ID, List<List<String>> recipes)
 	{
 		if(mob==null)
 			return recipes;
-		Item I=null;
-		List<List<String>> V=null;
-		List<String> V2=null;
-		List<String> lastRecipeV=null;
 		boolean clonedYet=false;
 		for(int i=0;i<mob.numItems();i++)
 		{
-			I=mob.getItem(i);
-			if((I instanceof Recipe)
-			&&(((Recipe)I).getCommonSkillID().equalsIgnoreCase(ID))
+			final Item I=mob.getItem(i);
+			if((I instanceof Recipes)
+			&&(((Recipes)I).getCommonSkillID().equalsIgnoreCase(ID))
 			&&(CMLib.flags().flaggedAffects(I, Ability.FLAG_UNCRAFTABLE).size()==0))
 			{
 				if(!clonedYet)
@@ -181,39 +215,21 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					recipes=new XVector<List<String>>(recipes);
 					clonedYet=true;
 				}
-				final StringBuffer allRecipeLines=new StringBuffer("");
-				if(((Recipe)I).getRecipeCodeLines().length>0)
+				addExtRecipe(mob, (Recipes)I, recipes);
+			}
+		}
+		for(final Enumeration<Ability> e = mob.effects();e.hasMoreElements();)
+		{
+			final Ability E = e.nextElement();
+			if((E instanceof Recipes)
+			&&(((Recipes)E).getCommonSkillID().equalsIgnoreCase(ID)))
+			{
+				if(!clonedYet)
 				{
-					for(final String recipeLine : ((Recipe)I).getRecipeCodeLines())
-					{
-						allRecipeLines.append(recipeLine);
-						allRecipeLines.append( "\n" );
-					}
+					recipes=new XVector<List<String>>(recipes);
+					clonedYet=true;
 				}
-				V=loadRecipeList(allRecipeLines.toString());
-				for(int v=0;v<V.size();v++)
-				{
-					V2=V.get(v);
-					if(recipes.size()==0)
-						recipes.add(V2);
-					else
-					{
-						lastRecipeV=recipes.get(recipes.size()-1);
-						if((recipes.size()==0)||lastRecipeV.size()<=V2.size())
-							recipes.add(V2);
-						else
-						{
-							//Log.errOut(ID,"Not enough parms ("+lastRecipeV.size()+"<="+V2.size()+"): "+CMParms.combine(V2));
-							while(V2.size()<lastRecipeV.size())
-								V2.add("");
-							while(V2.size()>lastRecipeV.size())
-								V2.remove(V2.size()-1);
-							recipes.add(V2);
-						}
-					}
-					if(V2 instanceof Vector)
-						((Vector<?>)V2).trimToSize();
-				}
+				addExtRecipe(mob, (Recipes)E, recipes);
 			}
 		}
 		if(recipes instanceof Vector)

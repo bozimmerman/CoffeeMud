@@ -654,10 +654,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			text.append(xmlLib.convertXMLtoTag("ECONSTYP",CMParms.toListString(((FuelConsumer)E).getConsumedFuelTypes())));
 		}
-		if(E instanceof Recipe)
+		if(E instanceof Recipes)
 		{
-			text.append(xmlLib.convertXMLtoTag("SKILLID",((Recipe)E).getCommonSkillID()));
-			final String[] recipes = ((Recipe)E).getRecipeCodeLines();
+			text.append(xmlLib.convertXMLtoTag("SKILLID",((Recipes)E).getCommonSkillID()));
+			final String[] recipes = ((Recipes)E).getRecipeCodeLines();
 			for(final String recipe : recipes)
 				text.append(xmlLib.convertXMLtoTag("RECIPE",recipe));
 		}
@@ -4069,18 +4069,18 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			((Coins)E).setCurrency(xml.getValFromPieces(buf,"CRNC"));
 			((Coins)E).setDenomination(xml.getDoubleFromPieces(buf,"DENOM"));
 		}
-		if(E instanceof Recipe)
+		if(E instanceof Recipes)
 		{
-			((Recipe)E).setCommonSkillID(xml.getValFromPieces(buf,"SKILLID"));
+			((Recipes)E).setCommonSkillID(xml.getValFromPieces(buf,"SKILLID"));
 			int numSupported = xml.getIntFromPieces(buf,"NUMRECIPES");
 			if(numSupported<=0)
 				numSupported=1;
-			((Recipe)E).setTotalRecipePages(numSupported);
+			((Recipes)E).setTotalRecipePages(numSupported);
 			final List<XMLTag> allRecipes = xml.getPiecesFromPieces(buf, "RECIPE");
 			final List<String> allRecipeStrings=new ArrayList<String>(allRecipes.size());
 			for(final XMLTag piece : allRecipes)
 				allRecipeStrings.add(piece.value());
-			((Recipe)E).setRecipeCodeLines(allRecipeStrings.toArray(new String[0]));
+			((Recipes)E).setRecipeCodeLines(allRecipeStrings.toArray(new String[0]));
 		}
 		if(E instanceof Light)
 		{

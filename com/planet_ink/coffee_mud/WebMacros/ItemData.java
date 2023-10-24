@@ -1033,14 +1033,14 @@ public class ItemData extends StdWebMacro
 						break;
 					}
 					case ISRECIPE: // isrecipe
-						if(I instanceof Recipe)
+						if(I instanceof Recipes)
 							return "true";
 						return "false";
 					case RECIPESKILL: // recipeskill
 					{
 						Ability A=null;
-						if((firstTime)&&(I instanceof Recipe))
-							old=""+((Recipe)I).getCommonSkillID();
+						if((firstTime)&&(I instanceof Recipes))
+							old=""+((Recipes)I).getCommonSkillID();
 						str.append("<OPTION VALUE=\"\"");
 						if(old.trim().length()==0)
 							str.append(" SELECTED");
@@ -1064,9 +1064,9 @@ public class ItemData extends StdWebMacro
 					case RECIPESKILLHELP: // recipeskillhelp
 					{
 						Ability A=null;
-						if((firstTime)&&(I instanceof Recipe))
+						if((firstTime)&&(I instanceof Recipes))
 						{
-							A=CMClass.getAbility(((Recipe)I).getCommonSkillID());
+							A=CMClass.getAbility(((Recipes)I).getCommonSkillID());
 							if(A==null)
 							{
 								for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
@@ -1091,7 +1091,7 @@ public class ItemData extends StdWebMacro
 						break;
 					}
 					case RECIPEDATA: // recipedata
-						if(I instanceof Recipe)
+						if(I instanceof Recipes)
 						{
 							String prefix=parms.get("RECIPEPREFIX");
 							if(prefix==null)
@@ -1119,7 +1119,7 @@ public class ItemData extends StdWebMacro
 								}
 								else
 								{
-									final String[] allRecipes=((Recipe)I).getRecipeCodeLines();
+									final String[] allRecipes=((Recipes)I).getRecipeCodeLines();
 									for(final String recipe : allRecipes)
 									{
 										if(recipe.length()>0)

@@ -367,7 +367,7 @@ public class Surveying extends CommonSkill
 				commonTelL(mob,"@x1 is not even readable!",CMStrings.capitalizeFirstLetter(I.name(mob)));
 			return false;
 		}
-		if(I instanceof Recipe)
+		if(I instanceof Recipes)
 		{
 			commonTelL(mob,"@x1 isn't a catalog!",CMStrings.capitalizeAndLower(I.name(mob)));
 			return false;

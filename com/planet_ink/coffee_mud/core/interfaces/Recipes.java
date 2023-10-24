@@ -1,5 +1,4 @@
-package com.planet_ink.coffee_mud.Items.interfaces;
-import com.planet_ink.coffee_mud.core.interfaces.*;
+package com.planet_ink.coffee_mud.core.interfaces;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -35,15 +34,15 @@ import java.util.Vector;
  * A Recipe is a special readable item that, merely by having, adds
  * to the recipes available to construction-type common skills, such
  * as tailoring, weaponsmithing, etc.
- * @author Bo Zimmerman
  *
+ * @author Bo Zimmerman
  */
-public interface Recipe extends Item
+public interface Recipes extends Environmental
 {
 	/**
 	 * Gets the Ability ID of the skill that
 	 * this Recipe item adds a new recipe to.
-	 * @see Recipe#setCommonSkillID(String)
+	 * @see Recipes#setCommonSkillID(String)
 	 * @return the Ability ID this enhances
 	 */
 	public String getCommonSkillID();
@@ -51,7 +50,7 @@ public interface Recipe extends Item
 	/**
 	 * Sets the Ability ID of the skill that
 	 * this Recipe item adds a new recipe to.
-	 * @see Recipe#getCommonSkillID()
+	 * @see Recipes#getCommonSkillID()
 	 * @param ID the Ability ID this enhances
 	 */
 	public void setCommonSkillID(String ID);
@@ -60,7 +59,7 @@ public interface Recipe extends Item
 	 * Gets the number of pages in this recipe
 	 * book, denoting how many recipes it has, or at
 	 * least how many it will hold.
-	 * @see Recipe#setTotalRecipePages(int)
+	 * @see Recipes#setTotalRecipePages(int)
 	 * @return the number of pages in this recipe
 	 */
 	public int getTotalRecipePages();
@@ -69,7 +68,7 @@ public interface Recipe extends Item
 	 * Sets the number of pages in this recipe
 	 * book, denoting how many recipes it has, or at
 	 * least how many it will hold.
-	 * @see Recipe#getTotalRecipePages()
+	 * @see Recipes#getTotalRecipePages()
 	 * @param numRemaining the number of pages in this recipe
 	 */
 	public void setTotalRecipePages(int numRemaining);
@@ -79,7 +78,7 @@ public interface Recipe extends Item
 	 * one on each line/page, and each line encoded
 	 * according to the specific common skill it
 	 * applies to.
-	 * @see Recipe#setRecipeCodeLines(String[])
+	 * @see Recipes#setRecipeCodeLines(String[])
 	 * @return all the recipes written on this Recipe item
 	 */
 	public String[] getRecipeCodeLines();
@@ -89,7 +88,7 @@ public interface Recipe extends Item
 	 * one on each line/page, and each line encoded
 	 * according to the specific common skill it
 	 * applies to.
-	 * @see Recipe#getRecipeCodeLines()
+	 * @see Recipes#getRecipeCodeLines()
 	 * @param lines all the recipes written on this Recipe item
 	 */
 	public void setRecipeCodeLines(String[] lines);

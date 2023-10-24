@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenRecipe extends GenReadable implements Recipe
+public class GenRecipe extends GenReadable implements Recipes
 {
 	@Override
 	public String ID()
@@ -227,7 +227,8 @@ public class GenRecipe extends GenReadable implements Recipe
 			{
 				final StringBuilder str = new StringBuilder("");
 				final int x=CMath.s_int(msg.targetMessage());
-				if((x>0)&&(x<=this.getRecipeCodeLines().length))
+				if((x>0)
+				&&(x<=this.getRecipeCodeLines().length))
 				{
 					final Ability A=CMClass.getAbility( getCommonSkillID() );
 					if(A!=null)

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.core.interfaces.CostDef;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -385,7 +384,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			if((!(buildingI instanceof Scroll))
 			||(!buildingI.isGeneric())
 			||(!(buildingI instanceof MiscMagic))
-			||(buildingI instanceof Recipe))
+			||(buildingI instanceof Recipes))
 			{
 				commonTelL(mob,"There's can't enscribe magic on @x1!",buildingI.name(mob));
 				return false;
