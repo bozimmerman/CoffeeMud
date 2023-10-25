@@ -251,7 +251,7 @@ public class Cavalier extends StdCharClass
 	@Override
 	public int availabilityCode()
 	{
-		return 0;//Area.THEME_FANTASY;
+		return Area.THEME_FANTASY;
 	}
 
 	@Override
