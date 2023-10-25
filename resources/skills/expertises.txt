@@ -387,6 +387,18 @@ HELP_=<EXPERTISE>The ability to use sea travel at a higher power level, producin
 EXTENDEDSAILINGL@x1=Extended Sailing @x2,10,TIME,-SKILLFLAG +SEA_TRAVEL,-MAXCLASSLEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to use sea travel that last even longer.
 
+RANGEDTRAVEL@x1=Ranged Traveling @x2,10,MAXRANGE,-SKILLFLAG +TRAVEL,-MAXCLASSLEVEL +>={19+(5*@x1)},+DEX {9+@x1} +CON {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to project traveling skills at longer ranges from the target.
+
+REDUCEDTRAVEL@x1=Reduced Traveling @x2,10,LOWCOST,-SKILLFLAG +TRAVEL,-MAXCLASSLEVEL +>={1+(3*@x1)},+WIS {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to use traveling skills for less mana/movement.
+
+POWERTRAVEL@x1=Power Traveling @x2,10,LEVEL,-SKILLFLAG +TRAVEL,-MAXCLASSLEVEL +>={1+(3*@x1)},+CHA {9+@x1} +INT {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to perform traveling skills at a higher power level, producing more effective results.
+
+EXTENDEDTRAVEL@x1=Extended Traveling @x2,10,TIME,-SKILLFLAG +TRAVEL,-MAXCLASSLEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to use traveling skills that last even longer.
+
 SMARTENGINEERING@x1=Ingenious Engineering @x2,10,XPCOST,-SKILLS +Construction +Masonry +Boatwright +Shipwright +Landscaping +Excavation +Irrigation +Welding +ShipBuilding,-MAXCLASSLEVEL +>={21+(5*@x1)},+INT {12+@x1} +WIS {12+@x1},0,2,0,0,0
 HELP_=<EXPERTISE>The ability to engineer using fewer materials.
 
