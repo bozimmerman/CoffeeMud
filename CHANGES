@@ -66,7 +66,7 @@
  65. New skills: Companion Mount, Hold The Line, Faithful Mount, Break Mount, Caravan Tactics
  66. New skills: Lucky Vanity, Sweeping Trip, Ride to the Rescue, Rope Dismount, Runover
  67. Command FOLLOW can now be used with sailing ships and caravans.
- 68. New skills: Riding Fight
+ 68. New skills: Riding Fight, Hog Tie, Stable Mount
  
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

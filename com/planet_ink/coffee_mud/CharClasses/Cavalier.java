@@ -160,7 +160,7 @@ public class Cavalier extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_FindHome",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Herding",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_SootheMount",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Fighter_SootheMount",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_RapidShot",false);
@@ -180,6 +180,7 @@ public class Cavalier extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Cleave",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_CommandMount",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Headlock",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_HogTie",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Ranger_HuntersEndurance",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_UnwaveringMark",false);
@@ -241,9 +242,9 @@ public class Cavalier extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ProtectedMount",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"CaravanConversion",false); //TODO
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Fighter_StableMount",true); //TODO
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Skill_StableMount",true);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Fighter_PlanarMount", 0, "", false, //TODO
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Fighter_PlanarMount", 0, "", false,
 				 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 	}
 

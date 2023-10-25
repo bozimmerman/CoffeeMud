@@ -10,6 +10,12 @@
  	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
 	<script language=JavaScript>
 	<!--
+		function Clicked(action)
+		{
+			document.WHITELIST.action=action;
+			document.WHITELIST.submit();
+		}
+
 		function DelClicked(fld, typ)
 		{
 			fld.value='';

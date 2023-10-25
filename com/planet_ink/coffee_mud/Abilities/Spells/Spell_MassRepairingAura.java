@@ -160,11 +160,11 @@ public class Spell_MassRepairingAura extends Spell
 	}
 
 	@Override
-	public boolean invoke(final MOB mob, final List<String> commands, Physical givenTarget, final boolean auto, final int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((commands.size()==0)&&(givenTarget==null))
-			givenTarget=mob;
-		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+			commands.add("SELF");
+		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY,false,false,false);
 		if(target==null)
 			return false;
 		if((target.fetchEffect(this.ID())!=null)
@@ -174,7 +174,9 @@ public class Spell_MassRepairingAura extends Spell
 			mob.tell(L("@x1 is already repairing!",target.name(mob)));
 			return false;
 		}
-		if((!(target instanceof Item))&&(!(target instanceof MOB))&&(!(target instanceof Room)))
+		if((!(target instanceof Item))
+		&&(!(target instanceof MOB))
+		&&(!(target instanceof Room)))
 		{
 			mob.tell(L("@x1 would not be affected by this spell.",target.name(mob)));
 			return false;
