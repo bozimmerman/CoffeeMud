@@ -2,7 +2,6 @@ package com.planet_ink.coffee_mud.Areas;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.core.interfaces.Places;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.Area.State;
@@ -1030,6 +1029,15 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 		affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
+		eachEffect(new EachApplicable<Ability>()
+		{
+			@Override
+			public final void apply(final Ability A)
+			{
+				if (A.bubbleAffect())
+					A.affectPhyStats(affected, affectableStats);
+			}
+		});
 	}
 
 	@Override

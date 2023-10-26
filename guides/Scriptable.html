@@ -163,7 +163,7 @@
 
             <li><a href="#script">&lt;SCRIPT&gt;</a></li>
 
-            <li><a href="#mpacctattoo">mpacctattoo</a></li>
+            <li><a href="#mpacctattoo">mpacctattoo</a></li><li><a href="#mpachieve">mpachieve</a></li>
 
             <li><a href="#mpaffect">mpaffect</a></li>
 
@@ -4686,7 +4686,22 @@ string, or a line delimeter, it must be escaped: \;</p>
 
       <p>Here is an example:</p>
 
-      <pre>GREET_PROG 100<br />mpecho Greetings $n! This command is mpecho, a mobprog command!<br /><br />&lt;SCRIPT&gt;<br />var greetedBefore=getVar(source().Name(),"GREETEDBEFORE");<br />source().tell("However, this greeting comes from Javascript!");<br />if(greetedBefore == 'true')<br /> source().tell("We've met before\; we will meet again!!");<br />else<br /> setVar(source().Name(),"GREETEDBEFORE","true");<br />&lt;/SCRIPT&gt;<br /><br />if var($n GREETEDBEFORE == true)<br /> mpecho The variable set in Javascript can be read here in mobprog land also!<br />endif<br />~ </pre>
+      <pre>GREET_PROG 100<br />mpecho Greetings $n! This command is mpecho, a mobprog command!<br /><br />&lt;SCRIPT&gt;<br />var greetedBefore=getVar(source().Name(),"GREETEDBEFORE");<br />source().tell("However, this greeting comes from Javascript!");<br />if(greetedBefore == 'true')<br /> source().tell("We've met before\; we will meet again!!");<br />else<br /> setVar(source().Name(),"GREETEDBEFORE","true");<br />&lt;/SCRIPT&gt;<br /><br />if var($n GREETEDBEFORE == true)<br /> mpecho The variable set in Javascript can be read here in mobprog land also!<br />endif<br />~ <br /></pre><h3><a name="mpacctattoo">mpachieve</a></h3>
+
+      <p>Usage:</p>
+
+mpachieve [player] [achievement id] [amount]<br />
+
+      <p>Adds
+or removes points from the given achievment (tattoo/achievement id) for
+the given player. &nbsp;This command is best used for SCRIPTED type
+achievements.</p>
+
+      
+
+      <p>EXAMPLES:</p>
+
+mpachieveme $i ACH_MYSPECIAL 10<br />
 
       <h3><a name="mpacctattoo">mpacctattoo</a></h3>
 
@@ -8544,7 +8559,9 @@ parenthesis to group word checks together.</p>
       <p>This
 function searches
 the first string to see if the second
-string appears as a whole word within it. If&nbsp;the second string begins and/or ends with *, it becomes a substring search. &nbsp;Astrisks may be escaped with a backslash..</p>
+string appears as a whole word within it. If&nbsp;the second string
+begins and/or ends with *, it becomes a substring search.
+&nbsp;Astrisks may be escaped with a backslash..</p>
 
       <p>&nbsp;The
 first string can also be grouped into phrases using

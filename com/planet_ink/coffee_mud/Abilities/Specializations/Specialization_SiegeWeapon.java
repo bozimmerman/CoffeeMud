@@ -116,5 +116,4 @@ public class Specialization_SiegeWeapon extends StdAbility
 		}
 		return true;
 	}
-
 }

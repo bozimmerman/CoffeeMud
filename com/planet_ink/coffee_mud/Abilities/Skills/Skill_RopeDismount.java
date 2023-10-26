@@ -198,9 +198,9 @@ public class Skill_RopeDismount extends StdSkill
 		}
 		if((R.getArea() instanceof Boardable)
 		&&((R.domainType()&Room.INDOORS)==0)
-		&&(R.getArea() instanceof NavigableItem))
+		&&(((Boardable)R.getArea()).getBoardableItem() instanceof NavigableItem))
 		{
-			final Rideable.Basis rb = ((NavigableItem)R.getArea()).navBasis();
+			final Rideable.Basis rb = ((NavigableItem)((Boardable)R.getArea()).getBoardableItem()).navBasis();
 			if((rb == Rideable.Basis.LAND_BASED)
 			||(rb == Rideable.Basis.WAGON)
 			||(rb == Rideable.Basis.WATER_BASED))

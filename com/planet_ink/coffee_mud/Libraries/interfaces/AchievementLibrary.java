@@ -110,7 +110,8 @@ public interface AchievementLibrary extends CMLibrary
 		SHIPSSUNK("Ships sunk",new String[] {"NUM", "SHIPMASK"}),
 		CMDUSE("Using Commands",new String[]{"NUM","COMMANDID"}),
 		GROUPKILLS("Number of Group Kills",new String[]{"NUM","SIZE","ZAPPERMASK"}),
-		ENTITLED("Number of titles",new String[]{"NUM","TITLEMASK"})
+		ENTITLED("Number of titles",new String[]{"NUM","TITLEMASK"}),
+		SCRIPTED("Special Scripted",new String[]{"NUM"})
 		;
 		private final String[] parameters;
 		private final String displayName;
@@ -636,6 +637,18 @@ public interface AchievementLibrary extends CMLibrary
 	 * @param parms any event-specific argument that help determine whether a bump is warranted.
 	 */
 	public void possiblyBumpAchievement(final MOB mob, final Event E, int bumpNum, Object... parms);
+
+	/**
+	 * Always causes a player to have one of their achievements bumped,
+	 * this method is called with event specific parameters which might possibly cause the achievement
+	 * to be bumped in the tracker, which might cause it to be completed as well.
+	 *
+	 * @param mob the mob who is bumping the achievement
+	 * @param A the achievement
+	 * @param bumpNum the amount to bump, plus or minus
+	 * @param parms any event-specific argument that help determine whether a bump is warranted.
+	 */
+	public void bumpAchievement(final MOB mob, final Achievement A, final int bumpNum, final Object... parms);
 
 	/**
 	 * When an event occurs that might possible cause a player to have one of their achievements bumped,

@@ -7167,6 +7167,163 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 			};
 			break;
+		case SCRIPTED:
+			A=new Achievement()
+			{
+				private int				num			= -1;
+
+				@Override
+				public Event getEvent()
+				{
+					return eventType;
+				}
+
+				@Override
+				public Agent getAgent()
+				{
+					return agent;
+				}
+
+				@Override
+				public boolean canApplyTo(final Agent agent)
+				{
+					return true;
+				}
+
+				@Override
+				public boolean canBeSeenBy(final MOB mob)
+				{
+					return ((seenMask==null)||(CMLib.masking().maskCheck(seenMask, mob, true)));
+				}
+
+				@Override
+				public String getTattoo()
+				{
+					return tattoo;
+				}
+
+				@Override
+				public int getDuration()
+				{
+					return duration;
+				}
+
+				@Override
+				public boolean isFlag(final AchievementFlag flag)
+				{
+					return flags.contains(flag);
+				}
+
+				@Override
+				public int getTargetCount()
+				{
+					return num;
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+
+				@Override
+				public String getDisplayStr()
+				{
+					return displayStr;
+				}
+
+				@Override
+				public Award[] getRewards()
+				{
+					return rewardList;
+				}
+
+				@Override
+				public String getRawParmVal(final String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
+				public Tracker getTracker(final int oldCount)
+				{
+					final Achievement me=this;
+					return new Tracker()
+					{
+						private volatile int count = oldCount;
+
+						@Override
+						public Achievement getAchievement()
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved(final Tattooable tracked)
+						{
+							return (num>=0) && (getCount(tracked) > num);
+						}
+
+						@Override
+						public int getCount(final Tattooable tracked)
+						{
+							return count;
+						}
+
+						@Override
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
+						{
+							if(bumpNum == 0)
+								return false;
+							if((playerMask!=null)&&(!CMLib.masking().maskCheck(playerMask, mob, true)))
+								return false;
+							for(final Object o : parms)
+							{
+								if(o instanceof Clan)
+								{
+									if((tracked instanceof Clan)
+									&&(tracked != o))
+										return false;
+								}
+							}
+							count += bumpNum;
+							if(count < 0)
+								count = 0;
+							return true;
+						}
+
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(final Exception e)
+							{
+								return this;
+							}
+						}
+					};
+				}
+
+				@Override
+				public boolean isSavableTracker()
+				{
+					return true;
+				}
+
+				@Override
+				public String parseParms(final String parms)
+				{
+					final String numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+					num=CMath.s_int(numStr);
+					return "";
+				}
+			};
+			break;
 		case CLANLEVELSGAINED:
 			A=new Achievement()
 			{
@@ -7484,6 +7641,28 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 					}
 				}
+			}
+		}
+	}
+
+	@Override
+	public void bumpAchievement(final MOB mob, final Achievement A, final int bumpNum, final Object... parms)
+	{
+		final PlayerStats pStats = mob.playerStats();
+		if(pStats != null)
+		{
+			final PlayerAccount account = pStats.getAccount();
+			switch(A.getAgent())
+			{
+			case PLAYER:
+				possiblyBumpPlayerAchievement(mob, A, pStats, A.getEvent(), bumpNum, parms);
+				break;
+			case ACCOUNT:
+				possiblyBumpAccountAchievement(mob, A, account, A.getEvent(), bumpNum, parms);
+				break;
+			case CLAN:
+				possiblyBumpClanAchievement(mob, A, mob.clans(), A.getEvent(), bumpNum, parms);
+				break;
 			}
 		}
 	}

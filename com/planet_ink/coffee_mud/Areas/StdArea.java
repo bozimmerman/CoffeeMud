@@ -1945,12 +1945,16 @@ public class StdArea implements Area
 			if (B != null)
 			{
 				final String ruler = B.rulingOrganization();
+				Clan C;
 				if (ruler.length() > 0)
-				{
-					final Clan C = CMLib.clans().getClanAnyHost(ruler);
-					if (C != null)
-						s.append("Controlled by  : ^H" + C.getGovernmentName() + " " + C.name() + "^N\n\r");
-				}
+					C = CMLib.clans().getClanAnyHost(ruler);
+				else
+					C=null;
+				if (C != null)
+					s.append("Controlled by  : ^H" + C.getGovernmentName() + " " + C.name() + "^N\n\r");
+				else
+				if(!B.isFullyControlled())
+					s.append("Controlled by  : ^H" + name() + "^N\n\r");
 			}
 			s.append("Level range    : ^H" + statData[Area.Stats.MIN_LEVEL.ordinal()] + "^N to ^H" + statData[Area.Stats.MAX_LEVEL.ordinal()] + "^N\n\r");
 			// s.append("Average level :

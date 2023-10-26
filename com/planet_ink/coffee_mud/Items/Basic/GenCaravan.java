@@ -346,39 +346,6 @@ public class GenCaravan extends GenNavigableBoardable
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.targetMinor()==CMMsg.TYP_SIT)
-		&&(msg.target()==this)
-		&&(msg.source().location()==owner())
-		&&(CMLib.flags().isWateryRoom(msg.source().location()))
-		&&(!CMLib.flags().isFlying(msg.source()))
-		&&(!CMLib.flags().isFalling((Physical)msg.target()))
-		&&(!CMLib.law().doesHavePriviledgesHere(msg.source(), super.getDestinationRoom(msg.source().location()))))
-		{
-			final Rideable ride=msg.source().riding();
-			if(ticksSinceMove < 2)
-			{
-				if(ride == null)
-					msg.source().tell(CMLib.lang().L("You'll need some assistance to board a caravan from the ground."));
-				else
-					msg.source().tell(msg.source(),this,ride,CMLib.lang().L("<S-NAME> chase(s) <T-NAME> around in <O-NAME>."));
-				return false;
-			}
-			else
-			if(ride == null)
-			{
-				msg.source().tell(CMLib.lang().L("You'll need some assistance to board a caravan from the ground."));
-				return false;
-			}
-			else
-			if(!CMLib.flags().isClimbing(msg.source()))
-			{
-				msg.source().tell(CMLib.lang().L("You'll need some assistance to board a ship from @x1, such as some means to climb up.",ride.name(msg.source())));
-				return false;
-			}
-			else
-				msg.source().setRiding(null); // if you're climbing, you're not riding any more
-		}
-		else
 		if((!isDriving)
 		&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
 		&&(msg.target() instanceof Room)

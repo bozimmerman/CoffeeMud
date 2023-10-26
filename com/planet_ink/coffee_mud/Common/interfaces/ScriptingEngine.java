@@ -724,6 +724,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"CASE", //96 JUST for catching errors...
 		"DEFAULT", //97 JUST for catching errors...
 		"MPHIT", //98
+		"MPACHIEVE", //99
 	};
 
 	/** a list of the different parts of a time clock */

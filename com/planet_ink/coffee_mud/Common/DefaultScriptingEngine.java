@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
@@ -13245,6 +13246,36 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				vscript.add(new ScriptLn("FUNCTION_PROG ALARM_"+time+Math.random(),null,null));
 				vscript.add(new ScriptLn(parms,null,null));
 				prequeResponse(-1,scripted,source,target,monster,primaryItem,secondaryItem,vscript,CMath.s_int(time.trim()),msg);
+				break;
+			}
+			case 99: // MPACHIEVE
+			{
+				if(tt==null)
+				{
+					tt=parseBits(script,si,"Cccp");
+					if(tt==null)
+						return null;
+				}
+				final PhysicalAgent M = getArgumentMOB(tt[1], source, monster, target, primaryItem, secondaryItem, msg, tmp);
+				if((!(M instanceof MOB))||(((MOB)M).isMonster()))
+				{
+					logError(scripted,"MPPOSSESS","RunTime",tt[1]+" is not a player.");
+					break;
+				}
+				final String amt=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
+				final String achieveID=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
+				if((amt.length()==0)||(!CMath.isInteger(amt)))
+				{
+					logError(scripted,"MPACHIEVE","Syntax","No Amount '"+amt+"'");
+					break;
+				}
+				final Achievement A = CMLib.achievements().getAchievement(achieveID);
+				if((achieveID.length()==0)||(A==null))
+				{
+					logError(scripted,"MPACHIEVE","RunTime","No Achievement '"+achieveID+"'");
+					break;
+				}
+				CMLib.achievements().bumpAchievement((MOB)M, A, CMath.s_int(amt), new Object[0]);
 				break;
 			}
 			case 37: // mpenable
