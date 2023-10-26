@@ -122,29 +122,27 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			else
 			{
 				statData=buildAreaIStats();
+				return statData;
 			}
 		}
-		if(parentArea == null)
+		int ct=0;
+		statData=new int[Area.Stats.values().length];
+		for(final Area childA : workList)
 		{
-			int ct=0;
-			statData=new int[Area.Stats.values().length];
-			for(final Area childA : workList)
+			final int[] theseStats=childA.getAreaIStats();
+			if(theseStats != emptyStats)
 			{
-				final int[] theseStats=childA.getAreaIStats();
-				if(theseStats != emptyStats)
-				{
-					ct++;
-					for(int i=0;i<theseStats.length;i++)
-						statData[i]+=theseStats[i];
-				}
+				ct++;
+				for(int i=0;i<theseStats.length;i++)
+					statData[i]+=theseStats[i];
 			}
-			if(ct==0)
-				return emptyStats;
-			for(int i=0;i<statData.length;i++)
-				statData[i]=statData[i]/ct;
-			Resources.removeResource("HELP_"+areaName.toUpperCase());
-			Resources.submitResource("STATS_"+areaName.toUpperCase(),statData);
 		}
+		if(ct==0)
+			return emptyStats;
+		for(int i=0;i<statData.length;i++)
+			statData[i]=statData[i]/ct;
+		Resources.removeResource("HELP_"+areaName.toUpperCase());
+		Resources.submitResource("STATS_"+areaName.toUpperCase(),statData);
 		return statData;
 	}
 
