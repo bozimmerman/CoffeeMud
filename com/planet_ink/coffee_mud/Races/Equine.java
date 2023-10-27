@@ -92,11 +92,11 @@ public class Equine extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "Fighter_Kick", "HorseSpeak", "Skill_Buck", "Skill_MountedLeap" };
-	private final int[]		racialAbilityLevels			= { 5, 1, 5, 5 };
-	private final int[]		racialAbilityProficiencies	= { 40, 100, 50, 50 };
-	private final boolean[]	racialAbilityQuals			= { false, false, false, false };
-	private final String[]	racialAbilityParms			= { "", "", "", "" };
+	private final String[]	racialAbilityNames			= { "Fighter_Kick", "HorseSpeak", "Skill_Buck", "Skill_MountedLeap", "Skill_Trample" };
+	private final int[]		racialAbilityLevels			= { 5, 1, 5, 5, 10 };
+	private final int[]		racialAbilityProficiencies	= { 40, 100, 50, 50, 50 };
+	private final boolean[]	racialAbilityQuals			= { false, false, false, false, false };
+	private final String[]	racialAbilityParms			= { "", "", "", "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()

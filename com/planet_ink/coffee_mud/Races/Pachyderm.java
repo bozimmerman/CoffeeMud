@@ -98,11 +98,11 @@ public class Pachyderm extends StdRace
 		return true;
 	}
 
-	private final String[]	racialAbilityNames			= { "ElephantSpeak" };
-	private final int[]		racialAbilityLevels			= { 1 };
-	private final int[]		racialAbilityProficiencies	= { 100 };
-	private final boolean[]	racialAbilityQuals			= { false };
-	private final String[]	racialAbilityParms			= { "" };
+	private final String[]	racialAbilityNames			= { "ElephantSpeak", "Skill_Trample" };
+	private final int[]		racialAbilityLevels			= { 1, 10 };
+	private final int[]		racialAbilityProficiencies	= { 100, 50 };
+	private final boolean[]	racialAbilityQuals			= { false, false };
+	private final String[]	racialAbilityParms			= { "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()

@@ -88,11 +88,11 @@ public class Bull extends Buffalo
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "CowSpeak", "Skill_Buck", "Gore", "Grazing" };
-	private final int[]		racialAbilityLevels			= { 1, 4, 21, 1 };
-	private final int[]		racialAbilityProficiencies	= { 100, 50, 100, 100 };
-	private final boolean[]	racialAbilityQuals			= { false, false, false, false };
-	private final String[]	racialAbilityParms			= { "", "", "", "" };
+	private final String[]	racialAbilityNames			= { "CowSpeak", "Skill_Buck", "Gore", "Grazing", "Skill_Trample" };
+	private final int[]		racialAbilityLevels			= { 1, 4, 21, 1, 10 };
+	private final int[]		racialAbilityProficiencies	= { 100, 50, 100, 100, 50 };
+	private final boolean[]	racialAbilityQuals			= { false, false, false, false, false };
+	private final String[]	racialAbilityParms			= { "", "", "", "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()
