@@ -2038,6 +2038,32 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				&&isSwimming(R);
 	}
 
+
+	/**
+	 * Returns whether the given room, whatever is
+	 * watery, such as a deep water surface, underwater, etc.
+	 * @param R the room to check
+	 * @return true if it is deep watery, false otherwise
+	 */
+	@Override
+	public boolean isDeepWateryRoom(final Room R)
+	{
+		if(R==null)
+			return false;
+		switch(R.domainType())
+		{
+		case Room.DOMAIN_INDOORS_WATERSURFACE:
+		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+			R.giveASky(0);
+			return isUnderWateryRoom(R.getRoomInDir(Directions.DOWN));
+		case Room.DOMAIN_INDOORS_UNDERWATER:
+		case Room.DOMAIN_OUTDOORS_UNDERWATER:
+			return true;
+		}
+		return ((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
+				&&isSwimming(R);
+	}
+
 	/**
 	 * Returns whether the given room, whatever is
 	 * the surface of deep water, such as a water surface, etc.

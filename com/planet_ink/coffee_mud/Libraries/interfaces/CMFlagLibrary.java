@@ -825,6 +825,14 @@ public interface CMFlagLibrary extends CMLibrary
 
 	/**
 	 * Returns whether the given room, whatever is
+	 * watery, such as a deep water surface, underwater, etc.
+	 * @param R the room to check
+	 * @return true if it is deep watery, false otherwise
+	 */
+	public boolean isDeepWateryRoom(Room R);
+
+	/**
+	 * Returns whether the given room, whatever is
 	 * watery, such as a water surface, etc.
 	 * @param R the room to check
 	 * @return true if it is water surfacy, false otherwise

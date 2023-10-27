@@ -668,7 +668,7 @@ public class StdRideable extends StdMOB implements Rideable
 					{
 					case LAND_BASED:
 						if((targetRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)
-						||(CMLib.flags().isWateryRoom(targetRoom))
+						||(CMLib.flags().isDeepWateryRoom(targetRoom))
 						||(targetRoom.domainType()==Room.DOMAIN_INDOORS_AIR))
 							ok=false;
 						else
