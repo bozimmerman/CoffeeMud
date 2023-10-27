@@ -1675,57 +1675,71 @@ public class StdArea implements Area
 		return Integer.MIN_VALUE;
 	}
 
-	protected void buildAreaIMobStats(final int[] statData, final long[] totalAlignments, final Faction theFaction, final List<Integer> alignRanges, final List<Integer> levelRanges, final MOB mob)
+	protected static final class IStatContext
+	{
+		final Faction		theFaction;
+		final int[]			statData		= new int[Area.Stats.values().length];
+		final List<Integer>	levelRanges		= new Vector<Integer>();
+		final List<Integer>	alignRanges		= new Vector<Integer>();
+		final long[]		totalAlignments	= new long[] { 0 };
+
+		public IStatContext(final Faction theFaction)
+		{
+			this.theFaction = theFaction;
+		}
+	}
+
+	protected void buildAreaIMobStats(final IStatContext ctx, final MOB mob)
 	{
 		if ((mob != null) && mob.isMonster())
 		{
 			if (!CMLib.flags().isUnattackable(mob))
 			{
 				final int lvl = mob.basePhyStats().level();
-				levelRanges.add(Integer.valueOf(lvl));
-				if ((theFaction != null) && (mob.fetchFaction(theFaction.factionID()) != Integer.MAX_VALUE))
+				ctx.levelRanges.add(Integer.valueOf(lvl));
+				if ((ctx.theFaction != null)
+				&& (mob.fetchFaction(ctx.theFaction.factionID()) != Integer.MAX_VALUE))
 				{
-					alignRanges.add(Integer.valueOf(mob.fetchFaction(theFaction.factionID())));
-					totalAlignments[0] += mob.fetchFaction(theFaction.factionID());
+					ctx.alignRanges.add(Integer.valueOf(mob.fetchFaction(ctx.theFaction.factionID())));
+					ctx.totalAlignments[0] += mob.fetchFaction(ctx.theFaction.factionID());
 				}
-				statData[Area.Stats.POPULATION.ordinal()]++;
-				statData[Area.Stats.TOTAL_LEVELS.ordinal()] += lvl;
+				ctx.statData[Area.Stats.POPULATION.ordinal()]++;
+				ctx.statData[Area.Stats.TOTAL_LEVELS.ordinal()] += lvl;
 				if (!CMLib.flags().isAnimalIntelligence(mob))
 				{
-					statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()] += lvl;
-					statData[Area.Stats.INTELLIGENT_MOBS.ordinal()]++;
+					ctx.statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()] += lvl;
+					ctx.statData[Area.Stats.INTELLIGENT_MOBS.ordinal()]++;
 				}
 				else
 				{
-					statData[Area.Stats.ANIMALS.ordinal()]++;
+					ctx.statData[Area.Stats.ANIMALS.ordinal()]++;
 				}
-				if (lvl < statData[Area.Stats.MIN_LEVEL.ordinal()])
-					statData[Area.Stats.MIN_LEVEL.ordinal()] = lvl;
-				if (lvl >= statData[Area.Stats.MAX_LEVEL.ordinal()])
+				if (lvl < ctx.statData[Area.Stats.MIN_LEVEL.ordinal()])
+					ctx.statData[Area.Stats.MIN_LEVEL.ordinal()] = lvl;
+				if (lvl >= ctx.statData[Area.Stats.MAX_LEVEL.ordinal()])
 				{
-					if (lvl > statData[Area.Stats.MAX_LEVEL.ordinal()])
+					if (lvl > ctx.statData[Area.Stats.MAX_LEVEL.ordinal()])
 					{
-						statData[Area.Stats.MAX_LEVEL.ordinal()] = lvl;
-						statData[Area.Stats.MAX_LEVEL_MOBS.ordinal()] = 0;
+						ctx.statData[Area.Stats.MAX_LEVEL.ordinal()] = lvl;
+						ctx.statData[Area.Stats.MAX_LEVEL_MOBS.ordinal()] = 0;
 					}
-					statData[Area.Stats.MAX_LEVEL_MOBS.ordinal()]++;
+					ctx.statData[Area.Stats.MAX_LEVEL_MOBS.ordinal()]++;
 				}
 				/*
 				 * if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)) {
 				 * if(CMLib.flags().isGood(mob))
-				 * statData[Area.Stats.GOOD_MOBS.ordinal()]++; else
+				 * ctx.statData[Area.Stats.GOOD_MOBS.ordinal()]++; else
 				 * if(CMLib.flags().isEvil(mob))
-				 * statData[Area.Stats.EVIL_MOBS.ordinal()]++; }
+				 * ctx.statData[Area.Stats.EVIL_MOBS.ordinal()]++; }
 				 * if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL)) {
 				 * if(CMLib.flags().isLawful(mob))
-				 * statData[Area.Stats.LAWFUL_MOBS.ordinal()]++; else
+				 * ctx.statData[Area.Stats.LAWFUL_MOBS.ordinal()]++; else
 				 * if(CMLib.flags().isChaotic(mob))
-				 * statData[Area.Stats.CHAOTIC_MOBS.ordinal()]++; }
+				 * ctx.statData[Area.Stats.CHAOTIC_MOBS.ordinal()]++; }
 				 * if(mob.fetchEffect("Prop_ShortEffects")!=null)
-				 * statData[Area.Stats.BOSS_MOBS.ordinal()]++;
-				 * if(" Humanoid Elf Dwarf Halfling HalfElf ".indexOf(" "+mob.
-				 * charStats().getMyRace().racialCategory()+" ")>=0)
-				 * statData[Area.Stats.HUMANOIDS.ordinal()]++;
+				 * ctx.statData[Area.Stats.BOSS_MOBS.ordinal()]++;
+				 * if(" Humanoid Elf Dwarf Halfling HalfElf ".indexOf(" "+mob.charStats().getMyRace().racialCategory()+" ")>=0)
+				 * ctx.statData[Area.Stats.HUMANOIDS.ordinal()]++;
 				 */
 			}
 		}
@@ -1759,8 +1773,6 @@ public class StdArea implements Area
 
 	protected int[] buildAreaIStats()
 	{
-		final List<Integer> levelRanges = new Vector<Integer>();
-		final List<Integer> alignRanges = new Vector<Integer>();
 		Faction theFaction = null;
 		for (final Enumeration<Faction> e = CMLib.factions().factions(); e.hasMoreElements();)
 		{
@@ -1768,46 +1780,45 @@ public class StdArea implements Area
 			if (F.showInSpecialReported())
 				theFaction = F;
 		}
-		final int[] statData = new int[Area.Stats.values().length];
-		statData[Area.Stats.POPULATION.ordinal()] = 0;
-		statData[Area.Stats.MIN_LEVEL.ordinal()] = Integer.MAX_VALUE;
-		statData[Area.Stats.MAX_LEVEL.ordinal()] = Integer.MIN_VALUE;
-		statData[Area.Stats.AVG_LEVEL.ordinal()] = 0;
-		statData[Area.Stats.MED_LEVEL.ordinal()] = 0;
-		statData[Area.Stats.AVG_ALIGNMENT.ordinal()] = 0;
-		statData[Area.Stats.TOTAL_LEVELS.ordinal()] = 0;
-		statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()] = 0;
-		statData[Area.Stats.VISITABLE_ROOMS.ordinal()] = getProperRoomnumbers().roomCountAllAreas();
+		final IStatContext ctx = new IStatContext(theFaction);
+		ctx.statData[Area.Stats.POPULATION.ordinal()] = 0;
+		ctx.statData[Area.Stats.MIN_LEVEL.ordinal()] = Integer.MAX_VALUE;
+		ctx.statData[Area.Stats.MAX_LEVEL.ordinal()] = Integer.MIN_VALUE;
+		ctx.statData[Area.Stats.AVG_LEVEL.ordinal()] = 0;
+		ctx.statData[Area.Stats.MED_LEVEL.ordinal()] = 0;
+		ctx.statData[Area.Stats.AVG_ALIGNMENT.ordinal()] = 0;
+		ctx.statData[Area.Stats.TOTAL_LEVELS.ordinal()] = 0;
+		ctx.statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()] = 0;
+		ctx.statData[Area.Stats.VISITABLE_ROOMS.ordinal()] = getProperRoomnumbers().roomCountAllAreas();
 		Resources.removeResource("PIETY_"+Name().toUpperCase());
-		final long[] totalAlignments = new long[] { 0 };
 		for (final Enumeration<Room> r = getProperMap(); r.hasMoreElements();)
 		{
 			final Room R = r.nextElement();
 			final int countable;
 			if (R instanceof GridLocale)
 			{
-				statData[Area.Stats.VISITABLE_ROOMS.ordinal()]--;
+				ctx.statData[Area.Stats.VISITABLE_ROOMS.ordinal()]--;
 				countable = ((GridLocale) R).getGridSize();
 			}
 			else
 				countable = 1;
-			statData[Area.Stats.COUNTABLE_ROOMS.ordinal()] += countable;
+			ctx.statData[Area.Stats.COUNTABLE_ROOMS.ordinal()] += countable;
 			if ((R.domainType() & Room.INDOORS) > 0)
 			{
-				statData[Area.Stats.INDOOR_ROOMS.ordinal()] += countable;
+				ctx.statData[Area.Stats.INDOOR_ROOMS.ordinal()] += countable;
 				switch (R.domainType())
 				{
 				case Room.DOMAIN_INDOORS_CAVE:
-					statData[Area.Stats.CAVE_ROOMS.ordinal()] += countable;
+					ctx.statData[Area.Stats.CAVE_ROOMS.ordinal()] += countable;
 					break;
 				case Room.DOMAIN_INDOORS_METAL:
 				case Room.DOMAIN_INDOORS_STONE:
 				case Room.DOMAIN_INDOORS_WOOD:
-					statData[Area.Stats.CITY_ROOMS.ordinal()] += countable;
+					ctx.statData[Area.Stats.CITY_ROOMS.ordinal()] += countable;
 					break;
 				case Room.DOMAIN_INDOORS_UNDERWATER:
 				case Room.DOMAIN_INDOORS_WATERSURFACE:
-					statData[Area.Stats.WATER_ROOMS.ordinal()] += countable;
+					ctx.statData[Area.Stats.WATER_ROOMS.ordinal()] += countable;
 					break;
 				}
 			}
@@ -1816,19 +1827,19 @@ public class StdArea implements Area
 				switch (R.domainType())
 				{
 				case Room.DOMAIN_OUTDOORS_CITY:
-					statData[Area.Stats.CITY_ROOMS.ordinal()] += countable;
+					ctx.statData[Area.Stats.CITY_ROOMS.ordinal()] += countable;
 					break;
 				case Room.DOMAIN_OUTDOORS_DESERT:
-					statData[Area.Stats.DESERT_ROOMS.ordinal()] += countable;
+					ctx.statData[Area.Stats.DESERT_ROOMS.ordinal()] += countable;
 					break;
 				case Room.DOMAIN_OUTDOORS_UNDERWATER:
 				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-					statData[Area.Stats.WATER_ROOMS.ordinal()] += countable;
+					ctx.statData[Area.Stats.WATER_ROOMS.ordinal()] += countable;
 					break;
 				}
 			}
 			for (int i = 0; i < R.numInhabitants(); i++)
-				buildAreaIMobStats(statData, totalAlignments, theFaction, alignRanges, levelRanges, R.fetchInhabitant(i));
+				buildAreaIMobStats(ctx, R.fetchInhabitant(i));
 			for (int i = 0; i < R.numItems(); i++)
 			{
 				final Item I = R.getItem(i);
@@ -1841,34 +1852,35 @@ public class StdArea implements Area
 					{
 						final Room R2 = r2.nextElement();
 						for (int i2 = 0; i2 < R2.numInhabitants(); i2++)
-							buildAreaIMobStats(statData, totalAlignments, theFaction, alignRanges, levelRanges, R2.fetchInhabitant(i2));
+							buildAreaIMobStats(ctx, R2.fetchInhabitant(i2));
 					}
 				}
 			}
 		}
-		if ((statData[Area.Stats.POPULATION.ordinal()] == 0) || (levelRanges.size() == 0))
+		if ((ctx.statData[Area.Stats.POPULATION.ordinal()] == 0)
+		|| (ctx.levelRanges.size() == 0))
 		{
-			statData[Area.Stats.MIN_LEVEL.ordinal()] = 0;
-			statData[Area.Stats.MAX_LEVEL.ordinal()] = 0;
+			ctx.statData[Area.Stats.MIN_LEVEL.ordinal()] = 0;
+			ctx.statData[Area.Stats.MAX_LEVEL.ordinal()] = 0;
 		}
 		else
 		{
-			Collections.sort(levelRanges);
-			Collections.sort(alignRanges);
-			statData[Area.Stats.MED_LEVEL.ordinal()] = levelRanges.get((int) Math.round(Math.floor(CMath.div(levelRanges.size(), 2.0)))).intValue();
-			if (alignRanges.size() > 0)
+			Collections.sort(ctx.levelRanges);
+			Collections.sort(ctx.alignRanges);
+			ctx.statData[Area.Stats.MED_LEVEL.ordinal()] = ctx.levelRanges.get((int) Math.round(Math.floor(CMath.div(ctx.levelRanges.size(), 2.0)))).intValue();
+			if (ctx.alignRanges.size() > 0)
 			{
-				statData[Area.Stats.MED_ALIGNMENT.ordinal()] = alignRanges.get((int) Math.round(Math.floor(CMath.div(alignRanges.size(), 2.0)))).intValue();
-				statData[Area.Stats.MIN_ALIGNMENT.ordinal()] = alignRanges.get(0).intValue();
-				statData[Area.Stats.MAX_ALIGNMENT.ordinal()] = alignRanges.get(alignRanges.size() - 1).intValue();
+				ctx.statData[Area.Stats.MED_ALIGNMENT.ordinal()] = ctx.alignRanges.get((int) Math.round(Math.floor(CMath.div(ctx.alignRanges.size(), 2.0)))).intValue();
+				ctx.statData[Area.Stats.MIN_ALIGNMENT.ordinal()] = ctx.alignRanges.get(0).intValue();
+				ctx.statData[Area.Stats.MAX_ALIGNMENT.ordinal()] = ctx.alignRanges.get(ctx.alignRanges.size() - 1).intValue();
 			}
-			statData[Area.Stats.AVG_LEVEL.ordinal()] = (int) Math.round(CMath.div(statData[Area.Stats.TOTAL_LEVELS.ordinal()], statData[Area.Stats.POPULATION.ordinal()]));
-			statData[Area.Stats.AVG_ALIGNMENT.ordinal()] = (int) Math.round(((double) totalAlignments[0]) / ((double) statData[Area.Stats.POPULATION.ordinal()]));
+			ctx.statData[Area.Stats.AVG_LEVEL.ordinal()] = (int) Math.round(CMath.div(ctx.statData[Area.Stats.TOTAL_LEVELS.ordinal()], ctx.statData[Area.Stats.POPULATION.ordinal()]));
+			ctx.statData[Area.Stats.AVG_ALIGNMENT.ordinal()] = (int) Math.round(((double) ctx.totalAlignments[0]) / ((double) ctx.statData[Area.Stats.POPULATION.ordinal()]));
 		}
-		basePhyStats().setLevel(statData[Area.Stats.MED_LEVEL.ordinal()]);
-		phyStats().setLevel(statData[Area.Stats.MED_LEVEL.ordinal()]);
+		basePhyStats().setLevel(ctx.statData[Area.Stats.MED_LEVEL.ordinal()]);
+		phyStats().setLevel(ctx.statData[Area.Stats.MED_LEVEL.ordinal()]);
 		// basePhyStats().setHeight(statData[Area.Stats.POPULATION.ordinal()]);
-		return statData;
+		return ctx.statData;
 	}
 
 	@Override
@@ -1895,6 +1907,7 @@ public class StdArea implements Area
 		{
 			Resources.removeResource("HELP_" + Name().toUpperCase());
 			statData = buildAreaIStats();
+			Resources.removeResource("HELP_" + Name().toUpperCase());
 			Resources.submitResource("STATS_" + Name().toUpperCase(), statData);
 		}
 		return statData;

@@ -1354,13 +1354,16 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	protected void obliterateRoom(final Room deadRoom, final List<Room> linkInRooms, final boolean includeDB)
 	{
+		if(deadRoom == null)
+			return;
+		final Area A = deadRoom.getArea();
 		for(final Enumeration<Ability> a=deadRoom.effects();a.hasMoreElements();)
 		{
-			final Ability A=a.nextElement();
+			final Ability effA=a.nextElement();
 			if(A!=null)
 			{
-				A.unInvoke();
-				deadRoom.delEffect(A);
+				effA.unInvoke();
+				deadRoom.delEffect(effA);
 			}
 		}
 		try
@@ -1465,7 +1468,14 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(deadRoom instanceof GridLocale)
 			((GridLocale)deadRoom).clearGrid(null);
 		if(includeDB)
+		{
 			CMLib.database().DBDeleteRoom(deadRoom);
+			if(A != null)
+			{
+				Resources.removeResource("HELP_" + A.Name().toUpperCase());
+				Resources.removeResource("STATS_" + A.Name().toUpperCase());
+			}
+		}
 	}
 
 	@Override
@@ -1817,6 +1827,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		for(final Room R : allRooms)
 			obliterateRoom(R,linkInRooms,includeDB);
 		delArea(A);
+		Resources.removeResource("HELP_" + A.Name().toUpperCase());
+		Resources.removeResource("STATS_" + A.Name().toUpperCase());
 		A.destroy(); // why not?
 	}
 
