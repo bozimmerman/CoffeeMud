@@ -277,10 +277,13 @@ public class Skill_StableMount extends StdAbility
 		}
 		if(CMLib.flags().isInTheGame(pickedM, true))
 		{
+			final PairList<String,Race> fav = CMLib.utensils().getFavoredMounts(mob);
 			if((!(pickedM instanceof Rideable))
 			||(((Rideable)pickedM).rideBasis() != Basis.LAND_BASED)
 			||(!CMLib.flags().isAnimalIntelligence(pickedM))
-			||(!pickedM.isMonster()))
+			||(!pickedM.isMonster())
+			||((!fav.containsSecond(pickedM.charStats().getMyRace())
+				||(fav.containsFirst(pickedM.charStats().getMyRace().racialCategory())))))
 			{
 				mob.tell(L("@x1 is not elligible to be stabled.",pickedM.name(mob)));
 				return false;
