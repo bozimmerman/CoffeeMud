@@ -85,7 +85,7 @@ public class Fighter_RopeTrip extends FighterSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_ROPEUSE;
+		return Ability.ACODE_SKILL | Ability.DOMAIN_BINDING;
 	}
 
 	@Override

@@ -78,7 +78,7 @@ public class Skill_Lassoing extends StdSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_ROPEUSE;
+		return Ability.ACODE_SKILL | Ability.DOMAIN_BINDING;
 	}
 
 	protected final static int[] LASSO_MATERIALS = new int[] {

@@ -90,7 +90,7 @@ public class Skill_RopeTricks extends StdSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL|Ability.DOMAIN_ROPEUSE;
+		return Ability.ACODE_SKILL|Ability.DOMAIN_BINDING;
 	}
 
 	Vector<MOB> mobsHitUp=new Vector<MOB>();

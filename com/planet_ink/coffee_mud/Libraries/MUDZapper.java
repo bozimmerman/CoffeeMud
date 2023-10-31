@@ -568,6 +568,39 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		{
 			for(int d=0;d<Ability.DOMAIN_DESCS.length;d++)
 			{
+				if(Ability.DOMAIN_DESCS[d].equals(str))
+				{
+					o=Integer.valueOf(d<<5);
+					break;
+				}
+			}
+		}
+		if(o==null)
+		{
+			for(int d=0;d<Ability.FLAG_DESCS.length;d++)
+			{
+				if(Ability.FLAG_DESCS[d].equals(str))
+				{
+					o=Long.valueOf(1L<<d);
+					break;
+				}
+			}
+		}
+		if(o==null)
+		{
+			for(short d=0;d<Ability.QUALITY_DESCS.length;d++)
+			{
+				if(Ability.QUALITY_DESCS[d].equals(str))
+				{
+					o=Short.valueOf(d);
+					break;
+				}
+			}
+		}
+		if(o==null)
+		{
+			for(int d=0;d<Ability.DOMAIN_DESCS.length;d++)
+			{
 				if(Ability.DOMAIN_DESCS[d].startsWith(str)||Ability.DOMAIN_DESCS[d].endsWith(str))
 				{
 					o=Integer.valueOf(d<<5);

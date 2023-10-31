@@ -209,7 +209,8 @@ public class Skill_StableMount extends StdAbility
 		final List<MOB> localStable = this.getLocalStable(mob, R.getArea());
 		for (final MOB M : localStable)
 			trueChoices.put(M.Name(), M);
-		if (commands.get(0).equalsIgnoreCase("list"))
+		if ((commands.size()==0)
+		||(commands.get(0).equalsIgnoreCase("list")))
 		{
 			final StringBuilder str = new StringBuilder(L("^H@x1 Stable: ^N\n\r",R.getArea().Name()));
 			for (final String name : trueChoices.keySet())
@@ -283,7 +284,7 @@ public class Skill_StableMount extends StdAbility
 			||(!CMLib.flags().isAnimalIntelligence(pickedM))
 			||(!pickedM.isMonster())
 			||((!fav.containsSecond(pickedM.charStats().getMyRace())
-				||(fav.containsFirst(pickedM.charStats().getMyRace().racialCategory())))))
+				&&(!fav.containsFirst(pickedM.charStats().getMyRace().racialCategory())))))
 			{
 				mob.tell(L("@x1 is not elligible to be stabled.",pickedM.name(mob)));
 				return false;
