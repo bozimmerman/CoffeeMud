@@ -78,7 +78,7 @@ public class Skill_RopeDismount extends StdSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_BINDING;
+		return Ability.ACODE_SKILL | Ability.DOMAIN_DIRTYFIGHTING;
 	}
 
 	@Override

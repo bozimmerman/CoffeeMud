@@ -77,7 +77,7 @@ public class Fighter_Ridethrough extends StdAbility
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;
+		return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;
 	}
 
 	@Override

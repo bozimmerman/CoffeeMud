@@ -204,7 +204,7 @@ HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type hammer.
 HAMMERFOCUS@x1=Hammer Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Hammer,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability for fighters to wield higher level hammers.
 
-POLESTRIKE@x1=Polearm Striking @x2,10,LEVEL,-SKILL +Specialization_Polearm,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
+POLESTRIKE@x1=Polearm Striking @x2,10,LEVEL,-SKILL +Specialization_Polearm +Fighter_SetPolearm +Fighter_HoldTheLine +Fighter_Forceback,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a polearm-class weapon.
 
 POLESLICE@x1=Polearm Slicing @x2,10,X1,-SKILL +Specialization_Polearm,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
