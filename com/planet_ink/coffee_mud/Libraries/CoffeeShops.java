@@ -360,6 +360,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						if((deviation != Armor.SizeDeviation.FITS) && (lie?(((lieHash >> 28) % 2) == 0):true))
 							str.append(L("\n\rSize       : ") + I.phyStats().height() +" ("+L(deviation.toString().toLowerCase().replace('_',' ')+")"));
 					}
+					if(((Armor)I).getClothingLayer()!= 0)
+						str.append(L("\n\rLayer      : ") + ((Armor)I).getClothingLayer());
 				}
 			}
 			str.append(L("\n\rDescription: @x1",E.description()));

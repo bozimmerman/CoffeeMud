@@ -53,6 +53,22 @@ public class Equipment extends StdCommand
 		{MOB.class, Boolean.class}
 	};
 
+	protected final static Comparator<Item> layerComp = new Comparator<Item>()
+	{
+		@Override
+		public int compare(final Item o1, final Item o2)
+		{
+			final short layer1 = (o1 instanceof Armor)?((Armor)o1).getClothingLayer():0;
+			final short layer2 = (o2 instanceof Armor)?((Armor)o2).getClothingLayer():0;
+			if(layer1>layer2)
+				return -1;
+			else
+			if(layer1<layer2)
+				return 1;
+			return 0;
+		}
+	};
+
 	public StringBuilder getEquipment(final MOB seer, final MOB mob, final boolean allPlaces)
 	{
 		if(CMLib.flags().isSleeping(seer))
@@ -108,7 +124,7 @@ public class Equipment extends StdCommand
 			final String wornLocHeader = headers.get(wC);
 			final StringBuilder msg = new StringBuilder("");
 			strs.put(wC, msg);
-			final List<Item> wornHere=mob.fetchWornItems(wornCode,(short)(Short.MIN_VALUE+1),(short)0);
+			final List<Item> wornHere=mob.fetchWornItems(wornCode,(short)(Short.MIN_VALUE+2),(short)0);
 			int numLocations=mob.getWearPositions(wornCode);
 			if(numLocations==0)
 				numLocations=1;
@@ -117,9 +133,9 @@ public class Equipment extends StdCommand
 			{
 				if(!allPlaces)
 				{
-					final List<List<Item>> sets=new Vector<List<Item>>(numLocations);
+					final List<List<Item>> sets=new ArrayList<List<Item>>(numLocations);
 					for(int i=0;i<numLocations;i++)
-						sets.add(new Vector<Item>());
+						sets.add(new ArrayList<Item>());
 					Item I=null;
 					Item I2=null;
 					short layer=Short.MAX_VALUE;
@@ -203,10 +219,15 @@ public class Equipment extends StdCommand
 						}
 					}
 				}
+				if((wornHere.size()>1)&&(allPlaces))
+					Collections.sort(wornHere,layerComp);
+				short lastLayer = Short.MAX_VALUE;
+				String indent = "";
 				for(int i=0;i<wornHere.size();i++)
 				{
 					final Item thisItem=wornHere.get(i);
-					if((thisItem.container()==null)&&(thisItem.amWearingAt(wornCode)))
+					if((thisItem.container()==null)
+					&&(thisItem.amWearingAt(wornCode)))
 					{
 						if(paragraphView)
 						{
@@ -250,13 +271,17 @@ public class Equipment extends StdCommand
 							}
 							else
 							{
+								final short layer = (thisItem instanceof Armor)?((Armor)thisItem).getClothingLayer():0;
+								if((layer < lastLayer)&&(lastLayer < Short.MAX_VALUE))
+									indent += " ";
+								lastLayer = layer;
 								String name=thisItem.name();
-								if((CMStrings.lengthMinusColors(name)>shortWrap)&&(!allPlaces))
+								if((CMStrings.lengthMinusColors(indent+name)>shortWrap)&&(!allPlaces))
 									name=CMStrings.ellipseColored(name,shortWrap);
 								if(mob==seer)
-									msg.append(wornLocHeader+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().getDispositionBlurbs(thisItem,seer).toString().trim()+"^?\n\r");
+									msg.append(wornLocHeader+indent+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().getDispositionBlurbs(thisItem,seer).toString().trim()+"^?\n\r");
 								else
-									msg.append(wornLocHeader+name.trim()+CMLib.flags().getDispositionBlurbs(thisItem,seer).toString().trim()+"^?\n\r");
+									msg.append(wornLocHeader+indent+name.trim()+CMLib.flags().getDispositionBlurbs(thisItem,seer).toString().trim()+"^?\n\r");
 							}
 						}
 						else

@@ -68,7 +68,8 @@
  67. Command FOLLOW can now be used with sailing ships and caravans.
  68. New skills: Riding Fight, Hog Tie, Stable Mount, Caravan Commander, Planar Mount
  69. New skills: Protected Mount, Trample
- 70. New Achevement type: SCRIPTED, and new Scriptable command: MPACHIEVE 
+ 70. New Achevement type: SCRIPTED, and new Scriptable command: MPACHIEVE
+ 71. Layer info added to VIEW and slightly more apparently in LONGLOOK. 
  
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)
