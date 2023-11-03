@@ -215,6 +215,8 @@ public class Chant_AnimalCompanion extends Chant
 				&&(target.getStartRoom()!=null))
 				{
 					final MOB oldTarget=target;
+					target.setFollowing(null);
+					mob.delFollower(target);
 					target = (MOB) target.copyOf();
 					target.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 					target.phyStats().setRejuv(PhyStats.NO_REJUV);

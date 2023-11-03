@@ -5705,7 +5705,8 @@ public class ListCmd extends StdCommand
 			final double colVal=columns.get(i).third.intValue();
 			final double pct=CMath.div(colVal,totalCols );
 			final int newSize=(int)Math.round(Math.floor(CMath.mul(pct, wrap)));
-			columns.get(i).third=Integer.valueOf(newSize);
+			if(newSize > 0)
+				columns.get(i).third=Integer.valueOf(newSize);
 		}
 
 		final StringBuilder str=new StringBuilder("");
