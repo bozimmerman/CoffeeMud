@@ -80,6 +80,7 @@ public class Skill_Recall extends StdSkill
 		return Ability.ACODE_SKILL | Ability.DOMAIN_CONJURATION;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -131,10 +132,19 @@ public class Skill_Recall extends StdSkill
 						}
 					}
 				}
+				final List<MOB> followers = new ArrayList<MOB>();
 				for(int f=0;f<mob.numFollowers();f++)
 				{
 					final MOB follower=mob.fetchFollower(f);
-
+					if(follower!=null)
+						followers.add(follower);
+				}
+				final Rideable riding = mob.riding();
+				if((riding instanceof MOB)
+				&&(!followers.contains(riding)))
+					followers.add((MOB)riding);
+				for(final MOB follower : followers)
+				{
 					if((follower!=null)
 					&&(follower.isMonster())
 					&&(!follower.isPossessing())
@@ -147,10 +157,12 @@ public class Skill_Recall extends StdSkill
 						msg=CMClass.getMsg(follower,fRecalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?L("<S-NAME> disappear(s) into the Java Plane!"):L("<S-NAME> <S-IS-ARE> sucked into the vortex created by @x1s recall.",mob.name()));
 						if(((follower.location()==fRecalledRoom))
 						&&(fRecalledRoom.isInhabitant(follower))
-						&&(fRecalledRoom.okMessage(follower,msg)||CMSecurity.isAllowed(mob,recalledRoom,CMSecurity.SecFlag.GOTO)))
+						&&(fRecalledRoom.okMessage(follower,msg)
+							||CMSecurity.isAllowed(mob,recalledRoom,CMSecurity.SecFlag.GOTO)))
 						{
 							msg2=CMClass.getMsg(follower,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
-							if(recallRoom.okMessage(follower,msg2)||CMSecurity.isAllowed(mob,recalledRoom,CMSecurity.SecFlag.GOTO))
+							if(recallRoom.okMessage(follower,msg2)
+							||CMSecurity.isAllowed(mob,recalledRoom,CMSecurity.SecFlag.GOTO))
 							{
 								if(follower.isInCombat())
 									CMLib.commands().postFlee(follower,("NOWHERE"));
