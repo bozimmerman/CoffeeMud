@@ -39,7 +39,7 @@ public interface WorldMap extends CMLibrary
 	public final static long ROOM_EXPIRATION_MILLIS=2500000;
 
 	/* ***********************************************************************/
-	/* *							 AREAS										*/
+	/* *							 AREAS									 */
 	/* ***********************************************************************/
 	public int numAreas();
 	public void addArea(Area newOne);
@@ -61,7 +61,7 @@ public interface WorldMap extends CMLibrary
 	public void renamedArea(Area theA);
 
 	/* ***********************************************************************/
-	/* *							 ROOMS										*/
+	/* *							 ROOMS									 */
 	/* ***********************************************************************/
 	public int numRooms();
 	public Enumeration<String> roomIDs();
@@ -90,7 +90,7 @@ public interface WorldMap extends CMLibrary
 	public Room getTargetRoom(Room from, Exit to);
 
 	/* ***********************************************************************/
-	/* *							 ROOM-AREA-UTILITIES						*/
+	/* *							 ROOM-AREA-UTILITIES					 */
 	/* ***********************************************************************/
 	public void resetArea(Area area);
 	public void resetRoom(Room room);
@@ -109,7 +109,7 @@ public interface WorldMap extends CMLibrary
 	public CMFile.CMVFSDir getMapRoot(final CMFile.CMVFSDir root);
 
 	/* ***********************************************************************/
-	/* *						WORLD OBJECT INDEXES							*/
+	/* *						WORLD OBJECT INDEXES						 */
 	/* ***********************************************************************/
 	public void registerWorldObjectLoaded(Area area, Room room, CMObject o);
 	public void registerWorldObjectDestroyed(Area area, Room room, CMObject o);
@@ -131,20 +131,95 @@ public interface WorldMap extends CMLibrary
 	public Map<String,TimeClock> getClockCache();
 
 	/* ***********************************************************************/
-	/* *							 MESSAGES	 								*/
+	/* *							 MISC		 							 */
 	/* ***********************************************************************/
-	public void addGlobalHandler(MsgListener E, int category);
-	public void delGlobalHandler(MsgListener E, int category);
+
+	/**
+	 * If a mob is needed as a msg host/source, and it doesn't matter the
+	 * name, level, room, or anything, then this is the method for you.
+	 *
+	 * @see WorldMap#getFactoryMOB(Room)
+	 *
+	 * @return a mob, which you should destroy after use
+	 */
 	public MOB getFactoryMOBInAnyRoom();
+
+	/**
+	 * If a mob is needed as a msg host/source, and it doesn't matter the
+	 * name or level, then this is the method for you.  Just specify the
+	 * room that the mob will be pointed at (not necc IN).
+	 *
+	 *   @see WorldMap#getFactoryMOBInAnyRoom()
+	 *
+	 * @param R the room to put the temporary mob in
+	 * @return a mob, which you should destroy after use
+	 */
 	public MOB getFactoryMOB(Room R);
+
+	/* ***********************************************************************/
+	/* *							 MESSAGES	 							 */
+	/* ***********************************************************************/
+
+	/**
+	 * Add a listener to the Global Alternative message passing system.
+	 *
+	 * @see WorldMap#delGlobalHandler(MsgListener, int)
+	 * @see WorldMap#sendGlobalMessage(MOB, int, CMMsg)
+	 *
+	 * @param E the message listener for the global message
+	 * @param category the CMMsg TYP code ({@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg}
+	 */
+	public void addGlobalHandler(MsgListener E, int category);
+
+	/**
+	 * Remove a listener from the Global Alternative message passing system.
+	 *
+	 * @see WorldMap#addGlobalHandler(MsgListener, int)
+	 * @see WorldMap#sendGlobalMessage(MOB, int, CMMsg)
+	 *
+	 * @param E the message listener for the global message
+	 * @param category the CMMsg TYP code ({@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg}
+	 */
+	public void delGlobalHandler(MsgListener E, int category);
+
+	/**
+	 * Send a message to all relevant listeners in the Global
+	 * Alternative message passing system.
+	 *
+	 * @see WorldMap#addGlobalHandler(MsgListener, int)
+	 * @see WorldMap#delGlobalHandler(MsgListener, int)
+	 *
+	 * @param host the host/sender of the message
+	 * @param category the CMMsg TYP code ({@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg}
+	 * @param msg the actual message to send
+	 * @return true if the message was successfully sent
+	 */
 	public boolean sendGlobalMessage(MOB host, int category, CMMsg msg);
 
 	/* ***********************************************************************/
-	/* *							 HELPER CLASSES								*/
+	/* *							 HELPER CLASSES							 */
 	/* ***********************************************************************/
+
+
+	/**
+	 * Helper class for world searches, as it returns both the thing Found,
+	 * as well as the room in which it was found.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static interface LocatedPair
 	{
+		/**
+		 * The room the Thing was found in.
+		 * @return the room the Thing was found in.
+		 */
 		public Room room();
+
+		/**
+		 * The thing that was found.
+		 * @return the thing that was found.
+		 */
 		public PhysicalAgent obj();
 	}
 }

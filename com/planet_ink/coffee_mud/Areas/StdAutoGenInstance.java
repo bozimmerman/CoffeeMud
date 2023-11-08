@@ -351,7 +351,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			&&(msg.sourceMessage()!=null)
 			&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0)
-			&&(CMath.s_bool(getAutoGenVariables().get("NORESET"))))
+			&&(!CMath.s_bool(getAutoGenVariables().get("NORESET"))))
 			{
 				final String said=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if("RESET INSTANCE".equalsIgnoreCase(said))
