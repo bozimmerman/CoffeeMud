@@ -99,7 +99,7 @@ public class Spell_TeleportObject extends Spell
 		}
 		if(target.amWearingAt(Wearable.IN_INVENTORY))
 		{
-			mob.tell(L("You seem to be wearing or holding the item '@x1'.",objectName));
+			mob.tell(L("You don't seem to be wearing or holding the item '@x1'.",objectName));
 			return false;
 		}
 		String searchWhat=null;

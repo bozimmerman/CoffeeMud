@@ -540,8 +540,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							{
 								if(mob.playerStats()!=null)
 								{
+									final String cleanedForStack = CMStrings.removeColors(CMStrings.replaceAll(msg.sourceMessage(),"^^","%5E"));
 									mob.playerStats().setReplyTo(target,PlayerStats.REPLY_TELL);
-									mob.playerStats().addTellStack(mob.Name(), target.Name(), CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,mob,target,null,CMStrings.removeColors(msg.sourceMessage()),false));
+									mob.playerStats().addTellStack(mob.Name(), target.Name(), CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,mob,target,null,cleanedForStack,false));
 								}
 								if(target.playerStats()!=null)
 								{
@@ -552,7 +553,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 									&&(target.fetchEffect(msg.tool().ID()) != null)
 									&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 										str=CMStrings.substituteSayInMessage(str,CMStrings.getSayFromMessage(msg.sourceMessage()));
-									target.playerStats().addTellStack(mob.Name(), target.Name(), CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,target,null,CMStrings.removeColors(str),false));
+									final String cleanedForStack = CMStrings.removeColors(CMStrings.replaceAll(str,"^^","%5E"));
+									target.playerStats().addTellStack(mob.Name(), target.Name(), CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,target,null,cleanedForStack,false));
 								}
 							}
 						}

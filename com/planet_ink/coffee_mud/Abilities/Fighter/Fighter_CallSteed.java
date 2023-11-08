@@ -109,7 +109,8 @@ public class Fighter_CallSteed extends StdAbility
 		{
 			if (mob.amDead())
 				mob.setLocation(null);
-			else if (mob.location() != null)
+			else
+			if ((mob.location() != null)&&(CMLib.flags().isInTheGame(mob, true)))
 				CMLib.tracking().wanderAway(mob, false, false);
 			mob.destroy();
 		}
@@ -123,8 +124,13 @@ public class Fighter_CallSteed extends StdAbility
 			if ((affected instanceof MOB) && (invoker != null))
 			{
 				final MOB mob = (MOB) affected;
-				if ((mob.amFollowing() == null) || (mob.amDead()) || (mob.location() == null)
-						|| ((invoker != null) && ((mob.location() != invoker.location()) || (!CMLib.flags().isInTheGame(invoker, true)) || ((invoker.riding() instanceof MOB) && (invoker.riding() != affected)))))
+				if ((mob.amFollowing() == null)
+				|| (mob.amDead())
+				|| (mob.location() == null)
+				|| ((invoker != null)
+					&& ((mob.location() != invoker.location())
+						|| (!CMLib.flags().isInTheGame(invoker, true))
+						|| ((invoker.riding() instanceof MOB) && (invoker.riding() != affected)))))
 				{
 					mob.delEffect(this);
 					if (mob.amDead())
