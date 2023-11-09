@@ -166,7 +166,7 @@ public class Fighter_CompanionMount extends FighterSkill
 										oldR.delInhabitant(target);
 										target.setLocation(null);
 										A.unInvoke();
-										oldR.addInhabitant(mob);
+										oldR.addInhabitant(target);
 										target.setLocation(oldR);
 										mob.makePeace(true);
 										target.makePeace(true);
