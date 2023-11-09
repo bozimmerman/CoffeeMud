@@ -1187,7 +1187,7 @@ public class JournalLoader
 			final String oldmsg=entry.msg();
 			final int replies = entry.replies()+1;
 			message=oldmsg+JournalsLibrary.JOURNAL_BOUNDARY
-			 +"^yReply from^N: "+from+"    ^yDate/Time ^N: "+CMLib.time().date2String(now)+"%0D"
+			 +"^yReply from^w: "+from+"    ^yDate/Time ^w: "+CMLib.time().date2String(now)+"%0D"
 			 +message;
 			entry.msg(message);
 			final String sql="UPDATE CMJRNL SET CMUPTM="+now+", CMMSGT=?, CMREPL="+replies+" WHERE CMJKEY='"+oldkey+"'";

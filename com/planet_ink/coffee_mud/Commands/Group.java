@@ -98,15 +98,15 @@ public class Group extends StdCommand
 		else
 		if(statShortLevel == 1)
 		{
-			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2hp^N ",hpColor,hpCur,hpMax),cols[5]));
-			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2mn^N ",mnColor,mnCur,mnMax),cols[5]));
-			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2mv^N",mvColor,mvCur,mvMax),cols[5]));
+			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2hp^N ",hpColor,hpCur),cols[5]));
+			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2mn^N ",mnColor,mnCur),cols[5]));
+			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2mv^N",mvColor,mvCur),cols[5]));
 		}
 		else
 		{
-			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2^N/",hpColor,hpCur.trim(),hpMax.trim()),cols[5]));
-			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2^N/",mnColor,mnCur.trim(),mnMax.trim()),cols[5]));
-			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2^N",mvColor,mvCur.trim(),mvMax.trim()),cols[5]));
+			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2^N/",hpColor,hpCur),cols[5]));
+			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2^N/",mnColor,mnCur),cols[5]));
+			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2^N",mvColor,mvCur),cols[5]));
 		}
 		msg.append("\n\r");
 		return msg;

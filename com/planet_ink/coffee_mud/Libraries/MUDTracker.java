@@ -1800,6 +1800,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			exit.executeMsg(mob,enterMsg);
 		if(mob.location()!=null)
 			mob.location().delInhabitant(mob);
+
 		((Room)leaveMsg.target()).send(mob,leaveMsg);
 
 		if(enterMsg.target()==null)
