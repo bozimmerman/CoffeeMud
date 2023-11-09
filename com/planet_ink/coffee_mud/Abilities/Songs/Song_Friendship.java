@@ -161,7 +161,9 @@ public class Song_Friendship extends Song
 			super.unInvoke();
 			if(mob!=invoker)
 			{
-				if((canBeUninvoked()&&(!mob.amDead())))
+				if((canBeUninvoked())
+				&&(!mob.amDead())
+				&&(mob.location()!=null))
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> free-will returns."));
 					mob.setFollowing(null);

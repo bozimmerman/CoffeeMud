@@ -190,7 +190,9 @@ public class Spell_Charm extends Spell
 
 		super.unInvoke();
 
-		if((canBeUninvoked()&&(!mob.amDead())))
+		if((canBeUninvoked())
+		&&(!mob.amDead())
+		&&(mob.location()!=null))
 		{
 
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> free-will returns."));
