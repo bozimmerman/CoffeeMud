@@ -2517,9 +2517,19 @@ public class CMMap extends StdLibrary implements WorldMap
 									continue;
 								}
 								else
+								if(mob.amFollowing()!=null)
+								{
+									if(mob.location()!=R)
+										Log.errOut(serviceClient.getName(),"Follower "+mob.name()+" in room "+getDescriptiveExtendedRoomID(R)
+										+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob being removed from here."));
+									else
+										Log.errOut(serviceClient.getName(),"Follower "+mob.name()+" in room "+getDescriptiveExtendedRoomID(R)
+										+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob is being ignored."));
+								}
+								else
 								{
 									Log.errOut(serviceClient.getName(),mob.name()+" in room "+getDescriptiveExtendedRoomID(R)
-											+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
+									+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
 									mob.destroy();
 								}
 							}
