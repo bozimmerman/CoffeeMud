@@ -78,12 +78,12 @@ public class Prop_NoSummon extends Property
 			return false;
 
 		if((msg.tool() instanceof Ability)
+		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING))
 		&&(msg.source().location()!=null)
 		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&((msg.source().location()==affected)
 		   ||((affected instanceof Area)&&(((Area)affected).inMyMetroArea(msg.source().location().getArea()))))
-		&&((!nonAggroOK)||(!(msg.target() instanceof MOB))||(!CMLib.flags().isAggressiveTo((MOB)msg.target(),null)))
-		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING)))
+		&&((!nonAggroOK)||(!(msg.target() instanceof MOB))||(!CMLib.flags().isAggressiveTo((MOB)msg.target(),null))))
 		{
 			final Ability A=(Ability)msg.tool();
 			if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
