@@ -117,7 +117,8 @@ public class Prop_OpenCommand extends Property
 			boolean match=false;
 			for(final String[] cmd : commandPhrases)
 			{
-				if(cmd[0].equals(word))
+				if((cmd[0].equals(word))
+				&&(cmds.size()>=cmd.length))
 				{
 					for(int i=1;i<cmd.length;i++)
 					{
