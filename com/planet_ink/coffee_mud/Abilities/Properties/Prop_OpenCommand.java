@@ -62,6 +62,7 @@ public class Prop_OpenCommand extends Property
 			{
 				if(p.equalsIgnoreCase("noopen"))
 					noopen=true;
+				else
 				if(p.toLowerCase().startsWith("message")
 				&&(p.substring(7).trim().startsWith("=")))
 					overMsg=p.substring(7).trim().substring(1);
