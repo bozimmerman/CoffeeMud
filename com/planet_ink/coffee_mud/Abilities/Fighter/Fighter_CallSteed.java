@@ -222,8 +222,9 @@ public class Fighter_CallSteed extends StdAbility
 	protected volatile MOB	lastSteedM	= null;
 	protected List<MOB>		favored		= null;
 
-	protected MOB getLastSteed()
+	protected MOB getLastSteed(final MOB mob)
 	{
+		getNames(mob);
 		final MOB steedM = lastSteedM;
 		if (steedM != null)
 		{
@@ -299,37 +300,33 @@ public class Fighter_CallSteed extends StdAbility
 	@Override
 	public String text()
 	{
-		if (favored == null)
+		if(favored == null)
 			return super.text();
-		else
+		final StringBuilder str = new StringBuilder("<MOBS>");
+		/*
+		for (final MOB M : favored)
 		{
-			final StringBuilder str = new StringBuilder("<MOBS>");
-			/*
-			for (final MOB M : favored)
-			{
-				if((M != null)
-				&& (!M.amDead())
-				&& (!M.amDestroyed())
-				&& ((lastSteedM == null)
-					|| (M.baseCharStats().getMyRace() != lastSteedM.baseCharStats().getMyRace())))
-					str.append(CMLib.coffeeMaker().getMobXML(M));
-			}
-			*/
-			final MOB M = getLastSteed();
 			if((M != null)
 			&& (!M.amDead())
 			&& (!M.amDestroyed())
-			&& (M.fetchEffect(ID()) == null))
-			{
+			&& ((lastSteedM == null)
+				|| (M.baseCharStats().getMyRace() != lastSteedM.baseCharStats().getMyRace())))
 				str.append(CMLib.coffeeMaker().getMobXML(M));
-				str.append("</MOBS>");
-				if (M != null)
-					str.append("<LAST>").append(CMLib.xml().parseOutAngleBrackets(M.Name())).append("</LAST>");
-			}
-			else
-				str.append("</MOBS>");
-			return str.toString();
 		}
+		*/
+		final MOB M = getLastSteed(null);
+		if((M != null)
+		&& (!M.amDead())
+		&& (!M.amDestroyed()))
+		{
+			str.append(CMLib.coffeeMaker().getMobXML(M));
+			str.append("</MOBS>");
+			if (M != null)
+				str.append("<LAST>").append(CMLib.xml().parseOutAngleBrackets(M.Name())).append("</LAST>");
+		}
+		else
+			str.append("</MOBS>");
+		return str.toString();
 	}
 
 	@Override
@@ -360,25 +357,15 @@ public class Fighter_CallSteed extends StdAbility
 		if (lastSteedM != null)
 		{
 			final Ability A = lastSteedM.fetchEffect(ID());
-			if (A == null)
+			if (A != null)
 			{
+				A.unInvoke();
 				final Room lastSteedR = lastSteedM.location();
 				if((lastSteedR != null)&&(CMLib.flags().isAliveAwakeMobileUnbound(mob, true)))
 					lastSteedR.show(lastSteedM, null, null, CMMsg.MSG_OK_VISUAL, L("<S-NAME> wander(s) off."));
 				CMLib.tracking().wanderAway(lastSteedM, false, false);
-				if (lastSteedR == null)
-					lastSteedM.destroy();
-				else
-				{
-					lastSteedM.destroy();
-					// store among the favored few
-					//lastSteedR.delInhabitant(lastSteedM);
-					//lastSteedM.setLocation(null);
-					//getNames(mob).add(lastSteedM);
-				}
 			}
-			else
-				A.unInvoke(); // should wander AND destroy
+			lastSteedM.destroy();
 			this.lastSteedM = null;
 			return true;
 		}
@@ -391,7 +378,7 @@ public class Fighter_CallSteed extends StdAbility
 		Race raceR = null;
 		MOB pickedM = null;
 		final PairList<String,Race> choices = CMLib.utensils().getFavoredMounts(mob);
-		final MOB lastSteedM = getLastSteed();
+		final MOB lastSteedM = getLastSteed(mob);
 		if (commands.size() == 0)
 		{
 			final Pair<String,Race> choice = Fighter_CallSteed.getMountChoice(mob, "Fighter_RacialMount");
@@ -534,26 +521,7 @@ public class Fighter_CallSteed extends StdAbility
 			{
 				R.send(mob, msg);
 
-				if(lastSteedM != null)
-				{
-					final Ability A = lastSteedM.fetchEffect(ID());
-					if (A == null)
-					{
-						CMLib.tracking().wanderAway(lastSteedM, false, false);
-						final Room lastSteedR = lastSteedM.location();
-						// store among the favored few
-						if (lastSteedR == null)
-							lastSteedM.destroy();
-						else
-						{
-							lastSteedR.delInhabitant(lastSteedM);
-							lastSteedM.setLocation(null);
-						}
-					}
-					else
-						A.unInvoke(); // should wander AND destroy
-				}
-				this.lastSteedM = null;
+				dismissLastSteed(mob, lastSteedM);
 
 				final MOB target;
 				if (pickedM != null)
@@ -564,12 +532,16 @@ public class Fighter_CallSteed extends StdAbility
 				else
 				{
 					target = determineMonster(mob, raceR, adjustedLevel(mob, asLevel));
-					final Ability thisA = (Ability) copyOf();
-					target.addNonUninvokableEffect(thisA);
-					thisA.setInvoker(mob);
 				}
 				target.bringToLife(newRoom, true);
 				CMLib.beanCounter().clearZeroMoney(target, null);
+				if (target.fetchEffect(ID())==null)
+				{
+					final Ability thisA = (Ability) copyOf();
+					target.addNonUninvokableEffect(thisA);
+					thisA.setSavable(true);
+					thisA.setInvoker(mob);
+				}
 				target.setMoneyVariation(0);
 				target.location().showOthers(target, null, CMMsg.MSG_OK_ACTION, L("<S-NAME> appears!"));
 				newRoom.recoverRoomStats();
