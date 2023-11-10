@@ -2,6 +2,9 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+
+import java.util.List;
+
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -51,6 +54,7 @@ public class Prop_NoSummon extends Property
 	}
 
 	protected boolean nonAggroOK=false;
+	protected boolean magicOnly=false;
 
 	@Override
 	public long flags()
@@ -61,7 +65,9 @@ public class Prop_NoSummon extends Property
 	@Override
 	public void setMiscText(final String text)
 	{
-		nonAggroOK=CMParms.parse(text.toUpperCase()).contains("ALLOWNONAGGR");
+		final List<String> parms = CMParms.parse(text.toUpperCase());
+		nonAggroOK=parms.contains("ALLOWNONAGGR");
+		magicOnly=parms.contains("MAGICONLY");
 
 	}
 
@@ -84,8 +90,15 @@ public class Prop_NoSummon extends Property
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
+			{
 				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
-			return false;
+				return false;
+			}
+			if(!magicOnly)
+			{
+				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> @x1 attempt fails.",A.Name()));
+				return false;
+			}
 		}
 		return true;
 	}
