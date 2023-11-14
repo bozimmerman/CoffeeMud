@@ -321,7 +321,17 @@ public class GModify extends StdCommand
 			else
 			if((stat.equalsIgnoreCase("DELAFFECT"))
 			&&(E instanceof Affectable))
-				((Affectable)E).delEffect(((Affectable)E).fetchEffect(value));
+			{
+				Ability A = ((Affectable)E).fetchEffect(value);
+				if(A == null)
+				{
+					A = CMClass.getAbility(value);
+					if(A != null)
+						A = ((Affectable)E).fetchEffect(A.ID());
+				}
+				if(A != null)
+					((Affectable)E).delEffect(A);
+			}
 			else
 			if((stat.equalsIgnoreCase("DELBEHAVIOR"))
 			&&(E instanceof Behavable))
