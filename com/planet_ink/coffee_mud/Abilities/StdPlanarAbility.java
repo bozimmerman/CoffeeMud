@@ -1868,8 +1868,20 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		if(planeName.toLowerCase().endsWith("prime material"))
 			planeName="Prime Material";
 		else
-		while((getPlanarVars(planeName)==null)&&(commands.size()>planeNameCt))
-			planeName=CMParms.combine(commands,++planeNameCt).trim().toUpperCase();
+		{
+			while((getPlanarVars(planeName)==null)&&(commands.size()>planeNameCt))
+				planeName=CMParms.combine(commands,++planeNameCt).trim().toUpperCase();
+		}
+		if(mob != travelM)
+		{
+			final Set<? extends Rider> mgrp = mob.getGroupMembersAndRideables(new XHashSet<Rider>());
+			final Set<? extends Rider> tgrp = travelM.getGroupMembersAndRideables(new XHashSet<Rider>());
+			if((!mgrp.contains(travelM))&&(!tgrp.contains(mob)))
+			{
+				mob.tell(L("@x1 does not seem willing.",travelM.name(mob)));
+				return false;
+			}
+		}
 		oldRoom=new WeakReference<Room>(travelM.location());
 		Area cloneArea = travelM.location().getArea();
 		final Area mobArea = cloneArea;

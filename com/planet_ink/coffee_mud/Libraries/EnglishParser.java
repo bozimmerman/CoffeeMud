@@ -1116,14 +1116,20 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			if((A!=null)
 			&&(evokedBy(A,evokeWord)))
 			{
-				if((evokableAbility!=null)
-				&&(!A.ID().equals(evokableAbility.ID())))
+				if(evokableAbility != null)
 				{
-					foundMoreThanOne=true;
-					evokableAbility=null;
-					break;
+					if(!A.ID().equals(evokableAbility.ID()))
+					{
+						foundMoreThanOne=true;
+						evokableAbility=null;
+						break;
+					}
+					else
+					if(A.proficiency() > evokableAbility.proficiency())
+						evokableAbility = A;
 				}
-				evokableAbility=A;
+				else
+					evokableAbility=A;
 			}
 		}
 
@@ -1166,8 +1172,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						break;
 					}
 					else
-					if((evokableAbility!=null)&&(!A.ID().equals(evokableAbility.ID())))
-						foundMoreThanOne=true;
+					if(evokableAbility!=null)
+					{
+						if(!A.ID().equals(evokableAbility.ID()))
+							foundMoreThanOne=true;
+						if(A.proficiency() > evokableAbility.proficiency())
+							evokableAbility = A;
+					}
 					else
 						evokableAbility=A;
 				}
@@ -1182,7 +1193,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 				{
 					final Ability A=a.nextElement();
-					if((A!=null) && (evokedBy(A,evokeWord,secondAndThirdWord.toUpperCase())))
+					if((A!=null)
+					&& (evokedBy(A,evokeWord,secondAndThirdWord.toUpperCase())))
 					{
 						evokableAbility=A;
 						break;

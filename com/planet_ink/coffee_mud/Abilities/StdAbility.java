@@ -1709,10 +1709,14 @@ public class StdAbility implements Ability
 				{
 					// very important, since these can be autoinvoked affects (copies)!
 					A.setProficiency(A.proficiency()+1);
-					if((this!=A)&&(proficiency()<maxProficiency))
+					if((this!=A)
+					&&(this.isSavable())
+					&&(proficiency()<maxProficiency))
 						setProficiency(A.proficiency());
 					final Ability effA=mob.fetchEffect(ID());
-					if((effA!=null) && (effA!=A) && (effA!=this)
+					if((effA!=null)
+					&& (effA!=A)
+					&& (effA!=this)
 					&&(effA.invoker()==mob)
 					&&(effA.proficiency()<maxProficiency))
 						effA.setProficiency(A.proficiency());
