@@ -106,7 +106,7 @@ public class Chant_Reincarnation extends Chant
 			}
 			if(this.newBaseWeightAdj == 0)
 				this.newBaseWeightAdj = affected.baseWeight() - oldBaseWeight;
-			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
+			affectableStats.setWearableRestrictionsBitmap(affectableStats.getMyRace().forbiddenWornBits());
 		}
 	}
 
@@ -259,7 +259,12 @@ public class Chant_Reincarnation extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,asLevel,1800);
+				final Ability A = beneficialAffect(mob,target,asLevel,1800);
+				if(A != null)
+				{
+					target.delEffect(A);
+					target.addPriorityEffect(A);
+				}
 			}
 		}
 		else

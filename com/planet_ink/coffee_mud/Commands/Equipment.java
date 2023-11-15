@@ -79,8 +79,8 @@ public class Equipment extends StdCommand
 		final int headWrap=26;
 
 		final boolean paragraphView=(CMProps.getIntVar(CMProps.Int.EQVIEW)>CMProps.Int.EQVIEW_MIXED)
-							||((seer!=mob)&&(CMProps.getIntVar(CMProps.Int.EQVIEW)>CMProps.Int.EQVIEW_DEFAULT))
-							||seer.isAttributeSet(MOB.Attrib.COMPRESS);
+									||((seer!=mob)&&(CMProps.getIntVar(CMProps.Int.EQVIEW)>CMProps.Int.EQVIEW_DEFAULT))
+									||seer.isAttributeSet(MOB.Attrib.COMPRESS);
 		final HashSet<Item> alreadyDone=new HashSet<Item>();
 		final Wearable.CODES codes = Wearable.CODES.instance();
 		final Map<Long,Pair<double[],List<String>>> tattoos = new TreeMap<Long,Pair<double[],List<String>>>();

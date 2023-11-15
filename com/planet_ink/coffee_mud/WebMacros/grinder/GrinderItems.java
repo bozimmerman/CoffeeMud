@@ -935,7 +935,8 @@ public class GrinderItems
 					break;
 				}
 			}
-			if(I.isGeneric()&&(!CMLib.flags().isCataloged(I)))
+			if(I.isGeneric()
+			&&(!CMLib.flags().isCataloged(I)))
 			{
 				String error=GrinderExits.dispositions(I,httpReq,parms);
 				if(error.length()>0)

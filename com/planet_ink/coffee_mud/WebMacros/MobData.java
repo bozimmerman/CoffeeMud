@@ -922,7 +922,13 @@ public class MobData extends StdWebMacro
 					}
 					else
 					if(O instanceof Item)
-						str.append("<INPUT TYPE=BUTTON NAME=EDITSHOPITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditShopItem('"+CMLib.webMacroFilter().findItemWebCacheCode((Item)O)+"');\">");
+					{
+						String s =  CMLib.webMacroFilter().findItemWebCacheCode((Item)O);
+						if(((s==null)||(s.length()==0))
+						&&(E instanceof MOB))
+							s=CMLib.webMacroFilter().findItemWebCacheCode((MOB)E,(Item)O);
+						str.append("<INPUT TYPE=BUTTON NAME=EDITSHOPITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditShopItem('"+s+"');\">");
+					}
 				}
 				str.append("</TD></TR>");
 			}
