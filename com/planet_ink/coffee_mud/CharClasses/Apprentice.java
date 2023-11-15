@@ -129,7 +129,7 @@ public class Apprentice extends StdCharClass
 		return disallowedWeapons;
 	}
 
-	protected Set<Tickable> currentApprentices = new HashSet<Tickable>();
+	protected Set<Tickable> currentApprentices = Collections.synchronizedSet(new HashSet<Tickable>());
 
 	@Override
 	public void initializeClass()
@@ -170,19 +170,25 @@ public class Apprentice extends StdCharClass
 	}
 
 	@Override
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		if(affectableStats.getCurrentClass().ID().equals("Apprentice"))
+		{
+			if(!currentApprentices.contains(affectedMOB))
+				currentApprentices.add(affectedMOB);
+		}
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
 		&&(ticking instanceof MOB)
 		&&(!((MOB)ticking).isMonster()))
 		{
-			if(((MOB)ticking).baseCharStats().getCurrentClass().ID().equals(ID()))
-			{
-				if(!currentApprentices.contains(ticking))
-					currentApprentices.add(ticking);
-			}
-			else
-			if(currentApprentices.contains(ticking))
+			if((!((MOB)ticking).charStats().getCurrentClass().ID().equals("Apprentice"))
+			&&(currentApprentices.contains(ticking)))
 			{
 				currentApprentices.remove(ticking);
 				((MOB)ticking).tell(L("\n\r\n\r^ZYou are no longer an apprentice!!!!^N\n\r\n\r"));
