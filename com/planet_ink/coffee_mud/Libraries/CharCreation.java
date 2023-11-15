@@ -3619,6 +3619,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		mob.basePhyStats().setLevel(1);
 		mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass(),1);
 		mob.basePhyStats().setSensesMask(0);
+		mob.recoverCharStats();
+		mob.recoverPhyStats();
 
 		getUniversalStartingItems(loginObj.theme, mob);
 		mob.setWimpHitPoint(5);
