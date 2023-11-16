@@ -82,6 +82,7 @@ public class Conquerable extends Arrest
 	protected static final int	POINTFREQ			= (int) ((10 * 60000) / CMProps.getTickMillis());
 	protected int				fightDown			= 0;
 	protected static final int	FIGHTFREQ			= 2;
+	protected int				conqPtLvlDiff		= Integer.MAX_VALUE;
 
 	@Override
 	public boolean isFullyControlled()
@@ -232,6 +233,7 @@ public class Conquerable extends Arrest
 		allowLaw=CMParms.getParmStr(newParms,"LAW","FALSE").toUpperCase().startsWith("T");
 		switchOwnership=CMParms.getParmStr(newParms,"OWNERSHIP","TRUE").toUpperCase().startsWith("T");
 		loyaltyBonus=CMParms.getParmInt(newParms,"LOYALTY",0);
+		conqPtLvlDiff=CMParms.getParmInt(newParms,"LEVELDIFF", CMProps.getIntVar(CMProps.Int.EXPRATE));
 		loadAttempt=false;
 		clanItems=new Vector<ClanItem>();
 		clanControlPoints=new DVector(2);
@@ -1382,7 +1384,7 @@ public class Conquerable extends Arrest
 					killer=(MOB)msg.tool();
 				if((killer!=null)
 				&&(R!=null)
-				&&((killer.phyStats().level()-msg.source().phyStats().level())<=CMProps.getIntVar(CMProps.Int.EXPRATE)))
+				&&((killer.phyStats().level()-msg.source().phyStats().level())<=conqPtLvlDiff))
 				{
 					// make sure followers are picked up
 					final HashSet<MOB> killersSeen=new HashSet<MOB>();
@@ -1457,7 +1459,7 @@ public class Conquerable extends Arrest
 				if((srcC.isWorshipConquest())
 				&&(((Area)myHost).inMyMetroArea(((MOB)msg.target()).getStartRoom().getArea()))
 				&&(msg.source().getClanRole(holdingClan)==null)
-				&&((msg.source().phyStats().level()-((MOB)msg.target()).phyStats().level())<=CMProps.getIntVar(CMProps.Int.EXPRATE))
+				&&((msg.source().phyStats().level()-((MOB)msg.target()).phyStats().level())<=conqPtLvlDiff)
 				&&(flagFound((Area)myHost,srcC)))
 				{
 					if(debugging)

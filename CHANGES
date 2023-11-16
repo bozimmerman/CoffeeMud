@@ -70,7 +70,7 @@
  69. New skills: Protected Mount, Trample, Combat Recall
  70. New Achevement type: SCRIPTED, and new Scriptable command: MPACHIEVE
  71. Layer info added to VIEW and slightly more apparently in LONGLOOK.
- 72. Conquest now requires that dead mob level be >= EXPRATE (from ini file) 
+ 72. Conquest now requires dead mob lvl be >= EXPRATE (from ini file) HELP CONQUERABLE
  
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)
