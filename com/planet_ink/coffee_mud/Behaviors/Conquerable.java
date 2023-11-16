@@ -233,7 +233,7 @@ public class Conquerable extends Arrest
 		allowLaw=CMParms.getParmStr(newParms,"LAW","FALSE").toUpperCase().startsWith("T");
 		switchOwnership=CMParms.getParmStr(newParms,"OWNERSHIP","TRUE").toUpperCase().startsWith("T");
 		loyaltyBonus=CMParms.getParmInt(newParms,"LOYALTY",0);
-		conqPtLvlDiff=CMParms.getParmInt(newParms,"LEVELDIFF", CMProps.getIntVar(CMProps.Int.EXPRATE));
+		conqPtLvlDiff=CMParms.getParmInt(newParms,"LEVELDIFF", CMProps.getIntVar(CMProps.Int.EXPRATE)*2);
 		loadAttempt=false;
 		clanItems=new Vector<ClanItem>();
 		clanControlPoints=new DVector(2);
