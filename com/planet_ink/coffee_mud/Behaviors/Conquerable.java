@@ -1380,7 +1380,9 @@ public class Conquerable extends Arrest
 				else
 				if(msg.tool() instanceof MOB)
 					killer=(MOB)msg.tool();
-				if((killer!=null)&&(R!=null))
+				if((killer!=null)
+				&&(R!=null)
+				&&((killer.phyStats().level()-msg.source().phyStats().level())<=CMProps.getIntVar(CMProps.Int.EXPRATE)))
 				{
 					// make sure followers are picked up
 					final HashSet<MOB> killersSeen=new HashSet<MOB>();
@@ -1455,6 +1457,7 @@ public class Conquerable extends Arrest
 				if((srcC.isWorshipConquest())
 				&&(((Area)myHost).inMyMetroArea(((MOB)msg.target()).getStartRoom().getArea()))
 				&&(msg.source().getClanRole(holdingClan)==null)
+				&&((msg.source().phyStats().level()-((MOB)msg.target()).phyStats().level())<=CMProps.getIntVar(CMProps.Int.EXPRATE))
 				&&(flagFound((Area)myHost,srcC)))
 				{
 					if(debugging)

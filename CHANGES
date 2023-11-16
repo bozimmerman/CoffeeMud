@@ -69,7 +69,8 @@
  68. New skills: Riding Fight, Hog Tie, Stable Mount, Caravan Commander, Planar Mount
  69. New skills: Protected Mount, Trample, Combat Recall
  70. New Achevement type: SCRIPTED, and new Scriptable command: MPACHIEVE
- 71. Layer info added to VIEW and slightly more apparently in LONGLOOK. 
+ 71. Layer info added to VIEW and slightly more apparently in LONGLOOK.
+ 72. Conquest now requires that dead mob level be >= EXPRATE (from ini file) 
  
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)
