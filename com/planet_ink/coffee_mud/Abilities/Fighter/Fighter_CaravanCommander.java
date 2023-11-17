@@ -50,6 +50,12 @@ public class Fighter_CaravanCommander extends FighterSkill
 	}
 
 	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
 	protected int canAffectCode()
 	{
 		return CAN_MOBS|CAN_AREAS;
