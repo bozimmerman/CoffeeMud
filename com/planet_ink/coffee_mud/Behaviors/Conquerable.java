@@ -110,7 +110,6 @@ public class Conquerable extends Arrest
 		return this.loyaltyBonus;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public CMObject copyOf()
 	{
