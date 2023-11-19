@@ -29,6 +29,16 @@ public interface Filterer<K>
 		}
 	};
 
+	@SuppressWarnings("rawtypes")
+	public static final Filterer NON_NULL=new Filterer()
+	{
+		@Override
+		public boolean passesFilter(final Object obj)
+		{
+			return obj != null;
+		}
+	};
+
 	public static class NotFilterer<L> implements Filterer<L>
 	{
 		private final Filterer<L> filter;
