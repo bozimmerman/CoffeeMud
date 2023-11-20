@@ -1383,11 +1383,12 @@ public class Conquerable extends Arrest
 					if(((Area)myHost).inMyMetroArea(msg.source().getStartRoom().getArea()))
 					{ // a native was killed
 						final MOB followerM=killer.amFollowing();
-						if((killer.getClanRole(holdingClan)==null)
-						&&(flagFound((Area)myHost,killerClan)))
+						if(killer.getClanRole(holdingClan)==null)
 						{
-							if((killerClan!=null)
-							||((followerM != null)&&((killerClan=CMLib.clans().findConquerableClan(followerM))!=null)))
+							if(((killerClan!=null)
+								||((followerM != null)&&((killerClan=CMLib.clans().findConquerableClan(followerM))!=null)))
+							&&(flagFound((Area)myHost,killerClan))
+							&&(killerClan!=null))
 							{
 								if((killer.phyStats().level()-msg.source().phyStats().level())<=conqPtLvlDiff)
 								{
@@ -1411,10 +1412,11 @@ public class Conquerable extends Arrest
 									for(;i<clanItems.size();i++)
 									{
 										final ClanItem I = clanItems.getFirst(i);
-										if(I.owner() == msg.source())
+										if(((I.owner() == msg.source())||(I.owner() instanceof Room))
+										&&(clanItems.getSecond(i) == msg.source()))
 										{
-											msg.source().delItem(I);
-											I.setOwner(null);
+											I.owner().delItem(I);
+											I.removeFromOwnerContainer();
 										}
 									}
 									msg.source().recoverCharStats();
@@ -1487,12 +1489,23 @@ public class Conquerable extends Arrest
 					for(;i<clanItems.size();i++)
 					{
 						final ClanItem I = clanItems.getFirst(i);
-						if((clanItems.getSecond(i) == msg.source())
-						&&(!CMLib.flags().isInTheGame(I, true)))
+						final ItemPossessor P = clanItems.getSecond(i);
+						if((P == msg.source())
+						&&(!(I.owner() instanceof MOB)))
 						{
-							msg.source().addItem(I);
+							msg.source().moveItemTo(I);
 							I.wearIfPossible(msg.source());
 						}
+						else
+						if((I.amDestroyed())
+						||(CMLib.map().areaLocation(I)!=(Area)myHost))
+						{
+							clanItems.remove(i);
+							i--;
+						}
+						else
+						if((P!=null)&&(P.amDestroyed())&&(I.owner()!=null))
+							clanItems.set(i, new Pair<ClanItem,ItemPossessor>(I,I.owner()));
 					}
 					msg.source().recoverCharStats();
 					msg.source().recoverPhyStats();

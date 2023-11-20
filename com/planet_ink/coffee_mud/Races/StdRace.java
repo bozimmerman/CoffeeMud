@@ -1023,7 +1023,8 @@ public class StdRace implements Race
 						Item newItem=CMLib.utensils().isRuinedLoot(mob,thisItem);
 						if(newItem==null)
 							continue;
-						if(newItem==thisItem) // why are mob items copied if they are restored anyway?
+						if((newItem==thisItem) // why are mob items copied if they are restored anyway?
+						&&(!(newItem instanceof ClanItem)))
 							newItem=(Item)thisItem.copyOf();
 						if(newItem != null)
 						{
@@ -1039,7 +1040,7 @@ public class StdRace implements Race
 						}
 					}
 					else
-						mob.delItem(thisItem);
+						mob.delItem(thisItem); // why don't mobs get their items deleted also?
 					thisItem.unWear();
 					if(thisItem.container()==null)
 						thisItem.setContainer(bodyI);
