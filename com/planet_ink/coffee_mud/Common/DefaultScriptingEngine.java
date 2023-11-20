@@ -12068,11 +12068,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						if(E instanceof MOB)
 						{
-							if(!((MOB)E).isMonster())
+							if(((MOB)E).isPlayer())
 							{
 								if(((MOB)E).getStartRoom()!=null)
 									((MOB)E).getStartRoom().bringMobHere((MOB)E,false);
-								((MOB)E).session().stopSession(false,false,false);
+								if(((MOB)E).session() != null)
+									((MOB)E).session().stopSession(false,false,false);
 							}
 							else
 							if(((MOB)E).getStartRoom()!=null)

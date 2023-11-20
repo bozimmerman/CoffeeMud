@@ -145,7 +145,7 @@ CREATE TABLE CMCHAR (
 	CMPASS char (50) NULL ,
 	CMCLAS char (250) NULL ,
 	CMSTRE int NULL ,
-	CMRACE char (50) NULL ,
+	CMRACE char (250) NULL ,
 	CMDEXT int NULL ,
 	CMCONS int NULL ,
 	CMGEND char (50) NULL ,

@@ -128,7 +128,7 @@ CREATE TABLE CMCHAR (
 	CMPASS varchar (50) NULL ,
 	CMCLAS varchar (250) NULL ,
 	CMSTRE int NULL ,
-	CMRACE varchar (50) NULL ,
+	CMRACE varchar (250) NULL ,
 	CMDEXT int NULL ,
 	CMCONS int NULL ,
 	CMGEND varchar (50) NULL ,

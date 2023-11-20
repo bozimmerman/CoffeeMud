@@ -42,7 +42,7 @@ CREATE TABLE CMCHAR (
 	CMPASS varchar (50) NULL,
 	CMCLAS varchar (250) NULL,
 	CMSTRE integer NULL,
-	CMRACE varchar (50) NULL,
+	CMRACE varchar (250) NULL,
 	CMDEXT integer NULL,
 	CMCONS integer NULL,
 	CMGEND varchar (50) NULL,

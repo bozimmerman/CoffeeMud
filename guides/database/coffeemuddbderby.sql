@@ -121,7 +121,7 @@ CREATE TABLE CMCHAR (
 	CMPASS varchar (50),
 	CMCLAS varchar (250),
 	CMSTRE integer,
-	CMRACE varchar (50),
+	CMRACE varchar (250),
 	CMDEXT integer,
 	CMCONS integer,
 	CMGEND varchar (50),

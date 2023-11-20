@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.planet_ink.coffee_mud.Items.MiscMagic.StdWand;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -45,6 +46,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 
 	private static Wand theWand=(Wand)CMClass.getMiscMagic("StdWand");
 	protected final static String[] MAGIC_WORDS={"LEVEL","RESTORE","REFRESH","BLAST","BURN","GAIN","REWIND"};
+	protected AtomicBoolean noRecurse = new AtomicBoolean(false);
 
 	public ArchonStaff()
 	{
@@ -480,20 +482,29 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		&&((msg.value())>0)
 		&&(msg.tool()==this)
 		&&(msg.target() instanceof MOB)
-		&&(!((MOB)msg.target()).amDead()))
+		&&(!((MOB)msg.target()).amDead())
+		&&(!noRecurse.get()))
 		{
-			final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),new ArchonStaff(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
-			if(msg.source().location().okMessage(msg.source(),msg2))
+			noRecurse.set(true);
+			try
 			{
-				msg.source().location().send(msg.source(), msg2);
-				if(msg2.value()<=0)
+				final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),new ArchonStaff(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
+				if(msg.source().location().okMessage(msg.source(),msg2))
 				{
-					int flameDamage = (int) Math.round( Math.random() * 6 );
-					flameDamage *= basePhyStats().level();
-					if(!((MOB)msg.target()).amDead())
-						CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,CMMsg.TYP_FIRE,
-								Weapon.TYPE_BURNING,L("@x1 shoots a flame which <DAMAGE> <T-NAME>!",name()));
+					msg.source().location().send(msg.source(), msg2);
+					if(msg2.value()<=0)
+					{
+						int flameDamage = (int) Math.round( Math.random() * 6 );
+						flameDamage *= basePhyStats().level();
+						if(!((MOB)msg.target()).amDead())
+							CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,CMMsg.TYP_FIRE,
+									Weapon.TYPE_BURNING,L("@x1 shoots a flame which <DAMAGE> <T-NAME>!",name()));
+					}
 				}
+			}
+			finally
+			{
+				noRecurse.set(false);
 			}
 		}
 	}

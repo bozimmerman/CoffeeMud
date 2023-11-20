@@ -527,11 +527,21 @@ public class Conquerable extends Arrest
 		for(int i=clanItems.size()-1;i>=0;i--)
 		{
 			final ClanItem I=clanItems.getFirst(i);
+			final ItemPossessor P = clanItems.getSecond(i);
 			if(!I.tick(this,Tickable.TICKID_CLANITEM))
 				deRegisterClanItem(I);
 			else
 			{
 				I.setExpirationDate(0);
+				if((I.amDestroyed())
+				||(CMLib.map().areaLocation(I)!=A))
+					clanItems.remove(i);
+				else
+				if((P!=null)
+				&&(P.amDestroyed()||(P!=I.owner()))
+				&&(I.owner()!=null))
+					clanItems.set(i, new Pair<ClanItem,ItemPossessor>(I,I.owner()));
+				else
 				if((I.owner() instanceof Room)&&(I.container()!=null))
 					I.setContainer(null);
 			}
@@ -1412,7 +1422,7 @@ public class Conquerable extends Arrest
 									for(;i<clanItems.size();i++)
 									{
 										final ClanItem I = clanItems.getFirst(i);
-										if(((I.owner() == msg.source())||(I.owner() instanceof Room))
+										if(((I.owner() == msg.source())||(I.owner() == msg.source().location()))
 										&&(clanItems.getSecond(i) == msg.source()))
 										{
 											I.owner().delItem(I);
@@ -1496,16 +1506,6 @@ public class Conquerable extends Arrest
 							msg.source().moveItemTo(I);
 							I.wearIfPossible(msg.source());
 						}
-						else
-						if((I.amDestroyed())
-						||(CMLib.map().areaLocation(I)!=(Area)myHost))
-						{
-							clanItems.remove(i);
-							i--;
-						}
-						else
-						if((P!=null)&&(P.amDestroyed())&&(I.owner()!=null))
-							clanItems.set(i, new Pair<ClanItem,ItemPossessor>(I,I.owner()));
 					}
 					msg.source().recoverCharStats();
 					msg.source().recoverPhyStats();

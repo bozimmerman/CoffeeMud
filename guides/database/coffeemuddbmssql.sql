@@ -125,7 +125,7 @@ CREATE TABLE CMCHAR (
 	CMPASS nvarchar (50) NULL,
 	CMCLAS nvarchar (250) NULL,
 	CMSTRE integer NULL,
-	CMRACE nvarchar (50) NULL,
+	CMRACE nvarchar (250) NULL,
 	CMDEXT integer NULL,
 	CMCONS integer NULL,
 	CMGEND nvarchar (50) NULL,
