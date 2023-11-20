@@ -57,6 +57,12 @@ public class Prop_ScrapExplode extends Property {
 	}
 
 	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NODISENCHANT;
+	}
+
+	@Override
 	public void executeMsg(final Environmental host, final CMMsg affect)
 	{
 		super.executeMsg(host, affect);

@@ -79,6 +79,18 @@ public class GenCageRideable extends StdCageRideable
 	}
 
 	@Override
+	public String keyName()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setKeyName(final String newKeyName)
+	{
+		readableText=newKeyName;
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		miscText="";
