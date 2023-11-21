@@ -120,7 +120,7 @@ public class Spell_CauseStink extends Spell
 			switch(cycle++)
 			{
 			case 1:
-				str = L("<S-NAME> emanate(s) an unpleasant odor");
+				str = L("<S-NAME> emanate(s) an unpleasant odor.");
 				break;
 			case 2:
 				str = L("<S-NAME> smell(s) like <S-HE-SHE> hasn't bathed in a month!");

@@ -8654,7 +8654,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				break;
 			case TATTOO:
 				awardStr.append("1 TATTOO(ID="+((TattooAward)award).getTattoo())
-						.append(" ").append("DESC="+CMStrings.escape("\""+CMStrings.escape(((TattooAward)award).getDescription()+"\"")));
+						.append(" ").append("DESC="+CMStrings.escape("\""+CMStrings.escape(((TattooAward)award).getDescription())+"\")"));
 				break;
 			default:
 				break;
@@ -9339,28 +9339,28 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		final StringBuilder str = new StringBuilder("");
 		final int cols = 20;
 		if(A.getAgent() == Agent.ACCOUNT)
-			str.append("\n\r").append(CMStrings.padRight(L("Account Achievement:"),cols)).append(" ").append(A.getTattoo());
+			str.append("\n\r^H").append(CMStrings.padRight(L("Account Achievement:"),cols)).append("^N ").append(A.getTattoo());
 		else
 		if(A.getAgent() == Agent.CLAN)
-			str.append("\n\r").append(CMStrings.padRight(L("Clan Achievement:"),cols)).append(" ").append(A.getTattoo());
+			str.append("\n\r^H").append(CMStrings.padRight(L("Clan Achievement   :"),cols)).append("^N ").append(A.getTattoo());
 		else
-			str.append("\n\r").append(CMStrings.padRight(L("Char. Achievement:"),cols)).append(" ").append(A.getTattoo());
-		str.append("\n\r").append(CMStrings.padRight(L("Description:"),cols)).append(" ").append(A.getDisplayStr());
-		str.append("\n\r").append(CMStrings.padRight(L("Achievement Type:"),cols)).append(" ");
+			str.append("\n\r^H").append(CMStrings.padRight(L("Char. Achievement  :"),cols)).append("^N ").append(A.getTattoo());
+		str.append("\n\r^H").append(CMStrings.padRight(    L("Description        :"),cols)).append("^N ").append(A.getDisplayStr());
+		str.append("\n\r^H").append(CMStrings.padRight(        L("Achievement Type   :"),cols)).append("^N ");
 		str.append(L(A.getEvent().displayName()));
 		if(A.getRewards().length>0)
 		{
 			if(A.getAgent() == Agent.ACCOUNT)
-				str.append("\n\r").append(CMStrings.padRight(L("Rewards Granted:"),cols)).append(" ").append(L("New Characters, Children, and Remorted"));
+				str.append("\n\r^H").append(CMStrings.padRight(L("Rewards Granted    :"),cols)).append("^N ").append(L("New Characters, Children, and Remorted"));
 			else
 			if(A.getAgent() == Agent.CLAN)
-				str.append("\n\r").append(CMStrings.padRight(L("Rewards Granted:"),cols)).append(" ").append(L("Existing Members"));
+				str.append("\n\r^H").append(CMStrings.padRight(L("Rewards Granted    :"),cols)).append("^N ").append(L("Existing Members"));
 			else
-				str.append("\n\r").append(CMStrings.padRight(L("Rewards Granted:"),cols)).append(" ").append(L("Immediately"));
+				str.append("\n\r^H").append(CMStrings.padRight(L("Rewards Granted    :"),cols)).append("^N ").append(L("Immediately"));
 		}
 		for(final Award W : A.getRewards())
 		{
-			str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ")
+			str.append("\n\r^H").append(CMStrings.padRight(L("Award              :"),cols)).append("^N ")
 				.append(CMLib.achievements().fixAwardDescription(A, W, null, null));
 		}
 		str.append("\n\r");

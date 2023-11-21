@@ -200,7 +200,8 @@ public class Areas extends StdCommand
 				String levelStr = (addStat>=0?(Integer.toString(A.getAreaIStats()[addStat])+":"):"");
 				if(addStat==-999)
 					levelStr=CMStrings.padRight(A.getAuthorID(),10)+":";
-				String name=levelStr+((!CMLib.flags().isHidden(A))?" "+A.name():"("+A.name()+")");
+				final String areaName = A.name().replace('`', '\'');
+				String name=levelStr+((!CMLib.flags().isHidden(A))?" "+areaName:"("+areaName+")");
 				if(sysop)
 				{
 					switch(A.getAreaState())

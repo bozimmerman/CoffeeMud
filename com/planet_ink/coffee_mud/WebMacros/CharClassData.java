@@ -1432,6 +1432,11 @@ public class CharClassData extends StdWebMacro
 			stat,
 			stat
 		};
-		return add+(level*(int)Math.round(CMath.parseMathExpression(formula, variables)));
+		final CMath.CompiledFormula cform =  CMath.compileMathExpression(formula);
+		final int iters = 100;
+		long sum = 0;
+		for(int i=0;i<iters;i++)
+			sum += add+(level*(int)Math.round(CMath.parseMathExpression(cform, variables, 0.0)));
+		return (int)Math.round(CMath.div((double)sum, iters));
 	}
 }

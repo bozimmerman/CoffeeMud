@@ -51,8 +51,7 @@
 <a name=STAT>Chart Key</a>: Under each stat TYPE are three groups () () ().  The first group is a 10th level
 character, the second group is a 50th level char, and the last group is a 90th level char.  
 Within each group are three stats (x/x/x).  The first stat is the character with an attribute
-score of 10, the second stat is an attribute score of 18, and the last stat is an attribute score
-of 25.<P><BR></FONT>
+score of 10, the second stat is an attribute score of 18, and the last stat is the maximum value for that class (often also 18, but possibly 22 or 25).<P><BR></FONT>
 Base Class: 
 @AddRequestParameter?OLDBASECLASS=@@RequestParameter?BASECLASS@@ @
 <SELECT NAME=BASECLASS ONCHANGE='Refresh()'>

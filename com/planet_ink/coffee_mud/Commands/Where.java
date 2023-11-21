@@ -808,7 +808,7 @@ public class Where extends StdCommand
 						lvl=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 					final int align=A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()];
 
-					msg.append(CMStrings.padRight(A.name(),35))
+					msg.append(CMStrings.padRight(A.name().replace('`', '\''),35))
 					   .append(CMStrings.padRight(Integer.toString(lvl),6))
 					   .append(CMStrings.padRight(CMLib.factions().getRange(CMLib.factions().getAlignmentID(), align).name(),20))
 					   .append(CMStrings.padRight(Integer.toString(A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]),10))
