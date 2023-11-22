@@ -1302,7 +1302,7 @@ public class AbilityData extends StdWebMacro
 					if((className!=null)&&(className.length()>0))
 						level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());
 					else
-						level=CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID());
+						level=CMLib.ableMapper().qualifiesByAnything(A.ID())?CMLib.ableMapper().lowestQualifyingLevel(A.ID()):-1;
 					str.append(level+", ");
 				}
 				if(parms.containsKey("QUALIFYQ")&&(httpReq.isUrlParameter("CLASS")))

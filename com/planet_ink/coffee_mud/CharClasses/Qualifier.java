@@ -103,7 +103,7 @@ public class Qualifier extends StdCharClass
 			{
 				final Ability A=a.nextElement();
 				final int lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
-				if((lvl>0)&&(!CMLib.ableMapper().classOnly("Archon",A.ID())))
+				if((lvl>0)&&(!(A instanceof ArchonOnly)))
 					CMLib.ableMapper().addCharAbilityMapping(ID(),lvl,A.ID(),false);
 			}
 		}

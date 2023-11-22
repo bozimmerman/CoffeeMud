@@ -107,7 +107,7 @@ public class AbilityPlayerNext extends StdWebMacro
 			}
 			else
 			{
-				final int level=CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID());
+				final int level=CMLib.ableMapper().qualifiesByAnything(A.ID())?CMLib.ableMapper().lowestQualifyingLevel(A.ID()):-1;
 				if(level<0)
 					okToShow=false;
 				else

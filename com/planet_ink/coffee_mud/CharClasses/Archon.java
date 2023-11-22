@@ -75,6 +75,9 @@ public class Archon extends StdCharClass implements ArchonOnly
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AnimalTaming",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AnimalTrading",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AnimalTraining",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AnimalSpeak", false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Blah", false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Drunken", false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Domesticating",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"InstrumentMaking",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"PlantLore",false);
@@ -133,7 +136,7 @@ public class Archon extends StdCharClass implements ArchonOnly
 	}
 
 	public static final String[] ARCHON_IMMUNITIES=
-		{
+	{
 		"Spell_Scry",
 		"Thief_Listen",
 		"Spell_Claireaudience",
@@ -147,7 +150,7 @@ public class Archon extends StdCharClass implements ArchonOnly
 		"Chant_StoneFriend",
 		"Thief_Steal",
 		"Thief_PlantItem"
-		};
+	};
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

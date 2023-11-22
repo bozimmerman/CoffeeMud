@@ -55,29 +55,33 @@ public class AbilityAffectNext extends StdWebMacro
 		final String ableType=httpReq.getUrlParameter("ABILITYTYPE");
 		if((ableType!=null)&&(ableType.length()>0))
 			parms.put(ableType,ableType);
+		boolean containsOne=false;
+		for (final String element : Ability.ACODE_DESCS)
+		{
+			if(parms.containsKey(element))
+			{
+				containsOne=true;
+				break;
+			}
+		}
+		final AbilityMapper mapper = CMLib.ableMapper();
 		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			boolean okToShow=true;
 			final int classType=A.classificationCode()&Ability.ALL_ACODES;
-			if(CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID())>=0)
+			final int lvl=mapper.lowestQualifyingLevel(A.ID());
+			if((lvl>=0)
+			&&(mapper.qualifiesByAnything(A.ID())))
 				continue;
-			boolean containsOne=false;
-			for (final String element : Ability.ACODE_DESCS)
-			{
-				if(parms.containsKey(element))
-				{
-					containsOne=true;
-					break;
-				}
-			}
 			if(containsOne&&(!parms.containsKey(Ability.ACODE_DESCS[classType])))
 				okToShow=false;
 			if(parms.containsKey("NOT"))
 				okToShow=!okToShow;
 			if(okToShow)
 			{
-				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.ID().equals(lastID))))
+				if((last==null)
+				||((last.length()>0)&&(last.equals(lastID))&&(!A.ID().equals(lastID))))
 				{
 					httpReq.addFakeUrlParameter("ABILITY",A.ID());
 					return "";

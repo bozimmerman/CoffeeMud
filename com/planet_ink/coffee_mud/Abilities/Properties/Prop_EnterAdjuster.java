@@ -125,7 +125,7 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 			if((thisOne.length()>0)&&(!thisOne.equals(";")))
 			{
 				Ability A=CMClass.getAbility(thisOne);
-				if((A!=null)&&(!CMLib.ableMapper().classOnly("Archon",A.ID())))
+				if((A!=null)&&(!(A instanceof ArchonOnly)))
 				{
 					A=(Ability)A.copyOf();
 					if(theSpells == null)

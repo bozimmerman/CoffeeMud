@@ -910,6 +910,21 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	}
 
 	@Override
+	public boolean qualifiesByAnything(final String abilityID)
+	{
+		if(completeAbleMap.containsKey("All"))
+		{
+			final Map<String, AbilityMapping> ableMap=completeAbleMap.get("All");
+			if(ableMap.containsKey(abilityID))
+				return true;
+		}
+		final Map<String,AbilityMapping> revMap = reverseAbilityMap.get(abilityID);
+		if(revMap != null)
+			return true;
+		return false;
+	}
+
+	@Override
 	public boolean qualifiesByAnyCharClass(final String abilityID)
 	{
 		if(completeAbleMap.containsKey("All"))
@@ -918,13 +933,12 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			if(ableMap.containsKey(abilityID))
 				return true;
 		}
-		for(final Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
+		final Map<String,AbilityMapping> revMap = reverseAbilityMap.get(abilityID);
+		if(revMap != null)
 		{
-			final CharClass C=e.nextElement();
-			if(completeAbleMap.containsKey(C.ID()))
+			for(final String str : revMap.keySet())
 			{
-				final Map<String, AbilityMapping> ableMap=completeAbleMap.get(C.ID());
-				if(ableMap.containsKey(abilityID))
+				if(CMClass.getCharClass(str)!=null)
 					return true;
 			}
 		}
@@ -943,17 +957,15 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	@Override
 	public boolean qualifiesByAnyCharClassOrRace(final String abilityID)
 	{
-		if(!this.qualifiesByAnyCharClass(abilityID))
+		if(this.qualifiesByAnyCharClass(abilityID))
+			return true;
+		final Map<String,AbilityMapping> revMap = reverseAbilityMap.get(abilityID);
+		if(revMap != null)
 		{
-			for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
+			for(final String str : revMap.keySet())
 			{
-				final Race R=e.nextElement();
-				if(completeAbleMap.containsKey(R.ID()))
-				{
-					final Map<String, AbilityMapping> ableMap=completeAbleMap.get(R.ID());
-					if(ableMap.containsKey(abilityID))
-						return true;
-				}
+				if(CMClass.getRace(str)!=null)
+					return true;
 			}
 		}
 		return false;

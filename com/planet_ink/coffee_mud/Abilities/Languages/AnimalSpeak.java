@@ -57,7 +57,6 @@ public class AnimalSpeak extends StdLanguage
 		if (!mapped)
 		{
 			mapped = true;
-			CMLib.ableMapper().addCharAbilityMapping("Archon", 1, ID(), false);
 		}
 	}
 

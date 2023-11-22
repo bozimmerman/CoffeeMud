@@ -601,6 +601,16 @@ public interface AbilityMapper extends CMLibrary
 
 	/**
 	 * Returns whether the given Ability ID() represents a skill qualified for by
+	 * any existing character class, race, or including All-Qualified abilities.
+	 * @see AbilityMapper#classOnly(String, String)
+	 * @see AbilityMapper#classOnly(MOB, String, String)
+	 * @param abilityID the ability ID()
+	 * @return true if something qualifies for it, false otherwise
+	 */
+	public boolean qualifiesByAnything(final String abilityID);
+
+	/**
+	 * Returns whether the given Ability ID() represents a skill qualified for by
 	 * any existing character class, or race, including All-Qualified abilities.
 	 * @see AbilityMapper#classOnly(String, String)
 	 * @see AbilityMapper#qualifiesByAnyCharClass(String)

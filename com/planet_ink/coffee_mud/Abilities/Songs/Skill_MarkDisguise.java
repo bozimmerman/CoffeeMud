@@ -95,9 +95,9 @@ public class Skill_MarkDisguise extends Skill_Disguise
 			mob.tell(L("You need to have marked someone before you can disguise yourself as him or her."));
 			return false;
 		}
-		if(target.charStats().getClassLevel("Archon")>=0)
+		if(CMSecurity.isAllowedEverywhere(target, CMSecurity.SecFlag.CMDPLAYERS))
 		{
-			mob.tell(L("You may not disguise yourself as an Archon."));
+			mob.tell(L("You may not disguise yourself as someone so powerful."));
 			return false;
 		}
 

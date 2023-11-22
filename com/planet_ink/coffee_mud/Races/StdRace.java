@@ -283,6 +283,9 @@ public class StdRace implements Race
 	@Override
 	public void initializeClass()
 	{
+		if((this.racialAbilityLevels()!=null)
+		&&(this.racialAbilityLevels().length>0))
+			this.racialAbilities(null);
 	}
 
 	public boolean fertile()

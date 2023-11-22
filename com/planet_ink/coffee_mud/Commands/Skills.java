@@ -96,7 +96,7 @@ public class Skills extends StdCommand
 				}
 			}
 		}
-		final boolean isSysOp = CMSecurity.isAllowedEverywhere(mob, SecFlag.ALLSKILLS); 
+		final boolean isSysOp = CMSecurity.isAllowedEverywhere(mob, SecFlag.ALLSKILLS);
 		final List<Ability> ableVs = new XArrayList<Ability>(mob.allAbilities());
 		Ability A;
 		A=(Ability)CMLib.english().fetchEnvironmental(ableVs,qual,true);
@@ -280,7 +280,7 @@ public class Skills extends StdCommand
 				final CharClass C=c.nextElement();
 				if(quals.contains(C.ID())
 				&& (!C.ID().equals(classID))
-				&& (!C.ID().equals("Archon")))
+				&& (!(C instanceof ArchonOnly)))
 					return false;
 			}
 		}
@@ -386,7 +386,7 @@ public class Skills extends StdCommand
 		final int lowestLevel=ableM.phyStats().level()+1;
 		final StringBuilder msg=new StringBuilder("");
 		final Integer allAcodes = Integer.valueOf(Ability.ALL_ACODES);
-		final boolean isSysOp = CMSecurity.isAllowedEverywhere(ableM, SecFlag.ALLSKILLS); 
+		final boolean isSysOp = CMSecurity.isAllowedEverywhere(ableM, SecFlag.ALLSKILLS);
 		for(final Enumeration<Ability> a=ableM.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();

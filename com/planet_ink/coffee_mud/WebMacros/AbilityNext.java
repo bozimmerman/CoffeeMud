@@ -130,6 +130,7 @@ public class AbilityNext extends StdWebMacro
 			httpReq.getRequestObjects().put("ABILITIESSORTEDBYNAME",fullList);
 			a=fullList.elements();
 		}
+		final AbilityMapper mapper = CMLib.ableMapper();
 		for(;a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -151,7 +152,7 @@ public class AbilityNext extends StdWebMacro
 
 			if((className!=null)&&(className.length()>0))
 			{
-				final int level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());
+				final int level=mapper.getQualifyingLevel(className,true,A.ID());
 				if((level<0)
 				&&(!unqualifiedOK)
 				&&((!unqualifiedNormalOK)
@@ -172,7 +173,7 @@ public class AbilityNext extends StdWebMacro
 			else
 			if(!allFlag)
 			{
-				final int level=CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID());
+				final int level=mapper.qualifiesByAnything(A.ID())?mapper.lowestQualifyingLevel(A.ID()):-1;
 				if((level<0)
 				&&(!unqualifiedOK)
 				&&((!unqualifiedNormalOK)

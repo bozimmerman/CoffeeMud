@@ -299,7 +299,7 @@ public class Oracle extends Cleric
 				final CharClass C=CMClass.randomCharClass();
 				if((C!=null)
 				&&(!C.ID().equals(ID()))
-				&&(!C.ID().equalsIgnoreCase("Archon"))
+				&&(!(C instanceof ArchonOnly))
 				&&(mob.charStats().getClassLevel(C)<0))
 				{
 					int tries2=0;

@@ -1466,6 +1466,7 @@ public class Clans extends StdLibrary implements ClanManager
 					G.setStat("GETREFFROLE"+x, able.parms().get("ROLES"));
 				}
 			}
+			G.getClanLevelAbilities(null,null,Integer.valueOf(Integer.MAX_VALUE));
 			governments.add(G);
 		}
 		final ClanGovernment[] govts=new ClanGovernment[governments.size()];

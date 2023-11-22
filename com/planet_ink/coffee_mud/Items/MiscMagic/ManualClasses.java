@@ -108,7 +108,7 @@ public class ManualClasses extends StdItem implements MiscMagic, ArchonOnly
 								}
 								lastC=C;
 							}
-							if((thisC!=null)&&(!(thisC.ID().equals("Archon"))))
+							if((thisC!=null)&&(!(thisC instanceof ArchonOnly)))
 							{
 								mob.charStats().setCurrentClass(thisC);
 								if((!mob.isMonster())&&(mob.soulMate()==null))

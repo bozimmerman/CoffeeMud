@@ -48,7 +48,7 @@ public class Otter extends Mustelid
 		return localizedStaticName;
 	}
 
-	private final String[]	racialAbilityNames			= { "Skill_Swim", "Skill_Longbreath", "Skill_Autoswim", "Skill_Burrow", "Skill_BurrowHide" };
+	private final String[]	racialAbilityNames			= { "Skill_Swim", "Skill_LongBreath", "Skill_Autoswim", "Skill_Burrow", "Skill_BurrowHide" };
 	private final int[]		racialAbilityLevels			= { 1, 2, 3, 1, 1 };
 	private final int[]		racialAbilityProficiencies	= { 100, 75, 100, 75, 100 };
 	private final boolean[]	racialAbilityQuals			= { false, false, false, false, false };

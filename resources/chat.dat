@@ -2839,7 +2839,7 @@
 
 {<S-NAME>& from &(the north|the south|the east|the west|above|below)}
 9: 
-1: bares <S-HIS-HER> teeth and watches you carefully.
+1: bares his teeth and watches you carefully.
 
 (hi|hello)
 9: growls and snarls at you.
@@ -2855,7 +2855,7 @@
 
 {<S-NAME>& from &(the north|the south|the east|the west|above|below)}
 5: 
-5: wiggles <S-HIS-HER> nose at you.  How cute!
+5: wiggles her nose at you.  How cute!
 
 (hi|hello)
 9: sticks his little ears up in the air.

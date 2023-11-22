@@ -647,9 +647,13 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				else
 				if(finalCommand.startsWith(":"))
 				{
-					finalCommand="emote "+finalCommand.substring(1).trim();
+					finalCommand = finalCommand.substring(1).trim();
 					if(source!=null)
+					{
 						finalCommand=CMStrings.replaceAll(finalCommand," her "," "+source.charStats().hisher()+" ");
+						finalCommand=CMStrings.replaceAll(finalCommand," his "," "+source.charStats().hisher()+" ");
+					}
+					finalCommand = "emote "+finalCommand;
 				}
 				else
 				if(finalCommand.startsWith("!"))
