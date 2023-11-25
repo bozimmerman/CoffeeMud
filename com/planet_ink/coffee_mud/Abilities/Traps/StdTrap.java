@@ -434,56 +434,6 @@ public class StdTrap extends StdAbility implements Trap
 			super.executeMsg(myHost,msg);
 			return;
 		}
-		if(CMath.bset(canAffectCode(),Ability.CAN_EXITS))
-		{
-			if(msg.amITarget(affected))
-			{
-				if((affected instanceof Exit)
-				&&(((Exit)affected).hasADoor())
-				&&(((Exit)affected).hasALock())
-				&&(((Exit)affected).isLocked()))
-				{
-					if(msg.targetMinor()==CMMsg.TYP_UNLOCK)
-						spring(msg.source());
-				}
-				else
-				if((affected instanceof Container)
-				&&(((Container)affected).hasADoor())
-				&&(((Container)affected).hasALock())
-				&&(((Container)affected).isLocked()))
-				{
-					if(msg.targetMinor()==CMMsg.TYP_UNLOCK)
-						spring(msg.source());
-				}
-				else
-				if(msg.targetMinor()==CMMsg.TYP_OPEN)
-					spring(msg.source());
-			}
-		}
-		else
-		if(CMath.bset(canAffectCode(),Ability.CAN_ITEMS))
-		{
-			if(isABomb())
-			{
-				if(msg.amITarget(affected))
-				{
-					if((msg.targetMinor()==CMMsg.TYP_HOLD)
-					&&(msg.source().isMine(affected)))
-					{
-						msg.source().tell(msg.source(),affected,null,L("You activate <T-NAME>."));
-						activateBomb();
-					}
-				}
-			}
-			else
-			if(msg.amITarget(affected))
-			{
-				if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
-				&&(!msg.source().isMine(affected)))
-					spring(msg.source());
-			}
-		}
-		else
 		if(CMath.bset(canAffectCode(), Ability.CAN_ROOMS)
 		&& msg.amITarget(affected)
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER))
@@ -513,6 +463,53 @@ public class StdTrap extends StdAbility implements Trap
 			else
 			if(!msg.source().isMine(affected))
 				spring(msg.source());
+		}
+		else
+		if(CMath.bset(canAffectCode(),Ability.CAN_EXITS)
+		&&(msg.amITarget(affected))
+		&&((affected instanceof Exit)||(affected instanceof Container)))
+		{
+			if((affected instanceof Exit)
+			&&(((Exit)affected).hasADoor())
+			&&(((Exit)affected).hasALock())
+			&&(((Exit)affected).isLocked()))
+			{
+				if(msg.targetMinor()==CMMsg.TYP_UNLOCK)
+					spring(msg.source());
+			}
+			else
+			if((affected instanceof Container)
+			&&(((Container)affected).hasADoor())
+			&&(((Container)affected).hasALock())
+			&&(((Container)affected).isLocked()))
+			{
+				if(msg.targetMinor()==CMMsg.TYP_UNLOCK)
+					spring(msg.source());
+			}
+			else
+			if(msg.targetMinor()==CMMsg.TYP_OPEN)
+				spring(msg.source());
+		}
+		else
+		if((CMath.bset(canAffectCode(),Ability.CAN_ITEMS))
+		&&(msg.amITarget(affected))
+		&&(affected instanceof Item))
+		{
+			if(isABomb())
+			{
+				if((msg.targetMinor()==CMMsg.TYP_HOLD)
+				&&(msg.source().isMine(affected)))
+				{
+					msg.source().tell(msg.source(),affected,null,L("You activate <T-NAME>."));
+					activateBomb();
+				}
+			}
+			else
+			{
+				if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
+				&&(!msg.source().isMine(affected)))
+					spring(msg.source());
+			}
 		}
 		super.executeMsg(myHost,msg);
 	}
