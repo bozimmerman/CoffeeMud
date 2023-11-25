@@ -122,4 +122,11 @@ public interface Language extends Ability
 	 * @return whether this is a natural sentient language
 	 */
 	public boolean isANaturalLanguage();
+	
+	/**
+	 * When someone who doesn't speak a language hears it spoken, the 
+	 * verb say(s) is replaced with this verb (if it exists).
+	 * @return empty string, of a verb that replaces "say(s)"
+	 */
+	public String getVerb();
 }

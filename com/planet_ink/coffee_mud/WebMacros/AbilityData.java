@@ -670,6 +670,13 @@ public class AbilityData extends StdWebMacro
 						old=A.getStat("BASELEVEL");
 					str.append(old+", ");
 				}
+				if(parms.containsKey("PERMRESET"))
+				{
+					String old=httpReq.getUrlParameter("PERMRESET");
+					if(old==null)
+						old=A.getStat("PERMRESET");
+					str.append(old+", ");
+				}
 				if(parms.containsKey("AUTOINVOKE"))
 				{
 					String old=httpReq.getUrlParameter("AUTOINVOKE");

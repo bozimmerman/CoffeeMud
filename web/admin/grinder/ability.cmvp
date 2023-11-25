@@ -512,7 +512,12 @@
                     <SELECT NAME=CANTARGETMASK MULTIPLE>@AbilityData?CANTARGETMASK@</SELECT>
                 </TD>
             </TR>
-            
+            <TR>
+                <TD><FONT COLOR=YELLOW>Base Reset Ticks: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=4 NAME=PERMRESET VALUE="@AbilityData?PERMRESET@">
+                </TD>
+            </TR>
             <TR>
                 <TD><FONT COLOR=YELLOW>Avoid Msg: </FONT></TD>
                 <TD>

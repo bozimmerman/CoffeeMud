@@ -277,6 +277,12 @@ public class StdLanguage extends StdAbility implements Language
 		return w.toString();
 	}
 
+	@Override
+	public String getVerb()
+	{
+		return "";
+	}
+
 	public String scrambleAll(final String language, final String str, final int numToMess)
 	{
 		final StringBuffer newStr=new StringBuffer("");

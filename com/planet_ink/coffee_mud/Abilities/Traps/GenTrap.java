@@ -142,6 +142,7 @@ public class GenTrap extends StdTrap
 			getScripter();
 			A.scriptParmHash=scriptParmHash;
 			A.trapLevel=((Integer)V(ID,V_LEVL)).intValue();
+			A.reset=reset;
 			if(scriptObj!=null)
 			{
 				A.scriptObj=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
@@ -413,6 +414,7 @@ public class GenTrap extends StdTrap
 										 "SCRIPT",//18S
 										 "HELP",//19S
 										 "BASELEVEL",//22I
+										 "PERMRESET",//NA
 										};
 
 	@Override
@@ -479,6 +481,8 @@ public class GenTrap extends StdTrap
 			return (String)V(ID, V_HELP);
 		case 20:
 			return ((Integer)V(ID, V_LEVL)).toString();
+		case 21:
+			return super.reset+"";
 		default:
 			if (code.equalsIgnoreCase("javaclass"))
 				return "GenTrap";
@@ -609,6 +613,9 @@ public class GenTrap extends StdTrap
 			break;
 		case 20:
 			SV(ID, V_LEVL, Integer.valueOf(CMath.s_int(val)));
+			break;
+		case 21:
+			setReset(CMath.s_int(val));
 			break;
 		default:
 			if (code.equalsIgnoreCase("allxml") && ID.equalsIgnoreCase("GenTrap"))

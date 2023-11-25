@@ -1164,7 +1164,7 @@ public class MUDGrinder extends StdWebMacro
 			final String last=httpReq.getUrlParameter("ABILITY");
 			if(last==null)
 				return " @break@";
-			A=CMClass.getAbility(last);
+			A=CMClass.getAbilityPrototype(last);
 			oldA=A;
 			boolean create=false;
 			if((A!=null)&&(!A.isGeneric()))

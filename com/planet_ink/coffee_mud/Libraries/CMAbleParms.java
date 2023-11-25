@@ -101,7 +101,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return A;
 		final Ability CR;
 		if(A instanceof Trap)
+		{
 			CR=(Ability)CMClass.getAbility("GenTrap").copyOf();
+			CR.setStat("PERMRESET", ""+((Trap)A).getReset());
+		}
 		else
 		if(A instanceof ItemCraftor)
 		{

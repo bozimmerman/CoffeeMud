@@ -260,6 +260,12 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 	}
 
 	@Override
+	public String getVerb()
+	{
+		return "";
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

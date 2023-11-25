@@ -128,6 +128,8 @@ public class GrinderAbilities
 				V.addElement(httpReq.getUrlParameter("CANTARGETMASK"+id));
 		}
 		A.setStat("CANTARGETMASK",CMParms.toListString(V));
+		old=httpReq.getUrlParameter("PERMRESET");
+		A.setStat("PERMRESET",(old==null)?"30":old);
 		old=httpReq.getUrlParameter("CANMEND");
 		A.setStat("CANMEND",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
 		old=httpReq.getUrlParameter("CANREFIT");

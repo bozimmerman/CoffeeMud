@@ -145,6 +145,12 @@ public class Prop_LangTranslator extends Property implements Language
 		return ints;
 	}
 
+	@Override
+	public String getVerb()
+	{
+		return "";
+	}
+
 	protected boolean wordMatch(String words, final List<String> allMatchWords)
 	{
 		if((allMatchWords == null)||(allMatchWords.size()==0)||(allMatchWords.contains("*")))
