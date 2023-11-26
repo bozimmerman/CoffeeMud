@@ -2158,6 +2158,25 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return ""+I.baseGoldValue();
 				}
 			},
+			new AbilityParmEditorImpl("FREQUENCY","Frequency",ParmType.NUMBER)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "1";
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "1";
+				}
+			},
 			new AbilityParmEditorImpl("ROOM_CLASS_ID","Class ID",ParmType.CHOICES)
 			{
 				@Override
@@ -5352,6 +5371,33 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
 					if(I.material()==RawMaterial.RESOURCE_HERBS)
+						return CMStrings.lastWordIn(I.Name());
+					return "";
+				}
+			},
+			new AbilityParmEditorImpl("MUSHROOM_NAME","Mushroom Final Name",ParmType.STRING)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "Mushroom Name";
+				}
+
+				@Override
+				public int minColWidth()
+				{
+					return 10;
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					if(I.material()==RawMaterial.RESOURCE_MUSHROOMS)
 						return CMStrings.lastWordIn(I.Name());
 					return "";
 				}

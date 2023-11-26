@@ -1,0 +1,43 @@
+bay bolete	5	1	
+black trumpet	5	5	
+button	1	100	
+caesar`s	5	1	
+chanterelle	20	3	
+russula	40	1	
+chicken-of-the-woods	5	2	
+inkcap	5	1	
+brittlegill	50	1	
+cremini	25	2	
+dryadsaddle	25	1	
+enoki	50	1	
+fieldshroom	50	1	
+puffball	5	2	
+greencrackling	5	1	
+gypsyshroom	5	1	
+hedgehogshroom	5	1	
+honeyfungus	5	5	
+pennybun	5	3	
+oystershroom	25	1	
+lionsmane	5	2	
+maitake	20	1	
+morel	20	1	
+pixabay	5	4	
+parasolshroom	20	1	
+portobello	20	1	
+redpine	5	1	
+scaberstalk	5	4	
+reishi	5	2	
+shimeji	10	1	
+shiitake	40	1	
+slipperyjack	5	1	
+strawshroom	5	1	
+blewit	5	1	
+woodear	20	1	
+yellowknight	5	1	
+death cap	10	1	
+destroyingangel	10	1	
+lepidella	10	1	
+foolshroom	10	1	
+webcap	10	1	
+falsemorel	20	1	
+falseparasol	10	1	

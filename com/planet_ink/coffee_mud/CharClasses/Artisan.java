@@ -184,6 +184,7 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Landscaping",false,CMParms.parseSemicolons("Composting",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterFarming",false,CMParms.parseSemicolons("Landscaping(75);Farming(100)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Herbology",false,CMParms.parseSemicolons("FoodPrep(75)",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Mycology",false,CMParms.parseSemicolons("FoodPrep(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Textiling",false,CMParms.parseSemicolons("Shearing(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Gardening",false,CMParms.parseSemicolons("Composting(75);Herbology(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Floristry",false,CMParms.parseSemicolons("Skill_WildernessLore(75);Herbology(75)",true));
@@ -250,6 +251,7 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Embroidering",false,CMParms.parseSemicolons("Skill_Write(50);Tailoring(75);Leatherworking(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterFloristry",false,CMParms.parseSemicolons("Floristry(100);Painting(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterHerbology",false,CMParms.parseSemicolons("Herbology(100);MasterCooking(75);MasterFoodPrep(75)",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterMycology",false,CMParms.parseSemicolons("Mycology(100);MasterCooking(75);MasterFoodPrep(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_Lore",false,CMParms.parseSemicolons("Skill_Write(75);PaperMaking(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Proficiency_Ranged",false,CMParms.parseSemicolons("Fletching(100)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Familiarity_Ranged",false,CMParms.parseSemicolons("Proficiency_Ranged(75)",true));

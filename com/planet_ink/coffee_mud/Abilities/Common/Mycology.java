@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.LeatherWorking.Stage;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -18,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2023 Bo Zimmerman
+   Copyright 2023-2023 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,23 +33,28 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Herbology extends CommonSkill implements RecipeDriven
+public class Mycology extends CommonSkill implements RecipeDriven
 {
 	@Override
 	public String ID()
 	{
-		return "Herbology";
+		return "Mycology";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Herbology");
+	private final static String localizedName = CMLib.lang().L("Mycology");
 
+	public static final int	RCP_FINALNAME	= 0;
+	public static final int	RCP_FREQ		= 1;
+	public static final int	RCP_VALUE		= 2;
+	public static final int RCP_SPELL		= 3;
+	
 	@Override
 	public String name()
 	{
 		return localizedName;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"HERBOLOGY"});
+	private static final String[] triggerStrings =I(new String[] {"MYCOLOGY"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -63,7 +69,7 @@ public class Herbology extends CommonSkill implements RecipeDriven
 
 	public String parametersFormat()
 	{
-		return "HERB_NAME";
+		return "MUSHROOM_NAME\tFREQUENCY\tITEM_BASE_VALUE";
 	}
 
 	protected Item		found		= null;
@@ -77,7 +83,7 @@ public class Herbology extends CommonSkill implements RecipeDriven
 		return true;
 	}
 
-	public Herbology()
+	public Mycology()
 	{
 		super();
 		displayText=L("You are evaluating...");
@@ -93,13 +99,13 @@ public class Herbology extends CommonSkill implements RecipeDriven
 	@Override
 	public String getRecipeFormat()
 	{
-		return "HERB_NAME";
+		return "MUSHROOM_NAME\tFREQUENCY\tITEM_BASE_VALUE\tCODED_SPELL_LIST";
 	}
 
 	@Override
 	public String getRecipeFilename()
 	{
-		return "herbology.txt";
+		return "mycology.txt";
 	}
 
 	@Override
@@ -123,6 +129,7 @@ public class Herbology extends CommonSkill implements RecipeDriven
 				Integer.valueOf(1));
 	}
 
+
 	@Override
 	public void unInvoke()
 	{
@@ -138,35 +145,65 @@ public class Herbology extends CommonSkill implements RecipeDriven
 					commonTelL(mob,"You lose your concentration on @x1.",found.name());
 				else
 				{
-					final List<List<String>> herbList=this.fetchRecipes();
+					final List<List<String>> mushroomList=this.fetchRecipes();
+					@SuppressWarnings("unchecked")
+					IntegerRangeMap<List<String>> map=(IntegerRangeMap<List<String>>)
+						Resources.getResource("PARSED_RECIPE_MAP: "+getRecipeFilename());
+					if(map==null)
+					{
+						map = new IntegerRangeMap<List<String>>();
+						int cur = 0;
+						for(List<String> recipe : mushroomList)
+						{
+							if((recipe.size()>RCP_FREQ)
+							&&(recipe.get(0).trim().length()>0))
+							{
+								int v = CMath.s_int(recipe.get(RCP_FREQ));
+								int min = cur;
+								int max = cur + v;
+								cur = cur + v + 1;
+								map.put(new int[] {min,max}, recipe);
+							}
+						}
+						Resources.submitResource("PARSED_RECIPE_MAP: "+getRecipeFilename(),map);
+					}
 					Item origFound=found;
 					while(found != null)
 					{
 						if(found.phyStats().weight()>1)
 							found=CMLib.materials().unbundle(found, 1, null);
-						String herb=null;
-						while((herbList.size()>2)&&((herb==null)||(herb.trim().length()==0)))
-							herb=herbList.get(CMLib.dice().roll(1,herbList.size(),-1)).get(0).trim().toLowerCase();
-
+						List<String> mushroomFound=null;
+						while((mushroomList.size()>2)
+						&&((mushroomFound==null)||(mushroomFound.get(0).trim().length()==0)))
+						{
+							int rand = CMLib.dice().roll(1, map.getMax(), 0);
+							mushroomFound=map.get(new int[] {rand,rand});
+						}
+						if(mushroomFound==null)
+							mushroomFound=new XVector<String>(L("unknown"),"1","1");
+						String mushroom=mushroomFound.get(RCP_FINALNAME).toLowerCase().trim();
+						int valueMultiplier=mushroomFound.size()>2?CMath.s_int(mushroomFound.get(RCP_VALUE)):1;
 						if(found.rawSecretIdentity().length()>0)
 						{
-							herb=found.rawSecretIdentity();
+							mushroom=found.rawSecretIdentity();
+							valueMultiplier=1;
 							found.setSecretIdentity("");
 						}
-						if(herb == null)
-							herb=L("unknown");
-
-						commonTelL(mob,"@x1 appears to be @x2.",found.name(),herb);
+						commonTelL(mob,"@x1 appears to be @x2.",found.name(),mushroom);
 						String name=found.Name();
-						name=name.substring(0,name.length()-5).trim();
+						name=name.substring(0,name.length()-10).trim(); //?!
+						String nameAddendum=mushroom.endsWith("shroom")?"":L(" mushrooms");
 						if(name.length()>0)
-							found.setName(name+" "+herb);
+							found.setName(name+" "+mushroom+nameAddendum);
 						else
-							found.setName(L("some @x1",herb));
+							found.setName(L("some @x1"+nameAddendum,mushroom));
 						found.setDisplayText(L("@x1 is here",found.Name()));
+						found.setBaseValue(found.baseGoldValue()*valueMultiplier);
 						found.setDescription("");
 						if(found instanceof RawMaterial)
-							((RawMaterial)found).setSubType(herb.toUpperCase().trim());
+							((RawMaterial)found).setSubType(mushroom.toUpperCase().trim());
+						final String spell=(mushroomFound.size()>RCP_SPELL)?mushroomFound.get(RCP_SPELL).trim():"";
+						new CraftingSkill().addSpellsOrBehaviors(found,spell,new ArrayList<CMObject>(),new ArrayList<CMObject>());
 						found.text();
 						if((!isLimitedToOne()) && (foundName!=null))
 						{
@@ -178,9 +215,9 @@ public class Herbology extends CommonSkill implements RecipeDriven
 							else
 								found=mob.fetchItem(null, Wearable.FILTER_UNWORNONLY, "$"+foundName+"$");
 							if((found != null)
-							&&((found.material()==RawMaterial.RESOURCE_HERBS))
-							&&((found.Name().toUpperCase().endsWith(" HERBS"))
-								||(found.Name().equalsIgnoreCase("herbs"))
+							&&((found.material()==RawMaterial.RESOURCE_MUSHROOMS))
+							&&((found.Name().toUpperCase().endsWith(" MUSHROOMS"))
+								||(found.Name().equalsIgnoreCase("mushroomss"))
 								||(found.Name().toUpperCase().endsWith("BUNDLE")))
 							&&(proficiencyCheck(mob,0,lastAuto)))
 							{
@@ -216,7 +253,7 @@ public class Herbology extends CommonSkill implements RecipeDriven
 			return true;
 		if(commands.size()<1)
 		{
-			commonTelL(mob,"You must specify what herb you want to identify.");
+			commonTelL(mob,"You must specify what mushroom or fungi you want to identify.");
 			return false;
 		}
 		final String finalName=CMParms.combine(commands,0);
@@ -228,14 +265,15 @@ public class Herbology extends CommonSkill implements RecipeDriven
 		}
 		commands.remove(commands.get(0));
 
-		if((target.material()!=RawMaterial.RESOURCE_HERBS)
-		||((!target.Name().toUpperCase().endsWith(" HERBS"))
-		   &&(!target.Name().equalsIgnoreCase("herbs"))
+		if((target.material()!=RawMaterial.RESOURCE_MUSHROOMS)
+		||((!target.Name().toUpperCase().endsWith(" MUSHROOMS"))
+		   &&(!target.Name().equalsIgnoreCase("mushrooms"))
 		   &&(!target.Name().toUpperCase().endsWith("BUNDLE")))
 		||(!(target instanceof RawMaterial))
+		||(((RawMaterial)target).getSubType().length()>0)
 		||(!target.isGeneric()))
 		{
-			commonTelL(mob,"You can only identify unknown herbs.");
+			commonTelL(mob,"You can only identify unknown mushrooms or fungi.");
 			return false;
 		}
 		if(isLimitedToOne() && target.basePhyStats().weight()>1)

@@ -118,4 +118,5 @@
 
 29 MasterFloristry MASK=+INT 12 REQUIRES=Floristry(100) 
 29 MasterHerbology MASK=+INT 12 REQUIRES=Herbology(100) 
+29 MasterMycology MASK=+INT 12 REQUIRES=Mycology(100) 
 

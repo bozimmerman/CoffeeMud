@@ -87,7 +87,7 @@ public class ArtisanalFocus extends StdAbility
 	}
 
 	protected final static String[][] nameSets = new String[][] {
-		{"Farmer","Irrigation","Farming","Shrooming","Composting","PlantLore","Floristry","Herbology","Gardening","MasterFloristry","MasterHerbology","MasterFarming","MasterGardening"},
+		{"Farmer","Irrigation","Farming","Shrooming","Composting","PlantLore","Floristry","Herbology","Gardening","MasterFloristry","MasterHerbology","MasterFarming","MasterGardening","Mycology"},
 		{"Rancher","AnimalHusbandry","CageBuilding","Taxidermy","Branding","Baiting","Shearing","MasterShearing","Herding","Shepherding"},
 		{"Smith","Smelting","Armorsmithing","Weaponsmithing","JewelMaking","Blacksmithing","Rodsmithing","LockSmith","MasterWeaponsmithing","MasterArmorsmithing"},
 		{"Tailor","Tailoring","LeatherWorking","Weaving","Cobbling","Tanning","Textiling","MasterLeatherWorking","MasterTailoring"},
