@@ -1312,6 +1312,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
+		if(tickStatus == Tickable.STATUS_ALIVE)
+			return true;
 		tickStatus=Tickable.STATUS_ALIVE;
 		try
 		{
@@ -1320,6 +1322,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
 					Log.debugOut("Starting calendar processing for "+name());
 				processCalendarEvents();
+				if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
+					Log.debugOut("Finished calendar processing for "+name());
 			}
 
 			// here and below is the normal utilithread
