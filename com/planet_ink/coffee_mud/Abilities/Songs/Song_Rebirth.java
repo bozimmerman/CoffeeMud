@@ -117,7 +117,9 @@ public class Song_Rebirth extends Song
 						if((body instanceof DeadBody)
 						&&(((DeadBody)body).isPlayerCorpse())
 						&&(((DeadBody)body).getMobName().length()>0)
-						&&(CMLib.players().playerExists(((DeadBody)body).getMobName())))
+						&&(CMLib.players().playerExists(((DeadBody)body).getMobName()))
+						&&((!mob.mayIFight(CMLib.players().getPlayer(((DeadBody)body).getMobName())))
+							||(mob.getGroupMembers(new XTreeSet<MOB>()).contains(CMLib.players().getPlayer(((DeadBody)body).getMobName())))))
 						{
 							if(!CMLib.utensils().resurrect(mob,R, (DeadBody)body, -1))
 								i++;

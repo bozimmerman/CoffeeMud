@@ -161,6 +161,7 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Paladin_SummonMount",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureLight",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CauseLight",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_SetPolearm",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))

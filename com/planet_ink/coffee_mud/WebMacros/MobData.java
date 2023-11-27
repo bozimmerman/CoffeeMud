@@ -1728,6 +1728,14 @@ public class MobData extends StdWebMacro
 				case IMAGE: // image
 					if(firstTime)
 						old=M.rawImage();
+					else
+					{
+						final Race nR = CMClass.getRace(httpReq.getUrlParameter("RACE"));
+						if((nR!=null)
+						&&(nR != M.baseCharStats().getMyRace())
+						&&(old.equalsIgnoreCase(CMLib.protocol().getDefaultMXPImage(M.baseCharStats().getMyRace()))))
+							old=CMLib.protocol().getDefaultMXPImage(nR);
+					}
 					str.append(old);
 					break;
 				case ISPOSTMAN: // ispostman
