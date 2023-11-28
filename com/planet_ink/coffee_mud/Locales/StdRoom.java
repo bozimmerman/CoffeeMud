@@ -708,34 +708,29 @@ public class StdRoom implements Room
 					&&(((StdRoom)R).myResource>0))
 						preferredChoices.add(Integer.valueOf(((StdRoom)R).myResource));
 				}
-				while(preferredChoices.size()>0)
-				{
-					final Integer choice=preferredChoices.remove(CMLib.dice().roll(1, preferredChoices.size(), -1));
-					if(CMLib.dice().rollPercentage()<25)
-					{
-						myResource = choice.intValue();
-						return myResource;
-					}
-				}
-				int totalChance=0;
+				final IntegerRangeMap<Integer> map = new IntegerRangeMap<Integer>();
+				int curTotal=0;
 				for(int i=0;i<resourceChoices().size();i++)
 				{
-					final int resource=resourceChoices().get(i).intValue();
-					totalChance+=RawMaterial.CODES.FREQUENCY(resource);
+					final Integer resource=resourceChoices().get(i);
+					final int min = curTotal;
+					final int max = min + RawMaterial.CODES.FREQUENCY(resource.intValue());
+					map.put(new int[] {min, max}, resource);
+					curTotal = max + 1;
+				}
+				if(preferredChoices.size()>0)
+				{
+					final int prefAmt = map.getMax() / 4 / preferredChoices.size();
+					for(final Integer I : preferredChoices)
+					{
+						map.put(new int[] {curTotal, curTotal + prefAmt},I);
+						curTotal += prefAmt + 1;
+					}
 				}
 				setResource(-1);
-				final int theRoll=CMLib.dice().roll(1,totalChance,0);
-				totalChance=0;
-				for(int i=0;i<resourceChoices().size();i++)
-				{
-					final int resource=resourceChoices().get(i).intValue();
-					totalChance+=RawMaterial.CODES.FREQUENCY(resource);
-					if(theRoll<=totalChance)
-					{
-						setResource(resource);
-						break;
-					}
-				}
+				final int theRoll=CMLib.dice().roll(1,map.getMax(),0);
+				final Integer resource = map.get(new int[] {theRoll,theRoll});
+				setResource(resource.intValue());
 			}
 		}
 		return myResource;
