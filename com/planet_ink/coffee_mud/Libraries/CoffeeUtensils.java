@@ -1461,7 +1461,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			corpseRoom.recoverRoomStats();
 			final List<String> whatsToDo=CMParms.parseCommas(CMProps.get(rejuvedMOB.session()).getStr(CMProps.Str.PLAYERDEATH),true);
 			int rejuv=rejuvedMOB.phyStats().rejuv();
-			if((rejuv==0)||(rejuv==Integer.MAX_VALUE))
+			if((rejuv==0)||(rejuv==PhyStats.NO_REJUV))
 				rejuv=rejuvedMOB.phyStats().level();
 			if(((!rejuvedMOB.isMonster())&&(rejuvedMOB.soulMate()==null)))
 				rejuv=1;

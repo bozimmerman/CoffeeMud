@@ -386,7 +386,7 @@ public class ItemData extends StdWebMacro
 					case REJUV: // rejuv;
 						if(firstTime)
 							old=""+I.basePhyStats().rejuv();
-						if(old.equals(""+Integer.MAX_VALUE))
+						if(old.equals(""+PhyStats.NO_REJUV))
 							str.append("0");
 						else
 							str.append(old);

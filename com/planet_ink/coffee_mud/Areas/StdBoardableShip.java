@@ -890,7 +890,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 						public void run()
 						{
 							I.setExpirationDate(0);
-							if((I.phyStats().rejuv()!=Integer.MAX_VALUE)
+							if((I.phyStats().rejuv()!=PhyStats.NO_REJUV)
 							&&(I.phyStats().rejuv()!=0)
 							&&(me.getOwnerName().length()>0)
 							&&(msg.source().location()!=null)
@@ -919,7 +919,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 				&&(msg.source().getStartRoom()!=null)
 				&&(msg.source().getStartRoom()==msg.source().location())
 				&&(msg.source().basePhyStats().rejuv()>0)
-				&&(msg.source().basePhyStats().rejuv()<Integer.MAX_VALUE)
+				&&(msg.source().basePhyStats().rejuv()<PhyStats.NO_REJUV)
 				&&(this.shipItem instanceof SiegableItem)
 				&&((SiegableItem)this.shipItem).amDead())
 				{

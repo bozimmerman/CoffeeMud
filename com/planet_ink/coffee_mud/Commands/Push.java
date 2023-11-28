@@ -348,7 +348,7 @@ public class Push extends Go
 								&&(!pM.isPlayer())
 								&&(pM.isMonster())
 								&&(pM.basePhyStats().rejuv() != 0)
-								&&(pM.basePhyStats().rejuv() != Integer.MAX_VALUE)
+								&&(pM.basePhyStats().rejuv() != PhyStats.NO_REJUV)
 								&&(pM.getStartRoom()==R)
 								&&(pM.isSavable()))
 									CMLib.tracking().markToWanderHomeLater(pM, (int)CMProps.getTicksPerHour());

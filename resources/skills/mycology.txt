@@ -34,10 +34,10 @@ strawshroom	5	1
 blewit	5	1	
 woodear	20	1	
 yellowknight	5	1	
-death cap	10	1	
-destroyingangel	10	1	
-lepidella	10	1	
-foolshroom	10	1	
-webcap	10	1	
-falsemorel	20	1	
-falseparasol	10	1	
+death cap	10	1	Poison_Heartstopper
+destroyingangel	10	1	Poison_Heartstopper
+lepidella	10	1	Poison_Sickening
+foolshroom	10	1	Poison_Sickening
+webcap	10	1	Poison_Sickening
+falsemorel	20	1	Poison_Sickening
+falseparasol	10	1	Poison_Sickening

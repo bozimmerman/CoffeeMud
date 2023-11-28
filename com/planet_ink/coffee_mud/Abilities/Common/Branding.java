@@ -203,7 +203,7 @@ public class Branding extends CommonSkill implements PrivateProperty
 							&&(animal.getStartRoom()!=null)
 							&&(animal.isSavable())
 							&&(animal.basePhyStats().rejuv()!=0)
-							&&(animal.basePhyStats().rejuv()!=Integer.MAX_VALUE))
+							&&(animal.basePhyStats().rejuv()!=PhyStats.NO_REJUV))
 							{
 								final MOB oldAnimal=animal;
 								animal=(MOB)animal.copyOf();

@@ -167,7 +167,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 	protected void overflowFix(final Item I, final Room targetRoom)
 	{
 		if((I.phyStats().rejuv()!=0)
-		&&(I.phyStats().rejuv()!=Integer.MAX_VALUE))
+		&&(I.phyStats().rejuv()!=PhyStats.NO_REJUV))
 		{
 			I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 			I.phyStats().setRejuv(PhyStats.NO_REJUV);

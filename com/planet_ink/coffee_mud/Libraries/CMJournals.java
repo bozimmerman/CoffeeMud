@@ -1092,7 +1092,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		synchronized(this.nextEvents)
 		{
 			this.nextEvents.clear();
-			CMLib.threads().deleteTick(this, Tickable.TICKID_EVENT);
+			while(CMLib.threads().isTicking(this, Tickable.TICKID_EVENT))
+				CMLib.threads().deleteTick(this, Tickable.TICKID_EVENT);
 			final List<JournalEntry> calendar = new Vector<JournalEntry>();
 			long endestTime = System.currentTimeMillis() + TimeManager.MILI_YEAR;
 			for(final JournalEntry holiday : CMLib.quests().getHolidayEntries(true))
@@ -1121,7 +1122,11 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			}
 			nextEvents.addAll(partials);
 			if(nextEvents.size()>0)
+			{
+				if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
+					Log.debugOut("Next Calendar thread will process "+nextEvents.size()+" events.");
 				CMLib.threads().startTickDown(this, Tickable.TICKID_EVENT, nextTime-System.currentTimeMillis(), 1);
+			}
 		}
 	}
 
@@ -1169,9 +1174,12 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 								final JournalEntry sampleE = me.nextEvents.get(0);
 								if(nextStart.date() < sampleE.date())
 								{
-									CMLib.threads().deleteTick(me, Tickable.TICKID_EVENT);
+									while(CMLib.threads().isTicking(me, TICKID_EVENT))
+										CMLib.threads().deleteTick(me, Tickable.TICKID_EVENT);
 									me.nextEvents.clear();
 									nextEvents.add(nextStart);
+									if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
+										Log.debugOut("Next Calendar thread will process "+nextEvents.size()+" events.");
 									CMLib.threads().startTickDown(me, Tickable.TICKID_EVENT, nextStart.date()-System.currentTimeMillis(), 1);
 								}
 								else
@@ -1180,9 +1188,12 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							}
 							else
 							{
-								CMLib.threads().deleteTick(me, Tickable.TICKID_EVENT);
+								while(CMLib.threads().isTicking(me, TICKID_EVENT))
+									CMLib.threads().deleteTick(me, Tickable.TICKID_EVENT);
 								me.nextEvents.clear();
 								nextEvents.add(nextStart);
+								if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
+									Log.debugOut("Next Calendar thread will process "+nextEvents.size()+" events.");
 								CMLib.threads().startTickDown(me, Tickable.TICKID_EVENT, nextStart.date()-System.currentTimeMillis(), 1);
 							}
 						}
@@ -1324,6 +1335,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				processCalendarEvents();
 				if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
 					Log.debugOut("Finished calendar processing for "+name());
+				return true;
 			}
 
 			// here and below is the normal utilithread

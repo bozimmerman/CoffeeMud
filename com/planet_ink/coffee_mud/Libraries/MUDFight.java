@@ -3179,7 +3179,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final int baseExperience=lostExperience[0];
 		lostExperience[0]=0;
 		int rejuv=deadM.phyStats().rejuv();
-		if((rejuv==0)||(rejuv==Integer.MAX_VALUE))
+		if((rejuv==0)||(rejuv==PhyStats.NO_REJUV))
 			rejuv=deadM.phyStats().level();
 		if(((!deadM.isMonster())&&(deadM.soulMate()==null)))
 			rejuv=1;

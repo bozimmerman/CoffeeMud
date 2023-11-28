@@ -73,6 +73,7 @@
  72. Conquest now requires dead mob lvl diff <= EXPRATEx2 (from ini file) HELP CONQUERABLE
  73. GenTraps now support custom reset ticks for builder-set traps.
  74. New common skills: Mycology, and Master Mycology. (Herbology now also Recipe Driven/Editable)
+ 75. New poison: Sickening (for mushrooms that aren't rotten, but aren't good for you either).
  
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)

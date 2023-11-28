@@ -2965,15 +2965,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
+		String rejuvStr = ""+P.basePhyStats().rejuv();
+		if((P.basePhyStats().rejuv()==0)||(P.basePhyStats().rejuv()==PhyStats.NO_REJUV))
+			rejuvStr = "0";
 		if(P instanceof Item)
 		{
 			if((((Item)P).owner() instanceof MOB)&&(((MOB)((Item)P).owner()).isMonster()))
-				mob.tell(L("@x1. Rejuv/Pct: '@x2' (0=special, -1=one time only).",""+showNumber,""+P.basePhyStats().rejuv()));
+				mob.tell(L("@x1. Rejuv/Pct: '@x2' (0=normal, -1=one time).",""+showNumber,rejuvStr));
 			else
-				mob.tell(L("@x1. Rejuv/Pct: '@x2' (0=special).",""+showNumber,""+P.basePhyStats().rejuv()));
+				mob.tell(L("@x1. Rejuv/Pct: '@x2' (0=never).",""+showNumber,rejuvStr));
 		}
 		else
-			mob.tell(L("@x1. Rejuv Ticks: '@x2' (0=never).",""+showNumber,""+P.basePhyStats().rejuv()));
+			mob.tell(L("@x1. Rejuv Ticks: '@x2' (0=never).",""+showNumber,rejuvStr));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		final String rlevel=mob.session().prompt(L("Enter new amount\n\r:"),"");

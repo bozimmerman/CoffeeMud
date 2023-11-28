@@ -592,7 +592,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 						updateItems=true;
 					}
 
-					if((I.phyStats().rejuv()!=Integer.MAX_VALUE)
+					if((I.phyStats().rejuv()!=PhyStats.NO_REJUV)
 					&&(I.phyStats().rejuv()!=0))
 					{
 						I.basePhyStats().setRejuv(PhyStats.NO_REJUV);

@@ -1330,7 +1330,7 @@ public class MobData extends StdWebMacro
 				case REJUV: // rejuv;
 					if(firstTime)
 						old=""+M.basePhyStats().rejuv();
-					if(old.equals(""+Integer.MAX_VALUE))
+					if(old.equals(""+PhyStats.NO_REJUV))
 						str.append("0");
 					else
 						str.append(old);
