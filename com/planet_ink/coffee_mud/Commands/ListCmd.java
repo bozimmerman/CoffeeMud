@@ -5834,33 +5834,65 @@ public class ListCmd extends StdCommand
 		if((commands!=null)&&(commands.size()>1))
 			sort=CMParms.combine(commands,1).trim().toUpperCase();
 
+		final Session viewerS = (mob==null)?null:mob.session();
+		if(CMath.isInteger(sort))
+		{
+			int x=0;
+			final int which = CMath.s_int(sort);
+			final int COL_LEN6=CMLib.lister().fixColWidth(10.0,viewerS);
+			for(final Session S : CMLib.sessions().allIterableAllHosts())
+			{
+				if(which == x)
+				{
+					final MOB M = S.mob();
+					final StringBuilder line = new StringBuilder("");
+					line.append("^x"+CMStrings.padRight("#",COL_LEN6)+":^.^N "+x+"\n\r");
+					line.append("^x"+CMStrings.padRight(L("Status"),COL_LEN6)+":^.^N "+S.getStatus().toString()+"\n\r");
+					line.append("^x"+CMStrings.padRight(L("Host"),COL_LEN6)+":^.^N "+S.getGroupName()+"\n\r");
+					line.append("^x"+CMStrings.padRight(L("Name"),COL_LEN6)+":^.^N "+((M==null)?L("NAMELESS"):M.Name())+"\n\r");
+					line.append("^x"+CMStrings.padRight(L("IP"),COL_LEN6)+":^.^N "+S.getAddress()+"\n\r");
+					line.append("^x"+CMStrings.padRight(L("Idle"),COL_LEN6)+":^.^N "+CMLib.english().stringifyElapsedTimeOrTicks(S.getIdleMillis(),0)+"\n\r");
+					mob.tell(line.toString());
+					break;
+				}
+				x++;
+			}
+			return;
+		}
+		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerS);
+		final int COL_LEN2=CMLib.lister().fixColWidth(9.0,viewerS);
+		final int COL_LEN3=CMLib.lister().fixColWidth(5.0,viewerS);
+		final int COL_LEN4=CMLib.lister().fixColWidth(17.0,viewerS);
+		final int COL_LEN5=CMLib.lister().fixColWidth(17.0,viewerS);
+		final int COL_LEN6=CMLib.lister().fixColWidth(17.0,viewerS);
+
 		final StringBuffer lines=new StringBuffer("\n\r^x");
-		lines.append(CMStrings.padRight("#",3)+"| ");
-		lines.append(CMStrings.padRight(L("Status"),9)+"| ");
-		lines.append(CMStrings.padRight(L("Host"),5)+"| ");
-		lines.append(CMStrings.padRight(L("Name"),17)+"| ");
-		lines.append(CMStrings.padRight(L("IP"),17)+"| ");
-		lines.append(CMStrings.padRight(L("Idle"),17)+"^.^N\n\r");
+		lines.append(CMStrings.padRight("#",COL_LEN1)+"| ");
+		lines.append(CMStrings.padRight(L("Status"),COL_LEN2)+"| ");
+		lines.append(CMStrings.padRight(L("Host"),COL_LEN3)+"| ");
+		lines.append(CMStrings.padRight(L("Name"),COL_LEN4)+"| ");
+		lines.append(CMStrings.padRight(L("IP"),COL_LEN5)+"| ");
+		lines.append(CMStrings.padRight(L("Idle"),COL_LEN6)+"^.^N\n\r");
 		final List<String[]> broken=new ArrayList<String[]>();
 		final boolean skipUnnamed = (sort.length()>0)&&("NAME".startsWith(sort)||"PLAYER".startsWith(sort));
 		for(final Session S : CMLib.sessions().allIterableAllHosts())
 		{
 			final String[] set=new String[6];
-			set[0]=CMStrings.padRight(""+broken.size(),3)+"| ";
-			set[1]=(S.isStopped()?"^H":"")+CMStrings.padRight(S.getStatus().toString(),9)+(S.isStopped()?"^?":"")+"| ";
-			set[2]=CMStrings.padRight(S.getGroupName(),5)+"| ";
+			set[0]=CMStrings.padRight(""+broken.size(),COL_LEN1)+"| ";
+			set[1]=(S.isStopped()?"^H":"")+CMStrings.padRight(S.getStatus().toString(),COL_LEN2)+(S.isStopped()?"^?":"")+"| ";
+			set[2]=CMStrings.padRight(S.getGroupName(),COL_LEN3)+"| ";
 			if (S.mob() != null)
 			{
 				final String color=(S.mob().session()==S)?"":"^N";
-				set[3]="^!"+CMStrings.padRight("^<LSTUSER^>"+color+S.mob().Name()+"^</LSTUSER^>",17)+"^?| ";
+				set[3]="^!"+CMStrings.padRight("^<LSTUSER^>"+color+S.mob().Name()+"^</LSTUSER^>",COL_LEN4)+"^?| ";
 			}
 			else
 			if(skipUnnamed)
 				continue;
 			else
-				set[3]=CMStrings.padRight(L("NAMELESS"),17)+"| ";
-			set[4]=CMStrings.padRight(S.getAddress(),17)+"| ";
-			set[5]=CMStrings.padRight(CMLib.english().stringifyElapsedTimeOrTicks(S.getIdleMillis(),0)+"",17);
+				set[3]=CMStrings.padRight(L("NAMELESS"),COL_LEN4)+"| ";
+			set[4]=CMStrings.padRight(S.getAddress(),COL_LEN5)+"| ";
+			set[5]=CMStrings.padRight(CMLib.english().stringifyElapsedTimeOrTicks(S.getIdleMillis(),0)+"",COL_LEN6);
 			broken.add(set);
 		}
 		List<String[]> sorted=null;
