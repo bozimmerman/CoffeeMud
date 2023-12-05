@@ -313,7 +313,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 					number=I.basePhyStats().weight();
 				if(number<=0)
 					number=1;
-				if(number>=(I.basePhyStats().weight()-1))
+				if(number>I.basePhyStats().weight())
 					number=I.basePhyStats().weight();
 				final List<Item> bundle=new XVector<Item>();
 				if(bundleSize >= I.basePhyStats().weight())
@@ -389,7 +389,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 					else
 						E=null;
 				}
-				if((I.basePhyStats().weight()-number)>1)
+				if((I.basePhyStats().weight()-number)>0)
 				{
 					I.basePhyStats().setWeight(I.basePhyStats().weight()-number);
 					I.setBaseValue(I.baseGoldValue()-loseValue);
