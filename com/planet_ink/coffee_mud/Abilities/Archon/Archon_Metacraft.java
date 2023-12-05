@@ -186,7 +186,7 @@ public class Archon_Metacraft extends ArchonSkill
 		}
 
 		ItemCraftor skill=null;
-		List<Pair<Ability,String>> skillsToUse=new Vector<Pair<Ability,String>>();
+		List<Pair<Ability,String>> skillsToUse=new ArrayList<Pair<Ability,String>>();
 		if(commands.size()>1)
 		{
 

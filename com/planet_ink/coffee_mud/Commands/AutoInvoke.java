@@ -101,7 +101,7 @@ public class AutoInvoke extends StdCommand
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		final List<Ability> abilities=new Vector<Ability>();
+		final List<Ability> abilities=new ArrayList<Ability>();
 		final Set<String> abilityids=new TreeSet<String>();
 		for(int a=0;a<mob.numAbilities();a++)
 		{

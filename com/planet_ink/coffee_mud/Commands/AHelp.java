@@ -64,84 +64,84 @@ public class AHelp extends StdCommand
 				StringBuffer theRest=(StringBuffer)Resources.getResource("arc_help.therest");
 				if(theRest==null)
 				{
-					final Vector<String> V=new Vector<String>();
+					final List<String> ableIV=new Vector<String>();
 					theRest=new StringBuffer("");
 
 					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY))
-							V.add(A.ID());
+							ableIV.add(A.ID());
 					}
-					if(V.size()>0)
+					if(ableIV.size()>0)
 					{
 						theRest.append("\n\rProperties:\n\r");
-						theRest.append(CMLib.lister().build4ColTable(mob,V));
+						theRest.append(CMLib.lister().build4ColTable(mob,ableIV));
 					}
 
-					V.clear();
+					ableIV.clear();
 					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE))
-							V.add(A.ID());
+							ableIV.add(A.ID());
 					}
-					if(V.size()>0)
+					if(ableIV.size()>0)
 					{
 						theRest.append("\n\rDiseases:\n\r");
-						theRest.append(CMLib.lister().build4ColTable(mob,V));
+						theRest.append(CMLib.lister().build4ColTable(mob,ableIV));
 					}
 
-					V.clear();
+					ableIV.clear();
 					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
-							V.add(A.ID());
+							ableIV.add(A.ID());
 					}
-					if(V.size()>0)
+					if(ableIV.size()>0)
 					{
 						theRest.append("\n\rPoisons:\n\r");
-						theRest.append(CMLib.lister().build4ColTable(mob,V));
+						theRest.append(CMLib.lister().build4ColTable(mob,ableIV));
 					}
 
-					V.clear();
+					ableIV.clear();
 					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SUPERPOWER))
-							V.add(A.ID());
+							ableIV.add(A.ID());
 					}
-					if(V.size()>0)
+					if(ableIV.size()>0)
 					{
 						theRest.append("\n\rSuper Powers:\n\r");
-						theRest.append(CMLib.lister().build4ColTable(mob,V));
+						theRest.append(CMLib.lister().build4ColTable(mob,ableIV));
 					}
 
-					V.clear();
+					ableIV.clear();
 					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_TECH))
-							V.add(A.ID());
+							ableIV.add(A.ID());
 					}
-					if(V.size()>0)
+					if(ableIV.size()>0)
 					{
 						theRest.append("\n\rTech Skills:\n\r");
-						theRest.append(CMLib.lister().build4ColTable(mob,V));
+						theRest.append(CMLib.lister().build4ColTable(mob,ableIV));
 					}
 
-					V.clear();
+					ableIV.clear();
 					for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
 					{
 						final Behavior B=b.nextElement();
 						if(B!=null)
-							V.add(B.ID());
+							ableIV.add(B.ID());
 					}
-					if(V.size()>0)
+					if(ableIV.size()>0)
 					{
 						theRest.append("\n\r\n\rBehaviors:\n\r");
-						theRest.append(CMLib.lister().build4ColTable(mob,V));
+						theRest.append(CMLib.lister().build4ColTable(mob,ableIV));
 					}
 					Resources.submitResource("arc_help.therest",theRest);
 				}

@@ -73,7 +73,7 @@ public class AbilityPlayerNext extends StdWebMacro
 			return " @break@";
 		}
 
-		final Vector<Ability> abilities=new Vector<Ability>();
+		final List<Ability> abilities=new ArrayList<Ability>();
 		HashSet<String> foundIDs=new HashSet<String>();
 		for(final Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
 		{
@@ -81,14 +81,14 @@ public class AbilityPlayerNext extends StdWebMacro
 			if((A!=null)&&(!foundIDs.contains(A.ID())))
 			{
 				foundIDs.add(A.ID());
-				abilities.addElement(A);
+				abilities.add(A);
 			}
 		}
 		foundIDs.clear();
 		foundIDs=null;
 		for(int a=0;a<abilities.size();a++)
 		{
-			final Ability A=abilities.elementAt(a);
+			final Ability A=abilities.get(a);
 			boolean okToShow=true;
 			final int classType=A.classificationCode()&Ability.ALL_ACODES;
 			final String className=httpReq.getUrlParameter("CLASS");

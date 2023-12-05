@@ -52,13 +52,13 @@ public class AreaTbl extends StdWebMacro
 			return "<TR><TD colspan=\"" + AT_MAX_COL + "\" class=\"cmAreaTblEntry\"><I>Game is not running - unable to get area list!</I></TD></TR>";
 		}
 
-		final Vector<String> areasVec=new Vector<String>();
+		final List<String> areasVec=new ArrayList<String>();
 
 		for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 		{
 			final Area A=a.nextElement();
 			if((!CMLib.flags().isHidden(A))&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
-				areasVec.addElement(A.name());
+				areasVec.add(A.name());
 		}
 		final StringBuffer msg=new StringBuffer("\n\r");
 		int col=0;
@@ -86,7 +86,7 @@ public class AreaTbl extends StdWebMacro
 				msg.append(" width=\"" + percent + "%\"");
 
 			msg.append(L(" class=\"cmAreaTblEntry\">"));
-			msg.append(areasVec.elementAt(i));
+			msg.append(areasVec.get(i));
 			msg.append("</td>");
 			// finish the row
 			if((percent == 100) || (++col)> (AT_MAX_COL-1 ))

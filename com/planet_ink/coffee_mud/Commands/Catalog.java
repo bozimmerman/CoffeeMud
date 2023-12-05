@@ -549,7 +549,7 @@ public class Catalog extends StdCommand
 				else
 				if(ID.equalsIgnoreCase("everydamnthing"))
 				{
-					final java.util.List<Physical> V=new Vector<Physical>();
+					final java.util.List<Physical> V=new ArrayList<Physical>();
 					V.addAll(Arrays.asList(CMLib.catalog().getCatalogItems()));
 					V.addAll(Arrays.asList(CMLib.catalog().getCatalogMobs()));
 					del=V.toArray(new Physical[0]);

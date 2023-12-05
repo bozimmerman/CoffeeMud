@@ -83,7 +83,7 @@ public class Bid extends StdCommand
 		}
 
 		String whatName=CMParms.combine(commands,0);
-		final Vector<Environmental> V=new Vector<Environmental>();
+		final List<Environmental> bidItemsV=new ArrayList<Environmental>();
 		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 		if(whatName.toUpperCase().startsWith("ALL."))
 		{
@@ -105,17 +105,17 @@ public class Bid extends StdCommand
 			if(itemToDo==null)
 				break;
 			if(CMLib.flags().canBeSeenBy(itemToDo,mob))
-				V.add(itemToDo);
+				bidItemsV.add(itemToDo);
 			if(addendum>=CMLib.coffeeShops().getShopKeeper(shopkeeper).getShop().numberInStock(itemToDo))
 				break;
 			++addendum;
 		}
-		if(V.size()==0)
+		if(bidItemsV.size()==0)
 			mob.tell(mob,shopkeeper,null,L("<T-NAME> do(es)n't appear to have any '@x1' available for auction.  Try LIST.",whatName));
 		else
-		for(int v=0;v<V.size();v++)
+		for(int v=0;v<bidItemsV.size();v++)
 		{
-			final Environmental thisThang=V.get(v);
+			final Environmental thisThang=bidItemsV.get(v);
 			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,thisThang,
 					CMMsg.MSG_BID,L("<S-NAME> bid(s) @x1 on <O-NAME> with <T-NAMESELF>.",bidStr),
 					CMMsg.MSG_BID,L("<S-NAME> bid(s) '@x1' on <O-NAME> with <T-NAMESELF>.",bidStr),
@@ -123,7 +123,7 @@ public class Bid extends StdCommand
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			else
-			if(V.size()==1)
+			if(bidItemsV.size()==1)
 				CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 		}
 		return false;

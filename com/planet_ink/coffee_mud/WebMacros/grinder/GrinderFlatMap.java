@@ -106,7 +106,7 @@ public class GrinderFlatMap
 		// left, now is the time to siphon out the ones we need.
 		if((area instanceof GridZones)&&(xyxy!=null))
 		{
-			final Vector<Room> finalSet=new Vector<Room>();
+			final List<Room> finalSet=new ArrayList<Room>();
 			for(;r.hasMoreElements();)
 			{
 				R=r.nextElement();
@@ -130,7 +130,7 @@ public class GrinderFlatMap
 					finalSet.add(R);
 				}
 			}
-			r=finalSet.elements();
+			r=new IteratorEnumeration<Room>(finalSet.iterator());
 		}
 		if((area instanceof GridZones)&&(boundsXYXY==null))
 		{
@@ -208,8 +208,8 @@ public class GrinderFlatMap
 		if((areaMap==null)||(hashRooms==null)||(area instanceof GridZones))
 			return;
 
-		final List<List<GrinderRoom>> sets=new Vector<List<GrinderRoom>>();
-		final HashSet<String> roomsDone=new HashSet<String>();
+		final List<List<GrinderRoom>> sets=new ArrayList<List<GrinderRoom>>();
+		final Set<String> roomsDone=new HashSet<String>();
 		boolean didSomething=true;
 
 		final List<int[]> allDirections=new XArrayList<int[]>();
@@ -236,7 +236,7 @@ public class GrinderFlatMap
 		final boolean[] allWays=new boolean[] {false, true};
 
 		// first, cluster the rooms WITHOUT positioning them
-		final List<GrinderRoom> finalCluster=new Vector<GrinderRoom>();
+		final List<GrinderRoom> finalCluster=new ArrayList<GrinderRoom>();
 		while((roomsDone.size()<areaMap.size())&&(didSomething))
 		{
 			didSomething=false;
@@ -372,11 +372,11 @@ public class GrinderFlatMap
 		if((areaMap==null)||(hashRooms==null)||(area instanceof GridZones))
 			return;
 
-		final List<List<GrinderRoom>> sets=new Vector<List<GrinderRoom>>();
+		final List<List<GrinderRoom>> sets=new ArrayList<List<GrinderRoom>>();
 		final Set<String> roomsDone=new HashSet<String>();
 		boolean didSomething=true;
 		// first, cluster the rooms WITHOUT positioning them
-		final List<GrinderRoom> finalCluster=new Vector<GrinderRoom>();
+		final List<GrinderRoom> finalCluster=new ArrayList<GrinderRoom>();
 		while((roomsDone.size()<areaMap.size())&&(didSomething))
 		{
 			didSomething=false;
@@ -439,7 +439,7 @@ public class GrinderFlatMap
 	{
 		// figure out width height, and xy bounds
 		// store them in a vector parallel to each
-		final Vector<int[]> sizeInfo=new Vector<int[]>(sets.size());
+		final List<int[]> sizeInfo=new ArrayList<int[]>(sets.size());
 		GrinderRoom R=null;
 		for(int s=0;s<sets.size();s++)
 		{
@@ -595,24 +595,24 @@ public class GrinderFlatMap
 
 	public List<GrinderRoom> scoreRoomII(final Map<String,GrinderRoom> H, final GrinderRoom room, final Set<String> roomsDone)
 	{
-		final HashSet<String> coordsDone=new HashSet<String>();
+		final Set<String> coordsDone=new HashSet<String>();
 		coordsDone.add(0+"/"+0);
 		roomsDone.add(room.roomID);
 
-		final List<GrinderRoom> V=new Vector<GrinderRoom>();
-		V.add(room);
+		final List<GrinderRoom> scoredV=new Vector<GrinderRoom>();
+		scoredV.add(room);
 		int startHere=0;
 		room.xy=new int[2];
 		GrinderRoom R2=null;
 		GrinderRoom R3=null;
-		while(startHere!=V.size())
+		while(startHere!=scoredV.size())
 		{
 			int s=startHere;
-			final int size=V.size();
+			final int size=scoredV.size();
 			startHere=size;
 			for(;s<size;s++)
 			{
-				final GrinderRoom R=V.get(s);
+				final GrinderRoom R=scoredV.get(s);
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					if((R.doors[d]!=null)
@@ -628,10 +628,10 @@ public class GrinderFlatMap
 						if(coordsDone.contains(R2.xy[0]+"/"+R2.xy[1]))
 						{
 							boolean adjust=false;
-							for(int v=0;v<V.size();v++)
+							for(int v=0;v<scoredV.size();v++)
 							{
 								adjust=false;
-								R3=V.get(v);
+								R3=scoredV.get(v);
 								switch(d)
 								{
 								case Directions.NORTH:
@@ -675,12 +675,12 @@ public class GrinderFlatMap
 						}
 						roomsDone.add(R2.roomID);
 						coordsDone.add(R2.xy[0]+"/"+R2.xy[1]);
-						V.add(R2);
+						scoredV.add(R2);
 					}
 				}
 			}
 		}
-		return V;
+		return scoredV;
 	}
 
 	protected int[] getDirectionSet(final int start, final int end, final int dir)
@@ -706,7 +706,7 @@ public class GrinderFlatMap
 	}
 
 	public List<GrinderRoom> buildCluster(final Map<String,GrinderRoom> fullMapH, final GrinderRoom coreRoom,
-										  final HashSet<String> outerRoomsDone, final boolean finalPosition,
+										  final Set<String> outerRoomsDone, final boolean finalPosition,
 										  final boolean doTwoWay, final int[] directionsToDo)
 	{
 		final HashSet<String> coordsDone=new HashSet<String>();

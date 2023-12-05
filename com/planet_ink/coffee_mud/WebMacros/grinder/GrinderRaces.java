@@ -136,7 +136,7 @@ public class GrinderRaces
 	{
 		if(items==null)
 			items=new Vector<Item>();
-		final Vector<Item> classes=new Vector<Item>(); // return value
+		final List<Item> classes=new Vector<Item>(); // return value
 		if(httpReq.isUrlParameter(c+"ITEM1"))
 		{
 			for(int i=1;;i++)
@@ -152,7 +152,7 @@ public class GrinderRaces
 						CMLib.webMacroFilter().contributeItemsToWebCache(new XVector<Item>(I2));
 				}
 				if(I2!=null)
-					classes.addElement(I2);
+					classes.add(I2);
 				if(one)
 					break;
 			}
@@ -250,7 +250,7 @@ public class GrinderRaces
 
 	public static void setDynImmunities(final Modifiable M, final HTTPRequest httpReq)
 	{
-		final List<String> theclasses=new Vector<String>();
+		final List<String> theclasses=new ArrayList<String>();
 		if(httpReq.isUrlParameter("IABLE1"))
 		{
 			int num=1;
@@ -415,10 +415,10 @@ public class GrinderRaces
 			R.setStat("WEAPONXML",x.toString());
 		}
 		int breathe=CMath.s_int(httpReq.getUrlParameter("BREATHES"));
-		final List<Integer> l=new Vector<Integer>();
+		final List<Integer> breatheCodesV=new ArrayList<Integer>();
 		if(breathe>=0)
 		{
-			l.add(Integer.valueOf(breathe));
+			breatheCodesV.add(Integer.valueOf(breathe));
 			for(int i=1;;i++)
 			{
 				if(httpReq.isUrlParameter("BREATHES"+(Integer.toString(i))))
@@ -426,16 +426,16 @@ public class GrinderRaces
 					breathe=CMath.s_int(httpReq.getUrlParameter("BREATHES"+(Integer.toString(i))));
 					if(breathe<0)
 					{
-						l.clear();
+						breatheCodesV.clear();
 						break;
 					}
-					l.add(Integer.valueOf(breathe));
+					breatheCodesV.add(Integer.valueOf(breathe));
 				}
 				else
 					break;
 			}
 		}
-		R.setStat("BREATHES", CMParms.toListString(l));
+		R.setStat("BREATHES", CMParms.toListString(breatheCodesV));
 
 		setDynAbilities(R,httpReq);
 		setDynEffects(R,httpReq);

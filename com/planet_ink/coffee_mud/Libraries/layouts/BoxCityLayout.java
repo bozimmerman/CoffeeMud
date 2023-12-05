@@ -105,7 +105,7 @@ public class BoxCityLayout extends AbstractLayout
 	@Override
 	public List<LayoutNode> generate(final int num, int dir)
 	{
-		final Vector<LayoutNode> set = new Vector<LayoutNode>();
+		final List<LayoutNode> set = new Vector<LayoutNode>();
 		final int diameter = (int)Math.round(Math.sqrt(num));
 		final int plusX = (diff(diameter,diameter,num) > diff(diameter+1,diameter,num)) ? 1 : 0;
 		final LayoutSet lSet = new LayoutSet(set,num);
@@ -189,7 +189,7 @@ public class BoxCityLayout extends AbstractLayout
 		if(n!=null)
 		{
 			set.remove(n);
-			set.insertElementAt(n,0);
+			set.add(0,n);
 		}
 		else
 			Log.errOut("BoxCityLayout","Not able to find start room for direction: "+dir);

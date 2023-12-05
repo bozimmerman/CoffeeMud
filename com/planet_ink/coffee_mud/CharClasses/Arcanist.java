@@ -247,17 +247,17 @@ public class Arcanist extends Thief
 	@Override
 	public void endCharacter(final MOB mob)
 	{
-		final Vector<Ability> otherChoices=new Vector<Ability>();
+		final List<Ability> otherChoices=new ArrayList<Ability>();
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			final Ability A2=mob.fetchAbility(a);
 			if((A2!=null)
 			&&(!A2.isSavable())
 			&&((A2.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
-				otherChoices.addElement(A2);
+				otherChoices.add(A2);
 		}
 		for(int a=0;a<otherChoices.size();a++)
-			mob.delAbility(otherChoices.elementAt(a));
+			mob.delAbility(otherChoices.get(a));
 	}
 
 	private void addAbilityToSpellcraftList(final MOB mob, final Ability A)

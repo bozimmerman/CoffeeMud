@@ -83,7 +83,7 @@ public class Antidote extends StdAbility
 
 	public List<Ability> returnOffensiveAffects(final Physical fromMe)
 	{
-		final Vector<Ability> offenders=new Vector<Ability>();
+		final List<Ability> offenders=new Vector<Ability>();
 
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
@@ -93,7 +93,7 @@ public class Antidote extends StdAbility
 			&&((text().length()==0)
 				||(A.name().toUpperCase().indexOf(text().toUpperCase())>=0)
 				||(A.ID().toUpperCase().indexOf(text().toUpperCase())>=0)))
-				offenders.addElement(A);
+				offenders.add(A);
 		}
 		return offenders;
 	}

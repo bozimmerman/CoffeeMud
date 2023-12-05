@@ -113,7 +113,7 @@ public class AccountData extends StdWebMacro
 				else
 				{
 					String id="";
-					set=new Vector<String>();
+					set=new ArrayList<String>();
 					for(int i=0;httpReq.isUrlParameter("FLAG"+id);id=""+(++i))
 						set.add(httpReq.getUrlParameter("FLAG"+id));
 				}

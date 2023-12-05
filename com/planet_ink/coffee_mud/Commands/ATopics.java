@@ -52,7 +52,7 @@ public class ATopics extends StdCommand
 		{
 			topicBuffer=new StringBuffer();
 
-			final Vector<String> reverseList=new Vector<String>();
+			final List<String> reverseList=new ArrayList<String>();
 			for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
 			{
 				final String ptop = (String)e.nextElement();

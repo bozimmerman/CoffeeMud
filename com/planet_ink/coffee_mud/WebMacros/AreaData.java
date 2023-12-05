@@ -48,8 +48,8 @@ public class AreaData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BEHAVIORS"))
 		{
-			final Vector<String> theclasses=new Vector<String>();
-			final Vector<String> theparms=new Vector<String>();
+			final List<String> theclasses=new ArrayList<String>();
+			final List<String> theparms=new ArrayList<String>();
 			if(httpReq.isUrlParameter("BEHAV1"))
 			{
 				int num=1;
@@ -59,10 +59,10 @@ public class AreaData extends StdWebMacro
 				{
 					if(behav.length()>0)
 					{
-						theclasses.addElement(behav);
+						theclasses.add(behav);
 						String t=theparm;
 						t=CMStrings.replaceAll(t,"\"","&quot;");
-						theparms.addElement(t);
+						theparms.add(t);
 					}
 					num++;
 					behav=httpReq.getUrlParameter("BEHAV"+num);
@@ -75,18 +75,18 @@ public class AreaData extends StdWebMacro
 				final Behavior B=e.nextElement();
 				if((B!=null)&&(B.isSavable()))
 				{
-					theclasses.addElement(CMClass.classID(B));
+					theclasses.add(CMClass.classID(B));
 					String t=B.getParms();
 					t=CMStrings.replaceAll(t,"\"","&quot;");
-					theparms.addElement(t);
+					theparms.add(t);
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			final HashSet<String> alreadyHave=new HashSet<String>();
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=theclasses.elementAt(i);
-				final String theparm=theparms.elementAt(i);
+				final String theclass=theclasses.get(i);
+				final String theparm=theparms.get(i);
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditBehavior(this);\" NAME=BEHAV"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -102,12 +102,12 @@ public class AreaData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Behavior");
 
 			Object[] sortedB=null;
-			final Vector<String> sortMeB=new Vector<String>();
+			final List<String> sortMeB=new ArrayList<String>();
 			for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
 			{
 				final Behavior B=b.nextElement();
 				if(B.canImprove(E))
-					sortMeB.addElement(CMClass.classID(B));
+					sortMeB.add(CMClass.classID(B));
 			}
 			sortedB=(new TreeSet<String>(sortMeB)).toArray();
 			for(int r=0;r<sortedB.length;r++)
@@ -132,8 +132,8 @@ public class AreaData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("AFFECTS"))
 		{
-			final Vector<String> theclasses=new Vector<String>();
-			final Vector<String> theparms=new Vector<String>();
+			final List<String> theclasses=new ArrayList<String>();
+			final List<String> theparms=new ArrayList<String>();
 			if(httpReq.isUrlParameter("AFFECT1"))
 			{
 				int num=1;
@@ -143,10 +143,10 @@ public class AreaData extends StdWebMacro
 				{
 					if(behav.length()>0)
 					{
-						theclasses.addElement(behav);
+						theclasses.add(behav);
 						String t=theparm;
 						t=CMStrings.replaceAll(t,"\"","&quot;");
-						theparms.addElement(t);
+						theparms.add(t);
 					}
 					num++;
 					behav=httpReq.getUrlParameter("AFFECT"+num);
@@ -159,19 +159,19 @@ public class AreaData extends StdWebMacro
 				final Ability Able=P.fetchEffect(a);
 				if((Able!=null)&&(Able.isSavable()))
 				{
-					theclasses.addElement(CMClass.classID(Able));
+					theclasses.add(CMClass.classID(Able));
 					String t=Able.text();
 					t=CMStrings.replaceAll(t,"\"","&quot;");
-					theparms.addElement(t);
+					theparms.add(t);
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			final HashSet<String> alreadyHave=new HashSet<String>();
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=theclasses.elementAt(i);
+				final String theclass=theclasses.get(i);
 				alreadyHave.add(theclass.toLowerCase());
-				final String theparm=theparms.elementAt(i);
+				final String theparm=theparms.get(i);
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=AFFECT"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -443,9 +443,9 @@ public class AreaData extends StdWebMacro
 					Object[] sortedA=(Object[])Resources.getResource("MUDGRINDER-AREAS");
 					if(sortedA==null)
 					{
-						final Vector<String> sortMeA=new Vector<String>();
+						final List<String> sortMeA=new ArrayList<String>();
 						for(final Enumeration<Area> a=CMClass.areaTypes();a.hasMoreElements();)
-							sortMeA.addElement(CMClass.classID(a.nextElement()));
+							sortMeA.add(CMClass.classID(a.nextElement()));
 						sortedA=(new TreeSet<String>(sortMeA)).toArray();
 						Resources.submitResource("MUDGRINDER-AREAS",sortedA);
 					}
@@ -461,16 +461,16 @@ public class AreaData extends StdWebMacro
 
 				if(parms.containsKey("BLURBS"))
 				{
-					final Vector<String> theprices=new Vector<String>();
-					final Vector<String> themasks=new Vector<String>();
+					final List<String> theprices=new ArrayList<String>();
+					final List<String> themasks=new ArrayList<String>();
 					int num=1;
 					if(!httpReq.isUrlParameter("IPRIC"+num))
 					{
 						for(final Enumeration<String> f=A.areaBlurbFlags();f.hasMoreElements();)
 						{
 							final String flag=f.nextElement();
-							theprices.addElement(flag);
-							themasks.addElement(A.getBlurbFlag(flag));
+							theprices.add(flag);
+							themasks.add(A.getBlurbFlag(flag));
 						}
 					}
 					else
@@ -480,11 +480,11 @@ public class AreaData extends StdWebMacro
 						final String MASK=httpReq.getUrlParameter("BLURB"+num);
 						if((PRICE!=null)&&(PRICE.length()>0))
 						{
-							theprices.addElement(PRICE);
+							theprices.add(PRICE);
 							if(MASK!=null)
-								themasks.addElement(MASK);
+								themasks.add(MASK);
 							else
-								themasks.addElement("");
+								themasks.add("");
 						}
 						num++;
 					}
@@ -492,8 +492,8 @@ public class AreaData extends StdWebMacro
 					str.append("<TR><TD WIDTH=30%>Flag</TD><TD>Description</TD></TR>");
 					for(int i=0;i<theprices.size();i++)
 					{
-						final String PRICE=theprices.elementAt(i);
-						final String MASK=themasks.elementAt(i);
+						final String PRICE=theprices.get(i);
+						final String MASK=themasks.get(i);
 						str.append("<TR><TD>");
 						str.append("<INPUT TYPE=TEXT SIZE=15 NAME=BLURBFLAG"+(i+1)+" VALUE=\""+PRICE+"\">");
 						str.append("</TD><TD>");

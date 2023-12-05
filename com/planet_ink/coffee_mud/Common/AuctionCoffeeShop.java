@@ -230,15 +230,15 @@ public class AuctionCoffeeShop implements CoffeeShop
 	@Override
 	public Environmental getStock(final String name, final MOB mob)
 	{
-		final Vector<Environmental> auctionItems=new Vector<Environmental>();
+		final List<Environmental> auctionItems=new ArrayList<Environmental>();
 		for(final Enumeration<AuctionData> a=CMLib.coffeeShops().getAuctions(null,auctionShop);a.hasMoreElements();)
 		{
 			final Item I=a.nextElement().getAuctionedItem();
-			auctionItems.addElement(I);
+			auctionItems.add(I);
 		}
 		for(int a=0;a<auctionItems.size();a++)
 		{
-			final Item I=(Item)auctionItems.elementAt(a);
+			final Item I=(Item)auctionItems.get(a);
 			I.setExpirationDate(CMLib.english().getContextNumber(auctionItems,I));
 		}
 		Environmental item=CMLib.english().fetchEnvironmental(auctionItems,name,true);

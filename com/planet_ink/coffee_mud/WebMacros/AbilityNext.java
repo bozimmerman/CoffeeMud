@@ -110,10 +110,10 @@ public class AbilityNext extends StdWebMacro
 			a=CMClass.abilities();
 		else
 		if(httpReq.getRequestObjects().containsKey("ABILITIESSORTEDBYNAME"))
-			a=((Vector)httpReq.getRequestObjects().get("ABILITIESSORTEDBYNAME")).elements();
+			a=new IteratorEnumeration<Ability>(((List)httpReq.getRequestObjects().get("ABILITIESSORTEDBYNAME")).iterator());
 		else
 		{
-			final Vector<Ability> fullList=new Vector<Ability>();
+			final List<Ability> fullList=new ArrayList<Ability>();
 			for(final Enumeration<Ability> aa=CMClass.abilities();aa.hasMoreElements();)
 				fullList.add(aa.nextElement());
 			final Ability[] aaray=fullList.toArray(new Ability[0]);
@@ -128,7 +128,7 @@ public class AbilityNext extends StdWebMacro
 			fullList.clear();
 			fullList.addAll(Arrays.asList(aaray));
 			httpReq.getRequestObjects().put("ABILITIESSORTEDBYNAME",fullList);
-			a=fullList.elements();
+			a=new IteratorEnumeration<Ability>(fullList.iterator());
 		}
 		final AbilityMapper mapper = CMLib.ableMapper();
 		for(;a.hasMoreElements();)

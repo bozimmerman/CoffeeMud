@@ -195,7 +195,7 @@ public class GrinderHolidays
 				setText(properties,httpReq.getUrlParameter("AFFECT"+i),httpReq.getUrlParameter("ADATA"+i));
 		}
 
-		final Vector<String> priceFV=new Vector<String>();
+		final List<String> priceFV=new ArrayList<String>();
 		for(int i=1;httpReq.isUrlParameter("PRCFAC"+i);i++)
 		{
 			if(CMath.isPct(httpReq.getUrlParameter("PRCFAC"+i).trim()))

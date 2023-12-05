@@ -373,7 +373,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 
 	public List<String> completeLimbNameSet(final Environmental E)
 	{
-		final Vector<String> V=new Vector<String>();
+		final Vector<String> limbNamesV=new Vector<String>();
 		final CharStats charStats = this.getAffectedStats(E);
 		final int[] limbs=charStats.getMyRace().bodyMask();
 		for(int i=0;i<limbs.length;i++)
@@ -381,29 +381,29 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			if((limbs[i]>0)&&(validamputees[i]))
 			{
 				if(limbs[i]==1)
-					V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+					limbNamesV.addElement(Race.BODYPARTSTR[i].toLowerCase());
 				else
 				if(limbs[i]==2)
 				{
-						V.addElement("left "+Race.BODYPARTSTR[i].toLowerCase());
-						V.addElement("right "+Race.BODYPARTSTR[i].toLowerCase());
+						limbNamesV.addElement("left "+Race.BODYPARTSTR[i].toLowerCase());
+						limbNamesV.addElement("right "+Race.BODYPARTSTR[i].toLowerCase());
 				}
 				else
 				for(int ii=0;ii<limbs[i];ii++)
-					V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+					limbNamesV.addElement(Race.BODYPARTSTR[i].toLowerCase());
 			}
 		}
-		return V;
+		return limbNamesV;
 	}
 
 	@Override
 	public List<String> unaffectedLimbSet()
 	{
 		affectedLimbNameSet();
-		final List<String> V=new Vector<String>();
+		final List<String> unaffLimbsV=new Vector<String>();
 		final CharStats charStats = this.getAffectedStats(affected);
 		if(charStats == null)
-			return V;
+			return unaffLimbsV;
 		final int[] limbs=new int[Race.BODY_PARTS];
 		final List<String> affectedList=affectedLimbNameSet();
 		for(int i=0;i<limbs.length;i++)
@@ -415,15 +415,15 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 				if(limbs[i]-amputations[i]==1)
 				{
 					if(!affectedList.contains(Race.BODYPARTSTR[i].toLowerCase()))
-						V.add(Race.BODYPARTSTR[i].toLowerCase());
+						unaffLimbsV.add(Race.BODYPARTSTR[i].toLowerCase());
 				}
 				else
 				if(limbs[i]-amputations[i]==2)
 				{
 					if(!affectedList.contains("left "+Race.BODYPARTSTR[i].toLowerCase()))
-						V.add("left "+Race.BODYPARTSTR[i].toLowerCase());
+						unaffLimbsV.add("left "+Race.BODYPARTSTR[i].toLowerCase());
 					if(!affectedList.contains("right "+Race.BODYPARTSTR[i].toLowerCase()))
-						V.add("right "+Race.BODYPARTSTR[i].toLowerCase());
+						unaffLimbsV.add("right "+Race.BODYPARTSTR[i].toLowerCase());
 				}
 				else
 				{
@@ -434,11 +434,11 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 							num++;
 					}
 					for(int ii=num;ii<limbs[i];ii++)
-						V.add(Race.BODYPARTSTR[i].toLowerCase());
+						unaffLimbsV.add(Race.BODYPARTSTR[i].toLowerCase());
 				}
 			}
 		}
-		return V;
+		return unaffLimbsV;
 	}
 
 // ****************************************************************************
@@ -598,7 +598,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 
 		if(!isFakeLimb)
 		{
-			final List<String> theRest=new Vector<String>();
+			final List<String> theRest=new ArrayList<String>();
 			final int x=getRacialCode(gone);
 			if(x>=0)
 			{
@@ -728,10 +728,11 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			LegalBehavior B=null;
 			if(mob.location()!=null)
 				B=CMLib.law().getLegalBehavior(mob.location());
-			List<LegalWarrant> warrants=new Vector<LegalWarrant>();
+			List<LegalWarrant> warrants=new ArrayList<LegalWarrant>();
 			if(B!=null)
 				warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),targetM);
-			if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)))
+			if((warrants.size()==0)
+			&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)))
 			{
 				final Session sess = targetM.session();
 				if((sess != null)

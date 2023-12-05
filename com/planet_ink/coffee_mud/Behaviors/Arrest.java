@@ -304,35 +304,35 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	@Override
 	public List<MOB> getCriminals(final Area myArea, final String searchStr)
 	{
-		final Vector<MOB> V=new Vector<MOB>();
+		final Vector<MOB> criminalsV=new Vector<MOB>();
 		if(!theLawIsEnabled())
-			return V;
+			return criminalsV;
 		final Law laws=getLaws(myArea,false);
 		final boolean debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST);
 		for(final LegalWarrant W : laws.warrants())
 		{
 			if((isStillACrime(W,debugging))
 			&&((searchStr==null)||(CMLib.english().containsString(W.criminal().name(),searchStr)))
-			&&(!V.contains(W.criminal())))
-				V.addElement(W.criminal());
+			&&(!criminalsV.contains(W.criminal())))
+				criminalsV.addElement(W.criminal());
 		}
-		return V;
+		return criminalsV;
 	}
 
 	@Override
 	public List<LegalWarrant> getWarrantsOf(final Area myArea, final MOB accused)
 	{
-		final Vector<LegalWarrant> V=new Vector<LegalWarrant>();
+		final Vector<LegalWarrant> warrantsV=new Vector<LegalWarrant>();
 		if(!theLawIsEnabled())
-			return V;
+			return warrantsV;
 		final Law laws=getLaws(myArea,false);
 		final boolean debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST);
 		for(final LegalWarrant W : laws.warrants())
 		{
 			if((isStillACrime(W,debugging))&&((accused==null)||(W.criminal()==accused)))
-				V.addElement(W);
+				warrantsV.addElement(W);
 		}
-		return V;
+		return warrantsV;
 	}
 
 	protected boolean isCrimeSuppressed(String crime)
@@ -943,9 +943,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public List<LegalWarrant> getRelevantWarrants(final List<LegalWarrant> warrants, final LegalWarrant W, final MOB criminal)
 	{
-		final List<LegalWarrant> V=new Vector<LegalWarrant>();
+		final List<LegalWarrant> warrantsV=new Vector<LegalWarrant>();
 		if(W!=null)
-			V.add(W);
+			warrantsV.add(W);
 		for(final LegalWarrant W2 : warrants)
 		{
 			if((W2.criminal()==criminal)
@@ -954,9 +954,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				||(W2.crime()==null)
 				||(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE))
 				||(W2.crime().equalsIgnoreCase(W.crime()))))
-					V.add(W2);
+					warrantsV.add(W2);
 		}
-		return V;
+		return warrantsV;
 	}
 
 	public double getFine(final Law laws, final LegalWarrant W, final MOB criminal)
@@ -1404,8 +1404,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public void fileAllWarrants(final Law laws, final LegalWarrant W1, final MOB mob)
 	{
-
-		final Vector<LegalWarrant> V=new Vector<LegalWarrant>();
+		final List<LegalWarrant> V=new ArrayList<LegalWarrant>();
 		{
 			LegalWarrant W=null;
 			if((W1!=null)&&(CMath.bset(W1.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE)))
@@ -1413,7 +1412,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
 				{
 					if((W.criminal()==mob)&&(W1.crime().equalsIgnoreCase(W.crime())))
-						V.addElement(W);
+						V.add(W);
 				}
 			}
 			else
@@ -1421,7 +1420,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
 				{
 					if(W.criminal()==mob)
-						V.addElement(W);
+						V.add(W);
 				}
 			}
 		}

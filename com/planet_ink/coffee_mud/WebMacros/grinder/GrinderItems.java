@@ -407,7 +407,7 @@ public class GrinderItems
 				case MAPAREAS: // map areas
 					if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
 					{
-						final Vector<String> V=new Vector<String>();
+						final List<String> V=new ArrayList<String>();
 						if(httpReq.isUrlParameter("MAPAREAS"))
 						{
 							old=httpReq.getUrlParameter("MAPAREAS").trim();

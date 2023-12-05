@@ -226,7 +226,7 @@ public class GrinderMobs
 
 	public static String clans(final MOB E, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
-		final List<String> clans=new Vector<String>();
+		final List<String> clans=new ArrayList<String>();
 		for(final Pair<Clan,Integer> p : E.clans())
 			clans.add(p.first.clanID());
 		for(final String clanID : clans)
@@ -1063,13 +1063,13 @@ public class GrinderMobs
 				if((M instanceof Economics)
 				&&(httpReq.isUrlParameter("IPRIC1")))
 				{
-					final Vector<String> prics=new Vector<String>();
+					final List<String> prics=new ArrayList<String>();
 					String DOUBLE=httpReq.getUrlParameter("IPRIC"+num);
 					String MASK=httpReq.getUrlParameter("IPRICM"+num);
 					while((DOUBLE!=null)&&(MASK!=null))
 					{
 						if(CMath.isNumber(DOUBLE))
-							prics.addElement((DOUBLE+" "+MASK).trim());
+							prics.add((DOUBLE+" "+MASK).trim());
 						num++;
 						DOUBLE=httpReq.getUrlParameter("IPRIC"+num);
 						MASK=httpReq.getUrlParameter("IPRICM"+num);

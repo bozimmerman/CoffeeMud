@@ -56,7 +56,7 @@ public class ApartmentLayout extends AbstractLayout
 	@Override
 	public java.util.List<LayoutNode> generate(final int num, final int dir)
 	{
-		final Vector<LayoutNode> set = new Vector<LayoutNode>();
+		final java.util.List<LayoutNode> set = new Vector<LayoutNode>();
 		int hallwayLength=num/3;
 		int numHallways=1;
 		while(hallwayLength > 7)

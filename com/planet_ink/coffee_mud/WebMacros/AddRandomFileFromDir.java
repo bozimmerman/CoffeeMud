@@ -50,7 +50,7 @@ public class AddRandomFileFromDir extends StdWebMacro
 		if((parms==null)||(parms.size()==0))
 			return "";
 		final StringBuffer buf=new StringBuffer("");
-		final Vector<String> fileList=new Vector<String>();
+		final List<String> fileList=new ArrayList<String>();
 		boolean LINKONLY=false;
 		for(final String val : parms.values())
 		{
@@ -68,7 +68,7 @@ public class AddRandomFileFromDir extends StdWebMacro
 			{
 				final String[] list=directory.list();
 				for (final String element : list)
-					fileList.addElement(filePath+element);
+					fileList.add(filePath+element);
 			}
 			else
 				Log.sysOut("AddRFDir","Directory error: "+filePath);
@@ -79,13 +79,13 @@ public class AddRandomFileFromDir extends StdWebMacro
 		try
 		{
 			if(LINKONLY)
-				buf.append(fileList.elementAt(CMLib.dice().roll(1,fileList.size(),-1)));
+				buf.append(fileList.get(CMLib.dice().roll(1,fileList.size(),-1)));
 			else
-				buf.append(new String(getHTTPFileData(httpReq,fileList.elementAt(CMLib.dice().roll(1,fileList.size(),-1)))));
+				buf.append(new String(getHTTPFileData(httpReq,fileList.get(CMLib.dice().roll(1,fileList.size(),-1)))));
 		}
 		catch(final HTTPException e)
 		{
-			Log.warnOut("Failed "+name()+" "+fileList.elementAt(CMLib.dice().roll(1,fileList.size(),-1)));
+			Log.warnOut("Failed "+name()+" "+fileList.get(CMLib.dice().roll(1,fileList.size(),-1)));
 		}
 		return buf.toString();
 	}

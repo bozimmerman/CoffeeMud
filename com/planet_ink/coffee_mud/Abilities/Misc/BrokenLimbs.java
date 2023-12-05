@@ -434,9 +434,9 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 
 	protected List<String> completeBrokenLimbNameSet(final Environmental E)
 	{
-		final Vector<String> V=new Vector<String>();
+		final List<String> brokenLimbsV=new Vector<String>();
 		if(!(E instanceof MOB))
-			return V;
+			return brokenLimbsV;
 		final MOB M=(MOB)E;
 		final int[] limbs=M.charStats().getMyRace().bodyMask();
 		for(int i=0;i<limbs.length;i++)
@@ -444,19 +444,19 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 			if((limbs[i]>0)&&(validBrokens[i]))
 			{
 				if(limbs[i]==1)
-					V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+					brokenLimbsV.add(Race.BODYPARTSTR[i].toLowerCase());
 				else
 				if(limbs[i]==2)
 				{
-					V.addElement("left "+Race.BODYPARTSTR[i].toLowerCase());
-					V.addElement("right "+Race.BODYPARTSTR[i].toLowerCase());
+					brokenLimbsV.add("left "+Race.BODYPARTSTR[i].toLowerCase());
+					brokenLimbsV.add("right "+Race.BODYPARTSTR[i].toLowerCase());
 				}
 				else
 				for(int ii=0;ii<limbs[i];ii++)
-					V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+					brokenLimbsV.add(Race.BODYPARTSTR[i].toLowerCase());
 			}
 		}
-		return V;
+		return brokenLimbsV;
 	}
 
 	protected void progressLimbHealing(final CMObject obj, final int thisMuch)

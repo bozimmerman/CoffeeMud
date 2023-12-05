@@ -66,7 +66,7 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final Vector<Room> V=new Vector<Room>();
+		final List<Room> radiantRoomsV=new ArrayList<Room>();
 		TrackingLibrary.TrackingFlags flags;
 		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
@@ -74,22 +74,22 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR)
 				.plus(TrackingLibrary.TrackingFlag.NOWATER);
-		CMLib.tracking().getRadiantRooms(mob.location(),V,flags,null,adjustedLevel(mob,asLevel)+(2*super.getXMAXRANGELevel(mob)),null);
-		for(int v=V.size()-1;v>=0;v--)
+		CMLib.tracking().getRadiantRooms(mob.location(),radiantRoomsV,flags,null,adjustedLevel(mob,asLevel)+(2*super.getXMAXRANGELevel(mob)),null);
+		for(int v=radiantRoomsV.size()-1;v>=0;v--)
 		{
-			final Room R=V.elementAt(v);
+			final Room R=radiantRoomsV.get(v);
 			if(((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
 				&&((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
 			||(R==mob.location()))
-				V.removeElementAt(v);
+				radiantRoomsV.remove(v);
 		}
-		if(V.size()>0)
+		if(radiantRoomsV.size()>0)
 		{
 			mob.location().show(mob,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_NOISE,L("The faint sound of fungus popping into existence can be heard."));
 			int done=0;
-			for(int v=0;v<V.size();v++)
+			for(int v=0;v<radiantRoomsV.size();v++)
 			{
-				final Room R=V.elementAt(v);
+				final Room R=radiantRoomsV.get(v);
 				if(R==mob.location())
 					continue;
 				buildMyThing(mob,R);

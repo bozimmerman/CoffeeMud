@@ -74,7 +74,7 @@ public class AbilityData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("INTERPRETS"))
 		{
-			final Vector<String> theclasses=new Vector<String>();
+			final List<String> theclasses=new ArrayList<String>();
 			if(httpReq.isUrlParameter("INTERPRET1"))
 			{
 				int num=1;
@@ -82,7 +82,7 @@ public class AbilityData extends StdWebMacro
 				while(ID!=null)
 				{
 					if(ID.length()>0)
-						theclasses.addElement(ID);
+						theclasses.add(ID);
 					num++;
 					ID=httpReq.getUrlParameter("INTERPRET"+num);
 				}
@@ -91,12 +91,12 @@ public class AbilityData extends StdWebMacro
 			for(final String ID : E.languagesSupported())
 			{
 				if(ID!=null)
-					theclasses.addElement(ID);
+					theclasses.add(ID);
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=theclasses.elementAt(i);
+				final String theclass=theclasses.get(i);
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditInterpret(this);\" NAME=INTERPRET"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -110,7 +110,7 @@ public class AbilityData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Language");
 
 			Object[] sortedB=null;
-			final Vector<String> sortMeB=new Vector<String>();
+			final List<String> sortMeB=new ArrayList<String>();
 			for(final Enumeration<Ability> b=CMClass.abilities(new Filterer<Ability>() {
 				@Override
 				public boolean passesFilter(Ability obj)
@@ -125,7 +125,7 @@ public class AbilityData extends StdWebMacro
 			{
 				final Ability A=b.nextElement();
 				if(!theclasses.contains(A.ID()))
-					sortMeB.addElement(A.ID());
+					sortMeB.add(A.ID());
 			}
 			sortedB=(new TreeSet<String>(sortMeB)).toArray();
 			for(int r=0;r<sortedB.length;r++)

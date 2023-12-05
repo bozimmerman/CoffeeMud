@@ -88,7 +88,7 @@ public class Buy extends StdCommand
 		}
 
 		String whatName=CMParms.combine(commands,0);
-		final Vector<Environmental> V=new Vector<Environmental>();
+		final List<Environmental> buyItemsV=new ArrayList<Environmental>();
 		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 		if(whatName.toUpperCase().startsWith("ALL."))
 		{
@@ -110,7 +110,7 @@ public class Buy extends StdCommand
 			if(itemToDo==null)
 				break;
 			if(CMLib.flags().canBeSeenBy(itemToDo,mob))
-				V.add(itemToDo);
+				buyItemsV.add(itemToDo);
 			if(addendum>=CMLib.coffeeShops().getShopKeeper(shopkeeper).getShop().numberInStock(itemToDo))
 				break;
 			++addendum;
@@ -124,17 +124,17 @@ public class Buy extends StdCommand
 				forName=" for "+mobFor.Name();
 		}
 
-		if(V.size()==0)
+		if(buyItemsV.size()==0)
 			mob.tell(mob,shopkeeper,null,L("<T-NAME> do(es)n't appear to have any '@x1' for sale.  Try LIST.",whatName));
 		else
-		for(int v=0;v<V.size();v++)
+		for(int v=0;v<buyItemsV.size();v++)
 		{
-			final Environmental thisThang=V.get(v);
+			final Environmental thisThang=buyItemsV.get(v);
 			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,L("<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>@x1.",forName));
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 			else
-			if(V.size()==0)
+			if(buyItemsV.size()==0)
 				CMLib.commands().postCommandRejection(mob,shopkeeper, thisThang,origCmds);
 		}
 		return false;

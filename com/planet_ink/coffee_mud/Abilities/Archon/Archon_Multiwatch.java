@@ -235,26 +235,25 @@ public class Archon_Multiwatch extends ArchonSkill
 		{
 			DATA.clear();
 			IPS.clear();
-			final Hashtable<String,List<MOB>> ipes=new Hashtable<String,List<MOB>>();
+			final HashMap<String,List<MOB>> ipes=new HashMap<String,List<MOB>>();
 			for(final Session S : CMLib.sessions().localOnlineIterable())
 			{
 				if((S.getAddress().length()>0)
 				&&(S.mob()!=null))
 				{
-					List<MOB> V=ipes.get(S.getAddress());
-					if(V==null)
+					List<MOB> ipList=ipes.get(S.getAddress());
+					if(ipList==null)
 					{
-						V=new Vector<MOB>();
-						ipes.put(S.getAddress(),V);
+						ipList=new Vector<MOB>();
+						ipes.put(S.getAddress(),ipList);
 					}
-					if(!V.contains(S.mob()))
-						V.add(S.mob());
+					if(!ipList.contains(S.mob()))
+						ipList.add(S.mob());
 				}
 			}
 			final StringBuffer rpt=new StringBuffer("");
-			for(final Enumeration<String> e=ipes.keys();e.hasMoreElements();)
+			for(final String addr : ipes.keySet())
 			{
-				final String addr=e.nextElement();
 				final List<MOB> names=ipes.get(addr);
 				if(names.size()>1)
 				{

@@ -475,7 +475,7 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 	{
 		final StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,CMFile.FLAG_LOGERRORS).text();
 		final StringBuffer inst=new StringBuffer("");
-		List<String> V=new Vector<String>();
+		List<String> V=new ArrayList<String>();
 		if(buf!=null)
 			V=Resources.getFileLineVector(buf);
 		for(int v=0;v<V.size();v++)

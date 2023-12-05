@@ -182,11 +182,10 @@ public class GrinderMap extends GrinderFlatMap
 		return null;
 	}
 
-	protected boolean isEmptyCluster(final Hashtable<String,GrinderRoom> processed, final int x, final int y, final int z)
+	protected boolean isEmptyCluster(final Map<String,GrinderRoom> processed, final int x, final int y, final int z)
 	{
-		for (final Enumeration<GrinderRoom> e = processed.elements(); e.hasMoreElements(); )
+		for (final GrinderRoom room : processed.values())
 		{
-			final GrinderRoom room = e.nextElement();
 			if ( ( ( (room.xy[0] > x - CLUSTERSIZE) && (room.xy[0] < x + CLUSTERSIZE))
 				  && ( (room.xy[1] > y - CLUSTERSIZE) && (room.xy[1] < y + CLUSTERSIZE)))
 				|| ( (room.xy[0] == x) && (room.xy[1] == y)) && (room.z == z))
@@ -195,11 +194,11 @@ public class GrinderMap extends GrinderFlatMap
 		return true;
 	}
 
-	protected void findEmptyCluster(final Hashtable<String,GrinderRoom> processed, final Vector<Integer> XYZ)
+	protected void findEmptyCluster(final Map<String,GrinderRoom> processed, final List<Integer> XYZ)
 	{
-		final int x = XYZ.elementAt(0).intValue();
-		final int y = XYZ.elementAt(1).intValue();
-		final int z = XYZ.elementAt(2).intValue();
+		final int x = XYZ.get(0).intValue();
+		final int y = XYZ.get(1).intValue();
+		final int z = XYZ.get(2).intValue();
 		int spacing = CLUSTERSIZE;
 		while (true)
 		{
@@ -241,9 +240,9 @@ public class GrinderMap extends GrinderFlatMap
 				// I'm letting EmptyCluster always search the current Z level
 				if (isEmptyCluster(processed, x + (spacing * xadjust), y + (spacing * yadjust), z))
 				{
-					XYZ.setElementAt(Integer.valueOf(x + (spacing * xadjust)), 0);
-					XYZ.setElementAt(Integer.valueOf(y + (spacing * yadjust)), 1);
-					XYZ.setElementAt(Integer.valueOf(z), 2);
+					XYZ.set(0,Integer.valueOf(x + (spacing * xadjust)));
+					XYZ.set(1,Integer.valueOf(y + (spacing * yadjust)));
+					XYZ.set(2,Integer.valueOf(z));
 					return;
 				}
 			}
@@ -634,14 +633,14 @@ public class GrinderMap extends GrinderFlatMap
 				}
 			}
 			// nope; nobody can.  It's up to this!
-			final Vector<Integer> XYZ = new Vector<Integer>();
-			XYZ.addElement(Integer.valueOf(0));
-			XYZ.addElement(Integer.valueOf(0));
-			XYZ.addElement(Integer.valueOf(0));
+			final List<Integer> XYZ = new ArrayList<Integer>();
+			XYZ.add(Integer.valueOf(0));
+			XYZ.add(Integer.valueOf(0));
+			XYZ.add(Integer.valueOf(0));
 			findEmptyCluster(processed, XYZ);
-			room.xy[0] = XYZ.elementAt(0).intValue();
-			room.xy[1] = XYZ.elementAt(1).intValue();
-			room.z = XYZ.elementAt(2).intValue();
+			room.xy[0] = XYZ.get(0).intValue();
+			room.xy[1] = XYZ.get(1).intValue();
+			room.z = XYZ.get(2).intValue();
 		}
 		else
 		{
