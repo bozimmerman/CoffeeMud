@@ -790,6 +790,7 @@ public class Modify extends StdCommand
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around wildly."));
 		Resources.removeResource("HELP_"+myArea.Name().toUpperCase());
 		final Set<Area> alsoUpdateAreas=new HashSet<Area>();
+		final Area copyA = (Area)myArea.copyOf();
 		if(commands.size()==2)
 			CMLib.genEd().modifyArea(mob,myArea,alsoUpdateAreas, -1);
 		else
@@ -1010,7 +1011,8 @@ public class Modify extends StdCommand
 			myArea.setName(oldName);
 		myArea.recoverPhyStats();
 		mob.location().recoverRoomStats();
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("There is something different about this place...\n\r"));
+		if(!copyA.sameAs(myArea))
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("There is something different about this place...\n\r"));
 		if(myArea.name().equals(oldName))
 			CMLib.database().DBUpdateArea(myArea.Name(),myArea);
 		else
@@ -1020,10 +1022,13 @@ public class Modify extends StdCommand
 		}
 		for(final Area A : alsoUpdateAreas)
 		{
-			if((A!=myArea)&&(!A.Name().equals(myArea.Name())))
+			if((A!=myArea)
+			&&(!A.Name().equals(myArea.Name())))
 				CMLib.database().DBUpdateArea(A.Name(),A);
 		}
-		Log.sysOut("Rooms",mob.Name()+" modified area "+myArea.Name()+".");
+		if(!copyA.sameAs(myArea))
+			Log.sysOut("Rooms",mob.Name()+" modified area "+myArea.Name()+".");
+		copyA.destroy();
 	}
 
 	public void cron(final MOB mob, final List<String> commands) throws IOException
