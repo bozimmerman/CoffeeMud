@@ -8833,30 +8833,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 	}
 
-	private void finishSaveAchievementsSection(final Agent agent, final Set<String> added, final String EOL, final StringBuffer newFileData)
-	{
-		for(final Enumeration<Achievement> a=achievements(agent);a.hasMoreElements();)
-		{
-			final Achievement A=a.nextElement();
-			if(!added.contains(A.getTattoo().toUpperCase().trim()))
-			{
-				final Map<String,String> parmTree = new TreeMap<String,String>();
-				fillAchievementParmTree(parmTree,A);
-				newFileData.append(buildRow(A.getEvent(),parmTree)).append(EOL);
-			}
-		}
-		added.clear(); // reset for the next section
-	}
-
-	@SuppressWarnings("unchecked")
 	@Override
 	public void resaveAchievements(final String modifyTattoo)
 	{
 		// find the right file
 		final String rawFilename = getAchievementFilename();
 		String loadAchievementFilename = rawFilename;
-		final Set<String> added = new HashSet<String>();
 		int fnx=0;
+		// step 1: map all achievement tattoo ids to their home filename
 		final TreeMap<String,Set<String>> foundKeysMap = new TreeMap<String,Set<String>>();
 		for(String fn=rawFilename;;fn=rawFilename+("."+(++fnx)))
 		{
@@ -8880,16 +8864,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					foundKeysMap.get(fn).add(tatt);
 			}
 		}
-		for(final String keyfn : foundKeysMap.keySet())
-		{
-			if(!keyfn.equalsIgnoreCase(loadAchievementFilename))
-				added.addAll(foundKeysMap.get(keyfn));
-		}
-		// right file found, but will this still work?
+		// load the found/default file, parse into lines
 		final StringBuffer buf = Resources.getRawFileResource(loadAchievementFilename,true);
 		Resources.removeResource(loadAchievementFilename);
-		final List<String> V=Resources.getFileLineVector(buf);
+		final List<String> achFileLinesV=Resources.getFileLineVector(buf);
 		final StringBuffer newFileData = new StringBuffer("");
+
+		// for each agent type, sort *ALL* existing achievements into agents array, and then mapped by tattoo
+		@SuppressWarnings("unchecked")
 		final Map<String,Achievement>[] maps=new Map[Agent.values().length];
 		for(int i=0;i<Agent.values().length;i++)
 			maps[i]=new TreeMap<String,Achievement>();
@@ -8902,55 +8884,75 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					maps[agent.ordinal()].put(A.getTattoo().toUpperCase().trim(), A);
 			}
 		}
+		Achievement modA=(modifyTattoo != null) ? getAchievement(modifyTattoo) : null;
+		// now, rebuild the achievement file loaded above.
 		final String EOL= Resources.getEOLineMarker(buf);
 		Agent currentAgent = Agent.PLAYER;
-		for(final String row : V)
+		for(final String row : achFileLinesV)
 		{
-			if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0))
+			final String rTrim = row.trim().toUpperCase();
+			final int eqDex = rTrim.indexOf('=');
+
+			// pass along comment and blank lines
+			if(rTrim.startsWith("#")
+			||rTrim.startsWith(";")
+			||(rTrim.length()==0))
 				newFileData.append(row).append(EOL);
 			else
+			// if you find a new section, set currentSection correctly
+			if(rTrim.startsWith("["))
 			{
-				final int x=row.indexOf('=');
-				if(x<=0)
+				final Agent oldAgent = currentAgent;
+				for(final Agent ag : Agent.values())
 				{
-					if(row.trim().startsWith("["))
+					if(rTrim.equals("["+ag.name()+"]"))
 					{
-						final Agent oldAgent = currentAgent;
-						for(final Agent ag : Agent.values())
-						{
-							if(row.trim().toUpperCase().equals("["+ag.name()+"]"))
-							{
-								currentAgent = ag;
-								break;
-							}
-						}
-						if(oldAgent != currentAgent)
-						{
-							finishSaveAchievementsSection(oldAgent, added, EOL, newFileData);
-						}
+						currentAgent = ag;
+						break;
 					}
-					newFileData.append(row).append(EOL);
 				}
-				else
+				newFileData.append(row).append(EOL);
+				if((oldAgent != currentAgent)
+				&&(modA != null)
+				&&(modA.getAgent() == oldAgent))
 				{
-					final String tatt = row.substring(0,x).toUpperCase().trim();
-					if(maps[currentAgent.ordinal()].containsKey(tatt))
-					{
-						final Achievement A=maps[currentAgent.ordinal()].get(tatt);
-						if((modifyTattoo != null)&&(modifyTattoo.equalsIgnoreCase(tatt)))
-						{
-							final Map<String,String> parmTree = new TreeMap<String,String>();
-							fillAchievementParmTree(parmTree,A);
-							newFileData.append(buildRow(A.getEvent(),parmTree)).append(EOL);
-						}
-						else
-							newFileData.append(row).append(EOL);
-						added.add(tatt);
-					}
+					final Map<String,String> parmTree = new TreeMap<String,String>();
+					fillAchievementParmTree(parmTree,modA);
+					newFileData.append(buildRow(modA.getEvent(),parmTree)).append(EOL);
+					modA = null;
 				}
 			}
+			else
+			if(eqDex > 0)
+			{
+				final String tatt = rTrim.substring(0,eqDex).trim();
+				if(maps[currentAgent.ordinal()].containsKey(tatt))
+				{
+					final Achievement A=maps[currentAgent.ordinal()].get(tatt);
+					// first, try to handle modifications
+					if((modifyTattoo != null)
+					&&(modifyTattoo.equalsIgnoreCase(tatt)))
+					{
+						modA = null;
+						final Map<String,String> parmTree = new TreeMap<String,String>();
+						fillAchievementParmTree(parmTree,A);
+						newFileData.append(buildRow(A.getEvent(),parmTree)).append(EOL);
+					}
+					else
+						newFileData.append(row).append(EOL);
+				}
+			}
+			else
+				newFileData.append(row).append(EOL);
 		}
-		finishSaveAchievementsSection(currentAgent, added, EOL, newFileData);
+		if(modA != null)
+		{
+			if(modA.getAgent() != currentAgent) // if it wasn't hit, it didn't exist
+				newFileData.append("["+modA.getAgent()+"]").append(EOL);
+			final Map<String,String> parmTree = new TreeMap<String,String>();
+			fillAchievementParmTree(parmTree,modA);
+			newFileData.append(buildRow(modA.getEvent(),parmTree)).append(EOL);
+		}
 		Resources.updateFileResource(loadAchievementFilename, newFileData);
 		Resources.removeResource(loadAchievementFilename);
 	}
