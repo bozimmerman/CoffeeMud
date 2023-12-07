@@ -160,6 +160,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	public void renamedArea(final Area theA)
 	{
 		areasList.reSort(theA);
+		final Map<String,Area> finder=getAreaFinder();
+		finder.clear();
 	}
 
 	// areas
