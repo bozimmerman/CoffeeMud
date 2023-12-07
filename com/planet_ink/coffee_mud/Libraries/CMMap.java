@@ -1212,16 +1212,6 @@ public class CMMap extends StdLibrary implements WorldMap
 		return true;
 	}
 
-	@Override
-	public boolean explored(final Room R)
-	{
-		if((R==null)
-		||(CMath.bset(R.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNEXPLORABLE))
-		||(R.getArea()==null))
-			return false;
-		return false;
-	}
-
 	public class AreasRoomsEnumerator implements Enumeration<Room>
 	{
 		private final Enumeration<Area>		curAreaEnumeration;
@@ -1622,11 +1612,12 @@ public class CMMap extends StdLibrary implements WorldMap
 				if((R!=null)&&(R!=room)&&(!R.amDestroyed())&&(R.roomID().length()>0))
 					return R;
 			}
-			if(room.getGridParent()!=null)
+			final Room parentR = room.getGridParent();
+			if(parentR!=null)
 			{
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				{
-					R=getRoom(room.getGridParent().getRoomInDir(d));
+					R=getRoom(parentR.getRoomInDir(d));
 					if((R!=null)&&(R!=room)&&(!R.amDestroyed())&&(R.roomID().length()>0))
 						return R;
 				}

@@ -105,29 +105,176 @@ public interface WorldMap extends CMLibrary
 	public String createNewExit(Room from, Room room, int direction);
 	public Area areaLocation(CMObject E);
 	public ThreadGroup getOwnedThreadGroup(CMObject E);
-	public boolean explored(Room R);
 	public CMFile.CMVFSDir getMapRoot(final CMFile.CMVFSDir root);
 
 	/* ***********************************************************************/
 	/* *						WORLD OBJECT INDEXES						 */
 	/* ***********************************************************************/
+
+	/**
+	 * When a map object is permanently added to the map, such as during map
+	 * load, this method is called to give the world map manager a chance
+	 * to keep track of it.
+	 *
+	 * @see WorldMap#registerWorldObjectDestroyed(Area, Room, CMObject)
+	 *
+	 * @param area the area that the object was loaded into
+	 * @param room the room that the object was loaded into
+	 * @param o the object to register as loaded
+	 */
 	public void registerWorldObjectLoaded(Area area, Room room, CMObject o);
+
+	/**
+	 * When a map object is permanently destroyed, this method is called
+	 * to give the world map manager a chance to remove tracking for it.
+	 *
+	 * @see WorldMap#registerWorldObjectLoaded(Area, Room, CMObject)
+	 *
+	 * @param area the area that the object was originally loaded into
+	 * @param room the room that the object was originally loaded into
+	 * @param o the object to de-register
+	 */
 	public void registerWorldObjectDestroyed(Area area, Room room, CMObject o);
 
+	/**
+	 * Checks the list of existing registered boardables, such as sailing ships,
+	 * space ships, castles, and caravans.  It returns the exact matching named
+	 * boardable.
+	 *
+	 * @see WorldMap#findShip(String, boolean)
+	 * @see WorldMap#ships()
+	 * @see WorldMap#shipsRoomEnumerator(Area)
+	 * @see WorldMap#numShips()
+	 *
+	 * @param calledThis the name of the boardable
+	 * @return the boardable found, or null
+	 */
 	public Boardable getShip(String calledThis);
+
+	/**
+	 * Searches the list of existing registered boardables, such as sailing ships,
+	 * space ships, castles, and caravans.  It returns the first one found.
+	 *
+	 * @see WorldMap#getShip(String)
+	 * @see WorldMap#ships()
+	 * @see WorldMap#shipsRoomEnumerator(Area)
+	 * @see WorldMap#numShips()
+	 *
+	 * @param s the name search
+	 * @param exactOnly true for exact matches only, false for substring matches
+	 * @return null, or the first found boardable that matches
+	 */
 	public Boardable findShip(final String s, final boolean exactOnly);
+
+	/**
+	 * Returns an enumeration of all registered boardables, such as sailing ships,
+	 * space ships, castles, and caravans.
+	 *
+	 * @see WorldMap#getShip(String)
+	 * @see WorldMap#findShip(String, boolean)
+	 * @see WorldMap#shipsRoomEnumerator(Area)
+	 * @see WorldMap#numShips()
+	 *
+	 * @return the enumeration of existing boardables
+	 */
 	public Enumeration<Boardable> ships();
+
+	/**
+	 * Returns an enumerator of all rooms contained in a registered
+	 * boardable, such as a sailing ship, space ship, castle, or
+	 * caravan, which is also in the given Area.
+	 *
+	 * @see WorldMap#getShip(String)
+	 * @see WorldMap#findShip(String, boolean)
+	 * @see WorldMap#ships()
+	 * @see WorldMap#numShips()
+	 *
+	 * @param inA the area containing a ship, possibly
+	 * @return the boardable rooms enumerator
+	 */
 	public Enumeration<Room> shipsRoomEnumerator(final Area inA);
+
+	/**
+	 * Returns the number of registered boardables, such as sailing ships,
+	 * space ships, castles, and caravans.
+	 *
+	 * @see WorldMap#getShip(String)
+	 * @see WorldMap#findShip(String, boolean)
+	 * @see WorldMap#ships()
+	 * @see WorldMap#shipsRoomEnumerator(Area)
+	 * @see WorldMap#numShips()
+	 *
+	 * @return the number of registered boardables
+	 */
 	public int numShips();
 
+	/**
+	 * Returns the parent room of the given private property, if it is a boardable,
+	 * or the given room if not. The parent of a grid, a nearby room, or at least
+	 * a random one is always returned.
+	 *
+	 * @param room the room that needs moving FROM
+	 * @param I null, or private property that needs moving
+	 * @return a room thats not the given one
+	 */
 	public Room getSafeRoomToMovePropertyTo(Room room, PrivateProperty I);
 
+	/**
+	 * Returns an enumeration of all objects scripted upon creation
+	 * in the world, or in the given area (non-metro).
+	 *
+	 * @see WorldMap.LocatedPair#room()
+	 *
+	 * @param area null, or the area to limit returns to
+	 * @return an enumeration of the scripted objects
+	 */
 	public Enumeration<LocatedPair> scriptHosts(Area area);
 
+	/**
+	 * Returns the first available deity, creating one from
+	 * scratch if necessary.
+	 *
+	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.Deity
+	 * @see WorldMap#deities()
+	 * @see WorldMap#getDeity(String)
+	 *
+	 * @return a deity
+	 */
 	public MOB deity();
+
+	/**
+	 * Returns the world deity of the given name, if it exists.
+	 *
+	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.Deity
+	 * @see WorldMap#deities()
+	 * @see WorldMap#deity()
+	 *
+	 * @param calledThis the name of the deity to get.
+	 * @return null, or the deity object found
+	 */
 	public Deity getDeity(String calledThis);
+
+	/**
+	 * Returns an enumeration of all the Deity-derived registered objects
+	 * in the game.
+	 *
+	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.Deity
+	 * @see WorldMap#deity()
+	 * @see WorldMap#getDeity(String)
+	 *
+	 * @return all the deities
+	 */
 	public Enumeration<Deity> deities();
 
+	/**
+	 * Returns the world-wide clock/timezone cache.  This map is
+	 * editable by the caller for submitting new clocks, or
+	 * referencing existing ones.
+	 *
+	 * The key is typically an area name.
+	 *
+	 * @return the world-wide clock cache
+	 */
 	public Map<String,TimeClock> getClockCache();
 
 	/* ***********************************************************************/
