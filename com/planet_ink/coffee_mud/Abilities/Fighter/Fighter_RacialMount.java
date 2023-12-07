@@ -243,25 +243,45 @@ public class Fighter_RacialMount extends StdAbility
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.source() instanceof Rideable)
-		&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
-			final MOB mob = (MOB)this.affected;
-			if((msg.targetMinor() == CMMsg.TYP_LEAVE)
-			&&(msg.target() instanceof Room)
-			&&(mob.commandQueSize()>0)
-			&&(isGoCommand(mob))
-			&&(isMount(mob,msg.source()))
-			&&(proficiencyCheck(mob,0,false)))
+			if(msg.source() instanceof Rideable)
 			{
-				lastLeave = System.currentTimeMillis();
-				mob.recoverPhyStats();
+				final MOB mob = (MOB)this.affected;
+				if((msg.targetMinor() == CMMsg.TYP_LEAVE)
+				&&(msg.target() instanceof Room)
+				&&(mob.commandQueSize()>0)
+				&&(isGoCommand(mob))
+				&&(isMount(mob,msg.source()))
+				&&(proficiencyCheck(mob,0,false)))
+				{
+					lastLeave = System.currentTimeMillis();
+					mob.recoverPhyStats();
+				}
+				else
+				if(lastLeave != 0)
+				{
+					lastLeave = 0;
+					mob.recoverPhyStats();
+				}
 			}
 			else
-			if(lastLeave != 0)
+			if((msg.source()==affected)
+			&&(msg.source().riding() instanceof MOB))
 			{
-				lastLeave = 0;
-				mob.recoverPhyStats();
+				if((msg.sourceMinor()==CMMsg.TYP_GIVE)
+				&&(msg.target() instanceof MOB)
+				&&(isMount(msg.source(),(MOB)msg.source().riding()))
+				&&(((MOB)msg.target()).riding()==null))
+					msg.setTargetCode(msg.targetCode()|CMMsg.MASK_ALWAYS);
+					// cavy as target doesn't work because eval-order
+				else
+				if((msg.sourceMinor()==CMMsg.TYP_GET)
+				&&(msg.target() instanceof Item)
+				&&(((Item)msg.target()).owner() instanceof Room)
+				&&(!CMLib.utensils().reachableItem(msg.source(),msg.target()))
+				&&(isMount(msg.source(),(MOB)msg.source().riding())))
+					msg.setTargetCode(msg.targetCode()|CMMsg.MASK_ALWAYS);
 			}
 		}
 		return super.okMessage(myHost, msg);

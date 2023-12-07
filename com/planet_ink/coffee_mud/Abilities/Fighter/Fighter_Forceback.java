@@ -60,6 +60,14 @@ public class Fighter_Forceback extends FighterSkill
 		return Ability.QUALITY_MALICIOUS;
 	}
 
+	private static final String[]	triggerStrings	= I(new String[] { "FORCEBACK" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
 	@Override
 	protected int canAffectCode()
 	{

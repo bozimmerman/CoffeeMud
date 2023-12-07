@@ -254,7 +254,7 @@ public class Fighter_SetPolearm extends FighterSkill
 		final Rideable ride = mob.riding();
 		if((ride != null)&&(!auto))
 		{
-			mob.tell(L("Not while you are "+ride.rideString(mob)+"@x1",ride.name(mob)));
+			mob.tell(L("Not while you are "+ride.stateString(mob)+" @x1",ride.name(mob)));
 			return false;
 		}
 
@@ -275,7 +275,7 @@ public class Fighter_SetPolearm extends FighterSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,polearmI,L("<S-NAME> attempt(s) to set <S-HIS-HER> @x1, but goof(s) it up."));
+			beneficialVisualFizzle(mob,polearmI,L("<S-NAME> attempt(s) to set <S-HIS-HER> <T-NAME>, but goof(s) it up."));
 		return success;
 	}
 }

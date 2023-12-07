@@ -717,10 +717,12 @@ public class StdRideable extends StdMOB implements Rideable
 			}
 			break;
 		case CMMsg.TYP_GIVE:
-			if(msg.target() instanceof MOB)
+			if((msg.target() instanceof MOB)
+			&&(!msg.targetMajor(CMMsg.MASK_ALWAYS)))
 			{
 				final MOB tmob=(MOB)msg.target();
-				if((amRiding(tmob))&&(!amRiding(msg.source())))
+				if((amRiding(tmob))
+				&&(!amRiding(msg.source())))
 				{
 					msg.source().tell(msg.source(),tmob,null,L("<T-NAME> must dismount first."));
 					return false;
@@ -730,7 +732,8 @@ public class StdRideable extends StdMOB implements Rideable
 		case CMMsg.TYP_BUY:
 		case CMMsg.TYP_BID:
 		case CMMsg.TYP_SELL:
-			if(amRiding(msg.source()))
+			if((amRiding(msg.source()))
+			&&(!msg.targetMajor(CMMsg.MASK_ALWAYS)))
 			{
 				msg.source().tell(L("You cannot do that while @x1 @x2.",stateString(msg.source()),name(msg.source())));
 				return false;
@@ -740,9 +743,13 @@ public class StdRideable extends StdMOB implements Rideable
 		if((msg.sourceMajor(CMMsg.MASK_HANDS))
 		&&(amRiding(msg.source()))
 		&&((msg.sourceMessage()!=null)||(msg.othersMessage()!=null))
-		&&(((!CMLib.utensils().reachableItem(msg.source(),msg.target())))
-			|| ((!CMLib.utensils().reachableItem(msg.source(),msg.tool())))
-			|| ((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target() instanceof MOB)&&(msg.target()!=this)&&(!amRiding((MOB)msg.target())))))
+		&&(((!CMLib.utensils().reachableItem(msg.source(),msg.target()))&&(!msg.targetMajor(CMMsg.MASK_ALWAYS)))
+			|| (!CMLib.utensils().reachableItem(msg.source(),msg.tool()))
+			|| ((msg.sourceMinor()==CMMsg.TYP_GIVE)
+				&&(msg.target() instanceof MOB)
+				&&(msg.target()!=this)
+				&&(!amRiding((MOB)msg.target()))
+				&&(!msg.targetMajor(CMMsg.MASK_ALWAYS)))))
 		{
 			msg.source().tell(L("You cannot do that while @x1 @x2.",stateString(msg.source()),name(msg.source())));
 			return false;
