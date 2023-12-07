@@ -92,19 +92,129 @@ public interface WorldMap extends CMLibrary
 	/* ***********************************************************************/
 	/* *							 ROOM-AREA-UTILITIES					 */
 	/* ***********************************************************************/
+	/**
+	 * Resets the given area by resetting all the cached rooms in it.
+	 *
+	 * @param area the area to reset.
+	 */
 	public void resetArea(Area area);
+
+	/**
+	 * Resets the contents of the given room to stock, without clearing grid
+	 * rooms.
+	 *
+	 * @param room the room whose content to reset
+	 */
 	public void resetRoom(Room room);
+
+	/**
+	 * Resets the contents of the given room to stock, clearing any grids
+	 * if necessary.
+	 *
+	 * @param room the room whose content to reset
+	 * @param rebuildGrids true to also clear and rebuild grids, or false otherwise
+	 */
 	public void resetRoom(Room room, boolean rebuildGrids);
+
+	/**
+	 * Attempts to return the start/orig room for the given mob or item
+	 * or room or whatever.
+	 *
+	 * @param E the object to get a start room for
+	 * @return the start room, or the area its in
+	 */
 	public Room getStartRoom(Environmental E);
+
+	/**
+	 * Attempts to return the start/orig area for the given mob or item
+	 * or room or whatever.
+	 *
+	 * @param E the object to get a start area for
+	 * @return the start area, or the area its in
+	 */
 	public Area getStartArea(Environmental E);
+
+	/**
+	 * Returns the Room in which the given object exists in, or is
+	 * attached to.  Handles almost any kind of object in the game,
+	 * so long as it can be traced back to a room.
+	 *
+	 * @param E the game object whose room location you are curious about
+	 * @return null, or the room that the object is in
+	 */
 	public Room roomLocation(Environmental E);
+
+	/**
+	 * Empties the given room of mobs and items, optionally moving stuff to
+	 * another room.  If no target junk room is given, you can optionally
+	 * move players somewhere safe anyway.
+	 *
+	 * @param room the room to clear
+	 * @param toRoom null, or the room to move all mobs/items to
+	 * @param clearPlayers true to move players anyway, false otherwise
+	 */
 	public void emptyRoom(Room room, Room toRoom, boolean clearPlayers);
+
+	/**
+	 * This method removes any area effects, and then empties and
+	 * destroys every room in the area.  Perfect for instances,
+	 * and other non-permanent areas.  Does not actually destroy
+	 * the area object per-se.
+	 *
+	 * @param A the area to empty
+	 */
 	public void emptyAreaAndDestroyRooms(Area A);
+
+	/**
+	 * Returns whether the given room might have a sky, due to
+	 * being outdoors but not being underwater.
+	 *
+	 * @param room the room to check
+	 * @return true if a sky would be appropriate, false otherwise
+	 */
 	public boolean hasASky(Room room);
+
+	/**
+	 * Sends any mobs or players in the given room to their start room,
+	 * and returns whether any players, private property, or player
+	 * corpses remain.  Also returns false if the room is under a temporary
+	 * effect.
+	 *
+	 * @param room the room to clear/check.
+	 * @return true if the room is ready to be cleared, false otherwise
+	 */
 	public boolean isClearableRoom(Room room);
+
+	/**
+	 * Attempts to create a pair of Open exits from the from room to the
+	 * room room.  If any errors are found in the inputs, then a descriptive
+	 * error is returned.  The exits changes ARE SAVED TO THE DB!
+	 *
+	 * @param from the from room
+	 * @param room the to room
+	 * @param direction the direction from the from to the room room
+	 * @return "", or an error message if something went wrong.
+	 */
 	public String createNewExit(Room from, Room room, int direction);
+
+	/**
+	 * Returns the Area in which the given object exists in, or is
+	 * attached to.  Handles almost any kind of object in the game,
+	 * so long as it can be traced back to a room or area.
+	 *
+	 * @param E the game object whose area location you are curious about
+	 * @return null, or the area that the object is in
+	 */
 	public Area areaLocation(CMObject E);
-	public ThreadGroup getOwnedThreadGroup(CMObject E);
+
+	/**
+	 * Generates a fake VFS file tree for the database game world map.
+	 * The nodes are generated dynamically during browsing, so this call
+	 * is very efficient.
+	 *
+	 * @param root the root directory to add the map directory to
+	 * @return the fake VFS map directory
+	 */
 	public CMFile.CMVFSDir getMapRoot(final CMFile.CMVFSDir root);
 
 	/* ***********************************************************************/

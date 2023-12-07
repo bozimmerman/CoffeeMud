@@ -480,7 +480,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			reverseRoom=opRoom.rawDoors()[Directions.getOpDirectionCode(direction)];
 
 		if((reverseRoom!=null)&&(reverseRoom==from))
-			return "Opposite room already exists and heads this way.  One-way link created.";
+			return "Opposite room already exists and heads this way.";
 
 		Exit thisExit=null;
 		synchronized(CMClass.getSync("SYNC"+from.roomID()))
@@ -1550,19 +1550,6 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(E instanceof Room)
 			return (Room)E;
 		return roomLocation(E);
-	}
-
-	@Override
-	public ThreadGroup getOwnedThreadGroup(final CMObject E)
-	{
-		final Area area=areaLocation(E);
-		if(area != null)
-		{
-			final int theme=area.getTheme();
-			if((theme>0)&&(theme<Area.THEME_NAMES.length))
-				return CMProps.getPrivateOwner(Area.THEME_NAMES[theme]+"AREAS");
-		}
-		return null;
 	}
 
 	@Override

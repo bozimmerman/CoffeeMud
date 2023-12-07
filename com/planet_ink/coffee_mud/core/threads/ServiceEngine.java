@@ -327,6 +327,23 @@ public class ServiceEngine implements ThreadEngine
 			drivingThread.interrupt();
 	}
 
+	protected ThreadGroup getAreaThemeThreadGroup(final Tickable E)
+	{
+		final Area area=CMLib.map().areaLocation(E);
+		if(area != null)
+		{
+			final int theme=area.getTheme();
+			if((theme>0)
+			&&(theme<Area.THEME_NAMES.length))
+			{
+				final ThreadGroup group = CMProps.getPrivateOwner(Area.THEME_NAMES[theme]+"AREAS");
+				if(group != null)
+					return group;
+			}
+		}
+		return Thread.currentThread().getThreadGroup();
+	}
+
 	@Override
 	public TickClient startTickDown(final Tickable E, final int tickID, final int numTicks)
 	{
@@ -336,15 +353,12 @@ public class ServiceEngine implements ThreadEngine
 	@Override
 	public TickClient startTickDown(final Tickable E, final int tickID, final long tickTimeMs, final int numTicks)
 	{
-		return startTickDown(CMLib.map().getOwnedThreadGroup(E),E,tickID,tickTimeMs,numTicks);
+		return startTickDown(getAreaThemeThreadGroup(E),E,tickID,tickTimeMs,numTicks);
 	}
 
 	@Override
 	public synchronized long getTickGroupPeriod(final Tickable E, final int tickID)
 	{
-		ThreadGroup group = CMLib.map().getOwnedThreadGroup(E);
-		if(group==null)
-			group=Thread.currentThread().getThreadGroup();
 		for(final TickableGroup almostTock : allTicks)
 		{
 			if(almostTock.contains(E,tickID))
