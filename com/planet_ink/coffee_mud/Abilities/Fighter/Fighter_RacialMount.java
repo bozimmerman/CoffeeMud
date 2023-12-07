@@ -273,15 +273,26 @@ public class Fighter_RacialMount extends StdAbility
 				&&(msg.target() instanceof MOB)
 				&&(isMount(msg.source(),(MOB)msg.source().riding()))
 				&&(((MOB)msg.target()).riding()==null))
+				{
+					if(!msg.target().okMessage(myHost, msg))
+						return false;
+					if((msg.tool() instanceof Physical)
+					&&(!msg.tool().okMessage(myHost, msg)))
+						return false;
 					msg.setTargetCode(msg.targetCode()|CMMsg.MASK_ALWAYS);
 					// cavy as target doesn't work because eval-order
+				}
 				else
 				if((msg.sourceMinor()==CMMsg.TYP_GET)
 				&&(msg.target() instanceof Item)
 				&&(((Item)msg.target()).owner() instanceof Room)
 				&&(!CMLib.utensils().reachableItem(msg.source(),msg.target()))
 				&&(isMount(msg.source(),(MOB)msg.source().riding())))
+				{
+					if(!msg.target().okMessage(myHost, msg))
+						return false;
 					msg.setTargetCode(msg.targetCode()|CMMsg.MASK_ALWAYS);
+				}
 			}
 		}
 		return super.okMessage(myHost, msg);
