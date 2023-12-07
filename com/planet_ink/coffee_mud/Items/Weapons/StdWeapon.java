@@ -137,21 +137,20 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 	{
 		super.recoverPhyStats();
 		final PhyStats phyStats = phyStats();
-		if((abilityImbuesMagic()&&(phyStats().ability()>0))||(this instanceof MiscMagic))
-			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_BONUS);
-		if(phyStats.damage()!=0)
+		if(phyStats.ability() != 0)
 		{
-			if(phyStats.ability() != 0)
+			final int ability = phyStats.ability();
+			if(phyStats.damage()!=0)
 			{
-				final int ability=super.wornLogicalAnd ? (phyStats.ability()*CMath.numberOfSetBits(super.properWornBitmap)) : phyStats.ability();
-				if(ability != 0)
-				{
-					phyStats.setDamage(phyStats.damage()+(ability*2));
-					phyStats.setAttackAdjustment(phyStats.attackAdjustment()+(ability*10));
-				}
+				phyStats.setDamage(phyStats.damage()+ability);
+				phyStats.setAttackAdjustment(phyStats.attackAdjustment()+(ability*10));
 			}
+			if(abilityImbuesMagic())
+				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_BONUS);
 		}
-		if((subjectToWearAndTear())&&(usesRemaining()<100))
+		if(this instanceof MiscMagic)
+			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_BONUS);
+		if(subjectToWearAndTear() && (usesRemaining()<100) && (phyStats().damage()>0))
 			phyStats.setDamage(((int)Math.round(CMath.mul(phyStats.damage(),CMath.div(usesRemaining(),100)))));
 	}
 
