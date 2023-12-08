@@ -105,7 +105,7 @@ public class BoxCityLayout extends AbstractLayout
 	@Override
 	public List<LayoutNode> generate(final int num, int dir)
 	{
-		final List<LayoutNode> set = new Vector<LayoutNode>();
+		final List<LayoutNode> set = new Vector<LayoutNode>(); // return value
 		final int diameter = (int)Math.round(Math.sqrt(num));
 		final int plusX = (diff(diameter,diameter,num) > diff(diameter+1,diameter,num)) ? 1 : 0;
 		final LayoutSet lSet = new LayoutSet(set,num);

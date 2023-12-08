@@ -244,7 +244,7 @@ public class Archon_Multiwatch extends ArchonSkill
 					List<MOB> ipList=ipes.get(S.getAddress());
 					if(ipList==null)
 					{
-						ipList=new Vector<MOB>();
+						ipList=new ArrayList<MOB>();
 						ipes.put(S.getAddress(),ipList);
 					}
 					if(!ipList.contains(S.mob()))

@@ -280,7 +280,7 @@ public class Archon_Metacraft extends ArchonSkill
 		{
 			skill=(ItemCraftor)skillsToUse.get(s).first;
 			final String recipeName = skillsToUse.get(s).second;
-			final List<Item> items=new Vector<Item>();
+			final List<Item> items=new ArrayList<Item>();
 			if(everyFlag)
 			{
 				if(recipe==null)

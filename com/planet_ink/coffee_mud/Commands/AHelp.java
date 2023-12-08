@@ -64,7 +64,7 @@ public class AHelp extends StdCommand
 				StringBuffer theRest=(StringBuffer)Resources.getResource("arc_help.therest");
 				if(theRest==null)
 				{
-					final List<String> ableIV=new Vector<String>();
+					final List<String> ableIV=new ArrayList<String>();
 					theRest=new StringBuffer("");
 
 					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)

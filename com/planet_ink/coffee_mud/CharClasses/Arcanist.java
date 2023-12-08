@@ -344,21 +344,21 @@ public class Arcanist extends Thief
 						else
 						if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<30)
 						{
-							final Vector<Ability> otherChoices=new Vector<Ability>();
+							final List<Ability> otherChoices=new ArrayList<Ability>();
 							for(int a=0;a<mob.numAbilities();a++)
 							{
 								final Ability A2=mob.fetchAbility(a);
 								if((A2!=null)
 								&&(!A2.isSavable())
 								&&((A2.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
-									otherChoices.addElement(A2);
+									otherChoices.add(A2);
 							}
 							A=(Ability)A.copyOf();
 							A.setProficiency(0);
 							A.setSavable(false);
 							if(otherChoices.size()>(mob.charStats().getClassLevel(this)/3))
 							{
-								final Ability A2=otherChoices.elementAt(CMLib.dice().roll(1,otherChoices.size(),-1));
+								final Ability A2=otherChoices.get(CMLib.dice().roll(1,otherChoices.size(),-1));
 								clearAbilityFromSpellcraftList(mob,A2);
 							}
 							addAbilityToSpellcraftList(mob,A);

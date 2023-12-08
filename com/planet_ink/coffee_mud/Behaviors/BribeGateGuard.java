@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -34,17 +35,20 @@ import java.util.*;
 */
 public class BribeGateGuard extends StdBehavior
 {
-	protected Exit e;
-	protected int dir = -1;
-	protected int tickTock = 0;
-	protected double price = 5.0;
-	protected String gates = "General";
-	protected Vector<MOB> paidPlayers = new Vector<MOB>();
-	protected Hashtable<String,Boolean> toldAlready = new Hashtable<String,Boolean>();
-	protected String maskStr = "";
-	protected MaskingLibrary.CompiledZMask mask = null;
-	protected static boolean debug = false; // debuggin
-	protected static boolean surviveReboot=false; // survive reboot
+	protected Exit		e;
+	protected int		dir			= -1;
+	protected int		tickTock	= 0;
+	protected double	price		= 5.0;
+	protected String	gates		= "General";
+
+	protected Vector<MOB>		paidPlayers		= new Vector<MOB>();
+	protected String			maskStr			= "";
+	protected CompiledZMask		mask			= null;
+
+	protected Map<String,Boolean> toldAlready = new Hashtable<String,Boolean>();
+
+	protected static boolean	debug			= false;			// debuggin
+	protected static boolean	surviveReboot	= false;			// survive reboot
 	protected static Map<String,Map<String,Double>> notTheJournal=new Hashtable<String,Map<String,Double>>();
 
 	@Override

@@ -157,7 +157,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		String num=null;
 		double d=0.0;
 		boolean canTrade=true;
-		final List<String> currencyNames=new ArrayList<String>();
+		final List<String> currencyNames=new Vector<String>(); // for a permanent names list
 		for(int v=0;v<CV.size();v++)
 		{
 			s=CV.get(v);
@@ -734,7 +734,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public List<DebtItem> getDebtOwed(final String owedTo)
 	{
 		final List<PlayerData> rows=CMLib.database().DBReadPlayerDataByKeyMask("DEBT",".*-DEBT-"+owedTo.toUpperCase().trim());
-		final List<DebtItem> debt=new Vector<DebtItem>(rows.size());
+		final List<DebtItem> debt=new Vector<DebtItem>(rows.size()); // return value
 		for(int r=0;r<rows.size();r++)
 		{
 			final PlayerData row=rows.get(r);

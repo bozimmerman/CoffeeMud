@@ -639,7 +639,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 			LegalBehavior B=null;
 			if(mob.location()!=null)
 				B=CMLib.law().getLegalBehavior(mob.location());
-			List<LegalWarrant> warrants=new Vector<LegalWarrant>();
+			List<LegalWarrant> warrants=new ArrayList<LegalWarrant>();
 			if(B!=null)
 				warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 			if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)))
