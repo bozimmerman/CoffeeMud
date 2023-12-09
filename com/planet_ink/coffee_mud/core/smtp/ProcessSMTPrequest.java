@@ -1030,7 +1030,9 @@ public class ProcessSMTPrequest implements Runnable
 			if((e != null)
 			&&(e.getMessage() != null)
 			&&(e.getMessage().toLowerCase().indexOf("connection reset")>=0))
-				Log.debugOut(runnableName,"Exception: " + e.getMessage() );
+			{
+				//Log.debugOut(runnableName,"Exception: " + e.getMessage() );
+			}
 			else
 			{
 				final String errorMessage=e.getMessage();
