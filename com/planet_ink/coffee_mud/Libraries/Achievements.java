@@ -1049,11 +1049,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ZAPPERMASK", ""));
 					if(zapperMask.trim().length()==0)
-						return "Error: Missing or invalid ZAPPERMASK parameter: "+zapperMask+"!";
+						return "Error: Missing or invalid ZAPPERMASK parameter: "+zapperMask+" for "+tattoo+"!";
 					this.npcMask = CMLib.masking().getPreCompiledMask(zapperMask);
 					return "";
 				}
@@ -1206,11 +1206,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "AMOUNT", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid AMOUNT parameter: "+numStr+"!";
+						return "Error: Missing or invalid AMOUNT parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ZAPPERMASK", ""));
 					if(zapperMask.trim().length()==0)
-						return "Error: Missing or invalid ZAPPERMASK parameter: "+zapperMask+"!";
+						return "Error: Missing or invalid ZAPPERMASK parameter: "+zapperMask+" for "+tattoo+"!";
 					this.npcMask = CMLib.masking().getPreCompiledMask(zapperMask);
 					return "";
 				}
@@ -1366,7 +1366,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					final String szStr=CMParms.getParmStr(parms, "SIZE", "");
 					gSize=1;
@@ -1375,7 +1375,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					num=CMath.s_int(numStr);
 					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ZAPPERMASK", ""));
 					if(zapperMask.trim().length()==0)
-						return "Error: Missing or invalid ZAPPERMASK parameter: "+zapperMask+"!";
+						return "Error: Missing or invalid ZAPPERMASK parameter: "+zapperMask+" for "+tattoo+"!";
 					this.npcMask = CMLib.masking().getPreCompiledMask(zapperMask);
 					return "";
 				}
@@ -1532,7 +1532,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 
 					// the only one that needs to s
 					if(playerMask == null)
-						return "Error: Missing or invalid PLAYERMASK parameter!";
+						return "Error: Missing or invalid PLAYERMASK parameter for "+tattoo+"!";
 					return "";
 				}
 			};
@@ -1677,15 +1677,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final MOB mob = CMClass.getFactoryMOB();
 					final String numStr=CMParms.getParmStr(parms, "VALUE", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid VALUE parameter: "+numStr+"!";
+						return "Error: Missing or invalid VALUE parameter: "+numStr+" for "+tattoo+"!";
 					value=CMath.s_int(numStr);
 					final String aboveBelow=CMParms.getParmStr(parms, "ABOVEBELOW", "").toUpperCase().trim();
 					if((!aboveBelow.equals("ABOVE")) && (!aboveBelow.equals("BELOW")))
-						return "Error: Missing or invalid ABOVEBELOW parameter: "+aboveBelow+"!";
+						return "Error: Missing or invalid ABOVEBELOW parameter: "+aboveBelow+" for "+tattoo+"!";
 					this.abelo = aboveBelow.equals("ABOVE")? 1 : -1;
 					final String statName=CMParms.getParmStr(parms, "STAT", "").toUpperCase().trim();
 					if((statName.length()==0)||(!CMLib.coffeeMaker().isAnyGenStat(mob, statName)))
-						return "Error: Missing or invalid STAT parameter: "+statName+"!";
+						return "Error: Missing or invalid STAT parameter: "+statName+" for "+tattoo+"!";
 					this.statName = statName;
 					return "";
 				}
@@ -1841,17 +1841,17 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "VALUE", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid VALUE parameter: "+numStr+"!";
+						return "Error: Missing or invalid VALUE parameter: "+numStr+" for "+tattoo+"!";
 					value=CMath.s_int(numStr);
 					final String aboveBelow=CMParms.getParmStr(parms, "ABOVEBELOW", "").toUpperCase().trim();
 					if((!aboveBelow.equals("ABOVE")) && (!aboveBelow.equals("BELOW")))
-						return "Error: Missing or invalid ABOVEBELOW parameter: "+aboveBelow+"!";
+						return "Error: Missing or invalid ABOVEBELOW parameter: "+aboveBelow+" for "+tattoo+"!";
 					this.abelo = aboveBelow.equals("ABOVE")? 1 : -1;
 					final String factionID=CMParms.getParmStr(parms, "ID", "").toUpperCase().trim();
 					if(factionID.length()==0)
-						return "Error: Missing ID parameter: "+factionID+"!";
+						return "Error: Missing ID parameter: "+factionID+" for "+tattoo+"!";
 					if(CMLib.factions().getFaction(factionID)==null)
-						return "Error: Unknown faction ID parameter: "+factionID+"!";
+						return "Error: Unknown faction ID parameter: "+factionID+" for "+tattoo+"!";
 					this.factionID=factionID;
 					return "";
 				}
@@ -2007,15 +2007,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					String numStr=CMParms.getParmStr(parms, "VALUE", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid VALUE parameter: "+numStr+"!";
+						return "Error: Missing or invalid VALUE parameter: "+numStr+" for "+tattoo+"!";
 					value=CMath.s_int(numStr);
 					numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					number=CMath.s_int(numStr);
 					final String aboveBelow=CMParms.getParmStr(parms, "ABOVEBELOW", "").toUpperCase().trim();
 					if((!aboveBelow.equals("ABOVE")) && (!aboveBelow.equals("BELOW")))
-						return "Error: Missing or invalid ABOVEBELOW parameter: "+aboveBelow+"!";
+						return "Error: Missing or invalid ABOVEBELOW parameter: "+aboveBelow+" for "+tattoo+"!";
 					this.abelo = aboveBelow.equals("ABOVE")? 1 : -1;
 					final String factionIDMask=CMParms.getParmStr(parms, "IDMASK", "").toUpperCase().trim();
 					this.factions.clear();
@@ -2026,7 +2026,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							this.factions.add(F);
 					}
 					if(this.factions.size()==0)
-						return "Error: No existing factions match: "+factionIDMask+"!";
+						return "Error: No existing factions match: "+factionIDMask+" for "+tattoo+"!";
 					return "";
 				}
 			};
@@ -2190,15 +2190,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "PERCENT", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid PERCENT parameter: "+numStr+"!";
+						return "Error: Missing or invalid PERCENT parameter: "+numStr+" for "+tattoo+"!";
 					this.pct=CMath.s_int(numStr);
 					final String areaID=CMParms.getParmStr(parms, "AREA", "").toUpperCase().trim();
 					if(areaID.length()==0)
-						return "Error: Missing AREA parameter: "+areaID+"!";
+						return "Error: Missing AREA parameter: "+areaID+" for "+tattoo+"!";
 					if((CMLib.map().getArea(areaID)==null)
 					&&(!areaID.equals("WORLD"))
 					&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
-						return "Error: Unknown AREA: "+areaID+"!";
+						return "Error: Unknown AREA: "+areaID+" for "+tattoo+"!";
 					this.areaID=areaID;
 					return "";
 				}
@@ -2377,11 +2377,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					this.num=CMath.s_int(numStr);
 					final String abilityIDs=CMParms.getParmStr(parms, "ABILITYID", "").toUpperCase().trim();
 					if(abilityIDs.length()==0)
-						return "Error: Missing ABILITYID parameter: "+abilityIDs+"!";
+						return "Error: Missing ABILITYID parameter: "+abilityIDs+" for "+tattoo+"!";
 					final String[] strList=abilityIDs.split(",");
 					this.abilityIDs.clear();
 					for(int i=0;i<strList.length;i++)
@@ -2416,14 +2416,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									this.abilityIDs.add(abilityID);
 								}
 								else
-									return "Error: Unknown crafting ABILITYID: "+abilityID+"!";
+									return "Error: Unknown crafting ABILITYID: "+abilityID+" for "+tattoo+"!";
 							}
 							else
 								this.abilityIDs.add(A.ID());
 						}
 					}
 					if(this.abilityIDs.size()==0)
-						return "Error: Unknown crafting ABILITYIDs: "+abilityIDs+"!";
+						return "Error: Unknown crafting ABILITYIDs: "+abilityIDs+" for "+tattoo+"!";
 					return "";
 				}
 			};
@@ -2586,11 +2586,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					this.num=CMath.s_int(numStr);
 					final String abilityIDs=CMParms.getParmStr(parms, "ABILITYID", "").toUpperCase().trim();
 					if(abilityIDs.length()==0)
-						return "Error: Missing ABILITYID parameter: "+abilityIDs+"!";
+						return "Error: Missing ABILITYID parameter: "+abilityIDs+" for "+tattoo+"!";
 					final String[] strList=abilityIDs.split(",");
 					this.abilityIDs.clear();
 					for(int i=0;i<strList.length;i++)
@@ -2614,7 +2614,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								{
 									if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
 									||(!CMClass.isLanguage(abilityID)))
-										return "Error: Unknown ABILITYID: "+abilityID+"!";
+										return "Error: Unknown ABILITYID: "+abilityID+" for "+tattoo+"!";
 									else
 										return "";
 								}
@@ -2626,7 +2626,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 					}
 					if(this.abilityIDs.size()==0)
-						return "Error: Unknown crafting ABILITYIDs: "+abilityIDs+"!";
+						return "Error: Unknown crafting ABILITYIDs: "+abilityIDs+" for "+tattoo+"!";
 					return "";
 				}
 			};
@@ -2792,14 +2792,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					this.num=CMath.s_int(numStr);
 					final String abilityIDs=CMParms.getParmStr(parms, "ABILITYID", "").toUpperCase().trim();
 					if(abilityIDs.length()==0)
-						return "Error: Missing ABILITYID parameter: "+abilityIDs+"!";
+						return "Error: Missing ABILITYID parameter: "+abilityIDs+" for "+tattoo+"!";
 					final String profStr=CMParms.getParmStr(parms, "PROFF", "100");
 					if(!CMath.isInteger(profStr))
-						return "Error: Missing or invalid PROF parameter: "+profStr+"!";
+						return "Error: Missing or invalid PROF parameter: "+profStr+" for "+tattoo+"!";
 					prof=CMath.s_int(profStr);
 					final String[] strList=abilityIDs.split(",");
 					this.abilityIDs.clear();
@@ -2824,7 +2824,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								{
 									if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
 									||(!CMClass.isLanguage(abilityID)))
-										return "Error: Unknown ABILITYID: "+abilityID+"!";
+										return "Error: Unknown ABILITYID: "+abilityID+" for "+tattoo+"!";
 									else
 										return "";
 								}
@@ -2836,7 +2836,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 					}
 					if(this.abilityIDs.size()==0)
-						return "Error: Unknown crafting ABILITYIDs: "+abilityIDs+"!";
+						return "Error: Unknown crafting ABILITYIDs: "+abilityIDs+" for "+tattoo+"!";
 					return "";
 				}
 			};
@@ -2999,11 +2999,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					this.num=CMath.s_int(numStr);
 					final String abilityIDs=CMParms.getParmStr(parms, "SOCIALID", "").toUpperCase().trim();
 					if(abilityIDs.length()==0)
-						return "Error: Missing SOCIALID parameter: "+abilityIDs+"!";
+						return "Error: Missing SOCIALID parameter: "+abilityIDs+" for "+tattoo+"!";
 					final String[] strList=abilityIDs.split(",");
 					this.socialIDs.clear();
 					final Set<String> tails=new TreeSet<String>();
@@ -3201,11 +3201,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					this.num=CMath.s_int(numStr);
 					final String abilityIDs=CMParms.getParmStr(parms, "COMMANDID", "").toUpperCase().trim();
 					if(abilityIDs.length()==0)
-						return "Error: Missing COMMANDID parameter: "+abilityIDs+"!";
+						return "Error: Missing COMMANDID parameter: "+abilityIDs+" for "+tattoo+"!";
 					final String[] strList=abilityIDs.split(",");
 					this.commandIDs.clear();
 					for(int i=0;i<strList.length;i++)
@@ -3393,7 +3393,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					final String questMask=CMStrings.deEscape(CMParms.getParmStr(parms, "QUESTMASK", ""));
 					this.questPattern = null;
@@ -3407,7 +3407,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 						catch(final Exception e)
 						{
-							return "Error: Invalid QUESTMASK regular expression parameter: "+questMask+": "+e.getMessage()+"!";
+							return "Error: Invalid QUESTMASK regular expression parameter: "+questMask+": "+e.getMessage()+" for "+tattoo+"!";
 						}
 					}
 					return "";
@@ -3568,7 +3568,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String list=CMStrings.deEscape(CMParms.getParmStr(parms, "ACHIEVEMENTLIST", ""));
 					if(list.trim().length()==0)
-						return "Error: Missing or invalid ACHIEVEMENTLIST parameter: "+list+"!";
+						return "Error: Missing or invalid ACHIEVEMENTLIST parameter: "+list+" for "+tattoo+"!";
 					final String[] listArray = list.toUpperCase().trim().split(",");
 					achievementList.clear();
 					for(final String s : listArray)
@@ -3577,7 +3577,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							achievementList.add(s.trim());
 					}
 					if(achievementList.size()==0)
-						return "Error: Missing or invalid ACHIEVEMENTLIST parameter: "+list+"!";
+						return "Error: Missing or invalid ACHIEVEMENTLIST parameter: "+list+" for "+tattoo+"!";
 					return "";
 				}
 			};
@@ -3727,7 +3727,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String list=CMStrings.deEscape(CMParms.getParmStr(parms, "ROOMID", ""));
 					if(list.trim().length()==0)
-						return "Error: Missing or invalid ROOMID parameter: "+list+"!";
+						return "Error: Missing or invalid ROOMID parameter: "+list+" for "+tattoo+"!";
 					final String[] listArray = list.toUpperCase().trim().split(",");
 					roomIDs.clear();
 					for(String s : listArray)
@@ -3739,7 +3739,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							if(R==null)
 							{
 								if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
-									return "Error: Missing or invalid ROOMID: "+s+"!";
+									return "Error: Missing or invalid ROOMID: "+s+" for "+tattoo+"!";
 								else
 									roomIDs.add(s);
 							}
@@ -3748,7 +3748,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 					}
 					if(roomIDs.size()==0)
-						return "Error: Missing or invalid ROOMID parameter: "+list+"!";
+						return "Error: Missing or invalid ROOMID parameter: "+list+" for "+tattoo+"!";
 					return "";
 				}
 			};
@@ -3907,14 +3907,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					final String charClassID=CMStrings.deEscape(CMParms.getParmStr(parms, "CLASS", ""));
 					this.charClass = CMClass.getCharClass(charClassID);
 					if(this.charClass == null)
 						this.charClass = CMClass.findCharClass(charClassID);
 					if(this.charClass == null)
-						return "Error: Missing or invalid CLASS parameter: "+charClassID+"!";
+						return "Error: Missing or invalid CLASS parameter: "+charClassID+" for "+tattoo+"!";
 					return "";
 				}
 			};
@@ -4061,7 +4061,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					return "";
 				}
@@ -4271,7 +4271,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						num=1;
 					else
 					if(!CMath.isInteger(numStr))
-						return "Error: Invalid NUM parameter!";
+						return "Error: Invalid NUM parameter for "+tattoo+"!";
 					else
 						num=CMath.s_int(numStr);
 					final String[] maskStrs = CMParms.getParmStrs(parms, "ITEMMASK", "");
@@ -4282,7 +4282,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						{
 							final CompiledZMask itemMask = CMLib.masking().getPreCompiledMask(CMStrings.deEscape(maskStr));
 							if(itemMask == null)
-								return "Error: Missing or invalid ITEMMASK parameter: '"+maskStr+"'!";
+								return "Error: Missing or invalid ITEMMASK parameter: '"+maskStr+"' for "+tattoo+"!";
 							masks.add(itemMask);
 						}
 					}
@@ -4290,7 +4290,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(CMParms.getParmBool(parms, "ALL", false))
 						this.allFlag=true;
 					if(masks.size()==0)
-						return "Error: Missing or invalid ITEMMASK parameter!";
+						return "Error: Missing or invalid ITEMMASK parameter for "+tattoo+"!";
 					this.itemMasks = masks.toArray(new CompiledZMask[masks.size()]);
 					return "";
 				}
@@ -4436,7 +4436,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "SECONDS", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid SECONDS parameter: "+numStr+"!";
+						return "Error: Missing or invalid SECONDS parameter: "+numStr+" for "+tattoo+"!";
 					seconds=CMath.s_int(numStr);
 					return "";
 				}
@@ -4586,7 +4586,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					this.npcMask = null;
 					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ZAPPERMASK", ""));
@@ -4741,7 +4741,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					this.npcMask = null;
 					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ZAPPERMASK", ""));
@@ -4896,7 +4896,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					this.npcMask = null;
 					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ZAPPERMASK", ""));
@@ -5191,7 +5191,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					this.npcMask = null;
 					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ZAPPERMASK", ""));
@@ -5370,7 +5370,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					return "";
 				}
@@ -5535,11 +5535,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ZAPPERMASK", ""));
 					if(zapperMask.trim().length()==0)
-						return "Error: Missing or invalid ZAPPERMASK parameter: "+zapperMask+"!";
+						return "Error: Missing or invalid ZAPPERMASK parameter: "+zapperMask+" for "+tattoo+"!";
 					this.npcMask = CMLib.masking().getPreCompiledMask(zapperMask);
 					return "";
 				}
@@ -5714,7 +5714,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					return "";
 				}
@@ -5883,7 +5883,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					final String areaMaskStr = CMStrings.deEscape(CMParms.getParmStr(parms, "AREAMASK", ""));
 					this.areaMask = null;
@@ -6037,7 +6037,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					this.shipMask = null;
 					final String shipMask=CMStrings.deEscape(CMParms.getParmStr(parms, "SHIPMASK", ""));
@@ -6210,7 +6210,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					final String areaMaskStr = CMStrings.deEscape(CMParms.getParmStr(parms, "AREAMASK", ""));
 					this.areaMask = null;
@@ -6424,13 +6424,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						this.minTime = CMath.s_int(minTimeStr) * 60 * 1000;
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					intruder=CMParms.getParmBool(parms, "INTRUDE", false);
 					final String areaMaskStr = CMStrings.deEscape(CMParms.getParmStr(parms, "AREAMASK", ""));
 					this.areaMask = null;
 					if(areaMaskStr.trim().length()==0)
-						return "Error: Missing or invalid AREAMASK parameter: "+numStr+"!";
+						return "Error: Missing or invalid AREAMASK parameter: "+numStr+" for "+tattoo+"!";
 					this.areaMask = CMLib.masking().getPreCompiledMask(areaMaskStr);
 					final String roomMaskStr = CMStrings.deEscape(CMParms.getParmStr(parms, "ROOMMASK", ""));
 					this.roomMask = null;
@@ -6622,12 +6622,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						this.minTime = CMath.s_int(minTimeStr) * 60 * 1000;
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					final String areaMaskStr = CMStrings.deEscape(CMParms.getParmStr(parms, "AREAMASK", ""));
 					this.areaMask = null;
 					if(areaMaskStr.trim().length()==0)
-						return "Error: Missing or invalid AREAMASK parameter: "+numStr+"!";
+						return "Error: Missing or invalid AREAMASK parameter: "+numStr+" for "+tattoo+"!";
 					this.areaMask = CMLib.masking().getPreCompiledMask(areaMaskStr);
 					final String valExpStr = CMStrings.deEscape(CMParms.getParmStr(parms, "VALUEEXP", ""));
 					this.valExpression = null;
@@ -6799,18 +6799,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					final List<String> relationV = CMParms.parse(CMStrings.deEscape(CMParms.getParmStr(parms, "RELATION", "")));
 					this.relationList.clear();
 					for(final String r : relationV)
 					{
 						if(!CMStrings.contains(Clan.REL_DESCS, r.toUpperCase().trim()))
-							return "Error: Invalid RELATION parameter: "+r+"!";
+							return "Error: Invalid RELATION parameter: "+r+" for "+tattoo+"!";
 						this.relationList.add(r.toUpperCase().trim());
 					}
 					if(this.relationList.size()==0)
-						return "Error: Missing relations list!";
+						return "Error: Missing relations list for "+tattoo+"!";
 
 					return "";
 				}
@@ -6980,7 +6980,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					final String areaMaskStr = CMStrings.deEscape(CMParms.getParmStr(parms, "AREAMASK", ""));
 					this.areaMask = null;
@@ -7157,7 +7157,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					this.pattern = null;
 					final String pattStr = CMParms.getParmStr(parms, "TITLEMASK", "");
@@ -7318,7 +7318,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					return "";
 				}
@@ -7472,7 +7472,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
-						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
 					num=CMath.s_int(numStr);
 					return "";
 				}
@@ -7485,7 +7485,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 
 		if(A==null)
 		{
-			return "Error: Unimplemented achievement type: "+eventStr+"!";
+			return "Error: Unimplemented achievement type: "+eventStr+" for "+tattoo+"!";
 		}
 
 		if(!A.canApplyTo(agent))
@@ -7506,7 +7506,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				final Achievement A2=a2.nextElement();
 				if(A2.getTattoo().equalsIgnoreCase(tattoo))
-					return "Error: Duplicate achievement ID: "+tattoo+"!";
+					return "Error: Duplicate achievement ID: "+tattoo+" for "+tattoo+"!";
 			}
 			switch(agent)
 			{

@@ -62,6 +62,12 @@ public class AmbianceAdder extends StdAbility
 		return CAN_MOBS|CAN_ITEMS|CAN_ROOMS|CAN_AREAS|CAN_EXITS;
 	}
 
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PROPERTY;
+	}
+
 	protected final List<String> ambiances = new ArrayList<String>();
 
 	@Override
