@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.application;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
+import com.planet_ink.coffee_mud.core.CMSecurity.ConnectState;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -75,13 +76,6 @@ public class MUD extends Thread implements MudHost
 		WAITING,
 		ACCEPTING,
 		STOPPED
-	}
-
-	private static enum ConnectState
-	{
-		NORMAL,
-		BANNED,
-		BLOCKED
 	}
 
 	private volatile MudState state		 = MudState.STOPPED;
@@ -177,85 +171,15 @@ public class MUD extends Thread implements MudHost
 			{
 				if (acceptConns)
 				{
-					String address="unknown";
-					try
-					{
-						address=sock.getInetAddress().getHostAddress().trim();
-					}
-					catch(final Exception e)
-					{
-					}
-					ConnectState proceed=ConnectState.NORMAL;
-					if(CMSecurity.isBanned(address))
-						proceed=ConnectState.BANNED;
-					int numAtThisAddress=0;
-					final long LastConnectionDelay=(5*60*1000);
-					boolean anyAtThisAddress=false;
-					final int maxAtThisAddress=6;
-					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CONNSPAMBLOCK))
-					{
-						if(!CMProps.isOnWhiteList(CMProps.WhiteList.IPSCONN, address))
-						{
-							if(CMSecurity.isIPBlocked(address))
-								proceed = ConnectState.BANNED;
-							else
-							{
-								@SuppressWarnings("unchecked")
-								List<Triad<String,Long,Integer>> accessed= (LinkedList<Triad<String,Long,Integer>>)Resources.staticInstance()._getResource("SYSTEM_IPACCESS_STATS");
-								if(accessed == null)
-								{
-									accessed= new LinkedList<Triad<String,Long,Integer>>();
-									Resources.staticInstance()._submitResource("SYSTEM_IPACCESS_STATS",accessed);
-								}
-								synchronized(accessed)
-								{
-									for(final Iterator<Triad<String,Long,Integer>> i=accessed.iterator();i.hasNext();)
-									{
-										final Triad<String,Long,Integer> triad=i.next();
-										if((triad.second.longValue()+LastConnectionDelay)<System.currentTimeMillis())
-											i.remove();
-										else
-										if(triad.first.trim().equalsIgnoreCase(address))
-										{
-											anyAtThisAddress=true;
-											triad.second=Long.valueOf(System.currentTimeMillis());
-											numAtThisAddress=triad.third.intValue()+1;
-											triad.third=Integer.valueOf(numAtThisAddress);
-										}
-									}
-									if(!anyAtThisAddress)
-										accessed.add(new Triad<String,Long,Integer>(address,Long.valueOf(System.currentTimeMillis()),Integer.valueOf(1)));
-								}
-							}
-							@SuppressWarnings("unchecked")
-							Set<String> autoblocked= (Set<String>)Resources.staticInstance()._getResource("SYSTEM_IPACCESS_AUTOBLOCK");
-							if(autoblocked == null)
-							{
-								autoblocked= new TreeSet<String>();
-								Resources.staticInstance()._submitResource("SYSTEM_IPACCESS_AUTOBLOCK",autoblocked);
-							}
-							if(autoblocked.contains(address.toUpperCase()))
-							{
-								if(!anyAtThisAddress)
-									autoblocked.remove(address.toUpperCase());
-								else
-									proceed=ConnectState.BLOCKED;
-							}
-							else
-							if(numAtThisAddress>=maxAtThisAddress)
-							{
-								autoblocked.add(address.toUpperCase());
-								proceed=ConnectState.BLOCKED;
-							}
-						}
-					}
-
+					final String address = CMSecurity.getSocketAddress(sock);
+					final int[] numAtAddress = new int[] {0};
+					final ConnectState proceed = CMSecurity.getConnectState(sock, numAtAddress);
 					if(proceed != ConnectState.NORMAL)
 					{
-						final int abusiveCount=numAtThisAddress-maxAtThisAddress+1;
+						final int abusiveCount=numAtAddress[0]-(int)CMSecurity.CONN_MAX_PER_ADDR+1;
 						final long rounder=Math.round(Math.sqrt(abusiveCount));
 						if(abusiveCount == (rounder*rounder))
-							Log.sysOut(name(),"Blocking a connection from "+address +" ("+numAtThisAddress+")");
+							Log.sysOut(name(),"Blocking a connection from "+address +" ("+numAtAddress[0]+")");
 						try
 						{
 							final PrintWriter out = new PrintWriter(sock.getOutputStream());
@@ -263,7 +187,7 @@ public class MUD extends Thread implements MudHost
 							if(proceed==ConnectState.BLOCKED)
 							{
 								introText=new StringBuffer(Resources.getFileResource(Resources.makeFileResourceName("text/connblocked.txt"),true));
-								introText=CMStrings.replaceAll(introText, "@mins@", ""+(LastConnectionDelay/60000));
+								introText=CMStrings.replaceAll(introText, "@mins@", ""+(CMSecurity.CONN_LAST_DELAY_MS/60000L));
 							}
 							else
 							{
@@ -326,7 +250,6 @@ public class MUD extends Thread implements MudHost
 				&&(CMLib.encoder()!=null))
 				{
 					StringBuffer rejectText;
-
 					try
 					{
 						rejectText = Resources.getFileResource("text/offline.txt",true);
@@ -335,14 +258,12 @@ public class MUD extends Thread implements MudHost
 					{
 						rejectText=new StringBuffer("");
 					}
-
 					try
 					{
 						final PrintWriter out = new PrintWriter(sock.getOutputStream());
 						out.println("\n\rOFFLINE: " + CMProps.getVar(CMProps.Str.MUDSTATUS)+"\n\r");
 						out.println(rejectText);
 						out.flush();
-
 						checkedSleep(1000);
 						out.close();
 					}

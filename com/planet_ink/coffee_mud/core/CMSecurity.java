@@ -68,6 +68,9 @@ public class CMSecurity
 	public static final int JSCRIPT__NO_APPROVAL = 0;
 	public static final int JSCRIPT_REQ_APPROVAL = 1;
 	public static final int JSCRIPT_ALL_APPROVAL = 2;
+	
+	public static final long CONN_LAST_DELAY_MS	 = (5*60*1000);
+	public static final long CONN_MAX_PER_ADDR	 = 6;
 
 	protected static final String[] emptyStrArray= new String[0];
 
@@ -1016,7 +1019,7 @@ public class CMSecurity
 	{
 		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)!=JSCRIPT_REQ_APPROVAL)
 			return;
-		final Map<Long,String> approved=CMSecurity.getApprovedJScriptTable();
+		final Map<Long,String> approved=getApprovedJScriptTable();
 		if(approved.containsKey(Long.valueOf(hashCode)))
 			approved.remove(Long.valueOf(hashCode));
 		approved.put(Long.valueOf(hashCode),approver);
@@ -1066,11 +1069,11 @@ public class CMSecurity
 	 */
 	public static final boolean isApprovedJScript(final StringBuffer script)
 	{
-		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==CMSecurity.JSCRIPT_ALL_APPROVAL)
+		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==JSCRIPT_ALL_APPROVAL)
 			return true;
-		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==CMSecurity.JSCRIPT__NO_APPROVAL)
+		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==JSCRIPT__NO_APPROVAL)
 			return false;
-		final Map<Long,String> approved=CMSecurity.getApprovedJScriptTable();
+		final Map<Long,String> approved=getApprovedJScriptTable();
 		final Long hashCode=Long.valueOf(script.toString().hashCode());
 		final String approver=approved.get(hashCode);
 		if(approver==null)
@@ -1154,7 +1157,7 @@ public class CMSecurity
 	public static final boolean setDebugVar(final String anyFlag)
 	{
 		final String flag = anyFlag.toUpperCase().trim();
-		final DbgFlag dbgFlag = (DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), flag);
+		final DbgFlag dbgFlag = (DbgFlag)CMath.s_valueOf(DbgFlag.values(), flag);
 		if(dbgFlag!=null)
 			return setDebugVar(dbgFlag);
 		return false;
@@ -1169,7 +1172,7 @@ public class CMSecurity
 	public static final boolean removeDebugVar(final String anyFlag)
 	{
 		final String flag = anyFlag.toUpperCase().trim();
-		final DbgFlag dbgFlag = (DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), flag);
+		final DbgFlag dbgFlag = (DbgFlag)CMath.s_valueOf(DbgFlag.values(), flag);
 		if(dbgFlag!=null)
 			return removeDebugVar(dbgFlag);
 		return false;
@@ -1320,7 +1323,7 @@ public class CMSecurity
 		{
 			/*
 			String flag = anyFlag.toUpperCase().trim();
-			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
+			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(DisFlag.values(), flag);
 			if(disFlag!=null)
 			{
 				removeDisableVar(disFlag);
@@ -1350,7 +1353,7 @@ public class CMSecurity
 		{
 			/*
 			String flag = anyFlag.toUpperCase().trim();
-			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
+			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(DisFlag.values(), flag);
 			if(disFlag!=null)
 			{
 				return setDisableVar(disFlag);
@@ -1391,7 +1394,7 @@ public class CMSecurity
 		{
 			/*
 			String flag = anyFlag.toUpperCase().trim();
-			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
+			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(DisFlag.values(), flag);
 			if(disFlag!=null)
 			{
 				return isDisabled(disFlag);
@@ -1580,7 +1583,7 @@ public class CMSecurity
 		if(set == null)
 		{
 			final String flag = anyFlag.toUpperCase().trim();
-			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
+			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(DisFlag.values(), flag);
 			if(disFlag!=null)
 			{
 				return isDisabled(disFlag);
@@ -1705,7 +1708,7 @@ public class CMSecurity
 		if(set == null)
 		{
 			final String flag = anyFlag.toUpperCase().trim();
-			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
+			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(DisFlag.values(), flag);
 			if(disFlag!=null)
 			{
 				removeDisableVar(disFlag);
@@ -1735,7 +1738,7 @@ public class CMSecurity
 		if(set == null)
 		{
 			final String flag = anyFlag.toUpperCase().trim();
-			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
+			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(DisFlag.values(), flag);
 			if(disFlag!=null)
 			{
 				return setDisableVar(disFlag);
@@ -1906,7 +1909,7 @@ public class CMSecurity
 		inst.saveFlags.clear();
 		for(final String flag : flagsList)
 		{
-			final SaveFlag flagObj = (SaveFlag)CMath.s_valueOf(CMSecurity.SaveFlag.class, flag);
+			final SaveFlag flagObj = (SaveFlag)CMath.s_valueOf(SaveFlag.class, flag);
 			if(flagObj != null)
 			{
 				inst.saveFlags.add(flagObj);
@@ -1992,7 +1995,7 @@ public class CMSecurity
 	 */
 	public static boolean isIPBlocked(final String ipAddress)
 	{
-		final LongSet group = CMSecurity.getIPBlocks();
+		final LongSet group = getIPBlocks();
 		final boolean chk = ((group != null) && (group.contains(makeIPNumFromInetAddress(ipAddress))));
 		/*
 		 if(chk && isDebugging(DbgFlag.TEMPMISC))
@@ -2168,6 +2171,161 @@ public class CMSecurity
 			str.append(banMe+"\n");
 		Resources.updateFileResource("::banned.ini",str);
 		return -1;
+	}
+	
+	/**
+	 * When an external connection occurs, this is the resulting
+	 * state from examining the incoming ip address against the
+	 * various security checks.
+	 * 
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static enum ConnectState
+	{
+		NORMAL,
+		BANNED,
+		BLOCKED;
+	}
+
+	/**
+	 * Returns the String version of the socket ip address,
+	 * or the word 'unknown'.
+	 * 
+	 * @param sock the socket to get the address from
+	 * @return the word 'unknown' or the socket address
+	 */
+	public static final String getSocketAddress(final Socket sock)
+	{
+		String address="unknown";
+		try
+		{
+			address=sock.getInetAddress().getHostAddress().trim();
+		}
+		catch(final Exception e)
+		{
+		}
+		return address;
+	}
+
+	/**
+	 * Returns the Resource-global list of ip address statistics.
+	 * @return the Resource-global list of ip address statistics.
+	 */
+	private static final List<Triad<String,Long,Integer>> getIPAccessList()
+	{
+		@SuppressWarnings("unchecked")
+		List<Triad<String,Long,Integer>> accessed= (LinkedList<Triad<String,Long,Integer>>)Resources.staticInstance()._getResource("SYSTEM_IPACCESS_STATS");
+		if(accessed == null)
+		{
+			accessed= new LinkedList<Triad<String,Long,Integer>>();
+			Resources.staticInstance()._submitResource("SYSTEM_IPACCESS_STATS",accessed);
+		}
+		return accessed;
+	}
+	
+	/**
+	 * If the given socket appears on the temporary ip block list, 
+	 * then this will remove the entry.
+	 * @param sock the socket to prevent blockage for
+	 */
+	public static final void clearConnectState(final Socket sock)
+	{
+		String address=getSocketAddress(sock);
+		if(!isDisabled(DisFlag.CONNSPAMBLOCK))
+		{
+			if(!CMProps.isOnWhiteList(CMProps.WhiteList.IPSCONN, address))
+			{
+				final List<Triad<String,Long,Integer>> accessed= getIPAccessList();
+				synchronized(accessed)
+				{
+					for(final Iterator<Triad<String,Long,Integer>> i=accessed.iterator();i.hasNext();)
+					{
+						final Triad<String,Long,Integer> triad=i.next();
+						if((triad.second.longValue()+CONN_LAST_DELAY_MS)<System.currentTimeMillis())
+							i.remove();
+						else
+						if(triad.first.equalsIgnoreCase(address))
+							i.remove();
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Checks the ban list, ip block whitelist, temporary block list, and black list for the 
+	 * given ip address in the given socket, and returns the appropriate state.  This will
+	 * bump the number of connections within a period, so it should be carefully used.
+	 *  
+	 * @see CMSecurity.ConnectState
+	 * 
+	 * @param sock the socket to check and bump 
+	 * @param numAtAddress null, or a 1 dimensional array to return the number of recent conns 
+	 * @return the connect state
+	 */
+	public static final ConnectState getConnectState(final Socket sock, final int[] numAtAddress)
+	{
+		String address=getSocketAddress(sock);
+		ConnectState proceed=ConnectState.NORMAL;
+		if(isBanned(address))
+			proceed=ConnectState.BANNED;
+		int numAtThisAddress=0;
+		boolean anyAtThisAddress=false;
+		if(!isDisabled(DisFlag.CONNSPAMBLOCK))
+		{
+			if(!CMProps.isOnWhiteList(CMProps.WhiteList.IPSCONN, address))
+			{
+				if(isIPBlocked(address))
+					proceed = ConnectState.BANNED;
+				else
+				{
+					final List<Triad<String,Long,Integer>> accessed= getIPAccessList();
+					synchronized(accessed)
+					{
+						for(final Iterator<Triad<String,Long,Integer>> i=accessed.iterator();i.hasNext();)
+						{
+							final Triad<String,Long,Integer> triad=i.next();
+							if((triad.second.longValue()+CONN_LAST_DELAY_MS)<System.currentTimeMillis())
+								i.remove();
+							else
+							if(triad.first.equalsIgnoreCase(address))
+							{
+								anyAtThisAddress=true;
+								triad.second=Long.valueOf(System.currentTimeMillis());
+								numAtThisAddress=triad.third.intValue()+1;
+								triad.third=Integer.valueOf(numAtThisAddress);
+							}
+						}
+						if(!anyAtThisAddress)
+							accessed.add(new Triad<String,Long,Integer>(address.trim(),Long.valueOf(System.currentTimeMillis()),Integer.valueOf(1)));
+					}
+				}
+				@SuppressWarnings("unchecked")
+				Set<String> autoblocked= (Set<String>)Resources.staticInstance()._getResource("SYSTEM_IPACCESS_AUTOBLOCK");
+				if(autoblocked == null)
+				{
+					autoblocked= new TreeSet<String>();
+					Resources.staticInstance()._submitResource("SYSTEM_IPACCESS_AUTOBLOCK",autoblocked);
+				}
+				if(autoblocked.contains(address.toUpperCase()))
+				{
+					if(!anyAtThisAddress)
+						autoblocked.remove(address.toUpperCase());
+					else
+						proceed=ConnectState.BLOCKED;
+				}
+				else
+				if(numAtThisAddress>=CONN_MAX_PER_ADDR)
+				{
+					autoblocked.add(address.toUpperCase());
+					proceed=ConnectState.BLOCKED;
+				}
+			}
+		}
+		if((numAtAddress != null)&&(numAtAddress.length>0))
+			numAtAddress[0] = numAtThisAddress;
+		return proceed;
 	}
 
 	/**

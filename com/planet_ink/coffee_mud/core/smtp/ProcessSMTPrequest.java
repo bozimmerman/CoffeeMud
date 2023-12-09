@@ -268,6 +268,7 @@ public class ProcessSMTPrequest implements Runnable
 						else
 						{
 							replyData=("250 Message accepted for delivery."+cr).getBytes();
+							CMSecurity.clearConnectState(sock);
 							msgsSent++;
 							boolean startBuffering=false;
 							StringBuilder finalData=new StringBuilder("");

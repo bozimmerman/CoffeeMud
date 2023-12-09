@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.CMThreadFactory;
 import com.planet_ink.coffee_mud.core.threads.CMThreadPoolExecutor;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.ConnectState;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -379,6 +380,12 @@ public class SMTPserver extends Thread implements Tickable
 		getJournalSets(); // cache the forwarding journals for the web site
 		return true;
 	}
+	
+	protected void serverDownMessage(final Socket sock) throws IOException
+	{
+		sock.getOutputStream().write(("421 Server down.. try later.\r\n").getBytes());
+		sock.getOutputStream().flush();
+	}
 
 	@Override
 	public void run()
@@ -428,16 +435,15 @@ public class SMTPserver extends Thread implements Tickable
 				sock=servsock.accept();
 				if(sock != null)
 				{
-					while(CMLib.threads().isAllSuspended())
-						Thread.sleep(1000);
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPSERVER))
 						Log.debugOut("SMTPserver","Connection received: "+sock.getInetAddress().getHostAddress());
-					if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+					if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED) 
+					&& (!CMLib.threads().isAllSuspended())
+					&& (CMSecurity.getConnectState(sock, null) == ConnectState.NORMAL))
 						threadPool.execute(new ProcessSMTPrequest(sock,this));
 					else
 					{
-						sock.getOutputStream().write(("421 Mud down.. try later.\r\n").getBytes());
-						sock.getOutputStream().flush();
+						serverDownMessage(sock);
 						sock.close();
 					}
 					sock=null;
