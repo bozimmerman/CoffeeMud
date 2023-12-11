@@ -54,6 +54,12 @@ public class CatSpeak extends AnimalSpeak
 	};
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "mewl(s)";
+	}
+
+	@Override
 	protected String[] getSounds()
 	{
 		return animalSounds;

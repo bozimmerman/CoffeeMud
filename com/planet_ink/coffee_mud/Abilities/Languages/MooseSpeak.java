@@ -48,6 +48,12 @@ public class MooseSpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "moo(s)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"bellow","belloow","behllouuuhw"

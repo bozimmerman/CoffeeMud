@@ -48,6 +48,12 @@ public class PigSpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "oink(s)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"snort","grunt","squeal","oink","oink","oink","oink","oink","oink"

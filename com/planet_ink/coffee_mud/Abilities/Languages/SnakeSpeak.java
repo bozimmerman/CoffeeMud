@@ -48,6 +48,12 @@ public class SnakeSpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "hiss(es)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"hiss","hissss","hisssss","sssss","ss","s","ssssss"

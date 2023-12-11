@@ -54,6 +54,12 @@ public class ChickenSpeak extends AnimalSpeak
 	};
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "bawk(s)";
+	}
+
+	@Override
 	protected String[] getSounds()
 	{
 		return animalSounds;

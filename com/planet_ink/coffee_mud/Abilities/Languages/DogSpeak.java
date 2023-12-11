@@ -54,6 +54,12 @@ public class DogSpeak extends AnimalSpeak
 	};
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "bark(s)";
+	}
+
+	@Override
 	protected String[] getSounds()
 	{
 		return animalSounds;

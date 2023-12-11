@@ -54,6 +54,12 @@ public class CowSpeak extends AnimalSpeak
 	};
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "moo(s)";
+	}
+
+	@Override
 	protected String[] getSounds()
 	{
 		return animalSounds;

@@ -48,6 +48,12 @@ public class Blah extends StdLanguage
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "blather(s)";
+	}
+
 	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
 

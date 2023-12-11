@@ -49,6 +49,12 @@ public class Semaphore extends StdLanguage
 	}
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "motion(s)";
+	}
+
+	@Override
 	public String translate(final String language, final String word)
 	{
 		return fixCase(word,"flag");

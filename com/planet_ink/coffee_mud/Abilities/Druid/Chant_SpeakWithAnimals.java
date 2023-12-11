@@ -266,6 +266,12 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 	}
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "";
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -445,7 +451,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 	}
 
 	@Override
-	public boolean translatesLanguage(final String language, String words)
+	public boolean translatesLanguage(final String language, final String words)
 	{
 		return myLanguages.containsKey(language);
 	}

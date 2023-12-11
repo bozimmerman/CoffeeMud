@@ -54,6 +54,12 @@ public class BirdSpeak extends AnimalSpeak
 	};
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "squawk(s)";
+	}
+
+	@Override
 	protected String[] getSounds()
 	{
 		return animalSounds;

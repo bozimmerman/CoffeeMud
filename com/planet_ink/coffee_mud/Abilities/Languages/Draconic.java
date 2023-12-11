@@ -55,6 +55,12 @@ public class Draconic extends StdLanguage
 	}
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "hiss(es)";
+	}
+
+	@Override
 	public List<String[]> translationLists(final String language)
 	{
 		if(wordLists==null)

@@ -48,6 +48,12 @@ public class Goblinese extends StdLanguage
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "squeek(s)";
+	}
+
 	public static List<String[]> wordLists=null;
 	public Goblinese()
 	{

@@ -48,6 +48,12 @@ public class Druidic extends StdLanguage
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "murmur(s)";
+	}
+
 	public static List<String[]> wordLists=null;
 	public Druidic()
 	{

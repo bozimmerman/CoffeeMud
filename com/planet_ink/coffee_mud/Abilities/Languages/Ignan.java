@@ -62,6 +62,12 @@ public class Ignan extends StdLanguage
 	}
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "crackle(s)";
+	}
+
+	@Override
 	public List<String[]> translationLists(final String language)
 	{
 		if(wordLists==null)

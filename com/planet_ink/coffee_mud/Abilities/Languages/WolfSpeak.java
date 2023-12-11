@@ -48,6 +48,12 @@ public class WolfSpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "howl(s)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"bark","howl","cry","yell","yelp"

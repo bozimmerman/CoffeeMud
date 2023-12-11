@@ -48,6 +48,12 @@ public class FrogSpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "croak(s)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"croak","ribbit","ribbit","ribbit","gribbit"

@@ -48,6 +48,12 @@ public class MonkeySpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "howler(s)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"chatter","gecker","gibber","whoop","screech"

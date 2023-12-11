@@ -48,6 +48,12 @@ public class SheepSpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "bleat(s)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"bleat","baa","baaa","baaaa","baaaaa","baaaaaa"

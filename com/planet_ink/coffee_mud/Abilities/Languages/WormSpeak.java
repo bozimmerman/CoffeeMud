@@ -33,6 +33,12 @@ public class WormSpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "squirm(s)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"mrrr","mrrmrmmmrmrm","mmmmm","rrrrm","rr","m","mrmrmrmrm"

@@ -48,6 +48,12 @@ public class RavenSpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "caw(s)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"croak"

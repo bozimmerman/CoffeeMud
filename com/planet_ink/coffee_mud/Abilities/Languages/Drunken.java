@@ -61,6 +61,12 @@ public class Drunken extends StdLanguage
 	}
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "slur(s)";
+	}
+
+	@Override
 	public List<String[]> translationLists(final String language)
 	{
 		return wordLists;

@@ -48,6 +48,12 @@ public class Orcish extends StdLanguage
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "grunt(s)";
+	}
+
 	public static List<String[]> wordLists=null;
 	public Orcish()
 	{

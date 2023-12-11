@@ -54,6 +54,12 @@ public class ElephantSpeak extends AnimalSpeak
 	};
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "trumpet(s)";
+	}
+
+	@Override
 	protected String[] getSounds()
 	{
 		return animalSounds;

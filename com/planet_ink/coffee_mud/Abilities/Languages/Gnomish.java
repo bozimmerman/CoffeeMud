@@ -55,6 +55,12 @@ public class Gnomish extends StdLanguage
 	}
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "articulate(s)";
+	}
+
+	@Override
 	public List<String[]> translationLists(final String language)
 	{
 		if(wordLists==null)

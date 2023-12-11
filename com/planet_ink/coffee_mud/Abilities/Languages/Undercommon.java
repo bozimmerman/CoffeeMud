@@ -49,6 +49,12 @@ public class Undercommon extends StdLanguage
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "utter(s)";
+	}
+
 	public static List<String[]> wordLists=null;
 	private static Drowish drowish = new Drowish();
 	public Undercommon()
@@ -79,7 +85,7 @@ public class Undercommon extends StdLanguage
 	}
 
 	@Override
-	public boolean translatesLanguage(final String language, String words)
+	public boolean translatesLanguage(final String language, final String words)
 	{
 		return ID().equalsIgnoreCase(language)
 				|| "Dwarven".equalsIgnoreCase(language)

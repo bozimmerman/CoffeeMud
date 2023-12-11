@@ -48,6 +48,12 @@ public class HorseSpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "whinie(s)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"neigh","snort","whinny","nicker","sputter"

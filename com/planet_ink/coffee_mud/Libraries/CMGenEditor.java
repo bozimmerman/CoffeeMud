@@ -9094,6 +9094,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 
 			promptStatBool(mob, me, ++showNumber, showFlag, "Is Natural", "NATURALLANG");
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Source Verb","VERB",true);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Translation Verb","TRANVERB",true);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
 
 			if (showFlag < -900)

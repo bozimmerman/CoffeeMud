@@ -48,6 +48,12 @@ public class Gigantic extends StdLanguage
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "BOOM(S)";
+	}
+
 	public static List<String[]> wordLists=null;
 	public Gigantic()
 	{

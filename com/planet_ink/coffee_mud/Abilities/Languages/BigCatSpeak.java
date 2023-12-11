@@ -54,6 +54,12 @@ public class BigCatSpeak extends AnimalSpeak
 	};
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "roar(s)";
+	}
+
+	@Override
 	protected String[] getSounds()
 	{
 		return animalSounds;

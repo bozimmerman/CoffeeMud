@@ -135,6 +135,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			CR.setStat("HASHEDWORDS", CMParms.toKeyValueSlashListString(((Language)A).translationHash(A.ID())));
 			CR.setStat("NATURALLANG", ""+((Language)A).isANaturalLanguage());
 			CR.setStat("INTERPRETS", CMParms.combineWith(((Language)A).languagesSupported(),','));
+			CR.setStat("VERB", ((Language)A).getVerb());
+			CR.setStat("TRANSVERB", ((Language)A).getTranslationVerb());
 		}
 		else
 			CR=(Ability)CMClass.getAbility("GenAbility").copyOf();

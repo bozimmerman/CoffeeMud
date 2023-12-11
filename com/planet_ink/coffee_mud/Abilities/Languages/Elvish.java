@@ -48,6 +48,12 @@ public class Elvish extends StdLanguage
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "trill(s)";
+	}
+
 	public static List<String[]> wordLists=null;
 	public Elvish()
 	{

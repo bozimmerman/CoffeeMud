@@ -62,7 +62,9 @@ public class GenLanguage extends StdLanguage
 	private static final int V_HELP=3;//S
 	private static final int V_INTS=4;//L<S>
 	private static final int V_NAT=5;//L<B>
-	private static final int NUM_VS=6;//S
+	private static final int V_VERB=6;//S
+	private static final int V_TVERB=7;//S
+	private static final int NUM_VS=8;//S
 
 	private static final Object[] makeEmpty()
 	{
@@ -73,6 +75,8 @@ public class GenLanguage extends StdLanguage
 		O[V_HELP]="<ABILITY>This language is not yet documented.";
 		O[V_INTS]=new HashSet<String>();
 		O[V_NAT]=Boolean.TRUE;
+		O[V_VERB]="";
+		O[V_TVERB]="";
 		return O;
 	}
 
@@ -129,6 +133,19 @@ public class GenLanguage extends StdLanguage
 		return ((Boolean)V(ID,V_NAT)).booleanValue();
 	}
 
+
+	@Override
+	public String getVerb()
+	{
+		return (String)V(ID,V_VERB);
+	}
+
+	@Override
+	public String getTranslationVerb()
+	{
+		return (String)V(ID,V_TVERB);
+	}
+
 	@Override
 	public CMObject newInstance()
 	{
@@ -170,7 +187,9 @@ public class GenLanguage extends StdLanguage
 										 "HASHEDWORDS",//2S
 										 "HELP",//27I
 										 "INTERPRETS", // S
-										 "NATURALLANG" // B
+										 "NATURALLANG", // B
+										 "VERB", // S
+										 "TRANSVERB", // S
 										};
 
 	@Override
@@ -237,6 +256,10 @@ public class GenLanguage extends StdLanguage
 			return CMParms.combineWith((Set<String>)V(ID,V_INTS), ',');
 		case 7:
 			return V(ID,V_NAT).toString();
+		case 8:
+			return V(ID,V_VERB).toString();
+		case 9:
+			return V(ID,V_TVERB).toString();
 		default:
 			if (code.equalsIgnoreCase("javaclass"))
 				return "GenLanguage";
@@ -330,6 +353,12 @@ public class GenLanguage extends StdLanguage
 				SV(ID, V_NAT, Boolean.valueOf(CMath.s_bool(val)));
 			break;
 		}
+		case 8:
+			SV(ID, V_VERB, val);
+			break;
+		case 9:
+			SV(ID, V_TVERB, val);
+			break;
 		default:
 			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenLanguage"))
 				parseAllXML(val);

@@ -55,6 +55,12 @@ public class Drowish extends StdLanguage
 	}
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "miser(es)";
+	}
+
+	@Override
 	public List<String[]> translationLists(final String language)
 	{
 		if(wordLists==null)

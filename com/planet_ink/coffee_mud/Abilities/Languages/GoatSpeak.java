@@ -48,6 +48,12 @@ public class GoatSpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "bleat(s)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"bleat","baa","baaa","baaaaa","baaaaaa"

@@ -60,6 +60,12 @@ public class Aquan extends AnimalSpeak
 	private static String[] animalSounds = null;
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "gurgle(s)";
+	}
+
+	@Override
 	protected String[] getSounds()
 	{
 		if(animalSounds == null)

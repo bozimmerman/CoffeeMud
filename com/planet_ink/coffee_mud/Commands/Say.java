@@ -117,7 +117,7 @@ public class Say extends StdCommand
 			return false;
 		}
 
-		Vector<Room> yellRooms=new Vector<Room>();
+		List<Room> yellRooms=new ArrayList<Room>();
 		if(theCommand.equals("YELL"))
 		{
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -171,10 +171,12 @@ public class Say extends StdCommand
 			if(whom.length()>0)
 			{
 				target=R.fetchFromRoomFavorMOBs(null,whom);
-				if((toFlag)&&(target==null))
+				if((toFlag)
+				&&(target==null))
 					target=mob.findItem(null,whom);
 
-				if((!toFlag)&&(target!=null))
+				if((!toFlag)
+				&&(target!=null))
 				{
 					if(!(target instanceof MOB))
 						target=null;
@@ -221,7 +223,7 @@ public class Say extends StdCommand
 						if(dir >=0)
 						{
 							commands.remove(1);
-							yellRooms=new Vector<Room>();
+							yellRooms=new ArrayList<Room>();
 							if(theCommand.equals("YELL"))
 							{
 								final Room R2=R.getRoomInDir(dir);
@@ -230,13 +232,16 @@ public class Say extends StdCommand
 								{
 									theWordSuffix=" "+CMLib.directions().getDirectionName(dir);
 									yellRooms.add(R2);
-									if((E2!=null)&&(E2.isOpen()))
+									if((E2!=null)
+									&&(E2.isOpen()))
 									{
 										for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 										{
 											final Room R3=R2.getRoomInDir(d);
 											final Exit E3=R2.getExitInDir(d);
-											if((R3!=null)&&(E3!=null)&&(E3.isOpen()))
+											if((R3!=null)
+											&&(E3!=null)
+											&&(E3.isOpen()))
 												yellRooms.add(R3);
 										}
 									}
@@ -325,9 +330,6 @@ public class Say extends StdCommand
 			theWord=L(theWord+"(s) to");
 		else
 			theWord=L(theWord+"(s)");
-		if(CMLib.flags().isAnimalIntelligence(mob))
-			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+L("go(es)")+theWordSuffix+" '"+combinedCommands+"'^</SAY^>^?");
-		else
 		if(target==null)
 			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" '"+combinedCommands+"'^</SAY^>^?");
 		else

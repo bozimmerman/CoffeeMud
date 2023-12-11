@@ -48,6 +48,12 @@ public class OwlSpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "hoot(s)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"hoot","hoot","hoot","hoot","hoot","hoot","hoot","hoot","hoot","hoot","scream","screech","shriek"

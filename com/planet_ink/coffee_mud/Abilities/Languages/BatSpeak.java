@@ -54,6 +54,12 @@ public class BatSpeak extends AnimalSpeak
 	};
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "squeek(s)";
+	}
+
+	@Override
 	protected String[] getSounds()
 	{
 		return animalSounds;

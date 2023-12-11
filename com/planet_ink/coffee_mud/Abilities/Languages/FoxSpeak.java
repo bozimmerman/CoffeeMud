@@ -48,6 +48,12 @@ public class FoxSpeak extends StdLanguage
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "yip(s)";
+	}
+
 	private static final String[] phrases = {
 		"Ring-ding-ding-ding-dingeringeding",
 		"Gering-ding-ding-ding-dingeringeding",

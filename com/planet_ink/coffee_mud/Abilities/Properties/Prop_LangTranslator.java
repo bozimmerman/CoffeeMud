@@ -89,7 +89,7 @@ public class Prop_LangTranslator extends Property implements Language
 		final String rname = CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(affected));
 		Log.errOut("Prop_LangTranslator: "+msg+": "+aname+": "+rname);
 	}
-	
+
 	@Override
 	public void setMiscText(final String text)
 	{
@@ -110,14 +110,14 @@ public class Prop_LangTranslator extends Property implements Language
 			else
 			if(s.startsWith("'")||s.startsWith("`"))
 			{
-				String wds=s.substring(1).trim().toUpperCase();
+				final String wds=s.substring(1).trim().toUpperCase();
 				if(wds.length()>0)
 					words.add(wds);
 			}
 			else
 			if(s.startsWith("#"))
 			{
-				String nm=s.substring(1).trim().toUpperCase();
+				final String nm=s.substring(1).trim().toUpperCase();
 				if(nm.length()>0)
 					trusted.add(nm);
 			}
@@ -147,6 +147,12 @@ public class Prop_LangTranslator extends Property implements Language
 
 	@Override
 	public String getVerb()
+	{
+		return "";
+	}
+
+	@Override
+	public String getTranslationVerb()
 	{
 		return "";
 	}
@@ -192,7 +198,7 @@ public class Prop_LangTranslator extends Property implements Language
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean translatesLanguage(final String language, final String words)
 	{
@@ -284,7 +290,7 @@ public class Prop_LangTranslator extends Property implements Language
 					if(wordMatch(spokenMsg, p.second))
 					{
 						final MOB M=(MOB)affected;
-						List<String> parsedInput=CMParms.parse(spokenMsg);
+						final List<String> parsedInput=CMParms.parse(spokenMsg);
 						int metaFlags = MUDCmdProcessor.METAFLAG_INORDER;
 						if((!M.isPlayer())&&(M.session()!=null))
 							metaFlags|=MUDCmdProcessor.METAFLAG_POSSESSED;
@@ -339,12 +345,12 @@ public class Prop_LangTranslator extends Property implements Language
 			}
 		}
 	}
-	
+
 	protected String[] parseParms(final String code,final String val)
 	{
 		if(code.startsWith("+")||code.startsWith("-"))
 		{
-			String lang=code.substring(1);
+			final String lang=code.substring(1);
 			String parms="";
 			if((val != null)&&(val.length()>0))
 				parms=val;
@@ -352,11 +358,11 @@ public class Prop_LangTranslator extends Property implements Language
 		}
 		return null;
 	}
-	
+
 	public Pair<Integer,List<String>> parseEquate(final Integer defI, final String arg)
 	{
 		Integer amt = (defI == null) ? Integer.valueOf(100) : defI;
-		List<String> words=new ArrayList<String>();
+		final List<String> words=new ArrayList<String>();
 		for(String s : CMParms.parse(arg))
 		{
 			if(s.endsWith("%"))
@@ -366,22 +372,22 @@ public class Prop_LangTranslator extends Property implements Language
 			else
 			if(s.startsWith("'")||s.startsWith("`"))
 			{
-				String wds=s.substring(1).trim().toUpperCase();
+				final String wds=s.substring(1).trim().toUpperCase();
 				if(wds.length()>0)
 					words.add(wds);
 			}
 		}
 		return new Pair<Integer,List<String>>(amt,words);
 	}
-	
+
 	public void rebuildMiscText()
 	{
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		if(passive)
 			str.append("NOTRANSLATE ");
 		for(final String t : trusted)
 			str.append("#"+t).append(" ");
-		for(String ID : ints)
+		for(final String ID : ints)
 		{
 			final Pair<Integer,List<String>> p = langs.get(ID.toUpperCase().trim());
 			if(p!=null)
@@ -399,7 +405,7 @@ public class Prop_LangTranslator extends Property implements Language
 		}
 		super.miscText = str.toString().trim();
 	}
-	
+
 	@Override
 	public String getStat(final String code)
 	{
@@ -428,13 +434,13 @@ public class Prop_LangTranslator extends Property implements Language
 		else
 			return super.getStat(code);
 	}
-	
+
 	@Override
 	public void setStat(final String code, final String val)
 	{
 		if(code.startsWith("+"))
 		{
-			String[] args = parseParms(code,val);
+			final String[] args = parseParms(code,val);
 			if(args[0].equalsIgnoreCase("PASSIVE")||args[0].equalsIgnoreCase("NOTRANSLATE"))
 			{
 				if (!passive)
@@ -465,8 +471,8 @@ public class Prop_LangTranslator extends Property implements Language
 				}
 				else
 				{
-					List<String> old=langs.get(A.ID().toUpperCase()).second;
-					Integer I=langs.get(A.ID().toUpperCase()).first;
+					final List<String> old=langs.get(A.ID().toUpperCase()).second;
+					final Integer I=langs.get(A.ID().toUpperCase()).first;
 					langs.put(A.ID().toUpperCase(), parseEquate(I,args[1]));
 					langs.get(A.ID().toUpperCase()).second.addAll(old);
 					rebuildMiscText();
@@ -476,7 +482,7 @@ public class Prop_LangTranslator extends Property implements Language
 		else
 		if(code.startsWith("-"))
 		{
-			String[] args = parseParms(code,val);
+			final String[] args = parseParms(code,val);
 			if(args[0].equalsIgnoreCase("PASSIVE")||args[0].equalsIgnoreCase("NOTRANSLATE"))
 			{
 				if (passive)

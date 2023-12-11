@@ -48,6 +48,12 @@ public class Dwarven extends StdLanguage
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "bellow(s)";
+	}
+
 	public static List<String[]> wordLists=null;
 	public Dwarven()
 	{

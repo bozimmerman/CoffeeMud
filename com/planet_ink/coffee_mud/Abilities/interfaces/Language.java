@@ -60,9 +60,9 @@ public interface Language extends Ability
 	/**
 	 * Returns whether the given language is translated by this one, possibly
 	 * given the words that would be translated.
-	 * 
+	 *
 	 * Does not use {@link Language#languagesSupported()}
-	 * 
+	 *
 	 * @param language the language to test
 	 * @param words null, or the words to be translated
 	 * @return true if this language translates (usually ID() == language)
@@ -122,11 +122,18 @@ public interface Language extends Ability
 	 * @return whether this is a natural sentient language
 	 */
 	public boolean isANaturalLanguage();
-	
+
 	/**
-	 * When someone who doesn't speak a language hears it spoken, the 
+	 * When someone who doesn't speak a language hears it spoken, the
 	 * verb say(s) is replaced with this verb (if it exists).
 	 * @return empty string, of a verb that replaces "say(s)"
 	 */
 	public String getVerb();
+
+	/**
+	 * When someone who doest speak a language hears it spoken, the
+	 * verb say(s) is replaced with this verb (if it exists).
+	 * @return empty string, of a verb that replaces "say(s)" in the translation
+	 */
+	public String getTranslationVerb();
 }

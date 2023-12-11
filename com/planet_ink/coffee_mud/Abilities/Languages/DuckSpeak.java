@@ -48,6 +48,12 @@ public class DuckSpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "quack(s)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"quack"

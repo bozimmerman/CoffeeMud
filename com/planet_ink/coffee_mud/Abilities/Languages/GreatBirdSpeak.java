@@ -48,6 +48,12 @@ public class GreatBirdSpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "screech(es)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"scream","squawk","mew","squeal","scream","squawk","mew","squeal","chirrup","chirp","twitter","tweet","sing","whistle","warble","trill","cheep","click"

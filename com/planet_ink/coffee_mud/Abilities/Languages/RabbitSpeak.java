@@ -48,6 +48,12 @@ public class RabbitSpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "eep(s)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"stomp","STOMP","crrryyyy","SCREAM!!","cry","sqeeeek","chitter","purr"

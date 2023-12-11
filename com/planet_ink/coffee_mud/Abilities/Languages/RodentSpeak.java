@@ -48,6 +48,12 @@ public class RodentSpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "squeal(s)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"squeak","squeak","squeak","squeak","squeal","eek","brux"

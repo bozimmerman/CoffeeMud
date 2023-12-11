@@ -48,6 +48,12 @@ public class GooseSpeak extends AnimalSpeak
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "honk(s)";
+	}
+
 	private final static String[] animalSounds=
 	{
 		"cackle","gobble","hiss","honk","quack"

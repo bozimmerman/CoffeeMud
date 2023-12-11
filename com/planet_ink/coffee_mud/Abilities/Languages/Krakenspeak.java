@@ -53,6 +53,12 @@ public class Krakenspeak extends Aquan
 		super();
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "decant(s)";
+	}
+
 	public String tup(final String msg)
 	{
 		if(msg==null)

@@ -55,6 +55,12 @@ public class ThievesCant extends StdLanguage
 		return localizedName;
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "insinuate(s)";
+	}
+
 	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
 	public ThievesCant()

@@ -363,6 +363,20 @@ public class AbilityData extends StdWebMacro
 							old=CMath.s_bool(A.getStat("NATURALLANG"))?"on":"";
 						str.append(old.equalsIgnoreCase("on")?"CHECKED, ":", ");
 					}
+					if(parms.containsKey("VERB"))
+					{
+						String old=httpReq.getUrlParameter("VERB");
+						if(old==null)
+							old=((Language) A).getVerb();
+						str.append(old.trim());
+					}
+					if(parms.containsKey("TRANSVERB"))
+					{
+						String old=httpReq.getUrlParameter("TRANSVERB");
+						if(old==null)
+							old=((Language) A).getTranslationVerb();
+						str.append(old.trim());
+					}
 					if(parms.containsKey("WORDLISTS"))
 					{
 						List<String[]> wordLists=((Language)A).translationLists(A.ID());

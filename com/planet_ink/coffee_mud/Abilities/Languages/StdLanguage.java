@@ -283,6 +283,12 @@ public class StdLanguage extends StdAbility implements Language
 		return "";
 	}
 
+	@Override
+	public String getTranslationVerb()
+	{
+		return "";
+	}
+
 	public String scrambleAll(final String language, final String str, final int numToMess)
 	{
 		final StringBuffer newStr=new StringBuffer("");
@@ -415,18 +421,36 @@ public class StdLanguage extends StdAbility implements Language
 		return winner;
 	}
 
+	protected String fixSayVerb(final String fullSay, final String verb)
+	{
+		if((verb.length() > 0)
+		&&(fullSay != null))
+		{
+			final int x=fullSay.indexOf('\'');
+			if(x > 0)
+			{
+				final String word = L("say(s)");
+				final int y = fullSay.lastIndexOf(word, x);
+				if((y > 0) && (y < x))
+					return fullSay.substring(0,y) + verb + fullSay.substring(y+word.length());
+			}
+		}
+		return fullSay;
+	}
+
 	protected boolean processSourceMessage(final CMMsg msg, final String str, final int numToMess)
 	{
 		String smsg=CMStrings.getSayFromMessage(msg.sourceMessage());
 		if(smsg != null)
 		{
+			final String sayMessage = fixSayVerb(msg.sourceMessage(), getTranslationVerb());
 			if(numToMess>0)
 				smsg=messChars(ID(),smsg,numToMess);
 			msg.modify(msg.source(),
 					   msg.target(),
 					   this,
 					   msg.sourceCode(),
-					   CMStrings.substituteSayInMessage(msg.sourceMessage(),smsg),
+					   CMStrings.substituteSayInMessage(sayMessage,smsg),
 					   msg.targetCode(),
 					   msg.targetMessage(),
 					   msg.othersCode(),
@@ -438,15 +462,17 @@ public class StdLanguage extends StdAbility implements Language
 	protected boolean processNonSourceMessages(final CMMsg msg, String str, final int numToMess)
 	{
 		str=scrambleAll(ID(),str,numToMess);
+		final String targetMessage = fixSayVerb(msg.targetMessage(), getVerb());
+		final String othersMessage = fixSayVerb(msg.othersMessage(), getVerb());
 		msg.modify(msg.source(),
 				   msg.target(),
 				   this,
 				   msg.sourceCode(),
 				   msg.sourceMessage(),
 				   msg.targetCode(),
-				   CMStrings.substituteSayInMessage(msg.targetMessage(),str),
+				   CMStrings.substituteSayInMessage(targetMessage,str),
 				   msg.othersCode(),
-				   CMStrings.substituteSayInMessage(msg.othersMessage(),str));
+				   CMStrings.substituteSayInMessage(othersMessage,str));
 		return true;
 	}
 
@@ -489,7 +515,7 @@ public class StdLanguage extends StdAbility implements Language
 					final int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-getProficiency(ID()),100)));
 					if(!processSourceMessage(msg, str, numToMess))
 						return false;
-					if(!processNonSourceMessages(msg,str,numToMess))
+					if(!processNonSourceMessages(msg, str, numToMess))
 						return false;
 					if(CMLib.flags().isAliveAwakeMobile((MOB)affected,true))
 						helpProficiency((MOB)affected, 0);
@@ -596,7 +622,8 @@ public class StdLanguage extends StdAbility implements Language
 		)
 		{
 			String str;
-			if(msg.targetMessage().startsWith("::")&&(msg.targetMessage().indexOf("::",2)>0))
+			if(msg.targetMessage().startsWith("::")
+			&&(msg.targetMessage().indexOf("::",2)>0))
 				str=msg.targetMessage().substring(msg.targetMessage().indexOf("::",2)+2);
 			else
 				str=msg.targetMessage();
@@ -699,7 +726,8 @@ public class StdLanguage extends StdAbility implements Language
 			String otherMes=msg.othersMessage();
 			if(msg.target()!=null)
 				otherMes=CMLib.coffeeFilter().fullOutFilter(null,(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.othersCode(),L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name()),CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.othersCode(),
+					L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name()),CMMsg.NO_EFFECT,null));
 			return true;
 		}
 		return false;
@@ -712,7 +740,8 @@ public class StdLanguage extends StdAbility implements Language
 			String otherMes=msg.targetMessage();
 			if(msg.target()!=null)
 				otherMes=CMLib.coffeeFilter().fullOutFilter(null,(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.targetCode(),L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name()),CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.targetCode(),
+					L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name()),CMMsg.NO_EFFECT,null));
 			return true;
 		}
 		return false;
@@ -722,7 +751,8 @@ public class StdLanguage extends StdAbility implements Language
 	{
 		if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 		{
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),sourceWords),name())));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),
+					L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),sourceWords),name())));
 			return true;
 		}
 		return false;

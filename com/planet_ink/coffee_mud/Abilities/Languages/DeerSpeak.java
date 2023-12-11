@@ -54,6 +54,12 @@ public class DeerSpeak extends AnimalSpeak
 	};
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "bleat(s)";
+	}
+
+	@Override
 	protected String[] getSounds()
 	{
 		return animalSounds;

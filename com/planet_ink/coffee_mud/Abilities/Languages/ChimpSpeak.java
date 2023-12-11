@@ -54,6 +54,12 @@ public class ChimpSpeak extends AnimalSpeak
 	};
 
 	@Override
+	public String getTranslationVerb()
+	{
+		return "chatter(s)";
+	}
+
+	@Override
 	protected String[] getSounds()
 	{
 		return animalSounds;

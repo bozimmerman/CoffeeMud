@@ -66,6 +66,18 @@ public class AnimalSpeak extends StdLanguage
 		return false;
 	}
 
+	@Override
+	public String getVerb()
+	{
+		return "go(es)";
+	}
+
+	@Override
+	public String getTranslationVerb()
+	{
+		return "growl(s)";
+	}
+
 	private final static String[] animalSounds={
 		"hiss","grunt","roar","quak","snort","growl","screech","growl","groan","moan","roar","hum","buzz","drone","click","chirrup","chirp",
 		"twitter","tweet","sing","whistle","boom","whistle","chirp","squeal","screech","shriek","squeak","hoot","bleat","grunt","chirp",
