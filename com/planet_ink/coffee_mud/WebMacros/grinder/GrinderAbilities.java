@@ -144,6 +144,8 @@ public class GrinderAbilities
 		A.setStat("SOUND",(old==null)?"":old);
 		old=httpReq.getUrlParameter("VERB");
 		A.setStat("VERB",(old==null)?"":old);
+		old=httpReq.getUrlParameter("TRANSVERB");
+		A.setStat("TRANSVERB",(old==null)?"":old);
 		old=httpReq.getUrlParameter("FILENAME");
 		A.setStat("FILENAME",(old==null)?"":old);
 		old=httpReq.getUrlParameter("VQUALITY");
