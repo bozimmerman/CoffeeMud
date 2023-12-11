@@ -179,6 +179,13 @@ public class Skill_Trip extends StdSkill
 				return Ability.QUALITY_INDIFFERENT;
 			if(CMLib.flags().isInFlight(target))
 				return Ability.QUALITY_INDIFFERENT;
+			if(target instanceof MOB)
+			{
+				final Rideable targetR = ((MOB)target).riding();
+				if((targetR != null)
+				&&(mob.riding() != targetR))
+					return Ability.QUALITY_INDIFFERENT;
+			}
 		}
 		return super.castingQuality(mob,target);
 	}
@@ -190,9 +197,18 @@ public class Skill_Trip extends StdSkill
 		if(target==null)
 			return false;
 
-		if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
+		if(CMLib.flags().isSitting(target)
+		||CMLib.flags().isSleeping(target))
 		{
 			failureTell(mob,target,auto,L("<S-NAME> is already on the floor!"));
+			return false;
+		}
+
+		final Rideable targetR = target.riding();
+		if((targetR != null)
+		&&(mob.riding() != targetR))
+		{
+			mob.tell(L("You can't trip someone @x1 @x2!",target.riding().stateString(target),target.riding().name()));
 			return false;
 		}
 

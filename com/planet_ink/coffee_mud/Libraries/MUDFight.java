@@ -2204,10 +2204,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				((MOB)riddenM).recoverPhyStats();
 			}
 		}
-		if((this instanceof Rideable)
-		&&(((Rideable)this).numRiders()>0))
+		if((mob instanceof Rideable)
+		&&(((Rideable)mob).numRiders()>0))
 		{
-			for(final Enumeration<Rider> r = ((Rideable)this).riders();r.hasMoreElements();)
+			for(final Enumeration<Rider> r = ((Rideable)mob).riders();r.hasMoreElements();)
 			{
 				final Rider R = r.nextElement();
 				if((R instanceof MOB)

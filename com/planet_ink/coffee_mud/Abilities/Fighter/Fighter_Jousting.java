@@ -285,9 +285,9 @@ public class Fighter_Jousting extends FighterSkill
 		}
 		else
 		if(mount != null)
-			return beneficialVisualFizzle(mob,target,L("<S-NAME> "+mount.rideString(mob)+" at <T-NAMESELF> in a Joust, but miss(es)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> "+mount.rideString(mob)+" at <T-NAMESELF> in a Joust, but miss(es)."));
 		else
-			return beneficialVisualFizzle(mob,target,L("<S-NAME> joust(s) at <T-NAMESELF> in a Joust, but miss(es)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> joust(s) at <T-NAMESELF> in a Joust, but miss(es)."));
 
 		// return whether it worked
 		return success;

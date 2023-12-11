@@ -2227,11 +2227,38 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						}
 						case 'E':
 						{
-							if ((mob.isInCombat()) && (CMLib.flags().canBeSeenBy(tank, mob)))
+							if (mob.isInCombat() && CMLib.flags().canBeSeenBy(tank, mob))
 								buf.append(tank.healthText(mob) + "\n\r");
 							c++;
 							break;
 						}
+						case 'd':
+						{
+							final MOB victim = tank.getVictim();
+							if (tank.isInCombat() && (victim != null))
+								buf.append("" + tank.rangeToTarget());
+							c++;
+							break;
+						}
+						case 'D':
+						{
+							final Rideable tR;
+							if((tank != mob)&&(tank instanceof Rideable))
+								tR = (Rideable)tank;
+							else
+								tR = tank.riding();
+							if(tR instanceof MOB)
+							{
+								final MOB trM = (MOB)tR;
+								final MOB victim = trM.getVictim();
+								if (trM.isInCombat() && (victim != null))
+									buf.append("" + trM.rangeToTarget());
+							}
+							c++;
+							break;
+						}
+						default:
+							break;
 						}
 					}
 					c++;

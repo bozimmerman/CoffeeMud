@@ -77,7 +77,7 @@ public class DefaultSession implements Session
 	private volatile Thread	 writeThread 		 = null;
 	protected String		 groupName			 = null;
 	protected SessionStatus  status 			 = SessionStatus.HANDSHAKE_OPEN;
-	protected long 			 lastStateChangeMs	 = System.currentTimeMillis();
+	protected volatile long  lastStateChangeMs	 = System.currentTimeMillis();
 	protected int   		 snoopSuspensionStack= 0;
 	protected Socket 	 	 sock				 = null;
 	protected SesInputStream charWriter;
@@ -133,7 +133,7 @@ public class DefaultSession implements Session
 	protected long			 milliTotal			 = 0;
 	protected long			 tickTotal			 = 0;
 	protected long			 lastKeystroke		 = 0;
-	protected long			 lastIACIn		 	 = System.currentTimeMillis();
+	protected volatile long	 lastIACIn		 	 = System.currentTimeMillis();
 	protected long			 promptLastShown	 = 0;
 	protected char 			 threadGroupChar	 = '\0';
 	protected volatile long  lastWriteTime		 = System.currentTimeMillis();
@@ -412,7 +412,8 @@ public class DefaultSession implements Session
 						case HANDSHAKE_MCCP:
 						{
 							if(((lastIACIn>firstIACIn)&&((System.currentTimeMillis()-lastIACIn)>500))
-							||((System.currentTimeMillis()-lastIACIn)>5000))
+							||((System.currentTimeMillis()-lastIACIn)>5000)
+							||((System.currentTimeMillis()-lastStateChangeMs)>10000))
 							{
 								if(getClientTelnetMode(TELNET_COMPRESS2))
 								{

@@ -1779,6 +1779,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					return ((source == backupMOB) && (backupMOB != null) && (monster != scripted)) ? scripted : source;
 				case 'I':
 				case 'i':
+				case 'Q':
+				case 'q':
 					return scripted;
 				case 'T':
 				case 't':
@@ -2110,6 +2112,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				case 'P':
 					if (secondaryItem != null)
 						middle = secondaryItem.name();
+					break;
+				case 'q':
+					if (scripted != null)
+						middle = scripted.name();
+					break;
+				case 'Q':
+					if (scripted != null)
+						middle = scripted.displayText();
 					break;
 				case 'r':
 				case 'R':
@@ -10029,6 +10039,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if (O instanceof MOB)
 							monster = (MOB) O;
 						break;
+					case 'Q':
+					case 'q':
+						break;
 					case 'T':
 					case 't':
 						if (O instanceof Environmental)
@@ -13000,6 +13013,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						scripted = (PhysicalAgent) O;
 					if (O instanceof MOB)
 						monster = (MOB) O;
+					break;
+				case 'Q':
+				case 'q':
 					break;
 				case 'B':
 				case 'b':

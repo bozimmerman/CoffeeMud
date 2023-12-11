@@ -158,6 +158,13 @@ public class Fighter_CircleTrip extends FighterSkill
 				return Ability.QUALITY_INDIFFERENT;
 			if(target.fetchEffect(ID())!=null)
 				return Ability.QUALITY_INDIFFERENT;
+			if(target instanceof MOB)
+			{
+				final Rideable targetR = ((MOB)target).riding();
+				if((targetR != null)
+				&&(mob.riding() != targetR))
+					return Ability.QUALITY_INDIFFERENT;
+			}
 		}
 		return super.castingQuality(mob,target);
 	}
@@ -207,8 +214,9 @@ public class Fighter_CircleTrip extends FighterSkill
 					mob.tell(L("@x1 is already on the floor!",target.name(mob)));
 					return false;
 				}
-
-				if(target.riding()!=null)
+				final Rideable targetR = target.riding();
+				if((targetR != null)
+				&&(mob.riding() != targetR))
 				{
 					mob.tell(L("You can't trip someone @x1 @x2!",target.riding().stateString(target),target.riding().name()));
 					return false;

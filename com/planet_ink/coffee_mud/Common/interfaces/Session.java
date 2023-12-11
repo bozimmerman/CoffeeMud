@@ -1090,8 +1090,8 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * The internal class to managing asynchronous user input.
 	 * This class supports three types of input: open text (PROMPT),
 	 * one-letter options (CHOOSE), and Y/N (CONFIRM).
-	 * @author Bo Zimmerman
 	 *
+	 * @author Bo Zimmerman
 	 */
 	public static abstract class InputCallback
 	{
@@ -1212,6 +1212,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		 * then this will call ShowPrompt and go back to waiting. Otherwise,
 		 * waiting is set to false and it becomes very likely that callBack()
 		 * will be called.
+		 *
 		 * @param input the user input to force
 		 */
 		public void setInput(String input)
@@ -1266,6 +1267,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		/**
 		 * Returns true if this class is currently waiting
 		 * for user input.
+		 *
 		 * @return true if waiting, false if waiting is over.
 		 */
 		public boolean waitForInput()
@@ -1277,6 +1279,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		 * This method allows reuse of a given InputCallback.
 		 * It will re-start the timeout period, and flag
 		 * the callback for requiring more input.
+		 *
 		 * @return this
 		 */
 		public InputCallback reset()
@@ -1316,6 +1319,13 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		public abstract void callBack();
 	}
 
+	/**
+	 * An input callback class type that uses its timeout value
+	 * as a tick period, and thus has no true timeout.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public abstract class TickingCallback extends InputCallback
 	{
 		protected volatile int			counter			= 0;
@@ -1323,6 +1333,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 
 		/**
 		 * Only constructor is the one to tell out often to call back.
+		 *
 		 * @param tickerMs the time is ms between timeouts
 		 */
 		public TickingCallback(final long tickerMs)

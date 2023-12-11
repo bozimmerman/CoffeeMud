@@ -67,6 +67,12 @@ public class Skill_Dodge extends StdSkill
 	}
 
 	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(10);
+	}
+
+	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_BENEFICIAL_SELF;
@@ -118,16 +124,23 @@ public class Skill_Dodge extends StdSkill
 			  &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_RANGED)
 			  &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_THROWN))))
 		{
-			final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> dodge(s) the attack by <T-NAME>!"));
 			if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-93+(getXLEVELLevel(mob)),false))
 			&&(msg.source().getVictim()==mob)
-			&&(!doneThisRound)
-			&&(mob.location().okMessage(mob,msg2)))
+			&&(!doneThisRound))
 			{
-				doneThisRound=true;
-				mob.location().send(mob,msg2);
-				helpProficiency(mob, 0);
-				return false;
+				final String wmsg;
+				if(msg.tool() instanceof Weapon)
+					wmsg=L("<S-NAME> dodge(s) <T-YOUPOSS> @x1!",((Weapon)msg.tool()).name(mob));
+				else
+					wmsg=L("<S-NAME> dodge(s) the attack by <T-NAME>!");
+				final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_QUIETMOVEMENT,wmsg);
+				if(mob.location().okMessage(mob,msg2))
+				{
+					doneThisRound=true;
+					mob.location().send(mob,msg2);
+					helpProficiency(mob, 0);
+					return false;
+				}
 			}
 		}
 		return true;
