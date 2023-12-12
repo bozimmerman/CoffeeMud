@@ -71,22 +71,218 @@ public interface WorldMap extends CMLibrary
 	public String getApproximateExtendedRoomID(final Room room);
 	public Room getRoom(Room room);
 	public Room getRoom(String calledThis);
+
+	//TODO:
+	/**
+	 *
+	 * @see WorldMap#getRoom(Room)
+	 * @see WorldMap#getRoom(String)
+	 * @see WorldMap#getRoom(Enumeration, String)
+	 * @see WorldMap#getCachedRoom(String)
+	 * @see WorldMap#getRoomAllHosts(String)
+	 *
+	 * @param roomSet
+	 * @param calledThis the room ID to get
+	 * @return null, or the room from the set
+	 */
 	public Room getRoom(Enumeration<Room> roomSet, String calledThis);
+
+	/**
+	 * Given a room ID, this will return the room on the map that matches, it.
+	 * It will only match cached rooms, esp from thin areas.
+	 *
+	 * @see WorldMap#getRoom(Room)
+	 * @see WorldMap#getRoom(String)
+	 * @see WorldMap#getRoom(Enumeration, String)
+	 * @see WorldMap#getCachedRoom(String)
+	 * @see WorldMap#getRoomAllHosts(String)
+	 *
+	 * @param calledThis the room ID to get
+	 * @return null, or the room from the map
+	 */
 	public Room getCachedRoom(final String calledThis);
+
+	/**
+	 * Given a room ID, this will return the room on the map that matches, it.
+	 * This will include ALL maps on every host in this mud.
+	 * This will de-cache any rooms from thin areas.
+	 *
+	 * @see WorldMap#getRoom(Room)
+	 * @see WorldMap#getRoom(String)
+	 * @see WorldMap#getRoom(Enumeration, String)
+	 * @see WorldMap#getCachedRoom(String)
+	 *
+	 * @param calledThis the room ID to get
+	 * @return null, or the room from the map
+	 */
 	public Room getRoomAllHosts(final String calledThis);
+
+	/**
+	 * Returns an enumeration of every CACHED proper room in every area, including
+	 * 'filled' proper rooms, which also includes ships and similar areas.
+	 *
+	 * @see WorldMap#roomsFilled()
+	 *
+	 * @return the enumeration of all the cached proper rooms
+	 */
 	public Enumeration<Room> rooms();
+
+	/**
+	 * Returns an enumeration of every CACHED room in every area, including
+	 * 'filled' rooms, which includes skys and underwater rooms, which
+	 * also includes ships and similar areas.
+	 *
+	 * @see WorldMap#rooms()
+	 *
+	 * @return the enumeration of all the cached rooms
+	 */
 	public Enumeration<Room> roomsFilled();
+
+	/**
+	 * Returns a JIT enumeration of every CACHED mob in every room
+	 * on the map, as it presently exists at the time the Next
+	 * method is called.
+	 *
+	 * @see WorldMap#worldEveryItems()
+	 * @see WorldMap#worldRoomItems()
+	 *
+	 * @return the enumeration of all the mobs
+	 */
 	public Enumeration<MOB> worldMobs();
+
+	/**
+	 * Returns a JIT enumeration of every CACHED item in every room
+	 * on the map, as it presently exists at the time the Next
+	 * method is called.
+	 *
+	 * @see WorldMap#worldEveryItems()
+	 * @see WorldMap#worldMobs()
+	 *
+	 * @return the enumeration of all the items
+	 */
 	public Enumeration<Item> worldRoomItems();
+
+	/**
+	 * Returns a JIT enumeration of every CACHED item in every room
+	 * on the map, well as every mob in every room on the map,
+	 * as it presently exists at the time the Next method is
+	 * called.
+	 *
+	 * @see WorldMap#worldEveryItems()
+	 * @see WorldMap#worldMobs()
+	 *
+	 * @return the enumeration of all the items
+	 */
 	public Enumeration<Item> worldEveryItems();
+
+	/**
+	 * Returns a random room from a random area on the map.
+	 * Just for fun -- typically for temporary mobs.
+	 *
+	 * @return a random cached room from the map
+	 */
 	public Room getRandomRoom();
+
+	/**
+	 * This will take an area that was recently renamed, and an optional list of
+	 * all its existing rooms, and rename the rooms to reflect the new name,
+	 * updating the database along the way.
+	 *
+	 * @param A the area that WAS renamed
+	 * @param oldName the previous name of the given area
+	 * @param allMyDamnRooms null, or the list of existing rooms.
+	 */
 	public void renameRooms(Area A, String oldName, List<Room> allMyDamnRooms);
+
+	/**
+	 * Removes the given room from the map, clears it, and deletes
+	 * any incoming exits.  Then deletes it, and all internally saved
+	 * objects from the DB.
+	 *
+	 * @see WorldMap#destroyRoomObject(Room)
+	 * @see WorldMap#obliterateMapArea(Area)
+	 *
+	 * @param deadRoom the room to remove from the map
+	 */
 	public void obliterateMapRoom(final Room deadRoom);
+
+	/**
+	 * Removes the given room from the map, clears it, and deletes
+	 * any incoming exits.  Does not affect the DB.
+	 *
+	 * @see WorldMap#obliterateMapRoom(Room)
+	 * @see WorldMap#destroyAreaObject(Area)
+	 *
+	 * @param deadRoom the room to remove from the map
+	 */
 	public void destroyRoomObject(final Room deadRoom);
+
+	/**
+	 * Returns a room that is connected to, and preferably links
+	 * back, to the given room.  This can include skys, and
+	 * might prefer them.
+	 *
+	 * @param room the room to look at exits from
+	 * @return a connecting room
+	 */
 	public Room findConnectingRoom(Room room);
+
+	/**
+	 * Given a room and a target room, this will return which
+	 * direction code is being used.
+	 *
+	 * @see com.planet_ink.coffee_mud.core.Directions
+	 * @see WorldMap#getTargetArea(Room, Exit)
+	 * @see WorldMap#getTargetRoom(Room, Exit)
+	 * @see WorldMap#getExitDir(Room, Exit)
+	 *
+	 * @param from the initial room
+	 * @param to the room being target
+	 * @return the direction code from the from room to the target
+	 */
 	public int getRoomDir(Room from, Room to);
+
+	/**
+	 * Given a room and an exit, this will return which
+	 * direction code is being used.
+	 *
+	 * @see com.planet_ink.coffee_mud.core.Directions
+	 * @see WorldMap#getTargetArea(Room, Exit)
+	 * @see WorldMap#getTargetRoom(Room, Exit)
+	 * @see WorldMap#getRoomDir(Room, Room)
+	 *
+	 * @param from the initial room
+	 * @param to the exit being used
+	 * @return the direction code
+	 */
 	public int getExitDir(Room from, Exit to);
+
+	/**
+	 * Given a room and an exit, this will return which area
+	 * it will lead to.
+	 *
+	 * @see WorldMap#getTargetRoom(Room, Exit)
+	 * @see WorldMap#getRoomDir(Room, Room)
+	 * @see WorldMap#getExitDir(Room, Exit)
+	 *
+	 * @param from the initial room
+	 * @param to the exit being used
+	 * @return the area it leads to, or null
+	 */
 	public Area getTargetArea(Room from, Exit to);
+
+	/**
+	 * Given a room and an exit, this will return which room
+	 * it will lead to.
+	 *
+	 * @see WorldMap#getTargetArea(Room, Exit)
+	 * @see WorldMap#getRoomDir(Room, Room)
+	 * @see WorldMap#getExitDir(Room, Exit)
+	 *
+	 * @param from the initial room
+	 * @param to the exit being used
+	 * @return the room it leads to, or null
+	 */
 	public Room getTargetRoom(Room from, Exit to);
 
 	/* ***********************************************************************/

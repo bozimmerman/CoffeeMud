@@ -1036,9 +1036,11 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void renameRooms(final Area A, final String oldName, final List<Room> allMyDamnRooms)
+	public void renameRooms(final Area A, final String oldName, List<Room> allMyDamnRooms)
 	{
 		final List<Room> onesToRenumber=new Vector<Room>();
+		if(allMyDamnRooms == null)
+			allMyDamnRooms = new XArrayList<Room>(A.getCompleteMap());
 		for(Room R : allMyDamnRooms)
 		{
 			synchronized(CMClass.getSync("SYNC"+R.roomID()))

@@ -783,7 +783,7 @@ public class Modify extends StdCommand
 		Area myArea=mob.location().getArea();
 
 		String oldName=myArea.Name();
-		final Vector<Room> allMyDamnRooms=new Vector<Room>();
+		final List<Room> allMyDamnRooms=new Vector<Room>();
 		for(final Enumeration<Room> e=myArea.getCompleteMap();e.hasMoreElements();)
 			allMyDamnRooms.add(e.nextElement());
 
