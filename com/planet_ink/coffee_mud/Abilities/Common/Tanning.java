@@ -91,7 +91,10 @@ public class Tanning extends CommonSkill
 		&&(tickID==Tickable.TICKID_MOB))
 		{
 			final MOB mob=(MOB)affected;
-			if((found==null)||(fireRequired&&(getRequiredFire(mob,0)==null)))
+			if((found==null)
+			||(fireRequired
+				&&(getRequiredFire(mob,0)==null)
+				&&(mob.location()==activityRoom)))
 			{
 				messedUp=true;
 				unInvoke();

@@ -104,10 +104,12 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
+		if((affected instanceof MOB)
+		&&(tickID==Tickable.TICKID_MOB))
 		{
 			final MOB mob=(MOB)affected;
-			if(fireRequired)
+			if((fireRequired)
+			&&(mob.location()==activityRoom))
 			{
 				if((buildingI==null)
 				||(getRequiredFire(mob,0)==null))

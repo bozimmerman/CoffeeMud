@@ -83,7 +83,8 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		{
 			final MOB mob=(MOB)affected;
 			if((buildingI==null)
-			||(getRequiredFire(mob,0)==null))
+			||((getRequiredFire(mob,0)==null)
+				&&(mob.location()==activityRoom)))
 			{
 				messedUp=true;
 				unInvoke();

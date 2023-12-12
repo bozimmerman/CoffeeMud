@@ -223,7 +223,9 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			||(!isMineForCooking(mob,cookingPot))
 			||(!meetsLidRequirements(mob,cookingPot))
 			||(!contentsSame(potContents(cookingPot),oldPotContents))
-			||(requireFire()&&(getRequiredFire(mob,0)==null)))
+			||(requireFire()
+				&&(getRequiredFire(mob,0)==null)
+				&&(mob.location()==activityRoom)))
 			{
 				aborted=true;
 				unInvoke();

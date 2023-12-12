@@ -104,7 +104,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			if(fireRequired)
 			{
 				if((buildingI==null)
-				||(getRequiredFire(mob,0)==null))
+				||((getRequiredFire(mob,0)==null)
+					&&(mob.location()==activityRoom)))
 				{
 					messedUp=true;
 					unInvoke();

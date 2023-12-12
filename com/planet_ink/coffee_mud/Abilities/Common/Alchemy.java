@@ -100,7 +100,9 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		{
 			final MOB mob=(MOB)affected;
 			if((buildingI==null)
-			||((fireRequired)&&(getRequiredFire(mob,0)==null))
+			||((fireRequired)
+				&&(getRequiredFire(mob,0)==null)
+				&&(mob.location()==activityRoom))
 			||(theSpell==null))
 			{
 				aborted=true;

@@ -109,7 +109,8 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			final MOB mob=(MOB)affected;
 			if((buildingI==null)
-			||(getRequiredFire(mob,0)==null))
+			||((getRequiredFire(mob,0)==null)
+				&&(mob.location()==activityRoom)))
 			{
 				messedUp=true;
 				unInvoke();
