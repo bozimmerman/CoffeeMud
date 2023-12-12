@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -852,6 +853,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		||(msg.targetMinor()==CMMsg.TYP_PUSH)
 		||(msg.targetMinor()==CMMsg.TYP_PULL))
 		{
+			if((msg.source().isMonster())
+			&&(msg.source().amUltimatelyFollowing()==null)||(msg.source().amUltimatelyFollowing().isMonster()))
+				return true;
 			final Room R=msg.source().location();
 			if((msg.target() instanceof Item)
 			&&(((Item)msg.target()).owner() ==R)
@@ -862,11 +866,21 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			//&&(msg.othersMessage()!=null) // ant train fix. Justify it next time.
 			//&&(msg.othersMessage().length()>0)
 			&&((msg.tool()==null)||(CMLib.coffeeShops().getShopKeeper(msg.tool()))==null) // getting from a shopkeeper is not stealing...
-			&&(!doesHavePriviledgesHere(msg.source(),R)))
+			&&(!doesHavePriviledgesHere(msg.source(),R))
+			&&(!((Item)msg.target()).phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_ROBBERY))
+			)
 			{
+				final Item I = (Item)msg.target();
+				// see if the title allows theft
 				final LandTitle title = CMLib.law().getLandTitle(R);
 				if((title != null) && (title.allowTheft()))
 					return true;
+				// now do a quick crafter check
+				if((I.expirationDate()>0)
+				&&(I.databaseID().length()==0)
+				&&(I.secretIdentity().startsWith(L(ItemCraftor.CRAFTING_BRAND_STR_PREFIX) + msg.source().Name())))
+					return true;
+				// see if stealing is allowed because PK
 				if((!canAttackThisProperty(msg.source(), record))
 				&&(!msg.source().isAttributeSet(Attrib.PLAYERKILL)))
 				{
@@ -874,6 +888,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 						msg.source().tell(L("You either need to turn on your PK flag, or be in a clan war to rob this property."));
 					return false;
 				}
+				// look for the law, check for witnesses, and report the crime
 				final LegalBehavior B=getLegalBehavior(R);
 				if(B!=null)
 				{
@@ -905,12 +920,12 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 							B.accuse(getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
 					}
 				}
-				Ability propertyProp=((Item)msg.target()).fetchEffect("Prop_PrivateProperty");
+				Ability propertyProp=I.fetchEffect("Prop_PrivateProperty");
 				if(propertyProp==null)
 				{
 					propertyProp=CMClass.getAbility("Prop_PrivateProperty");
 					propertyProp.setMiscText("owner=\""+record.getOwnerName()+"\" expiresec=60");
-					((Item)msg.target()).addNonUninvokableEffect(propertyProp);
+					I.addNonUninvokableEffect(propertyProp);
 				}
 			}
 		}

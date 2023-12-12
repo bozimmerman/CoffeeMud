@@ -3,7 +3,9 @@ package com.planet_ink.coffee_mud.core.interfaces;
 import java.util.Enumeration;
 import java.util.List;
 
+import com.planet_ink.coffee_mud.core.CMProps;
 import com.planet_ink.coffee_mud.Items.interfaces.Item;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
 /*
    Copyright 2010-2023 Bo Zimmerman
 
@@ -73,8 +75,37 @@ public interface ItemPossessor extends PhysicalAgent, ItemCollection
 	 */
 	public String getContextName(Environmental E);
 
-	/** constants for the addItem methods to denote how long the item lives before expiring */
-	public enum Expire { Never, Monster_EQ, Player_Drop, Resource, Monster_Body, Player_Body, Inheret	}
+	/**
+	 * Constants for the addItem methods to denote how long the item
+	 * lives before expiring.  Includes method to return that time
+	 * in milliseconds.
+	 * */
+	public enum Expire
+	{
+		Never(null),
+		Monster_EQ(CMProps.Int.EXPIRE_MONSTER_EQ),
+		Player_Drop(CMProps.Int.EXPIRE_PLAYER_DROP),
+		Resource(CMProps.Int.EXPIRE_RESOURCE),
+		Monster_Body(CMProps.Int.EXPIRE_MONSTER_BODY),
+		Player_Body(CMProps.Int.EXPIRE_PLAYER_BODY),
+		Inheret(null);
+		private final CMProps.Int propCode;
+		private Expire(final CMProps.Int propCode)
+		{
+			this.propCode = propCode;
+		}
+		/**
+		 * Return the expiration time of an item of this
+		 * expire code in RL milliseconds.
+		 * @return the number of milliseconds
+		 */
+		public long getExpirationMilliseconds()
+		{
+			if(propCode == null)
+				return 0;
+			return CMProps.getIntVar(this.propCode) * TimeManager.MILI_MINUTE;
+		}
+	}
 
 	/** constant for the moveItemTo methods to denote flags are being given -- normal operation */
 	public enum Move { Followers, Optimize}

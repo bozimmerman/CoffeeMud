@@ -2308,32 +2308,16 @@ public class StdRoom implements Room
 	public void addItem(final Item item, Expire expire)
 	{
 		if(expire == null)
-		{
 			expire=Expire.Never;
-		}
-		int numMins = 0;
 		switch(expire)
 		{
-		case Monster_EQ:
-			addItem(item);
-			numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_MONSTER_EQ);
-			break;
 		case Monster_Body:
-			insertItemUpTop(item);
-			numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_MONSTER_BODY);
-			break;
 		case Player_Body:
 			insertItemUpTop(item);
-			numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_PLAYER_BODY);
-			break;
-		case Player_Drop:
-			addItem(item);
-			numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_PLAYER_DROP);
 			break;
 		case Resource:
-			addItem(item);
-			numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_RESOURCE);
-			break;
+		case Monster_EQ:
+		case Player_Drop:
 		case Never:
 			addItem(item);
 			break;
@@ -2341,10 +2325,11 @@ public class StdRoom implements Room
 			addItem(item);
 			return;
 		}
-		if(numMins==0)
+		final long expireMs = expire.getExpirationMilliseconds();
+		if(expireMs<=0)
 			item.setExpirationDate(0);
 		else
-			item.setExpirationDate(System.currentTimeMillis()+(numMins * TimeManager.MILI_MINUTE));
+			item.setExpirationDate(System.currentTimeMillis()+expireMs);
 	}
 
 	protected void insertItemUpTop(final Item item)

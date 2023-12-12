@@ -102,7 +102,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	{
 		setMiscText(getOwnerName()+"/"
 			+(rentalProperty()?"RENTAL ":"")
-			+(allowTheft()?"":"NOTHEFT ")
+			+(allowTheft()?"ALLOWTHEFT ":"")
 			+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
 			+price);
 	}
@@ -140,7 +140,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	{
 		setMiscText(owner+"/"
 				+(rentalProperty()?"RENTAL ":"")
-				+(allowTheft()?"":"NOTHEFT ")
+				+(allowTheft()?"ALLOWTHEFT ":"")
 				+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
 				+getPrice());
 	}
@@ -162,7 +162,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	{
 		setMiscText(getOwnerName()+"/"
 				+(rentalProperty()?"RENTAL ":"")
-				+(allowTheft()?"":"NOTHEFT ")
+				+(allowTheft()?"ALLOWTHEFT ":"")
 				+((tax!=0)?"TAX"+tax+"X ":"")
 				+getPrice());
 	}
@@ -180,7 +180,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	{
 		setMiscText(getOwnerName()+"/"
 				+(truefalse?"RENTAL ":"")
-				+(allowTheft()?"":"NOTHEFT ")
+				+(allowTheft()?"ALLOWTHEFT ":"")
 				+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
 				+getPrice());
 	}
@@ -191,8 +191,8 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		final String upperText=text().toUpperCase();
 		final int dex=upperText.indexOf('/');
 		if(dex<0)
-			return upperText.indexOf("NOTHEFT")<0;
-		return upperText.indexOf("NOTHEFT",dex)<0;
+			return upperText.indexOf("ALLOWTHEFT")>=0;
+		return upperText.indexOf("ALLOWTHEFT",dex)>=0;
 	}
 
 	@Override
@@ -200,7 +200,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	{
 		setMiscText(getOwnerName()+"/"
 				+(rentalProperty()?"RENTAL ":"")
-				+(allowTheft()?"":"NOTHEFT ")
+				+(allowTheft()?"ALLOWTHEFT":"")
 				+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
 				+getPrice());
 	}

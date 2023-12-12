@@ -165,30 +165,49 @@ public class Auction extends Channel implements Tickable
 										winnerM.name(auctioneerM),
 										CMLib.beanCounter().nameCurrencyShort(AD.getCurrency(),houseCut)));
 								CMLib.commands().postStand(winnerM, true, true);
-								if(CMLib.commands().postGet(winnerM,null,AD.getAuctionedItem(),false)
-								||(winnerM.isMine(AD.getAuctionedItem())))
+								final boolean addRobberyProtection = !AD.getAuctionedItem().phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_ROBBERY);
+								if(addRobberyProtection)
 								{
-									winnerM.tell(L("@x1 has been transferred to @x2.  You should have received the auctioned goods.  This auction is complete.",
-											CMLib.beanCounter().nameCurrencyShort(AD.getCurrency(),AD.getBid()),
-											auctioneerM.name(winnerM)));
-									if(AD.getAuctionedItem() instanceof LandTitle)
+									AD.getAuctionedItem().basePhyStats().addAmbiance(PhyStats.Ambiance.SUPPRESS_ROBBERY.code());
+									AD.getAuctionedItem().recoverPhyStats();
+								}
+								try
+								{
+									if(CMLib.commands().postGet(winnerM,null,AD.getAuctionedItem(),false)
+									||(winnerM.isMine(AD.getAuctionedItem())))
 									{
-										final CMMsg msg=CMClass.getMsg(auctioneerM,winnerM,AD.getAuctionedItem(),CMMsg.MASK_ALWAYS|CMMsg.TYP_GIVE,null);
-										AD.getAuctionedItem().executeMsg(winnerM,msg);
+										winnerM.tell(L("@x1 has been transferred to @x2.  You should have received the auctioned goods.  This auction is complete.",
+												CMLib.beanCounter().nameCurrencyShort(AD.getCurrency(),AD.getBid()),
+												auctioneerM.name(winnerM)));
+										if(AD.getAuctionedItem() instanceof LandTitle)
+										{
+											final CMMsg msg=CMClass.getMsg(auctioneerM,winnerM,AD.getAuctionedItem(),CMMsg.MASK_ALWAYS|CMMsg.TYP_GIVE,null);
+											AD.getAuctionedItem().executeMsg(winnerM,msg);
+										}
+									}
+									else
+									{
+										auctioneerM.moveItemTo(AD.getAuctionedItem());
+										auctioneerM.tell(L("Your transaction could not be completed because @x1 was unable to collect the item.  "
+												+ "Please contact @x2 about receipt of ^[@x3^] for @x4.",
+												winnerM.name(auctioneerM),
+												winnerM.name(auctioneerM),
+												AD.getAuctionedItem().name(winnerM),
+												CMLib.beanCounter().nameCurrencyShort(AD.getCurrency(),AD.getBid())));
+										winnerM.tell(L("Your transaction could not be completed because you were unable to collect the item.  "
+												+ "Please contact @x1 about receipt of ^[@x2^] for @x3.",
+												auctioneerM.name(winnerM),
+												AD.getAuctionedItem().name(winnerM),
+												CMLib.beanCounter().nameCurrencyShort(AD.getCurrency(),AD.getBid())));
 									}
 								}
-								else
+								finally
 								{
-									auctioneerM.moveItemTo(AD.getAuctionedItem());
-									auctioneerM.tell(L("Your transaction could not be completed because @x1 was unable to collect the item.  Please contact @x2 about receipt of ^[@x3^] for @x4.",
-											winnerM.name(auctioneerM),
-											winnerM.name(auctioneerM),
-											AD.getAuctionedItem().name(winnerM),
-											CMLib.beanCounter().nameCurrencyShort(AD.getCurrency(),AD.getBid())));
-									winnerM.tell(L("Your transaction could not be completed because you were unable to collect the item.  Please contact @x1 about receipt of ^[@x2^] for @x3.",
-											auctioneerM.name(winnerM),
-											AD.getAuctionedItem().name(winnerM),
-											CMLib.beanCounter().nameCurrencyShort(AD.getCurrency(),AD.getBid())));
+									if(addRobberyProtection)
+									{
+										AD.getAuctionedItem().basePhyStats().delAmbiance(PhyStats.Ambiance.SUPPRESS_ROBBERY.code());
+										AD.getAuctionedItem().recoverPhyStats();
+									}
 								}
 							}
 						}
