@@ -55,6 +55,7 @@ public class StdThinInstance extends StdThinArea implements SubArea
 	protected final List<AreaInstanceChild>	instanceChildren	= new SVector<AreaInstanceChild>();
 	protected volatile int					instanceCounter		= 0;
 	protected long							childCheckDown		= CMProps.getMillisPerMudHour() / CMProps.getTickMillis();
+	protected volatile int					childTimeout		= 0;
 	protected WeakReference<Area>			parentArea			= null;
 
 	protected String getStrippedRoomID(final String roomID)
@@ -508,6 +509,13 @@ public class StdThinInstance extends StdThinArea implements SubArea
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
+		if((CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
+		&&(this.childTimeout > 0)
+		&&(--this.childTimeout == 0))
+		{
+			this.resetInstance(null);
+			return false;
+		}
 		if(!doesManageChildAreas())
 			return true;
 		if((--childCheckDown)<=0)
@@ -532,6 +540,91 @@ public class StdThinInstance extends StdThinArea implements SubArea
 		return true;
 	}
 
+	protected boolean resetInstance(Room returnToRoom)
+	{
+		if(CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
+		{
+			final Area A=this.getSuperArea();
+			if(A instanceof StdThinInstance)
+			{
+				if(returnToRoom == null)
+				{
+					Room backupR = null;
+					for(final Enumeration<Room> r = getProperMap();r.hasMoreElements();)
+					{
+						final Room R = r.nextElement();
+						if(R == null)
+							continue;
+						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+						{
+							if(R.getExitInDir(d)!=null)
+							{
+								final Room nR = R.getRoomInDir(d);
+								if((nR != null)
+								&& (nR.getArea() != this))
+								{
+									if (CMLib.flags().canAccess(null, nR))
+									{
+										returnToRoom = R;
+										break;
+									}
+									else
+										backupR = R;
+								}
+							}
+						}
+						if(returnToRoom == null)
+							returnToRoom = backupR;
+					}
+				}
+				final StdThinInstance parentA=(StdThinInstance)A;
+				final List<AreaInstanceChild> resetThese = new LinkedList<AreaInstanceChild>();
+				synchronized(instanceChildren)
+				{
+					for(int i=0;i<parentA.instanceChildren.size();i++)
+					{
+						if(parentA.instanceChildren.get(i).A==this)
+						{
+							final AreaInstanceChild child = parentA.instanceChildren.remove(i);
+							resetThese.add(child);
+						}
+					}
+				}
+				if(resetThese.size()>0)
+				{
+					for(final AreaInstanceChild child : resetThese)
+					{
+						final List<WeakReference<MOB>> V=child.mobs;
+						for(final WeakReference<MOB> wM : V)
+						{
+							final MOB M=wM.get();
+							if((M!=null)
+							&&CMLib.flags().isInTheGame(M,true)
+							&&(M.location()!=null)
+							&&(M.location().getArea()==this))
+							{
+								Room goR = returnToRoom;
+								if(goR == null)
+									goR = M.getStartRoom();
+								if(goR == null)
+									goR = CMLib.map().getRandomRoom();
+								if(M.location() != goR)
+								{
+									goR.bringMobHere(M, true);
+									CMLib.commands().postLook(M, true);
+								}
+							}
+						}
+						setAreaState(Area.State.PASSIVE);
+						flushInstance(child);
+					}
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -552,7 +645,9 @@ public class StdThinInstance extends StdThinArea implements SubArea
 						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 						{
 							final Room R=thisRoom.getRoomInDir(d);
-							if((R!=null)&&(R.getArea()!=null)&&(R.getArea()!=this))
+							if((R!=null)
+							&&(R.getArea()!=null)
+							&&(R.getArea()!=this))
 								returnToRoom=R;
 						}
 					}
@@ -561,44 +656,10 @@ public class StdThinInstance extends StdThinArea implements SubArea
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_ACTION,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT, L("You must be at an entrance to reset the area.")));
 						return;
 					}
-					final Area A=this.getSuperArea();
-					if(A instanceof StdThinInstance)
-					{
-						final StdThinInstance parentA=(StdThinInstance)A;
-						final List<AreaInstanceChild> resetThese = new LinkedList<AreaInstanceChild>();
-						synchronized(instanceChildren)
-						{
-							for(int i=0;i<parentA.instanceChildren.size();i++)
-							{
-								if(parentA.instanceChildren.get(i).A==this)
-								{
-									final AreaInstanceChild child = parentA.instanceChildren.remove(i);
-									resetThese.add(child);
-								}
-							}
-						}
-						for(final AreaInstanceChild child : resetThese)
-						{
-							final List<WeakReference<MOB>> V=child.mobs;
-							for(final WeakReference<MOB> wM : V)
-							{
-								final MOB M=wM.get();
-								if((M!=null)
-								&&CMLib.flags().isInTheGame(M,true)
-								&&(M.location()!=null)
-								&&(M.location()!=returnToRoom)
-								&&(M.location().getArea()==this))
-								{
-									returnToRoom.bringMobHere(M, true);
-									CMLib.commands().postLook(M, true);
-								}
-							}
-							setAreaState(Area.State.PASSIVE);
-							flushInstance(child);
-							msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance has been reset.")));
-						}
-					}
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance failed to reset.")));
+					if(this.resetInstance(returnToRoom))
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance has been reset.")));
+					else
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance failed to reset.")));
 				}
 			}
 			else
@@ -688,6 +749,24 @@ public class StdThinInstance extends StdThinArea implements SubArea
 		final AreaInstanceChild child = new AreaInstanceChild(newA,newMobList);
 		instanceChildren.add(child);
 		return newA;
+	}
+
+	@Override
+	public void setStat(final String code, final String val)
+	{
+		if(code.equalsIgnoreCase("RESET_INSTANCE")||code.equalsIgnoreCase("FLUSH_INSTANCE"))
+		{
+			final Room returnToR = (val.length()>0) ? CMLib.map().getRoom(val) : null;
+			this.resetInstance(returnToR);
+			return;
+		}
+		else
+		if(code.equalsIgnoreCase("TIMEOUT_INSTANCE"))
+		{
+			childTimeout = CMath.s_int(val);
+			return;
+		}
+		super.setStat(code, val);
 	}
 
 	@Override

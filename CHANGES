@@ -75,6 +75,7 @@
  74. New common skills: Mycology, and Master Mycology. (Herbology now also Recipe Driven/Editable)
  75. New poison: Sickening (for mushrooms that aren't rotten, but aren't good for you either).
  76. Languages now support special 'say' verbs.  Std languages updated, especially animal-speaks.
+ 77. Instanced areas can now be reset/flushed and timed-out from Scripts.  See Archons Guide.
  
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)
