@@ -157,7 +157,6 @@ public class StdRoom implements Room
 		else
 			domainName=CMLib.english().startWithAorAn(Room.DOMAIN_INDOORS_DESCS[CMath.unsetb(domainType(),Room.INDOORS)].toLowerCase());
 		return L("@x1 place",domainName);
-
 	}
 
 	protected void setMovementCost(final int newCost)

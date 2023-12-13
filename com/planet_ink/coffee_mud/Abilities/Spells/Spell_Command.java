@@ -102,7 +102,10 @@ public class Spell_Command extends Spell
 		CMObject O=CMLib.english().findCommand(target,new XVector<String>(commands));
 		if(O instanceof Command)
 		{
-			if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))||(((Command)O).ID().equals("Sleep")))
+			if((!((Command)O).canBeOrdered())
+			||(!((Command)O).securityCheck(mob))
+			||(((Command)O).ID().equals("Sleep"))
+			||(((Command)O).ID().equals("AutoMelee")))
 			{
 				mob.tell(L("You can't command someone to doing that."));
 				return false;
