@@ -605,7 +605,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		List<AbilityComponent> parm=null;
 		AbilityComponent build=null;
 		int depth=0;
-		parm=new Vector<AbilityComponent>();
+		parm=new Vector<AbilityComponent>(); // part of final output
 		String error=null;
 		while(parms.length()>0)
 		{
@@ -776,9 +776,11 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			abilitiesWithCompsWithTriggers.clear();
 			compSocials.clear();
 			final StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,CMFile.FLAG_LOGERRORS).text();
-			List<String> V=new Vector<String>();
+			final List<String> V;
 			if(buf!=null)
 				V=Resources.getFileLineVector(buf);
+			else
+				V=new ArrayList<String>(1); // only used locally
 			String s=null;
 			String error=null;
 			if(V!=null)
@@ -790,7 +792,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 						continue;
 					error=addAbilityComponent(s,H);
 					if(error!=null)
-						Log.errOut("CMAble",error+" on line "+v);
+						Log.errOut("CMAble",error + " on line " + v);
 				}
 			}
 			Triggerer.TrigSignal.sig++;
@@ -813,10 +815,10 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		int lostAmt=0;
 		int resCode=-1;
 		String subType="";
-		XVector<CMObject> lostProps = null;
+		XVector<CMObject> lostProps = null; // goes into the final output
 		if((found!=null)&&(found.size()>0))
 		{
-			lostProps=new XVector<CMObject>();
+			lostProps=new XVector<CMObject>(); // goes into the final output
 			while(found.size()>0)
 			{
 				int i=0;

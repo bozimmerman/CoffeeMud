@@ -329,10 +329,10 @@ public class GrinderFlatMap
 			}
 		}
 		// find leftover rooms and make them their own cluster
-		for(int a=0;a<areaMap.size();a++)
+		for(final GrinderRoom GR : areaMap)
 		{
-			if(!roomsDone.contains(areaMap.get(a).roomID))
-				finalCluster.add(areaMap.get(a));
+			if(!roomsDone.contains(GR.roomID))
+				finalCluster.add(GR);
 		}
 		if(finalCluster.size()>0)
 		{
@@ -705,17 +705,28 @@ public class GrinderFlatMap
 		return directionsToDo;
 	}
 
+	public boolean isUnClusteredRoom(final GrinderRoom R, final int d, final Set<String> innerRoomsDone, final Set<String> outerRoomsDone)
+	{
+		if((R.doors[d]!=null)
+		&&(R.doors[d].room!=null)
+		&&(R.doors[d].room.length()>0)
+		&&(!innerRoomsDone.contains(R.doors[d].room))
+		&&(!outerRoomsDone.contains(R.doors[d].room)))
+			return true;
+		return false;
+	}
+
 	public List<GrinderRoom> buildCluster(final Map<String,GrinderRoom> fullMapH, final GrinderRoom coreRoom,
 										  final Set<String> outerRoomsDone, final boolean finalPosition,
 										  final boolean doTwoWay, final int[] directionsToDo)
 	{
-		final HashSet<String> coordsDone=new HashSet<String>();
+		final Set<String> coordsDone=new HashSet<String>();
 		coordsDone.add(0+"/"+0);
 
-		final HashSet<String> innerRoomsDone=new HashSet<String>();
+		final Set<String> innerRoomsDone=new HashSet<String>();
 		innerRoomsDone.add(coreRoom.roomID);
 
-		final HashMap<String,int[]> xys=new HashMap<String,int[]>();
+		final Map<String,int[]> xys=new HashMap<String,int[]>();
 		int[] xy=new int[2];
 		if(finalPosition)
 			coreRoom.xy=xy;
@@ -737,11 +748,47 @@ public class GrinderFlatMap
 				{
 					if((d!=Directions.UP)
 					&&(d!=Directions.DOWN)
-					&&(R.doors[d]!=null)
-					&&(R.doors[d].room!=null)
-					&&(R.doors[d].room.length()>0)
-					&&(!innerRoomsDone.contains(R.doors[d].room))
-					&&(!outerRoomsDone.contains(R.doors[d].room)))
+					&&(isUnClusteredRoom(R,d,innerRoomsDone,outerRoomsDone)))
+					{
+						final GrinderRoom R2=fullMapH.get(R.doors[d].room);
+						if(R2==null)
+							continue;
+						if(doTwoWay)
+						{
+							final int opD=Directions.getOpDirectionCode(d);
+							if((R2.doors[opD]==null)
+							||(R2.doors[opD].room==null)
+							||(!R2.doors[opD].room.equalsIgnoreCase(R.roomID)))
+								continue;
+						}
+						final int[] xy2=newXY(xy,d);
+						xys.put(R2.roomID,xy2);
+						if(!coordsDone.contains(xy2[0]+"/"+xy2[1]))
+						{
+							if(finalPosition)
+								R2.xy=xy2;
+							innerRoomsDone.add(R2.roomID);
+							coordsDone.add(xy2[0]+"/"+xy2[1]);
+							roomClusterV.add(R2);
+						}
+					}
+				}
+			}
+		}
+		startHere=0;
+		while(startHere!=roomClusterV.size())
+		{
+			int s=startHere;
+			final int size=roomClusterV.size();
+			startHere=size;
+			for(;s<size;s++)
+			{
+				final GrinderRoom R=roomClusterV.get(s);
+				xy=xys.get(R.roomID);
+				for(final int d : directionsToDo)
+				{
+					if(((d==Directions.UP)||(d==Directions.DOWN))
+					&&(isUnClusteredRoom(R,d,innerRoomsDone,outerRoomsDone)))
 					{
 						final GrinderRoom R2=fullMapH.get(R.doors[d].room);
 						if(R2==null)
@@ -1001,7 +1048,9 @@ public class GrinderFlatMap
 
 	protected int findRelGridDir(final GrinderRoom room, final String roomID)
 	{
-		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		if((roomID==null)||(roomID.length()==0))
+			return -1;
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++) // map dirs should prefer the 0-4
 		{
 			final GrinderRoom possRoom=getRoomInDir(room,d);
 			if((possRoom!=null)&&(possRoom.roomID.equals(roomID)))

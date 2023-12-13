@@ -481,7 +481,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		return false;
 	}
 
-	protected void addOtherThings(final PhysicalAgent P, final List<CMObject> otherThings)
+	protected void addOtherThings(final PhysicalAgent P, final List<CMObject> otherThings, final boolean allowPropertyRecords)
 	{
 		if(otherThings == null)
 			return;
@@ -492,7 +492,8 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			{
 				final Ability A=(Ability)O;
 				if((!A.canBeUninvoked())
-				&&(P.fetchEffect(A.ID())==null))
+				&&(P.fetchEffect(A.ID())==null)
+				&&(allowPropertyRecords||(!(A instanceof PrivateProperty)))) // no property xfer from components
 				{
 					final Ability A2=(Ability)A.copyOf();
 					P.addNonUninvokableEffect(A2);
@@ -518,9 +519,9 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		if(spells.equalsIgnoreCase("bundle"))
 			return;
 		if(otherSpells1 != null)
-			addOtherThings(P,otherSpells1);
+			addOtherThings(P,otherSpells1,false);
 		if(otherSpells2 != null)
-			addOtherThings(P,otherSpells2);
+			addOtherThings(P,otherSpells2,false);
 		if(spells.length()==0)
 			return;
 		if(spells.startsWith("*") && spells.endsWith(";__DELETE__"))

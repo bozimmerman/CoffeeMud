@@ -410,9 +410,7 @@ public class GrinderMap extends GrinderFlatMap
 								buf.append(">");
 								String roomID = GR.roomID;
 								if (roomID.startsWith(area.Name() + "#"))
-								{
 									roomID = roomID.substring(roomID.indexOf('#'));
-								}
 								try
 								{
 									buf.append("<a name=\"" +
