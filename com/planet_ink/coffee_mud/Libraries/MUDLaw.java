@@ -847,7 +847,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean robberyCheck(final PrivateProperty record, final CMMsg msg, final boolean quiet)
 	{
-		if(msg.source().isMonster())
+		if((msg.source().isMonster())
+		&&((msg.source().amUltimatelyFollowing()==null)
+			||(msg.source().amUltimatelyFollowing().isMonster())))
 			return true;
 		if(((msg.targetMinor()==CMMsg.TYP_GET)&&(!msg.isTarget(CMMsg.MASK_INTERMSG)))
 		||(msg.targetMinor()==CMMsg.TYP_PUSH)
