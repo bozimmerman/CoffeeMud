@@ -724,8 +724,13 @@ public class StdRideable extends StdMOB implements Rideable
 				if((amRiding(tmob))
 				&&(!amRiding(msg.source())))
 				{
-					msg.source().tell(msg.source(),tmob,null,L("<T-NAME> must dismount first."));
-					return false;
+					if(!(tmob.okMessage(myHost, msg)))
+						return false;
+					if(!msg.targetMajor(CMMsg.MASK_ALWAYS))
+					{
+						msg.source().tell(msg.source(),tmob,null,L("<T-NAME> must dismount first."));
+						return false;
+					}
 				}
 			}
 			break;

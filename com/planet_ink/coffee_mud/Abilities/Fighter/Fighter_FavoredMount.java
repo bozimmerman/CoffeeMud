@@ -278,6 +278,21 @@ public class Fighter_FavoredMount extends StdAbility
 					msg.setTargetCode(msg.targetCode()|CMMsg.MASK_ALWAYS);
 				}
 			}
+			else
+			if((msg.target()==affected)
+			&&(((MOB)msg.target()).riding() instanceof MOB)
+			&&(msg.sourceMinor()==CMMsg.TYP_GIVE)
+			&&(isMount((MOB)msg.target(),(MOB)((MOB)msg.target()).riding()))
+			&&(msg.source().riding()==null))
+			{
+				if(!msg.target().okMessage(myHost, msg))
+					return false;
+				if((msg.tool() instanceof Physical)
+				&&(!msg.tool().okMessage(myHost, msg)))
+					return false;
+				msg.setTargetCode(msg.targetCode()|CMMsg.MASK_ALWAYS);
+				// cavy as target doesn't work because eval-order
+			}
 		}
 
 		return super.okMessage(myHost, msg);
