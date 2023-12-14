@@ -48,7 +48,6 @@ public interface WorldHuntLibrary extends CMLibrary
 	 * M)obs, inV)entory,  shop stocK)s.
 	 *
 	 * @param mob the mob whose room access to respect
-	 * @param A the area to search
 	 * @param cmd the search string
 	 * @param srchWhatAERIPMVK the librarl codes for what to search
 	 * @param timePct % of a second to keep searching between rooms, 100% is full time
@@ -63,7 +62,6 @@ public interface WorldHuntLibrary extends CMLibrary
 	 * M)obs, inV)entory,  shop stocK)s.
 	 *
 	 * @param mob the mob whose room access to respect
-	 * @param A the area to search
 	 * @param cmd the search string
 	 * @param srchWhatAERIPMVK the librarl codes for what to search
 	 * @param timePct % of a second to keep searching between rooms, 100% is full time
@@ -147,6 +145,7 @@ public interface WorldHuntLibrary extends CMLibrary
 	 * @param rooms the rooms with mobs to search
 	 * @param mob the mob whose room access to confirm
 	 * @param srchStr the search string, using full world hunt rules
+	 * @param returnFirst
 	 * @param timePct % of a second to keep searching between rooms, 100% is full time
 	 * @return the found room mobs
 	 */
@@ -171,6 +170,7 @@ public interface WorldHuntLibrary extends CMLibrary
 	 * @param rooms the rooms with mobs to search
 	 * @param mob the mob whose room access to confirm
 	 * @param srchStr the search string, using full world hunt rules
+	 * @param anyItems true to include container searches, false for non-contained only
 	 * @param timePct % of a second to keep searching between rooms, 100% is full time
 	 * @return the found room items
 	 */
@@ -183,6 +183,7 @@ public interface WorldHuntLibrary extends CMLibrary
 	 * @param rooms the rooms to search
 	 * @param mob the mob whose room access to confirm
 	 * @param srchStr the search string, using full world hunt rules
+	 * @param anyItems true to include container searches, false for non-contained only
 	 * @param timePct % of a second to keep searching between rooms, 100% is full time
 	 * @return null, or the first room item
 	 */

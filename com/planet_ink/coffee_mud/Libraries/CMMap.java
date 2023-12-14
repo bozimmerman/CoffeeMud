@@ -109,7 +109,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 	}
 
-	private static Filterer<Area> mundaneAreaFilter=new Filterer<Area>()
+	private static Filterer<Area> nonSpaceAreaFilter=new Filterer<Area>()
 	{
 		@Override
 		public boolean passesFilter(final Area obj)
@@ -313,7 +313,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public Enumeration<Area> mundaneAreas()
 	{
-		return new FilteredEnumeration<Area>(areas(),mundaneAreaFilter);
+		return new FilteredEnumeration<Area>(areas(),nonSpaceAreaFilter);
 	}
 
 	@Override
@@ -698,7 +698,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				if(child>1)
 				{
 					Room R=getRoom(roomSet,roomID.substring(0,child));
-					if((R!=null)&&(R instanceof GridLocale))
+					if(R instanceof GridLocale)
 					{
 						R=((GridLocale)R).getGridChild(roomID);
 						if(R!=null)
@@ -713,29 +713,68 @@ public class CMMap extends StdLibrary implements WorldMap
 				if(x>=0)
 				{
 					final Area A=getArea(roomID.substring(0,x));
-					if((A!=null)
-					&&((!cachedOnly)||(A.isRoomCached(roomID))))
-						R=A.getRoom(roomID);
-					if(R!=null)
-						return R;
+					if(A!=null)
+					{
+						if(cachedOnly)
+						{
+							if(A.getProperRoomnumbers().contains(roomID))
+							{
+								if(A.isRoomCached(roomID))
+									return A.getRoom(roomID);
+								return null;
+							}
+						}
+						else
+						{
+							R = A.getRoom(roomID);
+							if(R != null)
+								return R;
+						}
+					}
 				}
-				for(final Enumeration<Area> e=this.areas();e.hasMoreElements();)
+				for(final Enumeration<Area> e=areas();e.hasMoreElements();)
 				{
 					final Area A = e.nextElement();
-					if((A!=null)
-					&&((!cachedOnly)||(A.isRoomCached(roomID))))
-						R = A.getRoom(roomID);
-					if(R!=null)
-						return R;
+					if(A!=null)
+					{
+						if(cachedOnly)
+						{
+							if(A.getProperRoomnumbers().contains(roomID))
+							{
+								if(A.isRoomCached(roomID))
+									return A.getRoom(roomID);
+								return null;
+							}
+						}
+						else
+						{
+							R = A.getRoom(roomID);
+							if(R != null)
+								return R;
+						}
+					}
 				}
 				for(final Enumeration<Area> e=shipAreaEnumerator(null);e.hasMoreElements();)
 				{
 					final Area A = e.nextElement();
-					if((A!=null)
-					&&((!cachedOnly)||(A.isRoomCached(roomID))))
-						R = A.getRoom(roomID);
-					if(R!=null)
-						return R;
+					if(A!=null)
+					{
+						if(cachedOnly)
+						{
+							if(A.getProperRoomnumbers().contains(roomID))
+							{
+								if(A.isRoomCached(roomID))
+									return A.getRoom(roomID);
+								return null;
+							}
+						}
+						else
+						{
+							R = A.getRoom(roomID);
+							if(R != null)
+								return R;
+						}
+					}
 				}
 			}
 			else

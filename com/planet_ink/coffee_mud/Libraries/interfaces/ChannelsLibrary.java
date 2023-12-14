@@ -89,8 +89,8 @@ public interface ChannelsLibrary extends CMLibrary
 	 * @see ChannelsLibrary#getChannelQuePageEnd(int, MOB)
 	 * @param mob the channel reader
 	 * @param channelNumber the channel id number/index
-	 * @param searchTerms the string to search for
-	 * @param numToReturn max number of messages to return
+	 * @param srchTerms the string to search for
+	 * @param maxReturn max number of messages to return
 	 * @return the list of messages found
 	 */
 	public List<ChannelMsg> searchChannelQue(final MOB mob, final int channelNumber, final String srchTerms, final int maxReturn);

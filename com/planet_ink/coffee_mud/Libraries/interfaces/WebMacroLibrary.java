@@ -55,7 +55,7 @@ public interface WebMacroLibrary extends CMLibrary, HTTPOutputConverter
 	 * @see WebMacroLibrary#virtualPageFilter(StringBuffer, Map, Map)
 	 * @see WebMacroLibrary#virtualPageFilter(HTTPRequest, Map, long[], String[], StringBuffer)
 	 *
-	 * @param s the fake page to filter
+	 * @param data the fake page to filter
 	 * @return the filtered page data
 	 * @throws HTTPRedirectException any redirect exceptions encountered
 	 */
@@ -70,11 +70,11 @@ public interface WebMacroLibrary extends CMLibrary, HTTPOutputConverter
 	 * @see WebMacroLibrary#virtualPageFilter(StringBuffer, Map, Map)
 	 * @see WebMacroLibrary#virtualPageFilter(HTTPRequest, Map, long[], String[], StringBuffer)
 	 *
-	 * @param s the fake page to filter
+	 * @param data the fake page to filter
 	 * @return the filtered page data
 	 * @throws HTTPRedirectException any redirect exceptions encountered
 	 */
-	public String virtualPageFilter(String s) throws HTTPRedirectException;
+	public String virtualPageFilter(String data) throws HTTPRedirectException;
 
 	/**
 	 * Does macro filtering on a fake web page by constructing a fake request
@@ -85,11 +85,11 @@ public interface WebMacroLibrary extends CMLibrary, HTTPOutputConverter
 	 * @see WebMacroLibrary#virtualPageFilter(StringBuffer, Map, Map)
 	 * @see WebMacroLibrary#virtualPageFilter(HTTPRequest, Map, long[], String[], StringBuffer)
 	 *
-	 * @param s the fake page to filter
+	 * @param data the fake page to filter
 	 * @return the filtered page data
 	 * @throws HTTPRedirectException any redirect exceptions encountered
 	 */
-	public StringBuffer virtualPageFilter(StringBuffer s) throws HTTPRedirectException;
+	public StringBuffer virtualPageFilter(StringBuffer data) throws HTTPRedirectException;
 
 	/**
 	 * Does macro filtering on a fake web page by constructing a fake request
@@ -100,13 +100,13 @@ public interface WebMacroLibrary extends CMLibrary, HTTPOutputConverter
 	 * @see WebMacroLibrary#virtualPageFilter(StringBuffer)
 	 * @see WebMacroLibrary#virtualPageFilter(HTTPRequest, Map, long[], String[], StringBuffer)
 	 *
-	 * @param s the fake page to filter
+	 * @param data the fake page to filter
 	 * @param parms fake request parameters, which normally come from the request object
 	 * @param objs the object cache for use by macros
 	 * @return the filtered page data
 	 * @throws HTTPRedirectException any redirect exceptions encountered
 	 */
-	public StringBuffer virtualPageFilter(final StringBuffer s, Map<String,String> parms, Map<String,Object> objs) throws HTTPRedirectException;
+	public StringBuffer virtualPageFilter(final StringBuffer data, Map<String,String> parms, Map<String,Object> objs) throws HTTPRedirectException;
 
 	/**
 	 * The official web page filtering method for this output converter.
@@ -121,11 +121,11 @@ public interface WebMacroLibrary extends CMLibrary, HTTPOutputConverter
 	 * @param objects an empty 'sessions' object map for use by macros as a cache
 	 * @param processStartTime a 1-dimensional array with start time-ms, for timeouts
 	 * @param lastFoundMacro a 1-dimensional array for storing the last found macro
-	 * @param s the page data, which will be modified and returned by the filter
+	 * @param data the page data, which will be modified and returned by the filter
 	 * @return the modified and filtered page data
 	 * @throws HTTPRedirectException an http redirect exception found
 	 */
-	public StringBuffer virtualPageFilter(HTTPRequest request, Map<String, Object> objects, long[] processStartTime, String[] lastFoundMacro, StringBuffer s) throws HTTPRedirectException;
+	public StringBuffer virtualPageFilter(HTTPRequest request, Map<String, Object> objects, long[] processStartTime, String[] lastFoundMacro, StringBuffer data) throws HTTPRedirectException;
 
 	/**
 	 * Searches for web-macro commands in the given string and, if found,
@@ -138,7 +138,7 @@ public interface WebMacroLibrary extends CMLibrary, HTTPOutputConverter
 
 	/**
 	 * Given a stringbuffer and an index into it where an
-	 * @ sign was found, this method will identify a potential
+	 * '@' sign was found, this method will identify a potential
 	 * web macro string, and return it, optionally
 	 * deleting the '@' characters on internal macros.
 	 *

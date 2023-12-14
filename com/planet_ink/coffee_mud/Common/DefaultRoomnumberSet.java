@@ -318,44 +318,49 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	}
 
 	@Override
-	public boolean contains(String str)
+	public boolean contains(final String str)
 	{
-		if(str==null)
+		if((str==null)||(root.size()==0))
 			return false;
-		if(root.size()==0)
-			return false;
-		String theRest=null;
-		long roomNum=0;
 		final int origX=str.indexOf('#');
-		int x=origX;
-		if(x>0)
+		if(origX > 0)
 		{
-			theRest=str.substring(x+1).trim();
-			str=str.substring(0,x);
-			x=theRest.indexOf("#(");
-			if((x>=0)&&(theRest.endsWith(")"))&&(CMath.isInteger(theRest.substring(0,x))))
+			final String areaName = str.substring(0, origX);
+			final LongSet grouper = getGrouper(areaName);
+			if(grouper == null)
+				return false;
+			try
 			{
-				final int comma=theRest.indexOf(",",x);
-				if(comma>0)
+				final String numStr=str.substring(origX+1).trim();
+				long roomNum=0;
+				final int x=numStr.indexOf("#(");
+				if((x>=0)
+				&&(numStr.endsWith(")")))
 				{
-					roomNum=Long.parseLong(theRest.substring(0,x))<<30;
-					roomNum+=(Long.parseLong(theRest.substring(x+2,comma))<<15);
-					roomNum+=Long.parseLong(theRest.substring(comma+1,theRest.length()-1));
-					if(roomNum<LongSet.INT_BITS)
-						roomNum|=LongSet.OPTION_FLAG_LONG;
+					final int comma=numStr.indexOf(",",x);
+					if(comma>0)
+					{
+						roomNum=Long.parseLong(numStr.substring(0,x))<<30;
+						roomNum+=(Long.parseLong(numStr.substring(x+2,comma))<<15);
+						roomNum+=Long.parseLong(numStr.substring(comma+1,numStr.length()-1));
+						if(roomNum<LongSet.INT_BITS)
+							roomNum|=LongSet.OPTION_FLAG_LONG;
+					}
 				}
+				else
+					roomNum=Integer.parseInt(numStr.substring(x+1).trim());
+				return grouper.contains(roomNum);
 			}
-			else
-			if(CMath.isInteger(theRest))
-				roomNum=Integer.parseInt(theRest.substring(x+1).trim());
+			catch(final NumberFormatException x)
+			{
+				return false;
+			}
 		}
-
-		final LongSet myGrouper=getGrouper(str);
-		if((origX<0)&&(myGrouper==null)&&(isGrouper(str)))
+		else
+		if(isGrouper(str))
 			return true;
-		if(myGrouper==null)
+		else
 			return false;
-		return myGrouper.contains(roomNum);
 	}
 
 	@Override

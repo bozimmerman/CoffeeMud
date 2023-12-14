@@ -20,6 +20,11 @@ import com.planet_ink.coffee_mud.core.collections.XVector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * XML parsing and xml document building library.
+ *
+ * @author Bo Zimmerman
+ */
 public interface XMLLibrary extends CMLibrary
 {
 	public static final String FILE_XML_BOUNDARY="<?xml version=\"1.0\"?>";

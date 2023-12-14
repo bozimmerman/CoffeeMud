@@ -220,8 +220,11 @@ public interface Area extends Economics, PhysicalAgent, Places
 
 	/**
 	 * Returns a room of the given roomID, if it has already been added by calling
-	 * addProperRoom.
+	 * addProperRoom.  If this area is Thin, this will load the room from the
+	 * database and cache it.
+	 *
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
+	 *
 	 * @param roomID the roomID of the room to return.
 	 * @return a reference to the room that the id refers to, IF the room belongs here.
 	 */

@@ -110,19 +110,19 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	}
 
 	@Override
-	public String virtualPageFilter(final String s) throws HTTPRedirectException
+	public String virtualPageFilter(final String data) throws HTTPRedirectException
 	{
-		return virtualPageFilter(new StringBuffer(s)).toString();
+		return virtualPageFilter(new StringBuffer(data)).toString();
 	}
 
 	@Override
-	public StringBuffer virtualPageFilter(final StringBuffer s) throws HTTPRedirectException
+	public StringBuffer virtualPageFilter(final StringBuffer data) throws HTTPRedirectException
 	{
-		return virtualPageFilter(s,new HashMap<String,String>(),new HashMap<String,Object>());
+		return virtualPageFilter(data,new HashMap<String,String>(),new HashMap<String,Object>());
 	}
 
 	@Override
-	public StringBuffer virtualPageFilter(final StringBuffer s, final Map<String,String> parms, final Map<String,Object> objs) throws HTTPRedirectException
+	public StringBuffer virtualPageFilter(final StringBuffer data, final Map<String,String> parms, final Map<String,Object> objs) throws HTTPRedirectException
 	{
 		return virtualPageFilter(new HTTPRequest()
 		{
@@ -273,7 +273,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			{
 				return "";
 			}
-		}, new Hashtable<String, Object>(), new long[] { System.currentTimeMillis() }, new String[] { "" }, s);
+		}, new Hashtable<String, Object>(), new long[] { System.currentTimeMillis() }, new String[] { "" }, data);
 	}
 
 	@Override
