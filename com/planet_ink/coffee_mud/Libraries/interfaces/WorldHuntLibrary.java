@@ -145,7 +145,7 @@ public interface WorldHuntLibrary extends CMLibrary
 	 * @param rooms the rooms with mobs to search
 	 * @param mob the mob whose room access to confirm
 	 * @param srchStr the search string, using full world hunt rules
-	 * @param returnFirst
+	 * @param returnFirst true to return only 1 match, false for all
 	 * @param timePct % of a second to keep searching between rooms, 100% is full time
 	 * @return the found room mobs
 	 */
