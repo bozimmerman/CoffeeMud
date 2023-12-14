@@ -298,6 +298,7 @@ public class Skill_BreakMount extends StdSkill
 					}
 				}
 				else
+				if(R != null)
 				{
 					R.show(msg.source(), targM, CMMsg.MSG_NOISYMOVEMENT,
 							L("<S-NAME> attempt(s) to mount <T-NAME> and fail(s)."));

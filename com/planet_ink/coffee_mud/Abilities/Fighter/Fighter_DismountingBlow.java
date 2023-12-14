@@ -225,7 +225,8 @@ public class Fighter_DismountingBlow extends FighterSkill
 			return false;
 		}
 
-		rangeAdjust = polearmI.maxRange();
+		if(polearmI != null)
+			rangeAdjust = polearmI.maxRange();
 
 		if(target.riding()==null)
 		{
@@ -256,7 +257,10 @@ public class Fighter_DismountingBlow extends FighterSkill
 			&&((mob == target)||(polearmI == null)))
 				msgStr = L("<T-NAME> <T-IS-ARE> dismounted!");
 			else
+			if(polearmI != null)
 				msgStr = L("^F^<FIGHT^><S-NAME> dismount(s) <T-NAMESELF> with @x1!^</FIGHT^>^?",polearmI.name(mob));
+			else
+				msgStr = L("<T-NAME> <T-IS-ARE> dismounted!");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0), msgStr);
 			final CMMsg dismountMsg = CMClass.getMsg(target,target.riding(),null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DISMOUNT,null);
 			CMLib.color().fixSourceFightColor(msg);

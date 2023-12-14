@@ -92,6 +92,7 @@ public class Deposit extends StdCommand
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		else
+		if(msg != null)
 			CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 		return false;
 	}

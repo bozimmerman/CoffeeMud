@@ -255,6 +255,7 @@ public class Skill_MountedLeap extends StdSkill
 				success=proficiencyCheck(mob,0,auto);
 
 				if((mob.fetchEffect(ID())==null)
+				&&(riddenM != null)
 				&&(riddenM.fetchEffect(ID())==null))
 				{
 					final Ability A=(Ability)this.copyOf();

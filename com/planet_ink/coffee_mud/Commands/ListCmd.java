@@ -5834,7 +5834,7 @@ public class ListCmd extends StdCommand
 		if((commands!=null)&&(commands.size()>1))
 			sort=CMParms.combine(commands,1).trim().toUpperCase();
 
-		final Session viewerS = (mob==null)?null:mob.session();
+		final Session viewerS =mob.session();
 		if(CMath.isInteger(sort))
 		{
 			int x=0;

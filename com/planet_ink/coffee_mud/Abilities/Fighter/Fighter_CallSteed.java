@@ -254,7 +254,7 @@ public class Fighter_CallSteed extends StdAbility
 						if ((favored.size() > 0)
 						&& (favored.get(favored.size() - 1).Name().equals(val)))
 						{
-							final MOB lastM = favored.remove(favored.size() - 1);;
+							final MOB lastM = favored.remove(favored.size() - 1);
 							if(mob != null)
 							{
 								for (int f = 0; f < mob.numFollowers(); f++)

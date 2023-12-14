@@ -129,7 +129,7 @@ public class Skill_RopeTricks extends StdSkill
 				return true;
 			tickTock=0;
 			final MOB mob=(MOB)affected;
-			final Room R = (mob==null)?null:mob.location();
+			final Room R = mob.location();
 			if(R==null)
 				return false;
 			if((!CMLib.flags().isStanding(mob))

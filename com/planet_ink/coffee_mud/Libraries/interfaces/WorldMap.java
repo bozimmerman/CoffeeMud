@@ -63,29 +63,130 @@ public interface WorldMap extends CMLibrary
 	/* ***********************************************************************/
 	/* *							 ROOMS									 */
 	/* ***********************************************************************/
-	public int numRooms();
-	public Enumeration<String> roomIDs();
-	public String getExtendedRoomID(final Room R);
-	public String getDescriptiveExtendedRoomID(final Room room);
-	public String getExtendedTwinRoomIDs(final Room R1,final Room R2);
-	public String getApproximateExtendedRoomID(final Room room);
-	public Room getRoom(Room room);
-	public Room getRoom(String calledThis);
 
-	//TODO:
 	/**
-	 *
-	 * @see WorldMap#getRoom(Room)
+	 * Returns the sum of all the proper rooms in every area in all the world.
+	 * 
+	 * @return the number of rooms
+	 */
+	public int numRooms();
+
+	/**
+	 * Returns an enumeration of all proper room ids in
+	 * every area in the world.
+	 * 
+	 * @return the enumeration of all room ids
+	 */
+	public Enumeration<String> roomIDs();
+	
+	/**
+	 * If the given room has a proper room id, this
+	 * will return it.  If the given room is a child
+	 * of a grid, it will return the grid-reference unique
+	 * room id.
+	 * 
+	 * @see WorldMap#getExtendedRoomID(Room)
+	 * @see WorldMap#getExtendedTwinRoomIDs(Room, Room)
+	 * @see WorldMap#getDescriptiveExtendedRoomID(Room)
+	 * @see WorldMap#getApproximateExtendedRoomID(Room)
+	 * 
+	 * @param R the room to return a room id for
+	 * @return "", or the room id
+	 */
+	public String getExtendedRoomID(final Room R);
+	
+	/**
+	 * Similar to the approximate version, this will return a reference
+	 * to the nearest room, along with which direction its in relative
+	 * to the given room.
+	 * 
+	 * @see WorldMap#getExtendedRoomID(Room)
+	 * @see WorldMap#getExtendedTwinRoomIDs(Room, Room)
+	 * @see WorldMap#getApproximateExtendedRoomID(Room)
+	 * 
+	 * @param room the room to find a descriptive reference to
+	 * @return the descriptive extended room id
+	 */
+	public String getDescriptiveExtendedRoomID(final Room room);
+	
+	/**
+	 * Returns the extended room IDs of both the given rooms, 
+	 * in a deterministic ordering, with an underscore between
+	 * them -- nothing else.
+	 * 
+	 * @see WorldMap#getExtendedRoomID(Room)
+	 * @see WorldMap#getDescriptiveExtendedRoomID(Room)
+	 * @see WorldMap#getApproximateExtendedRoomID(Room)
+	 * 
+	 * @param R1 the first room
+	 * @param R2 the second room
+	 * @return the pair of rooms ids in one string
+	 */
+	public String getExtendedTwinRoomIDs(final Room R1, final Room R2);
+	
+	/**
+	 * All proper rooms, rooms savable to the database, have
+	 * a unique room ID.  Derived rooms however, such as grid 
+	 * rooms, skies, underwater rooms, and others will not.  Most
+	 * grid rooms have a derivative (extended) identifier id that
+	 * is tied to a proper room grid parent.  However, temporary
+	 * rooms can get tricky, which is why this method exists to return
+	 * the nearest room that does have an extended id.
+	 * 
+	 * @see WorldMap#getExtendedRoomID(Room)
+	 * @see WorldMap#getExtendedTwinRoomIDs(Room, Room)
+	 * @see WorldMap#getDescriptiveExtendedRoomID(Room)
+	 * 
+	 * @param room the room to find the nearest id for.
+	 * @return "" or an approximately located room id
+	 */
+	public String getApproximateExtendedRoomID(final Room room);
+	
+	/**
+	 * Because rooms can expire, but their references remain, this
+	 * method exists to check for a destroyed condition and, if the
+	 * room is destroyed, this will check for a replacement, and
+	 * de-cache it if possible. 
+	 * 
 	 * @see WorldMap#getRoom(String)
 	 * @see WorldMap#getRoom(Enumeration, String)
 	 * @see WorldMap#getCachedRoom(String)
 	 * @see WorldMap#getRoomAllHosts(String)
 	 *
-	 * @param roomSet
-	 * @param calledThis the room ID to get
+	 * @param room the room that may or may not be expired
+	 * @return the given room, or its replacement
+	 */
+	public Room getRoom(Room room);
+	
+	/**
+	 * Given a room ID, this will return the room on the map that
+	 * matches this room id.
+	 * 
+	 * @see WorldMap#getRoom(Room)
+	 * @see WorldMap#getRoom(Enumeration, String)
+	 * @see WorldMap#getCachedRoom(String)
+	 * @see WorldMap#getRoomAllHosts(String)
+	 *
+	 * @param roomID the room id to get the room for
+	 * @return null, or the room if found.
+	 */
+	public Room getRoom(String roomID);
+
+	/**
+	 * Enumerates through the given room set, returning the
+	 * room with the given room ID.  If a room set is null,
+	 * the entire map is checked.
+	 * 
+	 * @see WorldMap#getRoom(Room)
+	 * @see WorldMap#getRoom(String)
+	 * @see WorldMap#getCachedRoom(String)
+	 * @see WorldMap#getRoomAllHosts(String)
+	 *
+	 * @param roomSet an enumeration of rooms to check
+	 * @param roomID the room ID of the room to get
 	 * @return null, or the room from the set
 	 */
-	public Room getRoom(Enumeration<Room> roomSet, String calledThis);
+	public Room getRoom(Enumeration<Room> roomSet, String roomID);
 
 	/**
 	 * Given a room ID, this will return the room on the map that matches, it.
@@ -97,10 +198,10 @@ public interface WorldMap extends CMLibrary
 	 * @see WorldMap#getCachedRoom(String)
 	 * @see WorldMap#getRoomAllHosts(String)
 	 *
-	 * @param calledThis the room ID to get
+	 * @param roomID the room ID to get
 	 * @return null, or the room from the map
 	 */
-	public Room getCachedRoom(final String calledThis);
+	public Room getCachedRoom(final String roomID);
 
 	/**
 	 * Given a room ID, this will return the room on the map that matches, it.
@@ -112,10 +213,10 @@ public interface WorldMap extends CMLibrary
 	 * @see WorldMap#getRoom(Enumeration, String)
 	 * @see WorldMap#getCachedRoom(String)
 	 *
-	 * @param calledThis the room ID to get
+	 * @param roomID the room ID to get
 	 * @return null, or the room from the map
 	 */
-	public Room getRoomAllHosts(final String calledThis);
+	public Room getRoomAllHosts(final String roomID);
 
 	/**
 	 * Returns an enumeration of every CACHED proper room in every area, including

@@ -262,12 +262,13 @@ public class Fighter_Jousting extends FighterSkill
 					msg.setTargetMessage(null);
 					msg.setOthersMessage(null);
 					msg.setTool(null);
-					for(int i=mob.rangeToTarget()-1;i>=((Weapon)polearmI).maxRange();i--)
+					final int maxRange = polearmI != null ? ((Weapon)polearmI).maxRange() : 0;
+					for(int i=mob.rangeToTarget()-1;i>=maxRange;i--)
 					{
 						if(mob.location().okMessage(mob, msg))
 							mob.location().send(mob, msg);
 					}
-					if(mob.rangeToTarget()<=((Weapon)polearmI).maxRange())
+					if(mob.rangeToTarget()<=maxRange)
 					{
 						done=false;
 						hits=0;

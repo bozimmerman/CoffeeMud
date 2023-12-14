@@ -155,6 +155,7 @@ public class ExpireVector<T> implements Serializable, Iterable<T>, Collection<T>
 		return get(index);
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public Enumeration<T> elements()
 	{
@@ -206,6 +207,7 @@ public class ExpireVector<T> implements Serializable, Iterable<T>, Collection<T>
 			throw new IllegalArgumentException();
 	}
 
+	@Override
 	public void trimToSize()
 	{
 	}
@@ -363,13 +365,19 @@ public class ExpireVector<T> implements Serializable, Iterable<T>, Collection<T>
 	@Override
 	public T get(final int index)
 	{
+		if(index >= list.size())
+			throw new java.lang.IndexOutOfBoundsException();
 		final Pair<T,Long> O = list.get(index);
-		if((O != null)&&(System.currentTimeMillis()>O.second.longValue()))
+		if(O != null)
 		{
-			remove(index);
-			return get(index);
+			if(System.currentTimeMillis()>O.second.longValue())
+			{
+				remove(index);
+				return get(index);
+			}
+			return O.first;
 		}
-		return O.first;
+		return null;
 	}
 
 	@Override

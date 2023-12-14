@@ -108,8 +108,8 @@ public class Fighter_Runover extends FighterSkill
 			final Item I = ((Boardable)(R.getArea())).getBoardableItem();
 			if((I == null)
 			||((((Rideable)I).rideBasis() != Rideable.Basis.LAND_BASED)
-				&&(((Rideable)I).rideBasis() != Rideable.Basis.WAGON)));
-			return Ability.QUALITY_INDIFFERENT;
+				&&(((Rideable)I).rideBasis() != Rideable.Basis.WAGON)))
+				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
 	}
@@ -175,13 +175,13 @@ public class Fighter_Runover extends FighterSkill
 			final Item I = ((Boardable)(R.getArea())).getBoardableItem();
 			if((I != null)
 			&&((((Rideable)I).rideBasis() == Rideable.Basis.LAND_BASED)
-					||(((Rideable)I).rideBasis() == Rideable.Basis.WAGON)));
+					||(((Rideable)I).rideBasis() == Rideable.Basis.WAGON)))
 			{
 				boardI = I;
 				boardA = R.getArea();
 			}
 		}
-		if(boardA == null)
+		if((boardA == null) || (boardI == null))
 		{
 			mob.tell(L("You must be driving a caravan to run someone over."));
 			return false;

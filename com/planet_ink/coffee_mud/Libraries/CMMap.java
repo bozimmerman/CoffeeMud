@@ -625,6 +625,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		if(room==null)
 			return "";
+		final String extendedID = getExtendedRoomID(room);
+		if(extendedID.length()>0)
+			return extendedID;
 		Room validRoom = CMLib.tracking().getNearestValidIDRoom(room);
 		if(validRoom != null)
 		{
@@ -681,23 +684,23 @@ public class CMMap extends StdLibrary implements WorldMap
 		return null;
 	}
 
-	protected Room getRoom(final Enumeration<Room> roomSet, final String calledThis, final boolean cachedOnly)
+	protected Room getRoom(final Enumeration<Room> roomSet, final String roomID, final boolean cachedOnly)
 	{
 		try
 		{
-			if(calledThis==null)
+			if(roomID==null)
 				return null;
-			if(calledThis.length()==0)
+			if(roomID.length()==0)
 				return null;
-			if(calledThis.endsWith(")"))
+			if(roomID.endsWith(")"))
 			{
-				final int child=calledThis.lastIndexOf("#(");
+				final int child=roomID.lastIndexOf("#(");
 				if(child>1)
 				{
-					Room R=getRoom(roomSet,calledThis.substring(0,child));
+					Room R=getRoom(roomSet,roomID.substring(0,child));
 					if((R!=null)&&(R instanceof GridLocale))
 					{
-						R=((GridLocale)R).getGridChild(calledThis);
+						R=((GridLocale)R).getGridChild(roomID);
 						if(R!=null)
 							return R;
 					}
@@ -706,13 +709,13 @@ public class CMMap extends StdLibrary implements WorldMap
 			Room R=null;
 			if(roomSet==null)
 			{
-				final int x=calledThis.indexOf('#');
+				final int x=roomID.indexOf('#');
 				if(x>=0)
 				{
-					final Area A=getArea(calledThis.substring(0,x));
+					final Area A=getArea(roomID.substring(0,x));
 					if((A!=null)
-					&&((!cachedOnly)||(A.isRoomCached(calledThis))))
-						R=A.getRoom(calledThis);
+					&&((!cachedOnly)||(A.isRoomCached(roomID))))
+						R=A.getRoom(roomID);
 					if(R!=null)
 						return R;
 				}
@@ -720,8 +723,8 @@ public class CMMap extends StdLibrary implements WorldMap
 				{
 					final Area A = e.nextElement();
 					if((A!=null)
-					&&((!cachedOnly)||(A.isRoomCached(calledThis))))
-						R = A.getRoom(calledThis);
+					&&((!cachedOnly)||(A.isRoomCached(roomID))))
+						R = A.getRoom(roomID);
 					if(R!=null)
 						return R;
 				}
@@ -729,8 +732,8 @@ public class CMMap extends StdLibrary implements WorldMap
 				{
 					final Area A = e.nextElement();
 					if((A!=null)
-					&&((!cachedOnly)||(A.isRoomCached(calledThis))))
-						R = A.getRoom(calledThis);
+					&&((!cachedOnly)||(A.isRoomCached(roomID))))
+						R = A.getRoom(roomID);
 					if(R!=null)
 						return R;
 				}
@@ -740,7 +743,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				for(final Enumeration<Room> e=roomSet;e.hasMoreElements();)
 				{
 					R=e.nextElement();
-					if(R.roomID().equalsIgnoreCase(calledThis))
+					if(R.roomID().equalsIgnoreCase(roomID))
 						return R;
 				}
 			}
@@ -752,9 +755,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Room getRoom(final Enumeration<Room> roomSet, final String calledThis)
+	public Room getRoom(final Enumeration<Room> roomSet, final String roomID)
 	{
-		return getRoom(roomSet, calledThis, false);
+		return getRoom(roomSet, roomID, false);
 	}
 
 
@@ -769,21 +772,21 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Room getRoom(final String calledThis)
+	public Room getRoom(final String roomID)
 	{
-		return getRoom(null,calledThis);
+		return getRoom(null,roomID);
 	}
 
 	@Override
-	public Room getCachedRoom(final String calledThis)
+	public Room getCachedRoom(final String roomID)
 	{
-		return getRoom(null,calledThis,true);
+		return getRoom(null,roomID,true);
 	}
 
 	@Override
-	public Room getRoomAllHosts(final String calledThis)
+	public Room getRoomAllHosts(final String roomID)
 	{
-		final Room R = getRoom(null,calledThis);
+		final Room R = getRoom(null,roomID);
 		if(R!=null)
 			return R;
 		for(final Enumeration<CMLibrary> pl=CMLib.libraries(CMLib.Library.MAP); pl.hasMoreElements(); )
@@ -791,7 +794,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			final WorldMap mLib = (WorldMap)pl.nextElement();
 			if(mLib != this)
 			{
-				final Room R2 = mLib.getRoom(calledThis);
+				final Room R2 = mLib.getRoom(roomID);
 				if(R2 != null)
 					return R2;
 			}
