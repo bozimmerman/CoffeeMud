@@ -752,6 +752,18 @@ public class StdThinInstance extends StdThinArea implements SubArea
 	}
 
 	@Override
+	public boolean isStat(final String code)
+	{
+		if(!super.isStat(code))
+		{
+			return (code.equalsIgnoreCase("RESET_INSTANCE")
+					||code.equalsIgnoreCase("FLUSH_INSTANCE")
+					||code.equalsIgnoreCase("TIMEOUT_INSTANCE"));
+		}
+		return true;
+	}
+
+	@Override
 	public void setStat(final String code, final String val)
 	{
 		if(code.equalsIgnoreCase("RESET_INSTANCE")||code.equalsIgnoreCase("FLUSH_INSTANCE"))
@@ -767,6 +779,27 @@ public class StdThinInstance extends StdThinArea implements SubArea
 			return;
 		}
 		super.setStat(code, val);
+	}
+
+	@Override
+	public String getStat(final String code)
+	{
+		if(code == null)
+			return "";
+		if(code.equalsIgnoreCase("TIMEOUT_INSTANCE"))
+			return ""+childTimeout;
+		return super.getStat(code);
+	}
+
+	private static String[] inst_codes = null;
+	
+	@Override
+	public String[] getStatCodes()
+	{
+		if (inst_codes != null)
+			return inst_codes;
+		inst_codes = CMParms.combine(super.getStatCodes(), new String[] { "RESET_INSTANCE", "FLUSH_INSTANCE", "TIMEOUT_INSTANCE"});
+		return inst_codes;
 	}
 
 	@Override
