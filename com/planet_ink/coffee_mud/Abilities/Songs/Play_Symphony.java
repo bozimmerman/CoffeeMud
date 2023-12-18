@@ -245,7 +245,7 @@ public class Play_Symphony extends Play
 			else
 			{
 				toDoCode=CODE_CASTMALICIOUSSPELLPER10;
-				toDoString="Spell_Thirst";
+				toDoString="Spell_InsatiableThirst";
 			}
 			break;
 		}

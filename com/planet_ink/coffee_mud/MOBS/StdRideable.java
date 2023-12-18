@@ -748,13 +748,13 @@ public class StdRideable extends StdMOB implements Rideable
 		if((msg.sourceMajor(CMMsg.MASK_HANDS))
 		&&(amRiding(msg.source()))
 		&&((msg.sourceMessage()!=null)||(msg.othersMessage()!=null))
-		&&(((!CMLib.utensils().reachableItem(msg.source(),msg.target()))&&(!msg.targetMajor(CMMsg.MASK_ALWAYS)))
+		&&(!msg.targetMajor(CMMsg.MASK_ALWAYS))
+		&&((!CMLib.utensils().reachableItem(msg.source(),msg.target()))
 			|| (!CMLib.utensils().reachableItem(msg.source(),msg.tool()))
 			|| ((msg.sourceMinor()==CMMsg.TYP_GIVE)
 				&&(msg.target() instanceof MOB)
 				&&(msg.target()!=this)
-				&&(!amRiding((MOB)msg.target()))
-				&&(!msg.targetMajor(CMMsg.MASK_ALWAYS)))))
+				&&(!amRiding((MOB)msg.target())))))
 		{
 			msg.source().tell(L("You cannot do that while @x1 @x2.",stateString(msg.source()),name(msg.source())));
 			return false;

@@ -18,12 +18,12 @@ medium maze	18	200	2500		OUTDOOR	ROOM	StoneMaze	5		maze frame and roof		Turns an
 wide roof	29	150	1000		OUTDOOR	ROOM	StoneRoom	0	Prop_EnlargeRoom(10)	broad frame and roof		Turns an outdoor place into an indoor one of exceptional size.
 light stone door	20	45	60		INDOOR DIR	DOOR	GenDoor	light stone door		door @x1		Openable exit between two indoor places.
 upstairs	21	210	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1		Exit from an indoor place to a new indoor room above it.
-window	26	25	100		INDOOR DIR NOWALL	DOOR	GenDoor	window|open(s)|close(s)|A window.|An open window.	Prop_Crawlspace()Prop_RoomView()	window @x1		Object that, when looked at, shows you what's behind it.
+window	26	25	100	GLASS	DIR NOWALL INDOOR	DOOR	GenDoor	window|open(s)|close(s)|A window.|An open window.	Prop_Crawlspace()Prop_RoomView()	window @x1		Object that, when looked at, shows you what`s behind it.
 outdoor deep pool	27	200	700		OUTDOOR	ROOM	WaterSurface	1		pool		Turns an outdoor place into a deep diveable swimmable place.
 big maze	28	225	3500		OUTDOOR	ROOM	StoneMaze	7		large maze frame and roof		Turns an outdoor place into a large indoor one of twisting turns.
 hole	29	180	2550		INDOOR DOWNONLY	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly()	hole @x1 to another floor		Exit from an indoor place to a new room below it.
 great room	19	150	750		OUTDOOR	ROOM	LargeStoneRoom	0		large frame and roof		Turns an outdoor place into a large indoor place.
-yett	30	55	30	METAL	DIR	DOOR	GenDoor	yett		yett @x1		Openable exit between two places.
+yett	30	55	30	METAL	DIR	DOOR	GenDoor	yett	Prop_RoomView()	yett @x1		Openable exit between two places.
 cellar	31	300	3000		DOWNONLY	STAIRS	CaveRoom	@x1stairs to the @x2 cellar		cellar @x1		Exit from an indoor place to a new indoor room below it.
 raised ceiling	36	240	2500		INDOOR	STAIRS	IndoorInTheAir	@x1 to the @x2 floor	Spell_Fly()	scaffolding and supports to raise the ceiling		Turns an indoor room into a much taller one.
 indoor wade pool	37	250	1000		INDOOR	ROOM	IndoorShallowWater	0		indoor pool		Turns an indoor room into a wet indoor room.
@@ -31,7 +31,7 @@ heavy stone door	40	55	70		INDOOR DIR	DOOR	GenDoor	heavy stone door		door @x1		O
 indoor pool	47	300	1500		INDOOR	ROOM	IndoorWaterSurface	0		indoor pool		Turns an indoor room into an indoor water room.
 sliding stone door	50	65	80		INDOOR DIR	DOOR	GenDoor	door|slide(s) open|slide(s) closed|A closed door|An open doorway.		door @x1		Openable exit between two indoor places.
 indoor deep pool	57	400	2500		INDOOR	ROOM	IndoorWaterSurface	1		indoor pool		Turns an indoor room into a deeper indoor water room.
-portcullis	60	75	40	METAL	DIR	DOOR	GenDoor	portcullis|raise(s)|lower(s)|A portcullis blocks your way.		portcullis @x1		Openable exit between two places.
+portcullis	60	75	40	METAL	DIR	DOOR	GenDoor	portcullis|raise(s)|lower(s)|A portcullis blocks your way.	Prop_RoomView()	portcullis @x1		Openable exit between two places.
 quiet room	67	250	750		OUTDOOR	ROOM	StoneRoom	0	FasterRecovery(health=2)Prop_NoChannel(QUIET)	sound-resistant frame and roof	-SKILLS +Prayer_Silence(100)	Turns an outdoor place into an indoor one that allows faster health recovery, and prevents the usage of channels.
 nonquiet room	67	25	0		INDOOR	DELEFFECT			FasterRecovery()Prop_NoChannel()	room clear		Removes the quiet restriction and health recovery bonus from a quiet room.
 huge maze	68	400	5000		OUTDOOR	ROOM	StoneMaze	9		huge maze frame and roof		Turns an outdoor place into a huge indoor one of twisting turns.
