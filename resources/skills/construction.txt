@@ -28,7 +28,7 @@ big maze	27	210	3500		OUTDOOR	ROOM	WoodRoomMaze	7		large maze frame and roof		Tu
 standard gate	28	45	40		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
 hole	29	165	2550		INDOOR DOWNONLY	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly()	hole @x1 to another floor		Exit from an indoor place to a new indoor room below it.
 standard door	30	55	80		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
-obscured door	30	100	100		INDOOR DIR	DOOR	GenDoor	secret door	Prop_Hidden	secret door @x1	-BASECLASS +Thief	Very high-level hidden openable exit between two indoor places.
+obscured door	30	100	100		DIR INDOOR	DOOR	GenDoor	secret door	Prop_Hidden()	secret door @x1	-BASECLASS +Thief	Hidden openable exit between two indoor places.
 trap door	33	55	120		DIRUPDOWN INDOOR	DOOR	GenDoor	trapdoor|open(s)|close(s)|A closed trapdoor.|An open doorway.		door @x1		Openable exit between two indoor rooms above or below each other.
 sturdy door	35	55	90		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 diving board	36	125	250		OUTDOOR WATERONLY UPONLY	ROOM	OverTheLedge	0		high dive platform		Turns the space above an outdoor water room into a platform above the room that can be jumped from.
@@ -55,7 +55,7 @@ massive gate	78	95	100		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit b
 massive door	80	105	200		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 siege gate	88	105	125		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
 barricade door	90	115	250		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
-secret door	90	200	250		INDOOR DIR	DOOR	GenDoor	secret door	Prop_Hidden	obscured door @x1	-BASECLASS +Thief	Hidden openable exit between two indoor places.
+secret door	90	200	250		DIR INDOOR	DOOR	GenDoor	secret door	Prop_Hidden()	obscured door @x1	-BASECLASS +Thief	Very high-level hidden openable exit between two indoor places.
 grand hall	29	175	1500		OUTDOOR	ROOM	LargeWoodRoom	0		large frame and room		Turns an oudoor place into a large indoor one.
 small orchestra box	41	90	150		INDOOR	ROOMEFFECT			SoundEcho(1)	acoustic paneling	-ANYCLASS +Minstrel	Installs panels to carry sound to adjacent rooms.
 medium orchestra box	51	120	250		INDOOR	ROOMEFFECT			SoundEcho(2)	acoustic paneling	-ANYCLASS +Minstrel	Installs panels to carry sound to rooms up to 2 rooms away.

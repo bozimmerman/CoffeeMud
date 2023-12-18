@@ -4706,6 +4706,7 @@ public class ListCmd extends StdCommand
 		WHO("WHO",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDPLAYERS}),
 		CRON("CRON",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDCRON}),
 		SELECT("SELECT:",new SecFlag[]{SecFlag.LISTADMIN}),
+		TRACKINGFLAGS("TRACKINGFLAGS", new SecFlag[] {SecFlag.LISTADMIN}),
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -6107,6 +6108,9 @@ public class ListCmd extends StdCommand
 			break;
 		case DISEASES:
 			listAbilities(mob,s,commands,"Disease",Ability.ACODE_DISEASE);
+			break;
+		case TRACKINGFLAGS:
+			s.println(CMParms.toListString(TrackingLibrary.TrackingFlag.values()));
 			break;
 		case POSTOFFICES:
 			mob.tell(listPostOffices(mob,s,commands).toString());
