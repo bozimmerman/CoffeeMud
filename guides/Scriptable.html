@@ -5081,23 +5081,21 @@ from tick threads). &nbsp;In short, BE CAREFUL!</p>
 
       <p>Usage:</p>
 
-      <pre>mpdamage [target] [min amount] [max amount]<br />mpdamage [target] [min amount] [max amount] kill<br /></pre>
+      <pre>mpdamage [target] [min amount] [max amount] [options]<br /></pre>
 
       <p>This command does damage
 to a mob or item specified as the
 target. The amount of damage will be randomly between the min and max
 amounts. This command, by default, will never ever kill the target
-UNLESS the parameters are followed by the word kill as shown in the
+UNLESS the parameters are followed by the option 'KILL' as shown in the
 example below. Also, this command will treat any items that do not
 normally display a condition (like mundane items, wands, etc) as having
 1 hit point. Other items (weapons, armor) will have a number of hit
 points equal to their condition. This command is useful not only for
 hurting mobs, but for scratching up their armor when acid falls from
-the ceiling or something similar.</p>
+the ceiling or something similar.<br /><br />All the options include:<br /><span style="font-weight: bold;">KILL</span>: All the damage to actually kill the target<br /><span style="font-weight: bold;">ME</span>: Credit the damage to the scripted mob instead of it being self damage.<br /><span style="font-weight: bold;">PARALYZE, FIRE, COLD, WATER, GAS, MIND, GENERAL, JUSTICE, ACID, ELECTRIC, POISON, UNDEAD, CAST_SPELL</span>, or<span style="font-weight: bold;"> DISEASE</span>: &nbsp;Change the type of damage taken.<br /></p><p>EXAMPLES:</p>
 
-      <p>EXAMPLES:</p>
-
-      <pre>mpdamage $r 1 10 KILL<br />mpdamage $n 10 50<br /></pre>
+      <pre>mpdamage $r 1 10 KILL ACID<br />mpdamage $n 10 50<br /></pre>
 
       <h3><a name="mpdisable">mpdisable</a></h3>
 
@@ -5383,7 +5381,7 @@ player mobs also include: "FRIENDS",
 "IGNORE", "TITLES", "ALIAS","LASTIP","LASTDATETIME", "CHANNELMASK",
 "COLORSTR", "PROMPT", "POOFIN", "POOFOUT", "TRANPOOFIN",
 "TRAINPOOFOUT", "ANNOUNCEMSG", "NOTES", "WRAP", "BIRTHDAY",
-"ACCTEXPIRATION", "INTRODUCTIONS"</p>
+"ACCTEXPIRATION", "INTRODUCTIONS"</p><p>Instanced Areas include special variables "RESET_INSTANCE" and "TIMEOUT_INSTANCE".</p>
 
       <p>Whenever a value of ++ is
 given for any stat, it will
