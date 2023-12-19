@@ -19,7 +19,7 @@ import java.util.*;
  */
 public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Serializable
 {
-	private static final long	         serialVersionUID	= 6687178785122561993L;
+	private static final long			 serialVersionUID	= 6687178785122561993L;
 	private volatile LinkedHashMap<K, F>	H;
 
 	public SLinkedHashtable()

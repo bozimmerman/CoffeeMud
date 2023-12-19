@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T, K>
 {
-	protected int	     itemLimit;
+	protected int		 itemLimit;
 	protected final int	 origItemLimit;
 	protected final long touchAgeLimitMillis;
 	protected final long maxAgeLimitMillis;
@@ -70,15 +70,15 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	 * only hard limit.
 	 *
 	 * @param itemLimit
-	 *            the number of items to try to limit this map to
+	 *  		  the number of items to try to limit this map to
 	 * @param touchAgeLimitMillis
-	 *            the age of last-touching that makes an item too old to keep
+	 *  		  the age of last-touching that makes an item too old to keep
 	 * @param maxAgeLimitMillis
-	 *            the longest amount of time any entry is allowed to live,
-	 *            regardless of touching
+	 *  		  the longest amount of time any entry is allowed to live,
+	 *  		  regardless of touching
 	 * @param threshHoldToExpand
-	 *            the number of touches on any given item before the limit
-	 *            expands to accommodate, or 0 to disable
+	 *  		  the number of touches on any given item before the limit
+	 *  		  expands to accommodate, or 0 to disable
 	 */
 	public PrioritizingLimitedMap(int itemLimit, final long touchAgeLimitMillis, final long maxAgeLimitMillis, final int threshHoldToExpand)
 	{
@@ -100,12 +100,12 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	 * itemLimit, is therefore, a long-run ideal.
 	 *
 	 * @param itemLimit
-	 *            the number of items to try to limit this map to
+	 *  		  the number of items to try to limit this map to
 	 * @param touchAgeLimitMillis
-	 *            the age of last-touching that makes an item too old to keep
+	 *  		  the age of last-touching that makes an item too old to keep
 	 * @param maxAgeLimitMillis
-	 *            the longest amount of time any entry is allowed to live,
-	 *            regardless of touching
+	 *  		  the longest amount of time any entry is allowed to live,
+	 *  		  regardless of touching
 	 */
 	public PrioritizingLimitedMap(final int itemLimit, final long touchAgeLimitMillis, final long maxAgeLimitMillis)
 	{

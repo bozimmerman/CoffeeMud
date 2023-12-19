@@ -116,8 +116,8 @@ public class FileCache implements FileCacheManager
 	 * this function may end up throwing a 304 not modified if the eTag
 	 * matches the data anyway.
 	 * @param fileName   the name of the file being added
-	 * @param entry      the new fancy cache entry for this file
-	 * @param eTag       the r/w single dimension eTag holder
+	 * @param entry 	 the new fancy cache entry for this file
+	 * @param eTag  	 the r/w single dimension eTag holder
 	 * @throws HTTPException
 	 */
 	private void possibleAddEntryToCache(final String fileName, final FileCacheEntry entry, final String[] eTag) throws HTTPException
@@ -162,7 +162,7 @@ public class FileCache implements FileCacheManager
 	 * Internal method for retreiving a cache entry, and potentially throwing a 304 not modified,
 	 * or even a 404 not found if appropriate
 	 * @param fileName   the name of the file to look for
-	 * @param eTag       a read/write eTag container that is matched for 304 errors, and filled otherwise
+	 * @param eTag  	 a read/write eTag container that is matched for 304 errors, and filled otherwise
 	 * @return the HTTPFileCache entry if one is found, or null if a new one needs generating
 	 * @throws HTTPException
 	 */

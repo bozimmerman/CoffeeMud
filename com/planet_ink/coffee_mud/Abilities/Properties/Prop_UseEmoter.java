@@ -249,9 +249,9 @@ public class Prop_UseEmoter extends Property
 				case CMMsg.TYP_WIELD:
 				case CMMsg.TYP_HOLD:
 					if((!(myItem instanceof Drink))
-				    &&(!(myItem instanceof Armor))
-				    &&(!(myItem instanceof Container))
-				    &&(msg.amITarget(myItem)))
+					&&(!(myItem instanceof Armor))
+					&&(!(myItem instanceof Container))
+					&&(msg.amITarget(myItem)))
 						this.emoteNow(msg);
 					break;
 				}

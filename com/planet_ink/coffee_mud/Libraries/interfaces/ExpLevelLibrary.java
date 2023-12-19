@@ -142,7 +142,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @param sourceId an arbitrary string denoting the xp source
 	 * @param victim the mob killed, if any, to cause the experience gain
 	 * @param homageMessage the name, if any, of another mob whose gain experience is
-	 *            causing this gain
+	 *  		  causing this gain
 	 * @param amount the amount of experience to gain
 	 * @param quiet true if no messages should be given
 	 */
@@ -381,7 +381,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @param sourceId arbitrary string denoting the source of the xp
 	 * @param victim the mob killed, if any, to cause the experience gain
 	 * @param homage the name, if any, of another mob whose gain experience is
-	 *            causing this gain
+	 *  		  causing this gain
 	 * @param amount the amount of experience to gain
 	 * @param quiet true if no messages should be given
 	 */

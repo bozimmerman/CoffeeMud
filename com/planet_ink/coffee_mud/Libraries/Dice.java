@@ -132,21 +132,21 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 
 	@Override
-    public long plusOrMinus(final long range)
+	public long plusOrMinus(final long range)
 	{
 		final long l=randomizer.nextLong() % range;
 		return randomizer.nextBoolean()?l:-l;
 	}
 
 	@Override
-    public int plusOrMinus(final int range)
+	public int plusOrMinus(final int range)
 	{
 		final int l=randomizer.nextInt() % range;
 		return randomizer.nextBoolean()?l:-l;
 	}
 
 	@Override
-    public double plusOrMinus(final double range)
+	public double plusOrMinus(final double range)
 	{
 		final double l=randomizer.nextDouble() * range;
 		return randomizer.nextBoolean()?l:-l;

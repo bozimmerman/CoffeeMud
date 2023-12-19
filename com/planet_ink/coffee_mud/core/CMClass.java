@@ -585,7 +585,7 @@ public class CMClass extends ClassLoader
 	 * this thread
 	 *
 	 * @return an enumeration of all the stored common Objects in this
-	 *         classloader for this thread
+	 *  	   classloader for this thread
 	 */
 	public static final Enumeration<CMCommon> commonObjects()
 	{
@@ -597,7 +597,7 @@ public class CMClass extends ClassLoader
 	 * this thread
 	 *
 	 * @return an enumeration of all the stored char Classes in this classloader
-	 *         for this thread
+	 *  	   for this thread
 	 */
 	public static final Enumeration<CharClass> charClasses()
 	{
@@ -609,7 +609,7 @@ public class CMClass extends ClassLoader
 	 * thread
 	 *
 	 * @return an enumeration of all the stored mob Types in this classloader
-	 *         for this thread
+	 *  	   for this thread
 	 */
 	public static final Enumeration<MOB> mobTypes()
 	{
@@ -621,7 +621,7 @@ public class CMClass extends ClassLoader
 	 * thread
 	 *
 	 * @return an enumeration of all the stored races in this classloader for
-	 *         this thread
+	 *  	   this thread
 	 */
 	public static final Enumeration<CMLibrary> libraries()
 	{
@@ -633,7 +633,7 @@ public class CMClass extends ClassLoader
 	 * thread
 	 *
 	 * @return an enumeration of all the stored locales in this classloader for
-	 *         this thread
+	 *  	   this thread
 	 */
 	public static final Enumeration<Room> locales()
 	{
@@ -645,7 +645,7 @@ public class CMClass extends ClassLoader
 	 * thread
 	 *
 	 * @return an enumeration of all the stored exits in this classloader for
-	 *         this thread
+	 *  	   this thread
 	 */
 	public static final Enumeration<Exit> exits()
 	{
@@ -657,7 +657,7 @@ public class CMClass extends ClassLoader
 	 * thread
 	 *
 	 * @return an enumeration of all the stored behaviors in this classloader
-	 *         for this thread
+	 *  	   for this thread
 	 */
 	public static final Enumeration<Behavior> behaviors()
 	{
@@ -669,7 +669,7 @@ public class CMClass extends ClassLoader
 	 * thread
 	 *
 	 * @return an enumeration of all the stored basic Items in this classloader
-	 *         for this thread
+	 *  	   for this thread
 	 */
 	public static final Enumeration<Item> basicItems()
 	{
@@ -681,7 +681,7 @@ public class CMClass extends ClassLoader
 	 * thread
 	 *
 	 * @return an enumeration of all the stored weapons in this classloader for
-	 *         this thread
+	 *  	   this thread
 	 */
 	public static final Enumeration<Weapon> weapons()
 	{
@@ -693,7 +693,7 @@ public class CMClass extends ClassLoader
 	 * thread
 	 *
 	 * @return an enumeration of all the stored armor in this classloader for
-	 *         this thread
+	 *  	   this thread
 	 */
 	public static final Enumeration<Armor> armor()
 	{
@@ -705,7 +705,7 @@ public class CMClass extends ClassLoader
 	 * thread
 	 *
 	 * @return an enumeration of all the stored misc Magic in this classloader
-	 *         for this thread
+	 *  	   for this thread
 	 */
 	public static final Enumeration<MiscMagic> miscMagic()
 	{
@@ -717,7 +717,7 @@ public class CMClass extends ClassLoader
 	 * thread, of all types and subtypes
 	 *
 	 * @return an enumeration of all the stored Items in this classloader
-	 *         for this thread
+	 *  	   for this thread
 	 */
 	@SuppressWarnings("unchecked")
 	public static final Enumeration<Item> allItems()
@@ -736,7 +736,7 @@ public class CMClass extends ClassLoader
 	 *
 	 * @param f the filterer to help select which ones you want
 	 * @return an enumeration of all the stored misc Magic in this classloader
-	 *         for this thread
+	 *  	   for this thread
 	 */
 	public static final Enumeration<MiscMagic> miscMagic(final Filterer<MiscMagic> f)
 	{
@@ -748,7 +748,7 @@ public class CMClass extends ClassLoader
 	 * thread
 	 *
 	 * @return an enumeration of all the stored misc Tech in this classloader
-	 *         for this thread
+	 *  	   for this thread
 	 */
 	public static final Enumeration<Technical> tech()
 	{
@@ -761,7 +761,7 @@ public class CMClass extends ClassLoader
 	 *
 	 * @param f the filterer to help select which ones you want
 	 * @return an enumeration of all the stored misc Tech in this classloader
-	 *         for this thread
+	 *  	   for this thread
 	 */
 	public static final Enumeration<Technical> tech(final Filterer<Technical> f)
 	{
@@ -773,7 +773,7 @@ public class CMClass extends ClassLoader
 	 * thread
 	 *
 	 * @return an enumeration of all the stored clan Items in this classloader
-	 *         for this thread
+	 *  	   for this thread
 	 */
 	public static final Enumeration<ClanItem> clanItems()
 	{
@@ -785,7 +785,7 @@ public class CMClass extends ClassLoader
 	 * thread
 	 *
 	 * @return an enumeration of all the stored area Types in this classloader
-	 *         for this thread
+	 *  	   for this thread
 	 */
 	public static final Enumeration<Area> areaTypes()
 	{
@@ -797,7 +797,7 @@ public class CMClass extends ClassLoader
 	 * thread
 	 *
 	 * @return an enumeration of all the stored commands in this classloader for
-	 *         this thread
+	 *  	   this thread
 	 */
 	public static final Enumeration<Command> commands()
 	{
@@ -809,7 +809,7 @@ public class CMClass extends ClassLoader
 	 * thread
 	 *
 	 * @return an enumeration of all the stored abilities in this classloader
-	 *         for this thread
+	 *  	   for this thread
 	 */
 	public static final Enumeration<Ability> abilities()
 	{
@@ -822,7 +822,7 @@ public class CMClass extends ClassLoader
 	 *
 	 * @param f the filterer to help select which ones you want
 	 * @return an enumeration of all the stored abilities in this classloader
-	 *         for this thread
+	 *  	   for this thread
 	 */
 	public static final Enumeration<Ability> abilities(final Filterer<Ability> f)
 	{
@@ -834,7 +834,7 @@ public class CMClass extends ClassLoader
 	 * thread
 	 *
 	 * @return an enumeration of all the stored webmacros in this classloader
-	 *         for this thread
+	 *  	   for this thread
 	 */
 	public static final Enumeration<WebMacro> webmacros()
 	{

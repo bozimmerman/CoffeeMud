@@ -68,17 +68,17 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public final static String[]	fnouns		= { "bison", "buffalo", "carpcod", "deer", "fish", "moose", "pike", "salmon", "sheep", "shrimp", "squid", "trout", "ore" };
 	public final static String[]	feewords1	= { "foot", "goose", "louse", "dormouse", "man", "mouse", "tooth", "woman", "ox", "child", "brother" };
 	public final static String[]	feewords2	= { "feet", "geese", "lice", "dormice", "men", "mice", "teeth", "women", "oxen", "children", "brethren" };
-	public final static String[]    num_words 	= {
+	public final static String[]	num_words 	= {
 													"zero", "one", "two", "three", "four",
 													"five", "six", "seven", "eight", "nine",
 													"ten", "eleven", "twelve", "thirteen", "fourteen",
 													"fifteen", "sixteen", "seventeen", "eighteen", "nineteen"
 												  };
-	public final static String[]    num_words_10= {
+	public final static String[]	num_words_10= {
 													"", "ten", "twenty", "thirty", "fourty",
 													"fifty", "sixty", "seventy", "eighty", "ninety"
 												  };
-	public final static String[]    num_words_x	= {
+	public final static String[]	num_words_x	= {
 													"thousand", "million", "billion", "trillion",
 													"quadrillion", "quintillion", "sextillion"
 												  };
@@ -2793,7 +2793,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			0.08167, 0.01492, 0.02782, 0.04253, 0.12702, 0.02228, 0.02015,  // A-G
 			0.06094, 0.06966, 0.00153, 0.00772, 0.04025, 0.02406, 0.06749,  // H-N
 			0.07507, 0.01929, 0.00095, 0.05987, 0.06327, 0.09056, 0.02758,  // O-U
-			0.00978, 0.02360, 0.00150, 0.01974, 0.00074                     // V-Z
+			0.00978, 0.02360, 0.00150, 0.01974, 0.00074 					// V-Z
 		};
 		double punctuationCount=0;
 		double wordCount=0;

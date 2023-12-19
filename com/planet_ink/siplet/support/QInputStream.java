@@ -61,22 +61,22 @@ public class QInputStream extends InputStream
 		return -1;
 	}
 
-    @Override
+	@Override
 	public int available() throws IOException 
-    {
-    	int ct;
-    	final int pwrite=queueWrite.get();
-    	final int pread=queueRead.get();
+	{
+		int ct;
+		final int pwrite=queueWrite.get();
+		final int pread=queueRead.get();
 		if(pwrite>=pread)
 			ct=pwrite-pread;
 		else
 			ct=(queueSize-pread)+pwrite;
 		return ct;
-    }
+	}
 
-    @Override
+	@Override
 	public void close() throws IOException 
 	{
-    	queueRead.set(queueWrite.get());
+		queueRead.set(queueWrite.get());
 	}
 }

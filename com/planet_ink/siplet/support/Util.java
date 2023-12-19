@@ -659,7 +659,7 @@ public class Util
 	 * Usage: int num=s_bool(CMD.substring(14));
 	 *
 	 * @param INT
-	 *            Boolean value of string
+	 *  		  Boolean value of string
 	 * @return int Boolean value of the string
 	 */
 	public static boolean s_bool(final String BOOL)
@@ -675,7 +675,7 @@ public class Util
 	 * Usage: int num=s_int(CMD.substring(14));
 	 *
 	 * @param INT
-	 *            Integer value of string
+	 *  		  Integer value of string
 	 * @return int Integer value of the string
 	 */
 	public static int s_int(final String INT)
@@ -700,7 +700,7 @@ public class Util
 	 * Usage: int num=s0_int(CMD.substring(14));
 	 *
 	 * @param INT
-	 *            Integer value of string
+	 *  		  Integer value of string
 	 * @return int Integer value of the string
 	 */
 	public static int s0_int(String INT)
@@ -1441,7 +1441,7 @@ public class Util
 	 * Usage: Return=MiscFunc.convertToRoman(Number)+".";
 	 *
 	 * @param i
-	 *            Integer to convert
+	 *  		  Integer to convert
 	 *
 	 * @return String Converted integer
 	 */

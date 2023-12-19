@@ -46,7 +46,7 @@ public class Fey extends SmallElfKin
 		return localizedStaticName;
 	}
 
-	//                                     an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	//  								   an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[]	parts	= { 0, 2, 2, 1, 1, 2, 2, 1, 2, 2, 1, 0, 1, 1, 0, 0 };
 
 	private final static String localizedStaticRacialCat = CMLib.lang().L("Fairy-kin");

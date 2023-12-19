@@ -95,7 +95,7 @@ public class KeyPairWildSearchTree<V> extends KeyPairSearchTree<V>
 	 * @return the value
 	 */
 	@Override
-    public Pair<String,V> findLongestValue(final String fullStr)
+	public Pair<String,V> findLongestValue(final String fullStr)
 	{
 		return findLongestValueWithWildcards(fullStr,root,new int[]{0});
 	}

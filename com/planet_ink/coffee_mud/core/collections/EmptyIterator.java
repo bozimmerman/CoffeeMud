@@ -44,6 +44,6 @@ public class EmptyIterator<K> implements Iterator<K>
 	}
 
 	@SuppressWarnings("rawtypes")
-	public static final Iterator		INSTANCE	    = new EmptyIterator();
+	public static final Iterator		INSTANCE		= new EmptyIterator();
 	public static final Iterator<String>STRINSTANCE	= new EmptyIterator<String>();
 }

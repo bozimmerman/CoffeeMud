@@ -142,7 +142,7 @@ public class Thief_MastShot extends ThiefSkill
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.target() instanceof Rideable)
 			&&(msg.target() instanceof NavigableItem)
-		    &&(((NavigableItem)msg.target()).navBasis()==Rideable.Basis.WATER_BASED)
+			&&(((NavigableItem)msg.target()).navBasis()==Rideable.Basis.WATER_BASED)
 			&&(msg.target() instanceof Physical)
 			)
 			{

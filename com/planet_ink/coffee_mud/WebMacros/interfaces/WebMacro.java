@@ -57,7 +57,7 @@ public interface WebMacro extends CMObject
 	 * @see WebMacro#runBinaryMacro(HTTPRequest, String, HTTPResponse)
 	 * @see WebMacro#runMacro(HTTPRequest, String, HTTPResponse)
 	 * @return whether the runBinaryMacro executor should be called instead of
-	 *         runMacro
+	 *  	   runMacro
 	 */
 	public boolean preferBinary();
 

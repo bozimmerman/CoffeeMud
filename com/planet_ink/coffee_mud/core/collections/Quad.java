@@ -72,7 +72,7 @@ public class Quad<T, K, L, M> extends Triad<T, K, L>
 		{
 			final Quad<?,?,?,?> p = (Quad<?,?,?,?>) o;
 			return ((p.first == first) || ((p.first != null) && (p.first.equals(first)))) && ((p.second == second) || ((p.second != null) && (p.second.equals(second))))
-			        && ((p.third == third) || ((p.third != null) && (p.third.equals(third)))) && ((p.fourth == fourth) || ((p.fourth != null) && (p.fourth.equals(fourth))));
+					&& ((p.third == third) || ((p.third != null) && (p.third.equals(third)))) && ((p.fourth == fourth) || ((p.fourth != null) && (p.fourth.equals(fourth))));
 		}
 		return super.equals(o);
 	}

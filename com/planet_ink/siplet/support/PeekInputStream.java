@@ -77,24 +77,24 @@ public class PeekInputStream extends InputStream
 		return c;
 	}
 
-    @Override
+	@Override
 	public int available() throws IOException 
-    {
-    	int ct;
-    	final int pwrite=peekWrite.get();
-    	final int pread=peekRead.get();
+	{
+		int ct;
+		final int pwrite=peekWrite.get();
+		final int pread=peekRead.get();
 		if(pwrite>=pread)
 			ct=pwrite-pread;
 		else
 			ct=(peekSize-pread)+pwrite;
 		final int avail = ct + in.available();
 		return avail;
-    }
+	}
 
-    @Override
+	@Override
 	public void close() throws IOException 
 	{
-    	peekRead.set(peekWrite.get());
-    	in.close();
+		peekRead.set(peekWrite.get());
+		in.close();
 	}
 }

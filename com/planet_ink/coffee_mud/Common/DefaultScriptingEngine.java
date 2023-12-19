@@ -14057,8 +14057,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						  ||(!(msg.tool() instanceof Ability))
 						  ||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)))
 					  ||((msg.target()==monster)
-					    &&(msg.targetMessage()!=null)
-					    &&(msg.tool()==null)))
+						&&(msg.targetMessage()!=null)
+						&&(msg.tool()==null)))
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
 						if(t==null)

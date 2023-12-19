@@ -2282,7 +2282,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 									+"\n\rDesc  : "+viewedmob.description()
 									+"\n\rStart : "+((viewedmob.getStartRoom()==null)?"null":viewedmob.getStartRoom().roomID())
 									+"\n\r"+getRiderAddendum(viewedmob)
-									       +getFollowAddendum(viewedmob)
+										   +getFollowAddendum(viewedmob)
 									+"Misc  : "+viewedmob.text()
 									+"\n\r");
 			}

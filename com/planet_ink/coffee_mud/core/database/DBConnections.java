@@ -80,10 +80,10 @@ public class DBConnections
 	 * Usage: Initialize("ODBCSERVICE","USER","PASSWORD",10);
 	 * @param dbClass	the odbc service
 	 * @param dbService    the odbc service
-	 * @param dbUser    the odbc user login
-	 * @param dbPass    the odbc user password
+	 * @param dbUser	the odbc user login
+	 * @param dbPass	the odbc user password
 	 * @param dbParms	extra jdbc parameters
-	 * @param numConnections    Connections to maintain
+	 * @param numConnections	Connections to maintain
 	 * @param reuse    Whether to reuse connections
 	 * @param transact true to group statements into a transaction
 	 * @param doErrorQueueing    whether to save errors to a file

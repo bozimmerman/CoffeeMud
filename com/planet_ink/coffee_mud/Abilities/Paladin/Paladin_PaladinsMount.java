@@ -58,7 +58,7 @@ public class Paladin_PaladinsMount extends PaladinSkill
 	protected boolean pass=false;
 	protected static final long allGAlignFlags = Ability.FLAG_HOLY   + Ability.FLAG_LAW;
 	protected static final long allEAlignFlags = Ability.FLAG_UNHOLY + Ability.FLAG_CHAOS;
-	protected static final long allAlignFlags  = allGAlignFlags      + allEAlignFlags;
+	protected static final long allAlignFlags  = allGAlignFlags 	 + allEAlignFlags;
 
 	public Paladin_PaladinsMount()
 	{

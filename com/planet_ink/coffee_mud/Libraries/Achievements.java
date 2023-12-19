@@ -9348,7 +9348,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		else
 			str.append("\n\r^H").append(CMStrings.padRight(L("Char. Achievement  :"),cols)).append("^N ").append(A.getTattoo());
 		str.append("\n\r^H").append(CMStrings.padRight(    L("Description        :"),cols)).append("^N ").append(A.getDisplayStr());
-		str.append("\n\r^H").append(CMStrings.padRight(        L("Achievement Type   :"),cols)).append("^N ");
+		str.append("\n\r^H").append(CMStrings.padRight( 	   L("Achievement Type   :"),cols)).append("^N ");
 		str.append(L(A.getEvent().displayName()));
 		if(A.getRewards().length>0)
 		{

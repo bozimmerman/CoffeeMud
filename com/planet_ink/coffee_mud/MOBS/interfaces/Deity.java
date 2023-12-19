@@ -148,8 +148,8 @@ public interface Deity extends MOB
 		WORSHIP_CURSE,    /* how worshippers receive curses */
 		CLERIC_BLESSING,  /* how clerics receive blessings */
 		CLERIC_CURSE,     /* how clerics receive curses */
-		SERVICE,          /* cleric services */
-		POWER             /* cleric power ritual */
+		SERVICE,		  /* cleric services */
+		POWER   		  /* cleric power ritual */
 	}
 
 	/**

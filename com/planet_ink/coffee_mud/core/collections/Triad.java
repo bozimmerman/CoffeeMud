@@ -115,7 +115,7 @@ public class Triad<T, K, L> extends Pair<T, K>
 		{
 			final Triad<?,?,?> p = (Triad<?,?,?>) o;
 			return ((p.first == first) || ((p.first != null) && (p.first.equals(first)))) && ((p.second == second) || ((p.second != null) && (p.second.equals(second))))
-			        && ((p.third == third) || ((p.third != null) && (p.third.equals(third))));
+					&& ((p.third == third) || ((p.third != null) && (p.third.equals(third))));
 		}
 		return super.equals(o);
 	}

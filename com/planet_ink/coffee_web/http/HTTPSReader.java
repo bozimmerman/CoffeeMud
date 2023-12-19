@@ -164,12 +164,12 @@ public class HTTPSReader extends HTTPReader
 				{
 				case NEED_TASK:
 				{
-				    Runnable runnable;
-				    while ((runnable = sslEngine.getDelegatedTask()) != null)
-				    {
+					Runnable runnable;
+					while ((runnable = sslEngine.getDelegatedTask()) != null)
+					{
 						runnable.run();
-				    }
-				    status=sslEngine.getHandshakeStatus();
+					}
+					status=sslEngine.getHandshakeStatus();
 					break;
 				}
 				default:
@@ -194,8 +194,8 @@ public class HTTPSReader extends HTTPReader
 					status=sslEngine.getHandshakeStatus();
 					break;
 				case FINISHED:
-				    status=HandshakeStatus.NOT_HANDSHAKING;
-				    break;
+					status=HandshakeStatus.NOT_HANDSHAKING;
+					break;
 				case NOT_HANDSHAKING:
 					break;
 				}

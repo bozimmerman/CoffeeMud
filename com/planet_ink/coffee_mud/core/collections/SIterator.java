@@ -22,7 +22,7 @@ import java.util.NoSuchElementException;
 public class SIterator<K> implements Iterator<K>
 {
 	private final Iterator<K>	iter;
-	private K	              o	= null;
+	private K				  o	= null;
 
 	public SIterator(final Iterator<K> i)
 	{

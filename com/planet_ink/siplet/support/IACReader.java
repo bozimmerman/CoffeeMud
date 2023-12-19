@@ -195,25 +195,25 @@ public class IACReader extends Reader
 	}
 
 	@Override
-    public boolean ready() throws IOException 
-    {
-    	return available() > 0;
-    }
-    
-    /**
-     * Reads characters into a portion of an array.  This method will block
-     * until some input is available, an I/O error occurs, or the end of the
-     * stream is reached.
-     *
-     * @param      cbuf  Destination buffer
-     * @param      off   Offset at which to start storing characters
-     * @param      len   Maximum number of characters to read
-     *
-     * @return     The number of characters read, or -1 if the end of the
-     *             stream has been reached
-     *
-     * @exception  IOException  If an I/O error occurs
-     */
+	public boolean ready() throws IOException 
+	{
+		return available() > 0;
+	}
+	
+	/**
+	 * Reads characters into a portion of an array.  This method will block
+	 * until some input is available, an I/O error occurs, or the end of the
+	 * stream is reached.
+	 *
+	 * @param      cbuf  Destination buffer
+	 * @param      off   Offset at which to start storing characters
+	 * @param      len   Maximum number of characters to read
+	 *
+	 * @return     The number of characters read, or -1 if the end of the
+	 *  		   stream has been reached
+	 *
+	 * @exception  IOException  If an I/O error occurs
+	 */
 	@Override
 	public int read(char[] cbuf, int off, int len) throws IOException
 	{

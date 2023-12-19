@@ -653,7 +653,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						if(dir != this.directionFacing)
 						{
 							msg.source().tell(L("When in tactical mode, your "+noun_word+" can only "+verb_sail.toUpperCase()+
-											    " @x1.  Use COURSE for more complex maneuvers, or STEER.",dirName));
+												" @x1.  Use COURSE for more complex maneuvers, or STEER.",dirName));
 							return false;
 						}
 					}
