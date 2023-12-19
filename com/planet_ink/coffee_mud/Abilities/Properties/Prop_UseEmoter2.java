@@ -43,7 +43,7 @@ public class Prop_UseEmoter2 extends Prop_UseEmoter
 	@Override
 	public String name()
 	{
-		return "Emoting when used";
+		return "Emoting when used differently";
 	}
 
 	@Override

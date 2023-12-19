@@ -43,7 +43,7 @@ public class Prop_UseSpellCast2 extends Prop_UseSpellCast
 	@Override
 	public String name()
 	{
-		return "Casting spells when used";
+		return "Casting spells when used differently";
 	}
 
 	@Override

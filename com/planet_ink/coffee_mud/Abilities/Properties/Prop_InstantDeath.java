@@ -43,6 +43,12 @@ public class Prop_InstantDeath extends Property
 	}
 
 	@Override
+	public String name()
+	{
+		return "An Instant Death Property";
+	}
+
+	@Override
 	public long flags()
 	{
 		return super.flags()|Ability.FLAG_POTENTIALLY_DEADLY;

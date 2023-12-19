@@ -40,6 +40,12 @@ public class Prop_MOBEmoter extends Property
 		return "Prop_MOBEmoter";
 	}
 
+	@Override
+	public String name()
+	{
+		return "A MOB emoter property";
+	}
+
 	protected Behavior emoter=null;
 	@Override
 	public void setMiscText(final String newText)
