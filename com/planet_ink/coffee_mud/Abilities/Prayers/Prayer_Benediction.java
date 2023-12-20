@@ -89,7 +89,7 @@ public class Prayer_Benediction extends Prayer
 	protected Integer[] whichStats = null;
 	protected MOB amtAffected = null;
 	protected int amt=-1;
-	
+
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
@@ -106,12 +106,12 @@ public class Prayer_Benediction extends Prayer
 			&&(invoker().isPlayer())
 			&&(pts > (affected.phyStats().level()/5)+CMProps.getIntVar(CMProps.Int.EXPRATE)))
 				pts= (affected.phyStats().level()/5)+CMProps.getIntVar(CMProps.Int.EXPRATE);
-			CharStats chk=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+			final CharStats chk=(CharStats)CMClass.getCommon("DefaultCharStats");
 			chk.setAllBaseValues(0);
 			chk.setCurrentClass(mob.charStats().getCurrentClass());
 			for(int c=0;c<mob.charStats().numClasses();c++)
 				mob.charStats().getMyClass(c).affectCharStats(mob,chk);
-			List<Integer> whichOnes = new ArrayList<Integer>();
+			final List<Integer> whichOnes = new ArrayList<Integer>();
 			for(final int i: CharStats.CODES.MAXCODES())
 			{
 				if(chk.getStat(i)>0)
@@ -119,7 +119,10 @@ public class Prayer_Benediction extends Prayer
 			}
 			whichStats = whichOnes.toArray(new Integer[whichOnes.size()]);
 			amtAffected=affected;
-			amt=pts/whichStats.length;
+			if(whichOnes.size()==0) // prevent npe exception
+				amt=0;
+			else
+				amt=pts / whichStats.length;
 		}
 		for(final Integer I : whichStats)
 			affectableStats.setStat(I.intValue(),affectableStats.getStat(I.intValue())+amt);

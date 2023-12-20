@@ -58,9 +58,10 @@ public class Fighter_CaravanTactics extends Fighter_FieldTactics
 	{
 		if(R != null)
 		{
-			if(R.getArea() instanceof Boardable)
+			final Area A = R.getArea();
+			if(A instanceof Boardable)
 			{
-				final Item I = ((Boardable)(R.getArea())).getBoardableItem();
+				final Item I = ((Boardable)A).getBoardableItem();
 				return ((I != null)
 				&&((((Rideable)I).rideBasis() == Rideable.Basis.LAND_BASED)
 						||(((Rideable)I).rideBasis() == Rideable.Basis.WAGON)));
