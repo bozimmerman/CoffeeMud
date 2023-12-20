@@ -72,7 +72,7 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 		public Environmental convert(final Environmental obj)
 		{
 			final Environmental me=obj;
-			return new SpaceObject()
+			return new SpaceObject.SensedSpaceObject()
 			{
 				final Environmental	obj			= me;
 				protected String	name		= getGenericOpticalName(obj);
@@ -126,6 +126,12 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 				}
 
 				@Override
+				public Environmental get()
+				{
+					return obj;
+				}
+
+				@Override
 				public String image()
 				{
 					return obj.image();
@@ -166,9 +172,15 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 				}
 
 				@Override
-				public boolean sameAs(final Environmental E)
+				public boolean sameAs(Environmental E)
 				{
-					return E.ID().equals(ID()) || (ID().equals(""+E)) || obj.sameAs(E);
+					if(E==this)
+						return true;
+					if(E==null)
+						return false;
+					if(E instanceof SensedEnvironmental)
+						E=((SensedEnvironmental)E).get();
+					return E==obj || E.sameAs(obj);
 				}
 
 				@Override

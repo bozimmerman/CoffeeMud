@@ -134,6 +134,20 @@ public interface SpaceObject extends Environmental, BoundedObject
 	}
 
 	/**
+	 * Acting like an internal reference, a SensedSpaceObject is a reference (or
+	 * sensory echo) of an actual SpaceObject.
+	 *
+	 * @see Environmental
+	 * @see SpaceObject
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static interface SensedSpaceObject extends SpaceObject, SensedEnvironmental
+	{
+	}
+
+	/**
 	 * Some distance constants.  Not really proper enumerations, but
 	 * it's a nice way to create custom objects cleanly.
 	 * @author Bo Zimmerman

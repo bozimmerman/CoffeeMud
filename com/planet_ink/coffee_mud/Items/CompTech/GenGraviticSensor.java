@@ -99,7 +99,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 		@Override
 		public Environmental convert(final Environmental obj)
 		{
-			return new SpaceObject()
+			return new SpaceObject.SensedSpaceObject()
 			{
 				final String	name		= getGenericGraviticName(obj);
 				final String	displayText	= "";
@@ -137,6 +137,12 @@ public class GenGraviticSensor extends GenElecCompSensor
 				@Override
 				public void setDisplayText(final String newDisplayText)
 				{
+				}
+
+				@Override
+				public Environmental get()
+				{
+					return obj;
 				}
 
 				@Override
@@ -191,9 +197,15 @@ public class GenGraviticSensor extends GenElecCompSensor
 				}
 
 				@Override
-				public boolean sameAs(final Environmental E)
+				public boolean sameAs(Environmental E)
 				{
-					return E==this || E==obj;
+					if(E==this)
+						return true;
+					if(E==null)
+						return false;
+					if(E instanceof SensedEnvironmental)
+						E=((SensedEnvironmental)E).get();
+					return E==obj || E.sameAs(obj);
 				}
 
 				@Override

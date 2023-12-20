@@ -629,6 +629,19 @@ public class ShipNavProgram extends ShipSensorProgram
 		return false;
 	}
 
+	protected boolean sameAs(Environmental obj1, Environmental obj2)
+	{
+		if((obj1 == null)||(obj2 == null))
+			return false;
+		if(obj1 == obj2)
+			return true;
+		if(obj1 instanceof SensedEnvironmental)
+			obj1 = ((SensedEnvironmental)obj1).get();
+		if(obj2 instanceof SensedEnvironmental)
+			obj2 = ((SensedEnvironmental)obj2).get();
+		return obj1 == obj2;
+	}
+
 	protected SpaceObject getCollision(final SpaceObject fromObj, final SpaceObject toObj, final long radius, final SpaceObject[] others)
 	{
 		final long distance = CMLib.space().getDistanceFrom(fromObj, toObj);
@@ -639,9 +652,11 @@ public class ShipNavProgram extends ShipSensorProgram
 		long collDistance=Long.MAX_VALUE;
 		for(final SpaceObject O : CMLib.space().getSpaceObjectsInBound(cube))
 		{
-			if((O != others[0])&&(O != others[1])
-			&&(O != fromObj)&&(O != toObj)
-			&&(O.speed()==0.0))
+			if((O.speed()==0.0)
+			&&((others==null)||(!sameAs(others[0], O)))
+			&&((others==null)||(!sameAs(others[1], O)))
+			&&(!sameAs(fromObj, O))
+			&&(!sameAs(toObj, O)))
 			{
 				final long dist = CMLib.space().getDistanceFrom(fromObj, O);
 				if((dist < collDistance) || (collO == null))
