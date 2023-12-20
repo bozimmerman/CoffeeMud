@@ -158,6 +158,26 @@ public class ListCmd extends StdCommand
 		}
 	};
 
+	private static class NameIdFilter<K extends CMObject> implements Filterer<K>
+	{
+		private String mask;
+		public NameIdFilter(final String mask)
+		{
+			if((mask==null)||(mask.trim().length()==0))
+				this.mask=null;
+			else
+				this.mask=mask.toLowerCase().trim();
+		}
+
+		@Override
+		public boolean passesFilter(final K obj)
+		{
+			return (mask==null)
+					||(obj.ID().toLowerCase().indexOf(mask)>=0)
+					||(obj.name().toLowerCase().indexOf(mask)>=0);
+		}
+	};
+
 	public StringBuilder listAllQualifies(final Session viewerS, final List<String> cmds)
 	{
 		final StringBuilder str=new StringBuilder("");
@@ -5533,7 +5553,9 @@ public class ListCmd extends StdCommand
 		else
 		{
 			s.println("^H"+title+" Behavior IDs:^N");
-			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.behaviors()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
+					new FilteredEnumeration<Behavior>(CMClass.behaviors(),new NameIdFilter<Behavior>(CMParms.combine(commands,1)))
+					).toString());
 		}
 	}
 
@@ -6002,11 +6024,15 @@ public class ListCmd extends StdCommand
 			break;
 		case ITEMS:
 			s.println("^HBasic Item IDs:^N");
-			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.basicItems()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
+					new FilteredEnumeration<Item>(CMClass.basicItems(),new NameIdFilter<Item>(CMParms.combine(commands,1)))
+					).toString());
 			break;
 		case ARMOR:
 			s.println("^HArmor Item IDs:^N");
-			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.armor()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
+					new FilteredEnumeration<Armor>(CMClass.armor(),new NameIdFilter<Armor>(CMParms.combine(commands,1)))
+					).toString());
 			break;
 		case ENVRESOURCES:
 			s.wraplessPrintln(listEnvResources(mob.session(), rest));
@@ -6019,11 +6045,15 @@ public class ListCmd extends StdCommand
 			break;
 		case WEAPONS:
 			s.println("^HWeapon Item IDs:^N");
-			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.weapons()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
+					new FilteredEnumeration<Weapon>(CMClass.weapons(),new NameIdFilter<Weapon>(CMParms.combine(commands,1)))
+					).toString());
 			break;
 		case MOBS:
 			s.println("^HMOB IDs:^N");
-			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.mobTypes()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
+					new FilteredEnumeration<MOB>(CMClass.mobTypes(),new NameIdFilter<MOB>(CMParms.combine(commands,1)))
+					).toString());
 			break;
 		case ROOMS:
 			s.println("^HRoom Locale IDs:^N");
@@ -6040,7 +6070,9 @@ public class ListCmd extends StdCommand
 			break;
 		case LOCALES:
 			s.println("^HRoom Class Locale IDs:^N");
-			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.locales()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
+					new FilteredEnumeration<Room>(CMClass.locales(),new NameIdFilter<Room>(CMParms.combine(commands,1)))
+					).toString());
 			s.println("^HDomain Locales include the following:^N");
 			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, new IteratorEnumeration<String>(Arrays.asList(CMParms.combine(Room.DOMAIN_INDOORS_DESCS, Room.DOMAIN_OUTDOOR_DESCS)).iterator())).toString());
 			break;
@@ -6050,15 +6082,21 @@ public class ListCmd extends StdCommand
 			break;
 		case EXITS:
 			s.println("^HExit IDs:^N");
-			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.exits()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
+					new FilteredEnumeration<Exit>(CMClass.exits(),new NameIdFilter<Exit>(CMParms.combine(commands,1)))
+					).toString());
 			break;
 		case RACES:
 			s.println("^HRace IDs (Racial Category):^N");
-			s.wraplessPrintln(listRaces(s, CMClass.races(), rest).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
+					new FilteredEnumeration<Race>(CMClass.races(),new NameIdFilter<Race>(CMParms.combine(commands,1)))
+					).toString());
 			break;
 		case CLASSES:
 			s.println("^HCharacter Class IDs:^N");
-			s.wraplessPrintln(listCharClasses(s, CMClass.charClasses(), commands).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
+					new FilteredEnumeration<CharClass>(CMClass.charClasses(),new NameIdFilter<CharClass>(CMParms.combine(commands,1)))
+					).toString());
 			break;
 		case STAFF:
 			s.wraplessPrintln(listSubOps(mob.session()).toString());
@@ -6151,19 +6189,27 @@ public class ListCmd extends StdCommand
 		}
 		case MAGIC:
 			s.println("^HMagic Item IDs:^N");
-			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.miscMagic()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
+					new FilteredEnumeration<MiscMagic>(CMClass.miscMagic(),new NameIdFilter<MiscMagic>(CMParms.combine(commands,1)))
+					).toString());
 			break;
 		case TECH:
 			s.println("^HTech Item IDs:^N");
-			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.tech()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
+					new FilteredEnumeration<Technical>(CMClass.tech(),new NameIdFilter<Technical>(CMParms.combine(commands,1)))
+					).toString());
 			break;
 		case CLANITEMS:
 			s.println("^HClan Item IDs:^N");
-			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.clanItems()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
+					new FilteredEnumeration<ClanItem>(CMClass.clanItems(),new NameIdFilter<ClanItem>(CMParms.combine(commands,1)))
+					).toString());
 			break;
 		case AREATYPES:
 			s.println("^HArea Type IDs:^N");
-			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.areaTypes()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
+					new FilteredEnumeration<Area>(CMClass.areaTypes(),new NameIdFilter<Area>(CMParms.combine(commands,1)))
+					).toString());
 			break;
 		case COMMANDJOURNAL:
 			s.println(journalList(mob,mob.session(), listWord, rest).toString());
