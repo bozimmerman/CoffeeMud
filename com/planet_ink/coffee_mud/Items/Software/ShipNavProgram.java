@@ -642,28 +642,45 @@ public class ShipNavProgram extends ShipSensorProgram
 		return obj1 == obj2;
 	}
 
+	protected boolean sameAs(final Environmental obj1, final SpaceObject[] others)
+	{
+		if(others==null)
+			return false;
+		for(final SpaceObject o : others)
+		{
+			if(sameAs(obj1, o))
+				return true;
+		}
+		return false;
+	}
+
 	protected SpaceObject getCollision(final SpaceObject fromObj, final SpaceObject toObj, final long radius, final SpaceObject[] others)
 	{
 		final long distance = CMLib.space().getDistanceFrom(fromObj, toObj);
 		final double[] direction = CMLib.space().getDirection(fromObj, toObj);
-		BoundedCube cube=new BoundedCube(fromObj.coordinates(), radius);
-		cube=cube.expand(direction,distance);
+		BoundedCube baseCube=new BoundedCube(fromObj.coordinates(), SpaceObject.Distance.StarBRadius.dm);
+		baseCube=baseCube.expand(direction,distance);
+		BoundedCube compCube=new BoundedCube(fromObj.coordinates(), radius);
+		compCube=baseCube.expand(direction,distance);
 		SpaceObject collO = null;
 		long collDistance=Long.MAX_VALUE;
-		for(final SpaceObject O : CMLib.space().getSpaceObjectsInBound(cube))
+		for(final SpaceObject O : CMLib.space().getSpaceObjectsInBound(baseCube))
 		{
 			if((O.speed()==0.0)
-			&&((others==null)||(!sameAs(others[0], O)))
-			&&((others==null)||(!sameAs(others[1], O)))
 			&&(!sameAs(fromObj, O))
-			&&(!sameAs(toObj, O)))
+			&&(!sameAs(toObj, O))
+			&&(!sameAs(O, others)))
 			{
-				final long dist = CMLib.space().getDistanceFrom(fromObj, O);
-				if((dist < collDistance) || (collO == null))
+				final BoundedCube enemyCube = new BoundedCube(O.coordinates(), O.radius());
+				if(compCube.intersects(enemyCube))
 				{
-					// it's legit, a real collision!
-					collDistance = dist;
-					collO = O;
+					final long dist = CMLib.space().getDistanceFrom(fromObj, O);
+					if((dist < collDistance) || (collO == null))
+					{
+						// it's legit, a real collision!
+						collDistance = dist;
+						collO = O;
+					}
 				}
 			}
 		}
@@ -983,7 +1000,14 @@ public class ShipNavProgram extends ShipSensorProgram
 				final double toDirDiff = CMLib.space().getAngleDelta(ship.direction(), dirToITarget);
 				// if we are presently traveling towards the target, get detailed.
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SPACESHIP))
-					Log.debugOut(ship.name(),"Nav direction diff: "+CMath.div(Math.round(toDirDiff * 10000),10000.0));
+				{
+					Log.debugOut(ship.name(),"Nav direction diff: "+CMath.div(Math.round(toDirDiff * 10000),10000.0)
+								+", dist: "+CMLib.english().distanceDescShort(distToITarget)+", dir: "
+								+CMLib.english().directionDescShort(dirToITarget));
+					final SpaceObject O = CMLib.space().findSpaceObject("small moon", false);
+					if(O != null)
+						Log.debugOut(ship.name(),O.name()+": "+CMLib.space().getDistanceFrom(ship, O)+"/"+CMLib.english().directionDescShort(CMLib.space().getDirection(ship, O)));
+				}
 				if(toDirDiff < 0.08)
 				{
 					// first, check if we should be approaching, or deproaching
