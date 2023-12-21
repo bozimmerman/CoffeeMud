@@ -77,6 +77,12 @@ public class StdShipInertialBattery extends StdElecCompItem
 			((SpaceShip)((Room)container).getArea()).registerListener(TechCommand.ACCELERATION, this);
 	}
 
+	@Override
+	public int powerNeeds()
+	{
+		return activated()?(int)Math.min((powerCapacity - power), (int)Math.round((double)powerCapacity * getRechargeRate())):0;
+	}
+
 	protected synchronized SpaceShip getMyShip()
 	{
 		if(myShip == null)
