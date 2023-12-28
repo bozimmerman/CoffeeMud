@@ -359,7 +359,8 @@ public class Prop_ItemSlot extends Property
 					x=V.size()-1;
 				final String fromWhat = CMParms.combine(V,x);
 				final String what=CMParms.combine(V,1,x);
-				if(CMLib.english().containsString(affected.name(), fromWhat)||CMLib.english().containsString(affected.displayText(), fromWhat))
+				if((CMLib.english().containsString(affected.name(), fromWhat)||CMLib.english().containsString(affected.displayText(), fromWhat))
+				&&((!(affected instanceof Item))||(((Item)affected).amWearingAt(Item.IN_INVENTORY))))
 				{
 					final List<Item> items=new ArrayList<Item>(slots.length);
 					for(final Item I : slots)
