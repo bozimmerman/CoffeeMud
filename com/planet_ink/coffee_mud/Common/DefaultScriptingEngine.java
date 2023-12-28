@@ -12548,9 +12548,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					if((caged!=null)&&caged.cageMe((MOB)E)&&(lastKnownLocation!=null))
 					{
-						if(arg2.length()>0)
+						if((arg2.length()>0)&&(!arg2.equalsIgnoreCase(tt[1])))
 							((Item)caged).setName(arg2);
-						if(arg3.length()>0)
+						if((arg3.length()>0)&&(!arg3.equalsIgnoreCase(tt[1])))
 							((Item)caged).setDisplayText(arg3);
 						lastKnownLocation.addItem(caged,ItemPossessor.Expire.Player_Drop);
 						((MOB)E).killMeDead(false);
