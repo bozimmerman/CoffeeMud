@@ -1,12 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta name="generator" content="HTML Tidy, see www.w3.org" />
-  <title>Installing and Using MUDGrinder</title>
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index -->
-</head>
-<body>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+
+  <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Installing and Using MUDGrinder</title>
+  
+  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index --></head><body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
   <tbody>
@@ -26,16 +24,14 @@
       </ul>
       </td>
       <td align="left" valign="top">
-      <p class="center"><img src="images/grinder.gif"
- alt="MUDGrinder logo" /></p>
+      <p class="center"><img src="images/grinder.gif" alt="MUDGrinder logo" /></p>
       <h2><a name="what">What Is the MUDGrinder:</a></h2>
       <p>The MUDGrinder is a visual editing and administration tool. It
 includes the following <span style="font-weight: bold;">Utilities</span>:</p>
       <ul>
         <li> <b>Control Panel</b>, for changing many of the flexible
 settings of the engine, and includes the following: </li>
-        <li
- style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+        <li style="list-style-type: none; list-style-image: none; list-style-position: outside;">
           <ul>
             <li>Disable/enable buttons for features</li>
             <li>Database health and reset<br />
@@ -53,7 +49,21 @@ settings of the engine, and includes the following: </li>
           </ul>
         </li>
         <li> <b>File Browser</b> lets you browse, create, delete,
-upload, search, or modify text files in your CoffeeMud package. </li>
+upload, search, or modify text files in your CoffeeMud package.</li>
+        <ul>
+          <li>Files in <span style="font-style: italic;">normal Italics</span><span style="font-weight: bold;"> </span>are only in the database (VFS).&nbsp; Those in <span style="font-weight: bold; font-style: italic;">Bold Italics</span><span style="font-style: italic;"> </span>are both local and in the VFS.</li>
+          <li>All file operations will target the VFS version of the file if it exists, and only the local version if that is the only one.<br />
+The file operations are:<br />
+          </li>
+          <ul>
+            <li><img alt="Edit" src="images/edit.gif" /><img style="width: 20px; height: 20px;" alt="Edit" src="images/edit.gif" /> edit the file in the text editor window</li>
+            <li><img style="width: 20px; height: 20px;" alt="Rename" src="images/rename.gif" /> rename the file</li>
+            <li><img style="width: 20px; height: 20px;" alt="Download" src="images/download.gif" /> download the file</li>
+            <li><img style="width: 20px; height: 20px;" alt="Delete" src="images/delete.gif" /> delete the file (again, targeting the preferred version of the file)<br />
+            </li>
+          </ul>
+        </ul>
+
         <li> <b>Journals Browser</b> lets you post, read, email,
 delete, or reply to any of the journals (message boards) in your system.</li>
         <li><span style="font-weight: bold;">Account Manager </span>
@@ -61,8 +71,7 @@ is where common accounts are managed, if they are enabled in your
 coffeemud.ini file.</li>
         <li><b>Player Manager</b> is the place for reviewing your
 players and the banned names/ips list, and includes the following: </li>
-        <li
- style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+        <li style="list-style-type: none; list-style-image: none; list-style-position: outside;">
           <ul>
             <li>Player browser and editor, with the ability to delete
 or ban.</li>
@@ -78,8 +87,7 @@ includes the Quest-Maker Wizard. </li>
 allows you to create, destroy, and update your Polls.</li>
         <li> <b>System Reports</b> gives you a quick health and status
 check for your mud, which also includes: </li>
-        <li
- style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+        <li style="list-style-type: none; list-style-image: none; list-style-position: outside;">
           <ul>
             <li>"Tick" groups browser<br />
             </li>
@@ -93,8 +101,7 @@ and Skill Use statistics here. </li>
         <li> <b>Cache Resources</b> is an obscure tool for flushing
 from memory those things that have been loaded from disk. </li>
       </ul>
-      <p>On the right-hand side is a series of object <span
- style="font-weight: bold;">Editors</span>, which include the following:</p>
+      <p>On the right-hand side is a series of object <span style="font-weight: bold;">Editors</span>, which include the following:</p>
       <ul>
         <li> <span style="font-weight: bold;">Races</span> - manage
 Generic Races, and easily convert standard Races to Generic for
@@ -142,8 +149,7 @@ as well, then MUDGrinder is already installed! Good job!</p>
 Web Site (<a href="http://localhost:27777/">http://localhost:27777/</a>)
 and log into the MUDGrinder pages using your Archon administrative
 account information. If you have no idea what an Archon Administrative
-account is, you'll need to start back over again and read the <a
- href="InstallationGuide.html">Installation Guide</a>.</p>
+account is, you'll need to start back over again and read the <a href="InstallationGuide.html">Installation Guide</a>.</p>
       <h2><a name="mother">Not Your Mothers MUDGrinder:</a></h2>
       <p>The MUDGrinder is easy to use, but it is not forgiving, and it
 is not for wussies. If you make a mistake, you will probably pay for
@@ -151,8 +157,7 @@ it. If you click the wrong button, you will regret it. Be careful
 kiddies!</p>
       <h2><a name="use">Using MUDGrinder:</a></h2>
       <p>If you've actually played this game before, and you've read
-the <a href="ArchonGuide.html">Archon's Guide</a> and <a
- href="GameBuildersGuide.html">Game Builders Guide</a>
+the <a href="ArchonGuide.html">Archon's Guide</a> and <a href="GameBuildersGuide.html">Game Builders Guide</a>
 , and you understand it, you will have no troubles at all. The
 MUDGrinder is merely a visual means of accomplishing the same tasks,
 with the same objects and parameters as are described in the Archon's
@@ -171,5 +176,4 @@ that any protests to the contrary are vicious lies.</p>
   </tbody>
 </table>
 </center>
-</body>
-</html>
+</body></html>
