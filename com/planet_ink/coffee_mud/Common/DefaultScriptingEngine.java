@@ -13279,11 +13279,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					logError(scripted,"MPPOSSESS","RunTime",tt[1]+" is not a player.");
 					break;
 				}
-				final String amt=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
-				final String achieveID=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
+				final String achieveID=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
+				final String amt=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
 				if((amt.length()==0)||(!CMath.isInteger(amt)))
 				{
-					logError(scripted,"MPACHIEVE","Syntax","No Amount '"+amt+"'");
+					logError(scripted,"MPACHIEVE","Syntax","Not an amount '"+amt+"'");
 					break;
 				}
 				final Achievement A = CMLib.achievements().getAchievement(achieveID);
