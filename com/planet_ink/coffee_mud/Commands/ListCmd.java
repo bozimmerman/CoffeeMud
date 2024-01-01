@@ -176,7 +176,7 @@ public class ListCmd extends StdCommand
 					||(obj.ID().toLowerCase().indexOf(mask)>=0)
 					||(obj.name().toLowerCase().indexOf(mask)>=0);
 		}
-	};
+	}
 
 	public StringBuilder listAllQualifies(final Session viewerS, final List<String> cmds)
 	{
