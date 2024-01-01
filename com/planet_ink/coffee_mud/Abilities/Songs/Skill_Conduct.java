@@ -132,6 +132,9 @@ public class Skill_Conduct extends BardSkill
 					final MOB follower=(MOB)element;
 					if(follower == null)
 						continue;
+					if((follower==mob)
+					&&(Play.getInstrument(mob, null, false)==null))
+						continue;
 					final Room R=follower.location();
 					if(R!=null)
 					{
@@ -146,7 +149,12 @@ public class Skill_Conduct extends BardSkill
 							{
 								R.send(follower,msg2);
 								if(msg2.value()<=0)
+								{
+									final Ability oldA = follower.fetchEffect(symphonyA.ID());
+									if(oldA != null)
+										oldA.unInvoke();
 									symphonyA.invoke(follower,new Vector<String>(),null,false,asLevel+(3*getXLEVELLevel(mob)));
+								}
 							}
 						}
 					}
