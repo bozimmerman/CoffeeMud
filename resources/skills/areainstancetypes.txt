@@ -1,5 +1,5 @@
 InstanceArea types definitions
-# (C) 2020-2023 Bo Zimmerman
+# (C) 2020-2024 Bo Zimmerman
 # The Format:  One type per line, line must begin with quote ", then the 
 # name of the type, then ending quote, a space, and one or more arguments,
 # separated by spaces.  Argument values can also be in quotes.  Argument

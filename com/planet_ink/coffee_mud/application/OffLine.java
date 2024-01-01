@@ -30,7 +30,7 @@ import java.sql.*;
 import java.io.*;
 
 	/*
-	Copyright 2000-2023 Bo Zimmerman
+	Copyright 2000-2024 Bo Zimmerman
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -476,7 +476,7 @@ public class OffLine extends Thread implements MudHost
 
 				logStream.println();
 				logStream.println("CoffeeMud Off-Line");
-				logStream.println("(C) 2000-2023 Bo Zimmerman");
+				logStream.println("(C) 2000-2024 Bo Zimmerman");
 				logStream.println("http://www.coffeemud.org");
 
 				if(OffLine.isOK)

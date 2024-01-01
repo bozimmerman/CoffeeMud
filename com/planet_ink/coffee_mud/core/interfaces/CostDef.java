@@ -3,7 +3,7 @@ package com.planet_ink.coffee_mud.core.interfaces;
 import com.planet_ink.coffee_mud.core.collections.Triad;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 /*
-Copyright 2006-2023 Bo Zimmerman
+Copyright 2006-2024 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -4,7 +4,7 @@ import java.util.Enumeration;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
-	Copyright 2015-2023 Bo Zimmerman
+	Copyright 2015-2024 Bo Zimmerman
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.

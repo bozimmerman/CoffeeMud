@@ -6,7 +6,7 @@ import java.util.Map;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 /*
-   Copyright 2011-2023 Bo Zimmerman
+   Copyright 2011-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
