@@ -17,7 +17,7 @@
 % lamp post	13	150	250	2000	GenFixture			Spell_ContinualLight
 % pan	14	30	2	20	GenContainer	EATABLES|RAWMATERIALS	15	
 % gravy boat	15	15	2	10	GenEmptyDrink	LIQUID	5	
-large % grill	16	120	80	3000	GenRideable		250	Burning
+large % grill	16	120	80	3000	GenStove		250	
 % hooded lantern	17	45	9	150	GenLantern		1600	
 % spatula	18	10	2	7	GenItem			
 % trashcan	18	20	20	30	GenContainer		250	Prop_Trashcan
@@ -33,7 +33,7 @@ small % bin	20	25	5	50	GenContainer		100
 small % plate	24	10	1	5	GenContainer	EATABLES	3	
 % can	25	12	1	6	GenEmptyDrink	LIQUID	10	
 % sign	25	10	5	23	GenItem			
-% range	26	120	120	4500	GenContainer	LID	50	Burning
+% range	26	120	120	4500	GenStove	LID	50	
 % bullseye lantern	27	50	15	200	GenLantern		2400	
 % shelf	27	30	15	240	GenContainer		100	
 % chain	27	20	20	200	GenRideable	LADDER	1	
@@ -57,7 +57,7 @@ small % stool	33	20	5	60	GenChair	CHAIR	1
 % ice box	35	60	50	1200	GenContainer	LID||EATABLES	250	*Prop_IceBox;
 % pipe	36	25	2	33	GenPipe		200	
 small % bed	36	25	25	405	GenBed	BED	1	
-% grill	36	90	60	3500	GenRideable		100	Burning
+% grill	36	90	60	3500	GenStove		100	
 % eight-sided die	37	50	1	34	GenDice		8	
 % ladder	37	40	20	10	GenRideable	LADDER	0	
 % lamp	37	30	25	490	GenLantern		3600	
@@ -101,7 +101,7 @@ large % four-sided die	55	60	2	90	GenDice		4
 large % ice box	55	120	150	6000	GenContainer	LID||EATABLES	1000	*Prop_IceBox;
 % phalactery	56	16	2	22	GenItem			
 queen-sized % bed	56	40	100	2800	GenBed	BED	3	
-% furnace	56	140	150	12500	GenRideable		50	Burning
+% furnace	56	140	150	12500	GenStove		50	
 large % eight-sided die	57	60	2	88	GenDice		8	
 % altar	58	100	100	7400	GenRideable	TABLE	150	
 large % ten-sided die	59	70	2	103	GenDice		10	
@@ -115,7 +115,7 @@ large % storage drum	61	20	20	283	GenEmptyDrink	LIQUID	1000
 % claw-foot tub	63	120	400	25000	GenTub	CHAIR	1000	
 % charger	64	20	2	30	GenContainer		10	
 % anchor	64	30	75	1650	GenItem			
-small % grill	66	80	40	2500	GenRideable		20	Burning
+small % grill	66	80	40	2500	GenStove		20	
 King-sized % bed	66	50	150	5800	GenBed	BED	4	
 % cabinet	67	40	50	1550	GenContainer	LID	200	
 % sifter	68	20	1	16	GenItem			
