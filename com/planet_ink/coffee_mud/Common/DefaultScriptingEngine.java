@@ -8939,22 +8939,31 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 					tt=parseBits(script,si,"C");
-				final StringBuffer jscript=new StringBuffer("");
-				while((++si)<script.size())
+
+				final ScriptLn ln = script.get(si);
+				final StringBuffer jscript;
+				if(ln.third instanceof StringBuffer)
+					jscript=(StringBuffer)ln.third;
+				else
 				{
-					s=script.get(si).first;
-					tt=script.get(si).second;
-					if(tt!=null)
-						cmd=tt[0];
-					else
-						cmd=CMParms.getCleanBit(s,0).toUpperCase();
-					if(cmd.equals("</SCRIPT>"))
+					jscript=new StringBuffer("");
+					while((++si)<script.size())
 					{
-						if(tt==null)
-							tt=parseBits(script,si,"C");
-						break;
+						s=script.get(si).first;
+						tt=script.get(si).second;
+						if(tt!=null)
+							cmd=tt[0];
+						else
+							cmd=CMParms.getCleanBit(s,0).toUpperCase();
+						if(cmd.equals("</SCRIPT>"))
+						{
+							if(tt==null)
+								tt=parseBits(script,si,"C");
+							break;
+						}
+						jscript.append(s+"\n");
 					}
-					jscript.append(s+"\n");
+					ln.third = jscript;
 				}
 				if(CMSecurity.isApprovedJScript(jscript))
 				{
