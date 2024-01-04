@@ -7261,7 +7261,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean isAchieved(final Tattooable tracked)
 						{
-							return (num>=0) && (getCount(tracked) > num);
+							return (num>=0) && (getCount(tracked) >= num);
 						}
 
 						@Override
