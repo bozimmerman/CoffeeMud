@@ -448,7 +448,7 @@ public class Prop_Artifact extends Property
 				&&(!((MOB)((Item)affected).owner()).isMonster())
 				&&(CMLib.flags().isInTheGame((Item)affected,true)))
 					return false;
-
+				final String iRoomID = CMLib.map().getDescriptiveExtendedRoomID(CMLib.map().roomLocation(affected));
 				final List<PlayerData> itemSet=CMLib.database().DBReadPlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
 				if((itemSet!=null)&&(itemSet.size()>0))
 				{
@@ -470,7 +470,7 @@ public class Prop_Artifact extends Property
 								final Room R=CMLib.map().getRoomAllHosts(roomID);
 								if(R==null)
 								{
-									Log.errOut("Prop_Artifact","Unknown artifact room: '"+roomID+"' for '"+getItemID()+"'");
+									Log.errOut("Prop_Artifact","Unknown artifact room: '"+roomID+"' for '"+getItemID()+"' from "+iRoomID);
 									continue;
 								}
 								final String iClass=lib.getValFromPieces(roomData,"ICLAS");
@@ -487,7 +487,7 @@ public class Prop_Artifact extends Property
 									if(!registeredArtifacts.containsKey(getItemID()))
 										registeredArtifacts.put(getItemID(),newItem);
 									else
-										Log.errOut("Prop_Artifact","Possible duplicate artifact: "+newItem.name());
+										Log.errOut("Prop_Artifact","Possible duplicate artifact: "+newItem.name()+" from "+iRoomID);
 									MOB foundMOB=null;
 									if(MOBname.length()>0)
 									{
@@ -576,7 +576,7 @@ public class Prop_Artifact extends Property
 									else
 									{
 										destroyArtifact(newItemMinusArtifact);
-										Log.errOut("Prop_Artifact","Unable to find artifact NPC: "+getItemID()+" from "+MOBname+" in "+CMLib.map().getDescriptiveExtendedRoomID(R));
+										Log.errOut("Prop_Artifact","Unable to find artifact NPC: "+getItemID()+" from "+MOBname+" in "+CMLib.map().getDescriptiveExtendedRoomID(R)+" from "+iRoomID);
 										waitToReload=System.currentTimeMillis()+10*60000;
 										return true;
 									}
@@ -587,7 +587,7 @@ public class Prop_Artifact extends Property
 					}
 				}
 				else
-					Log.errOut("Prop_Artifact","No Artifact record for: "+getItemID());
+					Log.errOut("Prop_Artifact","No Artifact record for: "+getItemID()+" from "+iRoomID);
 				// my work is done, I can go away.
 				return false;
 			}
