@@ -84,6 +84,12 @@ public class Play extends StdAbility
 
 	protected volatile Pair<Double,Integer> bonusCache		= null;
 
+	// needs to be area-only, because of the aggro-tracking rule
+	private static final TrackingLibrary.TrackingFlags scopeFlags = CMLib.tracking().newFlags()
+																	.plus(TrackingLibrary.TrackingFlag.OPENONLY)
+																	.plus(TrackingLibrary.TrackingFlag.AREAONLY)
+																	.plus(TrackingLibrary.TrackingFlag.NOAIR);
+
 	@Override
 	public int classificationCode()
 	{
@@ -260,7 +266,9 @@ public class Play extends StdAbility
 			return false;
 
 		final MOB mob=(MOB)affected;
-		if((affected==invoker())&&(invoker()!=null)&&(invoker().location()!=originRoom))
+		if((affected==invoker())
+		&&(invoker()!=null)
+		&&(invoker().location()!=originRoom))
 		{
 			final List<Room> V=getInvokerScopeRoomSet(this.playDepth);
 			commonRoomSet.clear();
@@ -417,7 +425,7 @@ public class Play extends StdAbility
 	public static MusicalInstrument getInstrument(final MOB mob, final InstrumentType requiredInstrumentType, final boolean noisy)
 	{
 		MusicalInstrument instrument=null;
-		if((mob.riding()!=null)&&(mob.riding() instanceof MusicalInstrument))
+		if(mob.riding() instanceof MusicalInstrument)
 		{
 			if(!usingInstrument((MusicalInstrument)mob.riding(),mob))
 			{
@@ -428,16 +436,18 @@ public class Play extends StdAbility
 			instrument=(MusicalInstrument)mob.riding();
 		}
 		if(instrument==null)
-		for(int i=0;i<mob.numItems();i++)
 		{
-			final Item I=mob.getItem(i);
-			if((I!=null)
-			&&(I instanceof MusicalInstrument)
-			&&(I.container()==null)
-			&&(usingInstrument((MusicalInstrument)I,mob)))
+			for(int i=0;i<mob.numItems();i++)
 			{
-				instrument = (MusicalInstrument) I;
-				break;
+				final Item I=mob.getItem(i);
+				if((I!=null)
+				&&(I instanceof MusicalInstrument)
+				&&(I.container()==null)
+				&&(usingInstrument((MusicalInstrument)I,mob)))
+				{
+					instrument = (MusicalInstrument) I;
+					break;
+				}
 			}
 		}
 		if(instrument==null)
@@ -486,13 +496,7 @@ public class Play extends StdAbility
 			return listR;
 		}
 		final ArrayList<Room> rooms=new ArrayList<Room>();
-		// needs to be area-only, because of the aggro-tracking rule
-		TrackingLibrary.TrackingFlags flags;
-		flags = CMLib.tracking().newFlags()
-				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
-				.plus(TrackingLibrary.TrackingFlag.AREAONLY)
-				.plus(TrackingLibrary.TrackingFlag.NOAIR);
-		CMLib.tracking().getRadiantRooms(invokerRoom, rooms,flags, null, depth, null);
+		CMLib.tracking().getRadiantRooms(invokerRoom, rooms,scopeFlags, null, depth, null);
 		if(!rooms.contains(invokerRoom))
 			rooms.add(invokerRoom);
 		return rooms;

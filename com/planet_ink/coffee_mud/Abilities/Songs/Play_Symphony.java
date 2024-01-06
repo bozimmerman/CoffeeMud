@@ -60,22 +60,23 @@ public class Play_Symphony extends Play
 			return Ability.QUALITY_BENEFICIAL_OTHERS;
 	}
 
-	public final static int CODE_UPSAVE=1;
-	public final static int CODE_UPDAMAGEPER3=2;
-	public final static int CODE_UPSTAT=3;
-	public final static int CODE_DOWNDAMAGEPER5=4;
-	public final static int CODE_CASTMALICIOUSSPELLPER10=5;
-	public final static int CODE_CASTFRIENDLYSPELLPER2=6;
-	public final static int CODE_UPENVPER2=7;
-	public final static int CODE_UPENVPER5=8;
-	public final static int CODE_REMOVESPELLTYPE=9;
-	public final static int CODE_SPEEDCOMMONSKILLS=10;
-	public final static int CODE_UPMOVEMENT=11;
-	public final static int CODE_CASTFRIENDLYSPELLPER5=12;
-	public final static int CODE_CASTFRIENDLYSPELLPER10=13;
-	public final static int CODE_CASTFRIENDLYSPELLPER20=14;
-	public final static int CODE_DOWNSAVE=15;
-	public final static int CODE_UPDAMAGEPER5=16;
+	public final static int	CODE_UPSAVE						= 1;
+	public final static int	CODE_UPDAMAGEPER3				= 2;
+	public final static int	CODE_UPSTAT						= 3;
+	public final static int	CODE_DOWNDAMAGEPER5				= 4;
+	public final static int	CODE_CASTMALICIOUSSPELLPER10	= 5;
+	public final static int	CODE_CASTFRIENDLYSPELLPER2		= 6;
+	public final static int	CODE_UPENVPER2					= 7;
+	public final static int	CODE_UPENVPER5					= 8;
+	public final static int	CODE_REMOVESPELLTYPE			= 9;
+	public final static int	CODE_SPEEDCOMMONSKILLS			= 10;
+	public final static int	CODE_UPMOVEMENT					= 11;
+	public final static int	CODE_CASTFRIENDLYSPELLPER5		= 12;
+	public final static int	CODE_CASTFRIENDLYSPELLPER10		= 13;
+	public final static int	CODE_CASTFRIENDLYSPELLPER20		= 14;
+	public final static int	CODE_DOWNSAVE					= 15;
+	public final static int	CODE_UPDAMAGEPER5				= 16;
+
 	public int toDoCode=-1;
 	public String toDoString="";
 	public int toDoVal=0;
