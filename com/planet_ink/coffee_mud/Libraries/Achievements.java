@@ -8842,11 +8842,17 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		int fnx=0;
 		// step 1: map all achievement tattoo ids to their home filename
 		final TreeMap<String,Set<String>> foundKeysMap = new TreeMap<String,Set<String>>();
+		boolean found=false;
+		String lastFilename = rawFilename;
 		for(String fn=rawFilename;;fn=rawFilename+("."+(++fnx)))
 		{
 			final StringBuffer buf = Resources.getRawFileResource(fn,false);
 			if((buf.length()==0)&&(fnx>=2))
 				break;
+			if(buf.length()>0)
+				lastFilename=fn;
+			else
+				continue;
 			if(!foundKeysMap.containsKey(fn))
 				foundKeysMap.put(fn, new TreeSet<String>());
 			final List<String> V=Resources.getFileLineVector(buf);
@@ -8859,11 +8865,16 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					continue;
 				final String tatt = row.substring(0,x).toUpperCase().trim();
 				if((modifyTattoo==null)||(modifyTattoo.length()==0)||(tatt.equalsIgnoreCase(modifyTattoo)))
+				{
 					loadAchievementFilename = fn;
+					found=true;
+				}
 				if(getAchievement(tatt)!=null)
 					foundKeysMap.get(fn).add(tatt);
 			}
 		}
+		if(!found)
+			loadAchievementFilename=lastFilename;
 		// load the found/default file, parse into lines
 		final StringBuffer buf = Resources.getRawFileResource(loadAchievementFilename,true);
 		Resources.removeResource(loadAchievementFilename);
@@ -8941,6 +8952,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					else
 						newFileData.append(row).append(EOL);
 				}
+				else
+				if((modifyTattoo == null)
+				||(!modifyTattoo.equalsIgnoreCase(tatt)))
+					newFileData.append(row).append(EOL);
 			}
 			else
 				newFileData.append(row).append(EOL);

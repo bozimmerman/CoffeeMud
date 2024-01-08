@@ -194,7 +194,7 @@ public class AchievementData extends StdWebMacro
 				return "[error: "+error+"]";
 			if(!parms.containsKey("CHECKONLY"))
 			{
-				CMLib.achievements().resaveAchievements(last);
+				CMLib.achievements().resaveAchievements(newTattoo);
 			}
 		}
 		else
