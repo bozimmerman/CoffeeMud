@@ -2345,7 +2345,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder listCharClasses(final Session viewerS, final Enumeration<CharClass> these, final List<String> commands)
+	public StringBuilder listCharClasses(final Session viewerS, Enumeration<CharClass> these, final List<String> commands)
 	{
 		boolean shortList=false;
 		final WikiFlag wiki=this.getWikiFlagRemoved(commands);
@@ -2354,6 +2354,7 @@ public class ListCmd extends StdCommand
 			if(c.equalsIgnoreCase("SHORT"))
 				shortList=true;
 		}
+		these = new FilteredEnumeration<CharClass>(CMClass.charClasses(),new NameIdFilter<CharClass>(CMParms.combine(commands,1)));
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
 			return lines;
@@ -6088,15 +6089,11 @@ public class ListCmd extends StdCommand
 			break;
 		case RACES:
 			s.println("^HRace IDs (Racial Category):^N");
-			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
-					new FilteredEnumeration<Race>(CMClass.races(),new NameIdFilter<Race>(CMParms.combine(commands,1)))
-					).toString());
+			s.wraplessPrintln(listRaces(s, CMClass.races(), rest).toString());
 			break;
 		case CLASSES:
 			s.println("^HCharacter Class IDs:^N");
-			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
-					new FilteredEnumeration<CharClass>(CMClass.charClasses(),new NameIdFilter<CharClass>(CMParms.combine(commands,1)))
-					).toString());
+			s.wraplessPrintln(listCharClasses(s, CMClass.charClasses(), commands).toString());
 			break;
 		case STAFF:
 			s.wraplessPrintln(listSubOps(mob.session()).toString());
