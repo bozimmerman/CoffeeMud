@@ -20,7 +20,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import com.planet_ink.coffee_mud.core.MiniJSON;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -1147,10 +1146,14 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		ROOM_VNUM,
 		ROOM_AREA,
 		ROOM_TERRAIN,
-		ROOM_EXITS
+		ROOM_EXITS,
+		ARACHNOS_MUDLIST,
+		ARACHNOS_DEVEL,
+		ARACHNOS_CHAT
 	}
 
 	protected enum MSDPConfigurableVar {
+
 	}
 
 	protected Object getMsdpComparable(final Session session, final MSDPVariable var)
@@ -1409,6 +1412,37 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 			}
 			break;
+		case ARACHNOS_MUDLIST:
+		{
+			buf=new ByteArrayOutputStream();
+			buf.write(Session.MSDP_TABLE_OPEN);
+			buf.write(Session.MSDP_VAR);
+			buf.write("MUD_NAME".getBytes(Session.MSDP_CHARSET));
+			buf.write(Session.MSDP_VAL);
+			buf.write(CMProps.getVar(CMProps.Str.MUDNAME).getBytes(Session.MSDP_CHARSET));
+			buf.write(Session.MSDP_VAR);
+			buf.write("MUD_HOST".getBytes(Session.MSDP_CHARSET));
+			buf.write(Session.MSDP_VAL);
+			buf.write(CMProps.getVar(CMProps.Str.MUDDOMAIN).getBytes(Session.MSDP_CHARSET));
+			buf.write(Session.MSDP_VAR);
+			buf.write("MUD_PORT".getBytes(Session.MSDP_CHARSET));
+			buf.write(Session.MSDP_VAL);
+			buf.write(CMProps.getVar(CMProps.Str.ALLMUDPORTS).getBytes(Session.MSDP_CHARSET));
+			buf.write(Session.MSDP_VAR);
+			buf.write("MUD_UPTIME".getBytes(Session.MSDP_CHARSET));
+			buf.write(Session.MSDP_VAL);
+			buf.write(Long.toString(CMLib.host().getUptimeSecs()*1000L).getBytes(Session.MSDP_CHARSET));
+			buf.write(Session.MSDP_VAR);
+			buf.write("MUD_UPDATE".getBytes(Session.MSDP_CHARSET));
+			buf.write(Session.MSDP_VAL);
+			buf.write(Long.toString(System.currentTimeMillis()).getBytes(Session.MSDP_CHARSET));
+			buf.write(Session.MSDP_VAR);
+			buf.write("MUD_PLAYERS".getBytes(Session.MSDP_CHARSET));
+			buf.write(Session.MSDP_VAL);
+			buf.write(Long.toString(CMLib.sessions().numSessions()).getBytes(Session.MSDP_CHARSET));
+			buf.write(Session.MSDP_TABLE_CLOSE);
+			break;
+		}
 		case LOCATION:
 		case ROOM:
 			if((M!=null)&&(M.location()!=null))

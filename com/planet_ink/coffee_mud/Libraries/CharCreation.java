@@ -1009,6 +1009,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			rpt.append("\r\n").append("INTERMUD");
 			rpt.append("\t").append("IMC2");
 		}
+		rpt.append("\r\n").append("INTERMUD");
+		rpt.append("\t").append("ARACHNOS");
 		rpt.append("\r\n").append("FAMILY");
 		rpt.append("\t").append("CoffeeMUD");
 		rpt.append("\r\n").append("EMAIL");
