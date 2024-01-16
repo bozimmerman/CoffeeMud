@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Druid.Chant_Grapevine;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -55,10 +56,19 @@ public class CubicGate extends StdItem implements MiscMagic
 		recoverPhyStats();
 	}
 
-	protected final List<String> allWords=new ArrayList<String>(6);
-	protected final List<String> planes = new ArrayList<String>(6);
+	protected List<String> allWords=new ArrayList<String>(6);
+	protected List<String> planes = new ArrayList<String>(6);
 
-	protected void setCubeDescription()
+	@Override
+	public CMObject copyOf()
+	{
+		final CubicGate g = (CubicGate)super.copyOf();
+		g.allWords=new XVector<String>(allWords);
+		g.planes = new XVector<String>(planes);
+		return g;
+	}
+
+	protected synchronized void setCubeDescription()
 	{
 		final EnglishParsing elib = CMLib.english();
 		setDescription(L("This three-inch cube is of some unearthly metal. "
@@ -72,7 +82,7 @@ public class CubicGate extends StdItem implements MiscMagic
 		secretIdentity=L("A cubic gate.  Hold, and say 'one' to '@x1' to activate.", word);
 	}
 
-	protected void resetCube()
+	protected synchronized void resetCube()
 	{
 		planes.clear();
 		planes.add(L("Prime Material"));
@@ -98,7 +108,6 @@ public class CubicGate extends StdItem implements MiscMagic
 		super.setMiscText(newMiscText);
 		if((newMiscText != null) && (newMiscText.trim().length()>0))
 		{
-
 			planes.clear();
 			planes.addAll(CMParms.parseAny(newMiscText, ',', true));
 			if(planes.contains(L("Prime Material")))
@@ -158,9 +167,9 @@ public class CubicGate extends StdItem implements MiscMagic
 				&&(this.rawWornCode() != Wearable.IN_INVENTORY))
 				{
 					final int x = allWords.indexOf(said.toLowerCase().trim());
-					if((x>=1)&&(x<=planes.size()))
+					if((x>=0)&&(x<planes.size()))
 					{
-						final String plane = planes.get(x-1);
+						final String plane = planes.get(x);
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,plane,CMMsg.NO_EFFECT,null));
 					}
 				}

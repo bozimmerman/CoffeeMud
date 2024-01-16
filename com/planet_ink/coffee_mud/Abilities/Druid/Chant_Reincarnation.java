@@ -229,7 +229,9 @@ public class Chant_Reincarnation extends Chant
 				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fail(s) to lift the reincarnation geas on <T-NAMESELF>."));
 			return false;
 		}
-		if(target.isMonster())
+		if(target.isMonster()
+		|| (CMLib.flags().isUndead(target))
+		|| (CMLib.flags().isGolem(target)))
 		{
 			mob.tell(L("Your chant would have no effect on such a creature."));
 			return false;
