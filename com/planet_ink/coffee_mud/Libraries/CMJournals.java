@@ -1179,7 +1179,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 									me.nextEvents.clear();
 									nextEvents.add(nextStart);
 									if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
-										Log.debugOut("Next Calendar thread will process "+nextEvents.size()+" events.");
+										Log.debugOut("Next Calendar thread: "+nextEvents.size()+" events.");
 									CMLib.threads().startTickDown(me, Tickable.TICKID_EVENT, nextStart.date()-System.currentTimeMillis(), 1);
 								}
 								else
@@ -1193,7 +1193,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 								me.nextEvents.clear();
 								nextEvents.add(nextStart);
 								if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
-									Log.debugOut("Next Calendar thread will process "+nextEvents.size()+" events.");
+									Log.debugOut("Next Calendar thread will handle "+nextEvents.size()+" events.");
 								CMLib.threads().startTickDown(me, Tickable.TICKID_EVENT, nextStart.date()-System.currentTimeMillis(), 1);
 							}
 						}
@@ -1335,7 +1335,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				processCalendarEvents();
 				if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
 					Log.debugOut("Finished calendar processing for "+name());
-				return true;
+				return false; // processing ALWAYS reschedules, so KILL this one.
 			}
 
 			// here and below is the normal utilithread
