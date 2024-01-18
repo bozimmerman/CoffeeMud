@@ -2668,10 +2668,16 @@ public class MOBloader
 				newFol.text();
 				followM.killMeDead(false);
 				mob.addFollower(newFol, order.intValue());
+				if(newFol.amFollowing()!=mob)
+					newFol.setFollowing(mob);
 				if(CMLib.flags().isInTheGame(mob, true)
 				&&(!CMLib.flags().isInTheGame(newFol, true))
 				&&(R!=null))
 					newFol.bringToLife(R, false);
+				if(!mob.isFollowedBy(newFol))
+					mob.addFollower(newFol, order.intValue());
+				if(newFol.amFollowing()!=mob)
+					newFol.setFollowing(mob);
 				followM=newFol;
 			}
 
