@@ -68,7 +68,11 @@ public class Prop_Trashcan extends Property
 				if((System.currentTimeMillis()-lastAddition)<((tickDelay-1)*CMProps.getTickMillis()))
 					return true;
 				for(final Item I : trashables)
-					I.destroy();
+				{
+					if((I.owner() == affected)
+					||(I.container() == affected))
+						I.destroy();
+				}
 				lastAddition=0;
 				trashables.clear();
 				CMLib.threads().deleteTick(this, Tickable.TICKID_PROPERTY_SPECIAL);
