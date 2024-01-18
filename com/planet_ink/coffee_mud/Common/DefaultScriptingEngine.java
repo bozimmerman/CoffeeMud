@@ -10106,8 +10106,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
 				if(newTarget!=null)
 				{
-					if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
-						Log.sysOut("Scripting",newTarget.Name()+" has "+arg2+" MPGSETTED to "+arg3);
 					boolean found=false;
 					for(int i=0;i<newTarget.getStatCodes().length;i++)
 					{
@@ -10254,6 +10252,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						if(CMLib.coffeeMaker().isAnyGenStat(newTarget, arg2))
 						{
+							if(arg3.equals("++"))
+								arg3=""+(CMath.s_int(CMLib.coffeeMaker().getAnyGenStat(newTarget,arg2))+1);
+							if(arg3.equals("--"))
+								arg3=""+(CMath.s_int(CMLib.coffeeMaker().getAnyGenStat(newTarget,arg2))-1);
 							CMLib.coffeeMaker().setAnyGenStat(newTarget, arg2, arg3);
 							found=true;
 						}
@@ -10263,6 +10265,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						logError(scripted,"MPGSET","Syntax","Unknown stat: "+arg2+" for "+newTarget.Name());
 						break;
 					}
+					else
+					if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
+						Log.sysOut("Scripting",newTarget.Name()+" has "+arg2+" MPGSETTED to "+arg3);
 					if(newTarget instanceof MOB)
 						((MOB)newTarget).recoverCharStats();
 					newTarget.recoverPhyStats();
