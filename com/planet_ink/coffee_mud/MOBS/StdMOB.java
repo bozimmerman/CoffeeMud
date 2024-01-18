@@ -5897,9 +5897,8 @@ public class StdMOB implements MOB
 		else
 		if(env instanceof Ability)
 		{
-			if(abilitys.find(env.ID()) == env)
-				return true;
-			if(affects.contains(env))
+			if((abilitys.find(env.ID()) == env)
+			||(affects.contains(env)))
 				return true;
 			return false;
 		}

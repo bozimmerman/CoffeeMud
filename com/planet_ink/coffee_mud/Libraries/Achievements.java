@@ -8922,7 +8922,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						break;
 					}
 				}
-				newFileData.append(row).append(EOL);
 				if((oldAgent != currentAgent)
 				&&(modA != null)
 				&&(modA.getAgent() == oldAgent))
@@ -8932,6 +8931,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					newFileData.append(buildRow(modA.getEvent(),parmTree)).append(EOL);
 					modA = null;
 				}
+				newFileData.append(row).append(EOL);
 			}
 			else
 			if(eqDex > 0)

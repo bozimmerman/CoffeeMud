@@ -572,6 +572,11 @@ public class Play extends StdAbility
 		return h;
 	}
 
+	protected boolean isMine(final MOB mob)
+	{
+		return mob.isMine(this);
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -622,7 +627,7 @@ public class Play extends StdAbility
 		&&(!mob.isMonster())
 		&&(!disregardsArmorCheck(mob))
 		&&(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_LEATHER))
-		&&(mob.isMine(this))
+		&&(isMine(mob))
 		&&(mob.location()!=null)
 		&&(CMLib.dice().rollPercentage()<50))
 		{

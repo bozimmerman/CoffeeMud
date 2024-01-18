@@ -34,10 +34,12 @@ import java.util.*;
 */
 public class Play_Symphony extends Play
 {
+	private String id = "Play_Symphony";
+
 	@Override
 	public String ID()
 	{
-		return "Play_Symphony";
+		return id;
 	}
 
 	private final static String localizedName = CMLib.lang().L("Symphony");
@@ -46,6 +48,14 @@ public class Play_Symphony extends Play
 	public String name()
 	{
 		return localizedName;
+	}
+
+	private String playInstName = "";
+
+	@Override
+	public String displayText()
+	{
+		return "(" + songOf() + playInstName + ")";
 	}
 
 	@Override
@@ -788,6 +798,12 @@ public class Play_Symphony extends Play
 	}
 
 	@Override
+	protected boolean isMine(final MOB mob)
+	{
+		return mob.fetchAbility("Play_Symphony")==this;
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		instrument=null;
@@ -798,7 +814,20 @@ public class Play_Symphony extends Play
 			if(instrument!=null)
 				getToDoCode();
 		}
-		return super.invoke(mob,commands,givenTarget,auto,asLevel);
+		try
+		{
+			playInstName="";
+			if(instrument != null)
+			{
+				id = "Play_Symphony_"+instrument.getInstrumentTypeName().replace(' ', '_');
+				playInstName=": "+instrument.getInstrumentTypeName();
+			}
+			return super.invoke(mob,commands,givenTarget,auto,asLevel);
+		}
+		finally
+		{
+			id = "Play_Symphony";
+		}
 	}
 }
 
