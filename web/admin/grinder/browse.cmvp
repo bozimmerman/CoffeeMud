@@ -153,7 +153,7 @@
 	@endif@ @endif@
 @back@
 </TABLE>
-<a href="javascript:NewFile('@RequestParametersEncoded@');"><IMG BORDER=0 SRC=images/document_new.gif alt="Create New File" title="Create New File"><FONT COLOR=AQUA>*new file*</FONT></a><BR>
+<a href="javascript:NewFile('@RequestParametersEncoded@');"><IMG BORDER=0 SRC=images/document_new.gif alt="Create New File" title="Create New File"><FONT COLOR=AQUA>*new text file*</FONT></a><BR>
 </FORM>
 <HR>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=UPLOADNAMESEARCH TARGET=_top ENCTYPE="multipart/form-data" ACTION=/grinder/browse.cmvp METHOD=POST>
