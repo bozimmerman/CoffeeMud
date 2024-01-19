@@ -2237,7 +2237,7 @@ public class ListCmd extends StdCommand
 							else
 								effStr+=("[["+A.ID()+"|"+A.name()+"]] ");
 						}
-						final QuadVector<String,Integer,Integer,Boolean> cables=R.culturalAbilities();
+						final QuintVector<String,Integer,Integer,Boolean,String> cables=R.culturalAbilities();
 						if(cables != null)
 						{
 							for(int c=0;c<cables.size();c++)

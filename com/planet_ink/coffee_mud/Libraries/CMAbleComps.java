@@ -1229,7 +1229,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		if(CS.getCurrentClass()==null)
 			return aL;
 		final HashSet<String> culturalAbilities=new HashSet<String>();
-		final QuadVector<String,Integer,Integer,Boolean> culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
+		final QuintVector<String,Integer,Integer,Boolean,String> culturalAbilitiesDV =
+				student.baseCharStats().getMyRace().culturalAbilities();
 		for(int i=0;i<culturalAbilitiesDV.size();i++)
 			culturalAbilities.add(culturalAbilitiesDV.getFirst(i).toLowerCase());
 		for(int a=0;a<student.numAbilities();a++)

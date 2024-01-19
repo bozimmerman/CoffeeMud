@@ -118,7 +118,7 @@ public class Druid_ShapeShift extends StdAbility
 
 	private static final String buildShapeString(final ShiftShapeForm f)
 	{
-		final StringBuilder str = new StringBuilder("["+f.ID+"];");
+		final StringBuilder str = new StringBuilder(f.ID+";");
 		for(final ShiftShapeField i : ShiftShapeField.values())
 		{
 			str.append(i.name()+"=");
@@ -269,12 +269,10 @@ public class Druid_ShapeShift extends StdAbility
 				}
 				if(shapeData.size()>0)
 				{
+					this.uniqueForm = shapeData;
 					if((shapeData.size()==1)
 					&&(myRaceCode<0))
-					{
-						this.uniqueForm = shapeData;
 						myRaceCode = 0;
-					}
 				}
 			}
 			else

@@ -102,6 +102,35 @@ public class Vampire extends Undead
 		return racialEffectParms;
 	}
 
+	private final String[]	culturalAbilityNames			= { "Druid_ShapeShift"};
+	private final int[]		culturalAbilityLevels			= { 10};
+	private final int[]		culturalAbilityProficiencies	= { 100};
+	private final String[]	culturalAbilityParms			= { "[BAT FORM];NAME=Bat form;ATTADJ=0.7;DMGADJ=0.4;ARMADJ=1.0;SPEEDADJ=0.2;SHAPES=Bat,WereBat;RACES=Bat,WereBat"};
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityLevels()
+	{
+		return culturalAbilityLevels;
+	}
+
+	@Override
+	public String[] culturalAbilityParms()
+	{
+		return culturalAbilityParms;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
+
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{

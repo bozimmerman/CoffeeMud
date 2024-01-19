@@ -23,6 +23,16 @@ public class QuintVector<T, K, L, M, N> extends Vector<Quint<T, K, L, M, N>> imp
 {
 	private static final long	serialVersionUID	= -9175373358892311411L;
 
+	public QuintVector()
+	{
+		super();
+	}
+
+	public QuintVector(final int size)
+	{
+		super(size);
+	}
+
 	public Quint.FirstConverter<T, K, L, M, N> getFirstConverter()
 	{
 		return new Quint.FirstConverter<T, K, L, M, N>();

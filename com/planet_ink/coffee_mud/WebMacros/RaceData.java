@@ -55,17 +55,18 @@ public class RaceData extends StdWebMacro
 		for(final Enumeration<Race> e=MobData.sortedRaces(httpReq);e.hasMoreElements();)
 		{
 			R2=e.nextElement();
+			final String IDlimit = (R2.isGeneric()?CMStrings.ellipse(R2.ID(),20):R2.ID());
 			R2ID="com.planet_ink.coffee_mud.Races."+R2.ID();
 			if(R2.isGeneric() && CMClass.checkForCMClass(CMObjectType.RACE,R2ID))
 			{
-				str.append("<OPTION VALUE=\""+R2.ID()+"\" "+((old.equalsIgnoreCase(R2.ID()))?"SELECTED":"")+">"+R2.ID()+" (Generic)");
-				str.append("<OPTION VALUE=\""+R2ID+"\" "+((old.equalsIgnoreCase(R2ID))?"SELECTED":"")+">"+R2ID);
+				str.append("<OPTION VALUE=\""+R2.ID()+"\" "+((old.equalsIgnoreCase(R2.ID()))?"SELECTED":"")+">"+IDlimit+" (Generic)");
+				str.append("<OPTION VALUE=\""+R2ID+"\" "+((old.equalsIgnoreCase(R2ID))?"SELECTED":"")+">"+IDlimit);
 			}
 			else
 			if(R2.isGeneric())
-				str.append("<OPTION VALUE=\""+R2.ID()+"\" "+((old.equalsIgnoreCase(R2.ID())||old.equalsIgnoreCase(R2ID))?"SELECTED":"")+">"+R2.ID()+" (Generic)");
+				str.append("<OPTION VALUE=\""+R2.ID()+"\" "+((old.equalsIgnoreCase(R2.ID())||old.equalsIgnoreCase(R2ID))?"SELECTED":"")+">"+IDlimit+" (Generic)");
 			else
-				str.append("<OPTION VALUE=\""+R2.ID()+"\" "+((old.equalsIgnoreCase(R2.ID())||old.equalsIgnoreCase(R2ID))?"SELECTED":"")+">"+R2.ID());
+				str.append("<OPTION VALUE=\""+R2.ID()+"\" "+((old.equalsIgnoreCase(R2.ID())||old.equalsIgnoreCase(R2ID))?"SELECTED":"")+">"+IDlimit);
 		}
 		return str.toString();
 	}
@@ -425,11 +426,11 @@ public class RaceData extends StdWebMacro
 		}
 		else
 		{
-			QuadVector<String,Integer,Integer,Boolean> cables;
+			QuintVector<String,Integer,Integer,Boolean,String> cables;
 			if(obj instanceof Race)
 				cables=((Race)obj).culturalAbilities();
 			else
-				cables=new QuadVector<String,Integer,Integer,Boolean>();
+				cables=new QuintVector<String,Integer,Integer,Boolean,String>(1);
 			for (final Ability A : ables)
 			{
 				if((A!=null)
@@ -701,7 +702,7 @@ public class RaceData extends StdWebMacro
 	public static StringBuffer cabilities(final Race E, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize, String font)
 	{
 		final StringBuffer str=new StringBuffer("");
-		final QuadVector<String,Integer,Integer,Boolean> theclasses=new QuadVector<String,Integer,Integer,Boolean>();
+		final QuintVector<String,Integer,Integer,Boolean,String> theclasses=new QuintVector<String,Integer,Integer,Boolean,String>();
 		if(httpReq.isUrlParameter("CABLES1"))
 		{
 			int num=1;
@@ -719,7 +720,14 @@ public class RaceData extends StdWebMacro
 					String levl=httpReq.getUrlParameter("CABLVL"+num);
 					if(levl==null)
 						levl="0";
-					theclasses.addElement(behav,Integer.valueOf(CMath.s_int(prof)),Integer.valueOf(CMath.s_int(levl)),qual.equals("on")?Boolean.TRUE:Boolean.FALSE);
+					String parm=httpReq.getUrlParameter("CABPRM"+num);
+					if(parm==null)
+						parm="";
+					theclasses.addElement(behav,
+							Integer.valueOf(CMath.s_int(prof)),
+							Integer.valueOf(CMath.s_int(levl)),
+							qual.equals("on")?Boolean.TRUE:Boolean.FALSE,
+							parm);
 				}
 				num++;
 				behav=httpReq.getUrlParameter("CABLES"+num);
@@ -728,7 +736,7 @@ public class RaceData extends StdWebMacro
 		else
 		{
 			theclasses.addAll(E.culturalAbilities());
-			for(final Quad<String,Integer,Integer,Boolean> Q : theclasses)
+			for(final Quint<String,Integer,Integer,Boolean,String> Q : theclasses)
 				Q.fourth = Boolean.valueOf(!Q.fourth.booleanValue());
 		}
 		if(font==null)
@@ -753,6 +761,9 @@ public class RaceData extends StdWebMacro
 			str.append("<INPUT TYPE=CHECKBOX NAME=CABQUA"+(i+1)+" "+(theclasses.elementAt(i).fourth.booleanValue()?"CHECKED":"")+">"+font+"Qualify Only</B></FONT></I>&nbsp;");
 			str.append("</TD>");
 			str.append("</TR>");
+			str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
+			str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=CABPRM"+(i+1)+" VALUE=\""+(theclasses.elementAt(i).fifth)+"\" SIZE=40 MAXLENGTH=100>");
+			str.append("</TD></TR>");
 		}
 		str.append("<TR><TD WIDTH=35%>");
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=CABLES"+(theclasses.size()+1)+">");
@@ -776,6 +787,9 @@ public class RaceData extends StdWebMacro
 		str.append("<INPUT TYPE=CHECKBOX NAME=CABQUA"+i+" >"+font+"Qualify Only</B></FONT></I>&nbsp;");
 		str.append("</TD>");
 		str.append("</TR>");
+		str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
+		str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=CABPRM"+i+" VALUE=\"\" SIZE=40 MAXLENGTH=100>");
+		str.append("</TD></TR>");
 		str.append("</TABLE>");
 		return str;
 	}

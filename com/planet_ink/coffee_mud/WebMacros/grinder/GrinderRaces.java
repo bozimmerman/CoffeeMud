@@ -270,9 +270,9 @@ public class GrinderRaces
 			M.setStat("GETIABLE"+i, theclasses.get(i));
 	}
 
-	public static QuadVector<String,Integer,Integer,Boolean> cabilities(final HTTPRequest httpReq)
+	public static QuintVector<String,Integer,Integer,Boolean,String> cabilities(final HTTPRequest httpReq)
 	{
-		final QuadVector<String,Integer,Integer,Boolean> theclasses=new QuadVector<String,Integer,Integer,Boolean>();
+		final QuintVector<String,Integer,Integer,Boolean,String> theclasses=new QuintVector<String,Integer,Integer,Boolean,String>();
 		if(httpReq.isUrlParameter("CABLES1"))
 		{
 			int num=1;
@@ -290,7 +290,14 @@ public class GrinderRaces
 					String levl=httpReq.getUrlParameter("CABLVL"+num);
 					if(levl==null)
 						levl="0";
-					theclasses.addElement(behav,Integer.valueOf(CMath.s_int(prof)),Integer.valueOf(CMath.s_int(levl)),qual.equals("on")?Boolean.TRUE:Boolean.FALSE);
+					String parm=httpReq.getUrlParameter("CABPRM"+num);
+					if(parm==null)
+						parm="";
+					theclasses.addElement(behav,
+							Integer.valueOf(CMath.s_int(prof)),
+							Integer.valueOf(CMath.s_int(levl)),
+							qual.equals("on")?Boolean.TRUE:Boolean.FALSE,
+							parm);
 				}
 				num++;
 				behav=httpReq.getUrlParameter("CABLES"+num);
@@ -441,7 +448,7 @@ public class GrinderRaces
 		setDynEffects(R,httpReq);
 		setDynImmunities(R,httpReq);
 
-		final QuadVector<String,Integer,Integer,Boolean> CV=cabilities(httpReq);
+		final QuintVector<String,Integer,Integer,Boolean,String> CV=cabilities(httpReq);
 		R.setStat("NUMCABLE", ""+CV.size());
 		for(int i=0;i<CV.size();i++)
 		{
@@ -449,6 +456,7 @@ public class GrinderRaces
 			R.setStat("GETCABLEPROF"+i, CV.elementAt(i).second.toString());
 			R.setStat("GETCABLELVL"+i, CV.elementAt(i).third.toString());
 			R.setStat("GETCABLEGAIN"+i, Boolean.valueOf(!CV.elementAt(i).fourth.booleanValue()).toString());
+			R.setStat("GETCABLELPARM"+i, CV.elementAt(i).fifth.toString());
 		}
 		return "";
 	}

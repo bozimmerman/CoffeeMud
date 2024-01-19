@@ -1661,8 +1661,15 @@ public class CMClass extends ClassLoader
 		{
 		}
 		final Vector<Object> V=new Vector<Object>(1);
-		if(!loadListToObj(V,makeFilePath(path),classType.ancestorName,true))
+		try
+		{
+			if(!loadListToObj(V,makeFilePath(path),classType.ancestorName,true))
+				return false;
+		}
+		catch(final Throwable t) // a mal-formed class name
+		{
 			return false;
+		}
 		if(V.size()==0)
 			return false;
 		return true;

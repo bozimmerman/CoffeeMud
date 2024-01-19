@@ -8552,7 +8552,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					parts.append("("+A.ID()+"/"+E.getStat("GETCABLEPROF"+v)+"), ");
 					ables.addElement(A);
-					data.addElement(A.ID()+";"+E.getStat("GETCABLEPROF"+v)+";"+E.getStat("GETCABLELVL"+v)+";"+E.getStat("GETCABLEGAIN"+v));
+					data.addElement(A.ID()+";"+
+							E.getStat("GETCABLEPROF"+v)+";"+
+							E.getStat("GETCABLELVL"+v)+";"+
+							E.getStat("GETCABLEGAIN"+v)+";"+
+							E.getStat("GETCABLEPARM"+v));
 				}
 			}
 			if(parts.toString().endsWith(", "))
@@ -8599,6 +8603,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						final String gainStr=Boolean.valueOf(mob.session().confirm(L("Enter Y if it is auto-gained (Y/n)? "),"Y")).toString();
 						str.append(";");
 						str.append(gainStr);
+						final String parmStr=mob.session().prompt(L("Enter default params (): "),"");
+						str.append(";");
+						str.append(""+parmStr);
 						data.addElement(str.toString());
 						ables.addElement(A);
 						mob.tell(L("@x1 added.",A.name()));
@@ -8626,6 +8633,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						E.setStat("GETCABLEPROF"+i,V.get(1));
 						E.setStat("GETCABLELVL"+i,V.get(2));
 						E.setStat("GETCABLEGAIN"+i,V.get(3));
+						E.setStat("GETCABLEPARM"+i,CMParms.combineWith(V,';',4,V.size()));
 					}
 				}
 			}

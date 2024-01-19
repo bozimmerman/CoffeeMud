@@ -252,6 +252,11 @@ public class StdRace implements Race
 		return null;
 	}
 
+	protected String[] culturalAbilityParms()
+	{
+		return null;
+	}
+
 	@Override
 	public String[] abilityImmunities()
 	{
@@ -745,8 +750,11 @@ public class StdRace implements Race
 				int prof = 0;
 				if((culturalAbilityProficiencies() != null) && (culturalAbilityProficiencies().length>a))
 					prof = culturalAbilityProficiencies()[a];
+				String parms = "";
+				if((culturalAbilityParms() != null) && (culturalAbilityParms().length>a))
+					parms = culturalAbilityParms()[a];
 
-				CMLib.ableMapper().addCharAbilityMapping(ID(),lvl,culturalAbilityNames()[a],prof,"",gain);
+				CMLib.ableMapper().addCharAbilityMapping(ID(),lvl,culturalAbilityNames()[a],prof,parms,gain);
 			}
 			mappedCulturalAbilities=true;
 		}
@@ -1434,6 +1442,8 @@ public class StdRace implements Race
 				GR.setStat("GETCABLELVL"+i,""+lvl);
 				final boolean gain = (culturalAbilityAutoGains() != null) ? culturalAbilityAutoGains()[i] : true;
 				GR.setStat("GETCABLEGAIN"+i,""+gain);
+				final String parm = (culturalAbilityParms() != null) ? culturalAbilityParms()[i] : "";
+				GR.setStat("GETCABLEPARM"+i, parm);
 			}
 		}
 
@@ -1791,6 +1801,7 @@ public class StdRace implements Race
 			GR.setStat("GETCABLELVL"+i,""+cvataf.get(i).second.qualLevel());
 			GR.setStat("GETCABLEGAIN"+i,""+(cvataf.get(i).second.autoGain()));
 			GR.setStat("GETCABLEPROF"+i,""+cvataf.get(i).second.defaultProficiency());
+			GR.setStat("GETCABLEPARM"+i, cvataf.get(i).second.defaultParm());
 		}
 
 		final TriadVector<String,Integer,Integer> dataa=new TriadVector<String,Integer,Integer>();
@@ -1850,9 +1861,9 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public QuadVector<String,Integer,Integer,Boolean> culturalAbilities()
+	public QuintVector<String,Integer,Integer,Boolean,String> culturalAbilities()
 	{
-		final QuadVector<String,Integer,Integer,Boolean> ables=new QuadVector<String,Integer,Integer,Boolean>();
+		final QuintVector<String,Integer,Integer,Boolean,String> ables=new QuintVector<String,Integer,Integer,Boolean,String>();
 		if((culturalAbilityNames()!=null)
 		&&(culturalAbilityProficiencies()!=null))
 		{
@@ -1861,7 +1872,8 @@ public class StdRace implements Race
 				final Integer level = Integer.valueOf((culturalAbilityLevels() != null) ? culturalAbilityLevels()[i] : 0);
 				final Integer prof = Integer.valueOf(culturalAbilityProficiencies()[i]);
 				final Boolean autoGain = Boolean.valueOf((culturalAbilityAutoGains() != null) ? culturalAbilityAutoGains()[i] : true);
-				ables.addElement(culturalAbilityNames()[i],prof,level,autoGain);
+				final String parms = String.valueOf((culturalAbilityParms() != null) ? culturalAbilityParms()[i] : "");
+				ables.addElement(culturalAbilityNames()[i],prof,level,autoGain,parms);
 			}
 		}
 		return ables;
@@ -2076,7 +2088,7 @@ public class StdRace implements Race
 			ables.addAll(racialAbilities(null));
 			ables.addAll(racialEffects(null));
 
-			final QuadVector<String,Integer,Integer,Boolean> cables=culturalAbilities();
+			final QuintVector<String,Integer,Integer,Boolean,String> cables=culturalAbilities();
 			Ability A=null;
 			if(cables!=null)
 			{
@@ -2086,6 +2098,8 @@ public class StdRace implements Race
 					if(A!=null)
 					{
 						A.setProficiency(cables.getSecond(c).intValue());
+						if(cables.getFifth(c).length()>0)
+							A.setMiscText(cables.getFifth(c));
 						ables.add(A);
 					}
 				}

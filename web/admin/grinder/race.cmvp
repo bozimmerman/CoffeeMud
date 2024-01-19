@@ -144,7 +144,7 @@
 	<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
         <TR>
             <TD WIDTH=25%><FONT COLOR=YELLOW>Race ID: </FONT></TD>
-            <TD WIDTH=66%><FONT COLOR=WHITE>@RequestParameter?RACE@</FONT></TD>
+            <TD WIDTH=66%><FONT COLOR=WHITE>@RequestParameter?RACE&ELLIPSE=40@</FONT></TD>
         </TR>
 		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Name: </FONT></TD>

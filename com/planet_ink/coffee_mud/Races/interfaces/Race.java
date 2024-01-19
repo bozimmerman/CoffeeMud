@@ -378,9 +378,9 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * mob when they are created as this race.  The entries are the ability id,
 	 * the default proficiency, the level, and whether it is auto-gained.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-	 * @return a quadvector of the Ability IDs, profs, levels, auto-gained
+	 * @return a quadvector of the Ability IDs, profs, levels, auto-gained, parms
 	 */
-	public QuadVector<String,Integer,Integer,Boolean> culturalAbilities();
+	public QuintVector<String,Integer,Integer,Boolean,String> culturalAbilities();
 
 	/**
 	 * Return a vector of skills, spells, and other abilities granted to the given

@@ -66,7 +66,7 @@
     @RaceNext?ALL@
         @if?!CheckReqParm?RACE=GenRace@
             <TR>
-            <TD><a href="javascript:Race('@RaceID@','')"><FONT COLOR=WHITE><B>@RaceID@</B></FONT></a></TD>
+            <TD><a href="javascript:Race('@RaceID@','')"><FONT COLOR=WHITE><B>@RequestParameter?RACE&ELLIPSE=20@</B></FONT></a></TD>
             <TD><FONT COLOR=WHITE><B>@RaceData?CAT@</B></FONT></a></TD>
             <TD><FONT COLOR=WHITE><B>@if?RaceData?ISGENERIC@Yes@endif@</B></FONT></a></TD>
             <TD><FONT COLOR=WHITE><B>@RaceData?WEIGHT@ lbs</B></FONT></a></TD>

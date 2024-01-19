@@ -76,6 +76,7 @@ public class GenRace extends StdRace
 	protected int[]				culturalAbilityProfs= null;
 	protected int[]				culturalAbilityLvls = null;
 	protected boolean[]			culturalAbilityGains= null;
+	protected String[]			culturalAbilityParms= null;
 	protected int[]				sortedBreathables	= new int[] { RawMaterial.RESOURCE_AIR };
 	protected boolean			destroyBodyAfterUse	= false;
 	protected String			arriveStr			= "arrives";
@@ -300,6 +301,12 @@ public class GenRace extends StdRace
 	protected boolean[] culturalAbilityAutoGains()
 	{
 		return culturalAbilityGains;
+	}
+
+	@Override
+	protected String[] culturalAbilityParms()
+	{
+		return culturalAbilityParms;
 	}
 
 	@Override
@@ -589,6 +596,7 @@ public class GenRace extends StdRace
 				str.append("<CPROFF>"+culturalAbilityProfs[r]+"</CPROFF>");
 				str.append("<CPLEVL>"+culturalAbilityLvls[r]+"</CPLEVL>");
 				str.append("<CGAIN>"+culturalAbilityGains[r]+"</CGAIN>");
+				str.append("<CPARM>"+CMLib.xml().parseOutAngleBrackets(culturalAbilityParms[r])+"</CPARM>");
 				str.append("</CABILITY>");
 			}
 			str.append("</CABILITIES>");
@@ -880,12 +888,14 @@ public class GenRace extends StdRace
 		culturalAbilityProfs=null;
 		culturalAbilityLvls=null;
 		culturalAbilityGains=null;
+		culturalAbilityParms=null;
 		if((xV!=null)&&(xV.size()>0))
 		{
 			culturalAbilityNames=new String[xV.size()];
 			culturalAbilityProfs=new int[xV.size()];
 			culturalAbilityLvls=new int[xV.size()];
 			culturalAbilityGains=new boolean[xV.size()];
+			culturalAbilityParms=new String[xV.size()];
 			for(int x=0;x<xV.size();x++)
 			{
 				final XMLTag iblk=xV.get(x);
@@ -898,6 +908,7 @@ public class GenRace extends StdRace
 					culturalAbilityGains[x]=iblk.getBoolFromPieces("CGAIN");
 				else
 					culturalAbilityGains[x]=true;
+				culturalAbilityParms[x]=iblk.getValFromPieces("CPARM");
 			}
 		}
 
@@ -932,7 +943,8 @@ public class GenRace extends StdRace
 									 "DISFLAGS","STARTASTATE","EVENTRACE","WEAPONRACE", "HELP",
 									 "BREATHES","CANRIDE",
 									 "NUMIABLE","GETIABLE",
-									 "XPADJ", "CLASS"
+									 "XPADJ", "CLASS",
+									 "GETCABLEPARM"
 									 };
 
 	@Override
@@ -1070,6 +1082,8 @@ public class GenRace extends StdRace
 			return ""+getXPAdjustment();
 		case 53:
 			return ID();
+		case 54:
+			return (culturalAbilityParms == null) ? "" : ("" + culturalAbilityParms[num]);
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -1411,6 +1425,7 @@ public class GenRace extends StdRace
 				culturalAbilityProfs=null;
 				culturalAbilityLvls=null;
 				culturalAbilityGains=null;
+				culturalAbilityParms=null;
 			}
 			else
 			{
@@ -1418,6 +1433,7 @@ public class GenRace extends StdRace
 				culturalAbilityProfs=new int[CMath.s_int(val)];
 				culturalAbilityLvls=new int[CMath.s_int(val)];
 				culturalAbilityGains=new boolean[CMath.s_int(val)];
+				culturalAbilityParms=new String[CMath.s_int(val)];
 			}
 			this.mappedCulturalAbilities=false;
 			break;
@@ -1617,6 +1633,14 @@ public class GenRace extends StdRace
 		}
 		case 53: // CLASS
 			break;
+		case 54:
+		{
+			if(culturalAbilityParms==null)
+				culturalAbilityParms=new String[num+1];
+			culturalAbilityParms[num]=val;
+			this.mappedCulturalAbilities=false;
+			break;
+		}
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
