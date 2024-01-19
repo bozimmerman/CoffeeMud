@@ -116,6 +116,52 @@ public class Druid_ShapeShift extends StdAbility
 		RACES
 	}
 
+	private static final String buildShapeString(final ShiftShapeForm f)
+	{
+		final StringBuilder str = new StringBuilder("["+f.ID+"];");
+		for(final ShiftShapeField i : ShiftShapeField.values())
+		{
+			str.append(i.name()+"=");
+			switch(i)
+			{
+			case NAME:
+				str.append(f.form);
+				break;
+			case ATTADJ:
+				str.append(f.attackAdj);
+				break;
+			case DMGADJ:
+				str.append(f.dmgAdj);
+				break;
+			case ARMADJ:
+				str.append(f.armorAdj);
+				break;
+			case SPEEDADJ:
+				str.append(f.speedAdj);
+				break;
+			case SHAPES:
+				str.append(CMParms.toListString(f.shapes));
+				break;
+			case RACES:
+				str.append(CMParms.toListString(f.raceIDs));
+				break;
+			}
+			str.append(";");
+		}
+		return str.toString();
+	}
+
+	private final String buildUniqueShapeStrings()
+	{
+		if(this.uniqueForm == null)
+			return "";
+		final StringBuilder str = new StringBuilder("");
+		for(final ShiftShapeForm f : uniqueForm)
+			str.append(buildShapeString(f));
+		return str.toString();
+
+	}
+
 	private static final void fillShapeField(final ShiftShapeForm f, final String s)
 	{
 		if(f!=null)
@@ -216,12 +262,19 @@ public class Druid_ShapeShift extends StdAbility
 						shapeData.add(f);
 					}
 					else
+					if(CMath.isInteger(line))
+						myRaceCode = CMath.s_int(line);
+					else
 						fillShapeField(f,line);
 				}
 				if(shapeData.size()>0)
 				{
-					this.uniqueForm = shapeData;
-					myRaceCode = 0;
+					if((shapeData.size()==1)
+					&&(myRaceCode<0))
+					{
+						this.uniqueForm = shapeData;
+						myRaceCode = 0;
+					}
 				}
 			}
 			else
@@ -568,7 +621,7 @@ public class Druid_ShapeShift extends StdAbility
 				}
 			}
 		}
-		setMiscText(""+myRaceCode);
+		setMiscText(buildUniqueShapeStrings()+myRaceCode);
 		setRaceName(mob);
 
 		// now check for alternate shapeshifts
