@@ -109,6 +109,7 @@ public class Vampire extends Undead
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,22);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,22);
 		affectableStats.setRacialStat(CharStats.STAT_CHARISMA,20);
+		affectableStats.setStat(CharStats.STAT_XP_ADJ_PCT, affectableStats.getStat(CharStats.STAT_XP_ADJ_PCT)-50);
 	}
 
 	@Override
@@ -127,8 +128,25 @@ public class Vampire extends Undead
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_INVISIBLE);
 	}
 
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
+				final RawMaterial flesh = makeResource
+						(L("some @x1 flesh",name().toLowerCase()),RawMaterial.RESOURCE_MEAT);
+				resources.addElement(flesh);
+			}
+		}
+		return resources;
+	}
 }

@@ -116,4 +116,27 @@ public class Ghoul extends Undead
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 	}
 
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
+				final RawMaterial flesh = makeResource
+						(L("some @x1 flesh",name().toLowerCase()),RawMaterial.RESOURCE_MEAT);
+				final Ability A=CMClass.getAbility("Prop_Smell");
+				flesh.addNonUninvokableEffect(A);
+				A.setMiscText(flesh.name()+" SMELLS HORRIBLE!");
+				final Ability dA=CMClass.getAbility("Disease_Nausea");
+				flesh.addNonUninvokableEffect(dA);
+				resources.addElement(flesh);
+			}
+		}
+		return resources;
+	}
 }

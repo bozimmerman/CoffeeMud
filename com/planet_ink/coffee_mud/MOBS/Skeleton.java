@@ -71,5 +71,4 @@ public class Skeleton extends Undead
 		recoverPhyStats();
 		recoverCharStats();
 	}
-
 }
