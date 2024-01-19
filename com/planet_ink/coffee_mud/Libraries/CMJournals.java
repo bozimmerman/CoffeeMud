@@ -952,8 +952,11 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					{
 						newEntry.update(newEntry.date());
 						newEntry.expiration(newEntry.date() + durationMillis);
+
 						newEntry.key(null);
 						CMLib.database().DBWriteJournal("SYSTEM_CALENDAR", newEntry);
+						if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
+							Log.debugOut("Next entry "+newEntry.key()+" will happen @ "+CMLib.time().date2String(newEntry.expiration())+".");
 						nextStart=newEntry;
 					}
 				}
@@ -1124,7 +1127,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			if(nextEvents.size()>0)
 			{
 				if(CMSecurity.isDebugging(DbgFlag.CALENDAR))
-					Log.debugOut("Next Calendar thread will process "+nextEvents.size()+" events.");
+					Log.debugOut("Next Calendar thread will process "+nextEvents.size()+" events @ "+CMLib.time().date2String(nextTime)+".");
 				CMLib.threads().startTickDown(this, Tickable.TICKID_EVENT, nextTime-System.currentTimeMillis(), 1);
 			}
 		}
