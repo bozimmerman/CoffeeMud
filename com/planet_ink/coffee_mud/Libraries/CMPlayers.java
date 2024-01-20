@@ -445,6 +445,25 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		return null;
 	}
+	
+	@Override
+	public int getPlayerThreadId(final MOB mob)
+	{
+		if((mob==null)||(!mob.isPlayer()))
+			return -1;
+		final Session sess = mob.session();
+		if(sess != null)
+			return sess.getGroupID();
+		if(this.isLoadedPlayer(mob))
+			return CMLib.getLibraryThreadID(this);
+		for(final PlayerLibrary pLib2 : getOtherPlayerLibAllHosts())
+		{
+			if((pLib2 != this)
+			&&(pLib2.isLoadedPlayer(mob)))
+				return CMLib.getLibraryThreadID(pLib2);
+		}
+		return -1;
+	}
 
 	@Override
 	public MOB getLoadPlayerAllHosts(final String last)

@@ -317,6 +317,17 @@ public interface PlayerLibrary extends CMLibrary
 	public MOB getLoadPlayerByEmail(String email);
 
 	/**
+	 * Attempts to return the thread id associated with
+	 * the given player.  It first checks for a session
+	 * with a thread id, and then it looks for a player
+	 * library containing the mob, returning its id.
+	 * 
+	 * @param mob the player to look for
+	 * @return thread id, or -1 if not found.
+	 */
+	public int getPlayerThreadId(final MOB mob);
+	
+	/**
 	 * Returns a list of all player char names
 	 * in the database.
 	 *

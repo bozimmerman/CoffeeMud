@@ -12480,6 +12480,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				which=getVarHost(E,which,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
 				if((which.length()>0)&&(arg2.length()>0))
 				{
+					DatabaseEngine db= CMLib.database();
+					if((E instanceof MOB) && ((MOB)E).isPlayer())
+					{
+						int threadId = CMLib.players().getPlayerThreadId((MOB)E);
+						if(threadId >=0)
+							db = CMLib.get(threadId)._database();
+					}
 					final PairList<String,String> vars=getScriptVarSet(which,arg2);
 					for(int v=0;v<vars.size();v++)
 					{
@@ -12495,9 +12502,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								val="";
 						}
 						if(val.length()>0)
-							CMLib.database().DBReCreatePlayerData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2,val);
+							db.DBReCreatePlayerData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2,val);
 						else
-							CMLib.database().DBDeletePlayerData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
+							db.DBDeletePlayerData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
 					}
 				}
 				break;
@@ -12517,10 +12524,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					List<PlayerData> V=null;
 					which=getVarHost(E,which,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
+					DatabaseEngine db= CMLib.database();
+					if((E instanceof MOB) && ((MOB)E).isPlayer())
+					{
+						int threadId = CMLib.players().getPlayerThreadId((MOB)E);
+						if(threadId >=0)
+							db = CMLib.get(threadId)._database();
+					}
 					if(arg2.equals("*"))
-						V=CMLib.database().DBReadPlayerData(which,"SCRIPTABLEVARS");
+						V=db.DBReadPlayerData(which,"SCRIPTABLEVARS");
 					else
-						V=CMLib.database().DBReadPlayerData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
+						V=db.DBReadPlayerData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
 					if((V!=null)&&(V.size()>0))
 					for(int v=0;v<V.size();v++)
 					{
