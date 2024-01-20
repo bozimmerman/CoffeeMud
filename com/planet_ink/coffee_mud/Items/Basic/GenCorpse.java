@@ -39,4 +39,10 @@ public class GenCorpse extends Corpse
 	{
 		return "GenCorpse";
 	}
+	
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 }

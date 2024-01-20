@@ -4894,14 +4894,20 @@ public class ListCmd extends StdCommand
 		String rest="";
 		MOB whoM=mob;
 		final WikiFlag wiki = getWikiFlagRemoved(commands);
+		boolean time=false;
 		if(commands.size()>1)
 		{
 			rest=commands.get(1);
-			whoM=CMLib.players().getLoadPlayer(rest);
-			if(whoM==null)
+			if(rest.equalsIgnoreCase("time"))
+				time = true;
+			else
 			{
-				mob.tell("No '"+rest+"'");
-				return;
+				whoM=CMLib.players().getLoadPlayer(rest);
+				if(whoM==null)
+				{
+					mob.tell("No '"+rest+"'");
+					return;
+				}
 			}
 		}
 
@@ -4920,16 +4926,22 @@ public class ListCmd extends StdCommand
 			&&(C.securityCheck(whoM)))
 			{
 				done.add(access[0]);
-				commandSet.add(access[0]);
+				if(time)
+					commandSet.add(access[0] + "("+C.actionsCost(mob, commandSet)+", "+C.combatActionsCost(mob, commandSet)+")");
+				else
+					commandSet.add(access[0]);
 			}
 		}
-		for(final Enumeration<Ability> a=whoM.allAbilities();a.hasMoreElements();)
+		if(!time)
 		{
-			final Ability A=a.nextElement();
-			if((A!=null)&&(A.triggerStrings()!=null)&&(A.triggerStrings().length>0)&&(!done.contains(A.triggerStrings()[0])))
+			for(final Enumeration<Ability> a=whoM.allAbilities();a.hasMoreElements();)
 			{
-				done.add(A.triggerStrings()[0]);
-				commandSet.add(A.triggerStrings()[0]);
+				final Ability A=a.nextElement();
+				if((A!=null)&&(A.triggerStrings()!=null)&&(A.triggerStrings().length>0)&&(!done.contains(A.triggerStrings()[0])))
+				{
+					done.add(A.triggerStrings()[0]);
+					commandSet.add(A.triggerStrings()[0]);
+				}
 			}
 		}
 		Collections.sort(commandSet);
@@ -5014,7 +5026,13 @@ public class ListCmd extends StdCommand
 					commandList.append("\n\r");
 					col = 0;
 				}
-				commandList.append(CMStrings.padRight(s,COL_LEN));
+				if(time)
+				{
+					commandList.append(CMStrings.padRight(s,COL_LEN*2));
+					col++;
+				}
+				else
+					commandList.append(CMStrings.padRight(s,COL_LEN));
 			}
 		}
 		if(mob.session()!=null)

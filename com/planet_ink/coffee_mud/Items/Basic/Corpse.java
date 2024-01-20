@@ -364,4 +364,144 @@ public class Corpse extends GenContainer implements DeadBody
 		}
 		return super.okMessage(myHost, msg);
 	}
+
+	private final static String[] MYCODES;
+	static {
+		MYCODES= new String[6 + GenericBuilder.GenMOBCode.values().length];
+		MYCODES[0] = "KILLERNAME";
+		MYCODES[1] = "KILLERPLAYER";
+		MYCODES[2] = "KILLLASTMESSAGE";
+		MYCODES[3] = "KILLTOOLNAME";
+		MYCODES[4] = "MOBPLAYER";
+		MYCODES[5] = "MOBPK";
+		for (int g=0;g<GenericBuilder.GenMOBCode.values().length;g++)
+			MYCODES[6+g] = "MOB" + GenericBuilder.GenMOBCode.values()[g].name();
+	}		
+
+	private int getInternalCodeNum(final String code)
+	{
+		for(int i=0;i<MYCODES.length;i++)
+		{
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
+		}
+		return -1;
+	}
+
+	@Override
+	public String getStat(final String code)
+	{
+		final int internalNum = getInternalCodeNum(code);
+		if(internalNum<0)
+			return super.getStat(code);
+		else
+		switch(internalNum)
+		{
+		case 0: return killerName != null ? killerName : "";
+		case 1: return Boolean.toString(this.killerPlayer);
+		case 2: return lastMessage != null ? lastMessage : "";
+		case 3: return (this.killingTool != null) ? this.killingTool.Name() : "";
+		case 4: return Boolean.toString(this.playerCorpse);
+		case 5: return Boolean.toString(this.mobPKFlag);
+		default:
+		{
+			String ucode = code.toUpperCase().trim();
+			if(ucode.startsWith("MOB") && (ucode.length()>3))
+			{
+				ucode = ucode.substring(3);
+				final GenericBuilder.GenMOBCode cd = (GenericBuilder.GenMOBCode)CMath.s_valueOf(GenericBuilder.GenMOBCode.class, code.toUpperCase().trim());
+				if(cd == null)
+					return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+				else
+				if(this.savedMOB != null)
+					return CMLib.coffeeMaker().getGenMobStat(savedMOB, ucode);
+				else
+					return "";
+			}
+			else
+				return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
+		}
+	}
+
+	@Override
+	public void setStat(final String code, final String val)
+	{
+		final int internalNum = getInternalCodeNum(code);
+		if(internalNum<0)
+			super.setStat(code, val);
+		else
+		switch(internalNum)
+		{
+		case 0: 
+			killerName = val;
+			break;
+		case 1: 
+			this.killerPlayer = CMath.s_bool(val);
+			break;
+			
+		case 2: 
+			this.lastMessage = val;
+			break;
+		case 3: 
+			break; // nothing to do -- not gonna construct a new item!
+		case 4: 
+			this.playerCorpse = CMath.s_bool(val);
+			break;
+		case 5: 
+			this.mobPKFlag = CMath.s_bool(val);
+			break;
+		default:
+		{
+			String ucode = code.toUpperCase().trim();
+			if(ucode.startsWith("MOB") && (ucode.length()>3))
+			{
+				ucode = ucode.substring(3);
+				final GenericBuilder.GenMOBCode cd = (GenericBuilder.GenMOBCode)CMath.s_valueOf(GenericBuilder.GenMOBCode.class, code.toUpperCase().trim());
+				if(cd == null)
+					CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+				else
+				if(this.savedMOB != null)
+					CMLib.coffeeMaker().setGenMobStat(savedMOB, ucode, val);
+			}
+			else
+				CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
+		}
+		}
+	}
+
+	private static String[] codes=null;
+
+	@Override
+	public String[] getStatCodes()
+	{
+		if(codes==null)
+		{
+			if(codes!=null)
+				return codes;
+			final String[] MYCODES=CMProps.getStatCodesList(Corpse.MYCODES,this);
+			final String[] superCodes=super.getStatCodes();
+			codes=new String[superCodes.length+MYCODES.length];
+			int i=0;
+			for(;i<superCodes.length;i++)
+				codes[i]=superCodes[i];
+			for(int x=0;x<MYCODES.length;i++,x++)
+				codes[i]=MYCODES[x];
+		}
+		return codes;
+	}
+
+	@Override
+	public boolean sameAs(final Environmental E)
+	{
+		if(!(E instanceof Corpse))
+			return false;
+		for(int i=0;i<getStatCodes().length;i++)
+		{
+			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
+				return false;
+		}
+		return true;
+	}
 }

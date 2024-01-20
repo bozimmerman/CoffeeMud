@@ -8919,7 +8919,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if(cmd.length()==0)
 				continue;
 			if(traceDebugging)
-				Log.debugOut(CMStrings.padRight(scripted.Name(), 15)+": "+s);
+				Log.debugOut(CMStrings.padRight(scripted.Name(), 15)+": "+si+": "+s);
 
 			Integer methCode=methH.get(cmd);
 			if((methCode==null)&&(cmd.startsWith("MP")))
@@ -8972,7 +8972,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final JScriptEvent scope = new JScriptEvent(this,scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp);
 						cx.initStandardObjects(scope);
-						final String[] names = { "host", "source", "target", "monster", "item", "item2", "message" ,"getVar", "setVar", "toJavaString", "getCMType", "objs"};
+						final String[] names = { "host", "source", "target", "monster", "item", "item1", "item2", "message" ,"getVar", "setVar", "toJavaString", "getCMType", "objs"};
 						scope.defineFunctionProperties(names, JScriptEvent.class,
 													   ScriptableObject.DONTENUM);
 						cx.evaluateString(scope, jscript.toString(),"<cmd>", 1, null);
@@ -9063,25 +9063,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						cmd=tt[0];
 					else
 						cmd=CMParms.getCleanBit(s,0).toUpperCase();
-					if(cmd.equals("<SCRIPT>"))
-					{
-						if(tt==null)
-							tt=parseBits(script,si,"C");
-						ignoreUntilEndScript=true;
-					}
-					else
-					if(cmd.equals("</SCRIPT>"))
-					{
-						if(tt==null)
-							tt=parseBits(script,si,"C");
-						ignoreUntilEndScript=false;
-					}
-					else
-					if(ignoreUntilEndScript)
-					{
-					}
-					else
-					if(cmd.equals("ENDIF")&&(depth==0))
+					if(cmd.equals("ENDIF")&&(depth==0)&&(!ignoreUntilEndScript))
 					{
 						if(tt==null)
 							tt=parseBits(script,si,"C");
@@ -9090,7 +9072,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						break;
 					}
 					else
-					if(cmd.equals("ELSE")&&(depth==0))
+					if(cmd.equals("ELSE")&&(depth==0)&&(!ignoreUntilEndScript))
 					{
 						positiveCondition=false;
 						if(s.substring(4).trim().length()>0)
@@ -9101,14 +9083,30 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					else
 					{
-						if(cmd.equals("IF"))
-							depth++;
-						else
-						if(cmd.equals("ENDIF"))
+						if(!ignoreUntilEndScript)
+						{
+							if(cmd.equals("IF"))
+								depth++;
+							else
+							if(cmd.equals("ENDIF"))
+							{
+								if(tt==null)
+									tt=parseBits(script,si,"C");
+								depth--;
+							}
+						}
+						if(cmd.equals("<SCRIPT>"))
 						{
 							if(tt==null)
 								tt=parseBits(script,si,"C");
-							depth--;
+							ignoreUntilEndScript=true;
+						}
+						else
+						if(cmd.equals("</SCRIPT>"))
+						{
+							if(tt==null)
+								tt=parseBits(script,si,"C");
+							ignoreUntilEndScript=false;
 						}
 						if(positiveCondition)
 						{
@@ -9233,26 +9231,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						cmd=tt[0];
 					else
 						cmd=CMParms.getCleanBit(s,0).toUpperCase();
-					if(cmd.equals("<SCRIPT>"))
-					{
-						if(tt==null)
-							tt=parseBits(script,si,"C");
-						ignoreUntilEndScript=true;
-					}
-					else
-					if(cmd.equals("</SCRIPT>"))
-					{
-						if(tt==null)
-							tt=parseBits(script,si,"C");
-						ignoreUntilEndScript=false;
-					}
-					else
-					if(ignoreUntilEndScript)
-					{
-						// only applies when <SCRIPT> encountered.
-					}
-					else
-					if(cmd.equals("ENDSWITCH")&&(depth==0))
+					if((!ignoreUntilEndScript) && cmd.equals("ENDSWITCH")&&(depth==0))
 					{
 						if(tt==null)
 						{
@@ -9263,7 +9242,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						break;
 					}
 					else
-					if(cmd.equals("CASE")&&(depth==0))
+					if((!ignoreUntilEndScript) && cmd.equals("CASE")&&(depth==0))
 					{
 						if(tt==null)
 						{
@@ -9295,7 +9274,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					else
-					if(cmd.equals("DEFAULT")&&(depth==0))
+					if((!ignoreUntilEndScript) && cmd.equals("DEFAULT")&&(depth==0))
 					{
 						if(tt==null)
 						{
@@ -9322,22 +9301,39 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(line != null)
 								subScript.add(line);
 						}
-						if(cmd.equals("SWITCH"))
-						{
-							if(tt==null)
-							{
-								tt=parseBits(script,si,"Cr");
-								if(script.get(si).third==null)
-									script.get(si).third=Collections.synchronizedMap(new HashMap<String,Integer>());
-							}
-							depth++;
-						}
-						else
-						if(cmd.equals("ENDSWITCH"))
+						if(cmd.equals("<SCRIPT>"))
 						{
 							if(tt==null)
 								tt=parseBits(script,si,"C");
-							depth--;
+							ignoreUntilEndScript=true;
+						}
+						else
+						if(cmd.equals("</SCRIPT>"))
+						{
+							if(tt==null)
+								tt=parseBits(script,si,"C");
+							ignoreUntilEndScript=false;
+						}
+						else
+						if(!ignoreUntilEndScript)
+						{
+							if(cmd.equals("SWITCH"))
+							{
+								if(tt==null)
+								{
+									tt=parseBits(script,si,"Cr");
+									if(script.get(si).third==null)
+										script.get(si).third=Collections.synchronizedMap(new HashMap<String,Integer>());
+								}
+								depth++;
+							}
+							else
+							if(cmd.equals("ENDSWITCH"))
+							{
+								if(tt==null)
+									tt=parseBits(script,si,"C");
+								depth--;
+							}
 						}
 					}
 					si++;
@@ -9431,25 +9427,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						cmd=tt[0];
 					else
 						cmd=CMParms.getCleanBit(s,0).toUpperCase();
-					if(cmd.equals("<SCRIPT>"))
-					{
-						if(tt==null)
-							tt=parseBits(script,si,"C");
-						ignoreUntilEndScript=true;
-					}
-					else
-					if(cmd.equals("</SCRIPT>"))
-					{
-						if(tt==null)
-							tt=parseBits(script,si,"C");
-						ignoreUntilEndScript=false;
-					}
-					else
-					if(ignoreUntilEndScript)
-					{
-					}
-					else
-					if(cmd.equals("NEXT")&&(depth==0))
+					if((!ignoreUntilEndScript) && cmd.equals("NEXT")&&(depth==0))
 					{
 						if(tt==null)
 							tt=parseBits(script,si,"C");
@@ -9458,18 +9436,35 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					else
 					{
-						if(cmd.equals("FOR"))
-						{
-							if(tt==null)
-								tt=parseBits(script,si,"CcccCr");
-							depth++;
-						}
-						else
-						if(cmd.equals("NEXT"))
+						if(cmd.equals("<SCRIPT>"))
 						{
 							if(tt==null)
 								tt=parseBits(script,si,"C");
-							depth--;
+							ignoreUntilEndScript=true;
+						}
+						else
+						if(cmd.equals("</SCRIPT>"))
+						{
+							if(tt==null)
+								tt=parseBits(script,si,"C");
+							ignoreUntilEndScript=false;
+						}
+						else
+						if(!ignoreUntilEndScript)
+						{
+							if(cmd.equals("FOR"))
+							{
+								if(tt==null)
+									tt=parseBits(script,si,"CcccCr");
+								depth++;
+							}
+							else
+							if(cmd.equals("NEXT"))
+							{
+								if(tt==null)
+									tt=parseBits(script,si,"C");
+								depth--;
+							}
 						}
 						final ScriptLn line = script.get(si);
 						if(line != null)
@@ -15587,6 +15582,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		public Item item2()
 		{
 			return si;
+		}
+
+		public Item item1()
+		{
+			return pi;
 		}
 
 		public Object[] objs()
