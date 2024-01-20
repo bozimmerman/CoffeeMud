@@ -2315,6 +2315,19 @@ public interface DatabaseEngine extends CMLibrary
 	public List<CoffeeTableRow> DBReadStats(long startTime, long endTime);
 
 	/**
+	 * Table category: DBSTATS
+	 * Read the oldest start recorded.
+
+	 * @see DatabaseEngine#DBUpdateStat(long, String)
+	 * @see DatabaseEngine#DBDeleteStat(long)
+	 * @see DatabaseEngine#DBCreateStat(long, long, String)
+	 * @see DatabaseEngine#DBReadStat(long)
+	 *
+	 * @return startTime the timestamp of the first row
+	 */
+	public long DBReadOldestStatMs();
+
+	/**
 	 * Table category: DBPOLLS
 	 * Creates a new poll in the DBPOLLS table.  Most of the arguments are
 	 * self explanatory.

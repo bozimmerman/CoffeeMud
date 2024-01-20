@@ -203,6 +203,13 @@ public interface ProtocolLibrary extends CMLibrary
 	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables);
 
 	/**
+	 * Returns all the MSSP variables for crawlers.
+	 * Values can be Strings, or String Arrays
+	 * @return all the MSSP variables for crawlers.
+	 */
+	public Map<String,Object> getMSSPPackage();
+
+	/**
 	 * Enumeration of all support GMCP commands
 	 *
 	 * @author Bo Zimmerman

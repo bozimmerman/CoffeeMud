@@ -255,7 +255,8 @@ public class CMProps extends Properties
 		FORMULA_MAXFOLLOW,
 		TRAINCOSTS,
 		DEFAULTABILITYARGS,
-		XPMOD
+		XPMOD,
+		MSXPVARS
 	}
 
 	public final static int DEFAULT_MOB_HP_BASE = 11;
@@ -377,7 +378,8 @@ public class CMProps extends Properties
 		EFFECTCXL,
 		CLASSTRAINCOST,
 		CLASSSWITCHCOST,
-		LOGOUTMASKTICKS
+		LOGOUTMASKTICKS,
+		FIRSTCREATEDYEAR
 		;
 
 		public static final int	EXVIEW_DEFAULT		= 0;
@@ -2239,7 +2241,7 @@ public class CMProps extends Properties
 			final List<Pair<String,String>> finalPairs = new ArrayList<Pair<String,String>>();
 			for(int i=0;i<pairStrs.size();i++)
 			{
-				List<String> pair = pairStrs.get(i);
+				final List<String> pair = pairStrs.get(i);
 				if(pair.size()==2)
 					finalPairs.add(new Pair<String,String>(pair.get(0).trim(), pair.get(1).trim()));
 			}
@@ -2650,6 +2652,7 @@ public class CMProps extends Properties
 		setVar(Str.DEFAULTPLAYERFLAGS,getStr("DEFAULTPLAYERFLAGS"));
 		setUpLowVar(Str.AUTOAREAPROPS,getStr("AUTOAREAPROPS"));
 		setUpLowVar(Str.MXPIMAGEPATH,getStr("MXPIMAGEPATH"));
+		setUpLowVar(Str.MSXPVARS,getStr("MSXPVARS"));
 		setBoolVar(Bool.ACCOUNTEXPIRATION,getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
 		setBoolVar(Bool.INTRODUCTIONSYSTEM,getStr("INTRODUCTIONSYSTEM").equalsIgnoreCase("YES")?true:false);
 		setBoolVar(Bool.HASHPASSWORDS,getStr("HASHPASSWORDS").equalsIgnoreCase("YES")?true:false);

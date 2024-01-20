@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.exceptions.BadEmailAddressException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_web.util.CWThread;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
@@ -1431,7 +1432,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			buf.write(Session.MSDP_VAR);
 			buf.write("MUD_UPTIME".getBytes(Session.MSDP_CHARSET));
 			buf.write(Session.MSDP_VAL);
-			buf.write(Long.toString(CMLib.host().getUptimeSecs()*1000L).getBytes(Session.MSDP_CHARSET));
+			final long uptime = (System.currentTimeMillis() / 1000) - CMLib.host().getUptimeSecs();
+			buf.write(Long.toString(uptime).getBytes(Session.MSDP_CHARSET));
 			buf.write(Session.MSDP_VAR);
 			buf.write("MUD_UPDATE".getBytes(Session.MSDP_CHARSET));
 			buf.write(Session.MSDP_VAL);
@@ -2751,5 +2753,127 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			Log.errOut(t);
 		}
 		return null;
+	}
+
+	@Override
+	public Map<String,Object> getMSSPPackage()
+	{
+		final Map<String,Object> pkg = new Hashtable<String, Object>();
+		pkg.put("PLAYERS",Integer.toString(CMLib.sessions().numLocalOnline()));
+		switch(CMProps.getIntVar(CMProps.Int.MUDSTATE))
+		{
+		case 0:
+			pkg.put("STATUS","Alpha");
+			break;
+		case 1:
+			pkg.put("STATUS","Closed Beta");
+			break;
+		case 2:
+			pkg.put("STATUS","Open Beta");
+			break;
+		case 3:
+			pkg.put("STATUS","Live");
+			break;
+		default:
+			pkg.put("STATUS","Live");
+			break;
+		}
+
+		MudHost host = null;
+		if(CMLib.hosts().size()>0)
+		{
+			final List<String> ports = new ArrayList<String>();
+			host = CMLib.hosts().get(0);
+			for(int i=CMLib.hosts().size()-1;i>=0;i--)
+				ports.add(Integer.toString(CMLib.hosts().get(i).getPort()));
+			pkg.put("PORT",ports.toArray(new String[ports.size()]));
+		}
+		if(host != null)
+		{
+			final long uptime = (System.currentTimeMillis() / 1000) - CMLib.host().getUptimeSecs();
+			pkg.put("UPTIME",Long.toString(uptime));
+			pkg.put("HOSTNAME",host.getHost());
+			if(Thread.currentThread() instanceof CWThread)
+			{
+				final String webServerPort=Integer.toString(((CWThread)Thread.currentThread()).getConfig().getHttpListenPorts()[0]);
+				pkg.put("WEBSITE",("http://"+host.getHost()+":"+webServerPort));
+			}
+			else
+				pkg.put("WEBSITE",host.geWebHostUrl());
+			pkg.put("LANGUAGE",host.getLanguage());
+			pkg.put("ICON", host.geWebHostUrl()+"images/cm.jpg");
+		}
+		pkg.put("CHARSET", CMProps.getVar(CMProps.Str.CHARSETINPUT));
+		final List<String> intermuds = new ArrayList<String>(2);
+		if(CMLib.intermud().i3online())
+			intermuds.add("I3");
+		if(CMLib.intermud().imc2online())
+			intermuds.add("IMC2");
+		if(intermuds.size()>0)
+			pkg.put("INTERMUD", intermuds.toArray(new String[intermuds.size()]));
+		pkg.put("FAMILY","CoffeeMUD");
+		pkg.put("CRAWL DELAY","-1");
+		{
+			int fy = CMProps.getIntVar(CMProps.Int.FIRSTCREATEDYEAR);
+			if(fy <= 0)
+			{
+				final long statStartTime = CMLib.database().DBReadOldestStatMs();
+				final Calendar cal = Calendar.getInstance();
+				cal.setTimeInMillis(statStartTime);
+				fy = cal.get(Calendar.YEAR);
+				CMProps.setIntVar(CMProps.Int.FIRSTCREATEDYEAR, fy);
+			}
+			pkg.put("CREATED",Integer.toString(fy));
+		}
+		//pkg.put("DISCORD", "https://discord.gg/Q3KGzSs5");
+		pkg.put("CONTACT",CMProps.getVar(CMProps.Str.ADMINEMAIL));
+		pkg.put("EMAIL",CMProps.getVar(CMProps.Str.ADMINEMAIL));
+		pkg.put("CODEBASE",("CoffeeMUD v"+CMProps.getVar(CMProps.Str.MUDVER)));
+		pkg.put("AREAS",Integer.toString(CMLib.map().numAreas()));
+		pkg.put("HELPFILES",Integer.toString(CMLib.help().getHelpFile().size()));
+		pkg.put("MOBILES",Long.toString(CMClass.numPrototypes(CMClass.CMObjectType.MOB)));
+		pkg.put("OBJECTS",Long.toString(CMClass.numPrototypes(CMClass.OBJECTS_ITEMTYPES)));
+		pkg.put("GAMESYSTEM","Tick Based");
+		pkg.put("ROOMS",Long.toString(CMLib.map().numRooms()));
+		int numClasses = 0;
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
+			numClasses=CMLib.login().classQualifies(null, CMProps.getIntVar(CMProps.Int.MUDTHEME)&0x07).size();
+		pkg.put("CLASSES",Long.toString(numClasses));
+		int numRaces = 0;
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
+			numRaces=CMLib.login().raceQualifies(null, CMProps.getIntVar(CMProps.Int.MUDTHEME)&0x07).size();
+		pkg.put("RACES",Long.toString(numRaces));
+		pkg.put("SKILLS",Long.toString(CMLib.ableMapper().numMappedAbilities()));
+		pkg.put("ANSI","1");
+		pkg.put("XTERM 256 COLORS","1");
+		pkg.put("MCCP",(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP)?"1":"0"));
+		pkg.put("MSP",(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)?"1":"0"));
+		pkg.put("MXP",(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)?"1":"0"));
+		final Map<String,Object> xadded = new HashMap<String,Object>();
+		for(final String xvar : CMParms.parseCommasSafe(CMProps.getVar(Str.MSXPVARS), true))
+		{
+			final int x = xvar.indexOf('=');
+			if(x > 0)
+			{
+				final String var = xvar.substring(0,x).toUpperCase().trim();
+				final String val = xvar.substring(x+1).trim();
+				if(val.length()==0)
+					pkg.remove(var);
+				else
+				if(xadded.containsKey(var))
+				{
+					Object o;
+					if(xadded.get(var) instanceof String)
+						o = new String[] {xadded.get(var).toString(), val };
+					else
+						o = CMParms.appendToArray((String[])xadded.get(var), new String[] {val});
+					xadded.put(var,o);
+				}
+				else
+					xadded.put(var,val);
+			}
+		}
+		pkg.putAll(xadded);
+		return pkg;
 	}
 }

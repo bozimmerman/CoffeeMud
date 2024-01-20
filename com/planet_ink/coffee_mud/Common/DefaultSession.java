@@ -372,6 +372,9 @@ public class DefaultSession implements Session
 			if(mightSupportTelnetMode(TELNET_GA))
 				rawBytesOut(rawout,TELNETGABYTES);
 			//rawout.flush(); rawBytesOut already flushes
+			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP))
+			&&(mightSupportTelnetMode(TELNET_MSSP)))
+				changeTelnetMode(rawout,TELNET_MSSP,true);
 
 			final Charset charSet=Charset.forName(CMProps.getVar(CMProps.Str.CHARSETINPUT));
 			inMaxBytesPerChar=(int)Math.round(Math.ceil(charSet.newEncoder().maxBytesPerChar()));
@@ -587,6 +590,7 @@ public class DefaultSession implements Session
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_MXP));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_MSP));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_MSDP));
+			telnetSupportSet.add(Integer.valueOf(Session.TELNET_MSSP));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_GMCP));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_TERMTYPE));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_BINARY));
@@ -2047,8 +2051,44 @@ public class DefaultSession implements Session
 			if(!mightSupportTelnetMode(last))
 				changeTelnetMode(last,false);
 			else
-			if(!getServerTelnetMode(last))
-				changeTelnetMode(last,true);
+			{
+				if(!getServerTelnetMode(last))
+					changeTelnetMode(last,true);
+				if(last == TELNET_MSSP)
+				{
+					final ByteArrayOutputStream buf=new ByteArrayOutputStream();
+					buf.write(Session.TELNET_IAC);buf.write(Session.TELNET_SB);buf.write(Session.TELNET_MSSP);
+					final Map<String,Object> pkg = CMLib.protocol().getMSSPPackage();
+					for(final String key : pkg.keySet())
+					{
+						final Object o = pkg.get(key);
+						buf.write(1);
+						buf.write(key.getBytes("UTF-8"));
+						if(o instanceof String[])
+						{
+							final String[] os = (String[])o;
+							for(final String s : os)
+							{
+								buf.write(2);
+								buf.write(s.getBytes("UTF-8"));
+							}
+						}
+						else
+						{
+							buf.write(2);
+							buf.write(o.toString().getBytes("UTF-8"));
+						}
+					}
+					buf.write((char)Session.TELNET_IAC);buf.write((char)Session.TELNET_SE);
+					try
+					{
+						rawBytesOut(rawout, buf.toByteArray());
+					}
+					catch (final IOException e)
+					{
+					}
+				}
+			}
 			if(serverTelnetCodes[TELNET_LOGOUT])
 				setKillFlag(true);
 			break;

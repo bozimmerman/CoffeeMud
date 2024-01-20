@@ -314,7 +314,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	@Override
 	public List<CharClass> classQualifies(final MOB mob, final int theme)
 	{
-		mob.recoverCharStats();
+		if(mob != null)
+			mob.recoverCharStats();
 		final Vector<CharClass> them=new Vector<CharClass>(); // return value
 		final HashSet<String> doneClasses=new HashSet<String>();
 		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
@@ -956,97 +957,19 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	private String getMSSPPacket()
 	{
 		final StringBuffer rpt = new StringBuffer("\r\nMSSP-REPLY-START");
-		rpt.append("\r\n").append("PLAYERS");
-		rpt.append("\t").append(Integer.toString(CMLib.sessions().numLocalOnline()));
-		rpt.append("\r\n").append("STATUS");
-		rpt.append("\t");
-		switch(CMProps.getIntVar(CMProps.Int.MUDSTATE))
+		final Map<String,Object> pkg = CMLib.protocol().getMSSPPackage();
+		for(final String key : pkg.keySet())
 		{
-		case 0:
-			rpt.append("Alpha");
-			break;
-		case 1:
-			rpt.append("Closed Beta");
-			break;
-		case 2:
-			rpt.append("Open Beta");
-			break;
-		case 3:
-			rpt.append("Live");
-			break;
-		default:
-			rpt.append("Live");
-			break;
-		}
-
-		MudHost host = null;
-		if(CMLib.hosts().size()>0)
-			host = CMLib.hosts().get(0);
-		if(host != null)
-		{
-			rpt.append("\r\n").append("UPTIME");
-			rpt.append("\t").append(Long.toString(host.getUptimeSecs()));
-			rpt.append("\r\n").append("HOSTNAME");
-			rpt.append("\t").append(host.getHost());
-			rpt.append("\r\n").append("PORT");
-			rpt.append("\t").append(Integer.toString(host.getPort()));
-			if(Thread.currentThread() instanceof CWThread)
+			final Object o = pkg.get(key);
+			if(o instanceof String[])
 			{
-				final String webServerPort=Integer.toString(((CWThread)Thread.currentThread()).getConfig().getHttpListenPorts()[0]);
-				rpt.append("\r\n").append("WEBSITE");
-				rpt.append("\t").append(("http://"+host.getHost()+":"+webServerPort));
+				final String[] os = (String[])o;
+				for(int i=0;i<os.length;i++)
+					rpt.append("\r\n").append(key.toUpperCase().trim()).append("\t").append(os[i]);
 			}
-			rpt.append("\r\n").append("LANGUAGE");
-			rpt.append("\t").append(host.getLanguage());
+			else
+				rpt.append("\r\n").append(key.toUpperCase().trim()).append("\t").append(o.toString());
 		}
-		if(CMLib.intermud().i3online())
-		{
-			rpt.append("\r\n").append("INTERMUD");
-			rpt.append("\t").append("I3");
-		}
-		if(CMLib.intermud().imc2online())
-		{
-			rpt.append("\r\n").append("INTERMUD");
-			rpt.append("\t").append("IMC2");
-		}
-		rpt.append("\r\n").append("INTERMUD");
-		rpt.append("\t").append("ARACHNOS");
-		rpt.append("\r\n").append("FAMILY");
-		rpt.append("\t").append("CoffeeMUD");
-		rpt.append("\r\n").append("EMAIL");
-		rpt.append("\t").append(CMProps.getVar(CMProps.Str.ADMINEMAIL));
-		rpt.append("\r\n").append("CODEBASE");
-		rpt.append("\t").append(("CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER)));
-		rpt.append("\r\n").append("AREAS");
-		rpt.append("\t").append(Integer.toString(CMLib.map().numAreas()));
-		rpt.append("\r\n").append("HELPFILES");
-		rpt.append("\t").append(Integer.toString(CMLib.help().getHelpFile().size()));
-		rpt.append("\r\n").append("MOBILES");
-		rpt.append("\t").append(Long.toString(CMClass.numPrototypes(CMClass.CMObjectType.MOB)));
-		rpt.append("\r\n").append("OBJECTS");
-		rpt.append("\t").append(Long.toString(CMClass.numPrototypes(CMClass.OBJECTS_ITEMTYPES)));
-		rpt.append("\r\n").append("ROOMS");
-		rpt.append("\t").append(Long.toString(CMLib.map().numRooms()));
-		rpt.append("\r\n").append("CLASSES");
-		int numClasses = 0;
-		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
-			numClasses=classQualifies(null, CMProps.getIntVar(CMProps.Int.MUDTHEME)&0x07).size();
-		rpt.append("\t").append(Long.toString(numClasses));
-		rpt.append("\r\n").append("RACES");
-		int numRaces = 0;
-		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
-			numRaces=raceQualifies(null, CMProps.getIntVar(CMProps.Int.MUDTHEME)&0x07).size();
-		rpt.append("\t").append(Long.toString(numRaces));
-		rpt.append("\r\n").append("SKILLS");
-		rpt.append("\t").append(Long.toString(CMLib.ableMapper().numMappedAbilities()));
-		rpt.append("\r\n").append("ANSI");
-		rpt.append("\t").append("1");
-		rpt.append("\r\n").append("MCCP");
-		rpt.append("\t").append((!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP)?"1":"0"));
-		rpt.append("\r\n").append("MSP");
-		rpt.append("\t").append((!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)?"1":"0"));
-		rpt.append("\r\n").append("MXP");
-		rpt.append("\t").append((!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)?"1":"0"));
 		rpt.append("\r\nMSSP-REPLY-END\r\n");
 		return rpt.toString();
 	}
@@ -1225,6 +1148,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult loginName(final LoginSessionImpl loginObj, final Session session)
 	{
 		loginObj.login=loginObj.lastInput;
+		final String ogLogin = loginObj.login;
 		if(loginObj.login==null)
 		{
 			loginObj.state=LoginState.LOGIN_START;
@@ -1252,7 +1176,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.attempt--;
 			return null;
 		}
-		if(loginObj.login.equalsIgnoreCase("MSSP-REQUEST")&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP)))
+		if(ogLogin.equalsIgnoreCase("MSSP-REQUEST")&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP)))
 		{
 			session.rawOut(getMSSPPacket());
 			session.stopSession(false,false,false);

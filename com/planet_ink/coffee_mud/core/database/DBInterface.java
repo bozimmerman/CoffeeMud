@@ -1291,6 +1291,13 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public long DBReadOldestStatMs()
+	{
+		return StatLoader.DBReadOldestStatMs();
+	}
+
+
+	@Override
 	public String errorStatus()
 	{
 		return DB.errorStatus().toString();

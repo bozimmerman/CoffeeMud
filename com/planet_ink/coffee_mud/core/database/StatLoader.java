@@ -71,6 +71,35 @@ public class StatLoader
 		return T;
 	}
 
+	public long DBReadOldestStatMs()
+	{
+		DBConnection D=null;
+		long startTime = System.currentTimeMillis();
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT CMSTRT FROM CMSTAT ORDER BY CMSTRT");
+			try
+			{
+				if(R.next())
+					startTime=DBConnections.getLongRes(R,"CMSTRT");
+			}
+			finally
+			{
+				R.close();
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return startTime;
+	}
+
 	public List<CoffeeTableRow> DBReadAfter(final long startTime, final long endTime)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))
