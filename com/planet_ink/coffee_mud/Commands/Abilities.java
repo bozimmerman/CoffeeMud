@@ -68,7 +68,7 @@ public class Abilities extends Skills
 		if(typeName[0].length()>0)
 		{
 			final StringBuilder msg=new StringBuilder("");
-			msg.append(L("\n\r^HYour @x1@x2:^? ",domainName[0].replace('_',' '),CMLib.english().makePlural(Ability.ACODE_DESCS[type[0]].toLowerCase())));
+			msg.append(L("\n\r^HYour @x1@x2:^? ",domainName[0].replace('_',' '),CMLib.english().makePlural(Ability.ACODE.DESCS.get(type[0]).toLowerCase())));
 			StringBuilder ableListStr = getAbilities(mob,mob,type[0],domain[0],true,level[0]);
 			if(!mob.isMonster())
 				mob.session().wraplessPrintln(msg.toString()+ableListStr.toString()+"\n\r");
@@ -79,7 +79,7 @@ public class Abilities extends Skills
 			for(final int acode : playerAcodes)
 			{
 				final StringBuilder msg=new StringBuilder("");
-				msg.append(L("\n\r^HYour @x1@x2:^? ",domainName[0].replace('_',' '),CMLib.english().makePlural(Ability.ACODE_DESCS[acode].toLowerCase())));
+				msg.append(L("\n\r^HYour @x1@x2:^? ",domainName[0].replace('_',' '),CMLib.english().makePlural(Ability.ACODE.DESCS.get(acode).toLowerCase())));
 				StringBuilder ableListStr = getAbilities(mob,mob,acode,domain[0],acode==playerAcodes[playerAcodes.length-1],level[0]);
 				if(ableListStr.length()<10)
 					continue;

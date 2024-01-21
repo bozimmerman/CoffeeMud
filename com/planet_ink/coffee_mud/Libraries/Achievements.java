@@ -2329,8 +2329,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								if((A!=null)
 								&&(abilityIDs.contains("*")
 									||abilityIDs.contains(A.ID())
-									||(abilityIDs.contains(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]))
-									||(abilityIDs.contains(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5]))))
+									||(abilityIDs.contains(Ability.ACODE.DESCS.get(A.classificationCode()&Ability.ALL_ACODES)))
+									||(abilityIDs.contains(Ability.DOMAIN.DESCS.get((A.classificationCode()&Ability.ALL_DOMAINS)>>5)))))
 								{
 									if((itemMask != null)
 									&&(parms.length>1)
@@ -2402,16 +2402,16 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								&&((A.classificationCode() & Ability.ALL_DOMAINS)!=Ability.DOMAIN_EPICUREAN)
 								&&((A.classificationCode() & Ability.ALL_DOMAINS)!=Ability.DOMAIN_CRAFTINGSKILL)))
 							{
-								if(CMParms.contains(Ability.ACODE_DESCS,abilityID)
-								&&(CMParms.indexOfIgnoreCase(Ability.ACODE_DESCS, abilityID)==Ability.ACODE_COMMON_SKILL))
+								if(CMParms.contains(Ability.ACODE.DESCS,abilityID)
+								&&(CMParms.indexOfIgnoreCase(Ability.ACODE.DESCS, abilityID)==Ability.ACODE_COMMON_SKILL))
 								{
 									this.abilityIDs.add(abilityID);
 								}
 								else
-								if(CMParms.contains(Ability.DOMAIN_DESCS,abilityID)
-								&&((CMParms.indexOfIgnoreCase(Ability.DOMAIN_DESCS, abilityID)==(Ability.DOMAIN_BUILDINGSKILL>>5))
-									||(CMParms.indexOfIgnoreCase(Ability.DOMAIN_DESCS, abilityID)==(Ability.DOMAIN_EPICUREAN>>5))
-									||(CMParms.indexOfIgnoreCase(Ability.DOMAIN_DESCS, abilityID)==(Ability.DOMAIN_CRAFTINGSKILL>>5))))
+								if(CMParms.contains(Ability.DOMAIN.DESCS,abilityID)
+								&&((CMParms.indexOfIgnoreCase(Ability.DOMAIN.DESCS, abilityID)==(Ability.DOMAIN_BUILDINGSKILL>>5))
+									||(CMParms.indexOfIgnoreCase(Ability.DOMAIN.DESCS, abilityID)==(Ability.DOMAIN_EPICUREAN>>5))
+									||(CMParms.indexOfIgnoreCase(Ability.DOMAIN.DESCS, abilityID)==(Ability.DOMAIN_CRAFTINGSKILL>>5))))
 								{
 									this.abilityIDs.add(abilityID);
 								}
@@ -2550,8 +2550,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								if((A!=null)
 								&&(abilityIDs.contains("*")
 									||abilityIDs.contains(A.ID())
-									||(abilityIDs.contains(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]))
-									||(abilityIDs.contains(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5]))))
+									||(abilityIDs.contains(Ability.ACODE.DESCS.get(A.classificationCode()&Ability.ALL_ACODES)))
+									||(abilityIDs.contains(Ability.DOMAIN.DESCS.get((A.classificationCode()&Ability.ALL_DOMAINS)>>5)))))
 								{
 									count+=bumpNum;
 									return true;
@@ -2604,8 +2604,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						else
 						{
 							final Ability A;
-							if(CMParms.contains(Ability.ACODE_DESCS,abilityID)
-							||CMParms.contains(Ability.DOMAIN_DESCS,abilityID))
+							if(CMParms.contains(Ability.ACODE.DESCS,abilityID)
+							||CMParms.contains(Ability.DOMAIN.DESCS,abilityID))
 								A=null;
 							else
 							{
@@ -2754,8 +2754,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								if((A!=null)
 								&&(abilityIDs.contains("*")
 									||abilityIDs.contains(A.ID())
-									||(abilityIDs.contains(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]))
-									||(abilityIDs.contains(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5]))))
+									||(abilityIDs.contains(Ability.ACODE.DESCS.get(A.classificationCode()&Ability.ALL_ACODES)))
+									||(abilityIDs.contains(Ability.DOMAIN.DESCS.get((A.classificationCode()&Ability.ALL_DOMAINS)>>5)))))
 								{
 									final Ability A1=mob.fetchAbility(A.ID());
 									if((A1!=null)&&(A1.proficiency() >= prof))
@@ -2814,8 +2814,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						else
 						{
 							final Ability A;
-							if(CMParms.contains(Ability.ACODE_DESCS,abilityID)
-							||CMParms.contains(Ability.DOMAIN_DESCS,abilityID))
+							if(CMParms.contains(Ability.ACODE.DESCS,abilityID)
+							||CMParms.contains(Ability.DOMAIN.DESCS,abilityID))
 								A=null;
 							else
 							{

@@ -71,13 +71,13 @@ public class Skills extends StdCommand
 			return false;
 		if(qual.length()>0)
 		{
-			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
+			for(int i=1;i<Ability.DOMAIN.DESCS.size();i++)
 			{
-				if(Ability.DOMAIN_DESCS[i].replace('_',' ').equalsIgnoreCase(qual))
+				if(Ability.DOMAIN.DESCS.get(i).replace('_',' ').equalsIgnoreCase(qual))
 					return false;
 				else
-				if((Ability.DOMAIN_DESCS[i].replace('_',' ').indexOf('/')>=0)
-				&&(Ability.DOMAIN_DESCS[i].replace('_',' ').substring(Ability.DOMAIN_DESCS[i].indexOf('/')+1).equalsIgnoreCase(qual)))
+				if((Ability.DOMAIN.DESCS.get(i).replace('_',' ').indexOf('/')>=0)
+				&&(Ability.DOMAIN.DESCS.get(i).replace('_',' ').substring(Ability.DOMAIN.DESCS.get(i).indexOf('/')+1).equalsIgnoreCase(qual)))
 					return false;
 			}
 		}
@@ -85,13 +85,13 @@ public class Skills extends StdCommand
 		{
 			if(qual.length()>0)
 			{
-				for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+				for(int i=0;i<Ability.ACODE.DESCS.size();i++)
 				{
-					if(Ability.ACODE_DESCS[i].replace('_',' ').equalsIgnoreCase(qual))
+					if(Ability.ACODE.DESCS.get(i).replace('_',' ').equalsIgnoreCase(qual))
 						return false;
 					else
-					if((Ability.ACODE_DESCS[i].replace('_',' ').indexOf('/')>=0)
-					&&(Ability.ACODE_DESCS[i].replace('_',' ').substring(Ability.ACODE_DESCS[i].indexOf('/')+1).equalsIgnoreCase(qual)))
+					if((Ability.ACODE.DESCS.get(i).replace('_',' ').indexOf('/')>=0)
+					&&(Ability.ACODE.DESCS.get(i).replace('_',' ').substring(Ability.ACODE.DESCS.get(i).indexOf('/')+1).equalsIgnoreCase(qual)))
 						return false;
 				}
 			}
@@ -123,8 +123,8 @@ public class Skills extends StdCommand
 				line.append("\n\rLevel ^!"+level+"^?:\n\r");
 				int proficiency = A2.proficiency();
 				proficiency += mob.charStats().getAbilityAdjustment("PROF+"+A2.ID().toUpperCase());
-				proficiency += mob.charStats().getAbilityAdjustment("PROF+"+Ability.ACODE_DESCS[A2.classificationCode()&Ability.ALL_ACODES]);
-				proficiency += mob.charStats().getAbilityAdjustment("PROF+"+Ability.DOMAIN_DESCS[(A2.classificationCode()&Ability.ALL_DOMAINS)>> 5]);
+				proficiency += mob.charStats().getAbilityAdjustment("PROF+"+Ability.ACODE.DESCS.get(A2.classificationCode()&Ability.ALL_ACODES));
+				proficiency += mob.charStats().getAbilityAdjustment("PROF+"+Ability.DOMAIN.DESCS.get((A2.classificationCode()&Ability.ALL_DOMAINS)>> 5));
 				proficiency += mob.charStats().getAbilityAdjustment("PROF+*");
 				if(proficiency>100)
 					proficiency=100;
@@ -170,7 +170,7 @@ public class Skills extends StdCommand
 	 * Returns whether there are any crossings between a particular Ability type
 	 * and a particular Ability domain.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abilityCode()
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN_DESCS
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN.DESCS
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#ACODE_DESCS
 	 *
 	 * @param domain the domain mask
@@ -210,16 +210,16 @@ public class Skills extends StdCommand
 		domain[0]=-1;
 		if(qual.length()>0)
 		{
-			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
+			for(int i=1;i<Ability.DOMAIN.DESCS.size();i++)
 			{
-				if(Ability.DOMAIN_DESCS[i].replace('_',' ').startsWith(qual))
+				if(Ability.DOMAIN.DESCS.get(i).replace('_',' ').startsWith(qual))
 				{
 					domain[0] = i << 5;
 					break;
 				}
 				else
-				if((Ability.DOMAIN_DESCS[i].replace('_',' ').indexOf('/')>=0)
-				&&(Ability.DOMAIN_DESCS[i].replace('_',' ').substring(Ability.DOMAIN_DESCS[i].indexOf('/')+1).startsWith(qual)))
+				if((Ability.DOMAIN.DESCS.get(i).replace('_',' ').indexOf('/')>=0)
+				&&(Ability.DOMAIN.DESCS.get(i).replace('_',' ').substring(Ability.DOMAIN.DESCS.get(i).indexOf('/')+1).startsWith(qual)))
 				{
 					domain[0] = i << 5;
 					break;
@@ -227,12 +227,12 @@ public class Skills extends StdCommand
 			}
 		}
 		if(domain[0]>0)
-			domainName[0]=Ability.DOMAIN_DESCS[domain[0]>>5].toLowerCase();
+			domainName[0]=Ability.DOMAIN.DESCS.get(domain[0]>>5).toLowerCase();
 		if((domain[0]<0)&&(qual.length()>0))
 		{
 			StringBuffer domains=new StringBuffer("");
 			domains.append("\n\rValid schools/domains are: ");
-			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
+			for(int i=1;i<Ability.DOMAIN.DESCS.size();i++)
 			{
 				boolean found=acodes==null?true:false;
 				if(acodes!=null)
@@ -241,7 +241,7 @@ public class Skills extends StdCommand
 						found=found||isDomainIncludedInAnyAbility(i<<5,acodes.get(a).intValue());
 				}
 				if(found)
-					domains.append(Ability.DOMAIN_DESCS[i].toLowerCase().replace('_',' ')+", ");
+					domains.append(Ability.DOMAIN.DESCS.get(i).toLowerCase().replace('_',' ')+", ");
 			}
 			if(domains.toString().endsWith(", "))
 				domains=new StringBuffer(domains.substring(0,domains.length()-2));
@@ -303,39 +303,39 @@ public class Skills extends StdCommand
 		final String qual=CMParms.combine(commands,1).toUpperCase();
 		type[0]=-1;
 		if(qual.length()>0)
-		for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+		for(int i=0;i<Ability.ACODE.DESCS.size();i++)
 		{
-			if(Ability.ACODE_DESCS[i].replace('_',' ').startsWith(qual))
+			if(Ability.ACODE.DESCS.get(i).replace('_',' ').startsWith(qual))
 			{
 				type[0] = i;
 				break;
 			}
 			else
-			if((Ability.ACODE_DESCS[i].replace('_',' ').indexOf('/')>=0)
-			&&(Ability.ACODE_DESCS[i].replace('_',' ').substring(Ability.ACODE_DESCS[i].indexOf('/')+1).startsWith(qual)))
+			if((Ability.ACODE.DESCS.get(i).replace('_',' ').indexOf('/')>=0)
+			&&(Ability.ACODE.DESCS.get(i).replace('_',' ').substring(Ability.ACODE.DESCS.get(i).indexOf('/')+1).startsWith(qual)))
 			{
 				type[0] = i;
 				break;
 			}
 		}
 		if(type[0]>0)
-			typeName[0]=Ability.ACODE_DESCS[type[0]>>5].toLowerCase();
+			typeName[0]=Ability.ACODE.DESCS.get(type[0]>>5).toLowerCase();
 		if((type[0]<0)&&(qual.length()>0))
 		{
-			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
+			for(int i=1;i<Ability.DOMAIN.DESCS.size();i++)
 			{
-				if(Ability.DOMAIN_DESCS[i].replace('_',' ').equalsIgnoreCase(qual))
+				if(Ability.DOMAIN.DESCS.get(i).replace('_',' ').equalsIgnoreCase(qual))
 					return;
 				else
-				if((Ability.DOMAIN_DESCS[i].replace('_',' ').indexOf('/')>=0)
-				&&(Ability.DOMAIN_DESCS[i].replace('_',' ').substring(Ability.DOMAIN_DESCS[i].indexOf('/')+1).equalsIgnoreCase(qual)))
+				if((Ability.DOMAIN.DESCS.get(i).replace('_',' ').indexOf('/')>=0)
+				&&(Ability.DOMAIN.DESCS.get(i).replace('_',' ').substring(Ability.DOMAIN.DESCS.get(i).indexOf('/')+1).equalsIgnoreCase(qual)))
 					return;
 			}
 			StringBuffer types=new StringBuffer("");
 			types.append("\n\rValid ability types are: ");
 			for(int i=0;i<playerAcodes.length;i++)
 			{
-				types.append(Ability.ACODE_DESCS[playerAcodes[i]].toLowerCase().replace('_',' ')+", ");
+				types.append(Ability.ACODE.DESCS.get(playerAcodes[i]).toLowerCase().replace('_',' ')+", ");
 			}
 			if(types.toString().endsWith(", "))
 				types=new StringBuffer(types.substring(0,types.length()-2));
@@ -430,8 +430,8 @@ public class Skills extends StdCommand
 					col++;
 					int proficiency = A.proficiency();
 					proficiency += ableM.charStats().getAbilityAdjustment("PROF+"+A.ID().toUpperCase());
-					proficiency += ableM.charStats().getAbilityAdjustment("PROF+"+Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]);
-					proficiency += ableM.charStats().getAbilityAdjustment("PROF+"+Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>> 5]);
+					proficiency += ableM.charStats().getAbilityAdjustment("PROF+"+Ability.ACODE.DESCS.get(A.classificationCode()&Ability.ALL_ACODES));
+					proficiency += ableM.charStats().getAbilityAdjustment("PROF+"+Ability.DOMAIN.DESCS.get((A.classificationCode()&Ability.ALL_DOMAINS)>> 5));
 					proficiency += ableM.charStats().getAbilityAdjustment("PROF+*");
 					if(proficiency>100)
 						proficiency=100;

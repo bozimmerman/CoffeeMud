@@ -668,10 +668,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof Wand)
 		{
 			text.append(xmlLib.convertXMLtoTag("MAXUSE",((Wand)E).getMaxCharges()));
-			if((((Wand)E).getEnchantType()<0)||(((Wand)E).getEnchantType()>=Ability.ACODE_DESCS_.length))
+			if((((Wand)E).getEnchantType()<0)||(((Wand)E).getEnchantType()>=Ability.ACODE.DESCS_.size()))
 				text.append(xmlLib.convertXMLtoTag("ENCHTYPE", "ANY"));
 			else
-				text.append(xmlLib.convertXMLtoTag("ENCHTYPE", Ability.ACODE_DESCS_[((Wand)E).getEnchantType()]));
+				text.append(xmlLib.convertXMLtoTag("ENCHTYPE", Ability.ACODE.DESCS_.get(((Wand)E).getEnchantType())));
 			final Ability spellA = ((Wand)E).getSpell();
 			text.append(xmlLib.convertXMLtoTag("SPELL", (spellA==null)?"":spellA.ID()));
 		}
@@ -4107,7 +4107,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((Wand)E).setMaxCharges(CMath.s_int(bo));
 			final String tim=xml.getValFromPieces(buf, "ENCHTYPE");
 			if((tim!=null)&&(tim.length()>0))
-				((Wand)E).setEnchantType(CMParms.indexOf(Ability.ACODE_DESCS_, tim.toUpperCase().trim()));
+				((Wand)E).setEnchantType(CMParms.indexOf(Ability.ACODE.DESCS_, tim.toUpperCase().trim()));
 			final String lee=xml.getValFromPieces(buf, "SPELL");
 			if((lee!=null)&&(lee.length()>0))
 			{

@@ -4409,9 +4409,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if(I instanceof Wand)
 					{
 						final int ofType=((Wand)I).getEnchantType();
-						if((ofType<0)||(ofType>Ability.ACODE_DESCS_.length))
+						if((ofType<0)||(ofType>Ability.ACODE.DESCS_.size()))
 							return "ANY";
-						return Ability.ACODE_DESCS_[ofType];
+						return Ability.ACODE.DESCS_.get(ofType);
 					}
 					return "ANY";
 				}

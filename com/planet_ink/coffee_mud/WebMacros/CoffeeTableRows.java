@@ -279,14 +279,14 @@ public class CoffeeTableRows extends StdWebMacro
 			final String typeName=parms.get("ABLETYPE");
 			if(typeName!=null)
 			{
-				onlyAbilityTypes=CMParms.indexOf(Ability.ACODE_DESCS, typeName.toUpperCase().trim());
+				onlyAbilityTypes=CMParms.indexOf(Ability.ACODE.DESCS, typeName.toUpperCase().trim());
 				if(onlyAbilityTypes<0)
-					onlyAbilityTypes=CMParms.indexOf(Ability.ACODE_DESCS_, typeName.toUpperCase().trim());
+					onlyAbilityTypes=CMParms.indexOf(Ability.ACODE.DESCS_, typeName.toUpperCase().trim());
 			}
 			final String domainName=parms.get("ABLEDOMAIN");
 			if(domainName!=null)
 			{
-				final int domainIndex=CMParms.indexOf(Ability.DOMAIN_DESCS, domainName.toUpperCase().trim());
+				final int domainIndex=CMParms.indexOf(Ability.DOMAIN.DESCS, domainName.toUpperCase().trim());
 				if(domainIndex>=0)
 					onlyAbilityDomains=domainIndex<<5;
 			}

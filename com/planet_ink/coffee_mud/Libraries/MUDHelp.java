@@ -704,7 +704,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				{
 					prepend.append(L("\n\rDomain   : "));
 					final int school=(A.classificationCode()&Ability.ALL_DOMAINS)>>5;
-					prepend.append(CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[school].replace('_',' ')));
+					prepend.append(CMStrings.capitalizeAndLower(Ability.DOMAIN.DESCS.get(school).replace('_',' ')));
 				}
 				final PairList<String,Integer> avail=CMLib.ableMapper().getAvailabilityList(A, 2);
 				for(int c=0;c<avail.size();c++)

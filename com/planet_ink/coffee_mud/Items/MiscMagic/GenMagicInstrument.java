@@ -314,9 +314,9 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 		switch(getInternalCodeNum(code))
 		{
 		case 0:
-			if((getEnchantType()<0)||(getEnchantType()>=Ability.ACODE_DESCS_.length))
+			if((getEnchantType()<0)||(getEnchantType()>=Ability.ACODE.DESCS_.size()))
 				return "ANY";
-			return Ability.ACODE_DESCS_[getEnchantType()];
+			return Ability.ACODE.DESCS_.get(getEnchantType());
 		case 1:
 		{
 			final Ability A = getSpell();
@@ -340,7 +340,7 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 		switch(getInternalCodeNum(code))
 		{
 		case 0:
-			setEnchantType(CMParms.indexOf(Ability.ACODE_DESCS_, val.toUpperCase().trim()));
+			setEnchantType(CMParms.indexOf(Ability.ACODE.DESCS_, val.toUpperCase().trim()));
 			break;
 		case 1:
 		{

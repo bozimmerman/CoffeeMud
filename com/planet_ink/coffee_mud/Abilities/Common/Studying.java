@@ -526,12 +526,12 @@ public class Studying extends CommonSkill implements AbilityContainer
 								eA.unInvoke();
 								mob.delEffect(eA);
 							}
-							str.append(CMStrings.padRight(L(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]), 12)+": "+A.Name()+"\n\r");
+							str.append(CMStrings.padRight(L(Ability.ACODE.DESCS.get(A.classificationCode()&Ability.ALL_ACODES)), 12)+": "+A.Name()+"\n\r");
 						}
 					}
 				}
 				str.append("\n\rYou may learn ");
-				for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+				for(int i=0;i<Ability.ACODE.DESCS.size();i++)
 				{
 					perLevelLimits limitObj = null;
 					for(final perLevelLimits l : perLevelLimits.values())
@@ -555,7 +555,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 								numHas++;
 						}
 					}
-					str.append(numAllowed-numHas).append(" more ").append(CMLib.english().makePlural(Ability.ACODE_DESCS[i].toLowerCase())).append(", ");
+					str.append(numAllowed-numHas).append(" more ").append(CMLib.english().makePlural(Ability.ACODE.DESCS.get(i).toLowerCase())).append(", ");
 				}
 				final String fstr=str.toString();
 				if(fstr.endsWith(", "))
@@ -569,7 +569,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 		{
 			final String combStr=CMParms.combine(commands);
 			final List<List<String>> taughts = CMParms.parseDoubleDelimited(text(), ';', ',');
-			for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+			for(int i=0;i<Ability.ACODE.DESCS.size();i++)
 			{
 				perLevelLimits limitObj = null;
 				for(final perLevelLimits l : perLevelLimits.values())
@@ -581,8 +581,8 @@ public class Studying extends CommonSkill implements AbilityContainer
 					continue;
 				if((getSupportedSkillType()!=null) && (getSupportedSkillType()!=limitObj))
 					continue;
-				if(Ability.ACODE_DESCS[i].equalsIgnoreCase(combStr)
-				||CMLib.english().makePlural(Ability.ACODE_DESCS[i].toLowerCase()).equalsIgnoreCase(combStr))
+				if(Ability.ACODE.DESCS.get(i).equalsIgnoreCase(combStr)
+				||CMLib.english().makePlural(Ability.ACODE.DESCS.get(i).toLowerCase()).equalsIgnoreCase(combStr))
 				{
 					final int classLevel = CMLib.ableMapper().qualifyingClassLevel(mob, this);
 					final int numAllowed = limitObj.numAllowed(classLevel);
@@ -597,8 +597,8 @@ public class Studying extends CommonSkill implements AbilityContainer
 						}
 					}
 					final StringBuilder str=new StringBuilder("You may learn ");
-					str.append(numAllowed-numHas).append(" more ").append(CMLib.english().makePlural(Ability.ACODE_DESCS[i].toLowerCase())).append(". ");
-					str.append("\n\rAvailable ").append(CMLib.english().makePlural(Ability.ACODE_DESCS[i].toLowerCase())).append(" include: ");
+					str.append(numAllowed-numHas).append(" more ").append(CMLib.english().makePlural(Ability.ACODE.DESCS.get(i).toLowerCase())).append(". ");
+					str.append("\n\rAvailable ").append(CMLib.english().makePlural(Ability.ACODE.DESCS.get(i).toLowerCase())).append(" include: ");
 					final List<String> all=new ArrayList<String>(100);
 					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
@@ -763,7 +763,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 		}
 		if(numHas >= numAllowed)
 		{
-			mob.tell(L("You may not study any more @x1 at this time.",CMLib.english().makePlural(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES])));
+			mob.tell(L("You may not study any more @x1 at this time.",CMLib.english().makePlural(Ability.ACODE.DESCS.get(A.classificationCode()&Ability.ALL_ACODES))));
 			return false;
 		}
 

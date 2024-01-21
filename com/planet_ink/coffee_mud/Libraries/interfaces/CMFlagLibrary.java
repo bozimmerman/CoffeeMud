@@ -1364,7 +1364,7 @@ public interface CMFlagLibrary extends CMLibrary
 
 	/**
 	 * Returns the ability domain name for the given Ability.
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN_DESCS
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN.DESCS
 	 * @param A the Ability
 	 * @return "" or the Ability domain name of the given Ability
 	 */
@@ -1389,7 +1389,7 @@ public interface CMFlagLibrary extends CMLibrary
 
 	/**
 	 * Returns the ability domain bitmask for the given ability domain name.
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN_DESCS
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN.DESCS
 	 * @param name the name of the given ability domain
 	 * @return "" or the Ability code of the given name
 	 */

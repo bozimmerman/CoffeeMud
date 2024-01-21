@@ -238,7 +238,7 @@ public class StdWand extends StdItem implements Wand
 						&&(((WandUsage)A).getEnchantType()>0)
 						&&(((WandUsage)A).getEnchantType()<WandUsage.WAND_OPTIONS.length))
 						{
-							if(WandUsage.WAND_OPTIONS[((WandUsage)A).getEnchantType()][0].equals(Ability.ACODE_DESCS_[spellA.classificationCode()&Ability.ALL_ACODES]))
+							if(WandUsage.WAND_OPTIONS[((WandUsage)A).getEnchantType()][0].equals(Ability.ACODE.DESCS_.get(spellA.classificationCode()&Ability.ALL_ACODES)))
 								break;
 						}
 					}

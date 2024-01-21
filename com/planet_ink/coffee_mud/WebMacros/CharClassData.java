@@ -1006,9 +1006,9 @@ public class CharClassData extends StdWebMacro
 						if(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>0)
 						{
 							if((A.classificationCode()&Ability.ALL_DOMAINS)==0)
-								domain=Ability.ACODE_DESCS[A.classificationCode()];
+								domain=Ability.ACODE.DESCS.get(A.classificationCode());
 							else
-								domain=Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5];
+								domain=Ability.DOMAIN.DESCS.get((A.classificationCode()&Ability.ALL_DOMAINS)>>5);
 							Integer I=domains.get(domain);
 							if(I==null)
 								I=Integer.valueOf(0);

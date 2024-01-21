@@ -5239,30 +5239,30 @@ public class ListCmd extends StdCommand
 			if(domain<=0)
 			{
 				if((ofType == Ability.ALL_ACODES)
-				&&((CMParms.indexOfStartsWith(Ability.ACODE_DESCS,str.toUpperCase().trim())>=0)
-					||(CMParms.indexOfStartsWith2(Ability.ACODE_DESCS,str.toUpperCase().trim())>=0)))
+				&&((CMParms.indexOfStartsWith(Ability.ACODE.DESCS,str.toUpperCase().trim())>=0)
+					||(CMParms.indexOfStartsWith2(Ability.ACODE.DESCS,str.toUpperCase().trim())>=0)))
 				{
-					ofType=CMParms.indexOf(Ability.ACODE_DESCS,str.toUpperCase().trim());
+					ofType=CMParms.indexOf(Ability.ACODE.DESCS,str.toUpperCase().trim());
 					if(ofType < 0)
-						ofType=CMParms.indexOfStartsWith(Ability.ACODE_DESCS,str.toUpperCase().trim());
+						ofType=CMParms.indexOfStartsWith(Ability.ACODE.DESCS,str.toUpperCase().trim());
 					if(ofType < 0)
-						ofType=CMParms.indexOfStartsWith2(Ability.ACODE_DESCS,str.toUpperCase().trim());
-					final String domainName=CMStrings.capitalizeAllFirstLettersAndLower(Ability.ACODE_DESCS[ofType].toLowerCase().replaceAll("_"," "));
+						ofType=CMParms.indexOfStartsWith2(Ability.ACODE.DESCS,str.toUpperCase().trim());
+					final String domainName=CMStrings.capitalizeAllFirstLettersAndLower(Ability.ACODE.DESCS.get(ofType).toLowerCase().replaceAll("_"," "));
 					title=(domainName+" "+title).trim();
 				}
 				else
 				{
-					int x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.toUpperCase().trim());
+					int x=CMParms.indexOf(Ability.DOMAIN.DESCS,str.toUpperCase().trim());
 					if((x<0)&&(str.toUpperCase().startsWith("DOMAIN_")))
-						x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.toUpperCase().substring(10).trim());
+						x=CMParms.indexOf(Ability.DOMAIN.DESCS,str.toUpperCase().substring(10).trim());
 					if(x < 0)
-						x=CMParms.indexOfStartsWith(Ability.DOMAIN_DESCS,str.toUpperCase().trim());
+						x=CMParms.indexOfStartsWith(Ability.DOMAIN.DESCS,str.toUpperCase().trim());
 					if(x < 0)
-						x=CMParms.indexOfStartsWith2(Ability.DOMAIN_DESCS,str.toUpperCase().trim());
+						x=CMParms.indexOfStartsWith2(Ability.DOMAIN.DESCS,str.toUpperCase().trim());
 					if(x>=0)
 					{
 						domain = x << 5;
-						final String domainName=CMStrings.capitalizeAllFirstLettersAndLower(Ability.DOMAIN_DESCS[x].toLowerCase().replaceAll("_"," "));
+						final String domainName=CMStrings.capitalizeAllFirstLettersAndLower(Ability.DOMAIN.DESCS.get(x).toLowerCase().replaceAll("_"," "));
 						title=(domainName+" "+title).trim();
 					}
 					else
@@ -5328,7 +5328,7 @@ public class ListCmd extends StdCommand
 					if((A.classificationCode()&Ability.ALL_DOMAINS)!=domain)
 						continue;
 				}
-				final String domainID = Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5].toLowerCase();
+				final String domainID = Ability.DOMAIN.DESCS.get((A.classificationCode()&Ability.ALL_DOMAINS)>>5).toLowerCase();
 				final String domainName = CMStrings.capitalizeAllFirstLettersAndLower(domainID.replaceAll("_"," "));
 				final StringBuilder availStr=new StringBuilder("");
 				final PairList<String,Integer> avail=CMLib.ableMapper().getAvailabilityList(A, Integer.MAX_VALUE);
@@ -6434,10 +6434,10 @@ public class ListCmd extends StdCommand
 		{
 			final WikiFlag wiki=getWikiFlagRemoved(commands);
 			if(wiki == WikiFlag.NO)
-				s.wraplessPrintln(CMParms.toListString(Ability.DOMAIN_DESCS));
+				s.wraplessPrintln(CMParms.toListString(Ability.DOMAIN.DESCS));
 			else
 			{
-				for(String domain : Ability.DOMAIN_DESCS)
+				for(String domain : Ability.DOMAIN.DESCS)
 				{
 					domain = domain.toLowerCase();
 					final String domainName = CMStrings.capitalizeAllFirstLettersAndLower(domain.replaceAll("_"," "));
@@ -6447,7 +6447,7 @@ public class ListCmd extends StdCommand
 			break;
 		}
 		case ABILITYCODES:
-			s.wraplessPrintln(CMParms.toListString(Ability.ACODE_DESCS_));
+			s.wraplessPrintln(CMParms.toListString(Ability.ACODE.DESCS_));
 			break;
 		case ABILITYFLAGS:
 			s.wraplessPrintln(CMParms.toListString(Ability.FLAG_DESCS));

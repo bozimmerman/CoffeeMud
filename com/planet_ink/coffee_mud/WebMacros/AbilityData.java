@@ -581,27 +581,27 @@ public class AbilityData extends StdWebMacro
 					String old=httpReq.getUrlParameter("CLASSIFICATION_ACODE");
 					if(old==null)
 						old=""+(A.classificationCode()&Ability.ALL_ACODES);
-					for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+					for(int i=0;i<Ability.ACODE.DESCS.size();i++)
 					{
 						if(A instanceof ItemCraftor)
 						{
 							if(i==Ability.ACODE_COMMON_SKILL)
-								str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
+								str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE.DESCS.get(i)));
 						}
 						else
 						if(A instanceof ItemCollection)
 						{
 							if(i==Ability.ACODE_COMMON_SKILL)
-								str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
+								str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE.DESCS.get(i)));
 						}
 						else
 						if(A instanceof Language)
 						{
 							if(i==Ability.ACODE_LANGUAGE)
-								str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
+								str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE.DESCS.get(i)));
 						}
 						else
-							str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
+							str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE.DESCS.get(i)));
 					}
 					str.append(", ");
 				}
@@ -610,8 +610,8 @@ public class AbilityData extends StdWebMacro
 					String old=httpReq.getUrlParameter("CLASSIFICATION_DOMAIN");
 					if(old==null)
 						old=""+((A.classificationCode()&Ability.ALL_DOMAINS)>>5);
-					for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
-						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[i]));
+					for(int i=0;i<Ability.DOMAIN.DESCS.size();i++)
+						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.DOMAIN.DESCS.get(i)));
 					str.append(", ");
 				}
 				// here ends CLASSIFICATION
@@ -1270,10 +1270,10 @@ public class AbilityData extends StdWebMacro
 						{
 							int domain=A.classificationCode()&Ability.ALL_DOMAINS;
 							domain=domain>>5;
-							thang.append(Ability.DOMAIN_DESCS[domain].toLowerCase().replace('_',' '));
+							thang.append(Ability.DOMAIN.DESCS.get(domain).toLowerCase().replace('_',' '));
 						}
 						else
-							thang.append(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES].toLowerCase());
+							thang.append(Ability.ACODE.DESCS.get(A.classificationCode()&Ability.ALL_ACODES).toLowerCase());
 						if(thang.length()>0)
 						{
 							thang.setCharAt(0,Character.toUpperCase(thang.charAt(0)));
@@ -1288,12 +1288,12 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("TYPENDOMAIN"))
 				{
 					final StringBuffer thang=new StringBuffer("");
-					thang.append(CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]));
+					thang.append(CMStrings.capitalizeAndLower(Ability.ACODE.DESCS.get(A.classificationCode()&Ability.ALL_ACODES)));
 					if((A.classificationCode()&Ability.ALL_DOMAINS)!=0)
 					{
 						int domain=A.classificationCode()&Ability.ALL_DOMAINS;
 						domain=domain>>5;
-						thang.append(": "+CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[domain]).replace('_',' '));
+						thang.append(": "+CMStrings.capitalizeAndLower(Ability.DOMAIN.DESCS.get(domain)).replace('_',' '));
 					}
 
 					if(thang.length()>0)

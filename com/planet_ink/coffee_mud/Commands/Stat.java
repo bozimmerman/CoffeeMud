@@ -931,9 +931,9 @@ public class Stat  extends Skills
 			}
 			if(ableTypes==-1)
 			{
-				for(int a=0;a<Ability.ACODE_DESCS.length;a++)
+				for(int a=0;a<Ability.ACODE.DESCS.size();a++)
 				{
-					if((Ability.ACODE_DESCS[a]+"S").equals(s)||(Ability.ACODE_DESCS[a]).equals(s))
+					if((Ability.ACODE.DESCS.get(a)+"S").equals(s)||(Ability.ACODE.DESCS.get(a)).equals(s))
 					{
 						ableTypes=a;
 						commands.remove(0);
@@ -1447,7 +1447,7 @@ public class Stat  extends Skills
 				msg.append(L(", [MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], "));
 				for (final String[] element : ABLETYPE_DESCS)
 					msg.append(element[0]+", ");
-				msg.append(CMParms.toListString(Ability.ACODE_DESCS));
+				msg.append(CMParms.toListString(Ability.ACODE.DESCS));
 			}
 			mob.tell(msg.toString());
 			return false;

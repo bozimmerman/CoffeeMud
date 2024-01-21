@@ -258,7 +258,8 @@ public class CMProps extends Properties
 		DEFAULTABILITYARGS,
 		XPMOD,
 		MSXPVARS,
-		NEWDOMAINS
+		NEWDOMAINS,
+		NEWACODES
 	}
 
 	public final static int DEFAULT_MOB_HP_BASE = 11;
@@ -2530,9 +2531,8 @@ public class CMProps extends Properties
 			final List<String> newDoms = CMParms.parseCommas(getVar(Str.NEWDOMAINS), true);
 			if(newDoms.size() > 0)
 			{
-				/*
-				final List<String> domains = new XVector<String>(Arrays.copyOf(Ability.DOMAINS.first, Ability.NUM_CORE_DOMAINS));
-				final List<String> doverbs = new XVector<String>(Arrays.copyOf(Ability.DOMAINS.second, Ability.NUM_CORE_DOMAINS));
+				Ability.DOMAIN.DESCS.clear();
+				Ability.DOMAIN.VERBS.clear();
 				for(final String newDom : newDoms)
 				{
 					final int x = newDom.indexOf('=');
@@ -2542,14 +2542,28 @@ public class CMProps extends Properties
 						final String newDomainVerb = newDom.substring(x+1).trim();
 						if(newDomainName.length()>0)
 						{
-							domains.add(newDomainName);
-							doverbs.add(newDomainVerb);
+							Ability.DOMAIN.DESCS.add(newDomainName);
+							Ability.DOMAIN.VERBS.add(newDomainVerb);
 						}
 					}
 				}
-				Ability.DOMAINS.first = domains.toArray(Ability.DOMAINS.first);
-				Ability.DOMAINS.second = doverbs.toArray(Ability.DOMAINS.second);
-				*/
+			}
+		}
+		setVar(Str.NEWACODES,getStr("NEWACODES"));
+		{
+			final List<String> newCods = CMParms.parseCommas(getVar(Str.NEWACODES), true);
+			if(newCods.size() > 0)
+			{
+				Ability.ACODE.DESCS.clear();
+				Ability.ACODE.DESCS_.clear();
+				for(final String newCod : newCods)
+				{
+					if(newCod.length()>0)
+					{
+						Ability.ACODE.DESCS.add(newCod.toUpperCase().trim().replace('_', ' '));
+						Ability.ACODE.DESCS_.add(newCod.toUpperCase().trim().replace(' ', '_'));
+					}
+				}
 			}
 		}
 		setUpLowVar(Str.DEFAULTPARENTAREA,getStr("DEFAULTPARENTAREA"));

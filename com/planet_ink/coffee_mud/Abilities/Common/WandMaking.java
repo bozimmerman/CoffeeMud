@@ -555,7 +555,7 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 				((Wand)buildingI).setMaxCharges(maxuses);
 			if((buildingI instanceof Wand)
 			&&(foundRecipe.size()>RCP_WAND_TYPE))
-				((Wand)buildingI).setEnchantType(CMParms.indexOf(Ability.ACODE_DESCS_,foundRecipe.get(RCP_WAND_TYPE)));
+				((Wand)buildingI).setEnchantType(CMParms.indexOf(Ability.ACODE.DESCS_,foundRecipe.get(RCP_WAND_TYPE)));
 			buildingI.recoverPhyStats();
 			buildingI.text();
 			buildingI.recoverPhyStats();

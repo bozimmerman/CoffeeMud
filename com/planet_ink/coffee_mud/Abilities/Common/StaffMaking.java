@@ -565,7 +565,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 				((Wand)buildingI).setMaxCharges(maxuses);
 			if((buildingI instanceof Wand)
 			&&(foundRecipe.size()>RCP_WAND_TYPE))
-				((Wand)buildingI).setEnchantType(CMParms.indexOf(Ability.ACODE_DESCS_,foundRecipe.get(RCP_WAND_TYPE)));
+				((Wand)buildingI).setEnchantType(CMParms.indexOf(Ability.ACODE.DESCS_,foundRecipe.get(RCP_WAND_TYPE)));
 			if(buildingI instanceof Weapon)
 			{
 				buildingI.basePhyStats().setAttackAdjustment((baseYield()+abilityCode()+(hardness*5)-1));

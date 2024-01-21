@@ -58,7 +58,7 @@ public class CrossBaseClassAbilities extends StdWebMacro
 			final CharClass C=CMClass.findCharClass(className);
 			if(C==null)
 				return " @break@";
-			int domain=CMParms.indexOf(Ability.DOMAIN_DESCS, domainStr.toUpperCase().trim());
+			int domain=CMParms.indexOf(Ability.DOMAIN.DESCS, domainStr.toUpperCase().trim());
 			if(domain<0)
 				return " @break@";
 			domain = domain << 5;
@@ -85,7 +85,7 @@ public class CrossBaseClassAbilities extends StdWebMacro
 			final String domainStr=parms.get("DOMAIN");
 			if(domainStr==null)
 				return " @break@";
-			int domain=CMParms.indexOf(Ability.DOMAIN_DESCS, domainStr.toUpperCase().trim());
+			int domain=CMParms.indexOf(Ability.DOMAIN.DESCS, domainStr.toUpperCase().trim());
 			if(domain<0)
 				return " @break@";
 			domain = domain << 5;

@@ -409,9 +409,9 @@ public class FactionData extends StdWebMacro
 					str.append("<OPTION VALUE=\"\">Select a trigger");
 					for (final MiscTrigger element : Faction.FactionChangeEvent.MiscTrigger.values())
 						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.limit(CMStrings.capitalizeAndLower(element.name()),20));
-					for (final String element : Ability.ACODE_DESCS)
+					for (final String element : Ability.ACODE.DESCS)
 						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.limit(CMStrings.capitalizeAndLower(element),20));
-					for (final String element : Ability.DOMAIN_DESCS)
+					for (final String element : Ability.DOMAIN.DESCS)
 						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.limit(CMStrings.capitalizeAndLower(element),20));
 					for (final String element : Ability.FLAG_DESCS)
 						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.limit(CMStrings.capitalizeAndLower(element),20));
@@ -636,12 +636,12 @@ public class FactionData extends StdWebMacro
 								str.append("<BR>"+sfont+"AND&nbsp;"+efont);
 								str.append("<SELECT NAME=ABILITYUSE"+showNum+"_"+sx+" ONCHANGE=\"AddItem(this);\">");
 								str.append("<OPTION VALUE=\"\" SELECTED>Select an option");
-								for(int i=0;i<Ability.ACODE_DESCS.length;i++)
-									if(!doneSet.contains(Ability.ACODE_DESCS[i]))
-									str.append("<OPTION VALUE=\""+Ability.ACODE_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
-								for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
-									if(!doneSet.contains(Ability.DOMAIN_DESCS[i]))
-									str.append("<OPTION VALUE=\""+Ability.DOMAIN_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[i]));
+								for(int i=0;i<Ability.ACODE.DESCS.size();i++)
+									if(!doneSet.contains(Ability.ACODE.DESCS.get(i)))
+									str.append("<OPTION VALUE=\""+Ability.ACODE.DESCS.get(i)+"\">"+CMStrings.capitalizeAndLower(Ability.ACODE.DESCS.get(i)));
+								for(int i=0;i<Ability.DOMAIN.DESCS.size();i++)
+									if(!doneSet.contains(Ability.DOMAIN.DESCS.get(i)))
+									str.append("<OPTION VALUE=\""+Ability.DOMAIN.DESCS.get(i)+"\">"+CMStrings.capitalizeAndLower(Ability.DOMAIN.DESCS.get(i)));
 								for(int i=0;i<Ability.FLAG_DESCS.length;i++)
 									if(!doneSet.contains(Ability.FLAG_DESCS[i]))
 									str.append("<OPTION VALUE=\""+Ability.FLAG_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.FLAG_DESCS[i]));
@@ -664,9 +664,9 @@ public class FactionData extends StdWebMacro
 					str.append("<TR><TD>");
 					str.append("<SELECT NAME=ABILITYUSE"+showNum+" ONCHANGE=\"AddItem(this);\">");
 					str.append("<OPTION VALUE=\"\" SELECTED>Select an option");
-					for (final String element : Ability.ACODE_DESCS)
+					for (final String element : Ability.ACODE.DESCS)
 						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.capitalizeAndLower(element));
-					for (final String element : Ability.DOMAIN_DESCS)
+					for (final String element : Ability.DOMAIN.DESCS)
 						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.capitalizeAndLower(element));
 					for (final String element : Ability.FLAG_DESCS)
 						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.capitalizeAndLower(element));
@@ -910,17 +910,17 @@ public class FactionData extends StdWebMacro
 		switch(CMLib.factions().getAbilityFlagType(val))
 		{
 		case ACODE:
-			for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+			for(int i=0;i<Ability.ACODE.DESCS.size();i++)
 			{
-				if(!done.contains(Ability.ACODE_DESCS[i].toUpperCase()))
-					done.add(Ability.ACODE_DESCS[i].toUpperCase());
+				if(!done.contains(Ability.ACODE.DESCS.get(i).toUpperCase()))
+					done.add(Ability.ACODE.DESCS.get(i).toUpperCase());
 			}
 			break;
 		case DOMAIN:
-			for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
+			for(int i=0;i<Ability.DOMAIN.DESCS.size();i++)
 			{
-				if(!done.contains(Ability.DOMAIN_DESCS[i].toUpperCase()))
-					done.add(Ability.DOMAIN_DESCS[i].toUpperCase());
+				if(!done.contains(Ability.DOMAIN.DESCS.get(i).toUpperCase()))
+					done.add(Ability.DOMAIN.DESCS.get(i).toUpperCase());
 			}
 			break;
 		case FLAG:

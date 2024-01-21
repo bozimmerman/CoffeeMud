@@ -997,7 +997,7 @@ public class DefaultFaction implements Faction, MsgListener
 			if(CMClass.numPrototypes(CMObjectType.ABILITY)==0)
 				return null;
 			final Map<Integer,List<FactionChangeEvent>> abilityClassMap=new HashMap<Integer,List<FactionChangeEvent>>();
-			for(int classificationCode = 0;classificationCode < Ability.ACODE_DESCS.length;classificationCode++)
+			for(int classificationCode = 0;classificationCode < Ability.ACODE.DESCS.size();classificationCode++)
 			{
 				for (final Enumeration<FactionChangeEvent[]> e=changes.elements();e.hasMoreElements();)
 				{
@@ -1014,7 +1014,7 @@ public class DefaultFaction implements Faction, MsgListener
 				}
 			}
 			final Map<Integer,List<FactionChangeEvent>> abilityDomainMap=new HashMap<Integer,List<FactionChangeEvent>>();
-			for(int domainCode = 0;domainCode < Ability.DOMAIN_DESCS.length;domainCode++)
+			for(int domainCode = 0;domainCode < Ability.DOMAIN.DESCS.size();domainCode++)
 			{
 				final int domainID = domainCode << 5;
 				for (final Enumeration<FactionChangeEvent[]> e=changes.elements();e.hasMoreElements();)
@@ -2055,9 +2055,9 @@ public class DefaultFaction implements Faction, MsgListener
 			return _ALL_TYPES;
 		for (final MiscTrigger element : Faction.FactionChangeEvent.MiscTrigger.values())
 			ALL_TYPES.append(element.name()+", ");
-		for (final String element : Ability.ACODE_DESCS)
+		for (final String element : Ability.ACODE.DESCS)
 			ALL_TYPES.append(element+", ");
-		for (final String element : Ability.DOMAIN_DESCS)
+		for (final String element : Ability.DOMAIN.DESCS)
 			ALL_TYPES.append(element+", ");
 		for (final String element : Ability.FLAG_DESCS)
 			ALL_TYPES.append(element+", ");
@@ -2411,18 +2411,18 @@ public class DefaultFaction implements Faction, MsgListener
 					return true;
 				}
 			}
-			for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+			for(int i=0;i<Ability.ACODE.DESCS.size();i++)
 			{
-				if(Ability.ACODE_DESCS[i].equalsIgnoreCase(newID))
+				if(Ability.ACODE.DESCS.get(i).equalsIgnoreCase(newID))
 				{
 					IDclassFilter = i;
 					eventTriggerID = newID;
 					return true;
 				}
 			}
-			for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
+			for(int i=0;i<Ability.DOMAIN.DESCS.size();i++)
 			{
-				if(Ability.DOMAIN_DESCS[i].equalsIgnoreCase(newID))
+				if(Ability.DOMAIN.DESCS.get(i).equalsIgnoreCase(newID))
 				{
 					IDdomainFilter = i << 5;
 					eventTriggerID = newID;
@@ -3484,10 +3484,10 @@ public class DefaultFaction implements Faction, MsgListener
 				switch(flag)
 				{
 				case ACODE:
-					type=CMParms.indexOfIgnoreCase(Ability.ACODE_DESCS, strflag);
+					type=CMParms.indexOfIgnoreCase(Ability.ACODE.DESCS, strflag);
 					break;
 				case DOMAIN:
-					domain=CMParms.indexOfIgnoreCase(Ability.DOMAIN_DESCS, strflag);
+					domain=CMParms.indexOfIgnoreCase(Ability.DOMAIN.DESCS, strflag);
 					break;
 				case FLAG:
 				{

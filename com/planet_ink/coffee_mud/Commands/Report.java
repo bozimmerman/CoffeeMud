@@ -127,10 +127,10 @@ public class Report extends Skills
 				int acode=-1;
 				int adom=-1;
 				final String us = s.toUpperCase().replace(' ','_');
-				for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+				for(int i=0;i<Ability.ACODE.DESCS.size();i++)
 				{
-					if(Ability.ACODE_DESCS[i].equals(us)
-					||CMLib.english().makePlural(Ability.ACODE_DESCS[i]).equals(us))
+					if(Ability.ACODE.DESCS.get(i).equals(us)
+					||CMLib.english().makePlural(Ability.ACODE.DESCS.get(i)).equals(us))
 					{
 						acode=i;
 						break;
@@ -144,10 +144,10 @@ public class Report extends Skills
 					if("LANGS".equals(us))
 						acode=Ability.ACODE_LANGUAGE;
 					else
-					for(int d=0;d<Ability.DOMAIN_DESCS.length;d++)
+					for(int d=0;d<Ability.DOMAIN.DESCS.size();d++)
 					{
-						if(Ability.DOMAIN_DESCS[d].equals(us)
-						||CMLib.english().makePlural(Ability.DOMAIN_DESCS[d]).equals(us))
+						if(Ability.DOMAIN.DESCS.get(d).equals(us)
+						||CMLib.english().makePlural(Ability.DOMAIN.DESCS.get(d)).equals(us))
 						{
 							adom=d;
 							break;
@@ -156,9 +156,9 @@ public class Report extends Skills
 				}
 				if((acode < 0)&&(adom<0))
 				{
-					for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+					for(int i=0;i<Ability.ACODE.DESCS.size();i++)
 					{
-						if(CMLib.english().makePlural(Ability.ACODE_DESCS[i]).startsWith(us))
+						if(CMLib.english().makePlural(Ability.ACODE.DESCS.get(i)).startsWith(us))
 						{
 							acode=i;
 							break;
@@ -173,9 +173,9 @@ public class Report extends Skills
 					if("LANGS".startsWith(us))
 						acode=Ability.ACODE_LANGUAGE;
 					else
-					for(int d=0;d<Ability.DOMAIN_DESCS.length;d++)
+					for(int d=0;d<Ability.DOMAIN.DESCS.size();d++)
 					{
-						if(CMLib.english().makePlural(Ability.DOMAIN_DESCS[d]).startsWith(us))
+						if(CMLib.english().makePlural(Ability.DOMAIN.DESCS.get(d)).startsWith(us))
 						{
 							adom=d;
 							break;
@@ -225,7 +225,7 @@ public class Report extends Skills
 				else
 				if(adom >= 1)
 				{
-					final String domainName = Ability.DOMAIN_DESCS[adom].toLowerCase();
+					final String domainName = Ability.DOMAIN.DESCS.get(adom).toLowerCase();
 					say.append("\n\r^NMy "+domainName+" skills:^? "+getAbilities(null,mob,Ability.ALL_ACODES,adom<<5,false,level));
 				}
 			}

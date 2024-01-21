@@ -466,7 +466,7 @@ public interface Ability extends Environmental
 	public void unlearn(MOB student);
 
 	/**
-	 * Returns a string describing the requirements and qualifications that
+	 * Returns a string descriping the requirements and qualifications that
 	 * are required to learn this skill.
 	 * @param mob the mob whose requirements must be tested
 	 * @return a description of the learning requirements of this skill.
@@ -686,18 +686,28 @@ public interface Ability extends Environmental
 	public static final int ACODE_SUPERPOWER=12;
 	/** constant returned by classificationCode() designating this ability as a Archon ONly Skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int ACODE_TECH=13;
+	/** Number of base ability types defined by the codebase */
+	public static final int NUM_BASE_ACODES = 14;
 	/** constant returned by classificationCode() designating this ability as a Tech-Only Skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int ALL_ACODES=31;
-	/** array of string describtions for the ACODE_* constants, indexed by their values */
-	public static final String[] ACODE_DESCS=
+	/** container interface for all ACODE (ability type/code) descriptions */
+	public static interface ACODE
 	{
-		"SKILL","SPELL","PRAYER","SONG","TRAP","PROPERTY",
-		"THIEF SKILL","LANGUAGE","CHANT","COMMON SKILL",
-		"DISEASE","POISON","SUPERPOWER","ARCHON SKILL",
-		"TECH SKILL"
-	};
-	/** array of string describtions for the ACODE_* constants, indexed by their values, with _ where spaces would be */
-	public static final String[] ACODE_DESCS_= CMStrings.replaceInAll(ACODE_DESCS.clone()," ","_");
+		/** array of string descriptions for the ACODE_* constants, indexed by their values */
+		public static final List<String> DESCS = new MinSizedList<String>(new XVector<String>(new String[] {
+			"SKILL","SPELL","PRAYER","SONG","TRAP","PROPERTY",
+			"THIEF SKILL","LANGUAGE","CHANT","COMMON SKILL",
+			"DISEASE","POISON","SUPERPOWER","ARCHON SKILL",
+			"TECH SKILL"
+		}));
+		/** array of string descriptions for the ACODE_* constants, indexed by their values, with _ where spaces would be */
+		public static final List<String> DESCS_ = new MinSizedList<String>(new XVector<String>(new String[] {
+			"SKILL","SPELL","PRAYER","SONG","TRAP","PROPERTY",
+			"THIEF_SKILL","LANGUAGE","CHANT","COMMON_SKILL",
+			"DISEASE","POISON","SUPERPOWER","ARCHON_SKILL",
+			"TECH_SKILL"
+		}));
+	}
 
 	/** constant mask returned by classificationCode() designating this ability as being Divination @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int DOMAIN_DIVINATION=1<<5;
@@ -861,56 +871,62 @@ public interface Ability extends Environmental
 	public static final int DOMAIN_ROPEUSE=80<<5;
 	/** constant mask returned by classificationCode() designating this ability as being a land travel skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int DOMAIN_TRAVEL=81<<5;
+	/** Number of base ability domains defined by the codebase */
+	public static final int NUM_BASE_DOMAINS = 82;
 	/** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int ALL_DOMAINS=(255<<5);
-	/** array of string describtions for the DOMAIN_* constants, indexed by their values */
-	public static final String[] DOMAIN_DESCS={
-		"NOTHING","DIVINATION","ABJURATION","ILLUSION",
-		"INVOCATION/EVOCATION","ALTERATION","TRANSMUTATION","ENCHANTMENT/CHARM",
-		"CONJURATION", "ARCHON","SINGING","DANCING",
-		"PLAYING","DECEPTIVE","FIND/REMOVE_TRAPS","BINDING",
-		"STEALING","STEALTHY","TRAPPING","ALERT",
-		"HOLY_PROTECTION","HEALING","VEXING","BLESSING",
-		"CURSING","EVANGELISM","MOON_SUMMONING","MOON_ALTERING",
-		"GATHERING","CRAFTING","PLANT_GROWTH","SHAPE_SHIFTING",
-		"FOOLISHNESS","WARDING","DEATH_LORE","WEATHER_MASTERY",
-		"CORRUPTION","RESTORATION","NEUTRALIZATION","CREATION",
-		"COMMUNING","PRESERVING","ENDURING","PLANT_CONTROL",
-		"ANIMAL_AFFINITY","DEEP_MAGIC","BREEDING","WEAPON_USE",
-		"ROCK_CONTROL","KICKING","PUNCHING","GRAPPLING",
-		"CALLIGRAPHY","POISONING","ARCANE_LORE","ACROBATIC",
-		"INFLUENTIAL","STREET_SMARTS","NATURE_LORE","DIRTY_FIGHTING",
-		"COMBAT_LORE","COMBAT_FLUIDITY","EVASIVE","MARTIAL_LORE",
-		"RACIAL_ABILITY","ARTISTIC","ANATOMY","ARMOR_USE",
-		"SHIELD_USE","CRIMINAL","LEGAL","FITNESS","THEATRE",
-		"BUILDING","WATER_LORE","WATER_CONTROL","SEA_TRAVEL",
-		"EDUCATION_LORE","EPICUREAN","COSMOLOGY","ROPE_USE",
-		"TRAVEL"
-	};
-	/** array of string verbs for the DOMAIN_* constants, indexed by their values */
-	public static final String[] DOMAIN_VERBS={
-		"","Divining","Abjuring","Illusing",
-		"In/Evoking","Altering","Transmuting","Enchanting",
-		"Conjuring", "ArChreating","Singing", "Dancing",
-		"Playing","Deceptive","DeTrapping","Binding",
-		"Stealing","Stealthing","Trapping","Watching",
-		"Divinely Protecting","Healing","Vexing","Blessing",
-		"Cursing","Evangelising","Moon Summoning","Moon Altering",
-		"Gathering","Crafting","Plant Growing","Shape Shifting",
-		"Fool-Making","Warding","Death Animating","Weather Mastering",
-		"Corrupting","Restoring","Neutralizing","Creating",
-		"Communing","Preserving","Enduring","Plant Controling",
-		"Animal Befriending","Deep Enchanting","Breeding","Weapon Using",
-		"Rock Controling","Kicking","Punching","Grappling",
-		"Caligraphing","Poisoning","Arcane Loreing","Acrobatisizing",
-		"Influencing","Street Knowing","Nature Loring","Dirty Fighting",
-		"Combat Loring","Combat Fluidisizing","Evading","Matrial Loring",
-		"Racial Knowing","Artmaking","Anatomy","Armor Using",
-		"Shield Using","Crimemaking","Legalizing","Fitness","Acting",
-		"Building","Water Lore","Water Control","Sea Travel",
-		"Educating","Indulging","Cosmologing","Roping",
-		"Travelling"
-	};
+	/** arrays of string descriptions and verbs for the DOMAIN_* constants, indexed by their values */
+	public static interface DOMAIN
+	{
+		/** array of string descriptions for the DOMAIN_* constants, indexed by their values */
+		public final List<String> DESCS=new MinSizedList<String>(new XVector<String>(new String[]{
+			"NOTHING","DIVINATION","ABJURATION","ILLUSION",
+			"INVOCATION/EVOCATION","ALTERATION","TRANSMUTATION","ENCHANTMENT/CHARM",
+			"CONJURATION", "ARCHON","SINGING","DANCING",
+			"PLAYING","DECEPTIVE","FIND/REMOVE_TRAPS","BINDING",
+			"STEALING","STEALTHY","TRAPPING","ALERT",
+			"HOLY_PROTECTION","HEALING","VEXING","BLESSING",
+			"CURSING","EVANGELISM","MOON_SUMMONING","MOON_ALTERING",
+			"GATHERING","CRAFTING","PLANT_GROWTH","SHAPE_SHIFTING",
+			"FOOLISHNESS","WARDING","DEATH_LORE","WEATHER_MASTERY",
+			"CORRUPTION","RESTORATION","NEUTRALIZATION","CREATION",
+			"COMMUNING","PRESERVING","ENDURING","PLANT_CONTROL",
+			"ANIMAL_AFFINITY","DEEP_MAGIC","BREEDING","WEAPON_USE",
+			"ROCK_CONTROL","KICKING","PUNCHING","GRAPPLING",
+			"CALLIGRAPHY","POISONING","ARCANE_LORE","ACROBATIC",
+			"INFLUENTIAL","STREET_SMARTS","NATURE_LORE","DIRTY_FIGHTING",
+			"COMBAT_LORE","COMBAT_FLUIDITY","EVASIVE","MARTIAL_LORE",
+			"RACIAL_ABILITY","ARTISTIC","ANATOMY","ARMOR_USE",
+			"SHIELD_USE","CRIMINAL","LEGAL","FITNESS","THEATRE",
+			"BUILDING","WATER_LORE","WATER_CONTROL","SEA_TRAVEL",
+			"EDUCATION_LORE","EPICUREAN","COSMOLOGY","ROPE_USE",
+			"TRAVEL"
+		}));
+		/** array of string verbs for the DOMAIN_* constants, indexed by their values */
+		public static final List<String> VERBS=new MinSizedList<String>(new XVector<String>(new String[]{
+			"","Divining","Abjuring","Illusing",
+			"In/Evoking","Altering","Transmuting","Enchanting",
+			"Conjuring", "ArChreating","Singing", "Dancing",
+			"Playing","Deceptive","DeTrapping","Binding",
+			"Stealing","Stealthing","Trapping","Watching",
+			"Divinely Protecting","Healing","Vexing","Blessing",
+			"Cursing","Evangelising","Moon Summoning","Moon Altering",
+			"Gathering","Crafting","Plant Growing","Shape Shifting",
+			"Fool-Making","Warding","Death Animating","Weather Mastering",
+			"Corrupting","Restoring","Neutralizing","Creating",
+			"Communing","Preserving","Enduring","Plant Controling",
+			"Animal Befriending","Deep Enchanting","Breeding","Weapon Using",
+			"Rock Controling","Kicking","Punching","Grappling",
+			"Caligraphing","Poisoning","Arcane Loreing","Acrobatisizing",
+			"Influencing","Street Knowing","Nature Loring","Dirty Fighting",
+			"Combat Loring","Combat Fluidisizing","Evading","Matrial Loring",
+			"Racial Knowing","Artmaking","Anatomy","Armor Using",
+			"Shield Using","Crimemaking","Legalizing","Fitness","Acting",
+			"Building","Water Lore","Water Control","Sea Travel",
+			"Educating","Indulging","Cosmologing","Roping",
+			"Travelling"
+		}));
+	}
 
 	/** constant descriptions for the minRange()/maxRange() values @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#minRange() */
 	public static final String[] RANGE_CHOICES={"MELEE","CLOSE","SHORT","MEDIUM","LONG","LONGER","LONGERSTILL","VERYLONG","EXTREMELYLONG","INFINITE"};
@@ -1000,7 +1016,7 @@ public interface Ability extends Environmental
 	/** constant mask for the flags() method designating that this ability is fear-causing @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_FEARING=549755813888L;
 
-	/** array of string describtions for the FLAG_* constants, indexed by their values */
+	/** array of string descriptions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS=
 	{
 		"BINDING",

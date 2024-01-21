@@ -1550,9 +1550,9 @@ public class Factions extends StdLibrary implements FactionManager
 						if(newFlags.equalsIgnoreCase("?"))
 						{
 							final StringBuffer vals=new StringBuffer("Valid masks: \n\r");
-							for (final String element : Ability.ACODE_DESCS)
+							for (final String element : Ability.ACODE.DESCS)
 								vals.append(element+", ");
-							for (final String element : Ability.DOMAIN_DESCS)
+							for (final String element : Ability.DOMAIN.DESCS)
 								vals.append(element+", ");
 							for (final String element : Ability.FLAG_DESCS)
 								vals.append(element+", ");
@@ -2050,12 +2050,12 @@ public class Factions extends StdLibrary implements FactionManager
 	@Override
 	public FAbilityMaskType getAbilityFlagType(String strflag)
 	{
-		for (final String element : Ability.ACODE_DESCS)
+		for (final String element : Ability.ACODE.DESCS)
 		{
 			if(element.equalsIgnoreCase(strflag))
 				return FAbilityMaskType.ACODE;
 		}
-		for (final String element : Ability.DOMAIN_DESCS)
+		for (final String element : Ability.DOMAIN.DESCS)
 		{
 			if(element.equalsIgnoreCase(strflag))
 				return FAbilityMaskType.DOMAIN;

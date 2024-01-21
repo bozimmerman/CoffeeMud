@@ -166,7 +166,7 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 							this.weapClass=new HashMap<Integer,Object>();
 						this.weapClass.put(Integer.valueOf(code), current);
 					}
-					code=CMParms.indexOf(Ability.ACODE_DESCS_, s);
+					code=CMParms.indexOf(Ability.ACODE.DESCS_, s);
 					if(code>=0)
 					{
 						found=true;
@@ -174,7 +174,7 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 							this.ableCodes=new HashMap<Integer,Object>();
 						this.ableCodes.put(Integer.valueOf(code), current);
 					}
-					code=CMParms.indexOf(Ability.DOMAIN_DESCS, s);
+					code=CMParms.indexOf(Ability.DOMAIN.DESCS, s);
 					if(code>=0)
 					{
 						found=true;
@@ -525,10 +525,10 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 						statCode=CMParms.indexOf(Weapon.CLASS_DESCS, s);
 						if(statCode>=0)
 							str.append(this.makeStatMsg(s.toLowerCase(), current)+"\n\r");
-						statCode=CMParms.indexOf(Ability.ACODE_DESCS_, s);
+						statCode=CMParms.indexOf(Ability.ACODE.DESCS_, s);
 						if(statCode>=0)
 							str.append(this.makeStatMsg(s.toLowerCase(), current)+"\n\r");
-						statCode=CMParms.indexOf(Ability.DOMAIN_DESCS, s);
+						statCode=CMParms.indexOf(Ability.DOMAIN.DESCS, s);
 						if(statCode>=0)
 							str.append(this.makeStatMsg(s.toLowerCase(), current)+"\n\r");
 						statCode=CMParms.indexOf(Ability.FLAG_DESCS, s);

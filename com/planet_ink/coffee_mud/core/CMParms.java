@@ -4018,6 +4018,22 @@ public class CMParms
 	 * The search is case sensitive.
 	 * @param stringList the string array
 	 * @param str the string to search for
+	 * @return the index of the string in the list, or -1 if not found
+	 */
+	public final static int indexOf(final List<String> stringList, final String str)
+	{
+		if(stringList==null)
+			return -1;
+		if(str==null)
+			return -1;
+		return stringList.indexOf(str);
+	}
+
+	/**
+	 * Returns the index of the given string in the given string array.
+	 * The search is case sensitive.
+	 * @param stringList the string array
+	 * @param str the string to search for
 	 * @param startIndex the index to start from
 	 * @return the index of the string in the list, or -1 if not found
 	 */
@@ -4076,6 +4092,27 @@ public class CMParms
 	}
 
 	/**
+	 * Returns the index of the string in the given string list that starts
+	 * with the given one. The search is case sensitive.
+	 * @param stringList the string list
+	 * @param str the string to search for a starter of
+	 * @return the index of the string in the list that starts, or -1 if not found
+	 */
+	public final static int indexOfStartsWith(final List<String> stringList, final String str)
+	{
+		if(stringList==null)
+			return -1;
+		if(str==null)
+			return -1;
+		for(int i=0;i<stringList.size();i++)
+		{
+			if(stringList.get(i).startsWith(str))
+				return i;
+		}
+		return -1;
+	}
+
+	/**
 	 * Returns the index of the string in the given string array that the given string
 	 * starts with. The search is case sensitive.
 	 * @param stringList the string array
@@ -4091,6 +4128,27 @@ public class CMParms
 		for(int i=0;i<stringList.length;i++)
 		{
 			if(str.startsWith(stringList[i]))
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the index of the string in the given string list that the given string
+	 * starts with. The search is case sensitive.
+	 * @param stringList the string list
+	 * @param str the string to find a starter for
+	 * @return the index of the string in the list that str starts with, or -1 if not found
+	 */
+	public final static int indexOfStartsWith2(final List<String> stringList, final String str)
+	{
+		if(stringList==null)
+			return -1;
+		if(str==null)
+			return -1;
+		for(int i=0;i<stringList.size();i++)
+		{
+			if(str.startsWith(stringList.get(i)))
 				return i;
 		}
 		return -1;
@@ -4691,6 +4749,18 @@ public class CMParms
 	public final static boolean contains(final String[] theList, final String str)
 	{
 		return indexOf(theList,str)>=0;
+	}
+
+	/**
+	 * Returns whether the given string appears in the given list.
+	 * It is case sensitive.
+	 * @param theList the list
+	 * @param str the string to search for
+	 * @return true if the string is in the list, false otherwise
+	 */
+	public final static boolean contains(final List<String> theList, final String str)
+	{
+		return theList.contains(str);
 	}
 
 	/**

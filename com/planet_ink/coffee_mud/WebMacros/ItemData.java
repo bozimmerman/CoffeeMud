@@ -412,10 +412,10 @@ public class ItemData extends StdWebMacro
 						{
 							if(firstTime)
 							{
-								if((((Wand)I).getEnchantType()<0)||(((Wand)I).getEnchantType()>=Ability.ACODE_DESCS_.length))
+								if((((Wand)I).getEnchantType()<0)||(((Wand)I).getEnchantType()>=Ability.ACODE.DESCS_.size()))
 									old="ANY";
 								else
-									old=Ability.ACODE_DESCS_[((Wand)I).getEnchantType()];
+									old=Ability.ACODE.DESCS_.get(((Wand)I).getEnchantType());
 							}
 							for(final String[] option : Wand.WandUsage.WAND_OPTIONS)
 							{
@@ -747,7 +747,7 @@ public class ItemData extends StdWebMacro
 							{
 								final String ench = httpReq.getUrlParameter("ENCHTYPE");
 								if((ench != null) && (ench.length()>0))
-									ofType=CMParms.indexOf(Ability.ACODE_DESCS_, ench.toUpperCase().trim());
+									ofType=CMParms.indexOf(Ability.ACODE.DESCS_, ench.toUpperCase().trim());
 							}
 						}
 						for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)

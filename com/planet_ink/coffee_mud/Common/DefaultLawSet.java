@@ -843,10 +843,10 @@ public class DefaultLawSet implements Law
 				else
 				if((key.startsWith("$")&&(CMClass.getAbility(key.substring(1))!=null))
 				||(CMClass.getAbility(key)!=null)
-				||(CMParms.containsIgnoreCase(Ability.ACODE_DESCS_,key))
-				||(key.startsWith("$")&&CMParms.containsIgnoreCase(Ability.ACODE_DESCS_,key.substring(1)))
-				||(CMParms.containsIgnoreCase(Ability.DOMAIN_DESCS,key))
-				||(key.startsWith("$")&&CMParms.containsIgnoreCase(Ability.DOMAIN_DESCS,key.substring(1))))
+				||(CMParms.containsIgnoreCase(Ability.ACODE.DESCS_,key))
+				||(key.startsWith("$")&&CMParms.containsIgnoreCase(Ability.ACODE.DESCS_,key.substring(1)))
+				||(CMParms.containsIgnoreCase(Ability.DOMAIN.DESCS,key))
+				||(key.startsWith("$")&&CMParms.containsIgnoreCase(Ability.DOMAIN.DESCS,key.substring(1))))
 				{
 					abilityCrimes.put(key.toUpperCase(),getInternalBits(words));
 				}

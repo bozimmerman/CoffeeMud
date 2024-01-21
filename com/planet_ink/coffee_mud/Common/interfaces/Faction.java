@@ -1035,8 +1035,8 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		/**
 		 * A derivative of the event id, this will return a value of 0 or above
 		 * if the event id was of a particular Ability DOMAIN_.  Returns -1 if
-		 * this value does not apply, or an index into DOMAIN_DESCS.
-		 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN_DESCS
+		 * this value does not apply, or an index into DOMAIN.DESCS.
+		 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN.DESCS
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#eventID()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#miscEvent()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDclassFilter()
@@ -1608,7 +1608,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		/**
 		 * An ability domain that an ability must be in order for this usage to apply, or -1
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#abilityFlags()
-		 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN_DESCS
+		 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN.DESCS
 		 * @return an ability domain that an ability must be in order for this usage to apply, or -1
 		 */
 		public int domain();

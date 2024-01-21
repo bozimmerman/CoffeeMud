@@ -52,7 +52,7 @@ public class AbilityDomainNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for (final String element : Ability.DOMAIN_DESCS)
+		for (final String element : Ability.DOMAIN.DESCS)
 		{
 			final String S=element;
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!S.equals(lastID))))

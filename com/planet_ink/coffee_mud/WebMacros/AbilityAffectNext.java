@@ -56,7 +56,7 @@ public class AbilityAffectNext extends StdWebMacro
 		if((ableType!=null)&&(ableType.length()>0))
 			parms.put(ableType,ableType);
 		boolean containsOne=false;
-		for (final String element : Ability.ACODE_DESCS)
+		for (final String element : Ability.ACODE.DESCS)
 		{
 			if(parms.containsKey(element))
 			{
@@ -74,7 +74,7 @@ public class AbilityAffectNext extends StdWebMacro
 			if((lvl>=0)
 			&&(mapper.qualifiesByAnything(A.ID())))
 				continue;
-			if(containsOne&&(!parms.containsKey(Ability.ACODE_DESCS[classType])))
+			if(containsOne&&(!parms.containsKey(Ability.ACODE.DESCS.get(classType))))
 				okToShow=false;
 			if(parms.containsKey("NOT"))
 				okToShow=!okToShow;

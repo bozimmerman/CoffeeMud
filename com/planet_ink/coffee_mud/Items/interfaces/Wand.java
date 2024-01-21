@@ -55,10 +55,10 @@ public interface Wand extends MiscMagic, Dischargeable
 		 */
 		final String[][] WAND_OPTIONS=new String[][] {
 		 	{"ANY", "Any"},
-		 	{Ability.ACODE_DESCS_[Ability.ACODE_SPELL], CMStrings.capitalizeAllFirstLettersAndLower(Ability.ACODE_DESCS[Ability.ACODE_SPELL])},
-		 	{Ability.ACODE_DESCS_[Ability.ACODE_PRAYER], CMStrings.capitalizeAllFirstLettersAndLower(Ability.ACODE_DESCS[Ability.ACODE_PRAYER])},
-		 	{Ability.ACODE_DESCS_[Ability.ACODE_CHANT], CMStrings.capitalizeAllFirstLettersAndLower(Ability.ACODE_DESCS[Ability.ACODE_CHANT])},
-		 	{Ability.ACODE_DESCS_[Ability.ACODE_SKILL], CMStrings.capitalizeAllFirstLettersAndLower(Ability.ACODE_DESCS[Ability.ACODE_SKILL])},
+		 	{Ability.ACODE.DESCS_.get(Ability.ACODE_SPELL), CMStrings.capitalizeAllFirstLettersAndLower(Ability.ACODE.DESCS.get(Ability.ACODE_SPELL))},
+		 	{Ability.ACODE.DESCS_.get(Ability.ACODE_PRAYER), CMStrings.capitalizeAllFirstLettersAndLower(Ability.ACODE.DESCS.get(Ability.ACODE_PRAYER))},
+		 	{Ability.ACODE.DESCS_.get(Ability.ACODE_CHANT), CMStrings.capitalizeAllFirstLettersAndLower(Ability.ACODE.DESCS.get(Ability.ACODE_CHANT))},
+		 	{Ability.ACODE.DESCS_.get(Ability.ACODE_SKILL), CMStrings.capitalizeAllFirstLettersAndLower(Ability.ACODE.DESCS.get(Ability.ACODE_SKILL))},
 		};
 
 		/**

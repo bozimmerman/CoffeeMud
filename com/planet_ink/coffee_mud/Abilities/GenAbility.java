@@ -1368,32 +1368,32 @@ public class GenAbility extends StdAbility
 		{
 			val=V.get(v);
 			int tacod=-1;
-			for(int a=0;a<Ability.ACODE_DESCS.length;a++)
+			for(int a=0;a<Ability.ACODE.DESCS.size();a++)
 			{
-				if(val.equalsIgnoreCase(Ability.ACODE_DESCS[a]))
+				if(val.equalsIgnoreCase(Ability.ACODE.DESCS.get(a)))
 					tacod=a;
 			}
 			if(tacod<0)
 			{
-				for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+				for(int i=0;i<Ability.ACODE.DESCS.size();i++)
 				{
-					if(Ability.ACODE_DESCS[i].toUpperCase().startsWith(val.toUpperCase()))
+					if(Ability.ACODE.DESCS.get(i).toUpperCase().startsWith(val.toUpperCase()))
 						tacod=i;
 				}
 				if(tacod<0)
 				{
 					int tdom=-1;
-					for(int a=0;a<Ability.DOMAIN_DESCS.length;a++)
+					for(int a=0;a<Ability.DOMAIN.DESCS.size();a++)
 					{
-						if(val.equalsIgnoreCase(Ability.DOMAIN_DESCS[a]))
+						if(val.equalsIgnoreCase(Ability.DOMAIN.DESCS.get(a)))
 							tdom=a<<5;
 					}
 					if(tdom<0)
 					{
-						for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
+						for(int i=0;i<Ability.DOMAIN.DESCS.size();i++)
 						{
-							if(Ability.DOMAIN_DESCS[i].toUpperCase().startsWith(val.toUpperCase())
-									||Ability.DOMAIN_DESCS[i].toUpperCase().endsWith(val.toUpperCase()))
+							if(Ability.DOMAIN.DESCS.get(i).toUpperCase().startsWith(val.toUpperCase())
+									||Ability.DOMAIN.DESCS.get(i).toUpperCase().endsWith(val.toUpperCase()))
 							{
 								tdom = i << 5;
 								break;
@@ -1414,9 +1414,9 @@ public class GenAbility extends StdAbility
 	{
 		final int dom=(val&Ability.ALL_DOMAINS)>>5;
 		final int acod=val&Ability.ALL_ACODES;
-		if((acod>=0)&&(acod<Ability.ACODE_DESCS.length)
-		&&(dom>=0)&&(dom<Ability.DOMAIN_DESCS.length))
-			return Ability.ACODE_DESCS[acod]+","+Ability.DOMAIN_DESCS[dom];
+		if((acod>=0)&&(acod<Ability.ACODE.DESCS.size())
+		&&(dom>=0)&&(dom<Ability.DOMAIN.DESCS.size()))
+			return Ability.ACODE.DESCS.get(acod)+","+Ability.DOMAIN.DESCS.get(dom);
 		return ""+val;
 	}
 

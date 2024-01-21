@@ -107,7 +107,7 @@ public class SpecialistMage extends Mage
 	@Override
 	public String getOtherBonusDesc()
 	{
-		final String chosen = CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[domain() >> 5].replace('_', ' '));
+		final String chosen = CMStrings.capitalizeAndLower(Ability.DOMAIN.DESCS.get(domain() >> 5).replace('_', ' '));
 		return L("At 5th level, receives bonus damage from @x1 as levels advance.  "
 				+ "At 10th level, receives double duration on your @x1 magic, "
 				+ "and half duration from malicious @x1 magic.",chosen);
@@ -116,7 +116,7 @@ public class SpecialistMage extends Mage
 	@Override
 	public String getOtherLimitsDesc()
 	{
-		final String opposed = CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[opposed() >> 5].replace('_', ' '));
+		final String opposed = CMStrings.capitalizeAndLower(Ability.DOMAIN.DESCS.get(opposed() >> 5).replace('_', ' '));
 		return L("Unable to cast @x1 spells.  Receives penalty damage from @x1 as levels advance.  "
 				+ "Receives double duration from malicious @x1 magic, half duration on other @x1"
 				+ " effects.",opposed);

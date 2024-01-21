@@ -555,9 +555,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		}
 		if(o==null)
 		{
-			for(int d=0;d<Ability.ACODE_DESCS.length;d++)
+			for(int d=0;d<Ability.ACODE.DESCS.size();d++)
 			{
-				if(Ability.ACODE_DESCS[d].equals(str))
+				if(Ability.ACODE.DESCS.get(d).equals(str))
 				{
 					o=Integer.valueOf(d);
 					break;
@@ -566,9 +566,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		}
 		if(o==null)
 		{
-			for(int d=0;d<Ability.DOMAIN_DESCS.length;d++)
+			for(int d=0;d<Ability.DOMAIN.DESCS.size();d++)
 			{
-				if(Ability.DOMAIN_DESCS[d].equals(str))
+				if(Ability.DOMAIN.DESCS.get(d).equals(str))
 				{
 					o=Integer.valueOf(d<<5);
 					break;
@@ -599,9 +599,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		}
 		if(o==null)
 		{
-			for(int d=0;d<Ability.DOMAIN_DESCS.length;d++)
+			for(int d=0;d<Ability.DOMAIN.DESCS.size();d++)
 			{
-				if(Ability.DOMAIN_DESCS[d].startsWith(str)||Ability.DOMAIN_DESCS[d].endsWith(str))
+				if(Ability.DOMAIN.DESCS.get(d).startsWith(str)||Ability.DOMAIN.DESCS.get(d).endsWith(str))
 				{
 					o=Integer.valueOf(d<<5);
 					break;

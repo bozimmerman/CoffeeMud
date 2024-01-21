@@ -2338,7 +2338,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(A==null)
 			return "";
-		return Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES];
+		return Ability.ACODE.DESCS.get(A.classificationCode()&Ability.ALL_ACODES);
 	}
 
 	@Override
@@ -2346,7 +2346,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(A==null)
 			return "";
-		return Ability.ACODE_DESCS_[A.classificationCode()&Ability.ALL_ACODES];
+		return Ability.ACODE.DESCS_.get(A.classificationCode()&Ability.ALL_ACODES);
 	}
 
 	@Override
@@ -2354,15 +2354,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(A==null)
 			return "";
-		return Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5];
+		return Ability.DOMAIN.DESCS.get((A.classificationCode()&Ability.ALL_DOMAINS)>>5);
 	}
 
 	@Override
 	public int getAbilityType(final String name)
 	{
-		for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+		for(int i=0;i<Ability.ACODE.DESCS.size();i++)
 		{
-			if(name.equalsIgnoreCase(Ability.ACODE_DESCS[i]))
+			if(name.equalsIgnoreCase(Ability.ACODE.DESCS.get(i)))
 				return i;
 		}
 		return -1;
@@ -2371,9 +2371,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public int getAbilityType_(final String name)
 	{
-		for(int i=0;i<Ability.ACODE_DESCS_.length;i++)
+		for(int i=0;i<Ability.ACODE.DESCS_.size();i++)
 		{
-			if(name.equalsIgnoreCase(Ability.ACODE_DESCS_[i]))
+			if(name.equalsIgnoreCase(Ability.ACODE.DESCS_.get(i)))
 				return i;
 		}
 		return -1;
@@ -2382,9 +2382,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public int getAbilityDomain(final String name)
 	{
-		for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
+		for(int i=0;i<Ability.DOMAIN.DESCS.size();i++)
 		{
-			if(name.equalsIgnoreCase(Ability.DOMAIN_DESCS[i]))
+			if(name.equalsIgnoreCase(Ability.DOMAIN.DESCS.get(i)))
 				return i<<5;
 		}
 		return -1;

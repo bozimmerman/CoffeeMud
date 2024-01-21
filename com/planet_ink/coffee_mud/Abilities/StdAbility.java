@@ -405,8 +405,8 @@ public class StdAbility implements Ability
 			final CharStats charStats=mob.charStats(); // circumstantial bonuses
 			final String codeStr="X"+code.name()+"+";
 			xlevel += charStats.getAbilityAdjustment(codeStr+ID().toUpperCase());
-			xlevel += charStats.getAbilityAdjustment(codeStr+Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES]);
-			xlevel += charStats.getAbilityAdjustment(codeStr+Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>> 5]);
+			xlevel += charStats.getAbilityAdjustment(codeStr+Ability.ACODE.DESCS.get(classificationCode()&Ability.ALL_ACODES));
+			xlevel += charStats.getAbilityAdjustment(codeStr+Ability.DOMAIN.DESCS.get((classificationCode()&Ability.ALL_DOMAINS)>> 5));
 			xlevel += charStats.getAbilityAdjustment(codeStr+"*");
 			return xlevel;
 		}
@@ -784,8 +784,8 @@ public class StdAbility implements Ability
 	{
 		final CharStats charStats = caster.charStats();
 		return  charStats.getAbilityAdjustment("LEVEL+"+ID().toUpperCase())
-			+ charStats.getAbilityAdjustment("LEVEL+"+Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES])
-			+ charStats.getAbilityAdjustment("LEVEL+"+Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>> 5])
+			+ charStats.getAbilityAdjustment("LEVEL+"+Ability.ACODE.DESCS.get(classificationCode()&Ability.ALL_ACODES))
+			+ charStats.getAbilityAdjustment("LEVEL+"+Ability.DOMAIN.DESCS.get((classificationCode()&Ability.ALL_DOMAINS)>> 5))
 			+ charStats.getAbilityAdjustment("LEVEL+*");
 	}
 
@@ -1356,8 +1356,8 @@ public class StdAbility implements Ability
 				return true;
 			final CharStats charStats = mob.charStats();
 			pctChance += charStats.getAbilityAdjustment("PROF+"+ID().toUpperCase());
-			pctChance += charStats.getAbilityAdjustment("PROF+"+Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES]);
-			pctChance += charStats.getAbilityAdjustment("PROF+"+Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>> 5]);
+			pctChance += charStats.getAbilityAdjustment("PROF+"+Ability.ACODE.DESCS.get(classificationCode()&Ability.ALL_ACODES));
+			pctChance += charStats.getAbilityAdjustment("PROF+"+Ability.DOMAIN.DESCS.get((classificationCode()&Ability.ALL_DOMAINS)>> 5));
 			pctChance += charStats.getAbilityAdjustment("PROF+*");
 		}
 
@@ -1948,7 +1948,7 @@ public class StdAbility implements Ability
 				if(components==null)
 				{
 					failureTell(mob,mob,false,L("The requirements to use this @x1 are: @x2.",
-							Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES].toLowerCase(),
+							Ability.ACODE.DESCS.get(classificationCode()&Ability.ALL_ACODES).toLowerCase(),
 							CMLib.ableComponents().getAbilityComponentDesc(mob,ID())));
 					if(!mob.isPlayer())
 						CMLib.ableComponents().startAbilityComponentTrigger(mob, this);

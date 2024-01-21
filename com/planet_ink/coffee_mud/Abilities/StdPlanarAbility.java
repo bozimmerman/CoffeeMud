@@ -608,10 +608,10 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 							long flag=CMParms.indexOf(Ability.FLAG_DESCS, P.first);
 							if(flag >=0 )
 								flag=CMath.pow(2, flag);
-							int domain=CMParms.indexOf(Ability.DOMAIN_DESCS, P.first);
+							int domain=CMParms.indexOf(Ability.DOMAIN.DESCS, P.first);
 							if(domain > 0)
 								domain = domain << 5;
-							final int acode=CMParms.indexOf(Ability.ACODE_DESCS, P.first);
+							final int acode=CMParms.indexOf(Ability.ACODE.DESCS, P.first);
 							for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 							{
 								A=a.nextElement();

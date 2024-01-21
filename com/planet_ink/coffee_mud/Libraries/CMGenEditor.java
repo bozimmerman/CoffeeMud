@@ -8951,7 +8951,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final String varHelp = "You can insert variables into the arguments, such as: @x1=caster level, @x2=target level, @x3=level expertise, "
 					+ "@x4-@x8=x1-x5 expertise, @x9=adjusted caster level.";
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Ability/Skill name","NAME",false);
-			promptStatStr(mob,me,CMParms.toListString(Ability.ACODE_DESCS)+","+CMParms.toListString(Ability.DOMAIN_DESCS),++showNumber,showFlag,"Type, Domain","CLASSIFICATION",false);
+			promptStatStr(mob,me,CMParms.toListString(Ability.ACODE.DESCS)+","+CMParms.toListString(Ability.DOMAIN.DESCS),++showNumber,showFlag,"Type, Domain","CLASSIFICATION",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
 			promptStatStr(mob,me,CMParms.toListString(Ability.RANGE_CHOICES),++showNumber,showFlag,"Minimum Range","MINRANGE",false);
 			promptStatStr(mob,me,CMParms.toListString(Ability.RANGE_CHOICES),++showNumber,showFlag,"Maximum Range","MAXRANGE",false);
@@ -9624,7 +9624,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final List<String> enableV = new ArrayList<String>();
 		enableV.add("number");
 		final List<String> flags = new ConvertingList<String,String>(Arrays.asList(Ability.FLAG_DESCS),Converter.toLowerCase);
-		enableV.addAll(new ConvertingList<String,String>(Arrays.asList(Ability.DOMAIN_DESCS),Converter.toLowerCase));
+		enableV.addAll(new ConvertingList<String,String>(Ability.DOMAIN.DESCS,Converter.toLowerCase));
 		enableV.addAll(flags);
 		enableV.addAll(new XVector<String>(
 				new ConvertingEnumeration<Ability,String>(

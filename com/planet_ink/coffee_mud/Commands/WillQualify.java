@@ -159,7 +159,7 @@ public class WillQualify extends Skills
 		return msg;
 	}
 
-	public boolean perfectMatch(final String[] WORDS, final String str, final String bothStr, final List<String> commands, final Set<Object> useTypes, final int bitShift)
+	public boolean perfectMatch(final List<String> WORDS, final String str, final String bothStr, final List<String> commands, final Set<Object> useTypes, final int bitShift)
 	{
 		int x=CMParms.indexOf(WORDS,str);
 		if(x<0)
@@ -187,13 +187,13 @@ public class WillQualify extends Skills
 		return false;
 	}
 
-	public boolean softMatch(final String[] WORDS, final String str, final String bothStr, final List<String> commands, final Set<Object> useTypes, final int bitShift)
+	public boolean softMatch(final List<String> WORDS, final String str, final String bothStr, final List<String> commands, final Set<Object> useTypes, final int bitShift)
 	{
 		if(!str.equals(bothStr))
 		{
-			for(int x=0;x<WORDS.length;x++)
+			for(int x=0;x<WORDS.size();x++)
 			{
-				final String w=WORDS[x];
+				final String w=WORDS.get(x);
 				if(w.startsWith(bothStr)||w.startsWith(bothStr.replace(' ','_')))
 				{
 
@@ -204,9 +204,9 @@ public class WillQualify extends Skills
 				}
 			}
 		}
-		for(int x=0;x<WORDS.length;x++)
+		for(int x=0;x<WORDS.size();x++)
 		{
-			final String w=WORDS[x];
+			final String w=WORDS.get(x);
 			if(w.startsWith(str)||w.startsWith(str.replace(' ','_')))
 			{
 
@@ -217,9 +217,9 @@ public class WillQualify extends Skills
 		}
 		if(!str.equals(bothStr))
 		{
-			for(int x=0;x<WORDS.length;x++)
+			for(int x=0;x<WORDS.size();x++)
 			{
-				final String w=WORDS[x];
+				final String w=WORDS.get(x);
 				if(bothStr.startsWith(w)||bothStr.replace(' ','_').startsWith(w))
 				{
 					commands.remove(0);
@@ -229,9 +229,9 @@ public class WillQualify extends Skills
 				}
 			}
 		}
-		for(int x=0;x<WORDS.length;x++)
+		for(int x=0;x<WORDS.size();x++)
 		{
-			final String w=WORDS[x];
+			final String w=WORDS.get(x);
 			if(str.startsWith(w)||str.replace(' ','_').startsWith(w))
 			{
 
@@ -304,9 +304,9 @@ public class WillQualify extends Skills
 			}
 			else
 				useTypes = types;
-			if(perfectMatch(Ability.ACODE_DESCS,str,bothStr,commands,useTypes,0))
+			if(perfectMatch(Ability.ACODE.DESCS,str,bothStr,commands,useTypes,0))
 				continue;
-			if(perfectMatch(Ability.DOMAIN_DESCS,str,bothStr,commands,useTypes,5))
+			if(perfectMatch(Ability.DOMAIN.DESCS,str,bothStr,commands,useTypes,5))
 				continue;
 			if((CMLib.expertises().findDefinition(str,false)!=null)
 			||str.equalsIgnoreCase("EXPERTISE")
@@ -324,12 +324,12 @@ public class WillQualify extends Skills
 				useTypes.add(bothStr.toUpperCase().trim());
 				continue;
 			}
-			if(softMatch(Ability.ACODE_DESCS,str,bothStr,commands,useTypes,0))
+			if(softMatch(Ability.ACODE.DESCS,str,bothStr,commands,useTypes,0))
 				continue;
-			if(softMatch(Ability.DOMAIN_DESCS,str,bothStr,commands,useTypes,5))
+			if(softMatch(Ability.DOMAIN.DESCS,str,bothStr,commands,useTypes,5))
 				continue;
-			final List<String> allOptions=new XVector<String>(Ability.ACODE_DESCS);
-			allOptions.addAll(Arrays.asList(Ability.DOMAIN_DESCS));
+			final List<String> allOptions=new XVector<String>(Ability.ACODE.DESCS);
+			allOptions.addAll(Ability.DOMAIN.DESCS);
 			allOptions.add("EXPERTISES");
 			mob.tell(L("'@x1' is not a valid skill type, domain, expertise, or character class.  Try one of: @x2",str,CMParms.toListString(allOptions)));
 			mob.tell(willQualErr);

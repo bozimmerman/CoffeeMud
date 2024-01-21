@@ -444,10 +444,10 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 					levelChange += 2*getProtection("POISON");
 				if(checkProtection("TELEPORT"))
 					levelChange += 2*getProtection("TELEPORT");
-				for(final String acode : Ability.ACODE_DESCS_)
+				for(final String acode : Ability.ACODE.DESCS_)
 					if(checkProtection(acode))
 						levelChange += 5*getProtection(acode);
-				for(final String domain : Ability.DOMAIN_DESCS)
+				for(final String domain : Ability.DOMAIN.DESCS)
 					if(checkProtection(domain))
 						levelChange += getProtection(domain);
 

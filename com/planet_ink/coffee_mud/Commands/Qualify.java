@@ -343,20 +343,20 @@ public class Qualify  extends Skills
 		{
 			final String uqual=qual.toUpperCase();
 			final String qual2=uqual.replace(' ','_');
-			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
+			for(int i=1;i<Ability.DOMAIN.DESCS.size();i++)
 			{
-				if (Ability.DOMAIN_DESCS[i].startsWith(uqual)
-				||Ability.DOMAIN_DESCS[i].startsWith(qual2))
+				if (Ability.DOMAIN.DESCS.get(i).startsWith(uqual)
+				||Ability.DOMAIN.DESCS.get(i).startsWith(qual2))
 				{
 					domain = i << 5;
 					break;
 				}
 				else
 				{
-					final int x=Ability.DOMAIN_DESCS[i].indexOf('/');
+					final int x=Ability.DOMAIN.DESCS.get(i).indexOf('/');
 					if ((x >= 0)
-					&& (Ability.DOMAIN_DESCS[i].substring(x + 1).startsWith(uqual)
-						||Ability.DOMAIN_DESCS[i].substring(x + 1).startsWith(qual2)))
+					&& (Ability.DOMAIN.DESCS.get(i).substring(x + 1).startsWith(uqual)
+						||Ability.DOMAIN.DESCS.get(i).substring(x + 1).startsWith(qual2)))
 					{
 						domain = i << 5;
 						break;
@@ -365,7 +365,7 @@ public class Qualify  extends Skills
 			}
 			if(domain>0)
 			{
-				domainName=CMStrings.capitalizeAllFirstLettersAndLower(Ability.DOMAIN_DESCS[domain>>5].replace('_',' '));
+				domainName=CMStrings.capitalizeAllFirstLettersAndLower(Ability.DOMAIN.DESCS.get(domain>>5).replace('_',' '));
 				msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_SPELL,domain,"\n\r^H"+domainName+" abilities:^? ",shortOnly, uniqueOnly));
 			}
 		}
@@ -504,18 +504,18 @@ public class Qualify  extends Skills
 			{
 				StringBuilder list = new StringBuilder("");
 				final Set<Integer> qSet = this.getQualifiedTypes(mob);
-				for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+				for(int i=0;i<Ability.ACODE.DESCS.size();i++)
 				{
 					if(qSet.contains(Integer.valueOf(i)))
 					{
-						list.append(Ability.ACODE_DESCS[i]).append(", ");
+						list.append(Ability.ACODE.DESCS.get(i)).append(", ");
 					}
 				}
-				for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
+				for(int i=1;i<Ability.DOMAIN.DESCS.size();i++)
 				{
 					if(qSet.contains(Integer.valueOf(i << 5)))
 					{
-						list.append(Ability.DOMAIN_DESCS[i]).append(", ");
+						list.append(Ability.DOMAIN.DESCS.get(i)).append(", ");
 					}
 				}
 				if(list.length()>0)

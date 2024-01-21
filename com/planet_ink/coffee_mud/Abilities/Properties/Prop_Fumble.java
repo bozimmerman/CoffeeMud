@@ -129,9 +129,9 @@ public class Prop_Fumble extends Property
 					this.ableTypes = new int[0];
 					break;
 				}
-				int x=CMParms.indexOf(Ability.ACODE_DESCS_, s);
+				int x=CMParms.indexOf(Ability.ACODE.DESCS_, s);
 				if(x<0)
-					x=CMParms.indexOf(Ability.ACODE_DESCS, s);
+					x=CMParms.indexOf(Ability.ACODE.DESCS, s);
 				if(x<0)
 					Log.errOut(ID()+" on "+((affected==null)?"null":affected.Name())+" @"+
 							CMLib.map().roomLocation(affected)+" has bad atype: "+s);
@@ -149,9 +149,9 @@ public class Prop_Fumble extends Property
 		{
 			for(final String s : CMParms.parseCommas(domStr, true))
 			{
-				int x=CMParms.indexOf(Ability.DOMAIN_DESCS, s);
+				int x=CMParms.indexOf(Ability.DOMAIN.DESCS, s);
 				if(x<0)
-					x=CMParms.indexOfIgnoreCase(Ability.DOMAIN_VERBS, s);
+					x=CMParms.indexOfIgnoreCase(Ability.DOMAIN.VERBS, s);
 				if(x<0)
 					Log.errOut(ID()+" on "+((affected==null)?"null":affected.Name())+" @"+
 							CMLib.map().roomLocation(affected)+" has bad domain: "+s);

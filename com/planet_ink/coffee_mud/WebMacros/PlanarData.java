@@ -324,7 +324,7 @@ public class PlanarData extends StdWebMacro
 							options = new ArrayList<String>();
 							options.add("number");
 							final List<String> flags = new ConvertingList<String,String>(Arrays.asList(Ability.FLAG_DESCS),Converter.toLowerCase);
-							options.addAll(new ConvertingList<String,String>(Arrays.asList(Ability.DOMAIN_DESCS),Converter.toLowerCase));
+							options.addAll(new ConvertingList<String,String>(Ability.DOMAIN.DESCS,Converter.toLowerCase));
 							options.addAll(flags);
 							options.addAll(new XVector<String>(
 									new ConvertingEnumeration<Ability,String>(

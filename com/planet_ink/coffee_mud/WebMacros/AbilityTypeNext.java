@@ -52,7 +52,7 @@ public class AbilityTypeNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for (final String element : Ability.ACODE_DESCS)
+		for (final String element : Ability.ACODE.DESCS)
 		{
 			final String S=element;
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!S.equals(lastID))))
