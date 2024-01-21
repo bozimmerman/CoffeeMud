@@ -113,7 +113,8 @@ public class Chant_Treeform extends Chant
 		mob.recoverPhyStats();
 
 		if((msg.tool() instanceof Ability)
-		&&(msg.tool().ID().equals("Skill_Revoke"))
+		&&(msg.tool().ID().startsWith("Skill_"))
+		&&(msg.tool().ID().endsWith("Revoke"))
 		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			return super.okMessage(myHost, msg);
 

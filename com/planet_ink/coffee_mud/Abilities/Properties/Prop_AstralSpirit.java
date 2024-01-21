@@ -135,7 +135,9 @@ public class Prop_AstralSpirit extends Property
 					return false;
 				}
 			}
-			if((msg.tool()!=null)&&(msg.tool().ID().equalsIgnoreCase("Skill_Revoke")))
+			if((msg.tool()!=null)
+			&&(msg.tool().ID().startsWith("Skill_"))
+			&&(msg.tool().ID().endsWith("Revoke")))
 				return super.okMessage(myHost,msg);
 			else
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
