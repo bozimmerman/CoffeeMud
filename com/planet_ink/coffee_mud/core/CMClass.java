@@ -2498,7 +2498,6 @@ public class CMClass extends ClassLoader
 				if(packageName.toUpperCase().endsWith(".CLASS"))
 					packageName=packageName.substring(0,packageName.length()-6);
 				final Class<?> C=loader.loadClass(packageName,true);
-System.err.println(packageName);
 				if(C!=null)
 				{
 					if(!checkAncestry(C,ancestorCl))
@@ -2507,7 +2506,17 @@ System.err.println(packageName);
 							Log.sysOut("CMClass","WARNING: class failed ancestral check: "+packageName);
 					}
 					else
-						O=C.getDeclaredConstructor().newInstance();
+					{
+						try
+						{
+							O=C.getDeclaredConstructor().newInstance();
+						}
+						catch(Throwable t)
+						{
+							Log.errOut(t);
+							O=null;
+						}
+					}
 				}
 				if(O==null)
 				{

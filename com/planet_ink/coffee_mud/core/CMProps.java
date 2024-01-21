@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.core;
 
+import com.planet_ink.coffee_mud.Abilities.interfaces.Ability;
 import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CombatLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
@@ -256,7 +257,8 @@ public class CMProps extends Properties
 		TRAINCOSTS,
 		DEFAULTABILITYARGS,
 		XPMOD,
-		MSXPVARS
+		MSXPVARS,
+		NEWDOMAINS
 	}
 
 	public final static int DEFAULT_MOB_HP_BASE = 11;
@@ -2522,6 +2524,33 @@ public class CMProps extends Properties
 			final int i=set.indexOf('=');
 			if(i>0)
 				ableArgs.put(set.substring(0,i).toUpperCase().trim(), set.substring(i+1));
+		}
+		setUpLowVar(Str.NEWDOMAINS,getStr("NEWDOMAINS"));
+		{
+			final List<String> newDoms = CMParms.parseCommas(getVar(Str.NEWDOMAINS), true);
+			if(newDoms.size() > 0)
+			{
+				/*
+				final List<String> domains = new XVector<String>(Arrays.copyOf(Ability.DOMAINS.first, Ability.NUM_CORE_DOMAINS));
+				final List<String> doverbs = new XVector<String>(Arrays.copyOf(Ability.DOMAINS.second, Ability.NUM_CORE_DOMAINS));
+				for(final String newDom : newDoms)
+				{
+					final int x = newDom.indexOf('=');
+					if(x > 0)
+					{
+						final String newDomainName = newDom.substring(0,x).toUpperCase().trim().replace(' ', '_');
+						final String newDomainVerb = newDom.substring(x+1).trim();
+						if(newDomainName.length()>0)
+						{
+							domains.add(newDomainName);
+							doverbs.add(newDomainVerb);
+						}
+					}
+				}
+				Ability.DOMAINS.first = domains.toArray(Ability.DOMAINS.first);
+				Ability.DOMAINS.second = doverbs.toArray(Ability.DOMAINS.second);
+				*/
+			}
 		}
 		setUpLowVar(Str.DEFAULTPARENTAREA,getStr("DEFAULTPARENTAREA"));
 		setUpLowVar(Str.CLANWEBSITES,getStr("CLANWEBSITES"));
