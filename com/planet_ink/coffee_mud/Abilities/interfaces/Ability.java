@@ -907,8 +907,9 @@ public interface Ability extends Environmental
 		"Combat Loring","Combat Fluidisizing","Evading","Matrial Loring",
 		"Racial Knowing","Artmaking","Anatomy","Armor Using",
 		"Shield Using","Crimemaking","Legalizing","Fitness","Acting",
-		"Building","Water Lore","Water Control","Sea Travel","Indulging",
-		"Cosmologing"
+		"Building","Water Lore","Water Control","Sea Travel",
+		"Educating","Indulging","Cosmologing","Roping",
+		"Travelling"
 	};
 
 	/** constant descriptions for the minRange()/maxRange() values @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#minRange() */
