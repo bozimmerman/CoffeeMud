@@ -7589,8 +7589,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					else
 					if(E instanceof Item)
 					{
-						if(((Item)E).amWearingAt(Wearable.IN_INVENTORY))
-							return true; // duh, -worn and +worn should behave differently!
+						if(!((Item)E).amWearingAt(Wearable.IN_INVENTORY))
+							return false; // duh, -worn and +worn should behave differently!
 					}
 					break;
 				case ALIGNMENT: // +alignment
