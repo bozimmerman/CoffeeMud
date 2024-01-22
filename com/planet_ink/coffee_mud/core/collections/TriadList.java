@@ -47,6 +47,8 @@ public interface TriadList<T, K, L> extends List<Triad<T, K, L>>
 
 	public void add(T t, K k, L l);
 
+	public void add(int x, T t, K k, L l);
+
 	public boolean containsFirst(T t);
 
 	public boolean containsSecond(K k);

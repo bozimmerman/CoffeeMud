@@ -52,16 +52,16 @@ public class Where extends StdCommand
 		return access;
 	}
 
-	protected void whereAdd(final DVector V, final Area area, final int i)
+	protected void whereAdd(final PairList<Area,Integer> V, final Area area, final int i)
 	{
-		if(V.contains(area))
+		if(V.containsFirst(area))
 			return;
 
 		for(int v=0;v<V.size();v++)
 		{
-			if(((Integer)V.get(v,2)).intValue()>i)
+			if(V.get(v).second.intValue()>i)
 			{
-				V.insertElementAt(v,area,Integer.valueOf(i));
+				V.add(v,area,Integer.valueOf(i));
 				return;
 			}
 		}
@@ -708,9 +708,9 @@ public class Where extends StdCommand
 			}
 
 			final int adjust=CMath.s_int(CMParms.combine(commands,1));
-			final DVector levelsVec=new DVector(2);
-			final DVector mobsVec=new DVector(2);
-			final DVector alignVec=new DVector(2);
+			final PairArrayList<Area,Integer> levelsV=new PairArrayList<Area,Integer>();
+			final PairArrayList<Area,Integer> mobsV=new PairArrayList<Area,Integer>();
+			final PairArrayList<Area,Integer> alignV=new PairArrayList<Area,Integer>();
 			final int moblevel=mob.phyStats().level()+adjust;
 			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
@@ -732,13 +732,13 @@ public class Where extends StdCommand
 						else
 							medianDiff=(int)Math.round(10.0*CMath.div(moblevel,median));
 					}
-					whereAdd(levelsVec,A,medianDiff);
+					whereAdd(levelsV,A,medianDiff);
 
-					whereAdd(mobsVec,A,A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]);
+					whereAdd(mobsV,A,A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]);
 
 					final int align=A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()];
 					final int alignDiff=((int)Math.abs((double)(alignment-align)));
-					whereAdd(alignVec,A,alignDiff);
+					whereAdd(alignV,A,alignDiff);
 				}
 			}
 			final StringBuffer msg=new StringBuffer(L("You are currently in: ^H@x1^?\n\r",mob.location().getArea().name()));
@@ -749,24 +749,24 @@ public class Where extends StdCommand
 						""+mob.playerStats().percentVisited(mob,mob.location().getArea()),
 						""+mob.playerStats().percentVisited(mob,null)));
 			}
-			final DVector scores=new DVector(2);
+			final PairArrayList<Area,Integer> scores=new PairArrayList<Area,Integer>();
 			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				final Area A=a.nextElement();
 				if(CMLib.flags().canAccess(mob,A))
 				{
-					int index=levelsVec.indexOf(A);
+					int index=levelsV.indexOfFirst(A);
 					if(index>=0)
 					{
-						final Integer I=(Integer)levelsVec.get(index,2);
+						final Integer I=levelsV.get(index).second;
 						if((I!=null)&&(I.intValue()!=0))
 						{
 							int score=(index+1);
-							index=mobsVec.indexOf(A);
+							index=mobsV.indexOfFirst(A);
 							if(index>=0)
 								score+=(index+1);
 
-							index=alignVec.indexOf(A);
+							index=alignV.indexOfFirst(A);
 							if(index>=0)
 								score+=(index+1);
 							whereAdd(scores,A,score);
@@ -782,7 +782,7 @@ public class Where extends StdCommand
 				msg.append("^x"+CMStrings.padRight(L("Area Name"),35)+CMStrings.padRight(L("Level"),6)+CMStrings.padRight(L("Alignment"),20)+CMStrings.padRight(L("Pop"),10)+"^.^?\n\r");
 				final List<Area> finalScoreList = new ArrayList<Area>();
 				for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-15)));i--)
-					finalScoreList.add((Area)scores.get(i,1));
+					finalScoreList.add(scores.get(i).first);
 				final int mobLevel=mob.phyStats().level();
 				Collections.sort(finalScoreList,new Comparator<Area>()
 				{

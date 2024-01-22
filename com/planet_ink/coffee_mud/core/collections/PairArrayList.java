@@ -117,8 +117,18 @@ public class PairArrayList<T, K> extends ArrayList<Pair<T, K>> implements PairLi
 		add(new Pair<T, K>(t, k));
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
+	public void add(final int x, final T t, final K k)
+	{
+		add(x,new Pair<T, K>(t, k));
+	}
 
+	public void addElement(final int x, final T t, final K k)
+	{
+		add(x, new Pair<T, K>(t, k));
+	}
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean contains(final Object o)
 	{

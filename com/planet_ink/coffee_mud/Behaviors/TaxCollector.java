@@ -47,15 +47,15 @@ public class TaxCollector extends StdBehavior
 		return Behavior.CAN_MOBS;
 	}
 
-	protected DVector			demanded			= null;
-	protected DVector			paid				= null;
-	protected long				waitTime			= 1000 * 60 * 5;
-	protected long				graceTime			= 1000 * 60 * 60;
-	protected int				lastMonthChecked	= -1;
-	protected List<LandTitle>	taxableProperties	= new Vector<LandTitle>();
-	protected Set<String>		peopleWhoOwe		= new HashSet<String>();
-	protected String			treasuryRoomID		= null;
-	protected Container			treasuryContainer	= null;
+	protected PairVector<MOB, Long>	demanded			= null;
+	protected PairVector<MOB, Long>	paid				= null;
+	protected long					waitTime			= 1000 * 60 * 5;
+	protected long					graceTime			= 1000 * 60 * 60;
+	protected int					lastMonthChecked	= -1;
+	protected List<LandTitle>		taxableProperties	= new Vector<LandTitle>();
+	protected Set<String>			peopleWhoOwe		= new HashSet<String>();
+	protected String				treasuryRoomID		= null;
+	protected Container				treasuryContainer	= null;
 
 	public final static int		OWE_TOTAL			= 0;
 	public final static int		OWE_CITIZENTAX		= 1;
@@ -155,17 +155,17 @@ public class TaxCollector extends StdBehavior
 					}
 				}
 
-				if((demanded!=null)&&(demanded.contains(msg.source())))
+				if((demanded!=null)&&(demanded.containsFirst(msg.source())))
 				{
-					final int demanDex=demanded.indexOf(msg.source());
+					final int demanDex=demanded.indexOfFirst(msg.source());
 					if(demanDex>=0)
 					{
 						paidAmount-=owed[OWE_CITIZENTAX];
 						demanded.removeElementAt(demanDex);
 					}
 				}
-				if(paid.contains(msg.source()))
-					paid.removeElement(msg.source());
+				if(paid.containsFirst(msg.source()))
+					paid.removeElementFirst(msg.source());
 				paid.addElement(msg.source(),Long.valueOf(System.currentTimeMillis()));
 
 				double totalOwed = 0.0;
@@ -276,7 +276,7 @@ public class TaxCollector extends StdBehavior
 			final String currency=CMLib.beanCounter().getCurrency(mob);
 			final double[] owe=totalMoneyOwed(mob,msg.source());
 			final double coins=((Coins)msg.tool()).getTotalValue();
-			if((paid!=null)&&(paid.contains(msg.source())))
+			if((paid!=null)&&(paid.containsFirst(msg.source())))
 				owe[OWE_TOTAL]-=owe[OWE_CITIZENTAX];
 			final String owed=CMLib.beanCounter().nameCurrencyShort(currency,owe[OWE_TOTAL]);
 			if((!CMLib.beanCounter().isCurrencyMatch(((Coins)msg.tool()).getCurrency(),CMLib.beanCounter().getCurrency(mob))))
@@ -307,13 +307,13 @@ public class TaxCollector extends StdBehavior
 
 		final MOB mob=(MOB)ticking;
 		if(demanded==null)
-			demanded=new DVector(2);
+			demanded=new PairVector<MOB,Long>();
 		if(paid==null)
-			paid=new DVector(2);
+			paid=new PairVector<MOB,Long>();
 
 		for(int i=paid.size()-1;i>=0;i--)
 		{
-			final Long L=(Long)paid.elementAt(i,2);
+			final Long L=paid.get(i).second;
 			if((System.currentTimeMillis()-L.longValue())>graceTime)
 				paid.removeElementAt(i);
 		}
@@ -366,9 +366,9 @@ public class TaxCollector extends StdBehavior
 			&&(CMLib.clans().findCommonRivalrousClans(mob, M).size()==0)
 			&&(CMLib.flags().canBeSeenBy(M,mob)))
 			{
-				final int demandDex=demanded.indexOf(M);
+				final int demandDex=demanded.indexOfFirst(M);
 				if((demandDex>=0)
-				&&((System.currentTimeMillis()-((Long)demanded.elementAt(demandDex,2)).longValue())>waitTime))
+				&&((System.currentTimeMillis()-demanded.get(demandDex).second.longValue())>waitTime))
 				{
 					final LegalBehavior B=CMLib.law().getLegalBehavior(R.getArea());
 					if(M.isMonster()
@@ -388,7 +388,7 @@ public class TaxCollector extends StdBehavior
 						demanded.removeElementAt(demandDex);
 					}
 				}
-				if((!paid.contains(M))&&(demandDex<0))
+				if((!paid.containsFirst(M))&&(demandDex<0))
 				{
 					final double[] owe=totalMoneyOwed(mob,M);
 					final StringBuffer say=new StringBuffer("");

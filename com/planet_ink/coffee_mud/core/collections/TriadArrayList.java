@@ -2,10 +2,8 @@ package com.planet_ink.coffee_mud.core.collections;
 
 import java.util.*;
 
-import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
-
 /*
-   Copyright 2012-2024 Bo Zimmerman
+   Copyright 2024-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -19,28 +17,27 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements TriadList<T, K, L>
+public class TriadArrayList<T, K, L> extends ArrayList<Triad<T, K, L>> implements TriadList<T, K, L>
 {
-	private static final long	serialVersionUID	= -9175373358892311411L;
+	/**
+	 *
+	 */
+	private static final long	serialVersionUID	= 1672867955945287259L;
 
-	public TriadVector()
+	public TriadArrayList(final List<Triad<T,K,L>> initial)
+	{
+		super(initial.size());
+		addAll(initial);
+	}
+
+	public TriadArrayList()
 	{
 		super();
 	}
 
-	public TriadVector(final int initial)
+	public TriadArrayList(final int x)
 	{
-		super(initial);
-	}
-
-	public TriadVector(final TriadList<T, K, L> list)
-	{
-		super();
-		if(list != null)
-		{
-			for(final Triad<T, K, L> t : list)
-				add(t.first, t.second, t.third);
-		}
+		super(x);
 	}
 
 	@Override
@@ -74,6 +71,14 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	public Enumeration<L> thirdElements()
 	{
 		return new ConvertingEnumeration<Triad<T, K, L>, L>(elements(), getThirdConverter());
+	}
+
+	@SuppressWarnings("unchecked")
+	public Enumeration<Triad<T,K,L>> elements()
+	{
+		if(size()==0)
+			return EmptyEnumeration.INSTANCE;
+		return new IteratorEnumeration<Triad<T,K,L>>(iterator());
 	}
 
 	@Override
@@ -152,6 +157,35 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 		add(x, new Triad<T, K, L>(t, k, l));
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean contains(final Object o)
+	{
+		if (o instanceof Triad)
+			return super.contains(o);
+		if (containsFirst((T) o))
+			return true;
+		if (containsSecond((K) o))
+			return true;
+		return containsThird((L) o);
+	}
+
+	@SuppressWarnings("unchecked")
+
+	@Override
+	public int indexOf(final Object o)
+	{
+		if (o instanceof Triad)
+			return super.indexOf(o);
+		int x = indexOfFirst((T) o);
+		if (x >= 0)
+			return x;
+		x = indexOfSecond((K) o);
+		if (x >= 0)
+			return x;
+		return indexOfThird((L) o);
+	}
+
 	@Override
 	public boolean containsFirst(final T t)
 	{
@@ -203,44 +237,6 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 		return get(index).third;
 	}
 
-	@SuppressWarnings("unchecked")
-
-	@Override
-	public boolean contains(final Object o)
-	{
-		if (o instanceof Triad)
-			return super.contains(o);
-		if (containsFirst((T) o))
-			return true;
-		return containsSecond((K) o);
-	}
-
-	@SuppressWarnings("unchecked")
-
-	@Override
-	public int indexOf(final Object o)
-	{
-		if (o instanceof Triad)
-			return super.indexOf(o);
-		final int x = indexOfFirst((T) o);
-		if (x >= 0)
-			return x;
-		return indexOfSecond((K) o);
-	}
-
-	@SuppressWarnings("unchecked")
-
-	@Override
-	public synchronized int indexOf(final Object o, final int index)
-	{
-		if (o instanceof Triad)
-			return super.indexOf(o, index);
-		final int x = indexOfFirst((T) o, index);
-		if (x >= 0)
-			return x;
-		return indexOfSecond((K) o, index);
-	}
-
 	@Override
 	public int indexOfFirst(final T t, final int index)
 	{
@@ -282,7 +278,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 		{
 			for (int i = index; i < size(); i++)
 			{
-				if ((l == null ? get(i).third == null : l.equals(get(i).third)))
+				if ((l == null ? get(i).second == null : l.equals(get(i).second)))
 					return i;
 			}
 		}
@@ -333,7 +329,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 		{
 			for (int i = index; i >= 0; i--)
 			{
-				if ((l == null ? get(i).third == null : l.equals(get(i).third)))
+				if ((l == null ? get(i).second == null : l.equals(get(i).second)))
 					return i;
 			}
 		}
@@ -344,31 +340,31 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public synchronized int lastIndexOfFirst(final T t)
+	public int lastIndexOfFirst(final T t)
 	{
 		return lastIndexOfFirst(t, size() - 1);
 	}
 
 	@Override
-	public synchronized int lastIndexOfSecond(final K k)
+	public int lastIndexOfSecond(final K k)
 	{
 		return lastIndexOfSecond(k, size() - 1);
 	}
 
 	@Override
-	public synchronized int lastIndexOfThird(final L l)
+	public int lastIndexOfThird(final L l)
 	{
 		return lastIndexOfThird(l, size() - 1);
 	}
 
 	@Override
-	public synchronized boolean removeFirst(final T t)
+	public boolean removeFirst(final T t)
 	{
-		Triad<T, K, L> pair;
+		Triad<T, K, L> Triad;
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
 		{
-			pair = i.next();
-			if ((t == null ? pair.first == null : t.equals(pair.first)))
+			Triad = i.next();
+			if ((t == null ? Triad.first == null : t.equals(Triad.first)))
 			{
 				i.remove();
 				return true;
@@ -378,13 +374,13 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public synchronized boolean removeSecond(final K k)
+	public boolean removeSecond(final K k)
 	{
-		Triad<T, K, L> pair;
+		Triad<T, K, L> Triad;
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
 		{
-			pair = i.next();
-			if ((k == null ? pair.second == null : k.equals(pair.second)))
+			Triad = i.next();
+			if ((k == null ? Triad.second == null : k.equals(Triad.second)))
 			{
 				i.remove();
 				return true;
@@ -394,13 +390,13 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public synchronized boolean removeThird(final L l)
+	public boolean removeThird(final L l)
 	{
-		Triad<T, K, L> pair;
+		Triad<T, K, L> Triad;
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
 		{
-			pair = i.next();
-			if ((l == null ? pair.third == null : l.equals(pair.third)))
+			Triad = i.next();
+			if ((l == null ? Triad.second == null : l.equals(Triad.second)))
 			{
 				i.remove();
 				return true;
@@ -425,6 +421,20 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	public boolean removeElementThird(final L l)
 	{
 		return removeThird(l);
+	}
+
+	public Triad<T,K,L> firstElement()
+	{
+		if(size()==0)
+			throw new IndexOutOfBoundsException ();
+		return get(0);
+	}
+
+	public Triad<T,K,L> lastElement()
+	{
+		if(size()==0)
+			throw new IndexOutOfBoundsException ();
+		return get(size()-1);
 	}
 
 	public T firstFirstElement(final int index)

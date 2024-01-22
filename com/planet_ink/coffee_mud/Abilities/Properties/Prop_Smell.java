@@ -52,7 +52,7 @@ public class Prop_Smell extends Property
 		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;
 	}
 
-	protected DVector smells=null;
+	protected TriadList<String,Integer,Integer> smells=null;
 	protected final static int FLAG_EMOTE=512;
 	protected final static int FLAG_BROADCAST=1024;
 	protected boolean lastWasBroadcast=false;
@@ -93,12 +93,12 @@ public class Prop_Smell extends Property
 		}
 	}
 
-	public DVector getSmells()
+	public TriadList<String,Integer,Integer> getSmells()
 	{
 		if(smells!=null)
 			return smells;
 		final List<String> allsmells=CMParms.parseSemicolons(text(),true);
-		smells=new DVector(3);
+		smells=new TriadVector<String,Integer,Integer>(3);
 		for(int i=0;i<allsmells.size();i++)
 		{
 			final String smell=allsmells.get(i);
@@ -106,34 +106,34 @@ public class Prop_Smell extends Property
 			{
 				int pct=100;
 				int ticks=-1;
-				final Vector<String> parsedSmell=CMParms.parse(smell);
+				final List<String> parsedSmell=CMParms.parse(smell);
 				for(int ii=parsedSmell.size()-1;ii>=0;ii--)
 				{
-					final String s=parsedSmell.elementAt(ii).toUpperCase();
+					final String s=parsedSmell.get(ii).toUpperCase();
 					if(s.startsWith("TICKS="))
 					{
 						ticks=CMath.s_int(s.substring(6).trim());
-						parsedSmell.removeElementAt(ii);
+						parsedSmell.remove(ii);
 					}
 					if(s.startsWith("CHANCE="))
 					{
 						pct=(pct&(FLAG_BROADCAST+FLAG_EMOTE))+CMath.s_int(s.substring(5).trim());
-						parsedSmell.removeElementAt(ii);
+						parsedSmell.remove(ii);
 					}
 					if(s.equals("EMOTE"))
 					{
 						pct=pct|FLAG_EMOTE;
-						parsedSmell.removeElementAt(ii);
+						parsedSmell.remove(ii);
 					}
 					if(s.equals("BROADCAST"))
 					{
 						pct=pct|FLAG_BROADCAST;
-						parsedSmell.removeElementAt(ii);
+						parsedSmell.remove(ii);
 					}
 				}
 				final String finalSmell=CMParms.combine(parsedSmell,0).trim();
 				if(finalSmell.length()>0)
-					smells.addElement(finalSmell,Integer.valueOf(pct),Integer.valueOf(ticks));
+					smells.add(finalSmell,Integer.valueOf(pct),Integer.valueOf(ticks));
 			}
 		}
 		return smells;
@@ -148,7 +148,7 @@ public class Prop_Smell extends Property
 			int total=0;
 			for(int i=0;i<smells.size();i++)
 			{
-				final int pct=((Integer)smells.elementAt(i,2)).intValue();
+				final int pct=smells.get(i).second.intValue();
 				if((!emoteOnly)||(CMath.bset(pct,FLAG_EMOTE)))
 					total+=pct&511;
 			}
@@ -157,14 +157,14 @@ public class Prop_Smell extends Property
 			int draw=CMLib.dice().roll(1,total,0);
 			for(int i=0;i<smells.size();i++)
 			{
-				final int pct=((Integer)smells.elementAt(i,2)).intValue();
+				final int pct=smells.get(i).second.intValue();
 				if((!emoteOnly)||(CMath.bset(pct,FLAG_EMOTE)))
 				{
 					draw-=pct&511;
 					if(draw<=0)
 					{
 						lastWasBroadcast=CMath.bset(pct,FLAG_BROADCAST);
-						return (String)smells.elementAt(i,1);
+						return smells.get(i).first;
 					}
 				}
 			}
@@ -226,20 +226,20 @@ public class Prop_Smell extends Property
 					}
 				}
 			}
-			final DVector sm=getSmells();
+			final TriadList<String,Integer,Integer> sm=getSmells();
 			boolean redo=false;
 			for(int i=sm.size()-1;i>=0;i--)
 			{
-				if(((Integer)sm.elementAt(i,3)).intValue()>0)
+				if(sm.get(i).third.intValue()>0)
 				{
-					final Integer I=Integer.valueOf(((Integer)smells.elementAt(i,3)).intValue()-1);
+					final Integer I=Integer.valueOf(smells.get(i).third.intValue()-1);
 					if(I.intValue()>0)
 					{
-						final String smell=(String)sm.elementAt(i,1);
-						final Integer pct=(Integer)sm.elementAt(i,2);
-						sm.addElement(smell,pct,I);
+						final String smell=sm.get(i).first;
+						final Integer pct=sm.get(i).second;
+						sm.add(smell,pct,I);
 					}
-					sm.removeElementAt(i);
+					sm.remove(i);
 					if(I.intValue()<=0)
 						redo=true;
 				}
@@ -249,9 +249,9 @@ public class Prop_Smell extends Property
 				final StringBuffer newText=new StringBuffer("");
 				for(int i=0;i<sm.size();i++)
 				{
-					final String smell=(String)sm.elementAt(i,1);
-					final Integer pct=(Integer)sm.elementAt(i,2);
-					final Integer ticks=(Integer)sm.elementAt(i,3);
+					final String smell=sm.get(i).first;
+					final Integer pct=sm.get(i).second;
+					final Integer ticks=sm.get(i).third;
 					if(ticks.intValue()>0)
 						newText.append("TICKS="+ticks+" ");
 					if(CMath.bset(pct.intValue(),FLAG_EMOTE))

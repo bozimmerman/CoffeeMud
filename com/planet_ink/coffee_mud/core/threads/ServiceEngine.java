@@ -1444,18 +1444,18 @@ public class ServiceEngine implements ThreadEngine
 		return codeWord;
 	}
 
-	public void insertOrderDeathInOrder(final DVector DV, final long lastStart, final String msg, final TickableGroup tock)
+	public void insertOrderDeathInOrder(final TriadList<Long,String,TickableGroup> DV, final long lastStart, final String msg, final TickableGroup tock)
 	{
 		if(DV.size()>0)
 		for(int i=0;i<DV.size();i++)
 		{
-			if(((Long)DV.elementAt(i,1)).longValue()>lastStart)
+			if(DV.get(i).first.longValue()>lastStart)
 			{
-				DV.insertElementAt(i,Long.valueOf(lastStart),msg,tock);
+				DV.add(i,Long.valueOf(lastStart),msg,tock);
 				return;
 			}
 		}
-		DV.addElement(Long.valueOf(lastStart),msg,tock);
+		DV.add(Long.valueOf(lastStart),msg,tock);
 	}
 
 	public void setSupportStatus(final String s)
@@ -1532,7 +1532,7 @@ public class ServiceEngine implements ThreadEngine
 		setSupportStatus("checking");
 
 		setSupportStatus("checking tick groups.");
-		final DVector orderedDeaths=new DVector(3);
+		final TriadList<Long,String,TickableGroup> orderedDeaths=new TriadArrayList<Long,String,TickableGroup>(3);
 		try
 		{
 			TickableGroup almostTock = null;
@@ -1588,17 +1588,17 @@ public class ServiceEngine implements ThreadEngine
 		{
 		}
 		for(int i=0;i<orderedDeaths.size();i++)
-			Log.errOut(Thread.currentThread().getName(),(String)orderedDeaths.elementAt(i,2));
+			Log.errOut(Thread.currentThread().getName(),orderedDeaths.get(i).second);
 
 		setSupportStatus("killing tick groups.");
 		for(int x=0;x<orderedDeaths.size();x++)
 		{
-			final TickableGroup almostTock=(TickableGroup)orderedDeaths.elementAt(x,3);
-			final Vector<TickClient> tockClients=new Vector<TickClient>();
+			final TickableGroup almostTock=orderedDeaths.get(x).third;
+			final List<TickClient> tockClients=new LinkedList<TickClient>();
 			try
 			{
 				for(final Iterator<TickClient> e=almostTock.tickers();e.hasNext();)
-					tockClients.addElement(e.next());
+					tockClients.add(e.next());
 			}
 			catch (final NoSuchElementException e)
 			{
@@ -1617,11 +1617,8 @@ public class ServiceEngine implements ThreadEngine
 			}
 			if(CMLib.threads() instanceof ServiceEngine)
 				((ServiceEngine)CMLib.threads()).delTickGroup(almostTock);
-			for(int i=0;i<tockClients.size();i++)
-			{
-				final TickClient c=tockClients.elementAt(i);
+			for(final TickClient c : tockClients)
 				startTickDown(c.getClientObject(),c.getTickID(),c.getTotalTickDown());
-			}
 		}
 
 		setSupportStatus("Checking mud threads");

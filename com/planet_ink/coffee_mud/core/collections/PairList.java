@@ -38,6 +38,8 @@ public interface PairList<T, K> extends List<Pair<T, K>>
 
 	public void add(T t, K k);
 
+	public void add(int x, T t, K k);
+
 	public boolean containsFirst(T t);
 
 	public boolean containsSecond(K k);

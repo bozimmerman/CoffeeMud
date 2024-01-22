@@ -339,15 +339,13 @@ public class StdLawBook extends StdItem
 				{
 					StringBuffer msg=new StringBuffer("Sentences ( ");
 					for (final String sentence : Law.PUNISHMENT_DESCS)
-					{
 						msg.append(sentence.toLowerCase()+" ");
-					}
 					String oldSentence="";
-					final Vector<String> V=CMParms.parse(oldLaw[Law.BIT_SENTENCE]);
-					final DVector V2=new DVector(2);
-					for(int v=0;v<V.size();v++)
+					final List<String> sentencePartsV=CMParms.parse(oldLaw[Law.BIT_SENTENCE]);
+					final PairArrayList<String,String> sentenceVarsV=new PairArrayList<String,String>();
+					for(int v=0;v<sentencePartsV.size();v++)
 					{
-						final String t=V.elementAt(v);
+						final String t=sentencePartsV.get(v);
 						boolean sent=false;
 						for (final String element : Law.PUNISHMENT_DESCS)
 						{
@@ -355,7 +353,7 @@ public class StdLawBook extends StdItem
 							{
 								oldSentence=t.toLowerCase();
 								sent=true;
-								V2.addElement(oldSentence,"");
+								sentenceVarsV.add(oldSentence,"");
 								break;
 							}
 						}
@@ -367,9 +365,9 @@ public class StdLawBook extends StdItem
 								{
 									final int x1=t.indexOf('=');
 									if(x1>0)
-										V2.addElement(element.toLowerCase(),t.substring(x1+1));
+										sentenceVarsV.addElement(element.toLowerCase(),t.substring(x1+1));
 									else
-										V2.addElement(element.toLowerCase(),"");
+										sentenceVarsV.addElement(element.toLowerCase(),"");
 									break;
 								}
 							}
@@ -381,10 +379,10 @@ public class StdLawBook extends StdItem
 					{
 						if(element.startsWith(t.toUpperCase()))
 						{
-							final int x1=V2.indexOf(oldSentence);
+							final int x1=sentenceVarsV.indexOfFirst(oldSentence);
 							oldSentence=element.toLowerCase();
-							V2.setElementAt(x1,1,oldSentence);
-							V2.setElementAt(x1,2,"");
+							sentenceVarsV.get(x1).first=oldSentence;
+							sentenceVarsV.get(x1).second="";
 							t=null;
 							break;
 						}
@@ -402,12 +400,12 @@ public class StdLawBook extends StdItem
 								msg.append(sentence.toLowerCase()+" ");
 							}
 							final StringBuffer oldFlags=new StringBuffer("");
-							for(int v=0;v<V2.size();v++)
+							for(int v=0;v<sentenceVarsV.size();v++)
 							{
-								t=(String)V2.elementAt(v,1);
+								t=sentenceVarsV.get(v).first;
 								if(t.equalsIgnoreCase(oldSentence))
 									continue;
-								oldFlags.append(t+((String)V2.elementAt(v,2))+" ");
+								oldFlags.append(t+(sentenceVarsV.get(v).second)+" ");
 							}
 							msg.append(L("\n\rSelect a flag to toggle or RETURN (@x1): ",oldFlags.toString()));
 							int selectedMask=-1;
@@ -420,7 +418,7 @@ public class StdLawBook extends StdItem
 								if(Law.PUNISHMENTMASK_DESCS[i].startsWith(t.toUpperCase()))
 								{
 									selectedMask=i;
-									indexIfExists=V2.indexOf(Law.PUNISHMENTMASK_DESCS[selectedMask].toLowerCase());
+									indexIfExists=sentenceVarsV.indexOfFirst(Law.PUNISHMENTMASK_DESCS[selectedMask].toLowerCase());
 									t=null;
 									break;
 								}
@@ -429,8 +427,8 @@ public class StdLawBook extends StdItem
 							{
 								if(indexIfExists>=0)
 								{
-									mob.tell(L("'@x1' has been removed.",V2.elementAt(indexIfExists,1).toString()));
-									V2.removeElementAt(indexIfExists);
+									mob.tell(L("'@x1' has been removed.",sentenceVarsV.get(indexIfExists).first));
+									sentenceVarsV.remove(indexIfExists);
 								}
 								else
 								{
@@ -498,21 +496,21 @@ public class StdLawBook extends StdItem
 									}
 									if(!abort)
 									{
-										V2.addElement(Law.PUNISHMENTMASK_DESCS[selectedMask],parm);
-										mob.tell(L("'@x1@x2' has been added.",V2.elementAt(V2.size()-1,1).toString(),parm));
+										sentenceVarsV.addElement(Law.PUNISHMENTMASK_DESCS[selectedMask],parm);
+										mob.tell(L("'@x1@x2' has been added.",sentenceVarsV.get(sentenceVarsV.size()-1).first,parm));
 									}
 									else
-										mob.tell(L("'@x1@x2' has been aborted.",V2.elementAt(V2.size()-1,1).toString(),parm));
+										mob.tell(L("'@x1@x2' has been aborted.",sentenceVarsV.get(sentenceVarsV.size()-1).first,parm));
 								}
 							}
 							else
 								mob.tell(L("'@x1' is not a valid flag.  Unchanged.",t));
 						}
 						final StringBuffer newSentence=new StringBuffer("");
-						for(int v2=0;v2<V2.size();v2++)
+						for(int v2=0;v2<sentenceVarsV.size();v2++)
 						{
-							t=(String)V2.elementAt(v2,1);
-							final String p=(String)V2.elementAt(v2,2);
+							t=sentenceVarsV.get(v2).first;
+							final String p=sentenceVarsV.get(v2).second;
 							if(p.indexOf(' ')>0)
 								newSentence.append("\""+t+p+"\" ");
 							else
@@ -1246,13 +1244,13 @@ public class StdLawBook extends StdItem
 			str.append(L("3. LEVEL 3 PAROLE TIME: @x1 seconds.\n\r",""+(CMath.s_int(theLaw.getInternalStr("PAROLE3TIME"))*CMProps.getTickMillis()/1000)));
 			str.append(L("4. LEVEL 4 PAROLE TIME: @x1 seconds.\n\r",""+(CMath.s_int(theLaw.getInternalStr("PAROLE4TIME"))*CMProps.getTickMillis()/1000)));
 			str.append("\n\r");
-			List<String> V=theLaw.releaseRooms();
-			if(CMParms.combine(V,0).equals("@"))
-				V=new Vector<String>();
+			List<String> releaseRoomsV=theLaw.releaseRooms();
+			if(CMParms.combine(releaseRoomsV,0).equals("@"))
+				releaseRoomsV=new Vector<String>();
 			int highest=4;
-			for(int v=0;v<V.size();v++)
+			for(int v=0;v<releaseRoomsV.size();v++)
 			{
-				final String s=V.get(v);
+				final String s=releaseRoomsV.get(v);
 				highest++;
 				final Room R=CMLib.map().getRoom(s);
 				if(R!=null)
@@ -1272,7 +1270,7 @@ public class StdLawBook extends StdItem
 				else
 				if(mob.session().confirm(L("Add this room as a new release room (y/N)? "),"N"))
 				{
-					V.add(CMLib.map().getExtendedRoomID(mob.location()));
+					releaseRoomsV.add(CMLib.map().getExtendedRoomID(mob.location()));
 					changed=true;
 				}
 			}
@@ -1285,7 +1283,7 @@ public class StdLawBook extends StdItem
 					{
 						if(mob.session().confirm(L("Remove this room as a release room (y/N)? "),"N"))
 						{
-							V.remove(x-5);
+							releaseRoomsV.remove(x-5);
 							changed=true;
 						}
 					}
@@ -1308,8 +1306,8 @@ public class StdLawBook extends StdItem
 			if(changed)
 			{
 				final StringBuffer s2=new StringBuffer("");
-				for(int v=0;v<V.size();v++)
-					s2.append((V.get(v))+";");
+				for(int v=0;v<releaseRoomsV.size();v++)
+					s2.append((releaseRoomsV.get(v))+";");
 				if(s2.length()==0)
 					s2.append("@");
 				else

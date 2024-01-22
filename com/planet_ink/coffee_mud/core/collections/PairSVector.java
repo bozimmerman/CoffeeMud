@@ -87,9 +87,20 @@ public class PairSVector<T, K> extends SVector<Pair<T, K>> implements List<Pair<
 		add(new Pair<T, K>(t, k));
 	}
 
+	@Override
+	public void add(final int x, final T t, final K k)
+	{
+		add(x, new Pair<T, K>(t, k));
+	}
+
 	public void addElement(final T t, final K k)
 	{
 		add(new Pair<T, K>(t, k));
+	}
+
+	public void addElement(final int x, final T t, final K k)
+	{
+		add(x, new Pair<T, K>(t, k));
 	}
 
 	@Override

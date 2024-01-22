@@ -430,7 +430,7 @@ public class GModify extends StdCommand
 		Pattern pattern=null;
 		boolean checkedOut=true;
 		Matcher M=null;
-		final DVector matches=new DVector(3);
+		final TriadArrayList<String,Integer,Integer> matches=new TriadArrayList<String,Integer,Integer>();
 		int lastCode=FLAG_AND;
 		for(int i=0;i<onfields.size();i++)
 		{
@@ -622,10 +622,10 @@ public class GModify extends StdCommand
 					int matchEnd=-1;
 					for(int m=0;m<matches.size();m++)
 					{
-						if(((String)matches.get(m,1)).equals(field))
+						if(matches.get(m).first.equals(field))
 						{
-							matchStart=((Integer)matches.get(m,2)).intValue();
-							matchEnd=((Integer)matches.get(m,3)).intValue();
+							matchStart=matches.get(m).second.intValue();
+							matchEnd=matches.get(m).third.intValue();
 						}
 					}
 					if(matchStart>=0)
