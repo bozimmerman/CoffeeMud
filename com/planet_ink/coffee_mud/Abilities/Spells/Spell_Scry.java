@@ -80,7 +80,8 @@ public class Spell_Scry extends Spell
 		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
 	}
 
-	public static final DVector scries=new DVector(2);
+	public static final PairList<MOB,MOB> scries=new PairVector<MOB,MOB>();
+
 	private final AtomicBoolean recurse=new AtomicBoolean(false);
 
 	@Override
@@ -91,7 +92,7 @@ public class Spell_Scry extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			scries.removeElement(mob);
+			scries.removeElementFirst(mob);
 		if((canBeUninvoked())&&(invoker!=null))
 			invoker.tell(mob,null,null,L("Your knowledge of '<S-NAME>' fades."));
 		super.unInvoke();
@@ -167,8 +168,8 @@ public class Spell_Scry extends Spell
 			final StringBuffer scryList=new StringBuffer("");
 			for(int e=0;e<scries.size();e++)
 			{
-				if(scries.elementAt(e,2)==mob)
-					scryList.append(((e>0)?", ":"")+((MOB)scries.elementAt(e,1)).name());
+				if(scries.get(e).second==mob)
+					scryList.append(((e>0)?", ":"")+scries.get(e).first.name());
 			}
 			if(scryList.length()>0)
 				commonTelL(mob,"Cast on or revoke from whom?  You currently have @x1 on the following: @x2.",name(),scryList.toString());
@@ -212,7 +213,7 @@ public class Spell_Scry extends Spell
 			return true;
 		}
 		else
-		if((A!=null)||(scries.contains(target)))
+		if((A!=null)||(scries.containsFirst(target)))
 		{
 			commonTelL(mob,"You can't seem to focus on '@x1'.",mobName);
 			return false;
@@ -234,7 +235,7 @@ public class Spell_Scry extends Spell
 					newRoom.send(target,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					scries.addElement(target,mob);
+					scries.add(target,mob);
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

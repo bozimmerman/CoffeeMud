@@ -22,6 +22,7 @@ import com.planet_ink.coffee_mud.core.collections.Pair.SecondComparator;
  */
 public class Triad<T, K, L> extends Pair<T, K>
 {
+	private static final long serialVersionUID = 3227647705379969966L;
 	public L	third;
 
 	public Triad(final T frst, final K scnd, final L thrd)
@@ -86,7 +87,7 @@ public class Triad<T, K, L> extends Pair<T, K>
 			return Integer.valueOf(arg0.third.hashCode()).compareTo(Integer.valueOf(arg1.third.hashCode()));
 		}
 	}
-	
+
 	public static final class TripleComparator<T, K, L> implements Comparator<Triad<T, K, L>>
 	{
 		final FirstComparator<T, K>		fc	= new FirstComparator<T, K>();
@@ -105,7 +106,7 @@ public class Triad<T, K, L> extends Pair<T, K>
 			return tc.compare(arg0, arg1);
 		}
 	}
-	
+
 	@Override
 	public boolean equals(final Object o)
 	{

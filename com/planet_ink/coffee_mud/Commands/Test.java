@@ -870,6 +870,7 @@ public class Test extends StdCommand
 		{
 			final String what=commands.get(1).toUpperCase().trim();
 			//String rest=CMParms.combine(commands,2);
+
 			if(what.equalsIgnoreCase("levelxptest"))
 			{
 				for(int i=0;i<100;i++)

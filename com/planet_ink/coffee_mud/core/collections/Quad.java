@@ -19,9 +19,10 @@ import java.util.*;
  */
 public class Quad<T, K, L, M> extends Triad<T, K, L>
 {
+	private static final long serialVersionUID = 2479354656478636160L;
 	public M	fourth;
 
-	public Quad(T frst, K scnd, L thrd, M frth)
+	public Quad(final T frst, final K scnd, final L thrd, final M frth)
 	{
 		super(frst, scnd, thrd);
 		fourth = frth;
@@ -30,7 +31,7 @@ public class Quad<T, K, L, M> extends Triad<T, K, L>
 	public static final class FirstConverter<T, K, L, M> implements Converter<Quad<T, K, L, M>, T>
 	{
 		@Override
-		public T convert(Quad<T, K, L, M> obj)
+		public T convert(final Quad<T, K, L, M> obj)
 		{
 			return obj.first;
 		}
@@ -39,7 +40,7 @@ public class Quad<T, K, L, M> extends Triad<T, K, L>
 	public static final class SecondConverter<T, K, L, M> implements Converter<Quad<T, K, L, M>, K>
 	{
 		@Override
-		public K convert(Quad<T, K, L, M> obj)
+		public K convert(final Quad<T, K, L, M> obj)
 		{
 			return obj.second;
 		}
@@ -48,7 +49,7 @@ public class Quad<T, K, L, M> extends Triad<T, K, L>
 	public static final class ThirdConverter<T, K, L, M> implements Converter<Quad<T, K, L, M>, L>
 	{
 		@Override
-		public L convert(Quad<T, K, L, M> obj)
+		public L convert(final Quad<T, K, L, M> obj)
 		{
 			return obj.third;
 		}
@@ -57,14 +58,14 @@ public class Quad<T, K, L, M> extends Triad<T, K, L>
 	public static final class FourthConverter<T, K, L, M> implements Converter<Quad<T, K, L, M>, M>
 	{
 		@Override
-		public M convert(Quad<T, K, L, M> obj)
+		public M convert(final Quad<T, K, L, M> obj)
 		{
 			return obj.fourth;
 		}
 	}
 
 	@Override
-	public boolean equals(Object o)
+	public boolean equals(final Object o)
 	{
 		if (o == this)
 			return true;

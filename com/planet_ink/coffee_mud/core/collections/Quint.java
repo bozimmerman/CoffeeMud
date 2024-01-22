@@ -17,6 +17,7 @@ package com.planet_ink.coffee_mud.core.collections;
  */
 public class Quint<T, K, L, M, N> extends Quad<T, K, L, M>
 {
+	private static final long serialVersionUID = 5385283468188214266L;
 	public N	fifth;
 
 	public Quint(final T frst, final K scnd, final L thrd, final M frth, final N fith)

@@ -73,6 +73,8 @@ public interface CostDef
 	 */
 	public static class Cost extends Triad<Double,CostType, String>
 	{
+		private static final long serialVersionUID = 1386265685565326643L;
+
 		/**
 		 * Construct a Cost object
 		 * @param amt the amount

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.core.collections;
 
+import java.io.Serializable;
 import java.util.*;
 
 /*
@@ -17,8 +18,9 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-public class Pair<T, K> implements Map.Entry<T, K>
+public class Pair<T, K> implements Map.Entry<T, K>, Serializable
 {
+	private static final long serialVersionUID = 5801807195720264263L;
 	public T	first;
 	public K	second;
 

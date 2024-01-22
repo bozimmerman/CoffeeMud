@@ -42,6 +42,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 
 	private class LinkedEntry<V, W> extends Pair<V, W>
 	{
+		private static final long serialVersionUID = 8934491445006075722L;
 		public volatile LinkedEntry<V, W>	next		= null;
 		public volatile LinkedEntry<V, W>	prev		= null;
 		public volatile int					priority	= 0;

@@ -544,6 +544,8 @@ public interface AreaGenerationLibrary extends CMLibrary
 	 */
 	public class UpdateSet extends Triad<Modifiable,String,String>
 	{
+		private static final long serialVersionUID = -4823552885917346264L;
+
 		public UpdateSet(final Modifiable obj, final String key, final String value)
 		{
 			super(obj, key, value);

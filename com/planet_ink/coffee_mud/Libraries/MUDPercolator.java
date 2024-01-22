@@ -3975,6 +3975,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 		private static class WhatBit extends Pair<String[],String>
 		{
+			private static final long serialVersionUID = -3081263523263581063L;
 			public AggregatorFunctions aggregator = null;
 
 			private WhatBit(final String what[], final String as)

@@ -384,6 +384,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 */
 	public static class ScriptLn extends Triad<String,String[],Object>
 	{
+		private static final long serialVersionUID = -3327511702060317043L;
 
 		public ScriptLn(final String frst, final String[] scnd, final Object thrd)
 		{

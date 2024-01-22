@@ -1142,7 +1142,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			return;
 		final Race R=mob.charStats().getMyRace();
 		final long mobUnwearableBitmap=mob.charStats().getWearableRestrictionsBitmap();
-		final DVector reWearSet=new DVector(2);
+		final PairList<Item,Long> reWearSet=new PairArrayList<Item,Long>(Wearable.DEFAULT_WORN_DESCS.length);
 		Item item=null;
 		for(int i=0;i<mob.numItems();i++)
 		{
@@ -1153,16 +1153,16 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				final Long oldCode=Long.valueOf(item.rawWornCode());
 				item.unWear();
 				if(reWearSet.size()==0)
-					reWearSet.addElement(item,oldCode);
+					reWearSet.add(item,oldCode);
 				else
 				{
 					final short layer=(item instanceof Armor)?((Armor)item).getClothingLayer():0;
 					int d=0;
 					for(;d<reWearSet.size();d++)
 					{
-						if(reWearSet.elementAt(d,1) instanceof Armor)
+						if(reWearSet.get(d).first instanceof Armor)
 						{
-							if(((Armor)reWearSet.elementAt(d,1)).getClothingLayer()>layer)
+							if(((Armor)reWearSet.get(d).first).getClothingLayer()>layer)
 								break;
 						}
 						else
@@ -1170,9 +1170,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							break;
 					}
 					if(d>=reWearSet.size())
-						reWearSet.addElement(item,oldCode);
+						reWearSet.add(item,oldCode);
 					else
-						reWearSet.insertElementAt(d,item,oldCode);
+						reWearSet.add(d,item,oldCode);
 				}
 
 			}
@@ -1181,8 +1181,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		final CMMsg removeMsg=CMClass.getMsg(mob,item,null,CMMsg.NO_EFFECT,null,CMMsg.TYP_REMOVE|CMMsg.MASK_ALWAYS,null,CMMsg.NO_EFFECT,null);
 		for(int r=0;r<reWearSet.size();r++)
 		{
-			item=(Item)reWearSet.elementAt(r,1);
-			final long oldCode=((Long)reWearSet.elementAt(r,2)).longValue();
+			item=reWearSet.get(r).first;
+			final long oldCode=reWearSet.get(r).second.longValue();
 			int msgCode=CMMsg.MSG_WEAR;
 			if((oldCode&Wearable.WORN_WIELD)>0)
 				msgCode=CMMsg.MSG_WIELD;
