@@ -324,7 +324,7 @@ public interface AbilityParameters extends CMLibrary
 	 * @param columnsV the recipe column information
 	 * @param saveVFS true to save to vfs, false for local hard drive
 	 */
-	public void resaveRecipeFile(MOB mob, String recipeFilename, List<DVector> rowsV, List<? extends Object> columnsV, boolean saveVFS);
+	public void resaveRecipeFile(MOB mob, String recipeFilename, List<AbilityRecipeRow> rowsV, List<? extends Object> columnsV, boolean saveVFS);
 
 	/**
 	 * Given an CraftorAbility object (usually a common skill), this method will load the raw
@@ -351,21 +351,35 @@ public interface AbilityParameters extends CMLibrary
 	/**
 	 * Return the generic class type that most closely matches the
 	 * given ability.
-	 * 
+	 *
 	 * @param A the Ability to look
 	 * @return the class id
 	 */
 	public String getGenericClassID(final Ability A);
-	
+
 	/**
 	 * Attempts to convert a coded Ability into a generic one.
 	 * It does a terrible job.
-	 * 
+	 *
 	 * @param A the Ability to convert
 	 * @return the generic "version"
 	 */
 	public Ability convertAbilityToGeneric(final Ability A);
-	
+
+	/**
+	 * A Recipe row consists of a list of data in the row by
+	 * column.  The data is in two parts: the first is the
+	 * column editor, or editor name.  The second is the row
+	 * data itself.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static class AbilityRecipeRow extends PairVector<Object,String>
+	{
+		private static final long serialVersionUID = -4060619451997372217L;
+	}
+
 	/**
 	 * An AbilityParameters interface for passing around a completely decoded CraftorAbility
 	 * (Common Skill) recipe list, ready for manipulation by users.
@@ -395,7 +409,7 @@ public interface AbilityParameters extends CMLibrary
 		 * The rows of data, representing the rows of recipes.  One row per List item.
 		 * @return rows of data, representing the rows of recipes.  One row per List item.
 		 */
-		public List<DVector> dataRows();
+		public List<AbilityRecipeRow> dataRows();
 
 		/**
 		 * The columns of the recipe table, including multi-use and optional column data
@@ -440,13 +454,13 @@ public interface AbilityParameters extends CMLibrary
 		 * @param classFieldData the class info for the object in the recipe
 		 * @return the new coded row.
 		 */
-		public DVector newRow(String classFieldData);
+		public AbilityRecipeRow newRow(String classFieldData);
 
 		/**
 		 * Creates a new blank recipe row for alteration.
 		 * @return a new blank recipe row for alteration.
 		 */
-		public DVector blankRow();
+		public AbilityRecipeRow blankRow();
 
 		/**
 		 * Returns true if the recipe file, when loaded, was saved in the vfs

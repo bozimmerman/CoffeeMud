@@ -51,8 +51,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	protected String				templatePersonalSection	= commonBuilderTemplateKey + "_PERSONAL";
 	protected String				templateSharedSection	= commonBuilderTemplateKey + "_SHARED";
 
-	public DVector					icatalog				= new DVector(2);
-	public DVector					mcatalog				= new DVector(2);
+	public PairList<Item,CataData>	icatalog				= new PairVector<Item,CataData>();
+	public PairList<MOB,CataData>	mcatalog				= new PairVector<MOB,CataData>();
 	public volatile CMFile.CMVFSDir	catalogFileMobsRoot		= null;
 	public volatile CMFile.CMVFSDir	catalogFileItemsRoot	= null;
 
@@ -76,7 +76,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 	}
 
-	protected Object getCatalogObject(final DVector list, final String name, final int dim)
+	protected CataData getCatalogData(final PairList<? extends Physical,CataData> list, final String name)
 	{
 		synchronized(list)
 		{
@@ -89,9 +89,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				while(start<=end)
 				{
 					final int mid=(end+start)/2;
-					final int comp=((Environmental)list.elementAt(mid,1)).Name().compareToIgnoreCase(name);
+					final int comp=((Environmental)list.get(mid).first).Name().compareToIgnoreCase(name);
 					if(comp==0)
-						return list.elementAt(mid,dim);
+						return list.get(mid).second;
 					else
 					if(comp>0)
 						end=mid-1;
@@ -107,7 +107,38 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 	}
 
-	protected void addCatalogReplace(final DVector DV, final String category, final Physical P)
+	protected Physical getCatalogObject(final PairList<? extends Physical,CataData> list, final String name)
+	{
+		synchronized(list)
+		{
+			try
+			{
+				if(list.size()==0)
+					return null;
+				int start=0;
+				int end=list.size()-1;
+				while(start<=end)
+				{
+					final int mid=(end+start)/2;
+					final int comp=((Environmental)list.get(mid).first).Name().compareToIgnoreCase(name);
+					if(comp==0)
+						return list.get(mid).first;
+					else
+					if(comp>0)
+						end=mid-1;
+					else
+						start=mid+1;
+
+				}
+			}
+			catch(final Exception e)
+			{
+			}
+			return null;
+		}
+	}
+
+	protected void addCatalogReplace(final PairList<? extends Environmental,CataData> DV, final String category, final Physical P)
 	{
 		int start=0;
 		int end=DV.size()-1;
@@ -119,7 +150,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		while(start<=end)
 		{
 			mid=(end+start)/2;
-			comp=((Environmental)DV.elementAt(mid,1)).Name().compareToIgnoreCase(name);
+			comp=((Environmental)DV.get(mid).first).Name().compareToIgnoreCase(name);
 			if(comp==0)
 				break;
 			else
@@ -134,13 +165,15 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				start=mid+1;
 			}
 		}
+		@SuppressWarnings("unchecked")
+		final PairList<Physical,CataData> PV = (PairList<Physical,CataData>)DV;
 		if(comp==0)
 		{
 			if((P instanceof DBIdentifiable)
-			&&((DBIdentifiable)DV.elementAt(mid,1)).databaseID().length()>0)
-				((DBIdentifiable)P).setDatabaseID(((DBIdentifiable)DV.elementAt(mid,1)).databaseID());
-			((Environmental)DV.elementAt(mid,1)).destroy();
-			DV.setElementAt(mid,1,P);
+			&&((DBIdentifiable)DV.get(mid).first).databaseID().length()>0)
+				((DBIdentifiable)P).setDatabaseID(((DBIdentifiable)DV.get(mid).first).databaseID());
+			((Environmental)DV.get(mid).first).destroy();
+			PV.get(mid).first=P;
 		}
 		else
 		{
@@ -151,35 +184,35 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			{
 				for(comp=lastStart;comp<=lastEnd;comp++)
 				{
-					if(((Environmental)DV.elementAt(comp,1)).Name().compareToIgnoreCase(name)>0)
+					if(((Environmental)DV.get(comp).first).Name().compareToIgnoreCase(name)>0)
 					{
-						DV.insertElementAt(comp,P,data);
+						PV.add(comp,P,data);
 						return;
 					}
 				}
 			}
-			DV.addElement(P,data);
+			PV.add(P,data);
 		}
 	}
 
-	public String[] makeCatalogNames(final String catName, final DVector catalog)
+	public String[] makeCatalogNames(final String catName, final PairList<? extends Environmental,CataData> catalog)
 	{
 		final List<String> nameList=new ArrayList<String>(catalog.size());
 		for(int x=0;x<catalog.size();x++)
 		{
-			if((catName==null)||(catName.equals(((CataData)catalog.elementAt(x, 2)).category())))
-				nameList.add(((Environmental)catalog.elementAt(x, 1)).Name());
+			if((catName==null)||(catName.equals(catalog.get(x).second.category())))
+				nameList.add(((Environmental)catalog.get(x).first).Name());
 		}
 		return nameList.toArray(new String[0]);
 	}
 
-	public String[] makeCatalogCatagories(final DVector catalog)
+	public String[] makeCatalogCatagories(final PairList<? extends Environmental,CataData> catalog)
 	{
 		final List<String> catalogList=new SortedListWrap<String>(new ArrayList<String>(2));
 		for(int x=0;x<catalog.size();x++)
 		{
-			if(!catalogList.contains(((CataData)catalog.elementAt(x, 2)).category()))
-				catalogList.add(((CataData)catalog.elementAt(x, 2)).category());
+			if(!catalogList.contains(catalog.get(x).second.category()))
+				catalogList.add(catalog.get(x).second.category());
 		}
 		return catalogList.toArray(new String[catalogList.size()]);
 	}
@@ -221,19 +254,15 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Item[] getCatalogItems()
 	{
-		final List<Item> itemsV=(List)icatalog.getDimensionList(1);
-		return itemsV.toArray(new Item[itemsV.size()]);
+		return icatalog.toArrayFirst(new Item[icatalog.size()]);
 	}
 
 	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public MOB[] getCatalogMobs()
 	{
-		final List<MOB> mobsV=(List)mcatalog.getDimensionList(1);
-		return mobsV.toArray(new MOB[mobsV.size()]);
+		return mcatalog.toArrayFirst(new MOB[mcatalog.size()]);
 	}
 
 	@Override
@@ -258,25 +287,25 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	@Override
 	public Item getCatalogItem(final String called)
 	{
-		return (Item) getCatalogObject(icatalog, called, 1);
+		return (Item) getCatalogObject(icatalog, called);
 	}
 
 	@Override
 	public MOB getCatalogMob(final String called)
 	{
-		return (MOB) getCatalogObject(mcatalog, called, 1);
+		return (MOB) getCatalogObject(mcatalog, called);
 	}
 
 	@Override
 	public CataData getCatalogItemData(final String called)
 	{
-		return (CataData) getCatalogObject(icatalog, called, 2);
+		return getCatalogData(icatalog, called);
 	}
 
 	@Override
 	public CataData getCatalogMobData(final String called)
 	{
-		return (CataData) getCatalogObject(mcatalog, called, 2);
+		return getCatalogData(mcatalog, called);
 	}
 
 	@Override
@@ -503,7 +532,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		{
 			synchronized(icatalog)
 			{
-				icatalog.removeElement(P);
+				icatalog.removeElementFirst((Item)P);
 			}
 			CMLib.database().DBDeleteItem("CATALOG_ITEMS",(Item)P);
 			this.catalogFileItemsRoot=null;
@@ -513,7 +542,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		{
 			synchronized(mcatalog)
 			{
-				mcatalog.removeElement(P);
+				mcatalog.removeElementFirst((MOB)P);
 			}
 			CMLib.database().DBDeleteMOB("CATALOG_MOBS",(MOB)P);
 			this.catalogFileMobsRoot=null;
@@ -918,7 +947,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			{
 				for(int d=0;d<icatalog.size();d++)
 				{
-					data=(CatalogLibrary.CataData)icatalog.elementAt(d,2);
+					data=icatalog.get(d).second;
 					if((data.getSpawn()==(live?CataSpawn.LIVE:CataSpawn.DROP))
 					&&(Math.random() <= data.getRate())
 					&&(CMLib.masking().maskCheck(data.getMaskV(),M,true))
@@ -926,7 +955,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 					{
 						if(selections==null)
 							selections=new ArrayList<Item>();
-						selections.add((Item)icatalog.elementAt(d,1));
+						selections.add(icatalog.get(d).first);
 					}
 				}
 			}
@@ -1118,8 +1147,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	@Override
 	public boolean shutdown()
 	{
-		icatalog=new DVector(2);
-		mcatalog=new DVector(2);
+		icatalog=new PairVector<Item,CataData>();
+		mcatalog=new PairVector<MOB,CataData>();
 		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
 		{
 			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
@@ -1635,7 +1664,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		};
 	}
 
-	protected CMFile.CMVFSDir getCatalogRoot(final DVector catalog, final String rootName, final CMFile.CMVFSDir rootRoot)
+	protected CMFile.CMVFSDir getCatalogRoot(final PairList<? extends Physical,CataData> catalog, final String rootName, final CMFile.CMVFSDir rootRoot)
 	{
 		if(catalog.size()==0)
 			return null;
@@ -1644,8 +1673,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		final HashMap<String,List<Physical>> usedCats=new HashMap<String,List<Physical>>();
 		for(int i=0;i<catalog.size();i++)
 		{
-			final Physical obj=(Physical)catalog.elementAt(i, 1);
-			final CataData data=(CataData)catalog.elementAt(i, 2);
+			final Physical obj=catalog.get(i).first;
+			final CataData data=catalog.get(i).second;
 
 			catalogFileRoot.add(new CMFile.CMVFSFile(catalogFileRoot.getPath()+obj.Name().replace(' ','_')+".cmare",48,System.currentTimeMillis(),"SYS")
 			{
@@ -1672,11 +1701,11 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			@Override
 			public Object readData()
 			{
-				final String tagName=(catalog.elementAt(0,1) instanceof MOB)?"MOBS":"ITEMS";
+				final String tagName=(catalog.get(0).first instanceof MOB)?"MOBS":"ITEMS";
 				final StringBuilder str=new StringBuilder("<"+tagName+">");
 				for(int i=0;i<catalog.size();i++)
 				{
-					final Physical obj=(Physical)catalog.elementAt(i, 1);
+					final Physical obj=catalog.get(i).first;
 					if(obj instanceof MOB)
 						str.append(CMLib.coffeeMaker().getMobXML((MOB)obj));
 					else

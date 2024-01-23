@@ -72,9 +72,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	protected int		spawn				= Quest.Spawn.NO.ordinal();
 	private QuestState	questState			= new QuestState();
 	private boolean		copy				= false;
-	public DVector		internalFiles		= null;
 	private int[]		resetData			= null;
 
+	public PairList<String,StringBuffer>internalFiles		= null;
 	private final AtomicBoolean			suspended			= new AtomicBoolean(false);
 	protected final Map<String,Long>	stepEllapsedTimes	= Collections.synchronizedMap(new HashMap<String,Long>());
 	protected final Map<String,Long>	winners				= new CaselessTreeMap<Long>();
@@ -347,7 +347,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		{
 			for(int i=0;i<internalFiles.size();i++)
 			{
-				final String filename=((String)internalFiles.get(i,1)).toUpperCase();
+				final String filename=internalFiles.get(i).first.toUpperCase();
 				final List<String> delThese=new ArrayList<String>();
 				boolean foundKey=false;
 				for(final Iterator<String> k=Resources.findResourceKeys(filename);k.hasNext();)
@@ -547,9 +547,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		int index=-1;
 		if(internalFiles!=null)
 		{
-			index=internalFiles.indexOf(named.toUpperCase().trim());
+			index=internalFiles.indexOfFirst(named.toUpperCase().trim());
 			if(index>=0)
-				return (StringBuffer)internalFiles.get(index,2);
+				return internalFiles.get(index).second;
 		}
 		final StringBuffer buf=new CMFile(Resources.makeFileResourceName(named),null,showErrors?CMFile.FLAG_LOGERRORS:0).text();
 		return buf;
@@ -5952,8 +5952,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						if(debug)
 							Log.debugOut(prefix+"Found file "+name+" of "+data.length()+" lines");
 						if(internalFiles==null)
-							internalFiles=new DVector(2);
-						internalFiles.addElement(name.toUpperCase().trim(),new StringBuffer(data));
+							internalFiles=new PairVector<String,StringBuffer>();
+						internalFiles.add(name.toUpperCase().trim(),new StringBuffer(data));
 					}
 
 				}

@@ -20,6 +20,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.EnglishParsing;
 import com.planet_ink.coffee_mud.Libraries.interfaces.FactionManager.FAbilityMaskType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -2778,8 +2779,8 @@ public class DefaultFaction implements Faction, MsgListener
 		private boolean			erroredOut;
 		private Faction			myFaction;
 		public boolean			isReset	= false;
-		private DVector			currentReactionSets;
 		private long			birthTime = System.currentTimeMillis();
+		private PairList<CompiledZMask,List<Faction.FReactionItem>> currentReactionSets;
 
 		private final CMap<String, Long>				timers	= new SHashtable<String, Long>();
 		private final CMap<String, int[]>				counters= new SHashtable<String, int[]>();
@@ -2803,7 +2804,7 @@ public class DefaultFaction implements Faction, MsgListener
 				lastUpdated=System.currentTimeMillis();
 				myEffects=new Ability[0];
 				myBehaviors=new Behavior[0];
-				currentReactionSets = new DVector(2);
+				currentReactionSets = new PairVector<CompiledZMask,List<Faction.FReactionItem>>();
 				lightPresenceAbilities = new Ability[0];
 				currentRange = null;
 				erroredOut=false;
@@ -2878,7 +2879,6 @@ public class DefaultFaction implements Faction, MsgListener
 			nextChangeTime.put(event, Long.valueOf(time));
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public void setValue(final int newValue)
 		{
@@ -2899,7 +2899,7 @@ public class DefaultFaction implements Faction, MsgListener
 					else
 					{
 						erroredOut=false;
-						currentReactionSets=new DVector(2);
+						currentReactionSets=new PairVector<CompiledZMask,List<Faction.FReactionItem>>();
 						for(final Enumeration<Faction.FReactionItem> e=reactions();e.hasMoreElements();)
 						{
 							Faction.FReactionItem react = e.nextElement();
@@ -2909,7 +2909,7 @@ public class DefaultFaction implements Faction, MsgListener
 							Vector<Faction.FReactionItem> reactSet=null;
 							for(int r=0;r<currentReactionSets.size();r++)
 							{
-								reactSet=(Vector<Faction.FReactionItem>)currentReactionSets.elementAt(r,2);
+								reactSet=(Vector<Faction.FReactionItem>)currentReactionSets.get(r).second;
 								sampleReact=reactSet.firstElement();
 								if(react.presentMOBMask().trim().equalsIgnoreCase(sampleReact.presentMOBMask().trim()))
 								{
@@ -2918,7 +2918,7 @@ public class DefaultFaction implements Faction, MsgListener
 								}
 							}
 							if(react!=null)
-								currentReactionSets.addElement(react.compiledPresentMOBMask(),new XVector<Faction.FReactionItem>(react));
+								currentReactionSets.add(react.compiledPresentMOBMask(),new XVector<Faction.FReactionItem>(react));
 						}
 						//noReactions=currentReactionSets.size()==0;
 					}
@@ -2966,7 +2966,6 @@ public class DefaultFaction implements Faction, MsgListener
 			return lastDataChange[0] > lastUpdated;
 		}
 
-		@SuppressWarnings("unchecked")
 		private Ability setPresenceReaction(final MOB M, final Physical myHost)
 		{
 			if((!CMLib.flags().canBeSeenBy(myHost, M))
@@ -2975,15 +2974,15 @@ public class DefaultFaction implements Faction, MsgListener
 			if((M.amUltimatelyFollowing()!=null)
 			&&(!M.amUltimatelyFollowing().isMonster()))
 				return null;
-			Vector<String> myReactions=null;
+			List<String> myReactions=null;
 			List<Faction.FReactionItem> tempReactSet=null;
 			for(int d=0;d<currentReactionSets.size();d++)
 			{
-				if(CMLib.masking().maskCheck((MaskingLibrary.CompiledZMask)currentReactionSets.elementAt(d,1),M,true))
+				if(CMLib.masking().maskCheck(currentReactionSets.get(d).first,M,true))
 				{
 					if(myReactions==null)
 						myReactions=new Vector<String>();
-					tempReactSet=(List<Faction.FReactionItem>)currentReactionSets.elementAt(d,2);
+					tempReactSet=currentReactionSets.get(d).second;
 					for(final Faction.FReactionItem reactionItem : tempReactSet)
 						myReactions.add(reactionItem.reactionObjectID()+"="+reactionItem.parameters(myHost.Name()));
 				}

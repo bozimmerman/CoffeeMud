@@ -95,7 +95,6 @@ public class DefaultArrestWarrant implements LegalWarrant
 	private Room			jail				= null;
 	private Room			releaseRoom			= null;
 	private String			crime				= "";
-	private final DVector	punishmentParms		= new DVector(2);
 	private int				punishment			= -1;
 	private int				jailTime			= 0;
 	private int				state				= 0;
@@ -105,6 +104,8 @@ public class DefaultArrestWarrant implements LegalWarrant
 	private long			lastStateChangeTime = 0;
 	private long			ignoreUntilTime		= 0;
 	private String			warnMsg				= null;
+
+	private final PairList<Integer,String>	punishmentParms		= new PairVector<Integer,String>();
 
 	@Override
 	public void setArrestingOfficer(final Area legalArea, final MOB mob)
@@ -173,19 +174,19 @@ public class DefaultArrestWarrant implements LegalWarrant
 	@Override
 	public String getPunishmentParm(final int code)
 	{
-		final int index = punishmentParms.indexOf(Integer.valueOf(code));
+		final int index = punishmentParms.indexOfFirst(Integer.valueOf(code));
 		if (index < 0)
 			return "";
-		return (String) punishmentParms.elementAt(index, 2);
+		return punishmentParms.get(index).second;
 	}
 
 	@Override
 	public void addPunishmentParm(final int code, final String parm)
 	{
-		final int index = punishmentParms.indexOf(Integer.valueOf(code));
+		final int index = punishmentParms.indexOfFirst(Integer.valueOf(code));
 		if (index >= 0)
-			punishmentParms.removeElementAt(index);
-		punishmentParms.addElement(Integer.valueOf(code), parm);
+			punishmentParms.remove(index);
+		punishmentParms.add(Integer.valueOf(code), parm);
 	}
 
 	@Override

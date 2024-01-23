@@ -7271,7 +7271,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			final StringBuilder parts=new StringBuilder("");
 			final int numResources=CMath.s_int(E.getStat("NUMRSC"));
-			final DVector DV=new DVector(2);
+			final PairList<Item,Integer> DV=new PairArrayList<Item,Integer>();
 			for(int r=0;r<numResources;r++)
 			{
 				final Item I=CMClass.getItem(E.getStat("GETRSCID"+r));
@@ -7282,23 +7282,23 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					boolean done=false;
 					for(int v=0;v<DV.size();v++)
 					{
-						if(I.sameAs((Environmental)DV.elementAt(v,1)))
+						if(I.sameAs(DV.get(v).first))
 						{
-							DV.setElementAt(v, 2, Integer.valueOf(((Integer) DV.elementAt(v, 2)).intValue() + 1));
+							DV.get(v).second = Integer.valueOf(DV.get(v).second.intValue() + 1);
 							done = true;
 							break;
 						}
 					}
 					if(!done)
-						DV.addElement(I,Integer.valueOf(1));
+						DV.add(I,Integer.valueOf(1));
 				}
 				else
 					parts.append("Unknown: "+E.getStat("GETRSCID"+r)+", ");
 			}
 			for(int v=0;v<DV.size();v++)
 			{
-				final Item I=(Item)DV.elementAt(v,1);
-				final int i=((Integer)DV.elementAt(v,2)).intValue();
+				final Item I=DV.get(v).first;
+				final int i=DV.get(v).second.intValue();
 				if(i<2)
 					parts.append(I.name()+", ");
 				else
@@ -7318,7 +7318,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				int partNum=-1;
 				for(int i=0;i<DV.size();i++)
 				{
-					if(CMLib.english().containsString(((Item)DV.elementAt(i,1)).name(),newName))
+					if(CMLib.english().containsString(DV.get(i).first.name(),newName))
 					{
 						partNum=i;
 						break;
@@ -7340,15 +7340,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								boolean done=false;
 								for(int v=0;v<DV.size();v++)
 								{
-									if(I.sameAs((Environmental)DV.elementAt(v,1)))
+									if(I.sameAs(DV.get(v).first))
 									{
-										DV.setElementAt(v,2,Integer.valueOf(((Integer)DV.elementAt(v,2)).intValue()+1));
+										DV.get(v).second = Integer.valueOf(DV.get(v).second.intValue()+1);
 										done=true;
 										break;
 									}
 								}
 								if(!done)
-									DV.addElement(I,Integer.valueOf(1));
+									DV.add(I,Integer.valueOf(1));
 								else
 									I.destroy();
 								mob.tell(L("@x1 added.",I.name()));
@@ -7359,12 +7359,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				else
 				{
-					final Item I=(Item)DV.elementAt(partNum,1);
-					final int i=((Integer)DV.elementAt(partNum,2)).intValue();
+					final Item I=DV.get(partNum).first;
+					final int i=DV.get(partNum).second.intValue();
 					if(i<2)
-						DV.removeElementAt(partNum);
+						DV.remove(partNum);
 					else
-						DV.setElementAt(partNum,2,Integer.valueOf(i-1));
+						DV.get(partNum).second = Integer.valueOf(i-1);
 					mob.tell(L("@x1 removed.",I.name()));
 					updateList=true;
 				}
@@ -7372,23 +7372,23 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					int dex=0;
 					for(int i=0;i<DV.size();i++)
-						dex+=((Integer)DV.elementAt(i,2)).intValue();
+						dex+=DV.get(i).second.intValue();
 					E.setStat("NUMRSC",""+dex);
 					dex=0;
 					Item I=null;
 					Integer N=null;
 					for(int i=0;i<DV.size();i++)
 					{
-						I=(Item)DV.elementAt(i,1);
-						N=(Integer)DV.elementAt(i,2);
+						I=DV.get(i).first;
+						N=DV.get(i).second;
 						for(int n=0;n<N.intValue();n++)
 							E.setStat("GETRSCID"+(dex++),I.ID());
 					}
 					dex=0;
 					for(int i=0;i<DV.size();i++)
 					{
-						I=(Item)DV.elementAt(i,1);
-						N=(Integer)DV.elementAt(i,2);
+						I=DV.get(i).first;
+						N=DV.get(i).second;
 						for(int n=0;n<N.intValue();n++)
 							E.setStat("GETRSCPARM"+(dex++),I.text());
 					}
@@ -8220,20 +8220,21 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	protected DVector genClassAbleMod(final MOB mob, final DVector sets, final String ableID, final int origLevelIndex, int origAbleIndex)
-	throws IOException
+	protected PairList<Integer,List<AbilityMapper.AbilityMapping>> genClassAbleMod(final MOB mob,
+								final PairList<Integer,List<AbilityMapper.AbilityMapping>> sets,
+								final String ableID, final int origLevelIndex, int origAbleIndex)
+										throws IOException
 	{
 		Integer level=null;
 		if(origLevelIndex>=0)
 		{
 			if(mob.session().confirm(L("Enter Y to DELETE, or N to modify (y/N)?"),"N"))
 			{
-				final List<AbilityMapper.AbilityMapping> set=(List<AbilityMapper.AbilityMapping>)sets.elementAt(origLevelIndex,2);
+				final List<AbilityMapper.AbilityMapping> set=sets.get(origLevelIndex).second;
 				set.remove(origAbleIndex);
 				return null;
 			}
-			level=(Integer)sets.elementAt(origLevelIndex,1);
+			level=sets.get(origLevelIndex).first;
 		}
 		else
 			level=Integer.valueOf(1);
@@ -8258,22 +8259,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 		else
 		{
-			final List<AbilityMapper.AbilityMapping> levelSet=(List<AbilityMapper.AbilityMapping>)sets.elementAt(origLevelIndex,2);
+			final List<AbilityMapper.AbilityMapping> levelSet=sets.get(origLevelIndex).second;
 			aMAP=levelSet.get(origAbleIndex);
 			levelSet.remove(origAbleIndex);
 			origAbleIndex=-1;
 		}
 
-		int newlevelIndex=sets.indexOf(level);
+		int newlevelIndex=sets.indexOfFirst(level);
 		List<AbilityMapper.AbilityMapping> levelSet=null;
 		if(newlevelIndex<0)
 		{
 			newlevelIndex=sets.size();
 			levelSet=new Vector<AbilityMapper.AbilityMapping>();
-			sets.addElement(level,levelSet);
+			sets.add(level,levelSet);
 		}
 		else
-			levelSet=(List<AbilityMapper.AbilityMapping>)sets.elementAt(newlevelIndex,2);
+			levelSet=sets.get(newlevelIndex).second;
 		aMAP.defaultProficiency(CMath.s_int(mob.session().prompt(L("Enter the (default) proficiency level (@x1): ",""+aMAP.defaultProficiency()),aMAP.defaultProficiency()+"")));
 		aMAP.maxProficiency(CMath.s_int(mob.session().prompt(L("Enter the (maximum) proficiency level (@x1): ",""+aMAP.maxProficiency()),aMAP.maxProficiency()+"")));
 		aMAP.autoGain(mob.session().confirm(L("Is this skill automatically gained@x1?",(aMAP.autoGain()?"(Y/n)":"(y/N)")),""+aMAP.autoGain()));
@@ -8306,7 +8307,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		return sets;
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void genClassAbilities(final MOB mob, final CharClass E, final int showNumber, final int showFlag)
 		throws IOException
 	{
@@ -8321,7 +8321,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			final StringBuilder parts=new StringBuilder("");
 			int numAbles=CMath.s_int(E.getStat("NUMCABLE"));
-			final DVector levelSets=new DVector(2);
+			final PairList<Integer,List<AbilityMapper.AbilityMapping>> levelSets=
+					new PairArrayList<Integer,List<AbilityMapper.AbilityMapping>>();
 			int maxAbledLevel=Integer.MIN_VALUE;
 			for(int v=0;v<numAbles;v++)
 			{
@@ -8342,18 +8343,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					aMAP.defaultParm(E.getStat("GETCABLEPARM"+v));
 					aMAP.originalSkillPreReqList(E.getStat("GETCABLEPREQ"+v));
 					aMAP.extraMask(E.getStat("GETCABLEMASK"+v));
-					final int lvlIndex=levelSets.indexOf(Integer.valueOf(aMAP.qualLevel()));
-					Vector<AbilityMapper.AbilityMapping> set=null;
+					final int lvlIndex=levelSets.indexOfFirst(Integer.valueOf(aMAP.qualLevel()));
+					List<AbilityMapper.AbilityMapping> set=null;
 					if(lvlIndex<0)
 					{
-						set=new Vector<AbilityMapper.AbilityMapping>();
-						levelSets.addElement(Integer.valueOf(aMAP.qualLevel()),set);
+						set=new ArrayList<AbilityMapper.AbilityMapping>();
+						levelSets.add(Integer.valueOf(aMAP.qualLevel()),set);
 						if(aMAP.qualLevel()>maxAbledLevel)
 							maxAbledLevel=aMAP.qualLevel();
 					}
 					else
-						set=(Vector<AbilityMapper.AbilityMapping>)levelSets.elementAt(lvlIndex,2);
-					set.addElement(aMAP);
+						set=levelSets.get(lvlIndex).second;
+					set.add(aMAP);
 				}
 			}
 			final String header=showNumber+". Class Abilities: ";
@@ -8370,10 +8371,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							   );
 			for(int i=0;i<=maxAbledLevel;i++)
 			{
-				final int index=levelSets.indexOf(Integer.valueOf(i));
+				final int index=levelSets.indexOfFirst(Integer.valueOf(i));
 				if(index<0)
 					continue;
-				final List<AbilityMapper.AbilityMapping> set=(List<AbilityMapper.AbilityMapping>)levelSets.elementAt(index,2);
+				final List<AbilityMapper.AbilityMapping> set=levelSets.get(index).second;
 				for(int s=0;s<set.size();s++)
 				{
 					final AbilityMapper.AbilityMapping aMAP=set.get(s);
@@ -8401,7 +8402,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				List<AbilityMapper.AbilityMapping> myLevelSet=null;
 				for(int s=0;s<levelSets.size();s++)
 				{
-					final List<AbilityMapper.AbilityMapping> lvls=(List<AbilityMapper.AbilityMapping>)levelSets.elementAt(s,2);
+					final List<AbilityMapper.AbilityMapping> lvls=levelSets.get(s).second;
 					for(int l=0;l<lvls.size();l++)
 					{
 						if(CMLib.english().containsString(lvls.get(l).abilityID(),newName))
@@ -8459,8 +8460,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					int dex=0;
 					for(int s=0;s<levelSets.size();s++)
 					{
-						final Integer lvl=(Integer)levelSets.elementAt(s,1);
-						final List<AbilityMapper.AbilityMapping> lvls=(List<AbilityMapper.AbilityMapping>)levelSets.elementAt(s,2);
+						final Integer lvl=levelSets.get(s).first;
+						final List<AbilityMapper.AbilityMapping> lvls=levelSets.get(s).second;
 						for(int l=0;l<lvls.size();l++)
 						{
 							final AbilityMapper.AbilityMapping aMAP=lvls.get(l);

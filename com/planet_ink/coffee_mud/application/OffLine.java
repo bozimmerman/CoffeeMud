@@ -47,7 +47,7 @@ import java.io.*;
 public class OffLine extends Thread implements MudHost
 {
 	public static Vector<OffLine> mudThreads=new Vector<OffLine>();
-	public static DVector accessed=new DVector(2);
+	public static PairList<String,Long> accessed=new PairVector<String,Long>();
 	public static Vector<String> autoblocked=new Vector<String>();
 	private final static PrintStream logStream = System.out;
 	private final static PrintStream errStream = System.err;
@@ -215,13 +215,13 @@ public class OffLine extends Thread implements MudHost
 			{
 				for(int a=accessed.size()-1;a>=0;a--)
 				{
-					if((((Long)accessed.elementAt(a,2)).longValue()+LastConnectionDelay)<System.currentTimeMillis())
-						accessed.removeElementAt(a);
+					if((accessed.get(a).second.longValue()+LastConnectionDelay)<System.currentTimeMillis())
+						accessed.remove(a);
 					else
-					if(((String)accessed.elementAt(a,1)).trim().equalsIgnoreCase(address))
+					if(accessed.get(a).first.trim().equalsIgnoreCase(address))
 					{
 						anyAtThisAddress=true;
-						if((((Long)accessed.elementAt(a,2)).longValue()+ConnectionWindow)>System.currentTimeMillis())
+						if((accessed.get(a).second.longValue()+ConnectionWindow)>System.currentTimeMillis())
 							numAtThisAddress++;
 					}
 				}
@@ -243,7 +243,7 @@ public class OffLine extends Thread implements MudHost
 			{
 			}
 
-			accessed.addElement(address,Long.valueOf(System.currentTimeMillis()));
+			accessed.add(address,Long.valueOf(System.currentTimeMillis()));
 			if(proceed!=0)
 			{
 				logStream.println("Blocking a connection from "+address+" on port "+port);

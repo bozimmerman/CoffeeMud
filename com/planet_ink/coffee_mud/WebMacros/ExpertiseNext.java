@@ -56,11 +56,11 @@ public class ExpertiseNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		DVector experts=(DVector)httpReq.getRequestObjects().get("SORTED_EXPERTISE");
+		PairList<String,ExpertiseDefinition> experts=(PairList)httpReq.getRequestObjects().get("SORTED_EXPERTISE");
 		ExpertiseLibrary.ExpertiseDefinition E=null;
 		if(experts==null)
 		{
-			experts=new DVector(2);
+			experts=new PairVector<String,ExpertiseDefinition>();
 			String Ename=null;
 			String Vname=null;
 			int x=0;
@@ -74,16 +74,16 @@ public class ExpertiseNext extends StdWebMacro
 				boolean added=false;
 				for(int v=0;v<experts.size();v++)
 				{
-					Vname=(String)experts.elementAt(v,1);
+					Vname=experts.get(v).first;
 					if(Vname.compareTo(Ename)>0)
 					{
-						experts.insertElementAt(v,Ename,E);
+						experts.add(v,Ename,E);
 						added=true;
 						break;
 					}
 				}
 				if(!added)
-					experts.addElement(Ename,E);
+					experts.add(Ename,E);
 			}
 			httpReq.getRequestObjects().put("SORTED_EXPERTISE",experts);
 		}
@@ -118,9 +118,9 @@ public class ExpertiseNext extends StdWebMacro
 				}
 			}
 		}
-		for(final Iterator<Object> e=experts.getDimensionList(2).iterator();e.hasNext();)
+		for(final Iterator<ExpertiseDefinition> e=experts.secondIterator();e.hasNext();)
 		{
-			E=(ExpertiseLibrary.ExpertiseDefinition)e.next();
+			E=e.next();
 			if(E!=null)
 			{
 				if(expertsAllows!=null)

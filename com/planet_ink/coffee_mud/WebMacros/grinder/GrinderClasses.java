@@ -99,7 +99,7 @@ public class GrinderClasses
 		}
 		String old;
 		// names are numerous
-		DVector DV=new DVector(2);
+		final PairList<Integer,String> levelNamesV=new PairArrayList<Integer,String>();
 		int num=0;
 		while(httpReq.isUrlParameter("NAME"+(++num)))
 		{
@@ -109,39 +109,39 @@ public class GrinderClasses
 				final String name=httpReq.getUrlParameter("NAME"+(num));
 				if((name!=null)&&(name.length()>0))
 				{
-					if(DV.size()==0)
-						DV.addElement(Integer.valueOf(minLevel),name);
+					if(levelNamesV.size()==0)
+						levelNamesV.add(Integer.valueOf(minLevel),name);
 					else
 					{
 						boolean added=false;
-						for(int n=0;n<DV.size();n++)
+						for(int n=0;n<levelNamesV.size();n++)
 						{
-							if(minLevel<((Integer)DV.elementAt(n,1)).intValue())
+							if(minLevel<levelNamesV.get(n).first.intValue())
 							{
-								DV.insertElementAt(n,Integer.valueOf(minLevel),name);
+								levelNamesV.add(n,Integer.valueOf(minLevel),name);
 								added=true;
 								break;
 							}
 							else
-							if(minLevel==((Integer)DV.elementAt(n,1)).intValue())
+							if(minLevel==levelNamesV.get(n).first.intValue())
 							{
 								added=true;
 								break;
 							}
 						}
 						if(!added)
-							DV.addElement(Integer.valueOf(minLevel),name);
+							levelNamesV.add(Integer.valueOf(minLevel),name);
 					}
 				}
 			}
 		}
-		if(DV.size()==0)
-			DV.addElement(Integer.valueOf(0),C.ID());
-		C.setStat("NUMNAME",""+DV.size());
-		for(int l=0;l<DV.size();l++)
+		if(levelNamesV.size()==0)
+			levelNamesV.add(Integer.valueOf(0),C.ID());
+		C.setStat("NUMNAME",""+levelNamesV.size());
+		for(int l=0;l<levelNamesV.size();l++)
 		{
-			C.setStat("NAME"+l, (String)DV.elementAt(l,2));
-			C.setStat("NAMELEVEL"+l, ((Integer)DV.elementAt(l,1)).toString());
+			C.setStat("NAME"+l, levelNamesV.get(l).second);
+			C.setStat("NAMELEVEL"+l, levelNamesV.get(l).first.toString());
 		}
 
 		old=httpReq.getUrlParameter("");
@@ -201,10 +201,10 @@ public class GrinderClasses
 		old=httpReq.getUrlParameter("RACQUAL");
 		C.setStat("RACQUAL",(old==null)?"All":old);
 		String id="";
-		List<String> V=new Vector<String>();
+		final List<String> noWeapV=new Vector<String>();
 		for(int i=0;httpReq.isUrlParameter("NOWEAPS"+id);id=""+(++i))
-			V.add(httpReq.getUrlParameter("NOWEAPS"+id));
-		C.setStat("GETWEP",CMParms.toListString(V));
+			noWeapV.add(httpReq.getUrlParameter("NOWEAPS"+id));
+		C.setStat("GETWEP",CMParms.toListString(noWeapV));
 		int x=0;
 		final List<Pair<String,Integer>> minStats=new LinkedList<Pair<String,Integer>>();
 		while(httpReq.getUrlParameter("MINSTAT"+x)!=null)
@@ -230,7 +230,7 @@ public class GrinderClasses
 		}
 		C.setStat("DISFLAGS",""+CMath.s_long(httpReq.getUrlParameter("DISFLAGS")));
 		num=0;
-		DV.clear();
+		final PairList<Integer,String> levelSecV=new PairArrayList<Integer,String>();
 		while(httpReq.isUrlParameter("SSET"+(++num)))
 		{
 			if(CMath.isInteger(httpReq.getUrlParameter("SSETLEVEL"+(num))))
@@ -239,72 +239,72 @@ public class GrinderClasses
 				final String name=httpReq.getUrlParameter("SSET"+(num));
 				if((name!=null)&&(name.length()>0))
 				{
-					if(DV.size()==0)
-						DV.addElement(Integer.valueOf(minLevel),name);
+					if(levelSecV.size()==0)
+						levelSecV.add(Integer.valueOf(minLevel),name);
 					else
 					{
 						boolean added=false;
-						for(int n=0;n<DV.size();n++)
+						for(int n=0;n<levelSecV.size();n++)
 						{
-							if(minLevel<((Integer)DV.elementAt(n,1)).intValue())
+							if(minLevel<levelSecV.get(n).first.intValue())
 							{
-								DV.insertElementAt(n,Integer.valueOf(minLevel),name);
+								levelSecV.add(n,Integer.valueOf(minLevel),name);
 								added=true;
 								break;
 							}
 							else
-							if(minLevel==((Integer)DV.elementAt(n,1)).intValue())
+							if(minLevel==levelSecV.get(n).first.intValue())
 							{
 								added=true;
 								break;
 							}
 						}
 						if(!added)
-							DV.addElement(Integer.valueOf(minLevel),name);
+							levelSecV.add(Integer.valueOf(minLevel),name);
 					}
 				}
 			}
 		}
-		C.setStat("NUMSSET",""+DV.size());
-		for(int l=0;l<DV.size();l++)
+		C.setStat("NUMSSET",""+levelSecV.size());
+		for(int l=0;l<levelSecV.size();l++)
 		{
-			final String sec=(String)DV.elementAt(l,2);
-			V=CMParms.parseCommas(sec, true);
+			final String sec=levelSecV.get(l).second;
+			final List<String> V=CMParms.parseCommas(sec, true);
 			C.setStat("SSET"+l, CMParms.combineQuoted(V,0));
-			C.setStat("SSETLEVEL"+l, ((Integer)DV.elementAt(l,1)).toString());
+			C.setStat("SSETLEVEL"+l, levelSecV.get(l).first.toString());
 		}
 		id="";
-		V=new Vector<String>();
+		final List<String> weapMatsV=new Vector<String>();
 		for(int i=0;httpReq.isUrlParameter("WEAPMATS"+id);id=""+(++i))
 		{
 			if(CMath.isInteger(httpReq.getUrlParameter("WEAPMATS"+id)))
-				V.add(httpReq.getUrlParameter("WEAPMATS"+id));
+				weapMatsV.add(httpReq.getUrlParameter("WEAPMATS"+id));
 		}
-		C.setStat("NUMWMAT",""+V.size());
-		C.setStat("GETWMAT",CMParms.toListString(V));
+		C.setStat("NUMWMAT",""+weapMatsV.size());
+		C.setStat("GETWMAT",CMParms.toListString(weapMatsV));
 		old=httpReq.getUrlParameter("ARMORMINOR");
 		C.setStat("ARMORMINOR",(old==null)?"-1":old);
 		old=httpReq.getUrlParameter("STATCLASS");
 		C.setStat("STATCLASS",(old==null)?"":old);
 		old=httpReq.getUrlParameter("EVENTCLASS");
 		C.setStat("EVENTCLASS",(old==null)?"":old);
-		DV=cabilities(httpReq);
-		C.setStat("NUMCABLE", ""+DV.size());
-		for(int i=0;i<DV.size();i++)
+		final DVector cableDatV=cabilities(httpReq);
+		C.setStat("NUMCABLE", ""+cableDatV.size());
+		for(int i=0;i<cableDatV.size();i++)
 		{
-			C.setStat("GETCABLELVL"+i, (String)DV.elementAt(i,2));
-			C.setStat("GETCABLEPROF"+i, (String)DV.elementAt(i,3));
-			C.setStat("GETCABLEGAIN"+i, ((String)DV.elementAt(i,4)).equalsIgnoreCase("on")?"false":"true");
-			C.setStat("GETCABLESECR"+i, (String)DV.elementAt(i,5));
-			if(DV.elementAt(i,6) instanceof String)
-				C.setStat("GETCABLEPARM"+i, (String)DV.elementAt(i,6));
-			if(DV.elementAt(i,7) instanceof String)
-				C.setStat("GETCABLEPREQ"+i, (String)DV.elementAt(i,7));
-			if(DV.elementAt(i,8) instanceof String)
-				C.setStat("GETCABLEMASK"+i, (String)DV.elementAt(i,8));
-			C.setStat("GETCABLEMAXP"+i, (String)DV.elementAt(i,9));
+			C.setStat("GETCABLELVL"+i, (String)cableDatV.elementAt(i,2));
+			C.setStat("GETCABLEPROF"+i, (String)cableDatV.elementAt(i,3));
+			C.setStat("GETCABLEGAIN"+i, ((String)cableDatV.elementAt(i,4)).equalsIgnoreCase("on")?"false":"true");
+			C.setStat("GETCABLESECR"+i, (String)cableDatV.elementAt(i,5));
+			if(cableDatV.elementAt(i,6) instanceof String)
+				C.setStat("GETCABLEPARM"+i, (String)cableDatV.elementAt(i,6));
+			if(cableDatV.elementAt(i,7) instanceof String)
+				C.setStat("GETCABLEPREQ"+i, (String)cableDatV.elementAt(i,7));
+			if(cableDatV.elementAt(i,8) instanceof String)
+				C.setStat("GETCABLEMASK"+i, (String)cableDatV.elementAt(i,8));
+			C.setStat("GETCABLEMAXP"+i, (String)cableDatV.elementAt(i,9));
 			// CABLE MUST BE LAST
-			C.setStat("GETCABLE"+i, (String)DV.elementAt(i,1));
+			C.setStat("GETCABLE"+i, (String)cableDatV.elementAt(i,1));
 		}
 		return "";
 	}

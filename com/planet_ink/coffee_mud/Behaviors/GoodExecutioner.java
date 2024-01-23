@@ -49,7 +49,8 @@ public class GoodExecutioner  extends StdBehavior
 	private boolean			doPlayers		= false;
 	private boolean			norecurse		= false;
 	protected long			deepBreath		= System.currentTimeMillis();
-	private final DVector	protectedOnes	= new DVector(2);
+
+	private final PairList<String,Long>	protectedOnes	= new PairVector<String,Long>();
 
 	@Override
 	public void setParms(String newParms)
@@ -112,11 +113,11 @@ public class GoodExecutioner  extends StdBehavior
 				observer.makePeace(true);
 			synchronized(protectedOnes)
 			{
-				final int x = protectedOnes.indexOf(msg.source().Name());
+				final int x = protectedOnes.indexOfFirst(msg.source().Name());
 				if(x>=0)
-					protectedOnes.setElementAt(x, 2, Long.valueOf(System.currentTimeMillis()));
+					protectedOnes.get(x).second=Long.valueOf(System.currentTimeMillis());
 				else
-					protectedOnes.addElement(msg.source().Name(),Long.valueOf(System.currentTimeMillis()));
+					protectedOnes.add(msg.source().Name(),Long.valueOf(System.currentTimeMillis()));
 			}
 		}
 		if((deepBreath==0)||(System.currentTimeMillis()-deepBreath)>6000)
@@ -125,10 +126,10 @@ public class GoodExecutioner  extends StdBehavior
 			{
 				for(int p=protectedOnes.size()-1;p>=0;p--)
 				{
-					if((System.currentTimeMillis()-((Long)protectedOnes.elementAt(p, 2)).longValue())>(30 * 1000))
-						protectedOnes.removeElementAt(p);
+					if((System.currentTimeMillis()-protectedOnes.get(p).second.longValue())>(30 * 1000))
+						protectedOnes.remove(p);
 				}
-				if(protectedOnes.contains(msg.source().Name()))
+				if(protectedOnes.containsFirst(msg.source().Name()))
 					return;
 			}
 			deepBreath=0;

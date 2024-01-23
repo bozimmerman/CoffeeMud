@@ -73,7 +73,7 @@ public class Spell_Claireaudience extends Spell
 		return Ability.QUALITY_OK_OTHERS;
 	}
 
-	public static final DVector scries=new DVector(2);
+	public static final PairList<MOB,MOB> scries=new PairVector<MOB,MOB>();
 
 	@Override
 	public void unInvoke()
@@ -84,7 +84,7 @@ public class Spell_Claireaudience extends Spell
 		final MOB mob=(MOB)affected;
 
 		if(canBeUninvoked())
-			scries.removeElement(mob);
+			scries.removeElementFirst(mob);
 		if((canBeUninvoked())&&(invoker!=null))
 			invoker.tell(L("The sounds of '@x1' fade.",mob.name(invoker)));
 		super.unInvoke();
@@ -129,8 +129,8 @@ public class Spell_Claireaudience extends Spell
 			final StringBuffer scryList=new StringBuffer("");
 			for(int e=0;e<scries.size();e++)
 			{
-				if(scries.elementAt(e,2)==mob)
-					scryList.append(((e>0)?", ":"")+((MOB)scries.elementAt(e,1)).name());
+				if(scries.get(e).second==mob)
+					scryList.append(((e>0)?", ":"")+scries.get(e).first.name());
 			}
 			if(scryList.length()>0)
 				commonTelL(mob,"Cast on or revoke from whom?  You currently have @x1 on the following: @x2.",name(),scryList.toString());
@@ -182,7 +182,7 @@ public class Spell_Claireaudience extends Spell
 			return true;
 		}
 		else
-		if((A!=null)||(scries.contains(target)))
+		if((A!=null)||(scries.containsFirst(target)))
 		{
 			mob.tell(L("You can't seem to focus on '@x1'.",mobName));
 			return false;
@@ -202,7 +202,7 @@ public class Spell_Claireaudience extends Spell
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location())
 					newRoom.send(target,msg2);
-				scries.addElement(target,mob);
+				scries.add(target,mob);
 				beneficialAffect(mob,target,asLevel,0);
 			}
 

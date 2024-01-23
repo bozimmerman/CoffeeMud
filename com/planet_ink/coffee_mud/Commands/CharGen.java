@@ -321,7 +321,7 @@ public class CharGen extends StdCommand
 		String[][][] allSkills=null;//new String[classSet.size()][levelEnd-levelStart+1][4];
 		Area A=null;
 		MOB mob=null;
-		DVector classSet=new DVector(2);
+		PairList<CharClass,String> classSet=new PairVector<CharClass,String>();
 		Hashtable<String,int[]> failSkillCheck=null;
 	}
 
@@ -433,7 +433,7 @@ public class CharGen extends StdCommand
 				if(!classCleared)
 				{
 					classCleared=true;
-					c.classSet=new DVector(2);
+					c.classSet=new PairVector<CharClass,String>();
 				}
 				String behav="CombatAbilities";
 				for (final String[] element : CAMATCH)
@@ -456,7 +456,7 @@ public class CharGen extends StdCommand
 						if(!classCleared)
 						{
 							classCleared=true;
-							c.classSet=new DVector(2);
+							c.classSet=new PairVector<CharClass,String>();
 						}
 						String behav="CombatAbilities";
 						for (final String[] element : CAMATCH)
@@ -543,11 +543,11 @@ public class CharGen extends StdCommand
 					final MOB mob=c.mob;
 					final int[][][] allData = c.allData;
 					final String[][][] allSkills=c.allSkills;
-					final DVector classSet=c.classSet;
+					final PairList<CharClass,String> classSet=c.classSet;
 					final int levelStart=c.levelStart;
 					for(int level=c.levelStart;level<=c.levelEnd;level+=c.skipLevels)
 					{
-						final CharClass C=(CharClass)c.classSet.get(charClassDex,1);
+						final CharClass C=c.classSet.get(charClassDex).first;
 						mob.tell(C.ID()+": "+level);
 						int roomRobin=0;
 						Room R=null;
@@ -591,7 +591,7 @@ public class CharGen extends StdCommand
 								if(mob.session()!=null)
 									mob.session().print(".");
 							}
-							final Behavior B1=CMClass.getBehavior((String)classSet.get(charClassDex,2));
+							final Behavior B1=CMClass.getBehavior(classSet.get(charClassDex).second);
 							B1.setParms(C.ID()+" NOSTAT NOCOMBATSTAT");
 							switch(roomRobin)
 							{
@@ -1067,7 +1067,7 @@ public class CharGen extends StdCommand
 				final Vector<String> baseClasses=new Vector<String>();
 				for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
 				{
-					final CharClass C=(CharClass)c.classSet.get(charClassDex,1);
+					final CharClass C=c.classSet.get(charClassDex).first;
 					if(!baseClasses.contains(C.baseClass()))
 						baseClasses.add(C.baseClass());
 				}
@@ -1079,7 +1079,7 @@ public class CharGen extends StdCommand
 					buf.append("\n\r");
 					for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
 					{
-						final CharClass C=(CharClass)c.classSet.get(charClassDex,1);
+						final CharClass C=c.classSet.get(charClassDex).first;
 						buf.append(C.ID()).append("\t").append(C.baseClass()).append("\t");
 						for(int level=c.levelStart;level<=c.levelEnd;level+=c.skipLevels)
 						{
@@ -1101,7 +1101,7 @@ public class CharGen extends StdCommand
 						double ct=0;
 						for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
 						{
-							if(((CharClass)c.classSet.get(charClassDex,1)).baseClass().equalsIgnoreCase(baseClass))
+							if(c.classSet.get(charClassDex).first.baseClass().equalsIgnoreCase(baseClass))
 							{
 								ct+=1.0;
 								for(int level=c.levelStart;level<=c.levelEnd;level+=c.skipLevels)

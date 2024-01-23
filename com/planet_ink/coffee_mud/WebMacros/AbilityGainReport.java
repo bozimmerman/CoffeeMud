@@ -94,7 +94,7 @@ public class AbilityGainReport extends StdWebMacro
 				}
 			}
 		}
-		final DVector sorted=new DVector(2);
+		final PairList<String,long[]> sorted=new PairArrayList<String,long[]>();
 		while(profSpent.size()>0)
 		{
 			final Enumeration<String> e=profSpent.keys();
@@ -111,22 +111,22 @@ public class AbilityGainReport extends StdWebMacro
 				}
 			}
 			profSpent.remove(bestKey);
-			sorted.addElement(bestKey,bestStat);
+			sorted.add(bestKey,bestStat);
 		}
 		final StringBuffer buf=new StringBuffer("<TABLE WIDTH=100% BORDER=1>");
 		buf.append("<TR><TD WIDTH=40%>Trained Skill</TD><TD WIDTH=30%>Avg. Prof. Gained</TD><TD WIDTH=30%>Instances</TD></TR>");
 		buf.append("<TR><TD WIDTH=40%><BR></TD><TD WIDTH=30%><BR></TD><TD WIDTH=30%><BR></TD></TR>");
 		for(int s=0;s<sorted.size();s++)
 		{
-			final String able=(String)sorted.elementAt(s,1);
-			final long[] stats=(long[])sorted.elementAt(s,2);
+			final String able=sorted.get(s).first;
+			final long[] stats=sorted.get(s).second;
 			if(trainedFor.contains(able))
 				buf.append("<TR><TD>"+able+"</TD><TD>"+stats[2]+"</TD><TD>"+stats[1]+"</TD></TR>");
 		}
 		for(final Iterator<String> i=trainedFor.iterator();i.hasNext();)
 		{
 			final String able=i.next();
-			if(!sorted.contains(able))
+			if(!sorted.containsFirst(able))
 				buf.append("<TR><TD>"+able+"</TD><TD>N/A</TD><TD>N/A</TD></TR>");
 		}
 		buf.append("</TABLE><P><BR><TABLE WIDTH=100% BORDER=1>");
@@ -134,8 +134,8 @@ public class AbilityGainReport extends StdWebMacro
 		buf.append("<TR><TD WIDTH=40%><BR></TD><TD WIDTH=30%><BR></TD><TD WIDTH=30%><BR></TD></TR>");
 		for(int s=0;s<sorted.size();s++)
 		{
-			final String able=(String)sorted.elementAt(s,1);
-			final long[] stats=(long[])sorted.elementAt(s,2);
+			final String able=sorted.get(s).first;
+			final long[] stats=sorted.get(s).second;
 			buf.append("<TR><TD>"+able+"</TD><TD>"+stats[2]+"</TD><TD>"+stats[1]+"</TD></TR>");
 		}
 		buf.append("</TABLE>");

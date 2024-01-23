@@ -114,7 +114,7 @@ public class CharClassData extends StdWebMacro
 		else
 		{
 			final List<AbilityMapper.AbilityMapping> data1=CMLib.ableMapper().getUpToLevelListings(E.ID(),Integer.MAX_VALUE,true,false);
-			final DVector sortedData1=new DVector(2);
+			final PairList<String,Integer> sortedData1=new PairVector<String,Integer>();
 			String aID=null;
 			int minLvl=Integer.MAX_VALUE;
 			int maxLvl=Integer.MIN_VALUE;
@@ -128,7 +128,7 @@ public class CharClassData extends StdWebMacro
 						maxLvl=qlvl;
 					if(qlvl<minLvl)
 						minLvl=qlvl;
-					sortedData1.addElement(aID,Integer.valueOf(qlvl));
+					sortedData1.add(aID,Integer.valueOf(qlvl));
 				}
 			}
 			Integer qLvl=null;
@@ -136,10 +136,10 @@ public class CharClassData extends StdWebMacro
 			{
 				for(int i=0;i<sortedData1.size();i++)
 				{
-					qLvl=(Integer)sortedData1.elementAt(i,2);
+					qLvl=sortedData1.get(i).second;
 					if(qLvl.intValue()==lvl)
 					{
-						aID=(String)sortedData1.elementAt(i,1);
+						aID=sortedData1.get(i).first;
 						theclasses.addElement(aID,
 											  qLvl.toString(),
 											  Integer.toString(CMLib.ableMapper().getDefaultProficiency(E.ID(),false,aID)),
@@ -342,7 +342,7 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("NAMES"))
 				{
 					final String old=httpReq.getUrlParameter("NAME1");
-					final DVector nameSet=new DVector(2);
+					final PairList<Integer,String> nameSet=new PairArrayList<Integer,String>();
 					int numNames=0;
 					boolean cSrc=false;
 					if(old==null)
@@ -358,7 +358,7 @@ public class CharClassData extends StdWebMacro
 
 					}
 					if(numNames<=0)
-						nameSet.addElement(Integer.valueOf(0),C.name());
+						nameSet.add(Integer.valueOf(0),C.name());
 					else
 					for(int i=0;i<numNames;i++)
 					{
@@ -370,35 +370,35 @@ public class CharClassData extends StdWebMacro
 							if((name!=null)&&(name.length()>0))
 							{
 								if(nameSet.size()==0)
-									nameSet.addElement(Integer.valueOf(minLevel),name);
+									nameSet.add(Integer.valueOf(minLevel),name);
 								else
 								{
 									boolean added=false;
 									for(int n=0;n<nameSet.size();n++)
 									{
-										if(minLevel<((Integer)nameSet.elementAt(n,1)).intValue())
+										if(minLevel<nameSet.get(n).first.intValue())
 										{
-											nameSet.insertElementAt(n,Integer.valueOf(minLevel),name);
+											nameSet.add(n,Integer.valueOf(minLevel),name);
 											added=true;
 											break;
 										}
 										else
-										if(minLevel==((Integer)nameSet.elementAt(n,1)).intValue())
+										if(minLevel==nameSet.get(n).first.intValue())
 										{
 											added=true;
 											break;
 										}
 									}
 									if(!added)
-										nameSet.addElement(Integer.valueOf(minLevel),name);
+										nameSet.add(Integer.valueOf(minLevel),name);
 								}
 							}
 						}
 					}
 					if(nameSet.size()==0)
-						nameSet.addElement(Integer.valueOf(0),C.name());
+						nameSet.add(Integer.valueOf(0),C.name());
 					else
-						nameSet.setElementAt(0,1,Integer.valueOf(0));
+						nameSet.get(0).first=Integer.valueOf(0);
 					final int borderSize=1;
 					str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 					final String sfont=(parms.containsKey("FONT"))?("<FONT "+(parms.get("FONT"))+">"):"";
@@ -415,8 +415,8 @@ public class CharClassData extends StdWebMacro
 					}
 					for(int i=0;i<nameSet.size();i++)
 					{
-						final Integer lvl=(Integer)nameSet.elementAt(i,1);
-						final String name=(String)nameSet.elementAt(i,2);
+						final Integer lvl=nameSet.get(i).first;
+						final String name=nameSet.get(i).second;
 						str.append("<TR><TD WIDTH=20%>");
 						str.append("<INPUT TYPE=TEXT SIZE=5 NAME=NAMELEVEL"+(i+1)+" VALUE=\""+lvl.toString()+"\">");
 						str.append("</TD><TD WIDTH=80%>");
@@ -793,7 +793,7 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("SECURITYSETS"))
 				{
 					final String old=httpReq.getUrlParameter("SSET1");
-					final DVector sSet=new DVector(2);
+					final PairList<Integer,String> sSet=new PairArrayList<Integer,String>();
 					int numSSet=0;
 					boolean cSrc=false;
 					if(old==null)
@@ -827,27 +827,27 @@ public class CharClassData extends StdWebMacro
 							{
 								sec=CMParms.combineWithX(CMParms.parseCommas(sec.toUpperCase().trim(),true),",",0);
 								if(sSet.size()==0)
-									sSet.addElement(Integer.valueOf(minLevel),sec);
+									sSet.add(Integer.valueOf(minLevel),sec);
 								else
 								{
 									boolean added=false;
 									for(int n=0;n<sSet.size();n++)
 									{
-										if(minLevel<((Integer)sSet.elementAt(n,1)).intValue())
+										if(minLevel<sSet.get(n).first.intValue())
 										{
-											sSet.insertElementAt(n,Integer.valueOf(minLevel),sec);
+											sSet.add(n,Integer.valueOf(minLevel),sec);
 											added=true;
 											break;
 										}
 										else
-										if(minLevel==((Integer)sSet.elementAt(n,1)).intValue())
+										if(minLevel==sSet.get(n).first.intValue())
 										{
 											added=true;
 											break;
 										}
 									}
 									if(!added)
-										sSet.addElement(Integer.valueOf(minLevel),sec);
+										sSet.add(Integer.valueOf(minLevel),sec);
 								}
 							}
 						}
@@ -868,8 +868,8 @@ public class CharClassData extends StdWebMacro
 					}
 					for(int i=0;i<sSet.size();i++)
 					{
-						final Integer lvl=(Integer)sSet.elementAt(i,1);
-						final String sec=(String)sSet.elementAt(i,2);
+						final Integer lvl=sSet.get(i).first;
+						final String sec=sSet.get(i).second;
 						str.append("<TR><TD WIDTH=20%>");
 						str.append("<INPUT TYPE=TEXT SIZE=5 NAME=SSETLEVEL"+(i+1)+" VALUE=\""+lvl.toString()+"\">");
 						str.append("</TD><TD WIDTH=80%>");

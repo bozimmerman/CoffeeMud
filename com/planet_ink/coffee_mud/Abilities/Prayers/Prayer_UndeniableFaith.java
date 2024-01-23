@@ -85,7 +85,7 @@ public class Prayer_UndeniableFaith extends Prayer
 	}
 
 	protected String godName="";
-	private static DVector convertStack=new DVector(2);
+	private static PairList<MOB,Long> convertStack=new PairVector<MOB,Long>();
 
 	@Override
 	public void unInvoke()
@@ -148,13 +148,13 @@ public class Prayer_UndeniableFaith extends Prayer
 		}
 		if(!auto)
 		{
-			if(convertStack.contains(target))
+			if(convertStack.containsFirst(target))
 			{
-				final Long L=(Long)convertStack.elementAt(convertStack.indexOf(target),2);
+				final Long L=convertStack.get(convertStack.indexOfFirst(target)).second;
 				if((System.currentTimeMillis()-L.longValue())>CMProps.getMillisPerMudHour()*5)
-					convertStack.removeElement(target);
+					convertStack.removeElementFirst(target);
 			}
-			if(convertStack.contains(target))
+			if(convertStack.containsFirst(target))
 			{
 				mob.tell(L("@x1 must wait to be undeniably faithful again.",target.name(mob)));
 				return false;
@@ -193,7 +193,7 @@ public class Prayer_UndeniableFaith extends Prayer
 						CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),target,null,25, false);
 					godName=mob.charStats().getWorshipCharID();
 					beneficialAffect(mob,target,asLevel,CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH));
-					convertStack.addElement(target,Long.valueOf(System.currentTimeMillis()));
+					convertStack.add(target,Long.valueOf(System.currentTimeMillis()));
 				}
 			}
 		}

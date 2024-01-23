@@ -383,13 +383,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 
 	@SuppressWarnings("unchecked")
-	protected static int getClassFieldIndex(final DVector dataRow)
+	protected static int getClassFieldIndex(final AbilityRecipeRow dataRow)
 	{
 		for(int d=0;d<dataRow.size();d++)
 		{
-			if(dataRow.elementAt(d,1) instanceof List)
+			if(dataRow.get(d).first instanceof List)
 			{
-				final List<String> V=(List<String>)dataRow.elementAt(d,1);
+				final List<String> V=(List<String>)dataRow.get(d).first;
 				if(V.contains("ITEM_CLASS_ID")
 				||V.contains("FOOD_DRINK")
 				||V.contains("COLOR_TERM")
@@ -398,9 +398,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return d;
 			}
 			else
-			if(dataRow.elementAt(d,1) instanceof String)
+			if(dataRow.get(d).first instanceof String)
 			{
-				final String s=(String)dataRow.elementAt(d,1);
+				final String s=(String)dataRow.get(d).first;
 				if(s.equalsIgnoreCase("ITEM_CLASS_ID")
 				||s.equalsIgnoreCase("FOOD_DRINK")
 				||s.equalsIgnoreCase("ITEM_CMARE")
@@ -413,20 +413,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Object getSampleObject(final DVector dataRow)
+	protected Object getSampleObject(final AbilityRecipeRow dataRow)
 	{
 		boolean classIDRequired = false;
 		String classID = null;
 		final int fieldIndex = getClassFieldIndex(dataRow);
 		for(int d=0;d<dataRow.size();d++)
 		{
-			if((dataRow.elementAt(d,1) instanceof List)
+			if((dataRow.get(d).first instanceof List)
 			&&(!classIDRequired)
-			&&(((List<String>)dataRow.elementAt(d,1)).size()>1))
+			&&(((List<String>)dataRow.get(d).first).size()>1))
 				classIDRequired=true;
 		}
 		if(fieldIndex >=0)
-			classID=(String)dataRow.elementAt(fieldIndex,2);
+			classID=dataRow.get(fieldIndex).second;
 		if((classID!=null)&&(classID.length()>0))
 		{
 			final String uClassID=classID.toUpperCase();
@@ -517,13 +517,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Vector<DVector> parseDataRows(final StringBuffer recipeData, final Vector<? extends Object> columnsV, final int numberOfDataColumns)
+	protected Vector<AbilityRecipeRow> parseDataRows(final StringBuffer recipeData, final List<? extends Object> columnsV, final int numberOfDataColumns)
 		throws CMException
 	{
 		StringBuffer str = new StringBuffer(recipeData.toString());
 		str = cleanDataRowEOLs(str);
-		final Vector<DVector> rowsV = new Vector<DVector>();
-		DVector dataRow = new DVector(2);
+		final Vector<AbilityRecipeRow> rowsV = new Vector<AbilityRecipeRow>();
+		AbilityRecipeRow dataRow = new AbilityRecipeRow();
 		List<String> currCol = null;
 		String lastDiv = null;
 
@@ -549,9 +549,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						final String itemRow = xml.substring(0,closeTagDex+7);
 						uxml=uxml.substring(closeTagDex+7).trim();
 						xml=xml.substring(closeTagDex+7).trim();
-						dataRow.addElement(currCol,itemRow);
+						dataRow.add(currCol,itemRow);
 						rowsV.addElement(dataRow);
-						dataRow = new DVector(2);
+						dataRow = new AbilityRecipeRow();
 					}
 					str.setLength(0);
 					str.append(xml);
@@ -579,15 +579,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			{
 				String div = "\n";
 				currCol = null;
-				if(columnsV.elementAt(c) instanceof String)
-					stripData(str,(String)columnsV.elementAt(c));
+				if(columnsV.get(c) instanceof String)
+					stripData(str,(String)columnsV.get(c));
 				else
-				if(columnsV.elementAt(c) instanceof List)
+				if(columnsV.get(c) instanceof List)
 				{
-					currCol = (List<String>)columnsV.elementAt(c);
+					currCol = (List<String>)columnsV.get(c);
 					if(c<columnsV.size()-1)
 					{
-						div = (String)columnsV.elementAt(c+1);
+						div = (String)columnsV.get(c+1);
 						c++;
 					}
 				}
@@ -600,7 +600,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					data = stripData(str,lastDiv);
 					if(data == null)
 						data = "";
-					dataRow.addElement(currCol,data);
+					dataRow.add(currCol,data);
 					currCol = null;
 				}
 				else
@@ -608,13 +608,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					final String data = stripData(str,lastDiv);
 					if(data == null)
 						break;
-					dataRow.addElement(currCol,data);
+					dataRow.add(currCol,data);
 				}
 			}
 			if(dataRow.size() != numberOfDataColumns)
 				throw new CMException("Row "+(rowsV.size()+1)+" has "+dataRow.size()+"/"+numberOfDataColumns);
 			rowsV.addElement(dataRow);
-			dataRow = new DVector(2);
+			dataRow = new AbilityRecipeRow();
 			if(str.length()==lastLen)
 				throw new CMException("UNCHANGED: Row "+(rowsV.size()+1)+" has "+dataRow.size()+"/"+numberOfDataColumns);
 		}
@@ -623,28 +623,28 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return rowsV;
 	}
 
-	protected boolean fixDataColumn(final DVector dataRow, final int rowShow) throws CMException
+	protected boolean fixDataColumn(final AbilityRecipeRow dataRow, final int rowShow) throws CMException
 	{
 		final Object classModelI = getSampleObject(dataRow);
 		return fixDataColumn(dataRow,rowShow,classModelI);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected boolean fixDataColumn(final DVector dataRow, final int rowShow, final Object classModelI) throws CMException
+	protected boolean fixDataColumn(final AbilityRecipeRow dataRow, final int rowShow, final Object classModelI) throws CMException
 	{
 		final Map<String,AbilityParmEditor> editors = getEditors();
 		for(int d=0;d<dataRow.size();d++)
 		{
-			if(!(dataRow.elementAt(d, 1) instanceof List))
+			if(!(dataRow.get(d).first instanceof List))
 				throw new CMException(L("Data row @x1 discarded due to non-List at @x2",""+rowShow,""+d));
 
-			final List<String> colV=(List<String>)dataRow.elementAt(d,1);
+			final List<String> colV=(List<String>)dataRow.get(d).first;
 			if(colV.size()==1)
 			{
 				AbilityParmEditor A = editors.get(colV.get(0));
 				if((A == null)||(A.appliesToClass(classModelI)<0))
 					A = editors.get("N_A");
-				dataRow.setElementAt(d,1,A.ID());
+				dataRow.get(d).first=A.ID();
 			}
 			else
 			{
@@ -665,36 +665,36 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 				if((applicableA == null)||(applicableA.appliesToClass(classModelI)<0))
 					applicableA = editors.get("N_A");
-				dataRow.setElementAt(d,1,applicableA.ID());
+				dataRow.get(d).first=applicableA.ID();
 			}
-			final AbilityParmEditor A = editors.get(dataRow.elementAt(d,1));
+			final AbilityParmEditor A = editors.get(dataRow.get(d).first);
 			if(A==null)
 			{
 				if(classModelI instanceof CMObject)
-					throw new CMException(L("Item id @x1 has no editor for @x2",((CMObject)classModelI).ID(),((String)dataRow.elementAt(d,1))));
+					throw new CMException(L("Item id @x1 has no editor for @x2",((CMObject)classModelI).ID(),((String)dataRow.get(d).first)));
 				else
-					throw new CMException(L("Item id @x1 has no editor for @x2",classModelI+"",((String)dataRow.elementAt(d,1))));
+					throw new CMException(L("Item id @x1 has no editor for @x2",classModelI+"",((String)dataRow.get(d).first)));
 				//Log.errOut("CMAbleParms","Item id "+classModelI.ID()+" has no editor for "+((String)dataRow.elementAt(d,1)));
 				//return false;
 			}
 			else
 			if((rowShow>=0)
-			&&(!A.confirmValue((String)dataRow.elementAt(d,2))))
+			&&(!A.confirmValue(dataRow.get(d).second)))
 			{
-				final String data = ((String)dataRow.elementAt(d,2)).replace('@', ' ');
+				final String data = dataRow.get(d).second.replace('@', ' ');
 				if(classModelI instanceof CMObject)
-					throw new CMException(L("Item id @x1 has bad data '@x2' for column @x3 at row @x4",((CMObject)classModelI).ID(),data,((String)dataRow.elementAt(d,1)),""+rowShow));
+					throw new CMException(L("Item id @x1 has bad data '@x2' for column @x3 at row @x4",((CMObject)classModelI).ID(),data,((String)dataRow.get(d).first),""+rowShow));
 				else
-					throw new CMException(L("Item id @x1 has bad data '@x2' for column @x3 at row @x4",""+classModelI,data,((String)dataRow.elementAt(d,1)),""+rowShow));
+					throw new CMException(L("Item id @x1 has bad data '@x2' for column @x3 at row @x4",""+classModelI,data,((String)dataRow.get(d).first),""+rowShow));
 				//Log.errOut("CMAbleParms","Item id "+classModelI.ID()+" has bad data '"+((String)dataRow.elementAt(d,2))+"' for column "+((String)dataRow.elementAt(d,1))+" at row "+rowShow);
 			}
 		}
 		return true;
 	}
 
-	protected void fixDataColumns(final Vector<DVector> rowsV) throws CMException
+	protected void fixDataColumns(final Vector<AbilityRecipeRow> rowsV) throws CMException
 	{
-		DVector dataRow = new DVector(2);
+		AbilityRecipeRow dataRow;
 		for(int r=0;r<rowsV.size();r++)
 		{
 			dataRow=rowsV.elementAt(r);
@@ -745,11 +745,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if(columnsV.elementAt(c) instanceof List)
 				numberOfDataColumns++;
 		}
-		final Vector<DVector> rowsV = parseDataRows(str,columnsV,numberOfDataColumns);
+		final Vector<AbilityRecipeRow> rowsV = parseDataRows(str,columnsV,numberOfDataColumns);
 		final Vector<String> convertedColumnsV=(Vector<String>)columnsV;
 		fixDataColumns(rowsV);
 		final Map<String,AbilityParmEditor> editors = getEditors();
-		DVector editRow = null;
+		AbilityRecipeRow editRow = null;
 		final int[] showNumber = {0};
 		final int showFlag =-999;
 		final MOB mob=CMClass.getFactoryMOB();
@@ -761,14 +761,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			editRow = rowsV.elementAt(r);
 			for(int a=0;a<editRow.size();a++)
 			{
-				final AbilityParmEditor A = editors.get(editRow.elementAt(a,1));
+				final AbilityParmEditor A = editors.get(editRow.get(a).first);
 				try
 				{
-					final String oldVal = (String)editRow.elementAt(a,2);
+					final String oldVal = editRow.get(a).second;
 					fakeSession.getPreviousCMD().clear();
 					fakeSession.getPreviousCMD().addAll(new XVector<String>(A.fakeUserInput(oldVal)));
 					final String newVal = A.commandLinePrompt(mob,oldVal,showNumber,showFlag);
-					editRow.setElementAt(a,2,newVal);
+					editRow.get(a).second=newVal;
 				}
 				catch (final Exception e)
 				{
@@ -781,20 +781,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			resaveRecipeFile(mob,saveRecipeFilename,rowsV,convertedColumnsV,false);
 	}
 
-	protected void calculateRecipeCols(final int[] lengths, final String[] headers, final Vector<DVector> rowsV)
+	protected void calculateRecipeCols(final int[] lengths, final String[] headers, final List<AbilityRecipeRow> rowsV)
 	{
 		final Map<String,AbilityParmEditor> editors = getEditors();
-		DVector dataRow = null;
+		AbilityRecipeRow dataRow = null;
 		final int numRows[]=new int[headers.length];
 		for(int r=0;r<rowsV.size();r++)
 		{
-			dataRow=rowsV.elementAt(r);
+			dataRow=rowsV.get(r);
 			for(int c=0;c<dataRow.size();c++)
 			{
-				final AbilityParmEditor A = editors.get(dataRow.elementAt(c,1));
+				final AbilityParmEditor A = editors.get(dataRow.get(c).first);
 				try
 				{
-					int dataLen=((String)dataRow.elementAt(c, 2)).length();
+					int dataLen=dataRow.get(c).second.length();
 					if(dataLen > A.maxColWidth())
 						dataLen = A.maxColWidth();
 					if(dataLen < A.minColWidth())
@@ -806,7 +806,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 				}
 				if(A==null)
-					Log.errOut("CMAbleParms","Inexplicable lack of a column: "+((String)dataRow.elementAt(c,1)));
+					Log.errOut("CMAbleParms","Inexplicable lack of a column: "+((String)dataRow.get(c).first));
 				else
 				if(headers[c] == null)
 				{
@@ -875,7 +875,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	{
 		final Map<String,AbilityParmEditor> editors = getEditors();
 		final StringBuffer list=new StringBuffer("");
-		DVector dataRow = null;
+		AbilityRecipeRow dataRow = null;
 		list.append("### ");
 		for(int l=0;l<recipe.columnLengths().length;l++)
 			list.append(CMStrings.padRight(recipe.columnHeaders()[l],recipe.columnLengths()[l])+" ");
@@ -886,9 +886,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			list.append(CMStrings.padRight(""+(r+1),3)+" ");
 			for(int c=0;c<dataRow.size();c++)
 			{
-				final Object fieldType = dataRow.elementAt(c, 1);
+				final Object fieldType = dataRow.get(c).first;
 				final AbilityParmEditor A = editors.get(fieldType);
-				String value=(String)dataRow.elementAt(c,2);
+				String value=dataRow.get(c).second;
 				if(A!=null)
 					value=A.commandLineValue(value);
 				final String colVal = CMStrings.limit(value,recipe.columnLengths()[c]);
@@ -917,7 +917,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			final String lineNum = mob.session().prompt(L("\n\rEnter a line to edit, A to add, or ENTER to exit: "),"");
 			if(lineNum.trim().length()==0)
 				break;
-			DVector editRow = null;
+			AbilityRecipeRow editRow = null;
 			if(lineNum.equalsIgnoreCase("A"))
 			{
 				editRow = recipe.blankRow();
@@ -925,10 +925,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				String classFieldData = null;
 				if(keyIndex>=0)
 				{
-					final AbilityParmEditor A = editors.get(((List<String>)editRow.elementAt(keyIndex,1)).get(0));
+					final AbilityParmEditor A = editors.get(((List<String>)editRow.get(keyIndex).first).get(0));
 					if(A!=null)
 					{
-						classFieldData = A.commandLinePrompt(mob,(String)editRow.elementAt(keyIndex,2),new int[]{0},-999);
+						classFieldData = A.commandLinePrompt(mob,editRow.get(keyIndex).second,new int[]{0},-999);
 						if(!A.confirmValue(classFieldData))
 						{
 							mob.tell(L("Invalid value.  Aborted."));
@@ -963,13 +963,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					final int keyIndex = getClassFieldIndex(editRow);
 					for(int a=0;a<editRow.size();a++)
 					{
-						final Object editorName = editRow.elementAt(a,1);
+						final Object editorName = editRow.get(a).first;
 						if((a!=keyIndex)
 						||(editors.containsKey(editorName)))
 						{
 							final AbilityParmEditor A = editors.get(editorName);
-							final String newVal = A.commandLinePrompt(mob,(String)editRow.elementAt(a,2),showNumber,showFlag);
-							editRow.setElementAt(a,2,newVal);
+							final String newVal = A.commandLinePrompt(mob,editRow.get(a).second,showNumber,showFlag);
+							editRow.get(a).second=newVal;
 						}
 					}
 					if(showFlag<-900)
@@ -1006,12 +1006,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 
 	@Override
-	public void resaveRecipeFile(final MOB mob, final String recipeFilename, final List<DVector> rowsV, final List<? extends Object> columnsV, final boolean saveToVFS)
+	public void resaveRecipeFile(final MOB mob, final String recipeFilename, final List<AbilityRecipeRow> rowsV, final List<? extends Object> columnsV, final boolean saveToVFS)
 	{
 		final StringBuffer saveBuf = new StringBuffer("");
 		for(int r=0;r<rowsV.size();r++)
 		{
-			final DVector dataRow = rowsV.get(r);
+			final AbilityRecipeRow dataRow = rowsV.get(r);
 			int dataDex = 0;
 			for(int c=0;c<columnsV.size();c++)
 			{
@@ -1019,7 +1019,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				if(columnsV.get(c) instanceof String)
 					newRowVal = (String)columnsV.get(c);
 				else
-					newRowVal = dataRow.elementAt(dataDex++,2).toString();
+					newRowVal = dataRow.get(dataDex++).second.toString();
 				saveBuf.append(newRowVal);
 			}
 			saveBuf.append("\n");
@@ -6207,7 +6207,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		private String recipeFilename;
 		private String recipeFormat;
 		private Vector<Object> columns;
-		private Vector<DVector> dataRows;
+		private Vector<AbilityRecipeRow> dataRows;
 		private int numberOfDataColumns;
 		public String[] columnHeaders;
 		public int[] columnLengths;
@@ -6238,11 +6238,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			try
 			{
 				dataRows = parseDataRows(str,columns,numberOfDataColumns);
-				final DVector editRow = new DVector(2);
+				final AbilityRecipeRow editRow = new AbilityRecipeRow();
 				for(int c=0;c<columns().size();c++)
 				{
 					if(columns().elementAt(c) instanceof List)
-						editRow.addElement(columns().elementAt(c),"");
+						editRow.add(columns().elementAt(c),"");
 				}
 				if(editRow.size()==0)
 				{
@@ -6269,13 +6269,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 
 		@Override
-		public DVector newRow(final String classFieldData)
+		public AbilityRecipeRow newRow(final String classFieldData)
 		{
-			final DVector editRow = blankRow();
+			final AbilityRecipeRow editRow = blankRow();
 			final int keyIndex =classFieldIndex;
 			if((keyIndex>=0)&&(classFieldData!=null))
 			{
-				editRow.setElementAt(keyIndex,2,classFieldData);
+				editRow.get(keyIndex).second=classFieldData;
 			}
 			try
 			{
@@ -6289,21 +6289,21 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			{
 				if(i!=keyIndex)
 				{
-					final AbilityParmEditor A = getEditors().get(editRow.elementAt(i,1));
-					editRow.setElementAt(i,2,A.defaultValue());
+					final AbilityParmEditor A = getEditors().get(editRow.get(i).first);
+					editRow.get(i).second=A.defaultValue();
 				}
 			}
 			return editRow;
 		}
 
 		@Override
-		public DVector blankRow()
+		public AbilityRecipeRow blankRow()
 		{
-			final DVector editRow = new DVector(2);
+			final AbilityRecipeRow editRow = new AbilityRecipeRow();
 			for(int c=0;c<columns().size();c++)
 			{
 				if(columns().elementAt(c) instanceof List)
-					editRow.addElement(columns().elementAt(c),"");
+					editRow.add(columns().elementAt(c),"");
 			}
 			return editRow;
 		}
@@ -6327,7 +6327,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 
 		@Override
-		public Vector<DVector> dataRows()
+		public Vector<AbilityRecipeRow> dataRows()
 		{
 			return dataRows;
 		}
