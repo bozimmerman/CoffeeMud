@@ -468,7 +468,8 @@ public class PlanarData extends StdWebMacro
 						for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 						{
 							final Race R=r.nextElement();
-							str.append("<OPTION VALUE=\""+R.ID()+"\" "+(R.ID().equalsIgnoreCase(httpVal)?"SELECTED":"")+">").append(R.name());
+							str.append("<OPTION VALUE=\""+R.ID()+"\" "+(R.ID().equalsIgnoreCase(httpVal)?"SELECTED":"")+">").
+								append(CMStrings.ellipse(R.name(),20));
 						}
 						str.append(", ");
 						break;
