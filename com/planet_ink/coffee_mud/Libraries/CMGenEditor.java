@@ -5617,7 +5617,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				final Ability A=E.fetchBlessing(a);
 				if((A!=null)&&(A.isSavable()))
-					abilitiestr+=A.ID()+", ";
+				{
+					if(A.text().length()>0)
+						abilitiestr+=A.ID()+"("+A.text()+"), ";
+					else
+						abilitiestr+=A.ID()+", ";
+				}
 			}
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
@@ -5659,13 +5664,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								if((A!=null)&&(A.ID().equals(chosenOne.ID())))
 									alreadyHasIt=true;
 							}
+							final String arg=mob.session().prompt(L("Enter any arguments: "),"");
 							final boolean clericOnly=mob.session().confirm(L("Is this for clerics only (y/N)?"),"N");
 							if(!alreadyHasIt)
 								mob.tell(L("@x1 added.",chosenOne.ID()));
 							else
 								mob.tell(L("@x1 re-added.",chosenOne.ID()));
-							if(!alreadyHasIt)
-								E.addBlessing((Ability)chosenOne.copyOf(),clericOnly);
+							if(arg.length()>0)
+								chosenOne.setMiscText(arg);
+							E.addBlessing(chosenOne,clericOnly);
 						}
 						else
 						{
@@ -5692,7 +5699,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				final Ability A=E.fetchCurse(a);
 				if((A!=null)&&(A.isSavable()))
-					abilitiestr+=A.ID()+", ";
+				{
+					if(A.text().length()>0)
+						abilitiestr+=A.ID()+"("+A.text()+"), ";
+					else
+						abilitiestr+=A.ID()+", ";
+				}
 			}
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
@@ -5734,13 +5746,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								if((A!=null)&&(A.ID().equals(chosenOne.ID())))
 									alreadyHasIt=true;
 							}
+							final String arg=mob.session().prompt(L("Enter any arguments: "),"");
 							final boolean clericOnly=mob.session().confirm(L("Is this for clerics only (y/N)?"),"N");
 							if(!alreadyHasIt)
 								mob.tell(L("@x1 added.",chosenOne.ID()));
 							else
 								mob.tell(L("@x1 re-added.",chosenOne.ID()));
-							if(!alreadyHasIt)
-								E.addCurse((Ability)chosenOne.copyOf(),clericOnly);
+							if(arg.length()>0)
+								chosenOne.setMiscText(arg);
+							E.addCurse(chosenOne,clericOnly);
 						}
 						else
 						{
@@ -5767,7 +5781,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				final Ability A=E.fetchPower(a);
 				if((A!=null)&&(A.isSavable()))
-					abilitiestr+=A.ID()+", ";
+				{
+					if(A.text().length()>0)
+						abilitiestr+=A.ID()+"("+A.text()+"), ";
+					else
+						abilitiestr+=A.ID()+", ";
+				}
 			}
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
@@ -5809,12 +5828,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								if((A!=null)&&(A.ID().equals(chosenOne.ID())))
 									alreadyHasIt=true;
 							}
+							final String arg=mob.session().prompt(L("Enter any arguments: "),"");
 							if(!alreadyHasIt)
 								mob.tell(L("@x1 added.",chosenOne.ID()));
 							else
 								mob.tell(L("@x1 re-added.",chosenOne.ID()));
-							if(!alreadyHasIt)
-								E.addPower((Ability)chosenOne.copyOf());
+							if(arg.length()>0)
+								chosenOne.setMiscText(arg);
+							E.addPower(chosenOne);
 						}
 						else
 						{

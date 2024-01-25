@@ -1243,7 +1243,15 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			final Ability A=fetchBlessing(a);
 			if((A!=null)&&(A.ID().equals(to.ID())))
-				return;
+			{
+				if(!A.text().equals(to.text()))
+				{
+					blessings.remove(a);
+					break;
+				}
+				else
+					return;
+			}
 		}
 		blessings.add(new DeityPower(to,clericOnly));
 	}
@@ -1336,7 +1344,15 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			final Ability A=fetchCurse(a);
 			if((A!=null)&&(A.ID().equals(to.ID())))
-				return;
+			{
+				if(!A.text().equals(to.text()))
+				{
+					curses.remove(a);
+					break;
+				}
+				else
+					return;
+			}
 		}
 		curses.add(new DeityPower(to,clericOnly));
 	}
@@ -1477,7 +1493,15 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			final Ability A=fetchPower(a);
 			if((A!=null)&&(A.ID().equals(to.ID())))
-				return;
+			{
+				if(!A.text().equals(to.text()))
+				{
+					powers.remove(a);
+					break;
+				}
+				else
+					return;
+			}
 		}
 		powers.add(to);
 	}

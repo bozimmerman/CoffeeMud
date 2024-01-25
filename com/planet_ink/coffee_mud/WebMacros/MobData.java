@@ -92,7 +92,7 @@ public class MobData extends StdWebMacro
 			final Race R=r.nextElement();
 			map.put(R.name(), R);
 		}
-		final Vector<Race> V=new Vector<Race>(map.size());
+		final Vector<Race> V=new Vector<Race>(map.size()); // vector ok, going into resources
 		for(final String raceName : map.keySet())
 		{
 			V.add(map.get(raceName));
@@ -324,8 +324,7 @@ public class MobData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BLESSINGS"))
 		{
-			final Vector<String> theclasses=new Vector<String>();
-			final Vector<Boolean> theclerics=new Vector<Boolean>();
+			final TriadList<String,Boolean,String> theclasses=new TriadArrayList<String,Boolean,String>();
 			if(httpReq.isUrlParameter("BLESS1"))
 			{
 				int num=1;
@@ -335,8 +334,8 @@ public class MobData extends StdWebMacro
 					final boolean clericOnly=(httpReq.isUrlParameter("BLONLY"+num))&&(httpReq.getUrlParameter("BLONLY"+num)).equalsIgnoreCase("on");
 					if(behav.length()>0)
 					{
-						theclasses.addElement(behav);
-						theclerics.addElement(Boolean.valueOf(clericOnly));
+						final String arg = httpReq.getUrlParameter("BLESSTEXT"+num);
+						theclasses.add(behav,Boolean.valueOf(clericOnly),arg==null?"":arg);
 					}
 					num++;
 					behav=httpReq.getUrlParameter("BLESS"+num);
@@ -345,23 +344,22 @@ public class MobData extends StdWebMacro
 			else
 			for(int a=0;a<E.numBlessings();a++)
 			{
-				final Ability Able=E.fetchBlessing(a);
-				if(Able!=null)
-				{
-					theclasses.addElement(CMClass.classID(Able));
-					theclerics.addElement(Boolean.valueOf(E.fetchBlessingCleric(a)));
-				}
+				final Ability A=E.fetchBlessing(a);
+				if(A!=null)
+					theclasses.add(CMClass.classID(A),Boolean.valueOf(E.fetchBlessingCleric(a)),A.text());
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=theclasses.elementAt(i);
-				final boolean clericOnly=theclerics.elementAt(i).booleanValue();
+				final String theclass=theclasses.get(i).first;
+				final boolean clericOnly=theclasses.get(i).second.booleanValue();
+				final String arg=CMStrings.replaceAll(theclasses.get(i).third,"\"","&quot;");
 				str.append("<TR><TD WIDTH=100%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=BLESS"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
 				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
+				str.append("<FONT COLOR=WHITE SIZE=-2>Parms:</FONT><INPUT TYPE=TEXT NAME=BLESSTEXT"+(i+1)+" VALUE=\""+arg+"\">&nbsp;");
 				str.append("<INPUT TYPE=CHECKBOX NAME=BLONLY"+(i+1)+" "+((clericOnly)?"CHECKED":"")+"><FONT COLOR=WHITE SIZE=-2>Clerics only</FONT>");
 				str.append("</TD></TR>");
 			}
@@ -390,8 +388,7 @@ public class MobData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("CURSES"))
 		{
-			final Vector<String> theclasses=new Vector<String>();
-			final Vector<Boolean> theclerics=new Vector<Boolean>();
+			final TriadList<String,Boolean,String> theclasses=new TriadArrayList<String,Boolean,String>();
 			if(httpReq.isUrlParameter("CURSE1"))
 			{
 				int num=1;
@@ -401,8 +398,8 @@ public class MobData extends StdWebMacro
 					final boolean clericOnly=(httpReq.isUrlParameter("BLONLY"+num))&&(httpReq.getUrlParameter("BLONLY"+num)).equalsIgnoreCase("on");
 					if(behav.length()>0)
 					{
-						theclasses.addElement(behav);
-						theclerics.addElement(Boolean.valueOf(clericOnly));
+						final String arg = httpReq.getUrlParameter("CURSETEXT"+num);
+						theclasses.add(behav,Boolean.valueOf(clericOnly),arg==null?"":arg);
 					}
 					num++;
 					behav=httpReq.getUrlParameter("CURSE"+num);
@@ -411,23 +408,22 @@ public class MobData extends StdWebMacro
 			else
 			for(int a=0;a<E.numCurses();a++)
 			{
-				final Ability Able=E.fetchCurse(a);
-				if(Able!=null)
-				{
-					theclasses.addElement(CMClass.classID(Able));
-					theclerics.addElement(Boolean.valueOf(E.fetchCurseCleric(a)));
-				}
+				final Ability A=E.fetchCurse(a);
+				if(A!=null)
+					theclasses.add(CMClass.classID(A),Boolean.valueOf(E.fetchBlessingCleric(a)),A.text());
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=theclasses.elementAt(i);
-				final boolean clericOnly=theclerics.elementAt(i).booleanValue();
+				final String theclass=theclasses.get(i).first;
+				final boolean clericOnly=theclasses.get(i).second.booleanValue();
+				final String arg=CMStrings.replaceAll(theclasses.get(i).third,"\"","&quot;");
 				str.append("<TR><TD WIDTH=100%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=CURSE"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
 				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
+				str.append("<FONT COLOR=WHITE SIZE=-2>Parms:</FONT><INPUT TYPE=TEXT NAME=CURSETEXT"+(i+1)+" VALUE=\""+arg+"\">&nbsp;");
 				str.append("<INPUT TYPE=CHECKBOX NAME=CUONLY"+(i+1)+" "+((clericOnly)?"CHECKED":"")+"><FONT COLOR=WHITE SIZE=-2>Clerics only</FONT>");
 				str.append("</TD></TR>");
 			}
@@ -456,8 +452,7 @@ public class MobData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("FACTIONS"))
 		{
-			final Vector<String> theclasses=new Vector<String>();
-			final Vector<String> theparms=new Vector<String>();
+			final PairList<String,String> theclasses=new PairArrayList<String,String>();
 			if(httpReq.isUrlParameter("FACTION1"))
 			{
 				int num=1;
@@ -469,10 +464,8 @@ public class MobData extends StdWebMacro
 				{
 					if(facti.length()>0)
 					{
-						theclasses.addElement(facti);
-						String t=theparm;
-						t=CMStrings.replaceAll(t,"\"","&quot;");
-						theparms.addElement(t);
+						final String t=theparm;
+						theclasses.add(facti,t);
 					}
 					num++;
 					facti=httpReq.getUrlParameter("FACTION"+num);
@@ -496,20 +489,17 @@ public class MobData extends StdWebMacro
 				{
 					final Faction f=CMLib.factions().getFaction(e.nextElement());
 					if(f!=null)
-					{
-						theclasses.addElement(f.factionID());
-						theparms.addElement(Integer.toString(E.fetchFaction(f.factionID())));
-					}
+						theclasses.add(f.factionID(), Integer.toString(E.fetchFaction(f.factionID())));
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=theclasses.elementAt(i);
+				final String theclass=theclasses.get(i).first;
 				final Faction F=CMLib.factions().getFaction(theclass);
 				if(F==null)
 					continue;
-				String theparm=theparms.elementAt(i);
+				String theparm=theclasses.get(i).second;
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditFaction(this);\" NAME=FACTION"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -522,7 +512,7 @@ public class MobData extends StdWebMacro
 				final Faction.FRange FR=CMLib.factions().getRange(F.factionID(),CMath.s_int(theparm));
 				if(FR==null)
 					str.append("<OPTION VALUE=\""+CMath.s_int(theparm)+"\">"+CMath.s_int(theparm));
-				final List<Faction.FRange> sortedRanges = new XVector<Faction.FRange>(F.ranges());
+				final List<Faction.FRange> sortedRanges = new XArrayList<Faction.FRange>(F.ranges());
 				Collections.sort(sortedRanges, new Comparator<Faction.FRange>()
 				{
 					@Override
@@ -555,12 +545,12 @@ public class MobData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Faction");
 
 			Object[] sortedB=null;
-			final Vector<String> sortMeB=new Vector<String>();
+			final List<String> sortMeB=new ArrayList<String>();
 			for(final Enumeration<Faction> fID=CMLib.factions().factions();fID.hasMoreElements();)
 			{
 				final Faction F=fID.nextElement();
-				if((F!=null)&&(!theclasses.contains(F.factionID())))
-					sortMeB.addElement(F.factionID());
+				if((F!=null)&&(!theclasses.containsFirst(F.factionID())))
+					sortMeB.add(F.factionID());
 			}
 			sortedB=(new TreeSet<String>(sortMeB)).toArray();
 			for (final Object element : sortedB)
@@ -582,8 +572,7 @@ public class MobData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("CLASSLIST"))
 		{
-			final Vector<String> theclasses=new Vector<String>();
-			final Vector<String> theparms=new Vector<String>();
+			final PairList<String,String> theclasses=new PairArrayList<String,String>();
 			if(httpReq.isUrlParameter("CHARCLASS1"))
 			{
 				int num=1;
@@ -595,10 +584,9 @@ public class MobData extends StdWebMacro
 						theparm="0";
 					if(facti.length()>0)
 					{
-						theclasses.addElement(facti);
 						String t=theparm;
 						t=CMStrings.replaceAll(t,"\"","&quot;");
-						theparms.addElement(t);
+						theclasses.add(facti, t);
 					}
 					num++;
 					facti=httpReq.getUrlParameter("CHARCLASS"+num);
@@ -609,16 +597,15 @@ public class MobData extends StdWebMacro
 			{
 				final CharStats baseStats = E.baseCharStats();
 				if(baseStats!=null)
-				for(int c=0;c<baseStats.numClasses();c++)
 				{
-					final CharClass C=baseStats.getMyClass(c);
-					if(C!=null)
+					for(int c=0;c<baseStats.numClasses();c++)
 					{
-						final int lvl=baseStats.getClassLevel(C);
-						if(lvl>=0)
+						final CharClass C=baseStats.getMyClass(c);
+						if(C!=null)
 						{
-							theclasses.addElement(C.ID());
-							theparms.addElement(Integer.toString(lvl));
+							final int lvl=baseStats.getClassLevel(C);
+							if(lvl>=0)
+								theclasses.add(C.ID(), Integer.toString(lvl));
 						}
 					}
 				}
@@ -626,11 +613,11 @@ public class MobData extends StdWebMacro
 			str.append("<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=theclasses.elementAt(i);
+				final String theclass=theclasses.get(i).first;
 				final CharClass C=CMClass.getCharClass(theclass);
 				if(C==null)
 					continue;
-				final String theparm=theparms.elementAt(i);
+				final String theparm=theclasses.get(i).second;
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditFaction(this);\" NAME=CHARCLASS"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -663,7 +650,7 @@ public class MobData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("POWERS"))
 		{
-			final Vector<String> theclasses=new Vector<String>();
+			final PairList<String,String> theclasses=new PairArrayList<String,String>();
 			if(httpReq.isUrlParameter("POWER1"))
 			{
 				int num=1;
@@ -671,7 +658,10 @@ public class MobData extends StdWebMacro
 				while(behav!=null)
 				{
 					if(behav.length()>0)
-						theclasses.addElement(behav);
+					{
+						final String aff=httpReq.getUrlParameter("POWERTEXT"+num);
+						theclasses.add(behav,aff==null?"":aff);
+					}
 					num++;
 					behav=httpReq.getUrlParameter("POWER"+num);
 				}
@@ -679,19 +669,21 @@ public class MobData extends StdWebMacro
 			else
 			for(int a=0;a<E.numPowers();a++)
 			{
-				final Ability Able=E.fetchPower(a);
-				if(Able!=null)
-					theclasses.addElement(CMClass.classID(Able));
+				final Ability A=E.fetchPower(a);
+				if(A!=null)
+					theclasses.add(CMClass.classID(A),A.text());
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=theclasses.elementAt(i);
+				final String theclass=theclasses.get(i).first;
+				final String arg=CMStrings.replaceAll(theclasses.get(i).second,"\"","&quot;");
 				str.append("<TR><TD WIDTH=100%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=POWER"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
 				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
+				str.append("<FONT COLOR=WHITE SIZE=-2>Parms:</FONT><INPUT TYPE=TEXT NAME=POWERTEXT"+(i+1)+" VALUE=\""+arg+"\">&nbsp;");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=100%>");
@@ -795,12 +787,12 @@ public class MobData extends StdWebMacro
 				String theparm=httpReq.getUrlParameter("SDATA"+num);
 				String theprice=httpReq.getUrlParameter("SPRIC"+num);
 				final CoffeeShop shop=(E instanceof Librarian)?((Librarian)E).getBaseLibrary():E.getShop();
-				final XVector<Environmental> inventory=new XVector<Environmental>(shop.getStoreInventory());
+				final List<Environmental> inventory=new XArrayList<Environmental>(shop.getStoreInventory());
 				while((MATCHING!=null)&&(theparm!=null))
 				{
 					if(CMath.isNumber(MATCHING))
 					{
-						final Environmental O=inventory.elementAt(CMath.s_int(MATCHING)-1);
+						final Environmental O=inventory.get(CMath.s_int(MATCHING)-1);
 						if(O!=null)
 							theclasses.add(O);
 					}
@@ -1005,7 +997,7 @@ public class MobData extends StdWebMacro
 				}
 
 				containers=new ArrayList<Object>();
-				final Vector<String> cstrings=new Vector<String>();
+				final List<String> cstrings=new ArrayList<String>();
 				for(int i=1;;i++)
 				{
 					final String MATCHING=httpReq.getUrlParameter("ITEM"+i);
@@ -1018,12 +1010,12 @@ public class MobData extends StdWebMacro
 						classes.add(I2);
 						beingWorn.add(Boolean.valueOf((WORN!=null)&&(WORN.equalsIgnoreCase("on"))));
 						final String CONTAINER=httpReq.getUrlParameter("ITEMCONT"+i);
-						cstrings.addElement((CONTAINER==null)?"":CONTAINER);
+						cstrings.add((CONTAINER==null)?"":CONTAINER);
 					}
 				}
 				for(int i=0;i<cstrings.size();i++)
 				{
-					final String CONTAINER=cstrings.elementAt(i);
+					final String CONTAINER=cstrings.get(i);
 					Item C2=null;
 					if(CONTAINER.length()>0)
 						C2=(Item)CMLib.english().fetchEnvironmental(classes,CONTAINER,true);
@@ -1286,7 +1278,7 @@ public class MobData extends StdWebMacro
 						Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-MOBS");
 						if(sorted==null)
 						{
-							final Vector<String> sortMe=new Vector<String>();
+							final Vector<String> sortMe=new Vector<String>(); // Vector OK -- going into resources
 							for(final Enumeration<MOB> m=CMClass.mobTypes();m.hasMoreElements();)
 								sortMe.addElement(CMClass.classID(m.nextElement()));
 							sorted=(new TreeSet<String>(sortMe)).toArray();

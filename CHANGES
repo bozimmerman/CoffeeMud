@@ -2,6 +2,7 @@
   1. Races/GenRaces support parameters for cultural abilities.
   2. Better MSSP/MSDP support.  New INI entry: MSXPVARS.
   3. Ability CODES & DOMAINS can now be added to via the INI file/control panel.
+  4. Deity powers, curses, blessings all now support arguments
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

@@ -215,7 +215,12 @@ public class GrinderMobs
 					if(B==null)
 						return "Unknown Blessing '"+aff+"'.";
 					else
+					{
+						final String atext=httpReq.getUrlParameter("BLESSTEXT"+num);
+						if((atext!=null)&&(atext.length()>0))
+							B.setMiscText(atext);
 						E.addBlessing(B,clericOnly);
+					}
 				}
 				num++;
 				aff=httpReq.getUrlParameter("BLESS"+num);
@@ -274,7 +279,12 @@ public class GrinderMobs
 					if(B==null)
 						return "Unknown Curse '"+aff+"'.";
 					else
+					{
+						final String atext=httpReq.getUrlParameter("CURSETEXT"+num);
+						if((atext!=null)&&(atext.length()>0))
+							B.setMiscText(atext);
 						E.addCurse(B,clericOnly);
+					}
 				}
 				num++;
 				aff=httpReq.getUrlParameter("CURSE"+num);
@@ -390,7 +400,12 @@ public class GrinderMobs
 					if(B==null)
 						return "Unknown Power '"+aff+"'.";
 					else
+					{
+						final String atext=httpReq.getUrlParameter("POWERTEXT"+num);
+						if((atext!=null)&&(atext.length()>0))
+							B.setMiscText(atext);
 						E.addPower(B);
+					}
 				}
 				num++;
 				aff=httpReq.getUrlParameter("POWER"+num);
