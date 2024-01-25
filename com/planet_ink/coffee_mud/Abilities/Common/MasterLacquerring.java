@@ -194,6 +194,7 @@ public class MasterLacquerring extends MasterPaintingSkill
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));
 		if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
 		{
+			/*
 			final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
 			boolean ok=false;
 			for(final MOB M : followers)
@@ -202,8 +203,10 @@ public class MasterLacquerring extends MasterPaintingSkill
 					ok=true;
 			}
 			if(!ok)
+			*/
+			if(target.secretIdentity().indexOf(ItemCraftor.CRAFTING_BRAND_STR_PREFIX)<0)
 			{
-				commonTelL(mob,"You aren't allowed to work on '@x1'.",target.name(mob));
+				commonTelL(mob,"You aren't allowed to work on '@x1'.  It must be a crafted item.",target.name(mob));
 				return false;
 			}
 		}

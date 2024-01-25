@@ -145,6 +145,7 @@ public class Lacquerring extends PaintingSkill
 			target=mob.location().findItem(null, commands.get(0));
 		if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
 		{
+			/*
 			final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
 			boolean ok=false;
 			for(final MOB M : followers)
@@ -153,8 +154,10 @@ public class Lacquerring extends PaintingSkill
 					ok=true;
 			}
 			if(!ok)
+			*/
+			if(target.secretIdentity().indexOf(ItemCraftor.CRAFTING_BRAND_STR_PREFIX)<0)
 			{
-				commonTelL(mob,"You aren't allowed to work on '@x1'.",(commands.get(0)));
+				commonTelL(mob,"You aren't allowed to work on '@x1'.  It must be a crafted item.",target.name(mob));
 				return false;
 			}
 		}

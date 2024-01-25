@@ -76,6 +76,8 @@ public class Wizard extends Mage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_Shield",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_IronGrip",false);
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_ImprovedRevoke",false);
+
 		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
