@@ -64,71 +64,162 @@ public class Prop_TicketTaker extends Property
 		return "one who acts as a ticket taker";
 	}
 
-	protected double cost()
+	protected double	cost		= 0.0;
+	protected String	ticketName	= null;
+
+	protected final LimitedTreeSet<String> paid		= new LimitedTreeSet<String>(1000,25,false);
+
+	@Override
+	public void setMiscText(final String text)
 	{
-		int amount=CMath.s_int(text());
-		if(amount==0)
-			amount=10;
-		return amount;
+		super.setMiscText(text);
+		cost=0.0;
+		ticketName = null;
+		if(CMath.isNumber(text))
+			cost = Math.abs(CMath.s_double(text));
+		else
+		if(text.trim().length()>0)
+			ticketName = text.trim();
 	}
 
-	protected boolean isMine(final Environmental host, final Rideable R)
+	protected boolean isTicketTakingScenario(final MOB mob2, final Rideable rideableR)
 	{
+		final Physical host = affected;
 		if(host instanceof Rider)
 		{
-			final Rider mob=(Rider)host;
-			if(R==mob)
+			final Rider hostM=(Rider)host;
+			if(rideableR==hostM)
 				return true;
-			if(mob.riding()==null)
+			if(hostM.riding()==null)
+			{
+				if(isOnBoard(host, rideableR))
+					return true;
 				return false;
-			if(mob.riding()==R)
+			}
+			if(hostM.riding()==rideableR)
 				return true;
-			if((((Rider)R).riding()==mob.riding()))
+			if((rideableR.riding()==hostM.riding()))
 				return true;
-			if((((Rider)mob.riding()).riding()==R))
+			if((((Rider)hostM.riding()).riding()==rideableR))
 				return true;
 		}
-		else
 		if(host instanceof Rideable)
-			return host==R;
+			return host==rideableR;
 		return false;
+	}
+
+	@Override
+	public void setAffectedOne(final Physical P)
+	{
+		super.setAffectedOne(P);
+	}
+
+	protected boolean isPrivilegedWith(final MOB mob, final Rideable R)
+	{
+		if((R instanceof Boardable)
+		&&(R instanceof PrivateProperty)
+		&&(CMLib.law().doesHavePrivilegesWith(mob, (PrivateProperty)R)))
+			return true;
+		return false;
+	}
+
+	protected boolean isOnBoard(final Environmental host, final Rideable R)
+	{
+		if(host instanceof MOB)
+		{
+			final MOB M=(MOB)host;
+			final Room locR = M.location();
+			if(locR != null)
+			{
+				if((locR.getArea() instanceof Boardable)
+				&&(((Boardable)locR.getArea()).getBoardableItem() == R))
+					return true;
+				if((R instanceof Boardable)
+				&&(((Boardable)R).getBoardableItem().owner()==locR)
+				&&(R instanceof PrivateProperty)
+				&&(((PrivateProperty)R).getOwnerName().length()==0))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	protected Rideable getRideable(final Environmental target, final Environmental exit)
+	{
+		if(target instanceof Rideable)
+			return (Rideable)target;
+		if((target instanceof Room)
+		&&(CMLib.map().roomLocation(affected) == target))
+		{
+			final Room R = (Room)target;
+			if((R.getArea() instanceof Boardable)
+			&&(exit instanceof PrepositionExit))
+				return (Rideable)((Boardable)R.getArea()).getBoardableItem();
+		}
+		return null;
 	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(((myHost instanceof Rider)&&(((Rider)myHost).riding()!=null))
-		   ||(myHost instanceof Rideable))
+		final MOB mob=msg.source();
+		if((msg.target()!=null)
+		&&(myHost!=mob)
+		&&(!mob.isMonster()))
 		{
-			final MOB mob=msg.source();
-			if((msg.target()!=null)
-			&&(myHost!=mob)
-			&&(!mob.isMonster())
-			&&(msg.target() instanceof Rideable)
-			&&(isMine(myHost,(Rideable)msg.target())))
+			switch(msg.sourceMinor())
 			{
-				switch(msg.sourceMinor())
+			case CMMsg.TYP_MOUNT:
+			case CMMsg.TYP_SIT:
+			case CMMsg.TYP_ENTER:
+			case CMMsg.TYP_SLEEP:
+			{
+				final Rideable ride = getRideable(msg.target(), msg.tool());
+				if((ride != null)
+				&& (isTicketTakingScenario(msg.source(),ride))
+				&& (!paid.contains(msg.source().Name())))
 				{
-				case CMMsg.TYP_MOUNT:
-				case CMMsg.TYP_SIT:
-				case CMMsg.TYP_ENTER:
-				case CMMsg.TYP_SLEEP:
-				{
-					String currency=CMLib.beanCounter().getCurrency(affected);
-					if(currency.length()==0)
-						currency=CMLib.beanCounter().getCurrency(mob);
-					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)>=cost())
+					paid.add(msg.source().Name());
+					//final Room hostR = CMLib.map().roomLocation(affected);
+					if(cost > 0)
 					{
-						final String costStr=CMLib.beanCounter().nameCurrencyShort(currency,cost());
-						mob.location().show(mob,myHost,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> give(s) @x1 to <T-NAME>.",costStr));
-						CMLib.beanCounter().subtractMoney(mob,currency,cost());
+						String currency=CMLib.beanCounter().getCurrency(affected);
+						if(currency.length()==0)
+							currency=CMLib.beanCounter().getCurrency(mob);
+						if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)>=cost)
+						{
+							final String costStr=CMLib.beanCounter().nameCurrencyShort(currency, cost);
+							mob.location().show(mob,myHost,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> give(s) @x1 to <T-NAME>.",costStr));
+							CMLib.beanCounter().subtractMoney(mob,currency,cost);
+						}
+					}
+					else
+					if(ticketName != null)
+					{
+						final Item I = getTicket(msg.source());
+						if(I != null)
+						{
+							mob.location().show(mob,myHost,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> give(s) @x1 to <T-NAME>.",I.name(mob)));
+							I.destroy();
+						}
 					}
 				}
 				break;
-				}
 			}
 		}
+		}
+	}
+
+	protected Item getTicket(final MOB mob)
+	{
+		final Item I = mob.findItem(null, ticketName);
+		if((I != null)
+		&&(I.amWearingAt(Item.WORN_HELD)||I.amWearingAt(Item.IN_INVENTORY))
+		&&(CMLib.flags().isDroppable(I))
+		&&(CMLib.utensils().canBePlayerDestroyed(mob, I, true, true)))
+			return I;
+		return null;
 	}
 
 	@Override
@@ -136,40 +227,61 @@ public class Prop_TicketTaker extends Property
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if(((myHost instanceof Rider)&&(((Rider)myHost).riding()!=null))
-		   ||(myHost instanceof Rideable))
+		final MOB mob=msg.source();
+		if((msg.target()!=null)
+		&&(myHost!=mob)
+		&&(!mob.isMonster())
+		&&(msg.target() instanceof Rideable))
 		{
-			final MOB mob=msg.source();
-			if((msg.target()!=null)
-			&&(myHost!=mob)
-			&&(!mob.isMonster())
-			&&(msg.target() instanceof Rideable)
-			&&(isMine(myHost,(Rideable)msg.target())))
+			switch(msg.sourceMinor())
 			{
-				switch(msg.sourceMinor())
+			case CMMsg.TYP_MOUNT:
+			case CMMsg.TYP_SIT:
+			case CMMsg.TYP_ENTER:
+			case CMMsg.TYP_SLEEP:
+			{
+				if(isTicketTakingScenario(msg.source(),(Rideable)msg.target()))
 				{
-				case CMMsg.TYP_MOUNT:
-				case CMMsg.TYP_SIT:
-				case CMMsg.TYP_ENTER:
-				case CMMsg.TYP_SLEEP:
-				{
-					String currency=CMLib.beanCounter().getCurrency(affected);
-					if(currency.length()==0)
-						currency=CMLib.beanCounter().getCurrency(mob);
-					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)<cost())
+					if(cost > 0)
 					{
-						final String costStr=CMLib.beanCounter().nameCurrencyLong(currency,cost());
-						if(myHost instanceof MOB)
-							CMLib.commands().postSay((MOB)myHost,mob,L("You'll need @x1 to board.",costStr),false,false);
-						else
-							mob.tell(L("You'll need @x1 to board.",costStr));
-						return false;
+						String currency=CMLib.beanCounter().getCurrency(affected);
+						if(currency.length()==0)
+							currency=CMLib.beanCounter().getCurrency(mob);
+						if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)<cost)
+						{
+							final String costStr=CMLib.beanCounter().nameCurrencyLong(currency,cost);
+							if((myHost instanceof MOB)
+							&&(((MOB)myHost).location() == mob.location()))
+								CMLib.commands().postSay((MOB)myHost,mob,L("You'll need @x1 to board.",costStr),false,false);
+							else
+							if(myHost instanceof MOB)
+								mob.tell(L("@x1 says 'You'll need @x2 to board.'",myHost.name(),costStr));
+							else
+								mob.tell(L("You'll need @x1 to board.",costStr));
+							return false;
+						}
 					}
-					break;
+					else
+					if(ticketName != null)
+					{
+						final Item I = getTicket(msg.source());
+						if(I == null)
+						{
+							if((myHost instanceof MOB)
+							&&(((MOB)myHost).location() == mob.location()))
+								CMLib.commands().postSay((MOB)myHost,mob,L("You'll need @x1 to board.",ticketName),false,false);
+							else
+							if(myHost instanceof MOB)
+								mob.tell(L("@x1 says 'You'll need @x2 to board.'",myHost.name(),ticketName));
+							else
+								mob.tell(L("You'll need @x1 to board.",ticketName));
+						}
+					}
 				}
-				default:
-					break;
-				}
+				break;
+			}
+			default:
+				break;
 			}
 		}
 		return true;
