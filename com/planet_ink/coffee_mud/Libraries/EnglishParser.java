@@ -2569,7 +2569,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		int containerDex=commands.size()-1;
 		for(int i=commands.size()-2;i>=1;i--)
 		{
-			if(commands.get(i).equalsIgnoreCase("from") || commands.get(i).equalsIgnoreCase("in")|| commands.get(i).equalsIgnoreCase("on"))
+			if(commands.get(i).equalsIgnoreCase("from")
+			|| commands.get(i).equalsIgnoreCase("in")
+			|| commands.get(i).equalsIgnoreCase("on"))
 			{
 				fromDex=i;
 				containerDex=i+1;

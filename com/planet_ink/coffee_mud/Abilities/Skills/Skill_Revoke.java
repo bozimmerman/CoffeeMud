@@ -102,7 +102,8 @@ public class Skill_Revoke extends StdSkill
 		&&(mob.location().numEffects()>0))
 			target=mob.location();
 		else
-		if(whatToRevoke.equalsIgnoreCase("room"))
+		if(whatToRevoke.equalsIgnoreCase("room")
+		||whatToRevoke.equalsIgnoreCase(CMLib.english().removeArticleLead(mob.location().Name())))
 			target=mob.location();
 		else
 		if(whatToRevoke.equalsIgnoreCase("area"))

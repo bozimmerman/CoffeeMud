@@ -100,7 +100,10 @@ public class Thief_DetectBombs extends ThiefSkill
 	{
 		final String whatTounlock=CMParms.combine(commands,0);
 		Physical checkThis=givenTarget;
-		if((checkThis==null)&&(whatTounlock.equalsIgnoreCase("room")||whatTounlock.equalsIgnoreCase("here")))
+		if((checkThis==null)
+		&&(whatTounlock.equalsIgnoreCase("room")
+			||whatTounlock.equalsIgnoreCase("here")
+			||whatTounlock.equalsIgnoreCase(CMLib.english().removeArticleLead(mob.location().Name()))))
 			checkThis=mob.location();
 		if(checkThis==null)
 			checkThis=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);

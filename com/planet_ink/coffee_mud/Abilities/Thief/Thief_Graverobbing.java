@@ -129,7 +129,8 @@ public class Thief_Graverobbing extends ThiefSkill
 			return false;
 		Physical target=null;
 		if(what.equalsIgnoreCase("here")
-		||what.equalsIgnoreCase("room"))
+		||what.equalsIgnoreCase("room")
+		||what.equalsIgnoreCase(CMLib.english().removeArticleLead(R.Name())))
 			target=R;
 		else
 		{

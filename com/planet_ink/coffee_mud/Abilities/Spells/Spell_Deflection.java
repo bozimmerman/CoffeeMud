@@ -163,7 +163,8 @@ public class Spell_Deflection extends Spell
 		{
 			final String s=CMParms.combine(commands,0);
 			final Area A=CMLib.map().areaLocation(mob);
-			if(s.equalsIgnoreCase("room"))
+			if(s.equalsIgnoreCase("room")
+			||s.equalsIgnoreCase(CMLib.english().removeArticleLead(mob.location().Name())))
 				target=mob.location();
 			else
 			if(s.equalsIgnoreCase("here"))

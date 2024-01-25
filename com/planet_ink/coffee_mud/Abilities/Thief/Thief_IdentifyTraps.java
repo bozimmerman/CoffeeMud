@@ -98,7 +98,10 @@ public class Thief_IdentifyTraps extends ThiefSkill
 				nextRoom=mob.location().getRoomInDir(dirCode);
 			}
 		}
-		if((unlockThis==null)&&(whatTounlock.equalsIgnoreCase("room")||whatTounlock.equalsIgnoreCase("here")))
+		if((unlockThis==null)
+		&&(whatTounlock.equalsIgnoreCase("room")
+			||whatTounlock.equalsIgnoreCase("here")
+			||whatTounlock.equalsIgnoreCase(CMLib.english().removeArticleLead(mob.location().Name()))))
 			unlockThis=mob.location();
 		if(unlockThis==null)
 			unlockThis=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);

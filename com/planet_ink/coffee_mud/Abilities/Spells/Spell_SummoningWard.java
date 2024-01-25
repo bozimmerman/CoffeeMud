@@ -146,7 +146,8 @@ public class Spell_SummoningWard extends Spell
 		if(commands.size()>0)
 		{
 			final String s=CMParms.combine(commands,0);
-			if(s.equalsIgnoreCase("room"))
+			if(s.equalsIgnoreCase("room")
+			||s.equalsIgnoreCase(CMLib.english().removeArticleLead(mob.location().Name())))
 				target=mob.location();
 			else
 			if(s.equalsIgnoreCase("here"))

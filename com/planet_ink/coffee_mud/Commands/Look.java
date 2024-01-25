@@ -123,20 +123,31 @@ public class Look extends StdCommand
 				}
 			}
 			if((thisThang==null)
-			&&(commands.size()>3)
-			&&((CMParms.indexOfIgnoreCase(commands, "in") > 1)
-				||(CMParms.indexOfIgnoreCase(commands, "on") > 1))
-			&&((CMParms.indexOfIgnoreCase(commands, "in") < commands.size()-1)
-				||CMParms.indexOfIgnoreCase(commands, "on") < commands.size()-1))
+			&&(commands.size()>3))
 			{
-				final List<String> tempCmds=new XVector<String>(commands);
-				final Item containerC=CMLib.english().parsePossibleContainer(mob,tempCmds,true,Wearable.FILTER_ANY);
-				if(containerC!=null)
+
+				int fromDex=-1;
+				for(int i=commands.size()-2;i>=1;i--)
 				{
-					final String tempID=CMParms.combine(tempCmds,1);
-					thisThang=R.fetchFromMOBRoomFavorsItems(mob, containerC, tempID, noCoinFilter);
-					if(thisThang==null)
-						thisThang=R.fetchFromMOBRoomFavorsItems(mob, containerC, tempID, Wearable.FILTER_ANY);
+					if(commands.get(i).equalsIgnoreCase("from")
+					|| commands.get(i).equalsIgnoreCase("in")
+					|| commands.get(i).equalsIgnoreCase("on"))
+					{
+						fromDex=i;
+						break;
+					}
+				}
+				if(( fromDex > 1) && (fromDex < commands.size()-1))
+				{
+					final List<String> tempCmds=new XVector<String>(commands);
+					final Item containerC=CMLib.english().parsePossibleContainer(mob,tempCmds,true,Wearable.FILTER_ANY);
+					if(containerC!=null)
+					{
+						final String tempID=CMParms.combine(tempCmds,1);
+						thisThang=R.fetchFromMOBRoomFavorsItems(mob, containerC, tempID, noCoinFilter);
+						if(thisThang==null)
+							thisThang=R.fetchFromMOBRoomFavorsItems(mob, containerC, tempID, Wearable.FILTER_ANY);
+					}
 				}
 			}
 

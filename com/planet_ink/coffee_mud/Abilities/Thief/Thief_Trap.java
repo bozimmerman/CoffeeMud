@@ -190,9 +190,11 @@ public class Thief_Trap extends ThiefSkill implements RecipeDriven
 				return false;
 			}
 			String name;
-			if(commands.get(0).toString().equalsIgnoreCase("room")
-			||commands.get(0).toString().equalsIgnoreCase("here")
-			||((mob.location()!=null)&&(commands.get(0).toString().equalsIgnoreCase(mob.location().name()))))
+			final String what = commands.get(0).toLowerCase();
+			if(what.equalsIgnoreCase("room")
+			||what.equalsIgnoreCase("here")
+			||((mob.location()!=null)
+				&&(what.equalsIgnoreCase(CMLib.english().removeArticleLead(mob.location().name())))))
 			{
 				name=CMParms.combine(commands,1);
 				while(commands.size()>1)

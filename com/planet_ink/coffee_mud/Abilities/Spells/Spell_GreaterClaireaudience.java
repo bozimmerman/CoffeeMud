@@ -139,7 +139,8 @@ public class Spell_GreaterClaireaudience extends Spell
 			||(CMLib.english().containsString(localA.name(), targetName)))
 				target=localA;
 			else
-			if(targetName.equalsIgnoreCase("room"))
+			if(targetName.equalsIgnoreCase("room")
+			||targetName.equalsIgnoreCase(CMLib.english().removeArticleLead(localR.Name())))
 				target=localR;
 			else
 			if((localA instanceof Boardable)
