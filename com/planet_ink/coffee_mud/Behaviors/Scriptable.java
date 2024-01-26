@@ -270,9 +270,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public void dequeResponses()
+	public void dequeResponses(Object[] objects)
 	{
-		engine().dequeResponses();
+		engine().dequeResponses(null);
 	}
 
 	@Override

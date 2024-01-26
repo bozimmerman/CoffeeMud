@@ -150,7 +150,6 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		CR.setStat("MINRANGE", ""+A.minRange());
 		CR.setStat("FLAGS", ""+A.flags());
 		CR.setStat("AUTOINVOKE", ""+A.isAutoInvoked());
-		CR.setStat("CLASSIFICATION", ""+A.isAutoInvoked());
 		//CR.setStat("OVERRIDEMANA", ""+A.);
 		CR.setStat("USAGEMASK", ""+A.usageType());
 		int canAffect=0;

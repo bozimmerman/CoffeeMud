@@ -144,10 +144,10 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public void dequeResponses()
+	public void dequeResponses(Object[] objects)
 	{
 		if(sampleB!=null)
-			sampleB.dequeResponses();
+			sampleB.dequeResponses(null);
 	}
 
 	@Override

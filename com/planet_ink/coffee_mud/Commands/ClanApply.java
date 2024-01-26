@@ -120,7 +120,7 @@ public class ClanApply extends StdCommand
 									S.setScript(C.getGovernment().getEntryScript());
 									final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,L("CLANENTRY"));
 									S.executeMsg(mob, msg2);
-									S.dequeResponses();
+									S.dequeResponses(null);
 									S.tick(mob,Tickable.TICKID_MOB);
 								}
 								CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLANMEMBERS, 1, C);

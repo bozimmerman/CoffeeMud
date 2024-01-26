@@ -452,7 +452,11 @@ designating the type of mob resource
 used to invoke the skills, whether it be move, mana, hit points, or
 some combination. Enter ? for a list.</td>
           </tr>
-          <tr>
+          <tr><td><span style="font-style: italic;">Num. Arguments</span></td><td>Number of arguments to expect. &nbsp;When a target is selected according to <span style="font-style: italic;">Can Target</span>,
+the first argument will be assumed to be the target. &nbsp;Arguments
+are also made available to MOBPROG scripts as $0, $1, etc, and as @x1,
+@x2 arguments for internal castings.  If the user enters more arguments
+than this value, and this value &gt; 1, then the surplus arguments are combined.</td></tr><tr>
             <td><em>Can
 Affect</em></td>
             <td>the types of

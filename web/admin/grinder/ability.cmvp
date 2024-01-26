@@ -509,6 +509,12 @@
                 </TD>
             </TR>
             <TR>
+                <TD><FONT COLOR=YELLOW>Num. Arguments: </FONT></TD>
+                <TD>
+                    <SELECT NAME=NUMARGS MULTIPLE>@AbilityData?NUMARGS@</SELECT>
+                </TD>
+            </TR>
+            <TR>
                 <TD><FONT COLOR=YELLOW>Can Affect: </FONT></TD>
                 <TD>
                     <SELECT NAME=CANAFFECTMASK MULTIPLE>@AbilityData?CANAFFECTMASK@</SELECT>

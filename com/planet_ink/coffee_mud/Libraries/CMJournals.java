@@ -680,7 +680,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		S.setVar(mob.Name(),"VALUE", oldValue);
 		final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,L("COMMANDJOURNAL_@x1",CMJ.NAME()));
 		S.executeMsg(mob, msg2);
-		S.dequeResponses();
+		S.dequeResponses(null);
 		S.tick(mob,Tickable.TICKID_MOB);
 		final String response=S.getVar("*","VALUE");
 		if(response!=null)
@@ -808,7 +808,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					S.setScript(str.toString());
 					final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,L("MPRUN"));
 					S.executeMsg(mob, msg2);
-					S.dequeResponses();
+					S.dequeResponses(null);
 					S.tick(mob,Tickable.TICKID_MOB);
 				}
 				else

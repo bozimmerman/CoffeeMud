@@ -136,7 +136,7 @@ public class ClanAccept extends StdCommand
 								S.setScript(C.getGovernment().getEntryScript());
 								final CMMsg msg2=CMClass.getMsg(M,M,null,CMMsg.MSG_OK_VISUAL,null,null,L("CLANENTRY"));
 								S.executeMsg(M, msg2);
-								S.dequeResponses();
+								S.dequeResponses(null);
 								S.tick(M,Tickable.TICKID_MOB);
 							}
 							CMLib.achievements().possiblyBumpAchievement(M, AchievementLibrary.Event.CLANMEMBERS, 1, C);

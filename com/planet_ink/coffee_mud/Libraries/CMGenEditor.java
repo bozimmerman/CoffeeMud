@@ -8984,6 +8984,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.FLAG_DESCS),++showNumber,showFlag,"Skill Flags (comma sep)","FLAGS",true);
 			promptStatInt(mob,me,"-1,x,"+Integer.MAX_VALUE+","+Integer.MAX_VALUE+"-(1 to 100)",++showNumber,showFlag,"Override Cost","OVERRIDEMANA");
 			promptStatStr(mob,me,CMParms.toListString(Ability.USAGE_DESCS),++showNumber,showFlag,"Cost Type","USAGEMASK",false);
+			promptStatInt(mob,me,++showNumber,showFlag,"Num. Arguments","NUMARGS");
 			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,"Can Affect","CANAFFECTMASK",true);
 			promptStatBool(mob,me,++showNumber,showFlag,"Tick/Periodic Affects","TICKAFFECTS");
 			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,"Can Target","CANTARGETMASK",true);

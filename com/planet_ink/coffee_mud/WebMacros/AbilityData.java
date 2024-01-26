@@ -823,6 +823,13 @@ public class AbilityData extends StdWebMacro
 						old=A.getStat("CASTMASK");
 					str.append(old+", ");
 				}
+				if(parms.containsKey("NUMARGS"))
+				{
+					String old=httpReq.getUrlParameter("NUMARGS");
+					if(old==null)
+						old=A.getStat("NUMARGS");
+					str.append(old+", ");
+				}
 				if(parms.containsKey("TARGETMASK"))
 				{
 					String old=httpReq.getUrlParameter("TARGETMASK");

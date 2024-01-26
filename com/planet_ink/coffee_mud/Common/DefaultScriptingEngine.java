@@ -11639,7 +11639,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							S.tick(newTarget,Tickable.TICKID_MOB);
 							for(int i=0;i<5;i++)
-								S.dequeResponses();
+								S.dequeResponses(null);
 						}
 						if(delete)
 							newTarget.delScript(S);
@@ -12483,7 +12483,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					DatabaseEngine db= CMLib.database();
 					if((E instanceof MOB) && ((MOB)E).isPlayer())
 					{
-						int threadId = CMLib.players().getPlayerThreadId((MOB)E);
+						final int threadId = CMLib.players().getPlayerThreadId((MOB)E);
 						if(threadId >=0)
 							db = CMLib.get(threadId)._database();
 					}
@@ -12527,7 +12527,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					DatabaseEngine db= CMLib.database();
 					if((E instanceof MOB) && ((MOB)E).isPlayer())
 					{
-						int threadId = CMLib.players().getPlayerThreadId((MOB)E);
+						final int threadId = CMLib.players().getPlayerThreadId((MOB)E);
 						if(threadId >=0)
 							db = CMLib.get(threadId)._database();
 					}
@@ -15422,7 +15422,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 		}
 		tickStatus=Tickable.STATUS_SCRIPT+100;
-		dequeResponses();
+		dequeResponses(null);
 		altStatusTickable=null;
 		return true;
 	}
@@ -15512,7 +15512,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public void dequeResponses()
+	public void dequeResponses(final Object[] objects)
 	{
 		try
 		{
@@ -15525,7 +15525,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					SB=que.get(q);
 					if((SB != null) && (SB.checkTimeToExecute()))
 					{
-						execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
+						final Object[] newObjs;
+						if(objects == null)
+							newObjs = newObjs();
+						else
+							newObjs = Arrays.copyOf(objects, ScriptingEngine.SPECIAL_NUM_OBJECTS);
+						execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs);
 						que.remove(SB);
 					}
 				}

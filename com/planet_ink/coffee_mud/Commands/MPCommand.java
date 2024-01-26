@@ -65,7 +65,7 @@ public class MPCommand extends StdCommand
 		S.setScript(script);
 		final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,L("MPRUN"));
 		S.executeMsg(mob, msg2);
-		S.dequeResponses();
+		S.dequeResponses(null);
 		S.tick(mob,Tickable.TICKID_MOB);
 	}
 

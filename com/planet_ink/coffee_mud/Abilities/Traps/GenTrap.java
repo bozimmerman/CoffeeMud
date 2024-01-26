@@ -350,7 +350,7 @@ public class GenTrap extends StdTrap
 						{
 							final CMMsg msg3=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_VISUAL,null,null,ID);
 							S.executeMsg(target, msg3);
-							S.dequeResponses();
+							S.dequeResponses(null);
 							target.location().recoverRoomStats();
 						}
 					}

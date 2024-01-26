@@ -101,8 +101,10 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	/**
 	 * Forces any queued event responses to be immediately
 	 * executed.
+	 * @see ScriptingEngine#SPECIAL_NUM_OBJECTS
+	 * @param objects null, or a twelve (12) object array for local variables
 	 */
-	public void dequeResponses();
+	public void dequeResponses(Object[] objects);
 
 	/**
 	 * Creates a mob from the Tickable object sent, possibly saving it
