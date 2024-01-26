@@ -1710,8 +1710,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final CMFlagLibrary flags = CMLib.flags();
 		final StringBuilder finalLookStr=new StringBuilder("");
 		boolean sysmsgs=mob.isAttributeSet(MOB.Attrib.SYSOPMSGS);
-		final boolean compress=mob.isAttributeSet(MOB.Attrib.COMPRESS) || (CMath.bset(room.phyStats().sensesMask(), PhyStats.SENSE_ALWAYSCOMPRESSED));
-		final boolean useName = (lookCode==LookView.LOOK_BRIEFOK) && compress && mob.isAttributeSet(MOB.Attrib.BRIEF);
+		final boolean minimal = (lookCode == LookView.LOOK_MINIMAL);
+		final boolean compress= minimal
+								|| mob.isAttributeSet(MOB.Attrib.COMPRESS)
+								|| (CMath.bset(room.phyStats().sensesMask(), PhyStats.SENSE_ALWAYSCOMPRESSED));
+		final boolean useBrief = minimal || ((lookCode==LookView.LOOK_BRIEFOK) && mob.isAttributeSet(MOB.Attrib.BRIEF));
+		final boolean useName = minimal || (useBrief && compress);
 		if(sysmsgs && (!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.SYSMSGS)))
 		{
 			mob.setAttribute(MOB.Attrib.SYSOPMSGS,false);
@@ -1750,7 +1754,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(flags.canBeSeenBy(room,mob))
 		{
 			finalLookStr.append("^O^<RName^>" + room.displayText(mob)+"^</RName^>"+flags.getDispositionBlurbs(room,mob)+"^L\n\r");
-			if((lookCode!=LookView.LOOK_BRIEFOK)||(!mob.isAttributeSet(MOB.Attrib.BRIEF)))
+			if(!useBrief)
 			{
 				String roomDesc=room.description(mob);
 				if(lookCode==LookView.LOOK_LONG)
@@ -1876,10 +1880,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				finalLookStr.append(itemStr);
 		}
 		if(flags.canBeSeenBy(room,mob)
-		&&((lookCode!=LookView.LOOK_BRIEFOK)
-			||(!mob.isAttributeSet(MOB.Attrib.BRIEF))
-			||(hadCompressedItems)))
-				finalLookStr.append("^N\n\r\n\r");
+		&&((!useBrief)||(hadCompressedItems)))
+			finalLookStr.append("^N\n\r\n\r");
 		final String itemStr=CMLib.lister().lister(mob,viewItems,useName,"RItem"," \"*\"",lookCode==LookView.LOOK_LONG,compress);
 		if(itemStr.length()>0)
 			finalLookStr.append(itemStr);

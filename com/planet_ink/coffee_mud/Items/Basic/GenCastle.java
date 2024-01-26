@@ -23,6 +23,7 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CommonCommands.LookView;
 
 /*
    Copyright 2021-2024 Bo Zimmerman
@@ -120,10 +121,42 @@ public class GenCastle extends GenSiegableBoardable
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		super.executeMsg(myHost,msg);
-
-		if(msg.amITarget(this))
+		super.executeMsg(myHost, msg);
+		if(msg.amITarget(this)
+		&&(msg.targetMinor()==CMMsg.TYP_EXAMINE)
+		&&(msg.source().location()==owner))
 		{
+			boolean foundOne=false;
+			for(final Enumeration<Room> r = this.getArea().getProperMap(); r.hasMoreElements(); )
+			{
+				final Room R = r.nextElement();
+				if(super.canViewOuterRoom(R))
+				{
+					foundOne=true;
+					break;
+				}
+			}
+			if(foundOne)
+			{
+				final GenCastle tempMe = this;
+				msg.addTrailerRunnable(new Runnable()
+				{
+					final GenCastle me = tempMe;
+					final MOB viewerM = msg.source();
+					@Override
+					public void run()
+					{
+						for(final Enumeration<Room> r = me.getArea().getProperMap(); r.hasMoreElements(); )
+						{
+							final Room R = r.nextElement();
+							if(me.canViewOuterRoom(R)
+							&&(R.roomID().length()>0))
+								viewerM.tell(CMLib.commands().getFullRoomView(viewerM, R, LookView.LOOK_MINIMAL, false));
+						}
+						msg.trailerRunnables().remove(this);
+					}
+				});
+			}
 		}
 	}
 

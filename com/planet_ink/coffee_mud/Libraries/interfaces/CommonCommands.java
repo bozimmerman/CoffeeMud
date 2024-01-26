@@ -697,8 +697,12 @@ public interface CommonCommands extends CMLibrary
 		 */
 		LOOK_NORMAL,
 		/**
-		 * The even briefer glance flag
+		 * The briefer glance flag
 		 */
 		LOOK_BRIEFOK,
+		/**
+		 * The briefest glance flag
+		 */
+		LOOK_MINIMAL,
 	}
 }
