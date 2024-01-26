@@ -360,6 +360,8 @@ public class Config extends StdCommand
 					break;
 				case NOREPROMPT:
 					break;
+				case NOSPAM:
+					break;
 				case NOFOLLOW:
 					break;
 				case NOTEACH:

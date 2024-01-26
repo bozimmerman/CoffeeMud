@@ -3730,48 +3730,56 @@ public class StdMOB implements MOB
 						A.invoke(this, this, true, 0);
 				}
 			}
-			else
-			if(CMath.bset(othersMajor, CMMsg.MASK_CHANNEL))
+			else // main third-party observations!
+			if(msg.othersMessage() != null)
 			{
-				final int channelCode = (msg.othersMinor() - CMMsg.TYP_CHANNEL);
-				if((playerStats() != null)
-				&& (!this.isAttributeSet(MOB.Attrib.QUIET))
-				&& (!CMath.isSet(playerStats().getChannelMask(), channelCode)))
-					tell(srcM, msg.target(), msg.tool(), fixChannelColors(channelCode, msg.othersMessage()));
-			}
-			else
-			if((CMath.bset(othersMajor, CMMsg.MASK_SOUND)) && (!asleep) && (canhearsrc))
-			{
-				if((msg.othersMinor() == CMMsg.TYP_SPEAK)
-				&& (CMProps.getBoolVar(CMProps.Bool.INTRODUCTIONSYSTEM) || CMProps.get(mySession).getBool(CMProps.Bool.INTRODUCTIONSYSTEM)))
-					CMLib.commands().handleIntroductions(srcM, this, msg.othersMessage());
-				tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
-			}
-			else
-			if(othersMinor == CMMsg.TYP_AROMA)
-			{
-				if(flagLib.canSmell(this))
+				if(CMath.bset(othersMajor, CMMsg.MASK_CHANNEL))
+				{
+					final int channelCode = (msg.othersMinor() - CMMsg.TYP_CHANNEL);
+					if((playerStats() != null)
+					&& (!this.isAttributeSet(MOB.Attrib.QUIET))
+					&& (!CMath.isSet(playerStats().getChannelMask(), channelCode)))
+						tell(srcM, msg.target(), msg.tool(), fixChannelColors(channelCode, msg.othersMessage()));
+				}
+				else
+				if((CMath.bset(othersMajor, CMMsg.MASK_SOUND)) && (!asleep) && (canhearsrc))
+				{
+					if((msg.othersMinor() == CMMsg.TYP_SPEAK)
+					&& (CMProps.getBoolVar(CMProps.Bool.INTRODUCTIONSYSTEM) || CMProps.get(mySession).getBool(CMProps.Bool.INTRODUCTIONSYSTEM)))
+						CMLib.commands().handleIntroductions(srcM, this, msg.othersMessage());
+					tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
+				}
+				else
+				if(othersMinor == CMMsg.TYP_AROMA)
+				{
+					if(flagLib.canSmell(this))
+						tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
+				}
+				else
+				if(((CMath.bset(othersMajor, CMMsg.MASK_EYES))
+					|| (CMath.bset(othersMajor, CMMsg.MASK_HANDS))
+					|| (CMath.bset(othersMajor, CMMsg.MASK_ALWAYS)))
+				&& (!CMath.bset(msg.othersMajor(), CMMsg.MASK_CNTRLMSG))
+				&& ((!asleep) && (canseesrc)))
+				{
+					if((msg.target()==location())
+					&&(msg.targetMinor()==CMMsg.TYP_LOOK)
+					&&(isAttributeSet(Attrib.NOSPAM)))
+					{}
+					else
+						tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
+				}
+				else
+				if(((CMath.bset(othersMajor, CMMsg.MASK_MOVE))
+					|| ((CMath.bset(othersMajor, CMMsg.MASK_MOUTH))
+						&& (!CMath.bset(othersMajor, CMMsg.MASK_SOUND))))
+				&& (!asleep) && ((canseesrc) || (canhearsrc)))
+					tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
+				else
+				if((msg.sourceMinor() == CMMsg.TYP_TELL)
+				&& (msg.targetCode() == CMMsg.NO_EFFECT)) // group// tell
 					tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
 			}
-			else
-			if(((CMath.bset(othersMajor, CMMsg.MASK_EYES))
-				|| (CMath.bset(othersMajor, CMMsg.MASK_HANDS))
-				|| (CMath.bset(othersMajor, CMMsg.MASK_ALWAYS)))
-			&& (!CMath.bset(msg.othersMajor(), CMMsg.MASK_CNTRLMSG))
-			&& ((!asleep) && (canseesrc)))
-			{
-				tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
-			}
-			else
-			if(((CMath.bset(othersMajor, CMMsg.MASK_MOVE))
-				|| ((CMath.bset(othersMajor, CMMsg.MASK_MOUTH))
-					&& (!CMath.bset(othersMajor, CMMsg.MASK_SOUND))))
-			&& (!asleep) && ((canseesrc) || (canhearsrc)))
-				tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
-			else
-			if((msg.sourceMinor() == CMMsg.TYP_TELL)
-			&& (msg.targetCode() == CMMsg.NO_EFFECT)) // group// tell
-				tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
 
 			if((!isMonster())
 			&&((othersMinor == CMMsg.TYP_ADVANCE) || (othersMinor == CMMsg.TYP_ENTER)))

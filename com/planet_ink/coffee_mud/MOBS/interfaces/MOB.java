@@ -1071,6 +1071,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		ANSI16(false,"16 COLOR"), //27
 		PRIVACY(false), // 28
 		NOREPROMPT(false), // 29
+		NOSPAM(false),//30
 		// .. up to /31
 		;
 		private final int bitCode;
