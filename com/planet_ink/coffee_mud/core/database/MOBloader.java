@@ -2493,10 +2493,15 @@ public class MOBloader
 				final String userID=DB.getRes(R, players?"CMUSERID":"CMANAM");
 				String pxml;
 				final MOB M=CMLib.players().getPlayer(userID);
-				if((M!=null)&&(M.playerStats()!=null)&&(players))
+				if((M!=null)
+				&&(M.playerStats()!=null)
+				&&(players))
 					pxml=M.playerStats().getXML();
 				else
-				if((M!=null)&&(M.playerStats()!=null)&&(!players)&&(M.playerStats().getAccount()!=null))
+				if((M!=null)
+				&&(M.playerStats()!=null)
+				&&(!players)
+				&&(M.playerStats().getAccount()!=null))
 					pxml=M.playerStats().getAccount().getXML();
 				else
 				if(players)
@@ -2520,7 +2525,8 @@ public class MOBloader
 						{
 							for(final AccountStats.PrideStat pride : AccountStats.PrideStat.values())
 							{
-								if((p.second.length>pride.ordinal())&&(p.second[pride.ordinal()]>0))
+								if((p.second.length>pride.ordinal())
+								&&(p.second[pride.ordinal()]>0))
 								{
 									final int val=p.second[pride.ordinal()];
 									final List<Pair<String,Integer>> topPrides=topPeriods[pride.ordinal()];
