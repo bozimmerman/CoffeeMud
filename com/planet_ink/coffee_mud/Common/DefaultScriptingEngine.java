@@ -595,14 +595,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				parsed=parseBits("'"+funcParms+"' . .","cr");
 			else
 				parsed=parseBits(funcParms+" . .","cr");
-			tt=insertStringArray(tt,parsed,t);
+			tt=CMParms.insertStringArray(tt,parsed,t);
 			eval[0]=tt;
 		}
 		return tt;
 	}
 
-	/*
-	 * c=clean bit, r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger
+	/**
+	 * Given an unparsed mobprog script line, and instructions on how to parse
+	 * the line is given, this will return the parsed version of the line.  
+	 * The instruction codes are:  c=clean bit, r=pastbitclean, p=pastbit, 
+	 * s=remaining clean bits, t=trigger.  Capital letters are the 
+	 * UPPERCASED versions.
+	 * 
+	 * @param line the unparsed mobprog script line
+	 * @param instructions the instructions on how to parse
+	 * @return the parsed row
 	 */
 	protected String[] parseBits(String line, final String instructions)
 	{
@@ -679,20 +687,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return newLine;
 	}
 
-	protected String[] insertStringArray(final String[] oldS, final String[] inS, final int where)
-	{
-		final String[] newLine=new String[oldS.length+inS.length-1];
-		for(int i=0;i<where;i++)
-			newLine[i]=oldS[i];
-		for(int i=0;i<inS.length;i++)
-			newLine[where+i]=inS[i];
-		for(int i=where+1;i<oldS.length;i++)
-			newLine[inS.length+i-1]=oldS[i];
-		return newLine;
-	}
-
-	/*
-	 * c=clean bit, r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger
+	/**
+	 * Given a String grid where the first column is the unparsed lines of a mobprog
+	 * script, and the line number to parse is given, and instructions on how to parse
+	 * the line is given, this will replace the row for that line with the parsed
+	 * version of the line.  The instruction codes are:  c=clean bit, 
+	 * r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger.  Capital letters
+	 * are the UPPERCASED versions.
+	 * 
+	 * @param oldBits column 0 is the rows of the mobprog, with at least one unparsed
+	 * @param start the row to parse
+	 * @param instructions the instructions on how to parse
+	 * @return the parsed row
 	 */
 	protected String[] parseBits(final String[][] oldBits, final int start, final String instructions)
 	{
@@ -704,7 +710,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			tt[start]=parsed[0];
 			return tt;
 		}
-		final String[] newLine=insertStringArray(tt,parsed,start);
+		final String[] newLine=CMParms.insertStringArray(tt,parsed,start);
 		oldBits[0]=newLine;
 		return newLine;
 	}
@@ -5657,7 +5663,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								parsed=parseBits("'"+funcParms+"'"+CMStrings.repeat(" .",numBits-1),"cr");
 							else
 								parsed=parseBits(funcParms+CMStrings.repeat(" .",numBits-1),"cr");
-							tt=insertStringArray(tt,parsed,t);
+							tt=CMParms.insertStringArray(tt,parsed,t);
 							eval[0]=tt;
 						}
 					}
