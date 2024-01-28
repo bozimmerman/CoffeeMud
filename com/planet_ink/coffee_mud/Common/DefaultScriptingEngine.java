@@ -6177,10 +6177,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							returnable=!clanID.equalsIgnoreCase(arg3);
 						else
 						if(arg2.equalsIgnoreCase("IN"))
-							returnable=((MOB)E).getClanRole(arg3)!=null;
+						{
+							C = CMLib.clans().findClan(arg3);
+							if(C != null)
+								returnable=((MOB)E).getClanRole(C.clanID())!=null;
+							else
+								returnable=false;
+						}
 						else
 						if(arg2.equalsIgnoreCase("NOTIN"))
-							returnable=((MOB)E).getClanRole(arg3)==null;
+						{
+							C = CMLib.clans().findClan(arg3);
+							if(C != null)
+								returnable=((MOB)E).getClanRole(C.clanID())==null;
+							else
+								returnable=true;
+						}
 						else
 						{
 							logError(scripted,"CLAN","Syntax",funcParms);
