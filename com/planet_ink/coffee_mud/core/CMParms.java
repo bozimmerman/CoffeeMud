@@ -2093,6 +2093,27 @@ public class CMParms
 	}
 
 	/**
+	 * Given a String array, and another array to insert into the first, and where to insert it,
+	 * this will insert the second array into the first at the where.
+	 * 
+	 * @param oldS the array to insert into
+	 * @param inS the array to insert into oldS
+	 * @param where where to insert inS into oldS
+	 * @return the combined array
+	 */
+	public static final  String[] insertStringArray(final String[] oldS, final String[] inS, final int where)
+	{
+		final String[] newLine=new String[oldS.length+inS.length-1];
+		for(int i=0;i<where;i++)
+			newLine[i]=oldS[i];
+		for(int i=0;i<inS.length;i++)
+			newLine[where+i]=inS[i];
+		for(int i=where+1;i<oldS.length;i++)
+			newLine[inS.length+i-1]=oldS[i];
+		return newLine;
+	}
+
+	/**
 	 * Given a key/value parameter map, returns a string that is reparseable in a given
 	 * delimited way as KEY=VLUE, adding double quotes if any value has the delimiter.
 	 * @param parms the key/value pairs
