@@ -2471,13 +2471,22 @@ public class StdRoom implements Room
 	}
 
 	@Override
-	public PhysicalAgent fetchFromMOBRoomItemExit(final MOB mob, final Item goodLocation, String thingName, final Filterer<Environmental> filter)
+	public PhysicalAgent fetchFromMOBRoomItemExit(MOB mob, final Item goodLocation, String thingName, final Filterer<Environmental> filter)
 	{
 		PhysicalAgent found=null;
+		if(CMStrings.startsWithIgnoreCase(thingName,"room.")
+		||CMStrings.startsWithIgnoreCase(thingName,CMLib.english().removeArticleLead(genericName())+"."))
+		{
+			thingName = thingName.substring(5);
+			mob=null;
+		}
 		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null)
 			thingName=newThingName;
-		final boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
+		final boolean mineOnly=(mob!=null)
+				&&(CMStrings.startsWithIgnoreCase(thingName, "my"))
+				&&(thingName.length()>3)
+				&&((thingName.charAt(2)==' ')||(thingName.charAt(2)=='.'));
 		if(mineOnly)
 			thingName=thingName.trim().substring(3).trim();
 		if((mob!=null)&&((filter!=Wearable.FILTER_WORNONLY)))
@@ -2667,13 +2676,22 @@ public class StdRoom implements Room
 		return fetchFromMOBRoom(mob,goodLocation,thingName,filter,false);
 	}
 
-	private PhysicalAgent fetchFromMOBRoom(final MOB mob, final Item goodLocation, String thingName, final Filterer<Environmental> filter, final boolean favorItems)
+	protected PhysicalAgent fetchFromMOBRoom(MOB mob, final Item goodLocation, String thingName, final Filterer<Environmental> filter, final boolean favorItems)
 	{
 		PhysicalAgent found=null;
+		if(CMStrings.startsWithIgnoreCase(thingName,"room.")
+		||CMStrings.startsWithIgnoreCase(thingName,CMLib.english().removeArticleLead(genericName())+"."))
+		{
+			thingName = thingName.substring(5);
+			mob=null;
+		}
 		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null)
 			thingName=newThingName;
-		final boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
+		final boolean mineOnly=(mob!=null)
+				&&(CMStrings.startsWithIgnoreCase(thingName, "my"))
+				&&(thingName.length()>3)
+				&&((thingName.charAt(2)==' ')||(thingName.charAt(2)=='.'));
 		if(mineOnly)
 			thingName=thingName.trim().substring(3).trim();
 		if((mob!=null)&&(favorItems)&&(filter!=Wearable.FILTER_WORNONLY))

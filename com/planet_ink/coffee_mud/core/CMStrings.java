@@ -609,6 +609,42 @@ public class CMStrings
 	}
 
 	/**
+	 * Returns whether the first string starts with the second string, case insensitive.
+	 * 
+	 * @param thisStr the string to search
+	 * @param startStr the substring to search for
+	 * @return true if its true
+	 */
+	public final static boolean startsWithIgnoreCase(final String thisStr, final String startStr)
+	{
+		if((thisStr == null)
+		||(startStr==null)
+		||(thisStr.length()<startStr.length()))
+			return false;
+		if(startStr.length()==0)
+			return true;
+		return thisStr.substring(0,startStr.length()).toLowerCase().startsWith(startStr.toLowerCase());
+	}
+
+	/**
+	 * Returns whether the first string ends with the second string, case insensitive.
+	 * 
+	 * @param thisStr the string to search
+	 * @param startStr the substring to search for
+	 * @return true if its true
+	 */
+	public final static boolean endsWithIgnoreCase(final String thisStr, final String startStr)
+	{
+		if((thisStr == null)
+		||(startStr==null)
+		||(thisStr.length()<startStr.length()))
+			return false;
+		if(startStr.length()==0)
+			return true;
+		return thisStr.substring(0,startStr.length()).toLowerCase().endsWith(startStr.toLowerCase());
+	}
+	
+	/**
 	 * Returns whether the given string contains the second string, without any following
 	 * letter, which is the CMStrings definition of a "word".  This check is case
 	 * sensitive.

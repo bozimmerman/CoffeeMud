@@ -1089,7 +1089,7 @@ public class AbilityData extends StdWebMacro
 						&&(!CMSecurity.isASysOp(mob)))
 							continue;
 						final String AID=A2.ID();
-						final String ANAME=A2.name();
+						final String ANAME=CMStrings.ellipse(A2.ID()+" ("+A2.name()+")",40);
 						str.append("<OPTION VALUE=\""+AID+"\""+(list.contains(AID.toUpperCase())?" SELECTED":"")+">"+ANAME);
 					}
 					str.append(", ");
@@ -1132,7 +1132,7 @@ public class AbilityData extends StdWebMacro
 						if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(mob)))
 							continue;
 						final String AID=A2.ID();
-						final String ANAME=A2.name();
+						final String ANAME=CMStrings.ellipse(A2.ID()+" ("+A2.name()+")",40);
 						str.append("<OPTION VALUE=\""+AID+"\""+(list.contains(AID.toUpperCase())?" SELECTED":"")+">"+ANAME);
 					}
 					str.append(", ");
