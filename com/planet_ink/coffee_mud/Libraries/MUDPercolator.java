@@ -841,20 +841,124 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final List<LayoutNode> roomsToLayOut = layoutManager.generate(size,direction);
 		if((roomsToLayOut==null)||(roomsToLayOut.size()==0))
 			throw new CMException("Unable to fill area of size "+size+" off layout "+layoutManager.name());
+		final LayoutNode[] mostRooms = new LayoutNode[Directions.DIRECTIONS_ALL_CODES.length];
+		final LayoutNode magicRoomNode = roomsToLayOut.get(0);
+		
+		// find the north-most, east-mode, etc rooms that can serve as extra Exits.
+		LayoutNode startOddDirNode = null;
+		for(int i=0;i<roomsToLayOut.size();i++)
+		{
+			LayoutNode node = roomsToLayOut.get(i); 
+			if(node.type()!=LayoutTypes.leaf)
+			{
+				if(startOddDirNode == null)
+					startOddDirNode = node;
+				for(final int dir : Directions.DIRECTIONS_ALL_CODES)
+				{
+					if((mostRooms[dir]==null)
+					&&(!node.links().containsKey(Integer.valueOf(dir))))
+						mostRooms[dir] = node;
+				}
+			}
+		}
+		for(final int dir : Directions.DIRECTIONS_ALL_CODES)
+		{
+			if(mostRooms[dir]==null)
+				mostRooms[dir] = startOddDirNode;
+		}
+		// now count the leafs, and figure out the northmost, etc
 		int numLeafs=0;
 		for(int i=0;i<roomsToLayOut.size();i++)
 		{
 			final LayoutNode node=roomsToLayOut.get(i);
 			if(node.type()==LayoutTypes.leaf)
 				numLeafs++;
+			else
+			{
+				if((node.coord()[1] < mostRooms[Directions.NORTH].coord()[1])
+				&&(!node.links().containsKey(Integer.valueOf(Directions.NORTH))))
+					mostRooms[Directions.NORTH] = node;
+				if((node.coord()[1] > mostRooms[Directions.SOUTH].coord()[1])
+				&&(!node.links().containsKey(Integer.valueOf(Directions.SOUTH))))
+					mostRooms[Directions.SOUTH] = node;
+				if((node.coord()[0] < mostRooms[Directions.WEST].coord()[0])
+				&&(!node.links().containsKey(Integer.valueOf(Directions.WEST))))
+					mostRooms[Directions.WEST] = node;
+				if((node.coord()[0] > mostRooms[Directions.EAST].coord()[0])
+				&&(!node.links().containsKey(Integer.valueOf(Directions.EAST))))
+					mostRooms[Directions.EAST] = node;
+
+				if((node.coord()[1] < mostRooms[Directions.NORTHWEST].coord()[1])
+				&&(node.coord()[0] < mostRooms[Directions.NORTHWEST].coord()[0])
+				&&(!node.links().containsKey(Integer.valueOf(Directions.NORTHWEST))))
+					mostRooms[Directions.NORTHWEST] = node;
+				if((node.coord()[1] > mostRooms[Directions.SOUTHWEST].coord()[1])
+				&&(node.coord()[0] < mostRooms[Directions.SOUTHWEST].coord()[0])
+				&&(!node.links().containsKey(Integer.valueOf(Directions.SOUTHWEST))))
+					mostRooms[Directions.SOUTHWEST] = node;
+				if((node.coord()[1] < mostRooms[Directions.NORTHEAST].coord()[1])
+				&&(node.coord()[0] > mostRooms[Directions.NORTHEAST].coord()[0])
+				&&(!node.links().containsKey(Integer.valueOf(Directions.NORTHEAST))))
+					mostRooms[Directions.NORTHEAST] = node;
+				if((node.coord()[1] > mostRooms[Directions.SOUTHEAST].coord()[1])
+				&&(node.coord()[0] > mostRooms[Directions.SOUTHEAST].coord()[0])
+				&&(!node.links().containsKey(Integer.valueOf(Directions.SOUTHEAST))))
+					mostRooms[Directions.SOUTHEAST] = node;
+			}
 			if(node.links().size()==0)
 				throw new CMException("Created linkless node with "+layoutManager.name());
 		}
+		{
+			// for finding mostRooms for UP/DOWN & GATE
+			boolean filledInDirs=true;
+			for(int i=0;i<4;i++)
+				filledInDirs = (mostRooms[i]!=null) && filledInDirs;
+			if(filledInDirs)
+			{
+				long lowY = mostRooms[Directions.NORTH].coord()[1];
+				long lowX = mostRooms[Directions.WEST].coord()[0];
+				long hiY = mostRooms[Directions.SOUTH].coord()[1];
+				long hiX = mostRooms[Directions.EAST].coord()[0];
+				while(lowY<hiY)
+				{
+					lowY++;
+					if(lowY<hiY)
+						hiY--;
+				}
+				while(lowX<hiX)
+				{
+					lowX++;
+					if(lowX<hiX)
+						hiX--;
+				}
+				if(startOddDirNode != null)
+				{
+					LayoutNode closestN = startOddDirNode;
+					long closestDistance = Math.abs(lowX - closestN.coord()[0]) + Math.abs(lowY - closestN.coord()[1]);
+					for(int i=0;i<roomsToLayOut.size();i++)
+					{
+						final LayoutNode node=roomsToLayOut.get(i);
+						if(node.type() != LayoutTypes.leaf)
+						{
+							long distance = Math.abs(lowX - node.coord()[0]) + Math.abs(lowY - node.coord()[1]);
+							if(distance < closestDistance)
+							{
+								closestDistance = distance;
+								closestN = node;
+							}
+						}
+					}
+					mostRooms[Directions.UP] = closestN; 
+					mostRooms[Directions.DOWN] = closestN; 
+					mostRooms[Directions.GATE] = closestN; 
+				}
+			}
+		}
+					
 		defined.put("AREA_NUMLEAFS", ""+numLeafs);
 
 		// now break our rooms into logical groups, generate those rooms.
 		final List<List<LayoutNode>> roomGroups = new Vector<List<LayoutNode>>();
-		final LayoutNode magicRoomNode = roomsToLayOut.get(0);
 		final HashSet<LayoutNode> nodesAlreadyGrouped=new HashSet<LayoutNode>();
 		boolean keepLooking=true;
 		while(keepLooking)
@@ -1017,6 +1121,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		updateLayoutDefinitions(defined,groupDefined,groupDefinitions,roomGroups);
 
 		//now generate the rooms and add them to the area
+		//this is where all the real work is done. (well, after the magic room)
 		for(final List<LayoutNode> group : roomGroups)
 		{
 			groupDefined = groupDefinitions.get(group);

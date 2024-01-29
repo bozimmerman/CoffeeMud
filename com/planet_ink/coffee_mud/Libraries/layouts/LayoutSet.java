@@ -114,6 +114,14 @@ public class LayoutSet
 			return new long[]{n[0]+1,n[1]};
 		case Directions.WEST:
 			return new long[]{n[0]-1,n[1]};
+		case Directions.NORTHWEST:
+			return new long[]{n[0]-1,n[1]-1};
+		case Directions.SOUTHEAST:
+			return new long[]{n[0]+1,n[1]+1};
+		case Directions.NORTHEAST:
+			return new long[]{n[0]+1,n[1]-1};
+		case Directions.SOUTHWEST:
+			return new long[]{n[0]-1,n[1]+1};
 		default:
 			return makeNextCoord(n,CMLib.dice().pick(Directions.CODES())); // picks one of the above, and only one of the above
 		}
