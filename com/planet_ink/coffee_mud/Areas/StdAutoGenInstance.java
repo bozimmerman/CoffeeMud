@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.MPContext;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -549,7 +550,6 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					return false;
 				}
 				final ScriptingEngine scrptEng=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
-				final Object[] scriptObjs = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
 				final List<Double> levels=new ArrayList<Double>();
 				final Set<MOB> followers=msg.source().getGroupMembers(new HashSet<MOB>());
 				if(!followers.contains(msg.source()))
@@ -568,12 +568,13 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				final double highestLevel=sortedLevels[sortedLevels.length-1].doubleValue();
 				final double groupSize=Double.valueOf(followers.size()).doubleValue();
 				final double values[]={msg.source().basePhyStats().level(),lowestLevel,medianLevel,averageLevel,highestLevel,totalLevels,groupSize};
+				final MPContext ctx = new MPContext(msg.source(), msg.source(), msg.source(), newA, null, null, msg.sourceMessage(), null);
 				for(final String key : getAutoGenVariables().keySet())
 				{
 					if(!(key.equalsIgnoreCase("AREA_ID")||key.equalsIgnoreCase("AREA_IDS")||key.equalsIgnoreCase("AREAID")||key.equalsIgnoreCase("AREAIDS")))
 					{
 						final String rawValue = CMath.replaceVariables(getAutoGenVariables().get(key),values);
-						final String val=scrptEng.varify(msg.source(), newA, msg.source(), msg.source(), null, null, msg.sourceMessage(), scriptObjs, rawValue);
+						final String val=scrptEng.varify(ctx, rawValue);
 						definedIDs.put(key.toUpperCase(),val);
 					}
 				}

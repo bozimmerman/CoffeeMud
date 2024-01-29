@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.MPContext;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -237,8 +238,7 @@ public class Questwins extends StdCommand
 				{
 					final PhysicalAgent P=mob;
 					final MOB M=mob;
-					final Object[] objs = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
-					foundS.callFunc("DO_DROP", mob.Name(), P, mob, null, M, null, null, mob.Name(), objs);
+					foundS.callFunc("DO_DROP", mob.Name(), new MPContext(P, M, mob, null, null, null, mob.Name(), null));
 				}
 				foundS.stepQuest(mob, mob, foundS.defaultQuestName());
 				foundS.endQuest(mob, mob, foundS.defaultQuestName());

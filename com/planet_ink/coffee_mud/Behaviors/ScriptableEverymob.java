@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.MPContext;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -169,27 +170,21 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public boolean eval(final PhysicalAgent scripted, final MOB source,
-						final Environmental target, final MOB monster, final Item primaryItem,
-						final Item secondaryItem, final String msg, final Object[] tmp, final String[][] eval,
-						final int startEval)
+	public boolean eval(final MPContext ctx, final String[][] eval, final int startEval)
 	{
-		return (sampleB==null)?false:sampleB.eval(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, eval, startEval);
+		return (sampleB==null)?false:sampleB.eval(ctx, eval, startEval);
 	}
 
 	@Override
-	public String execute(final PhysicalAgent scripted, final MOB source,
-						  final Environmental target, final MOB monster, final Item primaryItem,
-						  final Item secondaryItem, final SubScript script, final String msg, final Object[] tmp)
+	public String execute(final MPContext ctx, final SubScript script)
 	{
-		return (sampleB==null)?"":sampleB.execute(scripted, source, target, monster, primaryItem, secondaryItem, script, msg, tmp);
+		return (sampleB==null)?"":sampleB.execute(ctx, script);
 	}
 
 	@Override
-	public String callFunc(final String named, final String parms, final PhysicalAgent scripted, final MOB source, final Environmental target,
-			   final MOB monster, final Item primaryItem, final Item secondaryItem, final String msg, final Object[] tmp)
+	public String callFunc(final String named, final String parms, final MPContext ctx)
 	{
-		return (sampleB==null)?null:sampleB.callFunc(named, parms, scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp);
+		return (sampleB==null)?null:sampleB.callFunc(named, parms, ctx);
 	}
 
 	@Override
@@ -275,18 +270,14 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public String varify(final MOB source, final Environmental target,
-						 final PhysicalAgent scripted, final MOB monster, final Item primaryItem,
-						 final Item secondaryItem, final String msg, final Object[] tmp, final String varifyable)
+	public String varify(final MPContext ctx, final String varifyable)
 	{
-		return (sampleB==null)?"":sampleB.varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, varifyable);
+		return (sampleB==null)?"":sampleB.varify(ctx, varifyable);
 	}
 
 	@Override
-	public String functify(final PhysicalAgent scripted, final MOB source, final Environmental target, final MOB monster,
-						   final Item primaryItem, final Item secondaryItem, final String msg, final Object[] tmp,
-						   final String evaluable)
+	public String functify(final MPContext ctx, final String evaluable)
 	{
-		return (sampleB==null)?"":sampleB.functify(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, evaluable);
+		return (sampleB==null)?"":sampleB.functify(ctx, evaluable);
 	}
 }

@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.Align;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.MPContext;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -7678,11 +7679,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							for(int v=0;v<entry.parms().length-2;v+=3)
 							{
 								final ScriptingEngine SE = (ScriptingEngine)entry.parms()[v];
-								final String[][] EVAL = (String[][])entry.parms()[v+1];
+								final String[][] eval = (String[][])entry.parms()[v+1];
 								final Object[] tmp = (Object[])entry.parms()[v+2];
 								final MOB M = SE.getMakeMOB(E);
 								final Item defaultItem=(E instanceof Item)?(Item)E:null;
-								if(SE.eval((PhysicalAgent)E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
+								if(SE.eval(new MPContext((PhysicalAgent)E, M, M,null, defaultItem, null, "", tmp), eval, 0))
 								{
 									oneIsOK = true;
 									break;
@@ -7700,13 +7701,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							for(int v=0;v<entry.parms().length-2;v+=3)
 							{
 								final ScriptingEngine SE = (ScriptingEngine)entry.parms()[v];
-								final String[][] EVAL = (String[][])entry.parms()[v+1];
+								final String[][] eval = (String[][])entry.parms()[v+1];
 								final Object[] tmp = (Object[])entry.parms()[v+2];
 								final MOB M = SE.getMakeMOB(E);
 								final Item defaultItem=(E instanceof Item)?(Item)E:null;
 								if(E instanceof PhysicalAgent)
 								{
-									if(SE.eval((PhysicalAgent)E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
+									if(SE.eval(new MPContext((PhysicalAgent)E, M, M,null, defaultItem, null, "", tmp), eval, 0))
 										return true;
 								}
 							}

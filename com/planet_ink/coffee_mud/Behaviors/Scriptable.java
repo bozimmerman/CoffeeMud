@@ -192,18 +192,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public boolean eval(final PhysicalAgent scripted,
-						final MOB source,
-						final Environmental target,
-						final MOB monster,
-						final Item primaryItem,
-						final Item secondaryItem,
-						final String msg,
-						final Object[] tmp,
-						final String[][] eval,
-						final int startEval)
+	public boolean eval(final MPContext ctx, final String[][] eval, final int startEval)
 	{
-		return engine().eval(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, eval, startEval);
+		return engine().eval(ctx, eval, startEval);
 	}
 
 	@Override
@@ -219,24 +210,15 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public String execute(final PhysicalAgent scripted,
-						  final MOB source,
-						  final Environmental target,
-						  final MOB monster,
-						  final Item primaryItem,
-						  final Item secondaryItem,
-						  final SubScript script,
-						  final String msg,
-						  final Object[] tmp)
+	public String execute(final MPContext ctx, final SubScript script)
 	{
-		return engine().execute(scripted, source, target, monster, primaryItem, secondaryItem, script, msg, tmp);
+		return engine().execute(ctx, script);
 	}
 
 	@Override
-	public String callFunc(final String named, final String parms, final PhysicalAgent scripted, final MOB source, final Environmental target,
-			   final MOB monster, final Item primaryItem, final Item secondaryItem, final String msg, final Object[] tmp)
+	public String callFunc(final String named, final String parms, final MPContext ctx)
 	{
-		return engine().callFunc(named, parms, scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp);
+		return engine().callFunc(named, parms, ctx);
 	}
 
 	@Override
@@ -276,17 +258,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public String varify(final MOB source, final Environmental target,
-		final PhysicalAgent scripted, final MOB monster, final Item primaryItem,
-		final Item secondaryItem, final String msg, final Object[] tmp, final String varifyable)
+	public String varify(final MPContext ctx, final String varifyable)
 	{
-		return engine().varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, varifyable);
+		return engine().varify(ctx, varifyable);
 	}
 
 	@Override
-	public String functify(final PhysicalAgent scripted, final MOB source, final Environmental target, final MOB monster, final Item primaryItem,
-							final Item secondaryItem, final String msg, final Object[] tmp, final String evaluable)
+	public String functify(final MPContext ctx, final String evaluable)
 	{
-		return engine().functify(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, evaluable);
+		return engine().functify(ctx, evaluable);
 	}
 }

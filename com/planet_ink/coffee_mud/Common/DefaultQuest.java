@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.MPContext;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -217,7 +218,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				return true;
 			final PhysicalAgent P=(B instanceof PhysicalAgent)?(PhysicalAgent)B:mob;
 			final MOB M=(B instanceof MOB)?(MOB)B:mob;
-			String eval = acceptEngine.callFunc("CAN_ACCEPT", mob.Name(), P, mob, (Environmental) B, M, null, null, mob.Name(), objs);
+			final MPContext ctx = new MPContext(P, M, mob, (Environmental) B, null, null, mob.Name(), objs);
+			String eval = acceptEngine.callFunc("CAN_ACCEPT", mob.Name(), ctx);
 			if(eval == null)
 				return false;
 			eval=eval.toLowerCase();
@@ -241,7 +243,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				return;
 			final PhysicalAgent P=(B instanceof PhysicalAgent)?(PhysicalAgent)B:mob;
 			final MOB M=(B instanceof MOB)?(MOB)B:mob;
-			acceptEng.callFunc("DO_ACCEPT", mob.Name(), P, mob, (Environmental) B, M, null, null, mob.Name(), objs);
+			final MPContext ctx = new MPContext(P, M, mob, (Environmental) B, null, null, mob.Name(), objs);
+			acceptEng.callFunc("DO_ACCEPT", mob.Name(), ctx);
 		}
 	}
 
@@ -3994,13 +3997,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								&&(S.isFunc("CAN_ACCEPT")))
 								{
 									final MOB M2=(MOB)E2;
-									String eval = S.callFunc("CAN_ACCEPT", M2.Name(), M2, M2, M2, M2, null, null, M2.Name(), objs);
+									final MPContext ctx = new MPContext(M2, M2, M2, M2, null, null, M2.Name(), objs);
+									String eval = S.callFunc("CAN_ACCEPT", M2.Name(), ctx);
 									if(eval == null)
 										continue; // failed, so don't do it
 									eval=eval.toLowerCase();
 									if(eval.equals("cancel") || (eval.length()==0))
 										continue; // failed, so don't do it
-									S.callFunc("DO_ACCEPT", M2.Name(), M2, M2, M2, M2, null, null, M2.Name(), objs);
+									S.callFunc("DO_ACCEPT", M2.Name(), ctx);
 								}
 								else
 								{

@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.MPContext;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
@@ -678,8 +679,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 						scriptEngine.setSavable(false);
 						scriptEngine.setVarScope("*");
 					}
-					final Object[] tmp = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
-					finalCommand = scriptEngine.varify(source, target, source, source, null, null, "", tmp, finalCommand);
+					finalCommand = scriptEngine.varify(new MPContext(source, source, source, target, null, null, "", null), finalCommand);
 				}
 				finalCommand=CMStrings.replaceAll(finalCommand,"$$","$");
 				Vector<String> V=CMParms.parse(finalCommand);

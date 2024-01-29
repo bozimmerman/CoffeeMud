@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.MPContext;
 import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.ScriptLn;
 import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.SubScript;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
@@ -264,7 +265,8 @@ public class JConsole extends StdCommand
 							};
 							DV.add(new ScriptLn("JS_PROG",null,null));
 							DV.add(new ScriptLn(strb.toString(),null,null));
-							return c.execute(mob,mob,null,mob,null,null,DV,"",objs);
+							final MPContext ctx = new MPContext(mob,mob,mob,null,null,null,"", objs);
+							return c.execute(ctx,DV);
 						}
 						if(name.endsWith("$"))
 						{
@@ -278,7 +280,8 @@ public class JConsole extends StdCommand
 								else
 									strb.append(" ").append("'"+String.valueOf(args[i])+"'");
 							strb.append(" ) ");
-							return c.functify(mob,mob,null,mob,null,null,"",objs,strb.toString());
+							final MPContext ctx = new MPContext(mob,mob,mob,null,null,null,"",objs);
+							return c.functify(ctx,strb.toString());
 						}
 						final String[] sargs=new String[args.length+3];
 						sargs[0]=name;
@@ -286,8 +289,9 @@ public class JConsole extends StdCommand
 						for(int i=0;i<args.length;i++)
 							sargs[i+2]=String.valueOf(args[i]);
 						sargs[sargs.length-1]=")";
-						final String[][] EVAL={sargs};
-						return Boolean.valueOf(c.eval(mob,mob,null,mob,null,null,"",objs,EVAL,0));
+						final String[][] eval={sargs};
+						final MPContext ctx = new MPContext(mob,mob,mob,null,null,null,"",objs);
+						return Boolean.valueOf(c.eval(ctx,eval,0));
 					}
 
 					@Override

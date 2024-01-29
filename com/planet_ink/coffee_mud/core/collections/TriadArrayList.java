@@ -171,7 +171,6 @@ public class TriadArrayList<T, K, L> extends ArrayList<Triad<T, K, L>> implement
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public int indexOf(final Object o)
 	{
@@ -278,7 +277,7 @@ public class TriadArrayList<T, K, L> extends ArrayList<Triad<T, K, L>> implement
 		{
 			for (int i = index; i < size(); i++)
 			{
-				if ((l == null ? get(i).second == null : l.equals(get(i).second)))
+				if ((l == null ? get(i).third == null : l.equals(get(i).third)))
 					return i;
 			}
 		}
@@ -329,7 +328,7 @@ public class TriadArrayList<T, K, L> extends ArrayList<Triad<T, K, L>> implement
 		{
 			for (int i = index; i >= 0; i--)
 			{
-				if ((l == null ? get(i).second == null : l.equals(get(i).second)))
+				if ((l == null ? get(i).third == null : l.equals(get(i).third)))
 					return i;
 			}
 		}
@@ -360,11 +359,11 @@ public class TriadArrayList<T, K, L> extends ArrayList<Triad<T, K, L>> implement
 	@Override
 	public boolean removeFirst(final T t)
 	{
-		Triad<T, K, L> Triad;
+		Triad<T, K, L> triad;
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
 		{
-			Triad = i.next();
-			if ((t == null ? Triad.first == null : t.equals(Triad.first)))
+			triad = i.next();
+			if ((t == null ? triad.first == null : t.equals(triad.first)))
 			{
 				i.remove();
 				return true;
@@ -376,11 +375,11 @@ public class TriadArrayList<T, K, L> extends ArrayList<Triad<T, K, L>> implement
 	@Override
 	public boolean removeSecond(final K k)
 	{
-		Triad<T, K, L> Triad;
+		Triad<T, K, L> triad;
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
 		{
-			Triad = i.next();
-			if ((k == null ? Triad.second == null : k.equals(Triad.second)))
+			triad = i.next();
+			if ((k == null ? triad.second == null : k.equals(triad.second)))
 			{
 				i.remove();
 				return true;
@@ -392,11 +391,11 @@ public class TriadArrayList<T, K, L> extends ArrayList<Triad<T, K, L>> implement
 	@Override
 	public boolean removeThird(final L l)
 	{
-		Triad<T, K, L> Triad;
+		Triad<T, K, L> triad;
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
 		{
-			Triad = i.next();
-			if ((l == null ? Triad.second == null : l.equals(Triad.second)))
+			triad = i.next();
+			if ((l == null ? triad.third == null : l.equals(triad.third)))
 			{
 				i.remove();
 				return true;
