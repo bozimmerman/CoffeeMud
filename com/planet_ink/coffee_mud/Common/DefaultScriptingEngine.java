@@ -2785,6 +2785,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		char lastQuote='\0';
 		String s=null;
 		int depth=0;
+		int fdepth=0;
 		for(int c=0;c<evalC.length;c++)
 		{
 			switch(state)
@@ -2836,7 +2837,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							V.add("(");
 							dex=c+1;
 							if(funcH.containsKey(s))
+							{
 								state=STATE_INFUNCTION;
+								fdepth=0;
+							}
 							else
 							if(connH.containsKey(s))
 								state=STATE_MAIN;
@@ -2874,6 +2878,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					V.add("(");
 					dex=c+1;
 					state=STATE_INFUNCTION;
+					fdepth=0;
 				}
 				else
 				if(!Character.isWhitespace(evalC[c]))
@@ -2925,10 +2930,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(evalC[c]==')')
 				{
-					V.add(new String(evalC,dex,c-dex));
-					V.add(")");
-					dex=c+1;
-					state=STATE_POSTFUNCTION;
+					if(fdepth<=0)
+					{
+						V.add(new String(evalC,dex,c-dex));
+						V.add(")");
+						dex=c+1;
+						state=STATE_POSTFUNCTION;
+					}
+					else
+						fdepth--;
 				}
 				else
 				if((evalC[c]=='\'')||(evalC[c]=='`'))
@@ -2936,6 +2946,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					lastQuote=evalC[c];
 					state=STATE_INFUNCQUOTE;
 				}
+				else
+				if((evalC[c]=='('))
+					fdepth++;
 				break;
 			}
 			case STATE_INFUNCQUOTE:
@@ -3565,7 +3578,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((E==null)||(!(E instanceof MOB)))
 						returnable=false;
 					else
-						returnable=((MOB)E).isMonster();
+						returnable=!((MOB)E).isPlayer();
 					break;
 				}
 				case 87: // isbirthday
@@ -3610,7 +3623,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((E==null)||(!(E instanceof MOB)))
 						returnable=false;
 					else
-						returnable=!((MOB)E).isMonster();
+						returnable=((MOB)E).isPlayer();
 					break;
 				}
 				case 6: // isgood
