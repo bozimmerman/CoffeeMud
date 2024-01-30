@@ -565,11 +565,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	/**
 	 * Given an unparsed mobprog script line, and instructions on how to parse
-	 * the line is given, this will return the parsed version of the line.  
-	 * The instruction codes are:  c=clean bit, r=pastbitclean, p=pastbit, 
-	 * s=remaining clean bits, t=trigger.  Capital letters are the 
+	 * the line is given, this will return the parsed version of the line.
+	 * The instruction codes are:  c=clean bit, r=pastbitclean, p=pastbit,
+	 * s=remaining clean bits, t=trigger.  Capital letters are the
 	 * UPPERCASED versions.
-	 * 
+	 *
 	 * @param line the unparsed mobprog script line
 	 * @param instructions the instructions on how to parse
 	 * @return the parsed row
@@ -653,10 +653,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	 * Given a String grid where the first column is the unparsed lines of a mobprog
 	 * script, and the line number to parse is given, and instructions on how to parse
 	 * the line is given, this will replace the row for that line with the parsed
-	 * version of the line.  The instruction codes are:  c=clean bit, 
+	 * version of the line.  The instruction codes are:  c=clean bit,
 	 * r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger.  Capital letters
 	 * are the UPPERCASED versions.
-	 * 
+	 *
 	 * @param oldBits column 0 is the rows of the mobprog, with at least one unparsed
 	 * @param start the row to parse
 	 * @param instructions the instructions on how to parse
@@ -735,7 +735,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return xmlfiles;
 	}
 
-	protected String getVarHost(final Environmental E, String rawHost, MPContext ctx)
+	protected String getVarHost(final Environmental E, String rawHost, final MPContext ctx)
 	{
 		if(!rawHost.equals("*"))
 		{
@@ -780,7 +780,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return (val!=null);
 	}
 
-	public String getVar(final Environmental E, final String rawHost, final String var, MPContext ctx)
+	public String getVar(final Environmental E, final String rawHost, final String var, final MPContext ctx)
 	{
 		return getVar(getVarHost(E,rawHost,ctx),var);
 	}
@@ -1662,9 +1662,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return null;
 	}
 
-	protected PhysicalAgent getArgumentMOB(final String str, MPContext ctx)
+	protected PhysicalAgent getArgumentMOB(final String str, final MPContext ctx)
 	{
-		
+
 		final MPContext ctx2;
 		if(ctx.scripted != ctx.monster)
 		{
@@ -1676,7 +1676,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return getArgumentItem(str, ctx2);
 	}
 
-	protected PhysicalAgent getArgumentItem(String str, MPContext ctx)
+	protected PhysicalAgent getArgumentItem(String str, final MPContext ctx)
 	{
 		if(str.length()<2)
 			return null;
@@ -5695,7 +5695,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						logError(ctx.scripted,"DATETIME","Syntax","Unknown arg: "+arg1+" for "+ctx.scripted.name());
 					else
 					{
-						final Area A =CMLib.map().areaLocation(ctx.scripted); 
+						final Area A =CMLib.map().areaLocation(ctx.scripted);
 						if(A!=null)
 						{
 							String val=null;
@@ -8212,7 +8212,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					logError(ctx.scripted,"DATETIME","Syntax","Unknown arg: "+arg1+" for "+ctx.scripted.name());
 				else
 				{
-					final Area A = CMLib.map().areaLocation(ctx.scripted); 
+					final Area A = CMLib.map().areaLocation(ctx.scripted);
 					if(A!=null)
 					{
 						switch(index)
@@ -8871,8 +8871,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				for(int i=0;i<methods.length;i++)
 				{
 					if(methods[i].startsWith(cmd))
-						methCode=Integer.valueOf(i);
+						methCode=Integer.valueOf(i+1); // offset by 1, always
 				}
+				if(methCode==null)
+					Log.errOut("Scripting",ctx.scripted.name()+"/"+CMLib.map().getDescriptiveExtendedRoomID(lastKnownLocation)+"/MOBPROG Error: '"+cmd+"' is not a valid command.");
 			}
 			if(methCode==null)
 				methCode=Integer.valueOf(0);
@@ -13713,20 +13715,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					String resp=null;
 					if(msg.target() instanceof MOB)
 					{
-						MPContext ctx = new MPContext(affecting,monster,msg.source(),msg.target(),Tool,defaultItem,str, null);
+						final MPContext ctx = new MPContext(affecting,monster,msg.source(),msg.target(),Tool,defaultItem,str, null);
 						ctx.tmp[0] = msg;
 						resp=execute(ctx,script);
 					}
 					else
 					if(msg.target() instanceof Item)
 					{
-						MPContext ctx = new MPContext(affecting,monster,msg.source(),msg.target(),Tool,(Item)msg.target(),str, null);
+						final MPContext ctx = new MPContext(affecting,monster,msg.source(),msg.target(),Tool,(Item)msg.target(),str, null);
 						ctx.tmp[0] = msg;
 						resp=execute(ctx,script);
 					}
 					else
 					{
-						MPContext ctx = new MPContext(affecting,monster,msg.source(),msg.target(),Tool,defaultItem,str, null);
+						final MPContext ctx = new MPContext(affecting,monster,msg.source(),msg.target(),Tool,defaultItem,str, null);
 						ctx.tmp[0] = msg;
 						resp=execute(ctx,script);
 					}
@@ -13743,9 +13745,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	protected String standardTriggerCheck(final SubScript script, String[] t, final Environmental E,
-										  final PhysicalAgent scripted, final MOB monster, 
-										  final MOB source, final Environmental target, 
-										  final Item primaryItem, final Item secondaryItem, 
+										  final PhysicalAgent scripted, final MOB monster,
+										  final MOB source, final Environmental target,
+										  final Item primaryItem, final Item secondaryItem,
 										  final Object[] tmp)
 	{
 		if(E==null)
@@ -15443,7 +15445,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			que.add(resp);
 		}
 	}
-	
+
 	public void enqueResponse(final int triggerCode,
 							  final PhysicalAgent scripted,
 							  final MOB monster,
@@ -15517,7 +15519,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 
 		static final long				serialVersionUID	= 43;
-		
+
 		final MPContext					ctx;
 		List<String>					scr;
 		final DefaultScriptingEngine	c;
