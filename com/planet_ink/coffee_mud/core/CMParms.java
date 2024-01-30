@@ -329,6 +329,24 @@ public class CMParms
 	}
 
 	/**
+	 * Returns a string containing the given Strings, and now space delimited.
+	 * @param args the Strings to combine into a single string
+	 * @param startAt the index in the list to start at.
+	 * @param endAt the index in the list to end with
+	 * @return the single string
+	 */
+	public final static String combine(final String[] args, final int startAt, final int endAt)
+	{
+		final StringBuilder combined=new StringBuilder("");
+		if(args!=null)
+		{
+			for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
+				combined.append(args[commandIndex].toString()+" ");
+		}
+		return combined.toString().trim();
+	}
+
+	/**
 	 * Returns a string containing the given objects, with toString()
 	 * called, and now delimited by the character given.
 	 * @param commands the objects to combine into a single string
@@ -2095,7 +2113,7 @@ public class CMParms
 	/**
 	 * Given a String array, and another array to insert into the first, and where to insert it,
 	 * this will insert the second array into the first at the where.
-	 * 
+	 *
 	 * @param oldS the array to insert into
 	 * @param inS the array to insert into oldS
 	 * @param where where to insert inS into oldS

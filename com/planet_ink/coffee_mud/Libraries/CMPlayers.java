@@ -445,7 +445,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		return null;
 	}
-	
+
 	@Override
 	public int getPlayerThreadId(final MOB mob)
 	{
