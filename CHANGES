@@ -6,6 +6,7 @@
   5. New skill: Improved Revoke
   6. GenAbilities: better argument parsing (see Game Builders Guide)
   7. New command: NOSPAM
+  8. AutoGenInstances will now respect multiple entrances.  See RandomAreas guide.
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

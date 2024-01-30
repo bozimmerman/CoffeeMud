@@ -468,7 +468,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				}
 			}
 			Area redirectA = null;
-			int direction = CMLib.map().getRoomDir(msg.source().location(), (Room)msg.target());
+			int direction;
+			direction = CMLib.map().getRoomDir(msg.source().location(), (Room)msg.target());
 			if((direction<0)&&(msg.tool() instanceof Exit))
 				direction = CMLib.map().getExitDir(msg.source().location(), (Exit)msg.tool());
 			if(direction < 0)
@@ -502,7 +503,10 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				final List<String> idChoices = new Vector<String>();
 				for(final String key : getAutoGenVariables().keySet())
 				{
-					if(key.equalsIgnoreCase("AREA_ID")||key.equalsIgnoreCase("AREA_IDS")||key.equalsIgnoreCase("AREAID")||key.equalsIgnoreCase("AREAIDS"))
+					if(key.equalsIgnoreCase("AREA_ID")
+					||key.equalsIgnoreCase("AREA_IDS")
+					||key.equalsIgnoreCase("AREAID")
+					||key.equalsIgnoreCase("AREAIDS"))
 						idChoices.addAll(CMParms.parseCommas(getAutoGenVariables().get(key),true));
 				}
 				if(idChoices.size()==0)
@@ -618,8 +622,37 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 									+ "------------------------------------------------------^N^.",Name()));
 						}
 					}
-					definedIDs.put("ROOMTAG_NODEGATEEXIT", CMLib.directions().getDirectionName(Directions.getOpDirectionCode(direction)));
+					final int magicDir = Directions.getOpDirectionCode(direction);
+					definedIDs.put("ROOMTAG_NODEGATEEXIT", CMLib.directions().getDirectionName(magicDir));
 					definedIDs.put("ROOMTAG_GATEEXITROOM", msg.source().location());
+					definedIDs.put("ROOMTAG_GATEEXITCLASS", msg.source().location().getExitInDir(direction));
+					definedIDs.put("ROOMTAG_NODEGATEEXIT"+magicDir, CMLib.directions().getDirectionName(magicDir));
+					definedIDs.put("ROOMTAG_GATEEXITROOM"+magicDir, msg.source().location());
+					definedIDs.put("ROOMTAG_GATEEXITCLASS"+magicDir, msg.source().location().getExitInDir(direction));
+					final Room innerR = getRandomProperRoom();
+					if(innerR != null)
+					{
+						for(int dir = 0; dir<Directions.NUM_DIRECTIONS(); dir++)
+						{
+							final Room linkR = innerR.getRoomInDir(dir);
+							if((linkR != null)
+							&&((linkR.roomID().length()>0)
+								||((linkR.getGridParent()!=null)&&(linkR.getGridParent().roomID().length()>0)))
+							&& (linkR.getRoomInDir(Directions.getOpDirectionCode(dir))==innerR))
+							{
+								final Exit E = linkR.getExitInDir(Directions.getOpDirectionCode(dir));
+								if(E != null)
+								{
+									definedIDs.put("ROOMTAG_NODEGATEEXIT"+dir, CMLib.directions().getDirectionName(dir));
+									definedIDs.put("ROOMTAG_GATEEXITROOM"+dir, linkR);
+									definedIDs.put("ROOMTAG_GATEEXITCLASS"+dir, E);
+								}
+								else
+									Log.errOut("Room "+linkR.roomID()+" needs an Exit object "+Directions.getOpDirectionCode(dir));
+							}
+						}
+					}
+					// finally, fill out the new random map!
 					if(!CMLib.percolator().fillInArea(piece, definedIDs, newA, direction))
 					{
 						msg.source().tell(L("Failed to enter the new area.  Try again later."));
@@ -649,10 +682,10 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				final Room R=redirectA.getRoom(redirectA.Name()+"#0");
 				if(R!=null)
 				{
-					Exit E=R.getExitInDir(Directions.getOpDirectionCode(direction));
+					final int opDir=Directions.getOpDirectionCode(direction);
+					Exit E=R.getExitInDir(opDir);
 					if(E==null)
 						E = CMClass.getExit("Open");
-					final int opDir=Directions.getOpDirectionCode(direction);
 					if(R.getRoomInDir(opDir)!=null)
 						msg.source().tell(L("An error has caused the following exit to be one-way."));
 					else
@@ -667,9 +700,34 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				redirectA=myRec.A;
 			if(redirectA instanceof StdAutoGenInstance)
 			{
-				final Room R=redirectA.getRoom(redirectA.Name()+"#0");
+				Room R=redirectA.getRoom(redirectA.Name()+"#0");
 				if(R!=null)
 				{
+					final int opDir=Directions.getOpDirectionCode(direction);
+					if(R.getRoomInDir(opDir)!=msg.source().location())
+					{
+						for(final Enumeration<Room> r = redirectA.getProperMap(); r.hasMoreElements(); )
+						{
+							final Room rR = r.nextElement();
+							if((rR!=null)&&(rR.getRoomInDir(opDir)==msg.source().location()))
+							{
+								R = rR;
+								break;
+							}
+						}
+						if(R.getRoomInDir(opDir)!=msg.source().location())
+						{
+							for(final Enumeration<Room> r = redirectA.getProperMap(); r.hasMoreElements(); )
+							{
+								final Room rR = r.nextElement();
+								if((rR!=null)&&(rR.phyStats().isAmbiance("#GATE"+opDir)))
+								{
+									R = rR;
+									break;
+								}
+							}
+						}
+					}
 					msg.setTarget(R);
 				}
 			}

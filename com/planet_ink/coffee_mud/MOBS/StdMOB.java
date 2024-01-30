@@ -3762,7 +3762,8 @@ public class StdMOB implements MOB
 				&& (!CMath.bset(msg.othersMajor(), CMMsg.MASK_CNTRLMSG))
 				&& ((!asleep) && (canseesrc)))
 				{
-					if((msg.target()==location())
+					if((mySession!=null)
+					&&(msg.target()==location())
 					&&(msg.targetMinor()==CMMsg.TYP_LOOK)
 					&&(isAttributeSet(Attrib.NOSPAM)))
 					{}

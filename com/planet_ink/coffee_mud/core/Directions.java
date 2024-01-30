@@ -91,6 +91,29 @@ public class Directions
 	public static final int	SOUTHEAST	= 9;
 	public static final int	SOUTHWEST	= 10;
 
+	public static final Integer	INORTH		= Integer.valueOf(0);
+	public static final Integer	ISOUTH		= Integer.valueOf(1);
+	public static final Integer	IEAST		= Integer.valueOf(2);
+	public static final Integer	IWEST		= Integer.valueOf(3);
+	public static final Integer	IUP			= Integer.valueOf(4);
+	public static final Integer	IDOWN		= Integer.valueOf(5);
+
+	public static final Integer	IGATE		= Integer.valueOf(6);
+
+	public static final Integer	INORTHEAST	= Integer.valueOf(7);
+	public static final Integer	INORTHWEST	= Integer.valueOf(8);
+	public static final Integer	ISOUTHEAST	= Integer.valueOf(9);
+	public static final Integer	ISOUTHWEST	= Integer.valueOf(10);
+
+	public final static int[]		DIRECTIONS_ALL_CODES	= {
+		NORTH, SOUTH, EAST, WEST, UP, DOWN, GATE,
+		NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST
+	};
+	public final static Integer[]	DIRECTIONS_ALL_ICODES= {
+		INORTH, ISOUTH, IEAST, IWEST, IUP, IDOWN, IGATE,
+		INORTHEAST, INORTHWEST, ISOUTHEAST, ISOUTHWEST
+	};
+
 	private final static String	DEFAULT_DIRECTION_7_LETTERS		= "N, S, E, W, U, D, or V";
 	private final static String	DEFAULT_DIRECTION_11_LETTERS	= "N, S, E, W, NE, NW, SE, SW, U, D, or V";
 	private final static String	DEFAULT_DIRECTION_7_NAMES		= "North, South, East, West, Up, or Down";
@@ -118,7 +141,6 @@ public class Directions
 	private final static int[]	DIRECTIONS_DISP_ORDER	= { UP, -1, DOWN, GATE };
 	private final static int[]	DIRECTIONS_7_BASE		= { NORTH, SOUTH, EAST, WEST };
 	private final static int[]	DIRECTIONS_11_BASE		= { NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST };
-	public final static int[]	DIRECTIONS_ALL_CODES	= { NORTH, SOUTH, EAST, WEST, UP, DOWN, GATE, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST };
 
 	private String	 DIRECTION_7_LETTERS				= DEFAULT_DIRECTION_7_LETTERS;
 	private String	 DIRECTION_11_LETTERS				= DEFAULT_DIRECTION_11_LETTERS;
@@ -898,6 +920,73 @@ public class Directions
 				return ((Integer)element[1]).intValue();
 		}
 		return -1;
+	}
+
+	/**
+	 * Returns whether the first coordinate is MORE in the given direction than the second
+	 * coordinate.
+	 * @param xy1 the first coordinate
+	 * @param xy2 the second coordinate
+	 * @param dir the direction
+	 * @return true if the first is more than the second
+	 */
+	public static final boolean isMoreDirections(final long[] xy1, final long[] xy2, final int dir)
+	{
+		switch(dir)
+		{
+		case Directions.NORTH:
+			return xy1[1] < xy2[1];
+		case Directions.SOUTH:
+			return xy1[1] > xy2[1];
+		case Directions.EAST:
+			return xy1[0] > xy2[0];
+		case Directions.WEST:
+			return xy1[0] < xy2[0];
+		case Directions.NORTHEAST:
+			return (xy1[1] <= xy2[1]) && (xy1[0] >= xy2[0]);
+		case Directions.NORTHWEST:
+			return (xy1[1] <= xy2[1]) && (xy1[0] <= xy2[0]);
+		case Directions.SOUTHEAST:
+			return xy1[1] >= xy2[1] && (xy1[0] >= xy2[0]);
+		case Directions.SOUTHWEST:
+			return xy1[1] >= xy2[1] && (xy1[0] < xy2[0]);
+		default:
+			return false;
+		}
+	}
+
+
+	/**
+	 * Returns whether the first coordinate is MORE in the given direction than the second
+	 * coordinate.
+	 * @param xy1 the first coordinate
+	 * @param xy2 the second coordinate
+	 * @param dir the direction
+	 * @return true if the first is more than the second
+	 */
+	public static final boolean isMoreDirections(final int[] xy1, final int[] xy2, final int dir)
+	{
+		switch(dir)
+		{
+		case Directions.NORTH:
+			return xy1[1] < xy2[1];
+		case Directions.SOUTH:
+			return xy1[1] > xy2[1];
+		case Directions.EAST:
+			return xy1[0] > xy2[0];
+		case Directions.WEST:
+			return xy1[0] < xy2[0];
+		case Directions.NORTHEAST:
+			return (xy1[1] <= xy2[1]) && (xy1[0] >= xy2[0]);
+		case Directions.NORTHWEST:
+			return (xy1[1] <= xy2[1]) && (xy1[0] <= xy2[0]);
+		case Directions.SOUTHEAST:
+			return xy1[1] >= xy2[1] && (xy1[0] >= xy2[0]);
+		case Directions.SOUTHWEST:
+			return xy1[1] >= xy2[1] && (xy1[0] < xy2[0]);
+		default:
+			return false;
+		}
 	}
 
 	/**
