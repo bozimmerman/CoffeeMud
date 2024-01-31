@@ -568,6 +568,15 @@ public interface PlayerLibrary extends CMLibrary
 	public void setPlayerValue(final String playerName, final PlayerCode code, final Object value);
 
 	/**
+	 * Constructs a ThinPlayer object out of a Modifiable that implements the following
+	 * fields: NAME, CHARCLASS, RACE, GENDER, LEVEL, AGE, LAST, EMAIL, IP, EXPERIENCE,
+	 * EXPERIENCENEEDED, LIEGE, DEITY, CLAN
+	 * @param mP the Modifiable object to use
+	 * @return the ThinPlayer, entirely fake
+	 */
+	public ThinPlayer makeThinModifiablePlayer(final Modifiable mP);
+
+	/**
 	 * Sometimes the list of players in a given room needs to be
 	 * determined rather instantly.  This method helps do that
 	 * by returning all player chars in the given room,
@@ -712,6 +721,8 @@ public interface PlayerLibrary extends CMLibrary
 	 */
 	public static enum PrideCat
 	{
+		ACCOUNT, // global placeholder
+		PLAYER, // global placeholder
 		CLASS,
 		RACE,
 		BASECLASS,

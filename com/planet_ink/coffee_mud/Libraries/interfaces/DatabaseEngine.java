@@ -2019,7 +2019,7 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBPLAYERDATA
 	 * Creates or Updates a single player data entry.  This is the same as an
-	 * upset where, if the key already exists, an update is done, otherwise
+	 * upsert where, if the key already exists, an update is done, otherwise
 	 * an insert is done.
 	 * All fields are required.
 	 * @see DatabaseEngine.PlayerData

@@ -2091,7 +2091,6 @@ public class ListCmd extends StdCommand
 					return "neuter";
 				}
 
-
 				@Override
 				public Enumeration<String> clans()
 				{

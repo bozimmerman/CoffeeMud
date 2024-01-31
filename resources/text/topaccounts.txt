@@ -1,63 +1,63 @@
 ^xTop Accounts All Time
-======================== ======================== ========================^.^N
-^HPVP Kills                XP Gained                Quests Completed
+========================  ========================  ========================^.^N
+^HPVP Kills                 XP Gained                 Quests Completed
 @trim?CRLFTAB@^N
 	@for?count=1,2,3,4,5,6,7,8,9,10@
 		^H@RequestParameter?count&padright=2@. ^N
-			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&NAME&PVPKILLS&PADRIGHT=13@^N
+			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&NAME&PVPKILLS&PADRIGHT=13@ ^N
 			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&VALUE&PVPKILLS&PADRIGHT=8&FIXI@^N
 		^H@RequestParameter?count&padright=2@. ^N
-			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&NAME&EXPERIENCE_GAINED&PADRIGHT=13@^N
+			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&NAME&EXPERIENCE_GAINED&PADRIGHT=13@ ^N
 			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&VALUE&EXPERIENCE_GAINED&PADRIGHT=8&FIXI@^N
 		^H@RequestParameter?count&padright=2@. ^N
-			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&NAME&QUESTS_COMPLETED&PADRIGHT=13@^N
-			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&VALUE&QUESTS_COMPLETED&PADRIGHT=8&FIXI@^N
+			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&NAME&QUESTS_COMPLETED&PADRIGHT=13@ ^N
+			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&VALUE&QUESTS_COMPLETED&FIXI@^N
 @/trim@
 @next@
 
-^HMins Online              Rooms Explored           QuestPoints Earned      
+^HMins Online               Rooms Explored            QuestPoints Earned      
 @trim?CRLFTAB@^N
 	@for?count=1,2,3,4,5,6,7,8,9,10@
 		^H@RequestParameter?count&padright=2@. ^N
-			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&NAME&MINUTES_ON&PADRIGHT=13@^N
+			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&NAME&MINUTES_ON&PADRIGHT=13@ ^N
 			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&VALUE&MINUTES_ON&PADRIGHT=8&FIXI@^N
 		^H@RequestParameter?count&padright=2@. ^N
-			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&NAME&ROOMS_EXPLORED&PADRIGHT=13@^N
+			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&NAME&ROOMS_EXPLORED&PADRIGHT=13@ ^N
 			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&VALUE&ROOMS_EXPLORED&PADRIGHT=8&FIXI@^N
 		^H@RequestParameter?count&padright=2@. ^N
-			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&NAME&QUESTPOINTS_EARNED&PADRIGHT=13@^N
-			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&VALUE&QUESTPOINTS_EARNED&PADRIGHT=8&FIXI@^N
+			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&NAME&QUESTPOINTS_EARNED&PADRIGHT=13@ ^N
+			@PrideStat?ALLTIME&ACCOUNT&@@RequestParameter?count@@&VALUE&QUESTPOINTS_EARNED&FIXI@^N
 @/trim@
 @next@
 
 ^xTop Accounts This Month
-======================== ======================== ========================^.^N
-^HPVP Kills                XP Gained                Quests Completed
+========================  ========================  ========================^.^N
+^HPVP Kills                 XP Gained                 Quests Completed
 @trim?CRLFTAB@^N
 	@for?count=1,2,3,4,5,6,7,8,9,10@
 		^H@RequestParameter?count&padright=2@. ^N
-			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&NAME&PVPKILLS&PADRIGHT=13@^N
+			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&NAME&PVPKILLS&PADRIGHT=13@ ^N
 			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&VALUE&PVPKILLS&PADRIGHT=8&FIXI@^N
 		^H@RequestParameter?count&padright=2@. ^N
-			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&NAME&EXPERIENCE_GAINED&PADRIGHT=13@^N
+			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&NAME&EXPERIENCE_GAINED&PADRIGHT=13@ ^N
 			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&VALUE&EXPERIENCE_GAINED&PADRIGHT=8&FIXI@^N
 		^H@RequestParameter?count&padright=2@. ^N
-			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&NAME&QUESTS_COMPLETED&PADRIGHT=13@^N
-			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&VALUE&QUESTS_COMPLETED&PADRIGHT=8&FIXI@^N
+			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&NAME&QUESTS_COMPLETED&PADRIGHT=13@ ^N
+			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&VALUE&QUESTS_COMPLETED&FIXI@^N
 @/trim@
 @next@
 
-^HMins Online              Rooms Explored           QuestPoints Earned      
+^HMins Online               Rooms Explored            QuestPoints Earned      
 @trim?CRLFTAB@^N
 	@for?count=1,2,3,4,5,6,7,8,9,10@
 		^H@RequestParameter?count&padright=2@. ^N
-			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&NAME&MINUTES_ON&PADRIGHT=13@^N
+			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&NAME&MINUTES_ON&PADRIGHT=13@ ^N
 			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&VALUE&MINUTES_ON&PADRIGHT=8&FIXI@^N
 		^H@RequestParameter?count&padright=2@. ^N
-			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&NAME&ROOMS_EXPLORED&PADRIGHT=13@^N
+			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&NAME&ROOMS_EXPLORED&PADRIGHT=13@ ^N
 			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&VALUE&ROOMS_EXPLORED&PADRIGHT=8&FIXI@^N
 		^H@RequestParameter?count&padright=2@. ^N
-			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&NAME&QUESTPOINTS_EARNED&PADRIGHT=13@^N
-			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&VALUE&QUESTPOINTS_EARNED&PADRIGHT=8&FIXI@^N
+			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&NAME&QUESTPOINTS_EARNED&PADRIGHT=13@ ^N
+			@PrideStat?MONTH&ACCOUNT&@@RequestParameter?count@@&VALUE&QUESTPOINTS_EARNED&FIXI@^N
 @/trim@
 @next@

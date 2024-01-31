@@ -14,13 +14,16 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PrideCat;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinnerPlayer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -2512,9 +2515,9 @@ public class MOBloader
 		DBConnection D=null;
 		final long msWait=Math.round(1000.0 * CMath.div(scanCPUPercent, 100));
 		final long sleepAmount=1000 - msWait;
+		long nextWaitAfter=System.currentTimeMillis() + msWait;
 		try
 		{
-			long nextWaitAfter=System.currentTimeMillis() + msWait;
 			D=DB.DBFetch();
 			final ResultSet R=D.query("SELECT * FROM CMCHAR");
 			while((R!=null)&&(R.next()))
@@ -2547,6 +2550,7 @@ public class MOBloader
 					nextWaitAfter=System.currentTimeMillis() + msWait;
 				}
 			}
+			R.close();
 		}
 		catch(final Exception sqle)
 		{
@@ -2555,6 +2559,153 @@ public class MOBloader
 		finally
 		{
 			DB.DBDone(D);
+		}
+		final List<PlayerData> pdV = CMLib.database().DBReadPlayerSectionData("SYSTEM_PRIDE_PARCHIVE");
+		final XMLLibrary xLib = CMLib.xml();
+		final Long now = Long.valueOf(System.currentTimeMillis());
+		for(final PlayerData pd : pdV)
+		{
+			final String fakeName = pd.who();
+			final List<XMLLibrary.XMLTag> pieces = xLib.parseAllXML(pd.xml());
+			final PrideCat cat = PrideCat.valueOf(xLib.getValFromPieces(pieces,"PCAT"));
+			final String unit = xLib.getValFromPieces(pieces, "PUNIT");
+			final PrideStat stat = PrideStat.valueOf(xLib.getValFromPieces(pieces, "PSTAT"));
+			final int pval = xLib.getIntFromPieces(pieces, "PVALUE");
+			@SuppressWarnings("unchecked")
+			final Pair<Long,int[]>[] allData = new Pair[TimeClock.TimePeriod.values().length];
+			final int[] data = new int[PrideStat.values().length];
+			allData[TimeClock.TimePeriod.ALLTIME.ordinal()] = new Pair<Long,int[]>(now,data);
+			data[stat.ordinal()] = pval;
+			final ThinPlayer whom = new ThinPlayer()
+			{
+				@Override
+				public String name()
+				{
+					return fakeName;
+				}
+
+				@Override
+				public String charClass()
+				{
+					if(cat == PrideCat.CLASS)
+						return unit;
+					else
+					if(cat == PrideCat.BASECLASS)
+					{
+						CharClass C = CMClass.getCharClass(unit);
+						if((C!=null)&&(C.baseClass().equalsIgnoreCase(unit)))
+							return C.ID();
+						for(final Enumeration<CharClass> c = CMClass.charClasses();c.hasMoreElements();)
+						{
+							C = c.nextElement();
+							if(C.baseClass().equalsIgnoreCase(unit))
+								return C.ID();
+						}
+					}
+					return null;
+				}
+
+				@Override
+				public String race()
+				{
+					if(cat == PrideCat.RACE)
+						return unit;
+					else
+					if(cat == PrideCat.RACECAT)
+					{
+						Race R = CMClass.getRace(unit);
+						if((R!=null)&&(R.racialCategory().equalsIgnoreCase(unit)))
+							return R.ID();
+						for(final Enumeration<Race> r = CMClass.races();r.hasMoreElements();)
+						{
+							R = r.nextElement();
+							if(R.racialCategory().equalsIgnoreCase(unit))
+								return R.ID();
+						}
+					}
+					return null;
+				}
+
+				@Override
+				public int level()
+				{
+					if(cat == PrideCat.LEVEL)
+						return CMath.s_int(unit);
+					else
+						return -1;
+				}
+
+				@Override
+				public int age()
+				{
+					return 0;
+				}
+
+				@Override
+				public long last()
+				{
+					return 0;
+				}
+
+				@Override
+				public String email()
+				{
+					return null;
+				}
+
+				@Override
+				public String ip()
+				{
+					return null;
+				}
+
+				@Override
+				public int exp()
+				{
+					return 0;
+				}
+
+				@Override
+				public int expLvl()
+				{
+					return 0;
+				}
+
+				@Override
+				public String liege()
+				{
+					return null;
+				}
+
+				@Override
+				public String worship()
+				{
+					return null;
+				}
+
+				@Override
+				public String gender()
+				{
+					if(cat == PrideCat.GENDER)
+						return unit;
+					return null;
+				}
+
+				@Override
+				public Enumeration<String> clans()
+				{
+					if(cat == PrideCat.CLAN)
+						return new XVector<String>(unit).elements();
+					return new EmptyEnumeration<String>();
+				}
+			};
+			final Pair<ThinPlayer,Pair<Long,int[]>[]> cbData = new Pair<ThinPlayer,Pair<Long,int[]>[]>(whom,allData);
+			callBack.callback(cbData);
+			if((sleepAmount>0)&&(System.currentTimeMillis() > nextWaitAfter))
+			{
+				CMLib.s_sleep(sleepAmount);
+				nextWaitAfter=System.currentTimeMillis() + msWait;
+			}
 		}
 	}
 

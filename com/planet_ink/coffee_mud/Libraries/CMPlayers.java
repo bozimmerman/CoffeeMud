@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -60,9 +61,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
 	protected final long[]				topPrideExpiration	= new long[TimeClock.TimePeriod.values().length];
 	@SuppressWarnings("unchecked")
-	protected final List<Pair<String,Integer>>[][] topPlayers	 = new List[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
+	protected final List<Pair<String,Integer>>[][] topPlayers	 = new List[TimeClock.TimePeriod.values().length][PrideStat.values().length];
 	@SuppressWarnings("unchecked")
-	protected final List<Pair<String,Integer>>[][] topAccounts	 = new List[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
+	protected final List<Pair<String,Integer>>[][] topAccounts	 = new List[TimeClock.TimePeriod.values().length][PrideStat.values().length];
 
 	protected final List<PrideCat>					prideCats	 = new Vector<PrideCat>(2);
 	protected final List<Object>					prideCatData = new Vector<Object>(2);
@@ -192,6 +193,102 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if(M!=null)
 			return getThinPlayer(M);
 		return CMLib.database().getThinUser(mobName);
+	}
+
+	@Override
+	public ThinPlayer makeThinModifiablePlayer(final Modifiable mP)
+	{
+		return new ThinPlayer()
+		{
+			final Modifiable M = mP;
+
+			@Override
+			public String name()
+			{
+				return M.getStat(GenMOBCode.NAME.name());
+			}
+
+			@Override
+			public String charClass()
+			{
+				return M.getStat(GenericBuilder.GenMOBBonusFakeStats.CHARCLASS.name());
+			}
+
+			@Override
+			public String race()
+			{
+				return M.getStat(GenMOBCode.RACE.name());
+			}
+
+			@Override
+			public String gender()
+			{
+				return M.getStat("GENDER");
+			}
+
+			@Override
+			public int level()
+			{
+				return CMath.s_int(M.getStat(GenMOBCode.LEVEL.name()));
+			}
+
+			@Override
+			public int age()
+			{
+				return CMath.s_int(M.getStat("AGE"));
+			}
+
+			@Override
+			public long last()
+			{
+				return CMath.s_long(M.getStat("LAST"));
+			}
+
+			@Override
+			public String email()
+			{
+				return M.getStat("EMAIL");
+			}
+
+			@Override
+			public String ip()
+			{
+				return M.getStat("IP");
+			}
+
+			@Override
+			public int exp()
+			{
+				return CMath.s_int(M.getStat("EXPERIENCE"));
+			}
+
+			@Override
+			public int expLvl()
+			{
+				return CMath.s_int(M.getStat("EXPERIENCENEEDED"));
+			}
+
+			@Override
+			public String liege()
+			{
+				return M.getStat("LIEGE");
+			}
+
+			@Override
+			public String worship()
+			{
+				return M.getStat(GenericBuilder.GenMOBBonusFakeStats.DEITY.name());
+			}
+
+			@Override
+			public Enumeration<String> clans()
+			{
+				final String clan = M.getStat(GenericBuilder.GenMOBBonusFakeStats.CLAN.name());
+				if(clan == null)
+					return new EmptyEnumeration<String>();
+				return new XVector<String>(clan).elements();
+			}
+		};
 	}
 
 	protected ThinPlayer getThinPlayer(final MOB mob)
@@ -736,7 +833,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public List<Pair<String,Integer>> getTopPridePlayers(final TimeClock.TimePeriod period, final AccountStats.PrideStat stat)
+	public List<Pair<String,Integer>> getTopPridePlayers(final TimeClock.TimePeriod period, final PrideStat stat)
 	{
 		List<Pair<String,Integer>> top=topPlayers[period.ordinal()][stat.ordinal()];
 		if(top == null)
@@ -745,7 +842,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public List<Pair<String,Integer>> getTopPridePlayers(final PrideCat category, final String catUnit, final TimeClock.TimePeriod period, final AccountStats.PrideStat stat)
+	public List<Pair<String,Integer>> getTopPridePlayers(final PrideCat category, final String catUnit, final TimeClock.TimePeriod period, final PrideStat stat)
 	{
 		if((!prideCats.contains(category))||(catUnit==null)||(catUnit.length()==0))
 			return emptyPride;
@@ -763,7 +860,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public List<Pair<String,Integer>> getTopPrideAccounts(final TimeClock.TimePeriod period, final AccountStats.PrideStat stat)
+	public List<Pair<String,Integer>> getTopPrideAccounts(final TimeClock.TimePeriod period, final PrideStat stat)
 	{
 		List<Pair<String,Integer>> top=topAccounts[period.ordinal()][stat.ordinal()];
 		if(top == null)
@@ -784,7 +881,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public int bumpPrideStat(final MOB mob, final AccountStats.PrideStat stat, final int amt)
+	public int bumpPrideStat(final MOB mob, final PrideStat stat, final int amt)
 	{
 		if((amt != 0)&&(mob!=null))
 		{
@@ -801,7 +898,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					pstats.bumpPrideStat(stat, amt);
 				if(!pstats.isSet(PlayerFlag.NOTOP))
 				{
-					adjustTopPrideStats(topPlayers,mob.Name(),stat,pstats);
+					adjustTopPrideStats(topPlayers,mob.Name(),true,"",stat,pstats);
 					for(int p=0;p<prideCats.size();p++)
 					{
 						final PrideCat pcat = prideCats.get(p);
@@ -826,7 +923,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 							topPlayerChart = newPrideStatTopChart();
 							topPlayerCat.put(catUnit, topPlayerChart);
 						}
-						adjustTopPrideStats(topPlayerChart,mob.Name(),stat,pstats);
+						adjustTopPrideStats(topPlayerChart,mob.Name(),true, pcat.name(), stat,pstats);
 					}
 				}
 				final PlayerAccount acct=pstats.getAccount();
@@ -835,7 +932,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					if(!acct.isSet(AccountFlag.NOSTATS))
 						pstats.getAccount().bumpPrideStat(stat,amt);
 					if(!acct.isSet(AccountFlag.NOTOP))
-						adjustTopPrideStats(topAccounts,pstats.getAccount().getAccountName(),stat,pstats.getAccount());
+						adjustTopPrideStats(topAccounts,pstats.getAccount().getAccountName(),false,"",stat,pstats.getAccount());
 				}
 				return amt;
 			}
@@ -843,7 +940,34 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return 0;
 	}
 
-	protected void adjustTopPrideStats(final List<Pair<String,Integer>>[][] topWhat, final String name, final AccountStats.PrideStat stat, final AccountStats astats)
+	protected void deleteFakePrideStatPermanently(final Pair<String,Integer> entry,
+			final PrideStat stat, final String catUnit, final boolean player)
+	{
+		if((entry.first!=null)
+		&&(entry.first.indexOf(' ')>0))
+		{
+			final String subKey = (catUnit + "/" + stat.ordinal() + "/" + entry.second).toUpperCase();
+			final String key = entry.first+"/"+subKey.hashCode();
+			if(player)
+				CMLib.database().DBDeletePlayerData(entry.first, "SYSTEM_PRIDE_PARCHIVE", key);
+			else
+				CMLib.database().DBDeletePlayerData(entry.first, "SYSTEM_PRIDE_AARCHIVE", key);
+		}
+	}
+
+	/**
+	 * Called during every bump to potentially bump a top 10 pride stat final value
+	 * based on some recent change.
+	 *
+	 * @param topWhat the real top stat charts for all periods
+	 * @param name the user who bumped
+	 * @param player true if this is a player entry, false for account
+	 * @param subKey "", or the pride stat category in question
+	 * @param stat the pridestat that bumped for the user
+	 * @param astats account OR player stats object, to get data from
+	 */
+	protected void adjustTopPrideStats(final List<Pair<String,Integer>>[][] topWhat, final String name,
+			final boolean player, final String subKey, final PrideStat stat, final AccountStats astats)
 	{
 		final int prideTopSize = CMProps.getIntVar(CMProps.Int.PRIDECOUNT);
 		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
@@ -863,15 +987,20 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					{
 						if(top.get(i).first.equals(name))
 						{
-							found=true;
+							found=true; // true replacement
 							top.get(i).second=Integer.valueOf(pVal);
 							break;
 						}
 						else
 						if(pVal > top.get(i).second.intValue())
 						{
+							// true addition, pushing others down
 							top.add(i,new Pair<String,Integer>(name,Integer.valueOf(pVal)));
+							// if *this* user ALSO had a lower record, remove it
 							removePrideStat(top,name,i+1);
+							//this might push a fake entry off the top topPrideStats
+							if(top.size()>prideTopSize)
+								deleteFakePrideStatPermanently(top.get(prideTopSize), stat, subKey, player);
 							found=true;
 							break;
 						}
@@ -962,6 +1091,82 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					}
 				}
 			}
+		}
+	}
+
+	protected List<Quad<PrideCat,String,PrideStat,Integer>> findPrideStatEntries(
+			final PrideCat pcat, final String pcatUnit, final String userId, final List<Pair<String,Integer>>[][] top)
+	{
+		final List<Quad<PrideCat,String,PrideStat,Integer>> found = new ArrayList<Quad<PrideCat,String,PrideStat,Integer>>(1);
+		final int x = TimeClock.TimePeriod.ALLTIME.ordinal();
+		if(top[x] != null)
+		{
+			for(int y=0;y<top[x].length;y++) // iterate over the pride Stat codes
+			{
+				if(top[x][y] != null)
+				{
+					for(final Pair<String,Integer> p : top[x][y])
+					{
+						if((p != null)
+						&&(userId.equalsIgnoreCase(p.first)))
+						{
+							final PrideStat stat = PrideStat.values()[y];
+							found.add(new Quad<PrideCat,String,PrideStat,Integer>(pcat,pcatUnit,stat,p.second));
+						}
+					}
+				}
+			}
+		}
+		return found;
+	}
+
+	protected void preservePrideRecords(final MOB deadMOB)
+	{
+		final List<Quad<PrideCat,String,PrideStat,Integer>> records = new ArrayList<Quad<PrideCat,String,PrideStat,Integer>>();
+		records.addAll(findPrideStatEntries(PrideCat.PLAYER, "", deadMOB.Name(), topPlayers));
+		String accountName = "";
+		if((deadMOB.playerStats()!=null)
+		&&(deadMOB.playerStats().getAccount() != null))
+		{
+			accountName = deadMOB.playerStats().getAccount().getAccountName();
+			records.addAll(findPrideStatEntries(PrideCat.ACCOUNT, "", accountName, topAccounts));
+		}
+		for(final PrideCat pcat : prideCats)
+		{
+			final Map<String,List<Pair<String,Integer>>[][]> subCat = this.topPlayerCats.get(pcat);
+			if(subCat != null)
+			{
+				for(final String subCatUnit : subCat.keySet())
+					records.addAll(findPrideStatEntries(pcat, subCatUnit, deadMOB.Name(), subCat.get(subCatUnit)));
+			}
+		}
+		final Calendar C = Calendar.getInstance();
+		final String nameSuffix = " " + C.get(Calendar.YEAR) + "/" + C.get(Calendar.DAY_OF_YEAR);
+		for(final Quad<PrideCat,String,PrideStat,Integer> preservedRec : records)
+		{
+			String nameToUse;
+			final String section;
+			if(preservedRec.first == PrideCat.ACCOUNT)
+			{
+				nameToUse = CMStrings.limit(accountName + nameSuffix,100);
+				section = "SYSTEM_PRIDE_AARCHIVE";
+			}
+			else
+			{
+				section = "SYSTEM_PRIDE_PARCHIVE";
+				nameToUse = CMStrings.limit(deadMOB.Name() + nameSuffix,100);
+			}
+			final PrideCat pcat = preservedRec.first;
+			final PrideStat pstat = preservedRec.third;
+			final Integer value = preservedRec.fourth;
+			final String subKey = (preservedRec.second + "/" + pstat.ordinal() + "/" + value.toString()).toUpperCase();
+			final String key = nameToUse+"/"+subKey.hashCode();
+			final String xml =
+				"<PCAT>"+pcat.name()+"</PCAT>"
+			  + "<PUNIT>" + CMLib.xml().parseOutAngleBrackets(preservedRec.second)+"</PUNIT>"
+			  + "<PSTAT>" + pstat.name()+"</PSTAT>"
+			  + "<PVALUE>" + value.toString()+"</PVALUE>";
+			CMLib.database().DBReCreatePlayerData(nameToUse, section, key, xml);
 		}
 	}
 
@@ -1062,6 +1267,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		CMLib.coffeeTables().bump(deadMOB,CoffeeTableRow.STAT_PURGES);
 
 		CMLib.database().DBDeletePlayerOnly(deadMOB.Name());
+		preservePrideRecords(deadMOB);
 		deadMOB.delAllItems(false);
 		for(int i=0;i<deadMOB.numItems();i++)
 		{
@@ -1374,7 +1580,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		final List<Pair<Long,int[]>> finalStats=new ArrayList<Pair<Long,int[]>>(TimeClock.TimePeriod.values().length);
 		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 		{
-			final Pair<Long,int[]> p=new Pair<Long,int[]>(Long.valueOf(0),new int[AccountStats.PrideStat.values().length]);
+			final Pair<Long,int[]> p=new Pair<Long,int[]>(Long.valueOf(0),new int[PrideStat.values().length]);
 			if(period==TimeClock.TimePeriod.ALLTIME)
 				p.first=Long.valueOf(Long.MAX_VALUE);
 			else
@@ -1386,7 +1592,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			if((prideStats.length>period.ordinal())&&(prideStats[period.ordinal()].length()>1))
 			{
 				final String[] prides=prideStats[period.ordinal()].split(",");
-				for(final AccountStats.PrideStat stat : AccountStats.PrideStat.values())
+				for(final PrideStat stat : PrideStat.values())
 				{
 					if(prides.length > stat.ordinal())
 					{
@@ -1875,6 +2081,16 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		CMLib.smtp().emailOrJournal(from, from, to, subj, CMLib.coffeeFilter().simpleOutFilter(msg));
 	}
 
+	/**
+	 * Called at boot time to build up the pre-existing pride stat Top-10 charts.
+	 * Since it's called at boot time, it will never remove a fake pride stat,
+	 * since those are all legit at this point.
+	 *
+	 * @param userID the user id whose stats are being accumulated
+	 * @param allData the users data, which may all get unused
+	 * @param top the actual top 10 chart for all periods
+	 * @param now the current time
+	 */
 	public void accumulatePrideStats(final String userID, final Pair<Long,int[]>[] allData,
 									 final List<Pair<String,Integer>>[][] top, final long now)
 	{
@@ -1884,10 +2100,12 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			if(allData.length > period.ordinal())
 			{
 				final Pair<Long,int[]> p=allData[period.ordinal()];
+				if(p == null)
+					continue;
 				final List<Pair<String,Integer>>[] topPeriods=top[period.ordinal()];
 				if((period==TimeClock.TimePeriod.ALLTIME)||(now < p.first.longValue()))
 				{
-					for(final AccountStats.PrideStat pride : AccountStats.PrideStat.values())
+					for(final PrideStat pride : PrideStat.values())
 					{
 						if((p.second.length>pride.ordinal())
 						&&(p.second[pride.ordinal()]>0))
@@ -1918,7 +2136,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		final int prideTopSize = CMProps.getIntVar(CMProps.Int.PRIDECOUNT);
 		@SuppressWarnings("unchecked")
-		final List<Pair<String,Integer>>[][] top=new Vector[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
+		final List<Pair<String,Integer>>[][] top=new Vector[TimeClock.TimePeriod.values().length][PrideStat.values().length];
 		for(int x=0;x<top.length;x++)
 		{
 			for(int y=0;y<top[x].length;y++)
@@ -1931,6 +2149,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		switch(cat)
 		{
+		case PLAYER:
+			return mob.name();
+		case ACCOUNT:
+			if((mob.playerStats()!=null)
+			&&(mob.playerStats().getAccount()!=null))
+				return mob.playerStats().getAccount().getAccountName();
+			return null;
 		case BASECLASS:
 			return mob.baseCharStats().getCurrentClass().baseClass();
 		case CLASS:
@@ -1962,8 +2187,14 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		switch(cat)
 		{
+		case PLAYER:
+			return mob.name();
+		case ACCOUNT:
+			return null;
 		case BASECLASS:
 		{
+			if(mob.charClass()==null)
+				return null;
 			final CharClass C=CMClass.findCharClass(mob.charClass());
 			if(C != null)
 				return C.baseClass();
@@ -1976,6 +2207,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		case LEVEL:
 		{
 			int level = mob.level();
+			if(level <= 0)
+				return null;
 			if(data instanceof Integer)
 				level = (int)Math.round(Math.floor(CMath.div(level,  ((Integer)data).intValue())))+1;
 			return ""+level;
@@ -1984,6 +2217,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			return mob.race();
 		case RACECAT:
 		{
+			if(mob.race()==null)
+				return null;
 			final Race R = CMClass.findRace(mob.race());
 			if(R != null)
 				return R.racialCategory();
@@ -1992,7 +2227,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		case CLAN:
 		{
 			final Enumeration<String> clans = mob.clans();
-			if(clans.hasMoreElements())
+			if((clans!=null)&&(clans.hasMoreElements()))
 				return clans.nextElement();
 			return null;
 		}
@@ -2777,7 +3012,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 							topPrideExpiration[period.ordinal()] = period.nextPeriod();
 							if(debugTopThread)
 								Log.debugOut(name()+": "+period.name()+": Next Expire @"+Math.round(topPrideExpiration[period.ordinal()]/60000));
-							for(final AccountStats.PrideStat stat : AccountStats.PrideStat.values())
+							for(final PrideStat stat : PrideStat.values())
 							{
 								clearTopStatChart(topAccounts[period.ordinal()][stat.ordinal()]);
 								clearTopStatChart(topPlayers[period.ordinal()][stat.ordinal()]);
@@ -2791,7 +3026,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 									for(final String key : topPlayerCat.keySet())
 									{
 										final List<Pair<String,Integer>>[][] keyChart = topPlayerCat.get(key);
-										for(final AccountStats.PrideStat stat : AccountStats.PrideStat.values())
+										for(final PrideStat stat : PrideStat.values())
 											clearTopStatChart(keyChart[period.ordinal()][stat.ordinal()]);
 									}
 								}
