@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder.GenItemCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder.GenMOBCode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PrideCat;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -321,12 +322,12 @@ public interface PlayerLibrary extends CMLibrary
 	 * the given player.  It first checks for a session
 	 * with a thread id, and then it looks for a player
 	 * library containing the mob, returning its id.
-	 * 
+	 *
 	 * @param mob the player to look for
 	 * @return thread id, or -1 if not found.
 	 */
 	public int getPlayerThreadId(final MOB mob);
-	
+
 	/**
 	 * Returns a list of all player char names
 	 * in the database.
@@ -652,6 +653,18 @@ public interface PlayerLibrary extends CMLibrary
 	public List<Pair<String,Integer>> getTopPridePlayers(TimeClock.TimePeriod period, AccountStats.PrideStat stat);
 
 	/**
+	 * Returns the top winning character names and the associated values that got them there, for the given time
+	 * period and given pridestat, in the given Pride Category, for the given Pride Category value.
+	 *
+	 * @param category the pride category from the INI file, like RACE, CLASS, etc..
+	 * @param catUnit the category value to return data for, like Orc, Fighter, etc..
+	 * @param period the time period to get the top accounts for
+	 * @param stat the pridestat to find winners for
+	 * @return the list of top winners
+	 */
+	public List<Pair<String,Integer>> getTopPridePlayers(final PrideCat category, final String catUnit, final TimeClock.TimePeriod period, final AccountStats.PrideStat stat);
+
+	/**
 	 * Returns the top winning account names and the associated values that got them there, for the given time
 	 * period and given pridestat.
 	 *
@@ -689,6 +702,23 @@ public interface PlayerLibrary extends CMLibrary
 		{
 			this.altName=ln;
 		}
+	}
+
+	/**
+	 * Public supported pride stat categories
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static enum PrideCat
+	{
+		CLASS,
+		RACE,
+		BASECLASS,
+		RACECAT,
+		LEVEL,
+		GENDER,
+		CLAN
 	}
 
 	/**
@@ -947,6 +977,18 @@ public interface PlayerLibrary extends CMLibrary
 		 * @return the char worship/deity
 		 */
 		public String worship();
+
+		/**
+		 * Return the char gender name
+		 * @return the char gender name
+		 */
+		public String gender();
+
+		/**
+		 * Returns an enumerator over this mobs clans.
+		 * This may result in a query, so use sparingly.
+		 */
+		public Enumeration<String> clans();
 	}
 
 	/**

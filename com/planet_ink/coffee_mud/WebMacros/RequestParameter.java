@@ -51,7 +51,9 @@ public class RequestParameter extends StdWebMacro
 		ELLIPSE,
 		TRIM,
 		AFTER,
-		CAPITALCASE
+		CAPITALCASE,
+		PADLEFT,
+		PADRIGHT,
 	}
 
 	private static HashSet<String> modifiers=new HashSet<String>();
@@ -80,44 +82,54 @@ public class RequestParameter extends StdWebMacro
 			if(modifiers.contains(key))
 			{
 				int num = 0;
-				if(key.equals(MODIFIER.UPPERCASE.name()))
-					str=str.toUpperCase();
-				else
-				if(key.equals(MODIFIER.LOWERCASE.name()))
-					str=str.toLowerCase();
-				else
-				if(key.equals(MODIFIER.CAPITALCASE.name()))
-					capCase=true;
-				else
-				if(key.equals(MODIFIER.TRIM.name()))
-					str=str.trim();
-				else
-				if(key.equals(MODIFIER.LEFT.name()))
+				final MODIFIER m = (MODIFIER)CMath.s_valueOf(MODIFIER.class, key);
+				if(m != null)
 				{
-					num = CMath.s_int(parms.get(MODIFIER.LEFT.name()));
-					if((num >0)&& (num < str.length()))
-						str=str.substring(0,num);
-				}
-				else
-				if(key.equals(MODIFIER.AFTER.name()))
-				{
-					num = CMath.s_int(parms.get(MODIFIER.AFTER.name()));
-					if((num >0)&& (num < str.length()))
-						str=str.substring(num);
-				}
-				else
-				if(key.equals(MODIFIER.RIGHT.name()))
-				{
-					num = CMath.s_int(parms.get(MODIFIER.RIGHT.name()));
-					if((num >0)&& (num < str.length()))
-						str=str.substring(str.length()-num);
-				}
-				else
-				if(key.equals(MODIFIER.ELLIPSE.name()))
-				{
-					num = CMath.s_int(parms.get(MODIFIER.ELLIPSE.name()));
-					if((num >0)&& (num < str.length()))
-						str=str.substring(0,num)+"...";
+					switch(m)
+					{
+					case UPPERCASE:
+						str=str.toUpperCase();
+						break;
+					case LOWERCASE:
+						str=str.toLowerCase();
+						break;
+					case LEFT:
+						num = CMath.s_int(parms.get(MODIFIER.LEFT.name()));
+						if((num >0)&& (num < str.length()))
+							str=str.substring(0,num);
+						break;
+					case RIGHT:
+						num = CMath.s_int(parms.get(MODIFIER.RIGHT.name()));
+						if((num >0)&& (num < str.length()))
+							str=str.substring(str.length()-num);
+						break;
+					case ELLIPSE:
+						num = CMath.s_int(parms.get(MODIFIER.ELLIPSE.name()));
+						if((num >0)&& (num < str.length()))
+							str=str.substring(0,num)+"...";
+						break;
+					case TRIM:
+						str=str.trim();
+						break;
+					case AFTER:
+						num = CMath.s_int(parms.get(MODIFIER.AFTER.name()));
+						if((num >0)&& (num < str.length()))
+							str=str.substring(num);
+						break;
+					case CAPITALCASE:
+						capCase=true;
+						break;
+					case PADLEFT:
+						num = CMath.s_int(parms.get(MODIFIER.PADLEFT.name()));
+						if(num >0)
+							str=CMStrings.padLeft(str, num);
+						break;
+					case PADRIGHT:
+						num = CMath.s_int(parms.get(MODIFIER.PADRIGHT.name()));
+						if(num >0)
+							str=CMStrings.padLeft(str, num);
+						break;
+					}
 				}
 			}
 		}

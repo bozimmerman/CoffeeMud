@@ -136,7 +136,35 @@ public class Top extends StdCommand
 		}
 
 		final int width=CMLib.lister().fixColWidth(72, mob)/3;
-		final String str=this.getTopData(width, doPlayers, new TimePeriod[]{TimePeriod.ALLTIME,TimePeriod.MONTH});
+		final String str;
+		if(doPlayers)
+		{
+			StringBuffer topPlayers=new CMFile(Resources.buildResourcePath("text")+"topplayers.txt",null,CMFile.FLAG_LOGERRORS).text();
+			try
+			{
+				final Map<String,String> map=new HashMap<String,String>();
+				map.put("WIDTH", ""+width);
+				topPlayers = CMLib.webMacroFilter().virtualPageFilter(topPlayers,map,new HashMap<String,Object>());
+			}
+			catch(final Exception ex)
+			{
+			}
+			str=topPlayers.toString();
+		}
+		else
+		{
+			StringBuffer topPlayers=new CMFile(Resources.buildResourcePath("text")+"topplayers.txt",null,CMFile.FLAG_LOGERRORS).text();
+			try
+			{
+				final Map<String,String> map=new HashMap<String,String>();
+				map.put("WIDTH", ""+width);
+				topPlayers = CMLib.webMacroFilter().virtualPageFilter(topPlayers,map,new HashMap<String,Object>());
+			}
+			catch(final Exception ex)
+			{
+			}
+			str=topPlayers.toString();
+		}
 		if(mob.session()!=null)
 			mob.session().print(str.toString());
 		return false;

@@ -7,6 +7,8 @@
   6. GenAbilities: better argument parsing (see Game Builders Guide)
   7. New command: NOSPAM
   8. AutoGenInstances will now respect multiple entrances.  See RandomAreas guide.
+  9. Two new Pride/TOP Stat config settings, PRIDECATS and PRIDECOUNT in INI file
+ 10. TOP command now only displays text files in resources/text/topplayers.txt, etc
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

@@ -681,6 +681,18 @@ public class DefaultPlayerAccount implements PlayerAccount
 							{
 								return "";
 							}
+
+							@Override
+							public String gender()
+							{
+								return "neuter";
+							}
+
+							@Override
+							public Enumeration<String> clans()
+							{
+								return new EmptyEnumeration<String>();
+							}
 						};
 					}
 					thinPlayers.add(tP);

@@ -259,7 +259,8 @@ public class CMProps extends Properties
 		XPMOD,
 		MSXPVARS,
 		NEWDOMAINS,
-		NEWACODES
+		NEWACODES,
+		PRIDECATS
 	}
 
 	public final static int DEFAULT_MOB_HP_BASE = 11;
@@ -382,7 +383,8 @@ public class CMProps extends Properties
 		CLASSTRAINCOST,
 		CLASSSWITCHCOST,
 		LOGOUTMASKTICKS,
-		FIRSTCREATEDYEAR
+		FIRSTCREATEDYEAR,
+		PRIDECOUNT
 		;
 
 		public static final int	EXVIEW_DEFAULT		= 0;
@@ -2566,6 +2568,8 @@ public class CMProps extends Properties
 				}
 			}
 		}
+		setVar(Str.PRIDECATS,getStr("PRIDECATS"));
+		setIntVar(Int.PRIDECOUNT,getStr("PRIDECOUNT","10"));
 		setUpLowVar(Str.DEFAULTPARENTAREA,getStr("DEFAULTPARENTAREA"));
 		setUpLowVar(Str.CLANWEBSITES,getStr("CLANWEBSITES"));
 		setVar(Str.CHANNELBACKLOG,getStr("CHANNELBACKLOG"));

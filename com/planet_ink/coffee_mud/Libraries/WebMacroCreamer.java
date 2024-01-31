@@ -71,6 +71,11 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		return "WebMacroCreamer";
 	}
 
+	private static final Set<String> internalTags = new XHashSet<String>(new String[] {
+		"if", "block", "/block", "trim", "/trim", "elif", "for?",
+		"insert", "else", "loop", "back", "next", "endif", "/jscript", "jscript"
+	});
+
 	@Override
 	public ByteBuffer convertOutput(final CWConfig config, final HTTPRequest request, final File pageFile, final HTTPStatus status, final ByteBuffer buffer) throws HTTPException
 	{
@@ -335,27 +340,14 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					if (foundMacro.equalsIgnoreCase("break"))
 						i += (foundMacro.length() + 2);
 					else
-					if ((foundMacro.startsWith("if?"))
-					|| (foundMacro.startsWith("block"))
-					|| (foundMacro.startsWith("/block"))
-					|| (foundMacro.startsWith("elif?"))
-					|| (foundMacro.startsWith("for?"))
-					|| (foundMacro.startsWith("insert?"))
-					|| (foundMacro.equalsIgnoreCase("else"))
-					|| (foundMacro.equalsIgnoreCase("loop"))
-					|| (foundMacro.equalsIgnoreCase("back"))
-					|| (foundMacro.equalsIgnoreCase("next"))
-					|| (foundMacro.equalsIgnoreCase("endif"))
-					|| (foundMacro.equalsIgnoreCase("/jscript"))
-					|| (foundMacro.equalsIgnoreCase("jscript")))
-						s.replace(i, i + foundMacro.length() + 2, foundMacro);
-					else
 					{
-						final int x = foundMacro.indexOf('?');
 						final int len = foundMacro.length();
+						final int x = foundMacro.indexOf('?');
 						if (x >= 0)
 							foundMacro = foundMacro.substring(0, x);
-						if (foundMacro != null)
+						if(internalTags.contains(foundMacro.toLowerCase()))
+							s.replace(i, i + len + 2, foundMacro);
+						else
 						{
 							final WebMacro W = CMClass.getWebMacro(foundMacro.toUpperCase());
 							if (W != null)
@@ -474,7 +466,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						if (foundMacro.equalsIgnoreCase("jscript"))
 						{
 							final int l = foundMacro.length() + 2;
-							final int v = myEndJScript(s, i + l, lastFoundMacro);
+							final int v = myEndBlock(s, i + l, lastFoundMacro, "/jscript");
 							if (v < 0)
 								s.replace(i, i + l, "[jscript without /jscript]");
 							else
@@ -504,7 +496,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						if (foundMacro.equalsIgnoreCase("<!--"))
 						{
 							final int l = foundMacro.length() + 2;
-							final int v = myEndComment(s, i + l, lastFoundMacro);
+							final int v = myEndBlock(s, i + l, lastFoundMacro, "-->");
 							if (v < 0)
 								s.replace(i, i + l, "[<!-- macro without --> macro]");
 							else
@@ -517,7 +509,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						if (foundMacro.startsWith("block?") || foundMacro.startsWith("BLOCK?"))
 						{
 							final int l = foundMacro.length() + 2;
-							final int v = myEndBlock(s, i + l, lastFoundMacro);
+							final int v = myEndBlock(s, i + l, lastFoundMacro,"/block");
 							if (v < 0)
 								s.replace(i, i + l, "[block without /block]");
 							else
@@ -525,6 +517,30 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 								final String name = foundMacro.substring(6).trim().toUpperCase();
 								objects.put(name, s.substring(i + l, v));
 								s.delete(i, v + 8);
+							}
+							continue;
+						}
+						else
+						if (foundMacro.startsWith("trim?") || foundMacro.startsWith("TRIM?"))
+						{
+							final int l = foundMacro.length() + 2;
+							final int v = myEndBlock(s, i + l, lastFoundMacro, "/trim");
+							if (v < 0)
+								s.replace(i, i + l, "[trim without /trim]");
+							else
+							{
+								final String parms = foundMacro.substring(5).trim().toUpperCase();
+								String part = s.substring(i + l, v);
+								if(parms.indexOf("CR")>=0)
+									part=CMStrings.replaceAll(part, "\n", "");
+								if(parms.indexOf("LF")>=0)
+									part=CMStrings.replaceAll(part, "\r", "");
+								if(parms.indexOf("TAB")>=0)
+									part=CMStrings.replaceAll(part, "\t", "");
+								if(parms.indexOf("SPACE")>=0)
+									part=CMStrings.replaceAll(part, " ", "");
+								s.replace(i, v+8, part);
+								i--;
 							}
 							continue;
 						}
@@ -699,7 +715,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 									}
 									try
 									{
-										request.addFakeUrlParameter(varName, qq);
+										request.addFakeUrlParameter(varName.toUpperCase(), qq);
+										request.addFakeUrlParameter(varName.toLowerCase(), qq);
 										s3 = new String(virtualPageFilter(request, objects, processStartTime, lastFoundMacro, new StringBuffer(s2)));
 									}
 									catch (final HTTPRedirectException e)
@@ -942,6 +959,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					if ((foundMacro.equalsIgnoreCase("else"))
 					&& (endifsToFind == 1))
 						return i;
+					i += foundMacro.length() + 1;
 				}
 			}
 		}
@@ -969,6 +987,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 							return i;
 					}
 				}
+				i += foundMacro.length() + 1;
 			}
 		}
 		return -1;
@@ -994,6 +1013,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						if (nextsToFind <= 0)
 							return i;
 					}
+					i += foundMacro.length() + 1;
 				}
 			}
 		}
@@ -1025,7 +1045,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		return -1;
 	}
 
-	private int myEndJScript(final StringBuffer s, int i, final String[] lastFoundMacro)
+	private int myEndBlock(final StringBuffer s, int i, final String[] lastFoundMacro, final String endTag)
 	{
 		for (; i < s.length(); i++)
 		{
@@ -1034,42 +1054,9 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 				final String foundMacro = parseFoundMacro(s, i, lastFoundMacro, true);
 				if ((foundMacro != null) && (foundMacro.length() > 0))
 				{
-					if (foundMacro.equalsIgnoreCase("/jscript"))
+					if (foundMacro.equalsIgnoreCase(endTag))
 						return i;
-				}
-			}
-		}
-		return -1;
-	}
-
-	private int myEndComment(final StringBuffer s, int i, final String[] lastFoundMacro)
-	{
-		for (; i < s.length(); i++)
-		{
-			if (s.charAt(i) == '@')
-			{
-				final String foundMacro = parseFoundMacro(s, i, lastFoundMacro, true);
-				if ((foundMacro != null) && (foundMacro.length() > 0))
-				{
-					if (foundMacro.equalsIgnoreCase("-->"))
-						return i;
-				}
-			}
-		}
-		return -1;
-	}
-
-	private int myEndBlock(final StringBuffer s, int i, final String[] lastFoundMacro)
-	{
-		for (; i < s.length(); i++)
-		{
-			if (s.charAt(i) == '@')
-			{
-				final String foundMacro = parseFoundMacro(s, i, lastFoundMacro, true);
-				if ((foundMacro != null) && (foundMacro.length() > 0))
-				{
-					if (foundMacro.equalsIgnoreCase("/block"))
-						return i;
+					i += foundMacro.length() + 1;
 				}
 			}
 		}

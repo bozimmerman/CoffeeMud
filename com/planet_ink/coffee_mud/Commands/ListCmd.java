@@ -2085,6 +2085,18 @@ public class ListCmd extends StdCommand
 					return "";
 				}
 
+				@Override
+				public String gender()
+				{
+					return "neuter";
+				}
+
+
+				@Override
+				public Enumeration<String> clans()
+				{
+					return new EmptyEnumeration<String>();
+				}
 			};
 			thinAcctHash.put(acct.getAccountName(), selectedU);
 		}

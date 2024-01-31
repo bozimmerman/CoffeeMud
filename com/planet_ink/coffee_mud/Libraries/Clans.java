@@ -2418,5 +2418,4 @@ public class Clans extends StdLibrary implements ClanManager
 			CMLib.journals().registerClanForum(C,CMProps.getVar(CMProps.Str.CLANFORUMDATA));
 		}
 	}
-
 }

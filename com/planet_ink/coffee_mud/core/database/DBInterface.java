@@ -28,6 +28,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.AckStats;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.ReadRoomDisableFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 /*
    Copyright 2004-2024 Bo Zimmerman
 
@@ -236,6 +237,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public List<String> DBReadMemberClans(final String userID)
+	{
+		return MOBloader.DBMemberClans(userID);
+	}
+
+	@Override
 	public void DBUpdateClanMembership(final String name, final String clan, final int role)
 	{
 		MOBloader.DBUpdateClanMembership(name, clan, role);
@@ -350,15 +357,15 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<Pair<String, Integer>>[][] DBScanPrideAccountWinners(final int topThisMany, final short scanCPUPercent)
+	public void DBScanPrideAccountWinners(final CMCallback<Pair<String,Pair<Long,int[]>[]>> callBack, final short scanCPUPercent)
 	{
-		return MOBloader.DBScanPrideAccountWinners(topThisMany, scanCPUPercent);
+		MOBloader.DBScanPrideAccountWinners(callBack, scanCPUPercent);
 	}
 
 	@Override
-	public List<Pair<String, Integer>>[][] DBScanPridePlayerWinners(final int topThisMany, final short scanCPUPercent)
+	public void DBScanPridePlayerWinners(final CMCallback<Pair<ThinPlayer,Pair<Long,int[]>[]>> callBack, final short scanCPUPercent)
 	{
-		return MOBloader.DBScanPridePlayerWinners(topThisMany, scanCPUPercent);
+		MOBloader.DBScanPridePlayerWinners(callBack, scanCPUPercent);
 	}
 
 	@Override

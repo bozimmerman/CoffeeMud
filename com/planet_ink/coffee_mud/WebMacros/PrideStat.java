@@ -49,6 +49,11 @@ public class PrideStat extends StdWebMacro
 		AccountStats.PrideStat stat=null;
 		int which=-1;
 		String val=null;
+		boolean fixi = false;
+		PlayerLibrary.PrideCat cat=null;
+		String catUnit=null;
+		int padRight=0;
+		int padLeft=0;
 		boolean player = true;
 		for(final String s : parms.keySet())
 		{
@@ -58,6 +63,9 @@ public class PrideStat extends StdWebMacro
 			if(s.equalsIgnoreCase("account"))
 				player=false;
 			else
+			if(s.equalsIgnoreCase("fixi"))
+				fixi=true;
+			else
 			if(s.equalsIgnoreCase("player"))
 				player=true;
 			else
@@ -66,6 +74,18 @@ public class PrideStat extends StdWebMacro
 			else
 			if(s.equalsIgnoreCase("value"))
 				val="VALUE";
+			else
+			if(s.equalsIgnoreCase("padleft"))
+				padLeft = CMath.s_int(parms.get(s));
+			else
+			if(s.equalsIgnoreCase("padright"))
+				padRight = CMath.s_int(parms.get(s));
+			else
+			if(s.equalsIgnoreCase("cat"))
+				cat=(PlayerLibrary.PrideCat)CMath.s_valueOf(PlayerLibrary.PrideCat.class,parms.get(s).toUpperCase());
+			else
+			if(s.equalsIgnoreCase("catunit"))
+				catUnit=val.toUpperCase();
 			else
 			{
 				try
@@ -94,13 +114,49 @@ public class PrideStat extends StdWebMacro
 		if(which<1)
 			return " [error missing number, try 1-10]";
 
-		final List<Pair<String,Integer>> list=player?CMLib.players().getTopPridePlayers(period, stat):CMLib.players().getTopPrideAccounts(period, stat);
-		if(which>list.size())
-			return "";
-		final Pair<String,Integer> p=list.get(which-1);
-		if(val.equals("NAME"))
-			return p.first;
+		final List<Pair<String,Integer>> list;
+		if(player)
+		{
+			if((cat != null)||(catUnit != null))
+			{
+				if((cat==null)||(catUnit==null))
+					return " [error missing cat/catunit pairing]";
+				list = CMLib.players().getTopPridePlayers(cat, catUnit, period, stat);
+			}
+			else
+				list = CMLib.players().getTopPridePlayers(period, stat);
+		}
 		else
-			return p.second.toString();
+			list = CMLib.players().getTopPrideAccounts(period, stat);
+		String fval;
+		if(which>list.size())
+			fval="";
+		else
+		{
+			final Pair<String,Integer> p=list.get(which-1);
+			if(val.equals("NAME"))
+				fval = p.first;
+			else
+			{
+				fval = p.second.toString();
+				if(fixi)
+				{
+					final int ilen=fval.length();
+					if(ilen > 6)
+					{
+						if(ilen > 9)
+							fval=fval.substring(0, ilen-6)+"m";
+						else
+							fval=fval.substring(0, ilen-3)+"k";
+					}
+				}
+			}
+		}
+		if(padLeft > 0)
+			fval=CMStrings.padLeft(fval, padLeft);
+		else
+		if(padRight > 0)
+			fval=CMStrings.padRight(fval, padRight);
+		return fval;
 	}
 }

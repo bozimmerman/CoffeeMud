@@ -29,6 +29,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -714,43 +715,37 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
-	 * Re-builds the entire top-10 player tables from the
-	 * database.  It returns a two dimensional array of
-	 * lists of players and their scores, in reverse sorted
-	 * order by score.  The first dimension of the array is
-	 * the time period ordinal (month, year, whatever), and the
-	 * second is the pridestat ordinal.
+	 * Scans the player pride stat xml and calls back your method
+	 * on every chunk of player data found.  You should use this
+	 * data to compile your top 10 pride stat indexes.
 	 *
 	 * The cpu percent is the percent (0-100) of each second of work
 	 * to spend actually working.  The balance is spent sleeping.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat
-	 * @param topThisMany the number of items in each list
+	 * @param callBack a call back containing the user id and data for each period
 	 * @param scanCPUPercent the percent (0-100) to spend working
 	 * @return the arrays of lists of top winner players
 	 */
-	public List<Pair<String,Integer>>[][] DBScanPridePlayerWinners(int topThisMany, short scanCPUPercent);
+	public void DBScanPridePlayerWinners(final CMCallback<Pair<ThinPlayer,Pair<Long,int[]>[]>> callBack, final short scanCPUPercent);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * Re-builds the entire top-10 account tables from the
-	 * database.  It returns a two dimensional array of
-	 * lists of accounts and their scores, in reverse sorted
-	 * order by score.  The first dimension of the array is
-	 * the time period ordinal (month, year, whatever), and the
-	 * second is the pridestat ordinal.
+	 * Scans the account pride stat xml and calls back your method
+	 * on every chunk of account data found.  You should use this
+	 * data to compile your top 10 pride stat indexes.
 	 *
 	 * The cpu percent is the percent (0-100) of each second of work
 	 * to spend actually working.  The balance is spent sleeping.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat
-	 * @param topThisMany the number of items in each list
+	 * @param callBack a call back containing the user id and data for each period
 	 * @param scanCPUPercent the percent (0-100) to spend working
 	 * @return the arrays of lists of top winner accounts
 	 */
-	public List<Pair<String,Integer>>[][] DBScanPrideAccountWinners(int topThisMany, short scanCPUPercent);
+	public void DBScanPrideAccountWinners(final CMCallback<Pair<String,Pair<Long,int[]>[]>> callBack, final short scanCPUPercent);
 
 	/**
 	 * Table category: DBPLAYERS
@@ -1115,6 +1110,20 @@ public interface DatabaseEngine extends CMLibrary
 	 * @return the list of all the clans members
 	 */
 	public List<MemberRecord> DBReadClanMembers(String clan);
+
+	/**
+	 * Table category: DBCLANS
+	 * Given a user, this will return the clans that user
+	 * belongs to.  You an then lookup the clan and get their
+	 * member records.
+	 *
+	 * @see DatabaseEngine#DBGetClanMember(String, String)
+	 * @see DatabaseEngine#DBUpdateClanMembership(String, String, int)
+	 * @see DatabaseEngine#DBUpdateClanKills(String, String, int, int)
+	 * @param clan the name of the clan to read members for
+	 * @return the list of all the members clans
+	 */
+	public List<String> DBReadMemberClans(String userID);
 
 	/**
 	 * Table category: DBCLANS

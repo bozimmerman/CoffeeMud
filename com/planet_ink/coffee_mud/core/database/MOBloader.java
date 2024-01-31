@@ -1550,9 +1550,10 @@ public class MOBloader
 			final int expLvl=CMath.s_int(DBConnections.getRes(R,"CMEXLV"));
 			final String leigeID=DBConnections.getRes(R,"CMLEIG");
 			final String worshipID=DBConnections.getRes(R,"CMWORS");
+			final char gendChar=DBConnections.getRes(R, "CMGEND").charAt(0);
 			return new PlayerLibrary.ThinPlayer()
 			{
-
+				XVector<String> clans = null;
 				@Override
 				public String name()
 				{
@@ -1623,6 +1624,21 @@ public class MOBloader
 				public String worship()
 				{
 					return worshipID;
+				}
+
+				@Override
+				public String gender()
+				{
+					final String[] set = CMProps.getGenderDef(gendChar);
+					return set[1]; // GEND_NOUN
+				}
+
+				@Override
+				public Enumeration<String> clans()
+				{
+					if(clans==null)
+						clans = new XVector<String>(CMLib.database().DBReadMemberClans(name));
+					return clans.elements();
 				}
 			};
 		}
@@ -1903,6 +1919,32 @@ public class MOBloader
 			DB.DBDone(D);
 		}
 		return members;
+	}
+
+
+	public List<String> DBMemberClans(String userID)
+	{
+		final List<String> clans = new Vector<String>(1);
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			userID=DB.injectionClean(userID);
+			final ResultSet R=D.query("SELECT CMCLAN FROM CMCHCL where CMUSERID='"+userID+"'");
+			if(R!=null) while(R.next())
+			{
+				clans.add(DB.getRes(R, "CMCLAN"));
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return clans;
 	}
 
 	public Clan.MemberRecord DBClanMember(String clan, String memberName)
@@ -2465,49 +2507,32 @@ public class MOBloader
 		DB.updateWithClobs(statements);
 	}
 
-	protected List<Pair<String,Integer>>[][] DBFindPrideWinners(final int topThisMany, final short scanCPUPercent, final boolean players)
+	public void DBScanPridePlayerWinners(final CMCallback<Pair<ThinPlayer,Pair<Long,int[]>[]>> callBack, final short scanCPUPercent)
 	{
-		@SuppressWarnings("unchecked")
-		final List<Pair<String,Integer>>[][] top=new Vector[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
-		for(int x=0;x<top.length;x++)
-		{
-			for(int y=0;y<top[x].length;y++)
-				top[x][y]=new Vector<Pair<String,Integer>>(topThisMany+1);
-		}
 		DBConnection D=null;
 		final long msWait=Math.round(1000.0 * CMath.div(scanCPUPercent, 100));
 		final long sleepAmount=1000 - msWait;
 		try
 		{
 			long nextWaitAfter=System.currentTimeMillis() + msWait;
-			final long now=System.currentTimeMillis();
-
 			D=DB.DBFetch();
-			ResultSet R;
-			if(players)
-				R=D.query("SELECT CMUSERID,CMPFIL FROM CMCHAR");
-			else
-				R=D.query("SELECT CMANAM,CMAXML FROM CMACCT");
+			final ResultSet R=D.query("SELECT * FROM CMCHAR");
 			while((R!=null)&&(R.next()))
 			{
-				final String userID=DB.getRes(R, players?"CMUSERID":"CMANAM");
-				String pxml;
+				final String userID=DB.getRes(R, "CMUSERID");
+				final String pxml;
+				final ThinPlayer whom;
 				final MOB M=CMLib.players().getPlayer(userID);
-				if((M!=null)
-				&&(M.playerStats()!=null)
-				&&(players))
+				if((M!=null)&&(M.playerStats()!=null))
+				{
 					pxml=M.playerStats().getXML();
+					whom=CMLib.players().getThinPlayer(userID);
+				}
 				else
-				if((M!=null)
-				&&(M.playerStats()!=null)
-				&&(!players)
-				&&(M.playerStats().getAccount()!=null))
-					pxml=M.playerStats().getAccount().getXML();
-				else
-				if(players)
+				{
 					pxml=DB.getRes(R, "CMPFIL");
-				else
-					pxml=DB.getRes(R, "CMAXML");
+					whom=this.parseThinUser(R);
+				}
 				final String[] pridePeriods=CMLib.xml().returnXMLValue(pxml, "NEXTPRIDEPERIODS").split(",");
 				final String[] prideStats=CMLib.xml().returnXMLValue(pxml, "PRIDESTATS").split(";");
 				final String[] prideExceptions=CMLib.xml().returnXMLValue(pxml, "FLAGS").split(",");
@@ -2515,39 +2540,7 @@ public class MOBloader
 					||CMParms.contains(prideExceptions, PlayerFlag.NOTOP.toString()))
 					continue;
 				final Pair<Long,int[]>[] allData = CMLib.players().parsePrideStats(pridePeriods, prideStats);
-				for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
-				{
-					if(allData.length > period.ordinal())
-					{
-						final Pair<Long,int[]> p=allData[period.ordinal()];
-						final List<Pair<String,Integer>>[] topPeriods=top[period.ordinal()];
-						if((period==TimeClock.TimePeriod.ALLTIME)||(now < p.first.longValue()))
-						{
-							for(final AccountStats.PrideStat pride : AccountStats.PrideStat.values())
-							{
-								if((p.second.length>pride.ordinal())
-								&&(p.second[pride.ordinal()]>0))
-								{
-									final int val=p.second[pride.ordinal()];
-									final List<Pair<String,Integer>> topPrides=topPeriods[pride.ordinal()];
-									final int oldSize=topPrides.size();
-									for(int i=0;i<topPrides.size();i++)
-									{
-										if(val >= topPrides.get(i).second.intValue())
-										{
-											topPrides.add(i, new Pair<String,Integer>(userID,Integer.valueOf(val)));
-											while(topPrides.size()>topThisMany)
-												topPrides.remove(topPrides.size()-1);
-											break;
-										}
-									}
-									if((oldSize==topPrides.size())&&(topPrides.size()<topThisMany))
-										topPrides.add(new Pair<String,Integer>(userID,Integer.valueOf(val)));
-								}
-							}
-						}
-					}
-				}
+				callBack.callback(new Pair<ThinPlayer,Pair<Long,int[]>[]>(whom,allData));
 				if((sleepAmount>0)&&(System.currentTimeMillis() > nextWaitAfter))
 				{
 					CMLib.s_sleep(sleepAmount);
@@ -2563,18 +2556,52 @@ public class MOBloader
 		{
 			DB.DBDone(D);
 		}
-		return top;
 	}
 
-	public List<Pair<String,Integer>>[][] DBScanPridePlayerWinners(final int topThisMany, final short scanCPUPercent)
+	public void DBScanPrideAccountWinners(final CMCallback<Pair<String,Pair<Long,int[]>[]>> callBack, final short scanCPUPercent)
 	{
-		return DBFindPrideWinners(topThisMany,scanCPUPercent,true);
+		DBConnection D=null;
+		final long msWait=Math.round(1000.0 * CMath.div(scanCPUPercent, 100));
+		final long sleepAmount=1000 - msWait;
+		try
+		{
+			long nextWaitAfter=System.currentTimeMillis() + msWait;
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT CMANAM,CMAXML FROM CMACCT");
+			while((R!=null)&&(R.next()))
+			{
+				final String userID=DB.getRes(R, "CMANAM");
+				final PlayerAccount A = CMLib.players().getAccount(userID);
+				final String pxml;
+				if(A!=null)
+					pxml=A.getXML();
+				else
+					pxml=DB.getRes(R, "CMAXML");
+				final String[] pridePeriods=CMLib.xml().returnXMLValue(pxml, "NEXTPRIDEPERIODS").split(",");
+				final String[] prideStats=CMLib.xml().returnXMLValue(pxml, "PRIDESTATS").split(";");
+				final String[] prideExceptions=CMLib.xml().returnXMLValue(pxml, "FLAGS").split(",");
+				if(CMParms.contains(prideExceptions, PlayerFlag.NOSTATS.toString())
+					||CMParms.contains(prideExceptions, PlayerFlag.NOTOP.toString()))
+					continue;
+				final Pair<Long,int[]>[] allData = CMLib.players().parsePrideStats(pridePeriods, prideStats);
+				callBack.callback(new Pair<String,Pair<Long,int[]>[]>(userID,allData));
+				if((sleepAmount>0)&&(System.currentTimeMillis() > nextWaitAfter))
+				{
+					CMLib.s_sleep(sleepAmount);
+					nextWaitAfter=System.currentTimeMillis() + msWait;
+				}
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
 	}
 
-	public List<Pair<String,Integer>>[][] DBScanPrideAccountWinners(final int topThisMany, final short scanCPUPercent)
-	{
-		return DBFindPrideWinners(topThisMany,scanCPUPercent,false);
-	}
 
 	// this method is unused, but is a good idea of how to collect riders, followers, carts, etc.
 	protected void addFollowerDependent(final PhysicalAgent P, final PairList<PhysicalAgent,String> list, final String parent)
