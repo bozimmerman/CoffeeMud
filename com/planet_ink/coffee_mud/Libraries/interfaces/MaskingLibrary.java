@@ -450,7 +450,9 @@ public interface MaskingLibrary extends CMLibrary
 		_BIRTHMONTH,
 		BIRTHMONTH,
 		_PARENTAREA,
-		PARENTAREA
+		PARENTAREA,
+		_DOMAIN,
+		DOMAIN
 		;
 		private final String[] keys;
 		private ZapperKey(final String... exts)

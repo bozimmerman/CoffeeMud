@@ -1960,6 +1960,94 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append(".  ");
 					}
 					break;
+				case DOMAIN: // +domain
+					{
+						buf.append(L("Disallowed in the following locale"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("-"))
+							{
+								final String str3=str2.substring(1).trim().toUpperCase();
+								if(CMath.isInteger(str3))
+								{
+									final int domain=CMath.s_int(str3);
+									if((domain>=0)&&(domain<Room.DOMAIN_OUTDOOR_DESCS.length))
+									{
+										v=v2;
+										buf.append(CMStrings.capitalizeAndLower(Room.DOMAIN_OUTDOOR_DESCS[domain])+", ");
+									}
+									else
+									if((domain>=Room.INDOORS)&&((domain-Room.INDOORS)<Room.DOMAIN_INDOORS_DESCS.length))
+									{
+										v=v2;
+										buf.append(CMStrings.capitalizeAndLower(Room.DOMAIN_INDOORS_DESCS[domain-Room.INDOORS])+", ");
+									}
+								}
+								else
+								{
+									int domain=CMParms.indexOf(Room.DOMAIN_OUTDOOR_DESCS,str3);
+									if(domain < 0)
+										domain = CMParms.indexOf(Room.DOMAIN_INDOORS_DESCS,str3);
+									if(domain>=0)
+									{
+										v=v2;
+										buf.append(CMStrings.capitalizeAndLower(str3)+", ");
+									}
+								}
+							}
+						}
+						if(buf.toString().endsWith(", "))
+							buf.delete(buf.length()-2, buf.length());
+						buf.append(".  ");
+					}
+					break;
+				case _DOMAIN: // -domain
+					{
+						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"in the following locale"+(multipleQuals(V,v,"+")?"s":"")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("+"))
+							{
+								final String str3=str2.substring(1).trim().toUpperCase();
+								if(CMath.isInteger(str3))
+								{
+									final int domain=CMath.s_int(str3);
+									if((domain>=0)&&(domain<Room.DOMAIN_OUTDOOR_DESCS.length))
+									{
+										v=v2;
+										buf.append(CMStrings.capitalizeAndLower(Room.DOMAIN_OUTDOOR_DESCS[domain])+", ");
+									}
+									else
+									if((domain>=Room.INDOORS)&&((domain-Room.INDOORS)<Room.DOMAIN_INDOORS_DESCS.length))
+									{
+										v=v2;
+										buf.append(CMStrings.capitalizeAndLower(Room.DOMAIN_INDOORS_DESCS[domain-Room.INDOORS])+", ");
+									}
+								}
+								else
+								{
+									int domain=CMParms.indexOf(Room.DOMAIN_OUTDOOR_DESCS,str3);
+									if(domain < 0)
+										domain = CMParms.indexOf(Room.DOMAIN_INDOORS_DESCS,str3);
+									if(domain>=0)
+									{
+										v=v2;
+										buf.append(CMStrings.capitalizeAndLower(str3)+", ");
+									}
+								}
+							}
+						}
+						if(buf.toString().endsWith(", "))
+							buf.delete(buf.length()-2, buf.length());
+						buf.append(".  ");
+					}
+					break;
 				case BIRTHDAY: //+birthday
 					{
 						buf.append(L("Disallow those born on the following day"+(multipleQuals(V,v,"-")?"s":"")+" of the month: "));
@@ -4443,6 +4531,37 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
 					}
 					break;
+				case DOMAIN: // +domain
+				case _DOMAIN: // -domain
+					{
+						final ArrayList<Object> parms=new ArrayList<Object>();
+						buildRoomFlag=true;
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+							{
+								v=v2-1;
+								break;
+							}
+							else
+							if((str2.startsWith("-"))||(str2.startsWith("+")))
+							{
+								final String str3=str2.substring(1).toUpperCase().trim();
+								if(CMath.isInteger(str2.substring(1).trim()))
+									parms.add(Integer.valueOf(CMath.s_int(str3)));
+								else
+								if(CMParms.indexOf(Room.DOMAIN_OUTDOOR_DESCS,str3)>=0)
+									parms.add(Integer.valueOf(CMParms.indexOf(Room.DOMAIN_OUTDOOR_DESCS,str3)));
+								else
+								if(CMParms.indexOf(Room.DOMAIN_INDOORS_DESCS,str3)>=0)
+									parms.add(Integer.valueOf(Room.INDOORS+CMParms.indexOf(Room.DOMAIN_INDOORS_DESCS,str3)));
+							}
+							v=V.size();
+						}
+						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
+					}
+					break;
 				case PORT: // +PORT
 				case _PORT: // -PORT
 					{
@@ -6387,6 +6506,36 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							return false;
 					}
 					break;
+				case DOMAIN: // +domain
+					{
+						if(room!=null)
+						{
+							for(final Object o : entry.parms())
+							{
+								if(room.domainType()==((Integer)o).intValue())
+									return false;
+							}
+						}
+					}
+					break;
+				case _DOMAIN: // -domain
+					{
+						boolean found=false;
+						if(room!=null)
+						{
+							for(final Object o : entry.parms())
+							{
+								if(room.domainType()==((Integer)o).intValue())
+								{
+									found = true;
+									break;
+								}
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
 				case MONTH: // +month
 					{
 						if(room!=null)
@@ -8198,6 +8347,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _HOUR: // -HOUR
 				case WEATHER: // +weather
 				case _WEATHER: // -weather
+				case DOMAIN: // +domain
+				case _DOMAIN: // -domain
 				case SEASON: // +season
 				case _SEASON: // -season
 				case MONTH: // +month

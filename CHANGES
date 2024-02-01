@@ -10,6 +10,7 @@
   9. Two new Pride/TOP Stat config settings, PRIDECATS and PRIDECOUNT in INI file
  10. TOP command now only displays text files in resources/text/topplayers.txt, etc
  11. TOP pride stats are retained for deleted players & accounts, until they fall off.
+ 12. New Zappermask: +-DOMAIN
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.
