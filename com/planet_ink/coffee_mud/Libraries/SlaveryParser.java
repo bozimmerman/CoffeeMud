@@ -111,6 +111,17 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		"no"
 	};
 
+	/**
+	 * If we want this to take over full behavior some day, it needs to consider the following:
+	 * 1. Am I dying quickly?
+	 * 2. Am I being murdered?
+	 * 3. Am I dying of something else? Can I breathe? Starving?
+	 * 4. Is my health in danger? Hungry? Thirsty?
+	 * 5. Am I uncomfortable? Bad weather. Highly fatigued.
+	 * 6. Am I tired, but not in danger (or uncomfortable)
+	 * 7. Wants and Needs
+	 */
+
 	//codes:
 	//%m mob name (anyone)
 	//%i item name (anything)
