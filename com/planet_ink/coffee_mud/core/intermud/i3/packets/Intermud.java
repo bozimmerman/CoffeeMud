@@ -990,9 +990,13 @@ public class Intermud implements Runnable, Persistent, Serializable
 			if( type.equals("ucache-update") )
 			{
 				//UCacheUpdate update = new UCacheUpdate(data);
-				Log.debugOut("Intermud","UCache packet has # data: " + data.size());
-				Log.debugOut("Intermud","UCache Data: "+CMParms.combineQuoted(data,0));
-				// i have NO idea what to do here
+				//Log.debugOut("Intermud","UCache packet has # data: " + data.size());
+				//Log.debugOut("Intermud","UCache Data: "+CMParms.combineQuoted(data,0));
+				/*
+				 * This is for tracking the users on other muds.  Not sure why you'd
+				 * want to do that though.  The format is as the class says.
+				 * data size = 9, indexed 0-8, with only the last 3 fields mattering.
+				 */
 			}
 			else
 			{
