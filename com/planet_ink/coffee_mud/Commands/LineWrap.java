@@ -66,6 +66,12 @@ public class LineWrap extends StdCommand
 		if("DISABLED".startsWith(newWrap.toUpperCase()))
 			newVal=0;
 		else
+		if("DEFAULT".startsWith(newWrap.toUpperCase()))
+		{
+			final PlayerStats P = (PlayerStats)CMClass.getCommon("DefaultPlayerStats");
+			newVal=P.getWrap();
+		}
+		else
 		{
 			mob.tell(L("'@x1' is not a valid setting. Enter a number larger than 10 or 'disable'.",newWrap));
 			return false;

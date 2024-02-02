@@ -59,8 +59,9 @@ public class DefaultPlayerStats implements PlayerStats
 		return ID();
 	}
 
-	protected final static int TELL_STACK_MAX_SIZE=50;
-	protected final static int GTELL_STACK_MAX_SIZE=50;
+	protected final static int	TELL_STACK_MAX_SIZE		= 50;
+	protected final static int	GTELL_STACK_MAX_SIZE	= 50;
+	protected final static int	DEFAULT_WORDWRAP		= 78;
 
 	protected long			 hygiene		= 0;
 	protected int			 theme			= Area.THEME_FANTASY;
@@ -89,7 +90,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected String		 savedPose		= "";
 	protected String		 notes			= "";
 	private volatile String  actTitle		= null;
-	protected int   		 wrap			= 78;
+	protected int   		 wrap			= DEFAULT_WORDWRAP;
 	protected int			 bonusCommonSk	= 0;
 	protected int			 bonusCraftSk	= 0;
 	protected int			 bonusNonCraftSk= 0;
