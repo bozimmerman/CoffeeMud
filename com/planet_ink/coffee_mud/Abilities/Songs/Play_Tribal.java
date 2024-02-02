@@ -95,9 +95,18 @@ public class Play_Tribal extends Play
 				if((A!=null)
 				&&(A instanceof StdAbility)
 				&&(A.abstractQuality()!=Ability.QUALITY_MALICIOUS)
-				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
-				&&(((StdAbility)A).getTickDownRemaining()==1))
-					((StdAbility)A).setTickDownRemaining(2);
+				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT))
+				{
+					switch(((StdAbility)A).getTickDownRemaining())
+					{
+					case 1:
+						((StdAbility)A).setTickDownRemaining(2);
+						break;
+					case 2:
+						((StdAbility)A).setTickDownRemaining(3);
+						break;
+					}
+				}
 			}
 		}
 		return true;

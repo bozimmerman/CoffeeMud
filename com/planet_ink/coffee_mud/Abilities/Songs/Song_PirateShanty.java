@@ -99,7 +99,7 @@ public class Song_PirateShanty extends Song
 			final double pct = super.statBonusPct();
 			final int amt = (int)Math.round(CMath.mul(pct,ct*ct));
 			M.curState().adjMovement(amt, M.maxState());
-			M.curState().adjFatigue(-amt, M.maxState());
+			M.curState().adjFatigue(-(amt*250), M.maxState());
 		}
 		return true;
 	}

@@ -1827,75 +1827,73 @@ public class StdArea implements Area
 		s.append(description() + "\n\r");
 		if (author.length() > 0)
 			s.append("Author         : ^H" + author + "^N\n\r");
-		if (statData == emptyStats)
+		if (statData != emptyStats)
 		{
-			s.append("\n\r^HFurther information about this area is not available at this time.^N\n\r");
-			return s;
-		}
-		s.append("Number of rooms: ^H" + statData.getStat(Area.Stats.VISITABLE_ROOMS) + "^N\n\r");
-		Faction theFaction = CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
-		if (theFaction == null)
-		{
-			for (final Enumeration<Faction> e = CMLib.factions().factions(); e.hasMoreElements();)
+			s.append("Number of rooms: ^H" + statData.getStat(Area.Stats.VISITABLE_ROOMS) + "^N\n\r");
+			Faction theFaction = CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
+			if (theFaction == null)
 			{
-				final Faction F = e.nextElement();
-				if (F.showInSpecialReported())
-					theFaction = F;
+				for (final Enumeration<Faction> e = CMLib.factions().factions(); e.hasMoreElements();)
+				{
+					final Faction F = e.nextElement();
+					if (F.showInSpecialReported())
+						theFaction = F;
+				}
 			}
-		}
-		if((!statData.isFinished())
-		&&(CMath.bset(flags(), Area.FLAG_THIN))
-		&&(statData.getStat(Area.Stats.MED_LEVEL)==0))
-		{
-			s.append("^r** Statistics for this area are incomplete. **\n\r");
-			if (statData.getStat(Area.Stats.POPULATION) > 0)
-				s.append("^r** The following data is probably incorrect.**\n\r^N");
-		}
-		if (statData.getStat(Area.Stats.POPULATION) == 0)
-		{
-			if (getProperRoomnumbers().roomCountAllAreas() / 2 < properRooms.size())
-				s.append("Population     : ^H0^N\n\r");
-		}
-		else
-		{
-			s.append("Population     : ^H" + statData.getStat(Area.Stats.POPULATION) + "^N\n\r");
-			final String currName = CMLib.beanCounter().getCurrency(this);
-			if (currName.length() > 0)
-				s.append("Currency       : ^H" + CMStrings.capitalizeAndLower(currName) + "^N\n\r");
+			if((!statData.isFinished())
+			&&(CMath.bset(flags(), Area.FLAG_THIN))
+			&&(statData.getStat(Area.Stats.MED_LEVEL)==0))
+			{
+				s.append("^r** Statistics for this area are incomplete. **\n\r");
+				if (statData.getStat(Area.Stats.POPULATION) > 0)
+					s.append("^r** The following data is probably incorrect.**\n\r^N");
+			}
+			if (statData.getStat(Area.Stats.POPULATION) == 0)
+			{
+				if (getProperRoomnumbers().roomCountAllAreas() / 2 < properRooms.size())
+					s.append("Population     : ^H0^N\n\r");
+			}
 			else
-				s.append("Currency       : ^HGold coins (default)^N\n\r");
-			final LegalBehavior B = CMLib.law().getLegalBehavior(this);
-			if (B != null)
 			{
-				final String ruler = B.rulingOrganization();
-				Clan C;
-				if (ruler.length() > 0)
-					C = CMLib.clans().getClanAnyHost(ruler);
+				s.append("Population     : ^H" + statData.getStat(Area.Stats.POPULATION) + "^N\n\r");
+				final String currName = CMLib.beanCounter().getCurrency(this);
+				if (currName.length() > 0)
+					s.append("Currency       : ^H" + CMStrings.capitalizeAndLower(currName) + "^N\n\r");
 				else
-					C=null;
-				if (C != null)
-					s.append("Controlled by  : ^H" + C.getGovernmentName() + " " + C.name() + "^N\n\r");
+					s.append("Currency       : ^HGold coins (default)^N\n\r");
+				final LegalBehavior B = CMLib.law().getLegalBehavior(this);
+				if (B != null)
+				{
+					final String ruler = B.rulingOrganization();
+					Clan C;
+					if (ruler.length() > 0)
+						C = CMLib.clans().getClanAnyHost(ruler);
+					else
+						C=null;
+					if (C != null)
+						s.append("Controlled by  : ^H" + C.getGovernmentName() + " " + C.name() + "^N\n\r");
+					else
+					if(!B.isFullyControlled())
+						s.append("Controlled by  : ^H" + name() + "^N\n\r");
+				}
+				s.append("Level range    : ^H" + statData.getStat(Area.Stats.MIN_LEVEL)
+						+ "^N to ^H" + statData.getStat(Area.Stats.MAX_LEVEL) + "^N\n\r");
+				// s.append("Average level :
+				// ^H"+statData[Area.Stats.AVG_LEVEL.ordinal()]+"^N\n\r");
+				if (getPlayerLevel() > 0)
+					s.append("Player level   : ^H" + getPlayerLevel() + "^N\n\r");
 				else
-				if(!B.isFullyControlled())
-					s.append("Controlled by  : ^H" + name() + "^N\n\r");
-			}
-			s.append("Level range    : ^H" + statData.getStat(Area.Stats.MIN_LEVEL)
-					+ "^N to ^H" + statData.getStat(Area.Stats.MAX_LEVEL) + "^N\n\r");
-			// s.append("Average level :
-			// ^H"+statData[Area.Stats.AVG_LEVEL.ordinal()]+"^N\n\r");
-			if (getPlayerLevel() > 0)
-				s.append("Player level   : ^H" + getPlayerLevel() + "^N\n\r");
-			else
-				s.append("Median level   : ^H" + statData.getStat(Area.Stats.MED_LEVEL) + "^N\n\r");
-			if (theFaction != null)
-			{
-				s.append("Avg. " + CMStrings.padRight(theFaction.name(), 10) + ": ^H" +
-						theFaction.fetchRangeName(statData.getStat(Area.Stats.AVG_ALIGNMENT)) + "^N\n\r");
-			}
-			if (theFaction != null)
-			{
-				s.append("Med. " + CMStrings.padRight(theFaction.name(), 10) + ": ^H" +
-						theFaction.fetchRangeName(statData.getStat(Area.Stats.MED_ALIGNMENT)) + "^N\n\r");
+					s.append("Median level   : ^H" + statData.getStat(Area.Stats.MED_LEVEL) + "^N\n\r");
+				if (theFaction != null)
+				{
+					s.append("Avg. " + CMStrings.padRight(theFaction.name(), 10) + ": ^H" +
+							theFaction.fetchRangeName(statData.getStat(Area.Stats.AVG_ALIGNMENT)) + "^N\n\r");
+				}
+				if (theFaction != null)
+				{
+					s.append("Med. " + CMStrings.padRight(theFaction.name(), 10) + ": ^H" +
+							theFaction.fetchRangeName(statData.getStat(Area.Stats.MED_ALIGNMENT)) + "^N\n\r");
+				}
 			}
 		}
 		try
