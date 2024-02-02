@@ -1350,7 +1350,7 @@ public class DefaultFaction implements Faction, MsgListener
 						events=getChangeEvents(MiscTrigger.AREAASS.toString());
 						if((events!=null)
 						&&(killedM!=null)
-						&&(killedM.phyStats().level()==R.getArea().getAreaIStats()[Area.Stats.MAX_LEVEL.ordinal()])
+						&&(killedM.phyStats().level()==R.getArea().getIStat(Area.Stats.MAX_LEVEL))
 						&&(killingBlowM!=killedM)
 						&&(killedM.isMonster())
 						&&(killedM.getStartRoom()!=null)
@@ -1369,7 +1369,7 @@ public class DefaultFaction implements Faction, MsgListener
 									{
 										if(event.applies(mob,killedM))
 										{
-											final double population = A.getAreaIStats()[Area.Stats.MAX_LEVEL_MOBS.ordinal()];
+											final double population = A.getIStat(Area.Stats.MAX_LEVEL_MOBS);
 											final Faction.FData data = mob.fetchFactionData(factionID());
 											final int count = data.getCounter(""+event)+1;
 											data.setCounter(""+event, count);
@@ -1405,7 +1405,7 @@ public class DefaultFaction implements Faction, MsgListener
 										if(event.applies(mob,killedM))
 										{
 											final Faction.FData data = mob.fetchFactionData(factionID());
-											final double population = A.getAreaIStats()[Area.Stats.POPULATION.ordinal()];
+											final double population = A.getIStat(Area.Stats.POPULATION);
 											final int count = data.getCounter(""+event)+1;
 											data.setCounter(""+event, count);
 											final int myPct = (int)Math.round(100.0*CMath.div(count, population));

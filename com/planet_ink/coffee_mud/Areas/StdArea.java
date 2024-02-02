@@ -90,7 +90,7 @@ public class StdArea implements Area
 	protected Climate					climateObj		= (Climate) CMClass.getCommon("DefaultClimate");
 
 	protected String[]					itemPricingAdjs	= new String[0];
-	protected final static int[]		emptyStats		= new int[Area.Stats.values().length];
+	protected final static AreaIStats	emptyStats		= (AreaIStats) CMClass.getCommon("DefaultAreaIStats");;
 	protected final static String[]		empty			= new String[0];
 	protected static volatile Area		lastComplainer	= null;
 
@@ -1771,116 +1771,11 @@ public class StdArea implements Area
 		return piety;
 	}
 
-	protected int[] buildAreaIStats()
+	protected AreaIStats buildAreaIStats()
 	{
-		Faction theFaction = null;
-		for (final Enumeration<Faction> e = CMLib.factions().factions(); e.hasMoreElements();)
-		{
-			final Faction F = e.nextElement();
-			if (F.showInSpecialReported())
-				theFaction = F;
-		}
-		final IStatContext ctx = new IStatContext(theFaction);
-		ctx.statData[Area.Stats.POPULATION.ordinal()] = 0;
-		ctx.statData[Area.Stats.MIN_LEVEL.ordinal()] = Integer.MAX_VALUE;
-		ctx.statData[Area.Stats.MAX_LEVEL.ordinal()] = Integer.MIN_VALUE;
-		ctx.statData[Area.Stats.AVG_LEVEL.ordinal()] = 0;
-		ctx.statData[Area.Stats.MED_LEVEL.ordinal()] = 0;
-		ctx.statData[Area.Stats.AVG_ALIGNMENT.ordinal()] = 0;
-		ctx.statData[Area.Stats.TOTAL_LEVELS.ordinal()] = 0;
-		ctx.statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()] = 0;
-		ctx.statData[Area.Stats.VISITABLE_ROOMS.ordinal()] = getProperRoomnumbers().roomCountAllAreas();
-		Resources.removeResource("PIETY_"+Name().toUpperCase());
-		for (final Enumeration<Room> r = getProperMap(); r.hasMoreElements();)
-		{
-			final Room R = r.nextElement();
-			final int countable;
-			if (R instanceof GridLocale)
-			{
-				ctx.statData[Area.Stats.VISITABLE_ROOMS.ordinal()]--;
-				countable = ((GridLocale) R).getGridSize();
-			}
-			else
-				countable = 1;
-			ctx.statData[Area.Stats.COUNTABLE_ROOMS.ordinal()] += countable;
-			if ((R.domainType() & Room.INDOORS) > 0)
-			{
-				ctx.statData[Area.Stats.INDOOR_ROOMS.ordinal()] += countable;
-				switch (R.domainType())
-				{
-				case Room.DOMAIN_INDOORS_CAVE:
-					ctx.statData[Area.Stats.CAVE_ROOMS.ordinal()] += countable;
-					break;
-				case Room.DOMAIN_INDOORS_METAL:
-				case Room.DOMAIN_INDOORS_STONE:
-				case Room.DOMAIN_INDOORS_WOOD:
-					ctx.statData[Area.Stats.CITY_ROOMS.ordinal()] += countable;
-					break;
-				case Room.DOMAIN_INDOORS_UNDERWATER:
-				case Room.DOMAIN_INDOORS_WATERSURFACE:
-					ctx.statData[Area.Stats.WATER_ROOMS.ordinal()] += countable;
-					break;
-				}
-			}
-			else
-			{
-				switch (R.domainType())
-				{
-				case Room.DOMAIN_OUTDOORS_CITY:
-					ctx.statData[Area.Stats.CITY_ROOMS.ordinal()] += countable;
-					break;
-				case Room.DOMAIN_OUTDOORS_DESERT:
-					ctx.statData[Area.Stats.DESERT_ROOMS.ordinal()] += countable;
-					break;
-				case Room.DOMAIN_OUTDOORS_UNDERWATER:
-				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-					ctx.statData[Area.Stats.WATER_ROOMS.ordinal()] += countable;
-					break;
-				}
-			}
-			for (int i = 0; i < R.numInhabitants(); i++)
-				buildAreaIMobStats(ctx, R.fetchInhabitant(i));
-			for (int i = 0; i < R.numItems(); i++)
-			{
-				final Item I = R.getItem(i);
-				if (I instanceof Boardable)
-				{
-					final Area A = ((Boardable) I).getArea();
-					if (A == null)
-						continue;
-					for (final Enumeration<Room> r2 = A.getProperMap(); r2.hasMoreElements();)
-					{
-						final Room R2 = r2.nextElement();
-						for (int i2 = 0; i2 < R2.numInhabitants(); i2++)
-							buildAreaIMobStats(ctx, R2.fetchInhabitant(i2));
-					}
-				}
-			}
-		}
-		if ((ctx.statData[Area.Stats.POPULATION.ordinal()] == 0)
-		|| (ctx.levelRanges.size() == 0))
-		{
-			ctx.statData[Area.Stats.MIN_LEVEL.ordinal()] = 0;
-			ctx.statData[Area.Stats.MAX_LEVEL.ordinal()] = 0;
-		}
-		else
-		{
-			Collections.sort(ctx.levelRanges);
-			Collections.sort(ctx.alignRanges);
-			ctx.statData[Area.Stats.MED_LEVEL.ordinal()] = ctx.levelRanges.get((int) Math.round(Math.floor(CMath.div(ctx.levelRanges.size(), 2.0)))).intValue();
-			if (ctx.alignRanges.size() > 0)
-			{
-				ctx.statData[Area.Stats.MED_ALIGNMENT.ordinal()] = ctx.alignRanges.get((int) Math.round(Math.floor(CMath.div(ctx.alignRanges.size(), 2.0)))).intValue();
-				ctx.statData[Area.Stats.MIN_ALIGNMENT.ordinal()] = ctx.alignRanges.get(0).intValue();
-				ctx.statData[Area.Stats.MAX_ALIGNMENT.ordinal()] = ctx.alignRanges.get(ctx.alignRanges.size() - 1).intValue();
-			}
-			ctx.statData[Area.Stats.AVG_LEVEL.ordinal()] = (int) Math.round(CMath.div(ctx.statData[Area.Stats.TOTAL_LEVELS.ordinal()], ctx.statData[Area.Stats.POPULATION.ordinal()]));
-			ctx.statData[Area.Stats.AVG_ALIGNMENT.ordinal()] = (int) Math.round(((double) ctx.totalAlignments[0]) / ((double) ctx.statData[Area.Stats.POPULATION.ordinal()]));
-		}
-		basePhyStats().setLevel(ctx.statData[Area.Stats.MED_LEVEL.ordinal()]);
-		phyStats().setLevel(ctx.statData[Area.Stats.MED_LEVEL.ordinal()]);
-		// basePhyStats().setHeight(statData[Area.Stats.POPULATION.ordinal()]);
-		return ctx.statData;
+		final AreaIStats stat = (AreaIStats)CMClass.getCommon("DefaultAreaIStats");
+		stat.build(this);
+		return stat;
 	}
 
 	@Override
@@ -1896,29 +1791,36 @@ public class StdArea implements Area
 	}
 
 	@Override
-	public int[] getAreaIStats()
+	public int getIStat(final Area.Stats stat)
+	{
+		return getAreaIStats().getStat(stat);
+	}
+
+	@Override
+	public boolean isAreaStatsLoaded()
+	{
+		return getAreaIStats().isFinished();
+	}
+
+	protected AreaIStats getAreaIStats()
 	{
 		if (!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return emptyStats;
-		int[] statData = (int[]) Resources.getResource("STATS_" + Name().toUpperCase());
+		AreaIStats statData = (AreaIStats) Resources.getResource("STATS_" + Name().toUpperCase());
 		if (statData != null)
 			return statData;
 		synchronized (("STATS_" + Name()))
 		{
 			Resources.removeResource("HELP_" + Name().toUpperCase());
-			statData = buildAreaIStats();
+			statData = (AreaIStats) CMClass.getCommon("DefaultAreaIStats");
+			statData.build(this);
 			Resources.removeResource("HELP_" + Name().toUpperCase());
 			Resources.submitResource("STATS_" + Name().toUpperCase(), statData);
 		}
 		return statData;
 	}
 
-	public int getPercentRoomsCached()
-	{
-		return 100;
-	}
-
-	protected StringBuffer buildAreaStats(final int[] statData)
+	protected StringBuffer buildAreaStats(final AreaIStats statData)
 	{
 		final StringBuffer s = new StringBuffer("^N");
 		s.append("Area           : ^H" + Name() + "^N\n\r");
@@ -1930,7 +1832,7 @@ public class StdArea implements Area
 			s.append("\n\r^HFurther information about this area is not available at this time.^N\n\r");
 			return s;
 		}
-		s.append("Number of rooms: ^H" + statData[Area.Stats.VISITABLE_ROOMS.ordinal()] + "^N\n\r");
+		s.append("Number of rooms: ^H" + statData.getStat(Area.Stats.VISITABLE_ROOMS) + "^N\n\r");
 		Faction theFaction = CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
 		if (theFaction == null)
 		{
@@ -1941,14 +1843,22 @@ public class StdArea implements Area
 					theFaction = F;
 			}
 		}
-		if (statData[Area.Stats.POPULATION.ordinal()] == 0)
+		if((!statData.isFinished())
+		&&(CMath.bset(flags(), Area.FLAG_THIN))
+		&&(statData.getStat(Area.Stats.MED_LEVEL)==0))
+		{
+			s.append("^r** Statistics for this area are incomplete. **\n\r");
+			if (statData.getStat(Area.Stats.POPULATION) > 0)
+				s.append("^r** The following data is probably incorrect.**\n\r^N");
+		}
+		if (statData.getStat(Area.Stats.POPULATION) == 0)
 		{
 			if (getProperRoomnumbers().roomCountAllAreas() / 2 < properRooms.size())
 				s.append("Population     : ^H0^N\n\r");
 		}
 		else
 		{
-			s.append("Population     : ^H" + statData[Area.Stats.POPULATION.ordinal()] + "^N\n\r");
+			s.append("Population     : ^H" + statData.getStat(Area.Stats.POPULATION) + "^N\n\r");
 			final String currName = CMLib.beanCounter().getCurrency(this);
 			if (currName.length() > 0)
 				s.append("Currency       : ^H" + CMStrings.capitalizeAndLower(currName) + "^N\n\r");
@@ -1969,17 +1879,24 @@ public class StdArea implements Area
 				if(!B.isFullyControlled())
 					s.append("Controlled by  : ^H" + name() + "^N\n\r");
 			}
-			s.append("Level range    : ^H" + statData[Area.Stats.MIN_LEVEL.ordinal()] + "^N to ^H" + statData[Area.Stats.MAX_LEVEL.ordinal()] + "^N\n\r");
+			s.append("Level range    : ^H" + statData.getStat(Area.Stats.MIN_LEVEL)
+					+ "^N to ^H" + statData.getStat(Area.Stats.MAX_LEVEL) + "^N\n\r");
 			// s.append("Average level :
 			// ^H"+statData[Area.Stats.AVG_LEVEL.ordinal()]+"^N\n\r");
 			if (getPlayerLevel() > 0)
 				s.append("Player level   : ^H" + getPlayerLevel() + "^N\n\r");
 			else
-				s.append("Median level   : ^H" + statData[Area.Stats.MED_LEVEL.ordinal()] + "^N\n\r");
+				s.append("Median level   : ^H" + statData.getStat(Area.Stats.MED_LEVEL) + "^N\n\r");
 			if (theFaction != null)
-				s.append("Avg. " + CMStrings.padRight(theFaction.name(), 10) + ": ^H" + theFaction.fetchRangeName(statData[Area.Stats.AVG_ALIGNMENT.ordinal()]) + "^N\n\r");
+			{
+				s.append("Avg. " + CMStrings.padRight(theFaction.name(), 10) + ": ^H" +
+						theFaction.fetchRangeName(statData.getStat(Area.Stats.AVG_ALIGNMENT)) + "^N\n\r");
+			}
 			if (theFaction != null)
-				s.append("Med. " + CMStrings.padRight(theFaction.name(), 10) + ": ^H" + theFaction.fetchRangeName(statData[Area.Stats.MED_ALIGNMENT.ordinal()]) + "^N\n\r");
+			{
+				s.append("Med. " + CMStrings.padRight(theFaction.name(), 10) + ": ^H" +
+						theFaction.fetchRangeName(statData.getStat(Area.Stats.MED_ALIGNMENT)) + "^N\n\r");
+			}
 		}
 		try
 		{

@@ -11,6 +11,8 @@
  10. TOP command now only displays text files in resources/text/topplayers.txt, etc
  11. TOP pride stats are retained for deleted players & accounts, until they fall off.
  12. New Zappermask: +-DOMAIN
+ 13. Thin Areas will now develop their correct area stats eventually
+ 14. Can now modify GenAbility IDs, and create new ones based on existing ones.
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

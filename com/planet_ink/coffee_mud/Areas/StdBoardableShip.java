@@ -64,6 +64,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	protected Area 			me			 	= this;
 	protected Boardable		shipItem		= null;
 
+	protected final AreaIStats 			istats 			= (AreaIStats)CMClass.getCommon("DefaultAreaIStats");
 	protected SVector<Ability>			affects			= new SVector<Ability>(1);
 	protected SVector<Behavior> 		behaviors		= new SVector<Behavior>(1);
 	protected SVector<ScriptingEngine>	scripts			= new SVector<ScriptingEngine>(1);
@@ -1415,9 +1416,22 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	}
 
 	@Override
-	public int[] getAreaIStats()
+	public int getIStat(final Area.Stats stat)
 	{
-		return new int[Area.Stats.values().length];
+		return getAreaIStats().getStat(stat);
+	}
+
+	@Override
+	public boolean isAreaStatsLoaded()
+	{
+		return getAreaIStats().isFinished();
+	}
+
+	protected AreaIStats getAreaIStats()
+	{
+		if(!this.istats.isFinished())
+			istats.build(this);
+		return istats;
 	}
 
 	@Override

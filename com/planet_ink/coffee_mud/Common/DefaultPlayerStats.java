@@ -1538,7 +1538,7 @@ public class DefaultPlayerStats implements PlayerStats
 	@Override
 	public boolean hasVisited(final Area A)
 	{
-		final int numRooms=A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()];
+		final int numRooms=A.getIStat(Area.Stats.VISITABLE_ROOMS);
 		if(numRooms<=0)
 			return true;
 		return (roomSet().roomCount(A.Name())>0) || (tempRoomSet().roomCount(A.Name())>0);
@@ -1579,8 +1579,7 @@ public class DefaultPlayerStats implements PlayerStats
 				if((!CMLib.flags().isHidden(A))
 				&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 				{
-					final int[] stats=A.getAreaIStats();
-					if(stats[Area.Stats.VISITABLE_ROOMS.ordinal()]>0)
+					if(A.getIStat(Area.Stats.VISITABLE_ROOMS)>0)
 						totalVisits+=roomSet().roomCount(A.Name()) + tempRoomSet().roomCount(A.Name());
 				}
 			}
@@ -1602,10 +1601,10 @@ public class DefaultPlayerStats implements PlayerStats
 				if((!CMLib.flags().isHidden(A))
 				&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 				{
-					final int[] stats=A.getAreaIStats();
-					if(stats[Area.Stats.VISITABLE_ROOMS.ordinal()]>0)
+					final int visitable = A.getIStat(Area.Stats.VISITABLE_ROOMS);
+					if(visitable>0)
 					{
-						totalRooms+=stats[Area.Stats.VISITABLE_ROOMS.ordinal()];
+						totalRooms+=visitable;
 						totalVisits+=roomSet().roomCount(A.Name()) + tempRoomSet().roomCount(A.Name());
 					}
 				}
@@ -1615,7 +1614,7 @@ public class DefaultPlayerStats implements PlayerStats
 			final double pct=CMath.div(totalVisits,totalRooms);
 			return (int)Math.round(100.0*pct);
 		}
-		final int numRooms=A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()];
+		final int numRooms=A.getIStat(Area.Stats.VISITABLE_ROOMS);
 		if(numRooms<=0)
 			return 100;
 		final double pct=CMath.div(roomSet().roomCount(A.Name()) + tempRoomSet().roomCount(A.Name()),numRooms);

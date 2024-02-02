@@ -104,16 +104,16 @@ public class Chant_DruidicConnection extends Chant
 				lastTime[0]=System.currentTimeMillis();
 				final List<Room> V=Druid_MyPlants.myAreaPlantRooms(invoker(),(Area)affected);
 				int pct=0;
-				if(((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
-					pct=(int)Math.round(100.0*CMath.div(V.size(),((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
+				if(((Area)affected).getIStat(Area.Stats.VISITABLE_ROOMS)>10)
+					pct=(int)Math.round(100.0*CMath.div(V.size(),((Area)affected).getIStat(Area.Stats.VISITABLE_ROOMS)));
 				if(pct<50)
 				{
 					unInvoke();
 					return false;
 				}
 				invoker.tell(L("Your prolonged connection to this place fills you with harmony!"));
-				final int xp=(int)Math.round(5.0*CMath.mul(CMath.div(V.size(),((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()])
-											,((Area)affected).getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()]));
+				final int xp=(int)Math.round(5.0*CMath.mul(CMath.div(V.size(),((Area)affected).getIStat(Area.Stats.VISITABLE_ROOMS))
+											,((Area)affected).getIStat(Area.Stats.AVG_LEVEL)));
 				CMLib.leveler().postExperience(invoker(),"ABILITY:"+ID(),null,null,xp, false);
 			}
 		}
@@ -194,8 +194,8 @@ public class Chant_DruidicConnection extends Chant
 		}
 		final List<Room> V=Druid_MyPlants.myAreaPlantRooms(mob,target);
 		int pct=0;
-		if(target.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
-			pct=(int)Math.round(100.0*CMath.div(V.size(),target.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
+		if(target.getIStat(Area.Stats.VISITABLE_ROOMS)>10)
+			pct=(int)Math.round(100.0*CMath.div(V.size(),target.getIStat(Area.Stats.VISITABLE_ROOMS)));
 		if(pct<50)
 		{
 			if(!quietly)

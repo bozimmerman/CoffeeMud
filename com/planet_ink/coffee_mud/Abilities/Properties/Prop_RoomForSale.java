@@ -363,7 +363,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					{
 						if(!forceCache)
 							continue;
-						final Room nAR=db.DBReadRoomObject(nR.roomID(), false); // wont have an area!
+						final Room nAR=db.DBReadRoomObject(nR.roomID(), true, false); // wont have an area!
 						if(nAR==null)
 							continue;
 						lotA=nAR.fetchEffect(ID());

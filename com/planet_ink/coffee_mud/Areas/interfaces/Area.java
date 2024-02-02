@@ -489,27 +489,46 @@ public interface Area extends Economics, PhysicalAgent, Places
 
 	/**
 	 * Returns a descriptive list of statistics about this area based on a
-	 * snapshot from getAreaIStats(), which is cached after being generated.
+	 * snapshot from area statistics, which is cached after being generated.
 	 * This stringbuffer returned is user-readable.
-	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats()
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getIStat(Stats)
 	 * @return a user readable string describing stats about the area.
 	 */
 	public StringBuffer getAreaStats();
 
 	/**
-	 * Returns an integer array of statistics about this area based on
+	 * Returns an integer from the array of statistics about this area based on
 	 * a snapshot generated the first time it is called.  This array is
 	 * the cached for future calls, but can be unloaded from resources
 	 * using the UNLOAD command, to force a re-generation.
-	 * The array is dereferenced using AREASTAT_ constants.
+	 * The array is dereferenced using Area.Stats constants.
+	 *
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area.Stats
-	 * @return an array of integer statistics
+	 * @see Area#getPiety(String)
+	 * @see Area#isAreaStatsLoaded()
+	 *
+	 * @param Area.Stats stat the stat to return
+	 * @return the current integer statistic
 	 */
-	public int[] getAreaIStats();
+	public int getIStat(Area.Stats stat);
+
+	/**
+	 * Returns whether the area statistics are ready for reading.
+	 *
+	 * @see Area#getIStat(Stats)
+	 * @see Area#getPiety(String)
+	 *
+	 * @return true if the stats are complete, false otherwise
+	 */
+	public boolean isAreaStatsLoaded();
 
 	/**
 	 * Returns the number of registered followers of the given
 	 * deity are in the given area name.
+	 *
+	 * @see Area#getIStat(Stats)
+	 * @see Area#isAreaStatsLoaded()
+	 *
 	 * @param deityName the deity to get the piety of
 	 * @return the piety of the area for that deity
 	 */

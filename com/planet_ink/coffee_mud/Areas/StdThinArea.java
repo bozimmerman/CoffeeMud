@@ -68,32 +68,6 @@ public class StdThinArea extends StdArea
 	}
 
 	@Override
-	public int getPercentRoomsCached()
-	{
-		final double totalRooms=getProperRoomnumbers().roomCountAllAreas();
-		if(totalRooms==0.0)
-			return 100;
-		final double currentRooms=getCachedRoomnumbers().roomCountAllAreas();
-		return (int)Math.round((currentRooms/totalRooms)*100.0);
-	}
-
-	@Override
-	public int[] getAreaIStats()
-	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
-			return emptyStats;
-		final int totalRooms=getProperRoomnumbers().roomCountAllAreas();
-		final int percent=getPercentRoomsCached();
-		if((totalRooms>15)&&(percent<90))
-			return emptyStats;
-		if((totalRooms>5)&&(percent<50))
-			return emptyStats;
-		if(percent<10)
-			return emptyStats;
-		return super.getAreaIStats();
-	}
-
-	@Override
 	public Room getRoom(String roomID)
 	{
 		final int grid=(roomID==null)?0:roomID.lastIndexOf("#(");
@@ -115,7 +89,7 @@ public class StdThinArea extends StdArea
 				if((R==null)||(R.amDestroyed()))
 				{
 					final DatabaseEngine dbe =(DatabaseEngine)CMLib.library(threadId, Library.DATABASE);
-					R=dbe.DBReadRoomObject(roomID,false);
+					R=dbe.DBReadRoomObject(roomID,true, false);
 					if(R!=null)
 					{
 						R.setArea(this);

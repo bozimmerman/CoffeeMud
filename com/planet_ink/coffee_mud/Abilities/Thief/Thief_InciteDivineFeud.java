@@ -154,8 +154,8 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 			if(CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))
 				a.remove();
 			else
-			if((A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]<10)
-			||(A.getAreaIStats()[Area.Stats.COUNTABLE_ROOMS.ordinal()]<10))
+			if((A.getIStat(Area.Stats.POPULATION)<10)
+			||(A.getIStat(Area.Stats.COUNTABLE_ROOMS)<10))
 				a.remove();
 		}
 		return deityAreas;
@@ -598,8 +598,8 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 			@Override
 			public int compare(final Area o1, final Area o2)
 			{
-				final int diff1 = Math.abs(M.phyStats().level() - o1.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
-				final int diff2 = Math.abs(M.phyStats().level() - o2.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
+				final int diff1 = Math.abs(M.phyStats().level() - o1.getIStat(Area.Stats.MED_LEVEL));
+				final int diff2 = Math.abs(M.phyStats().level() - o2.getIStat(Area.Stats.MED_LEVEL));
 				return Integer.valueOf(diff1).compareTo(Integer.valueOf(diff2));
 			}
 		};

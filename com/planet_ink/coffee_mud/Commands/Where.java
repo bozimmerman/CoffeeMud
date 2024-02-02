@@ -716,12 +716,11 @@ public class Where extends StdCommand
 			{
 				final Area A=a.nextElement();
 				if((CMLib.flags().canAccess(mob,A))
-				&&(CMLib.flags().canBeLocated(A))
-				&&(A.getAreaIStats()!=null))
+				&&(CMLib.flags().canBeLocated(A)))
 				{
 					int median=A.getPlayerLevel();
 					if(median==0)
-						median=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+						median=A.getIStat(Area.Stats.MED_LEVEL);
 					int medianDiff=0;
 					final int diffLimit=6;
 					if((median<(moblevel+diffLimit))
@@ -734,9 +733,9 @@ public class Where extends StdCommand
 					}
 					whereAdd(levelsV,A,medianDiff);
 
-					whereAdd(mobsV,A,A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]);
+					whereAdd(mobsV,A,A.getIStat(Area.Stats.POPULATION));
 
-					final int align=A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()];
+					final int align=A.getIStat(Area.Stats.MED_ALIGNMENT);
 					final int alignDiff=((int)Math.abs((double)(alignment-align)));
 					whereAdd(alignV,A,alignDiff);
 				}
@@ -791,10 +790,10 @@ public class Where extends StdCommand
 					{
 						int median1=o1.getPlayerLevel();
 						if(median1==0)
-							median1=o1.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+							median1=o1.getIStat(Area.Stats.MED_LEVEL);
 						int median2=o2.getPlayerLevel();
 						if(median2==0)
-							median2=o2.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+							median2=o2.getIStat(Area.Stats.MED_LEVEL);
 						final int lvlDiff1=Math.abs(mobLevel - median1);
 						final int lvlDiff2=Math.abs(mobLevel - median2);
 						return lvlDiff1==lvlDiff2?0:(lvlDiff1>lvlDiff2)?1:-1;
@@ -805,13 +804,13 @@ public class Where extends StdCommand
 				{
 					int lvl=A.getPlayerLevel();
 					if(lvl==0)
-						lvl=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
-					final int align=A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()];
+						lvl=A.getIStat(Area.Stats.MED_LEVEL);
+					final int align=A.getIStat(Area.Stats.MED_ALIGNMENT);
 
 					msg.append(CMStrings.padRight(A.name().replace('`', '\''),35))
 					   .append(CMStrings.padRight(Integer.toString(lvl),6))
 					   .append(CMStrings.padRight(CMLib.factions().getRange(CMLib.factions().getAlignmentID(), align).name(),20))
-					   .append(CMStrings.padRight(Integer.toString(A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]),10))
+					   .append(CMStrings.padRight(Integer.toString(A.getIStat(Area.Stats.POPULATION)),10))
 					   .append("\n\r");
 				}
 				msg.append(L("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?"));

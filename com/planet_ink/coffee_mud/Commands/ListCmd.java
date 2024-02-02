@@ -1508,13 +1508,13 @@ public class ListCmd extends StdCommand
 						ext.append("\n\r   "+CMLib.directions().getDirectionName(d)+": "+R2.getArea().name());
 						if(showSubStats)
 						{
-							final int[] areaStats = R2.getArea().getAreaIStats();
+							final Area A2 = R2.getArea();
 							ext.append(" (");
 							ext.append(L("@x1 mobs, @x2 avg lvl, @x3 med lvl, @x4 avg align",
-									""+areaStats[Area.Stats.POPULATION.ordinal()],
-									""+areaStats[Area.Stats.AVG_LEVEL.ordinal()],
-									""+areaStats[Area.Stats.MED_LEVEL.ordinal()],
-									""+areaStats[Area.Stats.AVG_ALIGNMENT.ordinal()]));
+									""+A2.getIStat(Area.Stats.POPULATION),
+									""+A2.getIStat(Area.Stats.AVG_LEVEL),
+									""+A2.getIStat(Area.Stats.MED_LEVEL),
+									""+A2.getIStat(Area.Stats.AVG_ALIGNMENT)));
 							ext.append(") ");
 						}
 						else
@@ -1557,14 +1557,13 @@ public class ListCmd extends StdCommand
 					areaLinkGroups.add(clearVec);
 				}
 			}
-			final int[] areaStats = A.getAreaIStats();
-			if(areaStats[Area.Stats.POPULATION.ordinal()]>0)
+			if(A.getIStat(Area.Stats.POPULATION)>0)
 			{
 				buf.append(L("@x1 mobs, @x2 avg lvl, @x3 med lvl, @x4 avg align",
-						""+areaStats[Area.Stats.POPULATION.ordinal()],
-						""+areaStats[Area.Stats.AVG_LEVEL.ordinal()],
-						""+areaStats[Area.Stats.MED_LEVEL.ordinal()],
-						""+areaStats[Area.Stats.AVG_ALIGNMENT.ordinal()]));
+						""+A.getIStat(Area.Stats.POPULATION),
+						""+A.getIStat(Area.Stats.AVG_LEVEL),
+						""+A.getIStat(Area.Stats.MED_LEVEL),
+						""+A.getIStat(Area.Stats.AVG_ALIGNMENT)));
 			}
 			if(linkedGroups.size()>0)
 			{
@@ -4891,7 +4890,7 @@ public class ListCmd extends StdCommand
 			return ls.getFromArea(A);
 		else
 		if(as!=null)
-			return Integer.valueOf(A.getAreaIStats()[as.ordinal()]);
+			return Integer.valueOf(A.getIStat(as));
 		else
 		if(A.isStat(stat))
 			return A.getStat(stat);
@@ -5775,7 +5774,7 @@ public class ListCmd extends StdCommand
 			for(final Enumeration<Area> as=CMLib.map().areas();as.hasMoreElements();)
 			{
 				final Area A=as.nextElement();
-				A.getAreaIStats();
+				A.getIStat(Area.Stats.AVG_LEVEL); // kick off stat creation
 				if((filter!=null)&&(!filter.passesFilter(A)))
 					continue;
 				sorted.add(A);
@@ -5829,7 +5828,7 @@ public class ListCmd extends StdCommand
 			final Area A=a.nextElement();
 			if((filter!=null)&&(!filter.passesFilter(A)))
 				continue;
-			A.getAreaIStats();
+			A.getIStat(Area.Stats.AVG_LEVEL); // kick off stat creation
 			if(wiki==WikiFlag.WIKILIST)
 			{
 				str.append("*[["+A.name()+"|"+A.name()+"]]");
@@ -5848,13 +5847,13 @@ public class ListCmd extends StdCommand
 						+ "|Name="+A.name()
 						+ "|Description="+desc
 						+ "|Author="+A.getAuthorID()
-						+ "|Rooms="+A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]
-						+ "|Population="+A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]
+						+ "|Rooms="+A.getIStat(Area.Stats.VISITABLE_ROOMS)
+						+ "|Population="+A.getIStat(Area.Stats.POPULATION)
 						+ "|Currency="+currency
-						+ "|LevelRange="+A.getAreaIStats()[Area.Stats.MIN_LEVEL.ordinal()]+"-"+A.getAreaIStats()[Area.Stats.MAX_LEVEL.ordinal()]
-						+ "|MedianLevel="+A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]
-						+ "|AvgAlign="+((theFaction!=null)?theFaction.fetchRangeName(A.getAreaIStats()[Area.Stats.AVG_ALIGNMENT.ordinal()]):"")
-						+ "|MedAlignment="+((theFaction!=null)?theFaction.fetchRangeName(A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()]):""));
+						+ "|LevelRange="+A.getIStat(Area.Stats.MIN_LEVEL)+"-"+A.getIStat(Area.Stats.MAX_LEVEL)
+						+ "|MedianLevel="+A.getIStat(Area.Stats.MED_LEVEL)
+						+ "|AvgAlign="+((theFaction!=null)?theFaction.fetchRangeName(A.getIStat(Area.Stats.AVG_ALIGNMENT)):"")
+						+ "|MedAlignment="+((theFaction!=null)?theFaction.fetchRangeName(A.getIStat(Area.Stats.MED_ALIGNMENT)):""));
 				for(final Enumeration<String> f=A.areaBlurbFlags();f.hasMoreElements();)
 				{
 					final String flag=f.nextElement();

@@ -316,7 +316,7 @@ public class Bard extends StdCharClass
 					if(mob.playerStats().addRoomVisit(R))
 					{
 						CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.ROOMS_EXPLORED,1);
-						int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],hostP.phyStats().level()));
+						int xp=(int)Math.round(100.0*CMath.div(A.getIStat(Area.Stats.AVG_LEVEL),hostP.phyStats().level()));
 						if(xp>250)
 							xp=250;
 						if((xp>0)
@@ -333,7 +333,7 @@ public class Bard extends StdCharClass
 						final int pctAfter=mob.playerStats().percentVisited((MOB)host,A);
 						if((pctBefore<50)&&(pctAfter>=50))
 						{
-							int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],hostP.phyStats().level()));
+							int xp=(int)Math.round(50.0*CMath.div(A.getIStat(Area.Stats.AVG_LEVEL),hostP.phyStats().level()));
 							if(xp>125)
 								xp=125;
 							if((xp>0)
@@ -343,7 +343,7 @@ public class Bard extends StdCharClass
 						else
 						if((pctBefore<90)&&(pctAfter>=90))
 						{
-							int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],hostP.phyStats().level()));
+							int xp=(int)Math.round(100.0*CMath.div(A.getIStat(Area.Stats.AVG_LEVEL),hostP.phyStats().level()));
 							if(xp>250)
 								xp=250;
 							if((xp>0)

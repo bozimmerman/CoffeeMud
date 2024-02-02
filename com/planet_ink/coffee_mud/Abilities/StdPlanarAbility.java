@@ -509,7 +509,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 				planeArea=(Area)affected;
 				int medianLevel=planeArea.getPlayerLevel();
 				if(medianLevel <= 0)
-					medianLevel=planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+					medianLevel=planeArea.getIStat(Area.Stats.MED_LEVEL);
 				planarLevel=medianLevel;
 			}
 			this.specFlags = null;
@@ -731,21 +731,28 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 					parentArea = CMLib.map().getArea(Name().substring(x+1));
 				if(parentArea != null)
 				{
-					int[] statData=(int[])Resources.getResource("STATS_"+planeArea.Name().toUpperCase());
+					AreaIStats statData=(AreaIStats)Resources.getResource("STATS_"+planeArea.Name().toUpperCase());
 					if(statData == null) // and it damn well better be null
 					{
-						final int[] oldParentStats = parentArea.getAreaIStats();
-						statData = Arrays.copyOf(oldParentStats, oldParentStats.length);
-						final double[] vars = new double[] {planarLevel, statData[Area.Stats.MIN_LEVEL.ordinal()], invoker().phyStats().level(),
-								statData[Area.Stats.MIN_LEVEL.ordinal()], statData[Area.Stats.MAX_LEVEL.ordinal()],
-								CMProps.getIntVar(CMProps.Int.EXPRATE)+1, 0} ;
-						statData[Area.Stats.MIN_LEVEL.ordinal()] = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
-						vars[1] = statData[Area.Stats.MAX_LEVEL.ordinal()];
-						statData[Area.Stats.MAX_LEVEL.ordinal()] = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
-						vars[1] = statData[Area.Stats.MED_LEVEL.ordinal()];
-						statData[Area.Stats.MED_LEVEL.ordinal()] = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
-						vars[1] = statData[Area.Stats.AVG_LEVEL.ordinal()];
-						statData[Area.Stats.AVG_LEVEL.ordinal()] = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
+						statData = (AreaIStats) CMClass.getCommon("DefaultAreaIStats");
+						for(final Area.Stats stat : Area.Stats.values())
+							statData.setStat(stat, parentArea.getIStat(stat));
+						final double[] vars = new double[] {
+							planarLevel,
+							statData.getStat(Area.Stats.MIN_LEVEL),
+							invoker().phyStats().level(),
+							statData.getStat(Area.Stats.MIN_LEVEL),
+							statData.getStat(Area.Stats.MAX_LEVEL),
+							CMProps.getIntVar(CMProps.Int.EXPRATE)+1,
+							0
+						} ;
+						statData.setStat(Area.Stats.MIN_LEVEL, (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0)));
+						vars[1] = statData.getStat(Area.Stats.MAX_LEVEL);
+						statData.setStat(Area.Stats.MAX_LEVEL, (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0)));
+						vars[1] = statData.getStat(Area.Stats.MED_LEVEL);
+						statData.setStat(Area.Stats.MED_LEVEL, (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0)));
+						vars[1] = statData.getStat(Area.Stats.AVG_LEVEL);
+						statData.setStat(Area.Stats.AVG_LEVEL, (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0)));
 						Resources.submitResource("STATS_"+planeArea.Name().toUpperCase(), statData);
 					}
 				}

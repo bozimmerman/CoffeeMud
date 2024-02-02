@@ -119,9 +119,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public boolean isACity(final Area A)
 	{
 		if((A==null)
-		||(A.getAreaIStats()[Area.Stats.COUNTABLE_ROOMS.ordinal()]==0))
+		||(A.getIStat(Area.Stats.COUNTABLE_ROOMS)==0))
 			return false;
-		return CMath.div(A.getAreaIStats()[Area.Stats.CITY_ROOMS.ordinal()],A.getAreaIStats()[Area.Stats.COUNTABLE_ROOMS.ordinal()]) > .60;
+		return CMath.div(A.getIStat(Area.Stats.CITY_ROOMS),A.getIStat(Area.Stats.COUNTABLE_ROOMS)) > .60;
 	}
 
 	protected List<Room> getAllMetroTitledRooms(final Area A)
@@ -164,7 +164,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 					if(A1.isRoomCached(id))
 						R=A1.getRoom(id);
 					else
-						R=CMLib.database().DBReadRoomObject(id, false);
+						R=CMLib.database().DBReadRoomObject(id, true, false);
 					if(R!=null)
 						roomList.add(R);
 				}

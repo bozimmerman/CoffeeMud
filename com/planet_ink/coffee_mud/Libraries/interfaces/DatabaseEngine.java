@@ -325,7 +325,7 @@ public interface DatabaseEngine extends CMLibrary
 	 *
 	 * @see DatabaseEngine#DBReadContent(String, Room, boolean)
 	 * @see DatabaseEngine#DBReReadRoomData(Room)
-	 * @see DatabaseEngine#DBReadRoomObject(String, boolean)
+	 * @see DatabaseEngine#DBReadRoomObject(String, boolean, boolean)
 	 *
 	 * @param roomID the room id of the room object to load
 	 * @param reportStatus true to populate global status, false otherwise
@@ -351,10 +351,11 @@ public interface DatabaseEngine extends CMLibrary
 	 * to an area or to the map.
 	 * @see DatabaseEngine#DBReadRoom(String, boolean)
 	 * @param roomIDtoLoad the id of the room to load
+	 * @param loadXML TODO
 	 * @param reportStatus true to populate global status, false otherwise
 	 * @return the room loaded, or null if it could not be
 	 */
-	public Room DBReadRoomObject(String roomIDtoLoad, boolean reportStatus);
+	public Room DBReadRoomObject(String roomIDtoLoad, boolean loadXML, boolean reportStatus);
 
 	/**
 	 * Table category: DBMAP

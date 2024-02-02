@@ -137,20 +137,20 @@ public class Surveying extends CommonSkill
 							msgBuilder.append(L("^HPct Visited: ^N")).append(mob.playerStats().percentVisited(mob,A)).append("\n\r");
 						if(expertise > 1)
 						{
-							msgBuilder.append(L("^HMedian Lvl : ^N")).append(A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]).append("\n\r");
+							msgBuilder.append(L("^HMedian Lvl : ^N")).append(A.getIStat(Area.Stats.MED_LEVEL)).append("\n\r");
 							if(A.getPlayerLevel()>0)
 								msgBuilder.append(L("^HPlayer Lvl : ^N")).append(A.getPlayerLevel()).append("\n\r");
 						}
 						if(expertise > 2)
 						{
-							msgBuilder.append(L("^HLevel Range: ^N")).append(A.getAreaIStats()[Area.Stats.MIN_LEVEL.ordinal()])
-									  .append("-").append(A.getAreaIStats()[Area.Stats.MAX_LEVEL.ordinal()]).append("\n\r");
+							msgBuilder.append(L("^HLevel Range: ^N")).append(A.getIStat(Area.Stats.MIN_LEVEL))
+									  .append("-").append(A.getIStat(Area.Stats.MAX_LEVEL)).append("\n\r");
 						}
 						if(expertise > 3)
 						{
 							final Faction F=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
 							if(F!=null)
-								msgBuilder.append(L("^HMed Align. : ^N")).append(F.fetchRangeName(A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()])).append("\n\r");
+								msgBuilder.append(L("^HMed Align. : ^N")).append(F.fetchRangeName(A.getIStat(Area.Stats.MED_ALIGNMENT))).append("\n\r");
 						}
 						if(expertise > 4)
 						{
@@ -158,9 +158,9 @@ public class Surveying extends CommonSkill
 							if(F!=null)
 							{
 								msgBuilder.append(L("^HAlign Range: ^N"))
-									.append(F.fetchRangeName(A.getAreaIStats()[Area.Stats.MIN_ALIGNMENT.ordinal()]))
+									.append(F.fetchRangeName(A.getIStat(Area.Stats.MIN_ALIGNMENT)))
 									.append("-")
-									.append(F.fetchRangeName(A.getAreaIStats()[Area.Stats.MAX_ALIGNMENT.ordinal()])).append("\n\r");
+									.append(F.fetchRangeName(A.getIStat(Area.Stats.MAX_ALIGNMENT))).append("\n\r");
 							}
 						}
 						if(expertise > 5)

@@ -30,23 +30,6 @@
         {
             ReShow();
         }
-        function NewAbility()
-        {
-            var abilityid=window.prompt('Enter a new unique ID for your Ability (no spaces):');
-            if(abilityid==null)
-                return;
-            if(abilityid.length==0)
-                return;
-            if(abilityid.indexOf(' ')>=0)
-            {
-                if(window.alert) window.alert('No spaces are allowed in your ID!');
-                return;
-            }
-            document.RESOURCES.NEWABILITYID.value=abilityid;
-            document.RESOURCES.FUNCTION.value='REABILITY';
-            document.RESOURCES.action='/grinder/abilitydo.cmvp';
-            document.RESOURCES.submit();
-        }
         function Delete()
         {
             if(confirm('Delete this generic ability?! Confirm!'))
@@ -99,12 +82,6 @@
             document.RESOURCES.action='/grinder/ability.cmvp';
             document.RESOURCES.submit();
         }
-        function ReAbility()
-        {
-            document.RESOURCES.FUNCTION.value='REABILITY';
-            document.RESOURCES.action='/grinder/abilitydo.cmvp';
-            document.RESOURCES.submit();
-        }
         function Cancel()
         {
             window.close();
@@ -144,7 +121,7 @@
     <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
         <TR>
             <TD><FONT COLOR=YELLOW>Ability ID: </FONT></TD>
-            <TD><FONT COLOR=WHITE>@RequestParameter?ABILITY@</FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=NEWID VALUE="@RequestParameter?ABILITY@"></TD>
         </TR>
         <TR>
             <TD><FONT COLOR=YELLOW>Name: </FONT></TD>

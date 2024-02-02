@@ -67,7 +67,7 @@ public class StdThinGridArea extends StdGridArea
 		{
 			if(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#"))
 				roomID=Name()+roomID.substring(Name().length()); // for case sensitive situations
-			R=CMLib.database().DBReadRoomObject(roomID,false);
+			R=CMLib.database().DBReadRoomObject(roomID,true, false);
 			if(R!=null)
 			{
 				R.setArea(this);
@@ -82,38 +82,12 @@ public class StdThinGridArea extends StdGridArea
 	}
 
 	@Override
-	public boolean isRoomCached(String roomID)
+	public boolean isRoomCached(final String roomID)
 	{
 		if(!isRoom(roomID))
 			return false;
-		Room R=super.getRoom(roomID); // *NOT* this.getRoom
+		final Room R=super.getRoom(roomID); // *NOT* this.getRoom
 		return (((R!=null)&&(!R.amDestroyed()))&&(roomID!=null));
-	}
-	
-	@Override
-	public int getPercentRoomsCached()
-	{
-		final double totalRooms=getProperRoomnumbers().roomCountAllAreas();
-		if(totalRooms==0.0)
-			return 100;
-		final double currentRooms=getCachedRoomnumbers().roomCountAllAreas();
-		return (int)Math.round((currentRooms/totalRooms)*100.0);
-	}
-
-	@Override
-	protected int[] buildAreaIStats()
-	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
-			return emptyStats;
-		final int totalRooms=getProperRoomnumbers().roomCountAllAreas();
-		final int percent=getPercentRoomsCached();
-		if((totalRooms>15)&&(percent<90))
-			return emptyStats;
-		if((totalRooms>5)&&(percent<50))
-			return emptyStats;
-		if(percent<10)
-			return emptyStats;
-		return super.buildAreaIStats();
 	}
 
 	public boolean isRoom(final String roomID)

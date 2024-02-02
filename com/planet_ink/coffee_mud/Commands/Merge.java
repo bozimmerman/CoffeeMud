@@ -758,7 +758,7 @@ public class Merge extends StdCommand
 		else
 		if(scope.equalsIgnoreCase("ROOM"))
 		{
-			final Room R=dbInterface.DBReadRoomObject(mob.location().roomID(), false);
+			final Room R=dbInterface.DBReadRoomObject(mob.location().roomID(), true, false);
 			if(R!=null)
 				rooms.add(R);
 		}

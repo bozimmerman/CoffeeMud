@@ -140,8 +140,8 @@ public class Thief_Digsite extends ThiefSkill
 			if((msg.value()==0)
 			||(msg.target() instanceof RawMaterial))
 			{
-				final int minLevel = A.getAreaIStats()[Area.Stats.MIN_LEVEL.ordinal()];
-				final int maxLevel = A.getAreaIStats()[Area.Stats.MAX_LEVEL.ordinal()];
+				final int minLevel = A.getIStat(Area.Stats.MIN_LEVEL);
+				final int maxLevel = A.getIStat(Area.Stats.MAX_LEVEL);
 				if(craftingSkills.size()==0)
 				{
 					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)

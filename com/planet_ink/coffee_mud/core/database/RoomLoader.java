@@ -338,14 +338,15 @@ public class RoomLoader
 		return new Room[0];
 	}
 
-	private void populateRoomInnerFields(final ResultSet R, final Room newRoom) throws SQLException
+	private void populateRoomInnerFields(final ResultSet R, final Room newRoom, final boolean buildXML) throws SQLException
 	{
 		newRoom.setDisplayText(DBConnections.getRes(R,"CMDESC1"));
 		if(CMProps.getBoolVar(CMProps.Bool.ROOMDNOCACHE))
 			newRoom.setDescription("");
 		else
 			newRoom.setDescription(DBConnections.getRes(R,"CMDESC2"));
-		newRoom.setMiscText(DBConnections.getRes(R,"CMROTX"));
+		if(buildXML)
+			newRoom.setMiscText(DBConnections.getRes(R,"CMROTX"));
 	}
 
 	protected Map<Integer,Pair<String,String>> readRoomExitIDsMap(final String roomID)
@@ -510,7 +511,7 @@ public class RoomLoader
 		return ids;
 	}
 
-	private Room buildRoomObject(final ResultSet R) throws SQLException
+	private Room buildRoomObject(final ResultSet R, final boolean buildXML) throws SQLException
 	{
 		final String roomID=DBConnections.getRes(R,"CMROID");
 		final String localeID=DBConnections.getRes(R,"CMLOID");
@@ -521,7 +522,7 @@ public class RoomLoader
 		else
 		{
 			newRoom.setRoomID(roomID);
-			populateRoomInnerFields(R,newRoom);
+			populateRoomInnerFields(R,newRoom,true);
 		}
 		return newRoom;
 	}
@@ -538,7 +539,7 @@ public class RoomLoader
 		{
 			if(reportStatus)
 				currentRecordPos=R.getRow();
-			final Room newRoom = this.buildRoomObject(R);
+			final Room newRoom = this.buildRoomObject(R,true);
 			if(newRoom != null)
 				rooms.add(newRoom);
 			if(((currentRecordPos%updateBreak)==0)&&(reportStatus))
@@ -557,7 +558,7 @@ public class RoomLoader
 			D=DB.DBFetch();
 			final ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+room.roomID()+"'");
 			if(R.next())
-				populateRoomInnerFields(R, room);
+				populateRoomInnerFields(R, room,true);
 			else
 				return false;
 		}
@@ -573,7 +574,7 @@ public class RoomLoader
 		return true;
 	}
 
-	public Room DBReadRoomObject(final String roomIDtoLoad, final boolean reportStatus)
+	public Room DBReadRoomObject(final String roomIDtoLoad, final boolean buildXML, final boolean reportStatus)
 	{
 		DBConnection D=null;
 		try
@@ -583,7 +584,7 @@ public class RoomLoader
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Counting Rooms");
 			final ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+roomIDtoLoad+"'");
 			if(R.next())
-				return buildRoomObject(R);
+				return buildRoomObject(R,true);
 		}
 		catch(final SQLException sqle)
 		{
@@ -1262,7 +1263,11 @@ public class RoomLoader
 		return false;
 	}
 
-	public void DBReadContent(final String thisRoomID, final Room thisRoom, Map<String, Room> rooms, final RoomnumberSet unloadedRooms, final Set<ReadRoomDisableFlag> disableFlags)
+	public void DBReadContent(final String thisRoomID,
+							  final Room thisRoom,
+							  Map<String, Room> rooms,
+							  final RoomnumberSet unloadedRooms,
+							  final Set<ReadRoomDisableFlag> disableFlags)
 	{
 		final boolean debug=Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMPOP));
 		if(debug||(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS))))

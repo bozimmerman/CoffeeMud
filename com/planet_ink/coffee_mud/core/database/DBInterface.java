@@ -441,9 +441,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public Room DBReadRoomObject(final String roomIDtoLoad, final boolean reportStatus)
+	public Room DBReadRoomObject(final String roomIDtoLoad, final boolean loadXML, final boolean reportStatus)
 	{
-		return RoomLoader.DBReadRoomObject(roomIDtoLoad, reportStatus);
+		return RoomLoader.DBReadRoomObject(roomIDtoLoad, loadXML, reportStatus);
 	}
 
 	@Override

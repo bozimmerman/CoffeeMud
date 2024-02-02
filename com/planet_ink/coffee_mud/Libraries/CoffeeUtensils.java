@@ -2482,11 +2482,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							break;
 						}
 						case 'l':
-							buf.append(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()]);
+							buf.append(A.getIStat(Area.Stats.AVG_LEVEL));
 							c+=2;
 							break;
 						case 'L':
-							buf.append(A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
+							buf.append(A.getIStat(Area.Stats.MED_LEVEL));
 							c+=2;
 							break;
 						case 'c':
@@ -2494,22 +2494,22 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							c+=2;
 							break;
 						case 'a':
-							buf.append(A.getAreaIStats()[Area.Stats.AVG_ALIGNMENT.ordinal()]);
+							buf.append(A.getIStat(Area.Stats.AVG_ALIGNMENT));
 							c+=2;
 							break;
 						case 'A':
-							buf.append(A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()]);
+							buf.append(A.getIStat(Area.Stats.MED_ALIGNMENT));
 							c+=2;
 							break;
 						case 'n':
 						{
-							final Faction.FRange FR = CMLib.factions().getRange(CMLib.factions().getAlignmentID(), A.getAreaIStats()[Area.Stats.AVG_ALIGNMENT.ordinal()]);
+							final Faction.FRange FR = CMLib.factions().getRange(CMLib.factions().getAlignmentID(), A.getIStat(Area.Stats.AVG_ALIGNMENT));
 							buf.append((FR==null)?"":FR.name());
 							c+=2;
 							break;
 						}
 						case 'N':
-							final Faction.FRange FR = CMLib.factions().getRange(CMLib.factions().getAlignmentID(), A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()]);
+							final Faction.FRange FR = CMLib.factions().getRange(CMLib.factions().getAlignmentID(), A.getIStat(Area.Stats.MED_ALIGNMENT));
 							buf.append((FR==null)?"":FR.name());
 							c+=2;
 							break;

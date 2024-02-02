@@ -4,6 +4,7 @@ import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -54,6 +55,7 @@ public class GrinderAbilities
 			httpReq.addFakeUrlParameter(field, value);
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
+		final String newid=httpReq.getUrlParameter("NEWID");
 		String old;
 		old=httpReq.getUrlParameter("NAME");
 		A.setStat("NAME",(old==null)?"NAME":old);
@@ -332,6 +334,19 @@ public class GrinderAbilities
 					x++;
 				}
 			}
+		}
+		if((newid!=null)
+		&&(newid.length()>0)
+		&&(!newid.equalsIgnoreCase(A.ID()))
+		&&(CMClass.getAbility(newid)==null)
+		&&(A!=null))
+		{
+			CMLib.database().DBDeleteAbility(A.ID());
+			if((CMClass.getAbility(A.ID())!=null)
+			&&(CMClass.getAbility(A.ID()).isGeneric()))
+				CMClass.delClass(CMObjectType.ABILITY, A);
+			A.setStat("CLASS9", newid);
+			CMClass.addClass(CMObjectType.ABILITY, A);
 		}
 		return "";
 	}

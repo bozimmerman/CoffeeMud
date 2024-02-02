@@ -548,7 +548,7 @@ public class Prayer_MalignedPortal extends Prayer
 			final CMMsg msg=CMClass.getMsg(mob,oldRoom,this,verbalCastCode(mob,oldRoom,auto),L("^S<S-NAME> @x1 a blinding, swirling portal here.^?",prayForWord(mob)));
 			if(oldRoom.okMessage(mob,msg))
 			{
-				int minLevel = oldRoom.getArea().getAreaIStats()[Area.Stats.MIN_LEVEL.ordinal()];
+				int minLevel = oldRoom.getArea().getIStat(Area.Stats.MIN_LEVEL);
 				if(minLevel > mob.phyStats().level() + super.getXLEVELLevel(mob))
 					minLevel = mob.phyStats().level() + super.getXLEVELLevel(mob);
 				final MOB invoker = CMClass.getFactoryMOB(mob.Name(), minLevel, mob.location());

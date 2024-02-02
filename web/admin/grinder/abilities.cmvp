@@ -34,6 +34,12 @@
     </script>
 </head>
 <body BGCOLOR=BLACK>
+    @AddRequestParameter?NEWABILITY=@
+    @AddRequestParameter?NEWLANGUAGE=@
+    @AddRequestParameter?NEWCRAFTSKILL=@
+    @AddRequestParameter?NEWWRIGHTSKILL=@
+    @AddRequestParameter?NEWGATHERINGSKILL=@
+    @AddRequestParameter?NEWTRAP=@
     <TABLE WIDTH=100% BORDER=0>
     <TR>
     <TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
@@ -81,39 +87,45 @@
        @endif@
     @back@
     <TR>
-	    <TD COLSPAN=4>
+	    <TD COLSPAN=5>
+	    	<INPUT TYPE=TEXT NAME=NEWABILITY SIZE=20 ONCHANGE="document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWCRAFTSKILL.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';document.RESOURCES.NEWWRIGHTSKILL.value='';document.RESOURCES.NEWTRAP.value='';">
 	    	<a href="javascript:if(document.RESOURCES.NEWABILITY.value!='')Ability(document.RESOURCES.NEWABILITY.value,'&NEWABILITY='+document.RESOURCES.NEWABILITY.value)">
-	    	<FONT COLOR=CYAN><B><U>Create new Ability/Skill:</U></B></a> <INPUT TYPE=TEXT NAME=NEWABILITY SIZE=20 ONCHANGE="document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWCRAFTSKILL.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';document.RESOURCES.NEWWRIGHTSKILL.value='';document.RESOURCES.NEWTRAP.value='';"></B></FONT>
+	    	<FONT COLOR=CYAN><B><U>Create new/Copy Ability/Skill</U></B></a></B></FONT>
 	    </TD>
     </TR>
     <TR>
-	    <TD COLSPAN=4>
+	    <TD COLSPAN=5>
+	    	<INPUT TYPE=TEXT NAME=NEWLANGUAGE SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWCRAFTSKILL.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';document.RESOURCES.NEWWRIGHTSKILL.value='';document.RESOURCES.NEWTRAP.value='';">
 	    	<a href="javascript:if(document.RESOURCES.NEWLANGUAGE.value!='')Ability(document.RESOURCES.NEWLANGUAGE.value,'&NEWLANGUAGE='+document.RESOURCES.NEWLANGUAGE.value)">
-	    	<FONT COLOR=CYAN><B><U>Create new Language:</U></B></a> <INPUT TYPE=TEXT NAME=NEWLANGUAGE SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWCRAFTSKILL.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';document.RESOURCES.NEWWRIGHTSKILL.value='';document.RESOURCES.NEWTRAP.value='';"></B></FONT>
+	    	<FONT COLOR=CYAN><B><U>Create new/Copy Language</U></B></a> </B></FONT>
 	    </TD>
     </TR>
     <TR>
-	    <TD COLSPAN=4>
+	    <TD COLSPAN=5>
+	    	<INPUT TYPE=TEXT NAME=NEWCRAFTSKILL SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';document.RESOURCES.NEWWRIGHTSKILL.value='';document.RESOURCES.NEWTRAP.value='';">
 	    	<a href="javascript:if(document.RESOURCES.NEWCRAFTSKILL.value!='')Ability(document.RESOURCES.NEWCRAFTSKILL.value,'&NEWCRAFTSKILL='+document.RESOURCES.NEWCRAFTSKILL.value)">
-	    	<FONT COLOR=CYAN><B><U>Create new Crafting Skill:</U></B></a> <INPUT TYPE=TEXT NAME=NEWCRAFTSKILL SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';document.RESOURCES.NEWWRIGHTSKILL.value='';document.RESOURCES.NEWTRAP.value='';"></B></FONT>
+	    	<FONT COLOR=CYAN><B><U>Create new/Copy Crafting Skill</U></B></a> </B></FONT>
 	    </TD>
     </TR>
     <TR>
-    	<TD COLSPAN=4>
+    	<TD COLSPAN=5>
+    		<INPUT TYPE=TEXT NAME=NEWGATHERINGSKILL SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWCRAFTSKILL.value='';document.RESOURCES.NEWWRIGHTSKILL.value='';document.RESOURCES.NEWTRAP.value='';">
     		<a href="javascript:if(document.RESOURCES.NEWGATHERINGSKILL.value!='')Ability(document.RESOURCES.NEWGATHERINGSKILL.value,'&NEWGATHERINGSKILL='+document.RESOURCES.NEWGATHERINGSKILL.value)">
-    		<FONT COLOR=CYAN><B><U>Create new Gathering Skill:</U></B></a> <INPUT TYPE=TEXT NAME=NEWGATHERINGSKILL SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWCRAFTSKILL.value='';document.RESOURCES.NEWWRIGHTSKILL.value='';document.RESOURCES.NEWTRAP.value='';"></B></FONT>
+    		<FONT COLOR=CYAN><B><U>Create new/Copy Gathering Skill</U></B></a> </B></FONT>
     	</TD>
     </TR>
     <TR>
-    	<TD COLSPAN=4>
+    	<TD COLSPAN=5>
+    		<INPUT TYPE=TEXT NAME=NEWWRIGHTSKILL SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';document.RESOURCES.NEWCRAFTSKILL.value='';document.RESOURCES.NEWTRAP.value='';">
     		<a href="javascript:if(document.RESOURCES.NEWWRIGHTSKILL.value!='')Ability(document.RESOURCES.NEWWRIGHTSKILL.value,'&NEWWRIGHTSKILL='+document.RESOURCES.NEWWRIGHTSKILL.value)">
-    		<FONT COLOR=CYAN><B><U>Create new Wrighting Skill:</U></B></a> <INPUT TYPE=TEXT NAME=NEWWRIGHTSKILL SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';document.RESOURCES.NEWCRAFTSKILL.value='';document.RESOURCES.NEWTRAP.value='';"></B></FONT>
+    		<FONT COLOR=CYAN><B><U>Create new/Copy Wrighting Skill</U></B></a> </B></FONT>
     	</TD>
     </TR>
     <TR>
-    	<TD COLSPAN=4>
+    	<TD COLSPAN=5>
+    		<INPUT TYPE=TEXT NAME=NEWTRAP SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';document.RESOURCES.NEWCRAFTSKILL.value='';document.RESOURCES.NEWWRIGHTSKILL.value='';">
     		<a href="javascript:if(document.RESOURCES.NEWTRAP.value!='')Ability(document.RESOURCES.NEWTRAP.value,'&NEWTRAP='+document.RESOURCES.NEWTRAP.value)">
-    		<FONT COLOR=CYAN><B><U>Create new Trap:</U></B></a> <INPUT TYPE=TEXT NAME=NEWTRAP SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';document.RESOURCES.NEWCRAFTSKILL.value='';document.RESOURCES.NEWWRIGHTSKILL.value='';"></B></FONT>
+    		<FONT COLOR=CYAN><B><U>Create new/Copy Trap</U></B></a> </B></FONT>
     	</TD>
     </TR>
     </TABLE>

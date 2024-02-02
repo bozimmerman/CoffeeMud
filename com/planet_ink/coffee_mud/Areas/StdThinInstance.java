@@ -119,7 +119,7 @@ public class StdThinInstance extends StdThinArea implements SubArea
 			if(parentR==null)
 				return null;
 
-			final Room newR=CMLib.database().DBReadRoomObject(parentR.roomID(), false);
+			final Room newR=CMLib.database().DBReadRoomObject(parentR.roomID(), true, false);
 			if(newR==null)
 				return null;
 			final TreeMap<String,Room> V=new TreeMap<String,Room>();
@@ -672,13 +672,13 @@ public class StdThinInstance extends StdThinArea implements SubArea
 	}
 
 	@Override
-	public int[] getAreaIStats()
+	protected AreaIStats getAreaIStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return emptyStats;
 		final Area parentArea=getSuperArea();
 		final String areaName = (parentArea==null)?Name():parentArea.Name();
-		int[] statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
+		AreaIStats statData=(AreaIStats)Resources.getResource("STATS_"+areaName.toUpperCase());
 		if(statData!=null)
 			return statData;
 		synchronized(CMClass.getSync(("STATS_"+areaName)))
@@ -692,22 +692,22 @@ public class StdThinInstance extends StdThinArea implements SubArea
 					int ct=0;
 					if(childE.hasNext())
 					{
-						statData=new int[Area.Stats.values().length];
+						statData=(AreaIStats)CMClass.getCommon("DefaultAreaIStats");
 						for(;childE.hasNext();)
 						{
-							final int[] theseStats=childE.next().A.getAreaIStats();
-							if(theseStats != emptyStats)
+							final Area childA = childE.next().A;
+							if(childA.isAreaStatsLoaded())
 							{
 								ct++;
-								for(int i=0;i<theseStats.length;i++)
-									statData[i]+=theseStats[i];
+								for(final Area.Stats stat : Area.Stats.values())
+									statData.setStat(stat,statData.getStat(stat)+childA.getIStat(stat));
 							}
 						}
 					}
 					if(ct==0)
 						return emptyStats;
-					for(int i=0;i<statData.length;i++)
-						statData[i]=statData[i]/ct;
+					for(final Area.Stats stat : Area.Stats.values())
+						statData.setStat(stat,statData.getStat(stat)/ct);
 				}
 				Resources.removeResource("HELP_"+areaName.toUpperCase());
 				Resources.submitResource("STATS_"+areaName.toUpperCase(),statData);
@@ -792,7 +792,7 @@ public class StdThinInstance extends StdThinArea implements SubArea
 	}
 
 	private static String[] inst_codes = null;
-	
+
 	@Override
 	public String[] getStatCodes()
 	{

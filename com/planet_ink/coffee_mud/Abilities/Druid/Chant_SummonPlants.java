@@ -181,8 +181,8 @@ public class Chant_SummonPlants extends Chant
 
 		final List<Room> V=Druid_MyPlants.myAreaPlantRooms(mob,room.getArea());
 		int pct=0;
-		if(A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
-			pct=(int)Math.round(100.0*CMath.div(V.size(),A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
+		if(A.getIStat(Area.Stats.VISITABLE_ROOMS)>10)
+			pct=(int)Math.round(100.0*CMath.div(V.size(),A.getIStat(Area.Stats.VISITABLE_ROOMS)));
 		final Item I=buildMyPlant(mob,room);
 		if((I!=null)
 		&&((mob.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Druid"))||(CMSecurity.isASysOp(mob))))
@@ -191,7 +191,7 @@ public class Chant_SummonPlants extends Chant
 			{
 				if(pct>0)
 				{
-					final int newPct=(int)Math.round(100.0*CMath.div(V.size(),A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
+					final int newPct=(int)Math.round(100.0*CMath.div(V.size(),A.getIStat(Area.Stats.VISITABLE_ROOMS)));
 					if((newPct>=50)&&(A.fetchEffect("Chant_DruidicConnection")==null))
 					{
 						final Ability A2=CMClass.getAbility("Chant_DruidicConnection");

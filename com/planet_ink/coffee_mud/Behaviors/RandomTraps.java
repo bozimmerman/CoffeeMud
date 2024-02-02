@@ -421,7 +421,7 @@ public class RandomTraps extends ActiveTicker
 				T.setProficiency(100);
 				final Area A=CMLib.map().areaLocation(ticking);
 				if(A!=null)
-					T.setMiscText(":"+A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()]+":");
+					T.setMiscText(":"+A.getIStat(Area.Stats.MED_ALIGNMENT)+":");
 				T.makeLongLasting();
 				T.setSavable(false);
 				P.addEffect(T);

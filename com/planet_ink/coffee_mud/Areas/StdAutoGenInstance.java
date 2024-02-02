@@ -97,19 +97,13 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	}
 
 	@Override
-	public int getPercentRoomsCached()
-	{
-		return (getParentArea()==null)?0:100;
-	}
-
-	@Override
-	public int[] getAreaIStats()
+	protected AreaIStats getAreaIStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return emptyStats;
 		final Area parentArea=getParentArea();
 		final String areaName = (parentArea==null)?Name():parentArea.Name();
-		int[] statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
+		AreaIStats statData=(AreaIStats)Resources.getResource("STATS_"+areaName.toUpperCase());
 		if(statData!=null)
 			return statData;
 		final List<Area> workList = new LinkedList<Area>();
@@ -127,21 +121,20 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			}
 		}
 		int ct=0;
-		statData=new int[Area.Stats.values().length];
+		statData=(AreaIStats)CMClass.getCommon("DefaultAreaIStats");
 		for(final Area childA : workList)
 		{
-			final int[] theseStats=childA.getAreaIStats();
-			if(theseStats != emptyStats)
+			if(childA.isAreaStatsLoaded())
 			{
 				ct++;
-				for(int i=0;i<theseStats.length;i++)
-					statData[i]+=theseStats[i];
+				for(final Area.Stats stat : Area.Stats.values())
+					statData.setStat(stat, statData.getStat(stat) + childA.getIStat(stat));
 			}
 		}
 		if(ct==0)
 			return emptyStats;
-		for(int i=0;i<statData.length;i++)
-			statData[i]=statData[i]/ct;
+		for(final Area.Stats stat : Area.Stats.values())
+			statData.setStat(stat, statData.getStat(stat) / ct);
 		Resources.removeResource("HELP_"+areaName.toUpperCase());
 		Resources.submitResource("STATS_"+areaName.toUpperCase(),statData);
 		return statData;

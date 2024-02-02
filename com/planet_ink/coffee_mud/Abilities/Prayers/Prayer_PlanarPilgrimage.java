@@ -369,7 +369,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 					case COLLECT_MOBS: //done
 						definedIDs.put("TEMPLATE", "normal_collect1");
 						definedIDs.put("HOLDERS_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER");
-						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
+						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getIStat(Area.Stats.MED_LEVEL));
 						definedIDs.put("target_name".toUpperCase(), L("a denizen of @x1",planeName));
 						definedIDs.put("itemname".toUpperCase(), L("a fragment of @x1",deityName));
 						definedIDs.put("item_level".toUpperCase(), "1");
@@ -409,7 +409,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 						definedIDs.put("targetname".toUpperCase(), L("a denizen of @x1",planeName));
 						definedIDs.put("CAPTURABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER");
 						definedIDs.put("CAPTUREABLES_AREAS","\""+planeArea.Name()+"\"");
-						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
+						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getIStat(Area.Stats.MED_LEVEL));
 						definedIDs.put("AGGRESSION", "YES");
 						definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
 						break;
@@ -424,7 +424,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 					case DISPEL: // done
 						definedIDs.put("TEMPLATE", "normal_dispel1");
 						definedIDs.put("target_name".toUpperCase(), L("a denizen of @x1",deityName));
-						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
+						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getIStat(Area.Stats.MED_LEVEL));
 						definedIDs.put("HELPABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER");
 						break;
 					/*
@@ -441,7 +441,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 						definedIDs.put("TEMPLATE", "normal_killer1");
 						definedIDs.put("AGGRESSION", "YES");
 						definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
-						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
+						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getIStat(Area.Stats.MED_LEVEL));
 						definedIDs.put("num_targets".toUpperCase(), "1");
 						definedIDs.put("KILLABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER -EFFECTS +Prop_ShortEffects");
 						definedIDs.put("target_name".toUpperCase(), L("an elite denizen of @x1",planeName));
@@ -451,7 +451,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 						definedIDs.put("AGGRESSION", "YES");
 						definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
 						definedIDs.put("KILLABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER");
-						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
+						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getIStat(Area.Stats.MED_LEVEL));
 						definedIDs.put("target_name".toUpperCase(), L("a denizen of @x1",planeName));
 						break;
 					case PEACEFUL_CAPTURE:
@@ -575,7 +575,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 						definedIDs.put("TEMPLATE", "auto_collect1");
 						definedIDs.put("HOLDERS_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER");
 						definedIDs.put("target_name".toUpperCase(), L("a denizen of @x1",planeName));
-						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
+						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getIStat(Area.Stats.MED_LEVEL));
 						definedIDs.put("itemname".toUpperCase(), L("a fragment of @x1",deityName));
 						definedIDs.put("item_level".toUpperCase(), "1");
 						definedIDs.put("item_material".toUpperCase(), "ENERGY");
@@ -618,7 +618,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 						definedIDs.put("targetname".toUpperCase(), L("a denizen of @x1",planeName));
 						definedIDs.put("CAPTURABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER");
 						definedIDs.put("CAPTUREABLES_AREAS","\""+planeArea.Name()+"\"");
-						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
+						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getIStat(Area.Stats.MED_LEVEL));
 						definedIDs.put("AGGRESSION", "YES");
 						definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
 						definedIDs.put("quest_instructionstring".toUpperCase(),
@@ -637,7 +637,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 					case DISPEL: // done
 						definedIDs.put("TEMPLATE", "auto_dispel1");
 						definedIDs.put("target_name".toUpperCase(), L("a denizen of @x1",deityName));
-						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
+						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getIStat(Area.Stats.MED_LEVEL));
 						definedIDs.put("HELPABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER");
 						definedIDs.put("quest_instructionstring".toUpperCase(),
 								L("@x1 wants you to aid the pious denizens of @x2. ${reason_short}.",deityName,planeName));
@@ -660,7 +660,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 						definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
 						definedIDs.put("num_targets".toUpperCase(), "1");
 						definedIDs.put("KILLABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER -EFFECTS +Prop_ShortEffects");
-						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
+						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getIStat(Area.Stats.MED_LEVEL));
 						definedIDs.put("target_name".toUpperCase(), L("an elite denizen of @x1",planeName));
 						definedIDs.put("quest_instructionstring".toUpperCase(),
 								L("@x1 wants you to destroy a powerful enemy in @x2. ${reason_short}.",deityName,planeName));
@@ -671,7 +671,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 						definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
 						definedIDs.put("KILLABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER");
 						definedIDs.put("target_name".toUpperCase(), L("a denizen of @x1",planeName));
-						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
+						definedIDs.put("target_level".toUpperCase(), ""+planeArea.getIStat(Area.Stats.MED_LEVEL));
 						definedIDs.put("quest_instructionstring".toUpperCase(),
 								L("@x1 wants you to thin the ranks of enemies in @x2. ${reason_short}.",deityName,planeName));
 						break;

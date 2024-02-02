@@ -631,9 +631,8 @@ public class Reset extends StdCommand
 				if(sess!=null)
 					sess.print(L("Working..."));
 				Log.infoOut(mob.Name()+" RESET RELEVELED "+A.name()+" to "+levelLow+"->"+levelHigh);
-				final int[] stats = A.getAreaIStats();
-				final int oldMinLevel = stats[Area.Stats.MIN_LEVEL.ordinal()];
-				final int oldMaxLevel = stats[Area.Stats.MAX_LEVEL.ordinal()];
+				final int oldMinLevel = A.getIStat(Area.Stats.MIN_LEVEL);
+				final int oldMaxLevel = A.getIStat(Area.Stats.MAX_LEVEL);
 				for(final Enumeration<String> r=A.getProperRoomnumbers().getRoomIDs();r.hasMoreElements();)
 				{
 					if(sess!=null)

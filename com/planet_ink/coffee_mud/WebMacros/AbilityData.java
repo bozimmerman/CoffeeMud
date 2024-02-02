@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftorType;
@@ -41,6 +42,15 @@ public class AbilityData extends StdWebMacro
 	{
 		return "AbilityData";
 	}
+
+	static final String[][] newMatches = new String[][] {
+		new String[] { "NEWABILITY", "GenAbility" },
+		new String[] { "NEWLANGUAGE", "GenLanguage" },
+		new String[] { "NEWCRAFTSKILL", "GenCraftSkill" },
+		new String[] { "NEWWRIGHTSKILL", "GenWrightSkill" },
+		new String[] { "NEWGATHERINGSKILL", "GenGatheringSkill" },
+		new String[] { "NEWTRAP", "GenTrap" },
+	};
 
 	private String itemList(final List<Item> itemList, Item oldItem, final String oldValue)
 	{
@@ -164,79 +174,60 @@ public class AbilityData extends StdWebMacro
 		String last=httpReq.getUrlParameter("ABILITY");
 		if(last==null)
 			return " @break@";
-		Ability A=null;
-		final String newAbilityID=httpReq.getUrlParameter("NEWABILITY");
-		final String newLanguageID=httpReq.getUrlParameter("NEWLANGUAGE");
-		final String newCraftSkillID=httpReq.getUrlParameter("NEWCRAFTSKILL");
-		final String newWrightSkillID=httpReq.getUrlParameter("NEWWRIGHTSKILL");
-		final String newGatheringSkillID=httpReq.getUrlParameter("NEWGATHERINGSKILL");
-		final String newTrapID=httpReq.getUrlParameter("NEWTRAP");
-		A=(Ability)httpReq.getRequestObjects().get("ABILITY-"+last);
-		if((A==null)
-		&&(newAbilityID!=null)
-		&&(newAbilityID.length()>0)
-		&&(CMClass.getAbility(newAbilityID)==null))
+		Ability A=(Ability)httpReq.getRequestObjects().get("ABILITY-"+last);
+		boolean isGeneric = (A==null)?false:A.isGeneric();
+		for(final String[] newMatch : newMatches)
 		{
-			A=(Ability)CMClass.getAbility("GenAbility").copyOf();
-			A.setStat("CLASS9",newAbilityID);
-			last=newAbilityID;
-			httpReq.addFakeUrlParameter("ABILITY",newAbilityID);
-		}
-		if((A==null)
-		&&(newLanguageID!=null)
-		&&(newLanguageID.length()>0)
-		&&(CMClass.getAbility(newLanguageID)==null))
-		{
-			A=(Ability)CMClass.getAbility("GenLanguage").copyOf();
-			A.setStat("CLASS9",newLanguageID);
-			last=newLanguageID;
-			httpReq.addFakeUrlParameter("ABILITY",newLanguageID);
-		}
-		if((A==null)
-		&&(newTrapID!=null)
-		&&(newTrapID.length()>0)
-		&&(CMClass.getAbility(newTrapID)==null))
-		{
-			A=(Ability)CMClass.getAbility("GenTrap").copyOf();
-			A.setStat("LEVEL","1");
-			A.setStat("CLASS9",newTrapID);
-			last=newTrapID;
-			httpReq.addFakeUrlParameter("ABILITY",newTrapID);
-		}
-		if((A==null)
-		&&(newCraftSkillID!=null)
-		&&(newCraftSkillID.length()>0)
-		&&(CMClass.getAbility(newCraftSkillID)==null))
-		{
-			A=(Ability)CMClass.getAbility("GenCraftSkill").copyOf();
-			A.setStat("CLASS9",newCraftSkillID);
-			last=newCraftSkillID;
-			httpReq.addFakeUrlParameter("ABILITY",newCraftSkillID);
-		}
-		if((A==null)
-		&&(newWrightSkillID!=null)
-		&&(newWrightSkillID.length()>0)
-		&&(CMClass.getAbility(newWrightSkillID)==null))
-		{
-			A=(Ability)CMClass.getAbility("GenWrightSkill").copyOf();
-			A.setStat("CLASS9",newWrightSkillID);
-			last=newWrightSkillID;
-			httpReq.addFakeUrlParameter("ABILITY",newWrightSkillID);
-		}
-		if((A==null)
-		&&(newGatheringSkillID!=null)
-		&&(newGatheringSkillID.length()>0)
-		&&(CMClass.getAbility(newGatheringSkillID)==null))
-		{
-			A=(Ability)CMClass.getAbility("GenGatheringSkill").copyOf();
-			A.setStat("CLASS9",newGatheringSkillID);
-			last=newGatheringSkillID;
-			httpReq.addFakeUrlParameter("ABILITY",newGatheringSkillID);
+			String newAbilityID=httpReq.getUrlParameter(newMatch[0]);
+			final String newClass=newMatch[1];
+			if((A==null)
+			&&(newAbilityID!=null)
+			&&(newAbilityID.length()>0))
+			{
+				A=CMClass.getAbility(newAbilityID);
+				if(A == null)
+					A=(Ability)CMClass.getAbility(newClass).copyOf();
+				else
+				{
+					final Ability CR;
+					if(A.isGeneric())
+					{
+						newAbilityID=newAbilityID+"_Copy";
+						httpReq.addFakeUrlParameter(newMatch[0],newAbilityID);
+						CR = CMClass.getAbility(A.getStat("JAVACLASS"));
+						CR.setStat("CLASS9", newAbilityID);
+						CR.setStat("LEVEL","1");
+						CR.setStat("NAME", newAbilityID);
+						for(int i=1;i<A.getStatCodes().length;i++)
+							CR.setStat(A.getStatCodes()[i], A.getStat(A.getStatCodes()[i]));
+					}
+					else
+					{
+						CR=CMLib.ableParms().convertAbilityToGeneric(A);
+						CR.setStat("CLASS9", newAbilityID);
+						CR.setStat("NAME", A.Name());
+						CMClass.addClass(CMObjectType.ABILITY, A);
+					}
+					A=CR;
+				}
+				if(newClass.endsWith("Trap"))
+					A.setStat("LEVEL","1");
+				A.setStat("CLASS9",newAbilityID);
+				last=newAbilityID;
+				httpReq.addFakeUrlParameter("ABILITY",newAbilityID);
+				httpReq.getRequestObjects().put("ABILITY-"+newAbilityID,A);
+				isGeneric=true;
+				break;
+			}
 		}
 		if(last.length()>0)
 		{
 			if(A==null)
+			{
 				A=CMClass.getAbility(last);
+				if(A!=null)
+					isGeneric = A.isGeneric();
+			}
 			if(parms.containsKey("ISNEWABILITY"))
 				return ""+(CMClass.getAbility(last)==null);
 			if(A!=null)
@@ -244,8 +235,7 @@ public class AbilityData extends StdWebMacro
 				final StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("ISGENERIC"))
 				{
-					final Ability A2=CMClass.getAbility(A.ID());
-					return ""+((A2!=null)&&(A2.isGeneric()));
+					return ""+isGeneric;
 				}
 				if(parms.containsKey("ISLANGUAGE"))
 				{

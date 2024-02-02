@@ -53,7 +53,8 @@ public class Areas extends StdCommand
 	{
 		String expression=null;
 		Enumeration<Area> a=CMLib.map().areas();
-		int addStat=-1;
+		Area.Stats addStat=null;
+		boolean addAuthor=false;
 		String append="";
 		int numCols=3;
 		boolean explored=false;
@@ -110,8 +111,8 @@ public class Areas extends StdCommand
 					@Override
 					public int compare(final Area arg0, final Area arg1)
 					{
-						final int lvl1=arg0.getAreaIStats()[Stats.MED_LEVEL.ordinal()];
-						final int lvl2=arg1.getAreaIStats()[Stats.MED_LEVEL.ordinal()];
+						final int lvl1=arg0.getIStat(Stats.MED_LEVEL);
+						final int lvl2=arg1.getIStat(Stats.MED_LEVEL);
 						if(lvl1==lvl2)
 							return 1;
 						return Integer.valueOf(lvl1).compareTo(Integer.valueOf(lvl2));
@@ -119,7 +120,7 @@ public class Areas extends StdCommand
 				});
 				a=new IteratorEnumeration<Area>(levelSorted.iterator());
 				append = " (sorted by level)";
-				addStat=Stats.MED_LEVEL.ordinal();
+				addStat=Stats.MED_LEVEL;
 				commands.remove(i);
 				i--;
 			}
@@ -139,25 +140,25 @@ public class Areas extends StdCommand
 				a=new IteratorEnumeration<Area>(levelSorted.iterator());
 				append = " (sorted by author)";
 				commands.remove(i);
-				addStat=-999;
+				addAuthor=true;
 				numCols=2;
 				i--;
 			}
 			else
 			if(s.toUpperCase().startsWith("SORT="))
 			{
-				int statVal=-1;
+				Area.Stats statVal=null;
 				for(int x=0;x<Area.Stats.values().length;x++)
 				{
 					if(s.toUpperCase().endsWith("="+Area.Stats.values()[x].name()))
-						statVal=x;
+						statVal=Area.Stats.values()[x];
 				}
-				if(statVal<0)
+				if(statVal==null)
 				{
 					mob.tell(L("There was an error in your SORT= qualifier: '@x1' is unknown.",s.substring(5)));
 					return false;
 				}
-				final int sortStat=statVal;
+				final Area.Stats sortStat=statVal;
 				final List<Area> levelSorted=new ArrayList<Area>();
 				for (; a.hasMoreElements();)
 					levelSorted.add(a.nextElement());
@@ -166,15 +167,15 @@ public class Areas extends StdCommand
 					@Override
 					public int compare(final Area arg0, final Area arg1)
 					{
-						final int lvl1=arg0.getAreaIStats()[sortStat];
-						final int lvl2=arg1.getAreaIStats()[sortStat];
+						final int lvl1=arg0.getIStat(sortStat);
+						final int lvl2=arg1.getIStat(sortStat);
 						if(lvl1==lvl2)
 							return 0;
 						return Integer.valueOf(lvl1).compareTo(Integer.valueOf(lvl2));
 					}
 				});
 				a=new IteratorEnumeration<Area>(levelSorted.iterator());
-				append = " (sorted by "+Area.Stats.values()[statVal].name().toLowerCase()+")";
+				append = " (sorted by "+statVal.name().toLowerCase()+")";
 				addStat=sortStat;
 				commands.remove(i);
 				i--;
@@ -197,8 +198,8 @@ public class Areas extends StdCommand
 			&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))
 			&&(!(A instanceof SpaceObject)))
 			{
-				String levelStr = (addStat>=0?(Integer.toString(A.getAreaIStats()[addStat])+":"):"");
-				if(addStat==-999)
+				String levelStr = (addStat!=null?(Integer.toString(A.getIStat(addStat))+":"):"");
+				if(addAuthor)
 					levelStr=CMStrings.padRight(A.getAuthorID(),10)+":";
 				final String areaName = A.name().replace('`', '\'');
 				String name=levelStr+((!CMLib.flags().isHidden(A))?" "+areaName:"("+areaName+")");
@@ -222,28 +223,24 @@ public class Areas extends StdCommand
 				}
 				if(expression!=null)
 				{
-					final int[] stats=A.getAreaIStats();
-					if(stats!=null)
+					final Map<String,Object> H=new Hashtable<String,Object>();
+					for(final Area.Stats stat : Area.Stats.values())
+						H.put(stat.name(),Integer.toString(A.getIStat(stat)));
+					H.put("AUTHOR", A.getAuthorID());
+					try
 					{
-						final Map<String,Object> H=new Hashtable<String,Object>();
-						for(int i=0;i<stats.length;i++)
-							H.put(Area.Stats.values()[i].name(),Integer.toString(stats[i]));
-						H.put("AUTHOR", A.getAuthorID());
-						try
+						if(!CMStrings.parseStringExpression(expression, H,false))
+							continue;
+					}
+					catch(final Exception e)
+					{
+						if(mob!=null)
 						{
-							if(!CMStrings.parseStringExpression(expression, H,false))
-								continue;
+							mob.tell(L("There was an error in your AREA qualifier parameters. See help on AREA for more information. "
+									+ "The error was: @x1", (e.getMessage()!=null)?e.getMessage():
+										L("bad syntax (did you forget quotes?)")));
 						}
-						catch(final Exception e)
-						{
-							if(mob!=null)
-							{
-								mob.tell(L("There was an error in your AREA qualifier parameters. See help on AREA for more information. "
-										+ "The error was: @x1", (e.getMessage()!=null)?e.getMessage():
-											L("bad syntax (did you forget quotes?)")));
-							}
-							return false;
-						}
+						return false;
 					}
 				}
 				if(explored && (mob!=null) && (mob.playerStats()!=null))

@@ -5028,10 +5028,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		if((mob==null)||(cset.useItemFlag()&&(item==null)))
 			return false;
 		if(E instanceof Area)
-		{
-			final int[] areaStats = ((Area)E).getAreaIStats();
-			mob.addFaction(CMLib.factions().getAlignmentID(), areaStats[Area.Stats.MED_ALIGNMENT.ordinal()]);
-		}
+			mob.addFaction(CMLib.factions().getAlignmentID(), ((Area)E).getIStat(Area.Stats.MED_ALIGNMENT));
 		if(cset.entries().length<3)
 			return maskCheckSubEntries(cset.entries()[0],E,actual,mob,item,room,P);
 		else
@@ -7797,8 +7794,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					{
 						if(E instanceof Area)
 						{
-							final int[] areaStats = ((Area)E).getAreaIStats();
-							if(areaStats[Area.Stats.POPULATION.ordinal()]<(((Integer)entry.parms()[0]).intValue()))
+							if(((Area)E).getIStat(Area.Stats.POPULATION)<(((Integer)entry.parms()[0]).intValue()))
 								return false;
 						}
 						else
@@ -7811,8 +7807,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					{
 						if(E instanceof Area)
 						{
-							final int[] areaStats = ((Area)E).getAreaIStats();
-							if(areaStats[Area.Stats.POPULATION.ordinal()]>(((Integer)entry.parms()[0]).intValue()))
+							if(((Area)E).getIStat(Area.Stats.POPULATION)>(((Integer)entry.parms()[0]).intValue()))
 								return false;
 						}
 						else

@@ -989,6 +989,18 @@ public class WorldHuntUtils extends StdLibrary implements WorldHuntLibrary
 		return responseSet;
 	}
 
+	protected boolean isOwnerHere(final CMObject ownerR, final Room here)
+	{
+		if(ownerR instanceof Room)
+		{
+			if(ownerR == here)
+				return true;
+			final Area A = ((Room)ownerR).getArea();
+			return (A instanceof Boardable)&&(((Boardable)A).getBoardableItem().owner()==here);
+		}
+		return false;
+	}
+
 	@Override
 	public boolean isHere(final CMObject E2, final Room here)
 	{
@@ -999,24 +1011,28 @@ public class WorldHuntUtils extends StdLibrary implements WorldHuntLibrary
 			return true;
 		else
 		if((E2 instanceof MOB)
-		&&(((MOB)E2).location()==here))
+		&&(isOwnerHere(((MOB)E2).location(),here)))
 			return true;
 		else
 		if((E2 instanceof Item)
-		&&(((Item)E2).owner()==here))
+		&&(isOwnerHere(((Item)E2).owner(),here)))
 			return true;
 		else
 		if((E2 instanceof Item)
-		&&(((Item)E2).owner()!=null)
 		&&(((Item)E2).owner() instanceof MOB)
-		&&(((MOB)((Item)E2).owner()).location()==here))
+		&&(isOwnerHere(((MOB)((Item)E2).owner()).location(),here)))
 			return true;
 		else
 		if(E2 instanceof Exit)
 		{
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			{
 				if(here.getRawExit(d)==E2)
 					return true;
+			}
+		}
+		else
+		{
 		}
 		return false;
 	}
@@ -1040,7 +1056,7 @@ public class WorldHuntUtils extends StdLibrary implements WorldHuntLibrary
 			return isHere(((Item)E2).owner(),here);
 		return false;
 	}
-	
+
 	@Override
 	public boolean isAnAdminHere(final Room R, final boolean sysMsgsOnly)
 	{

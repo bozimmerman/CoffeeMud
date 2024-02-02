@@ -510,7 +510,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				return false;
 			}
 			final Area A=CMLib.law().getLegalObject(R.getArea());
-			int areaPop = (A==null)?0:A.getAreaIStats()[Area.Stats.INTELLIGENT_MOBS.ordinal()];
+			int areaPop = (A==null)?0:A.getIStat(Area.Stats.INTELLIGENT_MOBS);
 			boolean another=false;
 			if(A != null)
 			{

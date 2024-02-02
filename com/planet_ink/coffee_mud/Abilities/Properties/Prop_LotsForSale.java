@@ -234,7 +234,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			final LandTitle lotA;
 			if((!R2.isSavable())&&(R2.numEffects()==0)) // might be thin
 			{
-				final Room realR2=CMLib.database().DBReadRoomObject(R2.roomID(), false);
+				final Room realR2=CMLib.database().DBReadRoomObject(R2.roomID(), true, false);
 				lotA = (realR2 != null) ? (LandTitle)realR2.fetchEffect(ID()) : null;
 			}
 			else

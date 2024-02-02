@@ -4647,12 +4647,12 @@ public class Test extends StdCommand
 				{
 					final Area A=a.nextElement();
 					final boolean newCheck;
-					if(A.getAreaIStats()[Area.Stats.COUNTABLE_ROOMS.ordinal()]>0)
+					if(A.getIStat(Area.Stats.COUNTABLE_ROOMS)>0)
 						newCheck = CMLib.law().isACity(A);
 					else
 						newCheck=false;
 					if(newCheck)
-					mob.tell(newCheck+"("+(CMath.div(A.getAreaIStats()[Area.Stats.CITY_ROOMS.ordinal()],A.getAreaIStats()[Area.Stats.COUNTABLE_ROOMS.ordinal()]))+") : "+A.Name());
+					mob.tell(newCheck+"("+(CMath.div(A.getIStat(Area.Stats.CITY_ROOMS),A.getIStat(Area.Stats.COUNTABLE_ROOMS)))+") : "+A.Name());
 				}
 			}
 			if(what.equalsIgnoreCase("timsvalue"))

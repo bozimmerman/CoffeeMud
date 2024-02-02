@@ -87,20 +87,26 @@ public class SubThinInstance extends StdThinInstance implements SubArea
 	}
 
 	@Override
-	public int[] getAreaIStats()
+	protected AreaIStats getAreaIStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return emptyStats;
-		int[] statData=(int[])Resources.getResource("STATS_"+Name().toUpperCase());
+		AreaIStats statData=(AreaIStats)Resources.getResource("STATS_"+Name().toUpperCase());
 		if(statData!=null)
 			return statData;
 		final Area parentArea=getSuperArea();
 		final String areaName = (parentArea==null)?Name():parentArea.Name();
-		statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
+		statData=(AreaIStats)Resources.getResource("STATS_"+areaName.toUpperCase());
 		if(statData!=null)
 			return statData;
-		if((parentArea!=null)&&(parentArea!=this))
-			return parentArea.getAreaIStats();
+		if((parentArea!=null)
+		&&(parentArea!=this))
+		{
+			parentArea.getIStat(Stats.AVG_ALIGNMENT); // force a build
+			statData=(AreaIStats)Resources.getResource("STATS_"+parentArea.Name().toUpperCase());
+			if(statData!=null)
+				return statData;
+		}
 		return super.getAreaIStats();
 	}
 
