@@ -179,7 +179,18 @@ public class Top extends StdCommand
 		if((args != null)&&(args.length>1))
 			return this.getTopData(((Integer)args[1]).intValue(), ((Boolean)args[0]).booleanValue(), periods);
 		else
-			return this.getTopData(78, true, periods)+"\n\r"+this.getTopData(78, false, periods);
+		{
+			StringBuffer topPlayers=new CMFile(Resources.buildResourcePath("text")+"topplayers.txt",null,CMFile.FLAG_LOGERRORS).text();
+			try
+			{
+				final Map<String,String> map=new HashMap<String,String>();
+				topPlayers = CMLib.webMacroFilter().virtualPageFilter(topPlayers,map,new HashMap<String,Object>());
+			}
+			catch(final Exception ex)
+			{
+			}
+			return topPlayers.toString();
+		}
 	}
 
 	@Override
