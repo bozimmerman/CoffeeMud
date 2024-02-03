@@ -56,6 +56,8 @@ public class CombatAbilities extends ActiveTicker
 	protected boolean			useTurnBasedRule	= false;
 	protected StringBuffer		record				= null;
 	protected int				physicalDamageTaken	= 0;
+	protected int				bucketSize			= 0;
+	protected List<Ability>		bucket				= null;
 	protected InternalWeaponSet	weaponSet			= new InternalWeaponSet();
 
 	protected volatile boolean	actionOverride		= false;
@@ -77,9 +79,9 @@ public class CombatAbilities extends ActiveTicker
 
 	private static class InternalWeaponSet
 	{
-		public Item wand=null;
-		public Item offHandWand=null;
-		public Item weapon=null;
+		public Item	wand		= null;
+		public Item	offHandWand	= null;
+		public Item	weapon		= null;
 	}
 
 	@Override
@@ -94,6 +96,11 @@ public class CombatAbilities extends ActiveTicker
 		minTicks=1;
 		maxTicks=1;
 		chance=100;
+		bucketSize=CMParms.getParmInt(parms,"bsize",0);
+		if(bucketSize == 0)
+			bucket = null;
+		else
+			bucket = new Vector<Ability>(bucketSize);
 		super.setParms(newParms);
 	}
 
@@ -103,7 +110,9 @@ public class CombatAbilities extends ActiveTicker
 		if(theParms.trim().length()==0)
 		{
 			C=CMClass.findCharClass(defaultClassName);
-			if((mob.baseCharStats().getCurrentClass()!=C)&&(C!=null)&&(C.availabilityCode()!=0))
+			if((mob.baseCharStats().getCurrentClass()!=C)
+			&&(C!=null)
+			&&(C.availabilityCode()!=0))
 			{
 				mob.baseCharStats().setCurrentClass(C);
 				mob.recoverCharStats();
@@ -121,7 +130,9 @@ public class CombatAbilities extends ActiveTicker
 		if(classes.size()==0)
 		{
 			C=CMClass.findCharClass(defaultClassName);
-			if((mob.baseCharStats().getCurrentClass()!=C)&&(C!=null)&&(C.availabilityCode()!=0))
+			if((mob.baseCharStats().getCurrentClass()!=C)
+			&&(C!=null)
+			&&(C.availabilityCode()!=0))
 			{
 				mob.baseCharStats().setCurrentClass(C);
 				mob.recoverCharStats();
@@ -203,7 +214,8 @@ public class CombatAbilities extends ActiveTicker
 		for(int a=0;a<mob.numAllAbilities();a++)
 		{
 			final Ability newOne=mob.fetchAbility(a);
-			if((newOne!=null)&&(!oldAbilities.contains(newOne)))
+			if((newOne!=null)
+			&&(!oldAbilities.contains(newOne)))
 			{
 				if(!CMLib.ableMapper().qualifiesByLevel(mob,newOne))
 				{
@@ -513,8 +525,15 @@ public class CombatAbilities extends ActiveTicker
 		int victimQuality=Ability.QUALITY_INDIFFERENT;
 		int selfQuality=Ability.QUALITY_INDIFFERENT;
 		int leaderQuality=Ability.QUALITY_INDIFFERENT;
-		while((tryA==null)&&((++tries)<100)&&(mob.numAllAbilities()>0))
+		while((tryA==null)
+		&&((++tries)<100)
+		&&(mob.numAllAbilities()>0))
 		{
+			if((bucketSize > 0)
+			&&(bucket != null)
+			&&(bucket.size()>=bucketSize))
+				A=bucket.get(CMLib.dice().roll(1, bucket.size(), -1));
+			else
 			if((combatMode==COMBAT_ONLYALWAYS)&&(this.skillsAlways!=null)&&(this.skillsAlways.size()>0))
 				A=mob.fetchAbility(skillsAlways.get(CMLib.dice().roll(1,skillsAlways.size(),-1)));
 			else
@@ -602,6 +621,10 @@ public class CombatAbilities extends ActiveTicker
 		&&(actionOverride||mob.actions()>=CMProps.getSkillCombatActionCost(tryA.ID())))
 		{
 			actionOverride=false;
+			if((bucketSize>0)
+			&&(bucket!=null)
+			&&(!bucket.contains(tryA)))
+				bucket.add(tryA);
 			if(CMath.bset(tryA.usageType(),Ability.USAGE_MANA))
 			{
 				if((Math.random()>CMath.div(mob.curState().getMana(), mob.maxState().getMana()))
