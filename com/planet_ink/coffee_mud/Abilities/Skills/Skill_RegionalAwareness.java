@@ -254,7 +254,7 @@ public class Skill_RegionalAwareness extends StdSkill
 								final Exit E = R2.getExitInDir(d);
 								if((E != null)
 								&&((!CMLib.flags().isHidden(E))||canSeeHidden)
-								&&((!CMLib.flags().isInvisible(E))||canSeeHidden))
+								&&((!CMLib.flags().isInvisible(E))||canSeeHidden||CMLib.flags().canSeeInvisible(mob)))
 								{
 									parentR=R2;
 									parentDir=d;
