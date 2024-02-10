@@ -207,7 +207,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		}
 	}
 
-	public String[] getMiniMap(final Room room, final int diameter, final boolean openOnly)
+	public String[] getMiniMap(final MOB mob, final Room room, final int diameter, final boolean openOnly)
 	{
 		final char[][] map=new char[diameter][diameter];
 		for(int i=0;i<diameter;i++)
@@ -226,7 +226,7 @@ public class Skill_RegionalAwareness extends StdSkill
 					.plus(TrackingLibrary.TrackingFlag.NOAIR);
 		if(openOnly)
 			flags = flags.plus(TrackingLibrary.TrackingFlag.OPENONLY);
-
+		final boolean canSeeHidden = CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDROOMS);
 		CMLib.tracking().getRadiantRooms(room,rooms,flags,null,diameter,null);
 		rmap[diameter/2][diameter/2]=room;
 		map[diameter/2][diameter/2]='*';
@@ -245,16 +245,23 @@ public class Skill_RegionalAwareness extends StdSkill
 				{
 					final Room R2=rmap[i2][i3];
 					if(R2!=null)
-					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						if((R2.getRoomInDir(d)==R)
-						&&(!closedPaths.contains(R2))
-						&&(R2.getExitInDir(d)!=null))
+						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						{
-							parentR=R2;
-							parentDir=d;
-							xy=Directions.adjustXYByDirections(i3,i2,d);
-							break;
+							if((R2.getRoomInDir(d)==R)
+							&&(!closedPaths.contains(R2)))
+							{
+								final Exit E = R2.getExitInDir(d);
+								if((E != null)
+								&&((!CMLib.flags().isHidden(E))||canSeeHidden)
+								&&((!CMLib.flags().isInvisible(E))||canSeeHidden))
+								{
+									parentR=R2;
+									parentDir=d;
+									xy=Directions.adjustXYByDirections(i3,i2,d);
+									break;
+								}
+							}
 						}
 					}
 				}
@@ -302,7 +309,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		final Session sess = mob.session();
 		if(auto && (givenTarget instanceof Room) && (asLevel>0))
 		{
-			final String[] miniMap=getMiniMap((Room)givenTarget, asLevel, false);
+			final String[] miniMap=getMiniMap(mob, (Room)givenTarget, asLevel, false);
 			if(commands!=null)
 			{
 				for(final String s : miniMap)
@@ -343,7 +350,7 @@ public class Skill_RegionalAwareness extends StdSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final String[] miniMap=getMiniMap(mob.location(), 2+(adjustedLevel(mob,asLevel)/10), true);
+				final String[] miniMap=getMiniMap(mob,mob.location(), 2+(adjustedLevel(mob,asLevel)/10), true);
 				if(sess != null)
 				{
 					for(final String s : miniMap)
