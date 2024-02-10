@@ -113,7 +113,7 @@
 		@if?!CheckAuthCode?AUTH_ACHIEVEMENTS=true@
 			@if?!CheckAuthCode?AUTH_TITLES=true@ 
 				@AddRequestParameter?MODE=AWARD@
-			@else
+			@else@
 				@AddRequestParameter?MODE=TITLE@
 			@endif@
 		@endif@
@@ -122,7 +122,7 @@
 			@if?!CheckAuthCode?AUTH_TITLES=true@
 				@if?!CheckAuthCode?AUTH_ACHIEVEMENTS=true@ 
 					@AddRequestParameter?MODE=AWARD@
-				@else
+				@else@
 					@AddRequestParameter?MODE=@
 				@endif@
 			@endif@
@@ -130,7 +130,7 @@
 			@if?!CheckAuthCode?AUTH_AUTOAWARDS=true@
 				@if?!CheckAuthCode?AUTH_ACHIEVEMENTS=true@ 
 					@AddRequestParameter?MODE=TITLE@
-				@else
+				@else@
 					@AddRequestParameter?MODE=@
 				@endif@
 			@endif@
