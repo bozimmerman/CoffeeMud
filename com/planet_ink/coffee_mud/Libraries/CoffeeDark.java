@@ -1214,7 +1214,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final long distance = getDistanceFrom(srcCoord, tgtCoord);
 		final BoundedCube courseRay = new BoundedCube(srcCoord, sgradius);
 		if(courseRay.contains(tgtCoord)
-		||courseRay.contains(srcCoord)
+		//||courseRay.contains(srcCoord) I don't get this .. courseRay is ONLY around the source, so isn't it ALWAYS colliding?
 		||(distance <= sradius))
 		{
 			// this means we are already right on top of it, nowhere to go!
@@ -1228,9 +1228,6 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	public List<long[]> plotCourse(final long[] osrc, final long sradius, final long[] otarget, final long tradius, int maxTicks)
 	{
 		final List<long[]> course = new LinkedList<long[]>();
-		final SpaceObject me = getSpaceObject(this, true);
-		if(me == null)
-			return course;
 		long[] src=osrc.clone();
 		long[] target = otarget.clone();
 		BoundedCube courseRay;

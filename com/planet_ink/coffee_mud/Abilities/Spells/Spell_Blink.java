@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -92,10 +93,15 @@ public class Spell_Blink extends Spell
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((tickID==Tickable.TICKID_MOB)&&(affected instanceof MOB))
+		if((tickID==Tickable.TICKID_MOB)
+		&&(affected instanceof MOB))
 		{
 			final MOB mob=(MOB)affected;
+			final Room R = (mob != null) ? mob.location() : null;
+			if(R == null)
+				return super.tick(ticking, tickID);
 			final int roll=CMLib.dice().roll(1,8,0);
+			final int msgCode = CMMsg.MSG_OK_VISUAL|CMMsg.MASK_SPAMMY;
 			if(mob.isInCombat())
 			{
 				int move=0;
@@ -117,12 +123,16 @@ public class Spell_Blink extends Spell
 					move = 0;
 				}
 				if(move==0)
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) again."));
+				{
+					R.show(mob,null,msgCode,L("<S-NAME> vanish(es) and reappear(s) again."));
+				}
 				else
 				{
 					int rangeTo=mob.rangeToTarget();
 					rangeTo+=move;
-					if((move==0)||(rangeTo<0)||(rangeTo>mob.location().maxRange()))
+					if((move==0)
+					||(rangeTo<0)
+					||(rangeTo>R.maxRange()))
 						move=0;
 					else
 					{
@@ -133,29 +143,30 @@ public class Spell_Blink extends Spell
 					switch(move)
 					{
 					case 0:
-						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) again."));
+						R.show(mob,null,msgCode,L("<S-NAME> vanish(es) and reappear(s) again."));
 						break;
 					case 1:
-						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) a bit further from <O-NAMESELF>."));
+						R.show(mob,null,mob.getVictim(),msgCode,L("<S-NAME> vanish(es) and reappear(s) a bit further from <O-NAMESELF>."));
 						break;
 					case 2:
-						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) much further from <O-NAMESELF>."));
+						R.show(mob,null,mob.getVictim(),msgCode,L("<S-NAME> vanish(es) and reappear(s) much further from <O-NAMESELF>."));
 						break;
 					case -1:
-						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) a bit closer to <O-NAMESELF>."));
+						R.show(mob,null,mob.getVictim(),msgCode,L("<S-NAME> vanish(es) and reappear(s) a bit closer to <O-NAMESELF>."));
 						break;
 					case -2:
-						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) much closer to <O-NAMESELF>."));
+						R.show(mob,null,mob.getVictim(),msgCode,L("<S-NAME> vanish(es) and reappear(s) much closer to <O-NAMESELF>."));
 						break;
 					}
 				}
-				if(mob.getVictim()==null) mob.setVictim(null); // correct range
+				if(mob.getVictim() == null)
+					mob.setVictim(null); // correct range
 			}
 			else
 			if((roll>2)&&(roll<7))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) a few feet away."));
+				R.show(mob,null,msgCode,L("<S-NAME> vanish(es) and reappear(s) a few feet away."));
 			else
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) again."));
+				R.show(mob,null,msgCode,L("<S-NAME> vanish(es) and reappear(s) again."));
 		}
 		return super.tick(ticking,tickID);
 	}

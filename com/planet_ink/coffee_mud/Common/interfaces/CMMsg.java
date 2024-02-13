@@ -933,6 +933,8 @@ public interface CMMsg extends CMCommon
 	public static final int MASK_CNTRLMSG=4194304; // to denote an internal only control message
 	/** MAJOR_MASK bit denoting an event that is for system processing, and not observable */
 	public static final int MASK_INTERMSG=8388608; // to denote an intermediate (not final goal) message
+	/** MAJOR_MASK bit denoting an event that might be too spammy for some players */
+	public static final int MASK_SPAMMY=16777216; // to denote a spammy message
 
 	// minor messages
 	/** MINOR_MASK minor action code type, denoting a general area event */

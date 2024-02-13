@@ -312,7 +312,7 @@ public class Look extends StdCommand
 				}
 			}
 
-			final CMMsg msg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"at you."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."));
+			final CMMsg msg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"at you."),CMMsg.MSG_LOOK|CMMsg.MASK_SPAMMY,(quiet?null:textMsg+"around."));
 			if((mob.isAttributeSet(MOB.Attrib.AUTOEXITS))
 			&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH)
 			&&(CMLib.flags().canBeSeenBy(R,mob)))

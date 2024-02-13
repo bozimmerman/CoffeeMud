@@ -3733,6 +3733,10 @@ public class StdMOB implements MOB
 			else // main third-party observations!
 			if(msg.othersMessage() != null)
 			{
+				if(CMath.bset(othersMajor, CMMsg.MASK_SPAMMY)
+				&&(isAttributeSet(Attrib.NOSPAM)))
+				{}
+				else
 				if(CMath.bset(othersMajor, CMMsg.MASK_CHANNEL))
 				{
 					final int channelCode = (msg.othersMinor() - CMMsg.TYP_CHANNEL);
@@ -3761,15 +3765,7 @@ public class StdMOB implements MOB
 					|| (CMath.bset(othersMajor, CMMsg.MASK_ALWAYS)))
 				&& (!CMath.bset(msg.othersMajor(), CMMsg.MASK_CNTRLMSG))
 				&& ((!asleep) && (canseesrc)))
-				{
-					if((mySession!=null)
-					&&(msg.target()==location())
-					&&(msg.targetMinor()==CMMsg.TYP_LOOK)
-					&&(isAttributeSet(Attrib.NOSPAM)))
-					{}
-					else
-						tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
-				}
+					tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
 				else
 				if(((CMath.bset(othersMajor, CMMsg.MASK_MOVE))
 					|| ((CMath.bset(othersMajor, CMMsg.MASK_MOUTH))
