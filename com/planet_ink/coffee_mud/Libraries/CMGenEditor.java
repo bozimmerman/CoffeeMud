@@ -6421,14 +6421,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		String newName="?";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
 		{
-			final StringBuilder disabled=new StringBuilder("");
+			final List<String> disabledL=new ArrayList<String>();
 			for(int i=0;i<Race.GENFLAG_DESCS.length;i++)
 			{
 				if(CMath.isSet(flags,i))
-					disabled.append(Race.GENFLAG_DESCS[i]);
+					disabledL.add(Race.GENFLAG_DESCS[i]);
 			}
 
-			mob.tell(L("@x1. Disabled: '@x2'.",""+showNumber,disabled.toString()));
+			mob.tell(L("@x1. Disabled: '@x2'.",""+showNumber,CMParms.toListString(disabledL)));
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
 
