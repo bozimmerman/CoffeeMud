@@ -85,7 +85,7 @@ public class DrowElf extends StdMOB
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,15 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setStat(CharStats.STAT_CONSTITUTION,12 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setStat(CharStats.STAT_CHARISMA,13 + Math.abs(randomizer.nextInt() % 6));
-		baseCharStats().setMyRace(CMClass.getRace("Elf"));
+		baseCharStats().setMyRace(CMClass.getRace("Drow"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
 		recoverMaxState();

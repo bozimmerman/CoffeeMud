@@ -83,7 +83,7 @@ public class Drowness extends StdBehavior
 			mob.recoverCharStats();
 			addFemaleNaturalAbilities(mob);
 		}
-		mob.baseCharStats().setMyRace(CMClass.getRace("Elf"));
+		mob.baseCharStats().setMyRace(CMClass.getRace("Drow"));
 		mob.baseCharStats().getMyRace().startRacing(mob,false);
 
 		mob.recoverMaxState();
