@@ -51,9 +51,9 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * The scripts are formatted as a SubScript class.  Each
 	 * row consists of the String command, and a parsed String[]
 	 * array as dimension 2.
-	 * 
+	 *
 	 * @see ScriptingEngine.MPContext
-	 * 
+	 *
 	 * @param ctx the script event context scope
 	 * @param script the script to execute
 	 * @return N/A
@@ -65,9 +65,9 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * any script variables $XXXX with their script determined values.
 	 * This is a powerful mechanism for getting at the script functions
 	 * in order to access stat data about specific objects, do math, etc.
-	 * 
+	 *
 	 * @see ScriptingEngine.MPContext
-	 * 
+	 *
 	 * @param ctx the script event context scope
 	 * @param varifyable the string to parse
 	 *
@@ -106,9 +106,9 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * to resolve IF, WHILE, and similar expressions that utilize the MOBPROG
 	 * functions.  The expressions are passed in as a String array stored
 	 * in a single string array entry (for replacement) in element 0.
-	 * 
+	 *
 	 * @see ScriptingEngine.MPContext
-	 * 
+	 *
 	 * @param ctx the script event context scope
 	 * @param eval the pre-parsed expression
 	 * @param startEval while line to start evaluating on.
@@ -121,9 +121,9 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * variable expression, which gives different and
 	 * informative results.  See the Green Table in the
 	 * Scripting Guide.
-	 * 
+	 *
 	 * @see ScriptingEngine.MPContext
-	 * 
+	 *
 	 * @param ctx the script event context scope
 	 * @param evaluable the function expression
 	 * @return the results of the function expression
@@ -133,13 +133,13 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	/**
 	 * Called a func with the given name, sending the given parms, and returning its
 	 * return value, if any, or null.  Does the same thing as MPCAlLFUNC
-	 * 
+	 *
 	 * @see ScriptingEngine.MPContext
 	 *
 	 * @param named the name of the FUNCTION_PROG to call
 	 * @param parms parameters to send as $g
 	 * @param ctx the script event context scope
-	 * 
+	 *
 	 * @return the return code, or null if function isn't found
 	 */
 	public String callFunc(final String named, final String parms, MPContext ctx);
@@ -680,7 +680,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	/**
 	 * Class to hold the complete script event
 	 * context, with all its event scope variables.
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -708,13 +708,14 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		 */
 		public MPContext(final PhysicalAgent scripted, final MOB monster, final MOB source,
 				final Environmental target, final Item primaryItem, final Item secondaryItem,
-				final String msg, Object[] tmp)
+				final String msg, final Object[] tmp)
 		{
 			this.scripted=scripted;
 			this.monster=monster;
 			this.source=source;
 			this.target=target;
 			this.primaryItem=primaryItem;
+			this.secondaryItem=secondaryItem;
 			this.msg=msg;
 			if((tmp == null)||(tmp.length!=ScriptingEngine.SPECIAL_NUM_OBJECTS))
 			{
@@ -728,13 +729,13 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 			else
 				this.tmp = tmp;
 		}
-		
+
 		public MPContext copyOf()
 		{
-			try { return (MPContext)super.clone(); } catch (CloneNotSupportedException e) {return this;}
+			try { return (MPContext)super.clone(); } catch (final CloneNotSupportedException e) {return this;}
 		}
 	}
-	
+
 	/** a list of the different parts of a time clock */
 	public final static String[] DATETIME_ARGS={"HOUR","TIME","DAY","DATE","MONTH","YEAR"};
 
