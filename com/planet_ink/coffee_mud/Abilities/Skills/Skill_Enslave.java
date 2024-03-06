@@ -561,6 +561,11 @@ public class Skill_Enslave extends StdSkill implements PrivateProperty
 			mob.tell(L("@x1 would be too stupid to understand your instructions!",target.name(mob)));
 			return false;
 		}
+		if(CMLib.flags().isUndead(target))
+		{
+			mob.tell(L("@x1 would not follow your instructions!",target.name(mob)));
+			return false;
+		}
 
 		if((!CMLib.flags().isBoundOrHeld(target))
 		&&(target.fetchEffect(ID())==null)
