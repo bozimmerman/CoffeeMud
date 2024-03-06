@@ -340,8 +340,8 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					}
 					double deposit=aRates.timedListingPrice();
 					deposit+=(aRates.timedListingPct()*(CMath.mul(days,I.baseGoldValue())));
-					final String depositAmt=CMLib.beanCounter().nameCurrencyLong(mob, deposit);
-					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,CMLib.beanCounter().getCurrency(mob))<deposit)
+					final String depositAmt=CMLib.beanCounter().nameCurrencyLong(this, deposit);
+					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,CMLib.beanCounter().getCurrency(this))<deposit)
 					{
 						CMLib.commands().postSay(this,mob,L("You don't have enough to cover the listing fee of @x1.  Sell a cheaper item, use fewer days, or come back later.",depositAmt),true,false);
 						return false;
@@ -360,7 +360,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					lastMsgData.setAuctionedItem((Item)msg.tool());
 					lastMsgData.setAuctioningMob(msg.source());
 					lastMsgData.setAuctioningMobName(null);
-					lastMsgData.setCurrency(CMLib.beanCounter().getCurrency(msg.source()));
+					lastMsgData.setCurrency(CMLib.beanCounter().getCurrency(this));
 					Area area=CMLib.map().getStartArea(this);
 					if(area==null)
 						area=CMLib.map().getStartArea(msg.source());
@@ -637,10 +637,24 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 							final double houseCut=Math.floor(data.getBid()*aRates.timedFinalCutPct());
 							final double finalAmount=data.getBid()-houseCut;
 							CMLib.coffeeShops().returnMoney(data.getAuctioningMob(),data.getCurrency(),finalAmount);
-							CMLib.coffeeShops().auctionNotify(data.getAuctioningMob(),data.getHighBidderMob().Name()+", who won your auction for "+data.getAuctionedItem().name()+" has claimed "+data.getHighBidderMob().charStats().hisher()+" property.  You have been credited with "+CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),finalAmount)+", after the house took a cut of "+CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),houseCut)+".",data.getAuctionedItem().Name());
-							//CMLib.coffeeShops().auctionNotify(data.getHighBidderM(),"You won the auction for "+data.getAuctioningI().name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),data.getBid())+".  The difference from your high bid ("+CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),data.getHighBid()-data.getBid())+") has been returned to you along with the winning item.",data.getAuctioningI().Name());
+							CMLib.coffeeShops().auctionNotify(data.getAuctioningMob(),
+									data.getHighBidderMob().Name()+", who won your auction for "+data.getAuctionedItem().name()+" has claimed "+
+									data.getHighBidderMob().charStats().hisher()+" property.  You have been credited with "+
+									CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),finalAmount)+", after the house took a cut of "+
+									CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),houseCut)+".",data.getAuctionedItem().Name());
+							/*
+							 * CMLib.coffeeShops().auctionNotify(data.getHighBidderM(),
+									"You won the auction for "+data.getAuctioningI().name()+" for "+
+									CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),data.getBid())+
+									".  The difference from your high bid ("+
+									CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),data.getHighBid()-data.getBid())+
+									") has been returned to you along with the winning item.",data.getAuctioningI().Name());
+							*/
 							if((data.getHighBid()-data.getBid())>0.0)
-								CMLib.commands().postSay(this,mob,L("Congratulations, and here is your @x1 in change as well.",CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),data.getHighBid()-data.getBid())),true,false);
+							{
+								CMLib.commands().postSay(this,mob,L("Congratulations, and here is your @x1 in change as well.",
+									CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),data.getHighBid()-data.getBid())),true,false);
+							}
 							else
 								CMLib.commands().postSay(this,mob,L("Congratulations!"),true,false);
 							CMLib.coffeeShops().returnMoney(mob,data.getCurrency(),data.getHighBid()-data.getBid());
@@ -657,7 +671,11 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 							final double houseCut=Math.floor(data.getBuyOutPrice()*aRates.timedFinalCutPct());
 							final double finalAmount=data.getBuyOutPrice()-houseCut;
 							CMLib.coffeeShops().returnMoney(data.getAuctioningMob(),data.getCurrency(),finalAmount);
-							CMLib.coffeeShops().auctionNotify(data.getAuctioningMob(),"Your auction for "+data.getAuctionedItem().name()+" sold to "+mob.Name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),data.getBuyOutPrice())+", after the house took a cut of "+CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),houseCut)+".",data.getAuctionedItem().Name());
+							CMLib.coffeeShops().auctionNotify(data.getAuctioningMob(),"Your auction for "+
+								data.getAuctionedItem().name()+" sold to "+mob.Name()+" for "+
+								CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),data.getBuyOutPrice())+
+								", after the house took a cut of "+CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),houseCut)+
+								".",data.getAuctionedItem().Name());
 							CMLib.beanCounter().subtractMoney(mob,data.getCurrency(),data.getBuyOutPrice());
 							CMLib.coffeeShops().purchaseItems(data.getAuctionedItem(),new XVector<Environmental>(data.getAuctionedItem()),this,mob);
 							CMLib.database().DBDeleteJournal(auctionHouse(),data.getAuctionDBKey());
@@ -698,7 +716,8 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 							final Triad<String,Double,Long> bidAmts=CMLib.english().parseMoneyStringSDL(mob,bidStr,data.getCurrency());
 							if(bidAmts==null)
 							{
-								CMLib.commands().postSay(this,mob,L("I can't accept '@x1' as a bid.  This auction is in @x2.",bidStr,CMLib.beanCounter().getDenominationName(data.getCurrency())),true,false);
+								CMLib.commands().postSay(this,mob,L("I can't accept '@x1' as a bid.  This auction is in @x2.",bidStr,
+									CMLib.beanCounter().getDenominationName(data.getCurrency())),true,false);
 								return;
 							}
 							final String myCurrency=bidAmts.first;
