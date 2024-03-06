@@ -2679,7 +2679,8 @@ public class Modify extends StdCommand
 			Object O=null;
 			final Map<Long,String> j=CMSecurity.getApprovedJScriptTable();
 			boolean somethingFound=false;
-			for(final Long L : j.keySet())
+			final List<Long> todoKeys = new XArrayList<Long>(j.keySet());
+			for(final Long L : todoKeys)
 			{
 				O=j.get(L);
 				if(!CMLib.players().playerExists(O.toString()))
