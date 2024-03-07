@@ -347,7 +347,38 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						continue;
 					}
 				}
-				final List<String> curSet=CMParms.parseAny(oldVal,delimiter,true);
+				final List<String> curSet;
+				if((prefix2!=null)&&prefix2.equals("("))
+				{
+					curSet = new ArrayList<String>();
+					int parDepth = 0;
+					int start=0;
+					for(int o=0;o<oldVal.length();o++)
+					{
+						if((oldVal.charAt(o)==delimiter)
+						&&(parDepth == 0))
+						{
+							final String val = oldVal.substring(start,o).trim();
+							if(val.length()>0)
+								curSet.add(val);
+							start=o+1;
+						}
+						else
+						if(oldVal.charAt(o)=='(')
+							parDepth++;
+						else
+						if(oldVal.charAt(o)==')')
+							parDepth--;
+					}
+					if(start<oldVal.length())
+					{
+						final String val = oldVal.substring(start).trim();
+						if(val.length()>0)
+							curSet.add(val);
+					}
+				}
+				else
+					curSet=CMParms.parseAny(oldVal,delimiter,true);
 				String oldOne=null;
 				for(final String c : curSet)
 				{
@@ -358,7 +389,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					for(final String c : curSet)
 					{
-						if(c.toLowerCase().startsWith((oldOne+prefix2).toLowerCase()))
+						if(c.toLowerCase().startsWith((newName+prefix2).toLowerCase()))
 							oldOne=c;
 					}
 				}
