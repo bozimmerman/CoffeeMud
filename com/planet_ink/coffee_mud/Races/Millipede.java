@@ -185,6 +185,7 @@ public class Millipede extends StdRace
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 	}
 
 	@Override

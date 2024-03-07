@@ -85,6 +85,13 @@ public class Badger extends Mustelid
 	}
 
 	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
+	}
+
+	@Override
 	public String healthText(final MOB viewer, final MOB mob)
 	{
 		final double pct = (CMath.div(mob.curState().getHitPoints(), mob.maxState().getHitPoints()));
