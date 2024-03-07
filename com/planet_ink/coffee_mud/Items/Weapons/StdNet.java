@@ -129,6 +129,7 @@ public class StdNet extends StdWeapon
 					final Ability A=CMClass.getAbility("Thief_Bind");
 					if(A!=null)
 					{
+						A.setMiscText(""); // defaults
 						A.setAffectedOne(this);
 						A.invoke(msg.source(),M2,true,phyStats().level());
 					}

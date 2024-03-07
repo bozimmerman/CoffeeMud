@@ -120,7 +120,7 @@ public class Thief_Bind extends ThiefSkill
 	public int			amountRemaining	= 1000;
 	public String		ropeName		= "the ropes";
 	protected boolean	sit				= false;
-	protected boolean	allowBreak		= false;
+	protected boolean	allowBreak		= true;
 
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)

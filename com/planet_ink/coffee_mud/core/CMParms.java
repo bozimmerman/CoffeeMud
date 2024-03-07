@@ -1971,7 +1971,7 @@ public class CMParms
 				}
 				else
 				if(errors != null)
-					errors.add("Illegal parameter starts at: "+str.substring(x));
+					errors.add("Illegal parameter starts at: "+str.substring(startParm));
 			}
 		}
 		if((lastParm!=null)&&(lastEQ>0))
