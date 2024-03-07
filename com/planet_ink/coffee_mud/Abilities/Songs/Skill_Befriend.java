@@ -295,6 +295,26 @@ public class Skill_Befriend extends BardSkill
 			return false;
 		}
 
+		final String raceReq = CMParms.getParmStr(text(), "RACE", "");
+		final String raceCat = CMParms.getParmStr(text(), "RACECAT", "");
+		if(raceReq.length()>0)
+		{
+			if(!target.charStats().getMyRace().ID().equalsIgnoreCase(raceReq))
+			{
+				failureTell(mob,target,auto,L("<S-NAME> is not a @x1.",raceReq.toLowerCase()));
+				return false;
+			}
+		}
+		else
+		if(raceCat.length()>0)
+		{
+			if(!target.charStats().getMyRace().racialCategory().equalsIgnoreCase(raceCat))
+			{
+				failureTell(mob,target,auto,L("<S-NAME> is not a @x1.",raceCat.toLowerCase()));
+				return false;
+			}
+		}
+		else
 		if(!target.charStats().getMyRace().racialCategory().equals(mob.charStats().getMyRace().racialCategory()))
 		{
 			failureTell(mob,target,auto,L("<S-NAME> is not a fellow @x1.",mob.charStats().getMyRace().racialCategory()));
