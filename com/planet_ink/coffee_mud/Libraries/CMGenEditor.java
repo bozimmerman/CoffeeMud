@@ -2730,7 +2730,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		}
 		String c="Q";
-		final String commandStr="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()=+-";
+		final String commandStr="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()=+-[]{}|_;:<>,.?/";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!c.equals("\n")))
 		{
 			for(final int i : CharStats.CODES.ALLCODES())
