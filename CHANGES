@@ -13,6 +13,7 @@
  12. New Zappermask: +-DOMAIN
  13. Thin Areas will now develop their correct area stats eventually
  14. Can now modify GenAbility IDs, and create new ones based on existing ones.
+ 15. Regeneration property now has many finer controls
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

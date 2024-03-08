@@ -112,6 +112,126 @@ public class Regeneration extends StdAbility implements HealthCondition
 		return "Possesses regenerative cells.";
 	}
 
+	protected static enum RecType
+	{
+		BURST,
+		HEALTH,
+		HITS,
+		MANA,
+		MOVE
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Triad<RecType,Integer,int[]>[] tickChanges = new Triad[0];
+	protected Set<String> weapExceptions = Collections.synchronizedSet(new HashSet<String>());
+	protected int weapMinLevel			= -1;
+
+	public boolean recoverTick(final MOB M)
+	{
+		if((M==null)||(tickChanges.length==0))
+			return false;
+		boolean changed = false;
+		for(final Triad<RecType,Integer,int[]> typ : tickChanges)
+		{
+			final int[] td;
+			synchronized(typ.third)
+			{
+				td = typ.third;
+			}
+			if(--td[0] > 0)
+				continue;
+			td[0] = td[1];
+			if((td.length==3) && (td[2] == 1))
+			{
+				final int val = typ.second.intValue();
+				switch(typ.first)
+				{
+				case BURST:
+				case HEALTH:
+					if(M.curState().getHitPoints()<M.maxState().getHitPoints())
+						changed = !M.curState().adjHitPoints(val, M.maxState()) || changed;
+					changed = !M.curState().adjMana(val, M.maxState()) || changed;
+					changed = !M.curState().adjMovement(val, M.maxState()) || changed;
+					break;
+				case HITS:
+					if(M.curState().getHitPoints()<M.maxState().getHitPoints())
+						changed = !M.curState().adjHitPoints(val, M.maxState()) || changed;
+					break;
+				case MANA:
+					changed = !M.curState().adjMana(val, M.maxState()) || changed;
+					break;
+				case MOVE:
+					changed = !M.curState().adjMovement(val, M.maxState()) || changed;
+					break;
+				default:
+					break;
+				}
+			}
+			else
+			{
+				switch(typ.first)
+				{
+				case BURST:
+					for(int i2=0;i2<typ.second.intValue();i2++)
+					{
+						M.tick(M,Tickable.TICKID_MOB);
+						changed=true;
+					}
+					break;
+				case HEALTH:
+					for(int i2=0;i2<typ.second.intValue();i2++)
+					{
+						if(M.curState().getHitPoints()<M.maxState().getHitPoints())
+							changed = CMLib.combat().recoverTick(M) || changed;
+					}
+					break;
+				case HITS:
+				{
+					if(M.curState().getHitPoints()<M.maxState().getHitPoints())
+					{
+						final int oldMana=M.curState().getMana();
+						final int oldMove=M.curState().getMovement();
+						for(int i2=0;i2<RecType.HITS.ordinal();i2++)
+							changed = CMLib.combat().recoverTick(M);
+						M.curState().setMana(oldMana);
+						M.curState().setMovement(oldMove);
+					}
+					break;
+				}
+				case MANA:
+				{
+					if(M.curState().getMana() < M.maxState().getMana())
+					{
+						final int oldHP=M.curState().getHitPoints();
+						final int oldMove=M.curState().getMovement();
+						for(int i2=0;i2<RecType.MANA.ordinal();i2++)
+							CMLib.combat().recoverTick(M);
+						M.curState().setHitPoints(oldHP);
+						M.curState().setMovement(oldMove);
+					}
+					break;
+				}
+				case MOVE:
+				{
+					if(M.curState().getMovement() < M.maxState().getMovement())
+					{
+						final int oldMana=M.curState().getMana();
+						final int oldHP=M.curState().getHitPoints();
+						for(int i2=0;i2<RecType.MOVE.ordinal();i2++)
+							CMLib.combat().recoverTick(M);
+						M.curState().setMana(oldMana);
+						M.curState().setHitPoints(oldHP);
+					}
+					break;
+				}
+				default:
+					break;
+				}
+			}
+		}
+		return changed;
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -130,12 +250,89 @@ public class Regeneration extends StdAbility implements HealthCondition
 			return true;
 
 		boolean doneAnything=false;
-		doneAnything=doneAnything||mob.curState().adjHitPoints((int)Math.round(CMath.div(mob.phyStats().level(),2.0)),mob.maxState());
-		doneAnything=doneAnything||mob.curState().adjMana(mob.phyStats().level()*2,mob.maxState());
-		doneAnything=doneAnything||mob.curState().adjMovement(mob.phyStats().level()*3,mob.maxState());
+		if(tickChanges.length==0)
+		{
+			if(mob.curState().getHitPoints()<mob.maxState().getHitPoints())
+				doneAnything=doneAnything||mob.curState().adjHitPoints((int)Math.round(CMath.div(mob.phyStats().level(),2.0)),mob.maxState());
+			doneAnything=doneAnything||mob.curState().adjMana(mob.phyStats().level()*2,mob.maxState());
+			doneAnything=doneAnything||mob.curState().adjMovement(mob.phyStats().level()*3,mob.maxState());
+		}
+		else
+			doneAnything = this.recoverTick(mob);
 		if(doneAnything)
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> regenerate(s)."));
 		return true;
+	}
+
+	@Override
+	public void setMiscText(final String parameters)
+	{
+		super.setMiscText(parameters);
+		this.weapExceptions.clear();
+		weapMinLevel=-1;
+		if(parameters == null)
+			return;
+		for(int i=0;i<parameters.length();i++)
+		{
+			if(parameters.charAt(i)=='+')
+			{
+				final int x = parameters.indexOf(' ',i+1);
+				final String word = ((x>i)?parameters.substring(i+1,x):parameters.substring(x+1)).toUpperCase().trim();
+				if(word.startsWith("LEVEL"))
+				{
+					weapMinLevel = CMath.s_int(word.substring(5).trim());
+					i = i + word.length();
+				}
+				else
+				if(word.equals("MAGIC")
+				||(CMParms.indexOf(Weapon.TYPE_DESCS, word)>=0)
+				||(RawMaterial.CODES.FIND_IgnoreCase(word)>=0))
+				{
+					this.weapExceptions.add(word);
+					i = i + word.length();
+				}
+			}
+		}
+		final List<Triad<RecType,Integer,int[]>> lst = new ArrayList<Triad<RecType,Integer,int[]>>();
+		for(final RecType r : RecType.values())
+		{
+			String val = CMParms.getParmStr(parameters, r.name(), "").trim();
+			if(val.length()>0)
+			{
+				boolean abs = false;
+				if(((val.charAt(0)=='+') || (val.charAt(0)=='-'))
+				&&(val.length()>1))
+				{
+					val=val.substring(1);
+					abs=true;
+				}
+				if(Character.isDigit(val.charAt(0)))
+				{
+					int valn;
+					int ticks = 1;
+					final int x=val.indexOf('/');
+					if(x>0)
+					{
+						valn = CMath.s_int(val.substring(0,x).trim());
+						ticks = CMath.s_int(val.substring(x+1).trim());
+					}
+					else
+						valn  = CMath.s_int(val);
+					if(valn != 0)
+					{
+						if(abs)
+							lst.add(new Triad<RecType,Integer,int[]>(r,Integer.valueOf(valn),new int[] {ticks, ticks, 0}));
+						else
+							lst.add(new Triad<RecType,Integer,int[]>(r,Integer.valueOf(valn),new int[] {ticks, ticks}));
+					}
+				}
+				else
+					Log.errOut("Unknown val '"+val+"' on FasterRecovery");
+			}
+		}
+		@SuppressWarnings("unchecked")
+		final Triad<RecType,Integer,int[]>[] ch = new Triad[lst.size()];
+		tickChanges = lst.toArray(ch);
 	}
 
 	@Override
@@ -155,34 +352,17 @@ public class Regeneration extends StdAbility implements HealthCondition
 			if((msg.amITarget(M))
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.tool()!=null)
-			&&(text().length()>0))
+			&&((weapExceptions.size()>0)||(weapMinLevel>=0)))
 			{
-				final String text=text().toUpperCase();
 				boolean hurts=false;
 				if(msg.tool() instanceof Weapon)
 				{
 					final Weapon W=(Weapon)msg.tool();
-					int x=text.indexOf(Weapon.TYPE_DESCS[W.weaponDamageType()]);
-					if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
-						hurts=true;
+					hurts = this.weapExceptions.contains(Weapon.TYPE_DESCS[W.weaponDamageType()]);
 					if(CMLib.flags().isABonusItems(W))
-					{
-						x=text.indexOf("MAGIC");
-						if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
-							hurts=true;
-					}
-					x=text.indexOf("LEVEL");
-					if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
-					{
-						String lvl=text.substring(x+5);
-						if(lvl.indexOf(' ')>=0)
-							lvl=lvl.substring(lvl.indexOf(' '));
-						if(W.phyStats().level()>=CMath.s_int(lvl))
-							hurts=true;
-					}
-					x=text.indexOf(RawMaterial.CODES.NAME(W.material()));
-					if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
-						hurts=true;
+						hurts = hurts || this.weapExceptions.contains("MAGIC");
+					hurts = hurts || (W.phyStats().level()>=weapMinLevel);
+					hurts = hurts || this.weapExceptions.contains(RawMaterial.CODES.NAME(W.material()));
 				}
 				else
 				if(msg.tool() instanceof Ability)
@@ -194,11 +374,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 					case Ability.ACODE_PRAYER:
 					case Ability.ACODE_CHANT:
 					case Ability.ACODE_SONG:
-						{
-							final int x=text.indexOf("MAGIC");
-							if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
-								hurts=true;
-						}
+						hurts = hurts || this.weapExceptions.contains("MAGIC");
 						break;
 					default:
 						break;

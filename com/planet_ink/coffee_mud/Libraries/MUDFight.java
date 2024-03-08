@@ -1047,7 +1047,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void recoverTick(final MOB mob)
+	public boolean recoverTick(final MOB mob)
 	{
 		if((mob!=null)
 		&&(!mob.isInCombat()))
@@ -1064,7 +1064,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if((A instanceof Boardable)
 				&&(((Boardable)A).getBoardableItem() instanceof Combatant)
 				&&(((Combatant)((Boardable)A).getBoardableItem()).isInCombat()))
-					return;
+					return false;
 
 				final Rideable riding=mob.riding();
 				final boolean isSleeping=CMLib.flags().isSleeping(mob);
@@ -1083,22 +1083,23 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					isFlying?1.0:0.0,
 					isSwimming?1.0:0.0
 				};
+				boolean changed = false;
 				final double hpGain = CMath.parseMathExpression(stateHitPointRecoverFormula, vals, 0.0);
 
 				if((hpGain>0)&&(!CMLib.flags().isGolem(mob)))
-					curState.adjHitPoints((int)Math.round(hpGain),maxState);
+					changed = !curState.adjHitPoints((int)Math.round(hpGain),maxState) || changed;
 
 				vals[0]=((charStats.getStat(CharStats.STAT_INTELLIGENCE)+charStats.getStat(CharStats.STAT_WISDOM)));
 				final double manaGain = CMath.parseMathExpression(stateManaRecoverFormula, vals, 0.0);
 
 				if(manaGain>0)
-					curState.adjMana((int)Math.round(manaGain),maxState);
+					changed = !curState.adjMana((int)Math.round(manaGain),maxState) || changed;
 
 				vals[0]=charStats.getStat(CharStats.STAT_STRENGTH);
 				final double moveGain = CMath.parseMathExpression(this.stateMovesRecoverFormula, vals, 0.0);
 
 				if(moveGain>0)
-					curState.adjMovement((int)Math.round(moveGain),maxState);
+					changed = !curState.adjMovement((int)Math.round(moveGain),maxState) || changed;
 
 				if(((hpGain>0)||(manaGain>0)||(moveGain>0))
 				&&(!isSleeping)
@@ -1106,8 +1107,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				&&(!CMSecurity.isDisabled(DisFlag.FATIGUE))
 				&&(!mob.charStats().getMyRace().infatigueable()))
 					mob.curState().adjFatigue(Math.round(CMProps.getTickMillis()), mob.maxState());
+				return changed;
 			}
 		}
+		return false;
 	}
 
 	@Override
