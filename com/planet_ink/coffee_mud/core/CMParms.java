@@ -2286,6 +2286,11 @@ public class CMParms
 						parmName=str.substring(start,x).toUpperCase().trim();
 					else
 						parmName=str.substring(start,x).trim();
+					if(c == '\n')
+					{
+						if(parmName.length()>0)
+							h.add(parmName, "");
+					}
 					state=5;
 					start=x;
 				}
