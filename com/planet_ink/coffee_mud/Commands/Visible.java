@@ -95,7 +95,16 @@ public class Visible extends StdCommand
 		}
 		else
 		for(int v=0;v<V.size();v++)
-			V.get(v).unInvoke();
+		{
+			final Ability revokeThisA = V.get(v);
+			final Ability unInvA = CMClass.getAbility("Skill_Revoke");
+			final CMMsg msg=CMClass.getMsg(mob,null,unInvA,CMMsg.MSG_THINK,null,revokeThisA.name(),mob.name());
+			if(mob.location().okMessage(mob,msg))
+			{
+				mob.location().send(mob,msg);
+				revokeThisA.unInvoke();
+			}
+		}
 		mob.location().recoverRoomStats();
 		mob.location().recoverRoomStats();
 		return false;
