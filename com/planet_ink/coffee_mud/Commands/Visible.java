@@ -91,7 +91,7 @@ public class Visible extends StdCommand
 		if(V.size()==0)
 		{
 			if(!didSomething)
-			mob.tell(L("You are not invisible or hidden!"));
+				mob.tell(L("You are not invisible or hidden!"));
 		}
 		else
 		{
