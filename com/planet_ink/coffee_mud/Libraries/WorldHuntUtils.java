@@ -996,7 +996,13 @@ public class WorldHuntUtils extends StdLibrary implements WorldHuntLibrary
 			if(ownerR == here)
 				return true;
 			final Area A = ((Room)ownerR).getArea();
-			return (A instanceof Boardable)&&(((Boardable)A).getBoardableItem().owner()==here);
+			if(A instanceof Boardable)
+			{
+				final Boardable B = (Boardable)A;
+				final Item I = B.getBoardableItem();
+				if(I!=null)
+					return (I.owner()==here);
+			}
 		}
 		return false;
 	}
