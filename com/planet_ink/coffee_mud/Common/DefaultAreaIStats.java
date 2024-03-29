@@ -375,15 +375,25 @@ public class DefaultAreaIStats implements AreaIStats
 								Log.debugOut("Unknown roomID building '"+areaA.Name()+"' istats: "+roomID);
 							else
 							{
-								CMLib.database().DBReadContent(roomID,R,false);
-								CMLib.threads().unTickAll(R);
-								buildAreaIRoomStats(wkDat,R);
-								if(R instanceof GridLocale)
+								try
 								{
-									for(final Room gR : ((GridLocale)R).getAllRooms())
-										buildAreaIRoomStats(wkDat,gR);
+									CMLib.database().DBReadContent(roomID,R,false);
+									CMLib.threads().unTickAll(R);
+									buildAreaIRoomStats(wkDat,R);
+									if(R instanceof GridLocale)
+									{
+										for(final Room gR : ((GridLocale)R).getAllRooms())
+											buildAreaIRoomStats(wkDat,gR);
+									}
 								}
-								R.destroy();
+								catch(final Exception e)
+								{
+									Log.errOut(e);
+								}
+								finally
+								{
+									R.destroy();
+								}
 							}
 							CMLib.threads().scheduleRunnable(this, 10+(System.currentTimeMillis()-startTime));
 						}
