@@ -50,11 +50,11 @@ public class WaterCurrents extends ActiveTicker
 		return Behavior.CAN_ROOMS | Behavior.CAN_AREAS;
 	}
 
-	protected static String DEFAULT_MINCOMING_MSG = "<S-NAME> <S-IS-ARE> swept in from @x1 by the current."; 
-	protected static String DEFAULT_MOUTGOING_MSG = "<S-NAME> <S-IS-ARE> swept @x1 by the current."; 
-	protected static String DEFAULT_IINCOMING_MSG = "@x2 is swept in from @x1 by the current."; 
-	protected static String DEFAULT_IOUTGOING_MSG = "@x2 is swept @x1 by the current."; 
-	
+	protected static String DEFAULT_MINCOMING_MSG = "<S-NAME> <S-IS-ARE> swept in from @x1 by the current.";
+	protected static String DEFAULT_MOUTGOING_MSG = "<S-NAME> <S-IS-ARE> swept @x1 by the current.";
+	protected static String DEFAULT_IINCOMING_MSG = "@x2 is swept in from @x1 by the current.";
+	protected static String DEFAULT_IOUTGOING_MSG = "@x2 is swept @x1 by the current.";
+
 	protected String	dirs	= "";
 	protected boolean	doBoats = false;
 	protected String	minMsg	= DEFAULT_MINCOMING_MSG;
@@ -95,6 +95,16 @@ public class WaterCurrents extends ActiveTicker
 		else
 			this.ioutMsg = CMStrings.replaceAll(CMStrings.replaceAll(this.moutMsg, "<S-NAME>", "@x2"),"<S-IS-ARE>","is");
 		parms.remove("OUTMSG");
+		final String go = parms.get("GO");
+		if(go != null)
+		{
+			for(final String goDir : CMParms.parse(go))
+			{
+				final int dir=CMLib.directions().getGoodDirectionCode(goDir);
+				if(dir>=0)
+					dirs=dirs+CMLib.directions().getDirectionChar(dir);
+			}
+		}
 		for(final String key : parms.keySet())
 		{
 			final int dir=CMLib.directions().getGoodDirectionCode(key);
