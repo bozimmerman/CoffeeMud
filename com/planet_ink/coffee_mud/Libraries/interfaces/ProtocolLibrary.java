@@ -234,6 +234,7 @@ public interface ProtocolLibrary extends CMLibrary
 		char_items_inv, // means they want updates, dude
 		char_items_contents,
 		char_skills_get,
+		char_effects_get,
 		group,
 		room_info, // means they want room.wrongdir and room.enter
 		room_items_inv,

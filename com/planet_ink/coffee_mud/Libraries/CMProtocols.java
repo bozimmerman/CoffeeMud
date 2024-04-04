@@ -1619,7 +1619,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	protected String getAbilityGroupName(final int code)
 	{
 		return Ability.ACODE.DESCS.get(code&Ability.ALL_ACODES).toLowerCase()+
-				"-"+Ability.DOMAIN.DESCS.get((code&Ability.ALL_DOMAINS)<<5).toLowerCase();
+				"-"+Ability.DOMAIN.DESCS.get((code&Ability.ALL_DOMAINS)>>5).toLowerCase();
 	}
 
 	protected void resetMsdpConfigurable(final Session session, final String var, final Map<Object,Object> reportables)
@@ -1827,7 +1827,21 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		for(int a=0;a<mob.numAllAbilities();a++)
 		{
 			final Ability A=mob.fetchAbility(a);
-			final Integer I=Integer.valueOf(A.abilityCode());
+			final Integer I=Integer.valueOf(A.classificationCode());
+			if(!allMyGroups.containsKey(I))
+				allMyGroups.put(I, new LinkedList<Ability>());
+			allMyGroups.get(I).add(A);
+		}
+		return allMyGroups;
+	}
+
+	protected Map<Integer,List<Ability>> getEffectGroups(final MOB mob)
+	{
+		final Map<Integer,List<Ability>> allMyGroups=new TreeMap<Integer,List<Ability>>();
+		for(int a=0;a<mob.numAllEffects();a++)
+		{
+			final Ability A=mob.fetchEffect(a);
+			final Integer I=Integer.valueOf(A.classificationCode());
 			if(!allMyGroups.containsKey(I))
 				allMyGroups.put(I, new LinkedList<Ability>());
 			allMyGroups.get(I).add(A);
@@ -2064,9 +2078,11 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					if(mob != null)
 					{
 						final Room R=mob.location();
-						if((R!=null) && (json != null))
+						if(json!=null)
+							json=json.getCheckedJSONObject("root");
+						if((json != null)&&(mob!=null)&&(R!=null))
 						{
-							final long hashCode = json.getCheckedLong("root").hashCode();
+							final long hashCode = json.getCheckedLong("id").hashCode();
 							final StringBuilder doc=new StringBuilder("room.items.list {");
 							doc.append("\"location\":\""+hashCode+"\",");
 							doc.append("\"items\":[");
@@ -2184,38 +2200,37 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 				case char_items_contents:
 				{
-					if(mob != null)
+					if(json!=null)
+						json=json.getCheckedJSONObject("root");
+					if((json != null)&&(mob!=null))
 					{
-						if(json != null)
+						final long hashCode = json.getCheckedLong("id").hashCode();
+						final StringBuilder doc=new StringBuilder("char.items.list {");
+						doc.append("\"location\":\""+hashCode+"\",");
+						doc.append("\"items\":[");
+						boolean comma=false;
+						for(int i=0;i<mob.numItems();i++)
 						{
-							final long hashCode = json.getCheckedLong("root").hashCode();
-							final StringBuilder doc=new StringBuilder("char.items.list {");
-							doc.append("\"location\":\""+hashCode+"\",");
-							doc.append("\"items\":[");
-							boolean comma=false;
-							for(int i=0;i<mob.numItems();i++)
+							final Item I=mob.getItem(i);
+							if((I!=null)
+							&&(I.container()!=null)
+							&&(CMath.abs(I.container().hashCode())==hashCode))
 							{
-								final Item I=mob.getItem(i);
-								if((I!=null)
-								&&(I.container()!=null)
-								&&(CMath.abs(I.container().hashCode())==hashCode))
-								{
-									if(comma)
-										doc.append(",");
-									comma=true;
-									doc.append("{");
-									doc.append("\"id\":").append(CMath.abs(I.hashCode())).append(",");
-									doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\"");
-									final String attribs = makeGMCPAttribs(I);
-									if(attribs.length()>0)
-										doc.append(",\"attrib\":\"").append(attribs.toString()).append("\"");
-									doc.append("}");
-								}
+								if(comma)
+									doc.append(",");
+								comma=true;
+								doc.append("{");
+								doc.append("\"id\":").append(CMath.abs(I.hashCode())).append(",");
+								doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\"");
+								final String attribs = makeGMCPAttribs(I);
+								if(attribs.length()>0)
+									doc.append(",\"attrib\":\"").append(attribs.toString()).append("\"");
+								doc.append("}");
 							}
-							doc.append("]");
-							doc.append("}");
-							return doc.toString();
 						}
+						doc.append("]");
+						doc.append("}");
+						return doc.toString();
 					}
 					break;
 				}
@@ -2491,6 +2506,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					}
 					break;
 				case char_skills_get:
+				case char_effects_get:
 					if(json!=null)
 						json=json.getCheckedJSONObject("root");
 					if((json != null)&&(mob!=null))
@@ -2505,8 +2521,18 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						&&(group.length()>0)
 						&&((name==null)||(name.length()==0)))
 						{
-							final Map<Integer,List<Ability>> allMyGroups=getSkillGroups(mob);
-							final StringBuilder doc=new StringBuilder("char.skills.list {");
+							final Map<Integer,List<Ability>> allMyGroups;
+							final StringBuilder doc;
+							if(cmd == GMCPCommand.char_effects_get)
+							{
+								allMyGroups=getEffectGroups(mob);
+								doc = new StringBuilder("char.effects.list {");
+							}
+							else
+							{
+								allMyGroups=getSkillGroups(mob);
+								doc = new StringBuilder("char.skills.list {");
+							}
 							for(final Integer grp : allMyGroups.keySet())
 							{
 								final String groupName=this.getAbilityGroupName(grp.intValue());
@@ -2525,10 +2551,21 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						}
 						if((group != null)&&(group.length()>0)&&(name!=null)&&(name.length()!=0))
 						{
-							final StringBuilder doc=new StringBuilder("char.skills.info {");
-							for(int a=0;a<mob.numAllAbilities();a++)
+							final StringBuilder doc;
+							final Enumeration<Ability> enuA;
+							if(cmd == GMCPCommand.char_effects_get)
 							{
-								final Ability A=mob.fetchAbility(a);
+								doc=new StringBuilder("char.effects.info {");
+								enuA = mob.effects();
+							}
+							else
+							{
+								doc=new StringBuilder("char.skills.info {");
+								enuA = mob.allAbilities();
+							}
+							for(;enuA.hasMoreElements();)
+							{
+								final Ability A=enuA.nextElement();
 								if((A!=null)&&(A.name().toLowerCase().equals(name)))
 								{
 									doc.append("\"group\":\""+MiniJSON.toJSONString(getAbilityGroupName(A.abilityCode()))+"\",");
@@ -2542,8 +2579,18 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						}
 						else
 						{
-							final StringBuilder doc=new StringBuilder("char.skills.groups [");
-							final Map<Integer,List<Ability>> allMyGroups=getSkillGroups(mob);
+							final StringBuilder doc;
+							final Map<Integer,List<Ability>> allMyGroups;
+							if(cmd == GMCPCommand.char_effects_get)
+							{
+								doc=new StringBuilder("char.effects.groups [");
+								allMyGroups=getEffectGroups(mob);
+							}
+							else
+							{
+								doc=new StringBuilder("char.skills.groups [");
+								allMyGroups=getSkillGroups(mob);
+							}
 							if(allMyGroups.size()>0)
 							{
 								for(final Integer grp : allMyGroups.keySet())
