@@ -1313,7 +1313,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						affects.add(A.name());
 				}
 				buf=new ByteArrayOutputStream();
-				buf.write(Session.MSDP_VAR);buf.write(type.toString().getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAR);
+				buf.write(type.toString().getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAL);
 				buf.write(msdpListToMsdpArray(affects.toArray(new String[0])));
 			}
 			break;
@@ -1488,7 +1490,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						final String roomID=CMLib.map().getExtendedRoomID(R2);
 						if(roomID.length()>0)
 						{
-							buf.write(Session.MSDP_VAR);buf.write(CMLib.directions().getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
+							buf.write(Session.MSDP_VAR);
+							buf.write(CMLib.directions().getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
 							buf.write(Session.MSDP_VAL);
 							buf.write(Integer.toString(Math.abs(roomID.hashCode())).getBytes(Session.MSDP_CHARSET));
 						}
@@ -1527,7 +1530,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			{
 				final Room R=M.location();
 				buf=new ByteArrayOutputStream();
-				buf.write(Session.MSDP_VAR);buf.write("EXITS".getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAR);
+				buf.write("EXITS".getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAL);
 				buf.write(Session.MSDP_TABLE_OPEN);
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
@@ -1538,7 +1542,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						final String roomID=CMLib.map().getExtendedRoomID(R2);
 						if(roomID.length()>0)
 						{
-							buf.write(Session.MSDP_VAR);buf.write(CMLib.directions().getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
+							buf.write(Session.MSDP_VAR);
+							buf.write(CMLib.directions().getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
 							buf.write(Session.MSDP_VAL);
 							buf.write(Integer.toString(Math.abs(roomID.hashCode())).getBytes(Session.MSDP_CHARSET));
 						}
