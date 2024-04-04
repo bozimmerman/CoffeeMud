@@ -226,6 +226,7 @@ public class Channel extends StdCommand
 		&&(lfw.equals("last")
 			||("last".startsWith(lfw))
 			||("last".endsWith(lfw))
+			||("previous".startsWith(lfw))
 			||(CMStrings.sameLetterCount("last",lfw))>2))
 		{
 			final long now=System.currentTimeMillis();
@@ -242,7 +243,8 @@ public class Channel extends StdCommand
 			boolean skippedSome=true;
 			final int pageSize=50;
 			final int highestNum=CMLib.channels().getChannelQuePageEnd(channelInt, mob);
-			while((count < num)&&((skippedSome)||((page*pageSize) < (highestNum+2+pageSize))))
+			while((count < num)
+			&&((skippedSome)||((page*pageSize) < (highestNum+2+pageSize))))
 			{
 				page++;
 				skippedSome=false;

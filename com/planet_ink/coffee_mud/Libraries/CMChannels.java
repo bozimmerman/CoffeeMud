@@ -287,7 +287,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			if(backLog.size()<=msgs.size())
 				return msgs;
 
-			for(int i=backLog.size()-msgs.size();i<backLog.size();i++)  // we already have these, so just cut them.
+			final int numRedundantIndex = msgs.size();
+			for(int i=0;i<numRedundantIndex;i++)  // we already have these, so just cut them.
 				backLog.remove(backLog.size()-1);
 
 			final List<ChannelMsg> allMsgs = this.convertBackLogEntries(mob, channel, subNameField, backLog);
