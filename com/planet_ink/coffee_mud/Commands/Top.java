@@ -153,17 +153,17 @@ public class Top extends StdCommand
 		}
 		else
 		{
-			StringBuffer topPlayers=new CMFile(Resources.buildResourcePath("text")+"topplayers.txt",null,CMFile.FLAG_LOGERRORS).text();
+			StringBuffer topAccounts=new CMFile(Resources.buildResourcePath("text")+"topaccounts.txt",null,CMFile.FLAG_LOGERRORS).text();
 			try
 			{
 				final Map<String,String> map=new HashMap<String,String>();
 				map.put("WIDTH", ""+width);
-				topPlayers = CMLib.webMacroFilter().virtualPageFilter(topPlayers,map,new HashMap<String,Object>());
+				topAccounts = CMLib.webMacroFilter().virtualPageFilter(topAccounts,map,new HashMap<String,Object>());
 			}
 			catch(final Exception ex)
 			{
 			}
-			str=topPlayers.toString();
+			str=topAccounts.toString();
 		}
 		if(mob.session()!=null)
 			mob.session().print(str.toString());
