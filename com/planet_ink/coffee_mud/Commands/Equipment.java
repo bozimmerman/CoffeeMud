@@ -337,12 +337,15 @@ public class Equipment extends StdCommand
 					}
 				}
 			}
-			if((allPlaces)&&(strs.get(wC).length()==0))
+			if((allPlaces)
+			&&(strs.get(wC).length()==0))
 			{
 				if(((!paragraphView)&&(wornCode!=Wearable.WORN_FLOATING_NEARBY))
 				||((paragraphView)&&(wornCode!=Wearable.WORN_WIELD)))
+				{
 					for(int i=mob.getWearPositions(wornCode)-1;i>=0;i--)
 						strs.get(wC).append(wornLocHeader+"^?\n\r");
+				}
 			}
 		}
 		final StringBuilder msg = new StringBuilder();
@@ -351,7 +354,11 @@ public class Equipment extends StdCommand
 			final long wornCode=codes.all_ordered()[l];
 			final Long wC = Long.valueOf(wornCode);
 			if(strs.containsKey(wC))
-				msg.append(strs.get(wC));
+			{
+				final StringBuilder str = strs.get(wC);
+				if((!paragraphView)||(CMStrings.removeColors(str.toString()).trim().length()>0))
+					msg.append(str);
+			}
 		}
 		if(msg.length()==0)
 			msg.append(L("^!(nothing)^?\n\r"));

@@ -191,6 +191,7 @@ public class SkyWatcher extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_WarningWinds",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_HealingMoon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_AcidWard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_BreathColor",false);
 
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_DispelLaw",false);
