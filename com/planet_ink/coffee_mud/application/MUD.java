@@ -1024,15 +1024,17 @@ public class MUD extends Thread implements MudHost
 		final CMProps page=CMProps.instance();
 		try
 		{
-			if(page.getBoolean("RUNI3SERVER")&&(tCode==MAIN_HOST)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.I3)))
+			if(page.getBoolean("RUNI3SERVER")
+			&&(tCode==MAIN_HOST)
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.I3)))
 			{
 				if(i3server!=null)
 					I3Server.shutdown();
 				i3server=null;
 				String playstate=page.getStr("MUDSTATE");
-				if((playstate==null)||(playstate.length()==0))
+				if((playstate==null) || (playstate.length()==0))
 					playstate=page.getStr("I3STATE");
-				if((playstate==null)||(!CMath.isInteger(playstate)))
+				if((playstate==null) || (!CMath.isInteger(playstate)))
 					playstate="Development";
 				else
 				switch(CMath.s_int(playstate.trim()))
@@ -1054,15 +1056,23 @@ public class MUD extends Thread implements MudHost
 					break;
 				}
 				final IMudInterface imud=new IMudInterface(CMProps.getVar(CMProps.Str.MUDNAME),
-													 "CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER),
-													 CMLib.mud(0).getPort(),
-													 playstate,
-													 CMLib.channels().getI3ChannelsList());
+														 "CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER),
+														 CMLib.mud(0).getPort(),
+														 playstate,
+														 CMLib.channels().getI3ChannelsList());
 				i3server=new I3Server();
 				int i3port=page.getInt("I3PORT");
 				if(i3port==0)
 					i3port=27766;
-				I3Server.start(CMProps.getVar(CMProps.Str.MUDNAME),i3port,imud);
+				final String routersList = page.getStr("I3ROUTERS");
+				final List<String> routersSepV = CMParms.parseCommas(routersList, true);
+				if(routersSepV.size()>0)
+				{
+					final String mudName = CMProps.getVar(CMProps.Str.MUDNAME);
+					final String adminEmail = CMProps.getVar(CMProps.Str.MUDNAME);
+					final String[] routersArray = routersSepV.toArray(new String[0]);
+					I3Server.start(mudName,i3port,imud,routersArray,adminEmail);
+				}
 			}
 		}
 		catch(final Exception e)

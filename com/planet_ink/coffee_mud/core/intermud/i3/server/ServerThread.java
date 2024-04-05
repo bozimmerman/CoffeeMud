@@ -50,14 +50,20 @@ public class ServerThread implements Tickable
 	private volatile int				tickStatus		= Tickable.STATUS_NOT;
 	private Map<String, ServerObject>	objects;
 	private Map<String, ServerUser>		interactives;
+	private final String				adminEmail;
+	private final String[]				routersList;
 
 	protected ServerThread(final String mname,
 						   final int mport,
-						   final ImudServices imud)
-						   {
-		mud_name = mname;
-		port = mport;
-		intermuds=imud;
+						   final ImudServices imud,
+						   final String[] routersList,
+						   final String adminEmail)
+	{
+		this.mud_name = mname;
+		this.port = mport;
+		this.intermuds=imud;
+		this.routersList = routersList;
+		this.adminEmail = adminEmail;
 	}
 
 	@Override
@@ -195,7 +201,7 @@ public class ServerThread implements Tickable
 
 		try
 		{
-			Intermud.setup(intermuds,
+			Intermud.setup(routersList, adminEmail, intermuds,
 						   (PersistentPeer)Class.forName("com.planet_ink.coffee_mud.core.intermud.i3.IMudPeer").getDeclaredConstructor().newInstance());
 		}
 		catch( final Exception e )

@@ -79,18 +79,21 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * Creates the initial link to an I3 router.
 	 * It will handle subsequent reconnections as needed
 	 * for as long as the mud process is running.
+	 * @param routersList - client list of host:port:service
+	 * @param adminEmail email address of mud admin
 	 * @param imud an instance of the mudlib implementation of com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices
 	 * @param peer and instance of the mudlib implementation of com.planet_ink.coffee_mud.core.intermud.i3.packets.IntermudPeer
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistentPeer
 	 */
-	static public void setup(final ImudServices imud, final PersistentPeer peer)
+	static public void setup(final String[] routersList, final String adminEmail,
+							 final ImudServices imud, final PersistentPeer peer)
 	{
 		if( thread != null )
 		{
 			return;
 		}
-		thread = new Intermud(imud, peer);
+		thread = new Intermud(routersList, adminEmail, imud, peer);
 	}
 
 	/**
@@ -228,35 +231,41 @@ public class Intermud implements Runnable, Persistent, Serializable
 	public List<NameServer>    	name_servers;
 	public int  			   	password;
 	public NameServer		   	currentRouter;
+	public String				adminEmail;
 
 	public Hashtable<String,String>	banned;
 
-	private Intermud(final ImudServices imud, final PersistentPeer p)
+	private Intermud(final String[] routersList, final String adminEmail,
+					 final ImudServices imud, final PersistentPeer p)
 	{
 		super();
-		intermud = imud;
-		peer = p;
-		peer.setPersistent(this);
-		connected = false;
-		password = -1;
-		attempts = 0;
-		input_thread = null;
-		channels = new ChannelList(-1);
-		muds = new MudList(-1);
-		banned = new Hashtable<String,String>();
-		name_servers = new Vector<NameServer>();
-		String s=CMProps.getVar(CMProps.Str.I3ROUTERS);
-		final List<String> V=CMParms.parseCommas(s,true);
-		for(int v=0;v<V.size();v++)
+		this.intermud = imud;
+		this.peer = p;
+		this.peer.setPersistent(this);
+		this.connected = false;
+		this.password = -1;
+		this.attempts = 0;
+		this.input_thread = null;
+		this.channels = new ChannelList(-1);
+		this.muds = new MudList(-1);
+		this.banned = new Hashtable<String,String>();
+		this.adminEmail = adminEmail;
+		this.name_servers = new Vector<NameServer>();
+		for(final String router: routersList)
 		{
-			s=V.get(v);
-			final List<String> V2=CMParms.parseAny(s,':',true);
-			if(V2.size()>=3)
-				name_servers.add(new NameServer(V2.get(0),CMath.s_int(V2.get(1)), V2.get(2)));
+			final List<String> V=CMParms.parseAny(router,':',true);
+			if(V.size()>=3)
+			{
+				final String host = V.get(0);
+				final int port = CMath.s_int(V.get(1));
+				final String service = V.get(2);
+				this.name_servers.add(new NameServer(host, port, service));
+			}
 		}
 		modified = Persistent.UNMODIFIED;
 		try
 		{
+			// make sure name_servers is loaded first, because it MATTERS!
 			restore();
 		}
 		catch( final PersistenceException e )

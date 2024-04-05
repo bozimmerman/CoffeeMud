@@ -69,22 +69,45 @@ public class IMudPeer implements PersistentPeer
 					return;
 
 				final ObjectInputStream in=new ObjectInputStream(new ByteArrayInputStream(F.raw()));
+				Integer passI = null;
+				Hashtable<String,String> banned = null;
+				ChannelList chanL = null;
+				MudList mudL = null;
 				Object newobj;
 				newobj=in.readObject();
 				if(newobj instanceof Integer)
-					((Intermud)myobj).password=((Integer)newobj).intValue();
+					passI=(Integer)newobj;
 				newobj=in.readObject();
 				if(newobj instanceof Hashtable)
-					((Intermud)myobj).banned=(Hashtable<String,String>)newobj;
+					banned=(Hashtable<String,String>)newobj;
 				newobj=in.readObject();
 				if(newobj instanceof ChannelList)
-					((Intermud)myobj).channels=(ChannelList)newobj;
+					chanL=(ChannelList)newobj;
 				newobj=in.readObject();
 				if(newobj instanceof MudList)
-					((Intermud)myobj).muds=(MudList)newobj;
+					mudL=(MudList)newobj;
 				newobj=in.readObject();
 				if(newobj instanceof List)
-				((Intermud)myobj).name_servers=(List<NameServer>)newobj;
+				{
+					final List<NameServer> nlist = (List<NameServer>)newobj;
+					final List<NameServer> olist = ((Intermud)myobj).name_servers;
+					if(olist.size() != nlist.size())
+						return;
+					for(final NameServer o : olist)
+						if(!nlist.contains(o))
+							return;
+					for(final NameServer o : nlist)
+						if(!olist.contains(o))
+							return;
+				}
+				if(passI != null)
+					((Intermud)myobj).password = passI.intValue();
+				if(banned != null)
+					((Intermud)myobj).banned = banned;
+				if(chanL != null)
+					((Intermud)myobj).channels = chanL;
+				if(mudL != null)
+					((Intermud)myobj).muds = mudL;
 			}
 			catch(final Exception e)
 			{

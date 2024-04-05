@@ -46,4 +46,17 @@ public class NameServer implements Serializable
 		port = p;
 		name = nom;
 	}
+
+	@Override
+	public boolean equals(final Object o)
+	{
+		if(o instanceof NameServer)
+		{
+			final NameServer n = (NameServer)o;
+			return n.ip.equalsIgnoreCase(ip)
+					&& n.name.equalsIgnoreCase(name)
+					&& n.port == port;
+		}
+		return false;
+	}
 }
