@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -110,12 +111,30 @@ public class AllQualifyData extends StdWebMacro
 			str.append(s).append(", ");
 		}
 
+		if(parms.containsKey("VISIBILITY"))
+		{
+			String s=httpReq.getUrlParameter("VISIBILITY");
+			if(s==null)
+				s=mapped.secretFlag().name();
+			str.append(s).append(", ");
+		}
+
 		if(parms.containsKey("AUTOGAIN"))
 		{
 			String s=httpReq.getUrlParameter("AUTOGAIN");
 			if(s==null)
 				s=mapped.autoGain()?"on":"";
 			str.append(s.equalsIgnoreCase("on")?"true":"false").append(", ");
+		}
+
+		if(parms.containsKey("SECRET"))
+		{
+			String s=httpReq.getUrlParameter("SECRET");
+			if(s==null)
+				s=mapped.secretFlag().name();
+			for(final SecretFlag flag : SecretFlag.values())
+				str.append("<OPTION VALUE="+flag.name()+" "+(s.equalsIgnoreCase(flag.name())?"SELECTED":"")+">"+flag.name());
+			str.append(", ");
 		}
 
 		if(parms.containsKey("REQUIRES"))

@@ -1038,4 +1038,21 @@ public interface GenericEditor extends CMLibrary
 	 * @throws IOException any i/o errors that occur (socket reset errors usually)
 	 */
 	public Collection<? extends Object> promptEnumChoices(final MOB mob, final Collection<? extends Object> flags, final Object[] values, final int showNumber, final int showFlag, final String fieldDisplayStr) throws IOException;
+
+	/**
+	 * Prompts the given mob for one or more choices from a given enum values
+	 * array.  Returns the choice from the collection.  Uses the standard
+	 * menu interface.
+	 *
+	 * @param mob the player doing the editing
+	 * @param val current value
+	 * @param cs the values to choose from
+	 * @param showNumber the item number of this menu entry
+	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
+	 * @param fieldDisplayStr the prompt display string
+	 * @return the new user value
+	 * @throws IOException any i/o errors that occur (socket reset errors usually)
+	 */
+	@SuppressWarnings("rawtypes")
+	public Enum<? extends Enum> promptEnumChoice(final MOB mob, final Enum<? extends Enum> val, final Enum<? extends Enum>[] cs, final int showNumber, final int showFlag, final String fieldDisplayStr) throws IOException;
 }

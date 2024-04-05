@@ -107,6 +107,25 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		return newFlags;
 	}
 
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Enum<? extends Enum> promptEnumChoice(final MOB mob, final Enum<? extends Enum> val, final Enum<? extends Enum>[] cs, final int showNumber, final int showFlag, final String fieldDisplayStr) throws IOException
+	{
+		final String help=CMParms.toListString(cs);
+		final String oldVal = val.name();
+		while((mob.session()!=null)&&(!mob.session().isStopped()))
+		{
+			final String newVal = CMLib.genEd().prompt(mob, oldVal, showNumber, showFlag, fieldDisplayStr, false, help);
+			if(newVal.equalsIgnoreCase(oldVal)||(newVal==null)||(newVal.length()==0))
+				return val;
+			final Enum<? extends Enum> newEnum= CMath.s_valueOf(val.getClass(), newVal.toUpperCase().trim());
+			if(newEnum != null)
+				return newEnum;
+			mob.tell(L("@x1 is not a proper value, try '@x2'.",newVal,help));
+		}
+		return val;
+	}
+
 	@Override
 	public void promptStatDouble(final MOB mob, final Modifiable E, final int showNumber, final int showFlag, final String fieldDisplayStr, final String field) throws IOException
 	{
@@ -12030,8 +12049,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mapped.qualLevel(prompt(mob,mapped.qualLevel(),++showNumber,showFlag,"Qualifying Level: "));
 			mapped.autoGain(prompt(mob,mapped.autoGain(),++showNumber,showFlag,"Auto-Gained: "));
 			mapped.defaultProficiency(prompt(mob,mapped.defaultProficiency(),++showNumber,showFlag,"Def. Proficiency: "));
+			mapped.secretFlag((SecretFlag)promptEnumChoice(mob, mapped.secretFlag(), SecretFlag.values(), ++showNumber, showFlag, "Visibility"));
 			mapped.extraMask(prompt(mob,mapped.extraMask(),++showNumber,showFlag,"Qualifying Mask (?): ", true, CMLib.masking().maskHelp("\n\r", "disallow")));
-			mapped.originalSkillPreReqList(prompt(mob,mapped.originalSkillPreReqList(),++showNumber,showFlag,"Required Skills (?): ", true, "Space delimited list of Ability IDs.  " +
+			mapped.originalSkillPreReqList(prompt(mob,mapped.originalSkillPreReqList(),++showNumber,showFlag,"Required Skills (?): ", true,
+					"Space delimited list of Ability IDs.  " +
 					"Put a required proficiency level in parenthesis after the Ability ID if desired.  " +
 					"For example: Skill_Write Skill_Trip Skill_Dirt(25) Hunting"));
 			if (showFlag < -900)
@@ -12052,7 +12073,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 		return CMLib.ableMapper().makeAbilityMapping(mapped.abilityID(), mapped.qualLevel(), mapped.abilityID(), mapped.defaultProficiency(), 100, "",
-													 mapped.autoGain(), SecretFlag.PUBLIC, true, CMParms.parseSpaces(mapped.originalSkillPreReqList().trim(), true),
+													 mapped.autoGain(), mapped.secretFlag(), true, CMParms.parseSpaces(mapped.originalSkillPreReqList().trim(), true),
 													 mapped.extraMask(), null);
 	}
 

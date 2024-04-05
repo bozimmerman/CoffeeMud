@@ -78,6 +78,13 @@ public class GrinderAllQualifys
 		s=httpReq.getUrlParameter("AUTOGAIN");
 		if(s!=null)
 			newMap.autoGain(s.equalsIgnoreCase("on"));
+		s=httpReq.getUrlParameter("SECRET");
+		if(s!=null)
+		{
+			final SecretFlag flag = (SecretFlag)CMath.s_valueOf(SecretFlag.class, s);
+			if(flag != null)
+				newMap.secretFlag(flag);
+		}
 		final StringBuilder preReqs=new StringBuilder("");
 		int curChkNum=1;
 		while(httpReq.isUrlParameter("REQABLE"+curChkNum))
@@ -99,7 +106,7 @@ public class GrinderAllQualifys
 		}
 		newMap=CMLib.ableMapper().makeAbilityMapping(newMap.abilityID(),newMap.qualLevel(),newMap.abilityID(),
 													 newMap.defaultProficiency(),100,"",newMap.autoGain(),
-													 SecretFlag.PUBLIC,true,CMParms.parseSpaces(preReqs.toString().trim(), true), 
+													 newMap.secretFlag(),true,CMParms.parseSpaces(preReqs.toString().trim(), true),
 													 newMap.extraMask(),null);
 		map.put(last.toUpperCase().trim(),newMap);
 		CMLib.ableMapper().saveAllQualifysFile(allQualMap);

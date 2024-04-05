@@ -97,6 +97,14 @@
         </TD>
     </TR>
     <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Visibility: </FONT></TD>
+        <TD WIDTH=75%>
+            <SELECT NAME=SECRET>
+                @AllQualifyData?SECRET@
+            </SELECT>
+        </TD>
+    </TR>
+    <TR>
         <TD WIDTH=25%><FONT COLOR=YELLOW>Required Skills: </FONT></TD>
         <TD WIDTH=75%>
             <TABLE WIDTH=100% BORDER=1>

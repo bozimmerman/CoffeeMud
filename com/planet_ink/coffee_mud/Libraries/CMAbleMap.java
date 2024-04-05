@@ -2325,6 +2325,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		final StringBuilder preReqs=new StringBuilder("");
 		final StringBuilder prof=new StringBuilder("");
 		boolean autogain=false;
+		SecretFlag flag = SecretFlag.PUBLIC;
 		if(x<0)
 			abilityID=s;
 		else
@@ -2372,19 +2373,33 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 						break;
 					}
 					else
-					if(cur!=null)
-						cur.append(s.charAt(i));
+					{
+						for(final SecretFlag sf : SecretFlag.values())
+						{
+							if((ss.startsWith(sf.name()+" "))
+							||(ss.startsWith(sf.name()) && (ss.length()==sf.name().length())))
+							{
+								cur=null;
+								flag = sf;
+								i+=sf.name().length();
+								break;
+							}
+						}
+						if(cur != null)
+							cur.append(s.charAt(i));
+					}
 				}
 				else
 				if(cur!=null)
 					cur.append(s.charAt(i));
-				lastC=s.charAt(i);
+				if(i<s.length())
+					lastC=s.charAt(i);
 			}
 		}
 		return
 			makeAbilityMapping(abilityID,qualLevel,abilityID,
 							  CMath.s_int(prof.toString().trim()),
-							  100,"",autogain,SecretFlag.PUBLIC,
+							  100,"",autogain,flag,
 							  true,CMParms.parseSpaces(preReqs.toString().trim(), true),
 							  mask.toString().trim(),null);
 	}
@@ -2543,6 +2558,8 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 					str.append("PROF="+mapped.defaultProficiency()+" ");
 				if(mapped.autoGain())
 					str.append("AUTOGAIN ");
+				if(mapped.secretFlag() != SecretFlag.PUBLIC)
+					str.append(mapped.secretFlag().name()+" ");
 				if((mapped.extraMask()!=null)&&(mapped.extraMask().length()>0))
 					 str.append("MASK=").append(mapped.extraMask()).append(" ");
 				if((mapped.originalSkillPreReqList()!=null)&&(mapped.originalSkillPreReqList().trim().length()>0))

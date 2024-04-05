@@ -12,7 +12,7 @@
     <!--
         function AllQualifyItem(which,action)
         {
-            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=550,alwaysRaised=yes,dependent=yes";
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=600,alwaysRaised=yes,dependent=yes";
             w=window.open("allqualify.cmvp?AUTH=@Authenticate?AUTH@&ALLQUALWHICH="+which+"&ALLQUALID="+action,
                 "All Qualify Item for "+action,strFeatures, false);
         }
@@ -52,11 +52,12 @@
     // all
     <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><H2>Abilities for ALL Classes</H2></FONT></TD></TR>
     <TR>
-    <TD WIDTH=35%><B><FONT COLOR=YELLOW>Skill</FONT></b></TD>
-    <TD WIDTH=10%><B><FONT COLOR=YELLOW>Level</FONT></b></TD>
-    <TD WIDTH=10%><B><FONT COLOR=YELLOW>Auto-Gain</FONT></b></TD>
-    <TD WIDTH=10%><B><FONT COLOR=YELLOW>Def. Proff</FONT></b></TD>
-    <TD WIDTH=30% COLSPAN=2><B><FONT COLOR=YELLOW>Mask</FONT></b></TD>
+    <TD WIDTH=28%><B><FONT COLOR=YELLOW>Skill</FONT></b></TD>
+    <TD WIDTH=8%><B><FONT COLOR=YELLOW>Level</FONT></b></TD>
+    <TD WIDTH=8%><B><FONT COLOR=YELLOW>Auto-Gain</FONT></b></TD>
+    <TD WIDTH=8%><B><FONT COLOR=YELLOW>Visibility</FONT></b></TD>
+    <TD WIDTH=8%><B><FONT COLOR=YELLOW>Def. Proff</FONT></b></TD>
+    <TD WIDTH=40% COLSPAN=2><B><FONT COLOR=YELLOW>Mask</FONT></b></TD>
     </TR>
     @AllQualifyNext?RESET@
     @loop@
@@ -65,6 +66,7 @@
     <TD><a href="javascript:AllQualifyItem('ALL','@RequestParameter?ALLQUALID@')"><FONT COLOR=WHITE>@RequestParameter?ALLQUALID@</FONT></a></TD>
     <TD><FONT COLOR=WHITE>@AllQualifyData?LEVEL&WHICH=ALL@</FONT></TD>
     <TD><FONT COLOR=WHITE>@AllQualifyData?AUTOGAIN&WHICH=ALL@</FONT></TD>
+    <TD><FONT COLOR=WHITE>@AllQualifyData?VISIBILITY&WHICH=ALL@</FONT></TD>
     <TD><FONT COLOR=WHITE>@AllQualifyData?PROF&WHICH=ALL@</FONT></TD>
     <TD COLSPAN=2><FONT COLOR=WHITE>@AllQualifyData?MASK&WHICH=ALL@</FONT></TD>
     </TR>
@@ -86,11 +88,12 @@
     // each
     <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><H2>Abilities for EACH Class</H2></FONT></TD></TR>
     <TR>
-    <TD WIDTH=35%><B><FONT COLOR=YELLOW>Skill</FONT></b></TD>
-    <TD WIDTH=10%><B><FONT COLOR=YELLOW>Level</FONT></b></TD>
-    <TD WIDTH=10%><B><FONT COLOR=YELLOW>Auto-Gain</FONT></b></TD>
-    <TD WIDTH=10%><B><FONT COLOR=YELLOW>Def. Proff</FONT></b></TD>
-    <TD WIDTH=30% COLSPAN=2><B><FONT COLOR=YELLOW>Mask</FONT></b></TD>
+    <TD WIDTH=28%><B><FONT COLOR=YELLOW>Skill</FONT></b></TD>
+    <TD WIDTH=8%><B><FONT COLOR=YELLOW>Level</FONT></b></TD>
+    <TD WIDTH=8%><B><FONT COLOR=YELLOW>Auto-Gain</FONT></b></TD>
+    <TD WIDTH=8%><B><FONT COLOR=YELLOW>Visibility</FONT></b></TD>
+    <TD WIDTH=8%><B><FONT COLOR=YELLOW>Def. Proff</FONT></b></TD>
+    <TD WIDTH=40% COLSPAN=2><B><FONT COLOR=YELLOW>Mask</FONT></b></TD>
     </TR>
     @AllQualifyNext?RESET@
     @loop@
@@ -99,6 +102,7 @@
     <TD><a href="javascript:AllQualifyItem('EACH','@RequestParameter?ALLQUALID@')"><FONT COLOR=WHITE>@RequestParameter?ALLQUALID@</FONT></a></TD>
     <TD><FONT COLOR=WHITE>@AllQualifyData?LEVEL&WHICH=EACH@</FONT></TD>
     <TD><FONT COLOR=WHITE>@AllQualifyData?AUTOGAIN&WHICH=EACH@</FONT></TD>
+    <TD><FONT COLOR=WHITE>@AllQualifyData?VISIBILITY&WHICH=ALL@</FONT></TD>
     <TD><FONT COLOR=WHITE>@AllQualifyData?PROF&WHICH=EACH@</FONT></TD>
     <TD COLSPAN=2><FONT COLOR=WHITE>@AllQualifyData?MASK&WHICH=EACH@</FONT></TD>
     </TR>
