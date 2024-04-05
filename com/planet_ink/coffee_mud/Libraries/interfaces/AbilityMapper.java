@@ -1032,6 +1032,16 @@ public interface AbilityMapper extends CMLibrary
 	public int getMaxProficiency(MOB mob, boolean checkAll, String abilityID);
 
 	/**
+	 * Returns the chance 0-100 that the given mob would gain a point
+	 * of proficiency in ability A at this moment in time.
+	 *
+	 * @param mob the mob who wants to be better
+	 * @param A the ability to be better at
+	 * @return the chance they will get better
+	 */
+	public int getProfGainChance(final MOB mob, final Ability A);
+
+	/**
 	 * Loads the All-Qualifies list from the filesystem.  This is the list that defines particular
 	 * skills that either ALL classes qualify for together.  Things like Skill_Write, or Swim..
 	 * The method takes an optional cache to preserve a loaded map over several sessions.  Otherwise,

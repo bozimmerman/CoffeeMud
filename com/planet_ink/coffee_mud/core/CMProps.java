@@ -260,7 +260,8 @@ public class CMProps extends Properties
 		MSXPVARS,
 		NEWDOMAINS,
 		NEWACODES,
-		PRIDECATS
+		PRIDECATS,
+		FORMULA_PROFGAIN,
 	}
 
 	public final static int DEFAULT_MOB_HP_BASE = 11;
@@ -2964,6 +2965,7 @@ public class CMProps extends Properties
 		setUpLowVar(Str.FORMULA_MAXCARRY, getStr("FORMULA_MAXCARRY","@x1 + ((@x2 + 10.0) * @x2 * @x1 / 150.0) + (@x2 * 5.0)"));
 		setUpLowVar(Str.FORMULA_MAXITEMS, getStr("FORMULA_MAXITEMS","(2 * @x1) + (2 * @x3) + (2 * @x2)"));
 		setUpLowVar(Str.FORMULA_MAXFOLLOW, getStr("FORMULA_MAXFOLLOW","1 + ( ( @x2 - 6.0 ) / 3.0)"));
+		setUpLowVar(Str.FORMULA_PROFGAIN, getStr("FORMULA_PROFGAIN","(100 - (@x3 * 50)) * ( (@x1 + 1 - @x2) / ( (@x1 * 2) + (10 * @x2) ) )"));
 
 		final LanguageLibrary lang = CMLib.lang();
 		Directions.instance().reInitialize(getInt("DIRECTIONS"), new Directions.DirectionWordTranslator()

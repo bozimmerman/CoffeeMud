@@ -63,6 +63,15 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	protected Map<String, Object>	allows  				= new SHashtable<String, Object>();
 	protected List<AbilityMapping>	eachClassSet			= null;
 	protected final Integer[]		costOverrides			= new Integer[AbilCostType.values().length];
+	protected CMath.CompiledFormula	proficiencyGainFormula	= null;
+
+	@Override
+	public boolean activate()
+	{
+		super.activate();
+		proficiencyGainFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_PROFGAIN));
+		return true;
+	}
 
 	@Override
 	public AbilityMapping addCharAbilityMapping(final String ID,
@@ -2801,9 +2810,30 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	}
 
 	@Override
+	public int getProfGainChance(final MOB mob, final Ability A)
+	{
+		final int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,A);
+		final double adjustedChance;
+		if(qualLevel<0)
+			adjustedChance=100.1;
+		else
+		{
+			final int maxLevel=CMProps.get(mob.session()).getInt(CMProps.Int.LASTPLAYERLEVEL);
+			final double[] vars = {
+				maxLevel,
+				qualLevel,
+				(mob.curState().getFatigue() > CharState.FATIGUED_MILLIS) ? 1 : 0
+			};
+			adjustedChance = CMath.parseMathExpression(proficiencyGainFormula, vars, 0.0);
+		}
+		return (int)Math.round(adjustedChance);
+	}
+
+	@Override
 	public void propertiesLoaded()
 	{
 		super.propertiesLoaded();
+		activate();
 		compoundingRulesLoaded=false;
 		loadCompoundingRules();
 	}

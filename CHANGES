@@ -17,6 +17,7 @@
  16. GMCP now supports char.effects.get
  17. New chants: breath color
  18. All Qualifies list now supports secret flag
+ 19. New formula: proficiency gain; see ini file
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.
