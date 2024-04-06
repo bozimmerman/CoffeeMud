@@ -1,5 +1,11 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
+import com.planet_ink.coffee_mud.core.intermud.imc2.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet.PacketType;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
+import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -16,10 +22,12 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.Vector;
 
 /**
- * Copyright (c) 1996 George Reese
+ * Copyright (c) 1996 George Reese, (c) 2024 Bo Zimmerman
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,54 +41,82 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class ChannelAdd extends UserPacket
+public class UserPacket extends Packet
 {
-	public String channel = null;
+	public String		sender_mud	= null;
+	public String		sender_name	= null;
+	public String		target_mud	= null;
+	public String		target_name	= null;
+	public PacketType	type		= null;
 
-	public ChannelAdd()
+	public UserPacket()
 	{
 		super();
-		type = Packet.PacketType.CHANNEL_ADD;
+		sender_mud = I3Server.getMudName();
 	}
 
-	public ChannelAdd(final Vector<?> v) throws InvalidPacketException
-	{
-		super(v);
-		try
-		{
-			type = Packet.PacketType.CHANNEL_ADD;
-			channel = (String)v.elementAt(6);
-		}
-		catch( final ClassCastException e )
-		{
-			throw new InvalidPacketException();
-		}
-	}
-
-	public ChannelAdd(final String chan, final String who)
+	public UserPacket(final Vector<?> v)
 	{
 		super();
-		type = Packet.PacketType.CHANNEL_ADD;
-		channel = chan;
-		sender_name = who;
+		{
+			Object ob;
+
+			ob = v.elementAt(2);
+			if( ob instanceof String )
+			{
+				sender_mud = (String)ob;
+			}
+			ob = v.elementAt(3);
+			if( ob instanceof String )
+			{
+				sender_name = (String)ob;
+			}
+			ob = v.elementAt(4);
+			if( ob instanceof String )
+			{
+				target_mud = (String)ob;
+			}
+			ob = v.elementAt(5);
+			if( ob instanceof String )
+			{
+				target_name = (String)ob;
+			}
+		}
 	}
 
-	@Override
+	public PacketType getType()
+	{
+		return type;
+	}
+
+	public String convertString(final String cmd)
+	{
+		final StringBuffer b = new StringBuffer(cmd);
+		int i = 0;
+
+		while( i < b.length() )
+		{
+			final char c = b.charAt(i);
+
+			if( c != '\\' && c != '"' )
+			{
+				i++;
+			}
+			else
+			{
+				b.insert(i, '\\');
+				i += 2;
+			}
+		}
+		return new String(b);
+	}
+
 	public void send() throws InvalidPacketException {
-		if( channel == null  )
+		if( type == null )
 		{
 			throw new InvalidPacketException();
 		}
-		super.send();
+		Intermud.sendPacket(this);
 	}
 
-	@Override
-	public String toString()
-	{
-		final NameServer n = Intermud.getNameServer();
-		final String cmd=
-			 "({\"channel-add\",5,\"" + I3Server.getMudName() + "\",\"" +
-			   sender_name + "\",\""+n.name+"\",0,\"" + channel + "\",0,})";
-		return cmd;
-	}
 }

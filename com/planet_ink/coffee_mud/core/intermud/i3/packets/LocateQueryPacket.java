@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet.PacketType;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -33,14 +34,14 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class LocateQueryPacket extends Packet
+public class LocateQueryPacket extends UserPacket
 {
 	public String user_name;
 
 	public LocateQueryPacket()
 	{
 		super();
-		type = Packet.LOCATE_QUERY;
+		type = Packet.PacketType.LOCATE_REQ;
 	}
 
 	public LocateQueryPacket(final Vector<?> v) throws InvalidPacketException
@@ -48,7 +49,7 @@ public class LocateQueryPacket extends Packet
 		super(v);
 		try
 		{
-			type = Packet.LOCATE_QUERY;
+			type = Packet.PacketType.LOCATE_REQ;
 			user_name = (String)v.elementAt(6);
 		}
 		catch( final ClassCastException e )
@@ -60,7 +61,7 @@ public class LocateQueryPacket extends Packet
 	public LocateQueryPacket(final String nom, final String who)
 	{
 		super();
-		type = Packet.LOCATE_QUERY;
+		type = Packet.PacketType.LOCATE_REQ;
 		sender_name = nom;
 		user_name = who;
 	}

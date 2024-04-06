@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class ErrorPacket extends Packet
+public class ErrorPacket extends UserPacket
 {
 	public String	error_code		= "";
 	public String	error_message	= "";
@@ -42,13 +42,13 @@ public class ErrorPacket extends Packet
 	public ErrorPacket()
 	{
 		super();
-		type = Packet.ERROR_PACKET;
+		type = Packet.PacketType.ERROR;
 	}
 
 	public ErrorPacket(final String to_whom, final String mud, final String error_code, final String error_message, final String packetStr)
 	{
 		super();
-		type = Packet.ERROR_PACKET;
+		type = Packet.PacketType.ERROR;
 		target_mud = mud;
 		target_name = to_whom;
 		this.error_code=error_code;
@@ -61,7 +61,7 @@ public class ErrorPacket extends Packet
 		super(v);
 		try
 		{
-			type = Packet.ERROR_PACKET;
+			type = Packet.PacketType.ERROR;
 			try
 			{
 				error_code = v.elementAt(6).toString();

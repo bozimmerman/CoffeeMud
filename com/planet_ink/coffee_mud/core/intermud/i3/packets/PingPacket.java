@@ -33,26 +33,26 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class PingPacket extends Packet
+public class PingPacket extends UserPacket
 {
 	public PingPacket()
 	{
 		super();
-		type = Packet.PING_PACKET;
+		type = Packet.PacketType.PING_REQ;
 		target_mud=Intermud.getNameServer().name;
 	}
 
 	public PingPacket(final Vector<?> v)
 	{
 		super(v);
-		type = Packet.PING_PACKET;
+		type = Packet.PacketType.PING_REQ;
 		target_mud=v.elementAt(4).toString();
 	}
 
 	public PingPacket(final String mud)
 	{
 		super();
-		type = Packet.PING_PACKET;
+		type = Packet.PacketType.PING_REQ;
 		target_mud=mud;
 	}
 

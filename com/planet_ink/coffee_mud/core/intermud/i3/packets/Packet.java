@@ -21,6 +21,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -38,104 +40,74 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class Packet
+public abstract class Packet
 {
 	/*
 		Transmissions are LPC arrays with a predefined set of six initial elements:
 	({ type, ttl, originator mudname, originator username, target mudname, target username, ... }).
 	*/
-	final static public int CHAN_MESSAGE = 1;
-	final static public int CHAN_EMOTE   = 2;
-	final static public int CHAN_TARGET  = 3;
-	final static public int WHO_REQUEST  = 4;
-	final static public int WHO_REPLY    = 5;
-	final static public int TELL		 = 6;
-	final static public int LOCATE_QUERY = 7;
-	final static public int LOCATE_REPLY = 8;
-	final static public int CHAN_WHO_REQ = 9;
-	final static public int CHAN_WHO_REP = 10;
-	final static public int CHAN_ADD	 = 11;
-	final static public int CHAN_REMOVE  = 12;
-	final static public int CHAN_LISTEN  = 13;
-	final static public int CHAN_USER_REQ= 14;
-	final static public int CHAN_USER_REP= 15;
-	final static public int SHUTDOWN	 = 16;
-	final static public int FINGER_REQUEST=17;
-	final static public int FINGER_REPLY = 18;
-	final static public int ERROR_PACKET = 19;
-	final static public int PING_PACKET  = 20;
-	final static public int MAUTH_REQUEST= 21;
-	final static public int MAUTH_REPLY  = 22;
-	final static public int UCACHE_UPDATE= 23;
-
-	public String	sender_mud	= null;
-	public String	sender_name	= null;
-	public String	target_mud	= null;
-	public String	target_name	= null;
-	public int		type		= 0;
+	public static enum PacketType
+	{
+		CHANNEL_M(ChannelMessage.class),
+		CHANNEL_E(ChannelEmote.class),
+		CHANNEL_T(ChannelTargetEmote.class),
+		WHO_REQ(WhoReqPacket.class),
+		WHO_REPLY(WhoReplyPacket.class),
+		TELL(TellPacket.class),
+		LOCATE_REQ(LocateQueryPacket.class),
+		LOCATE_REPLY(LocateReplyPacket.class),
+		CHAN_WHO_REQ(ChannelWhoRequest.class),
+		CHAN_WHO_REPLY(ChannelWhoReply.class),
+		CHANNEL_ADD(ChannelAdd.class),
+		CHANNEL_REMOVE(ChannelDelete.class),
+		CHANNEL_LISTEN(ChannelListen.class),
+		CHAN_USER_REQ(ChannelUserRequest.class),
+		CHAN_USER_REPLY(ChannelUserReply.class),
+		SHUTDOWN(ShutdownPacket.class),
+		FINGER_REQUEST(FingerRequest.class),
+		FINGER_REPLY(FingerReply.class),
+		PING_REQ(PingPacket.class),
+		AUTH_MUD_REQ(MudAuthRequest.class),
+		UCACHE_MUD_UPDATE(null),
+		UCACHE_UPDATE(UCacheUpdate.class),
+		MUDLIST(null),
+		STARTUP_REPLY(null),
+		ERROR(ErrorPacket.class),
+		CHANLIST_REPLY(null),
+		IRN_STARTUP_REQUEST(IrnStartupRequest.class),
+		IRN_MUDLIST_REQ(IrnMudlistRequest.class),
+		IRN_MUDLIST_DELTA(IrnMudlistDelta.class),
+		IRN_CHANLIST_REQ(IrnChanlistRequest.class),
+		IRN_CHANLIST_DELTA(IrnChanlistDelta.class),
+		IRN_DATA(IrnData.class),
+		IRN_PING(IrnPing.class),
+		IRN_SHUTDOWN(IrnShutdown.class)
+		;
+		public Class<? extends Packet> packetClass;
+		String key;
+		private PacketType(final Class<? extends Packet> pktClass)
+		{
+			key = this.name().toLowerCase().replace("_", "-");
+			if(pktClass != null)
+				packetClass = pktClass;
+			else
+				packetClass = null;
+		}
+	}
 
 	public Packet()
 	{
 		super();
-		sender_mud = I3Server.getMudName();
 	}
 
 	public Packet(final Vector<?> v)
 	{
 		super();
-		{
-			Object ob;
-
-			ob = v.elementAt(2);
-			if( ob instanceof String )
-			{
-				sender_mud = (String)ob;
-			}
-			ob = v.elementAt(3);
-			if( ob instanceof String )
-			{
-				sender_name = (String)ob;
-			}
-			ob = v.elementAt(4);
-			if( ob instanceof String )
-			{
-				target_mud = (String)ob;
-			}
-			ob = v.elementAt(5);
-			if( ob instanceof String )
-			{
-				target_name = (String)ob;
-			}
-		}
 	}
 
-	public String convertString(final String cmd)
-	{
-		final StringBuffer b = new StringBuffer(cmd);
-		int i = 0;
+	public abstract PacketType getType();
 
-		while( i < b.length() )
-		{
-			final char c = b.charAt(i);
+	public abstract String convertString(final String cmd);
 
-			if( c != '\\' && c != '"' )
-			{
-				i++;
-			}
-			else
-			{
-				b.insert(i, '\\');
-				i += 2;
-			}
-		}
-		return new String(b);
-	}
-
-	public void send() throws InvalidPacketException {
-		if( type == 0 )
-		{
-			throw new InvalidPacketException();
-		}
-		Intermud.sendPacket(this);
-	}
+	public abstract void send() throws InvalidPacketException;
 }

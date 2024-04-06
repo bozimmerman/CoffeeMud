@@ -33,12 +33,12 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class FingerRequest extends Packet
+public class FingerRequest extends UserPacket
 {
 	public FingerRequest()
 	{
 		super();
-		type = Packet.FINGER_REQUEST;
+		type = Packet.PacketType.FINGER_REQUEST;
 	}
 
 	public FingerRequest(final Vector<?> v) throws InvalidPacketException
@@ -46,7 +46,7 @@ public class FingerRequest extends Packet
 		super(v);
 		try
 		{
-			type = Packet.FINGER_REQUEST;
+			type = Packet.PacketType.FINGER_REQUEST;
 			target_mud=(String)v.elementAt(4);
 			target_name=(String)v.elementAt(6);
 		}

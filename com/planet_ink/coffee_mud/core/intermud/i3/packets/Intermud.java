@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
 import com.planet_ink.coffee_mud.core.intermud.imc2.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet.PacketType;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
@@ -25,12 +26,10 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -763,241 +762,30 @@ public class Intermud implements Runnable, Persistent, Serializable
 				continue;
 			}
 			// Figure out the packet type and send it to the mudlib
-			final String type = (String)data.elementAt(0);
+			final String typeStr = ((String)data.elementAt(0)).trim().replace("-", "_");
+			final PacketType type = PacketType.valueOf(typeStr.toUpperCase());
+			if(type == null)
+			{
+				Log.errOut("Intermud","Unknown packet type: " + typeStr);
+				return;
 
-			if( type.equals("channel-m") || type.equals("channel-e") || type.equals("channel-t") )
-			{
-				try
-				{
-					final ChannelPacket p = new ChannelPacket(data);
-
-					intermud.receive(p);
-				}
-				catch( final InvalidPacketException e )
-				{
-					Log.errOut("Intermud","0-"+e.getMessage());
-				}
 			}
-			else
-			if( type.equals("chan-who-req") )
+			final Class<? extends Packet> pktClass = type.packetClass;
+			switch(type)
 			{
-				try
-				{
-					final ChannelWhoRequest p = new ChannelWhoRequest(data);
-
-					intermud.receive(p);
-				}
-				catch( final InvalidPacketException e )
-				{
-					Log.errOut("Intermud",type+"-"+e.getMessage());
-				}
-			}
-			else
-			if( type.equals("chan-user-req") )
-			{
-				try
-				{
-					final ChannelUserRequest p = new ChannelUserRequest(data);
-
-					intermud.receive(p);
-				}
-				catch( final InvalidPacketException e )
-				{
-					Log.errOut("Intermud",type+"-"+e.getMessage());
-				}
-			}
-			else
-			if( type.equals("channel-add") )
-			{
-				try
-				{
-					final ChannelAdd p = new ChannelAdd(data);
-
-					intermud.receive(p);
-				}
-				catch( final InvalidPacketException e )
-				{
-					Log.errOut("Intermud",type+"-"+e.getMessage());
-				}
-			}
-			else
-			if( type.equals("channel-remove") )
-			{
-				try
-				{
-					final ChannelDelete p = new ChannelDelete(data);
-
-					intermud.receive(p);
-				}
-				catch( final InvalidPacketException e )
-				{
-					Log.errOut("Intermud",type+"-"+e.getMessage());
-				}
-			}
-			else
-			if( type.equals("channel-listen") )
-			{
-				try
-				{
-					final ChannelListen p = new ChannelListen(data);
-
-					intermud.receive(p);
-				}
-				catch( final InvalidPacketException e )
-				{
-					Log.errOut("Intermud",type+"-"+e.getMessage());
-				}
-			}
-			else
-			if( type.equals("chan-who-reply") )
-			{
-				try
-				{
-					final ChannelWhoReply p = new ChannelWhoReply(data);
-
-					intermud.receive(p);
-				}
-				catch( final InvalidPacketException e )
-				{
-					Log.errOut("Intermud",type+"-"+e.getMessage());
-				}
-			}
-			else
-			if( type.equals("chan-user-reply") )
-			{
-				try
-				{
-					final ChannelUserReply p = new ChannelUserReply(data);
-
-					intermud.receive(p);
-				}
-				catch( final InvalidPacketException e )
-				{
-					Log.errOut("Intermud",type+"-"+e.getMessage());
-				}
-			}
-			else
-			if( type.equals("chanlist-reply") )
-			{
-				channelList(data);
-			}
-			else
-			if( type.equals("locate-reply") )
-			{
-				try
-				{
-					final LocateReplyPacket p = new LocateReplyPacket(data);
-
-					intermud.receive(p);
-				}
-				catch( final InvalidPacketException e )
-				{
-					Log.errOut("Intermud",type+"-"+e.getMessage());
-				}
-			}
-			else
-			if( type.equals("finger-reply") )
-			{
-				try
-				{
-					final FingerReply p = new FingerReply(data);
-
-					intermud.receive(p);
-				}
-				catch( final InvalidPacketException e )
-				{
-					Log.errOut("Intermud",type+"-"+e.getMessage());
-				}
-			}
-			else
-			if( type.equals("finger-req") )
-			{
-				try
-				{
-					final FingerRequest p = new FingerRequest(data);
-
-					intermud.receive(p);
-				}
-				catch( final InvalidPacketException e )
-				{
-					Log.errOut("Intermud",type+"-"+e.getMessage());
-				}
-			}
-			else
-			if( type.equals("locate-req") )
-			{
-				try
-				{
-					final LocateQueryPacket p = new LocateQueryPacket(data);
-
-					intermud.receive(p);
-				}
-				catch( final InvalidPacketException e )
-				{
-					Log.errOut("Intermud",type+"-"+e.getMessage());
-				}
-			}
-			else
-			if( type.equals("mudlist") )
-			{
+			case MUDLIST:
 				mudlist(data);
-			}
-			else
-			if( type.equals("startup-reply") )
-			{
+				break;
+			case STARTUP_REPLY:
 				startupReply(data);
-			}
-			else
-			if( type.equals("tell") )
-			{
-				try
-				{
-					final TellPacket p = new TellPacket(data);
-
-					intermud.receive(p);
-				}
-				catch( final InvalidPacketException e )
-				{
-					Log.errOut("Intermud",type+"-"+e.getMessage());
-				}
-			}
-			else
-			if( type.equals("who-req") )
-			{
-				final WhoPacket p = new WhoPacket(data);
-
-				intermud.receive(p);
-			}
-			else
-			if( type.equals("who-reply") )
-			{
-				final WhoPacket p = new WhoPacket(data);
-
-				intermud.receive(p);
-			}
-			else
-			if( type.equals("auth-mud-req") )
-			{
-				final MudAuthRequest p = new MudAuthRequest(data);
-
-				intermud.receive(p);
-			}
-			else
-			if( type.equals("auth-mud-reply") )
-			{
-				final MudAuthReply p = new MudAuthReply(data);
-
-				intermud.receive(p);
-			}
-			else
-			if( type.equals("error") )
+				break;
+			case ERROR:
 				error(data);
-			else
-			if( type.equals("ping-req") )
-				Log.sysOut("Intermud","Ping reply: " + data);
-			else
-			if( type.equals("ucache-update") )
-			{
+				break;
+			case PING_REQ:
+				Log.sysOut("Intermud","Ping request: " + data);
+				break;
+			case UCACHE_UPDATE:
 				//UCacheUpdate update = new UCacheUpdate(data);
 				//Log.debugOut("Intermud","UCache packet has # data: " + data.size());
 				//Log.debugOut("Intermud","UCache Data: "+CMParms.combineQuoted(data,0));
@@ -1006,10 +794,26 @@ public class Intermud implements Runnable, Persistent, Serializable
 				 * want to do that though.  The format is as the class says.
 				 * data size = 9, indexed 0-8, with only the last 3 fields mattering.
 				 */
-			}
-			else
-			{
-				Log.errOut("Intermud","Other packet: " + type);
+				break;
+			case CHANLIST_REPLY:
+				channelList(data);
+				break;
+			default:
+				if(pktClass == null)
+					Log.errOut("Intermud","Other packet type: " + typeStr);
+				else
+				{
+					try
+					{
+						final Constructor<? extends Packet> con = pktClass.getConstructor(Vector.class);
+						final Packet pkt = con.newInstance(data);
+						intermud.receive(pkt);
+					}
+					catch( final Exception  e )
+					{
+						Log.errOut("Intermud",type+"-"+e.getMessage());
+					}
+				}
 			}
 		}
 	}

@@ -26,6 +26,7 @@ import java.util.Map;
  */
 public class I3RouterThread extends Thread implements CMObject
 {
+	//https://wotf.org/i3/irn/v1/
 	private java.util.Date				boot_time		= null;
 	private int							count			= 1;
 	private final String				mud_name;
@@ -36,7 +37,7 @@ public class I3RouterThread extends Thread implements CMObject
 //	private final String[]				peerRoutersList;
 //	private final String				adminEmail;
 	private Map<String, ServerObject>	objects;
-	private Map<String, RouterPeer>		interactives;
+	private Map<String, RouterPeer>		peers;
 
 	protected I3RouterThread(final String mname,
 							final int mport,
@@ -147,9 +148,9 @@ public class I3RouterThread extends Thread implements CMObject
 			return;
 		}
 		objects.remove(id);
-		if( interactives.containsKey(id) )
+		if( peers.containsKey(id) )
 		{
-			interactives.remove(id);
+			peers.remove(id);
 		}
 	}
 
@@ -191,6 +192,11 @@ public class I3RouterThread extends Thread implements CMObject
 		}
 
 		running = true;
+	}
+
+	public RouterPeer getPeer(final String name)
+	{
+		return peers.get(name);
 	}
 
 	@Override
@@ -253,7 +259,7 @@ public class I3RouterThread extends Thread implements CMObject
 						new_peer.setSocket(s);
 						synchronized( this )
 						{
-							interactives.put(new_peer.getObjectId(), new_peer);
+							peers.put(new_peer.getObjectId(), new_peer);
 							new_peer.connect();
 						}
 					}

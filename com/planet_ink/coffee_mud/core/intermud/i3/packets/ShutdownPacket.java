@@ -33,18 +33,18 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class ShutdownPacket extends Packet
+public class ShutdownPacket extends UserPacket
 {
 	public ShutdownPacket()
 	{
 		super();
-		type = Packet.SHUTDOWN;
+		type = Packet.PacketType.SHUTDOWN;
 	}
 
 	public ShutdownPacket(final Vector<?> v)
 	{
 		super(v);
-		type = Packet.SHUTDOWN;
+		type = Packet.PacketType.SHUTDOWN;
 		target_mud=Intermud.getNameServer().name;
 	}
 

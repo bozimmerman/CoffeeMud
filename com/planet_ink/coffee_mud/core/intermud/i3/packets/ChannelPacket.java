@@ -1,20 +1,4 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
-import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
-import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Areas.interfaces.*;
-import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
-import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
-import com.planet_ink.coffee_mud.Commands.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Exits.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Locales.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.interfaces.*;
-import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Vector;
 
@@ -33,18 +17,15 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class ChannelPacket extends Packet
+public abstract class ChannelPacket extends UserPacket
 {
 	public String channel = null;
 	public String sender_visible_name = null;
 	public String message = null;
-	public String message_target = null;
-	public String target_visible_name = null;
 
 	public ChannelPacket()
 	{
 		super();
-		type = Packet.CHAN_MESSAGE;
 	}
 
 	public ChannelPacket(final Vector<?> v) throws InvalidPacketException
@@ -52,33 +33,10 @@ public class ChannelPacket extends Packet
 		super(v);
 		try
 		{
-			final String cmd = (String)v.elementAt(0);
-
 			channel = (String)v.elementAt(6);
 			channel = Intermud.getLocalChannel(channel);
-			if( cmd.equals("channel-e") )
-			{
-				type = Packet.CHAN_EMOTE;
-				sender_visible_name = (String)v.elementAt(7);
-				message = (String)v.elementAt(8);
-			}
-			else
-			if( cmd.equals("channel-t") )
-			{
-				type = Packet.CHAN_TARGET;
-				target_mud=(String)v.elementAt(7);
-				target_name=(String)v.elementAt(8);
-				message=(String)v.elementAt(9);
-				message_target=(String)v.elementAt(10);
-				sender_visible_name = (String)v.elementAt(11);
-				target_visible_name = (String)v.elementAt(12);
-			}
-			else
-			{
-				type = Packet.CHAN_MESSAGE;
-				sender_visible_name = (String)v.elementAt(7);
-				message = (String)v.elementAt(8);
-			}
+			sender_visible_name = (String)v.elementAt(7);
+			message = (String)v.elementAt(8);
 		}
 		catch( final ClassCastException e )
 		{
@@ -86,10 +44,10 @@ public class ChannelPacket extends Packet
 		}
 	}
 
-	public ChannelPacket(final int t, final String chan, final String who, final String vis, final String msg)
+	public ChannelPacket(final Packet.PacketType t, final String chan, final String who, final String vis, final String msg)
 	{
 		super();
-		type = t;
+		type = Packet.PacketType.CHANNEL_REMOVE;
 		channel = chan;
 		sender_visible_name = vis;
 		sender_name = who;
@@ -102,30 +60,12 @@ public class ChannelPacket extends Packet
 		{
 			throw new InvalidPacketException();
 		}
-		channel = Intermud.getRemoteChannel(channel);
+		final String fixedChannel = Intermud.getRemoteChannel(channel);
+		if(((fixedChannel != null)&&(fixedChannel.length()>0))
+		||(channel == null))
+			channel = fixedChannel;
 		message = convertString(message);
 		super.send();
 	}
 
-	@Override
-	public String toString()
-	{
-		String cmd=null;
-		if(type==CHAN_TARGET)
-			 cmd="({\"channel-t\",5,\"" + I3Server.getMudName() + "\",\"" +
-			 sender_name + "\",0,0,\"" + channel + "\",\"" +
-			 target_mud + "\",\"" + target_name + "\",\"" +
-			 message + "\",\"" + message_target + "\",\"" +
-			 sender_visible_name + "\",\"" + target_visible_name + "\",})";
-		else
-		if(type==CHAN_EMOTE)
-			 cmd="({\"channel-e\",5,\"" + I3Server.getMudName() + "\",\"" +
-			 sender_name + "\",0,0,\"" + channel + "\",\"" +
-			 sender_visible_name + "\",\"" + message + "\",})";
-		else
-			 cmd="({\"channel-m\",5,\"" + I3Server.getMudName() + "\",\"" +
-			   sender_name + "\",0,0,\"" + channel + "\",\"" +
-			   sender_visible_name + "\",\"" + message + "\",})";
-		return cmd;
-	}
 }

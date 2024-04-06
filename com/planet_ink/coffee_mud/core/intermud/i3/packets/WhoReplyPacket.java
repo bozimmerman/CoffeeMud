@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Vector;
 
 /**
- * Copyright (c) 2010-2024 Bo Zimmerman
+ * Copyright (c) 1996 George Reese
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,42 +33,50 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class MudAuthReply extends UserPacket
+public class WhoReplyPacket extends UserPacket
 {
-	public long key=0;
+	public Vector<?> who = null;
 
-	public MudAuthReply()
+	public WhoReplyPacket()
 	{
 		super();
-		type = Packet.PacketType.UCACHE_MUD_UPDATE;
-		target_mud=I3Server.getMudName();
+		type = Packet.PacketType.WHO_REPLY;
 	}
 
-	public MudAuthReply(final Vector<?> v)
+	public WhoReplyPacket(final Vector<?> v)
 	{
 		super(v);
-		type = Packet.PacketType.UCACHE_MUD_UPDATE;
-		target_mud=(String)v.elementAt(4);
-		key=CMath.s_int(v.elementAt(6).toString());
-	}
-
-	public MudAuthReply(final String mud, final long key)
-	{
-		super();
-		type = Packet.PacketType.UCACHE_MUD_UPDATE;
-		target_mud=mud;
-		this.key=key;
+		type = Packet.PacketType.WHO_REPLY;
+		who = (Vector<?>)v.elementAt(6);
 	}
 
 	@Override
 	public void send() throws InvalidPacketException
 	{
+		if( who == null )
+		{
+			throw new InvalidPacketException();
+		}
 		super.send();
 	}
 
 	@Override
 	public String toString()
 	{
-		return "({\"auth-mud-reply\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,"+key+",})";
+		String cmd = "({\"who-reply\",5,\"" + I3Server.getMudName() +
+				 "\",0,\"" + target_mud + "\",\"" + target_name + "\",({";
+		int i;
+
+		for(i=0; i<who.size(); i++)
+		{
+			final Vector<?> v = (Vector<?>)who.elementAt(i);
+			final String nom = (String)v.elementAt(0);
+			final int idle = ((Integer)v.elementAt(1)).intValue();
+			final String xtra = (String)v.elementAt(2);
+
+			cmd += "({\"" + nom + "\"," + idle + ",\"" + xtra + "\",}),";
+		}
+		cmd += "}),})";
+		return cmd;
 	}
 }

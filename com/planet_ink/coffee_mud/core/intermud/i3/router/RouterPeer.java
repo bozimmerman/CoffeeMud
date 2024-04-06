@@ -2,6 +2,10 @@ package com.planet_ink.coffee_mud.core.intermud.i3.router;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistentPeer;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 /**
@@ -51,4 +55,16 @@ public interface RouterPeer extends ServerObject, PersistentPeer
 	 * @see java.lang.Class#newInstance
 	 */
 	public abstract void setSocket(java.net.Socket s) throws java.io.IOException;
+
+	/**
+	 * For IPR communication
+	 * @return the input stream
+	 */
+	public DataInputStream getInputStream();
+
+	/**
+	 * For IPR communication
+	 * @return the output stream
+	 */
+	public DataOutputStream getOutputStream();
 }

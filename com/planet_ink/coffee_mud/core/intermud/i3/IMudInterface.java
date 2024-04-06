@@ -249,11 +249,11 @@ public class IMudInterface implements ImudServices, Serializable
 	@Override
 	public void receive(final Packet packet)
 	{
-		switch(packet.type)
+		switch(packet.getType())
 		{
-		case Packet.CHAN_EMOTE:
-		case Packet.CHAN_MESSAGE:
-		case Packet.CHAN_TARGET:
+		case CHANNEL_E:
+		case CHANNEL_M:
+		case CHANNEL_T:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final ChannelPacket ck=(ChannelPacket)packet;
@@ -273,34 +273,35 @@ public class IMudInterface implements ImudServices, Serializable
 					channelCode=47;
 				}
 				ck.message=fixColors(CMProps.applyINIFilter(ck.message,CMProps.Str.CHANNELFILTER));
-				if(ck.message_target!=null)
-					ck.message_target=fixColors(CMProps.applyINIFilter(ck.message_target,CMProps.Str.CHANNELFILTER));
 				final MOB mob=CMClass.getFactoryMOB();
 				mob.setName(ck.sender_name+"@"+ck.sender_mud);
 				mob.setLocation(getUniversalRoom());
 				MOB targetMOB=null;
 				boolean killtargetmob=false;
-				if(ck.type==Packet.CHAN_TARGET)
+				if(ck.type==Packet.PacketType.CHANNEL_T)
 				{
-					if((ck.target_mud!=null)&&(ck.target_mud.equalsIgnoreCase(getMudName())))
+					final ChannelTargetEmote ct = (ChannelTargetEmote)ck;
+					if(ct.message_target != null)
+						ct.message_target = fixColors(CMProps.applyINIFilter(ct.message_target,CMProps.Str.CHANNELFILTER));
+					if((ct.target_mud!=null)&&(ck.target_mud.equalsIgnoreCase(getMudName())))
 						targetMOB=CMLib.players().getLoadPlayer(ck.target_name);
-					if((ck.target_visible_name!=null)&&(ck.target_mud!=null)&&(targetMOB==null))
+					if((ct.target_visible_name!=null)&&(ck.target_mud!=null)&&(targetMOB==null))
 					{
 						killtargetmob=true;
 						targetMOB=CMClass.getFactoryMOB();
-						targetMOB.setName(ck.target_visible_name+"@"+ck.target_mud);
+						targetMOB.setName(ct.target_visible_name+"@"+ck.target_mud);
 						targetMOB.setLocation(getUniversalRoom());
 					}
 					String msgs=socialFixIn(ck.message);
 					msgs=CMProps.applyINIFilter(msgs,CMProps.Str.EMOTEFILTER);
-					String targmsgs=socialFixIn(ck.message_target);
+					String targmsgs=socialFixIn(ct.message_target);
 					targmsgs=CMProps.applyINIFilter(targmsgs,CMProps.Str.EMOTEFILTER);
 					final String str=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^N^.";
 					final String str2=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+targmsgs+"^</CHANNEL^>^N^.";
 					msg=CMClass.getMsg(mob,targetMOB,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelCode),str2,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelCode),str);
 				}
 				else
-				if(ck.type==Packet.CHAN_EMOTE)
+				if(ck.type==Packet.PacketType.CHANNEL_E)
 				{
 					String msgs=socialFixIn(ck.message);
 					msgs=CMProps.applyINIFilter(msgs,CMProps.Str.EMOTEFILTER);
@@ -334,7 +335,7 @@ public class IMudInterface implements ImudServices, Serializable
 					targetMOB.destroy();
 			}
 			break;
-		case Packet.LOCATE_QUERY:
+		case LOCATE_REQ:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final LocateQueryPacket lk=(LocateQueryPacket)packet;
@@ -368,7 +369,7 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 			}
 			break;
-		case Packet.LOCATE_REPLY:
+		case LOCATE_REPLY:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final LocateReplyPacket lk=(LocateReplyPacket)packet;
@@ -377,7 +378,7 @@ public class IMudInterface implements ImudServices, Serializable
 					smob.tell(fixColors(lk.located_visible_name)+"@"+fixColors(lk.located_mud_name)+" ("+lk.idle_time+"): "+fixColors(lk.status));
 			}
 			break;
-		case Packet.FINGER_REQUEST:
+		case FINGER_REQUEST:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final FingerRequest lk=(FingerRequest)packet;
@@ -415,7 +416,7 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 			}
 			break;
-		case Packet.FINGER_REPLY:
+		case FINGER_REPLY:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final FingerReply lk=(FingerReply)packet;
@@ -441,7 +442,7 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 			}
 			break;
-		case Packet.MAUTH_REQUEST:
+		case AUTH_MUD_REQ:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final MudAuthRequest lk=(MudAuthRequest)packet;
@@ -463,7 +464,7 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 			}
 			break;
-		case Packet.MAUTH_REPLY:
+		case UCACHE_MUD_UPDATE:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final MudAuthReply lk=(MudAuthReply)packet;
@@ -477,10 +478,10 @@ public class IMudInterface implements ImudServices, Serializable
 					Log.sysOut("I3","MUD "+lk.sender_mud+" replied to my mud-auth with key "+lk.key+".");
 			}
 			break;
-		case Packet.WHO_REPLY:
+		case WHO_REPLY:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
-				final WhoPacket wk=(WhoPacket)packet;
+				final WhoReplyPacket wk=(WhoReplyPacket)packet;
 				final MOB smob=findSessMob(wk.target_name);
 				if(smob!=null)
 				{
@@ -502,7 +503,7 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 			}
 			break;
-		case Packet.CHAN_WHO_REP:
+		case CHAN_WHO_REPLY:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final ChannelWhoReply wk=(ChannelWhoReply)packet;
@@ -525,7 +526,7 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 			}
 			break;
-		case Packet.CHAN_WHO_REQ:
+		case CHAN_WHO_REQ:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final ChannelWhoRequest wk=(ChannelWhoRequest)packet;
@@ -554,7 +555,7 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 			}
 			break;
-		case Packet.CHAN_USER_REQ:
+		case CHAN_USER_REQ:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final ChannelUserRequest wk=(ChannelUserRequest)packet;
@@ -578,12 +579,11 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 			}
 			break;
-		case Packet.WHO_REQUEST:
+		case WHO_REQ:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
-				final WhoPacket wk=(WhoPacket)packet;
-				final WhoPacket wkr=new WhoPacket();
-				wkr.type=Packet.WHO_REPLY;
+				final WhoReqPacket wk=(WhoReqPacket)packet;
+				final WhoReplyPacket wkr=new WhoReplyPacket();
 				wkr.target_name=wk.sender_name;
 				wkr.target_mud=wk.sender_mud;
 				final Vector<Vector<Object>> whoV=new Vector<Vector<Object>>();
@@ -615,7 +615,7 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 			}
 			break;
-		case Packet.TELL:
+		case TELL:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final TellPacket tk=(TellPacket)packet;
@@ -642,7 +642,7 @@ public class IMudInterface implements ImudServices, Serializable
 			}
 			break;
 		default:
-			Log.errOut("IMudInterface","Unknown type: "+packet.type);
+			Log.errOut("IMudInterface","Unknown type: "+packet.getType());
 			break;
 		}
 	}

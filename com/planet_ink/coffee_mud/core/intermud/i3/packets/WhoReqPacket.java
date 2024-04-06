@@ -33,63 +33,33 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class WhoPacket extends Packet
+public class WhoReqPacket extends UserPacket
 {
 	public Vector<?> who = null;
 
-	public WhoPacket()
+	public WhoReqPacket()
 	{
 		super();
-		type = Packet.WHO_REQUEST;
+		type = Packet.PacketType.WHO_REQ;
 	}
 
-	public WhoPacket(final Vector<?> v)
+	public WhoReqPacket(final Vector<?> v)
 	{
 		super(v);
-		if( v.size() == 6 )
-		{
-			type = Packet.WHO_REQUEST;
-		}
-		else
-		{
-			type = Packet.WHO_REPLY;
-			who = (Vector<?>)v.elementAt(6);
-		}
+		type = Packet.PacketType.WHO_REQ;
 	}
 
 	@Override
 	public void send() throws InvalidPacketException
 	{
-		if( type == Packet.WHO_REPLY && who == null )
-		{
-			throw new InvalidPacketException();
-		}
 		super.send();
 	}
 
 	@Override
 	public String toString()
 	{
-		if(type==Packet.WHO_REQUEST)
-		{
-			return "({\"who-req\",5,\"" + I3Server.getMudName() +
-				   "\",\"" + sender_name + "\",\"" + target_mud +
-				   "\",0,})";
-		}
-		String cmd = "({\"who-reply\",5,\"" + I3Server.getMudName() +
-				 "\",0,\"" + target_mud + "\",\"" + target_name + "\",({";
-		int i;
-
-		for(i=0; i<who.size(); i++)
-		{
-			final Vector<?> v = (Vector<?>)who.elementAt(i);
-			final String nom = (String)v.elementAt(0);
-			final int idle = ((Integer)v.elementAt(1)).intValue();
-			final String xtra = (String)v.elementAt(2);
-
-			cmd += "({\"" + nom + "\"," + idle + ",\"" + xtra + "\",}),";
-		}
-		cmd += "}),})";
-		return cmd;
+		return "({\"who-req\",5,\"" + I3Server.getMudName() +
+			   "\",\"" + sender_name + "\",\"" + target_mud +
+			   "\",0,})";
 	}
 }

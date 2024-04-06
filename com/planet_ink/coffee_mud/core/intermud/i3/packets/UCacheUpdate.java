@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class UCacheUpdate extends Packet
+public class UCacheUpdate extends UserPacket
 {
 	public String	uname1	= "";
 	public String	uname2	= "";
@@ -42,13 +42,13 @@ public class UCacheUpdate extends Packet
 	public UCacheUpdate()
 	{
 		super();
-		type = Packet.MAUTH_REPLY;
+		type = Packet.PacketType.UCACHE_UPDATE;
 	}
 
 	public UCacheUpdate(final Vector<?> v)
 	{
 		super(v);
-		type = Packet.MAUTH_REPLY;
+		type = Packet.PacketType.UCACHE_UPDATE;
 		uname1=(String)v.elementAt(6);
 		uname2=(String)v.elementAt(7);
 		gender=CMath.s_int(v.elementAt(8).toString());
@@ -57,7 +57,7 @@ public class UCacheUpdate extends Packet
 	public UCacheUpdate(final String uname1, final String uname2, final int gender)
 	{
 		super();
-		type = Packet.MAUTH_REPLY;
+		type = Packet.PacketType.UCACHE_UPDATE;
 		this.uname1=uname1;
 		this.uname2=uname2;
 		this.gender=gender;

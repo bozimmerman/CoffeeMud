@@ -31,7 +31,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
  */
 public class I3Router
 {
-	static private I3RouterThread serverClient = null;
+	static private I3RouterThread routerThread = null;
 	static private boolean started = false;
 
 	/**
@@ -58,15 +58,20 @@ public class I3Router
 				throw new ServerSecurityException("Illegal attempt to start Router.");
 			}
 			started = true;
-			serverClient = new I3RouterThread(mud, port, password, routersList, adminEmail);
+			routerThread = new I3RouterThread(mud, port, password, routersList, adminEmail);
 			Log.sysOut("I3Router", "InterMud3 Core (c)1996 George Reese");
-			serverClient.start();
+			routerThread.start();
 		}
 		catch(final Exception e)
 		{
-			serverClient=null;
+			routerThread=null;
 			Log.errOut("I3Server",e);
 		}
+	}
+
+	public static I3RouterThread getRouter()
+	{
+		return I3Router.routerThread;
 	}
 
 	/**
@@ -76,7 +81,7 @@ public class I3Router
 	 * @return a distinct copy of the class identified
 	 */
 	static public ServerObject copyObject(final String file) throws ObjectLoadException {
-		return serverClient.copyObject(file);
+		return routerThread.copyObject(file);
 	}
 
 	/**
@@ -86,17 +91,17 @@ public class I3Router
 	 * @return original of the class identified
 	 */
 	static public ServerObject findObject(final String file) throws ObjectLoadException {
-		return serverClient.findObject(file);
+		return routerThread.findObject(file);
 	}
 
 	static public String getMudName()
 	{
-		return serverClient.getMudName();
+		return routerThread.getMudName();
 	}
 
 	static public int getPort()
 	{
-		return serverClient.getPort();
+		return routerThread.getPort();
 	}
 
 	static public void shutdown()
@@ -111,7 +116,7 @@ public class I3Router
 			catch(final Exception e)
 			{
 			}
-			serverClient.shutdown();
+			routerThread.shutdown();
 			started=false;
 		}
 		catch(final Exception e)
@@ -125,6 +130,6 @@ public class I3Router
 		{
 			return;
 		}
-		serverClient.removeObject(ob);
+		routerThread.removeObject(ob);
 	}
 }

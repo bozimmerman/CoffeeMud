@@ -33,14 +33,14 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class ChannelUserRequest extends Packet
+public class ChannelUserRequest extends UserPacket
 {
 	public String userToRequest = null;
 
 	public ChannelUserRequest()
 	{
 		super();
-		type = Packet.CHAN_USER_REQ;
+		type = Packet.PacketType.CHAN_USER_REQ;
 	}
 
 	public ChannelUserRequest(final Vector<?> v) throws InvalidPacketException
@@ -48,7 +48,7 @@ public class ChannelUserRequest extends Packet
 		super(v);
 		try
 		{
-			type = Packet.CHAN_USER_REQ;
+			type = Packet.PacketType.CHAN_USER_REQ;
 			userToRequest = (String)v.elementAt(6);
 		}
 		catch( final ClassCastException e )

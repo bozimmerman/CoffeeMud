@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class ChannelUserReply extends Packet
+public class ChannelUserReply extends UserPacket
 {
 	public String userRequested=null;
 	public String userVisibleName=null;
@@ -42,7 +42,7 @@ public class ChannelUserReply extends Packet
 	public ChannelUserReply()
 	{
 		super();
-		type = Packet.CHAN_USER_REP;
+		type = Packet.PacketType.CHAN_USER_REPLY;
 	}
 
 	public ChannelUserReply(final Vector<?> v) throws InvalidPacketException
@@ -50,7 +50,7 @@ public class ChannelUserReply extends Packet
 		super(v);
 		try
 		{
-			type = Packet.CHAN_USER_REP;
+			type = Packet.PacketType.CHAN_USER_REPLY;
 			try
 			{
 				userRequested = (String)v.elementAt(6);
@@ -105,7 +105,7 @@ public class ChannelUserReply extends Packet
 			genderCode = 2;
 			break;
 		}
-		final String cmd="({\"chan-user-req\",5,\"" + I3Server.getMudName() +
+		final String cmd="({\"chan-user-reply\",5,\"" + I3Server.getMudName() +
 		"\",0,\"" + target_mud + "\",0,\"" + userRequested
 		+ "\",\"" + userVisibleName
 		+ "\"," + genderCode + ",})";

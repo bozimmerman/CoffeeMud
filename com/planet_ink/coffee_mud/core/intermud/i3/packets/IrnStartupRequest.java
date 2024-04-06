@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
-import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
+import com.planet_ink.coffee_mud.core.intermud.i3.router.I3RouterThread;
+import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -19,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Vector;
 
 /**
- * Copyright (c) 2010-2024 Bo Zimmerman
+ * Copyright (c) 2024-2024 Bo Zimmerman
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,42 +34,44 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class MudAuthReply extends UserPacket
+public class IrnStartupRequest extends IrnPacket
 {
-	public long key=0;
+	String locPassword = "";
+	String remPassword = "";
 
-	public MudAuthReply()
+	public IrnStartupRequest(final String targetRouter)
 	{
-		super();
-		type = Packet.PacketType.UCACHE_MUD_UPDATE;
-		target_mud=I3Server.getMudName();
+		super(targetRouter);
+		type = Packet.PacketType.IRN_STARTUP_REQUEST;
 	}
 
-	public MudAuthReply(final Vector<?> v)
+	public IrnStartupRequest(final Vector<?> v) throws InvalidPacketException
 	{
 		super(v);
-		type = Packet.PacketType.UCACHE_MUD_UPDATE;
-		target_mud=(String)v.elementAt(4);
-		key=CMath.s_int(v.elementAt(6).toString());
-	}
-
-	public MudAuthReply(final String mud, final long key)
-	{
-		super();
-		type = Packet.PacketType.UCACHE_MUD_UPDATE;
-		target_mud=mud;
-		this.key=key;
+		type = Packet.PacketType.IRN_STARTUP_REQUEST;
 	}
 
 	@Override
 	public void send() throws InvalidPacketException
 	{
+		if(locPassword == null
+		|| remPassword == null)
+		{
+			throw new InvalidPacketException();
+		}
 		super.send();
 	}
 
 	@Override
 	public String toString()
 	{
-		return "({\"auth-mud-reply\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,"+key+",})";
+		final String cmd=
+				"({\"irn-startup-req\",5," +
+				"\"" + sender_router + "\",0," +
+				"\"" + target_router + "\",0," +
+				"([\"client_password\": \""+locPassword +"\"," +
+				"\"server_password\": \""+remPassword +"\"])" +
+				"})";
+		return cmd;
 	}
 }

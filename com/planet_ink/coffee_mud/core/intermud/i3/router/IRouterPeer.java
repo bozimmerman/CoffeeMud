@@ -14,6 +14,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -40,6 +42,8 @@ public class IRouterPeer implements RouterPeer
 	boolean			destructed	= false;
 	ChannelList		channels	= new ChannelList();
 	MudList			muds		= new MudList();
+	DataInputStream in			= null;
+	DataOutputStream out		= null;
 	Socket			sock		= null;
 	SocketAddress	address		= null;
 	String			password	= "";
@@ -145,7 +149,24 @@ public class IRouterPeer implements RouterPeer
 	public void destruct()
 	{
 		destructed = true;
-		// TODO Auto-generated method stub
+		try
+		{
+			if(in != null)
+				in.close();
+		}
+		catch (final IOException e){ }
+		try
+		{
+			if(out != null)
+				out.close();
+		}
+		catch (final IOException e){ }
+		try
+		{
+			if(sock != null)
+				sock.close();
+		}
+		catch (final IOException e){ }
 	}
 
 	@Override
@@ -174,17 +195,20 @@ public class IRouterPeer implements RouterPeer
 	@Override
 	public void connect()
 	{
-		if((sock != null)
-		&&(!sock.isConnected()))
+		if(sock != null)
 		{
-			try
+			if(!sock.isConnected())
 			{
-				sock.connect(address);
-			}
-			catch (final IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				try
+				{
+					sock.connect(address);
+					in = new DataInputStream(sock.getInputStream());
+					out = new DataOutputStream(sock.getOutputStream());
+				}
+				catch (final IOException e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -195,11 +219,25 @@ public class IRouterPeer implements RouterPeer
 		sock = s;
 		if(address == null)
 			address = s.getRemoteSocketAddress();
+		in = new DataInputStream(sock.getInputStream());
+		out = new DataOutputStream(sock.getOutputStream());
 	}
 
 	@Override
 	public boolean isConnected()
 	{
 		return (sock != null) && (sock.isConnected());
+	}
+
+	@Override
+	public DataInputStream getInputStream()
+	{
+		return in;
+	}
+
+	@Override
+	public DataOutputStream getOutputStream()
+	{
+		return out;
 	}
 }

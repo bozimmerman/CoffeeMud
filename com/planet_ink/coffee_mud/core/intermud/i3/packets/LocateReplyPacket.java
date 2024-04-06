@@ -33,19 +33,19 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class LocateReplyPacket extends Packet 
+public class LocateReplyPacket extends UserPacket
 {
 	public String located_mud_name;
 	public String located_visible_name;
 	public int    idle_time;
 	public String status;
 
-	public LocateReplyPacket(Vector<?> v) throws InvalidPacketException 
+	public LocateReplyPacket(final Vector<?> v) throws InvalidPacketException
 	{
 		super(v);
 		try
 		{
-			type = Packet.LOCATE_REPLY;
+			type = Packet.PacketType.LOCATE_REPLY;
 			located_mud_name = (String)v.elementAt(6);
 			located_visible_name = (String)v.elementAt(7);
 			try
@@ -71,10 +71,10 @@ public class LocateReplyPacket extends Packet
 		}
 	}
 
-	public LocateReplyPacket(String to_whom, String mud, String who, int idl, String stat)
+	public LocateReplyPacket(final String to_whom, final String mud, final String who, final int idl, final String stat)
 	{
 		super();
-		type = Packet.LOCATE_REPLY;
+		type = Packet.PacketType.LOCATE_REPLY;
 		target_mud = mud;
 		target_name = to_whom;
 		located_mud_name = I3Server.getMudName();
@@ -84,7 +84,7 @@ public class LocateReplyPacket extends Packet
 	}
 
 	@Override
-	public void send() throws InvalidPacketException 
+	public void send() throws InvalidPacketException
 	{
 		if( target_name == null || located_mud_name == null ||
 			located_visible_name == null || status == null )

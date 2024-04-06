@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
-import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
+import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Vector;
 
 /**
- * Copyright (c) 2010-2024 Bo Zimmerman
+ * Copyright (c) 1996 George Reese
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,42 +33,32 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class MudAuthReply extends UserPacket
+public class ChannelMessage extends ChannelPacket
 {
-	public long key=0;
-
-	public MudAuthReply()
+	public ChannelMessage()
 	{
 		super();
-		type = Packet.PacketType.UCACHE_MUD_UPDATE;
-		target_mud=I3Server.getMudName();
+		type = Packet.PacketType.CHANNEL_M;
 	}
 
-	public MudAuthReply(final Vector<?> v)
+	public ChannelMessage(final Vector<?> v) throws InvalidPacketException
 	{
 		super(v);
-		type = Packet.PacketType.UCACHE_MUD_UPDATE;
-		target_mud=(String)v.elementAt(4);
-		key=CMath.s_int(v.elementAt(6).toString());
+		type = Packet.PacketType.CHANNEL_M;
 	}
 
-	public MudAuthReply(final String mud, final long key)
+	public ChannelMessage(final int t, final String chan, final String who, final String vis, final String msg)
 	{
-		super();
-		type = Packet.PacketType.UCACHE_MUD_UPDATE;
-		target_mud=mud;
-		this.key=key;
-	}
-
-	@Override
-	public void send() throws InvalidPacketException
-	{
-		super.send();
+		super(Packet.PacketType.CHANNEL_M,chan,who,vis,msg);
 	}
 
 	@Override
 	public String toString()
 	{
-		return "({\"auth-mud-reply\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,"+key+",})";
+		String cmd=null;
+		cmd="({\"channel-m\",5,\"" + I3Server.getMudName() + "\",\"" +
+			sender_name + "\",0,0,\"" + channel + "\",\"" +
+			sender_visible_name + "\",\"" + message + "\",})";
+		return cmd;
 	}
 }

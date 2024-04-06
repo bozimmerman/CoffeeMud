@@ -33,14 +33,14 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class ChannelDelete extends Packet
+public class ChannelDelete extends UserPacket
 {
 	public String channel = null;
 
 	public ChannelDelete()
 	{
 		super();
-		type = Packet.CHAN_REMOVE;
+		type = Packet.PacketType.CHANNEL_REMOVE;
 	}
 
 	public ChannelDelete(final Vector<?> v) throws InvalidPacketException
@@ -48,7 +48,7 @@ public class ChannelDelete extends Packet
 		super(v);
 		try
 		{
-			type = Packet.CHAN_REMOVE;
+			type = Packet.PacketType.CHANNEL_REMOVE;
 			channel = (String)v.elementAt(6);
 			channel = Intermud.getLocalChannel(channel);
 		}
@@ -58,10 +58,10 @@ public class ChannelDelete extends Packet
 		}
 	}
 
-	public ChannelDelete(final int t, final String chan, final String who)
+	public ChannelDelete(final String chan, final String who)
 	{
 		super();
-		type = t;
+		type = Packet.PacketType.CHANNEL_REMOVE;
 		channel = chan;
 		sender_name = who;
 	}

@@ -33,26 +33,26 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class MudAuthRequest extends Packet
+public class MudAuthRequest extends UserPacket
 {
 	public MudAuthRequest()
 	{
 		super();
-		type = Packet.MAUTH_REQUEST;
+		type = Packet.PacketType.AUTH_MUD_REQ;
 		target_mud=I3Server.getMudName();
 	}
 
 	public MudAuthRequest(final Vector<?> v)
 	{
 		super(v);
-		type = Packet.MAUTH_REQUEST;
+		type = Packet.PacketType.AUTH_MUD_REQ;
 		target_mud=(String)v.elementAt(4);
 	}
 
 	public MudAuthRequest(final String target_mud)
 	{
 		super();
-		type = Packet.MAUTH_REQUEST;
+		type = Packet.PacketType.AUTH_MUD_REQ;
 		this.target_mud=target_mud;
 	}
 

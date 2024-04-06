@@ -33,14 +33,14 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class ChannelWhoRequest extends Packet
+public class ChannelWhoRequest extends UserPacket
 {
 	public String channel = null;
 
 	public ChannelWhoRequest()
 	{
 		super();
-		type = Packet.CHAN_WHO_REQ;
+		type = Packet.PacketType.CHAN_WHO_REQ;
 	}
 
 	public ChannelWhoRequest(final Vector<?> v) throws InvalidPacketException
@@ -48,7 +48,7 @@ public class ChannelWhoRequest extends Packet
 		super(v);
 		try
 		{
-			type = Packet.CHAN_WHO_REQ;
+			type = Packet.PacketType.CHAN_WHO_REQ;
 			channel = (String)v.elementAt(6);
 			channel = Intermud.getLocalChannel(channel);
 		}
