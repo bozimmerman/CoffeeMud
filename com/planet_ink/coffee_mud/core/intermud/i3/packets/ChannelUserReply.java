@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class ChannelUserReply extends UserPacket
+public class ChannelUserReply extends MudPacket
 {
 	public String userRequested=null;
 	public String userVisibleName=null;

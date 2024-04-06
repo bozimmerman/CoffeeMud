@@ -1,8 +1,10 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
 import com.planet_ink.coffee_mud.core.intermud.imc2.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet.PacketType;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -23,10 +25,10 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Hashtable;
 import java.util.Map;
-import java.io.Serializable;
+import java.util.Vector;
 
 /**
- * Copyright (c) 1996 George Reese
+ * Copyright (c) 1996 George Reese, (c) 2024 Bo Zimmerman
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,102 +42,82 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
-public class MudList implements Serializable
+public class MudPacket extends Packet
 {
-	public static final long serialVersionUID=0;
+	public String		sender_mud	= null;
+	public String		sender_name	= null;
+	public String		target_mud	= null;
+	public String		target_name	= null;
+	public PacketType	type		= null;
 
-	private int id;
-	private final Map<String,I3Mud> list;
-	private int modified;
-
-	public MudList()
+	public MudPacket()
 	{
 		super();
-		id = -1;
-		modified = Persistent.MODIFIED;
-		list = new Hashtable<String,I3Mud>();
+		sender_mud = I3Server.getMudName();
 	}
 
-	public MudList(final int i)
+	public MudPacket(final Vector<?> v)
 	{
-		this();
-		id = i;
-	}
-
-	public int getModified()
-	{
-		return modified;
-	}
-
-	public void setModified(final int x)
-	{
-		modified = x;
-	}
-
-	public void addMud(final I3Mud mud)
-	{
-		if(( mud.mud_name == null )||( mud.mud_name.length() == 0 ))
+		super();
 		{
-			return;
-		}
-		{ // temp hack
-			final char c = mud.mud_name.charAt(0);
+			Object ob;
 
-			if( !(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z') && c != '(' )
+			ob = v.elementAt(2);
+			if( ob instanceof String )
 			{
-				return;
+				sender_mud = (String)ob;
+			}
+			ob = v.elementAt(3);
+			if( ob instanceof String )
+			{
+				sender_name = (String)ob;
+			}
+			ob = v.elementAt(4);
+			if( ob instanceof String )
+			{
+				target_mud = (String)ob;
+			}
+			ob = v.elementAt(5);
+			if( ob instanceof String )
+			{
+				target_name = (String)ob;
 			}
 		}
-		if( list.containsKey(mud.mud_name) )
-		{
-			mud.modified = Persistent.MODIFIED;
-		}
-		else
-		{
-			mud.modified = Persistent.NEW;
-		}
-		list.put(mud.mud_name, mud);
-		modified = Persistent.MODIFIED;
 	}
 
-	public I3Mud getMud(final String mud)
+	public PacketType getType()
 	{
-		if( !list.containsKey(mud) )
+		return type;
+	}
+
+	public String convertString(final String cmd)
+	{
+		final StringBuffer b = new StringBuffer(cmd);
+		int i = 0;
+
+		while( i < b.length() )
 		{
-			return null;
-		}
-		final I3Mud tmp = list.get(mud);
+			final char c = b.charAt(i);
 
-		if( tmp.modified == Persistent.DELETED )
+			if( c != '\\' && c != '"' )
+			{
+				i++;
+			}
+			else
+			{
+				b.insert(i, '\\');
+				i += 2;
+			}
+		}
+		return new String(b);
+	}
+
+	public void send() throws InvalidPacketException {
+		if( type == null )
 		{
-			return null;
+			throw new InvalidPacketException();
 		}
-		return tmp;
+		Intermud.sendPacket(this);
 	}
 
-	public void removeMud(final I3Mud mud)
-	{
-		if( mud.mud_name == null )
-		{
-			return;
-		}
-		mud.modified = Persistent.DELETED;
-		modified = Persistent.MODIFIED;
-	}
-
-	public int getMudListId()
-	{
-		return id;
-	}
-
-	public void setMudListId(final int x)
-	{
-		id = x;
-	}
-
-	public Map<String,I3Mud> getMuds()
-	{
-		return list;
-	}
 }
-

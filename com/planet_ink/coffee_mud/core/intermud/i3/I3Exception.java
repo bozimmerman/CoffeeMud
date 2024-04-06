@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core.intermud.i3.packets;
+package com.planet_ink.coffee_mud.core.intermud.i3;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import java.io.Serializable;
 
 /**
  * Copyright (c) 1996 George Reese
@@ -31,32 +30,16 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
-public class NameServer implements Serializable
+public class I3Exception extends Exception
 {
 	public static final long serialVersionUID=0;
-
-	protected String ip;
-	protected String name;
-	protected int    port;
-
-	public NameServer(final String addr, final int p, final String nom)
+	public I3Exception()
 	{
-		super();
-		ip = addr;
-		port = p;
-		name = nom;
+		this("Unidentified exception.");
 	}
 
-	@Override
-	public boolean equals(final Object o)
+	public I3Exception(final String str)
 	{
-		if(o instanceof NameServer)
-		{
-			final NameServer n = (NameServer)o;
-			return n.ip.equalsIgnoreCase(ip)
-					&& n.name.equalsIgnoreCase(name)
-					&& n.port == port;
-		}
-		return false;
+		super(str);
 	}
 }

@@ -1,9 +1,13 @@
-package com.planet_ink.coffee_mud.core.intermud.i3.packets;
+package com.planet_ink.coffee_mud.core.intermud.i3;
 import com.planet_ink.coffee_mud.core.intermud.imc2.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet.PacketType;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3Mud;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.MudList;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -50,7 +54,7 @@ import java.util.concurrent.TimeUnit;
  * proper instance of Intermud.
  * @author George Reese
  * @version 1.0
- * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices
+ * @see com.planet_ink.coffee_mud.core.intermud.i3.ImudServices
  * @see com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistentPeer
  */
 
@@ -82,7 +86,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * @param adminEmail email address of mud admin
 	 * @param imud an instance of the mudlib implementation of com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices
 	 * @param peer and instance of the mudlib implementation of com.planet_ink.coffee_mud.core.intermud.i3.packets.IntermudPeer
-	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices
+	 * @see com.planet_ink.coffee_mud.core.intermud.i3.ImudServices
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistentPeer
 	 */
 	static public void setup(final String[] routersList, final String adminEmail,
@@ -129,7 +133,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * Register a fake channel
 	 * @param c the remote channel name
 	 * @return the local channel name for the specified new local channel name
-	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices#getLocalChannel
+	 * @see com.planet_ink.coffee_mud.core.intermud.i3.ImudServices#getLocalChannel
 	 */
 	static public String registerFakeChannel(final String c)
 	{
@@ -149,7 +153,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * Register a fake channel
 	 * @param c the remote channel name
 	 * @return the local channel name for the specified new local channel name
-	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices#getLocalChannel
+	 * @see com.planet_ink.coffee_mud.core.intermud.i3.ImudServices#getLocalChannel
 	 */
 	static public String removeFakeChannel(final String c)
 	{
@@ -170,7 +174,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * getLocalChannel().
 	 * @param c the remote channel name
 	 * @return the local channel name for the specified remote channel name
-	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices#getLocalChannel
+	 * @see com.planet_ink.coffee_mud.core.intermud.i3.ImudServices#getLocalChannel
 	 */
 	static public String getLocalChannel(final String c )
 	{
@@ -186,7 +190,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * getRemoteChannel().
 	 * @param c the local channel name
 	 * @return the remote channel name for the specified local channel name
-	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices#getRemoteChannel
+	 * @see com.planet_ink.coffee_mud.core.intermud.i3.ImudServices#getRemoteChannel
 	 */
 	static public String getRemoteChannel(final String c)
 	{
@@ -947,7 +951,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * added to the ImudServices implementation's getChannels()
 	 * method.
 	 * @param c the channel to add to the list of known channels
-	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices#getChannels
+	 * @see com.planet_ink.coffee_mud.core.intermud.i3.ImudServices#getChannels
 	 */
 	public void addChannel(final Channel c)
 	{

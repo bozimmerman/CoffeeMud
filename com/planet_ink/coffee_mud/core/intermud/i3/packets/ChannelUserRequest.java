@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class ChannelUserRequest extends UserPacket
+public class ChannelUserRequest extends MudPacket
 {
 	public String userToRequest = null;
 

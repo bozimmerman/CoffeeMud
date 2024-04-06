@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class UCacheUpdate extends UserPacket
+public class UCacheUpdate extends MudPacket
 {
 	public String	uname1	= "";
 	public String	uname2	= "";

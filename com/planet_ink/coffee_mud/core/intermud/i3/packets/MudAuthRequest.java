@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class MudAuthRequest extends UserPacket
+public class MudAuthRequest extends MudPacket
 {
 	public MudAuthRequest()
 	{

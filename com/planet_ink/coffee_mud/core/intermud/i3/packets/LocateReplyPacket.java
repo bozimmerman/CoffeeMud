@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class LocateReplyPacket extends UserPacket
+public class LocateReplyPacket extends MudPacket
 {
 	public String located_mud_name;
 	public String located_visible_name;

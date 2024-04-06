@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core.intermud.i3.packets;
+package com.planet_ink.coffee_mud.core.intermud.i3.entities;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -31,45 +31,32 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
-public class I3Mud implements Serializable
+public class NameServer implements Serializable
 {
 	public static final long serialVersionUID=0;
 
-	public String address;
-	public String admin_email;
-	public String base_mudlib;
-	public String driver;
-	public int    modified;
-	public String mud_name;
-	public String mud_type;
-	public String mudlib;
-	public int    player_port;
-	public int    state;
-	public String status;
-	public int    tcp_port;
-	public int    udp_port;
+	public String ip;
+	public String name;
+	public int    port;
 
-	public I3Mud()
+	public NameServer(final String addr, final int p, final String nom)
 	{
 		super();
+		ip = addr;
+		port = p;
+		name = nom;
 	}
 
-	public I3Mud(final I3Mud other)
+	@Override
+	public boolean equals(final Object o)
 	{
-		super();
-		address = other.address;
-		admin_email = other.admin_email;
-		base_mudlib = other.base_mudlib;
-		driver = other.driver;
-		modified = other.modified;
-		mud_name = other.mud_name;
-		mud_type = other.mud_type;
-		mudlib = other.mudlib;
-		player_port = other.player_port;
-		state = other.state;
-		status = other.status;
-		tcp_port = other.tcp_port;
-		udp_port = other.udp_port;
+		if(o instanceof NameServer)
+		{
+			final NameServer n = (NameServer)o;
+			return n.ip.equalsIgnoreCase(ip)
+					&& n.name.equalsIgnoreCase(name)
+					&& n.port == port;
+		}
+		return false;
 	}
 }
-

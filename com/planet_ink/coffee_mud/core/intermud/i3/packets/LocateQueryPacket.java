@@ -34,7 +34,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class LocateQueryPacket extends UserPacket
+public class LocateQueryPacket extends MudPacket
 {
 	public String user_name;
 

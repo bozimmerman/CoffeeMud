@@ -41,7 +41,7 @@ import java.io.Serializable;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class IMudInterface implements ImudServices, Serializable
+public class CoffeeMudI3Bridge implements ImudServices, Serializable
 {
 	public static final long serialVersionUID=0;
 
@@ -122,7 +122,7 @@ public class IMudInterface implements ImudServices, Serializable
 		{ "^w^*", "%^WHITE%^%^BOLD%^%^FLASH%^",   "\033[1;5;37m" }  // White
 	};
 
-	public IMudInterface(final String Name, final String Version, final int Port, final String i3status, final List<CMChannel> Channels)
+	public CoffeeMudI3Bridge(final String Name, final String Version, final int Port, final String i3status, final List<CMChannel> Channels)
 	{
 		if(Name!=null)
 			name=Name;
@@ -663,7 +663,7 @@ public class IMudInterface implements ImudServices, Serializable
 	 * Register a fake channel
 	 * @param chan the remote channel name
 	 * @return the local channel name for the specified new local channel name
-	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices#getLocalChannel
+	 * @see com.planet_ink.coffee_mud.core.intermud.i3.ImudServices#getLocalChannel
 	 */
 	@Override
 	public boolean addChannel(final CMChannel chan)

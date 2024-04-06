@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class ErrorPacket extends UserPacket
+public class ErrorPacket extends MudPacket
 {
 	public String	error_code		= "";
 	public String	error_message	= "";

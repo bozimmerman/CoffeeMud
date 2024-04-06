@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
+import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -33,7 +35,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class ChannelDelete extends UserPacket
+public class ChannelDelete extends MudPacket
 {
 	public String channel = null;
 

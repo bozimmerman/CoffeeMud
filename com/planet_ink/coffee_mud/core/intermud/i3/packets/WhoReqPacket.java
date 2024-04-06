@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class WhoReqPacket extends UserPacket
+public class WhoReqPacket extends MudPacket
 {
 	public Vector<?> who = null;
 

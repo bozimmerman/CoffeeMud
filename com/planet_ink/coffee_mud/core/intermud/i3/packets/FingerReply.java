@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class FingerReply extends UserPacket
+public class FingerReply extends MudPacket
 {
 	public String visible_name="";
 	public String title = "";

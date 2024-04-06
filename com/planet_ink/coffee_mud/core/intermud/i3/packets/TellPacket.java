@@ -47,7 +47,7 @@ import java.util.Vector;
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
  */
-public class TellPacket extends UserPacket
+public class TellPacket extends MudPacket
 {
 	/**
 	 * The display name for the person sending the tell.

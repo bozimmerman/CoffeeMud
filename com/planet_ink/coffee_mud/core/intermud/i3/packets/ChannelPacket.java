@@ -2,6 +2,8 @@ package com.planet_ink.coffee_mud.core.intermud.i3.packets;
 
 import java.util.Vector;
 
+import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
+
 /**
  * Copyright (c) 1996 George Reese
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +19,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public abstract class ChannelPacket extends UserPacket
+public abstract class ChannelPacket extends MudPacket
 {
 	public String channel = null;
 	public String sender_visible_name = null;

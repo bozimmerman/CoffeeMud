@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class FingerRequest extends UserPacket
+public class FingerRequest extends MudPacket
 {
 	public FingerRequest()
 	{

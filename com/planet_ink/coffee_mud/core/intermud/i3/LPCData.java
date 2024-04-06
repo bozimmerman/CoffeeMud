@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core.intermud.i3.packets;
+package com.planet_ink.coffee_mud.core.intermud.i3;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
