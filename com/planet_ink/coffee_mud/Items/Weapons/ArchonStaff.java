@@ -488,7 +488,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 			noRecurse.set(true);
 			try
 			{
-				final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),new ArchonStaff(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
+				final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
 				if(msg.source().location().okMessage(msg.source(),msg2))
 				{
 					msg.source().location().send(msg.source(), msg2);
