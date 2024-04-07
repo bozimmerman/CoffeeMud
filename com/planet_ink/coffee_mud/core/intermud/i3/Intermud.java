@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet.PacketType;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.ChannelList;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3Mud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.MudList;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
@@ -218,22 +219,22 @@ public class Intermud implements Runnable, Persistent, Serializable
 	}
 
 	private volatile long		lastPingSentTime;
-	private boolean 			connected;
-	private Socket  			connection;
-	private Thread  			input_thread;
+	private boolean				connected;
+	private Socket				connection;
+	private Thread				input_thread;
 	private ImudServices		intermud;
-	private int 				modified;
+	private int					modified;
 	private DataOutputStream	output;
-	private PersistentPeer  	peer;
-	private Tickable	  		save_thread;
-	public boolean				shutdown=false;
-	public DataInputStream 		input;
-	public int  			   	attempts;
-	public ChannelList  	   	channels;
-	public MudList  		   	muds;
-	public List<NameServer>    	name_servers;
-	public int  			   	password;
-	public NameServer		   	currentRouter;
+	private PersistentPeer		peer;
+	private Tickable			save_thread;
+	public boolean				shutdown	= false;
+	public DataInputStream		input;
+	public int					attempts;
+	public ChannelList			channels;
+	public MudList				muds;
+	public List<NameServer>		name_servers;
+	public int					password;
+	public NameServer			currentRouter;
 	public String				adminEmail;
 
 	public Hashtable<String,String>	banned;
@@ -444,12 +445,20 @@ public class Intermud implements Runnable, Persistent, Serializable
 					{
 						connection = new Socket(currentRouter.ip, currentRouter.port);
 						output = new DataOutputStream(connection.getOutputStream());
-						send("({\"startup-req-3\",5,\"" + intermud.getMudName() + "\",0,\"" +
-							 currentRouter.name + "\",0," + password +
-							 "," + muds.getMudListId() + "," + channels.getChannelListId() + "," + intermud.getMudPort() +
-							 ",0,0,\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\"CoffeeMud\"," +
-							 "\""+intermud.getMudState()+"\",\""+CMProps.getVar(CMProps.Str.ADMINEMAIL).toLowerCase()+"\",([" +
-							 "\"who\":1,\"finger\":1,\"channel\":1,\"tell\":1,\"locate\":1,\"auth\":1,]),([]),})");
+						final Map<String,Integer> services = new HashMap<String,Integer>();
+						services.put("who", Integer.valueOf(1));
+						services.put("finger", Integer.valueOf(1));
+						services.put("channel", Integer.valueOf(1));
+						services.put("tell", Integer.valueOf(1));
+						services.put("locate", Integer.valueOf(1));
+						services.put("auth", Integer.valueOf(1));
+						final Map<String,String> other = new HashMap<String,String>();
+						final StartupReq3 pkt = new StartupReq3(currentRouter.name,password,
+								muds.getMudListId(),channels.getChannelListId(),intermud.getMudPort(),0,0,
+								intermud.getMudVersion(),intermud.getMudVersion(),intermud.getMudVersion(),"CoffeeMud",
+								intermud.getMudState(),CMProps.getVar(CMProps.Str.ADMINEMAIL).toLowerCase(),
+								services,other);
+						send(pkt);
 					}
 					catch(final java.io.IOException e)
 					{
@@ -466,21 +475,26 @@ public class Intermud implements Runnable, Persistent, Serializable
 					while( e.hasMoreElements() )
 					{
 						final String chan = e.nextElement();
-
-						send("({\"channel-listen\",5,\"" + intermud.getMudName() + "\",0,\"" +
-								currentRouter.name + "\",0,\"" + chan + "\",1,})");
+						final ChannelListen pkt = new ChannelListen(chan,1);
+						pkt.target_mud = currentRouter.name;
+						send(pkt);
 					}
 					Log.sysOut("Intermud3","I3 client connection: "+currentRouter.ip+"@"+currentRouter.port);
 					break;
 				}
 				if(!connected)
+				{
 					for(int e=0;e<connectionStatuses.size();e++)
 						Log.errOut("Intermud",connectionStatuses.elementAt(e));
+				}
 			}
 		}
 		catch( final Exception e )
 		{
-			try { Thread.sleep((attempts) * 100l); }
+			try
+			{
+				Thread.sleep((attempts) * 100l);
+			}
 			catch( final InterruptedException ignore )
 			{
 				if(shutdown)
@@ -501,9 +515,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 
 		if( target instanceof Integer )
 		{
-			I3Exception e;
-
-			e = new I3Exception(msg);
+			final I3Exception e = new I3Exception(msg);
 			final String cmd=e.getMessage();
 			if(cmd!=null)
 			{
@@ -528,13 +540,12 @@ public class Intermud implements Runnable, Persistent, Serializable
 			keys = list.keys();
 			while( keys.hasMoreElements() )
 			{
-				final I3Mud mud = new I3Mud();
-				Object info;
-
-				mud.mud_name = keys.nextElement();
-				info = list.get(mud.mud_name);
+				final String mudName = keys.nextElement();
+				final Object info = list.get(mudName);
 				if( info instanceof Integer )
 				{
+					final I3Mud mud = new I3Mud();
+					mud.mud_name = mudName;
 					removeMud(mud);
 				}
 				else
@@ -548,6 +559,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 					}
 					if(total<1024)
 					{
+						final I3Mud mud = new I3Mud();
+						mud.mud_name = mudName;
 						mud.state = ((Integer)v.elementAt(0)).intValue();
 						mud.address = (String)v.elementAt(1);
 						mud.player_port = ((Integer)v.elementAt(2)).intValue();
@@ -565,8 +578,6 @@ public class Intermud implements Runnable, Persistent, Serializable
 			}
 		}
 	}
-			 // Hashtable services = (Hashtable)v.elementAt(11);
-			 // Hashtable other_info = (Hashtable)v.elementAt(12);
 
 	@Override
 	public void restore() throws PersistenceException {
@@ -772,7 +783,6 @@ public class Intermud implements Runnable, Persistent, Serializable
 			{
 				Log.errOut("Intermud","Unknown packet type: " + typeStr);
 				return;
-
 			}
 			final Class<? extends Packet> pktClass = type.packetClass;
 			switch(type)

@@ -18,9 +18,9 @@ import java.util.Vector;
  */
 public class IrnData extends IrnPacket
 {
-	Packet innerPacket = null;
+	MudPacket innerPacket = null;
 
-	public IrnData(final String targetRouter, final Packet innerPacket)
+	public IrnData(final String targetRouter, final MudPacket innerPacket)
 	{
 		super(targetRouter);
 		type = Packet.PacketType.IRN_DATA;
@@ -35,13 +35,24 @@ public class IrnData extends IrnPacket
 	}
 
 	@Override
+	public void send() throws InvalidPacketException
+	{
+		if(innerPacket == null)
+		{
+			throw new InvalidPacketException();
+		}
+		super.send();
+	}
+
+	@Override
 	public String toString()
 	{
 		final String cmd=
 				"({\"irn-data\",5," +
 				"\"" + sender_router + "\",0," +
-				"\"" + target_router + "\",0" +
-				"})";
+				"\"" + target_router + "\",0," +
+					innerPacket.toString() +
+				",})";
 		//TODO:
 		return cmd;
 	}

@@ -1,8 +1,13 @@
-package com.planet_ink.coffee_mud.core.intermud.i3.packets;
-import java.util.Vector;
+package com.planet_ink.coffee_mud.core.intermud.i3.entities;
+
+import java.net.Socket;
+import java.util.Hashtable;
+import java.util.Map;
+
+import com.planet_ink.coffee_mud.core.intermud.i3.net.NetPeer;
 
 /**
- * Copyright (c) 2024-2024 Bo Zimmerman
+ * Copyright (c) 1996 George Reese
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,28 +21,26 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class IrnPing extends IrnPacket
+public class PeerMud extends NetPeer
 {
-	public IrnPing(final String targetRouter)
+	private I3MudX mud;
+
+	public long lastPing = System.currentTimeMillis();
+
+	public PeerMud(final String mudName, final Socket sock)
 	{
-		super(targetRouter);
-		type = Packet.PacketType.IRN_PING;
+		super(sock);
+		mud = new I3MudX(mudName);
 	}
 
-	public IrnPing(final Vector<?> v) throws InvalidPacketException
+	public void setMud(final I3MudX mud)
 	{
-		super(v);
-		type = Packet.PacketType.IRN_PING;
+		this.mud = mud;
 	}
 
-	@Override
-	public String toString()
+	public I3MudX getMud()
 	{
-		final String cmd=
-				"({\"irn-ping\",5," +
-				"\"" + sender_router + "\",0," +
-				"\"" + target_router + "\",0," +
-				"})";
-		return cmd;
+		return this.mud;
 	}
+
 }

@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
 import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.core.intermud.i3.packets.Intermud;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;

@@ -52,7 +52,7 @@ public class IrnPacket extends Packet
 	public IrnPacket(final String targetRouter)
 	{
 		super();
-		sender_router = I3Router.getMudName();
+		sender_router = I3Router.getRouterName();
 		target_router = targetRouter;
 	}
 

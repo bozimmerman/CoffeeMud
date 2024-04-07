@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.ChannelList;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3Mud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.MudList;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
@@ -287,7 +288,7 @@ public class IMudClient implements I3Interface
 		final ChannelListen ck=new ChannelListen();
 		ck.sender_name=mob.Name();
 		ck.channel=channel;
-		ck.onoff="1";
+		ck.onoff=1;
 		try
 		{
 			ck.send();
@@ -316,7 +317,7 @@ public class IMudClient implements I3Interface
 		final ChannelListen ck=new ChannelListen();
 		ck.sender_name=mob.Name();
 		ck.channel=channel;
-		ck.onoff="0";
+		ck.onoff=0;
 		try
 		{
 			ck.send();

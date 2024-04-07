@@ -1,8 +1,14 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.router;
 import com.planet_ink.coffee_mud.core.intermud.imc2.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet.PacketType;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.I3Exception;
+import com.planet_ink.coffee_mud.core.intermud.i3.LPCData;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.ChannelList;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.MudList;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.PeerMud;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -10,10 +16,16 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.net.Socket;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Vector;
 
 /**
  * The Router class uses exactly one thread RouterThread object
@@ -26,10 +38,12 @@ import java.util.Map;
  */
 public class I3RouterThread extends Thread implements CMObject
 {
+	public final static int peerTimeout = 10000;
+
 	//https://wotf.org/i3/irn/v1/
 	private java.util.Date				boot_time		= null;
 	private int							count			= 1;
-	private final String				mud_name;
+	private final String				router_name;
 	private final int					port;
 	private boolean						running;
 	private ListenThread				listen_thread	= null;
@@ -37,17 +51,22 @@ public class I3RouterThread extends Thread implements CMObject
 //	private final String[]				peerRoutersList;
 //	private final String				adminEmail;
 	private Map<String, ServerObject>	objects;
-	private Map<String, RouterPeer>		peers;
+	private Map<String, RouterPeer>		routerPeers;
+	private final Map<String, NetPeer>	socks			= new Hashtable<String, NetPeer>();
+	private final Map<String, PeerMud>	clientMuds 		= new Hashtable<String, PeerMud>();
+	private final ChannelList			channels		= new ChannelList();
 
-	protected I3RouterThread(final String mname,
-							final int mport,
+	protected I3RouterThread(final String router_name,
+							final int router_port,
 							final String password,
 							final String[] routersList,
 							final String adminEmail)
 
 	{
-		this.mud_name = mname;
-		this.port = mport;
+		super(Thread.currentThread().getThreadGroup(),
+			  "I3Router"+Thread.currentThread().getThreadGroup().getName().charAt(0));
+		this.router_name = router_name;
+		this.port = router_port;
 //		this.password = password;
 //		this.peerRoutersList = routersList;
 //		this.adminEmail = adminEmail;
@@ -56,7 +75,7 @@ public class I3RouterThread extends Thread implements CMObject
 	@Override
 	public String ID()
 	{
-		return "I3RouterThread";
+		return  "I3Router"+getThreadGroup().getName().charAt(0);
 	}
 
 	@Override
@@ -85,7 +104,7 @@ public class I3RouterThread extends Thread implements CMObject
 	@Override
 	public String name()
 	{
-		return "I3RouterThread"+Thread.currentThread().getThreadGroup().getName().charAt(0);
+		return "I3Router"+getThreadGroup().getName().charAt(0);
 	}
 
 	protected synchronized ServerObject copyObject(String str) throws ObjectLoadException
@@ -148,9 +167,9 @@ public class I3RouterThread extends Thread implements CMObject
 			return;
 		}
 		objects.remove(id);
-		if( peers.containsKey(id) )
+		if( routerPeers.containsKey(id) )
 		{
-			peers.remove(id);
+			routerPeers.remove(id);
 		}
 	}
 
@@ -169,7 +188,7 @@ public class I3RouterThread extends Thread implements CMObject
 		super.start();
 		if( boot_time != null )
 		{
-			Log.errOut("I3RouterThread","Illegal attempt to invoke run().");
+			Log.errOut(ID(),"Illegal attempt to invoke run().");
 			return;
 		}
 
@@ -179,12 +198,12 @@ public class I3RouterThread extends Thread implements CMObject
 		}
 		catch( final java.io.IOException e )
 		{
-			Log.errOut("I3RouterThread",e);
+			Log.errOut(ID(),e);
 			return;
 		}
 
 		boot_time = new java.util.Date();
-		Log.sysOut("I3Router", "InterMud3 Router started on port "+port);
+		Log.sysOut(ID(), "InterMud3 Router started on port "+port);
 
 		synchronized( this )
 		{
@@ -196,7 +215,7 @@ public class I3RouterThread extends Thread implements CMObject
 
 	public RouterPeer getPeer(final String name)
 	{
-		return peers.get(name);
+		return routerPeers.get(name);
 	}
 
 	@Override
@@ -211,9 +230,7 @@ public class I3RouterThread extends Thread implements CMObject
 				things = getObjects();
 			}
 			{// Check for pending object events
-				int i;
-
-				for(i=0; i<things.length; i++)
+				for(int i=0; i<things.length; i++)
 				{
 					final ServerObject thing = things[i];
 
@@ -225,61 +242,156 @@ public class I3RouterThread extends Thread implements CMObject
 						}
 						catch( final Exception e )
 						{
-							Log.errOut("I3RouterThread",e);
+							Log.errOut(ID(),e);
 						}
 					}
 				}
 			}
-			{// Get new connections
-				int i;
-
-				for(i=0; i<5; i++)
+			if(listen_thread != null)
+			{
+				// Get new tentative connections
+				Socket sock = listen_thread.nextSocket();
+				while(sock != null)
 				{
-					java.net.Socket s;
-					RouterPeer new_peer;
-
-					if(listen_thread!=null)
-						s = listen_thread.nextSocket();
-					else
-						s=null;
-					if( s == null )
+					final NetPeer newPeer = new NetPeer(sock);
+					synchronized( this )
 					{
-						break;
+						socks.put(newPeer.toString(), newPeer);
 					}
+					sock = listen_thread.nextSocket();
+				}
+				Packet pkt;
+				for(final Iterator<String> i = socks.keySet().iterator();i.hasNext();)
+				{
+					final String key = i.next();
+					final NetPeer peer = socks.get(key);
+					final DataInputStream istream = peer.getInputStream();
 					try
 					{
-						new_peer = (RouterPeer)copyObject("com.planet_ink.coffee_mud.core.intermud.i3.router.IRouterPeer");
-					}
-					catch( final ObjectLoadException e )
-					{
-						continue;
-					}
-					try
-					{
-						new_peer.setSocket(s);
-						synchronized( this )
+						if(istream == null)
 						{
-							peers.put(new_peer.getObjectId(), new_peer);
-							new_peer.connect();
+							peer.close();
+							i.remove();
+						}
+						else
+						if((pkt = readPacket(istream))!=null)
+						{
+							if(pkt.getType() == Packet.PacketType.IRN_STARTUP_REQUEST)
+							{
+
+							}
+							else
+							if(pkt.getType() == Packet.PacketType.STARTUP_REQ_3)
+							{
+
+							}
+							else
+								Log.sysOut(ID(), "Rejecting new peer packet type: "+pkt.getType());
+						}
+						else
+						if((System.currentTimeMillis() - peer.connectTime) > peerTimeout)
+						{
+							peer.close();
+							i.remove();
 						}
 					}
-					catch( final java.io.IOException e )
+					catch (final IOException e)
 					{
-						new_peer.destruct();
+						try
+						{
+							peer.close();
+						}
+						catch (final IOException e1)
+						{
+						}
+						i.remove();
 					}
 				}
 			}
 		}
 	}
 
+	protected Packet readPacket(final DataInputStream istream) throws IOException
+	{
+		if(istream.available() >= 4)
+		{
+			if(istream.markSupported())
+				istream.mark(32768);
+			final int len = istream.readInt();
+			if(len > 32768)
+			{
+				if(istream.markSupported())
+					istream.reset();
+				istream.skip(istream.available());
+				return null;
+			}
+			if(istream.available() >= len)
+			{
+				final byte[] tmp = new byte[len];
+				istream.readFully(tmp);
+				final String cmd=new String(tmp);
+				Object o;
+				try
+				{
+					o = LPCData.getLPCData(cmd);
+					if((!(o instanceof Vector))
+					||(((Vector<?>)o).size()<4))
+					{
+						Log.errOut(ID(),"390-"+o);
+						if(istream.markSupported())
+							istream.reset();
+						istream.skip(istream.available());
+						return null;
+					}
+					final Vector<?> data=(Vector<?>)o;
+					final String typeStr = ((String)data.elementAt(0)).trim().replace("-", "_");
+					final PacketType type = PacketType.valueOf(typeStr.toUpperCase());
+					if(type == null)
+					{
+						Log.errOut(ID(),"Unknown packet type: " + typeStr);
+						return null;
+					}
+					final Class<? extends Packet> pktClass = type.packetClass;
+					if(pktClass == null)
+						Log.errOut(ID(),"Other packet type: " + typeStr);
+					else
+					{
+						try
+						{
+							final Constructor<? extends Packet> con = pktClass.getConstructor(Vector.class);
+							return con.newInstance(data);
+						}
+						catch( final Exception  e )
+						{
+							Log.errOut(ID(),type+"-"+e.getMessage());
+						}
+					}
+				}
+				catch (final I3Exception e)
+				{
+					Log.errOut(ID(),"390-"+e.getMessage());
+					if(istream.markSupported())
+						istream.reset();
+					istream.skip(istream.available());
+					return null;
+				}
+			}
+			else
+			if(istream.markSupported())
+				istream.reset();
+		}
+		return null;
+	}
+
+
 	protected Date getBootTime()
 	{
 		return boot_time;
 	}
 
-	protected String getMudName()
+	protected String getRouterName()
 	{
-		return mud_name;
+		return router_name;
 	}
 
 	protected int getPort()

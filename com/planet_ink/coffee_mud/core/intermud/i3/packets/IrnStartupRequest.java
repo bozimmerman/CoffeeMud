@@ -70,7 +70,7 @@ public class IrnStartupRequest extends IrnPacket
 				"\"" + sender_router + "\",0," +
 				"\"" + target_router + "\",0," +
 				"([\"client_password\": \""+locPassword +"\"," +
-				"\"server_password\": \""+remPassword +"\"])" +
+				"\"server_password\": \""+remPassword +"\",])," +
 				"})";
 		return cmd;
 	}

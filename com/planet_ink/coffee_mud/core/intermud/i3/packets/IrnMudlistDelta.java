@@ -36,7 +36,7 @@ public class IrnMudlistDelta extends IrnPacket
 		final String cmd=
 				"({\"irn-mudlist-delta\",5," +
 				"\"" + sender_router + "\",0," +
-				"\"" + target_router + "\",0" +
+				"\"" + target_router + "\",0," +
 				"})";
 		return cmd;
 	}

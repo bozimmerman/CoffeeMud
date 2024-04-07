@@ -36,7 +36,7 @@ public class IrnMudlistRequest extends IrnPacket
 		final String cmd=
 				"({\"irn-mudlist-req\",5," +
 				"\"" + sender_router + "\",0," +
-				"\"" + target_router + "\",0" +
+				"\"" + target_router + "\",0," +
 				"})";
 		return cmd;
 	}

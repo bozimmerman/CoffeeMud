@@ -81,7 +81,8 @@ public abstract class Packet
 		IRN_CHANLIST_DELTA(IrnChanlistDelta.class),
 		IRN_DATA(IrnData.class),
 		IRN_PING(IrnPing.class),
-		IRN_SHUTDOWN(IrnShutdown.class)
+		IRN_SHUTDOWN(IrnShutdown.class),
+		STARTUP_REQ_3(StartupReq3.class)
 		;
 		public Class<? extends Packet> packetClass;
 		String key;

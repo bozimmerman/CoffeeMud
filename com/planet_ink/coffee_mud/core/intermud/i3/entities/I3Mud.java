@@ -35,19 +35,19 @@ public class I3Mud implements Serializable
 {
 	public static final long serialVersionUID=0;
 
-	public String address;
-	public String admin_email;
-	public String base_mudlib;
-	public String driver;
-	public int    modified;
-	public String mud_name;
-	public String mud_type;
-	public String mudlib;
-	public int    player_port;
-	public int    state;
-	public String status;
-	public int    tcp_port;
-	public int    udp_port;
+	public String	address;
+	public String	admin_email;
+	public String	base_mudlib;
+	public String	driver;
+	public int		modified;
+	public String	mud_name;
+	public String	mud_type;
+	public String	mudlib;
+	public int		player_port;
+	public int		state;
+	public String	status;
+	public int		tcp_port;
+	public int		udp_port;
 
 	public I3Mud()
 	{

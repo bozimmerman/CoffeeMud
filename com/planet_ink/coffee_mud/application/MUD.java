@@ -26,7 +26,7 @@ import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
 import com.planet_ink.coffee_mud.core.smtp.SMTPserver;
 import com.planet_ink.coffee_mud.core.intermud.IMudClient;
 import com.planet_ink.coffee_mud.core.intermud.cm1.CM1Server;
-import com.planet_ink.coffee_mud.core.intermud.i3.IMudInterface;
+import com.planet_ink.coffee_mud.core.intermud.i3.CoffeeMudI3Bridge;
 import com.planet_ink.coffee_mud.core.intermud.imc2.IMC2Driver;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
 import com.planet_ink.coffee_web.http.MIMEType;
@@ -1055,7 +1055,7 @@ public class MUD extends Thread implements MudHost
 					playstate = "MudLib Development";
 					break;
 				}
-				final IMudInterface imud=new IMudInterface(CMProps.getVar(CMProps.Str.MUDNAME),
+				final CoffeeMudI3Bridge imud=new CoffeeMudI3Bridge(CMProps.getVar(CMProps.Str.MUDNAME),
 														 "CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER),
 														 CMLib.mud(0).getPort(),
 														 playstate,

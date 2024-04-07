@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.router;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
@@ -94,9 +95,13 @@ public class I3Router
 		return routerThread.findObject(file);
 	}
 
-	static public String getMudName()
+	static public String getRouterName()
 	{
-		return routerThread.getMudName();
+		if(routerThread != null)
+			return routerThread.getRouterName();
+		if(Intermud.getNameServer() != null)
+			return Intermud.getNameServer().name;
+		return "";
 	}
 
 	static public int getPort()
