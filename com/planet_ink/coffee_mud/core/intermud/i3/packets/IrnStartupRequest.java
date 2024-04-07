@@ -36,8 +36,8 @@ import java.util.Vector;
  */
 public class IrnStartupRequest extends IrnPacket
 {
-	String locPassword = "";
-	String remPassword = "";
+	public int sender_password = 0;
+	public int target_password = 0;
 
 	public IrnStartupRequest(final String targetRouter)
 	{
@@ -54,11 +54,6 @@ public class IrnStartupRequest extends IrnPacket
 	@Override
 	public void send() throws InvalidPacketException
 	{
-		if(locPassword == null
-		|| remPassword == null)
-		{
-			throw new InvalidPacketException();
-		}
 		super.send();
 	}
 
@@ -69,8 +64,8 @@ public class IrnStartupRequest extends IrnPacket
 				"({\"irn-startup-req\",5," +
 				"\"" + sender_router + "\",0," +
 				"\"" + target_router + "\",0," +
-				"([\"client_password\": \""+locPassword +"\"," +
-				"\"server_password\": \""+remPassword +"\",])," +
+				"([\"client_password\": "+sender_password +"," +
+				"\"server_password\": "+target_password +",])," +
 				"})";
 		return cmd;
 	}

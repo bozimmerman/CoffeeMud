@@ -46,6 +46,17 @@ public class NetPeer implements java.io.Closeable
 		}
 	}
 
+	public NetPeer(final NetPeer other)
+	{
+		super();
+		this.sock = other.sock;
+		this.sockIn = other.sockIn;
+		this.sockOut = other.sockOut;
+		other.sock = null;
+		other.sockIn = null;
+		other.sockOut = null;
+	}
+
 	public boolean isConnected()
 	{
 		return (sock != null) && (sock.isConnected());

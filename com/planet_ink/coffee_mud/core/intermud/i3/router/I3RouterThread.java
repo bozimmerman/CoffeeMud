@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Vector;
 
@@ -47,18 +48,18 @@ public class I3RouterThread extends Thread implements CMObject
 	private final int					port;
 	private boolean						running;
 	private ListenThread				listen_thread	= null;
-//	private final String				password;
+	private final int					password;
 //	private final String[]				peerRoutersList;
 //	private final String				adminEmail;
-	private Map<String, ServerObject>	objects;
-	private Map<String, RouterPeer>		routerPeers;
+	private final Map<String, ServerObject>	objects		= new Hashtable<String,ServerObject>(1000, 100);
+	private final Map<String, RouterPeer>	routerPeers	= new Hashtable<String, RouterPeer>();
 	private final Map<String, NetPeer>	socks			= new Hashtable<String, NetPeer>();
 	private final Map<String, PeerMud>	clientMuds 		= new Hashtable<String, PeerMud>();
 	private final ChannelList			channels		= new ChannelList();
 
 	protected I3RouterThread(final String router_name,
 							final int router_port,
-							final String password,
+							final int password,
 							final String[] routersList,
 							final String adminEmail)
 
@@ -67,7 +68,7 @@ public class I3RouterThread extends Thread implements CMObject
 			  "I3Router"+Thread.currentThread().getThreadGroup().getName().charAt(0));
 		this.router_name = router_name;
 		this.port = router_port;
-//		this.password = password;
+		this.password = password;
 //		this.peerRoutersList = routersList;
 //		this.adminEmail = adminEmail;
 	}
@@ -207,7 +208,7 @@ public class I3RouterThread extends Thread implements CMObject
 
 		synchronized( this )
 		{
-			objects = new Hashtable<String,ServerObject>(1000, 100);
+			objects.clear();
 		}
 
 		running = true;
@@ -218,12 +219,184 @@ public class I3RouterThread extends Thread implements CMObject
 		return routerPeers.get(name);
 	}
 
+	protected void processNewConnections()
+	{
+		final ListenThread listen_thread;
+		synchronized(this)
+		{
+			listen_thread = this.listen_thread;
+		}
+		if(listen_thread != null)
+		{
+			// Get new tentative connections
+			Socket sock = listen_thread.nextSocket();
+			while(sock != null)
+			{
+				final NetPeer newPeer = new NetPeer(sock);
+				synchronized( this )
+				{
+					socks.put(newPeer.toString(), newPeer);
+				}
+				sock = listen_thread.nextSocket();
+			}
+			Packet pkt;
+			for(final Iterator<String> i = socks.keySet().iterator();i.hasNext();)
+			{
+				final String key = i.next();
+				final NetPeer peer = socks.get(key);
+				final DataInputStream istream = peer.getInputStream();
+				try
+				{
+					if(istream == null)
+					{
+						peer.close();
+						i.remove();
+					}
+					else
+					if((pkt = readPacket(istream))!=null)
+					{
+						if(pkt.getType() == Packet.PacketType.IRN_STARTUP_REQUEST)
+						{
+							final IrnStartupRequest ipkt = (IrnStartupRequest)pkt;
+							if(((ipkt.target_password == this.password)
+								|| (this.password < 0))
+							&&(ipkt.target_router.equalsIgnoreCase(this.router_name))
+							&&(!this.routerPeers.containsKey(ipkt.sender_router)))
+							{
+								final String sender = ipkt.sender_router;
+								final IRouterPeer rpeer = new IRouterPeer(peer);
+								rpeer.password = ipkt.sender_password;
+								this.routerPeers.put(sender, rpeer);
+								// do not close peer, as we want to keep the socks open
+							}
+							else
+								peer.close();
+							i.remove();
+						}
+						else
+						if(pkt.getType() == Packet.PacketType.STARTUP_REQ_3)
+						{
+							final StartupReq3 mpkt = (StartupReq3)pkt;
+							if(((mpkt.password == this.password)
+								|| (this.password < 0))
+							&&(mpkt.target_router.equalsIgnoreCase(this.router_name))
+							&&(!this.clientMuds.containsKey(mpkt.sender_router)))
+							{
+								final PeerMud newMud = new PeerMud(mpkt.sender_router, peer);
+								newMud.setMud(mpkt.makeMud());
+								this.clientMuds.put(mpkt.sender_router, newMud);
+							}
+							i.remove();
+						}
+						else
+							Log.sysOut(ID(), "Rejecting new peer packet type: "+pkt.getType());
+					}
+					else
+					if((System.currentTimeMillis() - peer.connectTime) > peerTimeout)
+					{
+						peer.close();
+						i.remove();
+					}
+				}
+				catch (final IOException e)
+				{
+					try
+					{
+						peer.close();
+					}
+					catch (final IOException e1)
+					{
+					}
+					i.remove();
+				}
+			}
+		}
+	}
+
+	protected void processMudPeers()
+	{
+		final LinkedList<Packet> todo = new LinkedList<Packet>();
+		for(final Iterator<String> p = this.clientMuds.keySet().iterator(); p.hasNext();)
+		{
+			final String peerName = p.next();
+			final PeerMud peer = this.clientMuds.get(peerName);
+			if(!peer.isConnected())
+				p.remove();
+			else
+			{
+				final DataInputStream istream = peer.getInputStream();
+				final Packet pkt;
+				try
+				{
+					if(istream == null)
+					{
+						peer.close();
+						p.remove();
+					}
+					else
+					if((pkt = readPacket(istream))!=null)
+						todo.add(pkt);
+					//TODO: deal with unpinged, or pings
+				}
+				catch (final IOException e)
+				{
+					try
+					{
+						peer.close();
+					}
+					catch(final Exception e1) {}
+					p.remove();
+				}
+			}
+		}
+	}
+
+	protected void processRouterPeers()
+	{
+		final LinkedList<Packet> todo = new LinkedList<Packet>();
+		for(final Iterator<String> p = this.routerPeers.keySet().iterator(); p.hasNext();)
+		{
+			final String peerName = p.next();
+			final RouterPeer peer = this.routerPeers.get(peerName);
+			if(!peer.isConnected())
+			{
+				peer.destruct();
+				p.remove();
+			}
+			else
+			{
+				final DataInputStream istream = peer.getInputStream();
+				final Packet pkt;
+				try
+				{
+					if(istream == null)
+					{
+						peer.destruct();
+						p.remove();
+					}
+					else
+					if((pkt = readPacket(istream))!=null)
+						todo.add(pkt);
+					//TODO: deal with unpinged, or pings
+				}
+				catch (final IOException e)
+				{
+					peer.destruct();
+					p.remove();
+				}
+			}
+		}
+	}
+
 	@Override
 	public void run()
 	{
 		while(running)
 		{
 			CMLib.s_sleep(250);
+			processNewConnections();
+
+
 			ServerObject[] things;
 			synchronized( this )
 			{
@@ -244,67 +417,6 @@ public class I3RouterThread extends Thread implements CMObject
 						{
 							Log.errOut(ID(),e);
 						}
-					}
-				}
-			}
-			if(listen_thread != null)
-			{
-				// Get new tentative connections
-				Socket sock = listen_thread.nextSocket();
-				while(sock != null)
-				{
-					final NetPeer newPeer = new NetPeer(sock);
-					synchronized( this )
-					{
-						socks.put(newPeer.toString(), newPeer);
-					}
-					sock = listen_thread.nextSocket();
-				}
-				Packet pkt;
-				for(final Iterator<String> i = socks.keySet().iterator();i.hasNext();)
-				{
-					final String key = i.next();
-					final NetPeer peer = socks.get(key);
-					final DataInputStream istream = peer.getInputStream();
-					try
-					{
-						if(istream == null)
-						{
-							peer.close();
-							i.remove();
-						}
-						else
-						if((pkt = readPacket(istream))!=null)
-						{
-							if(pkt.getType() == Packet.PacketType.IRN_STARTUP_REQUEST)
-							{
-
-							}
-							else
-							if(pkt.getType() == Packet.PacketType.STARTUP_REQ_3)
-							{
-
-							}
-							else
-								Log.sysOut(ID(), "Rejecting new peer packet type: "+pkt.getType());
-						}
-						else
-						if((System.currentTimeMillis() - peer.connectTime) > peerTimeout)
-						{
-							peer.close();
-							i.remove();
-						}
-					}
-					catch (final IOException e)
-					{
-						try
-						{
-							peer.close();
-						}
-						catch (final IOException e1)
-						{
-						}
-						i.remove();
 					}
 				}
 			}

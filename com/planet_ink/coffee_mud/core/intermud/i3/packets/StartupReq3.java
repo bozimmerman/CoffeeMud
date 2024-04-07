@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
 import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3Mud;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -151,6 +152,30 @@ public class StartupReq3 extends IrnPacket
 		this.other.clear();
 		if(other != null)
 			this.other.putAll(other);
+	}
+
+	public I3MudX makeMud()
+	{
+		final I3MudX mud = new I3MudX(this.sender_router);
+		//mud.address
+		mud.admin_email = this.adminEmail;
+		mud.base_mudlib = this.baseLib;
+		mud.channelListId = this.channelListId;
+		mud.driver = this.driver;
+		mud.modified = (int)(System.currentTimeMillis()/1000);
+		mud.mud_name = this.sender_router;
+		mud.mud_type = this.mtype;
+		mud.mudlib = this.lib;
+		mud.mudListId = this.mudListId;
+		mud.other.putAll(this.other);
+		mud.password = -1;
+		mud.player_port = this.port;
+		mud.services.putAll(this.services);
+		mud.state = 1;
+		mud.status = this.mudState;
+		mud.tcp_port = this.tcpPort;
+		mud.udp_port = this.udpPort;
+		return mud;
 	}
 
 	@Override

@@ -33,6 +33,12 @@ public class PeerMud extends NetPeer
 		mud = new I3MudX(mudName);
 	}
 
+	public PeerMud(final String mudName, final NetPeer peer)
+	{
+		super(peer);
+		mud = new I3MudX(mudName);
+	}
+
 	public void setMud(final I3MudX mud)
 	{
 		this.mud = mud;

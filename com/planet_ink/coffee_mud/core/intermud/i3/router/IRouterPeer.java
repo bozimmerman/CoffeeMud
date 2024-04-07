@@ -48,9 +48,20 @@ public class IRouterPeer implements RouterPeer
 	DataOutputStream out		= null;
 	Socket			sock		= null;
 	SocketAddress	address		= null;
-	String			password	= "";
+	int				password	= 0;
 	String			myID		= "";
 	String			adminEmail	= "";
+
+	public IRouterPeer(final NetPeer peer)
+	{
+		super();
+		this.sock = peer.sock;
+		this.in = peer.getInputStream();
+		this.out = peer.getOutputStream();
+		peer.sock = null;
+		peer.sockIn = null;
+		peer.sockOut = null;
+	}
 
 	/**
 	 * Gets data about this peer from storage and gives it
@@ -70,9 +81,9 @@ public class IRouterPeer implements RouterPeer
 			final ObjectInputStream in=new ObjectInputStream(new ByteArrayInputStream(F.raw()));
 			Object newobj;
 			newobj=in.readObject();
-			if(newobj instanceof String)
+			if(newobj instanceof Integer)
 			{
-				password = (String)newobj;
+				password = ((Integer)newobj).intValue();
 				newobj=in.readObject();
 				if(newobj instanceof ChannelList)
 				{

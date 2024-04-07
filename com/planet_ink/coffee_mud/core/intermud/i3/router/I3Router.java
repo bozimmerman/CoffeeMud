@@ -48,7 +48,7 @@ public class I3Router
 	 */
 	static public void start(final String mud,
 							 final int port,
-							 final String password,
+							 final int password,
 							 final String[] routersList,
 							 final String adminEmail) throws ServerSecurityException
 	{
