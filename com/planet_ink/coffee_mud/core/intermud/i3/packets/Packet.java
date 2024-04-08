@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.intermud.imc2.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.MudList;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -70,8 +71,8 @@ public abstract class Packet
 		AUTH_MUD_REQ(MudAuthRequest.class),
 		UCACHE_MUD_UPDATE(null),
 		UCACHE_UPDATE(UCacheUpdate.class),
-		MUDLIST(null),
-		STARTUP_REPLY(null),
+		MUDLIST(MudlistPacket.class),
+		STARTUP_REPLY(StartupReply.class),
 		ERROR(ErrorPacket.class),
 		CHANLIST_REPLY(null),
 		IRN_STARTUP_REQUEST(IrnStartupRequest.class),

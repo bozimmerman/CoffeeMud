@@ -1,30 +1,29 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.router;
-import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
-import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
-import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.ChannelList;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.MudList;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
-import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
-import com.planet_ink.coffee_mud.core.intermud.*;
-import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.core.collections.*;
 
-import java.util.*;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketAddress;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Random;
+
+import com.planet_ink.coffee_mud.core.CMFile;
+import com.planet_ink.coffee_mud.core.Log;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
+import com.planet_ink.coffee_mud.core.intermud.i3.net.NetPeer;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.InvalidPacketException;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnMudlistDelta;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.MudlistPacket;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.StartupReply;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistenceException;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistentPeer;
+import com.planet_ink.coffee_mud.core.intermud.i3.server.ServerObject;
 
 /**
  * Copyright (c) 1996 George Reese
@@ -41,38 +40,36 @@ import java.net.SocketAddress;
  * limitations under the License.
  *
  */
-public class IRouterPeer extends NameServer implements RouterPeer
+public class MudPeer extends NetPeer implements ServerObject, PersistentPeer
 {
-	private static final long serialVersionUID = 1L;
+	I3MudX 			mud;
+	boolean			isRestoring	= false;
+	boolean			destructed	= false;
+	private boolean	initialized	= false;
 
-	boolean				isRestoring	= false;
-	boolean				destructed	= false;
-	ChannelList			channels	= new ChannelList();
-	MudList				muds		= new MudList();
-	DataInputStream		in			= null;
-	DataOutputStream	out			= null;
-	Socket				sock		= null;
-	SocketAddress		address		= null;
-	int					password	= 0;
-	long				lastPing	= System.currentTimeMillis();
-	long				lastPong	= System.currentTimeMillis();
-	int					mudListId	= 0;
-	int					chanListId	= 0;
-	boolean				initialized	= false;
+	public long lastPing = System.currentTimeMillis();
+	public long lastPong = System.currentTimeMillis();
 
-	public IRouterPeer(final String addr, final int p, final String nom)
+	public MudPeer(final String mudName, final Socket sock)
 	{
-		super(addr,p,nom);
+		super(sock);
+		mud = new I3MudX(mudName);
 	}
-	public IRouterPeer(final NameServer srvr, final NetPeer peer, final I3RouterThread baseRouter)
+
+	public MudPeer(final String mudName, final NetPeer peer)
 	{
-		super(srvr.ip, srvr.port, srvr.name);
-		this.sock = peer.sock;
-		this.in = peer.getInputStream();
-		this.out = peer.getOutputStream();
-		peer.sock = null;
-		peer.in = null;
-		peer.out = null;
+		super(peer);
+		mud = new I3MudX(mudName);
+	}
+
+	public void setMud(final I3MudX mud)
+	{
+		this.mud = mud;
+	}
+
+	public I3MudX getMud()
+	{
+		return this.mud;
 	}
 
 	/**
@@ -86,27 +83,15 @@ public class IRouterPeer extends NameServer implements RouterPeer
 		isRestoring=true;
 		try
 		{
-			final CMFile F=new CMFile("resources/rpeer."+getObjectId(),null);
+			final CMFile F=new CMFile("resources/mpeer."+getObjectId(),null);
 			if(!F.exists())
 				return;
 
 			final ObjectInputStream in=new ObjectInputStream(new ByteArrayInputStream(F.raw()));
 			Object newobj;
 			newobj=in.readObject();
-			if(newobj instanceof Integer)
-			{
-				password = ((Integer)newobj).intValue();
-				newobj=in.readObject();
-				if(newobj instanceof ChannelList)
-				{
-					channels=(ChannelList)newobj;
-					newobj=in.readObject();
-					if(newobj instanceof MudList)
-					{
-						muds=(MudList)newobj;
-					}
-				}
-			}
+			if(newobj instanceof I3MudX)
+				this.mud = (I3MudX)newobj;
 		}
 		catch(final Exception e)
 		{
@@ -128,9 +113,7 @@ public class IRouterPeer extends NameServer implements RouterPeer
 		{
 			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 			final ObjectOutputStream out=new ObjectOutputStream(bout);
-			out.writeObject(Integer.valueOf(password));
-			out.writeObject(channels);
-			out.writeObject(muds);
+			out.writeObject(mud);
 			out.flush();
 			bout.flush();
 			new CMFile("::resources/rpeer."+getObjectId(),null).saveRaw(bout.toByteArray());
@@ -196,26 +179,21 @@ public class IRouterPeer extends NameServer implements RouterPeer
 		initialized=true;
 		try
 		{
+			final StartupReply srep = new StartupReply(this.mud.mud_name);
+			srep.password = this.mud.password; //TODO: what is this supposed to be?
+			srep.send();
+
 			final Random r = new Random(System.currentTimeMillis());
 			final I3MudX[] muds = I3Router.getMudXPeers();
 			for(int i=0;i<muds.length;i+=5)
 			{
-				final IrnMudlistDelta mlrep = new IrnMudlistDelta(this.name);
+				final MudlistPacket mlrep = new MudlistPacket(this.mud.mud_name);
 				mlrep.mudlist_id = r.nextInt(Integer.MAX_VALUE);
 				for(int x=i;x<i+5 && x<muds.length;x++)
 					mlrep.mudlist.add(muds[x]);
 				mlrep.send();
 			}
 
-			final List<Channel> channels = new XArrayList<Channel>(I3Router.getRouter().channels.getChannels().values());
-			for(int i=0;i<channels.size();i+=5)
-			{
-				final IrnChanlistDelta clrep = new IrnChanlistDelta(this.name);
-				clrep.chanlist_id = r.nextInt(Integer.MAX_VALUE);
-				for(int x=i;x<i+5 && x<channels.size();x++)
-					clrep.chanlist.add(channels.get(x));
-				clrep.send();
-			}
 		}
 		catch (final InvalidPacketException e)
 		{
@@ -265,61 +243,12 @@ public class IRouterPeer extends NameServer implements RouterPeer
 	@Override
 	public String getObjectId()
 	{
-		return this.name;
+		return mud.mud_name;
 	}
 
 	@Override
 	public void setObjectId(final String id)
 	{
-		name = id;
-	}
-
-	@Override
-	public void connect()
-	{
-		if(sock != null)
-		{
-			if(!sock.isConnected())
-			{
-				try
-				{
-					sock.connect(address);
-					in = new DataInputStream(sock.getInputStream());
-					out = new DataOutputStream(sock.getOutputStream());
-				}
-				catch (final IOException e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
-	@Override
-	public void setSocket(final Socket s) throws IOException
-	{
-		sock = s;
-		if(address == null)
-			address = s.getRemoteSocketAddress();
-		in = new DataInputStream(sock.getInputStream());
-		out = new DataOutputStream(sock.getOutputStream());
-	}
-
-	@Override
-	public boolean isConnected()
-	{
-		return (sock != null) && (sock.isConnected());
-	}
-
-	@Override
-	public DataInputStream getInputStream()
-	{
-		return in;
-	}
-
-	@Override
-	public DataOutputStream getOutputStream()
-	{
-		return out;
+		mud.mud_name = id;
 	}
 }

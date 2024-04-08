@@ -26,8 +26,8 @@ import java.net.Socket;
 public class NetPeer implements java.io.Closeable
 {
 	public Socket			sock;
-	public DataInputStream	sockIn;
-	public DataOutputStream	sockOut;
+	public DataInputStream	in;
+	public DataOutputStream	out;
 	public final long		connectTime	= System.currentTimeMillis();
 
 	public NetPeer(final Socket sock)
@@ -37,8 +37,8 @@ public class NetPeer implements java.io.Closeable
 		{
 			try
 			{
-				this.sockIn = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
-				this.sockOut = new DataOutputStream(sock.getOutputStream());
+				this.in = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
+				this.out = new DataOutputStream(sock.getOutputStream());
 			}
 			catch (final IOException e)
 			{
@@ -50,11 +50,11 @@ public class NetPeer implements java.io.Closeable
 	{
 		super();
 		this.sock = other.sock;
-		this.sockIn = other.sockIn;
-		this.sockOut = other.sockOut;
+		this.in = other.in;
+		this.out = other.out;
 		other.sock = null;
-		other.sockIn = null;
-		other.sockOut = null;
+		other.in = null;
+		other.out = null;
 	}
 
 	public boolean isConnected()
@@ -64,12 +64,12 @@ public class NetPeer implements java.io.Closeable
 
 	public DataInputStream getInputStream()
 	{
-		return (isConnected()) ? sockIn : null;
+		return (isConnected()) ? in : null;
 	}
 
 	public DataOutputStream getOutputStream()
 	{
-		return (isConnected()) ? sockOut : null;
+		return (isConnected()) ? out : null;
 	}
 
 	@Override
@@ -78,12 +78,12 @@ public class NetPeer implements java.io.Closeable
 		if((sock != null)
 		&&(isConnected()))
 		{
-			sockIn.close();
-			sockOut.flush();
-			sockOut.close();
+			in.close();
+			out.flush();
+			out.close();
 			sock = null;
-			sockIn = null;
-			sockOut = null;
+			in = null;
+			out = null;
 		}
 
 	}

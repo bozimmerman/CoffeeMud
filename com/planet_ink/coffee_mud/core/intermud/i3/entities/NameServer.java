@@ -35,9 +35,10 @@ public class NameServer implements Serializable
 {
 	public static final long serialVersionUID=0;
 
-	public String ip;
-	public String name;
-	public int    port;
+	public String	ip;
+	public String	name;
+	public int		port;
+	public int		modified;
 
 	public NameServer(final String addr, final int p, final String nom)
 	{

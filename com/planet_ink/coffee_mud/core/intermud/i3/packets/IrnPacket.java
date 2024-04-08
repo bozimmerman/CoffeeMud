@@ -91,6 +91,34 @@ public class IrnPacket extends Packet
 		return type;
 	}
 
+	protected int s_int(final Object o)
+	{
+		if(o instanceof Integer)
+			return ((Integer)o).intValue();
+		return -1;
+	}
+
+	protected int s_int(final Object o, final int def)
+	{
+		if(o instanceof Integer)
+			return ((Integer)o).intValue();
+		return def;
+	}
+
+	protected String s_str(final Object o)
+	{
+		if(o instanceof String)
+			return (String)o;
+		return "";
+	}
+
+	protected String s_str(final Object o, final String def)
+	{
+		if(o instanceof String)
+			return (String)o;
+		return def;
+	}
+
 	public String convertString(final String cmd)
 	{
 		final StringBuffer b = new StringBuffer(cmd);
@@ -130,7 +158,7 @@ public class IrnPacket extends Packet
 		try
 		{
 			final byte[] packet = cmd.getBytes("ISO-8859-1");
-			final RouterPeer peer = I3Router.getRouter().getPeer(this.target_router);
+			final RouterPeer peer = I3Router.findRouterPeer(this.target_router);
 			if(peer != null)
 			{
 				peer.getOutputStream().writeInt(packet.length);

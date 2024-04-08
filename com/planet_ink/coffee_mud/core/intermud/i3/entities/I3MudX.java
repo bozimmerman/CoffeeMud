@@ -1,8 +1,11 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.entities;
 
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Vector;
+
+import com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router;
 
 /**
  * Copyright (c)2024-2024 Bo Zimmerman
@@ -19,7 +22,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class I3MudX extends I3Mud
+public class I3MudX extends I3Mud implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -27,6 +30,13 @@ public class I3MudX extends I3Mud
 	public int		password		= 0;
 	public int		mudListId		= 0;
 	public int		channelListId	= 0;
+	public int		connectTime		= 0;
+	public int		disconnectTime	= 0;
+	public int		version			= 3;
+	public String	router			= "";
+	public boolean	connected		= true;
+	public long 	lastPing 		= System.currentTimeMillis();
+	public long 	lastPong 		= System.currentTimeMillis();
 
 	public final Map<String,Integer> services = new Hashtable<String,Integer>();
 	public final Map<String,String> other = new Hashtable<String,String>();
@@ -38,6 +48,10 @@ public class I3MudX extends I3Mud
 		password		= otherMud.password;
 		mudListId		= otherMud.mudListId;
 		channelListId	= otherMud.channelListId;
+		connectTime		= otherMud.connectTime;
+		disconnectTime  = otherMud.disconnectTime;
+		version			= otherMud.version;
+		router			= otherMud.router;
 		services.putAll(otherMud.services);
 		other.putAll(otherMud.other);
 	}
@@ -46,5 +60,6 @@ public class I3MudX extends I3Mud
 	{
 		super();
 		super.mud_name = mudName;
+		this.router = I3Router.getRouterName();
 	}
 }

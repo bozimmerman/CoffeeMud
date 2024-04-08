@@ -44,12 +44,19 @@ public class ListenThread extends Thread
 {
 	private final ServerSocket listen;
 	private final List<Socket> clients;
+	public final String ipAddress;
 
 	public ListenThread(final int port) throws java.io.IOException
 	{
 		super(Thread.currentThread().getThreadGroup(), "I3Listener@"+port);
 		clients = new Vector<Socket>(10);
 		listen = new ServerSocket(port);
+		final String addr = listen.getLocalSocketAddress().toString();
+		final int x = addr.indexOf(':');
+		if(x > 0)
+			ipAddress = addr.substring(0,x);
+		else
+			ipAddress = addr;
 		setDaemon(true);
 		start();
 	}
