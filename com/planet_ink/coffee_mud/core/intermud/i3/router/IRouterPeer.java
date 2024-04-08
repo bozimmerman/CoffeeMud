@@ -48,7 +48,7 @@ public class IRouterPeer extends NameServer implements RouterPeer
 	boolean				isRestoring	= false;
 	boolean				destructed	= false;
 	ChannelList			channels	= new ChannelList();
-	MudList				muds		= new MudList();
+	Map<String,I3MudX>	muds		= new Hashtable<String,I3MudX>();
 	DataInputStream		in			= null;
 	DataOutputStream	out			= null;
 	Socket				sock		= null;
@@ -101,9 +101,11 @@ public class IRouterPeer extends NameServer implements RouterPeer
 				{
 					channels=(ChannelList)newobj;
 					newobj=in.readObject();
-					if(newobj instanceof MudList)
+					if(newobj instanceof Map)
 					{
-						muds=(MudList)newobj;
+						@SuppressWarnings("unchecked")
+						final Map<String,I3MudX> mudlist = (Map<String,I3MudX>)newobj;
+						muds=mudlist;
 					}
 				}
 			}
@@ -247,6 +249,22 @@ public class IRouterPeer extends NameServer implements RouterPeer
 			{
 				//TODO: deal with unpinged, or pings
 				return;
+			}
+			switch(pkt.getType())
+			{
+			case IRN_STARTUP_REQUEST:
+			case IRN_MUDLIST_REQ:
+			case IRN_MUDLIST_DELTA:
+			case IRN_CHANLIST_REQ:
+			case IRN_CHANLIST_DELTA:
+			case IRN_PING:
+			case IRN_SHUTDOWN:
+				break;
+			case IRN_DATA:
+				break;
+			default:
+				Log.errOut("Unexpected message type: "+pkt.getType().name());
+				break;
 			}
 		}
 		catch (final IOException e)

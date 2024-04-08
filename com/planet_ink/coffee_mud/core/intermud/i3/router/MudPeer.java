@@ -8,18 +8,51 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import com.planet_ink.coffee_mud.core.CMFile;
 import com.planet_ink.coffee_mud.core.Log;
+import com.planet_ink.coffee_mud.core.collections.XArrayList;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3Mud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.NetPeer;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelAdd;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelDelete;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelEmote;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelListen;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelMessage;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelTargetEmote;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelUserReply;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelUserRequest;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelWhoReply;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelWhoRequest;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.ErrorPacket;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.FingerReply;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.FingerRequest;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.InvalidPacketException;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnChanlistDelta;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnChanlistRequest;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnData;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnMudlistDelta;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnMudlistRequest;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnPing;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnShutdown;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnStartupRequest;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.LocateQueryPacket;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.LocateReplyPacket;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.MudAuthRequest;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.MudlistPacket;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.PingPacket;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.ShutdownPacket;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.StartupReply;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.StartupReq3;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.TellPacket;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.UCacheUpdate;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.WhoReplyPacket;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.WhoReqPacket;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistenceException;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistentPeer;
@@ -184,13 +217,19 @@ public class MudPeer extends NetPeer implements ServerObject, PersistentPeer
 			srep.send();
 
 			final Random r = new Random(System.currentTimeMillis());
-			final I3MudX[] muds = I3Router.getMudXPeers();
-			for(int i=0;i<muds.length;i+=5)
+			final XArrayList<I3MudX> muds = new XArrayList<I3MudX>();
+			muds.addAll(I3Router.getMudXPeers());
+			for(final IRouterPeer peer : I3Router.getRouterPeers())
+			{
+				for(final I3MudX mud : peer.muds.values())
+					muds.add(mud);
+			}
+			for(int i=0;i<muds.size();i+=5)
 			{
 				final MudlistPacket mlrep = new MudlistPacket(this.mud.mud_name);
 				mlrep.mudlist_id = r.nextInt(Integer.MAX_VALUE);
-				for(int x=i;x<i+5 && x<muds.length;x++)
-					mlrep.mudlist.add(muds[x]);
+				for(int x=i;x<i+5 && x<muds.size();x++)
+					mlrep.mudlist.add(muds.get(x));
 				mlrep.send();
 			}
 
@@ -225,6 +264,40 @@ public class MudPeer extends NetPeer implements ServerObject, PersistentPeer
 			{
 				//TODO: deal with unpinged, or pings
 				return;
+			}
+			switch(pkt.getType())
+			{
+			case CHANNEL_M:
+			case CHANNEL_E:
+			case CHANNEL_T:
+			case WHO_REQ:
+			case WHO_REPLY:
+			case TELL:
+			case LOCATE_REQ:
+			case LOCATE_REPLY:
+			case CHAN_WHO_REQ:
+			case CHAN_WHO_REPLY:
+			case CHANNEL_ADD:
+			case CHANNEL_REMOVE:
+			case CHANNEL_LISTEN:
+			case CHAN_USER_REQ:
+			case CHAN_USER_REPLY:
+			case SHUTDOWN:
+			case FINGER_REQUEST:
+			case FINGER_REPLY:
+			case PING_REQ:
+			case AUTH_MUD_REQ:
+			case UCACHE_MUD_UPDATE:
+			case UCACHE_UPDATE:
+			case MUDLIST:
+			case STARTUP_REPLY:
+			case ERROR:
+			case CHANLIST_REPLY:
+			case STARTUP_REQ_3:
+				break;
+			default:
+				Log.errOut("Unwanted message type: "+pkt.getType().name());
+				break;
 			}
 		}
 		catch (final IOException e)
