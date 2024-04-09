@@ -23,68 +23,48 @@ import java.net.Socket;
  * limitations under the License.
  *
  */
-public class NetPeer implements java.io.Closeable
+public interface NetPeer extends java.io.Closeable
 {
-	public Socket			sock;
-	public DataInputStream	in;
-	public DataOutputStream	out;
-	public final long		connectTime	= System.currentTimeMillis();
+	/**
+	 * Check if the peer is still connected
+	 */
+	public boolean isConnected();
 
-	public NetPeer(final Socket sock)
-	{
-		this.sock = sock;
-		if(sock != null)
-		{
-			try
-			{
-				this.in = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
-				this.out = new DataOutputStream(sock.getOutputStream());
-			}
-			catch (final IOException e)
-			{
-			}
-		}
-	}
+	/**
+	 * For IPR communication
+	 * @return the input stream
+	 */
+	public DataInputStream getInputStream();
 
-	public NetPeer(final NetPeer other)
-	{
-		super();
-		this.sock = other.sock;
-		this.in = other.in;
-		this.out = other.out;
-		other.sock = null;
-		other.in = null;
-		other.out = null;
-	}
+	/**
+	 * For IPR communication
+	 * @return the output stream
+	 */
+	public DataOutputStream getOutputStream();
 
-	public boolean isConnected()
-	{
-		return (sock != null) && (sock.isConnected());
-	}
+	/**
+	 * Returns the socket.
+	 * @return the socket.
+	 */
+	public Socket getSocket();
 
-	public DataInputStream getInputStream()
-	{
-		return (isConnected()) ? in : null;
-	}
+	/**
+	 * Zeroes out the socket without
+	 * closing it.  Prevents this object
+	 * from being used for other operations
+	 */
+	public void clearSocket();
 
-	public DataOutputStream getOutputStream()
-	{
-		return (isConnected()) ? out : null;
-	}
-
+	/**
+	 * Close the sockets
+	 * @throws IOException if an error occurs
+	 */
 	@Override
-	public void close() throws IOException
-	{
-		if((sock != null)
-		&&(isConnected()))
-		{
-			in.close();
-			out.flush();
-			out.close();
-			sock = null;
-			in = null;
-			out = null;
-		}
+	public void close() throws IOException;
 
-	}
+	/**
+	 * Returns when this was created.
+	 * @return the timestamp of creation
+	 */
+	public long getConnectTime();
 }

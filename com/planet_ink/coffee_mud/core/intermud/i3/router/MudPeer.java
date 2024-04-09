@@ -1,8 +1,10 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.router;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -11,10 +13,12 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Vector;
 
 import com.planet_ink.coffee_mud.core.CMFile;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.collections.XArrayList;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3Mud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.NetPeer;
@@ -43,8 +47,10 @@ import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnStartupRequest;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.LocateQueryPacket;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.LocateReplyPacket;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.MudAuthRequest;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.MudPacket;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.MudlistPacket;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet.PacketType;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.PingPacket;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.ShutdownPacket;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.StartupReply;
@@ -73,25 +79,44 @@ import com.planet_ink.coffee_mud.core.intermud.i3.server.ServerObject;
  * limitations under the License.
  *
  */
-public class MudPeer extends NetPeer implements ServerObject, PersistentPeer
+public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 {
-	I3MudX 			mud;
-	boolean			isRestoring	= false;
-	boolean			destructed	= false;
-	private boolean	initialized	= false;
+	I3MudX					mud;
+	boolean					isRestoring	= false;
+	boolean					destructed	= false;
+	private boolean			initialized	= false;
+	public List<Channel>	listening	= new Vector<Channel>();
+	public Socket			sock;
+	public DataInputStream	in;
+	public DataOutputStream	out;
+	public final long		connectTime	= System.currentTimeMillis();
 
 	public long lastPing = System.currentTimeMillis();
 	public long lastPong = System.currentTimeMillis();
 
 	public MudPeer(final String mudName, final Socket sock)
 	{
-		super(sock);
+		this.sock = sock;
+		if(sock != null)
+		{
+			try
+			{
+				this.in = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
+				this.out = new DataOutputStream(sock.getOutputStream());
+			}
+			catch (final IOException e)
+			{
+			}
+		}
 		mud = new I3MudX(mudName);
 	}
 
 	public MudPeer(final String mudName, final NetPeer peer)
 	{
-		super(peer);
+		this.sock = peer.getSocket();
+		this.in = peer.getInputStream();
+		this.out = peer.getOutputStream();
+		peer.clearSocket();
 		mud = new I3MudX(mudName);
 	}
 
@@ -219,7 +244,7 @@ public class MudPeer extends NetPeer implements ServerObject, PersistentPeer
 			final Random r = new Random(System.currentTimeMillis());
 			final XArrayList<I3MudX> muds = new XArrayList<I3MudX>();
 			muds.addAll(I3Router.getMudXPeers());
-			for(final IRouterPeer peer : I3Router.getRouterPeers())
+			for(final RouterPeer peer : I3Router.getRouterPeers())
 			{
 				for(final I3MudX mud : peer.muds.values())
 					muds.add(mud);
@@ -237,6 +262,102 @@ public class MudPeer extends NetPeer implements ServerObject, PersistentPeer
 		catch (final InvalidPacketException e)
 		{
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * route to the proper mud, or next router
+	 *
+	 * @param pkt
+	 */
+	private void routePacket(final MudPacket pkt)
+	{
+		if((pkt.target_mud == null)
+		||(pkt.target_mud.length()==0))
+			return;
+		final MudPeer mud = I3Router.findMudPeer(pkt.target_mud);
+		if(mud != null)
+		{
+			I3Router.writePacket(pkt);
+			return;
+		}
+		try
+		{
+			final RouterPeer[] peers = I3Router.getRouterPeers();
+			for(final RouterPeer peer : peers)
+			{
+				final I3MudX rmud = peer.muds.get(pkt.target_mud);
+				if((rmud != null)
+				&&(rmud.connected))
+				{
+					final IrnData dataPacket = new IrnData(peer.name, pkt);
+					dataPacket.send();
+					return;
+				}
+			}
+			for(final RouterPeer peer : peers)
+			{
+				final I3MudX rmud = peer.muds.get(pkt.target_mud);
+				if(rmud != null)
+				{
+					final IrnData dataPacket = new IrnData(peer.name, pkt);
+					dataPacket.send();
+					return;
+				}
+			}
+			Log.errOut("Mud not found: "+pkt.target_mud);
+			return;
+		}
+		catch (final InvalidPacketException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * send to all listening muds, and peer routers
+	 * @param pkt
+	 */
+	private void sendChannelMessage(final MudPacket pkt)
+	{
+		String channel;
+		switch(pkt.getType())
+		{
+		case CHANNEL_E:
+			channel = ((ChannelEmote)pkt).channel;
+			break;
+		case CHANNEL_M:
+			channel = ((ChannelMessage)pkt).channel;
+			break;
+		case CHANNEL_T:
+			channel = ((ChannelTargetEmote)pkt).channel;
+			break;
+		default:
+			Log.errOut("Unchanneled message type: "+pkt.getType().name());
+			return;
+		}
+		final Channel chan = I3Router.findChannel(channel);
+		if(chan == null)
+		{
+			Log.errOut("Unknown channel: "+chan);
+			return;
+		}
+		for(final MudPeer peer : I3Router.getMudPeers())
+		{
+			if((peer != this)
+			&&(peer.listening.contains(chan)))
+				I3Router.writePacket(pkt, peer);
+		}
+		for(final RouterPeer peer : I3Router.getRouterPeers())
+		{
+			final IrnData chanData = new IrnData(peer.name, pkt);
+			try
+			{
+				chanData.send();
+			}
+			catch (final InvalidPacketException e)
+			{
+			}
 		}
 	}
 
@@ -265,39 +386,72 @@ public class MudPeer extends NetPeer implements ServerObject, PersistentPeer
 				//TODO: deal with unpinged, or pings
 				return;
 			}
-			switch(pkt.getType())
+			if(!(pkt instanceof MudPacket))
 			{
-			case CHANNEL_M:
-			case CHANNEL_E:
-			case CHANNEL_T:
-			case WHO_REQ:
-			case WHO_REPLY:
-			case TELL:
-			case LOCATE_REQ:
-			case LOCATE_REPLY:
-			case CHAN_WHO_REQ:
-			case CHAN_WHO_REPLY:
-			case CHANNEL_ADD:
-			case CHANNEL_REMOVE:
-			case CHANNEL_LISTEN:
-			case CHAN_USER_REQ:
-			case CHAN_USER_REPLY:
-			case SHUTDOWN:
-			case FINGER_REQUEST:
-			case FINGER_REPLY:
-			case PING_REQ:
+				Log.errOut("Unwanted message type: "+pkt.getType().name() + " from "+mud.mud_name);
+				return;
+			}
+			lastPong = System.currentTimeMillis();
+			final MudPacket mudpkt = (MudPacket)pkt;
+			switch(mudpkt.getType())
+			{
 			case AUTH_MUD_REQ:
-			case UCACHE_MUD_UPDATE:
-			case UCACHE_UPDATE:
-			case MUDLIST:
-			case STARTUP_REPLY:
-			case ERROR:
-			case CHANLIST_REPLY:
+				break;
+			case CHANNEL_ADD:
+				break;
+			case CHANNEL_LISTEN:
+				break;
+			case CHANNEL_REMOVE:
+				break;
+			case LOCATE_REQ:
+				// send to all!
+				break;
+			case SHUTDOWN:
+				{
+					destruct();
+					I3Router.removeObject(this);
+					return;
+				}
 			case STARTUP_REQ_3:
 				break;
-			default:
-				Log.errOut("Unwanted message type: "+pkt.getType().name());
+			case UCACHE_MUD_UPDATE:
 				break;
+			case UCACHE_UPDATE:
+				break;
+			case CHANNEL_E:
+			case CHANNEL_M:
+			case CHANNEL_T:
+				sendChannelMessage(mudpkt);
+				break;
+			case ERROR:
+				//TODO: maybe send to target -- maybe eat it?
+				break;
+			case PING_REQ:
+			case CHAN_USER_REPLY:
+			case CHAN_USER_REQ:
+			case CHAN_WHO_REPLY:
+			case CHAN_WHO_REQ:
+			case FINGER_REPLY:
+			case FINGER_REQUEST:
+			case LOCATE_REPLY:
+			case TELL:
+			case WHO_REPLY:
+			case WHO_REQ:
+				routePacket(mudpkt);
+				break;
+			case STARTUP_REPLY: // a mud can't send a startup reply to any other mud, or the router
+			case CHANLIST_REPLY: // a mud can't send a channel reply to any other mud, or the router
+			case MUDLIST: // a mud can't send a mudlist to any other mud, or the router
+			case IRN_CHANLIST_DELTA:
+			case IRN_CHANLIST_REQ:
+			case IRN_DATA:
+			case IRN_MUDLIST_DELTA:
+			case IRN_MUDLIST_REQ:
+			case IRN_PING:
+			case IRN_SHUTDOWN:
+			case IRN_STARTUP_REQUEST:
+				Log.errOut("Unwanted message type: "+pkt.getType().name() + " from "+mud.mud_name);
+				return;
 			}
 		}
 		catch (final IOException e)
@@ -323,5 +477,59 @@ public class MudPeer extends NetPeer implements ServerObject, PersistentPeer
 	public void setObjectId(final String id)
 	{
 		mud.mud_name = id;
+	}
+
+	@Override
+	public Socket getSocket()
+	{
+		return sock;
+	}
+
+	@Override
+	public boolean isConnected()
+	{
+		return (sock != null) && (sock.isConnected());
+	}
+
+	@Override
+	public DataInputStream getInputStream()
+	{
+		return (isConnected()) ? in : null;
+	}
+
+	@Override
+	public DataOutputStream getOutputStream()
+	{
+		return (isConnected()) ? out : null;
+	}
+
+	@Override
+	public void clearSocket()
+	{
+		sock = null;
+		in = null;
+		out = null;
+	}
+
+	@Override
+	public void close() throws IOException
+	{
+		if((sock != null)
+		&&(isConnected()))
+		{
+			in.close();
+			out.flush();
+			out.close();
+			sock = null;
+			in = null;
+			out = null;
+		}
+	}
+
+
+	@Override
+	public long getConnectTime()
+	{
+		return this.connectTime;
 	}
 }

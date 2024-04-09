@@ -3,7 +3,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent;
 
 /**
  * Copyright (c) 2024-2024 Bo Zimmerman
@@ -36,7 +38,8 @@ public class IrnMudlistDelta extends IrnPacket
 		super(v);
 		type = Packet.PacketType.IRN_MUDLIST_DELTA;
 		if(v.size()>6) mudlist_id = ((Integer)v.get(6)).intValue();
-		if(v.size()>7)
+		if((v.size()>7)
+		&&(v.get(7) instanceof Map))
 		{
 			@SuppressWarnings("unchecked")
 			final Map<String,?> map = (Map<String,?>)v.get(7);
@@ -44,12 +47,21 @@ public class IrnMudlistDelta extends IrnPacket
 			{
 				final Object o = map.get(name);
 				if(o instanceof Integer)
+				{
+					if(((Integer)o).intValue() == 0)
+					{
+						final I3MudX mud = new I3MudX(name);
+						mud.modified = Persistent.DELETED;
+						this.mudlist.add(mud);
+					}
 					continue; // skip the deleted ones.. wtf?
+				}
 				if(!(o instanceof Map))
 					continue; // skip the wrong
 				@SuppressWarnings("unchecked")
 				final Map<String,?> lst = (Map<String,?>)o;
 				final I3MudX mud = new I3MudX(name);
+				this.mudlist.add(mud);
 				mud.mudListId = s_int(lst.get("old_mudlist_id"));
 				mud.channelListId = s_int(lst.get("old_chanlist_id"));
 				mud.player_port = s_int(lst.get("player_port"));

@@ -25,6 +25,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -98,11 +99,15 @@ public class IrnPacket extends Packet
 		return -1;
 	}
 
-	protected int s_int(final Object o, final int def)
+	protected int s_int(final List<?> lst, final int index)
 	{
-		if(o instanceof Integer)
-			return ((Integer)o).intValue();
-		return def;
+		if((index >=0) && (index < lst.size()))
+		{
+			final Object o = lst.get(index);
+			if(o instanceof Integer)
+				return ((Integer)o).intValue();
+		}
+		return -1;
 	}
 
 	protected String s_str(final Object o)
@@ -117,6 +122,17 @@ public class IrnPacket extends Packet
 		if(o instanceof String)
 			return (String)o;
 		return def;
+	}
+
+	protected String s_str(final List<?> lst, final int index)
+	{
+		if((index >=0) && (index < lst.size()))
+		{
+			final Object o = lst.get(index);
+			if(o instanceof String)
+				return (String)o;
+		}
+		return "";
 	}
 
 	public String convertString(final String cmd)
@@ -152,38 +168,6 @@ public class IrnPacket extends Packet
 		{
 			throw new InvalidPacketException();
 		}
-		final String cmd = toString();
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.I3))
-			Log.sysOut("I3Router","Sending: "+cmd);
-		try
-		{
-			final byte[] packet = cmd.getBytes("ISO-8859-1");
-			final RouterPeer peer = I3Router.findRouterPeer(this.target_router);
-			if(peer != null)
-			{
-				peer.getOutputStream().writeInt(packet.length);
-				// Remove non-printables, as required by the I3 specification
-				// (Contributed by David Green <green@couchpotato.net>)
-				for (int i = 0; i < packet.length; i++)
-				{
-					// 160 is a non-breaking space. We'll consider that "printable".
-					if ( (packet[i]&0xFF) < 32 || ((packet[i]&0xFF) >= 127 && (packet[i]&0xFF) <= 159))
-					{
-						// Java uses it as a replacement character,
-						// so it's probably ok for us too.
-						packet[i] = '?';
-					}
-					peer.getOutputStream().write(packet[i]);
-				}
-			}
-		}
-		catch( final java.io.IOException e )
-		{
-			final String errMsg=e.getMessage()==null?e.toString():e.getMessage();
-			if(errMsg!=null)
-			{
-				Log.errOut("I3Router","557-"+errMsg);
-			}
-		}
+		I3Router.writePacket(this);
 	}
 }

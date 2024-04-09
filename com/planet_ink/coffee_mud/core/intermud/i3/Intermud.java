@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.ChannelList;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3Mud;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.MudList;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
@@ -527,54 +528,15 @@ public class Intermud implements Runnable, Persistent, Serializable
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private synchronized void mudlist(final Vector<?> packet)
+	private synchronized void mudlist(final MudlistPacket pkt)
 	{
-		Hashtable<String,?> list;
-		Enumeration<String> keys;
-
 		synchronized( muds )
 		{
-			muds.setMudListId(((Integer)packet.elementAt(6)).intValue());
-			list = (Hashtable<String,?>)packet.elementAt(7);
-			keys = list.keys();
-			while( keys.hasMoreElements() )
+			muds.setMudListId(pkt.mudlist_id);
+			for(final I3MudX mudx : pkt.mudlist)
 			{
-				final String mudName = keys.nextElement();
-				final Object info = list.get(mudName);
-				if( info instanceof Integer )
-				{
-					final I3Mud mud = new I3Mud();
-					mud.mud_name = mudName;
-					removeMud(mud);
-				}
-				else
-				{
-					final Vector<?> v = (Vector<?>)info;
-					int total=0;
-					for(int vi=0;vi<v.size();vi++)
-					{
-						if(v.elementAt(vi) instanceof String)
-							total+=((String)v.elementAt(vi)).length();
-					}
-					if(total<1024)
-					{
-						final I3Mud mud = new I3Mud();
-						mud.mud_name = mudName;
-						mud.state = ((Integer)v.elementAt(0)).intValue();
-						mud.address = (String)v.elementAt(1);
-						mud.player_port = ((Integer)v.elementAt(2)).intValue();
-						mud.tcp_port = ((Integer)v.elementAt(3)).intValue();
-						mud.udp_port = ((Integer)v.elementAt(4)).intValue();
-						mud.mudlib = (String)v.elementAt(5);
-						mud.base_mudlib = (String)v.elementAt(6);
-						mud.driver = (String)v.elementAt(7);
-						mud.mud_type = (String)v.elementAt(8);
-						mud.status = (String)v.elementAt(9);
-						mud.admin_email = (String)v.elementAt(10);
-						addMud(mud);
-					}
-				}
+				if(mudx.modified != Persistent.DELETED)
+					addMud(mudx);
 			}
 		}
 	}
@@ -704,11 +666,16 @@ public class Intermud implements Runnable, Persistent, Serializable
 					int skipped=0;
 					try
 					{ // please don't compress this again
-						while(skipped<len)
-							skipped+=input.skipBytes(len);
+						Thread.sleep(10);
+						while(input.available()>0)
+						{
+							skipped += input.skipBytes(input.available());
+							Thread.sleep(10);
+						}
 					}
-					catch( final java.io.IOException e )
+					catch( final Exception e )
 					{
+						e.printStackTrace();
 					}
 					Log.errOut("Intermud","Got illegal packet: "+skipped+"/"+len+" bytes.");
 					continue;
@@ -731,6 +698,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 						if((System.currentTimeMillis()-startTime)>(10 * 60 * 1000))
 							throw e;
 						Log.errOut("Intermud","Timeout receiving packet sized "+len);
+						while(input.available()>0)
+							input.skipBytes(input.available());
 						continue;
 					}
 				}
@@ -740,6 +709,9 @@ public class Intermud implements Runnable, Persistent, Serializable
 			{
 				data = null;
 				cmd = null;
+				if((input_thread != null)
+				&&(!input_thread.isInterrupted()))
+					input_thread.interrupt();
 				connected = false;
 				try { Thread.sleep(1200); }
 				catch (final InterruptedException ee)
@@ -766,6 +738,12 @@ public class Intermud implements Runnable, Persistent, Serializable
 				else
 				{
 					Log.errOut("InterMud","390-"+o);
+					try
+					{
+						while(input.available()>0)
+							input.skip(input.available());
+					}
+					catch (final IOException e) { }
 					continue;
 				}
 			}
@@ -784,14 +762,30 @@ public class Intermud implements Runnable, Persistent, Serializable
 				Log.errOut("Intermud","Unknown packet type: " + typeStr);
 				return;
 			}
+			Packet pkt = null;
 			final Class<? extends Packet> pktClass = type.packetClass;
+			if(pktClass != null)
+			{
+				try
+				{
+					final Constructor<? extends Packet> con = pktClass.getConstructor(Vector.class);
+					pkt = con.newInstance(data);
+				}
+				catch( final Exception  e )
+				{
+					Log.errOut("Intermud","Error constructing :"+type+" packet:"+e.getMessage());
+					Log.debugOut("Intermud",e);
+				}
+			}
 			switch(type)
 			{
 			case MUDLIST:
-				mudlist(data);
+				if(pkt instanceof MudlistPacket)
+					mudlist((MudlistPacket)pkt);
 				break;
 			case STARTUP_REPLY:
-				startupReply(data);
+				if(pkt instanceof StartupReply)
+					startupReply((StartupReply)pkt);
 				break;
 			case ERROR:
 				error(data);
@@ -816,18 +810,10 @@ public class Intermud implements Runnable, Persistent, Serializable
 				if(pktClass == null)
 					Log.errOut("Intermud","Other packet type: " + typeStr);
 				else
-				{
-					try
-					{
-						final Constructor<? extends Packet> con = pktClass.getConstructor(Vector.class);
-						final Packet pkt = con.newInstance(data);
-						intermud.receive(pkt);
-					}
-					catch( final Exception  e )
-					{
-						Log.errOut("Intermud",type+"-"+e.getMessage());
-					}
-				}
+				if(pkt == null)
+					Log.errOut("Intermud","Bad packet type: "+type);
+				else
+					intermud.receive(pkt);
 			}
 		}
 	}
@@ -885,23 +871,38 @@ public class Intermud implements Runnable, Persistent, Serializable
 	}
 
 	// Handle a startup reply packet
-	@SuppressWarnings("unchecked")
-	private synchronized void startupReply(final Vector<?> packet)
+	private synchronized void startupReply(final StartupReply pkt)
 	{
-		final Vector<Vector<?>> router_list = (Vector<Vector<?>>)packet.elementAt(6);
+		final List<NameServer> router_list = pkt.routers;
 
-		if( router_list != null )
+		if(( router_list != null )
+		&&(router_list.size()>0))
 		{
-			final Vector<?> router = router_list.elementAt(0);
-			final NameServer name_server = name_servers.get(0);
-
-			if( !name_server.name.equals(router.elementAt(0)) )
+			final NameServer router = router_list.get(0);
+			final NameServer current_name_server = name_servers.get(0);
+			if( !current_name_server.name.equals(router.name) )
 			{
+				name_servers.remove(current_name_server);
 				// create new name server and connect
+				for(int l=router_list.size()-1;l>=0;l--)
+					name_servers.add(0, router_list.get(l));
+				try
+				{
+					input.close();
+					output.close();
+					connection.close();
+				}
+				catch (final IOException e)
+				{
+				}
+				connected = false;
+				if(input_thread != null)
+					input_thread.interrupt();
+				connect();
 				return;
 			}
 		}
-		password = ((Integer)packet.elementAt(7)).intValue();
+		password = pkt.password;
 		modified = Persistent.MODIFIED;
 	}
 

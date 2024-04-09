@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent;
 
 /**
  * Copyright (c) 2024-2024 Bo Zimmerman
@@ -36,7 +37,8 @@ public class IrnChanlistDelta extends IrnPacket
 		super(v);
 		type = Packet.PacketType.IRN_CHANLIST_DELTA;
 		if(v.size()>6) chanlist_id = ((Integer)v.get(6)).intValue();
-		if(v.size()>7)
+		if((v.size()>7)
+		&&(v.get(7) instanceof Map))
 		{
 			@SuppressWarnings("unchecked")
 			final Map<String,?> map = (Map<String,?>)v.get(7);
@@ -59,6 +61,15 @@ public class IrnChanlistDelta extends IrnPacket
 							c.owner = s_str(l.get(1));
 							chanlist.add(c);
 							// spot 2 is a list with "ban/allow list", whatever that is.
+						}
+						else
+						if((o1 instanceof Integer)
+						&&(((Integer)o1).intValue() == 0))
+						{
+							final Channel c = new Channel();
+							c.channel = channame;
+							c.modified = Persistent.DELETED;
+							chanlist.add(c);
 						}
 					}
 				}

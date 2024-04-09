@@ -2,7 +2,8 @@ package com.planet_ink.coffee_mud.core.intermud.i3.packets;
 import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router;
-import com.planet_ink.coffee_mud.core.intermud.i3.router.IRouterPeer;
+import com.planet_ink.coffee_mud.core.intermud.i3.router.MudPeer;
+import com.planet_ink.coffee_mud.core.intermud.i3.router.RouterPeer;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.ServerObject;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -41,7 +42,7 @@ import java.util.Vector;
  */
 public class StartupReply extends IrnPacket
 {
-	public final List<List<String>> routers = new Vector<List<String>>();
+	public final List<NameServer> routers = new Vector<NameServer>();
 	public int password = -1;
 
 	public StartupReply(final String targetRouter)
@@ -49,29 +50,51 @@ public class StartupReply extends IrnPacket
 		super(targetRouter);
 		type = Packet.PacketType.STARTUP_REPLY;
 		final NameServer me = I3Router.getNameServer();
-		routers.add(new XVector<String>( me.name, me.ip + " " + me.port ));
-		for(final IRouterPeer obj : I3Router.getRouterPeers())
+		routers.add(me);
+		for(final RouterPeer obj : I3Router.getRouterPeers())
 		{
 			if(!obj.name.equals(me.name))
-				routers.add(new XVector<String>( obj.name, obj.ip + " " + obj.port ));
+				routers.add(obj);
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public StartupReply(final Vector<?> v)
 	{
 		super(v);
 		type = Packet.PacketType.STARTUP_REPLY;
-		if(v.size()>6)
+		if((v.size()>6)
+		&&(v.get(6) instanceof List))
 		{
 			routers.clear();
-			routers.addAll((List<List<String>>)v.elementAt(6));
+			final List<?> rlist = (List<?>)v.elementAt(6);
+			for(final Object ro : rlist)
+			{
+				if(ro instanceof List)
+				{
+					final List<?> nsl = (List<?>)ro;
+					if(nsl.size()>1)
+					{
+						final String name = s_str(nsl,0);
+						final String addr = s_str(nsl,1);
+						final int x = addr.lastIndexOf(' ');
+						String ip = addr;
+						int port = 0;
+						if(x > 0)
+						{
+							ip = addr.substring(0,x).trim();
+							port = CMath.s_int(addr.substring(x+1).trim());
+							final NameServer ns = new NameServer(ip,port,name);
+							routers.add(ns);
+						}
+					}
+				}
+			}
 		}
 		if(v.size()>7)
 			password = ((Integer)v.elementAt(7)).intValue();
 	}
 
-	public StartupReply(final String targetMud, final List<List<String>> routers, final int password)
+	public StartupReply(final String targetMud, final List<NameServer> routers, final int password)
 	{
 		super(targetMud);
 		type = Packet.PacketType.STARTUP_REPLY;
@@ -87,7 +110,13 @@ public class StartupReply extends IrnPacket
 		{
 			throw new InvalidPacketException();
 		}
-		super.send();
+		final MudPeer mudPeer = I3Router.findMudPeer(this.target_router);
+		if(mudPeer == null)
+		{
+			Log.errOut("Unknown mud target: "+target_router);
+			return;
+		}
+		I3Router.writePacket(this, mudPeer);
 	}
 
 	@Override
@@ -95,11 +124,8 @@ public class StartupReply extends IrnPacket
 	{
 		final StringBuilder str = new StringBuilder();
 		str.append("({\"startup-reply\",5,\""+sender_router+"\",0,\""+target_router+"\",0,({");
-		for(final List<String> router : routers )
-		{
-			if(router.size()>=2)
-				str.append("({\""+router.get(0)+"\",\""+router.get(1)+"\",}),");
-		}
+		for(final NameServer router : routers )
+			str.append("({\""+router.name+"\",\""+router.ip+" "+router.port+"\",}),");
 		str.append("}),"+password+",})");
 		return str.toString();
 	}

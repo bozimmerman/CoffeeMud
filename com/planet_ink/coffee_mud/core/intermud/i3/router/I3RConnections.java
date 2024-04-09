@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.core.collections.XVector;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.ListenThread;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.NetPeer;
+import com.planet_ink.coffee_mud.core.intermud.i3.net.UnknownNetPeer;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnStartupRequest;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.StartupReply;
@@ -71,7 +72,7 @@ public class I3RConnections implements ServerObject
 			Socket sock = listen_thread.nextSocket();
 			while(sock != null)
 			{
-				final NetPeer newPeer = new NetPeer(sock);
+				final UnknownNetPeer newPeer = new UnknownNetPeer(sock);
 				synchronized( socks )
 				{
 					socks.put(newPeer.toString(), newPeer);
@@ -101,7 +102,7 @@ public class I3RConnections implements ServerObject
 								|| (routerBase.password < 0))
 							&&(ipkt.target_router.equalsIgnoreCase(I3Router.getRouterName())))
 							{
-								String remoteAddr = peer.sock.getRemoteSocketAddress().toString();
+								String remoteAddr = peer.getSocket().getRemoteSocketAddress().toString();
 								int port = -1;
 								final int x = remoteAddr.indexOf(':');
 								if(x>0)
@@ -110,7 +111,7 @@ public class I3RConnections implements ServerObject
 									remoteAddr = remoteAddr.substring(0,x);
 								}
 								final NameServer ns = new NameServer(remoteAddr,port,ipkt.sender_router);
-								final IRouterPeer rpeer = new IRouterPeer(ns, peer, routerBase);
+								final RouterPeer rpeer = new RouterPeer(ns, peer, routerBase);
 								rpeer.password = ipkt.sender_password;
 								I3Router.addObject(rpeer);
 								// do not close peer, as we want to keep the socks open
@@ -137,7 +138,7 @@ public class I3RConnections implements ServerObject
 							Log.sysOut(getObjectId(), "Rejecting new peer packet type: "+pkt.getType());
 					}
 					else
-					if((System.currentTimeMillis() - peer.connectTime) > peerTimeout)
+					if((System.currentTimeMillis() - peer.getConnectTime()) > peerTimeout)
 					{
 						peer.close();
 						i.remove();

@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.I3Exception;
 import com.planet_ink.coffee_mud.core.intermud.i3.LPCData;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.ChannelList;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.MudList;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
@@ -51,11 +52,11 @@ public class I3RouterThread extends Thread implements CMObject
 	protected int				channelListId	= 0;
 	protected ListenThread		listen_thread	= null;
 
-	protected final I3RConnections 				connMonitor = new I3RConnections();
-	protected final Map<String, MudPeer>		muds		= new Hashtable<String, MudPeer>();
-	protected final Map<String, IRouterPeer>	peers		= new Hashtable<String, IRouterPeer>();
-	protected final Map<String, NetPeer>		socks		= new Hashtable<String, NetPeer>();
-	protected final ChannelList					channels	= new ChannelList();
+	protected final I3RConnections 			connMonitor = new I3RConnections();
+	protected final Map<String, MudPeer>	muds		= new Hashtable<String, MudPeer>();
+	protected final Map<String, RouterPeer>	peers		= new Hashtable<String, RouterPeer>();
+	protected final Map<String, NetPeer>	socks		= new Hashtable<String, NetPeer>();
+	protected final ChannelList				channels	= new ChannelList();
 
 	protected I3RouterThread(final String router_name,
 							 final String router_ip,
@@ -126,11 +127,11 @@ public class I3RouterThread extends Thread implements CMObject
 		return ob;
 	}
 
-	protected synchronized IRouterPeer addRouterPeer(final IRouterPeer ob) throws ObjectLoadException
+	protected synchronized RouterPeer addRouterPeer(final RouterPeer ob) throws ObjectLoadException
 	{
 		try
 		{
-			final IRouterPeer old = peers.get(ob.name);
+			final RouterPeer old = peers.get(ob.name);
 			if((old != null) && (old != ob))
 			{
 				if(!old.isConnected())
@@ -159,11 +160,11 @@ public class I3RouterThread extends Thread implements CMObject
 		return null;
 	}
 
-	protected synchronized IRouterPeer findRouterPeer(final String name)
+	protected synchronized RouterPeer findRouterPeer(final String name)
 	{
 		if( peers.containsKey(name) )
 		{
-			final IRouterPeer ob = peers.get(name);
+			final RouterPeer ob = peers.get(name);
 			if(!ob.getDestructed() )
 				return ob;
 		}
@@ -298,9 +299,23 @@ public class I3RouterThread extends Thread implements CMObject
 		boot_time = null;
 	}
 
-	protected synchronized IRouterPeer[] getPeers()
+	protected synchronized Channel findChannel(final String str)
 	{
-		final IRouterPeer[] tmp = new IRouterPeer[peers.size()];
+		Channel c  = channels.getChannel(str);
+		if(c != null)
+			return c;
+		for(final RouterPeer p : getPeers())
+		{
+			c = p.channels.getChannel(str);
+			if(c != null)
+				return c;
+		}
+		return null;
+	}
+
+	protected synchronized RouterPeer[] getPeers()
+	{
+		final RouterPeer[] tmp = new RouterPeer[peers.size()];
 		final List<ServerObject> objsList = new XArrayList<ServerObject>(peers.values());
 		return objsList.toArray(tmp);
 	}

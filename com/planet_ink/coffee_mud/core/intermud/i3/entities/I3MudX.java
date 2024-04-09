@@ -26,7 +26,6 @@ public class I3MudX extends I3Mud implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	public String	address			= "";
 	public int		password		= 0;
 	public int		mudListId		= 0;
 	public int		channelListId	= 0;
@@ -44,7 +43,6 @@ public class I3MudX extends I3Mud implements Serializable
 	public I3MudX(final I3MudX otherMud)
 	{
 		super(otherMud);
-		address			= otherMud.address;
 		password		= otherMud.password;
 		mudListId		= otherMud.mudListId;
 		channelListId	= otherMud.channelListId;

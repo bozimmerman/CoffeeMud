@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.I3Exception;
 import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
 import com.planet_ink.coffee_mud.core.intermud.i3.LPCData;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
@@ -102,20 +103,78 @@ public class I3Router
 	static public ServerObject addObject(final ServerObject object) throws ObjectLoadException {
 		if(object instanceof MudPeer)
 			return routerThread.addMudPeer((MudPeer)object);
-		if(object instanceof IRouterPeer)
-			return routerThread.addRouterPeer((IRouterPeer)object);
+		if(object instanceof RouterPeer)
+			return routerThread.addRouterPeer((RouterPeer)object);
 		throw new ObjectLoadException("Object is unmanaged");
 	}
 
+	public static boolean writePacket(final IrnPacket irnpkt)
+	{
+		final RouterPeer peer = I3Router.findRouterPeer(irnpkt.target_router);
+		if(peer == null)
+		{
+			Log.errOut("Unknown peer target: "+irnpkt.target_router);
+			return false;
+		}
+		peer.lastPing = System.currentTimeMillis();
+		return writePacket(irnpkt, peer);
+	}
+
+	public static boolean writePacket(final Packet mudpkt, final NetPeer peer)
+	{
+		final String cmd = mudpkt.toString();
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.I3))
+			Log.sysOut("I3Router","Sending: "+cmd);
+		try
+		{
+			final byte[] packet = cmd.getBytes("ISO-8859-1");
+			peer.getOutputStream().writeInt(packet.length);
+			// Remove non-printables, as required by the I3 specification
+			// (Contributed by David Green <green@couchpotato.net>)
+			for (int i = 0; i < packet.length; i++)
+			{
+				// 160 is a non-breaking space. We'll consider that "printable".
+				if ( (packet[i]&0xFF) < 32 || ((packet[i]&0xFF) >= 127 && (packet[i]&0xFF) <= 159))
+				{
+					// Java uses it as a replacement character,
+					// so it's probably ok for us too.
+					packet[i] = '?';
+				}
+				peer.getOutputStream().write(packet[i]);
+			}
+		}
+		catch( final java.io.IOException e )
+		{
+			final String errMsg=e.getMessage()==null?e.toString():e.getMessage();
+			if(errMsg!=null)
+			{
+				Log.errOut("I3Router","557-"+errMsg);
+			}
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean writePacket(final MudPacket mudpkt)
+	{
+		final MudPeer targetMud = I3Router.findMudPeer(mudpkt.target_mud);
+		if(targetMud == null)
+		{
+			Log.errOut("Unknown mud target: "+mudpkt.target_mud);
+			return false;
+		}
+		targetMud.lastPing = System.currentTimeMillis();
+		return writePacket(mudpkt, targetMud);
+	}
 
 	public static Packet readPacket(final DataInputStream istream) throws IOException
 	{
 		if(istream.available() >= 4)
 		{
 			if(istream.markSupported())
-				istream.mark(32768);
+				istream.mark(65536);
 			final int len = istream.readInt();
-			if(len > 32768)
+			if(len > 65536)
 			{
 				if(istream.markSupported())
 					istream.reset();
@@ -176,6 +235,8 @@ public class I3Router
 			else
 			if(istream.markSupported())
 				istream.reset();
+			//TODO this is wrong -- if the len is < 65536, but not enough data, it will mess up forever.
+			// it should timeout, clear the stream, and look for a fresh start.
 		}
 		return null;
 	}
@@ -194,12 +255,16 @@ public class I3Router
 	 * @param name of the router being loaded
 	 * @return router identified
 	 */
-	static public IRouterPeer findRouterPeer(final String name) {
+	static public RouterPeer findRouterPeer(final String name) {
 		return routerThread.findRouterPeer(name);
 	}
 
-	static public IRouterPeer[] getRouterPeers() {
+	static public RouterPeer[] getRouterPeers() {
 		return routerThread.getPeers();
+	}
+
+	static public Channel findChannel(final String str) {
+		return routerThread.findChannel(str);
 	}
 
 	static public MudPeer[] getMudPeers() {

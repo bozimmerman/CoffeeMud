@@ -3,7 +3,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent;
+import com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router;
+import com.planet_ink.coffee_mud.core.intermud.i3.router.MudPeer;
 
 /**
  * Copyright (c) 2024-2024 Bo Zimmerman
@@ -35,43 +39,39 @@ public class MudlistPacket extends IrnPacket
 	{
 		super(v);
 		type = Packet.PacketType.MUDLIST;
-		if(v.size()>6) mudlist_id = ((Integer)v.get(6)).intValue();
-		if(v.size()>7)
+		mudlist_id = s_int(v,6);
+		if((v.size()>7)
+		&&(v.get(7) instanceof Map))
 		{
 			@SuppressWarnings("unchecked")
 			final Map<String,?> map = (Map<String,?>)v.get(7);
 			for(final String name : map.keySet())
 			{
+				final I3MudX mud = new I3MudX(name);
 				final Object o = map.get(name);
 				if(o instanceof Integer)
-					continue; // skip the deleted ones.. wtf?
+				{
+					mud.modified = Persistent.DELETED;
+					mudlist.add(mud);
+					continue;
+				}
 				if(!(o instanceof List))
 					continue; // skip the wrong
 				final List<?> lst = (List<?>)o;
-				final I3MudX mud = new I3MudX(name);
-				if(lst.size() > 0)
-					mud.mudListId = ((Integer)lst.get(0)).intValue();
-				if(lst.size() > 1)
-					mud.channelListId = ((Integer)lst.get(1)).intValue();
-				if(lst.size() > 2)
-					mud.player_port = ((Integer)lst.get(2)).intValue();
-				if(lst.size() > 3)
-					mud.tcp_port = ((Integer)lst.get(3)).intValue();
-				if(lst.size() > 4)
-					mud.udp_port = ((Integer)lst.get(4)).intValue();
-				if(lst.size() > 5)
-					mud.mudlib = ((String)lst.get(5));
-				if(lst.size() > 6)
-					mud.base_mudlib = ((String)lst.get(6));
-				if(lst.size() > 7)
-					mud.driver = ((String)lst.get(7));
-				if(lst.size() > 8)
-					mud.mud_type = ((String)lst.get(8));
-				if(lst.size() > 9)
-					mud.status = ((String)lst.get(9));
-				if(lst.size() > 10)
-					mud.admin_email = ((String)lst.get(10));
-				if(lst.size() > 11)
+				mud.state = s_int(lst,0);
+				mud.connected = mud.state<0;
+				mud.address = s_str(lst,1);
+				mud.player_port = s_int(lst,2);
+				mud.tcp_port = s_int(lst,3);
+				mud.udp_port = s_int(lst,4);
+				mud.mudlib = s_str(lst,5);
+				mud.base_mudlib = s_str(lst,6);
+				mud.driver = s_str(lst,7);
+				mud.mud_type = s_str(lst,8);
+				mud.status = s_str(lst,9);
+				mud.admin_email = s_str(lst,10);
+				if((lst.size() > 11)
+				&&(lst.get(11) instanceof Map))
 				{
 					@SuppressWarnings("unchecked")
 					final Map<String,?> m = (Map<String,?>)lst.get(11);
@@ -82,7 +82,8 @@ public class MudlistPacket extends IrnPacket
 							mud.services.put(str, (Integer)o1);
 					}
 				}
-				if(lst.size() > 12)
+				if((lst.size() > 12)
+				&&(lst.get(12) instanceof Map))
 				{
 					@SuppressWarnings("unchecked")
 					final Map<String,?> m = (Map<String,?>)lst.get(12);
@@ -93,6 +94,7 @@ public class MudlistPacket extends IrnPacket
 							mud.other.put(str, (String)o1);
 					}
 				}
+				mudlist.add(mud);
 			}
 		}
 	}
@@ -136,5 +138,16 @@ public class MudlistPacket extends IrnPacket
 		str.append("]),");
 		str.append("})");
 		return str.toString();
+	}
+
+	public void send() throws InvalidPacketException
+	{
+		final MudPeer mudPeer = I3Router.findMudPeer(this.target_router);
+		if(mudPeer == null)
+		{
+			Log.errOut("Unknown peer target: "+target_router);
+			return;
+		}
+		I3Router.writePacket(this, mudPeer);
 	}
 }
