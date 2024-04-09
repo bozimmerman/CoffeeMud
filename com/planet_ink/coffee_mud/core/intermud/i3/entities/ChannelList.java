@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Hashtable;
+import java.util.Random;
 import java.io.Serializable;
 
 /**
@@ -43,7 +44,7 @@ public class ChannelList implements Serializable
 	public ChannelList()
 	{
 		super();
-		id = -1;
+		id = new Random(System.currentTimeMillis()).nextInt(Integer.MAX_VALUE/1000);
 		list = new Hashtable<String,Channel>(10, 5);
 	}
 

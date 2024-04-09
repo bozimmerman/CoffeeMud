@@ -40,18 +40,19 @@ import java.util.Vector;
  */
 public class StartupReq3 extends IrnPacket
 {
-	public int password = 0;
-	public int mudListId = 0;
-	public int channelListId = 0;
-	public int port = 0;
-	public int tcpPort = 0;
-	public int udpPort = 0;
-	public String lib = "";
-	public String baseLib = "";
-	public String driver = "";
-	public String mtype = "";
-	public String mudState = "";
-	public String adminEmail = "";
+	public int		password		= 0;
+	public int		mudListId		= 0;
+	public int		channelListId	= 0;
+	public int		port			= 0;
+	public int		tcpPort			= 0;
+	public int		udpPort			= 0;
+	public String	lib				= "";
+	public String	baseLib			= "";
+	public String	driver			= "";
+	public String	mtype			= "";
+	public String	mudState		= "";
+	public String	adminEmail		= "";
+
 	public Map<String,Integer> services = new Hashtable<String,Integer>();
 	public Map<String,String> other = new Hashtable<String,String>();
 

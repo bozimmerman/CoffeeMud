@@ -911,11 +911,15 @@ public class IMudClient implements I3Interface
 		if(list!=null)
 		{
 			final Hashtable<String,Channel> l=list.getChannels();
-			for(final Enumeration<Channel> e=l.elements();e.hasMoreElements();)
+			final List<String> channelNames = new XArrayList<String>(l.keySet());
+			Collections.sort(channelNames);
+			for(final String channelName : channelNames)
 			{
-				final Channel c=e.nextElement();
-				if(c.type==0)
-					buf.append("["+CMStrings.padRight(c.channel,20)+"] "+c.owner+"\n\r");
+				final Channel c=l.get(channelName);
+				buf.append("["+CMStrings.padRight(c.channel,20)+"] "+c.owner);
+				if(c.type != 0)
+					buf.append(" ^R(private)^?");
+				buf.append("\n\r");
 			}
 		}
 		mob.session().wraplessPrintln(buf.toString());

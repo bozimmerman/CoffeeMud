@@ -23,6 +23,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Random;
 import java.io.Serializable;
 
 /**
@@ -51,7 +52,7 @@ public class MudList implements Serializable
 	public MudList()
 	{
 		super();
-		id = -1;
+		id = new Random(System.currentTimeMillis()).nextInt(Integer.MAX_VALUE/1000);
 		modified = Persistent.MODIFIED;
 		list = new Hashtable<String,I3Mud>();
 	}
