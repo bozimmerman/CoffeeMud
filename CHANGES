@@ -18,7 +18,7 @@
  17. New chants: breath color
  18. All Qualifies list now supports secret flag
  19. New formula: proficiency gain; see ini file
- 20. Note:  Due to InterMud 3 changes, you'll see a harmless error at startup.
+ 20. Note:  Due to InterMud 3 changes, some will see a harmless one-time error at startup.
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.
