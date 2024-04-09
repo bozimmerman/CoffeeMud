@@ -69,6 +69,6 @@ public class MudAuthReply extends MudPacket
 	@Override
 	public String toString()
 	{
-		return "({\"auth-mud-reply\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,"+key+",})";
+		return "({\"auth-mud-reply\",5,\""+sender_mud+"\",0,\""+target_mud+"\",0,"+key+",})";
 	}
 }

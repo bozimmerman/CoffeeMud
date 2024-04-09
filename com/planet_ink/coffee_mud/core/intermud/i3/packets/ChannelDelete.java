@@ -84,7 +84,7 @@ public class ChannelDelete extends MudPacket
 	{
 		final NameServer n = Intermud.getNameServer();
 		final String cmd=
-			 "({\"channel-remove\",5,\"" + I3Server.getMudName() + "\",\"" +
+			 "({\"channel-remove\",5,\"" + sender_mud + "\",\"" +
 			   sender_name + "\",\""+n.name+"\",0,\"" + channel + "\",})";
 		return cmd;
 	}

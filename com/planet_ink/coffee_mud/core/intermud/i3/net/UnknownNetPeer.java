@@ -12,6 +12,7 @@ public class UnknownNetPeer implements NetPeer
 	public DataInputStream	in;
 	public DataOutputStream	out;
 	public final long		connectTime	= System.currentTimeMillis();
+	final long[]			timeoutCtr 	= new long[] {0};
 
 	public UnknownNetPeer(final Socket sock)
 	{
@@ -90,5 +91,14 @@ public class UnknownNetPeer implements NetPeer
 	public long getConnectTime()
 	{
 		return this.connectTime;
+	}
+
+	@Override
+	public long[] getSockTimeout()
+	{
+		synchronized(this)
+		{
+			return timeoutCtr;
+		}
 	}
 }

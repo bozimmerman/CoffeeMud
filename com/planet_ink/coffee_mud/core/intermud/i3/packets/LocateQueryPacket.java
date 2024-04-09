@@ -79,7 +79,7 @@ public class LocateQueryPacket extends MudPacket
 	@Override
 	public String toString()
 	{
-		final String cmd="({\"locate-req\",5,\"" + I3Server.getMudName() +
+		final String cmd="({\"locate-req\",5,\"" + sender_mud +
 			   "\",\"" + sender_name + "\",0,0,\"" +
 			   user_name + "\",})";
 		return cmd;

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.core.*;
@@ -167,8 +168,9 @@ public class I3Router
 		return writePacket(mudpkt, targetMud);
 	}
 
-	public static Packet readPacket(final DataInputStream istream) throws IOException
+	public static Packet readPacket(final NetPeer peer) throws IOException
 	{
+		final DataInputStream istream = peer.getInputStream();
 		if(istream.available() >= 4)
 		{
 			if(istream.markSupported())
@@ -181,8 +183,13 @@ public class I3Router
 				istream.skip(istream.available());
 				return null;
 			}
+			final long[] timeout = peer.getSockTimeout();
 			if(istream.available() >= len)
 			{
+				synchronized(timeout)
+				{
+					timeout[0] = 0;
+				}
 				final byte[] tmp = new byte[len];
 				istream.readFully(tmp);
 				final String cmd=new String(tmp);
@@ -233,10 +240,25 @@ public class I3Router
 				}
 			}
 			else
-			if(istream.markSupported())
-				istream.reset();
-			//TODO this is wrong -- if the len is < 65536, but not enough data, it will mess up forever.
-			// it should timeout, clear the stream, and look for a fresh start.
+			{
+				if(istream.markSupported())
+					istream.reset();
+				final long currto;
+				synchronized(timeout)
+				{
+					currto = timeout[0];
+				}
+				if(currto > 0)
+				{
+					if((System.currentTimeMillis() - currto)>5000)
+					{
+						istream.skipBytes(istream.available());
+						timeout[0] = 0;
+					}
+				}
+				else
+					timeout[0] = System.currentTimeMillis();
+			}
 		}
 		return null;
 	}

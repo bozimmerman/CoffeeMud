@@ -105,7 +105,7 @@ public class ChannelUserReply extends MudPacket
 			genderCode = 2;
 			break;
 		}
-		final String cmd="({\"chan-user-reply\",5,\"" + I3Server.getMudName() +
+		final String cmd="({\"chan-user-reply\",5,\"" + sender_mud +
 		"\",0,\"" + target_mud + "\",0,\"" + userRequested
 		+ "\",\"" + userVisibleName
 		+ "\"," + genderCode + ",})";

@@ -81,7 +81,7 @@ public class ChannelWhoReply extends MudPacket
 	@Override
 	public String toString()
 	{
-		String cmd = "({\"chan-who-reply\",5,\"" + I3Server.getMudName() +
+		String cmd = "({\"chan-who-reply\",5,\"" + sender_mud +
 				 "\",0,\"" + target_mud + "\",\"" + target_name + "\",\"" + channel + "\",({";
 		int i;
 

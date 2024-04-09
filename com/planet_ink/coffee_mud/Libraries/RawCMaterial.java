@@ -664,7 +664,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		case RawMaterial.MATERIAL_GAS:
 		case 0:
 		{
-			//TODO!
+			//TODO: are gasses and nothing really liquids?
 			I=(RawMaterial)CMClass.getItem("GenLiquidResource");
 			break;
 		}

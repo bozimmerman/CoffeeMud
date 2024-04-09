@@ -53,6 +53,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 	DataOutputStream	out			= null;
 	Socket				sock		= null;
 	SocketAddress		address		= null;
+	final long[]		timeoutCtr 	= new long[] {0};
 	int					password	= 0;
 	public long			lastPing	= System.currentTimeMillis();
 	public long			lastPong	= System.currentTimeMillis();
@@ -65,7 +66,8 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 	{
 		super(addr,p,nom);
 	}
-	public RouterPeer(final NameServer srvr, final NetPeer peer, final I3RouterThread baseRouter)
+
+	public RouterPeer(final NameServer srvr, final NetPeer peer)
 	{
 		super(srvr.ip, srvr.port, srvr.name);
 		this.sock = peer.getSocket();
@@ -306,6 +308,43 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		I3Router.removeObject(this);
 	}
 
+	private void receiveRemoteChannelMsg(final MudPacket pkt)
+	{
+		String channel;
+		switch(pkt.getType())
+		{
+		case CHANNEL_E:
+			channel = ((ChannelEmote)pkt).channel;
+			break;
+		case CHANNEL_M:
+			channel = ((ChannelMessage)pkt).channel;
+			break;
+		case CHANNEL_T:
+			channel = ((ChannelTargetEmote)pkt).channel;
+			break;
+		default:
+			Log.errOut("Unchanneled message type: "+pkt.getType().name());
+			return;
+		}
+		final Channel chan = I3Router.findChannel(channel);
+		if(chan == null)
+		{
+			Log.errOut("I3R: Unknown channel '"+channel+"'.");
+			return;
+		}
+		for(final MudPeer peer : I3Router.getMudPeers())
+		{
+			if(peer.listening.contains(chan))
+				I3Router.writePacket(pkt, peer);
+		}
+	}
+
+	private void receiveLocateUserMsg(final LocateQueryPacket pkt)
+	{
+		for(final MudPeer peer : I3Router.getMudPeers())
+			I3Router.writePacket(pkt, peer);
+	}
+
 	private void receiveDataPacket(final IrnData pkt)
 	{
 		if(pkt.innerPacket == null)
@@ -318,6 +357,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		final MudPacket mudpkt = (MudPacket)pkt.innerPacket;
 		switch(mudpkt.getType())
 		{
+		case ERROR:
 		case AUTH_MUD_REQ:
 		case CHANLIST_REPLY:
 		case CHAN_USER_REPLY:
@@ -336,13 +376,12 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		case CHANNEL_E:
 		case CHANNEL_M:
 		case CHANNEL_T:
-			//TODO: these need the special Channel treatment
-			break;
-		case ERROR:
-			//TODO: dunno
+			// these need the special local Channel treatment
+			receiveRemoteChannelMsg(mudpkt);
 			break;
 		case LOCATE_REQ:
-			//TODO: these need the special locate broadcast treatment
+			//these need the special local locate broadcast treatment
+			receiveLocateUserMsg((LocateQueryPacket)mudpkt);
 			break;
 		case CHANNEL_ADD:
 		case CHANNEL_LISTEN:
@@ -386,9 +425,21 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		try
 		{
 			final Packet pkt;
-			if((pkt = I3Router.readPacket(istream))==null)
+			if((pkt = I3Router.readPacket(this))==null)
 			{
-				//TODO: deal with unpinged, or pings
+				final long now = System.currentTimeMillis();
+				if((now - this.lastPing) > 60000)
+				{
+					final IrnPing ppkt = new IrnPing(this.name);
+					try
+					{
+						ppkt.send();
+					}
+					catch (final InvalidPacketException e)
+					{
+						e.printStackTrace();
+					}
+				}
 				return;
 			}
 			if(!(pkt instanceof IrnPacket))
@@ -575,5 +626,14 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 	public long getConnectTime()
 	{
 		return this.connectTime;
+	}
+
+	@Override
+	public long[] getSockTimeout()
+	{
+		synchronized(this)
+		{
+			return timeoutCtr;
+		}
 	}
 }

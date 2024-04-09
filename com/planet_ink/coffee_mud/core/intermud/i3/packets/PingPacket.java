@@ -69,6 +69,6 @@ public class PingPacket extends MudPacket
 	@Override
 	public String toString()
 	{
-		return "({\"ping-req\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,0,})";
+		return "({\"ping-req\",5,\""+sender_mud+"\",0,\""+target_mud+"\",0,0,})";
 	}
 }

@@ -1632,7 +1632,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		final MSDPConfigurableVar type=(MSDPConfigurableVar)CMath.s_valueOf(MSDPConfigurableVar.class, var.toUpperCase().trim());
 		if(type == null)
 			return;
-		//TODO:
+		//TODO: Implement reset command for msdp?
 		/*
 		The RESET command works like the LIST command, and can be used to reset groups of variables to
 		their initial state. Most commonly RESET will be called with REPORTABLE_VARIABLES or

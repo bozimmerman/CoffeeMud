@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -118,6 +119,21 @@ public class I3RouterThread extends Thread implements CMObject
 					old.destruct();
 				return old;
 			}
+			final Random r = new Random(System.currentTimeMillis());
+			for(final RouterPeer rpeer : I3Router.getRouterPeers())
+			{
+				final IrnMudlistDelta delta = new IrnMudlistDelta(rpeer.name);
+				delta.mudlist_id = r.nextInt(Integer.MAX_VALUE/1000);
+				delta.mudlist.add(ob.mud);
+				try
+				{
+					delta.send();
+				}
+				catch (final InvalidPacketException e)
+				{
+					Log.errOut(e);
+				}
+			}
 			muds.put(ob.mud.mud_name, ob);
 		}
 		catch( final Exception e )
@@ -173,11 +189,25 @@ public class I3RouterThread extends Thread implements CMObject
 
 	protected synchronized void removeMudPeer(final MudPeer ob)
 	{
-		final String id = ob.getObjectId();
-
-		if( muds.containsKey(id) )
+		if( muds.containsKey(ob.mud.mud_name) )
 		{
-			muds.remove(id);
+			final Random r = new Random(System.currentTimeMillis());
+			for(final RouterPeer rpeer : I3Router.getRouterPeers())
+			{
+				final IrnMudlistDelta delta = new IrnMudlistDelta(rpeer.name);
+				delta.mudlist_id = r.nextInt(Integer.MAX_VALUE/1000);
+				delta.mudlist.add(ob.mud);
+				ob.mud.state = 0; // mark deleted
+				try
+				{
+					delta.send();
+				}
+				catch (final InvalidPacketException e)
+				{
+					Log.errOut(e);
+				}
+			}
+			muds.remove(ob.mud.mud_name);
 		}
 	}
 
@@ -237,6 +267,14 @@ public class I3RouterThread extends Thread implements CMObject
 			CMLib.s_sleep(250);
 
 			{
+				try
+				{
+					connMonitor.processEvent();
+				}
+				catch( final Exception e )
+				{
+					Log.errOut(ID(),e);
+				}
 				// Check for pending object events
 				ServerObject[] things;
 				synchronized( this )

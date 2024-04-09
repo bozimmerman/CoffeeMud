@@ -38,6 +38,7 @@ import java.util.Vector;
 public class ChannelAdd extends MudPacket
 {
 	public String channel = null;
+	public int	channelType = 0;
 
 	public ChannelAdd()
 	{
@@ -52,6 +53,7 @@ public class ChannelAdd extends MudPacket
 		{
 			type = Packet.PacketType.CHANNEL_ADD;
 			channel = (String)v.elementAt(6);
+			channelType = ((Integer)v.elementAt(7)).intValue();
 		}
 		catch( final ClassCastException e )
 		{
@@ -59,12 +61,13 @@ public class ChannelAdd extends MudPacket
 		}
 	}
 
-	public ChannelAdd(final String chan, final String who)
+	public ChannelAdd(final String chan, final String who, final int chtyp)
 	{
 		super();
 		type = Packet.PacketType.CHANNEL_ADD;
 		channel = chan;
 		sender_name = who;
+		channelType = chtyp;
 	}
 
 	@Override
@@ -81,7 +84,7 @@ public class ChannelAdd extends MudPacket
 	{
 		final NameServer n = Intermud.getNameServer();
 		final String cmd=
-			 "({\"channel-add\",5,\"" + I3Server.getMudName() + "\",\"" +
+			 "({\"channel-add\",5,\"" + sender_mud + "\",\"" +
 			   sender_name + "\",\""+n.name+"\",0,\"" + channel + "\",0,})";
 		return cmd;
 	}

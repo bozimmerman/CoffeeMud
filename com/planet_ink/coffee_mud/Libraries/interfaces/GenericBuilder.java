@@ -1164,12 +1164,12 @@ public interface GenericBuilder extends CMLibrary
 	 * Sets the faction values and associations on the given
 	 * mob from a pre-parsed xml doc.  The list of tags
 	 * must include one called "FACTIONS".
-	 * @return TODO
 	 *
 	 * @see GenericBuilder#getFactionXML(MOB, List)
 	 *
 	 * @param mob the mob to set faction associations on
 	 * @param xml the list of pre-parsed xml tags
+	 * @return the factions list
 	 */
 	public List<Pair<String, Integer>> unpackFactionFromXML(MOB mob, List<XMLTag> xml);
 

@@ -73,7 +73,7 @@ public class ChannelWhoRequest extends MudPacket
 	@Override
 	public String toString()
 	{
-		final String cmd="({\"chan-who-req\",5,\"" + I3Server.getMudName() +
+		final String cmd="({\"chan-who-req\",5,\"" + sender_mud +
 			   "\",\"" + sender_name + "\",\"" + target_mud + "\",0,\"" + channel + "\",})";
 		return cmd;
 	}

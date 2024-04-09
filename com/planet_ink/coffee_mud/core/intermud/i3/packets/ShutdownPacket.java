@@ -61,6 +61,6 @@ public class ShutdownPacket extends MudPacket
 	@Override
 	public String toString()
 	{
-		return "({\"shutdown\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,0,})";
+		return "({\"shutdown\",5,\""+sender_mud+"\",0,\""+target_mud+"\",0,0,})";
 	}
 }

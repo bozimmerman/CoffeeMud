@@ -67,4 +67,11 @@ public interface NetPeer extends java.io.Closeable
 	 * @return the timestamp of creation
 	 */
 	public long getConnectTime();
+
+	/**
+	 * Returns 1 dimensional array to use for
+	 * detecting timeouts.
+	 * @return the long array
+	 */
+	public long[] getSockTimeout();
 }

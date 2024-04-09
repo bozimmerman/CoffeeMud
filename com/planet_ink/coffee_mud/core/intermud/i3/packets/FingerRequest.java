@@ -69,7 +69,7 @@ public class FingerRequest extends MudPacket
 	@Override
 	public String toString()
 	{
-		final String cmd="({\"finger-req\",5,\"" + I3Server.getMudName() +
+		final String cmd="({\"finger-req\",5,\"" + sender_mud +
 			   "\",\"" + sender_name + "\",\"" + target_mud + "\",0,\"" + target_name + "\",})";
 		return cmd;
 	}

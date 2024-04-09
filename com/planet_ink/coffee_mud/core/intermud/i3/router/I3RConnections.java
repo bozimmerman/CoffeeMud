@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 
 import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.Log;
@@ -13,6 +14,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.ListenThread;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.NetPeer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.UnknownNetPeer;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnMudlistDelta;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnStartupRequest;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.StartupReply;
@@ -93,13 +95,13 @@ public class I3RConnections implements ServerObject
 						i.remove();
 					}
 					else
-					if((pkt = I3Router.readPacket(istream)) != null)
+					if((pkt = I3Router.readPacket(peer)) != null)
 					{
 						if(pkt.getType() == Packet.PacketType.IRN_STARTUP_REQUEST)
 						{
 							final IrnStartupRequest ipkt = (IrnStartupRequest)pkt;
-							if(((ipkt.target_password == routerBase.password)
-								|| (routerBase.password < 0))
+							if(((ipkt.target_password == I3Router.getRouterPassword())
+								|| (I3Router.getRouterPassword() < 0))
 							&&(ipkt.target_router.equalsIgnoreCase(I3Router.getRouterName())))
 							{
 								String remoteAddr = peer.getSocket().getRemoteSocketAddress().toString();
@@ -111,7 +113,7 @@ public class I3RConnections implements ServerObject
 									remoteAddr = remoteAddr.substring(0,x);
 								}
 								final NameServer ns = new NameServer(remoteAddr,port,ipkt.sender_router);
-								final RouterPeer rpeer = new RouterPeer(ns, peer, routerBase);
+								final RouterPeer rpeer = new RouterPeer(ns, peer);
 								rpeer.password = ipkt.sender_password;
 								I3Router.addObject(rpeer);
 								// do not close peer, as we want to keep the socks open
@@ -124,8 +126,8 @@ public class I3RConnections implements ServerObject
 						if(pkt.getType() == Packet.PacketType.STARTUP_REQ_3)
 						{
 							final StartupReq3 mpkt = (StartupReq3)pkt;
-							if(((mpkt.password == routerBase.password)
-								|| (routerBase.password < 0))
+							if(((mpkt.password == I3Router.getRouterPassword())
+								|| (I3Router.getRouterPassword() < 0))
 							&&(mpkt.target_router.equalsIgnoreCase(I3Router.getRouterName())))
 							{
 								final MudPeer newMud = new MudPeer(mpkt.sender_router, peer);

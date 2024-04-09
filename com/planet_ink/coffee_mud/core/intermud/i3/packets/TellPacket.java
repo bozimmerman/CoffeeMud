@@ -128,7 +128,7 @@ public class TellPacket extends MudPacket
 	@Override
 	public String toString()
 	{
-		return "({\"tell\",5,\"" + I3Server.getMudName() +
+		return "({\"tell\",5,\"" + sender_mud +
 			   "\",\"" + sender_name + "\",\"" + target_mud +
 			   "\",\"" + target_name + "\",\"" +
 			   sender_visible_name + "\",\"" + message + "\",})";
