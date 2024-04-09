@@ -386,6 +386,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		case CHANNEL_ADD:
 		case CHANNEL_LISTEN:
 		case CHANNEL_REMOVE:
+		case CHANNEL_ADMIN:
 		case PING_REQ:
 		case SHUTDOWN:
 		case STARTUP_REPLY:

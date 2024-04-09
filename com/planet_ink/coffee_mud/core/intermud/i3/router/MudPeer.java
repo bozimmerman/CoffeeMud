@@ -22,7 +22,9 @@ import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3Mud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.NetPeer;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChanlistReply;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelAdd;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelAdmin;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelDelete;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelEmote;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelListen;
@@ -41,6 +43,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnChanlistRequest;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnData;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnMudlistDelta;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnMudlistRequest;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnPacket;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnPing;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnShutdown;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnStartupRequest;
@@ -258,7 +261,21 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 					mlrep.mudlist.add(muds.get(x));
 				mlrep.send();
 			}
-			//TODO: send Chanlist-Reply
+			final XArrayList<Channel> chans = new XArrayList<Channel>();
+			chans.addAll(I3Router.getRouter().channels.getChannels().values());
+			for(final RouterPeer peer : I3Router.getRouterPeers())
+			{
+				for(final Channel chan : peer.channels.getChannels().values())
+					chans.add(chan);
+			}
+			for(int i=0;i<muds.size();i+=5)
+			{
+				final ChanlistReply clrep = new ChanlistReply(this.mud.mud_name);
+				clrep.chanlist_id = r.nextInt(Integer.MAX_VALUE);
+				for(int x=i;x<i+5 && x<chans.size();x++)
+					clrep.chanlist.add(chans.get(x));
+				clrep.send();
+			}
 		}
 		catch (final InvalidPacketException e)
 		{
@@ -376,11 +393,12 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			c.type = pkt.channelType;
 			I3Router.getRouter().channels.addChannel(c);
 			final Random r = new Random(System.currentTimeMillis());
+			final IrnChanlistDelta delta = new IrnChanlistDelta("");
+			delta.chanlist_id = r.nextInt(Integer.MAX_VALUE/1000);
+			delta.chanlist.add(c);
 			for(final RouterPeer rpeer : I3Router.getRouterPeers())
 			{
-				final IrnChanlistDelta delta = new IrnChanlistDelta(rpeer.name);
-				delta.chanlist_id = r.nextInt(Integer.MAX_VALUE/1000);
-				delta.chanlist.add(c);
+				delta.target_router = rpeer.name;
 				try
 				{
 					delta.send();
@@ -401,15 +419,87 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 		else
 		{
 			I3Router.getRouter().channels.removeChannel(c);
-			// can't see a way to notify router peers of removed channels
+			final Random r = new Random(System.currentTimeMillis());
+			c.modified = Persistent.DELETED;
+			final IrnChanlistDelta delta = new IrnChanlistDelta("");
+			delta.chanlist_id = r.nextInt(Integer.MAX_VALUE/1000);
+			delta.chanlist.add(c);
+			for(final RouterPeer rpeer : I3Router.getRouterPeers())
+			{
+				delta.target_router = rpeer.name;
+				try
+				{
+					delta.send();
+				}
+				catch (final InvalidPacketException e)
+				{
+					Log.errOut(e);
+				}
+			}
 		}
 	}
 
-	public void sendError(final String errorCode, final String errorMessage, final MudPacket packet)
+	public void channelAdminRequest(final ChannelAdmin pkt)
+	{
+		final Channel c = I3Router.findChannel(pkt.channel);
+		if (c == null)
+			sendError("bad-channel","The channel "+pkt.channel+" doesnt exists.",pkt);
+		else
+		if(!c.owner.equals(mud.mud_name))
+			sendError("not-allowed","The channel "+pkt.channel+" may not be altered by you.",pkt);
+		else
+		if((pkt.addlist.size()>0)
+		||(pkt.removelist.size()>0))
+		{
+			c.mudlist.addAll(pkt.addlist);
+			c.mudlist.removeAll(pkt.removelist);
+			final Random r = new Random(System.currentTimeMillis());
+			final IrnChanlistDelta delta = new IrnChanlistDelta("");
+			delta.chanlist_id = r.nextInt(Integer.MAX_VALUE/1000);
+			delta.chanlist.add(c);
+			for(final RouterPeer rpeer : I3Router.getRouterPeers())
+			{
+				delta.target_router = rpeer.name;
+				try
+				{
+					delta.send();
+				}
+				catch (final InvalidPacketException e)
+				{
+					Log.errOut(e);
+				}
+			}
+		}
+	}
+
+	public void sendError(final String errorCode, final String errorMessage, final Packet packet)
+	{
+		if(packet instanceof MudPacket)
+			sendMudError(errorCode, errorMessage,(MudPacket)packet);
+		else
+		if(packet instanceof IrnPacket)
+			sendIrnError(errorCode, errorMessage,(IrnPacket)packet);
+	}
+
+	public void sendMudError(final String errorCode, final String errorMessage, final MudPacket packet)
 	{
 		try
 		{
 			final ErrorPacket pkt = new ErrorPacket(mud.mud_name,packet.sender_name, errorCode, errorMessage, packet.toString());
+			pkt.sender_mud = I3Router.getRouterName();
+			pkt.send();
+		}
+		catch (final InvalidPacketException e)
+		{
+			Log.errOut(e);
+		}
+	}
+
+	public void sendIrnError(final String errorCode, final String errorMessage, final IrnPacket packet)
+	{
+		try
+		{
+			final ErrorPacket pkt = new ErrorPacket(mud.mud_name,packet.sender_router, errorCode, errorMessage, packet.toString());
 			pkt.sender_mud = I3Router.getRouterName();
 			pkt.send();
 		}
@@ -429,7 +519,22 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			if(pkt.onoff == 0)
 				listening.remove(c);
 			else
-				listening.add(c);
+			switch(c.type)
+			{
+			case 1: // selective admission
+			case 2: // selective admission & filtered
+				if(!c.mudlist.contains(pkt.sender_mud))
+					sendError("not-allowed", "Not allowed to listen to this channel.", pkt);
+				else
+					listening.add(c);
+				break;
+			default: // selective ban
+				if(c.mudlist.contains(pkt.sender_mud))
+					sendError("not-allowed", "Not allowed to listen to this channel.", pkt);
+				else
+					listening.add(c);
+				break;
+			}
 		}
 	}
 
@@ -521,6 +626,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			}
 			if(!(pkt instanceof MudPacket))
 			{
+				sendError("not-allowed", "Not allowed to send this packet.", pkt);
 				Log.errOut("Unwanted message type: "+pkt.getType().name() + " from "+mud.mud_name);
 				return;
 			}
@@ -536,6 +642,9 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 				break;
 			case CHANNEL_REMOVE:
 				channelRemoveRequest((ChannelDelete)pkt);
+				break;
+			case CHANNEL_ADMIN:
+				channelAdminRequest((ChannelAdmin)pkt);
 				break;
 			case LOCATE_REQ:
 				locateUserRequest((LocateQueryPacket)pkt);
@@ -582,6 +691,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			case IRN_PING:
 			case IRN_SHUTDOWN:
 			case IRN_STARTUP_REQUEST:
+				sendError("not-allowed", "Not allowed to send this packet.", pkt);
 				Log.errOut("Unwanted message type: "+pkt.getType().name() + " from "+mud.mud_name);
 				return;
 			}

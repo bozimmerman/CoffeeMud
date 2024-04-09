@@ -44,9 +44,6 @@ public class ChannelListen extends MudPacket
 	{
 		super();
 		type = Packet.PacketType.CHANNEL_LISTEN;
-		final NameServer n = Intermud.getNameServer();
-		if(n != null)
-			target_mud = n.name;
 	}
 
 	public ChannelListen(final Vector<?> v) throws InvalidPacketException

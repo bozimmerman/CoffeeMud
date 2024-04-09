@@ -21,6 +21,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  */
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * This class represents an I3 channel.  The ChannelList
@@ -38,23 +40,37 @@ import java.io.Serializable;
 public class Channel implements Serializable
 {
 	public static final long serialVersionUID=0;
+
 	/**
 	 * The name of the channel
 	 */
 	public String channel;
+
 	/**
 	 * The modification status of this channel
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent
 	 */
 	public int modified;
+
 	/**
 	 * The mud which controls the channel
 	 */
 	public String owner;
+
 	/**
 	 * The type of the mud channel
+	 * 0  selectively banned
+	 * 1  selectively admitted
+	 * 2  filtered (selectively admitted)
 	 */
 	public int    type;
+
+	/**
+	 * Either the list of muds allowed,
+	 * or the list of muds banned,
+	 * according to the Type
+	 */
+	public List<String> mudlist = new Vector<String>();
 
 	/**
 	 * Constructs a new mud channel object
@@ -76,5 +92,6 @@ public class Channel implements Serializable
 		modified = other.modified;
 		owner = other.owner;
 		type = other.type;
+		mudlist = new XVector<String>(other.mudlist);
 	}
 }

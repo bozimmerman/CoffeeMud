@@ -59,8 +59,12 @@ public class IrnChanlistDelta extends IrnPacket
 							c.channel = channame;
 							c.type = s_int(l.get(0));
 							c.owner = s_str(l.get(1));
+							if(l.get(2) instanceof List)
+							{
+								for(final Object mlo : ((List<?>)l.get(2)))
+									c.mudlist.add(mlo.toString());
+							}
 							chanlist.add(c);
-							// spot 2 is a list with "ban/allow list", whatever that is.
 						}
 						else
 						if((o1 instanceof Integer)
@@ -88,11 +92,20 @@ public class IrnChanlistDelta extends IrnPacket
 		str.append("\"channels\":([");
 		for(final Channel c : chanlist)
 		{
-			str.append("\""+c.channel+"\":({");
-			str.append(c.type).append(",");
-			str.append("\"").append(c.owner).append("\",");
-			str.append("({}),");
-			str.append("}),");
+			str.append("\""+c.channel+"\":");
+			if(c.modified == Persistent.DELETED)
+				str.append("0,");
+			else
+			{
+				str.append("({");
+					str.append(c.type).append(",");
+					str.append("\"").append(c.owner).append("\",");
+					str.append("({");
+					for(final String ml : c.mudlist)
+						str.append("\"").append(ml).append("\",");
+					str.append("}),");
+				str.append("}),");
+			}
 		}
 		str.append("]),");
 		str.append("\"listening\":([]),");

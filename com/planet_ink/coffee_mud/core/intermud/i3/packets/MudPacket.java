@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet.PacketType;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -54,6 +55,9 @@ public class MudPacket extends Packet
 	{
 		super();
 		sender_mud = I3Server.getMudName();
+		final NameServer ns = Intermud.getNameServer();
+		if(ns != null)
+			target_name = ns.name;
 	}
 
 	public MudPacket(final Vector<?> v)

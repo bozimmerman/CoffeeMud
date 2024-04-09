@@ -41,9 +41,6 @@ public class PingPacket extends MudPacket
 	{
 		super();
 		type = Packet.PacketType.PING_REQ;
-		final NameServer n = Intermud.getNameServer();
-		if(n != null)
-			target_mud = n.name;
 	}
 
 	public PingPacket(final Vector<?> v)

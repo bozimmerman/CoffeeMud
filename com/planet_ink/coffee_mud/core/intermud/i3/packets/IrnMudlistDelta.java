@@ -114,42 +114,48 @@ public class IrnMudlistDelta extends IrnPacket
 		str.append("([");
 		for(final I3MudX mud : mudlist)
 		{
-			str.append("\""+mud.mud_name+"\":[(");
-			str.append("\"").append("old_mudlist_id").append("\":").append(mud.mudListId).append(","); //0
-			str.append("\"").append("old_chanlist_id").append("\":").append(mud.channelListId).append(","); //1
-			str.append("\"").append("player_port").append("\":").append(mud.player_port).append(","); //2
-			str.append("\"").append("imud_tcp_port").append("\":").append(mud.tcp_port).append(","); //3
-			str.append("\"").append("imud_udp_port").append("\":").append(mud.udp_port).append(","); //4
-			str.append("\"").append("mudlib").append("\":").append("\"").append(mud.mudlib).append("\","); //5
-			str.append("\"").append("base_mudlib").append("\":").append("\"").append(mud.base_mudlib).append("\","); //6
-			str.append("\"").append("driver").append("\":").append("\"").append(mud.driver).append("\","); //7
-			str.append("\"").append("mud_type").append("\":").append("\"").append(mud.mud_type).append("\","); //8
-			str.append("\"").append("open_status").append("\":").append("\"").append(mud.status).append("\","); //9
-			str.append("\"").append("admin_email").append("\":").append("\"").append(mud.admin_email).append("\","); //10
-			str.append("\"").append("services").append("\":");
+			str.append("\""+mud.mud_name+"\":");
+			if(mud.modified == Persistent.DELETED)
+				str.append("0,");
+			else
 			{
 				str.append("([");
-				for(final String key : mud.services.keySet())
-					str.append("\"").append(key).append("\":").append(mud.services.get(key)).append(",");
+				str.append("\"").append("old_mudlist_id").append("\":").append(mud.mudListId).append(","); //0
+				str.append("\"").append("old_chanlist_id").append("\":").append(mud.channelListId).append(","); //1
+				str.append("\"").append("player_port").append("\":").append(mud.player_port).append(","); //2
+				str.append("\"").append("imud_tcp_port").append("\":").append(mud.tcp_port).append(","); //3
+				str.append("\"").append("imud_udp_port").append("\":").append(mud.udp_port).append(","); //4
+				str.append("\"").append("mudlib").append("\":").append("\"").append(mud.mudlib).append("\","); //5
+				str.append("\"").append("base_mudlib").append("\":").append("\"").append(mud.base_mudlib).append("\","); //6
+				str.append("\"").append("driver").append("\":").append("\"").append(mud.driver).append("\","); //7
+				str.append("\"").append("mud_type").append("\":").append("\"").append(mud.mud_type).append("\","); //8
+				str.append("\"").append("open_status").append("\":").append("\"").append(mud.status).append("\","); //9
+				str.append("\"").append("admin_email").append("\":").append("\"").append(mud.admin_email).append("\","); //10
+				str.append("\"").append("services").append("\":");
+				{
+					str.append("([");
+					for(final String key : mud.services.keySet())
+						str.append("\"").append(key).append("\":").append(mud.services.get(key)).append(",");
+					str.append("]),");
+				}
+				str.append("\"").append("other_data").append("\":");
+				{
+					str.append("([");
+					for(final String key : mud.other.keySet())
+						str.append("\"").append(key).append("\":\"").append(mud.other.get(key)).append("\",");
+					str.append("]),");
+				}
+				str.append("\"").append("password").append("\":").append(mud.password).append(",");
+				str.append("\"").append("connect_time").append("\":").append(mud.connectTime).append(",");
+				str.append("\"").append("disconnect_time").append("\":").append(mud.disconnectTime).append(",");
+				str.append("\"").append("version").append("\":").append(mud.version).append(",");
+				str.append("\"").append("name").append("\":").append("\"").append(mud.mud_name).append("\",");
+				str.append("\"").append("ip").append("\":").append("\"").append(mud.address).append("\",");
+				str.append("\"").append("version").append("\":").append(mud.version).append(",");
+				str.append("\"").append("restart_delay").append("\":").append(mud.connected?-1:0).append(",");
+				str.append("\"").append("router").append("\":").append("\"").append(mud.router).append("\",");
 				str.append("]),");
 			}
-			str.append("\"").append("other_data").append("\":");
-			{
-				str.append("([");
-				for(final String key : mud.other.keySet())
-					str.append("\"").append(key).append("\":\"").append(mud.other.get(key)).append("\",");
-				str.append("]),");
-			}
-			str.append("\"").append("password").append("\":").append(mud.password).append(",");
-			str.append("\"").append("connect_time").append("\":").append(mud.connectTime).append(",");
-			str.append("\"").append("disconnect_time").append("\":").append(mud.disconnectTime).append(",");
-			str.append("\"").append("version").append("\":").append(mud.version).append(",");
-			str.append("\"").append("name").append("\":").append("\"").append(mud.mud_name).append("\",");
-			str.append("\"").append("ip").append("\":").append("\"").append(mud.address).append("\",");
-			str.append("\"").append("version").append("\":").append(mud.version).append(",");
-			str.append("\"").append("restart_delay").append("\":").append(mud.connected?-1:0).append(",");
-			str.append("\"").append("router").append("\":").append("\"").append(mud.router).append("\",");
-			str.append("]),");
 		}
 		str.append("]),");
 		str.append("})");

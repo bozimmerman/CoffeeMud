@@ -240,9 +240,6 @@ public class I3RouterThread extends Thread implements CMObject
 		super.start();
 		// Load the support classes into objects, since they
 		// get thread time.
-		//TODO: restore routers
-		//TODO: restore channels?
-		//TODO: connect to other routers
 
 		try
 		{
@@ -253,10 +250,13 @@ public class I3RouterThread extends Thread implements CMObject
 			Log.errOut(ID(),e);
 			return;
 		}
-
 		Log.sysOut(ID(), "InterMud3 Router started on port "+me.port);
-
 		running = true;
+
+
+		//TODO: restore channels?
+		//TODO: restore routers
+		//TODO: connect to other routers
 	}
 
 	@Override

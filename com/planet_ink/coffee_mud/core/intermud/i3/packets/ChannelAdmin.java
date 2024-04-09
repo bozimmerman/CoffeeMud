@@ -18,10 +18,11 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.List;
 import java.util.Vector;
 
 /**
- * Copyright (c) 1996 George Reese
+ * Copyright (c)2024-2024 Bo Zimmerman
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,25 +36,37 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class ChannelAdd extends MudPacket
+public class ChannelAdmin extends MudPacket
 {
 	public String channel = null;
-	public int	channelType = 0;
+	public List<String> addlist = new Vector<String>();
+	public List<String> removelist = new Vector<String>();
 
-	public ChannelAdd()
+	public ChannelAdmin()
 	{
 		super();
-		type = Packet.PacketType.CHANNEL_ADD;
+		type = Packet.PacketType.CHANNEL_ADMIN;
 	}
 
-	public ChannelAdd(final Vector<?> v) throws InvalidPacketException
+	public ChannelAdmin(final Vector<?> v) throws InvalidPacketException
 	{
 		super(v);
 		try
 		{
-			type = Packet.PacketType.CHANNEL_ADD;
+			type = Packet.PacketType.CHANNEL_ADMIN;
 			channel = (String)v.elementAt(6);
-			channelType = ((Integer)v.elementAt(7)).intValue();
+			if((v.size()>7) && (v.get(7) instanceof List<?>))
+			{
+				final List<?> ml = (List<?>)v.get(7);
+				for(final Object mlo : ml)
+					addlist.add(mlo.toString());
+			}
+			if((v.size()>8) && (v.get(8) instanceof List<?>))
+			{
+				final List<?> ml = (List<?>)v.get(8);
+				for(final Object mlo : ml)
+					removelist.add(mlo.toString());
+			}
 		}
 		catch( final ClassCastException e )
 		{
@@ -61,13 +74,12 @@ public class ChannelAdd extends MudPacket
 		}
 	}
 
-	public ChannelAdd(final String chan, final String who, final int chtyp)
+	public ChannelAdmin(final String chan, final String who)
 	{
 		super();
-		type = Packet.PacketType.CHANNEL_ADD;
+		type = Packet.PacketType.CHANNEL_ADMIN;
 		channel = chan;
 		sender_name = who;
-		channelType = chtyp;
 	}
 
 	@Override
@@ -82,9 +94,22 @@ public class ChannelAdd extends MudPacket
 	@Override
 	public String toString()
 	{
-		final String cmd=
-			 "({\"channel-add\",5,\"" + sender_mud + "\",\"" +
-			   sender_name + "\",\""+target_name+"\",0,\"" + channel + "\",0,})";
-		return cmd;
+		final StringBuilder str = new StringBuilder("");
+		str.append("({\"channel-admin\",5,\"" + sender_mud + "\",\"" +
+			   sender_name + "\",\""+target_mud+"\",0,\"" + channel + "\",");
+		{
+			str.append("({");
+			for(final String ml : this.addlist)
+				str.append("\"").append(ml).append("\"").append(",");
+			str.append("}),");
+		}
+		{
+			str.append("({");
+			for(final String ml : this.removelist)
+				str.append("\"").append(ml).append("\"").append(",");
+			str.append("}),");
+		}
+		str.append("})");
+		return str.toString();
 	}
 }

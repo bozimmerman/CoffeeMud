@@ -47,9 +47,6 @@ public class ShutdownPacket extends MudPacket
 	{
 		super(v);
 		type = Packet.PacketType.SHUTDOWN;
-		final NameServer n = Intermud.getNameServer();
-		if(n != null)
-			target_mud = n.name;
 	}
 
 	@Override
