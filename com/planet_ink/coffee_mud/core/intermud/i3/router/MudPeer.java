@@ -258,7 +258,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 					mlrep.mudlist.add(muds.get(x));
 				mlrep.send();
 			}
-
+			//TODO: send Chanlist-Reply
 		}
 		catch (final InvalidPacketException e)
 		{
