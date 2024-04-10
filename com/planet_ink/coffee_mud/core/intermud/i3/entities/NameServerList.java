@@ -73,16 +73,6 @@ public class NameServerList implements Serializable, PersistentPeer
 		id = i;
 	}
 
-	public int getModified()
-	{
-		return modified;
-	}
-
-	public void setModified(final int x)
-	{
-		modified = x;
-	}
-
 	public void addNameServer(final NameServer mud)
 	{
 		if(( mud.name == null )||( mud.name.length() == 0 ))
@@ -146,6 +136,7 @@ public class NameServerList implements Serializable, PersistentPeer
 	public void setNameServerListId(final int x)
 	{
 		id = x;
+		this.modified = Persistent.MODIFIED;
 	}
 
 	public static Filterer<NameServer> nmFilter = new Filterer<NameServer>()
@@ -188,6 +179,7 @@ public class NameServerList implements Serializable, PersistentPeer
 					}
 				}
 			}
+			this.modified = Persistent.UNMODIFIED;
 		}
 		catch(final Exception e)
 		{
@@ -204,6 +196,8 @@ public class NameServerList implements Serializable, PersistentPeer
 	{
 		try
 		{
+			if(this.modified == Persistent.UNMODIFIED)
+				return;
 			final CMFile F=new CMFile(restoreFilename,null);
 			if(!F.exists())
 			{
@@ -221,6 +215,7 @@ public class NameServerList implements Serializable, PersistentPeer
 			}
 			bout.close();
 			F.saveRaw(bout.toByteArray());
+			this.modified = Persistent.UNMODIFIED;
 		}
 		catch(final Exception e)
 		{

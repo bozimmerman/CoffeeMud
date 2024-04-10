@@ -46,6 +46,7 @@ public class ChannelList implements Serializable, PersistentPeer
 {
 	public static final long serialVersionUID=0;
 	private int id;
+	private int modified = Persistent.NEW;
 	private final Hashtable<String,Channel> list;
 
 	private boolean isRestoring = false;
@@ -71,6 +72,8 @@ public class ChannelList implements Serializable, PersistentPeer
 			return;
 		}
 		list.put(c.channel, c);
+		c.modified = Persistent.NEW;
+		this.modified = Persistent.MODIFIED;
 	}
 
 	public Channel getChannel(final String channel)
@@ -79,7 +82,12 @@ public class ChannelList implements Serializable, PersistentPeer
 		{
 			return null;
 		}
-		return list.get(channel);
+		final Channel c = list.get(channel);
+		if(c == null)
+			return null;
+		if(c.modified == Persistent.DELETED)
+			return null;
+		return c;
 	}
 
 	public void removeChannel(final Channel c)
@@ -88,7 +96,8 @@ public class ChannelList implements Serializable, PersistentPeer
 		{
 			return;
 		}
-		list.remove(c.channel);
+		c.modified = Persistent.DELETED;
+		this.modified = Persistent.MODIFIED;
 	}
 
 	public int getChannelListId()
@@ -99,6 +108,7 @@ public class ChannelList implements Serializable, PersistentPeer
 	public void setChannelListId(final int x)
 	{
 		id = x;
+		this.modified = Persistent.MODIFIED;
 	}
 
 	public Hashtable<String,Channel> getChannels()
@@ -128,6 +138,7 @@ public class ChannelList implements Serializable, PersistentPeer
 					}
 				}
 			}
+			this.modified = Persistent.UNMODIFIED;
 		}
 		catch(final Exception e)
 		{
@@ -144,6 +155,8 @@ public class ChannelList implements Serializable, PersistentPeer
 	{
 		try
 		{
+			if(this.modified == Persistent.UNMODIFIED)
+				return;
 			final CMFile F=new CMFile(restoreFilename,null);
 			if(!F.exists())
 			{
@@ -162,6 +175,7 @@ public class ChannelList implements Serializable, PersistentPeer
 			bout.flush();
 			bout.close();
 			F.saveRaw(bout.toByteArray());
+			this.modified = Persistent.UNMODIFIED;
 		}
 		catch(final Exception e)
 		{

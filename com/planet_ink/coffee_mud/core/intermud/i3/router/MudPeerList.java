@@ -73,16 +73,6 @@ public class MudPeerList implements Serializable, PersistentPeer
 		id = i;
 	}
 
-	public int getModified()
-	{
-		return modified;
-	}
-
-	public void setModified(final int x)
-	{
-		modified = x;
-	}
-
 	public void addMud(final MudPeer mud)
 	{
 		if(( mud.mud.mud_name == null )||( mud.mud.mud_name.length() == 0 ))
@@ -142,6 +132,7 @@ public class MudPeerList implements Serializable, PersistentPeer
 	public void setMudListId(final int x)
 	{
 		id = x;
+		modified = Persistent.MODIFIED;
 	}
 
 	public Map<String,MudPeer> getMuds()
@@ -179,6 +170,7 @@ public class MudPeerList implements Serializable, PersistentPeer
 					}
 				}
 			}
+			this.modified = Persistent.UNMODIFIED;
 		}
 		catch(final Exception e)
 		{
@@ -193,6 +185,8 @@ public class MudPeerList implements Serializable, PersistentPeer
 	@Override
 	public void save() throws PersistenceException
 	{
+		if(this.modified == Persistent.UNMODIFIED)
+			return;
 		try
 		{
 			final CMFile F=new CMFile(restoreFilename,null);
@@ -212,6 +206,7 @@ public class MudPeerList implements Serializable, PersistentPeer
 			}
 			bout.close();
 			F.saveRaw(bout.toByteArray());
+			this.modified = Persistent.UNMODIFIED;
 		}
 		catch(final Exception e)
 		{
