@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -26,11 +27,13 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Random;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
- * Copyright (c) 1996 George Reese
+ * Copyright (c) 2024-2024 Bo Zimmerman
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -44,26 +47,26 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
-public class MudPeerList implements Serializable, PersistentPeer
+public class RouterPeerList implements Serializable, PersistentPeer
 {
 	public static final long serialVersionUID=0;
 
 	private int id;
-	protected final Map<String,MudPeer> list;
+	protected final Map<String,RouterPeer> list;
 	private int modified;
 
 	private boolean isRestoring = false;
-	private static final String restoreFilename = "resources/mpeers.I3Router";
+	private static final String restoreFilename = "resources/rpeers.I3Router";
 
-	public MudPeerList()
+	public RouterPeerList()
 	{
 		super();
 		id = 0;
 		modified = Persistent.MODIFIED;
-		list = new Hashtable<String,MudPeer>();
+		list = new Hashtable<String,RouterPeer>();
 	}
 
-	public MudPeerList(final int i)
+	public RouterPeerList(final int i)
 	{
 		this();
 		id = i;
@@ -79,68 +82,68 @@ public class MudPeerList implements Serializable, PersistentPeer
 		modified = x;
 	}
 
-	public void addMud(final MudPeer mud)
+	public void addRouter(final RouterPeer router)
 	{
-		if(( mud.mud.mud_name == null )||( mud.mud.mud_name.length() == 0 ))
+		if(( router.name == null )||( router.name.length() == 0 ))
 		{
 			return;
 		}
 		{ // temp hack
-			final char c = mud.mud.mud_name.charAt(0);
+			final char c = router.name.charAt(0);
 
 			if( !(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z') && c != '(' )
 			{
 				return;
 			}
 		}
-		if( list.containsKey(mud.mud.mud_name) )
+		if( list.containsKey(router.name) )
 		{
-			mud.mud.modified = Persistent.MODIFIED;
+			router.modified = Persistent.MODIFIED;
 		}
 		else
 		{
-			mud.mud.modified = Persistent.NEW;
+			router.modified = Persistent.NEW;
 		}
-		list.put(mud.mud.mud_name, mud);
+		list.put(router.name, router);
 		modified = Persistent.MODIFIED;
 	}
 
-	public MudPeer getMud(final String mud)
+	public RouterPeer getRouter(final String mud)
 	{
 		if( !list.containsKey(mud) )
 		{
 			return null;
 		}
-		final MudPeer tmp = list.get(mud);
+		final RouterPeer tmp = list.get(mud);
 
-		if( tmp.mud.modified == Persistent.DELETED )
+		if( tmp.modified == Persistent.DELETED )
 		{
 			return null;
 		}
 		return tmp;
 	}
 
-	public void removeMud(final MudPeer mud)
+	public void removeRouter(final RouterPeer mud)
 	{
-		if( mud.mud.mud_name == null )
+		if( mud.name == null )
 		{
 			return;
 		}
-		mud.mud.modified = Persistent.DELETED;
+		mud.modified = Persistent.DELETED;
 		modified = Persistent.MODIFIED;
 	}
 
-	public int getMudListId()
+	public int getRouterListId()
 	{
 		return id;
 	}
 
-	public void setMudListId(final int x)
+	public void setRouterListId(final int x)
 	{
 		id = x;
 	}
 
-	public Map<String,MudPeer> getMuds()
+	public Map<String,RouterPeer> getRouters()
 	{
 		return list;
 	}
@@ -153,7 +156,25 @@ public class MudPeerList implements Serializable, PersistentPeer
 		isRestoring = true;
 		try
 		{
-			//final CMFile F=new CMFile(restoreFilename,null);
+			final CMFile F=new CMFile(restoreFilename,null);
+			if(F.exists())
+			{
+				try(final ObjectInputStream din = new ObjectInputStream(new ByteArrayInputStream(F.raw())))
+				{
+					this.id = din.readInt();
+					final int numEntries = din.readInt();
+					for(int i=0;i<numEntries;i++)
+					{
+						final NameServer ns = (NameServer)din.readObject();
+						final RouterPeer rpeer = new RouterPeer(ns,null);
+						this.list.put(ns.name, rpeer);
+					}
+				}
+			}
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("RouterPeerList",e);
 		}
 		finally
 		{
@@ -168,11 +189,25 @@ public class MudPeerList implements Serializable, PersistentPeer
 		{
 			final CMFile F=new CMFile(restoreFilename,null);
 			if(!F.exists())
-				return;
+			{
+				if(!F.getParentFile().exists())
+					F.getParentFile().mkdirs();
+			}
+			final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			try(ObjectOutputStream out = new ObjectOutputStream(bout))
+			{
+				out.write(id);
+				out.write(list.size());
+				for(final NameServer ns : list.values())
+					if(ns.name.length()>0)
+						out.writeObject(ns);
+			}
+			bout.close();
+			F.saveRaw(bout.toByteArray());
 		}
 		catch(final Exception e)
 		{
-			Log.errOut("MudPeerList","Unable to read "+restoreFilename);
+			Log.errOut("RouterPeerList","Unable to read "+restoreFilename);
 		}
 	}
 

@@ -293,6 +293,10 @@ public class I3Router
 		return routerThread.getMuds();
 	}
 
+	static public Channel[] getChannels() {
+		return new XArrayList<Channel>(routerThread.channels.getChannels().values()).toArray(new Channel[0]);
+	}
+
 	static public int getMudListId() {
 		return routerThread.muds.getMudListId();
 	}

@@ -111,7 +111,9 @@ public class I3Server
 
 	static public String getMudName()
 	{
-		return serverClient.getMudName();
+		if(serverClient != null)
+			return serverClient.getMudName();
+		return "";
 	}
 
 	static public int getPort()

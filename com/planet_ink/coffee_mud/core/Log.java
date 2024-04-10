@@ -409,7 +409,9 @@ public class Log extends java.util.logging.Logger
 		final PrintWriter[] empty=new PrintWriter[]{null};
 		for(int i=max+1;i<10;i++)
 			writers[i]=empty;
-		if((this.fileOutWriter[0]!=null) && (!WRITTEN.containsKey(fileOutWriter[0])))
+		if((this.fileOutWriter != null)
+		&& (this.fileOutWriter[0]!=null)
+		&& (!WRITTEN.containsKey(fileOutWriter[0])))
 			WRITTEN.put(fileOutWriter[0], new long[2]);
 		if(priority<0)
 			return writers[0][0];

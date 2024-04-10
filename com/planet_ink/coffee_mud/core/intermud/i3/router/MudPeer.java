@@ -159,7 +159,10 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 		{
 			Log.errOut("IRouterPeer","Unable to read /resources/ppeer."+getObjectId());
 		}
-		isRestoring=false;
+		finally
+		{
+			isRestoring=false;
+		}
 	}
 
 	/**
@@ -249,7 +252,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			muds.addAll(I3Router.getMudXPeers());
 			for(final RouterPeer peer : I3Router.getRouterPeers())
 			{
-				for(final I3MudX mud : peer.muds.values())
+				for(final I3MudX mud : peer.muds.getMudXList())
 					muds.add(mud);
 			}
 			for(int i=0;i<muds.size();i+=5)
@@ -303,7 +306,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			final RouterPeer[] peers = I3Router.getRouterPeers();
 			for(final RouterPeer peer : peers)
 			{
-				final I3MudX rmud = peer.muds.get(pkt.target_mud);
+				final I3MudX rmud = peer.muds.getMud(pkt.target_mud);
 				if((rmud != null)
 				&&(rmud.connected))
 				{
@@ -314,7 +317,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			}
 			for(final RouterPeer peer : peers)
 			{
-				final I3MudX rmud = peer.muds.get(pkt.target_mud);
+				final I3MudX rmud = peer.muds.getMud(pkt.target_mud);
 				if(rmud != null)
 				{
 					final IrnData dataPacket = new IrnData(peer.name, pkt);
@@ -564,7 +567,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			|| (I3Router.getRouterPassword() < 0))
 		&&(pkt.target_router.equalsIgnoreCase(I3Router.getRouterName())))
 		{
-			setMud(pkt.makeMud());
+			setMud(pkt.makeMud(this));
 			final Random r = new Random(System.currentTimeMillis());
 			for(final RouterPeer rpeer : I3Router.getRouterPeers())
 			{

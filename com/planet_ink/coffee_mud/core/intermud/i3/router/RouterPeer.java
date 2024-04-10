@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.ChannelList;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.MudList;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.MudXList;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
@@ -45,20 +46,20 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 {
 	private static final long serialVersionUID = 1L;
 
-	boolean				isRestoring	= false;
-	boolean				destructed	= false;
-	ChannelList			channels	= new ChannelList();
-	Map<String,I3MudX>	muds		= new Hashtable<String,I3MudX>();
-	DataInputStream		in			= null;
-	DataOutputStream	out			= null;
-	Socket				sock		= null;
-	SocketAddress		address		= null;
-	final long[]		timeoutCtr 	= new long[] {0};
-	int					password	= 0;
-	public long			lastPing	= System.currentTimeMillis();
-	public long			lastPong	= System.currentTimeMillis();
-	boolean				initialized	= false;
-	long				connectTime = System.currentTimeMillis();
+	public boolean			isRestoring	= false;
+	public boolean			destructed	= false;
+	public ChannelList		channels	= new ChannelList();
+	public MudXList			muds		= new MudXList();
+	public DataInputStream	in			= null;
+	public DataOutputStream	out			= null;
+	public Socket			sock		= null;
+	public SocketAddress	address		= null;
+	public final long[]		timeoutCtr 	= new long[] {0};
+	public int				password	= 0;
+	public long				lastPing	= System.currentTimeMillis();
+	public long				lastPong	= System.currentTimeMillis();
+	boolean					initialized	= false;
+	public long				connectTime = System.currentTimeMillis();
 
 	public RouterPeer(final String addr, final int p, final String nom)
 	{
@@ -68,10 +69,13 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 	public RouterPeer(final NameServer srvr, final NetPeer peer)
 	{
 		super(srvr.ip, srvr.port, srvr.name);
-		this.sock = peer.getSocket();
-		this.in = peer.getInputStream();
-		this.out = peer.getOutputStream();
-		peer.clearSocket();
+		if(peer != null)
+		{
+			this.sock = peer.getSocket();
+			this.in = peer.getInputStream();
+			this.out = peer.getOutputStream();
+			peer.clearSocket();
+		}
 	}
 
 	/**
@@ -100,10 +104,9 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 				{
 					channels=(ChannelList)newobj;
 					newobj=in.readObject();
-					if(newobj instanceof Map)
+					if(newobj instanceof MudXList)
 					{
-						@SuppressWarnings("unchecked")
-						final Map<String,I3MudX> mudlist = (Map<String,I3MudX>)newobj;
+						final MudXList mudlist = (MudXList)newobj;
 						muds=mudlist;
 					}
 				}
@@ -232,8 +235,9 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 	{
 		if(pkt.mudlist_id > I3Router.getMudListId())
 			I3Router.getRouter().muds.setMudListId(I3Router.getMudListId()+1);
+		this.muds.setMudListId(pkt.mudlist_id);
 		for(final I3MudX m : pkt.mudlist)
-			this.muds.put(m.mud_name, m);
+			this.muds.addMud(m);
 	}
 
 	private void receiveMudlistReq(final IrnMudlistRequest pkt)
@@ -261,6 +265,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 	{
 		if(pkt.chanlist_id > I3Router.getChannelListId());
 			I3Router.getRouter().channels.setChannelListId(pkt.chanlist_id);
+		this.channels.setChannelListId(pkt.chanlist_id);
 		for(final Channel c : pkt.chanlist)
 		{
 			if(c.modified == Persistent.DELETED)
@@ -515,20 +520,33 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 	 */
 	public void connect()
 	{
-		if(sock != null)
+		try
 		{
-			if(!sock.isConnected())
+			if(sock == null)
 			{
-				try
-				{
-					sock.connect(address);
-					in = new DataInputStream(sock.getInputStream());
-					out = new DataOutputStream(sock.getOutputStream());
-				}
-				catch (final IOException e)
-				{
-					e.printStackTrace();
-				}
+				sock = new Socket(ip,port);
+				address = sock.getRemoteSocketAddress();
+				in = new DataInputStream(sock.getInputStream());
+				out = new DataOutputStream(sock.getOutputStream());
+			}
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("RouterPeer","Failed to connect to "+address+":"+port+" ("+name+")");
+			sock = null;
+			return;
+		}
+		if(!sock.isConnected())
+		{
+			try
+			{
+				sock.connect(address);
+				in = new DataInputStream(sock.getInputStream());
+				out = new DataOutputStream(sock.getOutputStream());
+			}
+			catch (final IOException e)
+			{
+				e.printStackTrace();
 			}
 		}
 	}

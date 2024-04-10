@@ -109,7 +109,7 @@ public class MudlistPacket extends IrnPacket
 		str.append("([");
 		for(final I3MudX mud : mudlist)
 		{
-			str.append("\""+mud.mud_name+"\":[{");
+			str.append("\""+mud.mud_name+"\":({");
 			str.append(mud.connected?-1:0).append(","); //1
 			str.append("\"").append(mud.address).append("\",");//2
 			str.append(mud.player_port).append(","); //3
@@ -133,7 +133,7 @@ public class MudlistPacket extends IrnPacket
 					str.append("\"").append(key).append("\":\"").append(mud.other.get(key)).append("\",");
 				str.append("]),");
 			}
-			str.append("}],");
+			str.append("}),");
 		}
 		str.append("]),");
 		str.append("})");

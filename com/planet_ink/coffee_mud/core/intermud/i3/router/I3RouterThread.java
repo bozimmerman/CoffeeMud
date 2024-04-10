@@ -48,12 +48,14 @@ public class I3RouterThread extends Thread implements CMObject
 	protected AtomicInteger		count			= new AtomicInteger(1);
 	protected final NameServer  me;
 	protected final int			password;
-	protected boolean			running;
 	protected ListenThread		listen_thread	= null;
+	protected ThreadGroup		threadGroup		= null;
+
+	public	  boolean			running			= false;
 
 	protected final I3RConnections 			connMonitor = new I3RConnections();
-	protected final Map<String, RouterPeer>	peers		= new Hashtable<String, RouterPeer>();
 	protected final Map<String, NetPeer>	socks		= new Hashtable<String, NetPeer>();
+	protected final RouterPeerList			peers		= new RouterPeerList();
 	protected final MudPeerList				muds		= new MudPeerList();
 	protected final ChannelList				channels	= new ChannelList();
 
@@ -63,16 +65,33 @@ public class I3RouterThread extends Thread implements CMObject
 							 final int password)
 
 	{
-		super(Thread.currentThread().getThreadGroup(),
-			  "I3Router"+Thread.currentThread().getThreadGroup().getName().charAt(0));
+		super(initialThreadGroup(),
+			  "I3Router"+initialThreadGroup().getName().charAt(0));
 		me = new NameServer(router_ip,router_port,router_name);
 		this.password = password;
+	}
+
+	private static ThreadGroup initialThreadGroup()
+	{
+		final ThreadGroup grp = Thread.currentThread().getThreadGroup();
+		if(grp != null)
+			return grp;
+		return new ThreadGroup("0-I3R");
+	}
+
+	public ThreadGroup threadGroup()
+	{
+		if(super.getThreadGroup() != null)
+			return super.getThreadGroup();
+		if(threadGroup == null)
+			threadGroup = initialThreadGroup();
+		return threadGroup;
 	}
 
 	@Override
 	public String ID()
 	{
-		return  "I3Router"+getThreadGroup().getName().charAt(0);
+		return  "I3Router"+threadGroup().getName().charAt(0);
 	}
 
 	@Override
@@ -145,16 +164,14 @@ public class I3RouterThread extends Thread implements CMObject
 	{
 		try
 		{
-			final RouterPeer old = peers.get(ob.name);
+			final RouterPeer old = peers.getRouter(ob.name);
 			if((old != null) && (old != ob))
 			{
 				if(!old.isConnected())
 					old.destruct();
 				return old;
 			}
-			if(peers.containsKey(ob.name))
-				peers.get(ob.name).destruct();
-			peers.put(ob.name, ob);
+			peers.addRouter(ob);
 		}
 		catch( final Exception e )
 		{
@@ -176,12 +193,9 @@ public class I3RouterThread extends Thread implements CMObject
 
 	protected synchronized RouterPeer findRouterPeer(final String name)
 	{
-		if( peers.containsKey(name) )
-		{
-			final RouterPeer ob = peers.get(name);
-			if(!ob.getDestructed() )
-				return ob;
-		}
+		final RouterPeer ob = peers.getRouter(name);
+		if((ob != null) && (!ob.getDestructed()) )
+			return ob;
 		return null;
 	}
 
@@ -211,10 +225,28 @@ public class I3RouterThread extends Thread implements CMObject
 
 	protected synchronized void removeRouterPeer(final RouterPeer ob)
 	{
-		final String id = ob.getObjectId();
+		peers.removeRouter(ob);
+	}
 
-		if( peers.containsKey(id) )
-			peers.remove(id);
+	public void initializePeer(final RouterPeer peer)
+	{
+		try
+		{
+			final IrnStartupRequest req1 = new IrnStartupRequest(peer.name);
+			req1.sender_password = this.password;
+			req1.target_password = peer.password;
+			req1.send();
+			final IrnMudlistRequest req2 = new IrnMudlistRequest(peer.name);
+			req2.mudlist_id = peer.muds.getMudListId();
+			req2.send();
+			final IrnChanlistRequest req3 = new IrnChanlistRequest(peer.name);
+			req3.chanlist_id = peer.channels.getChannelListId();
+			req3.send();
+		}
+		catch (final InvalidPacketException e)
+		{
+			Log.errOut(e);
+		}
 	}
 
 	/**
@@ -235,10 +267,8 @@ public class I3RouterThread extends Thread implements CMObject
 			return;
 		}
 		boot_time = new java.util.Date();
+		running = true; // must be before start
 		super.start();
-		// Load the support classes into objects, since they
-		// get thread time.
-
 		try
 		{
 			listen_thread = new ListenThread(me.port);
@@ -249,14 +279,30 @@ public class I3RouterThread extends Thread implements CMObject
 			return;
 		}
 
-
 		Log.sysOut(ID(), "InterMud3 Router started on port "+me.port);
-		running = true;
 
-
-		//TODO: restore channels?
-		//TODO: restore routers
-		//TODO: connect to other routers
+		try
+		{
+			channels.restore();
+		}
+		catch (final PersistenceException e)
+		{
+			Log.errOut(e);
+		}
+		try
+		{
+			peers.restore();
+		}
+		catch (final PersistenceException e)
+		{
+			Log.errOut(e);
+		}
+		for(final RouterPeer peer : peers.getRouters().values())
+		{
+			peer.connect();
+			if(peer.isConnected())
+				initializePeer(peer);
+		}
 	}
 
 	@Override
@@ -275,6 +321,9 @@ public class I3RouterThread extends Thread implements CMObject
 				{
 					Log.errOut(ID(),e);
 				}
+				//TODO: periodically try reconnecting to peers
+				//TODO: periodically save stuff!
+
 				// Check for pending object events
 				ServerObject[] things;
 				synchronized( this )
@@ -299,6 +348,8 @@ public class I3RouterThread extends Thread implements CMObject
 				}
 			}
 		}
+		Log.sysOut("I3RouterThread shut down.");
+		running=false;
 	}
 
 	protected Date getBootTime()
@@ -353,8 +404,8 @@ public class I3RouterThread extends Thread implements CMObject
 
 	protected synchronized RouterPeer[] getPeers()
 	{
-		final RouterPeer[] tmp = new RouterPeer[peers.size()];
-		final List<ServerObject> objsList = new XArrayList<ServerObject>(peers.values());
+		final RouterPeer[] tmp = new RouterPeer[peers.getRouters().size()];
+		final List<ServerObject> objsList = new XArrayList<ServerObject>(peers.getRouters().values());
 		return objsList.toArray(tmp);
 	}
 
@@ -367,9 +418,9 @@ public class I3RouterThread extends Thread implements CMObject
 
 	protected synchronized ServerObject[] getObjects()
 	{
-		final MudPeer[] tmp = new MudPeer[muds.getMuds().size() + peers.size()];
+		final ServerObject[] tmp = new ServerObject[muds.getMuds().size() + peers.getRouters().size()];
 		final List<ServerObject> objsList = new XArrayList<ServerObject>(muds.getMuds().values());
-		objsList.addAll(peers.values());
+		objsList.addAll(peers.getRouters().values());
 		return objsList.toArray(tmp);
 	}
 }

@@ -1,6 +1,9 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.entities;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistenceException;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistentPeer;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -18,6 +21,10 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Hashtable;
 import java.util.Random;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
@@ -35,11 +42,14 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
-public class ChannelList implements Serializable
+public class ChannelList implements Serializable, PersistentPeer
 {
 	public static final long serialVersionUID=0;
 	private int id;
 	private final Hashtable<String,Channel> list;
+
+	private boolean isRestoring = false;
+	private static final String restoreFilename = "resources/cpeers.I3Router";
 
 	public ChannelList()
 	{
@@ -94,5 +104,75 @@ public class ChannelList implements Serializable
 	public Hashtable<String,Channel> getChannels()
 	{
 		return list;
+	}
+
+	@Override
+	public void restore() throws PersistenceException
+	{
+		if(isRestoring)
+			return;
+		isRestoring = true;
+		try
+		{
+			final CMFile F=new CMFile(restoreFilename,null);
+			if(F.exists())
+			{
+				try(final ObjectInputStream din = new ObjectInputStream(new ByteArrayInputStream(F.raw())))
+				{
+					this.id = din.readInt();
+					final int numEntries = din.readInt();
+					for(int i=0;i<numEntries;i++)
+					{
+						final Channel cs = (Channel)din.readObject();
+						this.list.put(cs.channel, cs);
+					}
+				}
+			}
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("NameServerList",e);
+		}
+		finally
+		{
+			isRestoring = false;
+		}
+	}
+
+	@Override
+	public void save() throws PersistenceException
+	{
+		try
+		{
+			final CMFile F=new CMFile(restoreFilename,null);
+			if(!F.exists())
+			{
+				if(!F.getParentFile().exists())
+					F.getParentFile().mkdirs();
+			}
+			try(ObjectOutputStream out = new ObjectOutputStream(new ByteArrayOutputStream()))
+			{
+				out.write(id);
+				out.write(list.size());
+				for(final Channel ns : list.values())
+					if(ns.channel.length()>0)
+						out.writeObject(ns);
+			}
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("NameServerList",e);
+		}
+	}
+
+	@Override
+	public void setPersistent(final Persistent ob)
+	{
+	}
+
+	@Override
+	public boolean isRestoring()
+	{
+		return isRestoring;
 	}
 }

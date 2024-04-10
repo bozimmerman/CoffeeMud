@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core.intermud.i3.packets;
 import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3Mud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
+import com.planet_ink.coffee_mud.core.intermud.i3.net.NetPeer;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -66,7 +67,6 @@ public class StartupReq3 extends IrnPacket
 	public StartupReq3(final Vector<?> v)
 	{
 		super(v);
-		super.sender_router = I3Server.getMudName();
 		type = Packet.PacketType.STARTUP_REQ_3;
 		try
 		{
@@ -155,10 +155,13 @@ public class StartupReq3 extends IrnPacket
 			this.other.putAll(other);
 	}
 
-	public I3MudX makeMud()
+	public I3MudX makeMud(final NetPeer peer)
 	{
 		final I3MudX mud = new I3MudX(this.sender_router);
-		//mud.address
+		final String remoteAddr = peer.getSocket().getRemoteSocketAddress().toString();
+		final int x = remoteAddr.indexOf(':');
+		mud.address = (x>0) ? remoteAddr.substring(0,x) : remoteAddr;
+		mud.address = null;
 		mud.admin_email = this.adminEmail;
 		mud.base_mudlib = this.baseLib;
 		mud.channelListId = this.channelListId;
@@ -193,7 +196,8 @@ public class StartupReq3 extends IrnPacket
 				target_router + "\",0," + password +
 				 "," + mudListId + "," + channelListId + "," + port + "," + tcpPort +"," +
 				 udpPort+",\""+lib+"\",\""+baseLib+"\",\""+driver+"\",\""+mtype+"\"," +
-				 "\""+mudState+"\",\""+adminEmail+"\",([");
+				 "\""+mudState+"\",\""+adminEmail+"\",");
+		str.append("([");
 		if((this.services != null)&&(this.services.size()>0))
 		{
 			for(final String key : this.services.keySet())

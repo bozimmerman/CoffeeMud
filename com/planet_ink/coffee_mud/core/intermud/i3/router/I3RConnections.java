@@ -10,6 +10,7 @@ import java.util.Random;
 import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.collections.XVector;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.ListenThread;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.NetPeer;
@@ -112,6 +113,7 @@ public class I3RConnections implements ServerObject
 									port = CMath.s_int(remoteAddr.substring(x+1));
 									remoteAddr = remoteAddr.substring(0,x);
 								}
+								Log.sysOut("Accepting peer "+ipkt.sender_router);
 								final NameServer ns = new NameServer(remoteAddr,port,ipkt.sender_router);
 								final RouterPeer rpeer = new RouterPeer(ns, peer);
 								rpeer.password = ipkt.sender_password;
@@ -126,14 +128,19 @@ public class I3RConnections implements ServerObject
 						if(pkt.getType() == Packet.PacketType.STARTUP_REQ_3)
 						{
 							final StartupReq3 mpkt = (StartupReq3)pkt;
-							if(((mpkt.password == I3Router.getRouterPassword())
-								|| (I3Router.getRouterPassword() < 0))
+							if( true
+							//&&((mpkt.password == I3Router.getRouterPassword()) // let all clients enter
+							//	|| (I3Router.getRouterPassword() < 0))
 							&&(mpkt.target_router.equalsIgnoreCase(I3Router.getRouterName())))
 							{
+								final I3MudX mudx = mpkt.makeMud(peer);
+								Log.sysOut("Accepting mud "+mpkt.sender_router);
 								final MudPeer newMud = new MudPeer(mpkt.sender_router, peer);
-								newMud.setMud(mpkt.makeMud());
+								newMud.setMud(mudx);
 								I3Router.addObject(newMud);
 							}
+							else
+								peer.close();
 							i.remove();
 						}
 						else

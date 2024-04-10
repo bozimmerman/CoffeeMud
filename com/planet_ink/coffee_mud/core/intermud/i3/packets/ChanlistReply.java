@@ -80,10 +80,10 @@ public class ChanlistReply extends IrnPacket
 		str.append("([");
 		for(final Channel chan : chanlist)
 		{
-			str.append("\""+chan.channel+"\":[{");
+			str.append("\""+chan.channel+"\":({");
 			str.append("\"").append(chan.owner).append("\",");//0
 			str.append(chan.type).append(","); //1
-			str.append("}],");
+			str.append("}),");
 		}
 		str.append("]),");
 		str.append("})");

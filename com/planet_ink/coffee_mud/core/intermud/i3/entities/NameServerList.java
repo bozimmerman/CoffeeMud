@@ -26,6 +26,11 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
@@ -43,13 +48,16 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
-public class NameServerList implements Serializable
+public class NameServerList implements Serializable, PersistentPeer
 {
 	public static final long serialVersionUID=0;
 
 	private int id;
 	private final Hashtable<String,NameServer> list;
 	private int modified;
+
+	private boolean isRestoring = false;
+	private static final String restoreFilename = "resources/npeers.I3Router";
 
 	public NameServerList()
 	{
@@ -156,6 +164,79 @@ public class NameServerList implements Serializable
 	public  Iterator<NameServer> getNameServers()
 	{
 		return new FilteredIterator<NameServer>(list.values().iterator(), nmFilter);
+	}
+
+	@Override
+	public void restore() throws PersistenceException
+	{
+		if(isRestoring)
+			return;
+		isRestoring = true;
+		try
+		{
+			final CMFile F=new CMFile(restoreFilename,null);
+			if(F.exists())
+			{
+				try(final ObjectInputStream din = new ObjectInputStream(new ByteArrayInputStream(F.raw())))
+				{
+					this.id = din.readInt();
+					final int numEntries = din.readInt();
+					for(int i=0;i<numEntries;i++)
+					{
+						final NameServer ns = (NameServer)din.readObject();
+						this.list.put(ns.name, ns);
+					}
+				}
+			}
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("NameServerList",e);
+		}
+		finally
+		{
+			isRestoring = false;
+		}
+	}
+
+	@Override
+	public void save() throws PersistenceException
+	{
+		try
+		{
+			final CMFile F=new CMFile(restoreFilename,null);
+			if(!F.exists())
+			{
+				if(!F.getParentFile().exists())
+					F.getParentFile().mkdirs();
+			}
+			final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			try(ObjectOutputStream out = new ObjectOutputStream(bout))
+			{
+				out.write(id);
+				out.write(list.size());
+				for(final NameServer ns : list.values())
+					if(ns.name.length()>0)
+						out.writeObject(ns);
+			}
+			bout.close();
+			F.saveRaw(bout.toByteArray());
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("NameServerList",e);
+		}
+	}
+
+	@Override
+	public void setPersistent(final Persistent ob)
+	{
+	}
+
+	@Override
+	public boolean isRestoring()
+	{
+		return isRestoring;
 	}
 }
 
