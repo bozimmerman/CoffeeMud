@@ -60,10 +60,10 @@ import java.util.concurrent.TimeUnit;
  * @see com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistentPeer
  */
 
-public class Intermud implements Runnable, Persistent, Serializable
+public class I3Client implements Runnable, Persistent, Serializable
 {
 	public static final long serialVersionUID=0;
-	static private Intermud thread = null;
+	static private I3Client thread = null;
 
 	/**
 	 * Sends a packet to the router.  The packet must
@@ -98,7 +98,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 		{
 			return;
 		}
-		thread = new Intermud(routersList, adminEmail, imud, peer);
+		thread = new I3Client(routersList, adminEmail, imud, peer);
 	}
 
 	/**
@@ -240,7 +240,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 
 	public Hashtable<String,String>	banned;
 
-	private Intermud(final String[] routersList, final String adminEmail,
+	private I3Client(final String[] routersList, final String adminEmail,
 					 final ImudServices imud, final PersistentPeer p)
 	{
 		super();
@@ -349,7 +349,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 							final long ellapsedTime = System.currentTimeMillis()-imud.getLastPacketReceivedTime();
 							if(ellapsedTime>(60  * 60 * 1000)) // one hour
 							{
-								Log.errOut("I3SaveTick","No I3 response received in "+CMLib.time().date2EllapsedTime(ellapsedTime, TimeUnit.MILLISECONDS, false)+". Connected="+Intermud.isConnected());
+								Log.errOut("I3SaveTick","No I3 response received in "+CMLib.time().date2EllapsedTime(ellapsedTime, TimeUnit.MILLISECONDS, false)+". Connected="+I3Client.isConnected());
 								CMLib.threads().executeRunnable(new Runnable()
 								{
 									@Override
@@ -627,7 +627,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 				final long ellapsedTime = System.currentTimeMillis() - intermud.getLastPacketReceivedTime();
 				if(ellapsedTime>(60  * 60 * 1000)) // one hour
 				{
-					Log.errOut("Intermud","No I3 Ping received in "+CMLib.time().date2EllapsedTime(ellapsedTime, TimeUnit.SECONDS, false)+". Connected="+Intermud.isConnected());
+					Log.errOut("Intermud","No I3 Ping received in "+CMLib.time().date2EllapsedTime(ellapsedTime, TimeUnit.SECONDS, false)+". Connected="+I3Client.isConnected());
 					CMLib.threads().executeRunnable(new Runnable()
 					{
 						@Override

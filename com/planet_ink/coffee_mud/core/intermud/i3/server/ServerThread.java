@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.ImudServices;
-import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
+import com.planet_ink.coffee_mud.core.intermud.i3.I3Client;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -203,7 +203,7 @@ public class ServerThread implements Tickable
 
 		try
 		{
-			Intermud.setup(routersList, adminEmail, intermuds,
+			I3Client.setup(routersList, adminEmail, intermuds,
 						   (PersistentPeer)Class.forName("com.planet_ink.coffee_mud.core.intermud.i3.IMudPeer").getDeclaredConstructor().newInstance());
 		}
 		catch( final Exception e )
@@ -354,7 +354,7 @@ public class ServerThread implements Tickable
 	public void shutdown()
 	{
 		running=false;
-		Intermud.shutdown();
+		I3Client.shutdown();
 		if(listen_thread!=null)
 		{
 			listen_thread.close();

@@ -3,7 +3,7 @@ import com.planet_ink.coffee_mud.core.intermud.imc2.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
-import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
+import com.planet_ink.coffee_mud.core.intermud.i3.I3Client;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.ChannelList;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3Mud;
@@ -145,10 +145,10 @@ public class IMudClient implements I3Interface
 			mob.tell(L("You must specify a mud name."));
 			return;
 		}
-		if(i3online()&&Intermud.isAPossibleMUDName(mudName))
+		if(i3online()&&I3Client.isAPossibleMUDName(mudName))
 		{
-			mudName=Intermud.translateName(mudName);
-			if(!Intermud.isUp(mudName))
+			mudName=I3Client.translateName(mudName);
+			if(!I3Client.isUp(mudName))
 			{
 				mob.tell(L("@x1 is not available.",mudName));
 				return;
@@ -180,7 +180,7 @@ public class IMudClient implements I3Interface
 	@Override
 	public boolean i3online()
 	{
-		return Intermud.isConnected() && (!CMSecurity.isDisabled(DisFlag.I3));
+		return I3Client.isConnected() && (!CMSecurity.isDisabled(DisFlag.I3));
 	}
 
 	@Override
@@ -214,18 +214,18 @@ public class IMudClient implements I3Interface
 			mob.tell(L("You must specify a mud name."));
 			return;
 		}
-		if((channel==null)||(channel.length()==0)||(Intermud.getRemoteChannel(channel).length()==0))
+		if((channel==null)||(channel.length()==0)||(I3Client.getRemoteChannel(channel).length()==0))
 		{
 			mob.tell(L("You must specify an InterMud 3 channel name."));
 			return;
 		}
-		if(!Intermud.isAPossibleMUDName(mudName))
+		if(!I3Client.isAPossibleMUDName(mudName))
 		{
 			mob.tell(L("'@x1' is an unknown mud.",mudName));
 			return;
 		}
-		mudName=Intermud.translateName(mudName);
-		if(!Intermud.isUp(mudName))
+		mudName=I3Client.translateName(mudName);
+		if(!I3Client.isUp(mudName))
 		{
 			mob.tell(L("@x1 is not available.",mudName));
 			return;
@@ -233,7 +233,7 @@ public class IMudClient implements I3Interface
 		final ChannelWhoRequest ck=new ChannelWhoRequest();
 		ck.sender_name=mob.Name();
 		ck.target_mud=mudName;
-		ck.channel=channel;
+		ck.channel= I3Client.getRemoteChannel(channel);
 		try
 		{
 			ck.send();
@@ -249,7 +249,7 @@ public class IMudClient implements I3Interface
 	{
 		if((mob==null)||(!i3online()))
 			return;
-		if((channel==null)||(channel.length()==0)||(Intermud.getLocalChannel(channel).length()==0))
+		if((channel==null)||(channel.length()==0)||(I3Client.getLocalChannel(channel).length()==0))
 		{
 			mob.tell(L("You must specify an existing channel to add it to the i3 network."));
 			return;
@@ -257,7 +257,7 @@ public class IMudClient implements I3Interface
 
 		final ChannelAdd ck=new ChannelAdd();
 		ck.sender_name=mob.Name();
-		ck.target_mud=Intermud.getNameServer().name;
+		ck.target_mud=I3Client.getNameServer().name;
 		ck.channel=channel;
 		try
 		{
@@ -279,17 +279,17 @@ public class IMudClient implements I3Interface
 			mob.tell(L("You must specify a channel name listed in your INI file."));
 			return;
 		}
-		if(Intermud.getLocalChannel(channel).length()==0)
+		if(I3Client.getLocalChannel(channel).length()==0)
 		{
-			if(Intermud.registerFakeChannel(channel).length()>0)
+			if(I3Client.registerFakeChannel(channel).length()>0)
 				mob.tell(L("Channel was not officially registered."));
 			else
 				mob.tell(L("Channel listen failed."));
 		}
 		final ChannelListen ck=new ChannelListen();
 		ck.sender_name=mob.Name();
-		ck.target_mud=Intermud.getNameServer().name;
-		ck.channel=channel;
+		ck.target_mud=I3Client.getNameServer().name;
+		ck.channel= I3Client.getRemoteChannel(channel);
 		ck.onoff=1;
 		try
 		{
@@ -308,17 +308,17 @@ public class IMudClient implements I3Interface
 			return;
 		if((channel==null)
 		   ||(channel.length()==0)
-		   ||(Intermud.getLocalChannel(channel).length()==0))
+		   ||(I3Client.getLocalChannel(channel).length()==0))
 		{
 			mob.tell(L("You must specify an actual channel name."));
 			return;
 		}
-		if(Intermud.removeFakeChannel(channel).length()>0)
+		if(I3Client.removeFakeChannel(channel).length()>0)
 			mob.tell(L("Unofficial channel closed."));
 
 		final ChannelListen ck=new ChannelListen();
 		ck.sender_name=mob.Name();
-		ck.target_mud=Intermud.getNameServer().name;
+		ck.target_mud=I3Client.getNameServer().name;
 		ck.channel=channel;
 		ck.onoff=0;
 		try
@@ -336,15 +336,16 @@ public class IMudClient implements I3Interface
 	{
 		if((mob==null)||(!i3online()))
 			return;
-		if((channel==null)||(channel.length()==0)||(Intermud.getRemoteChannel(channel).length()==0))
+		if((channel==null)||(channel.length()==0)||(I3Client.getRemoteChannel(channel).length()==0))
 		{
 			mob.tell(L("You must specify a valid InterMud 3 channel name."));
 			return;
 		}
 		final ChannelDelete ck=new ChannelDelete();
 		ck.sender_name=mob.Name();
-		ck.target_mud=Intermud.getNameServer().name;
+		ck.target_mud=I3Client.getNameServer().name;
 		ck.channel=channel;
+		ck.channel = I3Client.getRemoteChannel(ck.channel);
 		try
 		{
 			ck.send();
@@ -377,10 +378,10 @@ public class IMudClient implements I3Interface
 			mob.tell(L("You must enter a message!"));
 			return;
 		}
-		if(i3online()&&Intermud.isAPossibleMUDName(mudName))
+		if(i3online()&&I3Client.isAPossibleMUDName(mudName))
 		{
-			mudName=Intermud.translateName(mudName);
-			if(!Intermud.isUp(mudName))
+			mudName=I3Client.translateName(mudName);
+			if(!I3Client.isUp(mudName))
 			{
 				mob.tell(L("@x1 is not available.",mudName));
 				return;
@@ -431,7 +432,7 @@ public class IMudClient implements I3Interface
 
 	public String getI3ChannelName(final String localChannelName)
 	{
-		final String fixedChannel = Intermud.getRemoteChannel(localChannelName);
+		final String fixedChannel = I3Client.getRemoteChannel(localChannelName);
 		if(((fixedChannel != null)&&(fixedChannel.length()>0)))
 			return fixedChannel;
 		else
@@ -456,7 +457,7 @@ public class IMudClient implements I3Interface
 			return;
 		}
 		if(i3online()
-		&&Intermud.getRemoteChannel(channelName).length()>0)
+		&&I3Client.getRemoteChannel(channelName).length()>0)
 		{
 			final ChannelPacket ck;
 			if((message.startsWith(":")||message.startsWith(","))
@@ -488,13 +489,13 @@ public class IMudClient implements I3Interface
 							mob.tell(L("You must specify someone to emote to."));
 							return;
 						}
-						if(!Intermud.isAPossibleMUDName(mudName))
+						if(!I3Client.isAPossibleMUDName(mudName))
 						{
 							mob.tell(L("'@x1' is an unknown mud.",mudName));
 							return;
 						}
-						mudName=Intermud.translateName(mudName);
-						if(!Intermud.isUp(mudName))
+						mudName=I3Client.translateName(mudName);
+						if(!I3Client.isUp(mudName))
 						{
 							mob.tell(L("@x1 is not available.",mudName));
 							return;
@@ -646,7 +647,7 @@ public class IMudClient implements I3Interface
 		{
 			final LocateQueryPacket ck=new LocateQueryPacket();
 			ck.sender_name=mob.Name();
-			ck.target_mud=Intermud.getNameServer().name;
+			ck.target_mud=I3Client.getNameServer().name;
 			ck.user_name=mobName;
 			try
 			{
@@ -732,7 +733,7 @@ public class IMudClient implements I3Interface
 
 	public List<I3Mud> mudFinder(final String parms)
 	{
-		final MudList list=Intermud.getAllMudsList();
+		final MudList list=I3Client.getAllMudsList();
 		if(list==null)
 			return null;
 		final Map<String,I3Mud> l=list.getMuds();
@@ -852,7 +853,7 @@ public class IMudClient implements I3Interface
 		final Vector<I3Mud> list = new Vector<I3Mud>();
 		if(!i3online())
 			return list;
-		final MudList mudList=Intermud.getAllMudsList();
+		final MudList mudList=I3Client.getAllMudsList();
 		if(mudList!=null)
 		{
 			for(final I3Mud m : mudList.getMuds().values())
@@ -923,7 +924,7 @@ public class IMudClient implements I3Interface
 		if(mob.isMonster())
 			return;
 		final StringBuffer buf=new StringBuffer("\n\rI3 Channels List:\n\r");
-		final ChannelList list=Intermud.getAllChannelList();
+		final ChannelList list=I3Client.getAllChannelList();
 		if(list!=null)
 		{
 			final Hashtable<String,Channel> l=list.getChannels();
@@ -992,7 +993,7 @@ public class IMudClient implements I3Interface
 	{
 		if(!i3online())
 			return false;
-		final String remote=Intermud.getRemoteChannel(channelName);
+		final String remote=I3Client.getRemoteChannel(channelName);
 		if(remote.length()==0)
 			return false;
 		return true;

@@ -1,6 +1,4 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
-import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -52,7 +50,6 @@ public class ChannelDelete extends MudPacket
 		{
 			type = Packet.PacketType.CHANNEL_REMOVE;
 			channel = (String)v.elementAt(6);
-			channel = Intermud.getLocalChannel(channel);
 		}
 		catch( final ClassCastException e )
 		{
@@ -75,7 +72,6 @@ public class ChannelDelete extends MudPacket
 		{
 			throw new InvalidPacketException();
 		}
-		channel = Intermud.getRemoteChannel(channel);
 		super.send();
 	}
 

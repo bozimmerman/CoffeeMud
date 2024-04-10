@@ -2,7 +2,7 @@ package com.planet_ink.coffee_mud.core.intermud.i3.packets;
 
 import java.util.Vector;
 
-import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
+import com.planet_ink.coffee_mud.core.intermud.i3.I3Client;
 
 /**
  * Copyright (c) 1996 George Reese

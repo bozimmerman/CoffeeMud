@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
+import com.planet_ink.coffee_mud.core.intermud.i3.I3Client;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -89,10 +89,10 @@ public class WhoIs extends Who
 			{
 				String mudName=mobName.substring(x+1);
 				mobName=mobName.substring(0,x);
-				if(Intermud.isAPossibleMUDName(mudName))
+				if(I3Client.isAPossibleMUDName(mudName))
 				{
-					mudName=Intermud.translateName(mudName);
-					if(!Intermud.isUp(mudName))
+					mudName=I3Client.translateName(mudName);
+					if(!I3Client.isUp(mudName))
 					{
 						mob.tell(L("@x1 is not available.",mudName));
 						return false;

@@ -258,7 +258,7 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final ChannelPacket ck=(ChannelPacket)packet;
 				String channelName=ck.channel;
-				channelName = Intermud.getLocalChannel(channelName);
+				channelName = I3Client.getLocalChannel(channelName);
 				CMMsg msg=null;
 
 				if((ck.sender_mud!=null)&&(ck.sender_mud.equalsIgnoreCase(getMudName())))
@@ -535,7 +535,8 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 				wkr.target_name=wk.sender_name;
 				wkr.target_mud=wk.sender_mud;
 				wkr.channel=wk.channel;
-				final int channelInt=CMLib.channels().getChannelIndex(wk.channel);
+				final String locChannel = I3Client.getRemoteChannel(wk.channel);
+				final int channelInt=CMLib.channels().getChannelIndex(locChannel);
 				final Vector<String> whoV=new Vector<String>();
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{

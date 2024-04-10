@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet.PacketType;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
-import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
+import com.planet_ink.coffee_mud.core.intermud.i3.I3Client;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
@@ -56,7 +56,7 @@ public class MudPacket extends Packet
 	{
 		super();
 		sender_mud = I3Server.getMudName();
-		final NameServer ns = Intermud.getNameServer();
+		final NameServer ns = I3Client.getNameServer();
 		if(ns != null)
 			target_name = ns.name;
 	}
@@ -122,8 +122,8 @@ public class MudPacket extends Packet
 		{
 			throw new InvalidPacketException();
 		}
-		if(Intermud.isConnected())
-			Intermud.sendPacket(this);
+		if(I3Client.isConnected())
+			I3Client.sendPacket(this);
 		if(I3Router.isConnected())
 			I3Router.writePacket(this);
 	}

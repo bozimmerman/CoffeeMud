@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.router;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.I3Exception;
-import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
+import com.planet_ink.coffee_mud.core.intermud.i3.I3Client;
 import com.planet_ink.coffee_mud.core.intermud.i3.LPCData;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
@@ -351,8 +351,8 @@ public class I3Router
 	{
 		if(routerThread != null)
 			return routerThread.getRouterName();
-		if(Intermud.getNameServer() != null)
-			return Intermud.getNameServer().name;
+		if(I3Client.getNameServer() != null)
+			return I3Client.getNameServer().name;
 		return "";
 	}
 
@@ -360,8 +360,8 @@ public class I3Router
 	{
 		if(routerThread != null)
 			return routerThread.getPort();
-		if(Intermud.getNameServer() != null)
-			return Intermud.getNameServer().port;
+		if(I3Client.getNameServer() != null)
+			return I3Client.getNameServer().port;
 		return 0;
 	}
 
