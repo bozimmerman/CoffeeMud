@@ -248,6 +248,8 @@ public class I3RouterThread extends Thread implements CMObject
 			Log.errOut(ID(),e);
 			return;
 		}
+
+
 		Log.sysOut(ID(), "InterMud3 Router started on port "+me.port);
 		running = true;
 

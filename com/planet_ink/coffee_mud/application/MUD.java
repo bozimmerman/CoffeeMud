@@ -2032,6 +2032,15 @@ public class MUD extends Thread implements MudHost
 			return;
 		}
 		Log.shareWith(MudHost.MAIN_HOST);
+		if(page.containsKey("MUD_NAME"))
+		{
+			final String str = page.getStr("MUD_NAME");
+			if(str.trim().length()>0)
+			{
+				nameID = str;
+				nameID = CMStrings.replaceAll(nameID, "\"", "`");
+			}
+		}
 		Log.instance().configureLogFile("mud",page.getInt("NUMLOGS"));
 		Log.instance().configureLog(Log.Type.info, page.getStr("SYSMSGS"));
 		Log.instance().configureLog(Log.Type.error, page.getStr("ERRMSGS"));
