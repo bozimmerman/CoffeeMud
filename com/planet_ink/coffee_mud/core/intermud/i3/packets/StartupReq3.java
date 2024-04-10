@@ -158,10 +158,11 @@ public class StartupReq3 extends IrnPacket
 	public I3MudX makeMud(final NetPeer peer)
 	{
 		final I3MudX mud = new I3MudX(this.sender_router);
-		final String remoteAddr = peer.getSocket().getRemoteSocketAddress().toString();
+		String remoteAddr = peer.getSocket().getRemoteSocketAddress().toString();
+		if(remoteAddr.startsWith("/"))
+			remoteAddr=remoteAddr.substring(1);
 		final int x = remoteAddr.indexOf(':');
 		mud.address = (x>0) ? remoteAddr.substring(0,x) : remoteAddr;
-		mud.address = null;
 		mud.admin_email = this.adminEmail;
 		mud.base_mudlib = this.baseLib;
 		mud.channelListId = this.channelListId;

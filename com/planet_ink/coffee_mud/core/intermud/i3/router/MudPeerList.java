@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -26,8 +27,11 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Random;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.Socket;
 
 /**
  * Copyright (c) 1996 George Reese
@@ -153,7 +157,32 @@ public class MudPeerList implements Serializable, PersistentPeer
 		isRestoring = true;
 		try
 		{
-			//final CMFile F=new CMFile(restoreFilename,null);
+			final CMFile F=new CMFile(restoreFilename,null);
+			if(F.exists())
+			{
+				try(final ObjectInputStream din = new ObjectInputStream(new ByteArrayInputStream(F.raw())))
+				{
+					if(din.available()>0)
+					{
+						this.id = din.readInt();
+						final int numEntries = din.readInt();
+						for(int i=0;i<numEntries;i++)
+						{
+							final I3MudX m = (I3MudX)din.readObject();
+							final MudPeer rpeer = new MudPeer(m.mud_name,(Socket)null);
+							rpeer.mud = m;
+							m.state = 0; // mark as down
+							m.connected = false; // mark as down
+							m.modified = Persistent.MODIFIED;
+							this.list.put(m.mud_name, rpeer);
+						}
+					}
+				}
+			}
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("RouterPeerList","Unable to read "+restoreFilename);
 		}
 		finally
 		{
@@ -168,7 +197,21 @@ public class MudPeerList implements Serializable, PersistentPeer
 		{
 			final CMFile F=new CMFile(restoreFilename,null);
 			if(!F.exists())
-				return;
+			{
+				if(!F.getParentFile().exists())
+					F.getParentFile().mkdirs();
+			}
+			final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			try(ObjectOutputStream out = new ObjectOutputStream(bout))
+			{
+				out.writeInt(id);
+				out.writeInt(list.size());
+				for(final MudPeer p : list.values())
+					if(p.mud != null)
+						out.writeObject(p.mud);
+			}
+			bout.close();
+			F.saveRaw(bout.toByteArray());
 		}
 		catch(final Exception e)
 		{

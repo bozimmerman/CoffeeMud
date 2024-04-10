@@ -254,6 +254,7 @@ public class I3Router
 				{
 					if((System.currentTimeMillis() - currto)>5000)
 					{
+						Log.errOut("I3R: 390-Eating"+istream.available());
 						istream.skipBytes(istream.available());
 						timeout[0] = 0;
 					}

@@ -91,19 +91,26 @@ public class Log extends java.util.logging.Logger
 	 */
 	public static enum Type
 	{
-		error,
-		help,
-		debug,
-		info,
-		warning,
-		kills,
-		combat,
-		access;
+		error("ERRMSGS"),
+		help("HLPMSGS"),
+		debug("DBGMSGS"),
+		info("SYSMSGS"),
+		warning("WRNMSGS"),
+		kills("KILLMSGS"),
+		combat("CBTMSGS"),
+		access("ACCMSGS");
 		final String sixChars;
+		final String logCode;
 
-		private Type()
+		private Type(final String code)
 		{
+			logCode = code;
 			sixChars=(this.toString()+SPACES).substring(0,5)+" ";
+		}
+
+		public final String getLogCode()
+		{
+			return logCode;
 		}
 
 		public final String getSixChars()

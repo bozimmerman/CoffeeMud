@@ -1975,9 +1975,10 @@ public class MUD extends Thread implements MudHost
 
 		if(iniFiles.size()==0)
 			iniFiles.addElement("coffeemud.ini");
+		String iniFile=iniFiles.firstElement();
+		final CMProps page=CMProps.loadPropPage("//"+iniFile);
 		if((nameID.length()==0)||(nameID.equalsIgnoreCase( "CoffeeMud" ))||nameID.equalsIgnoreCase("Your Muds Name"))
 		{
-			nameID="Unnamed_CoffeeMUD#";
 			long idNumber=new Random(System.currentTimeMillis()).nextLong();
 			try
 			{
@@ -2007,24 +2008,25 @@ public class MUD extends Thread implements MudHost
 			if(idNumber<0)
 				idNumber=idNumber*-1;
 			nameID=nameID+idNumber;
-			System.err.println("*** Please give your mud a unique name in mud.bat or mudUNIX.sh!! ***");
+			if((page != null)
+			&& page.containsKey("MUD_NAME")
+			&& (page.getStr("MUD_NAME") != null)
+			&& (page.getStr("MUD_NAME").toString().trim().length()>0))
+			{
+				nameID = page.getStr("MUD_NAME").toString().trim();
+				nameID = CMStrings.replaceAll(nameID, "\"", "`");
+			}
+			else
+				System.err.println("*** Please give your mud a unique name in mud.bat or mudUNIX.sh!! ***");
 		}
 		else
 		if(nameID.equalsIgnoreCase( "TheRealCoffeeMudCopyright2000-2024ByBoZimmerman" ))
 			nameID="CoffeeMud";
-		String iniFile=iniFiles.firstElement();
-		final CMProps page=CMProps.loadPropPage("//"+iniFile);
 		if ((page==null)||(!page.isLoaded()))
 		{
 			Log.instance().configureLogFile("mud",1);
-			Log.instance().configureLog(Log.Type.info, "BOTH");
-			Log.instance().configureLog(Log.Type.error, "BOTH");
-			Log.instance().configureLog(Log.Type.warning, "BOTH");
-			Log.instance().configureLog(Log.Type.debug, "BOTH");
-			Log.instance().configureLog(Log.Type.help, "BOTH");
-			Log.instance().configureLog(Log.Type.kills, "BOTH");
-			Log.instance().configureLog(Log.Type.combat, "BOTH");
-			Log.instance().configureLog(Log.Type.access, "BOTH");
+			for(final Log.Type logType : Log.Type.values())
+				Log.instance().configureLog(logType, "BOTH");
 			Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read ini file: '"+iniFile+"'.");
 			System.err.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
 			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"A terminal error has occured!");
@@ -2032,24 +2034,9 @@ public class MUD extends Thread implements MudHost
 			return;
 		}
 		Log.shareWith(MudHost.MAIN_HOST);
-		if(page.containsKey("MUD_NAME"))
-		{
-			final String str = page.getStr("MUD_NAME");
-			if(str.trim().length()>0)
-			{
-				nameID = str;
-				nameID = CMStrings.replaceAll(nameID, "\"", "`");
-			}
-		}
 		Log.instance().configureLogFile("mud",page.getInt("NUMLOGS"));
-		Log.instance().configureLog(Log.Type.info, page.getStr("SYSMSGS"));
-		Log.instance().configureLog(Log.Type.error, page.getStr("ERRMSGS"));
-		Log.instance().configureLog(Log.Type.warning, page.getStr("WRNMSGS"));
-		Log.instance().configureLog(Log.Type.debug, page.getStr("DBGMSGS"));
-		Log.instance().configureLog(Log.Type.help, page.getStr("HLPMSGS"));
-		Log.instance().configureLog(Log.Type.kills, page.getStr("KILMSGS"));
-		Log.instance().configureLog(Log.Type.combat, page.getStr("CBTMSGS"));
-		Log.instance().configureLog(Log.Type.access, page.getStr("ACCMSGS"));
+		for(final Log.Type logType : Log.Type.values())
+			Log.instance().configureLog(logType, page.getStr(logType.getLogCode()));
 
 		final Thread shutdownHook=new Thread("ShutdownHook")
 		{

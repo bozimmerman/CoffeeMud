@@ -159,15 +159,19 @@ public class RouterPeerList implements Serializable, PersistentPeer
 			final CMFile F=new CMFile(restoreFilename,null);
 			if(F.exists())
 			{
-				try(final ObjectInputStream din = new ObjectInputStream(new ByteArrayInputStream(F.raw())))
+				final ByteArrayInputStream bin = new ByteArrayInputStream(F.raw());
+				try(final ObjectInputStream din = new ObjectInputStream(bin))
 				{
-					this.id = din.readInt();
-					final int numEntries = din.readInt();
-					for(int i=0;i<numEntries;i++)
+					if(din.available()>0)
 					{
-						final NameServer ns = (NameServer)din.readObject();
-						final RouterPeer rpeer = new RouterPeer(ns,null);
-						this.list.put(ns.name, rpeer);
+						this.id = din.readInt();
+						final int numEntries = din.readInt();
+						for(int i=0;i<numEntries;i++)
+						{
+							final NameServer ns = (NameServer)din.readObject();
+							final RouterPeer rpeer = new RouterPeer(ns,null);
+							this.list.put(ns.name, rpeer);
+						}
 					}
 				}
 			}
@@ -196,8 +200,8 @@ public class RouterPeerList implements Serializable, PersistentPeer
 			final ByteArrayOutputStream bout = new ByteArrayOutputStream();
 			try(ObjectOutputStream out = new ObjectOutputStream(bout))
 			{
-				out.write(id);
-				out.write(list.size());
+				out.writeInt(id);
+				out.writeInt(list.size());
 				for(final NameServer ns : list.values())
 					if(ns.name.length()>0)
 						out.writeObject(ns);

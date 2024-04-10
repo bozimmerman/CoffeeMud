@@ -107,6 +107,8 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			{
 				this.in = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
 				this.out = new DataOutputStream(sock.getOutputStream());
+				initialized = false;
+				destructed = false;
 			}
 			catch (final IOException e)
 			{
@@ -117,10 +119,13 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 
 	public MudPeer(final String mudName, final NetPeer peer)
 	{
-		this.sock = peer.getSocket();
-		this.in = peer.getInputStream();
-		this.out = peer.getOutputStream();
-		peer.clearSocket();
+		if(peer != null)
+		{
+			this.sock = peer.getSocket();
+			this.in = peer.getInputStream();
+			this.out = peer.getOutputStream();
+			peer.clearSocket();
+		}
 		mud = new I3MudX(mudName);
 	}
 

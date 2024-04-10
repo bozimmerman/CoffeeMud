@@ -211,7 +211,7 @@ public class I3RouterThread extends Thread implements CMObject
 				final IrnMudlistDelta delta = new IrnMudlistDelta(rpeer.name);
 				delta.mudlist_id = I3Router.getMudListId();
 				delta.mudlist.add(ob.mud);
-				ob.mud.state = 0; // mark deleted
+				ob.mud.state = 0; // mark deleted YES!
 				try
 				{
 					delta.send();
@@ -286,6 +286,14 @@ public class I3RouterThread extends Thread implements CMObject
 		try
 		{
 			channels.restore();
+		}
+		catch (final PersistenceException e)
+		{
+			Log.errOut(e);
+		}
+		try
+		{
+			muds.restore();
 		}
 		catch (final PersistenceException e)
 		{

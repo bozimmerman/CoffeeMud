@@ -213,8 +213,8 @@ public class NameServerList implements Serializable, PersistentPeer
 			final ByteArrayOutputStream bout = new ByteArrayOutputStream();
 			try(ObjectOutputStream out = new ObjectOutputStream(bout))
 			{
-				out.write(id);
-				out.write(list.size());
+				out.writeInt(id);
+				out.writeInt(list.size());
 				for(final NameServer ns : list.values())
 					if(ns.name.length()>0)
 						out.writeObject(ns);

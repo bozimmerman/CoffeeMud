@@ -257,6 +257,7 @@ public class IMudClient implements I3Interface
 
 		final ChannelAdd ck=new ChannelAdd();
 		ck.sender_name=mob.Name();
+		ck.target_mud=Intermud.getNameServer().name;
 		ck.channel=channel;
 		try
 		{
@@ -287,6 +288,7 @@ public class IMudClient implements I3Interface
 		}
 		final ChannelListen ck=new ChannelListen();
 		ck.sender_name=mob.Name();
+		ck.target_mud=Intermud.getNameServer().name;
 		ck.channel=channel;
 		ck.onoff=1;
 		try
@@ -316,6 +318,7 @@ public class IMudClient implements I3Interface
 
 		final ChannelListen ck=new ChannelListen();
 		ck.sender_name=mob.Name();
+		ck.target_mud=Intermud.getNameServer().name;
 		ck.channel=channel;
 		ck.onoff=0;
 		try
@@ -340,6 +343,7 @@ public class IMudClient implements I3Interface
 		}
 		final ChannelDelete ck=new ChannelDelete();
 		ck.sender_name=mob.Name();
+		ck.target_mud=Intermud.getNameServer().name;
 		ck.channel=channel;
 		try
 		{
@@ -631,6 +635,7 @@ public class IMudClient implements I3Interface
 		{
 			final LocateQueryPacket ck=new LocateQueryPacket();
 			ck.sender_name=mob.Name();
+			ck.target_mud=Intermud.getNameServer().name;
 			ck.user_name=mobName;
 			try
 			{

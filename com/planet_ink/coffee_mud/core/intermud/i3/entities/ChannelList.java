@@ -49,7 +49,7 @@ public class ChannelList implements Serializable, PersistentPeer
 	private final Hashtable<String,Channel> list;
 
 	private boolean isRestoring = false;
-	private static final String restoreFilename = "resources/cpeers.I3Router";
+	private static final String restoreFilename = "resources/channels.I3Router";
 
 	public ChannelList()
 	{
@@ -152,8 +152,8 @@ public class ChannelList implements Serializable, PersistentPeer
 			}
 			try(ObjectOutputStream out = new ObjectOutputStream(new ByteArrayOutputStream()))
 			{
-				out.write(id);
-				out.write(list.size());
+				out.writeInt(id);
+				out.writeInt(list.size());
 				for(final Channel ns : list.values())
 					if(ns.channel.length()>0)
 						out.writeObject(ns);
