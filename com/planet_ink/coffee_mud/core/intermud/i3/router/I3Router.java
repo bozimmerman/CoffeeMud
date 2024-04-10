@@ -294,7 +294,7 @@ public class I3Router
 	}
 
 	static public int getMudListId() {
-		return routerThread.mudListId;
+		return routerThread.muds.getMudListId();
 	}
 
 	static public int getChannelListId() {

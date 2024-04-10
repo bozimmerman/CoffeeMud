@@ -1,6 +1,11 @@
-package com.planet_ink.coffee_mud.core.intermud.i3.entities;
+package com.planet_ink.coffee_mud.core.intermud.i3.router;
+import com.planet_ink.coffee_mud.core.intermud.imc2.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
+import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -17,6 +22,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Random;
 import java.io.Serializable;
 
@@ -35,64 +41,102 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
-public class ChannelList implements Serializable
+public class MudPeerList implements Serializable
 {
 	public static final long serialVersionUID=0;
-	private int id;
-	private final Hashtable<String,Channel> list;
 
-	public ChannelList()
+	private int id;
+	protected final Map<String,MudPeer> list;
+	private int modified;
+
+	public MudPeerList()
 	{
 		super();
 		id = 0;
-		list = new Hashtable<String,Channel>(10, 5);
+		modified = Persistent.MODIFIED;
+		list = new Hashtable<String,MudPeer>();
 	}
 
-	public ChannelList(final int i)
+	public MudPeerList(final int i)
 	{
 		this();
 		id = i;
 	}
 
-	public void addChannel(final Channel c )
+	public int getModified()
 	{
-		if( c.channel == null )
+		return modified;
+	}
+
+	public void setModified(final int x)
+	{
+		modified = x;
+	}
+
+	public void addMud(final MudPeer mud)
+	{
+		if(( mud.mud.mud_name == null )||( mud.mud.mud_name.length() == 0 ))
 		{
 			return;
 		}
-		list.put(c.channel, c);
+		{ // temp hack
+			final char c = mud.mud.mud_name.charAt(0);
+
+			if( !(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z') && c != '(' )
+			{
+				return;
+			}
+		}
+		if( list.containsKey(mud.mud.mud_name) )
+		{
+			mud.mud.modified = Persistent.MODIFIED;
+		}
+		else
+		{
+			mud.mud.modified = Persistent.NEW;
+		}
+		list.put(mud.mud.mud_name, mud);
+		modified = Persistent.MODIFIED;
 	}
 
-	public Channel getChannel(final String channel)
+	public MudPeer getMud(final String mud)
 	{
-		if( !list.containsKey(channel) )
+		if( !list.containsKey(mud) )
 		{
 			return null;
 		}
-		return list.get(channel);
+		final MudPeer tmp = list.get(mud);
+
+		if( tmp.mud.modified == Persistent.DELETED )
+		{
+			return null;
+		}
+		return tmp;
 	}
 
-	public void removeChannel(final Channel c)
+	public void removeMud(final MudPeer mud)
 	{
-		if( c.channel == null )
+		if( mud.mud.mud_name == null )
 		{
 			return;
 		}
-		list.remove(c.channel);
+		mud.mud.modified = Persistent.DELETED;
+		modified = Persistent.MODIFIED;
 	}
 
-	public int getChannelListId()
+	public int getMudListId()
 	{
 		return id;
 	}
 
-	public void setChannelListId(final int x)
+	public void setMudListId(final int x)
 	{
 		id = x;
 	}
 
-	public Hashtable<String,Channel> getChannels()
+	public Map<String,MudPeer> getMuds()
 	{
 		return list;
 	}
 }
+

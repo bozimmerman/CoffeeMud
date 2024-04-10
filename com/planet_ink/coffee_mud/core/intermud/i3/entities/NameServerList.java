@@ -54,7 +54,7 @@ public class NameServerList implements Serializable
 	public NameServerList()
 	{
 		super();
-		id = -1;
+		id = 0;
 		modified = Persistent.MODIFIED;
 		list = new Hashtable<String,NameServer>();
 	}

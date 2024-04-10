@@ -37,7 +37,8 @@ public class IrnMudlistDelta extends IrnPacket
 	{
 		super(v);
 		type = Packet.PacketType.IRN_MUDLIST_DELTA;
-		if(v.size()>6) mudlist_id = ((Integer)v.get(6)).intValue();
+		if(v.size()>6)
+			mudlist_id = ((Integer)v.get(6)).intValue();
 		if((v.size()>7)
 		&&(v.get(7) instanceof Map))
 		{

@@ -245,7 +245,6 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			srep.password = this.mud.password; //what is this supposed to be?
 			srep.send();
 
-			final Random r = new Random(System.currentTimeMillis());
 			final XArrayList<I3MudX> muds = new XArrayList<I3MudX>();
 			muds.addAll(I3Router.getMudXPeers());
 			for(final RouterPeer peer : I3Router.getRouterPeers())
@@ -256,7 +255,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			for(int i=0;i<muds.size();i+=5)
 			{
 				final MudlistPacket mlrep = new MudlistPacket(this.mud.mud_name);
-				mlrep.mudlist_id = r.nextInt(Integer.MAX_VALUE);
+				mlrep.mudlist_id = I3Router.getMudListId();
 				for(int x=i;x<i+5 && x<muds.size();x++)
 					mlrep.mudlist.add(muds.get(x));
 				mlrep.send();
@@ -271,7 +270,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			for(int i=0;i<muds.size();i+=5)
 			{
 				final ChanlistReply clrep = new ChanlistReply(this.mud.mud_name);
-				clrep.chanlist_id = r.nextInt(Integer.MAX_VALUE);
+				clrep.chanlist_id = I3Router.getChannelListId();
 				for(int x=i;x<i+5 && x<chans.size();x++)
 					clrep.chanlist.add(chans.get(x));
 				clrep.send();
@@ -392,9 +391,9 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			c.owner = pkt.sender_mud;
 			c.type = pkt.channelType;
 			I3Router.getRouter().channels.addChannel(c);
-			final Random r = new Random(System.currentTimeMillis());
+			I3Router.getRouter().channels.setChannelListId(I3Router.getChannelListId()+1);
 			final IrnChanlistDelta delta = new IrnChanlistDelta("");
-			delta.chanlist_id = r.nextInt(Integer.MAX_VALUE/1000);
+			delta.chanlist_id = I3Router.getChannelListId();
 			delta.chanlist.add(c);
 			for(final RouterPeer rpeer : I3Router.getRouterPeers())
 			{
@@ -419,11 +418,11 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 		else
 		{
 			I3Router.getRouter().channels.removeChannel(c);
-			final Random r = new Random(System.currentTimeMillis());
+			I3Router.getRouter().channels.setChannelListId(I3Router.getChannelListId()+1);
 			c.modified = Persistent.DELETED;
 			final IrnChanlistDelta delta = new IrnChanlistDelta("");
-			delta.chanlist_id = r.nextInt(Integer.MAX_VALUE/1000);
 			delta.chanlist.add(c);
+			delta.chanlist_id = I3Router.getChannelListId();
 			for(final RouterPeer rpeer : I3Router.getRouterPeers())
 			{
 				delta.target_router = rpeer.name;
@@ -453,9 +452,9 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 		{
 			c.mudlist.addAll(pkt.addlist);
 			c.mudlist.removeAll(pkt.removelist);
-			final Random r = new Random(System.currentTimeMillis());
+			I3Router.getRouter().channels.setChannelListId(I3Router.getChannelListId()+1);
 			final IrnChanlistDelta delta = new IrnChanlistDelta("");
-			delta.chanlist_id = r.nextInt(Integer.MAX_VALUE/1000);
+			delta.chanlist_id = I3Router.getChannelListId();
 			delta.chanlist.add(c);
 			for(final RouterPeer rpeer : I3Router.getRouterPeers())
 			{

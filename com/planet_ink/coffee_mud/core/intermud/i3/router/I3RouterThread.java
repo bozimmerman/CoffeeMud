@@ -49,14 +49,12 @@ public class I3RouterThread extends Thread implements CMObject
 	protected final NameServer  me;
 	protected final int			password;
 	protected boolean			running;
-	protected int				mudListId		= 0;
-	protected int				channelListId	= 0;
 	protected ListenThread		listen_thread	= null;
 
 	protected final I3RConnections 			connMonitor = new I3RConnections();
-	protected final Map<String, MudPeer>	muds		= new Hashtable<String, MudPeer>();
 	protected final Map<String, RouterPeer>	peers		= new Hashtable<String, RouterPeer>();
 	protected final Map<String, NetPeer>	socks		= new Hashtable<String, NetPeer>();
+	protected final MudPeerList				muds		= new MudPeerList();
 	protected final ChannelList				channels	= new ChannelList();
 
 	protected I3RouterThread(final String router_name,
@@ -112,18 +110,18 @@ public class I3RouterThread extends Thread implements CMObject
 	{
 		try
 		{
-			final MudPeer old = muds.get(ob.mud.mud_name);
+			final MudPeer old = muds.getMud(ob.mud.mud_name);
 			if((old != null) && (old != ob))
 			{
 				if(!old.isConnected())
 					old.destruct();
 				return old;
 			}
-			final Random r = new Random(System.currentTimeMillis());
+			muds.setMudListId(muds.getMudListId()+1);
 			for(final RouterPeer rpeer : I3Router.getRouterPeers())
 			{
 				final IrnMudlistDelta delta = new IrnMudlistDelta(rpeer.name);
-				delta.mudlist_id = r.nextInt(Integer.MAX_VALUE/1000);
+				delta.mudlist_id = I3Router.getMudListId();
 				delta.mudlist.add(ob.mud);
 				try
 				{
@@ -134,7 +132,7 @@ public class I3RouterThread extends Thread implements CMObject
 					Log.errOut(e);
 				}
 			}
-			muds.put(ob.mud.mud_name, ob);
+			muds.addMud(ob);
 		}
 		catch( final Exception e )
 		{
@@ -167,9 +165,9 @@ public class I3RouterThread extends Thread implements CMObject
 
 	protected synchronized MudPeer findMudPeer(final String name)
 	{
-		if( muds.containsKey(name) )
+		final MudPeer ob = muds.getMud(name);
+		if( ob != null )
 		{
-			final MudPeer ob = muds.get(name);
 			if( !ob.getDestructed() )
 				return ob;
 		}
@@ -189,13 +187,13 @@ public class I3RouterThread extends Thread implements CMObject
 
 	protected synchronized void removeMudPeer(final MudPeer ob)
 	{
-		if( muds.containsKey(ob.mud.mud_name) )
+		if( muds.getMud(ob.mud.mud_name) != null )
 		{
-			final Random r = new Random(System.currentTimeMillis());
+			muds.setMudListId(muds.getMudListId()+1);
 			for(final RouterPeer rpeer : I3Router.getRouterPeers())
 			{
 				final IrnMudlistDelta delta = new IrnMudlistDelta(rpeer.name);
-				delta.mudlist_id = r.nextInt(Integer.MAX_VALUE/1000);
+				delta.mudlist_id = I3Router.getMudListId();
 				delta.mudlist.add(ob.mud);
 				ob.mud.state = 0; // mark deleted
 				try
@@ -207,7 +205,7 @@ public class I3RouterThread extends Thread implements CMObject
 					Log.errOut(e);
 				}
 			}
-			muds.remove(ob.mud.mud_name);
+			muds.removeMud(ob);
 		}
 	}
 
@@ -360,15 +358,15 @@ public class I3RouterThread extends Thread implements CMObject
 
 	protected synchronized MudPeer[] getMuds()
 	{
-		final MudPeer[] tmp = new MudPeer[muds.size()];
-		final List<ServerObject> objsList = new XArrayList<ServerObject>(muds.values());
+		final MudPeer[] tmp = new MudPeer[muds.getMuds().size()];
+		final List<ServerObject> objsList = new XArrayList<ServerObject>(muds.getMuds().values());
 		return objsList.toArray(tmp);
 	}
 
 	protected synchronized ServerObject[] getObjects()
 	{
-		final MudPeer[] tmp = new MudPeer[muds.size() + peers.size()];
-		final List<ServerObject> objsList = new XArrayList<ServerObject>(muds.values());
+		final MudPeer[] tmp = new MudPeer[muds.getMuds().size() + peers.size()];
+		final List<ServerObject> objsList = new XArrayList<ServerObject>(muds.getMuds().values());
 		objsList.addAll(peers.values());
 		return objsList.toArray(tmp);
 	}

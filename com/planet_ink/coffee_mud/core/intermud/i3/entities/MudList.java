@@ -46,13 +46,13 @@ public class MudList implements Serializable
 	public static final long serialVersionUID=0;
 
 	private int id;
-	private final Map<String,I3Mud> list;
+	protected final Map<String,I3Mud> list;
 	private int modified;
 
 	public MudList()
 	{
 		super();
-		id = new Random(System.currentTimeMillis()).nextInt(Integer.MAX_VALUE/1000);
+		id = 0;
 		modified = Persistent.MODIFIED;
 		list = new Hashtable<String,I3Mud>();
 	}

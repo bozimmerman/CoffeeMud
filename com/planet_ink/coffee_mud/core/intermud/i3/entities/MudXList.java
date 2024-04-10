@@ -1,6 +1,11 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.entities;
+import com.planet_ink.coffee_mud.core.intermud.imc2.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
+import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -16,12 +21,14 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.Collection;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Random;
 import java.io.Serializable;
 
 /**
- * Copyright (c) 1996 George Reese
+ * Copyright (c)2024-2024 Bo Zimmerman
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,64 +42,44 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
-public class ChannelList implements Serializable
+public class MudXList extends MudList implements Serializable
 {
-	public static final long serialVersionUID=0;
-	private int id;
-	private final Hashtable<String,Channel> list;
+	private static final long serialVersionUID = 1L;
 
-	public ChannelList()
+	public void addMud(final I3MudX mud)
 	{
-		super();
-		id = 0;
-		list = new Hashtable<String,Channel>(10, 5);
+		super.addMud(mud);
 	}
 
-	public ChannelList(final int i)
+	public void removeMud(final I3Mud mud)
 	{
-		this();
-		id = i;
+		super.removeMud(mud);
 	}
 
-	public void addChannel(final Channel c )
+	@Override
+	public I3MudX getMud(final String mud)
 	{
-		if( c.channel == null )
+		final I3Mud mud1 = super.getMud(mud);
+		if(mud1 instanceof I3MudX)
+			return (I3MudX)mud1;
+		return null;
+	}
+
+	private static final Converter<I3Mud,I3MudX> conv = new Converter<I3Mud,I3MudX>()
+	{
+
+		@Override
+		public I3MudX convert(final I3Mud obj)
 		{
-			return;
-		}
-		list.put(c.channel, c);
-	}
-
-	public Channel getChannel(final String channel)
-	{
-		if( !list.containsKey(channel) )
-		{
+			if(obj instanceof I3MudX)
+				return (I3MudX)obj;
 			return null;
 		}
-		return list.get(channel);
-	}
 
-	public void removeChannel(final Channel c)
-	{
-		if( c.channel == null )
-		{
-			return;
-		}
-		list.remove(c.channel);
-	}
+	};
 
-	public int getChannelListId()
+	public Collection<I3MudX> getMudXList()
 	{
-		return id;
-	}
-
-	public void setChannelListId(final int x)
-	{
-		id = x;
-	}
-
-	public Hashtable<String,Channel> getChannels()
-	{
-		return list;
+		return new ConvertingCollection<I3Mud,I3MudX>(super.list.values(),conv);
 	}
 }

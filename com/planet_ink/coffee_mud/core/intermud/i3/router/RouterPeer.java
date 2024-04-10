@@ -57,8 +57,6 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 	int					password	= 0;
 	public long			lastPing	= System.currentTimeMillis();
 	public long			lastPong	= System.currentTimeMillis();
-	int					mudListId	= 0;
-	int					chanListId	= 0;
 	boolean				initialized	= false;
 	long				connectTime = System.currentTimeMillis();
 
@@ -199,12 +197,11 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		initialized=true;
 		try
 		{
-			final Random r = new Random(System.currentTimeMillis());
 			final I3MudX[] muds = I3Router.getMudXPeers();
 			for(int i=0;i<muds.length;i+=5)
 			{
 				final IrnMudlistDelta mlrep = new IrnMudlistDelta(this.name);
-				mlrep.mudlist_id = r.nextInt(Integer.MAX_VALUE/1000);
+				mlrep.mudlist_id = I3Router.getMudListId();
 				for(int x=i;x<i+5 && x<muds.length;x++)
 					mlrep.mudlist.add(muds[x]);
 				mlrep.send();
@@ -214,7 +211,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 			for(int i=0;i<channels.size();i+=5)
 			{
 				final IrnChanlistDelta clrep = new IrnChanlistDelta(this.name);
-				clrep.chanlist_id = r.nextInt(Integer.MAX_VALUE/1000);
+				clrep.chanlist_id = I3Router.getChannelListId();
 				for(int x=i;x<i+5 && x<channels.size();x++)
 					clrep.chanlist.add(channels.get(x));
 				clrep.send();
@@ -233,7 +230,8 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 
 	private void receiveMudlistDelta(final IrnMudlistDelta pkt)
 	{
-		this.mudListId = pkt.mudlist_id;
+		if(pkt.mudlist_id > I3Router.getMudListId())
+			I3Router.getRouter().muds.setMudListId(I3Router.getMudListId()+1);
 		for(final I3MudX m : pkt.mudlist)
 			this.muds.put(m.mud_name, m);
 	}
@@ -261,7 +259,8 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 
 	private void receiveChanlistDelta(final IrnChanlistDelta pkt)
 	{
-		this.chanListId = pkt.chanlist_id;
+		if(pkt.chanlist_id > I3Router.getChannelListId());
+			I3Router.getRouter().channels.setChannelListId(pkt.chanlist_id);
 		for(final Channel c : pkt.chanlist)
 		{
 			if(c.modified == Persistent.DELETED)
@@ -277,12 +276,11 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 
 	private void receiveChanlistReq(final IrnChanlistRequest pkt)
 	{
-		final Random r = new Random(System.currentTimeMillis());
 		final List<Channel> channels = new XArrayList<Channel>(I3Router.getRouter().channels.getChannels().values());
 		for(int i=0;i<channels.size();i+=5)
 		{
 			final IrnChanlistDelta clrep = new IrnChanlistDelta(this.name);
-			clrep.chanlist_id = r.nextInt(Integer.MAX_VALUE/1000);
+			clrep.chanlist_id = I3Router.getChannelListId();
 			for(int x=i;x<i+5 && x<channels.size();x++)
 				clrep.chanlist.add(channels.get(x));
 			try

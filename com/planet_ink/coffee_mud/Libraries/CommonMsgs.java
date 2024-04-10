@@ -1950,7 +1950,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if(mobsInTheDarkness>0)
 				finalLookStr.append(L("^MYou are not alone, but it's too dark to tell.^?\n\r"));
 		}
-		if(compress && (finalLookStr.length()>0) && (finalLookStr.charAt(finalLookStr.length()-1)!='\r'))
+		if(compress
+		&& (finalLookStr.length()>0)
+		&& (finalLookStr.charAt(finalLookStr.length()-1)!='\r'))
 			finalLookStr.append("\n\r");
 		return finalLookStr.toString();
 	}
