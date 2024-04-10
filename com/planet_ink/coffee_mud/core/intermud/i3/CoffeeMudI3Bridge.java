@@ -378,7 +378,7 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 					smob.tell(fixColors(lk.located_visible_name)+"@"+fixColors(lk.located_mud_name)+" ("+lk.idle_time+"): "+fixColors(lk.status));
 			}
 			break;
-		case FINGER_REQUEST:
+		case FINGER_REQ:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final FingerRequest lk=(FingerRequest)packet;

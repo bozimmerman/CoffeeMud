@@ -173,6 +173,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 	public void destruct()
 	{
 		destructed = true;
+		initialized=false;
 		try
 		{
 			if(in != null)
@@ -191,6 +192,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 				sock.close();
 		}
 		catch (final IOException e){ }
+		I3Router.getRouter().peers.removeRouter(this);
 	}
 
 	public void initialize()
@@ -370,7 +372,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		case WHO_REPLY:
 		case WHO_REQ:
 		case FINGER_REPLY:
-		case FINGER_REQUEST:
+		case FINGER_REQ:
 		case LOCATE_REPLY:
 		case TELL:
 			// all of these are from a foreign mud targeting a local one.  Is good.
@@ -520,6 +522,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 	 */
 	public void connect()
 	{
+		initialized=false;
 		try
 		{
 			if(sock == null)
@@ -528,6 +531,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 				address = sock.getRemoteSocketAddress();
 				in = new DataInputStream(sock.getInputStream());
 				out = new DataOutputStream(sock.getOutputStream());
+				this.destructed=false;
 			}
 		}
 		catch(final Exception e)
@@ -543,6 +547,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 				sock.connect(address);
 				in = new DataInputStream(sock.getInputStream());
 				out = new DataOutputStream(sock.getOutputStream());
+				this.destructed=false;
 			}
 			catch (final IOException e)
 			{
@@ -566,6 +571,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 			address = s.getRemoteSocketAddress();
 		in = new DataInputStream(sock.getInputStream());
 		out = new DataOutputStream(sock.getOutputStream());
+		this.destructed=false;
 	}
 
 	/**
@@ -618,6 +624,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		sock = null;
 		in = null;
 		out = null;
+		initialized=false;
 	}
 
 	/**
@@ -637,6 +644,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 			in = null;
 			out = null;
 		}
+		initialized=false;
 	}
 
 	@Override

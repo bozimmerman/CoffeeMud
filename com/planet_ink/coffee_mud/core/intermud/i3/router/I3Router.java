@@ -196,6 +196,8 @@ public class I3Router
 				Object o;
 				try
 				{
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.I3))
+						Log.sysOut("Receiving: "+cmd);
 					o = LPCData.getLPCData(cmd);
 					if((!(o instanceof Vector))
 					||(((Vector<?>)o).size()<4))
@@ -208,7 +210,7 @@ public class I3Router
 					}
 					final Vector<?> data=(Vector<?>)o;
 					final String typeStr = ((String)data.elementAt(0)).trim().replace("-", "_");
-					final PacketType type = PacketType.valueOf(typeStr.toUpperCase());
+					final PacketType type = (PacketType)CMath.s_valueOf(PacketType.class,typeStr.toUpperCase());
 					if(type == null)
 					{
 						Log.errOut("I3R: Unknown packet type: " + typeStr);

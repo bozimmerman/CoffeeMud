@@ -48,6 +48,8 @@ public class I3RouterThread extends Thread implements CMObject
 	protected AtomicInteger		count			= new AtomicInteger(1);
 	protected final NameServer  me;
 	protected final int			password;
+	protected long				nextSaveTime	= System.currentTimeMillis();
+	protected long				nextConnTime	= System.currentTimeMillis();
 	protected ListenThread		listen_thread	= null;
 	protected ThreadGroup		threadGroup		= null;
 
@@ -297,59 +299,93 @@ public class I3RouterThread extends Thread implements CMObject
 		{
 			Log.errOut(e);
 		}
-		for(final RouterPeer peer : peers.getRouters().values())
-		{
-			peer.connect();
-			if(peer.isConnected())
-				initializePeer(peer);
-		}
+		this.nextConnTime = System.currentTimeMillis() - 1;
 	}
 
 	@Override
 	public void run()
 	{
-		while(running)
+		try
 		{
-			CMLib.s_sleep(250);
-
+			nextSaveTime = System.currentTimeMillis() + 120000;
+			// nextConnTime - init in start
+			while(running)
 			{
-				try
+				CMLib.s_sleep(250);
+				if(System.currentTimeMillis() >= nextSaveTime)
 				{
-					connMonitor.processEvent();
+					nextSaveTime = System.currentTimeMillis() + 120000;
+					try
+					{
+						muds.save();
+						channels.save();
+						peers.save();
+					}
+					catch(final Exception e)
+					{
+						Log.errOut(e);
+					}
 				}
-				catch( final Exception e )
+				if(System.currentTimeMillis() > nextConnTime)
 				{
-					Log.errOut(ID(),e);
-				}
-				//TODO: periodically try reconnecting to peers
-				//TODO: periodically save stuff!
-
-				// Check for pending object events
-				ServerObject[] things;
-				synchronized( this )
-				{
-					things = getObjects();
-				}
-				for(int i=0; i<things.length; i++)
-				{
-					final ServerObject thing = things[i];
-
-					if( !thing.getDestructed() )
+					nextConnTime = System.currentTimeMillis() + 300000;
+					for(final RouterPeer peer : peers.getRouters().values())
 					{
 						try
 						{
-							thing.processEvent();
+							if(!peer.isConnected())
+							{
+								peer.connect();
+								if(peer.isConnected())
+									initializePeer(peer);
+							}
 						}
-						catch( final Exception e )
+						catch(final Exception e)
 						{
-							Log.errOut(ID(),e);
+							Log.errOut(e);
+						}
+					}
+				}
+				else
+				{
+					try
+					{
+						connMonitor.processEvent();
+					}
+					catch( final Exception e )
+					{
+						Log.errOut(ID(),e);
+					}
+
+					// Check for pending object events
+					ServerObject[] things;
+					synchronized( this )
+					{
+						things = getObjects();
+					}
+					for(int i=0; i<things.length; i++)
+					{
+						final ServerObject thing = things[i];
+						if( !thing.getDestructed() )
+						{
+							try
+							{
+								thing.processEvent();
+							}
+							catch( final Exception e )
+							{
+								Log.errOut(ID(),e);
+							}
 						}
 					}
 				}
 			}
+			Log.sysOut("I3RouterThread shut down.");
 		}
-		Log.sysOut("I3RouterThread shut down.");
-		running=false;
+		finally
+		{
+			running=false;
+		}
 	}
 
 	protected Date getBootTime()

@@ -66,7 +66,7 @@ public abstract class Packet
 		CHAN_USER_REQ(ChannelUserRequest.class),
 		CHAN_USER_REPLY(ChannelUserReply.class),
 		SHUTDOWN(ShutdownPacket.class),
-		FINGER_REQUEST(FingerRequest.class),
+		FINGER_REQ(FingerRequest.class),
 		FINGER_REPLY(FingerReply.class),
 		PING_REQ(PingPacket.class),
 		AUTH_MUD_REQ(MudAuthRequest.class),

@@ -217,6 +217,8 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 	public void destruct()
 	{
 		destructed = true;
+		initialized	= false;
+		isRestoring	= false;
 		try
 		{
 			if(in != null)
@@ -235,6 +237,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 				sock.close();
 		}
 		catch (final IOException e){ }
+		I3Router.getRouter().muds.removeMud(this);
 	}
 
 	public void initialize()
@@ -242,6 +245,8 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 		if(initialized)
 			return;
 		initialized=true;
+		destructed = false;
+		isRestoring	= false;
 		try
 		{
 			final StartupReply srep = new StartupReply(this.mud.mud_name);
@@ -325,6 +330,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 					return;
 				}
 			}
+			this.sendError("unk-dst", "Unknown mud '"+pkt.target_mud+"'", pkt);
 			Log.errOut("Mud not found: "+pkt.target_mud);
 			return;
 		}
@@ -673,7 +679,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			case CHAN_WHO_REPLY:
 			case CHAN_WHO_REQ:
 			case FINGER_REPLY:
-			case FINGER_REQUEST:
+			case FINGER_REQ:
 			case LOCATE_REPLY:
 			case TELL:
 			case WHO_REPLY:
@@ -732,7 +738,10 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 	@Override
 	public boolean isConnected()
 	{
-		return (sock != null) && (sock.isConnected());
+		final boolean conn = (sock != null) && (sock.isConnected());
+		if(!conn)
+			initialized	= false;
+		return conn;
 	}
 
 	@Override
@@ -750,6 +759,8 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 	@Override
 	public void clearSocket()
 	{
+		initialized	= false;
+		isRestoring	= false;
 		sock = null;
 		in = null;
 		out = null;
@@ -768,6 +779,8 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			in = null;
 			out = null;
 		}
+		initialized	= false;
+		isRestoring	= false;
 	}
 
 
