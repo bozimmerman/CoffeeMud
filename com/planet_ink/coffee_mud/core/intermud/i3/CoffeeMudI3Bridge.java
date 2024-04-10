@@ -257,7 +257,8 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final ChannelPacket ck=(ChannelPacket)packet;
-				final String channelName=ck.channel;
+				String channelName=ck.channel;
+				channelName = Intermud.getLocalChannel(channelName);
 				CMMsg msg=null;
 
 				if((ck.sender_mud!=null)&&(ck.sender_mud.equalsIgnoreCase(getMudName())))

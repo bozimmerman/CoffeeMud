@@ -208,6 +208,8 @@ public class I3RouterThread extends Thread implements CMObject
 			muds.setMudListId(muds.getMudListId()+1);
 			for(final RouterPeer rpeer : I3Router.getRouterPeers())
 			{
+				if(!rpeer.isConnected())
+					continue;
 				final IrnMudlistDelta delta = new IrnMudlistDelta(rpeer.name);
 				delta.mudlist_id = I3Router.getMudListId();
 				delta.mudlist.add(ob.mud);
@@ -222,6 +224,23 @@ public class I3RouterThread extends Thread implements CMObject
 				}
 			}
 			muds.removeMud(ob);
+			for(final MudPeer rpeer : I3Router.getMudPeers())
+			{
+				if(!rpeer.isConnected())
+					continue;
+				final MudlistPacket delta = new MudlistPacket(rpeer.getMud().mud_name);
+				delta.mudlist_id = I3Router.getMudListId();
+				delta.mudlist.add(ob.mud);
+				ob.mud.state = 0; // mark deleted YES!
+				try
+				{
+					delta.send();
+				}
+				catch (final InvalidPacketException e)
+				{
+					Log.errOut(e);
+				}
+			}
 		}
 	}
 

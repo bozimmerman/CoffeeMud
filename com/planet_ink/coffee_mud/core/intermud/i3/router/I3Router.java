@@ -151,6 +151,19 @@ public class I3Router
 			{
 				Log.errOut("I3Router","557-"+errMsg);
 			}
+			// this means the peer is DEAD!!!
+			if(peer instanceof MudPeer)
+				((MudPeer)peer).destruct();
+			else
+			if(peer instanceof RouterPeer)
+				((RouterPeer)peer).destruct();
+			else
+			{
+				try {
+					peer.close();
+				}
+				catch (final IOException e1) { }
+			}
 			return false;
 		}
 		return true;
@@ -273,6 +286,13 @@ public class I3Router
 	 */
 	static public MudPeer findMudPeer(final String name) {
 		return routerThread.findMudPeer(name);
+	}
+
+	public static boolean isConnected()
+	{
+		if(routerThread==null)
+			return false;
+		return routerThread.running;
 	}
 
 	/**

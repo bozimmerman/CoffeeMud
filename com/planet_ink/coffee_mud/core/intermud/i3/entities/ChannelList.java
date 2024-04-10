@@ -142,7 +142,7 @@ public class ChannelList implements Serializable, PersistentPeer
 		}
 		catch(final Exception e)
 		{
-			Log.errOut("NameServerList",e);
+			Log.errOut("ChannelList",e);
 		}
 		finally
 		{
@@ -179,7 +179,7 @@ public class ChannelList implements Serializable, PersistentPeer
 		}
 		catch(final Exception e)
 		{
-			Log.errOut("NameServerList",e);
+			Log.errOut("ChannelListList",e);
 		}
 	}
 

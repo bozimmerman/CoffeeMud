@@ -256,22 +256,29 @@ public class Intermud implements Runnable, Persistent, Serializable
 		this.banned = new Hashtable<String,String>();
 		this.adminEmail = adminEmail;
 		this.name_servers = new Vector<NameServer>();
-		for(final String router: routersList)
-		{
-			final List<String> V=CMParms.parseAny(router,':',true);
-			if(V.size()>=3)
-			{
-				final String host = V.get(0);
-				final int port = CMath.s_int(V.get(1));
-				final String service = V.get(2);
-				this.name_servers.add(new NameServer(host, port, service));
-			}
-		}
 		modified = Persistent.UNMODIFIED;
 		try
 		{
 			// make sure name_servers is loaded first, because it MATTERS!
 			restore();
+			final Map<String,NameServer> tempNSSet = new HashMap<String,NameServer>();
+			for(final NameServer ns: this.name_servers)
+				tempNSSet.put(ns.name, ns);
+			this.name_servers.clear();
+			for(final String router: routersList)
+			{
+				final List<String> V=CMParms.parseAny(router,':',true);
+				if(V.size()>=3)
+				{
+					final String host = V.get(0);
+					final int port = CMath.s_int(V.get(1));
+					final String service = V.get(2);
+					if(tempNSSet.containsKey(service))
+						this.name_servers.add(tempNSSet.get(service));
+					else
+						this.name_servers.add(new NameServer(host, port, service));
+				}
+			}
 		}
 		catch( final PersistenceException e )
 		{
@@ -436,7 +443,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 				Log.sysOut("Intermud3","No I3 routers defined in coffeemud.ini file.");
 			else
 			{
-				if(CMProps.getVar(CMProps.Str.ADMINEMAIL).indexOf('@')<0)
+				if(adminEmail.indexOf('@')<0)
 					Log.errOut("Intermud","Please set ADMINEMAIL in your coffeemud.ini file.");
 				final Vector<String> connectionStatuses=new Vector<String>(name_servers.size());
 				for(int i=0;i<name_servers.size();i++)

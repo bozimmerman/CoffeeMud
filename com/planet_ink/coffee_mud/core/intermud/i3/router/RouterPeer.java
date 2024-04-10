@@ -114,7 +114,8 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		}
 		catch(final Exception e)
 		{
-			Log.errOut("IRouterPeer","Unable to read /resources/ppeer."+getObjectId());
+			Log.errOut("IRouterPeer","Unable to read /resources/rpeer."+getObjectId());
+			Log.errOut(e);
 		}
 		isRestoring=false;
 	}
@@ -137,13 +138,14 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 			out.writeObject(muds);
 			out.flush();
 			bout.flush();
-			new CMFile("::resources/rpeer."+getObjectId(),null).saveRaw(bout.toByteArray());
+			new CMFile("resources/rpeer."+getObjectId(),null).saveRaw(bout.toByteArray());
 			out.close();
 			bout.close();
 		}
 		catch(final Exception e)
 		{
-			Log.errOut("IRouterPeer",e.getMessage());
+			Log.errOut("IRouterPeer","Unable to write /resources/rpeer."+getObjectId());
+			Log.errOut(e);
 		}
 	}
 
@@ -178,21 +180,24 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		{
 			if(in != null)
 				in.close();
+			in=null;
 		}
 		catch (final IOException e){ }
 		try
 		{
 			if(out != null)
 				out.close();
+			out=null;
 		}
 		catch (final IOException e){ }
 		try
 		{
 			if(sock != null)
 				sock.close();
+			sock=null;
 		}
 		catch (final IOException e){ }
-		I3Router.getRouter().peers.removeRouter(this);
+		I3Router.removeObject(this);
 	}
 
 	public void initialize()

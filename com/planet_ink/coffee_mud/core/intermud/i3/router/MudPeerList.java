@@ -174,7 +174,8 @@ public class MudPeerList implements Serializable, PersistentPeer
 		}
 		catch(final Exception e)
 		{
-			Log.errOut("RouterPeerList","Unable to read "+restoreFilename);
+			Log.errOut("MudPeerList","Unable to read "+restoreFilename);
+			Log.errOut(e);
 		}
 		finally
 		{
@@ -210,7 +211,8 @@ public class MudPeerList implements Serializable, PersistentPeer
 		}
 		catch(final Exception e)
 		{
-			Log.errOut("MudPeerList","Unable to read "+restoreFilename);
+			Log.errOut("MudPeerList","Unable to write "+restoreFilename);
+			Log.errOut(e);
 		}
 	}
 

@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.intermud.imc2.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet.PacketType;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
@@ -121,7 +122,10 @@ public class MudPacket extends Packet
 		{
 			throw new InvalidPacketException();
 		}
-		Intermud.sendPacket(this);
+		if(Intermud.isConnected())
+			Intermud.sendPacket(this);
+		if(I3Router.isConnected())
+			I3Router.writePacket(this);
 	}
 
 }

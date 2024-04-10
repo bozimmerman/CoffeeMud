@@ -228,21 +228,24 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 		{
 			if(in != null)
 				in.close();
+			in = null;
 		}
 		catch (final IOException e){ }
 		try
 		{
 			if(out != null)
 				out.close();
+			out=null;
 		}
 		catch (final IOException e){ }
 		try
 		{
 			if(sock != null)
 				sock.close();
+			sock=null;
 		}
 		catch (final IOException e){ }
-		I3Router.getRouter().muds.removeMud(this);
+		I3Router.removeObject(this);
 	}
 
 	public void initialize()
@@ -498,8 +501,9 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 	{
 		try
 		{
-			final ErrorPacket pkt = new ErrorPacket(mud.mud_name,packet.sender_name, errorCode, errorMessage, packet.toString());
+			final ErrorPacket pkt = new ErrorPacket(packet.sender_name, mud.mud_name, errorCode, errorMessage, packet.toString());
 			pkt.sender_mud = I3Router.getRouterName();
+			pkt.sender_name=packet.sender_name;
 			pkt.send();
 		}
 		catch (final InvalidPacketException e)
@@ -539,12 +543,14 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 				if(!c.mudlist.contains(pkt.sender_mud))
 					sendError("not-allowed", "Not allowed to listen to this channel.", pkt);
 				else
+				if(!listening.contains(c))
 					listening.add(c);
 				break;
 			default: // selective ban
 				if(c.mudlist.contains(pkt.sender_mud))
 					sendError("not-allowed", "Not allowed to listen to this channel.", pkt);
 				else
+				if(!listening.contains(c))
 					listening.add(c);
 				break;
 			}

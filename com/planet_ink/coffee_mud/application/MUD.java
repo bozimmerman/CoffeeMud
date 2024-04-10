@@ -96,6 +96,7 @@ public class MUD extends Thread implements MudHost
 	private static List<CM1Server>		cm1Servers			= new Vector<CM1Server>();
 	private static final ServiceEngine	serviceEngine		= new ServiceEngine();
 	private static AtomicBoolean 		bootSync			= new AtomicBoolean(false);
+	private static Map<String,String>	clArgs				= new Hashtable<String,String>();
 
 
 	public MUD(final String name)
@@ -1777,6 +1778,7 @@ public class MUD extends Thread implements MudHost
 					return;
 			}
 			final CMProps page=CMProps.loadPropPage("//"+iniFile);
+			page.putAll(clArgs);
 			if ((page==null)||(!page.isLoaded()))
 			{
 				Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read ini file: '"+iniFile+"'.");
@@ -1794,14 +1796,8 @@ public class MUD extends Thread implements MudHost
 				{
 					Log.newInstance();
 					Log.instance().configureLogFile(logName,page.getInt("NUMLOGS"));
-					Log.instance().configureLog(Log.Type.info, page.getStr("SYSMSGS"));
-					Log.instance().configureLog(Log.Type.error, page.getStr("ERRMSGS"));
-					Log.instance().configureLog(Log.Type.warning, page.getStr("WRNMSGS"));
-					Log.instance().configureLog(Log.Type.debug, page.getStr("DBGMSGS"));
-					Log.instance().configureLog(Log.Type.help, page.getStr("HLPMSGS"));
-					Log.instance().configureLog(Log.Type.kills, page.getStr("KILMSGS"));
-					Log.instance().configureLog(Log.Type.combat, page.getStr("CBTMSGS"));
-					Log.instance().configureLog(Log.Type.access, page.getStr("ACCMSGS"));
+					for(final Log.Type logType : Log.Type.values())
+						Log.instance().configureLog(logType, page.getStr(logType.getLogCode()));
 				}
 				if((page.getRawPrivateStr("SYSOPMASK")!=null)
 				||(page.getRawPrivateStr("DISABLE")!=null)
@@ -1951,25 +1947,23 @@ public class MUD extends Thread implements MudHost
 	public static void main(final String a[])
 	{
 		String nameID="";
-		Thread.currentThread().setName(("MUD"));
+		Thread.currentThread().setName("MUD");
 		final Vector<String> iniFiles=new Vector<String>();
 		if(a.length>0)
 		{
-			for (final String element : a)
-				nameID+=" "+element;
-			nameID=nameID.trim();
-			final List<String> V=CMParms.cleanParameterList(nameID);
-			for(int v=0;v<V.size();v++)
+			final Map<String,String[]> hargs=CMParms.parseCommandLineArgs(a);
+			if(hargs.containsKey(""))
+				nameID = hargs.remove("")[0];
+			final String[] boots = hargs.remove("BOOT");
+			if(boots != null)
 			{
-				final String s=V.get(v);
-				if(s.toUpperCase().startsWith("BOOT=")&&(s.length()>5))
-				{
-					iniFiles.addElement(s.substring(5));
-					V.remove(v);
-					v--;
-				}
+				for(final String bootIni : boots)
+					iniFiles.add(bootIni);
 			}
-			nameID=CMParms.combine(V,0);
+			final Map<String,String> fargs = new Hashtable<String,String>();
+			for(final String key : hargs.keySet())
+				fargs.put(key, hargs.get(key)[hargs.get(key).length-1]);
+			clArgs = new ReadOnlyMap<String,String>(fargs);
 		}
 		CMLib.initialize(); // initialize this threads libs
 
@@ -1977,6 +1971,7 @@ public class MUD extends Thread implements MudHost
 			iniFiles.addElement("coffeemud.ini");
 		String iniFile=iniFiles.firstElement();
 		final CMProps page=CMProps.loadPropPage("//"+iniFile);
+		page.putAll(clArgs);
 		if((nameID.length()==0)||(nameID.equalsIgnoreCase( "CoffeeMud" ))||nameID.equalsIgnoreCase("Your Muds Name"))
 		{
 			long idNumber=new Random(System.currentTimeMillis()).nextLong();

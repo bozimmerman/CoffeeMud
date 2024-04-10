@@ -633,6 +633,96 @@ public class CMParms
 	}
 
 	/**
+	 * Does a cleanParamatersList-like parse to generate a parm=val string, which
+	 * is then parsed into a map.  Multiple values for each key are
+	 * allowed.  Remaining chars and strings are put into an empty-key
+	 * value.
+	 * @param args the unparsed args
+	 * @return the map of args
+	 */
+	public static Map<String,String[]> parseCommandLineArgs(final String[] args)
+	{
+		final Map<String,String[]> parms = new Hashtable<String,String[]>();
+		final List<String> vargs = new XArrayList<String>(args);
+		for(int v=0;v<vargs.size();v++)
+		{
+			final String a = vargs.get(v);
+			if(a.startsWith("=")&&(a.length()>1)&&(v>0))
+			{
+				final String parm=vargs.get(v-1).trim().toUpperCase();
+				final String value = a.substring(1);
+				if(parm.length()>0)
+				{
+					String[] vals = new String[1];
+					if(parms.containsKey(parm))
+						vals = Arrays.copyOf(parms.get(parm), parms.get(parm).length+1);
+					vals[vals.length-1] = value;
+					parms.put(parm, vals);
+				}
+				vargs.remove(v);
+				v--;
+				vargs.remove(v);
+				v--;
+				continue;
+			}
+			if(a.endsWith("=")&&(a.length()>1)&&(v<(vargs.size()-1)))
+			{
+				final String parm=a.substring(0,a.length()-1).trim().toUpperCase();
+				final String value=vargs.get(v+1);
+				if(parm.length()>0)
+				{
+					String[] vals = new String[1];
+					if(parms.containsKey(parm))
+						vals = Arrays.copyOf(parms.get(parm), parms.get(parm).length+1);
+					vals[vals.length-1] = value;
+					parms.put(parm, vals);
+				}
+				vargs.remove(v);
+				vargs.remove(v);
+				v--;
+				continue;
+			}
+			if(a.equals("=")&&((v>0)&&(v<(vargs.size()-1))))
+			{
+				final String parm=vargs.get(v-1).toUpperCase().trim();
+				final String value=vargs.get(v+1);
+				if(parm.length()>0)
+				{
+					String[] vals = new String[1];
+					if(parms.containsKey(parm))
+						vals = Arrays.copyOf(parms.get(parm), parms.get(parm).length+1);
+					vals[vals.length-1] = value;
+					parms.put(parm, vals);
+				}
+				vargs.remove(v-1);
+				vargs.remove(v-1);
+				vargs.remove(v-1);
+				v-=2;
+				continue;
+			}
+			final int x = a.indexOf('=');
+			if(x>0)
+			{
+				final String parm = a.substring(0,x).trim().toUpperCase();
+				if(parm.length()>0)
+				{
+					String[] vals = new String[1];
+					if(parms.containsKey(parm))
+						vals = Arrays.copyOf(parms.get(parm), parms.get(parm).length+1);
+					vals[vals.length-1] = a.substring(x+1);
+					parms.put(parm, vals);
+					vargs.remove(v);
+					v--;
+				}
+			}
+		}
+		final String xtra=CMParms.combine(vargs,0);
+		if(xtra.length()>0)
+			parms.put("", new String[] { xtra.toString()});
+		return parms;
+	}
+
+	/**
 	 * Parses the given string space-delimited, with respect for quoted
 	 * strings.
 	 * @param str the string to parse

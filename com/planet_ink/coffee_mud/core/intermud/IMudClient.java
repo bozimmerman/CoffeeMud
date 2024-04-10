@@ -429,6 +429,15 @@ public class IMudClient implements I3Interface
 			R.destroy();
 	}
 
+	public String getI3ChannelName(final String localChannelName)
+	{
+		final String fixedChannel = Intermud.getRemoteChannel(localChannelName);
+		if(((fixedChannel != null)&&(fixedChannel.length()>0)))
+			return fixedChannel;
+		else
+			return localChannelName;
+	}
+
 	@Override
 	public void i3channel(final MOB mob, final String channelName, String message)
 	{
@@ -446,7 +455,8 @@ public class IMudClient implements I3Interface
 			mob.tell(L("You must enter a message!"));
 			return;
 		}
-		if(i3online()&&Intermud.getRemoteChannel(channelName).length()>0)
+		if(i3online()
+		&&Intermud.getRemoteChannel(channelName).length()>0)
 		{
 			final ChannelPacket ck;
 			if((message.startsWith(":")||message.startsWith(","))
@@ -490,7 +500,7 @@ public class IMudClient implements I3Interface
 							return;
 						}
 						ck = new ChannelTargetEmote();
-						ck.channel=channelName; // ck will translate it for us
+						ck.channel = this.getI3ChannelName(channelName);
 						ck.sender_name=mob.Name();
 						ck.sender_visible_name=mob.Name();
 						ck.target_mud=mudName;
@@ -504,7 +514,7 @@ public class IMudClient implements I3Interface
 					{
 						ck = new ChannelTargetEmote();
 						ck.target_name=msg.target().name();
-						ck.channel=channelName; // ck will translate it for us
+						ck.channel = this.getI3ChannelName(channelName);
 						ck.sender_name=mob.Name();
 						ck.sender_visible_name=mob.Name();
 						((ChannelTargetEmote)ck).target_visible_name=msg.target().name();
@@ -514,7 +524,7 @@ public class IMudClient implements I3Interface
 					else
 					{
 						ck = new ChannelEmote();
-						ck.channel=channelName; // ck will translate it for us
+						ck.channel = this.getI3ChannelName(channelName);
 						ck.sender_name=mob.Name();
 						ck.sender_visible_name=mob.Name();
 					}
@@ -522,11 +532,12 @@ public class IMudClient implements I3Interface
 						ck.message=socialFixOut(CMStrings.removeColors(msg.othersMessage()));
 					else
 						ck.message=socialFixOut(CMStrings.removeColors(msg.sourceMessage()));
+					ck.message = ck.convertString(ck.message);
 				}
 				else
 				{
 					ck = new ChannelEmote();
-					ck.channel=channelName; // ck will translate it for us
+					ck.channel = this.getI3ChannelName(channelName);
 					ck.sender_name=mob.Name();
 					ck.sender_visible_name=mob.Name();
 					if(msgstr.trim().startsWith("'")||msgstr.trim().startsWith("`"))
@@ -539,7 +550,7 @@ public class IMudClient implements I3Interface
 			else
 			{
 				ck = new ChannelMessage();
-				ck.channel=channelName; // ck will translate it for us
+				ck.channel = this.getI3ChannelName(channelName);
 				ck.sender_name=mob.Name();
 				ck.sender_visible_name=mob.Name();
 				ck.message=message;
