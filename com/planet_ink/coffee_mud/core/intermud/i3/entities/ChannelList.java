@@ -150,7 +150,8 @@ public class ChannelList implements Serializable, PersistentPeer
 				if(!F.getParentFile().exists())
 					F.getParentFile().mkdirs();
 			}
-			try(ObjectOutputStream out = new ObjectOutputStream(new ByteArrayOutputStream()))
+			final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			try(ObjectOutputStream out = new ObjectOutputStream(bout))
 			{
 				out.writeInt(id);
 				out.writeInt(list.size());
@@ -158,6 +159,9 @@ public class ChannelList implements Serializable, PersistentPeer
 					if(ns.channel.length()>0)
 						out.writeObject(ns);
 			}
+			bout.flush();
+			bout.close();
+			F.saveRaw(bout.toByteArray());
 		}
 		catch(final Exception e)
 		{
