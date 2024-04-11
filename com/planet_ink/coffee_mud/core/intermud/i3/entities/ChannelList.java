@@ -47,7 +47,7 @@ public class ChannelList implements Serializable, PersistentPeer
 	public static final long serialVersionUID=0;
 	private int id;
 	private int modified = Persistent.NEW;
-	private final Hashtable<String,Channel> list;
+	public final Hashtable<String,Channel> list;
 
 	private boolean isRestoring = false;
 	private static final String restoreFilename = "resources/channels.I3Router";

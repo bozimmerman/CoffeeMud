@@ -397,4 +397,27 @@ public class I3Router
 		if(ob instanceof RouterPeer)
 			routerThread.removeRouterPeer((RouterPeer)ob);
 	}
+
+	static public void destroyObjectForever(final Object ob)
+	{
+		if(ob instanceof MudPeer)
+		{
+			((MudPeer)ob).destruct();
+			routerThread.muds.list.remove(((MudPeer)ob).mud.mud_name);
+			routerThread.muds.setMudListId(getMudListId()+1);
+		}
+		else
+		if(ob instanceof RouterPeer)
+		{
+			((RouterPeer)ob).destruct();
+			routerThread.peers.list.remove(((RouterPeer)ob).name);
+			routerThread.peers.setRouterListId(routerThread.peers.getRouterListId()+1);
+		}
+		else
+		if(ob instanceof Channel)
+		{
+			routerThread.channels.list.remove(((Channel)ob).channel);
+			routerThread.channels.setChannelListId(getChannelListId()+1);
+		}
+	}
 }
