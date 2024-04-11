@@ -614,8 +614,8 @@ public class MudPeer extends I3RMud implements ServerObject, PersistentPeer, Net
 			if((pkt = I3Router.readPacket(this))==null)
 			{
 				final long now = System.currentTimeMillis();
-				if(((now - this.lastPing) > 60000)
-				&&((now - this.lastPong) > 60000))
+				if(((now - this.lastPing) > 600000)
+				&&((now - this.lastPong) > 600000))
 				{
 					final PingPacket ppkt = new PingPacket(mud_name);
 					ppkt.sender_mud = I3Router.getRouterName();
@@ -669,8 +669,15 @@ public class MudPeer extends I3RMud implements ServerObject, PersistentPeer, Net
 			case CHANNEL_T:
 				sendChannelMessage((ChannelPacket)mudpkt);
 				break;
-			case ERROR:
 			case AUTH_MUD_REQ:
+				if(mudpkt.sender_mud.equals(mudpkt.target_mud)) // its just a ping
+				{
+					Log.debugOut("Got: "+pkt.getType().name() + " ping from "+mud_name);
+					break;
+				}
+			//$FALL-THROUGH$
+			case AUTH_MUD_REPLY:
+			case ERROR:
 			case PING_REQ:
 			case CHAN_USER_REPLY:
 			case CHAN_USER_REQ:
@@ -684,7 +691,6 @@ public class MudPeer extends I3RMud implements ServerObject, PersistentPeer, Net
 			case WHO_REQ:
 				routePacket(mudpkt);
 				break;
-			case AUTH_MUD_REPLY: // ignore cache packets, just because
 			case UCACHE_UPDATE: // ignore cache packets, just because
 			case STARTUP_REPLY: // a mud can't send a startup reply to any other mud, or the router
 			case CHANLIST_REPLY: // a mud can't send a channel-list to any other mud, or the router
