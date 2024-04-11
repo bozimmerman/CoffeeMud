@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
 import com.planet_ink.coffee_mud.core.intermud.i3.I3Client;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3Mud;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3RMud;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.NetPeer;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -155,9 +155,9 @@ public class StartupReq3 extends IrnPacket
 			this.other.putAll(other);
 	}
 
-	public I3MudX makeMud(final NetPeer peer)
+	public I3RMud makeMud(final NetPeer peer)
 	{
-		final I3MudX mud = new I3MudX(this.sender_router);
+		final I3RMud mud = new I3RMud(this.sender_router);
 		String remoteAddr = peer.getSocket().getRemoteSocketAddress().toString();
 		if(remoteAddr.startsWith("/"))
 			remoteAddr=remoteAddr.substring(1);

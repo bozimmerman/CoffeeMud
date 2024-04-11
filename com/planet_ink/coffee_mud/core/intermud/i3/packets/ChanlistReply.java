@@ -5,7 +5,7 @@ import java.util.Vector;
 
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3RMud;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent;
 import com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router;
 import com.planet_ink.coffee_mud.core.intermud.i3.router.MudPeer;

@@ -4,9 +4,10 @@ import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.ChannelList;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3RMud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.MudList;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.MudXList;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.RMudList;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.RNameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
@@ -42,20 +43,17 @@ import java.net.SocketAddress;
  * limitations under the License.
  *
  */
-public class RouterPeer extends NameServer implements PersistentPeer, ServerObject, NetPeer
+public class RouterPeer extends RNameServer implements PersistentPeer, ServerObject, NetPeer
 {
 	private static final long serialVersionUID = 1L;
 
 	public boolean			isRestoring	= false;
 	public boolean			destructed	= false;
-	public ChannelList		channels	= new ChannelList();
-	public MudXList			muds		= new MudXList();
 	public DataInputStream	in			= null;
 	public DataOutputStream	out			= null;
 	public Socket			sock		= null;
 	public SocketAddress	address		= null;
 	public final long[]		timeoutCtr 	= new long[] {0};
-	public int				password	= 0;
 	public long				lastPing	= System.currentTimeMillis();
 	public long				lastPong	= System.currentTimeMillis();
 	boolean					initialized	= false;
@@ -66,9 +64,9 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		super(addr,p,nom);
 	}
 
-	public RouterPeer(final NameServer srvr, final NetPeer peer)
+	public RouterPeer(final RNameServer srvr, final NetPeer peer)
 	{
-		super(srvr.ip, srvr.port, srvr.name);
+		super(srvr);
 		if(peer != null)
 		{
 			this.sock = peer.getSocket();
@@ -104,9 +102,9 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 				{
 					channels=(ChannelList)newobj;
 					newobj=in.readObject();
-					if(newobj instanceof MudXList)
+					if(newobj instanceof RMudList)
 					{
-						final MudXList mudlist = (MudXList)newobj;
+						final RMudList mudlist = (RMudList)newobj;
 						muds=mudlist;
 					}
 				}
@@ -200,7 +198,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		initialized=true;
 		try
 		{
-			final I3MudX[] muds = I3Router.getMudXPeers();
+			final I3RMud[] muds = I3Router.getMudXPeers();
 			for(int i=0;i<muds.length;i+=5)
 			{
 				final IrnMudlistDelta mlrep = new IrnMudlistDelta(this.name);
@@ -236,14 +234,14 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		if(pkt.mudlist_id > I3Router.getMudListId())
 			I3Router.getRouter().muds.setMudListId(I3Router.getMudListId()+1);
 		this.muds.setMudListId(pkt.mudlist_id);
-		for(final I3MudX m : pkt.mudlist)
+		for(final I3RMud m : pkt.mudlist)
 			this.muds.addMud(m);
 	}
 
 	private void receiveMudlistReq(final IrnMudlistRequest pkt)
 	{
 		final Random r = new Random(System.currentTimeMillis());
-		final I3MudX[] muds = I3Router.getMudXPeers();
+		final I3RMud[] muds = I3Router.getMudXPeers();
 		for(int i=0;i<muds.length;i+=5)
 		{
 			final IrnMudlistDelta mlrep = new IrnMudlistDelta(this.name);

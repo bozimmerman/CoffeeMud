@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.ChannelList;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3Mud;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3RMud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.MudList;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
@@ -540,7 +540,7 @@ public class I3Client implements Runnable, Persistent, Serializable
 		synchronized( muds )
 		{
 			muds.setMudListId(pkt.mudlist_id);
-			for(final I3MudX mudx : pkt.mudlist)
+			for(final I3RMud mudx : pkt.mudlist)
 			{
 				if(mudx.modified != Persistent.DELETED)
 					addMud(mudx);

@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.core.Log;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3RMud;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent;
 import com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router;
 import com.planet_ink.coffee_mud.core.intermud.i3.router.MudPeer;
@@ -27,7 +27,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.router.MudPeer;
 public class MudlistPacket extends IrnPacket
 {
 	public int mudlist_id = 0;
-	public List<I3MudX> mudlist = new Vector<I3MudX>();
+	public List<I3RMud> mudlist = new Vector<I3RMud>();
 
 	public MudlistPacket(final String targetRouter)
 	{
@@ -47,7 +47,7 @@ public class MudlistPacket extends IrnPacket
 			final Map<String,?> map = (Map<String,?>)v.get(7);
 			for(final String name : map.keySet())
 			{
-				final I3MudX mud = new I3MudX(name);
+				final I3RMud mud = new I3RMud(name);
 				final Object o = map.get(name);
 				if(o instanceof Integer)
 				{
@@ -106,7 +106,7 @@ public class MudlistPacket extends IrnPacket
 				"\"" + sender_router + "\",0," +
 				"\"" + target_router + "\",0,"+mudlist_id+",");
 		str.append("([");
-		for(final I3MudX mud : mudlist)
+		for(final I3RMud mud : mudlist)
 		{
 			str.append("\""+mud.mud_name+"\":({");
 			str.append(mud.state<0?-1:0).append(","); //1

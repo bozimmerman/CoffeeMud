@@ -3,7 +3,7 @@ import com.planet_ink.coffee_mud.core.intermud.imc2.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3RMud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
@@ -75,27 +75,27 @@ public class MudPeerList implements Serializable, PersistentPeer
 
 	public void addMud(final MudPeer mud)
 	{
-		if(( mud.mud.mud_name == null )||( mud.mud.mud_name.length() == 0 ))
+		if(( mud.mud_name == null )||( mud.mud_name.length() == 0 ))
 		{
 			return;
 		}
 		{ // temp hack
-			final char c = mud.mud.mud_name.charAt(0);
+			final char c = mud.mud_name.charAt(0);
 
 			if( !(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z') && c != '(' )
 			{
 				return;
 			}
 		}
-		if( list.containsKey(mud.mud.mud_name) )
+		if( list.containsKey(mud.mud_name) )
 		{
-			mud.mud.modified = Persistent.MODIFIED;
+			mud.modified = Persistent.MODIFIED;
 		}
 		else
 		{
-			mud.mud.modified = Persistent.NEW;
+			mud.modified = Persistent.NEW;
 		}
-		list.put(mud.mud.mud_name, mud);
+		list.put(mud.mud_name, mud);
 		modified = Persistent.MODIFIED;
 	}
 
@@ -107,7 +107,7 @@ public class MudPeerList implements Serializable, PersistentPeer
 		}
 		final MudPeer tmp = list.get(mud);
 
-		if( tmp.mud.modified == Persistent.DELETED )
+		if( tmp.modified == Persistent.DELETED )
 		{
 			return null;
 		}
@@ -116,11 +116,11 @@ public class MudPeerList implements Serializable, PersistentPeer
 
 	public void removeMud(final MudPeer mud)
 	{
-		if( mud.mud.mud_name == null )
+		if( mud.mud_name == null )
 		{
 			return;
 		}
-		mud.mud.modified = Persistent.DELETED;
+		mud.modified = Persistent.DELETED;
 		modified = Persistent.MODIFIED;
 	}
 
@@ -159,9 +159,8 @@ public class MudPeerList implements Serializable, PersistentPeer
 						final int numEntries = din.readInt();
 						for(int i=0;i<numEntries;i++)
 						{
-							final I3MudX m = (I3MudX)din.readObject();
-							final MudPeer rpeer = new MudPeer(m.mud_name,(Socket)null);
-							rpeer.mud = m;
+							final I3RMud m = (I3RMud)din.readObject();
+							final MudPeer rpeer = new MudPeer(m,(NetPeer)null);
 							m.state = 0; // mark as down
 							m.modified = Persistent.MODIFIED;
 							this.list.put(m.mud_name, rpeer);
@@ -201,8 +200,10 @@ public class MudPeerList implements Serializable, PersistentPeer
 				out.writeInt(id);
 				out.writeInt(list.size());
 				for(final MudPeer p : list.values())
-					if(p.mud != null)
-						out.writeObject(p.mud);
+				{
+					final I3RMud mud = new I3RMud(p);
+					out.writeObject(mud);
+				}
 			}
 			bout.close();
 			F.saveRaw(bout.toByteArray());

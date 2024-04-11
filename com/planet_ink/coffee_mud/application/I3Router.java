@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.RNameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.router.I3RouterThread;
 import com.planet_ink.coffee_mud.core.intermud.i3.router.MudPeer;
 import com.planet_ink.coffee_mud.core.intermud.i3.router.RouterPeer;
@@ -177,9 +178,9 @@ public class I3Router
 							System.err.println("Try add peer name address port password");
 						else
 						{
-							final NameServer ns = new NameServer(parts[1],CMath.s_int(parts[2]),parts[0]);
+							final RNameServer ns = new RNameServer(parts[1],CMath.s_int(parts[2]),parts[0]);
+							ns.password = CMath.s_int(parts[3]);
 							final RouterPeer rp = new RouterPeer(ns,null);
-							rp.password = CMath.s_int(parts[3]);
 							rp.connect();
 							if(rp.isConnected())
 							{
@@ -221,7 +222,7 @@ public class I3Router
 						final MudPeer[] muds = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getMudPeers();
 						MudPeer mud = null;
 						for(int i=0;i<muds.length;i++)
-							if(muds[i].getMud().mud_name.equals(s))
+							if(muds[i].mud_name.equals(s))
 								mud=muds[i];
 						if(mud == null)
 							System.err.println("Mud '"+s+"' does not exist.");
@@ -277,7 +278,7 @@ public class I3Router
 						final MudPeer[] muds = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getMudPeers();
 						MudPeer mud = null;
 						for(int i=0;i<muds.length;i++)
-							if(muds[i].getMud().mud_name.equals(s))
+							if(muds[i].mud_name.equals(s))
 								mud=muds[i];
 						if(mud == null)
 							System.err.println("Mud '"+s+"' does not exist.");
@@ -327,9 +328,9 @@ public class I3Router
 						final MudPeer[] muds = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getMudPeers();
 						for(final MudPeer peer : muds)
 							System.out.println(
-									CMStrings.padRight(peer.getMud().mud_name, 20)+" "+
-									CMStrings.padRight(peer.getMud().address+":"+peer.getMud().player_port, 20)+" "+
-									CMStrings.padRight(peer.getMud().mud_type+"", 12)+" "+
+									CMStrings.padRight(peer.mud_name, 20)+" "+
+									CMStrings.padRight(peer.address+":"+peer.player_port, 20)+" "+
+									CMStrings.padRight(peer.mud_type+"", 12)+" "+
 									CMStrings.padRight(peer.isConnected()?"up":"down", 5)+" "+
 									CMStrings.padRight(peer.listening.size()+" listens", 10)+" "+
 							"");
@@ -384,31 +385,31 @@ public class I3Router
 						final MudPeer[] muds = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getMudPeers();
 						MudPeer mud = null;
 						for(int i=0;i<muds.length;i++)
-							if(muds[i].getMud().mud_name.equals(s))
+							if(muds[i].mud_name.equals(s))
 								mud=muds[i];
 						if(mud == null)
 							System.err.println("Mud '"+s+"' does not exist.");
 						else
 						{
-							System.out.println("Router  : "+mud.getMud().mud_name);
+							System.out.println("Router  : "+mud.mud_name);
 							System.out.println("Connect : "+mud.isConnected());
-							System.out.println("Address : "+mud.getMud().address);
-							System.out.println("Port    : "+mud.getMud().player_port);
-							System.out.println("Password: "+mud.getMud().password);
-							System.out.println("Admin@  : "+mud.getMud().admin_email);
-							System.out.println("MudType : "+mud.getMud().mud_type);
-							System.out.println("BMudlib : "+mud.getMud().base_mudlib);
-							System.out.println("Mudlib  : "+mud.getMud().mudlib);
-							System.out.println("Driver  : "+mud.getMud().driver);
-							System.out.println("Router  : "+mud.getMud().router);
-							System.out.println("State   : "+mud.getMud().state);
-							System.out.println("Status  : "+mud.getMud().status);
-							System.out.println("TCP-port: "+mud.getMud().tcp_port);
-							System.out.println("UDP-port: "+mud.getMud().udp_port);
-							System.out.println("Version : "+mud.getMud().version);
-							System.out.println("Chan-id : "+mud.getMud().channelListId);
-							System.out.println("Mud-id  : "+mud.getMud().mudListId);
-							System.out.println("Modified: "+mud.getMud().modified);
+							System.out.println("Address : "+mud.address);
+							System.out.println("Port    : "+mud.player_port);
+							System.out.println("Password: "+mud.password);
+							System.out.println("Admin@  : "+mud.admin_email);
+							System.out.println("MudType : "+mud.mud_type);
+							System.out.println("BMudlib : "+mud.base_mudlib);
+							System.out.println("Mudlib  : "+mud.mudlib);
+							System.out.println("Driver  : "+mud.driver);
+							System.out.println("Router  : "+mud.router);
+							System.out.println("State   : "+mud.state);
+							System.out.println("Status  : "+mud.status);
+							System.out.println("TCP-port: "+mud.tcp_port);
+							System.out.println("UDP-port: "+mud.udp_port);
+							System.out.println("Version : "+mud.version);
+							System.out.println("Chan-id : "+mud.channelListId);
+							System.out.println("Mud-id  : "+mud.mudListId);
+							System.out.println("Modified: "+mud.modified);
 						}
 					}
 					else

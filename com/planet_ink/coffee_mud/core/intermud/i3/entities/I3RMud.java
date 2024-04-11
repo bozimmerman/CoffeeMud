@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router;
  * limitations under the License.
  *
  */
-public class I3MudX extends I3Mud implements Serializable
+public class I3RMud extends I3Mud implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -33,30 +33,36 @@ public class I3MudX extends I3Mud implements Serializable
 	public int		disconnectTime	= 0;
 	public int		version			= 3;
 	public String	router			= "";
-	public long 	lastPing 		= System.currentTimeMillis();
-	public long 	lastPong 		= System.currentTimeMillis();
 
 	public final Map<String,Integer> services = new Hashtable<String,Integer>();
 	public final Map<String,String> other = new Hashtable<String,String>();
 
-	public I3MudX(final I3MudX otherMud)
+	public I3RMud(final I3RMud otherMud)
 	{
 		super(otherMud);
-		password		= otherMud.password;
-		mudListId		= otherMud.mudListId;
-		channelListId	= otherMud.channelListId;
-		connectTime		= otherMud.connectTime;
-		disconnectTime  = otherMud.disconnectTime;
-		version			= otherMud.version;
-		router			= otherMud.router;
-		services.putAll(otherMud.services);
-		other.putAll(otherMud.other);
+		copyIn(otherMud);
 	}
 
-	public I3MudX(final String mudName)
+	public I3RMud(final String mudName)
 	{
 		super();
 		super.mud_name = mudName;
 		this.router = I3Router.getRouterName();
+	}
+
+	public void copyIn(final I3RMud other)
+	{
+		super.copyIn(other);
+		password		= other.password;
+		mudListId		= other.mudListId;
+		channelListId	= other.channelListId;
+		connectTime		= other.connectTime;
+		disconnectTime  = other.disconnectTime;
+		version			= other.version;
+		router			= other.router;
+		services.clear();
+		services.putAll(other.services);
+		this.other.clear();
+		this.other.putAll(other.other);
 	}
 }

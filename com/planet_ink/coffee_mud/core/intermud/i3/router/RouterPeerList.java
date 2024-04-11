@@ -3,8 +3,9 @@ import com.planet_ink.coffee_mud.core.intermud.imc2.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3RMud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.RNameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -159,7 +160,7 @@ public class RouterPeerList implements Serializable, PersistentPeer
 						final int numEntries = din.readInt();
 						for(int i=0;i<numEntries;i++)
 						{
-							final NameServer ns = (NameServer)din.readObject();
+							final RNameServer ns = (RNameServer)din.readObject();
 							final RouterPeer rpeer = new RouterPeer(ns,null);
 							this.list.put(ns.name, rpeer);
 						}
@@ -196,9 +197,12 @@ public class RouterPeerList implements Serializable, PersistentPeer
 			{
 				out.writeInt(id);
 				out.writeInt(list.size());
-				for(final NameServer ns : list.values())
+				for(final RouterPeer ns : list.values())
 					if(ns.name.length()>0)
-						out.writeObject(ns);
+					{
+						final RNameServer rns = new RNameServer(ns);
+						out.writeObject(rns);
+					}
 			}
 			bout.close();
 			F.saveRaw(bout.toByteArray());
@@ -207,6 +211,7 @@ public class RouterPeerList implements Serializable, PersistentPeer
 		catch(final Exception e)
 		{
 			Log.errOut("RouterPeerList","Unable to save "+restoreFilename);
+			Log.errOut(e);
 		}
 	}
 

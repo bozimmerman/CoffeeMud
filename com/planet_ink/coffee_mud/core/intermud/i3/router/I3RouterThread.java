@@ -131,7 +131,7 @@ public class I3RouterThread extends Thread implements CMObject
 	{
 		try
 		{
-			final MudPeer old = muds.getMud(ob.mud.mud_name);
+			final MudPeer old = muds.getMud(ob.mud_name);
 			if((old != null) && (old != ob))
 			{
 				if(!old.isConnected())
@@ -142,7 +142,7 @@ public class I3RouterThread extends Thread implements CMObject
 			{
 				final IrnMudlistDelta delta = new IrnMudlistDelta(rpeer.name);
 				delta.mudlist_id = I3Router.getMudListId();
-				delta.mudlist.add(ob.mud);
+				delta.mudlist.add(ob);
 				try
 				{
 					delta.send();
@@ -153,14 +153,14 @@ public class I3RouterThread extends Thread implements CMObject
 				}
 			}
 			muds.addMud(ob);
-			ob.mud.state = -1; // mark online
+			ob.state = -1; // mark online
 			for(final MudPeer rpeer : I3Router.getMudPeers())
 			{
 				if((!rpeer.isConnected())||(rpeer==ob))
 					continue;
-				final MudlistPacket delta = new MudlistPacket(rpeer.getMud().mud_name);
+				final MudlistPacket delta = new MudlistPacket(rpeer.mud_name);
 				delta.mudlist_id = I3Router.getMudListId();
-				delta.mudlist.add(ob.mud);
+				delta.mudlist.add(ob);
 				try
 				{
 					delta.send();
@@ -232,7 +232,7 @@ public class I3RouterThread extends Thread implements CMObject
 
 	protected synchronized void removeMudPeer(final MudPeer ob)
 	{
-		if( muds.getMud(ob.mud.mud_name) != null )
+		if( muds.getMud(ob.mud_name) != null )
 		{
 			muds.setMudListId(muds.getMudListId()+1);
 			for(final RouterPeer rpeer : I3Router.getRouterPeers())
@@ -241,8 +241,8 @@ public class I3RouterThread extends Thread implements CMObject
 					continue;
 				final IrnMudlistDelta delta = new IrnMudlistDelta(rpeer.name);
 				delta.mudlist_id = I3Router.getMudListId();
-				delta.mudlist.add(ob.mud);
-				ob.mud.state = 0; // mark deleted YES!
+				delta.mudlist.add(ob);
+				ob.state = 0; // mark deleted YES!
 				try
 				{
 					delta.send();
@@ -253,14 +253,14 @@ public class I3RouterThread extends Thread implements CMObject
 				}
 			}
 			muds.removeMud(ob);
-			ob.mud.state = 0; // mark deleted YES!
+			ob.state = 0; // mark deleted YES!
 			for(final MudPeer rpeer : I3Router.getMudPeers())
 			{
 				if(!rpeer.isConnected())
 					continue;
-				final MudlistPacket delta = new MudlistPacket(rpeer.getMud().mud_name);
+				final MudlistPacket delta = new MudlistPacket(rpeer.mud_name);
 				delta.mudlist_id = I3Router.getMudListId();
-				delta.mudlist.add(ob.mud);
+				delta.mudlist.add(ob);
 				try
 				{
 					delta.send();

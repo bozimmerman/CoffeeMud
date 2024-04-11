@@ -48,6 +48,14 @@ public class NameServer implements Serializable
 		name = nom;
 	}
 
+	public NameServer(final NameServer other)
+	{
+		super();
+		ip = other.ip;
+		port = other.port;
+		name = other.name;
+	}
+
 	@Override
 	public boolean equals(final Object o)
 	{

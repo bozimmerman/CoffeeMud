@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.I3Exception;
 import com.planet_ink.coffee_mud.core.intermud.i3.I3Client;
 import com.planet_ink.coffee_mud.core.intermud.i3.LPCData;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3RMud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
@@ -331,16 +331,16 @@ public class I3Router
 		return routerThread.channels.getChannelListId();
 	}
 
-	static public I3MudX[] getMudXPeers() {
-		final List<I3MudX> peers = new XArrayList<I3MudX>();
+	static public I3RMud[] getMudXPeers() {
+		final List<I3RMud> peers = new XArrayList<I3RMud>();
 		for(final MudPeer obj : routerThread.getMuds())
 		{
-			final I3MudX mud = obj.getMud();
+			final I3RMud mud = obj;
 			if(!obj.isConnected())
 				mud.state=0;
 			peers.add(mud);
 		}
-		return peers.toArray(new I3MudX[peers.size()]);
+		return peers.toArray(new I3RMud[peers.size()]);
 	}
 
 	static public int getRouterPassword()
@@ -411,7 +411,7 @@ public class I3Router
 		if(ob instanceof MudPeer)
 		{
 			((MudPeer)ob).destruct();
-			routerThread.muds.list.remove(((MudPeer)ob).mud.mud_name);
+			routerThread.muds.list.remove(((MudPeer)ob).mud_name);
 			routerThread.muds.setMudListId(getMudListId()+1);
 		}
 		else

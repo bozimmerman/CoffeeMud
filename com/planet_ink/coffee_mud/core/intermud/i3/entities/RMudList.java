@@ -42,11 +42,11 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
-public class MudXList extends MudList implements Serializable
+public class RMudList extends MudList implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	public void addMud(final I3MudX mud)
+	public void addMud(final I3RMud mud)
 	{
 		super.addMud(mud);
 	}
@@ -57,29 +57,29 @@ public class MudXList extends MudList implements Serializable
 	}
 
 	@Override
-	public I3MudX getMud(final String mud)
+	public I3RMud getMud(final String mud)
 	{
 		final I3Mud mud1 = super.getMud(mud);
-		if(mud1 instanceof I3MudX)
-			return (I3MudX)mud1;
+		if(mud1 instanceof I3RMud)
+			return (I3RMud)mud1;
 		return null;
 	}
 
-	private static final Converter<I3Mud,I3MudX> conv = new Converter<I3Mud,I3MudX>()
+	private static final Converter<I3Mud,I3RMud> conv = new Converter<I3Mud,I3RMud>()
 	{
 
 		@Override
-		public I3MudX convert(final I3Mud obj)
+		public I3RMud convert(final I3Mud obj)
 		{
-			if(obj instanceof I3MudX)
-				return (I3MudX)obj;
+			if(obj instanceof I3RMud)
+				return (I3RMud)obj;
 			return null;
 		}
 
 	};
 
-	public Collection<I3MudX> getMudXList()
+	public Collection<I3RMud> getMudXList()
 	{
-		return new ConvertingCollection<I3Mud,I3MudX>(super.list.values(),conv);
+		return new ConvertingCollection<I3Mud,I3RMud>(super.list.values(),conv);
 	}
 }

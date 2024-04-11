@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3RMud;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent;
 
 /**
@@ -25,7 +25,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent;
 public class IrnMudlistDelta extends IrnPacket
 {
 	public int mudlist_id = 0;
-	public List<I3MudX> mudlist = new Vector<I3MudX>();
+	public List<I3RMud> mudlist = new Vector<I3RMud>();
 
 	public IrnMudlistDelta(final String targetRouter)
 	{
@@ -51,7 +51,7 @@ public class IrnMudlistDelta extends IrnPacket
 				{
 					if(((Integer)o).intValue() == 0)
 					{
-						final I3MudX mud = new I3MudX(name);
+						final I3RMud mud = new I3RMud(name);
 						mud.modified = Persistent.DELETED;
 						this.mudlist.add(mud);
 					}
@@ -61,7 +61,7 @@ public class IrnMudlistDelta extends IrnPacket
 					continue; // skip the wrong
 				@SuppressWarnings("unchecked")
 				final Map<String,?> lst = (Map<String,?>)o;
-				final I3MudX mud = new I3MudX(name);
+				final I3RMud mud = new I3RMud(name);
 				this.mudlist.add(mud);
 				mud.mudListId = s_int(lst.get("old_mudlist_id"));
 				mud.channelListId = s_int(lst.get("old_chanlist_id"));
@@ -113,7 +113,7 @@ public class IrnMudlistDelta extends IrnPacket
 				"\"" + sender_router + "\",0," +
 				"\"" + target_router + "\",0,"+mudlist_id+",");
 		str.append("([");
-		for(final I3MudX mud : mudlist)
+		for(final I3RMud mud : mudlist)
 		{
 			str.append("\""+mud.mud_name+"\":");
 			if(mud.modified == Persistent.DELETED)

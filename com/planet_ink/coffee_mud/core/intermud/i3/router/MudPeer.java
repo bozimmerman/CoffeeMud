@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.collections.XArrayList;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3Mud;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3MudX;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3RMud;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.NetPeer;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChanlistReply;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelAdd;
@@ -83,9 +83,9 @@ import com.planet_ink.coffee_mud.core.intermud.i3.server.ServerObject;
  * limitations under the License.
  *
  */
-public class MudPeer implements ServerObject, PersistentPeer, NetPeer
+public class MudPeer extends I3RMud implements ServerObject, PersistentPeer, NetPeer
 {
-	I3MudX					mud;
+	private static final long serialVersionUID = 1L;
 	boolean					isRestoring	= false;
 	boolean					destructed	= false;
 	private boolean			initialized	= false;
@@ -101,6 +101,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 
 	public MudPeer(final String mudName, final Socket sock)
 	{
+		super(mudName);
 		this.sock = sock;
 		if(sock != null)
 		{
@@ -115,11 +116,11 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			{
 			}
 		}
-		mud = new I3MudX(mudName);
 	}
 
-	public MudPeer(final String mudName, final NetPeer peer)
+	public MudPeer(final I3RMud mud, final NetPeer peer)
 	{
+		super(mud);
 		if(peer != null)
 		{
 			this.sock = peer.getSocket();
@@ -127,17 +128,6 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			this.out = peer.getOutputStream();
 			peer.clearSocket();
 		}
-		mud = new I3MudX(mudName);
-	}
-
-	public void setMud(final I3MudX mud)
-	{
-		this.mud = mud;
-	}
-
-	public I3MudX getMud()
-	{
-		return this.mud;
 	}
 
 	/**
@@ -158,8 +148,11 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			final ObjectInputStream in=new ObjectInputStream(new ByteArrayInputStream(F.raw()));
 			Object newobj;
 			newobj=in.readObject();
-			if(newobj instanceof I3MudX)
-				this.mud = (I3MudX)newobj;
+			if(newobj instanceof I3RMud)
+			{
+				final I3RMud other = (I3RMud)newobj;
+				this.copyIn(other);
+			}
 		}
 		catch(final Exception e)
 		{
@@ -184,6 +177,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 		{
 			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 			final ObjectOutputStream out=new ObjectOutputStream(bout);
+			final I3RMud mud = new I3RMud(this);
 			out.writeObject(mud);
 			out.flush();
 			bout.flush();
@@ -241,20 +235,20 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 		isRestoring	= false;
 		try
 		{
-			final StartupReply srep = new StartupReply(this.mud.mud_name);
-			srep.password = this.mud.password; //what is this supposed to be?
+			final StartupReply srep = new StartupReply(this.mud_name);
+			srep.password = this.password; //what is this supposed to be?
 			srep.send();
 
-			final XArrayList<I3MudX> muds = new XArrayList<I3MudX>();
+			final XArrayList<I3RMud> muds = new XArrayList<I3RMud>();
 			muds.addAll(I3Router.getMudXPeers());
 			for(final RouterPeer peer : I3Router.getRouterPeers())
 			{
-				for(final I3MudX mud : peer.muds.getMudXList())
+				for(final I3RMud mud : peer.muds.getMudXList())
 					muds.add(mud);
 			}
 			for(int i=0;i<muds.size();i+=5)
 			{
-				final MudlistPacket mlrep = new MudlistPacket(this.mud.mud_name);
+				final MudlistPacket mlrep = new MudlistPacket(this.mud_name);
 				mlrep.mudlist_id = I3Router.getMudListId();
 				for(int x=i;x<i+5 && x<muds.size();x++)
 					mlrep.mudlist.add(muds.get(x));
@@ -269,7 +263,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			}
 			for(int i=0;i<muds.size();i+=5)
 			{
-				final ChanlistReply clrep = new ChanlistReply(this.mud.mud_name);
+				final ChanlistReply clrep = new ChanlistReply(this.mud_name);
 				clrep.chanlist_id = I3Router.getChannelListId();
 				for(int x=i;x<i+5 && x<chans.size();x++)
 					clrep.chanlist.add(chans.get(x));
@@ -305,7 +299,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			{
 				if(!peer.isConnected())
 					continue;
-				final I3MudX rmud = peer.muds.getMud(pkt.target_mud);
+				final I3RMud rmud = peer.muds.getMud(pkt.target_mud);
 				if((rmud != null)
 				&&(rmud.state==-1))
 				{
@@ -316,7 +310,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			}
 			for(final RouterPeer peer : peers)
 			{
-				final I3MudX rmud = peer.muds.getMud(pkt.target_mud);
+				final I3RMud rmud = peer.muds.getMud(pkt.target_mud);
 				if(rmud != null)
 				{
 					final IrnData dataPacket = new IrnData(peer.name, pkt);
@@ -341,9 +335,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 	@Override
 	public String getName()
 	{
-		if(mud != null)
-			return mud.mud_name;
-		return "";
+		return mud_name;
 	}
 
 	/**
@@ -450,7 +442,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 		if (c == null)
 			sendError("bad-channel","The channel "+pkt.channel+" doesnt exists.",pkt);
 		else
-		if(!c.owner.equals(mud.mud_name))
+		if(!c.owner.equals(mud_name))
 			sendError("not-allowed","The channel "+pkt.channel+" may not be altered by you.",pkt);
 		else
 		if((pkt.addlist.size()>0)
@@ -492,7 +484,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 	{
 		try
 		{
-			final ErrorPacket pkt = new ErrorPacket(packet.sender_name, mud.mud_name, errorCode, errorMessage, packet.toString());
+			final ErrorPacket pkt = new ErrorPacket(packet.sender_name, mud_name, errorCode, errorMessage, packet.toString());
 			pkt.sender_mud = I3Router.getRouterName();
 			pkt.sender_name=packet.sender_name;
 			pkt.send();
@@ -507,7 +499,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 	{
 		try
 		{
-			final ErrorPacket pkt = new ErrorPacket(mud.mud_name,packet.sender_router, errorCode, errorMessage, packet.toString());
+			final ErrorPacket pkt = new ErrorPacket(mud_name,packet.sender_router, errorCode, errorMessage, packet.toString());
 			pkt.sender_mud = I3Router.getRouterName();
 			pkt.send();
 		}
@@ -577,7 +569,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			|| (I3Router.getRouterPassword() < 0))
 		&&(pkt.target_router.equalsIgnoreCase(I3Router.getRouterName())))
 		{
-			setMud(pkt.makeMud(this));
+			copyIn(pkt.makeMud(this));
 			final Random r = new Random(System.currentTimeMillis());
 			for(final RouterPeer rpeer : I3Router.getRouterPeers())
 			{
@@ -585,7 +577,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 					continue;
 				final IrnMudlistDelta delta = new IrnMudlistDelta(rpeer.name);
 				delta.mudlist_id = r.nextInt(Integer.MAX_VALUE/1000);
-				delta.mudlist.add(mud);
+				delta.mudlist.add(this);
 				try
 				{
 					delta.send();
@@ -625,7 +617,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 				if(((now - this.lastPing) > 60000)
 				&&((now - this.lastPong) > 60000))
 				{
-					final PingPacket ppkt = new PingPacket(mud.mud_name);
+					final PingPacket ppkt = new PingPacket(mud_name);
 					ppkt.sender_mud = I3Router.getRouterName();
 					try
 					{
@@ -641,7 +633,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			if(!(pkt instanceof MudPacket))
 			{
 				sendError("not-allowed", "Not allowed to send this packet.", pkt);
-				Log.errOut("Unwanted message type: "+pkt.getType().name() + " from "+mud.mud_name);
+				Log.errOut("Unwanted message type: "+pkt.getType().name() + " from "+mud_name);
 				return;
 			}
 			lastPong = System.currentTimeMillis();
@@ -706,7 +698,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			case IRN_SHUTDOWN:
 			case IRN_STARTUP_REQ:
 				sendError("not-allowed", "Not allowed to send this packet.", pkt);
-				Log.errOut("Unwanted message type: "+pkt.getType().name() + " from "+mud.mud_name);
+				Log.errOut("Unwanted message type: "+pkt.getType().name() + " from "+mud_name);
 				return;
 			}
 		}
@@ -726,13 +718,13 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 	@Override
 	public String getObjectId()
 	{
-		return mud.mud_name;
+		return mud_name;
 	}
 
 	@Override
 	public void setObjectId(final String id)
 	{
-		mud.mud_name = id;
+		mud_name = id;
 	}
 
 	@Override
