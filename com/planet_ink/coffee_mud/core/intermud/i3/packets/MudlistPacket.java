@@ -144,7 +144,7 @@ public class MudlistPacket extends IrnPacket
 		final MudPeer mudPeer = I3Router.findMudPeer(this.target_router);
 		if(mudPeer == null)
 		{
-			Log.errOut("Unknown peer target: "+target_router);
+			Log.errOut("Unknown mud target: "+target_router);
 			return;
 		}
 		I3Router.writePacket(this, mudPeer);

@@ -479,6 +479,18 @@ public class I3RouterThread extends Thread implements CMObject
 		{
 			Log.errOut(e);
 		}
+		for(final ServerObject obj : getObjects())
+		{
+			try
+			{
+				if(obj instanceof NetPeer)
+					((NetPeer)obj).close();
+			}
+			catch (final IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 		try
 		{
 			this.interrupt();
@@ -488,8 +500,6 @@ public class I3RouterThread extends Thread implements CMObject
 		{
 			Log.errOut(e);
 		}
-		for(final ServerObject obj : getObjects())
-			obj.destruct();
 		boot_time = null;
 	}
 
