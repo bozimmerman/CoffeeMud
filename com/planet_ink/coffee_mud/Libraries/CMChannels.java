@@ -1007,7 +1007,14 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				tweet(message);
 
 			final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
-			channelQueUp(channelInt, msg, this.getExtraChannelDataField(mob, chan));
+			try
+			{
+				channelQueUp(channelInt, msg, this.getExtraChannelDataField(mob, chan));
+			}
+			catch(final Exception e)
+			{
+				Log.errOut(e);
+			}
 			for(final Session S : CMLib.sessions().localOnlineIterable())
 			{
 				final ChannelsLibrary myChanLib=CMLib.get(S)._channels();

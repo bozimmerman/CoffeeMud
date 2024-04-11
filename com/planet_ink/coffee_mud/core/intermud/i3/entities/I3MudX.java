@@ -33,7 +33,6 @@ public class I3MudX extends I3Mud implements Serializable
 	public int		disconnectTime	= 0;
 	public int		version			= 3;
 	public String	router			= "";
-	public boolean	connected		= true;
 	public long 	lastPing 		= System.currentTimeMillis();
 	public long 	lastPong 		= System.currentTimeMillis();
 

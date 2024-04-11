@@ -333,7 +333,8 @@ public class I3Router
 		for(final MudPeer obj : routerThread.getMuds())
 		{
 			final I3MudX mud = obj.getMud();
-			mud.connected = obj.isConnected();
+			if(!obj.isConnected())
+				mud.state=0;
 			peers.add(mud);
 		}
 		return peers.toArray(new I3MudX[peers.size()]);

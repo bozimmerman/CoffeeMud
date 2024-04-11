@@ -29,6 +29,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelDelete;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelEmote;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelListen;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelMessage;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelPacket;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelTargetEmote;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelUserReply;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.ChannelUserRequest;
@@ -224,27 +225,10 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 		destructed = true;
 		initialized	= false;
 		isRestoring	= false;
-		try
-		{
-			if(in != null)
-				in.close();
-			in = null;
+		try {
+			this.close();
 		}
-		catch (final IOException e){ }
-		try
-		{
-			if(out != null)
-				out.close();
-			out=null;
-		}
-		catch (final IOException e){ }
-		try
-		{
-			if(sock != null)
-				sock.close();
-			sock=null;
-		}
-		catch (final IOException e){ }
+		catch (final IOException e) { }
 		I3Router.removeObject(this);
 	}
 
@@ -321,7 +305,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			{
 				final I3MudX rmud = peer.muds.getMud(pkt.target_mud);
 				if((rmud != null)
-				&&(rmud.connected))
+				&&(rmud.state==-1))
 				{
 					final IrnData dataPacket = new IrnData(peer.name, pkt);
 					dataPacket.send();
@@ -352,24 +336,9 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 	 * send to all listening muds, and peer routers
 	 * @param pkt
 	 */
-	private void sendChannelMessage(final MudPacket pkt)
+	private void sendChannelMessage(final ChannelPacket pkt)
 	{
-		String channel;
-		switch(pkt.getType())
-		{
-		case CHANNEL_E:
-			channel = ((ChannelEmote)pkt).channel;
-			break;
-		case CHANNEL_M:
-			channel = ((ChannelMessage)pkt).channel;
-			break;
-		case CHANNEL_T:
-			channel = ((ChannelTargetEmote)pkt).channel;
-			break;
-		default:
-			Log.errOut("Unchanneled message type: "+pkt.getType().name());
-			return;
-		}
+		final String channel = pkt.channel;
 		final Channel chan = I3Router.findChannel(channel);
 		if(chan == null)
 		{
@@ -680,7 +649,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			case CHANNEL_E:
 			case CHANNEL_M:
 			case CHANNEL_T:
-				sendChannelMessage(mudpkt);
+				sendChannelMessage((ChannelPacket)mudpkt);
 				break;
 			case ERROR:
 			case AUTH_MUD_REQ:
@@ -780,16 +749,26 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 	@Override
 	public void close() throws IOException
 	{
-		if((sock != null)
-		&&(isConnected()))
-		{
-			in.close();
-			out.flush();
-			out.close();
-			sock = null;
-			in = null;
-			out = null;
+		try {
+			if(in != null)
+				in.close();
 		}
+		catch (final IOException e){ }
+		in=null;
+		try {
+			if(out != null)
+			{
+				out.flush();
+				out.close();
+			}
+		}
+		catch (final IOException e){ }
+		out=null;
+		try {
+			if(sock != null)
+				sock.close();
+		}
+		catch (final IOException e){ }
 		initialized	= false;
 		isRestoring	= false;
 	}

@@ -163,7 +163,6 @@ public class MudPeerList implements Serializable, PersistentPeer
 							final MudPeer rpeer = new MudPeer(m.mud_name,(Socket)null);
 							rpeer.mud = m;
 							m.state = 0; // mark as down
-							m.connected = false; // mark as down
 							m.modified = Persistent.MODIFIED;
 							this.list.put(m.mud_name, rpeer);
 						}

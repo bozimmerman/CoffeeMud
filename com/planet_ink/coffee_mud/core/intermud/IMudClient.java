@@ -509,6 +509,8 @@ public class IMudClient implements I3Interface
 						((ChannelTargetEmote)ck).target_visible_name=tellName;
 						if((msg.targetMessage()!=null)&&(msg.targetMessage().length()>0))
 							((ChannelTargetEmote)ck).message_target=socialFixOut(CMStrings.removeColors(msg.targetMessage()));
+						if((msg.othersMessage()!=null)&&(msg.othersMessage().length()>0))
+							((ChannelTargetEmote)ck).message=socialFixOut(CMStrings.removeColors(msg.othersMessage()));
 					}
 					else
 					if(msg.target()!=null)

@@ -176,27 +176,10 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 	{
 		destructed = true;
 		initialized=false;
-		try
-		{
-			if(in != null)
-				in.close();
-			in=null;
+		try {
+			this.close();
 		}
-		catch (final IOException e){ }
-		try
-		{
-			if(out != null)
-				out.close();
-			out=null;
-		}
-		catch (final IOException e){ }
-		try
-		{
-			if(sock != null)
-				sock.close();
-			sock=null;
-		}
-		catch (final IOException e){ }
+		catch (final IOException e) { }
 		I3Router.removeObject(this);
 	}
 
@@ -318,24 +301,9 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		I3Router.removeObject(this);
 	}
 
-	private void receiveRemoteChannelMsg(final MudPacket pkt)
+	private void receiveRemoteChannelMsg(final ChannelPacket pkt)
 	{
-		String channel;
-		switch(pkt.getType())
-		{
-		case CHANNEL_E:
-			channel = ((ChannelEmote)pkt).channel;
-			break;
-		case CHANNEL_M:
-			channel = ((ChannelMessage)pkt).channel;
-			break;
-		case CHANNEL_T:
-			channel = ((ChannelTargetEmote)pkt).channel;
-			break;
-		default:
-			Log.errOut("Unchanneled message type: "+pkt.getType().name());
-			return;
-		}
+		final String channel = pkt.channel;
 		final Channel chan = I3Router.findChannel(channel);
 		if(chan == null)
 		{
@@ -387,7 +355,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		case CHANNEL_M:
 		case CHANNEL_T:
 			// these need the special local Channel treatment
-			receiveRemoteChannelMsg(mudpkt);
+			receiveRemoteChannelMsg((ChannelPacket)mudpkt);
 			break;
 		case LOCATE_REQ:
 			//these need the special local locate broadcast treatment
@@ -639,16 +607,27 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 	@Override
 	public void close() throws IOException
 	{
-		if((sock != null)
-		&&(isConnected()))
-		{
-			in.close();
-			out.flush();
-			out.close();
-			sock = null;
-			in = null;
-			out = null;
+		try {
+			if(in != null)
+				in.close();
 		}
+		catch (final IOException e){ }
+		in=null;
+		try {
+			if(out != null)
+			{
+				out.flush();
+				out.close();
+			}
+		}
+		catch (final IOException e){ }
+		out=null;
+		try {
+			if(sock != null)
+				sock.close();
+		}
+		catch (final IOException e){ }
+		sock=null;
 		initialized=false;
 	}
 

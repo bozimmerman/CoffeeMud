@@ -99,7 +99,7 @@ public class IrnMudlistDelta extends IrnPacket
 				mud.mud_name = s_str(lst.get("name"));
 				mud.address = s_str(lst.get("ip"));
 				mud.version = s_int(lst.get("version"));
-				mud.connected = s_int(lst.get("restart_delay")) == -1;
+				mud.state = (s_int(lst.get("restart_delay")) == -1)?-1:0;
 				mud.router = s_str(lst.get("router"));
 			}
 		}
@@ -153,7 +153,7 @@ public class IrnMudlistDelta extends IrnPacket
 				str.append("\"").append("name").append("\":").append("\"").append(mud.mud_name).append("\",");
 				str.append("\"").append("ip").append("\":").append("\"").append(mud.address).append("\",");
 				str.append("\"").append("version").append("\":").append(mud.version).append(",");
-				str.append("\"").append("restart_delay").append("\":").append(mud.connected?-1:0).append(",");
+				str.append("\"").append("restart_delay").append("\":").append(mud.state<0?-1:0).append(",");
 				str.append("\"").append("router").append("\":").append("\"").append(mud.router).append("\",");
 				str.append("]),");
 			}

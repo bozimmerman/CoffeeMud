@@ -284,9 +284,11 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 					final ChannelTargetEmote ct = (ChannelTargetEmote)ck;
 					if(ct.message_target != null)
 						ct.message_target = fixColors(CMProps.applyINIFilter(ct.message_target,CMProps.Str.CHANNELFILTER));
-					if((ct.target_mud!=null)&&(ck.target_mud.equalsIgnoreCase(getMudName())))
-						targetMOB=CMLib.players().getLoadPlayer(ck.target_name);
-					if((ct.target_visible_name!=null)&&(ck.target_mud!=null)&&(targetMOB==null))
+					if((ct.target_mud!=null)
+					&&(ct.target_mud.equals(getMudName()))
+					&&(CMLib.players().isLoadedPlayer(ct.target_name)))
+						targetMOB=CMLib.players().getPlayer(ct.target_name);
+					if((ct.target_visible_name!=null)&&(targetMOB==null))
 					{
 						killtargetmob=true;
 						targetMOB=CMClass.getFactoryMOB();
@@ -315,8 +317,15 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelCode),str);
 				}
 				CMLib.commands().monitorGlobalMessage(mob.location(), msg);
-				if(channelInt>=0)
-					channels.channelQueUp(channelInt, msg, 0);
+				try
+				{
+					if(channelInt>=0)
+						channels.channelQueUp(channelInt, msg, 0);
+				}
+				catch(final Exception e)
+				{
+					Log.errOut(e);
+				}
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					final MOB M=S.mob();

@@ -59,7 +59,6 @@ public class MudlistPacket extends IrnPacket
 					continue; // skip the wrong
 				final List<?> lst = (List<?>)o;
 				mud.state = s_int(lst,0);
-				mud.connected = mud.state<0;
 				mud.address = s_str(lst,1);
 				mud.player_port = s_int(lst,2);
 				mud.tcp_port = s_int(lst,3);
@@ -110,7 +109,7 @@ public class MudlistPacket extends IrnPacket
 		for(final I3MudX mud : mudlist)
 		{
 			str.append("\""+mud.mud_name+"\":({");
-			str.append(mud.connected?-1:0).append(","); //1
+			str.append(mud.state<0?-1:0).append(","); //1
 			str.append("\"").append(mud.address).append("\",");//2
 			str.append(mud.player_port).append(","); //3
 			str.append(mud.tcp_port).append(","); //4
