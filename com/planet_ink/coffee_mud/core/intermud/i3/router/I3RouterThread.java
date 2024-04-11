@@ -153,7 +153,6 @@ public class I3RouterThread extends Thread implements CMObject
 				}
 			}
 			muds.addMud(ob);
-			ob.state = -1; // mark online
 			for(final MudPeer rpeer : I3Router.getMudPeers())
 			{
 				if((!rpeer.isConnected())||(rpeer==ob))

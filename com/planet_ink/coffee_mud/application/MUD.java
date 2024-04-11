@@ -1070,7 +1070,7 @@ public class MUD extends Thread implements MudHost
 				if(routersSepV.size()>0)
 				{
 					final String mudName = CMProps.getVar(CMProps.Str.MUDNAME);
-					final String adminEmail = CMProps.getVar(CMProps.Str.MUDNAME);
+					final String adminEmail = CMProps.getVar(CMProps.Str.ADMINEMAIL);
 					final String[] routersArray = routersSepV.toArray(new String[0]);
 					I3Server.start(mudName,i3port,imud,routersArray,adminEmail);
 				}

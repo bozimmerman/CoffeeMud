@@ -137,6 +137,7 @@ public class I3RConnections implements ServerObject
 								final I3RMud mudx = mpkt.makeMud(peer);
 								Log.sysOut("Accepting mud "+mpkt.sender_router);
 								final MudPeer newMud = new MudPeer(mudx, peer);
+								newMud.state = -1; // mark online
 								I3Router.addObject(newMud);
 							}
 							else

@@ -3,6 +3,7 @@ import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Vector;
 
+import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet.PacketType;
 
@@ -41,11 +42,11 @@ public class IrnData extends IrnPacket
 			final List<?> nextPacket = (List<?>)v.get(6);
 			if(nextPacket.size()>0)
 			{
-				final String typeStr = v.get(0).toString();
-				final PacketType type = PacketType.valueOf(typeStr.toUpperCase());
+				final String typeStr = nextPacket.get(0).toString().toUpperCase().replace('-','_');
+				final PacketType type = (PacketType)CMath.s_valueOf(PacketType.class, typeStr);
 				if(type == null)
 				{
-					Log.errOut("Intermud","Unknown data packet type: " + typeStr);
+					Log.errOut("Unknown data packet type: " + typeStr);
 					return;
 				}
 				final Class<? extends Packet> pktClass = type.packetClass;
@@ -54,12 +55,12 @@ public class IrnData extends IrnPacket
 					try
 					{
 						final Constructor<? extends Packet> con = pktClass.getConstructor(Vector.class);
-						innerPacket = con.newInstance(v);
+						innerPacket = con.newInstance(nextPacket);
 					}
 					catch( final Exception  e )
 					{
-						Log.errOut("Intermud","Error constructing :"+type+" packet:"+e.getMessage());
-						Log.debugOut("Intermud",e);
+						Log.errOut("Error constructing :"+type+" packet:"+e.getMessage());
+						Log.debugOut(e);
 					}
 				}
 			}

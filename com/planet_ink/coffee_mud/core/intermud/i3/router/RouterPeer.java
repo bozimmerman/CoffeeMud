@@ -236,6 +236,18 @@ public class RouterPeer extends RNameServer implements PersistentPeer, ServerObj
 		this.muds.setMudListId(pkt.mudlist_id);
 		for(final I3RMud m : pkt.mudlist)
 			this.muds.addMud(m);
+		for(final MudPeer mud : I3Router.getMudPeers())
+		{
+			if(mud.isConnected())
+			{
+				final MudlistPacket mpkt = new MudlistPacket(mud.mud_name);
+				mpkt.mudlist_id=I3Router.getMudListId();
+				mud.mudListId=I3Router.getMudListId();
+				for(final I3RMud m : pkt.mudlist)
+					mpkt.mudlist.add(m);
+				I3Router.writePacket(mpkt);
+			}
+		}
 	}
 
 	private void receiveMudlistReq(final IrnMudlistRequest pkt)
@@ -274,6 +286,18 @@ public class RouterPeer extends RNameServer implements PersistentPeer, ServerObj
 			}
 			else
 				this.channels.addChannel(c);
+		}
+		for(final MudPeer mud : I3Router.getMudPeers())
+		{
+			if(mud.isConnected())
+			{
+				final ChanlistReply cpkt = new ChanlistReply(mud.mud_name);
+				cpkt.chanlist_id=I3Router.getChannelListId();
+				mud.channelListId=I3Router.getChannelListId();
+				for(final Channel c : pkt.chanlist)
+					cpkt.chanlist.add(c);
+				I3Router.writePacket(cpkt);
+			}
 		}
 	}
 
