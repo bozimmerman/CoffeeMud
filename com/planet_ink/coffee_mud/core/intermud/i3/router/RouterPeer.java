@@ -171,6 +171,16 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		return isRestoring;
 	}
 
+	/**
+	 * Return the identifying name
+	 * @return the name
+	 */
+	@Override
+	public String getName()
+	{
+		return name;
+	}
+
 	@Override
 	public void destruct()
 	{
@@ -369,7 +379,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		case SHUTDOWN:
 		case STARTUP_REPLY:
 		case STARTUP_REQ_3:
-		case UCACHE_MUD_UPDATE:
+		case AUTH_MUD_REPLY:
 		case UCACHE_UPDATE:
 		case MUDLIST:
 		case IRN_CHANLIST_DELTA:
@@ -379,7 +389,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 		case IRN_MUDLIST_REQ:
 		case IRN_PING:
 		case IRN_SHUTDOWN:
-		case IRN_STARTUP_REQUEST:
+		case IRN_STARTUP_REQ:
 			break;
 		}
 	}
@@ -435,7 +445,7 @@ public class RouterPeer extends NameServer implements PersistentPeer, ServerObje
 			lastPong = System.currentTimeMillis();
 			switch(pkt.getType())
 			{
-			case IRN_STARTUP_REQUEST:
+			case IRN_STARTUP_REQ:
 				receiveRouterStartRequest((IrnStartupRequest)pkt);
 				break;
 			case IRN_MUDLIST_REQ:

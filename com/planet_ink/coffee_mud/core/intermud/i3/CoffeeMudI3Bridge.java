@@ -474,7 +474,7 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 				}
 			}
 			break;
-		case UCACHE_MUD_UPDATE:
+		case AUTH_MUD_REPLY:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final MudAuthReply lk=(MudAuthReply)packet;

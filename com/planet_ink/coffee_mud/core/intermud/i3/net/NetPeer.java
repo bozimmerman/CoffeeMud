@@ -26,6 +26,12 @@ import java.net.Socket;
 public interface NetPeer extends java.io.Closeable
 {
 	/**
+	 * Return the identifying name
+	 * @return the name
+	 */
+	public String getName();
+
+	/**
 	 * Check if the peer is still connected
 	 */
 	public boolean isConnected();

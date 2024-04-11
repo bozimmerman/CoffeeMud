@@ -123,6 +123,8 @@ public class I3Router
 
 	public static boolean writePacket(final Packet mudpkt, final NetPeer peer)
 	{
+		if(!peer.isConnected())
+			return false;
 		final String cmd = mudpkt.toString();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.I3))
 			Log.sysOut("I3Router","Sending: "+cmd);
@@ -149,7 +151,8 @@ public class I3Router
 			final String errMsg=e.getMessage()==null?e.toString():e.getMessage();
 			if(errMsg!=null)
 			{
-				Log.errOut("I3Router","557-"+errMsg);
+				Log.errOut("557-"+errMsg);
+				Log.errOut("Could not send "+mudpkt.getType()+" to "+peer.getName());
 			}
 			// this means the peer is DEAD!!!
 			if(peer instanceof MudPeer)
@@ -370,13 +373,18 @@ public class I3Router
 	{
 		try
 		{
-			try
+			for(final RouterPeer peer : I3Router.getRouterPeers())
 			{
-				final ShutdownPacket shutdown=new ShutdownPacket();
-				shutdown.send();
-			}
-			catch(final Exception e)
-			{
+				if(!peer.isConnected())
+					continue;
+				try
+				{
+					final IrnShutdown shutdown=new IrnShutdown(peer.name);
+					shutdown.send();
+				}
+				catch(final Exception e)
+				{
+				}
 			}
 			routerThread.shutdown();
 			started=false;

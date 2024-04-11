@@ -98,7 +98,7 @@ public class I3RConnections implements ServerObject
 					else
 					if((pkt = I3Router.readPacket(peer)) != null)
 					{
-						if(pkt.getType() == Packet.PacketType.IRN_STARTUP_REQUEST)
+						if(pkt.getType() == Packet.PacketType.IRN_STARTUP_REQ)
 						{
 							final IrnStartupRequest ipkt = (IrnStartupRequest)pkt;
 							if(((ipkt.target_password == I3Router.getRouterPassword())

@@ -303,6 +303,8 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			final RouterPeer[] peers = I3Router.getRouterPeers();
 			for(final RouterPeer peer : peers)
 			{
+				if(!peer.isConnected())
+					continue;
 				final I3MudX rmud = peer.muds.getMud(pkt.target_mud);
 				if((rmud != null)
 				&&(rmud.state==-1))
@@ -333,6 +335,18 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 	}
 
 	/**
+	 * Return the identifying name
+	 * @return the name
+	 */
+	@Override
+	public String getName()
+	{
+		if(mud != null)
+			return mud.mud_name;
+		return "";
+	}
+
+	/**
 	 * send to all listening muds, and peer routers
 	 * @param pkt
 	 */
@@ -353,6 +367,8 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 		}
 		for(final RouterPeer peer : I3Router.getRouterPeers())
 		{
+			if(!peer.isConnected())
+				continue;
 			final IrnData chanData = new IrnData(peer.name, pkt);
 			try
 			{
@@ -383,6 +399,8 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			delta.chanlist.add(c);
 			for(final RouterPeer rpeer : I3Router.getRouterPeers())
 			{
+				if(!rpeer.isConnected())
+					continue;
 				delta.target_router = rpeer.name;
 				try
 				{
@@ -411,6 +429,8 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			delta.chanlist_id = I3Router.getChannelListId();
 			for(final RouterPeer rpeer : I3Router.getRouterPeers())
 			{
+				if(!rpeer.isConnected())
+					continue;
 				delta.target_router = rpeer.name;
 				try
 				{
@@ -444,6 +464,8 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			delta.chanlist.add(c);
 			for(final RouterPeer rpeer : I3Router.getRouterPeers())
 			{
+				if(!rpeer.isConnected())
+					continue;
 				delta.target_router = rpeer.name;
 				try
 				{
@@ -536,6 +558,8 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 		}
 		for(final RouterPeer peer : I3Router.getRouterPeers())
 		{
+			if(!peer.isConnected())
+				continue;
 			final IrnData chanData = new IrnData(peer.name, pkt);
 			try
 			{
@@ -557,6 +581,8 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			final Random r = new Random(System.currentTimeMillis());
 			for(final RouterPeer rpeer : I3Router.getRouterPeers())
 			{
+				if(!rpeer.isConnected())
+					continue;
 				final IrnMudlistDelta delta = new IrnMudlistDelta(rpeer.name);
 				delta.mudlist_id = r.nextInt(Integer.MAX_VALUE/1000);
 				delta.mudlist.add(mud);
@@ -666,7 +692,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			case WHO_REQ:
 				routePacket(mudpkt);
 				break;
-			case UCACHE_MUD_UPDATE: // ignore cache packets, just because
+			case AUTH_MUD_REPLY: // ignore cache packets, just because
 			case UCACHE_UPDATE: // ignore cache packets, just because
 			case STARTUP_REPLY: // a mud can't send a startup reply to any other mud, or the router
 			case CHANLIST_REPLY: // a mud can't send a channel-list to any other mud, or the router
@@ -678,7 +704,7 @@ public class MudPeer implements ServerObject, PersistentPeer, NetPeer
 			case IRN_MUDLIST_REQ:
 			case IRN_PING:
 			case IRN_SHUTDOWN:
-			case IRN_STARTUP_REQUEST:
+			case IRN_STARTUP_REQ:
 				sendError("not-allowed", "Not allowed to send this packet.", pkt);
 				Log.errOut("Unwanted message type: "+pkt.getType().name() + " from "+mud.mud_name);
 				return;

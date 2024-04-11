@@ -212,9 +212,22 @@ public class I3RouterThread extends Thread implements CMObject
 	protected synchronized RouterPeer findRouterPeer(final String name)
 	{
 		final RouterPeer ob = peers.getRouter(name);
-		if((ob != null) && (!ob.getDestructed()) )
-			return ob;
+		if( ob != null )
+		{
+			if( !ob.getDestructed() )
+				return ob;
+		}
 		return null;
+	}
+
+	protected synchronized MudPeer getMudPeer(final String name)
+	{
+		return muds.getMud(name);
+	}
+
+	protected synchronized RouterPeer getRouterPeer(final String name)
+	{
+		return peers.getRouter(name);
 	}
 
 	protected synchronized void removeMudPeer(final MudPeer ob)
@@ -273,12 +286,6 @@ public class I3RouterThread extends Thread implements CMObject
 			req1.sender_password = this.password;
 			req1.target_password = peer.password;
 			req1.send();
-			final IrnMudlistRequest req2 = new IrnMudlistRequest(peer.name);
-			req2.mudlist_id = peer.muds.getMudListId();
-			req2.send();
-			final IrnChanlistRequest req3 = new IrnChanlistRequest(peer.name);
-			req3.chanlist_id = peer.channels.getChannelListId();
-			req3.send();
 		}
 		catch (final InvalidPacketException e)
 		{
@@ -453,7 +460,7 @@ public class I3RouterThread extends Thread implements CMObject
 
 	public void shutdown()
 	{
-		if(running || boot_time == null)
+		if(!running || boot_time == null)
 			return;
 		running=false;
 		if(listen_thread!=null)
@@ -461,6 +468,25 @@ public class I3RouterThread extends Thread implements CMObject
 			listen_thread.close();
 			CMLib.killThread(listen_thread,500,1);
 			listen_thread=null;
+		}
+		try
+		{
+			muds.save();
+			channels.save();
+			peers.save();
+		}
+		catch(final Exception e)
+		{
+			Log.errOut(e);
+		}
+		try
+		{
+			this.interrupt();
+			Thread.sleep(501);
+		}
+		catch(final Exception e)
+		{
+			Log.errOut(e);
 		}
 		for(final ServerObject obj : getObjects())
 			obj.destruct();

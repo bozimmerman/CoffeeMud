@@ -163,12 +163,13 @@ public class I3Router
 					System.out.println("         : del mud name");
 					System.out.println("         : del channel name");
 					System.out.println("exit     : shutdown");
+					System.out.println(" * names are case-sensitive");
 				}
 				else
 				if(s.toLowerCase().startsWith("add "))
 				{
 					s=s.substring(4).trim();
-					if(s.equalsIgnoreCase("peer "))
+					if(s.toLowerCase().startsWith("peer "))
 					{
 						s=s.substring(5).trim();
 						final String[] parts = s.split(" ");
@@ -183,6 +184,7 @@ public class I3Router
 							if(rp.isConnected())
 							{
 								com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.addObject(rp);
+								com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getRouter().initializePeer(rp);
 								System.out.println("Added peer '"+ns.name+"'");
 							}
 							else
@@ -196,10 +198,14 @@ public class I3Router
 				if(s.toLowerCase().startsWith("del "))
 				{
 					s=s.substring(4).trim();
-					if(s.equalsIgnoreCase("peer "))
+					if(s.toLowerCase().startsWith("peer "))
 					{
 						s=s.substring(5).trim();
-						final RouterPeer peer = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.findRouterPeer(s);
+						final RouterPeer[] peers = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getRouterPeers();
+						RouterPeer peer = null;
+						for(int i=0;i<peers.length;i++)
+							if(peers[i].name.equals(s))
+								peer=peers[i];
 						if(peer == null)
 							System.err.println("Peer '"+s+"' does not exist.");
 						else
@@ -209,10 +215,14 @@ public class I3Router
 						}
 					}
 					else
-					if(s.equalsIgnoreCase("mud "))
+					if(s.toLowerCase().startsWith("mud "))
 					{
 						s=s.substring(4).trim();
-						final MudPeer mud = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.findMudPeer(s);
+						final MudPeer[] muds = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getMudPeers();
+						MudPeer mud = null;
+						for(int i=0;i<muds.length;i++)
+							if(muds[i].getMud().mud_name.equals(s))
+								mud=muds[i];
 						if(mud == null)
 							System.err.println("Mud '"+s+"' does not exist.");
 						else
@@ -222,7 +232,7 @@ public class I3Router
 						}
 					}
 					else
-					if(s.equalsIgnoreCase("channel "))
+					if(s.toLowerCase().startsWith("channel "))
 					{
 						s=s.substring(8).trim();
 						final Channel chan = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.findChannel(s);
@@ -241,10 +251,14 @@ public class I3Router
 				if(s.toLowerCase().startsWith("boot "))
 				{
 					s=s.substring(5).trim();
-					if(s.equalsIgnoreCase("peer "))
+					if(s.toLowerCase().startsWith("peer "))
 					{
 						s=s.substring(5).trim();
-						final RouterPeer peer = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.findRouterPeer(s);
+						final RouterPeer[] peers = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getRouterPeers();
+						RouterPeer peer = null;
+						for(int i=0;i<peers.length;i++)
+							if(peers[i].name.equals(s))
+								peer=peers[i];
 						if(peer == null)
 							System.err.println("Peer '"+s+"' does not exist.");
 						else
@@ -257,10 +271,14 @@ public class I3Router
 						}
 					}
 					else
-					if(s.equalsIgnoreCase("mud "))
+					if(s.toLowerCase().startsWith("mud "))
 					{
 						s=s.substring(4).trim();
-						final MudPeer mud = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.findMudPeer(s);
+						final MudPeer[] muds = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getMudPeers();
+						MudPeer mud = null;
+						for(int i=0;i<muds.length;i++)
+							if(muds[i].getMud().mud_name.equals(s))
+								mud=muds[i];
 						if(mud == null)
 							System.err.println("Mud '"+s+"' does not exist.");
 						else
@@ -322,6 +340,79 @@ public class I3Router
 				else
 				if(s.toLowerCase().startsWith("info "))
 				{
+					s=s.substring(5).trim();
+					if(s.toLowerCase().startsWith("peer "))
+					{
+						s=s.substring(5).trim();
+						final RouterPeer[] peers = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getRouterPeers();
+						RouterPeer peer = null;
+						for(int i=0;i<peers.length;i++)
+							if(peers[i].name.equals(s))
+								peer=peers[i];
+						if(peer == null)
+							System.err.println("Peer '"+s+"' does not exist.");
+						else
+						{
+							System.out.println("Router  : "+peer.name);
+							System.out.println("Connect : "+peer.isConnected());
+							System.out.println("IP      : "+peer.ip);
+							System.out.println("Port    : "+peer.port);
+							System.out.println("Password: "+peer.password);
+							System.out.println("Chans   : "+peer.channels.list.size()+" ("+peer.channels.getChannelListId()+")");
+							System.out.println("Muds    : "+peer.muds.getMuds().size()+" ("+peer.muds.getMudListId()+")");
+							System.out.println("Modified: "+peer.modified);
+						}
+					}
+					else
+					if(s.toLowerCase().startsWith("channels"))
+					{
+						final Channel chan = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.findChannel(s);
+						if(chan == null)
+							System.err.println("Channel '"+s+"' does not exist.");
+						else
+						{
+							System.out.println("Channel : "+chan.channel);
+							System.out.println("Owner   : "+chan.owner);
+							System.out.println("Type    : "+chan.type);
+							System.out.println("Modified: "+chan.modified);
+						}
+					}
+					else
+					if(s.toLowerCase().startsWith("mud "))
+					{
+						s=s.substring(4).trim();
+						final MudPeer[] muds = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getMudPeers();
+						MudPeer mud = null;
+						for(int i=0;i<muds.length;i++)
+							if(muds[i].getMud().mud_name.equals(s))
+								mud=muds[i];
+						if(mud == null)
+							System.err.println("Mud '"+s+"' does not exist.");
+						else
+						{
+							System.out.println("Router  : "+mud.getMud().mud_name);
+							System.out.println("Connect : "+mud.isConnected());
+							System.out.println("Address : "+mud.getMud().address);
+							System.out.println("Port    : "+mud.getMud().player_port);
+							System.out.println("Password: "+mud.getMud().password);
+							System.out.println("Admin@  : "+mud.getMud().admin_email);
+							System.out.println("MudType : "+mud.getMud().mud_type);
+							System.out.println("BMudlib : "+mud.getMud().base_mudlib);
+							System.out.println("Mudlib  : "+mud.getMud().mudlib);
+							System.out.println("Driver  : "+mud.getMud().driver);
+							System.out.println("Router  : "+mud.getMud().router);
+							System.out.println("State   : "+mud.getMud().state);
+							System.out.println("Status  : "+mud.getMud().status);
+							System.out.println("TCP-port: "+mud.getMud().tcp_port);
+							System.out.println("UDP-port: "+mud.getMud().udp_port);
+							System.out.println("Version : "+mud.getMud().version);
+							System.out.println("Chan-id : "+mud.getMud().channelListId);
+							System.out.println("Mud-id  : "+mud.getMud().mudListId);
+							System.out.println("Modified: "+mud.getMud().modified);
+						}
+					}
+					else
+						System.err.println("Try info peer, mud, or channel");
 				}
 				else
 				if(s.equalsIgnoreCase("exit"))

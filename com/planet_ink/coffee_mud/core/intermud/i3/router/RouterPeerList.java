@@ -206,7 +206,7 @@ public class RouterPeerList implements Serializable, PersistentPeer
 		}
 		catch(final Exception e)
 		{
-			Log.errOut("RouterPeerList","Unable to read "+restoreFilename);
+			Log.errOut("RouterPeerList","Unable to save "+restoreFilename);
 		}
 	}
 
