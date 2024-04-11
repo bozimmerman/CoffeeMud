@@ -191,7 +191,7 @@ public class Drider extends StdRace
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.disposition()|PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_INFRARED);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_INFRARED);
 	}
 
 	@Override
