@@ -302,7 +302,7 @@ public class I3RouterThread extends Thread implements CMObject
 	 *  	interactive object for each.
 	 *
 	 */
-	public void start()
+	public synchronized void start()
 	{
 		if( boot_time != null )
 		{

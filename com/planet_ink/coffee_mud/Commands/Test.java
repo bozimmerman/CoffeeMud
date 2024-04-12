@@ -3788,7 +3788,7 @@ public class Test extends StdCommand
 					}
 					else
 					{
-						final SpaceObject orig2=(SpaceObject)obj2.copyOf();
+						//final SpaceObject orig2=(SpaceObject)obj2.copyOf();
 						obj1.setDirection(pair.first);
 						obj1.setSpeed(pair.second.longValue());
 						if(!space.canMaybeIntercept(obj1, obj2, maxTicks, pair.second.longValue()))
@@ -3800,7 +3800,7 @@ public class Test extends StdCommand
 						}
 						int atti=0;
 						final long radius = obj1.radius()+obj2.radius();
-						final double orig = space.getDistanceFrom(obj1, obj2);
+						//final double orig = space.getDistanceFrom(obj1, obj2);
 						for(;atti<maxTicks;atti++)
 						{
 							final long[] oldCoords1=obj1.coordinates().clone();
@@ -3856,7 +3856,7 @@ public class Test extends StdCommand
 					}
 					else
 					{
-						final SpaceObject orig2=(SpaceObject)obj2.copyOf();
+						//final SpaceObject orig2=(SpaceObject)obj2.copyOf();
 						obj1.setDirection(pair.first);
 						obj1.setSpeed(pair.second.longValue());
 						if(!space.canMaybeIntercept(obj1, obj2, maxTicks, pair.second.longValue()))

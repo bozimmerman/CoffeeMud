@@ -95,7 +95,7 @@ public class I3Router
 		final int debug = CMath.s_int(getArgParm(args,"--debug"));
 		final int daemon = CMath.s_int(getArgParm(args,"--daemon"));
 		final int port = CMath.s_int(getArgParm(args,"--port"));
-		final int password = CMath.s_int(getArgParm(args,"--password"));;
+		final int password = CMath.s_int(getArgParm(args,"--password"));
 		if((name == null) || (ip == null) || (port < 0))
 		{
 			System.out.println("I3Router:");

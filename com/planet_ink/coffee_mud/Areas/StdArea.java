@@ -90,7 +90,7 @@ public class StdArea implements Area
 	protected Climate					climateObj		= (Climate) CMClass.getCommon("DefaultClimate");
 
 	protected String[]					itemPricingAdjs	= new String[0];
-	protected final static AreaIStats	emptyStats		= (AreaIStats) CMClass.getCommon("DefaultAreaIStats");;
+	protected final static AreaIStats	emptyStats		= (AreaIStats) CMClass.getCommon("DefaultAreaIStats");
 	protected final static String[]		empty			= new String[0];
 	protected static volatile Area		lastComplainer	= null;
 

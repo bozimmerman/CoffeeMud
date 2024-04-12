@@ -42,7 +42,7 @@ public class IntegerRangeMap<K> implements Map<int[],K>
 	private final Converter<Map.Entry<IntegerRange, K>,Map.Entry<int[],K>> entryConverter = new Converter<Map.Entry<IntegerRange, K>,Map.Entry<int[],K>>()
 	{
 		@Override
-		public Map.Entry<int[],K> convert(Map.Entry<IntegerRange, K> e)
+		public Map.Entry<int[],K> convert(final Map.Entry<IntegerRange, K> e)
 		{
 			return new Map.Entry<int[],K>()
 			{

@@ -273,7 +273,7 @@ public class RouterPeer extends RNameServer implements PersistentPeer, ServerObj
 
 	private void receiveChanlistDelta(final IrnChanlistDelta pkt)
 	{
-		if(pkt.chanlist_id > I3Router.getChannelListId());
+		if(pkt.chanlist_id > I3Router.getChannelListId())
 			I3Router.getRouter().channels.setChannelListId(pkt.chanlist_id);
 		this.channels.setChannelListId(pkt.chanlist_id);
 		for(final Channel c : pkt.chanlist)
