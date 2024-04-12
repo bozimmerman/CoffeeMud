@@ -197,7 +197,7 @@ public class Prayer_AnimateDead extends Prayer
 				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 				newMOB.baseState().setMana(0);
 				final Behavior B=CMClass.getBehavior("Aggressive");
-				if((B!=null)&&(mob!=null))
+				if(B!=null)
 				{
 					B.setParms("CHECKLEVEL +NAMES \"-"+mob.Name()+"\"");
 					newMOB.addBehavior(B);

@@ -242,13 +242,13 @@ public class Prayer_ImprovedWardingGlyph extends Prayer implements Trap
 	@Override
 	public void spring(final MOB mob)
 	{
-		if(affected==null)
+		if((affected==null)||(mob==null))
 			return;
 		if(!(affected instanceof Room))
 			return;
 		if((shooter==null)||(parameters==null)||(mob==null))
 			return;
-		if((invoker()!=null)&&(mob!=null)&&(!invoker().mayIFight(mob)))
+		if((invoker()!=null)&&(!invoker().mayIFight(mob)))
 			return;
 		if((!canInvokeTrapOn(invoker(),mob))
 		||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
