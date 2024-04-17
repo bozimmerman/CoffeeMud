@@ -109,6 +109,11 @@ public class I3Router
 		throw new ObjectLoadException("Object is unmanaged");
 	}
 
+	public static void sendMudChange(final I3RMud mud)
+	{
+		routerThread.sendMudChange(mud);
+	}
+
 	public static boolean writePacket(final IrnPacket irnpkt)
 	{
 		final RouterPeer peer = I3Router.findRouterPeer(irnpkt.target_router);

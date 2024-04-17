@@ -287,12 +287,14 @@ public class I3Router
 							System.err.println("Mud '"+s+"' is not connected.");
 						else
 						{
-							mud.destruct();
+							mud.close();
+							mud.state=0;
+							com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.sendMudChange(mud);
 							System.err.println("Mud '"+s+"'has been booted.");
 						}
 					}
 					else
-						System.err.println("Try del peer, mud, or channel");
+						System.err.println("Try boot peer, mud, or channel");
 				}
 				else
 				if(s.toLowerCase().startsWith("list "))

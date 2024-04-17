@@ -421,13 +421,8 @@ public class RouterPeer extends RNameServer implements PersistentPeer, ServerObj
 	@Override
 	public void processEvent()
 	{
-		if(!isConnected())
-		{
-			destruct();
-			return;
-		}
 		final DataInputStream istream = getInputStream();
-		if(istream == null)
+		if((!isConnected())||(istream == null))
 		{
 			destruct();
 			return;

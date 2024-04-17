@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.I3Exception;
 import com.planet_ink.coffee_mud.core.intermud.i3.LPCData;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.ChannelList;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.I3RMud;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.MudList;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
@@ -127,6 +128,41 @@ public class I3RouterThread extends Thread implements CMObject
 		return "I3Router"+getThreadGroup().getName().charAt(0);
 	}
 
+	protected synchronized void sendMudChange(final I3RMud ob)
+	{
+		muds.setMudListId(muds.getMudListId()+1);
+		for(final RouterPeer rpeer : I3Router.getRouterPeers())
+		{
+			final IrnMudlistDelta delta = new IrnMudlistDelta(rpeer.name);
+			delta.mudlist_id = I3Router.getMudListId();
+			delta.mudlist.add(ob);
+			try
+			{
+				delta.send();
+			}
+			catch (final InvalidPacketException e)
+			{
+				Log.errOut(e);
+			}
+		}
+		for(final MudPeer rpeer : I3Router.getMudPeers())
+		{
+			if((!rpeer.isConnected())||(rpeer==ob))
+				continue;
+			final MudlistPacket delta = new MudlistPacket(rpeer.mud_name);
+			delta.mudlist_id = I3Router.getMudListId();
+			delta.mudlist.add(ob);
+			try
+			{
+				delta.send();
+			}
+			catch (final InvalidPacketException e)
+			{
+				Log.errOut(e);
+			}
+		}
+	}
+
 	protected synchronized MudPeer addMudPeer(final MudPeer ob) throws ObjectLoadException
 	{
 		try
@@ -137,38 +173,8 @@ public class I3RouterThread extends Thread implements CMObject
 				if(!old.isConnected())
 					old.destruct();
 			}
-			muds.setMudListId(muds.getMudListId()+1);
-			for(final RouterPeer rpeer : I3Router.getRouterPeers())
-			{
-				final IrnMudlistDelta delta = new IrnMudlistDelta(rpeer.name);
-				delta.mudlist_id = I3Router.getMudListId();
-				delta.mudlist.add(ob);
-				try
-				{
-					delta.send();
-				}
-				catch (final InvalidPacketException e)
-				{
-					Log.errOut(e);
-				}
-			}
 			muds.addMud(ob);
-			for(final MudPeer rpeer : I3Router.getMudPeers())
-			{
-				if((!rpeer.isConnected())||(rpeer==ob))
-					continue;
-				final MudlistPacket delta = new MudlistPacket(rpeer.mud_name);
-				delta.mudlist_id = I3Router.getMudListId();
-				delta.mudlist.add(ob);
-				try
-				{
-					delta.send();
-				}
-				catch (final InvalidPacketException e)
-				{
-					Log.errOut(e);
-				}
-			}
+			sendMudChange(ob);
 		}
 		catch( final Exception e )
 		{

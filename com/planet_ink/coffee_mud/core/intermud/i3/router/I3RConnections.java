@@ -21,6 +21,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.packets.IrnStartupRequest;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.StartupReply;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.StartupReq3;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.ServerObject;
 
 /**
@@ -117,8 +118,19 @@ public class I3RConnections implements ServerObject
 								Log.sysOut("Accepting peer "+ipkt.sender_router);
 								final RNameServer ns = new RNameServer(remoteAddr,port,ipkt.sender_router);
 								ns.password = ipkt.sender_password;
-								final RouterPeer rpeer = new RouterPeer(ns, peer);
-								I3Router.addObject(rpeer);
+								final RouterPeer opeer = I3Router.getRouter().peers.getRouters().get(ipkt.sender_router);
+								if(opeer != null)
+								{
+									opeer.modified = Persistent.MODIFIED;
+									opeer.password = ipkt.sender_password;
+									opeer.setSocket(peer.getSocket());
+									peer.clearSocket();
+								}
+								else
+								{
+									final RouterPeer rpeer = new RouterPeer(ns, peer);
+									I3Router.addObject(rpeer);
+								}
 								// do not close peer, as we want to keep the socks open
 							}
 							else

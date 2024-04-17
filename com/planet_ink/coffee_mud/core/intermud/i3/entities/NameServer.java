@@ -43,7 +43,10 @@ public class NameServer implements Serializable
 	public NameServer(final String addr, final int p, final String nom)
 	{
 		super();
-		ip = addr;
+		if(addr.startsWith("/"))
+			ip = addr.substring(1);
+		else
+			ip = addr;
 		port = p;
 		name = nom;
 	}

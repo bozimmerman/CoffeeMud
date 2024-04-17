@@ -594,15 +594,17 @@ public class MudPeer extends I3RMud implements ServerObject, PersistentPeer, Net
 	@Override
 	public void processEvent()
 	{
-		if(!isConnected())
-		{
-			destruct();
-			return;
-		}
 		final DataInputStream istream = getInputStream();
-		if(istream == null)
+		if(!isConnected() || (istream == null))
 		{
-			destruct();
+			if(state == -1)
+			{
+				state = 0;
+				try {
+					this.close();
+				} catch (final IOException e) { }
+				I3Router.sendMudChange(this);
+			}
 			return;
 		}
 		if(!initialized)
