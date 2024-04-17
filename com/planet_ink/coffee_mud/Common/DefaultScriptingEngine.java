@@ -12079,7 +12079,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						else
 						{
 							goHere.bringMobHere(ctx.monster,true);
-							if(!(ctx.scripted instanceof MOB))
+							if((!(ctx.scripted instanceof MOB))
+							&&(!ctx.monster.isPlayer()))
 								goHere.delInhabitant(ctx.monster);
 						}
 						if(CMLib.map().roomLocation(ctx.scripted)==goHere)
@@ -12344,6 +12345,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					// this can not be permanently parsed because it is variable
 					final MPContext ctx2 = ctx.copyOf();
 					ctx2.monster = getMakeMOB(newTarget);
+					ctx2.scripted = ctx.monster;
 					execute(ctx2, vscript);
 				}
 				break;
