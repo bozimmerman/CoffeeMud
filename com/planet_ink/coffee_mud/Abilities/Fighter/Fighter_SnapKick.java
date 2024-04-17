@@ -95,6 +95,7 @@ public class Fighter_SnapKick extends StdAbility
 		return new Fighter_SnapKick();
 	}
 
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))

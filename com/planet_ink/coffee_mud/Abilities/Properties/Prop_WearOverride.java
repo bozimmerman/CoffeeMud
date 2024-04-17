@@ -62,6 +62,7 @@ public class Prop_WearOverride extends Property
 	protected volatile boolean	activated	= false;
 	protected volatile MOB		lastMob		= null;
 
+	@Override
 	public String accountForYourself()
 	{
 		if(affected != null)

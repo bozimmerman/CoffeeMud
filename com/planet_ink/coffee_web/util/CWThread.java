@@ -43,6 +43,7 @@ public class CWThread extends Thread
 		return config;
 	}
 
+	@Override
 	public String toString()
 	{
 		final StringBuilder dump = new StringBuilder("");

@@ -90,11 +90,13 @@ public class MudPacket extends Packet
 		}
 	}
 
+	@Override
 	public PacketType getType()
 	{
 		return type;
 	}
 
+	@Override
 	public String convertString(final String cmd)
 	{
 		final StringBuffer b = new StringBuffer(cmd);
@@ -117,6 +119,7 @@ public class MudPacket extends Packet
 		return new String(b);
 	}
 
+	@Override
 	public void send() throws InvalidPacketException {
 		if( type == null )
 		{

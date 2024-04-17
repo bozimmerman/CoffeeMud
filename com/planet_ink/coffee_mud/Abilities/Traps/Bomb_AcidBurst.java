@@ -60,6 +60,7 @@ public class Bomb_AcidBurst extends StdBomb
 		return "some lemons";
 	}
 
+	@Override
 	protected boolean doesInnerExplosionDestroy(final int material)
 	{
 		switch(material&RawMaterial.MATERIAL_MASK)

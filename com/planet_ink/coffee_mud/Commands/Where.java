@@ -238,6 +238,8 @@ public class Where extends StdCommand
 							final Runnable doUpdate = new Runnable()
 							{
 								final List<UpdateSet> todo=res;
+
+								@Override
 								public void run()
 								{
 									for(final UpdateSet o : todo)

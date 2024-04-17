@@ -92,7 +92,12 @@ public class Wolverine extends Mustelid
 	}
 
 	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
-	protected List<RawMaterial> privateResources() { return resources; }
+
+	@Override
+	protected List<RawMaterial> privateResources()
+	{
+		return resources;
+	}
 
 }
 

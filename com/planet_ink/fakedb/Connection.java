@@ -419,25 +419,30 @@ public class Connection implements java.sql.Connection
 		return null;
 	}
 
+	@Override
 	public void setSchema(final String schema) throws SQLException
 	{
 		connect(schema);
 	}
 
+	@Override
 	public String getSchema() throws SQLException
 	{
 		return oldPath;
 	}
 
+	@Override
 	public void abort(final Executor executor) throws SQLException
 	{
 		this.close();
 	}
 
+	@Override
 	public void setNetworkTimeout(final Executor executor, final int milliseconds) throws SQLException
 	{
 	}
 
+	@Override
 	public int getNetworkTimeout() throws SQLException
 	{
 		return 0;

@@ -87,6 +87,7 @@ public class IrnPacket extends Packet
 		}
 	}
 
+	@Override
 	public PacketType getType()
 	{
 		return type;
@@ -135,6 +136,7 @@ public class IrnPacket extends Packet
 		return "";
 	}
 
+	@Override
 	public String convertString(final String cmd)
 	{
 		final StringBuffer b = new StringBuffer(cmd);
@@ -157,6 +159,7 @@ public class IrnPacket extends Packet
 		return new String(b);
 	}
 
+	@Override
 	public void send() throws InvalidPacketException
 	{
 		if( type == null )

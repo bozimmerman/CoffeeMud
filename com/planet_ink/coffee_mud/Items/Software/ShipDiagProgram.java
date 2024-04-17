@@ -100,6 +100,7 @@ public class ShipDiagProgram extends GenShipProgram
 		diagCompletionMs = 0;
 	}
 
+	@Override
 	protected void decache()
 	{
 		components	= null;
@@ -159,6 +160,7 @@ public class ShipDiagProgram extends GenShipProgram
 		return A;
 	}
 
+	@Override
 	protected synchronized List<TechComponent> getTechComponents()
 	{
 		if(components == null)

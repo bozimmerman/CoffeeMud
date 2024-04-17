@@ -98,6 +98,7 @@ public class Bomb_Sonic extends StdBomb
 		return true;
 	}
 
+	@Override
 	protected void springOnRoomMobs(final Room R)
 	{
 		super.springOnRoomMobs(R);

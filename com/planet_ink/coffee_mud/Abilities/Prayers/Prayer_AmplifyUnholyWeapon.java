@@ -87,6 +87,7 @@ public class Prayer_AmplifyUnholyWeapon extends Prayer
 
 	protected int level = 23;
 
+	@Override
 	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);

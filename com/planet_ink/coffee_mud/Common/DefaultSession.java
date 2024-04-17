@@ -1013,6 +1013,7 @@ public class DefaultSession implements Session
 		return snoopSuspensionStack;
 	}
 
+	@Override
 	public Enumeration<List<String>> getHistory()
 	{
 		final Vector<List<String>> V;

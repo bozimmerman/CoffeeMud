@@ -123,6 +123,7 @@ public class Skill_RevealText extends StdSkill
 		return true;
 	}
 
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))

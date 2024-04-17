@@ -111,6 +111,7 @@ public class Prop_UseAdjuster extends Prop_Adjuster implements ArchonOnly
 		parameters=CMLib.masking().separateMaskStrs(text());
 	}
 
+	@Override
 	public void adjCharState(final MOB mob, final Object[] changes, final CharState charState)
 	{
 		if(changes==null)

@@ -90,6 +90,7 @@ public class ChanlistReply extends IrnPacket
 		return str.toString();
 	}
 
+	@Override
 	public void send() throws InvalidPacketException
 	{
 		final MudPeer mudPeer = I3Router.findMudPeer(this.target_router);

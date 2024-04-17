@@ -96,6 +96,7 @@ public class Fighter_CrescentKick extends StdAbility
 		return new Fighter_CrescentKick();
 	}
 
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))

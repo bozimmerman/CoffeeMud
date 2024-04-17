@@ -170,6 +170,7 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public Enumeration<F> elements()
 	{
 		if(size()==0)
@@ -207,6 +208,7 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 		return H.isEmpty();
 	}
 
+	@Override
 	public Enumeration<K> keys()
 	{
 		return new IteratorEnumeration<K>(H.keySet().iterator());

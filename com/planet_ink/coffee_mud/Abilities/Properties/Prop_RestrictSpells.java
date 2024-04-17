@@ -61,6 +61,7 @@ public class Prop_RestrictSpells extends Property
 		Ability.ACODE_CHANT,
 	};
 
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

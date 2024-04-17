@@ -59,6 +59,8 @@ public interface Rideable extends Rider
 		{
 			friendlyCodeName = name().replace('_','-');
 		}
+
+		@Override
 		public String toString()
 		{
 			return friendlyCodeName;

@@ -279,16 +279,19 @@ public interface MIMEType
 			this.parts=type.split("/");
 		}
 
+		@Override
 		public String[] getParts()
 		{
 			return parts;
 		}
 
+		@Override
 		public String getExt()
 		{
 			return ext;
 		}
 
+		@Override
 		public String getType()
 		{
 			return type;

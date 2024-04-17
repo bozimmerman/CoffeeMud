@@ -749,6 +749,7 @@ public class Clans extends StdLibrary implements ClanManager
 		return lastGovernmentLoad;
 	}
 
+	@Override
 	public String findGovernmentName(final String named, final boolean exact)
 	{
 		for(final ClanGovernment G : getStockGovernments())

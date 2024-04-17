@@ -54,6 +54,7 @@ public class Specialization_Whip extends Specialization_Weapon
 		weaponClass=-1;
 	}
 
+	@Override
 	protected boolean isWeaponMatch(final Weapon W)
 	{
 		if((W.weaponClassification()==Weapon.CLASS_FLAILED)

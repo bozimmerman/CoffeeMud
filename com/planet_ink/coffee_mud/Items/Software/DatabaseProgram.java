@@ -73,6 +73,7 @@ public class DatabaseProgram extends GenShipProgram
 		recoverPhyStats();
 	}
 
+	@Override
 	protected void decache()
 	{
 		scr.setLength(0);
@@ -240,6 +241,7 @@ public class DatabaseProgram extends GenShipProgram
 		scr.append(s).append("\n\r");
 	}
 
+	@Override
 	protected long[] convertStringToCoords(final String coordStr)
 	{
 		final List<String> coordCom = CMParms.parseCommas(coordStr,true);

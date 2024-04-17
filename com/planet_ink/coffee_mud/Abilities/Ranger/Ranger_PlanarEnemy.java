@@ -49,6 +49,7 @@ public class Ranger_PlanarEnemy extends Ranger_Enemy1
 		return localizedName;
 	}
 
+	@Override
 	protected String pickAnEnemy(final MOB mob)
 	{
 		if(mob==null)
@@ -145,6 +146,7 @@ public class Ranger_PlanarEnemy extends Ranger_Enemy1
 	protected volatile Area lastArea = null;
 	protected volatile boolean isEnemyArea = false;
 
+	@Override
 	protected boolean isTheEnemy(final MOB mob)
 	{
 		if(mob != null)

@@ -123,6 +123,7 @@ public class Skill_DecipherScript extends StdSkill
 		return true;
 	}
 
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))

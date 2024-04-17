@@ -254,6 +254,8 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 					CMLib.threads().scheduleRunnable(new Runnable()
 					{
 						final MOB M=rejuvedMOB;
+
+						@Override
 						public void run()
 						{
 							if((M==null)

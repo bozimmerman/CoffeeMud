@@ -61,21 +61,25 @@ public class Song_RechargeInstrument extends Song
 		return 100;
 	}
 
+	@Override
 	protected boolean skipStandardSongInvoke()
 	{
 		return true;
 	}
 
+	@Override
 	protected boolean mindAttack()
 	{
 		return abstractQuality() == Ability.QUALITY_MALICIOUS;
 	}
 
+	@Override
 	protected boolean skipStandardSongTick()
 	{
 		return true;
 	}
 
+	@Override
 	protected boolean skipSimpleStandardSongTickToo()
 	{
 		return true;

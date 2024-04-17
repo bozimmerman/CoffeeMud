@@ -51,6 +51,7 @@ public class RMudList extends MudList implements Serializable
 		super.addMud(mud);
 	}
 
+	@Override
 	public void removeMud(final I3Mud mud)
 	{
 		super.removeMud(mud);
