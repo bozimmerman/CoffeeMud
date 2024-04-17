@@ -407,9 +407,11 @@ public class RouterPeer extends RNameServer implements PersistentPeer, ServerObj
 		case UCACHE_UPDATE:
 		case MUDLIST:
 		case IRN_CHANLIST_DELTA:
+		case IRN_CHANLIST_ALTERED:
 		case IRN_CHANLIST_REQ:
 		case IRN_DATA:
 		case IRN_MUDLIST_DELTA:
+		case IRN_MUDLIST_ALTERED:
 		case IRN_MUDLIST_REQ:
 		case IRN_PING:
 		case IRN_SHUTDOWN:
@@ -471,12 +473,14 @@ public class RouterPeer extends RNameServer implements PersistentPeer, ServerObj
 				receiveMudlistReq((IrnMudlistRequest)pkt);
 				break;
 			case IRN_MUDLIST_DELTA:
+			case IRN_MUDLIST_ALTERED:
 				receiveMudlistDelta((IrnMudlistDelta)pkt);
 				break;
 			case IRN_CHANLIST_REQ:
 				receiveChanlistReq((IrnChanlistRequest)pkt);
 				break;
 			case IRN_CHANLIST_DELTA:
+			case IRN_CHANLIST_ALTERED:
 				receiveChanlistDelta((IrnChanlistDelta)pkt);
 				break;
 			case IRN_PING:

@@ -698,9 +698,11 @@ public class MudPeer extends I3RMud implements ServerObject, PersistentPeer, Net
 			case CHANLIST_REPLY: // a mud can't send a channel-list to any other mud, or the router
 			case MUDLIST: // a mud can't send a mudlist to any other mud, or the router
 			case IRN_CHANLIST_DELTA:
+			case IRN_CHANLIST_ALTERED:
 			case IRN_CHANLIST_REQ:
 			case IRN_DATA:
 			case IRN_MUDLIST_DELTA:
+			case IRN_MUDLIST_ALTERED:
 			case IRN_MUDLIST_REQ:
 			case IRN_PING:
 			case IRN_SHUTDOWN:
