@@ -245,7 +245,8 @@ public class RouterPeer extends RNameServer implements PersistentPeer, ServerObj
 				mud.mudListId=I3Router.getMudListId();
 				for(final I3RMud m : pkt.mudlist)
 					mpkt.mudlist.add(m);
-				I3Router.writePacket(mpkt);
+				mud.lastPing = System.currentTimeMillis();
+				I3Router.writePacket(mpkt, mud);
 			}
 		}
 	}
@@ -296,7 +297,8 @@ public class RouterPeer extends RNameServer implements PersistentPeer, ServerObj
 				mud.channelListId=I3Router.getChannelListId();
 				for(final Channel c : pkt.chanlist)
 					cpkt.chanlist.add(c);
-				I3Router.writePacket(cpkt);
+				mud.lastPing = System.currentTimeMillis();
+				I3Router.writePacket(cpkt, mud);
 			}
 		}
 	}
