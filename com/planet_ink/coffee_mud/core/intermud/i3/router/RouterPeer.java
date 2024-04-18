@@ -419,6 +419,7 @@ public class RouterPeer extends RNameServer implements PersistentPeer, ServerObj
 		case IRN_STARTUP_REQ:
 		case OOB_BEGIN:
 		case OOB_END:
+		case MAIL:
 			break;
 		}
 	}

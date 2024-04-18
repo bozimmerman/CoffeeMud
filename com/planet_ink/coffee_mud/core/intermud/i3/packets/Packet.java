@@ -97,6 +97,7 @@ public abstract class Packet
 		IRN_SHUTDOWN(IrnShutdown.class),
 		OOB_BEGIN(OOBBegin.class),
 		OOB_END(OOBEnd.class),
+		MAIL(MailPacket.class),
 		;
 		public Class<? extends Packet> packetClass;
 		String key;
