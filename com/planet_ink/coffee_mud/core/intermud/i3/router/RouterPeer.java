@@ -369,7 +369,10 @@ public class RouterPeer extends RNameServer implements PersistentPeer, ServerObj
 		final MudPacket mudpkt = (MudPacket)pkt.innerPacket;
 		switch(mudpkt.getType())
 		{
+		case PING_REQ:
+		case AUTH_MUD_REPLY:
 		case ERROR:
+		case OOB_REQ:
 		case AUTH_MUD_REQ:
 		case CHANLIST_REPLY:
 		case CHAN_USER_REPLY:
@@ -399,11 +402,9 @@ public class RouterPeer extends RNameServer implements PersistentPeer, ServerObj
 		case CHANNEL_LISTEN:
 		case CHANNEL_REMOVE:
 		case CHANNEL_ADMIN:
-		case PING_REQ:
 		case SHUTDOWN:
 		case STARTUP_REPLY:
 		case STARTUP_REQ_3:
-		case AUTH_MUD_REPLY:
 		case UCACHE_UPDATE:
 		case MUDLIST:
 		case IRN_CHANLIST_DELTA:
@@ -416,6 +417,8 @@ public class RouterPeer extends RNameServer implements PersistentPeer, ServerObj
 		case IRN_PING:
 		case IRN_SHUTDOWN:
 		case IRN_STARTUP_REQ:
+		case OOB_BEGIN:
+		case OOB_END:
 			break;
 		}
 	}
@@ -435,7 +438,7 @@ public class RouterPeer extends RNameServer implements PersistentPeer, ServerObj
 		try
 		{
 			final Packet pkt;
-			if((pkt = I3Router.readPacket(this))==null)
+			if((pkt = Packet.readPacket(this))==null)
 			{
 				final long now = System.currentTimeMillis();
 				if((now - this.lastPing) > 60000)

@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
+import com.planet_ink.coffee_mud.core.intermud.i3.I3Client;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -19,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Vector;
 
 /**
- * Copyright (c) 2010-2024 Bo Zimmerman
+ * Copyright (c) 2024-2024 Bo Zimmerman
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,31 +35,30 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class MudAuthReply extends MudPacket
+public class OOBBegin extends OOBPacket
 {
-	public long key=0;
+	public int authType	= -1;
+	public long authToken	= -1;
 
-	public MudAuthReply()
+	public OOBBegin()
 	{
 		super();
-		type = Packet.PacketType.AUTH_MUD_REPLY;
-		target_mud=I3Server.getMudName();
+		type = Packet.PacketType.OOB_REQ;
 	}
 
-	public MudAuthReply(final Vector<?> v)
+	public OOBBegin(final Vector<?> v)
 	{
 		super(v);
-		type = Packet.PacketType.AUTH_MUD_REPLY;
-		target_mud=(String)v.elementAt(4);
-		key=s_long(v,6);
+		type = Packet.PacketType.OOB_REQ;
+		authType = super.s_int(v, 2);
+		authToken = super.s_long(v, 3);
 	}
 
-	public MudAuthReply(final String mud, final long key)
+	public OOBBegin(final String mud)
 	{
 		super();
-		type = Packet.PacketType.AUTH_MUD_REPLY;
-		target_mud=mud;
-		this.key=key;
+		type = Packet.PacketType.OOB_REQ;
+		sender_mud = mud;
 	}
 
 	@Override
@@ -69,6 +70,6 @@ public class MudAuthReply extends MudPacket
 	@Override
 	public String toString()
 	{
-		return "({\"auth-mud-reply\",5,\""+sender_mud+"\",0,\""+target_mud+"\",0,"+key+",})";
+		return "({\"oob-begin\",\""+sender_mud+"\","+authType+","+authToken+",})";
 	}
 }

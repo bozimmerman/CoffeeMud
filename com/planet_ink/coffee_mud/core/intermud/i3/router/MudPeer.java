@@ -613,7 +613,7 @@ public class MudPeer extends I3RMud implements ServerObject, PersistentPeer, Net
 		try
 		{
 			final Packet pkt;
-			if((pkt = I3Router.readPacket(this))==null)
+			if((pkt = Packet.readPacket(this))==null)
 			{
 				final long now = System.currentTimeMillis();
 				if(((now - this.lastPing) > 600000)
@@ -678,6 +678,7 @@ public class MudPeer extends I3RMud implements ServerObject, PersistentPeer, Net
 					break;
 				}
 			//$FALL-THROUGH$
+			case OOB_REQ:
 			case AUTH_MUD_REPLY:
 			case ERROR:
 			case PING_REQ:
@@ -707,6 +708,8 @@ public class MudPeer extends I3RMud implements ServerObject, PersistentPeer, Net
 			case IRN_PING:
 			case IRN_SHUTDOWN:
 			case IRN_STARTUP_REQ:
+			case OOB_BEGIN:
+			case OOB_END:
 				sendError("not-allowed", "Not allowed to send this packet.", pkt);
 				Log.errOut("Unwanted message type: "+pkt.getType().name() + " from "+mud_name);
 				return;

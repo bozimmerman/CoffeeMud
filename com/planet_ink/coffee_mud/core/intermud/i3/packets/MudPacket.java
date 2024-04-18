@@ -65,28 +65,10 @@ public class MudPacket extends Packet
 	{
 		super();
 		{
-			Object ob;
-
-			ob = v.elementAt(2);
-			if( ob instanceof String )
-			{
-				sender_mud = (String)ob;
-			}
-			ob = v.elementAt(3);
-			if( ob instanceof String )
-			{
-				sender_name = (String)ob;
-			}
-			ob = v.elementAt(4);
-			if( ob instanceof String )
-			{
-				target_mud = (String)ob;
-			}
-			ob = v.elementAt(5);
-			if( ob instanceof String )
-			{
-				target_name = (String)ob;
-			}
+			sender_mud = super.s_str(v, 2);
+			sender_name = super.s_str(v, 3);
+			target_mud = super.s_str(v, 4);
+			target_name = super.s_str(v, 5);
 		}
 	}
 
@@ -94,29 +76,6 @@ public class MudPacket extends Packet
 	public PacketType getType()
 	{
 		return type;
-	}
-
-	@Override
-	public String convertString(final String cmd)
-	{
-		final StringBuffer b = new StringBuffer(cmd);
-		int i = 0;
-
-		while( i < b.length() )
-		{
-			final char c = b.charAt(i);
-
-			if( c != '\\' && c != '"' )
-			{
-				i++;
-			}
-			else
-			{
-				b.insert(i, '\\');
-				i += 2;
-			}
-		}
-		return new String(b);
 	}
 
 	@Override

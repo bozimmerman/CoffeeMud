@@ -56,7 +56,12 @@ public class LPCData
 		if((o instanceof String)||(o instanceof Integer))
 			return o;
 		if(o instanceof Long)
-			return Integer.valueOf(((Long)o).intValue());
+		{
+			if(((Long)o).longValue() > Integer.MAX_VALUE)
+				return o;
+			else
+				return Integer.valueOf(((Long)o).intValue());
+		}
 		if(o instanceof Double)
 			return Integer.valueOf(((Double)o).intValue());
 		if(o instanceof Float)

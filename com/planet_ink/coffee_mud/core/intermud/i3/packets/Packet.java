@@ -1,8 +1,11 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
 import com.planet_ink.coffee_mud.core.intermud.imc2.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet.PacketType;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.I3Exception;
+import com.planet_ink.coffee_mud.core.intermud.i3.LPCData;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.MudList;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
@@ -22,7 +25,11 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -69,6 +76,7 @@ public abstract class Packet
 		FINGER_REQ(FingerRequest.class),
 		FINGER_REPLY(FingerReply.class),
 		PING_REQ(PingPacket.class),
+		OOB_REQ(OOBReq.class),
 		AUTH_MUD_REQ(MudAuthRequest.class),
 		AUTH_MUD_REPLY(MudAuthReply.class),
 		UCACHE_UPDATE(UCacheUpdate.class),
@@ -76,6 +84,7 @@ public abstract class Packet
 		STARTUP_REPLY(StartupReply.class),
 		ERROR(ErrorPacket.class),
 		CHANLIST_REPLY(ChanlistReply.class),
+		STARTUP_REQ_3(StartupReq3.class),
 		IRN_STARTUP_REQ(IrnStartupRequest.class),
 		IRN_MUDLIST_REQ(IrnMudlistRequest.class),
 		IRN_MUDLIST_DELTA(IrnMudlistDelta.class),
@@ -86,7 +95,8 @@ public abstract class Packet
 		IRN_DATA(IrnData.class),
 		IRN_PING(IrnPing.class),
 		IRN_SHUTDOWN(IrnShutdown.class),
-		STARTUP_REQ_3(StartupReq3.class)
+		OOB_BEGIN(OOBBegin.class),
+		OOB_END(OOBEnd.class),
 		;
 		public Class<? extends Packet> packetClass;
 		String key;
@@ -112,7 +122,199 @@ public abstract class Packet
 
 	public abstract PacketType getType();
 
-	public abstract String convertString(final String cmd);
-
 	public abstract void send() throws InvalidPacketException;
+
+	public String convertString(final String cmd)
+	{
+		final StringBuffer b = new StringBuffer(cmd);
+		int i = 0;
+
+		while( i < b.length() )
+		{
+			final char c = b.charAt(i);
+
+			if( c != '\\' && c != '"' )
+			{
+				i++;
+			}
+			else
+			{
+				b.insert(i, '\\');
+				i += 2;
+			}
+		}
+		return new String(b);
+	}
+
+	public static Packet readPacket(final NetPeer peer) throws IOException
+	{
+		final DataInputStream istream = peer.getInputStream();
+		if(istream.available() >= 4)
+		{
+			if(istream.markSupported())
+				istream.mark(65536);
+			final int len = istream.readInt();
+			if(len > 65536)
+			{
+				if(istream.markSupported())
+					istream.reset();
+				istream.skip(istream.available());
+				return null;
+			}
+			final long[] timeout = peer.getSockTimeout();
+			if(istream.available() >= len)
+			{
+				synchronized(timeout)
+				{
+					timeout[0] = 0;
+				}
+				final byte[] tmp = new byte[len];
+				istream.readFully(tmp);
+				final String cmd=new String(tmp);
+				Object o;
+				try
+				{
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.I3))
+						Log.sysOut("Receiving: "+cmd);
+					o = LPCData.getLPCData(cmd);
+					if((!(o instanceof Vector))
+					||(((Vector<?>)o).size()<4))
+					{
+						Log.errOut("I3R: 390-"+o);
+						if(istream.markSupported())
+							istream.reset();
+						istream.skip(istream.available());
+						return null;
+					}
+					final Vector<?> data=(Vector<?>)o;
+					final String typeStr = ((String)data.elementAt(0)).trim().replace("-", "_");
+					final PacketType type = (PacketType)CMath.s_valueOf(PacketType.class,typeStr.toUpperCase());
+					if(type == null)
+					{
+						Log.errOut("I3R: Unknown packet type: " + typeStr);
+						return null;
+					}
+					final Class<? extends Packet> pktClass = type.packetClass;
+					if(pktClass == null)
+						Log.errOut("I3R: Other packet type: " + typeStr);
+					else
+					{
+						try
+						{
+							final Constructor<? extends Packet> con = pktClass.getConstructor(Vector.class);
+							return con.newInstance(data);
+						}
+						catch( final Exception  e )
+						{
+							Log.errOut("I3R: "+type+"-"+e.getMessage());
+						}
+					}
+				}
+				catch (final I3Exception e)
+				{
+					Log.errOut("I3R: 390-"+e.getMessage());
+					if(istream.markSupported())
+						istream.reset();
+					istream.skip(istream.available());
+					return null;
+				}
+			}
+			else
+			{
+				if(istream.markSupported())
+					istream.reset();
+				final long currto;
+				synchronized(timeout)
+				{
+					currto = timeout[0];
+				}
+				if(currto > 0)
+				{
+					if((System.currentTimeMillis() - currto)>5000)
+					{
+						Log.errOut("I3R: 390-Eating"+istream.available());
+						istream.skipBytes(istream.available());
+						timeout[0] = 0;
+					}
+				}
+				else
+					timeout[0] = System.currentTimeMillis();
+			}
+		}
+		return null;
+	}
+
+	protected int s_int(final Object o)
+	{
+		if(o instanceof Integer)
+			return ((Integer)o).intValue();
+		if(o instanceof Long)
+			return ((Long)o).intValue();
+		if(o instanceof String)
+		{
+			try
+			{
+				return Integer.valueOf((String)o).intValue();
+			}
+			catch(final Exception e) { }
+		}
+		return -1;
+	}
+
+	protected int s_int(final List<?> lst, final int index)
+	{
+		if((index >=0) && (index < lst.size()))
+		{
+			return s_int(lst.get(index));
+		}
+		return -1;
+	}
+
+	protected long s_long(final Object o)
+	{
+		if(o instanceof Integer)
+			return ((Integer)o).longValue();
+		if(o instanceof Long)
+			return ((Long)o).longValue();
+		if(o instanceof String)
+		{
+			try {
+				return Long.valueOf((String)o).longValue();
+			}
+			catch(final Exception e) { }
+		}
+		return -1;
+	}
+
+	protected long s_long(final List<?> lst, final int index)
+	{
+		if((index >=0) && (index < lst.size()))
+			return s_long(lst.get(index));
+		return -1;
+	}
+
+	protected String s_str(final Object o)
+	{
+		if(o instanceof String)
+			return (String)o;
+		return "";
+	}
+
+	protected String s_str(final Object o, final String def)
+	{
+		if(o instanceof String)
+			return (String)o;
+		return def;
+	}
+
+	protected String s_str(final List<?> lst, final int index)
+	{
+		if((index >=0) && (index < lst.size()))
+		{
+			final Object o = lst.get(index);
+			if(o instanceof String)
+				return (String)o;
+		}
+		return "";
+	}
 }

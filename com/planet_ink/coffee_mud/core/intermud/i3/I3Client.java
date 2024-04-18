@@ -92,13 +92,14 @@ public class I3Client implements Runnable, Persistent, Serializable
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistentPeer
 	 */
 	static public void setup(final String[] routersList, final String adminEmail,
-							 final ImudServices imud, final PersistentPeer peer)
+							 final ImudServices imud, final PersistentPeer peer,
+							 final int smtpPort)
 	{
 		if( thread != null )
 		{
 			return;
 		}
-		thread = new I3Client(routersList, adminEmail, imud, peer);
+		thread = new I3Client(routersList, adminEmail, imud, peer, smtpPort);
 	}
 
 	/**
@@ -237,11 +238,13 @@ public class I3Client implements Runnable, Persistent, Serializable
 	public int					password;
 	public NameServer			currentRouter;
 	public String				adminEmail;
+	public int					smtpPort;
 
 	public Hashtable<String,String>	banned;
 
 	private I3Client(final String[] routersList, final String adminEmail,
-					 final ImudServices imud, final PersistentPeer p)
+					 final ImudServices imud, final PersistentPeer p,
+					 final int smtpPort)
 	{
 		super();
 		this.intermud = imud;
@@ -256,6 +259,7 @@ public class I3Client implements Runnable, Persistent, Serializable
 		this.banned = new Hashtable<String,String>();
 		this.adminEmail = adminEmail;
 		this.name_servers = new Vector<NameServer>();
+		this.smtpPort = smtpPort;
 		modified = Persistent.UNMODIFIED;
 		try
 		{
@@ -454,15 +458,18 @@ public class I3Client implements Runnable, Persistent, Serializable
 						connection = new Socket(currentRouter.ip, currentRouter.port);
 						output = new DataOutputStream(connection.getOutputStream());
 						final Map<String,Integer> services = new HashMap<String,Integer>();
+						services.put("tell", Integer.valueOf(1));
+						services.put("emoteto", Integer.valueOf(1));
 						services.put("who", Integer.valueOf(1));
 						services.put("finger", Integer.valueOf(1));
-						services.put("channel", Integer.valueOf(1));
-						services.put("tell", Integer.valueOf(1));
 						services.put("locate", Integer.valueOf(1));
+						services.put("channel", Integer.valueOf(1));
 						services.put("auth", Integer.valueOf(1));
+						/*services.put("smtp", CMProps.getIntVar(CMProps.Int.));
+						 "news" : 1 "mail" : 1 "file" : 1 */
 						final Map<String,String> other = new HashMap<String,String>();
 						final StartupReq3 pkt = new StartupReq3(currentRouter.name,password,
-								muds.getMudListId(),channels.getChannelListId(),intermud.getMudPort(),0,0,
+								muds.getMudListId(),channels.getChannelListId(),intermud.getMudPort(),I3Server.getPort(),0,
 								intermud.getMudVersion(),intermud.getMudVersion(),intermud.getMudVersion(),"CoffeeMud",
 								intermud.getMudState(),CMProps.getVar(CMProps.Str.ADMINEMAIL).toLowerCase(),
 								services,other);
@@ -1000,6 +1007,16 @@ public class I3Client implements Runnable, Persistent, Serializable
 	public void setChannelList(final ChannelList list)
 	{
 		channels = list;
+	}
+
+	public static Map<String,Long> getIncomingKeys()
+	{
+		return thread.intermud.getIncomingKeys();
+	}
+
+	public static Map<String,Long> getOutgoingKeys()
+	{
+		return thread.intermud.getOutgoingKeys();
 	}
 
 	/**

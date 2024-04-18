@@ -98,7 +98,7 @@ public class I3RConnections implements ServerObject
 						i.remove();
 					}
 					else
-					if((pkt = I3Router.readPacket(peer)) != null)
+					if((pkt = Packet.readPacket(peer)) != null)
 					{
 						if(pkt.getType() == Packet.PacketType.IRN_STARTUP_REQ)
 						{

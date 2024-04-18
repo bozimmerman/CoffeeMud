@@ -1019,7 +1019,7 @@ public class MUD extends Thread implements MudHost
 		return false;
 	}
 
-	private static void startIntermud3()
+	private static void startIntermud3(final int smtpPort)
 	{
 		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		final CMProps page=CMProps.instance();
@@ -1072,7 +1072,7 @@ public class MUD extends Thread implements MudHost
 					final String mudName = CMProps.getVar(CMProps.Str.MUDNAME);
 					final String adminEmail = CMProps.getVar(CMProps.Str.ADMINEMAIL);
 					final String[] routersArray = routersSepV.toArray(new String[0]);
-					I3Server.start(mudName,i3port,imud,routersArray,adminEmail);
+					I3Server.start(mudName,i3port,imud,routersArray,adminEmail,smtpPort);
 				}
 			}
 		}
@@ -1607,7 +1607,7 @@ public class MUD extends Thread implements MudHost
 			startCM1();
 
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Starting I3");
-			startIntermud3();
+			startIntermud3((smtpServerThread==null)?-1:smtpServerThread.getSMTPPort());
 
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Starting IMC2");
 			startIntermud2();
@@ -2249,7 +2249,7 @@ public class MUD extends Thread implements MudHost
 			final String what=V.get(1);
 			if(what.equalsIgnoreCase("I3"))
 			{
-				startIntermud3();
+				startIntermud3((smtpServerThread==null)?-1:smtpServerThread.getSMTPPort());
 				return "Done";
 			}
 			else

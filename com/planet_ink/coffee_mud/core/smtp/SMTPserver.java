@@ -98,18 +98,20 @@ public class SMTPserver extends Thread implements Tickable
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
 
-	public int	 		tickStatus=STATUS_NOT;
-	public boolean 		isOK = false;
-	private final MudHost 	mud;
-	public CMProps 		page=null;
-	public ServerSocket servsock=null;
-	public CMProps 		iniPage=null;
-	private boolean 	displayedBlurb=false;
-	private String 		domain="coffeemud";
-	private int			maxThreads = 3;
-	private int			threadTimeoutMins = 10;
-	private final Set<String> 		 oldEmailComplaints=new HashSet<String>();
-	private final CMThreadPoolExecutor  	 threadPool;
+	public int				tickStatus			= STATUS_NOT;
+	public boolean			isOK				= false;
+	private final MudHost	mud;
+	public CMProps			page				= null;
+	public ServerSocket		servsock			= null;
+	public CMProps			iniPage				= null;
+	private boolean			displayedBlurb		= false;
+	private String			domain				= "coffeemud";
+	private int				maxThreads			= 3;
+	private int				threadTimeoutMins	= 10;
+	private int				port				= -1;
+
+	private final Set<String>			oldEmailComplaints	= new HashSet<String>();
+	private final CMThreadPoolExecutor	threadPool;
 
 	public SMTPserver()
 	{
@@ -143,6 +145,11 @@ public class SMTPserver extends Thread implements Tickable
 	public MudHost getMUD()
 	{
 		return mud;
+	}
+
+	public int getSMTPPort()
+	{
+		return this.port;
 	}
 
 	public String domainName()
@@ -184,6 +191,7 @@ public class SMTPserver extends Thread implements Tickable
 			Log.errOut(getName(),"Set your coffeemud.ini parameter: PORT");
 			return false;
 		}
+		port = page.getInt("PORT");
 		if(CMath.isNumber(page.getStr("REQUESTTIMEOUTMINS")))
 			threadTimeoutMins=CMath.s_int(page.getStr("REQUESTTIMEOUTMINS"));
 
@@ -380,7 +388,7 @@ public class SMTPserver extends Thread implements Tickable
 		getJournalSets(); // cache the forwarding journals for the web site
 		return true;
 	}
-	
+
 	protected void serverDownMessage(final Socket sock) throws IOException
 	{
 		sock.getOutputStream().write(("421 Server down.. try later.\r\n").getBytes());
@@ -421,10 +429,10 @@ public class SMTPserver extends Thread implements Tickable
 
 		try
 		{
-			setName(getName()+"@"+page.getInt("PORT"));
-			servsock=new ServerSocket(page.getInt("PORT"), q_len, bindAddr);
+			setName(getName()+"@"+port);
+			servsock=new ServerSocket(port, q_len, bindAddr);
 
-			Log.sysOut(getName(),"Started on port: "+page.getInt("PORT"));
+			Log.sysOut(getName(),"Started on port: "+port);
 			if (bindAddr != null)
 				Log.sysOut(getName(),"Bound to: "+bindAddr.toString());
 
@@ -437,7 +445,7 @@ public class SMTPserver extends Thread implements Tickable
 				{
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPSERVER))
 						Log.debugOut("SMTPserver","Connection received: "+sock.getInetAddress().getHostAddress());
-					if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED) 
+					if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)
 					&& (!CMLib.threads().isAllSuspended())
 					&& (CMSecurity.getConnectState(sock, null) == ConnectState.NORMAL))
 						threadPool.execute(new ProcessSMTPrequest(sock,this));

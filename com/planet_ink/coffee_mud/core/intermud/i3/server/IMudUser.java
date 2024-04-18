@@ -1,5 +1,8 @@
-package com.planet_ink.coffee_mud.core.intermud.i3.packets;
-import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
+package com.planet_ink.coffee_mud.core.intermud.i3.server;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
+import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -16,10 +19,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import java.util.Vector;
-
 /**
- * Copyright (c) 2010-2024 Bo Zimmerman
+ * Copyright (c) 1996 George Reese
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,42 +34,6 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class MudAuthReply extends MudPacket
+public class IMudUser extends com.planet_ink.coffee_mud.core.intermud.i3.net.Interactive
 {
-	public long key=0;
-
-	public MudAuthReply()
-	{
-		super();
-		type = Packet.PacketType.AUTH_MUD_REPLY;
-		target_mud=I3Server.getMudName();
-	}
-
-	public MudAuthReply(final Vector<?> v)
-	{
-		super(v);
-		type = Packet.PacketType.AUTH_MUD_REPLY;
-		target_mud=(String)v.elementAt(4);
-		key=s_long(v,6);
-	}
-
-	public MudAuthReply(final String mud, final long key)
-	{
-		super();
-		type = Packet.PacketType.AUTH_MUD_REPLY;
-		target_mud=mud;
-		this.key=key;
-	}
-
-	@Override
-	public void send() throws InvalidPacketException
-	{
-		super.send();
-	}
-
-	@Override
-	public String toString()
-	{
-		return "({\"auth-mud-reply\",5,\""+sender_mud+"\",0,\""+target_mud+"\",0,"+key+",})";
-	}
 }
