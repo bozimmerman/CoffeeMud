@@ -420,6 +420,7 @@ public class RouterPeer extends RNameServer implements PersistentPeer, ServerObj
 		case OOB_BEGIN:
 		case OOB_END:
 		case MAIL:
+		case MAIL_ACK:
 			break;
 		}
 	}

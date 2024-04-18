@@ -711,6 +711,7 @@ public class MudPeer extends I3RMud implements ServerObject, PersistentPeer, Net
 			case OOB_BEGIN:
 			case OOB_END:
 			case MAIL:
+			case MAIL_ACK:
 				sendError("not-allowed", "Not allowed to send this packet.", pkt);
 				Log.errOut("Unwanted message type: "+pkt.getType().name() + " from "+mud_name);
 				return;
