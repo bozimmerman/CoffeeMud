@@ -15491,9 +15491,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((SB != null)
 					&& (SB.checkTimeToExecute()))
 					{
-						if ((objects != null) && (objects.length <= SB.ctx.tmp.length))
+						if (objects != null)
 						{
-							for(int i=0;i<objects.length;i++)
+							for(int i=0;i<objects.length && i<SB.ctx.tmp.length;i++)
 								SB.ctx.tmp[i] = objects[i];
  						}
 						execute(SB.ctx,SB.scr);
