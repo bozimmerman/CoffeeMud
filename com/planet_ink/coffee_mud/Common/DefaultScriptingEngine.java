@@ -15488,8 +15488,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				try
 				{
 					SB=que.get(q);
-					if((SB != null) && (SB.checkTimeToExecute()))
+					if((SB != null)
+					&& (SB.checkTimeToExecute()))
 					{
+						if ((objects != null) && (objects.length <= SB.ctx.tmp.length))
+						{
+							for(int i=0;i<objects.length;i++)
+								SB.ctx.tmp[i] = objects[i];
+ 						}
 						execute(SB.ctx,SB.scr);
 						que.remove(SB);
 					}
