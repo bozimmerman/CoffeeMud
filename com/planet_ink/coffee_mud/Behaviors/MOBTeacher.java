@@ -538,7 +538,8 @@ public class MOBTeacher extends CombatAbilities
 				}
 
 				teachA = (Ability)teachA.copyOf();
-				final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,teachA.ID()),0.75));
+				final double max75 =CMath.div(CMProps.getIntVar(CMProps.Int.PRACMAXPCT), 100.0);
+				final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,teachA.ID()),max75));
 				teachA.setProficiency(prof75/2);
 				CMLib.expertises().postTeach(monster,student,teachA);
 				monster.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,19);

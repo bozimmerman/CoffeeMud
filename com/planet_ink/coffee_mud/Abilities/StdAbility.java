@@ -2540,7 +2540,8 @@ public class StdAbility implements Ability
 		}
 		else
 		{
-			final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,yourAbility.ID()), .75));
+			final double max75 =CMath.div(CMProps.getIntVar(CMProps.Int.PRACMAXPCT), 100.0);
+			final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,yourAbility.ID()), max75));
 			if(yourAbility.proficiency()>prof75-1)
 			{
 				teacher.tell(L("You can't teach @x1 any more about '@x2'.",student.charStats().himher(),name()));
@@ -2582,7 +2583,8 @@ public class StdAbility implements Ability
 				return;
 			cost.doSpend(student);
 			final Ability newAbility=(Ability)newInstance();
-			final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,newAbility.ID()), .75));
+			final double max75 =CMath.div(CMProps.getIntVar(CMProps.Int.PRACMAXPCT), 100.0);
+			final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,newAbility.ID()), max75));
 			newAbility.setProficiency((int)Math.round(CMath.mul(proficiency(),((CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),100.0))))));
 			if(newAbility.proficiency()>prof75)
 				newAbility.setProficiency(prof75);
@@ -2625,7 +2627,8 @@ public class StdAbility implements Ability
 		if(yourAbility!=null)
 		{
 			final Ability teachAbility=teacher.fetchAbility(ID());
-			final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,yourAbility.ID()), .75));
+			final double max75 =CMath.div(CMProps.getIntVar(CMProps.Int.PRACMAXPCT), 100.0);
+			final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,yourAbility.ID()), max75));
 			if(yourAbility.proficiency()<prof75)
 			{
 				student.setPractices(student.getPractices()-practicesToPractice(student));
