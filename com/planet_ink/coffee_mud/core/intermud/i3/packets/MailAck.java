@@ -37,39 +37,23 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class MailPacket extends OOBPacket
+public class MailAck extends OOBPacket
 {
-	public int id = 0;
-	public String sending_user = "";
-	public Hashtable<String,Vector<String>> to = new Hashtable<String,Vector<String>>();
-	public Hashtable<String,Vector<String>> cc = new Hashtable<String,Vector<String>>();
-	public Vector<String> bcc = new Vector<String>();
-	public int send_time = 0;
-	public String subject = "";
-	public String message = "";
+	public Hashtable<String,Vector<String>> ack = new Hashtable<String,Vector<String>>();
 
-	public MailPacket()
+	public MailAck()
 	{
 		super();
-		type = Packet.PacketType.MAIL;
+		type = Packet.PacketType.MAIL_ACK;
 	}
 
 	@SuppressWarnings({ "unchecked" })
-	public MailPacket(final Vector<?> v)
+	public MailAck(final Vector<?> v)
 	{
 		super();
-		id = s_int(v,1);
-		sending_user = s_str(v,2);
-		if((v.size()>3) && (v.get(3) instanceof Map))
-			to.putAll((Map<String,Vector<String>>)v.get(3));
-		if((v.size()>4) && (v.get(4) instanceof Map))
-			cc.putAll((Map<String,Vector<String>>)v.get(4));
-		if((v.size()>5) && (v.get(5) instanceof Vector))
-			bcc.addAll((Vector<String>)v.get(5));
-		send_time = s_int(v,6);
-		subject = s_str(v,7);
-		message = s_str(v,8);
-		type = Packet.PacketType.MAIL;
+		if((v.size()>1) && (v.get(1) instanceof Map))
+			ack.putAll((Map<String,Vector<String>>)v.get(1));
+		type = Packet.PacketType.MAIL_ACK;
 	}
 
 	@Override
@@ -82,34 +66,17 @@ public class MailPacket extends OOBPacket
 	public String toString()
 	{
 		final StringBuilder str = new StringBuilder("");
-		str.append("({\"mail\","+id+",");
-		str.append("\"").append(sending_user).append("\",");
+		str.append("({\"mail-ack\",");
 		str.append("([");
-		for(final String key : to.keySet())
+		for(final String key : ack.keySet())
 		{
 			str.append("\"").append(key).append("\"").append(":({");
-			final Vector<String> v = to.get(key);
+			final Vector<String> v = ack.get(key);
 			for(final String s : v)
 				str.append("\"").append(s).append("\",");
 			str.append("}),");
 		}
 		str.append("]),");
-		str.append("([");
-		for(final String key : cc.keySet())
-		{
-			str.append("\"").append(key).append("\"").append(":({");
-			final Vector<String> v = cc.get(key);
-			for(final String s : v)
-				str.append("\"").append(s).append("\",");
-			str.append("}),");
-		}
-		str.append("]),({");
-		for(final String s : bcc)
-			str.append("\"").append(s).append("\",");
-		str.append("}),");
-		str.append(send_time).append(",");
-		str.append("\"").append(subject).append("\",");
-		str.append("\"").append(message).append("\",");
 		str.append("})");
 		return str.toString();
 	}

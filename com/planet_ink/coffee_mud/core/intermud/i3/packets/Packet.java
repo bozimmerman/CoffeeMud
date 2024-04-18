@@ -98,6 +98,7 @@ public abstract class Packet
 		OOB_BEGIN(OOBBegin.class),
 		OOB_END(OOBEnd.class),
 		MAIL(MailPacket.class),
+		MAIL_ACK(MailAck.class),
 		;
 		public Class<? extends Packet> packetClass;
 		String key;

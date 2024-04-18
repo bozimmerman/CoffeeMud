@@ -1,5 +1,5 @@
 BUGS/UNTESTED STUFF:
-  *.
+  *. Fix the issue where a ship very close to a planet cant plot a course without hitting it.
 
 TECH TODO:
    *. make inertia battery that alter ships inertia overall for dir change 
