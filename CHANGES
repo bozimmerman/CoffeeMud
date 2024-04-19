@@ -100,7 +100,6 @@
  75. New poison: Sickening (for mushrooms that aren't rotten, but aren't good for you either).
  76. Languages now support special 'say' verbs.  Std languages updated, especially animal-speaks.
  77. Instanced areas can now be reset/flushed and timed-out from Scripts.  See Archons Guide.
- 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)
   1. GMODIFY can now affect Areas.
@@ -141,7 +140,6 @@
  36. Can now SLEEP UNTIL RESTED to remove fatigue
  37. MOB armor suggested values now balance player attack values. *ness Behaviors modified.
  38. StdMOBS will now auto-scale by their set levels, making them much more useful. 
-
 # Build 5.10.1 Release 1/01/2023
   1. FasterRecovery expanded and new char stat REJUVRATE for Prop*Adjuster
   2. Ability Components now support their own private socials list.
@@ -174,7 +172,6 @@
  28. New expertise: torturing
  29. New Gaoler skills: Child Labor, Track Criminal, Spread Apathy, Spread Hatred
  30. Quest SPAWNABLE now supports ANY, ONCE, ALLONCE, and ANYONCE.  You should update your holiday.quest file if necc.
-
 # Build 5.10.0 Release 9/23/2022
   1. New Scriptable functions: ROOMPC and AREAPC
   2. Caravans now have their own internal Directions (fore, back, right, left, up, down)
@@ -246,7 +243,6 @@
  68. New Fighter Skills: Forearm Block, Breakout
  69. New INI entry TRAINCOSTS for setting (or removing) costs for various things.
  70. Shutdown-restart has been removed.  It never really worked right anyway.
-
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG
   1. Prop_Have/WearAdjuster supports item sets now
@@ -530,7 +526,6 @@
   63. New Archon skill CRECORD -- a developer tool for auto-snooping combat logs.
   64. New spells: Improved Repairing Aura, Mass Repairing Aura
   65. Prop_Doppleganger can now apply to areas and has new args
-
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.
    2. A lot of the old static strings in rideables are now customizable by editors, Shipwright/Wainwright
