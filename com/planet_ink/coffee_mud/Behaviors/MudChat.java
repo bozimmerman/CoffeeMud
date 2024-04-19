@@ -1033,31 +1033,31 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		if((!canActAtAll(affecting))
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.MUDCHAT)))
 			return;
-		final MOB mob=msg.source();
-		final MOB monster=(MOB)affecting;
-		if((msg.source()==monster)
+		final MOB srcMob=msg.source();
+		final MOB meMob=(MOB)affecting;
+		if((msg.source()==meMob)
 		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(msg.othersMessage()!=null))
 			lastThingSaid=CMStrings.getSayFromMessage(msg.othersMessage());
 		else
-		if((!mob.isMonster())
-		&&(CMLib.flags().canBeHeardSpeakingBy(mob,monster))
-		&&(CMLib.flags().canBeSeenBy(mob,monster))
-		&&(CMLib.flags().canBeSeenBy(monster,mob)))
+		if((CMLib.flags().canBeHeardSpeakingBy(srcMob,meMob))
+		&&(CMLib.flags().canBeSeenBy(srcMob,meMob))
+		&&(CMLib.flags().canBeSeenBy(meMob,srcMob)))
 		{
 			List<Pair<ChattyTestResponse,String>> myResponses=null;
-			myChatGroup=getMyChatGroup(monster,getChatGroups(getParms()));
+			myChatGroup=getMyChatGroup(meMob,getChatGroups(getParms()));
 			final String rest[]=new String[1];
-			final boolean combat=((monster.isInCombat()))||(mob.isInCombat());
+			final boolean combat=((meMob.isInCombat()))||(srcMob.isInCombat());
 
 			String str;
 			if((msg.targetMinor()==CMMsg.TYP_SPEAK)
-			&&(msg.amITarget(monster)
+			&&(!srcMob.isMonster())
+			&&(msg.amITarget(meMob)
 			   ||((msg.target()==null)
-				  &&(mob.location()==monster.location())
+				  &&(srcMob.location()==meMob.location())
 				  &&(talkDown<=0)
-				  &&(mob.location().numPCInhabitants()<3)))
-			&&(CMLib.flags().canBeHeardSpeakingBy(mob,monster))
+				  &&(srcMob.location().numPCInhabitants()<3)))
+			&&(CMLib.flags().canBeHeardSpeakingBy(srcMob,meMob))
 			&&(myChatGroup!=null)
 			&&(lastReactedTo!=msg.source())
 			&&(msg.sourceMessage()!=null)
@@ -1071,7 +1071,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 					if((expression.type==ChatMatchType.SAY)
 					&&(entry.combatEntry==combat))
 					{
-						if(match(mob,expression,str,rest))
+						if(match(srcMob,expression,str,rest))
 						{
 							myResponses=new ArrayList<Pair<ChattyTestResponse,String>>();
 							for(final ChattyTestResponse c : entry.responses)
@@ -1083,21 +1083,22 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			}
 			else // dont interrupt another mob
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-			&&(mob.isMonster())  // this is another mob (not me) talking
-			&&(CMLib.flags().canBeHeardSpeakingBy(mob,monster))
-			&&(CMLib.flags().canBeSeenBy(mob,monster)))
+			&&(srcMob.isMonster())  // this is another mob (not me) talking
+			&&(CMLib.flags().canBeHeardSpeakingBy(srcMob,meMob))
+			&&(CMLib.flags().canBeSeenBy(srcMob,meMob)))
 			   talkDown=TALK_WAIT_DELAY;
 			else // dont parse unless we are done waiting
-			if((CMLib.flags().canBeHeardMovingBy(mob,monster))
-			&&(CMLib.flags().canBeSeenBy(mob,monster))
-			&&(CMLib.flags().canBeSeenBy(monster,mob))
+			if((CMLib.flags().canBeHeardMovingBy(srcMob,meMob))
+			&&(CMLib.flags().canBeSeenBy(srcMob,meMob))
+			&&(CMLib.flags().canBeSeenBy(meMob,srcMob))
+			&&(!srcMob.isMonster())
 			&&(talkDown<=0)
 			&&(lastReactedTo!=msg.source())
 			&&(myChatGroup!=null))
 			{
 				str=null;
 				ChatMatchType matchType = ChatMatchType.EMOTE;
-				if((msg.amITarget(monster)
+				if((msg.amITarget(meMob)
 				&&(msg.targetMessage()!=null)))
 				{
 					str=CMLib.english().stripEnglishPunctuation(msg.targetMessage().toLowerCase()).trim();
@@ -1117,7 +1118,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 						if((expression.type==matchType)
 						&&(entry.combatEntry==combat))
 						{
-							if(match(mob,expression,str,rest))
+							if(match(srcMob,expression,str,rest))
 							{
 								myResponses=new ArrayList<Pair<ChattyTestResponse,String>>();
 								for(final ChattyTestResponse c : entry.responses)
@@ -1133,7 +1134,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			{
 				lastReactedTo=msg.source();
 				lastRespondedTo=msg.source();
-				queResponse(myResponses,monster,mob);
+				queResponse(myResponses,meMob,srcMob);
 			}
 		}
 	}
