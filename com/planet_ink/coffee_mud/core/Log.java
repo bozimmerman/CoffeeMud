@@ -51,9 +51,11 @@ public class Log extends java.util.logging.Logger
 	private String 				LOGNAME 		 = "APPLICATION"; /** log name */
 	private static final Log[] 	logs			 = new Log[256];
 	private final Map<Type,Conf>CONFS			 = new Hashtable<Type,Conf>();
+	private final PrintStream 	outStream		 = System.out;
+
 	private final Map<PrintWriter,long[]> WRITTEN= new Hashtable<PrintWriter,long[]>();
+
 	private static final Type[] TYPE_LEVEL_MAP   = new Type[1001];
-	private final PrintStream 		outStream		 = System.out;
 
 	/**
 	 * The internally used targets for a log
@@ -1752,73 +1754,73 @@ public class Log extends java.util.logging.Logger
 	}
 	//Log a CONFIG message.
 	@Override
-	public void	config(final String msg)
+	public void config(final String msg)
 	{
 		l().standardOut(Type.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
 	}
 	//Log a method entry.
 	@Override
-	public void	entering(final String sourceClass, final String sourceMethod)
+	public void entering(final String sourceClass, final String sourceMethod)
 	{
 		l().standardOut(Type.debug, toModuleName(sourceClass), sourceMethod, Integer.MIN_VALUE);
 	}
 	//Log a method entry, with one parameter.
 	@Override
-	public void	entering(final String sourceClass, final String sourceMethod, final Object param1)
+	public void entering(final String sourceClass, final String sourceMethod, final Object param1)
 	{
 		l().standardOut(Type.debug, toModuleName(sourceClass), sourceMethod+": "+param1, Integer.MIN_VALUE);
 	}
 	//Log a method entry, with an array of parameters.
 	@Override
-	public void	entering(final String sourceClass, final String sourceMethod, final Object[] params)
+	public void entering(final String sourceClass, final String sourceMethod, final Object[] params)
 	{
 		l().standardOut(Type.debug, toModuleName(sourceClass), sourceMethod+": "+toStringList(params), Integer.MIN_VALUE);
 	}
 	//Log a method return.
 	@Override
-	public void	exiting(final String sourceClass, final String sourceMethod)
+	public void exiting(final String sourceClass, final String sourceMethod)
 	{
 		l().standardOut(Type.debug, toModuleName(sourceClass), sourceMethod, Integer.MIN_VALUE);
 	}
 	//Log a method return, with result object.
 	@Override
-	public void	exiting(final String sourceClass, final String sourceMethod, final Object result)
+	public void exiting(final String sourceClass, final String sourceMethod, final Object result)
 	{
 		l().standardOut(Type.debug, toModuleName(sourceClass), sourceMethod+": "+result, Integer.MIN_VALUE);
 	}
 	//Log a FINE message.
 	@Override
-	public void	fine(final String msg)
+	public void fine(final String msg)
 	{
 		l().standardOut(Type.access, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
 	}
 	//Log a FINER message.
 	@Override
-	public void	finer(final String msg)
+	public void finer(final String msg)
 	{
 		l().standardOut(Type.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
 	}
 	//Log a FINEST message.
 	@Override
-	public void	finest(final String msg)
+	public void finest(final String msg)
 	{
 		l().standardOut(Type.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
 	}
 	//Get the current filter for this Logger.
 	@Override
-	public Filter	getFilter()
+	public Filter getFilter()
 	{
 		return null;
 	}
 	//Get the Handlers associated with this logger.
 	@Override
-	public synchronized Handler[]	getHandlers()
+	public synchronized Handler[] getHandlers()
 	{
 		return new Handler[0];
 	}
 	//Get the log Level that has been specified for this Logger.
 	@Override
-	public Level	getLevel()
+	public Level getLevel()
 	{
 		final Log log=l();
 		if(log.isWriterOn(Type.access))
@@ -1837,67 +1839,67 @@ public class Log extends java.util.logging.Logger
 	}
 	//Get the name for this logger.
 	@Override
-	public String	getName()
+	public String getName()
 	{
 		return logName;
 	}
 	//Return the parent for this Logger.
 	@Override
-	public Logger	getParent()
+	public Logger getParent()
 	{
 		return null;
 	}
 	//Retrieve the localization resource bundle for this logger for the current default locale.
 	@Override
-	public ResourceBundle	getResourceBundle()
+	public ResourceBundle getResourceBundle()
 	{
 		return null;
 	}
 	//Retrieve the localization resource bundle name for this logger.
 	@Override
-	public String	getResourceBundleName()
+	public String getResourceBundleName()
 	{
 		return "";
 	}
 	//Discover whether or not this logger is sending its output to its parent logger.
 	@Override
-	public synchronized boolean	getUseParentHandlers()
+	public synchronized boolean getUseParentHandlers()
 	{
 		return false;
 	}
 	//Log an INFO message.
 	@Override
-	public void	info(final String msg)
+	public void info(final String msg)
 	{
 		standardOut(Type.info,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
 	}
 	//Check if a message of the given level would actually be logged by this logger.
 	@Override
-	public boolean	isLoggable(final Level level)
+	public boolean isLoggable(final Level level)
 	{
 		return this.isWriterOn(getTypeFromLevel(level));
 	}
 	//Log a message, with no arguments.
 	@Override
-	public void	log(final Level level, final String msg)
+	public void log(final Level level, final String msg)
 	{
 		standardOut(getTypeFromLevel(level),Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
 	}
 	//Log a message, with one object parameter.
 	@Override
-	public void	log(final Level level, final String msg, final Object param1)
+	public void log(final Level level, final String msg, final Object param1)
 	{
 		standardOut(getTypeFromLevel(level),Thread.currentThread().getName(),msg+": "+((param1==null)?"null":param1.toString()),Integer.MIN_VALUE);
 	}
 	//Log a message, with an array of object arguments.
 	@Override
-	public void	log(final Level level, final String msg, final Object[] params)
+	public void log(final Level level, final String msg, final Object[] params)
 	{
 		standardOut(getTypeFromLevel(level),Thread.currentThread().getName(),msg+": "+(toStringList(params)),Integer.MIN_VALUE);
 	}
 	//Log a message, with associated Throwable information.
 	@Override
-	public void	log(final Level level, final String msg, final Throwable thrown)
+	public void log(final Level level, final String msg, final Throwable thrown)
 	{
 		if(thrown==null)
 			log(level,msg);
@@ -1906,31 +1908,31 @@ public class Log extends java.util.logging.Logger
 	}
 	//Log a LogRecord.
 	@Override
-	public void	log(final LogRecord record)
+	public void log(final LogRecord record)
 	{
 		log(record.getLevel(), record.getMessage(), record.getThrown());
 	}
 	//Log a message, specifying source class and method, with no arguments.
 	@Override
-	public void	logp(final Level level, final String sourceClass, final String sourceMethod, final String msg)
+	public void logp(final Level level, final String sourceClass, final String sourceMethod, final String msg)
 	{
 		standardOut(getTypeFromLevel(level),toModuleName(sourceClass),sourceMethod+": "+msg,Integer.MIN_VALUE);
 	}
 	//Log a message, specifying source class and method, with a single object parameter to the log message.
 	@Override
-	public void	logp(final Level level, final String sourceClass, final String sourceMethod, final String msg, final Object param1)
+	public void logp(final Level level, final String sourceClass, final String sourceMethod, final String msg, final Object param1)
 	{
 		standardOut(getTypeFromLevel(level),toModuleName(sourceClass),sourceMethod+": "+msg+": "+((param1==null)?"null":param1.toString()),Integer.MIN_VALUE);
 	}
 	//Log a message, specifying source class and method, with an array of object arguments.
 	@Override
-	public void	logp(final Level level, final String sourceClass, final String sourceMethod, final String msg, final Object[] params)
+	public void logp(final Level level, final String sourceClass, final String sourceMethod, final String msg, final Object[] params)
 	{
 		standardOut(getTypeFromLevel(level),toModuleName(sourceClass),sourceMethod+": "+msg+": "+(toStringList(params)),Integer.MIN_VALUE);
 	}
 	//Log a message, specifying source class and method, with associated Throwable information.
 	@Override
-	public void	logp(final Level level, final String sourceClass, final String sourceMethod, final String msg, final Throwable thrown)
+	public void logp(final Level level, final String sourceClass, final String sourceMethod, final String msg, final Throwable thrown)
 	{
 		if(thrown==null)
 			log(level,msg);
@@ -1940,71 +1942,71 @@ public class Log extends java.util.logging.Logger
 	//Log a message, specifying source class, method, and resource bundle name with no arguments.
 	@Override
 	@Deprecated
-	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg)
+	public void logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg)
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg);
 	}
 	//Log a message, specifying source class, method, and resource bundle name, with a single object parameter to the log message.
 	@Override
 	@Deprecated
-	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, final Object param1)
+	public void logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, final Object param1)
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg, param1);
 	}
 	//Log a message, specifying source class, method, and resource bundle name, with an array of object arguments.
 	@Override
 	@Deprecated
-	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, final Object[] params)
+	public void logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, final Object[] params)
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg, params);
 	}
 	//Log a message, specifying source class, method, and resource bundle name, with associated Throwable information.
 	@Override
 	@Deprecated
-	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, final Throwable thrown)
+	public void logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, final Throwable thrown)
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg, thrown);
 	}
 	//Remove a log Handler.
 	@Override
-	public synchronized void	removeHandler(final Handler handler)
+	public synchronized void removeHandler(final Handler handler)
 	{
 	}
 	//Set a filter to control output on this Logger.
 	@Override
-	public void	setFilter(final Filter newFilter)
+	public void setFilter(final Filter newFilter)
 	{
 	}
 	//Set the log level specifying which message levels will be logged by this logger.
 	@Override
-	public void	setLevel(final Level newLevel)
+	public void setLevel(final Level newLevel)
 	{
 	}
 	//Set the parent for this Logger.
 	@Override
-	public void	setParent(final Logger parent)
+	public void setParent(final Logger parent)
 	{
 	}
 	//Specify whether or not this logger should send its output to it's parent Logger.
 	@Override
-	public synchronized void	setUseParentHandlers(final boolean useParentHandlers)
+	public synchronized void setUseParentHandlers(final boolean useParentHandlers)
 	{
 	}
 	//Log a SEVERE message.
 	@Override
-	public void	severe(final String msg)
+	public void severe(final String msg)
 	{
 		standardOut(Type.error,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
 	}
 	//Log throwing an exception.
 	@Override
-	public void	throwing(final String sourceClass, final String sourceMethod, final Throwable thrown)
+	public void throwing(final String sourceClass, final String sourceMethod, final Throwable thrown)
 	{
 		standardExOut(Type.error, toModuleName(sourceClass), Integer.MIN_VALUE, null, thrown);
 	}
 	//Log a WARNING message.
 	@Override
-	public void	warning(final String msg)
+	public void warning(final String msg)
 	{
 		standardOut(Type.warning,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
 	}
