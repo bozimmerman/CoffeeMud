@@ -25,7 +25,7 @@ import java.lang.reflect.*;
 */
 /**
  * A LPC parser.
- * Not much to say.  It can take a valid json string and generate a standing
+ * Not much to say.  It can take a valid LPC string and generate a standing
  * object that represents the document string, and also generate a string
  * from such an object.
  * @author Bo Zimmerman
@@ -553,8 +553,8 @@ public class MiniLPC
 	/**
 	 * Given a char array, and index into it, returns the byte value of the 1 hex
 	 * digits at the indexed point of the char array.
-	 * @param doc the json doc containing a hex number
-	 * @param index the index into that json doc where the hex number begins
+	 * @param doc the LPC doc containing a hex number
+	 * @param index the index into that LPC doc where the hex number begins
 	 * @return the byte value of the 1 digit hex number
 	 * @throws MLPCException a parse error meaning it wasn't a hex number at all
 	 */
@@ -571,10 +571,10 @@ public class MiniLPC
 	}
 
 	/**
-	 * Given a json document char array, and an index into it, parses a string at
+	 * Given a LPC document char array, and an index into it, parses a string at
 	 * the indexed point of the char array and returns its value.
-	 * @param doc the json doc containing the string
-	 * @param index the index into that json doc where the string begins
+	 * @param doc the LPC doc containing the string
+	 * @param index the index into that LPC doc where the string begins
 	 * @return the value of the found string
 	 * @throws MLPCException a parse exception, meaning no string was there
 	 */
@@ -650,10 +650,10 @@ public class MiniLPC
 	}
 
 	/**
-	 * Given a json document char array, and an index into it, parses an array at
+	 * Given a LPC document char array, and an index into it, parses an array at
 	 * the indexed point of the char array and returns its value object.
-	 * @param doc the json doc containing the array
-	 * @param index the index into that json doc where the array begins
+	 * @param doc the LPC doc containing the array
+	 * @param index the index into that LPC doc where the array begins
 	 * @return the value object of the found array
 	 * @throws MLPCException a parse exception, meaning no array was there
 	 */
@@ -708,11 +708,11 @@ public class MiniLPC
 	}
 
 	/**
-	 * Given a json document char array, and an index into it, parses a value object at
+	 * Given a LPC document char array, and an index into it, parses a value object at
 	 * the indexed point of the char array and returns its value object.  A value object
 	 * may be anything from a string, array, a LPC object, boolean, null, or a number.
-	 * @param doc the json doc containing the value
-	 * @param index the index into that json doc where the value begins
+	 * @param doc the LPC doc containing the value
+	 * @param index the index into that LPC doc where the value begins
 	 * @return the value object of the found value
 	 * @throws MLPCException a parse exception, meaning no recognized value was there
 	 */
@@ -779,10 +779,10 @@ public class MiniLPC
 	}
 
 	/**
-	 * Given a json document char array, and an index into it, parses a LPC object at
+	 * Given a LPC document char array, and an index into it, parses a LPC object at
 	 * the indexed point of the char array and returns it as a mapped LPC object.
-	 * @param doc the json doc containing the LPC object
-	 * @param index the index into that json doc where the LPC object begins
+	 * @param doc the LPC doc containing the LPC object
+	 * @param index the index into that LPC doc where the LPC object begins
 	 * @return the value object of the found LPC object
 	 * @throws MLPCException a parse exception, meaning no LPC object was there
 	 */
@@ -900,7 +900,7 @@ public class MiniLPC
 	 * Converts a pojo field to a LPC value.
 	 * @param type the class type
 	 * @param val the value
-	 * @return the json value
+	 * @return the LPC value
 	 */
 	public String fromPOJOFieldtoLPC(final Class<?> type, final Object val)
 	{
@@ -938,7 +938,7 @@ public class MiniLPC
 	/**
 	 * Converts a pojo object to a LPC document.
 	 * @param o the object to convert
-	 * @return the json document
+	 * @return the LPC document
 	 */
 	public String fromPOJOtoLPC(final Object o)
 	{
@@ -970,21 +970,21 @@ public class MiniLPC
 
 	/**
 	 * Converts a LPC document to a pojo object.
-	 * @param json the json document
+	 * @param lpcStr the LPC document
 	 * @param o the object to convert
 	 * @throws MLPCException a parse exception
 	 */
-	public void fromLPCtoPOJO(final String json, final Object o) throws MLPCException
+	public void fromLPCtoPOJO(final String lpcStr, final Object o) throws MLPCException
 	{
-		fromLPCtoPOJO(parseObject(json),o);
+		fromLPCtoPOJO(parseObject(lpcStr),o);
 	}
 	/**
-	 * Converts a json object to a pojo object.
-	 * @param jsonObj the json object
+	 * Converts a LPC object to a pojo object.
+	 * @param lpcObj the LPC object
 	 * @param o the object to convert
 	 * @throws MLPCException a parse exception
 	 */
-	public void fromLPCtoPOJO(final MiniLPC.LPCObject jsonObj, final Object o) throws MLPCException
+	public void fromLPCtoPOJO(final MiniLPC.LPCObject lpcObj, final Object o) throws MLPCException
 	{
 		final Field[] fields = o.getClass().getDeclaredFields();
 		for(final Field field : fields)
@@ -992,10 +992,10 @@ public class MiniLPC
 			try
 			{
 				field.setAccessible(true);
-				if(field.isAccessible() && jsonObj.containsKey(field.getName()))
+				if(field.isAccessible() && lpcObj.containsKey(field.getName()))
 				{
 
-					final Object jo = jsonObj.get(field.getName());
+					final Object jo = lpcObj.get(field.getName());
 					if((jo == null) || (jo == MiniLPC.NULL))
 						field.set(o, null);
 					else
