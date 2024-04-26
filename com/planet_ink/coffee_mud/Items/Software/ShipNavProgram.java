@@ -360,7 +360,12 @@ public class ShipNavProgram extends ShipSensorProgram
 								final ShipDirectional.ShipDir dir = angleDelta[0] < 0 ? ShipDir.PORT : ShipDir.STARBOARD;
 								final Double thrust = Double.valueOf(Math.abs(angleDelta[0]) / angleAchievedPerPt);
 								if(isDebugging)
-									Log.debugOut("Thrusting "+thrust+"*"+angleAchievedPerPt+" to "+dir+" to achieve delta, and go from "+ship.facing()[0]+" to "+newFacing[0]);
+								{
+									Log.debugOut("Thrusting "+thrust+"*"+angleAchievedPerPt+" to "+
+											dir+" to achieve delta, and go from "+
+											Math.toDegrees(ship.facing()[0])+" to "+Math.toDegrees(newFacing[0])+
+											", angle delta = "+Math.toDegrees(angleDelta[0]));
+								}
 								msg.setTargetMessage(TechCommand.THRUST.makeCommand(dir,thrust));
 								this.savedAngle = null;
 								this.trySendMsgToItem(M, engineE, msg);

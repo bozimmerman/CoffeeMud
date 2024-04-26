@@ -414,7 +414,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			delta[0] = -(CoffeeDark.PI_TIMES_2 - delta[0]);
 		else
 		if(delta[0] < -Math.PI)
-			delta[0] = (CoffeeDark.PI_TIMES_2 + delta[1]);
+			delta[0] = (CoffeeDark.PI_TIMES_2 + delta[0]);
 		delta[1] = toAngle[1] - fromAngle[1];
 		//fixDirectionBounds(delta); // normalizing directions makes NO SENSE for a delta!
 		return delta;
