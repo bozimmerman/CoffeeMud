@@ -106,7 +106,7 @@ public class ThiefSkill extends StdAbility
 		return meMOB.phyStats().level();
 	}
 
-	public MOB getHighestLevelMOB(final MOB meMOB, final List<MOB> not)
+	public MOB getHighestLevelMOB(final MOB meMOB, final List<MOB> not, final boolean whoCanSee)
 	{
 		if(meMOB==null)
 			return null;
@@ -124,6 +124,7 @@ public class ThiefSkill extends StdAbility
 			if((M!=null)
 			&&(M!=meMOB)
 			&&(!CMLib.flags().isSleeping(M))
+			&&((!whoCanSee)||(CMLib.flags().canSee(M)))
 			&&(!H.contains(M))
 			&&(highestLevel<M.phyStats().level())
 			&&(!CMSecurity.isASysOp(M)))

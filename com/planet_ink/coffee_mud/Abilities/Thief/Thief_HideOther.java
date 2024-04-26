@@ -211,7 +211,7 @@ public class Thief_HideOther extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final MOB highestMOB=getHighestLevelMOB(mob,new XVector<MOB>(target));
+		final MOB highestMOB=getHighestLevelMOB(mob,new XVector<MOB>(target),true);
 		final int levelDiff=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
 		final String str=L("You carefully hide <T-NAMESELF> and direct <T-HIM-HER> to hold still.");

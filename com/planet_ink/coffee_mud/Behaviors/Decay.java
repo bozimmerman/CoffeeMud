@@ -132,6 +132,16 @@ public class Decay extends ActiveTicker
 				{
 					if(E instanceof MOB)
 					{
+						try
+						{
+							if(!item.amWearingAt(Item.IN_INVENTORY))
+								com.planet_ink.coffee_mud.core.CMLib.commands().postRemove((MOB)E, item, true);
+							com.planet_ink.coffee_mud.core.CMLib.commands().postDrop((MOB)E, item, true, false, false);
+						}
+						catch(final Exception e)
+						{
+							Log.errOut(e);
+						}
 						((MOB)E).tell(item.name()+" "+answer.trim());
 						((MOB)E).recoverPhyStats();
 						((MOB)E).recoverCharStats();
