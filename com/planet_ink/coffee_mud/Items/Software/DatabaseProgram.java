@@ -159,26 +159,45 @@ public class DatabaseProgram extends GenShipProgram
 	@Override
 	public boolean isCommandString(final String word, final boolean isActive)
 	{
+		if(!isActive)
+			return false;
+		final Vector<String> parsed=CMParms.parse(word);
+		if(parsed.size()==0)
+			return false;
+		boolean actingAlone = true;
 		final ItemPossessor owner = owner();
-		if((owner != null)
-		&&(isActive))
+		if(owner instanceof Computer)
 		{
 			for(final Enumeration<Item> i = owner.items(); i.hasMoreElements();)
 			{
 				final Item I = i.nextElement();
 				if((I instanceof Software)
 				&&(I != this)
-				&&((Software)I).getParentMenu().equals(getParentMenu()))
-					return isActive && word.toLowerCase().startsWith("query ");
+				&&((Software)I).getInternalName().equals(((Computer)owner).getActiveMenu()))
+					actingAlone = false;
 			}
 		}
-		return isActive;
+		String uword=parsed.get(0).toUpperCase();
+		if(uword.equalsIgnoreCase("DATABASE")
+		|| uword.equalsIgnoreCase("DB"))
+		{
+			parsed.remove(0);
+			uword=(parsed.size()>0)?parsed.get(0).toUpperCase():"";
+			actingAlone = true;
+		}
+		if((uword.equals("ADD")&&(actingAlone))
+		|| (uword.equals("DEL")&&(actingAlone))
+		|| (uword.equals("HELP"))
+		|| uword.equals("QUERY")
+		|| (uword.startsWith("SET.")&&(actingAlone)))
+			return true;
+		return false;
 	}
 
 	@Override
 	public String getActivationMenu()
 	{
-		return "DATABASE    : Database Query Software";
+		return "^wDATABASE               ^N: Database Query Software";
 	}
 
 	protected void shutdown()
@@ -209,7 +228,10 @@ public class DatabaseProgram extends GenShipProgram
 	@Override
 	public String getCurrentScreenDisplay()
 	{
-		return scr.toString();
+		final StringBuilder str = new StringBuilder("^X");
+		str.append(CMStrings.centerPreserve(L(" -- Database System -- "),60)).append("^.^N\n\r");
+		str.append(scr.toString());
+		return str.toString();
 	}
 
 	@Override
@@ -825,16 +847,17 @@ public class DatabaseProgram extends GenShipProgram
 		return vals;
 	}
 
-	protected Set<String> doKeyQuery(final String query, final boolean noNotes)
+	protected Set<String> doKeyQuery(String query, final boolean noNotes)
 	{
 		final Set<String> keys = new TreeSet<String>();
 		if(data.containsKey("DISABLED"))
 			return keys;
 
+		query = query.toUpperCase().trim();
 		// at this point, query is NOT coords, and is NOT in an embedded space box
-		if(data.containsKey(query.toUpperCase().trim())) // a full name was entered
+		if(data.containsKey(query)) // a full name was entered
 		{
-			keys.add(query.toUpperCase().trim());
+			keys.add(query);
 			return keys;
 		}
 		String q=query;
@@ -844,22 +867,22 @@ public class DatabaseProgram extends GenShipProgram
 			if(query.endsWith("*") && (query.length()>1))
 			{
 				queryType=3;
-				q=query.substring(1,query.length()-1).toUpperCase().trim();
+				q=query.substring(1,query.length()-1).trim();
 			}
 			else
 			{
-				queryType=1;
-				q=query.substring(1).toUpperCase().trim();
+				queryType=2;
+				q=query.substring(1).trim();
 			}
 		}
 		else
 		if(query.endsWith("*"))
 		{
-			queryType=2;
-			q=query.substring(0,query.length()-1).toUpperCase().trim();
+			queryType=1;
+			q=query.substring(0,query.length()-1).trim();
 		}
 		else
-			q=query.toUpperCase().trim();
+			q=query;
 		for(final String key : data.keySet())
 		{
 			final List<String> vals = getValues(key,noNotes);
@@ -1118,7 +1141,7 @@ public class DatabaseProgram extends GenShipProgram
 							{
 								final JSONObject obj = new JSONObject();
 								obj.put("NAME", message);
-								data.put(key, obj);
+								data.put(key.toUpperCase().trim(), obj);
 								final String resp=L("Entry '@x1' added.",message);
 								addLineToReadableScreen(resp);
 								super.addScreenMessage(resp);
@@ -1154,32 +1177,26 @@ public class DatabaseProgram extends GenShipProgram
 				}
 				return; // done, one way or another
 			}
-			if((parsed.size()==0)
-			||(message.equalsIgnoreCase("QUERY"))
-			||(message.equalsIgnoreCase("HELP")))
+			if(message.equalsIgnoreCase("HELP"))
 			{
-				final StringBuilder msg=new StringBuilder("");
-				msg.append(L("-- @x1 instructions --\n\r",name()));
-				msg.append(L("Search database:\n\r",name()));
-				msg.append(L("  Enter search coordinates, e.g. -100gm,400dm,1000km\n\r"));
-				msg.append(L("  Enter an object name, e.g. Vulcan\n\r"));
-				msg.append(L("  Search for an object, e.g. Vulc*\n\r"));
-				msg.append(L(" * Use special object names HERE, or a sector name.\n\r"));
-				msg.append(L(" * Precede coordinates/name with the word NEAR\n\r"));
-				msg.append(L(" * May need to precede search terms with 'query'\n\r"));
+				final StringBuilder str = new StringBuilder("^.");
 				if(!data.containsKey("DISABLED"))
 				{
-					msg.append(L("Setting names, notes, and fields:\n\r"));
-					msg.append(L("  ADD \"[KEY]\" name\n\r"));
-					msg.append(L("  DEL [KEY]\n\r"));
-					msg.append(L("  SET.NOTE \"[KEY]\" comment\n\r"));
-					if(svcs.containsKey(SWServices.TARGETING))
-						msg.append(L(" * [KEY] can be TARGET, coordinates, search\n\r"));
-					else
-						msg.append(L(" * [KEY] can be coordinates or search\n\r"));
+					str.append("^wADD [X] [NAME]         ^N: Add DB entry [X] w/[NAME]").append("\n\r");
+					str.append("^wDEL [X]                ^N: Delete DB entry [X]").append("\n\r");
+					str.append("^wSET.NOTE [X] [TX]      ^N: Set DB info text [TX]").append("\n\r");
 				}
-				addLineToReadableScreen(msg.toString());
-				super.addScreenMessage(msg.toString());
+				    str.append("^wQUERY [X]              ^N: Search for DB entry [X]").append("\n\r");
+				if(svcs.containsKey(SWServices.TARGETING))
+				{
+					str.append("^W[X]                    ^N: [TARGET], [COORDINATE], search term").append("\n\r");
+					str.append("^W[TARGET]               ^N: name, name*, HERE, sector name").append("\n\r");
+				}
+				else
+					str.append("^W[X]                    ^N: [COORDINATE], or search term").append("\n\r");
+				    str.append("^W[COORDINATE]           ^N: x,y,z (-10gm,40dm,1km); opt: precede w/NEAR").append("\n\r");
+				//addLineToReadableScreen(str.toString());
+				super.addScreenMessage(str.toString());
 				return;
 			}
 			if(uword.equalsIgnoreCase("QUERY"))

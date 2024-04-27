@@ -580,6 +580,8 @@ public class StdProgram extends StdItem implements Software
 			case CMMsg.TYP_POWERCURRENT:
 				onPowerCurrent(msg.value());
 				break;
+			default:
+				break;
 			}
 		}
 		super.executeMsg(host, msg);
