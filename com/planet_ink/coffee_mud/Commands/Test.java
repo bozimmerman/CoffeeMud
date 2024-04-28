@@ -3750,8 +3750,6 @@ public class Test extends StdCommand
 					}
 				}
 			}
-
-
 			if(what.equalsIgnoreCase("spacesectorsmap")||what.equalsIgnoreCase("all"))
 			{
 				final Map<String,BoundedCube> sectors = CMLib.space().getSectorMap();
@@ -4307,6 +4305,57 @@ public class Test extends StdCommand
 					success = success && found;
 					if(!found)
 						mob.tell("MID Test #"+(i+1)+" failed: "+Math.toDegrees(mid[0])+","+Math.toDegrees(mid[1]));
+				}
+				if(!success)
+					return false;
+			}
+
+			if((what.equalsIgnoreCase("all"))
+			||(what.equalsIgnoreCase("spacebasic")||what.equalsIgnoreCase("spacebasics")))
+			{
+				// test angle integrity
+				boolean success = true;
+				final Random r = new Random(System.currentTimeMillis());
+				for(final int distance : new int[] { 1000, 10000, 100000, 1000000 })
+				{
+					for(int i=0;i<1000;i++)
+					{
+						final long[] opos = new long[] {
+							Math.abs(r.nextLong()),Math.abs(r.nextLong()),Math.abs(r.nextLong())
+						};
+						final double[] angle = new double[] {
+							Math.PI * 2.0 * r.nextDouble(),
+							Math.PI  * r.nextDouble()
+						};
+						final long[] npos = CMLib.space().moveSpaceObject(opos, angle, distance);
+						final double[] nangle = CMLib.space().getDirection(opos, npos);
+						final double delta = CMLib.space().getAngleDelta(angle, nangle);
+						if(delta > 0.1)
+						{
+							mob.tell("Fail: "+CMLib.english().coordDescShort(opos)+" @ "+CMLib.english().directionDescShort(angle) + " -> "
+									+CMLib.english().coordDescShort(npos)+" @ "+CMLib.english().directionDescShort(nangle) + " : " + delta );
+							success = false;
+						}
+					}
+					for(int i=0;i<1000;i++)
+					{
+						final long[] opos = new long[] {
+							Math.abs(r.nextLong()),Math.abs(r.nextLong()),Math.abs(r.nextLong())
+						};
+						final long[] npos = new long[] {
+							opos[0] + r.nextInt(distance/3),opos[1] + r.nextInt(distance/3),opos[2] + r.nextInt(distance/3)
+						};
+						final long actualDistance = CMLib.space().getDistanceFrom(opos, npos);
+						final double[] angle = CMLib.space().getDirection(opos, npos);
+						final long[] cpos = CMLib.space().moveSpaceObject(opos, angle, actualDistance);
+						final long delta = Math.abs(npos[0]-cpos[0])+Math.abs(npos[1]-cpos[1])+Math.abs(npos[2]-cpos[2]);
+						if(delta > actualDistance/20)
+						{
+							mob.tell("Fail: "+CMLib.english().coordDescShort(opos)+" @ "+CMLib.english().directionDescShort(angle) + " -> "
+									+CMLib.english().coordDescShort(npos)+" = " + CMLib.english().coordDescShort(cpos)+" : "+delta );
+							success = false;
+						}
+					}
 				}
 				if(!success)
 					return false;
