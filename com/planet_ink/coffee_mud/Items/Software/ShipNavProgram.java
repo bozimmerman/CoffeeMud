@@ -664,9 +664,10 @@ public class ShipNavProgram extends ShipSensorProgram
 		final long distance = CMLib.space().getDistanceFrom(fromObj, toObj);
 		final double[] direction = CMLib.space().getDirection(fromObj, toObj);
 		BoundedCube baseCube=new BoundedCube(fromObj.coordinates(), SpaceObject.Distance.StarBRadius.dm);
-		baseCube=baseCube.expand(direction,distance);
-		BoundedCube compCube=new BoundedCube(fromObj.coordinates(), radius);
-		compCube=baseCube.expand(direction,distance);
+		baseCube=baseCube.expand(direction, distance);
+		final BoundedCube fromCube=new BoundedCube(fromObj.coordinates(), radius);
+		BoundedCube compCube=fromCube;
+		compCube=baseCube.expand(direction, distance);
 		SpaceObject collO = null;
 		long collDistance=Long.MAX_VALUE;
 		for(final SpaceObject O : CMLib.space().getSpaceObjectsInBound(baseCube))
@@ -694,29 +695,37 @@ public class ShipNavProgram extends ShipSensorProgram
 
 	//TODO: figure this out
 	protected SpaceObject subCourseCheck(final SpaceObject ship,
-			final SpaceObject fromObj, final SpaceObject toObj,
-			final long[][] points, final SpaceObject[] others)
+										 final SpaceObject fromObj, final SpaceObject toObj,
+										 final long[][] points, final SpaceObject[] others)
 	{
 		SpaceObject newObj = null;
 		// one of these is always behind the object, so we have to check
 		CMLib.dice().scramble(points);
 		long closestPoint = Long.MAX_VALUE;
-		for(final long[] p : points)
+		final SpaceObject winnerObj = (SpaceObject)CMClass.getBasicItem("Moonlet");
+		winnerObj.setRadius(ship.radius());
+		winnerObj.setName("Nav Point");
+		try
 		{
-			final SpaceObject winnerObj = (SpaceObject)CMClass.getBasicItem("Moonlet");
-			winnerObj.setRadius(ship.radius());
-			winnerObj.setCoords(p);
-			final SpaceObject coll2O = getCollision(fromObj, winnerObj, ship.radius(), others);
-			if(coll2O == null)
+			for(final long[] p : points)
 			{
-				final long d = CMLib.space().getDistanceFrom(fromObj, winnerObj);
-				if((newObj == null)
-				||(d < closestPoint))
+				System.arraycopy(p,0,winnerObj.coordinates(),0,3); // prevents adding to space
+				final SpaceObject coll2O = getCollision(fromObj, winnerObj, ship.radius(), others);
+				if(coll2O == null)
 				{
-					newObj = winnerObj;
-					closestPoint = d;
+					final long d = CMLib.space().getDistanceFrom(fromObj, winnerObj);
+					if((newObj == null)
+					||(d < closestPoint))
+					{
+						newObj = (SpaceObject)winnerObj.copyOf(); // wont add to space
+						closestPoint = d;
+					}
 				}
 			}
+		}
+		finally
+		{
+			winnerObj.destroy();
 		}
 		return newObj;
 	}
@@ -742,18 +751,22 @@ public class ShipNavProgram extends ShipSensorProgram
 				&&((containsSameCoordinates(sensorObjs, collO.coordinates()))
 					||(checkDatabase(collO.coordinates()))))
 				{
-					final double[] angleFromOrigin = CMLib.space().getDirection(collO.coordinates(), fromObj.coordinates());
-					final long distAdd = Math.round(CMath.mul(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS, collO.radius())
-							- collO.radius());
-					final long collRadius = collO.radius() + (distAdd * 2) + 2;
-					long[][] points = CMLib.space().getPerpendicularPoints(collO.coordinates(), angleFromOrigin, collRadius);
+					final double[] angleFromOrigin = CMLib.space().getDirection(fromObj.coordinates(), collO.coordinates());
+					final double[] angleFromCollider = CMLib.space().getDirection(collO.coordinates(), fromObj.coordinates());
+					final long gravRadius = Math.round(CMath.mul(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS, collO.radius()));
+					final long distAdd = gravRadius - collO.radius();
+					final long distanceCollRadius = collO.radius() + (distAdd * 2) + 2;
+					final long[][] pointsFromOrigin = CMLib.space().getPerpendicularPoints(collO.coordinates(), angleFromCollider, distanceCollRadius);
+					final long[][] pointsFromCollider = CMLib.space().getPerpendicularPoints(fromObj.coordinates(), angleFromOrigin, distanceCollRadius);
+					long[][] points = CMParms.combine(pointsFromCollider, pointsFromOrigin);
+
 					// one of these is always behind the object, so we have to check
 					SpaceObject newObj = subCourseCheck(ship,fromObj,toObj,points,others);
 					if(newObj == null)
 					{
 
 						final double[] revAngleFromOrigin = CMLib.space().getDirection(fromObj.coordinates(), collO.coordinates());
-						points = CMLib.space().getPerpendicularPoints(fromObj.coordinates(), revAngleFromOrigin, collRadius);
+						points = CMLib.space().getPerpendicularPoints(fromObj.coordinates(), revAngleFromOrigin, distanceCollRadius);
 						newObj = subCourseCheck(ship,fromObj,toObj,points,others);
 						if(newObj == null)
 							return null;
