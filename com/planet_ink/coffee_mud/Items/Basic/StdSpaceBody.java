@@ -106,6 +106,17 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	}
 
 	@Override
+	public CMObject copyOf()
+	{
+		final StdSpaceBody E=(StdSpaceBody)super.copyOf();
+		if(coordinates.length >= 3)
+			E.coordinates = new long[] {coordinates[0],coordinates[1],coordinates[2]};
+		if(direction.length >= 2)
+			E.direction = new double[] {direction[0],direction[1]};
+		return E;
+	}
+
+	@Override
 	public BoundedCube getBounds()
 	{
 		return new BoundedObject.BoundedCube(coordinates(),radius());
