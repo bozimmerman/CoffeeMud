@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core;
+import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -100,70 +101,91 @@ public class CMParms
 	}
 
 	/**
-	 * Combine two string arrays into a single one.
-	 * @param strs1 the first array
-	 * @param strs2 the second array
-	 * @return the combined array
-	 */
-	public final static String[] combine(final String[] strs1, final String[] strs2)
-	{
-		final int strs1Len = strs1.length;
-		final int strs2Len = strs2.length;
-		final String[] array= new String[strs1Len+strs2Len];
-		System.arraycopy(strs1, 0, array, 0, strs1Len);
-		System.arraycopy(strs2, 0, array, strs1Len, strs2Len);
-		return array;
-	}
-
-	/**
 	 * Combine object arrays into a single one.
 	 * @param objs the arrays
 	 * @return the combined array
 	 */
-	public final static Object[] combine(final Object[]... objs)
+	@SuppressWarnings("unchecked")
+	public final static <T> T[] combine(final T[]... objs)
 	{
+		if(objs.length == 0)
+			return (T[])new Object[0];
 		int len=0;
-		for(final Object[] obj : objs)
+		for(final T[] obj : objs)
 			len+=obj.length;
-		final Object[] array= new Object[len];
-		int x=0;
-		for(final Object[] obj : objs)
+		final T[] array = Arrays.copyOf(objs[0],len);
+		int x=objs[0].length;
+		for(int y=1;y<objs.length;y++)
 		{
-			System.arraycopy(obj, 0, array, x, obj.length);
-			x+=obj.length;
+			System.arraycopy(objs[y], 0, array, x, objs[y].length);
+			x+=objs[y].length;
 		}
 		return array;
 	}
 
 	/**
-	 * Combine two int arrays into a single one.
-	 * @param strs1 the first array
-	 * @param strs2 the second array
+	 * Combine multiple int arrays into a single one.
+	 * @param ints the arrays
 	 * @return the combined array
 	 */
-	public final static int[] combine(final int[] strs1, final int[] strs2)
+	public final static int[] combine(final int[]... ints)
 	{
-		final int strs1Len = strs1.length;
-		final int strs2Len = strs2.length;
-		final int[] array= new int[strs1Len+strs2Len];
-		System.arraycopy(strs1, 0, array, 0, strs1Len);
-		System.arraycopy(strs2, 0, array, strs1Len, strs2Len);
+		if(ints.length==0)
+			return new int[0];
+		int len=0;
+		for(final int[] obj : ints)
+			len+=obj.length;
+		final int[] array= Arrays.copyOf(ints[0], len);
+		int x=ints[0].length;
+		for(int y=1;y<ints.length;y++)
+		{
+			System.arraycopy(ints[y], 0, array, x, ints[y].length);
+			x+=ints[y].length;
+		}
 		return array;
 	}
 
 	/**
-	 * Combine two boolean arrays into a single one.
-	 * @param strs1 the first array
-	 * @param strs2 the second array
+	 * Combine multiple long arrays into a single one.
+	 * @param longs the arrays
 	 * @return the combined array
 	 */
-	public final static boolean[] combine(final boolean[] strs1, final boolean[] strs2)
+	public final static long[] combine(final long[]... longs)
 	{
-		final int strs1Len = strs1.length;
-		final int strs2Len = strs2.length;
-		final boolean[] array= new boolean[strs1Len+strs2Len];
-		System.arraycopy(strs1, 0, array, 0, strs1Len);
-		System.arraycopy(strs2, 0, array, strs1Len, strs2Len);
+		if(longs.length==0)
+			return new long[0];
+		int len=0;
+		for(final long[] obj : longs)
+			len+=obj.length;
+		final long[] array= Arrays.copyOf(longs[0], len);
+		int x=longs[0].length;
+		for(int y=1;y<longs.length;y++)
+		{
+			System.arraycopy(longs[y], 0, array, x, longs[y].length);
+			x+=longs[y].length;
+		}
+		return array;
+	}
+
+	/**
+	 * Combine multiple boolean arrays into a single one.
+	 * @param booleans the arrays
+	 * @return the combined array
+	 */
+	public final static boolean[] combine(final boolean[]... booleans)
+	{
+		if(booleans.length==0)
+			return new boolean[0];
+		int len=0;
+		for(final boolean[] obj : booleans)
+			len+=obj.length;
+		final boolean[] array= Arrays.copyOf(booleans[0], len);
+		int x=booleans[0].length;
+		for(int y=1;y<booleans.length;y++)
+		{
+			System.arraycopy(booleans[y], 0, array, x, booleans[y].length);
+			x+=booleans[y].length;
+		}
 		return array;
 	}
 
