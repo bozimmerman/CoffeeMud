@@ -4311,6 +4311,43 @@ public class Test extends StdCommand
 			}
 
 			if((what.equalsIgnoreCase("all"))
+			||(what.equalsIgnoreCase("spaceintersect")))
+			{
+				for(final Enumeration<SpaceObject> o1 = CMLib.space().getSpaceObjects(); o1.hasMoreElements();)
+				{
+					final SpaceObject O1 = o1.nextElement();
+					final long O1radius = Math.round(CMath.mul(O1.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS));
+					final BoundedCube O1Cube = new BoundedCube(O1.coordinates(), O1radius);
+					for(final Enumeration<SpaceObject> o2 = CMLib.space().getSpaceObjects(); o2.hasMoreElements();)
+					{
+						final SpaceObject O2 = o2.nextElement();
+						if(O1 != O2)
+						{
+							final long O2radius = Math.round(CMath.mul(O2.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS));
+							final BoundedCube O2Cube = new BoundedCube(O2.coordinates(), O2radius);
+							if(O1Cube.intersects(O2Cube))
+							{
+								mob.tell(O1.Name()+" intersects "+O2.Name()+" right now: "
+												+(CMLib.space().getDistanceFrom(O1,O2)-O1radius-O2radius));
+								for(int i=1;i<100000;i++)
+								{
+									final double[] moondir = CMLib.space().getOppositeDir(CMLib.space().getDirection(O2, O1));
+									final long[] newCoord = CMLib.space().moveSpaceObject(O2.coordinates(), moondir, i);
+									final BoundedCube O3Cube = new BoundedCube(newCoord, O2radius);
+									if(!O1Cube.intersects(O3Cube))
+									{
+										mob.tell(O1.Name()+" stops intersecting "+O2.Name()+": "
+														+(CMLib.space().getDistanceFrom(O1.coordinates(),newCoord)-O1radius-O2radius) + ": "+i);
+										break;
+									}
+								}
+								return false;
+							}
+						}
+					}
+				}
+			}
+			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("spacebasic")||what.equalsIgnoreCase("spacebasics")))
 			{
 				// test angle integrity
@@ -4320,11 +4357,9 @@ public class Test extends StdCommand
 				{
 					for(int i=0;i<1000;i++)
 					{
-						final long[] opos = new long[] {
-							Math.abs(r.nextLong()),Math.abs(r.nextLong()),Math.abs(r.nextLong())
-						};
+						final long[] opos = new long[] { r.nextLong(),r.nextLong(),r.nextLong() };
 						final double[] angle = new double[] {
-							Math.PI * 2.0 * r.nextDouble(),
+							(Math.PI * 2.0) * r.nextDouble(),
 							Math.PI  * r.nextDouble()
 						};
 						final long[] npos = CMLib.space().moveSpaceObject(opos, angle, distance);
@@ -4339,9 +4374,7 @@ public class Test extends StdCommand
 					}
 					for(int i=0;i<1000;i++)
 					{
-						final long[] opos = new long[] {
-							Math.abs(r.nextLong()),Math.abs(r.nextLong()),Math.abs(r.nextLong())
-						};
+						final long[] opos = new long[] { r.nextLong(),r.nextLong(),r.nextLong() };
 						final long[] npos = new long[] {
 							opos[0] + r.nextInt(distance/3),opos[1] + r.nextInt(distance/3),opos[2] + r.nextInt(distance/3)
 						};
@@ -4353,6 +4386,75 @@ public class Test extends StdCommand
 						{
 							mob.tell("Fail: "+CMLib.english().coordDescShort(opos)+" @ "+CMLib.english().directionDescShort(angle) + " -> "
 									+CMLib.english().coordDescShort(npos)+" = " + CMLib.english().coordDescShort(cpos)+" : "+delta );
+							success = false;
+						}
+					}
+					for(int i=0;i<100;i++)
+					{
+						final long[] opos = new long[] { r.nextLong(),r.nextLong(),r.nextLong() };
+						final double[] angle = new double[] {
+							Math.PI * 2.0 * r.nextDouble(),
+							Math.PI  * r.nextDouble()
+						};
+						final long[] npos = CMLib.space().moveSpaceObject(opos, angle, distance);
+						final long dist = CMLib.space().getDistanceFrom(opos, npos);
+						final long delta = Math.abs(dist-distance);
+						if(delta > distance/20)
+						{
+							mob.tell("Fail: "+CMLib.english().coordDescShort(opos)+" @ "+CMLib.english().directionDescShort(angle) + " -> "
+									+CMLib.english().coordDescShort(npos)+" = " + distance+" : "+dist );
+							success = false;
+						}
+					}
+					boolean overlap=false;
+					for(int i=0;i<1000;i++)
+					{
+						overlap = !overlap;
+						final long[] pos1 = new long[] {
+											1000000L + (Math.abs(r.nextLong()) % 100),
+											1000000L + (Math.abs(r.nextLong()) % 100),
+											1000000L + (Math.abs(r.nextLong()) % 100) };
+						final long r1 = Math.abs(r.nextLong() % distance/100)+1;
+						final long r2 = Math.abs(r.nextLong() % distance/10)+1;
+						final long localDist;
+						if(overlap)
+							localDist = (distance % (r1 + r2 - 1)) + 1;
+						else
+						if(i<10)
+							localDist = (r1 + r2) + 23;
+						else
+							localDist = r1 + r2 + r.nextInt((int)(distance-r1-r2));
+						final double[] angle = new double[] {
+							(Math.PI * 2.0) * r.nextDouble(),
+							Math.PI  * r.nextDouble()
+						};
+						final long[] pos2 = CMLib.space().moveSpaceObject(pos1, angle, localDist);
+						if(Arrays.equals(pos1, pos2))
+						{
+							mob.tell("Fail-moveObj: "+CMLib.english().coordDescShort(pos1)+": "+CMLib.english().directionDescShort(angle)+"="+localDist);
+						}
+						final BoundedCube cube1 = new BoundedCube(pos1,r1);
+						final BoundedCube cube2 = new BoundedCube(pos2,r2);
+						if(cube1.intersects(cube2) != overlap)
+						{
+							/*
+							System.out.println("cube1, radius="+r1+", coordinates=");
+							System.out.println("x: "+cube1.lx +","+cube1.rx);
+							System.out.println("y: "+cube1.ty +","+cube1.by);
+							System.out.println("z: "+cube1.iz +","+cube1.oz);
+							System.out.println("cube2, radius="+r2+", coordinates=");
+							System.out.println("x: "+cube2.lx +","+cube2.rx);
+							System.out.println("y: "+cube2.ty +","+cube2.by);
+							System.out.println("z: "+cube2.iz +","+cube2.oz);
+							System.out.println("distance between centers = "+localDist);
+							cube1.intersects(cube2);
+							*/
+							if(overlap)
+								mob.tell("Fail-noverlap: "+CMLib.english().coordDescShort(pos1)+" # "+ r1 + " -> "
+										+CMLib.english().coordDescShort(pos2)+" # "+r2+" = " + localDist+"("+(localDist-r1-r2)+")" );
+							else
+								mob.tell("Fail-overlaps: "+CMLib.english().coordDescShort(pos1)+" # "+ r1 + " -> "
+										+CMLib.english().coordDescShort(pos2)+" # "+r2+" = " + localDist+"("+(localDist-r1-r2)+")" );
 							success = false;
 						}
 					}
