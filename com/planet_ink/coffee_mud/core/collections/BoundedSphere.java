@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.core.collections;
 
+import java.math.BigInteger;
+
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 
@@ -76,14 +78,26 @@ public class BoundedSphere implements Comparable<BoundedObject>, BoundedObject
 		return new BoundedTube(this, direction, distance);
 	}
 
+	public long distanceFrom(final long[] coord2)
+	{
+		final BigInteger coord_0 = BigInteger.valueOf(xyz.x().longValue()).subtract(BigInteger.valueOf(coord2[0]));
+		final BigInteger coord_0m = coord_0.multiply(coord_0);
+		final BigInteger coord_1 = BigInteger.valueOf(xyz.y().longValue()).subtract(BigInteger.valueOf(coord2[1]));
+		final BigInteger coord_1m = coord_1.multiply(coord_1);
+		final BigInteger coord_2 = BigInteger.valueOf(xyz.z().longValue()).subtract(BigInteger.valueOf(coord2[2]));
+		final BigInteger coord_2m = coord_2.multiply(coord_2);
+		final BigInteger coords_all = coord_0m.add(coord_1m).add(coord_2m);
+		return Math.round(Math.sqrt(coords_all.doubleValue()));
+	}
+
 	public boolean contains(final long x, final long y, final long z)
 	{
-		return CMLib.space().getDistanceFrom(xyz.toLongs(), new long[] {x,y,z}) <= radius;
+		return distanceFrom(new long[] {x,y,z}) <= radius;
 	}
 
 	public boolean contains(final long[] c)
 	{
-		return CMLib.space().getDistanceFrom(xyz.toLongs(), c) <= radius;
+		return distanceFrom(c) <= radius;
 	}
 
 	public boolean intersects(final BoundedObject two)
@@ -94,10 +108,7 @@ public class BoundedSphere implements Comparable<BoundedObject>, BoundedObject
 		&&((BoundedTube)two).exp != null))
 			return ((BoundedTube)two).intersects(this);
 		if(two instanceof BoundedSphere)
-		{
-			return CMLib.space().getDistanceFrom(xyz.toLongs(), ((BoundedSphere)two).xyz.toLongs())
-					< ( radius() + two.radius());
-		}
+			return distanceFrom(((BoundedSphere)two).xyz.toLongs()) < ( radius() + two.radius());
 		if(two instanceof BoundedCube)
 			return getCube().intersects(two);
 		return false;

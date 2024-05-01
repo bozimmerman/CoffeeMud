@@ -1483,7 +1483,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				&&(S.getArea()!=null)
 				&&(S.getArea().getAreaState()!=Area.State.ACTIVE))
 					continue;
-				BoundedTube tube=new BoundedTube(O.getSphere(), null);
+				BoundedTube tube=new BoundedTube(O.getSphere());
 				final double speed=O.speed();
 				final long[] startCoords=O.coordinates().clone();
 				final boolean moving;
