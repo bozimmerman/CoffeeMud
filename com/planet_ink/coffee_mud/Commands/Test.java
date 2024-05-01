@@ -3756,6 +3756,7 @@ public class Test extends StdCommand
 				for(final String key : sectors.keySet())
 					mob.tell(key+": "+sectors.get(key).toString());
 			}
+
 			if(what.equalsIgnoreCase("spaceinterception")||what.equalsIgnoreCase("all"))
 			{
 				final Random rand=new Random(System.currentTimeMillis());

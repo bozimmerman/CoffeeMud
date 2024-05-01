@@ -38,6 +38,21 @@ public class BigVector
 			b[i]=BigDecimal.valueOf(l[i]);
 	}
 
+	public BigVector(final long lx, final long ly)
+	{
+		b=new BigDecimal[2];
+		b[0]=BigDecimal.valueOf(lx);
+		b[1]=BigDecimal.valueOf(ly);
+	}
+
+	public BigVector(final long lx, final long ly, final long lz)
+	{
+		b=new BigDecimal[3];
+		b[0]=BigDecimal.valueOf(lx);
+		b[1]=BigDecimal.valueOf(ly);
+		b[2]=BigDecimal.valueOf(lz);
+	}
+
 	public BigVector(final double[] l)
 	{
 		b=new BigDecimal[l.length];

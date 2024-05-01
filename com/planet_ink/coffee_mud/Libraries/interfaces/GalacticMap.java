@@ -179,6 +179,23 @@ public interface GalacticMap extends CMLibrary
 	public double getMinDistanceFrom(final long[] prevPos, final long[] curPosition, final long[] objPos);
 
 	/**
+	 * Given two vectors, this will return the minimum
+	 * distance between the two vectors.
+	 *
+	 * @see GalacticMap#getDistanceFrom(long[], long[])
+	 * @see GalacticMap#getDistanceFrom(SpaceObject, SpaceObject)
+	 * @see GalacticMap#getMinDistanceFrom(long[], long[], long[])
+	 * @see GalacticMap#getMinDistanceFrom(long[], long[], long[], long[])
+	 *
+	 * @param vec1s start point of the first vector
+	 * @param vec1e end point of the first vector
+	 * @param vec2s start point of the second vector
+	 * @param vec2e end point of the second vector
+	 * @return the minimum distance in low precision
+	 */
+	public double getMinDistanceFrom(final long[] vec1s, final long[] vec1e, final long[] vec2s, final long[] vec2e);
+
+	/**
 	 * Given two angles, this returns the difference between them as a single angle.
 	 *
 	 * @see GalacticMap#getAngleDiff(double[], double[])

@@ -111,6 +111,7 @@ public interface BoundedObject
 
 		public BoundedCube expand(final double[] direction, final long distance)
 		{
+			// this is silly -- it's just a giant cube
 			final BoundedCube cube=new BoundedCube(this);
 			final double x1=Math.cos(direction[0])*Math.sin(direction[1]);
 			final double y1=Math.sin(direction[0])*Math.sin(direction[1]);
@@ -139,6 +140,7 @@ public interface BoundedObject
 		{
 			if(two==null)
 				return false;
+			// this is silly -- it's just a giant cube
 			return (
 				((lx <= two.lx && two.lx <= rx) || (two.lx <= lx && lx <= two.rx))
 			&&	((ty <= two.ty && two.ty <= by) || (two.ty <= ty && ty <= two.by))
