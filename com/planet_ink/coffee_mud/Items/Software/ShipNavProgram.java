@@ -2,7 +2,6 @@ package com.planet_ink.coffee_mud.Items.Software;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.BasicTech.GenElecItem;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -665,9 +664,8 @@ public class ShipNavProgram extends ShipSensorProgram
 		final double[] direction = CMLib.space().getDirection(fromObj, toObj);
 		BoundedCube baseCube=new BoundedCube(fromObj.coordinates(), SpaceObject.Distance.StarBRadius.dm);
 		baseCube=baseCube.expand(direction, distance);
-		final BoundedCube fromCube=new BoundedCube(fromObj.coordinates(), radius);
-		BoundedCube compCube=fromCube;
-		compCube=baseCube.expand(direction, distance);
+		final BoundedSphere fromSphere=new BoundedSphere(fromObj.coordinates(), radius);
+		final BoundedTube compTube=fromSphere.expand(direction, distance);
 		SpaceObject collO = null;
 		long collDistance=Long.MAX_VALUE;
 		for(final SpaceObject O : CMLib.space().getSpaceObjectsInBound(baseCube))
@@ -677,8 +675,8 @@ public class ShipNavProgram extends ShipSensorProgram
 			&&(!sameAs(toObj, O))
 			&&(!sameAs(O, others)))
 			{
-				final BoundedCube enemyCube = new BoundedCube(O.coordinates(), O.radius());
-				if(compCube.intersects(enemyCube))
+				final BoundedSphere enemySphere = O.getSphere();
+				if(compTube.intersects(enemySphere))
 				{
 					final long dist = CMLib.space().getDistanceFrom(fromObj, O);
 					if((dist < collDistance) || (collO == null))

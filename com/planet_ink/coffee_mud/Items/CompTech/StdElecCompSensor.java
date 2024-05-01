@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -52,6 +51,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 	protected final static long[] emptyCoords = new long[] {0,0,0};
 	protected final static double[] emptyDirection = new double[] {0,0};
 	protected final static BoundedCube smallCube = new BoundedCube(1,1,1,1,1,1);
+	protected final static BoundedSphere smallSphere = new BoundedSphere(new long[] {1,1,1},1);
 	protected Map<Software,Room> feedbackObjects = new TreeMap<Software,Room>(XTreeSet.comparator);
 	protected Map<Environmental,Environmental> lastSensedObjects = new TreeMap<Environmental,Environmental>(XTreeSet.comparator);
 	protected volatile long nextFailureCheck = System.currentTimeMillis();
@@ -388,12 +388,21 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				}
 
 				@Override
-				public BoundedCube getBounds()
+				public BoundedCube getCube()
 				{
 					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
-						return sobj.getBounds();
+						return sobj.getCube();
 					return smallCube;
+				}
+
+				@Override
+				public BoundedSphere getSphere()
+				{
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj.getSphere();
+					return smallSphere;
 				}
 
 				@Override
@@ -417,6 +426,12 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 					if(sobj!=null)
 						return sobj.radius();
 					return 1;
+				}
+
+				@Override
+				public long[] center()
+				{
+					return coordinates();
 				}
 
 				@Override

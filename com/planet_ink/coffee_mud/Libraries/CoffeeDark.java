@@ -1,7 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.exceptions.BadEmailAddressException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
@@ -835,7 +834,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			return within;
 		synchronized(space)
 		{
-			space.query(within, new BoundedObject.BoundedCube(centerCoordinates, maxDistance));
+			space.query(within, new BoundedCube(centerCoordinates, maxDistance));
 		}
 		if(within.size()<1)
 			return within;
@@ -861,6 +860,22 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
+	public List<SpaceObject> getSpaceObjectsInBound(final BoundedTube tube)
+	{
+		final List<SpaceObject> within=new ArrayList<SpaceObject>(1);
+		synchronized(space)
+		{
+			space.query(within, tube.getCube());
+		}
+		for(final Iterator<SpaceObject> i=within.iterator();i.hasNext();)
+		{
+			if(!tube.intersects(i.next().getSphere()))
+				i.remove();
+		}
+		return within;
+	}
+
+	@Override
 	public List<SpaceObject> getSpaceObjectsWithin(final SpaceObject ofObj, final long minDistance, final long maxDistance)
 	{
 		final List<SpaceObject> within=new ArrayList<SpaceObject>(1);
@@ -868,7 +883,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			return within;
 		synchronized(space)
 		{
-			space.query(within, new BoundedObject.BoundedCube(ofObj.coordinates(), maxDistance));
+			space.query(within, new BoundedCube(ofObj.coordinates(), maxDistance));
 		}
 		for (final Iterator<SpaceObject> o=within.iterator();o.hasNext();)
 		{
@@ -981,11 +996,11 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	@Override
 	public boolean canMaybeIntercept(final SpaceObject chaserO, final SpaceObject runnerO, final int maxTicks, final double maxSpeed)
 	{
-		final BoundedCube runB = runnerO.getBounds();
-		runB.expand(runnerO.direction(), Math.round(CMath.mul(runnerO.speed(),maxTicks)));
-		final BoundedCube chaB = runnerO.getBounds();
-		chaB.expand(chaserO.direction(), Math.round(CMath.mul(maxSpeed,maxTicks)));
-		return runB.intersects(chaB);
+		final BoundedSphere runB = runnerO.getSphere();
+		final BoundedTube tubeB = runB.expand(runnerO.direction(), Math.round(CMath.mul(runnerO.speed(),maxTicks)));
+		final BoundedSphere chaB = runnerO.getSphere();
+		final BoundedTube tubeC = chaB.expand(chaserO.direction(), Math.round(CMath.mul(maxSpeed,maxTicks)));
+		return tubeB.intersects(tubeC);
 	}
 
 	@Override
@@ -1268,7 +1283,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 
-	protected BoundedCube makeCourseCubeRay(final long[] src, final long sradius,
+	protected BoundedTube makeCourseTubeRay(final long[] src, final long sradius,
 											final long[] target, final long tradius,
 											final double[] dir)
 	{
@@ -1278,7 +1293,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final long[] srcCoord = moveSpaceObject(src, dir, sgradius+1);
 		final long[] tgtCoord = moveSpaceObject(target, getOppositeDir(dir), tgradius+1);
 		final long distance = getDistanceFrom(srcCoord, tgtCoord);
-		final BoundedCube courseRay = new BoundedCube(srcCoord, sgradius);
+		final BoundedSphere courseRay = new BoundedSphere(srcCoord, sgradius);
 		if(courseRay.contains(tgtCoord)
 		//||courseRay.contains(srcCoord) I don't get this .. courseRay is ONLY around the source, so isn't it ALWAYS colliding?
 		||(distance <= sradius))
@@ -1286,8 +1301,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			// this means we are already right on top of it, nowhere to go!
 			return null;
 		}
-		courseRay.expand(dir, distance);
-		return courseRay;
+		return courseRay.expand(dir, distance);
 	}
 
 	@Override
@@ -1296,12 +1310,12 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final List<long[]> course = new LinkedList<long[]>();
 		long[] src=osrc.clone();
 		long[] target = otarget.clone();
-		BoundedCube courseRay;
+		BoundedTube courseRay;
 		List<SpaceObject> objs;
 		while(!Arrays.equals(src, target))
 		{
 			final double[] dir = getDirection(src, target);
-			courseRay = makeCourseCubeRay(src, sradius, target, tradius,dir);
+			courseRay = makeCourseTubeRay(src, sradius, target, tradius,dir);
 			if(courseRay == null)
 				return course; // we are on top of the target, so done
 			objs = getSpaceObjectsInBound(courseRay);
@@ -1350,7 +1364,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 							break;
 						}
 						final long[] newSubTarget = moveSpaceObject(src, newDir, distanceToBobj.longValue());
-						courseRay = makeCourseCubeRay(src, sradius, newSubTarget, bobj.radius(), newDir);
+						courseRay = makeCourseTubeRay(src, sradius, newSubTarget, bobj.radius(), newDir);
 						if(courseRay == null)
 							return course; // we are on top of the target, so done
 						objs = getSpaceObjectsInBound(courseRay);
@@ -1391,9 +1405,6 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		}
 		return course;
 	}
-
-
-
 
 	@Override
 	public double getGravityForce(final SpaceObject S, final SpaceObject cO)
@@ -1472,13 +1483,13 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				&&(S.getArea()!=null)
 				&&(S.getArea().getAreaState()!=Area.State.ACTIVE))
 					continue;
-				BoundedCube cube=O.getBounds();
+				BoundedTube tube=new BoundedTube(O.getSphere(), null);
 				final double speed=O.speed();
 				final long[] startCoords=O.coordinates().clone();
 				final boolean moving;
 				if(speed>=1)
 				{
-					cube=cube.expand(O.direction(),(long)speed);
+					tube=tube.expand(O.direction(),(long)speed);
 					moveSpaceObject(O);
 					moving=true;
 				}

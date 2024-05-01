@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -329,12 +328,20 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 				}
 
 				@Override
-				public BoundedCube getBounds()
+				public BoundedCube getCube()
 				{
 					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
-						return sobj.getBounds();
+						return sobj.getCube();
 					return smallCube;
+				}
+
+				@Override
+				public BoundedSphere getSphere()
+				{
+					if(obj instanceof SpaceObject)
+						return ((SpaceObject)obj).getSphere();
+					return smallSphere;
 				}
 
 				@Override
@@ -344,6 +351,12 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 					if(sobj!=null)
 						return sobj.coordinates().clone();
 					return emptyCoords.clone();
+				}
+
+				@Override
+				public long[] center()
+				{
+					return coordinates();
 				}
 
 				@Override
@@ -442,7 +455,7 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 	{
 		final double[] hDirTo = space.getDirection(O, hO);
 		final long hDistance = space.getDistanceFrom(O, hO);
-		final BoundedCube hCube=O.getBounds().expand(hDirTo,hDistance);
+		final BoundedTube hTube=O.getSphere().expand(hDirTo,hDistance);
 		for(final Iterator<Environmental> rb=revList.descendingIterator();rb.hasNext();)
 		{
 			final Environmental bE=rb.next();
@@ -456,7 +469,7 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 				if(hL.doubleValue() < bL.doubleValue()) // if moon is smaller than planet, proceed with hide check
 				{
 					final SpaceObject bO=(SpaceObject)bE;
-					if(hCube.intersects(bO.getBounds()))
+					if(hTube.intersects(bO.getSphere()))
 						return true;
 				}
 			}
@@ -574,14 +587,14 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 		if(!filter.passesFilter(hO))
 			return false;
 		final double[] hDirTo = space.getDirection(O, hO);
-		final BoundedCube hCube=O.getBounds().expand(hDirTo,hDistance);
-		final List<SpaceObject> objs = space.getSpaceObjectsInBound(hCube);
+		final BoundedTube hTube=O.getSphere().expand(hDirTo,hDistance);
+		final List<SpaceObject> objs = space.getSpaceObjectsInBound(hTube.getCube());
 		final double vO = Math.atan(hO.radius()/hDistance);
 		for(final SpaceObject cO : objs)
 		{
 			if((cO != O)
 			&& (cO != hO)
-			&&(hCube.intersects(cO.getBounds())))
+			&&(hTube.intersects(cO.getSphere())))
 			{
 				final long cDistance = space.getDistanceFrom(O, cO);
 				final double vC = Math.atan(cO.radius()/cDistance);

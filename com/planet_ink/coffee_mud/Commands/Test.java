@@ -4,7 +4,6 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMath.CompiledFormula;
 import com.planet_ink.coffee_mud.core.CMath.CompiledOperation;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -3488,14 +3487,35 @@ public class Test extends StdCommand
 					for(int i=0;i<100;i++)
 					{
 						final int dist=r.nextInt(0x0fff);
-						final BoundedObject.BoundedCube cube=new BoundedObject.BoundedCube(gcenterX-dist,gcenterX+dist,gcenterY-dist,gcenterY+dist,gcenterZ-dist,gcenterZ+dist);
+						final BoundedSphere sphere1=new BoundedSphere(
+								new long[] {gcenterX,gcenterX,gcenterY}, dist);
 						final int num=i;
 						final BoundedObject obj=new BoundedObject()
 						{
+							final BoundedSphere sphere=new BoundedSphere(sphere1);
+
 							@Override
-							public BoundedCube getBounds()
+							public BoundedSphere getSphere()
 							{
-								return cube;
+								return sphere;
+							}
+
+							@Override
+							public BoundedCube getCube()
+							{
+								return sphere.getCube();
+							}
+
+							@Override
+							public long[] center()
+							{
+								return sphere.center();
+							}
+
+							@Override
+							public long radius()
+							{
+								return sphere.radius();
 							}
 
 							@Override

@@ -52,6 +52,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 * The current radius of  the object
 	 * @return the radius, in decameters
 	 */
+	@Override
 	public long radius();
 
 	/**

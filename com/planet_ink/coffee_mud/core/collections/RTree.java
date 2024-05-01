@@ -3,9 +3,7 @@ package com.planet_ink.coffee_mud.core.collections;
 import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.Map.Entry;
-
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
+import com.planet_ink.coffee_mud.core.interfaces.*;
 
 /**
  * 2D R-Tree implementation for Android.
@@ -69,6 +67,18 @@ public class RTree<T extends BoundedObject>
 			return parent == null;
 		}
 
+		@Override
+		public long radius()
+		{
+			return getCube().radius();
+		}
+
+		@Override
+		public long[] center()
+		{
+			return getCube().center();
+		}
+
 		public void addTo(final RTreeNode parent)
 		{
 			assert(parent.children != null);
@@ -104,10 +114,10 @@ public class RTree<T extends BoundedObject>
 				if (data.isEmpty())
 					return;
 
-				box.set(data.get(0).getBounds());
+				box.set(data.get(0).getCube());
 				for (int i = 1; i < data.size(); i++)
 				{
-					box.union(data.get(i).getBounds());
+					box.union(data.get(i).getCube());
 				}
 			}
 
@@ -142,9 +152,15 @@ public class RTree<T extends BoundedObject>
 		}
 
 		@Override
-		public BoundedCube getBounds()
+		public BoundedCube getCube()
 		{
 			return box;
+		}
+
+		@Override
+		public BoundedSphere getSphere()
+		{
+			return new BoundedSphere(box.center(),radius());
 		}
 
 		public boolean contains(final long px, final long py, final int pz)
@@ -198,9 +214,9 @@ public class RTree<T extends BoundedObject>
 				{
 					if (i == j) continue;
 					final BoundedObject n1 = list.get(i), n2 = list.get(j);
-					box.set(n1.getBounds());
-					box.union(n2.getBounds());
-					final long d = area(box) - area(n1.getBounds()) - area(n2.getBounds());
+					box.set(n1.getCube());
+					box.union(n2.getCube());
+					final long d = area(box) - area(n1.getCube()) - area(n2.getCube());
 					if (d > maxD)
 					{
 						maxD = d;
@@ -217,9 +233,9 @@ public class RTree<T extends BoundedObject>
 
 			// Distribute
 			final RTreeNode group1 = new RTreeNode(isleaf);
-			group1.box = new BoundedCube(seed1.getBounds());
+			group1.box = new BoundedCube(seed1.getCube());
 			final RTreeNode group2 = new RTreeNode(isleaf);
-			group2.box = new BoundedCube(seed2.getBounds());
+			group2.box = new BoundedCube(seed2.getCube());
 			if (isleaf)
 				distributeLeaves(n, group1, group2);
 			else
@@ -340,8 +356,8 @@ public class RTree<T extends BoundedObject>
 				for (int i = 0; i < n.data.size(); i++)
 				{
 					final T node = n.data.get(i);
-					final int d1 = expansionNeeded(node.getBounds(), g1.box);
-					final int d2 = expansionNeeded(node.getBounds(), g2.box);
+					final int d1 = expansionNeeded(node.getCube(), g1.box);
+					final int d2 = expansionNeeded(node.getCube(), g2.box);
 					final int dif = Math.abs(d1 - d2);
 					if (dif > difmax)
 					{
@@ -355,8 +371,8 @@ public class RTree<T extends BoundedObject>
 				final T nmax = n.data.remove(nmax_index);
 
 				// ... to the one with the least expansion
-				final int overlap1 = expansionNeeded(nmax.getBounds(), g1.box);
-				final int overlap2 = expansionNeeded(nmax.getBounds(), g2.box);
+				final int overlap1 = expansionNeeded(nmax.getCube(), g1.box);
+				final int overlap2 = expansionNeeded(nmax.getCube(), g2.box);
 				if (overlap1 > overlap2)
 				{
 					g1.data.add(nmax);
@@ -456,13 +472,13 @@ public class RTree<T extends BoundedObject>
 
 	private void query(final Collection<T> results, final BoundedCube box, final RTreeNode node)
 	{
-		if (node == null) 
+		if (node == null)
 			return;
 		if (node.isLeaf())
 		{
 			for (int i = 0; i < node.data.size(); i++)
 			{
-				if (node.data.get(i).getBounds().intersects(box))
+				if (node.data.get(i).getCube().intersects(box))
 					results.add(node.data.get(i));
 			}
 		}
@@ -496,7 +512,7 @@ public class RTree<T extends BoundedObject>
 		{
 			for (int i = 0; i < node.data.size(); i++)
 			{
-				if (node.data.get(i).getBounds().intersects(box))
+				if (node.data.get(i).getCube().intersects(box))
 				{
 					return node.data.get(i);
 				}
@@ -536,7 +552,7 @@ public class RTree<T extends BoundedObject>
 		{
 			for (int i = 0; i < node.data.size(); i++)
 			{
-				if (node.data.get(i).getBounds().contains(px, py, pz))
+				if (node.data.get(i).getCube().contains(px, py, pz))
 				{
 					results.add(node.data.get(i));
 				}
@@ -573,7 +589,7 @@ public class RTree<T extends BoundedObject>
 		{
 			for (int i = 0; i < node.data.size(); i++)
 			{
-				if (node.data.get(i).getBounds().contains(px, py, pz))
+				if (node.data.get(i).getCube().contains(px, py, pz))
 				{
 					return node.data.get(i);
 				}
@@ -718,7 +734,7 @@ public class RTree<T extends BoundedObject>
 		}
 		else
 		{
-			final BoundedCube box = o.getBounds();
+			final BoundedCube box = o.getCube();
 
 			int maxOverlap = Integer.MAX_VALUE;
 			RTreeNode maxnode = null;

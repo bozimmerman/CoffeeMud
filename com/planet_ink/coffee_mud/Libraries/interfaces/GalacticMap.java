@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -530,6 +529,7 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 * @see GalacticMap#getSpaceObject(CMObject, boolean)
 	 * @see GalacticMap#getSpaceObjectsInBound(BoundedCube)
+	 * @see GalacticMap#getSpaceObjectsInBound(BoundedTube)
 	 *
 	 * @param ofObj the space object to use as a center point
 	 * @param minDistance the minimum distance to return
@@ -547,11 +547,28 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(long[], long, long)
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 * @see GalacticMap#getSpaceObject(CMObject, boolean)
+	 * @see GalacticMap#getSpaceObjectsInBound(BoundedTube)
 	 *
 	 * @param cube the cube to look within
 	 * @return the objects in space in that cube
 	 */
 	public List<SpaceObject> getSpaceObjectsInBound(final BoundedCube cube);
+
+
+	/**
+	 * Given a bounded tube, this will return all space objects within that tube.
+	 *
+	 * @see GalacticMap#getSpaceObjects()
+	 * @see GalacticMap#getSpaceObjectEntries()
+	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(long[], long, long)
+	 * @see GalacticMap#findSpaceObject(String, boolean)
+	 * @see GalacticMap#getSpaceObject(CMObject, boolean)
+	 * @see GalacticMap#getSpaceObjectsInBound(BoundedCube)
+	 *
+	 * @param tube the tube to look within
+	 * @return the objects in space in that tube
+	 */
+	public List<SpaceObject> getSpaceObjectsInBound(final BoundedTube tube);
 
 	/**
 	 * Given a center galactic coordinates, and a minimum and maximum distance from that coordinate, this will
@@ -563,6 +580,7 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 * @see GalacticMap#getSpaceObject(CMObject, boolean)
 	 * @see GalacticMap#getSpaceObjectsInBound(BoundedCube)
+	 * @see GalacticMap#getSpaceObjectsInBound(BoundedTube)
 	 *
 	 * @param centerCoordinates the full galactic coordinates of the center point
 	 * @param minDistance the minimum distance to return
@@ -581,6 +599,7 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(long[], long, long)
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 * @see GalacticMap#getSpaceObjectsInBound(BoundedCube)
+	 * @see GalacticMap#getSpaceObjectsInBound(BoundedTube)
 	 *
 	 * @param o the game object, of almost any sort (item, area, room, mob)
 	 * @param ignoreMobs true to return null on mobs, false otherwise
@@ -599,6 +618,7 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(long[], long, long)
 	 * @see GalacticMap#getSpaceObject(CMObject, boolean)
 	 * @see GalacticMap#getSpaceObjectsInBound(BoundedCube)
+	 * @see GalacticMap#getSpaceObjectsInBound(BoundedTube)
 	 *
 	 * @param s the search string
 	 * @param exactOnly true to only match full terms, false for partial matches

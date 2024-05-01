@@ -69,9 +69,15 @@ public class StdSpaceTech extends StdTechItem implements SpaceObject
 	}
 
 	@Override
-	public BoundedCube getBounds()
+	public BoundedCube getCube()
 	{
-		return new BoundedObject.BoundedCube(coordinates(),radius());
+		return new BoundedCube(coordinates(),radius());
+	}
+
+	@Override
+	public BoundedSphere getSphere()
+	{
+		return new BoundedSphere(coordinates(),radius());
 	}
 
 	@Override
@@ -91,6 +97,12 @@ public class StdSpaceTech extends StdTechItem implements SpaceObject
 	public long radius()
 	{
 		return radius;
+	}
+
+	@Override
+	public long[] center()
+	{
+		return coordinates();
 	}
 
 	@Override
