@@ -5275,7 +5275,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							return false;
 					}
 					break;
-				case ANYCLASSLEVEL: // +classlevel
+				case ANYCLASSLEVEL: // +anyclasslevel
 					{
 						for(int i=0;i<entry.parms().length;i+=3)
 						{
@@ -5284,7 +5284,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 												:mob.charStats().getClassLevel(C);
 							if(cl >= 0)
 							{
-								if(!doZapperCompare(entry,cl,i+1))
+								if(doZapperCompare(entry,cl,i+1))
 									return false;
 							}
 						}

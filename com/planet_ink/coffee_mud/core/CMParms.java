@@ -1112,7 +1112,7 @@ public class CMParms
 			}
 		}
 		sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
-		if(sub.isEmpty())
+		if(!sub.isEmpty())
 			V.add(sub);
 		return V;
 	}
