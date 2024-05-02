@@ -1113,8 +1113,10 @@ public class StdArea implements Area
 		{
 			lastPlayerTime = System.currentTimeMillis();
 			if ((flag == State.PASSIVE)
-			&& ((msg.sourceMinor() == CMMsg.TYP_ENTER) || (msg.sourceMinor() == CMMsg.TYP_LEAVE) || (msg.sourceMinor() == CMMsg.TYP_FLEE)))
-				flag = State.ACTIVE;
+			&& ((msg.sourceMinor() == CMMsg.TYP_ENTER)
+				|| (msg.sourceMinor() == CMMsg.TYP_LEAVE)
+				|| (msg.sourceMinor() == CMMsg.TYP_FLEE)))
+					flag = State.ACTIVE;
 		}
 
 		if ((flag == State.FROZEN)
