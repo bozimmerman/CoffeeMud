@@ -71,7 +71,7 @@ public class Chant_SenseFluids extends Chant_SensePlants
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_TRACKING;
+		return Ability.FLAG_TRACKING | Ability.FLAG_DIVINING;
 	}
 
 	@Override

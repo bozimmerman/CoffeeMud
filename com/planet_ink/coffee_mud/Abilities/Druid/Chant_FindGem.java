@@ -69,7 +69,7 @@ public class Chant_FindGem extends Chant_FindPlant
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_TRACKING;
+		return Ability.FLAG_TRACKING | Ability.FLAG_DIVINING;
 	}
 
 	private final int[] myMats={RawMaterial.MATERIAL_PRECIOUS,

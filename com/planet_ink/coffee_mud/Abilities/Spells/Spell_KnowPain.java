@@ -72,7 +72,7 @@ public class Spell_KnowPain extends Spell
 	@Override
 	public long flags()
 	{
-		return super.flags() | Ability.FLAG_MINDALTERING;
+		return super.flags() | Ability.FLAG_MINDALTERING | Ability.FLAG_DIVINING;
 	}
 
 	@Override

@@ -63,7 +63,7 @@ public class Chant_FindOre extends Chant_FindPlant
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_TRACKING;
+		return Ability.FLAG_TRACKING | Ability.FLAG_DIVINING;
 	}
 
 	@Override

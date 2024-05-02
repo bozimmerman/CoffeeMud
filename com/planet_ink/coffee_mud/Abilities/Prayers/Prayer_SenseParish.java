@@ -64,7 +64,7 @@ public class Prayer_SenseParish extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_NEUTRAL;
+		return Ability.FLAG_NEUTRAL | Ability.FLAG_DIVINING;
 	}
 
 	@Override

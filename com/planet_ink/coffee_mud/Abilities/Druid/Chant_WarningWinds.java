@@ -68,6 +68,12 @@ public class Chant_WarningWinds extends Chant
 		return Ability.QUALITY_OK_SELF;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_DIVINING;
+	}
+
 	Room	lastRoom	= null;
 
 	@Override

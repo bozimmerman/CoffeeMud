@@ -89,7 +89,7 @@ public class Prayer_SenseGood extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_UNHOLY;
+		return Ability.FLAG_UNHOLY | Ability.FLAG_DIVINING;
 	}
 
 	@Override

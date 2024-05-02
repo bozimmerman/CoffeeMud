@@ -72,6 +72,12 @@ public class Chant_Grapevine extends Chant
 		return 0;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_DIVINING;
+	}
+
 	protected List<Ability> myChants=new Vector<Ability>();
 
 	@Override

@@ -67,6 +67,12 @@ public class Chant_SensePregnancy extends Chant
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_DIVINING;
+	}
+
+	@Override
 	protected int overrideMana()
 	{
 		return 5;

@@ -74,6 +74,12 @@ public class Chant_SenseWater extends Chant
 		return CAN_MOBS;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_DIVINING;
+	}
+
 	Room	lastRoom	= null;
 
 	@Override

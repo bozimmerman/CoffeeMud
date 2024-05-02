@@ -67,6 +67,12 @@ public class Chant_SensePoison extends Chant
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_DIVINING;
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;

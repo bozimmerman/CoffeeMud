@@ -51,7 +51,7 @@ public class Prayer_HuntChaos extends Prayer_HuntEvil
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_LAW|Ability.FLAG_TRACKING;
+		return Ability.FLAG_LAW|Ability.FLAG_TRACKING| Ability.FLAG_DIVINING;
 	}
 
 	@Override
