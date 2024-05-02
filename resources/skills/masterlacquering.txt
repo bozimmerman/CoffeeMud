@@ -13,6 +13,7 @@
 # m = skip to middle of entire phrase
 # - = go back 1 char
 # * = break. finish entire phrase
+solid	1	10	solid @x1	1E1w		
 striped	1	10	@x1 and @x2 striped	12
 banded	2	10	@x1 and @x2 banded	1w2w
 pinstriped	3	10	@x1 and @x2 pinstriped	1Cc21*
