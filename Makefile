@@ -175,6 +175,8 @@ com.planet_ink.coffee_mud.Libraries.layouts \
 com.planet_ink.coffee_mud.Locales.interfaces \
 com.planet_ink.coffee_mud.MOBS.interfaces \
 com.planet_ink.coffee_mud.Races.interfaces \
+com.planet_ink.coffee_mud.Tests \
+com.planet_ink.coffee_mud.Tests.interfaces \
 com.planet_ink.coffee_mud.WebMacros.grinder \
 com.planet_ink.coffee_mud.WebMacros.interfaces \
 com.planet_ink.coffee_web.converters \
@@ -565,6 +567,8 @@ com.planet_ink.coffee_mud.Libraries.layouts : $(call PACKAGE_OBJS,com.planet_ink
 com.planet_ink.coffee_mud.Locales.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Locales.interfaces)
 com.planet_ink.coffee_mud.MOBS.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.MOBS.interfaces)
 com.planet_ink.coffee_mud.Races.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Races.interfaces)
+com.planet_ink.coffee_mud.Tests : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Tests)
+com.planet_ink.coffee_mud.Tests.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Tests.interfaces)
 com.planet_ink.coffee_mud.WebMacros.grinder : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.WebMacros.grinder)
 com.planet_ink.coffee_mud.WebMacros.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.WebMacros.interfaces)
 com.planet_ink.miniweb.converters : $(call PACKAGE_OBJS,com.planet_ink.miniweb.converters)
