@@ -79,12 +79,12 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		setLocale(CMLib.props().getStr("LANGUAGE"),CMLib.props().getStr("COUNTRY"));
 	}
 
-	public String replaceWithDefinitions(final DVector global, final DVector local, String str)
+	public String replaceWithDefinitions(final PairList<String,String> global, final PairList<String,String> local, String str)
 	{
 		for(int v=0;v<local.size();v++)
-			str=CMStrings.replaceAll(str,(String)local.elementAt(v,1),(String)local.elementAt(v,2));
+			str=CMStrings.replaceAll(str,local.getFirst(v),local.getSecond(v));
 		for(int v=0;v<global.size();v++)
-			str=CMStrings.replaceAll(str,(String)global.elementAt(v,1),(String)global.elementAt(v,2));
+			str=CMStrings.replaceAll(str,global.getFirst(v),global.getSecond(v));
 		return str;
 	}
 
@@ -166,11 +166,12 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		final List<String> V=Resources.getFileLineVector(alldata);
 		String s=null;
 		DVector currentSection=null;
-		final DVector globalDefinitions=new DVector(2);
-		final DVector localDefinitions=new DVector(2);
+		final PairList<String,String> globalDefinitions=new PairArrayList<String,String>();
+		final PairList<String,String> localDefinitions=new PairArrayList<String,String>();
 		Map<String,String> currentSectionReplaceStrs=new Hashtable<String,String>();
 		final Map<String,String> currentSectionReplaceExactStrs=new Hashtable<String,String>();
 		Set<String> currentSectionIgnoreStrs=new HashSet<String>();
+		// especially these below
 		final DVector sectionIndexes=new DVector(2);
 		final DVector wholeFile=new DVector(2);
 		for(int v=0;v<V.size();v++)
@@ -253,13 +254,13 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				replacement=replaceWithDefinitions(globalDefinitions,localDefinitions,replacement);
 				if(currentSection!=null)
 				{
-					localDefinitions.removeElement(variable);
-					localDefinitions.addElement(variable,replacement);
+					localDefinitions.removeFirst(variable);
+					localDefinitions.add(variable,replacement);
 				}
 				else
 				{
-					globalDefinitions.removeElement(variable);
-					globalDefinitions.addElement(variable,replacement);
+					globalDefinitions.removeFirst(variable);
+					globalDefinitions.add(variable,replacement);
 				}
 			}
 			else

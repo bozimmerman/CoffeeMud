@@ -22,6 +22,7 @@
  21. New Prayer: Pacify -- a targeted Calm with duration
  22. Proficiency cap from practicing now in INI file (see PRACMAXPCT)
  23. Unit Tests (TEST command) are now friendlier and more accessible
+ 24. Wish/Limited Wish now has a configuration file in resources/skills/wish.txt
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

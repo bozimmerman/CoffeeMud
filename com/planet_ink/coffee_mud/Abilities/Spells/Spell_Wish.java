@@ -93,6 +93,13 @@ public class Spell_Wish extends Spell
 
 	protected volatile long lastCastTime = 0;
 
+	protected static final String resourceF=Resources.makeFileResourceName("skills/wish.txt");
+
+	protected static final String resourceID="PARSED: " + resourceF;
+
+	protected static final String forbCastId = "[NOCAST]";
+	protected static final String forbGainId = "[NOGAIN]";
+
 	protected Physical maybeAdd(final MOB mob, final Physical E, final List<Physical> foundAll, Physical foundThang)
 	{
 		final Room R=CMLib.map().roomLocation(E);
@@ -113,6 +120,67 @@ public class Spell_Wish extends Spell
 	protected boolean isLegalTarget(final MOB mob, final Physical target, final boolean isTargetChanger, final String myWish)
 	{
 		return true;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected static synchronized Map<String,Object> getWishParms()
+	{
+		if(Resources.isResource(Spell_Wish.resourceID))
+		{
+			return (Map<String,Object>)Resources.getResource(Spell_Wish.resourceID);
+		}
+		final Map<String,Object> parms = new Hashtable<String,Object>();
+		final CMFile f = new CMFile(Spell_Wish.resourceF,null);
+		if(f.exists())
+		{
+			final List<String> lines = Resources.getFileLineVector(f.text());
+			final List<String> rest = new ArrayList<String>();
+			List<String> curr = rest;
+			parms.put("REST", rest);
+			for(final String s : lines)
+			{
+				String ts = s.trim();
+				if((ts.length()==0)
+				||(ts.startsWith("#")))
+					continue;
+				if(ts.startsWith("["))
+				{
+					ts=ts.toUpperCase();
+					if(ts.equals(forbCastId)
+					||ts.equals(forbGainId))
+					{
+						if(!parms.containsKey(ts))
+							parms.put(ts, new ArrayList<String>());
+						curr = (List<String>)parms.get(ts);
+					}
+					else
+						curr = rest;
+				}
+				else
+				if(curr != rest)
+					curr.add(s.toUpperCase().trim());
+				else
+					curr.add(s);
+			}
+			if(parms.containsKey(forbCastId))
+				parms.put(forbCastId, new XTreeSet<String>((List<String>)parms.get(forbCastId)));
+			if(parms.containsKey(forbGainId))
+				parms.put(forbGainId, new XTreeSet<String>((List<String>)parms.get(forbGainId)));
+		}
+		Resources.submitResource(Spell_Wish.resourceID, parms);
+		return parms;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Set<String> getSpellsForbiddenToGain()
+	{
+		return (Set<String>)getWishParms().get(forbGainId);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Set<String> getSpellsForbiddenToCast()
+	{
+		return (Set<String>)getWishParms().get(forbCastId);
 	}
 
 	private double bringThangHere(final MOB mob, final Room newRoom, final Physical target)
@@ -1499,7 +1567,8 @@ public class Spell_Wish extends Spell
 				x = myWish.indexOf(" PRAY FOR ");
 				if ((x >= 0) && (x + 9 > code))
 					code = x + 9;
-				if((code>=0)&&(code<myWish.length()))
+				if((code>=0)
+				&&(code<myWish.length()))
 				{
 					final MOB tm=(MOB)target;
 					Ability A=CMClass.findAbility(myWish.substring(code).trim());
@@ -1509,8 +1578,8 @@ public class Spell_Wish extends Spell
 					{
 						if(!isLegalTarget(mob, target, true, myWish))
 							return false;
-						if((CMLib.ableMapper().lowestQualifyingLevel(A.ID())>=25)
-						||(CMLib.ableMapper().getSecretSkill(A.ID())==SecretFlag.SECRET))
+						final Set<String> noGainList = this.getSpellsForbiddenToGain();
+						if((noGainList!=null)&&(noGainList.contains(A.ID().toUpperCase())))
 						{
 							baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 							baseLoss=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-baseLoss, false);
@@ -1678,7 +1747,8 @@ public class Spell_Wish extends Spell
 					{
 						if(!isLegalTarget(mob, target, false, myWish))
 							return false;
-						if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>=25)
+						final Set<String> noCastList = this.getSpellsForbiddenToCast();
+						if((noCastList!=null)&&(noCastList.contains(A.ID().toUpperCase())))
 						{
 							baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 							baseLoss=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-baseLoss, false);
