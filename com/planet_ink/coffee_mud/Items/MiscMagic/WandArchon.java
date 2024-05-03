@@ -183,15 +183,18 @@ public class WandArchon extends StdWand implements ArchonOnly
 					||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 						mob.tell(L("The wand will not work on such as @x1.",target.name(mob)));
 					else
-					while(target.basePhyStats().level()<destLevel)
 					{
-						if((target.getExpNeededLevel()==Integer.MAX_VALUE)
-						||(target.charStats().getCurrentClass().expless())
-						||(target.charStats().getMyRace().expless())
-						||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
-							CMLib.leveler().level(target);
-						else
-							CMLib.leveler().postExperience(target,"MISC:"+ID(),null,null,target.getExpNeededLevel()+1, false);
+						int tries = destLevel*100;
+						while((target.basePhyStats().level()<destLevel)&&(--tries>0))
+						{
+							if((target.getExpNeededLevel()==Integer.MAX_VALUE)
+							||(target.charStats().getCurrentClass().expless())
+							||(target.charStats().getMyRace().expless())
+							||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
+								CMLib.leveler().level(target);
+							else
+								CMLib.leveler().postExperience(target,"MISC:"+ID(),null,null,target.getExpNeededLevel()+1, false);
+						}
 					}
 				}
 				else
@@ -213,13 +216,18 @@ public class WandArchon extends StdWand implements ArchonOnly
 					else
 					for(int i=0;i<num;i++)
 					{
-						if((target.getExpNeededLevel()==Integer.MAX_VALUE)
-						||(target.charStats().getCurrentClass().expless())
-						||(target.charStats().getMyRace().expless())
-						||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
-							CMLib.leveler().level(target);
-						else
-							CMLib.leveler().postExperience(target,"MISC:"+ID(),null,null,target.getExpNeededLevel()+1, false);
+						final int nextLevel = target.phyStats().level()+1;
+						int tries = 100;
+						while((target.phyStats().level()<nextLevel)&&(--tries>0))
+						{
+							if((target.getExpNeededLevel()==Integer.MAX_VALUE)
+							||(target.charStats().getCurrentClass().expless())
+							||(target.charStats().getMyRace().expless())
+							||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
+								CMLib.leveler().level(target);
+							else
+								CMLib.leveler().postExperience(target,"MISC:"+ID(),null,null,target.getExpNeededLevel()+1, false);
+						}
 					}
 					return;
 				}
