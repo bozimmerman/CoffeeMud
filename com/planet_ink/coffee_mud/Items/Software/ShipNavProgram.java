@@ -676,7 +676,9 @@ public class ShipNavProgram extends ShipSensorProgram
 			&&(!sameAs(O, others)))
 			{
 				final BoundedSphere enemySphere = O.getSphere();
-				if(compTube.intersects(enemySphere))
+				final BoundedSphere enemyBounds = new BoundedSphere(enemySphere.center(),
+						Math.round(CMath.mul(enemySphere.radius, SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
+				if(compTube.intersects(enemyBounds))
 				{
 					final long dist = CMLib.space().getDistanceFrom(fromObj, O);
 					if((dist < collDistance) || (collO == null))
@@ -776,6 +778,9 @@ public class ShipNavProgram extends ShipSensorProgram
 					fromObj = toObj;
 			}
 		}
+System.out.println("-----"); //TODO:BZ:DELME
+for(final SpaceObject o : navs)
+	System.out.println(o.coordinates()[0]+","+o.coordinates()[1]+","+o.coordinates()[2]); //TODO:BZ:DELME
 		return new XLinkedList<SpaceObject>(navs);
 	}
 

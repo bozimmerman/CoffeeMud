@@ -168,11 +168,6 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		set.add(new double[] {angle02, angle10 });
 
 		set.add(CMLib.space().getOppositeDir(angle));
-		for(final double[] a : set)
-		{
-			final double[] ang = a;
-			System.out.println("+:? / "+Math.toDegrees(ang[0])+", "+Math.toDegrees(ang[1]));
-		}
 		return set.toArray(new double[set.size()][]);
 	}
 
