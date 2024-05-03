@@ -1,5 +1,5 @@
 BUGS/UNTESTED STUFF:
-  *. Fix the issue where a ship very close to a planet cant plot a course without hitting it.
+   *. Is turning broken?  approach newer planet broke.
 
 TECH TODO:
    *. navigation course system testing.
