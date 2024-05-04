@@ -1,10 +1,10 @@
 BUGS/UNTESTED STUFF:
-   *. Is turning broken?  approach newer planet broke.
+   *. Is turning broken?  Swivel from approach->deproach looks terrible.  And then during deproach you end up drifting FURTHER from the target!
 
 TECH TODO:
    *. navigation course system testing.
    *. fix landing to require an orbit first
-   *. make orbit ability, integrate with navigation: 1. go dir, 2. adjust point same dist from planet. 3. plot course.
+   *. make orbit ability, integrate with navigation: 1. go dir, 2. adjust point same dist from planet. 3. plot course. 4. Cheat
    *. make inertia battery that alter ships inertia overall for dir change 
       (Kinetic Energy (inertia) KE=0.5*mass*velocity*velocity)
       discharge of all stored inertial power to stop the ship entirely

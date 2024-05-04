@@ -361,7 +361,7 @@ public class ShipNavProgram extends ShipSensorProgram
 								if(isDebugging)
 								{
 									Log.debugOut("Thrusting "+thrust+"*"+angleAchievedPerPt+" to "+
-											dir+" to achieve delta, and go from "+
+											dir+" to delta, and go from "+
 											Math.toDegrees(ship.facing()[0])+" to "+Math.toDegrees(newFacing[0])+
 											", angle delta = "+Math.toDegrees(angleDelta[0]));
 								}
@@ -402,13 +402,11 @@ public class ShipNavProgram extends ShipSensorProgram
 							else
 								break;
 							angleDelta = CMLib.space().getAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
-							/*
 							if(isDebugging)
 							{
 								Log.debugOut("Turn Deltas now: "+(Math.round(angleDelta[0]*100)/100.0)+" + "+(Math.round(angleDelta[1]*100)/100.0)
 										+"=="+(Math.round(Math.abs((angleDelta[0])+Math.abs(angleDelta[1]))*100)/100.0));
 							}
-							*/
 						}
 						if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))<.01)
 							break;
