@@ -350,9 +350,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			&&(loop!=lastSp)
 			&&(lastSp>=0)
 			&&(loop>=0)
-			&&(loop<buf.length())
 			&&(buf.charAt(loop)!=13)
-			&&(buf.charAt(loop)!=10))
+			&&(buf.charAt(loop)!=10)
+			&&(endLookAhead(buf,loop)<buf.length()))
 			{
 				amperStop=loop;
 				if(buf.charAt(lastSp)==' ')
@@ -1719,9 +1719,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			&&(loop!=lastSp)
 			&&(lastSp>=0)
 			&&(loop>=0)
-			&&(endLookAhead(buf,loop)<buf.length())
 			&&(buf.charAt(loop)!=13)
-			&&(buf.charAt(loop)!=10))
+			&&(buf.charAt(loop)!=10)
+			&&(endLookAhead(buf,loop)<buf.length()))
 			{
 				amperStop=loop;
 				if(buf.charAt(lastSp)==' ')
