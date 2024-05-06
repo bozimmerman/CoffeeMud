@@ -49,10 +49,18 @@ public class Thief_PubContacts extends ThiefSkill
 		return localizedName;
 	}
 
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Pub Contacts)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
 	@Override
 	protected int canAffectCode()
 	{
-		return 0;
+		return CAN_MOBS;
 	}
 
 	@Override

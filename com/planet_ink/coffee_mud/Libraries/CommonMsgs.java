@@ -1987,7 +1987,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if((awarenessA!=null)&&(mobLocR != null))
 				{
 					sess.colorOnlyPrintln("", true);
-					final Vector<String> list=new Vector<String>();
+					final List<String> list=new Vector<String>();
 					awarenessA.invoke(mob, list, mobLocR, true, CMProps.getIntVar(CMProps.Int.AWARERANGE));
 					for(final String o : list)
 					{

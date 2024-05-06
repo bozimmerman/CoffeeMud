@@ -1040,9 +1040,6 @@ for(final SpaceObject o : navs)
 					Log.debugOut(ship.name(),"Nav direction diff: "+CMath.div(Math.round(toDirDiff * 10000),10000.0)
 								+", dist: "+CMLib.english().distanceDescShort(distToITarget)+", dir: "
 								+CMLib.english().directionDescShort(dirToITarget));
-					final SpaceObject O = CMLib.space().findSpaceObject("small moon", false);
-					if(O != null)
-						Log.debugOut(ship.name(),O.name()+": "+CMLib.space().getDistanceFrom(ship, O)+"/"+CMLib.english().directionDescShort(CMLib.space().getDirection(ship, O)));
 				}
 				if(toDirDiff < 0.08)
 				{
