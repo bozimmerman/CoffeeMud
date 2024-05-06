@@ -238,6 +238,14 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean canBreathe(MOB M);
 
 	/**
+	 * Returns whether the given mob is capable of swimming,
+	 * even if they are not presently doing so.
+	 * @param M the mob to check
+	 * @return true if a swimmer
+	 */
+	public boolean canSwim(final MOB M);
+
+	/**
 	 * Return whether the given mob is able to breathe the given
 	 * resource due to their race, usually.
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial

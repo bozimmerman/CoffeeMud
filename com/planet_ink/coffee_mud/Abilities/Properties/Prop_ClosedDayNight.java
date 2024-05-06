@@ -388,7 +388,8 @@ public class Prop_ClosedDayNight extends Property
 						if(A!=null)
 						{
 							A.setAbilityCode(1);
-							A.invoke(mob,R,true,0);
+							final List<String> lst = new XVector<String>("NPC");
+							A.invoke(mob,lst,R,true,0);
 						}
 						return true;
 					}

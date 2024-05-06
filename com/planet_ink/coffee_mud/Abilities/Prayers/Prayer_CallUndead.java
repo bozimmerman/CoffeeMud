@@ -136,7 +136,8 @@ public class Prayer_CallUndead extends Prayer
 				final Ability A=CMClass.getAbility("Skill_Track");
 				if(A!=null)
 				{
-					A.invoke(follower,CMParms.parse("\""+CMLib.map().getExtendedRoomID(newRoom)+"\""),newRoom,true,0);
+					final List<String> lst = new XVector<String>("NPC", CMLib.map().getExtendedRoomID(newRoom));
+					A.invoke(follower,lst,newRoom,true,0);
 					return true;
 				}
 			}

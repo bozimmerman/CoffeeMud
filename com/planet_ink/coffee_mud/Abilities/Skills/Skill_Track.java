@@ -499,6 +499,17 @@ public class Skill_Track extends StdSkill
 					commands.remove(commands.size()-1);
 				}
 				else
+				if((commands.get(commands.size()-1)).equalsIgnoreCase("NPC")
+				&&(!mob.isPlayer()))
+				{
+					if(!CMLib.flags().canSwim(mob))
+						flags.plus(TrackingLibrary.TrackingFlag.NOWATER);
+					if(!CMLib.flags().isFlying(mob))
+						flags.plus(TrackingLibrary.TrackingFlag.NOAIR);
+					flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+					commands.remove(commands.size()-1);
+				}
+				else
 				if((commands.get(commands.size()-1)).equalsIgnoreCase("NOAIR"))
 				{
 					flags.plus(TrackingLibrary.TrackingFlag.NOAIR);

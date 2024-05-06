@@ -232,6 +232,13 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public boolean canSwim(final MOB M)
+	{
+		return (M != null)
+				&& (isSwimming(M) || (M.fetchAbility("Skill_Swim") != null));
+	}
+
+	@Override
 	public boolean canNotBeCamped(final Physical P)
 	{
 		return (P != null) && ((P.phyStats().sensesMask() & PhyStats.CAN_NOT_BE_CAMPED) != 0);
