@@ -17,9 +17,9 @@ limitations under the License.
 
 See guides/RandomAreas.html for information about documents of this type.
 
-template: normal_delivery1
+template: normal_delivery2
 settable vars: 
-    template(normal_delivery1)
+    template(normal_delivery2)
     category(whatevs)
     area_name(area name)
     source_name(mob name)
