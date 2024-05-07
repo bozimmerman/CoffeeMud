@@ -40,7 +40,7 @@ small % bench	29	40	40	450	GenChair	CHAIR	2	0
 % twelve-sided die	31	70	1	22	GenDice		12		
 % figurine	31	40	3	36	GenItem	STATUE			
 % book shelf	32	40	70	875	GenContainer		30	384	
-plain % sarcophagus	32	40	500	6125	GenBed	BED	500	64	;
+plain % sarcophagus	32	40	500	6125	GenBed	BED	500	64	
 % stool	33	20	50	300	GenChair	CHAIR	1	0	
 % tub	33	60	400	8000	GenTub	CHAIR	2000	0	
 % saucer	34	15	2	9	GenContainer		5	2048	
@@ -86,7 +86,7 @@ long % bench	59	160	400	38500	GenChair	CHAIR	8	0
 % charger	64	20	6	72	GenContainer		20	0	
 % hundred-sided die	65	100	1	66	GenDice		100		
 % chest	65	75	60	2950	GenContainer	LOCK	250	0	
-large % ice box	65	120	600	47000	GenContainer	LID	1000	131072	;
+large % ice box	65	120	600	47000	GenContainer	LID	1000	131072	*Prop_IceBox;
 four poster % bed	66	60	800	31500	GenBed	BED	4	0	
 % hearth	66	100	1000	65250	GenRideable		250	0	Burning
 % ladder	67	40	100	2625	GenRideable	LADDER	0	0	
