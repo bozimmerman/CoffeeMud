@@ -180,7 +180,7 @@ public class Thief_Appraise extends ThiefSkill
 			mob.tell(L("What would you like to appraise?"));
 			return false;
 		}
-		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));
+		final Item target=mob.fetchItem(null,Wearable.FILTER_ANY,commands.get(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell(L("You don't see '@x1' here.",(commands.get(0))));

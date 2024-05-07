@@ -175,6 +175,14 @@ public class ShipNavProgram extends ShipSensorProgram
 		navTrack=null;
 	}
 
+	/**
+	 * Generate a new engine injection amount from a previous and desired acceleration.
+	 *
+	 * @param lastInject the last injection amount
+	 * @param lastAcceleration the previous acceleration in dm/s
+	 * @param targetAcceleration the target acceleration in dm/s
+	 * @return the new injection amount
+	 */
 	protected Double fixInjection(final Double lastInject, final Double lastAcceleration, final double targetAcceleration)
 	{
 		final Double newInject;
@@ -234,6 +242,13 @@ public class ShipNavProgram extends ShipSensorProgram
 		return newInject;
 	}
 
+	/**
+	 * Generate a new engine injection amount from a previous and desired acceleration.
+	 *
+	 * @param newInject the last injection amount
+	 * @param targetAcceleration the target acceleration in dm/s
+	 * @return the new injection amount
+	 */
 	protected Double calculateMarginalTargetInjection(Double newInject, final double targetAcceleration)
 	{
 		//force/mass is the Gs felt by the occupants.. not force-mass
@@ -691,7 +706,6 @@ public class ShipNavProgram extends ShipSensorProgram
 		return collO;
 	}
 
-	//TODO: figure this out
 	protected SpaceObject subCourseCheck(final SpaceObject ship,
 										 final SpaceObject fromObj, final SpaceObject toObj,
 										 final long[][] points, final SpaceObject[] others)
@@ -776,9 +790,6 @@ public class ShipNavProgram extends ShipSensorProgram
 					fromObj = toObj;
 			}
 		}
-System.out.println("-----"); //TODO:BZ:DELME
-for(final SpaceObject o : navs)
-	System.out.println(o.coordinates()[0]+","+o.coordinates()[1]+","+o.coordinates()[2]); //TODO:BZ:DELME
 		return new XLinkedList<SpaceObject>(navs);
 	}
 
