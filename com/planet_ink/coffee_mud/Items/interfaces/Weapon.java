@@ -73,7 +73,7 @@ public interface Weapon extends Item
 	public final static int TYPE_SONICING=12;
 	/** One of the weapon type, denotes disrupting weapon damage */
 	public final static int TYPE_DISRUPTING=13;
-	/** One of the weapon type, denotes disrupting weapon damage */
+	/** One of the weapon type, denotes stultifying weapon damage */
 	public final static int TYPE_STULTIFYING=14;
 	/** One of the weapon type, denotes corrupting weapon damage */
 	public final static int TYPE_CORRUPTING=15;

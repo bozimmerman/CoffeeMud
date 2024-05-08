@@ -86,6 +86,7 @@ public class Prayer_DivinePerspective extends Prayer
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 		{
+			final MOB invoker=this.invoker();
 			if(invoker!=null)
 				invoker.tell(L("The perspective of '@x1' fades from your mind.",mob.name(invoker)));
 		}

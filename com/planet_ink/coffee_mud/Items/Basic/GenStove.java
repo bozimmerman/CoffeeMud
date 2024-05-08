@@ -305,7 +305,7 @@ public class GenStove extends GenContainer implements Light, FuelConsumer
 					fI.delEffect(A);
 				}
 			}
-			if(isLit)
+			if(isLit && (fuel.size()>0))
 			{
 				final Item I = fuel.get(0);
 				final Ability B=CMClass.getAbility("Burning");

@@ -95,6 +95,7 @@ public class Chant_AnimalSpy extends Chant
 			return;
 		if(canBeUninvoked())
 		{
+			final MOB invoker=this.invoker();
 			if(invoker!=null)
 			{
 				final Ability A=invoker.fetchEffect(this.ID());

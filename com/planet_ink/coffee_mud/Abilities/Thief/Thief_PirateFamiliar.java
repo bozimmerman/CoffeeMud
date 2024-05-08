@@ -154,7 +154,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 				if(M.amFollowing()!=null)
 					invoker=M.amFollowing();
 			}
-			final MOB invoker=this.invoker;
+			final MOB invoker=this.invoker();
 			if(invoker!=null)
 			{
 				if(affectableStats.level() < invoker.phyStats().level()-3)

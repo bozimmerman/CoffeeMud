@@ -106,6 +106,7 @@ public class Spell_TimeStop extends Spell
 			{
 				final Room room=(Room)affected;
 				room.showHappens(CMMsg.MSG_OK_VISUAL, L("Time starts moving again..."));
+				final MOB invoker=this.invoker();
 				if(invoker!=null)
 				{
 					final Ability me=invoker.fetchEffect(ID());

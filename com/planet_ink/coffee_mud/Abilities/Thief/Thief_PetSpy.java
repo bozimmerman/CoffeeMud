@@ -129,7 +129,7 @@ public class Thief_PetSpy extends ThiefSkill
 			{
 				if(path != null)
 					path.clear();
-				final MOB invoker=this.invoker;
+				final MOB invoker=this.invoker();
 				final MOB M=(MOB)affected;
 				if(invoker!=null)
 				{
