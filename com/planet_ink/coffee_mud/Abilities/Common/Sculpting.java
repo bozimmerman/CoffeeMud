@@ -489,6 +489,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			else
 			if(buildingI instanceof Container)
 			{
+				final String[] allTypes=CMParms.parseAny(misctype, "|", true).toArray(new String[0]);
 				if(buildingI instanceof Drink)
 				{
 					if(CMLib.flags().isGettable(buildingI))
@@ -505,10 +506,10 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 					((Container)buildingI).setCapacity(capacity+woodRequired);
 					((Container)buildingI).setContainTypes(canContain);
 				}
-				if(misctype.equalsIgnoreCase("LID"))
+				if(CMParms.contains(allTypes, "LID"))
 					((Container)buildingI).setDoorsNLocks(true,false,true,false,false,false);
 				else
-				if(misctype.equalsIgnoreCase("LOCK"))
+				if(CMParms.contains(allTypes, "LOCK"))
 				{
 					((Container)buildingI).setDoorsNLocks(true,false,true,true,false,true);
 					((Container)buildingI).setKeyName(Double.toString(Math.random()));

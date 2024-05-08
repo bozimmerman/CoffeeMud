@@ -2968,7 +2968,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					for(final String s : Container.CONTAIN_DESCS)
 						choices().add(s.toUpperCase().trim(),s);
 					choices().add("LID","Lid");
-					choices().add("LOCK","Lock");
+					choices().add("LOCK","Lid+Lock");
 				}
 
 				@Override
@@ -3016,6 +3016,146 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					if(oldVal.trim().length()==0)
 						return new String[]{"NULL"};
+					return CMParms.parseAny(oldVal,'|',true).toArray(new String[0]);
+				}
+
+				@Override
+				public String webValue(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final String oldVal, final String fieldName)
+				{
+					final String webValue = httpReq.getUrlParameter(fieldName);
+					if(webValue == null)
+						return oldVal;
+					String id="";
+					int index=0;
+					final StringBuilder str=new StringBuilder("");
+					for(;httpReq.isUrlParameter(fieldName+id);id=""+(++index))
+					{
+						final String newVal = httpReq.getUrlParameter(fieldName+id);
+						if((newVal!=null)&&(newVal.length()>0)&&(choices().containsFirst(newVal)))
+							str.append(newVal).append("|");
+					}
+					return str.toString();
+				}
+
+				@Override
+				public String commandLinePrompt(final MOB mob, final String oldVal, final int[] showNumber, final int showFlag)
+				throws java.io.IOException
+				{
+					return CMLib.genEd().promptMultiSelectList(mob,oldVal,"|",++showNumber[0],showFlag,prompt(),choices(),false);
+				}
+
+				@Override
+				public boolean confirmValue(final String oldVal)
+				{
+					final List<String> webVals=CMParms.parseAny(oldVal.toUpperCase().trim(), "|", true);
+					for(final String s : webVals)
+					{
+						if(!choices().containsFirst(s))
+							return false;
+					}
+					return true;
+				}
+
+				@Override
+				public String webField(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final String oldVal, final String fieldName)
+				{
+					final String webValue = webValue(httpReq,parms,oldVal,fieldName);
+					final List<String> webVals=CMParms.parseAny(webValue.toUpperCase().trim(), "|", true);
+					String onChange = null;
+					onChange = " MULTIPLE ";
+					if(!parms.containsKey("NOSELECT"))
+						onChange+= "ONCHANGE=\"MultiSelect(this);\"";
+					final StringBuilder str=new StringBuilder("");
+					str.append("\n\r<SELECT NAME="+fieldName+onChange+">");
+					for(int i=0;i<choices().size();i++)
+					{
+						final String option = (choices().get(i).first);
+						str.append("<OPTION VALUE=\""+option+"\" ");
+						if(webVals.contains(option))
+							str.append("SELECTED");
+						str.append(">"+(choices().get(i).second));
+					}
+					return str.toString()+"</SELECT>";
+				}
+			},
+			new AbilityParmEditorImpl("CONTAINER_TYPE_OR_LIDLOCK_OR_RIDEBASIS","Con./Ride",ParmType.SPECIAL)
+			{
+				@Override
+				public void createChoices()
+				{
+					super.choices = new PairVector<String,String>();
+					for(final String s : Container.CONTAIN_DESCS)
+						choices().add(s.toUpperCase().trim(),s);
+					choices().add("LID","Lid");
+					choices().add("LOCK","Lid+Lock");
+					for(final String s : new String[] { "", "CHAIR", "TABLE", "LADDER", "ENTER", "BED" })
+						choices().add(s, CMStrings.capitalizeAndLower(s));
+				}
+
+				@Override
+				public int appliesToClass(final Object o)
+				{
+					return ((o instanceof Container) || (o instanceof Rideable)) ? 1 : -1;
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					final StringBuilder str=new StringBuilder("");
+					if(I instanceof Container)
+					{
+						final Container C=(Container)I;
+						if(C.hasALock())
+							str.append("LOCK|");
+						if(C.hasADoor())
+							str.append("LID|");
+						for(int i=1;i<Container.CONTAIN_DESCS.length;i++)
+						{
+							if(CMath.isSet(C.containTypes(), i-1))
+								str.append(Container.CONTAIN_DESCS[i]).append("|");
+						}
+					}
+					if(I instanceof Rideable)
+					{
+						switch(((Rideable)I).rideBasis())
+						{
+						case FURNITURE_SIT:
+							str.append("SIT|");
+							break;
+						case FURNITURE_TABLE:
+							str.append("TABLE|");
+							break;
+						case LADDER:
+							str.append("LADDER|");
+							break;
+						case ENTER_IN:
+							str.append("ENTER|");
+							break;
+						case FURNITURE_SLEEP:
+							str.append("BED|");
+							break;
+						case AIR_FLYING:
+						case LAND_BASED:
+						case WAGON:
+						case WATER_BASED:
+							// not supported
+							break;
+						}
+					}
+					return str.toString();
+				}
+
+				@Override
+				public String[] fakeUserInput(final String oldVal)
+				{
+					if(oldVal.trim().length()==0)
+						return new String[]{""};
 					return CMParms.parseAny(oldVal,'|',true).toArray(new String[0]);
 				}
 
@@ -4171,7 +4311,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public void createChoices()
 				{
-					createChoices(new String[] { "", "LID", "LOCK" });
+					super.choices = new PairVector<String,String>();
+					choices().add("","");
+					choices().add("LID","Lid");
+					choices().add("LOCK","Lid+Lock");
 				}
 
 				@Override
