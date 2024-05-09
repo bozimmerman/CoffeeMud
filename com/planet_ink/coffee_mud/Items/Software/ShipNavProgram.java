@@ -64,6 +64,8 @@ public class ShipNavProgram extends ShipSensorProgram
 
 	protected final Map<ShipEngine, Double[]>	injects	= new Hashtable<ShipEngine, Double[]>();
 
+	protected final static double MAX_DIR_DIFF = 0.08;
+
 	protected static class ShipNavTrack
 	{
 		protected ShipNavProcess proc;
@@ -835,7 +837,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			int safeDistance=100 + (int)Math.round(ship.speed());
 			final double[] dirTo = CMLib.space().getDirection(ship, targetObject);
 			final double diffDelta = CMLib.space().getAngleDelta(ship.direction(), dirTo); // starboard is -, port is +
-			if(diffDelta<0.08)
+			if(diffDelta<MAX_DIR_DIFF)
 				safeDistance += (int)Math.round(ship.speed());
 			if(distance < safeDistance)
 			{
@@ -1052,7 +1054,7 @@ public class ShipNavProgram extends ShipSensorProgram
 								+", dist: "+CMLib.english().distanceDescShort(distToITarget)+", dir: "
 								+CMLib.english().directionDescShort(dirToITarget));
 				}
-				if(toDirDiff < 0.08)
+				if(toDirDiff < MAX_DIR_DIFF)
 				{
 					// first, check if we should be approaching, or deproaching
 					if((ship.speed()>targetAcceleration)
@@ -1075,20 +1077,20 @@ public class ShipNavProgram extends ShipSensorProgram
 							}
 							track.state = ShipNavState.DEPROACH;
 							final double[] opDirToITarget = CMLib.space().getOppositeDir(dirToITarget);
-							if(CMLib.space().getAngleDelta(ship.facing(), opDirToITarget)>0.08)
+							if(CMLib.space().getAngleDelta(ship.facing(), opDirToITarget)>MAX_DIR_DIFF)
 								changeFacing(ship, opDirToITarget);
 						}
 						else
 						{
 							track.state = ShipNavState.APPROACH;
-							if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>0.08)
+							if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>MAX_DIR_DIFF)
 								changeFacing(ship, dirToITarget);
 						}
 					}
 					else // if we aren't moving, then approach.
 					{
 						track.state = ShipNavState.APPROACH;
-						if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>0.08)
+						if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>MAX_DIR_DIFF)
 							changeFacing(ship, dirToITarget);
 					}
 				}
@@ -1114,11 +1116,11 @@ public class ShipNavProgram extends ShipSensorProgram
 						track.state = ShipNavState.APPROACH;
 						facingDir=CMLib.space().getOppositeDir(dirToITarget);
 					}
-					if(CMLib.space().getAngleDelta(ship.facing(), facingDir)>0.08)
+					if(CMLib.space().getAngleDelta(ship.facing(), facingDir)>MAX_DIR_DIFF)
 						changeFacing(ship, facingDir);
 				}
 				else
-				if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>0.08)
+				if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>MAX_DIR_DIFF)
 					changeFacing(ship, dirToITarget);
 			}
 			break;
