@@ -429,7 +429,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	public String parseOutAngleBrackets(String s)
 	{
 		if(s==null)
-			return null;
+			return "";
 		int x=s.indexOf('<');
 		if(x>=0)
 		{
@@ -463,7 +463,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	public String parseOutAngleBracketsAndQuotes(String s)
 	{
 		if(s==null)
-			return null;
+			return "";
 		int x=s.indexOf('<');
 		if(x>=0)
 		{
@@ -510,8 +510,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	public String restoreAngleBrackets(final String s)
 	{
 		if(s==null)
-			return null;
-
+			return "";
 		int loop=s.indexOf('&');
 		if(loop<0)
 		{
