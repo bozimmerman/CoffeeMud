@@ -390,7 +390,6 @@ public class RandomItems extends ActiveTicker
 					((MOB)ticking).addItem(I);
 					I.wearIfPossible((MOB)ticking);
 					maintained.add(I);
-					I.setContainer((Container)ticking);
 				}
 				else
 				{
