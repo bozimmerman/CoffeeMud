@@ -1128,10 +1128,10 @@ public class DefaultSession implements Session
 	{
 		try
 		{
+			if((sock==null)||(sock.isClosed())||(!sock.isConnected()))
+				return;
 			if(writeLock.tryLock(10000, TimeUnit.MILLISECONDS))
 			{
-				if((sock==null)||(sock.isClosed())||(!sock.isConnected()))
-					return;
 				try
 				{
 					writeThread=Thread.currentThread();
