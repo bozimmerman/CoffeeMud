@@ -388,7 +388,7 @@ public class Prop_ClosedDayNight extends Property
 						if(A!=null)
 						{
 							A.setAbilityCode(1);
-							final List<String> lst = new XVector<String>("NPC");
+							final List<String> lst = new XVector<String>(CMLib.map().getExtendedRoomID(R), "NPC");
 							A.invoke(mob,lst,R,true,0);
 						}
 						return true;
