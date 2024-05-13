@@ -1134,6 +1134,8 @@ public class DefaultSession implements Session
 			{
 				try
 				{
+					if((sock==null)||(sock.isClosed())||(!sock.isConnected()))
+						return;
 					writeThread=Thread.currentThread();
 					writeStartTime=System.currentTimeMillis();
 					if(debugBinOutput && Log.debugChannelOn())
