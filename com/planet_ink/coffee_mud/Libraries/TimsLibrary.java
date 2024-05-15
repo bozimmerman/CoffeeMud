@@ -119,21 +119,18 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		//IworkI=(Item)IworkI.copyOf();
 		//IworkI.recoverPhyStats();
 		// the item is only ever read, so why copy it?
-		int otherDam=0;
-		int otherAtt=0;
-		int otherArm=0;
-		for(final Ability A : props)
-		{
-			otherArm=-CMath.s_int(A.getStat("STAT-ARMOR"));
-			otherAtt=CMath.s_int(A.getStat("STAT-ATTACK"));
-			otherDam=CMath.s_int(A.getStat("STAT-DAMAGE"));
-		}
-		final int curArmor=savedI.basePhyStats().armor()+otherArm;
-		final double curAttack=savedI.basePhyStats().attackAdjustment()+otherAtt;
-		final double curDamage=savedI.basePhyStats().damage()+otherDam;
 		final Wearable.CODES codes = Wearable.CODES.instance();
 		if(itemI instanceof Weapon)
 		{
+			int otherDam=0;
+			int otherAtt=0;
+			for(final Ability A : props)
+			{
+				otherAtt=CMath.s_int(A.getStat("STAT-ATTACK"));
+				otherDam=CMath.s_int(A.getStat("STAT-DAMAGE"));
+			}
+			final double curAttack=savedI.basePhyStats().attackAdjustment()+otherAtt;
+			final double curDamage=savedI.basePhyStats().damage()+otherDam;
 			double weight=8;
 			if(weight<1.0)
 				weight=1.0;
@@ -155,6 +152,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		}
 		else
 		{
+			int otherArm=0;
+			for(final Ability A : props)
+			{
+				otherArm=-CMath.s_int(A.getStat("STAT-ARMOR"));
+			}
+			final int curArmor=savedI.basePhyStats().armor()+otherArm;
 			final long worndata=savedI.rawProperLocationBitmap();
 			double weightpts=0;
 			for(int i=0;i<codes.location_strength_points().length-1;i++)
@@ -166,31 +169,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						break;
 				}
 			}
-			final int[] leatherPoints = { 0, 0, 1, 5, 10, 16, 23, 31, 40, 49, 58, 67, 76, 85, 94 };
-			final int[] clothPoints = { 0, 3, 7, 12, 18, 25, 33, 42, 52, 62, 72, 82, 92, 102 };
-			final int[] metalPoints = { 0, 0, 0, 0, 1, 3, 5, 8, 12, 17, 23, 30, 38, 46, 54, 62, 70, 78, 86, 94 };
 			final int materialCode=savedI.material()&RawMaterial.MATERIAL_MASK;
-			int[] useArray=null;
-			switch(materialCode)
-			{
-			case RawMaterial.MATERIAL_METAL:
-			case RawMaterial.MATERIAL_MITHRIL:
-			case RawMaterial.MATERIAL_PRECIOUS:
-			case RawMaterial.MATERIAL_ENERGY:
-				useArray=metalPoints;
-				break;
-			case RawMaterial.MATERIAL_SYNTHETIC:
-			case RawMaterial.MATERIAL_LEATHER:
-			case RawMaterial.MATERIAL_GLASS:
-			case RawMaterial.MATERIAL_ROCK:
-			case RawMaterial.MATERIAL_WOODEN:
-				useArray=leatherPoints;
-				break;
-			case RawMaterial.MATERIAL_GAS:
-			default:
-				useArray=clothPoints;
-				break;
-			}
+			final int[] useArray = getArmorMaterialPointsArray(materialCode);
 			int which=(int)Math.round(CMath.div(curArmor,weightpts)+1);
 			if(which<0)
 				which=0;
