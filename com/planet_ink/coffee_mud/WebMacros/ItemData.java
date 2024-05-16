@@ -264,14 +264,7 @@ public class ItemData extends StdWebMacro
 			{
 				final int wclass=CMath.s_int(httpReq.getUrlParameter("WEAPONCLASS"));
 				final int reach=CMath.s_int(httpReq.getUrlParameter("MINRANGE"));
-
-				vals=CMLib.itemBuilder().timsItemAdjustments(I,
-															 level,
-															 material,
-															 hands,
-															 wclass,
-															 reach,
-															 0);
+				vals=CMLib.itemBuilder().timsItemAdjustments(I, level, material, hands, wclass, reach, 0);
 			}
 			else
 			{
@@ -287,13 +280,7 @@ public class ItemData extends StdWebMacro
 							break;
 					}
 				}
-				vals=CMLib.itemBuilder().timsItemAdjustments(I,
-															 level,
-															 material,
-															 hands,
-															 0,
-															 0,
-															 worndata);
+				vals=CMLib.itemBuilder().timsItemAdjustments(I, level, material, hands, 0, 0, worndata);
 			}
 			for(final String key : vals.keySet())
 			{
@@ -478,15 +465,23 @@ public class ItemData extends StdWebMacro
 						return "false";
 					case POWLEVEL: // show power level
 					{
-						final Item newItem = (Item)I.copyOf();
+						Item newItem = null;
+						final boolean destroyItem = httpReq.isUrlParameter("materials");
 						try
 						{
-							GrinderItems.editItem(httpReq, newItem, oldI, newClassID, itemCode, null);
+							if(destroyItem)
+							{
+								newItem = CMClass.getItem(I.ID());
+								GrinderItems.editItem(httpReq, newItem, oldI, newClassID, itemCode, null);
+							}
+							else
+								newItem = I;
 							str.append(CMLib.itemBuilder().timsLevelCalculator(newItem));
 						}
 						finally
 						{
-							newItem.destroy();
+							if(destroyItem && (newItem != null))
+								newItem.destroy();
 						}
 						break;
 					}

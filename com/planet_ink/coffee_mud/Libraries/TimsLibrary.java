@@ -47,7 +47,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return timsLevelCalculator(I,props);
 	}
 
-	protected double timsDmgModifier(final int weaponClass)
+	protected double getWeaponDmgModifierFromClass(final int weaponClass)
 	{
 		double dmgModifier=1.0;
 		switch(weaponClass)
@@ -71,7 +71,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return dmgModifier;
 	}
 
-	protected double timsBaseAttackModifier(final int weaponClass)
+	protected double getWeaponAttackModifierFromClass(final int weaponClass)
 	{
 		double baseattack=0.0;
 		switch(weaponClass)
@@ -89,7 +89,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return baseattack;
 	}
 
-	protected double timsAttackModifier(final int weaponClass)
+	protected double getAttackModifierFromClass(final int weaponClass)
 	{
 		double attModifier=0.0;
 		switch(weaponClass)
@@ -110,6 +110,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return attModifier;
 	}
 
+//TODO: the other place
 	@Override
 	public int timsLevelCalculator(final Item itemI, final List<Ability> props)
 	{
@@ -136,8 +137,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				weight=1.0;
 			final double range=((Weapon)savedI).getRanges()[1];
 			final int wclass=((Weapon)savedI).weaponClassification();
-			final double dmgMod = this.timsDmgModifier(wclass);
-			final double attMod = this.timsAttackModifier(wclass);
+			final double dmgMod = getWeaponDmgModifierFromClass(wclass);
+			final double attMod = getAttackModifierFromClass(wclass);
 			final double dmgLevel = Math.floor(((2.0*curDamage/(2.0*(itemI.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;
 			final double baseAttack = (curAttack - attMod);
 			double attackLevel;
@@ -160,11 +161,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			final int curArmor=savedI.basePhyStats().armor()+otherArm;
 			final long worndata=savedI.rawProperLocationBitmap();
 			double weightpts=0;
-			for(int i=0;i<codes.location_strength_points().length-1;i++)
+			final double[] locationWeightPoints = codes.location_strength_points();
+			for(int i=0;i<locationWeightPoints.length-1;i++)
 			{
 				if(CMath.isSet(worndata,i))
 				{
-					weightpts+=codes.location_strength_points()[i+1];
+					weightpts+=locationWeightPoints[i+1];
 					if(!itemI.rawLogicalAnd())
 						break;
 				}
@@ -633,14 +635,391 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return I.baseGoldValue();
 	}
 
+	protected int getMaterialArmorAdj(final int material)
+	{
+		switch(material)
+		{
+			case RawMaterial.RESOURCE_BALSA:
+			case RawMaterial.RESOURCE_LIMESTONE:
+			case RawMaterial.RESOURCE_FLINT:
+				return -1;
+			case RawMaterial.RESOURCE_CLAY:
+				return -2;
+			case RawMaterial.RESOURCE_BONE:
+				return 2;
+			case RawMaterial.RESOURCE_GRANITE:
+			case RawMaterial.RESOURCE_OBSIDIAN:
+			case RawMaterial.RESOURCE_IRONWOOD:
+				return 1;
+			case RawMaterial.RESOURCE_SAND:
+			case RawMaterial.RESOURCE_COAL:
+				return -4;
+			default:
+				return 0;
+		}
+	}
+
+	protected double getLocationArmorWeight(final long wornLocs, final int materialCode, final int hands)
+	{
+		double weightPts = 0;
+		final Wearable.CODES codes = Wearable.CODES.instance();
+		for(int i=0;i<codes.location_strength_points().length-1;i++)
+		{
+			if(CMath.isSet(wornLocs,i))
+			{
+				switch(materialCode)
+				{
+				case RawMaterial.MATERIAL_METAL:
+				case RawMaterial.MATERIAL_MITHRIL:
+				case RawMaterial.MATERIAL_PRECIOUS:
+					weightPts+=codes.material_weight_item()[i+1][2];
+					break;
+				case RawMaterial.MATERIAL_LEATHER:
+				case RawMaterial.MATERIAL_GLASS:
+				case RawMaterial.MATERIAL_SYNTHETIC:
+				case RawMaterial.MATERIAL_ROCK:
+				case RawMaterial.MATERIAL_WOODEN:
+					weightPts+=codes.material_weight_item()[i+1][1];
+					break;
+				case RawMaterial.MATERIAL_ENERGY:
+					break;
+				default:
+					weightPts+=codes.material_weight_item()[i+1][0];
+					break;
+				}
+				if(hands==1)
+					break;
+			}
+		}
+		return weightPts;
+	}
+
+	protected double getMaterialArmorPoints(final int material, final int level)
+	{
+		double matPoints=0.0;
+		final int[] useArray = getArmorMaterialPointsArray(material);
+		if(level>=useArray[useArray.length-1])
+			matPoints=useArray.length-2 + ((level-useArray[useArray.length-1])/(useArray[useArray.length-1]-useArray[useArray.length-2]));
+		else
+		for(int i=0;i<useArray.length;i++)
+		{
+			final int lvl=useArray[i];
+			if(lvl>level)
+			{
+				matPoints=i-1;
+				break;
+			}
+		}
+		return matPoints;
+	}
+
+	protected double getLocationArmorPoints(final long wornLocs, final double matPoints, final int hands)
+	{
+		double totalPts = 0;
+		final Wearable.CODES codes = Wearable.CODES.instance();
+		for(int i=0;i<codes.location_strength_points().length-1;i++)
+		{
+			if(CMath.isSet(wornLocs,i))
+			{
+				totalPts+=(matPoints*codes.location_strength_points()[i+1]);
+				if(hands==1)
+					break;
+			}
+		}
+		return totalPts;
+	}
+
+	protected int getWeaponBaseMaterialFromClass(final int wclass)
+	{
+		switch(wclass)
+		{
+		case Weapon.CLASS_POLEARM:
+			return RawMaterial.MATERIAL_METAL;
+		case Weapon.CLASS_EDGED:
+			return RawMaterial.MATERIAL_METAL;
+		case Weapon.CLASS_DAGGER:
+			return RawMaterial.MATERIAL_METAL;
+		case Weapon.CLASS_SWORD:
+			return RawMaterial.MATERIAL_METAL;
+		default:
+			return RawMaterial.MATERIAL_WOODEN;
+		}
+	}
+
+	protected int getWeaponReachFromClass(final int wclass, final int reach, final Map<String,String> vals)
+	{
+		int baseReach = 0;
+		switch(wclass)
+		{
+		case Weapon.CLASS_POLEARM:
+			baseReach = 1;
+			break;
+		case Weapon.CLASS_RANGED:
+			baseReach = 1;
+			break;
+		case Weapon.CLASS_THROWN:
+			baseReach = 1;
+			break;
+		default:
+			break;
+		}
+		int maxReach = 0;
+		switch(wclass)
+		{
+		case Weapon.CLASS_RANGED:
+			maxReach = 5;
+			break;
+		case Weapon.CLASS_THROWN:
+			maxReach = 5;
+			break;
+		default:
+			break;
+		}
+		if(baseReach>maxReach)
+			maxReach=baseReach;
+		if(reach>baseReach)
+			baseReach=reach;
+		else
+		if(reach<baseReach)
+		{
+			if(vals != null)
+			{
+				vals.put("MINRANGE",""+baseReach);
+				vals.put("MAXRANGE",""+maxReach);
+			}
+			return baseReach;
+		}
+		return reach;
+	}
+
+	protected int getWeaponDmgAdjFromClass(final int wclass, final int material)
+	{
+		final int baseMatTyp=getWeaponBaseMaterialFromClass(wclass);
+		int damage = 0;
+		if(baseMatTyp==RawMaterial.MATERIAL_METAL)
+		{
+			switch(material&RawMaterial.MATERIAL_MASK)
+			{
+			case RawMaterial.MATERIAL_MITHRIL:
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_ENERGY:
+				break;
+			case RawMaterial.MATERIAL_WOODEN:
+			case RawMaterial.MATERIAL_SYNTHETIC:
+				damage-=4;
+				break;
+			case RawMaterial.MATERIAL_PRECIOUS:
+				damage-=4;
+				break;
+			case RawMaterial.MATERIAL_LEATHER:
+				damage-=6;
+				break;
+			case RawMaterial.MATERIAL_ROCK:
+				damage-=2;
+				break;
+			case RawMaterial.MATERIAL_GLASS:
+				damage-=4;
+				break;
+			case RawMaterial.MATERIAL_GAS:
+			default:
+				damage-=8;
+				break;
+			}
+			switch(material)
+			{
+			case RawMaterial.RESOURCE_BALSA:
+			case RawMaterial.RESOURCE_LIMESTONE:
+			case RawMaterial.RESOURCE_FLINT:
+				damage-=2;
+				break;
+			case RawMaterial.RESOURCE_CLAY:
+				damage-=4;
+				break;
+			case RawMaterial.RESOURCE_BONE:
+				damage+=4;
+				break;
+			case RawMaterial.RESOURCE_GRANITE:
+			case RawMaterial.RESOURCE_OBSIDIAN:
+			case RawMaterial.RESOURCE_IRONWOOD:
+				damage+=2;
+				break;
+			case RawMaterial.RESOURCE_SAND:
+			case RawMaterial.RESOURCE_COAL:
+				damage-=8;
+				break;
+			}
+		}
+		if(baseMatTyp==RawMaterial.MATERIAL_WOODEN)
+		{
+			switch(material&RawMaterial.MATERIAL_MASK)
+			{
+			case RawMaterial.MATERIAL_WOODEN:
+			case RawMaterial.MATERIAL_ENERGY:
+				break;
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_MITHRIL:
+				damage+=2;
+				break;
+			case RawMaterial.MATERIAL_PRECIOUS:
+				damage+=2;
+				break;
+			case RawMaterial.MATERIAL_LEATHER:
+			case RawMaterial.MATERIAL_SYNTHETIC:
+				damage-=2;
+				break;
+			case RawMaterial.MATERIAL_ROCK:
+				damage+=2;
+				break;
+			case RawMaterial.MATERIAL_GLASS:
+				damage-=2;
+				break;
+			default:
+				damage-=6;
+				break;
+			}
+			switch(material)
+			{
+			case RawMaterial.RESOURCE_LIMESTONE:
+			case RawMaterial.RESOURCE_FLINT:
+				damage-=2;
+				break;
+			case RawMaterial.RESOURCE_CLAY:
+				damage-=4;
+				break;
+			case RawMaterial.RESOURCE_BONE:
+				damage+=4;
+				break;
+			case RawMaterial.RESOURCE_GRANITE:
+			case RawMaterial.RESOURCE_OBSIDIAN:
+				damage+=2;
+				break;
+			case RawMaterial.RESOURCE_SAND:
+			case RawMaterial.RESOURCE_COAL:
+				damage-=8;
+				break;
+			}
+		}
+		return damage;
+	}
+
+	protected int getWeaponAttackAdjFromClass(final int wclass, final int material)
+	{
+		final int baseMatTyp=getWeaponBaseMaterialFromClass(wclass);
+		int baseAttack = 0;
+		if(baseMatTyp==RawMaterial.MATERIAL_METAL)
+		{
+			switch(material&RawMaterial.MATERIAL_MASK)
+			{
+			case RawMaterial.MATERIAL_MITHRIL:
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_ENERGY:
+				break;
+			case RawMaterial.MATERIAL_WOODEN:
+			case RawMaterial.MATERIAL_SYNTHETIC:
+				baseAttack-=0;
+				break;
+			case RawMaterial.MATERIAL_PRECIOUS:
+				baseAttack-=10;
+				break;
+			case RawMaterial.MATERIAL_LEATHER:
+				baseAttack-=10;
+				break;
+			case RawMaterial.MATERIAL_ROCK:
+				baseAttack-=10;
+				break;
+			case RawMaterial.MATERIAL_GLASS:
+				baseAttack-=20;
+				break;
+			case RawMaterial.MATERIAL_GAS:
+			default:
+				baseAttack-=30;
+				break;
+			}
+			switch(material)
+			{
+			case RawMaterial.RESOURCE_BALSA:
+			case RawMaterial.RESOURCE_LIMESTONE:
+			case RawMaterial.RESOURCE_FLINT:
+				baseAttack-=10;
+				break;
+			case RawMaterial.RESOURCE_CLAY:
+				baseAttack-=20;
+				break;
+			case RawMaterial.RESOURCE_BONE:
+				baseAttack+=20;
+				break;
+			case RawMaterial.RESOURCE_GRANITE:
+			case RawMaterial.RESOURCE_OBSIDIAN:
+			case RawMaterial.RESOURCE_IRONWOOD:
+				baseAttack+=10;
+				break;
+			case RawMaterial.RESOURCE_SAND:
+			case RawMaterial.RESOURCE_COAL:
+				baseAttack-=40;
+				break;
+			}
+		}
+		if(baseMatTyp==RawMaterial.MATERIAL_WOODEN)
+		{
+			switch(material&RawMaterial.MATERIAL_MASK)
+			{
+			case RawMaterial.MATERIAL_WOODEN:
+			case RawMaterial.MATERIAL_ENERGY:
+				break;
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_MITHRIL:
+				baseAttack-=0;
+				break;
+			case RawMaterial.MATERIAL_PRECIOUS:
+				baseAttack-=10;
+				break;
+			case RawMaterial.MATERIAL_LEATHER:
+			case RawMaterial.MATERIAL_SYNTHETIC:
+				baseAttack-=0;
+				break;
+			case RawMaterial.MATERIAL_ROCK:
+				baseAttack-=10;
+				break;
+			case RawMaterial.MATERIAL_GLASS:
+				baseAttack-=10;
+				break;
+			default:
+				baseAttack-=30;
+				break;
+			}
+			switch(material)
+			{
+			case RawMaterial.RESOURCE_LIMESTONE:
+			case RawMaterial.RESOURCE_FLINT:
+				baseAttack-=10;
+				break;
+			case RawMaterial.RESOURCE_CLAY:
+				baseAttack-=20;
+				break;
+			case RawMaterial.RESOURCE_BONE:
+				baseAttack+=20;
+				break;
+			case RawMaterial.RESOURCE_GRANITE:
+			case RawMaterial.RESOURCE_OBSIDIAN:
+				baseAttack+=10;
+				break;
+			case RawMaterial.RESOURCE_SAND:
+			case RawMaterial.RESOURCE_COAL:
+				baseAttack-=40;
+				break;
+			}
+		}
+		return baseAttack;
+	}
+
 	@Override
 	public Map<String, String> timsItemAdjustments(final Item I,
-												 int level,
-												 final int material,
-												 final int hands,
-												 final int wclass,
-												 int reach,
-												 final long worndata)
+												   int level,
+												   final int material,
+												   final int hands,
+												   final int wclass,
+												   int reach,
+												   final long worndata)
 	{
 		final Hashtable<String,String> vals=new Hashtable<String,String>(); // return obj
 		final int materialvalue=RawMaterial.CODES.VALUE(material);
@@ -651,279 +1030,36 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 
 		if(I instanceof Weapon)
 		{
-			int baseattack=(int)Math.round(this.timsBaseAttackModifier(wclass));
-			int basereach=0;
-			int maxreach=0;
-			int thrown = 0;
-			int basematerial=RawMaterial.MATERIAL_WOODEN;
-			switch(wclass)
-			{
-			case Weapon.CLASS_POLEARM:
-			{
-				basereach = 1;
-				basematerial = RawMaterial.MATERIAL_METAL;
-				break;
-			}
-			case Weapon.CLASS_RANGED:
-			{
-				basereach = 1;
-				maxreach = 5;
-				break;
-			}
-			case Weapon.CLASS_THROWN:
-			{
-				basereach = 1;
-				maxreach = 5;
-				thrown = 1;
-				break;
-			}
-			case Weapon.CLASS_EDGED:
-			{
-				basematerial = RawMaterial.MATERIAL_METAL;
-				break;
-			}
-			case Weapon.CLASS_DAGGER:
-			{
-				basematerial = RawMaterial.MATERIAL_METAL;
-				break;
-			}
-			case Weapon.CLASS_SWORD:
-			{
-				basematerial = RawMaterial.MATERIAL_METAL;
-				break;
-			}
-			}
-			final double dmgModifier = this.timsDmgModifier(wclass);
-			int weight = I.basePhyStats().weight();
-			if(weight<1)
-				weight=8;
-			if(weight>40)
-				weight=40;
-			if(basereach>maxreach)
-				maxreach=basereach;
-			if(reach<basereach)
-			{
-				reach=basereach;
-				vals.put("MINRANGE",""+basereach);
-				vals.put("MAXRANGE",""+maxreach);
-			}
-			else
-			if(reach>basereach)
-				basereach=reach;
-
-			int damage=(int)Math.round((((level-1.0)/(((double)reach/(double)weight)+2.0) + ((double)weight-(double)baseattack)/5.0 -reach)*(((hands*2.0)+1.0)/2.0))*dmgModifier);
-			final int cost=(int)Math.round(2.0*(((double)weight*(double)materialvalue)+((2.0*damage)+baseattack+(reach*10.0))*damage)/((hands+1.0)*(thrown+1.0)));
-			baseattack += (int)Math.round(level * this.timsAttackModifier(wclass));
-			if(basematerial==RawMaterial.MATERIAL_METAL)
-			{
-				switch(material&RawMaterial.MATERIAL_MASK)
-				{
-				case RawMaterial.MATERIAL_MITHRIL:
-				case RawMaterial.MATERIAL_METAL:
-				case RawMaterial.MATERIAL_ENERGY:
-					break;
-				case RawMaterial.MATERIAL_WOODEN:
-				case RawMaterial.MATERIAL_SYNTHETIC:
-					damage-=4;
-					baseattack-=0;
-					break;
-				case RawMaterial.MATERIAL_PRECIOUS:
-					damage-=4;
-					baseattack-=10;
-					break;
-				case RawMaterial.MATERIAL_LEATHER:
-					damage-=6;
-					baseattack-=10;
-					break;
-				case RawMaterial.MATERIAL_ROCK:
-					damage-=2;
-					baseattack-=10;
-					break;
-				case RawMaterial.MATERIAL_GLASS:
-					damage-=4;
-					baseattack-=20;
-					break;
-				case RawMaterial.MATERIAL_GAS:
-				default:
-					damage-=8;
-					baseattack-=30;
-					break;
-				}
-				switch(material)
-				{
-				case RawMaterial.RESOURCE_BALSA:
-				case RawMaterial.RESOURCE_LIMESTONE:
-				case RawMaterial.RESOURCE_FLINT:
-					baseattack-=10;
-					damage-=2;
-					break;
-				case RawMaterial.RESOURCE_CLAY:
-					baseattack-=20;
-					damage-=4;
-					break;
-				case RawMaterial.RESOURCE_BONE:
-					baseattack+=20;
-					damage+=4;
-					break;
-				case RawMaterial.RESOURCE_GRANITE:
-				case RawMaterial.RESOURCE_OBSIDIAN:
-				case RawMaterial.RESOURCE_IRONWOOD:
-					baseattack+=10;
-					damage+=2;
-					break;
-				case RawMaterial.RESOURCE_SAND:
-				case RawMaterial.RESOURCE_COAL:
-					baseattack-=40;
-					damage-=8;
-					break;
-				}
-			}
-			if(basematerial==RawMaterial.MATERIAL_WOODEN)
-			{
-				switch(material&RawMaterial.MATERIAL_MASK)
-				{
-				case RawMaterial.MATERIAL_WOODEN:
-				case RawMaterial.MATERIAL_ENERGY:
-					break;
-				case RawMaterial.MATERIAL_METAL:
-				case RawMaterial.MATERIAL_MITHRIL:
-					damage+=2;
-					baseattack-=0;
-					break;
-				case RawMaterial.MATERIAL_PRECIOUS:
-					damage+=2;
-					baseattack-=10;
-					break;
-				case RawMaterial.MATERIAL_LEATHER:
-				case RawMaterial.MATERIAL_SYNTHETIC:
-					damage-=2;
-					baseattack-=0;
-					break;
-				case RawMaterial.MATERIAL_ROCK:
-					damage+=2;
-					baseattack-=10;
-					break;
-				case RawMaterial.MATERIAL_GLASS:
-					damage-=2;
-					baseattack-=10;
-					break;
-				default:
-					damage-=6;
-					baseattack-=30;
-					break;
-				}
-				switch(material)
-				{
-				case RawMaterial.RESOURCE_LIMESTONE:
-				case RawMaterial.RESOURCE_FLINT:
-					baseattack-=10;
-					damage-=2;
-					break;
-				case RawMaterial.RESOURCE_CLAY:
-					baseattack-=20;
-					damage-=4;
-					break;
-				case RawMaterial.RESOURCE_BONE:
-					baseattack+=20;
-					damage+=4;
-					break;
-				case RawMaterial.RESOURCE_GRANITE:
-				case RawMaterial.RESOURCE_OBSIDIAN:
-					baseattack+=10;
-					damage+=2;
-					break;
-				case RawMaterial.RESOURCE_SAND:
-				case RawMaterial.RESOURCE_COAL:
-					baseattack-=40;
-					damage-=8;
-					break;
-				}
-			}
+			int baseAttack=(int)Math.round(getWeaponAttackModifierFromClass(wclass));
+			reach=getWeaponReachFromClass(wclass, reach, vals);
+			final int thrown = (wclass == Weapon.CLASS_THROWN) ? 1 : 0;
+			final double dmgModifier = getWeaponDmgModifierFromClass(wclass);
+			final int weight = CMath.minMax(I.basePhyStats().weight()<1?8:1, I.basePhyStats().weight(), 40);
+			int damage=(int)Math.round((((level-1.0)/(((double)reach/(double)weight)+2.0) + ((double)weight-(double)baseAttack)/5.0 -reach)*(((hands*2.0)+1.0)/2.0))*dmgModifier);
+			baseAttack += (int)Math.round(level * getAttackModifierFromClass(wclass));
+			baseAttack += getWeaponAttackAdjFromClass(wclass, I.material());
+			damage += getWeaponDmgAdjFromClass(wclass, I.material());
 			if(damage<=0)
 				damage=1;
 
+			final int cost=(int)Math.round(2.0*(((double)weight*(double)materialvalue)+((2.0*damage)+baseAttack+(reach*10.0))*damage)/((hands+1.0)*(thrown+1.0)));
+
 			vals.put("DAMAGE",""+damage);
-			vals.put("ATTACK",""+baseattack);
+			vals.put("ATTACK",""+baseAttack);
 			vals.put("VALUE",""+cost);
 		}
 		else
 		if(I instanceof Armor)
 		{
-			double pts=0.0;
 			if(level<0)
 				level=0;
-			final int[] useArray = getArmorMaterialPointsArray(I.material());
-			if(level>=useArray[useArray.length-1])
-				pts=useArray.length-2 + ((level-useArray[useArray.length-1])/(useArray[useArray.length-1]-useArray[useArray.length-2]));
-			else
-			for(int i=0;i<useArray.length;i++)
-			{
-				final int lvl=useArray[i];
-				if(lvl>level)
-				{
-					pts=i-1;
-					break;
-				}
-			}
-
-			double totalpts=0.0;
-			double weightpts=0.0;
-			final Wearable.CODES codes = Wearable.CODES.instance();
+			final double matPoints = getMaterialArmorPoints(I.material(), level);
 			final int materialCode=material&RawMaterial.MATERIAL_MASK;
-			for(int i=0;i<codes.location_strength_points().length-1;i++)
-			{
-				if(CMath.isSet(worndata,i))
-				{
-					totalpts+=(pts*codes.location_strength_points()[i+1]);
-					switch(materialCode)
-					{
-					case RawMaterial.MATERIAL_METAL:
-					case RawMaterial.MATERIAL_MITHRIL:
-					case RawMaterial.MATERIAL_PRECIOUS:
-						weightpts+=codes.material_weight_item()[i+1][2];
-						break;
-					case RawMaterial.MATERIAL_LEATHER:
-					case RawMaterial.MATERIAL_GLASS:
-					case RawMaterial.MATERIAL_SYNTHETIC:
-					case RawMaterial.MATERIAL_ROCK:
-					case RawMaterial.MATERIAL_WOODEN:
-						weightpts+=codes.material_weight_item()[i+1][1];
-						break;
-					case RawMaterial.MATERIAL_ENERGY:
-						break;
-					default:
-						weightpts+=codes.material_weight_item()[i+1][0];
-						break;
-					}
-					if(hands==1)
-						break;
-				}
-			}
-			final int cost=(int)Math.round(((pts*pts) + materialvalue) * ( weightpts / 2.0));
+			final double totalpts=getLocationArmorPoints(worndata, matPoints, hands);
+			final double weightpts=getLocationArmorWeight(worndata, materialCode, hands);
+			final int cost=(int)Math.round(((matPoints*matPoints) + materialvalue) * ( weightpts / 2.0));
 			int armor=(int)Math.round(totalpts);
-			switch(material)
-			{
-				case RawMaterial.RESOURCE_BALSA:
-				case RawMaterial.RESOURCE_LIMESTONE:
-				case RawMaterial.RESOURCE_FLINT:
-					armor-=1;
-					break;
-				case RawMaterial.RESOURCE_CLAY:
-					armor-=2;
-					break;
-				case RawMaterial.RESOURCE_BONE:
-					armor+=2;
-					break;
-				case RawMaterial.RESOURCE_GRANITE:
-				case RawMaterial.RESOURCE_OBSIDIAN:
-				case RawMaterial.RESOURCE_IRONWOOD:
-					armor+=1;
-					break;
-				case RawMaterial.RESOURCE_SAND:
-				case RawMaterial.RESOURCE_COAL:
-					armor-=4;
-					break;
-			}
+			armor -= getMaterialArmorAdj(material);
 			vals.put("ARMOR",""+armor);
 			vals.put("VALUE",""+cost);
 			vals.put("WEIGHT",""+(int)Math.round(weightpts));
@@ -1084,8 +1220,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				weight=1.0;
 			final double range=((Weapon)I).getRanges()[1];
 			final int wclass = ((Weapon)I).weaponClassification();
-			final double dmgMod = this.timsDmgModifier(wclass);
-			final double attMod = this.timsAttackModifier(wclass);
+			final double dmgMod = this.getWeaponDmgModifierFromClass(wclass);
+			final double attMod = this.getAttackModifierFromClass(wclass);
 			final double dmgLevel = Math.floor(((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;
 			final double baseAttack = (curAttack - attMod);
 			double attackLevel;
