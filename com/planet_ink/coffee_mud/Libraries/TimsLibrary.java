@@ -1036,8 +1036,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			final int weight = CMath.minMax(I.basePhyStats().weight()<1?8:1, I.basePhyStats().weight(), 40);
 			int damage=(int)Math.round((((level-1.0)/(((double)reach/(double)weight)+2.0) + ((double)weight-(double)baseAttack)/5.0 -reach)*(((hands*2.0)+1.0)/2.0))*dmgModifier);
 			baseAttack += (int)Math.round(level * getAttackModifierFromClass(wclass));
-			baseAttack += getWeaponAttackAdjFromClass(wclass, I.material());
-			damage += getWeaponDmgAdjFromClass(wclass, I.material());
+			baseAttack += getWeaponAttackAdjFromClass(wclass, material);
+			damage += getWeaponDmgAdjFromClass(wclass, material);
 			if(damage<=0)
 				damage=1;
 
@@ -1052,7 +1052,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		{
 			if(level<0)
 				level=0;
-			final double matPoints = getMaterialArmorPoints(I.material(), level);
+			final double matPoints = getMaterialArmorPoints(material, level);
 			final int materialCode=material&RawMaterial.MATERIAL_MASK;
 			final double totalpts=getLocationArmorPoints(worndata, matPoints, hands);
 			final double weightpts=getLocationArmorWeight(worndata, materialCode, hands);
