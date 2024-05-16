@@ -701,16 +701,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		if(str.length()==0)
 			return str;
-		str=CMStrings.removeColors(str.trim());
-		final String uppStr=str.toUpperCase();
-		if((uppStr.startsWith("A "))
-		||(uppStr.startsWith("AN ")))
-			return properIndefiniteArticle(adjective)+" "+adjective+" "+str.substring(2).trim();
-		if(uppStr.startsWith("THE "))
-			return properIndefiniteArticle(adjective)+" "+adjective+" "+str.substring(3).trim();
-		if(uppStr.startsWith("SOME "))
-			return properIndefiniteArticle(adjective)+" "+adjective+" "+str.substring(4).trim();
-		return properIndefiniteArticle(adjective)+" "+adjective+" "+str.trim();
+		final String ostr = str;
+		str=CMStrings.removeColors(removeArticleLead(str.trim()).trim()).trim();
+		if(ostr.toLowerCase().startsWith("some "))
+			return ostr.substring(0,5)+adjective+" "+str;
+		return properIndefiniteArticle(adjective)+" "+adjective+" "+str;
 	}
 
 	protected int skipSpaces(final String paragraph, int index)
