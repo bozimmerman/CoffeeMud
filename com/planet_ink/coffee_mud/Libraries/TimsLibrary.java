@@ -110,7 +110,6 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return attModifier;
 	}
 
-//TODO: the other place
 	@Override
 	public int timsLevelCalculator(final Item itemI, final List<Ability> props)
 	{
