@@ -34,6 +34,11 @@ import java.util.*;
 */
 public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 {
+	@SuppressWarnings("rawtypes")
+	private static TreeMap cachedCalculations = new TreeMap();
+	private static Character iTypeW = Character.valueOf('W');
+	private static Character iTypeA = Character.valueOf('A');
+
 	@Override
 	public String ID()
 	{
@@ -110,6 +115,28 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return attModifier;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected static TreeMap getOrAddToCache(final TreeMap m, final Object key)
+	{
+		TreeMap m1 = (TreeMap)m.get(key);
+		if(m1 == null)
+		{
+			m1 = new TreeMap();
+			m.put(key, m1);
+		}
+		return m1;
+	}
+
+	@SuppressWarnings("rawtypes")
+	protected static TreeMap getCache(final int... keys)
+	{
+		TreeMap m = TimsLibrary.cachedCalculations;
+		for(final int key : keys)
+			m = getOrAddToCache(m, Integer.valueOf(key));
+		return m;
+	}
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public int timsLevelCalculator(final Item itemI, final List<Ability> props)
 	{
@@ -123,8 +150,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		final int curArmor;
 		final double curAttack;
 		final double curDamage;
+		final Character ityp;
+		@SuppressWarnings("rawtypes")
+		final TreeMap cache;
 		if(itemI instanceof Weapon)
 		{
+			ityp=TimsLibrary.iTypeW;
+			final int wclass=((Weapon)savedI).weaponClassification();
 			curArmor=0;
 			int otherDam=0;
 			int otherAtt=0;
@@ -133,16 +165,24 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				otherAtt=CMath.s_int(A.getStat("STAT-ATTACK"));
 				otherDam=CMath.s_int(A.getStat("STAT-DAMAGE"));
 			}
+			final int iweight=CMath.minMax(savedI.basePhyStats().weight()<1?8:1, savedI.basePhyStats().weight(), 40);
+			cache = getCache(iweight,
+							 wclass,
+							 ((Weapon)savedI).getRanges()[1],
+							 (itemI.rawLogicalAnd()?2:1),
+							 savedI.basePhyStats().attackAdjustment()+otherAtt,
+							 savedI.basePhyStats().damage()+otherDam
+							 );
+			if(cache.containsKey(ityp))
+				return ((Integer)cache.get(ityp)).intValue();
 			curAttack=savedI.basePhyStats().attackAdjustment()+otherAtt;
 			curDamage=savedI.basePhyStats().damage()+otherDam;
-			double weight=8;
-			if(weight<1.0)
-				weight=1.0;
+			final double weight = iweight;
 			final double range=((Weapon)savedI).getRanges()[1];
-			final int wclass=((Weapon)savedI).weaponClassification();
+			final double hands = (itemI.rawLogicalAnd()?2.0:1.0);
 			final double dmgMod = getWeaponDmgModifierFromClass(wclass);
 			final double attMod = getAttackModifierFromClass(wclass);
-			final double dmgLevel = Math.floor(((2.0*curDamage/(2.0*(itemI.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;
+			final double dmgLevel = Math.floor(((2.0*curDamage/((2.0*hands)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;
 			final double baseAttack = (curAttack - attMod);
 			double attackLevel;
 			if(baseAttack < 0)
@@ -156,6 +196,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		}
 		else
 		{
+			ityp=TimsLibrary.iTypeA;
 			int otherArm=0;
 			curAttack=0;
 			curDamage=0;
@@ -165,6 +206,16 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			}
 			curArmor=savedI.basePhyStats().armor()+otherArm;
 			final long worndata=savedI.rawProperLocationBitmap();
+			final int materialCode=savedI.material()&RawMaterial.MATERIAL_MASK;
+			cache = getCache(
+							materialCode,
+							(itemI.rawLogicalAnd()?2:1),
+							curArmor,
+							(int)(worndata & 0xffffffff),
+							(int)((worndata >> 32) & 0xffffffff)
+							);
+			if(cache.containsKey(ityp))
+				return ((Integer)cache.get(ityp)).intValue();
 			double weightpts=0;
 			final double[] locationWeightPoints = codes.location_strength_points();
 			for(int i=0;i<locationWeightPoints.length-1;i++)
@@ -176,7 +227,6 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						break;
 				}
 			}
-			final int materialCode=savedI.material()&RawMaterial.MATERIAL_MASK;
 			final int[] useArray = getArmorMaterialPointsArray(materialCode);
 			int which=(int)Math.round(CMath.div(curArmor,weightpts)+1);
 			if(which<0)
@@ -210,7 +260,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			}
 			else
 				maxRange=savedI.maxRange();
-			int tries = 30;
+			int tries = 60;
 			double lastDiff=Double.MAX_VALUE;
 			int diffCode = 0;
 			while(--tries>0)
@@ -224,7 +274,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					if(newArmor < curArmor)
 					{
 						if(diffCode == 1)
-							return (lastDiff < newDiff) ? (level+1) : level;
+						{
+							level = (lastDiff < newDiff) ? (level+1) : level;
+							break;
+						}
 						diffCode = -1;
 						level += 1;
 					}
@@ -232,14 +285,20 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					if(newArmor > curArmor)
 					{
 						if(diffCode == -1)
-							return (lastDiff < newDiff) ? (level-1) : level;
+						{
+							level = (lastDiff < newDiff) ? (level-1) : level;
+							break;
+						}
 						diffCode = 1;
 						level -= 1;
 						if(level < 1)
-							return 1;
+						{
+							level = 1;
+							break;
+						}
 					}
 					else
-						return level;
+						break;
 					lastDiff = newDiff;
 				}
 				else
@@ -253,7 +312,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					if((newAttack + newDmg) < (curAttack + curDamage))
 					{
 						if(diffCode == 1)
-							return (lastDiff < newDiff) ? (level+1) : level;
+						{
+							level = (lastDiff < newDiff) ? (level+1) : level;
+							break;
+						}
 						diffCode = -1;
 						level += 1;
 					}
@@ -261,21 +323,26 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						if((newAttack + newDmg) > (curAttack + curDamage))
 					{
 						if(diffCode == -1)
-							return (lastDiff < newDiff) ? (level-1) : level;
+						{
+							level = (lastDiff < newDiff) ? (level-1) : level;
+							break;
+						}
 						diffCode = 1;
 						level -= 1;
 						if(level < 1)
-							return 1;
+						{
+							level = 1;
+							break;
+						}
 					}
 					else
-						return level;
+						break;
 					lastDiff = newDiff;
 				}
 				else
 					break;
 			}
-			if(tries == 0)
-				Log.debugOut("Excessive power level tries:"+savedI.name()); //TODO:BZ:DELME
+			cache.put(ityp, Integer.valueOf(level));
 		}
 		//savedI.destroy();
 		//IworkI.destroy(); // this was a copy
