@@ -119,6 +119,7 @@ public class Skill_Stoicism extends StdSkill
 		if(!super.tick(ticking,tickID))
 			return false;
 
+		final Physical affected = super.affected;
 		if(!(affected instanceof MOB))
 			return true;
 		if(super.proficiencyCheck((MOB)affected, 0, false))
