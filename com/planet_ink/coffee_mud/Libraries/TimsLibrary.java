@@ -614,20 +614,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		else
 		if(I instanceof Armor)
 		{
-			double pts=0.0;
-			final int[] useArray = getArmorMaterialPointsArray(I.material());
-			if(level>=useArray[useArray.length-1])
-				pts=useArray.length-2 + ((level-useArray[useArray.length-1])/(useArray[useArray.length-1]-useArray[useArray.length-2]));
-			else
-			for(int i=0;i<useArray.length;i++)
-			{
-				final int lvl=useArray[i];
-				if(lvl>level)
-				{
-					pts=i-1;
-					break;
-				}
-			}
+			final double pts=getMaterialArmorPoints(I.material(), level);
 			final int cost=(int)Math.round(((pts*pts) + materialvalue) * ( I.basePhyStats().weight() / 2.0));
 			return cost;
 		}
@@ -1031,17 +1018,17 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		{
 			int baseAttack=(int)Math.round(getWeaponAttackModifierFromClass(wclass));
 			reach=getWeaponReachFromClass(wclass, reach, vals);
-			final int thrown = (wclass == Weapon.CLASS_THROWN) ? 1 : 0;
+			final double thrown = (wclass == Weapon.CLASS_THROWN) ? 1 : 0;
 			final double dmgModifier = getWeaponDmgModifierFromClass(wclass);
-			final int weight = CMath.minMax(I.basePhyStats().weight()<1?8:1, I.basePhyStats().weight(), 40);
-			int damage=(int)Math.round((((level-1.0)/(((double)reach/(double)weight)+2.0) + ((double)weight-(double)baseAttack)/5.0 -reach)*(((hands*2.0)+1.0)/2.0))*dmgModifier);
+			final double weight = CMath.minMax(I.basePhyStats().weight()<1?8:1, I.basePhyStats().weight(), 40);
+			int damage=(int)Math.round((((level-1.0)/((reach/weight)+2.0) + (weight-baseAttack)/5.0 -reach)*(((hands*2.0)+1.0)/2.0))*dmgModifier);
 			baseAttack += (int)Math.round(level * getAttackModifierFromClass(wclass));
 			baseAttack += getWeaponAttackAdjFromClass(wclass, material);
 			damage += getWeaponDmgAdjFromClass(wclass, material);
 			if(damage<=0)
 				damage=1;
 
-			final int cost=(int)Math.round(2.0*(((double)weight*(double)materialvalue)+((2.0*damage)+baseAttack+(reach*10.0))*damage)/((hands+1.0)*(thrown+1.0)));
+			final int cost=(int)Math.round(2.0*((weight*materialvalue)+((2.0*damage)+baseAttack+(reach*10.0))*damage)/((hands+1.0)*(thrown+1.0)));
 
 			vals.put("DAMAGE",""+damage);
 			vals.put("ATTACK",""+baseAttack);
