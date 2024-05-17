@@ -89,13 +89,13 @@ public class Familiarity_Shield extends StdAbility
 	{
 		if(buildingI != null)
 		{
-			final int x=buildingI.secretIdentity().indexOf(ItemCraftor.CRAFTING_BRAND_STR_PREFIX);
+			final int x=buildingI.rawSecretIdentity().indexOf(ItemCraftor.CRAFTING_BRAND_STR_PREFIX);
 			if(x>=0)
 			{
-				final int y=buildingI.secretIdentity().indexOf('.',x+ItemCraftor.CRAFTING_BRAND_STR_PREFIX.length());
+				final int y=buildingI.rawSecretIdentity().indexOf('.',x+ItemCraftor.CRAFTING_BRAND_STR_PREFIX.length());
 				if(y>=0)
 				{
-					return buildingI.secretIdentity().substring(x,y);
+					return buildingI.rawSecretIdentity().substring(x,y);
 				}
 			}
 		}

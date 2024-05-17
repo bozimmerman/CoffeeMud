@@ -331,7 +331,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						level += 1;
 					}
 					else
-						if((newAttack + newDmg) > (curAttack + curDamage))
+					if((newAttack + newDmg) > (curAttack + curDamage))
 					{
 						if(diffCode == -1)
 						{

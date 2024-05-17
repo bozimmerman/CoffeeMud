@@ -373,13 +373,13 @@ public class CommonSkill extends StdAbility
 			final Ability A=buildingI.fetchEffect("Copyright");
 			if((A!=null)&&(A.text().length()>0))
 				return A.text();
-			final int x=buildingI.secretIdentity().indexOf(ItemCraftor.CRAFTING_BRAND_STR_PREFIX);
+			final int x=buildingI.rawSecretIdentity().indexOf(ItemCraftor.CRAFTING_BRAND_STR_PREFIX);
 			if(x>=0)
 			{
-				final int y=buildingI.secretIdentity().indexOf('.',x+ItemCraftor.CRAFTING_BRAND_STR_PREFIX.length());
+				final int y=buildingI.rawSecretIdentity().indexOf('.',x+ItemCraftor.CRAFTING_BRAND_STR_PREFIX.length());
 				if(y>=0)
 				{
-					return buildingI.secretIdentity().substring(x,y);
+					return buildingI.rawSecretIdentity().substring(x,y);
 				}
 			}
 		}
