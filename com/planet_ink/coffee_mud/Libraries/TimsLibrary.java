@@ -120,8 +120,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		//IworkI.recoverPhyStats();
 		// the item is only ever read, so why copy it?
 		final Wearable.CODES codes = Wearable.CODES.instance();
+		final int curArmor;
+		final double curAttack;
+		final double curDamage;
 		if(itemI instanceof Weapon)
 		{
+			curArmor=0;
 			int otherDam=0;
 			int otherAtt=0;
 			for(final Ability A : props)
@@ -129,8 +133,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				otherAtt=CMath.s_int(A.getStat("STAT-ATTACK"));
 				otherDam=CMath.s_int(A.getStat("STAT-DAMAGE"));
 			}
-			final double curAttack=savedI.basePhyStats().attackAdjustment()+otherAtt;
-			final double curDamage=savedI.basePhyStats().damage()+otherDam;
+			curAttack=savedI.basePhyStats().attackAdjustment()+otherAtt;
+			curDamage=savedI.basePhyStats().damage()+otherDam;
 			double weight=8;
 			if(weight<1.0)
 				weight=1.0;
@@ -153,11 +157,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		else
 		{
 			int otherArm=0;
+			curAttack=0;
+			curDamage=0;
 			for(final Ability A : props)
 			{
 				otherArm=-CMath.s_int(A.getStat("STAT-ARMOR"));
 			}
-			final int curArmor=savedI.basePhyStats().armor()+otherArm;
+			curArmor=savedI.basePhyStats().armor()+otherArm;
 			final long worndata=savedI.rawProperLocationBitmap();
 			double weightpts=0;
 			final double[] locationWeightPoints = codes.location_strength_points();
@@ -191,6 +197,85 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			level += CMath.s_int(A.getStat("STAT-LEVEL"));
 		if(!CMLib.flags().isRemovable(itemI))
 			level-=5;
+		/** begin */
+		{
+			int hands=0;
+			int weaponClass=0;
+			final int maxRange;
+			if(savedI instanceof Weapon)
+			{
+				hands=savedI.rawLogicalAnd()?2:1;
+				weaponClass=((Weapon)savedI).weaponClassification();
+				maxRange=((Weapon)savedI).getRanges()[1];
+			}
+			else
+				maxRange=savedI.maxRange();
+			int tries = 100;
+			double lastDiff=Double.MAX_VALUE;
+			int diffCode = 0;
+			while(--tries>0)
+			{
+				final Map<String,String> H=timsItemAdjustments(savedI,level,savedI.material(),
+															   hands,weaponClass,maxRange,savedI.rawProperLocationBitmap());
+				if(savedI instanceof Armor)
+				{
+					final int newArmor = CMath.s_int(H.get("ARMOR"));
+					final double newDiff = Math.abs(newArmor-curArmor);
+					if(newArmor < curArmor)
+					{
+						if(diffCode == 1)
+							return (lastDiff < newDiff) ? (level+1) : level;
+						diffCode = -1;
+						level += 1;
+					}
+					else
+					if(newArmor > curArmor)
+					{
+						if(diffCode == -1)
+							return (lastDiff < newDiff) ? (level-1) : level;
+						diffCode = 1;
+						level -= 1;
+						if(level < 1)
+							return 1;
+					}
+					else
+						return level;
+					lastDiff = newDiff;
+				}
+				else
+				if(savedI instanceof Weapon)
+				{
+					final int newAttack = CMath.s_int(H.get("ATTACK"));
+					final int newDmg = CMath.s_int(H.get("DAMAGE"));
+					final double attackDiff = Math.abs(newAttack-curAttack);
+					final double damageDiff = Math.abs(newDmg-curDamage);
+					final double newDiff = attackDiff + damageDiff;
+					if((newAttack + newDmg) < (curAttack + curDamage))
+					{
+						if(diffCode == 1)
+							return (lastDiff < newDiff) ? (level+1) : level;
+						diffCode = -1;
+						level += 1;
+					}
+					else
+						if((newAttack + newDmg) > (curAttack + curDamage))
+					{
+						if(diffCode == -1)
+							return (lastDiff < newDiff) ? (level-1) : level;
+						diffCode = 1;
+						level -= 1;
+						if(level < 1)
+							return 1;
+					}
+					else
+						return level;
+					lastDiff = newDiff;
+				}
+				else
+					break;
+			}
+			Log.debugOut("Excessive power level tries:"+savedI.name()); //TODO:BZ:DELME
+		}
 		//savedI.destroy();
 		//IworkI.destroy(); // this was a copy
 		return level;
