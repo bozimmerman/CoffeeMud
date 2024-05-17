@@ -210,7 +210,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			}
 			else
 				maxRange=savedI.maxRange();
-			int tries = 100;
+			int tries = 30;
 			double lastDiff=Double.MAX_VALUE;
 			int diffCode = 0;
 			while(--tries>0)
@@ -274,7 +274,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				else
 					break;
 			}
-			Log.debugOut("Excessive power level tries:"+savedI.name()); //TODO:BZ:DELME
+			if(tries == 0)
+				Log.debugOut("Excessive power level tries:"+savedI.name()); //TODO:BZ:DELME
 		}
 		//savedI.destroy();
 		//IworkI.destroy(); // this was a copy
