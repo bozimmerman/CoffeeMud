@@ -35,9 +35,11 @@ import java.util.*;
 public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 {
 	@SuppressWarnings("rawtypes")
-	private static TreeMap cachedCalculations = new TreeMap();
-	private static Character iTypeW = Character.valueOf('W');
-	private static Character iTypeA = Character.valueOf('A');
+	private static TreeMap		cachedCalculations	= new TreeMap();
+	@SuppressWarnings("rawtypes")
+	private static TreeMap		cachedStats			= new TreeMap();
+	private static Character	iTypeW				= Character.valueOf('W');
+	private static Character	iTypeA				= Character.valueOf('A');
 
 	@Override
 	public String ID()
@@ -128,9 +130,18 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@SuppressWarnings("rawtypes")
-	protected static TreeMap getCache(final int... keys)
+	protected static TreeMap getLevelCache(final int... keys)
 	{
 		TreeMap m = TimsLibrary.cachedCalculations;
+		for(final int key : keys)
+			m = getOrAddToCache(m, Integer.valueOf(key));
+		return m;
+	}
+
+	@SuppressWarnings("rawtypes")
+	protected static TreeMap getStatCache(final int... keys)
+	{
+		TreeMap m = TimsLibrary.cachedStats;
 		for(final int key : keys)
 			m = getOrAddToCache(m, Integer.valueOf(key));
 		return m;
@@ -166,13 +177,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				otherDam=CMath.s_int(A.getStat("STAT-DAMAGE"));
 			}
 			final int iweight=CMath.minMax(savedI.basePhyStats().weight()<1?8:1, savedI.basePhyStats().weight(), 40);
-			cache = getCache(iweight,
-							 wclass,
-							 ((Weapon)savedI).getRanges()[1],
-							 (itemI.rawLogicalAnd()?2:1),
-							 savedI.basePhyStats().attackAdjustment()+otherAtt,
-							 savedI.basePhyStats().damage()+otherDam
-							 );
+			cache = getLevelCache(iweight,
+								 wclass,
+								 ((Weapon)savedI).getRanges()[1],
+								 (itemI.rawLogicalAnd()?2:1),
+								 savedI.basePhyStats().attackAdjustment()+otherAtt,
+								 savedI.basePhyStats().damage()+otherDam
+								 );
 			if(cache.containsKey(ityp))
 				return ((Integer)cache.get(ityp)).intValue();
 			curAttack=savedI.basePhyStats().attackAdjustment()+otherAtt;
@@ -207,13 +218,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			curArmor=savedI.basePhyStats().armor()+otherArm;
 			final long worndata=savedI.rawProperLocationBitmap();
 			final int materialCode=savedI.material()&RawMaterial.MATERIAL_MASK;
-			cache = getCache(
-							materialCode,
-							(itemI.rawLogicalAnd()?2:1),
-							curArmor,
-							(int)(worndata & 0xffffffff),
-							(int)((worndata >> 32) & 0xffffffff)
-							);
+			cache = getLevelCache(
+								materialCode,
+								(itemI.rawLogicalAnd()?2:1),
+								curArmor,
+								(int)(worndata & 0xffffffff),
+								(int)((worndata >> 32) & 0xffffffff)
+								);
 			if(cache.containsKey(ityp))
 				return ((Integer)cache.get(ityp)).intValue();
 			double weightpts=0;
@@ -1151,6 +1162,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return baseAttack;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, String> timsItemAdjustments(final Item I,
 												   int level,
@@ -1167,13 +1179,22 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		for(final Ability A : props)
 			level-=CMath.s_int(A.getStat("STAT-LEVEL"));
 
+		final int iweight = CMath.minMax(I.basePhyStats().weight()<1?8:1, I.basePhyStats().weight(), 40);
+		@SuppressWarnings("rawtypes")
+		final TreeMap m = TimsLibrary.getStatCache(material,wclass,reach,hands,iweight,
+										(int)(worndata&0xffffff),(int)((worndata>>32)&0xffffff),level);
 		if(I instanceof Weapon)
 		{
+			if(m.containsKey(TimsLibrary.iTypeW))
+			{
+				final Map<String,String> v=(Map<String,String>)m.get(TimsLibrary.iTypeW);
+				return v;
+			}
 			int baseAttack=(int)Math.round(getWeaponAttackModifierFromClass(wclass));
 			reach=getWeaponReachFromClass(wclass, reach, vals);
 			final double thrown = (wclass == Weapon.CLASS_THROWN) ? 1 : 0;
 			final double dmgModifier = getWeaponDmgModifierFromClass(wclass);
-			final double weight = CMath.minMax(I.basePhyStats().weight()<1?8:1, I.basePhyStats().weight(), 40);
+			final double weight = iweight;
 			int damage=(int)Math.round((((level-1.0)/((reach/weight)+2.0) + (weight-baseAttack)/5.0 -reach)*(((hands*2.0)+1.0)/2.0))*dmgModifier);
 			baseAttack += (int)Math.round(level * getAttackModifierFromClass(wclass));
 			baseAttack += getWeaponAttackAdjFromClass(wclass, material);
@@ -1186,12 +1207,18 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			vals.put("DAMAGE",""+damage);
 			vals.put("ATTACK",""+baseAttack);
 			vals.put("VALUE",""+cost);
+			m.put(iTypeW, vals);
 		}
 		else
 		if(I instanceof Armor)
 		{
 			if(level<0)
 				level=0;
+			if(m.containsKey(TimsLibrary.iTypeA))
+			{
+				final Map<String,String> v=(Map<String,String>)m.get(TimsLibrary.iTypeA);
+				return v;
+			}
 			final double matPoints = getMaterialArmorPoints(material, level);
 			final int materialCode=material&RawMaterial.MATERIAL_MASK;
 			final double totalpts=getLocationArmorPoints(worndata, matPoints, hands);
@@ -1202,6 +1229,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			vals.put("ARMOR",""+armor);
 			vals.put("VALUE",""+cost);
 			vals.put("WEIGHT",""+(int)Math.round(weightpts));
+			m.put(iTypeA, vals);
 		}
 		return vals;
 	}
