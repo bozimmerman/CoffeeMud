@@ -1181,17 +1181,20 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 
 		// do the magic room Link
-		for(final Integer linkDir : magicRoomNode.links().keySet())
+		if (magicRoomNode != null)
 		{
-			if(linkDir.intValue() == Directions.getOpDirectionCode(direction))
-				Log.errOut("MUDPercolator","Generated an override exit for "+magicRoom.roomID()+", direction="+direction+", layout="+layoutManager.name());
-			else
+			for(final Integer linkDir : magicRoomNode.links().keySet())
 			{
-				final LayoutNode linkNode=magicRoomNode.getLink(linkDir.intValue());
-				if((magicRoom.getRawExit(linkDir.intValue())==null) || (linkNode.room() == null))
-					Log.errOut("MUDPercolator","Generated an unpaired node for "+magicRoom.roomID());
+				if(linkDir.intValue() == Directions.getOpDirectionCode(direction))
+					Log.errOut("MUDPercolator","Generated an override exit for "+magicRoom.roomID()+", direction="+direction+", layout="+layoutManager.name());
 				else
-					magicRoom.rawDoors()[linkDir.intValue()]=linkNode.room();
+				{
+					final LayoutNode linkNode=magicRoomNode.getLink(linkDir.intValue());
+					if((magicRoom.getRawExit(linkDir.intValue())==null) || (linkNode.room() == null))
+						Log.errOut("MUDPercolator","Generated an unpaired node for "+magicRoom.roomID());
+					else
+						magicRoom.rawDoors()[linkDir.intValue()]=linkNode.room();
+				}
 			}
 		}
 

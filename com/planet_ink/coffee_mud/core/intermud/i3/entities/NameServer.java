@@ -71,4 +71,10 @@ public class NameServer implements Serializable
 		}
 		return false;
 	}
+
+	@Override
+	public int hashCode()
+	{
+		return (((ip.hashCode() << 8) ^ (name.hashCode()) << 8)) ^ port;
+	}
 }

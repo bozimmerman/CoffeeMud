@@ -157,10 +157,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		//IworkI=(Item)IworkI.copyOf();
 		//IworkI.recoverPhyStats();
 		// the item is only ever read, so why copy it?
-		final Wearable.CODES codes = Wearable.CODES.instance();
 		final int curArmor;
 		final double curAttack;
 		final double curDamage;
+		final int[] adjustments = timsBaseAdjustments(savedI,getBaseAdjusterAbility(props));
 		final Character ityp;
 		@SuppressWarnings("rawtypes")
 		final TreeMap cache;
@@ -169,38 +169,26 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			ityp=TimsLibrary.iTypeW;
 			final int wclass=((Weapon)savedI).weaponClassification();
 			curArmor=0;
-			int otherDam=0;
-			int otherAtt=0;
-			for(final Ability A : props)
-			{
-				otherAtt=CMath.s_int(A.getStat("STAT-ATTACK"));
-				otherDam=CMath.s_int(A.getStat("STAT-DAMAGE"));
-			}
+			curAttack=adjustments[1];
+			curDamage=adjustments[2];
 			final int iweight=CMath.minMax(savedI.basePhyStats().weight()<1?8:1, savedI.basePhyStats().weight(), 40);
 			cache = getLevelCache(iweight,
 								 wclass,
 								 ((Weapon)savedI).getRanges()[1],
 								 (itemI.rawLogicalAnd()?2:1),
-								 savedI.basePhyStats().attackAdjustment()+otherAtt,
-								 savedI.basePhyStats().damage()+otherDam
+								 adjustments[1],
+								 adjustments[2]
 								 );
 			if(cache.containsKey(ityp))
 				return ((Integer)cache.get(ityp)).intValue();
-			curAttack=savedI.basePhyStats().attackAdjustment()+otherAtt;
-			curDamage=savedI.basePhyStats().damage()+otherDam;
-			level = timsBaseLevel(savedI,null);
+			level = timsBaseLevel(savedI,adjustments);
 		}
 		else
 		{
 			ityp=TimsLibrary.iTypeA;
-			int otherArm=0;
+			curArmor=adjustments[0];
 			curAttack=0;
 			curDamage=0;
-			for(final Ability A : props)
-			{
-				otherArm=-CMath.s_int(A.getStat("STAT-ARMOR"));
-			}
-			curArmor=savedI.basePhyStats().armor()+otherArm;
 			final long worndata=savedI.rawProperLocationBitmap();
 			final int materialCode=savedI.material()&RawMaterial.MATERIAL_MASK;
 			cache = getLevelCache(
@@ -1338,7 +1326,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	public Map<Object,Integer> getItemLevels(final Item I, final List<Ability> props)
 	{
 		final Map<Object,Integer> map=new HashMap<Object,Integer>();
-		map.put(I,Integer.valueOf(timsBaseLevel(I,this.getBaseAdjusterAbility(props))));
+		map.put(I,Integer.valueOf(timsBaseLevel(I,timsBaseAdjustments(I,getBaseAdjusterAbility(props)))));
 		map.put("ABILITY",Integer.valueOf(levelsFromAbility(I)));
 		for(final Ability A : props)
 			map.put(A, Integer.valueOf(CMath.s_int(A.getStat("STAT-LEVEL"))));
@@ -1375,12 +1363,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	public int timsBaseLevel(final Item I)
 	{
 		final List<Ability> props=getTimsAdjResCast(I);
-		return timsBaseLevel(I,getBaseAdjusterAbility(props));
+		return timsBaseLevel(I,timsBaseAdjustments(I,getBaseAdjusterAbility(props)));
 	}
 
-	public int timsBaseLevel(final Item I, final Ability adjA)
+	protected int[] timsBaseAdjustments(final Item I, final Ability adjA)
 	{
-		int level=0;
 		int otherDam=0;
 		int otherAtt=0;
 		int otherArm=0;
@@ -1391,8 +1378,21 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			otherDam=CMath.s_int(adjA.getStat("STAT-DAMAGE"));
 		}
 		final int curArmor=I.basePhyStats().armor()+otherArm;
-		final double curAttack=I.basePhyStats().attackAdjustment()+otherAtt;
-		final double curDamage=I.basePhyStats().damage()+otherDam;
+		final int curAttack=I.basePhyStats().attackAdjustment()+otherAtt;
+		final int curDamage=I.basePhyStats().damage()+otherDam;
+		final int[] ret = new int[3];
+		ret[0] = curArmor;
+		ret[1] = curAttack;
+		ret[2] = curDamage;
+		return ret;
+	}
+	
+	protected int timsBaseLevel(final Item I, int[] adjustments)
+	{
+		int level=0;
+		final int curArmor=adjustments[0];
+		final double curAttack=adjustments[1];
+		final double curDamage=adjustments[2];
 		if(I instanceof Weapon)
 		{
 			double weight=8;
