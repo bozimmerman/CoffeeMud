@@ -424,6 +424,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					if((target.charStats().getCurrentClass().leveless())
 					||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
 					||(target.charStats().getMyRace().leveless())
+					||(CMSecurity.isDisabled(CMSecurity.DisFlag.UNLEVEL))
 					||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 						mob.tell(L("The wand will not work on such as @x1.",target.name(mob)));
 					else

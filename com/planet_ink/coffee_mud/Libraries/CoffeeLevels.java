@@ -378,6 +378,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	{
 		if((mob.basePhyStats().level()<2)
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
+		||(CMSecurity.isDisabled(CMSecurity.DisFlag.UNLEVEL))
 		||(mob.charStats().getCurrentClass().leveless())
 		||(mob.charStats().getMyRace().leveless()))
 			return;
@@ -486,6 +487,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		while(checkAgain
 		&&(mob.getExperience()<neededLowest)
 		&&(mob.basePhyStats().level()>1)
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.UNLEVELXP))
 		&&(neededLowest>0))
 		{
 			checkAgain=false;
