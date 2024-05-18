@@ -200,7 +200,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 								);
 			if(cache.containsKey(ityp))
 				return ((Integer)cache.get(ityp)).intValue();
-			level = timsBaseLevel(savedI,null);
+			level = timsBaseLevel(savedI,adjustments);
 		}
 		if(level < 1)
 			level = 1;
@@ -1387,7 +1387,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return ret;
 	}
 	
-	protected int timsBaseLevel(final Item I, int[] adjustments)
+	protected int timsBaseLevel(final Item I, final int[] adjustments)
 	{
 		int level=0;
 		final int curArmor=adjustments[0];
