@@ -188,22 +188,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				return ((Integer)cache.get(ityp)).intValue();
 			curAttack=savedI.basePhyStats().attackAdjustment()+otherAtt;
 			curDamage=savedI.basePhyStats().damage()+otherDam;
-			final double weight = iweight;
-			final double range=((Weapon)savedI).getRanges()[1];
-			final double hands = (itemI.rawLogicalAnd()?2.0:1.0);
-			final double dmgMod = getWeaponDmgModifierFromClass(wclass);
-			final double attMod = getAttackModifierFromClass(wclass);
-			final double dmgLevel = Math.floor(((2.0*curDamage/((2.0*hands)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;
-			final double baseAttack = (curAttack - attMod);
-			double attackLevel;
-			if(baseAttack < 0)
-				attackLevel = dmgLevel + baseAttack; // + == - when baseAttack is -
-			else
-			if(attMod>0.0)
-				attackLevel = baseAttack / attMod;
-			else
-				attackLevel = dmgLevel + baseAttack;
-			level = (int)Math.round((dmgLevel + attackLevel) / 2.0);
+			level = timsBaseLevel(savedI,null);
 		}
 		else
 		{
@@ -227,37 +212,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 								);
 			if(cache.containsKey(ityp))
 				return ((Integer)cache.get(ityp)).intValue();
-			double weightpts=0;
-			final double[] locationWeightPoints = codes.location_strength_points();
-			for(int i=0;i<locationWeightPoints.length-1;i++)
-			{
-				if(CMath.isSet(worndata,i))
-				{
-					weightpts+=locationWeightPoints[i+1];
-					if(!itemI.rawLogicalAnd())
-						break;
-				}
-			}
-			final int[] useArray = getArmorMaterialPointsArray(materialCode);
-			int which=(int)Math.round(CMath.div(curArmor,weightpts)+1);
-			if(which<0)
-				which=0;
-			int rollOver=0;
-			if(which>=useArray.length)
-			{
-				final int maxAmt=useArray[useArray.length-1];
-				rollOver =  ((maxAmt-useArray[useArray.length-2]) * (which-useArray.length));
-				which=useArray.length-1;
-			}
-			level=useArray[which] + rollOver;
+			level = timsBaseLevel(savedI,null);
 		}
 		if(level < 1)
 			level = 1;
 		level+=itemI.basePhyStats().ability()*5;
 		for(final Ability A : props)
 			level += CMath.s_int(A.getStat("STAT-LEVEL"));
-		if(!CMLib.flags().isRemovable(itemI))
-			level-=5;
 		/** begin */
 		{
 			int hands=0;
@@ -1439,9 +1400,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				weight=1.0;
 			final double range=((Weapon)I).getRanges()[1];
 			final int wclass = ((Weapon)I).weaponClassification();
+			final double hands = (I.rawLogicalAnd()?2.0:1.0);
 			final double dmgMod = this.getWeaponDmgModifierFromClass(wclass);
 			final double attMod = this.getAttackModifierFromClass(wclass);
-			final double dmgLevel = Math.floor(((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;
+			final double dmgLevel = Math.floor(((2.0*curDamage/(2.0*hands+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;
 			final double baseAttack = (curAttack - attMod);
 			double attackLevel;
 			if(baseAttack < 0)
