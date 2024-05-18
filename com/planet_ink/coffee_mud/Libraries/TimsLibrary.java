@@ -274,6 +274,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			int tries = 60;
 			double lastDiff=Double.MAX_VALUE;
 			int diffCode = 0;
+			boolean noDouble=false;
+			boolean noHalf=false;
+			final double curScore=(curAttack + curDamage);
 			while(--tries>0)
 			{
 				final Map<String,String> H=timsItemAdjustments(savedI,level,savedI.material(),
@@ -289,7 +292,18 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 							level = (lastDiff < newDiff) ? (level+1) : level;
 							break;
 						}
-						diffCode = -1;
+						else
+						if((!noDouble)
+						&&((newArmor+newArmor) < curArmor))
+						{
+							level *= 2;
+							if(level > CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)*1024)
+								break;
+							diffCode=0;
+						}
+						else
+							diffCode = -1;
+						noHalf=true;
 						level += 1;
 					}
 					else
@@ -300,7 +314,20 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 							level = (lastDiff < newDiff) ? (level-1) : level;
 							break;
 						}
-						diffCode = 1;
+						else
+						if((!noHalf)
+						&&((newArmor/2) > curArmor))
+						{
+							if(level < 2)
+								break;
+							level /= 2;
+							if(level < 2)
+								level = 1;
+							diffCode=0;
+						}
+						else
+							diffCode = 1;
+						noDouble=true;
 						level -= 1;
 						if(level < 1)
 						{
@@ -320,25 +347,50 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					final double attackDiff = Math.abs(newAttack-curAttack);
 					final double damageDiff = Math.abs(newDmg-curDamage);
 					final double newDiff = attackDiff + damageDiff;
-					if((newAttack + newDmg) < (curAttack + curDamage))
+					final int newScore=(newAttack + newDmg);
+					if(newScore < curScore)
 					{
 						if(diffCode == 1)
 						{
 							level = (lastDiff < newDiff) ? (level+1) : level;
 							break;
 						}
-						diffCode = -1;
+						else
+						if((!noDouble)
+						&&((newScore+newScore)) < curScore)
+						{
+							level *= 2;
+							if(level > CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)*1024)
+								break;
+							diffCode=0;
+						}
+						else
+							diffCode = -1;
+						noHalf=true;
 						level += 1;
 					}
 					else
-					if((newAttack + newDmg) > (curAttack + curDamage))
+					if(newScore > curScore)
 					{
 						if(diffCode == -1)
 						{
 							level = (lastDiff < newDiff) ? (level-1) : level;
 							break;
 						}
-						diffCode = 1;
+						else
+						if((!noHalf)
+						&&((newScore/2) > curScore))
+						{
+							if(level < 2)
+								break;
+							level /= 2;
+							if(level < 2)
+								level = 1;
+							diffCode=0;
+						}
+						else
+							diffCode = 1;
+						noDouble=true;
 						level -= 1;
 						if(level < 1)
 						{
