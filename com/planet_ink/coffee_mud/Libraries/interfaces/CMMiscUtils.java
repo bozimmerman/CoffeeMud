@@ -73,15 +73,16 @@ public interface CMMiscUtils extends CMLibrary
 	 * @see CMMiscUtils#addExtRecipes(MOB, String, List)
 	 *
 	 * @param str the unparsed data
+	 * @param tabs require recipe lines to be tab delimited
 	 * @return the parsed data
 	 */
-	public List<List<String>> loadRecipeList(final String str);
+	public List<List<String>> loadRecipeList(final String str, final boolean tabs);
 
 	/**
 	 * Adds any custom recipes known to the given mob to the given existing
 	 * recipe list, for the given skill ID.
 	 *
-	 * @see CMMiscUtils#loadRecipeList(String)
+	 * @see CMMiscUtils#loadRecipeList(String, boolean)
 	 *
 	 * @param mob the mob who might have more recipes
 	 * @param ID the Ability ID of the RecipeDriven object

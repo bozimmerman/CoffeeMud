@@ -258,7 +258,7 @@ public class Thief_MakeBomb extends ThiefSkill implements RecipeDriven
 		if(V==null)
 		{
 			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+getRecipeFilename(),null,CMFile.FLAG_LOGERRORS).text();
-			V=new ReadOnlyList<List<String>>(CMLib.utensils().loadRecipeList(str.toString()));
+			V=new ReadOnlyList<List<String>>(CMLib.utensils().loadRecipeList(str.toString(), true));
 			if(V.size()==0)
 				Log.errOut(ID(),"Recipes not found!");
 			Resources.submitResource("PARSED_RECIPE: "+getRecipeFilename(),V);

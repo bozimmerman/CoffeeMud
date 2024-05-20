@@ -84,6 +84,13 @@ public class Herbology extends CommonSkill implements RecipeDriven
 		verb=L("evaluating");
 	}
 
+	// so we can override it on a skill-by-skill basis
+	@Override
+	protected List<List<String>> loadList(final StringBuffer str)
+	{
+		return CMLib.utensils().loadRecipeList(str.toString(), false);
+	}
+
 	@Override
 	public List<List<String>> fetchRecipes()
 	{
