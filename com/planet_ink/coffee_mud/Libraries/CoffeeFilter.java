@@ -1626,6 +1626,14 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							loop+=3;
 						}
 					}
+					else
+					if((S!=null)
+					&&(S.getClientTelnetMode(Session.TELNET_MXP)))
+					{
+						buf.delete(loop,loop+1);
+						buf.insert(loop,"&lt;".toCharArray());
+						loop+=3;
+					}
 					break;
 				case '\033': // skip escapes
 					{
