@@ -3641,6 +3641,16 @@ public class CMStrings
 			tokens.remove(--i[0]);
 			token = nextToken(tokens, i);
 			token.value="-"+token.value;
+			if(token.type==StringExpTokenType.NUMCONST)
+			{
+				try
+				{
+					token.numValue=Double.valueOf(token.value).doubleValue();
+				}
+				catch(final Exception e)
+				{
+				}
+			}
 		}
 		if((token.type != StringExpTokenType.NUMCONST)
 		&& (token.type != StringExpTokenType.STRCONST)
