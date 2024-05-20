@@ -297,7 +297,6 @@ public class CommonSkill extends StdAbility
 		if(V==null)
 		{
 			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
-			System.out.println("hi");
 			V=new ReadOnlyList<List<String>>(loadList(str));
 			if((V.size()==0)
 			&&(!ID().equals("GenCraftSkill"))
