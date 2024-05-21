@@ -4686,6 +4686,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(ctx.monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT))
 						returnable=true;
 					else
+					if((!CMath.isInteger(arg1))
+					&&(ctx.monster.location().getArea().getTimeObj().getTODCode()==CMath.s_valueOf(TimeClock.TimeOfDay.class, arg1.toUpperCase().trim())))
+						returnable=true;
+					else
 					if((ctx.monster.location().getArea().getTimeObj().getHourOfDay()==CMath.s_int(arg1)))
 						returnable=true;
 					else
