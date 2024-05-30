@@ -1137,7 +1137,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					return true;
 				return false;
 			case Room.DOMAIN_INDOORS_STONE:
-				if((P.phyStats().weight()>2)&&(P.maxRange()>4))
+				if((P.phyStats().weight()>=2)&&(P.maxRange()>4))
 					return true;
 				return false;
 			default:

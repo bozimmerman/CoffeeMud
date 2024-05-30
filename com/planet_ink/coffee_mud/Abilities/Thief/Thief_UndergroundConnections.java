@@ -91,13 +91,13 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;
 	}
 
-	protected List<Integer> pathOut=null;
-	protected int hygieneLoss=0;
-	protected String theNoun=null;
-	protected Room currRoom=null;
-	protected List<MOB> theGroup=null;
-	protected List<Room> storage=null;
-	protected String lastDesc=null;
+	protected List<Integer>	pathOut		= null;
+	protected int			hygieneLoss	= 0;
+	protected String		theNoun		= null;
+	protected Room			currRoom	= null;
+	protected List<MOB>		theGroup	= null;
+	protected List<Room>	storage		= null;
+	protected String		lastDesc	= null;
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -167,9 +167,9 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
-			||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
-			||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(storage.contains(msg.target())))
-			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET)))
+		||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+		||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(storage.contains(msg.target())))
+		||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET)))
 		{
 			unInvoke();
 		}
@@ -315,7 +315,8 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		{
 			R=trail.get(c);
 			if((R.getArea()!=A)
-			&&(!CMath.bset(R.domainType(),Room.INDOORS))
+			&&((!CMath.bset(R.domainType(),Room.INDOORS))
+				||CMLib.flags().isACityRoom(R))
 			&&(CMLib.flags().canAccess(target,R)))
 			{
 				Room checkR=null;
@@ -324,7 +325,8 @@ public class Thief_UndergroundConnections extends ThiefSkill
 					checkR=R.getRoomInDir(d);
 					if((checkR!=null)
 					&&(checkR.getArea()==A)
-					&&(!CMath.bset(checkR.domainType(),Room.INDOORS))
+					&&((!CMath.bset(checkR.domainType(),Room.INDOORS))
+						||CMLib.flags().isACityRoom(R))
 					&&(trail.indexOf(checkR)<c))
 					{
 						finalTos.addElement(R);
@@ -334,6 +336,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			}
 		}
 		final List<List<Integer>> allTrails=CMLib.tracking().findAllTrails(thisRoom,finalTos,trail);
+		final List<List<Integer>> oldTrails=new XArrayList<List<Integer>>(allTrails);
 		for(int a=allTrails.size()-1;a>=0;a--)
 		{
 			final List<Integer> thisTrail=allTrails.get(a);
@@ -341,13 +344,18 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			for(int t=0;t<thisTrail.size();t++)
 			{
 				R=R.getRoomInDir(thisTrail.get(t).intValue());
-				if((R==null)||(CMath.bset(R.domainType(),Room.INDOORS)))
+				if((R==null)
+				||((CMath.bset(R.domainType(),Room.INDOORS)))
+					&&(!CMLib.flags().isACityRoom(R)))
 				{
 					allTrails.remove(a);
 					break;
 				}
 			}
 		}
+		if((allTrails.size()==0)
+		&&(oldTrails.size()>0))
+			allTrails.add(oldTrails.get(CMLib.dice().roll(1, oldTrails.size(), -1)));
 		if(allTrails.size()==0)
 		{
 			mob.tell(L("Your informants tell you that there's no way they can get you out of here."));
@@ -360,7 +368,9 @@ public class Thief_UndergroundConnections extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":L("<S-NAME> contact(s) <S-HIS-HER> underground connections here."));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,
+				auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,
+				auto?"":L("<S-NAME> contact(s) <S-HIS-HER> underground connections here."));
 		if(!success)
 			return beneficialVisualFizzle(mob,null,auto?"":L("<S-NAME> can't seem to contact <S-HIS-HER> underground connections here."));
 		else
