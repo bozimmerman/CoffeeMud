@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2018-2024 Bo Zimmerman
+   Copyright 2024-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -34,17 +34,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_HardToPort extends StdSkill
+public class Skill_HardToStarboard extends StdSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Skill_HardToPort";
+		return "Skill_HardToStern";
 	}
 
-	public static final int REUSE_MILLIS = 3 * 60 * 1000;
-
-	private final static String	localizedName	= CMLib.lang().L("Hard to Port");
+	private final static String	localizedName	= CMLib.lang().L("Hard to Starboard");
 
 	@Override
 	public String name()
@@ -70,7 +68,7 @@ public class Skill_HardToPort extends StdSkill
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "HARDTOPORT" });
+	private static final String[]	triggerStrings	= I(new String[] { "HARDTOSTARBOARD" });
 
 	@Override
 	public String[] triggerStrings()
@@ -107,7 +105,7 @@ public class Skill_HardToPort extends StdSkill
 			if((msg.target()==ship)
 			&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			&&(msg.value()>0)
-			&&(CMLib.dice().rollPercentage()<=(25+(5*super.getXLEVELLevel(invoker())))))
+			&&(CMLib.dice().rollPercentage()<=(25+super.getXLEVELLevel(invoker()))))
 			{
 				msg.setValue(0);
 			}
@@ -161,11 +159,11 @@ public class Skill_HardToPort extends StdSkill
 			return false;
 		}
 
-		if(((System.currentTimeMillis()-lastUse)<REUSE_MILLIS)
-		||(myShipItem.fetchEffect("Skill_HardToStarboard")!=null)
-		||(myShipItem.fetchEffect("Skill_HardToPort")!=null))
+		if(((System.currentTimeMillis()-lastUse)<(3 * 60 * 1000))
+		||(myShipItem.fetchEffect("Skill_HardToPort")!=null)
+		||(myShipItem.fetchEffect("Skill_HardToStern")!=null))
 		{
-			mob.tell(L("You can't put your ship through another hard turn to port attempt right now.  Wait a bit."));
+			mob.tell(L("You can't put your ship through another hard turn to starboard attempt right now.  Wait a bit."));
 			return false;
 		}
 
@@ -181,38 +179,38 @@ public class Skill_HardToPort extends StdSkill
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				CMLib.commands().forceStandardCommand(mob, "Yell", new XVector<String>("YELL",L("HARD TO PORT!")));
+				CMLib.commands().forceStandardCommand(mob, "Yell", new XVector<String>("YELL",L("HARD TO STARBOARD!")));
 				{
 					int newDirection = -1;
 					switch(myShipItem.getDirectionFacing())
 					{
 					case Directions.NORTH:
-						newDirection=Directions.WEST;
-						break;
-					case Directions.SOUTH:
 						newDirection=Directions.EAST;
 						break;
+					case Directions.SOUTH:
+						newDirection=Directions.WEST;
+						break;
 					case Directions.EAST:
-						newDirection=Directions.NORTH;
+						newDirection=Directions.SOUTH;
 						break;
 					case Directions.WEST:
-						newDirection=Directions.SOUTH;
+						newDirection=Directions.NORTH;
 						break;
 					case Directions.UP:
 						break;
 					case Directions.DOWN:
 						break;
 					case Directions.NORTHEAST:
-						newDirection=Directions.NORTHWEST;
+						newDirection=Directions.SOUTHEAST;
 						break;
 					case Directions.NORTHWEST:
-						newDirection=Directions.SOUTHWEST;
-						break;
-					case Directions.SOUTHEAST:
 						newDirection=Directions.NORTHEAST;
 						break;
+					case Directions.SOUTHEAST:
+						newDirection=Directions.SOUTHWEST;
+						break;
 					case Directions.SOUTHWEST:
-						newDirection=Directions.SOUTHEAST;
+						newDirection=Directions.NORTHWEST;
 						break;
 					}
 					if(newDirection >= 0)

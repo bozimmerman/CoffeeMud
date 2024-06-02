@@ -1522,7 +1522,7 @@ See guides/RandomAreas.html for information about documents of this type.
 
 <STRING id="__citygovttype" select="any-1" define="__citygovttype">
 	<STRING define="__chieftype=Chief,__officertype=Warrior Guard,__cityhalltype=Village Hall,__citytype=Village,__cityattendant=Subchief,__citypersontype=Villager">Chiefdom</STRING>
-	<STRING define="__chieftype=Prince,__officertype=Royalguard,__cityhalltype=City Palace,__citytype=Kingdom,__cityattendant=Courtier,__citypersontype=Subject">Principality</STRING>
+	<STRING define="__chieftype=Prince,__officertype=Royal Guard,__cityhalltype=City Palace,__citytype=Kingdom,__cityattendant=Courtier,__citypersontype=Subject">Principality</STRING>
 	<STRING define="__chieftype=Mayor,__officertype=Cityguard,__cityhalltype=City Hall,__citytype=City,__cityattendant=Bureaucrat,__citypersontype=Citizen">Mayorality</STRING>
 	<STRING define="__chieftype=Lord,__officertype=Manorguard,__cityhalltype=Lords Manor,__citytype=Town,__cityattendant=Attendant,__citypersontype=Serf">Aristocracy</STRING>
 	<STRING define="__chieftype=Captain,__officertype=Military Guard,__cityhalltype=Captains Office,__citytype=Military Base,__cityattendant=Lieutenant,__citypersontype=Private">Dictatorship</STRING>

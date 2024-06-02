@@ -3,7 +3,7 @@
   2. Better MSSP/MSDP support.  New INI entry: MSXPVARS.
   3. Ability CODES & DOMAINS can now be added to via the INI file/control panel.
   4. Deity powers, curses, blessings all now support arguments
-  5. New skill: Improved Revoke
+  5. New skills: Improved Revoke, Hard to Starboard
   6. GenAbilities: better argument parsing (see Game Builders Guide)
   7. New command: NOSPAM
   8. AutoGenInstances will now respect multiple entrances.  See RandomAreas guide.
