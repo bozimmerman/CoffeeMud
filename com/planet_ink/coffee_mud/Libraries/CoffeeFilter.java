@@ -204,9 +204,13 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					   ||(buf.substring(loop+2,loop+7).equalsIgnoreCase("music"))))
 					{
 						final int x=buf.indexOf("(",loop+7);
-						final int y=buf.indexOf(")",loop+7);
+						int y=buf.indexOf(")",loop+7);
 						if((x>=0)&&(y>=x))
 						{
+							if((loop>0)&&(buf.charAt(loop-1)==' '))
+								loop--;
+							if((y<buf.length()-1)&&(buf.charAt(y+1)==' '))
+								y++;
 							buf.delete(loop,y+1);
 							loop--;
 						}
@@ -1101,7 +1105,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					   ||(buf.substring(loop+2,loop+7).equalsIgnoreCase("music"))))
 					{
 						final int x=buf.indexOf("(",loop+7);
-						final int y=buf.indexOf(")",loop+7);
+						int y=buf.indexOf(")",loop+7);
 						if((x>=0)&&(y>=x))
 						{
 							if((S!=null)
@@ -1130,6 +1134,10 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							}
 							else
 							{
+								if((loop>0)&&(buf.charAt(loop-1)==' '))
+									loop--;
+								if((y<buf.length()-1)&&(buf.charAt(y+1)==' '))
+									y++;
 								buf.delete(loop,y+1);
 								loop--;
 							}
