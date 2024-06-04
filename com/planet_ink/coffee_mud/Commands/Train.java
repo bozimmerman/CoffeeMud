@@ -201,8 +201,13 @@ public class Train extends StdCommand
 			for(final CharClass C : map.keySet())
 			{
 				final int amt = map.get(C).intValue();
-				cols.add("^H"+CMStrings.padRight(C.name()+"^N",14)+"^N"
-						+CMStrings.limit(amt+" "+plural(amt,"TRAIN"),10));
+				if(mob.baseCharStats().getClassLevel(C) >= 0)
+					cols.add("^H"+CMStrings.padRight(C.name()+"^N",14)+"^N-");
+				else
+				{
+					cols.add("^H"+CMStrings.padRight(C.name()+"^N",14)+"^N"
+							+CMStrings.limit(amt+" "+plural(amt,"TRAIN"),10));
+				}
 			}
 			final String menu = CMLib.lister().buildNColTable(mob, cols, "", 3);
 			CMLib.commands().postCommandFail(mob,origCmds,
@@ -253,7 +258,7 @@ public class Train extends StdCommand
 			for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 			{
 				final CharClass C=c.nextElement();
-				int classLevel=mob.charStats().getClassLevel(C);
+				int classLevel=mob.baseCharStats().getClassLevel(C);
 				int trainCost = CMProps.getIntVar(CMProps.Int.CLASSSWITCHCOST);
 				if(classLevel<0)
 				{
@@ -311,7 +316,6 @@ public class Train extends StdCommand
 			mob.tell(L("You do not have enough @x1.  You need @x2.",ofWhat,finalCost.requirements(mob)));
 			return false;
 		}
-
 
 		MOB teacher=null;
 		if(teacherName!=null)

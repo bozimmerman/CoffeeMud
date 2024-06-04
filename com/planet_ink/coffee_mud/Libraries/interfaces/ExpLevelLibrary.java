@@ -186,7 +186,7 @@ public interface ExpLevelLibrary extends CMLibrary
 
 	/**
 	 * Causes the given mob to gain a level, with all that entails
-	 * @see ExpLevelLibrary#unLevel(MOB)
+	 * @see ExpLevelLibrary#unLevel(MOB, boolean)
 	 *
 	 * @param mob the mob to gain the level
 	 */
@@ -200,8 +200,9 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @see ExpLevelLibrary#level(MOB)
 	 *
 	 * @param mob the mob to lose the level
+	 * @param adjustXP true to ensure xp is lowered also
 	 */
-	public void unLevel(MOB mob);
+	public void unLevel(MOB mob, boolean adjustXP);
 
 	/**
 	 * Checks whether the given Command is assigned as the Deferred XP Assignment
@@ -392,7 +393,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * does the experience loss for the player as well as determining how much,
 	 * if any should be taken away from leiges or clans. Will automatically cause
 	 * an unleveling if necessary.
-	 * @see ExpLevelLibrary#unLevel(MOB)
+	 * @see ExpLevelLibrary#unLevel(MOB, boolean)
 	 * @see ExpLevelLibrary#handleExperienceChange(CMMsg)
 	 * @see ExpLevelLibrary#postExperience(MOB, String, MOB, String, int, boolean)
 	 * @see ExpLevelLibrary#gainExperience(MOB, String, MOB, String, int, boolean)

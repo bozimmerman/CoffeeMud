@@ -291,12 +291,18 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 						||(target.charStats().getCurrentClass().expless())
 						||(target.charStats().getMyRace().expless())
 						||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
-							CMLib.leveler().unLevel(target);
+							CMLib.leveler().unLevel(target, true);
 						else
 						{
-							final int xpLevelBelow=CMLib.leveler().getLevelExperience(mob, target.basePhyStats().level()-2);
-							final int levelDown=(target.getExperience()-xpLevelBelow)+1;
-							CMLib.leveler().postExperience(target,"MISC:"+ID(),null,null,-levelDown, false);
+							final int oldLevel = target.basePhyStats().level();
+							for(int x=0;(x<10) && (oldLevel == target.basePhyStats().level());x++)
+							{
+								final int xpLevelBelow=CMLib.leveler().getLevelExperience(mob, oldLevel-2);
+								int levelDown=(target.getExperience()-xpLevelBelow)+1;
+								if(levelDown > target.getExperience())
+									levelDown = target.getExperience();
+								CMLib.leveler().postExperience(target,"MISC:"+ID(),null,null,-levelDown, false);
+							}
 						}
 					}
 					return;

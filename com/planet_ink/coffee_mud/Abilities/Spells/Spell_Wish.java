@@ -1289,7 +1289,7 @@ public class Spell_Wish extends Spell
 							int tries=MT.basePhyStats().level();
 							while((MT.basePhyStats().level()>newLevel)&&(tries-->0))
 							{
-								CMLib.leveler().unLevel(MT);
+								CMLib.leveler().unLevel(MT, true);
 								MT.setExperience(CMLib.leveler().getLevelExperience(mob, MT.basePhyStats().level()-1));
 								MT.recoverPhyStats();
 							}
@@ -1306,7 +1306,7 @@ public class Spell_Wish extends Spell
 						msg.source().tell(L("Your wish also causes you to lose @x1 levels.",""+levelsLost));
 						for(int i2=0;i2<levelsLost;i2++)
 						{
-							CMLib.leveler().unLevel(mob);
+							CMLib.leveler().unLevel(mob, true);
 							mob.setExperience(CMLib.leveler().getLevelExperience(mob, mob.basePhyStats().level()-1));
 						}
 					}
@@ -1397,7 +1397,7 @@ public class Spell_Wish extends Spell
 					if(!((MOB)target).isMonster())
 					{
 						baseLoss+=500;
-						CMLib.leveler().unLevel(mob);
+						CMLib.leveler().unLevel(mob, true);
 						mob.setExperience(CMLib.leveler().getLevelExperience(mob, mob.basePhyStats().level()-1));
 					}
 					wishDrain(mob,baseLoss,true);
@@ -1437,9 +1437,9 @@ public class Spell_Wish extends Spell
 					baseLoss+=1000;
 					wishDrain(mob,baseLoss,true);
 					msg.source().tell(L("Your wish also causes you lose 3 levels."));
-					CMLib.leveler().unLevel(mob);
-					CMLib.leveler().unLevel(mob);
-					CMLib.leveler().unLevel(mob);
+					CMLib.leveler().unLevel(mob, true);
+					CMLib.leveler().unLevel(mob, true);
+					CMLib.leveler().unLevel(mob, true);
 					mob.setExperience(CMLib.leveler().getLevelExperience(mob, mob.basePhyStats().level()-1));
 					final StringBuffer str=new StringBuffer("");
 					for(final int trait: CharStats.CODES.BASECODES())
@@ -1624,7 +1624,7 @@ public class Spell_Wish extends Spell
 									numLevelsToLose = mob.phyStats().level()-1;
 								msg.source().tell(L("Your wish also causes you lose @x1 levels.",""+numLevelsToLose));
 								for(int l=0;l<numLevelsToLose;l++)
-									CMLib.leveler().unLevel(mob);
+									CMLib.leveler().unLevel(mob, true);
 							}
 							mob.setExperience(CMLib.leveler().getLevelExperience(mob, mob.basePhyStats().level()-1));
 						}
@@ -1980,7 +1980,7 @@ public class Spell_Wish extends Spell
 						if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 						{
 							msg.source().tell(L("Your wish causes you lose a level."));
-							CMLib.leveler().unLevel(mob);
+							CMLib.leveler().unLevel(mob, true);
 							mob.setExperience(CMLib.leveler().getLevelExperience(mob, mob.basePhyStats().level()+1));
 						}
 						((MOB)target).setTrains(((MOB)target).getTrains()+1);
@@ -2024,7 +2024,7 @@ public class Spell_Wish extends Spell
 					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 					{
 						msg.source().tell(L("Your wish causes you lose a level."));
-						CMLib.leveler().unLevel(mob);
+						CMLib.leveler().unLevel(mob, true);
 						mob.setExperience(CMLib.leveler().getLevelExperience(mob, mob.basePhyStats().level()-1));
 					}
 					if(foundAttribute<=6)

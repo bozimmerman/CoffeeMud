@@ -3201,7 +3201,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if((V.size()>1)&&(CMath.s_int(V.lastElement())>1))
 					times=CMath.s_int(V.lastElement());
 				for(int t=0;t<times;t++)
-					CMLib.leveler().unLevel(deadM);
+					CMLib.leveler().unLevel(deadM, true);
 			}
 			else
 			if(whatToDo.startsWith("RECALL"))
