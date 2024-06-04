@@ -205,7 +205,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		boolean aromaMade=true;
 		if(R!=null)
 		{
-			final CMMsg msg = CMClass.getMsg((MOB)target, null, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_AROMA, null);
+			final CMMsg msg = CMClass.getMsg(aromaSourceM, null, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_AROMA, null);
 			aromaMade = R.okMessage(M, msg);
 		}
 		if(aromaSourceM != target)
