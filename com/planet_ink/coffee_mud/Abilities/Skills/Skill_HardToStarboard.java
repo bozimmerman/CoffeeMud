@@ -39,7 +39,7 @@ public class Skill_HardToStarboard extends StdSkill
 	@Override
 	public String ID()
 	{
-		return "Skill_HardToStern";
+		return "Skill_HardToStarboard";
 	}
 
 	private final static String	localizedName	= CMLib.lang().L("Hard to Starboard");
