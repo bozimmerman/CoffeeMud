@@ -481,8 +481,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			CMLib.database().DBUpdatePlayerMOBOnly(mob);
 	}
 
-	@Override
-	public void loseExperience(final MOB mob, final String sourceId, int amount)
+	protected void loseExperience(final MOB mob, final String sourceId, int amount)
 	{
 		if((mob==null)||(mob.soulMate()!=null))
 			return;
@@ -575,8 +574,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return amount;
 	}
 
-	@Override
-	public void loseRPExperience(final MOB mob, final String sourceId, int amount)
+	protected void loseRPExperience(final MOB mob, final String sourceId, int amount)
 	{
 		if((mob==null)||(mob.soulMate()!=null))
 			return;
@@ -856,8 +854,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return newMods.toArray(new ModXP[newMods.size()]);
 	}
 
-	@Override
-	public void gainExperience(final MOB mob, final String sourceId, final MOB victim, String homageMessage, int amount, final boolean quiet)
+	protected void gainExperience(final MOB mob, final String sourceId, final MOB victim, String homageMessage, int amount, final boolean quiet)
 	{
 		if(mob==null)
 			return;
@@ -953,8 +950,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		checkedLevelGains(mob);
 	}
 
-	@Override
-	public void gainRPExperience(final MOB mob, final String sourceId, final MOB target, final String homageMessage, int amount, final boolean quiet)
+	protected void gainRPExperience(final MOB mob, final String sourceId, final MOB target, final String homageMessage, int amount, final boolean quiet)
 	{
 		if(mob==null)
 			return;

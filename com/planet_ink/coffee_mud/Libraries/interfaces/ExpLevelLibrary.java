@@ -83,8 +83,6 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @see ExpLevelLibrary#handleRPExperienceChange(CMMsg)
 	 * @see ExpLevelLibrary#adjustedExperience(MOB, MOB, int)
 	 * @see ExpLevelLibrary#postExperience(MOB, String, MOB, String, int, boolean)
-	 * @see ExpLevelLibrary#gainExperience(MOB, String, MOB, String, int, boolean)
-	 * @see ExpLevelLibrary#loseExperience(MOB, String, int)
 	 *
 	 * @param msg the message to check and maybe handle
 	 */
@@ -95,8 +93,6 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * and applies it if necessary.  Can be called with
 	 * any sort of message and it will filter it.
 	 * @see ExpLevelLibrary#handleExperienceChange(CMMsg)
-	 * @see ExpLevelLibrary#gainRPExperience(MOB, String, MOB, String, int, boolean)
-	 * @see ExpLevelLibrary#loseRPExperience(MOB, String, int)
 	 * @see ExpLevelLibrary#postRPExperience(MOB, String, MOB, String, int, boolean)
 	 *
 	 * @param msg the message to check and maybe handle
@@ -119,40 +115,8 @@ public interface ExpLevelLibrary extends CMLibrary
 	public int adjustedExperience(MOB mob, MOB victim, int amount);
 
 	/**
-	 * Called whenever a player actually loses RP experience.
-	 * @see ExpLevelLibrary#gainRPExperience(MOB, String, MOB, String, int, boolean)
-	 * @see ExpLevelLibrary#postRPExperience(MOB, String, MOB, String, int, boolean)
-	 * @see ExpLevelLibrary#handleRPExperienceChange(CMMsg)
-	 * @see ExpLevelLibrary#loseExperience(MOB, String, int)
-	 *
-	 * @param mob the mob to take experience from
-	 * @param sourceId an arbitrary string denoting the xp source
-	 * @param amount the amount of experience to lose
-	 */
-	public void loseRPExperience(MOB mob, String sourceId, int amount);
-
-	/**
-	 * Called whenever a player actually gains RP experience.
-	 * @see ExpLevelLibrary#loseRPExperience(MOB, String, int)
-	 * @see ExpLevelLibrary#postRPExperience(MOB, String, MOB, String, int, boolean)
-	 * @see ExpLevelLibrary#handleRPExperienceChange(CMMsg)
-	 * @see ExpLevelLibrary#gainExperience(MOB, String, MOB, String, int, boolean)
-	 *
-	 * @param mob the mob to distribute experience to
-	 * @param sourceId an arbitrary string denoting the xp source
-	 * @param victim the mob killed, if any, to cause the experience gain
-	 * @param homageMessage the name, if any, of another mob whose gain experience is
-	 *  		  causing this gain
-	 * @param amount the amount of experience to gain
-	 * @param quiet true if no messages should be given
-	 */
-	public void gainRPExperience(MOB mob, String sourceId, MOB victim, String homageMessage, int amount, boolean quiet);
-
-	/**
 	 * Generates and posts a rolePlay experience gain message, allowing it to
 	 * be previewed, modified, and then to happen.
-	 * @see ExpLevelLibrary#loseRPExperience(MOB, String, int)
-	 * @see ExpLevelLibrary#gainRPExperience(MOB, String, MOB, String, int, boolean)
 	 * @see ExpLevelLibrary#handleRPExperienceChange(CMMsg)
 	 * @see ExpLevelLibrary#postExperience(MOB, String, MOB, String, int, boolean)
 	 *
@@ -170,8 +134,6 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * Generates and posts a normal experience gain message, allowing it to
 	 * be previewed, modified, and then to happen.
 	 * @see ExpLevelLibrary#handleExperienceChange(CMMsg)
-	 * @see ExpLevelLibrary#gainExperience(MOB, String, MOB, String, int, boolean)
-	 * @see ExpLevelLibrary#loseExperience(MOB, String, int)
 	 * @see ExpLevelLibrary#postRPExperience(MOB, String, MOB, String, int, boolean)
 	 *
 	 * @param mob the gainer of the xp, usually the killer
@@ -366,44 +328,6 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @return the amount of damage per hit an npc should have
 	 */
 	public int getLevelMOBDamage(MOB mob);
-
-	/**
-	 * Called whenever a player actually gains any experience. It actually does
-	 * the experience gain for the player as well as determining how much, if
-	 * any should be distributed to leiges or clans. Will automatically cause a
-	 * call to level if necessary.
-	 * @see ExpLevelLibrary#level(MOB)
-	 * @see ExpLevelLibrary#handleExperienceChange(CMMsg)
-	 * @see ExpLevelLibrary#postExperience(MOB, String, MOB, String, int, boolean)
-	 * @see ExpLevelLibrary#loseExperience(MOB, String, int)
-	 * @see ExpLevelLibrary#gainRPExperience(MOB, String, MOB, String, int, boolean)
-	 *
-	 * @param mob the mob to distribute experience to
-	 * @param sourceId arbitrary string denoting the source of the xp
-	 * @param victim the mob killed, if any, to cause the experience gain
-	 * @param homage the name, if any, of another mob whose gain experience is
-	 *  		  causing this gain
-	 * @param amount the amount of experience to gain
-	 * @param quiet true if no messages should be given
-	 */
-	public void gainExperience(MOB mob, String sourceId, MOB victim, String homage, int amount, boolean quiet);
-
-	/**
-	 * Called whenever a member loses any experience. It actually
-	 * does the experience loss for the player as well as determining how much,
-	 * if any should be taken away from leiges or clans. Will automatically cause
-	 * an unleveling if necessary.
-	 * @see ExpLevelLibrary#unLevel(MOB, boolean)
-	 * @see ExpLevelLibrary#handleExperienceChange(CMMsg)
-	 * @see ExpLevelLibrary#postExperience(MOB, String, MOB, String, int, boolean)
-	 * @see ExpLevelLibrary#gainExperience(MOB, String, MOB, String, int, boolean)
-	 * @see ExpLevelLibrary#loseRPExperience(MOB, String, int)
-	 *
-	 * @param mob the mob to take experience away from
-	 * @param sourceId arbitrary string denoting the source of xp
-	 * @param amount the amount of experience to take away
-	 */
-	public void loseExperience(MOB mob, String sourceId, int amount);
 
 	/**
 	 * Given an encoded string of xp mods (see help on
