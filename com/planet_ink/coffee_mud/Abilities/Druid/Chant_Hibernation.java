@@ -145,7 +145,9 @@ public class Chant_Hibernation extends Chant
 
 		if((msg.amISource(mob))
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
-		&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH))))
+		&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))
+			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH))))
 		{
 			if((!deepHibernation)
 			&&(!this.amDestroyed))

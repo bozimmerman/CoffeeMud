@@ -927,7 +927,7 @@ public class StdAbility implements Ability
 
 	protected MOB getTarget(final MOB mob, final List<String> commands, final Environmental givenTarget, final boolean quiet, final boolean alreadyAffOk)
 	{
-		String targetName=CMParms.combine(commands,0);
+		final String targetName=CMParms.combine(commands,0);
 		MOB target=null;
 		if((givenTarget!=null)
 		&&(givenTarget instanceof MOB))
@@ -976,9 +976,6 @@ public class StdAbility implements Ability
 			}
 		}
 
-		if(target!=null)
-			targetName=target.name();
-
 		if((target==null)
 		||((givenTarget==null)
 			&&(!CMLib.flags().canBeSeenBy(target,mob))
@@ -986,7 +983,7 @@ public class StdAbility implements Ability
 		{
 			if(!quiet)
 			{
-				if(targetName.trim().length()==0)
+				if(targetName.length()==0)
 					failureTell(mob,mob,false,L("You don't see them here."));
 				else
 					failureTell(mob,mob,false,L("You don't see anyone called '@x1' here.",targetName));
@@ -1053,7 +1050,7 @@ public class StdAbility implements Ability
 			final boolean quiet)
 	{
 		final Room R=mob.location();
-		String targetName=CMParms.combine(commands,0);
+		final String targetName=CMParms.combine(commands,0);
 		Physical target=null;
 		if(givenTarget != null)
 			target=givenTarget;
@@ -1096,13 +1093,10 @@ public class StdAbility implements Ability
 				}
 			}
 		}
-		if(target!=null)
-			targetName=target.name();
-
 		if((target==null)
 		||((givenTarget==null)
 		   &&(!CMLib.flags().canBeSeenBy(target,mob))
-		   &&((!CMLib.flags().canBeHeardMovingBy(target,mob))
+		   &&((!CMLib.flags().canBeHeardMovingBy(target,mob)) // do you REALLY can't detect them
 				||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
 		{
 			if(!quiet)

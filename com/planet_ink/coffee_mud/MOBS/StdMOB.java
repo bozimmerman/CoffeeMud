@@ -2473,7 +2473,7 @@ public class StdMOB implements MOB
 			{
 				curState().setHitPoints(1);
 				if((msg.tool() != this) && (msg.tool() instanceof MOB))
-					((MOB) msg.tool()).tell(L("@x1 is immortal, and can not die.", name((MOB) msg.tool())));
+					((MOB) msg.tool()).tell(this,null,null,L("<S-NAME> is immortal, and can not die."));
 				tell(L("You are immortal, and can not die."));
 				return false;
 			}
