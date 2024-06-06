@@ -297,6 +297,8 @@ public class StdQuestBoard extends StdItem
 							msg.addTrailerRunnable(new Runnable()
 							{
 								final MOB M=mob1;
+
+								@Override
 								public void run()
 								{
 									M.session().prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)

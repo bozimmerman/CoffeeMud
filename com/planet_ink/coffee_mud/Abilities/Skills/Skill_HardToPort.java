@@ -162,6 +162,7 @@ public class Skill_HardToPort extends StdSkill
 		}
 
 		if(((System.currentTimeMillis()-lastUse)<REUSE_MILLIS)
+		||(myShipItem.fetchEffect("Skill_HardToStarboard")!=null)
 		||(myShipItem.fetchEffect("Skill_HardToPort")!=null))
 		{
 			mob.tell(L("You can't put your ship through another hard turn to port attempt right now.  Wait a bit."));

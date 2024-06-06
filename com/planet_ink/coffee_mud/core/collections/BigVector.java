@@ -18,7 +18,7 @@ import java.math.RoundingMode;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class BigVector
+public class BigVector implements Comparable<BigVector>
 {
 	public static final BigDecimal	ZERO	= BigDecimal.valueOf(0.0);
 	public static final BigDecimal	TWO		= BigDecimal.valueOf(2L);
@@ -36,6 +36,21 @@ public class BigVector
 		b=new BigDecimal[l.length];
 		for(int i=0;i<l.length;i++)
 			b[i]=BigDecimal.valueOf(l[i]);
+	}
+
+	public BigVector(final long lx, final long ly)
+	{
+		b=new BigDecimal[2];
+		b[0]=BigDecimal.valueOf(lx);
+		b[1]=BigDecimal.valueOf(ly);
+	}
+
+	public BigVector(final long lx, final long ly, final long lz)
+	{
+		b=new BigDecimal[3];
+		b[0]=BigDecimal.valueOf(lx);
+		b[1]=BigDecimal.valueOf(ly);
+		b[2]=BigDecimal.valueOf(lz);
 	}
 
 	public BigVector(final double[] l)
@@ -262,5 +277,23 @@ public class BigVector
 			val.append(b[i]).append(",");
 		return val.toString();
 
+	}
+
+	@Override
+	public int compareTo(final BigVector o)
+	{
+		if(o == null)
+			return 1;
+		if(b.length < o.b.length)
+			return -1;
+		if(b.length > o.b.length)
+			return 1;
+		for(int i=0;i<b.length;i++)
+		{
+			final int c = b[i].compareTo(o.b[i]);
+			if(c != 0)
+				return c;
+		}
+		return 0;
 	}
 }

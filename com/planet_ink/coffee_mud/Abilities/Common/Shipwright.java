@@ -965,7 +965,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			//buildingI.setDisplayText(L("@x1 lies here",itemName));
 			//buildingI.setDescription(itemName+". ");
 			//buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
-			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)+lostValue));
+			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+lostValue);
 			//buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			setBrand(mob, buildingI);
 			key=null;

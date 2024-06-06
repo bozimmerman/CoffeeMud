@@ -185,6 +185,7 @@ public class GenClanCastle extends GenCastle implements ClanItem
 		return I;
 	}
 
+	@Override
 	protected Room getDestinationRoom(final Room fromRoom)
 	{
 		if(System.currentTimeMillis()>targetExpire)

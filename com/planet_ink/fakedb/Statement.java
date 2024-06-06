@@ -884,11 +884,13 @@ public class Statement implements java.sql.Statement
 		return null;
 	}
 
+	@Override
 	public void closeOnCompletion() throws SQLException
 	{
 		closeStatementOnResultSetClose = true;
 	}
 
+	@Override
 	public boolean isCloseOnCompletion() throws SQLException
 	{
 		return closeStatementOnResultSetClose;

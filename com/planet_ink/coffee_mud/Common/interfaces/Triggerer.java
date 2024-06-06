@@ -135,7 +135,7 @@ public interface Triggerer extends CMCommon
 	 * Generates a message for the next step in the
 	 * tracked trigger denoted by the given trigger
 	 * key.
-	 * @param hostM TODO
+	 * @param hostM the mob triggering
 	 * @param mob the mob to check
 	 * @param key the arbitrary but unique key object
 	 * @param force true to force even an unstarted trigger

@@ -176,7 +176,7 @@ public class Transfer extends At
 			}
 			if(xferObjV.size()==0)
 			{
-				for(final Enumeration<Room> r=mob.location().getArea().getProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=curRoom.getArea().getProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
 					Item I=null;
@@ -231,13 +231,13 @@ public class Transfer extends At
 			}
 			if(xferObjV.size()==0)
 			{
-				final MOB M=mob.location().fetchInhabitant(searchName);
+				final MOB M=curRoom.fetchInhabitant(searchName);
 				if(M!=null)
 					xferObjV.add(M);
 			}
 			if(xferObjV.size()==0)
 			{
-				for(final Enumeration<Room> r=mob.location().getArea().getProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=curRoom.getArea().getProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
 					MOB M=null;
@@ -393,12 +393,12 @@ public class Transfer extends At
 		boolean inventoryFlag=false;
 		if(cmd.toString().equalsIgnoreCase("inventory"))
 		{
-			targetRoom=mob.location();
+			targetRoom=curRoom;
 			inventoryFlag=true;
 		}
 		else
 		if(cmd.toString().equalsIgnoreCase("here")||cmd.toString().equalsIgnoreCase("."))
-			targetRoom=mob.location();
+			targetRoom=curRoom;
 		else
 		if(cmd.toString().indexOf('@')>0)
 		{
@@ -543,7 +543,7 @@ public class Transfer extends At
 			targetRoom=CMLib.map().getRoom(cmd.toString());
 		else
 		if(CMLib.directions().getDirectionCode(cmd.toString())>=0)
-			targetRoom=mob.location().getRoomInDir(CMLib.directions().getDirectionCode(cmd.toString()));
+			targetRoom=curRoom.getRoomInDir(CMLib.directions().getDirectionCode(cmd.toString()));
 		else
 			targetRoom=CMLib.hunt().findWorldRoomLiberally(mob,cmd.toString(),"RIPME",100,120000);
 
@@ -610,11 +610,11 @@ public class Transfer extends At
 						M.setLocation(targetRoom);
 					else
 					{
-						if((mob.playerStats().getTranPoofOut().length()>0)&&(mob.location()!=null))
+						if((mob.playerStats().getTranPoofOut().length()>0)&&(M.location()!=null))
 							M.location().show(M,M.location(),CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS,mob.playerStats().getTranPoofOut());
 						targetRoom.bringMobHere(M,true);
 					}
-					if(mob.playerStats().getTranPoofIn().length()>0)
+					if((mob.playerStats().getTranPoofIn().length()>0)&&(M.location()!=null))
 						M.location().show(M,M.location(),CMMsg.MSG_ENTER|CMMsg.MASK_ALWAYS,mob.playerStats().getTranPoofIn());
 					if(!M.isMonster() && (targetRoom.isInhabitant(M)))
 						CMLib.commands().postLook(M,true);

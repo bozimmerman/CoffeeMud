@@ -72,7 +72,7 @@ public class UCacheUpdate extends MudPacket
 	@Override
 	public String toString()
 	{
-		return "({\"ucache-update\",5,\""+I3Server.getMudName()+"\",0,0,0,"
+		return "({\"ucache-update\",5,\""+sender_mud+"\",0,0,0,"
 				+ "\""+uname1+"\",\""+uname2+"\","+gender+",})";
 	}
 }

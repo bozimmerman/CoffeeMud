@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
@@ -76,6 +75,23 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if((channelNumber>=0)&&(channelNumber<channelList.size()))
 			return channelList.get(channelNumber);
 		return null;
+	}
+
+	@Override
+	public CMChannel getChannelFromMsg(final CMMsg msg)
+	{
+		int channelCode;
+		if(CMath.bset(msg.othersMajor(), CMMsg.MASK_CHANNEL))
+			channelCode = msg.othersMinor() - CMMsg.TYP_CHANNEL;
+		else
+		if(CMath.bset(msg.targetMajor(), CMMsg.MASK_CHANNEL))
+			channelCode = msg.targetMinor() - CMMsg.TYP_CHANNEL;
+		else
+		if(CMath.bset(msg.sourceMajor(), CMMsg.MASK_CHANNEL))
+			channelCode = msg.sourceMajor() - CMMsg.TYP_CHANNEL;
+		else
+			return null;
+		return getChannel(channelCode);
 	}
 
 	public CMChannel createNewChannel(final String name)
@@ -1007,7 +1023,14 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				tweet(message);
 
 			final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
-			channelQueUp(channelInt, msg, this.getExtraChannelDataField(mob, chan));
+			try
+			{
+				channelQueUp(channelInt, msg, this.getExtraChannelDataField(mob, chan));
+			}
+			catch(final Exception e)
+			{
+				Log.errOut(e);
+			}
 			for(final Session S : CMLib.sessions().localOnlineIterable())
 			{
 				final ChannelsLibrary myChanLib=CMLib.get(S)._channels();

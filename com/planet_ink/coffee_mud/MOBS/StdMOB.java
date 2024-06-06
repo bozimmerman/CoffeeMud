@@ -1840,13 +1840,20 @@ public class StdMOB implements MOB
 			&& CMLib.flags().isWithSeenContents(this))
 		|| (isInCombat()))
 		{
-			final StringBuilder sendBack;
+			final String localName;
 			if(!name(viewerMob).equals(Name()))
-				sendBack = new StringBuilder(name(viewerMob));
+				localName = name(viewerMob);
 			else
-				sendBack = new StringBuilder(titledName(viewerMob));
-			sendBack.append(" ");
-			sendBack.append(L(CMLib.flags().getPresentDispositionVerb(this, CMFlagLibrary.ComingOrGoing.IS) + " here"));
+				localName = titledName(viewerMob);
+			final StringBuilder sendBack;
+			if(displayText.startsWith(Name()))
+				sendBack = new StringBuilder(localName).append(displayText.substring(Name().length()));
+			else
+			{
+				sendBack = new StringBuilder(localName);
+				sendBack.append(" ");
+				sendBack.append(L(CMLib.flags().getPresentDispositionVerb(this, CMFlagLibrary.ComingOrGoing.IS) + " here"));
+			}
 			if(riding() != null)
 			{
 				sendBack.append(" " + riding().stateString(this) + " ");
@@ -2466,7 +2473,7 @@ public class StdMOB implements MOB
 			{
 				curState().setHitPoints(1);
 				if((msg.tool() != this) && (msg.tool() instanceof MOB))
-					((MOB) msg.tool()).tell(L("@x1 is immortal, and can not die.", name((MOB) msg.tool())));
+					((MOB) msg.tool()).tell(this,null,null,L("<S-NAME> is immortal, and can not die."));
 				tell(L("You are immortal, and can not die."));
 				return false;
 			}

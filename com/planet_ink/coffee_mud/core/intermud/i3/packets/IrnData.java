@@ -1,5 +1,11 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
+import java.lang.reflect.Constructor;
+import java.util.List;
 import java.util.Vector;
+
+import com.planet_ink.coffee_mud.core.CMath;
+import com.planet_ink.coffee_mud.core.Log;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet.PacketType;
 
 /**
  * Copyright (c) 2024-2024 Bo Zimmerman
@@ -18,7 +24,7 @@ import java.util.Vector;
  */
 public class IrnData extends IrnPacket
 {
-	MudPacket innerPacket = null;
+	public Packet innerPacket = null;
 
 	public IrnData(final String targetRouter, final MudPacket innerPacket)
 	{
@@ -31,7 +37,34 @@ public class IrnData extends IrnPacket
 	{
 		super(v);
 		type = Packet.PacketType.IRN_DATA;
-
+		if(v.size()>6)
+		{
+			final List<?> nextPacket = (List<?>)v.get(6);
+			if(nextPacket.size()>0)
+			{
+				final String typeStr = nextPacket.get(0).toString().toUpperCase().replace('-','_');
+				final PacketType type = (PacketType)CMath.s_valueOf(PacketType.class, typeStr);
+				if(type == null)
+				{
+					Log.errOut("Unknown data packet type: " + typeStr);
+					return;
+				}
+				final Class<? extends Packet> pktClass = type.packetClass;
+				if(pktClass != null)
+				{
+					try
+					{
+						final Constructor<? extends Packet> con = pktClass.getConstructor(Vector.class);
+						innerPacket = con.newInstance(nextPacket);
+					}
+					catch( final Exception  e )
+					{
+						Log.errOut("Error constructing :"+type+" packet:"+e.getMessage());
+						Log.debugOut(e);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -53,7 +86,6 @@ public class IrnData extends IrnPacket
 				"\"" + target_router + "\",0," +
 					innerPacket.toString() +
 				",})";
-		//TODO:
 		return cmd;
 	}
 }

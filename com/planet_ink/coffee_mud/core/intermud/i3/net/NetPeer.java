@@ -23,68 +23,61 @@ import java.net.Socket;
  * limitations under the License.
  *
  */
-public class NetPeer implements java.io.Closeable
+public interface NetPeer extends java.io.Closeable
 {
-	public Socket			sock;
-	public DataInputStream	sockIn;
-	public DataOutputStream	sockOut;
-	public final long		connectTime	= System.currentTimeMillis();
+	/**
+	 * Return the identifying name
+	 * @return the name
+	 */
+	public String getName();
 
-	public NetPeer(final Socket sock)
-	{
-		this.sock = sock;
-		if(sock != null)
-		{
-			try
-			{
-				this.sockIn = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
-				this.sockOut = new DataOutputStream(sock.getOutputStream());
-			}
-			catch (final IOException e)
-			{
-			}
-		}
-	}
+	/**
+	 * Check if the peer is still connected
+	 */
+	public boolean isConnected();
 
-	public NetPeer(final NetPeer other)
-	{
-		super();
-		this.sock = other.sock;
-		this.sockIn = other.sockIn;
-		this.sockOut = other.sockOut;
-		other.sock = null;
-		other.sockIn = null;
-		other.sockOut = null;
-	}
+	/**
+	 * For IPR communication
+	 * @return the input stream
+	 */
+	public DataInputStream getInputStream();
 
-	public boolean isConnected()
-	{
-		return (sock != null) && (sock.isConnected());
-	}
+	/**
+	 * For IPR communication
+	 * @return the output stream
+	 */
+	public DataOutputStream getOutputStream();
 
-	public DataInputStream getInputStream()
-	{
-		return (isConnected()) ? sockIn : null;
-	}
+	/**
+	 * Returns the socket.
+	 * @return the socket.
+	 */
+	public Socket getSocket();
 
-	public DataOutputStream getOutputStream()
-	{
-		return (isConnected()) ? sockOut : null;
-	}
+	/**
+	 * Zeroes out the socket without
+	 * closing it.  Prevents this object
+	 * from being used for other operations
+	 */
+	public void clearSocket();
 
+	/**
+	 * Close the sockets
+	 * @throws IOException if an error occurs
+	 */
 	@Override
-	public void close() throws IOException
-	{
-		if((sock != null)
-		&&(isConnected()))
-		{
-			sockIn.close();
-			sockOut.flush();
-			sockOut.close();
-			sock = null;
-			sockIn = null;
-			sockOut = null;
-		}
+	public void close() throws IOException;
 
-	}
+	/**
+	 * Returns when this was created.
+	 * @return the timestamp of creation
+	 */
+	public long getConnectTime();
+
+	/**
+	 * Returns 1 dimensional array to use for
+	 * detecting timeouts.
+	 * @return the long array
+	 */
+	public long[] getSockTimeout();
 }

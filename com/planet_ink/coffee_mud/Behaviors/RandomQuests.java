@@ -232,7 +232,7 @@ public class RandomQuests extends ActiveTicker
 							if(!Q.startQuest())
 							{
 								CMLib.quests().delQuest(Q);
-								throw new CMException("Unable to start the quest.  Something went wrong.  Perhaps the problem was logged?");
+								throw new CMException("Unable to start quest '"+Q.name()+"'  Perhaps the problem was logged?");
 							}
 						}
 						Q.setCopy(true);

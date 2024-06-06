@@ -63,7 +63,7 @@ public class IMudPeer implements PersistentPeer
 	public void restore() throws PersistenceException
 	{
 		isRestoring=true;
-		if(myobj instanceof Intermud)
+		if(myobj instanceof I3Client)
 		{
 			try
 			{
@@ -93,7 +93,7 @@ public class IMudPeer implements PersistentPeer
 				if(newobj instanceof List)
 				{
 					final List<NameServer> nlist = (List<NameServer>)newobj;
-					final List<NameServer> olist = ((Intermud)myobj).name_servers;
+					final List<NameServer> olist = ((I3Client)myobj).name_servers;
 					if(olist.size() != nlist.size())
 						return;
 					for(final NameServer o : olist)
@@ -104,13 +104,13 @@ public class IMudPeer implements PersistentPeer
 							return;
 				}
 				if(passI != null)
-					((Intermud)myobj).password = passI.intValue();
+					((I3Client)myobj).password = passI.intValue();
 				if(banned != null)
-					((Intermud)myobj).banned = banned;
+					((I3Client)myobj).banned = banned;
 				if(chanL != null)
-					((Intermud)myobj).channels = chanL;
+					((I3Client)myobj).channels = chanL;
 				if(mudL != null)
-					((Intermud)myobj).muds = mudL;
+					((I3Client)myobj).muds = mudL;
 			}
 			catch(final Exception e)
 			{
@@ -129,17 +129,17 @@ public class IMudPeer implements PersistentPeer
 	@Override
 	public void save() throws PersistenceException
 	{
-		if(myobj instanceof Intermud)
+		if(myobj instanceof I3Client)
 		{
 			try
 			{
 				final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 				final ObjectOutputStream out=new ObjectOutputStream(bout);
-				out.writeObject(Integer.valueOf(((Intermud)myobj).password));
-				out.writeObject(((Intermud)myobj).banned);
-				out.writeObject(((Intermud)myobj).channels);
-				out.writeObject(((Intermud)myobj).muds);
-				out.writeObject(((Intermud)myobj).name_servers);
+				out.writeObject(Integer.valueOf(((I3Client)myobj).password));
+				out.writeObject(((I3Client)myobj).banned);
+				out.writeObject(((I3Client)myobj).channels);
+				out.writeObject(((I3Client)myobj).muds);
+				out.writeObject(((I3Client)myobj).name_servers);
 				out.flush();
 				bout.flush();
 				new CMFile("::resources/ppeer."+myID,null).saveRaw(bout.toByteArray());

@@ -2107,7 +2107,7 @@ public class CMFile extends File
 	@Override
 	public boolean mkdirs()
 	{
-		if((this.localFile!=null)&&(this.canLocalEquiv()))
+		if((this.localFile!=null)&&(this.canWrite()))
 			return this.localFile.mkdirs();
 		return true;
 	}

@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -393,11 +392,19 @@ public class GenShipViewScreen extends GenShipOpticalSensor implements ShipDirec
 					}
 
 					@Override
-					public BoundedCube getBounds()
+					public BoundedCube getCube()
 					{
 						if(obj instanceof SpaceObject)
-							return ((SpaceObject)obj).getBounds();
+							return ((SpaceObject)obj).getCube();
 						return smallCube;
+					}
+
+					@Override
+					public BoundedSphere getSphere()
+					{
+						if(obj instanceof SpaceObject)
+							return ((SpaceObject)obj).getSphere();
+						return smallSphere;
 					}
 
 					@Override
@@ -421,6 +428,12 @@ public class GenShipViewScreen extends GenShipOpticalSensor implements ShipDirec
 						if(sobj!=null)
 							return sobj.radius();
 						return 1;
+					}
+
+					@Override
+					public long[] center()
+					{
+						return coordinates();
 					}
 
 					@Override

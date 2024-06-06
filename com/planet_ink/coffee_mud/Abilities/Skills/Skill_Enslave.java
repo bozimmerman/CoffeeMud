@@ -628,6 +628,7 @@ public class Skill_Enslave extends StdSkill implements PrivateProperty
 		return CODES;
 	}
 
+	@Override
 	protected int getInternalCodeNum(final String code)
 	{
 		for(int i=0;i<INTERNAL_CODES.length;i++)

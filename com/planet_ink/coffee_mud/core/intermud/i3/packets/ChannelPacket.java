@@ -2,7 +2,7 @@ package com.planet_ink.coffee_mud.core.intermud.i3.packets;
 
 import java.util.Vector;
 
-import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
+import com.planet_ink.coffee_mud.core.intermud.i3.I3Client;
 
 /**
  * Copyright (c) 1996 George Reese
@@ -36,7 +36,6 @@ public abstract class ChannelPacket extends MudPacket
 		try
 		{
 			channel = (String)v.elementAt(6);
-			channel = Intermud.getLocalChannel(channel);
 			sender_visible_name = (String)v.elementAt(7);
 			message = (String)v.elementAt(8);
 		}
@@ -62,11 +61,6 @@ public abstract class ChannelPacket extends MudPacket
 		{
 			throw new InvalidPacketException();
 		}
-		final String fixedChannel = Intermud.getRemoteChannel(channel);
-		if(((fixedChannel != null)&&(fixedChannel.length()>0))
-		||(channel == null))
-			channel = fixedChannel;
-		message = convertString(message);
 		super.send();
 	}
 

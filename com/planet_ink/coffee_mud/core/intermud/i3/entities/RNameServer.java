@@ -1,13 +1,9 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.entities;
 
-import java.net.Socket;
-import java.util.Hashtable;
-import java.util.Map;
-
-import com.planet_ink.coffee_mud.core.intermud.i3.net.NetPeer;
+import java.io.Serializable;
 
 /**
- * Copyright (c) 1996 George Reese
+ * Copyright (c)2024-2024 Bo Zimmerman
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,32 +17,24 @@ import com.planet_ink.coffee_mud.core.intermud.i3.net.NetPeer;
  * limitations under the License.
  *
  */
-public class PeerMud extends NetPeer
+public class RNameServer extends NameServer implements Serializable
 {
-	private I3MudX mud;
+	private static final long serialVersionUID = 1L;
 
-	public long lastPing = System.currentTimeMillis();
+	public ChannelList		channels	= new ChannelList();
+	public RMudList			muds		= new RMudList();
+	public int				password	= 0;
 
-	public PeerMud(final String mudName, final Socket sock)
+	public RNameServer(final String addr, final int p, final String nom)
 	{
-		super(sock);
-		mud = new I3MudX(mudName);
+		super(addr, p, nom);
 	}
 
-	public PeerMud(final String mudName, final NetPeer peer)
+	public RNameServer(final RNameServer other)
 	{
-		super(peer);
-		mud = new I3MudX(mudName);
+		super(other);
+		this.channels = other.channels;
+		this.muds=other.muds;
+		this.password=other.password;
 	}
-
-	public void setMud(final I3MudX mud)
-	{
-		this.mud = mud;
-	}
-
-	public I3MudX getMud()
-	{
-		return this.mud;
-	}
-
 }

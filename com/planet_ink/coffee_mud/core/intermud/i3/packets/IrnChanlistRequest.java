@@ -18,6 +18,8 @@ import java.util.Vector;
  */
 public class IrnChanlistRequest extends IrnPacket
 {
+	public int chanlist_id = 0;
+
 	public IrnChanlistRequest(final String targetRouter)
 	{
 		super(targetRouter);
@@ -28,6 +30,8 @@ public class IrnChanlistRequest extends IrnPacket
 	{
 		super(v);
 		type = Packet.PacketType.IRN_CHANLIST_REQ;
+		if(v.size()>6)
+			chanlist_id = s_int(v,6);
 	}
 
 	@Override
@@ -36,7 +40,7 @@ public class IrnChanlistRequest extends IrnPacket
 		final String cmd=
 				"({\"irn-chanlist-req\",5," +
 				"\"" + sender_router + "\",0," +
-				"\"" + target_router + "\",0," +
+				"\"" + target_router + "\",0," + chanlist_id + "," +
 				"})";
 		return cmd;
 	}

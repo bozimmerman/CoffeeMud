@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -42,13 +43,20 @@ public class IrnStartupRequest extends IrnPacket
 	public IrnStartupRequest(final String targetRouter)
 	{
 		super(targetRouter);
-		type = Packet.PacketType.IRN_STARTUP_REQUEST;
+		type = Packet.PacketType.IRN_STARTUP_REQ;
 	}
 
 	public IrnStartupRequest(final Vector<?> v) throws InvalidPacketException
 	{
 		super(v);
-		type = Packet.PacketType.IRN_STARTUP_REQUEST;
+		type = Packet.PacketType.IRN_STARTUP_REQ;
+		if((v.size()>6)&&(v.get(6) instanceof Map))
+		{
+			@SuppressWarnings("unchecked")
+			final Map<String,?> m = (Map<String,?>)v.get(6);
+			sender_password = CMath.s_int(m.get("client_password").toString());
+			target_password = CMath.s_int(m.get("server_password").toString());
+		}
 	}
 
 	@Override

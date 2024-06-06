@@ -75,6 +75,12 @@ public class Chant_SenseMetal extends Chant
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_DIVINING;
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))

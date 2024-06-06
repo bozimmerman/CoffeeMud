@@ -90,7 +90,7 @@ public class StdArea implements Area
 	protected Climate					climateObj		= (Climate) CMClass.getCommon("DefaultClimate");
 
 	protected String[]					itemPricingAdjs	= new String[0];
-	protected final static AreaIStats	emptyStats		= (AreaIStats) CMClass.getCommon("DefaultAreaIStats");;
+	protected final static AreaIStats	emptyStats		= (AreaIStats) CMClass.getCommon("DefaultAreaIStats");
 	protected final static String[]		empty			= new String[0];
 	protected static volatile Area		lastComplainer	= null;
 
@@ -1113,8 +1113,10 @@ public class StdArea implements Area
 		{
 			lastPlayerTime = System.currentTimeMillis();
 			if ((flag == State.PASSIVE)
-			&& ((msg.sourceMinor() == CMMsg.TYP_ENTER) || (msg.sourceMinor() == CMMsg.TYP_LEAVE) || (msg.sourceMinor() == CMMsg.TYP_FLEE)))
-				flag = State.ACTIVE;
+			&& ((msg.sourceMinor() == CMMsg.TYP_ENTER)
+				|| (msg.sourceMinor() == CMMsg.TYP_LEAVE)
+				|| (msg.sourceMinor() == CMMsg.TYP_FLEE)))
+					flag = State.ACTIVE;
 		}
 
 		if ((flag == State.FROZEN)

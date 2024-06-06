@@ -84,6 +84,13 @@ public class Herbology extends CommonSkill implements RecipeDriven
 		verb=L("evaluating");
 	}
 
+	// so we can override it on a skill-by-skill basis
+	@Override
+	protected List<List<String>> loadList(final StringBuffer str)
+	{
+		return CMLib.utensils().loadRecipeList(str.toString(), false);
+	}
+
 	@Override
 	public List<List<String>> fetchRecipes()
 	{
@@ -144,17 +151,15 @@ public class Herbology extends CommonSkill implements RecipeDriven
 					{
 						if(found.phyStats().weight()>1)
 							found=CMLib.materials().unbundle(found, 1, null);
-						String herb=null;
-						while((herbList.size()>2)&&((herb==null)||(herb.trim().length()==0)))
+						String herb=found.rawSecretIdentity();
+						found.setSecretIdentity("");
+						int tries = 100;
+						while((herbList.size()>0)
+						&&(--tries>0)
+						&&((herb==null)||(herb.trim().length()==0)||(herb.toLowerCase().startsWith(L("unknown")))))
 							herb=herbList.get(CMLib.dice().roll(1,herbList.size(),-1)).get(0).trim().toLowerCase();
-
-						if(found.rawSecretIdentity().length()>0)
-						{
-							herb=found.rawSecretIdentity();
-							found.setSecretIdentity("");
-						}
 						if(herb == null)
-							herb=L("unknown");
+							herb=L("unknown herb");
 
 						commonTelL(mob,"@x1 appears to be @x2.",found.name(),herb);
 						String name=found.Name();

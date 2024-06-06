@@ -1013,6 +1013,7 @@ public class DefaultSession implements Session
 		return snoopSuspensionStack;
 	}
 
+	@Override
 	public Enumeration<List<String>> getHistory()
 	{
 		final Vector<List<String>> V;
@@ -1127,12 +1128,14 @@ public class DefaultSession implements Session
 	{
 		try
 		{
+			if((sock==null)||(sock.isClosed())||(!sock.isConnected()))
+				return;
 			if(writeLock.tryLock(10000, TimeUnit.MILLISECONDS))
 			{
-				if((sock==null)||(sock.isClosed())||(!sock.isConnected()))
-					return;
 				try
 				{
+					if((sock==null)||(sock.isClosed())||(!sock.isConnected()))
+						return;
 					writeThread=Thread.currentThread();
 					writeStartTime=System.currentTimeMillis();
 					if(debugBinOutput && Log.debugChannelOn())

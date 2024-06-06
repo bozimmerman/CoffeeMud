@@ -70,6 +70,12 @@ public class Spell_ComprehendLangs extends Spell
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_DIVINING;
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
@@ -101,31 +107,47 @@ public class Spell_ComprehendLangs extends Spell
 			&&(msg.sourceMinor()==CMMsg.NO_EFFECT)
 			&&(msg.targetMinor()==CMMsg.NO_EFFECT)
 			&&(msg.othersMessage()!=null))
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,L("The smoke signals seem to say '@x1'.",msg.othersMessage()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			{
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,
+						L("The smoke signals seem to say '@x1'.",msg.othersMessage()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			}
 			else
 			if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
-			&&(msg.sourceMessage()!=null)
-			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
-			&&(((MOB)affected).fetchEffect(msg.tool().ID())==null)
+			&&(msg.sourceMessage() != null)
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES) == Ability.ACODE_LANGUAGE)
+			&&(((MOB)affected).fetchEffect(msg.tool().ID()) == null)
 			&&(msg.source().charStats().getMyRace().racialAbilities(msg.source()).find(msg.tool().ID())==null))
 			{
 				final String str=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if(str!=null)
 				{
 					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),str),msg.tool().name())));
+					{
+						final ChannelsLibrary.CMChannel C = CMLib.channels().getChannelFromMsg(msg);
+						if((C==null)||(!C.flags().contains(ChannelsLibrary.ChannelFlag.NOLANGUAGE)))
+						{
+							msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),
+								L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),str),msg.tool().name())));
+						}
+					}
 					else
-					if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.targetMessage(),str),msg.tool().name())));
+					if(msg.amITarget(affected)
+					&&(msg.targetMessage() != null))
+					{
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,
+							L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.targetMessage(),str),msg.tool().name())));
+					}
 					else
-					if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf('\'')>0))
+					if((msg.othersMessage()!=null)
+					&&(msg.othersMessage().indexOf('\'')>0))
 					{
 						String otherMes=msg.othersMessage();
-						if(msg.target()!=null)
+						if(msg.target() != null)
 							otherMes=CMLib.coffeeFilter().fullOutFilter(((MOB)affected).session(),(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,str),msg.tool().name())));
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,
+							L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,str),msg.tool().name())));
 					}
 				}
 			}

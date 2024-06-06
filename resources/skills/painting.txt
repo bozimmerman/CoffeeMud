@@ -14,7 +14,7 @@ pastel-painting	37	49	42	coloring	GenItem	0
 outline	40	52	45	sketching	GenItem	0		
 cartoon	43	55	48	drawing	GenItem	0		
 fresco	47	60	52	painting	GenItem	0		
-shaded-panting	50	63	55	coloring	GenItem	0		
+shaded-painting	50	63	55	coloring	GenItem	0		
 caricature	53	66	58	sketching	GenItem	0		
 illustration	56	69	61	drawing	GenItem	0		
 mural	59	72	64	painting	GenItem	0		
@@ -40,7 +40,7 @@ elvish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +ELF
 elvish outline	41	70	456	sketching	GenItem	1	-RACECAT +ELF	
 elvish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +ELF	
 elvish fresco	48	80	533	painting	GenItem	1	-RACECAT +ELF	
-elvish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +ELF	
+elvish shaded-painting	51	84	566	coloring	GenItem	1	-RACECAT +ELF	
 elvish caricature	54	88	599	sketching	GenItem	1	-RACECAT +ELF	
 elvish illustration	57	93	632	drawing	GenItem	1	-RACECAT +ELF	
 elvish mural	60	97	665	painting	GenItem	1	-RACECAT +ELF	
@@ -66,7 +66,7 @@ humanist pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +HUMANOID
 humanist outline	41	70	456	sketching	GenItem	1	-RACECAT +HUMANOID	
 humanist cartoon	44	74	489	drawing	GenItem	1	-RACECAT +HUMANOID	
 humanist fresco	48	80	533	painting	GenItem	1	-RACECAT +HUMANOID	
-humanist shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +HUMANOID	
+humanist shaded-painting	51	84	566	coloring	GenItem	1	-RACECAT +HUMANOID	
 humanist caricature	54	88	599	sketching	GenItem	1	-RACECAT +HUMANOID	
 humanist illustration	57	93	632	drawing	GenItem	1	-RACECAT +HUMANOID	
 humanist mural	60	97	665	painting	GenItem	1	-RACECAT +HUMANOID	
@@ -92,7 +92,7 @@ dwarvish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +DWARF
 dwarvish outline	41	70	456	sketching	GenItem	1	-RACECAT +DWARF	
 dwarvish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +DWARF	
 dwarvish fresco	48	80	533	painting	GenItem	1	-RACECAT +DWARF	
-dwarvish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +DWARF	
+dwarvish shaded-painting	51	84	566	coloring	GenItem	1	-RACECAT +DWARF	
 dwarvish caricature	54	88	599	sketching	GenItem	1	-RACECAT +DWARF	
 dwarvish illustration	57	93	632	drawing	GenItem	1	-RACECAT +DWARF	
 dwarvish mural	60	97	665	painting	GenItem	1	-RACECAT +DWARF	
@@ -118,7 +118,7 @@ Aarakocranic pastel-painting	38	65	423	coloring	GenItem	1	-RACE +AARAKOCRAN
 Aarakocranic outline	41	70	456	sketching	GenItem	1	-RACE +AARAKOCRAN	
 Aarakocranic cartoon	44	74	489	drawing	GenItem	1	-RACE +AARAKOCRAN	
 Aarakocranic fresco	48	80	533	painting	GenItem	1	-RACE +AARAKOCRAN	
-Aarakocranic shaded-panting	51	84	566	coloring	GenItem	1	-RACE +AARAKOCRAN	
+Aarakocranic shaded-painting	51	84	566	coloring	GenItem	1	-RACE +AARAKOCRAN	
 Aarakocranic caricature	54	88	599	sketching	GenItem	1	-RACE +AARAKOCRAN	
 Aarakocranic illustration	57	93	632	drawing	GenItem	1	-RACE +AARAKOCRAN	
 Aarakocranic mural	60	97	665	painting	GenItem	1	-RACE +AARAKOCRAN	
@@ -144,7 +144,7 @@ Centauran pastel-painting	38	65	423	coloring	GenItem	1	-RACE +CENTAUR
 Centauran outline	41	70	456	sketching	GenItem	1	-RACE +CENTAUR	
 Centauran cartoon	44	74	489	drawing	GenItem	1	-RACE +CENTAUR	
 Centauran fresco	48	80	533	painting	GenItem	1	-RACE +CENTAUR	
-Centauran shaded-panting	51	84	566	coloring	GenItem	1	-RACE +CENTAUR	
+Centauran shaded-painting	51	84	566	coloring	GenItem	1	-RACE +CENTAUR	
 Centauran caricature	54	88	599	sketching	GenItem	1	-RACE +CENTAUR	
 Centauran illustration	57	93	632	drawing	GenItem	1	-RACE +CENTAUR	
 Centauran mural	60	97	665	painting	GenItem	1	-RACE +CENTAUR	
@@ -170,7 +170,7 @@ Drowish pastel-painting	38	65	423	coloring	GenItem	1	-RACE +DROW +DRIDER
 Drowish outline	41	70	456	sketching	GenItem	1	-RACE +DROW +DRIDER	
 Drowish cartoon	44	74	489	drawing	GenItem	1	-RACE +DROW +DRIDER	
 Drowish fresco	48	80	533	painting	GenItem	1	-RACE +DROW +DRIDER	
-Drowish shaded-panting	51	84	566	coloring	GenItem	1	-RACE +DROW +DRIDER	
+Drowish shaded-painting	51	84	566	coloring	GenItem	1	-RACE +DROW +DRIDER	
 Drowish caricature	54	88	599	sketching	GenItem	1	-RACE +DROW +DRIDER	
 Drowish illustration	57	93	632	drawing	GenItem	1	-RACE +DROW +DRIDER	
 Drowish mural	60	97	665	painting	GenItem	1	-RACE +DROW +DRIDER	
@@ -196,7 +196,7 @@ Duergarish pastel-painting	38	65	423	coloring	GenItem	1	-RACE +DUERGAR
 Duergarish outline	41	70	456	sketching	GenItem	1	-RACE +DUERGAR	
 Duergarish cartoon	44	74	489	drawing	GenItem	1	-RACE +DUERGAR	
 Duergarish fresco	48	80	533	painting	GenItem	1	-RACE +DUERGAR	
-Duergarish shaded-panting	51	84	566	coloring	GenItem	1	-RACE +DUERGAR	
+Duergarish shaded-painting	51	84	566	coloring	GenItem	1	-RACE +DUERGAR	
 Duergarish caricature	54	88	599	sketching	GenItem	1	-RACE +DUERGAR	
 Duergarish illustration	57	93	632	drawing	GenItem	1	-RACE +DUERGAR	
 Duergarish mural	60	97	665	painting	GenItem	1	-RACE +DUERGAR	
@@ -222,7 +222,7 @@ Gith pastel-painting	38	65	423	coloring	GenItem	1	-RACE +GITHYANKI
 Gith outline	41	70	456	sketching	GenItem	1	-RACE +GITHYANKI	
 Gith cartoon	44	74	489	drawing	GenItem	1	-RACE +GITHYANKI	
 Gith fresco	48	80	533	painting	GenItem	1	-RACE +GITHYANKI	
-Gith shaded-panting	51	84	566	coloring	GenItem	1	-RACE +GITHYANKI	
+Gith shaded-painting	51	84	566	coloring	GenItem	1	-RACE +GITHYANKI	
 Gith caricature	54	88	599	sketching	GenItem	1	-RACE +GITHYANKI	
 Gith illustration	57	93	632	drawing	GenItem	1	-RACE +GITHYANKI	
 Gith mural	60	97	665	painting	GenItem	1	-RACE +GITHYANKI	
@@ -248,7 +248,7 @@ Gnollish pastel-painting	38	65	423	coloring	GenItem	1	-RACE +GNOLL
 Gnollish outline	41	70	456	sketching	GenItem	1	-RACE +GNOLL	
 Gnollish cartoon	44	74	489	drawing	GenItem	1	-RACE +GNOLL	
 Gnollish fresco	48	80	533	painting	GenItem	1	-RACE +GNOLL	
-Gnollish shaded-panting	51	84	566	coloring	GenItem	1	-RACE +GNOLL	
+Gnollish shaded-painting	51	84	566	coloring	GenItem	1	-RACE +GNOLL	
 Gnollish caricature	54	88	599	sketching	GenItem	1	-RACE +GNOLL	
 Gnollish illustration	57	93	632	drawing	GenItem	1	-RACE +GNOLL	
 Gnollish mural	60	97	665	painting	GenItem	1	-RACE +GNOLL	
@@ -274,7 +274,7 @@ Gnomish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +GNOME
 Gnomish outline	41	70	456	sketching	GenItem	1	-RACECAT +GNOME	
 Gnomish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +GNOME	
 Gnomish fresco	48	80	533	painting	GenItem	1	-RACECAT +GNOME	
-Gnomish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +GNOME	
+Gnomish shaded-painting	51	84	566	coloring	GenItem	1	-RACECAT +GNOME	
 Gnomish caricature	54	88	599	sketching	GenItem	1	-RACECAT +GNOME	
 Gnomish illustration	57	93	632	drawing	GenItem	1	-RACECAT +GNOME	
 Gnomish mural	60	97	665	painting	GenItem	1	-RACECAT +GNOME	
@@ -300,7 +300,7 @@ Goblinish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +GOBLINOID
 Goblinish outline	41	70	456	sketching	GenItem	1	-RACECAT +GOBLINOID	
 Goblinish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +GOBLINOID	
 Goblinish fresco	48	80	533	painting	GenItem	1	-RACECAT +GOBLINOID	
-Goblinish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +GOBLINOID	
+Goblinish shaded-painting	51	84	566	coloring	GenItem	1	-RACECAT +GOBLINOID	
 Goblinish caricature	54	88	599	sketching	GenItem	1	-RACECAT +GOBLINOID	
 Goblinish illustration	57	93	632	drawing	GenItem	1	-RACECAT +GOBLINOID	
 Goblinish mural	60	97	665	painting	GenItem	1	-RACECAT +GOBLINOID	
@@ -326,7 +326,7 @@ Halflingish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +HALFLING
 Halflingish outline	41	70	456	sketching	GenItem	1	-RACECAT +HALFLING	
 Halflingish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +HALFLING	
 Halflingish fresco	48	80	533	painting	GenItem	1	-RACECAT +HALFLING	
-Halflingish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +HALFLING	
+Halflingish shaded-painting	51	84	566	coloring	GenItem	1	-RACECAT +HALFLING	
 Halflingish caricature	54	88	599	sketching	GenItem	1	-RACECAT +HALFLING	
 Halflingish illustration	57	93	632	drawing	GenItem	1	-RACECAT +HALFLING	
 Halflingish mural	60	97	665	painting	GenItem	1	-RACECAT +HALFLING	
@@ -352,7 +352,7 @@ Reptiloidish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +REPTILE
 Reptiloidish outline	41	70	456	sketching	GenItem	1	-RACECAT +REPTILE	
 Reptiloidish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +REPTILE	
 Reptiloidish fresco	48	80	533	painting	GenItem	1	-RACECAT +REPTILE	
-Reptiloidish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +REPTILE	
+Reptiloidish shaded-painting	51	84	566	coloring	GenItem	1	-RACECAT +REPTILE	
 Reptiloidish caricature	54	88	599	sketching	GenItem	1	-RACECAT +REPTILE	
 Reptiloidish illustration	57	93	632	drawing	GenItem	1	-RACECAT +REPTILE	
 Reptiloidish mural	60	97	665	painting	GenItem	1	-RACECAT +REPTILE	
@@ -378,7 +378,7 @@ Merfolky pastel-painting	38	65	423	coloring	GenItem	1	-RACE +MERFOLK
 Merfolky outline	41	70	456	sketching	GenItem	1	-RACE +MERFOLK	
 Merfolky cartoon	44	74	489	drawing	GenItem	1	-RACE +MERFOLK	
 Merfolky fresco	48	80	533	painting	GenItem	1	-RACE +MERFOLK	
-Merfolky shaded-panting	51	84	566	coloring	GenItem	1	-RACE +MERFOLK	
+Merfolky shaded-painting	51	84	566	coloring	GenItem	1	-RACE +MERFOLK	
 Merfolky caricature	54	88	599	sketching	GenItem	1	-RACE +MERFOLK	
 Merfolky illustration	57	93	632	drawing	GenItem	1	-RACE +MERFOLK	
 Merfolky mural	60	97	665	painting	GenItem	1	-RACE +MERFOLK	
@@ -404,7 +404,7 @@ Illithidish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +ILLITHID
 Illithidish outline	41	70	456	sketching	GenItem	1	-RACECAT +ILLITHID	
 Illithidish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +ILLITHID	
 Illithidish fresco	48	80	533	painting	GenItem	1	-RACECAT +ILLITHID	
-Illithidish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +ILLITHID	
+Illithidish shaded-painting	51	84	566	coloring	GenItem	1	-RACECAT +ILLITHID	
 Illithidish caricature	54	88	599	sketching	GenItem	1	-RACECAT +ILLITHID	
 Illithidish illustration	57	93	632	drawing	GenItem	1	-RACECAT +ILLITHID	
 Illithidish mural	60	97	665	painting	GenItem	1	-RACECAT +ILLITHID	
@@ -430,7 +430,7 @@ Gigantic pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT "+GIANT-KIN"
 Gigantic outline	41	70	456	sketching	GenItem	1	-RACECAT "+GIANT-KIN"	
 Gigantic cartoon	44	74	489	drawing	GenItem	1	-RACECAT "+GIANT-KIN"	
 Gigantic fresco	48	80	533	painting	GenItem	1	-RACECAT "+GIANT-KIN"	
-Gigantic shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT "+GIANT-KIN"	
+Gigantic shaded-painting	51	84	566	coloring	GenItem	1	-RACECAT "+GIANT-KIN"	
 Gigantic caricature	54	88	599	sketching	GenItem	1	-RACECAT "+GIANT-KIN"	
 Gigantic illustration	57	93	632	drawing	GenItem	1	-RACECAT "+GIANT-KIN"	
 Gigantic mural	60	97	665	painting	GenItem	1	-RACECAT "+GIANT-KIN"	
@@ -456,7 +456,7 @@ Heavenly pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +CELESTIAL
 Heavenly outline	41	70	456	sketching	GenItem	1	-RACECAT +CELESTIAL	
 Heavenly cartoon	44	74	489	drawing	GenItem	1	-RACECAT +CELESTIAL	
 Heavenly fresco	48	80	533	painting	GenItem	1	-RACECAT +CELESTIAL	
-Heavenly shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +CELESTIAL	
+Heavenly shaded-painting	51	84	566	coloring	GenItem	1	-RACECAT +CELESTIAL	
 Heavenly caricature	54	88	599	sketching	GenItem	1	-RACECAT +CELESTIAL	
 Heavenly illustration	57	93	632	drawing	GenItem	1	-RACECAT +CELESTIAL	
 Heavenly mural	60	97	665	painting	GenItem	1	-RACECAT +CELESTIAL	
@@ -482,7 +482,7 @@ Orcish pastel-painting	38	65	423	coloring	GenItem	1	-RACE +ORC
 Orcish outline	41	70	456	sketching	GenItem	1	-RACE +ORC	
 Orcish cartoon	44	74	489	drawing	GenItem	1	-RACE +ORC	
 Orcish fresco	48	80	533	painting	GenItem	1	-RACE +ORC	
-Orcish shaded-panting	51	84	566	coloring	GenItem	1	-RACE +ORC	
+Orcish shaded-painting	51	84	566	coloring	GenItem	1	-RACE +ORC	
 Orcish caricature	54	88	599	sketching	GenItem	1	-RACE +ORC	
 Orcish illustration	57	93	632	drawing	GenItem	1	-RACE +ORC	
 Orcish mural	60	97	665	painting	GenItem	1	-RACE +ORC	
@@ -508,7 +508,7 @@ Fey pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT "+FAIRY-KIN"
 Fey outline	41	70	456	sketching	GenItem	1	-RACECAT "+FAIRY-KIN"	
 Fey cartoon	44	74	489	drawing	GenItem	1	-RACECAT "+FAIRY-KIN"	
 Fey fresco	48	80	533	painting	GenItem	1	-RACECAT "+FAIRY-KIN"	
-Fey shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT "+FAIRY-KIN"	
+Fey shaded-painting	51	84	566	coloring	GenItem	1	-RACECAT "+FAIRY-KIN"	
 Fey caricature	54	88	599	sketching	GenItem	1	-RACECAT "+FAIRY-KIN"	
 Fey illustration	57	93	632	drawing	GenItem	1	-RACECAT "+FAIRY-KIN"	
 Fey mural	60	97	665	painting	GenItem	1	-RACECAT "+FAIRY-KIN"	
@@ -534,7 +534,7 @@ Svirfneblinish pastel-painting	38	65	423	coloring	GenItem	1	-RACE +SVIRFNEBLIN
 Svirfneblinish outline	41	70	456	sketching	GenItem	1	-RACE +SVIRFNEBLIN	
 Svirfneblinish cartoon	44	74	489	drawing	GenItem	1	-RACE +SVIRFNEBLIN	
 Svirfneblinish fresco	48	80	533	painting	GenItem	1	-RACE +SVIRFNEBLIN	
-Svirfneblinish shaded-panting	51	84	566	coloring	GenItem	1	-RACE +SVIRFNEBLIN	
+Svirfneblinish shaded-painting	51	84	566	coloring	GenItem	1	-RACE +SVIRFNEBLIN	
 Svirfneblinish caricature	54	88	599	sketching	GenItem	1	-RACE +SVIRFNEBLIN	
 Svirfneblinish illustration	57	93	632	drawing	GenItem	1	-RACE +SVIRFNEBLIN	
 Svirfneblinish mural	60	97	665	painting	GenItem	1	-RACE +SVIRFNEBLIN	
@@ -560,7 +560,7 @@ Fiendish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +DEMON
 Fiendish outline	41	70	456	sketching	GenItem	1	-RACECAT +DEMON	
 Fiendish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +DEMON	
 Fiendish fresco	48	80	533	painting	GenItem	1	-RACECAT +DEMON	
-Fiendish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +DEMON	
+Fiendish shaded-painting	51	84	566	coloring	GenItem	1	-RACECAT +DEMON	
 Fiendish caricature	54	88	599	sketching	GenItem	1	-RACECAT +DEMON	
 Fiendish illustration	57	93	632	drawing	GenItem	1	-RACECAT +DEMON	
 Fiendish mural	60	97	665	painting	GenItem	1	-RACECAT +DEMON	
@@ -586,7 +586,7 @@ Devilish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +DEVIL
 Devilish outline	41	70	456	sketching	GenItem	1	-RACECAT +DEVIL	
 Devilish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +DEVIL	
 Devilish fresco	48	80	533	painting	GenItem	1	-RACECAT +DEVIL	
-Devilish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +DEVIL	
+Devilish shaded-painting	51	84	566	coloring	GenItem	1	-RACECAT +DEVIL	
 Devilish caricature	54	88	599	sketching	GenItem	1	-RACECAT +DEVIL	
 Devilish illustration	57	93	632	drawing	GenItem	1	-RACECAT +DEVIL	
 Devilish mural	60	97	665	painting	GenItem	1	-RACECAT +DEVIL	
@@ -612,7 +612,7 @@ Draconish pastel-painting	38	65	423	coloring	GenItem	1	-RACECAT +DRAGON
 Draconish outline	41	70	456	sketching	GenItem	1	-RACECAT +DRAGON	
 Draconish cartoon	44	74	489	drawing	GenItem	1	-RACECAT +DRAGON	
 Draconish fresco	48	80	533	painting	GenItem	1	-RACECAT +DRAGON	
-Draconish shaded-panting	51	84	566	coloring	GenItem	1	-RACECAT +DRAGON	
+Draconish shaded-painting	51	84	566	coloring	GenItem	1	-RACECAT +DRAGON	
 Draconish caricature	54	88	599	sketching	GenItem	1	-RACECAT +DRAGON	
 Draconish illustration	57	93	632	drawing	GenItem	1	-RACECAT +DRAGON	
 Draconish mural	60	97	665	painting	GenItem	1	-RACECAT +DRAGON	
@@ -638,7 +638,7 @@ abstract pastel-painting	39	82	824	coloring	GenItem	2
 abstract outline	42	88	887	sketching	GenItem	2		
 abstract cartoon	45	93	950	drawing	GenItem	2		
 abstract fresco	49	101	1034	painting	GenItem	2		
-abstract shaded-panting	52	106	1097	coloring	GenItem	2		
+abstract shaded-painting	52	106	1097	coloring	GenItem	2		
 abstract caricature	55	112	1160	sketching	GenItem	2		
 abstract illustration	58	117	1223	drawing	GenItem	2		
 abstract mural	61	123	1286	painting	GenItem	2		
@@ -664,7 +664,7 @@ art deco pastel-painting	40	100	1245	coloring	GenItem	3
 art deco outline	43	107	1338	sketching	GenItem	3		
 art deco cartoon	46	114	1431	drawing	GenItem	3		
 art deco fresco	50	123	1555	painting	GenItem	3		
-art deco shaded-panting	53	129	1648	coloring	GenItem	3		
+art deco shaded-painting	53	129	1648	coloring	GenItem	3		
 art deco caricature	56	136	1741	sketching	GenItem	3		
 art deco illustration	59	143	1834	drawing	GenItem	3		
 art deco mural	62	150	1927	painting	GenItem	3		
@@ -690,7 +690,7 @@ figurative pastel-painting	41	119	1686	coloring	GenItem	4
 figurative outline	44	127	1809	sketching	GenItem	4		
 figurative cartoon	47	135	1932	drawing	GenItem	4		
 figurative fresco	51	145	2096	painting	GenItem	4		
-figurative shaded-panting	54	153	2219	coloring	GenItem	4		
+figurative shaded-painting	54	153	2219	coloring	GenItem	4		
 figurative caricature	57	161	2342	sketching	GenItem	4		
 figurative illustration	60	169	2465	drawing	GenItem	4		
 figurative mural	63	177	2588	painting	GenItem	4		
@@ -716,7 +716,7 @@ feminist pastel-painting	42	138	2147	coloring	GenItem	5	-GENDER +FEMALE
 feminist outline	45	147	2300	sketching	GenItem	5	-GENDER +FEMALE	
 feminist cartoon	48	157	2453	drawing	GenItem	5	-GENDER +FEMALE	
 feminist fresco	52	169	2657	painting	GenItem	5	-GENDER +FEMALE	
-feminist shaded-panting	55	178	2810	coloring	GenItem	5	-GENDER +FEMALE	
+feminist shaded-painting	55	178	2810	coloring	GenItem	5	-GENDER +FEMALE	
 feminist caricature	58	187	2963	sketching	GenItem	5	-GENDER +FEMALE	
 feminist illustration	61	196	3116	drawing	GenItem	5	-GENDER +FEMALE	
 feminist mural	64	205	3269	painting	GenItem	5	-GENDER +FEMALE	
@@ -742,7 +742,7 @@ masculine pastel-painting	42	138	2147	coloring	GenItem	5	-GENDER +MALE
 masculine outline	45	147	2300	sketching	GenItem	5	-GENDER +MALE	
 masculine cartoon	48	157	2453	drawing	GenItem	5	-GENDER +MALE	
 masculine fresco	52	169	2657	painting	GenItem	5	-GENDER +MALE	
-masculine shaded-panting	55	178	2810	coloring	GenItem	5	-GENDER +MALE	
+masculine shaded-painting	55	178	2810	coloring	GenItem	5	-GENDER +MALE	
 masculine caricature	58	187	2963	sketching	GenItem	5	-GENDER +MALE	
 masculine illustration	61	196	3116	drawing	GenItem	5	-GENDER +MALE	
 masculine mural	64	205	3269	painting	GenItem	5	-GENDER +MALE	
@@ -768,7 +768,7 @@ art noveau pastel-painting	42	138	2147	coloring	GenItem	5
 art noveau outline	45	147	2300	sketching	GenItem	5		
 art noveau cartoon	48	157	2453	drawing	GenItem	5		
 art noveau fresco	52	169	2657	painting	GenItem	5		
-art noveau shaded-panting	55	178	2810	coloring	GenItem	5		
+art noveau shaded-painting	55	178	2810	coloring	GenItem	5		
 art noveau caricature	58	187	2963	sketching	GenItem	5		
 art noveau illustration	61	196	3116	drawing	GenItem	5		
 art noveau mural	64	205	3269	painting	GenItem	5		
@@ -794,7 +794,7 @@ modern pastel-painting	43	159	2628	coloring	GenItem	6
 modern outline	46	169	2811	sketching	GenItem	6		
 modern cartoon	49	179	2994	drawing	GenItem	6		
 modern fresco	53	193	3238	painting	GenItem	6		
-modern shaded-panting	56	203	3421	coloring	GenItem	6		
+modern shaded-painting	56	203	3421	coloring	GenItem	6		
 modern caricature	59	214	3604	sketching	GenItem	6		
 modern illustration	62	224	3787	drawing	GenItem	6		
 modern mural	65	234	3970	painting	GenItem	6		
@@ -820,7 +820,7 @@ impressionist pastel-painting	44	180	3129	coloring	GenItem	7
 impressionist outline	47	191	3342	sketching	GenItem	7		
 impressionist cartoon	50	203	3555	drawing	GenItem	7		
 impressionist fresco	54	218	3839	painting	GenItem	7		
-impressionist shaded-panting	57	230	4052	coloring	GenItem	7		
+impressionist shaded-painting	57	230	4052	coloring	GenItem	7		
 impressionist caricature	60	241	4265	sketching	GenItem	7		
 impressionist illustration	63	253	4478	drawing	GenItem	7		
 impressionist mural	66	264	4691	painting	GenItem	7		
@@ -846,7 +846,7 @@ cubist pastel-painting	45	201	3650	coloring	GenItem	8
 cubist outline	48	214	3893	sketching	GenItem	8		
 cubist cartoon	51	227	4136	drawing	GenItem	8		
 cubist fresco	55	244	4460	painting	GenItem	8		
-cubist shaded-panting	58	257	4703	coloring	GenItem	8		
+cubist shaded-painting	58	257	4703	coloring	GenItem	8		
 cubist caricature	61	269	4946	sketching	GenItem	8		
 cubist illustration	64	282	5189	drawing	GenItem	8		
 cubist mural	67	295	5432	painting	GenItem	8		
@@ -872,7 +872,7 @@ expressionist pastel-painting	46	224	4191	coloring	GenItem	9
 expressionist outline	49	238	4464	sketching	GenItem	9		
 expressionist cartoon	52	252	4737	drawing	GenItem	9		
 expressionist fresco	56	271	5101	painting	GenItem	9		
-expressionist shaded-panting	59	284	5374	coloring	GenItem	9		
+expressionist shaded-painting	59	284	5374	coloring	GenItem	9		
 expressionist caricature	62	298	5647	sketching	GenItem	9		
 expressionist illustration	65	312	5920	drawing	GenItem	9		
 expressionist mural	68	326	6193	painting	GenItem	9		
@@ -898,7 +898,7 @@ surreal pastel-painting	47	248	4752	coloring	GenItem	10
 surreal outline	50	263	5055	sketching	GenItem	10		
 surreal cartoon	53	278	5358	drawing	GenItem	10		
 surreal fresco	57	298	5762	painting	GenItem	10		
-surreal shaded-panting	60	313	6065	coloring	GenItem	10		
+surreal shaded-painting	60	313	6065	coloring	GenItem	10		
 surreal caricature	63	328	6368	sketching	GenItem	10		
 surreal illustration	66	343	6671	drawing	GenItem	10		
 surreal mural	69	358	6974	painting	GenItem	10		

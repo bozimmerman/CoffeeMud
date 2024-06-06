@@ -89,7 +89,7 @@ public class Prayer_SenseMagic extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_NEUTRAL;
+		return Ability.FLAG_NEUTRAL | Ability.FLAG_DIVINING;
 	}
 
 	@Override

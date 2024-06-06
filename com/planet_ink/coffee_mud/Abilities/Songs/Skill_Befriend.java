@@ -266,7 +266,7 @@ public class Skill_Befriend extends BardSkill
 			mob.tell(L("You are already your own friend."));
 			return false;
 		}
-		if(target.phyStats().level()>adjustedLevel(mob,asLevel)+(adjustedLevel(mob,asLevel)/10))
+		if(target.phyStats().level()>(mob.phyStats().level()+(super.getXLEVELLevel(mob)/10)))
 		{
 			mob.tell(L("@x1 is a bit too powerful to befriend.",target.charStats().HeShe()));
 			return false;
@@ -350,7 +350,7 @@ public class Skill_Befriend extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=mob.phyStats().level()-target.phyStats().level();
+		int levelDiff=(mob.phyStats().level()+(super.getXLEVELLevel(mob)/10))-target.phyStats().level();
 		if(levelDiff>0)
 			levelDiff=(-(levelDiff*levelDiff))/(1+super.getXLEVELLevel(mob));
 		else

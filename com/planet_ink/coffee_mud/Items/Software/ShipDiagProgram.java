@@ -100,6 +100,7 @@ public class ShipDiagProgram extends GenShipProgram
 		diagCompletionMs = 0;
 	}
 
+	@Override
 	protected void decache()
 	{
 		components	= null;
@@ -159,6 +160,7 @@ public class ShipDiagProgram extends GenShipProgram
 		return A;
 	}
 
+	@Override
 	protected synchronized List<TechComponent> getTechComponents()
 	{
 		if(components == null)
@@ -203,14 +205,14 @@ public class ShipDiagProgram extends GenShipProgram
 	public boolean isCommandString(String word, final boolean isActive)
 	{
 		word = word.toUpperCase();
-		return (word.startsWith("DIAG") || word.equals("DAMAGE"));
+		return (word.startsWith("DIAG") || word.equals("DAMAGE") || (word.startsWith("HELP")));
 	}
 
 	@Override
 	public String getActivationMenu()
 	{
-		return "DAMAGE      : Damage Control Software\n\r"
-			  +"DIAG [LEVEL]: Diagnostics Software";
+		return "^wDAMAGE                 ^N: Damage Control Software\n\r"
+			  +"^wDIAG [LEVEL]           ^N: Diagnostics Software";
 	}
 
 	protected void shutdown()
@@ -435,7 +437,7 @@ public class ShipDiagProgram extends GenShipProgram
 			header.append("^X");
 		final TimeClock C = CMLib.time().localClock(this);
 		final String time = C.getShortestTimeDescription();
-		header.append(CMStrings.centerPreserve(L(" -- Level 1 Diagnostic Report " + time+" -- "),60)).append("^.^N\n\r");
+		header.append(CMStrings.centerPreserve(L(" -- Level 2 Diagnostic Report " + time+" -- "),60)).append("^.^N\n\r");
 		scr.insert(0, header.toString());
 		return scr.toString();
 	}
@@ -517,7 +519,7 @@ public class ShipDiagProgram extends GenShipProgram
 			header.append("^X");
 		final TimeClock C = CMLib.time().localClock(this);
 		final String time = C.getShortestTimeDescription();
-		header.append(CMStrings.centerPreserve(L(" -- Level 1 Diagnostic Report " + time+" -- "),60)).append("^.^N\n\r");
+		header.append(CMStrings.centerPreserve(L(" -- Level 3 Diagnostic Report " + time+" -- "),60)).append("^.^N\n\r");
 		scr.insert(0, header.toString());
 		return scr.toString();
 	}
@@ -525,10 +527,13 @@ public class ShipDiagProgram extends GenShipProgram
 	@Override
 	public String getCurrentScreenDisplay()
 	{
+		final StringBuilder str = new StringBuilder("^X");
+		str.append(CMStrings.centerPreserve(L(" -- Diagnostics System -- "),60)).append("^.^N\n\r");
 		if(showUpdatedDamage)
-			return getDamageControl();
+			str.append(getDamageControl());
 		else
-			return scr.toString();
+			str.append(scr.toString());
+		return str.toString();
 	}
 
 	@Override
@@ -560,6 +565,11 @@ public class ShipDiagProgram extends GenShipProgram
 				showUpdatedDamage = true;
 				super.addScreenMessage(getCurrentScreenDisplay());
 				super.forceNewMessageScan();
+			}
+			else
+			if(uword.equals("HELP"))
+			{
+				super.addScreenMessage(this.getActivationMenu() + "^.^N");
 			}
 			else
 			if(uword.startsWith("DIAG"))

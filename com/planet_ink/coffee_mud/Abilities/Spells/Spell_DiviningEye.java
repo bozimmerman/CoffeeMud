@@ -67,6 +67,12 @@ public class Spell_DiviningEye extends Spell
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_DIVINING;
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;

@@ -49,16 +49,19 @@ public class Spell_LesserImage extends Spell_MinorImage
 		return localizedName;
 	}
 
+	@Override
 	protected int getDuration(final MOB caster, final int asLevel)
 	{
 		return 10 + (super.adjustedLevel(caster, asLevel)/5);
 	}
 
+	@Override
 	protected boolean canSeeAppearance()
 	{
 		return true;
 	}
 
+	@Override
 	protected boolean canTargetOthers()
 	{
 		return false;

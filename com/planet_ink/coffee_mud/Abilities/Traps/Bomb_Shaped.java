@@ -252,6 +252,7 @@ public class Bomb_Shaped extends StdBomb
 		return true;
 	}
 
+	@Override
 	protected boolean doesInnerExplosionDestroy(final int material)
 	{
 		return true;

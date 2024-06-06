@@ -986,8 +986,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						if (backsToFind <= 0)
 							return i;
 					}
+					i += foundMacro.length() + 1;
 				}
-				i += foundMacro.length() + 1;
 			}
 		}
 		return -1;

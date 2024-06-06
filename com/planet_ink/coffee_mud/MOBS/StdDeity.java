@@ -901,7 +901,7 @@ public class StdDeity extends StdMOB implements Deity
 							final Ability TRACKA=CMClass.getAbility("Skill_Track");
 							if(TRACKA!=null)
 							{
-								TRACKA.invoke(M,CMParms.parse("\""+CMLib.map().getExtendedRoomID(room)+"\""),room,true,0);
+								TRACKA.invoke(M,CMParms.parse("\""+CMLib.map().getExtendedRoomID(room)+"\" NPC"),room,true,0);
 								parishaners.add(M);
 								if(parishaners.size()>maxMobs)
 									break;

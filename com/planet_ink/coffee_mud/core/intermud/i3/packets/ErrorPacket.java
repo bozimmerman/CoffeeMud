@@ -87,7 +87,7 @@ public class ErrorPacket extends MudPacket
 	@Override
 	public String toString()
 	{
-		final String cmd = "({\"error\",5,\"" + I3Server.getMudName() +
+		final String cmd = "({\"error\",5,\"" + sender_mud +
 				 "\",0,\"" + target_mud + "\",\"" + target_name + "\"," +
 				 "\""+error_code+"\",\""+error_message+"\","+packetStr+",})";
 		return cmd;

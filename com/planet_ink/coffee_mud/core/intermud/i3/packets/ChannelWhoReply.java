@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
-import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
+import com.planet_ink.coffee_mud.core.intermud.i3.I3Client;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -51,7 +51,7 @@ public class ChannelWhoReply extends MudPacket
 		{
 			type = Packet.PacketType.CHAN_WHO_REPLY;
 			channel = (String)v.elementAt(6);
-			channel = Intermud.getLocalChannel(channel);
+			channel = I3Client.getLocalChannel(channel);
 			try
 			{
 				who = (Vector<?>) v.elementAt(7);
@@ -74,14 +74,14 @@ public class ChannelWhoReply extends MudPacket
 		{
 			throw new InvalidPacketException();
 		}
-		channel = Intermud.getRemoteChannel(channel);
+		channel = I3Client.getRemoteChannel(channel);
 		super.send();
 	}
 
 	@Override
 	public String toString()
 	{
-		String cmd = "({\"chan-who-reply\",5,\"" + I3Server.getMudName() +
+		String cmd = "({\"chan-who-reply\",5,\"" + sender_mud +
 				 "\",0,\"" + target_mud + "\",\"" + target_name + "\",\"" + channel + "\",({";
 		int i;
 

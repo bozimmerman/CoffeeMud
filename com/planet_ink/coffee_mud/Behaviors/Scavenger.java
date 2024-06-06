@@ -133,7 +133,7 @@ public class Scavenger extends ActiveTicker
 				{
 					final Ability A=CMLib.flags().isTracking(mob) ? null : CMClass.getAbility("Skill_Track");
 					if(A!=null)
-						A.invoke(mob,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
+						A.invoke(mob,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\" NPC"),R,true,0);
 				}
 				else
 				if((origItems>=0)&&(mob.numItems()>origItems))

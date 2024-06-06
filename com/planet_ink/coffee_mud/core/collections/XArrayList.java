@@ -26,7 +26,7 @@ public class XArrayList<T> extends ArrayList<T>
 {
 	private static final long	serialVersionUID	= 6687178785122563992L;
 
-	public XArrayList(final List<? extends T> V)
+	public XArrayList(final Collection<? extends T> V)
 	{
 		super((V==null)?0:V.size());
 		if (V != null)

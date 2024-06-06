@@ -4686,6 +4686,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(ctx.monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT))
 						returnable=true;
 					else
+					if((!CMath.isInteger(arg1))
+					&&(ctx.monster.location().getArea().getTimeObj().getTODCode()==CMath.s_valueOf(TimeClock.TimeOfDay.class, arg1.toUpperCase().trim())))
+						returnable=true;
+					else
 					if((ctx.monster.location().getArea().getTimeObj().getHourOfDay()==CMath.s_int(arg1)))
 						returnable=true;
 					else
@@ -5139,7 +5143,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tlen==1)
 						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 					final String arg1=tt[t+0];
-					final String arg2=tt[t+1];
+					final String arg2=varify(ctx,tt[t+1]);
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if(arg2.length()==0)
 					{
@@ -12079,7 +12083,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						else
 						{
 							goHere.bringMobHere(ctx.monster,true);
-							if(!(ctx.scripted instanceof MOB))
+							if((!(ctx.scripted instanceof MOB))
+							&&(!ctx.monster.isPlayer()))
 								goHere.delInhabitant(ctx.monster);
 						}
 						if(CMLib.map().roomLocation(ctx.scripted)==goHere)
@@ -12344,6 +12349,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					// this can not be permanently parsed because it is variable
 					final MPContext ctx2 = ctx.copyOf();
 					ctx2.monster = getMakeMOB(newTarget);
+					ctx2.scripted = ctx.monster;
 					execute(ctx2, vscript);
 				}
 				break;
@@ -15486,8 +15492,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				try
 				{
 					SB=que.get(q);
-					if((SB != null) && (SB.checkTimeToExecute()))
+					if((SB != null)
+					&& (SB.checkTimeToExecute()))
 					{
+						if (objects != null)
+						{
+							for(int i=0;i<objects.length && i<SB.ctx.tmp.length;i++)
+								SB.ctx.tmp[i] = objects[i];
+ 						}
 						execute(SB.ctx,SB.scr);
 						que.remove(SB);
 					}

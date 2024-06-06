@@ -1495,6 +1495,7 @@ public class ResultSet implements java.sql.ResultSet
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public <T> T getObject(final int columnIndex, final Class<T> type) throws SQLException
 	{
 		if (type == Long.class)
@@ -1536,6 +1537,7 @@ public class ResultSet implements java.sql.ResultSet
 		throw new SQLFeatureNotSupportedException();
 	}
 
+	@Override
 	public <T> T getObject(final String columnLabel, final Class<T> type) throws SQLException
 	{
 		return getObject(findColumn(columnLabel), type);

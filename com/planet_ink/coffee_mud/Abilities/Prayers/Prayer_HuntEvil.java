@@ -51,7 +51,7 @@ public class Prayer_HuntEvil extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY|Ability.FLAG_TRACKING;
+		return Ability.FLAG_HOLY|Ability.FLAG_TRACKING| Ability.FLAG_DIVINING;
 	}
 
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Hunting Evil)");

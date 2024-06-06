@@ -68,6 +68,14 @@ public interface ChannelsLibrary extends CMLibrary
 	public CMChannel getChannel(int channelNumber);
 
 	/**
+	 * Returns the CMChannel object embedded in
+	 * the given channel message, if possible.
+	 * @param msg the message that is a channel message
+	 * @return the cmchannel object
+	 */
+	public CMChannel getChannelFromMsg(final CMMsg msg);
+
+	/**
 	 * Generates a list of previous channel messages, in ChannelMsg
 	 * object format.  This may potentially hit the database.
 	 * @see ChannelsLibrary#getChannelIndex(String)

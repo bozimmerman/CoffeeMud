@@ -1880,6 +1880,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				finalLookStr.append(itemStr);
 		}
 		if(flags.canBeSeenBy(room,mob)
+		&&(!compress)
 		&&((!useBrief)||(hadCompressedItems)))
 			finalLookStr.append("^N\n\r\n\r");
 		final String itemStr=CMLib.lister().lister(mob,viewItems,useName,"RItem"," \"*\"",lookCode==LookView.LOOK_LONG,compress);
@@ -1949,8 +1950,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if(mobsInTheDarkness>0)
 				finalLookStr.append(L("^MYou are not alone, but it's too dark to tell.^?\n\r"));
 		}
-		else
-		if(compress)
+		if(compress
+		&& (finalLookStr.length()>0)
+		&& (finalLookStr.charAt(finalLookStr.length()-1)!='\r'))
 			finalLookStr.append("\n\r");
 		return finalLookStr.toString();
 	}
@@ -1985,7 +1987,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if((awarenessA!=null)&&(mobLocR != null))
 				{
 					sess.colorOnlyPrintln("", true);
-					final Vector<String> list=new Vector<String>();
+					final List<String> list=new Vector<String>();
 					awarenessA.invoke(mob, list, mobLocR, true, CMProps.getIntVar(CMProps.Int.AWARERANGE));
 					for(final String o : list)
 					{

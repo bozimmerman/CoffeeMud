@@ -89,7 +89,7 @@ public class Prayer_SenseDisease extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY;
+		return Ability.FLAG_HOLY | Ability.FLAG_DIVINING;
 	}
 
 	protected Room lastRoom=null;

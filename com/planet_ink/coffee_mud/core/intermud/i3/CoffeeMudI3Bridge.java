@@ -51,6 +51,8 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 	public Room				universalR	= null;
 	public int				port		= 5555;
 	public List<CMChannel>	channels	= new XVector<CMChannel>();
+	public Map<String,Long>	inkeys		= new LimitedTreeMap<String,Long>(1200000,1000,true);
+	public Map<String,Long>	outkeys		= new LimitedTreeMap<String,Long>(1200000,1000,true);
 
 	private static volatile long lastPacketReceivedTime = System.currentTimeMillis();
 
@@ -122,24 +124,24 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		{ "^w^*", "%^WHITE%^%^BOLD%^%^FLASH%^",   "\033[1;5;37m" }  // White
 	};
 
-	public CoffeeMudI3Bridge(final String Name, final String Version, final int Port, final String i3status, final List<CMChannel> Channels)
+	public CoffeeMudI3Bridge(final String name, final String version, final int port, final String i3status, final List<CMChannel> channels)
 	{
-		if(Name!=null)
-			name=Name;
+		if(name!=null)
+			this.name=name;
 		if(i3status!=null)
-			i3state=i3status;
-		if(Version!=null)
-			version=Version;
-		if(Channels!=null)
-			channels=Channels;
+			this.i3state=i3status;
+		if(version!=null)
+			this.version=version;
+		if(channels!=null)
+			this.channels=channels;
 		else
-		if(channels.size()==0)
+		if(this.channels.size()==0)
 		{
-			channels.add(CMLib.channels().createNewChannel("I3CHAT", "diku_chat", "", "", new HashSet<ChannelFlag>(), "",""));
-			channels.add(CMLib.channels().createNewChannel("I3GOSSIP", "diku_immortals", "", "", new HashSet<ChannelFlag>(), "",""));
-			channels.add(CMLib.channels().createNewChannel("GREET", "diku_code", "", "", new HashSet<ChannelFlag>(), "",""));
+			this.channels.add(CMLib.channels().createNewChannel("I3CHAT", "diku_chat", "", "", new HashSet<ChannelFlag>(), "",""));
+			this.channels.add(CMLib.channels().createNewChannel("I3GOSSIP", "diku_immortals", "", "", new HashSet<ChannelFlag>(), "",""));
+			this.channels.add(CMLib.channels().createNewChannel("GREET", "diku_code", "", "", new HashSet<ChannelFlag>(), "",""));
 		}
-		port=Port;
+		this.port=port;
 	}
 
 	public String L(final String str, final String ... xs)
@@ -234,6 +236,18 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		lastPacketReceivedTime=System.currentTimeMillis();
 	}
 
+	@Override
+	public Map<String,Long> getIncomingKeys()
+	{
+		return inkeys;
+	}
+
+	@Override
+	public Map<String,Long> getOutgoingKeys()
+	{
+		return outkeys;
+	}
+
 	/**
 	 * Handles an incoming I3 packet asynchronously.
 	 * An implementation should make sure that asynchronously
@@ -257,7 +271,8 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final ChannelPacket ck=(ChannelPacket)packet;
-				final String channelName=ck.channel;
+				String channelName=ck.channel;
+				channelName = I3Client.getLocalChannel(channelName);
 				CMMsg msg=null;
 
 				if((ck.sender_mud!=null)&&(ck.sender_mud.equalsIgnoreCase(getMudName())))
@@ -283,9 +298,11 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 					final ChannelTargetEmote ct = (ChannelTargetEmote)ck;
 					if(ct.message_target != null)
 						ct.message_target = fixColors(CMProps.applyINIFilter(ct.message_target,CMProps.Str.CHANNELFILTER));
-					if((ct.target_mud!=null)&&(ck.target_mud.equalsIgnoreCase(getMudName())))
-						targetMOB=CMLib.players().getLoadPlayer(ck.target_name);
-					if((ct.target_visible_name!=null)&&(ck.target_mud!=null)&&(targetMOB==null))
+					if((ct.target_mud!=null)
+					&&(ct.target_mud.equals(getMudName()))
+					&&(CMLib.players().isLoadedPlayer(ct.target_name)))
+						targetMOB=CMLib.players().getPlayer(ct.target_name);
+					if((ct.target_visible_name!=null)&&(targetMOB==null))
 					{
 						killtargetmob=true;
 						targetMOB=CMClass.getFactoryMOB();
@@ -314,8 +331,15 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelCode),str);
 				}
 				CMLib.commands().monitorGlobalMessage(mob.location(), msg);
-				if(channelInt>=0)
-					channels.channelQueUp(channelInt, msg, 0);
+				try
+				{
+					if(channelInt>=0)
+						channels.channelQueUp(channelInt, msg, 0);
+				}
+				catch(final Exception e)
+				{
+					Log.errOut(e);
+				}
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					final MOB M=S.mob();
@@ -378,7 +402,7 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 					smob.tell(fixColors(lk.located_visible_name)+"@"+fixColors(lk.located_mud_name)+" ("+lk.idle_time+"): "+fixColors(lk.status));
 			}
 			break;
-		case FINGER_REQUEST:
+		case FINGER_REQ:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final FingerRequest lk=(FingerRequest)packet;
@@ -453,7 +477,8 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 				}
 				else
 					Log.sysOut("I3","MUD "+lk.sender_mud+" wants to mud-auth.");
-				final MudAuthReply pkt = new MudAuthReply(lk.sender_mud, System.currentTimeMillis());
+				inkeys.put(lk.sender_mud, Long.valueOf(new Random(System.currentTimeMillis()).nextInt(999999)));
+				final MudAuthReply pkt = new MudAuthReply(lk.sender_mud, inkeys.get(lk.sender_mud).intValue());
 				try
 				{
 					pkt.send();
@@ -464,7 +489,14 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 				}
 			}
 			break;
-		case UCACHE_MUD_UPDATE:
+		case OOB_REQ:
+			{
+				final OOBReq lk=(OOBReq)packet;
+				if(lk.target_mud.equalsIgnoreCase(I3Server.getMudName()))
+					inkeys.put(lk.sender_mud, Long.valueOf(-1));
+				break;
+			}
+		case AUTH_MUD_REPLY:
 			{
 				lastPacketReceivedTime=System.currentTimeMillis();
 				final MudAuthReply lk=(MudAuthReply)packet;
@@ -475,7 +507,11 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 					lastPacketReceivedTime=System.currentTimeMillis();
 				}
 				else
+				{
+					outkeys.put(lk.sender_mud, Long.valueOf(lk.key));
+					//TODO: if we have stuff to deliver, connect, and deliver it now
 					Log.sysOut("I3","MUD "+lk.sender_mud+" replied to my mud-auth with key "+lk.key+".");
+				}
 			}
 			break;
 		case WHO_REPLY:
@@ -534,7 +570,8 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 				wkr.target_name=wk.sender_name;
 				wkr.target_mud=wk.sender_mud;
 				wkr.channel=wk.channel;
-				final int channelInt=CMLib.channels().getChannelIndex(wk.channel);
+				final String locChannel = I3Client.getRemoteChannel(wk.channel);
+				final int channelInt=CMLib.channels().getChannelIndex(locChannel);
 				final Vector<String> whoV=new Vector<String>();
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{

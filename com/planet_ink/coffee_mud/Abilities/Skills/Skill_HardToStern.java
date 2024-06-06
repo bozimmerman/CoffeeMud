@@ -85,7 +85,7 @@ public class Skill_HardToStern extends StdSkill
 	@Override
 	protected int overrideMana()
 	{
-		return 100;
+		return 200;
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class Skill_HardToStern extends StdSkill
 			if((msg.target()==ship)
 			&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			&&(msg.value()>0)
-			&&(CMLib.dice().rollPercentage()<=(25+super.getXLEVELLevel(invoker()))))
+			&&(CMLib.dice().rollPercentage()<=(12+super.getXLEVELLevel(invoker()))))
 			{
 				msg.setValue(0);
 			}
@@ -160,7 +160,8 @@ public class Skill_HardToStern extends StdSkill
 		}
 
 		if(((System.currentTimeMillis()-lastUse)<(3 * 60 * 1000))
-		||(myShipItem.fetchEffect("Skill_HardToPort")!=null))
+		||(myShipItem.fetchEffect("Skill_HardToPort")!=null)
+		||(myShipItem.fetchEffect("Skill_HardToStarboard")!=null))
 		{
 			mob.tell(L("You can't put your ship through another hard turn to stern attempt right now.  Wait a bit."));
 			return false;
@@ -179,6 +180,7 @@ public class Skill_HardToStern extends StdSkill
 			{
 				R.send(mob,msg);
 				CMLib.commands().forceStandardCommand(mob, "Yell", new XVector<String>("YELL",L("HARD TO STERN!")));
+				for(int i=0;i<2;i++)
 				{
 					int newDirection = -1;
 					switch(myShipItem.getDirectionFacing())
@@ -239,7 +241,8 @@ public class Skill_HardToStern extends StdSkill
 								thisRoom.send(smob, maneuverMsg);
 								myShipItem.setDirectionFacing(newDirection);
 								this.lastUse=System.currentTimeMillis();
-								super.beneficialAffect(mob, myShipItem, asLevel, 6);
+								if(i == 0)
+									super.beneficialAffect(mob, myShipItem, asLevel, 6);
 							}
 						}
 						finally

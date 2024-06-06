@@ -97,7 +97,7 @@ public class LocateReplyPacket extends MudPacket
 	@Override
 	public String toString()
 	{
-		return "({\"locate-reply\",5,\"" + I3Server.getMudName() +
+		return "({\"locate-reply\",5,\"" + sender_mud +
 			   "\",0,\"" + target_mud + "\",\"" + target_name +
 			   "\",\"" + located_mud_name + "\",\"" +
 			   located_visible_name + "\"," + idle_time + ",\"" +

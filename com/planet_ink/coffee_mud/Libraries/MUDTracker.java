@@ -237,7 +237,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final Ability A=CMClass.getAbility("Skill_Track");
 		if(A!=null)
 		{
-			A.invoke(mob,CMParms.parse("\""+CMLib.map().getExtendedRoomID(destR)+"\" "),destR,true,0);
+			A.invoke(mob,CMParms.parse("\""+CMLib.map().getExtendedRoomID(destR)+"\" NPC"),destR,true,0);
 			return true;
 		}
 		return false;

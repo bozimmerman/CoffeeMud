@@ -73,15 +73,15 @@ public class Spell_TrueName extends Spell
 	}
 
 	@Override
-	public int classificationCode()
+	public long flags()
 	{
-		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+		return super.flags() | Ability.FLAG_DIVINING;
 	}
 
 	@Override
-	public long flags()
+	public int classificationCode()
 	{
-		return 0;
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
 	}
 
 	protected volatile MOB monster=null;

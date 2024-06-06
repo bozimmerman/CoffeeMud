@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.intermud.i3;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.MiniLPC.MLPCException;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -15,6 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -37,11 +39,54 @@ public class LPCData
 {
 	static public Object getLPCData(final String cmd) throws I3Exception
 	{
-		return getLPCData(cmd, false);
+		try
+		{
+			return recursiveMessup(new MiniLPC().parseLPC(cmd));
+		}
+		catch (final MLPCException e)
+		{
+			throw new I3Exception(e);
+		}
+	}
+
+	static private Object recursiveMessup(final Object o)
+	{
+		if((o == null)||(o == MiniLPC.NULL))
+			return Integer.valueOf(0);
+		if((o instanceof String)||(o instanceof Integer))
+			return o;
+		if(o instanceof Long)
+		{
+			if(((Long)o).longValue() > Integer.MAX_VALUE)
+				return o;
+			else
+				return Integer.valueOf(((Long)o).intValue());
+		}
+		if(o instanceof Double)
+			return Integer.valueOf(((Double)o).intValue());
+		if(o instanceof Float)
+			return Integer.valueOf(((Float)o).intValue());
+		if(o.getClass().isArray())
+		{
+			final Vector<Object> v = new Vector<Object>();
+			final Object[] newArray = Arrays.copyOf((Object[])o, ((Object[])o).length);
+			for(int i=0;i<newArray.length;i++)
+				v.add(recursiveMessup(newArray[i]));
+			return v;
+		}
+		if(o instanceof MiniLPC.LPCObject)
+		{
+			final MiniLPC.LPCObject obj = (MiniLPC.LPCObject)o;
+			final Hashtable<Object,Object> h = new Hashtable<Object,Object>();
+			for(final String s : obj.keySet())
+				h.put(s, recursiveMessup(obj.get(s)));
+			return h;
+		}
+		return Integer.valueOf(0);
 	}
 
 	@SuppressWarnings("unchecked")
-	static public Object getLPCData(String cmd, final boolean flag) throws I3Exception {
+	static protected Object getLPCData(String cmd, final boolean flag) throws I3Exception {
 		final Vector<Object> data = new Vector<Object>(2);
 
 		data.addElement(null);
@@ -246,7 +291,7 @@ public class LPCData
 			while( !cmd.equals("") && (Character.isDigit(cmd.charAt(0))) )
 			{
 				tmp += cmd.charAt(0);
-			  //  tmp += cmd.substring(0, 1);
+				//  tmp += cmd.substring(0, 1);
 				if( cmd.length() > 1 )
 				{
 					cmd = cmd.substring(1, cmd.length());

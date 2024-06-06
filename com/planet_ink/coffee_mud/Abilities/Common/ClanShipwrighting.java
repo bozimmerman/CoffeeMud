@@ -62,6 +62,7 @@ public class ClanShipwrighting extends Shipwright
 		return triggerStrings;
 	}
 
+	@Override
 	protected void doShipTransfer(final Boardable buildingI, final MOB buyer)
 	{
 		final MOB shopKeeper = CMClass.getMOB("StdShopkeeper");

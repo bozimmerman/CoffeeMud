@@ -155,7 +155,7 @@ public class Lacquerring extends PaintingSkill
 			}
 			if(!ok)
 			*/
-			if(target.secretIdentity().indexOf(ItemCraftor.CRAFTING_BRAND_STR_PREFIX)<0)
+			if(target.rawSecretIdentity().indexOf(ItemCraftor.CRAFTING_BRAND_STR_PREFIX)<0)
 			{
 				commonTelL(mob,"You aren't allowed to work on '@x1'.  It must be a crafted item.",target.name(mob));
 				return false;

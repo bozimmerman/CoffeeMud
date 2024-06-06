@@ -73,6 +73,7 @@ public class Prayer_DefileShield extends Prayer_ImbueShield
 		targetI.recoverPhyStats();
 	}
 
+	@Override
 	protected boolean isOkPrayer(final Ability imbuePrayerA)
 	{
 		if((imbuePrayerA.ID().equals("Spell_Stoneskin"))
@@ -84,6 +85,7 @@ public class Prayer_DefileShield extends Prayer_ImbueShield
 		return true;
 	}
 
+	@Override
 	protected int getXPCost(final Ability imbuePrayerA)
 	{
 		int experienceToLose=500;

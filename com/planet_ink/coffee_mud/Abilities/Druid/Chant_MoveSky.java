@@ -98,17 +98,40 @@ public class Chant_MoveSky extends Chant
 			if(room.okMessage(mob,msg))
 			{
 				room.send(mob,msg);
-				if(room.getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT)
+				final TimeClock TO = room.getArea().getTimeObj();
+				TimeClock.TimeOfDay targetTOD;
+				final String msgStr;
+				switch(TO.getTODCode())
 				{
-					room.showHappens(CMMsg.MSG_OK_VISUAL,L("The moon begin(s) to descend!"));
-					final int x=room.getArea().getTimeObj().getHoursInDay()-room.getArea().getTimeObj().getHourOfDay();
-					room.getArea().getTimeObj().tickTock(x);
+				case NIGHT:
+					msgStr = L("The moon begins to descend!");
+					targetTOD = TimeClock.TimeOfDay.DAWN;
+					break;
+				case DUSK:
+					msgStr = L("The moon races across the sky!");
+					targetTOD = TimeClock.TimeOfDay.DAWN;
+					break;
+				case DAWN:
+					msgStr = L("The sun races across the sky!");
+					targetTOD = TimeClock.TimeOfDay.DUSK;
+					break;
+				case DAY:
+					msgStr = L("The sun hurries towards the horizon!");
+					targetTOD = TimeClock.TimeOfDay.DUSK;
+					break;
+				default:
+					mob.tell(L("You can't get there from here."));
+					return false;
 				}
-				else
+				if(TO.getDawnToDusk()[targetTOD.ordinal()]==TO.getDawnToDusk()[targetTOD.ordinal()+1])
+					targetTOD=TimeClock.TimeOfDay.values()[targetTOD.ordinal()+1];
+				if(TO.getDawnToDusk()[targetTOD.ordinal()]==TO.getDawnToDusk()[0])
+					targetTOD=TimeClock.TimeOfDay.values()[0];
+				room.showHappens(CMMsg.MSG_OK_VISUAL,msgStr);
+				for(int i=0;i<TO.getHoursInDay();i++)
 				{
-					room.showHappens(CMMsg.MSG_OK_VISUAL,L("The sun hurries towards the horizon!"));
-					final int x=room.getArea().getTimeObj().getDawnToDusk()[TimeClock.TimeOfDay.NIGHT.ordinal()]-room.getArea().getTimeObj().getHourOfDay();
-					room.getArea().getTimeObj().tickTock(x);
+					if(TO.getTODCode() != targetTOD)
+						TO.tickTock(1);
 				}
 			}
 		}

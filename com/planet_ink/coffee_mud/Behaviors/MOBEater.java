@@ -240,12 +240,10 @@ public class MOBEater extends ActiveTicker
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		super.tick(ticking,tickID);
-		if(ticking==null)
-			return true;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if(!(ticking instanceof MOB))
 			return true;
-
 		final MOB mob=(MOB)ticking;
 		if(this.lastKnownEaterM!=mob)
 			this.lastKnownEaterM=mob;
@@ -296,8 +294,8 @@ public class MOBEater extends ActiveTicker
 		if(stomachR==null)
 			return true;
 		if (CMLib.flags().isAliveAwakeMobile(mob,true)
-			&&(mob.rangeToTarget()==0)
-			&&(CMLib.flags().canHear(mob)||CMLib.flags().canSee(mob)||CMLib.flags().canSmell(mob)))
+		&&(mob.rangeToTarget()==0)
+		&&(CMLib.flags().canHear(mob)||CMLib.flags().canSee(mob)||CMLib.flags().canSmell(mob)))
 		{
 			final MOB tastyMorselM = mob.getVictim();
 			if(tastyMorselM==null)

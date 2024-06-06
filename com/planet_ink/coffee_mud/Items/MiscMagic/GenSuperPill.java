@@ -195,7 +195,7 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 				{
 					if(mob.basePhyStats().level() > 1)
 					{
-						CMLib.leveler().unLevel(mob);
+						CMLib.leveler().unLevel(mob, true);
 					}
 				}
 			}

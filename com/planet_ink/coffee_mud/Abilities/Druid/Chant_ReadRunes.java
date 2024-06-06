@@ -76,6 +76,12 @@ public class Chant_ReadRunes extends Chant implements Scroll.ScrollUsage
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_DIVINING;
+	}
+
+	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_INDIFFERENT;

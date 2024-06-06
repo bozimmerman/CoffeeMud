@@ -94,7 +94,7 @@ public class FingerReply extends MudPacket
 	@Override
 	public String toString()
 	{
-		String cmd = "({\"finger-reply\",5,\"" + I3Server.getMudName() +
+		String cmd = "({\"finger-reply\",5,\"" + sender_mud +
 				 "\",0,\"" + target_mud + "\",\"" + target_name + "\",";
 		final String[] responses={ visible_name, title, real_name, e_mail,
 							loginout_time, idle_time, ip_time, extra };

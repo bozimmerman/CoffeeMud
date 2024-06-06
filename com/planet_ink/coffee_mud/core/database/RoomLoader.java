@@ -522,7 +522,7 @@ public class RoomLoader
 		else
 		{
 			newRoom.setRoomID(roomID);
-			populateRoomInnerFields(R,newRoom,true);
+			populateRoomInnerFields(R,newRoom,buildXML);
 		}
 		return newRoom;
 	}
@@ -584,7 +584,7 @@ public class RoomLoader
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Counting Rooms");
 			final ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+roomIDtoLoad+"'");
 			if(R.next())
-				return buildRoomObject(R,true);
+				return buildRoomObject(R,buildXML);
 		}
 		catch(final SQLException sqle)
 		{

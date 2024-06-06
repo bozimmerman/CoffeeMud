@@ -121,6 +121,7 @@ public class Thief_SmugglersHold extends ThiefSkill
 		}
 	}
 
+	@Override
 	protected void commonTell(final MOB mob, String str)
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))

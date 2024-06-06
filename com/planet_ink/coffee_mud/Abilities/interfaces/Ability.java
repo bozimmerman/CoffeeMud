@@ -1015,6 +1015,8 @@ public interface Ability extends Environmental
 	public static final long FLAG_STEALING=274877906944L;
 	/** constant mask for the flags() method designating that this ability is fear-causing @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_FEARING=549755813888L;
+	/** constant mask for the flags() method designating that this ability is divining @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_DIVINING=1099511627776L;
 
 	/** array of string descriptions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS=
@@ -1058,7 +1060,8 @@ public interface Ability extends Environmental
 		"NONENCHANTMENT",
 		"NODISENCHANT",
 		"STEALING",
-		"FEARING"
+		"FEARING",
+		"DIVINING"
 	};
 
 	/** constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()}*/

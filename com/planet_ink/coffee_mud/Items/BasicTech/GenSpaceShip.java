@@ -672,9 +672,15 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	}
 
 	@Override
-	public BoundedCube getBounds()
+	public BoundedCube getCube()
 	{
-		return new BoundedObject.BoundedCube(coordinates(),radius());
+		return new BoundedCube(coordinates(),radius());
+	}
+
+	@Override
+	public BoundedSphere getSphere()
+	{
+		return new BoundedSphere(coordinates(),radius());
 	}
 
 	@Override
@@ -930,6 +936,12 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	public long radius()
 	{
 		return (area instanceof SpaceObject)?((SpaceObject)area).radius():50;
+	}
+
+	@Override
+	public long[] center()
+	{
+		return coordinates();
 	}
 
 	@Override

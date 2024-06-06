@@ -63,6 +63,12 @@ public class Chant_SenseLife extends Chant
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_DIVINING;
+	}
+
+	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_OK_SELF;

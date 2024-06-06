@@ -70,6 +70,12 @@ public class Spell_DetectWater extends Spell
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_DIVINING;
+	}
+
+	@Override
 	protected int canAffectCode()
 	{
 		return CAN_MOBS;

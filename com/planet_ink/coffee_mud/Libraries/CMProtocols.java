@@ -1632,7 +1632,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		final MSDPConfigurableVar type=(MSDPConfigurableVar)CMath.s_valueOf(MSDPConfigurableVar.class, var.toUpperCase().trim());
 		if(type == null)
 			return;
-		//TODO:
+		//TODO: Implement reset command for msdp?
 		/*
 		The RESET command works like the LIST command, and can be used to reset groups of variables to
 		their initial state. Most commonly RESET will be called with REPORTABLE_VARIABLES or
@@ -1816,8 +1816,30 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 		try
 		{
+			final byte[] jsonBytes = json.getBytes(Session.MSDP_CHARSET);
+			// fix EOL
+			for(int i=0;i<jsonBytes.length-1;i++)
+			{
+				if(jsonBytes[i]=='\n')
+				{
+					if(jsonBytes[i+1]=='\r')
+					{
+						jsonBytes[i]='\r';
+						jsonBytes[i+1]='\n';
+						i++;
+					}
+				}
+				else
+				if(jsonBytes[i]=='\r')
+				{
+					if(jsonBytes[i+1]=='\n')
+					{
+						i++;
+					}
+				}
+			}
 			bout.write(Session.TELNETBYTES_GMCP_HEAD);
-			bout.write(json.getBytes(Session.MSDP_CHARSET));
+			bout.write(jsonBytes);
 			bout.write(Session.TELNETBYTES_END_SB);
 		}
 		catch (final IOException e)

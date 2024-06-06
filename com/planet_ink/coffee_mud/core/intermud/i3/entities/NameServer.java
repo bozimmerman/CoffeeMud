@@ -35,16 +35,28 @@ public class NameServer implements Serializable
 {
 	public static final long serialVersionUID=0;
 
-	public String ip;
-	public String name;
-	public int    port;
+	public String	ip;
+	public String	name;
+	public int		port;
+	public int		modified;
 
 	public NameServer(final String addr, final int p, final String nom)
 	{
 		super();
-		ip = addr;
+		if(addr.startsWith("/"))
+			ip = addr.substring(1);
+		else
+			ip = addr;
 		port = p;
 		name = nom;
+	}
+
+	public NameServer(final NameServer other)
+	{
+		super();
+		ip = other.ip;
+		port = other.port;
+		name = other.name;
 	}
 
 	@Override
@@ -58,5 +70,11 @@ public class NameServer implements Serializable
 					&& n.port == port;
 		}
 		return false;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return (((ip.hashCode() << 8) ^ (name.hashCode()) << 8)) ^ port;
 	}
 }

@@ -277,6 +277,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			word=word.substring(0, word.length()-3);
 		if(word.endsWith("(es)"))
 			word=word.substring(0, word.length()-4);
+		if(word.endsWith("(ses)"))
+			word=word.substring(0, word.length()-5);
 		if(word.endsWith("(ys)"))
 			word=word.substring(0, word.length()-4);
 		if(CMStrings.isVowel(word.charAt(word.length()-1)))
@@ -322,6 +324,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return CMStrings.replaceAll(str, "(s)", "s");
 		if(str.indexOf("(es)")>0)
 			return CMStrings.replaceAll(str, "(es)", "es");
+		if(str.indexOf("(ses)")>0)
+			return CMStrings.replaceAll(str, "(ses)", "ses");
 		if(str.indexOf("(ys)")>0)
 			return CMStrings.replaceAll(str, "(ys)", "ies");
 		final String lowerStr=str.toLowerCase();
@@ -697,16 +701,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		if(str.length()==0)
 			return str;
-		str=CMStrings.removeColors(str.trim());
-		final String uppStr=str.toUpperCase();
-		if((uppStr.startsWith("A "))
-		||(uppStr.startsWith("AN ")))
-			return properIndefiniteArticle(adjective)+" "+adjective+" "+str.substring(2).trim();
-		if(uppStr.startsWith("THE "))
-			return properIndefiniteArticle(adjective)+" "+adjective+" "+str.substring(3).trim();
-		if(uppStr.startsWith("SOME "))
-			return properIndefiniteArticle(adjective)+" "+adjective+" "+str.substring(4).trim();
-		return properIndefiniteArticle(adjective)+" "+adjective+" "+str.trim();
+		final String ostr = str;
+		str=CMStrings.removeColors(removeArticleLead(str.trim()).trim()).trim();
+		if(ostr.toLowerCase().startsWith("some "))
+			return ostr.substring(0,5)+adjective+" "+str;
+		return properIndefiniteArticle(adjective)+" "+adjective+" "+str;
 	}
 
 	protected int skipSpaces(final String paragraph, int index)

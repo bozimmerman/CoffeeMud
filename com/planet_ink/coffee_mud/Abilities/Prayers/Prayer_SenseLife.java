@@ -89,7 +89,7 @@ public class Prayer_SenseLife extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_NEUTRAL;
+		return Ability.FLAG_NEUTRAL | Ability.FLAG_DIVINING;
 	}
 
 	protected Room lastRoom=null;

@@ -2,7 +2,6 @@ package com.planet_ink.coffee_mud.Areas;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -143,6 +142,12 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 	}
 
 	@Override
+	public long[] center()
+	{
+		return coordinates();
+	}
+
+	@Override
 	public void setRadius(final long radius)
 	{
 		this.radius = radius;
@@ -178,8 +183,14 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 	}
 
 	@Override
-	public BoundedCube getBounds()
+	public BoundedCube getCube()
 	{
-		return new BoundedObject.BoundedCube(coordinates(),radius());
+		return new BoundedCube(coordinates(),radius());
+	}
+
+	@Override
+	public BoundedSphere getSphere()
+	{
+		return new BoundedSphere(coordinates(),radius());
 	}
 }

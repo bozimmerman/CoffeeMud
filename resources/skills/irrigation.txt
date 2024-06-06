@@ -9,10 +9,10 @@ fresh underwater	17	90	255	VALUE	DOWNONLY WATERSURFACEONLY FRESHWATER	STAIRS	Und
 salty underwater	17	90	255	VALUE	DOWNONLY WATERSURFACEONLY SALTWATER	STAIRS	UnderSaltWater	0		underwater		Adds a deep salt under-water room below a Lake.
 beach	20	200	500	VALUE	OUTDOOR	ROOM	Shore	0		shore		Turns an outdoor room into a beach where boats may enter, but not sailing ships.
 no current	22	150	0		WATERONLY DIR	DELEFFECT			WaterCurrents()	no current		Removes any artificial currents from a water surface.
-slow current	22	150	50	VALUE	WATERONLY DIR	ROOMEFFECT			WaterCurrents(min=1 max=20 chance=99 @dir)	slow current		Adds a slow artificial current to a swimmable room.
-light current	23	150	100	VALUE	WATERONLY DIR	ROOMEFFECT			WaterCurrents(min=1 max=15 chance=99 @dir)	light current		Adds a light artificial current to a swimmable room.
-water current	25	150	150	VALUE	WATERONLY DIR	ROOMEFFECT			WaterCurrents(min=1 max=10 chance=99 @dir)	water current		Adds an artificial current to a swimmable room.
-strong current	27	150	200	VALUE	WATERONLY DIR	ROOMEFFECT			WaterCurrents(min=1 max=5 chance=99 @dir)	strong current		Adds a strong artificial current to a swimmable room.
+slow current	22	150	50	VALUE	DIR WATERONLY	ROOMEFFECT			WaterCurrents(min=1 max=20 chance=99 GO=@dir)	slow current		Adds a slow artificial current to a swimmable room.
+light current	23	150	100	VALUE	DIR WATERONLY	ROOMEFFECT			WaterCurrents(min=1 max=15 chance=99 GO=@dir)	light current		Adds a light artificial current to a swimmable room.
+water current	25	150	150	VALUE	DIR WATERONLY	ROOMEFFECT			WaterCurrents(min=1 max=10 chance=99 GO=@dir)	water current		Adds an artificial current to a swimmable room.
+strong current	27	150	200	VALUE	DIR WATERONLY	ROOMEFFECT			WaterCurrents(min=1 max=5 chance=99 GO=@dir)	strong current		Adds a strong artificial current to a swimmable room.
 fish hatchery	28	100	500	FISH	WATERONLY	ROOMEFFECT			ResourceOverride(Fish)	seeding fish		Makes a water room only produce fish resources.
 dock	30	300	100	VALUE	WATERSURFACEONLY	ROOM	SeaPort	0		dock		Turns an outdoor water room into a sea port that sailing ships may use.
 restore sealife	33	25	0		WATERONLY	DELEFFECT			ResourceOverride()Prop_CommonTwister()	normal resources		Makes a water room able to produce any normal resources available to that type of environment.

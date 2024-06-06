@@ -2550,7 +2550,8 @@ public class MOBloader
 					nextWaitAfter=System.currentTimeMillis() + msWait;
 				}
 			}
-			R.close();
+			if(R!=null)
+				R.close();
 		}
 		catch(final Exception sqle)
 		{

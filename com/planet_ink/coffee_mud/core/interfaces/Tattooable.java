@@ -68,10 +68,10 @@ public interface Tattooable extends CMObject
 
 	/**
 	 * Remove a specific tattoo from this object
-	 * @return TODO
 	 * @see Tattooable
 	 * @see Tattooable#delTattoo(Tattoo)
 	 * @param of the tattoo name of the tattoo to remove
+	 * @return true if the tattoo existed
 	 */
 	public boolean delTattoo(String of);
 

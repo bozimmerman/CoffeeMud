@@ -84,7 +84,7 @@ public class PrideStat extends StdWebMacro
 			if(s.equalsIgnoreCase("cat"))
 				cat=(PlayerLibrary.PrideCat)CMath.s_valueOf(PlayerLibrary.PrideCat.class,parms.get(s).toUpperCase());
 			else
-			if(s.equalsIgnoreCase("catunit"))
+			if(s.equalsIgnoreCase("catunit")&&(val!=null))
 				catUnit=val.toUpperCase();
 			else
 			{

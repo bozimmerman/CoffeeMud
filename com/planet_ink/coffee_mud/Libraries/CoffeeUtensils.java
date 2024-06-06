@@ -171,7 +171,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				allRecipeLines.append( "\n" );
 			}
 		}
-		final List<List<String>> V=loadRecipeList(allRecipeLines.toString());
+		final List<List<String>> V=loadRecipeList(allRecipeLines.toString(), true);
 		for(int v=0;v<V.size();v++)
 		{
 			final List<String> V2=V.get(v);
@@ -238,7 +238,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public List<List<String>> loadRecipeList(final String str)
+	public List<List<String>> loadRecipeList(final String str, final boolean tabs)
 	{
 		final List<List<String>> V=new Vector<List<String>>();
 		if(str==null)
@@ -265,7 +265,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				if(skipLine)
 					skipLine=false;
 				else
-				if(oneComma)
+				if(oneComma || (!tabs && (i > start+1)))
 				{
 					V2.add(str.substring(start,i));
 					if(V2.size()>longestList)

@@ -468,6 +468,57 @@ public class CMath
 	}
 
 	/**
+	 * Returns the smaller or larger or existing of the numbers
+	 * greater than or equal to 0.
+	 * @param a the min number
+	 * @param b the middle number
+	 * @param c the max number
+	 * @return the min or max or middle
+	 */
+	public final static long minMax(final long a, final long b, final long c)
+	{
+		if(b<a)
+			return a;
+		if(b>c)
+			return c;
+		return b;
+	}
+
+	/**
+	 * Returns the smaller or larger or existing of the numbers
+	 * greater than or equal to 0.
+	 * @param a the min number
+	 * @param b the middle number
+	 * @param c the max number
+	 * @return the min or max or middle
+	 */
+	public final static int minMax(final int a, final int b, final int c)
+	{
+		if(b<a)
+			return a;
+		if(b>c)
+			return c;
+		return b;
+	}
+
+	/**
+	 * Returns the smaller or larger or existing of the numbers
+	 * greater than or equal to 0.
+	 * @param a the min number
+	 * @param b the middle number
+	 * @param c the max number
+	 * @return the min or max or middle
+	 */
+	public final static double minMax(final double a, final double b, final double c)
+	{
+		if(b<a)
+			return a;
+		if(b>c)
+			return c;
+		return b;
+	}
+
+	/**
 	 * Returns the smaller of the two numbers that is
 	 * greater than or equal to 0.
 	 * @param a the first number

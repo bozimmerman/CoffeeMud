@@ -201,7 +201,8 @@ public class StdClanCommonItem extends StdClanItem
 			final Room R=M2.location();
 			if((R!=null)&&(CMLib.flags().isInTheGame(M2,true)))
 			{
-				A.invoke(M,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
+				final List<String> lst = new XVector<String>(CMLib.map().getExtendedRoomID(R), "NPC");
+				A.invoke(M,lst,R,true,0);
 				return true;
 			}
 		}
@@ -213,7 +214,8 @@ public class StdClanCommonItem extends StdClanItem
 		final Ability A=CMClass.getAbility("Skill_Track");
 		if((A!=null)&&(R!=null))
 		{
-			A.invoke(M,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
+			final List<String> lst = new XVector<String>(CMLib.map().getExtendedRoomID(R), "NPC");
+			A.invoke(M,lst,R,true,0);
 			return true;
 		}
 		return false;

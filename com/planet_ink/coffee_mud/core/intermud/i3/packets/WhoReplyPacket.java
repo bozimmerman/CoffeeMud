@@ -63,7 +63,7 @@ public class WhoReplyPacket extends MudPacket
 	@Override
 	public String toString()
 	{
-		String cmd = "({\"who-reply\",5,\"" + I3Server.getMudName() +
+		String cmd = "({\"who-reply\",5,\"" + sender_mud +
 				 "\",0,\"" + target_mud + "\",\"" + target_name + "\",({";
 		int i;
 

@@ -50,6 +50,9 @@ public class ChannelTargetEmote extends ChannelPacket
 		try
 		{
 			type = Packet.PacketType.CHANNEL_T;
+			target_mud=(String)v.elementAt(7);
+			target_name=(String)v.elementAt(8);
+			message=(String)v.elementAt(9);
 			message_target=(String)v.elementAt(10);
 			sender_visible_name = (String)v.elementAt(11);
 			target_visible_name = (String)v.elementAt(12);
@@ -69,7 +72,7 @@ public class ChannelTargetEmote extends ChannelPacket
 	public String toString()
 	{
 		String cmd=null;
-		 cmd="({\"channel-t\",5,\"" + I3Server.getMudName() + "\",\"" +
+		cmd="({\"channel-t\",5,\"" + sender_mud + "\",\"" +
 		 sender_name + "\",0,0,\"" + channel + "\",\"" +
 		 target_mud + "\",\"" + target_name + "\",\"" +
 		 message + "\",\"" + message_target + "\",\"" +

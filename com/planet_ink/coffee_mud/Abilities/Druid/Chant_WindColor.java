@@ -68,6 +68,12 @@ public class Chant_WindColor extends Chant
 		return Ability.ACODE_CHANT | Ability.DOMAIN_WEATHER_MASTERY;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_DIVINING;
+	}
+
 	Room	lastRoom	= null;
 
 	@Override

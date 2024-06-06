@@ -1,7 +1,11 @@
 BUGS/UNTESTED STUFF:
-  *.
+   *. Is turning broken?  Swivel from approach->deproach looks terrible.  
+      And then during deproach you end up drifting FURTHER from the target!
 
 TECH TODO:
+   *. navigation course system testing.
+   *. fix landing to require an orbit first
+   *. make orbit ability, integrate with navigation: 1. go dir, 2. adjust point same dist from planet. 3. plot course. 4. Cheat
    *. make inertia battery that alter ships inertia overall for dir change 
       (Kinetic Energy (inertia) KE=0.5*mass*velocity*velocity)
       discharge of all stored inertial power to stop the ship entirely
@@ -9,7 +13,6 @@ TECH TODO:
    *. make warp engines -- see tech doc
    *. make ship active scanners
    *. make communication system
-   *. navigation course system testing.
    *. When it's time to make the Real Software, good categories in tech docs
    *. make tractor beam system -- esp important for pirates!
    *. make shuttle system, ship items areas have landing zones... might require opening if exit has door?
@@ -17,7 +20,6 @@ TECH TODO:
    *. entry systems for ships (default entry key card, voice code, identifying scanner)
    *. Implement inertia/acceleration damage to the people on-board. (See StdSpaceShip gravity code)
    *. work on automatic component values ??
-   *. make orbit ability, integrate with navigation: 1. go dir, 2. adjust point same dist from planet. 3. plot course.
    *. Talk to Tim: Space Tech power consumption depends on tech level of generator, panel, or interaction damage?
    *. make food generators, and refrigerators, water recycler, 
    *. turbo lift -- moveable rooms

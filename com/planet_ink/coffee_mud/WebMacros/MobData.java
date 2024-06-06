@@ -1238,7 +1238,8 @@ public class MobData extends StdWebMacro
 			httpReq.addFakeUrlParameter("ARMOR",""+M.basePhyStats().armor());
 			httpReq.addFakeUrlParameter("DAMAGE",""+M.basePhyStats().damage());
 			httpReq.addFakeUrlParameter("SPEED",""+M.basePhyStats().speed());
-			httpReq.addFakeUrlParameter("GENDER",""+M.baseCharStats().getStat(CharStats.STAT_GENDER));
+			if(!httpReq.isUrlParameter("GENDER"))
+				httpReq.addFakeUrlParameter("GENDER",""+M.baseCharStats().getStat(CharStats.STAT_GENDER)); // WHY?!
 			httpReq.addFakeUrlParameter("ATTACK",""+M.basePhyStats().attackAdjustment());
 			httpReq.addFakeUrlParameter("MONEY",""+CMLib.beanCounter().getMoney(M));
 			if(baseChangedClass && (!oldM.isGeneric()))

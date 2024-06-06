@@ -214,6 +214,8 @@ public class Prop_QuestGiver extends Property
 			final MOB M=mob;
 			final Quest tQ=Q;
 			final String msgStr = announcement.toString();
+
+			@Override
 			public void run()
 			{
 				if(M.session() == null)
@@ -269,6 +271,7 @@ public class Prop_QuestGiver extends Property
 			asker.run();
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))

@@ -1,7 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Software;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.threads.TimeMs;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
@@ -52,9 +51,6 @@ public class RocketShipProgram extends ShipTacticalProgram
 	{
 		return "RocketShipProgram";
 	}
-
-	protected final static long[] 	emptyCoords = new long[] {0,0,0};
-	protected final static double[] emptyDirection = new double[] {0,0};
 
 	public RocketShipProgram()
 	{
@@ -214,6 +210,17 @@ public class RocketShipProgram extends ShipTacticalProgram
 		return trimColorsAndTrim(str.toString());
 	}
 
+	public int appendToLength(final StringBuilder str, final String s, final int pos, final int max)
+	{
+		final int posPos = pos + CMStrings.lengthMinusColors(s);
+		if(posPos<=max)
+		{
+			str.append(s);
+			return posPos;
+		}
+		return pos;
+	}
+
 	public String getSensorMenu()
 	{
 		final StringBuilder str=new StringBuilder();
@@ -254,19 +261,20 @@ public class RocketShipProgram extends ShipTacticalProgram
 								final SpaceObject obj = (SpaceObject)o;
 								final long distance = CMLib.space().getDistanceFrom(spaceMe.coordinates(), obj.coordinates()) - spaceMe.radius() - obj.radius();
 								final double[] direction = CMLib.space().getDirection(spaceMe, obj);
+								int pos=0;
+								final int max = 60;
 								if((currentTarget!=null)
 								&&((currentTarget==o)||(currentTarget.ID().equals(obj.ID()))))
-									str.append("^r*^N ");
-								str.append("^W").append(obj.name());
-								if(obj.getMass()>0)
-									str.append("^N/^WMass: ^N").append(CMath.abbreviateLong(obj.getMass()));
-								if(!Arrays.equals(obj.direction(),emptyDirection))
-									str.append("^N/^WDir: ^N").append(CMLib.english().directionDescShortest(direction));
-								else
-								if(obj.radius()>0)
-									str.append("^N/^WSize: ^N").append(CMLib.english().distanceDescShort(obj.radius()));
+									pos = appendToLength(str, "^r*^N ", pos, max);
+								pos = appendToLength(str, "^W" + obj.name(), pos, max);
 								if(!Arrays.equals(obj.coordinates(),emptyCoords))
-									str.append("^N/^WDist: ^N").append(CMLib.english().distanceDescShort(distance));
+									pos = appendToLength(str, "^N, ^WDist: ^N" + CMLib.english().distanceDescShort(distance), pos, max);
+								if(!Arrays.equals(obj.coordinates(),emptyCoords))
+									pos = appendToLength(str, "^N, ^WDir: ^N" + CMLib.english().directionDescShortest(direction), pos, max);
+								if(obj.getMass()>0)
+									pos = appendToLength(str, "^N, ^WMass: ^N" + CMath.abbreviateLong(obj.getMass()), pos, max);
+								if(obj.radius()>0)
+									pos = appendToLength(str, "^N, ^WSize: ^N" + CMLib.english().distanceDescShort(obj.radius()), pos, max);
 							}
 							else
 							if(o instanceof CMObject)
@@ -378,16 +386,6 @@ public class RocketShipProgram extends ShipTacticalProgram
 		str.append("\n\r^.^N");
 		if(engines.size()==0)
 			str.append("^rNo engine systems found.");
-		else
-		{
-			str.append("^X").append(CMStrings.centerPreserve(L(" -- Commands -- "),60)).append("^.^N\n\r");
-			str.append("^H").append(CMStrings.padRight(L("TYPE HELP INTO CONSOLE : Get help."),60)).append("\n\r");
-			if((container() instanceof Rideable)
-			&&(((Rideable)container()).rideBasis()==Rideable.Basis.FURNITURE_TABLE)
-			&&(((Rideable)container()).numRiders()==0))
-				str.append("^H").append(CMStrings.padRight(L("* Sit at "+container().name()+" to shorten commands *"),60)).append("\n\r");
-			str.append("^X").append(CMStrings.centerPreserve("",60));
-		}
 		return trimColorsAndTrim(str.toString())+"^.^N";
 	}
 
@@ -429,19 +427,19 @@ public class RocketShipProgram extends ShipTacticalProgram
 				{
 					addScreenMessage(CMLib.lang().L(
 							  "^HHELP:^N\n\r^N"
-							+ "ACTIVATE [SYSTEM/ALL]  : turn on specified system\n\r"
-							+ "DEACTIVATE [SYSTEM/ALL]: turn off any system specified\n\r"
-							+ "LAUNCH / ORBIT         : take your ship off the planet\n\r"
-							+ "TARGET [NAME]          : target a sensor object\n\r"
-							+ "FACE [NAME]            : face a sensor object\n\r"
-							+ "APPROACH [NAME]        : approach a sensor object\n\r"
-							+ "MOON [NAME]            : moon a sensor object\n\r"
-							+ "[SENSOR NAME] [DIR]    : aim/use a sensor\n\r"
-							+ "FIRE [WEAPON]          : fire weapon at target\n\r"
-							+ "STOP                   : negate all velocity\n\r"
-							+ "LAND                   : land on the nearest planet.\n\r"
-							+ "CANCEL                 : cancel any running prgs.\n\r"
-							+ "HELP [ENGINE/SYSTEM/SENSOR/WEAPON/...] : more info"));
+							+ "^wACTIVATE [SYSTEM/ALL]  ^N: turn on specified system\n\r"
+							+ "^wDEACTIVATE [SYSTEM/ALL]^N: turn off any system specified\n\r"
+							+ "^wLAUNCH / ORBIT         ^N: take your ship off the planet\n\r"
+							+ "^wTARGET [NAME]          ^N: target a sensor object\n\r"
+							+ "^wFACE [NAME]            ^N: face a sensor object\n\r"
+							+ "^wAPPROACH [NAME]        ^N: approach a sensor object\n\r"
+							+ "^wMOON [NAME]            ^N: moon a sensor object\n\r"
+							+ "^w[SENSOR NAME] [DIR]    ^N: aim/use a sensor\n\r"
+							+ "^wFIRE [WEAPON]          ^N: fire weapon at target\n\r"
+							+ "^wSTOP                   ^N: negate all velocity\n\r"
+							+ "^wLAND                   ^N: land on the nearest planet.\n\r"
+							+ "^wCANCEL                 ^N: cancel any running prgs.\n\r"
+							+ "^wHELP [ENGINE/SYSTEM/SENSOR/WEAPON/...] ^N: more info"));
 					return;
 				}
 				final String secondWord = CMParms.combine(parsed,1).toUpperCase();

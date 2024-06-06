@@ -428,6 +428,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public String parseOutAngleBrackets(String s)
 	{
+		if(s==null)
+			return "";
 		int x=s.indexOf('<');
 		if(x>=0)
 		{
@@ -460,6 +462,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public String parseOutAngleBracketsAndQuotes(String s)
 	{
+		if(s==null)
+			return "";
 		int x=s.indexOf('<');
 		if(x>=0)
 		{
@@ -506,8 +510,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	public String restoreAngleBrackets(final String s)
 	{
 		if(s==null)
-			return null;
-
+			return "";
 		int loop=s.indexOf('&');
 		if(loop<0)
 		{
@@ -1803,7 +1806,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 									fromXMLtoPOJO(vTag.contents(), newObj);
 									Array.set(tgt, i, newObj);
 								}
-								catch (Exception e)
+								catch (final Exception e)
 								{
 									e.printStackTrace();
 								}
@@ -1881,15 +1884,15 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			{
 				throw new IllegalArgumentException(e.getMessage(),e);
 			}
-			catch (NoSuchMethodException e)
+			catch (final NoSuchMethodException e)
 			{
 				throw new IllegalArgumentException(e.getMessage(),e);
 			}
-			catch (SecurityException e)
+			catch (final SecurityException e)
 			{
 				throw new IllegalArgumentException(e.getMessage(),e);
 			}
-			catch (InvocationTargetException e)
+			catch (final InvocationTargetException e)
 			{
 				throw new IllegalArgumentException(e.getMessage(),e);
 			}

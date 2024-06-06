@@ -33,6 +33,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerSortCo
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.Tests.interfaces.CMTest;
 import com.planet_ink.coffee_mud.core.threads.*;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 
@@ -4648,6 +4649,7 @@ public class ListCmd extends StdCommand
 		EXITS("EXITS",new SecFlag[]{SecFlag.CMDEXITS}),
 		RACES("RACES",new SecFlag[]{SecFlag.CMDRACES,SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS}),
 		CLASSES("CLASSES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDCLASSES}),
+		TESTS("TESTS",new SecFlag[]{SecFlag.LISTADMIN}),
 		STAFF("STAFF",new SecFlag[]{SecFlag.CMDAREAS}),
 		ABILITIES("ABILITIES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		SPELLS("SPELLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
@@ -6082,6 +6084,12 @@ public class ListCmd extends StdCommand
 			s.println("^HMOB IDs:^N");
 			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
 					new FilteredEnumeration<MOB>(CMClass.mobTypes(),new NameIdFilter<MOB>(CMParms.combine(commands,1)))
+					).toString());
+			break;
+		case TESTS:
+			s.println("^HTest IDs:^N");
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
+					new FilteredEnumeration<CMTest>(CMClass.tests(),new NameIdFilter<CMTest>(CMParms.combine(commands,1)))
 					).toString());
 			break;
 		case ROOMS:

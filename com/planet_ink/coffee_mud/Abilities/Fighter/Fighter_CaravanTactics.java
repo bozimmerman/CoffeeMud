@@ -54,6 +54,7 @@ public class Fighter_CaravanTactics extends Fighter_FieldTactics
 		return Ability.ACODE_SKILL|Ability.DOMAIN_TRAVEL;
 	}
 
+	@Override
 	protected boolean appliesHere(final Room R)
 	{
 		if(R != null)

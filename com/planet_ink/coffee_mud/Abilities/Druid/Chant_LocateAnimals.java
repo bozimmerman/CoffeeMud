@@ -74,7 +74,7 @@ public class Chant_LocateAnimals extends Chant
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_TRACKING;
+		return Ability.FLAG_TRACKING | Ability.FLAG_DIVINING;
 	}
 
 	@Override

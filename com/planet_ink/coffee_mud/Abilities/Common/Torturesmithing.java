@@ -78,7 +78,7 @@ public class Torturesmithing extends EnhancedCraftingSkill implements ItemCrafto
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
-		+"LID_LOCK||CONTAINER_TYPE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION\t"
+		+"CONTAINER_TYPE_OR_LIDLOCK_OR_RIDEBASIS||WEAPON_CLASS||CODED_WEAR_LOCATION\t"
 		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||MAX_WAND_USES\t"
 		+"BASE_ARMOR_AMOUNT\tWOOD_METAL_CLOTH\tCODED_SPELL_LIST";
 	}
@@ -396,11 +396,12 @@ public class Torturesmithing extends EnhancedCraftingSkill implements ItemCrafto
 		addSpellsOrBehaviors(buildingI,spell,deadMats.getLostProps(),deadComps.getLostProps());
 		if(buildingI instanceof Container)
 		{
+			final String[] allTypes=CMParms.parseAny(misctype, "|", true).toArray(new String[0]);
 			((Container)buildingI).setCapacity(capacity+woodRequired);
-			if(misctype.equalsIgnoreCase("LID"))
+			if(CMParms.contains(allTypes, "LID"))
 				((Container)buildingI).setDoorsNLocks(true,false,true,false,false,false);
 			else
-			if(misctype.equalsIgnoreCase("LOCK"))
+			if(CMParms.contains(allTypes, "LOCK"))
 			{
 				((Container)buildingI).setDoorsNLocks(true,false,true,true,false,true);
 				((Container)buildingI).setKeyName(Double.toString(Math.random()));
@@ -417,7 +418,8 @@ public class Torturesmithing extends EnhancedCraftingSkill implements ItemCrafto
 			if(capacity<5)
 				((Rideable)buildingI).setRiderCapacity(capacity);
 		}
-		if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
+		if((buildingI instanceof Armor)
+		&&(!(buildingI instanceof FalseLimb)))
 		{
 			((Armor)buildingI).basePhyStats().setArmor(0);
 			if(armordmg!=0)

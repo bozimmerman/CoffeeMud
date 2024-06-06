@@ -18,6 +18,8 @@ import java.util.Vector;
  */
 public class IrnMudlistRequest extends IrnPacket
 {
+	public int mudlist_id = 0;
+
 	public IrnMudlistRequest(final String targetRouter)
 	{
 		super(targetRouter);
@@ -28,6 +30,8 @@ public class IrnMudlistRequest extends IrnPacket
 	{
 		super(v);
 		type = Packet.PacketType.IRN_MUDLIST_REQ;
+		if(v.size()>6)
+			mudlist_id = s_int(v,6);
 	}
 
 	@Override
@@ -36,7 +40,7 @@ public class IrnMudlistRequest extends IrnPacket
 		final String cmd=
 				"({\"irn-mudlist-req\",5," +
 				"\"" + sender_router + "\",0," +
-				"\"" + target_router + "\",0," +
+				"\"" + target_router + "\",0," + mudlist_id + "," +
 				"})";
 		return cmd;
 	}

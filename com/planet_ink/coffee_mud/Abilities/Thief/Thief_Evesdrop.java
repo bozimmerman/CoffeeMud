@@ -164,7 +164,10 @@ public class Thief_Evesdrop extends ThiefSkill
 		if(A!=null)
 		{
 			if(A.invoker()==mob)
+			{
 				A.unInvoke();
+				return true;
+			}
 			else
 			{
 				mob.tell(mob,target,null,L("It is too crowded to eavesdrop on <T-NAME>."));

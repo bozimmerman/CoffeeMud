@@ -98,7 +98,7 @@ public class Spell_Blink extends Spell
 		{
 			final MOB mob=(MOB)affected;
 			final Room R = (mob != null) ? mob.location() : null;
-			if(R == null)
+			if((R == null)||(mob==null))
 				return super.tick(ticking, tickID);
 			final int roll=CMLib.dice().roll(1,8,0);
 			final int msgCode = CMMsg.MSG_OK_VISUAL|CMMsg.MASK_SPAMMY;

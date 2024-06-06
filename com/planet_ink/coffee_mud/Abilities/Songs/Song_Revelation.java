@@ -56,6 +56,12 @@ public class Song_Revelation extends Song
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_DIVINING;
+	}
+
+	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)

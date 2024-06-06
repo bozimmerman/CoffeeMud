@@ -25,6 +25,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * The interface for a intermud services daemon
  */
 
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -51,6 +52,22 @@ public interface ImudServices
 	 * @param packet the incoming packet
 	 */
 	public abstract void receive(Packet packet);
+
+	/**
+	 * Returns the mud->key mapping for muds that want
+	 * to connect to this server.
+	 *
+	 * @return the mud->key mapping
+	 */
+	public abstract Map<String,Long> getIncomingKeys();
+
+	/**
+	 * Returns the mud->key mapping so that you can
+	 * connect to other muds.
+	 *
+	 * @return the mud->key mapping
+	 */
+	public abstract Map<String,Long> getOutgoingKeys();
 
 	/**
 	 * @return an enumeration of channels this mud subscribes to

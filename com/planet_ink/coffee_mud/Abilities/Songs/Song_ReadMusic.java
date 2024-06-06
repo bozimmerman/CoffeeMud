@@ -75,21 +75,25 @@ public class Song_ReadMusic extends Song implements Scroll.ScrollUsage
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
+	@Override
 	protected boolean skipStandardSongInvoke()
 	{
 		return true;
 	}
 
+	@Override
 	protected boolean mindAttack()
 	{
 		return abstractQuality() == Ability.QUALITY_MALICIOUS;
 	}
 
+	@Override
 	protected boolean skipStandardSongTick()
 	{
 		return true;
 	}
 
+	@Override
 	protected boolean skipSimpleStandardSongTickToo()
 	{
 		return true;

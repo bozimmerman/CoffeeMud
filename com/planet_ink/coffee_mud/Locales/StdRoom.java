@@ -1428,7 +1428,14 @@ public class StdRoom implements Room
 		if(oldRoom!=null)
 			oldRoom.delInhabitant(mob);
 		if(!isInhabitant(mob))
+		{
+			//TODO: DELME -- THIS IS FOR DEBUGGING AN ISSUE
+			if((mob.isPlayer())
+			&&(this == mob.getStartRoom())
+			&&(CMProps.getVar(CMProps.Str.MUDNAME).equalsIgnoreCase("coffeemud")))
+				Log.helpOut(mob.Name(), new Exception());
 			addInhabitant(mob);
+		}
 		mob.setLocation(this);
 
 		if((andFollowers)&&(oldRoom!=null))

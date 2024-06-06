@@ -132,6 +132,16 @@ public class Decay extends ActiveTicker
 				{
 					if(E instanceof MOB)
 					{
+						try
+						{
+							if(!item.amWearingAt(Item.IN_INVENTORY))
+								com.planet_ink.coffee_mud.core.CMLib.commands().postRemove((MOB)E, item, true);
+							com.planet_ink.coffee_mud.core.CMLib.commands().postDrop((MOB)E, item, true, false, false);
+						}
+						catch(final Exception e)
+						{
+							Log.errOut(e);
+						}
 						((MOB)E).tell(item.name()+" "+answer.trim());
 						((MOB)E).recoverPhyStats();
 						((MOB)E).recoverCharStats();
@@ -160,10 +170,72 @@ public class Decay extends ActiveTicker
 			&&(!msg.source().isMonster())
 			&&(CMLib.masking().maskCheck(this.mask,msg.source(),true)))
 				activated=true;
+			else
+			if(use2
+			&&(msg.targetMinor()==CMMsg.TYP_MOUNT)
+			&&(msg.target()==affecting)
+			&&(!msg.source().isMonster())
+			&&(CMLib.masking().maskCheck(this.mask,msg.source(),true)))
+				activated=true;
 		}
 		else
-		if(msg.amITarget(affecting))
+		if(msg.amITarget(affecting)
+		&&(affecting instanceof Item))
 		{
+			if(use2)
+			{
+				switch(msg.targetMinor())
+				{
+				case CMMsg.TYP_HANDS:
+					if((affecting instanceof Light)
+					&&(((Light)affecting).amWearingAt(Wearable.WORN_MOUTH))
+					&&(((Light)affecting).isLit()))
+						activated=true;
+					break;
+				case CMMsg.TYP_READ:
+					if(affecting instanceof Book)
+					{
+						if(CMLib.masking().maskCheck(this.mask,msg.source(),true))
+							activated=true;
+					}
+					else
+					if((affecting instanceof Scroll)
+					&&(msg.sourceMessage()==null)
+					&&(msg.othersMessage()==null)
+					&&(CMLib.masking().maskCheck(this.mask,msg.source(),true)))
+						activated=true;
+					break;
+				case CMMsg.TYP_DRINK:
+					if((affecting instanceof Drink)
+					&&(CMLib.masking().maskCheck(this.mask,msg.source(),true)))
+						activated=true;
+					break;
+				case CMMsg.TYP_EAT:
+					if((affecting instanceof Food)
+					&&(CMLib.masking().maskCheck(this.mask,msg.source(),true)))
+						activated=true;
+					break;
+				case CMMsg.TYP_GET:
+				case CMMsg.TYP_PUSH:
+				case CMMsg.TYP_PULL:
+					if((affecting instanceof Scroll)
+					||(affecting instanceof Drink)
+					||(affecting instanceof Food)
+					||(affecting instanceof Book)
+					||((affecting instanceof Light)
+						&&((((Light)affecting).rawProperLocationBitmap()&Wearable.WORN_MOUTH)>0)))
+					{
+						/* do nothing */
+					}
+					else
+					if(CMLib.masking().maskCheck(this.mask,msg.source(),true))
+						activated=true;
+					break;
+				default:
+					break;
+				}
+			}
+			else // !use2 -- normal case
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_SLEEP:
@@ -182,51 +254,12 @@ public class Decay extends ActiveTicker
 				&&(CMLib.masking().maskCheck(this.mask,msg.source(),true)))
 					activated=true;
 				break;
-			case CMMsg.TYP_HANDS:
-				if(use2
-				&&(affecting instanceof Light)
-				&&(((Light)affecting).amWearingAt(Wearable.WORN_MOUTH))
-				&&(((Light)affecting).isLit()))
-					activated=true;
-				break;
-			case CMMsg.TYP_READ:
-				if(use2)
-				{
-					if(affecting instanceof Book)
-					{
-						if(CMLib.masking().maskCheck(this.mask,msg.source(),true))
-							activated=true;
-					}
-					else
-					if((affecting instanceof Scroll)
-					&&(msg.sourceMessage()==null)
-					&&(msg.othersMessage()==null)
-					&&(CMLib.masking().maskCheck(this.mask,msg.source(),true)))
-						activated=true;
-				}
-				break;
-			case CMMsg.TYP_DRINK:
-				if((affecting instanceof Drink)
-				&&(use2)
-				&&(CMLib.masking().maskCheck(this.mask,msg.source(),true)))
-					activated=true;
-				break;
-			case CMMsg.TYP_EAT:
-				if((affecting instanceof Food)
-				&&(use2)
-				&&(CMLib.masking().maskCheck(this.mask,msg.source(),true)))
-					activated=true;
-				break;
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_PUSH:
 			case CMMsg.TYP_PULL:
-				if(use2
-				&&((affecting instanceof Scroll)
-					||(affecting instanceof Drink)
-					||(affecting instanceof Food)
-					||(affecting instanceof Book)
-					||((affecting instanceof Light)
-						&&((((Light)affecting).rawProperLocationBitmap()&Wearable.WORN_MOUTH)>0))))
+				if((affecting instanceof Armor)
+				||(affecting instanceof Weapon)
+				||(affecting instanceof Rideable))
 				{
 					/* do nothing */
 				}

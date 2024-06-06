@@ -136,7 +136,8 @@ public class Chant_CallCompanion extends Chant
 				final Ability A=CMClass.getAbility("Skill_Track");
 				if(A!=null)
 				{
-					A.invoke(follower,CMParms.parse("\""+CMLib.map().getExtendedRoomID(newRoom)+"\""),newRoom,true,0);
+					final List<String> lst = new XVector<String>(CMLib.map().getExtendedRoomID(newRoom),"NPC");
+					A.invoke(follower,lst,newRoom,true,0);
 					return true;
 				}
 			}

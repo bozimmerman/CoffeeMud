@@ -25,6 +25,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -86,33 +87,13 @@ public class IrnPacket extends Packet
 		}
 	}
 
+	@Override
 	public PacketType getType()
 	{
 		return type;
 	}
 
-	public String convertString(final String cmd)
-	{
-		final StringBuffer b = new StringBuffer(cmd);
-		int i = 0;
-
-		while( i < b.length() )
-		{
-			final char c = b.charAt(i);
-
-			if( c != '\\' && c != '"' )
-			{
-				i++;
-			}
-			else
-			{
-				b.insert(i, '\\');
-				i += 2;
-			}
-		}
-		return new String(b);
-	}
-
+	@Override
 	public void send() throws InvalidPacketException
 	{
 		if( type == null )
@@ -124,38 +105,6 @@ public class IrnPacket extends Packet
 		{
 			throw new InvalidPacketException();
 		}
-		final String cmd = toString();
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.I3))
-			Log.sysOut("I3Router","Sending: "+cmd);
-		try
-		{
-			final byte[] packet = cmd.getBytes("ISO-8859-1");
-			final RouterPeer peer = I3Router.getRouter().getPeer(this.target_router);
-			if(peer != null)
-			{
-				peer.getOutputStream().writeInt(packet.length);
-				// Remove non-printables, as required by the I3 specification
-				// (Contributed by David Green <green@couchpotato.net>)
-				for (int i = 0; i < packet.length; i++)
-				{
-					// 160 is a non-breaking space. We'll consider that "printable".
-					if ( (packet[i]&0xFF) < 32 || ((packet[i]&0xFF) >= 127 && (packet[i]&0xFF) <= 159))
-					{
-						// Java uses it as a replacement character,
-						// so it's probably ok for us too.
-						packet[i] = '?';
-					}
-					peer.getOutputStream().write(packet[i]);
-				}
-			}
-		}
-		catch( final java.io.IOException e )
-		{
-			final String errMsg=e.getMessage()==null?e.toString():e.getMessage();
-			if(errMsg!=null)
-			{
-				Log.errOut("I3Router","557-"+errMsg);
-			}
-		}
+		I3Router.writePacket(this);
 	}
 }

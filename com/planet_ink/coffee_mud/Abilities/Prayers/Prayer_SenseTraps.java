@@ -83,7 +83,7 @@ public class Prayer_SenseTraps extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_NEUTRAL;
+		return Ability.FLAG_NEUTRAL | Ability.FLAG_DIVINING;
 	}
 	Room lastRoom=null;
 

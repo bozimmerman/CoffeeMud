@@ -106,9 +106,26 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	}
 
 	@Override
-	public BoundedCube getBounds()
+	public CMObject copyOf()
 	{
-		return new BoundedObject.BoundedCube(coordinates(),radius());
+		final StdSpaceBody E=(StdSpaceBody)super.copyOf();
+		if(coordinates.length >= 3)
+			E.coordinates = new long[] {coordinates[0],coordinates[1],coordinates[2]};
+		if(direction.length >= 2)
+			E.direction = new double[] {direction[0],direction[1]};
+		return E;
+	}
+
+	@Override
+	public BoundedCube getCube()
+	{
+		return new BoundedCube(coordinates(),radius());
+	}
+
+	@Override
+	public BoundedSphere getSphere()
+	{
+		return new BoundedSphere(coordinates(),radius());
 	}
 
 	@Override
@@ -128,6 +145,12 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	public long radius()
 	{
 		return radius;
+	}
+
+	@Override
+	public long[] center()
+	{
+		return coordinates();
 	}
 
 	@Override

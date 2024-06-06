@@ -610,7 +610,7 @@ public class CMStrings
 
 	/**
 	 * Returns whether the first string starts with the second string, case insensitive.
-	 * 
+	 *
 	 * @param thisStr the string to search
 	 * @param startStr the substring to search for
 	 * @return true if its true
@@ -628,7 +628,7 @@ public class CMStrings
 
 	/**
 	 * Returns whether the first string ends with the second string, case insensitive.
-	 * 
+	 *
 	 * @param thisStr the string to search
 	 * @param startStr the substring to search for
 	 * @return true if its true
@@ -643,7 +643,7 @@ public class CMStrings
 			return true;
 		return thisStr.substring(0,startStr.length()).toLowerCase().endsWith(startStr.toLowerCase());
 	}
-	
+
 	/**
 	 * Returns whether the given string contains the second string, without any following
 	 * letter, which is the CMStrings definition of a "word".  This check is case
@@ -1963,10 +1963,8 @@ public class CMStrings
 						break;
 					}
 					default:
-					{
 						i++;
 						break;
-					}
 					}
 				}
 				else
@@ -3643,6 +3641,16 @@ public class CMStrings
 			tokens.remove(--i[0]);
 			token = nextToken(tokens, i);
 			token.value="-"+token.value;
+			if(token.type==StringExpTokenType.NUMCONST)
+			{
+				try
+				{
+					token.numValue=Double.valueOf(token.value).doubleValue();
+				}
+				catch(final Exception e)
+				{
+				}
+			}
 		}
 		if((token.type != StringExpTokenType.NUMCONST)
 		&& (token.type != StringExpTokenType.STRCONST)

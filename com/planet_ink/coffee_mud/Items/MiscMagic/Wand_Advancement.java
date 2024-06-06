@@ -105,12 +105,19 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 							||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 								mob.tell(L("The wand will not work on such as @x1.",target.name(mob)));
 							else
-							if((target.getExpNeededLevel()==Integer.MAX_VALUE)
-							||(target.charStats().getCurrentClass().expless())
-							||(target.charStats().getMyRace().expless()))
-								CMLib.leveler().level(target);
-							else
-								CMLib.leveler().postExperience(target,"MISC:"+ID(),null,null,target.getExpNeededLevel()+1, false);
+							{
+								final int nextLevel = target.phyStats().level()+1;
+								int tries = 100;
+								while((target.phyStats().level()<nextLevel)&&(--tries>0))
+								{
+									if((target.getExpNeededLevel()==Integer.MAX_VALUE)
+									||(target.charStats().getCurrentClass().expless())
+									||(target.charStats().getMyRace().expless()))
+										CMLib.leveler().level(target);
+									else
+										CMLib.leveler().postExperience(target,"MISC:"+ID(),null,null,target.getExpNeededLevel()+1, false);
+								}
+							}
 						}
 					}
 				}

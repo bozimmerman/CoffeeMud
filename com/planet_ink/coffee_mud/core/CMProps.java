@@ -385,7 +385,8 @@ public class CMProps extends Properties
 		CLASSSWITCHCOST,
 		LOGOUTMASKTICKS,
 		FIRSTCREATEDYEAR,
-		PRIDECOUNT
+		PRIDECOUNT,
+		PRACMAXPCT
 		;
 
 		public static final int	EXVIEW_DEFAULT		= 0;
@@ -2838,6 +2839,7 @@ public class CMProps extends Properties
 		setUpLowVar(Str.MANACOST,getStr("MANACOST"));
 		p().skillMaxManaDefault = CMProps.setManaCosts(getStr("MANACOST"), p().skillMaxManaExceptions);
 		setIntVar(Int.MANAMINCOST,(int)CMProps.setExceptionCosts(getStr("MANAMINCOST"),p().skillMinManaExceptions));
+		setIntVar(Int.PRACMAXPCT,getStr("PRACMAXPCT","75"),75);
 		setIntVar(Int.EDITORTYPE,(getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) ? 1 : 0);
 		setIntVar(Int.MINCLANMEMBERS,getStr("MINCLANMEMBERS"));
 		setIntVar(Int.MAXCLANMEMBERS,getStr("MAXCLANMEMBERS"));

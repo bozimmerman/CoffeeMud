@@ -619,7 +619,7 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Converts this TimeClock to an approximate real-life
 	 * millis since epoc.
-	 * @param now TODO
+	 * @param now the timeclock to convert
 	 *
 	 * @return the real time of this clock.
 	 */

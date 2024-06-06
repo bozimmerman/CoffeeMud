@@ -317,6 +317,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 			synchronized(software)
 			{
 				boolean isInternal=false;
+				boolean hasHelp=false;
 				for(final Software S : software)
 				{
 					if(S.getInternalName().equals(getActiveMenu()))
@@ -324,20 +325,31 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 						str.append(S.getCurrentScreenDisplay());
 						if(S.getInternalName().length()>0)
 							isInternal=(S.getInternalName().equals(getActiveMenu()));
+						hasHelp = hasHelp || S.isCommandString("HELP", true);
 					}
-					else
-					if(S.getParentMenu().equals(getActiveMenu()))
+				}
+				if(software.size()>0)
+					str.append("^X").append(CMStrings.centerPreserve(L(" -- Commands -- "),60)).append("^.^N\n\r");
+				for(final Software S : software)
+				{
+					if(S.getParentMenu().equals(getActiveMenu())
+					&&(!(S.getInternalName().equals(getActiveMenu()))))
 					{
 						str.append(S.getActivationMenu()).append("\n\r");
+						hasHelp = hasHelp || S.isCommandString("HELP", false);
 					}
 				}
-				if(isInternal)
-				{
-					str.append(L("\n\rEnter \"<\" to return to the previous menu."));
-				}
-				else
 				if(software.size()>0)
 				{
+					if(hasHelp)
+						str.append("^H").append(CMStrings.padRight(L("^wHELP                   ^N: Get help."),60)).append("\n\r");
+					if(numRiders()==0)
+						str.append("^H").append(CMStrings.padRight(L("* Sit at "+name()+" to shorten commands *"),60)).append("\n\r");
+					if(isInternal)
+					{
+						str.append(L("\n\rEnter \"<\" to return to the previous menu."));
+					}
+					str.append("\n\r^X").append(CMStrings.centerPreserve("",60)+"^.^N");
 					str.append(L("\n\rType in a command:"));
 				}
 				else

@@ -83,7 +83,7 @@ public class Chant_FindMate extends Chant
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_TRACKING;
+		return Ability.FLAG_TRACKING | Ability.FLAG_DIVINING;
 	}
 
 	protected List<Room>	theTrail		= null;

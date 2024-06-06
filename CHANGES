@@ -3,7 +3,7 @@
   2. Better MSSP/MSDP support.  New INI entry: MSXPVARS.
   3. Ability CODES & DOMAINS can now be added to via the INI file/control panel.
   4. Deity powers, curses, blessings all now support arguments
-  5. New skill: Improved Revoke
+  5. New skills: Improved Revoke, Hard to Starboard
   6. GenAbilities: better argument parsing (see Game Builders Guide)
   7. New command: NOSPAM
   8. AutoGenInstances will now respect multiple entrances.  See RandomAreas guide.
@@ -18,7 +18,13 @@
  17. New chants: breath color
  18. All Qualifies list now supports secret flag
  19. New formula: proficiency gain; see ini file
- 20. Note:  Due to InterMud 3 changes, you'll see a harmless error at startup.
+ 20. Note:  Due to InterMud 3 changes, some will see a harmless one-time error at startup.
+ 21. New Prayer: Pacify -- a targeted Calm with duration
+ 22. Proficiency cap from practicing now in INI file (see PRACMAXPCT)
+ 23. Unit Tests (TEST command) are now friendlier and more accessible
+ 24. Wish/Limited Wish now has a configuration file in resources/skills/wish.txt
+ 25. Unleveling and Unleveling from XP loss can be disabled in the INI file
+ 26. Unleveling no longer removes a level 0 class, but still takes from other classes
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.
@@ -98,7 +104,6 @@
  75. New poison: Sickening (for mushrooms that aren't rotten, but aren't good for you either).
  76. Languages now support special 'say' verbs.  Std languages updated, especially animal-speaks.
  77. Instanced areas can now be reset/flushed and timed-out from Scripts.  See Archons Guide.
- 
 # Build 5.10.2 Release 4/28/2023
   *  DATABASE CHANGED! (Enlarged CMDATE, and new expiration date added to CMJRNL table)
   1. GMODIFY can now affect Areas.
@@ -139,7 +144,6 @@
  36. Can now SLEEP UNTIL RESTED to remove fatigue
  37. MOB armor suggested values now balance player attack values. *ness Behaviors modified.
  38. StdMOBS will now auto-scale by their set levels, making them much more useful. 
-
 # Build 5.10.1 Release 1/01/2023
   1. FasterRecovery expanded and new char stat REJUVRATE for Prop*Adjuster
   2. Ability Components now support their own private socials list.
@@ -172,7 +176,6 @@
  28. New expertise: torturing
  29. New Gaoler skills: Child Labor, Track Criminal, Spread Apathy, Spread Hatred
  30. Quest SPAWNABLE now supports ANY, ONCE, ALLONCE, and ANYONCE.  You should update your holiday.quest file if necc.
-
 # Build 5.10.0 Release 9/23/2022
   1. New Scriptable functions: ROOMPC and AREAPC
   2. Caravans now have their own internal Directions (fore, back, right, left, up, down)
@@ -244,7 +247,6 @@
  68. New Fighter Skills: Forearm Block, Breakout
  69. New INI entry TRAINCOSTS for setting (or removing) costs for various things.
  70. Shutdown-restart has been removed.  It never really worked right anyway.
-
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG
   1. Prop_Have/WearAdjuster supports item sets now
@@ -528,7 +530,6 @@
   63. New Archon skill CRECORD -- a developer tool for auto-snooping combat logs.
   64. New spells: Improved Repairing Aura, Mass Repairing Aura
   65. Prop_Doppleganger can now apply to areas and has new args
-
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.
    2. A lot of the old static strings in rideables are now customizable by editors, Shipwright/Wainwright

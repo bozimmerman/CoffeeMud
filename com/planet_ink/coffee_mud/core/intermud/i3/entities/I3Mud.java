@@ -57,6 +57,11 @@ public class I3Mud implements Serializable
 	public I3Mud(final I3Mud other)
 	{
 		super();
+		copyIn(other);
+	}
+
+	public void copyIn(final I3Mud other)
+	{
 		address = other.address;
 		admin_email = other.admin_email;
 		base_mudlib = other.base_mudlib;

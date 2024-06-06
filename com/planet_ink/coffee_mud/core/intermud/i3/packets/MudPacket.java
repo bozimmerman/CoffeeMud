@@ -3,8 +3,10 @@ import com.planet_ink.coffee_mud.core.intermud.imc2.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet.PacketType;
 import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
-import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
+import com.planet_ink.coffee_mud.core.intermud.i3.I3Client;
+import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -54,70 +56,38 @@ public class MudPacket extends Packet
 	{
 		super();
 		sender_mud = I3Server.getMudName();
+		final NameServer ns = I3Client.getNameServer();
+		if(ns != null)
+			target_name = ns.name;
 	}
 
 	public MudPacket(final Vector<?> v)
 	{
 		super();
 		{
-			Object ob;
-
-			ob = v.elementAt(2);
-			if( ob instanceof String )
-			{
-				sender_mud = (String)ob;
-			}
-			ob = v.elementAt(3);
-			if( ob instanceof String )
-			{
-				sender_name = (String)ob;
-			}
-			ob = v.elementAt(4);
-			if( ob instanceof String )
-			{
-				target_mud = (String)ob;
-			}
-			ob = v.elementAt(5);
-			if( ob instanceof String )
-			{
-				target_name = (String)ob;
-			}
+			sender_mud = super.s_str(v, 2);
+			sender_name = super.s_str(v, 3);
+			target_mud = super.s_str(v, 4);
+			target_name = super.s_str(v, 5);
 		}
 	}
 
+	@Override
 	public PacketType getType()
 	{
 		return type;
 	}
 
-	public String convertString(final String cmd)
-	{
-		final StringBuffer b = new StringBuffer(cmd);
-		int i = 0;
-
-		while( i < b.length() )
-		{
-			final char c = b.charAt(i);
-
-			if( c != '\\' && c != '"' )
-			{
-				i++;
-			}
-			else
-			{
-				b.insert(i, '\\');
-				i += 2;
-			}
-		}
-		return new String(b);
-	}
-
+	@Override
 	public void send() throws InvalidPacketException {
 		if( type == null )
 		{
 			throw new InvalidPacketException();
 		}
-		Intermud.sendPacket(this);
+		if(I3Client.isConnected())
+			I3Client.sendPacket(this);
+		if(I3Router.isConnected())
+			I3Router.writePacket(this);
 	}
 
 }

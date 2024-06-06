@@ -304,7 +304,7 @@ public class Thief_FalseService extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final MOB highestMOB=getHighestLevelMOB(mob,null);
+		final MOB highestMOB=getHighestLevelMOB(mob,null,false);
 		final int levelDiff=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
 		final boolean success=(highestMOB==null)||proficiencyCheck(mob,levelDiff*10,auto);

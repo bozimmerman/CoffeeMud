@@ -40,22 +40,22 @@ public class MudAuthReply extends MudPacket
 	public MudAuthReply()
 	{
 		super();
-		type = Packet.PacketType.UCACHE_MUD_UPDATE;
+		type = Packet.PacketType.AUTH_MUD_REPLY;
 		target_mud=I3Server.getMudName();
 	}
 
 	public MudAuthReply(final Vector<?> v)
 	{
 		super(v);
-		type = Packet.PacketType.UCACHE_MUD_UPDATE;
+		type = Packet.PacketType.AUTH_MUD_REPLY;
 		target_mud=(String)v.elementAt(4);
-		key=CMath.s_int(v.elementAt(6).toString());
+		key=s_long(v,6);
 	}
 
 	public MudAuthReply(final String mud, final long key)
 	{
 		super();
-		type = Packet.PacketType.UCACHE_MUD_UPDATE;
+		type = Packet.PacketType.AUTH_MUD_REPLY;
 		target_mud=mud;
 		this.key=key;
 	}
@@ -69,6 +69,6 @@ public class MudAuthReply extends MudPacket
 	@Override
 	public String toString()
 	{
-		return "({\"auth-mud-reply\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,"+key+",})";
+		return "({\"auth-mud-reply\",5,\""+sender_mud+"\",0,\""+target_mud+"\",0,"+key+",})";
 	}
 }

@@ -258,7 +258,8 @@ public class Semaphore extends StdLanguage
 				otherMes=otherMes.replace('.', ' ')+'\''+sourceWords+'\'';
 			if(msg.target()!=null)
 				otherMes=CMLib.coffeeFilter().fullOutFilter(null,(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.othersCode(),L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name()),CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.othersCode(),
+					L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name()),CMMsg.NO_EFFECT,null));
 			return true;
 		}
 		return false;
@@ -285,11 +286,16 @@ public class Semaphore extends StdLanguage
 	{
 		if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)&&(msg.othersMessage()!=null))
 		{
-			String otherMes=msg.othersMessage();
-			if((otherMes.lastIndexOf('\'')==otherMes.indexOf('\'')))
-				otherMes=otherMes.replace('.', ' ')+'\''+sourceWords+'\'';
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name())));
-			return true;
+			final ChannelsLibrary.CMChannel C = CMLib.channels().getChannelFromMsg(msg);
+			if((C==null)||(!C.flags().contains(ChannelsLibrary.ChannelFlag.NOLANGUAGE)))
+			{
+				String otherMes=msg.othersMessage();
+				if((otherMes.lastIndexOf('\'')==otherMes.indexOf('\'')))
+					otherMes=otherMes.replace('.', ' ')+'\''+sourceWords+'\'';
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),
+						L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name())));
+				return true;
+			}
 		}
 		return false;
 	}

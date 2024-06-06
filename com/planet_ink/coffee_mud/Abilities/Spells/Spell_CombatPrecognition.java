@@ -70,6 +70,12 @@ public class Spell_CombatPrecognition extends Spell
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_DIVINING;
+	}
+
+	@Override
 	protected int overrideMana()
 	{
 		return 100;

@@ -69,22 +69,40 @@ public class Say extends StdCommand
 
 	protected void gmcpSaySend(final String sayName, final MOB mob, final Environmental target, final CMMsg msg)
 	{
-		if((mob.session()!=null)&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)))
+		if((mob.session()!=null)
+		&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)))
 		{
 			mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
 					MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null, CMStrings.removeColors(msg.sourceMessage()), false))
 					+"\",\"player\":\""+mob.name()+"\"}");
 		}
 		final Room R=mob.location();
-		if(R!=null)
-		for(int i=0;i<R.numInhabitants();i++)
+		if((R!=null)
+		&&(msg.othersMessage()!=null))
 		{
-			final MOB M=R.fetchInhabitant(i);
-			if((M!=null)&&(M!=msg.source())&&(M.session()!=null)&&(M.session().getClientTelnetMode(Session.TELNET_GMCP)))
+			for(int i=0;i<R.numInhabitants();i++)
 			{
-				M.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
-						MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null, CMStrings.removeColors(msg.othersMessage()), false))
-						+"\",\"player\":\""+mob.name()+"\"}");
+				final MOB M=R.fetchInhabitant(i);
+				if((M!=null)
+				&&(M!=msg.source())
+				&&(M.session()!=null)
+				&&(M.session().getClientTelnetMode(Session.TELNET_GMCP)))
+				{
+					if((M == target)
+					&&(msg.targetMessage()!=null))
+					{
+						M.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
+								MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null, CMStrings.removeColors(msg.targetMessage()), false))
+								+"\",\"player\":\""+mob.name()+"\"}");
+					}
+					else
+					if(msg.othersMessage()!=null)
+					{
+						M.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
+								MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null, CMStrings.removeColors(msg.othersMessage()), false))
+								+"\",\"player\":\""+mob.name()+"\"}");
+					}
+				}
 			}
 		}
 	}

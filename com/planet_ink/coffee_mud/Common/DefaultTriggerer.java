@@ -1698,7 +1698,11 @@ public class DefaultTriggerer implements Triggerer
 			if(yup)
 			{
 				if(state == null)
+				{
 					state = getCreateTrigState(hostM, key);
+					if(state==null)
+						return null;
+				}
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.RITUALS))
 				{
 					Log.debugOut(msg.source().Name()+" completed "

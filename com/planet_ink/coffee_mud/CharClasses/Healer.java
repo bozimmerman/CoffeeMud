@@ -164,7 +164,7 @@ public class Healer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_HolyAura",false,CMParms.parseSemicolons("Prayer_Bless",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_HolyShield",true);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Calm",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Pacify",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_CureCannibalism",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",true);

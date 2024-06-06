@@ -205,7 +205,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		boolean aromaMade=true;
 		if(R!=null)
 		{
-			final CMMsg msg = CMClass.getMsg((MOB)target, null, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_AROMA, null);
+			final CMMsg msg = CMClass.getMsg(aromaSourceM, null, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_AROMA, null);
 			aromaMade = R.okMessage(M, msg);
 		}
 		if(aromaSourceM != target)
@@ -229,6 +229,13 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean canBreathe(final MOB M)
 	{
 		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_NOT_BREATHE) == 0);
+	}
+
+	@Override
+	public boolean canSwim(final MOB M)
+	{
+		return (M != null)
+				&& (isSwimming(M) || (M.fetchAbility("Skill_Swim") != null));
 	}
 
 	@Override
@@ -1130,7 +1137,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					return true;
 				return false;
 			case Room.DOMAIN_INDOORS_STONE:
-				if((P.phyStats().weight()>2)&&(P.maxRange()>4))
+				if((P.phyStats().weight()>=2)&&(P.maxRange()>4))
 					return true;
 				return false;
 			default:

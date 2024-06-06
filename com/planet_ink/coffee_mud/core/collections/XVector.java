@@ -29,7 +29,7 @@ public class XVector<T> extends Vector<T>
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static final ReadOnlyList empty = new ReadOnlyList(new ArrayList());
 
-	public XVector(final List<? extends T> V)
+	public XVector(final Collection<? extends T> V)
 	{
 		super((V==null)?0:V.size());
 		if (V != null)

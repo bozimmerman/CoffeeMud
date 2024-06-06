@@ -89,7 +89,7 @@ public class Prayer_SenseLaw extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_CHAOS;
+		return Ability.FLAG_CHAOS | Ability.FLAG_DIVINING;
 	}
 
 	@Override

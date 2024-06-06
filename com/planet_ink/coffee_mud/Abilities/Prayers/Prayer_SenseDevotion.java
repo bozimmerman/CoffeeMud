@@ -69,7 +69,7 @@ public class Prayer_SenseDevotion extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_LAW;
+		return Ability.FLAG_LAW | Ability.FLAG_DIVINING;
 	}
 
 	@Override

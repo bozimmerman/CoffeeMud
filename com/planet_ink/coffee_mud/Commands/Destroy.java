@@ -1041,6 +1041,8 @@ public class Destroy extends StdCommand
 				final Runnable doDelete = new Runnable()
 				{
 					final List<Environmental> todo=delts;
+
+					@Override
 					public void run()
 					{
 						for(final Environmental E : todo)

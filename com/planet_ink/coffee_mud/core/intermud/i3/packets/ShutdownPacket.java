@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
-import com.planet_ink.coffee_mud.core.intermud.i3.Intermud;
+import com.planet_ink.coffee_mud.core.intermud.i3.I3Client;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -47,9 +47,6 @@ public class ShutdownPacket extends MudPacket
 	{
 		super(v);
 		type = Packet.PacketType.SHUTDOWN;
-		final NameServer n = Intermud.getNameServer();
-		if(n != null)
-			target_mud = n.name;
 	}
 
 	@Override
@@ -61,6 +58,6 @@ public class ShutdownPacket extends MudPacket
 	@Override
 	public String toString()
 	{
-		return "({\"shutdown\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,0,})";
+		return "({\"shutdown\",5,\""+sender_mud+"\",0,\""+target_mud+"\",0,0,})";
 	}
 }

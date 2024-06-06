@@ -59,12 +59,14 @@ public class I3Server
 	 * @param imud a library for interaction with base system
 	 * @param routersList[] client list of host:port:service
 	 * @param adminEmail email address of mud admin
+	 * @param smtpPort the servers smtp port
 	 */
 	static public void start(final String mud,
 							 final int port,
 							 final ImudServices imud,
 							 final String[] routersList,
-							 final String adminEmail) throws ServerSecurityException
+							 final String adminEmail,
+							 final int smtpPort) throws ServerSecurityException
 	{
 		try
 		{
@@ -73,7 +75,7 @@ public class I3Server
 				throw new ServerSecurityException("Illegal attempt to start Server.");
 			}
 			started = true;
-			serverClient = new ServerThread(mud, port, imud, routersList, adminEmail);
+			serverClient = new ServerThread(mud, port, imud, routersList, adminEmail, smtpPort);
 			Log.sysOut("I3Server", "InterMud3 Core (c)1996 George Reese");
 			serverClient.start();
 		}
@@ -111,7 +113,9 @@ public class I3Server
 
 	static public String getMudName()
 	{
-		return serverClient.getMudName();
+		if(serverClient != null)
+			return serverClient.getMudName();
+		return "";
 	}
 
 	static public int getPort()

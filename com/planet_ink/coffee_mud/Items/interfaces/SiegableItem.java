@@ -78,6 +78,7 @@ public interface SiegableItem extends Item, Combatant
 	 * Returns whether this is sunk or destroyed in a siege..
 	 * @return true if this is sunk or destroyed in a siege
 	 */
+	@Override
 	public boolean amDead();
 
 	/**

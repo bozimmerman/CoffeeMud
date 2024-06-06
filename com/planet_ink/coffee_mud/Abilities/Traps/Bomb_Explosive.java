@@ -83,6 +83,7 @@ public class Bomb_Explosive extends StdBomb
 		return true;
 	}
 
+	@Override
 	protected boolean doesInnerExplosionDestroy(final int material)
 	{
 		switch(material&RawMaterial.MATERIAL_MASK)

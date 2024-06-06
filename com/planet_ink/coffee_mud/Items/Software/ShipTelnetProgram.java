@@ -99,7 +99,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	@Override
 	public String getActivationMenu()
 	{
-		return "TELNET [HOST] [PORT]: Telnet Network Software";
+		return "^wTELNET [HOST] [PORT]^N: Telnet Network Software";
 	}
 
 	protected void shutdown()

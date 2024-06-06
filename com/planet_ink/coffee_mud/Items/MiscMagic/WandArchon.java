@@ -183,15 +183,18 @@ public class WandArchon extends StdWand implements ArchonOnly
 					||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 						mob.tell(L("The wand will not work on such as @x1.",target.name(mob)));
 					else
-					while(target.basePhyStats().level()<destLevel)
 					{
-						if((target.getExpNeededLevel()==Integer.MAX_VALUE)
-						||(target.charStats().getCurrentClass().expless())
-						||(target.charStats().getMyRace().expless())
-						||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
-							CMLib.leveler().level(target);
-						else
-							CMLib.leveler().postExperience(target,"MISC:"+ID(),null,null,target.getExpNeededLevel()+1, false);
+						int tries = destLevel*100;
+						while((target.basePhyStats().level()<destLevel)&&(--tries>0))
+						{
+							if((target.getExpNeededLevel()==Integer.MAX_VALUE)
+							||(target.charStats().getCurrentClass().expless())
+							||(target.charStats().getMyRace().expless())
+							||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
+								CMLib.leveler().level(target);
+							else
+								CMLib.leveler().postExperience(target,"MISC:"+ID(),null,null,target.getExpNeededLevel()+1, false);
+						}
 					}
 				}
 				else
@@ -213,13 +216,18 @@ public class WandArchon extends StdWand implements ArchonOnly
 					else
 					for(int i=0;i<num;i++)
 					{
-						if((target.getExpNeededLevel()==Integer.MAX_VALUE)
-						||(target.charStats().getCurrentClass().expless())
-						||(target.charStats().getMyRace().expless())
-						||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
-							CMLib.leveler().level(target);
-						else
-							CMLib.leveler().postExperience(target,"MISC:"+ID(),null,null,target.getExpNeededLevel()+1, false);
+						final int nextLevel = target.phyStats().level()+1;
+						int tries = 100;
+						while((target.phyStats().level()<nextLevel)&&(--tries>0))
+						{
+							if((target.getExpNeededLevel()==Integer.MAX_VALUE)
+							||(target.charStats().getCurrentClass().expless())
+							||(target.charStats().getMyRace().expless())
+							||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
+								CMLib.leveler().level(target);
+							else
+								CMLib.leveler().postExperience(target,"MISC:"+ID(),null,null,target.getExpNeededLevel()+1, false);
+						}
 					}
 					return;
 				}
@@ -416,6 +424,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					if((target.charStats().getCurrentClass().leveless())
 					||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
 					||(target.charStats().getMyRace().leveless())
+					||(CMSecurity.isDisabled(CMSecurity.DisFlag.UNLEVEL))
 					||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 						mob.tell(L("The wand will not work on such as @x1.",target.name(mob)));
 					else
@@ -425,12 +434,18 @@ public class WandArchon extends StdWand implements ArchonOnly
 						||(target.charStats().getCurrentClass().expless())
 						||(target.charStats().getMyRace().expless())
 						||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
-							CMLib.leveler().unLevel(target);
+							CMLib.leveler().unLevel(target, true);
 						else
 						{
-							final int xpLevelBelow=CMLib.leveler().getLevelExperience(mob, target.basePhyStats().level()-2);
-							final int levelDown=(target.getExperience()-xpLevelBelow)+1;
-							CMLib.leveler().postExperience(target,"MISC:"+ID(),null,null,-levelDown, false);
+							final int oldLevel = target.basePhyStats().level();
+							for(int x=0;(x<10) && (oldLevel == target.basePhyStats().level());x++)
+							{
+								final int xpLevelBelow=CMLib.leveler().getLevelExperience(mob, oldLevel-2);
+								int levelDown=(target.getExperience()-xpLevelBelow)+1;
+								if(levelDown > target.getExperience())
+									levelDown = target.getExperience();
+								CMLib.leveler().postExperience(target,"MISC:"+ID(),null,null,-levelDown, false);
+							}
 						}
 					}
 					return;

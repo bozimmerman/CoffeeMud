@@ -152,6 +152,8 @@ public class Spell_Majesty extends Spell
 		{
 			final MOB mob=M;
 			final MOB kingM = meM;
+
+			@Override
 			public void run()
 			{
 				mob.enqueCommand(new XVector<String>("KNEEL ",kingM.Name()), 0,0);

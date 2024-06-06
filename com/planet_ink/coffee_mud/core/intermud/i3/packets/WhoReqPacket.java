@@ -58,7 +58,7 @@ public class WhoReqPacket extends MudPacket
 	@Override
 	public String toString()
 	{
-		return "({\"who-req\",5,\"" + I3Server.getMudName() +
+		return "({\"who-req\",5,\"" + sender_mud +
 			   "\",\"" + sender_name + "\",\"" + target_mud +
 			   "\",0,})";
 	}

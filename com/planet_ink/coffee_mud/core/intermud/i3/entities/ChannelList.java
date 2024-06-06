@@ -1,6 +1,9 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.entities;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistenceException;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistentPeer;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -17,6 +20,11 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Hashtable;
+import java.util.Random;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
@@ -34,16 +42,20 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
-public class ChannelList implements Serializable
+public class ChannelList implements Serializable, PersistentPeer
 {
 	public static final long serialVersionUID=0;
 	private int id;
-	private final Hashtable<String,Channel> list;
+	private int modified = Persistent.NEW;
+	public final Hashtable<String,Channel> list;
+
+	private boolean isRestoring = false;
+	private static final String restoreFilename = "resources/channels.I3Router";
 
 	public ChannelList()
 	{
 		super();
-		id = -1;
+		id = 0;
 		list = new Hashtable<String,Channel>(10, 5);
 	}
 
@@ -60,6 +72,8 @@ public class ChannelList implements Serializable
 			return;
 		}
 		list.put(c.channel, c);
+		c.modified = Persistent.NEW;
+		this.modified = Persistent.MODIFIED;
 	}
 
 	public Channel getChannel(final String channel)
@@ -68,7 +82,12 @@ public class ChannelList implements Serializable
 		{
 			return null;
 		}
-		return list.get(channel);
+		final Channel c = list.get(channel);
+		if(c == null)
+			return null;
+		if(c.modified == Persistent.DELETED)
+			return null;
+		return c;
 	}
 
 	public void removeChannel(final Channel c)
@@ -77,7 +96,8 @@ public class ChannelList implements Serializable
 		{
 			return;
 		}
-		list.remove(c.channel);
+		c.modified = Persistent.DELETED;
+		this.modified = Persistent.MODIFIED;
 	}
 
 	public int getChannelListId()
@@ -88,10 +108,89 @@ public class ChannelList implements Serializable
 	public void setChannelListId(final int x)
 	{
 		id = x;
+		this.modified = Persistent.MODIFIED;
 	}
 
 	public Hashtable<String,Channel> getChannels()
 	{
 		return list;
+	}
+
+	@Override
+	public void restore() throws PersistenceException
+	{
+		if(isRestoring)
+			return;
+		isRestoring = true;
+		try
+		{
+			final CMFile F=new CMFile(restoreFilename,null);
+			if(F.exists())
+			{
+				try(final ObjectInputStream din = new ObjectInputStream(new ByteArrayInputStream(F.raw())))
+				{
+					this.id = din.readInt();
+					final int numEntries = din.readInt();
+					for(int i=0;i<numEntries;i++)
+					{
+						final Channel cs = (Channel)din.readObject();
+						this.list.put(cs.channel, cs);
+					}
+				}
+			}
+			this.modified = Persistent.UNMODIFIED;
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("ChannelList",e);
+		}
+		finally
+		{
+			isRestoring = false;
+		}
+	}
+
+	@Override
+	public void save() throws PersistenceException
+	{
+		try
+		{
+			if(this.modified == Persistent.UNMODIFIED)
+				return;
+			final CMFile F=new CMFile(restoreFilename,null);
+			if(!F.exists())
+			{
+				if(!F.getParentFile().exists())
+					F.getParentFile().mkdirs();
+			}
+			final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			try(ObjectOutputStream out = new ObjectOutputStream(bout))
+			{
+				out.writeInt(id);
+				out.writeInt(list.size());
+				for(final Channel ns : list.values())
+					if(ns.channel.length()>0)
+						out.writeObject(ns);
+			}
+			bout.flush();
+			bout.close();
+			F.saveRaw(bout.toByteArray());
+			this.modified = Persistent.UNMODIFIED;
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("ChannelListList",e);
+		}
+	}
+
+	@Override
+	public void setPersistent(final Persistent ob)
+	{
+	}
+
+	@Override
+	public boolean isRestoring()
+	{
+		return isRestoring;
 	}
 }

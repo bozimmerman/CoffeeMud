@@ -351,7 +351,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * to an area or to the map.
 	 * @see DatabaseEngine#DBReadRoom(String, boolean)
 	 * @param roomIDtoLoad the id of the room to load
-	 * @param loadXML TODO
+	 * @param loadXML populates room effects, behavs, etc
 	 * @param reportStatus true to populate global status, false otherwise
 	 * @return the room loaded, or null if it could not be
 	 */

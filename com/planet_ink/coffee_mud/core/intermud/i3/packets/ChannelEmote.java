@@ -58,7 +58,7 @@ public class ChannelEmote extends ChannelPacket
 	public String toString()
 	{
 		String cmd=null;
-		 cmd="({\"channel-e\",5,\"" + I3Server.getMudName() + "\",\"" +
+		 cmd="({\"channel-e\",5,\"" + sender_mud + "\",\"" +
 			 sender_name + "\",0,0,\"" + channel + "\",\"" +
 			 sender_visible_name + "\",\"" + message + "\",})";
 		return cmd;

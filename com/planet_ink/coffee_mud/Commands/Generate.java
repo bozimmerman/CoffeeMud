@@ -309,7 +309,7 @@ public class Generate extends StdCommand
 							if(!Q.startQuest())
 							{
 								CMLib.quests().delQuest(Q);
-								mob.tell("Unable to start the quest.  Something went wrong.  Perhaps the problem was logged?");
+								mob.tell("Unable to start quest '"+Q.name()+"' Perhaps the problem was logged?");
 								mob.tell((String)V.get(0));
 								return false;
 							}
