@@ -749,11 +749,15 @@ public class StdLanguage extends StdAbility implements Language
 
 	protected boolean translateChannelMessage(final CMMsg msg, final String sourceWords)
 	{
-		if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
+		if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)&&(msg.othersMessage()!=null))
 		{
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),
-					L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),sourceWords),name())));
-			return true;
+			final ChannelsLibrary.CMChannel C = CMLib.channels().getChannelFromMsg(msg);
+			if((C==null)||(!C.flags().contains(ChannelsLibrary.ChannelFlag.NOLANGUAGE)))
+			{
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),
+						L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),sourceWords),name())));
+				return true;
+			}
 		}
 		return false;
 	}

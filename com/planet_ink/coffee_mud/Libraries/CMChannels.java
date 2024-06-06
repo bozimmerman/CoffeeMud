@@ -77,6 +77,23 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return null;
 	}
 
+	@Override
+	public CMChannel getChannelFromMsg(final CMMsg msg)
+	{
+		int channelCode;
+		if(CMath.bset(msg.othersMajor(), CMMsg.MASK_CHANNEL))
+			channelCode = msg.othersMinor() - CMMsg.TYP_CHANNEL;
+		else
+		if(CMath.bset(msg.targetMajor(), CMMsg.MASK_CHANNEL))
+			channelCode = msg.targetMinor() - CMMsg.TYP_CHANNEL;
+		else
+		if(CMath.bset(msg.sourceMajor(), CMMsg.MASK_CHANNEL))
+			channelCode = msg.sourceMajor() - CMMsg.TYP_CHANNEL;
+		else
+			return null;
+		return getChannel(channelCode);
+	}
+
 	public CMChannel createNewChannel(final String name)
 	{
 		return createNewChannel(name, "", "", "", new HashSet<ChannelFlag>(), "", "");
