@@ -8893,11 +8893,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 				final ScriptLn ln = script.get(si);
 				final StringBuffer jscript;
-				if(ln.third instanceof StringBuffer)
-					jscript=(StringBuffer)ln.third;
+				if(ln.third instanceof Object[])
+				{
+					final Object[] obj = (Object[])ln.third;
+					jscript=(StringBuffer)obj[0];
+					si += ((Integer)obj[1]).intValue();
+				}
 				else
 				{
 					jscript=new StringBuffer("");
+					final int oldsi = si;
 					while((++si)<script.size())
 					{
 						s=script.get(si).first;
@@ -8914,7 +8919,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						jscript.append(s+"\n");
 					}
-					ln.third = jscript;
+					ln.third = new Object[] {jscript, Integer.valueOf(si-oldsi)};
 				}
 				if(CMSecurity.isApprovedJScript(jscript))
 				{
