@@ -1027,6 +1027,18 @@ public class Log extends java.util.logging.Logger
 	}
 
 	/**
+	* Sends the given exception to the help channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param module The module name to prefix the message with
+	* @param e The exception to send out the stack and message of
+	*/
+	public static final void helpOut(final String module, final Throwable e)
+	{
+		l().shortExOut(Type.help,module,Integer.MIN_VALUE,e);
+	}
+
+	/**
 	* Sends the given exception to the error channel log, if appropriate to do so,
 	* whether its to System.out, a file, both, or neither.
  	* Since no priority is given, priority is set to lowest possible.
