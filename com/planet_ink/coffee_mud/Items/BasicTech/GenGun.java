@@ -95,9 +95,9 @@ public class GenGun extends StdGun
 		case 1:
 			return "" + maxRange();
 		case 2:
-			return "" + weaponDamageType();
+			return CMStrings.s_indexStr(Weapon.TYPE_DESCS,weaponDamageType(),"");
 		case 3:
-			return "" + weaponClassification();
+			return CMStrings.s_indexStr(Weapon.CLASS_DESCS,weaponClassification(),"");
 		case 4:
 			return "" + techLevel();
 		case 5:
