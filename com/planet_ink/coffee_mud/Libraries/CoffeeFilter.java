@@ -1689,7 +1689,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							{
 								len=(loop-oldLoop)+len+1;
 							}
-							lastSp=loop+1;
+							//lastSp=loop+1;
 						}
 						break;
 					}
