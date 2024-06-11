@@ -234,6 +234,13 @@ public class Qualify  extends Skills
 		return msg;
 	}
 
+	public String plural(final int amt, final String wd)
+	{
+		if(amt == 1)
+			return wd;
+		return CMLib.english().makePlural(wd);
+	}
+
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
@@ -382,17 +389,18 @@ public class Qualify  extends Skills
 			)
 			{
 				int col=1;
+				final Train trainC = (Train)CMClass.getCommand("Train");
+				final Map<CharClass,Integer> costs = trainC.getAvailableCharClasses(mob);
 				final StringBuffer msg2=new StringBuffer("");
-				for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+				for(final CharClass C : costs.keySet())
 				{
-					final CharClass C=c.nextElement();
+					final Integer trainCost = costs.get(C);
 					final StringBuffer thisLine=new StringBuffer("");
-					if((mob.charStats().getCurrentClass()!=C)
-					&&(CMLib.login().canChangeToThisClass(mob, C, -1)))
+					if(mob.charStats().getCurrentClass()!=C)
 					{
 						thisLine.append("^N[^H"+CMStrings.padRight(""+1,COL_LEN1)+"^?] "
-						+CMStrings.padRight("^<HELP^>"+C.name()+"^</HELP^>",COL_LEN2)+" "
-						+CMStrings.padRight(L("1 train"),COL_LEN3));
+							+CMStrings.padRight("^<HELP^>"+C.name()+"^</HELP^>",COL_LEN2)+" "
+							+CMStrings.padRight(trainCost.intValue()+" "+plural(trainCost.intValue(),"train"),COL_LEN3));
 						if((++col)>2)
 						{
 							thisLine.append("\n\r");
