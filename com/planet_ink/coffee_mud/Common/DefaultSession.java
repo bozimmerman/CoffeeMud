@@ -2384,6 +2384,8 @@ public class DefaultSession implements Session
 					}
 					CMLib.s_sleep(100); // if they entered nothing, make sure we dont do a busy poll
 				}
+				else
+					nextPingAtTime=now+PINGTIMEOUT;
 			}
 			if(inStr == null)
 				inStr = new StringBuilder();
