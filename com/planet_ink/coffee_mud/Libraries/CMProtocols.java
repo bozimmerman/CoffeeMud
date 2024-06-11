@@ -1397,7 +1397,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			break;
 		case OPPONENT_NAME:
 			if((M!=null)&&(M.getVictim()!=null))
-				buf.write(M.name().getBytes(Session.MSDP_CHARSET));
+				buf.write(CMLib.coffeeFilter().colorOnlyFilter(M.getVictim().name(),M.session()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case OPPONENT_STRENGTH:
 			if((M!=null)&&(M.getVictim()!=null))
@@ -1469,7 +1469,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				buf.write(Session.MSDP_VAR);
 				buf.write("NAME".getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAL);
-				buf.write(R.displayText(M).getBytes(Session.MSDP_CHARSET));
+				buf.write(CMLib.coffeeFilter().colorOnlyFilter(R.displayText(M),M.session()).getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAR);
 				buf.write("AREA".getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAL);
@@ -1503,7 +1503,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			break;
 		case ROOM_NAME:
 			if((M!=null)&&(M.location()!=null))
-				buf.write(M.location().displayText().getBytes(Session.MSDP_CHARSET));
+				buf.write(CMLib.coffeeFilter().colorOnlyFilter(M.location().displayText(),M.session()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case ROOM_VNUM:
 			if((M!=null)&&(M.location()!=null))
