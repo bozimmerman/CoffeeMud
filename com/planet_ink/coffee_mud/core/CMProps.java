@@ -2487,7 +2487,7 @@ public class CMProps extends Properties
 				setIntVar(Int.CLASSTRAINCOST,""+Math.round(CMath.s_double(CMParms.getParmStr(cs,"GAIN", ""))));
 			else
 			if(CMath.isNumber(CMParms.getParmStr(cs,"SWITCH", "")))
-				setIntVar(Int.CLASSTRAINCOST,""+Math.round(CMath.s_double(CMParms.getParmStr(cs,"SWITCH", ""))));
+				setIntVar(Int.CLASSSWITCHCOST,""+Math.round(CMath.s_double(CMParms.getParmStr(cs,"SWITCH", ""))));
 			else
 				setVar(Str.MULTICLASS,cs.toUpperCase());
 		}
