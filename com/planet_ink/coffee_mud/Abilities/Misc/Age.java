@@ -735,12 +735,15 @@ public class Age extends StdAbility
 				newMan.setWimpHitPoint(babe.getWimpHitPoint());
 				newMan.baseCharStats().setWorshipCharID(babe.baseCharStats().getWorshipCharID());
 				PlayerAccount account = null;
+				final int maxAcctPlayers = (CMProps.isUsingAccountSystem()) ? CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM) : Integer.MAX_VALUE/2;
 				if((babe.amFollowing()!=null)
 				&&(babe.amFollowing().isPlayer())
 				&&(parents.contains(babe.amFollowing())))
 				{
 					final PlayerStats P = babe.amFollowing().playerStats();
-					if((P!=null) && (P.getAccount()!=null))
+					if((P!=null)
+					&& (P.getAccount()!=null)
+					&& (P.getAccount().numPlayers() - P.getAccount().getBonusCharsLimit()<maxAcctPlayers))
 						account=P.getAccount();
 				}
 				if(account == null)
@@ -748,7 +751,9 @@ public class Age extends StdAbility
 					for(final MOB M : parents)
 					{
 						final PlayerStats P = M.playerStats();
-						if((P!=null) && (P.getAccount()!=null)
+						if((P!=null)
+						&& (P.getAccount()!=null)
+						&& (P.getAccount().numPlayers() - P.getAccount().getBonusCharsLimit()<maxAcctPlayers)
 						&&((account==null)||(M.location()==R)))
 							account=P.getAccount();
 					}
@@ -760,7 +765,9 @@ public class Age extends StdAbility
 					{
 						P.setPassword(P.getPasswordStr());
 						P.setEmail(P.getEmail());
-						if(account == null)
+						if((account == null)
+						&&(P.getAccount() != null)
+						&&(P.getAccount().numPlayers() - P.getAccount().getBonusCharsLimit()<maxAcctPlayers))
 							account=P.getAccount();
 					}
 				}
