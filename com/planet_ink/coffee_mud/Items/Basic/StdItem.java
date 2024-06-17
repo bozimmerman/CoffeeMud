@@ -2224,9 +2224,9 @@ public class StdItem implements Item
 		case 1:
 			return "" + usesRemaining();
 		case 2:
-			return "" + basePhyStats().ability();
-		case 3:
 			return "" + basePhyStats().level();
+		case 3:
+			return "" + basePhyStats().ability();
 		case 4:
 			return text();
 		}
