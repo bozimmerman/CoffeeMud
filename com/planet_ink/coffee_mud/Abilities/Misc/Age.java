@@ -1319,7 +1319,7 @@ public class Age extends StdAbility
 		else
 		{
 			A.doAgeChangeCheck();
-			final long l=getRawAgeCode();
+			final long l=CMath.s_long(A.text());
 			if(l==0)
 			{
 				mob.tell(L("Age is broken."));
