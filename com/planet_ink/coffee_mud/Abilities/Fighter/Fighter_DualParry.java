@@ -75,7 +75,7 @@ public class Fighter_DualParry extends FighterSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;
+		return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;
 	}
 
 	@Override
