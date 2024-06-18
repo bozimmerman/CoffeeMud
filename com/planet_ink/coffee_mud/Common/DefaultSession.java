@@ -681,9 +681,12 @@ public class DefaultSession implements Session
 				return false;
 			if(CMSecurity.isDebugging(DbgFlag.TELNET))
 				Log.debugOut("GMCP Sent: "+(lowerEventName+" "+json));
-			rawBytesOut(rawout,TELNETBYTES_GMCP_HEAD);
-			rawBytesOut(rawout,(lowerEventName+" "+json).getBytes());
-			rawBytesOut(rawout,TELNETBYTES_END_SB);
+			synchronized(gmcpSupports)
+			{
+				rawBytesOut(rawout,TELNETBYTES_GMCP_HEAD);
+				rawBytesOut(rawout,(lowerEventName+" "+json).getBytes());
+				rawBytesOut(rawout,TELNETBYTES_END_SB);
+			}
 			return true;
 		}
 		catch(final IOException e)
