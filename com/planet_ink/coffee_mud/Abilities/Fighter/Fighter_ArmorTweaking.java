@@ -123,7 +123,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		{
 			final MOB M=(MOB)((Item)affected).owner();
 			if((!M.amDead())&&(CMLib.flags().isInTheGame(M,true))&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
-				M.tell(M,affected,null,L("<T-NAME> no longer feel(s) quite as snuggly tweaked."));
+				M.tell(M,affected,null,L("<T-NAME> no longer feel(s) quite as snugly tweaked."));
 		}
 		super.unInvoke();
 	}
@@ -187,7 +187,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final String str=auto?L("@x1 snuggly covers <S-NAME>!",armor.name()):L("<S-NAME> tweak(s) <T-NAMESELF> until it is as snuggly protective as possible.");
+			final String str=auto?L("@x1 snugly covers <S-NAME>!",armor.name()):L("<S-NAME> tweak(s) <T-NAMESELF> until it is as snugly protective as possible.");
 			final CMMsg msg=CMClass.getMsg(mob,armor,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
 			{
