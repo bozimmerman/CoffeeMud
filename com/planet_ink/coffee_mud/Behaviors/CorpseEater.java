@@ -146,7 +146,7 @@ public class CorpseEater extends ActiveTicker
 							continue;
 					}
 					else
-					if(eatMobs)
+					if(!eatMobs)
 						continue;
 					if((maskStr.length()>0) || (mask != null))
 					{
