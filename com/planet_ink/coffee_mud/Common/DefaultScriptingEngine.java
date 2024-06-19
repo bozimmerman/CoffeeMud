@@ -12358,7 +12358,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					// this can not be permanently parsed because it is variable
 					final MPContext ctx2 = ctx.copyOf();
 					ctx2.monster = getMakeMOB(newTarget);
-					ctx2.scripted = ctx.monster;
+					ctx2.scripted = ctx2.monster;
 					execute(ctx2, vscript);
 				}
 				break;
