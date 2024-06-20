@@ -148,7 +148,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 			&&(msg.target()==affected)
 			&&(affected instanceof MOB)))
 			{
-				makeMyPeace((MOB)affected);
+				makeMyPeace((MOB)affected); // doesn't justify canceling the whole msg
 				if((msg.targetMinor()!=CMMsg.TYP_JUSTICE) // thief act, like bind
 				&&(msg.targetMinor()!=CMMsg.TYP_DELICATE_HANDS_ACT) // also thief-like acts
 				&&(msg.targetMinor()!=CMMsg.TYP_HANDS)) // handcuff
