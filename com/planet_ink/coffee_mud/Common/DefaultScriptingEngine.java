@@ -1121,18 +1121,25 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return roomR;
 	}
 
+	protected String getScriptFiles()
+	{
+		String scriptFiles=CMParms.toListString(externalFiles());
+		if((scriptFiles == null)||(scriptFiles.trim().length()==0))
+			scriptFiles=CMStrings.limit(this.getScript(),80);
+		if((scriptFiles == null)||(scriptFiles.trim().length()==0))
+			Log.errOut(new Exception("Scripting Error"));
+		if((scriptFiles == null)||(scriptFiles.trim().length()==0))
+			scriptFiles=getScriptResourceKey();
+		return scriptFiles;
+	}
+
+
 	protected void logError(final Environmental scripted, final String cmdName, final String errType, final String errMsg)
 	{
 		if(scripted!=null)
 		{
 			final Room R=CMLib.map().roomLocation(scripted);
-			String scriptFiles=CMParms.toListString(externalFiles());
-			if((scriptFiles == null)||(scriptFiles.trim().length()==0))
-				scriptFiles=CMStrings.limit(this.getScript(),80);
-			if((scriptFiles == null)||(scriptFiles.trim().length()==0))
-				Log.errOut(new Exception("Scripting Error"));
-			if((scriptFiles == null)||(scriptFiles.trim().length()==0))
-				scriptFiles=getScriptResourceKey();
+			final String scriptFiles = getScriptFiles();
 			Log.errOut("Scripting",scripted.name()+"/"+CMLib.map().getDescriptiveExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg+"/"+scriptFiles);
 			if(R!=null)
 				R.showHappens(CMMsg.MSG_OK_VISUAL,L("Scripting Error: @x1/@x2/@x3/@x4/@x5/@x6",scripted.name(),CMLib.map().getExtendedRoomID(R),cmdName,errType,errMsg,scriptFiles));
@@ -12262,7 +12269,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									}
 									thisRoom.send(follower,leaveMsg);
 									if(!alreadyHere)
+									{
+//TODO: DELME -- THIS IS FOR DEBUGGING AN ISSUE
+if((follower.isPlayer())
+&&(enterMsg.target() == follower.getStartRoom())
+&&(CMProps.getVar(CMProps.Str.MUDNAME).equalsIgnoreCase("coffeemud")))
+	Log.helpOut(follower.Name(), new Exception(getScriptFiles()+"/"+CMLib.map().getApproximateExtendedRoomID(follower.location())));
 										((Room)enterMsg.target()).bringMobHere(follower,false);
+									}
 									((Room)enterMsg.target()).send(follower,enterMsg);
 									follower.basePhyStats().setDisposition(follower.basePhyStats().disposition() | dispo1);
 									follower.phyStats().setDisposition(follower.phyStats().disposition() | dispo2);

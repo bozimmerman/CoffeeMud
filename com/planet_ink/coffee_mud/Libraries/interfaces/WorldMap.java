@@ -665,7 +665,7 @@ public interface WorldMap extends CMLibrary
 	public boolean hasASky(Room room);
 
 	/**
-	 * Sends any mobs or players in the given room to their start room,
+	 * Sends any NPCs in the given room to their start room,
 	 * and returns whether any players, private property, or player
 	 * corpses remain.  Also returns false if the room is under a temporary
 	 * effect.
