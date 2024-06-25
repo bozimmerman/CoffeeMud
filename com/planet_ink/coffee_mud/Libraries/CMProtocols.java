@@ -2476,7 +2476,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								doc.append(",");
 							comma=true;
 							doc.append("{\"name\":\"").append(M.name(mob)).append("\",")
-								.append("{\"info\":{")
+								.append("\"info\":{")
 								.append("\"hp\":").append(M.curState().getHitPoints()).append(",")
 								.append("\"mhp\":").append(M.maxState().getHitPoints()).append(",")
 								.append("\"mn\":").append(M.curState().getMana()).append(",")
@@ -2488,6 +2488,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							if(align!=Integer.MAX_VALUE)
 								doc.append("\"align\":").append(align).append(",");
 							doc.append("\"tnl\":").append(M.getExpNeededLevel());
+							doc.append("}");
 							doc.append("}");
 						}
 						doc.append("]");
