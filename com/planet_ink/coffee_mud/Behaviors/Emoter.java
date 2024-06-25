@@ -211,7 +211,8 @@ public class Emoter extends ActiveTicker
 			if(myHost instanceof Room)
 			{
 				emoter=CMClass.getFactoryMOB();
-				emoteHere((Room)myHost,emoter,emote,msg.source(),false);
+				emoter.setName(L("something here"));
+				emoteHere((Room)myHost,emoter,emote,msg.source(),emote.broadcast);
 				emoter.destroy();
 				return;
 			}
@@ -363,9 +364,9 @@ public class Emoter extends ActiveTicker
 					if(ticking instanceof Room)
 					{
 						emoter=CMClass.getFactoryMOB();
-						emoter.setName(ticking.name());
+						emoter.setName(L("something here"));
 						killEmoter=true;
-						emoteHere((Room)ticking,emoter,emote,null,false);
+						emoteHere((Room)ticking,emoter,emote,null,emote.broadcast);
 					}
 					else
 					{
