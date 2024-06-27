@@ -155,7 +155,7 @@ public class Score extends Affect
 		msg.append("\n\r");
 
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
-		&&(classLevel<mob.phyStats().level()))
+		&&(mob.charStats().numClasses()>1))
 		{
 			msg.append(L("You also have levels in: "));
 			final StringBuilder classList=new StringBuilder("");
@@ -165,10 +165,12 @@ public class Score extends Affect
 				if(C!=mob.charStats().getCurrentClass())
 				{
 					if(classList.length()>0)
+					{
 						if(c==mob.charStats().numClasses()-2)
 							classList.append(L(", and "));
 						else
 							classList.append(", ");
+					}
 					classList.append(C.name(mob.charStats().getClassLevel(C))+" ("+mob.charStats().getClassLevel(C)+") ");
 				}
 			}
@@ -178,7 +180,7 @@ public class Score extends Affect
 		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)&&(mob.playerStats()!=null))
 			msg.append(L("Your account is Registered and Active until: @x1!\n\r",CMLib.time().date2String(mob.playerStats().getAccountExpiration())));
 
-		String genderName="^!"+mob.charStats().realGenderName();
+		final String genderName="^!"+mob.charStats().realGenderName();
 		msg.append(L("You are a "));
 		if((mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING)))
 			msg.append(L("^!@x1^? year old ",""+mob.baseCharStats().getStat(CharStats.STAT_AGE)));
