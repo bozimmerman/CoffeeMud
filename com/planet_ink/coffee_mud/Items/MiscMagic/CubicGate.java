@@ -103,6 +103,15 @@ public class CubicGate extends StdItem implements MiscMagic
 	}
 
 	@Override
+	public void setOwner(final ItemPossessor E)
+	{
+		super.setOwner(E);
+		if((E instanceof MOB)
+		&&(text().length()==0))
+			resetCube();
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
@@ -115,8 +124,6 @@ public class CubicGate extends StdItem implements MiscMagic
 			else
 				resetCube();
 		}
-		else
-			resetCube();
 	}
 
 	@Override
