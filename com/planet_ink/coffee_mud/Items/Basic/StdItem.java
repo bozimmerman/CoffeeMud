@@ -1217,10 +1217,10 @@ public class StdItem implements Item
 			{
 				final StringBuilder str=new StringBuilder(L("You can't hold @x1.",name()));
 				if(fitsOn(Wearable.WORN_WIELD))
-					str.append(L("Try WIELDing it."));
+					str.append(L("  Try WIELDing it."));
 				else
 				if(properWornBitmap>0)
-					str.append(L("Try WEARing it."));
+					str.append(L("  Try WEARing it."));
 				mob.tell(str.toString());
 				return false;
 			}
@@ -2224,9 +2224,9 @@ public class StdItem implements Item
 		case 1:
 			return "" + usesRemaining();
 		case 2:
-			return "" + basePhyStats().ability();
-		case 3:
 			return "" + basePhyStats().level();
+		case 3:
+			return "" + basePhyStats().ability();
 		case 4:
 			return text();
 		}

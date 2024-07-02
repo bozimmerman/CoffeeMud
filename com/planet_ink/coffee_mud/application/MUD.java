@@ -108,6 +108,7 @@ public class MUD extends Thread implements MudHost
 	@Override
 	public void acceptConnection(final Socket sock) throws SocketException, IOException
 	{
+		sock.setKeepAlive(true);
 		setState(MudState.ACCEPTING);
 		final ConnectionAcceptor acceptor = new ConnectionAcceptor(sock, Thread.currentThread().getName());
 		serviceEngine.executeRunnable(threadGroup.getName(),acceptor);

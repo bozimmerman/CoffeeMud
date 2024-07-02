@@ -6425,7 +6425,7 @@ the questname.</p>
       <pre>mpstop [target]<br /></pre>
 
       <p>This command forces the
-target to stop fighting. If the target
+target to stop fighting and become peaceful, ending combat. If the target
 happens to be in the middle of working with a common skill, it will
 stop that too. You may specify a target of ALL to make everything in
 the room stop.</p>
@@ -6527,14 +6527,15 @@ endlessly, or something equally abusable.
       <pre>mptransfer [victim] [destination]<br /></pre>
 
       <p>This command sends the
-victim to a designated destination. The
-victim can be either a mob keyword or a character variable. The
+target to a designated destination. The
+target can be either a mob keyword or a character variable. The
 destination can be a full room id, room number from the current area,&nbsp; room name, room description, a mob keyword,
 or a character variable.&nbsp;If you need to be need to find mobile
 mobs or items, you can include the mob or item name, followed by @
 followed by a room id or area name. If there is no destination given,
 the mob
-transfers the victim to the same room that it is in. There is no
+transfers the target to the same room that it is in. If the target is
+in combat, they will suffer FLEE penalties (see MPSTOP). There is no
 message given to this command, so if you want there to be one, you need
 to include an mpecho in your mobprog. This command is a good way to
 move players around your zone or into other zones.</p>

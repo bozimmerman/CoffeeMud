@@ -148,7 +148,7 @@ public class Mood extends StdAbility
 		"smelly dork",
 		"geek",
 		"illegitimate offspring",
-		"gluteous maximus cavity",
+		"gluteus maximus cavity",
 		"uncle copulator",
 		"ugly yokle",
 		"brainless goop",

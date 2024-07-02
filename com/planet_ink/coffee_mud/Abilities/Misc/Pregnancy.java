@@ -570,6 +570,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							babe.baseState().setHitPoints(1);
 							babe.baseState().setMana(0);
 							babe.baseState().setMovement(0);
+							babe.setStartRoom(mob.getStartRoom());
 							if(CMLib.flags().isAnimalIntelligence(mob)
 							&&((otherParentM==null)||(CMLib.flags().isAnimalIntelligence(otherParentM))))
 								babe.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE, 1);

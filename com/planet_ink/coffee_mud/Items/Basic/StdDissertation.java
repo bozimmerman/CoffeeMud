@@ -399,9 +399,9 @@ public class StdDissertation extends StdItem implements Scroll
 		case 0:
 			return ID();
 		case 1:
-			return "" + basePhyStats().ability();
-		case 2:
 			return "" + basePhyStats().level();
+		case 2:
+			return "" + basePhyStats().ability();
 		case 3:
 			return text();
 		}

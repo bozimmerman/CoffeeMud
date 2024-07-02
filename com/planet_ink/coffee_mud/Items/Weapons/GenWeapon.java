@@ -116,9 +116,9 @@ public class GenWeapon extends StdWeapon
 		case 1:
 			return "" + W.getRanges()[1];
 		case 2:
-			return "" + W.weaponDamageType();
+			return CMStrings.s_indexStr(Weapon.TYPE_DESCS,W.weaponDamageType(),"");
 		case 3:
-			return "" + W.weaponClassification();
+			return CMStrings.s_indexStr(Weapon.CLASS_DESCS,W.weaponClassification(),"");
 		case 4:
 			return W.ammunitionType();
 		case 5:

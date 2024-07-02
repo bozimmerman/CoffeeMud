@@ -199,7 +199,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 					say = "Hairpit sniffer!";
 					break;
 				case 18:
-					say = "Gluteous maximus cavity!";
+					say = "Gluteus maximus cavity!";
 					break;
 				case 19:
 					say = "Uncle copulator!";

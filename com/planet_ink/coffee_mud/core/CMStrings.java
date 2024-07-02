@@ -3336,6 +3336,20 @@ public class CMStrings
 	}
 
 	/**
+	 * Given a string array, will return the string at the given
+	 * index, returning the def itself if out-of-range.
+	 * @param strs the string array
+	 * @param index the array index
+	 * @param def what to return if out-of-range
+	 */
+	public final static String s_indexStr(final String[] strs, final int index, final String def)
+	{
+		if((index<0)||(index>=strs.length))
+			return ""+index;
+		return strs[index];
+	}
+
+	/**
 	 * Tokenizer/Scanner table for the string expression parser and evaluator.
 	 * Clearly this is a state machine, where the values a series of characters, followed by
 	 * the next state that the character would put the tokenizer info.  The states are numbered

@@ -1220,6 +1220,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			M=R.fetchInhabitant(i);
 			if(M==null)
 				continue;
+			if((M.session()!=null)||(M.isPlayer()))
+				return false;
 			sR=M.getStartRoom();
 			if((sR!=null)
 			&&(sR != R)
@@ -1230,8 +1232,6 @@ public class CMMap extends StdLibrary implements WorldMap
 				if(M.location()==R)
 					return false;
 			}
-			if(M.session()!=null)
-				return false;
 		}
 		Item I=null;
 		for(int i=0;i<R.numItems();i++)

@@ -52,9 +52,9 @@ public class Go extends StdCommand
 	public boolean standIfNecessary(final MOB mob, final List<String> commands, final int metaFlags, final boolean giveMsg)
 		throws java.io.IOException
 	{
-		if(CMLib.flags().isFlying(mob))
+		final boolean wasStanding = CMLib.flags().isStanding(mob);
+		if(CMLib.flags().isFlying(mob) && wasStanding)
 			return true;
-		final boolean wasStanding = CMLib.flags().isStanding(mob) && (!CMLib.flags().isSleeping(mob));
 		if((ifneccvec==null)||(ifneccvec.size()!=2))
 		{
 			ifneccvec=new Vector<String>();

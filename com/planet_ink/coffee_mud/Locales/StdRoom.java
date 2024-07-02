@@ -1091,7 +1091,8 @@ public class StdRoom implements Room
 			}
 		}
 
-		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_EXPIRE))
+		if(msg.amITarget(this)
+		&&(msg.targetMinor()==CMMsg.TYP_EXPIRE))
 		{
 			synchronized(CMClass.getSync(("SYNC"+roomID())))
 			{
@@ -1428,9 +1429,7 @@ public class StdRoom implements Room
 		if(oldRoom!=null)
 			oldRoom.delInhabitant(mob);
 		if(!isInhabitant(mob))
-		{
 			addInhabitant(mob);
-		}
 		mob.setLocation(this);
 
 		if((andFollowers)&&(oldRoom!=null))

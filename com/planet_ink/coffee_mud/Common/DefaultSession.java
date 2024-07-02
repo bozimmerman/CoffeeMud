@@ -681,9 +681,12 @@ public class DefaultSession implements Session
 				return false;
 			if(CMSecurity.isDebugging(DbgFlag.TELNET))
 				Log.debugOut("GMCP Sent: "+(lowerEventName+" "+json));
-			rawBytesOut(rawout,TELNETBYTES_GMCP_HEAD);
-			rawBytesOut(rawout,(lowerEventName+" "+json).getBytes());
-			rawBytesOut(rawout,TELNETBYTES_END_SB);
+			synchronized(gmcpSupports)
+			{
+				rawBytesOut(rawout,TELNETBYTES_GMCP_HEAD);
+				rawBytesOut(rawout,(lowerEventName+" "+json).getBytes());
+				rawBytesOut(rawout,TELNETBYTES_END_SB);
+			}
 			return true;
 		}
 		catch(final IOException e)
@@ -2384,6 +2387,8 @@ public class DefaultSession implements Session
 					}
 					CMLib.s_sleep(100); // if they entered nothing, make sure we dont do a busy poll
 				}
+				else
+					nextPingAtTime=now+PINGTIMEOUT;
 			}
 			if(inStr == null)
 				inStr = new StringBuilder();
