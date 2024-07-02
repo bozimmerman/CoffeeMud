@@ -415,6 +415,7 @@ public class HolidayData extends StdWebMacro
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=30%>");
+			str.append("<DATALIST id=\"behaviordata\">");
 			str.append("<SELECT ONCHANGE=\"AddBehavior(this);\" NAME=BEHAV"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Behavior");
 
@@ -432,8 +433,9 @@ public class HolidayData extends StdWebMacro
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 			}
 			str.append("</SELECT>");
+			str.append("</DATALIST>");
 			str.append("</TD><TD WIDTH=70%>");
-			str.append("<INPUT TYPE=TEXT SIZE=40 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\">");
+			str.append("<INPUT LIST=\"behaviordata\" TYPE=TEXT SIZE=40 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\">");
 			str.append("</TD></TR>");
 			str.append("</TABLE>");
 		}

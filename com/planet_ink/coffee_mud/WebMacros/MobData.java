@@ -176,7 +176,8 @@ public class MobData extends StdWebMacro
 				str.append("</TR>");
 			}
 			str.append("<TR><TD WIDTH=35%>");
-			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=ABLES"+(theclasses.size()+1)+">");
+			str.append("<INPUT TYPE=\"TEXT\" LIST=\"abilitydata\" ONCHANGE=\"AddAbility(this);\" NAME=ABLES"+(theclasses.size()+1)+">");
+			str.append("<DATALIST ID=\"abilitydata\"");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
 			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
@@ -188,6 +189,7 @@ public class MobData extends StdWebMacro
 				}
 			}
 			str.append("</SELECT>");
+			str.append("</DATALIST>");
 			str.append("</TD>");
 			if(player)
 			{
