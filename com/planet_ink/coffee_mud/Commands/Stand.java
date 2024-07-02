@@ -70,7 +70,16 @@ public class Stand extends StdCommand
 		else
 		if(room!=null)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_STAND,(quietly || mob.amDead())?null:L("<S-NAME> stand(s) up."));
+			final String standMsg;
+			if(quietly || mob.amDead())
+				standMsg = null;
+			else
+			if(CMLib.flags().isFlying(mob) && CMLib.flags().isSleeping(mob))
+				standMsg = L("<S-NAME> wake(s) up.");
+			else
+				standMsg = L("<S-NAME> stand(s) up.");
+
+			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_STAND,standMsg);
 			if(room.okMessage(mob,msg))
 				room.send(mob,msg);
 			else

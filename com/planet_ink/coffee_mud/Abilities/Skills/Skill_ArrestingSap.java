@@ -140,16 +140,23 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 		}
 		if(utterSafety)
 		{
-			if((msg.source()==affected)&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
+			if((msg.source()==affected)
+			&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 				return false;
+			// why is this here?  If it's to prevent damage, then why not stop damage messages? malicious is a broad brush..
 			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)
 			&&(msg.target()==affected)
 			&&(affected instanceof MOB)))
 			{
-				if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))&&(affected!=msg.source()))
-					msg.source().tell((MOB)affected,null,null,L("<S-NAME> is already out!"));
-				makeMyPeace((MOB)affected);
-				return false;
+				makeMyPeace((MOB)affected); // doesn't justify canceling the whole msg
+				if((msg.targetMinor()!=CMMsg.TYP_JUSTICE) // thief act, like bind
+				&&(msg.targetMinor()!=CMMsg.TYP_DELICATE_HANDS_ACT) // also thief-like acts
+				&&(msg.targetMinor()!=CMMsg.TYP_HANDS)) // handcuff
+				{
+					if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))&&(affected!=msg.source()))
+						msg.source().tell((MOB)affected,null,null,L("<S-NAME> is already out!"));
+					return false;
+				}
 			}
 		}
 		return super.okMessage(myHost,msg);

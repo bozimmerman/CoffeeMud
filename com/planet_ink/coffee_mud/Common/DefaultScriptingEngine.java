@@ -1121,18 +1121,25 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return roomR;
 	}
 
+	protected String getScriptFiles()
+	{
+		String scriptFiles=CMParms.toListString(externalFiles());
+		if((scriptFiles == null)||(scriptFiles.trim().length()==0))
+			scriptFiles=CMStrings.limit(this.getScript(),80);
+		if((scriptFiles == null)||(scriptFiles.trim().length()==0))
+			Log.errOut(new Exception("Scripting Error"));
+		if((scriptFiles == null)||(scriptFiles.trim().length()==0))
+			scriptFiles=getScriptResourceKey();
+		return scriptFiles;
+	}
+
+
 	protected void logError(final Environmental scripted, final String cmdName, final String errType, final String errMsg)
 	{
 		if(scripted!=null)
 		{
 			final Room R=CMLib.map().roomLocation(scripted);
-			String scriptFiles=CMParms.toListString(externalFiles());
-			if((scriptFiles == null)||(scriptFiles.trim().length()==0))
-				scriptFiles=CMStrings.limit(this.getScript(),80);
-			if((scriptFiles == null)||(scriptFiles.trim().length()==0))
-				Log.errOut(new Exception("Scripting Error"));
-			if((scriptFiles == null)||(scriptFiles.trim().length()==0))
-				scriptFiles=getScriptResourceKey();
+			final String scriptFiles = getScriptFiles();
 			Log.errOut("Scripting",scripted.name()+"/"+CMLib.map().getDescriptiveExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg+"/"+scriptFiles);
 			if(R!=null)
 				R.showHappens(CMMsg.MSG_OK_VISUAL,L("Scripting Error: @x1/@x2/@x3/@x4/@x5/@x6",scripted.name(),CMLib.map().getExtendedRoomID(R),cmdName,errType,errMsg,scriptFiles));
@@ -11194,8 +11201,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String parm=tt[1];
 				final Environmental newTarget=getArgumentMOB(parm,ctx);
 				final Room lastR=lastKnownLocation;
-				if((newTarget!=null)
-				&&(newTarget instanceof MOB)
+				if((newTarget instanceof MOB)
 				&&(lastR!=null))
 				{
 					if(newTarget==ctx.monster)
@@ -11207,7 +11213,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((parm.equalsIgnoreCase("world"))
 				&&(lastR!=null))
 				{
-					lastR.showSource(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+					if(lastR.numInhabitants()==0)
+						lastR.showSource(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
 					for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 					{
 						final Room R=e.nextElement();
@@ -11219,7 +11226,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(parm.equalsIgnoreCase("area")
 				&&(lastR!=null))
 				{
-					lastR.showSource(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+					if(lastR.numInhabitants()==0)
+						lastR.showSource(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
 					for(final Enumeration<Room> e=lastR.getArea().getProperMap();e.hasMoreElements();)
 					{
 						final Room R=e.nextElement();
@@ -11231,15 +11239,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(CMLib.map().getRoom(parm)!=null)
 					CMLib.map().getRoom(parm).show(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
 				else
-				if((CMLib.map().findArea(parm)!=null)
-				&&(lastR!=null))
 				{
-					lastR.showSource(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
-					for(final Enumeration<Room> e=CMLib.map().findArea(parm).getMetroMap();e.hasMoreElements();)
+					final Area A = CMLib.map().findArea(parm);
+					if(A != null)
 					{
-						final Room R=e.nextElement();
-						if(R.numInhabitants()>0)
-							R.showOthers(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+						if((lastR.numInhabitants()==0)||(!A.inMyMetroArea(lastR.getArea())))
+							lastR.showSource(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+						for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+						{
+							final Room R=e.nextElement();
+							if(R.numInhabitants()>0)
+								R.showOthers(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+						}
 					}
 				}
 				break;
@@ -12258,7 +12269,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									}
 									thisRoom.send(follower,leaveMsg);
 									if(!alreadyHere)
+									{
+//TODO: DELME -- THIS IS FOR DEBUGGING AN ISSUE
+if((follower.isPlayer())
+&&(enterMsg.target() == follower.getStartRoom())
+&&(CMProps.getVar(CMProps.Str.MUDNAME).equalsIgnoreCase("coffeemud")))
+	Log.helpOut(follower.Name(), new Exception(getScriptFiles()+"/"+CMLib.map().getApproximateExtendedRoomID(follower.location())));
 										((Room)enterMsg.target()).bringMobHere(follower,false);
+									}
 									((Room)enterMsg.target()).send(follower,enterMsg);
 									follower.basePhyStats().setDisposition(follower.basePhyStats().disposition() | dispo1);
 									follower.phyStats().setDisposition(follower.phyStats().disposition() | dispo2);
@@ -12354,7 +12372,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					// this can not be permanently parsed because it is variable
 					final MPContext ctx2 = ctx.copyOf();
 					ctx2.monster = getMakeMOB(newTarget);
-					ctx2.scripted = ctx.monster;
+					ctx2.scripted = ctx2.monster;
 					execute(ctx2, vscript);
 				}
 				break;

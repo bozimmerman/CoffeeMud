@@ -819,9 +819,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		{
 			if(ses.getClientTelnetMode(Session.TELNET_GMCP)&&(channel!=null))
 			{
-				ses.sendGMCPEvent("comm.channel", "{\"chan\":\""+channel.name()+"\",\"msg\":\""+
-						MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, M, msg.source(), msg.target(), msg.tool(), CMStrings.removeColors((M==msg.source())?msg.sourceMessage():msg.othersMessage()), false))
-						+"\",\"player\":\""+msg.source().name()+"\"}");
+				final String player=CMStrings.removeAllButLettersAndDigits(CMStrings.removeColors(msg.source().name()));
+				final String chanMsgStr = CMStrings.removeColors((M==msg.source())?msg.sourceMessage():msg.othersMessage()).trim();
+				final String filteredMsgStr = CMLib.coffeeFilter().fullOutFilter(null, M, msg.source(), msg.target(), msg.tool(), chanMsgStr, false).trim();
+				final String jsonMsgStr = MiniJSON.toJSONString(filteredMsgStr);
+				ses.sendGMCPEvent("comm.channel", "{\"chan\":\""+channel.name()+"\",\"msg\":\""+jsonMsgStr+"\",\"player\":\""+player+"\"}");
 			}
 			M.executeMsg(M,msg);
 			didIt=true;

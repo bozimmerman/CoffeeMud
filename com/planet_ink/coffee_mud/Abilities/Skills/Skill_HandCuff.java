@@ -285,7 +285,7 @@ public class Skill_HandCuff extends StdSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),L("<S-NAME> handcuff(s) <T-NAME>."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_HANDS|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),L("<S-NAME> handcuff(s) <T-NAME>."));
 			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);

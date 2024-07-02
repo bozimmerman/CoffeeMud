@@ -121,9 +121,9 @@ public class GenTorpedo extends StdTorpedo
 		case 6:
 			return "" + maxRange();
 		case 7:
-			return "" + weaponDamageType();
+			return CMStrings.s_indexStr(Weapon.TYPE_DESCS,weaponDamageType(),"");
 		case 8:
-			return "" + weaponClassification();
+			return CMStrings.s_indexStr(Weapon.CLASS_DESCS,weaponClassification(),"");
 		case 9:
 			return "" + getManufacturerName();
 		case 10:

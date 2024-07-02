@@ -49,7 +49,7 @@ public class Train extends StdCommand
 		return access;
 	}
 
-	private static enum Trainable
+	public static enum Trainable
 	{
 		HITPOINTS("HIT POINTS"),
 		MANA("MANA"),
@@ -201,13 +201,8 @@ public class Train extends StdCommand
 			for(final CharClass C : map.keySet())
 			{
 				final int amt = map.get(C).intValue();
-				if(mob.baseCharStats().getClassLevel(C) >= 0)
-					cols.add("^H"+CMStrings.padRight(C.name()+"^N",14)+"^N-");
-				else
-				{
-					cols.add("^H"+CMStrings.padRight(C.name()+"^N",14)+"^N"
-							+CMStrings.limit(amt+" "+plural(amt,"TRAIN"),10));
-				}
+				cols.add("^H"+CMStrings.padRight(C.name()+"^N",14)+"^N"
+						+CMStrings.limit(amt+" "+plural(amt,"TRAIN"),10));
 			}
 			final String menu = CMLib.lister().buildNColTable(mob, cols, "", 3);
 			CMLib.commands().postCommandFail(mob,origCmds,

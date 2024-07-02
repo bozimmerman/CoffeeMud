@@ -1655,7 +1655,16 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			}
 		}
 		if(theLevel<0)
-			return getQualifyingLevel(studentM.charStats().getCurrentClass().ID(),true,A.ID());
+		{
+			// return ANY qualifying level, even if above station -- prefer current class
+			for(int c=studentM.charStats().numClasses()-1;c>=0;c--)
+			{
+				final CharClass C=studentM.charStats().getMyClass(c);
+				theLevel=getQualifyingLevel(C.ID(),true,A.ID());
+				if(theLevel > 0)
+					break;
+			}
+		}
 		return theLevel;
 	}
 

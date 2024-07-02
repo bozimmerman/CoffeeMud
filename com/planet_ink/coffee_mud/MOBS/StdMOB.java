@@ -3397,8 +3397,13 @@ public class StdMOB implements MOB
 			{
 				CMLib.combat().establishRange(this, (MOB) msg.target(), msg.tool());
 				if((msg.tool() instanceof Weapon)
-				|| (msg.sourceMinor() == CMMsg.TYP_WEAPONATTACK)
-				|| (!flagLib.isAliveAwakeMobileUnbound((MOB) msg.target(), true)))
+				|| (msg.sourceMinor() == CMMsg.TYP_WEAPONATTACK))
+				{
+					setVictim((MOB) msg.target());
+					combatStarted();
+				}
+				else
+				if(!flagLib.isAliveAwakeMobileUnbound((MOB) msg.target(), true))
 					setVictim((MOB) msg.target());
 			}
 
@@ -3856,6 +3861,18 @@ public class StdMOB implements MOB
 		return tickStatus;
 	}
 
+	protected final void combatStarted()
+	{
+		if((!isMonster()) && (this.peaceTime > 0))
+		{
+			if(isAttributeSet(MOB.Attrib.NOBATTLESPAM))
+				tell(L("^F^<FIGHT^>You are now in combat.^</FIGHT^>^N"));
+			if(isPlayer())
+				playerStats().bumpLevelCombatStat(PlayerCombatStat.COMBATS_TOTAL, basePhyStats().level(), 1);
+			this.peaceTime = 0;
+		}
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -4060,22 +4077,15 @@ public class StdMOB implements MOB
 						if(CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.CombatSystem.DEFAULT.ordinal())
 							setActions(actions() + 1.0); // bonus action is employed in default system
 						tickStatus = Tickable.STATUS_FIGHT;
-						if((!isMonster) && isAttributeSet(MOB.Attrib.NOBATTLESPAM) && (peaceTime > 0))
-							tell(L("^F^<FIGHT^>You are now in combat.^</FIGHT^>^N"));
+						combatStarted();
 						if(CMLib.flags().canAutoAttack(this))
 							CMLib.combat().tickCombat(this);
-
 						if(!isMonster)
 						{
 							if(playerStats() != null)
-							{
-								if(peaceTime > 0)
-									playerStats().bumpLevelCombatStat(PlayerCombatStat.COMBATS_TOTAL, basePhyStats().level(), 1);
 								playerStats().bumpLevelCombatStat(PlayerCombatStat.ROUNDS_TOTAL, basePhyStats().level(), 1);
-							}
 							CMLib.combat().handleDamageSpamSummary(this);
 						}
-						peaceTime = 0;
 					}
 					else
 					{

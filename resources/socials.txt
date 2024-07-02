@@ -20,7 +20,9 @@ ww	APOLOGIZE <T-NAME>	You might as well apologize because <T-HE-SHE> sure as hel
 ms	APPLAUD	Clap, clap, clap.	<S-NAME> gives a round of applause.					
 ms	APPLAUD <T-NAME>	You clap at <T-NAMESELF>'s actions.	<S-NAME> claps at <T-NAMESELF>'s actions.	<S-NAME> gives you a round of applause.  You MUST'VE done something good!	You give your imaginary round of applause to your imaginary friend.			
 ms	APPLAUD SELF	You applaud at yourself.  Boy, are we conceited!	<S-NAME> applauds at <S-HIM-HERSELF>.  Boy, are we conceited!					
+mo	ATL	You search around for a leg to attach to.	<S-NAME> looks for a leg to attach to.					
 oo	ATL <T-NAME>	You attach to <T-YOUPOSS> leg in a panicked attempt to make <T-HIM-HER> stay!	<S-NAME> divebombs <T-YOUPOSS> leg in a pathetic attempt to get <T-HIM-HER> to stay.	<S-NAME> attaches to your leg so you can`t leave. *PANIC* you can`t get <S-HIM-HER> off!	They`ve already left.			
+ov	ATL SELF	You twist and contort while trying to grab your leg.	<S-NAME> curl(s) into a ball trying to grab <S-HIS-HER> leg.					
 oo	AWE	You stand in awe.	<S-NAME> stands in awe.					
 oo	AWE <T-NAME>	You stand in awe of <T-NAME>, like WOW, dude!	<S-NAME> stands in awe of <T-NAME>.	<S-NAME> stands in awe of you.	You must be imagining things, they aren`t here.			
 oo	AWE SELF	You stand in awe of yourself, WOW, don`t you just rock?!	<S-NAME> stands in awe of <S-him-herself>.					
@@ -199,9 +201,6 @@ mo	EMBRACE SELF	You try to console yourself with a loving embrace.	<S-NAME> trie
 mv	ENOD	You eagerly nod <S-YOUPOSS> approval.	<S-NAME> eagerly nods <S-HIS-HER> approval.					
 mv	ENOD <T-NAME>	You eagerly nod at <T-NAME>.	<S-NAME> eagerly nods at <T-NAME>.  <S-NAME> must approve!	<S-NAME> nods at <T-NAME> in approval.				
 mv	ENOD SELF	You bob <S-YOUPOSS> head up and down rapidly.	<S-NAME> nods <S-HIS-HER> head rapidly in some bizarre dance move.					
-mo	EYEPOKE	You get ready to poke someone in the eye.	<S-NAME> looks around for some eyes to gouge.					
-mo	EYEPOKE <T-NAME>	You poke <T-NAME> in the eye! Squishy!	<S-NAME> pokes <T-NAME> in the eye. That must`ve hurt.	<S-NAME> pokes you in the eye! OWWIE!!!	They aren`t around to poke. Sorry.			
-mo	EYEPOKE SELF	You jam your thumb into your eye. Was that fun?	<S-NAME> jabs <S-HIS-HER> thumb into <S-HIS-HER> eye and squishes it around.					
 mo	EXCITED	Whoohoo!	<S-NAME> is so excited <S-HE-SHE> is bouncing off the walls!					
 mo	EXCITED <T-NAME>	You bounce excitedly at <T-NAME>!	<S-NAME> hops around excitedly at <T-NAME>.	<S-NAME> looks at you and bounces with excitement.	So much energy, but nobody to share it with.			
 oo	EXPLODE	You feel the blood boiling in your veins!	<S-NAME> turns a deep red, fighting to contain <S-HIS-HER> temper...					
@@ -212,6 +211,10 @@ mo	EYE <T-NAME>	You eye <T-NAME> suspiciously.	<S-NAME> sizes up <T-NAME> carefu
 mo	EYE SELF	You carefully inspect yourself making sure nothing is out of place.	<S-NAME> checks over <S-HIS-HER> belongings, looking for something.					
 mo	EYEBROW	You raise an eyebrow at the notion.	<S-NAME> raises an eyebrow.					
 mo	EYEBROW <T-NAME>	You raise your eyebrow at <T-NAMESELF>.	<S-NAME> raises an eyebrow at <T-NAMESELF>'s weird actions.	<S-NAME> raises an eyebrow at you.	Forget it.  They aren't here.			
+mo	EYEPOKE	You get ready to poke someone in the eye.	<S-NAME> looks around for some eyes to gouge.					
+mo	EYEPOKE <T-NAME>	You poke <T-NAME> in the eye! Squishy!	<S-NAME> pokes <T-NAME> in the eye. That must`ve hurt.	<S-NAME> pokes you in the eye! OWWIE!!!	They aren`t around to poke. Sorry.			
+mo	EYEPOKE SELF	You jam your thumb into your eye. Was that fun?	<S-NAME> jabs <S-HIS-HER> thumb into <S-HIS-HER> eye and squishes it around.					
+mv	FACEPALM	You put your hand over your face and shake your head slowly...What a dork!	<S-name> slaps <s-his-her> palm over <s-his-her> face and shakes <s-his-her> head slowly.					
 oo	FAINT	You faint.	<S-NAME> faints.					
 ot	FAINT <T-NAME>	You faint into <T-HIS-HER> arms.	<S-NAME> faints into <T-NAMESELF>'s open arms.	<S-NAME> just fainted into YOUR arms.	You fall on the floor and look stupid--really suave.			
 mo	FAREWELL	You raise a hand in farewell.	<S-NAME> raises a hand in farewell.					
@@ -256,7 +259,6 @@ mt	FONDLE SELF	You fondly fondle yourself, feels funny doesn't it?	<S-NAME> fond
 mo	FOOTSIE	Who do you want to play footsie with?	`					
 ov	FOOTSIE <T-NAME>	You rub your foot on <T-NAMESELF>`s leg from <T-HIS-HER> ankle to <T-HIS-HER> thigh.	<S-NAME> rubs <S-HIS-HER> foot on <T-NAMESELF>`s leg from <T-HIS-HER> ankle to <T-HIS-HER> thigh.	<S-NAME> rubs <S-HIS-HER> foot from your ankle to VERY high up on your thigh.	Who do you want to play footsie with?			
 mo	FOOTSIE SELF	You look weird trying to play footsie with yourself.	<S-NAME> looks rather awkward trying to play footsie with <S-HIM-HERSELF>.					
-mv	FACEPALM	You put your hand over your face and shake your head slowly...What a dork!	<S-name> slaps <s-his-her> palm over <s-his-her> face and shakes <s-his-her> head slowly.					
 mt	FRENCH	Kiss whom?						
 mt	FRENCH <T-NAME>	You give <T-NAMESELF> a long and passionate kiss, it seems to last forever...	<S-NAME> kisses <T-NAMESELF> passionately.	<S-NAME> gives you a long and passionate kiss, it seems to last forever...	Your heart is filled with despair as that person is not here.			
 ot	FRENCH SELF	You gather yourself in your arms and try to kiss yourself.	<S-NAME> makes an attempt at kissing <S-HIM-HERSELF>.					
