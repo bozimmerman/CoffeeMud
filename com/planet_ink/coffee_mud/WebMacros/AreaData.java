@@ -98,7 +98,8 @@ public class AreaData extends StdWebMacro
 				alreadyHave.add(theclass.toLowerCase());
 			}
 			str.append("<TR><TD WIDTH=50%>");
-			str.append("<SELECT ONCHANGE=\"AddBehavior(this);\" NAME=BEHAV"+(theclasses.size()+1)+">");
+			str.append("<INPUT TYPE=\"TEXT\" LIST=\"behaviordata\" ONCHANGE=\"AddBehavior(this);\" NAME=BEHAV"+(theclasses.size()+1)+">");
+			str.append("<DATALIST id=\"behaviordata\">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Behavior");
 
 			Object[] sortedB=null;
@@ -119,6 +120,7 @@ public class AreaData extends StdWebMacro
 				}
 			}
 			str.append("</SELECT>");
+			str.append("</DATALIST>");
 			str.append("</TD><TD WIDTH=50%>");
 			str.append("<INPUT TYPE=TEXT SIZE=30 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\">");
 			str.append("</TD></TR>");
@@ -182,7 +184,8 @@ public class AreaData extends StdWebMacro
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=50%>");
-			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=AFFECT"+(theclasses.size()+1)+">");
+			str.append("<INPUT TYPE=\"TEXT\" LIST=\"affectdata\" ONCHANGE=\"AddAffect(this);\" NAME=AFFECT"+(theclasses.size()+1)+">");
+			str.append("<DATALIST ID=\"affectdata\"");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
 			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
@@ -193,6 +196,7 @@ public class AreaData extends StdWebMacro
 				str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
 			}
 			str.append("</SELECT>");
+			str.append("</DATALIST>");
 			str.append("</TD><TD WIDTH=50%>");
 			str.append("<INPUT TYPE=TEXT SIZE=30 NAME=ADATA"+(theclasses.size()+1)+" VALUE=\"\">");
 			str.append("</TD></TR>");

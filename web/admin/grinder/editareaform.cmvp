@@ -23,11 +23,25 @@
 			if(ME.selectedIndex==0)
 				ReShow();
 		}
-		function AddBehavior(ME)
-		{
-			if(ME.selectedIndex>0)
-				ReShow();
-		}
+        function AddBehavior(ME)
+        {
+            const options = getOptions('behaviordata');
+            const value = ME.value;
+            if(options.includes(value)) {
+                ReShow();
+            }
+        }
+
+        function getOptions(element_id) {
+            const datalist = document.getElementById(element_id);
+            const options = datalist.getElementsByTagName('option');
+            const values = [];
+
+            for (let i = 0; i < options.length; i++) {
+                values.push(options[i].value);
+            }
+            return values;
+        }
 		function EditAffect(ME)
 		{
 			if(ME.selectedIndex==0)
@@ -35,8 +49,11 @@
 		}
 		function AddAffect(ME)
 		{
-			if(ME.selectedIndex>0)
-				ReShow();
+			const options = getOptions('affectdata');
+            const value = ME.value;
+            if(options.includes(value)) {
+                ReShow();
+            }
 		}
         function EditSubOp(ME)
         {
