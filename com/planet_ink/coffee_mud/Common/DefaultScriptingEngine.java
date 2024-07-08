@@ -11198,7 +11198,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tt==null)
 						return null;
 				}
-				final String parm=tt[1];
+				String parm=tt[1];
 				final Environmental newTarget=getArgumentMOB(parm,ctx);
 				final Room lastR=lastKnownLocation;
 				if((newTarget instanceof MOB)
@@ -11236,20 +11236,24 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 				else
-				if(CMLib.map().getRoom(parm)!=null)
-					CMLib.map().getRoom(parm).show(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
-				else
 				{
-					final Area A = CMLib.map().findArea(parm);
-					if(A != null)
+					parm = this.varify(ctx, parm);
+					Room R = CMLib.map().getRoom(parm);
+					if(R!=null)
+						R.show(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+					else
 					{
-						if((lastR.numInhabitants()==0)||(!A.inMyMetroArea(lastR.getArea())))
-							lastR.showSource(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
-						for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+						final Area A = CMLib.map().findArea(parm);
+						if(A != null)
 						{
-							final Room R=e.nextElement();
-							if(R.numInhabitants()>0)
-								R.showOthers(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+							if((lastR.numInhabitants()==0)||(!A.inMyMetroArea(lastR.getArea())))
+								lastR.showSource(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+							for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+							{
+								R=e.nextElement();
+								if(R.numInhabitants()>0)
+									R.showOthers(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+							}
 						}
 					}
 				}
