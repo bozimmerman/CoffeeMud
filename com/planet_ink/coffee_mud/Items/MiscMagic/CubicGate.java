@@ -47,7 +47,6 @@ public class CubicGate extends StdItem implements MiscMagic
 
 		setName("a cube of strange metal");
 		setDisplayText("a strange, metallic cube sits here.");
-		resetCube();
 		basePhyStats().setLevel(1);
 		setMaterial(RawMaterial.RESOURCE_ADAMANTITE);
 		basePhyStats().setWeight(2);
