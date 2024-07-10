@@ -1156,15 +1156,15 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			commands.remove(0);
 			foundMoreThanOne=false;
-			final String firstCastWord=commands.get(0).toUpperCase();
+			final String firstCastUWord=commands.get(0).toUpperCase();
 			for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
 				if((A!=null)
-				&&(evokedBy(A,evokeWord,firstCastWord.toUpperCase())))
+				&&(evokedBy(A,evokeWord,firstCastUWord)))
 				{
-					if((A.name().equalsIgnoreCase(firstCastWord))
-					||(collapsedName(A).equalsIgnoreCase(firstCastWord)))
+					if((A.name().equalsIgnoreCase(firstCastUWord))
+					||(collapsedName(A).equalsIgnoreCase(firstCastUWord)))
 					{
 						evokeA=A;
 						break;
@@ -1174,8 +1174,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					{
 						if(!A.ID().equals(evokeA.ID()))
 							foundMoreThanOne=true;
-						if(A.proficiency() > evokeA.proficiency())
+						if((A.proficiency() > evokeA.proficiency())
+						||((A.name().toUpperCase().startsWith(firstCastUWord)
+							&& (!evokeA.Name().toUpperCase().startsWith(firstCastUWord))))
+						||((collapsedName(A).toUpperCase().startsWith(firstCastUWord))
+							&& (!collapsedName(evokeA).toUpperCase().startsWith(firstCastUWord))))
+						{
 							evokeA = A;
+						}
 					}
 					else
 						evokeA=A;
@@ -1186,13 +1192,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			else
 			if((foundMoreThanOne)&&(commands.size()>1))
 			{
-				final String secondAndThirdCastWord=firstCastWord+" "+commands.get(1).toUpperCase();
-
+				final String secondAndThirdCastUWords=firstCastUWord+" "+commands.get(1).toUpperCase();
 				for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 				{
 					final Ability A=a.nextElement();
 					if((A!=null)
-					&& (evokedBy(A,evokeWord,secondAndThirdCastWord.toUpperCase())))
+					&& (evokedBy(A,evokeWord,secondAndThirdCastUWords)))
 					{
 						evokeA=A;
 						break;
@@ -1205,15 +1210,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
 			else
-			if((evokeA == null)
-			||(!evokeA.name().toUpperCase().startsWith(firstCastWord.toUpperCase())))
+			if(evokeA == null)
 			{
 				for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 				{
 					final Ability A=a.nextElement();
 					if((A!=null)
 					&&(evokedBy(A,evokeWord))
-					&&(A.name().toUpperCase().indexOf(" "+firstCastWord.toUpperCase())>0))
+					&&(A.name().toUpperCase().indexOf(" "+firstCastUWord)>0))
 					{
 						evokeA=A;
 						commands.remove(0);
