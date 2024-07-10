@@ -1108,40 +1108,40 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		final String evokeWord=commands.get(0).toUpperCase();
 
 		boolean foundMoreThanOne=false;
-		Ability evokableAbility=null;
+		Ability evokeA=null;
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)
 			&&(evokedBy(A,evokeWord)))
 			{
-				if(evokableAbility != null)
+				if(evokeA != null)
 				{
-					if(!A.ID().equals(evokableAbility.ID()))
+					if(!A.ID().equals(evokeA.ID()))
 					{
 						foundMoreThanOne=true;
-						evokableAbility=null;
+						evokeA=null;
 						break;
 					}
 					else
-					if(A.proficiency() > evokableAbility.proficiency())
-						evokableAbility = A;
+					if(A.proficiency() > evokeA.proficiency())
+						evokeA = A;
 				}
 				else
-					evokableAbility=A;
+					evokeA=A;
 			}
 		}
 
-		if((evokableAbility!=null)&&(commands.size()>1))
+		if((evokeA!=null)&&(commands.size()>1))
 		{
-			final int classCode=evokableAbility.classificationCode()&Ability.ALL_ACODES;
+			final int classCode=evokeA.classificationCode()&Ability.ALL_ACODES;
 			switch(classCode)
 			{
 			case Ability.ACODE_SPELL:
 			case Ability.ACODE_SONG:
 			case Ability.ACODE_PRAYER:
 			case Ability.ACODE_CHANT:
-				evokableAbility=null;
+				evokeA=null;
 				foundMoreThanOne=true;
 				break;
 			default:
@@ -1149,79 +1149,82 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 		}
 
-		if(evokableAbility!=null)
+		if(evokeA!=null)
 			commands.remove(0);
 		else
 		if((foundMoreThanOne)&&(commands.size()>1))
 		{
 			commands.remove(0);
 			foundMoreThanOne=false;
-			final String secondWord=commands.get(0).toUpperCase();
+			final String firstCastWord=commands.get(0).toUpperCase();
 			for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
 				if((A!=null)
-				&&(evokedBy(A,evokeWord,secondWord.toUpperCase())))
+				&&(evokedBy(A,evokeWord,firstCastWord.toUpperCase())))
 				{
-					if((A.name().equalsIgnoreCase(secondWord))
-					||(collapsedName(A).equalsIgnoreCase(secondWord)))
+					if((A.name().equalsIgnoreCase(firstCastWord))
+					||(collapsedName(A).equalsIgnoreCase(firstCastWord)))
 					{
-						evokableAbility=A;
-						foundMoreThanOne=false;
+						evokeA=A;
 						break;
 					}
 					else
-					if(evokableAbility!=null)
+					if(evokeA!=null)
 					{
-						if(!A.ID().equals(evokableAbility.ID()))
+						if(!A.ID().equals(evokeA.ID()))
 							foundMoreThanOne=true;
-						if(A.proficiency() > evokableAbility.proficiency())
-							evokableAbility = A;
+						if(A.proficiency() > evokeA.proficiency())
+							evokeA = A;
 					}
 					else
-						evokableAbility=A;
+						evokeA=A;
 				}
 			}
-			if((evokableAbility!=null)&&(!foundMoreThanOne))
+			if((evokeA!=null)&&(!foundMoreThanOne))
 				commands.remove(0);
 			else
 			if((foundMoreThanOne)&&(commands.size()>1))
 			{
-				final String secondAndThirdWord=secondWord+" "+commands.get(1).toUpperCase();
+				final String secondAndThirdCastWord=firstCastWord+" "+commands.get(1).toUpperCase();
 
 				for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 				{
 					final Ability A=a.nextElement();
 					if((A!=null)
-					&& (evokedBy(A,evokeWord,secondAndThirdWord.toUpperCase())))
+					&& (evokedBy(A,evokeWord,secondAndThirdCastWord.toUpperCase())))
 					{
-						evokableAbility=A;
+						evokeA=A;
 						break;
 					}
 				}
-				if(evokableAbility!=null)
+				if(evokeA!=null)
 				{
 					commands.remove(0);
 					commands.remove(0);
 				}
 			}
 			else
+			if((evokeA == null)
+			||(!evokeA.name().toUpperCase().startsWith(firstCastWord.toUpperCase())))
 			{
 				for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 				{
 					final Ability A=a.nextElement();
 					if((A!=null)
 					&&(evokedBy(A,evokeWord))
-					&&(A.name().toUpperCase().indexOf(" "+secondWord.toUpperCase())>0))
+					&&(A.name().toUpperCase().indexOf(" "+firstCastWord.toUpperCase())>0))
 					{
-						evokableAbility=A;
+						evokeA=A;
 						commands.remove(0);
 						break;
 					}
 				}
 			}
+			else
+				commands.remove(0);
 		}
-		return evokableAbility;
+		return evokeA;
 	}
 
 	@Override
