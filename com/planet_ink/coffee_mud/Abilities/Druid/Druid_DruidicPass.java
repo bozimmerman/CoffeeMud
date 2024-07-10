@@ -105,7 +105,7 @@ public class Druid_DruidicPass extends StdAbility
 				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
 					return false;
 				}
-				if((R.domainType()&Room.INDOORS)>0)
+				if((R.domainType()&Room.INDOORS)==0)
 					return true;
 			}
 		}
@@ -124,7 +124,7 @@ public class Druid_DruidicPass extends StdAbility
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 
-		if(!canPassHere(affected))
+		if(!canPassHere(mob))
 		{
 			mob.tell(L("You must be in the wild to perform the Druidic Pass."));
 			return false;

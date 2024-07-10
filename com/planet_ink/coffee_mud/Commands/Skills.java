@@ -143,7 +143,7 @@ public class Skills extends StdCommand
 				else
 				{
 					line.append("^N[^k"+CMStrings.padRight(Integer.toString(proficiency),3)+"%^?]^N ");
-					line.append("^<HELP^>^k"+A2.name()+"^^?</HELP^>");
+					line.append("^<HELP^>^k"+A2.name()+"^?^</HELP^>");
 				}
 				line.append("^?\n\r");
 				if(mob.session()!=null)
