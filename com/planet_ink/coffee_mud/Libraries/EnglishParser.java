@@ -1163,8 +1163,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				if((A!=null)
 				&&(evokedBy(A,evokeWord,firstCastUWord)))
 				{
-					if((A.name().equalsIgnoreCase(firstCastUWord))
-					||(collapsedName(A).equalsIgnoreCase(firstCastUWord)))
+					final String unameA = A.Name().toUpperCase();
+					final String ucnameA = collapsedName(A).toUpperCase();
+					if((unameA.equals(firstCastUWord))
+					||(ucnameA.equals(firstCastUWord)))
 					{
 						evokeA=A;
 						break;
@@ -1175,9 +1177,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						if(!A.ID().equals(evokeA.ID()))
 							foundMoreThanOne=true;
 						if((A.proficiency() > evokeA.proficiency())
-						||((A.name().toUpperCase().startsWith(firstCastUWord)
+						||((unameA.startsWith(firstCastUWord)
 							&& (!evokeA.Name().toUpperCase().startsWith(firstCastUWord))))
-						||((collapsedName(A).toUpperCase().startsWith(firstCastUWord))
+						||((ucnameA.startsWith(firstCastUWord))
 							&& (!collapsedName(evokeA).toUpperCase().startsWith(firstCastUWord))))
 						{
 							evokeA = A;
