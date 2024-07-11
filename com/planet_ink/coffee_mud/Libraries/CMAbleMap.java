@@ -1248,15 +1248,24 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			abilityID=orset.get(o);
 			preA=CMClass.getAbility(abilityID);
 			if(preA==null)
-			{
 				preA=CMClass.findAbility(abilityID);
-				if(preA!=null)
-					orset.set(o,preA.ID());
+			if(preA!=null)
+				orset.set(o,preA.ID());
+			else
+			{
+				final ExpertiseDefinition def = CMLib.expertises().findDefinition(abilityID, true);
+				if(def != null)
+					orset.set(0,def.ID());
 				else
 				{
-					Log.errOut("CMAble","Skill "+errStr+" requires nonexistant skill "+abilityID+".");
-					orset.clear();
-					break;
+					if(CMLib.expertises().getStageCodes(abilityID).size()>0)
+						orset.set(0,abilityID.toUpperCase().trim());
+					else
+					{
+						Log.errOut("CMAble","Skill "+errStr+" requires nonexistant skill "+abilityID+".");
+						orset.clear();
+						break;
+					}
 				}
 			}
 		}
@@ -1278,14 +1287,23 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			{
 				Ability otherAbility=CMClass.getAbility(abilityID);
 				if(otherAbility==null)
-				{
 					otherAbility=CMClass.findAbility(abilityID);
-					if(otherAbility!=null)
-						rawPreReqs.setElementAt(v,1,otherAbility.ID());
+				if(otherAbility!=null)
+					rawPreReqs.setElementAt(v,1,otherAbility.ID());
+				else
+				{
+					final ExpertiseDefinition def = CMLib.expertises().findDefinition(abilityID, true);
+					if(def != null)
+						rawPreReqs.setElementAt(v,1,def.ID());
 					else
 					{
-						Log.errOut("CMAble","Skill "+A.ID()+" requires nonexistant skill "+abilityID+".");
-						break;
+						if(CMLib.expertises().getStageCodes(abilityID).size()>0)
+							rawPreReqs.setElementAt(v,1,abilityID.toUpperCase().trim());
+						else
+						{
+							Log.errOut("CMAble","Skill "+A.ID()+" requires nonexistant skill "+abilityID+".");
+							break;
+						}
 					}
 				}
 			}
@@ -1368,25 +1386,29 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		if((V==null)||(V.size()==0))
 			return new DVector(2);
 		fillPreRequisites(A,V);
-		String abilityID=null;
-		Integer prof=null;
-		Ability A2=null;
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			prof=(Integer)V.elementAt(v,2);
+			final Integer prof=(Integer)V.elementAt(v,2);
 			if(V.elementAt(v,1) instanceof String)
 			{
-				abilityID=(String)V.elementAt(v,1);
-				A2=studentM.fetchAbility(abilityID);
+				final String abilityID=(String)V.elementAt(v,1);
+				final Ability A2=studentM.fetchAbility(abilityID);
 				if((A2!=null)&&(A2.proficiency()>=prof.intValue()))
 					V.removeElementAt(v);
 				else
-				if((!qualifiesByLevel(studentM,abilityID))
-				&&(!getAllQualified("All",true,abilityID)))
 				{
-					if(!getAllQualified("All",true,A.ID()))
+					final Pair<String,Integer> xP = studentM.fetchExpertise(abilityID);
+					if((xP!=null)&&(xP.second.intValue()>=prof.intValue()))
 						V.removeElementAt(v);
-					// why are you even trying?
+					else
+					if((!qualifiesByLevel(studentM,abilityID))
+					&&(!getAllQualified("All",true,abilityID))
+					&&(CMClass.getAbility(abilityID)!=null))
+					{
+						if(!getAllQualified("All",true,A.ID()))
+							V.removeElementAt(v);
+						// why are you even trying?
+					}
 				}
 			}
 			else
@@ -1395,20 +1417,30 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 				final List<String> orset=(List<String>)V.elementAt(v,1);
 				for(int o=orset.size()-1;o>=0;o--)
 				{
-					abilityID=orset.get(o);
-					A2=studentM.fetchAbility(abilityID);
+					final String abilityID=orset.get(o);
+					final Ability A2=studentM.fetchAbility(abilityID);
 					if((A2!=null)&&(A2.proficiency()>=prof.intValue()))
 					{
 						orset.clear();
 						break;
 					}
 					else
-					if((!qualifiesByLevel(studentM,abilityID))
-					&&(!getAllQualified("All",true,abilityID)))
 					{
-						if(!getAllQualified("All",true,A.ID()))
-							orset.remove(o);
-						// why are you even trying?
+						final Pair<String,Integer> xP = studentM.fetchExpertise(abilityID);
+						if((xP!=null)&&(xP.second.intValue()>=prof.intValue()))
+						{
+							orset.clear();
+							break;
+						}
+						else
+						if((!qualifiesByLevel(studentM,abilityID))
+						&&(!getAllQualified("All",true,abilityID))
+						&&(CMClass.getAbility(abilityID)!=null))
+						{
+							if(!getAllQualified("All",true,A.ID()))
+								orset.remove(o);
+							// why are you even trying?
+						}
 					}
 				}
 				if(orset.size()==0)
@@ -1450,36 +1482,63 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 					@SuppressWarnings({ "unchecked", "rawtypes" })
 					final List<String> V=(List)preReqs.elementAt(p,1);
 					names.append("(One of: ");
+					Ability A = null;
 					for(int v=0;v<V.size();v++)
 					{
-						final Ability A=CMClass.getAbility(V.get(v));
+						final String ID = V.get(v);
+						A=CMClass.getAbility(ID);
+						final String name;
 						if(A!=null)
+							name = A.Name();
+						else
 						{
-							names.append("'"+A.name()+"'");
-							if(V.size()>1)
-							{
-								if(v==(V.size()-2))
-									names.append(", or ");
-								else
-								if(v<V.size()-2)
-									names.append(", ");
-							}
+							final ExpertiseDefinition X;
+							if(prof.intValue()>0)
+								X = CMLib.expertises().getDefinition(ID+prof.toString());
+							else
+								X = CMLib.expertises().getDefinition(ID);
+							if(X != null)
+								name = X.name();
+							else
+								continue;
+						}
+						names.append("'"+name+"'");
+						if(V.size()>1)
+						{
+							if(v==(V.size()-2))
+								names.append(", or ");
+							else
+							if(v<V.size()-2)
+								names.append(", ");
 						}
 					}
-					if(prof.intValue()>0)
+					if((prof.intValue()>0)&&(A!=null))
 						names.append(" at "+prof+"%)");
 					else
 						names.append(")");
 				}
 				else
 				{
-					final Ability A=CMClass.getAbility((String)preReqs.elementAt(p,1));
+					final String ID=(String)preReqs.elementAt(p,1);
+					final Ability A=CMClass.getAbility(ID);
+					final String name;
 					if(A!=null)
+						name = A.Name();
+					else
 					{
-						names.append("'"+A.name()+"'");
+						final ExpertiseDefinition X;
 						if(prof.intValue()>0)
-							names.append(" at "+prof+"%");
+							X = CMLib.expertises().getDefinition(ID+prof.toString());
+						else
+							X = CMLib.expertises().getDefinition(ID);
+						if(X != null)
+							name = X.name();
+						else
+							continue;
 					}
+					names.append("'"+name+"'");
+					if((prof.intValue()>0)&&(A!=null))
+						names.append(" at "+prof+"%");
 				}
 				if(preReqs.size()>1)
 				{

@@ -997,7 +997,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	/**
 	 * Returns the expertise and number for the given code. The
 	 * code is a full expertise code, including number.  This
-	 * will only return a value if the mob has one at or below
+	 * will only return a value if the mob has one at or above
 	 * the given level, returning null if the mob does not have
 	 * a sufficient expertise as the one given.
 	 * @see MOB#delAllExpertises()

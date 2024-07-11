@@ -27,6 +27,7 @@
  26. Unleveling no longer removes a level 0 class, but still takes from other classes
  27. SCORE command has more arguments for narrowing the results.
  28. Prop_ItemNoRuin can now be used to Always ruin an item.
+ 29. Class Skills, including All Qualifys, now support expertises as requirements.
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.
