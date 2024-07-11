@@ -10676,6 +10676,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 41: // mpoloadroom
 			{
+				final Room putRoom = lastKnownLocation;
 				if(tt==null)
 				{
 					tt=parseBits(script,si,"Cr");
@@ -10683,7 +10684,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 				}
 				String name=varify(ctx,tt[1]);
-				if(lastKnownLocation!=null)
+				if(putRoom!=null)
 				{
 					final ArrayList<Environmental> Is=new ArrayList<Environmental>();
 					final int containerIndex=name.toUpperCase().indexOf(" INTO ");
@@ -10691,7 +10692,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(containerIndex>=0)
 					{
 						final ArrayList<Environmental> containers=new ArrayList<Environmental>();
-						findSomethingCalledThis(name.substring(containerIndex+6).trim(),null,lastKnownLocation,containers,false);
+						findSomethingCalledThis(name.substring(containerIndex+6).trim(),null,putRoom,containers,false);
 						for(int c=0;c<containers.size();c++)
 						{
 							if((containers.get(c) instanceof Container)
@@ -10722,11 +10723,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						else
 						{
-							findSomethingCalledThis(name,ctx.monster,lastKnownLocation,Is,false);
+							findSomethingCalledThis(name,ctx.monster,putRoom,Is,false);
 							if((container!=null)
 							&&(Is.size()==0))
 							{
-								findSomethingCalledThis(tt[1],ctx.monster,lastKnownLocation,Is,false);
+								findSomethingCalledThis(tt[1],ctx.monster,putRoom,Is,false);
 								if(Is.size()>0)
 									container=null;
 							}
@@ -10742,12 +10743,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							{
 								I=(Item)I.copyOf();
 								I.recoverPhyStats();
-								lastKnownLocation.addItem(I,ItemPossessor.Expire.Monster_EQ);
+								synchronized(putRoom)
+								{
+									// does this really do anything?  is it optimized away?
+								}
+								putRoom.addItem(I,ItemPossessor.Expire.Monster_EQ);
 								I.setContainer(container);
 								if(I instanceof Coins)
 									((Coins)I).putCoinsBack();
 								if(I instanceof RawMaterial)
 									((RawMaterial)I).rebundle();
+								if(!putRoom.isContent(I))
+									putRoom.addItem(I,ItemPossessor.Expire.Monster_EQ);
+								I.setOwner(putRoom);
 								lastLoaded=I;
 							}
 						}
