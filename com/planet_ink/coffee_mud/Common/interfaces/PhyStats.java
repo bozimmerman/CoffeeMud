@@ -522,8 +522,8 @@ public interface PhyStats extends CMCommon, Modifiable
 	// sensemask stuff not applicable to mobs
 	/** a bit setting, as from sensesMask(), flagging this item/room as being unlocatable */
 	public final static int SENSE_UNLOCATABLE=1;
-	/** a bit setting, as from sensesMask(), unused */
-	//public final static int SENSE_ITEMNOMINRANGE=2;
+	/** a bit setting, as from sensesMask(), flagging that this item is always ruined */
+	public final static int SENSE_ALWAYSRUIN=2;
 	/** a bit setting, as from sensesMask(), unused  */
 	//public final static int SENSE_ITEMNOMAXRANGE=4;
 	/** a bit setting, as from sensesMask(), flagging this item/room as readable */
@@ -568,7 +568,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	/** STAT codes list, indexed by the 2nd root of the various sensesMask() SENSE_ bitmasks */
 	public static final String[] SENSE_CODES={
 		"UNLOCATABLE",
-		"UNUSED",
+		"ALWAYSRUIN",
 		"UNUSED",
 		"ITEMREADABLE",
 		"ITEMNOTGET",

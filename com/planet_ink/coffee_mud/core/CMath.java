@@ -337,6 +337,31 @@ public class CMath
 	}
 
 	/**
+	 * Returns the matching enum using startsWith.  Case insensitive!
+	 * @param c the enum class to look in
+	 * @param s the string to look
+	 * @return the enum or null
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public final static Enum<? extends Enum> s_valueOfStartsWith(final Class<? extends Enum> c, final String s)
+	{
+		if((c==null)||(s==null))
+			return null;
+		final Enum<? extends Enum> fe = s_valueOf(c, s);
+		if(fe != null)
+			return fe;
+		final String us = s.toUpperCase().trim();
+		for(final Enum e : c.getEnumConstants())
+		{
+			if(e.name().toUpperCase().startsWith(us))
+				return e;
+		}
+		return null;
+	}
+
+
+
+	/**
 	 * Returns true if the string is a number (float or int)
 	 * @param s the string to test
 	 * @return true if a number, false otherwise

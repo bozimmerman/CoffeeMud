@@ -1906,6 +1906,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		||((!CMLib.flags().isGettable(I))&&(!(I instanceof Boardable)))
 		||(!CMLib.flags().isRemovable(I))
 		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
+		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ALWAYSRUIN))
 		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH))
 		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_UNLOCATABLE))
 		||(CMLib.flags().flaggedAffects(I, Ability.FLAG_UNCRAFTABLE).size()>0))
