@@ -2449,7 +2449,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			case MANA:
 				return Integer.valueOf(M.baseState().getMana());
 			case MATTRIB:
-				return Integer.valueOf(M.getAttributesBitmap());
+				return Long.valueOf(M.getAttributesBitmap());
 			case MOVES:
 				return Integer.valueOf(M.baseState().getMovement());
 			case PASSWORD:
@@ -2810,7 +2810,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				M.recoverMaxState();
 				break;
 			case MATTRIB:
-				M.setAttributesBitmap(CMath.s_int(""+value));
+				M.setAttributesBitmap(CMath.s_long(""+value));
 				break;
 			case MOVES:
 				M.baseState().setMovement(CMath.s_int(""+value));

@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -156,7 +157,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean canAutoAttack(final MOB M)
 	{
-		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_NOT_AUTO_ATTACK) == 0);
+		return (M != null)
+				&& ((M.phyStats().sensesMask() & PhyStats.CAN_NOT_AUTO_ATTACK) == 0)
+				&& (!M.isAttributeSet(Attrib.AUTOATTACK));
 	}
 
 	@Override

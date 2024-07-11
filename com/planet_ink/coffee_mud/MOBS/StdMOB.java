@@ -94,7 +94,7 @@ public class StdMOB implements MOB
 	protected int				money				= 0;
 	protected double			moneyVariation		= 0.0;
 	protected double			speedAdj			= CMProps.getSpeedAdjustment();
-	protected int				attributesBitmap	= MOB.Attrib.NOTEACH.getBitCode();
+	protected long				attributesBitmap	= MOB.Attrib.NOTEACH.getBitCode();
 	protected String			databaseID			= "";
 
 	protected int				tickAgeCounter		= 0;
@@ -329,7 +329,7 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public int getAttributesBitmap()
+	public long getAttributesBitmap()
 	{
 		return attributesBitmap;
 	}
@@ -376,7 +376,7 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public void setAttributesBitmap(final int bitmap)
+	public void setAttributesBitmap(final long bitmap)
 	{
 		this.attributesBitmap = bitmap;
 	}

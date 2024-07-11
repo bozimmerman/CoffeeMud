@@ -49,10 +49,10 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	/**
 	 * Returns the raw numeric attributes bitmap
 	 * @see MOB.Attrib
-	 * @see MOB#setAttributesBitmap(int)
+	 * @see MOB#setAttributesBitmap(long)
 	 * @return the raw numeric attributes bitmap
 	 */
-	public int getAttributesBitmap();
+	public long getAttributesBitmap();
 
 	/**
 	 * Sets the raw numeric attributes bitmap
@@ -60,7 +60,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @see MOB#getAttributesBitmap()
 	 * @param bitmap the raw numeric attributes bitmap
 	 */
-	public void setAttributesBitmap(int bitmap);
+	public void setAttributesBitmap(long bitmap);
 
 	/**
 	 * Changes the value of a specific attribute
@@ -1072,9 +1072,9 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		PRIVACY(false), // 28
 		NOREPROMPT(false), // 29
 		NOSPAM(false),//30
-		// .. up to /31
+		AUTOATTACK(true),//31
 		;
-		private final int bitCode;
+		private final long bitCode;
 		private final boolean autoReverse;
 		private final String desc;
 
@@ -1082,21 +1082,21 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		{
 			this.autoReverse=reversed;
 			this.desc=desc;
-			this.bitCode=(int)Math.round(Math.pow(2,this.ordinal()));
+			this.bitCode=Math.round(Math.pow(2,this.ordinal()));
 		}
 
 		private Attrib(final boolean reversed)
 		{
 			this.autoReverse=reversed;
 			this.desc=this.name();
-			this.bitCode=(int)Math.round(Math.pow(2,this.ordinal()));
+			this.bitCode=Math.round(Math.pow(2,this.ordinal()));
 		}
 
 		/**
 		 * Returns the bitmap mask of this attribute
 		 * @return the bitmap mask of this attribute
 		 */
-		public int getBitCode()
+		public long getBitCode()
 		{
 			return bitCode;
 		}

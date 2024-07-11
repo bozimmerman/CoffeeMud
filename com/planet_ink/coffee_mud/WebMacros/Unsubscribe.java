@@ -55,10 +55,10 @@ public class Unsubscribe extends StdWebMacro
 
 	protected void unsubScribePlayer(final String playerName)
 	{
-		Integer attributes = (Integer)CMLib.players().getPlayerValue(playerName, PlayerCode.MATTRIB);
+		Long attributes = (Long)CMLib.players().getPlayerValue(playerName, PlayerCode.MATTRIB);
 		if(attributes != null)
 		{
-			attributes = Integer.valueOf(attributes.intValue() |  Attrib.AUTOFORWARD.getBitCode());
+			attributes = Long.valueOf(attributes.longValue() |  Attrib.AUTOFORWARD.getBitCode());
 			CMLib.players().setPlayerValue(playerName, PlayerCode.MATTRIB, attributes);
 		}
 	}
@@ -96,7 +96,7 @@ public class Unsubscribe extends StdWebMacro
 				}
 			}
 			last=CMStrings.capitalizeAndLower(last);
-			final Integer attrib = (Integer)CMLib.players().getPlayerValue(last, PlayerCode.MATTRIB);
+			final Long attrib = (Long)CMLib.players().getPlayerValue(last, PlayerCode.MATTRIB);
 			if(attrib == null)
 				throw new HTTPServerException(new HTTPException(HTTPStatus.S202_ACCEPTED,L("You are already completely and totally unsubscribed from all emails forever.")));
 			if(CMath.bset(attrib.intValue(), Attrib.AUTOFORWARD.getBitCode()))

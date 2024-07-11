@@ -337,6 +337,17 @@ public class Config extends StdCommand
 					break;
 				case AUTOMELEE:
 					break;
+				case AUTOATTACK:
+					if(newSet)
+					{
+						if((CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.CombatSystem.TURNBASED.ordinal())
+						||(CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.CombatSystem.MANUAL.ordinal()))
+						{
+							mob.tell(L("Because of the combat system, this config doesn't really apply."));
+							return false;
+						}
+					}
+					break;
 				case AUTONOTIFY:
 					break;
 				case AUTORUN:
