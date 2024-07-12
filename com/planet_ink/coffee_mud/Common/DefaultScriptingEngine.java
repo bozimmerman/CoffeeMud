@@ -13279,7 +13279,7 @@ if((follower.isPlayer())
 				final PhysicalAgent M = getArgumentMOB(tt[1], ctx);
 				if((!(M instanceof MOB))||(((MOB)M).isMonster()))
 				{
-					logError(ctx.scripted,"MPPOSSESS","RunTime",tt[1]+" is not a player.");
+					logError(ctx.scripted,"MPACHIEVE","RunTime",tt[1]+" is not a player.");
 					break;
 				}
 				final String achieveID=varify(ctx,tt[2]);
