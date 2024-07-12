@@ -114,7 +114,7 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 		{
 			if((msg.sourceMajor(CMMsg.MASK_EYES))
 			||(msg.sourceMajor(CMMsg.MASK_HANDS))
-			||(msg.sourceMajor(CMMsg.MASK_MOUTH))
+			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)&&CMath.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))
 			||(msg.sourceMajor(CMMsg.MASK_MOVE)))
 			{
 				if(msg.sourceMessage()!=null)

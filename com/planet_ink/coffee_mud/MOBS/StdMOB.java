@@ -2567,6 +2567,7 @@ public class StdMOB implements MOB
 						}
 					}
 					else
+					if(CMath.bset(srcMajor, CMMsg.MASK_HANDS))
 					{
 						if((!flags.canBeSeenBy(msg.target(), this))
 						&& (!isMine(msg.target()))

@@ -114,7 +114,7 @@ public class Chant_PlantSelf extends Chant
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 		&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))
 				||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-				||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH))))
+				||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)&&CMath.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))))
 			unInvoke();
 		return;
 	}
