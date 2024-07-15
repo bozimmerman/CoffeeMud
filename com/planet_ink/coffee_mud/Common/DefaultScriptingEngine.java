@@ -12291,14 +12291,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									}
 									thisRoom.send(follower,leaveMsg);
 									if(!alreadyHere)
-									{
-//TODO: DELME -- THIS IS FOR DEBUGGING AN ISSUE
-if((follower.isPlayer())
-&&(enterMsg.target() == follower.getStartRoom())
-&&(CMProps.getVar(CMProps.Str.MUDNAME).equalsIgnoreCase("coffeemud")))
-	Log.helpOut(follower.Name(), new Exception(getScriptFiles()+"/"+CMLib.map().getApproximateExtendedRoomID(follower.location())));
 										((Room)enterMsg.target()).bringMobHere(follower,false);
-									}
 									((Room)enterMsg.target()).send(follower,enterMsg);
 									follower.basePhyStats().setDisposition(follower.basePhyStats().disposition() | dispo1);
 									follower.phyStats().setDisposition(follower.phyStats().disposition() | dispo2);
