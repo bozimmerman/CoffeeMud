@@ -167,6 +167,20 @@ public class Thief_Bind extends ThiefSkill
 					msg.source().tell(L("You are constricted by @x1 and can't move!",ropeName.toLowerCase()));
 				return false;
 			}
+			else
+			if(affected instanceof MOB)
+			{
+				final MOB mob=(MOB)affected;
+				if((mob!=null)
+				&&(mob.isMonster())
+				&&(!mob.isInCombat())
+				&&(mob.amFollowing()==null)  // means they aren't naturally struggling
+				&&(CMLib.flags().isAliveAwakeMobile((MOB)affected, true))
+				&&((invoker()==null)||(invoker()==affected)||(invoker().location()!=mob.location()))
+				&&(mob!=null)
+				&&(mob.location().numPCInhabitants()==0))
+					unInvoke();
+			}
 		}
 		return super.okMessage(myHost,msg);
 	}
