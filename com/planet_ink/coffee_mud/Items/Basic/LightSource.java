@@ -124,7 +124,7 @@ public class LightSource extends StdItem implements Light
 		if(!msg.amITarget(this))
 			return super.okMessage(myHost,msg);
 
-		if(!behaviorsEffectsScriptsOk(msg)) {
+		if(!behaviorsScriptsEffectsOk(msg)) {
 			return false;
 		}
 

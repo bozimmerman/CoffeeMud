@@ -1702,7 +1702,7 @@ public class StdItem implements Item
 		}
 	}
 
-	protected boolean behaviorsEffectsScriptsOk(CMMsg msg) {
+	protected boolean behaviorsScriptsEffectsOk(CMMsg msg) {
 		// the order that these things are checked in should
 		// be holy, and etched in stone.
 		int num=numBehaviors();
