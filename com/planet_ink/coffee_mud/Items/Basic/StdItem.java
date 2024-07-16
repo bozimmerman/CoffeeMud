@@ -1042,9 +1042,7 @@ public class StdItem implements Item
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		// the order that these things are checked in should
-		// be holy, and etched in stone.
-		if (!behaviorsEffectsScriptsOk(msg)) {
+		if (!behaviorsScriptsEffectsOk(msg)) {
 			return false;
 		}
 
