@@ -255,6 +255,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		while (pointsLeft > 0)
 		{
+			boolean procede = false;
+			for(final int cd : CharStats.CODES.BASECODES())
+				if(stats[cd] < basemax)
+					procede = true;
+			if(!procede)
+				break;
 			final int whichNum = CMLib.dice().roll(1,CharStats.CODES.BASECODES().length,-1);
 			if(stats[whichNum]<basemax)
 			{

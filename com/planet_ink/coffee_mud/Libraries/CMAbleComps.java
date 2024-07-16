@@ -610,6 +610,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		while(parms.length()>0)
 		{
 			build=(AbilityComponent)CMClass.getCommon("DefaultAbilityComponent");
+			if(build == null)
+				return null; // probably shutting down
 			build.setAbilityID(id);
 			build.setConnector(AbilityComponent.CompConnector.AND);
 			if(parms.startsWith("||"))
@@ -773,6 +775,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		if(H==null)
 		{
 			H=new Hashtable<String,List<AbilityComponent>>();
+			if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+				return H;
 			abilitiesWithCompsWithTriggers.clear();
 			compSocials.clear();
 			final StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,CMFile.FLAG_LOGERRORS).text();

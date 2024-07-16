@@ -8752,7 +8752,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((!M.isMonster())&&(M!=monster))
 					{
 						final HashSet<MOB> seen=new HashSet<MOB>();
-						while((M.amFollowing()!=null)&&(!M.amFollowing().isMonster())&&(!seen.contains(M)))
+						while((M.amFollowing()!=null)
+						&&(!M.amFollowing().isMonster())
+						&&(!seen.contains(M)))
 						{
 							seen.add(M);
 							M=M.amFollowing();
@@ -8944,7 +8946,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						Log.errOut("Scripting",ctx.scripted.name()+"/"+CMLib.map().getDescriptiveExtendedRoomID(lastKnownLocation)+"/JSCRIPT Error: "+e.getMessage());
 					}
-					Context.exit();
+					finally
+					{
+						Context.exit();
+					}
 				}
 				else
 				if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==CMSecurity.JSCRIPT_REQ_APPROVAL)
@@ -10676,6 +10681,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 41: // mpoloadroom
 			{
+				final Room putRoom = lastKnownLocation;
 				if(tt==null)
 				{
 					tt=parseBits(script,si,"Cr");
@@ -10683,7 +10689,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 				}
 				String name=varify(ctx,tt[1]);
-				if(lastKnownLocation!=null)
+				if(putRoom!=null)
 				{
 					final ArrayList<Environmental> Is=new ArrayList<Environmental>();
 					final int containerIndex=name.toUpperCase().indexOf(" INTO ");
@@ -10691,7 +10697,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(containerIndex>=0)
 					{
 						final ArrayList<Environmental> containers=new ArrayList<Environmental>();
-						findSomethingCalledThis(name.substring(containerIndex+6).trim(),null,lastKnownLocation,containers,false);
+						findSomethingCalledThis(name.substring(containerIndex+6).trim(),null,putRoom,containers,false);
 						for(int c=0;c<containers.size();c++)
 						{
 							if((containers.get(c) instanceof Container)
@@ -10722,11 +10728,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						else
 						{
-							findSomethingCalledThis(name,ctx.monster,lastKnownLocation,Is,false);
+							findSomethingCalledThis(name,ctx.monster,putRoom,Is,false);
 							if((container!=null)
 							&&(Is.size()==0))
 							{
-								findSomethingCalledThis(tt[1],ctx.monster,lastKnownLocation,Is,false);
+								findSomethingCalledThis(tt[1],ctx.monster,putRoom,Is,false);
 								if(Is.size()>0)
 									container=null;
 							}
@@ -10742,12 +10748,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							{
 								I=(Item)I.copyOf();
 								I.recoverPhyStats();
-								lastKnownLocation.addItem(I,ItemPossessor.Expire.Monster_EQ);
+								synchronized(putRoom)
+								{
+									// does this really do anything?  is it optimized away?
+								}
+								putRoom.addItem(I,ItemPossessor.Expire.Monster_EQ);
 								I.setContainer(container);
 								if(I instanceof Coins)
 									((Coins)I).putCoinsBack();
 								if(I instanceof RawMaterial)
 									((RawMaterial)I).rebundle();
+								if(!putRoom.isContent(I))
+									putRoom.addItem(I,ItemPossessor.Expire.Monster_EQ);
+								I.setOwner(putRoom);
 								lastLoaded=I;
 							}
 						}
@@ -10913,6 +10926,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						safeResetRoom(lastKnownLocation);
 				}
 				else
+				if(arg.trim().length()>0)
 				{
 					final Room R=CMLib.map().getRoom(arg);
 					if(R!=null)
@@ -10988,6 +11002,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						CMLib.threads().rejuv(lastKnownLocation,tickID);
 				}
 				else
+				if(next.trim().length()>0)
 				{
 					final Room R=CMLib.map().getRoom(next);
 					if(R!=null)
@@ -11238,21 +11253,24 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				else
 				{
 					parm = this.varify(ctx, parm);
-					Room R = CMLib.map().getRoom(parm);
-					if(R!=null)
-						R.show(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
-					else
+					if(parm.trim().length()>0)
 					{
-						final Area A = CMLib.map().findArea(parm);
-						if(A != null)
+						Room R = CMLib.map().getRoom(parm);
+						if(R!=null)
+							R.show(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+						else
 						{
-							if((lastR.numInhabitants()==0)||(!A.inMyMetroArea(lastR.getArea())))
-								lastR.showSource(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
-							for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+							final Area A = CMLib.map().findArea(parm);
+							if(A != null)
 							{
-								R=e.nextElement();
-								if(R.numInhabitants()>0)
-									R.showOthers(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+								if((lastR.numInhabitants()==0)||(!A.inMyMetroArea(lastR.getArea())))
+									lastR.showSource(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+								for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+								{
+									R=e.nextElement();
+									if(R.numInhabitants()>0)
+										R.showOthers(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+								}
 							}
 						}
 					}
@@ -12273,14 +12291,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									}
 									thisRoom.send(follower,leaveMsg);
 									if(!alreadyHere)
-									{
-//TODO: DELME -- THIS IS FOR DEBUGGING AN ISSUE
-if((follower.isPlayer())
-&&(enterMsg.target() == follower.getStartRoom())
-&&(CMProps.getVar(CMProps.Str.MUDNAME).equalsIgnoreCase("coffeemud")))
-	Log.helpOut(follower.Name(), new Exception(getScriptFiles()+"/"+CMLib.map().getApproximateExtendedRoomID(follower.location())));
 										((Room)enterMsg.target()).bringMobHere(follower,false);
-									}
 									((Room)enterMsg.target()).send(follower,enterMsg);
 									follower.basePhyStats().setDisposition(follower.basePhyStats().disposition() | dispo1);
 									follower.phyStats().setDisposition(follower.phyStats().disposition() | dispo2);
@@ -13271,7 +13282,7 @@ if((follower.isPlayer())
 				final PhysicalAgent M = getArgumentMOB(tt[1], ctx);
 				if((!(M instanceof MOB))||(((MOB)M).isMonster()))
 				{
-					logError(ctx.scripted,"MPPOSSESS","RunTime",tt[1]+" is not a player.");
+					logError(ctx.scripted,"MPACHIEVE","RunTime",tt[1]+" is not a player.");
 					break;
 				}
 				final String achieveID=varify(ctx,tt[2]);

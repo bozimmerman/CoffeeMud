@@ -189,7 +189,7 @@ public class MOBloader
 				mob.basePhyStats().setAttackAdjustment(CMath.s_int(DBConnections.getRes(R,"CMATTA")));
 				mob.basePhyStats().setArmor(CMath.s_int(DBConnections.getRes(R,"CMAMOR")));
 				mob.basePhyStats().setDamage(CMath.s_int(DBConnections.getRes(R,"CMDAMG")));
-				mob.setAttributesBitmap(CMath.s_int(DBConnections.getRes(R,"CMBTMP")));
+				mob.setAttributesBitmap((DBConnections.getLongRes(R,"CMBTMP")));
 				mob.setLiegeID(DBConnections.getRes(R,"CMLEIG"));
 				mob.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 				mob.basePhyStats().setWeight((int)DBConnections.getLongRes(R,"CMWEIT"));
@@ -592,7 +592,7 @@ public class MOBloader
 		case MANA:
 			return Integer.valueOf((queryCMCHARLong(name, "CMMANA")).intValue());
 		case MATTRIB:
-			return Integer.valueOf((queryCMCHARLong(name, "CMBTMP")).intValue());
+			return Long.valueOf((queryCMCHARLong(name, "CMBTMP")).longValue());
 		case MOVES:
 			return Integer.valueOf((queryCMCHARLong(name, "CMMOVE")).intValue());
 		case PASSWORD:

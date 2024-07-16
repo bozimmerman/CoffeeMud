@@ -784,7 +784,7 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public void initTelnetMode(final int attributesBitmap)
+	public void initTelnetMode(final long attributesBitmap)
 	{
 		setServerTelnetMode(TELNET_ANSI,CMath.bset(attributesBitmap,MOB.Attrib.ANSI.getBitCode()));
 		setClientTelnetMode(TELNET_ANSI,CMath.bset(attributesBitmap,MOB.Attrib.ANSI.getBitCode()));

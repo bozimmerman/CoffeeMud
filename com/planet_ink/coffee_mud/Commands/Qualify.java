@@ -249,7 +249,7 @@ public class Qualify  extends Skills
 		if(commands.size()>0)
 			commands.remove(0);
 		final boolean uniqueOnly=pickUniqueFlag(commands,false);
-		final String qual=CMParms.combine(commands,1).toUpperCase();
+		final String qual=CMParms.combine(commands,0).toUpperCase();
 		final boolean shortOnly=false;
 		final boolean showAll=qual.length()==0;
 		int acode=-1;

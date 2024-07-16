@@ -1015,7 +1015,7 @@ public class VFShell
 					}
 
 					@Override
-					public void initTelnetMode(final int mobbitmap)
+					public void initTelnetMode(final long mobbitmap)
 					{
 					}
 

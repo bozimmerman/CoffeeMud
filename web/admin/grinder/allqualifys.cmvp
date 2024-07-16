@@ -49,7 +49,6 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
     <TABLE WIDTH=100% BORDER=1>
     <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ All-Qualified Skills</H2></FONT></TD></TR>
-    // all
     <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><H2>Abilities for ALL Classes</H2></FONT></TD></TR>
     <TR>
     <TD WIDTH=28%><B><FONT COLOR=YELLOW>Skill</FONT></b></TD>
@@ -85,7 +84,6 @@
                 </B></FONT>
         </TD>
     </TR>
-    // each
     <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><H2>Abilities for EACH Class</H2></FONT></TD></TR>
     <TR>
     <TD WIDTH=28%><B><FONT COLOR=YELLOW>Skill</FONT></b></TD>

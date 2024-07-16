@@ -43,7 +43,7 @@ public class Prop_ItemNoRuin extends Property
 	@Override
 	public String name()
 	{
-		return "Prevents deletion/corruption from corpses";
+		return "Manages Deletion/corruption from corpses";
 	}
 
 	@Override
@@ -64,9 +64,21 @@ public class Prop_ItemNoRuin extends Property
 		return Ability.FLAG_ADJUSTER;
 	}
 
+	private boolean nevermind = false;
+
+	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		nevermind = newMiscText.equalsIgnoreCase("NEVERMIND");
+	}
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ITEMNORUIN);
+		if(nevermind)
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ALWAYSRUIN);
+		else
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ITEMNORUIN);
 	}
 }

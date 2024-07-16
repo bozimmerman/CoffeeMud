@@ -1,4 +1,5 @@
 # Build 5.10.4 Release ??/??/2024
+  *  DATABASE CHANGED! (Bitmap field in CMCHAR table is now larger)
   1. Races/GenRaces support parameters for cultural abilities.
   2. Better MSSP/MSDP support.  New INI entry: MSXPVARS.
   3. Ability CODES & DOMAINS can now be added to via the INI file/control panel.
@@ -25,6 +26,11 @@
  24. Wish/Limited Wish now has a configuration file in resources/skills/wish.txt
  25. Unleveling and Unleveling from XP loss can be disabled in the INI file
  26. Unleveling no longer removes a level 0 class, but still takes from other classes
+ 27. SCORE command has more arguments for narrowing the results.
+ 28. Prop_ItemNoRuin can now be used to Always ruin an item.
+ 29. Class Skills, including All Qualifys, now support expertises as requirements.
+ 30. New Command "AutoAttack" for toggling auto attack.   Also available in Config.
+ 31. Players can now drop, get, etc all weapons, armor, items, or money.
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

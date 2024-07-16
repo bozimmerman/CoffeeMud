@@ -938,7 +938,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#changeTelnetMode(int, boolean)
 	 * @param mobbitmap the mobbitmap the bitmap of mob flags to use as a guide in negotiation
 	 */
-	public void initTelnetMode(int mobbitmap);
+	public void initTelnetMode(long mobbitmap);
 
 	/**
 	 * Returns true if the given max tag will be accepted by the client.

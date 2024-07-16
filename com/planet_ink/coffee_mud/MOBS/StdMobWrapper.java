@@ -948,13 +948,13 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	}
 
 	@Override
-	public int getAttributesBitmap()
+	public long getAttributesBitmap()
 	{
 		return (mob == null) ? 0 : mob.getAttributesBitmap();
 	}
 
 	@Override
-	public void setAttributesBitmap(final int bitmap)
+	public void setAttributesBitmap(final long bitmap)
 	{
 	}
 

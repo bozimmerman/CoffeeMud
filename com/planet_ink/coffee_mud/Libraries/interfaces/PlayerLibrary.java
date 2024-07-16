@@ -449,6 +449,15 @@ public interface PlayerLibrary extends CMLibrary
 	public int savePlayers();
 
 	/**
+	 * Saves the given player, and all their followers and
+	 * all their things, no matter what.
+	 *
+	 * @param mob the player to save
+	 * @return true if the player saves, false otherwise
+	 */
+	public boolean savePlayer(final MOB mob);
+
+	/**
 	 * Factory method for a ThinnerPlayer object, so that
 	 * new features can be added in the future w/o having
 	 * to change many files.

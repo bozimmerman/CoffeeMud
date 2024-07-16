@@ -1226,7 +1226,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if(I==null)
 			return false;
 		if((CMath.bset(I.phyStats().disposition(),PhyStats.IS_UNSAVABLE))
-		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
+		||((CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
+			&&(!(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ALWAYSRUIN))))
 		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_UNDESTROYABLE))
 		||((I instanceof DeadBody)&&(((DeadBody)I).isPlayerCorpse()))
 		||(I instanceof Coins))
@@ -1302,6 +1303,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			return I;
 		if(I.ID().equals("GenRuinedItem"))
 			return I;
+		if(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ALWAYSRUIN))
+			return ruinItem(I);
+
 		final TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask> policies=parseLootPolicyFor(mob);
 		for(int d=0;d<policies.size();d++)
 		{
