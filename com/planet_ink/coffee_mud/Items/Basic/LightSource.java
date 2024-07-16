@@ -123,6 +123,11 @@ public class LightSource extends StdItem implements Light
 		final MOB mob=msg.source();
 		if(!msg.amITarget(this))
 			return super.okMessage(myHost,msg);
+
+		if(!behaviorsEffectsScriptsOk(msg)) {
+			return false;
+		}
+
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_HOLD:

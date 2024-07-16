@@ -1044,27 +1044,8 @@ public class StdItem implements Item
 	{
 		// the order that these things are checked in should
 		// be holy, and etched in stone.
-		int num=numBehaviors();
-		MsgListener N=null;
-		for(int b=0;b<num;b++)
-		{
-			N=fetchBehavior(b);
-			if((N!=null)&&(!N.okMessage(this,msg)))
-				return false;
-		}
-		num=numScripts();
-		for(int s=0;s<num;s++)
-		{
-			N=fetchScript(s);
-			if((N!=null)&&(!N.okMessage(this,msg)))
-				return false;
-		}
-		num=numEffects();
-		for(int i=0;i<num;i++)
-		{
-			N=fetchEffect(i);
-			if((N!=null)&&(!N.okMessage(this,msg)))
-				return false;
+		if (!behaviorsEffectsScriptsOk(msg)) {
+			return false;
 		}
 
 		final MOB mob=msg.source();
@@ -1719,6 +1700,34 @@ public class StdItem implements Item
 		default:
 			break;
 		}
+	}
+
+	protected boolean behaviorsEffectsScriptsOk(CMMsg msg) {
+		// the order that these things are checked in should
+		// be holy, and etched in stone.
+		int num=numBehaviors();
+		MsgListener N=null;
+		for(int b=0;b<num;b++)
+		{
+			N=fetchBehavior(b);
+			if((N!=null)&&(!N.okMessage(this,msg)))
+				return false;
+		}
+		num=numScripts();
+		for(int s=0;s<num;s++)
+		{
+			N=fetchScript(s);
+			if((N!=null)&&(!N.okMessage(this,msg)))
+				return false;
+		}
+		num=numEffects();
+		for(int i=0;i<num;i++)
+		{
+			N=fetchEffect(i);
+			if((N!=null)&&(!N.okMessage(this,msg)))
+				return false;
+		}
+		return true;
 	}
 
 	@Override
