@@ -3633,7 +3633,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					{
 						final int x=CMParms.indexOf(PhyStats.IS_CODES, v);
 						if(x>=0)
-							newDisposition |= (2^x);
+							newDisposition |= (int) Math.pow(2,x);
 					}
 					if(current)
 						P.phyStats().setDisposition(newDisposition);
@@ -3666,7 +3666,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					{
 						final int x=CMParms.indexOf(set, v);
 						if(x>=0)
-							newSensesMask |= (2^x);
+							newSensesMask |= (int) Math.pow(2,x);
 					}
 					if(current)
 						P.phyStats().setSensesMask(newSensesMask);
