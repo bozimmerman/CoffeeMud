@@ -1499,6 +1499,8 @@ public class StdItem implements Item
 			final Ability A=fetchEffect("Burning");
 			if((A!=null)&&(!CMath.bset(A.abilityCode(), 2048))) // yes, magic numbers suck
 				return true;
+			if(this instanceof LightSource)
+				return true;
 			break;
 		}
 		case CMMsg.TYP_CAUSESINK:

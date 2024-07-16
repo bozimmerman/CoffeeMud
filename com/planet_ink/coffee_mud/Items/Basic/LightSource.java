@@ -126,6 +126,7 @@ public class LightSource extends StdItem implements Light
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_HOLD:
+		{
 			if(durationTickDown==0)
 			{
 				mob.tell(L("@x1 looks used up.",name()));
@@ -143,14 +144,15 @@ public class LightSource extends StdItem implements Light
 					return false;
 				}
 			}
-			return super.okMessage(myHost,msg);
+			break;
+		}
 		case CMMsg.TYP_EXTINGUISH:
 			if((durationTickDown==0)||(!isLit()))
 			{
 				mob.tell(L("@x1 is not lit!",name()));
 				return false;
 			}
-			return true;
+			break;
 		}
 		return super.okMessage(myHost,msg);
 	}
