@@ -10664,6 +10664,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									else
 									if(addHere instanceof Room)
 										((Room)addHere).addItem(m, Expire.Monster_EQ);
+									if(CMLib.threads().isSuspended(m, -1))
+										CMLib.threads().resumeTicking(m, -1);
 									lastLoaded=m;
 								}
 							}
@@ -10761,6 +10763,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								if(!putRoom.isContent(I))
 									putRoom.addItem(I,ItemPossessor.Expire.Monster_EQ);
 								I.setOwner(putRoom);
+								if(CMLib.threads().isSuspended(I, -1))
+									CMLib.threads().resumeTicking(I, -1);
 								lastLoaded=I;
 							}
 						}

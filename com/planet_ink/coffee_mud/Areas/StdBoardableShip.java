@@ -241,6 +241,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	public void destroy()
 	{
 		CMLib.map().registerWorldObjectDestroyed(this,null,this);
+		CMLib.threads().deleteTick(this, -1);
 		phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		basePhyStats=phyStats;
 		miscText=null;

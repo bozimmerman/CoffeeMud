@@ -357,6 +357,7 @@ public class StdArea implements Area
 	public void destroy()
 	{
 		CMLib.map().registerWorldObjectDestroyed(this, null, this);
+		CMLib.threads().deleteTick(this, -1);
 		phyStats = (PhyStats) CMClass.getCommon("DefaultPhyStats");
 		Resources.removeResource("HELP_" + Name().toUpperCase());
 		Resources.removeResource("STATS_" + Name().toUpperCase());

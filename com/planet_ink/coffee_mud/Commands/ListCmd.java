@@ -2837,8 +2837,8 @@ public class ListCmd extends StdCommand
 					id=Integer.toString(idx & 255);
 				}
 				String finalVal=CMLib.threads().getTickInfoReport(finalCol+group+"-"+tick);
-				final boolean suspended=CMath.s_bool(CMLib.threads().getTickInfoReport("tickerSuspended"+group+"-"+tick));
-				final int realCol4Len=COL[3]-(suspended?2:1);
+				final char statusChar = CMath.s_bool(CMLib.threads().getTickInfoReport("tickerSuspended"+group+"-"+tick))?'_':' ';
+				final int realCol4Len=COL[3]-2;
 				if(finalVal.length()>realCol4Len)
 				{
 					if(CMath.isLong(finalVal))
@@ -2860,7 +2860,7 @@ public class ListCmd extends StdCommand
 				final String chunk=CMStrings.padRight(""+group,COL[0])
 								   +" "+CMStrings.padRight(id+"",COL[2])
 								   +CMStrings.padRight(name,COL[1])+"^N"
-								   +" "+CMStrings.padRight((activeOnly?(finalVal+(suspended?"*":"")):finalVal+(suspended?"*":"")),COL[3]);
+								   +" "+CMStrings.padRight(finalVal+statusChar,COL[3]);
 				msg.append(chunk);
 			}
 		}
