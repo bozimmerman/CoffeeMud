@@ -2649,7 +2649,7 @@ public class ListCmd extends StdCommand
 			buf.append("\n\r^xQuest Report:^.^N\n\r");
 			final int COL_LEN1=CMLib.lister().fixColWidth(5.0,viewerS);
 			final int COL_LEN2=CMLib.lister().fixColWidth(30.0,viewerS);
-			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Name"),COL_LEN2)+" Status^.^N\n\r");
+			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Name"),COL_LEN2)+L(" Status")+"^.^N\n\r");
 			for(int i=0;i<CMLib.quests().numQuests();i++)
 			{
 				final Quest Q=CMLib.quests().fetchQuest(i);
@@ -2661,17 +2661,19 @@ public class ListCmd extends StdCommand
 					buf.append(CMStrings.padRight(""+(i+1),COL_LEN1)+CMStrings.padRight("^<LSTQUEST^>"+Q.name()+"^</LSTQUEST^>",COL_LEN2)+" ");
 					if(Q.running())
 					{
-						String minsLeft="("+Q.minsRemaining()+" mins left)";
+						final String str;
 						if(Q.duration()==0)
-							minsLeft="(Eternal)";
-						if(Q.isCopy())
-							buf.append(L("copy running @x1",minsLeft));
+							str=L("*Eternal*");
 						else
-							buf.append("running "+minsLeft);
+							str = CMLib.time().date2EllapsedTime(Q.minsRemaining()*60000, TimeUnit.SECONDS, true)+" remain";
+						if(Q.isCopy())
+							buf.append(L("copy running (@x1)",str));
+						else
+							buf.append(L("running (@x1)",str));
 					}
 					else
 					if(Q.suspended())
-						buf.append("disabled");
+						buf.append(L("disabled"));
 					else
 					if(Q.waiting())
 					{
@@ -2680,7 +2682,10 @@ public class ListCmd extends StdCommand
 						{
 							min=min*CMProps.getTickMillis();
 							if(min>60000)
-								buf.append(L("waiting (@x1 minutes left)",""+(min/60000)));
+							{
+								final String str = CMLib.time().date2EllapsedTime(min, TimeUnit.SECONDS, true);
+								buf.append(L("waiting (@x1)",str));
+							}
 							else
 								buf.append(L("waiting (@x1 seconds left)",""+(min/1000)));
 						}
@@ -2688,7 +2693,7 @@ public class ListCmd extends StdCommand
 							buf.append(L("waiting (@x1 minutes left)",""+min));
 					}
 					else
-						buf.append("loaded");
+						buf.append(L("loaded"));
 					buf.append("^N\n\r");
 				}
 			}
@@ -3843,8 +3848,15 @@ public class ListCmd extends StdCommand
 		{
 			final JournalEntry E = jobs.get(CMath.s_int(rest)-1);
 			str.append(L("^HNAME      ^N: @x1\n\r",E.subj()));
-			final long interval = CMParms.getParmLong(E.data(), "INTERVAL", CMProps.getMillisPerMudHour());
-			str.append(L("^HINTERVAL  ^N: @x1\n\r",CMLib.time().date2EllapsedTime(interval, TimeUnit.SECONDS, false)));
+			final String intervalStr = CMParms.getParmStr(E.data(), "INTERVAL", ""+System.currentTimeMillis());
+			if(CMath.isLong(intervalStr))
+			{
+				final long interval = CMath.s_long(intervalStr);
+				str.append(L("^HINTERVAL  ^N: @x1\n\r",CMLib.time().date2EllapsedTime(interval, TimeUnit.SECONDS, false)));
+			}
+			else
+				str.append(L("^HINTERVAL  ^N: @x1\n\r",intervalStr));
+			str.append(L("^HNEXT ACT  ^N: @x1\n\r",CMLib.time().date2String(E.update())));
 			str.append(L("^HSCRIPT    ^N: \n\r"));
 			str.append(E.msg());
 			str.append("^N\n\r");
@@ -3857,10 +3869,16 @@ public class ListCmd extends StdCommand
 			for(int i=0;i<jobs.size();i++)
 			{
 				final JournalEntry E = jobs.get(i);
-				final long interval = CMParms.getParmLong(E.data(), "INTERVAL", CMProps.getMillisPerMudHour());
 				str.append(CMStrings.padRight(""+(i+1),COL_LEN1+1));
 				str.append(CMStrings.padRight(E.subj(),COL_LEN2+1));
-				str.append(CMLib.time().date2EllapsedTime(interval, TimeUnit.SECONDS, false));
+				final String intervalStr = CMParms.getParmStr(E.data(), "INTERVAL", ""+System.currentTimeMillis());
+				if(CMath.isLong(intervalStr))
+				{
+					final long interval = CMath.s_long(intervalStr);
+					str.append(CMLib.time().date2EllapsedTime(interval, TimeUnit.SECONDS, false));
+				}
+				else
+					str.append(intervalStr);
 				str.append("\n\r");
 			}
 		}

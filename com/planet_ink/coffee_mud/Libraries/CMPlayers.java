@@ -14,11 +14,13 @@ import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.Stat;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerFlag;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -64,10 +66,16 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	protected final List<Pair<String,Integer>>[][] topPlayers	 = new List[TimeClock.TimePeriod.values().length][PrideStat.values().length];
 	@SuppressWarnings("unchecked")
 	protected final List<Pair<String,Integer>>[][] topAccounts	 = new List[TimeClock.TimePeriod.values().length][PrideStat.values().length];
+	@SuppressWarnings("unchecked")
+	protected final List<Pair<String,Integer>>[][] prevTopPlayers= new List[TimeClock.TimePeriod.values().length][PrideStat.values().length];
+	@SuppressWarnings("unchecked")
+	protected final List<Pair<String,Integer>>[][] prevTopAccounts=new List[TimeClock.TimePeriod.values().length][PrideStat.values().length];
 
 	protected final List<PrideCat>					prideCats	 = new Vector<PrideCat>(2);
 	protected final List<Object>					prideCatData = new Vector<Object>(2);
 	protected final Map<PrideCat,Map<String,List<Pair<String,Integer>>[][]>> topPlayerCats =
+			new Hashtable<PrideCat,Map<String,List<Pair<String,Integer>>[][]>>();
+	protected final Map<PrideCat,Map<String,List<Pair<String,Integer>>[][]>> prevTopPlayerCats =
 			new Hashtable<PrideCat,Map<String,List<Pair<String,Integer>>[][]>>();
 
 	protected final static List<Pair<String,Integer>>	emptyPride	= new ReadOnlyVector<Pair<String,Integer>>(1);
@@ -135,6 +143,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					prideCatData.add(new Object());
 			}
 		}
+		loadPreviousPrideRecords();
 	}
 
 	@Override
@@ -842,6 +851,15 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
+	public List<Pair<String,Integer>> getPreviousTopPridePlayers(final TimeClock.TimePeriod period, final PrideStat stat)
+	{
+		List<Pair<String,Integer>> top=prevTopPlayers[period.ordinal()][stat.ordinal()];
+		if(top == null)
+			top=emptyPride;
+		return top;
+	}
+
+	@Override
 	public List<Pair<String,Integer>> getTopPridePlayers(final PrideCat category, final String catUnit, final TimeClock.TimePeriod period, final PrideStat stat)
 	{
 		if((!prideCats.contains(category))||(catUnit==null)||(catUnit.length()==0))
@@ -860,9 +878,36 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
+	public List<Pair<String,Integer>> getPreviousTopPridePlayers(final PrideCat category, final String catUnit, final TimeClock.TimePeriod period, final PrideStat stat)
+	{
+		if((!prideCats.contains(category))||(catUnit==null)||(catUnit.length()==0))
+			return emptyPride;
+
+		final Map<String,List<Pair<String,Integer>>[][]> topUnits=prevTopPlayerCats.get(category);
+		if(topUnits == null)
+			return emptyPride;
+		final List<Pair<String,Integer>>[][] topPrides = topUnits.get(catUnit.toUpperCase().trim());
+		if(topPrides == null)
+			return emptyPride;
+		final List<Pair<String,Integer>> top=topPrides[period.ordinal()][stat.ordinal()];
+		if(top == null)
+			return emptyPride;
+		return top;
+	}
+
+	@Override
 	public List<Pair<String,Integer>> getTopPrideAccounts(final TimeClock.TimePeriod period, final PrideStat stat)
 	{
 		List<Pair<String,Integer>> top=topAccounts[period.ordinal()][stat.ordinal()];
+		if(top == null)
+			top=emptyPride;
+		return top;
+	}
+
+	@Override
+	public List<Pair<String,Integer>> getPreviousTopPrideAccounts(final TimeClock.TimePeriod period, final PrideStat stat)
+	{
+		List<Pair<String,Integer>> top=prevTopAccounts[period.ordinal()][stat.ordinal()];
 		if(top == null)
 			top=emptyPride;
 		return top;
@@ -1118,6 +1163,147 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 		}
 		return found;
+	}
+
+	protected String getRecordXML(final String catName, final List<Pair<String,Integer>>[][] cat)
+	{
+		final StringBuilder str = new StringBuilder("");
+		str.append("<STAT CAT=\""+catName+"\">");
+		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+		{
+			if(period == TimePeriod.ALLTIME)
+				continue;
+			str.append("<PERIOD TYPE=\""+period.name()+"\">");
+			for(final PrideStat pstat : PrideStat.values())
+			{
+				final List<Pair<String,Integer>> stats = cat[period.ordinal()][pstat.ordinal()];
+				if(stats != null)
+				{
+					str.append("<STAT TYPE=\""+pstat.name()+"\">");
+					for(int i=0;i<10;i++)
+					{
+						if((i<stats.size())&&(stats.get(i).first.trim().length()>0))
+							str.append("<TOP NAME=\""+stats.get(i).first+"\">"+stats.get(i).second.toString()+"</TOP>");
+					}
+					str.append("</STAT>");
+				}
+			}
+			str.append("</PERIOD>");
+		}
+		str.append("</STAT>");
+		return str.toString();
+	}
+
+	protected void putRecordXML(final List<Pair<String,Integer>>[][] tops, final XMLLibrary.XMLTag statRoot)
+	{
+		for(final XMLLibrary.XMLTag perTag : statRoot.contents())
+		{
+			final TimePeriod period = (TimePeriod)CMath.s_valueOf(TimePeriod.class, perTag.getParmValue("TYPE"));
+			if(period != null)
+			{
+				for(final XMLLibrary.XMLTag statTag : perTag.contents())
+				{
+					final PrideStat pride = (PrideStat)CMath.s_valueOf(PrideStat.class, statTag.getParmValue("TYPE"));
+					if(pride != null)
+					{
+						tops[period.ordinal()][pride.ordinal()] = new XVector<Pair<String,Integer>>();
+						for(final XMLLibrary.XMLTag valTag : statTag.contents())
+						{
+							final String name = valTag.getParmValue("NAME");
+							final Integer value = Integer.valueOf(CMath.s_int(valTag.value()));
+							tops[period.ordinal()][pride.ordinal()].add(new Pair<String,Integer>(name,value));
+						}
+					}
+				}
+			}
+		}
+	}
+
+	protected void loadPreviousPrideRecords()
+	{
+		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+		{
+			if(period == TimePeriod.ALLTIME)
+				continue;
+			for(final PrideStat pstat : PrideStat.values())
+			{
+				clearTopStatChart(prevTopPlayers[period.ordinal()][pstat.ordinal()]);
+				clearTopStatChart(prevTopAccounts[period.ordinal()][pstat.ordinal()]);
+			}
+		}
+		prevTopPlayerCats.clear();
+		final String filename = "::/resources/sys_reports/prev_records.xml";
+		final CMFile F=new CMFile(filename, null);
+		if(!F.exists())
+			return;
+		final List<XMLLibrary.XMLTag> all = CMLib.xml().parseAllXML(F.text());
+		final XMLLibrary.XMLTag statsTag = CMLib.xml().getPieceFromPieces(all, "STATS");
+		if(statsTag != null)
+		{
+			for(final XMLLibrary.XMLTag statTag : statsTag.contents())
+			{
+				if(statTag.tag().equals("STAT"))
+				{
+					final String type = statTag.getParmValue("CAT");
+					if(type == null)
+						continue;
+					if(type.equals("PLAYERS"))
+						putRecordXML(prevTopPlayers, statTag);
+					else
+					if(type.equals("ACCOUNTS"))
+						putRecordXML(prevTopAccounts, statTag);
+				}
+				else
+				if(statTag.tag().equals("PRIDECAT"))
+				{
+					final PrideCat catType = (PrideCat)CMath.s_valueOf(PrideCat.class, statTag.getParmValue("TYPE"));
+					if(catType != null)
+					{
+						final Map<String,List<Pair<String,Integer>>[][]> catNames = new Hashtable<String,List<Pair<String,Integer>>[][]>();
+						prevTopPlayerCats.put(catType, catNames);
+						for(final XMLLibrary.XMLTag catTag : statTag.contents())
+						{
+							final String catName = catTag.getParmValue("CAT");
+							if(catName == null)
+								continue;
+							catNames.put(catName, newPrideStatTopChart());
+							putRecordXML(catNames.get(catName), catTag);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	protected void savePreviousPrideRecords()
+	{
+		final StringBuilder str = new StringBuilder("");
+
+		str.append("<STATS>");
+		str.append(getRecordXML("PLAYERS", prevTopPlayers));
+		str.append(getRecordXML("ACCOUNTS", prevTopAccounts));
+		for(final PrideCat catType : PrideCat.values())
+		{
+			if(prevTopPlayerCats.containsKey(catType))
+			{
+				str.append("<PRIDECAT TYPE=\""+catType.name()+"\">");
+				final Map<String,List<Pair<String,Integer>>[][]> catNames = prevTopPlayerCats.get(catType);
+				for(final String catName : catNames.keySet())
+				{
+					final List<Pair<String,Integer>>[][] cat = catNames.get(catName);
+					str.append(getRecordXML(catName,cat));
+				}
+				str.append("</PRIDECAT>");
+			}
+		}
+		str.append("</STATS>");
+		final String dir="::/resources/sys_reports/";
+		final CMFile dirF=new CMFile(dir, null);
+		if(!dirF.exists())
+			dirF.mkdir();
+		final String filename = "::/resources/sys_reports/prev_records.xml";
+		final CMFile F=new CMFile(filename, null);
+		F.saveText(str.toString());
 	}
 
 	protected void preservePrideRecords(final MOB deadMOB)
@@ -3011,6 +3197,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					final boolean debugTopThread = CMSecurity.isDebugging(DbgFlag.TOPTHREAD);
 					if(debugTopThread)
 						Log.debugOut(name()+": Current Time: "+Math.round(now/60000));
+					boolean anythingReset = false;
 					for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 					{
 						if(period == TimeClock.TimePeriod.ALLTIME)
@@ -3019,6 +3206,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 							Log.debugOut(name()+": "+period.name()+": Expires @"+Math.round(topPrideExpiration[period.ordinal()]/60000));
 						if(now > topPrideExpiration[period.ordinal()])
 						{
+							anythingReset = true;
 							if((period == TimeClock.TimePeriod.MONTH)
 							&&(!dumpTried))
 							{
@@ -3030,7 +3218,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 								Log.debugOut(name()+": "+period.name()+": Next Expire @"+Math.round(topPrideExpiration[period.ordinal()]/60000));
 							for(final PrideStat stat : PrideStat.values())
 							{
+								prevTopAccounts[period.ordinal()][stat.ordinal()]
+										=new XVector<Pair<String,Integer>>(topAccounts[period.ordinal()][stat.ordinal()]);
 								clearTopStatChart(topAccounts[period.ordinal()][stat.ordinal()]);
+								prevTopPlayers[period.ordinal()][stat.ordinal()]
+										=new XVector<Pair<String,Integer>>(topPlayers[period.ordinal()][stat.ordinal()]);
 								clearTopStatChart(topPlayers[period.ordinal()][stat.ordinal()]);
 							}
 							for(final PrideCat pcat : prideCats)
@@ -3039,16 +3231,38 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 								{
 									final Map<String,List<Pair<String,Integer>>[][]> topPlayerCat =
 											topPlayerCats.get(pcat);
+									final Map<String,List<Pair<String,Integer>>[][]> prevTopPlayerCat;
+									if(!prevTopPlayerCats.containsKey(pcat))
+									{
+										prevTopPlayerCat = new Hashtable<String,List<Pair<String,Integer>>[][]>();
+										prevTopPlayerCats.put(pcat, prevTopPlayerCat);
+									}
+									else
+										prevTopPlayerCat = prevTopPlayerCats.get(pcat);
 									for(final String key : topPlayerCat.keySet())
 									{
 										final List<Pair<String,Integer>>[][] keyChart = topPlayerCat.get(key);
+										final List<Pair<String,Integer>>[][] prevKeyChart;
+										if(prevTopPlayerCat.containsKey(key))
+											prevKeyChart = prevTopPlayerCat.get(key);
+										else
+										{
+											prevKeyChart = newPrideStatTopChart();
+											prevTopPlayerCat.put(key, prevKeyChart);
+										}
 										for(final PrideStat stat : PrideStat.values())
+										{
+											prevKeyChart[period.ordinal()][stat.ordinal()]
+													=new XVector<Pair<String,Integer>>(keyChart[period.ordinal()][stat.ordinal()]);
 											clearTopStatChart(keyChart[period.ordinal()][stat.ordinal()]);
+										}
 									}
 								}
 							}
 						}
 					}
+					if(anythingReset)
+						savePreviousPrideRecords();
 					setThreadStatus(serviceClient,"not doing anything");
 				}
 			}

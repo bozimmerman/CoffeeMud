@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.PlanarAbility.PlanarVar;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -1609,10 +1610,18 @@ public class Create extends StdCommand
 		}
 		final String name=commands.get(2);
 		final String interval=CMParms.combine(commands,3);
-		long tm = CMLib.time().parseTickExpression(interval);
-		if(tm <= 0)
+		long tm;
+		try
 		{
-			mob.tell(L("@x1 is not a valid interval.  Try like 10 minutes!",interval));
+			if(interval.trim().length()==0)
+				throw new CMException("Bad value: "+interval);
+			tm = CMLib.time().parseTickExpression(interval);
+			if(tm < 0)
+				throw new CMException("Bad value: "+tm);
+		}
+		catch(final CMException e)
+		{
+			mob.tell(L("@x1 is not a valid interval.  Try like 10 minutes (@x2)!",interval,e.getMessage()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -1626,7 +1635,7 @@ public class Create extends StdCommand
 		msg.parent("");
 		msg.msgIcon("");
 		msg.attributes(msg.attributes()|JournalEntry.JournalAttrib.PROTECTED.bit);
-		msg.data("INTERVAL="+tm);
+		msg.data("INTERVAL=\""+interval+"\"");
 		msg.to("ALL");
 		CMLib.database().DBWriteJournal("SYSTEM_CRON", msg);
 		mob.tell(L("New cron job created.  Use LIST CRON and MODIFY CRON to set a script."));

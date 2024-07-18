@@ -46,6 +46,132 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 
 	protected TimeClock	globalClock	= null;
 
+	public static enum TimeDelta
+	{
+		MINUTE("MINUTES","MINS","MIN","M"),
+		SECOND("SECONDS","SECS","SEC","S"),
+		HOUR("HOURS","HRS","HR","H"),
+		DAY("DAYS","D"),
+		WEEK("WEEKS","W","WKS","WK"),
+		MONTH("MONTHS"),
+		YEAR("YEARS"),
+		TICK("TICKS","T"),
+		MUDHOUR("MUDHOURS","MHRS","MHR","MH"),
+		MUDDAY("MUDDAYS","MD"),
+		MUDWEEK("MUDWEEKS","MW","MWK","MWKS"),
+		MUDMONTH("MUDMONTHS","MM"),
+		MUDYEAR("MUDYEARS","MY","MYRS","MYR"),
+		MINUTELY(),
+		SECONDLY(),
+		HOURLY(),
+		DAYLY(),
+		WEEKLY(),
+		MONTHLY(),
+		YEARLY()
+		;
+		private final static Map<String,TimeDelta> all = new Hashtable<String,TimeDelta>();
+		private final String[] alts;
+		private TimeDelta(final String... alts)
+		{
+			this.alts = alts;
+		}
+		public static TimeDelta get(final String str)
+		{
+			if(str == null)
+				return null;
+			if(all.size()==0)
+			{
+				for(final TimeDelta td : values())
+				{
+					all.put(td.name().toUpperCase().trim(), td);
+					for(final String alt : td.alts)
+						all.put(alt.toUpperCase().trim(), td);
+				}
+			}
+			return all.get(str.toUpperCase().trim());
+		}
+
+		public long delta()
+		{
+			final TimeClock globalClock = CMLib.time().globalClock();
+			final Calendar C = Calendar.getInstance();
+			switch(this)
+			{
+			case DAY:
+				return TimeManager.MILI_DAY;
+			case DAYLY:
+				C.add(Calendar.DATE, 1);
+				C.set(Calendar.HOUR_OF_DAY, 0);
+				C.set(Calendar.MINUTE,0);
+				C.set(Calendar.SECOND,0);
+				C.set(Calendar.MILLISECOND,0);
+				break;
+			case HOUR:
+				return TimeManager.MILI_HOUR;
+			case HOURLY:
+				C.add(Calendar.HOUR, 1);
+				C.set(Calendar.MINUTE,0);
+				C.set(Calendar.SECOND,0);
+				C.set(Calendar.MILLISECOND,0);
+				break;
+			case MINUTE:
+				return TimeManager.MILI_MINUTE;
+			case MINUTELY:
+				C.add(Calendar.MINUTE, 1);
+				C.set(Calendar.SECOND,0);
+				C.set(Calendar.MILLISECOND,0);
+				break;
+			case MONTH:
+				return TimeManager.MILI_DAY * 30;
+			case MONTHLY:
+				C.add(Calendar.MONTH, 1);
+				C.set(Calendar.DAY_OF_MONTH, 1);
+				C.set(Calendar.HOUR_OF_DAY, 0);
+				C.set(Calendar.MINUTE,0);
+				C.set(Calendar.SECOND,0);
+				C.set(Calendar.MILLISECOND,0);
+				Log.sysOut(CMLib.time().date2String(C.getTimeInMillis()));
+				break;
+			case MUDDAY:
+				return CMProps.getMillisPerMudHour()*globalClock.getHoursInDay();
+			case MUDHOUR:
+				return CMProps.getMillisPerMudHour();
+			case MUDMONTH:
+				return CMProps.getMillisPerMudHour()*globalClock.getHoursInDay()*globalClock.getDaysInMonth();
+			case MUDWEEK:
+				return CMProps.getMillisPerMudHour()*globalClock.getHoursInDay()*globalClock.getDaysInWeek();
+			case MUDYEAR:
+				return CMProps.getMillisPerMudHour()*globalClock.getHoursInDay()
+						*globalClock.getDaysInMonth()*globalClock.getMonthsInYear();
+			case SECOND:
+				return TimeManager.MILI_SECOND;
+			case SECONDLY:
+				C.add(Calendar.SECOND, 1);
+				C.set(Calendar.MILLISECOND,0);
+				break;
+			case TICK:
+				return CMProps.getTickMillis();
+			case WEEK:
+				return TimeManager.MILI_DAY * 7;
+			case WEEKLY:
+				C.add(Calendar.WEEK_OF_YEAR, 1);
+				break;
+			case YEAR:
+				return TimeManager.MILI_DAY * 365;
+			case YEARLY:
+				C.add(Calendar.YEAR, 1);
+				C.set(Calendar.MONTH, 0);
+				C.set(Calendar.DAY_OF_MONTH, 1);
+				C.set(Calendar.HOUR_OF_DAY, 0);
+				C.set(Calendar.MINUTE,0);
+				C.set(Calendar.SECOND,0);
+				C.set(Calendar.MILLISECOND,0);
+				break;
+			}
+			return C.getTimeInMillis() - System.currentTimeMillis();
+		}
+	}
+
 	@Override
 	public String month2MM(final String monthName)
 	{
@@ -847,81 +973,69 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return globalClock;
 	}
 
-	private double getTickExpressionMultiPlier(String lastWord)
-	{
-		lastWord=lastWord.toUpperCase().trim();
-		if(lastWord.startsWith("MINUTE")||lastWord.equals("MINS")||lastWord.equals("MIN"))
-			return CMath.div(TimeManager.MILI_MINUTE,CMProps.getTickMillisD());
-		else
-		if(lastWord.startsWith("SECOND")||lastWord.equals("SECS")||lastWord.equals("SEC"))
-			return CMath.div(TimeManager.MILI_SECOND,CMProps.getTickMillisD());
-		else
-		if(lastWord.startsWith("HOUR"))
-			return CMath.div(TimeManager.MILI_HOUR,CMProps.getTickMillisD());
-		else
-		if(lastWord.startsWith("DAY")||lastWord.equals("DAYS"))
-			return CMath.div(TimeManager.MILI_DAY,CMProps.getTickMillisD());
-		else
-		if(lastWord.startsWith("TICK"))
-			return 1.0;
-		else
-		if(lastWord.startsWith("MUDHOUR"))
-			return CMath.div(CMProps.getMillisPerMudHour(),CMProps.getTickMillisD());
-		else
-		if(lastWord.startsWith("MUDDAY"))
-			return CMath.div(CMProps.getMillisPerMudHour()
-					*globalClock().getHoursInDay()
-					,CMProps.getTickMillisD());
-		else
-		if(lastWord.startsWith("MUDWEEK"))
-			return CMath.div(CMProps.getMillisPerMudHour()
-					*globalClock().getHoursInDay()
-					*globalClock().getDaysInWeek()
-					,CMProps.getTickMillisD());
-		else
-		if(lastWord.startsWith("MUDMONTH"))
-			return CMath.div(CMProps.getMillisPerMudHour()
-					*globalClock().getHoursInDay()
-					*globalClock().getDaysInMonth()
-					,CMProps.getTickMillisD());
-		else
-		if(lastWord.startsWith("MUDYEAR"))
-			return CMath.div(CMProps.getMillisPerMudHour()
-					*globalClock().getHoursInDay()
-					*globalClock().getDaysInMonth()
-					*globalClock().getMonthsInYear()
-					,CMProps.getTickMillisD());
-		return 0.0;
-	}
-
 	@Override
-	public boolean isTickExpression(String val)
+	public boolean isTickExpression(final String val)
 	{
-		val=val.trim();
-		if(CMath.isMathExpression(val))
+		try
+		{
+			parseTickExpression(val);
 			return true;
-		final int x=val.lastIndexOf(' ');
-		if(x<0)
-			return CMath.isMathExpression(val);
-		final double multiPlier=getTickExpressionMultiPlier(val.substring(x+1));
-		if(multiPlier==0.0)
-			return CMath.isMathExpression(val);
-		return CMath.isMathExpression(val.substring(0,x).trim());
+		}
+		catch(final CMException e)
+		{
+			return false;
+		}
 	}
 
 	@Override
-	public int parseTickExpression(String val)
+	public int parseTickExpression(String val) throws CMException
 	{
 		val=val.trim();
 		if(CMath.isMathExpression(val))
 			return CMath.s_parseIntExpression(val);
-		final int x=val.lastIndexOf(' ');
-		if(x<0)
-			return CMath.s_parseIntExpression(val);
-		final double multiPlier=getTickExpressionMultiPlier(val.substring(x+1));
-		if(multiPlier==0.0)
-			return CMath.s_parseIntExpression(val);
-		return (int)Math.round(CMath.mul(multiPlier,CMath.s_parseIntExpression(val.substring(0,x).trim())));
+		final double[] vars = new double[10];
+		int curr = 0;
+		int lastDigit=0;
+		for(int i=0;i<val.length();i++)
+		{
+			final char c = val.charAt(i);
+			final int s=i;
+			if(Character.isDigit(c))
+			{
+				while((i<val.length()) && (Character.isDigit(val.charAt(i))))
+					i++;
+				lastDigit = CMath.s_int(val.substring(s,i));
+				i--;
+			}
+			else
+			if(Character.isLetter(c))
+			{
+				while((i<val.length()) && (Character.isLetter(val.charAt(i))))
+					i++;
+				final String word = val.substring(s,i).toUpperCase();
+				final TimeDelta delta = TimeDelta.get(word);
+				if(delta == null)
+					throw new CMException("Unknown word '"+word+"'");
+				if(lastDigit>0)
+				{
+					val=val.substring(0,s)+("* @x"+(1+curr))+val.substring(i);
+					i=s+4;
+				}
+				else
+				{
+					val=val.substring(0,s)+("@x"+(1+curr))+val.substring(i);
+					i=s+3;
+				}
+				vars[curr++] = delta.delta();
+				lastDigit=-1;
+			}
+			else
+			if(!Character.isWhitespace(c))
+				lastDigit=-1;
+		}
+		if(CMath.isMathExpression(val, vars))
+			return (int)Math.round(CMath.s_parseMathExpression(val, vars) / CMProps.getTickMillisD());
+		throw new CMException("Unknown expression '"+val+"'");
 	}
 
 	@Override

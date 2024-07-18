@@ -31,6 +31,9 @@
  29. Class Skills, including All Qualifys, now support expertises as requirements.
  30. New Command "AutoAttack" for toggling auto attack.   Also available in Config.
  31. Players can now drop, get, etc all weapons, armor, items, or money.
+ 32. TOP/Pride stats now preserves previous-period stats.
+ 33. CRON jobs now support new intervals and better formula support (HELP CRON)
+ 34. New example script playerBackups.js for making player backups as cmare xml.
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

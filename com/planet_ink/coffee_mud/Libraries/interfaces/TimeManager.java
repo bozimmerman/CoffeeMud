@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -348,9 +349,10 @@ public interface TimeManager extends CMLibrary
 	 * hours, seconds, days, mudhours, muddays,
 	 * mudweeks, mudmonths, or mudyears
 	 * @param val the expression
+	 * @throws any parsing errors
 	 * @return the number of ticks represented by the string
 	 */
-	public int parseTickExpression(String val);
+	public int parseTickExpression(String val) throws CMException;
 
 	/**
 	 * Parses whether a tick expression, or an

@@ -6213,10 +6213,24 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			setName(val);
 			break;
 		case 2:
-			setDuration(CMLib.time().parseTickExpression(val));
+			try
+			{
+				setDuration(CMLib.time().parseTickExpression(val));
+			}
+			catch(final CMException e)
+			{
+				Log.errOut(name(),e.getMessage());
+			}
 			break;
 		case 3:
-			setMinWait(CMLib.time().parseTickExpression(val));
+			try
+			{
+				setMinWait(CMLib.time().parseTickExpression(val));
+			}
+			catch(final CMException e)
+			{
+				Log.errOut(name(),e.getMessage());
+			}
 			break;
 		case 4:
 			setMinPlayers(CMath.s_parseIntExpression(val));
@@ -6234,7 +6248,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			setStartMudDate(val);
 			break;
 		case 9:
-			setWaitInterval(CMLib.time().parseTickExpression(val));
+			try
+			{
+				setWaitInterval(CMLib.time().parseTickExpression(val));
+			}
+			catch(final CMException e)
+			{
+				Log.errOut(name(),e.getMessage());
+			}
 			break;
 		case 10:
 		{
@@ -6257,13 +6278,20 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			break;
 		case 15:
 			{
-				final int ticks=CMLib.time().parseTickExpression(val);
-				if(ticks == 0)
-					this.setCopy(false);
-				else
+				try
 				{
-					this.setDuration(ticks);
-					this.setCopy(true);
+					final int ticks=CMLib.time().parseTickExpression(val);
+					if(ticks == 0)
+						this.setCopy(false);
+					else
+					{
+						this.setDuration(ticks);
+						this.setCopy(true);
+					}
+				}
+				catch(final CMException e)
+				{
+					Log.errOut(name(),e.getMessage());
 				}
 			}
 			break;
@@ -6274,10 +6302,17 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			this.category = val;
 			break;
 		default:
-			if((code.toUpperCase().trim().equalsIgnoreCase("REMAINING"))&&(running()))
-				ticksRemaining=CMLib.time().parseTickExpression(val);
-			else
-				questState.vars.put(code.toUpperCase().trim(), val);
+			try
+			{
+				if((code.toUpperCase().trim().equalsIgnoreCase("REMAINING"))&&(running()))
+					ticksRemaining=CMLib.time().parseTickExpression(val);
+				else
+					questState.vars.put(code.toUpperCase().trim(), val);
+			}
+			catch(final CMException e)
+			{
+				Log.errOut(name(),e.getMessage());
+			}
 			break;
 		}
 	}

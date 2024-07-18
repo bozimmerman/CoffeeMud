@@ -37,7 +37,17 @@ public class Top extends StdCommand
 {
 	private final String[] access=I(new String[]{"TOP"});
 
-	private final static Class<?>[][]	internalParameters	= new Class<?>[][] { {}, { Boolean.class, Integer.class } };
+	private final static Class<?>[][]	internalParameters	= new Class<?>[][] {
+		{},
+		{ Boolean.class, Integer.class },
+		{ Boolean.class },
+		{ Boolean.class, String.class },
+		{ Boolean.class, TimePeriod.class },
+		{ Boolean.class, Boolean.class, Integer.class },
+		{ Boolean.class, Boolean.class },
+		{ Boolean.class, Boolean.class, String.class },
+		{ Boolean.class, Boolean.class, TimePeriod.class },
+	};
 
 	@Override
 	public String[] getAccessWords()
@@ -59,7 +69,7 @@ public class Top extends StdCommand
 		return I.toString();
 	}
 
-	public String getTopData(final int width, final boolean doPlayers, final TimePeriod[] periods)
+	protected String getLegacyTopData(final int width, final boolean doPlayers, final TimePeriod[] periods)
 	{
 		final StringBuilder str=new StringBuilder();
 		final int nameWidth=width - (width/3)-3;
@@ -116,30 +126,82 @@ public class Top extends StdCommand
 		return str.toString();
 	}
 
+	protected String getTopXML(final boolean doPlayers, final TimePeriod[] periods, final boolean doPrevious)
+	{
+		final StringBuilder str=new StringBuilder("<TOPREPORT TYPE=\""+(doPlayers?"CHARACTERS":"ACCOUNTS")+"\">");
+		for(final TimePeriod period : periods)
+		{
+			str.append("<PERIOD TYPE=\""+period.name()+"\">");
+			for(final AccountStats.PrideStat stat : AccountStats.PrideStat.values())
+			{
+				str.append("<STAT TYPE=\""+stat.name()+"\">");
+				final List<Pair<String,Integer>>set1;
+				if(doPrevious)
+				{
+					set1=doPlayers?
+						CMLib.players().getTopPridePlayers(period, stat):
+						CMLib.players().getTopPrideAccounts(period, stat);
+				}
+				else
+				{
+					set1=doPlayers?
+						CMLib.players().getPreviousTopPridePlayers(period, stat):
+						CMLib.players().getPreviousTopPrideAccounts(period, stat);
+				}
+				for(int i=0;i<10;i++)
+				{
+					if((set1.size()>i)&&(set1.get(i).first.trim().length()>0))
+						str.append("<TOP NAME=\""+set1.get(i).first+"\">"+set1.get(i).second.intValue()+"</TOP>");
+				}
+				str.append("</STAT>");
+			}
+			str.append("</PERIOD>");
+		}
+		str.append("</TOPREPORT>");
+		return str.toString();
+	}
+
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags) throws java.io.IOException
 	{
 		boolean doPlayers=true;
+		boolean doPrevious=false;
 		if(commands.size()>1)
 		{
-			final String what=commands.get(1).toUpperCase();
-			if("PLAYERS".startsWith(what))
-				doPlayers=true;
-			else
-			if((CMProps.isUsingAccountSystem())&&("ACCOUNTS".startsWith(what)))
-				doPlayers=false;
-			else
+			for(int i=commands.size()-1;i>=1;i--)
 			{
-				mob.tell(L("'@x1' is unknown.  Try PLAYERS or ACCOUNTS",what));
-				return true;
+				final String what=commands.get(i).toUpperCase();
+				if("PLAYERS".startsWith(what))
+				{
+					doPlayers=true;
+					commands.remove(i);
+				}
+				else
+				if((CMProps.isUsingAccountSystem())&&("ACCOUNTS".startsWith(what)))
+				{
+					doPlayers=false;
+					commands.remove(i);
+				}
+				else
+				if("PREVIOUS".startsWith(what))
+				{
+					doPrevious=true;
+					commands.remove(i);
+				}
+				else
+				{
+					mob.tell(L("'@x1' is unknown.  Try PLAYERS or ACCOUNTS, and/or PREVIOUS",what));
+					return true;
+				}
 			}
 		}
 
 		final int width=CMLib.lister().fixColWidth(72, mob)/3;
 		final String str;
+		final String suffix = doPrevious?"-prev":"";
 		if(doPlayers)
 		{
-			StringBuffer topPlayers=new CMFile(Resources.buildResourcePath("text")+"topplayers.txt",null,CMFile.FLAG_LOGERRORS).text();
+			StringBuffer topPlayers=new CMFile(Resources.buildResourcePath("text")+"topplayers"+suffix+".txt",null,CMFile.FLAG_LOGERRORS).text();
 			try
 			{
 				final Map<String,String> map=new HashMap<String,String>();
@@ -153,7 +215,7 @@ public class Top extends StdCommand
 		}
 		else
 		{
-			StringBuffer topAccounts=new CMFile(Resources.buildResourcePath("text")+"topaccounts.txt",null,CMFile.FLAG_LOGERRORS).text();
+			StringBuffer topAccounts=new CMFile(Resources.buildResourcePath("text")+"topaccounts"+suffix+".txt",null,CMFile.FLAG_LOGERRORS).text();
 			try
 			{
 				final Map<String,String> map=new HashMap<String,String>();
@@ -175,9 +237,29 @@ public class Top extends StdCommand
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
-		final TimePeriod[] periods = new TimePeriod[]{TimePeriod.MONTH};
-		if((args != null)&&(args.length>1))
-			return this.getTopData(((Integer)args[1]).intValue(), ((Boolean)args[0]).booleanValue(), periods);
+		final TimePeriod[] periods;
+		if((args != null)
+		&&(args.length>1)
+		&&(args[args.length-1] instanceof String)
+		&&(CMath.s_valueOf(TimePeriod.class, (String)args[args.length-1])!=null))
+			periods = new TimePeriod[]{(TimePeriod)CMath.s_valueOf(TimePeriod.class, (String)args[args.length-1])};
+		else
+		if((args != null)
+		&&(args.length>1)
+		&&(args[args.length-1] instanceof TimePeriod))
+			periods = new TimePeriod[]{(TimePeriod)args[args.length-1]};
+		else
+			periods = new TimePeriod[] {TimePeriod.MONTH};
+		if((args != null)&&(args.length==2)&&(args[0] instanceof Boolean)&&(args[1] instanceof Integer))
+			return this.getLegacyTopData(((Integer)args[1]).intValue(), ((Boolean)args[0]).booleanValue(), periods);
+		else
+		if((args != null)&&(args.length>0)&&(args[0] instanceof Boolean))
+		{
+			if((args.length>1)&&(args[1] instanceof Boolean))
+				return this.getTopXML(((Boolean)args[0]).booleanValue(), periods, ((Boolean)args[1]).booleanValue());
+			else
+				return this.getTopXML(((Boolean)args[0]).booleanValue(), periods, false);
+		}
 		else
 		{
 			StringBuffer topPlayers=new CMFile(Resources.buildResourcePath("text")+"topplayers.txt",null,CMFile.FLAG_LOGERRORS).text();

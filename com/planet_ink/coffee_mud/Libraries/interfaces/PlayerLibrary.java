@@ -660,6 +660,8 @@ public interface PlayerLibrary extends CMLibrary
 	 * period and given pridestat.
 	 *
 	 * @see PlayerLibrary#getTopPrideAccounts(com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod, com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat)
+	 * @see PlayerLibrary#getPreviousTopPrideAccounts(com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod, com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat)
+	 * @see PlayerLibrary#getPreviousTopPridePlayers(com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod, com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat)
 	 * #see PlayerLibrary#bumpPrideStat(MOB, com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat, int)
 	 * @see PlayerLibrary#parsePrideStats(String[], String[])
 	 * @see PlayerLibrary#resetAllPrideStats()
@@ -671,9 +673,26 @@ public interface PlayerLibrary extends CMLibrary
 	public List<Pair<String,Integer>> getTopPridePlayers(TimeClock.TimePeriod period, AccountStats.PrideStat stat);
 
 	/**
+	 * Returns the top winning character names and the associated values that got them there, for the previous time
+	 * period and given pridestat.
+	 *
+	 * @see PlayerLibrary#getTopPrideAccounts(com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod, com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat)
+	 * @see PlayerLibrary#getPreviousTopPrideAccounts(com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod, com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat)
+	 * #see PlayerLibrary#bumpPrideStat(MOB, com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat, int)
+	 * @see PlayerLibrary#parsePrideStats(String[], String[])
+	 * @see PlayerLibrary#resetAllPrideStats()
+	 *
+	 * @param period the time period to get the top character for
+	 * @param stat the pridestat to find winners for
+	 * @return the list of top winners
+	 */
+	public List<Pair<String,Integer>> getPreviousTopPridePlayers(TimeClock.TimePeriod period, AccountStats.PrideStat stat);
+
+	/**
 	 * Returns the top winning character names and the associated values that got them there, for the given time
 	 * period and given pridestat, in the given Pride Category, for the given Pride Category value.
 	 *
+	 * @see PlayerLibrary#getPreviousTopPridePlayers(PrideCat, String, com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod, com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat)
 	 * @param category the pride category from the INI file, like RACE, CLASS, etc..
 	 * @param catUnit the category value to return data for, like Orc, Fighter, etc..
 	 * @param period the time period to get the top accounts for
@@ -683,10 +702,25 @@ public interface PlayerLibrary extends CMLibrary
 	public List<Pair<String,Integer>> getTopPridePlayers(final PrideCat category, final String catUnit, final TimeClock.TimePeriod period, final AccountStats.PrideStat stat);
 
 	/**
+	 * Returns the top winning character names and the associated values that got them there, for the previous time
+	 * period and given pridestat, in the given Pride Category, for the given Pride Category value.
+	 *
+	 * @see PlayerLibrary#getTopPridePlayers(PrideCat, String, com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod, com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat)
+	 * @param category the pride category from the INI file, like RACE, CLASS, etc..
+	 * @param catUnit the category value to return data for, like Orc, Fighter, etc..
+	 * @param period the time period to get the top accounts for
+	 * @param stat the pridestat to find winners for
+	 * @return the list of top winners
+	 */
+	public List<Pair<String,Integer>> getPreviousTopPridePlayers(final PrideCat category, final String catUnit, final TimeClock.TimePeriod period, final AccountStats.PrideStat stat);
+
+	/**
 	 * Returns the top winning account names and the associated values that got them there, for the given time
 	 * period and given pridestat.
 	 *
 	 * @see PlayerLibrary#getTopPridePlayers(com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod, com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat)
+	 * @see PlayerLibrary#getPreviousTopPrideAccounts(com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod, com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat)
+	 * @see PlayerLibrary#getPreviousTopPridePlayers(com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod, com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat)
 	 * #see PlayerLibrary#bumpPrideStat(MOB, com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat, int)
 	 * @see PlayerLibrary#parsePrideStats(String[], String[])
 	 * @see PlayerLibrary#resetAllPrideStats()
@@ -696,6 +730,22 @@ public interface PlayerLibrary extends CMLibrary
 	 * @return the list of top winners
 	 */
 	public List<Pair<String,Integer>> getTopPrideAccounts(TimeClock.TimePeriod period, AccountStats.PrideStat stat);
+
+	/**
+	 * Returns the top winning account names and the associated values that got them there, for the previous given time
+	 * period and given pridestat.
+	 *
+	 * @see PlayerLibrary#getTopPridePlayers(com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod, com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat)
+	 * @see PlayerLibrary#getPreviousTopPridePlayers(com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod, com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat)
+	 * #see PlayerLibrary#bumpPrideStat(MOB, com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat, int)
+	 * @see PlayerLibrary#parsePrideStats(String[], String[])
+	 * @see PlayerLibrary#resetAllPrideStats()
+	 *
+	 * @param period the time period to get the top accounts for
+	 * @param stat the pridestat to find winners for
+	 * @return the list of top winners
+	 */
+	public List<Pair<String,Integer>> getPreviousTopPrideAccounts(TimeClock.TimePeriod period, AccountStats.PrideStat stat);
 
 	/**
 	 * For systems that list users and allow sorting, here

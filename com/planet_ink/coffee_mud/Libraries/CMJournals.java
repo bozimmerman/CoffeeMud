@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -759,7 +760,22 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				return E.update();
 			if(debug)
 				Log.debugOut("Running cron job "+E.subj());
-			final long interval = CMParms.getParmLong(E.data(), "INTERVAL", CMProps.getMillisPerMudHour());
+			long interval = CMProps.getMillisPerMudHour();
+			try
+			{
+				final String intStr = CMParms.getParmStr(E.data(), "INTERVAL", ""+CMProps.getMillisPerMudHour());
+				if(CMath.isLong(intStr))
+					interval = CMath.s_long(intStr);
+				else
+				{
+					final int ticks = CMLib.time().parseTickExpression(intStr);
+					interval = ticks * CMProps.getTickMillis();
+				}
+			}
+			catch(final CMException e)
+			{
+				Log.errOut("cron",e.getMessage());
+			}
 			touch = System.currentTimeMillis()+interval;
 			E.update(System.currentTimeMillis()+interval);
 			CMLib.database().DBTouchJournalMessage(jobKey, E.update());
