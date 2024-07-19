@@ -672,6 +672,16 @@ public interface AchievementLibrary extends CMLibrary
 	public Map<String,Map<String,String>> getAchievementsHelpMap();
 
 	/**
+	 * Parses the given string as per an achievements.ini 'rewards'
+	 * definition and grants the given mob the given awards.
+	 *
+	 * @param mob the mob to give awards to
+	 * @param rewardStr the rewards definition
+	 * @return
+	 */
+	public String giveAwards(final MOB mob, final String rewardStr);
+
+	/**
 	 * Given the comments/help entried from the achievement definition file, and an event,
 	 * and the name of the parameter inside the event, this returns the help entry for
 	 * that parameter

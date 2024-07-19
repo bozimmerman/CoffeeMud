@@ -84,89 +84,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 	};
 
-	@Override
-	public String evaluateAchievement(final Agent agent, final String row, final boolean addIfPossible)
+	protected List<Award> parseAwards(final String eventStr, final String rewardStr) throws CMException
 	{
-		if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0))
-			return null;
-		int x=row.indexOf('=');
-		while((x>=1)&&(row.charAt(x-1)=='\\'))
-			x=row.indexOf('=',x+1);
-		if(x<0)
-			return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!";
-		final String tattoo=row.substring(0,x).toUpperCase().trim();
-		if(tattoo.length()==0)
-			return "Error: Blank achievement tattoo: "+tattoo+"!";
-		if(Character.isDigit(tattoo.charAt(0)))
-			return "Error: Invalid achievement tattoo: "+tattoo+"!";
-		final String params=row.substring(x+1).trim();
-		final String eventStr=CMParms.getParmStr(params, "EVENT", "");
-		final Event eventType = (Event)CMath.s_valueOf(Event.class, eventStr.toUpperCase().trim());
-		if(eventType == null)
-			return "Error: Blank or unknown achievement type: "+eventStr+"!";
-		final String displayStr=CMStrings.deEscape(CMParms.getParmStr(params, "DISPLAY", ""));
-		final String titleStr=CMStrings.deEscape(CMParms.getParmStr(params, "TITLE", ""));
-		final String rewardStr=CMStrings.deEscape(CMParms.getParmStr(params, "REWARDS", ""));
-		final int duration=CMParms.getParmInt(params, "DURATION", 0);
 		final String[] awardSet = CMParms.parse(rewardStr).toArray(new String[0]);
-		final Set<AchievementFlag> flags = Collections.synchronizedSet(new HashSet<AchievementFlag>());
-		final List<String> flagParts = CMParms.parse(CMParms.getParmStr(params, "FLAGS", ""));
-		for(final String fp : flagParts)
-		{
-			final AchievementFlag f = (AchievementFlag)CMath.s_valueOf(AchievementFlag.class, fp.toUpperCase().trim());
-			if(f != null)
-				flags.add(f);
-		}
-		final CompiledZMask seenMask;
-		final String seenMaskStr=CMStrings.deEscape(CMParms.getParmStr(params, "VISIBLEMASK", ""));
-		if(seenMaskStr.trim().length()>0)
-			seenMask = CMLib.masking().getPreCompiledMask(seenMaskStr);
-		else
-			seenMask = null;
-
-		final String playerMaskStr=CMStrings.deEscape(CMParms.getParmStr(params, "PLAYERMASK", ""));
-		final CompiledZMask playerMask;
-		if(playerMaskStr.trim().length()>0)
-			playerMask = CMLib.masking().getPreCompiledMask(playerMaskStr);
-		else
-			playerMask = null;
-
-		final List<Award> awardsList = new ArrayList<Award>();
-		if(titleStr.length()>0)
-		{
-			awardsList.add(new TitleAward()
-			{
-				@Override
-				public AwardType getType()
-				{
-					return AwardType.TITLE;
-				}
-
-				@Override
-				public String getTitle()
-				{
-					return titleStr;
-				}
-
-				@Override
-				public boolean isPreAwarded()
-				{
-					return false;
-				}
-
-				@Override
-				public String getDescription()
-				{
-					return L("The title: @x1",getTitle());
-				}
-
-				@Override
-				public boolean isNotAwardedOnRemort()
-				{
-					return false;
-				}
-			});
-		}
+		final List<Award> awardsList = new XVector<Award>();
 		for(int a=0;a<awardSet.length;a++)
 		{
 			if(awardSet[a].length()>0)
@@ -337,27 +258,27 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							thing=thing.substring(0,y);
 						}
 						if(parms.length()==0)
-							return "Error: Invalid TATTOO award for "+eventStr+":  Missing () arguments.";
+							throw new CMException("Error: Invalid TATTOO award for "+eventStr+":  Missing () arguments.");
 						final String accttattoo;
 						final String desc;
 						if(parms.indexOf('=')<0)
-							return "Error: Invalid TATTOO award for "+eventStr+":  Missing (ID= DESC=) arguments.";
+							throw new CMException("Error: Invalid TATTOO award for "+eventStr+":  Missing (ID= DESC=) arguments.");
 						else
 						{
 							if(CMParms.getParmStr(parms, "ID", "").length()>0)
 								accttattoo=CMStrings.deEscape(CMParms.getParmStr(parms, "ID", ""));
 							else
-								return "Error: Invalid TATTOO award for "+eventStr+":  Missing ID= argument.";
+								throw new CMException("Error: Invalid TATTOO award for "+eventStr+":  Missing ID= argument.");
 							if(CMParms.getParmStr(parms, "DESC", "").length()>0)
 								desc=CMStrings.deEscape(CMParms.getParmStr(parms, "DESC",""));
 							else
-							if(tattoo.startsWith("RACE_"))
-								desc=L("create a character of race '@x1'.",tattoo.toLowerCase().substring(5));
+							if(accttattoo.startsWith("RACE_"))
+								desc=L("create a character of race '@x1'.",accttattoo.toLowerCase().substring(5));
 							else
-							if(tattoo.startsWith("CHARCLASS_"))
-								desc=L("create a character of class '@x1'.",tattoo.toLowerCase().substring(9));
+							if(accttattoo.startsWith("CHARCLASS_"))
+								desc=L("create a character of class '@x1'.",accttattoo.toLowerCase().substring(9));
 							else
-								desc=tattoo.toLowerCase();
+								desc=accttattoo.toLowerCase();
 						}
 						awardsList.add(new TattooAward()
 						{
@@ -898,6 +819,100 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 			}
 		}
+		return awardsList;
+	}
+
+	@Override
+	public String evaluateAchievement(final Agent agent, final String row, final boolean addIfPossible)
+	{
+		if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0))
+			return null;
+		int x=row.indexOf('=');
+		while((x>=1)&&(row.charAt(x-1)=='\\'))
+			x=row.indexOf('=',x+1);
+		if(x<0)
+			return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!";
+		final String tattoo=row.substring(0,x).toUpperCase().trim();
+		if(tattoo.length()==0)
+			return "Error: Blank achievement tattoo: "+tattoo+"!";
+		if(Character.isDigit(tattoo.charAt(0)))
+			return "Error: Invalid achievement tattoo: "+tattoo+"!";
+		final String params=row.substring(x+1).trim();
+		final String eventStr=CMParms.getParmStr(params, "EVENT", "");
+		final Event eventType = (Event)CMath.s_valueOf(Event.class, eventStr.toUpperCase().trim());
+		if(eventType == null)
+			return "Error: Blank or unknown achievement type: "+eventStr+"!";
+		final String displayStr=CMStrings.deEscape(CMParms.getParmStr(params, "DISPLAY", ""));
+		final String titleStr=CMStrings.deEscape(CMParms.getParmStr(params, "TITLE", ""));
+		final String rewardStr=CMStrings.deEscape(CMParms.getParmStr(params, "REWARDS", ""));
+		final int duration=CMParms.getParmInt(params, "DURATION", 0);
+		final Set<AchievementFlag> flags = Collections.synchronizedSet(new HashSet<AchievementFlag>());
+		final List<String> flagParts = CMParms.parse(CMParms.getParmStr(params, "FLAGS", ""));
+		for(final String fp : flagParts)
+		{
+			final AchievementFlag f = (AchievementFlag)CMath.s_valueOf(AchievementFlag.class, fp.toUpperCase().trim());
+			if(f != null)
+				flags.add(f);
+		}
+		final CompiledZMask seenMask;
+		final String seenMaskStr=CMStrings.deEscape(CMParms.getParmStr(params, "VISIBLEMASK", ""));
+		if(seenMaskStr.trim().length()>0)
+			seenMask = CMLib.masking().getPreCompiledMask(seenMaskStr);
+		else
+			seenMask = null;
+
+		final String playerMaskStr=CMStrings.deEscape(CMParms.getParmStr(params, "PLAYERMASK", ""));
+		final CompiledZMask playerMask;
+		if(playerMaskStr.trim().length()>0)
+			playerMask = CMLib.masking().getPreCompiledMask(playerMaskStr);
+		else
+			playerMask = null;
+
+		final List<Award> awardsList = new ArrayList<Award>();
+		if(titleStr.length()>0)
+		{
+			awardsList.add(new TitleAward()
+			{
+				@Override
+				public AwardType getType()
+				{
+					return AwardType.TITLE;
+				}
+
+				@Override
+				public String getTitle()
+				{
+					return titleStr;
+				}
+
+				@Override
+				public boolean isPreAwarded()
+				{
+					return false;
+				}
+
+				@Override
+				public String getDescription()
+				{
+					return L("The title: @x1",getTitle());
+				}
+
+				@Override
+				public boolean isNotAwardedOnRemort()
+				{
+					return false;
+				}
+			});
+		}
+		try
+		{
+			awardsList.addAll(parseAwards(eventStr, rewardStr));
+		}
+		catch(final CMException e)
+		{
+			return e.getMessage();
+		}
+
 		final Award[] rewardList = awardsList.toArray(new Award[0]);
 		Achievement A;
 		switch(eventType)
@@ -7803,10 +7818,25 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return achievements;
 	}
 
-	protected void giveAwards(final MOB mob, final Clan forClan, final Award[] awardSet, final AchievementLoadFlag flag)
+	@Override
+	public String giveAwards(final MOB mob, final String rewardStr)
+	{
+		final List<Award> awards;
+		try
+		{
+			awards = parseAwards("AWARD", rewardStr);
+		}
+		catch(final CMException e)
+		{
+			return "Error giving awards: "+e.getMessage();
+		}
+		return giveAwards(mob, null, awards.toArray(new Award[0]), AchievementLoadFlag.NORMAL);
+	}
+
+	protected String giveAwards(final MOB mob, final Clan forClan, final Award[] awardSet, final AchievementLoadFlag flag)
 	{
 		if(mob == null)
-			return;
+			return "";
 		final PlayerStats pStats = mob.playerStats();
 		final StringBuilder awardMessage = new StringBuilder("");
 		for(final Award award : awardSet)
@@ -7988,9 +8018,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 
 			}
 		}
-		if(awardMessage.length()>0)
-			mob.tell(awardMessage.toString());
 		grantAbilitiesAndExpertises(mob);
+		return awardMessage.toString();
 	}
 
 	protected void giveAwards(final Clan clan, final Award[] awardSet, final AchievementLoadFlag flag)
@@ -8433,7 +8462,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 			if(A.getAgent() == Agent.PLAYER)
 			{
-				giveAwards(mob,null,awardSet,flag);
+				final String awardMessage = giveAwards(mob,null,awardSet,flag);
+				if(awardMessage.length()>0)
+					mob.tell(awardMessage.toString());
 			}
 			return true;
 		}
@@ -9238,7 +9269,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				final Achievement A=getAchievement(t.nextElement().getTattooName());
 				if((A != null)&&(A.getAgent()==Agent.PLAYER))
 				{
-					giveAwards(mob, null, A.getRewards(), flag);
+					final String awardMessage = giveAwards(mob, null, A.getRewards(), flag);
+					if(awardMessage.length()>0)
+						mob.tell(awardMessage.toString());
 					somethingDone=true;
 				}
 			}
@@ -9275,7 +9308,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								mob.addTattoo(A.getTattoo());
 							somethingDone=true;
 						}
-						giveAwards(mob, null, A.getRewards(), flag);
+						final String awardMessage = giveAwards(mob, null, A.getRewards(), flag);
+						if(awardMessage.length()>0)
+							mob.tell(awardMessage.toString());
 					}
 				}
 			}
@@ -9311,7 +9346,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									mob.addTattoo(A.getTattoo());
 								somethingDone=true;
 							}
-							giveAwards(mob, clan, A.getRewards(), flag);
+							final String awardMessage = giveAwards(mob, clan, A.getRewards(), flag);
+							if(awardMessage.length()>0)
+								mob.tell(awardMessage.toString());
 						}
 					}
 				}

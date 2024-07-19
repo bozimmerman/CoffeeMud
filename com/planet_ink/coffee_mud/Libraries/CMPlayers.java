@@ -1232,7 +1232,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 		}
 		prevTopPlayerCats.clear();
-		final String filename = "::/resources/sys_reports/prev_records.xml";
+		final String filename = "::/resources/sys_reports/"+name()+"_prev_top_records.xml";
 		final CMFile F=new CMFile(filename, null);
 		if(!F.exists())
 			return;
@@ -1301,7 +1301,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		final CMFile dirF=new CMFile(dir, null);
 		if(!dirF.exists())
 			dirF.mkdir();
-		final String filename = "::/resources/sys_reports/prev_records.xml";
+		final String filename = "::/resources/sys_reports/"+name()+"_prev_top_records.xml";
 		final CMFile F=new CMFile(filename, null);
 		F.saveText(str.toString());
 	}
@@ -3079,52 +3079,6 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return true;
 	}
 
-	protected void saveLastMonthsTopsData(final boolean debugTopThread)
-	{
-		final Command C=CMClass.getCommand("Top");
-		if(C!=null)
-		{
-			final Calendar calC=Calendar.getInstance();
-			final String dir="::/resources/sys_reports/";
-			final CMFile dirF=new CMFile(dir, null);
-			if(!dirF.exists())
-				dirF.mkdir();
-			final String filename = "::/resources/sys_reports/"+name()+"_top_report_"+calC.get(Calendar.YEAR)+"-"+(calC.get(Calendar.MONTH)+1)+"-"+calC.get(Calendar.DAY_OF_MONTH)+".txt";
-			if(debugTopThread)
-				Log.debugOut(name()+": Want to dump: "+filename);
-			final CMFile F=new CMFile(filename, null);
-			if(!F.exists())
-			{
-				final MOB mob=CMLib.map().deity();
-				Object o;
-				try
-				{
-					o = C.executeInternal(mob, 0, new Object[0]);
-					if(o instanceof String)
-					{
-						final String str=CMStrings.removeColors((String)o);
-						if(debugTopThread)
-							Log.debugOut(name()+": Saved");
-						F.saveText(str);
-					}
-					else
-					if(debugTopThread)
-						Log.debugOut(name()+": Not Saved");
-				}
-				catch (final IOException e)
-				{
-					Log.errOut(e);
-				}
-			}
-			else
-			if(debugTopThread)
-				Log.debugOut(name()+": Won't Save");
-		}
-		else
-		if(debugTopThread)
-			Log.debugOut(ID()+": No C");
-	}
-
 	protected void selectRandomTitle(final PlayerStats pStats)
 	{
 		if(pStats == null)
@@ -3193,7 +3147,6 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					}
 					setThreadStatus(serviceClient,"expiring top metrics");
 					final long now=System.currentTimeMillis();
-					boolean dumpTried = false;
 					final boolean debugTopThread = CMSecurity.isDebugging(DbgFlag.TOPTHREAD);
 					if(debugTopThread)
 						Log.debugOut(name()+": Current Time: "+Math.round(now/60000));
@@ -3207,12 +3160,6 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 						if(now > topPrideExpiration[period.ordinal()])
 						{
 							anythingReset = true;
-							if((period == TimeClock.TimePeriod.MONTH)
-							&&(!dumpTried))
-							{
-								dumpTried=true;
-								saveLastMonthsTopsData(debugTopThread);
-							}
 							topPrideExpiration[period.ordinal()] = period.nextPeriod();
 							if(debugTopThread)
 								Log.debugOut(name()+": "+period.name()+": Next Expire @"+Math.round(topPrideExpiration[period.ordinal()]/60000));

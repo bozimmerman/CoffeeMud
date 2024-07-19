@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -47,6 +48,10 @@ public class Top extends StdCommand
 		{ Boolean.class, Boolean.class },
 		{ Boolean.class, Boolean.class, String.class },
 		{ Boolean.class, Boolean.class, TimePeriod.class },
+		{ Boolean.class, Boolean.class, PlayerLibrary.class, Integer.class },
+		{ Boolean.class, Boolean.class, PlayerLibrary.class },
+		{ Boolean.class, Boolean.class, PlayerLibrary.class, String.class },
+		{ Boolean.class, Boolean.class, PlayerLibrary.class, TimePeriod.class },
 	};
 
 	@Override
@@ -126,7 +131,7 @@ public class Top extends StdCommand
 		return str.toString();
 	}
 
-	protected String getTopXML(final boolean doPlayers, final TimePeriod[] periods, final boolean doPrevious)
+	protected String getTopXML(final PlayerLibrary pLib, final boolean doPlayers, final TimePeriod[] periods, final boolean doPrevious)
 	{
 		final StringBuilder str=new StringBuilder("<TOPREPORT TYPE=\""+(doPlayers?"CHARACTERS":"ACCOUNTS")+"\">");
 		for(final TimePeriod period : periods)
@@ -136,7 +141,7 @@ public class Top extends StdCommand
 			{
 				str.append("<STAT TYPE=\""+stat.name()+"\">");
 				final List<Pair<String,Integer>>set1;
-				if(doPrevious)
+				if(!doPrevious)
 				{
 					set1=doPlayers?
 						CMLib.players().getTopPridePlayers(period, stat):
@@ -255,10 +260,13 @@ public class Top extends StdCommand
 		else
 		if((args != null)&&(args.length>0)&&(args[0] instanceof Boolean))
 		{
+			PlayerLibrary plib = CMLib.players();
+			if((args.length>2)&&(args[2] instanceof PlayerLibrary))
+				plib = (PlayerLibrary)args[2];
+			boolean previous = false;
 			if((args.length>1)&&(args[1] instanceof Boolean))
-				return this.getTopXML(((Boolean)args[0]).booleanValue(), periods, ((Boolean)args[1]).booleanValue());
-			else
-				return this.getTopXML(((Boolean)args[0]).booleanValue(), periods, false);
+				previous =  ((Boolean)args[1]).booleanValue();
+			return this.getTopXML(plib, ((Boolean)args[0]).booleanValue(), periods, previous);
 		}
 		else
 		{
