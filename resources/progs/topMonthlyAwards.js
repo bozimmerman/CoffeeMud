@@ -32,6 +32,7 @@ for(e=CMLib.libraries(Packages.com.planet_ink.coffee_mud.core.CMLib.Library.PLAY
 {
 	var playerLib = e.nextElement();
 	var pi;
+	var done = [];
 	for(pi=0;pi<prideStats.values().length;pi++)
 	{
 		var prideStat = prideStats.values()[pi];
@@ -43,8 +44,9 @@ for(e=CMLib.libraries(Packages.com.planet_ink.coffee_mud.core.CMLib.Library.PLAY
 		for(wi=0;wi<winners.size();wi++)
 		{
 			var winnerM = playerLib.getLoadPlayer(winners.get(wi).first);
-			if(winnerM != null)
+			if((winnerM != null) && (done.indexOf(winnerM.Name())<0))
 			{
+				done.push(winnerM.Name());
 				if(awardsStr.length > 0)
 				{
 					var msg = 'For placing '+(wi+1)+' in the monthly prize for '+statName+': ';
