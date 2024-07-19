@@ -278,7 +278,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		if((isAvailableCharClass(thisClass)||(isTattooedLike(mob,"CHARCLASS_"+thisClass.ID().toUpperCase())))
 		&&((theme<0)||((thisClass.availabilityCode()&theme)>0))
-		&&((mob==null)||(thisClass.qualifiesForThisClass(mob,true))))
+		&&((mob==null)||(thisClass.qualifiesForThisClass(mob,true)))
+		&&((mob==null)||(mob.charStats().getClassLevel(thisClass)>=0)||(mob.charStats().getMyClassesStr().length()+thisClass.ID().length()+1<=250)))
 			return true;
 		return false;
 	}
