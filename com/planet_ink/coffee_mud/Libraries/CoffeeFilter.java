@@ -377,7 +377,6 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					buf.insert(lastSp,(char)13);
 					buf.insert(lastSp,(char)10);
 				}
-				loop=lastSp+2;
 			}
 			if(wrap>0)
 				len=loop+wrap;
@@ -1758,7 +1757,6 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					buf.insert(lastSp,(char)13);
 					buf.insert(lastSp,(char)10);
 				}
-				loop=lastSp+2;
 			}
 			if(wrap>0)
 				len=loop+wrap;
