@@ -1781,6 +1781,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							for(int k=0;k<keyWords.size();k++)
 							{
 								word=keyWords.elementAt(k);
+								if(CMLib.english().isAnArticle(word))
+									continue;
 								x=roomDesc.toUpperCase().indexOf(word);
 								while(x>=0)
 								{
