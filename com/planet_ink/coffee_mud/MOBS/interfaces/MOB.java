@@ -753,7 +753,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * also refer to the room in which this mob/player WOULD be standing if they
 	 * were still in the game.
 	 * @see MOB#setLocation(Room)
-	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#isInhabitant(MOB)
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.MOBCollection#isInhabitant(MOB)
 	 * @return the room in which this mob/player is currently standing
 	 */
 	public Room location();
@@ -763,7 +763,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * also refer to the room in which this mob/player WOULD be standing if they
 	 * were still in the game.
 	 * @see MOB#location()
-	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#isInhabitant(MOB)
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.MOBCollection#isInhabitant(MOB)
 	 * @param newRoom the room in which this mob/player is currently standing
 	 */
 	public void setLocation(Room newRoom);
