@@ -48,7 +48,7 @@ public interface MOBCollection
 	 * @see MOBCollection#numInhabitants()
 	 * @see MOBPossessor#bringMobHere(MOB, boolean)
 	 * @see Room#numPCInhabitants()
-	 * @see Room#eachInhabitant(EachApplicable)
+	 * @see MOBCollection#eachInhabitant(EachApplicable)
 	 * @param inhabitantID the name, id, or keyword to search for
 	 * @return the first mob to match the search string
 	 */
@@ -70,7 +70,7 @@ public interface MOBCollection
 	 * @see MOBCollection#numInhabitants()
 	 * @see MOBPossessor#bringMobHere(MOB, boolean)
 	 * @see Room#numPCInhabitants()
-	 * @see Room#eachInhabitant(EachApplicable)
+	 * @see MOBCollection#eachInhabitant(EachApplicable)
 	 * @param inhabitantID the name, id, or keyword to search for
 	 * @return the first mob to match the search string
 	 */
@@ -91,7 +91,7 @@ public interface MOBCollection
 	 * @see MOBCollection#numInhabitants()
 	 * @see MOBPossessor#bringMobHere(MOB, boolean)
 	 * @see Room#numPCInhabitants()
-	 * @see Room#eachInhabitant(EachApplicable)
+	 * @see MOBCollection#eachInhabitant(EachApplicable)
 	 * @param inhabitantID the name, id, or keyword to search for
 	 * @return all the mobs that match the search string
 	 */
@@ -112,7 +112,7 @@ public interface MOBCollection
 	 * @see MOBCollection#numInhabitants()
 	 * @see MOBPossessor#bringMobHere(MOB, boolean)
 	 * @see Room#numPCInhabitants()
-	 * @see Room#eachInhabitant(EachApplicable)
+	 * @see MOBCollection#eachInhabitant(EachApplicable)
 	 * @param i the index of the mob
 	 * @return the mob inhabitant at that index
 	 */
@@ -132,7 +132,7 @@ public interface MOBCollection
 	 * @see MOBCollection#numInhabitants()
 	 * @see MOBPossessor#bringMobHere(MOB, boolean)
 	 * @see Room#numPCInhabitants()
-	 * @see Room#eachInhabitant(EachApplicable)
+	 * @see MOBCollection#eachInhabitant(EachApplicable)
 	 * @return an enumeration of all the inhabitants
 	 */
 	public Enumeration<MOB> inhabitants();
@@ -153,7 +153,7 @@ public interface MOBCollection
 	 * @see MOBCollection#numInhabitants()
 	 * @see MOBPossessor#bringMobHere(MOB, boolean)
 	 * @see Room#numPCInhabitants()
-	 * @see Room#eachInhabitant(EachApplicable)
+	 * @see MOBCollection#eachInhabitant(EachApplicable)
 	 * @param mob the mob to add to this room
 	 */
 	public void addInhabitant(MOB mob);
@@ -174,7 +174,7 @@ public interface MOBCollection
 	 * @see MOBCollection#numInhabitants()
 	 * @see MOBPossessor#bringMobHere(MOB, boolean)
 	 * @see Room#numPCInhabitants()
-	 * @see Room#eachInhabitant(EachApplicable)
+	 * @see MOBCollection#eachInhabitant(EachApplicable)
 	 * @param mob the mob to remove from this room
 	 */
 	public void delInhabitant(MOB mob);
@@ -193,7 +193,7 @@ public interface MOBCollection
 	 * @see MOBCollection#inhabitants()
 	 * @see MOBPossessor#bringMobHere(MOB, boolean)
 	 * @see Room#numPCInhabitants()
-	 * @see Room#eachInhabitant(EachApplicable)
+	 * @see MOBCollection#eachInhabitant(EachApplicable)
 	 * @return the number of inhabitants
 	 */
 	public int numInhabitants();
@@ -211,7 +211,7 @@ public interface MOBCollection
 	 * @see MOBCollection#numInhabitants()
 	 * @see MOBPossessor#bringMobHere(MOB, boolean)
 	 * @see Room#numPCInhabitants()
-	 * @see Room#eachInhabitant(EachApplicable)
+	 * @see MOBCollection#eachInhabitant(EachApplicable)
 	 * @param mob the mob to look for
 	 * @return true if the mob is here, false otherwise
 	 */
@@ -235,7 +235,7 @@ public interface MOBCollection
 	 * @see MOBCollection#numInhabitants()
 	 * @see MOBPossessor#bringMobHere(MOB, boolean)
 	 * @see Room#numPCInhabitants()
-	 * @see Room#eachInhabitant(EachApplicable)
+	 * @see MOBCollection#eachInhabitant(EachApplicable)
 	 * @param destroy true to also destroy the mob objects, false otherwise
 	 */
 	public void delAllInhabitants(boolean destroy);
@@ -254,9 +254,27 @@ public interface MOBCollection
 	 * @see MOBCollection#numInhabitants()
 	 * @see MOBPossessor#bringMobHere(MOB, boolean)
 	 * @see Room#numPCInhabitants()
-	 * @see Room#eachInhabitant(EachApplicable)
+	 * @see MOBCollection#eachInhabitant(EachApplicable)
 	 * @return the random mob inhabitant
 	 */
 	public MOB fetchRandomInhabitant();
+
+	/**
+	 * Applies the given applier Java code to each mob in this room
+	 * @see MOBCollection#fetchInhabitant(String)
+	 * @see MOBCollection#fetchInhabitant(int)
+	 * @see MOBCollection#fetchInhabitants(String)
+	 * @see MOBCollection#fetchRandomInhabitant()
+	 * @see MOBCollection#delAllInhabitants(boolean)
+	 * @see MOBCollection#inhabitants()
+	 * @see MOBCollection#delInhabitant(MOB)
+	 * @see MOBCollection#addInhabitant(MOB)
+	 * @see MOBCollection#numInhabitants()
+	 * @see MOBPossessor#bringMobHere(MOB, boolean)
+	 * @see Room#numPCInhabitants()
+	 * @see MOBCollection#isInhabitant(MOB)
+	 * @param applier code to execute against each object
+	 */
+	public void eachInhabitant(final EachApplicable<MOB> applier);
 
 }

@@ -27,7 +27,7 @@ public interface MOBPossessor extends MOBCollection
 	 * @see MOBCollection#inhabitants()
 	 * @see Room#numPCInhabitants()
 	 * @see MOBCollection#numInhabitants()
-	 * @see Room#eachInhabitant(EachApplicable)
+	 * @see MOBCollection#eachInhabitant(EachApplicable)
 	 * @param mob the mob to move from where he is, to here
 	 * @param andFollowers true to include followers, false otherwise
 	 */

@@ -880,24 +880,6 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places, MOBPossessor
 	public boolean isHere(Environmental E);
 
 	/**
-	 * Applies the given applier Java code to each mob in this room
-	 * @see MOBCollection#fetchInhabitant(String)
-	 * @see MOBCollection#fetchInhabitant(int)
-	 * @see MOBCollection#fetchInhabitants(String)
-	 * @see MOBCollection#fetchRandomInhabitant()
-	 * @see MOBCollection#delAllInhabitants(boolean)
-	 * @see MOBCollection#inhabitants()
-	 * @see MOBCollection#delInhabitant(MOB)
-	 * @see MOBCollection#addInhabitant(MOB)
-	 * @see MOBCollection#numInhabitants()
-	 * @see MOBPossessor#bringMobHere(MOB, boolean)
-	 * @see Room#numPCInhabitants()
-	 * @see MOBCollection#isInhabitant(MOB)
-	 * @param applier code to execute against each object
-	 */
-	public void eachInhabitant(final EachApplicable<MOB> applier);
-
-	/**
 	 * Returns the number of player/PC inhabitants of
 	 * this room.
 	 * @see MOBCollection#fetchInhabitant(String)
@@ -911,7 +893,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places, MOBPossessor
 	 * @see MOBCollection#inhabitants()
 	 * @see MOBPossessor#bringMobHere(MOB, boolean)
 	 * @see MOBCollection#numInhabitants()
-	 * @see Room#eachInhabitant(EachApplicable)
+	 * @see MOBCollection#eachInhabitant(EachApplicable)
 	 * @return the number of player inhabitants
 	 */
 	public int numPCInhabitants();
