@@ -130,6 +130,8 @@ public class Disease_Nausea extends Disease
 	public void setAbilityCode(final int newCode)
 	{
 		abilityCode = newCode;
+		if(newCode > 0)
+			diseaseTick=1;
 	}
 
 	@Override
