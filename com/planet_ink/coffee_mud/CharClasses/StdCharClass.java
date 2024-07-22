@@ -447,7 +447,10 @@ public class StdCharClass implements CharClass
 			{
 				final CharStats cStats = (CharStats)mob.baseCharStats().copyOf();
 				cStats.getMyRace().affectCharStats(mob, cStats);
-				if(cStats.getStat(statCode) < minReq.second.intValue())
+				final String uStat = minReq.first.toUpperCase().trim();
+				if((cStats.getStat(statCode) < minReq.second.intValue())
+					&& (!CMLib.login().isTattooedLike(mob, "CHARCLASS_"+ID()+"+"+uStat))
+					&& (!CMLib.login().isTattooedLike(mob,"CHARCLASS_ALL"+"+"+uStat)))
 				{
 					if(!quiet)
 						mob.tell(L("You need at least a @x1 @x2 to become a @x3.",minReq.second.toString(),CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode)),name()));
@@ -456,7 +459,13 @@ public class StdCharClass implements CharClass
 			}
 		}
 		final Race R=mob.baseCharStats().getMyRace();
-		if(!isAllowedRace(R))
+		if(!(isAllowedRace(R)
+			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_"+ID()+"+"+"RACE_"+R.ID()))
+			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_"+ID()+"+"+"RACE_ALL"))
+			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_ALL"+"+"+"RACE_"+R.ID()))
+			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_ALL"+"+"+"RACE_ALL"))
+			)
+		)
 		{
 			if(!quiet)
 			{

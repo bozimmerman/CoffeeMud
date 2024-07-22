@@ -186,6 +186,17 @@ public interface CharCreationLibrary extends CMLibrary
 	public boolean isAvailableRace(Race R);
 
 	/**
+	 * Checks for an account wide tattoo from the player, account,
+	 * clan, etc.
+	 *
+	 * @param mob the mob to check
+	 * @param fullID the tattoo id
+	 * @return true if found, false otherwise
+	 */
+	public boolean isTattooedLike(final MOB mob, final String fullID);
+
+
+	/**
 	 * Returns whether the given character class may be selected by a user.
 	 * @param C the CharClass to check
 	 * @return true if it's selectable, false otherwise

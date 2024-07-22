@@ -276,7 +276,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	@Override
 	public boolean canChangeToThisClass(final MOB mob, final CharClass thisClass, final int theme)
 	{
-		if((isAvailableCharClass(thisClass)||(isTattooedLike(mob,"CHARCLASS_"+thisClass.ID().toUpperCase())))
+		if((isAvailableCharClass(thisClass)
+			||(isTattooedLike(mob,"CHARCLASS_"+thisClass.ID().toUpperCase()))
+			||(isTattooedLike(mob,"CHARCLASS_ALL")))
 		&&((theme<0)||((thisClass.availabilityCode()&theme)>0))
 		&&((mob==null)||(thisClass.qualifiesForThisClass(mob,true)))
 		&&((mob==null)||(mob.charStats().getClassLevel(thisClass)>=0)||(mob.charStats().getMyClassesStr().length()+thisClass.ID().length()+1<=250)))
@@ -284,7 +286,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return false;
 	}
 
-	protected boolean isTattooedLike(final MOB mob, final String fullID)
+	@Override
+	public boolean isTattooedLike(final MOB mob, final String fullID)
 	{
 		if(mob==null)
 			return false;

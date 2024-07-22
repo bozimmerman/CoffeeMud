@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.lang.ref.WeakReference;
@@ -99,15 +100,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		boolean playerConfirmed=false;
-		Physical body=null;
-		if((commands.size()>0)
-		&&(commands.get(commands.size()-1).equalsIgnoreCase("CONFIRMED!:"+this)))
-		{
-			commands.remove(commands.size()-1);
-			playerConfirmed=true;
-		}
-		body=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		Physical body=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		DatabaseEngine.PlayerData nonPlayerData=null;
 		boolean playerCorpse=false;
 		if((body==null)
@@ -205,65 +198,6 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 					mob.tell(L("You can't resurrect @x1.",((DeadBody)body).charStats().himher()));
 					return false;
 				}
-			}
-		}
-
-		if((body instanceof DeadBody)
-		&&(((DeadBody)body).isPlayerCorpse()))
-		{
-			final MOB M = CMLib.players().getPlayer(((DeadBody)body).getMobName());
-			if((M!=null)
-			&&(mob.mayIFight(M))
-			&&(!mob.getGroupMembers(new XTreeSet<MOB>()).contains(M))
-			&&(!playerConfirmed))
-			{
-				final Session sess = M.session();
-				final Ability preMe = this;
-				if(CMLib.flags().isInTheGame(M,true)
-				&&(sess!=null))
-				{
-					sess.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)
-					{
-						final Ability meA=preMe;
-						final Session S=sess;
-						final MOB M=mob;
-						final List<String> cmds=new XVector<String>(commands);
-						final Physical givenTargetM=givenTarget;
-						final boolean givenAuto=auto;
-						final int givenLevel=asLevel;
-
-						@Override
-						public void showPrompt()
-						{
-							S.promptPrint(L("\n\r'@x1' wants to resurrect you.  Is this OK (y/N)? ", mob.name()));
-						}
-
-						@Override
-						public void timedOut()
-						{
-						}
-
-						@Override
-						public void callBack()
-						{
-							if(this.input.equals("Y"))
-							{
-								cmds.add("CONFIRMED!:"+meA);
-								CMLib.threads().executeRunnable(new Runnable() {
-
-									@Override
-									public void run()
-									{
-										meA.invoke(M, cmds, givenTargetM, givenAuto, givenLevel);
-									}
-								});
-							}
-						}
-					});
-				}
-				else
-					mob.tell(L("You cannot resurrect @x1 at this time.",body.name(mob)));
-				return false;
 			}
 		}
 

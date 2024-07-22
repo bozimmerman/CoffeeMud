@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.ByteArrayOutputStream;
@@ -1468,7 +1469,21 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			if((rejuv==0)||(rejuv==PhyStats.NO_REJUV))
 				rejuv=rejuvedMOB.phyStats().level();
 			if(((!rejuvedMOB.isMonster())&&(rejuvedMOB.soulMate()==null)))
+			{
+				if(rejuvedMOB.isAttributeSet(Attrib.PLAYERKILL))
+				{
+					Ability tempA =rejuvedMOB.fetchEffect("TemporaryAffects");
+					if(tempA == null)
+					{
+						tempA = CMClass.getAbility("TemporaryAffects");
+						tempA.makeLongLasting();
+						rejuvedMOB.addEffect(tempA);
+					}
+					tempA.makeLongLasting();
+					tempA.setMiscText("+PLAYERKILL 4 false");
+				}
 				rejuv=1;
+			}
 			int bodyLevel = body.phyStats().level();
 			if(bodyLevel < 1)
 				bodyLevel = 1;
