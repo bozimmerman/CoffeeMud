@@ -24,7 +24,6 @@ var e;
 
 var topNum = 3;
 var awardsStr = ""
-mob().tell(""+numParms());
 if(numParms() > 0)
 	topNum = Number(""+getParm(0));
 if(numParms() > 1)
@@ -53,7 +52,6 @@ for(e=CMLib.libraries(Packages.com.planet_ink.coffee_mud.core.CMLib.Library.PLAY
 		for(var wi=0;wi<winners.size();wi++)
 		{
 			var winnerName = winners.get(wi).first;
-mob().tell(statName+'/'+wi+'/'+winnerName);
 			var winnerM = playerLib.getLoadPlayer(winnerName);
 			// get the player mob himself
 			if(winnerM != null)
@@ -79,7 +77,6 @@ mob().tell(statName+'/'+wi+'/'+winnerName);
 				}
 				else
 					msg += ' You win this notification!';
-mob().tell(to+': '+msg);
 				winnerM.tell(msg);
 				CMLib.smtp().emailOrJournal(from, from, to, subj, msg);
 			}
