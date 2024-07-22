@@ -181,6 +181,11 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	@Override
 	public boolean emailIfPossible(final String fromName, final String toName, final String subj, final String msg)
 	{
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.SMTPCLIENT))
+		{
+			Log.debugOut("SMTPclient", "Message not sent: "+fromName+"/"+toName+"/"+subj+"/"+msg);
+			return false;
+		}
 		try
 		{
 			SMTPLibrary.SMTPClient SC=null;
