@@ -484,7 +484,7 @@ public class JournalLoader
 	public List<JournalEntry> makeJournalEntryList(final String journalID, final ResultSet R, long limit) throws SQLException
 	{
 		final List<String> ids = new ArrayList<String>();
-		while(R.next() && (--limit>=0))
+		while(R.next() && ((limit==0)||(--limit>=0)))
 			ids.add(R.getString("CMJKEY"));
 		R.close();
 		final String lastEntry = (ids.size()==0) ? "" : ids.get(ids.size()-1);
