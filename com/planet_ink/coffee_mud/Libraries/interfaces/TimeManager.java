@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.CoffeeTime.TimeDelta;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -278,6 +279,7 @@ public interface TimeManager extends CMLibrary
 	 * @return String Formatted date/time
 	 */
 	public String date2String24(final long time);
+
 	/**
 	 * Converts a given number of milliseconds,
 	 * into a number of rl years, months, days,
@@ -300,6 +302,7 @@ public interface TimeManager extends CMLibrary
 	 * @return ellapsed time approximation.
 	 */
 	public String date2BestShortEllapsedTime(long t);
+
 	/**
 	 * Converts a given number of milliseconds,
 	 * into a number of rl years, months, days,
@@ -308,12 +311,42 @@ public interface TimeManager extends CMLibrary
 	 * will automatically determine the smallest reasonable
 	 * unit of time to show.
 	 *
-	 * Usage: date2SmartEllapsedTime(time)
+	 * Usage: date2SmartEllapsedTime(time,true)
 	 * @param time The time in miliseconds
 	 * @param shortest true for short form, false otherwise
 	 * @return String Formatted ellapsed time
 	 */
 	public String date2SmartEllapsedTime(long time, boolean shortest);
+
+	/**
+	 * Converts a given number of milliseconds,
+	 * into a number of mud years, months, weeks, days,
+	 * and hours.  If in short form,
+	 * returns y, m, d, w, h.
+	 *
+	 * @param C the calendar to use, or null for global
+	 * @param time The time in miliseconds
+	 * @param minUnit The smallest unit to round down to
+	 * @param shortest true for short form, false otherwise
+	 * @return String Formatted ellapsed time
+	 */
+	public String date2EllapsedMudTime(TimeClock C, long time, final TimeDelta minUnit, final boolean shortest);
+
+	/**
+	 * Converts a given number of milliseconds,
+	 * into a number of rl years, months, days,
+	 * hours, minutes, and seconds.  If in short form,
+	 * returns y, m, d, h, m, and s.  This method
+	 * will automatically determine the smallest reasonable
+	 * unit of time to show.
+	 *
+	 * Usage: date2SmartEllapsedMudTime(time,true)
+	 * @param C the calendar to use, or null for global
+	 * @param time the time in miliseconds
+	 * @param shortest true for short form, false otherwise
+	 * @return String Formatted ellapsed mud time
+	 */
+	public String date2SmartEllapsedMudTime(final TimeClock C, long millis, boolean shortest);
 
 	/**
 	 * Converts a given date into a string of form:

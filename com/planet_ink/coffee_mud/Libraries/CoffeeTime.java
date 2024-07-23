@@ -884,6 +884,76 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
+	public String date2EllapsedMudTime(TimeClock C, long time, final TimeDelta minUnit, final boolean shortest)
+	{
+		if(C == null)
+			C=globalClock();
+		final long millisPerHr =CMProps.getMillisPerMudHour();
+		final long millisPerDay = millisPerHr * C.getHoursInDay();
+		final long millisPerWeek = millisPerDay * C.getDaysInWeek();
+		final long millisPerMonth = millisPerDay * C.getDaysInMonth();
+		final long millisPerYear = millisPerDay * C.getDaysInYear();
+		final StringBuilder str=new StringBuilder("");
+		if(time > millisPerYear)
+		{
+			final int num=(int)Math.round(CMath.floor(CMath.div(time,millisPerYear)));
+			time = time - (num *millisPerYear);
+			str.append(num+(shortest?"y":(" "+L("year"+(num!=1?"s":"")))));
+		}
+		if(time > millisPerMonth)
+		{
+			if(str.length()>0)
+				str.append(shortest?" ":", ");
+			final int num=(int)Math.round(CMath.floor(CMath.div(time,millisPerMonth)));
+			time = time - (num *millisPerMonth);
+			str.append(num+(shortest?"M":(" "+L("month"+(num!=1?"s":"")))));
+		}
+		if(time > millisPerWeek)
+		{
+			if(str.length()>0)
+				str.append(shortest?" ":", ");
+			final int num=(int)Math.round(CMath.floor(CMath.div(time,millisPerWeek)));
+			time = time - (num *millisPerWeek);
+			str.append(num+(shortest?"w":(" "+L("week"+(num!=1?"s":"")))));
+		}
+		if(time > millisPerDay)
+		{
+			if(str.length()>0)
+				str.append(shortest?" ":", ");
+			final int num=(int)Math.round(CMath.floor(CMath.div(time,millisPerDay)));
+			time = time - (num *millisPerDay);
+			str.append(num+(shortest?"d":(" "+L("day"+(num!=1?"s":"")))));
+		}
+		if(str.length()>0)
+			str.append(shortest?" ":", ");
+		final int num=(int)Math.round(CMath.floor(CMath.div(time,millisPerHr)));
+		time = time - (num *millisPerHr);
+		return str.append(time+(shortest?"h":(" "+L("hour"+(time!=1?"s":""))))).toString().trim();
+	}
+
+	@Override
+	public String date2SmartEllapsedMudTime(TimeClock C, final long millis, final boolean shortest)
+	{
+		if(C == null)
+			C=globalClock();
+		final long millisPerHr =CMProps.getMillisPerMudHour();
+		final long millisPerDay = millisPerHr * C.getHoursInDay();
+		final long millisPerWeek = millisPerDay * C.getDaysInWeek();
+		final long millisPerMonth = millisPerDay * C.getDaysInMonth();
+		final long millisPerYear = millisPerDay * C.getDaysInYear();
+
+		if(millis > millisPerYear*2)
+			return date2EllapsedMudTime(C, millis,TimeDelta.YEAR,shortest);
+		if(millis > millisPerMonth*2)
+			return date2EllapsedMudTime(C, millis,TimeDelta.MONTH,shortest);
+		if(millis > millisPerWeek*2)
+			return date2EllapsedMudTime(C, millis,TimeDelta.WEEK,shortest);
+		if(millis > millisPerDay*2)
+			return date2EllapsedMudTime(C, millis,TimeDelta.DAY,shortest);
+		return date2EllapsedMudTime(C, millis,TimeDelta.HOUR,shortest);
+	}
+
+	@Override
 	public String date2SecondsString(final long time)
 	{
 		final Calendar C=makeCalendar(time);
