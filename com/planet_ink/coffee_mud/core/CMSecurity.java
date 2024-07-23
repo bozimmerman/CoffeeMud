@@ -1366,7 +1366,8 @@ public class CMSecurity
 			if(flagList.size()>0)
 			{
 				final String flag = getFinalSpecialXableFlagName(flagList.get(0));
-				if(!set.containsKey(flag))
+				if((!set.containsKey(flag))
+				||(CMClass.getCharClass(flag)!=null))
 				{
 					flagList.remove(0);
 					set.put(flag,flagList.toArray(new String[0]));

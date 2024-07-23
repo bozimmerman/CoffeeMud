@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
@@ -63,7 +64,7 @@ public class Reliquist extends Thief
 	@Override
 	public int allowedWeaponLevel()
 	{
-		return CharClass.WEAPONS_ANY;
+		return CharClass.WEAPONS_RELIQUIST;
 	}
 
 	private final String[] raceRequiredList=new String[]{
@@ -99,7 +100,7 @@ public class Reliquist extends Thief
 	public String getOtherBonusDesc()
 	{
 		return L("Magic resistance, 1%/level.  Huge discounts when buying holy potions after 5th level.  Ability to memorize prayers learned through PrayerCraft. "
-				+ "Can see prayer scroll charges at level 30.");
+				+ "Can see prayer scroll charges at level 30.  Can see prayer boons and banes on marked.");
 	}
 
 	public Reliquist()
@@ -107,6 +108,24 @@ public class Reliquist extends Thief
 		super();
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
+	}
+
+	@Override
+	public String getMovementFormula()
+	{
+		return "6*((@x2<@x3)/18)";
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return "((@x6<@x7)/3)+(1*(1?10))";
+	}
+
+	@Override
+	public String getManaFormula()
+	{
+		return "((@x4<@x5)/5)+(1*(1?3))";
 	}
 
 	@Override
@@ -525,19 +544,55 @@ public class Reliquist extends Thief
 		final MOB mob=(MOB)myHost;
 		if(msg.amISource(mob))
 		{
-			if(((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE))
-			&&(msg.target() instanceof Wand)
-			&&((((Wand)msg.target()).getEnchantType()<0)
-				||(((Wand)msg.target()).getEnchantType()==Ability.ACODE_PRAYER))
-			&&(mob.charStats().getClassLevel(this)>=30))
+			if((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE))
 			{
-				final int maxCharges = ((Wand)msg.target()).usesRemaining();
-				final String message;
-				if((maxCharges < Integer.MAX_VALUE/2)&&(maxCharges > 0))
-					message=L("<O-NAME> has @x1/@x2 charges remaining.",""+((Wand)msg.target()).usesRemaining(),""+maxCharges);
+				if((msg.target() instanceof Wand)
+				&&((((Wand)msg.target()).getEnchantType()<0)
+					||(((Wand)msg.target()).getEnchantType()==Ability.ACODE_PRAYER))
+				&&(mob.charStats().getClassLevel(this)>=30))
+				{
+					final int maxCharges = ((Wand)msg.target()).usesRemaining();
+					final String message;
+					if((maxCharges < Integer.MAX_VALUE/2)&&(maxCharges > 0))
+						message=L("<O-NAME> has @x1/@x2 charges remaining.",""+((Wand)msg.target()).usesRemaining(),""+maxCharges);
+					else
+						message=L("<O-NAME> has @x1 charges remaining.",""+((Wand)msg.target()).usesRemaining());
+					msg.addTrailerMsg(CMClass.getMsg(mob, null, msg.target(), CMMsg.MSG_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, message));
+				}
 				else
-					message=L("<O-NAME> has @x1 charges remaining.",""+((Wand)msg.target()).usesRemaining());
-				msg.addTrailerMsg(CMClass.getMsg(mob, null, msg.target(), CMMsg.MSG_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, message));
+				if((msg.target() instanceof MOB)
+				&&(msg.target() != mob)
+				&&(((MOB)msg.target()).fetchEffect("Thief_Mark")!=null))
+				{
+					final MOB tgtM = (MOB)msg.target();
+					final List<String> boons = new ArrayList<String>();
+					final List<String> banes = new ArrayList<String>();
+					for(final Enumeration<Ability> a=tgtM.effects();a.hasMoreElements();)
+					{
+						final Ability effA = a.nextElement();
+						if((effA != null)
+						&&(effA.canBeUninvoked())
+						&&((effA.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER))
+						{
+							if((effA.abstractQuality() == Ability.QUALITY_MALICIOUS)
+							&&(effA.invoker() != tgtM))
+								banes.add(effA.Name());
+							else
+								boons.add(effA.Name());
+						}
+					}
+					if(boons.size()>0)
+					{
+						msg.addTrailerMsg(CMClass.getMsg(mob, null, msg.target(), CMMsg.MSG_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT,
+								L("Boons: @x1",CMLib.english().toEnglishStringList(boons))));
+					}
+					if(banes.size()>0)
+					{
+						msg.addTrailerMsg(CMClass.getMsg(mob, null, msg.target(), CMMsg.MSG_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT,
+								L("Banes: @x1",CMLib.english().toEnglishStringList(banes))));
+					}
+				}
+
 			}
 			else
 			if((msg.tool()!=null)

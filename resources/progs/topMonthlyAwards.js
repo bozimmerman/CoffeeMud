@@ -3,7 +3,8 @@
  * months top awards and gives them an award.
  * Args are: 
  * 1:  [top number winners - default 3]
- * 2:  [list of awards as per rewards in achievements.ini]
+ * 2:  [list of awards as per rewards in achievements.ini], 
+ *     comma delimited to award based on rank 
  * 
  * To use, create a cron job as follows:
  * create cron "monthlytopawards" "monthly + (2 hours)"
@@ -33,6 +34,7 @@ if(numParms() > 1)
 		awardsStr += " "+getParm(e);
 	awardsStr = awardsStr.toUpperCase().trim();
 }
+var awardsList = awardsStr.split(',');
 var MONTHLY = Packages.com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod.MONTH;
 var prideStats = Packages.com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
 
@@ -44,9 +46,7 @@ for(e=CMLib.libraries(Packages.com.planet_ink.coffee_mud.core.CMLib.Library.PLAY
 	{
 		var prideStat = prideStats.values()[pi];
 		var statName = prideStat.name().replace('_',' ').toLowerCase();
-		var winners = playerLib.getPreviousTopPridePlayers(MONTHLY, prideStat);
-		while(winners.size()>topNum)
-			winners.remove(winners.size()-1);
+		var winners = playerLib.gePrevioustTopPridePlayers(MONTHLY, prideStat);
 		var accountsDone = [];
 		var numDone = 0;
 		for(var wi=0;wi<winners.size();wi++)
@@ -69,16 +69,22 @@ for(e=CMLib.libraries(Packages.com.planet_ink.coffee_mud.core.CMLib.Library.PLAY
 				var from = 'noreply';
 				var to = winnerM.Name();
 				var msg = ' Congratulations! For placing '+(wi+1)+CMath.numAppendage(wi+1)+' in the monthly prize for '+statName+':  ';
-				if(awardsStr.length > 0)
+				var award = awardsStr;
+				if(awardsList.length > 1)
 				{
-					msg += CMLib.achievements().giveAwards(winnerM, awardsStr);
-					if(numDone >= topNum) // only award top 'topNum'
-						break;
+					if(numDone < awardsList.length)
+						award = awardsList[numDone];
+					else
+						award = awardsList[awardsList.length-1];
 				}
+				if(award.length > 0)
+					msg += CMLib.achievements().giveAwards(winnerM, award);
 				else
 					msg += ' You win this notification!';
-				winnerM.tell(msg);
+				numDone++;
 				CMLib.smtp().emailOrJournal(from, from, to, subj, msg);
+				if(numDone >= topNum)
+					break;
 			}
 		}
 	}

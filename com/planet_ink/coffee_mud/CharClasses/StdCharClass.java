@@ -1056,19 +1056,23 @@ public class StdCharClass implements CharClass
 		||CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,R.racialCategory()))
 			secondCheck = true;
 		else
-		if(CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,"-"+R.ID())
+		if(CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,"-All")
+		||CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,"-"+R.ID())
 		||CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,"-"+R.name())
 		||CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,"-"+R.racialCategory()))
 			secondCheck=false;
 		else
+		{
 			secondCheck =
 				(CMStrings.containsIgnoreCase(requiredRaceList,"All")
 				||CMStrings.containsIgnoreCase(requiredRaceList,R.ID())
 				||CMStrings.containsIgnoreCase(requiredRaceList,R.name())
 				||CMStrings.containsIgnoreCase(requiredRaceList,R.racialCategory()))
+			&&(!CMStrings.containsIgnoreCase(requiredRaceList,"-All"))
 			&&(!CMStrings.containsIgnoreCase(requiredRaceList,"-"+R.ID()))
 			&&(!CMStrings.containsIgnoreCase(requiredRaceList,"-"+R.name()))
 			&&(!CMStrings.containsIgnoreCase(requiredRaceList,"-"+R.racialCategory()));
+		}
 
 		synchronized(finalAllowedRaceSet)
 		{
