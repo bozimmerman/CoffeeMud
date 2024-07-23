@@ -890,7 +890,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 			C=globalClock();
 		final long millisPerHr =CMProps.getMillisPerMudHour();
 		final long millisPerDay = millisPerHr * C.getHoursInDay();
-		final long millisPerWeek = millisPerDay * C.getDaysInWeek();
+		final long millisPerWeek = millisPerDay * (C.getDaysInWeek()<=2?2:C.getDaysInWeek());
 		final long millisPerMonth = millisPerDay * C.getDaysInMonth();
 		final long millisPerYear = millisPerDay * C.getDaysInYear();
 		final StringBuilder str=new StringBuilder("");
@@ -900,6 +900,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 			time = time - (num *millisPerYear);
 			str.append(num+(shortest?"y":(" "+L("year"+(num!=1?"s":"")))));
 		}
+		if((minUnit == TimeDelta.YEAR)||(time <= 0))
+			return str.toString().trim();
 		if(time > millisPerMonth)
 		{
 			if(str.length()>0)
@@ -908,6 +910,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 			time = time - (num *millisPerMonth);
 			str.append(num+(shortest?"M":(" "+L("month"+(num!=1?"s":"")))));
 		}
+		if((minUnit == TimeDelta.MONTH)||(time <= 0))
+			return str.toString().trim();
 		if(time > millisPerWeek)
 		{
 			if(str.length()>0)
@@ -916,6 +920,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 			time = time - (num *millisPerWeek);
 			str.append(num+(shortest?"w":(" "+L("week"+(num!=1?"s":"")))));
 		}
+		if((minUnit == TimeDelta.WEEK)||(time <= 0))
+			return str.toString().trim();
 		if(time > millisPerDay)
 		{
 			if(str.length()>0)
@@ -924,11 +930,17 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 			time = time - (num *millisPerDay);
 			str.append(num+(shortest?"d":(" "+L("day"+(num!=1?"s":"")))));
 		}
-		if(str.length()>0)
-			str.append(shortest?" ":", ");
-		final int num=(int)Math.round(CMath.floor(CMath.div(time,millisPerHr)));
-		time = time - (num *millisPerHr);
-		return str.append(time+(shortest?"h":(" "+L("hour"+(time!=1?"s":""))))).toString().trim();
+		if((minUnit == TimeDelta.DAY)||(time <= 0))
+			return str.toString().trim();
+		if(time > millisPerHr)
+		{
+			if(str.length()>0)
+				str.append(shortest?" ":", ");
+			final int num=(int)Math.round(CMath.floor(CMath.div(time,millisPerHr)));
+			time = time - (num *millisPerHr);
+			return str.append(num+(shortest?"h":(" "+L("hour"+(num!=1?"s":""))))).toString().trim();
+		}
+		return L("less than an hour");
 	}
 
 	@Override
@@ -938,7 +950,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 			C=globalClock();
 		final long millisPerHr =CMProps.getMillisPerMudHour();
 		final long millisPerDay = millisPerHr * C.getHoursInDay();
-		final long millisPerWeek = millisPerDay * C.getDaysInWeek();
+		final long millisPerWeek = millisPerDay * (C.getDaysInWeek()<=2?2:C.getDaysInWeek());
 		final long millisPerMonth = millisPerDay * C.getDaysInMonth();
 		final long millisPerYear = millisPerDay * C.getDaysInYear();
 

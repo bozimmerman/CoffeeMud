@@ -127,7 +127,7 @@ public class Aggressive extends StdBehavior
 				final long safeTime = p.second.longValue() - System.currentTimeMillis();
 				final TimeClock C = CMLib.time().homeClock((MOB)affecting);
 				final String mtm = CMLib.time().date2SmartEllapsedMudTime(C,safeTime, false);
-				final String tm = CMLib.time().date2SmartEllapsedMudTime(C,safeTime, false);
+				final String tm = CMLib.time().date2SmartEllapsedTime(safeTime, false);
 				final String say = CMStrings.replaceVariables(bribeOkMsg,
 						new String[] { mtm, tm } );
 				CMLib.commands().postSay((MOB)affecting,msg.source(),say);

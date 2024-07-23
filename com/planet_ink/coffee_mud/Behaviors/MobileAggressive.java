@@ -91,6 +91,7 @@ public class MobileAggressive extends Mobile
 		misbehave=V.remove("MISBEHAVE");
 		V.removeAll(getMobileRemovables());
 		maskStr = CMLib.masking().separateZapperMask(CMParms.combineQuoted(V, 0));
+		veryA.setParms(newParms);
 		this.mask=null;
 		if(maskStr.length()>0)
 			this.mask=CMLib.masking().getPreCompiledMask(maskStr);
