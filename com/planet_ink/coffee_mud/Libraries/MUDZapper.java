@@ -166,8 +166,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			if(parms.length != me.parms.length)
 				return false;
 			for(int i=0;i<parms.length;i++)
+			{
 				if(!parms[i].equals(me.parms[i]))
 					return false;
+			}
 			return true;
 		}
 	}

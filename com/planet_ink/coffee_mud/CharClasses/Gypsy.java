@@ -150,14 +150,105 @@ public class Gypsy extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ScrollScribing",0,false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_ReadRunes",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",0,false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Staff",0,false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Staff",0,true);
 
-		//Q=Qualify G=GAIN A=Gain if alignment is the same as the prayer
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Hide",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_MaskFaith",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_RepurposeText",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_ProtectItem",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Hide",true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Runecasting",true);
 
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Kidnapping",true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_ShardUse",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_KnowAnimal",false);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Sneak",true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_EnhancePotion",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_SparkRunes",false);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"JewelMaking",0,true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_InspectShard",0,false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_Urchinize",0,true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Pick",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Dodge",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_RefreshRunes",true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Peek",true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_StaffSweep",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_TarotReading",false);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_UsePoison",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_ReleaseMagic",true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_FindRunaway",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_Tasseography",false);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Parry",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_RechargeShards",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_CurseMood",true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_Haggle",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Herbalism",true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_MyUrchins",true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Steal",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Lore",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_EnhanceJewelry",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_ExtendFortune",true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_Listen",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),12,"ShardMaking",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_StaffBlock",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_Astrology",false);
+
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_SuppressFortune",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_EnchantShards",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_DropSpot",true);
+
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_BountifulWomb",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_NameUrchin",true); // random urchiny names on no arg
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_PlantItem",false);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_PowerGrab",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_EnhanceShard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"CaravanBuilding",false);
+
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"ImprovedHerbalism",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_Tumble",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_CurseFortune",true);
+			// add more to this than just saves: spilling potions, wand targeting fail, wand fail, wand wrong spell, getting lost, etc
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Shadow",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_StaffSpin",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_PalmReading",false);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_UsePotion",false);
+		// scroll titling is a meta-skill, which I greatly dislike -- IOW, there's no RP explanation for it.
+		// I'd rather fix this some other way...
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),18,"ScrollTitling",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_StealFortune",true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Detection",true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_StrengthenSeed",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"TradeCharting",false);
+
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_EndowGemstones",true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_PromoteUrchin",false);
+
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_ConcealPathway",true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_ReverseFortune",false);
+
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_CallUrchins",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_EndowClub",true);
+
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_UrchinSpy",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_StaffThrust",true);
+
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_CurseSeed",true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_CaravanTravel",false);
+
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_EndowJewelry",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_FortuneTelling",true);
+
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_EndowIounStone",true);
 	}
 
 	@Override
@@ -191,48 +282,113 @@ public class Gypsy extends Thief
 		final MOB mob=(MOB)myHost;
 		if(msg.amISource(mob))
 		{
-			if((msg.tool() instanceof Ability)
-			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
-			&&(!mob.isMonster())
-			&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
-			&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-			&&(mob.isMine(msg.tool()))
-			&&(isQualifyingAuthority(mob,(Ability)msg.tool())))
+			switch(msg.sourceMinor())
 			{
-				final Ability A=(Ability)msg.tool();
-				if(A.appropriateToMyFactions(mob))
-					return true;
-				msg.source().tell(L("Extreme emotions disrupt your magic."));
-				return false;
-
-			}
-			if(mob.charStats().getClassLevel(this)>4)
-			{
-				if(((msg.sourceMinor()==CMMsg.TYP_BUY)
-					||(msg.sourceMinor()==CMMsg.TYP_LIST))
-				&&(msg.tool() instanceof Potion))
+			case CMMsg.TYP_CAST_SPELL:
+				if((msg.tool() instanceof Ability)
+				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+				&&(!mob.isMonster())
+				&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+				&&(mob.isMine(msg.tool()))
+				&&(isQualifyingAuthority(mob,(Ability)msg.tool())))
 				{
-					final Potion P=(Potion)msg.tool();
-					boolean hasPrayer=true;
-					for(final Ability A : P.getSpells())
+					final Ability A=(Ability)msg.tool();
+					if(A.appropriateToMyFactions(mob))
+						return true;
+					msg.source().tell(L("Extreme emotions disrupt your magic."));
+					return false;
+
+				}
+				break;
+			case CMMsg.TYP_BUY:
+			case CMMsg.TYP_LIST:
+				{
+					if(msg.tool() instanceof LandTitle)
 					{
-						if((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_CHANT)
-							hasPrayer=false;
+						final LandTitle t = (LandTitle)msg.tool();
+						final Room R = t.getATitledRoom();
+						if((R != null)&&(R.getArea() instanceof Boardable))
+						{
+							final Item I = ((Boardable)R.getArea()).getBoardableItem();
+							if((I != null)
+							&&((((Rideable)I).rideBasis() == Rideable.Basis.LAND_BASED)
+								||(((Rideable)I).rideBasis() == Rideable.Basis.WAGON)))
+							{
+								return true;
+							}
+							msg.source().tell(L("A Gypsy may not own real estate."));
+							return false;
+						}
 					}
-					if(hasPrayer)
+					if((msg.tool() instanceof Potion)
+					&&(mob.charStats().getClassLevel(this)>4))
 					{
-						mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_BONUS);
-						mob.recoverPhyStats();
-						mob.recoverCharStats();
+						final Potion P=(Potion)msg.tool();
+						boolean hasChant=true;
+						for(final Ability A : P.getSpells())
+						{
+							if((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_CHANT)
+								hasChant=false;
+						}
+						if(hasChant)
+						{
+							mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_BONUS);
+							mob.recoverPhyStats();
+							mob.recoverCharStats();
+						}
 					}
 				}
-				else
+				break;
+			case CMMsg.TYP_DROP:
+				if((msg.target() instanceof Item)
+				&&(!CMLib.flags().isDroppable((Item)msg.target())))
+				{
+					CMLib.flags().setDroppable((Item)msg.target(), true);
+					if(!msg.source().okMessage(msg.source(), msg))
+					{
+						CMLib.flags().setDroppable((Item)msg.target(), false);
+						return false;
+					}
+					final Item fi = (Item)msg.target();
+					msg.addTrailerRunnable(new Runnable() {
+						final Item I = fi;
+						@Override
+						public void run()
+						{
+							CMLib.flags().setDroppable(I, false);
+						}
+					});
+				}
+				break;
+			case CMMsg.TYP_REMOVE:
+				if((msg.target() instanceof Item)
+				&&(!CMLib.flags().isRemovable((Item)msg.target())))
+				{
+					CMLib.flags().setRemovable((Item)msg.target(), true);
+					if(!msg.source().okMessage(msg.source(), msg))
+					{
+						CMLib.flags().setRemovable((Item)msg.target(), false);
+						return false;
+					}
+					final Item fi = (Item)msg.target();
+					msg.addTrailerRunnable(new Runnable() {
+						final Item I = fi;
+						@Override
+						public void run()
+						{
+							CMLib.flags().setRemovable(I, false);
+						}
+					});
+				}
+				break;
+			default:
 				if((mob.basePhyStats().disposition()&PhyStats.IS_BONUS)==PhyStats.IS_BONUS)
 				{
 					mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()-PhyStats.IS_BONUS);
 					mob.recoverPhyStats();
 					mob.recoverCharStats();
 				}
+				break;
 			}
 		}
 		return super.okMessage(myHost,msg);
@@ -254,7 +410,7 @@ public class Gypsy extends Thief
 			mob.delAbility(otherChoices.elementAt(a));
 	}
 
-	private void addAbilityToPrayercraftist(final MOB mob, final Ability A)
+	private void addAbilityToChantcraftist(final MOB mob, final Ability A)
 	{
 		final Ability enabledA=mob.fetchAbility("Skill_Chantcraft");
 		if(enabledA!=null)
@@ -396,7 +552,7 @@ public class Gypsy extends Thief
 							if((!A.isSavable())
 							&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 							&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<30))
-								addAbilityToPrayercraftist(mob,A);
+								addAbilityToChantcraftist(mob,A);
 						}
 						else
 						if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<30)
@@ -418,7 +574,7 @@ public class Gypsy extends Thief
 								final Ability A2=otherChoices.elementAt(CMLib.dice().roll(1,otherChoices.size(),-1));
 								clearAbilityFromChantcraftist(mob,A2);
 							}
-							addAbilityToPrayercraftist(mob,A);
+							addAbilityToChantcraftist(mob,A);
 						}
 					}
 				}

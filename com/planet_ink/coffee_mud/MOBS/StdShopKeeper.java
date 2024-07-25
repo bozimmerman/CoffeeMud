@@ -284,6 +284,21 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_BUY:
 			case CMMsg.TYP_VIEW:
 			{
+				final MOB mobFor = CMLib.coffeeShops().parseBuyingFor(msg.source(), msg.targetMessage());
+				if(mobFor!=msg.source())
+				{
+					final MOB srcM = msg.source();
+					try
+					{
+						msg.setSource(mobFor);
+						if(!mobFor.okMessage(mobFor, msg))
+							return false;
+					}
+					finally
+					{
+						msg.setSource(srcM);
+					}
+				}
 				if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), this))
 					return false;
 				if ((msg.targetMinor() == CMMsg.TYP_BUY)

@@ -619,6 +619,12 @@ public class StdTitle extends StdItem implements LandTitle
 				destroy();
 				return;
 			}
+			final CMMsg buyMsg = CMClass.getMsg((MOB)msg.target(),msg.source(),this,CMMsg.MSG_BUY,CMMsg.MSG_BUY,CMMsg.MSG_BUY,"");
+			if(!msg.target().okMessage(msg.target(), buyMsg))
+			{
+				msg.source().tell(L("@x1 can not seem to accept @x2.",((MOB)msg.target()).name(msg.source()),name()));
+				return;
+			}
 
 			if(CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER))
 			{
