@@ -556,7 +556,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							CMLib.beanCounter().clearZeroMoney(babe, null);
 							babe.setMoneyVariation(0);
 							babe.baseCharStats().setMyRace(R);
-							babe.baseCharStats().setMyClasses("Apprentice");
+							babe.baseCharStats().setAllClassInfo("Apprentice", "1");
 							babe.baseCharStats().setStat(CharStats.STAT_CHARISMA, 10);
 							babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION, 6);
 							babe.baseCharStats().setStat(CharStats.STAT_DEXTERITY, 2);

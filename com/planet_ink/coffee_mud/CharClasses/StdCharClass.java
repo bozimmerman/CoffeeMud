@@ -1123,8 +1123,7 @@ public class StdCharClass implements CharClass
 		CR.setStat("QUAL","");
 
 		final MOB fakeMOB=CMClass.getFactoryMOB();
-		fakeMOB.baseCharStats().setMyClasses(ID());
-		fakeMOB.baseCharStats().setMyLevels("0");
+		fakeMOB.baseCharStats().setAllClassInfo(ID(), "0");
 		fakeMOB.recoverCharStats();
 
 		final PhyStats RS=(PhyStats)CMClass.getCommon("DefaultPhyStats");
@@ -1134,17 +1133,14 @@ public class StdCharClass implements CharClass
 		CR.setStat("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(RS));
 
 		final CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");
-		S1.setMyClasses(ID());
-		S1.setMyLevels("0");
+		S1.setAllClassInfo(ID(), "0");
 		S1.setAllValues(0);
 		final CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats");
 		S2.setAllValues(10);
-		S2.setMyClasses(ID());
-		S2.setMyLevels("0");
+		S2.setAllClassInfo(ID(), "0");
 		final CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats");
 		S3.setAllValues(11);
-		S3.setMyClasses(ID());
-		S3.setMyLevels("0");
+		S3.setAllClassInfo(ID(), "0");
 		final CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
 		SETSTAT.setAllValues(0);
 		final CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");

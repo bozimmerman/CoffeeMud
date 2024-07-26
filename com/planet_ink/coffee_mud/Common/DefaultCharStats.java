@@ -218,8 +218,8 @@ public class DefaultCharStats implements CharStats
 		}
 		else
 		{
-			intoStats.setMyClasses(getMyClassesStr());
-			intoStats.setMyLevels(getMyLevelsStr());
+			final Pair<String,String> allClassInfo = getAllClassInfo();
+			intoStats.setAllClassInfo(allClassInfo.first, allClassInfo.second);
 			intoStats.setMyRace(getMyRace());
 			intoStats.setRaceName(raceName);
 			intoStats.setDeityName(deityName);
@@ -236,78 +236,43 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setMyClasses(String classes)
+	public void setAllClassInfo(final String classes, final String levels)
 	{
-		int x=classes.indexOf(';');
-		final ArrayList<CharClass> classV=new ArrayList<CharClass>();
-		CharClass C=null;
-		while(x>=0)
+		final String[] classIDs = classes.trim().split(";");
+		final String[] classLvls = levels.trim().split(";");
+		final PairArrayList<CharClass,Integer> classV=new PairArrayList<CharClass,Integer>();
+		int i = 0;
+		for(final String id : classIDs)
 		{
-			final String theClass=classes.substring(0,x).trim();
-			classes=classes.substring(x+1);
-			if(theClass.length()>0)
-			{
-				C=CMClass.getCharClass(theClass);
-				if(C==null)
-					C=CMClass.getCharClass("StdCharClass");
-				classV.add(C);
-			}
-			x=classes.indexOf(';');
-		}
-		if(classes.trim().length()>0)
-		{
-			C=CMClass.getCharClass(classes.trim());
+			if(id.length()==0)
+				continue;
+			CharClass C=CMClass.getCharClass(id);
 			if(C==null)
 				C=CMClass.getCharClass("StdCharClass");
-			classV.add(C);
+			classV.add(C, Integer.valueOf((i < classLvls.length)?CMath.s_int(classLvls[i++]):0));
 		}
-		myClasses=classV.toArray(new CharClass[0]);
+		if(classV.size()==0)
+			classV.add(CMClass.getCharClass("StdCharClass"),Integer.valueOf(0));
+		myClasses=classV.toArrayFirst(new CharClass[classV.size()]);
+		myLevels=classV.toArraySecond(new Integer[classV.size()]);
 	}
 
 	@Override
-	public void setMyLevels(String levels)
+	public Pair<String,String> getAllClassInfo()
 	{
-		if((levels.length()==0)&&(myClasses!=null)&&(myClasses.length>0))
-			levels="0";
-		int x=levels.indexOf(';');
-		final ArrayList<Integer> levelV=new ArrayList<Integer>();
-		while(x>=0)
-		{
-			final String theLevel=levels.substring(0,x).trim();
-			levels=levels.substring(x+1);
-			if(theLevel.length()>0)
-				levelV.add(Integer.valueOf(CMath.s_int(theLevel)));
-			x=levels.indexOf(';');
-		}
-		if(levels.trim().length()>0)
-			levelV.add(Integer.valueOf(CMath.s_int(levels)));
-		myLevels=levelV.toArray(new Integer[0]);
-	}
-
-	@Override
-	public String getMyClassesStr()
-	{
-		if(myClasses==null)
-			return "StdCharClass";
-		String classStr="";
+		if((myClasses==null)||(myLevels==null))
+			return new Pair<String,String>("StdCharClass","0");
+		final StringBuilder classStr=new StringBuilder("");
 		for (final CharClass myClasse : myClasses)
-			classStr+=";"+myClasse.ID();
+			classStr.append(";").append(myClasse.ID());
 		if(classStr.length()>0)
-			classStr=classStr.substring(1);
-		return classStr;
-	}
-
-	@Override
-	public String getMyLevelsStr()
-	{
-		if(myLevels==null)
-			return "";
-		String levelStr="";
+			classStr.deleteCharAt(0);
+		final StringBuilder levelStr=new StringBuilder("");
 		for (final Integer myLevel : myLevels)
-			levelStr+=";"+myLevel.intValue();
+			levelStr.append(";").append(myLevel.toString());
 		if(levelStr.length()>0)
-			levelStr=levelStr.substring(1);
-		return levelStr;
+			levelStr.deleteCharAt(0);
+		return new Pair<String,String>(classStr.toString(), levelStr.toString());
 	}
 
 	@Override
@@ -555,6 +520,24 @@ public class DefaultCharStats implements CharStats
 		return getClassLevel(aClass.ID());
 	}
 
+	protected void removeClass(final CharClass aClass)
+	{
+		int i, j;
+		for (i = j = 0; j < myClasses.length; ++j)
+		{
+			final CharClass C = myClasses[j];
+			if((C!=null) && (!aClass.ID().equals(C.ID())))
+			{
+				myLevels[i] = myLevels[j];
+				myClasses[i++] = C;
+			}
+		}
+		if(i == j)
+			return;
+		myClasses = Arrays.copyOf(myClasses, i);
+		myLevels = Arrays.copyOf(myLevels, i);
+	}
+
 	@Override
 	public void setClassLevel(final CharClass aClass, final int level)
 	{
@@ -562,41 +545,27 @@ public class DefaultCharStats implements CharStats
 			return;
 		if(myClasses==null)
 		{
-			myClasses=new CharClass[1];
-			myLevels=new Integer[1];
-			myClasses[0]=aClass;
-			myLevels[0]=Integer.valueOf(level);
+			myClasses=new CharClass[] { aClass };
+			myLevels=new Integer[] { Integer.valueOf(level) };
+			return;
 		}
-		else
+		if(level<0)
 		{
-			if((level<0)&&(myClasses.length>1))
+			if(myClasses.length>1)
+				removeClass(aClass);
+			return;
+		}
+		if(getClassLevel(aClass)<0)
+			setCurrentClass(aClass); // adds the class
+		// finally sets the level
+		for(int i=0;i<myClasses.length;i++)
+		{
+			final CharClass C=myClasses[i];
+			if(C.ID().equals(aClass.ID()))
 			{
-				final CharClass[] oldClasses=myClasses;
-				final Integer[] oldLevels=myLevels;
-				final CharClass[] myNewClasses=new CharClass[oldClasses.length-1];
-				final Integer[] myNewLevels=new Integer[oldClasses.length-1];
-				for(int c=0;c<myNewClasses.length;c++)
-				{
-					myNewClasses[c]=oldClasses[c];
-					if(c<oldLevels.length)
-						myNewLevels[c]=oldLevels[c];
-					else
-						myNewLevels[c]=Integer.valueOf(0);
-				}
-				myClasses=myNewClasses;
-				myLevels=myNewLevels;
-			}
-			else
-			if(getClassLevel(aClass)<0)
-				setCurrentClass(aClass);
-			for(int i=0;i<numClasses();i++)
-			{
-				final CharClass C=getMyClass(i);
-				if((C==aClass)&&(myLevels[i].intValue()!=level))
-				{
+				if(myLevels[i].intValue()!=level)
 					myLevels[i]=Integer.valueOf(level);
-					break;
-				}
+				break;
 			}
 		}
 	}
@@ -626,52 +595,57 @@ public class DefaultCharStats implements CharStats
 		||((myClasses.length==1)
 			&&((myClasses[0]==null)||(myClasses[0].ID().equals("StdCharClass")))))
 		{
-			myClasses=new CharClass[1];
-			myLevels=new Integer[1];
-			myClasses[0]=aClass;
-			myLevels[0]=Integer.valueOf(0);
+			myClasses=new CharClass[] {aClass};
+			myLevels=new Integer[] {Integer.valueOf(0) };
 			return;
 		}
 
 		final int level=getClassLevel(aClass);
-		if(level<0)
+		if(level<0) // need to add
 		{
-			final CharClass[] oldClasses=myClasses;
-			final Integer[] oldLevels=myLevels;
-			final CharClass[] myNewClasses=new CharClass[oldClasses.length+1];
-			final Integer[] myNewLevels=new Integer[oldClasses.length+1];
-			for(int c=0;c<oldClasses.length;c++)
+			// calculate length of all classes to see if new one would fit
+			int newLen = aClass.ID().length()+1;
+			for(final CharClass C : myClasses)
+				newLen += C.ID().length()+1;
+			while(newLen > 250)
 			{
-				myNewClasses[c]=oldClasses[c];
-				myNewLevels[c]=oldLevels[c];
+				final int oldLen = newLen;
+				for(int i=0;i<myClasses.length;i++)
+				{
+					if((i<myLevels.length)&&(myLevels[i].intValue() == 0))
+					{
+
+						newLen -= (myClasses[i].ID().length()+1);
+						removeClass(myClasses[i]);
+						break;
+					}
+				}
+				if(oldLen == newLen) // just give up, as aClass would be the only 0 level class
+					return;
 			}
-			myNewClasses[oldClasses.length]=aClass;
-			myNewLevels[oldClasses.length]=Integer.valueOf(0);
-			myClasses=myNewClasses;
-			myLevels=myNewLevels;
+			myClasses=Arrays.copyOf(myClasses, myClasses.length+1);
+			myLevels=Arrays.copyOf(myLevels, myLevels.length+1);
+			myClasses[myClasses.length-1]=aClass;
+			myLevels[myLevels.length-1]=Integer.valueOf(0);
 		}
-		else
+		else // need to move
 		{
 			if(myClasses[myClasses.length-1]==aClass)
 				return;
-			final Integer oldI=Integer.valueOf(level);
-			boolean go=false;
-			final CharClass[] myNewClasses=myClasses.clone();
-			final Integer[] myNewLevels=myLevels.clone();
-			for(int i=0;i<myNewClasses.length-1;i++)
+			final Integer classLvl=Integer.valueOf(level);
+			boolean found=false;
+			for(int i=0;i<myClasses.length-1;i++)
 			{
-				final CharClass C=getMyClass(i);
-				if((C==aClass)||(go))
+				final CharClass C=myClasses[i];
+				if((C==aClass)||(found))
 				{
-					go=true;
-					myNewClasses[i]=myNewClasses[i+1];
-					myNewLevels[i]=myNewLevels[i+1];
+					found=true;
+					myClasses[i]=myClasses[i+1];
+					myLevels[i]=myLevels[i+1];
 				}
 			}
-			myNewClasses[myNewClasses.length-1]=aClass;
-			myNewLevels[myNewClasses.length-1]=oldI;
-			myClasses=myNewClasses;
-			myLevels=myNewLevels;
+			myClasses[myClasses.length-1]=aClass;
+			myLevels[myLevels.length-1]=classLvl;
 		}
 	}
 
@@ -682,7 +656,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public Collection<CharClass> getCharClasses()
+	public Iterable<CharClass> getCharClasses()
 	{
 		return Arrays.asList(myClasses);
 	}
@@ -1106,8 +1080,8 @@ public class DefaultCharStats implements CharStats
 	{
 		final CharStats copyStats=(CharStats)copyOf();
 		getMyRace().affectCharStats(mob,copyStats);
-		for(int c=0;c<numClasses();c++)
-			getMyClass(c).affectCharStats(mob,copyStats);
+		for(final CharClass C : myClasses)
+			C.affectCharStats(mob,copyStats);
 		return copyStats.getStat(statNum);
 	}
 

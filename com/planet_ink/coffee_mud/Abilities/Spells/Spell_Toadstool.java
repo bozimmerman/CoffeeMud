@@ -112,8 +112,7 @@ public class Spell_Toadstool extends Spell
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 				affectableStats.setStat(CharStats.STAT_AGE,newRace.getAgingChart()[oldCat]);
 		}
-		affectableStats.setMyClasses("StdCharClass");
-		affectableStats.setMyLevels("1");
+		affectableStats.setAllClassInfo("StdCharClass", "1");
 	}
 
 	@Override

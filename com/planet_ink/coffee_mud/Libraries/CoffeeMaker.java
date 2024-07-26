@@ -4468,13 +4468,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		str.append(CMLib.xml().convertXMLtoTag("CLASSID",mob.ID()));
 		str.append(CMLib.xml().convertXMLtoTag("NAME",mob.Name()));
 		str.append(CMLib.xml().convertXMLtoTag("PASS",pstats.getPasswordStr()));
-		str.append(CMLib.xml().convertXMLtoTag("CLASS",mob.baseCharStats().getMyClassesStr()));
+		final Pair<String, String> classInfo = mob.baseCharStats().getAllClassInfo();
+		str.append(CMLib.xml().convertXMLtoTag("CLASS",classInfo.first));
 		str.append(CMLib.xml().convertXMLtoTag("RACE",mob.baseCharStats().getMyRace().ID()));
 		str.append(CMLib.xml().convertXMLtoTag("GEND",""+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))));
 		for(final int i : CharStats.CODES.BASECODES())
 			str.append(CMLib.xml().convertXMLtoTag(CMStrings.limit(CharStats.CODES.NAME(i),3),mob.baseCharStats().getStat(i)));
 		str.append(CMLib.xml().convertXMLtoTag("HIT",mob.baseState().getHitPoints()));
-		str.append(CMLib.xml().convertXMLtoTag("LVL",mob.baseCharStats().getMyLevelsStr()));
+		str.append(CMLib.xml().convertXMLtoTag("LVL",classInfo.second));
 		str.append(CMLib.xml().convertXMLtoTag("MANA",mob.baseState().getMana()));
 		str.append(CMLib.xml().convertXMLtoTag("MOVE",mob.baseState().getMovement()));
 		str.append(CMLib.xml().convertXMLtoTag("EXP",mob.getExperience()));
@@ -4560,8 +4561,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 			mob.setName(mblk.getValFromPieces("NAME"));
 			mob.playerStats().setPassword(mblk.getValFromPieces("PASS"));
-			mob.baseCharStats().setMyClasses(mblk.getValFromPieces("CLASS"));
-			mob.baseCharStats().setMyLevels(mblk.getValFromPieces("LVL"));
+			mob.baseCharStats().setAllClassInfo(mblk.getValFromPieces("CLASS"), mblk.getValFromPieces("LVL"));
 			int level=0;
 			for(int i=0;i<mob.baseCharStats().numClasses();i++)
 				level+=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(i));

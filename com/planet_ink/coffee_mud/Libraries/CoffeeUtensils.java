@@ -1343,7 +1343,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				{
 					if(M.baseCharStats().getMyClass(c)==oldC)
 					{
-						M.baseCharStats().setMyClasses(M.baseCharStats().getMyClassesStr());
+						final Pair<String, String> classInfo = M.baseCharStats().getAllClassInfo();
+						M.baseCharStats().setAllClassInfo(classInfo.first, classInfo.second);
 						break;
 					}
 				}
@@ -1351,7 +1352,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				{
 					if(M.charStats().getMyClass(c)==oldC)
 					{
-						M.charStats().setMyClasses(M.charStats().getMyClassesStr());
+						final Pair<String, String> classInfo = M.charStats().getAllClassInfo();
+						M.charStats().setAllClassInfo(classInfo.first, classInfo.second);
 						break;
 					}
 				}
@@ -1363,7 +1365,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				{
 					if(M.baseCharStats().getMyClass(c)==oldC)
 					{
-						M.baseCharStats().setMyClasses(M.baseCharStats().getMyClassesStr());
+						final Pair<String, String> classInfo = M.baseCharStats().getAllClassInfo();
+						M.baseCharStats().setAllClassInfo(classInfo.first, classInfo.second);
 						break;
 					}
 				}
@@ -1371,7 +1374,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				{
 					if(M.charStats().getMyClass(c)==oldC)
 					{
-						M.charStats().setMyClasses(M.charStats().getMyClassesStr());
+						final Pair<String, String> classInfo = M.charStats().getAllClassInfo();
+						M.charStats().setAllClassInfo(classInfo.first, classInfo.second);
 						break;
 					}
 				}

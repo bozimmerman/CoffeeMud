@@ -824,12 +824,11 @@ public class Age extends StdAbility
 				newMan.playerStats().setTheme(theme);
 				try
 				{
-					newMan.baseCharStats().setMyClasses(";" + CMLib.login().promptCharClass(theme, newMan, null).name());
+					newMan.baseCharStats().setAllClassInfo(CMLib.login().promptCharClass(theme, newMan, null).name(),"1");
 				}
 				catch (final IOException e)
 				{
 				}
-				newMan.baseCharStats().setMyLevels(";1");
 				newMan.baseCharStats().getCurrentClass().startCharacter(newMan,false,false);
 				for(int i=0;i<babe.numItems();i++)
 					newMan.moveItemTo(babe.getItem(i));
@@ -843,7 +842,7 @@ public class Age extends StdAbility
 				newMan.resetToMaxState();
 				if(CMLib.flags().isAnimalIntelligence(newMan))
 				{
-					newMan.baseCharStats().setMyClasses(";StdCharClass");
+					newMan.baseCharStats().setAllClassInfo("StdCharClass","1");
 					newMan.recoverCharStats();
 					newMan.recoverPhyStats();
 					newMan.recoverMaxState();

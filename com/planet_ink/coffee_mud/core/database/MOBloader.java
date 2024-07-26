@@ -141,7 +141,7 @@ public class MOBloader
 				final String password=DBConnections.getRes(R,"CMPASS");
 				mob.setName(username);
 				pstats.setPassword(password);
-				stats.setMyClasses(DBConnections.getRes(R,"CMCLAS"));
+				stats.setAllClassInfo(DBConnections.getRes(R,"CMCLAS"), DBConnections.getRes(R,"CMLEVL"));
 				stats.setStat(CharStats.STAT_STRENGTH,CMath.s_int(DBConnections.getRes(R,"CMSTRE")));
 				final Race raceR=CMClass.getRace(DBConnections.getRes(R,"CMRACE"));
 				dbE.registerRaceUsed(raceR);
@@ -153,7 +153,6 @@ public class MOBloader
 				stats.setStat(CharStats.STAT_INTELLIGENCE,CMath.s_int(DBConnections.getRes(R,"CMINTE")));
 				stats.setStat(CharStats.STAT_CHARISMA,CMath.s_int(DBConnections.getRes(R,"CMCHAR")));
 				state.setHitPoints(CMath.s_int(DBConnections.getRes(R,"CMHITP")));
-				stats.setMyLevels(DBConnections.getRes(R,"CMLEVL"));
 				int level=0;
 				for(int i=0;i<mob.baseCharStats().numClasses();i++)
 					level+=stats.getClassLevel(mob.baseCharStats().getMyClass(i));
@@ -459,7 +458,7 @@ public class MOBloader
 		case CHARCLASS:
 		{
 			final CharStats stats = (CharStats)CMClass.getCommon("DefaultCharStats");
-			stats.setMyClasses(queryCMCHARStr(name, "CMCLAS"));
+			stats.setAllClassInfo(queryCMCHARStr(name, "CMCLAS"),"");
 			return stats.getCurrentClass();
 		}
 		case DAMAGE:
@@ -481,8 +480,7 @@ public class MOBloader
 		case LEVEL:
 		{
 			final CharStats stats = (CharStats)CMClass.getCommon("DefaultCharStats");
-			stats.setMyClasses(queryCMCHARStr(name, "CMCLAS"));
-			stats.setMyLevels(queryCMCHARStr(name, "CMLEVL"));
+			stats.setAllClassInfo(queryCMCHARStr(name, "CMCLAS"), queryCMCHARStr(name, "CMLEVL"));
 			int level=0;
 			for(int i=0;i<stats.numClasses();i++)
 				level+=stats.getClassLevel(stats.getMyClass(i));
@@ -763,10 +761,9 @@ public class MOBloader
 		case CHARCLASS:
 		{
 			final CharStats stats = (CharStats)CMClass.getCommon("DefaultCharStats");
-			stats.setMyClasses(queryCMCHARStr(name,"CMCLAS"));
-			stats.setMyLevels(queryCMCHARStr(name,"CMLEVL"));
+			stats.setAllClassInfo(queryCMCHARStr(name,"CMCLAS"), queryCMCHARStr(name,"CMLEVL"));
 			stats.setCurrentClass((CharClass)value);
-			updateCMCHARString(name, "CMCLAS", stats.getMyClassesStr());
+			updateCMCHARString(name, "CMCLAS", stats.getAllClassInfo().first);
 			break;
 		}
 		case DAMAGE:
@@ -849,10 +846,9 @@ public class MOBloader
 		case LEVEL:
 		{
 			final CharStats stats = (CharStats)CMClass.getCommon("DefaultCharStats");
-			stats.setMyClasses(queryCMCHARStr(name,"CMCLAS"));
-			stats.setMyLevels(queryCMCHARStr(name,"CMLEVL"));
+			stats.setAllClassInfo(queryCMCHARStr(name,"CMCLAS"), queryCMCHARStr(name,"CMLEVL"));
 			stats.setClassLevel(stats.getCurrentClass(), CMath.s_int(value.toString()) - stats.combinedSubLevels());
-			updateCMCHARString(name, "CMLEVL", stats.getMyLevelsStr());
+			updateCMCHARString(name, "CMLEVL", stats.getAllClassInfo().second);
 			break;
 		}
 		case MONEY:
@@ -2190,10 +2186,11 @@ public class MOBloader
 
 		final String playerStatsXML=getPlayerStatsXML(mob);
 		final String factionDataXML=CMLib.coffeeMaker().getFactionXML(mob, null).toString();
+		final Pair<String, String> classInfo = mob.baseCharStats().getAllClassInfo();
 		DB.updateWithClobs(
 				 "UPDATE CMCHAR SET  CMPASS='"+pstats.getPasswordStr()+"'"
 				+", CMCHID='"+mob.ID()+"'"
-				+", CMCLAS='"+mob.baseCharStats().getMyClassesStr()+"'"
+				+", CMCLAS=?"
 				+", CMSTRE="+mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)
 				+", CMRACE='"+mob.baseCharStats().getMyRace().ID()+"'"
 				+", CMDEXT="+mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)
@@ -2203,7 +2200,7 @@ public class MOBloader
 				+", CMINTE="+mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)
 				+", CMCHAR="+mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)
 				+", CMHITP="+mob.baseState().getHitPoints()
-				+", CMLEVL='"+mob.baseCharStats().getMyLevelsStr()+"'"
+				+", CMLEVL=?"
 				+", CMMANA="+mob.baseState().getMana()
 				+", CMMOVE="+mob.baseState().getMovement()
 				+", CMALIG=-1"
@@ -2236,6 +2233,8 @@ public class MOBloader
 				+", CMDESC=?"
 				+"  WHERE CMUSERID='"+mob.Name()+"'"
 				,new String[][]{{
+					classInfo.first,
+					classInfo.second,
 					pstats.getPrompt(),
 					pstats.getColorStr(),
 					pstats.getEmail(),
@@ -3011,8 +3010,9 @@ public class MOBloader
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null)
 			return;
+		final Pair<String, String> classInfo = mob.baseCharStats().getAllClassInfo();
 		DB.update("INSERT INTO CMCHAR (CMCHID, CMUSERID, CMPASS, CMCLAS, CMRACE, CMGEND "
-				+") VALUES ('"+mob.ID()+"','"+mob.Name()+"','"+pstats.getPasswordStr()+"','"+mob.baseCharStats().getMyClassesStr()
+				+") VALUES ('"+mob.ID()+"','"+mob.Name()+"','"+pstats.getPasswordStr()+"','"+classInfo.first
 				+"','"+mob.baseCharStats().getMyRace().ID()+"','"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))
 				+"')");
 		final PlayerAccount account = pstats.getAccount();

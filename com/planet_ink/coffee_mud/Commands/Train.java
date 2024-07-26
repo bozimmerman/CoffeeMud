@@ -389,9 +389,10 @@ public class Train extends StdCommand
 		if(trainType==Trainable.CCLASS)
 		{
 			boolean canTeach=false;
+			final CharClass currentC = mob.charStats().getCurrentClass();
 			for(int c=0;c<teacher.charStats().numClasses();c++)
 			{
-				if(teacher.charStats().getMyClass(c).baseClass().equals(mob.charStats().getCurrentClass().baseClass()))
+				if(teacher.charStats().getMyClass(c).baseClass().equals(currentC.baseClass()))
 					canTeach=true;
 			}
 			if((!canTeach)

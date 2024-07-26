@@ -531,8 +531,7 @@ public class Remort extends StdCommand
 										{
 											pStats.setSavable(false); // protect vulnerable weakling from saves so restore works
 											final Session sess = mob.session();
-											mob.baseCharStats().setMyClasses("StdCharClass");
-											mob.baseCharStats().setMyLevels("1");
+											mob.baseCharStats().setAllClassInfo("StdCharClass", "1");
 											mob.basePhyStats().setLevel(1);
 											for(int i=0;i<3;i++)
 											{

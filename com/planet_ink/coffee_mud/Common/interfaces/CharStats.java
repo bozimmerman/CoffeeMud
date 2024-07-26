@@ -325,7 +325,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	 * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass
 	 * @return the Collection of CharClass objects
 	 */
-	public Collection<CharClass> getCharClasses();
+	public Iterable<CharClass> getCharClasses();
 
 	/**
 	 * Returns the number of levels that this mob has in the CharClass
@@ -338,32 +338,19 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	public int getCurrentClassLevel();
 
 	/**
-	 * Creates the enumerated set of character class objects stored here
-	 * from a semicolon list of string names
+	 * Unpacks the set of character class objects stored here
+	 * from a semicolon list of string names and level amounts
 	 * @param classes the semicolon list of character class names
-	 */
-	public void setMyClasses(String classes);
-
-	/**
-	 * Creates the enumerated set of character class levels stored here
-	 * from a semicolon list of levels.
 	 * @param levels the semicolon list of levels
 	 */
-	public void setMyLevels(String levels);
+	public void setAllClassInfo(String classes, String levels);
 
 	/**
 	 * Returns the enumerated set of character class names stored here
-	 * as a semicolon list of string names
-	 * @return the semicolon list of character class names
+	 * as a semicolon list of string names and level amounts.
+	 * @return the semicolon list of character class names and levels respectively
 	 */
-	public String getMyClassesStr();
-
-	/**
-	 * Returns the enumerated set of character class levels stored here
-	 * as a semicolon list of levels.
-	 * @return levels the semicolon list of levels
-	 */
-	public String getMyLevelsStr();
+	public Pair<String,String> getAllClassInfo();
 
 	/**
 	 * Adds the character class to the mob to the given class, automatically
@@ -642,11 +629,11 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	/**
 	 * Based on the gender of the mob, returns M, N, or F, reflective
 	 * of reproductive role.
-	 * 
+	 *
 	 * @return M, N, or F
 	 */
 	public char reproductiveCode();
-	
+
 	/**
 	 * Based on the apparent gender of the mob, return the appropriate word "him", "her", or "it".
 	 * @return the gender-correct pronoun for this mob
@@ -712,7 +699,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	 * @return the gender-correct term for this young mob
 	 */
 	public String boygirl();
-	
+
 	/**
 	 * Based on the apparent gender of the mob, return the appropriate word "Mr.", or "Ms.".
 	 * @return the gender-correct title for this mob

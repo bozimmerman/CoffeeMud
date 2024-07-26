@@ -4157,8 +4157,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 									classLevels.append(";"+L2);
 								}
 							}
-							M.baseCharStats().setMyClasses(charClasses.toString());
-							M.baseCharStats().setMyLevels(classLevels.toString());
+							M.baseCharStats().setAllClassInfo(charClasses.toString(), classLevels.toString());
 						}
 					}
 					else

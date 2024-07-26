@@ -415,8 +415,7 @@ public class GrinderPlayers extends GrinderMobs
 				num++;
 				aff=httpReq.getUrlParameter("CHARCLASS"+num);
 			}
-			M.baseCharStats().setMyClasses(classList.toString());
-			M.baseCharStats().setMyLevels(levelsList.toString());
+			M.baseCharStats().setAllClassInfo(classList.toString(), levelsList.toString());
 			M.basePhyStats().setLevel(totalLevel);
 		}
 		return "";

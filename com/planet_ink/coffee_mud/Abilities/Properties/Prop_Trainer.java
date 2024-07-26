@@ -148,8 +148,7 @@ public class Prop_Trainer extends Prop_StatTrainer
 				mob.addExpertise(allowedExpertises.get(e).ID());
 			if(alsoSkills && (allowedClasses.size()>0))
 			{
-				mob.baseCharStats().setMyClasses("");
-				mob.charStats().setMyClasses("");
+				mob.baseCharStats().setAllClassInfo("StdCharClass", "0");
 				for(int c=0;c<allowedClasses.size();c++)
 				{
 					currC=allowedClasses.get(c);

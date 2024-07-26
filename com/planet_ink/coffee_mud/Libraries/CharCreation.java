@@ -279,10 +279,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((isAvailableCharClass(thisClass)
 			||(isTattooedLike(mob,"CHARCLASS_"+thisClass.ID().toUpperCase()))
 			||(isTattooedLike(mob,"CHARCLASS_ALL")))
-		&&((theme<0)||((thisClass.availabilityCode()&theme)>0))
-		&&((mob==null)||(thisClass.qualifiesForThisClass(mob,true)))
-		&&((mob==null)||(mob.charStats().getClassLevel(thisClass)>=0)||(mob.charStats().getMyClassesStr().length()+thisClass.ID().length()+1<=250)))
+		&&((theme<0)
+			||((thisClass.availabilityCode()&theme)>0))
+		&&((mob==null)
+			||(thisClass.qualifiesForThisClass(mob,true)))
+		&&((mob==null)
+			||(mob.charStats().getClassLevel(thisClass)>=0)
+			||(mob.charStats().getAllClassInfo().first.length()+thisClass.ID().length()+1<=250)))
+		{
 			return true;
+		}
 		return false;
 	}
 
@@ -3469,8 +3475,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult charcrClassStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
-		mob.baseCharStats().setMyClasses("StdCharClass");
-		mob.baseCharStats().setMyLevels("0");
+		mob.baseCharStats().setAllClassInfo("StdCharClass", "0");
 		final List<CharClass> qualClassesV=classQualifies(mob,loginObj.theme);
 		final String listOfClasses = buildQualifyingClassList(mob, qualClassesV, "or");
 		session.println(L("\n\r^!Please choose from the following Classes:"));

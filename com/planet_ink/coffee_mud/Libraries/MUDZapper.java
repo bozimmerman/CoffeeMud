@@ -7869,6 +7869,63 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return true;
 	}
 
+	protected TimeClock dateMaskSubEntryToNextTimeClock(final MOB mob, final CompiledZMaskEntry[] set, final boolean[] not)
+	{
+		final TimeClock C = (TimeClock)CMLib.time().homeClock(mob).copyOf();
+		for(final CompiledZMaskEntry entry : set)
+		{
+			try
+			{
+				switch(entry.maskType())
+				{
+				default:
+					break;
+				}
+			}
+			catch (final NullPointerException n)
+			{
+			}
+		}
+		return C;
+	}
+
+	public TimeClock dateMaskToNextTimeClock(final MOB mob, final CompiledZMask cset)
+	{
+		final boolean[] not = new boolean[] {false};
+		if(cset.entries().length<3)
+		{
+			final TimeClock C = dateMaskSubEntryToNextTimeClock(mob, cset.entries()[0], not);
+			if(!not[0])
+				return C;
+		}
+		else
+		{
+			/*
+			boolean lastValue = false;
+			boolean lastConnectorNot = false;
+			for(int i=0;i<cset.entries().length;i+=2)
+			{
+				boolean subResult =  maskCheckSubEntries(cset.entries()[i],E,actual,mob,item,room,P);
+				if(lastConnectorNot)
+					subResult = !subResult;
+				lastValue = lastValue || subResult;
+				if(i==cset.entries().length-1)
+					return lastValue;
+				final CompiledZMaskEntry entry = cset.entries()[i+1][0];
+				if(entry.maskType()==MaskingLibrary.ZapperKey._OR)
+					lastConnectorNot=true;
+				else
+				if(entry.maskType()==MaskingLibrary.ZapperKey.OR)
+					lastConnectorNot=false;
+				else
+					Log.errOut("Badly compiled zappermask @ "+E.Name()+"@"+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(E)));
+			}
+			return lastValue;
+			*/
+		}
+		return null;
+	}
+
 	@Override
 	public boolean maskCheck(final String text, final PlayerLibrary.ThinPlayer E)
 	{
