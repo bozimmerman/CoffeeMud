@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
@@ -748,37 +749,24 @@ public class DefaultTimeClock implements TimeClock
 		final TimeOfDay todCode=getTODCode();
 		if(howManyHours!=0)
 		{
-			setHourOfDay(getHourOfDay()+howManyHours);
 			lastTicked=System.currentTimeMillis();
-			while(getHourOfDay()>=getHoursInDay())
+			setHourOfDay(getHourOfDay()+howManyHours);
+			if(getHourOfDay()>=getHoursInDay())
 			{
-				setHourOfDay(getHourOfDay()-getHoursInDay());
-				setDayOfMonth(getDayOfMonth()+1);
-				if(getDayOfMonth()>getDaysInMonth())
-				{
-					setDayOfMonth(1);
-					setMonth(getMonth()+1);
-					if(getMonth()>getMonthsInYear())
-					{
-						setMonth(1);
-						setYear(getYear()+1);
-					}
-				}
+				bumpDays(1);
+				final int extraHours = getHourOfDay() - getHoursInDay();
+				setHourOfDay((extraHours % getHoursInDay()));
+				if(extraHours>=getHoursInDay())
+					bumpDays((int)Math.round(Math.floor(extraHours / getHoursInDay())));
 			}
-			while(getHourOfDay()<0)
+			else
+			if(getHourOfDay()<0)
 			{
-				setHourOfDay(getHoursInDay()+getHourOfDay());
-				setDayOfMonth(getDayOfMonth()-1);
-				if(getDayOfMonth()<1)
-				{
-					setDayOfMonth(getDaysInMonth());
-					setMonth(getMonth()-1);
-					if(getMonth()<1)
-					{
-						setMonth(getMonthsInYear());
-						setYear(getYear()-1);
-					}
-				}
+				bumpDays(-1);
+				final int extraHours = Math.abs(getHourOfDay());
+				setHourOfDay(getHoursInDay() - (extraHours % getHoursInDay()));
+				if(extraHours>=getHoursInDay())
+					bumpDays(-(int)Math.round(Math.floor(extraHours / getHoursInDay())));
 			}
 		}
 		if((moveTheSky)&&(getTODCode()!=todCode))
@@ -800,25 +788,59 @@ public class DefaultTimeClock implements TimeClock
 	@Override
 	public void bumpDays(final int num)
 	{
-		tickTock(this.getHoursInDay() * num,false);
+		setDayOfMonth(getDayOfMonth()+num);
+		if(getDayOfMonth()>getDaysInMonth())
+		{
+			bumpMonths(1);
+			final int extraDays = getDayOfMonth() - getDaysInMonth();
+			setDayOfMonth((extraDays % getDaysInMonth()));
+			if(extraDays>=getDaysInMonth())
+				bumpMonths((int)Math.round(Math.floor(extraDays / getDaysInMonth())));
+		}
+		else
+		if(getDayOfMonth()<=0)
+		{
+			bumpMonths(-1);
+			final int extraDays = Math.abs(getDayOfMonth());
+			setDayOfMonth(getDaysInMonth() - (extraDays % getDaysInMonth()));
+			if(extraDays>=getDaysInMonth())
+				bumpMonths(-(int)Math.round(Math.floor(extraDays / getDaysInMonth())));
+		}
 	}
 
 	@Override
 	public void bumpWeeks(final int num)
 	{
-		tickTock(this.getHoursInDay() * this.getDaysInWeek() * num,false);
+		bumpDays(getDaysInWeek() * num);
 	}
 
 	@Override
 	public void bumpMonths(final int num)
 	{
-		tickTock(this.getHoursInDay() * this.getDaysInMonth() * num,false);
+		setMonth(getMonth()+num);
+		if(getMonth()>getMonthsInYear())
+		{
+			bumpYears(1);
+			final int extraMonths = getMonth() - getMonthsInYear();
+			setMonth((extraMonths % getMonthsInYear()));
+			if(extraMonths>=getMonthsInYear())
+				bumpYears((int)Math.round(Math.floor(extraMonths / getMonthsInYear())));
+		}
+		else
+		if(getMonth()<=0)
+		{
+			bumpYears(-1);
+			final int extraMonths = Math.abs(getMonth());
+			setMonth(getMonthsInYear() - (extraMonths % getMonthsInYear()));
+			if(extraMonths>=getMonthsInYear())
+				bumpYears(-(int)Math.round(Math.floor(extraMonths / getMonthsInYear())));
+		}
 	}
 
 	@Override
 	public void bumpYears(final int num)
 	{
-		tickTock(this.getHoursInDay() * this.getDaysInMonth() * this.getMonthsInYear() * num,false);
+		setYear(getYear()+num);
 	}
 
 	@Override
@@ -1032,6 +1054,120 @@ public class DefaultTimeClock implements TimeClock
 		if(timeToTick)
 			tickTock(1);
 		return true;
+	}
+
+	@Override
+	public int get(final TimePeriod period)
+	{
+		switch(period)
+		{
+		case ALLTIME:
+			return 0;
+		case DAY:
+			return this.getDayOfMonth();
+		case HOUR:
+			return this.getHourOfDay();
+		case MONTH:
+			return this.getMonth();
+		case SEASON:
+			return this.getSeasonCode().ordinal();
+		case WEEK:
+			return this.getWeekOfYear();
+		case YEAR:
+			return this.getYear();
+		}
+		return -1;
+	}
+
+	@Override
+	public void set(final TimePeriod period, final int value)
+	{
+		switch(period)
+		{
+		case ALLTIME:
+			return;
+		case DAY:
+			setDayOfMonth(value);
+			break;
+		case HOUR:
+			setHourOfDay(value);
+			break;
+		case MONTH:
+			setMonth(value);
+			break;
+		case SEASON:
+			if(value != getSeasonCode().ordinal())
+				setNext(period, value);
+			break;
+		case WEEK:
+			if(value != getWeekOfYear())
+				setNext(period, value);
+			break;
+		case YEAR:
+			setYear(value);
+			break;
+		}
+	}
+
+	@Override
+	public void setNext(final TimePeriod period, final int value)
+	{
+		switch(period)
+		{
+		case ALLTIME:
+			return;
+		case DAY:
+			if(value <= getDayOfMonth())
+				bump(TimePeriod.MONTH, 1);
+			setDayOfMonth(value);
+			break;
+		case HOUR:
+			if(value <= getHourOfDay())
+				bump(TimePeriod.DAY, 1);
+			setHourOfDay(value);
+			break;
+		case MONTH:
+			if(value <= getMonth())
+				bump(TimePeriod.YEAR, 1);
+			setMonth(value);
+			break;
+		case SEASON:
+			if(this.getSeasonCode().ordinal()==value)
+				bump(TimePeriod.YEAR, 1);
+			else
+			if((value>=0)&&(value<Season.values().length))
+			{
+				for(int i=0;i<getMonthsInYear();i++)
+				{
+					if(this.getSeasonCode().ordinal()!=value)
+						bump(TimePeriod.MONTH, 1);
+					else
+						break;
+				}
+			}
+			break;
+		case WEEK:
+			if(getWeekOfYear()==value)
+				bump(TimePeriod.YEAR, 1);
+			else
+			{
+				final int numWeeksInYear = (getDaysInYear() / getWeekNames().length);
+				if((value>=0)&&(value<=numWeeksInYear))
+				{
+					for(int i=0;i<=numWeeksInYear;i++)
+					{
+						if(getWeekOfYear() != value)
+							bump(TimePeriod.WEEK, 1);
+						else
+							break;
+					}
+				}
+			}
+			break;
+		case YEAR:
+			setYear(getYear());
+			break;
+		}
 	}
 
 	@Override

@@ -652,6 +652,34 @@ public interface TimeClock extends Tickable, CMCommon
 	public int getHoursPer(final TimePeriod period);
 
 	/**
+	 * Returns the value of the given period for this
+	 * time clock object.
+	 *
+	 * @param period the hours, months, etc.
+	 * @return the value for this calendar
+	 */
+	public int get(final TimePeriod period);
+
+	/**
+	 * Sets the value of the given period for this
+	 * time clock object.
+	 *
+	 * @param period the hours, months, etc.
+	 * @param value the value for this calendar
+	 */
+	public void set(final TimePeriod period, int value);
+
+	/**
+	 * Sets the value of the given period for this
+	 * time clock object by bumping the clock until
+	 * it is the next of the given period.
+	 *
+	 * @param period the hours, months, etc.
+	 * @param value the value for this calendar
+	 */
+	public void setNext(final TimePeriod period, int value);
+
+	/**
 	 * Different time periods.
 	 * @author Bo Zimmerman
 	 */

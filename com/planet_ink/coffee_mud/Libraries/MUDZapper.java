@@ -7878,6 +7878,32 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			{
 				switch(entry.maskType())
 				{
+				case _HOUR:
+				case HOUR:
+				case _SEASON:
+				case SEASON:
+				case _WEEK:
+				case WEEK:
+				case _WEEKOFYEAR:
+				case WEEKOFYEAR:
+				case _YEAR:
+				case YEAR:
+				case _MONTH:
+				case MONTH:
+				case _BIRTHDAY:
+				case BIRTHDAY:
+				case _BIRTHDAYOFYEAR:
+				case BIRTHDAYOFYEAR:
+				case _BIRTHSEASON:
+				case BIRTHSEASON:
+				case _BIRTHWEEK:
+				case BIRTHWEEK:
+				case _BIRTHWEEKOFYEAR:
+				case BIRTHWEEKOFYEAR:
+				case _BIRTHYEAR:
+				case BIRTHYEAR:
+				case _BIRTHMONTH:
+				case BIRTHMONTH:
 				default:
 					break;
 				}

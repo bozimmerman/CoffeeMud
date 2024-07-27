@@ -1152,19 +1152,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			report.append("3. Day Hour: "+TC.getDawnToDusk()[TimeClock.TimeOfDay.DAY.ordinal()]+"\n\r");
 			report.append("4. Dusk Hour: "+TC.getDawnToDusk()[TimeClock.TimeOfDay.DUSK.ordinal()]+"\n\r");
 			report.append("5. Night Hour: "+TC.getDawnToDusk()[TimeClock.TimeOfDay.NIGHT.ordinal()]+"\n\r");
-			report.append("6. Weekdays: "+CMParms.toListString(TC.getWeekNames())+"\n\r");
-			report.append("7. Months: "+CMParms.toListString(TC.getMonthNames())+"\n\r");
-			report.append("8. Year Title(s): "+CMParms.toListString(TC.getYearNames()));
+			report.append("6. Days/Month: "+TC.getDaysInMonth()+"\n\r");
+			report.append("7. Weekdays: "+CMParms.toListString(TC.getWeekNames())+"\n\r");
+			report.append("8. Months: "+CMParms.toListString(TC.getMonthNames())+"\n\r");
+			report.append("9. Year Title(s): "+CMParms.toListString(TC.getYearNames()));
 			mob.tell(report.toString());
 			newName=mob.session().prompt(L("Enter one to change:"),"");
 			if(newName.length()==0)
 				break;
 			final int which=CMath.s_int(newName);
 
-			if((which<0)||(which>8))
+			if((which<0)||(which>9))
 				mob.tell(L("Invalid: @x1",""+which));
 			else
-			if(which<=5)
+			if(which<=6)
 			{
 				newName="";
 				final String newNum=mob.session().prompt(L("Enter a new number:"),"");
@@ -1207,6 +1208,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					else
 						TC.getDawnToDusk()[TimeClock.TimeOfDay.NIGHT.ordinal()]=val;
 					break;
+				case 6:
+					TC.setDaysInMonth(val);
+					break;
 				}
 			}
 			else
@@ -1218,13 +1222,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				else
 				switch(which)
 				{
-				case 6:
+				case 7:
 					TC.setDaysInWeek(CMParms.toStringArray(CMParms.parseCommas(newNum,true)));
 					break;
-				case 7:
+				case 8:
 					TC.setMonthsInYear(CMParms.toStringArray(CMParms.parseCommas(newNum,true)));
 					break;
-				case 8:
+				case 9:
 					TC.setYearNames(CMParms.toStringArray(CMParms.parseCommas(newNum,true)));
 					break;
 				}
