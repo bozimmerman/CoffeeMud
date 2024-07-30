@@ -52,7 +52,10 @@ public class Time extends StdCommand
 		final Room room=mob.location();
 		if(room==null)
 			return false;
-		mob.tell(room.getArea().getTimeObj().timeDescription(mob,room));
+		if((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("global")))
+			mob.tell(CMLib.time().globalClock().timeDescription(mob,room));
+		else
+			mob.tell(room.getArea().getTimeObj().timeDescription(mob,room));
 		if((mob.playerStats()!=null)&&(mob.playerStats().getBirthday()!=null))
 		{
 			final TimeClock C=CMLib.time().localClock(mob.getStartRoom());

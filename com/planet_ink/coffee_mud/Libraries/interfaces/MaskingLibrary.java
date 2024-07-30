@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.MUDZapper;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -240,6 +241,19 @@ public interface MaskingLibrary extends CMLibrary
 	 * @return the list of mask keys
 	 */
 	public String[] parseMaskKeys(final String maskStr);
+
+	/**
+	 * Given a compiled zappermask with at least one aspect that checks
+	 * the current mud date, and this will return a timeclock for the next
+	 * mud-time that that aspect of the mask will become true.  You must
+	 * also send a mob to get the correct home clock, and preferably a
+	 * player in case a birthdate is involved.
+	 *
+	 * @param mob the mob whose clock to use
+	 * @param cset the compiled zapper mask to peruse
+	 * @return null, or the next timeclock that will make the mask true.
+	 */
+	public TimeClock dateMaskToNextTimeClock(final MOB mob, final CompiledZMask cset);
 
 	/**
 	 * The set of mask types.  Each of these reflects some stat or

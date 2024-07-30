@@ -962,6 +962,12 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
+	public String toTimeString()
+	{
+		return getMonth()+"/"+getDayOfMonth()+"/"+getYear()+" "+getHourOfDay()+"h ";
+	}
+
+	@Override
 	public TimeClock fromTimePeriodCodeString(String period)
 	{
 		TimeClock C = null;
@@ -1075,6 +1081,53 @@ public class DefaultTimeClock implements TimeClock
 			return this.getWeekOfYear();
 		case YEAR:
 			return this.getYear();
+		}
+		return -1;
+	}
+
+	@Override
+	public int getMax(final TimePeriod period)
+	{
+		switch(period)
+		{
+		case ALLTIME:
+			return -1;
+		case DAY:
+			return this.getDaysInMonth();
+		case HOUR:
+			return this.getHoursInDay()-1;
+		case MONTH:
+			return this.getMonthsInYear();
+		case SEASON:
+			return 3;
+		case WEEK:
+			return this.getDaysInYear() / this.getDaysInWeek();
+		case YEAR:
+			return Integer.MAX_VALUE/2;
+		}
+		return -1;
+	}
+
+
+	@Override
+	public int getMin(final TimePeriod period)
+	{
+		switch(period)
+		{
+		case ALLTIME:
+			return -1;
+		case DAY:
+			return 1;
+		case HOUR:
+			return 0;
+		case MONTH:
+			return 1;
+		case SEASON:
+			return 0;
+		case WEEK:
+			return 0;
+		case YEAR:
+			return 0;
 		}
 		return -1;
 	}

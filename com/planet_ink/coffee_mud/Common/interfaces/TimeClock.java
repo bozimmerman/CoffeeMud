@@ -643,6 +643,12 @@ public interface TimeClock extends Tickable, CMCommon
 	public TimeClock fromTimePeriodCodeString(final String period);
 
 	/**
+	 * Returns this timeclock in m/d/y h format.
+	 * @return this timeclock in m/d/y h format.
+	 */
+	public String toTimeString();
+
+	/**
 	 * Given a time period, returns the number of mud hours
 	 * contained in each, based on this clock.
 	 *
@@ -659,6 +665,24 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @return the value for this calendar
 	 */
 	public int get(final TimePeriod period);
+
+	/**
+	 * Returns the maximum value of the given period for this
+	 * time clock object.
+	 *
+	 * @param period hours, months, days, etc
+	 * @return the last hour, months, etc.
+	 */
+	public int getMax(final TimePeriod period);
+
+	/**
+	 * Returns the first value of the given period for this
+	 * time clock object.
+	 *
+	 * @param period hours, months, days, etc
+	 * @return the first hour, months, etc.
+	 */
+	public int getMin(final TimePeriod period);
 
 	/**
 	 * Sets the value of the given period for this

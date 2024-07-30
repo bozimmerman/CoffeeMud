@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.Align;
 import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.MPContext;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -3140,6 +3141,27 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				return true;
 		}
 		return false;
+	}
+
+	protected final void addDateValues(final Object o, final List<Integer> vals, final int max)
+	{
+		if(o instanceof Integer)
+			vals.add((Integer)o);
+		else
+		if(o instanceof Pair)
+		{
+			@SuppressWarnings("unchecked")
+			final Pair<Integer,Integer> p=(Pair<Integer,Integer>)o;
+			vals.add(Integer.valueOf(p.second.intValue() * p.first.intValue()));
+		}
+		else
+		if(o instanceof Triad)
+		{
+			@SuppressWarnings("unchecked")
+			final Triad<Integer,Integer,String> p=(Triad<Integer,Integer,String>)o;
+			for(int i=p.first.intValue();i<=max;i+=p.second.intValue())
+				vals.add(Integer.valueOf(i));
+		}
 	}
 
 	@Override
@@ -7869,44 +7891,212 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return true;
 	}
 
+	protected TimePeriod toTimePeriod(final ZapperKey key)
+	{
+		switch(key)
+		{
+		case HOUR:
+		case _HOUR:
+			return TimePeriod.HOUR;
+		case YEAR:
+		case _YEAR:
+			return TimePeriod.YEAR;
+		case MONTH:
+		case _MONTH:
+			return TimePeriod.MONTH;
+		case SEASON:
+		case _SEASON:
+			return TimePeriod.SEASON;
+		case WEEK/*ofmonth*/:
+		case _WEEK/*ofmonth*/:
+		case WEEKOFYEAR:
+		case _WEEKOFYEAR:
+			return TimePeriod.WEEK;
+		case DAY:
+		case _DAY:
+			return TimePeriod.DAY;
+		case BIRTHDAY:
+		case _BIRTHDAY:
+			return TimePeriod.DAY;
+		case BIRTHDAYOFYEAR:
+		case _BIRTHDAYOFYEAR:
+			return TimePeriod.YEAR;
+		case BIRTHSEASON:
+		case _BIRTHSEASON:
+			return TimePeriod.SEASON;
+		case BIRTHWEEK:
+		case _BIRTHWEEK:
+		case BIRTHWEEKOFYEAR:
+		case _BIRTHWEEKOFYEAR:
+			return TimePeriod.WEEK;
+		case BIRTHYEAR:
+		case _BIRTHYEAR:
+			return TimePeriod.YEAR;
+		case BIRTHMONTH:
+		case _BIRTHMONTH:
+			return TimePeriod.MONTH;
+		default:
+			return null;
+		}
+	}
+
+	protected boolean useBirthTimePeriod(final ZapperKey key)
+	{
+		switch(key)
+		{
+		case BIRTHDAY:
+		case _BIRTHDAY:
+		case BIRTHDAYOFYEAR:
+		case _BIRTHDAYOFYEAR:
+		case BIRTHSEASON:
+		case _BIRTHSEASON:
+		case BIRTHWEEK:
+		case _BIRTHWEEK:
+		case BIRTHWEEKOFYEAR:
+		case _BIRTHWEEKOFYEAR:
+		case BIRTHYEAR:
+		case _BIRTHYEAR:
+		case BIRTHMONTH:
+		case _BIRTHMONTH:
+			return true;
+		default:
+			return false;
+		}
+	}
+
 	protected TimeClock dateMaskSubEntryToNextTimeClock(final MOB mob, final CompiledZMaskEntry[] set, final boolean[] not)
 	{
-		final TimeClock C = (TimeClock)CMLib.time().homeClock(mob).copyOf();
+		final CompiledZMaskEntry[] sset = Arrays.copyOf(set, set.length);
+		Arrays.sort(sset, new Comparator<CompiledZMaskEntry>()
+		{
+			@Override
+			public int compare(final CompiledZMaskEntry o1, final CompiledZMaskEntry o2)
+			{
+				final TimePeriod p1 = toTimePeriod(o1.maskType());
+				final TimePeriod p2 = toTimePeriod(o2.maskType());
+				if(p1.getIncrement()<p2.getIncrement())
+					return -1;
+				if(p1.getIncrement()>p2.getIncrement())
+					return 1;
+				return 0;
+			}
+		});
+		final TimeClock nowC = CMLib.time().homeClock(mob);
+		final TimeClock C = (TimeClock)nowC.copyOf();
+		final PlayerStats pStats = mob.playerStats();
+		final List<CompiledZMaskEntry> bdEntries = new ArrayList<CompiledZMaskEntry>(3);
 		for(final CompiledZMaskEntry entry : set)
+		{
+			if(useBirthTimePeriod(entry.maskType()))
+			{
+				if(pStats == null)
+					return null;
+				bdEntries.add(entry);
+				break;
+			}
+		}
+		if((bdEntries.size()>0) && (!maskCheck(bdEntries.toArray(new CompiledZMaskEntry[bdEntries.size()]), mob, true)))
+			return null;
+		final Map<TimePeriod, List<Integer>> okVals = new HashMap<TimePeriod, List<Integer>>();
+		for(final CompiledZMaskEntry entry : sset)
 		{
 			try
 			{
-				switch(entry.maskType())
+				final TimePeriod period = toTimePeriod(entry.maskType());
+				if((period == null)||useBirthTimePeriod(entry.maskType()))
+					continue;
+				List<Integer> okV = okVals.get(period);
+				if(okV == null)
 				{
-				case _HOUR:
-				case HOUR:
-				case _SEASON:
-				case SEASON:
-				case _WEEK:
-				case WEEK:
-				case _WEEKOFYEAR:
-				case WEEKOFYEAR:
-				case _YEAR:
-				case YEAR:
-				case _MONTH:
-				case MONTH:
-				case _BIRTHDAY:
-				case BIRTHDAY:
-				case _BIRTHDAYOFYEAR:
-				case BIRTHDAYOFYEAR:
-				case _BIRTHSEASON:
-				case BIRTHSEASON:
-				case _BIRTHWEEK:
-				case BIRTHWEEK:
-				case _BIRTHWEEKOFYEAR:
-				case BIRTHWEEKOFYEAR:
-				case _BIRTHYEAR:
-				case BIRTHYEAR:
-				case _BIRTHMONTH:
-				case BIRTHMONTH:
-				default:
-					break;
+					okV = new ArrayList<Integer>();
+					okVals.put(period, okV);
 				}
+				final int max = C.getMax(period);
+				for(final Object o : entry.parms())
+					addDateValues(o, okV, max);
+			}
+			catch (final NullPointerException n)
+			{
+			}
+		}
+		final Set<TimePeriod> donePeriods = new HashSet<TimePeriod>();
+		for(final CompiledZMaskEntry entry : sset)
+		{
+			try
+			{
+				final TimePeriod period = toTimePeriod(entry.maskType());
+				if((period == null)||useBirthTimePeriod(entry.maskType()))
+					continue;
+				final List<Integer> okV = okVals.get(period);
+				if(okV == null) // if null, anything will do!
+					continue;
+				final int max = C.getMax(period);
+				boolean useNot = !entry.maskType().name().startsWith("_");
+				useNot = (not == null || (!not[0])) ? useNot : !useNot;
+				Integer perI = Integer.valueOf(C.get(period));
+				final Integer oldI = perI;
+				if(useNot)
+				{
+					int bump=0;
+					for(int i=0;i<=max;i++) // time for brute force
+					{
+						if(!okV.contains(perI))
+							break;
+						else
+						{
+							C.bump(period, 1);
+							bump++;
+							perI = Integer.valueOf(C.get(period));
+						}
+					}
+				}
+				else
+				if(!okV.contains(perI))
+				{
+					int bump = Integer.MAX_VALUE;
+					for(final Integer I : okV)
+					{
+						final int bmp;
+						if((I.intValue()>perI.intValue())||(period == TimePeriod.YEAR))
+							bmp = I.intValue()-perI.intValue();
+						else
+						{
+							if(period == TimePeriod.HOUR)
+								bmp = 1+(max - perI.intValue()) + I.intValue();
+							else
+								bmp = (max - perI.intValue()) + I.intValue();
+						}
+						if(bmp < bump)
+						{
+							bump = bmp;
+							if(bump < 2)
+								break;
+						}
+					}
+					if(bump != Integer.MAX_VALUE)
+						C.bump(period, bump);
+				}
+				if(nowC.get(period) != C.get(period))
+				{
+					for(final TimePeriod P : TimePeriod.values())
+					{
+						if((P.getIncrement() < period.getIncrement())
+						&&(!donePeriods.contains(P)))
+						{
+							switch(P)
+							{
+							case MONTH:
+							case DAY:
+							case HOUR:
+								C.set(P, C.getMin(P));
+								break;
+							default:
+								break;
+							}
+						}
+					}
+				}
+				donePeriods.add(period);
 			}
 			catch (final NullPointerException n)
 			{
@@ -7915,26 +8105,23 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return C;
 	}
 
+	@Override
 	public TimeClock dateMaskToNextTimeClock(final MOB mob, final CompiledZMask cset)
 	{
 		final boolean[] not = new boolean[] {false};
 		if(cset.entries().length<3)
-		{
-			final TimeClock C = dateMaskSubEntryToNextTimeClock(mob, cset.entries()[0], not);
-			if(!not[0])
-				return C;
-		}
+			return dateMaskSubEntryToNextTimeClock(mob, cset.entries()[0], not);
 		else
 		{
-			/*
-			boolean lastValue = false;
+			TimeClock lastValue = null;
 			boolean lastConnectorNot = false;
 			for(int i=0;i<cset.entries().length;i+=2)
 			{
-				boolean subResult =  maskCheckSubEntries(cset.entries()[i],E,actual,mob,item,room,P);
-				if(lastConnectorNot)
-					subResult = !subResult;
-				lastValue = lastValue || subResult;
+				final TimeClock C = dateMaskSubEntryToNextTimeClock(mob, cset.entries()[i], new boolean[] { lastConnectorNot });
+				if(C == null)
+					continue;
+				if((lastValue == null)||(lastValue.isBefore(C)))
+					lastValue = C;
 				if(i==cset.entries().length-1)
 					return lastValue;
 				final CompiledZMaskEntry entry = cset.entries()[i+1][0];
@@ -7943,13 +8130,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				else
 				if(entry.maskType()==MaskingLibrary.ZapperKey.OR)
 					lastConnectorNot=false;
-				else
-					Log.errOut("Badly compiled zappermask @ "+E.Name()+"@"+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(E)));
 			}
 			return lastValue;
-			*/
 		}
-		return null;
 	}
 
 	@Override
