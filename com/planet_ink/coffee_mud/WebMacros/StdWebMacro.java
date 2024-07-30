@@ -17,6 +17,8 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.Color;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -247,7 +249,6 @@ public class StdWebMacro implements WebMacro
 			x=0;
 			int lastSpace=0;
 			boolean priorFont = false;
-			//TODO: limit should adjust or lastspace should -- something is wrong RIGHT HERE!
 			while((x>=0)&&(x<s.length()))
 			{
 				count++;
@@ -363,6 +364,41 @@ public class StdWebMacro implements WebMacro
 							code=CMLib.color().getBackgroundHtmlTag(c);
 						}
 						else
+						if(((c==ColorLibrary.COLORCODE_FANSI256)||(c==ColorLibrary.COLORCODE_BANSI256))
+						&&(x<(s.length()-4)))
+						{
+							final StringBuilder finalHex = new StringBuilder("");
+							int num=s.charAt(x+2)-'0';
+							if((num>=0)&&(num<=5))
+							{
+								num = 256+(int)Math.round(CMath.div(num, 5) * 256.0);
+								finalHex.append(Integer.toHexString(num).toUpperCase().substring(1));
+								num=s.charAt(x+3)-'0';
+								if((num>=0)&&(num<=5))
+								{
+									num = 256+(int)Math.round(CMath.div(num, 5) * 256.0);
+									finalHex.append(Integer.toHexString(num).toUpperCase().substring(1));
+									num=s.charAt(x+4)-'0';
+									if((num>=0)&&(num<=5))
+									{
+										num = 256+(int)Math.round(CMath.div(num, 5) * 256.0);
+										finalHex.append(Integer.toHexString(num).toUpperCase().substring(1));
+										s.delete(x,x+3);
+									}
+								}
+							}
+							if(finalHex.length()==6)
+							{
+								final boolean isFg = (c==ColorLibrary.COLORCODE_FANSI256);
+								if(isFg)
+									code = "<FONT COLOR=\"#" +finalHex.toString()+"\"";
+								else
+									code = "<FONT STYLE=\"background-color: #" +finalHex.toString()+";\"";
+							}
+							else
+								code=null;
+						}
+						else
 							code=lookup[c];
 						if(code!=null)
 						{
@@ -370,7 +406,10 @@ public class StdWebMacro implements WebMacro
 							if(code.startsWith("<FONT"))
 							{
 								if(priorFont)
+								{
 									s.insert(x,"</FONT>"+code+">");
+									x+=7;
+								}
 								else
 									s.insert(x,code+">");
 								priorFont = true;
