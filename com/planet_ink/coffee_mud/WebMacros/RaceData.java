@@ -1289,7 +1289,7 @@ public class RaceData extends StdWebMacro
 						for(final Item I : R.outfit(null))
 						{
 							if(I!=null)
-								str.append(I.Name()+", ");
+								str.append(super.helpHelp(I.Name())+", ");
 						}
 					}
 				}

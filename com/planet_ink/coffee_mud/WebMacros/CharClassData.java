@@ -1224,7 +1224,7 @@ public class CharClassData extends StdWebMacro
 						for(final Item I : items)
 						{
 							if(I!=null)
-								str.append(I.name()+", ");
+								str.append(super.helpHelp(I.name())+", ");
 						}
 					}
 				}
