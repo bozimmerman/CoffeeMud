@@ -44,6 +44,7 @@ public class Dragon extends StdMOB implements MOBPossessor
 	protected int breatheDown=4;
 	protected int swallowDown=5;
 	protected int digestDown=4;
+	protected int dmgBonus=0;
 
 	protected int birthColor=0;
 	protected int birthAge=0;
@@ -630,7 +631,7 @@ public class Dragon extends StdMOB implements MOBPossessor
 										   CMMsg.MSG_OK_ACTION,
 										   L("<S-NAME> digest(s) <T-NAMESELF>!!"));
 				myStomachR.send(this,digestMsg);
-				int damage=((int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),5)));
+				int damage=dmgBonus + ((int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),5)));
 				if(damage<(TastyMorsel.phyStats().level()+6))
 					damage=TastyMorsel.curState().getHitPoints()+1;
 				if(digestMsg.value()!=0)
@@ -638,6 +639,10 @@ public class Dragon extends StdMOB implements MOBPossessor
 				CMLib.combat().postDamage(this,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,L("The stomach acid <DAMAGE> <T-NAME>!"));
 			}
 		}
+		if(morselCount == 0)
+			dmgBonus = 0;
+		else
+			dmgBonus++;
 		return true;
 	}
 

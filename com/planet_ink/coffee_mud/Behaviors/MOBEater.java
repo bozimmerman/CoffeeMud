@@ -60,6 +60,7 @@ public class MOBEater extends ActiveTicker implements MOBPossessor, ItemCollecti
 	protected MOB	lastKnownEaterM		= null;
 	protected int	chanceToEat			= 5;
 	protected int	pctAcidHp			= 10;
+	protected int	dmgBonus			= 0;
 
 	@Override
 	public String accountForYourself()
@@ -369,7 +370,7 @@ public class MOBEater extends ActiveTicker implements MOBPossessor, ItemCollecti
 													 L("<S-NAME> digest(s) <T-NAMESELF>!!"));
 				// no OKaffectS, since the dragon is not in his own stomach.
 				stomachR.send(mob,digestMsg);
-				int damage=(int)Math.round(tastyMorselM.curState().getHitPoints() * CMath.div(pctAcidHp, 100));
+				int damage=dmgBonus + (int)Math.round(tastyMorselM.curState().getHitPoints() * CMath.div(pctAcidHp, 100));
 				if(damage<2)
 					damage=2;
 				if(digestMsg.value()!=0)
@@ -378,6 +379,10 @@ public class MOBEater extends ActiveTicker implements MOBPossessor, ItemCollecti
 						L("The stomach acid <DAMAGE> <T-NAME>!"));
 			}
 		}
+		if(morselCount == 0)
+			dmgBonus = 0;
+		else
+			dmgBonus++;
 		return true;
 	}
 

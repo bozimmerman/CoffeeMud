@@ -199,6 +199,7 @@ public class Spell_BigMouth extends Spell implements MOBPossessor, ItemCollectio
 		super.executeMsg(myHost,msg);
 	}
 
+	protected int  dmgBonus = 0;
 	protected Room myStomachR = null;
 	protected Room lastKnownRoom=null;
 	protected Room lastKnownLocation()
@@ -387,6 +388,10 @@ public class Spell_BigMouth extends Spell implements MOBPossessor, ItemCollectio
 								L("The stomach acid <DAMAGE> <T-NAME>!"));
 					}
 				}
+				if(stomachR.numInhabitants() == 0)
+					dmgBonus = 0;
+				else
+					dmgBonus++;
 			}
 			for (int x=0;x<stomachR.numInhabitants();x++)
 			{
