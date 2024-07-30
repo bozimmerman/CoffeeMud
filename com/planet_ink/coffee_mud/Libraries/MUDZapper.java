@@ -8034,10 +8034,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				boolean useNot = !entry.maskType().name().startsWith("_");
 				useNot = (not == null || (!not[0])) ? useNot : !useNot;
 				Integer perI = Integer.valueOf(C.get(period));
-				final Integer oldI = perI;
 				if(useNot)
 				{
-					int bump=0;
 					for(int i=0;i<=max;i++) // time for brute force
 					{
 						if(!okV.contains(perI))
@@ -8045,7 +8043,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						else
 						{
 							C.bump(period, 1);
-							bump++;
 							perI = Integer.valueOf(C.get(period));
 						}
 					}
