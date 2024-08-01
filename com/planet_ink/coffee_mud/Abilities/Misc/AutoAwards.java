@@ -300,7 +300,7 @@ public class AutoAwards extends StdAbility
 	protected void assignMyEntries(final Physical P)
 	{
 		final Map<TimePeriod,List<AutoProperties>> newMap = new HashMap<TimePeriod,List<AutoProperties>>();
-		final HashMap<CompiledZMask,Boolean> tried = new HashMap<CompiledZMask,Boolean>();
+		final Map<CompiledZMask,Boolean> tried = new HashMap<CompiledZMask,Boolean>();
 		for(final Enumeration<AutoProperties> ap = CMLib.awards().getAutoProperties(); ap.hasMoreElements();)
 		{
 			final AutoProperties a = ap.nextElement();
@@ -309,9 +309,12 @@ public class AutoAwards extends StdAbility
 				b=Boolean.TRUE;
 			else
 			{
-				b = tried.get(a.getPlayerCMask());
+				b = tried.get(a.getPlayerCMask()); // for this specific test run, only do a mask on target once
 				if(b == null)
+				{
 					b = Boolean.valueOf(CMLib.masking().maskCheck(a.getPlayerCMask(), P, true));
+					tried.put(a.getPlayerCMask(), b);
+				}
 			}
 			if(b.booleanValue())
 			{

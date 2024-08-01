@@ -249,11 +249,24 @@ public interface MaskingLibrary extends CMLibrary
 	 * also send a mob to get the correct home clock, and preferably a
 	 * player in case a birthdate is involved.
 	 *
-	 * @param mob the mob whose clock to use
+	 * @param P the mob or physical whose clock to use
 	 * @param cset the compiled zapper mask to peruse
 	 * @return null, or the next timeclock that will make the mask true.
 	 */
-	public TimeClock dateMaskToNextTimeClock(final MOB mob, final CompiledZMask cset);
+	public TimeClock dateMaskToNextTimeClock(final Physical P, final CompiledZMask cset);
+
+	/**
+	 * Given a compiled zappermask with at least one aspect that checks
+	 * the current mud date, and this will return a timeclock for the next
+	 * mud-time that that aspect of the mask will become false.  You must
+	 * also send a mob to get the correct home clock, and preferably a
+	 * player in case a birthdate is involved.
+	 *
+	 * @param P the mob or physical whose clock to use
+	 * @param cset the compiled zapper mask to peruse
+	 * @return null, or the expiring timeclock that will make the mask false.
+	 */
+	public TimeClock dateMaskToExpirationTimeClock(final Physical P, final CompiledZMask cset);
 
 	/**
 	 * The set of mask types.  Each of these reflects some stat or

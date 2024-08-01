@@ -5110,6 +5110,246 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return false;
 	}
 
+	protected boolean maskCheckDateEntries(final CompiledZMaskEntry[] set, final TimeClock C)
+	{
+		for(final CompiledZMaskEntry entry : set)
+		{
+			try
+			{
+				switch(entry.maskType())
+				{
+				case HOUR: // +HOUR
+					{
+						final int num = C.getHourOfDay();
+						for(final Object o : entry.parms())
+						{
+							if(isDateMatch(o,num))
+								return false;
+						}
+					}
+					break;
+				case _HOUR: // -HOUR
+					{
+						boolean found=false;
+						final int num = C.getHourOfDay();
+						for(final Object o : entry.parms())
+						{
+							if(isDateMatch(o,num))
+							{
+								found = true;
+								break;
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case BIRTHYEAR: // +BIRTHYEAR
+				case YEAR: // +YEAR
+					{
+						final int num = C.getYear();
+						for(final Object o : entry.parms())
+						{
+							if(isDateMatch(o,num))
+								return false;
+						}
+					}
+					break;
+				case _BIRTHYEAR: // -BIRTHYEAR
+				case _YEAR: // -YEAR
+					{
+						boolean found=false;
+						final int num = C.getYear();
+						for(final Object o : entry.parms())
+						{
+							if(isDateMatch(o,num))
+							{
+								found = true;
+								break;
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case BIRTHWEEK: // +BIRTHWEEK
+				case WEEK: // +WEEK
+					{
+						final int num = C.getWeekOfMonth();
+						for(final Object o : entry.parms())
+						{
+							if(isDateMatch(o,num))
+								return false;
+						}
+					}
+					break;
+				case _BIRTHWEEK: // -BIRTHWEEK
+				case _WEEK: // -WEEK
+					{
+						boolean found=false;
+						final int num = C.getWeekOfMonth();
+						for(final Object o : entry.parms())
+						{
+							if(isDateMatch(o,num))
+							{
+								found = true;
+								break;
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case BIRTHSEASON: // +birthseason
+				case SEASON: // +season
+					{
+						final int num = C.getSeasonCode().ordinal();
+						for(final Object o : entry.parms())
+						{
+							if(isDateMatch(o,num))
+								return false;
+						}
+					}
+					break;
+				case _BIRTHSEASON: // -birthseason
+				case _SEASON: // -season
+					{
+						boolean found=false;
+						final int num = C.getSeasonCode().ordinal();
+						for(final Object o : entry.parms())
+						{
+							if(isDateMatch(o,num))
+							{
+								found = true;
+								break;
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case BIRTHMONTH:
+				case MONTH:
+					{
+						final int num = C.getMonth();
+						for(final Object o : entry.parms())
+						{
+							if(isDateMatch(o,num))
+								return false;
+						}
+					}
+					break;
+				case _BIRTHMONTH:
+				case _MONTH:
+					{
+						boolean found=false;
+						final int num = C.getMonth();
+						for(final Object o : entry.parms())
+						{
+							if(isDateMatch(o,num))
+							{
+								found = true;
+								break;
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case BIRTHWEEKOFYEAR:
+				case WEEKOFYEAR:
+					{
+						final int num = C.getWeekOfYear();
+						for(final Object o : entry.parms())
+						{
+							if(isDateMatch(o,num))
+								return false;
+						}
+					}
+					break;
+				case _BIRTHWEEKOFYEAR:
+				case _WEEKOFYEAR:
+					{
+						boolean found=false;
+						final int num = C.getWeekOfYear();
+						for(final Object o : entry.parms())
+						{
+							if(isDateMatch(o,num))
+							{
+								found = true;
+								break;
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case BIRTHDAY:
+				case DAY:
+					{
+						final int num = C.getDayOfMonth();
+						for(final Object o : entry.parms())
+						{
+							if(isDateMatch(o,num))
+								return false;
+						}
+					}
+					break;
+				case _BIRTHDAY:
+				case _DAY:
+					{
+						boolean found=false;
+						final int num = C.getDayOfMonth();
+						for(final Object o : entry.parms())
+						{
+							if(isDateMatch(o,num))
+							{
+								found = true;
+								break;
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case BIRTHDAYOFYEAR:
+				case DAYOFYEAR:
+					{
+						final int num = C.getDayOfYear();
+						for(final Object o : entry.parms())
+						{
+							if(isDateMatch(o,num))
+								return false;
+						}
+					}
+					break;
+				case _BIRTHDAYOFYEAR:
+				case _DAYOFYEAR:
+					{
+						boolean found=false;
+						final int num = C.getDayOfYear();
+						for(final Object o : entry.parms())
+						{
+							if(isDateMatch(o,num))
+							{
+								found = true;
+								break;
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				default:
+					break;
+				}
+			}
+			catch(final Exception e)
+			{}
+		}
+		return true;
+	}
+
 	protected boolean maskCheckSubEntries(final CompiledZMaskEntry[] set, final Environmental E, final boolean actual,
 										  final MOB mob, final Item item, final Room room, final Physical P)
 	{
@@ -7964,7 +8204,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		}
 	}
 
-	protected TimeClock dateMaskSubEntryToNextTimeClock(final MOB mob, final CompiledZMaskEntry[] set, final boolean[] not)
+	protected TimeClock dateMaskSubEntryToNextTimeClock(final Physical pP, final CompiledZMaskEntry[] set, final boolean[] not)
 	{
 		final CompiledZMaskEntry[] sset = Arrays.copyOf(set, set.length);
 		Arrays.sort(sset, new Comparator<CompiledZMaskEntry>()
@@ -7981,22 +8221,23 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				return 0;
 			}
 		});
-		final TimeClock nowC = CMLib.time().homeClock(mob);
+		final TimeClock nowC = CMLib.time().homeClock(pP);
 		final TimeClock C = (TimeClock)nowC.copyOf();
-		final PlayerStats pStats = mob.playerStats();
-		final List<CompiledZMaskEntry> bdEntries = new ArrayList<CompiledZMaskEntry>(3);
-		for(final CompiledZMaskEntry entry : set)
+		final Set<TimePeriod> donePeriods = new HashSet<TimePeriod>();
+		if((pP instanceof MOB)&&(((MOB)pP).playerStats()!=null))
 		{
-			if(useBirthTimePeriod(entry.maskType()))
+			final List<CompiledZMaskEntry> bdEntries = new ArrayList<CompiledZMaskEntry>(3);
+			for(final CompiledZMaskEntry entry : set)
 			{
-				if(pStats == null)
-					return null;
-				bdEntries.add(entry);
-				break;
+				if(useBirthTimePeriod(entry.maskType()))
+				{
+					bdEntries.add(entry);
+					donePeriods.add(this.toTimePeriod(entry.maskType()));
+				}
 			}
+			if((bdEntries.size()>0) && (!maskCheck(bdEntries.toArray(new CompiledZMaskEntry[bdEntries.size()]), pP, true)))
+				return null;
 		}
-		if((bdEntries.size()>0) && (!maskCheck(bdEntries.toArray(new CompiledZMaskEntry[bdEntries.size()]), mob, true)))
-			return null;
 		final Map<TimePeriod, List<Integer>> okVals = new HashMap<TimePeriod, List<Integer>>();
 		for(final CompiledZMaskEntry entry : sset)
 		{
@@ -8019,7 +8260,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			{
 			}
 		}
-		final Set<TimePeriod> donePeriods = new HashSet<TimePeriod>();
 		for(final CompiledZMaskEntry entry : sset)
 		{
 			try
@@ -8103,24 +8343,70 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	}
 
 	@Override
-	public TimeClock dateMaskToNextTimeClock(final MOB mob, final CompiledZMask cset)
+	public TimeClock dateMaskToExpirationTimeClock(final Physical P, final CompiledZMask cset)
+	{
+		final Pair<CompiledZMaskEntry[], TimeClock> clock = dateMasksToNextTimeClock(P, cset);
+		if((clock == null)||(clock.second==null))
+			return null;
+		TimePeriod lowestPeriodC = null;
+		for(int i=0;i<clock.first.length;i++)
+		{
+			final CompiledZMaskEntry entry = clock.first[i];
+			final TimePeriod period = toTimePeriod(entry.maskType());
+			if((period == null)||(period==TimePeriod.ALLTIME))
+				continue;
+			if((lowestPeriodC == null)
+			||(lowestPeriodC.getIncrement()>period.getIncrement()))
+				lowestPeriodC = period;
+		}
+
+		if(lowestPeriodC == null)
+			return clock.second;
+		final TimeClock C = (TimeClock)clock.second.copyOf();
+		final int max = C.getMax(lowestPeriodC);
+		for(int i=0;i<max;i++)
+		{
+			C.bump(lowestPeriodC, 1);
+			if(!maskCheckDateEntries(clock.first, C))
+				return C;
+		}
+		return clock.second;
+	}
+
+	@Override
+	public TimeClock dateMaskToNextTimeClock(final Physical P, final CompiledZMask cset)
+	{
+		final Pair<CompiledZMaskEntry[], TimeClock> clock = dateMasksToNextTimeClock(P, cset);
+		if((clock == null)||(clock.second==null))
+			return null;
+		return clock.second;
+	}
+
+	protected Pair<CompiledZMaskEntry[], TimeClock> dateMasksToNextTimeClock(final Physical P, final CompiledZMask cset)
 	{
 		final boolean[] not = new boolean[] {false};
 		if(cset.entries().length<3)
-			return dateMaskSubEntryToNextTimeClock(mob, cset.entries()[0], not);
+		{
+			final CompiledZMaskEntry[] e = cset.entries()[0];
+			return new Pair<CompiledZMaskEntry[], TimeClock>(e, dateMaskSubEntryToNextTimeClock(P, e, not));
+		}
 		else
 		{
 			TimeClock lastValue = null;
+			CompiledZMaskEntry[] lastE = null;
 			boolean lastConnectorNot = false;
 			for(int i=0;i<cset.entries().length;i+=2)
 			{
-				final TimeClock C = dateMaskSubEntryToNextTimeClock(mob, cset.entries()[i], new boolean[] { lastConnectorNot });
+				final TimeClock C = dateMaskSubEntryToNextTimeClock(P, cset.entries()[i], new boolean[] { lastConnectorNot });
 				if(C == null)
 					continue;
 				if((lastValue == null)||(lastValue.isBefore(C)))
+				{
 					lastValue = C;
+					lastE = cset.entries()[i];
+				}
 				if(i==cset.entries().length-1)
-					return lastValue;
+					return new Pair<CompiledZMaskEntry[], TimeClock>(lastE, lastValue);
 				final CompiledZMaskEntry entry = cset.entries()[i+1][0];
 				if(entry.maskType()==MaskingLibrary.ZapperKey._OR)
 					lastConnectorNot=true;
@@ -8128,7 +8414,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				if(entry.maskType()==MaskingLibrary.ZapperKey.OR)
 					lastConnectorNot=false;
 			}
-			return lastValue;
+			return new Pair<CompiledZMaskEntry[], TimeClock>(lastE, lastValue);
 		}
 	}
 

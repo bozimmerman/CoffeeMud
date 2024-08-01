@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.Common.interfaces;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -718,6 +720,7 @@ public interface TimeClock extends Tickable, CMCommon
 		ALLTIME(0)
 		;
 		private final long increment;
+		private static TimePeriod[] reversed = null;
 
 		private TimePeriod(final long increment)
 		{
@@ -727,6 +730,16 @@ public interface TimeClock extends Tickable, CMCommon
 		public long getIncrement()
 		{
 			return increment;
+		}
+
+		public static TimePeriod[] reversed()
+		{
+			if(reversed == null)
+			{
+				reversed = Arrays.copyOf(values(),values().length);
+				Collections.reverse(Arrays.asList(reversed));
+			}
+			return reversed;
 		}
 
 		public long nextPeriod()

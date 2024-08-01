@@ -8,10 +8,13 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary.AutoProperties;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMaskEntry;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -79,7 +82,7 @@ public class Thief_Runecasting extends ThiefSkill
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_OK_SELF;
+		return Ability.QUALITY_INDIFFERENT;
 	}
 
 	private static final String[] triggerStrings =I(new String[] {"RUNECASTING"});
@@ -89,20 +92,185 @@ public class Thief_Runecasting extends ThiefSkill
 		return triggerStrings;
 	}
 
-	protected int tickUp = 0;
-	protected MOB forM = null;
+	protected static String[] runeStarts = new String[]
+	{
+		"The runes indicate...",
+		"Your fate has been cast...",
+		"And the runes show your future..."
+	};
+
+	protected static String[] runeFails = new String[]
+	{
+		"Astral clouds are blocking your aura.",
+		"Your future is unbound. Tread carefully.",
+		"Your path is clear.",
+		"The fates` gaze is elsewhere."
+	};
+
+	protected List<String>	reports	= null;
+	protected int			tickUp	= 0;
+	protected MOB			forM	= null;
+
+	protected Filterer<AutoProperties> runePlayerFilter = new Filterer<AutoProperties>()
+	{
+		@Override
+		public boolean passesFilter(final AutoProperties obj)
+		{
+			boolean foundOne = false;
+			for(final CompiledZMaskEntry[] entrySet : obj.getPlayerCMask().entries())
+			{
+				if(entrySet == null)
+					continue;
+				for(final CompiledZMaskEntry entry : entrySet)
+				{
+					switch(entry.maskType())
+					{
+					case ANYCLASS:
+					case ANYCLASSLEVEL:
+					case BASECLASS:
+					case MAXCLASSLEVEL:
+					case _ANYCLASS:
+					case _ANYCLASSLEVEL:
+					case _BASECLASS:
+					case _MAXCLASSLEVEL:
+						return false;
+					case BIRTHDAY:
+					case BIRTHDAYOFYEAR:
+					case BIRTHMONTH:
+					case BIRTHSEASON:
+					case BIRTHWEEK:
+					case BIRTHWEEKOFYEAR:
+					case BIRTHYEAR:
+					case _BIRTHDAY:
+					case _BIRTHDAYOFYEAR:
+					case _BIRTHMONTH:
+					case _BIRTHSEASON:
+					case _BIRTHWEEK:
+					case _BIRTHWEEKOFYEAR:
+					case _BIRTHYEAR:
+						return false;
+					case ALIGNMENT:
+					case FACTION:
+					case TATTOO:
+					case _ALIGNMENT:
+					case _FACTION:
+					case _TATTOO:
+						return false;
+					case IF:
+					case NPC:
+					case OR:
+					case PLAYER:
+					case PORT:
+					case SECURITY:
+					case SUBOP:
+					case SYSOP:
+					case _IF:
+					case _NPC:
+					case _OR:
+					case _PLAYER:
+					case _PORT:
+					case _SECURITY:
+					case _SUBOP:
+					case _SYSOP:
+						// neutral
+						break;
+					case RACE:
+					case RACECAT:
+					case _RACE:
+					case _RACECAT:
+						return false;
+					default:
+						foundOne=true;
+						break;
+					}
+				}
+			}
+			return foundOne;
+		}
+	};
+
+	public String[] getStartPhrases()
+	{
+		return runeStarts;
+	}
+
+	public String[] getFailPhrases()
+	{
+		return runeFails;
+	}
+
+	protected static final String[] negativeAdjectives = new String[]
+	{
+		"Dark", "Vile", "Bad", "Evil"
+	};
+
+	protected static final String[] positiveAdjectives = new String[]
+	{
+		"Light", "Blessed", "Good", "Positive"
+	};
+
+	protected String getFTAdjective(final boolean positive)
+	{
+		if(positive)
+			return positiveAdjectives[CMLib.dice().roll(1, positiveAdjectives.length, -1)];
+		else
+			return negativeAdjectives[CMLib.dice().roll(1, negativeAdjectives.length, -1)];
+	}
+
+	protected static final String[] negativeVerb = new String[]
+	{
+		"avoid","stay clear","be wary of","deny"
+	};
+
+	protected static final String[] positiveVerb = new String[]
+	{
+		"embrace","accept","welcome","endure","do not fear"
+	};
+
+	protected static final String[] neutralVerb = new String[]
+	{
+		"be mindful of","anticipate wildness of"
+	};
+
+	protected String getFTVerb(final boolean positive)
+	{
+		String str;
+		if(CMLib.dice().rollPercentage()<10)
+			str=neutralVerb[CMLib.dice().roll(1, neutralVerb.length, -1)];
+		else
+		if(positive)
+			str=positiveVerb[CMLib.dice().roll(1, positiveVerb.length, -1)];
+		else
+			str=negativeVerb[CMLib.dice().roll(1, negativeVerb.length, -1)];
+		return CMStrings.capitalizeAndLower(str);
+	}
+
+	protected String getFTTime(final boolean isNow, final TimeClock nextC, final TimeClock nowC, final TimeClock expireC)
+	{
+		if(isNow)
+			return L("for the next @x1 hours",""+expireC.deriveMudHoursAfter(nowC));
+		return L("on "+nextC.getShortTimeDescription());
+	}
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if(affected == invoker())
+		final MOB iM = invoker();
+		if(affected == iM)
 		{
+			if((iM==null)
+			||(iM.isInCombat())
+			||(!CMLib.flags().isInTheGame(iM, true)))
+			{
+				unInvoke();
+				return false;
+			}
 			if((forM == null)
 			||(!CMLib.flags().isInTheGame(forM, true))
-			||(invoker()==null)
-			||(forM.location() != invoker().location()))
+			||(iM==null)
+			||(forM.location() != iM.location()))
 			{
 				invoker().tell(L("I guess @x1 didn't really care.",forM.name()));
 				unInvoke();
@@ -111,33 +279,228 @@ public class Thief_Runecasting extends ThiefSkill
 			tickUp++;
 			if(tickUp >= 3)
 			{
-
+				if((this.reports == null)||(this.reports.size()==0))
+				{
+					CMLib.commands().postSay(invoker(), forM, L("That is your future, <T-NAME>."));
+					unInvoke();
+					return false;
+				}
+				CMLib.commands().postSay(invoker(), forM, this.reports.remove(0));
 			}
 			else
 			if(tickUp >= 2)
 			{
-
+				final int numToReturn = 1 + getXTIMELevel(iM);
+				final AutoProperties[] APs = Thief_Runecasting.getApplicableAward(forM, runePlayerFilter, numToReturn);
+				if((APs == null) || (APs.length==0))
+				{
+					final int x =CMLib.dice().roll(1, getFailPhrases().length, 0);
+					CMLib.commands().postSay(invoker(), forM, L(getFailPhrases()[x]));
+					unInvoke();
+					return false;
+				}
+				else
+				{
+					final TimeClock nowC = CMLib.time().homeClock(forM);
+					this.reports = new XVector<String>();
+					for(final AutoProperties P : APs)
+					{
+						final TimeClock C = CMLib.masking().dateMaskToNextTimeClock(forM, P.getDateCMask());
+						final TimeClock expireC = CMLib.masking().dateMaskToExpirationTimeClock(forM, P.getDateCMask());
+						final boolean isNow = CMLib.masking().maskCheck(P.getDateCMask(), forM, true);
+						for(final Pair<String, String> ps : P.getProps())
+						{
+							final Ability A = CMClass.getAbility(ps.first);
+							if(A != null)
+							{
+								final MOB M = CMClass.getFactoryMOB();
+								M.recoverCharStats();
+								M.recoverMaxState();
+								M.recoverPhyStats();
+								final CharStats cStats = (CharStats)M.charStats().copyOf();
+								final CharState cState = (CharState)M.curState().copyOf();
+								final PhyStats pStats = (PhyStats)M.phyStats().copyOf();
+								A.setAffectedOne(M);
+								A.setMiscText(ps.second);
+								A.affectCharState(M, M.curState());
+								A.affectCharStats(M, M.charStats());
+								A.affectPhyStats(M, M.phyStats());
+								final String format = "@x1 @x2. @x3 @x4 @x5";
+								for(final int cd : CharStats.CODES.ALLCODES())
+								{
+									final int diff = M.charStats().getStat(cd) - cStats.getStat(cd);
+									if(diff != 0)
+									{
+										final boolean positive = diff > 0;
+										final String codeName;
+										if(CMLib.dice().rollPercentage()<(10*this.getXLEVELLevel(iM)))
+											codeName = L(CharStats.CODES.DESC(cd).toLowerCase())+"("+Math.abs(diff)+")";
+										else
+											codeName = L(CharStats.CODES.DESC(cd).toLowerCase());
+										final String report = L(format,L(getFTAdjective(positive)),L(A.name().toLowerCase()),
+															L(getFTVerb(positive)), codeName, getFTTime(isNow,C,nowC,expireC));
+										this.reports.add(report);
+									}
+								}
+								for(int cd=0; cd<CharState.STAT_NUMSTATS;cd++)
+								{
+									final int diff = M.curState().getStat(cd) - cState.getStat(cd);
+									if(diff != 0)
+									{
+										final boolean positive = diff > 0;
+										final String codeName;
+										if(CMLib.dice().rollPercentage()<(10*this.getXLEVELLevel(iM)))
+											codeName = L(CharState.STAT_DESCS[cd]).toLowerCase()+"("+Math.abs(diff)+")";
+										else
+											codeName = L(CharState.STAT_DESCS[cd]).toLowerCase();
+										final String report = L(format,L(getFTAdjective(positive)),L(A.name().toLowerCase()),
+												L(getFTVerb(positive)), codeName, getFTTime(isNow,C,nowC,expireC) );
+										this.reports.add(report);
+									}
+								}
+								for(int cd=0; cd<PhyStats.NUM_STATS;cd++)
+								{
+									final int diff = M.phyStats().getStat(cd) - pStats.getStat(cd);
+									if(diff != 0)
+									{
+										boolean positive = diff > 0;
+										if(cd == PhyStats.STAT_ARMOR)
+											positive = !positive;
+										if(cd == PhyStats.STAT_DISPOSITION)
+										{
+											for(int i=0;i<PhyStats.IS_DESCS.length;i++)
+												if(CMath.isSet(pStats.getStat(cd), i))
+												{
+													final String codeName=PhyStats.IS_VERBS[i].toLowerCase();
+													final String report = L(format,L(getFTAdjective(positive)),L(A.name().toLowerCase()),
+															L(getFTVerb(positive)), codeName, getFTTime(isNow,C,nowC,expireC) );
+													this.reports.add(report);
+												}
+										}
+										else
+										if(cd == PhyStats.STAT_SENSES)
+										{
+											for(int i=0;i<PhyStats.CAN_SEE_DESCS.length;i++)
+												if(CMath.isSet(pStats.getStat(cd), i))
+												{
+													final String codeName=PhyStats.CAN_SEE_DESCS[i].toLowerCase();
+													final String report = L(format,L(getFTAdjective(positive)),L(A.name().toLowerCase()),
+															L(getFTVerb(positive)), codeName, getFTTime(isNow,C,nowC,expireC) );
+													this.reports.add(report);
+												}
+										}
+										else
+										{
+											final String codeName;
+											if(CMLib.dice().rollPercentage()<(10*this.getXLEVELLevel(iM)))
+												codeName =L(PhyStats.STAT_DESCS[cd].toLowerCase())+"("+Math.abs(diff)+")";
+											else
+												codeName = L(PhyStats.STAT_DESCS[cd].toLowerCase());
+											final String report = L(format,L(getFTAdjective(positive)),L(A.name().toLowerCase()),
+													L(getFTVerb(positive)), codeName, getFTTime(isNow,C,nowC,expireC) );
+											this.reports.add(report);
+										}
+									}
+								}
+							}
+						}
+					}
+					if(reports.size()==0)
+					{
+						final int x =CMLib.dice().roll(1, getFailPhrases().length, 0);
+						CMLib.commands().postSay(invoker(), forM, L(getFailPhrases()[x]));
+						unInvoke();
+						return false;
+					}
+					final int x =CMLib.dice().roll(1, getStartPhrases().length, 0);
+					CMLib.commands().postSay(invoker(), forM, L(getStartPhrases()[x]));
+				}
 			}
 			else
 			{
-
+				CMLib.commands().postSay(invoker(), forM, L("I see..."));
 			}
 		}
 		return true;
 	}
 
-	protected AutoProperties getApplicableAward(final MOB mob, final Filterer<AutoProperties> filter)
+	@Override
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
+		super.executeMsg(host,msg);
+		if((msg.source() == affected)
+		&&(affected == invoker())
+		&&(msg.sourceMinor()==CMMsg.TYP_ENTER)
+			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+			||(msg.sourceMinor()==CMMsg.TYP_QUIT)
+			||(msg.sourceMinor()==CMMsg.TYP_RECALL))
+			unInvoke();
+	}
+
+	protected static AutoProperties[] getApplicableAward(final MOB mob, final Filterer<AutoProperties> playerFilter,
+														 final int num)
+	{
+		final Map<CompiledZMask,Boolean> playerTried = new HashMap<CompiledZMask,Boolean>();
+		final Map<AutoProperties, TimeClock> clocks = new HashMap<AutoProperties, TimeClock>();
+		final Set<AutoProperties> awards = new TreeSet<AutoProperties>(new Comparator<AutoProperties>() {
+			@Override
+			public int compare(final AutoProperties o1, final AutoProperties o2)
+			{
+				final TimeClock c1 = clocks.get(o1);
+				final TimeClock c2 = clocks.get(o2);
+				if(c1.isEqual(c2))
+					return 0;
+				if(c1.isBefore(c2))
+					return -1;
+				return 1;
+			}
+		});
 		for(final Enumeration<AutoProperties> p = CMLib.awards().getAutoProperties();p.hasMoreElements();)
 		{
 			final AutoProperties P = p.nextElement();
-			if((filter.passesFilter(P))
-			&&(CMLib.masking().maskCheck(P.getPlayerCMask(), mob, true)))
+			if((P.getProps() != null)
+			&&(P.getProps().length>0))
 			{
-				//TODO:
+				Boolean playerCheck;
+				if((P.getPlayerCMask() == null) || (P.getPlayerCMask().empty()))
+					playerCheck=Boolean.TRUE;
+				else
+				{
+					playerCheck = playerTried.get(P.getPlayerCMask()); // for this specific test run, only do a mask on target once
+					if(playerCheck == null)
+					{
+						playerCheck = Boolean.valueOf(CMLib.masking().maskCheck(P.getPlayerCMask(), mob, true));
+						playerTried.put(P.getPlayerCMask(), playerCheck);
+					}
+				}
+				if(playerCheck.booleanValue()
+				&& (playerFilter.passesFilter(P)))
+				{
+					final TimeClock C = CMLib.masking().dateMaskToNextTimeClock(mob, P.getDateCMask());
+					if(C == null)
+						continue;
+					clocks.put(P, C);
+					awards.add(P);
+				}
 			}
 		}
-		return null;
+		int ct = 0;
+		final List<AutoProperties> winner = new ArrayList<AutoProperties>();
+		for(final Iterator<AutoProperties> pi = awards.iterator(); pi.hasNext();)
+		{
+			final AutoProperties P = pi.next();
+			if(ct<num)
+			{
+				winner.add(P);
+				ct++;
+			}
+			else
+			if(CMLib.dice().rollPercentage()<20)
+				winner.set(CMLib.dice().roll(1, winner.size(), -1), P);
+		}
+		if(winner.size()==0)
+			return null;
+		return winner.toArray(new AutoProperties[winner.size()]);
 	}
 
 	@Override
@@ -161,7 +524,7 @@ public class Thief_Runecasting extends ThiefSkill
 		{
 			final CMMsg msg=CMClass.getMsg(mob, target,this,CMMsg.MSG_THIEF_ACT,
 					auto?L("<T-NAME> has a runecasting vision!"):
-					L("<S-NAME> cast(s) <S-HIS-HER> rune cubes for <T-NAME>..."));
+					L("<S-NAME> cast(s) rune cubes for <T-NAMESELF>..."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -174,7 +537,7 @@ public class Thief_Runecasting extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob, target,L("<S-NAME> cast(s) rune cubes for <T-NAMESELF, but is confused."));
+			beneficialVisualFizzle(mob, target,L("<S-NAME> cast(s) rune cubes for <T-NAMESELF>, but <S-IS-ARE> confused."));
 		return success;
 	}
 }

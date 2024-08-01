@@ -153,7 +153,7 @@ public class Gypsy extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Staff",0,true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Hide",true);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Runecasting",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Runecasting",true);
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Kidnapping",true);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_ShardUse",true);

@@ -90,11 +90,13 @@ public class DefaultTimeClock implements TimeClock
 	protected int		day				= 1;
 	protected int		time			= 0;
 	protected int		hoursInDay		= 6;
+	protected Season	season			= Season.FALL;
 
 	protected int		weekOfMonth		= 0; // these are derived
 	protected int		weekOfYear		= 0; // these are derived
 	protected int		dayOfYear		= 1; // these are derived
 	protected int		daysInYear		= 8 * 20; // these are derived
+	protected int		monthsInSeason	= 3; // these are derived
 
 	protected String[] monthsInYear={
 		 "the 1st month","the 2nd month","the 3rd month","the 4th month",
@@ -153,6 +155,7 @@ public class DefaultTimeClock implements TimeClock
 			monthsInYear = months;
 			if((getDaysInMonth()>0)&&(months.length>0))
 				daysInYear = months.length * getDaysInMonth();
+			monthsInSeason = (int)Math.round(Math.floor(CMath.div(getMonthsInYear(),4.0)));
 		}
 	}
 
@@ -375,14 +378,7 @@ public class DefaultTimeClock implements TimeClock
 	@Override
 	public Season getSeasonCode()
 	{
-		final int div=getMonthsInSeason();
-		if(month<div)
-			return TimeClock.Season.WINTER;
-		if(month<(div*2))
-			return TimeClock.Season.SPRING;
-		if(month<(div*3))
-			return TimeClock.Season.SUMMER;
-		return TimeClock.Season.FALL;
+		return season;
 	}
 
 	@Override
@@ -395,6 +391,17 @@ public class DefaultTimeClock implements TimeClock
 	public void setMonth(final int m)
 	{
 		month=m;
+		final int div=getMonthsInSeason();
+		if(month<div)
+			season=TimeClock.Season.WINTER;
+		else
+		if(month<(div*2))
+			season=TimeClock.Season.SPRING;
+		else
+		if(month<(div*3))
+			season=TimeClock.Season.SUMMER;
+		else
+			season=TimeClock.Season.FALL;
 	}
 
 	@Override
