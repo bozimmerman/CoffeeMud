@@ -46,7 +46,7 @@ for(e=CMLib.libraries(Packages.com.planet_ink.coffee_mud.core.CMLib.Library.PLAY
 	{
 		var prideStat = prideStats.values()[pi];
 		var statName = prideStat.name().replace('_',' ').toLowerCase();
-		var winners = playerLib.gePrevioustTopPridePlayers(MONTHLY, prideStat);
+		var winners = playerLib.getPreviousTopPridePlayers(MONTHLY, prideStat);
 		var accountsDone = [];
 		var numDone = 0;
 		for(var wi=0;wi<winners.size();wi++)
