@@ -1527,6 +1527,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final List<Varidentifier> list=new XVector<Varidentifier>();
 		while((x>=0)&&(x<str.length()-1))
 		{
+			if((x>0)&&(str.charAt(x-1)=='\\'))
+			{
+				x=str.indexOf('$',x+1);
+				continue;
+			}
 			final Varidentifier var = new Varidentifier();
 			var.outerStart=x;
 			x++;
@@ -3273,12 +3278,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			final Object asPreviouslyDefined = defined.get((defPrefix+tagName).toUpperCase());
 			if(asPreviouslyDefined instanceof String)
-				return strFilter(E,ignoreStats,defPrefix,(String)asPreviouslyDefined,piece, defined);
+				return CMStrings.replaceAll(strFilter(E,ignoreStats,defPrefix,(String)asPreviouslyDefined,piece, defined),"\\$","$");
 		}
 
 		final String asParm = piece.getParmValue(tagName);
 		if(asParm != null)
-			return strFilter(E,ignoreStats,defPrefix,asParm,piece, defined);
+			return CMStrings.replaceAll(strFilter(E,ignoreStats,defPrefix,asParm,piece, defined),"\\$","$");
 
 		final Object asDefined = defined.get(tagName);
 		if(asDefined instanceof String)
@@ -3290,7 +3295,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			final CMFile file = new CMFile(contentload,null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
 			if(file.exists() && file.canRead())
-				return strFilter(E, ignoreStats, defPrefix,file.text().toString(), piece, defined);
+				return CMStrings.replaceAll(strFilter(E, ignoreStats, defPrefix,file.text().toString(), piece, defined),"\\$","$");
 			else
 				throw new CMException("Bad content_load filename in '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 		}
@@ -3355,7 +3360,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final String finalFinalValue=finalValue.toString().trim();
 		if(processDefined!=null)
 			defineReward(E,ignoreStats,defPrefix,piece.getParmValue("DEFINE"),processDefined,finalFinalValue,defined,true);
-		return finalFinalValue;
+		return CMStrings.replaceAll(finalFinalValue,"\\$","$");
 	}
 
 	@Override
@@ -7535,6 +7540,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			else
 			if(V.var.length()==0)
 				continue;
+			else
+			if(V.var.equals("$"))
+				val="$";
 			else
 				val = defined.get(V.var.toUpperCase().trim());
 			if(val instanceof XMLTag)

@@ -36,6 +36,7 @@
  34. New example script playerBackups.js for making player backups as cmare xml.
  35. New example script topMonthlyRpt.js for making TOP player reports every month.
  36. New example script topMonthlyAwards.js for giving TOP player awards every month.
+ 37. New thief skills: Runecasting
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

@@ -2342,6 +2342,8 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public boolean activate()
 	{
+		if(!super.activate())
+			return false;
 		if(serviceClient==null)
 		{
 			name="THClans"+Thread.currentThread().getThreadGroup().getName().charAt(0);

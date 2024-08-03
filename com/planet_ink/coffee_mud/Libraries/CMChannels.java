@@ -1062,6 +1062,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	@Override
 	public boolean activate()
 	{
+		if(!super.activate())
+			return false;
 		if(serviceClient==null)
 		{
 			name="THChannels"+Thread.currentThread().getThreadGroup().getName().charAt(0);

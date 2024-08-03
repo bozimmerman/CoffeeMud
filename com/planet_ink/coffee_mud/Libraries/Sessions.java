@@ -282,6 +282,8 @@ public class Sessions extends StdLibrary implements SessionsList
 	@Override
 	public boolean activate()
 	{
+		if(!super.activate())
+			return false;
 		nextSweepTime = System.currentTimeMillis()+MudHost.TIME_UTILTHREAD_SLEEP;
 		if(serviceClient==null)
 		{

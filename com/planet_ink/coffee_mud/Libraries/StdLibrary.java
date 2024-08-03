@@ -88,6 +88,7 @@ public class StdLibrary implements CMLibrary, Tickable
 	@Override
 	public boolean activate()
 	{
+		name=ID()+Thread.currentThread().getThreadGroup().getName().charAt(0);
 		return true;
 	}
 

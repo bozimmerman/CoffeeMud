@@ -201,12 +201,12 @@ public class Thief_Runecasting extends ThiefSkill
 
 	protected static final String[] negativeAdjectives = new String[]
 	{
-		"Dark", "Vile", "Bad", "Evil"
+		"dark", "vile", "bad", "evil"
 	};
 
 	protected static final String[] positiveAdjectives = new String[]
 	{
-		"Light", "Blessed", "Good", "Positive"
+		"light", "blessed", "good", "positive"
 	};
 
 	protected String getFTAdjective(final boolean positive)
@@ -245,11 +245,54 @@ public class Thief_Runecasting extends ThiefSkill
 		return CMStrings.capitalizeAndLower(str);
 	}
 
-	protected String getFTTime(final boolean isNow, final TimeClock nextC, final TimeClock nowC, final TimeClock expireC)
+	protected String getBestTimeDenom(final long hours, final TimeClock C)
 	{
-		if(isNow)
-			return L("for the next @x1 hours",""+expireC.deriveMudHoursAfter(nowC));
-		return L("on "+nextC.getShortTimeDescription());
+		if(hours < C.getHoursInDay()*2)
+			return L("@x1 hours",""+hours);
+		else
+		if(((hours < C.getHoursInDay()*C.getDaysInWeek()*2)
+				&&(C.getDaysInWeek()>1))
+		||((hours < C.getHoursInDay()*C.getDaysInMonth()*2)
+				&&(C.getDaysInWeek()<=1)))
+		{
+			final long days = hours / C.getHoursInDay();
+			return L("@x1 days",""+days);
+		}
+		else
+		if((hours < C.getHoursInDay()*C.getDaysInMonth()*2)&&(C.getDaysInWeek()>1))
+		{
+			final long weeks = hours / (C.getHoursInDay() * C.getDaysInWeek());
+			return L("@x1 weeks",""+weeks);
+		}
+		else
+		if((hours < C.getHoursInDay()*C.getDaysInMonth()*C.getMonthsInYear()*2))
+		{
+			final long months = hours / (C.getHoursInDay() * C.getDaysInMonth());
+			return L("@x1 months",""+months);
+		}
+		else
+		{
+			final long years = hours / (C.getHoursInDay() * C.getDaysInMonth()*C.getMonthsInYear());
+			return L("@x1 years",""+years);
+		}
+	}
+
+	protected String getFTTime(final TimeClock nextC, final TimeClock nowC, final TimeClock expireC)
+	{
+		if((invoker() != null)
+		&&(invoker() != affected))
+		{
+			final Ability A = invoker().fetchAbility(ID());
+			if((A!=null)&&(!A.proficiencyCheck(invoker(), 0, false)))
+			{
+				if(expireC != null)
+					return L("for the next @x1",""+getBestTimeDenom(expireC.deriveMudHoursAfter(nowC), expireC));
+				return L("within the next @x1",""+getBestTimeDenom(nextC.deriveMudHoursAfter(nowC), nextC));
+			}
+		}
+		if(expireC != null)
+			return L("until @x1",expireC.getShortTimeDescription());
+		return L("on @x1",nextC.getShortTimeDescription());
 	}
 
 	@Override
@@ -306,8 +349,8 @@ public class Thief_Runecasting extends ThiefSkill
 					for(final AutoProperties P : APs)
 					{
 						final TimeClock C = CMLib.masking().dateMaskToNextTimeClock(forM, P.getDateCMask());
-						final TimeClock expireC = CMLib.masking().dateMaskToExpirationTimeClock(forM, P.getDateCMask());
 						final boolean isNow = CMLib.masking().maskCheck(P.getDateCMask(), forM, true);
+						final TimeClock expireC = isNow ? CMLib.masking().dateMaskToExpirationTimeClock(forM, P.getDateCMask()) : null;
 						for(final Pair<String, String> ps : P.getProps())
 						{
 							final Ability A = CMClass.getAbility(ps.first);
@@ -325,7 +368,7 @@ public class Thief_Runecasting extends ThiefSkill
 								A.affectCharState(M, M.curState());
 								A.affectCharStats(M, M.charStats());
 								A.affectPhyStats(M, M.phyStats());
-								final String format = "@x1 @x2. @x3 @x4 @x5";
+								final String format = "I see @x1 @x2. @x3 @x4 @x5";
 								for(final int cd : CharStats.CODES.ALLCODES())
 								{
 									final int diff = M.charStats().getStat(cd) - cStats.getStat(cd);
@@ -338,7 +381,7 @@ public class Thief_Runecasting extends ThiefSkill
 										else
 											codeName = L(CharStats.CODES.DESC(cd).toLowerCase());
 										final String report = L(format,L(getFTAdjective(positive)),L(A.name().toLowerCase()),
-															L(getFTVerb(positive)), codeName, getFTTime(isNow,C,nowC,expireC));
+															L(getFTVerb(positive)), codeName, getFTTime(C,nowC,expireC));
 										this.reports.add(report);
 									}
 								}
@@ -354,7 +397,7 @@ public class Thief_Runecasting extends ThiefSkill
 										else
 											codeName = L(CharState.STAT_DESCS[cd]).toLowerCase();
 										final String report = L(format,L(getFTAdjective(positive)),L(A.name().toLowerCase()),
-												L(getFTVerb(positive)), codeName, getFTTime(isNow,C,nowC,expireC) );
+												L(getFTVerb(positive)), codeName, getFTTime(C,nowC,expireC) );
 										this.reports.add(report);
 									}
 								}
@@ -373,7 +416,7 @@ public class Thief_Runecasting extends ThiefSkill
 												{
 													final String codeName=PhyStats.IS_VERBS[i].toLowerCase();
 													final String report = L(format,L(getFTAdjective(positive)),L(A.name().toLowerCase()),
-															L(getFTVerb(positive)), codeName, getFTTime(isNow,C,nowC,expireC) );
+															L(getFTVerb(positive)), codeName, getFTTime(C,nowC,expireC) );
 													this.reports.add(report);
 												}
 										}
@@ -385,7 +428,7 @@ public class Thief_Runecasting extends ThiefSkill
 												{
 													final String codeName=PhyStats.CAN_SEE_DESCS[i].toLowerCase();
 													final String report = L(format,L(getFTAdjective(positive)),L(A.name().toLowerCase()),
-															L(getFTVerb(positive)), codeName, getFTTime(isNow,C,nowC,expireC) );
+															L(getFTVerb(positive)), codeName, getFTTime(C,nowC,expireC) );
 													this.reports.add(report);
 												}
 										}
@@ -397,7 +440,7 @@ public class Thief_Runecasting extends ThiefSkill
 											else
 												codeName = L(PhyStats.STAT_DESCS[cd].toLowerCase());
 											final String report = L(format,L(getFTAdjective(positive)),L(A.name().toLowerCase()),
-													L(getFTVerb(positive)), codeName, getFTTime(isNow,C,nowC,expireC) );
+													L(getFTVerb(positive)), codeName, getFTTime(C,nowC,expireC) );
 											this.reports.add(report);
 										}
 									}
@@ -509,6 +552,16 @@ public class Thief_Runecasting extends ThiefSkill
 		super.unInvoke();
 	}
 
+	public String getSuccessMsg()
+	{
+		return L("<S-NAME> cast(s) rune cubes for <T-NAMESELF>...");
+	}
+
+	public String getFailureMsg()
+	{
+		return L("<S-NAME> cast(s) rune cubes for <T-NAMESELF>, but <S-IS-ARE> confused.");
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -523,8 +576,7 @@ public class Thief_Runecasting extends ThiefSkill
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob, target,this,CMMsg.MSG_THIEF_ACT,
-					auto?L("<T-NAME> has a runecasting vision!"):
-					L("<S-NAME> cast(s) rune cubes for <T-NAMESELF>..."));
+					auto?L("<T-NAME> has a vision of the future!"):getSuccessMsg());
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -537,7 +589,7 @@ public class Thief_Runecasting extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob, target,L("<S-NAME> cast(s) rune cubes for <T-NAMESELF>, but <S-IS-ARE> confused."));
+			beneficialVisualFizzle(mob, target, getFailureMsg());
 		return success;
 	}
 }

@@ -2254,6 +2254,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public boolean activate()
 	{
+		if(!super.activate())
+			return false;
 		if(serviceClient==null)
 		{
 			name="THMap"+Thread.currentThread().getThreadGroup().getName().charAt(0);

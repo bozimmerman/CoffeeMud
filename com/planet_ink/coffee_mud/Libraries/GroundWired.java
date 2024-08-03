@@ -502,6 +502,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public boolean activate()
 	{
+		if(!super.activate())
+			return false;
 		if(serviceClient==null)
 		{
 			name="THWired"+Thread.currentThread().getThreadGroup().getName().charAt(0);

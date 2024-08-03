@@ -1065,6 +1065,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	@Override
 	public boolean activate()
 	{
+		if(!super.activate())
+			return false;
 		if(serviceClient==null)
 		{
 			name="THJournals"+Thread.currentThread().getThreadGroup().getName().charAt(0);

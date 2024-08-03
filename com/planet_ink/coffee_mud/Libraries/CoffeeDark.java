@@ -1581,6 +1581,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	@Override
 	public boolean activate()
 	{
+		if(!super.activate())
+			return false;
 		if(serviceClient==null)
 		{
 			name="THSpace"+Thread.currentThread().getThreadGroup().getName().charAt(0);

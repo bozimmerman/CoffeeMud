@@ -89,6 +89,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	@Override
 	public boolean activate()
 	{
+		if(!super.activate())
+			return false;
 		attackAdjustmentFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_ATTACKADJUSTMENT));
 		armorAdjustmentFormula= CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_ARMORADJUSTMENT));
 		attackerFudgeBonusFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_ATTACKFUDGEBONUS));

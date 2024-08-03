@@ -143,7 +143,6 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					prideCatData.add(new Object());
 			}
 		}
-		loadPreviousPrideRecords();
 	}
 
 	@Override
@@ -3070,11 +3069,14 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public boolean activate()
 	{
+		if(!super.activate())
+			return false;
 		if(serviceClient==null)
 		{
 			name="THPlayers"+Thread.currentThread().getThreadGroup().getName().charAt(0);
 			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK|Tickable.TICKID_LONGERMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
 			resetAllPrideStats();
+			loadPreviousPrideRecords();
 		}
 		return true;
 	}
