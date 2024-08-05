@@ -276,6 +276,14 @@ public class ExpireVector<T> implements Serializable, Iterable<T>, Collection<T>
 	{
 		return list.add(new Pair<T,Long>(e,new Long(System.currentTimeMillis() + expirationMs)));
 	}
+	
+	public long getExpiration(final T e)
+	{
+		int x = indexOf(e);
+		if(x<0)
+			return System.currentTimeMillis();
+		return list.get(x).second.longValue();
+	}
 
 	@Override
 	public boolean remove(final Object o)

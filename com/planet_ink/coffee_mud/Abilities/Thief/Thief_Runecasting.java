@@ -2,19 +2,23 @@ package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.MPContext;
 import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.CoffeeTime.TimeDelta;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary.AutoProperties;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMaskEntry;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -107,10 +111,18 @@ public class Thief_Runecasting extends ThiefSkill
 		"The fates` gaze is elsewhere."
 	};
 
-	protected List<String>	reports	= null;
-	protected int			tickUp	= 0;
-	protected MOB			forM	= null;
+	protected ExpireVector<MOB>	doneMs				= new ExpireVector<MOB>(getExpirationTime());
+	protected String			predictionScript	= null;
+	protected TimeClock			predictionClock		= null;
+	protected List<String>		reports				= null;
+	protected int				tickUp				= 0;
+	protected MOB				forM				= null;
 
+	protected long getExpirationTime()
+	{
+		return CMProps.getMillisPerMudHour();
+	}
+	
 	protected Filterer<AutoProperties> runePlayerFilter = new Filterer<AutoProperties>()
 	{
 		@Override
@@ -295,11 +307,139 @@ public class Thief_Runecasting extends ThiefSkill
 		return L("on @x1",nextC.getShortTimeDescription());
 	}
 
-	@Override
-	public boolean tick(final Tickable ticking, final int tickID)
+	public String generateEventPrediction(final MOB mob)
 	{
-		if(!super.tick(ticking, tickID))
+		try
+		{
+			CMFile file = new CMFile(Resources.buildResourcePath("skills/predictions.xml"),mob);
+			if(!file.canRead())
+				throw new CMException(L("Random data file '@x1' not found.  Aborting.",file.getCanonicalPath()));
+			final StringBuffer xml = file.textUnformatted();
+			final List<XMLLibrary.XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
+			final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
+			CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, new XTreeSet<String>(definedIDs.keys()));
+			final XMLTag piece=(XMLTag)definedIDs.get("random_prediction");
+			if(piece == null)
+				throw new CMException(L("Predictions not found in '@x1'.  Aborting.",file.getCanonicalPath()));
+			CMLib.percolator().preDefineReward(piece, definedIDs);
+			CMLib.percolator().defineReward(piece,definedIDs);
+			final String s=CMLib.percolator().findString("STRING", piece, definedIDs);
+			if((s==null)||(s.trim().length()==0))
+				throw new CMException(L("Predictions not generated in '@x1'.  Aborting.",file.getCanonicalPath()));
+			ScriptingEngine testE = (ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+			testE.setScript(s);
+			if(!testE.isFunc("Prediction"))
+				throw new CMException(L("Prediction corrupt in '@x1'.  Aborting.",file.getCanonicalPath()));
+			final MPContext ctx = new MPContext(mob, mob, mob, null, null, null, mob.Name(), null);
+			final String summary = testE.callFunc("Prediction", s, ctx);
+			if((summary == null)||(summary.trim().length()==0))
+				return null;
+			if(mob.fetchEffect(ID())!=null)
+				return null;
+			final Thief_Runecasting effA = (Thief_Runecasting)CMClass.getAbility(ID());
+			effA.predictionScript = s;
+			effA.predictionClock = null; //Add a time, plz ty
+			effA.setSavable(true);
+			mob.addNonUninvokableEffect(effA);
+			effA.invoker = invoker();
+			return summary;
+		}
+		catch(CMException e)
+		{
+			Log.errOut(e.getMessage());
+			return null;
+		}
+	}
+	
+	@Override
+	public String text()
+	{
+		if((predictionClock != null) && (predictionScript != null))
+		{
+			StringBuilder xml = new StringBuilder("<PREDICTION INVOKER=\""+invoker().Name()+"\" CLOCK=\""+predictionClock.toTimeString()+"\">");
+			xml.append(CMLib.xml().parseOutAngleBrackets(predictionScript));
+			xml.append("</PREDICTION>");
+		}
+		return "";
+	}
+	
+	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if((newMiscText.trim().startsWith("<PREDICTION")))
+		{
+			List<XMLTag> xml = CMLib.xml().parseAllXML(newMiscText);
+			if(xml.size()>0)
+			{
+				String clockStr = xml.get(0).getParmValue("CLOCK");
+				String invokerName = xml.get(0).getParmValue("INVOKER");
+				String script = CMLib.xml().restoreAngleBrackets(xml.get(0).value());
+				if((clockStr!=null)&&(clockStr.length()>0)&&(script.trim().length()>0))
+				{
+					this.predictionClock = CMLib.time().globalClock();
+					this.predictionScript = null;
+					if((invokerName!=null)&&(invokerName.trim().length()>0))
+					{
+						final MOB M = CMLib.players().getPlayer(invokerName);
+						if(M != null)
+							setInvoker(M);
+					}
+				}
+				else
+					super.setMiscText("");
+			}
+		}
+	}
+
+	protected boolean handleSpecialPredictionWait()
+	{
+		if(predictionScript == null) // check partially loaded state
+		{
+			if((text().trim().startsWith("<PREDICTION")))
+			{
+				List<XMLTag> xml = CMLib.xml().parseAllXML(text());
+				if(xml.size()>0)
+				{
+					String clockStr = xml.get(0).getParmValue("CLOCK");
+					String invokerName = xml.get(0).getParmValue("INVOKER");
+					String script = CMLib.xml().restoreAngleBrackets(xml.get(0).value());
+					if((clockStr!=null)&&(clockStr.length()>0)&&(script.trim().length()>0))
+					{
+						this.predictionClock = (TimeClock)CMLib.time().homeClock(affected).copyOf();
+						this.predictionClock.fromTimePeriodCodeString(clockStr);
+						this.predictionScript = script;
+						if((invokerName!=null)&&(invokerName.trim().length()>0))
+						{
+							final MOB M = CMLib.players().getPlayer(invokerName);
+							if(M != null)
+								setInvoker(M);
+						}
+					}
+				}
+			}
+		}
+		if(predictionScript == null) // did the load work?
+		{
+			affected.delEffect(this);
 			return false;
+		}
+		if(CMLib.time().homeClock(affected).isAfter(this.predictionClock))
+		{
+			ScriptingEngine predictE = (ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+			predictE.setScript(predictionScript);
+			if(affected instanceof MOB)
+				((MOB)affected).addScript(predictE);
+			this.canBeUninvoked=true;
+			affected.delEffect(this);
+			return false;
+		}
+		else
+			return true;
+	}
+
+	protected boolean handlePredictingTicking()
+	{
 		final MOB iM = invoker();
 		if(affected == iM)
 		{
@@ -312,10 +452,12 @@ public class Thief_Runecasting extends ThiefSkill
 			}
 			if((forM == null)
 			||(!CMLib.flags().isInTheGame(forM, true))
-			||(iM==null)
 			||(forM.location() != iM.location()))
 			{
-				invoker().tell(L("I guess @x1 didn't really care.",forM.name()));
+				if(forM != null)
+					iM.tell(L("I guess @x1 didn't really care.",forM.name()));
+				else
+					iM.tell(L("I guess nobody cares."));
 				unInvoke();
 				return false;
 			}
@@ -324,11 +466,11 @@ public class Thief_Runecasting extends ThiefSkill
 			{
 				if((this.reports == null)||(this.reports.size()==0))
 				{
-					CMLib.commands().postSay(invoker(), forM, L("That is your future, <T-NAME>."));
+					CMLib.commands().postSay(iM, forM, L("That is your future, <T-NAME>."));
 					unInvoke();
 					return false;
 				}
-				CMLib.commands().postSay(invoker(), forM, this.reports.remove(0));
+				CMLib.commands().postSay(iM, forM, this.reports.remove(0));
 			}
 			else
 			if(tickUp >= 2)
@@ -338,7 +480,7 @@ public class Thief_Runecasting extends ThiefSkill
 				if((APs == null) || (APs.length==0))
 				{
 					final int x =CMLib.dice().roll(1, getFailPhrases().length, 0);
-					CMLib.commands().postSay(invoker(), forM, L(getFailPhrases()[x]));
+					CMLib.commands().postSay(iM, forM, L(getFailPhrases()[x]));
 					unInvoke();
 					return false;
 				}
@@ -451,20 +593,37 @@ public class Thief_Runecasting extends ThiefSkill
 					if(reports.size()==0)
 					{
 						final int x =CMLib.dice().roll(1, getFailPhrases().length, 0);
-						CMLib.commands().postSay(invoker(), forM, L(getFailPhrases()[x]));
+						CMLib.commands().postSay(iM, forM, L(getFailPhrases()[x]));
 						unInvoke();
 						return false;
 					}
+					if(CMLib.dice().roll(1, 10, 0) < super.getXLEVELLevel(iM)/3)
+					{
+						String finalPrediction = generateEventPrediction(forM);
+						if((finalPrediction != null)&&(finalPrediction.trim().length()>0))
+							this.reports.add(finalPrediction);
+					}
 					final int x =CMLib.dice().roll(1, getStartPhrases().length, 0);
-					CMLib.commands().postSay(invoker(), forM, L(getStartPhrases()[x]));
+					CMLib.commands().postSay(iM, forM, L(getStartPhrases()[x]));
 				}
 			}
 			else
 			{
-				CMLib.commands().postSay(invoker(), forM, L("I see..."));
+				CMLib.commands().postSay(iM, forM, L("I see..."));
 			}
 		}
 		return true;
+	}
+	
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(predictionClock != null)
+			return this.handleSpecialPredictionWait();
+		else
+			return handlePredictingTicking();
 	}
 
 	@Override
@@ -569,6 +728,20 @@ public class Thief_Runecasting extends ThiefSkill
 		if(target==null)
 			return false;
 
+		if((!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.ALLSKILLS))
+		&&(doneMs.contains(target))
+		&&(!auto))
+		{
+			final long expirationTime = doneMs.getExpiration(target);
+			final TimeClock C = CMLib.time().homeClock(mob);
+			if(expirationTime >= System.currentTimeMillis())
+			{
+				mob.tell(L("You would not be able to see @x1's future again for another @x2.",target.name(mob),
+						CMLib.time().date2EllapsedMudTime(C, expirationTime-System.currentTimeMillis(), TimeDelta.SECOND, false)));
+				return false;
+			}
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -585,6 +758,8 @@ public class Thief_Runecasting extends ThiefSkill
 				{
 					rA.forM = target;
 					rA.tickUp = 0;
+					final long tm = Math.round(CMath.mul(getExpirationTime(),1.0-CMath.mul(super.getXTIMELevel(mob),0.09)));
+					doneMs.add(target, tm);
 				}
 			}
 		}

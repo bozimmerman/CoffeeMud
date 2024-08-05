@@ -11267,7 +11267,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final Area A = CMLib.map().findArea(parm);
 							if(A != null)
 							{
-								if((lastR.numInhabitants()==0)||(!A.inMyMetroArea(lastR.getArea())))
+								if((lastR!=null)
+								&&((lastR.numInhabitants()==0)||(!A.inMyMetroArea(lastR.getArea()))))
 									lastR.showSource(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
 								for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 								{
@@ -11581,23 +11582,36 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						m2=m2.substring(6).trim();
 					}
 					else
-					if(m2.toUpperCase().startsWith("INDIVIDUAL ")||m2.equals("*"))
+					if(m2.toUpperCase().startsWith("INDIVIDUAL "))
 					{
 						scope="*";
 						proceed=true;
 						m2=m2.substring(10).trim();
+					}
+					else
+					if(m2.startsWith("* "))
+					{
+						scope="*";
+						proceed=true;
+						m2=m2.substring(2).trim();
 					}
 				}
 				if((newTarget!=null)&&(m2.length()>0))
 				{
 					if(delete && (!execute))
 					{
+						String m3 = m2.trim();
+						if(m3.equals("*"))
+							m3 = getScript().trim();
+						final ScriptingEngine B = (ScriptingEngine)newTarget.fetchBehavior("Scriptable");
+						if((B != null) && (B.getScript().trim().equals(m3)))
+							newTarget.delBehavior((Behavior)B);
 						for(final Enumeration<ScriptingEngine> s1= newTarget.scripts(); s1.hasMoreElements();)
 						{
 							final ScriptingEngine S=s1.nextElement();
-							if(S.getScript().trim().equalsIgnoreCase(m2.trim()))
+							if(S.getScript().trim().equalsIgnoreCase(m3))
 							{
-								Log.sysOut("Scripting",newTarget.Name()+" was DE-MPSCRIPTED: "+defaultQuestName);
+								//Log.sysOut("Scripting",newTarget.Name()+" was DE-MPSCRIPTED: "+defaultQuestName);
 								newTarget.delScript(S);
 								break;
 							}
@@ -11605,12 +11619,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					else
 					{
-						if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
-							Log.sysOut("Scripting",newTarget.Name()+" was MPSCRIPTED: "+defaultQuestName);
+						//if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
+						//	Log.sysOut("Scripting",newTarget.Name()+" was MPSCRIPTED: "+defaultQuestName);
 						final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 						S.setSavable(savable);
 						S.setVarScope(scope);
-						S.setScript(m2);
+						if(m2.trim().equals("*"))
+							S.setScript(getScript());
+						else
+							S.setScript(m2);
 						if((this.questCacheObj!=null)
 						&&(defaultQuest()==this.questCacheObj))
 							S.registerDefaultQuest(defaultQuest());

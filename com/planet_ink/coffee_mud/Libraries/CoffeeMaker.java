@@ -3356,6 +3356,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					if(((MOB)P).playerStats()!=null)
 						return CMath.toPct(((MOB)P).playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
 					break;
+				case IDLETICKS:
+				{
+					final Session sess = ((MOB)P).session();
+					return ""+((sess != null) ? sess.getIdleMillis()/CMProps.getTickMillis() : -1);
+				}
+				case PEACETICKS:
+				{
+					final MOB mob = (MOB)P;
+					return ""+(mob.getPeaceTime()/CMProps.getTickMillis());
+				}
 				case OBJATTRIB:
 					{
 						final StringBuilder attrib=new StringBuilder("");
@@ -3736,6 +3746,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					return;
 				case STINK:
 					((MOB)P).playerStats().setHygiene(Math.round(CMath.s_pct(value)*PlayerStats.HYGIENE_DELIMIT));
+					return;
+				case IDLETICKS:
+					return;
+				case PEACETICKS:
 					return;
 				case CHARCLASS:
 				{

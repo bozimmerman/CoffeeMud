@@ -1,0 +1,239 @@
+<?xml version="1.0"?>
+<!-- ----------------------------------------------------------------------------
+Copyright 2024-2024 Bo Zimmerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--------------------------------------------------------------------------------
+
+See guides/RandomAreas.html for information about documents of this type.
+-->
+<string id="RANDNUM">$[1?1000]</string>
+<string id="random_prediction" define="random_prediction" select="any-1">
+	<string id="good_money">
+		FUNCTION_PROG Prediction
+			RETURN A benefactor from the shadows will bestow a modest gift upon you and slip away unseen.
+		~
+
+		RAND_PROD 25
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETIME != 3)
+				RETURN
+			ENDIF
+			MPECHOAT \$i You seem to have more money than you thought.  Weird.
+			mpmoney \$i $RANDNUM
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="bad_money">
+		FUNCTION_PROG Prediction
+			RETURN Beware the shadows that follow you; they yearn for your coin.
+		~
+
+		RAND_PROD 25
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETIME != 3)
+				RETURN
+			ENDIF
+			MPSETVAR \$i LOSTMONEY $RANDNUM
+			IF GOLDAMT(\$i &gt;= '$&lt;\$i LOSTMONEY&gt;')
+				MPECHOAT \$i You seem to have less money than you thought.  Weird.
+				mpmoney \$i -$&lt;\$i LOSTMONEY&gt;
+				MPSCRIPT \$i DELETE *
+			ENDIF 
+		~
+	</string>
+	<!--
+Beware the shadows that follow you; they may be your undoing if you’re not cautious.
+A stranger will offer you a choice, but only one path will lead to your true destiny.
+You will soon find an item of great value, but it will come with a heavy burden.
+A trusted ally will become your greatest challenge. Keep your friends close, and your enemies closer.
+In the darkest hour, look to the light within yourself to guide your way.
+An old enemy will reappear, seeking redemption or revenge. Prepare yourself for a confrontation.
+The winds of change are blowing; a significant transformation is on the horizon.
+A hidden passage will reveal itself to you soon, leading to untold treasures or dangers.
+You will encounter a wise being who will offer you cryptic advice. Heed their words carefully.
+An unexpected ally will arrive at a critical moment, but their motives may not be as clear as they seem.
+A decision made in haste will come back to challenge you. Take your time and think carefully.
+The stars are aligned in your favor, but only if you are brave enough to seize the opportunity.
+A cherished memory will come to life, offering you both guidance and a test of faith.
+A journey you undertake will reveal hidden truths about yourself and your purpose.
+A force of nature will intervene in your quest; respect its power and adapt to its changes.
+A secret will be revealed, but it will demand a sacrifice in exchange for the knowledge.
+You will face a trial of strength and will, and how you respond will shape your future.
+An ancient prophecy will come into play, influencing the outcome of your current endeavors.
+An unforeseen opportunity will arise; grasp it with both hands, but be prepared for its consequences.
+A familiar face will disappear from your life, but a new ally will take their place, bringing new prospects.
+Beware of the shadowy figure lurking in the forest; it may hold the key to your future.
+A great treasure awaits you, but it comes with a perilous journey.
+You will soon meet an ally who will become invaluable in your quest.
+The stars align in your favor; a time of great luck is upon you.
+A forgotten spellbook will soon come into your possession, unlocking untold power.
+Tread carefully near the old ruins; ancient spirits guard secrets there.
+Your next battle will be your most challenging yet, but victory will bring great rewards.
+A distant land calls to you; heed its call for great adventure and discovery.
+The one you trust most may soon deceive you; stay vigilant.
+A mystical creature will offer you guidance; listen to its wisdom.
+The answer you seek lies within the depths of the enchanted cave.
+A storm is coming; seek shelter and prepare for turbulent times.
+A powerful artifact will come into your possession, but it may be cursed.
+You will encounter a crossroads; the path you choose will shape your destiny.
+An old friend will return, bringing with them important news.
+A mysterious stranger will offer you a deal; consider it carefully.
+The moon's light will reveal a hidden path when you least expect it.
+You will discover a hidden talent that will aid you in your journey.
+A great festival will bring joy and new opportunities.
+You will find yourself in the middle of a great conflict; your choices will determine the outcome.
+A riddle must be solved to unlock a powerful secret.
+The spirits of the forest whisper your name; they have chosen you for a great task.
+A mirror will show you a glimpse of your future.
+You will be tested by fire, but you will emerge stronger.
+An ancient prophecy speaks of your coming; fulfill it, and greatness awaits.
+A guardian will grant you a boon if you prove your worth.
+Beware the enchanted ring; it holds both power and peril.
+You will find an ally in the most unlikely of places.
+A hidden door will lead you to untold treasures.
+The fate of a kingdom rests in your hands; choose wisely.
+A song will unlock a long-forgotten memory, guiding you to your next quest.
+You will gain the favor of a powerful deity, but it comes at a cost.
+A cursed item will find its way to you; breaking the curse will require great courage.
+The ocean's depths hide a secret that only you can uncover.
+A fierce rivalry will test your resolve and skill.
+You will encounter a magical beast that can change its form at will.
+An ancient map will lead you to a place of great power.
+A powerful enemy plots against you; uncover their plans before it's too late.
+You will be given a choice between love and power; the decision will shape your destiny.
+The spirits of the ancestors will guide you on your journey.
+A lost city awaits discovery, filled with both dangers and wonders.
+You will find a relic that can alter the flow of time.
+A powerful enchantment will be broken by your hand.
+You will encounter a being from another realm; their knowledge is invaluable.
+The fate of a lost soul rests with you; bring them peace.
+A hidden sanctuary will offer refuge and wisdom.
+You will be challenged by a powerful mage; their defeat will bring you great honor.
+A forgotten language will reveal secrets of the past.
+You will discover a link between your past and a legendary hero.
+A portal to another world will open; step through with caution.
+An old weapon will be reforged, becoming a key to your victory.
+You will encounter a wise sage who will teach you a forgotten art.
+A mystical herb will save your life at a critical moment.
+The echoes of a past life will guide you through a difficult decision.
+You will find yourself at the heart of a rebellion; your actions will shape its outcome.
+A magical portal will transport you to a realm of shadows and secrets.
+You will be given a task by the gods themselves; failure is not an option.
+A rare gemstone will reveal hidden paths when held under moonlight.
+You will uncover a plot that threatens the balance of the world.
+An enchanted forest will test your courage and resolve.
+A powerful spell will be yours, but mastering it will be a great challenge.
+You will meet a traveler from another time; their knowledge will be invaluable.
+A sacred text will provide you with wisdom and guidance.
+You will be granted a vision of the future; use it to avert disaster.
+A secret society will offer you membership; their resources are vast.
+You will find a creature that can speak in riddles; its answers will guide you.
+A celestial event will mark a turning point in your journey.
+You will be offered a chance to rewrite a part of your past.
+A mythical beast will cross your path; befriending it will bring you great power.
+You will discover an ancient ritual that can summon powerful allies.
+A deserted island holds the answers to your deepest questions.
+A powerful curse will be lifted through your bravery and cunning.
+You will find an ancient artifact that can control the elements.
+A hidden stronghold will become your sanctuary.
+You will be challenged to a duel by a master warrior; winning will earn you respect and honor.
+A mysterious dream will reveal a hidden truth.
+You will find a key that unlocks a gate to another dimension.
+A powerful enchantment will grant you temporary invincibility.
+You will encounter a being of pure light; their touch will heal you.
+A labyrinth will test your intellect and resolve.
+You will find a scroll that contains the knowledge of the ancients.
+A powerful storm will bring both destruction and opportunity.
+You will be given the chance to broker peace between warring factions.
+A forgotten song will awaken a slumbering giant.
+You will be chosen to bear a legendary weapon.
+A powerful relic will grant you the ability to see into the future.
+You will find a hidden library filled with forbidden knowledge.
+A mystical charm will protect you from harm.
+You will be called upon to defend a sacred place.
+A creature of darkness will seek your aid; helping it will bring unexpected rewards.
+You will discover a potion that grants you extraordinary abilities.
+A great battle will determine the fate of a kingdom, and you will play a crucial role.
+You will uncover the secrets of an ancient civilization.
+A powerful ally will come to your aid in your darkest hour.
+You will be given the chance to undo a great mistake from your past.
+A hidden valley holds the key to your destiny.
+You will find a map that leads to a place of great power.
+A legendary beast will recognize you as its master.
+You will be given a quest by a powerful deity.
+A mystical relic will grant you the power to control the elements.
+You will find a mentor who will teach you the ways of an ancient order.
+A magical artifact will bind you to a powerful spirit.
+You will be called upon to protect a sacred relic.
+A powerful spell will grant you the ability to communicate with the dead.
+You will find a hidden passage that leads to a forgotten realm.
+A mystical creature will offer you a pact; accepting it will bring great power.
+You will be given the chance to forge a powerful alliance.
+A hidden cave will reveal the secrets of an ancient prophecy.
+You will find a talisman that grants you protection from dark magic.
+A powerful sorcerer will seek your aid in a great endeavor.
+A lost city will reveal its secrets to you.
+You will be granted a vision of a future event that you must prevent.
+A powerful enemy will seek your destruction; defeating them will bring you great honor.
+You will find a book that contains the knowledge of the ancients.
+A magical mirror will show you the truth behind a great mystery.
+You will be given the chance to redeem a fallen hero.
+A hidden grove will provide you with a place of refuge and healing.
+You will encounter a being of pure energy; their knowledge is invaluable.
+A powerful ritual will grant you the ability to summon great power.
+A distant star will guide you to a place of great importance.
+You will be chosen to lead a great army into battle.
+A powerful charm will protect you from harm and bring you good fortune.
+You will encounter a creature that can shapeshift; its loyalty will be tested.
+A mysterious artifact will grant you the ability to control time itself.
+You will discover a portal that leads to a forgotten land.
+An ancient guardian will offer you protection in exchange for a favor.
+You will uncover a conspiracy that threatens the stability of the realm.
+A powerful enchantment will grant you the ability to see through illusions.
+You will find a scroll that contains the secrets of a long-lost civilization.
+A hidden chamber will reveal a treasure trove of magical artifacts.
+You will be called upon to break a powerful curse that plagues the land.
+A mysterious figure will offer you a deal; accepting it will change your fate.
+You will discover a hidden talent for a craft or skill that will aid you greatly.
+A powerful relic will grant you the ability to control the elements.
+You will be given the chance to travel to another plane of existence.
+A mystical gemstone will reveal hidden truths when held up to the light.
+You will find a legendary weapon that was thought to be lost forever.
+A powerful enemy will challenge you; defeating them will bring you great honor.
+You will discover a hidden sanctuary that offers refuge and wisdom.
+A forgotten spell will be revealed to you, granting you great power.
+You will be granted a vision of the future that will guide your actions.
+A hidden path will lead you to a place of great significance.
+You will be called upon to mediate a dispute between powerful factions.
+A magical artifact will grant you the ability to speak with animals.
+You will uncover a secret that has been hidden for generations.
+A powerful ally will come to your aid in your time of need.
+You will be given the chance to unlock a great mystery.
+A hidden garden will provide you with a place of peace and reflection.
+You will encounter a creature that can grant wishes; use this power wisely.
+A powerful spell will grant you the ability to heal others.
+You will discover a hidden library filled with ancient tomes of knowledge.
+A mystical talisman will grant you protection from dark forces.
+You will find yourself at the center of a great prophecy.
+A powerful enchantment will grant you the ability to walk through walls.
+You will uncover the secrets of an ancient order.
+A hidden portal will transport you to a realm of magic and wonder.
+You will be called upon to protect a sacred relic from falling into the wrong hands.
+A powerful artifact will grant you the ability to control the weather.
+You will discover a hidden talent for a powerful form of magic.
+A mysterious figure will offer you a quest that will change your destiny.
+You will be given the chance to rewrite a part of history.
+A hidden cave will reveal a treasure trove of magical artifacts.
+You will find a powerful ally in the most unlikely of places.
+A mystical relic will grant you the ability to communicate with the dead.
+	 -->
+</string>

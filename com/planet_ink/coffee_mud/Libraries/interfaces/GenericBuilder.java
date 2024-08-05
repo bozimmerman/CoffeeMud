@@ -168,7 +168,9 @@ public interface GenericBuilder extends CMLibrary
 		CLANROLE,
 		OBJATTRIB,
 		BUDGETRESETDATE,
-		INVENTORYRESETDATE
+		INVENTORYRESETDATE,
+		IDLETICKS,
+		PEACETICKS
 	}
 
 	/**
