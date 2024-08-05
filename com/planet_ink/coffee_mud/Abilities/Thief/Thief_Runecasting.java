@@ -316,29 +316,35 @@ public class Thief_Runecasting extends ThiefSkill
 				throw new CMException(L("Random data file '@x1' not found.  Aborting.",file.getCanonicalPath()));
 			final StringBuffer xml = file.textUnformatted();
 			final List<XMLLibrary.XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
-			final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
-			CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, new XTreeSet<String>(definedIDs.keys()));
-			final XMLTag piece=(XMLTag)definedIDs.get("random_prediction");
-			if(piece == null)
-				throw new CMException(L("Predictions not found in '@x1'.  Aborting.",file.getCanonicalPath()));
-			CMLib.percolator().preDefineReward(piece, definedIDs);
-			CMLib.percolator().defineReward(piece,definedIDs);
-			final String s=CMLib.percolator().findString("STRING", piece, definedIDs);
-			if((s==null)||(s.trim().length()==0))
-				throw new CMException(L("Predictions not generated in '@x1'.  Aborting.",file.getCanonicalPath()));
-			ScriptingEngine testE = (ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
-			testE.setScript(s);
-			if(!testE.isFunc("Prediction"))
-				throw new CMException(L("Prediction corrupt in '@x1'.  Aborting.",file.getCanonicalPath()));
-			final MPContext ctx = new MPContext(mob, mob, mob, null, null, null, mob.Name(), null);
-			final String summary = testE.callFunc("Prediction", s, ctx);
-			if((summary == null)||(summary.trim().length()==0))
-				return null;
+			String s=null;
+			String summary=null;
+			for(int i=0;i<10;i++)
+			{
+				final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
+				CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, new XTreeSet<String>(definedIDs.keys()));
+				final XMLTag piece=(XMLTag)definedIDs.get("random_prediction");
+				if(piece == null)
+					throw new CMException(L("Predictions not found in '@x1'.  Aborting.",file.getCanonicalPath()));
+				CMLib.percolator().preDefineReward(piece, definedIDs);
+				CMLib.percolator().defineReward(piece,definedIDs);
+				s=CMLib.percolator().findString("STRING", piece, definedIDs);
+				if((s==null)||(s.trim().length()==0))
+					throw new CMException(L("Predictions not generated in '@x1'.  Aborting.",file.getCanonicalPath()));
+				ScriptingEngine testE = (ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+				testE.setScript(s);
+				if(!testE.isFunc("Prediction"))
+					throw new CMException(L("Prediction corrupt in '@x1'.  Aborting.",file.getCanonicalPath()));
+				final MPContext ctx = new MPContext(mob, mob, mob, null, null, null, mob.Name(), null);
+				summary = testE.callFunc("Prediction", s, ctx);
+				if((summary != null)&&(summary.trim().length()>0))
+					break;
+				// try again!
+			}
 			if(mob.fetchEffect(ID())!=null)
 				return null;
 			final Thief_Runecasting effA = (Thief_Runecasting)CMClass.getAbility(ID());
 			effA.predictionScript = s;
-			effA.predictionClock = null; //Add a time, plz ty
+			effA.predictionClock = null; //TODO:BZ:Add a time, plz ty
 			effA.setSavable(true);
 			mob.addNonUninvokableEffect(effA);
 			effA.invoker = invoker();
