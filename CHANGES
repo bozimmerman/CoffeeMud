@@ -37,6 +37,8 @@
  35. New example script topMonthlyRpt.js for making TOP player reports every month.
  36. New example script topMonthlyAwards.js for giving TOP player awards every month.
  37. New thief skills: Runecasting
+ 38. Prophecy prayer will now also use new random predictions file
+ 39. New property: ScriptLater for, well, scripting later
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

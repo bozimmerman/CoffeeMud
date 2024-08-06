@@ -112,8 +112,6 @@ public class Thief_Runecasting extends ThiefSkill
 	};
 
 	protected ExpireVector<MOB>	doneMs				= new ExpireVector<MOB>(getExpirationTime());
-	protected String			predictionScript	= null;
-	protected TimeClock			predictionClock		= null;
 	protected List<String>		reports				= null;
 	protected int				tickUp				= 0;
 	protected MOB				forM				= null;
@@ -122,7 +120,7 @@ public class Thief_Runecasting extends ThiefSkill
 	{
 		return CMProps.getMillisPerMudHour();
 	}
-	
+
 	protected Filterer<AutoProperties> runePlayerFilter = new Filterer<AutoProperties>()
 	{
 		@Override
@@ -307,145 +305,76 @@ public class Thief_Runecasting extends ThiefSkill
 		return L("on @x1",nextC.getShortTimeDescription());
 	}
 
-	public String generateEventPrediction(final MOB mob)
+	public String generateEventPrediction(final MOB invokerM, final MOB mob)
 	{
 		try
 		{
-			CMFile file = new CMFile(Resources.buildResourcePath("skills/predictions.xml"),mob);
-			if(!file.canRead())
-				throw new CMException(L("Random data file '@x1' not found.  Aborting.",file.getCanonicalPath()));
-			final StringBuffer xml = file.textUnformatted();
-			final List<XMLLibrary.XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
+			@SuppressWarnings("unchecked")
+			List<XMLLibrary.XMLTag> predictionRoot = (List<XMLLibrary.XMLTag>)Resources.getResource("SYSTEM_PREDICTION_SCRIPTS");
+			if(predictionRoot == null)
+			{
+				final CMFile file = new CMFile(Resources.buildResourcePath("skills/predictions.xml"),null);
+				if(!file.canRead())
+					throw new CMException(L("Random data file '@x1' not found.  Aborting.",file.getCanonicalPath()));
+				final StringBuffer xml = file.textUnformatted();
+				predictionRoot = CMLib.xml().parseAllXML(xml);
+				Resources.submitResource("SYSTEM_PREDICTION_SCRIPTS", predictionRoot);
+			}
 			String s=null;
 			String summary=null;
 			for(int i=0;i<10;i++)
 			{
 				final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
-				CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, new XTreeSet<String>(definedIDs.keys()));
-				final XMLTag piece=(XMLTag)definedIDs.get("random_prediction");
+				CMLib.percolator().buildDefinedIDSet(predictionRoot,definedIDs, new XTreeSet<String>(definedIDs.keys()));
+				final XMLTag piece=(XMLTag)definedIDs.get("RANDOM_PREDICTION");
 				if(piece == null)
-					throw new CMException(L("Predictions not found in '@x1'.  Aborting.",file.getCanonicalPath()));
+					throw new CMException(L("Predictions not found.  Aborting."));
 				CMLib.percolator().preDefineReward(piece, definedIDs);
 				CMLib.percolator().defineReward(piece,definedIDs);
 				s=CMLib.percolator().findString("STRING", piece, definedIDs);
 				if((s==null)||(s.trim().length()==0))
-					throw new CMException(L("Predictions not generated in '@x1'.  Aborting.",file.getCanonicalPath()));
-				ScriptingEngine testE = (ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+					throw new CMException(L("Predictions not generated."));
+				final ScriptingEngine testE = (ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 				testE.setScript(s);
 				if(!testE.isFunc("Prediction"))
-					throw new CMException(L("Prediction corrupt in '@x1'.  Aborting.",file.getCanonicalPath()));
+					throw new CMException(L("Prediction corrupt."));
 				final MPContext ctx = new MPContext(mob, mob, mob, null, null, null, mob.Name(), null);
 				summary = testE.callFunc("Prediction", s, ctx);
 				if((summary != null)&&(summary.trim().length()>0))
 					break;
 				// try again!
 			}
-			if(mob.fetchEffect(ID())!=null)
-				return null;
-			final Thief_Runecasting effA = (Thief_Runecasting)CMClass.getAbility(ID());
-			effA.predictionScript = s;
-			effA.predictionClock = null; //TODO:BZ:Add a time, plz ty
-			effA.setSavable(true);
-			mob.addNonUninvokableEffect(effA);
-			effA.invoker = invoker();
+			final TimeClock predictionClock = (TimeClock)CMLib.time().homeClock(mob).copyOf();
+			switch(CMLib.dice().roll(1, 3, 0))
+			{
+			case 1:
+				break;
+			case 2:
+				predictionClock.bumpMonths(CMLib.dice().roll(1, 10, 3));
+				break;
+			case 3:
+				predictionClock.bumpYears(CMLib.dice().roll(1, 10, 3));
+				predictionClock.bumpMonths(CMLib.dice().roll(1, 10, 3));
+				break;
+			}
+			predictionClock.bumpDays(CMLib.dice().roll(1, 10, 3));
+			predictionClock.bumpHours(CMLib.dice().roll(1, 10, 3));
+			final Ability effA = CMClass.getAbility("ScriptLater");
+			effA.invoke(invokerM, new XVector<String>(mob.Name(), predictionClock.toTimePeriodCodeString(), s),mob,true,0);
 			return summary;
 		}
-		catch(CMException e)
+		catch(final CMException e)
 		{
 			Log.errOut(e.getMessage());
 			return null;
 		}
 	}
-	
-	@Override
-	public String text()
-	{
-		if((predictionClock != null) && (predictionScript != null))
-		{
-			StringBuilder xml = new StringBuilder("<PREDICTION INVOKER=\""+invoker().Name()+"\" CLOCK=\""+predictionClock.toTimeString()+"\">");
-			xml.append(CMLib.xml().parseOutAngleBrackets(predictionScript));
-			xml.append("</PREDICTION>");
-		}
-		return "";
-	}
-	
-	@Override
-	public void setMiscText(final String newMiscText)
-	{
-		super.setMiscText(newMiscText);
-		if((newMiscText.trim().startsWith("<PREDICTION")))
-		{
-			List<XMLTag> xml = CMLib.xml().parseAllXML(newMiscText);
-			if(xml.size()>0)
-			{
-				String clockStr = xml.get(0).getParmValue("CLOCK");
-				String invokerName = xml.get(0).getParmValue("INVOKER");
-				String script = CMLib.xml().restoreAngleBrackets(xml.get(0).value());
-				if((clockStr!=null)&&(clockStr.length()>0)&&(script.trim().length()>0))
-				{
-					this.predictionClock = CMLib.time().globalClock();
-					this.predictionScript = null;
-					if((invokerName!=null)&&(invokerName.trim().length()>0))
-					{
-						final MOB M = CMLib.players().getPlayer(invokerName);
-						if(M != null)
-							setInvoker(M);
-					}
-				}
-				else
-					super.setMiscText("");
-			}
-		}
-	}
 
-	protected boolean handleSpecialPredictionWait()
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if(predictionScript == null) // check partially loaded state
-		{
-			if((text().trim().startsWith("<PREDICTION")))
-			{
-				List<XMLTag> xml = CMLib.xml().parseAllXML(text());
-				if(xml.size()>0)
-				{
-					String clockStr = xml.get(0).getParmValue("CLOCK");
-					String invokerName = xml.get(0).getParmValue("INVOKER");
-					String script = CMLib.xml().restoreAngleBrackets(xml.get(0).value());
-					if((clockStr!=null)&&(clockStr.length()>0)&&(script.trim().length()>0))
-					{
-						this.predictionClock = (TimeClock)CMLib.time().homeClock(affected).copyOf();
-						this.predictionClock.fromTimePeriodCodeString(clockStr);
-						this.predictionScript = script;
-						if((invokerName!=null)&&(invokerName.trim().length()>0))
-						{
-							final MOB M = CMLib.players().getPlayer(invokerName);
-							if(M != null)
-								setInvoker(M);
-						}
-					}
-				}
-			}
-		}
-		if(predictionScript == null) // did the load work?
-		{
-			affected.delEffect(this);
+		if(!super.tick(ticking, tickID))
 			return false;
-		}
-		if(CMLib.time().homeClock(affected).isAfter(this.predictionClock))
-		{
-			ScriptingEngine predictE = (ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
-			predictE.setScript(predictionScript);
-			if(affected instanceof MOB)
-				((MOB)affected).addScript(predictE);
-			this.canBeUninvoked=true;
-			affected.delEffect(this);
-			return false;
-		}
-		else
-			return true;
-	}
-
-	protected boolean handlePredictingTicking()
-	{
 		final MOB iM = invoker();
 		if(affected == iM)
 		{
@@ -605,7 +534,7 @@ public class Thief_Runecasting extends ThiefSkill
 					}
 					if(CMLib.dice().roll(1, 10, 0) < super.getXLEVELLevel(iM)/3)
 					{
-						String finalPrediction = generateEventPrediction(forM);
+						final String finalPrediction = generateEventPrediction(iM, forM);
 						if((finalPrediction != null)&&(finalPrediction.trim().length()>0))
 							this.reports.add(finalPrediction);
 					}
@@ -619,17 +548,6 @@ public class Thief_Runecasting extends ThiefSkill
 			}
 		}
 		return true;
-	}
-	
-	@Override
-	public boolean tick(final Tickable ticking, final int tickID)
-	{
-		if(!super.tick(ticking, tickID))
-			return false;
-		if(predictionClock != null)
-			return this.handleSpecialPredictionWait();
-		else
-			return handlePredictingTicking();
 	}
 
 	@Override
@@ -747,7 +665,7 @@ public class Thief_Runecasting extends ThiefSkill
 				return false;
 			}
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

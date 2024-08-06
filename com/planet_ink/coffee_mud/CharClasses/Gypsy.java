@@ -98,7 +98,7 @@ public class Gypsy extends Thief
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L(" Huge discounts when buying druidic potions after 5th level.  Ability to memorize chants learned through ChantCraft. "
+		return L("Huge discounts when buying druidic potions after 5th level.  Ability to memorize chants learned through ChantCraft. "
 				+ "Can see druidic scroll charges at level 30.");
 	}
 

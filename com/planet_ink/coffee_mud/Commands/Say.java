@@ -125,6 +125,18 @@ public class Say extends StdCommand
 		if(theCommand.equals("YELL"))
 			theWord="Yell";
 		else
+		if(theCommand.equals("YELLTO"))
+		{
+			theWord="Yell";
+			toFlag=true;
+		}
+		else
+		if(theCommand.equals("YELLAT"))
+		{
+			theWord="Yell";
+			toFlag=true;
+		}
+		else
 		if(theCommand.equals("SAYTO")
 		||theCommand.equals("SAYT"))
 		{

@@ -15172,7 +15172,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		final Item defaultItem=(ticking instanceof Item)?(Item)ticking:null;
 		final MOB mob;
 		synchronized(this) // supposedly this will cause a sync between cpus of the object
 		{
@@ -15184,7 +15183,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return true;
 		}
 		final PhysicalAgent affecting=(ticking instanceof PhysicalAgent)?((PhysicalAgent)ticking):null;
-
+		final Item defaultItem=(ticking instanceof Item)?(Item)ticking:null;
 		final List<SubScript> scripts=getScripts(affecting);
 
 		if(!runInPassiveAreas)
@@ -15227,6 +15226,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			tickStatus=Tickable.STATUS_SCRIPT+triggerCode;
 			switch(triggerCode)
 			{
+			case 0:
+				if(affecting != null)
+				{
+					Log.errOut("Scripting",affecting.name()+"/"+CMLib.map().getDescriptiveExtendedRoomID(lastKnownLocation)
+							+"/MOBPROG Error: '"+script.get(0).first+"' is not a valid trigger.");
+				}
+				else
+					Log.errOut("Scripting","MOBPROG Error: '"+script.get(0).first+"' is not a valid trigger.");
+				scripts.remove(thisScriptIndex);
+				thisScriptIndex--;
+				break;
 			case 5: // rand_Prog
 				if((!mob.amDead())&&canTrigger(5))
 				{

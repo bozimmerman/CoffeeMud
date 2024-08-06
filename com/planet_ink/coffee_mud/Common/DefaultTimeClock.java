@@ -638,7 +638,7 @@ public class DefaultTimeClock implements TimeClock
 	{
 		if(getYear()!=C.getYear())
 			return getYear()>C.getYear();
-		if(getMonth()!=C.getYear())
+		if(getMonth()!=C.getMonth())
 			return getMonth()>C.getMonth();
 		if(getDayOfMonth()!=C.getDayOfMonth())
 			return getDayOfMonth()>C.getDayOfMonth();
@@ -652,7 +652,7 @@ public class DefaultTimeClock implements TimeClock
 	{
 		if(getYear()!=C.getYear())
 			return getYear()<C.getYear();
-		if(getMonth()!=C.getYear())
+		if(getMonth()!=C.getMonth())
 			return getMonth()<C.getMonth();
 		if(getDayOfMonth()!=C.getDayOfMonth())
 			return getDayOfMonth()<C.getDayOfMonth();
@@ -987,9 +987,20 @@ public class DefaultTimeClock implements TimeClock
 		{
 			date = period.substring(0,x).trim().split("/");
 			final String clockName =  period.substring(x+1).trim();
-			final TimeClock foundClock = CMLib.map().getClockCache().get(clockName);
-			if(foundClock != null)
-				C = (TimeClock)foundClock.copyOf();
+			if((clockName.length()>1)
+			&&(date.length==3)
+			&&(clockName.endsWith("h"))
+			&&(CMath.isInteger(clockName.substring(0,clockName.length()-1))))
+			{
+				date = Arrays.copyOf(date, 4);
+				date[3]=clockName.substring(0,clockName.length()-1);
+			}
+			else
+			{
+				final TimeClock foundClock = CMLib.map().getClockCache().get(clockName);
+				if(foundClock != null)
+					C = (TimeClock)foundClock.copyOf();
+			}
 		}
 		if(C == null)
 			C = (TimeClock)this.copyOf();

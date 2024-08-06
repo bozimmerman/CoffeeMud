@@ -2928,23 +2928,30 @@ public class MOBloader
 			final Ability thisAbility=mob.fetchAbility(a);
 			if((thisAbility!=null)&&(thisAbility.isSavable()))
 			{
-				int proficiency=thisAbility.proficiency();
-				final Ability effectA=mob.fetchEffect(thisAbility.ID());
-				if(effectA!=null)
+				try
 				{
-					if((effectA.isSavable())&&(!effectA.canBeUninvoked())&&(!effectA.isAutoInvoked()))
-						proficiency=proficiency-200;
+					int proficiency=thisAbility.proficiency();
+					final Ability effectA=mob.fetchEffect(thisAbility.ID());
+					if(effectA!=null)
+					{
+						if((effectA.isSavable())&&(!effectA.canBeUninvoked())&&(!effectA.isAutoInvoked()))
+							proficiency=proficiency-200;
+					}
+					H.add(thisAbility.ID());
+					final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
+					+") values ('"+mob.Name()+"','"+thisAbility.ID()+"',"+proficiency+",?)";
+					if(!useBulkInserts)
+						statements.add(new DBPreparedBatchEntry(sql,thisAbility.text()));
+					else
+					{
+						final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,thisAbility.text());
+						if(entry != null)
+							statements.add(entry);
+					}
 				}
-				H.add(thisAbility.ID());
-				final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
-				+") values ('"+mob.Name()+"','"+thisAbility.ID()+"',"+proficiency+",?)";
-				if(!useBulkInserts)
-					statements.add(new DBPreparedBatchEntry(sql,thisAbility.text()));
-				else
+				catch(final Exception e)
 				{
-					final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,thisAbility.text());
-					if(entry != null)
-						statements.add(entry);
+					Log.errOut(e);
 				}
 			}
 		}
@@ -2953,15 +2960,22 @@ public class MOBloader
 			final Ability A=a.nextElement();
 			if((A!=null)&&(!H.contains(A.ID()))&&(A.isSavable())&&(!A.canBeUninvoked()))
 			{
-				final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
-				+") values ('"+mob.Name()+"','"+A.ID()+"',"+Integer.MAX_VALUE+",?)";
-				if(!useBulkInserts)
-					statements.add(new DBPreparedBatchEntry(sql,A.text()));
-				else
+				try
 				{
-					final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,A.text());
-					if(entry != null)
-						statements.add(entry);
+					final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
+					+") values ('"+mob.Name()+"','"+A.ID()+"',"+Integer.MAX_VALUE+",?)";
+					if(!useBulkInserts)
+						statements.add(new DBPreparedBatchEntry(sql,A.text()));
+					else
+					{
+						final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,A.text());
+						if(entry != null)
+							statements.add(entry);
+					}
+				}
+				catch(final Exception e)
+				{
+					Log.errOut(e);
 				}
 			}
 		}
@@ -2970,33 +2984,47 @@ public class MOBloader
 			final Behavior B=e.nextElement();
 			if((B!=null)&&(B.isSavable()))
 			{
+				try
+				{
+					final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
+					+") values ('"+mob.Name()+"','"+B.ID()+"',"+(Integer.MIN_VALUE+1)+",?"
+					+")";
+					if(!useBulkInserts)
+						statements.add(new DBPreparedBatchEntry(sql,B.getParms()));
+					else
+					{
+						final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,B.getParms());
+						if(entry != null)
+							statements.add(entry);
+					}
+				}
+				catch(final Exception er)
+				{
+					Log.errOut(er);
+				}
+			}
+		}
+		try
+		{
+			final String scriptStuff = CMLib.coffeeMaker().getGenScriptsXML(mob,true);
+			if(scriptStuff.length()>0)
+			{
 				final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
-				+") values ('"+mob.Name()+"','"+B.ID()+"',"+(Integer.MIN_VALUE+1)+",?"
+				+") values ('"+mob.Name()+"','ScriptingEngine',"+(Integer.MIN_VALUE+1)+",?"
 				+")";
 				if(!useBulkInserts)
-					statements.add(new DBPreparedBatchEntry(sql,B.getParms()));
+					statements.add(new DBPreparedBatchEntry(sql,scriptStuff));
 				else
 				{
-					final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,B.getParms());
+					final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,scriptStuff);
 					if(entry != null)
 						statements.add(entry);
 				}
 			}
 		}
-		final String scriptStuff = CMLib.coffeeMaker().getGenScriptsXML(mob,true);
-		if(scriptStuff.length()>0)
+		catch(final Exception e)
 		{
-			final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
-			+") values ('"+mob.Name()+"','ScriptingEngine',"+(Integer.MIN_VALUE+1)+",?"
-			+")";
-			if(!useBulkInserts)
-				statements.add(new DBPreparedBatchEntry(sql,scriptStuff));
-			else
-			{
-				final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,scriptStuff);
-				if(entry != null)
-					statements.add(entry);
-			}
+			Log.errOut(e);
 		}
 		if((bulkSQL.length()>0) && useBulkInserts)
 			statements.add(new DBPreparedBatchEntry(bulkSQL.toString(),bulkClobs.toArray(new String[0])));
