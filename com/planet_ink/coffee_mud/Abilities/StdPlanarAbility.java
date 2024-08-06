@@ -100,6 +100,9 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 	protected int						hardBumpLevel	= 0;
 	protected CompiledFormula			levelFormula	= null;
 	protected final Map<String,long[]>	recentVisits	= new TreeMap<String,long[]>();
+	protected String					overrideCastMsg	= null;
+	protected String					overrideFotMsg	= null;
+	protected String					overrideFinMsg	= null;
 
 	protected final static long			hardBumpTimeout	= (60L * 60L * 1000L);
 
@@ -1330,6 +1333,11 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected, affectableStats);
+		if(affected instanceof Exit)
+		{
+
+		}
+		else
 		if(this.specFlags!=null)
 		{
 			if(this.specFlags.contains(PlanarSpecFlag.ALLBREATHE))
@@ -1428,6 +1436,11 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
+		if(affected instanceof Exit)
+		{
+
+		}
+		else
 		if(msg.targetMinor()==CMMsg.TYP_NEWROOM)
 		{
 			if((msg.target() instanceof Room)
@@ -1446,6 +1459,24 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
+		if(affected instanceof Exit)
+		{
+			if(((msg.targetMinor()==CMMsg.TYP_ENTER)
+				&&((msg.tool()==affected)||(msg.target()==affected)))
+			||((msg.targetMinor()==CMMsg.TYP_SIT)&&(msg.target()==affected)))
+			{
+				final StdPlanarAbility spellA = (StdPlanarAbility)CMClass.getAbility("Spell_Planeshift");
+				final List<String> cmds = new XVector<String>(planarName);
+				if(spellA != null)
+				{
+					spellA.overrideCastMsg="";
+					spellA.overrideFotMsg=L("<S-NAME> disappear(s) into @x1.",affected.name(msg.source()));
+					spellA.invoke(msg.source(), cmds, msg.source(), true, msg.source().phyStats().level());
+					return false;
+				}
+			}
+		}
+		else
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WEAPONATTACK:
@@ -1906,7 +1937,8 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			final boolean success=proficiencyCheck(mob,0,auto);
 			if(success)
 			{
-				final CMMsg msg=CMClass.getMsg(travelM,null,this,CMMsg.MASK_MOVE|verbalCastCode(travelM,null,auto),castingMessage(travelM, auto));
+				final String msgStr = (overrideCastMsg!=null)?overrideCastMsg:castingMessage(travelM, auto);
+				final CMMsg msg=CMClass.getMsg(travelM,null,this,CMMsg.MASK_MOVE|verbalCastCode(travelM,null,auto),msgStr);
 				if(travelM.location().okMessage(travelM,msg))
 				{
 					travelM.location().send(travelM,msg);
@@ -2168,10 +2200,11 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			for (final MOB follower : h)
 			{
 				final boolean invisible = !CMLib.flags().isSeeable(follower);
+				final String foutMsgStr = this.overrideFotMsg != null ? this.overrideFotMsg : (invisible?"":L("<S-NAME> fade(s) away."));
+				final String finMsgStr = this.overrideFinMsg != null ? this.overrideFinMsg : (invisible?"":L("<S-NAME> fade(s) into view."));
 				final CMMsg enterMsg=CMClass.getMsg(follower,target,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,
-						invisible?"":("<S-NAME> fade(s) into view.")+CMLib.protocol().msp("appear.wav",10));
-				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,
-						invisible?"":L("<S-NAME> fade(s) away."));
+						finMsgStr+CMLib.protocol().msp("appear.wav",10));
+				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC, foutMsgStr);
 				if(thisRoom.okMessage(follower,leaveMsg)
 				&&(follower.okMessage(follower, enterMsg))
 				&&target.okMessage(follower,enterMsg))

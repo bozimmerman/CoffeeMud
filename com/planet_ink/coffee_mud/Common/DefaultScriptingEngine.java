@@ -5639,10 +5639,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					{
 						final Room R=CMLib.map().roomLocation(E);
+						final String uarg2=arg2.toUpperCase().trim();
 						if(R==null)
 							returnable=false;
 						else
-						if(CMClass.classID(R).toUpperCase().indexOf(arg2.toUpperCase())>=0)
+						if((CMClass.classID(R).toUpperCase().indexOf(uarg2)>=0)
+						||((R.domainType()<Room.INDOORS)
+							&&uarg2.startsWith("OUTDOOR")||(Room.DOMAIN_OUTDOOR_DESCS[R.domainType()].indexOf(uarg2)>=0))
+						||((R.domainType()>=Room.INDOORS)
+							&&uarg2.startsWith("OUTDOOR")||(Room.DOMAIN_INDOORS_DESCS[R.domainType()&~Room.INDOORS].indexOf(uarg2)>=0)))
 							returnable=true;
 						else
 							returnable=false;

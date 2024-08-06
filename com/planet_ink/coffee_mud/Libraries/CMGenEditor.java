@@ -10336,7 +10336,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				final ScriptingEngine SE=e.nextElement();
 				if(SE!=null)
+				if(SE.defaultQuestName().length()>0)
 					behaviorstr+=b+":"+SE.defaultQuestName()+", ";
+				else
+				if((showFlag==showNumber)||(showFlag<=-999))
+					behaviorstr+=b+":"+CMStrings.ellipse(SE.getScript(),200)+", ";
+				else
+					behaviorstr+=b+":"+CMStrings.ellipse(SE.getScript(),40)+", ";
 			}
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);

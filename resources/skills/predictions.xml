@@ -24,7 +24,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			RETURN A benefactor from the shadows will bestow a modest gift upon you and slip away unseen.
 		~
 
-		RAND_PROG 25
+		RAND_PROG 50
 			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS != 3)
 				RETURN
 			ENDIF
@@ -38,7 +38,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			RETURN Beware the shadows that follow you-- they yearn for your coin.
 		~
 
-		RAND_PROG 25
+		RAND_PROG 50
 			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS != 3)
 				RETURN
 			ENDIF
@@ -50,11 +50,28 @@ See guides/RandomAreas.html for information about documents of this type.
 			ENDIF 
 		~
 	</string>
+	<string id="meh_shadow_portal">
+		FUNCTION_PROG Prediction
+			RETURN You will find a magical portal will transport you to a realm of shadows and secrets.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS != 3) OR INLOCALE(\$i INDOORS) OR INLOCALE(\$i WATER)
+				RETURN
+			ENDIF
+			MPOLOADROOM GenPortal
+			MPGSET \$b NAME a swirling magical portal
+			MPGSET \$b DISPLAY a swirling magical portal is here
+			MPGSET \$b DESCRIPTION You can't quite see what is beyond the swirling curtain.
+			MPBEHAVE Decay \$b remain=60 notrigger
+			MPAFFECT property:Spell_Planeshift \$b 999999ticks Negative
+			MPECHO A swirling magical portal appears!
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
 	<!--
-You will find a magical portal will transport you to a realm of shadows and secrets.
-	-- shadow planes exist, right?
 You will be tested by fire, but you will emerge stronger.
-	-- thinking hit by red dragon ambush, but end up with a +str adjuster
+	-- thinking hit by red dragon ambush, but end up with a +str adjuster?
 A mystical herb will save your life at a critical moment.
 	-- find a rare herb with the deaths door effect
 A powerful artifact will come into your possession, but it may be cursed.

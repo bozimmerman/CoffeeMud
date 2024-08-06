@@ -39,6 +39,8 @@
  37. New thief skills: Runecasting
  38. Prophecy prayer will now also use new random predictions file
  39. New property: ScriptLater for, well, scripting later
+ 40. Generate command now supports object type SCRIPTS
+ 41. StdPlanarAbility, etc now works on exits and portals.
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

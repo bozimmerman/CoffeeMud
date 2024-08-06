@@ -51,6 +51,7 @@ public class Generate extends StdCommand
 			{"ROOM",CMClass.CMObjectType.LOCALE},
 			{"ITEM",CMClass.CMObjectType.ITEM},
 			{"QUEST",CMClass.CMObjectType.WEBMACRO},
+			{"SCRIPT",CMClass.CMObjectType.BEHAVIOR}
 	});
 
 	private final String[]	access	= I(new String[] { "GENERATE" });
@@ -87,6 +88,7 @@ public class Generate extends StdCommand
 		oldR.showHappens(CMMsg.MSG_OK_VISUAL,L("A new place materializes to the @x1",dirName));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
@@ -145,10 +147,12 @@ public class Generate extends StdCommand
 				return false;
 			}
 		}
+		if(codeI == CMClass.CMObjectType.BEHAVIOR)
+			objectType="STRING";
 		int direction=-1;
 		if((codeI==CMClass.CMObjectType.AREA)||(codeI==CMClass.CMObjectType.LOCALE))
 		{
-			final String possDir=commands.get(commands.size()-1);
+			final String possDir=commands.remove(commands.size()-1);
 			direction = CMLib.directions().getGoodDirectionCode(possDir);
 			if(direction<0)
 			{
@@ -159,6 +163,17 @@ public class Generate extends StdCommand
 			{
 				final String dirName=CMLib.directions().getDirectionName(direction, CMLib.flags().getInDirType(mob));
 				mob.tell(L("A room already exists in direction @x1. Action aborted.",dirName));
+				return false;
+			}
+		}
+		PhysicalAgent target=null;
+		if(codeI==CMClass.CMObjectType.BEHAVIOR)
+		{
+			final String possTarget=commands.remove(commands.size()-1);
+			target = mob.location().fetchFromMOBRoomFavorsMOBs(mob, null, possTarget, Filterer.ANYTHING);
+			if(target == null)
+			{
+				mob.tell(L("When creating an script, the last argument must be the object to apply it to."));
 				return false;
 			}
 		}
@@ -204,6 +219,15 @@ public class Generate extends StdCommand
 			switch(codeI)
 			{
 			case LIBRARY:
+			{
+				CMLib.percolator().preDefineReward(piece, definedIDs);
+				CMLib.percolator().defineReward(piece,definedIDs);
+				final String s=CMLib.percolator().findString("STRING", piece, definedIDs);
+				if(s!=null)
+					V.add(s);
+				break;
+			}
+			case BEHAVIOR:
 			{
 				CMLib.percolator().preDefineReward(piece, definedIDs);
 				CMLib.percolator().defineReward(piece,definedIDs);
@@ -315,6 +339,13 @@ public class Generate extends StdCommand
 							}
 						}
 						CMLib.quests().save();
+					}
+					else
+					if(codeI==CMObjectType.BEHAVIOR)
+					{
+						final ScriptingEngine engE = (ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+						engE.setScript((String)V.get(v));
+						target.addScript(engE);
 					}
 					else
 						mob.tell((String)V.get(v));
