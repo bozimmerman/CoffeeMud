@@ -25,7 +25,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS != 3)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INROOM(ANYSPECIAL)
 				RETURN
 			ENDIF
 			MPECHOAT \$i You seem to have more money than you thought.  Weird.
@@ -39,7 +39,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS != 3)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INROOM(ANYSPECIAL)
 				RETURN
 			ENDIF
 			MPSETVAR \$i LOSTMONEY $RANDNUM
@@ -56,7 +56,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS != 3) OR INLOCALE(\$i INDOORS) OR INLOCALE(\$i WATER)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
 				RETURN
 			ENDIF
 			MPOLOADROOM GenPortal
@@ -69,19 +69,192 @@ See guides/RandomAreas.html for information about documents of this type.
 			MPSCRIPT \$i DELETE *
 		~
 	</string>
+	<string id="bad_dragon_fireball">
+		FUNCTION_PROG Prediction
+			RETURN You will be tested by fire, but you will emerge stronger.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+				RETURN
+			ENDIF
+			MPECHOAT \$i ^ZYou see a red dragon circling far overhead.  It spots you!!^.^?
+			MPMLOAD RedDragon
+			MPGSET \$b REJUV 0
+			MPFORCE \$b MPCAST Firebreath \$i
+			MPPURGE \$b
+			MPAFFECT Spell_GiantStrength \$i
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="good_death_herb">
+		FUNCTION_PROG Prediction
+			RETURN A mystical herb will save your life at a critical moment.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+				RETURN
+			ENDIF
+			MPECHOAT \$i You spot a strange herb growing nearby.
+			MPOLOADROOM GenPill
+			MPGSET \$b NAME a strange herb
+			MPGSET \$b DISPLAY a strange herb is growing here
+			MPGSET \$b DESCRIPTION You've never seen anything like it.
+			MPGSET \$b READABLETEXT Prayer_DeathsDoor
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="bad_powerful_artifact">
+		FUNCTION_PROG Prediction
+			RETURN A powerful artifact will come into your possession, but it may be cursed.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+				RETURN
+			ENDIF
+			MPECHOAT \$i You spot a strange ring nearby, and are compelled to pick it up and wear it.
+			MPOLOADROOM GenArmor
+			MPGSET \$b NAME a simple gold ring
+			MPGSET \$b DISPLAY a simple gold ring sits here
+			MPGSET \$b DESCRIPTION It appears to have writing inside, but you can't read it.
+			MPGSET \$b PROPERWORN left finger,right finger
+			MPGSET \$b MATERIAL GOLD
+			MPGSET \$b ISREMOVABLE false
+			MPGSET \$b ISDROPPABLE false
+			MPAFFECT Prop_WearSpellCast \$b Spell_Invisibility\;Spell_Nightmare
+			MPFORCE \$i get \$b
+			MPFORCE \$i wear \$b
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="good_timestop_wand">
+		FUNCTION_PROG Prediction
+			RETURN You will find a relic that can alter the flow of time.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+				RETURN
+			ENDIF
+			MPECHOAT \$i You spot a strange stick with runes scratched into it.
+			MPOLOADROOM GenWand
+			MPGSET \$b NAME a strange stick
+			MPGSET \$b DISPLAY a strange stick is here
+			MPGSET \$b MATERIAL OAK
+			MPGSET \$b DESCRIPTION It appears to have tiny runes and tiny clocks etched into it.
+			MPGSET \$b SPELL Spell_TimeStop
+			MPGSET \$b MAXUSES 1
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="bad_power_ring">
+		FUNCTION_PROG Prediction
+			RETURN Beware the enchanted ring; it holds both power and peril.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+				RETURN
+			ENDIF
+			MPECHOAT \$i You spot a pretty ring on the ground.
+			MPOLOADROOM GenWand
+			MPGSET \$b NAME a pretty ring
+			MPGSET \$b DISPLAY a pretty ring sits here
+			MPGSET \$b DESCRIPTION It seems pretty simple.
+			MPGSET \$b PROPERWORN left finger,right finger
+			MPGSET \$b MATERIAL SILVER
+			MPGSET \$b ISREMOVABLE false
+			MPAFFECT Prop_WearAdjuster \$b ARMOR-30 ALLSAVES-10
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="good_summon_rain_hat">
+		FUNCTION_PROG Prediction
+			RETURN A powerful artifact will grant you the ability to control the weather.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+				RETURN
+			ENDIF
+			MPECHOAT \$i You spot a wide brimmed hat on the ground.
+			MPOLOADROOM GenArmor
+			MPGSET \$b NAME a wide brimmed hat
+			MPGSET \$b DISPLAY a wide brimmed hat lies here
+			MPGSET \$b DESCRIPTION It looks water proof!
+			MPGSET \$b PROPERWORN head
+			MPGSET \$b MATERIAL PIPEWEED
+			MPAFFECT Prop_WearSpellCast \$b Chant_SummonRain
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_nonsense1">
+		FUNCTION_PROG Prediction
+			RETURN Beware the shadows that follow you; they may be your undoing if you’re not cautious.
+		~
+		
+		ONCE_PROG
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_nonsense2">
+		FUNCTION_PROG Prediction
+			RETURN In the darkest hour, look to the light within yourself to guide your way.
+		~
+		
+		ONCE_PROG
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_nonsense3">
+		FUNCTION_PROG Prediction
+			RETURN A great treasure awaits you, but it comes with a perilous journey.
+		~
+		
+		ONCE_PROG
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_nonsense4">
+		FUNCTION_PROG Prediction
+			RETURN An ancient prophecy speaks of your coming; fulfill it, and greatness awaits.
+		~
+		
+		ONCE_PROG
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_nonsense5">
+		FUNCTION_PROG Prediction
+			RETURN You will encounter a crossroads; the path you choose will shape your destiny.
+		~
+		
+		ONCE_PROG
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_nonsense6">
+		FUNCTION_PROG Prediction
+			RETURN A decision made in haste will come back to challenge you. Take your time and think carefully.
+		~
+		
+		ONCE_PROG
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_nonsense7">
+		FUNCTION_PROG Prediction
+			RETURN A distant land calls to you; heed its call for great adventure and discovery.
+		~
+		
+		ONCE_PROG
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
 	<!--
-You will be tested by fire, but you will emerge stronger.
-	-- thinking hit by red dragon ambush, but end up with a +str adjuster?
-A mystical herb will save your life at a critical moment.
-	-- find a rare herb with the deaths door effect
-A powerful artifact will come into your possession, but it may be cursed.
-	-- pretty straight forward
-You will encounter a crossroads; the path you choose will shape your destiny.
-	-- any room with 3 road exits is a crossroads, right?
-You will find a relic that can alter the flow of time.
-	-- a relic that does move the sky, once
-A powerful artifact will grant you the ability to control the weather.
-	-- a relic that does summon rain, once
+
 A forgotten song will awaken a slumbering giant.
 	-- wait to see a giant, make them sleep, then narrate a song playing that wakes him.
 A powerful charm will protect you from harm and bring you good fortune.
@@ -100,10 +273,6 @@ You will be given a quest by a powerful deity.
 	-- Sounds straight forward.
 The fate of a lost soul rests with you; bring them peace.
 	-- a ghost appears and asks you to kill them.
-Beware the enchanted ring; it holds both power and peril.
-	-- a ring of protection + 3, Prop_WearAdjuster with many -SAVES, not removable
-You will soon find an item of great value, but it will come with a heavy burden.
-	-- a really heavy block of gold
 Beware of the shadowy figure lurking in the forest.
 	-- a shadoy figure appears next time player is in forest or woods
 The winds of change are blowing; a significant transformation is on the horizon.
@@ -123,8 +292,11 @@ You will be chosen to lead a great army into battle.
 A portal to another world will open; step through with caution.
 	-- portal to a random area opens
 A hidden grove will provide you with a place of refuge and healing.
-	-- portal 
+	-- portal to nofantasy plains with no items
 A mystical relic will grant you the ability to communicate with the dead.
+	-- wand of speak with dead
+You will be given the chance to travel to another plane of existence.
+	-- mage shows up and asks for a companion to another plane
 
 *******  Possibilities Below******
 You will find a map that leads to a place of great power.
@@ -135,9 +307,6 @@ You will face a trial of strength and will, and how you respond will shape your 
 A mysterious stranger will offer you a deal; consider it carefully.
 
 ******* Pure Unscripted Nonsense Below ********
-Beware the shadows that follow you; they may be your undoing if you’re not cautious.
-In the darkest hour, look to the light within yourself to guide your way.
-A great treasure awaits you, but it comes with a perilous journey.
 
 ******* Unsorted ********
 A stranger will offer you a choice, but only one path will lead to your true destiny.
@@ -146,7 +315,6 @@ An old enemy will reappear, seeking redemption or revenge. Prepare yourself for 
 A hidden passage will reveal itself to you soon, leading to untold treasures or dangers.
 You will encounter a wise being who will offer you cryptic advice. Heed their words carefully.
 An unexpected ally will arrive at a critical moment, but their motives may not be as clear as they seem.
-A decision made in haste will come back to challenge you. Take your time and think carefully.
 The stars are aligned in your favor, but only if you are brave enough to seize the opportunity.
 A force of nature will intervene in your quest; respect its power and adapt to its changes.
 A cherished memory will come to life, offering you both guidance and a test of faith.
@@ -158,7 +326,6 @@ The stars align in your favor; a time of great luck is upon you.
 A forgotten spellbook will soon come into your possession, unlocking untold power.
 Tread carefully near the old ruins; ancient spirits guard secrets there.
 Your next battle will be your most challenging yet, but victory will bring great rewards.
-A distant land calls to you; heed its call for great adventure and discovery.
 The one you trust most may soon deceive you; stay vigilant.
 A mystical creature will offer you guidance; listen to its wisdom.
 The answer you seek lies within the depths of an enchanted cave.
@@ -171,7 +338,6 @@ You will find yourself in the middle of a great conflict; your choices will dete
 A riddle must be solved to unlock a powerful secret.
 The spirits of the forest whisper your name; they have chosen you for a great task.
 A mirror will show you a glimpse of your future.
-An ancient prophecy speaks of your coming; fulfill it, and greatness awaits.
 A guardian will grant you a boon if you prove your worth.
 You will find an ally in the most unlikely of places.
 A hidden door will lead you to untold treasures.
@@ -261,7 +427,6 @@ A hidden chamber will reveal a treasure trove of magical artifacts.
 You will be called upon to break a powerful curse that plagues the land.
 A mysterious figure will offer you a deal; accepting it will change your fate.
 A powerful relic will grant you the ability to control the elements.
-You will be given the chance to travel to another plane of existence.
 A mystical gemstone will reveal hidden truths when held up to the light.
 You will find a legendary weapon that was thought to be lost forever.
 A powerful enemy will challenge you; defeating them will bring you great honor.

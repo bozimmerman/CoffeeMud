@@ -5284,13 +5284,16 @@ function to modify the value of a faction.</p>
 
       <pre>mpforce [target] [command]<br /></pre>
 
-      <p>This command forces the
+      <p>This
+command forces the
 victim to do the designated command.
 The target can be a character variable or a keyword of a mob. This
 command has a lot of uses, but is mostly use in combat to do
 particularly nasty things, like force the player to heal the mob, etc.
 It can also be used to trigger other mobs by forcing them to perform a
-specific action which triggers an act_prog.</p>
+specific action which triggers an act_prog. &nbsp;If you need a neutral
+mob to, for example, cast a malicious spell, you can also MPFORCE $GOD
+...&nbsp;</p>
 
       <p>EXAMPLES:</p>
 
@@ -6726,8 +6729,15 @@ Operators</a></h3>
       <p>These operators are found
 in many of the functions below. Here
 are their meanings:</p>
-
-      <pre>== This operator means &#8216;equal to'<br />!= This operator means &#8216;not equal to'<br />&gt; This operator means &#8216;greater than'<br />&lt; This operator means &#8216;less than'<br />&gt;= This operator means &#8216;equal or greater than'<br />&lt;= This operator means &#8216;equal or less than'<br /></pre>
+      <pre>
+      == This operator means 'equal to'
+      != This operator means 'not equal to'
+      &gt; This operator means 'greater than'
+      &lt; This operator means 'less than'
+      &gt;= This operator means 'equal or greater than'
+      &lt;= This operator means 'equal or less than'
+      .in. This operator means 'is inside'.  For strings, it must be whole words.
+      </pre>
 
       <h3><a name="affected">affected</a></h3>
 
@@ -7297,12 +7307,15 @@ what we are after here.</p>
 
       <pre>inroom(target == roomcode)<br /></pre>
 
-      <p>This checks to see if the
+      <p>This
+checks to see if the
 target is in the room specified by
 the room code. The room code may be a room id, a mob name, or text from
 the rooms name or description. If you need to be need to find mobile
 mobs or items, you can include the mob or item name, followed by @
-followed by a room id or area name. The '==' may also be '!='.</p>
+followed by a room id or area name. The '==' may also be '!='.
+&nbsp;The roomcode can also be one of the special codes: BEACON,
+MYPROPERTY, ANYPROPERTY, or ANYSPECIAL.</p>
 
       <p>EXAMPLES:</p>
 

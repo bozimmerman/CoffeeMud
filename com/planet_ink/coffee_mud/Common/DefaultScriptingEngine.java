@@ -1154,7 +1154,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	protected boolean simpleEvalStr(final Environmental scripted, final String arg1, final String arg2, final String cmp, final String cmdName)
 	{
-		final int x=arg1.compareToIgnoreCase(arg2);
+		int x=arg1.compareToIgnoreCase(arg2);
 		final Integer SIGN=signH.get(cmp);
 		if(SIGN==null)
 		{
@@ -1177,6 +1177,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return (x < 0);
 		case SIGN_NTEQ:
 			return (x != 0);
+		case SIGN_IN:
+		{
+			x= arg2.indexOf(arg1);
+			if(x<0)
+				return false;
+			return ((x==0)||(!Character.isLetterOrDigit(arg2.charAt(x-1))))
+					&&((x>=arg2.length()-arg1.length())||(!Character.isLetterOrDigit(arg2.charAt(x+arg1.length()))));
+		}
 		default:
 			return (x == 0);
 		}
@@ -1184,7 +1192,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	protected boolean simpleEval(final Environmental scripted, final String arg1, final String arg2, final String cmp, final String cmdName)
 	{
-		final long val1=CMath.s_long(arg1.trim());
+		long val1=CMath.s_long(arg1.trim());
 		final long val2=CMath.s_long(arg2.trim());
 		final Integer SIGN=signH.get(cmp);
 		if(SIGN==null)
@@ -1208,6 +1216,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return (val1 < val2);
 		case SIGN_NTEQ:
 			return (val1 != val2);
+		case SIGN_IN:
+		{
+			val1 = arg2.indexOf(arg1);
+			if(val1<0)
+				return false;
+			return ((val1==0)||(!Character.isLetterOrDigit(arg2.charAt((int)val1-1))))
+					&&((val1>=arg2.length()-arg1.length())||(!Character.isLetterOrDigit(arg2.charAt((int)val1+arg1.length()))));
+
+		}
 		default:
 			return (val1 == val2);
 		}
@@ -1239,6 +1256,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return (val1 < val2);
 		case SIGN_NTEQ:
 			return (val1 != val2);
+		case SIGN_IN:
+			return (""+val2).indexOf(""+val1) >=0;
 		default:
 			return (val1 == val2);
 		}
@@ -5453,6 +5472,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						tt=parseSpecial3PartEval(eval,t);
 					String comp="==";
 					Environmental E=ctx.monster;
+					final Room mobLocR=CMLib.map().roomLocation(E);
 					String arg2;
 					if(signH.containsKey(tt[t+1]))
 					{
@@ -5463,22 +5483,45 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 						arg2=varify(ctx,tt[t+0]);
 					Room R=null;
-					if(arg2.startsWith("$"))
-						R=CMLib.map().roomLocation(this.getArgumentItem(arg2,ctx));
-					if(R==null)
-						R=getRoom(arg2,lastKnownLocation);
+					if(arg2.equalsIgnoreCase("BEACON"))
+						ctx.monster.getStartRoom();
+					else
+					if(arg2.equalsIgnoreCase("MYPROPERTY"))
+					{
+						if(CMLib.law().doesOwnThisLand(ctx.monster, mobLocR))
+							R=mobLocR;
+					}
+					else
+					if(arg2.equalsIgnoreCase("ANYPROPERTY"))
+					{
+						if(CMLib.law().getLandTitle(mobLocR)!=null)
+							R=mobLocR;
+					}
+					else
+					if(arg2.equalsIgnoreCase("ANYSPECIAL"))
+					{
+						if((ctx.monster.getStartRoom()==mobLocR)
+						||(CMLib.law().getLandTitle(mobLocR)!=null))
+							R=mobLocR;
+					}
+					else
+					{
+						if(arg2.startsWith("$"))
+							R=CMLib.map().roomLocation(getArgumentItem(arg2,ctx));
+						if(R==null)
+							R=getRoom(arg2,lastKnownLocation);
+					}
 					if(E==null)
 						returnable=false;
 					else
 					{
-						final Room R2=CMLib.map().roomLocation(E);
-						if((R==null)&&((arg2.length()==0)||(R2==null)))
+						if((R==null)&&((arg2.length()==0)||(mobLocR==null)))
 							returnable=true;
 						else
-						if((R==null)||(R2==null))
+						if((R==null)||(mobLocR==null))
 							returnable=false;
 						else
-							returnable=simpleEvalStr(ctx.scripted,CMLib.map().getExtendedRoomID(R2),CMLib.map().getExtendedRoomID(R),comp,"INROOM");
+							returnable=simpleEvalStr(ctx.scripted,CMLib.map().getExtendedRoomID(mobLocR),CMLib.map().getExtendedRoomID(R),comp,"INROOM");
 					}
 					break;
 				}
@@ -6483,25 +6526,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(arg3.equals("==")||arg3.equals("="))
 						returnable=val.equals(arg4);
 					else
-					if(arg3.equals("!=")||(arg3.contentEquals("<>")))
+					if(arg3.equals("!=")||(arg3.equals("<>")))
 						returnable=!val.equals(arg4);
 					else
-					if(arg3.equals(">"))
-						returnable=CMath.s_int(val.trim())>CMath.s_int(arg4.trim());
-					else
-					if(arg3.equals("<"))
-						returnable=CMath.s_int(val.trim())<CMath.s_int(arg4.trim());
-					else
-					if(arg3.equals(">="))
-						returnable=CMath.s_int(val.trim())>=CMath.s_int(arg4.trim());
-					else
-					if(arg3.equals("<="))
-						returnable=CMath.s_int(val.trim())<=CMath.s_int(arg4.trim());
-					else
-					{
-						logError(ctx.scripted,"VAR","Syntax",CMParms.combine(tt,t,t+tlen));
-						return returnable;
-					}
+						returnable=simpleEval(E, val, arg4, arg3, "VAR");
 					break;
 				}
 				case 41: // eval
@@ -6522,22 +6550,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(arg3.equals("!="))
 						returnable=!val.equals(arg4);
 					else
-					if(arg3.equals(">"))
-						returnable=CMath.s_int(val.trim())>CMath.s_int(arg4.trim());
-					else
-					if(arg3.equals("<"))
-						returnable=CMath.s_int(val.trim())<CMath.s_int(arg4.trim());
-					else
-					if(arg3.equals(">="))
-						returnable=CMath.s_int(val.trim())>=CMath.s_int(arg4.trim());
-					else
-					if(arg3.equals("<="))
-						returnable=CMath.s_int(val.trim())<=CMath.s_int(arg4.trim());
-					else
-					{
-						logError(ctx.scripted,"EVAL","Syntax",CMParms.combine(tt,t,t+tlen));
-						return returnable;
-					}
+						returnable=simpleEval(ctx.scripted, val, arg4, arg3, "EVAL");
 					break;
 				}
 				case 40: // number
@@ -12403,7 +12416,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tt==null)
 						return null;
 				}
-				final PhysicalAgent newTarget=getArgumentMOB(tt[1],ctx);
+				final PhysicalAgent newTarget;
+				if(tt[1].equalsIgnoreCase("$GOD"))
+					newTarget=CMLib.map().deity();
+				else
+					newTarget=getArgumentMOB(tt[1],ctx);
 				final String force=varify(ctx,tt[2]).trim();
 				if(newTarget!=null)
 				{

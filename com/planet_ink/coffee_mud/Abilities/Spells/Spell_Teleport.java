@@ -327,9 +327,12 @@ public class Spell_Teleport extends Spell
 			mob.location().send(mob,msg);
 			if(A == parentGenA)
 			{
-				final Spell_Teleport tA = (Spell_Teleport)beneficialAffect(mob, mob, asLevel, 0);
-				if(tA != null)
-					tA.returnToRoom = mob.location();
+				if(mob.fetchEffect(ID())==null)
+				{
+					final Spell_Teleport tA = (Spell_Teleport)beneficialAffect(mob, mob, asLevel, 0);
+					if(tA != null)
+						tA.returnToRoom = mob.location();
+				}
 			}
 			final List<MOB> h=properTargetList(mob,givenTarget,false);
 			if(h==null)
