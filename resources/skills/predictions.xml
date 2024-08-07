@@ -255,12 +255,16 @@ See guides/RandomAreas.html for information about documents of this type.
 	</string>
 	<!--
 
-A forgotten song will awaken a slumbering giant.
-	-- wait to see a giant, make them sleep, then narrate a song playing that wakes him.
-A powerful charm will protect you from harm and bring you good fortune.
-	-- saving throw charm with temporary life?
+A hidden grove will provide you with a place of refuge and healing.
+	-- portal to nofantasy plains with no items
+Beware of the shadowy figure lurking in the forest.
+	-- a shadoy figure appears next time player is in forest or woods
+You will encounter a magical beast that can change its form at will.
+	-- a druid doppleganger!
 You will find a key that unlocks a gate to another dimension.
 	-- one of those planar cube things?
+A powerful charm will protect you from harm and bring you good fortune.
+	-- saving throw charm with temporary life?
 You will be given the chance to rewrite a part of history.
 	-- Scholar approaches with a history book and asks to hire player to proofread it.  I'ts mostly blank.
 A powerful spell will grant you the ability to heal others.
@@ -273,8 +277,6 @@ You will be given a quest by a powerful deity.
 	-- Sounds straight forward.
 The fate of a lost soul rests with you; bring them peace.
 	-- a ghost appears and asks you to kill them.
-Beware of the shadowy figure lurking in the forest.
-	-- a shadoy figure appears next time player is in forest or woods
 The winds of change are blowing; a significant transformation is on the horizon.
 	-- a mystical wind blows through and casts 
 An ancient prophecy will come into play, influencing the outcome of your current endeavors.
@@ -291,12 +293,12 @@ You will be chosen to lead a great army into battle.
 	-- summon army is cast by the player
 A portal to another world will open; step through with caution.
 	-- portal to a random area opens
-A hidden grove will provide you with a place of refuge and healing.
-	-- portal to nofantasy plains with no items
 A mystical relic will grant you the ability to communicate with the dead.
 	-- wand of speak with dead
 You will be given the chance to travel to another plane of existence.
 	-- mage shows up and asks for a companion to another plane
+A forgotten song will awaken a slumbering giant.
+	-- wait to see a giant, make them sleep, then narrate a song playing that wakes him.
 
 *******  Possibilities Below******
 You will find a map that leads to a place of great power.
@@ -346,7 +348,6 @@ A song will unlock a long-forgotten memory, guiding you to your next quest.
 You will gain the favor of a powerful deity, but it comes at a cost.
 The ocean's depths hide a secret that only you can uncover.
 A fierce rivalry will test your resolve and skill.
-You will encounter a magical beast that can change its form at will.
 An ancient map will lead you to a place of great power.
 A powerful enemy plots against you; uncover their plans before it's too late.
 You will be given a choice between love and power; the decision will shape your destiny.
