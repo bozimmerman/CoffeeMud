@@ -5178,7 +5178,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				final Ability A=M.fetchAbility(a);
 				if((A!=null)&&(A.isSavable()))
-					abilitiestr+=A.ID()+", ";
+				{
+					abilitiestr+=A.ID();
+					if(A.text().length()>0)
+						abilitiestr+="(), ";
+					else
+						abilitiestr+=", ";
+				}
 			}
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
@@ -5194,6 +5200,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities(),-1).toString());
 				else
 				{
+					String parms = null;
+					final int x = behave.indexOf('(');
+					if((x>0)&&(behave.endsWith(")")))
+					{
+						parms = behave.substring(x+1,behave.length()-1);
+						behave = behave.substring(0,x);
+					}
 					Ability chosenOne=null;
 					for(int a=0;a<M.numAbilities();a++)
 					{
@@ -5217,6 +5230,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							chosenOne=null;
 						if(chosenOne!=null)
 						{
+							if(parms == null)
+								parms = mob.session().prompt(L("Enter any arguments: "),"");
 							final boolean alreadyHasIt=(M.fetchAbility(chosenOne.ID())!=null);
 							if(!alreadyHasIt)
 								mob.tell(L("@x1 added.",chosenOne.ID()));
@@ -5226,6 +5241,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							{
 								chosenOne=(Ability)chosenOne.copyOf();
 								M.addAbility(chosenOne);
+								if((parms != null)&&(parms.length()>0))
+									chosenOne.setMiscText(parms);
 								chosenOne.setProficiency(75);
 								chosenOne.autoInvocation(M, false);
 							}

@@ -3637,11 +3637,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 	protected boolean testCondition(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String condition, final XMLTag piece, final Map<String,Object> defined) throws PostProcessException
 	{
+		if((condition == null)||(condition.length()==0))
+			return true;
 		final Map<String,Object> fixed=new HashMap<String,Object>();
 		try
 		{
-			if(condition == null)
-				return true;
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MudPercolator","START-TEST "+piece.tag()+": "+condition);
 			final List<Varidentifier> ids=parseVariables(condition);
@@ -3714,7 +3714,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			finalDefined.putAll(defined);
 			finalDefined.putAll(fixed);
 			final boolean test= CMStrings.parseStringExpression(condition.toUpperCase(),finalDefined, true);
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) //TODO:BZ:FIX
 				Log.debugOut("MudPercolator","TEST "+piece.tag()+": "+condition+"="+test);
 			return test;
 		}

@@ -86,8 +86,8 @@ See guides/RandomAreas.html for information about documents of this type.
 		<TITLE>$a_streetprefix $_lair_hallways_street_name</TITLE>
 		<DESCRIPTION>$lair_interior_desc</DESCRIPTION>
 		<EXIT class="Open" />
-		<MOB condition="1?3=1" select="any-1" insert="lair_mobs" />
-		<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+		<MOB condition="(1?3=1) and ($pop_mobs!='false')" select="any-1" insert="lair_mobs" />
+		<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 	</ROOM>
 </ROOM>
 
@@ -115,8 +115,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
-			<MOB select="repeat-2?6" insert="nasty_lair_kid" />
-			<MOB class="GenMob" level="($level_range) / 2" id="nasty_lair_kid" race="$nasty_picked_race" gender="$anygender">
+			<MOB select="repeat-2?6" insert="nasty_lair_kid" condition="$pop_mobs!='false'"/>
+			<MOB class="GenMob" level="($level_range) / 2" id="nasty_lair_kid" race="$nasty_picked_race" gender="$anygender" condition="$pop_mobs!='false'">
 				<NAME select="pick-1">
 					<NAME pickweight="5">(a(n)) $adj_nasty_animal ${l:mob_race} child</NAME>
 					<NAME pickweight="1">a ${l:mob_race} kid</NAME>
@@ -143,17 +143,17 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="Scavenger" parms="" />
 					<BEHAVIOR class="CombatAbilities" parms="" />
 				</BEHAVIOR>
-				<ITEM class="GenArmor" LEVEL="$mob_level">
+				<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME select="any-1"><NAME>(a(n)) $adj_smallnastyragged diaper</NAME><NAME>(a(n)) $adj_smallnastyragged diaper</NAME></NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>WAIST</PROPERWORN>
 				</ITEM>
-				<ITEM class="GenItem" LEVEL="$mob_level" condition="1?2=1">
+				<ITEM class="GenItem" LEVEL="$mob_level" condition="(1?2=1) and ($pop_items!='false')">
 					<NAME select="any-1"><NAME>(a(n)) $adj_smallnastyragged toy</NAME><NAME>(a(n)) $adj_smallnastyragged toy</NAME></NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>OAK</MATERIAL>
 				</ITEM>
-				<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+				<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 			</MOB>
-			<MOB class="GenMob" level="(1.10 * ($level_range)) + 1" race="$nasty_picked_race" gender="F">
+			<MOB class="GenMob" level="(1.10 * ($level_range)) + 1" race="$nasty_picked_race" gender="F" condition="$pop_mobs!='false'">
 				<NAME>a ${l:mob_race} nanny</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
@@ -177,7 +177,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="Scavenger" parms="" />
 					<BEHAVIOR class="CombatAbilities" parms="" />
 				</BEHAVIOR>
-				<ITEM select="pick-1?3">
+				<ITEM select="pick-1?3" condition="$pop_items!='false'">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
 						<NAME select="any-1"><NAME>(a(n)) $adj_smallnastyragged leather hat</NAME><NAME>(a(n)) $adj_smallnastyragged hat</NAME></NAME>
 						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
@@ -195,7 +195,7 @@ See guides/RandomAreas.html for information about documents of this type.
 						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>ARMS</PROPERWORN>
 					</ITEM>
 				</ITEM>
-				<ITEM select="pick-1">
+				<ITEM select="pick-1" condition="$pop_items!='false'">
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 						<NAME>a sharp $adj_smallnastyragged stick</NAME>
 						<DISPLAY>$item_name has been left here</DISPLAY>
@@ -204,9 +204,9 @@ See guides/RandomAreas.html for information about documents of this type.
 						<WEAPONTYPE>PIERCING</WEAPONTYPE>
 					</ITEM>
 				</ITEM>
-				<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+				<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 			</MOB>
-			<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE select="any-1">
@@ -224,8 +224,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
-			<MOB select="repeat-1?3" insert="nasty_lair_guard" />
-			<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+			<MOB select="repeat-1?3" insert="nasty_lair_guard" condition="$pop_mobs!='false'"/>
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$theme='kobolds' or $theme='troglodytes' or $theme='gnolls' or $theme='hobgoblins' or $theme='goblins' or $theme='random'" predefine="nasty_picked_race=${l:nasty_race_name}">
 			<TITLE>a $nasty_picked_race workshop</TITLE>
@@ -252,8 +252,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
-			<MOB select="repeat-1?3" insert="nasty_lair_tinkerer" />
-			<MOB class="GenMob" level="$level_range" id="nasty_lair_tinkerer" race="$nasty_picked_race" gender="$anygender">
+			<MOB select="repeat-1?3" insert="nasty_lair_tinkerer" condition="$pop_mobs!='false'"/>
+			<MOB class="GenMob" level="$level_range" id="nasty_lair_tinkerer" race="$nasty_picked_race" gender="$anygender" condition="$pop_mobs!='false'">
 				<NAME>a ${l:mob_race} tinkerer</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
@@ -278,7 +278,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="Scavenger" parms="" />
 					<BEHAVIOR class="CombatAbilities" parms="" />
 				</BEHAVIOR>
-				<ITEM select="pick-1?3">
+				<ITEM select="pick-1?3" condition="$pop_items!='false'">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
 						<NAME select="any-1"><NAME>(a(n)) $adj_smallnastyragged pointy leather cap</NAME><NAME>(a(n)) $adj_smallnastyragged pointy cap</NAME></NAME>
 						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
@@ -296,7 +296,7 @@ See guides/RandomAreas.html for information about documents of this type.
 						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>ARMS</PROPERWORN>
 					</ITEM>
 				</ITEM>
-				<ITEM select="pick-1">
+				<ITEM select="pick-1" condition="$pop_items!='false'">
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 						<NAME>(a(n)) $adj_smallnastyragged tool</NAME>
 						<DISPLAY>$item_name has been left here</DISPLAY>
@@ -305,10 +305,10 @@ See guides/RandomAreas.html for information about documents of this type.
 						<WEAPONTYPE>PIERCING</WEAPONTYPE>
 					</ITEM>
 				</ITEM>
-				<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+				<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 			</MOB>
-			<ITEM class="GenTable" name="(a(n)) $adj_nasty table" display="$ITEM_NAME is here" isgettable="false"/>
-			<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+			<ITEM class="GenTable" name="(a(n)) $adj_nasty table" display="$ITEM_NAME is here" isgettable="false" condition="$pop_items!='false'"/>
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE select="any-1">
@@ -331,15 +331,15 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$lair_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
-			<ITEM select="any-2">
+			<ITEM select="any-2" condition="$pop_items!='false'">
 				<ITEM class="GenFoodResource" weight="10" name="some $adj_nasty meat" display="$item_name is stored here" material="MEAT" />
 				<ITEM class="GenFoodResource" weight="10" name="some $adj_nasty bread" display="$item_name is stored here" material="bread" />
 				<ITEM class="GenFoodResource" weight="10" name="some $adj_nasty mushrooms" display="$item_name is stored here" material="mushrooms" />
 				<ITEM class="GenFoodResource" weight="10" name="some $adj_nasty fish" display="$item_name is stored here" material="fish" />
 			</ITEM>
-			<MOB select="all" insert="$lair_rat" condition="1?2=1" />
+			<MOB select="all" insert="$lair_rat" condition="(1?2=1) and ($pop_mobs!='false')" />
 			<EXIT class="LockedDoor"  text="$areaname storekey"/>
-			<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a store room</TITLE>
@@ -359,19 +359,19 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$lair_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
-			<ITEM select="any-5">
+			<ITEM select="any-5" condition="$pop_items!='false'">
 				<ITEM class="metacraft:anything<$level_range{100"/>
 				<ITEM class="metacraft:anything<$level_range{100" />
 				<ITEM class="metacraft:anything<$level_range{100" />
 				<ITEM class="metacraft:anything<$level_range{100" />
 				<ITEM class="metacraft:anything<$level_range{100" />
 			</ITEM>
-			<MOB select="all" insert="$lair_rat" condition="1?2=1" />
+			<MOB select="all" insert="$lair_rat" condition="(1?2=1) and ($pop_mobs!='false')" />
 			<EXIT select="pick-1">
 				<EXIT pickweight=1 class="GenDoor" hasalock="true" deflocked="true" disposition="ISHIDDEN" keyname="$areaname storekey"/>
 				<EXIT pickweight=2 class="GenDoor" hasalock="true" deflocked="true" keyname="$areaname storekey"/>
 			</EXIT>
-			<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" predefine="nasty_picked_race=${l:nasty_race_name}">
 			<TITLE>a kitchen</TITLE>
@@ -399,8 +399,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
-			<MOB select="repeat-1?3" insert="nasty_lair_cook" />
-			<MOB class="GenMob" level="$level_range" id="nasty_lair_cook" race="$nasty_picked_race" gender="F">
+			<MOB select="repeat-1?3" insert="nasty_lair_cook" condition="$pop_mobs!='false'"/>
+			<MOB class="GenMob" level="$level_range" id="nasty_lair_cook" race="$nasty_picked_race" gender="F" condition="$pop_mobs!='false'">
 				<NAME>a ${l:mob_race} cook</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
@@ -424,7 +424,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="Scavenger" parms="" />
 					<BEHAVIOR class="CombatAbilities" parms="" />
 				</BEHAVIOR>
-				<ITEM select="pick-1?3">
+				<ITEM select="pick-1?3" condition="$pop_items!='false'">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
 						<NAME select="any-1"><NAME>(a(n)) $adj_smallnastyragged leather chefs hat</NAME><NAME>(a(n)) $adj_smallnastyragged chefs hat</NAME></NAME>
 						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
@@ -438,7 +438,7 @@ See guides/RandomAreas.html for information about documents of this type.
 						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>ARMS</PROPERWORN>
 					</ITEM>
 				</ITEM>
-				<ITEM select="pick-1">
+				<ITEM select="pick-1" condition="$pop_items!='false'">
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 						<NAME>(a(n)) $adj_smallnastyragged rolling pin</NAME>
 						<DISPLAY>$item_name has been left here</DISPLAY>
@@ -447,18 +447,18 @@ See guides/RandomAreas.html for information about documents of this type.
 						<WEAPONTYPE>BASHING</WEAPONTYPE>
 					</ITEM>
 				</ITEM>
-				<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+				<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 			</MOB>
-			<ITEM class="GenTable" name="(a(n)) $adj_nasty chopping table" display="$ITEM_NAME is here" isgettable="false"/>
-			<ITEM class="metacraft:Oven" isgettable="false"/>
-			<ITEM select="1?3" >
+			<ITEM class="GenTable" name="(a(n)) $adj_nasty chopping table" display="$ITEM_NAME is here" isgettable="false" condition="$pop_items!='false'"/>
+			<ITEM class="metacraft:Oven" isgettable="false" condition="$pop_items!='false'"/>
+			<ITEM select="1?3" condition="$pop_items!='false'">
 				<ITEM class="metacraft:Baking Pot" />
 				<ITEM class="metacraft:Pan" />
 				<ITEM class="metacraft:Pitcher" />
 				<ITEM class="metacraft:Cup" />
 				<ITEM class="metacraft:Bowl" />
 			</ITEM>
-			<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" predefine="nasty_picked_race=$nasty_race_name">
 			<TITLE>a common room</TITLE>
@@ -484,19 +484,19 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Open" />
-			<MOB select="repeat-2?5" insert="nasty_lair_peon" />
-			<ITEM select="pick-1?2" >
+			<MOB select="repeat-2?5" insert="nasty_lair_peon" condition="$pop_mobs!='false'"/>
+			<ITEM select="pick-1?2" condition="$pop_items!='false'">
 				<ITEM pickweight="1" class="metacraft:chair" isgettable="false"/>
 				<ITEM pickweight="2" class="metacraft:bench" isgettable="false"/>
 			</ITEM>
-			<ITEM select="1?2" >
+			<ITEM select="1?2" condition="$pop_items!='false'">
 				<ITEM class="metacraft:hammock" isgettable="false"/>
 				<ITEM class="metacraft:whip"/>
 				<ITEM class="metacraft:pants"/>
 			</ITEM>
-			<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 		</ROOM>
-		<ROOM class="CaveRoom" condition="$theme='kobolds' or $theme='troglodytes' or $theme='random'" predefine="nasty_picked_race=$nasty_race_name">
+		<ROOM class="CaveRoom" condition="($theme='kobolds' or $theme='troglodytes' or $theme='random') and ($pop_mobs!='false')" predefine="nasty_picked_race=$nasty_race_name">
 			<TITLE>a hatchery</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
@@ -523,10 +523,10 @@ See guides/RandomAreas.html for information about documents of this type.
 				<EXIT pickweight=1 class="GenDoor" disposition="ISHIDDEN"/>
 				<EXIT pickweight=2 class="GenDoor"/>
 			</EXIT>
-			<MOB select="repeat-1?2" insert="nasty_lair_guard" />
-			<ITEM class="GenFoodResource" id="nasty_race_egg" name="some $adj_nasty $nasty_picked_race eggs" display="$item_name are here" material="EGGS" />
-			<ITEM select="2?13" insert="nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg" />
-			<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+			<MOB select="repeat-1?2" insert="nasty_lair_guard" condition="$pop_mobs!='false'"/>
+			<ITEM class="GenFoodResource" id="nasty_race_egg" name="some $adj_nasty $nasty_picked_race eggs" display="$item_name are here" material="EGGS" condition="$pop_items!='false'"/>
+			<ITEM select="2?13" insert="nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg" condition="$pop_items!='false'"/>
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$__throneroom&lt;1" define="__throneroom+=1" predefine="nasty_picked_race=${l:nasty_race_name}">
 			<TITLE>the throne room</TITLE>
@@ -553,8 +553,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>			
 			<EXIT class="LockedDoor" text="$areaname thronekey"/>
-			<MOB select="repeat-5" insert="nasty_lair_guard" />
-			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="nasty_lair_king" race="$nasty_picked_race" gender="M" hpmod="15">
+			<MOB select="repeat-5" insert="nasty_lair_guard" condition="$pop_mobs!='false'"/>
+			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="nasty_lair_king" race="$nasty_picked_race" gender="M" hpmod="15" condition="$pop_mobs!='false'">
 				<NAME>King $fantasy_name1</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
@@ -583,7 +583,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 					<AFFECT condition="$mob_level&gt;=30" class="Prop_ShortEffects" parms="" />
 				</AFFECT>
-				<ITEM select="pick-1?3">
+				<ITEM select="pick-1?3" condition="$pop_items!='false'">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
 						<NAME select="any-1"><NAME>(a(n)) $adj_smallnastyragged crown</NAME><NAME>(a(n)) $adj_smallnastyragged crown</NAME></NAME>
 						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>GOLD</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
@@ -597,7 +597,7 @@ See guides/RandomAreas.html for information about documents of this type.
 						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>GOLD</MATERIAL><PROPERWORN>FEET</PROPERWORN>
 					</ITEM>
 				</ITEM>
-				<ITEM select="pick-1">
+				<ITEM select="pick-1" condition="$pop_items!='false'">
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 						<NAME>(a(n)) $adj_smallnastyragged sceptor</NAME>
 						<DISPLAY>$item_name has been left here</DISPLAY>
@@ -606,10 +606,10 @@ See guides/RandomAreas.html for information about documents of this type.
 						<WEAPONTYPE>BASHING</WEAPONTYPE>
 					</ITEM>
 				</ITEM>
-				<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+				<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 			</MOB>
-			<ITEM class="GenChair"  name="(a(n)) $adj_smallnastyragged throne" display="$ITEM_NAME is here"  isgettable="false"/>
-			<ITEM class="GenContainer" name="The kings chest" display="The kings chest is here" HASLID="true" HASLOCK="true" READABLETEXT="$areaname thronekey">
+			<ITEM class="GenChair"  name="(a(n)) $adj_smallnastyragged throne" display="$ITEM_NAME is here"  isgettable="false" condition="$pop_items!='false'"/>
+			<ITEM class="GenContainer" name="The kings chest" display="The kings chest is here" HASLID="true" HASLOCK="true" READABLETEXT="$areaname thronekey" condition="$pop_items!='false'">
 				<CONTENT>
 					<ITEM select="any-5" insert="dungeon_treasure_items" />
 				</CONTENT>
@@ -642,10 +642,10 @@ See guides/RandomAreas.html for information about documents of this type.
 			<STRING select="any-1" insert="lair_random_blurbs" action="APPEND" />
 		</STRING>
 		<EXIT class="Open" />
-		<MOB condition="1?2=1" select="any-1" insert="lair_mobs" />
-		<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+		<MOB condition="(1?2=1) and ($pop_mobs!='false')" select="any-1" insert="lair_mobs"/>
+		<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk"/>
 	</ROOM>
-	<ROOM class="CaveRoom" pickweight="1" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='troglodytes' or $theme='gnolls' or $theme='hobgoblins' or $theme='trolls' or $theme='random'">
+	<ROOM class="CaveRoom" pickweight="1" condition="($theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='troglodytes' or $theme='gnolls' or $theme='hobgoblins' or $theme='trolls' or $theme='random') and ($pop_mobs!='false')">
 		<TITLE>$a_streetprefix $_lair_crawlways_street_name</TITLE>
 		<STRING id="_lair_hallways_street_name" define="_lair_hallways_street_name" select="any-1">
 			<STRING>cavernous $_lair_tunnelword</STRING>
@@ -676,7 +676,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		</STRING>
 		<AFFECT class="Prop_Crawlspace" parms="" />
 		<EXIT class="Open" />
-		<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+		<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 	</ROOM>
 </ROOM>
 
@@ -858,7 +858,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<BEHAVIOR class="Scavenger" parms="" />
 			<BEHAVIOR class="CombatAbilities" parms="" />
 		</BEHAVIOR>
-		<ITEM select="all">
+		<ITEM select="all" condition="$pop_items!='false'">
 			<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname storekey" name="(a(n)) ${l:mob_race} key" material="iron" validate="1?10=1 or (1?2=1 and $__storekey&lt;2)" define="__storekey+=1">
 				<AFFECT class="Prop_ItemNoRuin"/>
 			</ITEM>
@@ -909,7 +909,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DISPLAY>$item_name has been left here</DISPLAY>
 				</ITEM>
 			</ITEM>
-			<ITEM select="pick-1">
+			<ITEM select="pick-1" condition="$pop_items!='false'">
 				<ITEM pickweight="3" class="GenWeapon" LEVEL="$mob_level">
 					<NAME>(a(n)) $adj_smallnastyragged spear</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
@@ -940,7 +940,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				</ITEM>
 			</ITEM>
 		</ITEM>
-		<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+		<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 	</MOB>
 	<MOB class="GenMob" level="$level_range" id="nasty_lair_peon" race="$nasty_race_name" gender="$anygender">
 		<NAME select="pick-1">
@@ -974,7 +974,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<BEHAVIOR class="Scavenger" parms="" />
 			<BEHAVIOR class="CombatAbilities" parms="" />
 		</BEHAVIOR>
-		<ITEM select="all">
+		<ITEM select="all" condition="$pop_items!='false'">
 			<ITEM select="pick-1?3">
 				<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender!='F'">
 					<NAME select="any-1"><NAME>(a(n)) $adj_smallnastyragged leather cap</NAME><NAME>(a(n)) $adj_smallnastyragged cap</NAME></NAME>
@@ -1015,7 +1015,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DISPLAY>$item_name has been left here</DISPLAY>
 				</ITEM>
 			</ITEM>
-			<ITEM select="pick-1">
+			<ITEM select="pick-1" condition="$pop_items!='false'">
 				<ITEM pickweight="3" class="GenWeapon" LEVEL="$mob_level">
 					<NAME>(a(n)) $adj_smallnastyragged spear</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
@@ -1046,6 +1046,6 @@ See guides/RandomAreas.html for information about documents of this type.
 				</ITEM>
 			</ITEM>
 		</ITEM>
-		<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
+		<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 	</MOB>
 </MOB>

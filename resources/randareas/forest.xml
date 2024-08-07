@@ -76,7 +76,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />
-		<MOB condition="1?2=1" select="any-1" insert="forest_mobs" />
+		<MOB condition="(1?2=1) and ($pop_mobs!='false')" select="any-1" insert="forest_mobs" />
 	</ROOM>
 </ROOM>
 
@@ -114,9 +114,9 @@ See guides/RandomAreas.html for information about documents of this type.
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />
-		<MOB condition="($NOFANTASY != 'true') and ($__defined_forest_faerie&lt;1)" define="__defined_forest_faerie+=1" like="forest_faerie_mob" />
-		<MOB condition="1?2=1" select="any-1" insert="forest_mobs" />
-		<ITEM condition="1?4=1" select="any-1">
+		<MOB condition="($NOFANTASY != 'true') and ($__defined_forest_faerie&lt;1) and ($pop_mobs!='false')" define="__defined_forest_faerie+=1" like="forest_faerie_mob" />
+		<MOB condition="(1?2=1) and ($pop_mobs!='false')" select="any-1" insert="forest_mobs" />
+		<ITEM condition="(1?4=1) and ($pop_items!='false')" select="any-1">
 			<ITEM class="GenContainer" name="(a(n)) $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="$trueorfalse">
 				<CONTENT>
 					<ITEM select="any-5" insert="dungeon_treasure_items" />
@@ -155,7 +155,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 		<AFFECT condition="$mob_level&gt;=30" class="Prop_ShortEffects" parms="" />
 	</AFFECT>
-	<ITEM select="all">
+	<ITEM select="all" condition="$pop_items!='false'">
 		<ITEM class="GenArmor" LEVEL="$mob_level">
 			<NAME>faerie garb</NAME>
 			<DISPLAY>$item_name has been left here</DISPLAY>

@@ -63,8 +63,8 @@ See guides/RandomAreas.html for information about documents of this type.
 		</STRING>
 		<DESCRIPTION>$prison_interior_desc</DESCRIPTION>
 		<EXIT class="Open" />
-		<MOB condition="1?3=1" select="any-1" insert="prison_mobs" />
-		<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+		<MOB condition="(1?3=1) and ($pop_mobs!='false')" select="any-1" insert="prison_mobs" />
+		<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="prison_junk" />
 	</ROOM>
 </ROOM>
 
@@ -93,8 +93,8 @@ See guides/RandomAreas.html for information about documents of this type.
 			<STRING select="any-1" insert="prison_random_blurbs" action="APPEND" />
 		</STRING>
 		<EXIT class="Open" />
-		<MOB condition="1?2=1" select="any-1" insert="prison_mobs" />
-		<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+		<MOB condition="(1?2=1) and ($pop_mobs!='false')" select="any-1" insert="prison_mobs" />
+		<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="prison_junk" />
 	</ROOM>
 </ROOM>
 
@@ -115,9 +115,9 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="LockedDoor" text="$areaname cellkey" />
-			<MOB select="repeat-1?2" insert="prison_prisoner" />
+			<MOB select="repeat-1?2" insert="prison_prisoner" condition="$pop_mobs!='false'" />
 			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
-			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="prison_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a large $adj_nasty cage</TITLE>
@@ -140,9 +140,9 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="LockedGate" text="$areaname cellkey" />
-			<MOB select="repeat-2?5" insert="prison_prisoner" />
+			<MOB select="repeat-2?5" insert="prison_prisoner" condition="$pop_mobs!='false'"/>
 			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
-			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="prison_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>(a(n)) $adj_nasty solitary cell</TITLE>
@@ -167,9 +167,9 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="LockedDoor" text="$areaname cellkey" />
-			<MOB select="any-1" insert="prison_prisoner" />
+			<MOB select="any-1" insert="prison_prisoner" condition="$pop_mobs!='false'" />
 			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
-			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="prison_junk" />
 		</ROOM>
 		<ROOM class="StoneRoom" condition="$__luxuryCell&lt;2" define="__luxuryCell+=1">
 			<TITLE>a private $adj_fancy cell</TITLE>
@@ -193,7 +193,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="LockedDoor" text="$areaname luxurykey" />
-			<MOB class="GenMob" like="prison_prisoner" level="$level_range" race="$_prisoner_races" name="$fantasy_name" display="$glitzy_prisoner_disp" />
+			<MOB class="GenMob" like="prison_prisoner" level="$level_range" race="$_prisoner_races" name="$fantasy_name" display="$glitzy_prisoner_disp" condition="$pop_mobs!='false'" />
 			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
 			<STRING id="glitzy_prisoner_disp" select="any-1">
 				<STRING>$MOB_NAME is enjoying a confined rest.</STRING>
@@ -203,9 +203,9 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING>$MOB_NAME has the best cell sold.</STRING>
 				<STRING>$MOB_NAME has the best punishment money can buy.</STRING>
 			</STRING>
-			<ITEM class="GenBed"  name="(a(n)) $adj_fancy bed" display="$ITEM_NAME is made here"  isgettable="false" />
-			<ITEM class="GenChair" name="(a(n)) $adj_fancy chair" display="$ITEM_NAME is waiting to be rested upon" isgettable="false" />
-			<ITEM select="any-2">
+			<ITEM class="GenBed"  name="(a(n)) $adj_fancy bed" display="$ITEM_NAME is made here"  isgettable="false" condition="$pop_items!='false'"/>
+			<ITEM class="GenChair" name="(a(n)) $adj_fancy chair" display="$ITEM_NAME is waiting to be rested upon" isgettable="false" condition="$pop_items!='false'" />
+			<ITEM select="any-2" condition="$pop_items!='false'">
 				<ITEM class="GenFountain" name="(a(n)) $adj_fancy fountain" display="$ITEM_NAME has been built here" isgettable="false" />
 				<ITEM class="GenMirror" name="a mirror" display="a mirror is for gazing in" />
 				<ITEM class="GenTub"  name="(a(n)) $adj_fancy tub" display="$ITEM_NAME is here"  isgettable="false"/>
@@ -214,7 +214,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<ITEM class="GenPipe" name="(a(n)) $adj_fancy pipe" display="$ITEM_NAME has been put aside for a moment" />
 				<ITEM class="GenCigar" name="(a(n)) $adj_fancy cigar" display="$ITEM_NAME is here waiting to be enjoyed." />
 			</ITEM>
-			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="prison_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$__torturechamber&lt;1" define="__torturechamber+=1">
 			<TITLE>(a(n)) $adj_scary_feeling torture chamber</TITLE>
@@ -236,8 +236,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$prison_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
-			<MOB class="GenMob" like="prison_prisonguard" level="$level_range" race="$_prisoner_races" name="Dr. $fantasy_name" display="$torture_prisonguard_disp" />
-			<ITEM select="any-2">
+			<MOB class="GenMob" like="prison_prisonguard" level="$level_range" race="$_prisoner_races" name="Dr. $fantasy_name" display="$torture_prisonguard_disp" condition="$pop_mobs!='false'" />
+			<ITEM select="any-2" condition="$pop_items!='false'">
 				<ITEM class="metacraft:Whipping Post"/>
 				<ITEM class="metacraft:Torture Bed" isgettable="false"/>
 				<ITEM class="metacraft:Stockade" isgettable="false"/>
@@ -260,7 +260,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<EXIT pickweight=1 class="GenDoor" DISPOSITION="ISHIDDEN"/>
 				<EXIT pickweight=2 class="GenDoor"/>
 			</EXIT>
-			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="prison_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$__pitroom&lt;2" define="__pitroom+=1">
 			<TITLE>(a(n)) $adj_nasty pit</TITLE>
@@ -281,10 +281,10 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="LockedDoor" text="$areaname cellkey" />
-			<MOB select="repeat-1?3" insert="prison_prisoner" />
+			<MOB select="repeat-1?3" insert="prison_prisoner" condition="$pop_mobs!='false'" />
 			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
 			<EXIT class="Gate" />
-			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="prison_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$__latrine&lt;2" define="__latrine+=1">
 			<TITLE>(a(n)) $adj_nasty latrine</TITLE>
@@ -312,8 +312,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
-			<MOB select="repeat-1?2" insert="prison_prisonguard" />
-			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+			<MOB select="repeat-1?2" insert="prison_prisonguard" condition="$pop_mobs!='false'" />
+			<ITEM condition="(1?10=1) and $pop_items!='false'" select="any-1" insert="prison_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a guard station</TITLE>
@@ -327,8 +327,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION>The exit is to the $roomexits_desc_long</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
-			<MOB select="repeat-2?5" insert="prison_prisonguard" />
-			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+			<MOB select="repeat-2?5" insert="prison_prisonguard" condition="$pop_mobs!='false'" />
+			<ITEM condition="(1?10=1) and $pop_items!='false'" select="any-1" insert="prison_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$__wardenroom&lt;2" define="__wardenroom+=1">
 			<TITLE>the wardens office</TITLE>
@@ -353,12 +353,12 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION>The exit is to the $roomexits_desc_long</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
-			<MOB select="repeat-2?5" insert="prison_prisonguard" />
-			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
-			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
-			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
-			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
-			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="prison_warden" race="$_humanoid_races" gender="$anygender" hpmod="15">
+			<MOB select="repeat-2?5" insert="prison_prisonguard" condition="$pop_mobs!='false'" />
+			<ITEM condition="(1?10=1) and $pop_items!='false'" select="any-1" insert="prison_junk" />
+			<ITEM condition="(1?10=1) and $pop_items!='false'" select="any-1" insert="prison_junk" />
+			<ITEM condition="(1?10=1) and $pop_items!='false'" select="any-1" insert="prison_junk" />
+			<ITEM condition="(1?10=1) and $pop_items!='false'" select="any-1" insert="prison_junk" />
+			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="prison_warden" race="$_humanoid_races" gender="$anygender" hpmod="15" condition="$pop_mobs!='false'">
 				<NAME>Warden $fantasy_name</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
@@ -386,7 +386,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 					<AFFECT condition="$mob_level&gt;=30" class="Prop_ShortEffects" parms="" />
 				</AFFECT>
-				<ITEM select="pick-1?3">
+				<ITEM select="pick-1?3" condition="$pop_items!='false'">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
 						<NAME select="any-1"><NAME>(a(n)) $adj_fancy wardens hat</NAME><NAME>(a(n)) $adj_fancy wardens hat</NAME></NAME>
 						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>COTTON</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
@@ -400,7 +400,7 @@ See guides/RandomAreas.html for information about documents of this type.
 						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>DRAGONSCALES</MATERIAL><PROPERWORN>FEET</PROPERWORN>
 					</ITEM>
 				</ITEM>
-				<ITEM select="pick-1">
+				<ITEM select="pick-1" condition="$pop_items!='false'">
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 						<NAME>(a(n)) $adj_fancy nightstick</NAME>
 						<DISPLAY>$item_name has been left here</DISPLAY>
@@ -409,11 +409,11 @@ See guides/RandomAreas.html for information about documents of this type.
 						<WEAPONTYPE>BASHING</WEAPONTYPE>
 					</ITEM>
 				</ITEM>
-				<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+				<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="prison_junk" />
 			</MOB>
-			<ITEM class="GenChair"  name="(a(n)) $adj_fancy chair" display="$ITEM_NAME is here"  isgettable="false"/>
-			<ITEM class="GenTable"  name="(a(n)) $adj_fancy desk" display="$ITEM_NAME is here"  isgettable="false"/>
-			<ITEM class="GenContainer" name="The wardens chest" display="The wardens chest is here" HASLID="true" HASLOCK="false">
+			<ITEM class="GenChair"  name="(a(n)) $adj_fancy chair" display="$ITEM_NAME is here"  isgettable="false" condition="$pop_items!='false'"/>
+			<ITEM class="GenTable"  name="(a(n)) $adj_fancy desk" display="$ITEM_NAME is here"  isgettable="false" condition="$pop_items!='false'"/>
+			<ITEM class="GenContainer" name="The wardens chest" display="The wardens chest is here" HASLID="true" HASLOCK="false" condition="$pop_items!='false'">
 				<CONTENT>
 					<ITEM select="any-5" insert="dungeon_treasure_items" />
 				</CONTENT>
@@ -447,9 +447,9 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION>The exit is to the $roomexits_desc_long</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
-			<MOB select="repeat-2?5" insert="prison_prisoner" />
-			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
-			<ITEM select="repeat-3">
+			<MOB select="repeat-2?5" insert="prison_prisoner" condition="$pop_mobs!='false'" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="prison_junk" />
+			<ITEM select="repeat-3" condition="$pop_items!='false'">
 				<ITEM class="GenTub" name="a laundry tub" display="$item_name sits here">
 					<CONTENT>
 						<ITEM select="any-1" insert="any_tailoring_item" />
@@ -493,7 +493,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
 				<BEHAVIOR class="Scavenger" parms="" />
 			</BEHAVIOR>
-			<ITEM select="all">
+			<ITEM select="all" condition="$pop_items!='false'">
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME>(a(n)) $adj_colored_color prisoner`s jumpsuit</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>COTTON</MATERIAL>
@@ -523,7 +523,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					</ITEM>
 				</ITEM>
 			</ITEM>
-			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="prison_junk" />
 		</MOB>
 		<MOB class="GenUndead" level="$level_range" id="prison_spirit" race="Spirit" gender="$anygender" condition="($theme!='prison') or (1?3=1)">
 			<NAME>a dead prisoners spirit</NAME>
@@ -548,7 +548,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
 				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
 			</BEHAVIOR>
-			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="prison_junk" />
 		</MOB>
 		<MOB class="GenMob" level="$level_range" id="prison_prisonguard" race="$_humanoid_races" gender="$anygender">
 			<NAME>(a(n)) $mob_race prison guard</NAME>
@@ -572,7 +572,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
 				<BEHAVIOR class="Scavenger" parms="" />
 			</BEHAVIOR>
-			<ITEM select="all">
+			<ITEM select="all" condition="$pop_items!='false'">
 				<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname cellkey" name="a jail key" material="iron" validate="1?10=1 or (1?2=1 and $__maincellkey&lt;2)" define="__maincellkey+=1">
 					<AFFECT class="Prop_ItemNoRuin"/>
 				</ITEM>
@@ -641,7 +641,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					</ITEM>
 				</ITEM>
 			</ITEM>
-			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="prison_junk" />
 		</MOB>
 	</MOB>
 </MOB>
