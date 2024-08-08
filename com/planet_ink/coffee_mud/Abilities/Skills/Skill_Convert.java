@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -189,7 +190,7 @@ public class Skill_Convert extends StdSkill
 		}
 		if(!auto)
 		{
-			//convertStack.clear(); // W the actual F?!
+			//convertStack.clear(); // W the actual F?! Oh, I bet this was for debugging or something.
 			if(convertStack.containsFirst(target))
 			{
 				final Long L=convertStack.getSecond(convertStack.indexOfFirst(target));
@@ -372,7 +373,7 @@ public class Skill_Convert extends StdSkill
 				}
 				if(target.isMonster())
 				{
-					beneficialAffect(mob,target,asLevel,(int)(TimeManager.MILI_HOUR/CMProps.getTickMillis()));
+					beneficialAffect(mob,target,asLevel,(int)((TimeManager.MILI_HOUR * 3)/CMProps.getTickMillis()));
 					final Room startRoom=target.getStartRoom();
 					final Area startArea=(startRoom==null)?null:startRoom.getArea();
 					if(startArea!=null)
@@ -383,17 +384,50 @@ public class Skill_Convert extends StdSkill
 		}
 		else
 		{
-			if((target.isMonster())&&(target.fetchEffect("Prayer_ReligiousDoubt")==null))
+			StdAbility effA = (StdAbility)target.fetchEffect("Prayer_ReligiousDoubt");
+			if(target.isMonster() && (effA==null))
 			{
 				final Ability A=CMClass.getAbility("Prayer_ReligiousDoubt");
 				if(A!=null)
 				{
 					A.invoke(mob,target,true,asLevel);
-					final Ability effA=target.fetchEffect("Prayer_ReligiousDoubt");
+					effA=(StdAbility)target.fetchEffect(A.ID());
 					if((effA!=null)
 					&&(effA.canBeUninvoked())
 					&&(effA.expirationDate()>0))
-						effA.setExpirationDate((int)(DOUBT_TIME/CMProps.getTickMillis()));
+						effA.setExpirationDate(System.currentTimeMillis() + DOUBT_TIME);
+				}
+			}
+			else
+			if((effA != null)
+			&&(effA.invoker() == mob)
+			&&(mob != target))
+			{
+				final long durationRemaining = effA.getTickDownRemaining() * CMProps.getTickMillis();
+				final int hours = (int)(durationRemaining / CMProps.getMillisPerMudHour());
+				if(hours == 0)
+					mob.tell(L("<T-HE-SHE> seems to be on the verge of a clear mind."));
+				else
+				{
+					final String word = (hours > 1) ? "hours" : "hour";
+					switch(CMLib.dice().roll(1, 5, 0))
+					{
+					case 1:
+						mob.tell(mob,target,null,L("<T-HE-SHE> seems to need @x1 "+word+" more to think.",""+hours));
+						break;
+					case 2:
+						mob.tell(mob,target,null,L("You think <T-HE-SHE> might think for another @x1 "+word+".",""+hours));
+						break;
+					case 3:
+						mob.tell(mob,target,null,L("Give <T-HIM-HER> another @x1 "+word+".",""+hours));
+						break;
+					case 4:
+						mob.tell(mob,target,null,L("A big decision like this will take <T-HIM-HER> another @x1 "+word+".",""+hours));
+						break;
+					case 5:
+						mob.tell(mob,target,null,L("<T-HE-SHE> seems to need @x1 "+word+" to be convinced.",""+hours));
+						break;
+					}
 				}
 			}
 			else

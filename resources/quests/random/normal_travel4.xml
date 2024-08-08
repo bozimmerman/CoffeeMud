@@ -204,6 +204,7 @@ settable vars:
 		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
 		<STRING define="quest_message">$quest_generic_traveled_message</STRING>
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_short">${c:deityname} requires you to visit ${c:target_name}.</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:deityname} need you to travel to $target_name.</STRING>
 			<STRING>By ${c:deityname}`s command, you need to meet with ${target_name}.</STRING>

@@ -60,11 +60,12 @@ See guides/RandomAreas.html for information about documents of this type.
 				RETURN
 			ENDIF
 			MPOLOADROOM GenPortal
+			MPGSET \$b REJUV 0
 			MPGSET \$b NAME a swirling magical portal
 			MPGSET \$b DISPLAY a swirling magical portal is here
 			MPGSET \$b DESCRIPTION You can't quite see what is beyond the swirling curtain.
 			MPBEHAVE Decay \$b remain=60 notrigger
-			MPAFFECT property:Spell_Planeshift \$b 999999ticks Negative
+			MPAFFECT property:Spell_Planeshift \$b 999ticks Negative
 			MPECHO A swirling magical portal appears!
 			MPSCRIPT \$i DELETE *
 		~
@@ -98,6 +99,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			ENDIF
 			MPECHOAT \$i You spot a strange herb growing nearby.
 			MPOLOADROOM GenPill
+			MPGSET \$b REJUV 0
 			MPGSET \$b NAME a strange herb
 			MPGSET \$b DISPLAY a strange herb is growing here
 			MPGSET \$b DESCRIPTION You've never seen anything like it.
@@ -116,6 +118,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			ENDIF
 			MPECHOAT \$i You spot a strange ring nearby, and are compelled to pick it up and wear it.
 			MPOLOADROOM GenArmor
+			MPGSET \$b REJUV 0
 			MPGSET \$b NAME a simple gold ring
 			MPGSET \$b DISPLAY a simple gold ring sits here
 			MPGSET \$b DESCRIPTION It appears to have writing inside, but you can't read it.
@@ -140,6 +143,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			ENDIF
 			MPECHOAT \$i You spot a strange stick with runes scratched into it.
 			MPOLOADROOM GenWand
+			MPGSET \$b REJUV 0
 			MPGSET \$b NAME a strange stick
 			MPGSET \$b DISPLAY a strange stick is here
 			MPGSET \$b MATERIAL OAK
@@ -160,9 +164,10 @@ See guides/RandomAreas.html for information about documents of this type.
 			ENDIF
 			MPECHOAT \$i You spot a pretty ring on the ground.
 			MPOLOADROOM GenWand
+			MPGSET \$b REJUV 0
 			MPGSET \$b NAME a pretty ring
 			MPGSET \$b DISPLAY a pretty ring sits here
-			MPGSET \$b DESCRIPTION It seems pretty simple.
+			MPGSET \$b DESCRIPTION It seems pretty simple... and pretty.
 			MPGSET \$b PROPERWORN left finger,right finger
 			MPGSET \$b MATERIAL SILVER
 			MPGSET \$b ISREMOVABLE false
@@ -181,6 +186,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			ENDIF
 			MPECHOAT \$i You spot a wide brimmed hat on the ground.
 			MPOLOADROOM GenArmor
+			MPGSET \$b REJUV 0
 			MPGSET \$b NAME a wide brimmed hat
 			MPGSET \$b DISPLAY a wide brimmed hat lies here
 			MPGSET \$b DESCRIPTION It looks water proof!
@@ -253,50 +259,203 @@ See guides/RandomAreas.html for information about documents of this type.
 			MPSCRIPT \$i DELETE *
 		~
 	</string>
-	<!--
+	<string id="meh_hidden_grove">
+		FUNCTION_PROG Prediction
+			RETURN A hidden grove will provide you with a place of refuge and healing.
+		~
 
-A hidden grove will provide you with a place of refuge and healing.
-	-- portal to nofantasy plains with no items
-Beware of the shadowy figure lurking in the forest.
-	-- a shadoy figure appears next time player is in forest or woods
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR HITPRCNT(\$i > 75)
+				RETURN
+			ENDIF
+			MPOLOADROOM GenPortal
+			MPGSET \$b NAME a hidden passage
+			MPGSET \$b REJUV 0
+			MPGSET \$b DISPLAY a hidden passage is revealed here
+			MPGSET \$b DESCRIPTION You can't quite see what is beyond.
+			MPBEHAVE Decay \$b remain=60 notrigger
+			MPAFFECT property:Spell_Teleport \$b theme=plains areasize=50 pop_items=false nofantasy=true
+			MPECHO You spot a formerly hidden passage!
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_another_world">
+		FUNCTION_PROG Prediction
+			RETURN A portal to another world will open; step through with caution.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+				RETURN
+			ENDIF
+			MPOLOADROOM GenPortal
+			MPGSET \$b NAME a swirling magical portal
+			MPGSET \$b REJUV 0
+			MPGSET \$b DISPLAY a swirling magical portal is here
+			MPGSET \$b DESCRIPTION You can't quite see what is beyond the swirling curtain.
+			MPBEHAVE Decay \$b remain=60 notrigger
+			MPAFFECT property:Spell_Planeshift \$b 999ticks Hades
+			MPECHO A swirling magical portal appears!
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="good_extra_potion">
+		FUNCTION_PROG Prediction
+			RETURN You will discover a potion that grants you extraordinary abilities.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+				RETURN
+			ENDIF
+			MPECHOAT \$i You spot a potion on the ground.  Perhaps someone dropped it?
+			MPOLOADROOM GenPotion
+			MPGSET \$b REJUV 0
+			MPGSET \$b NAME an unknown potion
+			MPGSET \$b DISPLAY an unknown potion lies here
+			MPGSET \$b DESCRIPTION You aren't sure what it is.
+			IF RAND(50)
+				MPGSET \$b READABLETEXT Spell_BigMouth
+			ELSE
+				MPGSET \$b READABLETEXT Spell_AddLimb
+			ENDIF
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="bad_forest_shadow_ambush">
+		FUNCTION_PROG Prediction
+			RETURN Beware of the shadowy figure lurking in the forest.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INROOM(ANYSPECIAL)
+				RETURN
+			ENDIF
+			IF NOT INLOCALE(\$i WOODS)
+				RETURN
+			ENDIF
+			MPECHOAT \$i You are ambushed from the shadows!
+			MPMLOAD GenMob
+			MPGSET \$b NAME a shadowy figure
+			MPGSET \$b DISPLAY a shadowy figure is here.
+			MPGSET \$b DESCRIPTION You can't make out his or her features.
+			MPBEHAVE Decay \$b remain=199 notrigger
+			MPBEHAVE Aggressive \$b
+			MPBEHAVE Fighterness \$b
+			MPGSET \$b LEVEL $%LEVEL(\$i)%
+			MPGSET \$b REJUV 0
+			MPFORCE \$b KILL \$i
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="good_heal_wand">
+		FUNCTION_PROG Prediction
+			RETURN A powerful spell will grant you the ability to heal others.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+				RETURN
+			ENDIF
+			MPECHOAT \$i You spot a wand on the ground.  Perhaps someone dropped it?
+			MPOLOADROOM GenWand
+			MPGSET \$b REJUV 0
+			MPGSET \$b NAME a wand
+			MPGSET \$b DISPLAY a wand lies here
+			MPGSET \$b DESCRIPTION You aren't sure what it does.
+			MPGSET \$b READABLETEXT Prayer_CureLight
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="bad_annoying_soul">
+		FUNCTION_PROG Prediction
+			RETURN The fate of a lost soul rests with you; bring them peace.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+				RETURN
+			ENDIF
+			MPECHOAT \$i A lost soul appears to you.
+			MPMLOAD GenMob
+			MPGSET \$b NAME a lost soul
+			MPGSET \$b DISPLAY a lost soul floats here
+			MPGSET \$b DESCRIPTION You can't make out his or her ghostly features.
+			MPGSET \$b RACE Ghost
+			MPGSET \$b LEVEL $%LEVEL(\$i)%
+			MPGSET \$b REJUV 0
+			MPBEHAVE Decay \$b remain=299 notrigger
+			MPAFFECT Prop_PracticeDummy \$b KILL
+			MPFORCE \$b say Pleeeaaaassseeee kiiiillllll meeeeeeeeee.....
+			MPSCRIPT \$b INDIVIDUAL SAVABLE STATIC=RAND_PROG 25\;IF NOT INROOM(\$i)\;MPGOTO \$i \;ENDIF\;say Pleeeaaaassseeee kiiiillllll meeeeeeeeee.....\;\~
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_finish_history">
+		FUNCTION_PROG Prediction
+			RETURN You will be given the chance to rewrite a part of history.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INROOM(ANYSPECIAL) OR !INLOCALE(\$i CITY)
+				RETURN
+			ENDIF
+			MPECHOAT \$i A scholar approaches you.
+			MPMLOAD GenMob
+			MPGSET \$b NAME the scholar
+			MPGSET \$b DISPLAY a scholar stands here
+			MPGSET \$b DESCRIPTION He looks smart, I guess?
+			MPGSET \$b RACE Human
+			MPGSET \$b LEVEL $%LEVEL(\$i)%
+			MPGSET \$b REJUV 0
+			MPBEHAVE Decay \$b remain=99 notrigger
+			MPFORCE \$b sayto \$i Greetings! I was hoping you might help me by proofreading my history paper.  Well, not proofread so much as fill in gaps.  Maybe 'finish' is a better word.  Thanks!
+			MPARGSET \$0 \$b
+			MPFORCE \$b MPOLOAD GenPaper
+			MPGSET \$b NAME a scholarly historical paper
+			MPGSET \$b DISPLAY an important piece of paper has been left here.
+			MPGSET \$b READABLETEXT The History of the Universe by Grothus Gallslanger.  Chapter 1: --TODO--
+			MPGSET \$b REJUV 0
+			MPALARM 1 MPFORCE \$0 give "\$b" "\$i"
+			MPALARM 2 MPECHO The scholar wanders off muttering to himself.
+			MPALARM 2 MPPURGE \$0
+			MPALARM 3 MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<!--
+**** TODO IMMEDIATELY ****
+You will be given a quest by a powerful deity.
+	-- Sounds straight forward.
+The winds of change are blowing; a significant transformation is on the horizon.
+	-- a mystical wind blows through and casts 
+A cursed item will find its way to you; breaking the curse will require great courage.
+	-- curse a players existing item
+You will be chosen to lead a great army into battle.
+	-- summon army is cast by the player
+You will be given the chance to travel to another plane of existence.
+	-- mage shows up and asks for a companion to another plane
+
+**** TODO AFTER SORTING GOOD/BAD ****
+
+
 You will encounter a magical beast that can change its form at will.
 	-- a druid doppleganger!
 You will find a key that unlocks a gate to another dimension.
 	-- one of those planar cube things?
 A powerful charm will protect you from harm and bring you good fortune.
 	-- saving throw charm with temporary life?
-You will be given the chance to rewrite a part of history.
-	-- Scholar approaches with a history book and asks to hire player to proofread it.  I'ts mostly blank.
-A powerful spell will grant you the ability to heal others.
-	-- Prayer Scroll of Healing
-You will discover a potion that grants you extraordinary abilities.
-	-- Random potion? Potion of Big Mouth or Add Limb?
 You will encounter a wise sage who will teach you a forgotten art.
 	-- Definitely flower arranging
-You will be given a quest by a powerful deity.
-	-- Sounds straight forward.
-The fate of a lost soul rests with you; bring them peace.
-	-- a ghost appears and asks you to kill them.
-The winds of change are blowing; a significant transformation is on the horizon.
-	-- a mystical wind blows through and casts 
 An ancient prophecy will come into play, influencing the outcome of your current endeavors.
 	-- you remember an ancient prophecy that says someone would do whatever the player just did
 You will soon meet an ally who will become invaluable in your quest.
 	-- if they follow someone, or are followed, this happ
-A cursed item will find its way to you; breaking the curse will require great courage.
-	-- curse a players existing item
 A rare gemstone will reveal hidden paths when held under moonlight.
 	-- gemstone, held outdoors at night gives see hidden
 You will discover an ancient ritual that can summon powerful allies.
 	-- scroll of summon army
-You will be chosen to lead a great army into battle.
-	-- summon army is cast by the player
-A portal to another world will open; step through with caution.
-	-- portal to a random area opens
 A mystical relic will grant you the ability to communicate with the dead.
 	-- wand of speak with dead
-You will be given the chance to travel to another plane of existence.
-	-- mage shows up and asks for a companion to another plane
 A forgotten song will awaken a slumbering giant.
 	-- wait to see a giant, make them sleep, then narrate a song playing that wakes him.
 

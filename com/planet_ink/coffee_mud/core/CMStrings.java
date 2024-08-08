@@ -946,6 +946,32 @@ public class CMStrings
 	}
 
 	/**
+	 * This methods replaces any double-escapes to single escape characters, and any
+	 * escaped double-chars to double-chars
+	 * @param str the string to de-escape
+	 * @param chars the chars to de-escape
+	 * @return the string, de-escaped
+	 */
+	public final static String deEscape(String str, final String chars)
+	{
+		if(str==null)
+			return str;
+		if(str.indexOf('\\')<0)
+			return str;
+		for(int i=0;i<str.length()-1;i++)
+		{
+			if(str.charAt(i)=='\\')
+			{
+				if(chars.indexOf(str.charAt(i+1))>=0)
+					str=str.substring(0,i)+str.substring(i+1);
+				else
+					i++;
+			}
+		}
+		return str;
+	}
+
+	/**
 	 * This methods replaces any escapes to double-escape characters, and any
 	 *  double-quotes to escaped double-quotes
 	 * @param str the string to escape

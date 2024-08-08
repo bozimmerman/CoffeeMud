@@ -187,6 +187,7 @@ settable vars:
 
 	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="reason_short">${c:deityname} requires that $target_item_name be delivered to $target_area_name.</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:deityname} requires that $target_item_name be delivered to $target_area_name today.</STRING>
 		</STRING>

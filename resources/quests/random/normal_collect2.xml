@@ -267,6 +267,7 @@ vars:
 		<STRING define="reason_verb">$verb_steal</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
+		<STRING define="reason_short">${c:deityname} needs the ${p:target_item_name} of $target_area_name.</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:deityname} needs the ${p:target_item_name} of $target_area_name for some magical experiments.</STRING>
 			<STRING>${c:reason_verb} ${p:target_item_name} from $target_area_name for ${c:deityname}.</STRING>

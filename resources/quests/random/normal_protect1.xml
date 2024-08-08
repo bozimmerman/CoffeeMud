@@ -214,6 +214,7 @@ settable vars:
 		<STRING define="quest_fightspeech" SELECT="Any-1">
 			<STRING>I'm here to kill !</STRING>
 		</STRING>
+		<STRING define="reason_short">$deityname requires that ${c:target_name} be protected from ${p:attacker_name}.</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:target_name} and the ${p:attacker_name} have never gotten along, and now $target_name, favored of $deityname, is in danger.</STRING>
 			<STRING>${c:target_name} has started refusing service to ${p:attacker_name}, by $deityname command, and will be killed for it.</STRING>

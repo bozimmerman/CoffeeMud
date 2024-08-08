@@ -1342,7 +1342,7 @@ public class MobData extends StdWebMacro
 						str.append("<OPTION VALUE=\""+R2.ID()+"\"");
 						if(R2.ID().equals(old))
 							str.append(" SELECTED");
-						str.append(">"+R2.name());
+						str.append(">"+CMStrings.ellipse(R2.name(),40));
 					}
 					if((changedClass)||(changedLevel))
 					{

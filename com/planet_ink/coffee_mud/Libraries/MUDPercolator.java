@@ -6601,7 +6601,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(e instanceof MQLException)
 				throw (MQLException)e;
 			else
-				throw new MQLException("MQL failure on $"+strpath,e);
+				throw new MQLException("MQL failure on $"+CMParms.combine(Arrays.asList(strpath),0),e);
 		}
 		return finalO;
 	}

@@ -3971,7 +3971,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give script, script not given.");
 							break;
 						}
-						final String val=CMParms.rest(s,2);
+						final String val=CMParms.combine(p,2);
 						List<Environmental> toSet=new ArrayList<Environmental>();
 						if(q.envObject instanceof List)
 							toSet=(List<Environmental>)q.envObject;

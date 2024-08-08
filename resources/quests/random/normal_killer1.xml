@@ -211,6 +211,7 @@ settable vars:
 			<STRING>Please?! You can't make me die for $deityname!</STRING>
 			<STRING>I'd rather kill you than submit to $deityname!</STRING>
 		</STRING>
+		<STRING define="reason_short">${c:deityname} requires that you engage in a $adj_feeling_good ${p:target_name} ${hurt_verb}ing.</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>The ${p:target_name} are trying to kill followers of ${c:deityname}, and must be stopped.</STRING>
 			<STRING>The ${p:target_name} have insulted ${c:deityname}`s honor, and only a ritual $hurt_verb will satisfy it.</STRING>

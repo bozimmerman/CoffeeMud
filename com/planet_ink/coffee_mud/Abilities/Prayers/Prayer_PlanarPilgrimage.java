@@ -845,7 +845,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 		}
 		if(!targetM.charStats().getWorshipCharID().equals(deityName))
 		{
-			mob.tell(L("@x1 must worship also worship @x2 to begin the planar pilgrimage.",targetM.Name(),deityName));
+			mob.tell(L("@x1 must also worship @x2 to begin the planar pilgrimage.",targetM.Name(),deityName));
 			return false;
 		}
 

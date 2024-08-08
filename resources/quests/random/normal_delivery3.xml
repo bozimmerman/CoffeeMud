@@ -259,6 +259,7 @@ settable vars:
 	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_short">${c:deityname} wants $target_item_name delivered to ${p_target_name}.</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:deityname} requires that I start a ${target_item_name} factory with ${p_target_name} help.</STRING>
 			<STRING>${c:deityname} requires that ${c:p_target_name} and I study $target_item_name today.</STRING>

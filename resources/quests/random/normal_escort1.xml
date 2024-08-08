@@ -194,6 +194,7 @@ settable vars:
 
 	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
 		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
+		<STRING define="reason_short">${c:deityname} requires that ${c:target_name} be taken to $target_room_name in $target_area_name.</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:deityname} requires that ${c:target_name} be taken to $target_room_name in $target_area_name.</STRING>
 		</STRING>

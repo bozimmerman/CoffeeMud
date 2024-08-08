@@ -169,6 +169,12 @@ public class Prayer_ReligiousDoubt extends Prayer
 	}
 
 	@Override
+	public void unInvoke()
+	{
+		super.unInvoke();
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);

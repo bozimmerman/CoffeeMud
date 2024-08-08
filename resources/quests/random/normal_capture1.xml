@@ -484,6 +484,7 @@ settable vars:
 			<STRING>I'd rather die than serve $deityname!</STRING>
 		</STRING>
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_short">${c:deityname} requires that ${p:target_name} be $verb_captured.</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:deityname} is collecting ${p:target_name}.  Do not ask why.</STRING>
 			<STRING>${c:deityname} requires that ${p:target_name} be $verb_captured, for some divine purpose.</STRING>

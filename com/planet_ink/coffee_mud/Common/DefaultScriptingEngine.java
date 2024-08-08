@@ -875,12 +875,28 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(Q!=null)
 			return Q.getResourceFileData(named, showErrors);
 		final CMFile F = new CMFile(Resources.makeFileResourceName(named),null,CMFile.FLAG_LOGERRORS);
-		if((!F.exists())||(!F.canRead()))
+		if((F.exists())&&(F.canRead()))
+			return F.text();
+		final List<SubScript> script = this.getScripts(scripted);
+		if(script.size()>0)
 		{
-			this.logError(scripted, "LOAD", "NOREAD", F.getAbsolutePath());
-			return new StringBuffer();
+			for(int i=0;i<script.size();i++)
+			{
+				if(script.get(i).getTriggerCode()==55)
+				{
+					@SuppressWarnings("unchecked")
+					final List<XMLLibrary.XMLTag> tags = (List<XMLLibrary.XMLTag>)script.get(i).get(0).third;
+					for(final XMLLibrary.XMLTag tag : tags)
+					{
+						if(tag.tag().equalsIgnoreCase("FILE")
+						&&(named.equalsIgnoreCase(CMLib.xml().getValFromPieces(tag.contents(), "NAME", ""))))
+							return new StringBuffer(CMLib.xml().getValFromPieces(tag.contents(), "DATA", ""));
+					}
+				}
+			}
 		}
-		return F.text();
+		this.logError(scripted, "LOAD", "NOREAD", named);
+		return new StringBuffer();
 	}
 
 	@Override
@@ -1015,6 +1031,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 	}
 
+	protected static final String deEscapeParseChars = ";~<#\\";
+
+	protected static void addSubScriptLine(final SubScript ss, String s)
+	{
+		s=CMStrings.deEscape(s, deEscapeParseChars);
+		if(s.trim().length()>0)
+			ss.add(new ScriptLn(s,null,null));
+	}
+
 	protected List<SubScript> parseScripts(final Environmental E, String text)
 	{
 		buildHashes();
@@ -1035,16 +1060,99 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			myScript=text;
 			reset();
 		}
-		final List<List<String>> V = CMParms.parseDoubleDelimited(text,'~',';');
-		final List<SubScript> V2=Collections.synchronizedList(new ArrayList<SubScript>(3));
-		for(final List<String> ls : V)
+		String xml = "";
+		final int xmlEnd = text.indexOf(XMLLibrary.FILE_XML_BOUNDARY);
+		if(xmlEnd > 0)
 		{
-			final SubScript DV=new SubScriptImpl();
-			for(final String s : ls)
-				DV.add(new ScriptLn(s,null,null));
-			V2.add(DV);
+			xml = text.substring(xmlEnd+XMLLibrary.FILE_XML_BOUNDARY.length());
+			text = text.substring(0,xmlEnd);
 		}
-		return V2;
+		int state = 0; // 0=normal, 2=incomment, 3=inscript
+		int lastLine=0;
+		final List<SubScript> parsedScript=Collections.synchronizedList(new ArrayList<SubScript>(3));
+		SubScript currentScript = new SubScriptImpl();
+		parsedScript.add(currentScript);
+		for(int i=0;i<text.length();i++)
+		{
+			final char c = text.charAt(i);
+			switch(c)
+			{
+			case '\n': case '\r':
+				if(state == 0)
+					addSubScriptLine(currentScript, text.substring(lastLine,i));
+				else
+				if(state==2)
+					state=0;
+				lastLine=i+1;
+				break;
+			case '#':
+				if((state==0)
+				&&((i==0)||(text.charAt(i-1)!='\\'))
+				&&(text.substring(lastLine,i).trim().length()==0))
+				{
+					state=2; // in a comment;
+					lastLine=i+1; // this wont end up mattering...
+				}
+				break;
+			case ';':
+				if((state==0)
+				&&((i==0)||(text.charAt(i-1)!='\\')))
+				{
+					addSubScriptLine(currentScript, text.substring(lastLine,i));
+					lastLine=i+1;
+				}
+				break;
+			case '~':
+				if((state == 0)
+				&&((i==0)||(text.charAt(i-1)!='\\')))
+				{
+					addSubScriptLine(currentScript, text.substring(lastLine,i));
+					lastLine=i+1;
+					currentScript = new SubScriptImpl();
+					parsedScript.add(currentScript);
+				}
+				break;
+			case '<':
+				if((i<text.length()-9)
+				&&(Character.isLetter(text.charAt(i+1))))
+				{
+					final String uppAhead=text.substring(i,i+9).toUpperCase();
+					if((state==0)
+					&&uppAhead.startsWith("<SCRIPT>")
+					&&((i==0)||(text.charAt(i-1)!='\\')))
+					{
+						addSubScriptLine(currentScript, text.substring(lastLine,i));
+						addSubScriptLine(currentScript, "<SCRIPT>");
+						i+=8;
+						lastLine=i;
+						state=3;
+					}
+					else
+					if((state==3)
+					&&uppAhead.startsWith("</SCRIPT>")
+					&&((i==0)||(text.charAt(i-1)!='\\')))
+					{
+						addSubScriptLine(currentScript, text.substring(lastLine,i));
+						addSubScriptLine(currentScript, "</SCRIPT>");
+						i+=9;
+						lastLine=i;
+						state=0;
+					}
+				}
+				break;
+			}
+		}
+		addSubScriptLine(currentScript, text.substring(lastLine,text.length()));
+		if(currentScript.size()==0)
+			parsedScript.remove(parsedScript.size()-1);
+		if(xml.length()>0)
+		{
+			final SubScript xmlS = new SubScriptImpl();
+			final List<XMLLibrary.XMLTag> tags = CMLib.xml().parseAllXML(xml);
+			xmlS.add(new ScriptLn(XMLLibrary.FILE_XML_BOUNDARY,null,tags));
+			parsedScript.add(xmlS);
+		}
+		return parsedScript;
 	}
 
 	protected Room getRoom(final String thisName, final Room imHere)
@@ -1093,6 +1201,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return roomR;
 		}
 
+		final MOB pM = CMLib.players().getPlayer(thisName);
+		if((pM != null)&&(CMLib.flags().isInTheGame(pM, true)))
+			return pM.location();
 		List<Room> rooms=new ArrayList<Room>(1);
 		if((imHere!=null)&&(imHere.getArea()!=null))
 			rooms=CMLib.hunt().findAreaRoomsLiberally(null, imHere.getArea(), thisName, "RIEPM",100);
@@ -1146,7 +1257,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 		else
 		if((cmdName!=null)&&(cmdName.equalsIgnoreCase("LOAD")))
-			Log.errOut("Scripting","*/*/*/"+cmdName+"/"+errType+"/"+errMsg);
+			Log.errOut("Scripting","*/*/*/"+cmdName+"/"+errType+"/"+errMsg+"/");
 		else
 			Log.errOut("Scripting","*/*/"+CMParms.toListString(externalFiles())+"/"+cmdName+"/"+errType+"/"+errMsg);
 
@@ -5071,7 +5182,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final String cmp=varify(ctx,tt[t+2]);
 					final String arg2=varify(ctx,tt[t+3]);
 					final Environmental E=getArgumentMOB(whom,ctx);
-					final Faction F=CMLib.factions().getFaction(arg1);
+					Faction F=CMLib.factions().getFaction(arg1);
+					if(F == null)
+						F=CMLib.factions().getFactionByName(arg1);
+					if(F == null)
+						F=CMLib.factions().getFactionByRangeCodeName(arg1);
 					if((E==null)||(!(E instanceof MOB)))
 					{
 						logError(ctx.scripted,"FACTION","Unknown Code",whom);
@@ -15249,13 +15364,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			switch(triggerCode)
 			{
 			case 0:
-				if(affecting != null)
-				{
-					Log.errOut("Scripting",affecting.name()+"/"+CMLib.map().getDescriptiveExtendedRoomID(lastKnownLocation)
-							+"/MOBPROG Error: '"+script.get(0).first+"' is not a valid trigger.");
-				}
-				else
-					Log.errOut("Scripting","MOBPROG Error: '"+script.get(0).first+"' is not a valid trigger.");
+				logError(affecting, "?", "BAD_TRIGGER", script.get(0).first+"' is not a valid trigger.");
 				scripts.remove(thisScriptIndex);
 				thisScriptIndex--;
 				break;
