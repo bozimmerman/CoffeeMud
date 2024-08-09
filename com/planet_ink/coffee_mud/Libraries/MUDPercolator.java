@@ -3360,7 +3360,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final String finalFinalValue=finalValue.toString().trim();
 		if(processDefined!=null)
 			defineReward(E,ignoreStats,defPrefix,piece.getParmValue("DEFINE"),processDefined,finalFinalValue,defined,true);
-		return CMStrings.replaceAll(finalFinalValue,"\\$","$");
+		return CMStrings.deEscape(finalFinalValue,"$");
 	}
 
 	@Override

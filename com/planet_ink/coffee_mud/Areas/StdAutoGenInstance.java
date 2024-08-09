@@ -124,7 +124,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		statData=(AreaIStats)CMClass.getCommon("DefaultAreaIStats");
 		for(final Area childA : workList)
 		{
-			if(childA.isAreaStatsLoaded())
+			if((childA != this) && childA.isAreaStatsLoaded())
 			{
 				ct++;
 				for(final Area.Stats stat : Area.Stats.values())
@@ -290,12 +290,15 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				for(int i=instanceChildren.size()-1;i>=0;i--)
 				{
 					if((instanceChildren.get(i).A instanceof StdAutoGenInstance)
-					&&(!CMath.bset(instanceChildren.get(i).A.flags(),Area.FLAG_INSTANCE_PARENT)))
+					&&(CMath.bset(instanceChildren.get(i).A.flags(),Area.FLAG_INSTANCE_CHILD)))
 						areas.add((StdAutoGenInstance)instanceChildren.get(i).A);
 				}
 			}
 			for(final StdAutoGenInstance A : areas)
-				A.resetInstance(returnToRoom);
+			{
+				if(A != this)
+					A.resetInstance(returnToRoom);
+			}
 			return instanceChildren.size()==0;
 		}
 		// else, child I guess?
@@ -496,6 +499,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				newA.blurbFlags=new STreeMap<String,String>();
 				newA.setName((++instanceCounter)+"_"+Name());
 				newA.flags |= Area.FLAG_INSTANCE_CHILD;
+				newA.flags = newA.flags & ~Area.FLAG_INSTANCE_PARENT;
 				final Set<MOB> myGroup=msg.source().getGroupMembers(new HashSet<MOB>());
 				final StringBuffer xml = Resources.getFileResource(getGeneratorXmlPath(), true);
 				if((xml==null)||(xml.length()==0))

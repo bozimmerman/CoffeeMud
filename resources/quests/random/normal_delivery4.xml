@@ -50,11 +50,12 @@ settable vars:
 	<FACTION>$source_faction</FACTION>
 	<NUMFACTION>$[$source_faction_amt / 500]</NUMFACTION>
 	<DELIVEREE_COUNT>$num_targets</DELIVEREE_COUNT>
-	<QUEST_NAME SELECT="Any-1">
+	<QUEST_NAME SELECT="Pick-1">
 		<QUEST_NAME>${C:source_name} needs $num_targets ${target_item_name} $reason_verbed to $c_target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:source_name} wants $num_targets ${target_item_name} $reason_verbed to $c_target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:source_name} asks for $num_targets ${target_item_name} to be $reason_verbed to $c_target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $num_targets ${target_item_name} to $c_target_name in ${C:target_area_name} for ${C:source_name}</QUEST_NAME>
+		<QUEST_NAME PICKWEIGHT=99 CONDITION="$deityname!=''">${C:source_name} needs $num_targets ${target_item_name} $reason_verbed to $c_target_name in ${C:target_area_name} for $deityname</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_NOTIFYSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSTRING>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>

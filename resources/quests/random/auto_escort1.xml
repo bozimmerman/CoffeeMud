@@ -57,11 +57,12 @@ settable vars:
 	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
 	<FACTION>$target_faction</FACTION>
 	<NUMFACTION>$[$target_faction_amt / 500]</NUMFACTION>
-	<QUEST_NAME SELECT="Any-1">
+	<QUEST_NAME SELECT="Pick-1">
 		<QUEST_NAME>You need to $reason_verb $target_name to ${C:target_room_name}</QUEST_NAME>
 		<QUEST_NAME>You want to $reason_verb $target_name to ${C:target_room_name}</QUEST_NAME>
 		<QUEST_NAME>You must $reason_verb $target_name to ${C:target_room_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $target_name to ${C:target_room_name}</QUEST_NAME>
+		<QUEST_NAME PICKWEIGHT=99 CONDITION="$deityname!=''">$deityname needs you to $reason_verb $target_name to ${C:target_room_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<ATTACKER_SCREAM SELECT="Any-1">
 		<ATTACKER_SCREAM CONDITION="'$aggression' != 'NO'">${j:1:quest_attackerscream}</ATTACKER_SCREAM>
@@ -97,7 +98,7 @@ settable vars:
 	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$verb_escorted</STRING>
 	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$verb_escort</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
-	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+	<STRING ID="reason" DEFINE="reason" SELECT="Pick-1">
 		<STRING>$reason_theyoweme</STRING>
 		<STRING>$reason_partytime</STRING>
 		<STRING>$reason_iowethem</STRING>
@@ -107,6 +108,14 @@ settable vars:
 		<STRING>$reason_wedotogether</STRING>
 		<STRING>$reason_idotothem</STRING>
 		<STRING>$reason_wedotoeachother</STRING>
+		<STRING PICKWEIGHT=99 CONDITION="$deityname!=''">$reason_deitydo</STRING>
+	</STRING>
+	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
+		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
+		<STRING define="reason_short">${c:deityname} requires that ${c:target_name} be taken to $target_room_name in $target_area_name.</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${c:deityname} requires that ${c:target_name} be taken to $target_room_name in $target_area_name.</STRING>
+		</STRING>
 	</STRING>
 
 	<STRING id="quest_arrivalstring" SELECT="Any-1">

@@ -218,7 +218,7 @@ public class Prayer_DivineQuest extends Prayer
 					Log.errOut(L("Required ids for @x1 were missing: @x2: for @x3",idName,cme.getMessage(),targetM.name()));
 					return null;
 				}
-				String s=CMLib.percolator().buildQuestScript(piece, definedIDs, mob);
+				String s=CMLib.percolator().buildQuestScript(piece, definedIDs, targetM);
 				if(s.length()==0)
 					throw new CMException("Failed to create any sort of quest at all! WTF!!");
 				CMLib.percolator().postProcess(definedIDs);
@@ -246,8 +246,8 @@ public class Prayer_DivineQuest extends Prayer
 					}
 				}
 				Q.setCopy(true);
-				final CMMsg msg=CMClass.getMsg(targetM, mob.location(),null, CMMsg.MSG_ENTER, null);
-				mob.location().send(targetM, msg);
+				final CMMsg msg=CMClass.getMsg(targetM, targetM.location(),null, CMMsg.MSG_ENTER, null);
+				targetM.location().send(targetM, msg);
 				return Q;
 			}
 			catch(final CMException cme)
@@ -306,16 +306,16 @@ public class Prayer_DivineQuest extends Prayer
 			final CMMsg msg=CMClass.getMsg(mob,targetM,this,verbalCastCode(mob,targetM,auto),
 					((mob!=targetM)&&(mob instanceof Deity))?L("^S<S-NAME> point(s) at <T-NAMESELF>.^?"):
 						auto?"":L("^S<S-NAME> @x1 while pointing at <T-NAMESELF>.^?",super.prayWord(mob)));
-			if(mob.location().okMessage(mob,msg))
+			if(targetM.location().okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				targetM.location().send(mob,msg);
 				final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
 				final Map<String,Object> definedIDs = new Hashtable<String,Object>();
-				definedIDs.put("AREA_NAME", mob.location().getArea().Name());
+				definedIDs.put("AREA_NAME", targetM.location().getArea().Name());
 				definedIDs.put("target_level".toUpperCase(), ""+targetM.phyStats().level());
 				definedIDs.put("AGGRESSION", "YES");
 				definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
-				definedIDs.put("TEMPLATE", "normal");
+				definedIDs.put("TEMPLATE", "auto");
 				definedIDs.put("DEITYNAME", deityName);
 				final Quest q1=deviseAndStartQuest(mob, targetM, definedIDs);
 				if(q1 == null)

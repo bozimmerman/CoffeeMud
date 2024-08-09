@@ -128,8 +128,10 @@ public class Spell_Teleport extends Spell
 	@Override
 	public void unInvoke()
 	{
+		final boolean affM = !(affected instanceof Exit);
 		super.unInvoke();
-		if(parentGenA != null)
+		// this MUST be done, because you never know when its the last ticker...
+		if((parentGenA != null) && (affM))
 			((AutoGenArea)parentGenA).resetInstance(returnToRoom);
 	}
 
@@ -165,7 +167,13 @@ public class Spell_Teleport extends Spell
 						spellA.castMsgStr="";
 						spellA.leaveMsgStr=L("<S-NAME> disappear(s) into @x1.",affected.name(msg.source()));
 					}
-					spellA.invoke(msg.source(), cmds, msg.source(), true, msg.source().phyStats().level());
+					if(msg.source().fetchEffect(spellA.ID())==null)
+					{
+						spellA.invoke(msg.source(), cmds, msg.source(), true, msg.source().phyStats().level());
+						final Spell_Teleport pA= (Spell_Teleport)msg.source().fetchEffect(spellA.ID());
+						if(pA != null)
+							pA.parentGenA = parentGenA;
+					}
 					return false;
 				}
 			}

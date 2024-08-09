@@ -52,11 +52,12 @@ settable vars:
 	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
 	<FACTION>$source_faction</FACTION>
 	<NUMFACTION>$[$source_faction_amt / 500]</NUMFACTION>
-	<QUEST_NAME SELECT="Any-1">
+	<QUEST_NAME SELECT="Pick-1">
 		<QUEST_NAME>${C:source_name} needs you to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:source_name} wants you to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:source_name} asks for you to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $target_name in ${C:target_area_name} for ${C:source_name}</QUEST_NAME>
+		<QUEST_NAME PICKWEIGHT=99 CONDITION="$deityname!=''">${C:source_name} needs you to $reason_verb $target_name in ${C:target_area_name} for $deityname</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_NOTIFYSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSTRING>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>

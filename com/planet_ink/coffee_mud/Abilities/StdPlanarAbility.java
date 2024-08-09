@@ -466,12 +466,18 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 	}
 
 	@Override
-	public void setMiscText(final String newText)
+	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		clearVars();
 		if(newText.length()>0)
 		{
+			if(newText.equalsIgnoreCase("any"))
+			{
+				final List<String> allPlaneKeys = getAllPlaneKeys();
+				newText = allPlaneKeys.get(CMLib.dice().roll(1, allPlaneKeys.size(), -1));
+				super.setMiscText(newText);
+			}
 			this.planarName=newText;
 			this.planeVars=getPlanarVars(newText);
 			if(this.planeVars==null)

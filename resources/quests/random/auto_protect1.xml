@@ -62,6 +62,7 @@ settable vars:
 		<QUEST_NAME>You want ${target_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
 		<QUEST_NAME>You must ${C:reason_verb} ${target_name} in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} ${target_name} in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME PICKWEIGHT=99 CONDITION="$deityname!=''">$deityname needs ${target_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
 	</QUEST_NAME>
 	<ATTACKER_SCREAM>${j:1:quest_fightspeech}</ATTACKER_SCREAM>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
@@ -90,13 +91,27 @@ settable vars:
 	<STRING ID="quest_winspeech" PREDEFINE="reason=$reason">$quest_winspeech</STRING>
 	<STRING ID="quest_fightspeech" PREDEFINE="reason=$reason">$quest_fightspeech</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
-	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+	<STRING ID="reason" DEFINE="reason" SELECT="Pick-1">
 		<STRING CONDITION="$target_int &gt; 5">$reason_theyoweme</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_iowethem</STRING>
 		<STRING>$reason_genprotect</STRING>
 		<STRING>$reason_idotothem</STRING>
 		<STRING>$reason_theydidtome</STRING>
 		<STRING>$reason_wedotoeachother</STRING>
+		<STRING PICKWEIGHT=99 CONDITION="$deityname!=''">$reason_deitydo</STRING>
+	</STRING>
+	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'm here to kill !</STRING>
+		</STRING>
+		<STRING define="reason_short">$deityname requires that ${c:target_name} be protected from ${p:attacker_name}.</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${c:target_name} and the ${p:attacker_name} have never gotten along, and now $target_name, favored of $deityname, is in danger.</STRING>
+			<STRING>${c:target_name} has started refusing service to ${p:attacker_name}, by $deityname command, and will be killed for it.</STRING>
+			<STRING>$deityname requires that ${c:target_name} be protected from ${p:attacker_name}.</STRING>
+			<STRING>Pios $deityname follower ${c:target_name} lost a deadly game to the ${p:attacker_name}, and they've come to collect.</STRING>
+		</STRING>
 	</STRING>
 
 	<STRING id="quest_generic_winner_speeches" SELECT="Any-1">

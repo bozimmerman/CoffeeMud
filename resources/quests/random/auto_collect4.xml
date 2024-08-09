@@ -57,11 +57,12 @@ vars:
 	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
 	<FACTION>$target_faction</FACTION>
 	<NUMFACTION>$[$target_faction_amt / -500]</NUMFACTION>
-	<QUEST_NAME SELECT="Any-1">
+	<QUEST_NAME SELECT="Pick-1">
 		<QUEST_NAME>You need $num_targets ${p:target_item_name} $reason_verbed</QUEST_NAME>
 		<QUEST_NAME>You want $num_targets ${p:target_item_name} $reason_verbed</QUEST_NAME>
 		<QUEST_NAME>You must $reason_verb $num_targets ${p:target_item_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_item_name}</QUEST_NAME>
+		<QUEST_NAME PICKWEIGHT=99 CONDITION="$deityname!=''">$deityname needs $num_targets ${p:target_item_name} $reason_verbed</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
 	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
@@ -176,12 +177,26 @@ vars:
 		<STRING CONDITION="$q_craft=0">$verb_collect</STRING>
 	</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
-	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+	<STRING ID="reason" DEFINE="reason" SELECT="Pick-1">
 		<STRING>$reason_ilostthem</STRING>
 		<STRING>$reason_welosteachother</STRING>
 		<STRING>$reason_gencollect</STRING>
 		<STRING>$reason_idoforthem</STRING>
 		<STRING>$reason_wedotoeachother</STRING>
+		<STRING PICKWEIGHT=99 CONDITION="$deityname!=''">$reason_deitydo</STRING>
+	</STRING>
+	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
+		<STRING define="reason_verbed">$verb_stolen</STRING>
+		<STRING define="reason_verb">$verb_steal</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
+		<STRING define="reason_short">${c:deityname} needs me to have ${p:target_item_name}.</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${c:deityname} needs me to have ${p:target_item_name} for some magical experiments.</STRING>
+			<STRING>${c:reason_verb} ${p:target_item_name} for ${c:deityname}.</STRING>
+			<STRING>${c:deityname} has proclaimed that I need ${p:target_item_name}.</STRING>
+			<STRING>Bring me ${p:target_item_name} for ${c:deityname}.</STRING>
+		</STRING>
 	</STRING>
 
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">

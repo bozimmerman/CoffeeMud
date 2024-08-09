@@ -51,11 +51,12 @@ settable vars:
 	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
 	<FACTION>$target_faction</FACTION>
 	<NUMFACTION>$[$target_faction_amt / 500]</NUMFACTION>
-	<QUEST_NAME SELECT="Any-1">
+	<QUEST_NAME SELECT="Pick-1">
 		<QUEST_NAME>You need to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>You want to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>You must $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME PICKWEIGHT=99 CONDITION="$deityname!=''">$deityname needs you to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
@@ -98,12 +99,20 @@ settable vars:
 	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$verb_visited</STRING>
 	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$verb_visit</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
-	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+	<STRING ID="reason" DEFINE="reason" SELECT="Pick-1">
 		<STRING CONDITION="$target_int &gt; 5">$reason_theyoweme</STRING>
 		<STRING>$reason_partytime</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_iowethem</STRING>
 		<STRING>$reason_ilostthem</STRING>
 		<STRING>$reason_gentravel</STRING>
+		<STRING PICKWEIGHT=99 CONDITION="$deityname!=''">$reason_deitydo</STRING>
+	</STRING>
+	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
+		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="reason_short">${c:deityname} requires that you go to $target_name.</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${c:deityname} requires that you go to $target_name.</STRING>
+		</STRING>
 	</STRING>
 
 	<STRING id="quest_generic_hello_speeches" SELECT="Any-1">

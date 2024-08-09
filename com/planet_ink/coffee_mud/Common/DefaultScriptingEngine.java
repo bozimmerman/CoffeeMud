@@ -2036,6 +2036,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		final StringBuilder vchrs = new StringBuilder(varifyableStr);
 		while((t>=0)&&(t<vchrs.length()-1))
 		{
+			if((t>0)&&(vchrs.charAt(t-1)=='\\'))
+			{
+				t=vchrs.indexOf("$",t+1);
+				continue;
+			}
 			int replLen = 2;
 			final char c=vchrs.charAt(t+1);
 			String middle="";
@@ -2378,7 +2383,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			vchrs.replace(t, t+replLen, middle);
 			t=vchrs.indexOf("$",t);
 		}
-		return vchrs.toString();
+		return CMStrings.deEscape(vchrs.toString());
 	}
 
 	protected PairList<String,String> getScriptVarSet(final String mobname, final String varname)

@@ -171,13 +171,19 @@ public class Spell_ImprovedPolymorph extends Spell
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if(commands.size()==0)
+		String race;
+		if(!auto)
 		{
-			mob.tell(L("You need to specify what to turn your target into!"));
-			return false;
+			if(commands.size()==0)
+			{
+				mob.tell(L("You need to specify what to turn your target into!"));
+				return false;
+			}
+			race=commands.get(commands.size()-1);
+			commands.remove(commands.size()-1);
 		}
-		final String race=commands.get(commands.size()-1);
-		commands.remove(commands.size()-1);
+		else
+			race="doesntexist";
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
@@ -186,7 +192,7 @@ public class Spell_ImprovedPolymorph extends Spell
 			mob.tell(L("You cannot hold enough energy to cast this on yourself."));
 			return false;
 		}
-		Race R=CMClass.getRace(race);
+		Race R=race.equalsIgnoreCase("any")?CMClass.randomRace():CMClass.getRace(race);
 		if((R==null)&&(!auto))
 		{
 			if(mob.isMonster())
@@ -296,7 +302,7 @@ public class Spell_ImprovedPolymorph extends Spell
 				if(msg.value()<=0)
 				{
 					newRace=R;
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",newRace.name()));
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",newRace.name()));
 					final Spell_ImprovedPolymorph morph = (Spell_ImprovedPolymorph) beneficialAffect(mob,target,asLevel,0);
 					if(morph != null)
 					{
