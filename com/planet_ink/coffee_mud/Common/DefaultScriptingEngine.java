@@ -15370,8 +15370,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 			case 0:
 				logError(affecting, "?", "BAD_TRIGGER", script.get(0).first+"' is not a valid trigger.");
-				scripts.remove(thisScriptIndex);
-				thisScriptIndex--;
+				if(thisScriptIndex<scripts.size())
+				{
+					scripts.remove(thisScriptIndex);
+					thisScriptIndex--;
+				}
 				break;
 			case 5: // rand_Prog
 				if((!mob.amDead())&&canTrigger(5))
