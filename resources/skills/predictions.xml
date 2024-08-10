@@ -56,7 +56,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPOLOADROOM GenPortal
@@ -76,7 +76,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPECHOAT \$i ^ZYou see a red dragon circling far overhead.  It spots you!!^.^?
@@ -94,7 +94,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPECHOAT \$i You spot a strange herb growing nearby.
@@ -113,7 +113,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPECHOAT \$i You spot a strange ring nearby, and are compelled to pick it up and wear it.
@@ -138,7 +138,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPECHOAT \$i You spot a strange stick with runes scratched into it.
@@ -159,7 +159,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPECHOAT \$i You spot a pretty ring on the ground.
@@ -181,7 +181,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPECHOAT \$i You spot a wide brimmed hat on the ground.
@@ -277,13 +277,89 @@ See guides/RandomAreas.html for information about documents of this type.
 			MPSCRIPT \$i DELETE *
 		~
 	</string>
+	<string id="meh_nonsense10">
+		FUNCTION_PROG Prediction
+			RETURN An unforeseen opportunity will arise; grasp it with both hands, but be prepared for its consequences.
+		~
+		
+		ONCE_PROG
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_nonsense11">
+		FUNCTION_PROG Prediction
+			RETURN A journey you undertake will reveal hidden truths about yourself and your purpose.
+		~
+		
+		ONCE_PROG
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_nonsense12">
+		FUNCTION_PROG Prediction
+			RETURN The stars align in your favor; a time of great luck is upon you.
+		~
+		
+		ONCE_PROG
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_nonsense13">
+		FUNCTION_PROG Prediction
+			RETURN The fate of a kingdom rests in your hands; choose wisely.
+		~
+		
+		ONCE_PROG
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_nonsense14">
+		FUNCTION_PROG Prediction
+			RETURN You will be given a choice between love and power; the decision will shape your destiny.
+		~
+		
+		ONCE_PROG
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_nonsense15">
+		FUNCTION_PROG Prediction
+			RETURN You will discover a hidden talent for a powerful ability.
+		~
+		
+		ONCE_PROG
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_nonsense16">
+		FUNCTION_PROG Prediction
+			RETURN A powerful skill will be yours, but mastering it will be a great challenge.
+		~
+		
+		ONCE_PROG
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_nonsense17">
+		FUNCTION_PROG Prediction
+			RETURN You will discover a hidden talent for a craft or skill that will aid you greatly.
+		~
+		
+		ONCE_PROG
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
 	<string id="meh_hidden_grove">
 		FUNCTION_PROG Prediction
-			RETURN A hidden grove will provide you with a place of refuge and healing.
+			IF RAND(50)
+				RETURN A hidden garden will provide you with a place of peace and reflection.
+			ELSE
+				RETURN A hidden grove will provide you with a place of refuge and healing.
+			ENDIF
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR HITPRCNT(\$i > 75)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR HITPRCNT(\$i > 75) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPOLOADROOM GenPortal
@@ -303,7 +379,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPOLOADROOM GenPortal
@@ -323,7 +399,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPECHOAT \$i You spot a potion on the ground.  Perhaps someone dropped it?
@@ -357,8 +433,9 @@ See guides/RandomAreas.html for information about documents of this type.
 			MPGSET \$b NAME a shadowy figure
 			MPGSET \$b DISPLAY a shadowy figure is here.
 			MPGSET \$b DESCRIPTION You can't make out his or her features.
+			MPGSET \$b RACE Shadow
 			MPBEHAVE Decay \$b remain=199 notrigger
-			MPBEHAVE Aggressive \$b
+			MPBEHAVE Aggressive \$b MISBEHAVE -NAME "+\$i"
 			MPBEHAVE Fighterness \$b
 			MPGSET \$b LEVEL $%LEVEL(\$i)%
 			MPGSET \$b REJUV 0
@@ -372,7 +449,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPECHOAT \$i You spot a wand on the ground.  Perhaps someone dropped it?
@@ -405,7 +482,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			MPBEHAVE Decay \$b remain=299 notrigger
 			MPAFFECT Prop_PracticeDummy \$b KILL
 			MPFORCE \$b say Pleeeaaaassseeee kiiiillllll meeeeeeeeee.....
-			MPSCRIPT \$b INDIVIDUAL SAVABLE STATIC=RAND_PROG 25\;IF NOT INROOM(\$i)\;MPGOTO \$i \;ENDIF\;say Pleeeaaaassseeee kiiiillllll meeeeeeeeee.....\;\~
+			MPSCRIPT \$b INDIVIDUAL SAVABLE RAND_PROG 25\;IF NOT INROOM(\$i)\;MPGOTO \$i \;ENDIF\;say Pleeeaaaassseeee kiiiillllll meeeeeeeeee.....\;\~
 			MPSCRIPT \$i DELETE *
 		~
 	</string>
@@ -442,7 +519,11 @@ See guides/RandomAreas.html for information about documents of this type.
 	</string>
 	<string id="meh_deity_quest">
 		FUNCTION_PROG Prediction
-			RETURN You will be given a quest by a powerful deity.
+			IF RAND(50)
+				RETURN You will be given a quest by a powerful deity.
+			ELSE
+				RETURN You will gain the favor of a powerful deity, but it comes at a cost.
+			ENDIF
 		~
 
 		RAND_PROG 50
@@ -485,7 +566,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INROOM(ANYSPECIAL) OR INLOCALE(\$i INDOORS)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INROOM(ANYSPECIAL) OR INLOCALE(\$i INDOORS) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPECHOAT \$i An amy marches in and declares allegiance to you.
@@ -500,7 +581,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPOLOADROOM GenPortal
@@ -520,7 +601,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPECHOAT \$i You spot a scroll lying on the ground.
@@ -566,7 +647,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPECHOAT \$i You spot a strange relic with divine symbols scratched into it.
@@ -609,7 +690,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPECHOAT \$i You are ambushed by a strange beast!
@@ -619,10 +700,10 @@ See guides/RandomAreas.html for information about documents of this type.
 			MPGSET \$b DESCRIPTION You can't make out his or her features.
 			MPGSET \$b RACE Unique
 			MPBEHAVE Decay \$b remain=199 notrigger
-			MPBEHAVE Aggressive \$b
+			MPBEHAVE Aggressive \$b MISBEHAVE -NAME "+\$i"
 			MPBEHAVE Fighterness \$b
 			MPGSET \$b LEVEL $%LEVEL(\$i)%
-			MPSCRIPT \$b INDIVIDUAL SAVABLE STATIC=FIGHT_PROG 50\;MPAFFECT Spell_ImprovedPolymorph '\\\$i'\;\~
+			MPSCRIPT \$b GLOBAL FIGHT_PROG 50\;MPAFFECT Spell_ImprovedPolymorph '\\\$i'\;\~
 			MPGSET \$b REJUV 0
 			MPFORCE \$b KILL \$i
 			MPSCRIPT \$i DELETE *
@@ -634,7 +715,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPOLOADROOM GenPortal
@@ -654,7 +735,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPECHOAT \$i You spot a scroll lying on the ground.
@@ -674,7 +755,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPECHOAT \$i You spot a strange cube on the ground.
@@ -690,7 +771,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPECHOAT \$i You are ambushed by a powerful mage!
@@ -700,10 +781,10 @@ See guides/RandomAreas.html for information about documents of this type.
 			MPGSET \$b DESCRIPTION He looks powerful, and smart.
 			MPGSET \$b RACE Human
 			MPBEHAVE Decay \$b remain=199 notrigger
-			MPBEHAVE Aggressive \$b
+			MPBEHAVE Aggressive \$b MISBEHAVE -NAME "+\$i"
 			MPBEHAVE Mageness \$b
 			MPGSET \$b LEVEL $%LEVEL(\$i)%
-			MPSCRIPT \$b INDIVIDUAL SAVABLE STATIC=DEATH_PROG 100\;MPAFFECT Spell_ImprovedPolymorph '\\\$i'\;\~
+			MPSCRIPT \$b GLOBAL DEATH_PROG 100\;MPAFFECT Spell_ImprovedPolymorph '\\\$i'\;\~
 			MPGSET \$b REJUV 0
 			MPFORCE \$b KILL \$i
 			MPSCRIPT \$i DELETE *
@@ -715,7 +796,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR !ISMOON('')
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR !ISMOON('') OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPOLOADROOM GenPortal
@@ -731,11 +812,15 @@ See guides/RandomAreas.html for information about documents of this type.
 	</string>
 	<string id="good_paladin_ally">
 		FUNCTION_PROG Prediction
-			RETURN You will meet an ally who will become invaluable in your quest.
+			IF RAND(50)
+				RETURN You will find a powerful ally in the most unlikely of places.
+			ELSE
+				RETURN You will meet an ally who will become invaluable in your quest.
+			ENDIF
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPECHO A friendly stranger walks up to \$i.
@@ -756,11 +841,15 @@ See guides/RandomAreas.html for information about documents of this type.
 	</string>
 	<string id="meh_hidden_sanctuary">
 		FUNCTION_PROG Prediction
-			RETURN A hidden sanctuary will offer refuge and wisdom.
+			IF RAND(50)
+				RETURN A hidden sanctuary will offer refuge and wisdom.
+			ELSE
+				RETURN You will discover a hidden sanctuary that offers refuge and wisdom.
+			ENDIF
 		~
 
 		RAND_PROG 50
-			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
 				RETURN
 			ENDIF
 			MPOLOADROOM GenPortal
@@ -775,51 +864,397 @@ See guides/RandomAreas.html for information about documents of this type.
 			MPSCRIPT \$i DELETE *
 		~
 	</string>
-	<!--
-**** TODO IMMEDIATELY ****
+	<string id="meh_stupid_prophecy">
+		FUNCTION_PROG Prediction
+			RETURN An ancient prophecy will come into play, influencing the outcome of your current endeavors.
+		~
 
-**** TODO AFTER SORTING GOOD/BAD ****
-An ancient prophecy will come into play, influencing the outcome of your current endeavors.
-	-- you remember an ancient prophecy that says someone would do whatever the player just did
-A powerful charm will protect you from harm and bring you good fortune.
-	-- saving throw charm
-A rare gemstone will reveal hidden paths when held under moonlight.
-	-- gemstone, held outdoors at night gives see hidden
-A forgotten song will awaken a slumbering giant.
-	-- wait to see a giant, make them sleep, then narrate a song playing that wakes him.
-The spirits of the forest whisper your name; they have chosen you for a great task.
-    -- another quest one
-	
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4')
+				RETURN
+			ENDIF
+			MPECHOAT \$i You recall an ancient prophecy that predicted that someone would do what you just did.
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="good_save_charm">
+		FUNCTION_PROG Prediction
+			RETURN A powerful charm will protect you from harm and bring you good fortune.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
+				RETURN
+			ENDIF
+			MPECHOAT \$i You spot a charm bracelet on the ground.
+			MPOLOADROOM GenArmor
+			MPGSET \$b REJUV 0
+			MPGSET \$b NAME a charm bracelet
+			MPGSET \$b DISPLAY a charm bracelet sits here
+			MPGSET \$b DESCRIPTION It has several tiny shield charms hung from it.
+			MPGSET \$b PROPERWORN left wrist,right wrist
+			MPGSET \$b MATERIAL SILVER
+			MPGSET \$b ISREMOVABLE true
+			MPAFFECT Prop_WearAdjuster \$b ARMOR-5 ALLSAVES-10
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_gemstone_path">
+		FUNCTION_PROG Prediction
+			RETURN A rare gemstone will reveal hidden paths when held under moonlight.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+				RETURN
+			ENDIF
+			MPOLOADROOM GenItem
+			MPGSET \$b REJUV 0
+			MPGSET \$b NAME a rare gemstone
+			MPGSET \$b DISPLAY a rare gemstone bracelet sits here
+			MPGSET \$b BASEGOLD 1000
+			MPGSET \$b DESCRIPTION It is a beautiful swirl of color.
+			MPGSET \$b MATERIAL GEM
+			MPGSET \$b ISREMOVABLE true
+			MPSCRIPT \$b SAVABLE GLOBAL STATIC LOAD=prediction_gemstone.script
+			MPECHOAT \$i You spot a rare gemstone on the ground.
+			MPSCRIPT \$i DELETE *
+		~
+		&lt;?xml version="1.0"?>
+		&lt;FILE>&lt;NAME>prediction_gemstone.script&lt;/NAME>&lt;DATA>
+		WEAR_PROG P a rare gemstone
+			IF INLOCALE(\$n INDOORS) OR INROOM(ANYSPECIAL) OR !ISMOON('')
+				RETURN
+			ENDIF
+			MPOLOADROOM GenPortal
+			MPGSET \$b NAME a hidden passage
+			MPGSET \$b REJUV 0
+			MPGSET \$b DISPLAY a hidden passage is revealed here
+			MPGSET \$b DESCRIPTION You can't quite see what is beyond.
+			MPBEHAVE Decay \$b remain=60 notrigger
+			MPAFFECT property:Spell_Teleport \$b theme=swamp areasize=50
+			MPECHO Your gemstone glows and reveals a formerly hidden passage!
+			MPSCRIPT \$i DELETE *
+		~
+		&lt;/DATA>&lt;/FILE>
+	</string>
+	<string id="meh_relic_defence">
+		FUNCTION_PROG Prediction
+			IF RAND(50)
+				RETURN You will be called upon to protect a sacred relic from destruction by evil hands.
+			ELSE
+				RETURN You will be called upon to protect a sacred relic.
+			ENDIF
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. ' 2 3 4 ') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
+				RETURN
+			ENDIF
+			MPECHOAT \$i You spot a sacred relic under attack from a kobold.  The relic speaks to you, pleading for help.
+			MPOLOADROOM GenWand
+			MPGSET \$b REJUV 0
+			MPGSET \$b NAME a sacred relic
+			MPGSET \$b DISPLAY a sacred relic is here
+			MPGSET \$b MATERIAL OAK
+			MPGSET \$b DESCRIPTION It appears to have hold symbols etched into it.
+			MPGSET \$b SPELL Prayer_Calm
+			MPBEHAVE MudChat \$b
+			MPGSET \$b MAXUSES 1
+			MPMLOAD GenMob
+			MPGSET \$b NAME a kobold
+			MPGSET \$b DISPLAY a kobold is here
+			MPGSET \$b DESCRIPTION He looks like a kobold.
+			MPGSET \$b RACE Kobold
+			MPBEHAVE Decay \$b remain=399 notrigger
+			MPBEHAVE Fighterness \$b
+			MPSCRIPT \$b GLOBAL RAND_PROG 50\;IF INROOM('a sacred relic') AND NOT ISFIGHT(\\\$i)\;emote beats on a sacred relic.\;ENDIF\;\~
+			MPGSET \$b LEVEL $%LEVEL(\$i)%
+			MPGSET \$b REJUV 0
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_forest_quest">
+		FUNCTION_PROG Prediction
+			RETURN The spirits of the forest will whisper your name; and choose you for a great task.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INROOM(ANYSPECIAL)
+				RETURN
+			ENDIF
+			IF NOT INLOCALE(\$i WOODS)
+				RETURN
+			ENDIF
+			MPECHOAT \$i You hear the spirits of the forest whisper '\$i....'
+			MPMLOAD GenMob
+			MPGSET \$b NAME the spirits of the forest
+			MPFORCE \$b MPCAST Spell_MysticTask \$i
+			MPPURGE \$b
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_hidden_realm">
+		FUNCTION_PROG Prediction
+			IF RAND(33)
+				RETURN A lost city awaits discovery at the end of a hidden passage, filled with both dangers and wonders.
+			ELSE
+				IF RAND(50)
+					RETURN A lost city will reveal its secrets to you.
+				ELSE
+					RETURN You will find a hidden passage that leads to a forgotten realm.
+				ENDIF
+			ENDIF
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) or INLOCALE(\$i CITY)
+				RETURN
+			ENDIF
+			MPOLOADROOM GenPortal
+			MPGSET \$b NAME a hidden passage
+			MPGSET \$b REJUV 0
+			MPGSET \$b DISPLAY a hidden passage is revealed here
+			MPGSET \$b DESCRIPTION You can't quite see what is beyond.
+			MPBEHAVE Decay \$b remain=60 notrigger
+			MPAFFECT property:Spell_Teleport \$b theme=town areasize=50
+			MPECHOAT \$i You spot a formerly hidden passage!
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_guardian_boon">
+		FUNCTION_PROG Prediction
+			RETURN A guardian will grant you a boon if you prove your worth.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
+				RETURN
+			ENDIF
+			IF NOT INLOCALE(\$i WOODS)
+				RETURN
+			ENDIF
+			MPECHOAT \$i A mighty guardian appears!
+			MPMLOAD GenMob
+			MPGSET \$b NAME a mighty guardian
+			MPGSET \$b DISPLAY a mighty guardian is here.
+			MPGSET \$b DESCRIPTION He is a large stone figure.
+			MPFORCE \$b sayto \$i I am the guardian of fortune!  Defeat me, and I will reward you.
+			MPBEHAVE Decay \$b remain=199 notrigger
+			MPBEHAVE Aggressive \$b MISBEHAVE -NAME "+\$i"
+			MPBEHAVE Fighterness \$b
+			MPGSET RACE StoneGolem
+			MPGSET \$b LEVEL $%LEVEL(\$i)%
+			MPGSET \$b REJUV 0
+			MPSCRIPT \$b STATIC GLOBAL DEATH_PROG\;say Well Done.\;MPOLOAD PracticePoint\;give \\\$b \\\$n\;MPPURGE \\\$i\;\~\;
+			MPFORCE \$b KILL \$i
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_hidden_passage">
+		FUNCTION_PROG Prediction
+			RETURN A hidden passage will reveal itself to you, leading to untold treasures or dangers.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
+				RETURN
+			ENDIF
+			MPOLOADROOM GenPortal
+			MPGSET \$b NAME a hidden passage
+			MPGSET \$b REJUV 0
+			MPGSET \$b DISPLAY a hidden passage is revealed here
+			MPGSET \$b DESCRIPTION You can't quite see what is beyond.
+			MPBEHAVE Decay \$b remain=60 notrigger
+			MPAFFECT property:Spell_Teleport \$b theme=rats areasize=50
+			MPECHOAT \$i You spot a formerly hidden passage!
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_wonder_portal">
+		FUNCTION_PROG Prediction
+			RETURN A hidden portal will transport you to a realm of magic and wonder.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
+				RETURN
+			ENDIF
+			MPOLOADROOM GenPortal
+			MPGSET \$b REJUV 0
+			MPGSET \$b NAME a swirling magical portal
+			MPGSET \$b DISPLAY a swirling magical portal is here
+			MPGSET \$b DESCRIPTION You can't quite see what is beyond the swirling curtain.
+			MPBEHAVE Decay \$b remain=60 notrigger
+			MPAFFECT property:Spell_Planeshift \$b 999ticks Twin Paradises
+			MPECHO A swirling magical portal appears!
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_wonder_path">
+		FUNCTION_PROG Prediction
+			RETURN A hidden path will lead you to a place of great significance.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
+				RETURN
+			ENDIF
+			MPOLOADROOM GenPortal
+			MPGSET \$b REJUV 0
+			MPGSET \$b NAME a hidden path
+			MPGSET \$b DISPLAY a hidden path is here
+			MPGSET \$b DESCRIPTION You can't quite see what is down the hidden path.
+			MPBEHAVE Decay \$b remain=60 notrigger
+			MPAFFECT property:Spell_Planeshift \$b 999ticks Olympus
+			MPECHO You spot a hidden path.
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_snow_portal">
+		FUNCTION_PROG Prediction
+			RETURN You will discover a portal that leads to a forgotten land.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
+				RETURN
+			ENDIF
+			MPOLOADROOM GenPortal
+			MPGSET \$b REJUV 0
+			MPGSET \$b NAME a swirling magical portal
+			MPGSET \$b DISPLAY a swirling magical portal is here
+			MPGSET \$b DESCRIPTION You can't quite see what is beyond the swirling curtain.
+			MPBEHAVE Decay \$b remain=60 notrigger
+			MPAFFECT property:Spell_Teleport \$b theme=snow areasize=50
+			MPECHO A swirling magical portal appears!
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_hidden_prison">
+		FUNCTION_PROG Prediction
+			RETURN A hidden stronghold will become your sanctuary.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
+				RETURN
+			ENDIF
+			MPOLOADROOM GenPortal
+			MPGSET \$b REJUV 0
+			MPGSET \$b NAME a hidden passage
+			MPGSET \$b DISPLAY a hidden passage is here
+			MPGSET \$b DESCRIPTION You can't quite see what is down the hidden passage.
+			MPBEHAVE Decay \$b remain=60 notrigger
+			MPAFFECT property:Spell_Teleport \$b theme=prison areasize=50 aggrochance=0 nofantasy=true
+			MPECHO You spot a hidden passage.
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_wonder_star">
+		FUNCTION_PROG Prediction
+			RETURN A distant star will guide you to a place of great importance.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY) OR !ISMOON('')
+				RETURN
+			ENDIF
+			MPOLOADROOM GenPortal
+			MPGSET \$b REJUV 0
+			MPGSET \$b NAME a starlight portal
+			MPGSET \$b DISPLAY a starlight portal is here
+			MPGSET \$b DESCRIPTION You can't quite see what beyond the bright light.
+			MPBEHAVE Decay \$b remain=60 notrigger
+			MPAFFECT property:Spell_Planeshift \$b 999ticks Seven Heavens
+			MPECHO The light from distant stars beam down to reveal a portal!
+			MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="good_genie">
+		FUNCTION_PROG Prediction
+			RETURN You will encounter a creature that can grant wishes; use this power wisely.
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4')
+				RETURN
+			ENDIF
+			MPECHOAT \$i A genie rises up out of the ground.
+			MPMLOAD GenMob
+			MPGSET \$b NAME a genie
+			MPGSET \$b DISPLAY a genie floats here
+			MPGSET \$b DESCRIPTION He seems formitale.
+			MPBEHAVE Decay \$b remain=199 notrigger
+			MPGSET \$b REJUV 0
+			MPSCRIPT \$b STATIC GLOBAL SPEECH_PROG ALL\;say Very well.\;MPFORCE \\\$n MPCASTEXT Spell_Wish '' \\\$g\;MPPURGE \\\$i\;MPECHO the genie vanishes!\;\~\;
+			MPALARM 1 MPFORCE \$b emote points at \$i and says 'Speak your wish!'
+			MPALARM 1 MPSCRIPT \$i DELETE *
+		~
+	</string>
+	<string id="meh_map_magic">
+		FUNCTION_PROG Prediction
+			IF RAND(50
+				RETURN You will find a map that leads to a place of great power.
+			ELSE
+				RETURN An ancient map will lead you to a place of great power.
+			ENDIF
+		~
+
+		RAND_PROG 50
+			IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+				RETURN
+			ENDIF
+			MPOLOADROOM GenReadable
+			MPGSET \$b REJUV 0
+			MPGSET \$b NAME a strange map
+			MPGSET \$b DISPLAY a strange map sits here
+			MPGSET \$b DESCRIPTION It has writing on it, and seems to buzz with power.
+			MPGSET \$b MATERIAL PAPER
+			MPGSET \$b ISREADABLE true
+			MPGSET \$b READABLETEXT Uh oh...
+			MPSCRIPT \$b SAVABLE GLOBAL STATIC LOAD=prediction_magicmap.script
+			MPECHOAT \$i You spot a strange map on the ground.
+			MPSCRIPT \$i DELETE *
+		~
+		&lt;?xml version="1.0"?>
+		&lt;FILE>&lt;NAME>prediction_magicmap.script&lt;/NAME>&lt;DATA>
+		EXECMSG_PROG READ all
+			IF EVAL(\$t == \$i)
+				MPCASTEXT Spell_Planeshift \$n Gladsheim
+				MPSCRIPT \$i DELETE *
+				MPPURGE \$i
+			ENDIF 
+		~
+		&lt;/DATA>&lt;/FILE>
+	</string>
+	<!--
 *******  Possibilities Below******
-You will be called upon to protect a sacred relic.
-You will find a hidden passage that leads to a forgotten realm.
-You will find yourself in the middle of a great conflict; your choices will determine the outcome.
-A guardian will grant you a boon if you prove your worth.
-You will find a map that leads to a place of great power.
-A powerful enchantment will grant you the ability to walk through walls.
-An old weapon will be reforged, becoming a key to your victory.
-You will discover a hidden talent for a craft or skill that will aid you greatly.
-You will face a trial of strength and will, and how you respond will shape your future.
-A mysterious stranger will offer you a deal; consider it carefully.
-A hidden passage will reveal itself to you soon, leading to untold treasures or dangers.
-A lost city awaits discovery, filled with both dangers and wonders.
-A mystical talisman will grant you protection from dark forces.
-A hidden portal will transport you to a realm of magic and wonder.
-You will be called upon to protect a sacred relic from falling into the wrong hands.
-A mysterious figure will offer you a quest that will change your destiny.
-A hidden cave will reveal a treasure trove of magical artifacts.
-You will find a powerful ally in the most unlikely of places.
-A stranger will offer you a choice, but only one path will lead to your true destiny.
 A trusted ally will become your greatest challenge. Keep your friends close, and your enemies closer.
 An unexpected ally will arrive at a critical moment, but their motives may not be as clear as they seem.
-A force of nature will intervene in your quest; respect its power and adapt to its changes.
+A powerful ally will come to your aid in your darkest hour.
+
+You will face a trial of strength and will, and how you respond will shape your future.
 An old enemy will reappear, seeking redemption or revenge. Prepare yourself for a confrontation.
 	-- Remember me?  Your old enemy! Hahahaha!
+You will be challenged to a duel by a master warrior; winning will earn you respect and honor.
+A powerful enemy will challenge you; defeating them will bring you great honor.
+
+A mysterious figure will offer you a quest that will change your destiny.
+
+A mysterious stranger will offer you a deal; consider it carefully.
+A stranger will offer you a choice, but only one path will lead to your true destiny.
+
+A powerful enchantment will grant you the ability to walk through walls.
+An old weapon will be reforged, becoming a key to your victory.
+A mystical talisman will grant you protection from dark forces.
+A hidden cave will reveal a treasure trove of magical artifacts.
+	-- they are all ruined?
+A force of nature will intervene in your quest; respect its power and adapt to its changes.
 Your next battle will be your most challenging yet, but victory will bring great rewards.
 A storm is coming; seek shelter and prepare for turbulent times.
 	-- just give them a nasty lightning storm
 A mirror will show you a glimpse of your future.
-You will find an ally in the most unlikely of places.
 A hidden door will lead you to untold treasures.
 A song will unlock a long-forgotten memory, guiding you to your next quest.
 The ocean's depths hide a secret that only you can uncover.
@@ -833,45 +1268,43 @@ A celestial event will mark a turning point in your journey.
 You will be offered a chance to rewrite a part of your past.
 A mythical beast will cross your path; befriending it will bring you great power.
 You will find an ancient artifact that can control the elements.
-A hidden stronghold will become your sanctuary.
-You will be challenged to a duel by a master warrior; winning will earn you respect and honor.
 A powerful enchantment will grant you temporary invincibility.
 You will find a scroll that contains the knowledge of the ancients.
 You will be chosen to bear a legendary weapon.
 A powerful relic will grant you the ability to see into the future.
 A mystical charm will protect you from harm.
-A powerful ally will come to your aid in your darkest hour.
 A legendary beast will recognize you as its master.
 A mystical relic will grant you the power to control the elements.
 You will find a talisman that grants you protection from dark magic.
 A powerful sorcerer will seek your aid in a great endeavor.
-A lost city will reveal its secrets to you.
 A powerful enemy will seek your destruction; defeating them will bring you great honor.
 A mysterious artifact will grant you the ability to control time itself.
-You will discover a portal that leads to a forgotten land.
 An ancient guardian will offer you protection in exchange for a favor.
 A powerful enchantment will grant you the ability to see through illusions.
 A powerful relic will grant you the ability to control the elements.
-A powerful enemy will challenge you; defeating them will bring you great honor.
-You will discover a hidden sanctuary that offers refuge and wisdom.
-A hidden path will lead you to a place of great significance.
 A magical artifact will grant you the ability to speak with animals.
 You will uncover a secret that has been hidden for generations.
-A hidden garden will provide you with a place of peace and reflection.
+A forgotten song will awaken a slumbering giant.
+	-- wait to see a giant, make them sleep, then narrate a song playing that wakes him.
+You will be called upon to defend a sacred place.
+A forgotten spellbook will soon come into your possession, unlocking untold power.
+	Scroll of something
+A powerful ally will come to your aid in your time of need.
+A hidden chamber will reveal a trove of ancient magical artifacts.
+	-- all are ruined
+A sacred text will provide you with wisdom and guidance.
+You will encounter a being of pure light; their touch will heal you.
+A hidden valley holds the key to your destiny.
+A magical artifact will bind you to a powerful spirit.
+A powerful ritual will grant you the ability to summon great power.
 
 ******* Pure Unscripted Nonsense Below ********
-An unforeseen opportunity will arise; grasp it with both hands, but be prepared for its consequences.
-A journey you undertake will reveal hidden truths about yourself and your purpose.
-The stars align in your favor; a time of great luck is upon you.
-The fate of a kingdom rests in your hands; choose wisely.
-You will be given a choice between love and power; the decision will shape your destiny.
 
 ******* Unsorted ********
 You will encounter a wise being who will offer you cryptic advice. Heed their words carefully.
 A cherished memory will come to life, offering you both guidance and a test of faith.
 A secret will be revealed, but it will demand a sacrifice in exchange for the knowledge.
 A familiar face will disappear from your life, but a new ally will take their place, bringing new prospects.
-A forgotten spellbook will soon come into your possession, unlocking untold power.
 Tread carefully near the old ruins; ancient spirits guard secrets there.
 The one you trust most may soon deceive you; stay vigilant.
 A mystical creature will offer you guidance; listen to its wisdom.
@@ -879,35 +1312,27 @@ The answer you seek lies within the depths of an enchanted cave.
 An old friend will return, bringing with them important news.
 You will discover a hidden talent that will aid you in your journey.
 A riddle must be solved to unlock a powerful secret.
-You will gain the favor of a powerful deity, but it comes at a cost.
 A fierce rivalry will test your resolve and skill.
-An ancient map will lead you to a place of great power.
 A powerful enemy plots against you; uncover their plans before it's too late.
 A powerful enchantment will be broken by your hand.
 You will encounter a being from another realm; their knowledge is invaluable.
 The echoes of a past life will guide you through a difficult decision.
 You will find yourself at the heart of a rebellion; your actions will shape its outcome.
 You will uncover a plot that threatens the balance of the world.
-A powerful spell will be yours, but mastering it will be a great challenge.
 You will meet a traveler from another time; their knowledge will be invaluable.
-A sacred text will provide you with wisdom and guidance.
 You will be granted a vision of the future; use it to avert disaster.
 You will find a creature that can speak in riddles; its answers will guide you.
 A deserted island holds the answers to your deepest questions.
 A powerful curse will be lifted through your bravery and cunning.
 A mysterious dream will reveal a hidden truth.
-You will encounter a being of pure light; their touch will heal you.
 A powerful storm will bring both destruction and opportunity.
 You will be given the chance to broker peace between warring factions.
 You will find a hidden library filled with forbidden knowledge.
-You will be called upon to defend a sacred place.
 A creature of darkness will seek your aid; helping it will bring unexpected rewards.
 A great battle will determine the fate of a kingdom, and you will play a crucial role.
 You will uncover the secrets of an ancient civilization.
 You will be given the chance to undo a great mistake from your past.
-A hidden valley holds the key to your destiny.
 You will find a mentor who will teach you the ways of an ancient order.
-A magical artifact will bind you to a powerful spirit.
 A mystical creature will offer you a pact; accepting it will bring great power.
 You will be given the chance to forge a powerful alliance.
 A hidden cave will reveal the secrets of an ancient prophecy.
@@ -916,12 +1341,9 @@ You will find a book that contains the knowledge of the ancients.
 A magical mirror will show you the truth behind a great mystery.
 You will be given the chance to redeem a fallen hero.
 You will encounter a being of pure energy; their knowledge is invaluable.
-A powerful ritual will grant you the ability to summon great power.
-A distant star will guide you to a place of great importance.
 You will encounter a creature that can shapeshift; its loyalty will be tested.
 You will uncover a conspiracy that threatens the stability of the realm.
 You will find a scroll that contains the secrets of a long-lost civilization.
-A hidden chamber will reveal a treasure trove of magical artifacts.
 You will be called upon to break a powerful curse that plagues the land.
 A mysterious figure will offer you a deal; accepting it will change your fate.
 A mystical gemstone will reveal hidden truths when held up to the light.
@@ -929,12 +1351,9 @@ You will find a legendary weapon that was thought to be lost forever.
 A forgotten spell will be revealed to you, granting you great power.
 You will be granted a vision of the future that will guide your actions.
 You will be called upon to mediate a dispute between powerful factions.
-A powerful ally will come to your aid in your time of need.
 You will be given the chance to unlock a great mystery.
-You will encounter a creature that can grant wishes; use this power wisely.
 You will find yourself at the center of a great prophecy.
 You will uncover the secrets of an ancient order.
-You will discover a hidden talent for a powerful form of magic.
 
  -->
 </string>

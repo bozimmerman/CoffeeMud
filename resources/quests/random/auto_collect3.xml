@@ -271,7 +271,7 @@ vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>The ${p:target_name} must be $hurt_verbed.  Do it and $reason_verbed their ${p:target_item_name} as proof.</STRING>
 			<STRING>You are hungry for ${p:target_name}.  Gather some of their ${p:target_item_name}.</STRING>
-			<STRING CONDITION="$target_int &lt; 4">You are making a special $target_area_name stew! Bring me the ${p:target_item_name} of ${p:target_name}.</STRING>
+			<STRING CONDITION="$target_int &lt; 4">You are making a special $target_area_name stew! Collect ${p:target_item_name} of ${p:target_name}.</STRING>
 			<STRING>The ${p:target_name} have ${p:target_item_name} and I do not.</STRING>
 		</STRING>
 	</STRING>

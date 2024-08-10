@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Prayers;
+package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -39,16 +39,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_DivineQuest extends Prayer
+public class Spell_MysticTask extends Spell
 {
 
 	@Override
 	public String ID()
 	{
-		return "Prayer_DivineQuest";
+		return "Spell_MysticTask";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Divine Quest");
+	private final static String	localizedName	= CMLib.lang().L("Mystic Task");
 
 	@Override
 	public String name()
@@ -74,7 +74,7 @@ public class Prayer_DivineQuest extends Prayer
 		return 1;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Divine Quest)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mystic Task)");
 
 	@Override
 	public String displayText()
@@ -85,13 +85,7 @@ public class Prayer_DivineQuest extends Prayer
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_PRAYER | Ability.DOMAIN_BLESSING;
-	}
-
-	@Override
-	public long flags()
-	{
-		return Ability.FLAG_NEUTRAL;
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ENCHANTMENT;
 	}
 
 	@Override
@@ -111,11 +105,11 @@ public class Prayer_DivineQuest extends Prayer
 			quest1.enterDormantState();
 			CMLib.quests().delQuest(quest1);
 			if(affected instanceof MOB)
-				((MOB)affected).tell("You have failed the divine quest.");
+				((MOB)affected).tell("You have failed your task.");
 		}
 		else
 		if(affected instanceof MOB)
-			((MOB)affected).tell("You have failed the divine quest.");
+			((MOB)affected).tell("You have failed your task.");
 		super.unInvoke();
 	}
 
@@ -143,7 +137,7 @@ public class Prayer_DivineQuest extends Prayer
 			quest1.stopQuest();
 			quest1.enterDormantState();
 			CMLib.quests().delQuest(quest1);
-			mob.tell("You have successfully completed the divine quest.");
+			mob.tell("You have successfully completed your task.");
 			mob.delEffect(this);
 			this.setAffectedOne(null);
 			return tickUninvoke();
@@ -274,28 +268,7 @@ public class Prayer_DivineQuest extends Prayer
 			mob.tell(L("@x1 does not look ready for such a task.",targetM.Name()));
 			return false;
 		}
-		final String deityName;
-		if(mob instanceof Deity)
-			deityName = mob.Name();
-		else
-		if(!auto)
-		{
-			deityName=mob.charStats().getWorshipCharID();
-			if(deityName.length()==0)
-			{
-				mob.tell(L("You must worship a deity to begin the imbuing.",targetM.Name()));
-				return false;
-			}
-			if(!targetM.charStats().getWorshipCharID().equals(deityName))
-			{
-				mob.tell(L("@x1 must also worship @x2 to begin the imbuing.",targetM.Name(),deityName));
-				return false;
-			}
-		}
-		else
-			deityName = CMLib.map().deity().Name();
 
-		// lose all the mana!
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -304,8 +277,7 @@ public class Prayer_DivineQuest extends Prayer
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,targetM,this,verbalCastCode(mob,targetM,auto),
-					((mob!=targetM)&&(mob instanceof Deity))?L("^S<S-NAME> point(s) at <T-NAMESELF>.^?"):
-						auto?"":L("^S<S-NAME> @x1 while pointing at <T-NAMESELF>.^?",super.prayWord(mob)));
+					auto?"":L("^S<S-NAME> encant(s) while pointing at <T-NAMESELF>.^?"));
 			if(targetM.location().okMessage(mob,msg))
 			{
 				targetM.location().send(mob,msg);
@@ -316,7 +288,6 @@ public class Prayer_DivineQuest extends Prayer
 				definedIDs.put("AGGRESSION", "YES");
 				definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
 				definedIDs.put("TEMPLATE", "auto");
-				definedIDs.put("DEITYNAME", deityName);
 				final Quest q1=deviseAndStartQuest(mob, targetM, definedIDs);
 				if(q1 == null)
 				{
@@ -325,25 +296,13 @@ public class Prayer_DivineQuest extends Prayer
 				}
 				obj.putString("template1", definedIDs.get("TEMPLATE").toString());
 				obj.putString("quest1", q1.name());
-				final Prayer_DivineQuest dA=(Prayer_DivineQuest)beneficialAffect(mob,targetM,asLevel,(int)(CMProps.getTicksPerHour()*2));
+				final Spell_MysticTask dA=(Spell_MysticTask)beneficialAffect(mob,targetM,asLevel,(int)(CMProps.getTicksPerHour()*2));
 				if(dA!=null)
 					dA.setMiscText(obj.toString());
-				/*
-				for(final Enumeration<ScriptingEngine> e= targetM.scripts();e.hasMoreElements();)
-				{
-					final ScriptingEngine E = e.nextElement();
-					if((E!=null)&&(E.defaultQuestName().equals(q1.name())))
-					{
-						E.tick(targetM, Tickable.TICKID_MOB);
-						final String instr = E.getVar(targetM.Name(), "INSTRUCTIONS");
-						CMLib.commands().postSay(mob, targetM, L("@x1 has a task for you! @x2",deityName,instr));
-					}
-				}
-				*/
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,targetM,L("<S-NAME> @x1 while pointing at <T-NAMESELF>, and looking very frustrated.",super.prayWord(mob)));
+			beneficialWordsFizzle(mob,targetM,L("<S-NAME> encant(s) while pointing at <T-NAMESELF>, but looks very frustrated."));
 		// return whether it worked
 		return success;
 	}

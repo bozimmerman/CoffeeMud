@@ -195,7 +195,7 @@ vars:
 			<STRING>${c:deityname} needs me to have ${p:target_item_name} for some magical experiments.</STRING>
 			<STRING>${c:reason_verb} ${p:target_item_name} for ${c:deityname}.</STRING>
 			<STRING>${c:deityname} has proclaimed that I need ${p:target_item_name}.</STRING>
-			<STRING>Bring me ${p:target_item_name} for ${c:deityname}.</STRING>
+			<STRING>Collect ${p:target_item_name} for ${c:deityname}.</STRING>
 		</STRING>
 	</STRING>
 
@@ -300,7 +300,7 @@ vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING >You need ${p:target_item_name} for your magical experiments.</STRING>
 			<STRING>${c:reason_verb} ${p:target_item_name} for you.</STRING>
-			<STRING>Bring me ${p:target_item_name}.</STRING>
+			<STRING>Collect ${p:target_item_name}.</STRING>
 		</STRING>
 	</STRING>
 

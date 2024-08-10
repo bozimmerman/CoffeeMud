@@ -113,7 +113,7 @@ vars:
 			<STRING>${c:deityname} needs the ${p:target_item_name} of $target_area_name for some magical experiments.</STRING>
 			<STRING>${c:reason_verb} ${p:target_item_name} from $target_area_name for ${c:deityname}.</STRING>
 			<STRING>${c:deityname} has proclaimed that $target_area_name has too many ${p:target_item_name}.</STRING>
-			<STRING>Bring me ${p:target_item_name} for ${c:deityname}.</STRING>
+			<STRING>Collect ${p:target_item_name} for ${c:deityname}.</STRING>
 			<STRING>${c:deityname} feels like witnessing a $adj_feeling_good $target_area_name ${hurt_verb}ing.  Go do it and bring me their ${p:target_item_name}.</STRING>
 		</STRING>
 	</STRING>
@@ -245,7 +245,7 @@ vars:
 			<STRING >You need the ${p:target_item_name} of $target_area_name for your magical experiments.</STRING>
 			<STRING>${c:reason_verb} ${p:target_item_name} from $target_area_name for you.</STRING>
 			<STRING>${c:target_area_name} has all your ${p:target_item_name}. Get them back for you.</STRING>
-			<STRING>Bring me ${p:target_item_name}.</STRING>
+			<STRING>Collect ${p:target_item_name}.</STRING>
 		</STRING>
 	</STRING>
 

@@ -869,16 +869,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return val;
 	}
 
-	private StringBuffer getResourceFileData(final Environmental scripted, final String named, final boolean showErrors)
+	private StringBuffer getResourceFileData(final Environmental scripted, final String named)
 	{
 		final Quest Q=getQuest("*");
 		if(Q!=null)
-			return Q.getResourceFileData(named, showErrors);
+			return Q.getResourceFileData(named, true);
 		final CMFile F = new CMFile(Resources.makeFileResourceName(named),null,CMFile.FLAG_LOGERRORS);
 		if((F.exists())&&(F.canRead()))
 			return F.text();
-		final List<SubScript> script = this.getScripts(scripted);
-		if(script.size()>0)
+		@SuppressWarnings("unchecked")
+		final List<SubScript> script=(List<SubScript>)Resources.getResource(getScriptResourceKey());
+		if((script!=null)&&(script.size()>0))
 		{
 			for(int i=0;i<script.size();i++)
 			{
@@ -950,7 +951,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return CMLib.flags().canFreelyBehaveNormal(affecting);
 	}
 
-	protected String parseLoads(final Environmental E, final String text, final int depth, final List<String> filenames, final StringBuffer nonFilenameScript)
+	protected String parseLoads(final Environmental E, final String text, final int depth,
+								final List<String> filenames, final StringBuffer nonFilenameScript)
 	{
 		final StringBuffer results=new StringBuffer("");
 		String parse=text;
@@ -984,14 +986,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					parse=parse.substring(z+1);
 					if((filenames!=null)&&(!filenames.contains(filename)))
 						filenames.add(filename);
-					results.append(parseLoads(E,getResourceFileData(E,filename, true).toString(),depth+1,filenames,null));
+					results.append(parseLoads(E,getResourceFileData(E,filename).toString(),depth+1,filenames,null));
 				}
 				else
 				{
 					final String filename=parse.substring(y+5).trim();
 					if((filenames!=null)&&(!filenames.contains(filename)))
 						filenames.add(filename);
-					results.append(parseLoads(E,getResourceFileData(E,filename, true).toString(),depth+1,filenames,null));
+					results.append(parseLoads(E,getResourceFileData(E,filename).toString(),depth+1,filenames,null));
 					break;
 				}
 			}
@@ -1381,7 +1383,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		List<MOB> monsters=(List<MOB>)Resources.getResource("RANDOMMONSTERS-"+filename);
 		if(monsters!=null)
 			return monsters;
-		final StringBuffer buf=getResourceFileData(scripted,filename, true);
+		final StringBuffer buf=getResourceFileData(scripted,filename);
 		String thangName="null";
 		final Room R=CMLib.map().roomLocation(scripted);
 		if(R!=null)
@@ -1439,7 +1441,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		List<MOB> monsters=(List<MOB>)Resources.getResource("RANDOMGENMONSTERS-"+filename+"."+tagName+"-"+rest);
 		if(monsters!=null)
 			return monsters;
-		final StringBuffer buf=getResourceFileData(scripted,filename, true);
+		final StringBuffer buf=getResourceFileData(scripted,filename);
 		String thangName="null";
 		final Room R=CMLib.map().roomLocation(scripted);
 		if(R!=null)
@@ -1520,7 +1522,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		List<Item> items=(List<Item>)Resources.getResource("RANDOMITEMS-"+filename);
 		if(items!=null)
 			return items;
-		final StringBuffer buf=getResourceFileData(scripted,filename, true);
+		final StringBuffer buf=getResourceFileData(scripted,filename);
 		String thangName="null";
 		final Room R=CMLib.map().roomLocation(scripted);
 		if(R!=null)
@@ -1578,7 +1580,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		List<Item> items=(List<Item>)Resources.getResource("RANDOMGENITEMS-"+filename+"."+tagName+"-"+rest);
 		if(items!=null)
 			return items;
-		final StringBuffer buf=getResourceFileData(scripted,filename, true);
+		final StringBuffer buf=getResourceFileData(scripted,filename);
 		String thangName="null";
 		final Room R=CMLib.map().roomLocation(scripted);
 		if(R!=null)
@@ -10067,6 +10069,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(newTarget instanceof MOB)
 					{
 						((MOB)newTarget).recoverMaxState();
+						if(arg2.equals("RACE"))
+						{
+							final Race R = ((MOB)newTarget).baseCharStats().getMyRace();
+							R.startRacing((MOB)newTarget, false);
+						}
+						else
 						if(arg2.equals("LEVEL"))
 						{
 							CMLib.leveler().fillOutMOB(((MOB)newTarget),((MOB)newTarget).basePhyStats().level());
@@ -11478,7 +11486,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((A==null)||(cast==null)||(cast.length()==0))
 					logError(ctx.scripted,"MPCASTEXT","RunTime",cast+" is not a valid ability name.");
 				else
-				if(newTarget!=null)
+				if((newTarget!=null)||(tt[2].length()==0))
 				{
 					A.setProficiency(100);
 					final List<String> commands = CMParms.parse(args);
@@ -11687,6 +11695,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				boolean savable=false;
 				boolean execute=false;
 				boolean delete=false;
+				boolean statica = false;
 				String scope=getVarScope();
 				while(proceed)
 				{
@@ -11695,6 +11704,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						savable=true;
 						m2=m2.substring(8).trim();
+						proceed=true;
+					}
+					else
+					if(m2.toUpperCase().startsWith("STATIC "))
+					{
+						statica=true;
+						m2=m2.substring(7).trim();
 						proceed=true;
 					}
 					else
@@ -11765,7 +11781,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(m2.trim().equals("*"))
 							S.setScript(getScript());
 						else
+						{
+							if(statica)
+								m2=this.parseLoads(newTarget, m2, 0, null, null);
 							S.setScript(m2);
+						}
 						if((this.questCacheObj!=null)
 						&&(defaultQuest()==this.questCacheObj))
 							S.registerDefaultQuest(defaultQuest());

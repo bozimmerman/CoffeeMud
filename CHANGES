@@ -44,6 +44,7 @@
  42. Spell_Teleport can now generate random areas when places on exits and portals.
  43. The XML files feature from quest scripts can now be used in mobprog scripts also.
  44. New prayer: Divine Quest, mostly to use in blessings or curses.
+ 45. New spell: Mystic Task, mostly for use in scripts
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.
