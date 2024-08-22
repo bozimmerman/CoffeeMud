@@ -441,7 +441,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					if(lastColor.backgroundCode() < 256)
 					{
 						bgEscapeSequence=clookup[lastColor.backgroundCode()];
-						if(bgEscapeSequence==null)
+						if((bgEscapeSequence==null)||(lastColor.backgroundCode()==ColorLibrary.Color.BGBLACK.getBGCodeChar()))
 							bgEscapeSequence=ColorLibrary.Color.BGBLACK.getANSICode();
 						else
 						{
@@ -580,6 +580,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			final String escapeSequence=clookup[bc];
 			if(escapeSequence == null)
 				bgEscapeSequence = null;
+			else
+			if(bc == ColorLibrary.Color.BGBLACK.getBGCodeChar())
+				bgEscapeSequence=Color.BGBLACK.getANSICode();
 			else
 				bgEscapeSequence=CMLib.color().getBackgroundAnsiCode(escapeSequence);
 			if(bgEscapeSequence != null)
