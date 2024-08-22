@@ -3517,6 +3517,17 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						return ""+((MOB)P).fetchFaction(inclinID);
 					return "";
 				}
+				case BIRTHDATE:
+				{
+					final MOB mob=(MOB)P;
+					if(mob.playerStats() != null)
+					{
+						final int bday=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
+						final int bmonth=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+						return bmonth+"-"+bday;
+					}
+					return "";
+				}
 				}
 			}
 		}
@@ -3791,6 +3802,22 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					break;
 				case FACTIONAMT:
 					break;
+				case BIRTHDATE:
+				{
+					final MOB mob=(MOB)P;
+					if(mob.playerStats()!=null)
+					{
+						final String[] pts = value.trim().split("-");
+						if((pts.length==2)
+						&&(CMath.s_int(pts[0])>0)
+						&&(CMath.s_int(pts[1])>0))
+						{
+							mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH] = CMath.s_int(pts[0]);
+							mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY] = CMath.s_int(pts[1]);
+						}
+					}
+					break;
+				}
 				case FACTIONID:
 					break;
 				case INCLINATION:

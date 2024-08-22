@@ -170,7 +170,8 @@ public interface GenericBuilder extends CMLibrary
 		BUDGETRESETDATE,
 		INVENTORYRESETDATE,
 		IDLETICKS,
-		PEACETICKS
+		PEACETICKS,
+		BIRTHDATE
 	}
 
 	/**
