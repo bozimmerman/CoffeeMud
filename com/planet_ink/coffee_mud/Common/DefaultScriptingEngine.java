@@ -9666,14 +9666,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				else
 				{
-					final Environmental E=getArgumentItem(tt[1],ctx);
 					Item I=null;
-					if(E instanceof Item)
-						I=(Item)E;
+					if(tt[1].indexOf('$')>=0)
+					{
+						final Environmental E=getArgumentItem(tt[1],ctx);
+						if(E instanceof Item)
+							I=(Item)E;
+					}
 					if((I==null)&&(ctx.monster!=null))
 						I=ctx.monster.findItem(varify(ctx,tt[1]));
 					if((I==null)&&(ctx.scripted instanceof Room))
 						I=((Room)ctx.scripted).findItem(varify(ctx,tt[1]));
+					if(I == null)
+					{
+						final Environmental E=getArgumentItem(tt[1],ctx);
+						if(E instanceof Item)
+							I=(Item)E;
+					}
 					if(I!=null)
 					{
 						final ItemPossessor p = I.owner();
