@@ -3624,7 +3624,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentItem(arg1,ctx);
 					if((value.length()==0)||(item.length()==0)||(cmp.length()==0))
 					{
-						logError(ctx.scripted,"HASNUM","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"HASNUM","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					Item I=null;
@@ -3680,7 +3680,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if(arg2.length()==0)
 					{
-						logError(ctx.scripted,"HASTITLE","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"HASTITLE","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if(E instanceof MOB)
@@ -3701,7 +3701,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentItem(arg1,ctx);
 					if(arg2.length()==0)
 					{
-						logError(ctx.scripted,"WORN","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"WORN","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if(E==null)
@@ -4341,7 +4341,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						returnable = false;
 						final Area parent=CMLib.map().getArea(arg1);
 						if(parent == null)
-							logError(ctx.scripted,"QUESTAREA","NoArea",CMParms.combine(tt,t,t+tlen));
+							logError(ctx.scripted,"QUESTAREA","NoArea",CMParms.combine(tt,t));
 						else
 						while(E!=null)
 						{
@@ -4456,7 +4456,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final String arg3=varify(ctx,tt[t+2]);
 					if(arg2.length()==0)
 					{
-						logError(ctx.scripted,"ITEMCOUNT","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"ITEMCOUNT","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if(E==null)
@@ -4724,7 +4724,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"HITPRCNT","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"HITPRCNT","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if((E==null)||(!(E instanceof MOB)))
@@ -5295,7 +5295,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if(arg2.length()==0)
 					{
-						logError(ctx.scripted,"HASTATTOO","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"HASTATTOO","Syntax",CMParms.combine(tt,t));
 						break;
 					}
 					else
@@ -5316,7 +5316,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if(arg2.length()==0)
 					{
-						logError(ctx.scripted,"HASTATTOO","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"HASTATTOO","Syntax",CMParms.combine(tt,t));
 						break;
 					}
 					else
@@ -5341,7 +5341,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if(arg2.length()==0)
 					{
-						logError(ctx.scripted,"HASACCTATTOO","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"HASACCTATTOO","Syntax",CMParms.combine(tt,t));
 						break;
 					}
 					else
@@ -5844,7 +5844,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"SEX","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"SEX","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if((E==null)||(!(E instanceof MOB)))
@@ -5859,7 +5859,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							returnable=!arg3.startsWith(sex);
 						else
 						{
-							logError(ctx.scripted,"SEX","Syntax",CMParms.combine(tt,t,t+tlen));
+							logError(ctx.scripted,"SEX","Syntax",CMParms.combine(tt,t));
 							return returnable;
 						}
 					}
@@ -5915,7 +5915,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentItem(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"STAT","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"STAT","Syntax",CMParms.combine(tt,t));
 						break;
 					}
 					if(E==null)
@@ -5950,7 +5950,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentItem(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"GSTAT","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"GSTAT","Syntax",CMParms.combine(tt,t));
 						break;
 					}
 					if(E==null)
@@ -5984,7 +5984,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Physical P=getArgumentItem(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"POSITION","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"POSITION","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if(P==null)
@@ -6004,7 +6004,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							returnable=!sex.startsWith(arg3);
 						else
 						{
-							logError(ctx.scripted,"POSITION","Syntax",CMParms.combine(tt,t,t+tlen));
+							logError(ctx.scripted,"POSITION","Syntax",CMParms.combine(tt,t));
 							return returnable;
 						}
 					}
@@ -6020,7 +6020,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Physical P=getArgumentItem(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"LEVEL","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"LEVEL","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if(P==null)
@@ -6042,7 +6042,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"QUESTPOINTS","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"QUESTPOINTS","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if((E==null)||(!(E instanceof MOB)))
@@ -6065,7 +6065,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Quest Q=getQuest(arg1);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"QVAR","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"QVAR","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if(Q==null)
@@ -6083,12 +6083,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final String arg3=varify(ctx,tt[t+2]);
 					if(!CMath.isMathExpression(arg1))
 					{
-						logError(ctx.scripted,"MATH","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"MATH","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if(!CMath.isMathExpression(arg3))
 					{
-						logError(ctx.scripted,"MATH","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"MATH","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					returnable=simpleExpressionEval(ctx.scripted,arg1,arg3,arg2,"MATH");
@@ -6104,7 +6104,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"TRAINS","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"TRAINS","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if((E==null)||(!(E instanceof MOB)))
@@ -6126,7 +6126,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"PRACS","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"PRACS","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if((E==null)||(!(E instanceof MOB)))
@@ -6148,7 +6148,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"CLANRANK","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"CLANRANK","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if(!(E instanceof MOB))
@@ -6175,7 +6175,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if(arg2.length()==0)
 					{
-						logError(ctx.scripted,"DEITY","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"DEITY","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if((E==null)||(!(E instanceof MOB)))
@@ -6190,7 +6190,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							returnable=!sex.equalsIgnoreCase(arg3);
 						else
 						{
-							logError(ctx.scripted,"DEITY","Syntax",CMParms.combine(tt,t,t+tlen));
+							logError(ctx.scripted,"DEITY","Syntax",CMParms.combine(tt,t));
 							return returnable;
 						}
 					}
@@ -6207,7 +6207,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"CLANDATA","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"CLANDATA","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					String clanID=null;
@@ -6255,7 +6255,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if(arg2.length()==0)
 					{
-						logError(ctx.scripted,"CLANQUALIFIES","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"CLANQUALIFIES","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					final Clan C=CMLib.clans().findClan(arg2);
@@ -6276,7 +6276,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					else
 					{
-						logError(ctx.scripted,"CLANQUALIFIES","Unknown clan "+arg2+" or "+arg1+" is not a mob",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"CLANQUALIFIES","Unknown clan "+arg2+" or "+arg1+" is not a mob",CMParms.combine(tt,t));
 						return returnable;
 					}
 					break;
@@ -6291,7 +6291,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if(arg2.length()==0)
 					{
-						logError(ctx.scripted,"CLAN","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"CLAN","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if((E==null)||(!(E instanceof MOB)))
@@ -6329,7 +6329,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						else
 						{
-							logError(ctx.scripted,"CLAN","Syntax",CMParms.combine(tt,t,t+tlen));
+							logError(ctx.scripted,"CLAN","Syntax",CMParms.combine(tt,t));
 							return returnable;
 						}
 					}
@@ -6345,7 +6345,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Physical P=getArgumentMOB(arg1,ctx);
 					if(arg2.length()==0)
 					{
-						logError(ctx.scripted,"MOOD","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"MOOD","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if((P==null)||(!(P instanceof MOB)))
@@ -6363,7 +6363,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								returnable=!sex.equalsIgnoreCase(arg3);
 							else
 							{
-								logError(ctx.scripted,"MOOD","Syntax",CMParms.combine(tt,t,t+tlen));
+								logError(ctx.scripted,"MOOD","Syntax",CMParms.combine(tt,t));
 								return returnable;
 							}
 						}
@@ -6380,7 +6380,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"CLASS","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"CLASS","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if((E==null)||(!(E instanceof MOB)))
@@ -6395,7 +6395,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							returnable=!sex.startsWith(arg3);
 						else
 						{
-							logError(ctx.scripted,"CLASS","Syntax",CMParms.combine(tt,t,t+tlen));
+							logError(ctx.scripted,"CLASS","Syntax",CMParms.combine(tt,t));
 							return returnable;
 						}
 					}
@@ -6411,7 +6411,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"CLASS","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"CLASS","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if((E==null)||(!(E instanceof MOB)))
@@ -6426,7 +6426,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							returnable=!sex.startsWith(arg3);
 						else
 						{
-							logError(ctx.scripted,"CLASS","Syntax",CMParms.combine(tt,t,t+tlen));
+							logError(ctx.scripted,"CLASS","Syntax",CMParms.combine(tt,t));
 							return returnable;
 						}
 					}
@@ -6442,7 +6442,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"RACE","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"RACE","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if((E==null)||(!(E instanceof MOB)))
@@ -6457,7 +6457,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							returnable=!sex.startsWith(arg3);
 						else
 						{
-							logError(ctx.scripted,"RACE","Syntax",CMParms.combine(tt,t,t+tlen));
+							logError(ctx.scripted,"RACE","Syntax",CMParms.combine(tt,t));
 							return returnable;
 						}
 					}
@@ -6473,7 +6473,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"RACECAT","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"RACECAT","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if((E==null)||(!(E instanceof MOB)))
@@ -6488,7 +6488,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							returnable=!sex.startsWith(arg3);
 						else
 						{
-							logError(ctx.scripted,"RACECAT","Syntax",CMParms.combine(tt,t,t+tlen));
+							logError(ctx.scripted,"RACECAT","Syntax",CMParms.combine(tt,t));
 							return returnable;
 						}
 					}
@@ -6504,7 +6504,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentItem(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"GOLDAMT","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"GOLDAMT","Syntax",CMParms.combine(tt,t));
 						break;
 					}
 					if(E==null)
@@ -6522,7 +6522,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							val1=((Item)E).value();
 						else
 						{
-							logError(ctx.scripted,"GOLDAMT","Syntax",CMParms.combine(tt,t,t+tlen));
+							logError(ctx.scripted,"GOLDAMT","Syntax",CMParms.combine(tt,t));
 							return returnable;
 						}
 
@@ -6540,7 +6540,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentMOB(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"EXP","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"EXP","Syntax",CMParms.combine(tt,t));
 						break;
 					}
 					if((E==null)||(!(E instanceof MOB)))
@@ -6563,7 +6563,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final String arg4=varify(ctx,tt[t+3]);
 					if((arg2.length()==0)||(arg3.length()==0)||(arg4.length()==0))
 					{
-						logError(ctx.scripted,"VALUE","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"VALUE","Syntax",CMParms.combine(tt,t));
 						break;
 					}
 					if(!CMLib.beanCounter().getAllCurrencies().contains(arg2.toUpperCase()))
@@ -6589,7 +6589,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							val1=((Item)E).value();
 						else
 						{
-							logError(ctx.scripted,"VALUE","Syntax",CMParms.combine(tt,t,t+tlen));
+							logError(ctx.scripted,"VALUE","Syntax",CMParms.combine(tt,t));
 							return returnable;
 						}
 
@@ -6607,7 +6607,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentItem(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"OBJTYPE","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"OBJTYPE","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if(E==null)
@@ -6622,7 +6622,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							returnable=sex.indexOf(arg3)<0;
 						else
 						{
-							logError(ctx.scripted,"OBJTYPE","Syntax",CMParms.combine(tt,t,t+tlen));
+							logError(ctx.scripted,"OBJTYPE","Syntax",CMParms.combine(tt,t));
 							return returnable;
 						}
 					}
@@ -6639,7 +6639,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentItem(arg1,ctx);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"VAR","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"VAR","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					final String val=getVar(E,arg1,arg2,ctx);
@@ -6659,20 +6659,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tlen==1)
 						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 					final String val=varify(ctx,tt[t+0]);
-					final String arg3=tt[t+1];
+					final String cmp=tt[t+1];
 					final String arg4=varify(ctx,tt[t+2]);
-					if(arg3.length()==0)
+					if(cmp.length()==0)
 					{
-						logError(ctx.scripted,"EVAL","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"EVAL","Syntax",CMParms.combine(tt,t,t+tt.length));
 						return returnable;
 					}
-					if(arg3.equals("=="))
+					if(cmp.equals("=="))
 						returnable=val.equals(arg4);
 					else
-					if(arg3.equals("!="))
+					if(cmp.equals("!="))
 						returnable=!val.equals(arg4);
 					else
-						returnable=simpleEval(ctx.scripted, val, arg4, arg3, "EVAL");
+						returnable=simpleEval(ctx.scripted, val, arg4, cmp, "EVAL");
 					break;
 				}
 				case 40: // number
@@ -6806,7 +6806,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final String arg3=varify(ctx, tt[t+2]);
 					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(ctx.scripted,"WORNON","Syntax",CMParms.combine(tt,t,t+tlen));
+						logError(ctx.scripted,"WORNON","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					final int wornLoc = CMParms.indexOf(Wearable.CODES.NAMESUP(), arg2.toUpperCase().trim());
