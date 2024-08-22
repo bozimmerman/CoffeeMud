@@ -369,6 +369,23 @@ public class CMParms
 	}
 
 	/**
+	 * Returns a string containing the given Strings, and now space delimited.
+	 * @param args the Strings to combine into a single string
+	 * @param startAt the index in the list to start at.
+	 * @return the single string
+	 */
+	public final static String combine(final String[] args, final int startAt)
+	{
+		final StringBuilder combined=new StringBuilder("");
+		if(args!=null)
+		{
+			for(int commandIndex=startAt;commandIndex<args.length;commandIndex++)
+				combined.append(args[commandIndex].toString()+" ");
+		}
+		return combined.toString().trim();
+	}
+
+	/**
 	 * Returns a string containing the given objects, with toString()
 	 * called, and now delimited by the character given.
 	 * @param commands the objects to combine into a single string
