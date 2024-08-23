@@ -54,8 +54,11 @@ public class Prop_IceBox extends Property
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		if(msg.targetMinor()==CMMsg.TYP_STARTUP)
+		if((msg.targetMinor()==CMMsg.TYP_STARTUP)
+		||(msg.targetMinor()==CMMsg.TYP_ROOMRESET)
+		||(!started))
 		{
+			started = true;
 			Iterator<Item> i;
 			if(affected instanceof Container)
 				i=((Container)affected).getContents().iterator();
