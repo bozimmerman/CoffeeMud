@@ -360,6 +360,14 @@ public class Dissertating extends CraftingSkill
 				if((A!=null)
 				&&(A.name().equalsIgnoreCase(recipeName)))
 				{
+					if((A instanceof ArchonOnly)
+					||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+					||(!CMLib.ableMapper().qualifiesByAnyCharClass(A.ID())))
+					{
+						commonTelL(mob,"You can't write a dissertation on '@x1'.",recipeName);
+						return false;
+					}
+					else
 					if(xlevel(mob)>=spellLevel(mob,A))
 						theSpell=A;
 					else
