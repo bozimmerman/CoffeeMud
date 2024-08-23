@@ -214,7 +214,7 @@ GREET_PROG 100
 	endif
 ~
 
-SPEECH_PROG mission problem package quest help delivery deliver 'me to do' 'to do' mission? problem? package? quest? help? delivery? delive?r 'me to do?' 'to do?' 
+SPEECH_PROG mission problem package quest help delivery deliver 'me to do' 'to do' mission? problem? package? quest? help? delivery? delive?r 'me to do?' 'to do?' quests 
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and EVAL('$[1 *]' != '')
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if has($n '$[1 *]')
@@ -288,6 +288,7 @@ PUT_PROG all
 					if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
 						mpoloadroom QuestPoint
 						mpforce $n GET "a quest point"
+						mpjunk a quest point
 					endif
 					if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
 						mpoload $GOLD
@@ -330,6 +331,7 @@ DROP_PROG all
 				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
 					mpoloadroom QuestPoint
 					mpforce $n GET "a quest point"
+					mpjunk a quest point
 				endif
 				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
 					mpoload $GOLD

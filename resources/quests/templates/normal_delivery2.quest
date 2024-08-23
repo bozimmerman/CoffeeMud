@@ -168,6 +168,14 @@ ONCE_PROG 100
 	endif
 ~
 
+SPEECH_PROG quest quests quest? quests?
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			sayto "$n" $QUEST_NOTIFYSTRING -- say '^yi accept^?' or '^yi accept $QUEST_NAME^?' to take on this quest.
+		endif
+	endif
+~
+
 # this script is for the human chosen to be the note bearer
 GREET_PROG 100
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
@@ -253,6 +261,7 @@ PUT_PROG p '$[1 *]'
 					if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
 						mpoloadroom QuestPoint
 						mpforce $n GET "a quest point"
+						mpjunk a quest point
 					endif
 					if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
 						mpoload $GOLD
@@ -287,6 +296,7 @@ DROP_PROG p '$[1 *]'
 				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
 					mpoloadroom QuestPoint
 					mpforce $n GET "a quest point"
+					mpjunk a quest point
 				endif
 				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
 					mpoload $GOLD

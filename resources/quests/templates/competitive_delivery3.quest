@@ -220,7 +220,7 @@ GREET_PROG 100
 	endif
 ~
 
-SPEECH_PROG mission problem package quest help delivery deliver 'me to do' 'to do' mission? problem? package? quest? help? delivery? delive?r 'me to do?' 'to do?' 
+SPEECH_PROG mission problem package quest help delivery deliver 'me to do' 'to do' mission? problem? package? quest? help? delivery? delive?r 'me to do?' 'to do?' quests 
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if has($n '$[1 *]')

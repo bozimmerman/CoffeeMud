@@ -274,6 +274,7 @@ ENTRY_PROG 100
 				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($i *)
 					mpoloadroom QuestPoint
 					mpforce $i GET "a quest point"
+					mpjunk a quest point
 				endif
 				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
 					mpoloadroom $GOLD
