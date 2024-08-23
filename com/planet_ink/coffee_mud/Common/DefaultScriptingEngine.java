@@ -1310,7 +1310,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		final Integer SIGN=signH.get(cmp);
 		if(SIGN==null)
 		{
-			logError(scripted,cmdName,"Syntax",val1+" "+cmp+" "+val2);
+			logError(scripted,cmdName,"NOSIGN",val1+" "+cmp+" "+val2);
 			return false;
 		}
 		switch(SIGN.intValue())
@@ -3506,7 +3506,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					||(stack.size()==1)
 					||(!(stack.get(stack.size()-2)).equals("(")))
 					{
-						logError(ctx.scripted,"EVAL","SYNTAX",") Format error: "+CMParms.toListString(tt));
+						logError(ctx.scripted,"EVALCOND","SYNTAX",") Format error: "+CMParms.toListString(tt));
 						return false;
 					}
 					final boolean b=((Boolean)stack.get(stack.size()-1)).booleanValue();
@@ -3535,7 +3535,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((t==tt.length-1)
 				||(!tt[t+1].equals("(")))
 				{
-					logError(ctx.scripted,"EVAL","SYNTAX","No ( for fuction "+tt[t]+": "+CMParms.toListString(tt));
+					logError(ctx.scripted,"GENERAL","SYNTAX","No ( for fuction "+tt[t]+": "+CMParms.toListString(tt));
 					return false;
 				}
 				t+=2;
@@ -3544,7 +3544,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tlen++;
 				if((t+tlen)==tt.length)
 				{
-					logError(ctx.scripted,"EVAL","SYNTAX","No ) for fuction "+tt[t-1]+": "+CMParms.toListString(tt));
+					logError(ctx.scripted,"GENERAL","SYNTAX","No ) for fuction "+tt[t-1]+": "+CMParms.toListString(tt));
 					return false;
 				}
 				tickStatus=Tickable.STATUS_MISC+funcCode.intValue();
@@ -6663,7 +6663,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final String arg4=varify(ctx,tt[t+2]);
 					if(cmp.length()==0)
 					{
-						logError(ctx.scripted,"EVAL","Syntax",CMParms.combine(tt,t,t+tt.length));
+						logError(ctx.scripted,"EVAL","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
 					if(cmp.equals("=="))
