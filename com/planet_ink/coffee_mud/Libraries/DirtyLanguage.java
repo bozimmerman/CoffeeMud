@@ -704,6 +704,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				matcher=pattern.matcher(str);
 				if(matcher.find())
 				{
+					str = (String)parser.elementAt(p,  3);
 					for(int i=0;i<=matcher.groupCount();i++)
 						str=CMStrings.replaceAll(str,"\\"+i,matcher.group(i));
 				}
