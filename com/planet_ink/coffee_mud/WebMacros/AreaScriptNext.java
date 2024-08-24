@@ -183,9 +183,15 @@ public class AreaScriptNext extends StdWebMacro
 			ArrayList<String> prefix = new ArrayList<String>();
 			for(final Enumeration<WorldMap.LocatedPair> ae=CMLib.map().scriptHosts(A);ae.hasMoreElements();)
 			{
-				LP=ae.nextElement(); if(LP==null) continue;
-				AE=LP.obj(); if(AE==null) continue;
-				R=LP.room(); if(R==null) R=CMLib.map().getStartRoom(AE);
+				LP=ae.nextElement();
+				if(LP==null)
+					continue;
+				AE=LP.obj();
+				if(AE==null)
+					continue;
+				R=LP.room();
+				if(R==null)
+					R=CMLib.map().getStartRoom(AE);
 
 				prefix = new ArrayList<String>();
 				prefix.add(A.name());
