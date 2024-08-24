@@ -86,7 +86,7 @@ public class Socials extends StdLibrary implements SocialsList
 					}
 					if(fail)
 					{
-						Log.errOut("Socials", "Unknown S code: '"+s.charAt(1)+"' in "+getline);
+						Log.errOut("Socials", "Unknown S code: '"+s.charAt(0)+"' in "+getline);
 						continue;
 					}
 				}
