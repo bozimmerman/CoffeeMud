@@ -758,7 +758,7 @@ public class StdDeity extends StdMOB implements Deity
 					case SERVICE_CANCEL:
 						{
 							final WorshipService service=findService(msg.source(),null);
-							this.cancelService(service);
+							this.cancelService(service,"");
 							break;
 						}
 					case CURSING:
@@ -922,7 +922,7 @@ public class StdDeity extends StdMOB implements Deity
 		for(int m=V.size()-1;m>=0;m--)
 		{
 			M=V.get(m);
-			if(M==null)
+			if((M==null)||(!M.isMonster())||(M.isPlayer()))
 				continue;
 			A=M.fetchEffect("Skill_Track");
 			if(A!=null)
@@ -999,9 +999,20 @@ public class StdDeity extends StdMOB implements Deity
 		final WorshipService service = findService(mob,room);
 		if(service == null)
 			return false;
+		for(int m=0;m<room.numInhabitants();m++)
+		{
+			M=room.fetchInhabitant(m);
+			if((M==null)||(M==mob)||(CMLib.flags().isAnimalIntelligence(M)))
+				continue;
+			if(M.charStats().getWorshipCharID().equals(Name()))
+			{
+				if(!M.isMonster())
+					service.parishaners.add(M);
+			}
+		}
 		if(service.parishaners.size()==0)
 		{
-			return this.cancelService(service);
+			return this.cancelService(service,L(" because no one showed up for it."));
 		}
 		final CMMsg eventMsg=CMClass.getMsg(this, null, null,
 				CMMsg.MSG_HOLYEVENT, null,
@@ -1034,7 +1045,7 @@ public class StdDeity extends StdMOB implements Deity
 		return true;
 	}
 
-	public boolean cancelService(final WorshipService service)
+	protected boolean cancelService(final WorshipService service, final String reason)
 	{
 		if(service == null)
 			return false;
@@ -1058,7 +1069,7 @@ public class StdDeity extends StdMOB implements Deity
 				CMMsg.MSG_HOLYEVENT, null,
 				CMMsg.NO_EFFECT, HolyEvent.SERVICE_CANCEL.toString());
 		final CMMsg msg2=CMClass.getMsg(this,null,null,
-				CMMsg.NO_EFFECT, null,CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_ACTION,L("The service conducted by @x1 has been cancelled.",mob.Name()));
+				CMMsg.NO_EFFECT, null,CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_ACTION,L("The service conducted by @x1 has been cancelled@x1.",mob.Name(),reason));
 		if(room.okMessage(this, msg)
 		&&room.okMessage(this, msg2))
 		{
@@ -1216,7 +1227,7 @@ public class StdDeity extends StdMOB implements Deity
 				if(delThese != null)
 				{
 					for(final WorshipService w : delThese)
-						cancelService(w);
+						cancelService(w,"");
 				}
 			}
 		}
