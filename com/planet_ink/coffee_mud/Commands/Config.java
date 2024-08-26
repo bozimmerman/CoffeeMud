@@ -43,7 +43,7 @@ public class Config extends StdCommand
 	{
 	}
 
-	private final String[] access=I(new String[]{"CONFIG","AUTO"});
+	private final String[] access=I(new String[]{"CONFIG","AUTO","CONFIGURATION"});
 	@Override
 	public String[] getAccessWords()
 	{

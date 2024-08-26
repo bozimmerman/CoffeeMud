@@ -76,7 +76,7 @@ public class Skill_Trample extends StdSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;
+		return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS;
 	}
 
 	@Override

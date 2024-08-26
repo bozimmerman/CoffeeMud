@@ -189,7 +189,7 @@ public class ColorSet extends StdCommand
 						final MOB M1=mob;
 						final MOB M2=M;
 						if(M.playerStats().getColorStr().equals(mob.playerStats().getColorStr()))
-							mob.tell(L("Your colors already match @x1s.",M.name()));
+							mob.tell(L("Your colors already match @x1`s.",M.name()));
 						else
 						sess.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)
 						{

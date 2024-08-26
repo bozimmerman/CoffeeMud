@@ -88,6 +88,12 @@ public class Spell_SummonFlyer extends Spell
 	}
 
 	@Override
+	public long flags()
+	{
+		return Ability.FLAG_SUMMONING;
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		final MOB mob=(MOB)affected;

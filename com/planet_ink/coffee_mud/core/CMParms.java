@@ -985,19 +985,19 @@ public class CMParms
 			c=str.charAt(i);
 			if(c==delimiter)
 			{
-				sub=str.substring(last,i).trim();
-				last=i+1;
-				if(!ignoreNulls||(sub.length()>0))
+				if(safe&&(i>0)&&(str.charAt(i-1)=='\\'))
 				{
-					if(!safe)
-						V.add(sub.replace("\\",""));
-					else
+					str.deleteCharAt(i-1);
+					i--;
+				}
+				else
+				{
+					sub=str.substring(last,i).trim();
+					last=i+1;
+					if(!ignoreNulls||(sub.length()>0))
 						V.add(sub);
 				}
 			}
-			else
-			if(safe &&(c=='\\'))
-				str.deleteCharAt(i);
 		}
 		sub = (last>=str.length())?"":str.substring(last,str.length()).trim();
 		if(!ignoreNulls||(sub.length()>0))
