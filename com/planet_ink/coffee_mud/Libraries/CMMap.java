@@ -2079,12 +2079,17 @@ public class CMMap extends StdLibrary implements WorldMap
 				area = room.getArea();
 			if(area == null)
 				area = getStartArea(AE);
-			addScriptHost(area, room, AE);
 			if(o instanceof MOB)
 			{
-				for(final Enumeration<Item> i=((MOB)o).items();i.hasMoreElements();)
-					addScriptHost(area, room, i.nextElement());
+				if(!((MOB)o).isPlayer())
+				{
+					addScriptHost(area, room, AE);
+					for(final Enumeration<Item> i=((MOB)o).items();i.hasMoreElements();)
+						addScriptHost(area, room, i.nextElement());
+				}
 			}
+			else
+				addScriptHost(area, room, AE);
 		}
 	}
 

@@ -1745,7 +1745,14 @@ public class StdMOB implements MOB
 		lastLocation = location;
 		location = newRoom;
 		if((playerStats != null) && (lastLocation != newRoom))
+		{
 			CMLib.players().changePlayersLocation(this, newRoom);
+			if((!playerStats.isPoseConstant()) && (playerStats.getSavedPose().length()>0))
+			{
+				playerStats.setSavedPose("", true);
+				setDisplayText("");
+			}
+		}
 	}
 
 	@Override

@@ -49,8 +49,8 @@ public class Dagger extends StdWeapon
 		basePhyStats().setLevel(0);
 		basePhyStats.setWeight(1);
 		baseGoldValue=2;
-		basePhyStats().setAttackAdjustment(0);
-		basePhyStats().setDamage(4);
+		basePhyStats().setAttackAdjustment(5);
+		basePhyStats().setDamage(3);
 		weaponDamageType=TYPE_PIERCING;
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponClassification=Weapon.CLASS_DAGGER;

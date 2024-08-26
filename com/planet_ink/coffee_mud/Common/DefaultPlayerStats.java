@@ -88,6 +88,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected String		 deathPoof		= "";
 	protected String		 announceMsg	= "";
 	protected String		 savedPose		= "";
+	protected boolean		 poseConstant	= true; // makes the location change a bit faster
 	protected String		 notes			= "";
 	private volatile String  actTitle		= null;
 	protected int   		 wrap			= DEFAULT_WORDWRAP;
@@ -442,9 +443,19 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setSavedPose(final String msg)
+	public void setSavedPose(final String msg, final boolean constant)
 	{
-		savedPose=msg;
+		if(msg == null)
+			savedPose="";
+		else
+			savedPose=msg;
+		poseConstant = constant;
+	}
+
+	@Override
+	public boolean isPoseConstant()
+	{
+		return poseConstant;
 	}
 
 	@Override
@@ -1054,6 +1065,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+((poofout.length()>0)?"<POOFOUT>"+CMLib.xml().parseOutAngleBrackets(poofout)+"</POOFOUT>":"")
 			+((announceMsg.length()>0)?"<ANNOUNCE>"+CMLib.xml().parseOutAngleBrackets(announceMsg)+"</ANNOUNCE>":"")
 			+((savedPose.length()>0)?"<POSE>"+CMLib.xml().parseOutAngleBrackets(savedPose)+"</POSE>":"")
+			+((savedPose.length()>0)?"<POSECONST>"+poseConstant+"</POSECONST>":"")
 			+((tranpoofin.length()>0)?"<TRANPOOFIN>"+CMLib.xml().parseOutAngleBrackets(tranpoofin)+"</TRANPOOFIN>":"")
 			+((tranpoofout.length()>0)?"<TRANPOOFOUT>"+CMLib.xml().parseOutAngleBrackets(tranpoofout)+"</TRANPOOFOUT>":"")
 			+"<DATES>"+CMLib.xml().parseOutAngleBrackets(this.getLevelDateTimesStr())+"</DATES>"
@@ -1306,6 +1318,11 @@ public class DefaultPlayerStats implements PlayerStats
 		if(savedPose==null)
 			savedPose="";
 		savedPose=xmlLib.restoreAngleBrackets(savedPose);
+		if(savedPose.length()>0)
+		{
+			final String c = xmlLib.getValFromPieces(xml, "POSECONST");
+			poseConstant = (c.length()>0) ? CMath.s_bool(c) : true;
+		}
 
 		notes=xmlLib.getValFromPieces(xml,"NOTES");
 		if(debug)
@@ -2146,7 +2163,10 @@ public class DefaultPlayerStats implements PlayerStats
 			pageBreak = CMath.s_parseIntExpression(val);
 			break;
 		case 21:
-			savedPose = val;
+			if(val == null)
+				savedPose = "";
+			else
+				savedPose = val;
 			break;
 		case 22:
 			theme = CMath.s_parseIntExpression(val);
