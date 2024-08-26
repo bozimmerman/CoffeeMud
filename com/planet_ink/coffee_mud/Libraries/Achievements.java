@@ -3769,6 +3769,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			};
 			break;
 		case CLASSLEVELSGAINED:
+		case CLASSLEVELUP:
+		case CLASSLEVELDOWN:
 			A=new Achievement()
 			{
 				private int				num			= -1;
@@ -3937,6 +3939,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case RETIRE:
 		case REMORT:
 		case LEVELSGAINED:
+		case LEVELUP:
+		case LEVELDOWN:
 			A=new Achievement()
 			{
 				private int				num			= -1;

@@ -85,8 +85,8 @@ public interface AchievementLibrary extends CMLibrary
 		SOCIALUSE("Using Socials",new String[]{"NUM","SOCIALID"}),
 		QUESTOR("Completing Quests",new String[]{"NUM","QUESTMASK"}),
 		ACHIEVER("Completing Achievements",new String[]{"ACHIEVEMENTLIST"}),
-		LEVELSGAINED("Gaining Levels",new String[]{"NUM"}),
-		CLASSLEVELSGAINED("Gaining Class Levels",new String[]{"NUM","CLASS"}),
+		LEVELSGAINED("Gaining net Levels",new String[]{"NUM"}),
+		CLASSLEVELSGAINED("Gaining net Class Levels",new String[]{"NUM","CLASS"}),
 		TIMEPLAYED("Time Played",new String[]{"SECONDS"}),
 		JUSTBE("Character State",new String[]{}),
 		DEATHS("Dieing",new String[]{"NUM","ZAPPERMASK"}),
@@ -111,7 +111,11 @@ public interface AchievementLibrary extends CMLibrary
 		CMDUSE("Using Commands",new String[]{"NUM","COMMANDID"}),
 		GROUPKILLS("Number of Group Kills",new String[]{"NUM","SIZE","ZAPPERMASK"}),
 		ENTITLED("Number of titles",new String[]{"NUM","TITLEMASK"}),
-		SCRIPTED("Special Scripted",new String[]{"NUM"})
+		SCRIPTED("Special Scripted",new String[]{"NUM"}),
+		LEVELUP("Gaining a level",new String[]{"NUM"}),
+		CLASSLEVELUP("Gaining a Class levels",new String[]{"NUM","CLASS"}),
+		LEVELDOWN("Losing a level",new String[]{"NUM"}),
+		CLASSLEVELDOWN("Losing a Class levels",new String[]{"NUM","CLASS"}),
 		;
 		private final String[] parameters;
 		private final String displayName;
