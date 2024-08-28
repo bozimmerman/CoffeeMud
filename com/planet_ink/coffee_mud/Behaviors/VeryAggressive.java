@@ -98,14 +98,14 @@ public class VeryAggressive extends Aggressive
 				return;
 		}
 
+		// let's not do this 100%
+		if(CMLib.dice().rollPercentage()>15)
+			return;
+
 		if(((mob.amFollowing()!=null)
 			&&(CMLib.tracking().areNearEachOther(mob,mob.amFollowing())
 				||CMLib.tracking().areNearEachOther(mob,mob.amUltimatelyFollowing())))
 		||(!CMLib.flags().canTaste(mob)))
-			return;
-
-		// let's not do this 100%
-		if(CMLib.dice().rollPercentage()>15)
 			return;
 
 		final Room R=mob.location();

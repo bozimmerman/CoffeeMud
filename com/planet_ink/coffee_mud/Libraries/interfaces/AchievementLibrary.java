@@ -325,7 +325,9 @@ public interface AchievementLibrary extends CMLibrary
 		NOPURGE,
 		CLANXP,
 		CLANCURRENCY,
-		TATTOO
+		TATTOO,
+		ITEM,
+		MOB
 		;
 	}
 
@@ -493,6 +495,27 @@ public interface AchievementLibrary extends CMLibrary
 		 * @return the tattoo to grant to the player or account
 		 */
 		public String getTattoo();
+	}
+
+	/**
+	 * The CatalogAward interface provides pre-parsed award information for those who
+	 * complete the achievement and have earned a mob or item from the catalog.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public interface CatalogAward extends AmountAward
+	{
+		/**
+		 * The item or mob granted.
+		 * @return the item or mob granted.
+		 */
+		public PhysicalAgent getItem();
+
+		/**
+		 * The name of the item or mob to grant.
+		 * @return the name of the item or mob to grant.
+		 */
+		public String getItemName();
 	}
 
 	/**

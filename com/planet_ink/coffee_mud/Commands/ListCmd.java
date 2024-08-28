@@ -21,6 +21,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Ability
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AmountAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.CatalogAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.CurrencyAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.ExpertiseAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.StatAward;
@@ -4319,6 +4320,16 @@ public class ListCmd extends StdCommand
 					case CLANXP:
 						rewardDisplay.append(((AmountAward)award).getAmount()+" Clan XP ");
 						break;
+					case ITEM:
+					case MOB:
+					{
+						final CatalogAward itm = (CatalogAward)award;
+						if(itm.getAmount() == 1)
+							rewardDisplay.append(itm.getItemName());
+						else
+							rewardDisplay.append(itm.getAmount()+" "+CMLib.english().removeArticleLead(itm.getItemName())+"s");
+						break;
+					}
 					default:
 						break;
 					}

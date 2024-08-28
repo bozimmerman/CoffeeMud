@@ -9077,7 +9077,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
 		if(newText == null)
 			return "";
-		final List<String> p = CMParms.parse(newText);
+		return separateZapperMask(CMParms.parse(newText));
+	}
+
+	@Override
+	public String separateZapperMask(final List<String> p)
+	{
+		if(p == null)
+			return "";
 		int start = 0;
 		for(start=0;start<p.size();start++)
 		{

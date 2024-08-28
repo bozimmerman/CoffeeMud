@@ -314,6 +314,99 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						});
 					}
 					else
+					if(thing.startsWith("MOB")||thing.startsWith("ITEM"))
+					{
+						final AwardType type = thing.startsWith("MOB")?AwardType.MOB:AwardType.ITEM;
+						final int y=thing.indexOf('(');
+						String parms="";
+						if((y>0) && thing.endsWith(")"))
+						{
+							parms=thing.substring(y+1,thing.length()-1).trim();
+							thing=thing.substring(0,y);
+						}
+						if(parms.length()==0)
+							throw new CMException("Error: Invalid "+thing+" award for "+eventStr+":  Missing () arguments.");
+						final String accttattoo;
+						final String desc;
+						if(parms.indexOf('=')<0)
+							throw new CMException("Error: Invalid "+thing+" award for "+eventStr+":  Missing (ID= DESC=) arguments.");
+						else
+						{
+							if(CMParms.getParmStr(parms, "ID", "").length()>0)
+								accttattoo=CMStrings.deEscape(CMParms.getParmStr(parms, "ID", ""));
+							else
+								throw new CMException("Error: Invalid "+thing+" award for "+eventStr+":  Missing ID= argument.");
+							if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+							{
+								Physical P;
+								if(type == AwardType.ITEM)
+									P = CMLib.catalog().getCatalogItem(accttattoo);
+								else
+									P = CMLib.catalog().getCatalogMob(accttattoo);
+								if(P == null)
+									throw new CMException("Error: Invalid "+thing+" award for "+eventStr+":  Missing catalog ("+accttattoo+").");
+								desc = P.name();
+							}
+							else
+								desc = accttattoo.toLowerCase();
+						}
+						awardsList.add(new CatalogAward()
+						{
+							private final AwardType awardType = type;
+							private final String awardDesc = desc;
+							private final String awardID = accttattoo;
+							private final int awardNum = number;
+							@Override
+							public AwardType getType()
+							{
+								return awardType;
+							}
+
+							@Override
+							public String getItemName()
+							{
+								return awardID;
+							}
+
+							@Override
+							public PhysicalAgent getItem()
+							{
+								PhysicalAgent P;
+								if(type == AwardType.ITEM)
+									P = CMLib.catalog().getCatalogItem(accttattoo);
+								else
+									P = CMLib.catalog().getCatalogMob(accttattoo);
+								if(P != null)
+									P=(PhysicalAgent)P.copyOf();
+								return P;
+							}
+
+							@Override
+							public boolean isPreAwarded()
+							{
+								return false;
+							}
+
+							@Override
+							public int getAmount()
+							{
+								return awardNum;
+							}
+
+							@Override
+							public String getDescription()
+							{
+								return awardDesc;
+							}
+
+							@Override
+							public boolean isNotAwardedOnRemort()
+							{
+								return true;
+							}
+						});
+					}
+					else
 					{
 						final int y=thing.indexOf('(');
 						String parms="";
@@ -8017,6 +8110,41 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				CMLib.leveler().postExperience(mob, "ACHIEVE:"+ID(), null, null, aaward.getAmount(), false);
 				break;
 			}
+			case ITEM:
+			{
+				final CatalogAward aaward=(CatalogAward)award;
+				if(aaward.getAmount() == 1)
+					awardMessage.append(L("^HYou are awarded @x1!\n\r^?\n\r",aaward.getItemName()));
+				else
+				{
+					awardMessage.append(L("^HYou are awarded @x1 @x2s!\n\r^?\n\r",""+aaward.getAmount(),
+							CMLib.english().removeArticleLead(aaward.getItemName())));
+				}
+				for(int i=0;i<aaward.getAmount();i++)
+					mob.addItem((Item)aaward.getItem());
+				break;
+			}
+			case MOB:
+			{
+				final CatalogAward aaward=(CatalogAward)award;
+				if(aaward.getAmount() == 1)
+					awardMessage.append(L("^HYou are awarded @x1!\n\r^?\n\r",aaward.getItemName()));
+				else
+				{
+					awardMessage.append(L("^HYou are awarded @x1 @x2s!\n\r^?\n\r",""+aaward.getAmount(),
+							CMLib.english().removeArticleLead(aaward.getItemName())));
+				}
+				for(int i=0;i<aaward.getAmount();i++)
+				{
+					final MOB M = (MOB)aaward.getItem();
+					if(M != null)
+					{
+						M.bringToLife(mob.location(), true);
+						M.setFollowing(mob);
+					}
+				}
+				break;
+			}
 			default:
 				break;
 
@@ -8141,6 +8269,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				CMLib.clans().clanAnnounce(cM,L("Your @x2 @x3 has been granted '@x1'.",""+taward.getDescription(),clan.getGovernmentName(),clan.name()));
 				break;
 			}
+			case MOB:
+			case ITEM:
+				// awarded elsewhere, not directly to clan
+				break;
 			default:
 				break;
 			}
@@ -8394,6 +8526,16 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				break;
 			}
 			case CURRENCY:
+			{
+				// is never un-awarded
+				break;
+			}
+			case ITEM:
+			{
+				// is never un-awarded
+				break;
+			}
+			case MOB:
 			{
 				// is never un-awarded
 				break;
@@ -8690,6 +8832,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case TATTOO:
 				awardStr.append("1 TATTOO(ID="+((TattooAward)award).getTattoo())
 						.append(" ").append("DESC="+CMStrings.escape("\""+CMStrings.escape(((TattooAward)award).getDescription())+"\")"));
+				break;
+			case MOB:
+				awardStr.append(" ").append(((CatalogAward)award).getAmount())
+						.append(" ").append("MOB(ID="+CMStrings.escape("\""+CMStrings.escape(((CatalogAward)award).getItemName())+"\")"));
+				break;
+			case ITEM:
+				awardStr.append(" ").append(((CatalogAward)award).getAmount())
+						.append(" ").append("ITEM(ID="+CMStrings.escape("\""+CMStrings.escape(((CatalogAward)award).getItemName())+"\")"));
 				break;
 			default:
 				break;

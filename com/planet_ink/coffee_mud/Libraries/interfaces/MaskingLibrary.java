@@ -226,6 +226,18 @@ public interface MaskingLibrary extends CMLibrary
 	public String separateZapperMask(final String newText);
 
 	/**
+	 * Lots of props and behaviors support embedded
+	 * zappermasks, but they aren't delineated.  This method
+	 * will attempt to discover the mask embedded in a
+	 * complex string by looking for first and last
+	 * appearances of pluses and minuses.
+	 *
+	 * @param parsed the pre-parsed string to check
+	 * @return the zappermask, or ""
+	 */
+	public String separateZapperMask(final List<String> parsed);
+
+	/**
 	 * Creates an empty always-passing compiled zappermask
 	 * object.
 	 *
@@ -284,8 +296,8 @@ public interface MaskingLibrary extends CMLibrary
 	{
 		_PLAYER("-PLAYERS"),
 		PLAYER("+PLAYERS"),
-		_NPC("-MOB"),
-		NPC("+MOB"),
+		_NPC("-MOB","-MOBS"),
+		NPC("+MOB","+MOBS"),
 		_CHANCE,
 		_CLASS("-CLASSES"),
 		CLASS("CLASSES"),

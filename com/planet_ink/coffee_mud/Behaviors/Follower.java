@@ -80,7 +80,7 @@ public class Follower extends ActiveTicker
 		noFollowers=V.contains("NOFOLLOWERS");
 		inventory=V.contains("INVENTORY")||V.contains("INV");
 		name=CMParms.getParmStr(newParms, "NAME", "");
-		final String maskStr = CMLib.masking().separateZapperMask(newParms);
+		final String maskStr = CMLib.masking().separateZapperMask(V);
 		this.mask=null;
 		if(maskStr.length()>0)
 			this.mask=CMLib.masking().getPreCompiledMask(maskStr);

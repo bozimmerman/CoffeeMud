@@ -178,7 +178,7 @@ public class Aggressive extends StdBehavior
 		noGangUp=V.contains("NOGANG")||V.contains("NOGANGUP");
 		misbehave=V.contains("MISBEHAVE");
 		tickDown=tickWait;
-		maskStr = CMLib.masking().separateZapperMask(newParms);
+		maskStr = CMLib.masking().separateZapperMask(V);
 		this.mask=null;
 		if(maskStr.length()>0)
 			this.mask=CMLib.masking().getPreCompiledMask(maskStr);
