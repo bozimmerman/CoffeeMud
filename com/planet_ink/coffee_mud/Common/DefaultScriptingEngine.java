@@ -9608,7 +9608,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							if((System.currentTimeMillis()>tm) || (ctx.scripted.amDestroyed()))
 							{
-								logError(ctx.scripted,"FOR","Runtime","For loop violates 10 second rule: " +s);
+								logError(ctx.scripted,"FOR","Runtime","For loop ("+fromInt+"-"+toInt+"/"+increment+") violates 10 second rule: " +s);
 								break;
 							}
 						}
