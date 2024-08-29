@@ -795,5 +795,9 @@ public interface Law extends CMCommon
 		"INEBRIATION=!home !pub !tavern !inn !bar;!recently;"+CMLib.lang().L("public intoxication")+";parole1 punishcap=jail4;"+CMLib.lang().L("Drunkenness is a demeaning and intolerable state.")+"\n"+
 		"POISON_ALCOHOL=!home !pub !tavern !inn !bar;!recently;"+CMLib.lang().L("public intoxication")+";parole1 punishcap=jail4;"+CMLib.lang().L("Drunkenness is a demeaning and intolerable state.")+"\n"+
 		"POISON_FIREBREATHER=!home !pub !tavern !inn !bar;!recently;"+CMLib.lang().L("public intoxication")+";parole1 punishcap=jail4;"+CMLib.lang().L("Drunkenness is a demeaning and intolerable state.")+"\n"+
-		"POISON_LIQUOR=!home !pub !tavern !inn !bar;!recently;"+CMLib.lang().L("public intoxication")+";parole1 punishcap=jail4;"+CMLib.lang().L("Drunkenness is a demeaning and intolerable state.")+"\n";
+		"POISON_LIQUOR=!home !pub !tavern !inn !bar;!recently;"+CMLib.lang().L("public intoxication")+";parole1 punishcap=jail4;"+CMLib.lang().L("Drunkenness is a demeaning and intolerable state.")+"\n"+
+		"PRAYER_MALIGNEDPORTAL=;;"+CMLib.lang().L("invoking dangerous magic")+";jail4;"+CMLib.lang().L("People could be hurt by such behavior!")+
+		"PRAYER_BENIGNEDPORTAL=;;"+CMLib.lang().L("invoking dangerous magic")+";jail4;"+CMLib.lang().L("People could be hurt by such behavior!")+
+		"PRAYER_ELEMENTALPORTAL=;;"+CMLib.lang().L("invoking dangerous magic")+";jail4;"+CMLib.lang().L("People could be hurt by such behavior!")+
+		"THIEF_KIDNAPPING=;;"+CMLib.lang().L("kidnapping <T-NAME>")+";jail3;"+CMLib.lang().L("Kidnapping is an inhuman crime against an innocent child.");
 }

@@ -2238,7 +2238,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			return false;
 		if((thisThang instanceof Coins)
 		||(thisThang instanceof DeadBody)
-		||(CMLib.flags().isChild(thisThang)))
+		||(CMLib.flags().isAgingChild(thisThang)))
 			return false;
 		boolean yesISell=false;
 		if(shop.isSold(ShopKeeper.DEAL_ANYTHING))

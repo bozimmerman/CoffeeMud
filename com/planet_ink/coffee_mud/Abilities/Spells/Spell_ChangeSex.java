@@ -87,7 +87,7 @@ public class Spell_ChangeSex extends Spell
 
 	public void setChildStuff(final MOB M, final Environmental target)
 	{
-		if(CMLib.flags().isChild(M))
+		if(CMLib.flags().isAgingChild(M))
 		{
 			
 			if(M.charStats().reproductiveCode()=='F')

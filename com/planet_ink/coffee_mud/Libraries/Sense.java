@@ -720,6 +720,23 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public int getAgeYears(final Physical P)
+	{
+		if(P == null)
+			return -1;
+		if(P instanceof MOB)
+		{
+			final MOB M=(MOB)P;
+			if(M.charStats().getStat(CharStats.STAT_AGE)>0)
+				return M.charStats().getStat(CharStats.STAT_AGE);
+		}
+		final Ability A=P.fetchEffect("Age");
+		if(A!=null)
+			return CMath.s_int(A.getStat("AGEYEARS"));
+		return -1;
+	}
+
+	@Override
 	public String getAge(final MOB M)
 	{
 		final Ability A=M.fetchEffect("Age");
@@ -2224,7 +2241,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
-	public boolean isAgingThing(final Physical P)
+	protected boolean isAgingThing(final Physical P)
 	{
 		if(P==null)
 			return false;
@@ -2235,7 +2252,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
-	public boolean isChild(final Environmental E)
+	public boolean isAgingChild(final Environmental E)
 	{
 		return isBaby(E)||((E instanceof MOB)&&(((MOB)E).isMonster())&&(isAgingThing((MOB)E)));
 	}

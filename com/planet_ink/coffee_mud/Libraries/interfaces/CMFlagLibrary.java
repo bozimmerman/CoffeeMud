@@ -1089,7 +1089,7 @@ public interface CMFlagLibrary extends CMLibrary
 	 * @param E the potential child
 	 * @return true if its a child, false otherwise
 	 */
-	public boolean isChild(Environmental E);
+	public boolean isAgingChild(Environmental E);
 
 	/**
 	 * Returns whether the given mob (item usually) is a
@@ -1406,10 +1406,19 @@ public interface CMFlagLibrary extends CMLibrary
 	/**
 	 * Returns the friendly descriptive age of the given mob,
 	 * whether baby, child, player, whatever.
+	 * @see CMFlagLibrary#getAgeYears(Physical)
 	 * @param M the mob to check
 	 * @return the friendly age of the mob
 	 */
 	public String getAge(MOB M);
+
+	/**
+	 * Returns the age of the mob or item in years, or -1.
+	 * @see CMFlagLibrary#getAge(MOB)
+	 * @param P the mob or item or baby to inspect
+	 * @return the age in years, or -1
+	 */
+	public int getAgeYears(final Physical P);
 
 	/**
 	 * Returns the name of the plane of existence upon which

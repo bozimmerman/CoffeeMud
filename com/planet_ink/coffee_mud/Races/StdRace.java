@@ -653,7 +653,7 @@ public class StdRace implements Race
 			if(autoInvoke)
 			{
 				A.autoInvocation(mob, false);
-				final boolean isChild=CMLib.flags().isChild(mob);
+				final boolean isChild=CMLib.flags().isAgingChild(mob);
 				final boolean isAnimal=CMLib.flags().isAnimalIntelligence(mob);
 				final boolean isMonster=mob.isMonster();
 				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
