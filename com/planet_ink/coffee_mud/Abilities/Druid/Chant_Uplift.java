@@ -328,7 +328,7 @@ public class Chant_Uplift extends Chant
 		if(target!=null)
 		{
 			newRoom=target.location();
-			if((!CMLib.flags().isAnimalIntelligence(target))
+			if((!CMLib.flags().isAnAnimal(target))
 			||(target.amFollowing()!=mob))
 			{
 				mob.tell(L("You have no animal follower named '@x1' here.",mobName));

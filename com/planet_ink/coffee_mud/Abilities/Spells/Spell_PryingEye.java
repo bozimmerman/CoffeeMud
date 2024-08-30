@@ -203,6 +203,7 @@ public class Spell_PryingEye extends Spell
 				newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 				newMOB.addTattoo("SYSTEM_SUMMONED");
+				newMOB.addTattoo("SUMMONED_BY:"+mob.name());
 				newMOB.recoverCharStats();
 				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();

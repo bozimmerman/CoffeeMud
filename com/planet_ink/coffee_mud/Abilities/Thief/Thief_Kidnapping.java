@@ -138,7 +138,9 @@ public class Thief_Kidnapping extends ThiefSkill
 	{
 		if((M.charStats().ageCategory()>=Race.AGE_YOUNGADULT)
 		&&(!CMLib.flags().isAgingChild(M))
-		&&(!CMStrings.containsWord(M.name().toLowerCase(), "child")))
+		&&(!CMLib.flags().isAnimalIntelligence(M))
+		&&(!CMStrings.containsWord(M.name().toLowerCase(), "child"))
+		&&(!CMStrings.containsWord(M.name().toLowerCase(), "kid")))
 			return false;
 		if(M.isPlayer()||(!M.isMonster()))
 			return kidnapperM.mayIFight(M);

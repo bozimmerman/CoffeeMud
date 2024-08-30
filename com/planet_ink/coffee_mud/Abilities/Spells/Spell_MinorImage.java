@@ -213,7 +213,7 @@ public class Spell_MinorImage extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final MOB M=determineMonster(target,target.location(),target.phyStats().level());
+				final MOB M=determineMonster(mob,target,target.location(),target.phyStats().level());
 				final Spell_MinorImage A = (Spell_MinorImage)beneficialAffect(mob,M,asLevel,getDuration(mob,asLevel));
 				if(A!=null)
 				{
@@ -369,7 +369,7 @@ public class Spell_MinorImage extends Spell
 		return seenTatts;
 	}
 
-	public MOB determineMonster(final MOB target, final Room R, final int level)
+	public MOB determineMonster(final MOB caster, final MOB target, final Room R, final int level)
 	{
 
 		final MOB newMOB=CMClass.getMOB("GenMob");
@@ -389,6 +389,7 @@ public class Spell_MinorImage extends Spell
 		newMOB.setDescription(target.description());
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 		newMOB.addTattoo("SYSTEM_SUMMONED");
+		newMOB.addTattoo("SUMMONED_BY:"+caster.name());
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();

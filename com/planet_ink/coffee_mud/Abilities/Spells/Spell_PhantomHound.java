@@ -242,6 +242,7 @@ public class Spell_PhantomHound extends Spell
 					newMOB.baseCharStats().setStat(i,200);
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 				newMOB.addTattoo("SYSTEM_SUMMONED");
+				newMOB.addTattoo("SUMMONED_BY:"+mob.name());
 				newMOB.basePhyStats().setAbility(CMProps.getMobHPBase()*9);
 				newMOB.baseState().setMana(100);
 				newMOB.baseState().setMovement(1000);

@@ -145,7 +145,7 @@ public class Domesticating extends CommonSkill
 				commonTelL(mob,M,null,"You can't domesticate <T-NAME>.");
 			return false;
 		}
-		if(!CMLib.flags().isAnimalIntelligence(M))
+		if(!CMLib.flags().isAnAnimal(M))
 		{
 			if(newName!=null)
 				commonTelL(mob,M,null,"You can't name <T-NAME>.");

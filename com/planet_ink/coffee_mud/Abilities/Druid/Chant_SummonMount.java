@@ -238,6 +238,7 @@ public class Chant_SummonMount extends Chant
 		newMOB.setDescription(L("An untamed beast of the fields, tame only by magical means."));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0 RIDEOK"));
 		newMOB.addTattoo("SYSTEM_SUMMONED");
+		newMOB.addTattoo("SUMMONED_BY:"+caster.name());
 		ride.setRiderCapacity(1);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

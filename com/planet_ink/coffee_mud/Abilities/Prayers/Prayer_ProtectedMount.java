@@ -126,7 +126,7 @@ public class Prayer_ProtectedMount extends Prayer
 		if((target instanceof Rideable)
 		&&(((Rideable)target).riderCapacity()>0)
 		&&(target.isMonster())
-		&&(CMLib.flags().isAnimalIntelligence(target)))
+		&&(CMLib.flags().isAnAnimal(target)))
 		{
 			final PairList<String, Race> choices = CMLib.utensils().getFavoredMounts(mob);
 			if((choices.containsSecond(target.baseCharStats().getMyRace()))

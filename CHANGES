@@ -16,7 +16,7 @@
  14. Can now modify GenAbility IDs, and create new ones based on existing ones.
  15. Regeneration property now has many finer controls
  16. GMCP now supports char.effects.get
- 17. New chants: breath color
+ 17. New chants: breath color, know animal, enhance potion, spark runes
  18. All Qualifies list now supports secret flag
  19. New formula: proficiency gain; see ini file
  20. Note:  Due to InterMud 3 changes, some will see a harmless one-time error at startup.

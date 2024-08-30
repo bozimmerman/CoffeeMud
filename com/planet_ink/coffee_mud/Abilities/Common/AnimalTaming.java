@@ -186,7 +186,7 @@ public class AnimalTaming extends CommonSkill
 				return false;
 			}
 			if((!M.isMonster())
-			   ||(!CMLib.flags().isAnimalIntelligence(M)))
+			   ||(!CMLib.flags().isAnAnimal(M)))
 			{
 				commonTelL(mob,"You can't tame @x1.",M.name(mob));
 				return false;

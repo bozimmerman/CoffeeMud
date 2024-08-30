@@ -102,7 +102,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 			return false;
 		if(invoker==null)
 		{
-			if(CMLib.flags().isAnimalIntelligence((MOB)affected)
+			if(CMLib.flags().isAnAnimal((MOB)affected)
 			&&(((MOB)affected).isMonster()))
 				return true;
 			invoker=(MOB)affected;
@@ -123,7 +123,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 				if((!rangersGroup.contains(mob))
 				&&(mob!=invoker)
 				&&(mob.location()==invoker.location())
-				&&(CMLib.flags().isAnimalIntelligence(mob)))
+				&&(CMLib.flags().isAnAnimal(mob)))
 				{
 					rangersGroup.addElement(mob);
 					mob.addNonUninvokableEffect((Ability)this.copyOf());

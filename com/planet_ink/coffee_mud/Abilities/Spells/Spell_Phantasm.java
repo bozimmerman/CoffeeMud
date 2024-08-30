@@ -260,6 +260,7 @@ public class Spell_Phantasm extends Spell
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 		newMOB.addTattoo("SYSTEM_SUMMONED");
+		newMOB.addTattoo("SUMMONED_BY:"+caster.name());
 		newMOB.setName(L("a ferocious @x1",R.name().toLowerCase()));
 		newMOB.setDisplayText(L("a ferocious @x1 is stalking around here",R.name().toLowerCase()));
 		newMOB.setDescription("");

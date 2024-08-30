@@ -3388,8 +3388,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 							attrib.append("\"SHOP\" \"STORE\" ");
 						if(CMLib.flags().isUndead(M))
 							attrib.append("\"UNDEAD\" ");
-						if(CMLib.flags().isAnimalIntelligence(M))
+						if(CMLib.flags().isAnAnimal(M))
 							attrib.append("\"ANIMAL\" ");
+						else
+						if(CMLib.flags().isAnimalIntelligence(M))
+							attrib.append("\"CREATURE\" ");
 						if(CMLib.flags().isAPlant(M))
 							attrib.append("\"PLANT\" ");
 						if(CMLib.flags().isInsect(M))

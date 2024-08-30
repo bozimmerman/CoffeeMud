@@ -311,7 +311,7 @@ public class Cavalier extends StdCharClass
 		&&(mob!=killed)
 		&&(!mob.amDead())
 		&&((!mob.isMonster())
-			||(!CMLib.flags().isAnimalIntelligence(mob))
+			||(!CMLib.flags().isAnAnimal(mob))
 			||(!(mob instanceof Rideable)))
 		&&((mob.getVictim()==killed)
 		 ||(followers.contains(mob))

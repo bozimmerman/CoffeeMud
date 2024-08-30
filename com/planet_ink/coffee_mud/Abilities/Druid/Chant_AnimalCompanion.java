@@ -92,7 +92,7 @@ public class Chant_AnimalCompanion extends Chant
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		if(!CMLib.flags().isAnimalIntelligence(target))
+		if(!CMLib.flags().isAnAnimal(target))
 		{
 			mob.tell(L("This chant only works on animals."));
 			return false;
@@ -126,7 +126,7 @@ public class Chant_AnimalCompanion extends Chant
 		{
 			final MOB M=mob.fetchFollower(f);
 			if((M!=mob)
-			&&(CMLib.flags().isAnimalIntelligence(M))
+			&&(CMLib.flags().isAnAnimal(M))
 			&&(M.fetchEffect("Loyalty")!=null))
 				numLoyal++;
 		}

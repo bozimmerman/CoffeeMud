@@ -103,7 +103,7 @@ public class Chant_GiveLife extends Chant
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		if((!CMLib.flags().isAnimalIntelligence(target))||(!target.isMonster())||(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
+		if((!CMLib.flags().isAnAnimal(target))||(!target.isMonster())||(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
 			mob.tell(L("This chant only works on non-player animals in your group."));
 			return false;

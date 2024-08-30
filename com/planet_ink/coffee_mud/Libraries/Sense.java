@@ -1771,6 +1771,13 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public boolean isAnAnimal(final MOB M)
+	{
+		return isAnimalIntelligence(M) && M.charStats().getMyRace().canBreedWith(M.charStats().getMyRace(), false);
+
+	}
+
+	@Override
 	public boolean isVegetable(final MOB M)
 	{
 		return (M != null)

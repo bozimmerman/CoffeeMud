@@ -272,6 +272,7 @@ public class Prayer_SnakeStaff extends Prayer
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 		newMOB.addTattoo("SYSTEM_SUMMONED");
+		newMOB.addTattoo("SUMMONED_BY:"+caster.name());
 		newMOB.addBehavior(CMClass.getBehavior("CombatAbilities"));
 		final Ability A=CMClass.getAbility("Poison");
 		if(A!=null)

@@ -193,7 +193,7 @@ public class Disease_FilthFever extends Disease
 				{
 					final MOB M=R.fetchInhabitant(i);
 					if((M!=null)
-					&&(CMLib.flags().isAnimalIntelligence(M))
+					&&(CMLib.flags().isAnAnimal(M))
 					&&(CMLib.flags().canSmell(M,mob)))
 						M.tell(mob,null,null,DISEASE_AFFECT());
 				}

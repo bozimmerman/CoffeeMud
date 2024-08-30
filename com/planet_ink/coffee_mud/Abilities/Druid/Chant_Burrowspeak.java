@@ -59,7 +59,7 @@ public class Chant_Burrowspeak extends Chant_SpeakWithAnimals
 	@Override
 	protected boolean canSpeakWithThis(final MOB mob)
 	{
-		if(CMLib.flags().isAnimalIntelligence(mob))
+		if(CMLib.flags().isAnAnimal(mob))
 		{
 			final Race R=mob.charStats().getMyRace();
 			if(R.racialCategory().equals("Rodent")

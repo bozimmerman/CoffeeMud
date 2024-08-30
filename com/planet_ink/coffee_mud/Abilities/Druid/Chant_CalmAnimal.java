@@ -78,7 +78,7 @@ public class Chant_CalmAnimal extends Chant
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		if(!CMLib.flags().isAnimalIntelligence(target))
+		if(!CMLib.flags().isAnAnimal(target))
 		{
 			mob.tell(L("@x1 is not an animal!",target.name(mob)));
 			return false;

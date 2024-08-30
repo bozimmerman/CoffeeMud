@@ -123,7 +123,7 @@ public class Chant_SpeedAging extends Chant
 		if((target instanceof Item)
 		||((target instanceof MOB)
 			&&(((MOB)target).isMonster())
-			&&(CMLib.flags().isAnimalIntelligence((MOB)target))
+			&&(CMLib.flags().isAnAnimal((MOB)target))
 			&&(CMLib.law().doesHavePriviledgesHere(mob, mob.location()))))
 		{
 			type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);

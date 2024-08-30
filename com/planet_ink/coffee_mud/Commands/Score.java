@@ -40,6 +40,8 @@ public class Score extends Affect
 
 	private final String[]	access	= I(new String[] { "SCORE", "SC" });
 
+	private final static Class<?>[][]	internalParameters	= new Class<?>[][] { { String.class} };
+
 	private static enum ScoreArgs
 	{
 		BASE,
@@ -94,6 +96,39 @@ public class Score extends Affect
 		return str.toString();
 	}
 
+	public String getStats(final MOB mob, final int prowessCode, final ScoreArgs arg)
+	{
+		final StringBuilder msg = new StringBuilder("");
+		CharStats CT=mob.charStats();
+		if(arg == ScoreArgs.BASE)
+			CT=mob.baseCharStats();
+		msg.append("^N^!");
+		final int longest=CharStats.CODES.LONNGEST_BASECODE_NAME();
+		final boolean useWords=CMProps.Int.Prowesses.STAT_PROFICIENCY.is(prowessCode);
+		final String[] charStatList = CMProps.getListFileStringList(CMProps.ListFile.CHARSTAT_CHART);
+		for(final int i : CharStats.CODES.BASECODES())
+		{
+			final String statDesc;
+			if(useWords)
+			{
+				final int val=CT.getStat(i);
+				if(val < 0)
+					statDesc=CMStrings.capitalizeAndLower(charStatList[0]);
+				else
+				if(val < charStatList.length)
+					statDesc=CMStrings.capitalizeAndLower(charStatList[val]);
+				else
+					statDesc=CMStrings.capitalizeAndLower(getExtremeValue(val-charStatList.length+1))+" "+CMStrings.capitalizeAndLower(charStatList[charStatList.length-1]);
+			}
+			else
+				statDesc=CMStrings.padRightPreserve(Integer.toString(CT.getStat(i)),2)+"/"+CT.getMaxStat(i);
+			msg.append(CMStrings.padRight("^<HELP^>^N^!" + CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i))+"^</HELP^>",longest)
+					+"^N: ^H"+statDesc+"^?\n\r");
+		}
+		msg.append("^N\n\r");
+		return msg.toString();
+	}
+
 	public StringBuilder getScore(final MOB mob, final String parm)
 	{
 		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
@@ -104,7 +139,6 @@ public class Score extends Affect
 			arg = (ScoreArgs)CMath.s_valueOfStartsWith(ScoreArgs.class,parm.toUpperCase().trim());
 
 		final StringBuilder msg=new StringBuilder("^N");
-
 		final int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 		final int powerLevel=CMLib.leveler().getEffectFudgedLevel(mob);
 		final boolean showPowerLevel=CMProps.Int.Prowesses.POWER_LEVEL.is(prowessCode);
@@ -242,33 +276,7 @@ public class Score extends Affect
 				msg.append(L("\n\r^NYour stats are: "));
 				msg.append(CMLib.protocol().mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
 				msg.append("\n\r");
-				CharStats CT=mob.charStats();
-				if(arg == ScoreArgs.BASE)
-					CT=mob.baseCharStats();
-				msg.append("^N^!");
-				final int longest=CharStats.CODES.LONNGEST_BASECODE_NAME();
-				final boolean useWords=CMProps.Int.Prowesses.STAT_PROFICIENCY.is(prowessCode);
-				final String[] charStatList = CMProps.getListFileStringList(CMProps.ListFile.CHARSTAT_CHART);
-				for(final int i : CharStats.CODES.BASECODES())
-				{
-					final String statDesc;
-					if(useWords)
-					{
-						final int val=CT.getStat(i);
-						if(val < 0)
-							statDesc=CMStrings.capitalizeAndLower(charStatList[0]);
-						else
-						if(val < charStatList.length)
-							statDesc=CMStrings.capitalizeAndLower(charStatList[val]);
-						else
-							statDesc=CMStrings.capitalizeAndLower(getExtremeValue(val-charStatList.length+1))+" "+CMStrings.capitalizeAndLower(charStatList[charStatList.length-1]);
-					}
-					else
-						statDesc=CMStrings.padRightPreserve(Integer.toString(CT.getStat(i)),2)+"/"+CT.getMaxStat(i);
-					msg.append(CMStrings.padRight("^<HELP^>^N^!" + CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i))+"^</HELP^>",longest)
-							+"^N: ^H"+statDesc+"^?\n\r");
-				}
-				msg.append("^N\n\r");
+				msg.append(getStats(mob,prowessCode,arg));
 			}
 			if(arg == ScoreArgs.STATS)
 				return msg;
@@ -344,11 +352,11 @@ public class Score extends Affect
 					}
 				}
 			}
-			if((CMProps.getIntVar(CMProps.Int.COMBATPROWESS)&CMProps.Int.ANY_ARMOR_PROWESS)!=0)
+			if((prowessCode&CMProps.Int.ANY_ARMOR_PROWESS)!=0)
 				msg.append(L("Your ^<HELP^>armored defence^</HELP^>: ^H@x1^.^N\n\r",CMLib.combat().armorStr(mob)));
-			if((CMProps.getIntVar(CMProps.Int.COMBATPROWESS)&CMProps.Int.ANY_COMBAT_PROWESS)!=0)
+			if((prowessCode&CMProps.Int.ANY_COMBAT_PROWESS)!=0)
 				msg.append(L("Your ^<HELP^>combat prowess^</HELP^> : ^H@x1^.^N\n\r",CMLib.combat().fightingProwessStr(mob)));
-			if((CMProps.getIntVar(CMProps.Int.COMBATPROWESS)&CMProps.Int.ANY_DAMAGE_PROWESS)!=0)
+			if((prowessCode&CMProps.Int.ANY_DAMAGE_PROWESS)!=0)
 				msg.append(L("Your ^<HELP^>damage threat^</HELP^>  : ^H@x1^.^N\n\r",CMLib.combat().damageProwessStr(mob)));
 			//if(CMLib.flags().canSeeHidden(mob))
 			//    msg.append(L("Your ^<HELP^>observation score^</HELP^> : ^H@x1^?.\n\r",CMLib.flags().getDetectScore(mob)));
@@ -391,6 +399,44 @@ public class Score extends Affect
 	public boolean canBeOrdered()
 	{
 		return true;
+	}
+
+	@Override
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		final String parms = (String)args[0];
+		if(parms.startsWith(":"))
+		{
+			final String parm = parms.substring(1).trim();
+			if(parm.trim().length()==0)
+				return "";
+			final ScoreArgs arg = (ScoreArgs)CMath.s_valueOfStartsWith(ScoreArgs.class,parm.toUpperCase().trim());
+			if(arg == null)
+				return "";
+			final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
+			switch(arg)
+			{
+			case AFFECTS:
+				return getAffects(mob.session(),mob,false,false);
+			case BASE:
+				return this.getStats(mob, prowessCode, arg);
+			case DETAILS:
+				return getScore(mob,parm).toString();
+			case EFFECTS:
+				return getAffects(mob.session(),mob,false,false);
+			case INFO:
+				return getScore(mob,parm).toString();
+			case STATS:
+				return this.getStats(mob, prowessCode, arg);
+			default:
+				break;
+			}
+			return "";
+		}
+		else
+			return getScore(mob,parms).toString();
 	}
 
 }

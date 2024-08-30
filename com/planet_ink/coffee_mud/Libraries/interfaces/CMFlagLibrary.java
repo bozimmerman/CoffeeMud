@@ -1057,6 +1057,15 @@ public interface CMFlagLibrary extends CMLibrary
 	 */
 	public boolean isAnimalIntelligence(MOB M);
 
+
+	/**
+	 * Returns whether the given mob is classifyable as
+	 * an animal, being breedable, but with low intelligence.
+	 * @param M the mob to check
+	 * @return true if its an animal, false otherwise
+	 */
+	public boolean isAnAnimal(final MOB M);
+
 	/**
 	 * Returns whether the given mob, item, whatever has a
 	 * behavior making it move around.

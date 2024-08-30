@@ -166,10 +166,12 @@ public class Druid extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_Moonbeam",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_RestoreMana",0,"",false,SecretFlag.SECRET);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SenseLife",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_KnowAnimal",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_Tangle",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_SummonFire",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_LocateAnimals",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_EnhancePotion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_FortifyFood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_Farsight",false);
@@ -475,7 +477,7 @@ public class Druid extends StdCharClass
 			if((druidM!=null)
 			&&(!druidM.isMonster())
 			&&(druidM.charStats().getCurrentClass().ID().equals(C.ID()))
-			&&(CMLib.flags().isAnimalIntelligence(msg.source())
+			&&(CMLib.flags().isAnAnimal(msg.source())
 			  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")
 			  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Stone Golem"))
 			&&(Math.abs(druidM.phyStats().level()-msg.source().phyStats().level())<=10))
@@ -502,7 +504,7 @@ public class Druid extends StdCharClass
 		&&(msg.source().getStartRoom()!=null)
 		&&(CMLib.law().isACity(msg.source().getStartRoom().getArea()))
 		&&(((MOB)host).charStats().getCurrentClass().ID().equals(C.ID()))
-		&&(CMLib.flags().isAnimalIntelligence(msg.source())
+		&&(CMLib.flags().isAnAnimal(msg.source())
 		  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")
 		  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Stone Golem"))
 		&&(CMLib.flags().flaggedAffects(msg.source(),Ability.FLAG_SUMMONING).size()==0)
@@ -602,7 +604,7 @@ public class Druid extends StdCharClass
 		if((mob!=null)
 		&&(mob!=killed)
 		&&(!mob.amDead())
-		&&((!mob.isMonster())||(!CMLib.flags().isAnimalIntelligence(mob)))
+		&&((!mob.isMonster())||(!CMLib.flags().isAnAnimal(mob)))
 		&&((mob.getVictim()==killed)
 		 ||(followers.contains(mob))
 		 ||(mob==killer)))

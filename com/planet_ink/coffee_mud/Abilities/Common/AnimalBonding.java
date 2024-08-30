@@ -181,7 +181,7 @@ public class AnimalBonding extends CommonSkill
 		}
 		if((!M.isMonster())
 		||(!M.isMonster())
-		||(!CMLib.flags().isAnimalIntelligence(M)))
+		||(!CMLib.flags().isAnAnimal(M)))
 		{
 			commonTelL(mob,"You can't bond with @x1.",M.name(mob));
 			return false;

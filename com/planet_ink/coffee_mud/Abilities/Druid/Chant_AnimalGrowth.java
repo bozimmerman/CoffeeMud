@@ -133,7 +133,7 @@ public class Chant_AnimalGrowth extends Chant
 		{
 			if(target instanceof MOB)
 			{
-				if(!CMLib.flags().isAnimalIntelligence((MOB)target))
+				if(!CMLib.flags().isAnAnimal((MOB)target))
 					return Ability.QUALITY_INDIFFERENT;
 			}
 		}
@@ -146,7 +146,7 @@ public class Chant_AnimalGrowth extends Chant
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		if(!CMLib.flags().isAnimalIntelligence(target))
+		if(!CMLib.flags().isAnAnimal(target))
 		{
 			mob.tell(L("This chant only works on animals."));
 			return false;

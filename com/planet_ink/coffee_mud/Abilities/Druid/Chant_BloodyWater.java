@@ -178,7 +178,7 @@ public class Chant_BloodyWater extends Chant
 						for(final Enumeration<MOB> m= R.inhabitants();m.hasMoreElements();)
 						{
 							final MOB M = m.nextElement();
-							if(CMLib.flags().isAnimalIntelligence(M)
+							if(CMLib.flags().isAnAnimal(M)
 							&&(bloodyMobs.size()<limit)
 							&&(M.isMonster())
 							&&((M.amFollowing()==null)||(M.amFollowing().isMonster()))

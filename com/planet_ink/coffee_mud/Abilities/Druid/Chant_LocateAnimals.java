@@ -141,7 +141,7 @@ public class Chant_LocateAnimals extends Chant
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			final MOB mob=room.fetchInhabitant(i);
-			if(CMLib.flags().isAnimalIntelligence(mob)
+			if(CMLib.flags().isAnAnimal(mob)
 			&&(CMLib.flags().isSeeable(mob)))
 				return mob;
 		}

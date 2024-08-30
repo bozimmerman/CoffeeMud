@@ -131,7 +131,7 @@ public class Ranger_FierceCompanions extends StdAbility
 			final Set<MOB> companions=((MOB)affected).getGroupMembers(new HashSet<MOB>());
 			for(final MOB M : companions)
 			{
-				if((M!=affected)&&(CMLib.flags().isAnimalIntelligence(M))&&(M.location()==((MOB)affected).location())&&(!M.amDead())&&(M.isInCombat()))
+				if((M!=affected)&&(CMLib.flags().isAnAnimal(M))&&(M.location()==((MOB)affected).location())&&(!M.amDead())&&(M.isInCombat()))
 				{
 					found=true;
 					break;
