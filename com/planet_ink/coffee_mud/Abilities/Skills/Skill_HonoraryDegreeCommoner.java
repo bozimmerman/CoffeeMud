@@ -264,11 +264,14 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 		{
 			C=this.activatedC;
 		}
-		if((C != null)&&(affectableStats.getCurrentClass()!=C))
+		synchronized(affectableStats)
 		{
-			final int level = affectableStats.getCurrentClassLevel();
-			affectableStats.setCurrentClass(C);
-			affectableStats.setCurrentClassLevel(level);
+			if((C != null)&&(affectableStats.getCurrentClass()!=C))
+			{
+				final int level = affectableStats.getCurrentClassLevel();
+				affectableStats.setCurrentClass(C);
+				affectableStats.setCurrentClassLevel(level);
+			}
 		}
 	}
 

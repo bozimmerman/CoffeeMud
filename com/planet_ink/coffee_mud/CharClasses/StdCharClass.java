@@ -1337,9 +1337,11 @@ public class StdCharClass implements CharClass
 	@Override
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
-		if(affectableStats.getCurrentClass().ID().equals(ID()))
-		for(final int i: CharStats.CODES.MAXCODES())
-			affectableStats.setStat(i,affectableStats.getStat(i)+maxStatAdjustments()[i]+maxStatAdjustments()[CharStats.CODES.toMAXBASE(i)]);
+		if(affectableStats.getCurrentClass()==this)
+		{
+			for(final int i: CharStats.CODES.MAXCODES())
+				affectableStats.setStat(i,affectableStats.getStat(i)+maxStatAdjustments()[i]+maxStatAdjustments()[CharStats.CODES.toMAXBASE(i)]);
+		}
 	}
 
 	@Override
