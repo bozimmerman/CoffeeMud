@@ -38,7 +38,7 @@ public class Chant_EnhancePotion extends Chant
 	@Override
 	public String ID()
 	{
-		return "Chant_KnowAnimal";
+		return "Chant_EnhancePotion";
 	}
 
 	private final static String	localizedName	= CMLib.lang().L("Enhance Potion");
