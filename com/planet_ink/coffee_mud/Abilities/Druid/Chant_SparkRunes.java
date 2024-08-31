@@ -137,8 +137,7 @@ public class Chant_SparkRunes extends Chant
 				final List<Ability> mySpells = new ArrayList<Ability>();
 				for(final Ability A : spells)
 				{
-					if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
-					&&(A.appropriateToMyFactions(mob)))
+					if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 						mySpells.add(A);
 				}
 				if((mySpells.size()>0)
@@ -152,8 +151,9 @@ public class Chant_SparkRunes extends Chant
 						for(final Ability A : mySpells)
 						{
 							M.addAbility((Ability)A.copyOf());
-							final CMMsg cmsg=CMClass.getMsg(M,null,A,CMMsg.TYP_CAST_SPELL,L("You feel @x1 release <O-NAME>",target.Name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-							R.send(mob, cmsg);
+							final CMMsg cmsg=CMClass.getMsg(M,null,A,CMMsg.TYP_CAST_SPELL,CMMsg.NO_EFFECT,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,
+									L("You feel @x1 release <O-NAME>",target.Name()));
+							R.send(M, cmsg);
 						}
 					}
 					finally

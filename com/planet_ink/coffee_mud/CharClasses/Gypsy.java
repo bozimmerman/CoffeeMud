@@ -160,8 +160,8 @@ public class Gypsy extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_KnowAnimal",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Sneak",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_EnhancePotion",false); // untested
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_SparkRunes",false); // untested
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_EnhancePotion",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_SparkRunes",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"JewelMaking",0,true);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_InspectShard",0,false);

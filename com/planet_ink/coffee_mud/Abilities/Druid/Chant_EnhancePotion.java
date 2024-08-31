@@ -79,12 +79,14 @@ public class Chant_EnhancePotion extends Chant
 		return USAGE_MANA;
 	}
 
-	private volatile int finalLevel = -1;
+	private volatile int addedLevels = -1;
 
 	@Override
 	public int overrideMana()
 	{
-		return 50 + ((finalLevel > 30)?((finalLevel-30)*5):0);
+		if(addedLevels>30)
+			return 50 + ((addedLevels-30)*5);
+		return 50;
 	}
 
 	public boolean isMagical(final List<Ability> spells)
@@ -141,7 +143,7 @@ public class Chant_EnhancePotion extends Chant
 			mob.tell(L("You can't enhance @x1 quite that much.",target.name(mob)));
 			return false;
 		}
-		finalLevel = target.phyStats().level() + levels;
+		addedLevels = levels;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

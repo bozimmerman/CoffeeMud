@@ -69,11 +69,13 @@ public class Thief_Kidnapping extends ThiefSkill
 		return Ability.QUALITY_MALICIOUS;
 	}
 
-	protected boolean reAssist = false; // false means assist is ON
-	protected Reference<MOB> parentM = null;
-	protected long parentTimeout = System.currentTimeMillis()-1;
-	protected volatile int aloneTicker = -1;
-	protected Map<MOB,Long> failures = new Hashtable<MOB,Long>();
+	protected boolean			reAssist		= false; // false means assist is ON
+	protected long				roomTimeout		= System.currentTimeMillis() - 1;
+	protected volatile int		aloneTicker		= -1;
+	protected Map<MOB, Long>	failures		= new Hashtable<MOB, Long>();
+	protected String			roomID			= "";
+	protected Room				roomR			= null;
+	protected String			followName		= null;
 
 	@Override
 	public int classificationCode()
@@ -113,6 +115,8 @@ public class Thief_Kidnapping extends ThiefSkill
 	{
 		//super.setMiscText(newMiscText);
 		reAssist = CMParms.getParmBool(newMiscText, "NOASSIST", false); // false is ASSIST ON, which is confusing here, i get it
+		roomID = CMParms.getParmStr(newMiscText, "ROOM", "");
+		followName = CMParms.getParmStr(newMiscText, "FOLLOW", "");
 		final String invoker = CMParms.getParmStr(newMiscText, "INVOKER", "");
 		if(invoker.length()>0)
 		{
@@ -128,10 +132,13 @@ public class Thief_Kidnapping extends ThiefSkill
 	@Override
 	public String text()
 	{
+		final StringBuilder txt = new StringBuilder("NOASSIST="+reAssist);
+		txt.append(" ROOM=\""+CMStrings.escape(roomID)+"\"");
 		if(invoker() != null)
-			return "NOASSIST="+reAssist+" INVOKER=\""+invoker().Name()+"\"";
-		else
-			return "NOASSIST="+reAssist;
+			txt.append(" INVOKER=\""+invoker().Name()+"\"");
+		if(followName != null)
+			txt.append(" FOLLOW=\""+CMStrings.escape(followName)+"\"");
+		return txt.toString();
 	}
 
 	protected boolean isKidnappable(final MOB kidnapperM, final MOB M)
@@ -149,12 +156,38 @@ public class Thief_Kidnapping extends ThiefSkill
 		return true;
 	}
 
-	protected MOB getReturnParent()
+	protected Room getReturnRoom()
 	{
 		final Physical P = affected;
-		if((parentM == null)
-		||(System.currentTimeMillis()>parentTimeout))
+		if((roomR == null)
+		||(System.currentTimeMillis()>roomTimeout))
 		{
+			roomTimeout = System.currentTimeMillis() + (TimeManager.MILI_MINUTE*10);
+			if(this.roomID.length()>0)
+			{
+				final Room R = CMLib.map().getRoom(roomID);
+				if(R != null)
+				{
+					roomR = R;
+					roomTimeout = Long.MAX_VALUE; // don't timeout, this is perfect
+					return roomR;
+				}
+				roomID="";
+			}
+			if((followName != null)&&(followName.length()>0))
+			{
+				if(!CMLib.players().playerExists(followName))
+					followName="";
+				else
+				{
+					final MOB M = CMLib.players().getPlayer(followName);
+					if((M!=null)&&(CMLib.flags().isInTheGame(M, true)))
+					{
+						roomR = M.location();
+						return roomR;
+					}
+				}
+			}
 			if(!(P instanceof Tattooable))
 				return null;
 			final Tattooable TP = (Tattooable)P;
@@ -167,19 +200,13 @@ public class Thief_Kidnapping extends ThiefSkill
 					final MOB M = CMLib.players().getPlayer(parentName);
 					if((M!=null)&&(CMLib.flags().isInTheGame(M, true)))
 					{
-						parentM = new WeakReference<MOB>(M);
-						parentTimeout = Long.MAX_VALUE; // don't timeout, this is perfect
-						return M;
+						roomR=M.location();
+						return roomR;
 					}
-					if(M != null)
-						parentM = new WeakReference<MOB>(M);
 				}
 			}
-			if(parentM == null)
-				parentM = new WeakReference<MOB>(null);
-			parentTimeout = System.currentTimeMillis() + TimeManager.MILI_HOUR;
 		}
-		return parentM.get();
+		return null;
 	}
 
 	@Override
@@ -213,8 +240,8 @@ public class Thief_Kidnapping extends ThiefSkill
 				else
 				if(--this.aloneTicker<=0)
 				{
-					final MOB parentM = this.getReturnParent();
-					if(parentM == null)
+					final Room returnR = this.getReturnRoom();
+					if(returnR == null)
 						this.aloneTicker = 40;
 					else
 					{
@@ -248,7 +275,7 @@ public class Thief_Kidnapping extends ThiefSkill
 								this.unInvoke();
 								M.delEffect(this);
 								M.setFollowing(null);
-								CMLib.tracking().autoTrack(M, parentM.location());
+								CMLib.tracking().autoTrack(M, returnR);
 								return false;
 							}
 						}
@@ -320,8 +347,19 @@ public class Thief_Kidnapping extends ThiefSkill
 				target.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					if(target.amFollowing() != null)
+					final MOB followP = target.amFollowing();
+
+					final boolean wasFollowing;
+					String followName = "";
+					if(followP != null)
+					{
+						wasFollowing = true;
+						if(followP.isPlayer())
+							followName = followP.name();
 						CMLib.commands().postFollow(target, null, true);
+					}
+					else
+						wasFollowing = false;
 					if(target.amFollowing() != null)
 					{
 						failures.put(target, Long.valueOf(System.currentTimeMillis()+TimeManager.MILI_HOUR));
@@ -335,6 +373,11 @@ public class Thief_Kidnapping extends ThiefSkill
 					{
 						kA.reAssist = autoAssist;
 						kA.invoker = mob;
+						if(!wasFollowing)
+							kA.roomID = CMLib.map().getExtendedRoomID(target.location());
+						else
+							kA.followName = followName;
+
 						kA.makeNonUninvokable();
 					}
 				}

@@ -139,8 +139,9 @@ public class Prayer_AttuneRelic extends Prayer
 						for(final Ability A : mySpells)
 						{
 							M.addAbility((Ability)A.copyOf());
-							final CMMsg cmsg=CMClass.getMsg(M,null,A,CMMsg.TYP_CAST_SPELL,L("You feel @x1 release <O-NAME>",target.Name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-							R.send(mob, cmsg);
+							final CMMsg cmsg=CMClass.getMsg(M,null,A,CMMsg.TYP_CAST_SPELL,CMMsg.NO_EFFECT,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,
+									L("You feel @x1 release <O-NAME>",target.Name()));
+							R.send(M, cmsg);
 						}
 					}
 					finally
