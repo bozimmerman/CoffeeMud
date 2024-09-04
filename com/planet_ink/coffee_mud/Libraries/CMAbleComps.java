@@ -493,7 +493,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			t.addTrigger(t, comp.getTriggererDef(), compSocials, null);
 			if((comp.getCompiledMask()!=null)&&(useConnector||(buf.length()>0)))
 				buf.append("then ");
-			buf.append(t.getTriggerDesc(t));
+			buf.append(t.getTriggerDesc(t, "the player"));
 		}
 		else
 		{

@@ -229,7 +229,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(numBlessings()>0)
 		{
 			return L("The blessings of @x1 are placed upon @x2 clerics whenever the cleric does the following: @x3.",
-					name(),charStats().hisher(),rituals.getTriggerDesc(RitualType.CLERIC_BLESSING));
+					name(),charStats().hisher(),rituals.getTriggerDesc(RitualType.CLERIC_BLESSING, "the cleric"));
 		}
 		return "";
 	}
@@ -246,7 +246,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(numBlessings()>0)
 		{
 			return L("The blessings of @x1 are placed upon @x2 worshippers whenever they do the following: @x3.",
-					name(), charStats().hisher(), rituals.getTriggerDesc(RitualType.WORSHIP_BLESSING));
+					name(), charStats().hisher(), rituals.getTriggerDesc(RitualType.WORSHIP_BLESSING, "the worshipper"));
 		}
 		return "";
 	}
@@ -255,7 +255,7 @@ public class StdDeity extends StdMOB implements Deity
 	public String getServiceTriggerDesc()
 	{
 		return L("The services of @x1 requires using an Infused place, and are the following: @x2.",
-				name(),rituals.getTriggerDesc(RitualType.SERVICE));
+				name(),rituals.getTriggerDesc(RitualType.SERVICE, "the cleric"));
 	}
 
 	@Override
@@ -1463,7 +1463,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(numCurses()>0)
 		{
 			return L("The curses of @x1 are placed upon @x2 clerics whenever the cleric does the following: @x3.",
-					name(),charStats().hisher(),rituals.getTriggerDesc(RitualType.CLERIC_CURSE));
+					name(),charStats().hisher(),rituals.getTriggerDesc(RitualType.CLERIC_CURSE, "the cleric"));
 		}
 		return "";
 	}
@@ -1487,7 +1487,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(numCurses()>0)
 		{
 			return L("The curses of @x1 are placed upon @x2 worshippers whenever the worshipper does the following: @x3.",
-					name(),charStats().hisher(),rituals.getTriggerDesc(RitualType.WORSHIP_CURSE));
+					name(),charStats().hisher(),rituals.getTriggerDesc(RitualType.WORSHIP_CURSE, "the worshipper"));
 		}
 		return "";
 	}
@@ -1573,7 +1573,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(numPowers()>0)
 		{
 			return L("Special powers of @x1 are placed upon @x2 clerics whenever the cleric does the following: @x3.",
-					name(),charStats().hisher(),rituals.getTriggerDesc(RitualType.POWER));
+					name(),charStats().hisher(),rituals.getTriggerDesc(RitualType.POWER, "the cleric"));
 		}
 		return "";
 	}

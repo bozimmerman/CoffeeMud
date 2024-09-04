@@ -127,9 +127,10 @@ public interface Triggerer extends CMCommon
 	 * of the given trigger key
 	 *
 	 * @param key the arbitrary but unique key object
+	 * @param thePlayer a third person description of the triggerer
 	 * @return a readable description
 	 */
-	public String getTriggerDesc(final Object key);
+	public String getTriggerDesc(final Object key, final String thePlayer);
 
 	/**
 	 * Generates a message for the next step in the
