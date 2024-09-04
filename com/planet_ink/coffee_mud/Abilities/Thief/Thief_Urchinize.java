@@ -100,7 +100,7 @@ public class Thief_Urchinize extends ThiefSkill
 	protected int tickSuccess = 0;
 	protected int lastDropOffDay = -1;
 
-	protected static Set<MOB> myUrchins = Collections.synchronizedSet(new HashSet<MOB>());
+	protected Set<MOB> myUrchins = Collections.synchronizedSet(new HashSet<MOB>());
 
 	protected boolean forceUninvoke()
 	{
@@ -254,6 +254,21 @@ public class Thief_Urchinize extends ThiefSkill
 		||(target.findTattoo("CHRISTENED")!=null))
 		{
 			mob.tell(L("@x1 doesn't seem like a viable urchin.",target.name(mob)));
+			return false;
+		}
+
+		int maxUrchins = (((super.adjustedLevel(mob, asLevel) + 1) * mob.charStats().getStat(CharStats.STAT_CHARISMA))/90)+super.getXLEVELLevel(mob);
+		if(maxUrchins < 1)
+			maxUrchins = 1;
+		for(final Iterator<MOB> m = myUrchins.iterator();m.hasNext();)
+		{
+			final MOB M = m.next();
+			if(M.amDestroyed())
+				m.remove();
+		}
+		if(myUrchins.size()>=maxUrchins)
+		{
+			mob.tell(L("You can't train any more urchins..."));
 			return false;
 		}
 
