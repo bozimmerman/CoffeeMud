@@ -7,24 +7,24 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.collections.Filterer;
 
-public class Thief_TarotReading extends Thief_Runecasting
+public class Thief_Tasseography extends Thief_Runecasting
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_TarotReading";
+		return "Thief_Tasseography";
 	}
 
 	@Override
 	public String displayText()
 	{
 		if(invoker() == affected)
-			return L("(Tarot Reading)");
+			return L("(Tasseography)");
 		else
 			return "";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Tarot Reading");
+	private final static String localizedName = CMLib.lang().L("Tasseography");
 
 	@Override
 	public String name()
@@ -32,7 +32,7 @@ public class Thief_TarotReading extends Thief_Runecasting
 		return localizedName;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"TAROTREAD","TAROTREADING"});
+	private static final String[] triggerStrings =I(new String[] {"TASSEOGRAPHY"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -41,19 +41,17 @@ public class Thief_TarotReading extends Thief_Runecasting
 
 	protected static String[] tarotStarts = new String[]
 	{
-		"I see your future is bright...",
-		"I see your future is murky...",
-		"I see your future is muddled...",
-		"I see your future is sloppy...",
-		"I see your future is orderly..."
+		"I see your major arcana is affected by...",
+		"I see your minor arcana is affected by...",
+		"I see your future holds..."
 	};
 
 	protected static String[] tarotFails = new String[]
 	{
-		"You drank too fast.  Try again later.",
-		"The grounds are unclear.",
-		"You need to drink more coffee.  Come back later.",
-		"I see... I see.... I don't see.  Sorry, your life might be too uneventful."
+		"Astral clouds are blocking your aura.",
+		"Your future is unbound. Tread carefully.",
+		"Your path is clear.",
+		"The fates` gaze is elsewhere."
 	};
 
 	@Override
@@ -71,13 +69,13 @@ public class Thief_TarotReading extends Thief_Runecasting
 	@Override
 	protected String getSuccessMsg()
 	{
-		return L("<S-NAME> stud(ys) coffee grounds for <T-NAMESELF>...");
+		return L("<S-NAME> deal(s) tarot cards for <T-NAMESELF>...");
 	}
 
 	@Override
 	protected String getFailureMsg()
 	{
-		return L("<S-NAME> stud(ys) coffee grounds for <T-NAMESELF>, but just make(s) a mess.");
+		return L("<S-NAME> deal(s) tarot cards for <T-NAMESELF>, but <S-IS-ARE> confused.");
 	}
 
 	@Override
@@ -126,7 +124,7 @@ public class Thief_TarotReading extends Thief_Runecasting
 						case _ALIGNMENT:
 						case _FACTION:
 						case _TATTOO:
-							return false;
+							return true;
 						case IF:
 						case NPC:
 						case OR:
@@ -149,7 +147,7 @@ public class Thief_TarotReading extends Thief_Runecasting
 						case RACECAT:
 						case _RACE:
 						case _RACECAT:
-							return true;
+							return false;
 						default:
 							break;
 						}
