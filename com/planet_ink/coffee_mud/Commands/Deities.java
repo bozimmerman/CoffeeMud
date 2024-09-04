@@ -128,6 +128,7 @@ public class Deities extends StdCommand
 				msg.append(D.getClericTriggerDesc()+"\n\r");
 			else
 				msg.append(D.getWorshipTriggerDesc()+"\n\r");
+			msg.append("See also help on BLESSINGS\n\r");
 		}
 		if((mob==null)||(mob.charStats().getStat(CharStats.STAT_FAITH)>=100))
 		{
@@ -142,9 +143,11 @@ public class Deities extends StdCommand
 				}
 				msg.append(L("\n\r^HPowers Instructions: ^N"));
 				msg.append(D.getClericPowerupDesc()+"\n\r");
+				msg.append("See also help on POWERS\n\r");
 			}
 			msg.append(L("\n\r^HService Instructions: ^N"));
 			msg.append(D.getServiceTriggerDesc()+"\n\r");
+			msg.append("See also help on SERVICES\n\r");
 		}
 		return msg.toString();
 	}
