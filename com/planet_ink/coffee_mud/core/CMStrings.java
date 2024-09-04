@@ -647,18 +647,18 @@ public class CMStrings
 	/**
 	 * Returns whether the given string contains the second string, without any following
 	 * letter, which is the CMStrings definition of a "word".  This check is case
-	 * sensitive.
+	 * sensitive.  It returns the index of the word
 	 * @param thisStr the string to look in
 	 * @param word the string/word to look for
-	 * @return true if the word is in the string, and false otherwise
+	 * @return -1, or the index of the found word in the string
 	 */
-	public final static boolean containsWord(final String thisStr, final String word)
+	public final static int indexOfWord(final String thisStr, final String word)
 	{
 		if((thisStr==null)
 		||(word==null)
 		||(thisStr.length()==0)
 		||(word.length()==0))
-			return false;
+			return -1;
 		for(int i=thisStr.length()-1;i>=0;i--)
 		{
 			if((thisStr.charAt(i)==word.charAt(0))
@@ -666,12 +666,23 @@ public class CMStrings
 			{
 				if((thisStr.substring(i).startsWith(word))
 				&&((thisStr.length()==i+word.length())||(!Character.isLetter(thisStr.charAt(i+word.length())))))
-				{
-					return true;
-				}
+					return i;
 			}
 		}
-		return false;
+		return -1;
+	}
+
+	/**
+	 * Returns whether the given string contains the second string, without any following
+	 * letter, which is the CMStrings definition of a "word".  This check is case
+	 * sensitive.
+	 * @param thisStr the string to look in
+	 * @param word the string/word to look for
+	 * @return true if the word is in the string, and false otherwise
+	 */
+	public final static boolean containsWord(final String thisStr, final String word)
+	{
+		return indexOfWord(thisStr,word) >=0;
 	}
 
 	/**

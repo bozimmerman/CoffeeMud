@@ -161,6 +161,7 @@ public class Delver extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_ShardUse",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_StrikeBarren",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_DeepDarkness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_InspectShard",0,false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_Mold",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_MagneticField",false);

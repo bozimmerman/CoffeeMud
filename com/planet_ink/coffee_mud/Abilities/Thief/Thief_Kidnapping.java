@@ -141,7 +141,7 @@ public class Thief_Kidnapping extends ThiefSkill
 		return txt.toString();
 	}
 
-	protected boolean isKidnappable(final MOB kidnapperM, final MOB M)
+	protected static boolean isKidnappable(final MOB kidnapperM, final MOB M)
 	{
 		if((M.charStats().ageCategory()>=Race.AGE_YOUNGADULT)
 		&&(!CMLib.flags().isAgingChild(M))
@@ -151,7 +151,7 @@ public class Thief_Kidnapping extends ThiefSkill
 			return false;
 		if(M.isPlayer()||(!M.isMonster()))
 			return kidnapperM.mayIFight(M);
-		if(M.amFollowing()!=null)
+		if((M.amFollowing()!=null) && (M.amFollowing()!=kidnapperM))
 			return kidnapperM.mayIFight(M.amUltimatelyFollowing());
 		return true;
 	}

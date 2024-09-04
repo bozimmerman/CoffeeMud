@@ -176,6 +176,7 @@ public class Druid extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_FortifyFood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_Farsight",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_FeelElectricity",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_InspectShard",0,false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_CalmAnimal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_Sunray",false);

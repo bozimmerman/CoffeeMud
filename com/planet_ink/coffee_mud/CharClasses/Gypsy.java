@@ -164,8 +164,8 @@ public class Gypsy extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_SparkRunes",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"JewelMaking",0,true);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_InspectShard",0,false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_Urchinize",0,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_InspectShard",0,false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_Urchinize",0,true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Pick",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Dodge",false);
@@ -200,7 +200,6 @@ public class Gypsy extends Thief
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_SuppressFortune",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_EnchantShards",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_DropSpot",true);
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_BountifulWomb",false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_NameUrchin",true); // random urchiny names on no arg

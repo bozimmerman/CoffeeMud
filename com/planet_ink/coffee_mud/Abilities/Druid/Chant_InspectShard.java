@@ -82,11 +82,11 @@ public class Chant_InspectShard extends Chant
 
 		if(!(target instanceof Wand))
 		{
-			mob.tell(L("@x1 is not a shard.",target.name(mob)));
+			mob.tell(L("@x1 is not a druidic shard.",target.name(mob)));
 			return false;
 		}
 
-
+		final Wand wI = (Wand)target;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -99,7 +99,24 @@ public class Chant_InspectShard extends Chant
 			{
 				mob.location().send(mob,msg);
 				final StringBuilder info = new StringBuilder("");
-				//TODO:
+				if(wI.getSpell()==null)
+					info.append(L("@x1 appears to be mundane.",target.name(mob)));
+				else
+				if((wI.getSpell().classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_CHANT)
+				{
+					mob.tell(L("@x1 is not a druidic shard, but contains some other sort of magic.",target.name(mob)));
+					return false;
+				}
+				else
+				{
+					info.append(L("@x1 contains the '@x2' magic, and is invoked with the word '@x3'.",target.name(mob),wI.getSpell().name(),wI.magicWord()));
+					if(super.getXLEVELLevel(mob)>2)
+						info.append(L(" It has @x2 charges.",""+wI.getCharges()));
+					if(super.getXLEVELLevel(mob)>5)
+						info.append(L(" It can hold at most @x2 charges.",""+wI.getMaxCharges()));
+					if(super.getXLEVELLevel(mob)>8)
+						info.append(" "+target.secretIdentity());
+				}
 				if(mob.isMonster())
 					CMLib.commands().postSay(mob,null,info.toString(),false,false);
 				else
