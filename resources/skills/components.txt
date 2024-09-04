@@ -32,3 +32,5 @@
 #   (the aove requires held sane if you are a wizard AND a trigger ritual with SAY and GOODNIGHT social.)
 BANDAGING=(inventory:consumed:1:CLOTH:)||(held:consumed:5:DUST:-race +elf)
 SPELL_LIGHT=(trigger:SAY light &STANDING &INCLUDE 1 -NPC &ASSISTSAY okee:)
+THIEF_RUNECASTING=(inventory:kept:1:rune cube:)
+THIEF_TAROTREADING=(inventory:kept:1:tarot cards:)

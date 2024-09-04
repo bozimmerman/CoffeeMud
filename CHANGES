@@ -4,7 +4,7 @@
   2. Better MSSP/MSDP support.  New INI entry: MSXPVARS.
   3. Ability CODES & DOMAINS can now be added to via the INI file/control panel.
   4. Deity powers, curses, blessings all now support arguments
-  5. New skills: Improved Revoke, Hard to Starboard
+  5. New skills: Improved Revoke, Hard to Starboard, Staff Sweep
   6. GenAbilities: better argument parsing (see Game Builders Guide)
   7. New command: NOSPAM
   8. AutoGenInstances will now respect multiple entrances.  See RandomAreas guide.
@@ -36,7 +36,7 @@
  34. New example script playerBackups.js for making player backups as cmare xml.
  35. New example script topMonthlyRpt.js for making TOP player reports every month.
  36. New example script topMonthlyAwards.js for giving TOP player awards every month.
- 37. New thief skills: Runecasting, Kidnapping, Urchinize
+ 37. New thief skills: Runecasting, Kidnapping, Urchinize, Tarot Reading
  38. Prophecy prayer will now also use new random predictions file
  39. New property: ScriptLater for, well, scripting later
  40. Generate command now supports object type SCRIPTS

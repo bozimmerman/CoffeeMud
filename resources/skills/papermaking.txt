@@ -10,6 +10,7 @@ the log book	4	60	5	10	GenPlayerBook	WOOD		2/5000
 a cigarette	5	20	(onground:consumed:1:PIPEWEED:)&&(onground:consumed:1:a piece of paper:)	5	GenCigar	PAPER		0	
 a small paper bag	5	10	2	1	GenContainer	PAPER		20	
 an essay	5	40	1	1	GenPaper	WOOD		1/3000	
+a deck of tarot cards	5	40	8	1	GenPaper	WOOD		0	
 a book	7	70	8	20	GenPlayerBook	WOOD		10/5000	
 a sheet of parchment	6	10	1	1	GenPaper	HIDE		1/5000	
 a recipe page	7	15	1	10	GenRecipe	WOOD			

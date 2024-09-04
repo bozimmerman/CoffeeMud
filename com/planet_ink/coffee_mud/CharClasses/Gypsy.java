@@ -172,8 +172,8 @@ public class Gypsy extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_RefreshRunes",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Peek",true);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_StaffSweep",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_TarotReading",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_StaffSweep",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_TarotReading",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_UsePoison",false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_ReleaseMagic",true);
@@ -210,7 +210,7 @@ public class Gypsy extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"CaravanBuilding",false);
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"ImprovedHerbalism",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_Tumble",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_Tumble",false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_CurseFortune",true);
 			// add more to this than just saves: spilling potions, wand targeting fail, wand fail, wand wrong spell, getting lost, etc
 

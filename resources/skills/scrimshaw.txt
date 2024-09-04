@@ -3,6 +3,7 @@
 small % club	2	25	10	15	GenWeapon	BLUNT	3	
 % flail	2	40	15	41	GenWeapon	FLAILED	5	
 % six-sided die	3	40	1	1	GenDice		6	
+% rune cube	3	30	1	1	GenDice		6	
 % comb	3	5	1	1	GenItem			
 % sliver	4	10	1	8	GenWeapon	EDGED	2	
 % four-sided die	5	50	1	2	GenDice		4	

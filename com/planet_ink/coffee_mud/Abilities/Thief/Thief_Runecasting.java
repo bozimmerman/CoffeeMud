@@ -96,6 +96,97 @@ public class Thief_Runecasting extends ThiefSkill
 		return triggerStrings;
 	}
 
+	protected ExpireVector<MOB>	doneMs				= new ExpireVector<MOB>(getExpirationTime());
+	protected List<String>		reports				= null;
+	protected int				tickUp				= 0;
+	protected MOB				forM				= null;
+
+	protected long getExpirationTime()
+	{
+		return CMProps.getMillisPerMudHour();
+	}
+
+	protected Filterer<AutoProperties> getPlayerFilter()
+	{
+		return new Filterer<AutoProperties>()
+		{
+			@Override
+			public boolean passesFilter(final AutoProperties obj)
+			{
+				boolean foundOne = false;
+				for(final CompiledZMaskEntry[] entrySet : obj.getPlayerCMask().entries())
+				{
+					if(entrySet == null)
+						continue;
+					for(final CompiledZMaskEntry entry : entrySet)
+					{
+						switch(entry.maskType())
+						{
+						case ANYCLASS:
+						case ANYCLASSLEVEL:
+						case BASECLASS:
+						case MAXCLASSLEVEL:
+						case _ANYCLASS:
+						case _ANYCLASSLEVEL:
+						case _BASECLASS:
+						case _MAXCLASSLEVEL:
+							return false;
+						case BIRTHDAY:
+						case BIRTHDAYOFYEAR:
+						case BIRTHMONTH:
+						case BIRTHSEASON:
+						case BIRTHWEEK:
+						case BIRTHWEEKOFYEAR:
+						case BIRTHYEAR:
+						case _BIRTHDAY:
+						case _BIRTHDAYOFYEAR:
+						case _BIRTHMONTH:
+						case _BIRTHSEASON:
+						case _BIRTHWEEK:
+						case _BIRTHWEEKOFYEAR:
+						case _BIRTHYEAR:
+							return false;
+						case ALIGNMENT:
+						case FACTION:
+						case TATTOO:
+						case _ALIGNMENT:
+						case _FACTION:
+						case _TATTOO:
+							return false;
+						case IF:
+						case NPC:
+						case OR:
+						case PLAYER:
+						case PORT:
+						case SECURITY:
+						case SUBOP:
+						case SYSOP:
+						case _IF:
+						case _NPC:
+						case _OR:
+						case _PLAYER:
+						case _PORT:
+						case _SECURITY:
+						case _SUBOP:
+						case _SYSOP:
+							// neutral
+							break;
+						case RACE:
+						case RACECAT:
+						case _RACE:
+						case _RACECAT:
+							return false;
+						default:
+							foundOne=true;
+							break;
+						}
+					}
+				}
+				return foundOne;
+			}
+		};
+	}
+
 	protected static String[] runeStarts = new String[]
 	{
 		"The runes indicate...",
@@ -111,100 +202,12 @@ public class Thief_Runecasting extends ThiefSkill
 		"The fates` gaze is elsewhere."
 	};
 
-	protected ExpireVector<MOB>	doneMs				= new ExpireVector<MOB>(getExpirationTime());
-	protected List<String>		reports				= null;
-	protected int				tickUp				= 0;
-	protected MOB				forM				= null;
-
-	protected long getExpirationTime()
-	{
-		return CMProps.getMillisPerMudHour();
-	}
-
-	protected Filterer<AutoProperties> runePlayerFilter = new Filterer<AutoProperties>()
-	{
-		@Override
-		public boolean passesFilter(final AutoProperties obj)
-		{
-			boolean foundOne = false;
-			for(final CompiledZMaskEntry[] entrySet : obj.getPlayerCMask().entries())
-			{
-				if(entrySet == null)
-					continue;
-				for(final CompiledZMaskEntry entry : entrySet)
-				{
-					switch(entry.maskType())
-					{
-					case ANYCLASS:
-					case ANYCLASSLEVEL:
-					case BASECLASS:
-					case MAXCLASSLEVEL:
-					case _ANYCLASS:
-					case _ANYCLASSLEVEL:
-					case _BASECLASS:
-					case _MAXCLASSLEVEL:
-						return false;
-					case BIRTHDAY:
-					case BIRTHDAYOFYEAR:
-					case BIRTHMONTH:
-					case BIRTHSEASON:
-					case BIRTHWEEK:
-					case BIRTHWEEKOFYEAR:
-					case BIRTHYEAR:
-					case _BIRTHDAY:
-					case _BIRTHDAYOFYEAR:
-					case _BIRTHMONTH:
-					case _BIRTHSEASON:
-					case _BIRTHWEEK:
-					case _BIRTHWEEKOFYEAR:
-					case _BIRTHYEAR:
-						return false;
-					case ALIGNMENT:
-					case FACTION:
-					case TATTOO:
-					case _ALIGNMENT:
-					case _FACTION:
-					case _TATTOO:
-						return false;
-					case IF:
-					case NPC:
-					case OR:
-					case PLAYER:
-					case PORT:
-					case SECURITY:
-					case SUBOP:
-					case SYSOP:
-					case _IF:
-					case _NPC:
-					case _OR:
-					case _PLAYER:
-					case _PORT:
-					case _SECURITY:
-					case _SUBOP:
-					case _SYSOP:
-						// neutral
-						break;
-					case RACE:
-					case RACECAT:
-					case _RACE:
-					case _RACECAT:
-						return false;
-					default:
-						foundOne=true;
-						break;
-					}
-				}
-			}
-			return foundOne;
-		}
-	};
-
-	public String[] getStartPhrases()
+	protected String[] getStartPhrases()
 	{
 		return runeStarts;
 	}
 
-	public String[] getFailPhrases()
+	protected String[] getFailPhrases()
 	{
 		return runeFails;
 	}
@@ -331,7 +334,7 @@ public class Thief_Runecasting extends ThiefSkill
 					throw new CMException(L("Predictions not found.  Aborting."));
 				CMLib.percolator().preDefineReward(piece, definedIDs);
 				CMLib.percolator().defineReward(piece,definedIDs);
-				s=CMLib.percolator().findString("STRING", piece, definedIDs);
+				s=CMLib.percolator().findString("SCRIPT", piece, definedIDs);
 				if((s==null)||(s.trim().length()==0))
 					throw new CMException(L("Predictions not generated."));
 				final ScriptingEngine testE = (ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
@@ -411,7 +414,7 @@ public class Thief_Runecasting extends ThiefSkill
 			if(tickUp >= 2)
 			{
 				final int numToReturn = 1 + getXTIMELevel(iM);
-				final AutoProperties[] APs = Thief_Runecasting.getApplicableAward(forM, runePlayerFilter, numToReturn);
+				final AutoProperties[] APs = Thief_Runecasting.getApplicableAward(forM, getPlayerFilter(), numToReturn);
 				if((APs == null) || (APs.length==0))
 				{
 					final int x =CMLib.dice().roll(1, getFailPhrases().length, 0);
@@ -635,14 +638,19 @@ public class Thief_Runecasting extends ThiefSkill
 		super.unInvoke();
 	}
 
-	public String getSuccessMsg()
+	protected String getSuccessMsg()
 	{
 		return L("<S-NAME> cast(s) rune cubes for <T-NAMESELF>...");
 	}
 
-	public String getFailureMsg()
+	protected String getFailureMsg()
 	{
 		return L("<S-NAME> cast(s) rune cubes for <T-NAMESELF>, but <S-IS-ARE> confused.");
+	}
+
+	protected boolean otherRequirements(final MOB mob, final MOB target, final boolean auto, final int asLevel)
+	{
+		return true;
 	}
 
 	@Override
@@ -666,6 +674,9 @@ public class Thief_Runecasting extends ThiefSkill
 			}
 		}
 
+		if(!otherRequirements(mob,target,auto,asLevel))
+			return false;
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -677,7 +688,7 @@ public class Thief_Runecasting extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final Thief_Runecasting rA = (Thief_Runecasting)beneficialAffect(mob, target, asLevel, 0);
+				final Thief_Runecasting rA = (Thief_Runecasting)beneficialAffect(mob, mob, asLevel, 0);
 				if(rA != null)
 				{
 					rA.forM = target;
