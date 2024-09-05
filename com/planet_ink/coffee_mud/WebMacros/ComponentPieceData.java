@@ -10,6 +10,9 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompConnector;
+import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompLocation;
+import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompType;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -66,8 +69,8 @@ public class ComponentPieceData extends StdWebMacro
 			{
 				final String type=httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last);
 				final String strType=httpReq.getUrlParameter(fixedCompID+"_PIECE_STRING_"+last);
-				final AbilityComponent.CompType C=(AbilityComponent.CompType)CMath.s_valueOf(AbilityComponent.CompType.values(), type);
-				if((C==null)||(C==AbilityComponent.CompType.STRING)||(!CMath.isNumber(strType)))
+				final CompType C=(CompType)CMath.s_valueOf(CompType.values(), type);
+				if((C==null)||(C==CompType.STRING)||(!CMath.isNumber(strType)))
 					str.append(strType);
 				else
 					str.append("TODO");
@@ -81,8 +84,8 @@ public class ComponentPieceData extends StdWebMacro
 				String subType=httpReq.getUrlParameter(fixedCompID+"_PIECE_STYPE_"+last);
 				if(subType==null)
 					subType="";
-				final AbilityComponent.CompType C=(AbilityComponent.CompType)CMath.s_valueOf(AbilityComponent.CompType.values(), type);
-				if((C==null)||(C==AbilityComponent.CompType.STRING))
+				final CompType C=(CompType)CMath.s_valueOf(CompType.values(), type);
+				if((C==null)||(C==CompType.STRING))
 				{
 					str.append("<INPUT TYPE=TEXT NAME=\""+fixedCompID+"_PIECE_STRING_"+last+"\" VALUE=\"");
 					str.append(strType);
@@ -91,7 +94,7 @@ public class ComponentPieceData extends StdWebMacro
 				else
 				{
 					str.append("<SELECT NAME=\""+fixedCompID+"_PIECE_STRING_"+last+"\">");
-					if(C==AbilityComponent.CompType.MATERIAL)
+					if(C==CompType.MATERIAL)
 					{
 						for(final RawMaterial.Material m : RawMaterial.Material.values())
 						{
@@ -102,7 +105,7 @@ public class ComponentPieceData extends StdWebMacro
 						}
 					}
 					else
-					if(C==AbilityComponent.CompType.RESOURCE)
+					if(C==CompType.RESOURCE)
 					{
 						for(int i=0;i<RawMaterial.CODES.TOTAL();i++)
 						{
@@ -146,7 +149,7 @@ public class ComponentPieceData extends StdWebMacro
 			if(parms.containsKey("CONNECTOREDIT"))
 			{
 				str.append("<OPTION VALUE=\"DELETE\">Delete Component");
-				for(final AbilityComponent.CompConnector conn : AbilityComponent.CompConnector.values())
+				for(final CompConnector conn : CompConnector.values())
 				{
 					str.append("<OPTION VALUE=\""+conn.toString()+"\" ");
 					if(conn.toString().equalsIgnoreCase(httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+last)))
@@ -163,7 +166,7 @@ public class ComponentPieceData extends StdWebMacro
 				String currType = httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last);
 				if(currType == null)
 					currType = "STRING";
-				for(final AbilityComponent.CompType conn : AbilityComponent.CompType.values())
+				for(final CompType conn : CompType.values())
 				{
 					str.append("<OPTION VALUE=\""+conn.toString()+"\" ");
 					if(conn.toString().equalsIgnoreCase(currType))
@@ -175,7 +178,7 @@ public class ComponentPieceData extends StdWebMacro
 				str.append(httpReq.getUrlParameter(fixedCompID+"_PIECE_LOCATION_"+last));
 			if(parms.containsKey("LOCATIONEDIT"))
 			{
-				for(final AbilityComponent.CompLocation conn : AbilityComponent.CompLocation.values())
+				for(final CompLocation conn : CompLocation.values())
 				{
 					str.append("<OPTION VALUE=\""+conn.toString()+"\" ");
 					if(conn.toString().equalsIgnoreCase(httpReq.getUrlParameter(fixedCompID+"_PIECE_LOCATION_"+last)))

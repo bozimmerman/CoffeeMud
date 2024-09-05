@@ -1678,76 +1678,6 @@ public class StdArea implements Area
 		return Integer.MIN_VALUE;
 	}
 
-	protected static final class IStatContext
-	{
-		final Faction		theFaction;
-		final int[]			statData		= new int[Area.Stats.values().length];
-		final List<Integer>	levelRanges		= new Vector<Integer>();
-		final List<Integer>	alignRanges		= new Vector<Integer>();
-		final long[]		totalAlignments	= new long[] { 0 };
-
-		public IStatContext(final Faction theFaction)
-		{
-			this.theFaction = theFaction;
-		}
-	}
-
-	protected void buildAreaIMobStats(final IStatContext ctx, final MOB mob)
-	{
-		if ((mob != null) && mob.isMonster())
-		{
-			if (!CMLib.flags().isUnattackable(mob))
-			{
-				final int lvl = mob.basePhyStats().level();
-				ctx.levelRanges.add(Integer.valueOf(lvl));
-				if ((ctx.theFaction != null)
-				&& (mob.fetchFaction(ctx.theFaction.factionID()) != Integer.MAX_VALUE))
-				{
-					ctx.alignRanges.add(Integer.valueOf(mob.fetchFaction(ctx.theFaction.factionID())));
-					ctx.totalAlignments[0] += mob.fetchFaction(ctx.theFaction.factionID());
-				}
-				ctx.statData[Area.Stats.POPULATION.ordinal()]++;
-				ctx.statData[Area.Stats.TOTAL_LEVELS.ordinal()] += lvl;
-				if (!CMLib.flags().isAnimalIntelligence(mob))
-				{
-					ctx.statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()] += lvl;
-					ctx.statData[Area.Stats.INTELLIGENT_MOBS.ordinal()]++;
-				}
-				else
-				{
-					ctx.statData[Area.Stats.ANIMALS.ordinal()]++;
-				}
-				if (lvl < ctx.statData[Area.Stats.MIN_LEVEL.ordinal()])
-					ctx.statData[Area.Stats.MIN_LEVEL.ordinal()] = lvl;
-				if (lvl >= ctx.statData[Area.Stats.MAX_LEVEL.ordinal()])
-				{
-					if (lvl > ctx.statData[Area.Stats.MAX_LEVEL.ordinal()])
-					{
-						ctx.statData[Area.Stats.MAX_LEVEL.ordinal()] = lvl;
-						ctx.statData[Area.Stats.MAX_LEVEL_MOBS.ordinal()] = 0;
-					}
-					ctx.statData[Area.Stats.MAX_LEVEL_MOBS.ordinal()]++;
-				}
-				/*
-				 * if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)) {
-				 * if(CMLib.flags().isGood(mob))
-				 * ctx.statData[Area.Stats.GOOD_MOBS.ordinal()]++; else
-				 * if(CMLib.flags().isEvil(mob))
-				 * ctx.statData[Area.Stats.EVIL_MOBS.ordinal()]++; }
-				 * if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL)) {
-				 * if(CMLib.flags().isLawful(mob))
-				 * ctx.statData[Area.Stats.LAWFUL_MOBS.ordinal()]++; else
-				 * if(CMLib.flags().isChaotic(mob))
-				 * ctx.statData[Area.Stats.CHAOTIC_MOBS.ordinal()]++; }
-				 * if(mob.fetchEffect("Prop_ShortEffects")!=null)
-				 * ctx.statData[Area.Stats.BOSS_MOBS.ordinal()]++;
-				 * if(" Humanoid Elf Dwarf Halfling HalfElf ".indexOf(" "+mob.charStats().getMyRace().racialCategory()+" ")>=0)
-				 * ctx.statData[Area.Stats.HUMANOIDS.ordinal()]++;
-				 */
-			}
-		}
-	}
-
 	protected Map<String,int[]> buildAreaPiety()
 	{
 		getAreaIStats();
@@ -2440,6 +2370,15 @@ public class StdArea implements Area
 				return pietyNum[0];
 		}
 		return 0;
+	}
+
+	@Override
+	public Race getAreaRace()
+	{
+		final AreaIStats stats = this.getAreaIStats();
+		if(stats.isFinished())
+			return stats.getCommonRace();
+		return null;
 	}
 
 	public SLinkedList<Area> loadAreas(final Collection<String> loadableSet)

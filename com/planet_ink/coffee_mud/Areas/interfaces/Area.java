@@ -523,6 +523,14 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public boolean isAreaStatsLoaded();
 
 	/**
+	 * Returns the most common race in the area, or null if one is either
+	 * not determined yet, or the area is unpopulated.
+	 * This is derived from the area istats.
+	 * @return the area race
+	 */
+	public Race getAreaRace();
+
+	/**
 	 * Returns the number of registered followers of the given
 	 * deity are in the given area name.
 	 *
@@ -767,16 +775,15 @@ public interface Area extends Economics, PhysicalAgent, Places
 		CITY_ROOMS,
 		CAVE_ROOMS,
 		INTELLIGENT_MOBS,
-		MAX_LEVEL_MOBS
-
-		/*
+		MAX_LEVEL_MOBS,
 		HUMANOIDS,
 		GOOD_MOBS,
 		EVIL_MOBS,
 		LAWFUL_MOBS,
 		CHAOTIC_MOBS,
-		BOSS_MOBS
-		*/
+		BOSS_MOBS,
+		MODE_LEVEL,
+		MODE_ALIGNMENT
 	}
 
 	/**

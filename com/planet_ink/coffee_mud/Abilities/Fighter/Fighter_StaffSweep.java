@@ -103,7 +103,7 @@ public class Fighter_StaffSweep extends FighterSkill
 	{
 		final Item I = mob.fetchWieldedItem();
 		if((I instanceof Weapon)
-		&&(((Weapon)I).weaponClassification()!=Weapon.CLASS_STAFF))
+		&&(((Weapon)I).weaponClassification()==Weapon.CLASS_STAFF))
 			return (Weapon)I;
 		return null;
 	}
@@ -169,7 +169,7 @@ public class Fighter_StaffSweep extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,L("^F^<FIGHT^><S-NAME> sweep(s) low with @x1!^</FIGHT^>^?",w.name()));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,L("^F^<FIGHT^><S-NAME> sweep(s) low with @x1!^</FIGHT^>^?",w.name()));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -180,12 +180,8 @@ public class Fighter_StaffSweep extends FighterSkill
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
-					msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_OK_ACTION|(auto?CMMsg.MASK_ALWAYS:0),null);
-					if(mob.location().okMessage(mob,msg))
-					{
-						mob.location().send(mob,msg);
+					if(CMLib.combat().postAttack(mob, target, w))
 						A.invoke(mob, target, true, adjustedLevel(mob, asLevel));
-					}
 				}
 				mob.recoverPhyStats();
 			}

@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompConnector;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
@@ -2206,11 +2207,16 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				return components;
 			}
 			final StringBuffer buf=new StringBuffer("");
-			for(int r=0;r<componentsRequirements.size();r++)
+			if((componentsRequirements.size() > 0) && (componentsRequirements.get(componentsRequirements.size()-1).getConnector()==CompConnector.MESSAGE))
+				buf.append(componentsRequirements.get(componentsRequirements.size()-1).getMaskStr());
+			else
 			{
-				String str=CMLib.ableComponents().getAbilityComponentDesc(mob,componentsRequirements.get(r),r>0);
-				str=CMStrings.replaceAll(str,L(" on the ground"), ""); // this is implied
-				buf.append(str);
+				for(int r=0;r<componentsRequirements.size();r++)
+				{
+					String str=CMLib.ableComponents().getAbilityComponentDesc(mob,componentsRequirements.get(r),r>0);
+					str=CMStrings.replaceAll(str,L(" on the ground"), ""); // this is implied
+					buf.append(str);
+				}
 			}
 			commonTelL(mob,"You lack the necessary materials to @x1, the requirements are: @x2.",doingWhat.toLowerCase(),buf.toString());
 			return null;

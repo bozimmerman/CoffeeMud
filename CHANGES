@@ -36,7 +36,7 @@
  34. New example script playerBackups.js for making player backups as cmare xml.
  35. New example script topMonthlyRpt.js for making TOP player reports every month.
  36. New example script topMonthlyAwards.js for giving TOP player awards every month.
- 37. New thief skills: Runecasting, Kidnapping, Urchinize, Tarot Reading
+ 37. New thief skills: Runecasting, Kidnapping, Urchinize, Tarot Reading, Find Runaway
  38. Prophecy prayer will now also use new random predictions file
  39. New property: ScriptLater for, well, scripting later
  40. Generate command now supports object type SCRIPTS
@@ -48,8 +48,10 @@
  46. Achievements now supports LEVELUP, LEVELDOWN, CLASSLEVELUP, CLASSLEVELDOWN events.
  47. POSE command now supports HERE argument.
  48. New Achievement award types: ITEM, and MOB
- 49. New chants: release magic, tasseography
-
+ 49. New chants: Release Magic, Tasseography, Curse Mood, Enhance Jewelry
+ 50. Areas now track several more stats and most common race, see LIST AREAS for more info.
+ 51. New thief skills: My Urchins 
+ 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.
   1. New Paladin skills: Unholy Strike, Chaos Rage, Paladin's Fear, Paladin's CorruRption

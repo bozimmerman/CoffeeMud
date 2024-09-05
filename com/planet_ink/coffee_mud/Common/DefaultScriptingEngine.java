@@ -4123,6 +4123,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(P==null)
 						returnable=false;
 					else
+					if(arg2.equalsIgnoreCase("*"))
+					{
+						if(P instanceof MOB)
+							returnable=((MOB)P).personalEffects().hasMoreElements();
+						else
+							returnable=(P.numEffects() > 0);
+					}
+					else
 					{
 						final Ability A=findAbility(arg2);
 						if((A==null)||(arg2==null)||(arg2.length()==0))
@@ -4143,6 +4151,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final PhysicalAgent P=getArgumentItem(arg1,ctx);
 					if(P==null)
 						returnable=false;
+					else
+					if(arg2.equalsIgnoreCase("*"))
+						returnable=(P.numBehaviors() > 0);
 					else
 					{
 						final Behavior B=CMClass.findBehavior(arg2);

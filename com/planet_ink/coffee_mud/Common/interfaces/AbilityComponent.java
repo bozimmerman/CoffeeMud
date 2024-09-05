@@ -19,7 +19,8 @@ public interface AbilityComponent extends CMCommon
 	/**
 	 * Returns an enum describing how this component "connects" with the
 	 * following component logically.  As in, is it required
-	 * WITH the following component, or instead of?
+	 * WITH the following component, or instead of?  It may also designate
+	 * that the component is really the description message.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompConnector
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent#setConnector(CompConnector)
 	 * @return a connector enum
@@ -29,7 +30,8 @@ public interface AbilityComponent extends CMCommon
 	/**
 	 * Sets an enum describing how this component "connects" with the
 	 * following component logically.  As in, is it required
-	 * WITH the following component, or instead of?
+	 * WITH the following component, or instead of? It may also designate
+	 * that the component is really the description message.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompConnector
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent#getConnector()
 	 * @param connector a connector enum
@@ -211,14 +213,14 @@ public interface AbilityComponent extends CMCommon
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public enum CompConnector { AND, OR }
+	public enum CompConnector { AND, OR, MESSAGE }
 
 	/**
 	 * Where worn locations for determining where a component must be
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public enum CompLocation { INVENTORY, HELD, WORN, NEARBY, ONGROUND, TRIGGER }
+	public enum CompLocation { INVENTORY, HELD, WORN, HAVE, NEARBY, ONGROUND, TRIGGER }
 
 	/**
 	 * An component type item filter for determining

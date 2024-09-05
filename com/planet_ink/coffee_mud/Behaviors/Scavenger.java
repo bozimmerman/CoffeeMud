@@ -139,6 +139,13 @@ public class Scavenger extends ActiveTicker
 							mob.doCommand(new XVector<String>("PUT","ALL",C.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 						else
 							mob.doCommand(new XVector<String>("DROP","ALL"),MUDCmdProcessor.METAFLAG_FORCED);
+						if(this.doAtNight) // a signal to include money
+						{
+							if(C!=null)
+								mob.doCommand(new XVector<String>("PUT","ALL",C.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							else
+								mob.doCommand(new XVector<String>("DROP","ALL"),MUDCmdProcessor.METAFLAG_FORCED);
+						}
 						if(returnR == null)
 							CMLib.tracking().wanderAway(mob,false,true);
 						else

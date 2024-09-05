@@ -100,8 +100,6 @@ public class Thief_Urchinize extends ThiefSkill
 	protected int tickSuccess = 0;
 	protected int lastDropOffDay = -1;
 
-	protected Set<MOB> myUrchins = Collections.synchronizedSet(new HashSet<MOB>());
-
 	protected boolean forceUninvoke()
 	{
 		final Physical P = affected;
@@ -163,9 +161,15 @@ public class Thief_Urchinize extends ThiefSkill
 				B = CMClass.getBehavior("Mobile");
 				M.addBehavior(B);
 				M.setLiegeID(invoker.Name());
-				synchronized(myUrchins)
+				Thief_MyUrchins.addNewUrchin(invoker(), M);
+				if(M.findTattoo("PARENT:*")==null)
 				{
-					myUrchins.add(M);
+					final Ability kidnapA = M.fetchEffect("Thief_Kidnapping");
+					if(kidnapA != null)
+					{
+						kidnapA.unInvoke();
+						M.delEffect(kidnapA);
+					}
 				}
 			}
 			else
@@ -176,7 +180,7 @@ public class Thief_Urchinize extends ThiefSkill
 			}
 			else
 			{
-				if(!R.show(invoker, M,CMMsg.MSG_HANDS,L("<S-NAME> conitnue(s) urchanizing <T-NAME>.")))
+				if(!R.show(invoker, M,CMMsg.MSG_HANDS,L("<S-NAME> continue(s) urchanizing <T-NAME>.")))
 					return forceUninvoke();
 			}
 		}
@@ -260,13 +264,8 @@ public class Thief_Urchinize extends ThiefSkill
 		int maxUrchins = (((super.adjustedLevel(mob, asLevel) + 1) * mob.charStats().getStat(CharStats.STAT_CHARISMA))/90)+super.getXLEVELLevel(mob);
 		if(maxUrchins < 1)
 			maxUrchins = 1;
-		for(final Iterator<MOB> m = myUrchins.iterator();m.hasNext();)
-		{
-			final MOB M = m.next();
-			if(M.amDestroyed())
-				m.remove();
-		}
-		if(myUrchins.size()>=maxUrchins)
+
+		if(Thief_MyUrchins.getMyUrchins(mob).size()>=maxUrchins)
 		{
 			mob.tell(L("You can't train any more urchins..."));
 			return false;
@@ -292,6 +291,7 @@ public class Thief_Urchinize extends ThiefSkill
 						kA.tickSuccess = 11 - super.getXTIMELevel(mob);
 						kA.urchanizing = Boolean.TRUE;
 						kA.makeNonUninvokable();
+						target.makePeace(true);
 					}
 				}
 			}

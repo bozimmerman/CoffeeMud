@@ -4849,7 +4849,8 @@ public class ListCmd extends StdCommand
 		STATE("State", 10),
 		HIDDEN("Hiddn", 6),
 		PIETY("Piety",50),
-		CACHED("Cached", 6)
+		CACHED("Cached", 6),
+		RACE("Race", 15)
 		;
 
 		public String	shortName;
@@ -4904,6 +4905,14 @@ public class ListCmd extends StdCommand
 					}
 					return piety.toString();
 				}
+			case RACE:
+				if(A.isAreaStatsLoaded())
+				{
+					final Race R = A.getAreaRace();
+					if(R != null)
+						return R.ID();
+				}
+				return "";
 			default:
 				return "";
 			}

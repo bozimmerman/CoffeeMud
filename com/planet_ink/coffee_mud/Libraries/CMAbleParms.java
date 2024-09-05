@@ -14,6 +14,9 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompConnector;
+import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompLocation;
+import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompType;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.RawMaterial.Material;
@@ -1855,13 +1858,18 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							{
 								final AbilityComponent able=CMLib.ableComponents().createBlankAbilityComponent("");
 								able.setConnector(AbilityComponent.CompConnector.valueOf(connector));
-								able.setAmount(CMath.s_int(amt));
-								able.setMask((def==null)?"":def);
-								able.setTriggererDef("");
-								able.setConsumed((con!=null) && con.equalsIgnoreCase("on"));
-								able.setLocation(AbilityComponent.CompLocation.valueOf(loc));
-								if(CMath.s_valueOf(AbilityComponent.CompType.class, typ)!=null)
-									able.setType(AbilityComponent.CompType.valueOf(typ), strVal, styp);
+								if(able.getConnector()==CompConnector.MESSAGE)
+									able.setMask((def==null)?"":def);
+								else
+								{
+									able.setAmount(CMath.s_int(amt));
+									able.setMask((def==null)?"":def);
+									able.setTriggererDef("");
+									able.setConsumed((con!=null) && con.equalsIgnoreCase("on"));
+									able.setLocation(AbilityComponent.CompLocation.valueOf(loc));
+									if(CMath.s_valueOf(CompType.class, typ)!=null)
+										able.setType(CompType.valueOf(typ), strVal, styp);
+								}
 								comps.add(able);
 							}
 							catch(final Exception e)
@@ -1889,24 +1897,24 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					final String subType = (I instanceof RawMaterial)?((RawMaterial)I).getSubType():"";
 					final List<AbilityComponent> comps=new Vector<AbilityComponent>();
 					AbilityComponent able=CMLib.ableComponents().createBlankAbilityComponent("");
-					able.setConnector(AbilityComponent.CompConnector.AND);
+					able.setConnector(CompConnector.AND);
 					able.setAmount(amt);
 					able.setMask("");
 					able.setTriggererDef("");
 					able.setConsumed(true);
-					able.setLocation(AbilityComponent.CompLocation.ONGROUND);
-					able.setType(AbilityComponent.CompType.MATERIAL, Integer.valueOf(I.material() & RawMaterial.MATERIAL_MASK), subType);
+					able.setLocation(CompLocation.ONGROUND);
+					able.setType(CompType.MATERIAL, Integer.valueOf(I.material() & RawMaterial.MATERIAL_MASK), subType);
 					comps.add(able);
 					for(final Integer resourceCode : extraMatsM.keySet())
 					{
 						able=CMLib.ableComponents().createBlankAbilityComponent("");
-						able.setConnector(AbilityComponent.CompConnector.AND);
+						able.setConnector(CompConnector.AND);
 						able.setAmount(extraMatsM.get(resourceCode)[0]);
 						able.setMask("");
 						able.setTriggererDef("");
 						able.setConsumed(true);
-						able.setLocation(AbilityComponent.CompLocation.ONGROUND);
-						able.setType(AbilityComponent.CompType.RESOURCE, resourceCode, "");
+						able.setLocation(CompLocation.ONGROUND);
+						able.setType(CompType.RESOURCE, resourceCode, "");
 						comps.add(able);
 					}
 					return CMLib.ableComponents().getAbilityComponentCodedString(comps);
@@ -1984,7 +1992,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							else
 							if(type==2)
 								str.append("<OPTION VALUE=\"\" SELECTED>");
-							for(final AbilityComponent.CompConnector conector : AbilityComponent.CompConnector.values())
+							for(final CompConnector conector : CompConnector.values())
 							{
 								str.append("<OPTION VALUE=\""+conector.toString()+"\" ");
 								if((type==2)&&(comp!=null)&&(conector==comp.getConnector()))
@@ -1995,9 +2003,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						str.append("\n\rAmt: <INPUT TYPE=TEXT SIZE=2 NAME="+fieldName+"_CUST_AMT_"+(i+1)+" VALUE=\""+(((type!=2)||(comp==null))?"":Integer.toString(comp.getAmount()))+"\"  ONKEYDOWN=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
 						str.append("\n\r<SELECT NAME="+fieldName+"_CUST_TYPE_"+(i+1)+" ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true; ReShow();\">");
-						final AbilityComponent.CompType compType=(comp!=null)?comp.getType():AbilityComponent.CompType.STRING;
+						final CompType compType=(comp!=null)?comp.getType():CompType.STRING;
 						final String subType=(comp != null)?comp.getSubType():"";
-						for(final AbilityComponent.CompType conn : AbilityComponent.CompType.values())
+						for(final CompType conn : CompType.values())
 						{
 							str.append("<OPTION VALUE=\""+conn.toString()+"\" ");
 							if(conn==compType)
@@ -2005,12 +2013,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							str.append(">"+CMStrings.capitalizeAndLower(conn.toString()));
 						}
 						str.append("</SELECT>");
-						if(compType==AbilityComponent.CompType.STRING)
+						if(compType==CompType.STRING)
 							str.append("\n\r<INPUT TYPE=TEXT SIZE=10 NAME="+fieldName+"_CUST_STR_"+(i+1)+" VALUE=\""+(((type!=2)||(comp==null))?"":comp.getStringType())+"\"  ONKEYDOWN=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
 						else
 						{
 							str.append("\n\r<SELECT NAME="+fieldName+"_CUST_STR_"+(i+1)+" ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
-							if(compType==AbilityComponent.CompType.MATERIAL)
+							if(compType==CompType.MATERIAL)
 							{
 								final RawMaterial.Material[] M=RawMaterial.Material.values();
 								Arrays.sort(M,new Comparator<RawMaterial.Material>()
@@ -2030,7 +2038,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								}
 							}
 							else
-							if(compType==AbilityComponent.CompType.RESOURCE)
+							if(compType==CompType.RESOURCE)
 							{
 								final List<Pair<String,Integer>> L=new Vector<Pair<String,Integer>>();
 								for(int x=0;x<RawMaterial.CODES.TOTAL();x++)
@@ -2055,7 +2063,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							str.append(" <INPUT TYPE=TEXT SIZE=2 NAME="+fieldName+"_CUST_STYPE_"+(i+1)+" VALUE=\""+subType+"\">");
 						}
 						str.append("\n\r<SELECT NAME="+fieldName+"_CUST_LOC_"+(i+1)+" ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
-						for(final AbilityComponent.CompLocation conn : AbilityComponent.CompLocation.values())
+						for(final CompLocation conn : CompLocation.values())
 						{
 							str.append("<OPTION VALUE=\""+conn.toString()+"\" ");
 							if((type==2)&&(comp!=null)&&(conn==comp.getLocation()))

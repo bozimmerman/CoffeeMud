@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Spells;
+package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2018-2024 Bo Zimmerman
+   Copyright 2024-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_GreaterEnchantWeapon extends Spell
+public class Chant_EnhanceJewelry extends Chant
 {
 
 	@Override
 	public String ID()
 	{
-		return "Spell_GreaterEnchantWeapon";
+		return "Chant_EnhanceJewelry";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Greater Enchant Weapon");
+	private final static String localizedName = CMLib.lang().L("Enhance Jewelry");
 
 	@Override
 	public String name()
@@ -58,7 +58,7 @@ public class Spell_GreaterEnchantWeapon extends Spell
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+		return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;
 	}
 
 	@Override
@@ -86,26 +86,36 @@ public class Spell_GreaterEnchantWeapon extends Spell
 		if(target==null)
 			return false;
 
-		if(!(target instanceof Weapon))
+		if(!(target instanceof Armor))
 		{
-			mob.tell(mob,target,null,L("You can't enchant <T-NAME> with a Greater Enchant Weapon spell!"));
+			mob.tell(mob,target,null,L("You can't enhance <T-NAME> with this magic!"));
 			return false;
 		}
-		if(target.phyStats().ability()<3)
+		final long goodCheck = ((Armor)target).rawProperLocationBitmap()
+				& ( Wearable.WORN_EARS | Wearable.WORN_RIGHT_FINGER | Wearable.WORN_LEFT_FINGER | Wearable.WORN_NECK | Wearable.WORN_LEFT_WRIST | Wearable.WORN_RIGHT_WRIST);
+		if(goodCheck == 0)
 		{
-			mob.tell(L("@x1 cannot be greatly enchanted until it has first attained 3 levels of regular enchantment.",target.name(mob)));
+			mob.tell(L("@x1 can not be enhanced with this magic, as it is not worn on the ears, fingers, neck, or wrist."));
 			return false;
 		}
-		if(target.phyStats().ability()>9+(super.getXLEVELLevel(mob)/3))
+		final long badCheck = ((Armor)target).rawProperLocationBitmap()
+				& ( Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_FEET | Wearable.WORN_ABOUT_BODY | Wearable.WORN_HANDS | Wearable.WORN_HEAD);
+		if(badCheck != 0)
 		{
-			mob.tell(L("@x1 cannot be greatly enchanted further.",target.name(mob)));
+			mob.tell(L("@x1 can not be enhanced with this magic, as it is not worn exclusively on the ears, fingers, neck, or wrist."));
+			return false;
+		}
+
+		if(target.phyStats().ability()>5+(super.getXLEVELLevel(mob)/2))
+		{
+			mob.tell(L("@x1 cannot be enhanced further.",target.name(mob)));
 			return false;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int experienceToLose=getXPCOSTAdjustment(mob,250);
+		int experienceToLose=getXPCOSTAdjustment(mob,50);
 		experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 		mob.tell(L("The effort causes you to lose @x1 experience.",""+experienceToLose));
 
@@ -113,7 +123,8 @@ public class Spell_GreaterEnchantWeapon extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> hold(s) <T-NAMESELF> and shout(s) a spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?"":L("^S<S-NAME> hold(s) <T-NAMESELF> and chant(s) to it.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -126,7 +137,7 @@ public class Spell_GreaterEnchantWeapon extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,L("<S-NAME> hold(s) <T-NAMESELF> tightly and shout(s), but fail(s) to cast a spell."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> hold(s) <T-NAMESELF> tightly and chant(s), but fail(s)."));
 
 		// return whether it worked
 		return success;

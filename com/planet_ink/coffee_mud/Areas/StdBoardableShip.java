@@ -2273,6 +2273,15 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	}
 
 	@Override
+	public Race getAreaRace()
+	{
+		final AreaIStats stats = this.getAreaIStats();
+		if(stats.isFinished())
+			return stats.getCommonRace();
+		return null;
+	}
+
+	@Override
 	public boolean securityCheck(final MOB mob)
 	{
 		if( getBoardableItem() instanceof Boardable)

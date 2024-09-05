@@ -155,7 +155,7 @@ public class Gypsy extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Hide",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Runecasting",true);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Kidnapping",true); // untested
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Kidnapping",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_ShardUse",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_KnowAnimal",false);
 
@@ -177,20 +177,20 @@ public class Gypsy extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_UsePoison",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_ReleaseMagic",true);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_FindRunaway",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_FindRunaway",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_Tasseography",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Parry",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_RechargeShards",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_CurseMood",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_CurseMood",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_Haggle",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Herbalism",true);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_MyUrchins",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_MyUrchins",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Steal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Lore",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_EnhanceJewelry",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_EnhanceJewelry",false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_ExtendFortune",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_Listen",false);

@@ -10,6 +10,9 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompConnector;
+import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompLocation;
+import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompType;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -64,17 +67,22 @@ public class GrinderComponent
 				if(!conn.equalsIgnoreCase("DELETE"))
 				{
 					final AbilityComponent able=(AbilityComponent)CMClass.getCommon("DefaultAbilityComponent");
-					able.setAmount(CMath.s_int(amt));
 					if(posDex==1)
-						able.setConnector(AbilityComponent.CompConnector.AND);
+						able.setConnector(CompConnector.AND);
 					else
-						able.setConnector(AbilityComponent.CompConnector.valueOf(conn));
-					able.setConsumed((consumed!=null)&&(consumed.equalsIgnoreCase("on")||consumed.equalsIgnoreCase("checked")));
-					able.setLocation(AbilityComponent.CompLocation.valueOf(loc));
-					able.setMask(mask);
-					able.setTriggererDef(CMStrings.deleteCRLFTAB(ritual==null?"":ritual));
-					if(CMath.s_valueOf(AbilityComponent.CompType.class, type)!=null)
-						able.setType(AbilityComponent.CompType.valueOf(type), str,stype);
+						able.setConnector(CompConnector.valueOf(conn));
+					if(able.getConnector()==CompConnector.MESSAGE)
+						able.setMask(mask);
+					else
+					{
+						able.setAmount(CMath.s_int(amt));
+						able.setConsumed((consumed!=null)&&(consumed.equalsIgnoreCase("on")||consumed.equalsIgnoreCase("checked")));
+						able.setLocation(CompLocation.valueOf(loc));
+						able.setMask(mask);
+						able.setTriggererDef(CMStrings.deleteCRLFTAB(ritual==null?"":ritual));
+						if(CMath.s_valueOf(CompType.class, type)!=null)
+							able.setType(CompType.valueOf(type), str,stype);
+					}
 					set.add(able);
 				}
 				posDex++;
