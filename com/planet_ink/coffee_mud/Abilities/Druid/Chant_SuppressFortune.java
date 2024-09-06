@@ -32,16 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Chant_InspectShard extends Chant
+public class Chant_SuppressFortune extends Chant
 {
-
 	@Override
 	public String ID()
 	{
-		return "Chant_InspectShard";
+		return "Chant_ExtendFortune";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Inspect Shard");
+	private final static String localizedName = CMLib.lang().L("Suppress Fortune");
 
 	@Override
 	public String name()
@@ -49,85 +48,94 @@ public class Chant_InspectShard extends Chant
 		return localizedName;
 	}
 
-	@Override
-	protected int canTargetCode()
-	{
-		return CAN_ITEMS;
-	}
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Suppress Fortune)");
 
 	@Override
-	public long flags()
+	public String displayText()
 	{
-		return super.flags() | Ability.FLAG_DIVINING;
+		return localizedStaticDisplay;
 	}
 
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_CHANT|Ability.DOMAIN_NATURELORE;
+		return Ability.ACODE_CHANT|Ability.DOMAIN_COSMOLOGY;
 	}
 
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_INDIFFERENT;
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		if(!(affected instanceof MOB))
+			return;
+		final MOB mob=(MOB)affected;
+		if(canBeUninvoked())
+		{
+			mob.tell(L("Your suppressed fortune fades."));
+			final Ability A = mob.fetchEffect("AutoAwards");
+			if(A != null)
+			{
+				A.setStat("SUPPRESSOR", ""); // autoawards has a backup to this, so no worries
+				A.setStat("FORCETICK", "true");
+			}
+		}
+		super.unInvoke();
 	}
 
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
 
-		if(!(target instanceof Wand))
-		{
-			mob.tell(L("@x1 is not a druidic shard.",target.name(mob)));
-			return false;
-		}
-
-		final Wand wI = (Wand)target;
-
-		if((wI.getEnchantType()!=-1)
-		&&(wI.getEnchantType()!=Ability.ACODE_CHANT))
-		{
-			mob.tell(L("@x1 is not a druidic shard.",target.name(mob)));
-			return false;
-		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> inspect(s) <T-NAMESELF> while softly chanting.^?"));
+			invoker=mob;
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) suppressively to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final StringBuilder info = new StringBuilder("");
-				if(wI.getSpell()==null)
-					info.append(L("@x1 appears to be mundane.",target.name(mob)));
-				else
+				if(msg.value()<=0)
 				{
-					info.append(L("@x1 contains the '@x2' magic, and is invoked with the word '@x3'.",target.name(mob),wI.getSpell().name(),wI.magicWord()));
-					if(super.getXLEVELLevel(mob)>2)
-						info.append(L(" It has @x2 charges.",""+wI.getCharges()));
-					if(super.getXLEVELLevel(mob)>5)
-						info.append(L(" It can hold at most @x2 charges.",""+wI.getMaxCharges()));
-					if(super.getXLEVELLevel(mob)>8)
-						info.append(" "+target.secretIdentity());
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) <S-HIS-HER> fortune being suppressed."));
+					final Ability meA = beneficialAffect(mob,target,asLevel,0);
+					if(meA != null)
+					{
+						final Ability A = mob.fetchEffect("AutoAwards");
+						if(A != null)
+							A.setStat("SUPPRESSOR", meA.ID());
+						target.recoverPhyStats();
+						target.recoverCharStats();
+						target.recoverMaxState();
+					}
 				}
-				if(mob.isMonster())
-					CMLib.commands().postSay(mob,null,info.toString(),false,false);
-				else
-					mob.tell(info.toString());
 			}
-
 		}
 		else
-			beneficialVisualFizzle(mob,target,L("<S-NAME> inspect(s) <T-NAMESELF> while softly chanting, looking more frustrated every second."));
-
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

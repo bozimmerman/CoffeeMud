@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Prayers;
+package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2024 Bo Zimmerman
+   Copyright 2002-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_AiryForm extends Prayer
+public class Chant_ExtendFortune extends Chant
 {
 	@Override
 	public String ID()
 	{
-		return "Prayer_AiryForm";
+		return "Chant_ExtendFortune";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Airyform");
+	private final static String localizedName = CMLib.lang().L("Extend Fortune");
 
 	@Override
 	public String name()
@@ -48,12 +48,24 @@ public class Prayer_AiryForm extends Prayer
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Airyform)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Extended Fortune)");
 
 	@Override
 	public String displayText()
 	{
 		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_COSMOLOGY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
 	}
 
 	@Override
@@ -65,25 +77,7 @@ public class Prayer_AiryForm extends Prayer
 	@Override
 	protected int canTargetCode()
 	{
-		return 0;
-	}
-
-	@Override
-	public int classificationCode()
-	{
-		return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;
-	}
-
-	@Override
-	public int abstractQuality()
-	{
-		return Ability.QUALITY_BENEFICIAL_SELF;
-	}
-
-	@Override
-	public long flags()
-	{
-		return Ability.FLAG_NEUTRAL;
+		return CAN_MOBS;
 	}
 
 	@Override
@@ -93,67 +87,55 @@ public class Prayer_AiryForm extends Prayer
 		if(!(affected instanceof MOB))
 			return;
 		final MOB mob=(MOB)affected;
-
-		super.unInvoke();
-
 		if(canBeUninvoked())
-			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> no longer airy."));
-	}
-
-	@Override
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		if(!super.okMessage(myHost,msg))
-			return false;
-
-		if(!(affected instanceof MOB))
-			return true;
-
-		final MOB mob=(MOB)affected;
-		if((msg.amITarget(mob))
-		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		   &&(msg.tool() instanceof Item))
 		{
-			int recovery=(int)Math.round(CMath.mul((msg.value()),0.75));
-			if((recovery==msg.value())&&(msg.value()>1))
-				recovery=msg.value()-1;
-			msg.setValue(recovery);
+			mob.tell(L("Your extended fortune fades."));
+			final Ability A = mob.fetchEffect("AutoAwards");
+			if(A != null)
+			{
+				A.setStat("HOLDER", ""); // autoawards has a backup to this, so no worries
+				A.setStat("FORCETICK", "true");
+			}
 		}
-		return true;
+		super.unInvoke();
 	}
 
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
-			target=(MOB)givenTarget;
-
-		if(target.fetchEffect(ID())!=null)
-		{
-			target.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already an airy form."));
+		final MOB target=this.getTarget(mob,commands,givenTarget);
+		if(target==null)
 			return false;
-		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 that <T-NAME> be given an airy form.^?",prayWord(mob)));
+			invoker=mob;
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) extensively to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> shimmer(s)."));
-				beneficialAffect(mob,target,asLevel,0);
+				if(msg.value()<=0)
+				{
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) more fortunate!"));
+					final Ability meA = beneficialAffect(mob,target,asLevel,0);
+					if(meA != null)
+					{
+						final Ability A = mob.fetchEffect("AutoAwards");
+						if(A != null)
+							A.setStat("HOLDER", meA.ID());
+						target.recoverPhyStats();
+						target.recoverCharStats();
+						target.recoverMaxState();
+					}
+				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for a new form, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
-
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

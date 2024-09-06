@@ -223,7 +223,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public void setDaysInWeek(final String[] days)
+	public void setWeekNames(final String[] days)
 	{
 		weekNames = days;
 		setDayOfMonth(getDayOfMonth()); // causes derived fields to be recalculated
@@ -284,7 +284,7 @@ public class DefaultTimeClock implements TimeClock
 		if(monthsInYear.trim().length()>0)
 			setMonthsInYear(CMParms.toStringArray(CMParms.parseCommas(monthsInYear,true)));
 
-		setDaysInWeek(CMParms.toStringArray(CMParms.parseCommas(page.getStr("DAYSINWEEK"),true)));
+		setWeekNames(CMParms.toStringArray(CMParms.parseCommas(page.getStr("DAYSINWEEK"),true)));
 
 		if(page.containsKey("YEARDESC"))
 			setYearNames(CMParms.toStringArray(CMParms.parseCommas(page.getStr("YEARDESC"),true)));
@@ -922,6 +922,31 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
+	public void setDateTime(final TimeClock fromC)
+	{
+		loaded = true;
+		if(fromC instanceof DefaultTimeClock)
+		{
+			final DefaultTimeClock fromDC = (DefaultTimeClock)fromC;
+			year = fromDC.year;
+			month = fromDC.month;
+			day = fromDC.day;
+			time = fromDC.time;
+			dayOfYear = fromDC.dayOfYear;
+			weekOfMonth = fromDC.weekOfMonth;
+			weekOfYear = fromDC.weekOfYear;
+			season = fromDC.season;
+		}
+		else
+		{
+			this.setYear(fromC.getYear());
+			this.setMonth(fromC.getMonth());
+			this.setDayOfMonth(fromC.getDayOfMonth());
+			this.setHourOfDay(fromC.getHourOfDay());
+		}
+	}
+
+	@Override
 	public int getHoursPer(final TimePeriod period)
 	{
 		switch(period)
@@ -1057,7 +1082,7 @@ public class DefaultTimeClock implements TimeClock
 								  globalClock.getDawnToDusk()[TimeOfDay.DAY.ordinal()],
 								  globalClock.getDawnToDusk()[TimeOfDay.DUSK.ordinal()],
 								  globalClock.getDawnToDusk()[TimeOfDay.NIGHT.ordinal()]);
-					setDaysInWeek(globalClock.getWeekNames());
+					setWeekNames(globalClock.getWeekNames());
 					setYearNames(globalClock.getYearNames());
 				}
 				else
@@ -1069,7 +1094,7 @@ public class DefaultTimeClock implements TimeClock
 								  CMLib.xml().getIntFromPieces(V,"DAYHR"),
 								  CMLib.xml().getIntFromPieces(V,"DUSKHR"),
 								  CMLib.xml().getIntFromPieces(V,"NIGHTHR"));
-					setDaysInWeek(CMParms.toStringArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"WEEK"),true)));
+					setWeekNames(CMParms.toStringArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"WEEK"),true)));
 					setYearNames(CMParms.toStringArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"YEARS"),true)));
 				}
 			}

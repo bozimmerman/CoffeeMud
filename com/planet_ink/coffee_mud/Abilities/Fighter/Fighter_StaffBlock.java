@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2022-2024 Bo Zimmerman
+   Copyright 2024-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fighter_ForearmBlock extends FighterSkill
+public class Fighter_StaffBlock extends FighterSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_ForearmBlock";
+		return "Fighter_StaffBlock";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Forearm Block");
+	private final static String	localizedName	= CMLib.lang().L("Staff Block");
 
 	@Override
 	public String name()
@@ -110,16 +110,17 @@ public class Fighter_ForearmBlock extends FighterSkill
 
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&((msg.tool()==null)||(msg.tool() instanceof Weapon))
+		&&(mob.fetchWieldedItem() instanceof Weapon)
+		&&(((Weapon)mob.fetchWieldedItem()).weaponClassification() == Weapon.CLASS_STAFF)
 		&&(CMLib.flags().isAliveAwakeMobile(mob,true))
 		&&(msg.source().rangeToTarget()==0)
 		&&(CMLib.flags().canBeSeenBy(mob, msg.source()))
 		&&(!CMLib.flags().isBoundOrHeld(mob))
-		&&(mob.charStats().getBodyPart(Race.BODY_ARM)>0)
-		&&((msg.tool()==null)
-			||((msg.tool() instanceof Weapon)&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
 		&&(msg.source().getVictim()==mob))
 		{
-			final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> block(s) the attack by <T-NAME>!"));
+			final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,
+					L("<S-NAME> block(s) the attack by <T-NAME> with @x1!",mob.fetchWieldedItem().name()));
 			if(((++triesThisRound)<(mob.phyStats().speed()+CMath.div(super.getXLEVELLevel(mob),3.0)))
 			&&(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-93+(getXLEVELLevel(mob)),false))
 			&&(mob.location().okMessage(mob,msg2)))

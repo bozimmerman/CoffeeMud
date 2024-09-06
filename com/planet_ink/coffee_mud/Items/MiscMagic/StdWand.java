@@ -181,8 +181,9 @@ public class StdWand extends StdItem implements Wand
 		}
 		else
 			uses="unlimited";
+		final String plus = ((phyStats().ability()>0)&&(phyStats.ability()<10))?("+"+phyStats.ability()):"";
 		if(A!=null)
-			id="'A wand of "+A.name()+"' Charges: "+uses+"\n\r"+id;
+			id="'A wand of "+A.name()+plus+" Charges: "+uses+"\n\r"+id;
 		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
 	}
 
@@ -265,6 +266,7 @@ public class StdWand extends StdItem implements Wand
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("@x1 glows brightly.",me.name()));
 							me.setUsesRemaining(me.usesRemaining()-1);
 							int level=me.phyStats().level()
+									+ Math.min(me.phyStats().ability(),10)
 									+ CMLib.expertises().getExpertiseLevelCached(mob, wandUse.ID(), ExpertiseLibrary.XType.LEVEL);
 							final int lowest=CMLib.ableMapper().lowestQualifyingLevel(spellA.ID());
 							if(level<lowest)

@@ -78,6 +78,12 @@ public class Thief_Runecasting extends ThiefSkill
 	}
 
 	@Override
+	public int usageType()
+	{
+		return USAGE_MANA;
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIVINATION;

@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Chant_InspectShard extends Chant
+public class Chant_EnhanceShard extends Chant
 {
 
 	@Override
 	public String ID()
 	{
-		return "Chant_InspectShard";
+		return "Chant_EnhanceShard";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Inspect Shard");
+	private final static String localizedName = CMLib.lang().L("Enhance Shard");
 
 	@Override
 	public String name()
@@ -56,15 +56,21 @@ public class Chant_InspectShard extends Chant
 	}
 
 	@Override
-	public long flags()
+	public int classificationCode()
 	{
-		return super.flags() | Ability.FLAG_DIVINING;
+		return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;
 	}
 
 	@Override
-	public int classificationCode()
+	public long flags()
 	{
-		return Ability.ACODE_CHANT|Ability.DOMAIN_NATURELORE;
+		return Ability.FLAG_NOORDERING;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 100;
 	}
 
 	@Override
@@ -82,51 +88,55 @@ public class Chant_InspectShard extends Chant
 
 		if(!(target instanceof Wand))
 		{
-			mob.tell(L("@x1 is not a druidic shard.",target.name(mob)));
+			mob.tell(mob,target,null,L("You can't enhance <T-NAME> with this magic!"));
 			return false;
 		}
 
-		final Wand wI = (Wand)target;
-
-		if((wI.getEnchantType()!=-1)
-		&&(wI.getEnchantType()!=Ability.ACODE_CHANT))
+		if((((Wand)target).getEnchantType()!=-1)
+		&&(((Wand)target).getEnchantType()!=Ability.ACODE_CHANT))
 		{
-			mob.tell(L("@x1 is not a druidic shard.",target.name(mob)));
+			mob.tell(mob,target,null,L("You can't enhance <T-NAME> with this chant."));
 			return false;
 		}
+
+		int maxLevel = adjustedLevel(mob,asLevel) + super.getXLEVELLevel(mob);
+		if(maxLevel > mob.phyStats().level())
+			maxLevel = mob.phyStats().level();
+
+		if(target.phyStats().level()>=maxLevel)
+		{
+			mob.tell(L("@x1 cannot be enhanced further.",target.name(mob)));
+			return false;
+		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
+
+		int experienceToLose=getXPCOSTAdjustment(mob,50);
+		experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
+		mob.tell(L("The effort causes you to lose @x1 experience.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> inspect(s) <T-NAMESELF> while softly chanting.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?"":L("^S<S-NAME> hold(s) <T-NAMESELF> and chant(s) to it.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final StringBuilder info = new StringBuilder("");
-				if(wI.getSpell()==null)
-					info.append(L("@x1 appears to be mundane.",target.name(mob)));
-				else
-				{
-					info.append(L("@x1 contains the '@x2' magic, and is invoked with the word '@x3'.",target.name(mob),wI.getSpell().name(),wI.magicWord()));
-					if(super.getXLEVELLevel(mob)>2)
-						info.append(L(" It has @x2 charges.",""+wI.getCharges()));
-					if(super.getXLEVELLevel(mob)>5)
-						info.append(L(" It can hold at most @x2 charges.",""+wI.getMaxCharges()));
-					if(super.getXLEVELLevel(mob)>8)
-						info.append(" "+target.secretIdentity());
-				}
-				if(mob.isMonster())
-					CMLib.commands().postSay(mob,null,info.toString(),false,false);
-				else
-					mob.tell(info.toString());
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glows!"));
+				final int newLevel = Math.min(target.basePhyStats().level()+3,maxLevel);
+				if(target.basePhyStats().ability()<5+(super.getXLEVELLevel(mob)/2))
+					target.basePhyStats().setAbility(target.basePhyStats().ability()+1);
+				target.basePhyStats().setLevel(newLevel);
+				target.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS);
+				target.recoverPhyStats();
+				mob.recoverPhyStats();
 			}
-
 		}
 		else
-			beneficialVisualFizzle(mob,target,L("<S-NAME> inspect(s) <T-NAMESELF> while softly chanting, looking more frustrated every second."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> hold(s) <T-NAMESELF> tightly and chant(s), but fail(s)."));
 
 		// return whether it worked
 		return success;

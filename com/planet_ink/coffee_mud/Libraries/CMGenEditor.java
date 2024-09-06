@@ -1223,7 +1223,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				switch(which)
 				{
 				case 7:
-					TC.setDaysInWeek(CMParms.toStringArray(CMParms.parseCommas(newNum,true)));
+					TC.setWeekNames(CMParms.toStringArray(CMParms.parseCommas(newNum,true)));
 					break;
 				case 8:
 					TC.setMonthsInYear(CMParms.toStringArray(CMParms.parseCommas(newNum,true)));

@@ -4,7 +4,7 @@
   2. Better MSSP/MSDP support.  New INI entry: MSXPVARS.
   3. Ability CODES & DOMAINS can now be added to via the INI file/control panel.
   4. Deity powers, curses, blessings all now support arguments
-  5. New skills: Improved Revoke, Hard to Starboard, Staff Sweep
+  5. New skills: Improved Revoke, Hard to Starboard, Staff Sweep, Staff Block
   6. GenAbilities: better argument parsing (see Game Builders Guide)
   7. New command: NOSPAM
   8. AutoGenInstances will now respect multiple entrances.  See RandomAreas guide.
@@ -48,9 +48,11 @@
  46. Achievements now supports LEVELUP, LEVELDOWN, CLASSLEVELUP, CLASSLEVELDOWN events.
  47. POSE command now supports HERE argument.
  48. New Achievement award types: ITEM, and MOB
- 49. New chants: Release Magic, Tasseography, Curse Mood, Enhance Jewelry
+ 49. New chants: Release Magic, Tasseography, Curse Mood, Enhance Jewelry, Extend Fortune
  50. Areas now track several more stats and most common race, see LIST AREAS for more info.
- 51. New thief skills: My Urchins 
+ 51. New thief skills: My Urchins, Astrology, Name Urchin
+ 52. New chants: Suppress Fortune, Enhance Shard, Bountiful Womb
+ 53. New common skill: Shard Making, Improved Herbalism
  
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

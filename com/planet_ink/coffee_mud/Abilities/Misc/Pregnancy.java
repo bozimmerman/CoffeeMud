@@ -55,6 +55,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	protected long	monthsRemaining	= -1;
 	protected long	daysRemaining	= -1;
 	protected Ability addictions	= null;
+	protected int	ticksInLabor	= 0;
+
 
 	@Override
 	public String getHealthConditionDesc()
@@ -371,8 +373,6 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	{
 		return Ability.ACODE_PROPERTY;
 	}
-
-	protected int	ticksInLabor	= 0;
 
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)

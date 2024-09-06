@@ -123,19 +123,34 @@ public class SpellCraftingSkill extends CraftingSkill
 		return theSpell;
 	}
 
-	protected int getCraftableSpellLevel(final List<String> commands)
+	protected int getCraftableSpellLevel(final List<String> commands, final int asLevel)
 	{
+		int level = 1;
 		Ability theSpell=null;
 		final String spellName=getCraftableSpellName(commands);
 		if(spellName!=null)
 		{
+			if(asLevel > 0)
+			{
+				theSpell=CMClass.getAbility(commands.get(0));
+				if(theSpell!=null)
+				{
+					final int lowlevel = CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID());
+					if(asLevel >= lowlevel)
+						return asLevel;
+					return lowlevel;
+				}
+			}
 			final List<String> spellFound=getCraftableSpellRow(spellName);
 			if(spellFound!=null)
-				return CMath.s_int(spellFound.get(RecipeDriven.RCP_LEVEL));
-			theSpell=CMClass.getAbility(commands.get(0));
-			if(theSpell!=null)
-				return CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID());
+				level = CMath.s_int(spellFound.get(RecipeDriven.RCP_LEVEL));
+			else
+			{
+				theSpell=CMClass.getAbility(commands.get(0));
+				if(theSpell!=null)
+					level = CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID());
+			}
 		}
-		return -1;
+		return level;
 	}
 }

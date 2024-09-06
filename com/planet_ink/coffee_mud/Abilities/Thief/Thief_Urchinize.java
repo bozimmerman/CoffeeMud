@@ -98,7 +98,6 @@ public class Thief_Urchinize extends ThiefSkill
 	protected Boolean urchanizing = null;
 	protected int tickUp = 0;
 	protected int tickSuccess = 0;
-	protected int lastDropOffDay = -1;
 
 	protected boolean forceUninvoke()
 	{

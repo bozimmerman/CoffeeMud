@@ -191,25 +191,25 @@ public class Gypsy extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Steal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Lore",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_EnhanceJewelry",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_ExtendFortune",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_ExtendFortune",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_Listen",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),12,"ShardMaking",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_StaffBlock",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_Astrology",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"ShardMaking",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_StaffBlock",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_Astrology",false);
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_SuppressFortune",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_SuppressFortune",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_EnchantShards",false);
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_BountifulWomb",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_NameUrchin",true); // random urchiny names on no arg
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_BountifulWomb",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_NameUrchin",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_PlantItem",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_PowerGrab",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_EnhanceShard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_EnhanceShard",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"CaravanBuilding",false);
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"ImprovedHerbalism",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"ImprovedHerbalism",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_Tumble",false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_CurseFortune",true);
 			// add more to this than just saves: spilling potions, wand targeting fail, wand fail, wand wrong spell, getting lost, etc

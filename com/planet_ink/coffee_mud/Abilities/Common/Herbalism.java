@@ -288,9 +288,9 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new ArrayList<CraftedItem>(0));
 	}
 
-	private int calculateDuration(final MOB mob, final Ability theSpell)
+	protected int calculateDuration(final MOB mob, final Ability theSpell, final int asLevel)
 	{
-		int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
+		int duration=asLevel*5;
 		if(duration<10)
 			duration=10;
 		return duration;
@@ -309,11 +309,9 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			final Ability theSpell=super.getCraftableSpellRecipeSpell(commands);
 			if(theSpell==null)
 				return false;
-			int level=super.getCraftableSpellLevel(commands);
-			if(level<0)
-				level=1;
+			final int level=super.getCraftableSpellLevel(commands, asLevel);
 			buildingI=buildItem(theSpell, level);
-			crafted.add(new CraftedItem(buildingI,null,calculateDuration(mob,theSpell)));
+			crafted.add(new CraftedItem(buildingI,null,calculateDuration(mob,theSpell,level)));
 			return true;
 		}
 		if(commands.size()<1)
@@ -321,6 +319,9 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			commonTelL(mob,"Brew what? Enter \"hbrew list\" for a list, \"hbrew learn <item>\" to learn recipes, or \"hbrew stop\" to cancel.");
 			return false;
 		}
+		int playerLevel = xlevel(mob);
+		if(asLevel > playerLevel)
+			playerLevel = asLevel;
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
 		final String pos=commands.get(commands.size()-1);
 		if(((commands.get(0)).equalsIgnoreCase("LIST")))
@@ -349,7 +350,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 					final Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(level>=0)
-					&&((level<=xlevel(mob))||allFlag))
+					&&((level<=playerLevel)||allFlag))
 					{
 						buf.append(CMStrings.padRight(A.name(),cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" ");
 						for(int i=2;i<V.size();i++)
@@ -437,11 +438,19 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					final Ability A=mob.fetchAbility(spell);
 					if((A!=null)
-					&&(xlevel(mob)>=level)
+					&&(playerLevel>=level)
 					&&(A.name().equalsIgnoreCase(recipeName)))
 					{
 						theSpell=A;
 						theLevel=level;
+						if(asLevel > 0)
+						{
+							final int lowest = CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+							if(asLevel > lowest)
+								theLevel=asLevel;
+							else
+								theLevel=lowest;
+						}
 						recipe=V;
 					}
 				}
@@ -454,7 +463,15 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			int experienceToLose=10;
 			if((theSpell.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 			{
-				experienceToLose+=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*10;
+				int spellLevel = CMLib.ableMapper().qualifyingLevel(mob,theSpell);
+				if(asLevel > 0)
+				{
+					spellLevel = asLevel;
+					final int lowest = CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID());
+					if(spellLevel < lowest)
+						spellLevel = lowest;
+				}
+				experienceToLose+=spellLevel*10;
 				experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
 			}
 
@@ -520,14 +537,14 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			buildingI=buildItem(theSpell, theLevel);
 			playSound="hotspring.wav";
 
-			final int duration=calculateDuration(mob,theSpell);
+			final int duration=calculateDuration(mob,theSpell,theLevel);
 			messedUp=!proficiencyCheck(mob,0,auto);
 			final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				buildingI=(Item)msg.target();
-				beneficialAffect(mob,mob,asLevel,duration);
+				beneficialAffect(mob,mob,theLevel,duration);
 			}
 		}
 		return true;

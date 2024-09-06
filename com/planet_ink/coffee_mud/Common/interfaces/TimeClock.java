@@ -329,7 +329,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * Gets the week names, which is the names of the days of each week,
 	 * a string array indexed by the day of the week - 1.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDaysInWeek(String[])
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setWeekNames(String[])
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getDaysInWeek()
 	 *
 	 * @return the week names as an array of strings
@@ -339,7 +339,7 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Gets the number of days in each week
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDaysInWeek(String[])
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setWeekNames(String[])
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getWeekNames()
 	 *
 	 * @return the days in each week
@@ -386,7 +386,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 *
 	 * @param days the new days in each week string array
 	 */
-	public void setDaysInWeek(String[] days);
+	public void setWeekNames(String[] days);
 
 	/**
 	 * Gets the names of the year, an arbitrary sized list that is rotated
@@ -649,6 +649,14 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @return this timeclock in m/d/y h format.
 	 */
 	public String toTimeString();
+
+	/**
+	 * Updates the date/time info from one clock into this one.
+	 * The calendar structure should be the same before doing this.
+	 *
+	 * @param fromC the current clock to copy from
+	 */
+	public void setDateTime(final TimeClock fromC);
 
 	/**
 	 * Given a time period, returns the number of mud hours

@@ -34,24 +34,30 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_TarotReading extends Thief_Runecasting
+public class Thief_Astrology extends Thief_Runecasting
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_TarotReading";
+		return "Thief_Astrology";
 	}
 
 	@Override
 	public String displayText()
 	{
 		if(invoker() == affected)
-			return L("(Tarot Reading)");
+			return L("(Astrology)");
 		else
 			return "";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Tarot Reading");
+	@Override
+	public int usageType()
+	{
+		return USAGE_MANA;
+	}
+
+	private final static String localizedName = CMLib.lang().L("Astrology");
 
 	@Override
 	public String name()
@@ -59,58 +65,50 @@ public class Thief_TarotReading extends Thief_Runecasting
 		return localizedName;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"TAROTREAD","TAROTREADING"});
+	private static final String[] triggerStrings =I(new String[] {"ASTROLOGY"});
 	@Override
 	public String[] triggerStrings()
 	{
 		return triggerStrings;
 	}
 
-	protected static String[] tarotStarts = new String[]
+	protected static String[] astroStarts = new String[]
 	{
-		"I see your future is bright...",
-		"I see your future is murky...",
-		"I see your future is muddled...",
-		"I see your future is sloppy...",
-		"I see your future is orderly..."
+		"I see your stars are affected by...",
+		"I see the alignments will affect...",
+		"I see the calestial motions will cause..."
 	};
 
-	protected static String[] tarotFails = new String[]
+	protected static String[] astroFails = new String[]
 	{
-		"You drank too fast.  Try again later.",
-		"The grounds are unclear.",
-		"You need to drink more coffee.  Come back later.",
-		"I see... I see.... I don't see.  Sorry, your life might be too uneventful."
+		"Astral clouds are blocking your aura.",
+		"Your future is unbound. Tread carefully.",
+		"Your path is clear.",
+		"The fates` gaze is elsewhere."
 	};
 
 	@Override
 	protected String[] getStartPhrases()
 	{
-		return tarotStarts;
+		return astroStarts;
 	}
 
 	@Override
 	protected String[] getFailPhrases()
 	{
-		return tarotFails;
+		return astroFails;
 	}
 
 	@Override
 	protected String getSuccessMsg()
 	{
-		return L("<S-NAME> stud(ys) coffee grounds for <T-NAMESELF>...");
+		return L("<S-NAME> consult(s) the stars for <T-NAMESELF>...");
 	}
 
 	@Override
 	protected String getFailureMsg()
 	{
-		return L("<S-NAME> stud(ys) coffee grounds for <T-NAMESELF>, but just make(s) a mess.");
-	}
-
-	@Override
-	public int usageType()
-	{
-		return USAGE_MANA;
+		return L("<S-NAME> consult(s) the stars for <T-NAMESELF>, but <S-IS-ARE> confused.");
 	}
 
 	@Override
@@ -152,7 +150,7 @@ public class Thief_TarotReading extends Thief_Runecasting
 						case _BIRTHWEEK:
 						case _BIRTHWEEKOFYEAR:
 						case _BIRTHYEAR:
-							return false;
+							return true;
 						case ALIGNMENT:
 						case FACTION:
 						case TATTOO:
@@ -182,7 +180,7 @@ public class Thief_TarotReading extends Thief_Runecasting
 						case RACECAT:
 						case _RACE:
 						case _RACECAT:
-							return true;
+							return false;
 						default:
 							break;
 						}

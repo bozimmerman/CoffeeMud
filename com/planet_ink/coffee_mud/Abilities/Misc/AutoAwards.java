@@ -110,24 +110,58 @@ public class AutoAwards extends StdAbility
 			super.setMiscText(newText);
 	}
 
+	protected volatile boolean		forceApply	= false;
 	protected volatile int[]		savedHash	= null;
 	protected TimeClock				lastClock	= null;
 	protected volatile int[]		affectHash	= null;
-	protected final List<CMObject>	affects		= new Vector<CMObject>();
+	protected volatile Ability		holderA		= null;
+	protected volatile Ability		suppressorA	= null;
 
+	protected final PairList<AutoProperties, CMObject>	affects		= new PairVector<AutoProperties, CMObject>();
 	protected final Map<TimePeriod, AutoProperties[]>	myEntries	= new Hashtable<TimePeriod, AutoProperties[]>();
 
-	public void gatherEntries(final Physical P, final AutoProperties[] entries, final List<AutoProperties> apply, final int[] hash)
+	protected void gatherTimelyEntries(final Physical P, final AutoProperties[] entries, final List<AutoProperties> apply, final int[] hash)
 	{
 		if((entries == null)||(entries.length==0))
 			return;
 		final MaskingLibrary mlib = CMLib.masking();
+		final Ability holdA = holderA;
+		if(holdA != null)
+		{
+			if((holdA.affecting() != affected)
+			||(affected.fetchEffect(holdA.ID())!=holdA))
+				this.holderA = null;
+		}
 		for(final AutoProperties E : entries)
 		{
-			if(mlib.maskCheck(E.getDateCMask(), P, true))
+			if(((holderA != null) && (affects.containsFirst(E)))
+			||(mlib.maskCheck(E.getDateCMask(), P, true)))
 			{
 				apply.add(E);
 				hash[0] ^= E.hashCode();
+			}
+		}
+	}
+
+	protected void applyAward(final AutoProperties autoProp, final Pair<String, String> award)
+	{
+		final Ability A = CMClass.getAbility(award.first);
+		if(A != null)
+		{
+			A.setMiscText(award.second);
+			A.setAffectedOne(affected);
+			A.setProficiency(100);
+			affects.add(autoProp,A);
+		}
+		else
+		{
+			final Behavior B=CMClass.getBehavior(award.first);
+			if(B != null)
+			{
+				B.setParms(award.second);
+				if(affected instanceof PhysicalAgent)
+					B.startBehavior((PhysicalAgent)affected);
+				affects.add(autoProp,B);
 			}
 		}
 	}
@@ -140,10 +174,17 @@ public class AutoAwards extends StdAbility
 		final Physical affected=this.affected;
 		if(affected != null)
 		{
+			final Ability suppressA = suppressorA;
+			if(suppressA != null)
+			{
+				if((suppressA.affecting() != affected)
+				||(affected.fetchEffect(suppressA.ID()) != suppressA))
+					this.suppressorA = null;
+			}
 			TimeClock lastClock = this.lastClock;
 			if(lastClock == null)
 			{
-				lastClock = (TimeClock)CMLib.time().globalClock().copyOf();
+				lastClock = (TimeClock)CMLib.time().homeClock(affected).copyOf();
 				lastClock.setYear(1);
 				lastClock.setMonth(1);
 				lastClock.setDayOfMonth(1);
@@ -164,54 +205,36 @@ public class AutoAwards extends StdAbility
 			{
 				final TimeClock now = CMLib.time().homeClock(affected);
 				if((now != null)
-				&& (now.getHourOfDay() != lastClock.getHourOfDay()))
+				&& ((now.getHourOfDay() != lastClock.getHourOfDay()) || forceApply ))
 				{
-					if((myEntries.containsKey(TimePeriod.HOUR))
-					||((now.getDayOfYear() != lastClock.getDayOfYear())&&(myEntries.containsKey(TimePeriod.DAY)))
-					||((now.getWeekOfYear() != lastClock.getWeekOfYear())&&(myEntries.containsKey(TimePeriod.WEEK)))
-					||((now.getMonth() != lastClock.getMonth())&&(myEntries.containsKey(TimePeriod.MONTH)))
-					||((now.getSeasonCode() != lastClock.getSeasonCode())&&(myEntries.containsKey(TimePeriod.SEASON)))
-					||((now.getYear() != lastClock.getYear())&&(myEntries.containsKey(TimePeriod.YEAR))))
+					if(myEntries.containsKey(TimePeriod.HOUR)
+					||((now.getDayOfYear() != lastClock.getDayOfYear()) && myEntries.containsKey(TimePeriod.DAY) )
+					||((now.getWeekOfYear() != lastClock.getWeekOfYear()) && myEntries.containsKey(TimePeriod.WEEK) )
+					||((now.getMonth() != lastClock.getMonth()) && myEntries.containsKey(TimePeriod.MONTH) )
+					||((now.getSeasonCode() != lastClock.getSeasonCode()) && myEntries.containsKey(TimePeriod.SEASON) )
+					||((now.getYear() != lastClock.getYear()) && myEntries.containsKey(TimePeriod.YEAR) ))
 					{
+						forceApply = false;
 						final List<AutoProperties> chk = new ArrayList<AutoProperties>();
 						final int[] eHash = new int[] {0};
 						final Room R=CMLib.map().roomLocation(affected);
 						for(final TimePeriod key : myEntries.keySet())
-							gatherEntries(R, myEntries.get(key), chk, eHash);
+							gatherTimelyEntries(R, myEntries.get(key), chk, eHash);
 						if((affectHash==null)
 						||(affectHash[0] != eHash[0]))
 						{
 							if(affectHash == null)
 								affectHash = new int[1];
 							affectHash[0] = eHash[0];
+							// not terribly efficient for awards that overlap, but *shrug*
 							affects.clear();
 							for(final AutoProperties aE : chk)
 							{
 								for(final Pair<String,String> pE : aE.getProps())
-								{
-									final Ability A = CMClass.getAbility(pE.first);
-									if(A != null)
-									{
-										A.setMiscText(pE.second);
-										A.setAffectedOne(affected);
-										A.setProficiency(100);
-										affects.add(A);
-									}
-									else
-									{
-										final Behavior B=CMClass.getBehavior(pE.first);
-										if(B != null)
-										{
-											B.setParms(pE.second);
-											if(affected instanceof PhysicalAgent)
-												B.startBehavior((PhysicalAgent)affected);
-											affects.add(B);
-										}
-									}
-								}
+									applyAward(aE, pE);
 							}
 						}
-						lastClock.setFromHoursSinceEpoc(now.toHoursSinceEpoc());
+						lastClock.setDateTime(now);
 						affected.recoverPhyStats();
 						if(affected instanceof MOB)
 						{
@@ -220,10 +243,13 @@ public class AutoAwards extends StdAbility
 						}
 					}
 				}
-				for(final CMObject p : affects)
+				if(suppressorA == null)
 				{
-					if(p instanceof Tickable)
-						((Tickable)p).tick(ticking, tickID);
+					for(final Pair<AutoProperties, CMObject> p : affects)
+					{
+						if(p.second instanceof Tickable)
+							((Tickable)p.second).tick(ticking, tickID);
+					}
 				}
 			}
 		}
@@ -234,11 +260,14 @@ public class AutoAwards extends StdAbility
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		for(final CMObject p : affects)
+		if(suppressorA == null)
 		{
-			if(p instanceof MsgListener)
+			for(final Pair<AutoProperties, CMObject> p : affects)
 			{
-				((MsgListener)p).executeMsg(myHost, msg);
+				if(p.second instanceof MsgListener)
+				{
+					((MsgListener)p.second).executeMsg(myHost, msg);
+				}
 			}
 		}
 	}
@@ -248,12 +277,15 @@ public class AutoAwards extends StdAbility
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		for(final CMObject p : affects)
+		if(suppressorA == null)
 		{
-			if(p instanceof MsgListener)
+			for(final Pair<AutoProperties, CMObject> p : affects)
 			{
-				if(!((MsgListener)p).okMessage(myHost, msg))
-					return false;
+				if(p.second instanceof MsgListener)
+				{
+					if(!((MsgListener)p.second).okMessage(myHost, msg))
+						return false;
+				}
 			}
 		}
 		return true;
@@ -265,10 +297,13 @@ public class AutoAwards extends StdAbility
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null)
 			return;
-		for(final CMObject p : affects)
+		if(suppressorA == null)
 		{
-			if(p instanceof StatsAffecting)
-				((StatsAffecting)p).affectPhyStats(affected, affectableStats);
+			for(final Pair<AutoProperties, CMObject> p : affects)
+			{
+				if(p.second instanceof StatsAffecting)
+					((StatsAffecting)p.second).affectPhyStats(affected, affectableStats);
+			}
 		}
 	}
 
@@ -278,10 +313,13 @@ public class AutoAwards extends StdAbility
 		super.affectCharStats(affected, affectableStats);
 		if(affected==null)
 			return;
-		for(final CMObject p : affects)
+		if(suppressorA == null)
 		{
-			if(p instanceof StatsAffecting)
-				((StatsAffecting)p).affectCharStats(affected, affectableStats);
+			for(final Pair<AutoProperties, CMObject> p : affects)
+			{
+				if(p.second instanceof StatsAffecting)
+					((StatsAffecting)p.second).affectCharStats(affected, affectableStats);
+			}
 		}
 	}
 
@@ -291,12 +329,16 @@ public class AutoAwards extends StdAbility
 		super.affectCharState(affected, affectableStats);
 		if(affected==null)
 			return;
-		for(final CMObject p : affects)
+		if(suppressorA == null)
 		{
-			if(p instanceof StatsAffecting)
-				((StatsAffecting)p).affectCharState(affected, affectableStats);
+			for(final Pair<AutoProperties, CMObject> p : affects)
+			{
+				if(p.second instanceof StatsAffecting)
+					((StatsAffecting)p.second).affectCharState(affected, affectableStats);
+			}
 		}
 	}
+
 	protected void assignMyEntries(final Physical P)
 	{
 		final Map<TimePeriod,List<AutoProperties>> newMap = new HashMap<TimePeriod,List<AutoProperties>>();
@@ -341,17 +383,107 @@ public class AutoAwards extends StdAbility
 	}
 
 	@Override
+	public void setStat(final String code, final String val)
+	{
+		if(code==null)
+			return;
+		if(code.equalsIgnoreCase("SUPPRESSOR"))
+		{
+			if(val.trim().length()==0)
+				this.suppressorA = null;
+			else
+			if(this.affected != null)
+				this.suppressorA = this.affected.fetchEffect(val);
+		}
+		else
+		if(code.equalsIgnoreCase("HOLDER"))
+		{
+			if(val.trim().length()==0)
+				this.holderA = null;
+			else
+			if(this.affected != null)
+				this.holderA = this.affected.fetchEffect(val);
+		}
+		else
+		if(code.equalsIgnoreCase("FORCETICK"))
+		{
+			this.forceApply = CMath.s_bool(val);
+		}
+		else
+		if(code.equalsIgnoreCase("AUTOAWARDS"))
+		{
+			final Physical affected = this.affected;
+			if(affected == null)
+				return;
+			for(final String bp : CMParms.parseSemicolons(val, true))
+			{
+				final int awardID = CMath.s_int(bp);
+				boolean found = false;
+				for(final Pair<AutoProperties, CMObject> p : affects)
+				{
+					if(p.first.hashCode()==awardID)
+					{
+						found=true;
+						break;
+					}
+				}
+				if(!found)
+				{
+					if(affectHash == null)
+						affectHash = new int[1];
+					for(final Enumeration<AutoProperties> p = CMLib.awards().getAutoProperties(); p.hasMoreElements();)
+					{
+						final AutoProperties P = p.nextElement();
+						if(P.hashCode() == awardID)
+						{
+							affectHash[0] ^= P.hashCode();
+							for(final Pair<String, String> ps : P.getProps())
+								applyAward(P, ps);
+							break;
+						}
+					}
+					affected.recoverPhyStats();
+					if(affected instanceof MOB)
+					{
+						((MOB)affected).recoverCharStats();
+						((MOB)affected).recoverMaxState();
+					}
+				}
+			}
+		}
+		else
+			super.setStat(code, val);
+	}
+
+	@Override
+	public String getStat(final String code)
+	{
+		if(code==null)
+			return "";
+		if(code.equalsIgnoreCase("AUTOAWARDS"))
+		{
+			final StringBuilder str = new StringBuilder("");
+			for(final Pair<AutoProperties, CMObject> p : affects)
+				str.append(p.first.hashCode()+";");
+			return str.toString();
+		}
+		return super.getStat(code);
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
 
 		if(target==null)
 			return false;
+
 		if(target.fetchEffect(ID())!=null)
 			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
+
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{

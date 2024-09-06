@@ -81,6 +81,12 @@ public class Thief_MyUrchins extends StdAbility
 		return Ability.ACODE_SKILL | Ability.DOMAIN_STREETSMARTS;
 	}
 
+	@Override
+	public int usageType()
+	{
+		return USAGE_MANA|USAGE_MOVEMENT;
+	}
+
 	protected Set<MOB> myUrchins = Collections.synchronizedSet(new HashSet<MOB>());
 
 	private static final Map<String,WeakArrayList<MOB>> allUrchins = new Hashtable<String,WeakArrayList<MOB>>();
