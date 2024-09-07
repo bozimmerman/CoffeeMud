@@ -239,6 +239,7 @@ public class Druid extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_GasWard",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_Hibernation",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_Reabsorb",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_ScrollFamiliarity",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_SummonAnimal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_Nectar",false);
@@ -255,6 +256,7 @@ public class Druid extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_PlantSnare",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_SensePregnancy",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_SenseFluids",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"ImprovedHerbalism",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_Treemorph",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_SummonWind",false);

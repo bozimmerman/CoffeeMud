@@ -1091,7 +1091,8 @@ public interface TrackingLibrary extends CMLibrary
 		NOCLIMB,
 		NOCRAWL,
 		OUTDOORONLY,
-		INDOORONLY
+		INDOORONLY,
+		DRIVEABLEONLY
 		;
 		public RFilter myFilter=null;
 

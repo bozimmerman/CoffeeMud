@@ -825,6 +825,14 @@ public interface CMFlagLibrary extends CMLibrary
 
 	/**
 	 * Returns whether the given room, whatever is
+	 * driveable, such as a road, street, etc.
+	 * @param R the room to check
+	 * @return true if it is driveable, false otherwise
+	 */
+	public boolean isDrivableRoom(Room R);
+
+	/**
+	 * Returns whether the given room, whatever is
 	 * watery, such as a water surface, underwater, etc.
 	 * @param R the room to check
 	 * @return true if it is watery, false otherwise

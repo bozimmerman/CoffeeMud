@@ -663,7 +663,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			if(parms.startsWith("\""))
 			{
 				build.setConnector(CompConnector.MESSAGE);
-				parms=parms.substring(2).trim();
+				parms=parms.substring(1).trim();
 				if(parms.endsWith("\""))
 					parms = parms.substring(0,parms.length()-1);
 				build.setMask(parms);

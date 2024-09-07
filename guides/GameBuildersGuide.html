@@ -1333,8 +1333,9 @@ entire
 component relates to the ones before it. &nbsp;If it is ALSO
 required in addition to the ones before it, set this to say AND.
 &nbsp;If it is an OPTION along with the ones before it, set it to
-say OR. &nbsp;On the command line, enter X to delete the entire
-component.</td>
+say OR. &nbsp;The <em>last</em> component may also be set to MESSAGE/&quot;, 
+which is a readable description of the skill component.
+On the command line, enter X to delete the entire component.</td>
           </tr>
           <tr>
             <td><em>Location / Position</em></td>
@@ -1389,6 +1390,10 @@ applies to.</td>
 Location/Position is set to trigger, this is where you would put the
 complete ritual definition. &nbsp;See help on 'rituals' or look up
 Deity Rituals in the Archon's Guide for more information on this syntax.</td></tr>
+          <tr>
+            <td><em>Description</em></td>
+            <td>if this is the final component, and the Conjuction is MESSAGE, then this
+            a description of the skill component.</td>
         </tbody>
       </table>
       <p>If you no longer want a
@@ -5442,7 +5447,8 @@ functions that this role can always perform, without a vote<br>
       <p>An Auto-Award skill is a behavior or property or spell effect
 that is automatically assigned based on player characteristics as
 filtered by a ZapperMask, AND can differ efficiencly based on the
-aspects of the date.<br>
+aspects of the date.  For efficiency, Auto-Awards are not given to NPCs 
+at birth, but they will acquire them during combat or if a skill requires them.<br>
       </p>
       <p>From the command line, auto-award entries can be created using
 the CREATE command:</p>

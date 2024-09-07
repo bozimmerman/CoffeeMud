@@ -2034,6 +2034,31 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
+
+	@Override
+	public boolean isDrivableRoom(final Room R)
+	{
+		if(R==null)
+			return false;
+		switch(R.domainType())
+		{
+		case Room.DOMAIN_OUTDOORS_SEAPORT:
+		case Room.DOMAIN_OUTDOORS_SPACEPORT:
+		case Room.DOMAIN_INDOORS_CAVE_SEAPORT:
+		case Room.DOMAIN_INDOORS_SEAPORT:
+		case Room.DOMAIN_OUTDOORS_CITY:
+		case Room.DOMAIN_OUTDOORS_PLAINS:
+			return true;
+		case Room.DOMAIN_INDOORS_CAVE:
+			return R.basePhyStats().weight()>3;
+		case Room.DOMAIN_INDOORS_STONE: // underground city street
+			return R.basePhyStats().weight()<=2
+				&& R.basePhyStats().weight()>0
+				&& R.basePhyStats().height()>=5;
+		}
+		return false;
+	}
+
 	@Override
 	public boolean isWateryRoom(final Room R)
 	{

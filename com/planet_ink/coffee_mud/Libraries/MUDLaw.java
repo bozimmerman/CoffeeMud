@@ -609,7 +609,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean doesOwnThisProperty(final MOB mob, final PrivateProperty record)
 	{
-		if(record.getOwnerName()==null)
+		if((record==null)||(record.getOwnerName()==null))
 			return false;
 		if(record.getOwnerName().length()==0)
 			return false;
@@ -628,7 +628,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public MOB getPropertyOwner(final PrivateProperty record)
 	{
-		if(record.getOwnerName()==null)
+		if((record==null)||(record.getOwnerName()==null))
 			return null;
 		if(record.getOwnerName().length()==0)
 			return null;
@@ -646,7 +646,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean canAttackThisProperty(final MOB mob, final PrivateProperty record)
 	{
-		if(record.getOwnerName()==null)
+		if((record==null)||(record.getOwnerName()==null))
 			return true;
 		if(record.getOwnerName().length()==0)
 			return true;

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2024-2024 Bo Zimmerman
+   Copyright 2003-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Chant_SuppressFortune extends Chant
+public class Chant_StrengthenSeed extends Chant
 {
 	@Override
 	public String ID()
 	{
-		return "Chant_SuppressFortune";
+		return "Chant_StrengthenSeed";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Suppress Fortune");
+	private final static String localizedName = CMLib.lang().L("Strengthen Seed");
 
 	@Override
 	public String name()
@@ -48,7 +48,7 @@ public class Chant_SuppressFortune extends Chant
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Suppress Fortune)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Strengthen Seed)");
 
 	@Override
 	public String displayText()
@@ -59,7 +59,7 @@ public class Chant_SuppressFortune extends Chant
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_CHANT|Ability.DOMAIN_COSMOLOGY;
+		return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;
 	}
 
 	@Override
@@ -69,35 +69,43 @@ public class Chant_SuppressFortune extends Chant
 	}
 
 	@Override
-	protected int canAffectCode()
-	{
-		return CAN_MOBS;
-	}
-
-	@Override
-	protected int canTargetCode()
-	{
-		return CAN_MOBS;
-	}
-
-	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
 		final MOB mob=(MOB)affected;
+
+		super.unInvoke();
+
 		if(canBeUninvoked())
+			mob.tell(L("Your strengthened seed subsides."));
+	}
+
+	private boolean done=false;
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if((ticking instanceof MOB)
+		&&(!done))
 		{
-			mob.tell(L("Your suppressed fortune fades."));
-			final Ability A = mob.fetchEffect("AutoAwards");
-			if(A != null)
+			final MOB mob=(MOB)ticking;
+			final Ability pregA=mob.fetchEffect("Pregnancy");
+			if(pregA != null)
 			{
-				A.setStat("SUPPRESSOR", ""); // autoawards has a backup to this, so no worries
-				A.setStat("FORCETICK", "true");
+				done=true;
+				pregA.setStat("BABYRACE", ""+mob.baseCharStats().getMyRace().ID());
+				if(canBeUninvoked())
+				{
+					unInvoke();
+					return false;
+				}
 			}
 		}
-		super.unInvoke();
+		return true;
 	}
 
 	@Override
@@ -109,35 +117,21 @@ public class Chant_SuppressFortune extends Chant
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		final boolean success=proficiencyCheck(mob,0,auto);
 
+		final boolean success=proficiencyCheck(mob,0,auto) && (auto||(target.fetchEffect("Pregnancy")==null));
 		if(success)
 		{
-			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) suppressively to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(msg.value()<=0)
-				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) <S-HIS-HER> fortune being suppressed."));
-					final Ability meA = beneficialAffect(mob,target,asLevel,0);
-					if(meA != null)
-					{
-						if(!target.isPlayer())
-							CMLib.awards().giveAutoProperties(target, false);
-						final Ability A = target.fetchEffect("AutoAwards");
-						if(A != null)
-							A.setStat("SUPPRESSOR", meA.ID());
-						target.recoverPhyStats();
-						target.recoverCharStats();
-						target.recoverMaxState();
-					}
-				}
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) genetically strengthened!"));
+				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+
 		// return whether it worked
 		return success;
 	}

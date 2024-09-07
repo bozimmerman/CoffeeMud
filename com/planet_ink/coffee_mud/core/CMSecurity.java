@@ -3037,6 +3037,7 @@ public class CMSecurity
 		SPACETHREAD("space thread"),
 		CRONJOBS("cron jobs"),
 		AUTOAWARDS("auto-awards system"),
+		NPCAUTOAWARDS("auto-awards system for npcs"),
 		FATIGUE("fatigue system"),
 		UNLEVELXP("unleveling from xp"),
 		UNLEVEL("unleveling at all")

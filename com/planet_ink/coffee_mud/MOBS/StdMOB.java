@@ -1358,7 +1358,9 @@ public class StdMOB implements MOB
 			if(dropItem != null)
 				addItem(dropItem);
 		}
-		CMLib.awards().giveAutoProperties(me);
+
+		if(isPlayer())
+			CMLib.awards().giveAutoProperties(me, true);
 
 		CMLib.map().registerWorldObjectLoaded(null, getStartRoom(), this);
 		location().show(this, null, CMMsg.MSG_BRINGTOLIFE, null);
@@ -3404,6 +3406,10 @@ public class StdMOB implements MOB
 				|| (!(msg.tool() instanceof DiseaseAffect))))
 			{
 				CMLib.combat().establishRange(this, (MOB) msg.target(), msg.tool());
+				if(!((MOB)msg.target()).isPlayer())
+					CMLib.awards().giveAutoProperties((MOB)msg.target(), false);
+				if(!isPlayer())
+					CMLib.awards().giveAutoProperties(this, false);
 				if((msg.tool() instanceof Weapon)
 				|| (msg.sourceMinor() == CMMsg.TYP_WEAPONATTACK))
 				{

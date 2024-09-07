@@ -416,13 +416,10 @@ public class CMParms
 	public final static String combineWith(final List<?> commands, final char withChar)
 	{
 		final StringBuilder combined=new StringBuilder("");
-		if(commands!=null)
-		{
-			for(final Object o : commands)
-				combined.append(withChar).append(o.toString());
-		}
-		if(combined.length()==0)
+		if((commands==null)||(commands.size()==0))
 			return "";
+		for(final Object o : commands)
+			combined.append(withChar).append(o.toString());
 		return combined.substring(1);
 	}
 

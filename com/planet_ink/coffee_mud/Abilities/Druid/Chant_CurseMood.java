@@ -91,6 +91,8 @@ public class Chant_CurseMood extends Chant
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		if(!super.okMessage(myHost, msg))
+			return false;
 		if((msg.target()==affected)
 		&&(msg.tool() instanceof Ability)
 		&&(((msg.tool()).ID().equalsIgnoreCase("Mood")))

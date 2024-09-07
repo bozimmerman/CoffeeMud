@@ -124,7 +124,9 @@ public class Chant_ExtendFortune extends Chant
 					final Ability meA = beneficialAffect(mob,target,asLevel,0);
 					if(meA != null)
 					{
-						final Ability A = mob.fetchEffect("AutoAwards");
+						if(!target.isPlayer())
+							CMLib.awards().giveAutoProperties(target, false);
+						final Ability A = target.fetchEffect("AutoAwards");
 						if(A != null)
 							A.setStat("HOLDER", meA.ID());
 						target.recoverPhyStats();

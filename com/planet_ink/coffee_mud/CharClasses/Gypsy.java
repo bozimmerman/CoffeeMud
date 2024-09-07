@@ -199,35 +199,32 @@ public class Gypsy extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_Astrology",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_SuppressFortune",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_EnchantShards",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_EnchantShards",false); //untested
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_BountifulWomb",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_NameUrchin",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_BountifulWomb",false); //untested
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_NameUrchin",true); //untested
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_PlantItem",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_PowerGrab",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_EnhanceShard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_EnhanceShard",false); //untested
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"CaravanBuilding",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"ImprovedHerbalism",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"ImprovedHerbalism",false); //untested
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_Tumble",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_CurseFortune",true);
-			// add more to this than just saves: spilling potions, wand targeting fail, wand fail, wand wrong spell, getting lost, etc
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_CurseFortune",true); // untested
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Shadow",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_StaffSpin",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_PalmReading",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_StaffSpin",false,CMParms.parseSemicolons("Fighter_StaffBlock",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_PalmReading",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_UsePotion",false);
-		// scroll titling is a meta-skill, which I greatly dislike -- IOW, there's no RP explanation for it.
-		// I'd rather fix this some other way...
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),18,"ScrollTitling",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_StealFortune",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_ScrollFamiliarity",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_StealFortune",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Detection",true);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_StrengthenSeed",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"TradeCharting",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_StrengthenSeed",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_TradeCharting",false);
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_EndowGemstones",true);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_PromoteUrchin",false);

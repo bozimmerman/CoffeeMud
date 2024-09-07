@@ -153,6 +153,7 @@ public class Arcanist extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_Knock",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_UsePotion",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_ScrollFamiliarity",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_Refit",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Detection",false);

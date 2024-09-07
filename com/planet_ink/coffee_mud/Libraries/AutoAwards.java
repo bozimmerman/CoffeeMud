@@ -729,10 +729,11 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 	}
 
 	@Override
-	public void giveAutoProperties(final MOB mob)
+	public void giveAutoProperties(final MOB mob, final boolean reset)
 	{
-		if(mob.isMonster()
-		|| CMSecurity.isDisabled(CMSecurity.DisFlag.AUTOAWARDS))
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.AUTOAWARDS))
+			return;
+		if((!mob.isPlayer())&&(CMSecurity.isDisabled(CMSecurity.DisFlag.NPCAUTOAWARDS)))
 			return;
 		Ability A=mob.fetchEffect("AutoAwards");
 		if(A==null)
@@ -745,7 +746,8 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 			}
 		}
 		else
-			A.setMiscText("RESET");
+		if(reset)
+			A.setStat("RESET","true");
 	}
 
 	@Override

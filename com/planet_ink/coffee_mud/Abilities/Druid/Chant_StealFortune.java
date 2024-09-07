@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Chant_SuppressFortune extends Chant
+public class Chant_StealFortune extends Chant
 {
 	@Override
 	public String ID()
 	{
-		return "Chant_SuppressFortune";
+		return "Chant_StealFortune";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Suppress Fortune");
+	private final static String localizedName = CMLib.lang().L("Steal Fortune");
 
 	@Override
 	public String name()
@@ -48,7 +48,7 @@ public class Chant_SuppressFortune extends Chant
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Suppress Fortune)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Steal Fortune)");
 
 	@Override
 	public String displayText()
@@ -89,12 +89,23 @@ public class Chant_SuppressFortune extends Chant
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 		{
-			mob.tell(L("Your suppressed fortune fades."));
-			final Ability A = mob.fetchEffect("AutoAwards");
-			if(A != null)
+			mob.tell(L("Your stolen fortune fades."));
 			{
-				A.setStat("SUPPRESSOR", ""); // autoawards has a backup to this, so no worries
-				A.setStat("FORCETICK", "true");
+				final Ability A = mob.fetchEffect("AutoAwards");
+				if(A != null)
+				{
+					A.setStat("SUPPRESSOR", ""); // autoawards has a backup to this, so no worries
+					A.setStat("FORCETICK", "true");
+				}
+			}
+			if(invoker()!=null)
+			{
+				final Ability A = invoker().fetchEffect("AutoAwards");
+				if(A != null)
+				{
+					A.setStat("HOLDER", ""); // autoawards has a backup to this, so no worries
+					A.setStat("FORCETICK", "true");
+				}
 			}
 		}
 		super.unInvoke();
@@ -106,6 +117,11 @@ public class Chant_SuppressFortune extends Chant
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
+		if(mob.fetchEffect(ID())!=null)
+		{
+			mob.tell(L("You've already stolen someone's fortune."));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -114,21 +130,35 @@ public class Chant_SuppressFortune extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) suppressively to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) at <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) <S-HIS-HER> fortune being suppressed."));
-					final Ability meA = beneficialAffect(mob,target,asLevel,0);
-					if(meA != null)
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) <S-HIS-HER> fortune being stolen."));
+					final Ability tmeA = beneficialAffect(mob,target,asLevel,0);
+					if(tmeA != null)
 					{
+						final Ability smeA = beneficialAffect(mob,mob,asLevel,0);
+						if(!mob.isPlayer())
+							CMLib.awards().giveAutoProperties(mob, false);
 						if(!target.isPlayer())
 							CMLib.awards().giveAutoProperties(target, false);
-						final Ability A = target.fetchEffect("AutoAwards");
-						if(A != null)
-							A.setStat("SUPPRESSOR", meA.ID());
+						final Ability sA = mob.fetchEffect("AutoAwards");
+						final Ability tA = target.fetchEffect("AutoAwards");
+						if(tA != null)
+						{
+							tA.setStat("SUPPRESSOR", tmeA.ID());
+							if((sA != null)&&(smeA!=null))
+							{
+								sA.setStat("AUTOAWARDS", tA.getStat("AUTOAWARDS"));
+								sA.setStat("HOLDER", smeA.ID());
+							}
+							mob.recoverPhyStats();
+							mob.recoverCharStats();
+							mob.recoverMaxState();
+						}
 						target.recoverPhyStats();
 						target.recoverCharStats();
 						target.recoverMaxState();

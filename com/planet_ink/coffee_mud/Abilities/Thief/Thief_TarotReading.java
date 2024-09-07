@@ -129,55 +129,6 @@ public class Thief_TarotReading extends Thief_Runecasting
 					{
 						switch(entry.maskType())
 						{
-						case ANYCLASS:
-						case ANYCLASSLEVEL:
-						case BASECLASS:
-						case MAXCLASSLEVEL:
-						case _ANYCLASS:
-						case _ANYCLASSLEVEL:
-						case _BASECLASS:
-						case _MAXCLASSLEVEL:
-							return false;
-						case BIRTHDAY:
-						case BIRTHDAYOFYEAR:
-						case BIRTHMONTH:
-						case BIRTHSEASON:
-						case BIRTHWEEK:
-						case BIRTHWEEKOFYEAR:
-						case BIRTHYEAR:
-						case _BIRTHDAY:
-						case _BIRTHDAYOFYEAR:
-						case _BIRTHMONTH:
-						case _BIRTHSEASON:
-						case _BIRTHWEEK:
-						case _BIRTHWEEKOFYEAR:
-						case _BIRTHYEAR:
-							return false;
-						case ALIGNMENT:
-						case FACTION:
-						case TATTOO:
-						case _ALIGNMENT:
-						case _FACTION:
-						case _TATTOO:
-							return false;
-						case IF:
-						case NPC:
-						case OR:
-						case PLAYER:
-						case PORT:
-						case SECURITY:
-						case SUBOP:
-						case SYSOP:
-						case _IF:
-						case _NPC:
-						case _OR:
-						case _PLAYER:
-						case _PORT:
-						case _SECURITY:
-						case _SUBOP:
-						case _SYSOP:
-							// neutral
-							break;
 						case RACE:
 						case RACECAT:
 						case _RACE:

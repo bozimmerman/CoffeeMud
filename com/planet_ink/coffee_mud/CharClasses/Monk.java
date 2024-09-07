@@ -175,6 +175,7 @@ public class Monk extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_CatchProjectile",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_FlyingKick",false,CMParms.parseSemicolons("Fighter_AxKick",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_StaffSpin",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_WeaponBreak",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_Pin",false);

@@ -112,7 +112,10 @@ public class Chant_BountifulWomb extends Chant
 					pregA.setStat("NUMBABIES", ""+(numKids+1));
 				}
 				if(canBeUninvoked())
+				{
 					unInvoke();
+					return false;
+				}
 			}
 		}
 		return true;
@@ -142,7 +145,7 @@ public class Chant_BountifulWomb extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) more bountiful!"));
-				final Chant_BountifulWomb wA = (Chant_BountifulWomb)beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
+				final Chant_BountifulWomb wA = (Chant_BountifulWomb)beneficialAffect(mob,target,asLevel,0);
 				if(wA != null)
 					wA.chance = 50+(5*super.adjustedLevel(mob, 0))+(10*super.getXLEVELLevel(mob));
 			}

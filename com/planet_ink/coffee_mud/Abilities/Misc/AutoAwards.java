@@ -98,16 +98,7 @@ public class AutoAwards extends StdAbility
 	@Override
 	public void setMiscText(final String newText)
 	{
-		if(newText.equals("RESET"))
-		{
-			savedHash = null;
-			lastClock = null;
-			affectHash	= null;
-			affects.clear();
-			myEntries.clear();
-		}
-		else
-			super.setMiscText(newText);
+		super.setMiscText(newText);
 	}
 
 	protected volatile boolean		forceApply	= false;
@@ -188,7 +179,7 @@ public class AutoAwards extends StdAbility
 				lastClock.setYear(1);
 				lastClock.setMonth(1);
 				lastClock.setDayOfMonth(1);
-				lastClock.setHourOfDay(1);
+				lastClock.setHourOfDay(0);
 				this.lastClock = lastClock;
 			}
 
@@ -387,6 +378,15 @@ public class AutoAwards extends StdAbility
 	{
 		if(code==null)
 			return;
+		if(code.equalsIgnoreCase("RESET"))
+		{
+			savedHash = null;
+			lastClock = null;
+			affectHash	= null;
+			affects.clear();
+			myEntries.clear();
+		}
+		else
 		if(code.equalsIgnoreCase("SUPPRESSOR"))
 		{
 			if(val.trim().length()==0)

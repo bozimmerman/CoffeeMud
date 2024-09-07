@@ -2786,6 +2786,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					}
 				};
 				break;
+			case DRIVEABLEONLY: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return !CMLib.flags().isDrivableRoom(R);
+					}
+				};
+				break;
 			case WATERSURFACEORSHOREONLY: tf.myFilter=new RFilter()
 				{
 					@Override

@@ -34,24 +34,30 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Tasseography extends Thief_Runecasting
+public class Thief_PalmReading extends Thief_Runecasting
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_Tasseography";
+		return "Thief_PalmReading";
 	}
 
 	@Override
 	public String displayText()
 	{
 		if(invoker() == affected)
-			return L("(Tasseography)");
+			return L("(Palm Reading)");
 		else
 			return "";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Tasseography");
+	@Override
+	public int usageType()
+	{
+		return USAGE_MANA;
+	}
+
+	private final static String localizedName = CMLib.lang().L("Palm Reading");
 
 	@Override
 	public String name()
@@ -59,21 +65,23 @@ public class Thief_Tasseography extends Thief_Runecasting
 		return localizedName;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"TASSEOGRAPHY"});
+	private static final String[] triggerStrings =I(new String[] {"PALMREADING"});
 	@Override
 	public String[] triggerStrings()
 	{
 		return triggerStrings;
 	}
 
-	protected static String[] tarotStarts = new String[]
+	protected static String[] astroStarts = new String[]
 	{
-		"I see your major arcana is affected by...",
-		"I see your minor arcana is affected by...",
-		"I see your future holds..."
+		"I see your life line is affected by...",
+		"I see your head line is affected by...",
+		"I see your sun line is affected by...",
+		"I see your fate line is affected by...",
+		"I see your heart line is affected by..."
 	};
 
-	protected static String[] tarotFails = new String[]
+	protected static String[] astroFails = new String[]
 	{
 		"Astral clouds are blocking your aura.",
 		"Your future is unbound. Tread carefully.",
@@ -84,31 +92,25 @@ public class Thief_Tasseography extends Thief_Runecasting
 	@Override
 	protected String[] getStartPhrases()
 	{
-		return tarotStarts;
+		return astroStarts;
 	}
 
 	@Override
 	protected String[] getFailPhrases()
 	{
-		return tarotFails;
+		return astroFails;
 	}
 
 	@Override
 	protected String getSuccessMsg()
 	{
-		return L("<S-NAME> deal(s) tarot cards for <T-NAMESELF>...");
+		return L("<S-NAME> examine(s) <T-YOUPOSS> palm...");
 	}
 
 	@Override
 	protected String getFailureMsg()
 	{
-		return L("<S-NAME> deal(s) tarot cards for <T-NAMESELF>, but <S-IS-ARE> confused.");
-	}
-
-	@Override
-	public int usageType()
-	{
-		return USAGE_MANA;
+		return L("<S-NAME> examine(s) <T-YOUPOSS> palm, but <S-IS-ARE> confused.");
 	}
 
 	@Override
@@ -127,12 +129,14 @@ public class Thief_Tasseography extends Thief_Runecasting
 					{
 						switch(entry.maskType())
 						{
-						case ALIGNMENT:
-						case FACTION:
-						case TATTOO:
-						case _ALIGNMENT:
-						case _FACTION:
-						case _TATTOO:
+						case ANYCLASS:
+						case ANYCLASSLEVEL:
+						case BASECLASS:
+						case MAXCLASSLEVEL:
+						case _ANYCLASS:
+						case _ANYCLASSLEVEL:
+						case _BASECLASS:
+						case _MAXCLASSLEVEL:
 							return true;
 						default:
 							break;

@@ -20,6 +20,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompConnector;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerFlag;
@@ -9522,34 +9523,42 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		boolean ok=false;
 		if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
 			showFlag=-999;
+		else
+		if(showFlag > 0)
+			showFlag=1;
 		final String choices="Your choices are: ";
 		final String allComponents=CMParms.toListString(RawMaterial.Material.values())+","+CMParms.toListString(RawMaterial.CODES.NAMES());
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
-			genText(mob,decoded,(new String[]{"&&","||","X"}),choices+" &&, ||, X",++showNumber,showFlag,"Conjunction (X Deletes) (?)","ANDOR");
+			genText(mob,decoded,(new String[]{"&&","||","\"", "X"}),choices+" &&, ||, \", X",++showNumber,showFlag,"Conjunction (X Deletes) (?)","ANDOR");
 			if(decoded.get(0).second.equalsIgnoreCase("X"))
 				return false;
-			final String oldT = (decoded.size()>2)?decoded.getSecond(1):"";
-			genText(mob,decoded,(new String[]{"INVENTORY","HELD","WORN","ONGROUND","NEARBY","TRIGGER"}),
-						choices+" INVENTORY, HELD, WORN, ONGROUND, NEARBY, TRIGGER",++showNumber,showFlag,"Component position (?)","DISPOSITION");
-			final String newT = (decoded.size()>2)?decoded.getSecond(1):"";
-			if((!oldT.equalsIgnoreCase(newT))
-			&&(oldT.equalsIgnoreCase("TRIGGER")||newT.equalsIgnoreCase("TRIGGER")))
+			if(!decoded.get(0).second.equalsIgnoreCase("\""))
 			{
-				CMLib.ableComponents().setAbilityComponentCodedFromCodedPairs(decoded,comp);
-				decoded=CMLib.ableComponents().getAbilityComponentCoded(comp);
+				final String oldT = (decoded.size()>2)?decoded.getSecond(1):"";
+				genText(mob,decoded,(new String[]{"INVENTORY","HELD","WORN","ONGROUND","NEARBY","TRIGGER"}),
+							choices+" INVENTORY, HELD, WORN, ONGROUND, NEARBY, TRIGGER",++showNumber,showFlag,"Component position (?)","DISPOSITION");
+				final String newT = (decoded.size()>2)?decoded.getSecond(1):"";
+				if((!oldT.equalsIgnoreCase(newT))
+				&&(oldT.equalsIgnoreCase("TRIGGER")||newT.equalsIgnoreCase("TRIGGER")))
+				{
+					CMLib.ableComponents().setAbilityComponentCodedFromCodedPairs(decoded,comp);
+					decoded=CMLib.ableComponents().getAbilityComponentCoded(comp);
+				}
+				if(newT.equalsIgnoreCase("TRIGGER"))
+					genText(mob,decoded,null,null,++showNumber,showFlag,"Trigger Ritual","TRIGGER");
+				else
+				{
+					genText(mob,decoded,(new String[]{"KEPT","CONSUMED"}),choices+" KEPT, CONSUMED",++showNumber,showFlag,"Component fate (?)","FATE");
+					genText(mob,decoded,null,null,++showNumber,showFlag,"Amount of component","AMOUNT");
+					genText(mob,decoded,null,allComponents,++showNumber,showFlag,"Type of component (?)","COMPONENTID");
+					genText(mob,decoded,null,allComponents,++showNumber,showFlag,"Component Subtype","SUBTYPE");
+				}
+				genText(mob,decoded,null,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Component applies-to mask (?)","MASK");
 			}
-			if(newT.equalsIgnoreCase("TRIGGER"))
-				genText(mob,decoded,null,null,++showNumber,showFlag,"Trigger Ritual","TRIGGER");
 			else
-			{
-				genText(mob,decoded,(new String[]{"KEPT","CONSUMED"}),choices+" KEPT, CONSUMED",++showNumber,showFlag,"Component fate (?)","FATE");
-				genText(mob,decoded,null,null,++showNumber,showFlag,"Amount of component","AMOUNT");
-				genText(mob,decoded,null,allComponents,++showNumber,showFlag,"Type of component (?)","COMPONENTID");
-				genText(mob,decoded,null,allComponents,++showNumber,showFlag,"Component Subtype","SUBTYPE");
-			}
-			genText(mob,decoded,null,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Component applies-to mask (?)","MASK");
+				genText(mob,decoded,null,null,++showNumber,showFlag,"Description","MASK");
 
 			if (showFlag < -900)
 			{
@@ -9603,21 +9612,24 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			while((mob.session()!=null)&&(!mob.session().isStopped()))
 			{
-				showNumber++;
-				mob.tell(L("@x1. Add new component requirement.",""+showNumber));
-				if((showFlag==showNumber)||(showFlag<=-999))
+				if((codedDV.size()==0)||(codedDV.get(codedDV.size()-1).getConnector()!=CompConnector.MESSAGE))
 				{
-					final AbilityComponent comp = CMLib.ableComponents().createBlankAbilityComponent("");
-					final boolean success=modifyComponent(mob,comp,showFlag);
-					if(!success)
+					showNumber++;
+					mob.tell(L("@x1. Add new component requirement.",""+showNumber));
+					if((showFlag==showNumber)||(showFlag<=-999))
 					{
-						// do nothing
-					}
-					else
-					{
-						codedDV.add(comp);
-						if(showFlag<=-999)
-							continue;
+						final AbilityComponent comp = CMLib.ableComponents().createBlankAbilityComponent("");
+						final boolean success=modifyComponent(mob,comp,showFlag);
+						if(!success)
+						{
+							// do nothing
+						}
+						else
+						{
+							codedDV.add(comp);
+							if(showFlag<=-999)
+								continue;
+						}
 					}
 				}
 				break;
