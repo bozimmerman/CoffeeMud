@@ -54,6 +54,17 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 		this.oz = coords[2] + radius;
 	}
 
+	public BoundedCube(final Coord3D coords, final long radius)
+	{
+		super();
+		this.lx = coords.x().longValue() - radius;
+		this.rx = coords.x().longValue() + radius;
+		this.ty = coords.y().longValue() - radius;
+		this.by = coords.y().longValue() + radius;
+		this.iz = coords.z().longValue() - radius;
+		this.oz = coords.z().longValue() + radius;
+	}
+
 	public BoundedCube(final BoundedCube l)
 	{
 		super();
@@ -101,23 +112,23 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 		final double x1=Math.cos(direction[0])*Math.sin(direction[1]);
 		final double y1=Math.sin(direction[0])*Math.sin(direction[1]);
 		final double z1=Math.cos(direction[1]);
-		final long[] oldCenter=center();
+		final Coord3D oldCenter=center();
 		final long[] newCenter=new long[]{
-				oldCenter[0]+Math.round(CMath.mul(distance,x1)),
-				oldCenter[1]+Math.round(CMath.mul(distance,y1)),
-				oldCenter[2]+Math.round(CMath.mul(distance,z1))};
-		if(newCenter[0]>oldCenter[0])
-			cube.rx+=newCenter[0]-oldCenter[0];
+				oldCenter.x().longValue()+Math.round(CMath.mul(distance,x1)),
+				oldCenter.y().longValue()+Math.round(CMath.mul(distance,y1)),
+				oldCenter.z().longValue()+Math.round(CMath.mul(distance,z1))};
+		if(newCenter[0]>oldCenter.x().longValue())
+			cube.rx+=newCenter[0]-oldCenter.x().longValue();
 		else
-			cube.lx+=newCenter[0]-oldCenter[0];
-		if(newCenter[1]>oldCenter[1])
-			cube.ty+=newCenter[1]-oldCenter[1];
+			cube.lx+=newCenter[0]-oldCenter.x().longValue();
+		if(newCenter[1]>oldCenter.y().longValue())
+			cube.ty+=newCenter[1]-oldCenter.y().longValue();
 		else
-			cube.by+=newCenter[1]-oldCenter[1];
-		if(newCenter[2]>oldCenter[2])
-			cube.iz+=newCenter[2]-oldCenter[2];
+			cube.by+=newCenter[1]-oldCenter.y().longValue();
+		if(newCenter[2]>oldCenter.z().longValue())
+			cube.iz+=newCenter[2]-oldCenter.z().longValue();
 		else
-			cube.oz+=newCenter[2]-oldCenter[2];
+			cube.oz+=newCenter[2]-oldCenter.z().longValue();
 		return cube;
 	}
 
@@ -156,6 +167,16 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 			  &&(c[2] <= oz));
 	}
 
+	public boolean contains(final Coord3D c)
+	{
+		return ((c.x().longValue() >= lx)
+			  &&(c.x().longValue() <= rx)
+			  &&(c.y().longValue() >= ty)
+			  &&(c.y().longValue() <= by)
+			  &&(c.z().longValue() >= iz)
+			  &&(c.z().longValue() <= oz));
+	}
+
 	public long width()
 	{
 		return rx - lx;
@@ -178,9 +199,9 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 	}
 
 	@Override
-	public long[] center()
+	public Coord3D center()
 	{
-		return new long[]{((lx+rx)/2),((ty+rx)/2),((iz+oz)/2)};
+		return new Coord3D(new long[]{((lx+rx)/2),((ty+rx)/2),((iz+oz)/2)});
 	}
 
 	@Override

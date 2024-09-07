@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core.collections;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Arrays;
 
 /*
    Copyright 2022-2024 Bo Zimmerman
@@ -23,12 +24,20 @@ public class BigVector implements Comparable<BigVector>
 	public static final BigDecimal	ZERO	= BigDecimal.valueOf(0.0);
 	public static final BigDecimal	TWO		= BigDecimal.valueOf(2L);
 	public final static int			SCALE	= 25;
+	public static final BigDecimal[]ZEROS	= new BigDecimal[] { ZERO, ZERO, ZERO };
 
 	protected final BigDecimal[] b;
 
 	public BigVector(final int len)
 	{
-		b=new BigDecimal[len];
+		if(len == 3)
+			b=ZEROS.clone();
+		else
+		{
+			b=new BigDecimal[len];
+			for(int i=0;i<len;i++)
+				b[i]=ZERO;
+		}
 	}
 
 	public BigVector(final long[] l)
@@ -73,27 +82,6 @@ public class BigVector implements Comparable<BigVector>
 	public final int length()
 	{
 		return b.length;
-	}
-
-	public BigDecimal x()
-	{
-		if(b.length>0)
-			return b[0];
-		return null;
-	}
-
-	public BigDecimal y()
-	{
-		if(b.length>1)
-			return b[1];
-		return null;
-	}
-
-	public BigDecimal z()
-	{
-		if(b.length>2)
-			return b[2];
-		return null;
 	}
 
 	public BigVector subtract(final BigVector v)
@@ -147,6 +135,28 @@ public class BigVector implements Comparable<BigVector>
 			x1 = x1.divide(TWO, SCALE, RoundingMode.UP);
 		}
 		return x1;
+	}
+	
+	@Override
+	public boolean equals(final Object o)
+	{
+		if(o instanceof BigVector)
+		{
+			final BigVector v = (BigVector)o;
+			if(v.length()!=b.length)
+				return false;
+			for(int i=0;i<b.length;i++)
+				if(b[i].longValue() != v.b[i].longValue())
+					return false;
+			return true;
+		}
+		return o==this;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Arrays.hashCode(b);
 	}
 
 	public BigDecimal magnitude()

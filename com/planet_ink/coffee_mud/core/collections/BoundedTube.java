@@ -25,7 +25,7 @@ limitations under the License.
 */
 public class BoundedTube extends BoundedSphere
 {
-	public BigVector	exp;
+	public Coord3D	exp;
 	public double[] 	dir;
 	public long			dist;
 
@@ -34,7 +34,7 @@ public class BoundedTube extends BoundedSphere
 		super(l);
 		this.dir = direction;
 		this.dist = distance;
-		exp = new BigVector(extendTo(distance));
+		exp = new Coord3D(extendTo(distance));
 	}
 
 	public BoundedTube(final BoundedSphere l)
@@ -100,9 +100,9 @@ public class BoundedTube extends BoundedSphere
 			{
 				if(((BoundedTube)two).exp == null)
 					return super.intersects(two);
-				final double dist = CMLib.space().getMinDistanceFrom(((BoundedTube)two).xyz.toLongs(),
-																	((BoundedTube)two).exp.toLongs(),
-																	xyz.toLongs());
+				final double dist = CMLib.space().getMinDistanceFrom(((BoundedTube)two).xyz,
+																	((BoundedTube)two).exp,
+																	xyz);
 				return dist < radius() + two.radius();
 			}
 			else
@@ -113,21 +113,21 @@ public class BoundedTube extends BoundedSphere
 		{
 			if(((BoundedTube)two).exp == null) // line vs point
 			{
-				final double dist = CMLib.space().getMinDistanceFrom(xyz.toLongs(), exp.toLongs(),
-																	((BoundedTube)two).xyz.toLongs());
+				final double dist = CMLib.space().getMinDistanceFrom(xyz, exp,
+																	((BoundedTube)two).xyz);
 				return dist < radius() + two.radius();
 			}
 			// line vs line
-			final double dist = CMLib.space().getMinDistanceFrom(xyz.toLongs(), exp.toLongs(),
-														((BoundedTube)two).xyz.toLongs(),
-														((BoundedTube)two).exp.toLongs());
+			final double dist = CMLib.space().getMinDistanceFrom(xyz, exp,
+														((BoundedTube)two).xyz,
+														((BoundedTube)two).exp);
 			return dist < radius() + two.radius();
 		}
 		else
 		if(two instanceof BoundedSphere)
 		{
-			final double dist = CMLib.space().getMinDistanceFrom(xyz.toLongs(), exp.toLongs(),
-																((BoundedSphere)two).xyz.toLongs());
+			final double dist = CMLib.space().getMinDistanceFrom(xyz, exp,
+																((BoundedSphere)two).xyz);
 			return dist < radius() + two.radius();
 		}
 		else

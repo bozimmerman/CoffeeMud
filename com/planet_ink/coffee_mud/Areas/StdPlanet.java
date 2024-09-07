@@ -2,7 +2,6 @@ package com.planet_ink.coffee_mud.Areas;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -43,7 +42,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 
 	protected static double[]	emptyDirection	= new double[2];
 
-	protected long[]	coordinates	= new long[3];
+	protected Coord3D	coordinates	= new Coord3D();
 	protected long		radius;
 
 	public StdPlanet()
@@ -51,21 +50,24 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 		super();
 
 		myClock = (TimeClock)CMClass.getCommon("DefaultTimeClock");
-		coordinates=new long[]{Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random())};
+		coordinates=new Coord3D(new long[]{
+				Math.round(Long.MAX_VALUE*Math.random()),
+				Math.round(Long.MAX_VALUE*Math.random()),
+				Math.round(Long.MAX_VALUE*Math.random())});
 		final Random random=new Random(System.currentTimeMillis());
 		radius=SpaceObject.Distance.PlanetRadius.dm + (random.nextLong() % (SpaceObject.Distance.PlanetRadius.dm / 20));
 	}
 
 	@Override
-	public long[] coordinates()
+	public Coord3D coordinates()
 	{
 		return coordinates;
 	}
 
 	@Override
-	public void setCoords(final long[] coords)
+	public void setCoords(final Coord3D coords)
 	{
-		if((coords!=null)&&(coords.length==3))
+		if((coords!=null)&&(coords.length()==3))
 			CMLib.space().moveSpaceObject(this,coords);
 	}
 
@@ -98,7 +100,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	}
 
 	@Override
-	public long[] center()
+	public Coord3D center()
 	{
 		return coordinates();
 	}
@@ -179,7 +181,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 		switch(getLocCodeNum(code))
 		{
 		case 0:
-			return CMParms.toListString(this.coordinates());
+			return CMParms.toListString(this.coordinates().toLongs());
 		case 1:
 			return "" + radius();
 		default:
@@ -193,10 +195,10 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 		switch(getLocCodeNum(code))
 		{
 		case 0:
-			setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true)));
-			coordinates[0] = coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm;
-			coordinates[1] = coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm;
-			coordinates[2] = coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm;
+			setCoords(new Coord3D(CMParms.toLongArray(CMParms.parseCommas(val, true))));
+			coordinates.x(coordinates.x().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
+			coordinates.y(coordinates.y().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
+			coordinates.z(coordinates.z().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
 			break;
 		case 1:
 			setRadius(CMath.s_long(val));

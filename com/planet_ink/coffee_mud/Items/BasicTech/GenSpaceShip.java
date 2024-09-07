@@ -53,7 +53,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 
 	protected Manufacturer	cachedManufact  = null;
 	protected String	 	manufacturer	= "RANDOM";
-	public long[]   		coordinates 	= new long[3];
+	public Coord3D   		coordinates 	= new Coord3D();
 	public double[] 		direction   	= new double[2];
 	public double			roll			= 0.0;
 	public double 			speed			= 0;
@@ -180,10 +180,10 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 		{
 			final SpaceObject o = getShipSpaceObject();
 			final SpaceObject planetO = CMLib.space().getSpaceObject(R, true);
-			final long[] newCoordinates = CMLib.space().moveSpaceObject(((LocationRoom)R).coordinates(), direction(), radius()+radius());
+			final Coord3D newCoordinates = CMLib.space().moveSpaceObject(((LocationRoom)R).coordinates(), direction(), radius()+radius());
 			if((o != null)&&(R instanceof LocationRoom))
 			{
-				CMLib.space().addObjectToSpace(o,newCoordinates);
+				CMLib.space().addObjectToSpace(o, newCoordinates);
 				final double gravity = CMLib.space().getGravityForce(o, planetO);
 				setShipFlag(SpaceShip.ShipFlag.IN_THE_AIR,(gravity > 0.0));
 			}
@@ -840,7 +840,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	}
 
 	@Override
-	public long[] coordinates()
+	public Coord3D coordinates()
 	{
 		return coordinates;
 	}
@@ -889,9 +889,9 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	}
 
 	@Override
-	public void setCoords(final long[] coords)
+	public void setCoords(final Coord3D coords)
 	{
-		if((coords!=null)&&(coords.length==3))
+		if((coords!=null)&&(coords.length()==3))
 			CMLib.space().moveSpaceObject(this,coords);
 	}
 
@@ -939,7 +939,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	}
 
 	@Override
-	public long[] center()
+	public Coord3D center()
 	{
 		return coordinates();
 	}
@@ -1045,7 +1045,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 		case 3:
 			return getManufacturerName();
 		case 4:
-			return CMParms.toListString(coordinates());
+			return CMParms.toListString(coordinates().toLongs());
 		case 5:
 			return "" + radius();
 		case 6:
@@ -1081,10 +1081,10 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 			setManufacturerName(val);
 			break;
 		case 4:
-			setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true)));
-			coordinates[0] = coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm;
-			coordinates[1] = coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm;
-			coordinates[2] = coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm;
+			setCoords(new Coord3D(CMParms.toLongArray(CMParms.parseCommas(val, true))));
+			coordinates.x(coordinates.x().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
+			coordinates.y(coordinates.y().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
+			coordinates.z(coordinates.z().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
 			break;
 		case 5:
 			setRadius(CMath.s_long(val));

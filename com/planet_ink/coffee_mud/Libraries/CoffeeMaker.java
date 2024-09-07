@@ -222,7 +222,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final XMLLibrary xmlLib=CMLib.xml();
 			final StringBuilder str=new StringBuilder("");
 			str.append(xmlLib.convertXMLtoTag("SSRADIUS",((SpaceObject)E).radius()));
-			str.append(xmlLib.convertXMLtoTag("SSCOORDS",CMParms.toListString(((SpaceObject)E).coordinates())));
+			str.append(xmlLib.convertXMLtoTag("SSCOORDS",CMParms.toListString(((SpaceObject)E).coordinates().toLongs())));
 			str.append(xmlLib.convertXMLtoTag("SSDIR",CMParms.toListString(((SpaceObject)E).direction())));
 			str.append(xmlLib.convertXMLtoTag("SSSPEED",Math.round(((SpaceObject)E).speed())));
 			return str.append((E.isGeneric()?getGenEnvironmentalXML(E):"") + (fromTop?getOrdEnvironmentalXML(E):"")).toString();
@@ -445,7 +445,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				CMLib.catalog().updateCatalogIntegrity(thisItem);
 				final Item cont=thisItem.ultimateContainer(null);
 				final String roomID=((cont.owner()==null)&&(thisItem instanceof SpaceObject)&&(CMLib.space().isObjectInSpace((SpaceObject)thisItem)))?
-						("SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates())):CMLib.map().getExtendedRoomID((Room)cont.owner());
+						("SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates().toLongs()))
+							:CMLib.map().getExtendedRoomID((Room)cont.owner());
 				itemstr.append("<ITEM>");
 				itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(thisItem)));
 				itemstr.append((thisItem instanceof Container)
@@ -504,7 +505,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final String roomID=irm.parms().get("ID");
 			final long expirationDate=CMath.s_long(irm.parms().get("EXPIRE"));
 			if(roomID.startsWith("SPACE.") && (newOne instanceof SpaceObject))
-				CMLib.space().addObjectToSpace((SpaceObject)newOne,CMParms.toLongArray(CMParms.parseCommas(roomID.substring(6), true)));
+			{
+				CMLib.space().addObjectToSpace((SpaceObject)newOne,
+						new Coord3D(CMParms.toLongArray(CMParms.parseCommas(roomID.substring(6), true))));
+			}
 			else
 			{
 				final Room itemR=CMLib.map().getRoom(roomID);
@@ -2683,8 +2687,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(E instanceof SpaceObject)
 			{
 				((SpaceObject)E).setRadius(CMLib.xml().getLongFromPieces(V,"SSRADIUS"));
-				final long[] coords=CMParms.toLongArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"SSCOORDS"), true));
-				if((coords!=null)&&(coords.length==3))
+				final Coord3D coords=new Coord3D(CMParms.toLongArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"SSCOORDS"), true)));
+				if((coords!=null)&&(coords.length()==3))
 					((SpaceObject)E).setCoords(coords);
 				((SpaceObject)E).setSpeed(CMLib.xml().getDoubleFromPieces(V,"SSSPEED"));
 				final double[] dir=CMParms.toDoubleArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"SSDIR"), true));

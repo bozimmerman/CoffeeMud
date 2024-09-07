@@ -182,7 +182,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 				str.append("^N").append(CMStrings.padRight(CMLib.space().getSectorName(ship.coordinates()),50));
 				str.append("\n\r");
 				str.append("^H").append(CMStrings.padRight(L("Location"),10));
-				str.append("^N").append(CMStrings.padRight(CMLib.english().coordDescShort(CMLib.space().getInSectorCoords(shipSpaceObject.coordinates())),25));
+				str.append("^N").append(CMStrings.padRight(CMLib.english().coordDescShort(CMLib.space().getInSectorCoords(shipSpaceObject.coordinates()).toLongs()),25));
 			}
 			str.append("^H").append(CMStrings.padRight(L("Facing"),10));
 			final String facStr=display(ship.facing());
@@ -267,9 +267,9 @@ public class RocketShipProgram extends ShipTacticalProgram
 								&&((currentTarget==o)||(currentTarget.ID().equals(obj.ID()))))
 									pos = appendToLength(str, "^r*^N ", pos, max);
 								pos = appendToLength(str, "^W" + obj.name(), pos, max);
-								if(!Arrays.equals(obj.coordinates(),emptyCoords))
+								if(!obj.coordinates().equals(emptyCoords))
 									pos = appendToLength(str, "^N, ^WDist: ^N" + CMLib.english().distanceDescShort(distance), pos, max);
-								if(!Arrays.equals(obj.coordinates(),emptyCoords))
+								if(!obj.coordinates().equals(emptyCoords))
 									pos = appendToLength(str, "^N, ^WDir: ^N" + CMLib.english().directionDescShortest(direction), pos, max);
 								if(obj.getMass()>0)
 									pos = appendToLength(str, "^N, ^WMass: ^N" + CMath.abbreviateLong(obj.getMass()), pos, max);

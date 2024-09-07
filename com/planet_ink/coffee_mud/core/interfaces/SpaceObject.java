@@ -40,13 +40,13 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 * The current absolute coordinates of  the object
 	 * @return 3 dimensional array of the coordinates
 	 */
-	public long[] coordinates();
+	public Coord3D coordinates();
 
 	/**
 	 * Sets the current absolute coordinates of the object
 	 * @param coords 3  dimensional array of the coordinates in space
 	 */
-	public void setCoords(long[] coords);
+	public void setCoords(Coord3D coords);
 
 	/**
 	 * The current radius of  the object

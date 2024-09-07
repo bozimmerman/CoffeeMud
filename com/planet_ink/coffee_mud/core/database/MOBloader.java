@@ -1249,7 +1249,8 @@ public class MOBloader
 							final long expirationDate=CMath.s_long(xml.get(0).parms().get("EXPIRE"));
 							if(roomID.startsWith("SPACE.") && (newItem instanceof SpaceObject))
 							{
-								CMLib.space().addObjectToSpace((SpaceObject)newItem,CMParms.toLongArray(CMParms.parseCommas(roomID.substring(6), true)));
+								CMLib.space().addObjectToSpace((SpaceObject)newItem,
+										new Coord3D(CMParms.toLongArray(CMParms.parseCommas(roomID.substring(6), true))));
 								addToMOB=false;
 							}
 							else
@@ -2433,14 +2434,14 @@ public class MOBloader
 					if((cont.owner()==null)
 					&&(thisItem instanceof SpaceObject)
 					&&(CMLib.space().isObjectInSpace((SpaceObject)thisItem)))
-						roomID="SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates());
+						roomID="SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates().toLongs());
 					else
 					if(cont.owner() instanceof Room)
 						roomID=CMLib.map().getApproximateExtendedRoomID((Room)cont.owner());
 					else
 					if((thisItem instanceof SpaceObject)
 					&&(CMLib.space().isObjectInSpace((SpaceObject)thisItem)))
-						roomID="SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates());
+						roomID="SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates().toLongs());
 					else
 						roomID="";
 					String insert="";

@@ -99,7 +99,7 @@ public class GenSmartTorpedo extends StdSmartTorpedo
 		case 0:
 			return "" + techLevel();
 		case 1:
-			return CMParms.toListString(coordinates());
+			return CMParms.toListString(coordinates().toLongs());
 		case 2:
 			return "" + radius();
 		case 3:
@@ -135,10 +135,10 @@ public class GenSmartTorpedo extends StdSmartTorpedo
 			setTechLevel(CMath.s_parseIntExpression(val));
 			break;
 		case 1:
-			setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true)));
-			coordinates[0] = coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm;
-			coordinates[1] = coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm;
-			coordinates[2] = coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm;
+			setCoords(new Coord3D(CMParms.toLongArray(CMParms.parseCommas(val, true))));
+			coordinates.x(coordinates.x().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
+			coordinates.y(coordinates.y().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
+			coordinates.z(coordinates.z().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
 			break;
 		case 2:
 			setRadius(CMath.s_long(val));

@@ -52,8 +52,8 @@ public class ShipNavProgram extends ShipSensorProgram
 		return "ShipNavProgram";
 	}
 
-	protected final List<long[]>	course				= new LinkedList<long[]>();
-	protected volatile long[]		courseTargetCoords	= null;
+	protected final List<Coord3D>	course				= new LinkedList<Coord3D>();
+	protected volatile Coord3D	courseTargetCoords	= null;
 	protected volatile long			courseTargetRadius	= 0;
 	protected volatile Double		savedAcceleration	= null;
 	protected volatile Double		savedSpeedDelta		= null;
@@ -550,10 +550,10 @@ public class ShipNavProgram extends ShipSensorProgram
 				this.courseTargetCoords = null;
 			else
 			{
-				long[] srcCoords = me.coordinates();
+				Coord3D srcCoords = me.coordinates();
 				if(this.course.size()>0)
-					srcCoords = course.get(this.course.size()-1).clone();
-				final List<long[]> newBits = CMLib.space().plotCourse(srcCoords, me.radius(), courseTargetCoords, courseTargetRadius, 1);
+					srcCoords = course.get(this.course.size()-1).copyOf();
+				final List<Coord3D> newBits = CMLib.space().plotCourse(srcCoords, me.radius(), courseTargetCoords, courseTargetRadius, 1);
 				if(newBits.size()==0)
 				{
 					this.courseTargetCoords = null;
@@ -562,9 +562,9 @@ public class ShipNavProgram extends ShipSensorProgram
 				else
 				{
 					this.course.addAll(newBits);
-					for(final long[] bit : newBits)
+					for(final Coord3D bit : newBits)
 					{
-						if(Arrays.equals(bit, courseTargetCoords))
+						if(bit.equals(courseTargetCoords))
 						{
 							this.courseTargetCoords = null;
 							super.addScreenMessage(L("Course plotted."));
@@ -633,9 +633,9 @@ public class ShipNavProgram extends ShipSensorProgram
 		super.onDeactivate(mob, message);
 	}
 
-	protected boolean checkDatabase(final long[] coords)
+	protected boolean checkDatabase(final Coord3D coords)
 	{
-		final String[] parms = new String[] {CMParms.toListString(coords)};
+		final String[] parms = new String[] {CMParms.toListString(coords.toLongs())};
 		final List<String[]> names = super.doServiceTransaction(SWServices.IDENTIFICATION, parms);
 		for(final String[] res : names)
 		{
@@ -710,7 +710,7 @@ public class ShipNavProgram extends ShipSensorProgram
 
 	protected SpaceObject subCourseCheck(final SpaceObject ship,
 										 final SpaceObject fromObj, final SpaceObject toObj,
-										 final long[][] points, final SpaceObject[] others)
+										 final Coord3D[] points, final SpaceObject[] others)
 	{
 		SpaceObject newObj = null;
 		// one of these is always behind the object, so we have to check
@@ -721,7 +721,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		winnerObj.setName("Nav Point");
 		try
 		{
-			for(final long[] p : points)
+			for(final Coord3D p : points)
 			{
 				System.arraycopy(p,0,winnerObj.coordinates(),0,3); // prevents adding to space
 				final SpaceObject coll2O = getCollision(fromObj, winnerObj, ship.radius(), others);
@@ -770,9 +770,9 @@ public class ShipNavProgram extends ShipSensorProgram
 					final long gravRadius = Math.round(CMath.mul(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS, collO.radius()));
 					final long distAdd = gravRadius - collO.radius();
 					final long distanceCollRadius = collO.radius() + (distAdd * 2) + 2;
-					final long[][] pointsFromOrigin = CMLib.space().getPerpendicularPoints(collO.coordinates(), angleFromCollider, distanceCollRadius);
-					final long[][] pointsFromCollider = CMLib.space().getPerpendicularPoints(fromObj.coordinates(), angleFromOrigin, distanceCollRadius);
-					long[][] points = CMParms.combine(pointsFromCollider, pointsFromOrigin);
+					final Coord3D[] pointsFromOrigin = CMLib.space().getPerpendicularPoints(collO.coordinates(), angleFromCollider, distanceCollRadius);
+					final Coord3D[] pointsFromCollider = CMLib.space().getPerpendicularPoints(fromObj.coordinates(), angleFromOrigin, distanceCollRadius);
+					Coord3D[] points = CMParms.combine(pointsFromCollider, pointsFromOrigin);
 
 					// one of these is always behind the object, so we have to check
 					SpaceObject newObj = subCourseCheck(ship,fromObj,toObj,points,others);
@@ -1517,7 +1517,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				return false;
 			}
 			final String targetStr=CMParms.combine(parsed, 1);
-			long[] targetCoords = null;
+			Coord3D targetCoords = null;
 			if(sensorReps.size()>0)
 			{
 				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
@@ -1550,13 +1550,13 @@ public class ShipNavProgram extends ShipSensorProgram
 				final List<SpaceObject> objs = CMLib.space().getSpaceObjectsByCenterpointWithin(targetCoords, 0, 10);
 				for(final SpaceObject o1 : objs)
 				{
-					if(Arrays.equals(targetCoords, o1.coordinates()))
+					if(targetCoords.equals(o1.coordinates()))
 						courseTargetRadius = o1.radius();
 				}
 			}
 			course.clear();
 			courseTargetCoords = targetCoords;
-			addScreenMessage(L("Plotting course to @x1.",CMParms.toListString(courseTargetCoords)));
+			addScreenMessage(L("Plotting course to @x1.",CMParms.toListString(courseTargetCoords.toLongs())));
 			return false;
 		}
 	};

@@ -57,12 +57,12 @@ public class SpacePort extends StdRoom implements LocationRoom
 	}
 
 	@Override
-	public long[] coordinates()
+	public Coord3D coordinates()
 	{
 		final SpaceObject planet=CMLib.space().getSpaceObject(this,true);
 		if(planet!=null)
 			return CMLib.space().getLocation(planet.coordinates(),dirFromCore,planet.radius());
-		return new long[]{0,0,0};
+		return new Coord3D();
 	}
 
 	@Override

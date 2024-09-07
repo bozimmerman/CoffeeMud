@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.math.BigDecimal;
 import java.util.*;
 
 /*
@@ -66,7 +67,7 @@ public class Transfer extends At
 		return s;
 	}
 
-	protected long[] fixSpaceCoords(final List<Physical> xferObjV, final long distanceDm, long[] targetSpace)
+	protected Coord3D fixSpaceCoords(final List<Physical> xferObjV, final long distanceDm, Coord3D targetSpace)
 	{
 		long baseDist = 1;
 		for(final Environmental e : xferObjV)
@@ -100,7 +101,7 @@ public class Transfer extends At
 		throws java.io.IOException
 	{
 		Room targetRoom=null;
-		long[] targetSpace=null;
+		Coord3D targetSpace=null;
 		long distanceDm = 1000;
 		if(commands.size()<3)
 		{
@@ -514,7 +515,7 @@ public class Transfer extends At
 			if(rV.size()>1)
 			{
 				final String last=rV.remove(rV.size()-1);
-				final Long distl = CMLib.english().parseSpaceDistance(last);
+				final BigDecimal distl = CMLib.english().parseSpaceDistance(last);
 				if(distl != null)
 				{
 					distanceDm = distl.longValue();
@@ -525,7 +526,7 @@ public class Transfer extends At
 			{
 				final List<String> bits=CMParms.parseAny(rest,',',true);
 				if(bits.size()==3)
-					targetSpace=new long[] { CMath.s_long(bits.get(0)), CMath.s_long(bits.get(1)), CMath.s_long(bits.get(2))};
+					targetSpace=new Coord3D(new long[] { CMath.s_long(bits.get(0)), CMath.s_long(bits.get(1)), CMath.s_long(bits.get(2))});
 			}
 			else
 			{
@@ -533,7 +534,7 @@ public class Transfer extends At
 				if(o == null)
 					o = CMLib.space().findSpaceObject(rest, false);
 				if(o != null)
-					targetSpace=Arrays.copyOf(o.coordinates(),o.coordinates().length);
+					targetSpace=o.coordinates().copyOf();
 			}
 			if(targetSpace != null)
 				targetSpace=fixSpaceCoords(xferObjV, distanceDm, targetSpace);

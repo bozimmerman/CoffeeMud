@@ -40,7 +40,7 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 		return "StdThinPlanet";
 	}
 
-	protected long[]	coordinates	= new long[3];
+	protected Coord3D	coordinates	= new Coord3D();
 	protected double[]	direction	= new double[2];
 	protected long		radius;
 
@@ -49,7 +49,7 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 		super();
 
 		myClock = (TimeClock)CMClass.getCommon("DefaultTimeClock");
-		coordinates=new long[]{Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random())};
+		coordinates=new Coord3D(new long[]{Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random())});
 		final Random random=new Random(System.currentTimeMillis());
 		radius=SpaceObject.Distance.PlanetRadius.dm + (random.nextLong() % (SpaceObject.Distance.PlanetRadius.dm / 20));
 	}
@@ -85,15 +85,15 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 	}
 
 	@Override
-	public long[] coordinates()
+	public Coord3D coordinates()
 	{
 		return coordinates;
 	}
 
 	@Override
-	public void setCoords(final long[] coords)
+	public void setCoords(final Coord3D coords)
 	{
-		if((coords!=null)&&(coords.length==3))
+		if((coords!=null)&&(coords.length()==3))
 			CMLib.space().moveSpaceObject(this,coords);
 	}
 
@@ -142,7 +142,7 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 	}
 
 	@Override
-	public long[] center()
+	public Coord3D center()
 	{
 		return coordinates();
 	}

@@ -345,22 +345,22 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 				}
 
 				@Override
-				public long[] coordinates()
+				public Coord3D coordinates()
 				{
 					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
-						return sobj.coordinates().clone();
-					return emptyCoords.clone();
+						return sobj.coordinates().copyOf();
+					return emptyCoords.copyOf();
 				}
 
 				@Override
-				public long[] center()
+				public Coord3D center()
 				{
 					return coordinates();
 				}
 
 				@Override
-				public void setCoords(final long[] coords)
+				public void setCoords(final Coord3D coords)
 				{
 				}
 

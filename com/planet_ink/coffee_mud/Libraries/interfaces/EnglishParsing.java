@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 /*
    Copyright 2005-2024 Bo Zimmerman
@@ -1099,5 +1100,5 @@ public interface EnglishParsing extends CMLibrary
 	 * @param dist the user-entered string
 	 * @return the distance in decameters
 	 */
-	public Long parseSpaceDistance(String dist);
+	public BigDecimal parseSpaceDistance(String dist);
 }

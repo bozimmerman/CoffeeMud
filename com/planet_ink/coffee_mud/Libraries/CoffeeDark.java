@@ -96,13 +96,11 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public void addObjectToSpace(final SpaceObject O, final long[] coords)
+	public void addObjectToSpace(final SpaceObject O, final Coord3D coords)
 	{
 		synchronized(space)
 		{
-			O.coordinates()[0]=coords[0];
-			O.coordinates()[1]=coords[1];
-			O.coordinates()[2]=coords[2];
+			O.setCoords(coords.copyOf());
 			space.insert(O); // won't accept dups, so is ok
 		}
 	}
@@ -123,15 +121,15 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public long getDistanceFrom(final long[] coord1, final long[] coord2)
+	public long getDistanceFrom(final Coord3D coord1, final Coord3D coord2)
 	{
-		final BigInteger coord_0 = BigInteger.valueOf(coord1[0]).subtract(BigInteger.valueOf(coord2[0]));
-		final BigInteger coord_0m = coord_0.multiply(coord_0);
-		final BigInteger coord_1 = BigInteger.valueOf(coord1[1]).subtract(BigInteger.valueOf(coord2[1]));
-		final BigInteger coord_1m = coord_1.multiply(coord_1);
-		final BigInteger coord_2 = BigInteger.valueOf(coord1[2]).subtract(BigInteger.valueOf(coord2[2]));
-		final BigInteger coord_2m = coord_2.multiply(coord_2);
-		final BigInteger coords_all = coord_0m.add(coord_1m).add(coord_2m);
+		final BigDecimal coord_0 = coord1.x().subtract(coord2.x());
+		final BigDecimal coord_0m = coord_0.multiply(coord_0);
+		final BigDecimal coord_1 = coord1.y().subtract(coord2.y());
+		final BigDecimal coord_1m = coord_1.multiply(coord_1);
+		final BigDecimal coord_2 = coord1.z().subtract(coord2.z());
+		final BigDecimal coord_2m = coord_2.multiply(coord_2);
+		final BigDecimal coords_all = coord_0m.add(coord_1m).add(coord_2m);
 		return Math.round(Math.sqrt(coords_all.doubleValue()));
 	}
 
@@ -172,10 +170,10 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public long[][] getPerpendicularPoints(final long[] origin, final double[] angle, final long distance)
+	public Coord3D[] getPerpendicularPoints(final Coord3D origin, final double[] angle, final long distance)
 	{
 		final double[][] angles = getPerpendicularAngles(angle);
-		final long[][] points = new long[angles.length][3];
+		final Coord3D[] points = new Coord3D[angles.length];
 		for(int i=0;i<angles.length;i++)
 		{
 			final double[] a = angles[i];
@@ -184,13 +182,13 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		return points;
 	}
 
-	protected BigDecimal getBigDistanceFrom(final long[] coord1, final long[] coord2)
+	protected BigDecimal getBigDistanceFrom(final Coord3D coord1, final Coord3D coord2)
 	{
-		final BigDecimal coord_0 = BigDecimal.valueOf(coord1[0]).subtract(BigDecimal.valueOf(coord2[0]));
+		final BigDecimal coord_0 = coord1.x().subtract(coord2.x());
 		final BigDecimal coord_0m = coord_0.multiply(coord_0);
-		final BigDecimal coord_1 = BigDecimal.valueOf(coord1[1]).subtract(BigDecimal.valueOf(coord2[1]));
+		final BigDecimal coord_1 = coord1.y().subtract(coord2.y());
 		final BigDecimal coord_1m = coord_1.multiply(coord_1);
-		final BigDecimal coord_2 = BigDecimal.valueOf(coord1[2]).subtract(BigDecimal.valueOf(coord2[2]));
+		final BigDecimal coord_2 = coord1.z().subtract(coord2.z());
 		final BigDecimal coord_2m = coord_2.multiply(coord_2);
 		final BigDecimal coords_all = coord_0m.add(coord_1m).add(coord_2m);
 		final BigDecimal val = bigSqrt(coords_all);
@@ -198,7 +196,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public String getSectorName(final long[] coords)
+	public String getSectorName(final Coord3D coords)
 	{
 		final String[] xsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_X_NAMES);
 		final String[] ysecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Y_NAMES);
@@ -208,9 +206,9 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final long dmsPerYSector = (SpaceObject.Distance.GalaxyRadius.dm / (ysecs.length)) * 2L;
 		final long dmsPerZSector = (SpaceObject.Distance.GalaxyRadius.dm / (zsecs.length)) * 2L;
 
-		final long secDeX = coords[0] / dmsPerXSector;
-		final long secDeY = coords[1] / dmsPerYSector;
-		final long secDeZ = coords[2] / dmsPerZSector;
+		final long secDeX = coords.x().longValue() / dmsPerXSector;
+		final long secDeY = coords.y().longValue() / dmsPerYSector;
+		final long secDeZ = coords.z().longValue() / dmsPerZSector;
 
 		final StringBuilder sectorName = new StringBuilder("");
 		sectorName.append(xsecs[(int)secDeX + xsecs.length/2]).append(" ");
@@ -220,7 +218,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public long[] getInSectorCoords(final long[] coords)
+	public Coord3D getInSectorCoords(final Coord3D coords)
 	{
 		final String[] xsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_X_NAMES);
 		final String[] ysecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Y_NAMES);
@@ -230,15 +228,16 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final long dmsPerYSector = (SpaceObject.Distance.GalaxyRadius.dm / (ysecs.length)) * 2L;
 		final long dmsPerZSector = (SpaceObject.Distance.GalaxyRadius.dm / (zsecs.length)) * 2L;
 
-		final long[] sectorCoords = coords.clone();
-		for(int i=0;i<sectorCoords.length;i++)
-		{
-			if(sectorCoords[i]<0)
-				sectorCoords[i]*=-1;
-		}
-		sectorCoords[0] = (sectorCoords[0] % dmsPerXSector);
-		sectorCoords[1] = (sectorCoords[1] % dmsPerYSector);
-		sectorCoords[2] = (sectorCoords[2] % dmsPerZSector);
+		final Coord3D sectorCoords = coords.copyOf();
+		if(sectorCoords.x().longValue()<0)
+			sectorCoords.x(sectorCoords.x().multiply(MIN_ONE));
+		if(sectorCoords.y().longValue()<0)
+			sectorCoords.y(sectorCoords.y().multiply(MIN_ONE));
+		if(sectorCoords.z().longValue()<0)
+			sectorCoords.z(sectorCoords.z().multiply(MIN_ONE));
+		sectorCoords.x(sectorCoords.x().longValue() % dmsPerXSector);
+		sectorCoords.y(sectorCoords.y().longValue() % dmsPerYSector);
+		sectorCoords.z(sectorCoords.z().longValue() % dmsPerZSector);
 		return sectorCoords;
 	}
 
@@ -262,10 +261,10 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				{
 					for(long z=0;z<SpaceObject.Distance.GalaxyRadius.dm-dmsPerZSector;z+=dmsPerZSector)
 					{
-						final long[] coords = new long[] {x, y, z};
+						final Coord3D coords = new Coord3D(new long[] {x, y, z});
 						final BoundedCube cube = new BoundedCube(x,x+dmsPerXSector,y,y+dmsPerYSector,z,z+dmsPerZSector);
 						final String name = getSectorName(coords);
-						if(tempMap.containsKey(name) || (coords[2]<0L))
+						if(tempMap.containsKey(name) || (coords.z().longValue()<0L))
 							Log.errOut("Argh!");
 						else
 							tempMap.put(name, cube);
@@ -278,10 +277,10 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				{
 					for(long z=dmsPerZSector;z<SpaceObject.Distance.GalaxyRadius.dm-dmsPerZSector;z+=dmsPerZSector)
 					{
-						final long[] coords = new long[] {-x, -y, -z};
+						final Coord3D coords = new Coord3D(new long[] {-x, -y, -z});
 						final BoundedCube cube = new BoundedCube(-x,-x+dmsPerXSector,-y,-y+dmsPerYSector,-z,-z+dmsPerZSector);
 						final String name = getSectorName(coords);
-						if(tempMap.containsKey(name) || (coords[2]>0L))
+						if(tempMap.containsKey(name) || (coords.z().longValue()>0L))
 							Log.errOut("Argh!!");
 						else
 							tempMap.put(name, cube);
@@ -633,25 +632,25 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		return getDirection(fromObj.coordinates(),toObj.coordinates());
 	}
 
-	protected void moveSpaceObject(final SpaceObject O, final long x, final long y, final long z)
+	protected void moveSpaceObject(final SpaceObject O, final BigDecimal x, final BigDecimal y, final BigDecimal z)
 	{
 		synchronized(space)
 		{
 			final boolean reAdd=space.contains(O);
 			if(reAdd)
 				space.remove(O);
-			O.coordinates()[0]=x;
-			O.coordinates()[1]=y;
-			O.coordinates()[2]=z;
+			O.coordinates().x(x);
+			O.coordinates().y(y);
+			O.coordinates().z(z);
 			if(reAdd)
 				space.insert(O);
 		}
 	}
 
 	@Override
-	public void moveSpaceObject(final SpaceObject O, final long[] coords)
+	public void moveSpaceObject(final SpaceObject O, final Coord3D coords)
 	{
-		moveSpaceObject(O, coords[0], coords[1], coords[2]);
+		moveSpaceObject(O, coords.x(), coords.y(), coords.z());
 	}
 
 	@Override
@@ -659,17 +658,18 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	{
 		if(O.speed()>0)
 		{
-			final double x1=Math.cos(O.direction()[0])*Math.sin(O.direction()[1]);
-			final double y1=Math.sin(O.direction()[0])*Math.sin(O.direction()[1]);
-			final double z1=Math.cos(O.direction()[1]);
-			moveSpaceObject(O,Math.round(CMath.mul(O.speed(),x1)+O.coordinates()[0]),
-							Math.round(CMath.mul(O.speed(),y1)+O.coordinates()[1]),
-							Math.round(CMath.mul(O.speed(),z1))+O.coordinates()[2]);
+			final BigDecimal speed = new BigDecimal(O.speed());
+			final BigDecimal x1=new BigDecimal(Math.cos(O.direction()[0])).multiply(new BigDecimal(Math.sin(O.direction()[1])));
+			final BigDecimal y1=new BigDecimal(Math.sin(O.direction()[0])).multiply(new BigDecimal(Math.sin(O.direction()[1])));
+			final BigDecimal z1=new BigDecimal(Math.cos(O.direction()[1]));
+			moveSpaceObject(O,x1.multiply(speed).add(O.coordinates().x()),
+								y1.multiply(speed).add(O.coordinates().y()),
+								z1.multiply(speed).add(O.coordinates().z()));
 		}
 	}
 
 	@Override
-	public double[] getDirection(final long[] fromCoords, final long[] toCoords)
+	public double[] getDirection(final Coord3D fromCoords, final Coord3D toCoords)
 	{
 		return getBigDirection(fromCoords, toCoords);
 		/*
@@ -694,12 +694,12 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		*/
 	}
 
-	protected double[] getBigDirection(final long[] fromCoords, final long[] toCoords)
+	protected double[] getBigDirection(final Coord3D fromCoords, final Coord3D toCoords)
 	{
 		final double[] dir=new double[2];
-		final BigDecimal x=BigDecimal.valueOf(toCoords[0]-fromCoords[0]);
-		final BigDecimal y=BigDecimal.valueOf(toCoords[1]-fromCoords[1]);
-		final BigDecimal z=BigDecimal.valueOf(toCoords[2]-fromCoords[2]);
+		final BigDecimal x=toCoords.x().subtract(fromCoords.x());
+		final BigDecimal y=toCoords.y().subtract(fromCoords.y());
+		final BigDecimal z=toCoords.z().subtract(fromCoords.z());
 		final BigDecimal xy = x.multiply(x).add(y.multiply(y));
 		if((x.doubleValue()!=0)||(y.doubleValue()!=0))
 		{
@@ -717,45 +717,55 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public long[] moveSpaceObject(final long[] coordinates, final double[] direction, final long speed)
+	public Coord3D moveSpaceObject(final Coord3D coordinates, final double[] direction, final long speed)
 	{
 		if(speed>0)
 		{
-			final double x1=Math.cos(direction[0])*Math.sin(direction[1]);
-			final double y1=Math.sin(direction[0])*Math.sin(direction[1]);
-			final double z1=Math.cos(direction[1]);
-			return new long[]{coordinates[0]+Math.round(CMath.mul(speed,x1)),
-							coordinates[1]+Math.round(CMath.mul(speed,y1)),
-							coordinates[2]+Math.round(CMath.mul(speed,z1))};
+			final BigDecimal bigSpeed = new BigDecimal(speed);
+			final BigDecimal x1=new BigDecimal(Math.cos(direction[0])).multiply(new BigDecimal(Math.sin(direction[1])));
+			final BigDecimal y1=new BigDecimal(Math.sin(direction[0])).multiply(new BigDecimal(Math.sin(direction[1])));
+			final BigDecimal z1=new BigDecimal(Math.cos(direction[1]));
+			return new Coord3D(coordinates.x().add(x1.multiply(bigSpeed)),
+							coordinates.y().add(y1.multiply(bigSpeed)),
+							coordinates.z().add(z1.multiply(bigSpeed)));
 		}
 		return coordinates;
 	}
 
 	@Override
-	public long[] getLocation(final long[] oldLocation, final double[] direction, final long distance)
+	public Coord3D getLocation(final Coord3D oldLocation, final double[] direction, final long distance)
 	{
-		final double x1=Math.cos(direction[0])*Math.sin(direction[1]);
-		final double y1=Math.sin(direction[0])*Math.sin(direction[1]);
-		final double z1=Math.cos(direction[1]);
-		final long[] location=new long[3];
-		location[0]=oldLocation[0]+Math.round(CMath.mul(distance,x1));
-		location[1]=oldLocation[1]+Math.round(CMath.mul(distance,y1));
-		location[2]=oldLocation[2]+Math.round(CMath.mul(distance,z1));
+		final BigDecimal bigDistance = new BigDecimal(distance);
+		final BigDecimal x1=new BigDecimal(Math.cos(direction[0])).multiply(new BigDecimal(Math.sin(direction[1])));
+		final BigDecimal y1=new BigDecimal(Math.sin(direction[0])).multiply(new BigDecimal(Math.sin(direction[1])));
+		final BigDecimal z1=new BigDecimal(Math.cos(direction[1]));
+		final Coord3D location=oldLocation.copyOf();
+		location.x(oldLocation.x().add(bigDistance.multiply(x1)));
+		location.y(oldLocation.y().add(bigDistance.multiply(y1)));
+		location.z(oldLocation.z().add(bigDistance.multiply(z1)));
 		return location;
 	}
 
 	@Override
 	public long getRelativeSpeed(final SpaceObject O1, final SpaceObject O2)
 	{
-		return Math.round(Math.sqrt((CMath.bigMultiply(O1.speed(),O1.coordinates()[0])
-										.subtract(CMath.bigMultiply(O2.speed(),O2.coordinates()[0]).multiply(CMath.bigMultiply(O1.speed(),O1.coordinates()[0])))
-										.subtract(CMath.bigMultiply(O2.speed(),O2.coordinates()[0])))
-									.add(CMath.bigMultiply(O1.speed(),O1.coordinates()[1])
-										.subtract(CMath.bigMultiply(O2.speed(),O2.coordinates()[1]).multiply(CMath.bigMultiply(O1.speed(),O1.coordinates()[1])))
-										.subtract(CMath.bigMultiply(O2.speed(),O2.coordinates()[1])))
-									.add(CMath.bigMultiply(O1.speed(),O1.coordinates()[2])
-										.subtract(CMath.bigMultiply(O2.speed(),O2.coordinates()[2]).multiply(CMath.bigMultiply(O1.speed(),O1.coordinates()[2])))
-										.subtract(CMath.bigMultiply(O2.speed(),O2.coordinates()[2]))).doubleValue()));
+		final BigDecimal speed1 = new BigDecimal(O1.speed());
+		final BigDecimal speed2 = new BigDecimal(O1.speed());
+		final BigDecimal x1 = O1.coordinates().x();
+		final BigDecimal y1 = O1.coordinates().y();
+		final BigDecimal z1 = O1.coordinates().z();
+		final BigDecimal x2 = O2.coordinates().x();
+		final BigDecimal y2 = O2.coordinates().y();
+		final BigDecimal z2 = O2.coordinates().z();
+		return Math.round(Math.sqrt((speed1.multiply(x1)
+										.subtract(speed2.multiply(x2).multiply(speed1.multiply(x1)))
+										.subtract(speed2.multiply(x2)))
+									.add(speed1.multiply(y1)
+										.subtract(speed2.multiply(y1).multiply(speed1.multiply(y1)))
+										.subtract(speed2.multiply(y2)))
+									.add(speed1.multiply(z1)
+										.subtract(speed2.multiply(z1).multiply(speed1.multiply(z1)))
+										.subtract(speed2.multiply(z2))).doubleValue()));
 	}
 
 	@Override
@@ -822,10 +832,10 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public List<SpaceObject> getSpaceObjectsByCenterpointWithin(final long[] centerCoordinates, final long minDistance, final long maxDistance)
+	public List<SpaceObject> getSpaceObjectsByCenterpointWithin(final Coord3D centerCoordinates, final long minDistance, final long maxDistance)
 	{
 		final List<SpaceObject> within=new ArrayList<SpaceObject>(1);
-		if((centerCoordinates==null)||(centerCoordinates.length!=3))
+		if((centerCoordinates==null)||(centerCoordinates.length()!=3))
 			return within;
 		synchronized(space)
 		{
@@ -1013,21 +1023,21 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				final double[] dirTo = getDirection(chaserO, runnerO);
 				return new Pair<double[], Long>(dirTo, Long.valueOf(distance));
 			}
-			final BigVector P0=new BigVector(runnerO.coordinates()); // runners position
-			final BigVector P1=new BigVector(chaserO.coordinates()); // chasers position (torpedo/ship/whatever)
-			final BigVector P0S=new BigVector(moveSpaceObject(runnerO.coordinates(), runnerO.direction(), Math.round(runnerO.speed())));
-			final BigVector V0=P0S.subtract(P0);
+			final Coord3D P0=new Coord3D(runnerO.coordinates()); // runners position
+			final Coord3D P1=new Coord3D(chaserO.coordinates()); // chasers position (torpedo/ship/whatever)
+			final Coord3D P0S=new Coord3D(moveSpaceObject(runnerO.coordinates(), runnerO.direction(), Math.round(runnerO.speed())));
+			final Coord3D V0=P0S.subtract(P0);
 			final BigDecimal S1=BigDecimal.valueOf(speedToUse);
 			BigDecimal A=V0.dotProduct(V0).subtract(S1.multiply(S1));
 			if(A.doubleValue()==0.0)
 			{
-				final BigVector V01=new BigVector(V0.x().add(BigDecimal.ONE),V0.y(),V0.z());
+				final Coord3D V01=new Coord3D(V0.x().add(BigDecimal.ONE),V0.y(),V0.z());
 				A=V01.dotProduct(V01).subtract(S1.multiply(S1));
 			}
 			final BigDecimal B=TWO.multiply(P0.dotProduct(V0).add(P1.scalarProduct(ONE.negate()).dotProduct(V0)));
 			final BigDecimal C=P0.dotProduct(P0).add(P1.dotProduct(P1)).add(P1.scalarProduct(TWO.negate()).dotProduct(P0));
-			final BigDecimal T1 = B.negate().add(bigSqrt(B.multiply(B).subtract(FOUR.multiply(A).multiply(C)))).divide(TWO.multiply(A),BigVector.SCALE,RoundingMode.UP);
-			final BigDecimal T2 = B.negate().subtract(bigSqrt(B.multiply(B).subtract(FOUR.multiply(A).multiply(C)))).divide(TWO.multiply(A),BigVector.SCALE,RoundingMode.UP);
+			final BigDecimal T1 = B.negate().add(bigSqrt(B.multiply(B).subtract(FOUR.multiply(A).multiply(C)))).divide(TWO.multiply(A),Coord3D.SCALE,RoundingMode.UP);
+			final BigDecimal T2 = B.negate().subtract(bigSqrt(B.multiply(B).subtract(FOUR.multiply(A).multiply(C)))).divide(TWO.multiply(A),Coord3D.SCALE,RoundingMode.UP);
 			final BigDecimal T;
 			if((T1.doubleValue() < 0)
 			|| ((T2.doubleValue() < T1.doubleValue()) && (T2.doubleValue() >= 0)))
@@ -1037,7 +1047,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			if(T.doubleValue()<=0)
 				return null;
 			final BigVector P0T = P0.add(V0.scalarProduct(T));
-			final double[] finalDir = getDirection(chaserO.coordinates(),P0T.toLongs());
+			final double[] finalDir = getDirection(chaserO.coordinates(),new Coord3D(P0T));
 			return new Pair<double[], Long>(finalDir,Long.valueOf(maxChaserSpeed));
 		}
 		else
@@ -1076,11 +1086,11 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			while(++tries < maxTries)
 			{
 				curTicks = newTicks;
-				long[] runnerCoords = runnerO.coordinates().clone();
-				long[] chaserCoords = chaserO.coordinates().clone();
+				Coord3D runnerCoords = runnerO.coordinates().copyOf();
+				Coord3D chaserCoords = chaserO.coordinates().copyOf();
 				chaserCoords=moveSpaceObject(chaserCoords, dirTo, speedToUse*(newTicks-1));
 				runnerCoords=moveSpaceObject(runnerCoords, runnerO.direction(), Math.round(runnerO.speed())*newTicks-1);
-				final long[] oldCoords = chaserCoords.clone();
+				final Coord3D oldCoords = chaserCoords.copyOf();
 				chaserCoords=moveSpaceObject(chaserCoords, dirTo, speedToUse);
 				if(getMinDistanceFrom(oldCoords, chaserCoords, runnerCoords)<radius)
 				{
@@ -1114,22 +1124,22 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public double getMinDistanceFrom(final long[] vec1s, final long[] vec1e, final long[] vec2s, final long[] vec2e)
+	public double getMinDistanceFrom(final Coord3D vec1s, final Coord3D vec1e, final Coord3D vec2s, final Coord3D vec2e)
 	{
-		if(Arrays.equals(vec1s, vec1e))
+		if(vec1s.equals(vec1e))
 			return this.getMinDistanceFrom(vec2s,vec2e,vec1s);
-		if(Arrays.equals(vec2s, vec2e))
+		if(vec2s.equals(vec2e))
 			return this.getMinDistanceFrom(vec1s,vec1e,vec2s);
-		final BigVector bigVec1s = new BigVector(vec1s);
-		final BigVector bigVec1e = new BigVector(vec2e);
-		final BigVector bigVec2s = new BigVector(vec2s);
-		final BigVector bigVec2e = new BigVector(vec2e);
+		final Coord3D bigVec1s = new Coord3D(vec1s);
+		final Coord3D bigVec1e = new Coord3D(vec2e);
+		final Coord3D bigVec2s = new Coord3D(vec2s);
+		final Coord3D bigVec2e = new Coord3D(vec2e);
 
-		final BigVector d1 = bigVec1e.subtract(bigVec1s);
-		final BigVector d2 = bigVec2e.subtract(bigVec2s);
+		final Coord3D d1 = bigVec1e.subtract(bigVec1s);
+		final Coord3D d2 = bigVec2e.subtract(bigVec2s);
 
-		final BigVector w0 = bigVec1s.subtract(bigVec2s);
-		final BigVector w1 = bigVec1e.subtract(bigVec2e);
+		final Coord3D w0 = bigVec1s.subtract(bigVec2s);
+		final Coord3D w1 = bigVec1e.subtract(bigVec2e);
 
 		final BigDecimal a = d1.dotProduct(d1);
 		final BigDecimal b = d1.dotProduct(d2);
@@ -1157,7 +1167,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			bigVec2e.y().add(t.multiply(bigVec2e.y().subtract(bigVec2s.y()))),
 			bigVec2e.z().add(t.multiply(bigVec2e.z().subtract(bigVec2s.z())))
 		};
-		final BigDecimal minDist = BigVector.bigSqrt(
+		final BigDecimal minDist = Coord3D.bigSqrt(
 			v2[0].subtract(v1[0]).multiply(v2[0].subtract(v1[0])).add(
 			v2[1].subtract(v1[1]).multiply(v2[1].subtract(v1[1]))).add(
 			v2[2].subtract(v1[2]).multiply(v2[2].subtract(v1[2]))));
@@ -1165,17 +1175,17 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public double getMinDistanceFrom(final long[] prevPos, final long[] curPos, final long[] objPos)
+	public double getMinDistanceFrom(final Coord3D prevPos, final Coord3D curPos, final Coord3D objPos)
 	{
-		if(Arrays.equals(prevPos, curPos))
+		if(prevPos.equals(curPos))
 			return this.getDistanceFrom(curPos, objPos);
-		final BigVector bigPrevPos = new BigVector(prevPos);
-		final BigVector bigCurPos = new BigVector(curPos);
-		final BigVector bigObjPos = new BigVector(objPos);
+		final Coord3D bigPrevPos = new Coord3D(prevPos);
+		final Coord3D bigCurPos = new Coord3D(curPos);
+		final Coord3D bigObjPos = new Coord3D(objPos);
 
-		final BigVector AB = bigCurPos.subtract(bigPrevPos);
-		final BigVector BE = bigObjPos.subtract(bigCurPos);
-		final BigVector AE = bigObjPos.subtract(bigPrevPos);
+		final Coord3D AB = bigCurPos.subtract(bigPrevPos);
+		final Coord3D BE = bigObjPos.subtract(bigCurPos);
+		final Coord3D AE = bigObjPos.subtract(bigPrevPos);
 
 		if(AB.dotProduct(BE).doubleValue() > 0)
 			return BE.magnitude().doubleValue();
@@ -1184,18 +1194,18 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			return AE.magnitude().doubleValue();
 		else
 		{
-			final BigVector bigDistance = bigPrevPos.subtract(bigCurPos);
+			final Coord3D bigDistance = bigPrevPos.subtract(bigCurPos);
 			bigDistance.unitVectorFrom(); // divides each point by the vectors magnitude
 			final BigDecimal dp = BE.dotProduct(bigDistance);
 			return bigCurPos.add(bigDistance.scalarProduct(dp)).subtract(bigObjPos).magnitude().doubleValue();
 		}
 	}
 
-	protected double getOldMinDistFrom(final long[] prevPos, final double speed, final double[] dir, final long[] curPosition,
-									   final double[] directionTo, final long[] objPos)
+	protected double getOldMinDistFrom(final Coord3D prevPos, final double speed, final double[] dir, final Coord3D curPosition,
+									   final double[] directionTo, final Coord3D objPos)
 	{
 		final BigDecimal currentDistance=getBigDistanceFrom(curPosition, objPos);
-		if(Arrays.equals(prevPos, curPosition))
+		if(prevPos.equals(curPosition))
 			return currentDistance.doubleValue();
 		final BigDecimal prevDistance=getBigDistanceFrom(prevPos, objPos);
 		final BigDecimal baseDistance=BigDecimal.valueOf(speed);
@@ -1278,15 +1288,15 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 
-	protected BoundedTube makeCourseTubeRay(final long[] src, final long sradius,
-											final long[] target, final long tradius,
+	protected BoundedTube makeCourseTubeRay(final Coord3D src, final long sradius,
+											final Coord3D target, final long tradius,
 											final double[] dir)
 	{
 		// never add source, it is implied!
 		final long sgradius=Math.round(CMath.mul(sradius,(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 		final long tgradius=Math.round(CMath.mul(tradius,(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
-		final long[] srcCoord = moveSpaceObject(src, dir, sgradius+1);
-		final long[] tgtCoord = moveSpaceObject(target, getOppositeDir(dir), tgradius+1);
+		final Coord3D srcCoord = moveSpaceObject(src, dir, sgradius+1);
+		final Coord3D tgtCoord = moveSpaceObject(target, getOppositeDir(dir), tgradius+1);
 		final long distance = getDistanceFrom(srcCoord, tgtCoord);
 		final BoundedSphere courseRay = new BoundedSphere(srcCoord, sgradius);
 		if(courseRay.contains(tgtCoord)
@@ -1300,14 +1310,14 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public List<long[]> plotCourse(final long[] osrc, final long sradius, final long[] otarget, final long tradius, int maxTicks)
+	public List<Coord3D> plotCourse(final Coord3D osrc, final long sradius, final Coord3D otarget, final long tradius, int maxTicks)
 	{
-		final List<long[]> course = new LinkedList<long[]>();
-		long[] src=osrc.clone();
-		long[] target = otarget.clone();
+		final List<Coord3D> course = new LinkedList<Coord3D>();
+		Coord3D src=osrc.copyOf();
+		Coord3D target = otarget.copyOf();
 		BoundedTube courseRay;
 		List<SpaceObject> objs;
-		while(!Arrays.equals(src, target))
+		while(!src.equals(target))
 		{
 			final double[] dir = getDirection(src, target);
 			courseRay = makeCourseTubeRay(src, sradius, target, tradius,dir);
@@ -1319,7 +1329,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			while((objs.size()>0)&&(--tries>0))
 			{
 				err *= 2.0;
-				final List<long[]> choices = new ArrayList<long[]>(4);
+				final List<Coord3D> choices = new ArrayList<Coord3D>(4);
 				for(int dd=0;dd<4;dd++)
 				{
 					if(objs.size()>0)
@@ -1341,7 +1351,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 						final double dsgradius = CMath.mul(sradius, err);
 						final double dtgradius = CMath.mul(bobj.radius(),(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)) * err;
 						final double dirDelta = new BigDecimal(Math.atan(dsgradius + dtgradius))
-											.divide(distanceToBobj, BigVector.SCALE, RoundingMode.HALF_UP).doubleValue();
+											.divide(distanceToBobj, Coord3D.SCALE, RoundingMode.HALF_UP).doubleValue();
 						final double[] newDir = dir.clone();
 						switch(dd)
 						{
@@ -1358,7 +1368,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 							changeDirection(newDir, new double[] {0,-dirDelta});
 							break;
 						}
-						final long[] newSubTarget = moveSpaceObject(src, newDir, distanceToBobj.longValue());
+						final Coord3D newSubTarget = moveSpaceObject(src, newDir, distanceToBobj.longValue());
 						courseRay = makeCourseTubeRay(src, sradius, newSubTarget, bobj.radius(), newDir);
 						if(courseRay == null)
 							return course; // we are on top of the target, so done
@@ -1390,8 +1400,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			if(objs.size()==0)
 			{
 				course.add(target); // WIN!
-				src = target.clone();
-				target = otarget.clone();
+				src = target.copyOf();
+				target = otarget.copyOf();
 				if(--maxTicks<=0)
 					return course;
 			}
@@ -1480,7 +1490,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 					continue;
 				BoundedTube tube=new BoundedTube(O.getSphere());
 				final double speed=O.speed();
-				final long[] startCoords=O.coordinates().clone();
+				final Coord3D startCoords=O.coordinates().copyOf();
 				final boolean moving;
 				if(speed>=1)
 				{
@@ -1497,7 +1507,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				final long oMass = O.getMass();
 				// objects should already be sorted by closeness for good collision detection
 				if(isDebuggingHARD && moving)
-					Log.debugOut("Space Object "+O.name()+" moved "+speed+" in dir " +CMLib.english().directionDescShort(O.direction())+" to "+CMLib.english().coordDescShort(O.coordinates()));
+					Log.debugOut("Space Object "+O.name()+" moved "+speed+" in dir " +CMLib.english().directionDescShort(O.direction())+" to "+CMLib.english().coordDescShort(O.coordinates().toLongs()));
 
 				for(final SpaceObject cO : cOs)
 				{
@@ -1523,7 +1533,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 						if((O instanceof Weapon)&&(isDebugging) && moving)
 						{
 							final long dist = CMLib.space().getDistanceFrom(O, cO);
-							Log.debugOut("SpaceShip Weapon "+O.Name()+" closest distance is "+minDistance+" to "+cO.name()+"@("+CMParms.toListString(cO.coordinates())+"):<"+(O.radius()+cO.radius())+"/"+dist);
+							Log.debugOut("SpaceShip Weapon "+O.Name()+" closest distance is "+minDistance+" to "+cO.name()
+								+"@("+CMParms.toListString(cO.coordinates().toLongs())+"):<"+(O.radius()+cO.radius())+"/"+dist);
 						}
 						if ((minDistance<(O.radius()+cO.radius()))
 						&&((speed>0)||(cO.speed()>0))

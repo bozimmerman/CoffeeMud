@@ -273,7 +273,8 @@ public class StdCompLauncher extends StdElecCompContainer implements TechCompone
 								reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 								return;
 							}
-							final long[] proposedLoc=new long[] {((Long)parms[0]).longValue(), ((Long)parms[1]).longValue(), ((Long)parms[2]).longValue()};
+							final Coord3D proposedLoc=
+									new Coord3D(new long[] {((Long)parms[0]).longValue(), ((Long)parms[1]).longValue(), ((Long)parms[2]).longValue()});
 							final List<SpaceObject> nearbies = CMLib.space().getSpaceObjectsByCenterpointWithin(proposedLoc, 0, 1000);
 							SpaceObject nearestObj = null;
 							long closest = Long.MAX_VALUE;
@@ -376,7 +377,7 @@ public class StdCompLauncher extends StdElecCompContainer implements TechCompone
 											launchSpeed = launchedO.speed();
 										final int accellerationOfShipInSameDirectionAsWeapon = 4; //TODO: magic numbers suck
 										//TODO: adding ship.speed() is wrong because you could be firing aft.
-										final long[] firstCoords = CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection,
+										final Coord3D firstCoords = CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection,
 												(int)Math.round(ship.radius()+launchedO.radius()+ship.speed()+accellerationOfShipInSameDirectionAsWeapon));
 										launchedO.setCoords(firstCoords);
 										launchedO.setDirection(targetDirection);

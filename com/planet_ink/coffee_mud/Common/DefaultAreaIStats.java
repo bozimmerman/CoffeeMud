@@ -342,7 +342,8 @@ public class DefaultAreaIStats implements AreaIStats
 					modeLevel = lastI;
 					modeCt=curCt;
 				}
-				statData[Area.Stats.MODE_LEVEL.ordinal()] = modeLevel.intValue();
+				if(modeLevel != null)
+					statData[Area.Stats.MODE_LEVEL.ordinal()] = modeLevel.intValue();
 			}
 		}
 		wk.levelRanges.clear();
@@ -372,7 +373,8 @@ public class DefaultAreaIStats implements AreaIStats
 				modeAlign = lastI;
 				modeCt=curCt;
 			}
-			statData[Area.Stats.MODE_ALIGNMENT.ordinal()] = modeAlign.intValue();
+			if(modeAlign != null)
+				statData[Area.Stats.MODE_ALIGNMENT.ordinal()] = modeAlign.intValue();
 		}
 		wk.alignRanges.clear();
 		int maxRace = 0;

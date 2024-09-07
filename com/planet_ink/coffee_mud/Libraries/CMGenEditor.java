@@ -35,6 +35,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.regex.*;
@@ -5982,7 +5983,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final StringBuilder buf=new StringBuilder();
 		buf.append(showNumber+". ");
 		final String targetName = E.knownTarget() == null ? "NONE" : E.knownTarget().Name();
-		final String targetLoc = E.knownTarget() == null ? "N/A" : CMLib.english().coordDescShort(E.knownTarget().coordinates());
+		final String targetLoc = E.knownTarget() == null ? "N/A" : CMLib.english().coordDescShort(E.knownTarget().coordinates().toLongs());
 		buf.append(L("Target: @x1  (Coords in space: @x2)",targetName,targetLoc));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
@@ -6028,7 +6029,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			final StringBuilder buf=new StringBuilder();
 			buf.append(showNumber+". ");
-			buf.append(L("Radius: @x1, Coords in space: @x2\n\r",CMLib.english().sizeDescShort(E.radius()),CMLib.english().coordDescShort(E.coordinates())));
+			buf.append(L("Radius: @x1, Coords in space: @x2\n\r",CMLib.english().sizeDescShort(E.radius()),CMLib.english().coordDescShort(E.coordinates().toLongs())));
 			buf.append(L("@x1. Moving: ",CMStrings.SPACES.substring(0,(""+showNumber).length())));
 			if(E.speed()<=0)
 				buf.append("no");
@@ -6045,7 +6046,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(L("(unchanged)"));
 				break;
 			}
-			final Long newValue=CMLib.english().parseSpaceDistance(val);
+			final BigDecimal newValue=CMLib.english().parseSpaceDistance(val);
 			if((newValue==null)||(newValue.longValue()<0))
 				mob.tell(L("Unknown radius: '@x1', valid units include: @x2.",val,SpaceObject.Distance.getFullList()));
 			else
@@ -6061,7 +6062,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final String coordHelp2=L("Valid distance units include: @x1.",SpaceObject.Distance.getFullList());
 		while((mob!=null)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
-			String val=mob.session().prompt(L("@x1. Coordinates in Space (ENTER=@x2): ",""+showNumber,(CMLib.english().coordDescShort(E.coordinates()))));
+			String val=mob.session().prompt(L("@x1. Coordinates in Space (ENTER=@x2): ",""+showNumber,(CMLib.english().coordDescShort(E.coordinates().toLongs()))));
 			if((val==null)||(val.trim().length()==0))
 			{
 				mob.tell(L("(unchanged)"));
@@ -6096,7 +6097,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 				final String distStr=CMParms.combine(tokens,0,x);
 				final String objName=CMParms.combine(tokens,x+1);
-				final Long dist=CMLib.english().parseSpaceDistance(distStr);
+				final BigDecimal dist=CMLib.english().parseSpaceDistance(distStr);
 				if(dist==null)
 				{
 					mob.tell(L("Unknown distance:")+" '"+distStr+"'. "+coordHelp2);
@@ -6114,7 +6115,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					mob.tell(L("Unknown relative space object")+" '"+objName+"'.\n\r"+coordHelp2);
 					continue;
 				}
-				val=CMParms.toListString(CMLib.space().getLocation(O.coordinates(), direction, dist.longValue()));
+				val=CMParms.toListString(CMLib.space().getLocation(O.coordinates(), direction, dist.longValue()).toLongs());
 			}
 
 			final List<String> valsL=CMParms.parseCommas(val,true);
@@ -6123,10 +6124,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			{
 				boolean fail=true;
-				final Long[] valL=new Long[3];
+				final BigDecimal[] valL=new BigDecimal[3];
 				for(int i=0;i<3;i++)
 				{
-					final Long newValue=CMLib.english().parseSpaceDistance(valsL.get(i));
+					final BigDecimal newValue=CMLib.english().parseSpaceDistance(valsL.get(i));
 					if(newValue==null)
 					{
 						mob.tell(L("Unknown coord: '@x1'. @x2",valsL.get(i),coordHelp2));
@@ -6141,10 +6142,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				if(!fail)
 				{
-					E.setCoords(new long[]{valL[0].longValue(),valL[1].longValue(),valL[2].longValue()});
-					E.coordinates()[0] = E.coordinates()[0] % SpaceObject.Distance.GalaxyRadius.dm;
-					E.coordinates()[1] = E.coordinates()[1] % SpaceObject.Distance.GalaxyRadius.dm;
-					E.coordinates()[2] = E.coordinates()[2] % SpaceObject.Distance.GalaxyRadius.dm;
+					E.setCoords(new Coord3D(valL));
+					E.coordinates().x(E.coordinates().x().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
+					E.coordinates().y(E.coordinates().y().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
+					E.coordinates().z(E.coordinates().z().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
 					break;
 				}
 			}
@@ -6162,7 +6163,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				val=val.substring(0,val.length()-4);
 			if(val.trim().toLowerCase().endsWith("/second"))
 				val=val.substring(0,val.length()-7);
-			final Long newValue=CMLib.english().parseSpaceDistance(val);
+			final BigDecimal newValue=CMLib.english().parseSpaceDistance(val);
 			if((newValue==null)||(newValue.longValue()<0))
 				mob.tell(L("Unknown speed/sec: '@x1', valid units include: @x2.",val,SpaceObject.Distance.getAbbrList()));
 			else

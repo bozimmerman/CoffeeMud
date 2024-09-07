@@ -65,5 +65,5 @@ public interface BoundedObject
 	 *
 	 * @return the center of this object in xyz coordinates
 	 */
-	public long[] center();
+	public Coord3D center();
 }

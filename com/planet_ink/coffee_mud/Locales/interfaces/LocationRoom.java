@@ -49,7 +49,7 @@ public interface LocationRoom extends Room
 	 * @see LocationRoom#getDirectionFromCore()
 	 * @return Coordinates of the place
 	 */
-	public long[] coordinates();
+	public Coord3D coordinates();
 
 	/**
 	 * Returns the direction from the core of the planet to the

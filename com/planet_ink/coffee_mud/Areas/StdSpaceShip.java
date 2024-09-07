@@ -142,7 +142,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public long[] center()
+	public Coord3D center()
 	{
 		return coordinates();
 	}
@@ -172,13 +172,13 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public long[] coordinates()
+	public Coord3D coordinates()
 	{
-		return (shipItem instanceof SpaceShip) ? ((SpaceShip) shipItem).coordinates() : new long[3];
+		return (shipItem instanceof SpaceShip) ? ((SpaceShip) shipItem).coordinates() : new Coord3D();
 	}
 
 	@Override
-	public void setCoords(final long[] coords)
+	public void setCoords(final Coord3D coords)
 	{
 		if (shipItem instanceof SpaceShip)
 			((SpaceShip) shipItem).setCoords(coords);

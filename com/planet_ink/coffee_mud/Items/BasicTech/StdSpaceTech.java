@@ -41,7 +41,7 @@ public class StdSpaceTech extends StdTechItem implements SpaceObject
 		return "StdSpaceTech";
 	}
 
-	protected long[]		coordinates	= new long[3];
+	protected Coord3D		coordinates	= new Coord3D();
 	protected long			radius;
 	protected double[]		direction	= new double[2];
 	protected double		speed		= 0;
@@ -81,15 +81,15 @@ public class StdSpaceTech extends StdTechItem implements SpaceObject
 	}
 
 	@Override
-	public long[] coordinates()
+	public Coord3D coordinates()
 	{
 		return coordinates;
 	}
 
 	@Override
-	public void setCoords(final long[] coords)
+	public void setCoords(final Coord3D coords)
 	{
-		if((coords!=null)&&(coords.length==3))
+		if((coords!=null)&&(coords.length()==3))
 			CMLib.space().moveSpaceObject(this,coords);
 	}
 
@@ -100,7 +100,7 @@ public class StdSpaceTech extends StdTechItem implements SpaceObject
 	}
 
 	@Override
-	public long[] center()
+	public Coord3D center()
 	{
 		return coordinates();
 	}

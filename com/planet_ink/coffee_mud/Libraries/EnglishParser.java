@@ -22,6 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.*;
 
@@ -551,7 +552,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public Long parseSpaceDistance(String dist)
+	public BigDecimal parseSpaceDistance(String dist)
 	{
 		if(dist==null)
 			return null;
@@ -563,7 +564,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			digits++;
 		if(digits<0)
 			return null;
-		final Long value=Long.valueOf(dist.substring(0,digits+1));
+		final BigDecimal value=new BigDecimal(Long.valueOf(dist.substring(0,digits+1)).longValue());
 		final String unit=dist.substring(digits+1).trim();
 		if(unit.length()==0)
 			return value;
@@ -594,7 +595,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		if(distUnit==null)
 			return null;
-		return Long.valueOf(value.longValue() * distUnit.dm);
+		return value.multiply(new BigDecimal(distUnit.dm));
 	}
 
 	@Override

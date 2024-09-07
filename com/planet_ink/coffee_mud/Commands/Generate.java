@@ -372,7 +372,8 @@ public class Generate extends StdCommand
 					{
 						final ScriptingEngine engE = (ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 						engE.setScript((String)V.get(v));
-						target.addScript(engE);
+						if(target != null)
+							target.addScript(engE);
 					}
 					else
 						mob.tell((String)V.get(v));

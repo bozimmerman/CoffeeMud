@@ -193,9 +193,9 @@ public class ShipTacticalProgram extends ShipNavProgram
 			{
 				E=finalWeaponToFire;
 				String code;
-				code=TechCommand.TARGETSET.makeCommand(Long.valueOf(targetObj.coordinates()[0]),
-													   Long.valueOf(targetObj.coordinates()[1]),
-													   Long.valueOf(targetObj.coordinates()[2]));
+				code=TechCommand.TARGETSET.makeCommand(Long.valueOf(targetObj.coordinates().x().longValue()),
+													   Long.valueOf(targetObj.coordinates().y().longValue()),
+													   Long.valueOf(targetObj.coordinates().z().longValue()));
 				msg=CMClass.getMsg(mob, finalWeaponToFire, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 				if((finalWeaponToFire.getTechType()!=Technical.TechType.SHIP_LAUNCHER)
 				||sendMessage(mob, finalWeaponToFire, msg, unparsed))
@@ -395,7 +395,7 @@ public class ShipTacticalProgram extends ShipNavProgram
 				String coords = "";
 				if((currentTarget.speed()==0)
 				&&(currentTarget.radius()>SpaceObject.Distance.AsteroidRadius.dm))
-					coords = CMParms.toListString(currentTarget.coordinates());
+					coords = CMParms.toListString(currentTarget.coordinates().toLongs());
 				final String code=TechCommand.SWSVCRES.makeCommand(service,new String[] { Name,name,coords });
 				final CMMsg msg2=CMClass.getMsg(factoryMOB, S, this,
 								CMMsg.NO_EFFECT, null,

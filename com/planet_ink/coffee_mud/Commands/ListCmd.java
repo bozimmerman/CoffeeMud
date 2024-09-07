@@ -41,6 +41,7 @@ import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -3463,8 +3464,8 @@ public class ListCmd extends StdCommand
 		}
 		final String[] keywords=CMLib.lang().sessionTranslation(new String[]{"ALL","WITHIN","DISTANCE"});
 		final String[] sortcols=CMLib.lang().sessionTranslation(new String[]{"TYPE","RADIUS","COORDINATES","SPEED","MASS","NAME","COORDSX","COORDSY","COORDSZ"});
-		Long withinDistance=null;
-		long[] centerPoint=null;
+		BigDecimal withinDistance=null;
+		Coord3D centerPoint=null;
 		final SpaceObject SO=CMLib.space().getSpaceObject(mob, false);
 		for(int i=1;i<commands.size();i++)
 		{
@@ -3488,20 +3489,20 @@ public class ListCmd extends StdCommand
 					{
 						final String around=CMParms.combine(commands,i,end);
 						final List<String> listStr=CMParms.parseCommas(around,true);
-						long[] coords=null;
+						Coord3D coords=null;
 						if(listStr.size()==3)
 						{
 							final long[] valL=new long[3];
 							for(int x=0;x<3;x++)
 							{
-								final Long newValue=CMLib.english().parseSpaceDistance(listStr.get(x));
+								final BigDecimal newValue=CMLib.english().parseSpaceDistance(listStr.get(x));
 								if(newValue==null)
 									break;
 								else
 								{
 									valL[i]=newValue.longValue();
 									if(i==2)
-										coords=valL;
+										coords=new Coord3D(valL);
 								}
 							}
 						}
@@ -3542,7 +3543,7 @@ public class ListCmd extends StdCommand
 					else
 					{
 						final String within=CMParms.combine(commands,i,end);
-						final Long distance=CMLib.english().parseSpaceDistance(within);
+						final BigDecimal distance=CMLib.english().parseSpaceDistance(within);
 						if(distance==null)
 						{
 							return L("\n\rBad WITHIN parm: '@x1' -- no valid distance specified.\n\r",within);
@@ -3641,17 +3642,17 @@ public class ListCmd extends StdCommand
 								@Override
 								public int compare(final SpaceObject o1, final SpaceObject o2)
 								{
-									int i = Long.valueOf(o1 == null ? Long.MIN_VALUE : o1.coordinates()[b[0][0]])
-											.compareTo(Long.valueOf(o2 == null ? Long.MIN_VALUE : o2.coordinates()[b[0][0]]));
+									int i = Long.valueOf(o1 == null ? Long.MIN_VALUE : o1.coordinates().getl(b[0][0]))
+											.compareTo(Long.valueOf(o2 == null ? Long.MIN_VALUE : o2.coordinates().getl(b[0][0])));
 									if (i != 0)
 									{
-										i = Long.valueOf(o1 == null ? Long.MIN_VALUE : o1.coordinates()[b[0][1]])
-											.compareTo(Long.valueOf(o2 == null ? Long.MIN_VALUE : o2.coordinates()[b[0][1]]));
+										i = Long.valueOf(o1 == null ? Long.MIN_VALUE : o1.coordinates().getl(b[0][1]))
+											.compareTo(Long.valueOf(o2 == null ? Long.MIN_VALUE : o2.coordinates().getl(b[0][1])));
 									}
 									if (i != 0)
 									{
-										i = Long.valueOf(o1 == null ? Long.MIN_VALUE : o1.coordinates()[b[0][2]])
-											.compareTo(Long.valueOf(o2 == null ? Long.MIN_VALUE : o2.coordinates()[b[0][2]]));
+										i = Long.valueOf(o1 == null ? Long.MIN_VALUE : o1.coordinates().getl(b[0][2]))
+											.compareTo(Long.valueOf(o2 == null ? Long.MIN_VALUE : o2.coordinates().getl(b[0][2])));
 									}
 									return i;
 								}
@@ -3675,10 +3676,10 @@ public class ListCmd extends StdCommand
 				if(SO!=null)
 					centerPoint=SO.coordinates();
 				else
-					centerPoint=new long[]{0,0,0};
+					centerPoint=new Coord3D(new long[]{0,0,0});
 			}
 			if(withinDistance==null)
-				withinDistance=Long.valueOf(SpaceObject.Distance.SolarSystemRadius.dm+1000000);
+				withinDistance=BigDecimal.valueOf(SpaceObject.Distance.SolarSystemRadius.dm+1000000);
 			final List<SpaceObject> objs2=CMLib.space().getSpaceObjectsByCenterpointWithin(centerPoint, 0, withinDistance.longValue());
 			for(final Iterator<SpaceObject> i=objs.iterator();i.hasNext();)
 			{
@@ -3699,7 +3700,7 @@ public class ListCmd extends StdCommand
 		{
 			str.append(CMStrings.padRight(getSpaceObjectType(obj),COL_LEN1)+" ");
 			str.append(CMStrings.padRight(CMLib.english().sizeDescShort(obj.radius()),COL_LEN2)+" ");
-			str.append(CMStrings.padRight(CMLib.english().coordDescShort(obj.coordinates()),COL_LEN3)+" ");
+			str.append(CMStrings.padRight(CMLib.english().coordDescShort(obj.coordinates().toLongs()),COL_LEN3)+" ");
 			str.append(CMStrings.padRight(CMLib.english().speedDescShort(obj.speed()),COL_LEN4)+" ");
 			str.append(CMStrings.padRight(shortenNumber(obj.getMass(),COL_LEN5),COL_LEN5)+" ");
 			str.append(obj.name()+"\n\r");
@@ -5262,7 +5263,7 @@ public class ListCmd extends StdCommand
 			final Boardable S=s.nextElement();
 			str.append(CMStrings.padRight(S.Name(), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");
 			if((S instanceof SpaceObject)&&(((SpaceShip)S).getIsDocked()==null))
-				str.append(CMStrings.padRight(CMParms.toListString(((SpaceObject)S).coordinates()), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");
+				str.append(CMStrings.padRight(CMParms.toListString(((SpaceObject)S).coordinates().toLongs()), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");
 			else
 				str.append(CMStrings.padRight(CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(S)), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");
 			if(S instanceof SpaceObject)

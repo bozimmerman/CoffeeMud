@@ -46,7 +46,10 @@ public class GasGiant extends GenSpaceBody
 		setName("unknown gas giant");
 		setDisplayText("an unknown gas giant is floating here");
 		setDescription("it`s pretty");
-		coordinates=new long[]{Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random())};
+		coordinates=new Coord3D(new long[]{
+				Math.round(Long.MAX_VALUE*Math.random()),
+				Math.round(Long.MAX_VALUE*Math.random()),
+				Math.round(Long.MAX_VALUE*Math.random())});
 		final Random random=new Random(System.currentTimeMillis());
 		radius=SpaceObject.Distance.SaturnRadius.dm + (random.nextLong() % (SpaceObject.Distance.SaturnRadius.dm / 2));
 		this.setMaterial(RawMaterial.RESOURCE_HYDROGEN);

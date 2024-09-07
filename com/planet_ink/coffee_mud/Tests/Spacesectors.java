@@ -58,24 +58,24 @@ public class Spacesectors extends StdTest
 	@Override
 	public String doTest(final MOB mob, final int metaFlags, final String what, final List<String> commands)
 	{
-		final long[] coordinates = new long[3];
+		final Coord3D coordinates = new Coord3D();
 		for(long x = -SpaceObject.Distance.GalaxyRadius.dm; x<= SpaceObject.Distance.GalaxyRadius.dm; x+= (SpaceObject.Distance.GalaxyRadius.dm / 88))
 		{
-			coordinates[0] = x;
-			final long [] in = CMLib.space().getInSectorCoords(coordinates);
-			mob.tell(CMLib.space().getSectorName(coordinates) + ": "+in[0]+","+in[1]+","+in[2]);
+			coordinates.x(x);
+			final Coord3D in = CMLib.space().getInSectorCoords(coordinates);
+			mob.tell(CMLib.space().getSectorName(coordinates) + ": "+in.x()+","+in.y()+","+in.z());
 		}
 		for(long x = -SpaceObject.Distance.GalaxyRadius.dm; x<= SpaceObject.Distance.GalaxyRadius.dm; x+= (SpaceObject.Distance.GalaxyRadius.dm / 88))
 		{
-			coordinates[1] = x;
-			final long [] in = CMLib.space().getInSectorCoords(coordinates);
-			mob.tell(CMLib.space().getSectorName(coordinates) + ": "+in[0]+","+in[1]+","+in[2]);
+			coordinates.y(x);
+			final Coord3D in = CMLib.space().getInSectorCoords(coordinates);
+			mob.tell(CMLib.space().getSectorName(coordinates) + ": "+in.x()+","+in.y()+","+in.z());
 		}
 		for(long x = -SpaceObject.Distance.GalaxyRadius.dm; x<= SpaceObject.Distance.GalaxyRadius.dm; x+= (SpaceObject.Distance.GalaxyRadius.dm / 88))
 		{
-			coordinates[2] = x;
-			final long [] in = CMLib.space().getInSectorCoords(coordinates);
-			mob.tell(CMLib.space().getSectorName(coordinates) + ": "+in[0]+","+in[1]+","+in[2]);
+			coordinates.z(x);
+			final Coord3D in = CMLib.space().getInSectorCoords(coordinates);
+			mob.tell(CMLib.space().getSectorName(coordinates) + ": "+in.x()+","+in.y()+","+in.z());
 		}
 		return null;
 	}

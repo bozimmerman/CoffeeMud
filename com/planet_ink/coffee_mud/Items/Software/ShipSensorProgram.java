@@ -52,8 +52,8 @@ public class ShipSensorProgram extends GenShipProgram
 		return "ShipSensorProgram";
 	}
 
-	protected final static long[] 	emptyCoords = new long[] {0,0,0};
-	protected final static double[] emptyDirection = new double[] {0,0};
+	protected final static BigVector emptyCoords = new BigVector(new long[] {0,0,0});
+	protected final static double[]  emptyDirection = new double[] {0,0};
 
 	protected final Map<Technical, Set<SpaceObject>>	sensorReps	= new SHashtable<Technical, Set<SpaceObject>>();
 	protected final Set<TechComponent>					activated	= Collections.synchronizedSet(new HashSet<TechComponent>());
@@ -152,11 +152,11 @@ public class ShipSensorProgram extends GenShipProgram
 		return localSensorReport;
 	}
 
-	protected boolean containsSameCoordinates(final List<SpaceObject> objs, final long[] coordinates)
+	protected boolean containsSameCoordinates(final List<SpaceObject> objs, final BigVector coordinates)
 	{
 		for(final SpaceObject o : objs)
 		{
-			if(Arrays.equals(o.coordinates(), coordinates))
+			if(o.coordinates().equals(coordinates))
 				return true;
 		}
 		return false;
@@ -279,7 +279,7 @@ public class ShipSensorProgram extends GenShipProgram
 								if((!spaceObj.Name().equals(spaceObj.name()))
 								&&(svcs.containsKey(SWServices.IDENTIFICATION)))
 								{
-									final String coords = CMParms.toListString(spaceObj.coordinates());
+									final String coords = CMParms.toListString(spaceObj.coordinates().toLongs());
 									final String realName=spaceObj.Name();
 									final String notName = spaceObj.name();
 									final String name = getDataName(realName, coords, notName);
@@ -346,9 +346,9 @@ public class ShipSensorProgram extends GenShipProgram
 					final long distance = CMLib.space().getDistanceFrom(ship.coordinates(), targetObj.coordinates()) - ship.radius() - targetObj.radius();
 					final double[] direction = CMLib.space().getDirection(ship, targetObj);
 					entries.add("Identifier",targetObj.name());
-					if(!Arrays.equals(targetObj.coordinates(),emptyCoords))
+					if(!targetObj.coordinates().equals(emptyCoords))
 						entries.add("Direction",CMLib.english().directionDescShortest(direction));
-					if(!Arrays.equals(targetObj.coordinates(),emptyCoords))
+					if(!targetObj.coordinates().equals(emptyCoords))
 						entries.add("Distance",CMLib.english().distanceDescShort(distance));
 					if(!Arrays.equals(targetObj.direction(),emptyDirection))
 						entries.add("Moving",CMLib.english().directionDescShortest(targetObj.direction()));
@@ -413,13 +413,13 @@ public class ShipSensorProgram extends GenShipProgram
 				SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, parm, false);
 				if(targetObj == null)
 					targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, parm, true);
-				final long[] coords=(targetObj!=null) ? targetObj.coordinates() : null;
+				final BigVector coords=(targetObj!=null) ? targetObj.coordinates() : null;
 				if(coords != null)
 				{
 					final MOB factoryMOB = CMClass.getFactoryMOB(name(), 1, CMLib.map().roomLocation(this));
 					try
 					{
-						final String code=TechCommand.SWSVCRES.makeCommand(service,new String[] { CMParms.toListString(coords) });
+						final String code=TechCommand.SWSVCRES.makeCommand(service,new String[] { CMParms.toListString(coords.toLongs()) });
 						final CMMsg msg2=CMClass.getMsg(factoryMOB, S, this,
 								CMMsg.NO_EFFECT, null,
 								CMMsg.MSG_ACTIVATE|CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG, code,

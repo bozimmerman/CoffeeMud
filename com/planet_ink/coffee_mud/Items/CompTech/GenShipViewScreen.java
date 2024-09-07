@@ -408,16 +408,16 @@ public class GenShipViewScreen extends GenShipOpticalSensor implements ShipDirec
 					}
 
 					@Override
-					public long[] coordinates()
+					public Coord3D coordinates()
 					{
 						final SpaceObject sobj =CMLib.space().getSpaceObject(obj, false);
 						if(sobj!=null)
-							return Arrays.copyOf(sobj.coordinates(), sobj.coordinates().length);
+							return sobj.coordinates().copyOf();
 						return emptyCoords;
 					}
 
 					@Override
-					public void setCoords(final long[] coords)
+					public void setCoords(final Coord3D coords)
 					{
 					}
 
@@ -431,7 +431,7 @@ public class GenShipViewScreen extends GenShipOpticalSensor implements ShipDirec
 					}
 
 					@Override
-					public long[] center()
+					public Coord3D center()
 					{
 						return coordinates();
 					}

@@ -2,7 +2,6 @@ package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -99,7 +98,7 @@ public class GenSpaceBody extends StdSpaceBody
 		case 2:
 			return "" + radius();
 		case 3:
-			return "" + CMParms.toListString(coordinates());
+			return "" + CMParms.toListString(coordinates().toLongs());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -123,10 +122,10 @@ public class GenSpaceBody extends StdSpaceBody
 			setRadius(CMath.s_parseLongExpression(val));
 			break;
 		case 3:
-			setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true)));
-			coordinates[0] = coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm;
-			coordinates[1] = coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm;
-			coordinates[2] = coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm;
+			setCoords(new Coord3D(CMParms.toLongArray(CMParms.parseCommas(val, true))));
+			coordinates.x(coordinates.x().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
+			coordinates.y(coordinates.y().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
+			coordinates.z(coordinates.z().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
