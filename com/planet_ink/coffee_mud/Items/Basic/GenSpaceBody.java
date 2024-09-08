@@ -92,7 +92,7 @@ public class GenSpaceBody extends StdSpaceBody
 		switch(getInternalCodeNum(code))
 		{
 		case 0:
-			return "" + CMParms.toListString(direction());
+			return "" + CMParms.toListString(direction().toDoubles());
 		case 1:
 			return "" + speed();
 		case 2:
@@ -113,7 +113,7 @@ public class GenSpaceBody extends StdSpaceBody
 		switch(getInternalCodeNum(code))
 		{
 		case 0:
-			setDirection(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
+			setDirection(new Dir3D(CMParms.toDoubleArray(CMParms.parseCommas(val, true))));
 			break;
 		case 1:
 			setSpeed(CMath.s_parseMathExpression(val));

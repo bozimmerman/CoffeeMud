@@ -530,12 +530,12 @@ public class AreaData extends StdWebMacro
 					str.append(((SpaceObject)A).getMass());
 
 				if(parms.containsKey("DIRECTION") && (A instanceof SpaceObject))
-					str.append(CMParms.toListString(((SpaceObject)A).direction()));
+					str.append(CMParms.toListString(((SpaceObject)A).direction().toDoubles()));
 
 				if(parms.containsKey("DIRECTION0") && (A instanceof SpaceObject))
-					str.append(((SpaceObject)A).direction()[0]);
+					str.append(((SpaceObject)A).direction().xyd());
 				if(parms.containsKey("DIRECTION1") && (A instanceof SpaceObject))
-					str.append(((SpaceObject)A).direction()[1]);
+					str.append(((SpaceObject)A).direction().zd());
 
 				if(parms.containsKey("SPEED") && (A instanceof SpaceObject))
 					str.append(((SpaceObject)A).speed());

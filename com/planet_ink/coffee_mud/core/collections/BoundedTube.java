@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.core.collections;
 
+import java.math.BigDecimal;
+
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
@@ -26,10 +28,10 @@ limitations under the License.
 public class BoundedTube extends BoundedSphere
 {
 	public Coord3D	exp;
-	public double[] 	dir;
-	public long			dist;
+	public Dir3D 	dir;
+	public long		dist;
 
-	public BoundedTube(final BoundedSphere l, final double[] direction, final long distance)
+	public BoundedTube(final BoundedSphere l, final Dir3D direction, final long distance)
 	{
 		super(l);
 		this.dir = direction;
@@ -41,20 +43,20 @@ public class BoundedTube extends BoundedSphere
 	{
 		super(l);
 		this.exp = null;
-		this.dir = new double[2];
+		this.dir = new Dir3D();
 		this.dist = 2;
 	}
 
-	private long[] extendTo(final long distance)
+	private Coord3D extendTo(final long distance)
 	{
-		final long[] start = xyz.toLongs();
-		final double x1=Math.cos(dir[0])*Math.sin(dir[1]);
-		final double y1=Math.sin(dir[0])*Math.sin(dir[1]);
-		final double z1=Math.cos(dir[1]);
-		final long speed = this.dist/2;
-		return new long[]{start[0]+Math.round(CMath.mul(speed,x1)),
-						start[1]+Math.round(CMath.mul(speed,y1)),
-						start[2]+Math.round(CMath.mul(speed,z1))};
+		final Coord3D start = xyz.copyOf();
+		final BigDecimal x1=BigDecimal.valueOf(Math.cos(dir.xyd())).multiply(BigDecimal.valueOf(Math.sin(dir.zd())));
+		final BigDecimal y1=BigDecimal.valueOf(Math.sin(dir.xyd())).multiply(BigDecimal.valueOf(Math.sin(dir.zd())));
+		final BigDecimal z1=BigDecimal.valueOf(Math.cos(dir.zd()));
+		final BigDecimal speed = BigDecimal.valueOf(this.dist/2);
+		return new Coord3D(start.x().add(speed.multiply(x1)),
+						   start.y().add(speed.multiply(y1)),
+						   start.z().add(speed.multiply(z1)));
 	}
 
 	@Override
@@ -85,10 +87,10 @@ public class BoundedTube extends BoundedSphere
 	{
 		if(exp != null)
 		{
-			final long[] mid = extendTo(this.dist/2);
+			final Coord3D mid = extendTo(this.dist/2);
 			return new BoundedSphere(mid,dist);
 		}
-		return new BoundedSphere(xyz.toLongs(), radius);
+		return new BoundedSphere(xyz, radius);
 	}
 
 	@Override

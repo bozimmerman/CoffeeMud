@@ -160,7 +160,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 			str.append("^H").append(CMStrings.padRight(L("Speed"),10));
 			str.append("^N").append(CMStrings.padRight(displayPerSec(Math.round(ship.speed())),25));
 			str.append("^H").append(CMStrings.padRight(L("Direction"),10));
-			final String dirStr=display(ship.direction());
+			final String dirStr=display(ship.direction().toDoubles());
 			str.append("^N").append(CMStrings.padRight(dirStr,15));
 			if(orbitingPlanet!=null)
 			{
@@ -185,7 +185,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 				str.append("^N").append(CMStrings.padRight(CMLib.english().coordDescShort(CMLib.space().getInSectorCoords(shipSpaceObject.coordinates()).toLongs()),25));
 			}
 			str.append("^H").append(CMStrings.padRight(L("Facing"),10));
-			final String facStr=display(ship.facing());
+			final String facStr=display(ship.facing().toDoubles());
 			str.append("^N").append(CMStrings.padRight(facStr,15));
 		}
 		str.append("^.^N\n\r");
@@ -260,7 +260,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 							{
 								final SpaceObject obj = (SpaceObject)o;
 								final long distance = CMLib.space().getDistanceFrom(spaceMe.coordinates(), obj.coordinates()) - spaceMe.radius() - obj.radius();
-								final double[] direction = CMLib.space().getDirection(spaceMe, obj);
+								final Dir3D direction = CMLib.space().getDirection(spaceMe, obj);
 								int pos=0;
 								final int max = 60;
 								if((currentTarget!=null)
@@ -270,7 +270,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 								if(!obj.coordinates().equals(emptyCoords))
 									pos = appendToLength(str, "^N, ^WDist: ^N" + CMLib.english().distanceDescShort(distance), pos, max);
 								if(!obj.coordinates().equals(emptyCoords))
-									pos = appendToLength(str, "^N, ^WDir: ^N" + CMLib.english().directionDescShortest(direction), pos, max);
+									pos = appendToLength(str, "^N, ^WDir: ^N" + CMLib.english().directionDescShortest(direction.toDoubles()), pos, max);
 								if(obj.getMass()>0)
 									pos = appendToLength(str, "^N, ^WMass: ^N" + CMath.abbreviateLong(obj.getMass()), pos, max);
 								if(obj.radius()>0)

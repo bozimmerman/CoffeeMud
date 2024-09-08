@@ -98,7 +98,7 @@ public class GenSpaceTech extends StdSpaceTech
 		case 2:
 			return "" + radius();
 		case 3:
-			return CMParms.toListString(direction());
+			return CMParms.toListString(direction().toDoubles());
 		case 4:
 			return "" + speed();
 		case 5:
@@ -129,7 +129,7 @@ public class GenSpaceTech extends StdSpaceTech
 			setRadius(CMath.s_long(val));
 			break;
 		case 3:
-			setDirection(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
+			setDirection(new Dir3D(CMParms.toDoubleArray(CMParms.parseCommas(val, true))));
 			break;
 		case 4:
 			setSpeed(CMath.s_double(val));

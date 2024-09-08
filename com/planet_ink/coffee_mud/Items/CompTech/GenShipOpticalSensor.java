@@ -379,16 +379,16 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 				}
 
 				@Override
-				public double[] direction()
+				public Dir3D direction()
 				{
 					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
-						return sobj.direction().clone();
-					return emptyDirection.clone();
+						return sobj.direction().copyOf();
+					return emptyDirection.copyOf();
 				}
 
 				@Override
-				public void setDirection(final double[] dir)
+				public void setDirection(final Dir3D dir)
 				{
 				}
 
@@ -453,7 +453,7 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 										  final SpaceObject O, final SpaceObject hO,
 										  final Map<Environmental, Double> visualRadiuses)
 	{
-		final double[] hDirTo = space.getDirection(O, hO);
+		final Dir3D hDirTo = space.getDirection(O, hO);
 		final long hDistance = space.getDistanceFrom(O, hO);
 		final BoundedTube hTube=O.getSphere().expand(hDirTo,hDistance);
 		for(final Iterator<Environmental> rb=revList.descendingIterator();rb.hasNext();)
@@ -586,7 +586,7 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 		final Filterer<Environmental> filter = this.getSensedObjectFilter();
 		if(!filter.passesFilter(hO))
 			return false;
-		final double[] hDirTo = space.getDirection(O, hO);
+		final Dir3D hDirTo = space.getDirection(O, hO);
 		final BoundedTube hTube=O.getSphere().expand(hDirTo,hDistance);
 		final List<SpaceObject> objs = space.getSpaceObjectsInBound(hTube.getCube());
 		final double vO = Math.atan(hO.radius()/hDistance);

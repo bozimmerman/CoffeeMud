@@ -78,14 +78,14 @@ public class Spaceinterception extends StdTest
 					obj1.coordinates().set(i,rand.nextInt(50000));
 					obj2.coordinates().set(i,rand.nextInt(50000));
 				}
-				obj2.direction()[0]=Math.abs(rand.nextDouble() * Math.PI * 2.0);
-				obj2.direction()[1]=Math.abs(rand.nextDouble() * Math.PI);
+				obj2.direction().xy(Math.abs(rand.nextDouble() * Math.PI * 2.0));
+				obj2.direction().z(Math.abs(rand.nextDouble() * Math.PI));
 				obj2.setSpeed(300+rand.nextInt(300));
-				final Pair<double[], Long> pair = space.calculateIntercept(obj1, obj2, 1000, maxTicks);
+				final Pair<Dir3D, Long> pair = space.calculateIntercept(obj1, obj2, 1000, maxTicks);
 				if(pair == null)
 				{
 					throw new CMException("FAILED! #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates().toLongs())
-							+": "+CMLib.english().directionDescShort(obj2.direction())
+							+": "+CMLib.english().directionDescShort(obj2.direction().toDoubles())
 							+": "+obj2.speed());
 				}
 				else
@@ -96,7 +96,7 @@ public class Spaceinterception extends StdTest
 					if(!space.canMaybeIntercept(obj1, obj2, maxTicks, pair.second.longValue()))
 					{
 						mob.tell("Stupid #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates().toLongs())
-								+": "+CMLib.english().directionDescShort(obj2.direction())
+								+": "+CMLib.english().directionDescShort(obj2.direction().toDoubles())
 								+": "+obj2.speed());
 						continue;
 					}
@@ -115,7 +115,7 @@ public class Spaceinterception extends StdTest
 					if(atti>=maxTicks)
 					{
 						throw new CMException("Failed #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates().toLongs())
-								+": "+CMLib.english().directionDescShort(obj2.direction())
+								+": "+CMLib.english().directionDescShort(obj2.direction().toDoubles())
 								+": "+obj2.speed());
 					}
 					else

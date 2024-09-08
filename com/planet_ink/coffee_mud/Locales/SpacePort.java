@@ -40,7 +40,7 @@ public class SpacePort extends StdRoom implements LocationRoom
 		return "SpacePort";
 	}
 
-	protected double[] dirFromCore = new double[2];
+	protected Dir3D dirFromCore = new Dir3D();
 
 	public SpacePort()
 	{
@@ -66,15 +66,15 @@ public class SpacePort extends StdRoom implements LocationRoom
 	}
 
 	@Override
-	public double[] getDirectionFromCore()
+	public Dir3D getDirectionFromCore()
 	{
 		return dirFromCore;
 	}
 
 	@Override
-	public void setDirectionFromCore(final double[] dir)
+	public void setDirectionFromCore(final Dir3D dir)
 	{
-		if((dir!=null)&&(dir.length==2))
+		if((dir!=null)&&(dir.length()==2))
 			dirFromCore=dir;
 	}
 
@@ -85,7 +85,7 @@ public class SpacePort extends StdRoom implements LocationRoom
 		switch(getLocCodeNum(code))
 		{
 		case 0:
-			return CMParms.toListString(this.getDirectionFromCore());
+			return CMParms.toListString(this.getDirectionFromCore().toDoubles());
 		default:
 			return super.getStat(code);
 		}
@@ -97,7 +97,7 @@ public class SpacePort extends StdRoom implements LocationRoom
 		switch(getLocCodeNum(code))
 		{
 		case 0:
-			this.setDirectionFromCore(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
+			this.setDirectionFromCore(new Dir3D(CMParms.toDoubleArray(CMParms.parseCommas(val, true))));
 			break;
 		default:
 			super.setStat(code, val);

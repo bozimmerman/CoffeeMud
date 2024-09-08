@@ -50,7 +50,7 @@ public class StdSmartTorpedo extends StdTorpedo
 		setDisplayText("a smart torpedo is sitting here");
 	}
 
-	public volatile double[] targetDir = null;
+	public volatile Dir3D targetDir = null;
 	public volatile int rescanCtr = 0;
 
 	@Override
@@ -75,7 +75,7 @@ public class StdSmartTorpedo extends StdTorpedo
 				{
 					rescanCtr=0;
 					final double maxSpeed = CMath.mul((phyStats().speed()/100.0), SpaceObject.VELOCITY_LIGHT);
-					final Pair<double[], Long> intercept = space.calculateIntercept(this, targetO, Math.round(maxSpeed), maxTicks);
+					final Pair<Dir3D, Long> intercept = space.calculateIntercept(this, targetO, Math.round(maxSpeed), maxTicks);
 					if(intercept == null)
 					{
 						targetDir = this.direction;

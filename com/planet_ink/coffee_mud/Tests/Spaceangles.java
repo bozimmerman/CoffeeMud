@@ -65,7 +65,7 @@ public class Spaceangles extends StdTest
 			{ {90,10}, {90,100},  {90} },
 		};
 		final int[][][] opps = new int[][][] {
-			{ {180,0},  	 {180,180}, {360,0}, {0,0}, {0,180} },
+			{ {180,0},  	 {180,180}, {360,0}, {0,0}, {0,180}, {360,180} },
 			{ {180,5},  	 {0,175}, {360,175} },
 			{ {90,15},  	 {270,165} },
 			{ {15,90},  	 {195,90} }
@@ -79,63 +79,61 @@ public class Spaceangles extends StdTest
 		for(int i=0;i<diffsets.length;i++)
 		{
 			final int[] anglei1 = diffsets[i][0];
-			final double[] angle1 = new double[] {Math.toRadians(anglei1[0]), Math.toRadians(anglei1[1])};
+			final Dir3D angle1 = new Dir3D(new double[] {Math.toRadians(anglei1[0]), Math.toRadians(anglei1[1])});
 			final int[] anglei2 = diffsets[i][1];
-			final double[] angle2 = new double[] {Math.toRadians(anglei2[0]), Math.toRadians(anglei2[1])};
+			final Dir3D angle2 = new Dir3D(new double[] {Math.toRadians(anglei2[0]), Math.toRadians(anglei2[1])});
 			final double diff = CMLib.space().getAngleDelta(angle1, angle2);
 			final int[] an = diffsets[i][2];
 			final double and = Math.toRadians(an[0]);
-			final boolean found = Math.abs(diff - and) < 0.001;
-			if(!found)
-				return ("DIFF Test #"+(i+1)+" failed: "+Math.toDegrees(diff));
-			/*
-			else
-				mob.tell("DIFF Test #"+(i+1)+": "+
-						CMLib.english().directionDescShort(angle1)+"-"+CMLib.english().directionDescShort(angle2)
+			final boolean pass = Math.abs(diff - and) < 0.001;
+			if(!pass)
+			{
+				return ("DIFF Test #"+(i+1)+": "+
+						CMLib.english().directionDescShort(angle1.toDoubles())+"-"+CMLib.english().directionDescShort(angle2.toDoubles())
 							+"="+Math.toDegrees(diff));
-			*/
+			}
 		}
 		for(int i=0;i<opps.length;i++)
 		{
 			final int[] anglei = opps[i][0];
-			final double[] angle = new double[] {Math.toRadians(anglei[0]), Math.toRadians(anglei[1])};
-			final double[] op = CMLib.space().getOppositeDir(angle);
-			boolean found=false;
+			final Dir3D angle = new Dir3D(new double[] {Math.toRadians(anglei[0]), Math.toRadians(anglei[1])});
+			final Dir3D op = CMLib.space().getOppositeDir(angle);
+			boolean pass=false;
 			for(int x=1;x<opps[i].length;x++)
 			{
 				final int[] compi = opps[i][x];
 				final double[] comp = new double[] {Math.toRadians(compi[0]), Math.toRadians(compi[1])};
-				if((Math.abs(comp[0]-op[0])<0.001)&&(Math.abs(comp[1]-op[1])<0.001))
-					found=true;
+				if((Math.abs(comp[0]-op.xyd())<0.001)&&(Math.abs(comp[1]-op.zd())<0.001))
+					pass=true;
 			}
-			if(!found)
-				return ("OP Test #"+(i+1)+" failed: "+Math.toDegrees(op[0])+","+Math.toDegrees(op[1]));
+			if(!pass)
+				return ("OP Test #"+(i+1)+" failed: "+Math.toDegrees(op.xyd())+","+Math.toDegrees(op.zd()));
 		}
 		for(int i=0;i<offsets.length;i++)
 		{
 			final int[] anglei1 = offsets[i][0];
-			final double[] angle1 = new double[] {Math.toRadians(anglei1[0]), Math.toRadians(anglei1[1])};
+			final Dir3D angle1 = new Dir3D(new double[] {Math.toRadians(anglei1[0]), Math.toRadians(anglei1[1])});
 			final int[] anglei2 = offsets[i][1];
-			final double[] angle2 = new double[] {Math.toRadians(anglei2[0]), Math.toRadians(anglei2[1])};
-			final double[] off = CMLib.space().getOffsetAngle(angle1, angle2);
+			final Dir3D angle2 = new Dir3D(new double[] {Math.toRadians(anglei2[0]), Math.toRadians(anglei2[1])});
+			final Dir3D off = CMLib.space().getOffsetAngle(angle1, angle2);
 			final int[] an = offsets[i][2];
-			final double[] and = new double[] {Math.toRadians(an[0]), Math.toRadians(an[1])};
-			final boolean found = (Math.abs(off[0] - and[0])<0.001) && (Math.abs(off[1] - and[1])<0.001);
-			if(!found)
-				return ("OF Test #"+(i+1)+" failed: "+Math.toDegrees(off[0])+","+Math.toDegrees(off[1]));
+			final Dir3D and = new Dir3D(new double[] {Math.toRadians(an[0]), Math.toRadians(an[1])});
+			final boolean pass = (Math.abs(off.xyd() - and.xyd())<0.001) && (Math.abs(off.zd() - and.zd())<0.001);
+			if(!pass)
+				return ("OF Test #"+(i+1)+" failed: "+Math.toDegrees(off.xyd())+","+Math.toDegrees(off.zd()));
 		}
 		for(int i=0;i<midsets.length;i++)
 		{
 			final int[] anglei1 = midsets[i][0];
-			final double[] angle1 = new double[] {Math.toRadians(anglei1[0]), Math.toRadians(anglei1[1])};
+			final Dir3D angle1 = new Dir3D(new double[] {Math.toRadians(anglei1[0]), Math.toRadians(anglei1[1])});
 			final int[] anglei2 = midsets[i][1];
-			final double[] angle2 = new double[] {Math.toRadians(anglei2[0]), Math.toRadians(anglei2[1])};
-			final double[] mid = CMLib.space().getMiddleAngle(angle1, angle2);
+			final Dir3D angle2 = new Dir3D(new double[] {Math.toRadians(anglei2[0]), Math.toRadians(anglei2[1])});
+			final Dir3D mid = CMLib.space().getMiddleAngle(angle1, angle2);
 			final int[] an = midsets[i][2];
-			final double[] and = new double[] {Math.toRadians(an[0]), Math.toRadians(an[1])};
-			final boolean found = (Math.abs(mid[0] - and[0])<0.001) && (Math.abs(mid[1] - and[1])<0.001);
-			if(!found)
-				return ("MID Test #"+(i+1)+" failed: "+Math.toDegrees(mid[0])+","+Math.toDegrees(mid[1]));
+			final Dir3D and = new Dir3D(new double[] {Math.toRadians(an[0]), Math.toRadians(an[1])});
+			final boolean pass = (Math.abs(mid.xyd() - and.xyd())<0.001) && (Math.abs(mid.zd() - and.zd())<0.001);
+			if(!pass)
+				return ("MID Test #"+(i+1)+" failed: "+Math.toDegrees(mid.xyd())+","+Math.toDegrees(mid.zd()));
 		}
 		return null;
 	}

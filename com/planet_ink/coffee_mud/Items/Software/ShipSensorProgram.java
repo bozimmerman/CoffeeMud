@@ -53,7 +53,7 @@ public class ShipSensorProgram extends GenShipProgram
 	}
 
 	protected final static BigVector emptyCoords = new BigVector(new long[] {0,0,0});
-	protected final static double[]  emptyDirection = new double[] {0,0};
+	protected final static Dir3D  emptyDirection = new Dir3D();
 
 	protected final Map<Technical, Set<SpaceObject>>	sensorReps	= new SHashtable<Technical, Set<SpaceObject>>();
 	protected final Set<TechComponent>					activated	= Collections.synchronizedSet(new HashSet<TechComponent>());
@@ -344,14 +344,14 @@ public class ShipSensorProgram extends GenShipProgram
 				{
 					final PairList<String,String> entries = new PairArrayList<String,String>();
 					final long distance = CMLib.space().getDistanceFrom(ship.coordinates(), targetObj.coordinates()) - ship.radius() - targetObj.radius();
-					final double[] direction = CMLib.space().getDirection(ship, targetObj);
+					final Dir3D direction = CMLib.space().getDirection(ship, targetObj);
 					entries.add("Identifier",targetObj.name());
 					if(!targetObj.coordinates().equals(emptyCoords))
-						entries.add("Direction",CMLib.english().directionDescShortest(direction));
+						entries.add("Direction",CMLib.english().directionDescShortest(direction.toDoubles()));
 					if(!targetObj.coordinates().equals(emptyCoords))
 						entries.add("Distance",CMLib.english().distanceDescShort(distance));
-					if(!Arrays.equals(targetObj.direction(),emptyDirection))
-						entries.add("Moving",CMLib.english().directionDescShortest(targetObj.direction()));
+					if(!targetObj.direction().equals(emptyDirection))
+						entries.add("Moving",CMLib.english().directionDescShortest(targetObj.direction().toDoubles()));
 					if(targetObj.speed()>0)
 						entries.add("Speed",CMath.abbreviateLong((long)targetObj.speed()));
 					if(targetObj.radius()>0)

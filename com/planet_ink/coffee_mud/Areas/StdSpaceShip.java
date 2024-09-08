@@ -185,9 +185,9 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public double[] direction()
+	public Dir3D direction()
 	{
-		return (shipItem instanceof SpaceShip) ? ((SpaceShip) shipItem).direction() : new double[2];
+		return (shipItem instanceof SpaceShip) ? ((SpaceShip) shipItem).direction() : new Dir3D();
 	}
 
 	@Override
@@ -204,20 +204,20 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void setDirection(final double[] dir)
+	public void setDirection(final Dir3D dir)
 	{
 		if (shipItem instanceof SpaceShip)
 			((SpaceShip) shipItem).setDirection(dir);
 	}
 
 	@Override
-	public double[] facing()
+	public Dir3D facing()
 	{
-		return (shipItem instanceof SpaceShip) ? ((SpaceShip) shipItem).facing() : new double[2];
+		return (shipItem instanceof SpaceShip) ? ((SpaceShip) shipItem).facing() : new Dir3D();
 	}
 
 	@Override
-	public void setFacing(final double[] dir)
+	public void setFacing(final Dir3D dir)
 	{
 		if (shipItem instanceof SpaceShip)
 			((SpaceShip) shipItem).setFacing(dir);

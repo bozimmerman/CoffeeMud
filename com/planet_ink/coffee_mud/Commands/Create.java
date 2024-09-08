@@ -150,7 +150,7 @@ public class Create extends StdCommand
 		int x;
 		if(((x=utokens.indexOf("FROM"))>0)&&(x<utokens.size()-1))
 		{
-			final double[] direction=new double[]{Math.toRadians(CMLib.dice().roll(1, 360, -1)),Math.toRadians(CMLib.dice().roll(1,180,-1))};
+			final Dir3D direction=new Dir3D(Math.toRadians(CMLib.dice().roll(1, 360, -1)),Math.toRadians(CMLib.dice().roll(1,180,-1)));
 			final String distStr=CMParms.combine(utokens,0,x);
 			final String objName=CMParms.combine(utokens,x+1);
 			final BigDecimal dist=CMLib.english().parseSpaceDistance(distStr);

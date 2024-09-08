@@ -400,13 +400,13 @@ public class GenGraviticSensor extends GenElecCompSensor
 				}
 
 				@Override
-				public double[] direction()
+				public Dir3D direction()
 				{
-					return new double[]{0,0};
+					return new Dir3D();
 				}
 
 				@Override
-				public void setDirection(final double[] dir)
+				public void setDirection(final Dir3D dir)
 				{
 				}
 
@@ -501,7 +501,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 	protected boolean isHiddenFromSensors(final GalacticMap space, final LinkedList<Environmental> revList,
 										  final SpaceObject O, final SpaceObject hO)
 	{
-		final double[] hDirTo = space.getDirection(O, hO);
+		final Dir3D hDirTo = space.getDirection(O, hO);
 		final long hDistance = space.getDistanceFrom(O, hO);
 		final BoundedTube hTube=O.getSphere().expand(hDirTo,hDistance);
 		for(final Iterator<Environmental> rb=revList.descendingIterator();rb.hasNext();)
@@ -594,7 +594,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 		final Filterer<Environmental> filter = this.getSensedObjectFilter();
 		if(!filter.passesFilter(hO))
 			return false;
-		final double[] hDirTo = space.getDirection(O, hO);
+		final Dir3D hDirTo = space.getDirection(O, hO);
 		final BoundedTube hTube=O.getSphere().expand(hDirTo,hDistance);
 		final List<SpaceObject> objs = space.getSpaceObjectsInBound(hTube.getCube());
 		for(final SpaceObject cO : objs)

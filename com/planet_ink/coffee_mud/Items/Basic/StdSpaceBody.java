@@ -47,7 +47,7 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 
 	protected Coord3D		coordinates	= new Coord3D();
 	protected long			radius;
-	protected double[]		direction	= new double[2];
+	protected Dir3D			direction	= new Dir3D();
 	protected double		speed		= 0;
 	protected SpaceObject	spaceSource = null;
 	protected SpaceObject	spaceTarget = null;
@@ -109,10 +109,8 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	public CMObject copyOf()
 	{
 		final StdSpaceBody E=(StdSpaceBody)super.copyOf();
-		if(coordinates.length() >= 3)
-			E.coordinates = coordinates.copyOf();
-		if(direction.length >= 2)
-			E.direction = new double[] {direction[0],direction[1]};
+		E.coordinates = coordinates.copyOf();
+		E.direction = direction.copyOf();
 		return E;
 	}
 
@@ -160,15 +158,15 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	}
 
 	@Override
-	public double[] direction()
+	public Dir3D direction()
 	{
 		return direction;
 	}
 
 	@Override
-	public void setDirection(final double[] dir)
+	public void setDirection(final Dir3D dir)
 	{
-		if((dir!=null)&&(dir.length==2))
+		if((dir!=null)&&(dir.length()==2))
 			direction=dir;
 	}
 

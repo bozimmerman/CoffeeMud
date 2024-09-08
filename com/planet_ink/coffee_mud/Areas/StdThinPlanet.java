@@ -41,7 +41,7 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 	}
 
 	protected Coord3D	coordinates	= new Coord3D();
-	protected double[]	direction	= new double[2];
+	protected Dir3D		direction	= new Dir3D();
 	protected long		radius;
 
 	public StdThinPlanet()
@@ -98,13 +98,13 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 	}
 
 	@Override
-	public double[] direction()
+	public Dir3D direction()
 	{
 		return direction;
 	}
 
 	@Override
-	public void setDirection(final double[] dir)
+	public void setDirection(final Dir3D dir)
 	{
 		direction = dir;
 	}

@@ -71,22 +71,22 @@ public class Spacemovereport1 extends StdTest
 							dir1=Math.PI;
 						if(adir1 > Math.PI)
 							adir1=Math.PI;
-						final double[] curDir = new double[] {dir0, dir1};
-						final double[] accelDir = new double[] {adir0, adir1};
+						final Dir3D curDir = new Dir3D(new double[] {dir0, dir1});
+						final Dir3D accelDir = new  Dir3D(new double[] {adir0, adir1});
 						double curSpeed = 1000;
 						final long newAcceleration = 200;
 						int steps = 0;
 						final double totDirDiff = CMLib.space().getAngleDelta(curDir, accelDir);
 						mob.tell("Interesting: ");
-						mob.tell("Andgle diff between "+Math.round(Math.toDegrees(curDir[0]))+"mk"+Math.round(Math.toDegrees(curDir[1]))
-						+"   and   "+Math.round(Math.toDegrees(accelDir[0]))+"mk"+Math.round(Math.toDegrees(accelDir[1]))
+						mob.tell("Angle diff between "+Math.round(Math.toDegrees(curDir.xyd()))+"mk"+Math.round(Math.toDegrees(curDir.zd()))
+						+"   and   "+Math.round(Math.toDegrees(accelDir.xyd()))+"mk"+Math.round(Math.toDegrees(accelDir.zd()))
 						+"       is: "+Math.round(Math.toDegrees(totDirDiff)));
 						final double halfPI = Math.PI/2.0;
-						while(!Arrays.equals(curDir, accelDir))
+						while(!curDir.equals(accelDir))
 						{
 							final double oldCurSpeed = curSpeed;
 							final double curDirDiff = CMLib.space().getAngleDelta(curDir, accelDir);
-							final double[] oldCurDir=new double[]{curDir[0],curDir[1]};
+							final Dir3D oldCurDir=new Dir3D(curDir);
 							curSpeed = CMLib.space().accelSpaceObject(curDir,curSpeed,accelDir, newAcceleration);
 							final double newDirDiff = CMLib.space().getAngleDelta(curDir, accelDir);
 							if((curDirDiff > halfPI)
@@ -95,9 +95,9 @@ public class Spacemovereport1 extends StdTest
 								if(curSpeed > oldCurSpeed)
 								{
 									Log.debugOut("Step "+steps+" of "+
-											Math.round(Math.toDegrees(oldCurDir[0]))+"@"+Math.round(Math.toDegrees(oldCurDir[1]))
+											Math.round(Math.toDegrees(oldCurDir.xyd()))+"@"+Math.round(Math.toDegrees(oldCurDir.zd()))
 											+" -> "
-											+Math.round(Math.toDegrees(accelDir[0]))+"@"+Math.round(Math.toDegrees(accelDir[1]))
+											+Math.round(Math.toDegrees(accelDir.xyd()))+"@"+Math.round(Math.toDegrees(accelDir.zd()))
 											+" (angle Diff "+curDirDiff+") went from speed "+oldCurSpeed+" to "+curSpeed);
 									//CMLib.space().moveSpaceObject(oldCurDir,oldCurSpeed,accelDir, newAcceleration);
 									//curDirDiff = CMLib.space().getAngleDelta(oldCurDir, accelDir);
@@ -110,9 +110,9 @@ public class Spacemovereport1 extends StdTest
 								if(curSpeed < oldCurSpeed)
 								{
 									mob.tell("Step "+steps+" of "+
-											Math.round(Math.toDegrees(oldCurDir[0]))+"@"+Math.round(Math.toDegrees(oldCurDir[1]))
+											Math.round(Math.toDegrees(oldCurDir.xyd()))+"@"+Math.round(Math.toDegrees(oldCurDir.zd()))
 											+" -> "
-											+Math.round(Math.toDegrees(accelDir[0]))+"@"+Math.round(Math.toDegrees(accelDir[1]))
+											+Math.round(Math.toDegrees(accelDir.xyd()))+"@"+Math.round(Math.toDegrees(accelDir.zd()))
 											+" (angle Diff "+curDirDiff+") went from speed "+oldCurSpeed+" to "+curSpeed);
 								}
 							}

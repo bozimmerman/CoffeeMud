@@ -5971,9 +5971,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genLocationCoords(final MOB mob, final LocationRoom E, final int showNumber, final int showFlag) throws IOException
 	{
 		final double[] newDir=new double[2];
-		newDir[0]=Math.toRadians(prompt(mob,Math.toDegrees(E.getDirectionFromCore()[0]),showNumber,showFlag,"Horiz. Dir From Core","This is a horizontal direction in degrees from 0 to 360.",0,360));
-		newDir[1]=Math.toRadians(prompt(mob,Math.toDegrees(E.getDirectionFromCore()[1]),showNumber,showFlag,"Vert. Dir From Core","This is a vertical direction in degrees from 0 to 360.",0,360));
-		E.setDirectionFromCore(newDir);
+		newDir[0]=Math.toRadians(prompt(mob,Math.toDegrees(E.getDirectionFromCore().xyd()),showNumber,showFlag,"Horiz. Dir From Core","This is a horizontal direction in degrees from 0 to 360.",0,360));
+		newDir[1]=Math.toRadians(prompt(mob,Math.toDegrees(E.getDirectionFromCore().zd()),showNumber,showFlag,"Vert. Dir From Core","This is a vertical direction in degrees from 0 to 360.",0,360));
+		E.setDirectionFromCore(new Dir3D(newDir));
 	}
 
 	public void genSpaceGate(final MOB mob, final SpaceObject.SpaceGateway E, final int showNumber, final int showFlag) throws IOException
@@ -6034,7 +6034,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(E.speed()<=0)
 				buf.append("no");
 			else
-				buf.append(CMLib.english().speedDescShort(E.speed())+", Direction: "+CMLib.english().directionDescShort(E.direction()));
+				buf.append(CMLib.english().speedDescShort(E.speed())+", Direction: "+CMLib.english().directionDescShort(E.direction().toDoubles()));
 			mob.tell(buf.toString());
 			return;
 		}
@@ -6074,7 +6074,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				final List<String> tokens=CMParms.parseSpaces(val,true);
 				final int x=utokens.indexOf("FROM");
 				final int y=utokens.indexOf("TOWARD");
-				double[] direction;
+				Dir3D direction;
 				if(y>0)
 				{
 					final List<String> degreeStr=CMParms.parseCommas(CMParms.combine(tokens,y+1),true);
@@ -6088,12 +6088,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						continue;
 					}
 					final double[] degreesDbl=CMParms.toDoubleArray(degreeStr);
-					direction=new double[]{Math.toRadians(degreesDbl[0]),Math.toRadians(degreesDbl[1])};
+					direction=new Dir3D(new double[]{Math.toRadians(degreesDbl[0]),Math.toRadians(degreesDbl[1])});
 					while(tokens.size()>=y)
 						tokens.remove(tokens.size()-1);
 				}
 				else
-					direction=new double[]{Math.toRadians(CMLib.dice().roll(1, 360, -1)),Math.toRadians(CMLib.dice().roll(1,180,-1))};
+					direction=new Dir3D(new double[]{Math.toRadians(CMLib.dice().roll(1, 360, -1)),Math.toRadians(CMLib.dice().roll(1,180,-1))});
 
 				final String distStr=CMParms.combine(tokens,0,x);
 				final String objName=CMParms.combine(tokens,x+1);
@@ -6174,7 +6174,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 		while((mob!=null)&&(mob.session()!=null)&&(!mob.session().isStopped())&&(E.speed()>0))
 		{
-			String val=mob.session().prompt(L("@x1. Direction in Space (ENTER=@x2): ",""+showNumber,(CMLib.english().directionDescShort(E.direction()))));
+			String val=mob.session().prompt(L("@x1. Direction in Space (ENTER=@x2): ",""+showNumber,
+					(CMLib.english().directionDescShort(E.direction().toDoubles()))));
 			if((val==null)||(val.trim().length()==0))
 			{
 				mob.tell(L("(unchanged)"));
@@ -6192,7 +6193,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(L("Invalid direction in degrees: '@x1', you might need to include 'mark' in the direction.",val));
 			else
 			{
-				E.setDirection(new double[]{Math.toRadians(CMath.s_double(val.substring(0,x).trim())),Math.toRadians(CMath.s_double(val.substring(x+6).trim()))});
+				E.setDirection(new Dir3D(new double[]{Math.toRadians(CMath.s_double(val.substring(0,x).trim())),
+						Math.toRadians(CMath.s_double(val.substring(x+6).trim()))}));
 				break;
 			}
 		}

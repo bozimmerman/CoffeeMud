@@ -40,7 +40,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 		return "StdPlanet";
 	}
 
-	protected static double[]	emptyDirection	= new double[2];
+	protected static Dir3D	emptyDirection	= new Dir3D();
 
 	protected Coord3D	coordinates	= new Coord3D();
 	protected long		radius;
@@ -72,13 +72,13 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	}
 
 	@Override
-	public double[] direction()
+	public Dir3D direction()
 	{
 		return emptyDirection;
 	}
 
 	@Override
-	public void setDirection(final double[] dir)
+	public void setDirection(final Dir3D dir)
 	{
 	}
 

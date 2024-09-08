@@ -165,7 +165,7 @@ public class Spacecollisions extends StdTest
 				final Coord3D shipCoord1 = new Coord3D(l[0]);
 				final long speed = l[1][0];
 				final Coord3D targetCoord=new Coord3D(l[3]);
-				final double[] dir=CMLib.space().getDirection(shipCoord1, targetCoord);
+				final Dir3D dir=CMLib.space().getDirection(shipCoord1, targetCoord);
 				if(l[2].length==2)
 				{
 					CMLib.space().changeDirection(dir, Math.toRadians(l[2][0]), Math.toRadians(l[2][1]));
@@ -194,7 +194,7 @@ public class Spacecollisions extends StdTest
 				final Coord3D shipCoord1 = new Coord3D(l[3]);
 				final long speed = l[1][0];
 				final Coord3D targetCoord=new Coord3D(l[0]);
-				final double[] dir=CMLib.space().getDirection(shipCoord1, targetCoord);
+				final Dir3D dir=CMLib.space().getDirection(shipCoord1, targetCoord);
 				if(l[2].length==2)
 				{
 					CMLib.space().changeDirection(dir, Math.toRadians(l[2][0]), Math.toRadians(l[2][1]));

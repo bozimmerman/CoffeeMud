@@ -65,7 +65,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 * The direction of travel of this object in radians.
 	 * @return 2 dimensional array for the direction of movement
 	 */
-	public double[] direction();
+	public Dir3D direction();
 
 	/**
 	 * Sets the direction of travel of this object in radians.
@@ -73,7 +73,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 * direction[1] less than or equal to 2PI
 	 * @param dir 2 dimensional array for the direction of movement
 	 */
-	public void setDirection(double[] dir);
+	public void setDirection(Dir3D dir);
 
 	/**
 	 * The speed of the object through space

@@ -186,4 +186,20 @@ public class Coord3D extends BigVector
 	{
 		return new Coord3D(super.subtract(v));
 	}
+	
+	@Override
+	public boolean equals(final Object o)
+	{
+		if(o instanceof Coord3D)
+		{
+			final Coord3D v = (Coord3D)o;
+			if(v.length()!=b.length)
+				return false;
+			for(int i=0;i<b.length;i++)
+				if(b[i].longValue() != v.b[i].longValue())
+					return false;
+			return true;
+		}
+		return super.equals(o);
+	}
 }

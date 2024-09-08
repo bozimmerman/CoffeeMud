@@ -88,7 +88,7 @@ public class Transfer extends At
 				{
 					final long distanceDiff = minDistance - CMLib.space().getDistanceFrom(sO.coordinates(), targetSpace);
 					somethingDone=true;
-					final double[] randomDir = new double[] { rand.nextDouble() * Math.PI * 2.0, rand.nextDouble() * Math.PI };
+					final Dir3D randomDir = new Dir3D(new double[] { rand.nextDouble() * Math.PI * 2.0, rand.nextDouble() * Math.PI });
 					targetSpace = CMLib.space().moveSpaceObject(targetSpace, randomDir, distanceDiff);
 				}
 			}

@@ -20,6 +20,8 @@ import java.math.BigDecimal;
 public class Dir3D extends BigVector
 {
 	private static final BigDecimal		PI_TIMES_2				= BigDecimal.valueOf(Math.PI * 2.0);
+	private static final BigDecimal		PIP						= BigDecimal.valueOf(Math.PI+0.000000000000001);
+	private static final BigDecimal		PIP_TIMES_2				= PIP.multiply(BigDecimal.valueOf(2.0));
 	private static final BigDecimal		PI						= BigDecimal.valueOf(Math.PI);
 	private static final BigDecimal		NEGPI					= BigDecimal.valueOf(-Math.PI);
 
@@ -54,6 +56,12 @@ public class Dir3D extends BigVector
 	}
 	
 	public Dir3D(final BigDecimal v0, final BigDecimal v1)
+	{
+		super(2);
+		xy(v0).z(v1);
+	}
+	
+	public Dir3D(final double v0, final double v1)
 	{
 		super(2);
 		xy(v0).z(v1);
@@ -105,7 +113,7 @@ public class Dir3D extends BigVector
 	{
 		if(d!=null)
 		{
-			while(d.compareTo(PI_TIMES_2) >=0)
+			while(d.compareTo(PIP_TIMES_2) >=0)
 				d=d.subtract(PI_TIMES_2);
 			while(d.compareTo(ZERO) <0)
 				d=d.add(PI_TIMES_2);
@@ -118,11 +126,11 @@ public class Dir3D extends BigVector
 	{
 		if(d!=null)
 		{
-			while(d.compareTo(PI_TIMES_2) >=0)
+			while(d.compareTo(PIP_TIMES_2) >=0)
 				d=d.subtract(PI_TIMES_2);
-			while(d.compareTo(PI_TIMES_2) <0)
+			while(d.compareTo(PIP_TIMES_2.negate()) <0)
 				d=d.add(PI_TIMES_2);
-			while(d.compareTo(PI) > 0)
+			while(d.compareTo(PIP) > 0)
 			{
 				d = d.subtract(PI);
 				b[0] = b[0].add((b[0].compareTo(PI) <= 0)?PI:NEGPI);
@@ -178,5 +186,22 @@ public class Dir3D extends BigVector
 	public Dir3D subtract(final Dir3D v)
 	{
 		return new Dir3D(super.subtract(v));
+	}
+	
+	
+	@Override
+	public boolean equals(final Object o)
+	{
+		if(o instanceof Dir3D)
+		{
+			final Dir3D v = (Dir3D)o;
+			if(v.length()!=b.length)
+				return false;
+			for(int i=0;i<b.length;i++)
+				if(b[i].doubleValue() != v.b[i].doubleValue())
+					return false;
+			return true;
+		}
+		return super.equals(o);
 	}
 }

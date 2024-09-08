@@ -321,14 +321,14 @@ public class GrinderAreas
 				for(int i=0;i<3;i++)
 				{
 					if(i<parts.size())
-						SO.direction()[i]=CMath.s_double(parts.get(i));
+						SO.direction().set(i,CMath.s_double(parts.get(i)));
 				}
 			}
 
 			if(httpReq.isUrlParameter("DIRECTION0"))
-				SO.direction()[0]=CMath.s_double(httpReq.getUrlParameter("DIRECTION0"));
+				SO.direction().xy(CMath.s_double(httpReq.getUrlParameter("DIRECTION0")));
 			if(httpReq.isUrlParameter("DIRECTION1"))
-				SO.direction()[1]=CMath.s_double(httpReq.getUrlParameter("DIRECTION1"));
+				SO.direction().z(CMath.s_double(httpReq.getUrlParameter("DIRECTION1")));
 
 			if(httpReq.isUrlParameter("SPEED"))
 				SO.setSpeed(CMath.s_long(httpReq.getUrlParameter("SPEED")));

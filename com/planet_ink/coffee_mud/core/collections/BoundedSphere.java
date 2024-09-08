@@ -81,7 +81,7 @@ public class BoundedSphere implements Comparable<BoundedObject>, BoundedObject
 		return this;
 	}
 
-	public BoundedTube expand(final double[] direction, final long distance)
+	public BoundedTube expand(final Dir3D direction, final long distance)
 	{
 		return new BoundedTube(this, direction, distance);
 	}

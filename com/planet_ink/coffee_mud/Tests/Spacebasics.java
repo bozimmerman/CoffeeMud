@@ -65,17 +65,19 @@ public class Spacebasics extends StdTest
 			for(int i=0;i<1000;i++)
 			{
 				final Coord3D opos = new Coord3D(new long[] { r.nextLong(),r.nextLong(),r.nextLong() });
-				final double[] angle = new double[] {
+				final Dir3D angle = new Dir3D(new double[] {
 					(Math.PI * 2.0) * r.nextDouble(),
 					Math.PI  * r.nextDouble()
-				};
+				});
 				final Coord3D npos = CMLib.space().moveSpaceObject(opos, angle, distance);
-				final double[] nangle = CMLib.space().getDirection(opos, npos);
+				final Dir3D nangle = CMLib.space().getDirection(opos, npos);
 				final double delta = CMLib.space().getAngleDelta(angle, nangle);
 				if(delta > 0.1)
 				{
-					return ("Fail1: "+CMLib.english().coordDescShort(opos.toLongs())+" @ "+CMLib.english().directionDescShort(angle) + " -> "
-							+CMLib.english().coordDescShort(npos.toLongs())+" @ "+CMLib.english().directionDescShort(nangle) + " : " + delta );
+					return ("Fail1: "+CMLib.english().coordDescShort(opos.toLongs())+" @ "
+							+CMLib.english().directionDescShort(angle.toDoubles()) + " -> "
+							+CMLib.english().coordDescShort(npos.toLongs())+" @ "
+							+CMLib.english().directionDescShort(nangle.toDoubles()) + " : " + delta );
 				}
 			}
 			for(int i=0;i<1000;i++)
@@ -85,28 +87,28 @@ public class Spacebasics extends StdTest
 					opos.x().longValue() + r.nextInt(distance/3),opos.y().longValue() + r.nextInt(distance/3),opos.z().longValue() + r.nextInt(distance/3)
 				});
 				final long actualDistance = CMLib.space().getDistanceFrom(opos, npos);
-				final double[] angle = CMLib.space().getDirection(opos, npos);
+				final Dir3D angle = CMLib.space().getDirection(opos, npos);
 				final Coord3D cpos = CMLib.space().moveSpaceObject(opos, angle, actualDistance);
 				final long delta = CMLib.space().getDistanceFrom(npos, cpos);
 				if(delta > actualDistance/20)
 				{
-					return ("Fail2: "+CMLib.english().coordDescShort(opos.toLongs())+" @ "+CMLib.english().directionDescShort(angle) + " -> "
+					return ("Fail2: "+CMLib.english().coordDescShort(opos.toLongs())+" @ "+CMLib.english().directionDescShort(angle.toDoubles()) + " -> "
 							+CMLib.english().coordDescShort(npos.toLongs())+" = " + CMLib.english().coordDescShort(cpos.toLongs())+" : "+delta );
 				}
 			}
 			for(int i=0;i<100;i++)
 			{
 				final Coord3D opos = new Coord3D(new long[] { r.nextLong(),r.nextLong(),r.nextLong() });
-				final double[] angle = new double[] {
+				final Dir3D angle = new Dir3D(new double[] {
 					Math.PI * 2.0 * r.nextDouble(),
 					Math.PI  * r.nextDouble()
-				};
+				});
 				final Coord3D npos = CMLib.space().moveSpaceObject(opos, angle, distance);
 				final long dist = CMLib.space().getDistanceFrom(opos, npos);
 				final long delta = Math.abs(dist-distance);
 				if(delta > distance/20)
 				{
-					return ("Fail3: "+CMLib.english().coordDescShort(opos.toLongs())+" @ "+CMLib.english().directionDescShort(angle) + " -> "
+					return ("Fail3: "+CMLib.english().coordDescShort(opos.toLongs())+" @ "+CMLib.english().directionDescShort(angle.toDoubles()) + " -> "
 							+CMLib.english().coordDescShort(npos.toLongs())+" = " + distance+" : "+dist );
 				}
 			}
@@ -128,14 +130,15 @@ public class Spacebasics extends StdTest
 					localDist = (r1 + r2) + 23;
 				else
 					localDist = r1 + r2 + r.nextInt((int)(distance-r1-r2));
-				final double[] angle = new double[] {
+				final Dir3D angle = new Dir3D(new double[] {
 					(Math.PI * 2.0) * r.nextDouble(),
 					Math.PI  * r.nextDouble()
-				};
+				});
 				final Coord3D pos2 = CMLib.space().moveSpaceObject(pos1, angle, localDist);
 				if(pos1.equals(pos2)&&(localDist>1))
 				{
-					return ("Fail-moveObj: "+CMLib.english().coordDescShort(pos1.toLongs())+": "+CMLib.english().directionDescShort(angle)+"="+localDist);
+					return ("Fail-moveObj: "+CMLib.english().coordDescShort(pos1.toLongs())+": "
+							+CMLib.english().directionDescShort(angle.toDoubles())+"="+localDist);
 				}
 				final BoundedSphere cube1 = new BoundedSphere(pos1,r1);
 				final BoundedSphere cube2 = new BoundedSphere(pos2,r2);

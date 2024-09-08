@@ -43,7 +43,7 @@ public class StdSpaceTech extends StdTechItem implements SpaceObject
 
 	protected Coord3D		coordinates	= new Coord3D();
 	protected long			radius;
-	protected double[]		direction	= new double[2];
+	protected Dir3D			direction	= new Dir3D();
 	protected double		speed		= 0;
 	protected SpaceObject	spaceSource = null;
 	protected SpaceObject	spaceTarget = null;
@@ -112,15 +112,15 @@ public class StdSpaceTech extends StdTechItem implements SpaceObject
 	}
 
 	@Override
-	public double[] direction()
+	public Dir3D direction()
 	{
 		return direction;
 	}
 
 	@Override
-	public void setDirection(final double[] dir)
+	public void setDirection(final Dir3D dir)
 	{
-		if((dir!=null)&&(dir.length==2))
+		if((dir!=null)&&(dir.length()==2))
 			direction=dir;
 	}
 

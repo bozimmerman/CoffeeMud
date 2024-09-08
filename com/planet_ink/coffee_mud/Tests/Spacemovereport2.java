@@ -86,12 +86,12 @@ public class Spacemovereport2 extends StdTest
 							dir1=Math.PI;
 						if(adir1 > Math.PI)
 							adir1=Math.PI;
-						final double[] angle1 = new double[] {dir0, dir1};
-						final double[] angle2 = new double[] {adir0, adir1};
-						final double[] mid = CMLib.space().getMiddleAngle(angle1, angle2);
-						mob.tell("Middle angle between "+Math.round(Math.toDegrees(angle1[0]))+"mk"+Math.round(Math.toDegrees(angle1[1]))
-						+"   and   "+Math.round(Math.toDegrees(angle2[0]))+"mk"+Math.round(Math.toDegrees(angle2[1]))
-						+"       is: "+Math.round(Math.toDegrees(mid[0]))+"mk"+Math.round(Math.toDegrees(mid[1])));
+						final Dir3D angle1 = new Dir3D(new double[] {dir0, dir1});
+						final Dir3D angle2 = new Dir3D(new double[] {adir0, adir1});
+						final Dir3D mid = CMLib.space().getMiddleAngle(angle1, angle2);
+						mob.tell("Middle angle between "+Math.round(Math.toDegrees(angle1.xyd()))+"mk"+Math.round(Math.toDegrees(angle1.zd()))
+						+"   and   "+Math.round(Math.toDegrees(angle2.xyd()))+"mk"+Math.round(Math.toDegrees(angle2.zd()))
+						+"       is: "+Math.round(Math.toDegrees(mid.xyd()))+"mk"+Math.round(Math.toDegrees(mid.zd())));
 					}
 				}
 			}

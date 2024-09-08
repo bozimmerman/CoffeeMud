@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.core.collections;
 
+import java.math.BigDecimal;
+
 import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 /*
@@ -105,30 +107,32 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 								   +((oz - iz) * (oz - iz))));
 	}
 
-	public BoundedCube expand(final double[] direction, final long distance)
+	public BoundedCube expand(final Dir3D direction, final long distance)
 	{
 		// this is silly -- it's just a giant cube
 		final BoundedCube cube=new BoundedCube(this);
-		final double x1=Math.cos(direction[0])*Math.sin(direction[1]);
-		final double y1=Math.sin(direction[0])*Math.sin(direction[1]);
-		final double z1=Math.cos(direction[1]);
+		final BigDecimal bigDistance=BigDecimal.valueOf(distance);
+		final BigDecimal x1=BigDecimal.valueOf(Math.cos(direction.xyd())).multiply(BigDecimal.valueOf(Math.sin(direction.zd())));
+		final BigDecimal y1=BigDecimal.valueOf(Math.sin(direction.xyd())).multiply(BigDecimal.valueOf(Math.sin(direction.zd())));
+		final BigDecimal z1=BigDecimal.valueOf(Math.cos(direction.zd()));
 		final Coord3D oldCenter=center();
-		final long[] newCenter=new long[]{
-				oldCenter.x().longValue()+Math.round(CMath.mul(distance,x1)),
-				oldCenter.y().longValue()+Math.round(CMath.mul(distance,y1)),
-				oldCenter.z().longValue()+Math.round(CMath.mul(distance,z1))};
-		if(newCenter[0]>oldCenter.x().longValue())
-			cube.rx+=newCenter[0]-oldCenter.x().longValue();
+		final Coord3D newCenter=new Coord3D(
+			oldCenter.x().add(bigDistance.multiply(x1)),
+			oldCenter.y().add(bigDistance.multiply(y1)),
+			oldCenter.z().add(bigDistance.multiply(z1))
+		);
+		if(newCenter.x().compareTo(oldCenter.x())>0)
+			cube.rx+=newCenter.x().subtract(oldCenter.x()).longValue();
 		else
-			cube.lx+=newCenter[0]-oldCenter.x().longValue();
-		if(newCenter[1]>oldCenter.y().longValue())
-			cube.ty+=newCenter[1]-oldCenter.y().longValue();
+			cube.lx+=newCenter.x().subtract(oldCenter.x()).longValue();
+		if(newCenter.y().compareTo(oldCenter.y())>0)
+			cube.ty+=newCenter.y().subtract(oldCenter.y()).longValue();
 		else
-			cube.by+=newCenter[1]-oldCenter.y().longValue();
-		if(newCenter[2]>oldCenter.z().longValue())
-			cube.iz+=newCenter[2]-oldCenter.z().longValue();
+			cube.by+=newCenter.y().subtract(oldCenter.y()).longValue();
+		if(newCenter.z().compareTo(oldCenter.z())>0)
+			cube.iz+=newCenter.z().subtract(oldCenter.z()).longValue();
 		else
-			cube.oz+=newCenter[2]-oldCenter.z().longValue();
+			cube.oz+=newCenter.z().subtract(oldCenter.z()).longValue();
 		return cube;
 	}
 

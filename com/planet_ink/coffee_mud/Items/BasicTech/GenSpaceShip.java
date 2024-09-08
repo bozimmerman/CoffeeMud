@@ -54,11 +54,11 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	protected Manufacturer	cachedManufact  = null;
 	protected String	 	manufacturer	= "RANDOM";
 	public Coord3D   		coordinates 	= new Coord3D();
-	public double[] 		direction   	= new double[2];
+	public Dir3D	 		direction   	= new Dir3D();
 	public double			roll			= 0.0;
 	public double 			speed			= 0;
 	protected SpaceObject	spaceTarget 	= null;
-	protected double[]		facing			= new double[2];
+	protected Dir3D			facing			= new Dir3D();
 	protected Set<ShipFlag>	shipFlags		= new SHashSet<ShipFlag>();
 
 	protected volatile double				speedTick	= 0;
@@ -172,9 +172,9 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 		final Room exitRoom = super.unDock(moveToOutside);
 		if(R instanceof LocationRoom)
 		{
-			setDirection(Arrays.copyOf(((LocationRoom)R).getDirectionFromCore(),2));
+			setDirection(((LocationRoom)R).getDirectionFromCore().copyOf());
 			CMLib.space().changeDirection(direction, CMLib.dice().plusOrMinus(Math.PI/10.0), CMath.abs(CMLib.dice().plusOrMinus(Math.PI/10.0)));
-			setFacing(Arrays.copyOf(direction(),2));
+			setFacing(direction().copyOf());
 		}
 		if(moveToOutside)
 		{
@@ -320,7 +320,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 											effectiveAcceleration = finalAcceleration;
 											CMLib.space().changeDirection(facing, finalAcceleration, 0.0);
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing[0]);
+												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.xyd());
 										}
 										break;
 									case PORT:
@@ -330,7 +330,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 											effectiveAcceleration = finalAcceleration;
 											CMLib.space().changeDirection(facing, finalAcceleration, 0.0);
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing[0]);
+												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.xyd());
 										}
 										break;
 									case DORSEL:
@@ -340,7 +340,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 											effectiveAcceleration = finalAcceleration;
 											CMLib.space().changeDirection(facing, 0.0, finalAcceleration);
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing[1]);
+												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.zd());
 										}
 										break;
 									case VENTRAL:
@@ -350,7 +350,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 											effectiveAcceleration = finalAcceleration;
 											CMLib.space().changeDirection(facing, 0.0, finalAcceleration);
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing[1]);
+												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.zd());
 										}
 										break;
 									case FORWARD:
@@ -383,7 +383,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 										effectiveAcceleration = finalAcceleration-this.speedTick;
 										if((dockR==null) && (effectiveAcceleration > 0))
 										{
-											final double[] moveDir = (dir == ShipDir.FORWARD) ? facing() : CMLib.space().getOppositeDir(facing());
+											final Dir3D moveDir = (dir == ShipDir.FORWARD) ? facing() : CMLib.space().getOppositeDir(facing());
 											CMLib.space().accelSpaceObject(this,moveDir,effectiveAcceleration); // have to do this to know new speed
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 												Log.debugOut("SpaceShip "+name()+" accelerates "+dir.toString()+" " +effectiveAcceleration);
@@ -846,7 +846,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	}
 
 	@Override
-	public double[] direction()
+	public Dir3D direction()
 	{
 		return direction;
 	}
@@ -864,13 +864,13 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	}
 
 	@Override
-	public double[] facing()
+	public Dir3D facing()
 	{
 		return facing;
 	}
 
 	@Override
-	public void setFacing(final double[] dir)
+	public void setFacing(final Dir3D dir)
 	{
 		if(dir!=null)
 			this.facing=dir;
@@ -896,7 +896,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	}
 
 	@Override
-	public void setDirection(final double[] dir)
+	public void setDirection(final Dir3D dir)
 	{
 		if(dir!=null)
 			direction=dir;
@@ -1051,11 +1051,11 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 		case 6:
 			return "" + roll();
 		case 7:
-			return CMParms.toListString(direction());
+			return CMParms.toListString(direction().toDoubles());
 		case 8:
 			return "" + speed();
 		case 9:
-			return CMParms.toListString(facing());
+			return CMParms.toListString(facing().toDoubles());
 		case 10:
 			return "" + techLevel();
 		default:
@@ -1093,13 +1093,13 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 			setRoll(CMath.s_double(val));
 			break;
 		case 7:
-			setDirection(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
+			setDirection(new Dir3D(CMParms.toDoubleArray(CMParms.parseCommas(val, true))));
 			break;
 		case 8:
 			setSpeed(CMath.s_double(val));
 			break;
 		case 9:
-			setFacing(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
+			setFacing(new Dir3D(CMParms.toDoubleArray(CMParms.parseCommas(val, true))));
 			break;
 		case 10:
 			setTechLevel(CMath.s_parseIntExpression(val));

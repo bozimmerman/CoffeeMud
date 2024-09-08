@@ -146,7 +146,7 @@ public class BigVector implements Comparable<BigVector>
 			if(v.length()!=b.length)
 				return false;
 			for(int i=0;i<b.length;i++)
-				if(b[i].longValue() != v.b[i].longValue())
+				if(!b[i].equals(v.b[i]))
 					return false;
 			return true;
 		}
