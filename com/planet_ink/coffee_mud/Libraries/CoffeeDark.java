@@ -432,7 +432,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		delta.z(toAngle.z().subtract(fromAngle.z()));
 		return delta;
 	}
-
+	
 	@Override
 	public double accelSpaceObject(final Dir3D curDirection, final double curSpeed, final Dir3D accelDirection, final double newAcceleration)
 	{
@@ -476,6 +476,9 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			pitchDelta = accelDirectionPitch.subtract(curDirectionPitch);
 		}
 		final BigDecimal anglesDelta =  BigDecimal.valueOf(getAngleDelta(curDirection, accelDirection));
+		if((anglesDelta.subtract(BPI).abs().compareTo(BZERO_ALMOST)<=0)
+		&&(currentSpeed.compareTo(acceleration)>0))
+			return currentSpeed.subtract(acceleration).doubleValue();
 		BigDecimal newDirectionYaw;
 		BigDecimal newDirectionPitch;
 		final BigDecimal deltaMultiplier = BigDecimal.valueOf(Math.sin(anglesDelta.doubleValue()));

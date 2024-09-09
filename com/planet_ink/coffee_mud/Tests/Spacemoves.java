@@ -169,9 +169,11 @@ public class Spacemoves extends StdTest
 					throw new CMException(s);
 				}
 
+				Dir3D opDir3D = CMLib.space().getOppositeDir(o.direction());
+				Dir3D oldDir = o.direction().copyOf();
 				for(int a=0;a<decelMoves;a++)
 				{
-					CMLib.space().accelSpaceObject(o,CMLib.space().getOppositeDir(o.direction()),accel);
+					CMLib.space().accelSpaceObject(o,opDir3D,accel);
 					speed -= accel;
 					final Coord3D oldCoords = o.coordinates().copyOf();
 					final double otraveledDistance = CMLib.space().getDistanceFrom(startCoords, o.coordinates());
@@ -187,7 +189,7 @@ public class Spacemoves extends StdTest
 						String s;
 						if(shortDebug)
 						{
-							final String complaint = (speedDiff>1)+"/"+(!dir.equals(o.direction()))+"/"+(distDiff > accel+(2*speed));
+							final String complaint = (speedDiff>1)+"/"+(!dir.equals(o.direction()))+"/"+(distDiff > (accel*10*(a+1)));
 							s="Error: Space move mid-end"+i+"."+a+", test failed: "+complaint;
 						}
 						else
