@@ -112,9 +112,9 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 		// this is silly -- it's just a giant cube
 		final BoundedCube cube=new BoundedCube(this);
 		final BigDecimal bigDistance=BigDecimal.valueOf(distance);
-		final BigDecimal x1=BigDecimal.valueOf(Math.cos(direction.xyd())).multiply(BigDecimal.valueOf(Math.sin(direction.zd())));
-		final BigDecimal y1=BigDecimal.valueOf(Math.sin(direction.xyd())).multiply(BigDecimal.valueOf(Math.sin(direction.zd())));
-		final BigDecimal z1=BigDecimal.valueOf(Math.cos(direction.zd()));
+		final BigDecimal x1=Dir3D.cos(direction.xy()).multiply(Dir3D.sin(direction.z()));
+		final BigDecimal y1=Dir3D.sin(direction.xy()).multiply(Dir3D.sin(direction.z()));
+		final BigDecimal z1=Dir3D.cos(direction.z());
 		final Coord3D oldCenter=center();
 		final Coord3D newCenter=new Coord3D(
 			oldCenter.x().add(bigDistance.multiply(x1)),

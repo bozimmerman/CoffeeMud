@@ -50,9 +50,9 @@ public class BoundedTube extends BoundedSphere
 	private Coord3D extendTo(final long distance)
 	{
 		final Coord3D start = xyz.copyOf();
-		final BigDecimal x1=BigDecimal.valueOf(Math.cos(dir.xyd())).multiply(BigDecimal.valueOf(Math.sin(dir.zd())));
-		final BigDecimal y1=BigDecimal.valueOf(Math.sin(dir.xyd())).multiply(BigDecimal.valueOf(Math.sin(dir.zd())));
-		final BigDecimal z1=BigDecimal.valueOf(Math.cos(dir.zd()));
+		final BigDecimal x1=Dir3D.cos(dir.xy()).multiply(Dir3D.sin(dir.z()));
+		final BigDecimal y1=Dir3D.sin(dir.xy()).multiply(Dir3D.sin(dir.z()));
+		final BigDecimal z1=Dir3D.cos(dir.z());
 		final BigDecimal speed = BigDecimal.valueOf(this.dist/2);
 		return new Coord3D(start.x().add(speed.multiply(x1)),
 						   start.y().add(speed.multiply(y1)),

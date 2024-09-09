@@ -120,7 +120,7 @@ public class BigVector implements Comparable<BigVector>
 			b[i] = b[i].add(v.b[i]);
 	}
 
-	public final static BigDecimal bigSqrt(final BigDecimal A)
+	public final static BigDecimal sqrt(final BigDecimal A)
 	{
 		if(A.doubleValue()<0)
 			return ZERO;
@@ -136,7 +136,7 @@ public class BigVector implements Comparable<BigVector>
 		}
 		return x1;
 	}
-	
+
 	@Override
 	public boolean equals(final Object o)
 	{
@@ -164,7 +164,7 @@ public class BigVector implements Comparable<BigVector>
 		BigDecimal a = ZERO;
 		for(int i=0;i<b.length;i++)
 			a=a.add(b[i].pow(2));
-		return bigSqrt(a);
+		return sqrt(a);
 	}
 
 	public BigVector unitVector()
@@ -186,7 +186,7 @@ public class BigVector implements Comparable<BigVector>
 			final BigDecimal p=v.b[i].subtract(b[i]);
 			x0=x0.add(p.multiply(p));
 		}
-		return BigVector.bigSqrt(x0);
+		return BigVector.sqrt(x0);
 	}
 
 	public void unitVectorFrom()
@@ -221,14 +221,64 @@ public class BigVector implements Comparable<BigVector>
 
 	}
 
+	public static BigDecimal cos(final BigDecimal d)
+	{
+		return BigDecimal.valueOf(Math.cos(d.doubleValue()));
+	}
+
+	public static BigDecimal acos(final BigDecimal d)
+	{
+		return BigDecimal.valueOf(Math.acos(d.doubleValue()));
+	}
+
+	public static BigDecimal sin(final BigDecimal d)
+	{
+		return BigDecimal.valueOf(Math.sin(d.doubleValue()));
+	}
+
+	public static BigDecimal tan(final BigDecimal d)
+	{
+		return BigDecimal.valueOf(Math.tan(d.doubleValue()));
+	}
+
+	public static BigDecimal atan(final BigDecimal d)
+	{
+		return BigDecimal.valueOf(Math.atan(d.doubleValue()));
+	}
+
+	public static BigDecimal cos(final double d)
+	{
+		return BigDecimal.valueOf(Math.cos(d));
+	}
+
+	public static BigDecimal acos(final double d)
+	{
+		return BigDecimal.valueOf(Math.acos(d));
+	}
+
+	public static BigDecimal sin(final double d)
+	{
+		return BigDecimal.valueOf(Math.sin(d));
+	}
+
+	public static BigDecimal tan(final double d)
+	{
+		return BigDecimal.valueOf(Math.tan(d));
+	}
+
+	public static BigDecimal atan(final double d)
+	{
+		return BigDecimal.valueOf(Math.atan(d));
+	}
+
 	public BigVector sphereToCartesian()
 	{
 		if(b.length != 2)
 			throw new IllegalArgumentException("Different sphere dimensions");
 		final BigVector d = new BigVector(3);
-		d.b[0]=new BigDecimal(Math.sin(b[1].doubleValue())).multiply(new BigDecimal(Math.cos(b[0].doubleValue())));
-		d.b[1]=new BigDecimal(Math.sin(b[1].doubleValue())).multiply(new BigDecimal(Math.sin(b[0].doubleValue())));
-		d.b[2]=new BigDecimal(Math.cos(b[1].doubleValue()));
+		d.b[0]=sin(b[1]).multiply(cos(b[0]));
+		d.b[1]=sin(b[1]).multiply(sin(b[0]));
+		d.b[2]=cos(b[1]);
 		return d;
 	}
 

@@ -169,8 +169,7 @@ public class Spacemoves extends StdTest
 					throw new CMException(s);
 				}
 
-				Dir3D opDir3D = CMLib.space().getOppositeDir(o.direction());
-				Dir3D oldDir = o.direction().copyOf();
+				final Dir3D opDir3D = CMLib.space().getOppositeDir(o.direction());
 				for(int a=0;a<decelMoves;a++)
 				{
 					CMLib.space().accelSpaceObject(o,opDir3D,accel);

@@ -354,22 +354,6 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				middleAngle.xy((xy1.add(xy2)).divide(TWO,Dir3D.SCALE,RoundingMode.UP));
 		}
 		middleAngle.z((angle1.z().add(angle2.z())).divide(TWO,Dir3D.SCALE,RoundingMode.UP));
-		/*
-		final double x1=Math.sin(angle1.z())*Math.cos(angle1.xy());
-		final double y1=Math.sin(angle1.z())*Math.sin(angle1.xy());
-		final double z1=Math.cos(angle1.z());
-		final double x2=Math.sin(angle2.z())*Math.cos(angle2.xy());
-		final double y2=Math.sin(angle2.z())*Math.sin(angle2.xy());
-		final double z2=Math.cos(angle2.z());
-		final double xSum = (x1 + x2);
-		final double ySum = (y1 + y2);
-		final double zSum = (z1 + z2);
-		middleAngle.xy() = Math.atan2(ySum, xSum);
-		if(middleAngle.xy() < 0)
-			middleAngle.xy() += PI_TIMES_2;
-		middleAngle.z() = Math.acos(zSum);
-		}
-		*/
 		return middleAngle;
 	}
 
@@ -432,7 +416,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		delta.z(toAngle.z().subtract(fromAngle.z()));
 		return delta;
 	}
-	
+
 	@Override
 	public double accelSpaceObject(final Dir3D curDirection, final double curSpeed, final Dir3D accelDirection, final double newAcceleration)
 	{
@@ -481,7 +465,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			return currentSpeed.subtract(acceleration).doubleValue();
 		BigDecimal newDirectionYaw;
 		BigDecimal newDirectionPitch;
-		final BigDecimal deltaMultiplier = BigDecimal.valueOf(Math.sin(anglesDelta.doubleValue()));
+		final BigDecimal deltaMultiplier = Dir3D.sin(anglesDelta);
 		final BigDecimal yawMin =  deltaMultiplier.multiply((POINT01.add(yawDelta.multiply(ONEPOINT01.subtract(BigDecimal.valueOf(Math.sin(curDirectionPitch.doubleValue())))))));
 		final BigDecimal accelerationMultiplier;
 		if(currentSpeed.equals(ZERO))
@@ -492,7 +476,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			newDirectionYaw = accelDirectionYaw;
 		else
 		{
-			BigDecimal nearFinalYawDelta = BigDecimal.valueOf(Math.sin(yawDelta.doubleValue())).multiply(accelerationMultiplier,MathContext.DECIMAL128);
+			BigDecimal nearFinalYawDelta = Dir3D.sin(yawDelta).multiply(accelerationMultiplier,MathContext.DECIMAL128);
 			if((nearFinalYawDelta.compareTo(yawMin)<0)&&(yawDelta.compareTo(yawMin)>0))
 				nearFinalYawDelta = yawMin;
 			newDirectionYaw = curDirectionYaw.add(nearFinalYawDelta.multiply(yawSign));
@@ -509,7 +493,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				nearFinalPitchDelta = pitchMin;
 			newDirectionPitch = curDirectionPitch.add(nearFinalPitchDelta.multiply(pitchSign));
 		}
-		BigDecimal newSpeed = currentSpeed.add(acceleration.multiply(BigDecimal.valueOf(Math.cos(anglesDelta.doubleValue()))));
+		BigDecimal newSpeed = currentSpeed.add(acceleration.multiply(Dir3D.cos(anglesDelta)));
 		if(newSpeed.compareTo(ZERO)<0)
 		{
 			newSpeed = newSpeed.negate();
@@ -630,9 +614,9 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		if(O.speed()>0)
 		{
 			final BigDecimal speed = new BigDecimal(O.speed());
-			final BigDecimal x1=new BigDecimal(Math.cos(O.direction().xy().doubleValue())).multiply(new BigDecimal(Math.sin(O.direction().z().doubleValue())));
-			final BigDecimal y1=new BigDecimal(Math.sin(O.direction().xy().doubleValue())).multiply(new BigDecimal(Math.sin(O.direction().z().doubleValue())));
-			final BigDecimal z1=new BigDecimal(Math.cos(O.direction().z().doubleValue()));
+			final BigDecimal x1=Dir3D.cos(O.direction().xy()).multiply(Dir3D.sin(O.direction().z()));
+			final BigDecimal y1=Dir3D.sin(O.direction().xy()).multiply(Dir3D.sin(O.direction().z()));
+			final BigDecimal z1=Dir3D.cos(O.direction().z());
 			moveSpaceObject(O,x1.multiply(speed).add(O.coordinates().x()),
 								y1.multiply(speed).add(O.coordinates().y()),
 								z1.multiply(speed).add(O.coordinates().z()));
@@ -692,9 +676,9 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		if(speed>0)
 		{
 			final BigDecimal bigSpeed = new BigDecimal(speed);
-			final BigDecimal x1=new BigDecimal(Math.cos(direction.xy().doubleValue())).multiply(new BigDecimal(Math.sin(direction.z().doubleValue())));
-			final BigDecimal y1=new BigDecimal(Math.sin(direction.xy().doubleValue())).multiply(new BigDecimal(Math.sin(direction.z().doubleValue())));
-			final BigDecimal z1=new BigDecimal(Math.cos(direction.z().doubleValue()));
+			final BigDecimal x1=Dir3D.cos(direction.xy()).multiply(Dir3D.sin(direction.z()));
+			final BigDecimal y1=Dir3D.sin(direction.xy()).multiply(Dir3D.sin(direction.z()));
+			final BigDecimal z1=Dir3D.cos(direction.z());
 			return new Coord3D(coordinates.x().add(x1.multiply(bigSpeed)),
 							coordinates.y().add(y1.multiply(bigSpeed)),
 							coordinates.z().add(z1.multiply(bigSpeed)));
@@ -706,9 +690,9 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	public Coord3D getLocation(final Coord3D oldLocation, final Dir3D direction, final long distance)
 	{
 		final BigDecimal bigDistance = new BigDecimal(distance);
-		final BigDecimal x1=new BigDecimal(Math.cos(direction.xy().doubleValue())).multiply(new BigDecimal(Math.sin(direction.z().doubleValue())));
-		final BigDecimal y1=new BigDecimal(Math.sin(direction.xy().doubleValue())).multiply(new BigDecimal(Math.sin(direction.z().doubleValue())));
-		final BigDecimal z1=new BigDecimal(Math.cos(direction.z().doubleValue()));
+		final BigDecimal x1=Dir3D.cos(direction.xy()).multiply(Dir3D.sin(direction.z()));
+		final BigDecimal y1=Dir3D.sin(direction.xy()).multiply(Dir3D.sin(direction.z()));
+		final BigDecimal z1=Dir3D.cos(direction.z());
 		final Coord3D location=oldLocation.copyOf();
 		location.x(oldLocation.x().add(bigDistance.multiply(x1)));
 		location.y(oldLocation.y().add(bigDistance.multiply(y1)));
@@ -1137,7 +1121,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			bigVec2e.y().add(t.multiply(bigVec2e.y().subtract(bigVec2s.y()))),
 			bigVec2e.z().add(t.multiply(bigVec2e.z().subtract(bigVec2s.z())))
 		};
-		final BigDecimal minDist = Coord3D.bigSqrt(
+		final BigDecimal minDist = Coord3D.sqrt(
 			v2[0].subtract(v1[0]).multiply(v2[0].subtract(v1[0])).add(
 			v2[1].subtract(v1[1]).multiply(v2[1].subtract(v1[1]))).add(
 			v2[2].subtract(v1[2]).multiply(v2[2].subtract(v1[2]))));
@@ -1320,7 +1304,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 						final BigDecimal distanceToBobj = new BigDecimal(bobjdist);
 						final double dsgradius = CMath.mul(sradius, err);
 						final double dtgradius = CMath.mul(bobj.radius(),(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)) * err;
-						final double dirDelta = new BigDecimal(Math.atan(dsgradius + dtgradius))
+						final double dirDelta = Dir3D.atan(dsgradius + dtgradius)
 											.divide(distanceToBobj, Coord3D.SCALE, RoundingMode.HALF_UP).doubleValue();
 						final Dir3D newDir = dir.copyOf();
 						switch(dd)

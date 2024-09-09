@@ -38,7 +38,7 @@ public class Dir3D extends BigVector
 		b[0]=v.b[0];
 		b[1]=v.b[1];
 	}
-	
+
 	public Dir3D(final double[] v)
 	{
 		super(2);
@@ -46,7 +46,7 @@ public class Dir3D extends BigVector
 			throw new IllegalArgumentException();
 		xy(v[0]).z(BigDecimal.valueOf(v[1]));
 	}
-	
+
 	public Dir3D(final BigDecimal[] v)
 	{
 		super(2);
@@ -54,19 +54,24 @@ public class Dir3D extends BigVector
 			throw new IllegalArgumentException();
 		xy(v[0]).z(v[1]);
 	}
-	
+
 	public Dir3D(final BigDecimal v0, final BigDecimal v1)
 	{
 		super(2);
 		xy(v0).z(v1);
 	}
-	
+
 	public Dir3D(final double v0, final double v1)
 	{
 		super(2);
 		xy(v0).z(v1);
 	}
-	
+
+	public BigDecimal BigDecimal(final double d)
+	{
+		return BigDecimal.valueOf(d);
+	}
+
 	public BigDecimal xy()
 	{
 		if(b.length>0)
@@ -149,7 +154,7 @@ public class Dir3D extends BigVector
 	{
 		return new Dir3D(this);
 	}
-	
+
 	public Dir3D xy(final double d)
 	{
 		return xy(new BigDecimal(d));
@@ -182,13 +187,12 @@ public class Dir3D extends BigVector
 	{
 		return new Dir3D(super.add(v));
 	}
-	
+
 	public Dir3D subtract(final Dir3D v)
 	{
 		return new Dir3D(super.subtract(v));
 	}
-	
-	
+
 	@Override
 	public boolean equals(final Object o)
 	{
