@@ -67,16 +67,17 @@ public class Thief_ConcealWalkway extends ThiefSkill
 	}
 
 	private static final String[] triggerStrings =I(new String[] {"WALKWAYCONCEAL","WALKCONCEAL","WCONCEAL","CONCEALWALKWAY"});
-	@Override
-	public int classificationCode()
-	{
-		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;
-	}
 
 	@Override
 	public String[] triggerStrings()
 	{
 		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;
 	}
 
 	@Override
@@ -117,7 +118,11 @@ public class Thief_ConcealWalkway extends ThiefSkill
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		if(canBeUninvoked() && (invoker()!=null) && (!msg.source().isMonster()) && (msg.source()!=invoker()) && (msg.sourceMinor()==CMMsg.TYP_ENTER))
+		if(canBeUninvoked()
+		&& (invoker()!=null)
+		&& (!msg.source().isMonster())
+		&& (msg.source()!=invoker())
+		&& (msg.sourceMinor()==CMMsg.TYP_ENTER))
 		{
 			final Physical affected=super.affected;
 			if(affected != null)
@@ -131,7 +136,8 @@ public class Thief_ConcealWalkway extends ThiefSkill
 				else
 				{
 					final Set<MOB> grp=invoker().getGroupMembers(new HashSet<MOB>());
-					if(!grp.contains(msg.source()))
+					if((!grp.contains(msg.source()))
+					&&(!msg.source().mayIFight(invoker())))
 					{
 						unInvoke();
 						affected.delEffect(this);

@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_NameUrchin extends ThiefSkill
+public class Thief_PromoteUrchin extends ThiefSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_NameUrchin";
+		return "Thief_PromoteUrchin";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Name Urchin");
+	private final static String localizedName = CMLib.lang().L("Promote Urchin");
 
 	@Override
 	public String name()
@@ -72,7 +72,7 @@ public class Thief_NameUrchin extends ThiefSkill
 		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"NAMEURCHIN"});
+	private static final String[] triggerStrings =I(new String[] {"PROMOTEURCHIN"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -88,15 +88,7 @@ public class Thief_NameUrchin extends ThiefSkill
 	@Override
 	protected int overrideMana()
 	{
-		return Ability.COST_ALL;
-	}
-
-	@Override
-	public void affectPhyStats(final Physical affected, final PhyStats affectedStats)
-	{
-		super.affectPhyStats(affected,affectedStats);
-		if(text().length()>0)
-			affectedStats.setName(text());
+		return 100;
 	}
 
 	@Override
@@ -107,39 +99,6 @@ public class Thief_NameUrchin extends ThiefSkill
 			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
-		if(commands.size()<2)
-		{
-			mob.tell(L("You must specify the urchin, and a name to give him or her (or the name 'random' for a random one)."));
-			return false;
-		}
-		String myName=CMStrings.capitalizeAndLower(commands.remove(commands.size()-1)).trim();
-		if(myName.length()==0)
-		{
-			mob.tell(L("You must specify a name."));
-			return false;
-		}
-		if(myName.indexOf(' ')>=0)
-		{
-			mob.tell(L("Your name may not contain a space."));
-			return false;
-		}
-		if(CMStrings.containsAny(myName, "!@#$%^&*()+<>.,'\";:) {}[]|\\/?~`".toCharArray()))
-		{
-			mob.tell(L("Your name contains illegal characters."));
-			return false;
-		}
-		myName = CMLib.coffeeFilter().secondaryUserInputFilter(myName);
-		if(myName.equalsIgnoreCase("random"))
-		{
-			final List<String> names = Resources.getFileLineVector(Resources.getFileResource("skills/urchins.txt", true));
-			if(names.size()==0)
-			{
-				mob.tell(L("You need to specify a name."));
-				return false;
-			}
-			myName=names.get(CMLib.dice().roll(1,names.size(),-1));
-		}
-
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
@@ -150,6 +109,14 @@ public class Thief_NameUrchin extends ThiefSkill
 		||(!Thief_MyUrchins.isMyUrchin(target, mob))))
 		{
 			mob.tell(L("@x1 is not one of your urchins.",target.name(mob)));
+			return false;
+		}
+
+		final int maxLevel = mob.phyStats().level() - 11 + super.getXLEVELLevel(mob);
+		if((target.phyStats().level() >= maxLevel)
+		||(target.getExpNeededLevel() == Integer.MAX_VALUE))
+		{
+			mob.tell(L("You can not promote @x1 any further.",target.name(mob)));
 			return false;
 		}
 
@@ -166,26 +133,25 @@ public class Thief_NameUrchin extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final String str=auto?"":L("<S-NAME> name(s) <T-NAME> `@x1`.",myName);
+			final String str=auto?"":L("<S-NAME> promote(s) <T-NAME>.");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND,auto?"":str,str,str);
 			if(target.location().okMessage(mob,msg))
 			{
 				target.location().send(mob,msg);
-				if(target.isPlayer() || (target.findTattooStartsWith("PARENT:")!=null))
-				{
-					final Ability A=(Ability)this.copyOf();
-					A.setMiscText(myName);
-					target.addNonUninvokableEffect(A);
-				}
-				else
-				{
-					target.setName(myName);
-					target.setDisplayText(L("@x1 is here.",myName));
-				}
 				try
 				{
 					target.setLiegeID(""); // prevent back-xp giving
-					CMLib.leveler().postExperience(target,"ABILITY:"+ID(),null,null,1000, false);
+					final int targetLevel = target.basePhyStats().level()+1;
+					int tries = targetLevel*100;
+					while((target.basePhyStats().level()<targetLevel)&&(--tries>0))
+					{
+						if((target.charStats().getCurrentClass().expless())
+						||(target.charStats().getMyRace().expless())
+						||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
+							CMLib.leveler().level(target);
+						else
+							CMLib.leveler().postExperience(target,"ABILITY:"+ID(),null,null,target.getExpNeededLevel()+1, false);
+					}
 				}
 				finally
 				{
@@ -194,7 +160,7 @@ public class Thief_NameUrchin extends ThiefSkill
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to give <T-NAME> a new name, but <T-NAME> <T-IS-ARE> not having it."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to promote <T-NAME>, but <T-NAME> <T-IS-ARE> not believing it."));
 
 		// return whether it worked
 		return success;

@@ -234,6 +234,7 @@ public class Ranger extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_GasWard",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Ranger_Camouflage",false,CMParms.parseSemicolons("Ranger_Hide",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_ConcealPathway",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_SummonAnimal",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_Sunray",false);

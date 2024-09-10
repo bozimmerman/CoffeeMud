@@ -1,0 +1,8 @@
+Small attack penalty	1	attack-5	-2	
+Small mana bonus	1	mana+5	1	
+Small hit point bonus	1	hit+5	1	
+Small hit point and movement bonus	1	hit+5 move+5	2	
+Small attack bonus	1	attack+5	5	
+Small strength bonus	1	str+1	15	PRESERVING1
+Decent intelligence bonus	1	int+2	30	PRESERVING3
+Decent wisdom bonus	1	wis+3	wis+3	45	PRESERVING4

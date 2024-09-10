@@ -55,7 +55,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		return localizedName;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"HERBALISM","HERBREW","HBREW"});
+	private static final String[] triggerStrings =I(new String[] {"HBREW","HERBALISM","HERBREW"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -314,9 +314,10 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			crafted.add(new CraftedItem(buildingI,null,calculateDuration(mob,theSpell,level)));
 			return true;
 		}
+		final String keyword = this.triggerStrings()[0].toLowerCase();
 		if(commands.size()<1)
 		{
-			commonTelL(mob,"Brew what? Enter \"hbrew list\" for a list, \"hbrew learn <item>\" to learn recipes, or \"hbrew stop\" to cancel.");
+			commonTelL(mob,"Brew what? Enter \"@x1 list\" for a list, \"@x1 learn <item>\" to learn recipes, or \"@x1 stop\" to cancel.",keyword);
 			return false;
 		}
 		int playerLevel = xlevel(mob);
@@ -457,7 +458,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			}
 			if((theSpell==null)||(recipe==null))
 			{
-				commonTelL(mob,"You don't know how to brew '@x1'.  Try \"hbrew list\" for a list.",recipeName);
+				commonTelL(mob,"You don't know how to brew '@x1'.  Try \"@x2 list\" for a list.",recipeName,keyword);
 				return false;
 			}
 			int experienceToLose=10;

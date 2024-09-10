@@ -199,23 +199,24 @@ public class Gypsy extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_Astrology",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_SuppressFortune",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_EnchantShards",false); //untested
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_EnchantShards",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_BountifulWomb",false); //untested
-		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_NameUrchin",true); //untested
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_BountifulWomb",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_NameUrchin",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_PlantItem",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_PowerGrab",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_EnhanceShard",false); //untested
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_EnhanceShard",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"CaravanBuilding",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"ImprovedHerbalism",false); //untested
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"ImprovedHerbalism",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_Tumble",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_CurseFortune",true); // untested
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_CurseFortune",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Shadow",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_StaffSpin",false,CMParms.parseSemicolons("Fighter_StaffBlock",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_StaffSpin",false,
+				CMParms.parseSemicolons("Fighter_StaffBlock",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_PalmReading",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_UsePotion",false);
@@ -226,25 +227,25 @@ public class Gypsy extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_StrengthenSeed",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_TradeCharting",false);
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_EndowGemstones",true);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_PromoteUrchin",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_EndowGemstones",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_PromoteUrchin",false);
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_ConcealPathway",true);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_ReverseFortune",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_ConcealPathway",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_ReverseFortune",false);
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_CallUrchins",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_EndowClub",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_CallUrchins",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_EndowClub",true);
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_UrchinSpy",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_StaffThrust",true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_UrchinSpy",false); // untested
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_StaffThrust",true); // untested
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_CurseSeed",true);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_CaravanTravel",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_CurseSeed",true); // untested
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_CaravanTravel",false); // untested
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_EndowJewelry",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_FortuneTelling",true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_EndowJewelry",false); // untested
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_FortuneTelling",true); // untested
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_EndowIounStone",true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_EndowIounStone",true); // untested
 	}
 
 	@Override

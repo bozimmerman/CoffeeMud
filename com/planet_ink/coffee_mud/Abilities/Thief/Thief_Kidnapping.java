@@ -348,7 +348,7 @@ public class Thief_Kidnapping extends ThiefSkill
 				if(msg.value()<=0)
 				{
 					final MOB followP = target.amFollowing();
-
+					target.makePeace(true);
 					final boolean wasFollowing;
 					String followName = "";
 					if(followP != null)
@@ -366,7 +366,14 @@ public class Thief_Kidnapping extends ThiefSkill
 						return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to kidnap <T-NAME> and fail(s)."));
 					}
 					else
+					{
 						CMLib.commands().postFollow(target, mob, false);
+						if(target.amFollowing() != mob)
+						{
+							failures.put(target, Long.valueOf(System.currentTimeMillis()+TimeManager.MILI_HOUR));
+							return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to kidnap <T-NAME> and fail(s)."));
+						}
+					}
 					final boolean autoAssist = target.isAttributeSet(Attrib.AUTOASSIST);
 					final Thief_Kidnapping kA = (Thief_Kidnapping)beneficialAffect(mob, target, asLevel, 0);
 					if(kA != null)

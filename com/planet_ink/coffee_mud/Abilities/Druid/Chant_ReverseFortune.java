@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Chant_SuppressFortune extends Chant
+public class Chant_ReverseFortune extends Chant
 {
 	@Override
 	public String ID()
 	{
-		return "Chant_SuppressFortune";
+		return "Chant_ReverseFortune";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Suppress Fortune");
+	private final static String localizedName = CMLib.lang().L("Reverse Fortune");
 
 	@Override
 	public String name()
@@ -48,7 +48,7 @@ public class Chant_SuppressFortune extends Chant
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Suppress Fortune)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Reverse Fortune)");
 
 	@Override
 	public String displayText()
@@ -89,11 +89,11 @@ public class Chant_SuppressFortune extends Chant
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 		{
-			mob.tell(L("Your suppressed fortune fades."));
+			mob.tell(L("Your reversed fortune fades."));
 			final Ability A = mob.fetchEffect("AutoAwards");
 			if(A != null)
 			{
-				A.setStat("SUPPRESSOR", ""); // autoawards has a backup to this, so no worries
+				A.setStat("REVERSER", ""); // autoawards has a backup to this, so no worries
 				A.setStat("FORCETICK", "true");
 			}
 		}
@@ -114,13 +114,13 @@ public class Chant_SuppressFortune extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) suppressively to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) in reverse to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) <S-HIS-HER> fortune being suppressed."));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) <S-HIS-HER> fortune being reversed."));
 					final Ability meA = beneficialAffect(mob,target,asLevel,0);
 					if(meA != null)
 					{
@@ -129,7 +129,7 @@ public class Chant_SuppressFortune extends Chant
 						final Ability A = target.fetchEffect("AutoAwards");
 						if(A != null)
 						{
-							A.setStat("SUPPRESSOR", meA.ID());
+							A.setStat("REVERSER", meA.ID());
 							A.setStat("FORCETICK", "true");
 						}
 						target.recoverPhyStats();

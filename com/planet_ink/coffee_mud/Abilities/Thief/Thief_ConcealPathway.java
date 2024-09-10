@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2006-2024 Bo Zimmerman
+   Copyright 2024-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_ConcealDoor extends ThiefSkill
+public class Thief_ConcealPathway extends ThiefSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_ConcealDoor";
+		return "Thief_ConcealPathway";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Conceal Door");
+	private final static String localizedName = CMLib.lang().L("Conceal Pathway");
 
 	@Override
 	public String name()
@@ -66,13 +66,13 @@ public class Thief_ConcealDoor extends ThiefSkill
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
+	private static final String[] triggerStrings =I(new String[] {"PATHWAYCONCEAL","PATHCONCEAL","PCONCEAL","CONCEALPATHWAY"});
 	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"DOORCONCEAL","DCONCEAL","CONCEALDOOR"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -106,51 +106,39 @@ public class Thief_ConcealDoor extends ThiefSkill
 	public void affectPhyStats(final Physical host, final PhyStats stats)
 	{
 		super.affectPhyStats(host,stats);
-		if((host instanceof Exit)&&(!((Exit)host).isOpen()))
+		if(host instanceof Exit)
 		{
 			stats.setDisposition(stats.disposition()|PhyStats.IS_HIDDEN);
-			// cant affect level because will make it unpickable, therefore unopenable
-			// need some other way to designate its hiddenitude.
-			//stats.setLevel(stats.level()+abilityCode());
+			stats.setLevel(stats.level()+abilityCode());
 		}
 	}
 
 	@Override
-	public void executeMsg(final Environmental host, final CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		super.executeMsg(host,msg);
-		if((msg.target()==affected)
-		&&(msg.targetMinor()==CMMsg.TYP_OPEN)
-		&&(super.canBeUninvoked()))
+		super.executeMsg(myHost, msg);
+		if(canBeUninvoked()
+		&& (invoker()!=null)
+		&& (!msg.source().isMonster())
+		&& (msg.source()!=invoker())
+		&& (msg.sourceMinor()==CMMsg.TYP_ENTER))
 		{
-			unInvoke();
-			if(affected!=null)
+			final Physical affected=super.affected;
+			if(affected != null)
 			{
-				affected.delEffect(this);
-				affected.recoverPhyStats();
-			}
-		}
-		else
-		if(canBeUninvoked() && (invoker()!=null) && (!msg.source().isMonster()) && (msg.source()!=invoker()) && (msg.sourceMinor()==CMMsg.TYP_ENTER) && (affected!=null))
-		{
-			if(!CMLib.flags().isInTheGame(invoker(), true))
-			{
-				unInvoke();
-				if(affected!=null)
+				if(!CMLib.flags().isInTheGame(invoker(), true))
 				{
+					unInvoke();
 					affected.delEffect(this);
 					affected.recoverPhyStats();
 				}
-			}
-			else
-			{
-				final Set<MOB> grp=invoker().getGroupMembers(new HashSet<MOB>());
-				if((!grp.contains(msg.source()))
-				&&(!msg.source().mayIFight(invoker())))
+				else
 				{
-					unInvoke();
-					if(affected!=null)
+					final Set<MOB> grp=invoker().getGroupMembers(new HashSet<MOB>());
+					if((!grp.contains(msg.source()))
+					&&(!msg.source().mayIFight(invoker())))
 					{
+						unInvoke();
 						affected.delEffect(this);
 						affected.recoverPhyStats();
 					}
@@ -159,12 +147,35 @@ public class Thief_ConcealDoor extends ThiefSkill
 		}
 	}
 
+	protected boolean isAPathway(final Room R)
+	{
+		if(R==null)
+			return false;
+		if((R.domainType()==Room.DOMAIN_OUTDOORS_PLAINS)
+		&&(R.basePhyStats().weight()==1))
+			return true;
+		return false;
+	}
+
+	protected boolean isWilderness(final Room R)
+	{
+		if(R==null)
+			return false;
+		if(isAPathway(R))
+			return false;
+		if(CMLib.flags().isACityRoom(R))
+			return false;
+		if((R.domainType()&Room.INDOORS)>0)
+			return false;
+		return true;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(L("Which door would you like to conceal?"));
+			mob.tell(L("Which pathway would you like to conceal?"));
 			return false;
 		}
 		Environmental chkE=null;
@@ -173,25 +184,29 @@ public class Thief_ConcealDoor extends ThiefSkill
 			chkE=mob.location().fetchFromMOBRoomItemExit(mob,null,typed,Wearable.FILTER_WORNONLY);
 		else
 			chkE=mob.location().getExitInDir(CMLib.directions().getGoodDirectionCode(typed));
-		if((!(chkE instanceof Exit))||(!CMLib.flags().canBeSeenBy(chkE,mob)))
+		int direction=-1;
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			mob.tell(L("You don't see any doors called '@x1' here.",typed));
+			if(mob.location().getExitInDir(d)==chkE)
+				direction=d;
+		}
+		if((!(chkE instanceof Exit))||(!CMLib.flags().canBeSeenBy(chkE,mob))||(direction<0))
+		{
+			mob.tell(L("You don't see any directions called '@x1' here.",typed));
+			return false;
+		}
+		final Room R2=mob.location().getRoomInDir(direction);
+		final boolean roomOk = ((isAPathway(mob.location())) && (isWilderness(R2)))
+				|| ((isAPathway(R2)) && (isWilderness(mob.location())));
+		if(!roomOk)
+		{
+			mob.tell(L("You don't know how to conceal that.  One of the connecting rooms must be a moderate road, and the other must be a wilderness room."));
 			return false;
 		}
 		final Exit X=(Exit)chkE;
-		if(!X.hasADoor())
+		if((!auto)&&(X.phyStats().level()>(adjustedLevel(mob,asLevel)*2)))
 		{
-			mob.tell(mob,X,null,L("<T-NAME> is not a door!"));
-			return false;
-		}
-		if((!auto)&&(X.phyStats().level()>((adjustedLevel(mob,asLevel)*2))))
-		{
-			mob.tell(L("You aren't good enough to conceal that door."));
-			return false;
-		}
-		if(X.isOpen())
-		{
-			mob.tell(mob,X,null,L("You'd better close <T-NAME> first."));
+			mob.tell(L("You aren't good enough to conceal that direction."));
 			return false;
 		}
 
@@ -210,15 +225,6 @@ public class Thief_ConcealDoor extends ThiefSkill
 				A.setInvoker(mob);
 				A.setAbilityCode((adjustedLevel(mob,asLevel)*2)-X.phyStats().level());
 				final Room R=mob.location();
-				Room R2=null;
-				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-				{
-					if(R.getExitInDir(d)==X)
-					{
-						R2=R.getRoomInDir(d);
-						break;
-					}
-				}
 				if((CMLib.law().doesOwnThisLand(mob,R))
 				||((R2!=null)&&(CMLib.law().doesOwnThisLand(mob,R2))))
 				{

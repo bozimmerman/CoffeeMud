@@ -1513,6 +1513,38 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
+			new AbilityParmEditorImpl("EXPERTISE","Expertise",ParmType.STRINGORNULL)
+			{
+				@Override
+				public void createChoices()
+				{
+					createChoices(CMLib.expertises().definitions());
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+
+				@Override
+				public boolean confirmValue(final String oldVal)
+				{
+					return CMLib.expertises().findDefinition(oldVal, true) != null;
+				}
+
+				@Override
+				public int minColWidth()
+				{
+					return 15;
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+			},
 			new AbilityParmEditorImpl("STAIRS_DESC","Exit Desc",ParmType.STRING)
 			{
 				@Override

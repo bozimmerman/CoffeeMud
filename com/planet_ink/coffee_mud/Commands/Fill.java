@@ -69,7 +69,8 @@ public class Fill extends StdCommand
 			return false;
 		}
 
-		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
+		if((commands.size()<2)
+		&&(!(mob.location() instanceof Drink)))
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("From what should I fill the @x1?",commands.get(0)));
 			return false;

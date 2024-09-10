@@ -107,6 +107,7 @@ public class AutoAwards extends StdAbility
 	protected volatile int[]		affectHash	= null;
 	protected volatile Ability		holderA		= null;
 	protected volatile Ability		suppressorA	= null;
+	protected volatile Ability		reverserA	= null;
 
 	protected final PairList<AutoProperties, CMObject>	affects		= new PairVector<AutoProperties, CMObject>();
 	protected final Map<TimePeriod, AutoProperties[]>	myEntries	= new Hashtable<TimePeriod, AutoProperties[]>();
@@ -134,12 +135,26 @@ public class AutoAwards extends StdAbility
 		}
 	}
 
-	protected void applyAward(final AutoProperties autoProp, final Pair<String, String> award)
+	protected void applyAward(final AutoProperties autoProp, final Pair<String, String> award, final boolean reverse)
 	{
 		final Ability A = CMClass.getAbility(award.first);
+		String parms = award.second;
+		if(reverse)
+		{
+			final char[] cs = parms.toCharArray();
+			for(int i=0;i<cs.length;i++)
+			{
+				if(cs[i]=='+')
+					cs[i]='-';
+				else
+				if(cs[i]=='-')
+					cs[i]='+';
+			}
+			parms = new String(cs);
+		}
 		if(A != null)
 		{
-			A.setMiscText(award.second);
+			A.setMiscText(parms);
 			A.setAffectedOne(affected);
 			A.setProficiency(100);
 			affects.add(autoProp,A);
@@ -149,7 +164,7 @@ public class AutoAwards extends StdAbility
 			final Behavior B=CMClass.getBehavior(award.first);
 			if(B != null)
 			{
-				B.setParms(award.second);
+				B.setParms(parms);
 				if(affected instanceof PhysicalAgent)
 					B.startBehavior((PhysicalAgent)affected);
 				affects.add(autoProp,B);
@@ -165,13 +180,6 @@ public class AutoAwards extends StdAbility
 		final Physical affected=this.affected;
 		if(affected != null)
 		{
-			final Ability suppressA = suppressorA;
-			if(suppressA != null)
-			{
-				if((suppressA.affecting() != affected)
-				||(affected.fetchEffect(suppressA.ID()) != suppressA))
-					this.suppressorA = null;
-			}
 			TimeClock lastClock = this.lastClock;
 			if(lastClock == null)
 			{
@@ -194,6 +202,13 @@ public class AutoAwards extends StdAbility
 			}
 			if(myEntries.size()>0)
 			{
+				final Ability suppressA = suppressorA;
+				if(suppressA != null)
+				{
+					if((suppressA.affecting() != affected)
+					||(affected.fetchEffect(suppressA.ID()) != suppressA))
+						this.suppressorA = null;
+				}
 				final TimeClock now = CMLib.time().homeClock(affected);
 				if((now != null)
 				&& ((now.getHourOfDay() != lastClock.getHourOfDay()) || forceApply ))
@@ -219,10 +234,17 @@ public class AutoAwards extends StdAbility
 							affectHash[0] = eHash[0];
 							// not terribly efficient for awards that overlap, but *shrug*
 							affects.clear();
+							final Ability reverseA = reverserA;
+							if(reverseA != null)
+							{
+								if((reverseA.affecting() != affected)
+								||(affected.fetchEffect(reverseA.ID()) != reverseA))
+									this.reverserA = null;
+							}
 							for(final AutoProperties aE : chk)
 							{
 								for(final Pair<String,String> pE : aE.getProps())
-									applyAward(aE, pE);
+									applyAward(aE, pE, reverserA!=null);
 							}
 						}
 						lastClock.setDateTime(now);
@@ -396,6 +418,16 @@ public class AutoAwards extends StdAbility
 				this.suppressorA = this.affected.fetchEffect(val);
 		}
 		else
+		if(code.equalsIgnoreCase("REVERSER"))
+		{
+			if(val.trim().length()==0)
+				this.reverserA = null;
+			else
+			if(this.affected != null)
+				this.reverserA = this.affected.fetchEffect(val);
+			this.affectHash = null;
+		}
+		else
 		if(code.equalsIgnoreCase("HOLDER"))
 		{
 			if(val.trim().length()==0)
@@ -438,7 +470,7 @@ public class AutoAwards extends StdAbility
 						{
 							affectHash[0] ^= P.hashCode();
 							for(final Pair<String, String> ps : P.getProps())
-								applyAward(P, ps);
+								applyAward(P, ps, reverserA!=null);
 							break;
 						}
 					}
