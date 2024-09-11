@@ -256,7 +256,7 @@ public class Play extends StdAbility
 					&&(mob.fetchFirstWornItem(Wearable.WORN_WIELD)==null)
 					&&(mob.fetchHeldItem()==null));
 		}
-		return mob.isMine(I)&&(!I.amWearingAt(Wearable.IN_INVENTORY));
+		return mob.isMine(I)&&(I.amBeingWornProperly());
 	}
 
 	@Override

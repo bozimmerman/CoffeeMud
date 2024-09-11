@@ -970,9 +970,6 @@ public class GrinderMobs
 				error=GrinderMobs.senses(M,httpReq,parms);
 				if(error.length()>0)
 					return error;
-				error=GrinderAreas.doAffects(M,httpReq,parms);
-				if(error.length()>0)
-					return error;
 				error=GrinderAreas.doBehavs(M,httpReq,parms);
 				if(error.length()>0)
 					return error;
@@ -980,6 +977,9 @@ public class GrinderMobs
 				if(error.length()>0)
 					return error;
 				error=GrinderMobs.abilities(M,httpReq,parms);
+				if(error.length()>0)
+					return error;
+				error=GrinderAreas.doAffects(M,httpReq,parms); // after abilities because of auto-invoking crap
 				if(error.length()>0)
 					return error;
 				error=GrinderMobs.clans(M,httpReq,parms);

@@ -1119,6 +1119,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							{
 								if(S.getClientTelnetMode(Session.TELNET_MXP))
 								{
+									buf.setCharAt(loop, ' ');
 									buf.setCharAt(loop+1, '<');
 									buf.setCharAt(x, ' ');
 									buf.setCharAt(y, '>');

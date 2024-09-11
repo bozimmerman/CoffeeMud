@@ -237,7 +237,7 @@ public class Gypsy extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_EndowClub",true);
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_UrchinSpy",false); // untested
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_StaffThrust",true); // untested
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_StaffThrust",true); // untested
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_CurseSeed",true); // untested
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_CaravanTravel",false); // untested
