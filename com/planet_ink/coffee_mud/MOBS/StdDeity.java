@@ -834,7 +834,7 @@ public class StdDeity extends StdMOB implements Deity
 					{
 						if(rituals.isCompleted(RitualType.SERVICE, msg))
 						{
-							if(!alreadyServiced(msg.source(),msg.source().location()))
+							if(!serviceCheck(msg.source(),msg.source().location(),false))
 								finishService(msg.source(),msg.source().location());
 						}
 						else
@@ -849,17 +849,20 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		if((mob==null)||(room==null))
 			return;
+		if(serviceCheck(mob, room, true))
+			return;
+		if(serviceCheck(mob, room, false))
+		{
+			if(!mob.isMonster())
+				mob.tell(L("Services have already been performed here for @x1 recently.",name()));
+			return;
+		}
 		final List<MOB> parishaners=new ArrayList<MOB>();
 		synchronized(services)
 		{
-			for(final WorshipService w : services)
-			{
-				if(w.room==room)
-					return;
-			}
 			final CMMsg msg=CMClass.getMsg(this,mob,null,
-					CMMsg.MSG_HOLYEVENT, L("<T-NAME> begin(s) to hold services for @x1 here.",mob.Name()),
-					CMMsg.MSG_HOLYEVENT,null,
+					CMMsg.MSG_HOLYEVENT, L("<T-NAME> begin(s) to hold services for @x1 here.",name()),
+					CMMsg.MSG_HOLYEVENT, L("<T-NAME> begin(s) to hold services for @x1 here.",name()),
 					CMMsg.NO_EFFECT,HolyEvent.SERVICE_BEGIN.toString());
 			if(!room.okMessage(this, msg))
 				return;
@@ -898,10 +901,8 @@ public class StdDeity extends StdMOB implements Deity
 						&&(!M.isInCombat())
 						&&(CMLib.flags().isAliveAwakeMobileUnbound(M, true)))
 						{
-							final Ability TRACKA=CMClass.getAbility("Skill_Track");
-							if(TRACKA!=null)
+							if(CMLib.tracking().autoTrack(M, room))
 							{
-								TRACKA.invoke(M,CMParms.parse("\""+CMLib.map().getExtendedRoomID(room)+"\" NPC"),room,true,0);
 								parishaners.add(M);
 								if(parishaners.size()>maxMobs)
 									break;
@@ -932,7 +933,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 	}
 
-	protected boolean alreadyServiced(final MOB mob, final Room room)
+	protected boolean serviceCheck(final MOB mob, final Room room, final boolean inProgress)
 	{
 		synchronized(services)
 		{
@@ -950,7 +951,7 @@ public class StdDeity extends StdMOB implements Deity
 				else
 				if((service.room != null)
 				&&(service.room.getArea()==room.getArea())
-				&&(service.serviceCompleted))
+				&&(service.serviceCompleted == !inProgress))
 					return true;
 			}
 		}
@@ -1014,9 +1015,9 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return this.cancelService(service,L(" because no one showed up for it."));
 		}
-		final CMMsg eventMsg=CMClass.getMsg(this, null, null,
+		final CMMsg eventMsg=CMClass.getMsg(this, mob, null,
 				CMMsg.MSG_HOLYEVENT, null,
-				CMMsg.MSG_HOLYEVENT, null,
+				CMMsg.MSG_HOLYEVENT, L("<T-NAME> <T-HAS-HAVE> completed services for @x1.",name()),
 				CMMsg.NO_EFFECT, HolyEvent.SERVICE.toString());
 		eventMsg.setValue(service.parishaners.size());
 		service.serviceCompleted = true;
@@ -1049,6 +1050,11 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		if(service == null)
 			return false;
+		synchronized(services)
+		{
+			if(!services.contains(service))
+				return false;
+		}
 		final Room room = service.room;
 		final MOB mob = service.cleric;
 		MOB M=null;
@@ -1069,7 +1075,7 @@ public class StdDeity extends StdMOB implements Deity
 				CMMsg.MSG_HOLYEVENT, null,
 				CMMsg.NO_EFFECT, HolyEvent.SERVICE_CANCEL.toString());
 		final CMMsg msg2=CMClass.getMsg(this,null,null,
-				CMMsg.NO_EFFECT, null,CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_ACTION,L("The service conducted by @x1 has been cancelled@x1.",mob.Name(),reason));
+				CMMsg.NO_EFFECT, null,CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_ACTION,L("The service conducted by @x1 has been cancelled@x2.",mob.Name(),reason));
 		if(room.okMessage(this, msg)
 		&&room.okMessage(this, msg2))
 		{
