@@ -680,7 +680,7 @@ public class StdWearable extends StdItem implements Armor
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected, affectableStats);
-		StdWearable.applyMaterialSaves(null, affected, affectableStats);
+		StdWearable.applyMaterialSaves(this, affected, affectableStats);
 	}
 
 	protected static void applyMaterialSaves(final Armor A, final MOB affected, final CharStats affectableStats)
