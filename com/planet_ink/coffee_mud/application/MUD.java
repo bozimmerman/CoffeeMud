@@ -68,7 +68,7 @@ import java.sql.*;
 */
 public class MUD extends Thread implements MudHost
 {
-	private static final String	  HOST_VERSION	= "5.10.3";
+	private static final String	  HOST_VERSION	= "5.10.3.1";
 
 	private static enum MudState
 	{
@@ -1662,6 +1662,7 @@ public class MUD extends Thread implements MudHost
 				if(!CMLib.map().roomIDs().hasMoreElements())
 				{
 					Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
+					CMLib.time().globalClock().setYear(1000);
 					final String id="START";//New Area#0";
 					final Area newArea=CMClass.getAreaType("StdArea");
 					newArea.setName(CMLib.lang().L("New Area"));
