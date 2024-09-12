@@ -99,6 +99,30 @@ public class Thief_NameUrchin extends ThiefSkill
 			affectedStats.setName(text());
 	}
 
+	public volatile int nameCheckCtr = 0;
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(++nameCheckCtr > 10)
+		{
+			nameCheckCtr = 0;
+			final Physical P = affected;
+			if((P instanceof MOB)
+			&&(((MOB)P).amFollowing()==null)
+			&&(CMLib.flags().isInTheGame((MOB)P,true))
+			&&(((MOB)P).getLiegeID()==null)||(((MOB)P).getLiegeID().trim().length()==0))
+			{
+				P.delEffect(P.fetchEffect(ID()));
+				P.recoverPhyStats();
+				return false;
+			}
+		}
+		return true;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{

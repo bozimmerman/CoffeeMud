@@ -103,7 +103,33 @@ public class Prayer_Designation extends Prayer
 		if((msg.amISource(mob))
 		&&(mob.amFollowing()!=null)
 		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
+		{
 			mob.delEffect(mob.fetchEffect(ID()));
+			mob.recoverPhyStats();
+		}
+	}
+
+	public volatile int nameCheckCtr = 0;
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(++nameCheckCtr > 10)
+		{
+			nameCheckCtr = 0;
+			final Physical P = affected;
+			if((P instanceof MOB)
+			&&(((MOB)P).amFollowing()==null)
+			&&(CMLib.flags().isInTheGame((MOB)P,true)))
+			{
+				P.delEffect(P.fetchEffect(ID()));
+				P.recoverPhyStats();
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
