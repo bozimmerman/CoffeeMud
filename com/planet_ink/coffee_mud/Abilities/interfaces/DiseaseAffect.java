@@ -52,6 +52,8 @@ public interface DiseaseAffect extends HealthCondition
 	public final static int SPREAD_GET=32;
 	/** denotes a diseases spread by hearing someone who is infected. @see Ability#abilityCode() */
 	public final static int SPREAD_HEARING=64;
+	/** denotes a diseases spread by birth who is infected. @see Ability#abilityCode() */
+	public final static int SPREAD_INHERETED=128;
 
 	/**
 	 * Descriptions of the SPREAD_ constants
@@ -63,7 +65,8 @@ public interface DiseaseAffect extends HealthCondition
 		"ingestion",
 		"blood contact",
 		"picking up",
-		"hearing"
+		"hearing",
+		"inheritance"
 	};
 
 	/**

@@ -189,6 +189,7 @@ public class Bard extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_Steal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Song_Death",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Song_Disgust",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_CaravanTravel",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Song_Rebirth",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Song_Ode",true);
 

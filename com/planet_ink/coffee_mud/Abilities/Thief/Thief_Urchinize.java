@@ -145,7 +145,19 @@ public class Thief_Urchinize extends ThiefSkill
 				R.show(M, null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> now an urchin."));
 				CMLib.commands().postFollow(M, null, false);
 				urchanizing = null;
-				final Ability A = CMClass.getAbility("Thief_Swipe");
+				Ability A = CMClass.getAbility("Thief_Swipe");
+				if(M.fetchAbility(A.ID())==null)
+				{
+					A.setProficiency(100);
+					M.addAbility(A);
+				}
+				A = CMClass.getAbility("Thief_Sneak");
+				if(M.fetchAbility(A.ID())==null)
+				{
+					A.setProficiency(100);
+					M.addAbility(A);
+				}
+				A = CMClass.getAbility("Thief_Hide");
 				if(M.fetchAbility(A.ID())==null)
 				{
 					A.setProficiency(100);

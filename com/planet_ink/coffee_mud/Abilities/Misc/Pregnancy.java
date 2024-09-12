@@ -87,7 +87,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		ENDTIME,
 		FATHERNAME,
 		FATHERRACE,
-		BABYRACE
+		BABYRACE,
+		BABYGENDER
 	}
 
 	protected String getSplitArgument(final PregArg arg)
@@ -165,6 +166,16 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		setSplitArgument(PregArg.BABYRACE,raceID);
 	}
 
+	protected String getBabyGender()
+	{
+		return getSplitArgument(PregArg.BABYGENDER);
+	}
+
+	protected void setBabyGender(final String genderChar)
+	{
+		setSplitArgument(PregArg.BABYGENDER,genderChar);
+	}
+
 	protected String getFathersRace()
 	{
 		final String racePart=getSplitArgument(PregArg.FATHERRACE);
@@ -226,6 +237,9 @@ public class Pregnancy extends StdAbility implements HealthCondition
 			if (code.equalsIgnoreCase("BABYRACE"))
 				this.setBabyRace(val);
 			else
+			if (code.equalsIgnoreCase("BABYGENDER"))
+				this.setBabyGender(val);
+			else
 			if (code.equalsIgnoreCase("NUMBABIES"))
 				this.setNumKids(Math.min(9, CMath.s_int(val)));
 			else
@@ -261,6 +275,9 @@ public class Pregnancy extends StdAbility implements HealthCondition
 			else
 			if (code.equalsIgnoreCase("BABYRACE"))
 				return "" + this.getBabyRace();
+			else
+			if (code.equalsIgnoreCase("BABYGENDER"))
+				return "" + this.getBabyGender();
 			else
 				return super.getStat(code);
 		}
@@ -437,13 +454,26 @@ public class Pregnancy extends StdAbility implements HealthCondition
 						final String babyRaceID = this.getBabyRace();
 						for(int k=0;k<numKids;k++)
 						{
-							char gender = 'F';
-							String sondat = "daughter";
-							if (CMLib.dice().rollPercentage() > 50)
+							char gender;
+							if((getBabyGender()!=null)
+							&&(getBabyGender().length()>0)
+							&&("MFN".indexOf(getBabyGender().toUpperCase().charAt(0))>=0))
+								gender = getBabyGender().toUpperCase().charAt(0);
+							else
+								gender = (CMLib.dice().rollPercentage() > 50)?'M':'F';
+							String sondat;
+							switch(gender)
 							{
-								gender = 'M';
-								sondat = "son";
+							case 'M':
+								sondat="son";
+								break;
+							case 'F':
+								sondat="daughter";
+								break;
+							default:
+								sondat="child";
 							}
+
 							final MOB babe = CMClass.getMOB(classID);
 							babe.addTattoo("PARENT:" + mob.Name());
 							final String desc;
@@ -595,6 +625,16 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								{
 									AGE.setMiscText("" + System.currentTimeMillis());
 									babe.addNonUninvokableEffect(AGE);
+								}
+							}
+							for(final Enumeration<Ability> a = mob.effects();a.hasMoreElements();)
+							{
+								final Ability A = a.nextElement();
+								if((A instanceof DiseaseAffect)
+								&&((((DiseaseAffect)A).spreadBitmap()&DiseaseAffect.SPREAD_INHERETED)==DiseaseAffect.SPREAD_INHERETED))
+								{
+									final Ability effA = (Ability)A.copyOf();
+									babe.addEffect(effA);
 								}
 							}
 							babe.recoverCharStats();

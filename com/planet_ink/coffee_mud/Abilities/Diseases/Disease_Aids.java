@@ -117,7 +117,7 @@ public class Disease_Aids extends Disease
 	@Override
 	public int spreadBitmap()
 	{
-		return DiseaseAffect.SPREAD_STD;
+		return DiseaseAffect.SPREAD_STD|DiseaseAffect.SPREAD_INHERETED;
 	}
 
 	@Override

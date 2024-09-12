@@ -33,16 +33,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Chant_EndowClub extends Chant
+public class Chant_EndowJewelry extends Chant
 {
 
 	@Override
 	public String ID()
 	{
-		return "Chant_EndowClub";
+		return "Chant_EndowJewelry";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Endow Club");
+	private final static String	localizedName	= CMLib.lang().L("Endow Jewelry");
 
 	@Override
 	public String name()
@@ -59,7 +59,7 @@ public class Chant_EndowClub extends Chant
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_CHANT | Ability.DOMAIN_DEEPMAGIC;
+		return Ability.ACODE_SPELL | Ability.DOMAIN_DEEPMAGIC;
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class Chant_EndowClub extends Chant
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(L("Endow which chant onto which club?"));
+			mob.tell(L("Endow which chant onto what jewelry?"));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,commands.get(commands.size()-1),Wearable.FILTER_UNWORNONLY);
@@ -94,17 +94,28 @@ public class Chant_EndowClub extends Chant
 			mob.tell(L("You don't see '@x1' here.",(commands.get(commands.size()-1))));
 			return false;
 		}
-		if((!(target instanceof Weapon))
-		||(((Weapon)target).weaponClassification()!=Weapon.CLASS_BLUNT)
-		||(((((Weapon)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
-			&&((((Weapon)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)))
+		if(!(target instanceof Item))
 		{
 			mob.tell(mob,target,null,L("You can't endow <T-NAME>."));
 			return false;
 		}
+		final long goodCheck = ((Armor)target).rawProperLocationBitmap()
+				& ( Wearable.WORN_EARS | Wearable.WORN_RIGHT_FINGER | Wearable.WORN_LEFT_FINGER | Wearable.WORN_NECK | Wearable.WORN_LEFT_WRIST | Wearable.WORN_RIGHT_WRIST);
+		if(goodCheck == 0)
+		{
+			mob.tell(L("@x1 can not be endowed with this magic, as it is not worn on the ears, fingers, neck, or wrist."));
+			return false;
+		}
+		final long badCheck = ((Armor)target).rawProperLocationBitmap()
+				& ( Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_FEET | Wearable.WORN_ABOUT_BODY | Wearable.WORN_HANDS | Wearable.WORN_HEAD);
+		if(badCheck != 0)
+		{
+			mob.tell(L("@x1 can not be endowed with this magic, as it is not worn exclusively on the ears, fingers, neck, or wrist."));
+			return false;
+		}
 
 		commands.remove(commands.size()-1);
-		final Item clubI=(Item)target;
+		final Item targetI=(Item)target;
 
 		final String chantName=CMParms.combine(commands,0).trim();
 		Ability endowChantA=null;
@@ -140,9 +151,9 @@ public class Chant_EndowClub extends Chant
 			return false;
 		}
 
-		if((clubI.numEffects()>0)||(!clubI.isGeneric()))
+		if((targetI.numEffects()>0)||(!targetI.isGeneric()))
 		{
-			mob.tell(L("You can't endow '@x1'.",clubI.name()));
+			mob.tell(L("You can't endow '@x1'.",targetI.name()));
 			return false;
 		}
 
@@ -150,7 +161,7 @@ public class Chant_EndowClub extends Chant
 		experienceToLose+=(100*CMLib.ableMapper().lowestQualifyingLevel(endowChantA.ID()));
 		if((mob.getExperience()-experienceToLose)<0)
 		{
-			mob.tell(L("You don't have enough experience to endow this chant."));
+			mob.tell(L("You don't have enough experience to use this magic."));
 			return false;
 		}
 		// lose all the mana!
@@ -170,13 +181,28 @@ public class Chant_EndowClub extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) brightly!"));
-				clubI.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS);
-				clubI.basePhyStats().setLevel(clubI.basePhyStats().level()+(CMLib.ableMapper().lowestQualifyingLevel(endowChantA.ID())/2));
+				targetI.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS);
+				targetI.basePhyStats().setLevel(targetI.basePhyStats().level()+(CMLib.ableMapper().lowestQualifyingLevel(endowChantA.ID())/2));
 				//Vector<String> V=CMParms.parseCommas(CMLib.utensils().wornList(wand.rawProperLocationBitmap()),true);
-				final Ability A=CMClass.getAbility("Prop_FightSpellCast");
-				A.setMiscText("25%;MAXTICKS=12;"+endowChantA.ID()+";");
-				clubI.addNonUninvokableEffect(A);
-				clubI.recoverPhyStats();
+				if(targetI instanceof Armor)
+				{
+					final Ability A=CMClass.getAbility("Prop_WearSpellCast");
+					A.setMiscText("LAYERED;"+endowChantA.ID()+";");
+					targetI.addNonUninvokableEffect(A);
+				}
+				if(targetI.fitsOn(Wearable.WORN_HELD)||targetI.fitsOn(Wearable.WORN_WIELD))
+				{
+					final Ability A=CMClass.getAbility("Prop_WearSpellCast");
+					A.setMiscText("LAYERED;"+endowChantA.ID()+";");
+					targetI.addNonUninvokableEffect(A);
+				}
+				else
+				{
+					final Ability A=CMClass.getAbility("Prop_WearSpellCast");
+					A.setMiscText("LAYERED;"+endowChantA.ID()+";");
+					targetI.addNonUninvokableEffect(A);
+				}
+				targetI.recoverPhyStats();
 			}
 
 		}
@@ -185,7 +211,7 @@ public class Chant_EndowClub extends Chant
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
-			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, looking very frustrated."));
 		}
 		// return whether it worked
 		return success;

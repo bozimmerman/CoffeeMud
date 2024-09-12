@@ -166,24 +166,63 @@ public class Prayer_MassTongues extends Prayer
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final Set<MOB> h=properTargets(mob,givenTarget,auto);
-		if(h==null)
-			return false;
+		final TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags()
+				.plus(TrackingLibrary.TrackingFlag.AREAONLY)
+				.plus(TrackingLibrary.TrackingFlag.PASSABLE);
+		final int limit = 1 + (super.getXLEVELLevel(mob)/2);
+		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,limit);
+		final Set<MOB> enemySet = new HashSet<MOB>();
+		final Room room = mob.location();
+		try
+		{
+			for(final Room R : checkSet)
+			{
+				mob.setLocation(R);
+				final Set<MOB> h=CMLib.combat().allPossibleCombatants(mob, true);
+				if(h != null)
+					enemySet.addAll(h);
+			}
+		}
+		finally
+		{
+			mob.setLocation(room);
+		}
+
+		for(final Iterator<MOB> i=enemySet.iterator();i.hasNext();)
+		{
+			final MOB M = i.next();
+			if((M==mob)
+			||(!mob.mayIFight(M)))
+				i.remove();
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
 		boolean nothingDone=true;
+		if(success && (!auto))
+		{
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto)|CMMsg.MASK_MALICIOUS,
+					L("^S<S-NAME> @x1 for a horrid curse!^?",prayWord(mob)));
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
+			else
+				success=false;
+		}
 		if(success)
 		{
-			for (final Object element : h)
+			for (final MOB target : enemySet)
 			{
-				final MOB target=(MOB)element;
-				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?L("<T-NAME> <T-IS-ARE> cursed!"):L("^S<S-NAME> curse(s) <T-NAMESELF>.^?"));
-				if(mob.location().okMessage(mob,msg))
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,
+						L("^S<T-NAME> <T-IS-ARE> cursed!^?"));
+				final Room R = target.location();
+				if(R.okMessage(mob,msg))
 				{
-					mob.location().send(mob,msg);
+					if(R==room)
+						R.send(mob,msg);
+					else
+						R.sendOthers(mob, msg);
 					if(msg.value()<=0)
 					{
 						langs=null;

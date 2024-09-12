@@ -166,6 +166,11 @@ public class Fighter_StaffThrust extends FighterSkill
 			mob.tell(L("You must be in combat to do a staff thrust."));
 			return false;
 		}
+		if(mob.fetchEffect(ID())!=null)
+		{
+			mob.tell(L("You are already staff thrusting!"));
+			return false;
+		}
 
 		if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 		{
@@ -186,12 +191,12 @@ public class Fighter_StaffThrust extends FighterSkill
 			{
 				staffI.setWeaponDamageType(Weapon.TYPE_PIERCING);
 				success = CMLib.combat().postAttack(mob, target, staffI) || success;
-				if(super.getXLEVELLevel(mob)>0)
-					beneficialAffect(mob,mob,asLevel,2);
 			}
 			finally
 			{
 				staffI.setWeaponDamageType(damageType);
+				if(super.getXLEVELLevel(mob)>0)
+					beneficialAffect(mob,mob,asLevel,2);
 			}
 		}
 		return success;

@@ -1750,7 +1750,8 @@ public class StdAbility implements Ability
 		return invoke(mob,V,target,auto,asLevel);
 	}
 
-	protected boolean testUsageCost(final MOB mob, final boolean auto, final int[] consumed, final boolean quiet)
+	// needs to be public because StdAbility is not local to any of the skills
+	public boolean testUsageCost(final MOB mob, final boolean auto, final int[] consumed, final boolean quiet)
 	{
 		if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
 		{

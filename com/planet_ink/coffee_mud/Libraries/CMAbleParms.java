@@ -1513,12 +1513,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
-			new AbilityParmEditorImpl("EXPERTISE","Expertise",ParmType.STRINGORNULL)
+			new AbilityParmEditorImpl("EXPERTISE","Expertise",ParmType.CHOICES)
 			{
 				@Override
 				public void createChoices()
 				{
 					createChoices(CMLib.expertises().definitions());
+					super.choices.add(0,new Pair<String,String>("","NA"));
 				}
 
 				@Override
@@ -1530,6 +1531,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public boolean confirmValue(final String oldVal)
 				{
+					if((oldVal==null)||(oldVal.trim().length()==0))
+						return true;
 					return CMLib.expertises().findDefinition(oldVal, true) != null;
 				}
 
@@ -2411,7 +2414,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if(I instanceof Weapon)
 						return "GenWeapon";
 					if(I instanceof Armor)
-						return "GenArmor";
+					{
+						if(I instanceof Container)
+							return "GenArmor";
+						else
+							return "GenWearable";
+					}
 					if(I instanceof Rideable)
 						return "GenRideable";
 					return "GenItem";

@@ -1,0 +1,1 @@
+% rhomboid	1	20	1	5	GenThinArmor	FLOATING NEARBY		0		*Prop_WearAdjuster;STR+1	

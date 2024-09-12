@@ -387,12 +387,13 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			msg.setValue(0);
 		else
 		{
-			final CraftingSkill mySkill = (CraftingSkill)mob.fetchAbility(ID());
+			final Ability mySkill = mob.fetchAbility(ID());
 			if(mySkill == null)
 				msg.setValue(0);
 			else
+			if(mySkill instanceof CraftingSkill)
 			{
-				final LinkedList<String> localLast25Items = mySkill.last25items;
+				final LinkedList<String> localLast25Items = ((CraftingSkill)mySkill).last25items;
 				final String buildingIName = cleanBuildingNameForXP(mob,buildingI.Name().toUpperCase());
 				int lastBaseDuration = this.lastBaseDuration;
 				if(lastBaseDuration > 75)

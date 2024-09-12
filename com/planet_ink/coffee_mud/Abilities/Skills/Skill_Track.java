@@ -52,6 +52,7 @@ public class Skill_Track extends StdSkill
 	protected boolean			andBefriend		= false;
 	protected List<String>		persistantV		= null;
 	protected Reference<MOB>	targetMob		= null;
+	protected boolean			noUnlock		= false;
 
 	private final static String	localizedName	= CMLib.lang().L("Tracking");
 
@@ -235,6 +236,18 @@ public class Skill_Track extends StdSkill
 						// handle doors!
 						if(nextExit.hasADoor()&&(!nextExit.isOpen()))
 						{
+							if(noUnlock)
+							{
+								final CMMsg msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OPEN,
+										L("<S-NAME> @x1 <T-NAMESELF>.",((nextExit.openWord().indexOf('(')>0)?nextExit.openWord():(nextExit.openWord()+"(s)"))));
+								if(oldRoom.okMessage(mob,msg))
+								{
+									reclose=true;
+									relock=false;
+									CMLib.utensils().roomAffectFully(msg,oldRoom,nextDirection);
+								}
+							}
+							else
 							if((nextExit.hasALock())&&(nextExit.isLocked()))
 							{
 								CMMsg msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
@@ -477,6 +490,7 @@ public class Skill_Track extends StdSkill
 		}
 
 		tickStatus=Tickable.STATUS_MISC6+3;
+		boolean noUnlock = false;
 		int radius=50 + (10*(super.getXMAXRANGELevel(mob)+super.getXLEVELLevel(mob)));
 		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 		flags.plus(TrackingLibrary.TrackingFlag.PASSABLE);
@@ -496,6 +510,12 @@ public class Skill_Track extends StdSkill
 					flags.plus(TrackingLibrary.TrackingFlag.NOAIR);
 					flags.plus(TrackingLibrary.TrackingFlag.NOWATER);
 					flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+					commands.remove(commands.size()-1);
+				}
+				else
+				if((commands.get(commands.size()-1)).equalsIgnoreCase("NOUNLOCK"))
+				{
+					noUnlock=true;
 					commands.remove(commands.size()-1);
 				}
 				else
@@ -657,6 +677,7 @@ public class Skill_Track extends StdSkill
 					mob.addEffect(newOne);
 				mob.recoverPhyStats();
 				tickStatus=Tickable.STATUS_MISC6+13;
+				newOne.noUnlock = noUnlock;
 				newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,startRoom,false);
 				newOne.andBefriend=befriend;
 				if(persist)

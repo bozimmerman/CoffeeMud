@@ -588,7 +588,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		if(commands.size()==0)
 		{
 			final StringBuilder features=new StringBuilder(noun+" what? Enter \""+noun.toLowerCase()+" list\" for a list");
-			features.append(", \""+noun.toLowerCase()+" info\" to details");
+			features.append(", \""+noun.toLowerCase()+" info\" for details");
 			if(canMendB.booleanValue())
 				features.append(", \""+noun.toLowerCase()+" mend <item>\" to mend broken items, \""+noun.toLowerCase()+" scan\" to scan for mendable items");
 			if(canRefitB.booleanValue())
@@ -643,6 +643,21 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					final String mats=getComponentDescription(mob,V,RCP_AMOUNTMATS);
+					if(V.size()>RCP_KEYVALUE)
+					{
+						final String keyValueParmStr=V.get(RCP_KEYVALUE);
+						if(keyValueParmStr.length()>0)
+						{
+							final Map<String,String> kvMap=CMParms.parseEQParms(keyValueParmStr);
+							final String race = kvMap.get("RACEREQUIREMENT");
+							if((race!=null)
+							&&(race.length()>0)
+							&&(!mob.charStats().getMyRace().ID().equalsIgnoreCase(race))
+							&&(!mob.charStats().getMyRace().name().equalsIgnoreCase(race))
+							&&(!mob.charStats().getMyRace().racialCategory().equalsIgnoreCase(race)))
+								continue;
+						}
+					}
 					if((level<=xlevel(mob))||allFlag)
 					{
 						if(mats.length()>5)
@@ -916,6 +931,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				if(keyValueParmStr.length()>0)
 				{
 					final Map<String,String> kvMap=CMParms.parseEQParms(keyValueParmStr);
+					kvMap.remove("RACEREQUIREMENT");
 					for(final String key : kvMap.keySet())
 						buildingI.setStat(key, kvMap.get(key));
 				}

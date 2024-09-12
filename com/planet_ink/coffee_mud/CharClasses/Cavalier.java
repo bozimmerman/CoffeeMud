@@ -238,6 +238,7 @@ public class Cavalier extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_RegionalAwareness",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_PlainsTactics",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_RidingFight",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_CaravanTravel",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_CalledShot",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ProtectedMount",true);
