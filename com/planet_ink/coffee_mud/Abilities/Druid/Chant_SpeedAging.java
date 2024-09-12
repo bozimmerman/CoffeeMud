@@ -208,24 +208,31 @@ public class Chant_SpeedAging extends Chant
 				if(A!=null)
 				{
 					final long start=CMath.s_long(A.text());
-					long age=System.currentTimeMillis()-start;
-					final long millisPerMudday=CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
-					if(age<millisPerMudday)
-						age=millisPerMudday;
-					final long millisPerMonth=CMLib.time().globalClock().getDaysInMonth() * millisPerMudday;
-					final long millisPerYear=CMLib.time().globalClock().getMonthsInYear() * millisPerMonth;
-					long ageBy=age/(10-(super.getXLEVELLevel(mob)/3));
-					if(ageBy<millisPerMonth)
-						ageBy=millisPerMonth+1;
+					if((start>=0)&&(start < Short.MAX_VALUE))
+						A.setMiscText(""+(start+1+(super.getXLEVELLevel(mob)/3)));
 					else
-					if(ageBy<millisPerYear)
-						ageBy=millisPerYear+1;
-					A.setMiscText(""+(start-ageBy));
+					{
+						long age=System.currentTimeMillis()-start;
+						final long millisPerMudday=CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
+						if(age<millisPerMudday)
+							age=millisPerMudday;
+						final long millisPerMonth=CMLib.time().globalClock().getDaysInMonth() * millisPerMudday;
+						final long millisPerYear=CMLib.time().globalClock().getMonthsInYear() * millisPerMonth;
+						long ageBy=age/(10-(super.getXLEVELLevel(mob)/3));
+						if(ageBy<millisPerMonth)
+							ageBy=millisPerMonth+1;
+						else
+						if(ageBy<millisPerYear)
+							ageBy=millisPerYear+1;
+						A.setMiscText(""+(start-ageBy));
+					}
 					if(target instanceof MOB)
 						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> age(s) a bit."));
 					else
 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 ages a bit.",target.name()));
 					target.recoverPhyStats();
+					if(target instanceof MOB)
+						((MOB)target).recoverCharStats();
 				}
 				else
 					return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
