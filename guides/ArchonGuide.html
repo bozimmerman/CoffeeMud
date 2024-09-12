@@ -6358,7 +6358,8 @@ like "LAND-BASED","WATER-BASED","AIR-FLYING", and "WAGON" while others
 may not. "WAGON", unlike the others, may be hitched to another Rideable
 (such as a GenRideable MOB made into a horse.) "LADDER" will help those
 trying to get through climable rooms. The others are just furniture for
-sitting on, sleeping on, or climbing into.</td>
+sitting on, sleeping on, or climbing into.</td> "HOOK" is not mountable
+at all, but has capacity limited by riders, and displays its contents.
 
 
     </tr>
@@ -7565,7 +7566,7 @@ item that can act as a gateway between
 two rooms via the ENTER command. The item can be made gettable or not,
 blended or not, having all the advantages of a standard item, while
 still getting you from here to there like an Exit. The
-Rideable-specific fields Rideable Type and MOBs Held are also
+Rideable-specific fields Rideable Type and Rider Capacity are also
 unchangeable due to the specific nature of the portal, although you
 will see them listed on the editor screens. They also share the same
 re-closing and re-locking behaviors noted above with GenContainers.<br>
@@ -10248,12 +10249,11 @@ etc.</td>
     <tr>
 
 
-      <td><em>MOBs
-Held</em></td>
+      <td><em>Rider Capacity</em></td>
 
 
-      <td>th emaximum number of
-mobs which may ride this animal at once.</td>
+      <td>the maximum number of
+riders which may ride this one at once.</td>
 
 
     </tr>

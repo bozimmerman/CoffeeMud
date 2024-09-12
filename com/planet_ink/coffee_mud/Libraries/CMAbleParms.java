@@ -3188,6 +3188,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						case FURNITURE_SLEEP:
 							str.append("BED|");
 							break;
+						case FURNITURE_HOOK:
+							str.append("HOOK|");
+							break;
 						case AIR_FLYING:
 						case LAND_BASED:
 						case WAGON:
@@ -4481,6 +4484,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "SIT";
 					case FURNITURE_TABLE:
 						return "TABLE";
+					case FURNITURE_HOOK:
+						return "HOOK";
 					case LADDER:
 						return "LADDER";
 					case ENTER_IN:

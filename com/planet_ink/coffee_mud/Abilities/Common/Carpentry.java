@@ -216,6 +216,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			case FURNITURE_SLEEP:
 			case FURNITURE_SIT:
 			case FURNITURE_TABLE:
+			case FURNITURE_HOOK:
 				return true;
 			default:
 				return false;

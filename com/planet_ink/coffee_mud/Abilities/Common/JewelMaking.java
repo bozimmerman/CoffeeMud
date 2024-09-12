@@ -238,6 +238,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				case FURNITURE_SLEEP:
 				case FURNITURE_SIT:
 				case FURNITURE_TABLE:
+				case FURNITURE_HOOK:
 					return true;
 				default:
 					return false;

@@ -1968,6 +1968,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					{
 						if((((Rideable)I).rideBasis()!=Rideable.Basis.FURNITURE_SIT)
 						&&(((Rideable)I).rideBasis()!=Rideable.Basis.FURNITURE_TABLE)
+						&&(((Rideable)I).rideBasis()!=Rideable.Basis.FURNITURE_HOOK)
 						&&(((Rideable)I).rideBasis()!=Rideable.Basis.ENTER_IN)
 						&&(((Rideable)I).rideBasis()!=Rideable.Basis.FURNITURE_SLEEP)
 						&&(((Rideable)I).rideBasis()!=Rideable.Basis.LADDER))

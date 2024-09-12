@@ -245,6 +245,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			case FURNITURE_SLEEP:
 			case FURNITURE_SIT:
 			case FURNITURE_TABLE:
+			case FURNITURE_HOOK:
 				return true;
 			default:
 				return false;

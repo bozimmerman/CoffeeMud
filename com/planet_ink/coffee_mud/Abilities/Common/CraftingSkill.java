@@ -2110,6 +2110,9 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		if(basises.indexOf("TABLE")>=0)
 			rideable.setRideBasis(Rideable.Basis.FURNITURE_TABLE);
 		else
+		if(basises.indexOf("HOOK")>=0)
+			rideable.setRideBasis(Rideable.Basis.FURNITURE_HOOK);
+		else
 		if(basises.indexOf("LADDER")>=0)
 		{
 			rideable.setRideBasis(Rideable.Basis.LADDER);

@@ -181,6 +181,8 @@ public class StdTub extends StdRideable implements Drink
 			case LADDER:
 			case FURNITURE_SLEEP:
 				return "in";
+			case FURNITURE_HOOK:
+				return "on";
 			}
 			return "riding in";
 		}
@@ -213,6 +215,7 @@ public class StdTub extends StdRideable implements Drink
 			case FURNITURE_SLEEP:
 				return "get(s) into";
 			case LADDER:
+			case FURNITURE_HOOK:
 				return "climb(s) into";
 			}
 			return "board(s)";
@@ -238,6 +241,8 @@ public class StdTub extends StdRideable implements Drink
 			case LADDER:
 			case ENTER_IN:
 				return "get(s) out of";
+			case FURNITURE_HOOK:
+				return "get(s) off of";
 			}
 			return "disembark(s) from";
 		}
@@ -262,6 +267,8 @@ public class StdTub extends StdRideable implements Drink
 			case ENTER_IN:
 			case LADDER:
 				return "occupied by";
+			case FURNITURE_HOOK:
+				return "holding";
 			}
 			return "";
 		}

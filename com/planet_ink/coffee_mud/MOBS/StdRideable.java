@@ -105,6 +105,7 @@ public class StdRideable extends StdMOB implements Rideable
 		{
 			case FURNITURE_SIT:
 			case FURNITURE_TABLE:
+			case FURNITURE_HOOK:
 			case ENTER_IN:
 			case FURNITURE_SLEEP:
 			case LADDER:
@@ -540,6 +541,11 @@ public class StdRideable extends StdMOB implements Rideable
 			else
 			if(msg.amITarget(this))
 			{
+				if(rideBasis()==Basis.FURNITURE_HOOK)
+				{
+					msg.source().tell(L("You can't do that to @x1.",name(msg.source())));
+					return false;
+				}
 				msg.source().tell(L("You cannot simply sit on @x1, try 'mount'.",name(msg.source())));
 				return false;
 			}
@@ -582,6 +588,11 @@ public class StdRideable extends StdMOB implements Rideable
 				if(isInCombat())
 				{
 					msg.source().tell(L("@x1 won't let you do that right now.",name(msg.source())));
+					return false;
+				}
+				if(rideBasis()==Basis.FURNITURE_HOOK)
+				{
+					msg.source().tell(L("You can't do that to @x1.",name(msg.source())));
 					return false;
 				}
 				if(riding()==whoWantsToRide)

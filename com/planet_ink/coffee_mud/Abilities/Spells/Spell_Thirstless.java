@@ -102,7 +102,8 @@ public class Spell_Thirstless extends Spell
 		super.unInvoke();
 
 		if((canBeUninvoked())
-		&&(!CMSecurity.isDisabled(DisFlag.THIRST)))
+		&&(!CMSecurity.isDisabled(DisFlag.THIRST))
+		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMMORT)))
 		{
 			mob.tell(L("You are starting to feel thirstier."));
 			mob.curState().setThirst(0);

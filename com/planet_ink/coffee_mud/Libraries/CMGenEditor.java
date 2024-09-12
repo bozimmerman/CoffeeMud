@@ -4674,7 +4674,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		boolean q=false;
-		final String sel="LWACBTEDG";
+		final String sel="LWACBTEDGH";
 		while(!q)
 		{
 			final String newType=mob.session().choose(L("Enter a new value (?)\n\r:"),sel+"?","");
@@ -4700,7 +4700,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genRideableRideCapacity(final MOB mob, final Rideable E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setRiderCapacity(prompt(mob, E.riderCapacity(), showNumber, showFlag, "Number of MOBs held"));
+		E.setRiderCapacity(prompt(mob, E.riderCapacity(), showNumber, showFlag, "Rider capacity"));
 	}
 
 	protected void genShopkeeperType(final MOB mob, final ShopKeeper M, final int showNumber, final int showFlag)

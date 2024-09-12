@@ -545,6 +545,7 @@ public class Patroller extends ActiveTicker
 								{
 									if((((Rideable)ticking).rideBasis()!=Rideable.Basis.FURNITURE_SIT)
 									&&(((Rideable)ticking).rideBasis()!=Rideable.Basis.FURNITURE_TABLE)
+									&&(((Rideable)ticking).rideBasis()!=Rideable.Basis.FURNITURE_HOOK)
 									&&(((Rideable)ticking).rideBasis()!=Rideable.Basis.ENTER_IN)
 									&&(((Rideable)ticking).rideBasis()!=Rideable.Basis.FURNITURE_SLEEP)
 									&&(((Rideable)ticking).rideBasis()!=Rideable.Basis.LADDER))
