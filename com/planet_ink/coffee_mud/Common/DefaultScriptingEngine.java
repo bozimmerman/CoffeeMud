@@ -135,6 +135,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		public SubScript scr;
 		/** the hash code for this whole thing */
 		private Integer hashCode = null;
+		/** when this event was queued */
+		private final long queuedAt = System.currentTimeMillis();
 
 		/**
 		 * Create an event response object
@@ -15682,6 +15684,26 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					this.logError(resp.ctx.scripted, "UNK", "SYS", "Attempt to pre-que more than 25 events).");
 				else
 					this.logError(resp.ctx.scripted, "UNK", "SYS", "Attempt to enque more than 25 events (last was "+CMParms.toListString(triggerStr)+" ).");
+				final StringBuilder rpt=new StringBuilder("Queue Log:\n\r");
+				for(int q=que.size()-1; q >= 0; q--)
+				{
+					try
+					{
+						SB = que.get(q);
+						if(SB != null)
+						{
+							rpt.append(CMStrings.padRight(""+q,2)+") trig="+SB.triggerCode)
+								.append(", src="+((SB.ctx.source==null)?SB.ctx.source.name():"null"))
+								.append(", when="+CMLib.time().date2APTimeString(SB.queuedAt))
+								.append("\n\r");
+						}
+					}
+					catch(final IndexOutOfBoundsException x)
+					{
+						continue;
+					}
+				}
+				Log.debugOut(rpt.toString());
 				que.clear();
 			}
 		}

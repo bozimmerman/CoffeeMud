@@ -88,16 +88,22 @@ public class Prayer_Designation extends Prayer
 	public void affectPhyStats(final Physical affected, final PhyStats affectedStats)
 	{
 		super.affectPhyStats(affected,affectedStats);
-		if((affected instanceof MOB)
-		&&(((MOB)affected).amFollowing()==null)
-		&&(CMLib.flags().isInTheGame((MOB)affected,true)))
-		{
-			affected.delEffect(affected.fetchEffect(ID()));
-			affectedStats.setName(null);
-		}
-		else
-		if((text().length()>0))
+		if(text().length()>0)
 			affectedStats.setName(text());
+	}
+
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if(!(affected instanceof MOB))
+			return;
+
+		final MOB mob=(MOB)affected;
+		if((msg.amISource(mob))
+		&&(mob.amFollowing()!=null)
+		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
+			mob.delEffect(mob.fetchEffect(ID()));
 	}
 
 	@Override
@@ -141,6 +147,11 @@ public class Prayer_Designation extends Prayer
 		if(target.name().indexOf(' ')>=0)
 			myName=myName+", "+target.name();
 		myName=CMLib.coffeeFilter().secondaryUserInputFilter(myName);
+		if(target.name().indexOf(myName)>0)
+		{
+			mob.tell(L("That's already @x1's name.",target.name(mob)));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -153,7 +164,7 @@ public class Prayer_Designation extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final Prayer_Designation A=(Prayer_Designation)copyOf();
+				final Ability A=(Ability)this.copyOf();
 				A.setMiscText(myName);
 				target.addNonUninvokableEffect(A);
 				mob.location().recoverRoomStats();

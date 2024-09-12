@@ -152,6 +152,11 @@ public class Thief_NameUrchin extends ThiefSkill
 			mob.tell(L("@x1 is not one of your urchins.",target.name(mob)));
 			return false;
 		}
+		if(target.name().indexOf(myName)>0)
+		{
+			mob.tell(L("That's already @x1's name.",target.name(mob)));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -171,17 +176,9 @@ public class Thief_NameUrchin extends ThiefSkill
 			if(target.location().okMessage(mob,msg))
 			{
 				target.location().send(mob,msg);
-				if(target.isPlayer() || (target.findTattooStartsWith("PARENT:")!=null))
-				{
-					final Ability A=(Ability)this.copyOf();
-					A.setMiscText(myName);
-					target.addNonUninvokableEffect(A);
-				}
-				else
-				{
-					target.setName(myName);
-					target.setDisplayText(L("@x1 is here.",myName));
-				}
+				final Ability A=(Ability)this.copyOf();
+				A.setMiscText(myName);
+				target.addNonUninvokableEffect(A);
 				try
 				{
 					target.setLiegeID(""); // prevent back-xp giving

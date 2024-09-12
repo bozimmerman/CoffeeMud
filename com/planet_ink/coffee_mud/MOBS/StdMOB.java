@@ -718,6 +718,7 @@ public class StdMOB implements MOB
 				A = a.nextElement();
 				if(A != null)
 				{
+					final MOB oldInvoker = A.invoker();
 					A = (Ability) A.copyOf();
 					addEffect(A);
 					if(A.canBeUninvoked())
@@ -725,6 +726,9 @@ public class StdMOB implements MOB
 						A.unInvoke();
 						delEffect(A);
 					}
+					else
+					if(oldInvoker==M)
+						A.setInvoker(this);
 				}
 			}
 		}
@@ -1200,7 +1204,6 @@ public class StdMOB implements MOB
 					final MOB newFol = (MOB) follower.copyOf();
 					newFol.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 					newFol.phyStats().setRejuv(PhyStats.NO_REJUV);
-					newFol.text();
 					follower.killMeDead(false);
 					addFollower(newFol, p.second.intValue());
 				}
