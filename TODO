@@ -1,6 +1,4 @@
 BUGS/UNTESTED STUFF:
-   *. Is turning broken?  Swivel from approach->deproach looks terrible.  
-      And then during deproach you end up drifting FURTHER from the target!
 
 TECH TODO:
    *. navigation course system testing.
