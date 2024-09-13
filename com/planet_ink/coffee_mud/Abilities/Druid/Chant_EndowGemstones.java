@@ -301,7 +301,7 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) brightly!"));
 				gemI.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS);
 				gemI.basePhyStats().setLevel(gemI.basePhyStats().level()+xlvl);
-				final Ability adjusterA = CMClass.getAbility("Prop_Adjuster");
+				final Ability adjusterA = CMClass.getAbility("Prop_WearAdjuster");
 				adjusterA.setMiscText(mask);
 				((AbilityContainer)A).addAbility(adjusterA);
 				gemI.recoverPhyStats();
