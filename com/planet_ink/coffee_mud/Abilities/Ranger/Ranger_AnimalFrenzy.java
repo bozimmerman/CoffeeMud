@@ -146,7 +146,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 						rangersGroup.removeElement(mob);
 					}
 				}
-				catch(final java.lang.ArrayIndexOutOfBoundsException e)
+				catch(final IndexOutOfBoundsException e)
 				{
 				}
 			}

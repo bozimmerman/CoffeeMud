@@ -1916,7 +1916,7 @@ public class CMClass extends ClassLoader
 				else
 					start=mid+1;
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 				start=0;
 				end=list.size()-1;

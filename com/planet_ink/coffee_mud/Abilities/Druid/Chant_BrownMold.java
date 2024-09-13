@@ -223,7 +223,8 @@ public class Chant_BrownMold extends Chant
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 		newMOB.addTattoo("SYSTEM_SUMMONED");
-		newMOB.addTattoo("SUMMONED_BY:"+caster.name());
+		if(caster != null)
+			newMOB.addTattoo("SUMMONED_BY:"+caster.name());
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

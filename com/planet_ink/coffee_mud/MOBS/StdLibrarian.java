@@ -175,7 +175,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			{
 				totalDue += recs.get(i).charges;
 			}
-			catch (final java.lang.IndexOutOfBoundsException e)
+			catch (final IndexOutOfBoundsException e)
 			{
 			}
 		}
@@ -373,7 +373,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 						if (rec.itemName.length() > 0)
 							curShop.lowerStock("$" + rec.itemName + "$");
 					}
-					catch (final java.lang.IndexOutOfBoundsException e)
+					catch (final IndexOutOfBoundsException e)
 					{
 					}
 				}

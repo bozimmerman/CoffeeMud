@@ -1481,7 +1481,7 @@ public class StdArea implements Area
 		{
 			return affects.elementAt(index);
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -1885,7 +1885,7 @@ public class StdArea implements Area
 		{
 			return behaviors.elementAt(index);
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return null;

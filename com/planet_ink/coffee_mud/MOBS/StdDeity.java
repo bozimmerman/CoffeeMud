@@ -1298,7 +1298,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return blessings.get(index).power;
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -1311,7 +1311,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return blessings.get(index).clericOnly;
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return false;
@@ -1400,7 +1400,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return curses.get(index).power;
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -1432,7 +1432,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return curses.get(index).clericOnly;
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return false;
@@ -1542,7 +1542,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return powers.get(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return null;

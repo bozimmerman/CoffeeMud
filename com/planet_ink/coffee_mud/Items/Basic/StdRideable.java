@@ -167,7 +167,7 @@ public class StdRideable extends StdContainer implements Rideable
 		{
 			return riders.get(which);
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException e)
+		catch (final IndexOutOfBoundsException e)
 		{
 		}
 		return null;

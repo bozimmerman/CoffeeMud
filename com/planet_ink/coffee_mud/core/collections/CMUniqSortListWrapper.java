@@ -81,7 +81,7 @@ public class CMUniqSortListWrapper<T extends CMObject> implements SearchIDList<T
 				else
 					start=mid+1;
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 				comp=-1;
 				mid=-1;
@@ -191,7 +191,7 @@ public class CMUniqSortListWrapper<T extends CMObject> implements SearchIDList<T
 					else
 						start=mid+1;
 				}
-				catch(final java.lang.ArrayIndexOutOfBoundsException e)
+				catch(final IndexOutOfBoundsException e)
 				{
 					start=0;
 					end=size()-1;
@@ -215,7 +215,7 @@ public class CMUniqSortListWrapper<T extends CMObject> implements SearchIDList<T
 					else
 						start=mid+1;
 				}
-				catch(final java.lang.ArrayIndexOutOfBoundsException e)
+				catch(final IndexOutOfBoundsException e)
 				{
 					start=0;
 					end=size()-1;
@@ -248,7 +248,7 @@ public class CMUniqSortListWrapper<T extends CMObject> implements SearchIDList<T
 				else
 					start=mid+1;
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 				start=0;
 				end=size()-1;
@@ -280,7 +280,7 @@ public class CMUniqSortListWrapper<T extends CMObject> implements SearchIDList<T
 				else
 					start=mid+1;
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 				start=0;
 				end=size()-1;
@@ -312,7 +312,7 @@ public class CMUniqSortListWrapper<T extends CMObject> implements SearchIDList<T
 				else
 					start=mid+1;
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 				start=0;
 				end=size()-1;

@@ -231,14 +231,22 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 		if(matches.size()==0)
 			matches = this.matchingRecipeNames(commands.get(0), true);
 		String recipeName = null;
-		for(final List<String> recipe : this.fetchRecipes())
+		for(final String rn : matches)
 		{
-			final String name = recipe.get(RCP_FINALNAME);
-			final int lvl = CMath.s_int(recipe.get(RCP_LEVEL));
-			if(lvl <= adjustedLevel(mob,asLevel))
-			{
-				recipeName = name;
+			if(recipeName != null)
 				break;
+			for(final List<String> recipe : this.fetchRecipes())
+			{
+				final String name = recipe.get(RCP_FINALNAME);
+				if(name.equalsIgnoreCase(rn))
+				{
+					final int lvl = CMath.s_int(recipe.get(RCP_LEVEL));
+					if(lvl <= adjustedLevel(mob,asLevel))
+					{
+						recipeName = name;
+						break;
+					}
+				}
 			}
 		}
 		if(recipeName == null)

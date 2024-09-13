@@ -59,7 +59,7 @@ public class Chant_EndowJewelry extends Chant
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SPELL | Ability.DOMAIN_DEEPMAGIC;
+		return Ability.ACODE_CHANT | Ability.DOMAIN_DEEPMAGIC;
 	}
 
 	@Override

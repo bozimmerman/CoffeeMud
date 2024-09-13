@@ -184,7 +184,7 @@ public class ReadOnlyMultiList<K> implements List<K>
 				return l.get(index);
 			index -= l.size();
 		}
-		throw new java.lang.IndexOutOfBoundsException();
+		throw new IndexOutOfBoundsException();
 	}
 
 	@Override

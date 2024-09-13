@@ -1,3 +1,8 @@
+# RECIPE NAME - friendly name of the recipe -- has no effect on the item name
+# RECIPE LEVEL - required level to make the recipe (same as other crafting skills)
+# MASK	- Prop_WearAdjuster arguments
+# XLEVEL - XP LEVEL (determines how much XP is lost)
+# EXPERTISE - blank, or a required expertise id (or higher)
 Small attack penalty	1	attack-5	-2	
 Small mana bonus	1	mana+5	1	
 Small hit point bonus	1	hit+5	1	

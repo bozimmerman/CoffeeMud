@@ -173,7 +173,7 @@ public class StdRideable extends StdMOB implements Rideable
 		{
 			return riders.get(which);
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException e)
+		catch (final IndexOutOfBoundsException e)
 		{
 		}
 		return null;

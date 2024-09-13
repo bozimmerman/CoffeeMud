@@ -2671,7 +2671,7 @@ public class DefaultSession implements Session
 			catch(final IOException e)
 			{
 			}
-			catch (final java.lang.ArrayIndexOutOfBoundsException e)
+			catch (final IndexOutOfBoundsException e)
 			{
 			}
 			finally

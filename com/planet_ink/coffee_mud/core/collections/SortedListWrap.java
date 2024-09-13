@@ -52,7 +52,7 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 				else
 					start=mid+1;
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 				comp=-1;
 				mid=-1;
@@ -158,7 +158,7 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 				else
 					start=mid+1;
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 				start=0;
 				end=size()-1;

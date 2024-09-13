@@ -567,6 +567,26 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new ArrayList<CraftedItem>(0));
 	}
 
+	protected boolean checkRecipeRace(final MOB mob, final List<String> recipe)
+	{
+		if(recipe.size()>RCP_KEYVALUE)
+		{
+			final String keyValueParmStr=recipe.get(RCP_KEYVALUE);
+			if(keyValueParmStr.length()>0)
+			{
+				final Map<String,String> kvMap=CMParms.parseEQParms(keyValueParmStr);
+				final String race = kvMap.get("RACEREQUIREMENT");
+				if((race!=null)
+				&&(race.length()>0)
+				&&(!mob.charStats().getMyRace().ID().equalsIgnoreCase(race))
+				&&(!mob.charStats().getMyRace().name().equalsIgnoreCase(race))
+				&&(!mob.charStats().getMyRace().racialCategory().equalsIgnoreCase(race)))
+					return false;
+			}
+		}
+		return true;
+	}
+
 	@Override
 	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
 								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<CraftedItem> crafted)
@@ -643,22 +663,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					final String mats=getComponentDescription(mob,V,RCP_AMOUNTMATS);
-					if(V.size()>RCP_KEYVALUE)
-					{
-						final String keyValueParmStr=V.get(RCP_KEYVALUE);
-						if(keyValueParmStr.length()>0)
-						{
-							final Map<String,String> kvMap=CMParms.parseEQParms(keyValueParmStr);
-							final String race = kvMap.get("RACEREQUIREMENT");
-							if((race!=null)
-							&&(race.length()>0)
-							&&(!mob.charStats().getMyRace().ID().equalsIgnoreCase(race))
-							&&(!mob.charStats().getMyRace().name().equalsIgnoreCase(race))
-							&&(!mob.charStats().getMyRace().racialCategory().equalsIgnoreCase(race)))
-								continue;
-						}
-					}
-					if((level<=xlevel(mob))||allFlag)
+					if(((level<=xlevel(mob))||allFlag)
+					&&(checkRecipeRace(mob, V)))
 					{
 						if(mats.length()>5)
 						{
@@ -754,7 +760,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				if(V.size()>0)
 				{
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
-					if((autoGenerate>0)||(level<=xlevel(mob)))
+					if((autoGenerate>0)
+					||((level<=xlevel(mob))&&(checkRecipeRace(mob, V))))
 					{
 						foundRecipe=V;
 						recipeLevel=level;

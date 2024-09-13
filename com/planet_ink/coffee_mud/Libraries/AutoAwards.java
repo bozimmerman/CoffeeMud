@@ -255,7 +255,7 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 						break;
 					}
 				}
-				catch(final java.lang.IndexOutOfBoundsException ioe)
+				catch(final IndexOutOfBoundsException ioe)
 				{
 				}
 			}

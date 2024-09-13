@@ -239,7 +239,7 @@ public class OffLine extends Thread implements MudHost
 					proceed=2;
 				}
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 			}
 

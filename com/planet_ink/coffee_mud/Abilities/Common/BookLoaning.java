@@ -187,7 +187,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 						if (rec.itemName.length() > 0)
 							curShop.lowerStock("$" + rec.itemName + "$");
 					}
-					catch (final java.lang.IndexOutOfBoundsException e)
+					catch (final IndexOutOfBoundsException e)
 					{
 					}
 				}
@@ -1068,7 +1068,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			{
 				totalDue += recs.get(i).charges;
 			}
-			catch (final java.lang.IndexOutOfBoundsException e)
+			catch (final IndexOutOfBoundsException e)
 			{
 			}
 		}

@@ -1141,7 +1141,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 		{
 			return affects.elementAt(index);
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -1459,7 +1459,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 		{
 			return behaviors.elementAt(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -1673,7 +1673,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 					else
 						start=mid+1;
 				}
-				catch(final java.lang.IndexOutOfBoundsException e)
+				catch(final IndexOutOfBoundsException e)
 				{
 					start=0;
 					end=myRooms.size()-1;

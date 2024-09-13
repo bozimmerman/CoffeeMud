@@ -4415,7 +4415,7 @@ public class StdMOB implements MOB
 		{
 			return inventory.elementAt(index);
 		}
-		catch (final java.lang.IndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -4445,7 +4445,7 @@ public class StdMOB implements MOB
 					}
 				}
 			}
-			catch (final java.lang.IndexOutOfBoundsException x)
+			catch (final IndexOutOfBoundsException x)
 			{
 			}
 		}
@@ -4608,7 +4608,7 @@ public class StdMOB implements MOB
 				return null;
 			return followers.get(index).first;
 		}
-		catch (final java.lang.IndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -4910,7 +4910,7 @@ public class StdMOB implements MOB
 				index -= list.size();
 			}
 		}
-		catch (final java.lang.IndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -5145,7 +5145,7 @@ public class StdMOB implements MOB
 				}
 			}
 		}
-		catch (final java.lang.IndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		try
@@ -5165,7 +5165,7 @@ public class StdMOB implements MOB
 				}
 			}
 		}
-		catch (final java.lang.IndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 	}
@@ -5212,7 +5212,7 @@ public class StdMOB implements MOB
 				return racialEffects().get(index - affects.size());
 			return clanEffects().get(index - affects.size() - racialEffects().size());
 		}
-		catch (final java.lang.IndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -5290,7 +5290,7 @@ public class StdMOB implements MOB
 		{
 			return behaviors.elementAt(index);
 		}
-		catch (final java.lang.IndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -5517,7 +5517,7 @@ public class StdMOB implements MOB
 						applier.apply(S);
 				}
 			}
-			catch (final java.lang.IndexOutOfBoundsException x)
+			catch (final IndexOutOfBoundsException x)
 			{
 			}
 		}

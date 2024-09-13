@@ -2139,7 +2139,7 @@ public class StdRoom implements Room
 		{
 			return inhabitants.elementAt(i);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -2404,7 +2404,7 @@ public class StdRoom implements Room
 		{
 			return contents.elementAt(i);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -2952,7 +2952,7 @@ public class StdRoom implements Room
 		{
 			return affects.elementAt(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -3043,7 +3043,7 @@ public class StdRoom implements Room
 		{
 			return behaviors.elementAt(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return null;

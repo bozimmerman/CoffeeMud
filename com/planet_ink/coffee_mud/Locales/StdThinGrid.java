@@ -233,7 +233,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				else
 					start=mid+1;
 			}
-			catch(final java.lang.IndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 				comp=0;
 				mid=0;

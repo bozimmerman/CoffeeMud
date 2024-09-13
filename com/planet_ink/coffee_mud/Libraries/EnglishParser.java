@@ -3081,7 +3081,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -3143,7 +3143,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		catch (final Exception e)
@@ -3216,7 +3216,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -3277,7 +3277,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -3336,7 +3336,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -3405,7 +3405,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return matches;
@@ -3518,7 +3518,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					}
 				}
 			}
-			catch (final java.lang.ArrayIndexOutOfBoundsException x)
+			catch (final IndexOutOfBoundsException x)
 			{
 			}
 		}
@@ -3541,7 +3541,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					}
 				}
 			}
-			catch (final java.lang.ArrayIndexOutOfBoundsException x)
+			catch (final IndexOutOfBoundsException x)
 			{
 			}
 			if(myOccurrance == flags.occurrance)
@@ -3561,7 +3561,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						}
 					}
 				}
-				catch (final java.lang.ArrayIndexOutOfBoundsException x)
+				catch (final IndexOutOfBoundsException x)
 				{
 				}
 			}
@@ -3640,7 +3640,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return matches;
@@ -3758,7 +3758,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		counterSlap[0]+=(flags.occurrance-myOccurrance);
@@ -3878,7 +3878,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return null;

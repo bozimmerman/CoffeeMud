@@ -1956,7 +1956,7 @@ public class StdItem implements Item
 		{
 			return affects.elementAt(index);
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -2046,7 +2046,7 @@ public class StdItem implements Item
 		{
 			return behaviors.elementAt(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return null;

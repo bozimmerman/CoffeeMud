@@ -141,7 +141,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				else
 					start=mid+1;
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 				start=0;
 				end=list.size()-1;
@@ -557,7 +557,7 @@ public class CMMap extends StdLibrary implements WorldMap
 						O.executeMsg(host,msg);
 				}
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException xx)
+			catch(final IndexOutOfBoundsException xx)
 			{
 			}
 			catch (final Exception x)
