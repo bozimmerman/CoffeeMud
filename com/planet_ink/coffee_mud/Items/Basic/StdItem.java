@@ -630,7 +630,10 @@ public class StdItem implements Item
 				if(CMLib.flags().isInDark(affected))
 					affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 			}
-			if((amWearingAt(Wearable.WORN_MOUTH))&&(affected instanceof MOB))
+			if((amWearingAt(Wearable.WORN_MOUTH))
+			&&(affected instanceof MOB)
+			&&((((MOB)affected).charStats().getBodyPart(Race.BODY_MOUTH)<2)
+				||((MOB)affected).freeWearPositions(WORN_MOUTH, (short)0,(short)0)==0))
 			{
 				if(!(this instanceof Light))
 					affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);

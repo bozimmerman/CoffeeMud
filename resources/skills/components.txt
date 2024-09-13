@@ -32,5 +32,5 @@
 # SPELL_SLEEP=(held:consumed:5:SAND:-class +wizard)&&(trigger:say you are feeling sleepy&social+ GOODNIGHT <T-NAME>:-class +wizard)
 #   (the aove requires held sane if you are a wizard AND a trigger ritual with SAY and GOODNIGHT social.)
 BANDAGING=(inventory:consumed:1:CLOTH:)||(held:consumed:5:DUST:-race +elf)
-Thief_Runecasting=(have:kept:1:RUNE CUBE:)"a rune cube"
+Thief_Runecasting=(have:kept:1:RUNE TILE:)||(have:kept:1:RUNE STONE:)||(have:kept:1:RUNE CUBE:) "a crafted rune cube, tile, or stone"
 THIEF_TAROTREADING=(have:kept:1:tarot cards:) "a deck of tarot cards"
