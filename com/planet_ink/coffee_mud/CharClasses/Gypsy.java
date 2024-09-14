@@ -592,6 +592,23 @@ public class Gypsy extends Thief
 					&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT))
 						clearAbilityFromChantcraftist(mob,A);
 				}
+				else
+				if((!mob.isMonster())
+				&&(msg.sourceCode()==CMMsg.MSG_THIEF_ACT)
+				&&(msg.target() instanceof MOB)
+				&&(((MOB)msg.target()).isPlayer())
+				&&(msg.tool() instanceof Ability)
+				&&(mob.charStats().getCurrentClass()==this)
+				&&((msg.tool().ID().equals("Thief_Runecasting"))
+					||(msg.tool().ID().equals("Thief_PalmReading"))
+					||(msg.tool().ID().equals("Thief_TarotReading"))
+					||(msg.tool().ID().equals("Thief_Astrology"))
+					||(msg.tool().ID().equals("Thief_Tasseography"))
+					||(msg.tool().ID().equals("Thief_FortuneTelling"))))
+				{
+					final int xp=CMLib.flags().isAliveAwakeMobileUnbound((MOB)msg.target(), true)?50:25;
+					CMLib.leveler().postExperience(mob,"CLASS:"+ID(),(MOB)msg.target()," for a successful "+msg.tool().name(),xp, false);
+				}
 			}
 		}
 	}
