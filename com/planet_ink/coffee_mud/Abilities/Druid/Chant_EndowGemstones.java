@@ -251,7 +251,7 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 		}
 		if(recipeName == null)
 		{
-			mob.tell(L("'@x1' does not match an endowment.  Try LIST."));
+			mob.tell(L("'@x1' does not match an endowment.  Try LIST.",commands.get(0)));
 			return false;
 		}
 		List<String> foundRecipe = null;
@@ -263,6 +263,11 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 				foundRecipe=recipe;
 				break;
 			}
+		}
+		if(foundRecipe == null)
+		{
+			mob.tell(L("'@x1' does not match an endowment.  Try LIST.",commands.get(0)));
+			return false;
 		}
 		final int xlvl = CMath.s_int(foundRecipe.get(RCP_XLEVEL));
 		final String mask = foundRecipe.get(RCP_MASK);
