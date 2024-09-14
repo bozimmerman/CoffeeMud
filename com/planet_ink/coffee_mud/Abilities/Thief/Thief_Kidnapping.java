@@ -349,6 +349,7 @@ public class Thief_Kidnapping extends ThiefSkill
 				{
 					final MOB followP = target.amFollowing();
 					target.makePeace(true);
+					mob.makePeace(true);
 					final boolean wasFollowing;
 					String followName = "";
 					if(followP != null)

@@ -127,6 +127,17 @@ public interface CMMsg extends CMCommon
 	public boolean targetMajor(final int bitMask);
 
 	/**
+	 * Returns whether high order bitmask for the target code is set with
+	 * any of the given bits
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMinor()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
+	 * @param bitMask the bitmask to check for
+	 * @return true if high order bitmask for the target code is set
+	 */
+	public boolean targetMajorAny(final int bitMask);
+
+	/**
 	 * Returns low order action type integer for the target code
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMajor(int)
@@ -266,6 +277,17 @@ public interface CMMsg extends CMCommon
 	 * @return true if high order bitmask for the source code is set
 	 */
 	public boolean sourceMajor(final int bitMask);
+
+	/**
+	 * Returns whether high order bitmask for the source code is set
+	 * with ANY of the given bits.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMinor()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
+	 * @param bitMask the bitmask to check for
+	 * @return true if high order bitmask for the source code is set
+	 */
+	public boolean sourceMajorAny(final int bitMask);
 
 	/**
 	 * Returns low order action type integer for the target code
@@ -409,6 +431,17 @@ public interface CMMsg extends CMCommon
 	 * @return true if high order bitmask for the others code is set
 	 */
 	public boolean othersMajor(final int bitMask);
+
+	/**
+	 * Returns whether high order bitmask for the others code is set
+	 * with any of the given bits. 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMinor()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
+	 * @param bitMask the bitmask to check for
+	 * @return true if high order bitmask for the others code is set
+	 */
+	public boolean othersMajorAny(final int bitMask);
 
 	/**
 	 * Returns low order action type integer for the others code

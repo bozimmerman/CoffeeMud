@@ -484,6 +484,12 @@ public class DefaultMessage implements CMMsg
 	}
 
 	@Override
+	public final boolean targetMajorAny(final int bitMask)
+	{
+		return (targetMajorMask&bitMask) != 0;
+	}
+
+	@Override
 	public final int targetMinor()
 	{
 		return targetMinorType;
@@ -514,6 +520,12 @@ public class DefaultMessage implements CMMsg
 	}
 
 	@Override
+	public final boolean sourceMajorAny(final int bitMask)
+	{
+		return (sourceMajorMask&bitMask) != 0;
+	}
+
+	@Override
 	public final int sourceMinor()
 	{
 		return sourceMinorType;
@@ -529,6 +541,12 @@ public class DefaultMessage implements CMMsg
 	public final boolean othersMajor(final int bitMask)
 	{
 		return (othersMajorMask&bitMask)==bitMask;
+	}
+
+	@Override
+	public final boolean othersMajorAny(final int bitMask)
+	{
+		return (othersMajorMask&bitMask) != 0;
 	}
 
 	@Override
