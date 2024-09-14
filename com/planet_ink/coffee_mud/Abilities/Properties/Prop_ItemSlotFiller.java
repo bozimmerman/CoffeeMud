@@ -320,15 +320,24 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	{
 		if(isSlotted())
 		{
-			final Physical P=(affected2 != null)?affected2:host;
-			for(final Ability A : getAffects())
+			if(host instanceof MOB)
 			{
-				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
+				for(final Ability A : getAffects())
 				{
-					if(A.bubbleAffect())
+					if((A!=null)
+					&&(A.bubbleAffect())
+					&&(!A.ID().startsWith("Prop_ItemSlot")))
 						A.affectPhyStats(host, affectableStats);
-					else
-						A.affectPhyStats(P, affectableStats);
+				}
+			}
+			else
+			{
+				for(final Ability A : getAffects())
+				{
+					if((A!=null)
+					&&(!A.bubbleAffect())
+					&&(!A.ID().startsWith("Prop_ItemSlot")))
+						A.affectPhyStats(host, affectableStats);
 				}
 			}
 		}
@@ -342,7 +351,9 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		{
 			for(final Ability A : getAffects())
 			{
-				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
+				if((A!=null)
+				&&(A.bubbleAffect())
+				&&(!A.ID().startsWith("Prop_ItemSlot")))
 					A.affectCharStats(affectedMOB, affectedStats);
 			}
 		}
@@ -356,7 +367,9 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		{
 			for(final Ability A : getAffects())
 			{
-				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
+				if((A!=null)
+				&&(A.bubbleAffect())
+				&&(!A.ID().startsWith("Prop_ItemSlot")))
 					A.affectCharState(affectedMOB, affectedState);
 			}
 		}

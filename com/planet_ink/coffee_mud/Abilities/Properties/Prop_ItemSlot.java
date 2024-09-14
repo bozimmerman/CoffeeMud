@@ -537,13 +537,10 @@ public class Prop_ItemSlot extends Property
 				break;
 			}
 		}
-		else
+		for(final Ability A : slotProps)
 		{
-			for(final Ability A : slotProps)
-			{
-				if(A!=null)
-					A.affectPhyStats(host, affectableStats);
-			}
+			if(A!=null)
+				A.affectPhyStats(host, affectableStats);
 		}
 		super.affectPhyStats(host,affectableStats);
 	}
