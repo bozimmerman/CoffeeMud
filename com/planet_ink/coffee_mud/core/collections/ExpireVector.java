@@ -497,4 +497,9 @@ public class ExpireVector<T> implements Serializable, Iterable<T>, Collection<T>
 	{
 		list.remove(index);
 	}
+	
+	public void setExpirationTime(final long millis)
+	{
+		this.expirationTime = millis;
+	}
 }

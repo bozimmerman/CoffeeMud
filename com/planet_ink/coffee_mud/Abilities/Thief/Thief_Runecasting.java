@@ -697,6 +697,8 @@ public class Thief_Runecasting extends ThiefSkill
 				final Thief_Runecasting rA = (Thief_Runecasting)beneficialAffect(mob, mob, asLevel, 0);
 				if(rA != null)
 				{
+					final TimeClock C = CMLib.time().homeClock(mob);
+					doneMs.setExpirationTime(CMProps.getMillisPerMudHour() * C.getHoursInDay());
 					rA.forM = target;
 					rA.tickUp = 0;
 					final long tm = Math.round(CMath.mul(getExpirationTime(),1.0-CMath.mul(super.getXTIMELevel(mob),0.09)));
