@@ -606,7 +606,11 @@ public class Gypsy extends Thief
 					||(msg.tool().ID().equals("Thief_Tasseography"))
 					||(msg.tool().ID().equals("Thief_FortuneTelling"))))
 				{
-					final int xp=CMLib.flags().isAliveAwakeMobileUnbound((MOB)msg.target(), true)?50:25;
+					final int xp;
+					if(msg.tool().ID().equals("Thief_FortuneTelling"))
+						xp=200;
+					else
+						xp=CMLib.flags().isAliveAwakeMobileUnbound((MOB)msg.target(), true)?50:25;
 					CMLib.leveler().postExperience(mob,"CLASS:"+ID(),(MOB)msg.target()," for a successful "+msg.tool().name(),xp, false);
 				}
 			}
