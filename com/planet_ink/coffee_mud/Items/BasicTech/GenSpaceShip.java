@@ -180,7 +180,17 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 		{
 			final SpaceObject o = getShipSpaceObject();
 			final SpaceObject planetO = CMLib.space().getSpaceObject(R, true);
-			final Coord3D newCoordinates = CMLib.space().moveSpaceObject(((LocationRoom)R).coordinates(), direction(), radius()+radius());
+			final Coord3D newCoordinates;
+			if(R instanceof LocationRoom)
+				newCoordinates = CMLib.space().moveSpaceObject(((LocationRoom)R).coordinates(), direction(), radius()+radius());
+			else
+			{
+				SpaceObject op = CMLib.space().getSpaceObject(R, false);
+				if(op != null)
+					newCoordinates = CMLib.space().moveSpaceObject(op.coordinates(), direction(), radius()+radius());
+				else
+					newCoordinates = o.coordinates();
+			}
 			if((o != null)&&(R instanceof LocationRoom))
 			{
 				CMLib.space().addObjectToSpace(o, newCoordinates);
