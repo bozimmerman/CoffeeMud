@@ -1072,6 +1072,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final long sgradius=Math.round(CMath.mul(sradius,(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 		final long tgradius=Math.round(CMath.mul(tradius,(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 		final Coord3D srcCoord = moveSpaceObject(src, dir, sgradius+1);
+		// if "dir" is the tangent, then I get why to move the source, but why the target opposite to tangent?
 		final Coord3D tgtCoord = moveSpaceObject(target, getOppositeDir(dir), tgradius+1);
 		final long distance = getDistanceFrom(srcCoord, tgtCoord);
 		final BoundedSphere courseRay = new BoundedSphere(srcCoord, sgradius);

@@ -252,6 +252,26 @@ public class RocketShipProgram extends ShipTacticalProgram
 						final List<SpaceObject> sortedReport = new ArrayList<SpaceObject>(localSensorReport.size());
 						sortedReport.addAll(localSensorReport);
 						Collections.sort(sortedReport, new DistanceSorter(spaceMe));
+						int[] cols = new int[] {
+							CMLib.lister().fixColWidth(19, 78),
+							CMLib.lister().fixColWidth(10, 78),
+							CMLib.lister().fixColWidth(12, 78),
+							CMLib.lister().fixColWidth(10, 78),
+							CMLib.lister().fixColWidth(10, 78)
+						};
+						boolean withSpaceObject = false;
+						for(final Object o : sortedReport)
+							withSpaceObject = withSpaceObject || ((o instanceof SpaceObject)&&(o != spaceObject));
+						if(withSpaceObject)
+						{
+							str.append("  ^w")
+								.append(CMStrings.padRight(L("Desc"),cols[0]))
+								.append(CMStrings.padRight(L("Dist"),cols[1]))
+								.append(CMStrings.padRight(L("Dir"),cols[2]))
+								.append(CMStrings.padRight(L("Mass"),cols[3]))
+								.append(CMStrings.padRight(L("Size"),cols[4]))
+								.append("^N\n\r");
+						}
 						for(final Object o : sortedReport)
 						{
 							if(o == spaceObject)
@@ -265,18 +285,22 @@ public class RocketShipProgram extends ShipTacticalProgram
 								final int max = 60;
 								if((currentTarget!=null)
 								&&((currentTarget==o)||(currentTarget.ID().equals(obj.ID()))))
-									pos = appendToLength(str, "^r*^N ", pos, max);
-								pos = appendToLength(str, "^W" + obj.name(), pos, max);
-								if(!obj.coordinates().equals(emptyCoords))
-									pos = appendToLength(str, "^N, ^WDist: ^N" + CMLib.english().distanceDescShort(distance), pos, max);
-								if(!obj.coordinates().equals(emptyCoords))
-									pos = appendToLength(str, "^N, ^WDir: ^N" + CMLib.english().directionDescShortest(direction.toDoubles()), pos, max);
-								if(obj.getMass()>0)
-									pos = appendToLength(str, "^N, ^WMass: ^N" + CMath.abbreviateLong(obj.getMass()), pos, max);
-								if(obj.radius()>0)
-									pos = appendToLength(str, "^N, ^WSize: ^N" + CMLib.english().distanceDescShort(obj.radius()), pos, max);
+									str.append("^r*^W");
+								else
+									str.append(" ^W");
+								str.append(" ")
+									.append(CMStrings.padRight(obj.name(),cols[0])).append("^.^N")
+									.append(CMStrings.padRight(CMLib.english().distanceDescShort(distance),cols[1]))
+									.append(CMStrings.padRight(CMLib.english().directionDescShortest(direction.toDoubles()),cols[2]))
+									.append(CMStrings.padRight(CMath.abbreviateLong(obj.getMass()),cols[3]))
+									.append(CMStrings.padRight(CMLib.english().distanceDescShort(obj.radius()),cols[4]))
+									.append("\n\r");
 							}
-							else
+						}
+						for(final Object o : sortedReport)
+						{
+							if(o instanceof SpaceObject)
+								continue;
 							if(o instanceof CMObject)
 								str.append("^W").append(L("Found: ")).append("^N").append(((CMObject)o).name());
 							else
