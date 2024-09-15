@@ -2,6 +2,8 @@ package com.planet_ink.coffee_mud.core.collections;
 
 import java.math.BigDecimal;
 
+import com.planet_ink.coffee_mud.core.BigCMath;
+
 /*
    Copyright 2024-2024 Bo Zimmerman
 
@@ -19,12 +21,6 @@ import java.math.BigDecimal;
 */
 public class Dir3D extends BigVector
 {
-	private static final BigDecimal		PI_TIMES_2				= BigDecimal.valueOf(Math.PI * 2.0);
-	private static final BigDecimal		PIP						= BigDecimal.valueOf(Math.PI+0.000000000000001);
-	private static final BigDecimal		PIP_TIMES_2				= PIP.multiply(BigDecimal.valueOf(2.0));
-	private static final BigDecimal		PI						= BigDecimal.valueOf(Math.PI);
-	private static final BigDecimal		NEGPI					= BigDecimal.valueOf(-Math.PI);
-
 	public Dir3D()
 	{
 		super(2);
@@ -118,10 +114,10 @@ public class Dir3D extends BigVector
 	{
 		if(d!=null)
 		{
-			while(d.compareTo(PIP_TIMES_2) >=0)
-				d=d.subtract(PI_TIMES_2);
+			while(d.compareTo(BigCMath.PI_TIMES_2) >=0)
+				d=d.subtract(BigCMath.PI_TIMES_2);
 			while(d.compareTo(ZERO) <0)
-				d=d.add(PI_TIMES_2);
+				d=d.add(BigCMath.PI_TIMES_2);
 			b[0] = d;
 		}
 		return this;
@@ -131,19 +127,19 @@ public class Dir3D extends BigVector
 	{
 		if(d!=null)
 		{
-			while(d.compareTo(PIP_TIMES_2) >=0)
-				d=d.subtract(PI_TIMES_2);
-			while(d.compareTo(PIP_TIMES_2.negate()) <0)
-				d=d.add(PI_TIMES_2);
-			while(d.compareTo(PIP) > 0)
+			while(d.compareTo(BigCMath.PI_TIMES_2) >=0)
+				d=d.subtract(BigCMath.PI_TIMES_2);
+			while(d.compareTo(BigCMath.PI_TIMES_2.negate()) <0)
+				d=d.add(BigCMath.PI_TIMES_2);
+			while(d.compareTo(BigCMath.PI) > 0)
 			{
-				d = d.subtract(PI);
-				b[0] = b[0].add((b[0].compareTo(PI) <= 0)?PI:NEGPI);
+				d = d.subtract(BigCMath.PI);
+				b[0] = b[0].add((b[0].compareTo(BigCMath.PI) <= 0)?BigCMath.PI:BigCMath.PI.negate());
 			}
 			while(d.compareTo(ZERO) < 0)
 			{
 				d = d.abs();
-				b[0] = b[0].add((b[0].compareTo(PI) <= 0)?PI:NEGPI);
+				b[0] = b[0].add((b[0].compareTo(BigCMath.PI) <= 0)?BigCMath.PI:BigCMath.PI.negate());
 			}
 			b[1] = d;
 		}

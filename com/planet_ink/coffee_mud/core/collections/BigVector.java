@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Arrays;
 
+import com.planet_ink.coffee_mud.core.BigCMath;
+
 /*
    Copyright 2022-2024 Bo Zimmerman
 
@@ -21,10 +23,11 @@ import java.util.Arrays;
 */
 public class BigVector implements Comparable<BigVector>
 {
-	public static final BigDecimal	ZERO	= BigDecimal.valueOf(0.0);
-	public static final BigDecimal	TWO		= BigDecimal.valueOf(2L);
-	public final static int			SCALE	= 25;
-	public static final BigDecimal[]ZEROS	= new BigDecimal[] { ZERO, ZERO, ZERO };
+	public static final BigDecimal	 ZERO	= BigDecimal.ZERO;
+	public static final BigDecimal	 TWO	= BigDecimal.valueOf(2L);
+	public final static int			 SCALE	= BigCMath.SCALE;
+	public final static RoundingMode ROUND	= BigCMath.ROUND;
+	public static final BigDecimal[] ZEROS	= new BigDecimal[] { ZERO, ZERO, ZERO };
 
 	protected final BigDecimal[] b;
 

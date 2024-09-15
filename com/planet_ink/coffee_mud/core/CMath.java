@@ -50,7 +50,6 @@ public class CMath
 	private static final int[]			INTEGER_BITMASKS= new int[31];
 	private static final long[]			LONG_BITMASKS	= new long[63];
 	private static Random 				rand			= new Random(System.currentTimeMillis());
-	public  static BigDecimal			BIG_PI			= BigDecimal.valueOf(Math.PI);
 
 	static
 	{

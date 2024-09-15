@@ -98,6 +98,7 @@ public class Spaceangles extends StdTest
 			final int[] anglei = opps[i][0];
 			final Dir3D angle = new Dir3D(new double[] {Math.toRadians(anglei[0]), Math.toRadians(anglei[1])});
 			final Dir3D op = CMLib.space().getOppositeDir(angle);
+			final double angleDiff = CMLib.space().getAngleDelta(angle, op);
 			boolean pass=false;
 			for(int x=1;x<opps[i].length;x++)
 			{

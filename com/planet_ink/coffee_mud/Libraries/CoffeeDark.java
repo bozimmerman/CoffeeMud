@@ -49,27 +49,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		return "CoffeeDark";
 	}
 	protected static final double		ZERO_ALMOST				= 0.000001;
-	protected static final BigDecimal	BZERO_ALMOST			= BigDecimal.valueOf(0.000001);
-	protected static final BigDecimal	ZERO					= BigDecimal.valueOf(0.0);
-	protected static final BigDecimal	POINT01					= BigDecimal.valueOf(0.01);
-	protected static final BigDecimal	POINT1					= BigDecimal.valueOf(0.1);
-	protected static final BigDecimal	ONEPOINT01				= BigDecimal.valueOf(1.01);
-	protected static final BigDecimal	ALMOST_ZERO				= BigDecimal.valueOf(ZERO_ALMOST);
-	protected static final BigDecimal	ONE						= BigDecimal.valueOf(1L);
-	protected static final BigDecimal	MIN_ONE					= BigDecimal.valueOf(-1L);
-	protected static final BigDecimal	TWO						= BigDecimal.valueOf(2L);
-	protected static final BigDecimal	FOUR					= BigDecimal.valueOf(4L);
-	protected static final BigDecimal	TEN						= BigDecimal.valueOf(10L);
-	protected static final BigDecimal	ONE_THOUSAND			= BigDecimal.valueOf(1000);
-	protected static final double		PI_ALMOST				= Math.PI - ZERO_ALMOST;
-	protected static final double		PI_TIMES_2_ALMOST		= Math.PI * 2.0 - ZERO_ALMOST;
 	protected static final double		PI_TIMES_2				= Math.PI * 2.0;
-	protected static final BigDecimal	BPI_TIMES_2				= BigDecimal.valueOf(Math.PI).multiply(TWO);
-	protected static final double		PI_BY_2					= Math.PI / 2.0;
-	protected static final BigDecimal	BPI_BY_2				= BigDecimal.valueOf(Math.PI / 2.0);
-	protected static final BigDecimal	BPI						= BigDecimal.valueOf(Math.PI);
-	protected static final double		PI_BY_12				= Math.PI / 12.0;
-	protected static final double		PI_TIMES_1ANDAHALF		= Math.PI * 1.5;
+
 	protected final int					QUADRANT_WIDTH			= 10;
 
 	protected final RTree<SpaceObject>			space		= new RTree<SpaceObject>();
@@ -150,26 +131,26 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	public Dir3D[] getPerpendicularAngles(final Dir3D angle)
 	{
 		final List<Dir3D> set = new ArrayList<Dir3D>(5);
-		if(angle.z().compareTo(BPI_BY_2)>0)
-			set.add(new Dir3D( angle.xy(), angle.z().subtract(BPI_BY_2)));
+		if(angle.z().compareTo(BigCMath.PI_BY_2)>0)
+			set.add(new Dir3D( angle.xy(), angle.z().subtract(BigCMath.PI_BY_2)));
 		else
-		if(angle.z().compareTo(BPI_BY_2)<0)
-			set.add(new Dir3D ( angle.xy(), angle.z().add(BPI_BY_2) ));
+		if(angle.z().compareTo(BigCMath.PI_BY_2)<0)
+			set.add(new Dir3D ( angle.xy(), angle.z().add(BigCMath.PI_BY_2) ));
 
-		final BigDecimal angle10 = angle.z().compareTo(BPI_BY_2) > 0 ?  angle.z().subtract(BPI_BY_2) : BPI_BY_2.subtract(angle.z());
-		BigDecimal angle00 = angle.xy().add(BPI_BY_2);
-		if(angle00.compareTo(BPI_TIMES_2) >=0)
-			angle00 = angle00.subtract(BPI_TIMES_2);
+		final BigDecimal angle10 = angle.z().compareTo(BigCMath.PI_BY_2) > 0 ?  angle.z().subtract(BigCMath.PI_BY_2) : BigCMath.PI_BY_2.subtract(angle.z());
+		BigDecimal angle00 = angle.xy().add(BigCMath.PI_BY_2);
+		if(angle00.compareTo(BigCMath.PI_TIMES_2) >=0)
+			angle00 = angle00.subtract(BigCMath.PI_TIMES_2);
 		set.add(new Dir3D (angle00, angle10 ));
 
-		BigDecimal angle01 = angle.xy().add(BPI);
-		if(angle01.compareTo(BPI_TIMES_2) >=0)
-			angle01 = angle01.subtract(BPI_TIMES_2);
-		set.add(new Dir3D(angle01, BPI_BY_2));
+		BigDecimal angle01 = angle.xy().add(BigCMath.PI);
+		if(angle01.compareTo(BigCMath.PI_TIMES_2) >=0)
+			angle01 = angle01.subtract(BigCMath.PI_TIMES_2);
+		set.add(new Dir3D(angle01, BigCMath.PI_BY_2));
 
-		BigDecimal angle02 = angle.xy().subtract(BPI_BY_2);
-		if(angle02.compareTo(ZERO) < 0)
-			angle02 = angle02.add(BPI_TIMES_2);
+		BigDecimal angle02 = angle.xy().subtract(BigCMath.PI_BY_2);
+		if(angle02.compareTo(BigCMath.ZERO) < 0)
+			angle02 = angle02.add(BigCMath.PI_TIMES_2);
 		set.add(new Dir3D (angle02, angle10 ));
 
 		set.add(CMLib.space().getOppositeDir(angle));
@@ -198,7 +179,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final BigDecimal coord_2 = coord1.z().subtract(coord2.z());
 		final BigDecimal coord_2m = coord_2.multiply(coord_2);
 		final BigDecimal coords_all = coord_0m.add(coord_1m).add(coord_2m);
-		final BigDecimal val = bigSqrt(coords_all);
+		final BigDecimal val = BigCMath.sqrt(coords_all);
 		return val;
 	}
 
@@ -237,11 +218,11 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 
 		final Coord3D sectorCoords = coords.copyOf();
 		if(sectorCoords.x().longValue()<0)
-			sectorCoords.x(sectorCoords.x().multiply(MIN_ONE));
+			sectorCoords.x(sectorCoords.x().negate());
 		if(sectorCoords.y().longValue()<0)
-			sectorCoords.y(sectorCoords.y().multiply(MIN_ONE));
+			sectorCoords.y(sectorCoords.y().negate());
 		if(sectorCoords.z().longValue()<0)
-			sectorCoords.z(sectorCoords.z().multiply(MIN_ONE));
+			sectorCoords.z(sectorCoords.z().negate());
 		sectorCoords.x(sectorCoords.x().longValue() % dmsPerXSector);
 		sectorCoords.y(sectorCoords.y().longValue() % dmsPerYSector);
 		sectorCoords.z(sectorCoords.z().longValue() % dmsPerZSector);
@@ -324,10 +305,10 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		}
 		final BigVector to = new BigVector(toAngle).sphereToCartesian();
 		BigDecimal dotProd = from.dotProduct(to);
-		if(dotProd.compareTo(ONE)>0)
-			dotProd=TWO.subtract(dotProd);
-		if(dotProd.compareTo(MIN_ONE)<0)
-			dotProd=MIN_ONE.multiply(dotProd).subtract(TWO);
+		if(dotProd.compareTo(BigCMath.ONE)>0)
+			dotProd=BigCMath.TWO.subtract(dotProd);
+		if(dotProd.compareTo(BigCMath.MIN_ONE)<0)
+			dotProd=BigCMath.MIN_ONE.multiply(dotProd).subtract(BigCMath.TWO);
 		//final BigDecimal fromag = from.magnitude();
 		//final BigDecimal tomag = to.magnitude();
 		final double finalDelta = Math.acos(dotProd.doubleValue());
@@ -348,12 +329,12 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		{
 			final BigDecimal xy1 = angle1.xy().compareTo(angle2.xy())>0?angle1.xy():angle2.xy();
 			final BigDecimal xy2 = xy1.equals(angle1.xy()) ? angle2.xy() : angle1.xy();
-			if(xy2.compareTo(xy1.subtract(BPI))<0)
-				middleAngle.xy(((BPI_TIMES_2.subtract(xy1)).add(xy2)).divide(TWO,Dir3D.SCALE,RoundingMode.UP));
+			if(xy2.compareTo(xy1.subtract(BigCMath.PI))<0)
+				middleAngle.xy(((BigCMath.PI_TIMES_2.subtract(xy1)).add(xy2)).divide(BigCMath.TWO,Dir3D.SCALE,RoundingMode.UP));
 			else
-				middleAngle.xy((xy1.add(xy2)).divide(TWO,Dir3D.SCALE,RoundingMode.UP));
+				middleAngle.xy((xy1.add(xy2)).divide(BigCMath.TWO,Dir3D.SCALE,RoundingMode.UP));
 		}
-		middleAngle.z((angle1.z().add(angle2.z())).divide(TWO,Dir3D.SCALE,RoundingMode.UP));
+		middleAngle.z((angle1.z().add(angle2.z())).divide(BigCMath.TWO,Dir3D.SCALE,RoundingMode.UP));
 		return middleAngle;
 	}
 
@@ -365,22 +346,22 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		{
 			final BigDecimal xy1 = correctAngle.xy().compareTo(wrongAngle.xy())>0?correctAngle.xy():wrongAngle.xy();
 			final BigDecimal xy2 = xy1.equals(correctAngle.xy()) ? wrongAngle.xy() : correctAngle.xy();
-			if(xy2.compareTo(xy1.subtract(BPI))<0)
-				offsetAngles.xy(((BPI_TIMES_2.subtract(xy1)).add(xy2)));
+			if(xy2.compareTo(xy1.subtract(BigCMath.PI))<0)
+				offsetAngles.xy(((BigCMath.PI_TIMES_2.subtract(xy1)).add(xy2)));
 			else
 				offsetAngles.xy(xy1.subtract(xy2));
 			if((wrongAngle.xy().compareTo(correctAngle.xy())>0)
-			&&((wrongAngle.xy().subtract(correctAngle.xy()).compareTo(BPI)<0)))
+			&&((wrongAngle.xy().subtract(correctAngle.xy()).compareTo(BigCMath.PI)<0)))
 			{
 				offsetAngles.xy(correctAngle.xy().subtract(offsetAngles.xy()));
-				if(offsetAngles.xy().compareTo(ZERO) < 0)
-					offsetAngles.xy(offsetAngles.xy().add(BPI_TIMES_2));
+				if(offsetAngles.xy().compareTo(BigCMath.ZERO) < 0)
+					offsetAngles.xy(offsetAngles.xy().add(BigCMath.PI_TIMES_2));
 			}
 			else
 			{
 				offsetAngles.xy(correctAngle.xy().add(offsetAngles.xy()));
-				if(offsetAngles.xy().compareTo(BPI_TIMES_2) >= 0)
-					offsetAngles.xy(offsetAngles.xy().subtract(BPI_TIMES_2));
+				if(offsetAngles.xy().compareTo(BigCMath.PI_TIMES_2) >= 0)
+					offsetAngles.xy(offsetAngles.xy().subtract(BigCMath.PI_TIMES_2));
 			}
 		}
 		if(!correctAngle.z().equals(wrongAngle.z()))
@@ -408,11 +389,11 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	{
 		final Dir3D delta = new Dir3D();
 		delta.xy(toAngle.xy().subtract(fromAngle.xy()));
-		if(delta.xy().compareTo(BPI) > 0)
-			delta.xy(BPI_TIMES_2.subtract(delta.xy()));
+		if(delta.xy().compareTo(BigCMath.PI) > 0)
+			delta.xy(BigCMath.PI_TIMES_2.subtract(delta.xy()));
 		else
-		if(delta.xy().compareTo(BPI.negate()) < 0)
-			delta.xy(BPI_TIMES_2.add(delta.xy()));
+		if(delta.xy().compareTo(BigCMath.PI.negate()) < 0)
+			delta.xy(BigCMath.PI_TIMES_2.add(delta.xy()));
 		delta.z(toAngle.z().subtract(fromAngle.z()));
 		return delta;
 	}
@@ -445,8 +426,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			yawDelta = accelDirectionYaw.subtract(curDirectionYaw);
 		}
 		// 350 and 10, diff = 340 + -360 = 20
-		if(yawDelta.compareTo(BPI)>0) // a delta is never more than 180 degrees
-			yawDelta=BPI_TIMES_2.subtract(yawDelta);
+		if(yawDelta.compareTo(BigCMath.PI)>0) // a delta is never more than 180 degrees
+			yawDelta=BigCMath.PI_TIMES_2.subtract(yawDelta);
 		final BigDecimal pitchSign;
 		final BigDecimal pitchDelta;
 		if(curDirectionPitch.compareTo(accelDirectionPitch) >0)
@@ -460,18 +441,18 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			pitchDelta = accelDirectionPitch.subtract(curDirectionPitch);
 		}
 		final BigDecimal anglesDelta =  BigDecimal.valueOf(getAngleDelta(curDirection, accelDirection));
-		if((anglesDelta.subtract(BPI).abs().compareTo(BZERO_ALMOST)<=0)
+		if((anglesDelta.subtract(BigCMath.PI).abs().compareTo(BigCMath.ZERO_ALMOST)<=0)
 		&&(currentSpeed.compareTo(acceleration)>0))
 			return currentSpeed.subtract(acceleration).doubleValue();
 		BigDecimal newDirectionYaw;
 		BigDecimal newDirectionPitch;
 		final BigDecimal deltaMultiplier = Dir3D.sin(anglesDelta);
-		final BigDecimal yawMin =  deltaMultiplier.multiply((POINT01.add(yawDelta.multiply(ONEPOINT01.subtract(BigDecimal.valueOf(Math.sin(curDirectionPitch.doubleValue())))))));
+		final BigDecimal yawMin =  deltaMultiplier.multiply((BigCMath.POINT01.add(yawDelta.multiply(BigCMath.ONEPOINT01.subtract(BigDecimal.valueOf(Math.sin(curDirectionPitch.doubleValue())))))));
 		final BigDecimal accelerationMultiplier;
-		if(currentSpeed.equals(ZERO))
-			accelerationMultiplier = ONE;
+		if(currentSpeed.compareTo(BigCMath.ZERO)==0)
+			accelerationMultiplier = BigCMath.ONE;
 		else
-			accelerationMultiplier = acceleration.multiply(TEN).divide(currentSpeed,Dir3D.SCALE,RoundingMode.UP).multiply(deltaMultiplier,MathContext.DECIMAL128);
+			accelerationMultiplier = acceleration.multiply(BigCMath.TEN).divide(currentSpeed,Dir3D.SCALE,RoundingMode.UP).multiply(deltaMultiplier,MathContext.DECIMAL128);
 		if((yawDelta.compareTo(yawMin) <= 0))
 			newDirectionYaw = accelDirectionYaw;
 		else
@@ -480,10 +461,10 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			if((nearFinalYawDelta.compareTo(yawMin)<0)&&(yawDelta.compareTo(yawMin)>0))
 				nearFinalYawDelta = yawMin;
 			newDirectionYaw = curDirectionYaw.add(nearFinalYawDelta.multiply(yawSign));
-			if((newDirectionYaw.compareTo(ZERO) > 0) && ((BPI_TIMES_2.subtract(newDirectionYaw)).compareTo(BZERO_ALMOST)<0))
-				newDirectionYaw=ZERO;
+			if((newDirectionYaw.compareTo(BigCMath.ZERO) > 0) && ((BigCMath.PI_TIMES_2.subtract(newDirectionYaw)).compareTo(BigCMath.ZERO_ALMOST)<0))
+				newDirectionYaw=BigCMath.ZERO;
 		}
-		final BigDecimal pitchMin = POINT1;
+		final BigDecimal pitchMin = BigCMath.POINT1;
 		if(pitchDelta.compareTo(pitchMin)<=0)
 			newDirectionPitch = accelDirectionPitch;
 		else
@@ -494,7 +475,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			newDirectionPitch = curDirectionPitch.add(nearFinalPitchDelta.multiply(pitchSign));
 		}
 		BigDecimal newSpeed = currentSpeed.add(acceleration.multiply(Dir3D.cos(anglesDelta)));
-		if(newSpeed.compareTo(ZERO)<0) // cos >=180deg is a negative number, so negative acceleration, new direction
+		if(newSpeed.compareTo(BigCMath.ZERO)<0) // cos >=180deg is a negative number, so negative acceleration, new direction
 		{
 			newSpeed = newSpeed.negate();
 			newDirectionYaw = accelDirectionYaw;
@@ -522,7 +503,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	@Override
 	public Dir3D getOppositeDir(final Dir3D dir)
 	{
-		return new Dir3D(BPI.add(dir.xy()),BPI.subtract(dir.z()));
+		return new Dir3D(BigCMath.PI.add(dir.xy()),BigCMath.PI.subtract(dir.z()));
 	}
 
 	@Override
@@ -627,26 +608,6 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	public Dir3D getDirection(final Coord3D fromCoords, final Coord3D toCoords)
 	{
 		return getBigDirection(fromCoords, toCoords);
-		/*
-		final Dir3D dir=new double[2];
-		final double x=toCoords.xy()-fromCoords.xy();
-		final double y=toCoords.z()-fromCoords.z();
-		final double z=toCoords[2]-fromCoords[2];
-		final double xy = (x*x)+(y*y);
-		if((x!=0)||(y!=0))
-		{
-			final double sqrtxy = Math.sqrt(xy);
-			final double ybysqrtxy=y/sqrtxy;
-			if(x<0)
-				dir.xy()=Math.PI-Math.asin(ybysqrtxy);
-			else
-				dir.xy()=Math.asin(ybysqrtxy);
-		}
-		if((x!=0)||(y!=0)||(z!=0))
-			dir.z()=Math.acos(z/Math.sqrt((z*z)+xy));
-		fixDirectionBounds(dir);
-		return dir;
-		*/
 	}
 
 	protected Dir3D getBigDirection(final Coord3D fromCoords, final Coord3D toCoords)
@@ -658,7 +619,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final BigDecimal xy = x.multiply(x).add(y.multiply(y));
 		if((x.doubleValue()!=0)||(y.doubleValue()!=0))
 		{
-			final BigDecimal sqrtxy = bigSqrt(xy);
+			final BigDecimal sqrtxy = BigCMath.sqrt(xy);
 			final BigDecimal ybysqrtxy=y.divide(sqrtxy,50,RoundingMode.HALF_EVEN);
 			if(x.doubleValue()<0)
 				dir.xy(Math.PI-Math.asin(ybysqrtxy.doubleValue()));
@@ -666,7 +627,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				dir.xy(Math.asin(ybysqrtxy.doubleValue()));
 		}
 		if((x.doubleValue()!=0)||(y.doubleValue()!=0)||(z.doubleValue()!=0))
-			dir.z(Math.acos(z.divide(bigSqrt(z.multiply(z).add(xy)),50,RoundingMode.HALF_EVEN).doubleValue()));
+			dir.z(Math.acos(z.divide(BigCMath.sqrt(z.multiply(z).add(xy)),50,RoundingMode.HALF_EVEN).doubleValue()));
 		return dir;
 	}
 
@@ -934,24 +895,6 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		return space.count();
 	}
 
-	public static BigDecimal bigSqrt(final BigDecimal A)
-	{
-		if(A.doubleValue()<0)
-			return ZERO;
-		final int SCALE=50;
-		BigDecimal x0 = BigDecimal.valueOf(0);
-		BigDecimal x1 = BigDecimal.valueOf(Math.sqrt(A.doubleValue()));
-		int times=0;
-		while ((!x0.equals(x1))&&(++times<20))
-		{
-			x0 = x1;
-			x1 = A.divide(x0, SCALE, RoundingMode.UP);
-			x1 = x1.add(x0);
-			x1 = x1.divide(TWO, SCALE, RoundingMode.UP);
-		}
-		return x1;
-	}
-
 	@Override
 	public boolean canMaybeIntercept(final SpaceObject chaserO, final SpaceObject runnerO, final int maxTicks, final double maxSpeed)
 	{
@@ -988,10 +931,10 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				final Coord3D V01=new Coord3D(V0.x().add(BigDecimal.ONE),V0.y(),V0.z());
 				A=V01.dotProduct(V01).subtract(S1.multiply(S1));
 			}
-			final BigDecimal B=TWO.multiply(P0.dotProduct(V0).add(P1.scalarProduct(ONE.negate()).dotProduct(V0)));
-			final BigDecimal C=P0.dotProduct(P0).add(P1.dotProduct(P1)).add(P1.scalarProduct(TWO.negate()).dotProduct(P0));
-			final BigDecimal T1 = B.negate().add(bigSqrt(B.multiply(B).subtract(FOUR.multiply(A).multiply(C)))).divide(TWO.multiply(A),Coord3D.SCALE,RoundingMode.UP);
-			final BigDecimal T2 = B.negate().subtract(bigSqrt(B.multiply(B).subtract(FOUR.multiply(A).multiply(C)))).divide(TWO.multiply(A),Coord3D.SCALE,RoundingMode.UP);
+			final BigDecimal B=BigCMath.TWO.multiply(P0.dotProduct(V0).add(P1.scalarProduct(BigCMath.ONE.negate()).dotProduct(V0)));
+			final BigDecimal C=P0.dotProduct(P0).add(P1.dotProduct(P1)).add(P1.scalarProduct(BigCMath.TWO.negate()).dotProduct(P0));
+			final BigDecimal T1 = B.negate().add(BigCMath.sqrt(B.multiply(B).subtract(BigCMath.FOUR.multiply(A).multiply(C)))).divide(BigCMath.TWO.multiply(A),Coord3D.SCALE,RoundingMode.UP);
+			final BigDecimal T2 = B.negate().subtract(BigCMath.sqrt(B.multiply(B).subtract(BigCMath.FOUR.multiply(A).multiply(C)))).divide(BigCMath.TWO.multiply(A),Coord3D.SCALE,RoundingMode.UP);
 			final BigDecimal T;
 			if((T1.doubleValue() < 0)
 			|| ((T2.doubleValue() < T1.doubleValue()) && (T2.doubleValue() >= 0)))
@@ -1011,70 +954,6 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			return new Pair<Dir3D, Long>(dirTo,Long.valueOf(maxChaserSpeed));
 		}
 		return null; // something is not
-	}
-
-	//@Override
-	public Pair<Dir3D,Long> calculateIntercept2(final SpaceObject chaserO, final SpaceObject runnerO, final long maxChaserSpeed, final int maxTicks)
-	{
-		if(maxTicks < 1)
-			return null; // not possible, too late
-		Dir3D dirTo = getDirection(chaserO, runnerO);
-		if((maxChaserSpeed>0)
-		&&(runnerO.speed()>0))
-		{
-			long distance = getDistanceFrom(chaserO, runnerO);
-			long speedToUse = maxChaserSpeed;
-			if(distance < maxChaserSpeed)
-			{
-				speedToUse = distance;
-				return new Pair<Dir3D, Long>(dirTo, Long.valueOf(speedToUse));
-			}
-			long curTicks = Math.round(CMath.div(distance, speedToUse));
-			if((curTicks > maxTicks)||(curTicks==0))
-				return null; // not enough time
-			long newTicks = curTicks;
-			curTicks = 0;
-			long tries = 0;
-			final long radius = runnerO.radius() + chaserO.radius();
-			final long maxTries = (curTicks<100)?100:curTicks+1;
-			while(++tries < maxTries)
-			{
-				curTicks = newTicks;
-				Coord3D runnerCoords = runnerO.coordinates().copyOf();
-				Coord3D chaserCoords = chaserO.coordinates().copyOf();
-				chaserCoords=moveSpaceObject(chaserCoords, dirTo, speedToUse*(newTicks-1));
-				runnerCoords=moveSpaceObject(runnerCoords, runnerO.direction(), Math.round(runnerO.speed())*newTicks-1);
-				final Coord3D oldCoords = chaserCoords.copyOf();
-				chaserCoords=moveSpaceObject(chaserCoords, dirTo, speedToUse);
-				if(getMinDistanceFrom(oldCoords, chaserCoords, runnerCoords)<radius)
-				{
-					return new Pair<Dir3D, Long>(dirTo, Long.valueOf(speedToUse));
-				}
-
-				dirTo = getDirection(chaserO.coordinates(), runnerCoords);
-				distance = getDistanceFrom(chaserO.coordinates(), runnerCoords);
-				newTicks = Math.round(CMath.div(distance, speedToUse))-1; // this is the absolute best I can do
-				if(newTicks<2)
-					newTicks=2;
-				if(newTicks > maxTicks)
-					return null; // not enough time
-				if(newTicks == curTicks)
-					newTicks = newTicks+1;
-			}
-			return new Pair<Dir3D, Long>(dirTo,Long.valueOf(speedToUse));
-		}
-		else
-		if(chaserO.speed()>0) // runner isn't moving, so straight shot
-			return new Pair<Dir3D, Long>(dirTo,Long.valueOf(maxChaserSpeed));
-		return null; // something is not
-	}
-
-	protected final double getDirDiffSum(final Dir3D d1, final Dir3D d2)
-	{
-		final BigDecimal sum1=(d1.xy().compareTo(d2.xy())>0)?(d1.xy().subtract(d2.xy())):(d2.xy().subtract(d1.xy()));
-		final BigDecimal sum2=(d1.xy().compareTo(d2.xy())>0)?(BPI_TIMES_2.subtract(d1.xy()).add(d2.xy())):(BPI_TIMES_2.subtract(d2.xy()).add(d1.xy()));
-		final BigDecimal sum3=(d1.z().compareTo(d2.z())>0)?(d1.z().subtract(d2.z())):(d2.z().subtract(d1.z()));
-		return ((sum1.compareTo(sum2)>0)?(sum2.add(sum3)):(sum1.add(sum3))).doubleValue();
 	}
 
 	@Override
@@ -1153,63 +1032,6 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			final BigDecimal dp = BE.dotProduct(bigDistance);
 			return bigCurPos.add(bigDistance.scalarProduct(dp)).subtract(bigObjPos).magnitude().doubleValue();
 		}
-	}
-
-	protected double getOldMinDistFrom(final Coord3D prevPos, final double speed, final Dir3D dir, final Coord3D curPosition,
-									   final Dir3D directionTo, final Coord3D objPos)
-	{
-		final BigDecimal currentDistance=getBigDistanceFrom(curPosition, objPos);
-		if(prevPos.equals(curPosition))
-			return currentDistance.doubleValue();
-		final BigDecimal prevDistance=getBigDistanceFrom(prevPos, objPos);
-		final BigDecimal baseDistance=BigDecimal.valueOf(speed);
-		if(baseDistance.compareTo(currentDistance.add(prevDistance))>=0)
-		{
-			//Log.debugOut("0:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
-			return 0;
-		}
-		if(prevDistance.subtract(baseDistance).equals(currentDistance)
-		||currentDistance.subtract(baseDistance).equals(prevDistance))
-		{
-			//Log.debugOut("1:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
-			return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
-		}
-		//Log.debugOut("2:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
-		final Dir3D travelDir = dir;
-		final Dir3D prevDirToObject = getDirection(prevPos, objPos);
-		final double diDelta=getDirDiffSum(travelDir,prevDirToObject);
-		if(diDelta<ZERO_ALMOST)
-		{
-			final Dir3D currDirToObject = directionTo;
-			final double fiDelta=getDirDiffSum(currDirToObject,prevDirToObject);
-			if(fiDelta>ZERO_ALMOST)
-				return 0;
-			if(prevDistance.compareTo(currentDistance)>0)
-				return currentDistance.doubleValue();
-			else
-				return prevDistance.doubleValue();
-		}
-
-		final BigDecimal semiPerimeter=currentDistance.add(prevDistance).add(baseDistance).divide(TWO, RoundingMode.HALF_UP);
-		final BigDecimal partOfTriangle=semiPerimeter.multiply(semiPerimeter.subtract(currentDistance))
-													.multiply(semiPerimeter.subtract(baseDistance))
-													.multiply(semiPerimeter.subtract(prevDistance));
-
-		final BigDecimal areaOfTriangle=bigSqrt(partOfTriangle);
-		//Log.debugOut("3:semiPerimeter="+semiPerimeter.longValue()+", areaOfTriangle="+areaOfTriangle.doubleValue());
-		if(areaOfTriangle.doubleValue()==0.0)
-		{
-			//Log.debugOut("3.5:semiPerimeter="+semiPerimeter.longValue()+", areaOfTriangle="+areaOfTriangle.doubleValue());
-			if (semiPerimeter.subtract(baseDistance).abs().doubleValue() <= 1)
-				return 0;
-			else
-				return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
-		}
-		//Log.debugOut("4:getMinDistanceFrom="+TWO.multiply(areaOfTriangle).divide(baseDistance, RoundingMode.HALF_UP).doubleValue());
-		if((baseDistance.multiply(ONE_THOUSAND).compareTo(currentDistance)<0)
-		&&(baseDistance.multiply(ONE_THOUSAND).compareTo(prevDistance)<0))
-			return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
-		return TWO.multiply(areaOfTriangle).divide(baseDistance, RoundingMode.HALF_UP).doubleValue();
 	}
 
 	@Override
