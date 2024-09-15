@@ -67,7 +67,9 @@ public class Transfer extends At
 		return s;
 	}
 
-	protected Coord3D fixSpaceCoords(final List<Physical> xferObjV, final long distanceDm, Coord3D targetSpace)
+	protected Coord3D fixSpaceCoords(final List<Physical> xferObjV, 
+									 final long distanceDm,
+									 Coord3D targetSpace)
 	{
 		long baseDist = 1;
 		for(final Environmental e : xferObjV)
@@ -522,19 +524,42 @@ public class Transfer extends At
 					rest = CMParms.combine(rV);
 				}
 			}
-			if((rest.length()>0)&&(Character.isDigit(rest.charAt(0))))
+			final int restx=rest.indexOf("->");
+			if(rest.length()>0)
 			{
-				final List<String> bits=CMParms.parseAny(rest,',',true);
-				if(bits.size()==3)
-					targetSpace=new Coord3D(new long[] { CMath.s_long(bits.get(0)), CMath.s_long(bits.get(1)), CMath.s_long(bits.get(2))});
-			}
-			else
-			{
-				SpaceObject o = CMLib.space().findSpaceObject(rest, true);
-				if(o == null)
-					o = CMLib.space().findSpaceObject(rest, false);
-				if(o != null)
-					targetSpace=o.coordinates().copyOf();
+				if(restx>0)
+				{
+					final String o1s = rest.substring(0,restx);
+					final String o2s = rest.substring(restx+2);
+					SpaceObject o1 = CMLib.space().findSpaceObject(o1s, true);
+					if(o1 == null)
+						o1 = CMLib.space().findSpaceObject(o1s, false);
+					SpaceObject o2 = CMLib.space().findSpaceObject(o2s, true);
+					if(o2 == null)
+						o2 = CMLib.space().findSpaceObject(o2s, false);
+					if((o1 != null)&&(o2 != null))
+					{
+						Dir3D dir = CMLib.space().getDirection(o1.coordinates(), o2.coordinates());
+						Dir3D opDir = CMLib.space().getOppositeDir(dir);
+						Coord3D o1coords = o1.coordinates().copyOf();
+						targetSpace = CMLib.space().moveSpaceObject(o1coords, opDir, o1.radius()+distanceDm).copyOf();
+					}
+				}
+				else
+				if(Character.isDigit(rest.charAt(0)))
+				{
+					final List<String> bits=CMParms.parseAny(rest,',',true);
+					if(bits.size()==3)
+						targetSpace=new Coord3D(new long[] { CMath.s_long(bits.get(0)), CMath.s_long(bits.get(1)), CMath.s_long(bits.get(2))});
+				}
+				else
+				{
+					SpaceObject o = CMLib.space().findSpaceObject(rest, true);
+					if(o == null)
+						o = CMLib.space().findSpaceObject(rest, false);
+					if(o != null)
+						targetSpace=o.coordinates().copyOf();
+				}
 			}
 			if(targetSpace != null)
 				targetSpace=fixSpaceCoords(xferObjV, distanceDm, targetSpace);
