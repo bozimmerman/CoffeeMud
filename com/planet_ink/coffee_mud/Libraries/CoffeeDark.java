@@ -64,7 +64,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	protected static final double		PI_ALMOST				= Math.PI - ZERO_ALMOST;
 	protected static final double		PI_TIMES_2_ALMOST		= Math.PI * 2.0 - ZERO_ALMOST;
 	protected static final double		PI_TIMES_2				= Math.PI * 2.0;
-	protected static final BigDecimal	BPI_TIMES_2				= BigDecimal.valueOf(Math.PI);
+	protected static final BigDecimal	BPI_TIMES_2				= BigDecimal.valueOf(Math.PI).multiply(TWO);
 	protected static final double		PI_BY_2					= Math.PI / 2.0;
 	protected static final BigDecimal	BPI_BY_2				= BigDecimal.valueOf(Math.PI / 2.0);
 	protected static final BigDecimal	BPI						= BigDecimal.valueOf(Math.PI);
@@ -494,7 +494,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			newDirectionPitch = curDirectionPitch.add(nearFinalPitchDelta.multiply(pitchSign));
 		}
 		BigDecimal newSpeed = currentSpeed.add(acceleration.multiply(Dir3D.cos(anglesDelta)));
-		if(newSpeed.compareTo(ZERO)<0)
+		if(newSpeed.compareTo(ZERO)<0) // cos >=180deg is a negative number, so negative acceleration, new direction
 		{
 			newSpeed = newSpeed.negate();
 			newDirectionYaw = accelDirectionYaw;
@@ -1301,6 +1301,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 								bobj = notBobj;
 							}
 						}
+						if(bobjdist == 0.0)
+							continue;
 						final BigDecimal distanceToBobj = new BigDecimal(bobjdist);
 						final double dsgradius = CMath.mul(sradius, err);
 						final double dtgradius = CMath.mul(bobj.radius(),(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)) * err;
