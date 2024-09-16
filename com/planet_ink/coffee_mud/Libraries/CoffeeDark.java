@@ -780,7 +780,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public List<SpaceObject> getSpaceObjectsInBound(final BoundedTube tube)
+	public List<SpaceObject> getSpaceObjectsInBound(final BoundedTube tube, final Set<Coord3D> except)
 	{
 		final List<SpaceObject> within=new ArrayList<SpaceObject>(1);
 		synchronized(space)
@@ -789,7 +789,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		}
 		for(final Iterator<SpaceObject> i=within.iterator();i.hasNext();)
 		{
-			if(!tube.intersects(i.next().getSphere()))
+			final SpaceObject o = i.next();
+			if((!tube.intersects(o.getSphere()))||(except.contains(o.coordinates())))
 				i.remove();
 		}
 		return within;
@@ -1072,7 +1073,6 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final long sgradius=Math.round(CMath.mul(sradius,(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 		final long tgradius=Math.round(CMath.mul(tradius,(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 		final Coord3D srcCoord = moveSpaceObject(src, dir, sgradius+1);
-		// if "dir" is the tangent, then I get why to move the source, but why the target opposite to tangent?
 		final Coord3D tgtCoord = moveSpaceObject(target, getOppositeDir(dir), tgradius+1);
 		final long distance = getDistanceFrom(srcCoord, tgtCoord);
 		final BoundedSphere courseRay = new BoundedSphere(srcCoord, sgradius);
@@ -1086,107 +1086,136 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		return courseRay.expand(dir, distance);
 	}
 
-	@Override
-	public List<Coord3D> plotCourse(final Coord3D osrc, final long sradius, final Coord3D otarget, final long tradius, int maxTicks)
+	protected List<SpaceObject> checkSubCourse(final Coord3D osrc, final long sradius, final Coord3D otarget, final long tradius,
+											final Set<Coord3D> exceptions)
+	{
+		BoundedTube courseRay;
+		final Dir3D dir = getDirection(osrc, otarget);
+		// ray is a source-sized tube stretching from end-of-src coord to beginning of target coord.
+		courseRay = makeCourseTubeRay(osrc, sradius, otarget, tradius, dir);
+		if(courseRay == null)
+			return null;
+		return getSpaceObjectsInBound(courseRay, exceptions);
+	}
+
+	protected List<Coord3D> plotFullCourse(final Coord3D osrc, final long sradius, final Coord3D otarget, final long tradius,
+									   final Set<Coord3D> exceptions, final Set<Coord3D> ignoreTargets)
 	{
 		final List<Coord3D> course = new LinkedList<Coord3D>();
-		Coord3D src=osrc.copyOf();
-		Coord3D target = otarget.copyOf();
-		BoundedTube courseRay;
-		List<SpaceObject> objs;
-		while(!src.equals(target))
+		final Coord3D src=osrc.copyOf();
+		final Coord3D target = otarget.copyOf();
+		final Dir3D dir = getDirection(src, target);
+		final List<SpaceObject> collisions = checkSubCourse(src, sradius, target, tradius, exceptions);
+		if(collisions == null)
+			return course; // we were already there
+		if(collisions.size()==0)
 		{
-			final Dir3D dir = getDirection(src, target);
-			courseRay = makeCourseTubeRay(src, sradius, target, tradius,dir);
-			if(courseRay == null)
-				return course; // we are on top of the target, so done
-			objs = getSpaceObjectsInBound(courseRay);
-			double err = 1.0;
-			int tries=100;
-			while((objs.size()>0)&&(--tries>0))
+			course.add(target);
+			return course;
+		}
+
+		// find the closest collider and go around that
+		SpaceObject closestColliderObj = collisions.get(0);
+		long closestDistance = getDistanceFrom(src, closestColliderObj.coordinates());
+		for(int i=1;i<collisions.size();i++)
+		{
+			final SpaceObject otherColliderObj = collisions.get(i);
+			final long otherColliderDistance = getDistanceFrom(src, otherColliderObj.coordinates());
+			if((otherColliderDistance > 0) && (otherColliderDistance < closestDistance))
 			{
-				err *= 2.0;
-				final List<Coord3D> choices = new ArrayList<Coord3D>(4);
-				for(int dd=0;dd<4;dd++)
+				closestColliderObj = otherColliderObj;
+				closestDistance = otherColliderDistance;
+			}
+		}
+
+		// now try every direction to get around it -- recursively, increasing radius until one is found.
+		for(double err = 2.0; err <= 65536.0; err *= 2.0)
+		{
+			final BigDecimal distanceToColliderObj = new BigDecimal(closestDistance);
+			final double newSrcRadius = CMath.mul(sradius, err);
+			final double newTgtRradius = CMath.mul(closestColliderObj.radius(),(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)) * err;
+			final double dirDelta = Dir3D.atan(newSrcRadius + newTgtRradius)
+								.divide(distanceToColliderObj, Coord3D.SCALE, Coord3D.ROUND).doubleValue();
+			final List<Coord3D> allSub = new ArrayList<Coord3D>();
+			// now try four different tangents
+			for(int dd=0;dd<4;dd++)
+			{
+				final Dir3D newDir = dir.copyOf();
+				switch(dd)
 				{
-					if(objs.size()>0)
-					{
-						// find closest
-						SpaceObject bobj = objs.get(0);
-						long bobjdist = getDistanceFrom(src, bobj.coordinates());
-						for(int i=1;i<objs.size();i++)
-						{
-							final SpaceObject notBobj = objs.get(i);
-							final long notbobjdist = getDistanceFrom(src, notBobj.coordinates());
-							if(notbobjdist > bobjdist)
-							{
-								bobjdist = notbobjdist;
-								bobj = notBobj;
-							}
-						}
-						if(bobjdist == 0.0)
-							continue;
-						final BigDecimal distanceToBobj = new BigDecimal(bobjdist);
-						final double dsgradius = CMath.mul(sradius, err);
-						final double dtgradius = CMath.mul(bobj.radius(),(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)) * err;
-						final double dirDelta = Dir3D.atan(dsgradius + dtgradius)
-											.divide(distanceToBobj, Coord3D.SCALE, RoundingMode.HALF_UP).doubleValue();
-						final Dir3D newDir = dir.copyOf();
-						switch(dd)
-						{
-						case 0:
-							changeDirection(newDir, new Dir3D (dirDelta,0.0));
-							break;
-						case 1:
-							changeDirection(newDir, new Dir3D (-dirDelta,0.0));
-							break;
-						case 2:
-							changeDirection(newDir, new Dir3D (0.0,dirDelta));
-							break;
-						case 3:
-							changeDirection(newDir, new Dir3D (0.0,-dirDelta));
-							break;
-						}
-						final Coord3D newSubTarget = moveSpaceObject(src, newDir, distanceToBobj.longValue());
-						courseRay = makeCourseTubeRay(src, sradius, newSubTarget, bobj.radius(), newDir);
-						if(courseRay == null)
-							return course; // we are on top of the target, so done
-						objs = getSpaceObjectsInBound(courseRay);
-						if(objs.size()==0)
-							choices.add(newSubTarget);
-					}
-				}
-				if(choices.size()>0)
-				{
-					target=choices.get(0);
-					if(choices.size()>1)
-					{
-						long dist = getDistanceFrom(target, otarget);
-						for(int i=1;i<choices.size();i++)
-						{
-							final long dist2 = this.getDistanceFrom(choices.get(i), otarget);
-							if(dist2<dist)
-							{
-								target=choices.get(i);
-								dist=dist2;
-							}
-						}
-					}
-					objs.clear();
+				case 0:
+					changeDirection(newDir, new Dir3D (dirDelta,0.0));
+					break;
+				case 1:
+					changeDirection(newDir, new Dir3D (-dirDelta,0.0));
+					break;
+				case 2:
+					changeDirection(newDir, new Dir3D (0.0,dirDelta));
+					break;
+				case 3:
+					changeDirection(newDir, new Dir3D (0.0,-dirDelta));
 					break;
 				}
+				final Coord3D newSubTarget = moveSpaceObject(src, newDir, closestDistance);
+				if(ignoreTargets.contains(newSubTarget))
+					continue;
+				allSub.add(newSubTarget);
 			}
-			if(objs.size()==0)
+			final Map<Coord3D,Long> distanceMap = new HashMap<Coord3D,Long>();
+			for(final Coord3D d3 : allSub)
+				distanceMap.put(d3, Long.valueOf(CMLib.space().getDistanceFrom(d3, otarget)));
+			Collections.sort(allSub, new Comparator<Coord3D>()
 			{
-				course.add(target); // WIN!
-				src = target.copyOf();
-				target = otarget.copyOf();
-				if(--maxTicks<=0)
+				@Override
+				public int compare(final Coord3D o1, final Coord3D o2)
+				{
+					final long dist1 = distanceMap.get(o1).longValue();
+					final long dist2 = distanceMap.get(o2).longValue();
+					if(dist1 == dist2)
+						return 0;
+					if(dist1<dist2)
+						return -1;
+					return 1;
+				}
+			});
+			for(final Coord3D newSubTarget : allSub)
+			{
+				final List<SpaceObject> intermediateCheck = checkSubCourse(src,sradius,newSubTarget,sradius,exceptions);
+				if(intermediateCheck == null) // this should never happen
+				{
+					course.add(newSubTarget);
 					return course;
+				}
+				if(intermediateCheck.size()==0) // clear to recurse
+				{
+					final Set<Coord3D> ignore = new XHashSet<Coord3D>(ignoreTargets);
+					ignore.add(newSubTarget);
+					final List<Coord3D> subCourse =  plotFullCourse(newSubTarget, sradius, target, tradius, exceptions, ignore);
+					if(subCourse != null)
+					{
+						course.add(newSubTarget);
+						course.addAll(subCourse);
+						return course;
+					}
+				}
 			}
-			else
-				break;
 		}
+		return null;
+	}
+
+	@Override
+	public List<Coord3D> plotCourse(final Coord3D osrc, final long sradius, final Coord3D otarget, final long tradius, final int maxTicks)
+	{
+		final HashSet<Coord3D> exceptions = new HashSet<Coord3D>();
+		exceptions.add(osrc);
+		exceptions.add(otarget);
+
+		final HashSet<Coord3D> ignoreTargets = new HashSet<Coord3D>();
+		final List<Coord3D> course = plotFullCourse(osrc, sradius, otarget, tradius, exceptions, ignoreTargets);
+		if(course == null)
+			return new ArrayList<Coord3D>();
+		while(course.size()>maxTicks)
+			course.remove(course.size()-1);
 		return course;
 	}
 

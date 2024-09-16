@@ -555,22 +555,22 @@ public class ShipNavProgram extends ShipSensorProgram
 			else
 			{
 				Coord3D srcCoords = me.coordinates();
-				if(this.course.size()>0)
-					srcCoords = course.get(this.course.size()-1).copyOf();
+				if(course.size()>0)
+					srcCoords = course.get(course.size()-1).copyOf();
 				final List<Coord3D> newBits = CMLib.space().plotCourse(srcCoords, me.radius(), courseTargetCoords, courseTargetRadius, 1);
 				if(newBits.size()==0)
 				{
-					this.courseTargetCoords = null;
+					courseTargetCoords = null;
 					super.addScreenMessage(L("Failed to plot course."));
 				}
 				else
 				{
-					this.course.addAll(newBits);
+					course.addAll(newBits);
 					for(final Coord3D bit : newBits)
 					{
 						if(bit.equals(courseTargetCoords))
 						{
-							this.courseTargetCoords = null;
+							courseTargetCoords = null;
 							super.addScreenMessage(L("Course plotted."));
 							break;
 						}

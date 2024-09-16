@@ -556,7 +556,8 @@ public interface GalacticMap extends CMLibrary
 
 
 	/**
-	 * Given a bounded tube, this will return all space objects within that tube.
+	 * Given a bounded tube, this will return all space objects within that tube,
+	 * with exceptions
 	 *
 	 * @see GalacticMap#getSpaceObjects()
 	 * @see GalacticMap#getSpaceObjectEntries()
@@ -566,9 +567,10 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#getSpaceObjectsInBound(BoundedCube)
 	 *
 	 * @param tube the tube to look within
+	 * @param except don't return any objects centered on the given coordinates
 	 * @return the objects in space in that tube
 	 */
-	public List<SpaceObject> getSpaceObjectsInBound(final BoundedTube tube);
+	public List<SpaceObject> getSpaceObjectsInBound(final BoundedTube tube, final Set<Coord3D> except);
 
 	/**
 	 * Given a center galactic coordinates, and a minimum and maximum distance from that coordinate, this will

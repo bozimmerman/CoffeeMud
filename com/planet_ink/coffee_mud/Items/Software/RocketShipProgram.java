@@ -252,7 +252,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 						final List<SpaceObject> sortedReport = new ArrayList<SpaceObject>(localSensorReport.size());
 						sortedReport.addAll(localSensorReport);
 						Collections.sort(sortedReport, new DistanceSorter(spaceMe));
-						int[] cols = new int[] {
+						final int[] cols = new int[] {
 							CMLib.lister().fixColWidth(19, 78),
 							CMLib.lister().fixColWidth(10, 78),
 							CMLib.lister().fixColWidth(12, 78),
@@ -281,8 +281,6 @@ public class RocketShipProgram extends ShipTacticalProgram
 								final SpaceObject obj = (SpaceObject)o;
 								final long distance = CMLib.space().getDistanceFrom(spaceMe.coordinates(), obj.coordinates()) - spaceMe.radius() - obj.radius();
 								final Dir3D direction = CMLib.space().getDirection(spaceMe, obj);
-								int pos=0;
-								final int max = 60;
 								if((currentTarget!=null)
 								&&((currentTarget==o)||(currentTarget.ID().equals(obj.ID()))))
 									str.append("^r*^W");
