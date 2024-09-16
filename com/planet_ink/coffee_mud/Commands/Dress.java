@@ -82,7 +82,13 @@ public class Dress extends StdCommand
 			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",what));
 			return false;
 		}
-		if((!target.willFollowOrdersOf(mob))&&(!CMLib.flags().isBoundOrHeld(target)))
+		final boolean willAllow = target.willFollowOrdersOf(mob)
+				|| CMLib.flags().isBoundOrHeld(target)
+				|| ((target instanceof MOB)
+						&& (target instanceof Rideable)
+						&&(!target.isPlayer())
+						&& CMLib.flags().isAnimalIntelligence(target));
+		if(!willAllow)
 			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 won't let you.",target.name(mob)));
 		else
 		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER)

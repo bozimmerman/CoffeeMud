@@ -561,6 +561,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				if(newBits.size()==0)
 				{
 					courseTargetCoords = null;
+					course.clear();
 					super.addScreenMessage(L("Failed to plot course."));
 				}
 				else
