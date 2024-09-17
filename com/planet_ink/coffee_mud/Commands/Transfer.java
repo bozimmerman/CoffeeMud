@@ -67,7 +67,7 @@ public class Transfer extends At
 		return s;
 	}
 
-	protected Coord3D fixSpaceCoords(final List<Physical> xferObjV, 
+	protected Coord3D fixSpaceCoords(final List<Physical> xferObjV,
 									 final long distanceDm,
 									 Coord3D targetSpace)
 	{
@@ -539,9 +539,9 @@ public class Transfer extends At
 						o2 = CMLib.space().findSpaceObject(o2s, false);
 					if((o1 != null)&&(o2 != null))
 					{
-						Dir3D dir = CMLib.space().getDirection(o1.coordinates(), o2.coordinates());
-						Dir3D opDir = CMLib.space().getOppositeDir(dir);
-						Coord3D o1coords = o1.coordinates().copyOf();
+						final Dir3D dir = CMLib.space().getDirection(o1.coordinates(), o2.coordinates());
+						final Dir3D opDir = CMLib.space().getOppositeDir(dir);
+						final Coord3D o1coords = o1.coordinates().copyOf();
 						targetSpace = CMLib.space().moveSpaceObject(o1coords, opDir, o1.radius()+distanceDm).copyOf();
 					}
 				}
@@ -564,6 +564,9 @@ public class Transfer extends At
 			if(targetSpace != null)
 				targetSpace=fixSpaceCoords(xferObjV, distanceDm, targetSpace);
 		}
+		else
+		if(CMLib.sessions().findCharacterOnline(cmd.toString(), true) != null)
+			targetRoom=CMLib.sessions().findCharacterOnline(cmd.toString(), true).location();
 		else
 		if(CMLib.map().getRoom(cmd.toString())!=null)
 			targetRoom=CMLib.map().getRoom(cmd.toString());

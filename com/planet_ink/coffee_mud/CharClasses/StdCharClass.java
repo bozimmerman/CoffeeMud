@@ -460,10 +460,10 @@ public class StdCharClass implements CharClass
 		}
 		final Race R=mob.baseCharStats().getMyRace();
 		if(!(isAllowedRace(R)
-			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_"+ID()+"+"+"RACE_"+R.ID()))
-			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_"+ID()+"+"+"RACE_ALL"))
-			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_ALL"+"+"+"RACE_"+R.ID()))
-			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_ALL"+"+"+"RACE_ALL"))
+			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_"+ID()+"+RACE_"+R.ID()))
+			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_"+ID()+"+RACE_ALL"))
+			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_ALL+RACE_"+R.ID()))
+			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_ALL+RACE_ALL"))
 			)
 		)
 		{
