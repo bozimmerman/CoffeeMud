@@ -49,6 +49,14 @@ public class Spell_Irritation extends Spell
 		return localizedName;
 	}
 
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Irritation)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
 	@Override
 	public int abstractQuality()
 	{
