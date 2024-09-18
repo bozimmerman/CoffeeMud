@@ -714,17 +714,17 @@ public interface TimeClock extends Tickable, CMCommon
 	public void setNext(final TimePeriod period, int value);
 
 	/**
-	 * Different time periods.
+	 * Different time periods for player stats.
 	 * @author Bo Zimmerman
 	 */
 	public enum TimePeriod
 	{
-		HOUR(60L * 60L * 1000L),
-		DAY(60L * 60L * 1000L * 24L),
-		WEEK(60L * 60L * 1000L * 24L * 7L),
-		MONTH(60L * 60L * 1000L * 24L * 30L),
-		SEASON(60L * 60L * 1000L * 24L * 365L / 4L),
-		YEAR(60L * 60L * 1000L * 24L * 365L),
+		HOUR(TimeManager.MILI_HOUR),
+		DAY(TimeManager.MILI_DAY),
+		WEEK(TimeManager.MILI_WEEK),
+		MONTH(TimeManager.MILI_MONTH),
+		SEASON(TimeManager.MILI_YEAR / 4L),
+		YEAR(TimeManager.MILI_YEAR),
 		ALLTIME(0)
 		;
 		private final long increment;

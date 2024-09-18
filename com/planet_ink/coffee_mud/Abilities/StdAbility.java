@@ -2540,7 +2540,7 @@ public class StdAbility implements Ability
 			if(yourAbility.proficiency()>prof75-1)
 			{
 				teacher.tell(L("You can't teach @x1 any more about '@x2'.",student.charStats().himher(),name()));
-				student.tell(L("You can't learn any more about '@x1' except through dilligence.",name()));
+				student.tell(L("You can't learn any more about '@x1' except through diligence.",name()));
 				return false;
 			}
 		}

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.CoffeeTime.TimeDelta;
@@ -446,4 +447,32 @@ public interface TimeManager extends CMLibrary
 	public final static long MILI_MONTH=MILI_DAY*30;
 	/** constant for the number of milliseconds in a rl year */
 	public final static long MILI_YEAR=MILI_DAY*365;
+
+
+	/**
+	 * Extended time periods for other uses
+	 * @author Bo Zimmerman
+	 */
+	public enum TimePeriod
+	{
+		HOUR(MILI_HOUR),
+		DAY(MILI_DAY),
+		WEEK(MILI_WEEK),
+		MONTH(MILI_MONTH),
+		SEASON(MILI_YEAR / 4L),
+		YEAR(MILI_YEAR),
+		ALLTIME(0)
+		;
+		private final long millis;
+
+		private TimePeriod(final long increment)
+		{
+			this.millis=increment;
+		}
+
+		public long getMillis()
+		{
+			return millis;
+		}
+	}
 }

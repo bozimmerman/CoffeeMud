@@ -26,6 +26,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.math.BigDecimal;
 import java.net.Socket;
 import java.util.*;
 
@@ -52,15 +53,15 @@ public class ShipNavProgram extends ShipSensorProgram
 		return "ShipNavProgram";
 	}
 
-	protected final List<Coord3D>	course				= new LinkedList<Coord3D>();
-	protected volatile Coord3D	courseTargetCoords	= null;
-	protected volatile long			courseTargetRadius	= 0;
 	protected volatile Double		savedAcceleration	= null;
 	protected volatile Double		savedSpeedDelta		= null;
 	protected volatile Double		savedAngle			= null;
 	protected volatile Double		lastInject			= null;
 	protected volatile Double		targetAcceleration	= Double.valueOf(SpaceObject.ACCELERATION_TYPICALSPACEROCKET);
 	protected volatile ShipNavTrack	navTrack			= null;
+	protected final List<SpaceObject>course				= new LinkedList<SpaceObject>();
+	protected volatile boolean		courseSet			= false;
+	protected volatile SpaceObject	courseTarget		= null;
 
 	protected final Map<ShipEngine, Double[]>	injects	= new Hashtable<ShipEngine, Double[]>();
 
@@ -68,11 +69,12 @@ public class ShipNavProgram extends ShipSensorProgram
 
 	protected static class ShipNavTrack
 	{
-		protected ShipNavProcess proc;
-		protected ShipNavState state;
-		protected Object[] args;
-		protected Class<?>[] types;
-		protected Map<Class<?>, Integer> classMap;
+		protected long						speedLimit 			= Long.MAX_VALUE;
+		protected ShipNavProcess			proc;
+		protected ShipNavState				state;
+		protected Object[]					args;
+		protected Class<?>[]				types;
+		protected Map<Class<?>, Integer>	classMap;
 
 		protected ShipNavTrack(final ShipNavProcess proc, final Object... args)
 		{
@@ -171,10 +173,15 @@ public class ShipNavProgram extends ShipSensorProgram
 		injects.clear();
 	}
 
-	protected void cancelNavigation()
+	protected boolean cancelNavigation()
 	{
+		final boolean didSomething = navTrack != null || courseSet;
 		lastInject = null;
 		navTrack=null;
+		course.clear();
+		courseTarget = null;
+		courseSet = false;
+		return didSomething;
 	}
 
 	/**
@@ -547,39 +554,28 @@ public class ShipNavProgram extends ShipSensorProgram
 	protected void onPowerCurrent(final int value)
 	{
 		super.onPowerCurrent(value);
-		if(this.courseTargetCoords != null)
+		if((courseTarget != null) && (!courseSet))
 		{
 			final SpaceObject me = CMLib.space().getSpaceObject(this,true);
 			if(me == null)
-				this.courseTargetCoords = null;
+				cancelNavigation();
 			else
 			{
-				Coord3D srcCoords = me.coordinates();
-				if(course.size()>0)
-					srcCoords = course.get(course.size()-1).copyOf();
-				final List<Coord3D> newBits = CMLib.space().plotCourse(srcCoords, me.radius(), courseTargetCoords, courseTargetRadius, 1);
-				if(newBits.size()==0)
+				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
+				for(final TechComponent sensor : getShipSensors())
+					allObjects.addAll(takeNewSensorReport(sensor));
+				Collections.sort(allObjects, new DistanceSorter(me));
+				course.clear();
+				course.addAll(this.calculateNavigation(me, courseTarget, allObjects));
+				if(!course.contains(courseTarget))
 				{
-					courseTargetCoords = null;
-					course.clear();
+					cancelNavigation();
 					super.addScreenMessage(L("Failed to plot course."));
 				}
 				else
 				{
-					course.addAll(newBits);
-					for(final Coord3D bit : newBits)
-					{
-						if(bit.equals(courseTargetCoords))
-						{
-							courseTargetCoords = null;
-							super.addScreenMessage(L("Course plotted."));
-							break;
-						}
-					}
-					if(courseTargetCoords != null)
-					{
-						// still plotting
-					}
+					courseSet = true;
+					super.addScreenMessage(L("Course plotted."));
 				}
 			}
 		}
@@ -624,9 +620,6 @@ public class ShipNavProgram extends ShipSensorProgram
 	{
 		if(message == null)
 		{
-			course.clear();
-			courseTargetCoords	= null;
-			courseTargetRadius	= 0;
 			savedAcceleration	= null;
 			savedSpeedDelta		= null;
 			savedAngle			= null;
@@ -728,7 +721,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		{
 			for(final Coord3D p : points)
 			{
-				System.arraycopy(p,0,winnerObj.coordinates(),0,3); // prevents adding to space
+				winnerObj.setCoords(p.copyOf());
 				final SpaceObject coll2O = getCollision(fromObj, winnerObj, ship.radius(), others);
 				if(coll2O == null)
 				{
@@ -1355,6 +1348,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				final int gs = (int)Math.round(targetAcceleration.doubleValue()/SpaceObject.ACCELERATION_G);
 				addScreenMessage(L("No inertial dampeners found.  Limiting acceleration to "+gs+"Gs."));
 			}
+			if(cancelNavigation())
+				addScreenMessage(L("Warning. Previous program cancelled."));
 			final List<ShipEngine> programEngines=new XVector<ShipEngine>(engineE);
 			if(uword.equalsIgnoreCase("ORBIT"))
 				navTrack = new ShipNavTrack(ShipNavProcess.ORBIT, programPlanet, programEngines);
@@ -1384,11 +1379,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				addScreenMessage(L("Error: Ship is already stopped."));
 				return false;
 			}
-			if(navTrack!=null)
-			{
+			if(cancelNavigation())
 				addScreenMessage(L("Warning. Previous program cancelled."));
-				cancelNavigation();
-			}
 			ShipEngine engineE=null;
 			if(!flipForAllStop(ship))
 			{
@@ -1472,11 +1464,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				return false;
 			}
 
-			if(navTrack!=null)
-			{
+			if(cancelNavigation())
 				addScreenMessage(L("Warning. Previous program cancelled."));
-				cancelNavigation();
-			}
 			ShipEngine engineE=null;
 			if(!flipForAllStop(ship))
 			{
@@ -1525,14 +1514,14 @@ public class ShipNavProgram extends ShipSensorProgram
 				return false;
 			}
 			final String targetStr=CMParms.combine(parsed, 1);
-			Coord3D targetCoords = null;
+			SpaceObject targetObj = null;
 			if(sensorReps.size()>0)
 			{
 				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
 				for(final TechComponent sensor : getShipSensors())
 					allObjects.addAll(takeNewSensorReport(sensor));
 				Collections.sort(allObjects, new DistanceSorter(spaceObject));
-				SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
+				targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
 				if(targetObj == null)
 					targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, true);
 				if(targetObj != null)
@@ -1542,29 +1531,33 @@ public class ShipNavProgram extends ShipSensorProgram
 						addScreenMessage(L("Error: Can not plot course to @x1 due to lack of coordinate information.",targetObj.name()));
 						return false;
 					}
-					targetCoords = targetObj.coordinates();
 				}
 			}
-			if(targetCoords == null)
-				targetCoords = findCoordinates(targetStr);
-			if(targetCoords == null)
+			if(targetObj == null)
 			{
-				addScreenMessage(L("Error: Unable to find course target '@x1'.",targetStr));
-				return false;
-			}
-			else
-			{
-				// yes, it's cheating.  deal
+				final Coord3D targetCoords = findCoordinates(targetStr);
+				if(targetCoords == null)
+				{
+					addScreenMessage(L("Error: Unable to find course target '@x1'.",targetStr));
+					return false;
+				}
 				final List<SpaceObject> objs = CMLib.space().getSpaceObjectsByCenterpointWithin(targetCoords, 0, 10);
 				for(final SpaceObject o1 : objs)
 				{
 					if(targetCoords.equals(o1.coordinates()))
-						courseTargetRadius = o1.radius();
+						courseTarget = o1;
+				}
+				if(courseTarget == null)
+				{
+					courseTarget = (SpaceObject)CMClass.getBasicItem("Moonlet");
+					courseTarget.setRadius(ship.radius());
+					courseTarget.setName("Nav Point");
+					courseTarget.setCoords(targetCoords);
 				}
 			}
-			course.clear();
-			courseTargetCoords = targetCoords;
-			addScreenMessage(L("Plotting course to @x1.",CMParms.toListString(courseTargetCoords.toLongs())));
+			if(cancelNavigation())
+				addScreenMessage(L("Warning. Previous program cancelled."));
+			addScreenMessage(L("Plotting course to @x1.",targetStr));
 			return false;
 		}
 	};
@@ -1661,6 +1654,8 @@ public class ShipNavProgram extends ShipSensorProgram
 								portDir.name(),""+Math.round(CMath.pctDiff(dirTo.xyd(),ship.facing().xyd(),Math.PI*2.0)*100.0)));
 						return false;
 					}
+					if(cancelNavigation())
+						addScreenMessage(L("Warning. Previous program cancelled."));
 					if(facing.z().compareTo(dirTo.z())>0)
 						portDir=ShipDirectional.ShipDir.VENTRAL;
 					else
@@ -1756,6 +1751,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				addScreenMessage(L("Can not approach @x1 due being too close.",targetObj.name()));
 				return false;
 			}
+			if(cancelNavigation())
+				addScreenMessage(L("Warning. Previous program cancelled."));
 			ShipEngine engineE=null;
 			final Dir3D dirTo = CMLib.space().getDirection(ship, targetObj);
 			if(!changeFacing(ship, dirTo))
@@ -1798,7 +1795,6 @@ public class ShipNavProgram extends ShipSensorProgram
 				return false;
 			}
 			final Electronics E=engineE;
-			double amount=0;
 			ShipDirectional.ShipDir portDir=ShipDirectional.ShipDir.AFT;
 			if(parsed.size()>3)
 			{
@@ -1810,12 +1806,27 @@ public class ShipNavProgram extends ShipSensorProgram
 				addScreenMessage(L("Error: No thrust amount given."));
 				return false;
 			}
-			if(!CMath.isNumber(parsed.get(parsed.size()-1)))
+			final String amountStr = parsed.get(parsed.size()-1);
+			double injectAmount;
+			long speedLimit = Long.MAX_VALUE;
+			if(CMath.isNumber(amountStr))
+				injectAmount=CMath.s_double(amountStr);
+			else
 			{
-				addScreenMessage(L("Error: '@x1' is not a valid amount.",parsed.get(parsed.size()-1)));
-				return false;
+				final BigDecimal d = CMLib.english().parseSpaceSpeed(amountStr);
+				if((d==null)||(d.doubleValue()<=0.0))
+				{
+					addScreenMessage(L("Error: '@x1' is not a valid amount or speed.",amountStr));
+					return false;
+				}
+				injectAmount = d.doubleValue();
+				final double targetAmt = findTargetAcceleration(engineE);
+				if(injectAmount > targetAmt)
+				{
+					speedLimit = Math.round(injectAmount);
+					injectAmount = targetAmt;
+				}
 			}
-			amount=CMath.s_double(parsed.get(parsed.size()-1));
 			if((engineE.isReactionEngine())
 			&&(CMParms.contains(engineE.getAvailPorts(),ShipDirectional.ShipDir.AFT)))
 			{
@@ -1823,9 +1834,9 @@ public class ShipNavProgram extends ShipSensorProgram
 				{
 					final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
 					final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
-					if((primeMainThrusters(ship, amount, engineE) == engineE)
+					if((primeMainThrusters(ship, injectAmount, engineE) == engineE)
 					&&(lastInject != null))
-						amount = calculateMarginalTargetInjection(lastInject,amount).doubleValue();
+						injectAmount = calculateMarginalTargetInjection(lastInject,injectAmount).doubleValue();
 					else
 					{
 						addScreenMessage(L("Error: '@x1' priming failure.",engineE.name()));
@@ -1833,44 +1844,42 @@ public class ShipNavProgram extends ShipSensorProgram
 					}
 				}
 				else
-					amount = calculateMarginalTargetInjection(lastInject,amount).doubleValue();
+					injectAmount = calculateMarginalTargetInjection(lastInject,injectAmount).doubleValue();
 			}
 			if(parsed.size()==3)
 			{
-				portDir=(ShipDirectional.ShipDir)CMath.s_valueOf(ShipDirectional.ShipDir.class, parsed.get(1).toUpperCase().trim());
+				final String dirNm = parsed.get(1).toUpperCase().trim();
+				portDir=(ShipDirectional.ShipDir)CMath.s_valueOf(ShipDirectional.ShipDir.class, dirNm);
+				if(portDir == null)
+					portDir=(ShipDirectional.ShipDir)CMath.s_valueOfStartsWith(ShipDirectional.ShipDir.class, dirNm);
 				if(portDir!=null)
 				{
 					if(!CMParms.contains(engineE.getAvailPorts(), portDir))
 					{
-						addScreenMessage(L("Error: '@x1' is not a valid direction for that engine.  Try: @x2.",parsed.get(1),CMParms.toListString(engineE.getAvailPorts())));
+						addScreenMessage(L("Error: '@x1' is not a valid direction for that engine.  Try: @x2.",dirNm,CMParms.toListString(engineE.getAvailPorts())));
 						return false;
 					}
 				}
 				else
-				if("aft".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ShipDirectional.ShipDir.AFT))
-					portDir=ShipDirectional.ShipDir.AFT;
-				else
-				if("port".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ShipDirectional.ShipDir.PORT))
-					portDir=ShipDirectional.ShipDir.PORT;
-				else
-				if("starboard".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ShipDirectional.ShipDir.STARBOARD))
-					portDir=ShipDirectional.ShipDir.STARBOARD;
-				else
-				if("ventral".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ShipDirectional.ShipDir.VENTRAL))
-					portDir=ShipDirectional.ShipDir.VENTRAL;
-				else
-				if("dorsel".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ShipDirectional.ShipDir.DORSEL))
-					portDir=ShipDirectional.ShipDir.DORSEL;
-				else
 				{
-					addScreenMessage(L("Error: '@x1' is not a valid direction for that engine.  Try: @x2.",parsed.get(1),CMParms.toListString(engineE.getAvailPorts())));
+					addScreenMessage(L("Error: '@x1' is not a valid direction for that engine.  Try: @x2.",dirNm,CMParms.toListString(engineE.getAvailPorts())));
 					return false;
 				}
 			}
-			CMMsg msg = null;
-			if(amount > 0)
+			if(navTrack != null)
+				navTrack.speedLimit = speedLimit;
+			else
+			if(courseSet && (course.size()>0))
 			{
-				final String code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(amount));
+				targetAcceleration=Double.valueOf(findTargetAcceleration(engineE));
+				final List<ShipEngine> programEngines=new XVector<ShipEngine>(engineE);
+				navTrack = new ShipNavTrack(ShipNavProcess.APPROACH, courseTarget, programEngines, course);
+				return true;
+			}
+			CMMsg msg = null;
+			if(injectAmount > 0)
+			{
+				final String code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(injectAmount));
 				msg=CMClass.getMsg(mob, engineE, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			}
 			else
@@ -1954,6 +1963,8 @@ public class ShipNavProgram extends ShipSensorProgram
 					addScreenMessage(L("Error: Malfunctioning finding maneuvering engine."));
 					return false;
 				}
+				if(cancelNavigation())
+					addScreenMessage(L("Warning. Previous program cancelled."));
 				Dir3D oldFacing=ship.facing().copyOf();
 				String code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(Math.toDegrees(fdist1)));
 				CMMsg msg=CMClass.getMsg(mob, engineE, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);

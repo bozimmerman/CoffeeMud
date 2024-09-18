@@ -1101,4 +1101,13 @@ public interface EnglishParsing extends CMLibrary
 	 * @return the distance in decameters
 	 */
 	public BigDecimal parseSpaceDistance(String dist);
+
+	/**
+	 * Returns a speed in decameters/second represented by the given
+	 * parsable user-entered string.
+	 *
+	 * @param dist the user-entered string
+	 * @return the distance in decameters or null
+	 */
+	public BigDecimal parseSpaceSpeed(String speed);
 }

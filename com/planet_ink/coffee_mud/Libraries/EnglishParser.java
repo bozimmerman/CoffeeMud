@@ -564,7 +564,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			digits++;
 		if(digits<0)
 			return null;
-		final BigDecimal value=new BigDecimal(Long.valueOf(dist.substring(0,digits+1)).longValue());
+		final BigDecimal value=new BigDecimal(Long.valueOf(CMath.s_long(dist.substring(0,digits+1))).longValue());
 		final String unit=dist.substring(digits+1).trim();
 		if(unit.length()==0)
 			return value;
@@ -596,6 +596,33 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(distUnit==null)
 			return null;
 		return value.multiply(new BigDecimal(distUnit.dm));
+	}
+
+	@Override
+	public BigDecimal parseSpaceSpeed(String speed)
+	{
+		if(speed==null)
+			return null;
+		speed=speed.trim();
+		BigDecimal divider = BigDecimal.ONE;
+		int x = speed.indexOf('/');
+		if(x<0 )
+			x = speed.indexOf('\\');
+		if(x>0)
+		{
+			final String mult = speed.substring(x+1).toUpperCase().trim();
+			TimeManager.TimePeriod per = (TimeManager.TimePeriod)CMath.s_valueOf(TimeManager.TimePeriod.class, mult);
+			if(per == null)
+				per = (TimeManager.TimePeriod)CMath.s_valueOfStartsWith(TimeManager.TimePeriod.class, mult);
+			if(per == null)
+				return null;
+			speed=speed.substring(0,x);
+			divider = BigDecimal.valueOf(per.getMillis()/1000);
+		}
+		final BigDecimal distance = parseSpaceDistance(speed);
+		if((distance == null)||(distance.intValue()<=0))
+			return null;
+		return distance.divide(divider,BigCMath.SCALE,BigCMath.ROUND);
 	}
 
 	@Override

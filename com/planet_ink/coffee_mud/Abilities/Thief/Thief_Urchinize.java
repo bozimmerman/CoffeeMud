@@ -95,7 +95,7 @@ public class Thief_Urchinize extends ThiefSkill
 	}
 
 	protected Map<MOB, Long>	failures		= new Hashtable<MOB, Long>();
-	protected Boolean urchanizing = null;
+	protected Boolean urchinizing = null;
 	protected int tickUp = 0;
 	protected int tickSuccess = 0;
 
@@ -104,7 +104,7 @@ public class Thief_Urchinize extends ThiefSkill
 		final Physical P = affected;
 		if(P != null)
 		{
-			urchanizing = Boolean.FALSE;
+			urchinizing = Boolean.FALSE;
 			this.canBeUninvoked = true;
 			unInvoke();
 			P.delEffect(this);
@@ -116,13 +116,13 @@ public class Thief_Urchinize extends ThiefSkill
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)
-		&&(urchanizing == Boolean.FALSE)
+		&&(urchinizing == Boolean.FALSE)
 		&&(this.canBeUninvoked))
 			((MOB)affected).location().show((MOB)affected, null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fail(s) to become an urchin."));
 		super.unInvoke();
 	}
 
-	protected boolean urchanTick()
+	protected boolean urchinTick()
 	{
 		final Physical P = affected;
 		final MOB invoker = invoker();
@@ -144,7 +144,7 @@ public class Thief_Urchinize extends ThiefSkill
 			{
 				R.show(M, null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> now an urchin."));
 				CMLib.commands().postFollow(M, null, false);
-				urchanizing = null;
+				urchinizing = null;
 				Ability A = CMClass.getAbility("Thief_Swipe");
 				if(M.fetchAbility(A.ID())==null)
 				{
@@ -186,12 +186,12 @@ public class Thief_Urchinize extends ThiefSkill
 			else
 			if(tickDown==4)
 			{
-				if(!R.show(invoker, M,CMMsg.MSG_HANDS,L("<S-NAME> <S-IS-ARE> almost done urchanizing <T-NAME>.")))
+				if(!R.show(invoker, M,CMMsg.MSG_HANDS,L("<S-NAME> <S-IS-ARE> almost done urchinizing <T-NAME>.")))
 					return forceUninvoke();
 			}
 			else
 			{
-				if(!R.show(invoker, M,CMMsg.MSG_HANDS,L("<S-NAME> continue(s) urchanizing <T-NAME>.")))
+				if(!R.show(invoker, M,CMMsg.MSG_HANDS,L("<S-NAME> continue(s) urchinizing <T-NAME>.")))
 					return forceUninvoke();
 			}
 		}
@@ -203,8 +203,8 @@ public class Thief_Urchinize extends ThiefSkill
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if(urchanizing == Boolean.TRUE)
-			return this.urchanTick();
+		if(urchinizing == Boolean.TRUE)
+			return this.urchinTick();
 		return true;
 	}
 
@@ -215,7 +215,7 @@ public class Thief_Urchinize extends ThiefSkill
 			return false;
 
 		if((msg.targetMinor()==CMMsg.TYP_ORDER)
-		&&(this.urchanizing == null)
+		&&(this.urchinizing == null)
 		&&(msg.source().location()!=null)
 		&&(msg.target() ==affected)
 		&&(affected instanceof MOB)
@@ -300,7 +300,7 @@ public class Thief_Urchinize extends ThiefSkill
 					{
 						kA.invoker = mob;
 						kA.tickSuccess = 11 - super.getXTIMELevel(mob);
-						kA.urchanizing = Boolean.TRUE;
+						kA.urchinizing = Boolean.TRUE;
 						kA.makeNonUninvokable();
 						target.makePeace(true);
 					}

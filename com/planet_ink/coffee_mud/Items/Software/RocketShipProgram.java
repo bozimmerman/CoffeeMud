@@ -455,6 +455,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 							+ "^wTARGET [NAME]          ^N: target a sensor object\n\r"
 							+ "^wFACE [NAME]            ^N: face a sensor object\n\r"
 							+ "^wAPPROACH [NAME]        ^N: approach a sensor object\n\r"
+							+ "^wCOURSE [NAME]          ^N: plot a course\n\r"
 							+ "^wMOON [NAME]            ^N: moon a sensor object\n\r"
 							+ "^w[SENSOR NAME] [DIR]    ^N: aim/use a sensor\n\r"
 							+ "^wFIRE [WEAPON]          ^N: fire weapon at target\n\r"
