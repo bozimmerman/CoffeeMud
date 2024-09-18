@@ -679,7 +679,8 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			break;
 		case CMMsg.TYP_PUT:
-			if(msg.tool() instanceof Item)
+			if((msg.tool() instanceof Item)
+			&&(msg.target()==this))
 			{
 				if(getContents().size()>=this.riderCapacity())
 				{

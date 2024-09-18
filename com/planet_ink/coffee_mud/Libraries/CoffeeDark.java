@@ -387,7 +387,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	@Override
 	public Dir3D getAngleDiff(final Dir3D fromAngle, final Dir3D toAngle)
 	{
-		final Dir3D delta = new Dir3D();
+		final Dir3D delta = new Dir3D(false); // not safe, because negatives OK
 		delta.xy(toAngle.xy().subtract(fromAngle.xy()));
 		if(delta.xy().compareTo(BigCMath.PI) > 0)
 			delta.xy(BigCMath.PI_TIMES_2.subtract(delta.xy()));

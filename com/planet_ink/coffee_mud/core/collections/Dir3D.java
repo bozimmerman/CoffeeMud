@@ -21,9 +21,16 @@ import com.planet_ink.coffee_mud.core.BigCMath;
 */
 public class Dir3D extends BigVector
 {
+	boolean safe = true;
 	public Dir3D()
 	{
 		super(2);
+	}
+
+	public Dir3D(final boolean safeness)
+	{
+		super(2);
+		safe=false;
 	}
 
 	public Dir3D(final BigVector v)
@@ -114,10 +121,13 @@ public class Dir3D extends BigVector
 	{
 		if(d!=null)
 		{
-			while(d.compareTo(BigCMath.PI_TIMES_2) >=0)
-				d=d.subtract(BigCMath.PI_TIMES_2);
-			while(d.compareTo(ZERO) <0)
-				d=d.add(BigCMath.PI_TIMES_2);
+			if(safe)
+			{
+				while(d.compareTo(BigCMath.PI_TIMES_2) >=0)
+					d=d.subtract(BigCMath.PI_TIMES_2);
+				while(d.compareTo(ZERO) <0)
+					d=d.add(BigCMath.PI_TIMES_2);
+			}
 			b[0] = d;
 		}
 		return this;
@@ -127,19 +137,22 @@ public class Dir3D extends BigVector
 	{
 		if(d!=null)
 		{
-			while(d.compareTo(BigCMath.PI_TIMES_2) >=0)
-				d=d.subtract(BigCMath.PI_TIMES_2);
-			while(d.compareTo(BigCMath.PI_TIMES_2.negate()) <0)
-				d=d.add(BigCMath.PI_TIMES_2);
-			while(d.compareTo(BigCMath.PI) > 0)
+			if(safe)
 			{
-				d = d.subtract(BigCMath.PI);
-				b[0] = b[0].add((b[0].compareTo(BigCMath.PI) <= 0)?BigCMath.PI:BigCMath.PI.negate());
-			}
-			while(d.compareTo(ZERO) < 0)
-			{
-				d = d.abs();
-				b[0] = b[0].add((b[0].compareTo(BigCMath.PI) <= 0)?BigCMath.PI:BigCMath.PI.negate());
+				while(d.compareTo(BigCMath.PI_TIMES_2) >=0)
+					d=d.subtract(BigCMath.PI_TIMES_2);
+				while(d.compareTo(BigCMath.PI_TIMES_2.negate()) <0)
+					d=d.add(BigCMath.PI_TIMES_2);
+				while(d.compareTo(BigCMath.PI) > 0)
+				{
+					d = d.subtract(BigCMath.PI);
+					b[0] = b[0].add((b[0].compareTo(BigCMath.PI) <= 0)?BigCMath.PI:BigCMath.PI.negate());
+				}
+				while(d.compareTo(ZERO) < 0)
+				{
+					d = d.abs();
+					b[0] = b[0].add((b[0].compareTo(BigCMath.PI) <= 0)?BigCMath.PI:BigCMath.PI.negate());
+				}
 			}
 			b[1] = d;
 		}

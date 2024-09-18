@@ -1132,10 +1132,18 @@ public class ShipNavProgram extends ShipSensorProgram
 
 		// the state of the meat.
 		Double newInject=this.lastInject;
+		boolean doInject=true;
 		switch(track.state)
 		{
-		case STOP:
 		case APPROACH:
+			if((track.speedLimit < Long.MAX_VALUE)
+			&&(ship.speed() >= track.speedLimit))
+			{
+				if(Math.toDegrees(CMLib.space().getAngleDelta(ship.facing(), ship.direction()))<90)
+					doInject=false;
+			}
+			//$FALL-THROUGH$
+		case STOP:
 		case DEPROACH:
 		case PRE_LANDING_STOP:
 		{
@@ -1143,8 +1151,11 @@ public class ShipNavProgram extends ShipSensorProgram
 			newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
 			//if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 			//	Log.debugOut(ship.Name(),"Old engine inject value = "+oldInject+", new="+newInject);
-			for(final ShipEngine engineE : programEngines)
-				performSimpleThrust(engineE,newInject, false);
+			if(doInject)
+			{
+				for(final ShipEngine engineE : programEngines)
+					performSimpleThrust(engineE,newInject, false);
+			}
 			break;
 		}
 		case LAUNCHING:
