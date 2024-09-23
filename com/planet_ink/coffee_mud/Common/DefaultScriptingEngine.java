@@ -29,6 +29,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import org.mozilla.javascript.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -15375,6 +15376,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			final Area A=CMLib.map().areaLocation(ticking);
 			if((A!=null)&&(A.getAreaState() != Area.State.ACTIVE))
 			{
+				if(this.que.size()>0)
+					this.que.clear();
 				return true;
 			}
 		}
@@ -15382,7 +15385,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			if((lastKnownLocation !=null)
 			&&(lastKnownLocation.numPCInhabitants()==0))
+			{
+				dequeResponses(null);
 				return true;
+			}
 		}
 		if(defaultItem != null)
 		{
@@ -15692,9 +15698,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						SB = que.get(q);
 						if(SB != null)
 						{
-							rpt.append(CMStrings.padRight(""+q,2)+") trig="+SB.triggerCode)
-								.append(", src="+((SB.ctx.source==null)?SB.ctx.source.name():"null"))
-								.append(", when="+CMLib.time().date2APTimeString(SB.queuedAt))
+							rpt.append(CMStrings.padRight(""+q,2)+") "+SB.triggerCode)
+								.append(", src="+((SB.ctx.source==null)?"null":SB.ctx.source.name()))
+								.append(", when="+new SimpleDateFormat("yyyyMMdd.HHmm.ss").format(Long.valueOf(SB.queuedAt)))
 								.append("\n\r");
 						}
 					}

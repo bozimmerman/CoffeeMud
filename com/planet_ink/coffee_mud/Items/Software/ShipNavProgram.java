@@ -195,16 +195,21 @@ public class ShipNavProgram extends ShipSensorProgram
 	protected Double fixInjection(final Double lastInject, final Double lastAcceleration, final double targetAcceleration)
 	{
 		final Double newInject;
+		if(targetAcceleration <= 0)
+			return Double.valueOf(0);
 		if(lastAcceleration.doubleValue() < targetAcceleration)
 		{
 			if(lastAcceleration.doubleValue() < (targetAcceleration * .00001))
-				newInject = Double.valueOf(lastInject.doubleValue()*200.0);
+				newInject = Double.valueOf(lastInject.doubleValue()*10000.0);
+			else
+			if(lastAcceleration.doubleValue() < (targetAcceleration * .0001))
+				newInject = Double.valueOf(lastInject.doubleValue()*999.0);
 			else
 			if(lastAcceleration.doubleValue() < (targetAcceleration * .001))
-				newInject = Double.valueOf(lastInject.doubleValue()*20.0);
+				newInject = Double.valueOf(lastInject.doubleValue()*99.0);
 			else
 			if(lastAcceleration.doubleValue() < (targetAcceleration * .1))
-				newInject = Double.valueOf(lastInject.doubleValue()*2.0);
+				newInject = Double.valueOf(lastInject.doubleValue()*9.9);
 			else
 			if(lastAcceleration.doubleValue() < (targetAcceleration * .5))
 				newInject = Double.valueOf(lastInject.doubleValue()*1.25);
@@ -224,13 +229,19 @@ public class ShipNavProgram extends ShipSensorProgram
 		if(lastAcceleration.doubleValue() > targetAcceleration)
 		{
 			if(lastAcceleration.doubleValue() > (targetAcceleration * 1000000))
-				newInject = Double.valueOf(lastInject.doubleValue()/200.0);
+				newInject = Double.valueOf(lastInject.doubleValue()/90000.0);
+			else
+			if(lastAcceleration.doubleValue() > (targetAcceleration * 100000))
+				newInject = Double.valueOf(lastInject.doubleValue()/9000.0);
 			else
 			if(lastAcceleration.doubleValue() > (targetAcceleration * 10000))
-				newInject = Double.valueOf(lastInject.doubleValue()/20.0);
+				newInject = Double.valueOf(lastInject.doubleValue()/900.0);
+			else
+			if(lastAcceleration.doubleValue() > (targetAcceleration * 1000))
+				newInject = Double.valueOf(lastInject.doubleValue()/90.0);
 			else
 			if(lastAcceleration.doubleValue() > (targetAcceleration * 100))
-				newInject = Double.valueOf(lastInject.doubleValue()/2.0);
+				newInject = Double.valueOf(lastInject.doubleValue()/9.0);
 			else
 			if(lastAcceleration.doubleValue() > (targetAcceleration * 2))
 				newInject = Double.valueOf(lastInject.doubleValue()/1.25);
@@ -334,7 +345,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		}
 		if(!dampenerFound)
 			return SpaceObject.ACCELERATION_TYPICALSPACEROCKET;
-		return SpaceObject.ACCELERATION_DAMAGED;
+		return SpaceObject.ACCELERATION_DAMAGED*10;
 	}
 
 	protected boolean flipForAllStop(final SpaceShip ship)
@@ -834,7 +845,7 @@ public class ShipNavProgram extends ShipSensorProgram
 								-Math.round(CMath.mul(targetObject.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 			int safeDistance=100 + (int)Math.round(ship.speed());
 			final Dir3D dirTo = CMLib.space().getDirection(ship, targetObject);
-			final double diffDelta = CMLib.space().getAngleDelta(ship.direction(), dirTo); // starboard is -, port is +
+			final double diffDelta = CMLib.space().getAngleDelta(ship.direction(), dirTo);
 			if(diffDelta<MAX_DIR_DIFF)
 				safeDistance += (int)Math.round(ship.speed());
 			if(distance < safeDistance)
@@ -1039,62 +1050,99 @@ public class ShipNavProgram extends ShipSensorProgram
 			final LinkedList<SpaceObject> navList = track.getArg(LinkedList.class);
 			if(!navList.isEmpty())
 			{
-				final SpaceObject intTarget = navList.getFirst();
-				final long distToITarget = (CMLib.space().getDistanceFrom(ship, intTarget)-ship.radius()
+				SpaceObject intTarget = navList.getFirst();
+				long distToITarget = (CMLib.space().getDistanceFrom(ship, intTarget)-ship.radius()
 						-Math.round(CMath.mul(intTarget.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
-				final Dir3D dirToITarget = CMLib.space().getDirection(ship.coordinates(), intTarget.coordinates());
-				//final double[] opShipDir = CMLib.space().getOppositeDir(ship.direction());
-				final double toDirDiff = CMLib.space().getAngleDelta(ship.direction(), dirToITarget);
+				Dir3D dirToITarget = CMLib.space().getDirection(ship.coordinates(), intTarget.coordinates());
+				double toDirDiff = CMLib.space().getAngleDelta(ship.direction(), dirToITarget);
+				// see if we've hit a waypoint
+				{
+					int safeDistance=100 + (int)Math.round(ship.speed());
+					if(toDirDiff<MAX_DIR_DIFF)
+						safeDistance += (int)Math.round(ship.speed());
+					if(distToITarget < safeDistance)
+					{
+						if(navList.size()>1)
+						{
+							navList.removeFirst();
+							intTarget = navList.getFirst();
+							distToITarget = (CMLib.space().getDistanceFrom(ship, intTarget)-ship.radius()
+									-Math.round(CMath.mul(intTarget.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
+							dirToITarget = CMLib.space().getDirection(ship.coordinates(), intTarget.coordinates());
+							toDirDiff = CMLib.space().getAngleDelta(ship.direction(), dirToITarget);
+							targetAcceleration=this.findTargetAcceleration(programEngines.get(0));
+							track.state = ShipNavState.APPROACH;
+						}
+					}
+				}
 				// if we are presently traveling towards the target, get detailed.
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SPACESHIP))
 				{
 					Log.debugOut(ship.name(),"Nav direction diff: "+CMath.div(Math.round(toDirDiff * 10000),10000.0)
+								+", speed: "+CMLib.english().distanceDescShort(Math.round(ship.speed()))
 								+", dist: "+CMLib.english().distanceDescShort(distToITarget)+", dir: "
 								+CMLib.english().directionDescShort(dirToITarget.toDoubles()));
 				}
+				// regardless of speeding up or slowing down, are we still going the right way?
 				if(toDirDiff < MAX_DIR_DIFF)
 				{
-					// first, check if we should be approaching, or deproaching
+					// Yes, so check if we should be speeding up, or slowing down
+
+					// first see if we are actually underway...
 					if((ship.speed()>targetAcceleration)
 					&& (targetAcceleration > 0.0))
 					{
 						final double ticksToStop = ship.speed() / targetAcceleration;
 						final double stopDistance = (ship.speed()/2.0) * ticksToStop;
-						if((stopDistance >= distToITarget)
-						&&(targetObject != null)
-						&&(ship.speed() > (targetObject.speed() * 2)))
+						// now see if we need to adjust decelleration during deproach
+						if((ticksToStop > 0)
+						&&(track.state==ShipNavState.DEPROACH))
 						{
-							if(ticksToStop > 0)
-							{
-								final double overUnderDistance = stopDistance - distToITarget;
-								if(overUnderDistance > targetAcceleration)
-									targetAcceleration += Math.min(CMath.div(overUnderDistance , ticksToStop), 1.0) ;
-								else
-								if(overUnderDistance < -targetAcceleration)
-									targetAcceleration -= CMath.div(overUnderDistance , ticksToStop);
-							}
-							track.state = ShipNavState.DEPROACH;
-							final Dir3D opDirToITarget = CMLib.space().getOppositeDir(dirToITarget);
-							if(CMLib.space().getAngleDelta(ship.facing(), opDirToITarget)>MAX_DIR_DIFF)
-								changeFacing(ship, opDirToITarget);
+							final double overUnderDistance = stopDistance - distToITarget;
+							if(overUnderDistance > targetAcceleration * 2) // means we are stopping too slowly
+								targetAcceleration += Math.min(CMath.div(overUnderDistance , ticksToStop), 1.0) ;
+							else
+							if(overUnderDistance < -(targetAcceleration * 2)) // stopping too quickly
+								targetAcceleration -= CMath.div(overUnderDistance , ticksToStop);
+							if(ship.speed()>distToITarget*2) // this is deproach, so we want to STOP!
+								targetAcceleration = ship.speed();
 						}
-						else
+
+						// now see if it is time to decellerate
+						if(track.state==ShipNavState.APPROACH)
 						{
-							track.state = ShipNavState.APPROACH;
-							if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>MAX_DIR_DIFF)
-								changeFacing(ship, dirToITarget);
+							if((stopDistance >= distToITarget)
+							&&(targetObject != null)
+							&&(ship.speed() > (targetObject.speed() * 2)))
+							{
+								track.state = ShipNavState.DEPROACH;
+								// ensure we are mooning our direction
+								final Dir3D opDirToITarget = CMLib.space().getOppositeDir(dirToITarget);
+								if(CMLib.space().getAngleDelta(ship.facing(), opDirToITarget)>MAX_DIR_DIFF)
+									changeFacing(ship, opDirToITarget);
+								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SPACESHIP))
+									Log.debugOut(ship.name(),"New Target Accelleration: "+targetAcceleration);
+							}
+							else
+							{
+								// otherwise, just continue the approach
+								track.state = ShipNavState.APPROACH;
+								if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>MAX_DIR_DIFF)
+									changeFacing(ship, dirToITarget);
+							}
 						}
 					}
-					else // if we aren't moving, then approach.
+					else // since we aren't moving yet, Begin standard approach.
 					{
 						track.state = ShipNavState.APPROACH;
 						if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>MAX_DIR_DIFF)
 							changeFacing(ship, dirToITarget);
 					}
 				}
-				else
-				if(ship.speed() > (targetAcceleration * 3)) // are we moving a bit too fast to turn properly?
+				else // we are not going the right way, so look for solutions
+				if(ship.speed() > (targetAcceleration * 10)) // are we moving a bit too fast to turn properly?
 				{
+					//TODO: when this triggers, the target navigation falls apart.
 					Dir3D facingDir;
 					if(toDirDiff < Math.PI/2)
 					{
@@ -1117,7 +1165,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					if(CMLib.space().getAngleDelta(ship.facing(), facingDir)>MAX_DIR_DIFF)
 						changeFacing(ship, facingDir);
 				}
-				else
+				else // see how big a problem it is...
 				if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>MAX_DIR_DIFF)
 					changeFacing(ship, dirToITarget);
 			}
