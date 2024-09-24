@@ -309,10 +309,7 @@ public class Prop_Doppleganger extends Property
 		if(mob.isMonster())
 		{
 			if(matchPlayersFollowersOnly)
-			{
-				final MOB folM=mob.amUltimatelyFollowing();
-				return (folM!=null)&& (!folM.isMonster());
-			}
+				return !mob.getGroupLeader().isMonster();
 			return (!matchPlayersOnly);
 		}
 

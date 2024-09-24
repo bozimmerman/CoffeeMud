@@ -1091,8 +1091,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		final Room R=studentM.location();
 		if((sess==null)
 		||(R==null)
-		||((!teacherM.isPlayer())
-			&&((teacherM.amFollowing()==null)||(!teacherM.amUltimatelyFollowing().isPlayer()))))
+		||((!teacherM.isPlayer())&&(!teacherM.getGroupLeader().isPlayer())))
 		{
 			final boolean success=postTeach(teacherM,studentM,teachableO);
 			if(callBack != null)

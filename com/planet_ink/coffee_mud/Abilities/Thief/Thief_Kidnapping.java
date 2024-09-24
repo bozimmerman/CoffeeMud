@@ -152,7 +152,7 @@ public class Thief_Kidnapping extends ThiefSkill
 		if(M.isPlayer()||(!M.isMonster()))
 			return kidnapperM.mayIFight(M);
 		if((M.amFollowing()!=null) && (M.amFollowing()!=kidnapperM))
-			return kidnapperM.mayIFight(M.amUltimatelyFollowing());
+			return kidnapperM.mayIFight(M.getGroupLeader());
 		return true;
 	}
 

@@ -2463,7 +2463,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					{
 						final StringBuilder doc=new StringBuilder("group {");
 						final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
-						final MOB leaderM=(mob.amFollowing()==null)?mob:mob.amUltimatelyFollowing();
+						final MOB leaderM=mob.getGroupLeader();
 						doc.append("\"groupname\":\"").append(leaderM.name(mob)).append("s group").append("\",")
 							.append("\"leader\":\"").append(leaderM.name(mob)).append("\",")
 							.append("\"status\":\"").append("Private").append("\",")

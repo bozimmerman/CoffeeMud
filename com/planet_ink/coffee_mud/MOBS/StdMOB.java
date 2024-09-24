@@ -2547,7 +2547,7 @@ public class StdMOB implements MOB
 						|| flags.isSleeping(srcM))
 					&& (!flags.isAliveAwakeMobile(this, false)))
 						return false;
-					
+
 					if(msg.sourceMajor(CMMsg.MASK_SOUND))
 					{
 						if((msg.tool() == null)
@@ -4706,11 +4706,13 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public MOB amUltimatelyFollowing()
+	public MOB getGroupLeader()
 	{
 		Followable<MOB> following = amFollowing;
 		if(following == null)
-			return null;
+			return this;
+		if(following.amFollowing() == null)
+			return (MOB)following;
 		final HashSet<Followable<MOB>> seen = new HashSet<Followable<MOB>>();
 		while((following != null)
 		&& (following.amFollowing() != null)

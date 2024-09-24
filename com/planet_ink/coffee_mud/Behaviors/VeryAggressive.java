@@ -104,7 +104,7 @@ public class VeryAggressive extends Aggressive
 
 		if(((mob.amFollowing()!=null)
 			&&(CMLib.tracking().areNearEachOther(mob,mob.amFollowing())
-				||CMLib.tracking().areNearEachOther(mob,mob.amUltimatelyFollowing())))
+				||CMLib.tracking().areNearEachOther(mob,mob.getGroupLeader())))
 		||(!CMLib.flags().canTaste(mob)))
 			return;
 

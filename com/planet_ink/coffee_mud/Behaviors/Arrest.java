@@ -2470,8 +2470,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			this.fillOutMurderWarrant(laws, myArea, criminal, msg.source());
 			if(criminal.isMonster() && (isAnyKindOfOfficer(laws, msg.source())))
 			{
-				final MOB leaderM = criminal.amUltimatelyFollowing();
-				if((leaderM != null) && (leaderM != criminal) && (!leaderM.isMonster()))
+				final MOB leaderM = criminal.getGroupLeader();
+				if((leaderM != criminal) && (!leaderM.isMonster()))
 					this.fillOutMurderWarrant(laws, myArea, leaderM, msg.source());
 			}
 			return;

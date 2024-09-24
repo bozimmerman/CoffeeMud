@@ -117,9 +117,7 @@ public class NastyAbilities extends ActiveTicker
 					{
 						if(mask == null)
 						{
-							MOB followMOB=M;
-							if(M.amFollowing()!=null)
-								followMOB=M.amUltimatelyFollowing();
+							final MOB followMOB=M.getGroupLeader();
 							if((followMOB.getVictim()==mob)
 							||(followMOB.isMonster()))
 								continue;

@@ -945,8 +945,8 @@ public class StdGrid extends StdRoom implements GridLocale
 										M.destroy();
 									else
 									if((M.getStartRoom().ID().length()==0)
-									&&(M.isMonster())
-									&&((M.amFollowing()==null)||(M.amUltimatelyFollowing().isMonster())))
+									&&(!M.isPlayer())
+									&&(!M.getGroupLeader().isPlayer()))
 										M.destroy();
 									else
 										M.getStartRoom().bringMobHere(M,true);

@@ -476,8 +476,8 @@ public class Druid extends StdCharClass
 		&&(msg.source().isMonster())
 		&&(msg.source().basePhyStats().level() < msg.value()))
 		{
-			final MOB druidM=msg.source().amUltimatelyFollowing();
-			if((druidM!=null)
+			final MOB druidM=msg.source().getGroupLeader();
+			if((druidM != msg.source())
 			&&(!druidM.isMonster())
 			&&(druidM.charStats().getCurrentClass().ID().equals(C.ID()))
 			&&(CMLib.flags().isAnAnimal(msg.source())

@@ -49,10 +49,7 @@ public class GConsider extends StdCommand
 	{
 		if((mob1==null)||(mobs==null))
 			return 0;
-		MOB mob2=mobs.iterator().next();
-		if(mob2.amFollowing()!=null)
-			mob2=mob2.amUltimatelyFollowing();
-
+		final MOB mob2=mobs.iterator().next().getGroupLeader();
 		final int mob2Armor=CMLib.combat().adjustedArmor(mob2);
 		final int mob1Armor=CMLib.combat().adjustedArmor(mob1);
 		final double mob1Attack=CMLib.combat().adjustedAttackBonus(mob1,mob2);

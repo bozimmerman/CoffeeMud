@@ -959,10 +959,10 @@ public class StdRace implements Race
 		if(mob.isMonster())
 		{
 			final MOB following=mob.amFollowing();
-			final MOB ultFollow=mob.amUltimatelyFollowing();
+			final MOB ultFollow=mob.getGroupLeader();
 			if((following!=null)
 			&&((!following.isMonster())
-				||((ultFollow != null) && (!ultFollow.isMonster()))))
+				||(!ultFollow.isMonster())))
 			{
 				final MOB M=(MOB)mob.copyOf();
 				CMLib.threads().unTickAll(M);

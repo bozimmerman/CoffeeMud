@@ -90,8 +90,8 @@ public class Healer extends ActiveTicker
 			{
 				final MOB target=thisRoom.fetchRandomInhabitant();
 				MOB followMOB=target;
-				if((target != null)&&(target.amFollowing()!=null))
-					followMOB=target.amUltimatelyFollowing();
+				if(target != null)
+					followMOB=target.getGroupLeader();
 				if((target!=null)
 				&&(target!=mob)
 				&&(followMOB.getVictim()!=mob)

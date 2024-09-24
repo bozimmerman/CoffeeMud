@@ -2121,8 +2121,8 @@ public class StdAbility implements Ability
 			return false;
 		if(casterM instanceof Deity)
 			return false;
-		final MOB folM=casterM.amUltimatelyFollowing();
-		if((folM!=null)&&(folM.isPlayer()))
+		final MOB folM=casterM.getGroupLeader();
+		if(folM.isPlayer())
 			return true;
 		/* too much
 		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)

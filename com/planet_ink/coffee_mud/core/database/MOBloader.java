@@ -2458,7 +2458,7 @@ public class MOBloader
 							{
 								final MOB rideM=(MOB)leadR;
 								if((rideM.isMonster())
-								&&((rideM.amUltimatelyFollowing()==null)||(!rideM.amUltimatelyFollowing().isPlayer()))
+								&&((rideM.amFollowing()==null)||(!rideM.getGroupLeader().isPlayer()))
 								&&(rideM.location()==R))
 									fakeR.addInhabitant(rideM); // will not affect location
 								leadR=rideM.riding();

@@ -329,9 +329,7 @@ public class Corpse extends GenContainer implements DeadBody
 					if(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDITEMS))
 						return true;
 
-					final MOB ultimateFollowing=msg.source().amUltimatelyFollowing();
-					if((msg.source().isMonster())
-					&&((ultimateFollowing==null)||(ultimateFollowing.isMonster())))
+					if(msg.source().getGroupLeader().isMonster())
 						return true;
 					if(guardPolicy.equals("ANY"))
 						return true;
@@ -376,7 +374,7 @@ public class Corpse extends GenContainer implements DeadBody
 		MYCODES[5] = "MOBPK";
 		for (int g=0;g<GenericBuilder.GenMOBCode.values().length;g++)
 			MYCODES[6+g] = "MOB" + GenericBuilder.GenMOBCode.values()[g].name();
-	}		
+	}
 
 	private int getInternalCodeNum(final String code)
 	{
@@ -433,22 +431,22 @@ public class Corpse extends GenContainer implements DeadBody
 		else
 		switch(internalNum)
 		{
-		case 0: 
+		case 0:
 			killerName = val;
 			break;
-		case 1: 
+		case 1:
 			this.killerPlayer = CMath.s_bool(val);
 			break;
-			
-		case 2: 
+
+		case 2:
 			this.lastMessage = val;
 			break;
-		case 3: 
+		case 3:
 			break; // nothing to do -- not gonna construct a new item!
-		case 4: 
+		case 4:
 			this.playerCorpse = CMath.s_bool(val);
 			break;
-		case 5: 
+		case 5:
 			this.mobPKFlag = CMath.s_bool(val);
 			break;
 		default:

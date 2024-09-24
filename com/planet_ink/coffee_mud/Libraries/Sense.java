@@ -1252,10 +1252,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			{
 				if(locR == null)
 					return "*"+M.name()+" is nowhere!";
-				final MOB ultFol = M.amUltimatelyFollowing();
 				if(!locR.isInhabitant(M)
 				&&(!M.isPlayer())
-				&&((ultFol==null)||(!ultFol.isPlayer())))
+				&&((M.amFollowing()==M)||(!M.getGroupLeader().isPlayer())))
 					return "*"+M.name()+" is not where he is: "+CMLib.map().getExtendedRoomID(locR);
 				final String roomReport =validCheck(locR);
 				if(roomReport != null)
@@ -1292,7 +1291,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				final MOB M=(MOB)owner;
 				if((!M.isPlayer())
 				&& (!CMLib.threads().isTicking(M, -1))
-				&& ((M.amUltimatelyFollowing()==null)||(!M.amUltimatelyFollowing().isPlayer())))
+				&& ((M.amFollowing()==null)||(!M.getGroupLeader().isPlayer())))
 					return I.name()+" on non-ticking mob: "+M.name()+", in: "+CMLib.map().getExtendedRoomID(M.location());
 				final String mobReport = validCheck(M);
 				if(mobReport != null)

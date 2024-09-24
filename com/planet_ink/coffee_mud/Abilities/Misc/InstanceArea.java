@@ -329,7 +329,7 @@ public class InstanceArea extends StdAbility
 					return true;
 				}
 				InstanceArea iA=null;
-				final MOB leaderM = (msg.source().amFollowing()!=null)?msg.source().amUltimatelyFollowing():msg.source();
+				final MOB leaderM = msg.source().getGroupLeader();
 				final Set<MOB> grp = getAppropriateGroup(leaderM);
 				synchronized(managed)
 				{
@@ -1711,10 +1711,10 @@ public class InstanceArea extends StdAbility
 			return (mob==affected)||mobGrp.contains(affected);
 		if(affected instanceof Rideable)
 			return ((Rideable)affected).amRiding(mob)
-				||((mob.amFollowing()!=null)&&((Rideable)affected).amRiding(mob.amUltimatelyFollowing()));
+				||((mob.amFollowing()!=null)&&((Rideable)affected).amRiding(mob.getGroupLeader()));
 		if(affected instanceof Item)
 			return (((Item)affected).owner()==mob)
-					||((mob.amFollowing()!=null)&&(((Item)affected).owner()==mob.amUltimatelyFollowing()));
+					||((mob.amFollowing()!=null)&&(((Item)affected).owner()==mob.getGroupLeader()));
 		return false;
 	}
 
@@ -1799,7 +1799,7 @@ public class InstanceArea extends StdAbility
 			final Room srcStartRoom =msg.source().getStartRoom();
 			if(((srcStartRoom==null)||(srcStartRoom.getArea()!=parentA)||(msg.source().isPlayer())))
 			{
-				MOB leaderM = (msg.source().amFollowing()!=null)?msg.source().amUltimatelyFollowing():msg.source();
+				MOB leaderM = msg.source().getGroupLeader();
 				final Set<MOB> grp = getAppropriateGroup(leaderM);
 				Area instA = findExistingInstance(msg.source(), grp, parentA);
 				boolean created = false;

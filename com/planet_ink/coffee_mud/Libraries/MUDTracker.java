@@ -900,7 +900,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if(((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0))
 		||((mob.amFollowing()!=null)
 			&&(CMLib.tracking().areNearEachOther(mob,mob.amFollowing())
-				||CMLib.tracking().areNearEachOther(mob,mob.amUltimatelyFollowing()))))
+				||CMLib.tracking().areNearEachOther(mob,mob.getGroupLeader()))))
 		{
 			if(status!=null)
 				status[0]=Tickable.STATUS_NOT;
@@ -1168,7 +1168,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			if(((M instanceof Rideable)&&(((Rideable)M).numRiders()>0))
 			||((M.amFollowing()!=null)
 				&&(CMLib.tracking().areNearEachOther(M,M.amFollowing())
-					||CMLib.tracking().areNearEachOther(M,M.amUltimatelyFollowing()))))
+					||CMLib.tracking().areNearEachOther(M,M.getGroupLeader()))))
 				return;
 			beMobile(M,true,true,false,false,false,null,null);
 		}

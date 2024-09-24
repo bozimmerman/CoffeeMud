@@ -1329,21 +1329,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public MOB getFollowedLeader(final MOB mob)
-	{
-		MOB leader=mob;
-		if(leader.amFollowing()!=null)
-			leader=leader.amUltimatelyFollowing();
-		return leader;
-	}
-
-	@Override
 	@SuppressWarnings("unchecked")
 	public List<MOB>[] getFormation(final MOB mob)
 	{
-		MOB leader=mob;
-		if(leader.amFollowing()!=null)
-			leader=leader.amUltimatelyFollowing();
+		final MOB leader=mob.getGroupLeader();
 		final Vector<MOB>[] done=new Vector[20];
 		processFormation(done,leader,0);
 		return done;

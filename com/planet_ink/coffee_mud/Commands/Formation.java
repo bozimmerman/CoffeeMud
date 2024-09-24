@@ -51,7 +51,7 @@ public class Formation extends StdCommand
 	{
 		final Vector<String> origCmds=new XVector<String>(commands);
 		commands.remove(0);
-		final MOB leader=CMLib.combat().getFollowedLeader(mob);
+		final MOB leader=mob.getGroupLeader();
 		final List<MOB>[] done=CMLib.combat().getFormation(mob);
 		if(commands.size()==0)
 		{

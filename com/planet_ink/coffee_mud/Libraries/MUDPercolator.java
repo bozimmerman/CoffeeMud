@@ -122,7 +122,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			return (obj != null)
 				&& (!obj.isPlayer())
-				&&((obj.amFollowing()==null)||(!obj.amUltimatelyFollowing().isPlayer()));
+				&& (!obj.getGroupLeader().isPlayer());
 		}
 
 	};

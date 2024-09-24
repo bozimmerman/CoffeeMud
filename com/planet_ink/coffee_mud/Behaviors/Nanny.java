@@ -497,28 +497,18 @@ public class Nanny extends StdBehavior
 		return false;
 	}
 
-	public MOB ultimateFollowing(final Environmental E)
-	{
-		MOB ultimateFollowing=null;
-		if(E instanceof MOB)
-			ultimateFollowing=((MOB)E).amUltimatelyFollowing();
-		return ultimateFollowing;
-	}
-
 	public MOB getMommyOf(final Physical P)
 	{
 		if((P instanceof Item)
 		&&(((Item)P).owner() instanceof MOB)
 		&&(!((MOB)((Item)P).owner()).isMonster()))
 			return (MOB)((Item)P).owner();
+
 		if((P instanceof MOB)
 		&&(((MOB)P).amFollowing()!=null)
-		&&(!((MOB)P).amFollowing().isMonster()))
+		&&(((MOB)P).amFollowing().isPlayer()||(!((MOB)P).amFollowing().isMonster())))
 			return ((MOB)P).amFollowing();
-		if((P instanceof MOB)
-		&&(ultimateFollowing(P)!=null)
-		&&(!ultimateFollowing(P).isMonster()))
-			return ultimateFollowing(P);
+
 		if(P instanceof Rideable)
 		{
 			final Rideable R=(Rideable)P;

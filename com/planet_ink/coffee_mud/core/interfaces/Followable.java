@@ -99,9 +99,9 @@ public interface Followable<T extends Followable<T>> extends Physical
 	 * If this followable follower is following a followable that is also following
 	 * a followable, then this will recursively determine the First followable and
 	 * return it.
-	 * @return the first followable
+	 * @return the lead followable or the followable
 	 */
-	public T amUltimatelyFollowing();
+	public T getGroupLeader();
 
 	/**
 	 * Alters who this followable follower is following.  This also calls addFollower

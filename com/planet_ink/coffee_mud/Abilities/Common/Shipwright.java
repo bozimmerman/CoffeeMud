@@ -338,8 +338,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 							{
 								final Boardable ship=(Boardable)buildingI;
 								MOB buyer = mob;
-								if(buyer.isMonster() && (buyer.amFollowing()!=null))
-									buyer = buyer.amUltimatelyFollowing();
+								if(buyer.isMonster())
+									buyer = buyer.getGroupLeader();
 								if(buyer.isMonster())
 									((Boardable)buildingI).rename(""+CMLib.dice().roll(1, 999, 0));
 								else

@@ -1309,8 +1309,8 @@ public class ServiceEngine implements ThreadEngine
 						if((mob.isMonster())
 						&&(!room.isInhabitant(mob))
 						&&((mob.amFollowing()==null)
-							||(!mob.amUltimatelyFollowing().isPlayer())
-							||(!CMLib.flags().isInTheGame(mob.amUltimatelyFollowing(), true))))
+							||(!mob.getGroupLeader().isPlayer())
+							||(!CMLib.flags().isInTheGame(mob.getGroupLeader(), true))))
 						{
 							mob.destroy();
 							almostTock.delTicker(C);

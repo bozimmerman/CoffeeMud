@@ -852,8 +852,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		||(msg.targetMinor()==CMMsg.TYP_PULL))
 		{
 			if((msg.source().isMonster())
-			&&((msg.source().amUltimatelyFollowing()==null)
-				||(msg.source().amUltimatelyFollowing().isMonster())))
+			||(msg.source().getGroupLeader().isMonster()))
 				return true;
 			final Room R=msg.source().location();
 			if((msg.target() instanceof Item)

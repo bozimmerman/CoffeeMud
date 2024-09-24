@@ -182,9 +182,8 @@ public class Undead extends StdRace
 			final MOB mob=(MOB)ticking;
 			mob.curState().setHunger(mob.maxState().getHunger());
 			mob.curState().setThirst(mob.maxState().getThirst());
-			final MOB followingM = mob.amUltimatelyFollowing();
-			if((followingM!=null)
-			&&(followingM!=mob))
+			final MOB followingM = mob.getGroupLeader();
+			if(followingM!=mob)
 			{
 				if((mob.location() == followingM.location())
 				&&(CMLib.dice().rollPercentage()==1)

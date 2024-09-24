@@ -874,9 +874,9 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	}
 
 	@Override
-	public MOB amUltimatelyFollowing()
+	public MOB getGroupLeader()
 	{
-		return null;
+		return this;
 	}
 
 	@Override

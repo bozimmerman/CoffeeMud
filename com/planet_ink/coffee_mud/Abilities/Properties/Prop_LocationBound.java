@@ -158,8 +158,7 @@ public class Prop_LocationBound extends Property
 			if(affected instanceof MOB)
 			{
 				final MOB M=(MOB)affected;
-				final MOB mF=M.amUltimatelyFollowing();
-				if((mF!=null)&&(mF.isPlayer()))
+				if((M.amFollowing()!=null)&&(M.getGroupLeader().isPlayer()))
 					return true;
 			}
 			else
