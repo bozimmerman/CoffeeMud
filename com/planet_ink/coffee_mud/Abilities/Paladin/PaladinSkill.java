@@ -164,11 +164,15 @@ public class PaladinSkill extends StdAbility
 	{
 		if(!super.canBeTaughtBy(teacher, student))
 			return false;
-		if(!this.appropriateToMyFactions(student))
+		if(student != null)
 		{
-			teacher.tell(L("@x1 lacks the moral disposition to learn '@x2'.",student.name(), name()));
-			student.tell(L("You lack the moral disposition to learn '@x1'.",name()));
-			return false;
+			final Faction F = super.getInappropriateFaction(student);
+			if(F!=null)
+			{
+				teacher.tell(L("@x1 lacks the correct moral @x2 to learn '@x3'.",student.name(),F.name().toLowerCase(),name()));
+				student.tell(L("You lack the correct moral @x1 to learn '@x2'.",F.name(), name()));
+				return false;
+			}
 		}
 		return true;
 	}

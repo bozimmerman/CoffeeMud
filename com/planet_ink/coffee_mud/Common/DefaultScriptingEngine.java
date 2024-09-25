@@ -15709,7 +15709,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						continue;
 					}
 				}
-				Log.debugOut(rpt.toString());
+				//Log.debugOut(rpt.toString());
 				que.clear();
 			}
 		}

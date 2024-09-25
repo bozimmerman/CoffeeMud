@@ -2687,6 +2687,13 @@ public class StdAbility implements Ability
 	{
 		if(mob == null)
 			return true;
+		return getInappropriateFaction(mob) == null;
+	}
+
+	protected Faction getInappropriateFaction(final MOB mob)
+	{
+		if(mob == null)
+			return null;
 		for(final Enumeration<String> e=mob.factions();e.hasMoreElements();)
 		{
 			final String factionID=e.nextElement();
@@ -2694,9 +2701,9 @@ public class StdAbility implements Ability
 			if((F!=null)
 			&&(F.hasUsage(this))
 			&&(!F.canUse(mob,this)))
-				return false;
+				return F;
 		}
-		return true;
+		return null;
 	}
 
 	@Override

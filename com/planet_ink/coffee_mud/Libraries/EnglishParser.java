@@ -2777,7 +2777,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(checkWhat instanceof MOB)
 						fromWhat=mob.findItem(null,packCheckName);
 					else
-					if(checkWhat instanceof Room)
+					if(checkWhat instanceof Room) //TODO: this seems to favor the mob, which might be wrong.
 						fromWhat=((Room)checkWhat).fetchFromMOBRoomFavorsItems(mob,null,packCheckName,Wearable.FILTER_UNWORNONLY);
 					if(fromWhat instanceof Item)
 					{
@@ -2814,7 +2814,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						else
 						if(getOnly&&mob.isMine(fromWhat)&&mob.isMine(toWhat))
 						{
-							mob.tell(L("Ok"));
+							CMLib.commands().postCommandFail(mob,new XVector<String>(commands),L("You already have that."));
 							return -1;
 						}
 						else

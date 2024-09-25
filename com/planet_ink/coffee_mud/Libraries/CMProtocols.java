@@ -2775,7 +2775,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					if(buf!=null)
 						bout.write(buf);
 				}
-				if((mob!=null)&&((mob.amFollowing()!=null)||(mob.numFollowers()>0)))
+				if(mob!=null)
 				{
 					if(supportables.containsKey("group"))
 					{

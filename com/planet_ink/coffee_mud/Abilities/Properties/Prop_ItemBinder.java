@@ -271,22 +271,5 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 				break;
 			}
 		}
-		else
-		if((msg.tool()==affected)
-		&&(msg.targetMinor()==CMMsg.TYP_BUY)
-		&&(this.boundToName.length()==0)
-		&&(on == BoundOn.PICKUP)
-		&&(msg.target() instanceof MOB)
-		&&((!(msg.source() instanceof ShopKeeper)))
-		&&((!msg.source().isMonster())||(msg.source().amFollowing()!=null)))
-		{
-			this.boundToName = getBindyName(msg.source());
-			if(this.boundToName.length()>0)
-			{
-				final String boundStr=" BOUND=\""+CMStrings.escape(this.boundToName)+"\"";
-				if(text().indexOf(boundStr)<0)
-					super.miscText = text()+boundStr;
-			}
-		}
 	}
 }
