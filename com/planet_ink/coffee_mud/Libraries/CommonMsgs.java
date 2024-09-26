@@ -501,8 +501,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						if((mob.session()!=null)&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)))
 						{
 							mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\"tell\",\"msg\":\""+
-									MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null,
-											CMStrings.removeColors(msg.sourceMessage()).trim(), false))
+									MiniJSON.toJSONString(CMStrings.removeCRLF(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null,
+											CMStrings.removeColors(msg.sourceMessage()).trim(), false)))
 									+"\",\"player\":\""+player+"\"}");
 						}
 						mob.executeMsg(mob,msg);
@@ -511,8 +511,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							if((target.session()!=null)&&(target.session().getClientTelnetMode(Session.TELNET_GMCP)))
 							{
 								target.session().sendGMCPEvent("comm.channel", "{\"chan\":\"tell\",\"msg\":\""+
-										MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, target, mob, target, null,
-												CMStrings.removeColors(msg.targetMessage()), false)).trim()
+										MiniJSON.toJSONString(CMStrings.removeCRLF(CMLib.coffeeFilter().fullOutFilter(null, target, mob, target, null,
+												CMStrings.removeColors(msg.targetMessage()), false)).trim())
 										+"\",\"player\":\""+player+"\"}");
 							}
 							target.executeMsg(target,msg);
@@ -590,8 +590,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if((mob.session()!=null)&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)))
 		{
 			mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
-					MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null,
-							CMStrings.removeColors(msg.sourceMessage()), false)).trim()
+					MiniJSON.toJSONString(CMStrings.removeCRLF(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null,
+							CMStrings.removeColors(msg.sourceMessage()), false)).trim())
 					+"\",\"player\":\""+player+"\"}");
 		}
 		final Room R=mob.location();
@@ -602,8 +602,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if((M!=null)&&(M!=msg.source())&&(M.session()!=null)&&(M.session().getClientTelnetMode(Session.TELNET_GMCP)))
 			{
 				M.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
-						MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null,
-								CMStrings.removeColors(msg.othersMessage()), false)).trim()
+						MiniJSON.toJSONString(CMStrings.removeCRLF(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null,
+								CMStrings.removeColors(msg.othersMessage()), false))).trim()
 						+"\",\"player\":\""+player+"\"}");
 			}
 		}

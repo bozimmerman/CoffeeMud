@@ -74,8 +74,8 @@ public class Say extends StdCommand
 		&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)))
 		{
 			mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
-					MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null,
-							CMStrings.removeColors(msg.sourceMessage()), false)).trim()
+					MiniJSON.toJSONString(CMStrings.removeCRLF(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null,
+							CMStrings.removeColors(msg.sourceMessage()), false)).trim())
 					+"\",\"player\":\""+player+"\"}");
 		}
 		final Room R=mob.location();
@@ -94,16 +94,16 @@ public class Say extends StdCommand
 					&&(msg.targetMessage()!=null))
 					{
 						M.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
-								MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null,
-										CMStrings.removeColors(msg.targetMessage()), false)).trim()
+								MiniJSON.toJSONString(CMStrings.removeCRLF(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null,
+										CMStrings.removeColors(msg.targetMessage()), false)).trim())
 								+"\",\"player\":\""+player+"\"}");
 					}
 					else
 					if(msg.othersMessage()!=null)
 					{
 						M.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
-								MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null,
-										CMStrings.removeColors(msg.othersMessage()), false)).trim()
+								MiniJSON.toJSONString(CMStrings.removeCRLF(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null,
+										CMStrings.removeColors(msg.othersMessage()), false)).trim())
 								+"\",\"player\":\""+player+"\"}");
 					}
 				}

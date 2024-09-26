@@ -2140,6 +2140,34 @@ public class CMStrings
 	}
 
 
+
+	/**
+	 * Strips cr and lf
+	 * @param s the string to strip
+	 * @return the stripped string
+	 */
+	public final static String removeCRLF(final String s)
+	{
+		if(s==null)
+			return "";
+		if((s.indexOf('\n')<0)&&(s.indexOf('\r')<0))
+			return s;
+		final StringBuilder str=new StringBuilder(s);
+		for(int i=0;i<str.length();i++)
+		{
+			switch(str.charAt(i))
+			{
+			case '\n':
+			case '\r':
+				str.delete(i, i+1);
+				break;
+			default:
+				break;
+			}
+		}
+		return str.toString();
+	}
+
 	/**
 	 * Returns a boolean array of the chars marking where
 	 * colors (ansi and cm), and other markups chars are
