@@ -74,7 +74,7 @@ public class Say extends StdCommand
 		&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)))
 		{
 			mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
-					MiniJSON.toJSONString(CMStrings.removeCRLF(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null,
+					MiniJSON.toJSONString(CMStrings.unWWrap(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null,
 							CMStrings.removeColors(msg.sourceMessage()), false)).trim())
 					+"\",\"player\":\""+player+"\"}");
 		}
@@ -94,7 +94,7 @@ public class Say extends StdCommand
 					&&(msg.targetMessage()!=null))
 					{
 						M.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
-								MiniJSON.toJSONString(CMStrings.removeCRLF(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null,
+								MiniJSON.toJSONString(CMStrings.unWWrap(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null,
 										CMStrings.removeColors(msg.targetMessage()), false)).trim())
 								+"\",\"player\":\""+player+"\"}");
 					}
@@ -102,7 +102,7 @@ public class Say extends StdCommand
 					if(msg.othersMessage()!=null)
 					{
 						M.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
-								MiniJSON.toJSONString(CMStrings.removeCRLF(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null,
+								MiniJSON.toJSONString(CMStrings.unWWrap(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null,
 										CMStrings.removeColors(msg.othersMessage()), false)).trim())
 								+"\",\"player\":\""+player+"\"}");
 					}

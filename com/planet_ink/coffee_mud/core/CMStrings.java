@@ -2139,8 +2139,6 @@ public class CMStrings
 		return str.toString();
 	}
 
-
-
 	/**
 	 * Strips cr and lf
 	 * @param s the string to strip
@@ -2161,6 +2159,51 @@ public class CMStrings
 			case '\r':
 				str.delete(i, i+1);
 				break;
+			default:
+				break;
+			}
+		}
+		return str.toString();
+	}
+
+	/**
+	 * Strips cr and lf, replacing them with a space when necc
+	 * @param s the string to strip
+	 * @return the stripped string
+	 */
+	public final static String unWWrap(final String s)
+	{
+		if(s==null)
+			return "";
+		if((s.indexOf('\n')<0)&&(s.indexOf('\r')<0))
+			return s;
+		final StringBuilder str=new StringBuilder(s);
+		for(int i=0;i<str.length();i++)
+		{
+			final char c=str.charAt(i);
+			switch(c)
+			{
+			case '\n':
+			case '\r':
+			{
+				if((i==0)||(i==str.length()-1))
+					str.delete(i, i+1);
+				else
+				{
+					int len=1;
+					final char nc = str.charAt(i+1);
+					if((nc!=c)&&((nc=='\n')||(nc=='\r')))
+						len++;
+					if(i+len>=str.length())
+						str.delete(i, i+len);
+					else
+					if((!Character.isWhitespace(str.charAt(i-1))&&(!Character.isWhitespace(str.charAt(i+len)))))
+						str.replace(i, i+len, " ");
+					else
+						str.delete(i, i+len);
+				}
+				break;
+			}
 			default:
 				break;
 			}
