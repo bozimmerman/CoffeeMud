@@ -239,16 +239,22 @@ public class Undead extends StdRace
 					{
 						final int amount=msg.value();
 						if((amount>0)
-						&&(msg.tool() instanceof Ability)
-						&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HEALINGMAGIC|Ability.FLAG_HOLY))
-						&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
+						&&(msg.tool() instanceof Ability))
 						{
-							CMLib.combat().postDamage(msg.source(),mob,msg.tool(),amount,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,L("The healing magic from <S-NAME> <DAMAGES> <T-NAMESELF>."));
-							if((mob.getVictim()==null)&&(mob!=msg.source())&&(mob.isMonster()))
-								mob.setVictim(msg.source());
+							if((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE)
+								break;
+							if((CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HEALINGMAGIC|Ability.FLAG_HOLY))
+							&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
+							{
+								CMLib.combat().postDamage(msg.source(),mob,msg.tool(),amount,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,L("The healing magic from <S-NAME> <DAMAGES> <T-NAMESELF>."));
+								if((mob.getVictim()==null)&&(mob!=msg.source())&&(mob.isMonster()))
+									mob.setVictim(msg.source());
+							}
 						}
 					}
-					return false;
+					if(!(msg.tool() instanceof MOB))
+						return false;
+					break;
 				default:
 					if((msg.tool() instanceof Ability)
 					&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
