@@ -66,13 +66,13 @@ public class Train extends StdCommand
 		}
 	}
 
-	public Pair<Integer,Cost> getTrainCost(final Trainable t)
+	protected Pair<Integer,Cost> getTrainCost(final Trainable t)
 	{
 		final Map<Trainable,Pair<Integer,Cost>> cost = getTrainCosts();
 		return cost.get(t);
 	}
 
-	public synchronized Map<Trainable,Pair<Integer,Cost>> getTrainCosts()
+	protected synchronized Map<Trainable,Pair<Integer,Cost>> getTrainCosts()
 	{
 		final String trainCostStr = CMProps.getVar(CMProps.Str.TRAINCOSTS);
 		if((trainCosts == null)||(!trainCostStr.equals(trainCosts.first)))
@@ -114,7 +114,7 @@ public class Train extends StdCommand
 		return trainCosts.second;
 	}
 
-	public List<String> getAllPossibleThingsToTrainFor()
+	protected List<String> getAllPossibleThingsToTrainFor()
 	{
 		final List<String> V=new Vector<String>();
 		for(final Trainable t : getTrainCosts().keySet())
@@ -133,7 +133,7 @@ public class Train extends StdCommand
 		return V;
 	}
 
-	public Map<CharClass,Integer> getAvailableCharClasses(final MOB mob)
+	protected Map<CharClass,Integer> getAvailableCharClasses(final MOB mob)
 	{
 		final Map<CharClass,Integer> classes = new HashMap<CharClass,Integer>();
 		final Area A = CMLib.map().areaLocation(mob);
@@ -160,17 +160,18 @@ public class Train extends StdCommand
 		return classes;
 	}
 
-	public String filter(final MOB mob, final String s)
+	protected String filter(final MOB mob, final String s)
 	{
 		return CMLib.coffeeFilter().fullOutFilter(null, mob, mob, mob, mob, s, false);
 	}
 
-	public String plural(final int amt, final String wd)
+	protected String plural(final int amt, final String wd)
 	{
 		if(amt == 1)
 			return wd;
 		return CMLib.english().makePlural(wd);
 	}
+
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
@@ -428,7 +429,22 @@ public class Train extends StdCommand
 			curStat=mob.baseCharStats().getStat(abilityCode);
 		}
 
-		final CMMsg msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> train(s) with <T-NAMESELF>."));
+		final Environmental details = (Environmental)CMClass.getCommon("DefaultEnvironmental");
+		details.setStat("COST", cost.value());
+		switch(trainType)
+		{
+		case ATTRIBUTE:
+			details.setStat("TYPE", CharStats.CODES.NAME(abilityCode));
+			break;
+		case CCLASS:
+			details.setStat("TYPE", CMClass.classID(theClass));
+			break;
+		default:
+			details.setStat("TYPE",trainType.name());
+			break;
+		}
+		final CMMsg msg=CMClass.getMsg(teacher,mob,details,CMMsg.MSG_TRAIN,L("<S-NAME> train(s) with <T-NAMESELF>."));
+		msg.setValue(gainAmount);
 		if(!mob.location().okMessage(mob,msg))
 		{
 			CMLib.commands().postCommandRejection(teacher,mob, null,origCmds);
