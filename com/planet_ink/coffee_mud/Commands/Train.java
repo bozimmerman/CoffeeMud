@@ -305,7 +305,7 @@ public class Train extends StdCommand
 				return false;
 			}
 		}
-		final CostManager finalCost = CMLib.utensils().createCostManager(cost);
+		CostManager finalCost = CMLib.utensils().createCostManager(cost);
 		if(!finalCost.doesMeetCostRequirements(mob))
 		{
 			final String ofWhat=finalCost.costType(mob);
@@ -451,6 +451,14 @@ public class Train extends StdCommand
 			return false;
 		}
 		mob.location().send(mob,msg);
+		gainAmount = msg.value();
+		final String costStr = msg.tool().isStat("COST")?msg.tool().getStat("COST"):cost.value();
+		if(!costStr.equals(cost.value()))
+		{
+			cost = Cost.valueOf(costStr);
+			if(cost != null)
+				finalCost=CMLib.utensils().createCostManager(cost);
+		}
 		finalCost.doSpend(mob);
 		switch(trainType)
 		{
