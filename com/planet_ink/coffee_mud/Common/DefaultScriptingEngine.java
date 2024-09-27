@@ -15668,6 +15668,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		if(que.size()>25)
 		{
+			int max = 25;
+			if(resp.ctx.scripted instanceof Area)
+				max = 150;
 			final int hc = resp.hashCode();
 			ScriptableResponse SB=null;
 			for(int q=que.size()-1; q >= 0; q--)
@@ -15684,12 +15687,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					continue;
 				}
 			}
-			if(que.size()>25)
+			if(que.size()>max)
 			{
 				if(triggerStr == null)
-					this.logError(resp.ctx.scripted, "UNK", "SYS", "Attempt to pre-que more than 25 events).");
+					this.logError(resp.ctx.scripted, "UNK", "SYS", "Attempt to pre-que more than "+max+" events).");
 				else
-					this.logError(resp.ctx.scripted, "UNK", "SYS", "Attempt to enque more than 25 events (last was "+CMParms.toListString(triggerStr)+" ).");
+					this.logError(resp.ctx.scripted, "UNK", "SYS", "Attempt to enque more than "+max+" events (last was "+CMParms.toListString(triggerStr)+" ).");
 				final StringBuilder rpt=new StringBuilder("Queue Log:\n\r");
 				for(int q=que.size()-1; q >= 0; q--)
 				{
