@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.Readable;
 import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.interfaces.TickableGroup.LocalType;
 import com.planet_ink.coffee_mud.core.*;
@@ -4850,7 +4851,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return text.toString();
 	}
 
-	public void fillFileSet(final List<String> V, final Set<String> H)
+	protected void fillFileSet(final List<String> V, final Set<String> H)
 	{
 		if(H==null)
 			return;
@@ -4883,6 +4884,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				if(SE!=null)
 					fillFileSet(SE.externalFiles(),H);
 			}
+			if(E instanceof Item)
+			{
+				final String filename = getItemFilename((Item)E);
+				if((filename != null)
+				&& (!H.contains(filename)))
+					H.add(filename);
+			}
 		}
 		if(E instanceof Physical)
 		{
@@ -4914,10 +4922,26 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				final CMFile file = new CMFile(Resources.makeFileResourceName(CMLib.factions().makeFactionFilename(F.factionID())),null);
 				if(file.exists()
+				&&(!file.isDirectory())
 				&& (!H.contains(file.getAbsolutePath())))
 					H.add(file.getAbsolutePath());
 			}
 		}
+	}
+
+	protected String getItemFilename(final Item I)
+	{
+		if(I.isReadable()
+		&&(I.readableText()!=null)
+		&&(I.readableText().startsWith(Readable.FILE_PREFIX)))
+		{
+			final String subFilename = I.readableText().substring(5);
+			final CMFile file = new CMFile(Resources.makeFileResourceName(subFilename),null);
+			if(file.exists()
+			&&(!file.isDirectory()))
+				return file.getAbsolutePath();
+		}
+		return null;
 	}
 
 	protected void fillFileMap(final Environmental E, final List<String> V, final Map<String,Set<Environmental>> H)
@@ -4960,6 +4984,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				final ScriptingEngine SE=e.nextElement();
 				if(SE!=null)
 					fillFileMap(E, SE.externalFiles(),H);
+			}
+			if(E instanceof Item)
+			{
+				final String filename = getItemFilename((Item)E);
+				if(filename != null)
+					fillFileMap(E, new XVector<String>(filename),H);
 			}
 		}
 		if(E instanceof Physical)

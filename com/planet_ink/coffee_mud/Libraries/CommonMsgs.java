@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.Readable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -2469,7 +2470,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if((text!=null)
 				&&(text.length()>0))
 				{
-					if(text.toUpperCase().startsWith("FILE="))
+					if(text.toUpperCase().startsWith(Readable.FILE_PREFIX))
 					{
 						final StringBuffer buf=Resources.getFileResource(text.substring(5),true);
 						if((buf!=null)&&(buf.length()>0))

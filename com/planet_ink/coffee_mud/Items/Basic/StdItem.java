@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.Readable;
 import com.planet_ink.coffee_mud.core.interfaces.EachApplicable.ApplyAffectPhyStats;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -1556,7 +1557,7 @@ public class StdItem implements Item
 						mob.tell(L("Write what on @x1?",name()));
 					return false;
 				}
-				if(readableText().startsWith("FILE="))
+				if(readableText().startsWith(Readable.FILE_PREFIX))
 				{
 					mob.tell(L("There's no more room to write on @x1.",name()));
 					return false;
@@ -1577,7 +1578,7 @@ public class StdItem implements Item
 						mob.tell(L("Write what on @x1?",name()));
 					return false;
 				}
-				if(readableText().startsWith("FILE="))
+				if(readableText().startsWith(Readable.FILE_PREFIX))
 				{
 					mob.tell(L("There's no more room to write on @x1.",name()));
 					return false;
