@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.MOBS;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Bool;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -237,7 +238,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	{
 		if (!super.tick(ticking, tickID))
 			return false;
-		if ((tickID == Tickable.TICKID_MOB) && (isGeneric()))
+		if ((tickID == Tickable.TICKID_MOB)
+		&& (isGeneric())
+		&& (CMProps.getBoolVar(Bool.MUDSTARTED)))
 		{
 			if ((--invResetTickDown) <= 0)
 				doInventoryReset();

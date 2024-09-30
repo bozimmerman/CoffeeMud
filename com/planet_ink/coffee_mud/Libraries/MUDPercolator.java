@@ -3245,38 +3245,46 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		tagName=tagName.toUpperCase().trim();
 
-		if(tagName.startsWith("SYSTEM_RANDOM_NAME:"))
+		switch(tagName.charAt(0))
 		{
-			final String[] split=tagName.substring(19).split("-");
-			if((split.length==2)&&(CMath.isInteger(split[0]))&&(CMath.isInteger(split[1])))
-				return CMLib.login().generateRandomName(CMath.s_int(split[0]), CMath.s_int(split[1]));
-			throw new CMException("Bad random name range in '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
-		}
-		else
-		if(tagName.equals("ROOM_AREAGATE"))
-		{
-			if(E instanceof Environmental)
+		case 'S':
+			if(tagName.startsWith("SYSTEM_RANDOM_NAME:"))
 			{
-				final Room R=CMLib.map().roomLocation((Environmental)E);
-				if(R!=null)
-				{
-					boolean foundOne=false;
-					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-					{
-						final Room R2=R.getRoomInDir(d);
-						foundOne=(R2!=null) || foundOne;
-						if((R2!=null) && (R2.roomID().length()>0) && (R.getArea()!=R2.getArea()))
-							return CMLib.directions().getDirectionName(d);
-					}
-					if(!foundOne)
-						throw new PostProcessException("No exits at all on on object "+R.roomID()+" in variable '"+tagName+"'");
-				}
+				final String[] split=tagName.substring(19).split("-");
+				if((split.length==2)&&(CMath.isInteger(split[0]))&&(CMath.isInteger(split[1])))
+					return CMLib.login().generateRandomName(CMath.s_int(split[0]), CMath.s_int(split[1]));
+				throw new CMException("Bad random name range in '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 			}
-			return "";
+			break;
+		case 'R':
+			if(tagName.equals("ROOM_AREAGATE"))
+			{
+				if(E instanceof Environmental)
+				{
+					final Room R=CMLib.map().roomLocation((Environmental)E);
+					if(R!=null)
+					{
+						boolean foundOne=false;
+						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+						{
+							final Room R2=R.getRoomInDir(d);
+							foundOne=(R2!=null) || foundOne;
+							if((R2!=null) && (R2.roomID().length()>0) && (R.getArea()!=R2.getArea()))
+								return CMLib.directions().getDirectionName(d);
+						}
+						if(!foundOne)
+							throw new PostProcessException("No exits at all on on object "+R.roomID()+" in variable '"+tagName+"'");
+					}
+				}
+				return "";
+			}
+			break;
+		default:
+			break;
 		}
 		if(defPrefix != null)
 		{
-			final Object asPreviouslyDefined = defined.get((defPrefix+tagName).toUpperCase());
+			final Object asPreviouslyDefined = defined.get(defPrefix.toUpperCase()+tagName);
 			if(asPreviouslyDefined instanceof String)
 				return CMStrings.replaceAll(strFilter(E,ignoreStats,defPrefix,(String)asPreviouslyDefined,piece, defined),"\\$","$");
 		}
@@ -3339,22 +3347,35 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(processDefined!=valPiece)
 				defineReward(E,ignoreStats,defPrefix,valPiece.getParmValue("DEFINE"),valPiece,value,defined,true);
 
-			String action = valPiece.getParmValue("ACTION");
-			if(action==null)
+			final String action = valPiece.getParmValue("ACTION");
+			if((action==null) || (action.length()==0))
 				finalValue.append(" ").append(value);
 			else
+			switch(action.charAt(0))
 			{
-				action=action.toUpperCase().trim();
-				if((action.length()==0)||(action.equals("APPEND")))
-					finalValue.append(" ").append(value);
-				else
-				if(action.equals("REPLACE"))
+			case 'a': case 'A':
+				if(action.equalsIgnoreCase("APPEND"))
+				{
+					finalValue.append(" ").append(value); //append
+					break;
+				}
+				//$FALL-THROUGH$
+			case 'r': case 'R': // replace
+				if(action.equalsIgnoreCase("REPLACE"))
+				{
 					finalValue = new StringBuffer(value);
-				else
-				if(action.equals("PREPEND"))
+					break;
+				}
+				//$FALL-THROUGH$
+			case 'p': case 'P':
+				if(action.equalsIgnoreCase("PREPEND"))
+				{
 					finalValue.insert(0,' ').insert(0,value);
-				else
-					throw new CMException("Unknown action '"+action+" on subPiece "+valPiece.tag()+" on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
+					break;
+				}
+				//$FALL-THROUGH$
+			default:
+				throw new CMException("Unknown action '"+action+" on subPiece "+valPiece.tag()+" on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 			}
 		}
 		final String finalFinalValue=finalValue.toString().trim();
