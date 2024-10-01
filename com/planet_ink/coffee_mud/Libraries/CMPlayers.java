@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.Stat;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
+import com.planet_ink.coffee_mud.Common.interfaces.PrideStats.PrideStat;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
@@ -1008,10 +1008,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	 * @param player true if this is a player entry, false for account
 	 * @param subKey "", or the pride stat category in question
 	 * @param stat the pridestat that bumped for the user
-	 * @param astats account OR player stats object, to get data from
+	 * @param pstats account OR player stats object, to get data from
 	 */
 	protected void adjustTopPrideStats(final List<Pair<String,Integer>>[][] topWhat, final String name,
-			final boolean player, final String subKey, final PrideStat stat, final AccountStats astats)
+			final boolean player, final String subKey, final PrideStat stat, final PrideStats pstats)
 	{
 		final int prideTopSize = CMProps.getIntVar(CMProps.Int.PRIDECOUNT);
 		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
@@ -1021,7 +1021,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				continue;
 			synchronized(top)
 			{
-				final int pVal=astats.getPrideStat(period, stat);
+				final int pVal=pstats.getPrideStat(period, stat);
 				if(pVal <= 0)
 					removePrideStat(top,name,0);
 				else

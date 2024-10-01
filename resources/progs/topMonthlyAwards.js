@@ -36,7 +36,7 @@ if(numParms() > 1)
 }
 var awardsList = awardsStr.split(',');
 var MONTHLY = Packages.com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod.MONTH;
-var prideStats = Packages.com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
+var prideStats = Packages.com.planet_ink.coffee_mud.Common.interfaces.PrideStats.PrideStat;
 
 for(e=CMLib.libraries(Packages.com.planet_ink.coffee_mud.core.CMLib.Library.PLAYERS);e.hasMoreElements();)
 {

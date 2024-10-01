@@ -46,7 +46,7 @@ public class PrideStat extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		TimeClock.TimePeriod period=null;
-		AccountStats.PrideStat stat=null;
+		PrideStats.PrideStat stat=null;
 		int which=-1;
 		String val=null;
 		boolean fixi = false;
@@ -100,7 +100,7 @@ public class PrideStat extends StdWebMacro
 				{
 					try
 					{
-						stat=AccountStats.PrideStat.valueOf(s.toUpperCase().trim());
+						stat=PrideStats.PrideStat.valueOf(s.toUpperCase().trim());
 					}
 					catch(final Exception e2)
 					{
@@ -112,7 +112,7 @@ public class PrideStat extends StdWebMacro
 		if(period==null)
 			return " [error missing valid period, try "+CMParms.toListString(TimeClock.TimePeriod.values())+"]";
 		if(stat==null)
-			return " [error missing valid stat, try "+CMParms.toListString(AccountStats.PrideStat.values())+"]";
+			return " [error missing valid stat, try "+CMParms.toListString(PrideStats.PrideStat.values())+"]";
 		if(val==null)
 			return " [error missing value type, try name or value]";
 		if(which<1)

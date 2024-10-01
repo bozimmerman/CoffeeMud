@@ -842,7 +842,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if((minutesEllapsed>0)
 		&&((!CMLib.flags().isCloaked(mob))
 		  ||(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDROOMS))))
-			CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.MINUTES_ON, (int)minutesEllapsed);
+			CMLib.players().bumpPrideStat(mob,PrideStats.PrideStat.MINUTES_ON, (int)minutesEllapsed);
 
 		final PlayerStats stats = mob.playerStats();
 		if(stats==null)

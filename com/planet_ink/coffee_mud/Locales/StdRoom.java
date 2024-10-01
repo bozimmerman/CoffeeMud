@@ -937,7 +937,7 @@ public class StdRoom implements Room
 				&&(msg.source().soulMate()==null))
 				{
 					if(msg.source().playerStats().addRoomVisit(this))
-						CMLib.players().bumpPrideStat(msg.source(),AccountStats.PrideStat.ROOMS_EXPLORED, 1);
+						CMLib.players().bumpPrideStat(msg.source(),PrideStats.PrideStat.ROOMS_EXPLORED, 1);
 				}
 				break;
 			}

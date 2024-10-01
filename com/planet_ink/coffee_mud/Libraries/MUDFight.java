@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.CharClasses.Fighter;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
+import com.planet_ink.coffee_mud.Common.interfaces.PrideStats.PrideStat;
 import com.planet_ink.coffee_mud.Common.interfaces.CMMsg.View;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerCombatStat;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;

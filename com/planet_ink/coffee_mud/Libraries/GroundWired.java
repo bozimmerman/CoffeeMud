@@ -1045,7 +1045,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		for(final Manufacturer man : manufacturers.values())
 		{
 			if(man != defaultManufacturer)
-				xmlStr.append("<MANUFACTURER>").append(man.getXml()).append("</MANUFACTURER>");
+				xmlStr.append("<MANUFACTURER>").append(man.getXML()).append("</MANUFACTURER>");
 		}
 		xmlStr.append("</MANUFACTURERS>");
 		xmlFile.saveText(xmlStr.toString());
@@ -1073,7 +1073,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			for(final XMLTag x : xMans)
 			{
 				final Manufacturer man =(Manufacturer)CMClass.getCommon("DefaultManufacturer");
-				man.setXml(x.value());
+				man.setXML(x.value());
 				addManufacturer(man);
 			}
 		}

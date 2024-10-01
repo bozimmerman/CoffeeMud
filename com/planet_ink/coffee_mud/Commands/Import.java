@@ -1142,7 +1142,7 @@ public class Import extends StdCommand
 						if(!mob.session().confirm(L("Custom Manufacturer '@x1' found which would override your existing one.  Import custom manufacturer anyway (Y/n)?",M.name()),"Y"))
 							continue;
 					}
-					eM.setXml(M.getXml());
+					eM.setXML(M.getXML());
 				}
 			}
 		}

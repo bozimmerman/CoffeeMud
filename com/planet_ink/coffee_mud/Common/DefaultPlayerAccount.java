@@ -41,7 +41,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class DefaultPlayerAccount implements PlayerAccount
+public class DefaultPlayerAccount extends DefaultPrideStats implements PlayerAccount
 {
 	@Override
 	public String ID()
@@ -77,8 +77,6 @@ public class DefaultPlayerAccount implements PlayerAccount
 	protected String[]			xtraValues			= null;
 	protected Set<AccountFlag>	acctFlags			= new SHashSet<AccountFlag>();
 	protected volatile MOB 		fakePlayerM			= null;
-	protected long[]			prideExpireTime		= new long[TimeClock.TimePeriod.values().length];
-	protected int[][]			prideStats			= new int[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
 
 	protected SVector<PlayerLibrary.ThinPlayer> thinPlayers 	= new SVector<PlayerLibrary.ThinPlayer>();
 	protected Map<String,Tracker>				achievementers	= new STreeMap<String,Tracker>();
@@ -326,36 +324,6 @@ public class DefaultPlayerAccount implements PlayerAccount
 		return (ignored.contains(name) || ignored.contains(name+"*"));
 	}
 
-	@Override
-	public void bumpPrideStat(final PrideStat stat, final int amt)
-	{
-		final long now=System.currentTimeMillis();
-		if(stat==null)
-			return;
-		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
-		{
-			if(period==TimeClock.TimePeriod.ALLTIME)
-				prideStats[period.ordinal()][stat.ordinal()]+=amt;
-			else
-			{
-				if(now>prideExpireTime[period.ordinal()])
-				{
-					for(final AccountStats.PrideStat stat2 : AccountStats.PrideStat.values())
-						prideStats[period.ordinal()][stat2.ordinal()]=0;
-					prideExpireTime[period.ordinal()]=period.nextPeriod();
-				}
-				prideStats[period.ordinal()][stat.ordinal()]+=amt;
-			}
-		}
-	}
-
-	@Override
-	public int getPrideStat(final TimePeriod period, final PrideStat stat)
-	{
-		if((period==null)||(stat==null))
-			return 0;
-		return prideStats[period.ordinal()][stat.ordinal()];
-	}
 
 	@Override
 	public MOB getAccountMob()
@@ -402,11 +370,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 			else
 				rest.append("<"+code+">"+libXML.parseOutAngleBrackets(value)+"</"+code+">");
 		}
-		rest.append("<NEXTPRIDEPERIODS>").append(CMParms.toTightListString(prideExpireTime)).append("</NEXTPRIDEPERIODS>");
-		rest.append("<PRIDESTATS>");
-		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
-			rest.append(CMParms.toTightListString(prideStats[period.ordinal()])).append(";");
-		rest.append("</PRIDESTATS>");
+		rest.append(super.getXML());
 		rest.append("<ACHIEVEMENTS");
 		for(final Iterator<Tracker> i=achievementers.values().iterator();i.hasNext();)
 		{
@@ -442,17 +406,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 				val="";
 			setStat(code.toUpperCase(),xmlLib.restoreAngleBrackets(val));
 		}
-		final String[] nextPeriods=xmlLib.getValFromPieces(xml, "NEXTPRIDEPERIODS").split(",");
-		final String[] prideStats=xmlLib.getValFromPieces(xml, "PRIDESTATS").split(";");
-		final Pair<Long,int[]>[] finalPrideStats = CMLib.players().parsePrideStats(nextPeriods, prideStats);
-		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
-		{
-			if(period.ordinal()<finalPrideStats.length)
-			{
-				this.prideExpireTime[period.ordinal()]=finalPrideStats[period.ordinal()].first.longValue();
-				this.prideStats[period.ordinal()]=finalPrideStats[period.ordinal()].second;
-			}
-		}
+		super.setXML(xmlLib, xml);
 		final XMLTag achievePiece = xmlLib.getPieceFromPieces(xml, "ACHIEVEMENTS");
 		achievementers.clear();
 		for(final Enumeration<Achievement> a=CMLib.achievements().achievements(Agent.ACCOUNT);a.hasMoreElements();)

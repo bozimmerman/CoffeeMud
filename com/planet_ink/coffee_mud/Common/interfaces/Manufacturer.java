@@ -34,7 +34,7 @@ import java.util.*;
 /**
  * A class for holding information about the manufacturer of electronics.
  */
-public interface Manufacturer extends CMCommon
+public interface Manufacturer extends CMCommon, XMLConfigureable
 {
 	/**
 	 * Returns whether the given item will be manufacturered by this manufacturer.
@@ -144,17 +144,4 @@ public interface Manufacturer extends CMCommon
 	 * @return the zapperMask, not compiled
 	 */
 	public String getItemMaskStr();
-
-	/**
-	 * Returns an Xml document representing this manufacturer.
-	 * @return an Xml document representing this manufacturer.
-	 */
-	public String getXml();
-
-	/**
-	 * Sets an Xml document representing this manufacturer.
-	 * This will "build out" the manufacturer object.
-	 * @param xml Xml document representing this manufacturer.
-	 */
-	public void setXml(String xml);
 }

@@ -611,7 +611,7 @@ public class Gypsy extends Thief
 						xp=200;
 					else
 						xp=CMLib.flags().isAliveAwakeMobileUnbound((MOB)msg.target(), true)?50:25;
-					CMLib.leveler().postExperience(mob,"CLASS:"+ID(),(MOB)msg.target()," for a successful "+msg.tool().name(),xp, false);
+					CMLib.leveler().postExperience(mob,"CLASS:"+ID(),null," for a successful "+msg.tool().name(),xp, false);
 				}
 			}
 		}

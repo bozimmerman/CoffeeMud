@@ -1452,7 +1452,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					final Manufacturer M=(Manufacturer)CMClass.getCommon("DefaultManufacturer");
 					if(M!=null)
 					{
-						M.setXml(ablk.value());
+						M.setXML(ablk.value());
 						if(CMLib.tech().getManufacturer(M.name())==null)
 							custom.add(M);
 					}

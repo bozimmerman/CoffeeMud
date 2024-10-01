@@ -88,14 +88,14 @@ public class Top extends StdCommand
 			str.append(L("^xTop @x1 @x2\n\r^x@x3^.^N ^x@x4^.^N ^x@x5^.^N\n\r",(doPlayers?"Characters":"Accounts"),desc,slashes,slashes,slashes));
 			str.append(CMStrings.padRight(L("^HPVP Kills"), width)+"^. "+CMStrings.padRight(L("^HXP Gained"), width)+"^. "+CMStrings.padRight(L("^HQuests Completed"), width)+"^.^N\n\r");
 			set1=doPlayers?
-				CMLib.players().getTopPridePlayers(period, AccountStats.PrideStat.PVPKILLS):
-				CMLib.players().getTopPrideAccounts(period, AccountStats.PrideStat.PVPKILLS);
+				CMLib.players().getTopPridePlayers(period, PrideStats.PrideStat.PVPKILLS):
+				CMLib.players().getTopPrideAccounts(period, PrideStats.PrideStat.PVPKILLS);
 			set2=doPlayers?
-				CMLib.players().getTopPridePlayers(period, AccountStats.PrideStat.EXPERIENCE_GAINED):
-				CMLib.players().getTopPrideAccounts(period, AccountStats.PrideStat.EXPERIENCE_GAINED);
+				CMLib.players().getTopPridePlayers(period, PrideStats.PrideStat.EXPERIENCE_GAINED):
+				CMLib.players().getTopPrideAccounts(period, PrideStats.PrideStat.EXPERIENCE_GAINED);
 			set3=doPlayers?
-				CMLib.players().getTopPridePlayers(period, AccountStats.PrideStat.QUESTS_COMPLETED):
-				CMLib.players().getTopPrideAccounts(period, AccountStats.PrideStat.QUESTS_COMPLETED);
+				CMLib.players().getTopPridePlayers(period, PrideStats.PrideStat.QUESTS_COMPLETED):
+				CMLib.players().getTopPrideAccounts(period, PrideStats.PrideStat.QUESTS_COMPLETED);
 			String data;
 			for(int i=0;i<10;i++)
 			{
@@ -109,14 +109,14 @@ public class Top extends StdCommand
 			str.append("\n\r");
 			str.append(CMStrings.padRight(L("^HMins Online"), width)+"^. "+CMStrings.padRight(L("^HRooms Explored"), width)+"^. "+CMStrings.padRight(L("^HQuestPoints Earned"), width)+"^.^N\n\r");
 			set1=doPlayers?
-					CMLib.players().getTopPridePlayers(period, AccountStats.PrideStat.MINUTES_ON):
-					CMLib.players().getTopPrideAccounts(period, AccountStats.PrideStat.MINUTES_ON);
+					CMLib.players().getTopPridePlayers(period, PrideStats.PrideStat.MINUTES_ON):
+					CMLib.players().getTopPrideAccounts(period, PrideStats.PrideStat.MINUTES_ON);
 				set2=doPlayers?
-					CMLib.players().getTopPridePlayers(period, AccountStats.PrideStat.ROOMS_EXPLORED):
-					CMLib.players().getTopPrideAccounts(period, AccountStats.PrideStat.ROOMS_EXPLORED);
+					CMLib.players().getTopPridePlayers(period, PrideStats.PrideStat.ROOMS_EXPLORED):
+					CMLib.players().getTopPrideAccounts(period, PrideStats.PrideStat.ROOMS_EXPLORED);
 				set3=doPlayers?
-					CMLib.players().getTopPridePlayers(period, AccountStats.PrideStat.QUESTPOINTS_EARNED):
-					CMLib.players().getTopPrideAccounts(period, AccountStats.PrideStat.QUESTPOINTS_EARNED);
+					CMLib.players().getTopPridePlayers(period, PrideStats.PrideStat.QUESTPOINTS_EARNED):
+					CMLib.players().getTopPrideAccounts(period, PrideStats.PrideStat.QUESTPOINTS_EARNED);
 			for(int i=0;i<10;i++)
 			{
 				data = CMStrings.padRight((set1.size()>i)?("^N"+set1.get(i).first):"",nameWidth)+"^c"+((set1.size()>i)?("^N"+fixI(set1.get(i).second)):"");
@@ -137,7 +137,7 @@ public class Top extends StdCommand
 		for(final TimePeriod period : periods)
 		{
 			str.append("<PERIOD TYPE=\""+period.name()+"\">");
-			for(final AccountStats.PrideStat stat : AccountStats.PrideStat.values())
+			for(final PrideStats.PrideStat stat : PrideStats.PrideStat.values())
 			{
 				str.append("<STAT TYPE=\""+stat.name()+"\">");
 				final List<Pair<String,Integer>>set1;
