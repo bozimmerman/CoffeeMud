@@ -100,7 +100,7 @@ public class Poison_BeeSting extends Poison
 	@Override
 	protected int POISON_DAMAGE()
 	{
-		return (invoker!=null)?2:0;
+		return (invoker!=null)?(1+(int)Math.round(rank)):0;
 	}
 
 	@Override
@@ -112,8 +112,8 @@ public class Poison_BeeSting extends Poison
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-1);
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-1);
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-(int)Math.round(rank));
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-(int)Math.round(rank));
 		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)
 			affectableStats.setStat(CharStats.STAT_CONSTITUTION,1);
 		if(affectableStats.getStat(CharStats.STAT_STRENGTH)<=0)

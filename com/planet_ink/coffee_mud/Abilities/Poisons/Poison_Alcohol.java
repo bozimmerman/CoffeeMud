@@ -126,12 +126,12 @@ public class Poison_Alcohol extends Poison
 
 	protected int alcoholContribution()
 	{
-		return 1;
+		return (int)Math.round(rank);
 	}
 
-	protected int level()
+	protected int alchoholLevel()
 	{
-		return 1;
+		return (int)Math.round(rank);
 	}
 
 	protected int drunkness = 5;
@@ -419,7 +419,7 @@ public class Poison_Alcohol extends Poison
 				if(A instanceof Poison_Alcohol)
 				{
 					largest+=((Poison_Alcohol)A).drunkness;
-					if(((Poison_Alcohol)A).level()>=level())
+					if(((Poison_Alcohol)A).alchoholLevel()>=alchoholLevel())
 						found.addElement(A);
 					else
 						remove.addElement(A);

@@ -100,7 +100,7 @@ public class Poison_Venom extends Poison
 	@Override
 	protected int POISON_DAMAGE()
 	{
-		return (invoker!=null)?CMLib.dice().roll(1,9,1):0;
+		return (invoker!=null)?CMLib.dice().roll((int)Math.round(rank),9,1):0;
 	}
 
 	@Override
@@ -112,8 +112,8 @@ public class Poison_Venom extends Poison
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-7);
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-3);
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-6-(int)Math.round(rank));
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-2-(int)Math.round(rank));
 		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)
 			affectableStats.setStat(CharStats.STAT_CONSTITUTION,1);
 		if(affectableStats.getStat(CharStats.STAT_STRENGTH)<=0)

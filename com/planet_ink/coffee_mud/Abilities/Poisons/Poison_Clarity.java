@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2024 Bo Zimmerman
+   Copyright 2024-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,14 +32,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Poison_Caffeine extends Poison {
+public class Poison_Clarity extends Poison {
 	@Override
 	public String ID()
 	{
-		return "Poison_Caffeine";
+		return "Poison_Clarity";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Hyper");
+	private final static String localizedName = CMLib.lang().L("Clarity");
 
 	@Override
 	public String name()
@@ -47,7 +47,7 @@ public class Poison_Caffeine extends Poison {
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(CAFFEINATED!!)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Clarity)");
 
 	@Override
 	public String displayText()
@@ -55,7 +55,7 @@ public class Poison_Caffeine extends Poison {
 		return localizedStaticDisplay;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"POISONHYPER"});
+	private static final String[] triggerStrings =I(new String[] {"POISONCLARITY"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -77,31 +77,31 @@ public class Poison_Caffeine extends Poison {
 	@Override
 	protected String POISON_DONE()
 	{
-		return "The caffeine runs its course.";
+		return "The clarity fades.";
 	}
 
 	@Override
 	protected String POISON_START()
 	{
-		return "^G<S-NAME> seem(s) wired!^?";
+		return "^G<S-NAME> seem(s) clear and alert!^?";
 	}
 
 	@Override
 	protected String POISON_AFFECT()
 	{
-		return "^G<S-NAME> twitch(es) spastically.";
+		return "";
 	}
 
 	@Override
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> caffeinate(s) <T-NAMESELF>!^</FIGHT^>^?";
+		return "^F^<FIGHT^><S-NAME> clarif(ys) <T-NAMESELF>!^</FIGHT^>^?";
 	}
 
 	@Override
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to caffinate <T-NAMESELF>, but fail(s).";
+		return "<S-NAME> attempt(s) to clarity <T-NAMESELF>, but fail(s).";
 	}
 
 	@Override
@@ -113,23 +113,14 @@ public class Poison_Caffeine extends Poison {
 	@Override
 	protected int POISON_ADDICTION_CHANCE()
 	{
-		return 1;
+		return 2;
 	}
 
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+(int)Math.round(rank));
-	}
-
-	@Override
-	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setSpeed(affectableStats.speed() + (CMProps.getSpeedAdjustment()*0.25*rank));
-		int oldDisposition=affectableStats.disposition();
-		oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
-		affectableStats.setDisposition(oldDisposition);
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+(int)Math.round(rank));
+		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)+(10*(int)Math.round(rank)));
 	}
 
 	@Override
@@ -141,15 +132,18 @@ public class Poison_Caffeine extends Poison {
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!(affected instanceof MOB))
-				return true;
-
-		final MOB mob=(MOB)affected;
-		if(msg.amISource(mob)&&((msg.sourceMinor()==CMMsg.TYP_SIT)||(msg.sourceMinor()==CMMsg.TYP_SLEEP)))
+		if ((msg.target() != null)
+		&& (msg.tool() instanceof Ability )
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
+		&& (msg.amITarget(affected))
+		&&(msg.tool() instanceof Poison_Liquor))
 		{
-			mob.tell(L("You're too caffeinated for that!"));
+			if(msg.target() instanceof MOB)
+				((MOB)msg.target()).tell(L("You are immune to @x1.",msg.tool().name()));
+			if(msg.source()!=msg.target())
+				msg.source().tell(msg.source(),msg.target(),msg.tool(),L("<T-NAME> seem(s) immune to <O-NAME>."));
 			return false;
 		}
-		return true;
+		return super.okMessage(myHost, msg);
 	}
 }
