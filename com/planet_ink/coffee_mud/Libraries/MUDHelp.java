@@ -1098,6 +1098,23 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 		}
 
+		if(helpText==null)
+		{
+			for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
+			{
+				final ItemCraftor cA = e.nextElement();
+				final List<String> matches = cA.matchingRecipeNames(helpKeyWSpaces, false);
+				if(matches.size()>0)
+				{
+					final String recipeName = CMStrings.capitalizeAndLower(helpKeyWSpaces);
+					final String recipeHelp = L("@x1 is an item that is craftable by @x2.",recipeName,cA.name());
+					helpText=normalizeHelpText(recipeHelp,skip);
+					if(helpText != null)
+						return new Pair<String,String>(helpKey, helpText);
+				}
+			}
+		}
+
 		// INEXACT searches start here
 		if(helpText==null)
 		{
@@ -1293,6 +1310,23 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				{
 					helpKey=helpKey.substring(0,helpKey.length()-suf.length());
 					return new Pair<String,String>(helpKey, getHelpText(helpKey,rHelpFile,forM,noFix));
+				}
+			}
+		}
+
+		if(helpText==null)
+		{
+			for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
+			{
+				final ItemCraftor cA = e.nextElement();
+				final List<String> matches = cA.matchingRecipeNames(helpKeyWSpaces, true);
+				if(matches.size()>0)
+				{
+					final String recipeName = CMStrings.capitalizeAndLower(helpKeyWSpaces);
+					final String recipeHelp = L("@x1 is an item that is craftable by @x2.",recipeName,cA.name());
+					helpText=normalizeHelpText(recipeHelp,skip);
+					if(helpText != null)
+						return new Pair<String,String>(helpKey, helpText);
 				}
 			}
 		}

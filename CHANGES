@@ -58,6 +58,7 @@
  56. New thief skills: Conceal Pathway, Urchin Spy, Fortune Telling
  57. New chants: Curse Seed, Endow Jewelry, Endow Ioun Stone
  58. New rideable type: furniture-hook
+ 59. HELP can now match on common recipes to tell you which skill produces them.
  
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

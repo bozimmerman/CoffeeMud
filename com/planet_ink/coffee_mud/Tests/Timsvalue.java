@@ -60,12 +60,8 @@ public class Timsvalue extends StdTest
 	{
 		final ArrayList<ItemCraftor> V=new ArrayList<ItemCraftor>();
 		final Vector<ItemCraftor> craftingSkills=new Vector<ItemCraftor>();
-		for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
-		{
-			final Ability A=e.nextElement();
-			if(A instanceof ItemCraftor)
-				V.add((ItemCraftor)A.copyOf());
-		}
+		for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
+			V.add((ItemCraftor)e.nextElement().copyOf());
 		while(V.size()>0)
 		{
 			int lowest=Integer.MAX_VALUE;

@@ -87,12 +87,8 @@ public class Archon_Metacraft extends ArchonSkill
 		if(craftingSkills.size()==0)
 		{
 			final ArrayList<Ability> V=new ArrayList<Ability>();
-			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
-			{
-				final Ability A=e.nextElement();
-				if(A instanceof ItemCraftor)
-					V.add((Ability)A.copyOf());
-			}
+			for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
+				V.add((Ability)e.nextElement().copyOf());
 			while(V.size()>0)
 			{
 				int lowest=Integer.MAX_VALUE;

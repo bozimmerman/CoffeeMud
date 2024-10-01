@@ -2364,12 +2364,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(craftorPrototypes == null)
 			{
 				craftorPrototypes=new Vector<ItemCraftor>();
-				for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
-				{
-					final Ability A=e.nextElement();
-					if(A instanceof ItemCraftor)
-						craftorPrototypes.add((ItemCraftor)A);
-				}
+				for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
+					craftorPrototypes.add(e.nextElement());
 				defined.put("____SYSTEM_FILTERED_ITEM_CRAFTORS", craftorPrototypes);
 			}
 			final List<ItemCraftor> craftors = new ArrayList<ItemCraftor>(craftorPrototypes.size());

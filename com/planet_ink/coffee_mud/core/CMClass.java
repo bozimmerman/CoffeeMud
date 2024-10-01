@@ -1475,9 +1475,15 @@ public class CMClass extends ClassLoader
 			((HashSet<CMObject>)set).remove(O);
 		else
 			return false;
+
 		if(set==c().commands)
 			reloadCommandWords();
-		ableFinder.clear();
+		else
+		if(set==c().abilities)
+		{
+			Resources.removeResource("SYSTEM_FILTERED_ITEM_CRAFTORS");
+			ableFinder.clear();
+		}
 		//if(set==libraries) CMLib.registerLibraries(libraries.elements());
 		return true;
 	}
@@ -1509,11 +1515,18 @@ public class CMClass extends ClassLoader
 			((HashSet<CMObject>)set).add(O);
 		else
 			return false;
+
 		if(set==c().commands)
 			reloadCommandWords();
+		else
 		if(set==c().libraries)
 			CMLib.registerLibraries(c().libraries.elements());
-		ableFinder.clear();
+		else
+		if(set==c().abilities)
+		{
+			Resources.removeResource("SYSTEM_FILTERED_ITEM_CRAFTORS");
+			ableFinder.clear();
+		}
 		return true;
 	}
 
@@ -2126,6 +2139,28 @@ public class CMClass extends ClassLoader
 		if(A!=null)
 			A=(Ability)A.newInstance();
 		return A;
+	}
+
+	/**
+	 * Returns the registered abilities that extend the ItemCraftor interface
+	 * @return the registered abilities that extend the ItemCraftor interface
+	 */
+	public static Enumeration<ItemCraftor> craftorAbilities()
+	{
+		@SuppressWarnings("unchecked")
+		List<ItemCraftor> craftorPrototypes = (List<ItemCraftor>)Resources.getResource("SYSTEM_FILTERED_ITEM_CRAFTORS");
+		if(craftorPrototypes == null)
+		{
+			craftorPrototypes=new Vector<ItemCraftor>();
+			for(final Enumeration<Ability> e=abilities();e.hasMoreElements();)
+			{
+				final Ability A=e.nextElement();
+				if(A instanceof ItemCraftor)
+					craftorPrototypes.add((ItemCraftor)A);
+			}
+			Resources.submitResource("SYSTEM_FILTERED_ITEM_CRAFTORS", craftorPrototypes);
+		}
+		return new IteratorEnumeration<ItemCraftor>(craftorPrototypes.iterator());
 	}
 
 	/**
