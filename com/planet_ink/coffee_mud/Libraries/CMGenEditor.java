@@ -1159,9 +1159,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			report.append("8. Months: "+CMParms.toListString(TC.getMonthNames())+"\n\r");
 			report.append("9. Year Title(s): "+CMParms.toListString(TC.getYearNames()));
 			mob.tell(report.toString());
-			newName=mob.session().prompt(L("Enter one to change:"),"");
+			newName=mob.session().prompt(L("Enter one to change (or global):"),"");
 			if(newName.length()==0)
 				break;
+			if(newName.equalsIgnoreCase("global"))
+			{
+				A.setTimeObj((TimeClock)CMLib.time().globalClock().copyOf());
+				continue;
+			}
+
 			final int which=CMath.s_int(newName);
 
 			if((which<0)||(which>9))
