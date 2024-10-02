@@ -138,11 +138,12 @@ public class Chant_EnhancePotion extends Chant
 			mob.tell(L("You can't enhance @x1 any more.",target.name(mob)));
 			return false;
 		}
-		if(target.phyStats().level()+levels>=mob.phyStats().level() )
+		if((target.phyStats().level()+levels>=mob.phyStats().level()) || (levels > (1+super.getXLEVELLevel(mob))))
 		{
 			mob.tell(L("You can't enhance @x1 quite that much.",target.name(mob)));
 			return false;
 		}
+
 		addedLevels = levels;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
