@@ -937,13 +937,14 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 
 		CMMsg msg=null;
+		final int srcCode = chan.flags().contains(ChannelFlag.NOMOUTH) ? CMMsg.TYP_OK_ACTION : CMMsg.MSG_SPEAK;
 		if(systemMsg)
 		{
 			String str="["+channelName+"]"+nameAppendage+" '"+message+"'^</CHANNEL^>^?^.";
 			if((!mob.name().startsWith("^"))||(mob.name().length()>2))
 				str="<S-NAME>"+nameAppendage+" "+str;
 			msg=CMClass.getMsg(mob,null,null,
-					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+"^<CHANNEL \""+channelName+"\"^>"+str,
+					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|srcCode,channelColor+"^<CHANNEL \""+channelName+"\"^>"+str,
 					CMMsg.NO_EFFECT,null,
 					CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+"^<CHANNEL \""+channelName+"\"^>"+str);
 		}
@@ -971,7 +972,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				final String srcstr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+mob.name()+nameAppendage+msgstr+"^</CHANNEL^>^N^.";
 				final String reststr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] <S-NAME>"+nameAppendage+msgstr+"^</CHANNEL^>^N^.";
 				msg=CMClass.getMsg(mob,null,null,
-						CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+""+srcstr,
+						CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|srcCode,channelColor+""+srcstr,
 						CMMsg.NO_EFFECT,null,
 						CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+reststr);
 			}
@@ -979,7 +980,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		else
 		{
 			msg=CMClass.getMsg(mob,null,null,
-					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+"^<CHANNEL \""+channelName+"\"^>"+L("You")+nameAppendage+" "+channelName+" '"+message+"'^</CHANNEL^>^N^.",
+					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|srcCode,channelColor+"^<CHANNEL \""+channelName+"\"^>"+L("You")+nameAppendage+" "+channelName+" '"+message+"'^</CHANNEL^>^N^.",
 					CMMsg.NO_EFFECT,null,
 					CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+"^<CHANNEL \""+channelName+"\"^><S-NAME>"+nameAppendage+" "+CMLib.english().makePlural(channelName)+" '"+message+"'^</CHANNEL^>^N^.");
 		}

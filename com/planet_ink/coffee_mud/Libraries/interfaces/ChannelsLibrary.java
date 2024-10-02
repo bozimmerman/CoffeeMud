@@ -500,6 +500,7 @@ public interface ChannelsLibrary extends CMLibrary
 		FACTIONANNOUNCEMENTS,
 		PROFICIENT,
 		CALENDAR,
-		SAMEHOST
+		SAMEHOST,
+		NOMOUTH
 	}
 }
