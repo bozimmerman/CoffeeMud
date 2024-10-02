@@ -967,6 +967,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 							topPlayerChart = newPrideStatTopChart();
 							topPlayerCat.put(catUnit, topPlayerChart);
 						}
+
+						// this is probably deprecated, but ensures global accumulation of stats
+						//this.bumpTopPrideCat(topPlayerChart, catUnit, stat);
+						// the below is for 'top player in a particular category'
 						adjustTopPrideStats(topPlayerChart,mob.Name(),true, pcat.name(), stat,pstats);
 					}
 				}
@@ -1051,6 +1055,46 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					}
 					if((!found)&&(top.size()<prideTopSize))
 						top.add(new Pair<String,Integer>(name,Integer.valueOf(pVal)));
+				}
+			}
+		}
+	}
+
+	/**
+	 * Called during every bump to potentially bump a top 10 pride stat final value
+	 * based on some recent change.  Only applies to global categories.
+	 *
+	 * @param topWhat the real top stat charts for all periods
+	 * @param name the cat who bumped
+	 * @param stat the pridestat that bumped for the cat
+	 */
+	protected void bumpTopPrideCat(final List<Pair<String,Integer>>[][] topWhat, final String name, final PrideStat stat)
+	{
+		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+		{
+			final List<Pair<String,Integer>> top=topWhat[period.ordinal()][stat.ordinal()];
+			if(top == null)
+				continue;
+			synchronized(top)
+			{
+				for(int i=0;i<=top.size();i++)
+				{
+					if((i==top.size())||(top.get(i).first.equals(name)))
+					{
+						if(i==top.size())
+							top.add(new Pair<String,Integer>(name,Integer.valueOf(1)));
+						final int newVal = top.get(i).second.intValue()+1;
+						final Pair<String,Integer> move = top.get(i);
+						top.get(i).second=Integer.valueOf(newVal);
+						while((i>0)&&(newVal>top.get(i-1).second.intValue()))
+						{
+							final Pair<String,Integer> save=top.get(i-1);
+							top.set(i-1, move);
+							top.set(i, save);
+							i--;
+						}
+						break;
+					}
 				}
 			}
 		}
