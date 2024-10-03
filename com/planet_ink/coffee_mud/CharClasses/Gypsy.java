@@ -172,6 +172,7 @@ public class Gypsy extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_RefreshRunes",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Peek",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Chantcraft",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_StaffSweep",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_TarotReading",false);
 
