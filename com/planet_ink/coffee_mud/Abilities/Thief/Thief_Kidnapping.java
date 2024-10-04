@@ -287,6 +287,26 @@ public class Thief_Kidnapping extends ThiefSkill
 	}
 
 	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost,msg))
+			return false;
+
+		if((msg.targetMinor()==CMMsg.TYP_ORDER)
+		&&(msg.source().location()!=null)
+		&&(msg.target()==affected)
+		&&(affected instanceof MOB)
+		&&(msg.source() == invoker)
+		&&(msg.sourceMessage()!=null)
+		&&(msg.sourceMessage().length()>0))
+		{
+			CMLib.commands().postSay((MOB)affected, "You're not the boss of me!");
+			return false;
+		}
+		return true;
+	}
+
+	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if((mob!=null)&&(target!=null))
