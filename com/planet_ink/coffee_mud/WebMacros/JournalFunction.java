@@ -295,6 +295,7 @@ public class JournalFunction extends StdWebMacro
 					parms.put(replyemail,replyemail);
 				if(parms.size()==1)
 				{
+					// means there was no action found
 					JournalEntry entry = JournalInfo.getNextEntry(msgs, msgKey);
 					while((entry!=null) && (!CMLib.journals().canReadMessage(entry,srch,M,parms.containsKey("NOPRIV"))))
 						entry = JournalInfo.getNextEntry(msgs, entry.key());
