@@ -2148,6 +2148,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						if(R!=null)
 						{
 							final StringBuilder doc=new StringBuilder("room.mobiles {");
+							doc.append("\"npcs\":[");
 							boolean comma=false;
 							for(int r=0;r<R.numInhabitants();r++)
 							{
@@ -2157,11 +2158,11 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									if(comma)
 										doc.append(",");
 									comma=true;
-									final String lname=(M.Name().equals(M.name())?M.titledName(mob):M.name(mob));
-									doc.append("\""+M.Name()+"\":\"").append(MiniJSON.toJSONString(lname)).append("\"");
+									final String rname = R.getContextName(M);
+									doc.append("{\""+MiniJSON.toJSONString(M.Name())+"\":\"").append(MiniJSON.toJSONString(rname)).append("\"}");
 								}
 							}
-							doc.append("}");
+							doc.append("]}");
 							return doc.toString();
 						}
 					}
@@ -2175,6 +2176,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						if(R!=null)
 						{
 							final StringBuilder doc=new StringBuilder("room.players {");
+							doc.append("\"pcs\":[");
 							boolean comma=false;
 							for(int r=0;r<R.numInhabitants();r++)
 							{
@@ -2185,10 +2187,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 										doc.append(",");
 									comma=true;
 									final String lname=(M.Name().equals(M.name())?M.titledName(mob):M.name(mob));
-									doc.append("\""+M.Name()+"\":\"").append(MiniJSON.toJSONString(lname)).append("\"");
+									doc.append("{\""+M.Name()+"\":\"").append(MiniJSON.toJSONString(lname)).append("\"}");
 								}
 							}
-							doc.append("}");
+							doc.append("]}");
 							return doc.toString();
 						}
 					}
@@ -2297,7 +2299,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						doc.append("\"class\":\"").append(mob.charStats().getCurrentClass().baseClass()).append("\"").append(",");
 						doc.append("\"subclass\":\"").append(MiniJSON.toJSONString(mob.charStats().displayClassName())).append("\"").append(",");
 						doc.append("\"race\":\"").append(MiniJSON.toJSONString(mob.charStats().raceName())).append("\"").append(",");
-						doc.append("\"perlevel\":").append(mob.getExpNextLevel());
+						doc.append("\"perlevel\":").append(mob.getExpNextLevel()).append(",");
+						doc.append("\"prevlevel\":").append(mob.getExpPrevLevel());
 						final String title = (mob.playerStats()!=null)?mob.playerStats().getActiveTitle():null;
 						if(title!=null)
 							doc.append(",\"pretitle\":\"").append(MiniJSON.toJSONString(title)).append("\"");
@@ -2339,6 +2342,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						final StringBuilder doc=new StringBuilder("char.status {");
 						doc.append("\"level\":").append(mob.phyStats().level()).append(",");
 						doc.append("\"tnl\":").append(mob.getExpNeededLevel()).append(",");
+						doc.append("\"xpnl\":").append(mob.getExpNextLevel()).append(",");
+						doc.append("\"xppl\":").append(mob.getExpPrevLevel()).append(",");
 						doc.append("\"hunger\":").append(mob.curState().getHunger()).append(",");
 						doc.append("\"thirst\":").append(mob.curState().getThirst()).append(",");
 						doc.append("\"fatigue\":").append(mob.curState().getFatigue()).append(",");
@@ -2347,6 +2352,21 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						final int align=mob.fetchFaction(CMLib.factions().getAlignmentID());
 						if(align!=Integer.MAX_VALUE)
 							doc.append("\"align\":").append(align).append(",");
+						final String autoReactionTypeStr=CMProps.getVar(CMProps.Str.AUTOREACTION).trim();
+						if(autoReactionTypeStr.length()>0)
+						{
+							final Area A = CMLib.map().areaLocation(mob);
+							if(A!=null)
+							{
+								final Faction F = CMLib.factions().getSpecialAreaFaction(A);
+								if(F != null)
+								{
+									final int f = mob.fetchFaction(F.factionID());
+									if(f < Integer.MAX_VALUE)
+										doc.append("\"faction\":").append(f).append(",");
+								}
+							}
+						}
 						int state=3;
 						if(session.isAfk())
 							state=4;
@@ -2418,12 +2438,22 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								domType=Room.DOMAIN_OUTDOOR_DESCS[room.domainType()];
 							else
 								domType=Room.DOMAIN_INDOORS_DESCS[CMath.unsetb(room.domainType(),Room.INDOORS)];
+							String move="normal";
+							if(CMLib.flags().isCrawlable(room))
+								move="crawl";
+							else
+							if(CMLib.flags().isWateryRoom(room))
+								move="swim";
+							else
+							if(CMLib.flags().isAiryRoom(room))
+								move="fly";
 							doc.append("\"num\":").append(CMath.abs(roomID.hashCode())).append(",")
 								.append("\"id\":\"").append(roomID).append("\",")
 								.append("\"name\":\"").append(MiniJSON.toJSONString(room.displayText(mob))).append("\",")
 								.append("\"zone\":\"").append(MiniJSON.toJSONString(room.getArea().name())).append("\",")
 								.append("\"desc\":\"").append(MiniJSON.toJSONString(room.description(mob))).append("\",")
 								.append("\"terrain\":\"").append(domType.toLowerCase()).append("\",")
+								.append("\"move\":\"").append(move).append("\",")
 								.append("\"details\":\"").append("\",")
 								.append("\"exits\":{");
 							boolean comma=false;
@@ -2690,37 +2720,102 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	@Override
 	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables)
 	{
+		if(supportables.size()==0)
+			return null;
+		final MOB mob=session.mob();
+		if(mob==null)
+			return null;
+		final Room room;
+		synchronized(mob)
+		{
+			room = mob.location();
+		}
+		if(room == null)
+			return null;
 		try
 		{
+			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
+			byte[] buf;
 			if(supportables.containsKey("room.info")||supportables.containsKey("room"))
 			{
-				final ByteArrayOutputStream bout=new ByteArrayOutputStream();
-				final MOB mob=session.mob();
-				byte[] buf;
-				if(mob!=null)
+				final Long oldRoomHash=reporteds.get("system.currentRoom");
+				if((oldRoomHash==null)
+				||(room.hashCode() != oldRoomHash.intValue()))
 				{
-					final Room room;
-					synchronized(mob)
-					{
-						room = mob.location();
-					}
-					if(room!=null)
-					{
-						final Long oldRoomHash=reporteds.get("system.currentRoom");
-						if((oldRoomHash==null)
-						||(room.hashCode() != oldRoomHash.longValue()))
-						{
-							reporteds.put("system.currentRoom", Long.valueOf(room.hashCode()));
-							final String command="room.info";
-							final char[] cmd=command.toCharArray();
-							buf=processGmcp(session, new String(cmd), supportables);
-							if(buf!=null)
-								bout.write(buf);
-						}
-					}
+					reporteds.put("system.currentRoom", Long.valueOf(room.hashCode()));
+					final String command="room.info";
+					final char[] cmd=command.toCharArray();
+					buf=processGmcp(session, new String(cmd), supportables);
+					if(buf!=null)
+						bout.write(buf);
 				}
-				return (bout.size()==0) ? null: bout.toByteArray();
 			}
+			if(supportables.containsKey("room.mobiles")||supportables.containsKey("room"))
+			{
+				final Long oldRoomHash=reporteds.get("system.currentRoomMobiles");
+				int mobileHash = 0;
+				for(int i=0;i<room.numInhabitants();i++)
+				{
+					final MOB M = room.fetchInhabitant(i);
+					if((M != null)&&(!M.isPlayer()))
+						mobileHash += M.hashCode();
+				}
+				if((oldRoomHash==null)
+				||(mobileHash != oldRoomHash.intValue()))
+				{
+					reporteds.put("system.currentRoomMobiles", Long.valueOf(room.hashCode()));
+					final String command="room.mobiles";
+					final char[] cmd=command.toCharArray();
+					buf=processGmcp(session, new String(cmd), supportables);
+					if(buf!=null)
+						bout.write(buf);
+				}
+			}
+			if(supportables.containsKey("room.players")||supportables.containsKey("room"))
+			{
+				final Long oldRoomHash=reporteds.get("system.currentRoomPlayers");
+				int playerHash = 0;
+				for(int i=0;i<room.numInhabitants();i++)
+				{
+					final MOB M = room.fetchInhabitant(i);
+					if((M != null)&&(M.isPlayer()))
+						playerHash += M.hashCode();
+				}
+				if((oldRoomHash==null)
+				||(playerHash != oldRoomHash.intValue()))
+				{
+					reporteds.put("system.currentRoomPlayers", Long.valueOf(room.hashCode()));
+					final String command="room.players";
+					final char[] cmd=command.toCharArray();
+					buf=processGmcp(session, new String(cmd), supportables);
+					if(buf!=null)
+						bout.write(buf);
+				}
+			}
+			if(supportables.containsKey("room.items.inv")||supportables.containsKey("room.items")||supportables.containsKey("room"))
+			{
+				final Long oldRoomHash=reporteds.get("system.currentRoomItems");
+				int itemHash = 0;
+				for(int i=0;i<room.numItems();i++)
+				{
+					final Item I = room.getItem(i);
+					if((I != null) && (I.container()==null))
+						itemHash += I.hashCode();
+				}
+				if((oldRoomHash==null)
+				||(itemHash != oldRoomHash.intValue()))
+				{
+					reporteds.put("system.currentRoomItems", Long.valueOf(room.hashCode()));
+					final String command="room.items.inv";
+					final char[] cmd=command.toCharArray();
+					buf=processGmcp(session, new String(cmd), supportables);
+					if(buf!=null)
+						bout.write(buf);
+				}
+			}
+			if(bout.size()==0)
+				return null;
+			return bout.toByteArray();
 		}
 		catch(final java.io.IOException ioe)
 		{
@@ -2740,6 +2835,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		try
 		{
 			final Long nextMedReport=reporteds.get("system.nextMedReport");
+			final Long nextGrpReport=reporteds.get("system.nextGrpReport");
 			final Long nextLongReport=reporteds.get("system.nextLongReport");
 			final Long nextTruePingReport=reporteds.get("system.nextTruePing");
 			final long now=System.currentTimeMillis();
@@ -2747,12 +2843,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 			final MOB mob=session.mob();
 			byte[] buf;
-			if(charSupported||supportables.containsKey("char.vitals"))
-			{
-				buf=possiblePingGmcp(session, reporteds, supportables, "char.vitals");
-				if(buf!=null)
-					bout.write(buf);
-			}
 			if((nextTruePingReport==null)||(now>nextTruePingReport.longValue()))
 			{
 				final long tickMillis=CharState.REAL_TICK_ADJUST_FACTOR*CMProps.getTickMillis();
@@ -2768,13 +2858,17 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 			if((nextMedReport==null)||(now>nextMedReport.longValue()))
 			{
-				reporteds.put("system.nextMedReport", Long.valueOf(now+3999));
+				reporteds.put("system.nextMedReport", Long.valueOf(now+(CMProps.getTickMillis()-1)));
 				if(charSupported||supportables.containsKey("char.status"))
 				{
 					buf=possiblePingGmcp(session, reporteds, supportables, "char.status");
 					if(buf!=null)
 						bout.write(buf);
 				}
+			}
+			if((nextGrpReport==null)||(now>nextGrpReport.longValue()))
+			{
+				reporteds.put("system.nextGrpReport", Long.valueOf(now+(CMProps.getTickMillis()-1)));
 				if(mob!=null)
 				{
 					if(supportables.containsKey("group"))
@@ -2784,6 +2878,12 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							bout.write(buf);
 					}
 				}
+			}
+			if(charSupported||supportables.containsKey("char.vitals"))
+			{
+				buf=possiblePingGmcp(session, reporteds, supportables, "char.vitals");
+				if(buf!=null)
+					bout.write(buf);
 			}
 			if((nextLongReport==null)||(now>nextLongReport.longValue()))
 			{

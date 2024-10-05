@@ -365,11 +365,13 @@ public class Dragon extends StdMOB implements MOBPossessor
 				myStomachR = CMClass.getLocale("StoneRoom");
 				if(myStomachR!=null)
 				{
+					final Area A = CMClass.getAreaType("StdArea");
+					A.setName("a stomach");
 					myStomachR.setSavable(false);
 					myStomachR.setRoomID("");
 					myStomachR.setName(L("Dragon Stomach"));
 					myStomachR.setDisplayText(L("Dragon Stomach"));
-					myStomachR.setArea(location().getArea());
+					myStomachR.setArea(A);
 					myStomachR.setDescription(L("You are in the stomach of a dragon.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested."));
 				}
 			}

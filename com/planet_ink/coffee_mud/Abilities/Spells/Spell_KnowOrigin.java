@@ -127,7 +127,7 @@ public class Spell_KnowOrigin extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				commonTelL(mob,"@x1 seems to come from '@x2'.",target.name(mob),R.displayText(mob));
+				commonTelL(mob,"@x1 seems to come from '@x2' in a place called '@x3'.",target.name(mob),R.displayText(mob),R.getArea().name(mob));
 			}
 		}
 		else

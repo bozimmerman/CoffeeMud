@@ -3777,9 +3777,13 @@ public class StdMOB implements MOB
 				{
 					tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
 					if((mySession != null)
-					&& (msg.othersMinor() == CMMsg.TYP_ENTER)
 					&& (mySession.getClientTelnetMode(Session.TELNET_GMCP)))
-						mySession.sendGMCPEvent("room.enter", "\"" + MiniJSON.toJSONString(srcM.Name()) + "\"");
+					{
+						if (msg.othersMinor() == CMMsg.TYP_ENTER)
+							mySession.sendGMCPEvent("room.enter", "\"" + MiniJSON.toJSONString(srcM.Name()) + "\"");
+						if (msg.othersMinor() == CMMsg.TYP_LEAVE)
+							mySession.sendGMCPEvent("room.leave", "\"" + MiniJSON.toJSONString(srcM.Name()) + "\"");
+					}
 				}
 				if((!isMonster())
 				&& (riding != null)
@@ -3930,6 +3934,8 @@ public class StdMOB implements MOB
 			if(isPlayer())
 				playerStats().bumpLevelCombatStat(PlayerCombatStat.COMBATS_TOTAL, basePhyStats().level(), 1);
 			this.peaceTime = 0;
+			if(mySession!=null)
+				mySession.setStat("PPING", "true");
 		}
 	}
 

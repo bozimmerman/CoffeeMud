@@ -3655,7 +3655,7 @@ public class DefaultSession implements Session
 	private static enum SESS_STAT_CODES {PREVCMD,ISAFK,AFKMESSAGE,ADDRESS,IDLETIME,
 										 LASTMSG,LASTNPCFIGHT,LASTPKFIGHT,TERMTYPE,
 										 TOTALMILLIS,TOTALTICKS,WRAP,LASTLOOPTIME,
-										 ROOMLOOK,TWRAP}
+										 ROOMLOOK,TWRAP,PPING}
 
 	@Override
 	public int getSaveStatIndex()
@@ -3718,6 +3718,8 @@ public class DefaultSession implements Session
 			return CMLib.time().date2String(getInputLoopTime());
 		case ROOMLOOK:
 			break; // do nothing
+		case PPING:
+			break; // do nothing
 		case TWRAP:
 			return ""+this.terminalWidth;
 		default:
@@ -3778,6 +3780,10 @@ public class DefaultSession implements Session
 			break;
 		case LASTLOOPTIME:
 			lastLoopTop = CMLib.time().string2Millis(val);
+			break;
+		case PPING:
+			this.gmcpPings.remove("system.nextMedReport");
+			this.doProtocolPings();
 			break;
 		case ROOMLOOK:
 			if(getClientTelnetMode(TELNET_GMCP))
