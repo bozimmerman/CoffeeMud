@@ -204,7 +204,8 @@ after which all output from the server to that client will be in the
 GZIP compressed format.&nbsp; No data will be sent, however, for
 another few seconds to give the client time to process the response and
 set up.&nbsp; See also the above section on the TELNET protocol for
-more information on how negotiations are done.<br />
+more information on how negotiations are done.</p>
+      <p><br />
       </p>
       <h2><a name="mcp"> MCP</a></h2>
 
@@ -213,8 +214,8 @@ more information on how negotiations are done.<br />
 invoking 'packages' or programs on the server by the client, or on the
 client by the server.&nbsp; CoffeeMud supports, by default, only two
 packages:&nbsp; one that negotiates the MCP features, and a client-side
-full screen editor package.&nbsp; Assuming the site still exists,
-complete details on MCP can be found at <a href="https://www.moo.mud.org/mcp/mcp2.html">https://www.moo.mud.org/mcp/mcp2.html</a><br />
+full screen editor package.&nbsp; Complete details on MCP can be found
+at <a href="https://www.moo.mud.org/mcp/mcp2.html">https://www.moo.mud.org/mcp/mcp2.html</a><br />
       </p>
       <p>Upon connection to the server, the client will be sent a mcp protocol announcement string:</p>
       <p><span style="font-family: monospace;">#$#mcp version: 2.1 to: 2.1</span><br />
@@ -289,7 +290,8 @@ client to send back the changed text.</p>
 they should be written as Java files that implement the
 com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.MCPPackage
 interface, and placed in the
-com/planet_ink/coffee_mud/Libraries/mcppkgs/ directory before boot.<br />
+com/planet_ink/coffee_mud/Libraries/mcppkgs/ directory before boot.</p>
+      <p><br />
       </p>
 <p /><h2><a name="msp">MSP</a></h2>
       <p>The MUD Sound Protocol
@@ -381,9 +383,28 @@ string.&nbsp; <br />
       <p><br />
       </p>
 <p /><h2><a name="atcp">ATCP</a></h2>
-      <p>TODO</p><p /><h2><a name="msdp">MSDP</a></h2>
-      <p>TODO</p><p /><h2><a name="gmcp">GMCP</a></h2>
+      <p>ATCP is the predecessor
+to the GMCP protocol, and is superceded by it.&nbsp; CoffeeMud will
+recognize and accept TELNET negotiation of this protocol, but does not
+use it.</p>
+      <p><br />
+      </p>
+<p /><h2><a name="msdp">MSDP</a></h2>
+      <p>The MUD Server Data
+Protocol is a protocol that embeds itself completely in TELNET
+sub-option negotiation codes in order to send and receive data and data
+requests to and from the server and client.&nbsp; It is entirely about
+getting extra unseen information from the server.&nbsp; You can find
+details for this protocol at the following site: <a href="https://tintin.mudhalla.net/protocols/msdp/">https://tintin.mudhalla.net/protocols/msdp/</a><br />
+</p>
+      <p><br />
+      </p>
+      <p><br />
+      </p>
+<p /><h2><a name="gmcp">GMCP</a></h2>
       <p>TODO</p>
+      <p><br />
+      </p>
       <h2><a name="mssp">MSSP</a></h2>
 
       TOD<p /><p /><p /><p /><p /><p /><p /><p /><p /><p />
