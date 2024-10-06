@@ -2430,7 +2430,7 @@ public class DefaultSession implements Session
 	{
 		if((inStr.length()>3)
 		&&(inStr.charAt(0)=='#')
-		&&(inStr.substring(0, 2).equals("#$")))
+		&&(inStr.charAt(1)=='$'))
 		{
 			if(inStr.substring(0, 3).equals("#$#"))
 			{
