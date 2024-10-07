@@ -5,6 +5,7 @@ import com.planet_ink.coffee_web.util.CWThread;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
+import com.planet_ink.coffee_mud.core.MiniJSON.JSONObject;
 import com.planet_ink.coffee_mud.core.MiniJSON.MJSONException;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -1018,6 +1019,85 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			return o;
 	}
 
+	protected Object convertJSONObjectToMsdpMapObject(final Object o)
+	{
+		if(o instanceof JSONObject)
+			return convertJSONObjectToMsdpMap((JSONObject)o);
+		if(o instanceof Object[])
+		{
+			final Object[] objs = (Object[])o;
+			final List<Object> lst = new ArrayList<Object>();
+			for(final Object o1 : objs)
+			{
+				final Object o2 = convertJSONObjectToMsdpMapObject(o1);
+				if(o2 != null)
+					lst.add(o2);
+			}
+			return lst;
+		}
+		if(o != null)
+			return o.toString();
+		return null;
+	}
+
+	protected Map<String,Object> convertJSONObjectToMsdpMap(final JSONObject obj)
+	{
+		final Map<String,Object> map = new HashMap<String,Object>();
+		for(final String key : obj.keySet())
+		{
+			final Object o = obj.get(key);
+			final Object oval = convertJSONObjectToMsdpMapObject(o);
+			if(oval != null)
+				map.put(key, oval);
+		}
+		return map;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Object convertMsdpObjectToJSONObject(final Object o)
+	{
+		if(o instanceof Map)
+		{
+			final JSONObject jobj = new JSONObject();
+			final Map<String,Object> map = (Map<String,Object>)o;
+			for(final String key : map.keySet())
+			{
+				final Object o1 = map.get(key);
+				final Object oval = convertMsdpObjectToJSONObject(o1);
+				if(oval != null)
+					jobj.put(key, oval);
+			}
+			return jobj;
+		}
+		if(o instanceof List)
+		{
+			final List<Object> lst = (List<Object>)o;
+			final List<Object> objs = new ArrayList<Object>(lst.size());
+			for(final Object o1 : lst)
+			{
+				final Object o2 = convertMsdpObjectToJSONObject(o1);
+				if(o2 != null)
+					objs.add(o2);
+			}
+			return objs.toArray();
+		}
+		if(o != null)
+		{
+			if(o instanceof String)
+			{
+				final String s = (String)o;
+				if(CMath.isLong(s))
+					return Long.valueOf(CMath.s_long(s));
+				if(CMath.isDouble(s))
+					return Double.valueOf(CMath.s_double(s));
+				return s;
+			}
+			else
+				return o;
+		}
+		return null;
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected Map<String,Object> buildMsdpMap(final char[] data, final int dataSize)
 	{
@@ -1669,9 +1749,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			final ByteArrayOutputStream buf=new ByteArrayOutputStream();
 			buf.write(Session.TELNET_IAC);buf.write(Session.TELNET_SB);buf.write(Session.TELNET_MSDP);
 			for(final Object var : broken)
-			{
 				buf.write(processMsdpSend(session,var.toString()));
-			}
 			buf.write((char)Session.TELNET_IAC);buf.write((char)Session.TELNET_SE);
 			return buf.toByteArray();
 		}
@@ -1684,9 +1762,27 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	@Override
 	public byte[] processMsdp(final Session session, final char[] data, final int dataSize, final Map<Object,Object> reportables)
 	{
+		final Map<String,Object> cmds=this.buildMsdpMap(data, dataSize);
+		final byte[] result = processMsdpResult(session, cmds, reportables);
+		if((result == null)||(result.length==0))
+			return null;
+		final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		bout.write(Session.TELNET_IAC); bout.write(Session.TELNET_SB); bout.write(Session.TELNET_MSDP);
 		try
 		{
-			final Map<String,Object> cmds=this.buildMsdpMap(data, dataSize);
+			bout.write(result); bout.write(Session.TELNET_IAC); bout.write(Session.TELNET_SE);
+			return bout.toByteArray();
+		}
+		catch(final IOException ioe)
+		{
+			return null;
+		}
+	}
+
+	protected byte[] processMsdpResult(final Session session, final Map<String,Object> cmds, final Map<Object,Object> reportables)
+	{
+		try
+		{
 			final ByteArrayOutputStream buf=new ByteArrayOutputStream();
 			if(cmds.containsKey(MSDPCommand.REPORT.toString()))
 			{
@@ -1800,10 +1896,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 			if(buf.size()==0)
 				return null;
-			final ByteArrayOutputStream bout = new ByteArrayOutputStream();
-			bout.write(Session.TELNET_IAC); bout.write(Session.TELNET_SB); bout.write(Session.TELNET_MSDP);
-			bout.write(buf.toByteArray()); bout.write(Session.TELNET_IAC); bout.write(Session.TELNET_SE);
-			return bout.toByteArray();
+			return buf.toByteArray();
 		}
 		catch(final IOException e)
 		{
@@ -1892,7 +1985,21 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return attribs.toString();
 	}
 
-	protected String processGmcpStr(final Session session, final String jsonData, final Map<String,Double> supportables)
+	protected String convertMsdpStreamToJSONString(final byte[] msdpData)
+	{
+		final char[] charResult = new char[msdpData.length];
+		for(int i=0;i<msdpData.length;i++)
+			charResult[i]=(char)(msdpData[i] & 0xff);
+		final Map<String,Object> newMap = buildMsdpMap(charResult, charResult.length);
+		final Object jsonConversion = convertMsdpObjectToJSONObject(newMap);
+		final StringBuilder str = new StringBuilder("");
+		MiniJSON.JSONObject.appendJSONValue(str, jsonConversion);
+		return str.toString();
+	}
+
+	protected String processGmcpStr(final Session session, final String jsonData,
+									final Map<String,Double> supportables,
+									final Map<Object,Object> reportables)
 	{
 		final MiniJSON jsonParser=new MiniJSON();
 		try
@@ -1930,11 +2037,22 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				case maplevel:
 					// what's this do?
 					break;
+				case msdp:
+				{
+					if(json != null)
+					{
+						final Map<String,Object> msdpMap = convertJSONObjectToMsdpMap(json.getCheckedJSONObject("root"));
+						final byte[] result = this.processMsdpResult(session, msdpMap, reportables);
+						if(result != null)
+							return convertMsdpStreamToJSONString(result);
+					}
+					break;
+				}
 				case request:
 				{
 					final StringBuilder str=new StringBuilder(allDoc);
 					str.setCharAt(pkgSepIndex, '_');
-					return processGmcpStr(session,str.toString(),supportables);
+					return processGmcpStr(session,str.toString(),supportables,reportables);
 				}
 				case char_login:
 				{
@@ -1948,7 +2066,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							final String pw=json.getCheckedString("password");
 							if(session.autoLogin(name, pw))
 							{
-								return processGmcpStr(session,"char.statusvars",supportables);
+								return processGmcpStr(session,"char.statusvars",supportables,reportables);
 							}
 						}
 					}
@@ -2687,9 +2805,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@Override
-	public byte[] processGmcp(final Session session, final String data, final Map<String,Double> supportables)
+	public byte[] processGmcp(final Session session, final String data, final Map<String,Double> supportables, final Map<Object,Object> reportables)
 	{
-		final String doc=processGmcpStr(session, data, supportables);
+		final String doc=processGmcpStr(session, data, supportables, reportables);
 		if(doc != null)
 		{
 			if(CMSecurity.isDebugging(DbgFlag.GMCP))
@@ -2699,9 +2817,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return null;
 	}
 
-	protected byte[] possiblePingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, final String command)
+	protected byte[] possiblePingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, final String command, final Map<Object,Object> reportables)
 	{
-		final String chunkStr=processGmcpStr(session, command, supportables);
+		final String chunkStr=processGmcpStr(session, command, supportables, reportables);
 		if(chunkStr!=null)
 		{
 			final Long oldHash=reporteds.get(command);
@@ -2718,7 +2836,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@Override
-	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables)
+	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, final Map<Object,Object> reportables)
 	{
 		if(supportables.size()==0)
 			return null;
@@ -2745,7 +2863,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					reporteds.put("system.currentRoom", Long.valueOf(room.hashCode()));
 					final String command="room.info";
 					final char[] cmd=command.toCharArray();
-					buf=processGmcp(session, new String(cmd), supportables);
+					buf=processGmcp(session, new String(cmd), supportables, reportables);
 					if(buf!=null)
 						bout.write(buf);
 				}
@@ -2766,7 +2884,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					reporteds.put("system.currentRoomMobiles", Long.valueOf(room.hashCode()));
 					final String command="room.mobiles";
 					final char[] cmd=command.toCharArray();
-					buf=processGmcp(session, new String(cmd), supportables);
+					buf=processGmcp(session, new String(cmd), supportables, reportables);
 					if(buf!=null)
 						bout.write(buf);
 				}
@@ -2787,7 +2905,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					reporteds.put("system.currentRoomPlayers", Long.valueOf(room.hashCode()));
 					final String command="room.players";
 					final char[] cmd=command.toCharArray();
-					buf=processGmcp(session, new String(cmd), supportables);
+					buf=processGmcp(session, new String(cmd), supportables, reportables);
 					if(buf!=null)
 						bout.write(buf);
 				}
@@ -2808,7 +2926,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					reporteds.put("system.currentRoomItems", Long.valueOf(room.hashCode()));
 					final String command="room.items.inv";
 					final char[] cmd=command.toCharArray();
-					buf=processGmcp(session, new String(cmd), supportables);
+					buf=processGmcp(session, new String(cmd), supportables, reportables);
 					if(buf!=null)
 						bout.write(buf);
 				}
@@ -2830,7 +2948,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@Override
-	public byte[] pingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables)
+	public byte[] pingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, final Map<Object,Object> reportables)
 	{
 		try
 		{
@@ -2861,7 +2979,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				reporteds.put("system.nextMedReport", Long.valueOf(now+(CMProps.getTickMillis()-1)));
 				if(charSupported||supportables.containsKey("char.status"))
 				{
-					buf=possiblePingGmcp(session, reporteds, supportables, "char.status");
+					buf=possiblePingGmcp(session, reporteds, supportables, "char.status", reportables);
 					if(buf!=null)
 						bout.write(buf);
 				}
@@ -2873,7 +2991,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				{
 					if(supportables.containsKey("group"))
 					{
-						buf=possiblePingGmcp(session, reporteds, supportables, "group");
+						buf=possiblePingGmcp(session, reporteds, supportables, "group", reportables);
 						if(buf!=null)
 							bout.write(buf);
 					}
@@ -2881,7 +2999,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 			if(charSupported||supportables.containsKey("char.vitals"))
 			{
-				buf=possiblePingGmcp(session, reporteds, supportables, "char.vitals");
+				buf=possiblePingGmcp(session, reporteds, supportables, "char.vitals", reportables);
 				if(buf!=null)
 					bout.write(buf);
 			}
@@ -2890,32 +3008,60 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				reporteds.put("system.nextLongReport", Long.valueOf(now+15996));
 				if(charSupported||supportables.containsKey("char.worth"))
 				{
-					buf=possiblePingGmcp(session, reporteds, supportables, "char.worth");
+					buf=possiblePingGmcp(session, reporteds, supportables, "char.worth", reportables);
 					if(buf!=null)
 						bout.write(buf);
 				}
 				if(charSupported||supportables.containsKey("char.maxstats"))
 				{
-					buf=possiblePingGmcp(session, reporteds, supportables, "char.maxstats");
+					buf=possiblePingGmcp(session, reporteds, supportables, "char.maxstats", reportables);
 					if(buf!=null)
 						bout.write(buf);
 				}
 				if(charSupported||supportables.containsKey("char.base"))
 				{
-					buf=possiblePingGmcp(session, reporteds, supportables, "char.base");
+					buf=possiblePingGmcp(session, reporteds, supportables, "char.base", reportables);
 					if(buf!=null)
 						bout.write(buf);
 				}
 				if(charSupported||supportables.containsKey("char.statusvars"))
 				{
-					buf=possiblePingGmcp(session, reporteds, supportables, "char.statusvars");
+					buf=possiblePingGmcp(session, reporteds, supportables, "char.statusvars", reportables);
 					if(buf!=null)
 						bout.write(buf);
 				}
 			}
-			final byte[] roomStuff = invokeRoomChangeGmcp(session, reporteds, supportables);
+			final byte[] roomStuff = invokeRoomChangeGmcp(session, reporteds, supportables, reportables);
 			if(roomStuff != null)
 				bout.write(roomStuff);
+			if((reportables.size()>0)&&(!session.getClientTelnetMode(Session.TELNET_MSDP)))
+			{
+				List<Object> broken=null;
+				synchronized(reportables)
+				{
+					Object newValue;
+					for(final Entry<Object,Object> e : reportables.entrySet())
+					{
+						newValue=getMsdpComparable(session, (MSDPVariable)e.getKey());
+						if(!e.getValue().equals(newValue))
+						{
+							reportables.put(e.getKey(),newValue);
+							if(broken==null)
+								broken=new LinkedList<Object>();
+							broken.add(e.getKey());
+						}
+					}
+				}
+				if(broken!=null)
+				{
+					for(final Object var : broken)
+					{
+						final byte[] result = processMsdpSend(session,var.toString());
+						if(result != null)
+							bout.write(convertMsdpStreamToJSONString(result).getBytes());
+					}
+				}
+			}
 			return (bout.size()==0) ? null: bout.toByteArray();
 		}
 		catch(final java.io.IOException ioe)

@@ -1787,7 +1787,7 @@ public class DefaultSession implements Session
 			break;
 		case TELNET_GMCP:
 			{
-				final byte[] resp=CMLib.protocol().processGmcp(this, new String(suboptionData), this.gmcpSupports);
+				final byte[] resp=CMLib.protocol().processGmcp(this, new String(suboptionData), gmcpSupports, msdpReportables);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 				{
 					Log.debugOut("For suboption "+Session.TELNET_DESCS[optionCode]+", got "+dataSize+" bytes, sent "+((resp==null)?0:resp.length));
@@ -2852,7 +2852,7 @@ public class DefaultSession implements Session
 		}
 		if(getClientTelnetMode(TELNET_GMCP))
 		{
-			final byte[] gmcpPingBuf=CMLib.protocol().pingGmcp(this, gmcpPings, gmcpSupports);
+			final byte[] gmcpPingBuf=CMLib.protocol().pingGmcp(this, gmcpPings, gmcpSupports, msdpReportables);
 			if(gmcpPingBuf!=null)
 			{
 				try
@@ -3788,7 +3788,7 @@ public class DefaultSession implements Session
 		case ROOMLOOK:
 			if(getClientTelnetMode(TELNET_GMCP))
 			{
-				final byte[] gmcpPingBuf=CMLib.protocol().invokeRoomChangeGmcp(this, gmcpPings, gmcpSupports);
+				final byte[] gmcpPingBuf=CMLib.protocol().invokeRoomChangeGmcp(this, gmcpPings, gmcpSupports, msdpReportables);
 				if(gmcpPingBuf!=null)
 				{
 					try

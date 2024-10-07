@@ -3,7 +3,8 @@
 
   <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>The CoffeeMud CM1 Server</title>
   
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-5, fix validation errors, add index, and fix spelling errors --></head><body>
+  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-5, fix validation errors, add index, and fix spelling errors --></head>
+<body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
   <tbody>
@@ -39,7 +40,7 @@ standard of LF-CR (\n\r, or 10-13).&nbsp; Most text files, however, can
 be encoded using either, or any combination of \n and \r, so long as
 the same standard is used throughout the file.</p>
       <pre style="color: rgb(0, 0, 0); font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px;">Dec  Char                           Dec  Char     Dec  Char     Dec  Char<br />---------                           ---------     ---------     ----------<br />  0  NUL (null)                      32  SPACE     64  @         96  `<br />  1  Not used                        33  !         65  A         97  a<br />  2  Not used                        34  "         66  B         98  b<br />  3  Not used                        35  #         67  C         99  c<br />  4  Not used                        36  $         68  D        100  d<br />  5  Not used                        37  %         69  E        101  e<br />  6  Not used                        38  &amp;         70  F        102  f<br />  7  BEL (bell)                      39  '         71  G        103  g<br />  8  BS  (backspace)                 40  (         72  H        104  h<br />  9  TAB (horizontal tab)            41  )         73  I        105  i<br /> 10  LF  (NL line feed, new line)    42  *         74  J        106  j<br /> 11  Not used                        43  +         75  K        107  k<br /> 12  Not used                        44  ,         76  L        108  l<br /> 13  CR  (carriage return)           45  -         77  M        109  m<br /> 14  Not used                        46  .         78  N        110  n<br /> 15  Not used                        47  /         79  O        111  o<br /> 16  Not used                        48  0         80  P        112  p<br /> 17  Not used                        49  1         81  Q        113  q<br /> 18  Not used                        50  2         82  R        114  r<br /> 19  Not used                        51  3         83  S        115  s<br /> 20  Not used                        52  4         84  T        116  t<br /> 21  Not used                        53  5         85  U        117  u<br /> 22  Not used                        54  6         86  V        118  v<br /> 23  Not used                        55  7         87  W        119  w<br /> 24  Not used                        56  8         88  X        120  x<br /> 25  Not used                        57  9         89  Y        121  y<br /> 26  Not used                        58  :         90  Z        122  z<br /> 27  ESC (escape)                    59  ;         91  [        123  {<br /> 28  Not used                        60  &lt;         92  \        124  |<br /> 29  Not used                        61  =         93  ]        125  }<br /> 30  Not used                        62  &gt;         94  ^        126  ~<br /> 31  Not used                        63  ?         95  _        127  Not used<br /><br /></pre>
-<p /><h2><a name="ascii">ANSI</a></h2>
+<h2><a name="ascii">ANSI</a></h2>
       <p>The ANSI escape
 sequences are an ASCII-compatible protocol for varying both the display
 of text, and for controlling cursor position and other terminal
@@ -87,7 +88,7 @@ separated by semicolons, and finally ending with ASCII 109 'm'.</p>
       <p>* The \033 above is the ASCII-27 (ESCAPE)</p>
       <p><br />
       </p>
-<p /><h2><a name="ansi256">ANSI-256</a></h2>
+<h2><a name="ansi256">ANSI-256</a></h2>
       <p>This is a
 further extension of the color capabilities of ANSI that provides 256
 foreground and background colors.&nbsp;&nbsp; While&nbsp; ANSI&nbsp; is
@@ -98,7 +99,7 @@ feature can be specifically turned off by the user using the CONFIG
 command.</p>
       <p>The format for ANSI-256 is as follows:</p>
       <span style="font-family: monospace;">\033[38;5;XXm&nbsp; FOREGROUND COLOR XX (0 - 255)<br /></span><span style="font-family: monospace;">\033[48;5;XXm&nbsp; BACKGROUND COLOR XX (0 - 255)<br /></span><br />
-<p /><h2><a name="telnet" /> TELNET</h2>
+<h2><a name="telnet"> TELNET</a></h2>
       <p>TELNET is a system
 of inline escape codes that CoffeeMud uses to negotiate client
 capabilities between the client and server, and to support the other
@@ -110,7 +111,10 @@ sending to the client a WILL -feature- or WONT -feature- message, and
 the client responding with either a DO -feature- or DONT -feature.</p>
       <p>These negotations are of the form:</p>
       <p style="font-family: monospace;">[IAC][DO][CODE]</p>
-      <p>Where [IAC] is decimal 252, [DO] is either 253 for DO, 254 for DONT, 251 for WILL, or 252 for WONT. [CODE] is one of the TELNET feature codes (see below)</p>
+      <p>Where
+[IAC] is decimal 252, [DO] is either 253 for DO, 254 for DONT, 251 for
+WILL, or 252 for WONT. [CODE] is one of the TELNET feature codes (see
+below)</p>
       <p>Another type of TELNET negotation is the SUB-OPTION
 negotation, which allows the client to send more information to the
 server than can be represented in a single byte.&nbsp;&nbsp; The format
@@ -145,8 +149,8 @@ to support the Window Size sub-option. [NAWS] is dec 31<br />
       </span><span style="font-family: monospace;">[IAC][</span><span style="font-family: monospace;">WILL</span><span style="font-family: monospace;">][MSSP]&nbsp;&nbsp;
 &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Offer
 to support the MSSP protocol (see below). [MSSP] is dec 70</span><br />
-      <span style="font-family: monospace;"><br />
-      </span><span style="font-family: monospace;" />The client will
+      <br />
+      The client will
 then be given a period of time to respond with the appropriate DO or
 DONT before the server just proceeds with its default behavior.&nbsp; <br />
       <br />
@@ -191,7 +195,7 @@ decimal 18.<br />
       <br />
 Upon receiving [IAC][AYT], the server will respond with a space and \b.&nbsp; The [AYT] code is 246.<br />
       <br />
-<p /><h2><a name="mccp" /> MCCP</h2>
+<h2><a name="mccp"> MCCP</a></h2>
       <p>The Mud Client
 Compression Protocol, when enabled, alters the encoding sent by the
 server to the client to one that is GZIP compressed ASCII.&nbsp; There
@@ -232,9 +236,9 @@ following special command:<br />
 
       <br />
 
-      <span style="font-family: monospace;" /><span style="font-family: monospace;">#$#[MCP-PACKAGE] [AUTH-KEY] [KEY]: [VALUE] ... etc ..</span><br />
+      <span style="font-family: monospace;"><span style="font-family: monospace;">#$#[MCP-PACKAGE] [AUTH-KEY] [KEY]: [VALUE] ... etc ..</span><br />
 
-      </p>
+      </span></p>
       <p>[MCP-PACKAGE] would be one of the package names, usually
 beginning
 with MCP.&nbsp; After the following space, the auth-key and another
@@ -262,8 +266,8 @@ followed by data-tag value the to continue the previous line, and ends
 when a line that starts with #$#: is encountered.&nbsp;&nbsp; Here are
 some examples:<br />
       </p>
-      <p><span style="font-family: monospace;">#$#* </span><span style="font-family: monospace;">[TAG-VALUE] </span><span style="font-family: monospace;">[KEY]: [VALUE] </span><span style="font-family: monospace;" /><span style="font-family: monospace;">... etc ... </span><br />
-      <span style="font-family: monospace;">#$#: </span><span style="font-family: monospace;">[</span><span style="font-family: monospace;">TAG-VALUE</span><span style="font-family: monospace;">] </span><span style="font-family: monospace;">[KEY]: [VALUE] </span><span style="font-family: monospace;">... etc ... </span></p>
+      <p><span style="font-family: monospace;">#$#* </span><span style="font-family: monospace;">[TAG-VALUE] </span><span style="font-family: monospace;">[KEY]: [VALUE] </span><span style="font-family: monospace;"><span style="font-family: monospace;">... etc ... </span><br />
+      <span style="font-family: monospace;">#$#: </span><span style="font-family: monospace;">[</span><span style="font-family: monospace;">TAG-VALUE</span><span style="font-family: monospace;">] </span><span style="font-family: monospace;">[KEY]: [VALUE] </span><span style="font-family: monospace;">... etc ... </span></span></p>
 
       <p>Anyway, back to the negotiation.&nbsp; After receiving the
 authentication-key, the server will immediately respond with a series
@@ -293,7 +297,7 @@ interface, and placed in the
 com/planet_ink/coffee_mud/Libraries/mcppkgs/ directory before boot.</p>
       <p><br />
       </p>
-<p /><h2><a name="msp">MSP</a></h2>
+<h2><a name="msp">MSP</a></h2>
       <p>The MUD Sound Protocol
 allows sound files to be played by the client.&nbsp; It can also
 specify a URL to download the sound file from a web server supported by
@@ -313,7 +317,7 @@ in /resources/web/pub/sounds/ , and also put them in the sounds.zip
 file found in the same directory, for people who want to install all
 the sounds in their client at once.<br />
       <br />
-<p /><h2><a name="mxp">MXP</a></h2>
+<h2><a name="mxp">MXP</a></h2>
       <p>The Mud eXtension
 Protocol, developed by ZuggSoft, is an HTML-like markup language that
 provides quite a few client view capabilities that can be driven by the
@@ -388,9 +392,8 @@ sign, to let the mud know that an MXP tag was embedded in an outgoing
 string.&nbsp; MXP also allows traditional HTML entitles, such as
 &amp;quot; for double-quotes, &amp;lt; for less-than, etc.<br />
       </p>
-      <p><br />
-      </p>
-<p /><p /><h2><a name="msdp">MSDP</a></h2>
+      
+<p></p><h2><a name="msdp">MSDP</a></h2>
       <p>The MUD Server
 Data Protocol is a protocol that embeds itself entirely in TELNET
 sub-option negotiation codes in order to send and receive data and data
@@ -422,7 +425,7 @@ For example:</p>
       <p><span style="font-family: monospace;">[IAC][SB][MSDP-CODE][MSDP-VAR-CODE][VAR-NAME][MSDP-VAL-CODE][VAR-VALUE] </span><span style="font-family: monospace;">[MSDP-VAL-CODE][VAR-VALUE] </span><span style="font-family: monospace;">... [IAC][SE]</span></p>
       <p>An example of an array would be:</p>
       <p><span style="font-family: monospace;">[IAC][SB][MSDP-CODE][MSDP-VAR-CODE][VAR-NAME][MSDP-VAL-CODE]</span><span style="font-family: monospace;">[MSDP-ARRAY-OPEN-CODE]<br />
-      </span><span style="font-family: monospace;">[MSDP-VAL-CODE]</span><span style="font-family: monospace;">[VAR-VALUE] ... </span><span style="font-family: monospace;" /><span style="font-family: monospace;">[MSDP-ARRAY-CLOSE-CODE]</span><span style="font-family: monospace;">[IAC][SE]</span></p>
+      </span><span style="font-family: monospace;">[MSDP-VAL-CODE]</span><span style="font-family: monospace;">[VAR-VALUE] ... </span><span style="font-family: monospace;"><span style="font-family: monospace;">[MSDP-ARRAY-CLOSE-CODE]</span><span style="font-family: monospace;">[IAC][SE]</span></span></p>
 
 Where [MSDP-ARRAY-OPEN-CODE] is decimal 5, and [MSDP-ARRAY-CLOSE-CODE]
 is 6.&nbsp;&nbsp; Tables are defined as embedded key-value pairs, and
@@ -464,25 +467,31 @@ OPPONENT_RANGE, WORLD_TIME, ROOM, LOCATION, ROOM_NAME, ROOM_VNUM,
 ROOM_AREA, ROOM_TERRAIN, ROOM_EXITS, ARACHNOS_MUDLIST, ARACHNOS_DEVEL,
 ARACHNOS_CHAT<br />
       </p>
-<p /><h2><a name="gmcp">GMCP</a></h2>
+<p></p><h2><a name="gmcp">GMCP</a></h2>
       <p>The Generic Mud Client
-Protocol is a close cousin to the MSDP protocol, in that it is also
+Protocol is a close sibling to the MSDP protocol, in that it is also
 entirely implemented using the TELNET sub-option negotiation
 protocol.&nbsp; Also like MSDP, GMCP is bi-directional, and intended
 mostly for communicating information from the server to the
 client.&nbsp; Inside each TELNET SB packet is a a string consisting of
-a GMCP "Package" name followed by a JSON document.</p>
-      <p><br />
+a GMCP "Package" name/command followed by a a space and then a JSON object document. &nbsp; You can find details for this protocol at
+the following site: <a href="https://tintin.mudhalla.net/protocols/msdp/">https://tintin.mudhalla.net/protocols/gmcp/</a></p>
+      <p>Before the server will begin to send GMCP data packets, it
+will
+first negotiate client support for the protocol.&nbsp; It does this
+using a
+TELNET WILL&nbsp;GMCP escape code, as described above in the TELNET
+section.&nbsp;</p><p>
       </p>
       <p><br />
       </p>
       <h2><a name="mssp">MSSP</a></h2>
 
-      TOD<p /><p /><p /><p /><p /><p /><p /><p /><p /><p />
+      TOD<p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p>
       
       <br />
       <br />
-&nbsp;</td>
+&nbsp;</p></td>
     </tr><tr>
       <td style="vertical-align: top;"><br />
       </td>
