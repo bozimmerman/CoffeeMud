@@ -38,6 +38,7 @@
     <A target=OtherBrowser HREF="pub/guides/SMTPServer.html"><FONT COLOR=CYAN>SMTP Server guide</FONT></A><br>
     <A target=OtherBrowser HREF="pub/guides/Programming.html"><FONT COLOR=CYAN>Programmers Guide</FONT></A><br>
     <A target=OtherBrowser HREF="pub/guides/BuildersFAQ.html"><FONT COLOR=CYAN>Builders FAQ</FONT></A><br>
+    <A target=OtherBrowser HREF="pub/guides/Protocols.html"><FONT COLOR=CYAN>Protocols Guide</FONT></A><br>
     </TD>
 </TR>
 </TABLE>

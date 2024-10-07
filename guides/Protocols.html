@@ -17,7 +17,7 @@
 <tr>
 <td align="left" valign="top" width="20%">
 <ul>
-<li><a href="#ascii">Diku-ASCII</a></li>
+<li><a href="#ascii">ASCII</a></li>
 <li><a href="#ansi">ANSI</a></li>
 <li><a href="#ansi256">ANSI-256</a></li>
 <li><a href="#telnet">TELNET</a></li>
@@ -34,8 +34,7 @@
 <td align="left" valign="top">
 <p>The
 CoffeeMud Server, like all other MUD servers in its class, is
-responsible for much of the player view. &nbsp;To accomplish this,
-the
+responsible for much of the player view and retains all character and map information. &nbsp;The
 server utilizes several protocols that assist a variety of MUD game
 clients in presenting this view. &nbsp;This document exists to
 enumerate and detail those protocols, with special emphasis on any
@@ -52,10 +51,10 @@ standard of LF-CR (\n\r, or 10-13).&nbsp; Most text files, however,
 can
 be encoded using either, or any combination of \n and \r, so long as
 the same standard is used throughout the file.</p>
-<pre style="color: rgb(0, 0, 0); font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px;">Dec Char Dec Char Dec Char Dec Char<br />--------- --------- --------- ----------<br /> 0 NUL (null) 32 SPACE 64 @ 96 `<br /> 1 Not used 33 ! 65 A 97 a<br /> 2 Not used 34 " 66 B 98 b<br /> 3 Not used 35 # 67 C 99 c<br /> 4 Not used 36 $ 68 D 100 d<br /> 5 Not used 37 % 69 E 101 e<br /> 6 Not used 38 &amp; 70 F 102 f<br /> 7 BEL (bell) 39 ' 71 G 103 g<br /> 8 BS (backspace) 40 ( 72 H 104 h<br /> 9 TAB (horizontal tab) 41 ) 73 I 105 i<br /> 10 LF (NL line feed, new line) 42 * 74 J 106 j<br /> 11 Not used 43 + 75 K 107 k<br /> 12 Not used 44 , 76 L 108 l<br /> 13 CR (carriage return) 45 - 77 M 109 m<br /> 14 Not used 46 . 78 N 110 n<br /> 15 Not used 47 / 79 O 111 o<br /> 16 Not used 48 0 80 P 112 p<br /> 17 Not used 49 1 81 Q 113 q<br /> 18 Not used 50 2 82 R 114 r<br /> 19 Not used 51 3 83 S 115 s<br /> 20 Not used 52 4 84 T 116 t<br /> 21 Not used 53 5 85 U 117 u<br /> 22 Not used 54 6 86 V 118 v<br /> 23 Not used 55 7 87 W 119 w<br /> 24 Not used 56 8 88 X 120 x<br /> 25 Not used 57 9 89 Y 121 y<br /> 26 Not used 58 : 90 Z 122 z<br /> 27 ESC (escape) 59 ; 91 [ 123 {<br /> 28 Not used 60 &lt; 92 \ 124 |<br /> 29 Not used 61 = 93 ] 125 }<br /> 30 Not used 62 &gt; 94 ^ 126 ~<br /> 31 Not used 63 ? 95 _ 127 Not used<br /><br /></pre>
+<pre style="color: rgb(0, 0, 0); font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px;">Dec Char                 Dec Char  Dec Char  Dec Char<br />---------                --------- --------- ----------<br /> 0  NUL (null)           32  SPACE 64  @     96  `<br /> 1  Not used             33  !     65  A     97  a<br /> 2  Not used             34  "     66  B     98  b<br /> 3  Not used             35  #     67  C     99  c<br /> 4  Not used             36  $     68  D     100 d<br /> 5  Not used             37  %     69  E     101 e<br /> 6  Not used             38  &amp;     70  F     102 f<br /> 7  BEL (bell)           39  '     71  G     103 g<br /> 8  BS  (backspace)      40  (     72  H     104 h<br /> 9  TAB (horz tab)       41  )     73  I     105 i<br /> 10 LF (NL line feed)    42  *     74  J     106 j<br /> 11 Not used             43  +     75  K     107 k<br /> 12 Not used             44  ,     76  L     108 l<br /> 13 CR (carriage return) 45  -     77  M     109 m<br /> 14 Not used             46  .     78  N     110 n<br /> 15 Not used             47  /     79  O     111 o<br /> 16 Not used             48  0     80  P     112 p<br /> 17 Not used             49  1     81  Q     113 q<br /> 18 Not used             50  2     82  R     114 r<br /> 19 Not used             51  3     83  S     115 s<br /> 20 Not used             52  4     84  T     116 t<br /> 21 Not used             53  5     85  U     117 u<br /> 22 Not used             54  6     86  V     118 v<br /> 23 Not used             55  7     87  W     119 w<br /> 24 Not used             56  8     88  X     120 x<br /> 25 Not used             57  9     89  Y     121 y<br /> 26 Not used             58  :     90  Z     122 z<br /> 27 ESC (escape)         59  ;     91  [     123 {<br /> 28 Not used             60  &lt;     92  \     124 |<br /> 29 Not used             61  =     93  ]     125 }<br /> 30 Not used             62  &gt;     94  ^     126 ~<br /> 31 Not used             63  ?     95  _     127 Not used<br /><br /></pre>
 <h2><a name="ascii">ANSI</a></h2>
 <p>The ANSI escape
-sequences are an ASCII-compatible protocol for varying both the display
+sequences are an ASCII-compatible protocol for varying&nbsp;the display
 of text, and for controlling cursor position and other terminal
 features.&nbsp; For our purposes, it is best to think of it as what
 allows 16 foreground colors for text, and 8 text background
@@ -477,9 +476,9 @@ Sounds.</p>
 <p>The <span style="font-weight: bold;">SEND</span>
 tag is for
 creating right-mouse-click context menus on various lines of text to
-allow the user to enter commands that make sure of them without
+allow the user to enter commands that make use of them without
 typing.&nbsp; The format is &lt;SEND HREF="[COMMANDS]"
-HINT="[TEXT]"&gt;&nbsp; The [COMMANDS] are a pipe-delimited
+HINT="[TEXT]"&gt;&nbsp; The [COMMANDS] are a |pipe|-delimited
 list of MUD
 commands that are entered when a menu option is chosen.&nbsp; The
 [TEXT] is a pipe-delimited list of the menu options corresponding to
@@ -600,8 +599,8 @@ intended
 mostly for communicating information from the server to the
 client.&nbsp; Inside each TELNET SB packet is a a string consisting
 of
-a GMCP "Package" name/command followed by a a space and then a JSON
-object document. &nbsp; You can find details for this protocol at
+a GMCP "Package" name/command followed by a a space and then a
+JSON&nbsp;document. &nbsp; You can find details for this protocol at
 the following site: <a href="https://tintin.mudhalla.net/protocols/msdp/">https://tintin.mudhalla.net/protocols/gmcp/</a></p>
 <p>Before the server will begin to send GMCP data packets,
 it
@@ -614,8 +613,7 @@ section.&nbsp;</p>
 previously, to embed an GMCP package and JSON document stream inside a
 TELNET sub-option
 negotiation packet. A typical packet is as follows:</p>
-<span style="font-family: monospace;">[IAC][SB][GMCP-CODE][GMCP-PKG-NAME
-][JSON-DOCUMENT][IAC][SE]</span>
+<span style="font-family: monospace;">[IAC][SB][GMCP-CODE][GMCP-PKG-NAME][JSON-DOCUMENT][IAC][SE]</span>
 <p> Where [IAC] is decinal 252, [SB] is 250, [SE] is 240,
 [GMCP-CODE] is 201, [GMCP-PKG-NAME] is a space-free GMCP package or
 command word, typically formatted with period-separated package names.
@@ -660,8 +658,9 @@ packages/commands.</td>
 </tr>
 <tr>
 <td width="25%">char.login</td>
-<td>{"name":"char name", "password": "char pw" } - Logs in a character,
-when one is not yet logged in. &nbsp;Sent by the client of course.</td>
+<td>Arguments: {"name":"char name", "password": "char pw" } - Logs in a
+character, when one is not yet logged in. &nbsp;Sent by the client of
+course.</td>
 </tr>
 <tr>
 <td width="25%">char.vitals</td>
@@ -678,7 +677,7 @@ when one is not yet logged in. &nbsp;Sent by the client of course.</td>
 10, "state": 22, "pos": "sleeping", "enemy": "enemy name",
 "enemyrange": 1, "enemypct": 10} <br />"state" is: 4-afk, 9-sleeping, 11-sitting, 8-in combat, 6-sysmsgs, 12-autorun, 3-normal</td>
 </tr>
-<tr><td>char</td><td>Sends char.vitals, char.worth, char.maxstats, char.base</td></tr><tr>
+<tr><td>char</td><td>When supported, sends char.vitals, char.worth, char.maxstats, char.base</td></tr><tr>
 <td width="25%">char.base</td>
 <td>char.base {"name": "name", "class": "base class", "subclass":
 "class name", "race": "race name", "perlevel": 999, "prevlevel": 999,
@@ -728,7 +727,7 @@ char.effects.list{"group": "skilltype-domain", "list": ["skill name",
 "hp": 1, "mhp": 2, "mn": 3, "mmn": 4, "mv": 5, "mmv": 6, "lvl": 7,
 "align": 8, "tnl": 9 }, ... }</td>
 </tr>
-<tr><td>room</td><td>Sends room.info, room.items.inv, room.mobiles, room.players, room.enter, room.leave</td></tr><tr><td>room.items</td><td>Sends room.items.inv</td></tr><tr>
+<tr><td>room</td><td>When supported, sends room.info, room.items.inv, room.mobiles, room.players, room.enter, room.leave</td></tr><tr><td>room.items</td><td>Sends room.items.inv</td></tr><tr>
 <td width="25%">room.info</td>
 <td>room.info {"num": 932939, "id":"Area#9", "name": "name", "zone":
 "area name", "desc": "room desc", "terrain": "locale domain type",
@@ -816,7 +815,7 @@ offline text editor.</td></tr><tr>
 </tr>
 <tr>
 <td width="25%">external.discord.hello</td>
-<td></td>
+<td>Not implemented</td>
 </tr>
 <tr>
 <td width="25%">msdp</td>
@@ -836,8 +835,35 @@ char.worth, char.maxstats, char.base, room, room.info, room.mobiles,
 room.players, room.items, room.items.inv, room.enter, room.leave.</p><p>All others have either special behavior, or must be requested of the server by sending the package name/command.<br />
 </p>
 <h2><a name="mssp">MSSP</a></h2>
-TOD
-<p></p>
+<p>The MUD Server Status Protocol is a unique protocol whose purpose is
+to gather high-level basic information about a MUD without logging in a
+character. &nbsp;For this reason, all of the protocol transactions will
+occur on your Login prompt. &nbsp;Like MSDP, MSSP is encoded entirely
+in a TELNET sub-option negotiation packet. &nbsp;See the TELNET section
+for more information, and see the website for MSSP at <a href="https://tintin.mudhalla.net/protocols/mssp/">https://tintin.mudhalla.net/protocols/mssp/</a></p><p>Before the server will begin to send MSSP data packets,
+it
+will
+first negotiate client support for the protocol.&nbsp; It does this
+using a
+TELNET WILL&nbsp;MSSP escape code, as described above in the TELNET
+section.&nbsp;&nbsp;</p>
+<p>The format of a typical MSDP packet is, as mentioned
+previously, to embed an MSDP stream inside a TELNET sub-option
+negotiation packet. A typical key-value pair packet is as follows:</p>
+<span style="font-family: monospace;">[IAC][SB][MSSP-CODE][MSDP-VAR-CODE][VAR-NAME][MSDP-VAL-CODE][VAR-VALUE]...[IAC][SE]</span><p>Where [IAC] is decinal 252, [SB] is 250, [SE] is 240,
+[MSSP-CODE] is 70, [MSSP-VAR-CODE] is 1, [MSSP-VAL-CODE] is 2,
+[VAR-NAME] and [VAR-VALUE] are unquoted ascii strings.</p><p>Immediately
+after the DO MSSP TELNET code is received by the server from the
+client, CoffeeMud will immediately send the entire MSSP Packet.
+&nbsp;Encoded in the VAR-VALUE format mentioned above, this data
+includes:</p><p>PLAYERS, STATUS, PORT, UPTIME, HOSTNAME, WEBSITE,
+LANGUAGE, ICON, CHARSET, I3, IMC2, INTERMUD, FAMILY, CRAWL DELAY,
+CREATED, CONTACT, EMAIL, CODEBASE, AREAS, HELPFILES, MOBILES, OBJECTS,
+GAMESYSTEM, ROOMS, CLASSES, RACES, SKILLS, ANSI, XTERM 256 COLORS,
+MXXP, MSP, MXP. &nbsp;To this list is added any special variables and
+values defined in the coffeemud.ini file under "MSXPVARS". &nbsp;See
+the above MSSP web site for more information on what extra variables
+might be cool to send.</p>
 <p></p>
 <p></p>
 <p></p>
