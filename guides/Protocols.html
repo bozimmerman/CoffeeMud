@@ -1,60 +1,78 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" /><title>The CoffeeMud CM1 Server</title>
 
-  <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>The CoffeeMud CM1 Server</title>
-  
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-5, fix validation errors, add index, and fix spelling errors --></head>
+<link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+<!-- Modified by Josh Mueller, 2006-5-5, fix validation errors, add index, and fix spelling errors -->
+</head>
 <body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
-  <tbody>
-    <tr>
-      <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
-      <h1>CoffeeMud 5.10 Inline Protocols</h1>
-      </td>
-    </tr>
-    <tr>
-      <td align="left" valign="top" width="20%">
-      <ul>
-        <li><a href="#ascii">Diku-ASCII</a></li><li><a href="#ansi">ANSI</a></li><li><a href="#ansi256">ANSI-256</a></li><li><a href="#telnet">TELNET</a></li><li><a href="#mccp">MCCP</a></li>
-        <li><a href="#mcp">MCP</a><br />
-        </li>
-<li><a href="#msp">MSP</a></li><li><a href="#mxp">MXP</a></li><li><a href="#msdp">MSDP</a></li><li><a href="#gmcp">GMCP</a></li>
-        <li><a href="#mssp">MSSP</a></li>
+<tbody>
+<tr>
+<td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
+<h1>CoffeeMud 5.10 Inline Protocols</h1>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="20%">
+<ul>
+<li><a href="#ascii">Diku-ASCII</a></li>
+<li><a href="#ansi">ANSI</a></li>
+<li><a href="#ansi256">ANSI-256</a></li>
+<li><a href="#telnet">TELNET</a></li>
+<li><a href="#mccp">MCCP</a></li>
+<li><a href="#mcp">MCP</a><br />
+</li>
+<li><a href="#msp">MSP</a></li>
+<li><a href="#mxp">MXP</a></li>
+<li><a href="#msdp">MSDP</a></li>
+<li><a href="#gmcp">GMCP</a></li>
+<li><a href="#mssp">MSSP</a></li>
 </ul>
-      </td>
-      <td align="left" valign="top">
-      <p>The
+</td>
+<td align="left" valign="top">
+<p>The
 CoffeeMud Server, like all other MUD servers in its class, is
-responsible for much of the player view. &nbsp;To accomplish this, the
+responsible for much of the player view. &nbsp;To accomplish this,
+the
 server utilizes several protocols that assist a variety of MUD game
 clients in presenting this view. &nbsp;This document exists to
 enumerate and detail those protocols, with special emphasis on any
-particular CoffeeMud specific additions or changes.</p><h2><a name="ascii">ASCII</a></h2>
-      <p>All
+particular CoffeeMud specific additions or changes.</p>
+<h2><a name="ascii">ASCII</a></h2>
+<p>All
 text from the MUD server is transmitted as per the ISO-8859-1 encoding,
 an 8-bit superset of US-ASCII, though only the specified characters
-shown below are typically used.&nbsp; This encoding can be changed from
-the coffeemud.ini file.&nbsp; The End-of-line marker follows the Diku
-standard of LF-CR (\n\r, or 10-13).&nbsp; Most text files, however, can
+shown below are typically used.&nbsp; This encoding can be changed
+from
+the coffeemud.ini file.&nbsp; The End-of-line marker follows the
+Diku
+standard of LF-CR (\n\r, or 10-13).&nbsp; Most text files, however,
+can
 be encoded using either, or any combination of \n and \r, so long as
 the same standard is used throughout the file.</p>
-      <pre style="color: rgb(0, 0, 0); font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px;">Dec  Char                           Dec  Char     Dec  Char     Dec  Char<br />---------                           ---------     ---------     ----------<br />  0  NUL (null)                      32  SPACE     64  @         96  `<br />  1  Not used                        33  !         65  A         97  a<br />  2  Not used                        34  "         66  B         98  b<br />  3  Not used                        35  #         67  C         99  c<br />  4  Not used                        36  $         68  D        100  d<br />  5  Not used                        37  %         69  E        101  e<br />  6  Not used                        38  &amp;         70  F        102  f<br />  7  BEL (bell)                      39  '         71  G        103  g<br />  8  BS  (backspace)                 40  (         72  H        104  h<br />  9  TAB (horizontal tab)            41  )         73  I        105  i<br /> 10  LF  (NL line feed, new line)    42  *         74  J        106  j<br /> 11  Not used                        43  +         75  K        107  k<br /> 12  Not used                        44  ,         76  L        108  l<br /> 13  CR  (carriage return)           45  -         77  M        109  m<br /> 14  Not used                        46  .         78  N        110  n<br /> 15  Not used                        47  /         79  O        111  o<br /> 16  Not used                        48  0         80  P        112  p<br /> 17  Not used                        49  1         81  Q        113  q<br /> 18  Not used                        50  2         82  R        114  r<br /> 19  Not used                        51  3         83  S        115  s<br /> 20  Not used                        52  4         84  T        116  t<br /> 21  Not used                        53  5         85  U        117  u<br /> 22  Not used                        54  6         86  V        118  v<br /> 23  Not used                        55  7         87  W        119  w<br /> 24  Not used                        56  8         88  X        120  x<br /> 25  Not used                        57  9         89  Y        121  y<br /> 26  Not used                        58  :         90  Z        122  z<br /> 27  ESC (escape)                    59  ;         91  [        123  {<br /> 28  Not used                        60  &lt;         92  \        124  |<br /> 29  Not used                        61  =         93  ]        125  }<br /> 30  Not used                        62  &gt;         94  ^        126  ~<br /> 31  Not used                        63  ?         95  _        127  Not used<br /><br /></pre>
+<pre style="color: rgb(0, 0, 0); font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px;">Dec Char Dec Char Dec Char Dec Char<br />--------- --------- --------- ----------<br /> 0 NUL (null) 32 SPACE 64 @ 96 `<br /> 1 Not used 33 ! 65 A 97 a<br /> 2 Not used 34 " 66 B 98 b<br /> 3 Not used 35 # 67 C 99 c<br /> 4 Not used 36 $ 68 D 100 d<br /> 5 Not used 37 % 69 E 101 e<br /> 6 Not used 38 &amp; 70 F 102 f<br /> 7 BEL (bell) 39 ' 71 G 103 g<br /> 8 BS (backspace) 40 ( 72 H 104 h<br /> 9 TAB (horizontal tab) 41 ) 73 I 105 i<br /> 10 LF (NL line feed, new line) 42 * 74 J 106 j<br /> 11 Not used 43 + 75 K 107 k<br /> 12 Not used 44 , 76 L 108 l<br /> 13 CR (carriage return) 45 - 77 M 109 m<br /> 14 Not used 46 . 78 N 110 n<br /> 15 Not used 47 / 79 O 111 o<br /> 16 Not used 48 0 80 P 112 p<br /> 17 Not used 49 1 81 Q 113 q<br /> 18 Not used 50 2 82 R 114 r<br /> 19 Not used 51 3 83 S 115 s<br /> 20 Not used 52 4 84 T 116 t<br /> 21 Not used 53 5 85 U 117 u<br /> 22 Not used 54 6 86 V 118 v<br /> 23 Not used 55 7 87 W 119 w<br /> 24 Not used 56 8 88 X 120 x<br /> 25 Not used 57 9 89 Y 121 y<br /> 26 Not used 58 : 90 Z 122 z<br /> 27 ESC (escape) 59 ; 91 [ 123 {<br /> 28 Not used 60 &lt; 92 \ 124 |<br /> 29 Not used 61 = 93 ] 125 }<br /> 30 Not used 62 &gt; 94 ^ 126 ~<br /> 31 Not used 63 ? 95 _ 127 Not used<br /><br /></pre>
 <h2><a name="ascii">ANSI</a></h2>
-      <p>The ANSI escape
+<p>The ANSI escape
 sequences are an ASCII-compatible protocol for varying both the display
 of text, and for controlling cursor position and other terminal
 features.&nbsp; For our purposes, it is best to think of it as what
 allows 16 foreground colors for text, and 8 text background
-colors.&nbsp; None of the other rich features of ANSI escape codes are
-presently sent by the server.&nbsp; If or when they do, this section
+colors.&nbsp; None of the other rich features of ANSI escape codes
+are
+presently sent by the server.&nbsp; If or when they do, this
+section
 will be updated.<br />
 </p>
-      <p>An escape code begins with the sending of ASCII code 27 'ESC',
+<p>An escape code begins with the sending of ASCII code 27
+'ESC',
 followed by ASCII 91 '[', followed by one integer, or two integers
 separated by semicolons, and finally ending with ASCII 109 'm'.</p>
-      <p>The escape codes that the server may be expected to send include:</p>
-      <span style="font-family: monospace;">\033[1;37m&nbsp; WHITE<br />
+<p>The escape codes that the server may be expected to send
+include:</p>
+<span style="font-family: monospace;">\033[1;37m&nbsp;
+WHITE<br />
 \033[1;32m&nbsp; LIGHTG REEN<br />
 \033[1;34m&nbsp; LIGHT BLUE<br />
 \033[1;31m&nbsp; LIGHT RED<br />
@@ -84,123 +102,157 @@ separated by semicolons, and finally ending with ASCII 109 'm'.</p>
 \033[45m&nbsp;&nbsp;&nbsp; PURPLE BACKGROUND<br />
 \033[40m&nbsp;&nbsp;&nbsp; BLACK BACKGROUND<br />
 \033[49m&nbsp;&nbsp;&nbsp; DEFAULT BACKGROUND<br />
-      </span><br />
-      <p>* The \033 above is the ASCII-27 (ESCAPE)</p>
-      <p><br />
-      </p>
+</span><br />
+<p>* The \033 above is the ASCII-27 (ESCAPE)</p>
+<p><br />
+</p>
 <h2><a name="ansi256">ANSI-256</a></h2>
-      <p>This is a
+<p>This is a
 further extension of the color capabilities of ANSI that provides 256
-foreground and background colors.&nbsp;&nbsp; While&nbsp; ANSI&nbsp; is
+foreground and background colors.&nbsp;&nbsp; While&nbsp;
+ANSI&nbsp; is
 supported by basically any and all clients, ANSI-256 tends to be less
-supported.&nbsp; This can lead to undefined behavior when one of the
+supported.&nbsp; This can lead to undefined behavior when one of
+the
 special colors are sent by the server.&nbsp; For this reason, this
 feature can be specifically turned off by the user using the CONFIG
 command.</p>
-      <p>The format for ANSI-256 is as follows:</p>
-      <span style="font-family: monospace;">\033[38;5;XXm&nbsp; FOREGROUND COLOR XX (0 - 255)<br /></span><span style="font-family: monospace;">\033[48;5;XXm&nbsp; BACKGROUND COLOR XX (0 - 255)<br /></span><br />
+<p>The format for ANSI-256 is as follows:</p>
+<span style="font-family: monospace;">\033[38;5;XXm&nbsp;
+FOREGROUND COLOR XX (0 - 255)<br />
+</span><span style="font-family: monospace;">\033[48;5;XXm&nbsp;
+BACKGROUND COLOR XX (0 - 255)<br />
+</span><br />
 <h2><a name="telnet"> TELNET</a></h2>
-      <p>TELNET is a system
+<p>TELNET is a system
 of inline escape codes that CoffeeMud uses to negotiate client
 capabilities between the client and server, and to support the other
-protocols below.&nbsp; It is defined by RFC-854, which is available on
+protocols below.&nbsp; It is defined by RFC-854, which is available
+on
 the internet for your inspection.</p>
-      <p>TELNET negotiations consist of a set of asynchronous
+<p>TELNET negotiations consist of a set of asynchronous
 message/response pairs.&nbsp; Typical of this would be the server
 sending to the client a WILL -feature- or WONT -feature- message, and
 the client responding with either a DO -feature- or DONT -feature.</p>
-      <p>These negotations are of the form:</p>
-      <p style="font-family: monospace;">[IAC][DO][CODE]</p>
-      <p>Where
-[IAC] is decimal 252, [DO] is either 253 for DO, 254 for DONT, 251 for
-WILL, or 252 for WONT. [CODE] is one of the TELNET feature codes (see
-below)</p>
-      <p>Another type of TELNET negotation is the SUB-OPTION
+<p>These negotations are of the form:</p>
+<p style="font-family: monospace;">[IAC][DO][CODE]</p>
+<p>Where [IAC] is decimal 252, [DO] is either 253 for DO,
+254 for DONT, 251 for WILL, or 252 for WONT. [CODE] is one of the
+TELNET feature codes (see below)</p>
+<p>Another type of TELNET negotation is the SUB-OPTION
 negotation, which allows the client to send more information to the
-server than can be represented in a single byte.&nbsp;&nbsp; The format
+server than can be represented in a single byte.&nbsp;&nbsp;
+The format
 of these is:</p>
-      <p style="font-family: monospace;">[IAC][SB][CODE][STREAM][IAC][SE]</p>
-      <p>Where [IAC] is decinal 252, [SB] is 250, [SE] is 240, [CODE]
+<p style="font-family: monospace;">[IAC][SB][CODE][STREAM][IAC][SE]</p>
+<p>Where [IAC] is decinal 252, [SB] is 250, [SE] is 240,
+[CODE]
 is a Sub-Option code (see below), and [STREAM] is one or more bytes
 specific to the SUB-OPTION code.&nbsp; <br />
-      </p>
-      <p>The set of features that the server will automatically negotiate with the client upon connection includes the following:</p>
-      <span style="font-family: monospace;">[IAC][DO][TERMTYPE]&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; Offer to support the
+</p>
+<p>The set of features that the server will automatically
+negotiate with the client upon connection includes the following:</p>
+<span style="font-family: monospace;">[IAC][DO][TERMTYPE]&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; Offer to support the
 Terminal Type sub-option. [TERMTYPE] is dec 24</span><br style="font-family: monospace;" />
-      <span style="font-family: monospace;">[IAC][SB][TERMTYPE][ONE][IAC][SE] Initiate Term Type sub-option negotation, where [ONE] is decimal 1<br />
-[IAC][WILL][COMPRESS2]</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Offer to support MCCP protocol (see below).&nbsp; [COMPRESS2] is dec 86<br />
+<span style="font-family: monospace;">[IAC][SB][TERMTYPE][ONE][IAC][SE]
+Initiate Term Type sub-option negotation, where [ONE] is decimal 1<br />
+[IAC][WILL][COMPRESS2]</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Offer to
+support MCCP protocol (see below).&nbsp; [COMPRESS2] is dec 86<br />
 [IAC][WILL][MXP]</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; Offer
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; Offer
 to support MXP protocol (see below).&nbsp; [MXP] is dec 91<br />
-      </span><span style="font-family: monospace;">[IAC][</span><span style="font-family: monospace;">WILL</span><span style="font-family: monospace;">][GMCP]
-&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="font-family: monospace;">[IAC][</span><span style="font-family: monospace;">WILL</span><span style="font-family: monospace;">][GMCP]
+&nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
 Offer to support the GMCP protocol (see below). [GMCP] is dec 2<br />
-      </span><span style="font-family: monospace;">[IAC][</span><span style="font-family: monospace;">WILL</span><span style="font-family: monospace;">][MSP]
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp; Offer to support the MSP protocol (see below).
+</span><span style="font-family: monospace;">[IAC][</span><span style="font-family: monospace;">WILL</span><span style="font-family: monospace;">][MSP]
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Offer to support the MSP
+protocol (see below).
 [MSP] is dec 90<br />
-      </span><span style="font-family: monospace;">[IAC][</span><span style="font-family: monospace;">WILL</span><span style="font-family: monospace;">][MSDP]&nbsp;&nbsp;
-&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Offer
+</span><span style="font-family: monospace;">[IAC][</span><span style="font-family: monospace;">WILL</span><span style="font-family: monospace;">][MSDP]&nbsp;&nbsp;
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Offer
 to support the MSDP protocol (see below). [MSDP] is dec 69<br />
-      </span><span style="font-family: monospace;">[IAC][</span><span style="font-family: monospace;">WILL</span><span style="font-family: monospace;">][NAWS]&nbsp;&nbsp;
-&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Offer
+</span><span style="font-family: monospace;">[IAC][</span><span style="font-family: monospace;">WILL</span><span style="font-family: monospace;">][NAWS]&nbsp;&nbsp;
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Offer
 to support the Window Size sub-option. [NAWS] is dec 31<br />
-      </span><span style="font-family: monospace;">[IAC][</span><span style="font-family: monospace;">WILL</span><span style="font-family: monospace;">][MSSP]&nbsp;&nbsp;
-&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Offer
+</span><span style="font-family: monospace;">[IAC][</span><span style="font-family: monospace;">WILL</span><span style="font-family: monospace;">][MSSP]&nbsp;&nbsp;
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Offer
 to support the MSSP protocol (see below). [MSSP] is dec 70</span><br />
-      <br />
-      The client will
+<br />
+The client will
 then be given a period of time to respond with the appropriate DO or
-DONT before the server just proceeds with its default behavior.&nbsp; <br />
-      <br />
-The "Terminal Type" negotiation is expected to be responded to by the client with:<br />
-      <span style="font-family: monospace;">[IAC][SB][TERMTYPE][ZERO][CLIENT NAME][IAC][SE]</span><br />
-Where [IAC], [SB], [TERMTYPE], and [SE] are as above.&nbsp; [ZERO] is
-decimal 0.&nbsp; [CLIENT NAME] is an ascii stream of the name of the
+DONT before the server just proceeds with its default
+behavior.&nbsp; <br />
+<br />
+The "Terminal Type" negotiation is expected to be responded to by the
+client with:<br />
+<span style="font-family: monospace;">[IAC][SB][TERMTYPE][ZERO][CLIENT
+NAME][IAC][SE]</span><br />
+Where [IAC], [SB], [TERMTYPE], and [SE] are as above.&nbsp; [ZERO]
+is
+decimal 0.&nbsp; [CLIENT NAME] is an ascii stream of the name of
+the
 client. <br />
-      <br />
+<br />
 The NAWS negotiation is expected to be responded to by the client with:<br />
-      <span style="font-family: monospace;">[IAC][SB][NAWS][WIDTHLB][WIDTHHB][HEIGHTLB][HEIGHTHB][IAC][SE]</span><br />
-Where [IAC], [SB], [NAWS], and [SE] are as above.&nbsp; [WIDTHLB] and
+<span style="font-family: monospace;">[IAC][SB][NAWS][WIDTHLB][WIDTHHB][HEIGHTLB][HEIGHTHB][IAC][SE]</span><br />
+Where [IAC], [SB], [NAWS], and [SE] are as above.&nbsp; [WIDTHLB]
+and
 [WIDTHHB] are the low and high byte of the terminal width.&nbsp;
-[HEIGHTLB] and [HEIGHTHB] are the low and high byte of the terminal height (which is unused).<br />
-      <br />
+[HEIGHTLB] and [HEIGHTHB] are the low and high byte of the terminal
+height (which is unused).<br />
+<br />
 Other features that may be enabled or modified by clients include:<br />
-      <br />
-      <span style="font-weight: bold;">Go-Ahead/Suppress Go-Ahead:</span><br />
-      <p>Go-Ahead is a code sent by the server that informs the client that
+<br />
+<span style="font-weight: bold;">Go-Ahead/Suppress
+Go-Ahead:</span><br />
+<p>Go-Ahead is a code sent by the server that informs the
+client that
 the it is now waiting for input.&nbsp; Very few clients support
 this, and the number that don't outweigh those that do, so, while this
-feature can be enabled, it is not by default.&nbsp; The format of this is
+feature can be enabled, it is not by default.&nbsp; The format of
+this is
 simple: [IAC][GA] where [GA] is decimal 249. The client may also send
 [IAC][DO][SGA] to suppress the go-ahead feature, where [SGA] is decimal
 3.</p>
-      <p style="font-weight: bold;">Echo</p>
-      <p>If enabled, this will cause the server to echo back to the
+<p style="font-weight: bold;">Echo</p>
+<p>If enabled, this will cause the server to echo back to
+the
 client all the characters sent from it.&nbsp; While it can be
 negotiated in the normal way mentioned above, it is more typical to be
 automatically set by the server in reaction to a Terminal Type
-response.&nbsp; For example, if the client says that it is "ZMUD", then
+response.&nbsp; For example, if the client says that it is "ZMUD",
+then
 echo is automatically disabled, regardless of what the client may have
 sent previous to that.&nbsp; The [ECHO] code is decimal 1.<br />
-      </p>
-
-      <p style="font-weight: bold;">Logout</p>
-      <p>Upon receiving a DO [LOGOUT] code from the client, the server
+</p>
+<p style="font-weight: bold;">Logout</p>
+<p>Upon receiving a DO [LOGOUT] code from the client, the
+server
 will disconnect the client and close its socket.&nbsp; [LOGOUT] is
 decimal 18.<br />
-      </p>
-      <span style="font-weight: bold;">Are you There?</span><br />
-      <br />
-Upon receiving [IAC][AYT], the server will respond with a space and \b.&nbsp; The [AYT] code is 246.<br />
-      <br />
+</p>
+<span style="font-weight: bold;">Are you There?</span><br />
+<br />
+Upon receiving [IAC][AYT], the server will respond with a space and
+\b.&nbsp; The [AYT] code is 246.<br />
+<br />
 <h2><a name="mccp"> MCCP</a></h2>
-      <p>The Mud Client
+<p>The Mud Client
 Compression Protocol, when enabled, alters the encoding sent by the
-server to the client to one that is GZIP compressed ASCII.&nbsp; There
+server to the client to one that is GZIP compressed ASCII.&nbsp;
+There
 were two versions of this protocol, and CoffeeMud supports version 2.</p>
-      <p>The protocol is enabled during the early connection
+<p>The protocol is enabled during the early connection
 period.&nbsp; The server will send the TELNET code WILL
 COMPRESS2.&nbsp; If the client responds with DO COMPRESS2, then the
 server will wait 750ms and send the TELNET sub-negotiation code 86,
@@ -209,37 +261,42 @@ GZIP compressed format.&nbsp; No data will be sent, however, for
 another few seconds to give the client time to process the response and
 set up.&nbsp; See also the above section on the TELNET protocol for
 more information on how negotiations are done.</p>
-      <p><br />
-      </p>
-      <h2><a name="mcp"> MCP</a></h2>
-
-      
-      <p>The MUD Client Protocol is an entirely in-line system for
+<p><br />
+</p>
+<h2><a name="mcp"> MCP</a></h2>
+<p>The MUD Client Protocol is an entirely in-line system
+for
 invoking 'packages' or programs on the server by the client, or on the
-client by the server.&nbsp; CoffeeMud supports, by default, only two
-packages:&nbsp; one that negotiates the MCP features, and a client-side
-full screen editor package.&nbsp; Complete details on MCP can be found
+client by the server.&nbsp; CoffeeMud supports, by default, only
+two
+packages:&nbsp; one that negotiates the MCP features, and a
+client-side
+full screen editor package.&nbsp; Complete details on MCP can be
+found
 at <a href="https://www.moo.mud.org/mcp/mcp2.html">https://www.moo.mud.org/mcp/mcp2.html</a><br />
-      </p>
-      <p>Upon connection to the server, the client will be sent a mcp protocol announcement string:</p>
-      <p><span style="font-family: monospace;">#$#mcp version: 2.1 to: 2.1</span><br />
-      </p>
-      <p>If the client does not support MCP, then that's the end of
+</p>
+<p>Upon connection to the server, the client will be sent a
+mcp protocol announcement string:</p>
+<p><span style="font-family: monospace;">#$#mcp
+version: 2.1 to: 2.1</span><br />
+</p>
+<p>If the client does not support MCP, then that's the end
+of
 it.&nbsp; However, if it does support MCP, it will begin sending
 supported packages information to the server, starting with the
 following special command:<br />
-      </p>
-      <p style="font-family: monospace;">#$#mcp authentication-key: [AUTH-KEY]</p>
-      <p>The [AUTH-KEY] sent is then saved by the server to confirm against other inline MCP messages.<br />
-      </p>
-      <p>The MCP protocol general command format is as follows:<br />
-
-      <br />
-
-      <span style="font-family: monospace;"><span style="font-family: monospace;">#$#[MCP-PACKAGE] [AUTH-KEY] [KEY]: [VALUE] ... etc ..</span><br />
-
-      </span></p>
-      <p>[MCP-PACKAGE] would be one of the package names, usually
+</p>
+<p style="font-family: monospace;">#$#mcp
+authentication-key: [AUTH-KEY]</p>
+<p>The [AUTH-KEY] sent is then saved by the server to
+confirm against other inline MCP messages.<br />
+</p>
+<p>The MCP protocol general command format is as follows:<br />
+<br />
+<span style="font-family: monospace;"><span style="font-family: monospace;">#$#[MCP-PACKAGE] [AUTH-KEY]
+[KEY]: [VALUE] ... etc ..</span><br />
+</span></p>
+<p>[MCP-PACKAGE] would be one of the package names, usually
 beginning
 with MCP.&nbsp; After the following space, the auth-key and another
 space,
@@ -247,218 +304,284 @@ followed by an optional set of key:value pairs.&nbsp; Keys may not
 contain
 whitespace.&nbsp; After the colon must be a whitespace character
 followed by
-a double-quoted value, or a value also without whitespace.&nbsp; The
+a double-quoted value, or a value also without whitespace.&nbsp;
+The
 value
-may then be followed by whitespace and more key:value pairs.&nbsp; If a
+may then be followed by whitespace and more key:value pairs.&nbsp;
+If a
 string beginning with #$# must be sent to the client by the mud for
 consumption by the user, then the line should begin with #$"#$#...</p>
-      <p>Multi-line commands begin in the following format:</p>
-      <p><span style="font-family: monospace;">#$#[MCP-PACKAGE] </span><span style="font-family: monospace;">[AUTH-KEY] </span><span style="font-family: monospace;">... etc ... [KEY]*: [VALUE] _data-tag: [TAG-VALUE]</span><br />
-
-
-
-      </p>
-      <p>As you can see, if the last real key on the ends with the '*'
+<p>Multi-line commands begin in the following format:</p>
+<p><span style="font-family: monospace;">#$#[MCP-PACKAGE]
+</span><span style="font-family: monospace;">[AUTH-KEY]
+</span><span style="font-family: monospace;">...
+etc ... [KEY]*: [VALUE] _data-tag: [TAG-VALUE]</span><br />
+</p>
+<p>As you can see, if the last real key on the ends with
+the '*'
 character and the line ends with a a key called "_data-tag" whose value
 is a hex number, then it denotes the beginning of a multi-line
-command.&nbsp; In this case, the following line would begin with #$#*
+command.&nbsp; In this case, the following line would begin with
+#$#*
 followed by data-tag value the to continue the previous line, and ends
-when a line that starts with #$#: is encountered.&nbsp;&nbsp; Here are
+when a line that starts with #$#: is encountered.&nbsp;&nbsp;
+Here are
 some examples:<br />
-      </p>
-      <p><span style="font-family: monospace;">#$#* </span><span style="font-family: monospace;">[TAG-VALUE] </span><span style="font-family: monospace;">[KEY]: [VALUE] </span><span style="font-family: monospace;"><span style="font-family: monospace;">... etc ... </span><br />
-      <span style="font-family: monospace;">#$#: </span><span style="font-family: monospace;">[</span><span style="font-family: monospace;">TAG-VALUE</span><span style="font-family: monospace;">] </span><span style="font-family: monospace;">[KEY]: [VALUE] </span><span style="font-family: monospace;">... etc ... </span></span></p>
-
-      <p>Anyway, back to the negotiation.&nbsp; After receiving the
+</p>
+<p><span style="font-family: monospace;">#$#* </span><span style="font-family: monospace;">[TAG-VALUE] </span><span style="font-family: monospace;">[KEY]: [VALUE] </span><span style="font-family: monospace;"><span style="font-family: monospace;">... etc ... </span><br />
+<span style="font-family: monospace;">#$#: </span><span style="font-family: monospace;">[</span><span style="font-family: monospace;">TAG-VALUE</span><span style="font-family: monospace;">] </span><span style="font-family: monospace;">[KEY]: [VALUE] </span><span style="font-family: monospace;">... etc ... </span></span></p>
+<p>Anyway, back to the negotiation.&nbsp; After
+receiving the
 authentication-key, the server will immediately respond with a series
 of messages announcing which packages it supports:</p>
- 
-      <p style="font-family: monospace;">#$#mcp-negotiate-can [AUTH-KEY] package: dns-org-mud-moo-simpleedit min-version: 1.0 max-version: 1.0<br />
-#$#mcp-negotiate-can [AUTH-KEY] package: mcp-negotiate min-version: 1.0 max-version: 2.0<br />
+<p style="font-family: monospace;">#$#mcp-negotiate-can
+[AUTH-KEY] package: dns-org-mud-moo-simpleedit min-version: 1.0
+max-version: 1.0<br />
+#$#mcp-negotiate-can [AUTH-KEY] package: mcp-negotiate min-version: 1.0
+max-version: 2.0<br />
 #$#mcp-negotiate-end<br />
-      </p>
-      <p>This will be followed (or preceded?) by the client sending a similar set of messages declaring the packages that it supports.</p>
+</p>
+<p>This will be followed (or preceded?) by the client
+sending a similar set of messages declaring the packages that it
+supports.</p>
 Packages supported:<br />
-      <p><span style="font-weight: bold;">dns-org-mud-moo-simpleedit-content</span><br />
-      </p>
-      <p>This package is sent by the server to the client asking it to
+<p><span style="font-weight: bold;">dns-org-mud-moo-simpleedit-content</span><br />
+</p>
+<p>This package is sent by the server to the client asking
+it to
 open up a screen text editor with the given content.&nbsp; Once the
 client user is done editing the file, the package is invoked by the
 client to send back the changed text.</p>
-      <p>The command sent by the server will look like:</p>
-      <p><span style="font-family: monospace;">#$#dns-org-mud-moo-simpleedit-content [AUTH-KEY] reference: #64.name name: Data type: string content*: "" _data-tag: [NUMBER]</span><br style="font-family: monospace;" />
-      <span style="font-family: monospace;">#$#* [NUMBER] content: "[FIRST LINE OF THE FILE]"</span><br style="font-family: monospace;" />
-      <span style="font-family: monospace;">...</span><br style="font-family: monospace;" />
-      <span style="font-family: monospace;">#$#: [NUMBER]</span></p>
-      <p>* If a developer wants to add more Server-side MCP packages,
+<p>The command sent by the server will look like:</p>
+<p><span style="font-family: monospace;">#$#dns-org-mud-moo-simpleedit-content
+[AUTH-KEY] reference: #64.name name: Data type: string content*: ""
+_data-tag: [NUMBER]</span><br style="font-family: monospace;" />
+<span style="font-family: monospace;">#$#* [NUMBER]
+content: "[FIRST LINE OF THE FILE]"</span><br style="font-family: monospace;" />
+<span style="font-family: monospace;">...</span><br style="font-family: monospace;" />
+<span style="font-family: monospace;">#$#: [NUMBER]</span></p>
+<p>* If a developer wants to add more Server-side MCP
+packages,
 they should be written as Java files that implement the
 com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.MCPPackage
 interface, and placed in the
 com/planet_ink/coffee_mud/Libraries/mcppkgs/ directory before boot.</p>
-      <p><br />
-      </p>
+<p><br />
+</p>
 <h2><a name="msp">MSP</a></h2>
-      <p>The MUD Sound Protocol
+<p>The MUD Sound Protocol
 allows sound files to be played by the client.&nbsp; It can also
 specify a URL to download the sound file from a web server supported by
-the MUD.&nbsp; A detailed definition of the protocol can be found at <a href="https://www.zuggsoft.com/zmud/msp.htm">https://www.zuggsoft.com/zmud/msp.htm</a><br />
+the MUD.&nbsp; A detailed definition of the protocol can be found
+at <a href="https://www.zuggsoft.com/zmud/msp.htm">https://www.zuggsoft.com/zmud/msp.htm</a><br />
 </p>
-      <p>Before the server will begin to send MSP inline commands, it
+<p>Before the server will begin to send MSP inline
+commands, it
 will first negotiate client support for the protocol.&nbsp; It does
 this using a TELNET WILL MCP escape code, as described above in the
 TELNET section.</p>
-      <p>Once the server is aware of client support, then, at
+<p>Once the server is aware of client support, then, at
 appropriate times, it will send the MSP inline command, which is as
 follows:</p>
-      <span style="font-family: monospace;">!!SOUND([FILENAME] V=50 P=25 U=http://webserver.domain/sounds/)</span><br />
-      <br />
+<span style="font-family: monospace;">!!SOUND([FILENAME]
+V=50 P=25 U=http://webserver.domain/sounds/)</span><br />
+<br />
 To add new sounds to CoffeeMud, you should put them as a loose wav file
 in /resources/web/pub/sounds/ , and also put them in the sounds.zip
 file found in the same directory, for people who want to install all
 the sounds in their client at once.<br />
-      <br />
+<br />
 <h2><a name="mxp">MXP</a></h2>
-      <p>The Mud eXtension
+<p>The Mud eXtension
 Protocol, developed by ZuggSoft, is an HTML-like markup language that
 provides quite a few client view capabilities that can be driven by the
-server, but also configured by the client user.&nbsp; These features
+server, but also configured by the client user.&nbsp; These
+features
 include sounds, images, context menus, text markup, color, frames,
-cursor control, and entities.A detailed definition of the protocol can be found at  <a href="https://www.zuggsoft.com/zmud/msp.htm">https://www.zuggsoft.com/zmud/mxp.htm<br />
-      </a></p>
-      <p>Not many mud clients support the entire MXP command set.&nbsp;
+cursor control, and entities.A detailed definition of the protocol can
+be found at <a href="https://www.zuggsoft.com/zmud/msp.htm">https://www.zuggsoft.com/zmud/mxp.htm<br />
+</a></p>
+<p>Not many mud clients support the entire MXP command
+set.&nbsp;
 Presently, that list includes ZMUD, CMUD (both from ZuggSoft
 themselves), and the Siplet web-based client built into
-CoffeeMud.&nbsp; Many other clients, however, support some portion of
+CoffeeMud.&nbsp; Many other clients, however, support some portion
+of
 MXP, so your miliage may vary.<br />
-      </p>
-      <p>Before the server will begin to send MXP tags, it will
-first negotiate client support for the protocol.&nbsp; It does this using a
+</p>
+<p>Before the server will begin to send MXP tags, it will
+first negotiate client support for the protocol.&nbsp; It does this
+using a
 TELNET WILL MXP escape code, as described above in the TELNET section.</p>
-      <p>Once the server is aware of client support, it will
+<p>Once the server is aware of client support, it will
 automatically transmit the file /resources/text/mxp.txt to the client,
 which contains numerous entity definitions for context menus,&nbsp;
-health bar tags, and the &lt;SUPPORT tag to notify the client of the
+health bar tags, and the &lt;SUPPORT tag to notify the client of
+the
 MXP features that the client supports.&nbsp; These include: IMAGE,
 SEND, GUAGE, FONT, B, IMAGE, and SOUND.</p>
-      <p>Tags are so similar to HTML as to not really be worth
+<p>Tags are so similar to HTML as to not really be worth
 elaboration, but I will anyway.&nbsp; An example would be:
-&lt;HITPOINTS&gt;24&lt;/HITPOINTS&gt;, after, for example, definiting
-an MXP entity with &lt;!ELEMENT HITPOINTS '&lt;FONT COLOR=GREEN&gt;'
-&gt;&nbsp; This would result in the number 24 being seen as green on
-the muds client, or whatever else is sent inside &lt;HITPOINTS&gt;
+&lt;HITPOINTS&gt;24&lt;/HITPOINTS&gt;, after, for
+example, definiting
+an MXP entity with &lt;!ELEMENT HITPOINTS '&lt;FONT
+COLOR=GREEN&gt;'
+&gt;&nbsp; This would result in the number 24 being seen as
+green on
+the muds client, or whatever else is sent inside
+&lt;HITPOINTS&gt;
 tag.&nbsp; <br />
-      </p>
-      <p>Tthe <span style="font-weight: bold;">&lt;!ELEMENT</span> tag
+</p>
+<p>Tthe <span style="font-weight: bold;">&lt;!ELEMENT</span>
+tag
 is unique to MXP, and is used to give definition to substitute some tag
-(such as HITPOINTS with others, such as FONT.&nbsp; It can also be used
-to call out or define some value. &nbsp; &lt;!ELEMENT is followed by
+(such as HITPOINTS with others, such as FONT.&nbsp; It can also be
+used
+to call out or define some value. &nbsp; &lt;!ELEMENT is
+followed by
 the name of the tag being defined, followed by the word EMPTY and the
-FLAG attribute, or a replacement MXP string in single quotes ''.&nbsp; <br />
-      </p>
-      <p>The <span style="font-weight: bold;">GUAGE</span> tag is for
-adding a column to the "health bar" type feature.&nbsp; The tag begins
-with &lt;GUAGE [TAG] Max=[MAXTAG] ... , where [TAG] is the name of the
+FLAG attribute, or a replacement MXP string in single quotes
+''.&nbsp; <br />
+</p>
+<p>The <span style="font-weight: bold;">GUAGE</span>
+tag is for
+adding a column to the "health bar" type feature.&nbsp; The tag
+begins
+with &lt;GUAGE [TAG] Max=[MAXTAG] ... , where [TAG] is the name of
+the
 tag whose value will update this bar, where [MAXTAG] is the name of the
 tag whose value updates the maximum value of this bar.&nbsp; Other
 attributes include COLOR, and CAPTION.</p>
-      <p>The <span style="font-weight: bold;">IMAGE</span> tag is for
-sending images to the client.&nbsp; The format is &lt;IMAGE [FILENAME]
-URL="http://your.web.site/images/' H=[HEIGHT] W=[WIDTH]&gt;.&nbsp;
+<p>The <span style="font-weight: bold;">IMAGE</span>
+tag is for
+sending images to the client.&nbsp; The format is &lt;IMAGE
+[FILENAME]
+URL="http://your.web.site/images/' H=[HEIGHT]
+W=[WIDTH]&gt;.&nbsp;
 Stock images are typically found in the /web/pub/images/mxp/
-directory.&nbsp; Images may be added there, and then associated with
+directory.&nbsp; Images may be added there, and then associated
+with
 objects of various kinds for automatic association by the mud by
 editing the file /resources/mxp_images.ini and adding a new line or
 editing an existing line.<br />
-      </p>
-      <p>The <span style="font-weight: bold;">SOUND</span> tag is for
-sending sounds to the client.&nbsp; The format is &lt;SOUND FILENAME
-V=50 P=25 U=http://your.web.site/sounds&gt;.&nbsp; This is remarkably
+</p>
+<p>The <span style="font-weight: bold;">SOUND</span>
+tag is for
+sending sounds to the client.&nbsp; The format is &lt;SOUND
+FILENAME
+V=50 P=25 U=http://your.web.site/sounds&gt;.&nbsp; This is
+remarkably
 similar to the MSP format above, which was probably intentional.
-:)&nbsp; See the MSP section for more information on CoffeeMud Sounds.</p>
-      <p>The <span style="font-weight: bold;">SEND</span> tag is for
+:)&nbsp; See the MSP section for more information on CoffeeMud
+Sounds.</p>
+<p>The <span style="font-weight: bold;">SEND</span>
+tag is for
 creating right-mouse-click context menus on various lines of text to
 allow the user to enter commands that make sure of them without
 typing.&nbsp; The format is &lt;SEND HREF="[COMMANDS]"
-HINT="[TEXT]"&gt;&nbsp; The [COMMANDS] are a pipe-delimited list of MUD
+HINT="[TEXT]"&gt;&nbsp; The [COMMANDS] are a pipe-delimited
+list of MUD
 commands that are entered when a menu option is chosen.&nbsp; The
 [TEXT] is a pipe-delimited list of the menu options corresponding to
-the commands.&nbsp; The string &amp;text; is used to substitute the
+the commands.&nbsp; The string &amp;text; is used to substitute
+the
 value inside the &lt;SEND tag.&nbsp; <br />
-      </p>
-
-      <p>To differentiate MXP tags from normal uses of the less-than
-&lt; sign, you will often see a carrot ^&lt; preceding the less-than
+</p>
+<p>To differentiate MXP tags from normal uses of the
+less-than
+&lt; sign, you will often see a carrot ^&lt; preceding the
+less-than
 sign, to let the mud know that an MXP tag was embedded in an outgoing
 string.&nbsp; MXP also allows traditional HTML entitles, such as
 &amp;quot; for double-quotes, &amp;lt; for less-than, etc.<br />
-      </p>
-      
-<p></p><h2><a name="msdp">MSDP</a></h2>
-      <p>The MUD Server
+</p>
+<p></p>
+<h2><a name="msdp">MSDP</a></h2>
+<p>The MUD Server
 Data Protocol is a protocol that embeds itself entirely in TELNET
 sub-option negotiation codes in order to send and receive data and data
-request commands.&nbsp; The purpose is to allow extra "unseen" data to
+request commands.&nbsp; The purpose is to allow extra "unseen" data
+to
 be sent to the client from the server, which can then expose or
-otherwise use the data.&nbsp; You can find details for this protocol at
+otherwise use the data.&nbsp; You can find details for this
+protocol at
 the following site: <a href="https://tintin.mudhalla.net/protocols/msdp/">https://tintin.mudhalla.net/protocols/msdp/</a><br />
 </p>
-      <p>Before the server will begin to send MSDP data packets, it
+<p>Before the server will begin to send MSDP data packets,
+it
 will
 first negotiate client support for the protocol.&nbsp; It does this
 using a
 TELNET WILL MSDP escape code, as described above in the TELNET
-section.&nbsp; Once MSDP is enabled on both sides, the client may then
+section.&nbsp; Once MSDP is enabled on both sides, the client may
+then
 begin sending "LIST" commands in an MSDP packet to learn the
 capabilities of the server.</p>
-      <p>The format of a typical MSDP packet is, as mentioned
+<p>The format of a typical MSDP packet is, as mentioned
 previously, to embed an MSDP stream inside a TELNET sub-option
 negotiation packet. A typical key-value pair packet is as follows:</p>
-      <p><span style="font-family: monospace;">[IAC][SB][MSDP-CODE][MSDP-VAR-CODE][VAR-NAME][MSDP-VAL-CODE][VAR-VALUE]...[IAC][SE]</span><br />
-      </p>
-      <p>Where [IAC] is decinal 252, [SB] is 250, [SE] is 240,
+<p><span style="font-family: monospace;">[IAC][SB][MSDP-CODE][MSDP-VAR-CODE][VAR-NAME][MSDP-VAL-CODE][VAR-VALUE]...[IAC][SE]</span><br />
+</p>
+<p>Where [IAC] is decinal 252, [SB] is 250, [SE] is 240,
 [MSDP-CODE] is 69, [MSDP-VAR-CODE] is 1, [MSDP-VAL-CODE] is 2,
 [VAR-NAME] and [VAR-VALUE] are unquoted ascii strings.</p>
-      <p>Instead of simple string values, MSDP also supports both value
-lists, arrays, and value tables.&nbsp;&nbsp; A list is simply a case
-where more than one [MSDP-VAL-CODE] is provided for a given VAR.&nbsp;
+<p>Instead of simple string values, MSDP also supports both
+value
+lists, arrays, and value tables.&nbsp;&nbsp; A list is simply a
+case
+where more than one [MSDP-VAL-CODE] is provided for a given
+VAR.&nbsp;
 For example:</p>
-      <p><span style="font-family: monospace;">[IAC][SB][MSDP-CODE][MSDP-VAR-CODE][VAR-NAME][MSDP-VAL-CODE][VAR-VALUE] </span><span style="font-family: monospace;">[MSDP-VAL-CODE][VAR-VALUE] </span><span style="font-family: monospace;">... [IAC][SE]</span></p>
-      <p>An example of an array would be:</p>
-      <p><span style="font-family: monospace;">[IAC][SB][MSDP-CODE][MSDP-VAR-CODE][VAR-NAME][MSDP-VAL-CODE]</span><span style="font-family: monospace;">[MSDP-ARRAY-OPEN-CODE]<br />
-      </span><span style="font-family: monospace;">[MSDP-VAL-CODE]</span><span style="font-family: monospace;">[VAR-VALUE] ... </span><span style="font-family: monospace;"><span style="font-family: monospace;">[MSDP-ARRAY-CLOSE-CODE]</span><span style="font-family: monospace;">[IAC][SE]</span></span></p>
-
+<p><span style="font-family: monospace;">[IAC][SB][MSDP-CODE][MSDP-VAR-CODE][VAR-NAME][MSDP-VAL-CODE][VAR-VALUE]
+</span><span style="font-family: monospace;">[MSDP-VAL-CODE][VAR-VALUE]
+</span><span style="font-family: monospace;">...
+[IAC][SE]</span></p>
+<p>An example of an array would be:</p>
+<p><span style="font-family: monospace;">[IAC][SB][MSDP-CODE][MSDP-VAR-CODE][VAR-NAME][MSDP-VAL-CODE]</span><span style="font-family: monospace;">[MSDP-ARRAY-OPEN-CODE]<br />
+</span><span style="font-family: monospace;">[MSDP-VAL-CODE]</span><span style="font-family: monospace;">[VAR-VALUE] ... </span><span style="font-family: monospace;"><span style="font-family: monospace;">[MSDP-ARRAY-CLOSE-CODE]</span><span style="font-family: monospace;">[IAC][SE]</span></span></p>
 Where [MSDP-ARRAY-OPEN-CODE] is decimal 5, and [MSDP-ARRAY-CLOSE-CODE]
-is 6.&nbsp;&nbsp; Tables are defined as embedded key-value pairs, and
+is 6.&nbsp;&nbsp; Tables are defined as embedded key-value
+pairs, and
 look as follows:<br />
-      <p><span style="font-family: monospace;">[IAC][SB][MSDP-CODE][MSDP-VAR-CODE][VAR-NAME][MSDP-VAL-CODE]</span><span style="font-family: monospace;">[MSDP-TABLE-OPEN-CODE]</span><span style="font-family: monospace;"><br />
+<p><span style="font-family: monospace;">[IAC][SB][MSDP-CODE][MSDP-VAR-CODE][VAR-NAME][MSDP-VAL-CODE]</span><span style="font-family: monospace;">[MSDP-TABLE-OPEN-CODE]</span><span style="font-family: monospace;"><br />
 [MSDP-VAR-CODE][VAR-NAME]</span><span style="font-family: monospace;">[MSDP-VAL-CODE]</span><span style="font-family: monospace;">[VAR-VALUE] ... </span><span style="font-family: monospace;"><span style="font-family: monospace;">[MSDP-TABLE-CLOSE-CODE]</span><span style="font-family: monospace;">[IAC][SE]</span></span></p>
-
-
-[MSDP-TABLE-OPEN-CODE] is decimal 3, and [MSDP-TABLE-CLOSE-CODE] is decimal 4.<br />
-      <br />
-      <p style="font-weight: bold;">Client Commands and Server Variables<br />
-      </p>
-      <p>Commands are sent as Special variable names, with the value
+[MSDP-TABLE-OPEN-CODE] is decimal 3, and [MSDP-TABLE-CLOSE-CODE] is
+decimal 4.<br />
+<br />
+<p style="font-weight: bold;">Client Commands and
+Server Variables<br />
+</p>
+<p>Commands are sent as Special variable names, with the
+value
 being an argument to the command, which is typically a variable or list
 of variables.&nbsp; <br />
-      </p>
-      <p>"LIST" "COMMANDS" will cause the server to respond with the
+</p>
+<p>"LIST" "COMMANDS" will cause the server to respond with
+the
 variable "COMMANDS" and an Array of client commands that may be
-used.&nbsp; These are typically "LIST", "REPORT", "UNREPORT", "RESET",
-and "SEND".&nbsp; The difference between values "SEND"ed or "REPORT"ed
+used.&nbsp; These are typically "LIST", "REPORT", "UNREPORT",
+"RESET",
+and "SEND".&nbsp; The difference between values "SEND"ed or
+"REPORT"ed
 is that SEND orders the server to give a value only on demand, whereas
 REPORT causes the server to send a new value every time the variable
 changes on the server side. UNREPORT will stop that behavior for the
-given variable. &nbsp;&nbsp;This LIST command is typically the first one sent by the client after MSDP is negotiated. </p>
-      <p>Other "LIST"able things include: CONFIGURABLE_VARIABLES, REPORTABLE_VARIABLES,&nbsp; REPORTED_VARIABLES, SENDABLE_VARIABLES<br />
-      </p>
-      <p>Other than commands, MSDP distinguishes between two types of
-variables: Reportable and Configurable.&nbsp; In CoffeeMud, both types
+given variable. &nbsp;&nbsp;This LIST command is typically the
+first one sent by the client after MSDP is negotiated. </p>
+<p>Other "LIST"able things include: CONFIGURABLE_VARIABLES,
+REPORTABLE_VARIABLES,&nbsp; REPORTED_VARIABLES, SENDABLE_VARIABLES<br />
+</p>
+<p>Other than commands, MSDP distinguishes between two
+types of
+variables: Reportable and Configurable.&nbsp; In CoffeeMud, both
+types
 can be subject to the SEND command, but only Reportable variables can
 be the subject of the REPORT command, and only Configurable variables
-can be changed by the client, or reset using the RESET command.&nbsp;
+can be changed by the client, or reset using the RESET
+command.&nbsp;
 At this time, CoffeeMud does not support any configurable variables.</p>
-      <p>Reportable variables include ACCOUNT_NAME, CHARACTER_NAME,
+<p>Reportable variables include ACCOUNT_NAME,
+CHARACTER_NAME,
 SERVER_ID, SERVER_TIME, SPECIFICATION, AFFECTS, ALIGNMENT, EXPERIENCE,
 EXPERIENCE_MAX,EXPERIENCE_TNL, EXPERIENCE_TNL_MAX, HEALTH, HEALTH_MAX,
 LEVEL, MANA, MANA_MAX, MONEY, MOVEMENT, MOVEMENT_MAX, OPPONENT_LEVEL,
@@ -466,40 +589,275 @@ OPPONENT_HEALTH, OPPONENT_HEALTH_MAX, OPPONENT_NAME, OPPONENT_STRENGTH,
 OPPONENT_RANGE, WORLD_TIME, ROOM, LOCATION, ROOM_NAME, ROOM_VNUM,
 ROOM_AREA, ROOM_TERRAIN, ROOM_EXITS, ARACHNOS_MUDLIST, ARACHNOS_DEVEL,
 ARACHNOS_CHAT<br />
-      </p>
-<p></p><h2><a name="gmcp">GMCP</a></h2>
-      <p>The Generic Mud Client
+</p>
+<p></p>
+<h2><a name="gmcp">GMCP</a></h2>
+<p>The Generic Mud Client
 Protocol is a close sibling to the MSDP protocol, in that it is also
 entirely implemented using the TELNET sub-option negotiation
-protocol.&nbsp; Also like MSDP, GMCP is bi-directional, and intended
+protocol.&nbsp; Also like MSDP, GMCP is bi-directional, and
+intended
 mostly for communicating information from the server to the
-client.&nbsp; Inside each TELNET SB packet is a a string consisting of
-a GMCP "Package" name/command followed by a a space and then a JSON object document. &nbsp; You can find details for this protocol at
+client.&nbsp; Inside each TELNET SB packet is a a string consisting
+of
+a GMCP "Package" name/command followed by a a space and then a JSON
+object document. &nbsp; You can find details for this protocol at
 the following site: <a href="https://tintin.mudhalla.net/protocols/msdp/">https://tintin.mudhalla.net/protocols/gmcp/</a></p>
-      <p>Before the server will begin to send GMCP data packets, it
+<p>Before the server will begin to send GMCP data packets,
+it
 will
 first negotiate client support for the protocol.&nbsp; It does this
 using a
 TELNET WILL&nbsp;GMCP escape code, as described above in the TELNET
-section.&nbsp;</p><p>
-      </p>
-      <p><br />
-      </p>
-      <h2><a name="mssp">MSSP</a></h2>
-
-      TOD<p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p>
-      
-      <br />
-      <br />
-&nbsp;</p></td>
-    </tr><tr>
-      <td style="vertical-align: top;"><br />
-      </td>
-      <td style="vertical-align: top;"><br />
-      </td>
-    </tr>
-
-  </tbody>
+section.&nbsp;</p>
+<p>The format of a typical GMCP packet is, as mentioned
+previously, to embed an GMCP package and JSON document stream inside a
+TELNET sub-option
+negotiation packet. A typical packet is as follows:</p>
+<span style="font-family: monospace;">[IAC][SB][GMCP-CODE][GMCP-PKG-NAME
+][JSON-DOCUMENT][IAC][SE]</span>
+<p> Where [IAC] is decinal 252, [SB] is 250, [SE] is 240,
+[GMCP-CODE] is 201, [GMCP-PKG-NAME] is a space-free GMCP package or
+command word, typically formatted with period-separated package names.
+&nbsp;[JSON-DOCUMENT] is just what it sounds like, a JSON document
+consisting of a wrapper JSON object (so always starting with the {
+character).</p>
+<p>CoffeeMud supported Packages/Commands:</p>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr><td><span style="font-weight: bold;">Package/Command</span></td><td><span style="font-weight: bold;">JSON and notes</span></td></tr><tr><td>comm</td><td>Same as comm.tick</td></tr><tr><td>comm.tick</td><td>{}&nbsp;</td></tr><tr>
+<td width="25%">core.hello</td>
+<td>Arguments: {"client":"client name", "version": 1.0} - sent by Client</td>
+</tr>
+<tr>
+<td width="25%">core.supports.set</td>
+<td>Arguments: &nbsp;["package-name 1.0", "package-name 2.1", ...] Set
+the list of supported packages/commands and the version supported
+(which is optional) - sent by the Client.</td>
+</tr>
+<tr>
+<td width="25%">core.supports.add</td>
+<td>Arguments: &nbsp;["package-name 1.0", "package-name 2.1", ...] Adds to the list of supported
+packages/commands and the version supported (which is optional) - sent
+by the Client.</td>
+</tr>
+<tr>
+<td width="25%">core.supports.remove</td>
+<td>Arguments: &nbsp;["package-name", "package-name", ...] Removes from the list of supported
+packages/commands.</td>
+</tr>
+<tr>
+<td width="25%">core.keepalive</td>
+<td>No arguments. &nbsp;Sent to the server to update session idle timers.</td>
+</tr>
+<tr>
+<td width="25%">core.ping</td>
+<td>Returns whatever document is sent. &nbsp;Be careful of endless loops!</td>
+</tr>
+<tr>
+<td width="25%">core.goodbye</td>
+<td>No arguments. &nbsp;Closes the session and logs off the user.</td>
+</tr>
+<tr>
+<td width="25%">char.login</td>
+<td>{"name":"char name", "password": "char pw" } - Logs in a character,
+when one is not yet logged in. &nbsp;Sent by the client of course.</td>
+</tr>
+<tr>
+<td width="25%">char.vitals</td>
+<td>char.vitals {"hp": 1, "mana": 2, "moves": 3, "maxhp":&nbsp;4, "maxmana": 5, "maxmoves": 6}.</td>
+</tr>
+<tr>
+<td width="25%">char.statusvars</td>
+<td>char.statusvars {"level": 1, "race": "racename", "guild": "clan name"}</td>
+</tr>
+<tr>
+<td width="25%">char.status</td>
+<td>char.status {"level": 1, "tnl": 2, "xpnl": 3, "xppl": 4, "hunger":
+5, "thirst": 6, "fatigue": 7, "stink_pct": 8, "align": 9, "faction":
+10, "state": 22, "pos": "sleeping", "enemy": "enemy name",
+"enemyrange": 1, "enemypct": 10} <br />"state" is: 4-afk, 9-sleeping, 11-sitting, 8-in combat, 6-sysmsgs, 12-autorun, 3-normal</td>
+</tr>
+<tr><td>char</td><td>Sends char.vitals, char.worth, char.maxstats, char.base</td></tr><tr>
+<td width="25%">char.base</td>
+<td>char.base {"name": "name", "class": "base class", "subclass":
+"class name", "race": "race name", "perlevel": 999, "prevlevel": 999,
+"pretitle": "title", "clan": "clan name" }</td>
+</tr>
+<tr>
+<td width="25%">char.maxstats</td>
+<td>char.maxstats {"maxhp": 1, "maxmana": 2, "maxmoves": 3 }</td>
+</tr>
+<tr>
+<td width="25%">char.worth</td>
+<td>char.worth {"gold": 1, "qp": 2, "trains": 3, "pracs": 4 }</td>
+</tr>
+<tr>
+<td width="25%">char.items.inv</td>
+<td>char.items.list {"location": "inv", "items": [{"id": 99922, "name": "item name", "attrib": "item attributes"}, ....] }</td>
+</tr>
+<tr>
+<td width="25%">char.items.contents</td>
+<td>char.items.list {"location": "container name", "items": [{"id":
+99922, "name": "item name", "attrib": "item attributes"}, ....] }</td>
+</tr>
+<tr>
+<td width="25%">char.skills.get</td>
+<td>When sent, the optional argument are {"group": "skilltype-domain"},
+or {"name": "skill name"}. The response when "name" is sent:
+char.skills.info {"group": "skilltype-domain", "skill": "skill name",
+"info": "help text"}. &nbsp;The response when "group" is sent:
+char.skills.list{"group": "skilltype-domain", "list": ["skill name",
+"skill name", ... ] }. &nbsp;With neither are sent: char.skills.groups
+["skilltype-domain", ... ]</td>
+</tr>
+<tr>
+<td width="25%">char.effects.get</td>
+<td>When sent, the optional argument are {"group": "skilltype-domain"}, or
+{"name": "skill name"}. The response when "name" is sent:
+char.effects.info {"group": "skilltype-domain", "skill": "skill name",
+"info": "help text"}. &nbsp;The response when "group" is sent:
+char.effects.list{"group": "skilltype-domain", "list": ["skill name",
+"skill name", ... ] }. &nbsp;With neither are sent: char.effects.groups
+["skilltype-domain", ... ]</td>
+</tr>
+<tr>
+<td width="25%">group</td>
+<td>group {"groupname": "gname", "leader": "playername", "status":
+"Private", "count": 1, "members": [ {"name": "playername", "info": {
+"hp": 1, "mhp": 2, "mn": 3, "mmn": 4, "mv": 5, "mmv": 6, "lvl": 7,
+"align": 8, "tnl": 9 }, ... }</td>
+</tr>
+<tr><td>room</td><td>Sends room.info, room.items.inv, room.mobiles, room.players, room.enter, room.leave</td></tr><tr><td>room.items</td><td>Sends room.items.inv</td></tr><tr>
+<td width="25%">room.info</td>
+<td>room.info {"num": 932939, "id":"Area#9", "name": "name", "zone":
+"area name", "desc": "room desc", "terrain": "locale domain type",
+"move": 3, "details: "", "exits": [{'N': 929292 },...], "coord":
+{"id":0,"x":-1,"y":-1,"cont":0} }</td>
+</tr>
+<tr><td>room.enter</td><td>room.enter "mob name"</td></tr><tr><td>room.leave</td><td>room.leave "mob name"</td></tr><tr>
+<td width="25%">room.items.inv</td>
+<td>&nbsp;rooms.items.list {"location": "room", "items": [ {"id": 93939, "name": "item name", "attrib": "GMCP attributes"}, ...] } </td>
+</tr>
+<tr>
+<td width="25%">room.items.contents</td>
+<td>rooms.items.list {"location": "container name", "items": [ {"id":
+93939, "name": "item name", "attrib": "GMCP attributes"}, ...] } </td>
+</tr>
+<tr>
+<td width="25%">room.mobiles</td>
+<td>room.mobiles {"npcs": [{"mob name": "mob context name"}, ...] }</td>
+</tr>
+<tr>
+<td width="25%">room.players</td>
+<td>room.players {"pcs": [{"mob name": "mob context name"}, ...] }</td>
+</tr>
+<tr>
+<td width="25%">comm.channel</td>
+<td>comm.channel {"chan": "channelname", "msg": "message text", "player": "playername" } - sent when channel message arrives</td>
+</tr>
+<tr>
+<td width="25%">comm.channel.players</td>
+<td>com.channel.players [{"name": "playername", "channels":
+["channelname", ...]} - list of online players and channels they can
+read</td>
+</tr>
+<tr>
+<td width="25%">ire.composer.setbuffer</td>
+<td>Arguments: &nbsp;"text" After using a local client text editor, this command is sent to transmit the altered text.</td>
+</tr>
+<tr><td>ire.composer.edit</td><td>ire.composer.edit {"title": "message
+title", "text": "message text" } - Sent by server to invoke client-side
+offline text editor.</td></tr><tr>
+<td width="25%">request.room</td>
+<td>&nbsp;- same as room.info</td>
+</tr>
+<tr>
+<td width="25%">request.area</td>
+<td>&nbsp;- same as room.info</td>
+</tr>
+<tr>
+<td width="25%">request.char</td>
+<td>&nbsp;&nbsp;- same as char.base</td>
+</tr>
+<tr>
+<td width="25%">request.sectors</td>
+<td>&nbsp;&nbsp;- same as room.info</td>
+</tr>
+<tr>
+<td width="25%">request.group</td>
+<td>&nbsp;- same as group</td>
+</tr>
+<tr>
+<td width="25%">request.quest</td>
+<td>&nbsp;Not implemented</td>
+</tr>
+<tr>
+<td width="25%">rawcolor</td>
+<td>&nbsp;Does nothing, no idea what it should do.</td>
+</tr>
+<tr>
+<td width="25%">request</td>
+<td>&nbsp;Substitute for request.* (such as request.area), except the
+"area" part is given instead of a JSON doc. &nbsp;For example: request
+"area" would be the same as the request.area command.</td>
+</tr>
+<tr>
+<td width="25%">maplevel</td>
+<td>&nbsp;Does nothing, no idea what it should do.</td>
+</tr>
+<tr>
+<td width="25%">client</td>
+<td>&nbsp;Not used.</td>
+</tr>
+<tr>
+<td width="25%">client.version</td>
+<td>&nbsp;Not used.</td>
+</tr>
+<tr>
+<td width="25%">external.discord.hello</td>
+<td></td>
+</tr>
+<tr>
+<td width="25%">msdp</td>
+<td>Allows ALL of the&nbsp; features, variables, and data from the MSDP
+spec above to be retreived through GMCP, except that the arguments and
+data are in JSON documents instead of the MSDP coded format.
+&nbsp;Var-Value is changed to maps, arrays to arrays, etc. &nbsp;For
+example:<br />MSDP {"list": "commands"}. &nbsp;See the MSDP section above for more details on commands.</td>
+</tr><tr><td>Siplet.Input</td><td>Siplet.Input ("title": "prompt text", "text": "current field value"}</td></tr>
+</tbody>
+</table>
+<p>Some of the above, if supported, will cause values to be
+automatically sent by the server to the client when the server detects
+a change, either immediately, or&nbsp;on the next tick. &nbsp;These
+include: comm, comm.tick, char.status, group, char, char.vitals,
+char.worth, char.maxstats, char.base, room, room.info, room.mobiles,
+room.players, room.items, room.items.inv, room.enter, room.leave.</p><p>All others have either special behavior, or must be requested of the server by sending the package name/command.<br />
+</p>
+<h2><a name="mssp">MSSP</a></h2>
+TOD
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p> <br />
+<br />
+&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><br />
+</td>
+<td style="vertical-align: top;"><br />
+</td>
+</tr>
+</tbody>
 </table>
 <br />
 </center>

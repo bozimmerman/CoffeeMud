@@ -2092,8 +2092,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					}
 					break;
 				}
-				case core_supports_add:
 				case core_supports_set:
+					supportables.clear();
+					//$FALL-THROUGH$
+				case core_supports_add:
 				{
 					Object[] list = null;
 					if(json!=null)
@@ -2573,7 +2575,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								.append("\"terrain\":\"").append(domType.toLowerCase()).append("\",")
 								.append("\"move\":\"").append(move).append("\",")
 								.append("\"details\":\"").append("\",")
-								.append("\"exits\":{");
+								.append("\"exits\":[");
 							boolean comma=false;
 							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 							{
@@ -2586,11 +2588,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 										if(comma)
 											doc.append(",");
 										comma=true;
-										doc.append("\""+CMLib.directions().getDirectionChar(d)+"\":").append(CMath.abs(room2ID.hashCode()));
+										doc.append("{\""+CMLib.directions().getDirectionChar(d)+"\":")
+											.append(CMath.abs(room2ID.hashCode()))
+											.append("}");
 									}
 								}
 							}
-							doc.append("},\"coord\":{\"id\":0,\"x\":-1,\"y\":-1,\"cont\":0}");
+							doc.append("],\"coord\":{\"id\":0,\"x\":-1,\"y\":-1,\"cont\":0}");
 							doc.append("}");
 							return doc.toString();
 						}
@@ -2685,16 +2689,18 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				case char_effects_get:
 					if(json!=null)
 						json=json.getCheckedJSONObject("root");
-					if((json != null)&&(mob!=null))
+					if(mob!=null)
 					{
 						String group=null;
 						String name=null;
-						if(json.containsKey("group"))
-							group=json.getCheckedString("group").toLowerCase().trim();
-						if(json.containsKey("name"))
-							name=json.getCheckedString("name").toLowerCase().trim();
-						if((group != null)
-						&&(group.length()>0)
+						if(json != null)
+						{
+							if(json.containsKey("group"))
+								group=json.getCheckedString("group").toLowerCase().trim();
+							if(json.containsKey("name"))
+								name=json.getCheckedString("name").toLowerCase().trim();
+						}
+						if((group != null)&&(group.length()>0)
 						&&((name==null)||(name.length()==0)))
 						{
 							final Map<Integer,List<Ability>> allMyGroups;
@@ -2725,7 +2731,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							doc.append("}");
 							return doc.toString();
 						}
-						if((group != null)&&(group.length()>0)&&(name!=null)&&(name.length()!=0))
+						if((group != null)&&(group.length()>0)
+						&&(name!=null)&&(name.length()!=0))
 						{
 							final StringBuilder doc;
 							final Enumeration<Ability> enuA;

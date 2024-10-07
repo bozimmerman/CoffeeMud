@@ -61,8 +61,8 @@ public class Switch extends StdCommand
 			return false;
 		}
 		final PlayerStats mobPStats=mob.playerStats();
-		final Session s1=mob.session();
-		if((mobPStats==null)||(s1==null))
+		final Session sess=mob.session();
+		if((mobPStats==null)||(sess==null))
 		{
 			mob.tell(L("You are a mob! Go away!"));
 			return false;
@@ -114,24 +114,24 @@ public class Switch extends StdCommand
 					CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
 					//s1.initializeSession(new Socket(), s1.getGroupName(),"");
 					//s1.stopSession(false,false, false); // this should call prelogout and later loginlogoutthread to cause msg SEND
-					s1.logout(true); // this should call prelogout and later loginlogoutthread to cause msg SEND
+					sess.logout(true); // this should call prelogout and later loginlogoutthread to cause msg SEND
 					//s1.stopSession(false,false, false);
 					//s1.setMob(null);
 					//mob.setSession(null);
 					final MudHost newHost = switchToHost;
 					final ThreadGroup newG=((Thread)newHost).getThreadGroup();
 					final String newName = newG.getName();
-					if(CMLib.library(s1.getGroupName().charAt(0), CMLib.Library.SESSIONS)
+					if(CMLib.library(sess.getGroupName().charAt(0), CMLib.Library.SESSIONS)
 					!= CMLib.library(newName.charAt(0), CMLib.Library.SESSIONS))
 					{
-						((Sessions)CMLib.library(s1.getGroupName().charAt(0), CMLib.Library.SESSIONS)).remove(s1);
-						((Sessions)CMLib.library(newName.charAt(0), CMLib.Library.SESSIONS)).add(s1);
+						((Sessions)CMLib.library(sess.getGroupName().charAt(0), CMLib.Library.SESSIONS)).remove(sess);
+						((Sessions)CMLib.library(newName.charAt(0), CMLib.Library.SESSIONS)).add(sess);
 					}
-					s1.setGroupName(newName);
+					sess.setGroupName(newName);
 					CMLib.commands().monitorGlobalMessage(room, msg);
-					s1.setMob(null);
-					s1.setAccount(null);
-					s1.autoLogin(null, null);
+					sess.setMob(null);
+					sess.setAccount(null);
+					sess.autoLogin(null, null);
 				}
 			}
 			return false;
@@ -174,9 +174,9 @@ public class Switch extends StdCommand
 				if(room!=null)
 					room.send(mob, msg);
 
-				s1.setMob(target);
+				sess.setMob(target);
 				s2.setMob(mob);
-				target.setSession(s1);
+				target.setSession(sess);
 				mob.setSession(s2);
 				CMLib.commands().postLook(target,true);
 				CMLib.commands().postLook(mob,true);
@@ -189,12 +189,12 @@ public class Switch extends StdCommand
 			if((room != null) && (room.okMessage(mob,msg)))
 			{
 				CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
-				s1.logout(true); // this should call prelogout and later loginlogoutthread to cause msg SEND
+				sess.logout(true); // this should call prelogout and later loginlogoutthread to cause msg SEND
 				CMLib.commands().monitorGlobalMessage(room, msg);
-				target.setSession(s1);
-				s1.setMob(target);
-				if(CMLib.login().finishLogin(s1, target, target.location(), resetStats) != CharCreationLibrary.LoginResult.NORMAL_LOGIN)
-					s1.stopSession(true, true, true);
+				target.setSession(sess);
+				sess.setMob(target);
+				if(CMLib.login().finishLogin(sess, target, target.location(), resetStats) != CharCreationLibrary.LoginResult.NORMAL_LOGIN)
+					sess.stopSession(true, true, true);
 				else
 				{
 					CMLib.login().showTheNews(target);
