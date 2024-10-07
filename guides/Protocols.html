@@ -18,7 +18,7 @@
         <li><a href="#ascii">Diku-ASCII</a></li><li><a href="#ansi">ANSI</a></li><li><a href="#ansi256">ANSI-256</a></li><li><a href="#telnet">TELNET</a></li><li><a href="#mccp">MCCP</a></li>
         <li><a href="#mcp">MCP</a><br />
         </li>
-<li><a href="#msp">MSP</a></li><li><a href="#mxp">MXP</a></li><li><a href="#atcp">ATCP</a></li><li><a href="#msdp">MSDP</a></li><li><a href="#gmcp">GMCP</a></li>
+<li><a href="#msp">MSP</a></li><li><a href="#mxp">MXP</a></li><li><a href="#msdp">MSDP</a></li><li><a href="#gmcp">GMCP</a></li>
         <li><a href="#mssp">MSSP</a></li>
 </ul>
       </td>
@@ -319,7 +319,14 @@ Protocol, developed by ZuggSoft, is an HTML-like markup language that
 provides quite a few client view capabilities that can be driven by the
 server, but also configured by the client user.&nbsp; These features
 include sounds, images, context menus, text markup, color, frames,
-cursor control, and entities.A detailed definition of the protocol can be found at  <a href="https://www.zuggsoft.com/zmud/msp.htm">https://www.zuggsoft.com/zmud/mxp.htm</a></p>
+cursor control, and entities.A detailed definition of the protocol can be found at  <a href="https://www.zuggsoft.com/zmud/msp.htm">https://www.zuggsoft.com/zmud/mxp.htm<br />
+      </a></p>
+      <p>Not many mud clients support the entire MXP command set.&nbsp;
+Presently, that list includes ZMUD, CMUD (both from ZuggSoft
+themselves), and the Siplet web-based client built into
+CoffeeMud.&nbsp; Many other clients, however, support some portion of
+MXP, so your miliage may vary.<br />
+      </p>
       <p>Before the server will begin to send MXP tags, it will
 first negotiate client support for the protocol.&nbsp; It does this using a
 TELNET WILL MXP escape code, as described above in the TELNET section.</p>
@@ -378,31 +385,95 @@ value inside the &lt;SEND tag.&nbsp; <br />
       <p>To differentiate MXP tags from normal uses of the less-than
 &lt; sign, you will often see a carrot ^&lt; preceding the less-than
 sign, to let the mud know that an MXP tag was embedded in an outgoing
-string.&nbsp; <br />
+string.&nbsp; MXP also allows traditional HTML entitles, such as
+&amp;quot; for double-quotes, &amp;lt; for less-than, etc.<br />
       </p>
       <p><br />
       </p>
-<p /><h2><a name="atcp">ATCP</a></h2>
-      <p>ATCP is the predecessor
-to the GMCP protocol, and is superceded by it.&nbsp; CoffeeMud will
-recognize and accept TELNET negotiation of this protocol, but does not
-use it.</p>
-      <p><br />
-      </p>
-<p /><h2><a name="msdp">MSDP</a></h2>
-      <p>The MUD Server Data
-Protocol is a protocol that embeds itself completely in TELNET
+<p /><p /><h2><a name="msdp">MSDP</a></h2>
+      <p>The MUD Server
+Data Protocol is a protocol that embeds itself entirely in TELNET
 sub-option negotiation codes in order to send and receive data and data
-requests to and from the server and client.&nbsp; It is entirely about
-getting extra unseen information from the server.&nbsp; You can find
-details for this protocol at the following site: <a href="https://tintin.mudhalla.net/protocols/msdp/">https://tintin.mudhalla.net/protocols/msdp/</a><br />
+request commands.&nbsp; The purpose is to allow extra "unseen" data to
+be sent to the client from the server, which can then expose or
+otherwise use the data.&nbsp; You can find details for this protocol at
+the following site: <a href="https://tintin.mudhalla.net/protocols/msdp/">https://tintin.mudhalla.net/protocols/msdp/</a><br />
 </p>
-      <p><br />
+      <p>Before the server will begin to send MSDP data packets, it
+will
+first negotiate client support for the protocol.&nbsp; It does this
+using a
+TELNET WILL MSDP escape code, as described above in the TELNET
+section.&nbsp; Once MSDP is enabled on both sides, the client may then
+begin sending "LIST" commands in an MSDP packet to learn the
+capabilities of the server.</p>
+      <p>The format of a typical MSDP packet is, as mentioned
+previously, to embed an MSDP stream inside a TELNET sub-option
+negotiation packet. A typical key-value pair packet is as follows:</p>
+      <p><span style="font-family: monospace;">[IAC][SB][MSDP-CODE][MSDP-VAR-CODE][VAR-NAME][MSDP-VAL-CODE][VAR-VALUE]...[IAC][SE]</span><br />
       </p>
-      <p><br />
+      <p>Where [IAC] is decinal 252, [SB] is 250, [SE] is 240,
+[MSDP-CODE] is 69, [MSDP-VAR-CODE] is 1, [MSDP-VAL-CODE] is 2,
+[VAR-NAME] and [VAR-VALUE] are unquoted ascii strings.</p>
+      <p>Instead of simple string values, MSDP also supports both value
+lists, arrays, and value tables.&nbsp;&nbsp; A list is simply a case
+where more than one [MSDP-VAL-CODE] is provided for a given VAR.&nbsp;
+For example:</p>
+      <p><span style="font-family: monospace;">[IAC][SB][MSDP-CODE][MSDP-VAR-CODE][VAR-NAME][MSDP-VAL-CODE][VAR-VALUE] </span><span style="font-family: monospace;">[MSDP-VAL-CODE][VAR-VALUE] </span><span style="font-family: monospace;">... [IAC][SE]</span></p>
+      <p>An example of an array would be:</p>
+      <p><span style="font-family: monospace;">[IAC][SB][MSDP-CODE][MSDP-VAR-CODE][VAR-NAME][MSDP-VAL-CODE]</span><span style="font-family: monospace;">[MSDP-ARRAY-OPEN-CODE]<br />
+      </span><span style="font-family: monospace;">[MSDP-VAL-CODE]</span><span style="font-family: monospace;">[VAR-VALUE] ... </span><span style="font-family: monospace;" /><span style="font-family: monospace;">[MSDP-ARRAY-CLOSE-CODE]</span><span style="font-family: monospace;">[IAC][SE]</span></p>
+
+Where [MSDP-ARRAY-OPEN-CODE] is decimal 5, and [MSDP-ARRAY-CLOSE-CODE]
+is 6.&nbsp;&nbsp; Tables are defined as embedded key-value pairs, and
+look as follows:<br />
+      <p><span style="font-family: monospace;">[IAC][SB][MSDP-CODE][MSDP-VAR-CODE][VAR-NAME][MSDP-VAL-CODE]</span><span style="font-family: monospace;">[MSDP-TABLE-OPEN-CODE]</span><span style="font-family: monospace;"><br />
+[MSDP-VAR-CODE][VAR-NAME]</span><span style="font-family: monospace;">[MSDP-VAL-CODE]</span><span style="font-family: monospace;">[VAR-VALUE] ... </span><span style="font-family: monospace;"><span style="font-family: monospace;">[MSDP-TABLE-CLOSE-CODE]</span><span style="font-family: monospace;">[IAC][SE]</span></span></p>
+
+
+[MSDP-TABLE-OPEN-CODE] is decimal 3, and [MSDP-TABLE-CLOSE-CODE] is decimal 4.<br />
+      <br />
+      <p style="font-weight: bold;">Client Commands and Server Variables<br />
+      </p>
+      <p>Commands are sent as Special variable names, with the value
+being an argument to the command, which is typically a variable or list
+of variables.&nbsp; <br />
+      </p>
+      <p>"LIST" "COMMANDS" will cause the server to respond with the
+variable "COMMANDS" and an Array of client commands that may be
+used.&nbsp; These are typically "LIST", "REPORT", "UNREPORT", "RESET",
+and "SEND".&nbsp; The difference between values "SEND"ed or "REPORT"ed
+is that SEND orders the server to give a value only on demand, whereas
+REPORT causes the server to send a new value every time the variable
+changes on the server side. UNREPORT will stop that behavior for the
+given variable. &nbsp;&nbsp;This LIST command is typically the first one sent by the client after MSDP is negotiated. </p>
+      <p>Other "LIST"able things include: CONFIGURABLE_VARIABLES, REPORTABLE_VARIABLES,&nbsp; REPORTED_VARIABLES, SENDABLE_VARIABLES<br />
+      </p>
+      <p>Other than commands, MSDP distinguishes between two types of
+variables: Reportable and Configurable.&nbsp; In CoffeeMud, both types
+can be subject to the SEND command, but only Reportable variables can
+be the subject of the REPORT command, and only Configurable variables
+can be changed by the client, or reset using the RESET command.&nbsp;
+At this time, CoffeeMud does not support any configurable variables.</p>
+      <p>Reportable variables include ACCOUNT_NAME, CHARACTER_NAME,
+SERVER_ID, SERVER_TIME, SPECIFICATION, AFFECTS, ALIGNMENT, EXPERIENCE,
+EXPERIENCE_MAX,EXPERIENCE_TNL, EXPERIENCE_TNL_MAX, HEALTH, HEALTH_MAX,
+LEVEL, MANA, MANA_MAX, MONEY, MOVEMENT, MOVEMENT_MAX, OPPONENT_LEVEL,
+OPPONENT_HEALTH, OPPONENT_HEALTH_MAX, OPPONENT_NAME, OPPONENT_STRENGTH,
+OPPONENT_RANGE, WORLD_TIME, ROOM, LOCATION, ROOM_NAME, ROOM_VNUM,
+ROOM_AREA, ROOM_TERRAIN, ROOM_EXITS, ARACHNOS_MUDLIST, ARACHNOS_DEVEL,
+ARACHNOS_CHAT<br />
       </p>
 <p /><h2><a name="gmcp">GMCP</a></h2>
-      <p>TODO</p>
+      <p>The Generic Mud Client
+Protocol is a close cousin to the MSDP protocol, in that it is also
+entirely implemented using the TELNET sub-option negotiation
+protocol.&nbsp; Also like MSDP, GMCP is bi-directional, and intended
+mostly for communicating information from the server to the
+client.&nbsp; Inside each TELNET SB packet is a a string consisting of
+a GMCP "Package" name followed by a JSON document.</p>
+      <p><br />
+      </p>
       <p><br />
       </p>
       <h2><a name="mssp">MSSP</a></h2>
