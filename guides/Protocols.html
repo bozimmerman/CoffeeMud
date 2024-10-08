@@ -2,9 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>The CoffeeMud CM1 Server</title>
 
-<link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-5-5, fix validation errors, add index, and fix spelling errors -->
-</head>
+<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-5, fix validation errors, add index, and fix spelling errors --></head>
 <body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
@@ -153,39 +151,38 @@ specific to the SUB-OPTION code.&nbsp; <br />
 negotiate with the client upon connection includes the following:</p>
 <span style="font-family: monospace;">[IAC][DO][TERMTYPE]&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp; Offer to support the
-Terminal Type sub-option. [TERMTYPE] is dec 24</span><br style="font-family: monospace;" />
+&nbsp;&nbsp; Offer to support Terminal Type sub-option. [TERMTYPE] is dec 24</span><br style="font-family: monospace;" />
 <span style="font-family: monospace;">[IAC][SB][TERMTYPE][ONE][IAC][SE]
-Initiate Term Type sub-option negotation, where [ONE] is decimal 1<br />
+Initiate TermType sub-option negotation, where [ONE] is dec 1<br />
 [IAC][WILL][COMPRESS2]</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Offer to
-support MCCP protocol (see below).&nbsp; [COMPRESS2] is dec 86<br />
+support MCCP protocol (see below).&nbsp;[COMPRESS2] is dec 86<br />
 [IAC][WILL][MXP]</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp; &nbsp; Offer
-to support MXP protocol (see below).&nbsp; [MXP] is dec 91<br />
+to support MXP protocol (see below).&nbsp;[MXP] is dec 91<br />
 </span><span style="font-family: monospace;">[IAC][</span><span style="font-family: monospace;">WILL</span><span style="font-family: monospace;">][GMCP]
 &nbsp; &nbsp; &nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-Offer to support the GMCP protocol (see below). [GMCP] is dec 2<br />
+Offer to support&nbsp;GMCP protocol (see below). [GMCP] is dec 201<br />
 </span><span style="font-family: monospace;">[IAC][</span><span style="font-family: monospace;">WILL</span><span style="font-family: monospace;">][MSP]
 &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp; Offer to support the MSP
+&nbsp;&nbsp;&nbsp;&nbsp; Offer to support MSP
 protocol (see below).
 [MSP] is dec 90<br />
 </span><span style="font-family: monospace;">[IAC][</span><span style="font-family: monospace;">WILL</span><span style="font-family: monospace;">][MSDP]&nbsp;&nbsp;
 &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp; Offer
-to support the MSDP protocol (see below). [MSDP] is dec 69<br />
+to support MSDP protocol (see below). [MSDP] is dec 69<br />
 </span><span style="font-family: monospace;">[IAC][</span><span style="font-family: monospace;">WILL</span><span style="font-family: monospace;">][NAWS]&nbsp;&nbsp;
 &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp; Offer
-to support the Window Size sub-option. [NAWS] is dec 31<br />
+to support Window Size sub-option. [NAWS] is dec 31<br />
 </span><span style="font-family: monospace;">[IAC][</span><span style="font-family: monospace;">WILL</span><span style="font-family: monospace;">][MSSP]&nbsp;&nbsp;
 &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp; Offer
-to support the MSSP protocol (see below). [MSSP] is dec 70</span><br />
+to support MSSP protocol (see below). [MSSP] is dec 70</span><br />
 <br />
 The client will
 then be given a period of time to respond with the appropriate DO or
@@ -617,9 +614,7 @@ negotiation packet. A typical packet is as follows:</p>
 <p> Where [IAC] is decinal 252, [SB] is 250, [SE] is 240,
 [GMCP-CODE] is 201, [GMCP-PKG-NAME] is a space-free GMCP package or
 command word, typically formatted with period-separated package names.
-&nbsp;[JSON-DOCUMENT] is just what it sounds like, a JSON document
-consisting of a wrapper JSON object (so always starting with the {
-character).</p>
+&nbsp;[JSON-DOCUMENT] is just what it sounds like, a JSON document, such as a JSON map, array,&nbsp;string, etc.</p>
 <p>CoffeeMud supported Packages/Commands:</p>
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
 <tbody>
