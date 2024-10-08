@@ -219,7 +219,9 @@ feature can be enabled, it is not by default.&nbsp; The format of
 this is
 simple: [IAC][GA] where [GA] is decimal 249. The client may also send
 [IAC][DO][SGA] to suppress the go-ahead feature, where [SGA] is decimal
-3.</p>
+3.</p><p>CoffeeMud
+does not send Go-Ahead by default, but activates it for a few mud
+clients based on the results of the Terminal Type query.</p>
 <p style="font-weight: bold;">Echo</p>
 <p>If enabled, this will cause the server to echo back to
 the
