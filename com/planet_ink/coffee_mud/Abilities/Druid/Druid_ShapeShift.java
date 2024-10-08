@@ -214,7 +214,10 @@ public class Druid_ShapeShift extends StdAbility
 		if(shapeData == null)
 		{
 			shapeData = new Vector<ShiftShapeForm>();
-			final List<String> lines=Resources.getFileLineVector(Resources.getFileResource(Resources.makeFileResourceName("skills/shapeshift.txt"), true));
+			final CMFile[] fileList = CMFile.getExistingExtendedFiles(Resources.makeFileResourceName("skills/shapeshift.txt"),null,CMFile.FLAG_FORCEALLOW);
+			final List<String> lines = new ArrayList<String>();
+			for(final CMFile F : fileList)
+				lines.addAll(Resources.getFileLineVector(Resources.getFileResource(F.getAbsolutePath(), true)));
 			ShiftShapeForm f=null;
 			for(String s : lines)
 			{

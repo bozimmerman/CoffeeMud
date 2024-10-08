@@ -318,7 +318,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return maskHelp;
 	}
 
-	public synchronized void buildSavedClasses()
+	protected void buildSavedClasses()
 	{
 		if(savedClassUpdateTime==CMClass.getLastClassUpdatedTime())
 			return;
@@ -416,33 +416,45 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		savedClassUpdateTime=CMClass.getLastClassUpdatedTime();
 	}
 
-	public final TreeMap<String,CompiledZapperMaskEntryImpl> getLooseCodes()
+	protected final TreeMap<String,CompiledZapperMaskEntryImpl> getLooseCodes()
 	{
-		final TreeMap<String,CompiledZapperMaskEntryImpl> looseCodes = looseCodesCache;
-		if(savedClassUpdateTime!=CMClass.getLastClassUpdatedTime())
-			buildSavedClasses();
-		return looseCodes;
+		synchronized(compiledCache)
+		{
+			final TreeMap<String,CompiledZapperMaskEntryImpl> looseCodes = looseCodesCache;
+			if(savedClassUpdateTime!=CMClass.getLastClassUpdatedTime())
+				buildSavedClasses();
+			return looseCodes;
+		}
 	}
 
-	public final List<SavedClass> charClasses()
+	protected final List<SavedClass> charClasses()
 	{
-		if(savedClassUpdateTime!=CMClass.getLastClassUpdatedTime())
-			buildSavedClasses();
-		return savedCharClasses;
+		synchronized(compiledCache)
+		{
+			if(savedClassUpdateTime!=CMClass.getLastClassUpdatedTime())
+				buildSavedClasses();
+			return savedCharClasses;
+		}
 	}
 
-	public final List<SavedRace> races()
+	protected final List<SavedRace> races()
 	{
-		if(savedClassUpdateTime!=CMClass.getLastClassUpdatedTime())
-			buildSavedClasses();
-		return savedRaces;
+		synchronized(compiledCache)
+		{
+			if(savedClassUpdateTime!=CMClass.getLastClassUpdatedTime())
+				buildSavedClasses();
+			return savedRaces;
+		}
 	}
 
-	public final TreeMap<String,Object> getCompiledCache(final ZapperKey key)
+	protected final TreeMap<String,Object> getCompiledCache(final ZapperKey key)
 	{
-		if(savedClassUpdateTime!=CMClass.getLastClassUpdatedTime())
-			buildSavedClasses();
-		return compiledCache.get(key);
+		synchronized(compiledCache)
+		{
+			if(savedClassUpdateTime!=CMClass.getLastClassUpdatedTime())
+				buildSavedClasses();
+			return compiledCache.get(key);
+		}
 	}
 
 	@Override

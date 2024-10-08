@@ -4968,7 +4968,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	@Override
 	public void fillFileMap(final Environmental E, final Map<String,Set<Environmental>> H)
 	{
-		if(E==null)
+		if((E==null)||(H==null))
 			return;
 		if(E instanceof PhysicalAgent)
 		{

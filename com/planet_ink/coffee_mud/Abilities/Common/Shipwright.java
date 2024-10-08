@@ -120,16 +120,13 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		List<Item> shipPrototypes = (List<Item>)Resources.getResource(allItemID);
 		if(shipPrototypes == null)
 		{
-			final CMFile F=new CMFile(Resources.makeFileResourceName("skills/"+getRecipeFilename()),null);
-			if(F.exists())
-			{
-				shipPrototypes=new Vector<Item>();
+			shipPrototypes=new Vector<Item>();
+			for(final CMFile F : CMFile.getExistingExtendedFiles(Resources.makeFileResourceName("skills/"+getRecipeFilename()), null, CMFile.FLAG_FORCEALLOW))
 				CMLib.coffeeMaker().addItemsFromXML(F.textUnformatted().toString(), shipPrototypes, null);
-				for(final Item I : shipPrototypes)
-					CMLib.threads().unTickAll(I);
-				if(shipPrototypes.size()>0)
-					Resources.submitResource(allItemID, shipPrototypes);
-			}
+			for(final Item I : shipPrototypes)
+				CMLib.threads().unTickAll(I);
+			if(shipPrototypes.size()>0)
+				Resources.submitResource(allItemID, shipPrototypes);
 		}
 		return shipPrototypes;
 	}

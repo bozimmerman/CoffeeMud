@@ -2061,14 +2061,10 @@ public class InstanceArea extends StdAbility
 		if(map == null)
 		{
 			map = new TreeMap<String,Map<String,String>[]>();
+			final CMFile[] fileList = CMFile.getExistingExtendedFiles(Resources.makeFileResourceName("skills/areainstancetypes.txt"),null,CMFile.FLAG_FORCEALLOW);
 			final List<String> lines = new ArrayList<String>();
-			for(String i="";!i.equals(".9");i=("."+(Math.round(CMath.s_double(i)*10)+1)))
-			{
-				final CMFile F=new CMFile(Resources.makeFileResourceName("skills/areainstancetypes.txt"+i), null);
-				if(!F.exists())
-					break;
+			for(final CMFile F : fileList)
 				lines.addAll(Resources.getFileLineVector(F.text()));
-			}
 			for(String line : lines)
 			{
 				line=line.trim();

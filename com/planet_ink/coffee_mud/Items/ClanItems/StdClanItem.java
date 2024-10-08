@@ -306,8 +306,13 @@ public class StdClanItem extends StdItem implements ClanItem
 		List<List<String>> V = (List<List<String>>) Resources.getResource("PARSED: clancraft.txt");
 		if (V == null)
 		{
-			final StringBuffer str = new CMFile(Resources.buildResourcePath("skills") + "clancraft.txt", null, CMFile.FLAG_LOGERRORS).text();
-			V = loadList(str);
+			V = new Vector<List<String>>();
+			for(final CMFile F : CMFile.getExistingExtendedFiles(Resources.buildResourcePath("skills")+"clancraft.txt",null,CMFile.FLAG_LOGERRORS))
+			{
+				final StringBuffer str = F.text();
+				V.addAll(loadList(str));
+			}
+			V=new ReadOnlyList<List<String>>(V);
 			if (V.size() == 0)
 				Log.errOut("StdClanItem", "Recipes not found!");
 			Resources.submitResource("PARSED: clancrtaft.txt", V);

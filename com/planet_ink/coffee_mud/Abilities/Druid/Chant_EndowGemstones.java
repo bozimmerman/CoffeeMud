@@ -78,8 +78,13 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
 		if(V==null)
 		{
-			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
-			V=new ReadOnlyList<List<String>>(CMLib.utensils().loadRecipeList(str.toString(), true));
+			V = new Vector<List<String>>();
+			for(final CMFile F : CMFile.getExistingExtendedFiles(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS))
+			{
+				final StringBuffer str = F.text();
+				V.addAll(CMLib.utensils().loadRecipeList(str.toString(), true));
+			}
+			V=new ReadOnlyList<List<String>>(V);
 			if(V.size()==0)
 				Log.errOut(ID(),"Recipes not found!");
 			Resources.submitResource("PARSED_RECIPE: "+filename,V);

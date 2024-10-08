@@ -400,9 +400,11 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 	@Override
 	public void appendAutoTitle(final String text)
 	{
-		Resources.removeResource(getAutoTitleFilename());
-		final CMFile F=new CMFile(Resources.makeFileResourceName(titleFilename),null,CMFile.FLAG_LOGERRORS);
-		F.saveText(text,true);
+		final Iterator<String> k=Resources.findResourceKeys(getAutoTitleFilename());
+		while(k.hasNext())
+			Resources.removeResource(k.next());
+		final CMFile[] fileList = CMFile.getExistingExtendedFiles(Resources.makeFileResourceName(titleFilename),null,CMFile.FLAG_LOGERRORS);
+		fileList[fileList.length-1].saveText(text,true); // always add to the last one!
 		reloadAutoTitles();
 	}
 
@@ -426,19 +428,20 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 				});
 			}
 		}
-		final CMFile F=new CMFile(Resources.makeFileResourceName(titleFilename),null,CMFile.FLAG_LOGERRORS);
-		if(F.exists())
+		final String fileName = Resources.makeFileResourceName(titleFilename);
+		for(final CMFile F : CMFile.getExistingExtendedFiles(fileName, null, CMFile.FLAG_LOGERRORS))
 		{
 			final boolean removed=Resources.findRemoveProperty(F, title);
 			if(removed)
 			{
-				Resources.removeResource(titleFilename);
+				final Iterator<String> k=Resources.findResourceKeys(titleFilename);
+				while(k.hasNext())
+					Resources.removeResource(k.next());
 				reloadAutoTitles();
 				return null;
 			}
-			return "Unable to delete title!";
 		}
-		return "Unable to open "+titleFilename+"!";
+		return "Unable to delete title!";
 	}
 
 	@Override
@@ -448,7 +451,9 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 		final Iterator<String> k=Resources.findResourceKeys(getAutoTitleFilename());
 		while(k.hasNext())
 			Resources.removeResource(k.next());
-		final List<String> V=Resources.getFileLineVector(Resources.getFileResource(getAutoTitleFilename(),true));
+		final List<String> V = new ArrayList<String>();
+		for(final CMFile F : CMFile.getExistingExtendedFiles(getAutoTitleFilename(), null, CMFile.FLAG_FORCEALLOW))
+			V.addAll(Resources.getFileLineVector(Resources.getFileResource(F.getAbsolutePath(),true)));
 		String WKID=null;
 		for(int v=0;v<V.size();v++)
 		{
@@ -627,7 +632,9 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 				if(astro != null)
 					return astro;
 				astro = new Vector<AutoProperties>();
-				final List<String> lines = Resources.getFileLineVector(new CMFile(Resources.makeFileResourceName(getAutoPropsFilename()),null).text());
+				final List<String> lines = new ArrayList<String>();
+				for(final CMFile F : CMFile.getExistingExtendedFiles(Resources.makeFileResourceName(getAutoPropsFilename()),null,CMFile.FLAG_FORCEALLOW))
+					lines.addAll(Resources.getFileLineVector(F.text()));
 				for(String s : lines)
 				{
 					s=s.trim();
@@ -756,43 +763,46 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 		final int num = lineNum;
 		if(num<1)
 			return false;
-		final StringBuffer buf = new StringBuffer("");
-		final CMFile F = new CMFile(Resources.makeFileResourceName(getAutoPropsFilename()),null);
-		final List<String> lines=Resources.getFileLineVector(F.text());
-		boolean found=false;
-		int i=1;
-		for(String l : lines)
+		final CMFile[] fileList = CMFile.getExistingExtendedFiles(Resources.makeFileResourceName(getAutoPropsFilename()),null,CMFile.FLAG_FORCEALLOW);
+		for(final CMFile F : fileList)
 		{
-			l=l.trim();
-			if(l.startsWith("#") || (l.length()==0))
+			final StringBuilder buf = new StringBuilder("");
+			final List<String> lines=Resources.getFileLineVector(F.text());
+			boolean found=false;
+			int i=1;
+			for(String l : lines)
 			{
-				buf.append(l).append("\n\r");
-				continue;
+				l=l.trim();
+				if(l.startsWith("#") || (l.length()==0))
+				{
+					buf.append(l).append("\n\r");
+					continue;
+				}
+				if(i!=num)
+					buf.append(l).append("\n\r");
+				else
+				{
+					found=true;
+					if(newLine != null)
+						buf.append(newLine).append("\n\r");
+				}
+				i++;
 			}
-			if(i!=num)
-				buf.append(l).append("\n\r");
-			else
+			if((num == Integer.MAX_VALUE)
+			&&(newLine != null)
+			&&(F==fileList[fileList.length-1])) // only add to the last one!
 			{
 				found=true;
 				if(newLine != null)
 					buf.append(newLine).append("\n\r");
 			}
-			i++;
+			if(found)
+			{
+				autoPropHash	= null;
+				autoProperties	= null;
+				return F.saveText(buf);
+			}
 		}
-		if((num == Integer.MAX_VALUE)
-		&&(newLine != null))
-		{
-			found=true;
-			if(newLine != null)
-				buf.append(newLine).append("\n\r");
-		}
-		if(!found)
-			return false;
-		else
-		{
-			autoPropHash	= null;
-			autoProperties	= null;
-			return F.saveText(buf);
-		}
+		return false;
 	}
 }

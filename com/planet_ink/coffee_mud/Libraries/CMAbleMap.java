@@ -2571,36 +2571,39 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		bothMaps=new TreeMap<String,Map<String,AbilityMapping>>();
 		bothMaps.put("ALL", new TreeMap<String,AbilityMapping>());
 		bothMaps.put("EACH", new TreeMap<String,AbilityMapping>());
-		final CMFile f = new CMFile(Resources.makeFileResourceName("skills/allqualifylist.txt"),null);
-		if(f.exists() && f.canRead())
+		final CMFile[] fileList = CMFile.getExistingExtendedFiles(Resources.makeFileResourceName("skills/allqualifylist.txt"),null,CMFile.FLAG_FORCEALLOW);
+		for(final CMFile F : fileList)
 		{
-			final List<String> list = Resources.getFileLineVector(f.text());
-			boolean eachMode = false;
-			for(String s : list)
+			if(F.canRead())
 			{
-				s=s.trim();
-				if(s.equalsIgnoreCase("[EACH]"))
-					eachMode=true;
-				else
-				if(s.equalsIgnoreCase("[ALL]"))
-					eachMode=false;
-				else
-				if(s.startsWith("#")||s.length()==0)
-					continue;
-				else
+				final List<String> list = Resources.getFileLineVector(F.text());
+				boolean eachMode = false;
+				for(String s : list)
 				{
-					final AbilityMapping able=makeAllQualifyMapping(s);
-					if(able==null)
+					s=s.trim();
+					if(s.equalsIgnoreCase("[EACH]"))
+						eachMode=true;
+					else
+					if(s.equalsIgnoreCase("[ALL]"))
+						eachMode=false;
+					else
+					if(s.startsWith("#")||s.length()==0)
 						continue;
-					if(eachMode)
-					{
-						final Map<String, AbilityMapping> map=bothMaps.get("EACH");
-						map.put(able.abilityID().toUpperCase().trim(),able);
-					}
 					else
 					{
-						final Map<String, AbilityMapping> map=bothMaps.get("ALL");
-						map.put(able.abilityID().toUpperCase().trim(),able);
+						final AbilityMapping able=makeAllQualifyMapping(s);
+						if(able==null)
+							continue;
+						if(eachMode)
+						{
+							final Map<String, AbilityMapping> map=bothMaps.get("EACH");
+							map.put(able.abilityID().toUpperCase().trim(),able);
+						}
+						else
+						{
+							final Map<String, AbilityMapping> map=bothMaps.get("ALL");
+							map.put(able.abilityID().toUpperCase().trim(),able);
+						}
 					}
 				}
 			}
@@ -2694,7 +2697,8 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		}
 
 		// now just save it
-		final CMFile f = new CMFile(Resources.makeFileResourceName("skills/allqualifylist.txt"),null);
+		final CMFile[] fileList = CMFile.getExistingExtendedFiles(Resources.makeFileResourceName("skills/allqualifylist.txt"),null,CMFile.FLAG_FORCEALLOW);
+		final CMFile f = fileList[fileList.length-1]; //TODO: support them all
 		List<String> set=new Vector<String>(0);
 		if(f.exists() && f.canRead())
 		{

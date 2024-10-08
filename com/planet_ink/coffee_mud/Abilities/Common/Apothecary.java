@@ -119,8 +119,12 @@ public class Apothecary extends Cooking
 		List<List<String>> recipes=(List<List<String>>)Resources.getResource("PARSED_ANTIDOTE_RECIPE: "+filename);
 		if(recipes==null)
 		{
-			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
-			recipes=loadList(str);
+			recipes = new Vector<List<String>>();
+			for(final CMFile F : CMFile.getExistingExtendedFiles(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS))
+			{
+				final StringBuffer str = F.text();
+				recipes.addAll(loadList(str));
+			}
 			if(recipes.size()==0)
 				Log.errOut("Apothecary","Recipes not found!");
 			else

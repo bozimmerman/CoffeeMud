@@ -207,8 +207,12 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				recipePath = filename;
 			else
 				recipePath = Resources.buildResourcePath("skills")+filename;
-			final StringBuffer str=new CMFile(recipePath,null,CMFile.FLAG_LOGERRORS).text();
-			V=loadList(str);
+			V = new Vector<List<String>>();
+			for(final CMFile F : CMFile.getExistingExtendedFiles(recipePath,null,CMFile.FLAG_LOGERRORS))
+			{
+				final StringBuffer str = F.text();
+				V.addAll(loadList(str));
+			}
 			Collections.sort(V,new Comparator<List<String>>()
 			{
 				@Override

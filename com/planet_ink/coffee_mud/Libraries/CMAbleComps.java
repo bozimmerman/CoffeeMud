@@ -831,12 +831,18 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				return H;
 			abilitiesWithCompsWithTriggers.clear();
 			compSocials.clear();
-			final StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,CMFile.FLAG_LOGERRORS).text();
-			final List<String> V;
-			if(buf!=null)
-				V=Resources.getFileLineVector(buf);
-			else
-				V=new ArrayList<String>(1); // only used locally
+			final CMFile[] fileList = CMFile.getExistingExtendedFiles(Resources.makeFileResourceName("skills/components.txt"),null,CMFile.FLAG_LOGERRORS);
+			List<String> V=null;
+			for(final CMFile F : fileList)
+			{
+				final StringBuffer buf = F.text();
+				if((buf!=null)&&(buf.length()>0))
+				{
+					if(V == null)
+						V=new ArrayList<String>(1);
+					V.addAll(Resources.getFileLineVector(buf));
+				}
+			}
 			String s=null;
 			String error=null;
 			if(V!=null)
@@ -989,82 +995,96 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	@Override
 	public void alterAbilityComponentFile(final String compID, final boolean delete)
 	{
-		final CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,CMFile.FLAG_LOGERRORS);
 		final boolean isSocial =
 				((compID.length()>2)&&(compID.charAt(2)=='\t'))
 				||compSocials.containsKey(compID.trim().toUpperCase());
+		final CMFile[] fileList = CMFile.getExistingExtendedFiles(Resources.makeFileResourceName("skills/components.txt"),null,CMFile.FLAG_LOGERRORS);
 		if(delete)
 		{
 			//if it's not a social, you get to use the Resource method
 			if(!isSocial)
 			{
-				Resources.findRemoveProperty(F, compID);
+				for(final CMFile F : fileList)
+					Resources.findRemoveProperty(F, compID);
 				return;
 			}
 		}
 		final String parms=isSocial?compID:getAbilityComponentCodedString(compID);
-		final StringBuffer text=F.textUnformatted();
-		boolean lastWasCR=true;
-		boolean addIt=true;
-		int delFromHere=-1;
-		final String upID;
-		if(isSocial)
+		for(final CMFile F : fileList)
 		{
-			final int x=compID.indexOf('\t',3);
-			if(x<0)
-				upID=compID.toUpperCase()+"\t";
-			else
-				upID=compID.substring(3,x+1).toUpperCase();
-		}
-		else
-			upID=compID.toUpperCase();
-		for(int t=0;t<text.length();t++)
-		{
-			if(text.charAt(t)=='\n')
-				lastWasCR=true;
-			else
-			if(text.charAt(t)=='\r')
-				lastWasCR=true;
-			else
-			if(Character.isWhitespace(text.charAt(t)))
-				continue;
-			else
-			if((lastWasCR)&&(delFromHere>=0))
+			final StringBuffer text=F.textUnformatted();
+			boolean lastWasCR=true;
+			boolean addIt=true;
+			boolean changed=false;
+			int delFromHere=-1;
+			final String upID;
+			if(isSocial)
 			{
-				text.delete(delFromHere,t);
+				final int x=compID.indexOf('\t',3);
+				if(x<0)
+					upID=compID.toUpperCase()+"\t";
+				else
+					upID=compID.substring(3,x+1).toUpperCase();
+			}
+			else
+				upID=compID.toUpperCase();
+			for(int t=0;t<text.length();t++)
+			{
+				if(text.charAt(t)=='\n')
+					lastWasCR=true;
+				else
+				if(text.charAt(t)=='\r')
+					lastWasCR=true;
+				else
+				if(Character.isWhitespace(text.charAt(t)))
+					continue;
+				else
+				if((lastWasCR)&&(delFromHere>=0))
+				{
+					text.delete(delFromHere,t);
+					if(!delete)
+						text.insert(delFromHere,parms+'\n');
+					delFromHere=-1;
+					addIt=false;
+					changed=true;
+					break;
+				}
+				else
+				if((lastWasCR)
+				&&((isSocial && text.substring(t+3).startsWith(upID))
+				  ||((!isSocial)
+					&&(text.substring(t).toUpperCase().startsWith(upID))
+					&&(text.substring(t+upID.length()).trim().startsWith("=")))))
+				{
+					addIt=false;
+					delFromHere=t;
+					lastWasCR=false;
+				}
+				else
+					lastWasCR=false;
+			}
+			if(delFromHere>0)
+			{
+				text.delete(delFromHere,text.length());
 				if(!delete)
-					text.insert(delFromHere,parms+'\n');
-				delFromHere=-1;
-				addIt=false;
+					text.append(parms+'\n');
+				F.saveText(text.toString(),false);
 				break;
 			}
-			else
-			if((lastWasCR)
-			&&((isSocial && text.substring(t+3).startsWith(upID))
-			  ||((!isSocial)
-				&&(text.substring(t).toUpperCase().startsWith(upID))
-				&&(text.substring(t+upID.length()).trim().startsWith("=")))))
+			if(changed)
 			{
-				addIt=false;
-				delFromHere=t;
-				lastWasCR=false;
+				F.saveText(text.toString(),false);
+				break;
 			}
-			else
-				lastWasCR=false;
-		}
-		if(delFromHere>0)
-		{
-			text.delete(delFromHere,text.length());
-			if(!delete)
+			if(addIt && (F==fileList[fileList.length-1]))
+			{
+				if(!lastWasCR)
+					text.append('\n');
 				text.append(parms+'\n');
+				F.saveText(text.toString(),false);
+				break;
+			}
 		}
-		if(addIt)
-		{
-			if(!lastWasCR)
-				text.append('\n');
-			text.append(parms+'\n');
-		}
-		F.saveText(text.toString(),false);
 		Resources.removeResource("COMPONENT_MAP");
 		abilitiesWithCompsWithTriggers.clear();
 		compSocials.clear();

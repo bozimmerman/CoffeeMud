@@ -296,8 +296,13 @@ public class CommonSkill extends StdAbility
 		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
 		if(V==null)
 		{
-			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
-			V=new ReadOnlyList<List<String>>(loadList(str));
+			final List<List<String>> frecipes = new ArrayList<List<String>>();
+			for(final CMFile F : CMFile.getExistingExtendedFiles(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS))
+			{
+				final StringBuffer str = F.text();
+				frecipes.addAll(loadList(str));
+			}
+			V=new ReadOnlyList<List<String>>(frecipes);
 			if((V.size()==0)
 			&&(!ID().equals("GenCraftSkill"))
 			&&(!ID().endsWith("Costuming")))

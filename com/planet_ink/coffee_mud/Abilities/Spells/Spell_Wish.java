@@ -93,10 +93,6 @@ public class Spell_Wish extends Spell
 
 	protected volatile long lastCastTime = 0;
 
-	protected static final String resourceF=Resources.makeFileResourceName("skills/wish.txt");
-
-	protected static final String resourceID="PARSED: " + resourceF;
-
 	protected static final String forbCastId = "[NOCAST]";
 	protected static final String forbGainId = "[NOGAIN]";
 
@@ -125,18 +121,21 @@ public class Spell_Wish extends Spell
 	@SuppressWarnings("unchecked")
 	protected static synchronized Map<String,Object> getWishParms()
 	{
-		if(Resources.isResource(Spell_Wish.resourceID))
+		final String resourceF=Resources.makeFileResourceName("skills/wish.txt");
+
+		final String resourceID="PARSED: " + resourceF;
+
+		if(Resources.isResource(resourceID))
 		{
-			return (Map<String,Object>)Resources.getResource(Spell_Wish.resourceID);
+			return (Map<String,Object>)Resources.getResource(resourceID);
 		}
 		final Map<String,Object> parms = new Hashtable<String,Object>();
-		final CMFile f = new CMFile(Spell_Wish.resourceF,null);
-		if(f.exists())
+		final List<String> rest = new ArrayList<String>();
+		parms.put("REST", rest);
+		for(final CMFile f : CMFile.getExistingExtendedFiles(resourceF, null, CMFile.FLAG_FORCEALLOW))
 		{
-			final List<String> lines = Resources.getFileLineVector(f.text());
-			final List<String> rest = new ArrayList<String>();
 			List<String> curr = rest;
-			parms.put("REST", rest);
+			final List<String> lines = Resources.getFileLineVector(f.text());
 			for(final String s : lines)
 			{
 				String ts = s.trim();
@@ -167,7 +166,7 @@ public class Spell_Wish extends Spell
 			if(parms.containsKey(forbGainId))
 				parms.put(forbGainId, new XTreeSet<String>((List<String>)parms.get(forbGainId)));
 		}
-		Resources.submitResource(Spell_Wish.resourceID, parms);
+		Resources.submitResource(resourceID, parms);
 		return parms;
 	}
 
