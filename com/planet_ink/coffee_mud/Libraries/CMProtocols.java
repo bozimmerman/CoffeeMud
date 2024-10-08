@@ -2636,7 +2636,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								.append("\"mv\":").append(M.curState().getMovement()).append(",")
 								.append("\"mmv\":").append(M.maxState().getMovement()).append(",")
 								.append("\"lvl\":").append(M.phyStats().level()).append(",");
-							final int align=mob.fetchFaction(CMLib.factions().getAlignmentID());
+							final int align=M.fetchFaction(CMLib.factions().getAlignmentID());
 							if(align!=Integer.MAX_VALUE)
 								doc.append("\"align\":").append(align).append(",");
 							doc.append("\"tnl\":").append(M.getExpNeededLevel());

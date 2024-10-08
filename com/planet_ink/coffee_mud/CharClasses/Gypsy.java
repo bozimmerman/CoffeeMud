@@ -538,8 +538,7 @@ public class Gypsy extends Thief
 				if(msg.tool().ID().equals("Skill_Chantcraft"))
 				{
 					if((msg.tool().text().length()>0)
-					&&(msg.target() instanceof MOB)
-					&&(msg.source().baseCharStats().getMyDeity()!=null))
+					&&(msg.target() instanceof MOB))
 					{
 						Ability A=((MOB)msg.target()).fetchAbility(msg.tool().text());
 						if(A==null)

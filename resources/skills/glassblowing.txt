@@ -21,6 +21,7 @@ gravy boat	15	15	2	3	GenEmptyDrink	LIQUID	5
 glass pipe	16	25	3	10	GenPipe		200	
 glass lantern	17	40	9	57	GenLantern		800	
 mirror	18	60	5	54	GenMirror			
+crystal ball	19	60	5	54	GenItem			
 glass wind chimes	19	80	10	155	GenItem			Prop_MOBEmoter;SOUNDER PORTAL_ENTER_ROOM clanks loudly in the breeze.
 vase	21	20	2	7	GenEmptyDrink	LIQUID|RAWMATERIALS	10	
 display case	22	30	20	120	GenContainer		100	

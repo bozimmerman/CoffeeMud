@@ -34,3 +34,5 @@
 BANDAGING=(inventory:consumed:1:CLOTH:)||(held:consumed:5:DUST:-race +elf)
 Thief_Runecasting=(have:kept:1:RUNE TILE:)||(have:kept:1:RUNE STONE:)||(have:kept:1:RUNE CUBE:) "a crafted rune cube, tile, or stone"
 THIEF_TAROTREADING=(have:kept:1:tarot cards:) "a deck of tarot cards"
+THIEF_TASSEOGRAPHY=(have:consumed:1:coffee:) "some coffee"
+THIEF_FORTUNETELLING=(have:kept:1:crystal ball:) "a crystal ball"

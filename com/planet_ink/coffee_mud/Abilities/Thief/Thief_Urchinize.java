@@ -165,6 +165,8 @@ public class Thief_Urchinize extends ThiefSkill
 					A.setProficiency(100);
 					M.addAbility(A);
 				}
+				M.delAllBehaviors();
+				M.delAllScripts();
 				Behavior B = CMClass.getBehavior("Thiefness");
 				B.setParms("Thief");
 				M.addBehavior(B);

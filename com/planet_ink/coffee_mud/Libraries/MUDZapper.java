@@ -3125,14 +3125,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				return true;
 		}
 		else
-		if(o instanceof Pair)
-		{
-			@SuppressWarnings("unchecked")
-			final Pair<Integer,Integer> p=(Pair<Integer,Integer>)o;
-			if((int)Math.round(CMath.floor(CMath.div(num,p.second.intValue())))==p.first.intValue())
-				return true;
-		}
-		else
 		if(o instanceof Triad)
 		{
 			@SuppressWarnings("unchecked")
@@ -3140,27 +3132,51 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			if((num % p.second.intValue())==p.first.intValue())
 				return true;
 		}
-		return false;
-	}
-
-	protected final void addDateValues(final Object o, final List<Integer> vals, final int max)
-	{
-		if(o instanceof Integer)
-			vals.add((Integer)o);
 		else
 		if(o instanceof Pair)
 		{
 			@SuppressWarnings("unchecked")
 			final Pair<Integer,Integer> p=(Pair<Integer,Integer>)o;
-			vals.add(Integer.valueOf(p.second.intValue() * p.first.intValue()));
+			if((int)Math.round(CMath.floor(CMath.div(num,p.second.intValue())))==p.first.intValue())
+				return true;
+		}
+		return false;
+	}
+
+	protected final void addDateValues(final Object o, final List<Integer> vals, final int min, final int max)
+	{
+		if(o instanceof Integer)
+		{
+			if(min == 0)
+				vals.add((Integer)o);
+			else
+				vals.add(Integer.valueOf(((Integer)o).intValue()+min));
 		}
 		else
 		if(o instanceof Triad)
 		{
 			@SuppressWarnings("unchecked")
 			final Triad<Integer,Integer,String> p=(Triad<Integer,Integer,String>)o;
-			for(int i=p.first.intValue();i<=max;i+=p.second.intValue())
-				vals.add(Integer.valueOf(i));
+			if(min == 0)
+			{
+				for(int i=p.first.intValue();i<=max;i+=p.second.intValue())
+					vals.add(Integer.valueOf(min));
+			}
+			else
+			{
+				int firstVal = min - (min % p.second.intValue()) + p.first.intValue() ;
+				if(firstVal <= min)
+					firstVal += p.second.intValue();
+				for(int i=firstVal;i<=max;i+=p.second.intValue())
+					vals.add(Integer.valueOf(i));
+			}
+		}
+		else
+		if(o instanceof Pair)
+		{
+			@SuppressWarnings("unchecked")
+			final Pair<Integer,Integer> p=(Pair<Integer,Integer>)o;
+			vals.add(Integer.valueOf(min+(p.second.intValue() * p.first.intValue())));
 		}
 	}
 
@@ -8252,9 +8268,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					okV = new ArrayList<Integer>();
 					okVals.put(period, okV);
 				}
-				final int max = C.getMax(period);
+				final int min = (period == TimePeriod.YEAR)?C.get(period):0;
+				final int max = (period == TimePeriod.YEAR)?C.get(period)+100:C.getMax(period);
 				for(final Object o : entry.parms())
-					addDateValues(o, okV, max);
+					addDateValues(o, okV, min, max);
 			}
 			catch (final NullPointerException n)
 			{
@@ -8270,7 +8287,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				final List<Integer> okV = okVals.get(period);
 				if(okV == null) // if null, anything will do!
 					continue;
-				final int max = C.getMax(period);
+				final int max = (period == TimePeriod.YEAR)?C.get(period)+100:C.getMax(period);
 				boolean useNot = !entry.maskType().name().startsWith("_");
 				useNot = (not == null || (!not[0])) ? useNot : !useNot;
 				Integer perI = Integer.valueOf(C.get(period));
@@ -8363,7 +8380,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		if(lowestPeriodC == null)
 			return clock.second;
 		final TimeClock C = (TimeClock)clock.second.copyOf();
-		final int max = C.getMax(lowestPeriodC);
+		final int max = (lowestPeriodC == TimePeriod.YEAR)?C.get(lowestPeriodC)+100:C.getMax(lowestPeriodC);
 		for(int i=0;i<max;i++)
 		{
 			C.bump(lowestPeriodC, 1);

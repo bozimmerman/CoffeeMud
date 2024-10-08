@@ -74,11 +74,11 @@ public class Thief_FortuneTelling extends Thief_Runecasting
 
 	protected static String[] astroStarts = new String[]
 	{
-		"I see your aura are affected by...",
+		"I see your future is affected by...",
 		"You are surrounded by...",
 		"In your future there are...",
 		"Your future holds...",
-		"YBe warned"
+		"Be ye warned..."
 	};
 
 	protected static String[] astroFails = new String[]
@@ -104,13 +104,13 @@ public class Thief_FortuneTelling extends Thief_Runecasting
 	@Override
 	protected String getSuccessMsg()
 	{
-		return L("<S-NAME> peer(s) into the future of <T-NAMESELF>...");
+		return L("<S-NAME> peer(s) into a crystal ball to see the future of <T-NAMESELF>...");
 	}
 
 	@Override
 	protected String getFailureMsg()
 	{
-		return L("<S-NAME> attempt(s) to peer into the future of <T-NAMESELF>, but <S-IS-ARE> confused.");
+		return L("<S-NAME> peer(s) into a crystal ball for <T-NAMESELF>, but <S-IS-ARE> confused.");
 	}
 
 	@Override

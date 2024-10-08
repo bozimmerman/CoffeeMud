@@ -116,6 +116,13 @@ public class GTell extends StdCommand
 			tellMsg.setOthersMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^>"+mob.name()+" tells the group '"+text+"'^</GTELL^>^?^.");
 		}
 
+		if((mob.session()!=null)
+		&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)))
+		{
+			mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\"GTELL\",\"msg\":\""+MiniJSON.toJSONString(text)+"\""
+					+ ",\"player\":\""+mob.name()+"\"}");
+		}
+
 		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 		final CMMsg msg=tellMsg;
 		for (final MOB target : group)

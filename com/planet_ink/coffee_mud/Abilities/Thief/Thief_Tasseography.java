@@ -68,17 +68,19 @@ public class Thief_Tasseography extends Thief_Runecasting
 
 	protected static String[] tarotStarts = new String[]
 	{
-		"I see your major arcana is affected by...",
-		"I see your minor arcana is affected by...",
-		"I see your future holds..."
+		"I see your future is bright...",
+		"I see your future is murky...",
+		"I see your future is muddled...",
+		"I see your future is sloppy...",
+		"I see your future is orderly..."
 	};
 
 	protected static String[] tarotFails = new String[]
 	{
-		"Astral clouds are blocking your aura.",
-		"Your future is unbound. Tread carefully.",
-		"Your path is clear.",
-		"The fates` gaze is elsewhere."
+		"You drank too fast.  Try again later.",
+		"The grounds are unclear.",
+		"You need to drink more coffee.  Come back later.",
+		"I see... I see.... I don't see.  Sorry, your life might be too uneventful."
 	};
 
 	@Override
@@ -96,13 +98,13 @@ public class Thief_Tasseography extends Thief_Runecasting
 	@Override
 	protected String getSuccessMsg()
 	{
-		return L("<S-NAME> deal(s) tarot cards for <T-NAMESELF>...");
+		return L("<S-NAME> stud(ys) coffee grounds for <T-NAMESELF>...");
 	}
 
 	@Override
 	protected String getFailureMsg()
 	{
-		return L("<S-NAME> deal(s) tarot cards for <T-NAMESELF>, but <S-IS-ARE> confused.");
+		return L("<S-NAME> stud(ys) coffee grounds for <T-NAMESELF>, but just make(s) a mess.");
 	}
 
 	@Override
