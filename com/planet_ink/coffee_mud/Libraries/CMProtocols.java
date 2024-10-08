@@ -3116,6 +3116,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				ports.add(Integer.toString(CMLib.hosts().get(i).getPort()));
 			pkg.put("PORT",ports.toArray(new String[ports.size()]));
 		}
+		pkg.put("NAME",CMProps.getVar(CMProps.Str.MUDNAME));
 		if(host != null)
 		{
 			final long uptime = (System.currentTimeMillis() / 1000) - CMLib.host().getUptimeSecs();
