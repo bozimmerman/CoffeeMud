@@ -381,6 +381,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	{
 		adds.add(new Pair<String,String>(to.ID(),to.text()));
 		super.miscText = newText();
+		this.affects = null;
 	}
 
 	@Override
@@ -393,6 +394,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 				i.remove();
 		}
 		super.miscText = newText();
+		this.affects = null;
 	}
 
 	@Override
