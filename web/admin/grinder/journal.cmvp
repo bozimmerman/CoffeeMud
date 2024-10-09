@@ -427,7 +427,7 @@
 								@JournalNext?RESET@
 								@loop@
 									@JournalNext@
-									<OPTION VALUE="@JournalName@">@JournalName?NOCOLOR@
+									<OPTION VALUE="@JournalName?LIMIT=15@">@JournalName?NOCOLOR@
 								@back@
 								@AddRequestParameter?JOURNAL=@@RequestParameter?THISJOURNAL@@ @
 								@JournalInfo?ASSIGN&RESET@

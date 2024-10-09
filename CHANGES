@@ -60,6 +60,7 @@
  58. New rideable type: furniture-hook
  59. HELP can now match on common recipes to tell you which skill produces them.
  60. Many resource files can be 'extended' by adding versions with .1, .2, etc after the extension.
+ 61. Std/Gen Journals now support post and msg size limits, and post expiration.
  
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

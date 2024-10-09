@@ -315,6 +315,8 @@ public class StdJournal extends StdItem implements Book
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		final MOB mob=msg.source();
+		if(this.parmCache == null)
+			getParm("");
 		if(msg.amITarget(this))
 		{
 			switch(msg.targetMinor())
@@ -637,6 +639,10 @@ public class StdJournal extends StdItem implements Book
 					else
 						journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true, 100000, tos);
 					final JournalEntry entry2=journal2.get(which-1);
+					final int charLimit = this.getMaxCharsPerPage();
+					if((charLimit > 0)
+					&&(messageStr.length()>charLimit))
+						messageStr = messageStr.substring(0, charLimit);
 					entry2.msg(messageStr);
 					CMLib.database().DBUpdateJournal(Name(), entry2);
 				}
@@ -659,7 +665,12 @@ public class StdJournal extends StdItem implements Book
 						{
 							if(res == MsgMkrResolution.SAVEFILE)
 							{
-								entry2.msg(CMParms.combineWith(vbuf,"\n"));
+								String newMsgTxt = CMParms.combineWith(vbuf,"\n");
+								final int charLimit = getMaxCharsPerPage();
+								if((charLimit > 0)
+								&&(newMsgTxt.length()>charLimit))
+									newMsgTxt = newMsgTxt.substring(0, charLimit);
+								entry2.msg(newMsgTxt);
 								CMLib.database().DBUpdateJournal(Name(), entry2);
 							}
 						}
@@ -688,7 +699,7 @@ public class StdJournal extends StdItem implements Book
 					{
 						String to="ALL";
 						String subject;
-						final String message;
+						String message;
 						if(msg.targetMessage().length()>1)
 						{
 							message=msg.targetMessage();
@@ -736,6 +747,10 @@ public class StdJournal extends StdItem implements Book
 							return;
 						}
 						CMLib.journals().notifyPosting(Name(), mob.Name(), to, subject);
+						final int charLimit = getMaxCharsPerPage();
+						if((charLimit > 0)
+						&&(message.length()>charLimit))
+							message = message.substring(0, charLimit);
 						CMLib.database().DBWriteJournal(Name(),mob.Name(),to,subject,message);
 						if((R!=null)&&(msg.targetMessage().length()<=1))
 							R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Journal entry added."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
@@ -800,6 +815,16 @@ public class StdJournal extends StdItem implements Book
 			journalEntries=CMLib.database().DBReadJournalMsgsByCreateDate(journal, true, 100000, tos);
 		else
 			journalEntries=CMLib.database().DBReadJournalMsgsByUpdateDate(journal, true, 100000, tos);
+		final int postLimit = this.getMaxPages();
+		if((postLimit > 0)
+		&&(journalEntries.size()>postLimit))
+		{
+			while(journalEntries.size()>postLimit)
+			{
+				final JournalEntry badEntry = journalEntries.remove(0);
+				CMLib.database().DBDeleteJournal(Name(), badEntry.key());
+			}
+		}
 		final StringBuffer buf=new StringBuffer("");
 		final boolean shortFormat=readableText().toUpperCase().indexOf("SHORTLIST")>=0;
 		if((which<0)||(journalEntries==null)||(which>=journalEntries.size()))
@@ -942,32 +967,43 @@ public class StdJournal extends StdItem implements Book
 		return fakeEntry;
 	}
 
-	private static final String[] JOURNAL_PARMS_LIST=new String[]{"READ","WRITE","REPLY","ADMIN","PRIVATE","MAILBOX","SORTBY","FILTER"};
+	protected static final String[] JOURNAL_PARMS_LIST=new String[]{
+		"READ", "WRITE", "REPLY",
+		"ADMIN", "PRIVATE", "MAILBOX",
+		"SORTBY", "FILTER", "EXPIRE",
+		"LIMIT", "MAXCHARS"
+	};
 
 
-	private String getParm(final String parmName)
+	protected String getParm(final String parmName)
 	{
 		if(readableText().length()==0)
 			return "";
 		Map<String,String> useH;
-		synchronized(this)
+		useH = this.parmCache;
+		if(useH == null)
 		{
-			useH = this.parmCache;
-			if(useH == null)
+			synchronized(this)
 			{
-				useH=CMParms.parseEQParms(readableText().toUpperCase(), JOURNAL_PARMS_LIST);
-				if(useH.containsKey("FILTER"))
+				useH = this.parmCache;
+				if(useH == null)
 				{
-					// looks the same as above, but its not, because case sensitivity.
-					final Map<String,String> h2=CMParms.parseEQParms(readableText(), JOURNAL_PARMS_LIST);
-					for(final String key : h2.keySet())
+					useH=CMParms.parseEQParms(readableText().toUpperCase(), JOURNAL_PARMS_LIST);
+					if(useH.containsKey("FILTER"))
 					{
-						if(key.equalsIgnoreCase("FILTER"))
-							useH.put("FILTER", h2.get(key));
+						// looks the same as above, but its not, because case sensitivity.
+						final Map<String,String> h2=CMParms.parseEQParms(readableText(), JOURNAL_PARMS_LIST);
+						for(final String key : h2.keySet())
+						{
+							if(key.equalsIgnoreCase("FILTER"))
+								useH.put("FILTER", h2.get(key));
+						}
 					}
+					this.parmCache = useH;
 				}
-				this.parmCache = useH;
 			}
+			if(useH.containsKey("EXPIRE"))
+				CMLib.journals().registerItemJournal(this);
 		}
 		final String req=useH.get(parmName.toUpperCase().trim());
 		if(req==null)
@@ -1014,13 +1050,13 @@ public class StdJournal extends StdItem implements Book
 	@Override
 	public int getMaxPages()
 	{
-		return 0;
+		return CMath.s_int(getParm("LIMIT"));
 	}
 
 	@Override
 	public int getMaxCharsPerPage()
 	{
-		return 0;
+		return CMath.s_int(getParm("MAXCHARS"));
 	}
 
 	@Override

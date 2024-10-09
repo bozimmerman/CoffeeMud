@@ -52,11 +52,14 @@ public class JournalName extends StdWebMacro
 		{
 			final boolean webify=parms.containsKey("WEBCOLOR");
 			final boolean decolor=parms.containsKey("NOCOLOR");
+			final int limit = parms.containsKey("LIMIT")?CMath.s_int(parms.get("LIMIT")):0;
 			StringBuffer lastBuf=new StringBuffer(last);
 			if(webify)
 				lastBuf=super.colorwebifyOnly(lastBuf);
 			if(decolor)
 				lastBuf=new StringBuffer(CMStrings.removeColors(lastBuf.toString()));
+			if(limit>0)
+				return clearWebMacros(CMStrings.ellipse(lastBuf.toString(),limit));
 			return clearWebMacros(lastBuf.toString());
 		}
 		return "";

@@ -5326,7 +5326,7 @@ followed by some requirements. <br>
 
 
 A writing requirement is specified by
-putting WRITE= followed by some requirements. <br>
+putting WRITE= followed by some requirements. <br>A message limit is specified by putting LIMIT= followed by a number.<br>A character limit per msg is set by putting MAXCHARS= followed by a number.<br>Setting how long until a message expires is specified by putting EXPIRE= followed by the number of days.<br>
 
 
 An attachments requirement is specified by putting ATTACH=
@@ -5337,10 +5337,7 @@ A named TO: filter can be given by putting
 FILTER= followed by a comma-delimited list of names (or ALL).<br>
 
 
-putting WRITE= followed by some requirements. <br>
-
-
-An optional
+putting WRITE= followed by some requirements. <br>An optional
 administrative requirement is specified by putting ADMIN= followed by
 some requirements. <br>
 
@@ -6326,7 +6323,11 @@ the fields listed above under GenItem, and GenContainer, plus a few
 more:</p>
 
 
-<table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+"HOOK" is not mountable
+at all, but has capacity limited by riders, and displays its contents.
+
+
+    <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
 
 
   <tbody>
@@ -6358,11 +6359,7 @@ like "LAND-BASED","WATER-BASED","AIR-FLYING", and "WAGON" while others
 may not. "WAGON", unlike the others, may be hitched to another Rideable
 (such as a GenRideable MOB made into a horse.) "LADDER" will help those
 trying to get through climable rooms. The others are just furniture for
-sitting on, sleeping on, or climbing into.</td> "HOOK" is not mountable
-at all, but has capacity limited by riders, and displays its contents.
-
-
-    </tr>
+sitting on, sleeping on, or climbing into.</td> </tr>
 
 
     <tr>
@@ -12107,8 +12104,8 @@ container. </div>
     <div> misc text - The reading,
 writing, and replying requirements
 for the journal. The proper format is READ=REQUIREMENTS
-WRITE=REQUIREMENTS REPLY=REQUIREMENTS ADMIN=REQUIREMENTS, etc... The
-REQUIREMENTS are as described above under the Assigned Readable Text
+WRITE=REQUIREMENTS REPLY=REQUIREMENTS ADMIN=REQUIREMENTS, etc... Other
+parameters are as described above under the Assigned Readable Text
 field in the GenJournal entry. </div>
 
 
