@@ -166,6 +166,19 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			}
 			if(setOtherField(thisOne))
 				continue;
+			//TODO: RESTORE THE COMMENTED OVER THE BELOW:
+			/**
+			final int pctDex=thisOne.indexOf("% ");
+			if((pctDex>0) && (pctDex<5) && (thisOne.substring(pctDex+1).trim().length()>0))
+				thisOne=thisOne.substring(pctDex+1).trim();
+			final List<Ability> aList=CMLib.coffeeMaker().getCodedEffects(thisOne, null);
+			if(aList.size()>0)
+			{
+				final Ability A=aList.get(0);
+				if((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON)
+					spellV.add(A, ticks);
+			}
+			 */
 			final int pctDex=thisOne.indexOf("% ");
 			if((pctDex>0) && (thisOne.substring(pctDex+1).trim().length()>0))
 				thisOne=thisOne.substring(pctDex+1).trim();

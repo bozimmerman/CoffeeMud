@@ -5955,6 +5955,113 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
+	public List<Ability> getCodedEffects(final String spells, final Character delimiter)
+	{
+		final Vector<Ability> spellsV=new Vector<Ability>();
+		List<String> parts;
+		if(delimiter != null)
+			parts = CMParms.parseAny(spells, delimiter.charValue(), true, true);
+		else
+			parts = new XArrayList<String>(spells);
+		for(final String part : parts)
+		{
+			final StringBuilder parms=new StringBuilder("");
+			final StringBuilder settings=new StringBuilder("");
+			String abilityID="";
+			int state=0;
+			final StringBuilder s=new StringBuilder(part);
+			int depth=0;
+			for(int i=0;i<s.length();i++)
+			{
+				final char c=s.charAt(i);
+				switch(state)
+				{
+				case 0:
+					if(c =='\\')
+						s.deleteCharAt(i);
+					else
+					if(c == '(')
+					{
+						state=1;
+						depth=0;
+						abilityID=s.substring(0,i);
+					}
+					else
+					if(c == '[')
+					{
+						state=2;
+						depth=0;
+						abilityID=s.substring(0,i);
+					}
+					break;
+				case 1:
+					if((c=='\\')
+					&&(i<s.length()-1)
+					&&(s.charAt(i+1)=='('))
+						s.deleteCharAt(i);
+					else
+					if((c==')')&&(depth==0))
+						state=3;
+					else
+					{
+						parms.append(c);
+						if(c=='(')
+							depth++;
+						else
+						if(c==')')
+							depth--;
+					}
+					break;
+				case 2:
+					if((c=='\\')
+					&&(i<s.length()-1)
+					&&(s.charAt(i+1)=='['))
+						s.deleteCharAt(i);
+					else
+					if((c==']')&&(depth==0))
+						state=3;
+					else
+					{
+						settings.append(c);
+						if(c=='[')
+							depth++;
+						else
+						if(c==']')
+							depth--;
+					}
+					break;
+				case 3:
+					depth=0;
+					if(c == '(')
+						state=1;
+					else
+					if(c == '[')
+						state=2;
+					break;
+				}
+			}
+			if((state==0)&&(abilityID.length()==0))
+				abilityID=s.toString();
+			if(abilityID.length()>0)
+			{
+				final Ability A=CMClass.getAbility(abilityID);
+				if(A==null)
+					continue;
+				if(settings.length()>0)
+				{
+					final Map<String,String> map=CMParms.parseEQParms(settings.toString());
+					for(final String key : map.keySet())
+						A.setStat(key, map.get(key));
+				}
+				if(parms.length()>0)
+					A.setMiscText(parms.toString());
+				spellsV.add(A);
+			}
+		}
+		return spellsV;
+	}
+
+	@Override
 	public List<CMObject> getCodedSpellsOrBehaviors(String spellsOrBehavsList)
 	{
 		final Vector<CMObject> spellsV=new Vector<CMObject>();

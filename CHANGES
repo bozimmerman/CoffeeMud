@@ -61,6 +61,9 @@
  59. HELP can now match on common recipes to tell you which skill produces them.
  60. Many resource files can be 'extended' by adding versions with .1, .2, etc after the extension.
  61. Std/Gen Journals now support post and msg size limits, and post expiration.
+ 62. CONSIDER and GCONSIDER now support the "all" syntax.
+ 63. ACCOUNT now supports a sort field.
+ 64. Corpses can now be generated with some cause-of-death blurbs, see CORPSE_BLURBS in LISTS.INI.
  
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

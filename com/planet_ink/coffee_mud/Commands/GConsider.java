@@ -76,24 +76,8 @@ public class GConsider extends StdCommand
 		return levelDiffed*(levelDiff<0.0?-1:1);
 	}
 
-	@Override
-	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
-		throws java.io.IOException
+	protected boolean doGConsider(final MOB mob, final MOB target)
 	{
-		if(commands.size()<2)
-		{
-			mob.tell(L("Consider whom?"));
-			return false;
-		}
-		commands.remove(0);
-		final String targetName=CMParms.combine(commands,0);
-		final MOB target=getVisibleRoomTarget(mob,targetName);
-		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
-		{
-			mob.tell(L("I don't see '@x1' here.",targetName));
-			return false;
-		}
-
 		final int relDiff=relativeLevelDiff(target,mob.getGroupMembers(new HashSet<MOB>()));
 		final int lvlDiff=(target.phyStats().level()-mob.phyStats().level());
 		final int realDiff=(relDiff+lvlDiff)/2;
@@ -164,6 +148,70 @@ public class GConsider extends StdCommand
 			mob.tell(L("@x1 WILL KILL YOU DEAD!",target.charStats().HeShe()));
 			return false;
 		}
+	}
+
+	@Override
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
+		throws java.io.IOException
+	{
+		final Vector<String> origCmds=new XVector<String>(commands);
+		if(commands.size()<2)
+		{
+			CMLib.commands().postCommandFail(mob,origCmds,L("GConsider whom?"));
+			return false;
+		}
+		commands.remove(0);
+		String targetName=CMParms.combine(commands,0);
+		final List<MOB> targets = new ArrayList<MOB>();
+		if(targetName.equalsIgnoreCase("SELF")||targetName.equalsIgnoreCase("ME"))
+			targets.add(mob);
+		else
+		{
+			boolean allFlag = targetName.equalsIgnoreCase("ALL");
+			if ((targetName.toUpperCase().startsWith("ALL."))||(targetName.toUpperCase().startsWith("ALL ")))
+			{
+				allFlag = true;
+				targetName = "ALL " + targetName.substring(4);
+			}
+			else
+			if (targetName.toUpperCase().endsWith(".ALL"))
+			{
+				allFlag = true;
+				targetName = "ALL " + targetName.substring(0, targetName.length() - 4);
+			}
+			MOB target=mob.location().fetchInhabitant(targetName);
+			int ctr=1;
+			if(target!=null)
+			{
+				if(((!allFlag)||(targetName.indexOf('.')>0))
+				&&(CMLib.flags().canBeSeenBy(target, mob)))
+					targets.add(target);
+				else
+				while ((target != null)
+				&&((allFlag||(!CMLib.flags().canBeSeenBy(target, mob))))
+				&&(targetName.indexOf('.')<0))
+				{
+					targets.add(target);
+					target = mob.location().fetchInhabitant(targetName+"."+(++ctr));
+				}
+			}
+		}
+		if(targets.size()>1)
+			targets.remove(mob);
+		for(final Iterator<MOB> p=targets.iterator();p.hasNext();)
+		{
+			final MOB P = p.next();
+			if(!CMLib.flags().canBeSeenBy(P,mob))
+				p.remove();
+		}
+		if(targets.size()==0)
+		{
+			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see '@x1' here.",targetName));
+			return false;
+		}
+		for(final MOB P : targets)
+			doGConsider(mob,P);
+		return true;
 	}
 
 	@Override

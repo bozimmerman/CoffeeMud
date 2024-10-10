@@ -547,8 +547,18 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					CMMsg.MSG_OK_VISUAL,null,
 					CMMsg.MSG_DEATH,L("^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r@x1",msp));
 		}
+		String targetMsg = null;
+		if(addHere!=null)
+		{
+			final Environmental E = addHere.tool();
+			final Integer xtraCode=Weapon.MSG_TYPE_MAP.get(Integer.valueOf(addHere.sourceMinor()));
+			targetMsg=getDeathCorpseAddOn(E,xtraCode);
+			if((targetMsg!=null)&&(targetMsg.trim().length()==0))
+				targetMsg=null;
+		}
+
 		CMLib.map().sendGlobalMessage(deadM,CMMsg.TYP_DEATH, CMClass.getMsg(deadM,null,killerM, CMMsg.TYP_DEATH,null, CMMsg.TYP_DEATH,null, CMMsg.TYP_DEATH,null));
-		final CMMsg msg2=CMClass.getMsg(deadM,null,killerM, CMMsg.MSG_DEATH,null, CMMsg.MSG_DEATH,null, CMMsg.MSG_DEATH,null);
+		final CMMsg msg2=CMClass.getMsg(deadM,null,killerM, CMMsg.MSG_DEATH,null, CMMsg.MSG_DEATH,targetMsg, CMMsg.MSG_DEATH,null);
 		if(addHere!=null)
 		{
 			if(deathRoom.okMessage(deadM,msg2))
@@ -1493,7 +1503,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return dividers;
 	}
 
-	protected DeadBody justDie(final MOB killerM, final MOB deadM)
+	protected DeadBody justDie(final MOB killerM, final MOB deadM, final String specialCorpseDescription)
 	{
 		if(deadM==null)
 			return null;
@@ -1561,7 +1571,22 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		DeadBody body=null; //must be done before consequences because consequences could be purging
 		if((!CMParms.containsIgnoreCase(cmds,"RECALL"))
 		&&(!isKnockedOutUponDeath(deadM,killerM)))
+		{
 			body=(DeadBody)deadM.killMeDead(true);
+			if((body!=null)&&(specialCorpseDescription!=null)&&(specialCorpseDescription.length()>0))
+			{
+				String displayText = body.displayText();
+				if(displayText.endsWith(".")||displayText.endsWith("!")||displayText.endsWith("?"))
+				{
+					displayText=displayText.substring(0,displayText.length()-1)
+							+ ", "+specialCorpseDescription
+							+ displayText.charAt(displayText.length()-1);
+				}
+				else
+					displayText += ", "+specialCorpseDescription;
+				body.setDisplayText(displayText);
+			}
+		}
 
 		if(deadM.isPlayer())
 			deadM.playerStats().deathCounter(1);
@@ -1692,6 +1717,75 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			damnCode = thresholds.length-1;
 		return getStandardHitWordInternal(type, damnCode);
 	}
+
+	protected String getDeathCorpseAddOn(final Environmental E, final Integer xtraCode)
+	{
+		if((E==null)&&(xtraCode==null))
+			return null;
+		final Object[][][] addOns = CMProps.getListFileGrid(CMProps.ListFile.CORPSE_BLURBS);
+		final Object[] hitWords = null;
+		if(E instanceof Ability)
+		{
+			final String ID = ((Ability)E).ID().trim();
+			for (final Object[][] addOnList : addOns)
+			{
+				if(((String)addOnList[0][0]).equalsIgnoreCase(ID))
+				{
+					final Object[] pick = (Object[])CMLib.dice().pick(addOnList, addOnList[0]);
+					return (pick != null)?(String)pick[0]:null;
+				}
+			}
+		}
+		else
+		if(E instanceof Weapon)
+		{
+			try
+			{
+				final String weaponClassName=Weapon.CLASS_DESCS[((Weapon)E).weaponClassification()];
+				final String damageTypeName=Weapon.TYPE_DESCS[((Weapon)E).weaponDamageType()];
+				for (final Object[][] addOnList : addOns)
+				{
+					if(((String)addOnList[0][0]).equalsIgnoreCase(damageTypeName))
+					{
+						final Object[] pick = (Object[])CMLib.dice().pick(addOnList, addOnList[0]);
+						return (pick != null)?(String)pick[0]:null;
+					}
+				}
+				if(hitWords == null)
+				{
+					for (final Object[][] addOnList : addOns)
+					{
+						if(((String)addOnList[0][0]).equalsIgnoreCase(weaponClassName))
+						{
+							final Object[] pick = (Object[])CMLib.dice().pick(addOnList, addOnList[0]);
+							return (pick != null)?(String)pick[0]:null;
+						}
+					}
+				}
+			}
+			catch(final Exception e)
+			{}
+		}
+		if((hitWords == null)&&(xtraCode!=null)&&(xtraCode.intValue()>=0))
+		{
+			try
+			{
+				final String damageTypeName=Weapon.TYPE_DESCS[xtraCode.intValue()];
+				for (final Object[][] addOnList : addOns)
+				{
+					if(((String)addOnList[0][0]).equalsIgnoreCase(damageTypeName))
+					{
+						final Object[] pick = (Object[])CMLib.dice().pick(addOnList, addOnList[0]);
+						return (pick != null)?(String)pick[0]:null;
+					}
+				}
+			}
+			catch(final Exception e)
+			{}
+		}
+		return null;
+	}
+
 
 	protected String getStandardHitWordInternal(final int type, int damnCode)
 	{
@@ -2457,10 +2551,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 						killerM.playerStats().bumpLevelCombatStat(PlayerCombatStat.DEATHS_DONE, killerM.basePhyStats().level(), 1);
 					killerM=killerM.amFollowing();
 				}
-				justDie(killer,deadmob);
+				justDie(killer,deadmob,msg.targetMessage());
 			}
 			else
-				justDie(null,deadmob);
+				justDie(null,deadmob,msg.targetMessage());
 			deadmob.tell(deadmob,msg.target(),msg.tool(),msg.sourceMessage());
 			if(deadmob.riding()!=null)
 				deadmob.riding().delRider(deadmob);

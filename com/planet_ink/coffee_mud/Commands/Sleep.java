@@ -53,8 +53,6 @@ public class Sleep extends StdCommand implements Tickable
 		DAY, NIGHT, DAWN, DUSK, HEALED, FULL, RESTED
 	}
 
-	private final Map<MOB, WaitUntil> untilMap = new Hashtable<MOB, WaitUntil>();
-
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
@@ -89,14 +87,14 @@ public class Sleep extends StdCommand implements Tickable
 					return false;
 				}
 			}
-			synchronized(untilMap)
-			{
-				if(untilMap.containsKey(mob))
-					untilMap.remove(mob);
-				untilMap.put(mob, wait);
-			}
-			if(!CMLib.threads().isTicking(this, Tickable.TICKID_MISCELLANEOUS))
-				CMLib.threads().startTickDown(this, Tickable.TICKID_MISCELLANEOUS, 1);
+			mob.delAbility(mob.fetchAbility("AutoWaker"));
+			final ExtendableAbility A = (ExtendableAbility)CMClass.getAbility("ExtAbility");
+			A.setName("Auto-Waker");
+			A.setDisplayText("");
+			A.setAbilityID("AutoWaker");
+			A.setTickable(this);
+			A.setMiscText(wait.name());
+			mob.addNonUninvokableEffect(A);
 		}
 		if(commands.size()<=1)
 		{
@@ -163,59 +161,60 @@ public class Sleep extends StdCommand implements Tickable
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		tickStatus = Tickable.STATUS_ALIVE;
-		synchronized(untilMap)
+		if(!(ticking instanceof MOB))
+			return false;
+		final MOB M=(MOB)ticking;
+		final Ability A =M.fetchEffect("AutoWaker");
+		if(A ==null)
+			return false;
+		final WaitUntil w = (WaitUntil)CMath.s_valueOf(WaitUntil.class, A.text());
+		if(w == null)
 		{
-			final Iterator<Entry<MOB,WaitUntil>> e;
-			e = untilMap.entrySet().iterator();
-			final TimeManager mgr = CMLib.time();
-			for(;e.hasNext();)
-			{
-				final Entry<MOB,WaitUntil> E=e.next();
-				final MOB M=E.getKey();
-				final boolean isSleeping = CMLib.flags().isSleeping(M);
-				boolean wakeMeUp = false;
-				if(!wakeMeUp)
-				{
-					final TimeClock clock = mgr.localClock(M);
-					switch(E.getValue())
-					{
-					case DAWN:
-						wakeMeUp = clock.getTODCode()==TimeOfDay.DAWN;
-						break;
-					case DAY:
-						wakeMeUp = clock.getTODCode()==TimeOfDay.DAY;
-						break;
-					case DUSK:
-						wakeMeUp = clock.getTODCode()==TimeOfDay.DUSK;
-						break;
-					case NIGHT:
-						wakeMeUp = clock.getTODCode()==TimeOfDay.NIGHT;
-						break;
-					case FULL:
-						wakeMeUp = M.curState().getHitPoints() >= M.maxState().getHitPoints();
-						wakeMeUp &= M.curState().getMana() >= M.maxState().getMana();
-						wakeMeUp &= M.curState().getMovement() >= M.maxState().getMovement();
-						break;
-					case HEALED:
-						wakeMeUp = M.curState().getHitPoints() >= M.maxState().getHitPoints();
-						break;
-					case RESTED:
-						wakeMeUp = M.curState().getFatigue() <= 0;
-						break;
-					}
-				}
-				if(wakeMeUp || (!isSleeping))
-				{
-					e.remove();
-				}
-				if(wakeMeUp && isSleeping)
-				{
-					M.enqueCommand(new XVector<String>("WAKE"),0, 1);
-				}
-			}
+			M.delEffect(A);
+			return false;
 		}
-		tickStatus = Tickable.STATUS_NOT;
-		return untilMap.size()>0;
-	}
 
+		final TimeManager mgr = CMLib.time();
+		final boolean isSleeping = CMLib.flags().isSleeping(M);
+		if(!isSleeping)
+		{
+			M.delEffect(A);
+			return false;
+		}
+		boolean wakeMeUp = false;
+		final TimeClock clock = mgr.localClock(M);
+		switch(w)
+		{
+		case DAWN:
+			wakeMeUp = clock.getTODCode()==TimeOfDay.DAWN;
+			break;
+		case DAY:
+			wakeMeUp = clock.getTODCode()==TimeOfDay.DAY;
+			break;
+		case DUSK:
+			wakeMeUp = clock.getTODCode()==TimeOfDay.DUSK;
+			break;
+		case NIGHT:
+			wakeMeUp = clock.getTODCode()==TimeOfDay.NIGHT;
+			break;
+		case FULL:
+			wakeMeUp = M.curState().getHitPoints() >= M.maxState().getHitPoints();
+			wakeMeUp &= M.curState().getMana() >= M.maxState().getMana();
+			wakeMeUp &= M.curState().getMovement() >= M.maxState().getMovement();
+			break;
+		case HEALED:
+			wakeMeUp = M.curState().getHitPoints() >= M.maxState().getHitPoints();
+			break;
+		case RESTED:
+			wakeMeUp = M.curState().getFatigue() <= 0;
+			break;
+		}
+		if(wakeMeUp)
+		{
+			M.enqueCommand(new XVector<String>("WAKE"),0, 1);
+			M.delEffect(A);
+			return false;
+		}
+		return true;
+	}
 }

@@ -86,7 +86,8 @@ public class Druid_ShapeShift extends StdAbility
 	public Race		newRace		= null;
 	public String	raceName	= "";
 
-	private List<ShiftShapeForm> uniqueForm = null;
+	private String					uniqueFormFilename	= null;
+	private List<ShiftShapeForm>	uniqueForm			= null;
 
 	protected static class ShiftShapeForm
 	{
@@ -153,6 +154,8 @@ public class Druid_ShapeShift extends StdAbility
 
 	private final String buildUniqueShapeStrings()
 	{
+		if(this.uniqueFormFilename!=null)
+			return "[FILE="+this.uniqueFormFilename+"]";
 		if(this.uniqueForm == null)
 			return "";
 		final StringBuilder str = new StringBuilder("");
@@ -210,11 +213,12 @@ public class Druid_ShapeShift extends StdAbility
 	{
 		if(uniqueForm != null)
 			return uniqueForm;
-		List<ShiftShapeForm> shapeData = (List<ShiftShapeForm>)Resources.getResource("DRUID_SHAPESHIFT_DATA");
+		final String fileName = (this.uniqueFormFilename!=null)?this.uniqueFormFilename:"skills/shapeshift.txt";
+		List<ShiftShapeForm> shapeData = (List<ShiftShapeForm>)Resources.getResource("DRUID_SHAPESHIFT_DATA: "+fileName);
 		if(shapeData == null)
 		{
 			shapeData = new Vector<ShiftShapeForm>();
-			final CMFile[] fileList = CMFile.getExistingExtendedFiles(Resources.makeFileResourceName("skills/shapeshift.txt"),null,CMFile.FLAG_FORCEALLOW);
+			final CMFile[] fileList = CMFile.getExistingExtendedFiles(Resources.makeFileResourceName(fileName),null,CMFile.FLAG_FORCEALLOW);
 			final List<String> lines = new ArrayList<String>();
 			for(final CMFile F : fileList)
 				lines.addAll(Resources.getFileLineVector(Resources.getFileResource(F.getAbsolutePath(), true)));
@@ -233,7 +237,7 @@ public class Druid_ShapeShift extends StdAbility
 						fillShapeField(f,s);
 				}
 			}
-			Resources.submitResource("DRUID_SHAPESHIFT_DATA",shapeData);
+			Resources.submitResource("DRUID_SHAPESHIFT_DATA: "+fileName,shapeData);
 		}
 		return shapeData;
 	}
@@ -255,6 +259,15 @@ public class Druid_ShapeShift extends StdAbility
 			final String parm = newText.trim();
 			if(parm.startsWith("["))
 			{
+				if(parm.startsWith("[FILE="))
+				{
+					final int x=parm.indexOf(']');
+					this.uniqueFormFilename=parm.substring(6,x);
+					if(CMath.isInteger(parm.substring(x+1)))
+						myRaceCode=CMath.s_int(parm.substring(x+1));
+					super.setMiscText(newText);
+					return;
+				}
 				ShiftShapeForm f = null;
 				final List<ShiftShapeForm> shapeData = new Vector<ShiftShapeForm>();
 				for(final String line : CMParms.parseAny(parm,';',true))
