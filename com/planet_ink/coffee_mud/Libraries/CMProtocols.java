@@ -2963,6 +2963,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			final Long nextGrpReport=reporteds.get("system.nextGrpReport");
 			final Long nextLongReport=reporteds.get("system.nextLongReport");
 			final Long nextTruePingReport=reporteds.get("system.nextTruePing");
+			final Long lastEffectHash=reporteds.get("system.lastEffectHash");
 			final long now=System.currentTimeMillis();
 			final boolean charSupported=supportables.containsKey("char");
 			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
@@ -3001,6 +3002,17 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						buf=possiblePingGmcp(session, reporteds, supportables, "group", reportables);
 						if(buf!=null)
 							bout.write(buf);
+					}
+
+					if(charSupported||supportables.containsKey("char.effects")||supportables.containsKey("char.effects.get"))
+					{
+						if((lastEffectHash==null)||(lastEffectHash.intValue()!=mob.numEffects()))
+						{
+							reporteds.put("system.lastEffectHash", Long.valueOf(mob.numEffects()));
+							buf=possiblePingGmcp(session, reporteds, supportables, "char.effects.get", reportables);
+							if(buf!=null)
+								bout.write(buf);
+						}
 					}
 				}
 			}

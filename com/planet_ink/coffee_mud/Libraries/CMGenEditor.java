@@ -11718,6 +11718,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				((Auctioneer)me).setMinTimedAuctionDays(genAuctionPrompt(mob,((Auctioneer)me).minTimedAuctionDays(),++showNumber,showFlag,"Minimum number of auction mud-days"));
 			}
 			else
+			if(me instanceof CraftBroker)
+			{
+				((CraftBroker)me).setBrokerChain(prompt(mob,((CraftBroker)me).brokerChain(),++showNumber,showFlag,"Broker Chain"));
+			}
+			else
 			{
 				genEconomicsPriceFactors(mob,me,++showNumber,showFlag);
 				genEconomicsBudget(mob,me,++showNumber,showFlag);

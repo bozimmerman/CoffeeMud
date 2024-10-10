@@ -1834,6 +1834,11 @@ public class MobData extends StdWebMacro
 						old=((Auctioneer)M).auctionHouse();
 					str.append(old);
 					break;
+				case BROCHAIN:
+					if((firstTime)&&(M instanceof CraftBroker))
+						old=((CraftBroker)M).brokerChain();
+					str.append(old);
+					break;
 				case LIVELIST: // live list
 					//if((firstTime)&&(M instanceof Auctioneer))
 					//    old=""+((Auctioneer)M).liveListingPrice();
@@ -1883,6 +1888,10 @@ public class MobData extends StdWebMacro
 					break;
 				case ISAUCTION: // is auction
 					if(M instanceof Auctioneer)
+						return "true";
+					return "false";
+				case ISBROKER: // is auction
+					if(M instanceof CraftBroker)
 						return "true";
 					return "false";
 				case DEITYID: // deityid

@@ -2252,8 +2252,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	@Override
 	public String getTrailToDescription(final Room startR, final List<Room> radiantV, final String where,
 										final Set<TrailFlag> trailFlags, final int radius, final Set<Room> ignoreRooms,
-										final int maxSecs)
+										String delimeter, final int maxSecs)
 	{
+		if(delimeter==null)
+			delimeter=" ";
 		final Room R2=getWhere(where,radiantV);
 		if(R2==null)
 			return L("Unable to determine '@x1'.",where);
@@ -2297,7 +2299,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			final Room R=trailV.get(s);
 			final Room RA=trailV.get(s-1);
-			theDirTrail.add(CMLib.directions().getDirectionChar(getRoomDirection(R,RA,empty))+" ");
+			theDirTrail.add(CMLib.directions().getDirectionChar(getRoomDirection(R,RA,empty))+delimeter);
 		}
 		final StringBuffer theTrail=new StringBuffer("");
 		if(confirm)
@@ -2318,9 +2320,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			else
 			{
 				if(lastNum==1)
-					theTrail.append(lastDir+" ");
+					theTrail.append(lastDir+delimeter);
 				else
-					theTrail.append(Integer.toString(lastNum)+lastDir+" ");
+					theTrail.append(Integer.toString(lastNum)+lastDir+delimeter);
 				lastDir=s;
 				lastNum=1;
 			}
@@ -2331,7 +2333,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		else
 		if(lastNum>0)
 			theTrail.append(Integer.toString(lastNum)+lastDir);
-
+		if((theTrail.length()>delimeter.length())
+		&&(theTrail.substring(theTrail.length()-delimeter.length()).equals(delimeter)))
+			theTrail.delete(theTrail.length()-delimeter.length(), theTrail.length());
 		if((confirm)&&(trailV.size()>1))
 		{
 			for(int i=0;i<trailV.size();i++)

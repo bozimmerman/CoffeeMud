@@ -152,6 +152,60 @@ public interface CityMap extends CMLibrary
 	public void delPostOffice(final PostOffice oneToDel);
 
 	/**
+	 * Returns a cached CraftBroker of the given chain, from the given
+	 * area.  If the area name is also the same as the chain, it just
+	 * returns the first CraftBroker in that chain, otherwise, it only
+	 * returns the first CraftBroker whose home is that area name.
+	 *
+	 * @see CityMap#getCraftBroker(String, String)
+	 * @see CityMap#craftBrokers()
+	 * @see CityMap#addCraftBroker(CraftBroker)
+	 * @see CityMap#delCraftBroker(CraftBroker)
+	 *
+	 * @param chain name of the chain to return a CraftBroker of
+	 * @param areaNameOrBranch name of the area to return the chain CraftBroker in
+	 * @return the cached CraftBroker, or null
+	 */
+	public CraftBroker getCraftBroker(String chain, String areaNameOrBranch);
+
+	/**
+	 * Returns an enumeration of all CraftBroker objects in the
+	 * city cache
+	 *
+	 * @see CityMap#getCraftBroker(String, String)
+	 * @see CityMap#craftBrokers()
+	 * @see CityMap#addCraftBroker(CraftBroker)
+	 * @see CityMap#delCraftBroker(CraftBroker)
+	 *
+	 * @return an enumeration of all CraftBroker objects
+	 */
+	public Enumeration<CraftBroker> craftBrokers();
+
+	/**
+	 * Adds the given CraftBroker to the city cache
+	 *
+	 * @see CityMap#getCraftBroker(String, String)
+	 * @see CityMap#craftBrokers()
+	 * @see CityMap#addCraftBroker(CraftBroker)
+	 * @see CityMap#delCraftBroker(CraftBroker)
+	 *
+	 * @param newOne CraftBroker to add
+	 */
+	public void addCraftBroker(final CraftBroker newOne);
+
+	/**
+	 * Deletes the given CraftBroker from the city cache
+	 *
+	 * @see CityMap#getCraftBroker(String, String)
+	 * @see CityMap#craftBrokers()
+	 * @see CityMap#addCraftBroker(CraftBroker)
+	 * @see CityMap#delCraftBroker(CraftBroker)
+	 *
+	 * @param oneToDel the CraftBroker to delete
+	 */
+	public void delCraftBroker(final CraftBroker oneToDel);
+
+	/**
 	 * Returns a cached Banker of the given chain, from the given
 	 * area.  If the area name is also the same as the chain, it just
 	 * returns the first Banker in that chain, otherwise, it only

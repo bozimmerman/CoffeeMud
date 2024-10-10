@@ -62,7 +62,8 @@ public class GrinderMobs
 		LIBMAXDAYS,LIBMAXBORROW,ISLIBRARIAN,LIBCMASK,
 		STATESTR,STATESUBJSTR,RIDERSTR,MOUNTSTR,DISMOUNTSTR,
 		ISDRINK, LIQUIDHELD, QUENCHED, LIQUIDTYPES, SIVIEWTYPES,
-		CURRENCIES, CURRENCY,CATARATE,CATALIVE,CATAMASK,CATACAP
+		CURRENCIES, CURRENCY,CATARATE,CATALIVE,CATAMASK,CATACAP,
+		ISBROKER, BROCHAIN
 		;
 
 		public boolean isGenField;
@@ -841,6 +842,10 @@ public class GrinderMobs
 					if(M instanceof Auctioneer)
 						((Auctioneer)M).setAuctionHouse(old);
 					break;
+				case BROCHAIN: // auction house
+					if(M instanceof CraftBroker)
+						((CraftBroker)M).setBrokerChain(old);
+					break;
 				case LIVELIST: // live list
 					//if(M instanceof Auctioneer)
 					//	if(old.length()==0)
@@ -901,6 +906,8 @@ public class GrinderMobs
 					}
 					break;
 				case ISAUCTION: // is auction
+					break;
+				case ISBROKER: // is broker
 					break;
 				case DEITYID: // deity
 					/*

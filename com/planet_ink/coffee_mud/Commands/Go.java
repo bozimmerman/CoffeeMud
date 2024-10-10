@@ -128,9 +128,9 @@ public class Go extends StdCommand
 		if(direction<0)
 		{
 			if(mob.isMonster())
-				direction=CMLib.directions().getGoodDirectionCode(whereStr);
+				direction=CMLib.directions().getGoodDirectionCode(CMStrings.removePunctuation(whereStr));
 			else
-				direction=CMLib.directions().getGoodDirectionCode(whereStr, dirType);
+				direction=CMLib.directions().getGoodDirectionCode(CMStrings.removePunctuation(whereStr), dirType);
 		}
 		if(direction<0)
 		{
@@ -171,6 +171,19 @@ public class Go extends StdCommand
 
 			boolean doneAnything=false;
 			final List<List<String>> prequeCommands=new ArrayList<List<String>>();
+
+
+			for(int v=1;v<commands.size();v++)
+			{
+				final String[] cs = commands.get(v).split(",");
+				if(cs.length>1)
+				{
+					commands.remove(v);
+					for(int i=cs.length-1;i>=0;i--)
+						if(cs[i].trim().length()>0)
+							commands.add(v, cs[i]);
+				}
+			}
 			for(int v=1;v<commands.size();v++)
 			{
 				int num=1;
@@ -193,9 +206,9 @@ public class Go extends StdCommand
 				}
 
 				if(mob.isMonster())
-					direction=CMLib.directions().getGoodDirectionCode(s);
+					direction=CMLib.directions().getGoodDirectionCode(CMStrings.removePunctuation(s));
 				else
-					direction=CMLib.directions().getGoodDirectionCode(s, dirType);
+					direction=CMLib.directions().getGoodDirectionCode(CMStrings.removePunctuation(s), dirType);
 				if(direction>=0)
 				{
 					doneAnything=true;
