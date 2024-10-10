@@ -62,4 +62,37 @@ public interface CraftBroker extends ShopKeeper
 	 * @param named name of the chain
 	 */
 	public void setBrokerChain(String named);
+
+	/**
+	 * Gets the maximum number of game-days that
+	 * an listing can continue.
+	 * @see CraftBroker#setMaxTimedListingDays(int)
+	 * @return the maximum number of game-days
+	 */
+	public int maxTimedListingDays();
+
+	/**
+	 * Sets the maximum number of game-days that
+	 * an listing can continue.
+	 * @see CraftBroker#maxTimedListingDays()
+	 * @param d the maximum number of game-days
+	 */
+	public void setMaxTimedListingDays(int d);
+
+
+	/**
+	 * Gets the maximum number of listings that
+	 * a player can have.
+	 * @see CraftBroker#setMaxListings(int)
+	 * @return the maximum number of listings
+	 */
+	public int maxListings();
+
+	/**
+	 * Sets the maximum number of listings that
+	 * a player can have.
+	 * @see CraftBroker#maxListings()
+	 * @param d the maximum number of listings
+	 */
+	public void setMaxListings(int d);
 }

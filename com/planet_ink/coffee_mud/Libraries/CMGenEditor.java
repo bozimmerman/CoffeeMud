@@ -11721,6 +11721,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof CraftBroker)
 			{
 				((CraftBroker)me).setBrokerChain(prompt(mob,((CraftBroker)me).brokerChain(),++showNumber,showFlag,"Broker Chain"));
+				((CraftBroker)me).setMaxTimedListingDays(genAuctionPrompt(mob,((CraftBroker)me).maxTimedListingDays(),++showNumber,showFlag,"Maximum number of listing mud-days"));
+				((CraftBroker)me).setMaxListings(genAuctionPrompt(mob,((CraftBroker)me).maxListings(),++showNumber,showFlag,"Maximum number of listings"));
 			}
 			else
 			{

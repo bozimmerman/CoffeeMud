@@ -715,6 +715,16 @@
 						    <TD COLSPAN=2><INPUT TYPE=TEXT NAME=BROCHAIN SIZE=50 VALUE="@MobData?BROCHAIN@">
 						    </TD>
 						</TR>
+						<TR>
+							<TD><FONT COLOR="#66FFFF"><B>Maximum mud-days:</B></FONT></TD>
+						    <TD COLSPAN=2><INPUT TYPE=TEXT NAME=MAXDAYS SIZE=7 VALUE="@MobData?MAXDAYS@">
+						    </TD>
+						</TR>
+						<TR>
+							<TD><FONT COLOR="#66FFFF"><B>Max Listings per Player:</B></FONT></TD>
+						    <TD COLSPAN=2><INPUT TYPE=TEXT NAME=MAXLISTINGS SIZE=7 VALUE="@MobData?MAXLISTINGS@">
+						    </TD>
+						</TR>
 					@else@
 						<TR>
 							<TD><FONT COLOR="#66FFFF"><B>Budget:</B></FONT></TD>

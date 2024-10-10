@@ -194,14 +194,14 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 			return false;
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return true;
-		if(!CMLib.flags().isInTheGame(this,true))
-			return true;
 		//TODO: reconsider how this big this synchro block is, plz
 		synchronized(CMClass.getSync(("AUCTION_HOUSE_"+auctionHouse().toUpperCase().trim())))
 		{
 			final Long lastTime=StdAuctioneer.lastCheckTimes.get(auctionHouse().toUpperCase().trim());
 			if((lastTime==null)||(System.currentTimeMillis()-lastTime.longValue())>(CMProps.getMillisPerMudHour()-5))
 			{
+				if(!CMLib.flags().isInTheGame(this,true))
+					return true;
 				StdAuctioneer.lastCheckTimes.remove(auctionHouse().toUpperCase().trim());
 				final long thisTime=System.currentTimeMillis();
 				StdAuctioneer.lastCheckTimes.put(auctionHouse().toUpperCase().trim(),Long.valueOf(thisTime));
@@ -830,13 +830,13 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	@Override
 	public String getRawPrejudiceFactors()
 	{
-		return CMStrings.bytesToStr(miscText);
+		return "";
 	}
 
 	@Override
 	public void setPrejudiceFactors(final String factors)
 	{
-		miscText = factors;
+		//misc text already being used
 	}
 
 	@Override

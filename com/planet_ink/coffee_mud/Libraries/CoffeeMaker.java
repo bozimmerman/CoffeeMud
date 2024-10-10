@@ -871,6 +871,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(E instanceof CraftBroker)
 			{
 				text.append(xmlLib.convertXMLtoTag("BROCHAIN",""+((CraftBroker)E).brokerChain()));
+				text.append(xmlLib.convertXMLtoTag("MAXCDAYS",""+((CraftBroker)E).maxTimedListingDays()));
+				text.append(xmlLib.convertXMLtoTag("MAXLISTINGS",""+((CraftBroker)E).maxListings()));
 			}
 			if(E instanceof Deity)
 			{
@@ -4355,6 +4357,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(E instanceof CraftBroker)
 			{
 				((CraftBroker)E).setBrokerChain(xml.getValFromPieces(buf,"BROCHAIN"));
+				((CraftBroker)E).setMaxTimedListingDays(xml.getIntFromPieces(buf,"MAXCDAYS"));
+				((CraftBroker)E).setMaxListings(xml.getIntFromPieces(buf,"MAXLISTINGS"));
 			}
 
 			if(E instanceof Deity)

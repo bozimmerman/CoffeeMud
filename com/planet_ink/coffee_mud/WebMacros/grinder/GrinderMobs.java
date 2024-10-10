@@ -63,7 +63,7 @@ public class GrinderMobs
 		STATESTR,STATESUBJSTR,RIDERSTR,MOUNTSTR,DISMOUNTSTR,
 		ISDRINK, LIQUIDHELD, QUENCHED, LIQUIDTYPES, SIVIEWTYPES,
 		CURRENCIES, CURRENCY,CATARATE,CATALIVE,CATAMASK,CATACAP,
-		ISBROKER, BROCHAIN
+		ISBROKER, BROCHAIN, MAXLISTINGS
 		;
 
 		public boolean isGenField;
@@ -818,6 +818,10 @@ public class GrinderMobs
 					if(M instanceof Librarian)
 						((Librarian)M).setMaxOverdueDays(CMath.s_int(old));
 					break;
+				case MAXLISTINGS: // max listings
+					if(M instanceof CraftBroker)
+						((CraftBroker)M).setMaxListings(CMath.s_int(old));
+					break;
 				case LIBMAXBORROW: // library max borrowed
 					if(M instanceof Librarian)
 						((Librarian)M).setMaxBorrowed(CMath.s_int(old));
@@ -894,6 +898,14 @@ public class GrinderMobs
 							((Auctioneer)M).setMaxTimedAuctionDays(-1);
 						else
 							((Auctioneer)M).setMaxTimedAuctionDays(CMath.s_int(old));
+					}
+					else
+					if(M instanceof CraftBroker)
+					{
+						if(old.length()==0)
+							((CraftBroker)M).setMaxTimedListingDays(-1);
+						else
+							((CraftBroker)M).setMaxTimedListingDays(CMath.s_int(old));
 					}
 					break;
 				case MINDAYS: // min days

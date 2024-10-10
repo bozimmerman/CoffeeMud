@@ -883,7 +883,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			{
 				if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), this))
 					return false;
-				return super.stdokMessage(myHost, msg);
+				return super.stdMOBokMessage(myHost, msg);
 			}
 			default:
 				break;

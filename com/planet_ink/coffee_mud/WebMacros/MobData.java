@@ -1872,9 +1872,18 @@ public class MobData extends StdWebMacro
 						old="";
 					str.append(old);
 					break;
+				case MAXLISTINGS: // max days
+					if((firstTime)&&(M instanceof CraftBroker))
+						old=""+((CraftBroker)M).maxListings();
+					if(CMath.s_double(old)<0.0)
+						old="";
+					str.append(old);
+					break;
 				case MAXDAYS: // max days
 					if((firstTime)&&(M instanceof Auctioneer))
 						old=""+((Auctioneer)M).maxTimedAuctionDays();
+					if((firstTime)&&(M instanceof CraftBroker))
+						old=""+((CraftBroker)M).maxTimedListingDays();
 					if(CMath.s_double(old)<0.0)
 						old="";
 					str.append(old);
