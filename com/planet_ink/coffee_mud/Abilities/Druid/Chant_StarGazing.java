@@ -111,6 +111,7 @@ public class Chant_StarGazing extends Chant
 
 		if((msg.amISource(mob))
 		&&(msg.tool()!=this)
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)) // prevents endless loops
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 		&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))
 				||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
