@@ -79,7 +79,6 @@ public interface CraftBroker extends ShopKeeper
 	 */
 	public void setMaxTimedListingDays(int d);
 
-
 	/**
 	 * Gets the maximum number of listings that
 	 * a player can have.
