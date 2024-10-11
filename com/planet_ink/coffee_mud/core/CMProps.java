@@ -2536,8 +2536,13 @@ public class CMProps extends Properties
 			final List<String> newDoms = CMParms.parseCommas(getVar(Str.NEWDOMAINS), true);
 			if(newDoms.size() > 0)
 			{
-				Ability.DOMAIN.DESCS.clear();
-				Ability.DOMAIN.VERBS.clear();
+				try
+				{
+					Ability.DOMAIN.DESCS.clear();
+					Ability.DOMAIN.VERBS.clear();
+				}
+				catch(final Exception e)
+				{}
 				for(final String newDom : newDoms)
 				{
 					final int x = newDom.indexOf('=');
