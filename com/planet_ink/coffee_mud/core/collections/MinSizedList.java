@@ -53,8 +53,13 @@ public class MinSizedList<K> implements List<K>
 	@Override
 	public void clear()
 	{
-		while(list.size() > minSize)
-			list.remove(minSize);
+		try
+		{
+			while(list.size() > minSize)
+				list.remove(minSize);
+		}
+		catch(final java.lang.ArrayIndexOutOfBoundsException ioe)
+		{}
 	}
 
 	@Override
