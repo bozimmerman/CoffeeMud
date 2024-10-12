@@ -1,4 +1,4 @@
-Calf	>	3	F	Bull
+Calf	>	3	M	Bull
 Calf	>	3	*	Cow
 Kitten	>	3	*	Cat
 Puppy	>	3	*	Dog
