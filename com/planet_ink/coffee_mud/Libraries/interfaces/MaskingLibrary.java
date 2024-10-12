@@ -281,6 +281,34 @@ public interface MaskingLibrary extends CMLibrary
 	public TimeClock dateMaskToExpirationTimeClock(final Physical P, final CompiledZMask cset);
 
 	/**
+	 * Given a specially formatted item mask, this produces a CompiledZMask that
+	 * reflects the special format.  If an error occurs, null is returned and
+	 * the list is returned with an error message as the first element.
+	 *
+	 * @param parsed the space-parsed string to use for further parsing
+	 * @return null for an error, or a compiledzmask
+	 */
+	public CompiledZMask parseSpecialItemMask(final List<String> parsed);
+
+	/**
+	 * Enum for special item mask item types
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum SpecialItemType
+	{
+		WEAPON,
+		ARMOR,
+		WAND,
+		RING,
+		RESOURCE,
+		FOOD,
+		DRINK,
+		POTION
+	}
+
+	/**
 	 * The set of mask types.  Each of these reflects some stat or
 	 * aspect of a CoffeeMud object that is being tested.  ZapperMask
 	 * entries are typically of the type VALUE in SET.  For this reason

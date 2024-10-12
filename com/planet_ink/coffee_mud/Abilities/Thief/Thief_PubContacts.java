@@ -115,13 +115,14 @@ public class Thief_PubContacts extends ThiefSkill
 					final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 					if(SK!=null)
 					{
-						for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+						final CoffeeShop shop = SK.getShop();
+						for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 						{
 							final Environmental E=i.next();
 							if((E instanceof Item)&&(CMLib.flags().isAlcoholic((Item)E)))
 							{
 								double moneyPrice=0;
-								final ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice(M,mob,E,SK,SK.getShop(), true);
+								final ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice(M,mob,E,SK,shop, true);
 								if(price.experiencePrice>0)
 									moneyPrice=(100 * price.experiencePrice);
 								else

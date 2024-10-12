@@ -1879,6 +1879,13 @@ public class MobData extends StdWebMacro
 						old="";
 					str.append(old);
 					break;
+				case COMMISSIONPCT: // commission pct
+					if((firstTime)&&(M instanceof CraftBroker))
+						old=CMath.toPct(((CraftBroker)M).commissionPct());
+					if(CMath.s_double(old)<0.0)
+						old="";
+					str.append(old);
+					break;
 				case MAXDAYS: // max days
 					if((firstTime)&&(M instanceof Auctioneer))
 						old=""+((Auctioneer)M).maxTimedAuctionDays();

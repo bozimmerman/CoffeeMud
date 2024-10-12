@@ -1262,6 +1262,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_PUFF=145;
 	/** MINOR_MASK minor action code type, denoting a train action */
 	public static final int TYP_TRAIN=146;
+	/** MINOR_MASK minor action code type, denoting a broker request action*/
+	public static final int TYP_BROKERADD=147;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1293,7 +1295,7 @@ public interface CMMsg extends CMCommon
 		"WROTE", "REWRITE", "WASREAD", "PREMOVE", "THINK", "STARTUP", "RPXPCHANGE",
 		"COMMANDREJECT","RECIPELEARNED", "GRAVITY", "LEGALSTATE", "NEWROOM","CAUSESINK",
 		"ENDQUEST","WINQUEST","HOLYEVENT","EMISSION", "BODYDROP", "GLANCE", "RITUAL",
-		"PUFF","TRAIN"
+		"PUFF", "TRAIN", "BROKERADD"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1645,6 +1647,8 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_PUFF=MASK_MOUTH|TYP_PUFF;
 	/** combined MAJOR and MINOR codes for useful event message type for a train event */
 	public static final int MSG_TRAIN=MASK_HANDS|MASK_SOUND|MASK_MOVE|TYP_NOISYMOVEMENT;
+	/** combined MAJOR and MINOR codes for useful event message type for a auction bid event */
+	public static final int MSG_BROKERADD=MASK_SOUND|MASK_MOUTH|TYP_BROKERADD;
 
 	/**
 	 * An enum to use for an external message check from inside

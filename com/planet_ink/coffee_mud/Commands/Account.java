@@ -231,7 +231,7 @@ public class Account extends StdCommand
 			str.append(CMStrings.padRight(L("^X@x1's characters:",account.getAccountName()),40)).append("^.^N\n\r");
 			boolean toggle = false;
 			final String sortByStr;
-			if(commands.size()>1)
+			if(commands.size()==1)
 				sortByStr="NAME";
 			else
 			{

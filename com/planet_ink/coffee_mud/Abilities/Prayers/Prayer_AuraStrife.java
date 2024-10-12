@@ -154,7 +154,7 @@ public class Prayer_AuraStrife extends Prayer
 					else
 					if(mob.isInCombat())
 					{
-						if(CMLib.dice().rollPercentage()<30)
+						if(CMLib.dice().rollPercentage()<10)
 						{
 							final MOB newvictim=R.fetchRandomInhabitant();
 							if((newvictim!=mob)
@@ -178,7 +178,7 @@ public class Prayer_AuraStrife extends Prayer
 							{
 								lastTargetM = newvictim;
 								CMLib.commands().forceStandardCommand(mob, "Emote",
-										new XVector<String>("EMOTE","yell(s) and curse(s) at @x1.",newvictim.name(mob)));
+										new XVector<String>("EMOTE",L("yell(s) and curse(s) at @x1.",newvictim.name(mob))));
 							}
 						}
 					}
@@ -194,6 +194,7 @@ public class Prayer_AuraStrife extends Prayer
 					if((M != null)
 					&&(M != templarM)
 					&&(!invokerGroup.contains(M))
+					&&(mob.mayIFight(M))
 					&&(!M.Name().equals(mob.getLiegeID())))
 						beneficialAffect(templarM,M,0,Ability.TICKS_FOREVER);
 				}

@@ -15,6 +15,8 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ShoppingLibrary.BuySellFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -49,11 +51,12 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 		return "StdCraftBroker";
 	}
 
-	protected static final Map<String,Long> lastCheckTimes=new Hashtable<String,Long>();
+	protected static final Map<String,Long> nextCheckTimes=new Hashtable<String,Long>();
 
 	protected String		currency			= "";
 	protected int			maxDays				= 900;
 	protected int			maxListings			= 5;
+	protected double		commissionPct		= 0.10;
 
 	public StdCraftBroker()
 	{
@@ -91,10 +94,22 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 		setMiscText(name);
 	}
 
-	private List<Quad<String,String,Integer,Double>> loadRequests()
+	@Override
+	public CoffeeShop getShop(final MOB mob)
+	{
+		if(mob == null)
+			return getShop();
+		return loadResults(mob.Name());
+	}
+
+	private List<Quad<String,String,Integer,Double>> loadRequests(final String shelfName)
 	{
 		final String shopKey = "BROKER_REQ_"+brokerChain().toUpperCase().replace(' ', '_');
-		final List<PlayerData> data = CMLib.database().DBReadPlayerSectionData(shopKey);
+		final List<PlayerData> data;
+		if(shelfName == null)
+			data = CMLib.database().DBReadPlayerSectionData(shopKey);
+		else
+			data = CMLib.database().DBReadPlayerData(shelfName, shopKey);
 		final List<Quad<String,String,Integer,Double>> list = new ArrayList<Quad<String,String,Integer,Double>>();
 		final XMLLibrary xmlLib = CMLib.xml();
 		for(final PlayerData dat : data)
@@ -123,7 +138,7 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 		final String shopKey = "BROKER_REQ_"+brokerChain().toUpperCase().replace(' ', '_');
 		final String key = shopKey+mob.Name()+(shopKey+mob.Name()).hashCode();
 		final StringBuilder xml = new StringBuilder("");
-		xml.append("<REQUEST NAME=\""+mob.Name()+"\" NUM="+number+" PRICE="+price+">");
+		xml.append("<REQUEST NAME=\""+mob.Name()+"\" NUM="+number+" PRICE="+Math.round(price)+">");
 		xml.append(CMLib.xml().parseOutAngleBrackets(request));
 		xml.append("</REQUEST>");
 		CMLib.database().DBCreatePlayerData(mob.Name(), shopKey, key, xml.toString());
@@ -132,7 +147,7 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 	private CoffeeShop loadRequestShop()
 	{
 		final CoffeeShop shop = ((CoffeeShop)CMClass.getCommon("DefaultCoffeeShop")).build(this);
-		for(final Quad<String,String,Integer,Double> q : loadRequests())
+		for(final Quad<String,String,Integer,Double> q : loadRequests(null))
 		{
 			final ExtendableAbility A = (ExtendableAbility)CMClass.getAbility("ExtAbility");
 			A.setName(q.second);
@@ -142,10 +157,27 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 		return shop;
 	}
 
+	private Ability getMatchingRequestInventory(final CoffeeShop shop, final Item I)
+	{
+		if(I==null)
+			return null;
+		for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+		{
+			final Environmental E = i.next();
+			if(E instanceof Ability)
+			{
+				final CompiledZMask mask = CMLib.masking().parseSpecialItemMask(CMParms.parse(E.name()));
+				if((mask != null)&&(CMLib.masking().maskCheck(mask, I, true)))
+					return (Ability)E;
+			}
+		}
+		return null;
+	}
+
 	private void removeRequestShop(final Ability A)
 	{
 		final int x =A.text().indexOf('/');
-		if(x>0)
+		if(x<0)
 			return;
 		final String shopKey = "BROKER_REQ_"+brokerChain().toUpperCase().replace(' ', '_');
 		final String author = A.text().substring(0,x);
@@ -153,10 +185,16 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 		CMLib.database().DBDeletePlayerData(author, shopKey, key);
 	}
 
+	private void removeRequestShop(final String shelfName)
+	{
+		final String shopKey = "BROKER_REQ_"+brokerChain().toUpperCase().replace(' ', '_');
+		CMLib.database().DBDeletePlayerData(shelfName, shopKey);
+	}
+
 	private void updateRequestShop(final CoffeeShop shop, final Ability A)
 	{
 		final int x =A.text().indexOf('/');
-		if(x>0)
+		if(x<0)
 			return;
 		final String shopKey = "BROKER_REQ_"+brokerChain().toUpperCase().replace(' ', '_');
 		final String author = A.text().substring(0,x);
@@ -170,11 +208,11 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 		CMLib.database().DBReCreatePlayerData(author, shopKey, key, xml.toString());
 	}
 
-	private CoffeeShop loadResults(final MOB mob)
+	private CoffeeShop loadResults(final String shelfName)
 	{
 		final String shopKey = "BROKER_SHOP_"+brokerChain().toUpperCase().replace(' ', '_');
 		final CoffeeShop shop = ((CoffeeShop)CMClass.getCommon("DoubleCoffeeShop")).build(this);
-		final List<PlayerData> data = CMLib.database().DBReadPlayerData(mob.Name(), shopKey);
+		final List<PlayerData> data = CMLib.database().DBReadPlayerData(shelfName, shopKey);
 		for(final PlayerData dat : data)
 		{
 			if((dat.xml().length()>0)&&(dat.xml().startsWith("<")))
@@ -183,13 +221,28 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 		return shop;
 	}
 
-	private void saveResults(final MOB mob, final CoffeeShop shop)
+	private String getShelfName(final String s)
+	{
+		final int x =s.indexOf('/');
+		if(x<0)
+			return "";
+		return s.substring(0,x);
+	}
+
+	private String getShelfName(final Ability A)
+	{
+		if(A==null)
+			return "";
+		return getShelfName(A.text());
+	}
+
+	private void saveResults(final String shelfName, final CoffeeShop shop)
 	{
 		final String shopKey = "BROKER_SHOP_"+brokerChain().toUpperCase().replace(' ', '_');
-		String key = shopKey+mob.Name()+(shopKey+mob.Name()).hashCode();
+		String key = shopKey+shelfName+(shopKey+shelfName).hashCode();
 		if(key.length()>=100)
 			key=key.substring(key.length()-99);
-		CMLib.database().DBReCreatePlayerData(mob.Name(), shopKey, key, shop.makeXML());
+		CMLib.database().DBReCreatePlayerData(shelfName, shopKey, key, shop.makeXML());
 	}
 
 	@Override
@@ -201,14 +254,22 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 			return true;
 		synchronized(CMClass.getSync(("BROKER_CHAIN_"+brokerChain().toUpperCase().trim())))
 		{
-			final Long lastTime=StdCraftBroker.lastCheckTimes.get(brokerChain().toUpperCase().trim());
-			if((lastTime==null)||(System.currentTimeMillis()-lastTime.longValue())>(CMProps.getMillisPerMudHour()-5))
+			final Long nextTime=StdCraftBroker.nextCheckTimes.get(brokerChain().toUpperCase().trim());
+			if((nextTime==null)||System.currentTimeMillis()>nextTime.longValue())
 			{
 				if(!CMLib.flags().isInTheGame(this,true))
 					return true;
-				StdCraftBroker.lastCheckTimes.remove(brokerChain().toUpperCase().trim());
+				StdCraftBroker.nextCheckTimes.remove(brokerChain().toUpperCase().trim());
 				final long thisTime=System.currentTimeMillis();
-				StdCraftBroker.lastCheckTimes.put(brokerChain().toUpperCase().trim(),Long.valueOf(thisTime));
+				final TimeClock C = CMLib.time().homeClock(this);
+				final long millisPerMudDay = (CMProps.getMillisPerMudHour() * C.getHoursInDay());
+				StdCraftBroker.nextCheckTimes.put(brokerChain().toUpperCase().trim(),Long.valueOf(thisTime+millisPerMudDay));
+				final int maxListingDays = this.maxTimedListingDays();
+				if(maxListingDays > 0)
+				{
+					//TODO: FINISH THIS
+
+				}
 			}
 		}
 		return true;
@@ -231,32 +292,145 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 			switch (msg.targetMinor())
 			{
 			case CMMsg.TYP_GIVE:
-			case CMMsg.TYP_DEPOSIT:
-				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
-				{
-					if ((CMSecurity.isAllowed(msg.source(), location(), CMSecurity.SecFlag.ORDER)
-					|| (CMLib.law().doesHavePriviledgesHere(msg.source(), getStartRoom()))
-					|| (CMSecurity.isAllowed(msg.source(), location(), CMSecurity.SecFlag.CMDMOBS) && (isMonster()))
-					|| (CMSecurity.isAllowed(msg.source(), location(), CMSecurity.SecFlag.CMDROOMS) && (isMonster()))))
-						return;
-					super.executeMsg(myHost, msg);
-				}
-				return;
-			case CMMsg.TYP_BORROW:
-			case CMMsg.TYP_WITHDRAW:
-				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
-				{
-				}
 				super.executeMsg(myHost, msg);
-				return;
+				break;
 			case CMMsg.TYP_VALUE:
-			case CMMsg.TYP_SELL:
+			{
+				super.stdMOBexecuteMsg(myHost, msg);
+				CMLib.commands().postSay(this, mob, L("I'm sorry, I don't run a pawn shop."), true, false);
+				break;
+			}
+			case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player
+			{
+				super.stdMOBexecuteMsg(myHost, msg);
+				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true)
+				&&(msg.tool() instanceof Item))
+				{
+					final CoffeeShop shop = loadRequestShop();
+					Ability A = this.getMatchingRequestInventory(shop, (Item)msg.tool());
+					if(A != null)
+					{
+						final String forName = getShelfName(A);
+						final int price = shop.stockPrice(A);
+						int numberSold = 1;
+						if(msg.tool() instanceof PackagedItems)
+							numberSold=((PackagedItems)msg.tool()).numberOfItemsInPackage();
+						else
+						if(msg.tool() instanceof RawMaterial)
+							numberSold=((RawMaterial)msg.tool()).phyStats().weight();
+						shop.addStoreInventory(msg.tool(), shop.numberInStock(A), price);
+						final double paid = CMLib.coffeeShops().transactPawn(this, msg.source(), this, msg.tool(), shop, BuySellFlag.WHOLESALE);
+						if (paid > Double.MIN_VALUE)
+						{
+							budgetRemaining = budgetRemaining - Math.round(paid);
+							if (mySession != null)
+								mySession.stdPrintln(msg.source(), msg.target(), msg.tool(), msg.targetMessage());
+						}
+						for(int i=0;i<numberSold;i++)
+							A=(Ability)shop.removeStock("$"+A.name()+"$", mob);
+						shop.removeSellableProduct("$"+msg.tool().name()+"$", msg.source());
+						final CoffeeShop itemShop = this.loadResults(forName);
+						final double sellPrice = price + ((commissionPct()>0)?CMath.mul(paid, commissionPct()):0);
+						itemShop.addStoreInventory(msg.tool(), 1, (int)Math.round(sellPrice));
+						final int num = shop.numberInStock(A);
+						if(num <= 0)
+							this.removeRequestShop(A);
+						else
+							this.updateRequestShop(shop, A);
+						if(forName.length()>0)
+							this.saveResults(forName, itemShop);
+					}
+				}
+				return;
+			}
 			case CMMsg.TYP_VIEW:
-				super.executeMsg(myHost, msg);
-				return;
+			{
+				super.stdMOBexecuteMsg(myHost, msg);
+				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
+				{
+					final CoffeeShop shop = getShop(msg.source());
+					if ((msg.tool() != null)
+					&& (shop.doIHaveThisInStock("$" + msg.tool().Name() + "$", mob)))
+					{
+						final String prefix = L("Interested in @x1? Here is some information for you: ",msg.tool().Name());
+						final String viewDesc = prefix + CMLib.coffeeShops().getViewDescription(msg.source(), msg.tool(), viewFlags());
+						CMLib.commands().postSay(this, msg.source(), viewDesc, true, false);
+					}
+				}
+				break;
+			}
 			case CMMsg.TYP_BUY:
-				super.executeMsg(myHost, msg);
+				super.stdMOBexecuteMsg(myHost, msg);
+				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
+				{
+					final CoffeeShop shop = getShop(msg.source());
+					if ((msg.tool() != null) && (shop.doIHaveThisInStock("$" + msg.tool().Name() + "$", msg.source()))
+					&& (location() != null))
+					{
+						final Environmental item = shop.getStock("$" + msg.tool().Name() + "$",  msg.source());
+						double scratch = 0;
+						if(isMonster())
+							scratch=CMLib.beanCounter().getTotalAbsoluteNativeValue(this);
+						if (item != null)
+							CMLib.coffeeShops().transactMoneyOnly(this, msg.source(), this, item, BuySellFlag.WHOLESALE);
+						if(isMonster() && CMLib.beanCounter().getTotalAbsoluteNativeValue(this) > scratch)
+							CMLib.beanCounter().subtractMoney(mob, CMLib.beanCounter().getTotalAbsoluteNativeValue(this) - scratch );
+
+						final List<Environmental> products = shop.removeSellableProduct("$" + msg.tool().Name() + "$",  msg.source());
+						if (products.size() == 0)
+							break;
+						saveResults(msg.source().Name(), shop);
+						final Environmental product = products.get(0);
+
+						if (product instanceof Item)
+						{
+							msg.modify(msg.source(), msg.target(), product, msg.sourceCode(), msg.sourceMessage(), msg.targetCode(), msg.targetMessage(), msg.othersCode(), msg.othersMessage());
+							if (!CMLib.coffeeShops().purchaseItems((Item) product, products, this,  msg.source()))
+								return;
+						}
+						if (mySession != null)
+							mySession.stdPrintln(msg.source(), msg.target(), msg.tool(), msg.targetMessage());
+						if (!CMath.bset(msg.targetMajor(), CMMsg.MASK_OPTIMIZE))
+							mob.location().recoverRoomStats();
+					}
+				}
 				return;
+			case CMMsg.TYP_BROKERADD:
+			{
+				super.executeMsg(myHost, msg);
+				if((msg.targetMessage()!=null) || (msg.targetMessage().length()>0))
+				{
+					final List<String> parts = CMParms.parse(msg.targetMessage());
+					if((parts.size()==1)
+					&&(parts.get(0).equalsIgnoreCase("CANCEL")))
+						this.removeRequestShop(msg.source().Name());
+					else
+					if(parts.size()>2)
+					{
+						final int num = CMath.s_int(parts.remove(0));
+						final Triad<String, Double, Long> triad =
+								CMLib.english().parseMoneyStringSDL(getFinalCurrency(), parts.remove(parts.size()-1));
+						final CompiledZMask mask = CMLib.masking().parseSpecialItemMask(parts);
+						if((num>0)
+						&&(triad != null)
+						&&(mask != null))
+						{
+							addRequest(msg.source(), CMParms.combineQuoted(parts, 0), num, triad.second.doubleValue()*triad.third.intValue());
+							if(this.maxTimedListingDays()>0)
+							{
+								CMLib.commands().postSay(this,msg.source(),
+										L("Your new listing is posted and will remain for the next @x1 days.",""+this.maxTimedListingDays()));
+							}
+							else
+							{
+								CMLib.commands().postSay(this,msg.source(),
+										L("Your new listing is posted.",""+this.maxTimedListingDays()));
+							}
+						}
+					}
+				}
+				return;
+			}
 			case CMMsg.TYP_SPEAK:
 			{
 				super.executeMsg(myHost, msg);
@@ -265,18 +439,32 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 			}
 			case CMMsg.TYP_LIST:
 			{
-				super.executeMsg(myHost, msg);
+				super.stdMOBexecuteMsg(myHost, msg);
 				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 				{
-					final StringBuilder str = new StringBuilder("");
-					if (str.length() > 2)
+					final String forMask = CMLib.coffeeShops().getListForMask(msg.targetMessage());
+					boolean listedSomething = false;
+					final int limit = CMParms.getParmInt(getFinalPrejudiceFactors(), "LIMIT", 0);
 					{
-						mob.tell("");
-						CMLib.commands().postSay(this, mob, str.toString().substring(0, str.length() - 2), true, false);
+						final CoffeeShop reqshop = this.loadRequestShop();
+						final List<Environmental> inventory = new XVector<Environmental>(reqshop.getStoreInventory());
+						final String s = CMLib.coffeeShops().getListInventory(this, null, inventory, limit, this, reqshop, forMask);
+						listedSomething = listedSomething || s.length()>0;
+						if (s.length() > 0)
+							mob.tell(L("\n\r^HItem Requests:^?\n\r")+s);
 					}
-					return;
+					{
+						final CoffeeShop resshop = getShop(mob);
+						final List<Environmental> inventory = new XVector<Environmental>(resshop.getStoreInventory());
+						final String s = CMLib.coffeeShops().getListInventory(this, null, inventory, limit, this, resshop, forMask);
+						listedSomething = listedSomething || s.length()>0;
+						if (s.length() > 0)
+							mob.tell(L("\n\r^HItem Pickups:^?\n\r")+s);
+					}
+					if(!listedSomething)
+						mob.tell(L("There are no listings to see at this time."));
 				}
-				break;
+				return;
 			}
 			default:
 				break;
@@ -296,8 +484,52 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 		{
 			switch (msg.targetMinor())
 			{
+			case CMMsg.TYP_BROKERADD:
+			{
+				if(!super.okMessage(myHost, msg))
+					return false;
+				if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), this))
+					return false;
+				boolean wellFormatted = false;
+				if((msg.targetMessage()!=null) || (msg.targetMessage().length()>0))
+				{
+					final List<String> parts = CMParms.parse(msg.targetMessage());
+					Triad<String, Double, Long> triad;
+					if((parts.size()==1)
+					&&(parts.get(0).equalsIgnoreCase("CANCEL")))
+						wellFormatted=true;
+					else
+					if((parts.size()>2)
+					&&(CMath.s_int(parts.remove(0))>0)
+					&&((triad=CMLib.english().parseMoneyStringSDL(getFinalCurrency(), parts.remove(parts.size()-1)))!=null)
+					&&(CMLib.masking().parseSpecialItemMask(parts)!=null))
+					{
+						wellFormatted=true;
+						if(!triad.first.equalsIgnoreCase(getFinalCurrency()))
+						{
+							CMLib.commands().postSay(this,msg.source(),L("Your new listing would be paid in currency I don't deal in."));
+							return false;
+						}
+					}
+				}
+				if(!wellFormatted)
+				{
+					msg.source().tell(L("Your new listing is too badly formatted to list."));
+					return false;
+				}
+				if(this.maxListings()>0)
+				{
+					final List<Quad<String,String,Integer,Double>> quads = loadRequests(msg.source().Name());
+					final int numExisting = quads.size();
+					if(numExisting > this.maxListings())
+					{
+						CMLib.commands().postSay(this,msg.source(),L("I'm sorry, you can't post any more listings."),true,false);
+						return false;
+					}
+				}
+				return true;
+			}
 			case CMMsg.TYP_GIVE:
-			case CMMsg.TYP_DEPOSIT:
 				{
 					if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), this))
 						return false;
@@ -315,33 +547,56 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 					}
 					return super.okMessage(myHost, msg);
 				}
-			case CMMsg.TYP_WITHDRAW:
-			case CMMsg.TYP_BORROW:
-				{
-					if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), this))
-						return false;
-					if ((msg.tool() == null) || (!(msg.tool() instanceof Item)) || (msg.tool() instanceof Coins))
-					{
-						CMLib.commands().postSay(this, mob, L("What do you want? I'm busy! Also, SHHHH!!!!"), true, false);
-						return false;
-					}
-					if ((msg.tool() != null) && (!msg.tool().okMessage(myHost, msg)))
-						return false;
-					if (!this.getShop().doIHaveThisInStock(msg.tool().Name(), null))
-					{
-						CMLib.commands().postSay(this, mob, L("We don't stock anything like that."), true, false);
-						return false;
-					}
-				}
-				return super.okMessage(myHost, msg);
 			case CMMsg.TYP_SELL:
+			{
+				if(!super.stdMOBokMessage(myHost, msg))
+					return false;
+				if((msg.tool()==null)
+				||(!doISellThis(msg.tool()))
+				||(!(msg.tool() instanceof Item)))
+				{
+					CMLib.commands().postSay(this,msg.source(),L("I'm sorry, I don't deal in that."),true,false);
+					return false;
+				}
+				if((msg.tool() instanceof Item)
+				&& (!CMLib.law().mayOwnThisItem(msg.source(), (Item)msg.tool()))
+				&& ((!CMLib.flags().isEvil(this))
+					||(CMLib.flags().isLawful(this))))
+				{
+					CMLib.commands().postSay(this,msg.source(),L("I don't deal in stolen goods."),true,false);
+					return false;
+				}
+				if((msg.tool() instanceof Item)&&(msg.source().isMine(msg.tool())))
+				{
+					final CMMsg msg2=CMClass.getMsg(msg.source(),msg.tool(),CMMsg.MSG_DROP,null);
+					if(!msg.source().location().okMessage(msg.source(),msg2))
+						return false;
+				}
+				if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), this))
+					return false;
+				final CoffeeShop shop = loadRequestShop();
+				final Ability item = this.getMatchingRequestInventory(shop, (Item)msg.tool());
+				if(item == null)
+				{
+					CMLib.commands().postSay(this,msg.source(),L("That item does not fulfill any listed request.  Try LIST."),true,false);
+					return false;
+				}
+				return true;
+			}
 			case CMMsg.TYP_VALUE:
 				return super.okMessage(myHost, msg);
 			case CMMsg.TYP_VIEW:
-				return super.okMessage(myHost, msg);
 			case CMMsg.TYP_BUY:
-				CMLib.commands().postSay(this, mob, L("I'm sorry, but nothing here is for sale."), true, false);
-				return super.okMessage(myHost, msg);
+				if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), this))
+					return false;
+				if ((msg.targetMinor() == CMMsg.TYP_BUY)
+				&& (msg.tool() != null)
+				&& (!msg.tool().okMessage(myHost, msg)))
+					return false;
+				final BuySellFlag buyFlag = (msg.targetMinor()==CMMsg.TYP_BUY)?BuySellFlag.WHOLESALE:BuySellFlag.INFO;
+				if (CMLib.coffeeShops().sellEvaluation(this, msg.source(), msg.tool(), this, buyFlag))
+					return super.stdMOBokMessage(myHost, msg);
+				return false;
 			case CMMsg.TYP_LIST:
 			{
 				if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), this))
@@ -377,5 +632,17 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 	public void setMaxListings(final int d)
 	{
 		maxListings=d;
+	}
+
+	@Override
+	public double commissionPct()
+	{
+		return commissionPct;
+	}
+
+	@Override
+	public void setCommissionPct(final double d)
+	{
+		commissionPct = d;
 	}
 }

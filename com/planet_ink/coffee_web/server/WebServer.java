@@ -437,7 +437,7 @@ public class WebServer extends Thread
 			}
 		}
 		close();
-		config.getLogger().info("Shutdown complete");
+		config.getLogger().info(serverName+" shutdown complete");
 	}
 
 	/**

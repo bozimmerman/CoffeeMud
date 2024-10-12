@@ -63,7 +63,7 @@ public class GrinderMobs
 		STATESTR,STATESUBJSTR,RIDERSTR,MOUNTSTR,DISMOUNTSTR,
 		ISDRINK, LIQUIDHELD, QUENCHED, LIQUIDTYPES, SIVIEWTYPES,
 		CURRENCIES, CURRENCY,CATARATE,CATALIVE,CATAMASK,CATACAP,
-		ISBROKER, BROCHAIN, MAXLISTINGS
+		ISBROKER, BROCHAIN, MAXLISTINGS, COMMISSIONPCT
 		;
 
 		public boolean isGenField;
@@ -821,6 +821,10 @@ public class GrinderMobs
 				case MAXLISTINGS: // max listings
 					if(M instanceof CraftBroker)
 						((CraftBroker)M).setMaxListings(CMath.s_int(old));
+					break;
+				case COMMISSIONPCT:
+					if(M instanceof CraftBroker)
+						((CraftBroker)M).setCommissionPct(CMath.s_pct(old));
 					break;
 				case LIBMAXBORROW: // library max borrowed
 					if(M instanceof Librarian)

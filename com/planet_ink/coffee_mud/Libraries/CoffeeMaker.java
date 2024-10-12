@@ -873,6 +873,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				text.append(xmlLib.convertXMLtoTag("BROCHAIN",""+((CraftBroker)E).brokerChain()));
 				text.append(xmlLib.convertXMLtoTag("MAXCDAYS",""+((CraftBroker)E).maxTimedListingDays()));
 				text.append(xmlLib.convertXMLtoTag("MAXLISTINGS",""+((CraftBroker)E).maxListings()));
+				text.append(xmlLib.convertXMLtoTag("COMMPCT",""+((CraftBroker)E).commissionPct()));
 			}
 			if(E instanceof Deity)
 			{
@@ -4359,6 +4360,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((CraftBroker)E).setBrokerChain(xml.getValFromPieces(buf,"BROCHAIN"));
 				((CraftBroker)E).setMaxTimedListingDays(xml.getIntFromPieces(buf,"MAXCDAYS"));
 				((CraftBroker)E).setMaxListings(xml.getIntFromPieces(buf,"MAXLISTINGS"));
+				((CraftBroker)E).setCommissionPct(xml.getDoubleFromPieces(buf,"COMMPCT"));
 			}
 
 			if(E instanceof Deity)

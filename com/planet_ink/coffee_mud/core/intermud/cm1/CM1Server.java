@@ -220,7 +220,7 @@ public class CM1Server extends Thread
 					}
 				}
 				handlers.clear();
-				Log.sysOut("CM1Server","Shutdown complete");
+				Log.sysOut("CM1Server","CM1Server shutdown complete");
 			}
 		}
 		isShutdown = true;

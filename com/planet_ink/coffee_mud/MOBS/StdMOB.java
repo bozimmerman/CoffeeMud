@@ -3583,6 +3583,8 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_FOLLOW:
 					if(msg.target() instanceof MOB)
 					{
+						if(!isPlayer())
+							CMLib.awards().giveAutoProperties(me, false);
 						setFollowing((MOB) msg.target());
 						tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
 					}

@@ -66,7 +66,7 @@ public class Compare extends StdCommand
 				{
 					final Environmental shopkeeper=V.get(i);
 					final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-					final Environmental itemToDo=SK.getShop().getStock(commands.get(0),mob);
+					final Environmental itemToDo=SK.getShop(mob).getStock(commands.get(0),mob);
 					if((itemToDo==null)||(!(itemToDo instanceof Item)))
 					{
 						continue; // next shopkeeper

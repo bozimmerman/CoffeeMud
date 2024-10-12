@@ -44,9 +44,16 @@ public class ExtAbility extends StdAbility implements ExtendableAbility
 		return ID;
 	}
 
-	private StatsAffecting	statsAffector = null;
-	private MsgListener		msgListener = null;
-	private Tickable		tickable = null;
+	private String			name			= null;
+	private StatsAffecting	statsAffector	= null;
+	private MsgListener		msgListener		= null;
+	private Tickable		tickable		= null;
+
+	@Override
+	public void setName(final String newName)
+	{
+		name = newName;
+	}
 
 	@Override
 	public String displayText()
@@ -127,6 +134,8 @@ public class ExtAbility extends StdAbility implements ExtendableAbility
 	@Override
 	public String name()
 	{
+		if(name != null)
+			return name;
 		return (tickable != null) ? tickable.name() : super.name();
 	}
 

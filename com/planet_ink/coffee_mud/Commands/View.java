@@ -88,16 +88,17 @@ public class View extends StdCommand
 		}
 		int addendum=1;
 		boolean doBugFix = true;
+		final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
+		final CoffeeShop shop = SK.getShop(mob);
 		while(doBugFix || ((allFlag)&&(addendum<=maxToDo)))
 		{
 			doBugFix=false;
-			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-			final Environmental itemToDo=SK.getShop().getStock(whatName,mob);
+			final Environmental itemToDo=shop.getStock(whatName,mob);
 			if(itemToDo==null)
 				break;
 			if(CMLib.flags().canBeSeenBy(itemToDo,mob))
 				V.add(itemToDo);
-			if(addendum>=CMLib.coffeeShops().getShopKeeper(shopkeeper).getShop().numberInStock(itemToDo))
+			if(addendum>=shop.numberInStock(itemToDo))
 				break;
 			addendum++;
 		}

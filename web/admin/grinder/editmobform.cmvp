@@ -711,6 +711,12 @@
 				@else@
 					@if?MobData?ISBROKER@
 						<TR>
+							<TD><FONT COLOR="#66FFFF"><B>Budget:</B></FONT></TD>
+						    <TD COLSPAN=2><INPUT TYPE=TEXT NAME=BUDGET SIZE=30 VALUE="@MobData?BUDGET@">
+							<a href="javascript:OpenUp('ihelp.cmvp','BUDGET');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+						    </TD>
+						</TR>
+						<TR>
 							<TD><FONT COLOR="#66FFFF"><B>Broker Chain Name:</B></FONT></TD>
 						    <TD COLSPAN=2><INPUT TYPE=TEXT NAME=BROCHAIN SIZE=50 VALUE="@MobData?BROCHAIN@">
 						    </TD>

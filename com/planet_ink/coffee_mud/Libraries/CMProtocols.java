@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginS
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.GridZones.XYVector;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
@@ -2575,7 +2576,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								.append("\"terrain\":\"").append(domType.toLowerCase()).append("\",")
 								.append("\"move\":\"").append(move).append("\",")
 								.append("\"details\":\"").append("\",")
-								.append("\"exits\":[");
+								.append("\"exits\":{");
 							boolean comma=false;
 							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 							{
@@ -2588,13 +2589,54 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 										if(comma)
 											doc.append(",");
 										comma=true;
-										doc.append("{\""+CMLib.directions().getDirectionChar(d)+"\":")
-											.append(CMath.abs(room2ID.hashCode()))
-											.append("}");
+										doc.append("\""+CMLib.directions().getDirectionChar(d)+"\":")
+											.append(CMath.abs(room2ID.hashCode()));
 									}
 								}
 							}
-							doc.append("],\"coord\":{\"id\":0,\"x\":-1,\"y\":-1,\"cont\":0}");
+							doc.append("{\"idexits\":");
+							comma=false;
+							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+							{
+								final Room R2=room.getRoomInDir(d);
+								if((R2!=null)&&(room.getExitInDir(d)!=null))
+								{
+									final String room2ID=CMLib.map().getExtendedRoomID(R2);
+									if(room2ID.length()>0)
+									{
+										if(comma)
+											doc.append(",");
+										comma=true;
+										doc.append("\""+CMLib.directions().getDirectionChar(d)+"\":\"")
+											.append(room2ID).append("\"");
+									}
+								}
+							}
+							doc.append("},");
+							if(room.getGridParent() != null)
+							{
+								final String parentID=room.getGridParent().roomID();
+								final XYVector vec = room.getGridParent().getRoomXY(room);
+								doc.append("\"coord\":{");
+								doc.append("\"id\":"+Math.abs(parentID.hashCode())+",");
+								doc.append("\"x\":"+((vec==null)?-1:vec.x)+",");
+								doc.append("\"y\":"+((vec==null)?-1:vec.y)+",");
+								doc.append("\"cont\":0"); // what is this? continent?
+								doc.append("}");
+							}
+							else
+							if(room.getArea() instanceof GridZones)
+							{
+								final XYVector vec = ((GridZones)room.getArea()).getRoomXY(room);
+								doc.append("\"coord\":{");
+								doc.append("\"id\":0,");
+								doc.append("\"x\":"+((vec==null)?-1:vec.x)+",");
+								doc.append("\"y\":"+((vec==null)?-1:vec.y)+",");
+								doc.append("\"cont\":0"); // what is this? continent?
+								doc.append("}");
+							}
+							else
+								doc.append("\"coord\":{\"id\":0,\"x\":-1,\"y\":-1,\"cont\":0}");
 							doc.append("}");
 							return doc.toString();
 						}

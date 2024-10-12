@@ -1275,7 +1275,7 @@ public class ServiceEngine implements ThreadEngine
 				}
 			}
 		}
-		Log.sysOut("ServiceEngine","Shutdown complete.");
+		Log.sysOut("ServiceEngine","Threads Service shutdown complete.");
 		return true;
 	}
 

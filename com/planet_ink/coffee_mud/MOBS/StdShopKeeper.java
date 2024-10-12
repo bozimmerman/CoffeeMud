@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ShoppingLibrary.BuySellFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -154,6 +155,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	}
 
 	@Override
+	public CoffeeShop getShop(final MOB mob)
+	{
+		return getShop();
+	}
+
+	@Override
 	public CoffeeShop getShop()
 	{
 		return shop;
@@ -263,6 +270,19 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return super.okMessage(myHost, msg);
 	}
 
+	/**
+	 * For bankers and stuff that override stdshopkeeper, but can't call
+	 * its okmess,and needs to call the StdMob one.
+	 *
+	 * @param myHost the host
+	 * @param msg the message
+	 * @return true or false
+	 */
+	protected void stdMOBexecuteMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -275,7 +295,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), this))
 					return false;
-				if (CMLib.coffeeShops().pawnEvaluation(this, msg.source(), msg.tool(), this, budgetRemaining, budgetMax, msg.targetMinor() == CMMsg.TYP_SELL))
+				final BuySellFlag flag = (msg.targetMinor()==CMMsg.TYP_SELL)?BuySellFlag.RETAIL:BuySellFlag.INFO;
+				if (CMLib.coffeeShops().pawnEvaluation(this, msg.source(), msg.tool(), this, budgetRemaining, budgetMax, flag))
 					return super.okMessage(myHost, msg);
 				return false;
 			}
@@ -308,7 +329,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				&& (msg.tool() != null)
 				&& (!msg.tool().okMessage(myHost, msg)))
 					return false;
-				if (CMLib.coffeeShops().sellEvaluation(this, msg.source(), msg.tool(), this, msg.targetMinor() == CMMsg.TYP_BUY))
+				final BuySellFlag buyFlag = (msg.targetMinor()==CMMsg.TYP_BUY)?BuySellFlag.RETAIL:BuySellFlag.INFO;
+				if (CMLib.coffeeShops().sellEvaluation(this, msg.source(), msg.tool(), this, buyFlag))
 					return super.okMessage(myHost, msg);
 				return false;
 			}
@@ -357,7 +379,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				super.executeMsg(myHost, msg);
 				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 				{
-					final double pawningPrice = CMLib.coffeeShops().pawningPrice(this, mob, msg.tool(), this, getShop()).absoluteGoldPrice;
+					final double pawningPrice = CMLib.coffeeShops().pawningPrice(this, mob, msg.tool(), this).absoluteGoldPrice;
 					final String currencyShort = CMLib.beanCounter().nameCurrencyShort(this, pawningPrice);
 					CMLib.commands().postSay(this, mob, L("I'll give you @x1 for @x2.", currencyShort, msg.tool().name()), true, false);
 				}
@@ -368,7 +390,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				super.executeMsg(myHost, msg);
 				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 				{
-					final double paid = CMLib.coffeeShops().transactPawn(this, msg.source(), this, msg.tool());
+					final double paid = CMLib.coffeeShops().transactPawn(this, msg.source(), this, msg.tool(), getShop(), BuySellFlag.RETAIL);
 					if (paid > Double.MIN_VALUE)
 					{
 						budgetRemaining = budgetRemaining - Math.round(paid);
@@ -397,8 +419,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				}
 				break;
 			}
-			case CMMsg.TYP_BUY: // buy-from -- this is a player buying from a
-								// shopkeeper
+			case CMMsg.TYP_BUY: // buy-from -- this is a player buying from a shopkeeper
 			{
 				super.executeMsg(myHost, msg);
 				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
@@ -409,7 +430,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					{
 						final Environmental item = getShop().getStock("$" + msg.tool().Name() + "$", mobFor);
 						if (item != null)
-							CMLib.coffeeShops().transactMoneyOnly(this, msg.source(), this, item, !isMonster());
+						{
+							final BuySellFlag flag = !isMonster() ? BuySellFlag.RETAIL : BuySellFlag.INFO;
+							CMLib.coffeeShops().transactMoneyOnly(this, msg.source(), this, item, flag);
+						}
 
 						final List<Environmental> products = getShop().removeSellableProduct("$" + msg.tool().Name() + "$", mobFor);
 						if (products.size() == 0)

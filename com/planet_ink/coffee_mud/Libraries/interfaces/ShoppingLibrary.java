@@ -123,8 +123,8 @@ public interface ShoppingLibrary extends CMLibrary
 	/**
 	 * Gives the price of an item that might be sold to a player/mob by a shopkeeper.
 	 *
-	 * @see ShoppingLibrary#transactMoneyOnly(MOB, MOB, ShopKeeper, Environmental, boolean)
-	 * @see ShoppingLibrary#sellEvaluation(MOB, MOB, Environmental, ShopKeeper, boolean)
+	 * @see ShoppingLibrary#transactMoneyOnly(MOB, MOB, ShopKeeper, Environmental, BuySellFlag)
+	 * @see ShoppingLibrary#sellEvaluation(MOB, MOB, Environmental, ShopKeeper, BuySellFlag)
 	 * @see ShoppingLibrary#getSalesTax(Room, MOB)
 	 *
 	 * @param sellerShopM the shopkeeper mob
@@ -142,8 +142,8 @@ public interface ShoppingLibrary extends CMLibrary
 	 * Returns the applicable sales tax percentage for the given seller from the
 	 * given room.
 	 *
-	 * @see ShoppingLibrary#transactMoneyOnly(MOB, MOB, ShopKeeper, Environmental, boolean)
-	 * @see ShoppingLibrary#sellEvaluation(MOB, MOB, Environmental, ShopKeeper, boolean)
+	 * @see ShoppingLibrary#transactMoneyOnly(MOB, MOB, ShopKeeper, Environmental, BuySellFlag)
+	 * @see ShoppingLibrary#sellEvaluation(MOB, MOB, Environmental, ShopKeeper, BuySellFlag)
 	 * @see ShoppingLibrary#sellingPrice(MOB, MOB, Environmental, ShopKeeper, CoffeeShop, boolean)
 	 *
 	 * @param homeRoom the room the shopkeeper is originally from
@@ -157,7 +157,7 @@ public interface ShoppingLibrary extends CMLibrary
 	 * Returns whether the sale can go forth.  This also handles proposed
 	 * VIEW commands.
 	 *
-	 * @see ShoppingLibrary#transactMoneyOnly(MOB, MOB, ShopKeeper, Environmental, boolean)
+	 * @see ShoppingLibrary#transactMoneyOnly(MOB, MOB, ShopKeeper, Environmental, BuySellFlag)
 	 * @see ShoppingLibrary#getSalesTax(Room, MOB)
 	 * @see ShoppingLibrary#sellingPrice(MOB, MOB, Environmental, ShopKeeper, CoffeeShop, boolean)
 	 *
@@ -165,10 +165,10 @@ public interface ShoppingLibrary extends CMLibrary
 	 * @param buyerCustM the player or mob doing the buying
 	 * @param product the product to potentiall sell to the buyer
 	 * @param shop the actual shop
-	 * @param buyNotView true if a buy is requested, false for a view
+	 * @param buyFlag the flag to tell how to do the evaluation
 	 * @return true if the buy or view should go forward
 	 */
-	public boolean sellEvaluation(MOB sellerShopM, MOB buyerCustM, Environmental product, ShopKeeper shop, boolean buyNotView);
+	public boolean sellEvaluation(MOB sellerShopM, MOB buyerCustM, Environmental product, ShopKeeper shop, BuySellFlag buyFlag);
 
 	/**
 	 * Part of a shopkeeper selling an item to a player/mob is the transaction of the price.
@@ -176,7 +176,7 @@ public interface ShoppingLibrary extends CMLibrary
 	 * price comes from sellingPrice above.  Having the money go into the shopkeepers
 	 * pocket is optional.
 	 *
-	 * @see ShoppingLibrary#sellEvaluation(MOB, MOB, Environmental, ShopKeeper, boolean)
+	 * @see ShoppingLibrary#sellEvaluation(MOB, MOB, Environmental, ShopKeeper, BuySellFlag)
 	 * @see ShoppingLibrary#getSalesTax(Room, MOB)
 	 * @see ShoppingLibrary#sellingPrice(MOB, MOB, Environmental, ShopKeeper, CoffeeShop, boolean)
 	 *
@@ -184,9 +184,9 @@ public interface ShoppingLibrary extends CMLibrary
 	 * @param buyerM the buyer mob who is losing money
 	 * @param shop the shop itself
 	 * @param product the product being sold, whose value constitutes the price
-	 * @param sellerGetsPaid true to add the money to the shopkeepers
+	 * @param flag true to add the money to the shopkeepers
 	 */
-	public void transactMoneyOnly(MOB sellerM, MOB buyerM, ShopKeeper shop, Environmental product, boolean sellerGetsPaid);
+	public void transactMoneyOnly(MOB sellerM, MOB buyerM, ShopKeeper shop, Environmental product, BuySellFlag flag);
 
 
 	/**
@@ -205,26 +205,25 @@ public interface ShoppingLibrary extends CMLibrary
 	 * Gives the value of an item that might be sold to a shopkeeper by a player/mob.
 	 * Takes current stock into account.
 	 *
-	 * @see ShoppingLibrary#transactPawn(MOB, MOB, ShopKeeper, Environmental)
-	 * @see ShoppingLibrary#pawnEvaluation(MOB, MOB, Environmental, ShopKeeper, double, double, boolean)
+	 * @see ShoppingLibrary#transactPawn(MOB, MOB, ShopKeeper, Environmental, CoffeeShop, BuySellFlag)
+	 * @see ShoppingLibrary#pawnEvaluation(MOB, MOB, Environmental, ShopKeeper, double, double, BuySellFlag)
 	 *
 	 * @param buyerShopM the shopkeeper mob
 	 * @param sellerCustM the player seller mob
 	 * @param product the proposed produce to sell to the shop
 	 * @param shopKeeper the shop itself
-	 * @param shop the inventory object of the shop
 	 * @return the valuation that this shopkeeper will put on the item
 	 */
 	public ShopKeeper.ShopPrice pawningPrice(MOB buyerShopM, MOB sellerCustM, Environmental product,
-											 ShopKeeper shopKeeper, CoffeeShop shop);
+											 ShopKeeper shopKeeper);
 
 	/**
 	 * Evaluates a proposed sale of an item to a shopkeeper by a player/mob
 	 * Returns whether the sale can go forth.  This also handles proposed
 	 * VALUE commands.
 	 *
-	 * @see ShoppingLibrary#transactPawn(MOB, MOB, ShopKeeper, Environmental)
-	 * @see ShoppingLibrary#pawningPrice(MOB, MOB, Environmental, ShopKeeper, CoffeeShop)
+	 * @see ShoppingLibrary#transactPawn(MOB, MOB, ShopKeeper, Environmental, CoffeeShop, BuySellFlag)
+	 * @see ShoppingLibrary#pawningPrice(MOB, MOB, Environmental, ShopKeeper)
 	 *
 	 * @param buyerShopM the shopkeeper mob
 	 * @param sellerCustM the player seller mob
@@ -232,27 +231,29 @@ public interface ShoppingLibrary extends CMLibrary
 	 * @param shop the shop itself
 	 * @param maxToPay money the shopkeeper has remaining
 	 * @param maxEverPaid the overall budget of the shopkeeper
-	 * @param sellNotValue true if a sale is proposed, and false for a valuation
+	 * @param buyFlag how to do the evaluation
 	 * @return true if the sale should go through, false otherwise
 	 */
 	public boolean pawnEvaluation(MOB buyerShopM, MOB sellerCustM, Environmental product,
-								  ShopKeeper shop, double maxToPay, double maxEverPaid, boolean sellNotValue);
+								  ShopKeeper shop, double maxToPay, double maxEverPaid, BuySellFlag buyFlag);
 
 	/**
 	 * Does the transaction where a player/mob sells an item to a shopkeeper.
 	 * It returns the amount given to the player in absolute value.  Adds
 	 * the item to the shopkeepers inventory
 	 *
-	 * @see ShoppingLibrary#pawnEvaluation(MOB, MOB, Environmental, ShopKeeper, double, double, boolean)
-	 * @see ShoppingLibrary#pawningPrice(MOB, MOB, Environmental, ShopKeeper, CoffeeShop)
+	 * @see ShoppingLibrary#pawnEvaluation(MOB, MOB, Environmental, ShopKeeper, double, double, BuySellFlag)
+	 * @see ShoppingLibrary#pawningPrice(MOB, MOB, Environmental, ShopKeeper)
 	 *
 	 * @param shopkeeperM the shopkeeper mob being sold to
 	 * @param pawnerM the player/mob selling an item
 	 * @param shop the shopkeeper object
 	 * @param product the product sold to the shopkeeper
+	 * @param shopItems the inventory object for the shopkeeper
+	 * @param flag flag on how to do the transaction
 	 * @return the value given to the player
 	 */
-	public double transactPawn(MOB shopkeeperM, MOB pawnerM, ShopKeeper shop, Environmental product);
+	public double transactPawn(MOB shopkeeperM, MOB pawnerM, ShopKeeper shop, Environmental product, CoffeeShop shopItems, BuySellFlag flag);
 
 	/**
 	 * Checks a BUY message for an english embedded 'FOR' message, which
@@ -282,6 +283,24 @@ public interface ShoppingLibrary extends CMLibrary
 	 */
 	public String getListInventory(MOB seller,  MOB buyer, List<? extends Environmental> inventory,
 								   int limit, ShopKeeper shop, String mask);
+
+	/**
+	 * Formats and returns a displayable inventory for a shopkeeper.
+	 *
+	 * @see ShoppingLibrary#getListInventory(MOB, MOB, List, int, ShopKeeper, String)
+	 * @see ShoppingLibrary#getListForMask(String)
+	 *
+	 * @param seller the seller mob who speaks
+	 * @param buyer the buyer mob who is ... buying
+	 * @param inventory the inventory of the seller to show
+	 * @param limit 0, or maximum number of rows to display
+	 * @param shop the ShopKeeper object
+	 * @param shopItems the ShopKeeper stock list
+	 * @param mask null, or a name substring mask for items to show
+	 * @return the formatted displayable inventory
+	 */
+	public String getListInventory(MOB seller,  MOB buyer, List<? extends Environmental> inventory,
+								   int limit, ShopKeeper shop, CoffeeShop shopItems, String mask);
 
 	/**
 	 * Given an inn key, and a starting room, this will return
@@ -523,4 +542,16 @@ public interface ShoppingLibrary extends CMLibrary
 	 * @param updateOnly true for update, false when creating
 	 */
 	public void saveAuction(AuctionData data, String auctionHouse, boolean updateOnly);
+
+	/**
+	 * Flag to tell the system how to handle a transaction.
+	 *
+	 * @author BZ
+	 */
+	public enum BuySellFlag
+	{
+		INFO,
+		RETAIL,
+		WHOLESALE
+	}
 }

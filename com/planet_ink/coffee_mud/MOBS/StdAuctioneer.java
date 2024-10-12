@@ -80,6 +80,12 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
+	public CoffeeShop getShop(final MOB mob)
+	{
+		return getShop();
+	}
+
+	@Override
 	public CoffeeShop getShop()
 	{
 		final CoffeeShop shop=((CoffeeShop)CMClass.getCommon("AuctionCoffeeShop")).build(this);

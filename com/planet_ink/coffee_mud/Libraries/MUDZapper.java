@@ -6008,6 +6008,20 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _SKILL: // -skill
 					{
 						boolean found=false;
+						if(E instanceof SpellHolder)
+						{
+							final SpellHolder spellE = (SpellHolder)E;
+							final String lowerSpellList = spellE.getSpellList().toLowerCase();
+							for(int v=0;v<entry.parms().length-1;v+=2)
+							{
+								if(lowerSpellList.indexOf(((String)entry.parms()[v]).toLowerCase())>=0)
+								{
+									found = true;
+									break;
+								}
+							}
+						}
+						else
 						for(int v=0;v<entry.parms().length-1;v+=2)
 						{
 							final Ability A=mob.fetchAbility((String)entry.parms()[v]);
@@ -6024,6 +6038,24 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _SKILLFLAG: // -skillflag
 					{
 						boolean found=false;
+						if(E instanceof SpellHolder)
+						{
+							final SpellHolder spellE = (SpellHolder)E;
+							for(final Object o : entry.parms())
+							{
+								for(final Ability A : spellE.getSpells())
+								{
+									if(evaluateSkillFlagObject(o,A))
+									{
+										found = true;
+										break;
+									}
+								}
+								if(found)
+									break;
+							}
+						}
+						else
 						for(final Object o : entry.parms())
 						{
 							for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
@@ -6044,6 +6076,17 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case SKILL: // +skill
 					{
+						if(E instanceof SpellHolder)
+						{
+							final SpellHolder spellE = (SpellHolder)E;
+							final String lowerSpellList = spellE.getSpellList().toLowerCase();
+							for(int v=0;v<entry.parms().length-1;v+=2)
+							{
+								if(lowerSpellList.indexOf(((String)entry.parms()[v]).toLowerCase())>=0)
+									return false;
+							}
+						}
+						else
 						for(int v=0;v<entry.parms().length-1;v+=2)
 						{
 							final Ability A=mob.fetchAbility((String)entry.parms()[v]);
@@ -6054,6 +6097,19 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case SKILLFLAG: // +skillflag
 					{
+						if(E instanceof SpellHolder)
+						{
+							final SpellHolder spellE = (SpellHolder)E;
+							for(final Object o : entry.parms())
+							{
+								for(final Ability A : spellE.getSpells())
+								{
+									if(evaluateSkillFlagObject(o,A))
+										return false;
+								}
+							}
+						}
+						else
 						for(final Object o : entry.parms())
 						{
 							for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
@@ -9203,5 +9259,228 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			strs[1]="";
 		}
 		return strs;
+	}
+
+	@Override
+	public CompiledZMask parseSpecialItemMask(final List<String> parsed)
+	{
+		SpecialItemType type = null;
+		final StringBuilder finalMaskStr = new StringBuilder("");
+		for(int i=0;i<parsed.size();i++)
+		{
+			String s = parsed.get(i).trim();
+			if(s.length()==0)
+				continue;
+			if(Character.isDigit(s.charAt(0)))
+			{
+				if(s.endsWith("-")&&(i<parsed.size()-1)&&(CMath.isInteger(parsed.get(i+1))))
+					s=s+parsed.remove(i+1);
+				final int x = s.indexOf('-');
+				if(x<0)
+				{
+					final int level = CMath.s_int(s);
+					if(level <= 0)
+					{
+						parsed.add(0,L("@x1 is not a valid level or level range.",s));
+						return null;
+					}
+					finalMaskStr.append(" -LEVEL +="+level);
+					continue;
+				}
+				else
+				if(x==s.length()-1)
+				{
+					final int level = CMath.s_int(s.substring(0,x));
+					if(level <= 0)
+					{
+						parsed.add(0,L("@x1 is not a valid level or level range.",s));
+						return null;
+					}
+					finalMaskStr.append(" -LEVEL +>="+level);
+					continue;
+				}
+				else
+				if(x==0)
+				{
+					final int level = CMath.s_int(s.substring(0,x));
+					if(level <= 0)
+					{
+						parsed.add(0,L("@x1 is not a valid level or level range.",s));
+						return null;
+					}
+					finalMaskStr.append(" -LEVEL +<="+level);
+					continue;
+				}
+				else
+				{
+					final int minlevel = CMath.s_int(s.substring(0,x));
+					final int maxlevel = CMath.s_int(s.substring(x+1));
+					if((minlevel<=0)||(maxlevel <= 0))
+					{
+						parsed.add(0,L("@x1 is not a valid level or level range.",s));
+						return null;
+					}
+					finalMaskStr.append(" +LEVEL -<"+minlevel+" ->"+maxlevel);
+					continue;
+				}
+			}
+			final String us = s.toUpperCase();
+			if(CMath.s_valueOf(SpecialItemType.class, us) != null)
+			{
+				type = (SpecialItemType)CMath.s_valueOf(SpecialItemType.class, us);
+				switch(type)
+				{
+				case ARMOR:
+					finalMaskStr.append(" -JAVACLASS +GenArmor +StdArmor");
+					break;
+				case RESOURCE:
+					finalMaskStr.append(" -JAVACLASS +GenResource +GenLiquidResource +GenFoodResource");
+					break;
+				case RING:
+					finalMaskStr.append(" -WORNON +finger");
+					break;
+				case WAND:
+					finalMaskStr.append(" -JAVACLASS +Wand +GenWand +StdWand");
+					break;
+				case WEAPON:
+					finalMaskStr.append(" -JAVACLASS +Weapon +GenWeapon +StdWeapon");
+					break;
+				case FOOD:
+					finalMaskStr.append(" -JAVACLASS +Food +StdFood +GenFood +GenFoodResource");
+					break;
+				case DRINK:
+					finalMaskStr.append(" -JAVACLASS +Drink +StdDrink +GenDrink +GenLiquidResource");
+					break;
+				case POTION:
+					finalMaskStr.append(" -JAVACLASS +Potion +StdPotion +GenPotion");
+					break;
+				}
+				continue;
+			}
+			if((us.equalsIgnoreCase("NAME")||us.equalsIgnoreCase("NAMED"))
+			&&(i<parsed.size()-1))
+			{
+				finalMaskStr.append(" -NAME +\""+CMParms.combine(parsed,i+1)+"\"");
+				break;
+			}
+			final int cd = RawMaterial.CODES.FIND_IgnoreCase(us);
+			if(cd >= 0)
+			{
+				finalMaskStr.append(" -RESOURCE +"+RawMaterial.CODES.NAME(cd));
+				continue;
+			}
+			if(type != null)
+			{
+				switch(type)
+				{
+				case ARMOR:
+				{
+					final long wc = Wearable.CODES.FIND_ignoreCase(us);
+					if(wc >=0)
+					{
+						finalMaskStr.append(" -WORNON +\""+Wearable.CODES.NAME(wc)+"\"");
+						continue;
+					}
+					parsed.add(0,L("@x1 is not a valid term for armor.",s));
+					return null;
+				}
+				case WEAPON:
+				{
+					boolean found=false;
+					for(int cl=0;cl<Weapon.TYPE_DESCS.length;cl++)
+					{
+						if(s.equalsIgnoreCase(Weapon.TYPE_DESCS[cl]))
+						{
+							finalMaskStr.append(" -WEAPONTYPE +\""+Weapon.TYPE_DESCS[cl]+"\"");
+							found=true;
+							break;
+						}
+					}
+					if(found)
+						continue;
+					for(int cl=0;cl<Weapon.CLASS_DESCS.length;cl++)
+					{
+						if(s.equalsIgnoreCase(Weapon.CLASS_DESCS[cl]))
+						{
+							finalMaskStr.append(" -WEAPONCLASS +\""+Weapon.CLASS_DESCS[cl]+"\"");
+							found=true;
+							break;
+						}
+					}
+					if(found)
+						continue;
+					for(int cl=0;cl<Weapon.TYPE_DESCS.length;cl++)
+					{
+						if(us.startsWith(Weapon.TYPE_DESCS[cl]))
+						{
+							finalMaskStr.append(" -WEAPONTYPE +\""+Weapon.TYPE_DESCS[cl]+"\"");
+							found=true;
+							break;
+						}
+					}
+					if(found)
+						continue;
+					for(int cl=0;cl<Weapon.CLASS_DESCS.length;cl++)
+					{
+						if(us.startsWith(Weapon.CLASS_DESCS[cl]))
+						{
+							finalMaskStr.append(" -WEAPONCLASS +\""+Weapon.CLASS_DESCS[cl]+"\"");
+							found=true;
+							break;
+						}
+					}
+					if(found)
+						continue;
+					parsed.add(0,L("@x1 is not a valid term for armor.",s));
+					return null;
+				}
+				case POTION:
+				case WAND:
+				{
+					Ability A =CMClass.getAbilityByName(s,true);
+					if(A == null)
+						A = CMClass.getAbilityByName(s,false);
+					if(A != null)
+					{
+						finalMaskStr.append(" -SKILL +"+A.ID());
+						continue;
+					}
+					parsed.add(0,L("@x1 is not a valid term for potions and wands.",s));
+					return null;
+				}
+				default:
+					parsed.add(0,L("@x1 is not a valid term for @x2s.",s,type.name().toLowerCase()));
+					return null;
+				}
+			}
+			boolean found=false;
+			for(int cl=0;cl<Weapon.CLASS_DESCS.length;cl++)
+			{
+				if(s.equalsIgnoreCase(Weapon.CLASS_DESCS[cl]))
+				{
+					finalMaskStr.append(" -JAVACLASS +Weapon +GenWeapon +StdWeapon");
+					finalMaskStr.append(" -WEAPONCLASS +\""+Weapon.CLASS_DESCS[cl]+"\"");
+					found=true;
+					break;
+				}
+			}
+			if(found)
+				continue;
+			for(int cl=0;cl<Weapon.CLASS_DESCS.length;cl++)
+			{
+				if(us.startsWith(Weapon.CLASS_DESCS[cl]))
+				{
+					finalMaskStr.append(" -JAVACLASS +Weapon +GenWeapon +StdWeapon");
+					finalMaskStr.append(" -WEAPONCLASS +\""+Weapon.CLASS_DESCS[cl]+"\"");
+					found=true;
+					break;
+				}
+			}
+			if(found)
+				continue;
+			parsed.add(0,L("@x1 is not a valid term for an unknown type.",s));
+			return null;
+		}
+		return maskCompile(finalMaskStr.toString());
 	}
 }

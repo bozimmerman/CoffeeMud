@@ -349,6 +349,12 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	}
 
 	@Override
+	public CoffeeShop getShop(final MOB mob)
+	{
+		return getShop();
+	}
+
+	@Override
 	public CoffeeShop getShop()
 	{
 		if (shopApply)
@@ -471,7 +477,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			if (System.currentTimeMillis() > rec.mudDueDateMs)
 			{
 				stockItem = shop.getStock("$" + rec.itemName + "$", null);
-				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this, shop);
+				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this);
 				final double value = (P!=null)? P.absoluteGoldPrice : 0;
 				double newCharges = this.getOverdueCharge();
 				if (value > 0)
@@ -497,7 +503,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			{
 				if(stockItem == null)
 					stockItem = shop.getStock("$" + rec.itemName+"$", null);
-				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this, shop);
+				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this);
 				final double value = (P!=null)? P.absoluteGoldPrice : 0;
 				if(rec.charges < value)
 					rec.charges = value;

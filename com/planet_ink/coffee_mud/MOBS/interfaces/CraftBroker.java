@@ -94,4 +94,18 @@ public interface CraftBroker extends ShopKeeper
 	 * @param d the maximum number of listings
 	 */
 	public void setMaxListings(int d);
+
+	/**
+	 * Gets the commission percentage.
+	 * @see CraftBroker#setCommissionPct(int)
+	 * @return the commission percentage
+	 */
+	public double commissionPct();
+
+	/**
+	 * Sets the commission percentage.
+	 * @see CraftBroker#commissionPct()
+	 * @param d the commission percentage
+	 */
+	public void setCommissionPct(double d);
 }

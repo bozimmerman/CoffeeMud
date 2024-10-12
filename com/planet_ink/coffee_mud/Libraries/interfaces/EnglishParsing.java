@@ -901,6 +901,17 @@ public interface EnglishParsing extends CMLibrary
 	public Triad<String, Double, Long> parseMoneyStringSDL(MOB mob, String moneyStr, String correctCurrency);
 
 	/**
+	 * For cases when a string input probably contains an amount of money,
+	 * this method is used to determine the currency, denomination, and
+	 * number of units of that currency.
+	 *
+	 * @param currency the type of currency to prefer
+	 * @param moneyStr the parsable user input
+	 * @return the currency, denomination, and amount as a triad
+	 */
+	public Triad<String, Double, Long> parseMoneyStringSDL(String currency, String moneyStr);
+
+	/**
 	 * For cases when a string input must contain an amount of money,
 	 * this method is used to determine the currency id reflect by
 	 * the whole denomination specified by the given user input.

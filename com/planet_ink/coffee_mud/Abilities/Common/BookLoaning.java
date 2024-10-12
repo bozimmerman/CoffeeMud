@@ -164,6 +164,12 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
+	public CoffeeShop getShop(final MOB mob)
+	{
+		return getShop();
+	}
+
+	@Override
 	public CoffeeShop getShop()
 	{
 		if (shopApply)
@@ -700,7 +706,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			if (System.currentTimeMillis() > rec.mudDueDateMs)
 			{
 				stockItem = shop.getStock("$" + rec.itemName + "$", null);
-				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(deriveLibrarian(null), null, stockItem, this, shop);
+				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(deriveLibrarian(null), null, stockItem, this);
 				final double value = (P!=null)? P.absoluteGoldPrice : 10;
 				if(rec.mudReclaimDateMs < rec.mudDueDateMs)
 					rec.mudReclaimDateMs = rec.mudDueDateMs + TimeManager.MILI_DAY;
@@ -719,7 +725,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			{
 				if(stockItem == null)
 					stockItem = shop.getStock("$" + rec.itemName+"$", null);
-				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(deriveLibrarian(null), null, stockItem, this, shop);
+				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(deriveLibrarian(null), null, stockItem, this);
 				final double value = (P!=null)? P.absoluteGoldPrice : 0;
 				if(rec.charges < value)
 					rec.charges = value;
@@ -1330,7 +1336,9 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 				&&(isActive(merchantM))
 				&&(getShop().doIHaveThisInStock(msg.tool().Name(),mob)))
 				{
-					msg.source().tell(merchantM, mob, null, L("Interested in @x1? Here is some information for you:\n\rLevel @x2\n\rDescription: @x3",msg.tool().name(),""+((Physical)msg.tool()).phyStats().level(),msg.tool().description()));
+					msg.source().tell(merchantM, mob, null,
+							L("Interested in @x1? Here is some information for you:\n\rLevel @x2\n\rDescription: @x3"
+									,msg.tool().name(),""+((Physical)msg.tool()).phyStats().level(),msg.tool().description()));
 				}
 				break;
 			case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player

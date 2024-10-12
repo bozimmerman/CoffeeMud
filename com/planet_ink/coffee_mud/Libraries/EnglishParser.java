@@ -1870,7 +1870,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		if(matchWords.isEmpty())
 		{
-			if(error.length()>0)
+			if((error!=null)&&(error.length()>0))
 				mob.tell(error);
 			return null;
 		}
@@ -1879,7 +1879,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		final List<Environmental> V=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
 		if(V.isEmpty())
 		{
-			if(error.length()>0)
+			if((error!=null)&&(error.length()>0))
 				mob.tell(error);
 			return null;
 		}
@@ -1889,7 +1889,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			if(matchWords.size()<2)
 			{
-				if(error.length()>0)
+				if((error!=null)&&(error.length()>0))
 					mob.tell(error);
 				return null;
 			}
@@ -2726,6 +2726,41 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		final long days=hours/24;
 		hours-=(days*24);
 		return days+"d "+hours+"h "+minutes+"m "+seconds+"s "+millis+"ms"+avg;
+	}
+
+	@Override
+	public Triad<String, Double, Long> parseMoneyStringSDL(String currency, String moneyStr)
+	{
+		double b=0;
+		double denomination=1.0;
+		if(moneyStr == null)
+			return null;
+		moneyStr=moneyStr.trim();
+		if(moneyStr.length()==0)
+			return null;
+		int x=0;
+		while((x<moneyStr.length())&&(Character.isDigit(moneyStr.charAt(x))))
+			x++;
+		if(x>0)
+		{
+			b=CMath.s_int(moneyStr.substring(0,x));
+			moneyStr=moneyStr.substring(x).trim();
+		}
+		if(moneyStr.length()==0)
+			return new Triad<String,Double,Long>(currency,Double.valueOf(denomination),Long.valueOf(Math.round(b/denomination)));
+		if(b==0)
+			b=1.0;
+		denomination = matchAnyDenomination(currency,moneyStr);
+		if(denomination != 0.0)
+			return new Triad<String,Double,Long>(currency,Double.valueOf(denomination),Long.valueOf(Math.round(b/denomination)));
+		// its some other kind of money other than the given currency
+		currency=matchAnyCurrencySet(moneyStr);
+		if(currency == null)
+			return null;
+		denomination = matchAnyDenomination(currency,moneyStr);
+		if(denomination != 0.0)
+			return new Triad<String,Double,Long>(currency,Double.valueOf(denomination),Long.valueOf(Math.round(b/denomination)));
+		return null;
 	}
 
 	@Override
