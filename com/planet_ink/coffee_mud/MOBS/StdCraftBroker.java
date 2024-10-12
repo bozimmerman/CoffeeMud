@@ -137,10 +137,10 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 	{
 		if(maxTimedListingDays()>0)
 		{
-			TimeClock time = CMLib.time().homeClock(this);
-			time=(TimeClock)time.copyOf();
+			final TimeClock nowC = CMLib.time().homeClock(this);
+			final TimeClock time=(TimeClock)nowC.copyOf();
 			time.bump(TimePeriod.DAY, this.maxTimedListingDays());
-			return (" EXPIRE=\""+time.toTimeString()+"\"");
+			return (" EXPIRE=\""+time.toTimestamp(nowC)+"\"");
 		}
 		return "";
 	}
@@ -222,16 +222,15 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 		CMLib.database().DBReCreatePlayerData(author, shopKey, key, xml.toString());
 	}
 
-	private List<Triad<String,String,TimeClock>> scanRequests()
+	private List<Triad<String,String,Long>> scanRequests()
 	{
 		final String shopKey = "BROKER_REQ_"+brokerChain().toUpperCase().replace(' ', '_');
 		final List<PlayerData> data = CMLib.database().DBReadPlayerSectionData(shopKey);
-		final List<Triad<String,String,TimeClock>> list = new Vector<Triad<String,String,TimeClock>>();
+		final List<Triad<String,String,Long>> list = new Vector<Triad<String,String,Long>>();
 		final XMLLibrary xmlLib=CMLib.xml();
 		for(final PlayerData dat : data)
 		{
-			final TimeClock time = (TimeClock)CMLib.time().homeClock(this).copyOf();
-			time.bump(TimePeriod.HOUR, -1);
+			Long time = Long.valueOf(System.currentTimeMillis()-1);
 			final String xmlStr = dat.xml();
 			if((xmlStr.length()>0)&&(xmlStr.startsWith("<")))
 			{
@@ -242,11 +241,11 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 					{
 						final String expireStr = tag.getParmValue("EXPIRE");
 						if((expireStr!=null)&&(expireStr.length()>0))
-							time.fromTimePeriodCodeString(expireStr);
+							time = Long.valueOf(CMath.s_long(expireStr));
 					}
 				}
 			}
-			list.add(new Triad<String,String,TimeClock>(dat.who(),dat.key(),time));
+			list.add(new Triad<String,String,Long>(dat.who(),dat.key(),time));
 		}
 		return list;
 	}
@@ -275,15 +274,14 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 		return shop;
 	}
 
-	private List<Triad<String,String,TimeClock>> scanResults()
+	private List<Triad<String,String,Long>> scanResults()
 	{
 		final String shopKey = "BROKER_SHOP_"+brokerChain().toUpperCase().replace(' ', '_');
 		final List<PlayerData> data = CMLib.database().DBReadPlayerSectionData(shopKey);
-		final List<Triad<String,String,TimeClock>> list = new Vector<Triad<String,String,TimeClock>>();
+		final List<Triad<String,String,Long>> list = new Vector<Triad<String,String,Long>>();
 		for(final PlayerData dat : data)
 		{
-			final TimeClock time = (TimeClock)CMLib.time().homeClock(this).copyOf();
-			time.bump(TimePeriod.HOUR, -1);
+			Long time = Long.valueOf(System.currentTimeMillis()-1);
 			final String xml = dat.xml();
 			if(!xml.startsWith("<"))
 			{
@@ -293,10 +291,10 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 					final String parms = xml.substring(0,x);
 					final String expireStr = CMParms.getParmStr(parms, "EXPIRE", "");
 					if(expireStr.length()>0)
-						time.fromTimePeriodCodeString(expireStr);
+						time = Long.valueOf(CMath.s_long(expireStr));
 				}
 			}
-			list.add(new Triad<String,String,TimeClock>(dat.who(),dat.key(),time));
+			list.add(new Triad<String,String,Long>(dat.who(),dat.key(),time));
 		}
 		return list;
 	}
@@ -349,18 +347,16 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 				if(maxListingDays > 0)
 				{
 					final String shopKey = "BROKER_SHOP_"+brokerChain().toUpperCase().replace(' ', '_');
-					final List<Triad<String,String,TimeClock>> results = scanResults();
-					for(final Triad<String,String,TimeClock> res : results)
+					for(final Triad<String,String,Long> res : scanResults())
 					{
-						if(nowC.isAfter(res.third))
+						if(System.currentTimeMillis()>res.third.longValue())
 							CMLib.database().DBDeletePlayerData(res.first, shopKey, res.second);
 					}
 
 					final String reqKey = "BROKER_REQ_"+brokerChain().toUpperCase().replace(' ', '_');
-					final List<Triad<String,String,TimeClock>> requests = scanRequests();
-					for(final Triad<String,String,TimeClock> req : requests)
+					for(final Triad<String,String,Long> req : scanRequests())
 					{
-						if(nowC.isAfter(req.third))
+						if(System.currentTimeMillis()>req.third.longValue())
 							CMLib.database().DBDeletePlayerData(req.first, reqKey, req.second);
 					}
 				}
