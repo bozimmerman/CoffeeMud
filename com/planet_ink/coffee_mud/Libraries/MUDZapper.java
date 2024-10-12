@@ -9275,7 +9275,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			{
 				if(s.endsWith("-")&&(i<parsed.size()-1)&&(CMath.isInteger(parsed.get(i+1))))
 					s=s+parsed.remove(i+1);
-				final int x = s.indexOf('-');
+				int x = s.indexOf('-');
+				if((x<0)&&(i<parsed.size()-1)&&(parsed.get(i+1).startsWith("-")))
+				{
+					x=s.length();
+					s+=parsed.remove(i+1);
+				}
 				if(x<0)
 				{
 					final int level = CMath.s_int(s);
