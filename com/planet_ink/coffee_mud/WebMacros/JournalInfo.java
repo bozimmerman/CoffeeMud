@@ -485,6 +485,18 @@ public class JournalInfo extends StdWebMacro
 			if(parms.containsKey("MESSAGE"))
 			{
 				String s=entry.msg();
+				if(parms.containsKey("SMARTTAGS"))
+				{
+					final boolean forum = CMLib.journals().getForumJournal(journalName) != null;
+					if(!forum)
+					{
+						s=CMStrings.replaceAll(s,"&","&amp;");
+						s=CMStrings.replaceAll(s,"<","&lt;");
+						s=CMStrings.replaceAll(s,">","&gt;");
+						s=CMStrings.replaceAll(s,JournalsLibrary.JOURNAL_BOUNDARY,"\n<HR>");
+						s=CMStrings.replaceAll(s,"%0D","<BR>");
+					}
+				}
 				if(parms.containsKey("NOREPLIES"))
 				{
 					final int x=s.indexOf(JournalsLibrary.JOURNAL_BOUNDARY);

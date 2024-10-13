@@ -3158,12 +3158,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	protected final void addDateValues(final Object o, final List<Integer> vals, final int min, final int max)
 	{
 		if(o instanceof Integer)
-		{
-			if(min == 0)
-				vals.add((Integer)o);
-			else
-				vals.add(Integer.valueOf(((Integer)o).intValue()+min));
-		}
+			vals.add((Integer)o);
 		else
 		if(o instanceof Triad)
 		{
@@ -3172,7 +3167,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			if(min == 0)
 			{
 				for(int i=p.first.intValue();i<=max;i+=p.second.intValue())
-					vals.add(Integer.valueOf(min));
+					vals.add(Integer.valueOf(i));
 			}
 			else
 			{
@@ -4662,6 +4657,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case DAYOFYEAR: // +DAYOFYEAR
 				case _DAYOFYEAR: // -DAY
 					{
+						// three data formats supported:
+						// -MONTH +5 (the month numbered 5)
+						// -DAY +3rd 5 -- no earthly idea
+						// -MONTH +3 of 5 - 3rd of every 5 months
 						final ArrayList<Object> parms=new ArrayList<Object>();
 						buildRoomFlag=true;
 						for(int v2=v+1;v2<V.size();v2++)
@@ -4689,7 +4688,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 										if(amt > 0)
 										{
 											parms.add(new Pair<Integer,Integer>(
-													Integer.valueOf(amt-1), // because 0 is the first X
+													Integer.valueOf(amt), //-1 because 0 is the first X -- so what?
 													Integer.valueOf(CMath.s_int(nstr.trim()))));
 										}
 									}
@@ -4701,7 +4700,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 										{
 											parms.add(new Triad<Integer,Integer,String>(
 													Integer.valueOf(CMath.s_int(lstr3)),
-													Integer.valueOf(amt-1), // // because 0 is the first in every X
+													Integer.valueOf(amt), // -1 because 0 is the first in every X -- how is that an excuse?
 													null));
 										}
 									}
@@ -8336,7 +8335,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					okV = new ArrayList<Integer>();
 					okVals.put(period, okV);
 				}
-				final int min = (period == TimePeriod.YEAR)?C.get(period):0;
+				final int min = (period == TimePeriod.YEAR)?C.get(period):C.getMin(period);
 				final int max = (period == TimePeriod.YEAR)?C.get(period)+100:C.getMax(period);
 				for(final Object o : entry.parms())
 					addDateValues(o, okV, min, max);
@@ -8355,7 +8354,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				final List<Integer> okV = okVals.get(period);
 				if(okV == null) // if null, anything will do!
 					continue;
-				final int max = (period == TimePeriod.YEAR)?C.get(period)+100:C.getMax(period);
+				final int max = (period == TimePeriod.YEAR)?C.get(period)+100:C.getMax(period)+1;
 				boolean useNot = !entry.maskType().name().startsWith("_");
 				useNot = (not == null || (!not[0])) ? useNot : !useNot;
 				Integer perI = Integer.valueOf(C.get(period));
@@ -8398,7 +8397,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					if(bump != Integer.MAX_VALUE)
 						C.bump(period, bump);
 				}
-				if(nowC.get(period) != C.get(period))
+				if(C.get(period) != C.get(period)) // if months matter, set days and lower to min
 				{
 					for(final TimePeriod P : TimePeriod.values())
 					{

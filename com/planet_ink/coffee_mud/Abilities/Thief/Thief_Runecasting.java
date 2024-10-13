@@ -359,10 +359,9 @@ public class Thief_Runecasting extends ThiefSkill
 			case 1:
 				break;
 			case 2:
-				predictionClock.bumpMonths(CMLib.dice().roll(1, 10, 3));
+				predictionClock.bumpWeeks(CMLib.dice().roll(1, 10, 5));
 				break;
 			case 3:
-				predictionClock.bumpYears(CMLib.dice().roll(1, 10, 3));
 				predictionClock.bumpMonths(CMLib.dice().roll(1, 10, 3));
 				break;
 			}
@@ -443,6 +442,9 @@ public class Thief_Runecasting extends ThiefSkill
 							if(A != null)
 							{
 								final MOB M = CMClass.getFactoryMOB();
+								M.setBaseCharStats((CharStats)forM.charStats().copyOf());
+								M.setBasePhyStats((PhyStats)forM.phyStats().copyOf());
+								M.setBaseState((CharState)forM.maxState().copyOf());
 								M.recoverCharStats();
 								M.recoverMaxState();
 								M.recoverPhyStats();

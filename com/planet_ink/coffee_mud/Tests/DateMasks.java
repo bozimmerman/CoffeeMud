@@ -68,7 +68,7 @@ public class DateMasks extends StdTest
 		R.addInhabitant(M);
 		M.setStartRoom(R);
 		M.setLocation(R);
-		final TimeClock C = (TimeClock)CMLib.time().globalClock().copyOf();
+		final TimeClock C = CMLib.time().homeClock(M);
 		for(int i=0;i<10000;i++)
 		{
 			A.setTimeObj(C);
@@ -123,11 +123,16 @@ public class DateMasks extends StdTest
 					mask.append(" ");
 				}
 			}
-			final CompiledZMask cm = CMLib.masking().maskCompile(mask.toString());
-			final TimeClock C1 = CMLib.masking().dateMaskToNextTimeClock(M, cm);
+			CompiledZMask cm = CMLib.masking().maskCompile(mask.toString());
+			TimeClock C1 = CMLib.masking().dateMaskToNextTimeClock(M, cm);
 			A.setTimeObj(C1);
 			if(!CMLib.masking().maskCheck(cm, M, true))
-				return "Fail("+i+"): "+mask.toString()+": "+C1.toTimeString();
+			{
+				cm = CMLib.masking().maskCompile(mask.toString());
+				C1 = CMLib.masking().dateMaskToNextTimeClock(M, cm);
+				CMLib.masking().maskCheck(cm, M, true);
+				return "Fail(test#"+i+"): "+mask.toString()+" != "+C1.toTimeString();
+			}
 		}
 		R.destroy();
 		A.destroy();

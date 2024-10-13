@@ -124,6 +124,26 @@ public class Thief_Urchinize extends ThiefSkill
 		super.unInvoke();
 	}
 
+	@Override
+	public void setAffectedOne(final Physical P)
+	{
+		final Physical oldP = affected;
+		super.setAffectedOne(P);
+		if((oldP instanceof MOB)
+		&&(P == null)
+		&&(urchinizing==null))
+		{
+			final MOB mob=(MOB)oldP;
+			MOB invoker = invoker();
+			if((invoker == null)
+			&&(mob.getLiegeID()!=null)
+			&&(mob.getLiegeID().length()>0))
+				invoker=CMLib.players().getLoadPlayer(mob.getLiegeID());
+			Thief_MyUrchins.removeLostUrchin(invoker, mob);
+			mob.delEffect(this);
+		}
+	}
+
 	protected boolean urchinTick()
 	{
 		final Physical P = affected;
@@ -234,6 +254,23 @@ public class Thief_Urchinize extends ThiefSkill
 			Thief_MyUrchins.addNewUrchin(invoker(), newMob);
 		}
 		return true;
+	}
+
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
+		&&(msg.source()==affected))
+		{
+			MOB invoker = invoker();
+			if((invoker == null)
+			&&(msg.source().getLiegeID()!=null)
+			&&(msg.source().getLiegeID().length()>0))
+				invoker=CMLib.players().getLoadPlayer(msg.source().getLiegeID());
+			Thief_MyUrchins.removeLostUrchin(invoker, msg.source());
+			msg.source().delEffect(this);
+		}
 	}
 
 	@Override

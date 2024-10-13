@@ -573,7 +573,7 @@ public class DefaultTimeClock implements TimeClock
 			months=(int)Math.round(Math.floor(CMath.div(days,getDaysInMonth())));
 			days=days-(months*getDaysInMonth());
 		}
-		if(months>getMonthsInYear())
+		if(months>=getMonthsInYear())
 		{
 			years=(int)Math.round(Math.floor(CMath.div(months,getMonthsInYear())));
 			months=months-(years*getMonthsInYear());
@@ -762,7 +762,8 @@ public class DefaultTimeClock implements TimeClock
 			{
 				bumpDays(1);
 				final int extraHours = getHourOfDay() - getHoursInDay();
-				setHourOfDay((extraHours % getHoursInDay()));
+				final int newHour = extraHours % getHoursInDay();
+				setHourOfDay(newHour);
 				if(extraHours>=getHoursInDay())
 					bumpDays((int)Math.round(Math.floor(extraHours / getHoursInDay())));
 			}
@@ -800,8 +801,9 @@ public class DefaultTimeClock implements TimeClock
 		{
 			bumpMonths(1);
 			final int extraDays = getDayOfMonth() - getDaysInMonth();
-			setDayOfMonth((extraDays % getDaysInMonth()));
-			if(extraDays>=getDaysInMonth())
+			final int newDay = (extraDays % getDaysInMonth());
+			setDayOfMonth(newDay+1);
+			if(extraDays>getDaysInMonth())
 				bumpMonths((int)Math.round(Math.floor(extraDays / getDaysInMonth())));
 		}
 		else
@@ -809,8 +811,9 @@ public class DefaultTimeClock implements TimeClock
 		{
 			bumpMonths(-1);
 			final int extraDays = Math.abs(getDayOfMonth());
-			setDayOfMonth(getDaysInMonth() - (extraDays % getDaysInMonth()));
-			if(extraDays>=getDaysInMonth())
+			final int newDay = getDaysInMonth() - (extraDays % getDaysInMonth());
+			setDayOfMonth(newDay);
+			if(extraDays>getDaysInMonth())
 				bumpMonths(-(int)Math.round(Math.floor(extraDays / getDaysInMonth())));
 		}
 	}
@@ -825,20 +828,21 @@ public class DefaultTimeClock implements TimeClock
 	public void bumpMonths(final int num)
 	{
 		setMonth(getMonth()+num);
-		if(getMonth()>getMonthsInYear())
+		if(getMonth()>=getMonthsInYear())
 		{
 			bumpYears(1);
 			final int extraMonths = getMonth() - getMonthsInYear();
-			setMonth((extraMonths % getMonthsInYear()));
+			final int newMonth = extraMonths % getMonthsInYear();
+			setMonth(newMonth);
 			if(extraMonths>=getMonthsInYear())
-				bumpYears((int)Math.round(Math.floor(extraMonths / getMonthsInYear())));
+				bumpYears((int)Math.round(Math.floor(extraMonths / getMonthsInYear()))); // this should be an even #
 		}
-		else
-		if(getMonth()<=0)
+		if(getMonth()<0)
 		{
 			bumpYears(-1);
 			final int extraMonths = Math.abs(getMonth());
-			setMonth(getMonthsInYear() - (extraMonths % getMonthsInYear()));
+			final int newMonth = getMonthsInYear() - (extraMonths % getMonthsInYear());
+			setMonth(newMonth);
 			if(extraMonths>=getMonthsInYear())
 				bumpYears(-(int)Math.round(Math.floor(extraMonths / getMonthsInYear())));
 		}
@@ -1140,7 +1144,7 @@ public class DefaultTimeClock implements TimeClock
 		case HOUR:
 			return this.getHoursInDay()-1;
 		case MONTH:
-			return this.getMonthsInYear();
+			return this.getMonthsInYear()-1;
 		case SEASON:
 			return 3;
 		case WEEK:
@@ -1164,7 +1168,7 @@ public class DefaultTimeClock implements TimeClock
 		case HOUR:
 			return 0;
 		case MONTH:
-			return 1;
+			return 0;
 		case SEASON:
 			return 0;
 		case WEEK:

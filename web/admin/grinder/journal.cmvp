@@ -290,7 +290,7 @@
 						</TR>
 						</TABLE>
 						<HR>
-						<FONT COLOR=WHITE>@JournalInfo?MESSAGE@</FONT><P>
+						<FONT COLOR=WHITE>@JournalInfo?MESSAGE&SMARTTAGS@</FONT><P>
 						<HR>
 						
 						<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
@@ -414,7 +414,7 @@
 							</TR>
 							</TABLE>
 							<HR>
-							<FONT COLOR=WHITE>@JournalInfo?MESSAGE@</FONT><P>
+							<FONT COLOR=WHITE>@JournalInfo?MESSAGE&SMARTTAGS@</FONT><P>
 							<HR>
 							<TABLE WIDTH=100% BORDER=0>
 							<TR VALIGN=TOP>
