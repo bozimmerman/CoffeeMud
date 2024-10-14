@@ -2930,7 +2930,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				if((oldRoomHash==null)
 				||(mobileHash != oldRoomHash.intValue()))
 				{
-					reporteds.put("system.currentRoomMobiles", Long.valueOf(room.hashCode()));
+					reporteds.put("system.currentRoomMobiles", Long.valueOf(mobileHash));
 					final String command="room.mobiles";
 					final char[] cmd=command.toCharArray();
 					buf=processGmcp(session, new String(cmd), supportables, reportables);
@@ -2951,7 +2951,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				if((oldRoomHash==null)
 				||(playerHash != oldRoomHash.intValue()))
 				{
-					reporteds.put("system.currentRoomPlayers", Long.valueOf(room.hashCode()));
+					reporteds.put("system.currentRoomPlayers", Long.valueOf(playerHash));
 					final String command="room.players";
 					final char[] cmd=command.toCharArray();
 					buf=processGmcp(session, new String(cmd), supportables, reportables);
@@ -2972,7 +2972,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				if((oldRoomHash==null)
 				||(itemHash != oldRoomHash.intValue()))
 				{
-					reporteds.put("system.currentRoomItems", Long.valueOf(room.hashCode()));
+					reporteds.put("system.currentRoomItems", Long.valueOf(itemHash));
 					final String command="room.items.inv";
 					final char[] cmd=command.toCharArray();
 					buf=processGmcp(session, new String(cmd), supportables, reportables);

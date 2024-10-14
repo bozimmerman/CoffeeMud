@@ -178,10 +178,9 @@ public class Prayer_Prophecy extends Prayer
 			case 2:
 			case 3:
 			case 4:
-				predictionClock.bumpMonths(CMLib.dice().roll(1, 10, 3));
+				predictionClock.bumpWeeks(CMLib.dice().roll(1, 10, 5));
 				break;
 			case 5:
-				predictionClock.bumpYears(CMLib.dice().roll(1, 10, 3));
 				predictionClock.bumpMonths(CMLib.dice().roll(1, 10, 3));
 				break;
 			}

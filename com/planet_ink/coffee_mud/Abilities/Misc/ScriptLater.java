@@ -209,7 +209,7 @@ public class ScriptLater extends StdAbility
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final MOB target=super.getTarget(mob, commands, givenTarget, true, false);
+		final MOB target=super.getTarget(mob, commands, givenTarget, true, true);
 		if(target==null)
 			return false;
 
