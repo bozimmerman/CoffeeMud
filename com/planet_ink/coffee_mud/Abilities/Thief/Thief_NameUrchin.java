@@ -186,12 +186,9 @@ public class Thief_NameUrchin extends ThiefSkill
 			return false;
 
 		final int experienceToLose=getXPCOSTAdjustment(mob,100);
-		final int amt = CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
+		final int amt = -CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 		if(amt > 0)
-		{
 			mob.tell(L("You lose @x1 xp in the attempt.",""+amt));
-			return false;
-		}
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
