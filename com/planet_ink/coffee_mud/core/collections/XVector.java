@@ -28,12 +28,16 @@ public class XVector<T> extends Vector<T>
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static final ReadOnlyList empty = new ReadOnlyList(new ArrayList());
+	private String specialData = null;
 
 	public XVector(final Collection<? extends T> V)
 	{
 		super((V==null)?0:V.size());
 		if (V != null)
+		{
 			addAll(V);
+			setSpecialData(V);
+		}
 	}
 
 	public XVector(final List<? extends T> V, final int start)
@@ -43,6 +47,7 @@ public class XVector<T> extends Vector<T>
 		{
 			for(int i=start;i<V.size();i++)
 				add(V.get(i));
+			setSpecialData(V);
 		}
 	}
 
@@ -133,6 +138,18 @@ public class XVector<T> extends Vector<T>
 		{
 			for (; E.hasNext();)
 				add(E.next());
+		}
+	}
+
+	public void setSpecialData(final Object o)
+	{
+		if(o instanceof String)
+			specialData = (String)o;
+		if(o instanceof XVector)
+		{
+			@SuppressWarnings({"unchecked","rawtypes"})
+			final XVector<T> x = (XVector)o;
+			specialData = x.specialData;
 		}
 	}
 
@@ -284,6 +301,11 @@ public class XVector<T> extends Vector<T>
 		}
 
 	};
+
+	public String getSpecialData()
+	{
+		return specialData;
+	}
 
 	protected Comparator<T> comparator = anyComparator;
 
