@@ -130,6 +130,14 @@ public class GTell extends StdCommand
 			if((mob.location().okMessage(mob,msg))
 			&&(target.okMessage(target,msg)))
 			{
+				if((target.session()!=null)
+				&&(target!=mob)
+				&&(target.session().getClientTelnetMode(Session.TELNET_GMCP)))
+				{
+					target.session().sendGMCPEvent("comm.channel", "{\"chan\":\"GTELL\","
+							+ "\"msg\":\""+MiniJSON.toJSONString(text)+"\""
+							+ ",\"player\":\""+mob.name()+"\"}");
+				}
 				if(target.playerStats()!=null)
 				{
 					final String tellStr=(target==mob)?msg.sourceMessage():(
