@@ -369,44 +369,53 @@ public class Thief_UrchinSpy extends ThiefSkill
 				final boolean canseesrc = CMLib.flags().canBeSeenBy(msg.source(), mob) || (msg.source()==mob);
 				final boolean canhearsrc = CMLib.flags().canBeHeardMovingBy(msg.source(), mob) || (msg.source()==mob);
 				final boolean asleep=CMLib.flags().isSleeping(mob);
-				if(CMath.bset(othersMajor, CMMsg.MASK_CHANNEL))
+				final String msgStr = msg.othersMessage();
+				final MOB M = CMClass.getFactoryMOB();
+				try
 				{
+					if(CMath.bset(othersMajor, CMMsg.MASK_CHANNEL))
+					{
+					}
+					else
+					if((CMath.bset(othersMajor, CMMsg.MASK_SOUND)) && (!asleep) && (canhearsrc))
+					{
+						report.append(CMLib.coffeeFilter().fullOutFilter(null, M, msg.source(), msg.target(), msg.tool(),
+								msgStr, false)).append("\n\r");
+					}
+					else
+					if(msg.othersMinor() == CMMsg.TYP_AROMA)
+					{
+					}
+					else
+					if(((CMath.bset(othersMajor, CMMsg.MASK_EYES))
+						|| (CMath.bset(othersMajor, CMMsg.MASK_HANDS))
+						|| (CMath.bset(othersMajor, CMMsg.MASK_ALWAYS)))
+					&& (!CMath.bset(msg.othersMajor(), CMMsg.MASK_CNTRLMSG))
+					&& ((!asleep) && (canseesrc)))
+					{
+						report.append(CMLib.coffeeFilter().fullOutFilter(null, M, msg.source(), msg.target(), msg.tool(),
+								msgStr, false)).append("\n\r");
+					}
+					else
+					if(((CMath.bset(othersMajor, CMMsg.MASK_MOVE))
+						|| ((CMath.bset(othersMajor, CMMsg.MASK_MOUTH))
+							&& (!CMath.bset(othersMajor, CMMsg.MASK_SOUND))))
+					&& (!asleep) && ((canseesrc) || (canhearsrc)))
+					{
+						report.append(CMLib.coffeeFilter().fullOutFilter(null, M, msg.source(), msg.target(), msg.tool(),
+								msgStr, false)).append("\n\r");
+					}
+					else
+					if((msg.sourceMinor() == CMMsg.TYP_TELL)
+					&& (msg.targetCode() == CMMsg.NO_EFFECT)) // group// tell
+					{
+						report.append(CMLib.coffeeFilter().fullOutFilter(null, M, msg.source(), msg.target(), msg.tool(),
+								msgStr, false)).append("\n\r");
+					}
 				}
-				else
-				if((CMath.bset(othersMajor, CMMsg.MASK_SOUND)) && (!asleep) && (canhearsrc))
+				finally
 				{
-					report.append(CMLib.coffeeFilter().fullOutFilter(null, mob, msg.source(), msg.target(), msg.tool(),
-							msg.othersMessage(), false)).append("\n\r");
-				}
-				else
-				if(msg.othersMinor() == CMMsg.TYP_AROMA)
-				{
-				}
-				else
-				if(((CMath.bset(othersMajor, CMMsg.MASK_EYES))
-					|| (CMath.bset(othersMajor, CMMsg.MASK_HANDS))
-					|| (CMath.bset(othersMajor, CMMsg.MASK_ALWAYS)))
-				&& (!CMath.bset(msg.othersMajor(), CMMsg.MASK_CNTRLMSG))
-				&& ((!asleep) && (canseesrc)))
-				{
-					report.append(CMLib.coffeeFilter().fullOutFilter(null, mob, msg.source(), msg.target(), msg.tool(),
-							msg.othersMessage(), false)).append("\n\r");
-				}
-				else
-				if(((CMath.bset(othersMajor, CMMsg.MASK_MOVE))
-					|| ((CMath.bset(othersMajor, CMMsg.MASK_MOUTH))
-						&& (!CMath.bset(othersMajor, CMMsg.MASK_SOUND))))
-				&& (!asleep) && ((canseesrc) || (canhearsrc)))
-				{
-					report.append(CMLib.coffeeFilter().fullOutFilter(null, mob, msg.source(), msg.target(), msg.tool(),
-							msg.othersMessage(), false)).append("\n\r");
-				}
-				else
-				if((msg.sourceMinor() == CMMsg.TYP_TELL)
-				&& (msg.targetCode() == CMMsg.NO_EFFECT)) // group// tell
-				{
-					report.append(CMLib.coffeeFilter().fullOutFilter(null, mob, msg.source(), msg.target(), msg.tool(),
-							msg.othersMessage(), false)).append("\n\r");
+					M.destroy();
 				}
 			}
 		}
