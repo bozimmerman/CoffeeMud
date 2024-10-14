@@ -740,6 +740,21 @@ public interface TimeClock extends Tickable, CMCommon
 			return increment;
 		}
 
+		public static TimePeriod get(final String s)
+		{
+			if(s==null)
+				return null;
+			try
+			{
+				return valueOf(s.toUpperCase().trim());
+			}
+			catch(final Exception e)
+			{}
+			if(s.endsWith("s")||s.endsWith("S"))
+				return get(s.substring(0,s.length()-1));
+			return null;
+		}
+
 		public static TimePeriod[] reversed()
 		{
 			if(reversed == null)

@@ -978,6 +978,7 @@ public class DefaultTimeClock implements TimeClock
 		if((loaded)&&(loadName!=null))
 		{
 			CMLib.database().DBReCreatePlayerData(loadName,"TIMECLOCK","TIMECLOCK/"+loadName,
+			"<HOUR>"+getHourOfDay()+"</HOUR>"+
 			"<DAY>"+getDayOfMonth()+"</DAY><MONTH>"+getMonth()+"</MONTH><YEAR>"+getYear()+"</YEAR>"
 			+"<HOURS>"+getHoursInDay()+"</HOURS><DAYS>"+getDaysInMonth()+"</DAYS>"
 			+"<MONTHS>"+CMParms.toListString(getMonthNames())+"</MONTHS>"
@@ -1072,6 +1073,9 @@ public class DefaultTimeClock implements TimeClock
 			setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));
 			setMonth(CMLib.xml().getIntFromPieces(V,"MONTH"));
 			setYear(CMLib.xml().getIntFromPieces(V,"YEAR"));
+			final String hr = CMLib.xml().getValFromPieces(V,"HOUR");
+			if(hr.length()>0)
+				setHourOfDay(CMath.s_int(hr));
 			final TimeClock globalClock=CMLib.time().globalClock();
 			if(this!=globalClock)
 			{

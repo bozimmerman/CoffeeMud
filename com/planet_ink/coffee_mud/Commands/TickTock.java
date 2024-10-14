@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -60,6 +61,17 @@ public class TickTock extends StdCommand
 					h=1;
 				mob.tell(L("..tick..tock.."));
 				mob.location().getArea().getTimeObj().tickTock(h);
+				mob.location().getArea().getTimeObj().save();
+			}
+			else
+			if((commands.size()==2)
+			&&(CMath.isInteger(commands.get(0)))
+			&&(TimePeriod.get(commands.get(1))!=null))
+			{
+				final int num = CMath.s_int(commands.get(0));
+				final TimePeriod P = TimePeriod.get(commands.get(1));
+				mob.tell(L("..tick..tock.."));
+				mob.location().getArea().getTimeObj().bump(P, num);
 				mob.location().getArea().getTimeObj().save();
 			}
 			else
@@ -127,7 +139,7 @@ public class TickTock extends StdCommand
 						}
 						return false;
 					}
-					mob.tell(L("Ticktock what?  Enter a number of mud-hours, or clanticks, or thread id."));
+					mob.tell(L("Ticktock what?  Enter a number of mud-hours, months, days, years, or clanticks, or thread id."));
 				}
 			}
 		}
