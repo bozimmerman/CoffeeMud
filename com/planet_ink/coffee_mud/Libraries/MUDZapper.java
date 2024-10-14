@@ -8397,7 +8397,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					if(bump != Integer.MAX_VALUE)
 						C.bump(period, bump);
 				}
-				if(C.get(period) != C.get(period)) // if months matter, set days and lower to min
+				// if months matter, set days and lower to min
 				{
 					for(final TimePeriod P : TimePeriod.values())
 					{
