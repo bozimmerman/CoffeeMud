@@ -82,7 +82,7 @@ function openThisWindow(foundX)
     var thespan=document.getElementById("EWINDOW" + currentWindow);
     alldivs[currentWindow] = thespan;
     thespan.innerHTML=thespan.innerHTML+getFrameHTML(wname,currentWindow);
-    loadwindow(top.termurl+'?wnum='+currentWindow,780,355,wname,currentWindow);
+    loadwindow(top.termurl+'?wnum='+currentWindow,780,555,wname,currentWindow);
 }
 
 function rotateWindow()
