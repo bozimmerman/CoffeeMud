@@ -185,7 +185,14 @@ public class MiniJSON
 				strBldr.append('\\').append('t');
 				break;
 			default:
-				strBldr.append(c);
+				if((c>31)&&(c<127))
+					strBldr.append(c);
+				else
+				{
+					String hex = ("000"+Integer.toHexString(c));
+					hex = hex.substring(hex.length()-4);
+					strBldr.append("\\u"+hex.toLowerCase());
+				}
 				break;
 			}
 		}
@@ -999,7 +1006,7 @@ public class MiniJSON
 									fromJSONtoPOJO((JSONObject)objs[i], newObj);
 									Array.set(tgt, i, newObj);
 								}
-								catch (Exception e)
+								catch (final Exception e)
 								{
 									e.printStackTrace();
 								}
@@ -1040,7 +1047,7 @@ public class MiniJSON
 					else
 					if(jo instanceof JSONObject)
 					{
-						Object newObj = field.getType().getDeclaredConstructor().newInstance();
+						final Object newObj = field.getType().getDeclaredConstructor().newInstance();
 						fromJSONtoPOJO((JSONObject)jo, newObj);
 						field.set(o, newObj);
 					}
@@ -1081,15 +1088,15 @@ public class MiniJSON
 			{
 				throw new MJSONException(e.getMessage(),e);
 			}
-			catch (InvocationTargetException e)
+			catch (final InvocationTargetException e)
 			{
 				throw new MJSONException(e.getMessage(),e);
 			}
-			catch (NoSuchMethodException e)
+			catch (final NoSuchMethodException e)
 			{
 				throw new MJSONException(e.getMessage(),e);
 			}
-			catch (SecurityException e)
+			catch (final SecurityException e)
 			{
 				throw new MJSONException(e.getMessage(),e);
 			}

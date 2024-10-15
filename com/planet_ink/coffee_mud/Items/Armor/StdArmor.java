@@ -635,13 +635,13 @@ public class StdArmor extends StdContainer implements Armor
 		&&((!amWearingAt(Wearable.WORN_HELD))||(this instanceof Shield)))
 		{
 			affectableStats.setArmor(affectableStats.armor()-phyStats().armor());
-			if(phyStats().armor()!=0)
+			if((phyStats().ability()>0)&&((layerAttributes&LAYERMASK_MULTIWEAR)==0))
 			{
 				final int ability=super.wornLogicalAnd ? (phyStats().ability()*CMath.numberOfSetBits(super.myWornCode)) : phyStats().ability();
 				if(amWearingAt(Wearable.WORN_TORSO))
 					affectableStats.setArmor(affectableStats.armor()-(ability*5));
 				else
-				if((amWearingAt(Wearable.WORN_HEAD))||(this.amWearingAt(Wearable.WORN_HELD)))
+				if((amWearingAt(Wearable.WORN_HEAD))||(amWearingAt(Wearable.WORN_HELD)))
 					affectableStats.setArmor(affectableStats.armor()-(ability*2));
 				else
 				if(!amWearingAt(Wearable.WORN_FLOATING_NEARBY))
