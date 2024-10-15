@@ -22,8 +22,13 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /*
    Copyright 2005-2024 Bo Zimmerman
@@ -692,6 +697,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	@Override
 	public int loadChannels(String list, String ilist, String imc2list)
 	{
+		discord();
 		clearChannels();
 		while(list.length()>0)
 		{
@@ -1110,6 +1116,51 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			final Class<?> twClass = Class.forName("twitter4j.Twitter");
 			final Method twM1 = twClass.getMethod("updateStatus", String.class);
 			twM1.invoke(twObj, msg);
+		}
+		catch (final Exception e)
+		{
+			Log.errOut(e);
+		}
+	}
+
+	protected void discord()
+	{
+		final String jarPath = "lib/javacord-3.9.0-shaded.jar";
+		URL jarUrl;
+		try
+		{
+			jarUrl = new URL("file:" + jarPath);
+		}
+		catch (final MalformedURLException e)
+		{
+			Log.errOut(e);
+			return;
+		}
+		try(final URLClassLoader classLoader=new URLClassLoader(new URL[]{jarUrl}))
+		{
+			final Class<?> apiBuilderClass = classLoader.loadClass("org.javacord.api.DiscordApiBuilder");
+			final Class<?> intentClass = classLoader.loadClass("org.javacord.api.entity.intent.Intent");
+			final Object apiBuilder = apiBuilderClass.getDeclaredConstructor().newInstance();
+			final String secretToken = CMProps.getVar(CMProps.Str.DISCORD_BOT_KEY);
+			if(secretToken.length()==0)
+				return;
+			Object api = apiBuilder;
+			final Method setTokenM = apiBuilderClass.getMethod("setToken", String.class);
+			api = setTokenM.invoke(api, secretToken);
+			final Method addIntentsM = apiBuilderClass.getMethod("addIntents", intentClass.getEnumConstants().getClass());
+			final Object array = Array.newInstance(intentClass, 1);
+			for(final Object o : intentClass.getEnumConstants())
+			{
+				@SuppressWarnings("rawtypes")
+				final Enum e = (Enum)o;
+				if(e.name().equals("MESSAGE_CONTENT"))
+					Array.set(array, 0, e);
+			}
+			api = addIntentsM.invoke(api, new Object[] {array});
+			final Method loginM = apiBuilderClass.getMethod("login");
+			final CompletableFuture<?> future = (CompletableFuture<?>)loginM.invoke(api);
+			future.join();
+			Log.infoOut("Discord Bot connected.");
 		}
 		catch (final Exception e)
 		{
