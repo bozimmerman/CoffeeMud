@@ -697,7 +697,6 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	@Override
 	public int loadChannels(String list, String ilist, String imc2list)
 	{
-		discord();
 		clearChannels();
 		while(list.length()>0)
 		{
