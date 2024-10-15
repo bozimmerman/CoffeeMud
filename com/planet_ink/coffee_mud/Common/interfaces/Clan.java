@@ -907,7 +907,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 	 * for the purposes of channelling, usually. Do Not Delete!
 	 * @return this clans factory mob
 	 */
-	public MOB getFactoryMOB();
+	public MOB getClanTalker();
 
 	/**
 	 * Expensively calculates the given clans preferred banking details,

@@ -1432,7 +1432,7 @@ public class DefaultClan implements Clan
 	}
 
 	@Override
-	public MOB getFactoryMOB()
+	public MOB getClanTalker()
 	{
 		if(this.factoryMob == null)
 		{

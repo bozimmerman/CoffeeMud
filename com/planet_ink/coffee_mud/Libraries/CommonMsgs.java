@@ -275,6 +275,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	public void postChannel(final String channelName, final Iterable<Pair<Clan,Integer>> clanList, final String message, final boolean systemMsg)
 	{
 		MOB talker = null;
+		boolean destroyTheTalker = false;
 		try
 		{
 			if((talkLocationR == null)
@@ -286,18 +287,33 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if((clanList != null)
 			&&(clanList.iterator().hasNext()))
 			{
-				final Pair<Clan,Integer> c = clanList.iterator().next();
-				talker = c.first.getFactoryMOB();
-				talker.setClan(c.first.clanID(), c.second.intValue());
+				final Iterator<Pair<Clan,Integer>> pc = clanList.iterator();
+				Pair<Clan,Integer> P = pc.next();
+				if(!pc.hasNext())
+					talker = P.first.getClanTalker();
+				else
+				if(clanList == CMLib.clans().clanRoles())
+					talker = CMLib.clans().getAllClanTalker();
+				else
+				{
+					talker = CMClass.getFactoryMOB();
+					talker.setName("^</B^>");
+					talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
+					talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
+					talker.setClan(P.first.clanID(),P.second.intValue());
+					for(;pc.hasNext();)
+					{
+						P = pc.next();
+						talker.setClan(P.first.clanID(),P.second.intValue());
+					}
+					destroyTheTalker = true;
+				}
 				talker.setLocation(talkLocationR);
-				//postChannel(talker,channelName,message,systemMsg);
 				// never destroy the clans factory mob!
 			}
 			else
 			if(nonClanTalkerM!=null)
-			{
 				talker=nonClanTalkerM;
-			}
 			else
 			{
 				talker=CMClass.getMOB("StdMOB"); // not factory because he lasts forever
@@ -311,7 +327,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 		finally
 		{
-			if ((talker != null) && (talker != nonClanTalkerM))
+			if (destroyTheTalker)
 				talker.destroy();
 		}
 	}
