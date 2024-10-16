@@ -65,7 +65,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public final static List<ChannelMsg> emptyQueue=new ReadOnlyList<ChannelMsg>(new Vector<ChannelMsg>(1));
 	public final static Set<ChannelFlag> emptyFlags=new ReadOnlySet<ChannelFlag>(new HashSet<ChannelFlag>(1));
 
-	protected static Object discordApi = null;
+	protected static ClassLoader	discordClassLoader	= null;
+	protected static Object			discordApi			= null;
 
 	@Override
 	public int getNumChannels()
@@ -1204,14 +1205,15 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			Log.errOut(e);
 			return;
 		}
-		try(final URLClassLoader classLoader=new URLClassLoader(new URL[]{jarUrl}))
+		discordClassLoader=new URLClassLoader(new URL[]{jarUrl});
+		try
 		{
-			final Class<?> apiBuilderClass = classLoader.loadClass("org.javacord.api.DiscordApiBuilder");
-			final Class<?> apiClass = classLoader.loadClass("org.javacord.api.DiscordApi");
-			final Class<?> intentClass = classLoader.loadClass("org.javacord.api.entity.intent.Intent");
-			final Class<?> listenClass = classLoader.loadClass("org.javacord.api.listener.message.MessageCreateListener");
-			final Class<?> eventInterface = classLoader.loadClass("org.javacord.api.event.message.MessageCreateEvent");
-			final Class<?> textChannelClass = classLoader.loadClass("org.javacord.api.entity.channel.TextChannel");
+			final Class<?> apiBuilderClass = discordClassLoader.loadClass("org.javacord.api.DiscordApiBuilder");
+			final Class<?> apiClass = discordClassLoader.loadClass("org.javacord.api.DiscordApi");
+			final Class<?> intentClass = discordClassLoader.loadClass("org.javacord.api.entity.intent.Intent");
+			final Class<?> listenClass = discordClassLoader.loadClass("org.javacord.api.listener.message.MessageCreateListener");
+			final Class<?> eventInterface = discordClassLoader.loadClass("org.javacord.api.event.message.MessageCreateEvent");
+			final Class<?> textChannelClass = discordClassLoader.loadClass("org.javacord.api.entity.channel.TextChannel");
 			final Object apiBuilder = apiBuilderClass.getDeclaredConstructor().newInstance();
 			final String secretToken = CMProps.getVar(CMProps.Str.DISCORD_BOT_KEY);
 			if(secretToken.length()==0)
@@ -1237,7 +1239,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			Log.infoOut("Discord Bot auth url: "+url);
 			final Method listenM = apiClass.getMethod("addMessageCreateListener", listenClass);
 			final Class<?>[] classArray = new Class<?>[] { listenClass };
-			final Object listener = Proxy.newProxyInstance(classLoader, classArray, new DiscordMsgListener(eventInterface, textChannelClass));
+			final Object listener = Proxy.newProxyInstance(discordClassLoader, classArray, new DiscordMsgListener(eventInterface, textChannelClass));
 			listenM.invoke(discordApi, listener);
 		}
 		catch (final Exception e)
