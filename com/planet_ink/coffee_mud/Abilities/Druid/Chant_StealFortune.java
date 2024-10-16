@@ -49,10 +49,13 @@ public class Chant_StealFortune extends Chant
 	}
 
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Steal Fortune)");
+	private final static String localizedStaticDisplay2 = CMLib.lang().L("(Fortune Stolen)");
 
 	@Override
 	public String displayText()
 	{
+		if((affected != invoker)&&(invoker != null)&&(affected!=null))
+			return localizedStaticDisplay2;
 		return localizedStaticDisplay;
 	}
 
@@ -122,6 +125,11 @@ public class Chant_StealFortune extends Chant
 			mob.tell(L("You've already stolen someone's fortune."));
 			return false;
 		}
+		if(mob==target)
+		{
+			mob.tell(L("You can't steal your own forune."));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -141,6 +149,7 @@ public class Chant_StealFortune extends Chant
 					if(tmeA != null)
 					{
 						final Ability smeA = beneficialAffect(mob,mob,asLevel,0);
+						smeA.setStat("TICKDOWN", tmeA.getStat("TICKDOWN"));
 						if(!mob.isPlayer())
 							CMLib.awards().giveAutoProperties(mob, false);
 						if(!target.isPlayer())
