@@ -24,6 +24,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Array;
@@ -33,6 +34,8 @@ import java.lang.reflect.Proxy;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLConnection;
+import java.net.URLStreamHandler;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -73,6 +76,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	protected static ClassLoader			discordClassLoader	= null;
 	protected static Object					discordApi			= null;
 	protected DoubleMap<CMChannel, Object>	discordChannels		= new DoubleMap<CMChannel, Object>(SHashtable.class);
+	protected LimitedTreeSet<String>		lastDiscordMsgs		= new LimitedTreeSet<String>(10000,100,false,true);
 
 	@Override
 	public int getNumChannels()
@@ -1006,7 +1010,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			if((!mob.name().startsWith("^"))||(mob.name().length()>2))
 			{
 				str="<S-NAME>"+nameAppendage+" "+str;
-				message = "<S-NAME>"+nameAppendage+" "+message;
+				message = "(<S-NAME>"+"@"+CMProps.getVar(CMProps.Str.MUDNAME)+nameAppendage+") "+message;
 			}
 			msg=CMClass.getMsg(mob,null,null,
 					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|srcCode,channelColor+"^<CHANNEL \""+channelName+"\"^>"+str,
@@ -1030,9 +1034,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				msg=S.makeChannelMsg(mob,channelInt,channelName,V,false);
 				if(msg.othersMessage()!=null)
 				{
-					message=msg.othersMessage();
+					message=CMStrings.removeColors(msg.othersMessage());
 					if(msg.target()!=null)
 						message=CMStrings.replaceAll(message,"<T-NAME>",msg.target().name());
+					message=CMStrings.replaceAll(message,"["+channelName+"]","(@"+CMProps.getVar(Str.MUDNAME)+")");
 				}
 			}
 			else
@@ -1048,7 +1053,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 						CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|srcCode,channelColor+""+srcstr,
 						CMMsg.NO_EFFECT,null,
 						CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+reststr);
-				message="<S-NAME>"+nameAppendage+msgstr;
+				message="<S-NAME>"+"@"+CMProps.getVar(CMProps.Str.MUDNAME)+nameAppendage+msgstr;
 			}
 		}
 		else
@@ -1057,7 +1062,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|srcCode,channelColor+"^<CHANNEL \""+channelName+"\"^>"+L("You")+nameAppendage+" "+channelName+" '"+message+"'^</CHANNEL^>^N^.",
 					CMMsg.NO_EFFECT,null,
 					CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+"^<CHANNEL \""+channelName+"\"^><S-NAME>"+nameAppendage+" "+CMLib.english().makePlural(channelName)+" '"+message+"'^</CHANNEL^>^N^.");
-			message="<S-NAME>"+nameAppendage+": "+message;
+			message="(<S-NAME>@"+CMProps.getVar(CMProps.Str.MUDNAME)+nameAppendage+") "+message;
 		}
 
 		if((chan.flags().contains(ChannelsLibrary.ChannelFlag.ACCOUNTOOC)
@@ -1212,6 +1217,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			{
 				final Class<?> schannelClass = discordClassLoader.loadClass("org.javacord.core.entity.channel.ServerTextChannelImpl");
 				final Method sendM = schannelClass.getMethod("sendMessage",String.class);
+				lastDiscordMsgs.add(msg);
 				sendM.invoke(chanObj, msg);
 			}
 			catch(final Exception e)
@@ -1261,18 +1267,21 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 							final Class<?> authClass = discordClassLoader.loadClass("org.javacord.api.entity.message.MessageAuthor");
 							final Method contentM = eventClass.getMethod("getMessageContent");
 							final String content = (String)contentM.invoke(args[0]);
-							final Method authorM = eventClass.getMethod("getMessageAuthor");
-							final Object authorO = authorM.invoke(args[0]);
-							final Method nameM = authClass.getMethod("getDisplayName");
-							final String name = (String)nameM.invoke(authorO);
-							final MOB M = CMClass.getFactoryMOB(name, 1, CMLib.map().getRandomRoom());
-							try
+							if(!lib.lastDiscordMsgs.contains(content))
 							{
-								lib.createAndSendChannelMessage(M, chan.name(), content, false, true);
-							}
-							finally
-							{
-								M.destroy();
+								final Method authorM = eventClass.getMethod("getMessageAuthor");
+								final Object authorO = authorM.invoke(args[0]);
+								final Method nameM = authClass.getMethod("getDisplayName");
+								final String name = (String)nameM.invoke(authorO);
+								final MOB M = CMClass.getFactoryMOB(name, 1, CMLib.map().getRandomRoom());
+								try
+								{
+									lib.createAndSendChannelMessage(M, chan.name(), content, false, true);
+								}
+								finally
+								{
+									M.destroy();
+								}
 							}
 						}
 					}
@@ -1358,7 +1367,29 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		URL jarUrl;
 		try
 		{
-			jarUrl = new URL("file:" + jarPath);
+			URL.setURLStreamHandlerFactory(protocol -> "vfs".equals(protocol) ? new URLStreamHandler()
+			{
+				@Override
+				protected java.net.URLConnection openConnection(final URL url) throws IOException
+				{
+					return new java.net.URLConnection(url)
+					{
+						final CMFile F = new CMFile(url.getPath(),null);
+						@Override
+						public void connect() throws IOException
+						{
+							if(!F.exists())
+								throw new IOException("File not found.");
+						}
+						@Override
+						public java.io.InputStream getInputStream() throws IOException
+						{
+							return F.getRawStream();
+						}
+					};
+				}
+			} : null);
+			jarUrl = new URL("vfs:" + jarPath);
 		}
 		catch (final MalformedURLException e)
 		{

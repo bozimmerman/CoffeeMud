@@ -226,7 +226,7 @@ public class Paladin_UnholyStrike extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,L("<S-NAME> call(s) an unholy strike against , but fail(s) <S-HIS-HER> attack."));
+			return maliciousFizzle(mob,target,L("<S-NAME> call(s) an unholy strike against , but fail(s) <S-HIS-HER> attack."));
 
 		// return whether it worked
 		return success;

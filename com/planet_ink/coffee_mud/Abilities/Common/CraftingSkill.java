@@ -1473,6 +1473,19 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				}
 			}
 		}
+		if(matches.size()==0)
+		{
+			for(int r=0;r<recipes.size();r++)
+			{
+				final List<String> V=recipes.get(r);
+				if(V.size()>0)
+				{
+					final String item=V.get(RCP_FINALNAME);
+					if(replacePercent(item,"").equalsIgnoreCase(recipeName))
+						matches.add(V);
+				}
+			}
+		}
 		if(supportsWeapons()
 		&& (matches.size()==0)
 		&&(recipeName.length()>2)
@@ -1535,20 +1548,6 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				}
 			}
 		}
-		if(matches.size()==0)
-		{
-			for(int r=0;r<recipes.size();r++)
-			{
-				final List<String> V=recipes.get(r);
-				if(V.size()>0)
-				{
-					final String item=V.get(RCP_FINALNAME);
-					if(replacePercent(item,"").equalsIgnoreCase(recipeName))
-						matches.add(V);
-				}
-			}
-		}
-
 		if(supportsArmors() && (matches.size()==0))
 		{
 			long code=Wearable.CODES.FIND_ignoreCase(recipeName.toUpperCase().trim());

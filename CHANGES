@@ -66,6 +66,7 @@
  64. Corpses can now be generated with some cause-of-death blurbs, see CORPSE_BLURBS in LISTS.INI.
  65. New MOB class: StdCraftBroker, allows players to craft for each other async. See Archons Guide
  66. Magical Ability code on armor now applies only to non-multiwear armor.
+ 67. Game Channels can now be tied to Discord channels via Discord Apps and Bots.
  
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

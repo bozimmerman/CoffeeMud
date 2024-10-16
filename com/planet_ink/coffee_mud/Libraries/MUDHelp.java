@@ -1106,11 +1106,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				final List<String> matches = cA.matchingRecipeNames(helpKeyWSpaces, false);
 				if(matches.size()>0)
 				{
-					final String recipeName = CMStrings.capitalizeAndLower(helpKeyWSpaces);
+					final String recipeName = CMStrings.capitalizeAndLower(CMStrings.replaceAll(matches.get(0),"%",""));
 					final String recipeHelp = L("@x1 is an item that is craftable by @x2.",recipeName,cA.name());
 					helpText=normalizeHelpText(recipeHelp,skip);
 					if(helpText != null)
-						return new Pair<String,String>(helpKey, helpText);
+						return new Pair<String,String>(recipeName, helpText);
 				}
 			}
 		}
@@ -1322,11 +1322,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				final List<String> matches = cA.matchingRecipeNames(helpKeyWSpaces, true);
 				if(matches.size()>0)
 				{
-					final String recipeName = CMStrings.capitalizeAndLower(helpKeyWSpaces);
+					final String recipeName = CMStrings.capitalizeAndLower(CMStrings.replaceAll(matches.get(0),"%",""));
 					final String recipeHelp = L("@x1 is an item that is craftable by @x2.",recipeName,cA.name());
 					helpText=normalizeHelpText(recipeHelp,skip);
 					if(helpText != null)
-						return new Pair<String,String>(helpKey, helpText);
+						return new Pair<String,String>(recipeName, helpText);
 				}
 			}
 		}
