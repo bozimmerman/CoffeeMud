@@ -146,7 +146,7 @@ public class I3Client implements Runnable, Persistent, Serializable
 		final int x=1;
 		while(thread.intermud.getRemoteChannel(name).length()>0)
 			name=c.toUpperCase()+x;
-		final CMChannel chan=CMLib.channels().createNewChannel(name, c, "", "+FAKE", new HashSet<ChannelFlag>(), "","");
+		final CMChannel chan=CMLib.channels().createNewChannel(name, c, "", "+FAKE", new HashSet<ChannelFlag>(),"","","");
 		if(thread.intermud.addChannel(chan))
 			return chan.name();
 		return "";

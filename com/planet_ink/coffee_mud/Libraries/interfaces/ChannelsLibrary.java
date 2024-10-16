@@ -345,12 +345,13 @@ public interface ChannelsLibrary extends CMLibrary
 	 * @param imc2Name empty string, or the mapped name of the imc2 channel
 	 * @param mask the zapper mask for who may read the channel
 	 * @param flags the channel flags to set for the given channel
+	 * @param disName the name of the discord channel this maps to
 	 * @param colorOverrideANSI empty string for default, or the color code for this channel
 	 * @param colorOverrideWords empty string for default, or the color code for this channel
 	 * @return the newly created channel object
 	 */
 	public CMChannel createNewChannel(final String name, final String i3Name, final String imc2Name,
-									  final String mask, final Set<ChannelFlag> flags,
+									  final String mask, final Set<ChannelFlag> flags, final String disName,
 									  final String colorOverrideANSI, final String colorOverrideWords);
 
 	/**
@@ -380,6 +381,13 @@ public interface ChannelsLibrary extends CMLibrary
 		public String imc2Name();
 
 		/**
+		 * An empty string, or the name of the discord channel that
+		 * this channel is mapped to.
+		 * @return the name of the discord channel or ""
+		 */
+		public String discordName();
+
+		/**
 		 * The zapper mask to filter in those who may read this
 		 * channel.
 		 * @see MaskingLibrary
@@ -405,6 +413,7 @@ public interface ChannelsLibrary extends CMLibrary
 
 		/**
 		 * The channel flags for this channel.
+		 * TODO: This should be a map, and contain all the other stuff
 		 * @see ChannelsLibrary.ChannelFlag
 		 * @return channel flags for this channel.
 		 */

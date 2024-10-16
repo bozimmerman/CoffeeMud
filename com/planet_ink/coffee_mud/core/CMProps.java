@@ -262,6 +262,7 @@ public class CMProps extends Properties
 		NEWACODES,
 		PRIDECATS,
 		FORMULA_PROFGAIN,
+		DISCORD_JAR_PATH,
 		DISCORD_BOT_KEY
 	}
 
@@ -2976,6 +2977,7 @@ public class CMProps extends Properties
 		setUpLowVar(Str.FORMULA_MAXFOLLOW, getStr("FORMULA_MAXFOLLOW","1 + ( ( @x2 - 6.0 ) / 3.0)"));
 		setUpLowVar(Str.FORMULA_PROFGAIN, getStr("FORMULA_PROFGAIN","(100 - (@x3 * 50)) * ( (@x1 + 1 - @x2) / ( (@x1 * 2) + (10 * @x2) ) )"));
 
+		setUpLowVar(Str.DISCORD_JAR_PATH, getStr("DISCORD_JAR_PATH",""));
 		setUpLowVar(Str.DISCORD_BOT_KEY, getStr("DISCORD_BOT_KEY",""));
 		final LanguageLibrary lang = CMLib.lang();
 		Directions.instance().reInitialize(getInt("DIRECTIONS"), new Directions.DirectionWordTranslator()

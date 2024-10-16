@@ -161,7 +161,7 @@ public final class IMC2Driver extends Thread
 			final String name=e.nextElement();
 			final String mask=chan_mask.get(name);
 			final String imc2Name=chan_conf.get(name);
-			final CMChannel chan=CMLib.channels().createNewChannel(name, "", imc2Name, mask, new HashSet<ChannelFlag>(),"","");
+			final CMChannel chan=CMLib.channels().createNewChannel(name, "", imc2Name, mask, new HashSet<ChannelFlag>(),"","","");
 			map.add(chan);
 		}
 		return map;

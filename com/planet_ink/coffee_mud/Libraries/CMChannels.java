@@ -2,6 +2,8 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMLib.Library;
+import com.planet_ink.coffee_mud.core.CMProps.Bool;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -22,6 +24,8 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -62,11 +66,13 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
 	protected Language		commonLang		= null;
 
-	public final static List<ChannelMsg> emptyQueue=new ReadOnlyList<ChannelMsg>(new Vector<ChannelMsg>(1));
-	public final static Set<ChannelFlag> emptyFlags=new ReadOnlySet<ChannelFlag>(new HashSet<ChannelFlag>(1));
+	protected final static List<ChannelMsg> emptyQueue=new ReadOnlyList<ChannelMsg>(new Vector<ChannelMsg>(1));
+	protected final static Set<ChannelFlag> emptyFlags=new ReadOnlySet<ChannelFlag>(new HashSet<ChannelFlag>(1));
 
-	protected static ClassLoader	discordClassLoader	= null;
-	protected static Object			discordApi			= null;
+	protected final static Map<Object, List<CMChannels>> discordLibMap = new Hashtable<Object,List<CMChannels>>();
+	protected static ClassLoader			discordClassLoader	= null;
+	protected static Object					discordApi			= null;
+	protected DoubleMap<CMChannel, Object>	discordChannels		= new DoubleMap<CMChannel, Object>(SHashtable.class);
 
 	@Override
 	public int getNumChannels()
@@ -104,20 +110,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return getChannel(channelCode);
 	}
 
-	public CMChannel createNewChannel(final String name)
-	{
-		return createNewChannel(name, "", "", "", new HashSet<ChannelFlag>(), "", "");
-	}
-
-	public CMChannel createNewChannel(final String name, final String mask, final Set<ChannelFlag> flags,
-									  final String colorOverrideANSI, final String colorOverrideWords)
-	{
-		return createNewChannel(name, "", "", mask, flags, colorOverrideANSI, colorOverrideWords);
-	}
-
 	@Override
 	public CMChannel createNewChannel(final String name, final String i3Name, final String imc2Name,
-									  final String mask, final Set<ChannelFlag> flags,
+									  final String mask, final Set<ChannelFlag> flags, final String disName,
 									  final String colorOverrideANSI, final String colorOverrideWords)
 	{
 		final SLinkedList<ChannelMsg> queue = new SLinkedList<ChannelMsg>();
@@ -139,6 +134,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			public String imc2Name()
 			{
 				return imc2Name;
+			}
+
+			@Override
+			public String discordName()
+			{
+				return disName;
 			}
 
 			@Override
@@ -601,7 +602,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
 	private void clearChannels()
 	{
-		channelList=new Vector<CMChannel>();
+		channelList = new Vector<CMChannel>();
+		discordChannels = new DoubleMap<CMChannel, Object>(SHashtable.class);
+		for(final Object key : discordLibMap.keySet())
+			discordLibMap.get(key).remove(this);
 	}
 
 	@Override
@@ -668,23 +672,39 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			mySession.setBeingSnoopedBy(invalid.get(s), true);
 	}
 
-	public String parseOutFlags(final String mask, final Set<ChannelFlag> flags, final String[] colorOverride)
+	protected String parseOutFlags(final String mask, final Set<ChannelFlag> flags, final String[] colorOverride, final String[] discordChannel)
 	{
 		final List<String> V=CMParms.parseSpaces(mask,true);
-		for(int v=V.size()-1;v>=0;v--)
+		for(int i=V.size()-1;i>=0;i--)
 		{
-			final String s=V.get(v).toUpperCase();
+			final String vs=V.get(i);
+			final String s;
+			final String v;
+			final int x = vs.indexOf('=');
+			if(x<0)
+			{
+				s=vs.toUpperCase();
+				v="";
+			}
+			else
+			{
+				s=vs.substring(0,x).toUpperCase().trim();
+				v=vs.substring(x+1);
+			}
 			if(CMParms.contains(CMParms.toStringArray(ChannelFlag.values()), s))
 			{
-				V.remove(v);
-				flags.add(ChannelFlag.valueOf(s));
+				V.remove(i);
+				final ChannelFlag flag = ChannelFlag.valueOf(s);
+				flags.add(flag);
+				if((flag==ChannelFlag.DISCORD)&&(v.length()>0))
+					discordChannel[0]=v;
 			}
 			else
 			{
 				final Color C=(Color)CMath.s_valueOf(Color.class, s);
 				if(C!=null)
 				{
-					V.remove(v);
+					V.remove(i);
 					if(s.startsWith("BG"))
 						colorOverride[0]=colorOverride[0]+C.getANSICode();
 					else
@@ -703,7 +723,6 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public int loadChannels(String list, String ilist, String imc2list)
 	{
 		clearChannels();
-		boolean iniDiscord = false;
 		while(list.length()>0)
 		{
 			int x=list.indexOf(',');
@@ -725,14 +744,15 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			{
 				final String[] colorOverride=new String[]{"",""};
 				final Set<ChannelFlag> flags = new HashSet<ChannelFlag>();
-				final String mask=parseOutFlags(item.substring(x+1).trim(),flags,colorOverride);
+				final String[] discordChan = new String[] {""};
+				final String mask=parseOutFlags(item.substring(x+1).trim(),flags,colorOverride,discordChan);
 				item=item.substring(0,x);
-				chan = this.createNewChannel(item.toUpperCase().trim(), mask, flags, colorOverride[0], colorOverride[1]);
+				chan = this.createNewChannel(item.toUpperCase().trim(), "", "", mask, flags,
+												discordChan[0],  colorOverride[0], colorOverride[1]);
 			}
 			else
-				chan = this.createNewChannel(item.toUpperCase().trim());
+				chan = createNewChannel(item.toUpperCase().trim(), "", "", "", new HashSet<ChannelFlag>(), "", "", "");
 			channelList.add(chan);
-			iniDiscord = iniDiscord || chan.flags().contains(ChannelFlag.DISCORD);
 		}
 		while(ilist.length()>0)
 		{
@@ -759,11 +779,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			final Set<ChannelFlag> flags = new HashSet<ChannelFlag>();
 			final String nameStr=item.toUpperCase().trim();
 			final String[] colorOverride=new String[]{"",""};
-			final String maskStr=parseOutFlags(lvl,flags,colorOverride);
+			final String[] discordChan = new String[] {""};
+			final String maskStr=parseOutFlags(lvl,flags,colorOverride,discordChan);
 			final String i3nameStr=ichan;
-			final CMChannel chan = this.createNewChannel(nameStr, i3nameStr, "", maskStr, flags, colorOverride[0], colorOverride[1]);
+			final CMChannel chan = this.createNewChannel(nameStr, i3nameStr, "", maskStr, flags,
+														discordChan[0], colorOverride[0], colorOverride[1]);
 			channelList.add(chan);
-			iniDiscord = iniDiscord || chan.flags().contains(ChannelFlag.DISCORD);
 		}
 		while(imc2list.length()>0)
 		{
@@ -790,11 +811,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			item=item.substring(0,y1);
 			final String nameStr=item.toUpperCase().trim();
 			final String[] colorOverride=new String[]{"",""};
-			final String maskStr=parseOutFlags(lvl,flags,colorOverride);
+			final String[] discordChan = new String[] {""};
+			final String maskStr=parseOutFlags(lvl,flags,colorOverride,discordChan);
 			final String imc2Name=ichan;
-			final CMChannel chan = this.createNewChannel(nameStr, "", imc2Name, maskStr, flags, colorOverride[0], colorOverride[1]);
+			final CMChannel chan = this.createNewChannel(nameStr, "", imc2Name, maskStr, flags,
+					discordChan[0], colorOverride[0], colorOverride[1]);
 			channelList.add(chan);
-			iniDiscord = iniDiscord || chan.flags().contains(ChannelFlag.DISCORD);
 		}
 		baseChannelNames=new String[channelList.size()];
 		for(int i=0;i<channelList.size();i++)
@@ -805,11 +827,30 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELAUCTION))
 		&&(this.getChannel("AUCTION")==null))
+			channelList.add(createNewChannel("AUCTION", "", "", "", new HashSet<ChannelFlag>(), "", "", ""));
+		for(final CMChannel chan : channelList)
 		{
-			channelList.add(this.createNewChannel("AUCTION"));
+			if(chan.flags().contains(ChannelFlag.DISCORD)
+			&& (chan.discordName().length() > 0))
+			{
+				initDiscord();
+				if(discordApi == null)
+					break;
+				final Object chanObj = CMChannels.getDiscordChannelObj(chan.discordName());
+				if(chanObj != null)
+				{
+					discordChannels.put(chan, chanObj);
+					synchronized(discordLibMap)
+					{
+						if(!discordLibMap.containsKey(chanObj))
+							discordLibMap.put(chanObj, new Vector<CMChannels>());
+						discordLibMap.get(chanObj).add(this);
+					}
+				}
+				else
+					Log.errOut("Unable to map discord channel '"+chan.discordName()+"'");
+			}
 		}
-		if(iniDiscord)
-			initDiscord();
 		return channelList.size();
 	}
 
@@ -898,7 +939,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	}
 
 	@Override
-	public void createAndSendChannelMessage(final MOB mob, String channelName, String message, final boolean systemMsg)
+	public void createAndSendChannelMessage(final MOB mob, final String channelName, final String message, final boolean systemMsg)
+	{
+		this.createAndSendChannelMessage(mob, channelName, message, systemMsg, false);
+	}
+
+	protected void createAndSendChannelMessage(final MOB mob, String channelName, String message, final boolean systemMsg, final boolean noloop)
 	{
 		if(mob == null)
 			return;
@@ -958,7 +1004,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		{
 			String str="["+channelName+"]"+nameAppendage+" '"+message+"'^</CHANNEL^>^?^.";
 			if((!mob.name().startsWith("^"))||(mob.name().length()>2))
+			{
 				str="<S-NAME>"+nameAppendage+" "+str;
+				message = "<S-NAME>"+nameAppendage+" "+message;
+			}
 			msg=CMClass.getMsg(mob,null,null,
 					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|srcCode,channelColor+"^<CHANNEL \""+channelName+"\"^>"+str,
 					CMMsg.NO_EFFECT,null,
@@ -977,7 +1026,15 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				S=CMLib.socials().fetchSocial(V,false,false);
 			if((S!=null)
 			&&(S.meetsCriteriaToUse(mob)))
+			{
 				msg=S.makeChannelMsg(mob,channelInt,channelName,V,false);
+				if(msg.othersMessage()!=null)
+				{
+					message=msg.othersMessage();
+					if(msg.target()!=null)
+						message=CMStrings.replaceAll(message,"<T-NAME>",msg.target().name());
+				}
+			}
 			else
 			{
 				msgstr=CMProps.applyINIFilter(msgstr,CMProps.Str.EMOTEFILTER);
@@ -991,6 +1048,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 						CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|srcCode,channelColor+""+srcstr,
 						CMMsg.NO_EFFECT,null,
 						CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+reststr);
+				message="<S-NAME>"+nameAppendage+msgstr;
 			}
 		}
 		else
@@ -999,6 +1057,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|srcCode,channelColor+"^<CHANNEL \""+channelName+"\"^>"+L("You")+nameAppendage+" "+channelName+" '"+message+"'^</CHANNEL^>^N^.",
 					CMMsg.NO_EFFECT,null,
 					CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+"^<CHANNEL \""+channelName+"\"^><S-NAME>"+nameAppendage+" "+CMLib.english().makePlural(channelName)+" '"+message+"'^</CHANNEL^>^N^.");
+			message="<S-NAME>"+nameAppendage+": "+message;
 		}
 
 		if((chan.flags().contains(ChannelsLibrary.ChannelFlag.ACCOUNTOOC)
@@ -1040,6 +1099,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		{
 			if(chan.flags().contains(ChannelsLibrary.ChannelFlag.TWITTER))
 				tweet(message);
+			if(chan.flags().contains(ChannelsLibrary.ChannelFlag.DISCORD) && (!noloop))
+			{
+				message=CMStrings.replaceAll(message,"<S-NAME>",mob.name());
+				discordMsg(chan, message);
+			}
 
 			final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 			try
@@ -1133,14 +1197,36 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 	}
 
+	/**
+	 * Requires including special library and special configuration.
+	 * @param msg the message to send
+	 */
+	private void discordMsg(final CMChannel chan, final String msg)
+	{
+		if(discordApi==null)
+			return;
+		final Object chanObj = this.discordChannels.get(chan);
+		if(chanObj != null)
+		{
+			try
+			{
+				final Class<?> schannelClass = discordClassLoader.loadClass("org.javacord.core.entity.channel.ServerTextChannelImpl");
+				final Method sendM = schannelClass.getMethod("sendMessage",String.class);
+				sendM.invoke(chanObj, msg);
+			}
+			catch(final Exception e)
+			{
+				Log.errOut(e);
+			}
+		}
+	}
+
 	protected static class DiscordMsgListener implements InvocationHandler
 	{
 		private final Class<?> eventClass;
-		private final Class<?> channelClass;
-		public DiscordMsgListener(final Class<?> eventClass, final Class<?> channelClass)
+		public DiscordMsgListener(final Class<?> eventClass)
 		{
 			this.eventClass = eventClass;
-			this.channelClass = channelClass;
 		}
 
 		@Override
@@ -1159,17 +1245,37 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 					return "";
 				else
 				if((method.getName().equals("onMessageCreate"))
-				&&(args != null)&&(args.length>0))
+				&&(args != null)
+				&&(args.length>0)
+				&&(CMProps.getBoolVar(Bool.MUDSTARTED)))
 				{
-					final Method contentM = eventClass.getMethod("getMessageContent");
-					final String content = (String)contentM.invoke(args[0]);
-					final Method channelM = eventClass.getMethod("getChannel"); // this might need TextChannelEvent interface instead
+					final Method channelM = eventClass.getMethod("getChannel");
 					final Object channelObj = channelM.invoke(args[0]);
-					final Method sendM = channelClass.getMethod("sendMessage",String.class);
-					if(content.equalsIgnoreCase("!ping"))
-						sendM.invoke(channelObj, "Pong!");
-					else
-						Log.debugOut("Got Discord Msg: "+content);
+					if(discordLibMap.containsKey(channelObj))
+					{
+						for(final CMChannels lib : discordLibMap.get(channelObj))
+						{
+							final CMChannel chan = lib.discordChannels.getValue(channelObj);
+							if(chan == null)
+								continue;
+							final Class<?> authClass = discordClassLoader.loadClass("org.javacord.api.entity.message.MessageAuthor");
+							final Method contentM = eventClass.getMethod("getMessageContent");
+							final String content = (String)contentM.invoke(args[0]);
+							final Method authorM = eventClass.getMethod("getMessageAuthor");
+							final Object authorO = authorM.invoke(args[0]);
+							final Method nameM = authClass.getMethod("getDisplayName");
+							final String name = (String)nameM.invoke(authorO);
+							final MOB M = CMClass.getFactoryMOB(name, 1, CMLib.map().getRandomRoom());
+							try
+							{
+								lib.createAndSendChannelMessage(M, chan.name(), content, false, true);
+							}
+							finally
+							{
+								M.destroy();
+							}
+						}
+					}
 				}
 			}
 			catch (final Exception e)
@@ -1180,21 +1286,75 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 	}
 
-	protected static void dumpMethods(final Class<?> cls)
+	@SuppressWarnings("rawtypes")
+	protected static Object getDiscordChannelObj(final String named)
 	{
-		for(final Method M : cls.getMethods())
+		if(discordApi == null)
+			return null;
+		try
 		{
-			System.out.println(M.getName());
-			for(final Class<?> C : M.getParameterTypes())
-				System.out.println("="+C.getCanonicalName());
+			final Class<?> apiClass = discordClassLoader.loadClass("org.javacord.api.DiscordApi");
+			final Class<?> serverClass = discordClassLoader.loadClass("org.javacord.api.entity.server.Server");
+			final Class<?> schannelClass = discordClassLoader.loadClass("org.javacord.core.entity.channel.ServerTextChannelImpl");
+			final Method getServersM = apiClass.getMethod("getServers");
+			final Map<String,Object> names = new TreeMap<String,Object>();
+			for(final Object svrObj : (Iterable)getServersM.invoke(discordApi))
+			{
+				final Method getChannels = serverClass.getMethod("getTextChannels");
+				for(final Object chanObj : (Iterable)getChannels.invoke(svrObj))
+				{
+					if(schannelClass.isInstance(chanObj))
+					{
+						final Method getName = schannelClass.getMethod("getName");
+						final String channelName = (String)getName.invoke(chanObj);
+						names.put(channelName.toUpperCase(), chanObj);
+						if(channelName.equals(named))
+							return chanObj;
+					}
+				}
+			}
+			final String unamed = named.toUpperCase();
+			if(names.containsKey(unamed))
+				return names.get(unamed);
+			for(final String name : names.keySet())
+			{
+				if(unamed.startsWith(name))
+					return names.get(name);
+			}
+			for(final String name : names.keySet())
+			{
+				if(unamed.endsWith(name))
+					return names.get(name);
+			}
+			for(final String name : names.keySet())
+			{
+				if(name.startsWith(unamed))
+					return names.get(name);
+			}
+			for(final String name : names.keySet())
+			{
+				if(name.endsWith(unamed))
+					return names.get(name);
+			}
 		}
+		catch (final Exception e)
+		{
+			Log.errOut(e);
+		}
+		/* channel.sendMessage(""); */
+		return null;
 	}
 
 	protected static void initDiscord()
 	{
 		if(discordApi!=null)
 			return;
-		final String jarPath = "lib/javacord-3.9.0-shaded.jar";
+		final String jarPath = CMProps.getVar(Str.DISCORD_JAR_PATH);
+		if(jarPath.length()==0)
+		{
+			Log.errOut("DISCORD_JAR_PATH not set in INI file.");
+			return;
+		}
 		URL jarUrl;
 		try
 		{
@@ -1206,14 +1366,20 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			return;
 		}
 		discordClassLoader=new URLClassLoader(new URL[]{jarUrl});
-		try
+		final PrintStream originalOut = System.out;
+		System.setOut(new PrintStream(new OutputStream() {
+			@Override
+			public void write(final int b)
+			{
+			}
+		}));
+        try
 		{
 			final Class<?> apiBuilderClass = discordClassLoader.loadClass("org.javacord.api.DiscordApiBuilder");
 			final Class<?> apiClass = discordClassLoader.loadClass("org.javacord.api.DiscordApi");
 			final Class<?> intentClass = discordClassLoader.loadClass("org.javacord.api.entity.intent.Intent");
 			final Class<?> listenClass = discordClassLoader.loadClass("org.javacord.api.listener.message.MessageCreateListener");
 			final Class<?> eventInterface = discordClassLoader.loadClass("org.javacord.api.event.message.MessageCreateEvent");
-			final Class<?> textChannelClass = discordClassLoader.loadClass("org.javacord.api.entity.channel.TextChannel");
 			final Object apiBuilder = apiBuilderClass.getDeclaredConstructor().newInstance();
 			final String secretToken = CMProps.getVar(CMProps.Str.DISCORD_BOT_KEY);
 			if(secretToken.length()==0)
@@ -1239,12 +1405,16 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			Log.infoOut("Discord Bot auth url: "+url);
 			final Method listenM = apiClass.getMethod("addMessageCreateListener", listenClass);
 			final Class<?>[] classArray = new Class<?>[] { listenClass };
-			final Object listener = Proxy.newProxyInstance(discordClassLoader, classArray, new DiscordMsgListener(eventInterface, textChannelClass));
+			final Object listener = Proxy.newProxyInstance(discordClassLoader, classArray, new DiscordMsgListener(eventInterface));
 			listenM.invoke(discordApi, listener);
 		}
 		catch (final Exception e)
 		{
 			Log.errOut(e);
+		}
+		finally
+		{
+			System.setOut(originalOut);
 		}
 	}
 
