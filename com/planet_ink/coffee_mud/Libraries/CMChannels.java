@@ -1162,7 +1162,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				{
 					final Method contentM = eventClass.getMethod("getMessageContent");
 					final String content = (String)contentM.invoke(args[0]);
-					final Method channelM = eventClass.getMethod("getChannel");
+					final Method channelM = eventClass.getMethod("getChannel"); // this might need TextChannelEvent interface instead
 					final Object channelObj = channelM.invoke(args[0]);
 					final Method sendM = channelClass.getMethod("sendMessage",String.class);
 					if(content.equalsIgnoreCase("!ping"))
