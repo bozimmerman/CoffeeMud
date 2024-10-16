@@ -1276,7 +1276,20 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 								final MOB M = CMClass.getFactoryMOB(name, 1, CMLib.map().getRandomRoom());
 								try
 								{
-									lib.createAndSendChannelMessage(M, chan.name(), content, false, true);
+									final StringBuilder str = new StringBuilder("");
+									for(final char c : content.toCharArray())
+									{
+										if((c>31)&&(c<128))
+											str.append(c);
+										else
+										switch(c)
+										{
+										case '\n':case '\r':case '\t':
+											str.append(c);
+											break;
+										}
+									}
+									lib.createAndSendChannelMessage(M, chan.name(), str.toString(), false, true);
 								}
 								finally
 								{
