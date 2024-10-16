@@ -23,7 +23,9 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -62,6 +64,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
 	public final static List<ChannelMsg> emptyQueue=new ReadOnlyList<ChannelMsg>(new Vector<ChannelMsg>(1));
 	public final static Set<ChannelFlag> emptyFlags=new ReadOnlySet<ChannelFlag>(new HashSet<ChannelFlag>(1));
+
+	protected static Object discordApi = null;
 
 	@Override
 	public int getNumChannels()
@@ -698,6 +702,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public int loadChannels(String list, String ilist, String imc2list)
 	{
 		clearChannels();
+		boolean iniDiscord = false;
 		while(list.length()>0)
 		{
 			int x=list.indexOf(',');
@@ -726,6 +731,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			else
 				chan = this.createNewChannel(item.toUpperCase().trim());
 			channelList.add(chan);
+			iniDiscord = iniDiscord || chan.flags().contains(ChannelFlag.DISCORD);
 		}
 		while(ilist.length()>0)
 		{
@@ -756,6 +762,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			final String i3nameStr=ichan;
 			final CMChannel chan = this.createNewChannel(nameStr, i3nameStr, "", maskStr, flags, colorOverride[0], colorOverride[1]);
 			channelList.add(chan);
+			iniDiscord = iniDiscord || chan.flags().contains(ChannelFlag.DISCORD);
 		}
 		while(imc2list.length()>0)
 		{
@@ -786,6 +793,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			final String imc2Name=ichan;
 			final CMChannel chan = this.createNewChannel(nameStr, "", imc2Name, maskStr, flags, colorOverride[0], colorOverride[1]);
 			channelList.add(chan);
+			iniDiscord = iniDiscord || chan.flags().contains(ChannelFlag.DISCORD);
 		}
 		baseChannelNames=new String[channelList.size()];
 		for(int i=0;i<channelList.size();i++)
@@ -799,6 +807,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		{
 			channelList.add(this.createNewChannel("AUCTION"));
 		}
+		if(iniDiscord)
+			initDiscord();
 		return channelList.size();
 	}
 
@@ -1122,8 +1132,67 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 	}
 
-	protected void discord()
+	protected static class DiscordMsgListener implements InvocationHandler
 	{
+		private final Class<?> eventClass;
+		private final Class<?> channelClass;
+		public DiscordMsgListener(final Class<?> eventClass, final Class<?> channelClass)
+		{
+			this.eventClass = eventClass;
+			this.channelClass = channelClass;
+		}
+
+		@Override
+		public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable
+		{
+			final Object result = null;
+			try
+			{
+				if(method.getName().equals("hashCode"))
+					return Integer.valueOf(this.hashCode());
+				else
+				if(method.getName().equals("equals") && (args!=null) && (args.length>0))
+					return Boolean.valueOf(this.equals(args[0]));
+				else
+				if(method.getName().equals("toString"))
+					return "";
+				else
+				if((method.getName().equals("onMessageCreate"))
+				&&(args != null)&&(args.length>0))
+				{
+					final Method contentM = eventClass.getMethod("getMessageContent");
+					final String content = (String)contentM.invoke(args[0]);
+					final Method channelM = eventClass.getMethod("getChannel");
+					final Object channelObj = channelM.invoke(args[0]);
+					final Method sendM = channelClass.getMethod("sendMessage",String.class);
+					if(content.equalsIgnoreCase("!ping"))
+						sendM.invoke(channelObj, "Pong!");
+					else
+						Log.debugOut("Got Discord Msg: "+content);
+				}
+			}
+			catch (final Exception e)
+			{
+				Log.errOut(e);
+			}
+			return result;
+		}
+	}
+
+	protected static void dumpMethods(final Class<?> cls)
+	{
+		for(final Method M : cls.getMethods())
+		{
+			System.out.println(M.getName());
+			for(final Class<?> C : M.getParameterTypes())
+				System.out.println("="+C.getCanonicalName());
+		}
+	}
+
+	protected static void initDiscord()
+	{
+		if(discordApi!=null)
+			return;
 		final String jarPath = "lib/javacord-3.9.0-shaded.jar";
 		URL jarUrl;
 		try
@@ -1138,7 +1207,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		try(final URLClassLoader classLoader=new URLClassLoader(new URL[]{jarUrl}))
 		{
 			final Class<?> apiBuilderClass = classLoader.loadClass("org.javacord.api.DiscordApiBuilder");
+			final Class<?> apiClass = classLoader.loadClass("org.javacord.api.DiscordApi");
 			final Class<?> intentClass = classLoader.loadClass("org.javacord.api.entity.intent.Intent");
+			final Class<?> listenClass = classLoader.loadClass("org.javacord.api.listener.message.MessageCreateListener");
+			final Class<?> eventInterface = classLoader.loadClass("org.javacord.api.event.message.MessageCreateEvent");
+			final Class<?> textChannelClass = classLoader.loadClass("org.javacord.api.entity.channel.TextChannel");
 			final Object apiBuilder = apiBuilderClass.getDeclaredConstructor().newInstance();
 			final String secretToken = CMProps.getVar(CMProps.Str.DISCORD_BOT_KEY);
 			if(secretToken.length()==0)
@@ -1158,8 +1231,14 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			api = addIntentsM.invoke(api, new Object[] {array});
 			final Method loginM = apiBuilderClass.getMethod("login");
 			final CompletableFuture<?> future = (CompletableFuture<?>)loginM.invoke(api);
-			future.join();
-			Log.infoOut("Discord Bot connected.");
+			discordApi = future.join();
+			final Method createBotInviteM = apiClass.getMethod("createBotInvite");
+			final String url=CMStrings.replaceAll(createBotInviteM.invoke(discordApi).toString(),"permissions=0","permissions=2048");
+			Log.infoOut("Discord Bot auth url: "+url);
+			final Method listenM = apiClass.getMethod("addMessageCreateListener", listenClass);
+			final Class<?>[] classArray = new Class<?>[] { listenClass };
+			final Object listener = Proxy.newProxyInstance(classLoader, classArray, new DiscordMsgListener(eventInterface, textChannelClass));
+			listenM.invoke(discordApi, listener);
 		}
 		catch (final Exception e)
 		{

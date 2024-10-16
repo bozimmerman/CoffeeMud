@@ -501,6 +501,7 @@ public interface ChannelsLibrary extends CMLibrary
 		PROFICIENT,
 		CALENDAR,
 		SAMEHOST,
-		NOMOUTH
+		NOMOUTH,
+		DISCORD
 	}
 }
