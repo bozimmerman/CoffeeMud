@@ -107,6 +107,14 @@ public class Chant_SuppressFortune extends Chant
 		if(target==null)
 			return false;
 
+		if((!auto)
+		&&(!mob.getGroupMembers(new TreeSet<MOB>()).contains(target))
+		&&(!mob.mayIFight(target))
+		&&(mob!=target))
+		{
+			mob.tell(mob,target,null,L("<T-HE-SHE> <T-IS-ARE> not a valid target."));
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		final boolean success=proficiencyCheck(mob,0,auto);

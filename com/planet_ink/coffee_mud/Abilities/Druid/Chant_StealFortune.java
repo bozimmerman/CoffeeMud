@@ -130,6 +130,13 @@ public class Chant_StealFortune extends Chant
 			mob.tell(L("You can't steal your own forune."));
 			return false;
 		}
+		if((!auto)
+		&&(!mob.getGroupMembers(new TreeSet<MOB>()).contains(target))
+		&&(!mob.mayIFight(target)))
+		{
+			mob.tell(mob,target,null,L("<T-HE-SHE> <T-IS-ARE> not a valid target."));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
