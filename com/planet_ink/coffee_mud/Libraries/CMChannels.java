@@ -1392,7 +1392,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 						public void connect() throws IOException
 						{
 							if(!F.exists())
-								throw new IOException("File not found.");
+								throw new IOException("File not found: "+F.getAbsolutePath());
 						}
 						@Override
 						public java.io.InputStream getInputStream() throws IOException
