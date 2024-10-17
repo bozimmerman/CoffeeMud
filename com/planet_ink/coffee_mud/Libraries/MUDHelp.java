@@ -826,6 +826,29 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		return p.second;
 	}
 
+	protected String replacePercent(final String thisStr, final String withThis)
+	{
+		if(withThis.length()==0)
+		{
+			int x=thisStr.indexOf("% ");
+			if(x>=0)
+				return new StringBuffer(thisStr).replace(x,x+2,withThis).toString();
+			x=thisStr.indexOf(" %");
+			if(x>=0)
+				return new StringBuffer(thisStr).replace(x,x+2,withThis).toString();
+			x=thisStr.indexOf('%');
+			if(x>=0)
+				return new StringBuffer(thisStr).replace(x,x+1,withThis).toString();
+		}
+		else
+		{
+			final int x=thisStr.indexOf('%');
+			if(x>=0)
+				return new StringBuffer(thisStr).replace(x,x+1,withThis).toString();
+		}
+		return thisStr;
+	}
+
 	protected Pair<String,String> getHelpText(String helpKey, final Properties rHelpFile, final MOB forM, final boolean noFix, final int[] skip)
 	{
 		helpKey=helpKey.toUpperCase().trim();
@@ -1100,18 +1123,24 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 		if(helpText==null)
 		{
+			final List<String> skills = new ArrayList<String>(2);
 			for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
 			{
 				final ItemCraftor cA = e.nextElement();
 				final List<String> matches = cA.matchingRecipeNames(helpKeyWSpaces, false);
 				if(matches.size()>0)
 				{
-					final String recipeName = CMStrings.capitalizeAndLower(CMStrings.replaceAll(matches.get(0),"%",""));
-					final String recipeHelp = L("@x1 is an item that is craftable by @x2.",recipeName,cA.name());
-					helpText=normalizeHelpText(recipeHelp,skip);
-					if(helpText != null)
-						return new Pair<String,String>(recipeName, helpText);
+					helpKey = CMStrings.capitalizeAndLower(replacePercent(matches.get(0),"")).toUpperCase().trim();
+					skills.add(cA.name());
 				}
+			}
+			if(skills.size()>0)
+			{
+				final String recipeHelp = L("@x1 is an item that is craftable by @x2.",helpKey,
+						CMLib.english().toEnglishStringList(skills));
+				helpText=normalizeHelpText(recipeHelp,skip);
+				if(helpText != null)
+					return new Pair<String,String>(helpKey, helpText);
 			}
 		}
 
@@ -1322,11 +1351,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				final List<String> matches = cA.matchingRecipeNames(helpKeyWSpaces, true);
 				if(matches.size()>0)
 				{
-					final String recipeName = CMStrings.capitalizeAndLower(CMStrings.replaceAll(matches.get(0),"%",""));
+					final String recipeName = CMStrings.capitalizeAndLower(replacePercent(matches.get(0),""));
 					final String recipeHelp = L("@x1 is an item that is craftable by @x2.",recipeName,cA.name());
 					helpText=normalizeHelpText(recipeHelp,skip);
 					if(helpText != null)
-						return new Pair<String,String>(recipeName, helpText);
+						return new Pair<String,String>(recipeName.toUpperCase().trim(), helpText);
 				}
 			}
 		}

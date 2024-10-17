@@ -117,7 +117,6 @@ public class Draw extends Get
 			else
 			if(mob.fetchWieldedItem()!=null)
 				return false;
-
 		}
 
 		boolean allFlag=false;
