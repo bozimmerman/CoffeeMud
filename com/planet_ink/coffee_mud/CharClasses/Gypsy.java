@@ -134,6 +134,12 @@ public class Gypsy extends Thief
 	}
 
 	@Override
+	public String getOtherLimitsDesc()
+	{
+		return L("Must remain Neutral to avoid failure chances for some chants.");
+	}
+
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
