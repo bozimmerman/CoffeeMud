@@ -1101,14 +1101,25 @@ public class Shell extends StdCommand
 				if(s.trim().length()>0)
 					text2.append(s.trim()).append("\n\r");
 			}
-			final LinkedList<CMStrings.Diff> diffs=CMStrings.diff_main(text1.toString(), text2.toString(), false);
-			boolean flipFlop=false;
-			for(final CMStrings.Diff d : diffs)
+			final LinkedList<CMStrings.Diff> diffs=CMStrings.diffMain(text1.toString(), text2.toString(), false);
 			{
-				final StringBuilder str=new StringBuilder("\n\r^H"+d.operation.toString()+": ");
-				str.append(flipFlop?"^N":"^w");
-				flipFlop=!flipFlop;
-				str.append(d.text);
+				final StringBuilder str = new StringBuilder("");
+				for(final CMStrings.Diff d : diffs)
+				{
+					switch(d.operation)
+					{
+					case DELETE:
+						str.append("^r");
+						break;
+					case EQUAL:
+						str.append("^N");
+						break;
+					case INSERT:
+						str.append("^g");
+						break;
+					}
+					str.append(d.text);
+				}
 				mob.session().colorOnlyPrintln(str.toString());
 			}
 			mob.tell(L("^HDONE."));
