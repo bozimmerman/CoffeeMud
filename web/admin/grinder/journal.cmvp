@@ -516,7 +516,7 @@
                                         <SELECT NAME=NEWJOURNAL@RequestParameter?JOURNALMESSAGE@>
                                         @JournalNext?RESET@
                                         @loop@
-                                            @JournalNext&TRANSFERLIST@
+                                            @JournalNext?TRANSFERLIST@
                                             <OPTION VALUE="@JournalName@">@JournalName?NOCOLOR@
                                         @back@
                                         </SELECT>
