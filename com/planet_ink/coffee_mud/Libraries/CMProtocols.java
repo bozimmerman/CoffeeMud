@@ -2594,7 +2594,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									}
 								}
 							}
-							doc.append("{\"idexits\":");
+							doc.append("},\"idexits\":{");
 							comma=false;
 							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 							{
