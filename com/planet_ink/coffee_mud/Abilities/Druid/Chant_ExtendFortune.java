@@ -129,7 +129,8 @@ public class Chant_ExtendFortune extends Chant
 				if(msg.value()<=0)
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) more fortunate!"));
-					final Ability meA = beneficialAffect(mob,target,asLevel,0);
+					final int ticks=super.getBeneficialTickdownTime(mob, target, 0, asLevel);
+					final Ability meA = beneficialAffect(mob,target,asLevel,ticks*10);
 					if(meA != null)
 					{
 						if(!target.isPlayer())
@@ -145,7 +146,10 @@ public class Chant_ExtendFortune extends Chant
 			}
 		}
 		else
+		if((mob!=target)&&(!mob.getGroupMembers(new TreeSet<MOB>()).contains(target))&&(mob.mayIFight(target)))
 			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+		else
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 		// return whether it worked
 		return success;
 	}
