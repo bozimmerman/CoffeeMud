@@ -1423,10 +1423,10 @@ public class CMMap extends StdLibrary implements WorldMap
 				for(int i=0;i<Directions.NUM_DIRECTIONS();i++)
 				{
 					final Room R = deadRoom.getRoomInDir(i);
-					if(R != null)
+					if((R != null)
+					&&((linkInRooms == null)||(R.getArea()!=deadRoom.getArea())))
 					{
-						final Room R2=R.getRoomInDir(Directions.getOpDirectionCode(i));
-						if(R2 == deadRoom)
+						if(R.getRoomInDir(Directions.getOpDirectionCode(i)) == deadRoom)
 						{
 							if(!roomsToDo.containsKey(R))
 								roomsToDo.put(R, new TreeSet<Integer>());
