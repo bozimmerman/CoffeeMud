@@ -1425,9 +1425,13 @@ public class CMMap extends StdLibrary implements WorldMap
 					final Room R = deadRoom.getRoomInDir(i);
 					if(R != null)
 					{
-						if(!roomsToDo.containsKey(R))
-							roomsToDo.put(R, new TreeSet<Integer>());
-						roomsToDo.get(R).add(Integer.valueOf(i));
+						final Room R2=R.getRoomInDir(Directions.getOpDirectionCode(i));
+						if(R2 == deadRoom)
+						{
+							if(!roomsToDo.containsKey(R))
+								roomsToDo.put(R, new TreeSet<Integer>());
+							roomsToDo.get(R).add(Integer.valueOf(Directions.getOpDirectionCode(i)));
+						}
 					}
 				}
 			}
