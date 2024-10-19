@@ -3362,6 +3362,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				switch(fakeStat)
 				{
+				case AGENAME:
+					return current?((MOB)P).charStats().ageName():((MOB)P).baseCharStats().ageName();
+				case AGEMINS:
+					return ""+((MOB)P).getAgeMinutes();
 				case QUESTPOINTS:
 					return ""+((MOB)P).getQuestPoint();
 				case FOLLOWERS:
@@ -3765,6 +3769,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				switch(fakeStat)
 				{
+				case AGENAME:
+					return;
+				case AGEMINS:
+					((MOB)P).setAgeMinutes(CMath.parseLongExpression(value));
+					return;
 				case QUESTPOINTS:
 					((MOB)P).setQuestPoint(CMath.parseIntExpression(value));
 					return;

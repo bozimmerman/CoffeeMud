@@ -171,7 +171,9 @@ public interface GenericBuilder extends CMLibrary
 		INVENTORYRESETDATE,
 		IDLETICKS,
 		PEACETICKS,
-		BIRTHDATE
+		BIRTHDATE,
+		AGEMINS,
+		AGENAME
 	}
 
 	/**
