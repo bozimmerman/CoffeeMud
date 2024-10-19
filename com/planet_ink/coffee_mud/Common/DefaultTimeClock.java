@@ -1069,7 +1069,7 @@ public class DefaultTimeClock implements TimeClock
 			final List<PlayerData> bitV=CMLib.database().DBReadPlayerData(loadName,"TIMECLOCK");
 			String timeRsc=null;
 			if((bitV==null)||(bitV.size()==0))
-				timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1</YEAR>";
+				timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1000</YEAR>";
 			else
 				timeRsc=bitV.get(0).xml();
 			final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(timeRsc);

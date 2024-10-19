@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /*
    Copyright 2008-2024 Bo Zimmerman
@@ -496,6 +497,7 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 
 	protected final static class AutoPropertiesImpl implements AutoProperties
 	{
+		public final static Set<Integer>	hasDups 	= new TreeSet<Integer>();
 		public final String					playerMask;
 		public final String					dateMask;
 		public final CompiledZMask			playerCMask;
@@ -525,9 +527,11 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 			}
 			period = (per == null) ? TimePeriod.YEAR : per;
 			int hc = 0;
-			hc = playerCMask.hashCode() ^ dateCMask.hashCode() ^ period.hashCode();
+			hc = playerMask.hashCode() + dateMask.hashCode() + period.hashCode();
 			for(final Pair<String,String> p : props)
-				hc = (hc << 8) ^ (p.first.hashCode() ^ p.second.hashCode());
+				hc = (hc << 2) + (p.first.hashCode() + p.second.hashCode());
+			while(hasDups.contains(Integer.valueOf(hc)))
+				hc++;
 			hashCode = hc;
 		}
 
