@@ -141,10 +141,17 @@ public class Spell_DispelMagic extends Spell
 			{
 				foundSomethingAtLeast=true;
 				if((A.invoker()!=null)
+				&&(A.canBeUninvoked())
 				&&((A.invoker()==mob)
 					||(A.invoker().phyStats().level()<=mob.phyStats().level()+CMProps.getIntVar(CMProps.Int.EXPRATE))
 					||admin))
 					revokeThis=A;
+				/*
+				else
+				if((A.invoker()==null)
+				&&((adjustedLevel(mob,0)>=100)||admin))
+					revokeThis=A;
+				*/
 			}
 		}
 
@@ -166,7 +173,8 @@ public class Spell_DispelMagic extends Spell
 		int diff=revokeThis.invoker().phyStats().level()-mob.phyStats().level();
 		if(diff<0)
 			diff=0;
-		else diff=diff*-20;
+		else
+			diff=diff*-20;
 
 		final boolean success=proficiencyCheck(mob,diff,auto);
 		if(success)
@@ -183,8 +191,18 @@ public class Spell_DispelMagic extends Spell
 			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?L("@x1 is dispelled from <T-NAME>.",revokeThis.name()):L("^S<S-NAME> dispel(s) @x1 from <T-NAMESELF>.^?",revokeThis.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				/*
+				if((!revokeThis.canBeUninvoked())
+				&&(!revokeThis.isAutoInvoked())
+				&&(!revokeThis.isNowAnAutoEffect())
+				&&((adjustedLevel(mob,0)>=100)||admin))
+					revokeThis.setStat("CANUNINVOKE", "true");
+				*/
 				revokeThis.unInvoke();
+				if(target.fetchEffect(revokeThis.ID())==null)
+					mob.location().send(mob,msg);
+				else
+					beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to dispel @x1 from <T-NAMESELF>, but nothing happens.",revokeThis.name()));
 			}
 		}
 		else
