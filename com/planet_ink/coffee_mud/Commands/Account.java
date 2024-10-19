@@ -175,9 +175,12 @@ public class Account extends StdCommand
 		final boolean showLastLogin;
 		if(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS) && (commands.size()>1))
 		{
-			final String name = CMStrings.capitalizeAndLower(CMParms.combine(commands,1));
+			final String name = CMStrings.capitalizeAndLower(commands.get(1));
 			if(CMLib.players().accountExists(name))
+			{
 				account = CMLib.players().getLoadAccount(name);
+				commands.remove(1);
+			}
 			else
 			if(CMLib.players().playerExists(name))
 			{
@@ -189,6 +192,7 @@ public class Account extends StdCommand
 				}
 				else
 					account = null;
+				commands.remove(1);
 			}
 			else
 			{

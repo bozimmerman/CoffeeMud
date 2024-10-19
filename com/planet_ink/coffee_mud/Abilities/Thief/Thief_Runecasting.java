@@ -422,7 +422,7 @@ public class Thief_Runecasting extends ThiefSkill
 				final AutoProperties[] APs = Thief_Runecasting.getApplicableAward(forM, getPlayerFilter(), numToReturn);
 				if((APs == null) || (APs.length==0))
 				{
-					final int x =CMLib.dice().roll(1, getFailPhrases().length, 0);
+					final int x =CMLib.dice().roll(1, getFailPhrases().length, -1);
 					CMLib.commands().postSay(iM, forM, L(getFailPhrases()[x]));
 					unInvoke();
 					return false;
@@ -538,7 +538,7 @@ public class Thief_Runecasting extends ThiefSkill
 					}
 					if(reports.size()==0)
 					{
-						final int x =CMLib.dice().roll(1, getFailPhrases().length, 0);
+						final int x =CMLib.dice().roll(1, getFailPhrases().length, -1);
 						CMLib.commands().postSay(iM, forM, L(getFailPhrases()[x]));
 						unInvoke();
 						return false;
@@ -549,7 +549,7 @@ public class Thief_Runecasting extends ThiefSkill
 						if((finalPrediction != null)&&(finalPrediction.trim().length()>0))
 							this.reports.add(finalPrediction);
 					}
-					final int x =CMLib.dice().roll(1, getStartPhrases().length, 0);
+					final int x =CMLib.dice().roll(1, getStartPhrases().length, -1);
 					CMLib.commands().postSay(iM, forM, L(getStartPhrases()[x]));
 				}
 			}

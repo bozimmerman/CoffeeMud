@@ -5168,12 +5168,12 @@ public class StdMOB implements MOB
 		{
 			for(int a = 0; a < affects.size(); a++)
 			{
+				final Ability A;
+				try { A=affects.get(a);}catch(final IndexOutOfBoundsException e){ break;  /** this happens **/ }
 				try
 				{
-					applier.apply(affects.get(a));
+					applier.apply(A);
 				}
-				catch(final IndexOutOfBoundsException e)
-				{ break;  /** this happens **/ }
 				catch(final Exception e)
 				{
 					Log.errOut(e);
@@ -5363,12 +5363,12 @@ public class StdMOB implements MOB
 		{
 			for(int a = 0; a < behaviors.size(); a++)
 			{
+				final Behavior B;
+				try{ B = behaviors.get(a);}catch(final IndexOutOfBoundsException e){ break;  /** this happens **/ }
 				try
 				{
-					applier.apply(behaviors.get(a));
+					applier.apply(B);
 				}
-				catch(final IndexOutOfBoundsException e)
-				{ break;  /** this happens **/ }
 				catch(final Exception e)
 				{
 					Log.errOut(e);

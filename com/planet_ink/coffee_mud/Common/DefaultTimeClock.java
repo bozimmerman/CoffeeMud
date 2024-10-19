@@ -265,7 +265,11 @@ public class DefaultTimeClock implements TimeClock
 				timeDesc.append(weekNames[weekDayIndex]+", ");
 		}
 		timeDesc.append("the "+getDayOfMonth()+CMath.numAppendage(getDayOfMonth()));
-		timeDesc.append(" day of "+getMonthNames()[getMonth()-1]);
+		final int month = getMonth();
+		if((month>=0)&&(month<getMonthsInYear()))
+			timeDesc.append(" day of "+getMonthNames()[month]);
+		else
+			timeDesc.append(" day of month "+month);
 		if(getYearNames().length>0)
 			timeDesc.append(", "+CMStrings.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
 		return timeDesc.toString();
