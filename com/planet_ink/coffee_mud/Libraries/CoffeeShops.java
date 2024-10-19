@@ -2100,6 +2100,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				case ShopKeeper.DEAL_SLAVES:
 					V.addElement(L("Slaves"));
 					break;
+				case ShopKeeper.DEAL_CHILDREN:
+					V.addElement(L("Orphans"));
+					break;
 				case ShopKeeper.DEAL_POSTMAN:
 					V.addElement(L("My services as a Postman"));
 					break;
@@ -2168,10 +2171,15 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					&&(!(E instanceof RawMaterial)));
 			break;
 		case ShopKeeper.DEAL_PETS:
-			chk = ((E instanceof MOB)&&(CMLib.flags().isAnimalIntelligence((MOB)E)));
+			chk = ((E instanceof MOB)
+					&&(CMLib.flags().isAnimalIntelligence((MOB)E)));
 			break;
 		case ShopKeeper.DEAL_SLAVES:
-			chk = ((E instanceof MOB)&&(!CMLib.flags().isAnimalIntelligence((MOB)E)));
+			chk = ((E instanceof MOB)
+					&&(!CMLib.flags().isAnimalIntelligence((MOB)E)));
+			break;
+		case ShopKeeper.DEAL_CHILDREN:
+			chk = CMLib.flags().isAgingChild(E);
 			break;
 		case ShopKeeper.DEAL_INVENTORYONLY:
 		{
