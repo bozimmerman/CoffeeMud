@@ -1117,7 +1117,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -1280,7 +1280,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -1444,7 +1444,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -1620,7 +1620,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -1779,7 +1779,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -1950,7 +1950,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -2122,7 +2122,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -2311,7 +2311,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -2470,7 +2470,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -2697,7 +2697,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -2907,7 +2907,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -3350,7 +3350,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -3560,7 +3560,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -3752,7 +3752,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -3959,7 +3959,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -4124,7 +4124,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -4302,7 +4302,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -4469,7 +4469,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -4667,7 +4667,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -4856,7 +4856,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -5009,7 +5009,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -5170,7 +5170,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -5331,7 +5331,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -5488,7 +5488,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -5638,7 +5638,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -5831,7 +5831,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -5979,7 +5979,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -6178,7 +6178,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -6335,7 +6335,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -6514,7 +6514,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -6674,7 +6674,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -6857,7 +6857,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -7083,7 +7083,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -7282,7 +7282,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -7467,7 +7467,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -7674,7 +7674,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -7829,7 +7829,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -7994,7 +7994,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public String getCountParms(final Tattooable tracked)
 						{
-							return Integer.toBinaryString(getCount(tracked));
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
