@@ -424,16 +424,15 @@ public class INIModify extends StdWebMacro
 					flags.add(flag);
 			}
 			String discName=httpReq.getUrlParameter("CHANNEL_"+index+"_DISCNAME");
+			if((discName!=null)&&(discName.trim().length()>0))
+				discName=CMStrings.replaceAll(discName," ","").trim();
 			if((discName==null)||(discName.trim().length()==0))
 			{
 				discName="";
 				flags.remove(ChannelsLibrary.ChannelFlag.DISCORD);
 			}
 			else
-			{
-				discName=discName.trim();
 				flags.add(ChannelsLibrary.ChannelFlag.DISCORD);
-			}
 			for(final ChannelsLibrary.ChannelFlag flag : flags)
 			{
 				if(flag == ChannelsLibrary.ChannelFlag.DISCORD)
