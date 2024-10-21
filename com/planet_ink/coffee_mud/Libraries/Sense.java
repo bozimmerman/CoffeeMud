@@ -2177,6 +2177,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isInTheGame(final MOB M, final boolean reqInhabitation)
 	{
+		if(M==null)
+			return false;
 		final Room R;
 		synchronized(M)
 		{
@@ -2190,6 +2192,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isInTheGame(final Item I, final boolean reqInhabitation)
 	{
+		if(I==null)
+			return false;
 		final ItemPossessor iP;
 		synchronized(I)
 		{
@@ -2899,6 +2903,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(str.toString().endsWith(", "))
 			return str.toString().substring(0,str.length()-2);
 		return str.toString();
+	}
+
+	@Override
+	public boolean isASlave(final MOB slaveM)
+	{
+		return isASlave(slaveM);
 	}
 
 	@Override

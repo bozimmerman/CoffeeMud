@@ -2141,7 +2141,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		switch(dealCode)
 		{
 		case ShopKeeper.DEAL_ANYTHING:
-			chk = !(E instanceof LandTitle);
+			chk = (!(E instanceof LandTitle)) && (!CMLib.flags().isAgingChild(E));
 			break;
 		case ShopKeeper.DEAL_ARMOR:
 			chk = (E instanceof Armor);
@@ -2163,7 +2163,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					&&(!(E instanceof LandTitle))
 					&&(!(E instanceof Boardable))
 					&&(!(E instanceof RawMaterial))
-					&&(!(E instanceof Ability)));
+					&&(!(E instanceof Ability)))
+					&&(!(E instanceof CagedAnimal));
 			break;
 		case ShopKeeper.DEAL_LEATHER:
 			chk = ((E instanceof Item)
@@ -2171,12 +2172,40 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					&&(!(E instanceof RawMaterial)));
 			break;
 		case ShopKeeper.DEAL_PETS:
-			chk = ((E instanceof MOB)
-					&&(CMLib.flags().isAnimalIntelligence((MOB)E)));
+			if(E instanceof CagedAnimal)
+			{
+				MOB M=null;
+				try
+				{
+					M = ((CagedAnimal)E).unCageMe();
+					chk = CMLib.flags().isAnimalIntelligence((MOB)E);
+				}
+				finally
+				{
+					if(M != null)
+						M.destroy();
+				}
+			}
+			else
+				chk = ((E instanceof MOB)&&(CMLib.flags().isAnimalIntelligence((MOB)E)));
 			break;
 		case ShopKeeper.DEAL_SLAVES:
-			chk = ((E instanceof MOB)
-					&&(!CMLib.flags().isAnimalIntelligence((MOB)E)));
+			if(E instanceof CagedAnimal)
+			{
+				MOB M=null;
+				try
+				{
+					M = ((CagedAnimal)E).unCageMe();
+					chk = (!CMLib.flags().isAnimalIntelligence((MOB)E)) && CMLib.flags().isASlave((MOB)E);
+				}
+				finally
+				{
+					if(M != null)
+						M.destroy();
+				}
+			}
+			else
+				chk = (E instanceof MOB)&&(!CMLib.flags().isAnimalIntelligence((MOB)E)) && CMLib.flags().isASlave((MOB)E);
 			break;
 		case ShopKeeper.DEAL_CHILDREN:
 			chk = CMLib.flags().isAgingChild(E);

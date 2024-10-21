@@ -672,6 +672,13 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isASlave(MOB slaveM, MOB masterM);
 
 	/**
+	 * Returns whether the given mob is a slave.
+	 * @param slaveM the mob to check
+	 * @return true if its a slave, false otherwise
+	 */
+	public boolean isASlave(final MOB slaveM);
+
+	/**
 	 * Returns whether the given player or npc mob is being
 	 * driven (tracking) towards something
 	 * @param M the mob to check

@@ -54,6 +54,7 @@ public class Sell extends StdCommand
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"to", "Sell what to whom?");
 		if(shopkeeper==null)
 			return false;
+		final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if(commands.size()==0)
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("Sell what?"));
@@ -65,7 +66,7 @@ public class Sell extends StdCommand
 			return false;
 
 		String whatName=CMParms.combine(commands,0);
-		final List<Item> itemsV=new ArrayList<Item>();
+		final List<Environmental> itemsV=new ArrayList<Environmental>();
 		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 		if (whatName.toUpperCase().startsWith("ALL."))
 		{
@@ -77,15 +78,29 @@ public class Sell extends StdCommand
 			allFlag = true;
 			whatName = "ALL " + whatName.substring(0, whatName.length() - 4);
 		}
+		final boolean mobCheck = ((SK!=null)
+								&& ((SK.getShop().isSold(ShopKeeper.DEAL_CHILDREN))
+									));
 		int addendum=1;
 		String addendumStr="";
 		boolean doBugFix = true;
 		while(doBugFix || ((allFlag)&&(addendum<=maxToDo)))
 		{
 			doBugFix=false;
-			final Item itemToDo=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,whatName+addendumStr);
+			Environmental itemToDo=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,whatName+addendumStr);
 			if(itemToDo==null)
-				break;
+			{
+				if(mobCheck)
+				{
+					itemToDo = mob.location().fetchInhabitant(whatName+addendumStr);
+					if((itemToDo!=null)
+					&&((((MOB)itemToDo).isPlayer())
+						||(!mob.getGroupMembers(new XTreeSet<MOB>()).contains(itemToDo))))
+						itemToDo=null;
+				}
+				if(itemToDo==null)
+					break;
+			}
 			if((CMLib.flags().canBeSeenBy(itemToDo,mob))
 			&&(!(itemToDo instanceof Coins))
 			&&(!itemsV.contains(itemToDo)))
@@ -99,7 +114,7 @@ public class Sell extends StdCommand
 		{
 			for(int v=0;v<itemsV.size();v++)
 			{
-				final Item thisThang=itemsV.get(v);
+				final Environmental thisThang=itemsV.get(v);
 				final CMMsg msg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_SELL,L("<S-NAME> sell(s) <O-NAME> to <T-NAMESELF>."));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);

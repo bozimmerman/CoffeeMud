@@ -192,7 +192,7 @@ public class BookNaming extends CommonSkill
 		if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			/*
-			final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
+			final Set<MOB> followers=mob.getGroupMembers(new XTreeSet<MOB>());
 			boolean ok=false;
 			for(final MOB M : followers)
 			{

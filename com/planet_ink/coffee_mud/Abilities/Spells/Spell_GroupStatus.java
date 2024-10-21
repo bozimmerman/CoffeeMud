@@ -99,7 +99,7 @@ public class Spell_GroupStatus extends Spell
 				if(groupMembers==null)
 				{
 					groupMembers=new SLinkedList<Pair<MOB,Ability>>();
-					final Set<MOB> grp=mob.getGroupMembers(new TreeSet<MOB>());
+					final Set<MOB> grp=mob.getGroupMembers(new XTreeSet<MOB>());
 					for(final MOB M : grp)
 					{
 						final Pair<MOB,Ability> P=new Pair<MOB,Ability>(M,null);

@@ -653,6 +653,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							final Item I = CMClass.getItem("GenCaged");
 							((CagedAnimal) I).cageMe(babe);
 							((CagedAnimal) I).setCageFlagsBitmap(CagedAnimal.CAGEFLAG_TO_MOB_PROGRAMMATICALLY);
+							I.setBaseValue(1000);
 							final Ability AGE = CMClass.getAbility("Age");
 							if (AGE != null)
 							{

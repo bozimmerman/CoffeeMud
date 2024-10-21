@@ -35,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Kidnapping extends ThiefSkill
+public class Thief_Kidnapping extends ThiefSkill implements PrivateProperty
 {
 	@Override
 	public String ID()
@@ -76,6 +76,7 @@ public class Thief_Kidnapping extends ThiefSkill
 	protected String			roomID			= "";
 	protected Room				roomR			= null;
 	protected String			followName		= null;
+	protected int				price			= -1;
 
 	@Override
 	public int classificationCode()
@@ -401,10 +402,15 @@ public class Thief_Kidnapping extends ThiefSkill
 					{
 						kA.reAssist = autoAssist;
 						kA.invoker = mob;
-						if(!wasFollowing)
-							kA.roomID = CMLib.map().getExtendedRoomID(target.location());
-						else
+
+						if(wasFollowing)
 							kA.followName = followName;
+						else
+						if((target.getLiegeID().length()>0)
+						&&(CMLib.flags().isInTheGame(CMLib.players().getPlayerAllHosts(target.getLiegeID()), true)))
+							kA.followName = target.getLiegeID();
+						else
+							kA.roomID = CMLib.map().getExtendedRoomID(target.location());
 
 						kA.makeNonUninvokable();
 					}
@@ -419,5 +425,54 @@ public class Thief_Kidnapping extends ThiefSkill
 
 		// return whether it worked
 		return success;
+	}
+
+	@Override
+	public int getPrice()
+	{
+		if(price < 0)
+		{
+			price = 90;
+			final Physical P = affected;
+			if(P != null)
+				price = price + (P.phyStats().level()*10);
+		}
+		return price;
+	}
+
+	@Override
+	public void setPrice(final int price)
+	{
+		this.price = price;
+	}
+
+	@Override
+	public String getOwnerName()
+	{
+		final Physical P = affected;
+		if((followName!=null)&&(followName.length()>0))
+			return followName;
+		if((P instanceof MOB)&&(((MOB)P).getLiegeID().length()>0))
+			return ((MOB)P).getLiegeID();
+		return "";
+	}
+
+	@Override
+	public void setOwnerName(final String owner)
+	{
+		followName = owner;
+	}
+
+	@Override
+	public boolean isProperlyOwned()
+	{
+		return getOwnerName().length()>0;
+	}
+
+	@Override
+	public String getTitleID()
+	{
+		final Physical P = affected;
+		return (P==null)?"":P.Name();
 	}
 }

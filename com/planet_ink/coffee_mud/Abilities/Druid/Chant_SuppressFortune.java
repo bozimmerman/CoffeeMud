@@ -108,7 +108,7 @@ public class Chant_SuppressFortune extends Chant
 			return false;
 
 		if((!auto)
-		&&(!mob.getGroupMembers(new TreeSet<MOB>()).contains(target))
+		&&(!mob.getGroupMembers(new XTreeSet<MOB>()).contains(target))
 		&&(!mob.mayIFight(target))
 		&&(mob!=target))
 		{
@@ -148,7 +148,7 @@ public class Chant_SuppressFortune extends Chant
 			}
 		}
 		else
-		if((mob!=target)&&(!mob.getGroupMembers(new TreeSet<MOB>()).contains(target))&&(mob.mayIFight(target)))
+		if((mob!=target)&&(!mob.getGroupMembers(new XTreeSet<MOB>()).contains(target))&&(mob.mayIFight(target)))
 			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
