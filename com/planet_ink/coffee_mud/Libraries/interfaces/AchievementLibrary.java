@@ -82,6 +82,7 @@ public interface AchievementLibrary extends CMLibrary
 		DECONSTRUCTING("Deconstructing",new String[]{"NUM","ABILITYID","ITEMMASK"}),
 		SKILLUSE("Using Skills",new String[]{"NUM","ABILITYID"}),
 		SKILLPROF("Skill proficiency",new String[]{"NUM", "PROF","ABILITYID"}),
+		EFFECTSHAD("Effects checked-off",new String[] {"NUM", "ABILITYID"}),
 		SOCIALUSE("Using Socials",new String[]{"NUM","SOCIALID"}),
 		QUESTOR("Completing Quests",new String[]{"NUM","QUESTMASK"}),
 		ACHIEVER("Completing Achievements",new String[]{"ACHIEVEMENTLIST"}),
@@ -223,10 +224,10 @@ public interface AchievementLibrary extends CMLibrary
 		 * Creates a new tracker object with the given progress count as
 		 * the default/starting value.
 		 * @see Achievement#getTargetCount()
-		 * @param oldCount the initial value for progress, if applicable
+		 * @param oldVal the initial value for progress, if applicable
 		 * @return a new tracker object with the given progress count
 		 */
-		public Tracker getTracker(int oldCount);
+		public Tracker getTracker(String oldVal);
 
 		/**
 		 * Parses the parameters defined by the event type of this achievement
@@ -564,6 +565,15 @@ public interface AchievementLibrary extends CMLibrary
 		 * @return the score for this achievement and this mob
 		 */
 		public int getCount(Tattooable tracked);
+
+		/**
+		 * Returns the parms to store for the given mob.  If the
+		 * achievement of this tracker is Savable, then the mob may be
+		 * null, since the count would then be internally stored.
+		 * @param tracked the mob to get a parms for -- required ONLY for unsavable
+		 * @return the parms for this achievement and this mob
+		 */
+		public String getCountParms(Tattooable tracked);
 
 		/**
 		 * Returns a copy of this tracker, unattached to the

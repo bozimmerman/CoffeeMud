@@ -376,7 +376,7 @@ public class DefaultPlayerAccount extends DefaultPrideStats implements PlayerAcc
 		{
 			final Tracker T = i.next();
 			if(T.getAchievement().isSavableTracker() && (T.getCount(null) != 0))
-				rest.append(" ").append(T.getAchievement().getTattoo()).append("=").append(T.getCount(null));
+				rest.append(" ").append(T.getAchievement().getTattoo()).append("=").append(T.getCountParms(null));
 			// getCount(null) should be ok, because it's only the un-savable trackers that need the mob obj
 		}
 		rest.append(" />");
@@ -413,9 +413,9 @@ public class DefaultPlayerAccount extends DefaultPrideStats implements PlayerAcc
 		{
 			final Achievement A=a.nextElement();
 			if((achievePiece != null) && achievePiece.parms().containsKey(A.getTattoo()))
-				achievementers.put(A.getTattoo(), A.getTracker(CMath.s_int(achievePiece.parms().get(A.getTattoo()).trim())));
+				achievementers.put(A.getTattoo(), A.getTracker(achievePiece.parms().get(A.getTattoo()).trim()));
 			else
-				achievementers.put(A.getTattoo(), A.getTracker(0));
+				achievementers.put(A.getTattoo(), A.getTracker("0"));
 		}
 		final String[] allTattoos=xmlLib.getValFromPieces(xml, "TATTOOS").split(",");
 		this.tattoos.clear();
@@ -721,7 +721,7 @@ public class DefaultPlayerAccount extends DefaultPrideStats implements PlayerAcc
 		}
 		else
 		{
-			T=A.getTracker(0);
+			T=A.getTracker("0");
 			achievementers.put(A.getTattoo(), T);
 		}
 		return T;
@@ -734,9 +734,9 @@ public class DefaultPlayerAccount extends DefaultPrideStats implements PlayerAcc
 		if(A!=null)
 		{
 			if(achievementers.containsKey(A.getTattoo()))
-				achievementers.put(A.getTattoo(), A.getTracker(achievementers.get(A.getTattoo()).getCount(mob)));
+				achievementers.put(A.getTattoo(), A.getTracker(achievementers.get(A.getTattoo()).getCountParms(mob)));
 			else
-				achievementers.put(A.getTattoo(), A.getTracker(0));
+				achievementers.put(A.getTattoo(), A.getTracker("0"));
 		}
 		else
 			achievementers.remove(achievementTattoo);

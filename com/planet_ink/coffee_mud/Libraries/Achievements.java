@@ -1089,12 +1089,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -1112,6 +1112,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -1246,12 +1252,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -1269,6 +1275,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -1404,12 +1416,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -1427,6 +1439,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -1567,7 +1585,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -1597,6 +1615,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -1725,7 +1749,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -1750,6 +1774,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							if(tracked instanceof MOB)
 								return CMath.s_int(CMLib.coffeeMaker().getAnyGenStat((MOB)tracked, statName));
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -1879,7 +1909,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -1915,6 +1945,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								return f;
 							}
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -2046,7 +2082,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -2081,6 +2117,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								return num;
 							}
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -2218,7 +2260,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -2264,6 +2306,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 							}
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -2394,12 +2442,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -2417,6 +2465,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -2615,12 +2669,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -2638,6 +2692,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -2819,12 +2879,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -2842,6 +2902,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -2949,6 +3015,234 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 			};
 			break;
+		case EFFECTSHAD:
+			A=new Achievement()
+			{
+				private int			num			= 0;
+				private String[]	abilityIDs	= new String[0];
+
+				@Override
+				public Event getEvent()
+				{
+					return eventType;
+				}
+
+				@Override
+				public Agent getAgent()
+				{
+					return agent;
+				}
+
+				@Override
+				public boolean canBeSeenBy(final MOB mob)
+				{
+					return ((seenMask==null)||(CMLib.masking().maskCheck(seenMask, mob, true)));
+				}
+
+				@Override
+				public boolean canApplyTo(final Agent agent)
+				{
+					return true;
+				}
+
+				@Override
+				public String getTattoo()
+				{
+					return tattoo;
+				}
+
+				@Override
+				public String getDisplayStr()
+				{
+					return displayStr;
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+
+				@Override
+				public Award[] getRewards()
+				{
+					return rewardList;
+				}
+
+				@Override
+				public int getDuration()
+				{
+					return duration;
+				}
+
+				@Override
+				public boolean isFlag(final AchievementFlag flag)
+				{
+					return flags.contains(flag);
+				}
+
+				@Override
+				public int getTargetCount()
+				{
+					return num;
+				}
+
+				@Override
+				public String getRawParmVal(final String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
+				public Tracker getTracker(final String oldVal)
+				{
+					final Achievement me=this;
+					final Bitmap newBits = new Bitmap(oldVal);
+					final int newCount = newBits.onCount();
+					return new Tracker()
+					{
+						private final Bitmap	bits	= newBits;
+						private volatile int	count	= newCount;
+
+						@Override
+						public Achievement getAchievement()
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved(final Tattooable tracked)
+						{
+							return getCount(tracked) >= num;
+						}
+
+						@Override
+						public int getCount(final Tattooable tracked)
+						{
+							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return bits.toHexString();
+						}
+
+						@Override
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
+						{
+							if((playerMask!=null)&&(!CMLib.masking().maskCheck(playerMask, mob, true)))
+								return false;
+							final Ability A;
+							if(parms.length>0)
+							{
+								if(parms[0] instanceof String)
+								{
+									A=CMClass.getAbility((String)parms[0]);
+									if(A==null)
+										return false;
+								}
+								else
+								if(parms[0] instanceof Ability)
+									A=(Ability)parms[0];
+								else
+									return false;
+								final int bitNum = Arrays.binarySearch(abilityIDs, A.ID());
+								if(bitNum < 0)
+									return false;
+								if(!bits.get(bitNum))
+								{
+									count+=1;
+									bits.set(bitNum, true);
+								}
+								return true;
+							}
+							return false;
+						}
+
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(final Exception e)
+							{
+								return this;
+							}
+						}
+					};
+				}
+
+				@Override
+				public boolean isSavableTracker()
+				{
+					return true;
+				}
+
+				@Override
+				public String parseParms(final String parms)
+				{
+					final String numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
+					this.num=CMath.s_int(numStr);
+					final String abilityIDMask=CMParms.getParmStr(parms, "ABILITYID", "").toUpperCase().trim();
+					if(abilityIDMask.length()==0)
+						return "Error: Missing ABILITYID parameter: "+abilityIDs+" for "+tattoo+"!";
+					final String[] strList=abilityIDMask.split(",");
+					final Set<String> abilityMaskList = new TreeSet<String>();
+					for(int i=0;i<strList.length;i++)
+					{
+						final String abilityID = strList[i].trim();
+						if(abilityID.equals("*"))
+						{
+							abilityMaskList.add(abilityID);
+							break;
+						}
+						else
+						{
+							final Ability A;
+							if(CMParms.contains(Ability.ACODE.DESCS,abilityID)
+							||CMParms.contains(Ability.DOMAIN.DESCS,abilityID))
+								A=null;
+							else
+							{
+								A=CMClass.getAbility(abilityID);
+								if(A==null)
+								{
+									if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+									||(!CMClass.isLanguage(abilityID)))
+										return "Error: Unknown ABILITYID: "+abilityID+" for "+tattoo+"!";
+									else
+										return "";
+								}
+							}
+							if(A!=null)
+								abilityMaskList.add(A.ID());
+							else
+								abilityMaskList.add(abilityID.toUpperCase());
+						}
+					}
+					if(abilityMaskList.size()==0)
+						return "Error: Unknown crafting ABILITYIDs: "+abilityIDs+" for "+tattoo+"!";
+					final List<String> finalAbilityList = new LinkedList<String>();
+					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					{
+						final Ability A = a.nextElement();
+						if(abilityMaskList.contains("*")
+							||abilityMaskList.contains(A.ID())
+							||(abilityMaskList.contains(Ability.ACODE.DESCS.get(A.classificationCode()&Ability.ALL_ACODES)))
+							||(abilityMaskList.contains(Ability.DOMAIN.DESCS.get((A.classificationCode()&Ability.ALL_DOMAINS)>>5))))
+								finalAbilityList.add(A.ID());
+					}
+					finalAbilityList.sort(CaselessTreeMap.comparatorCaseSensitive);
+					abilityIDs = finalAbilityList.toArray(new String[finalAbilityList.size()]);
+					return "";
+				}
+			};
+			break;
 		case SOCIALUSE:
 			A=new Achievement()
 			{
@@ -3028,12 +3322,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -3051,6 +3345,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -3232,12 +3532,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -3255,6 +3555,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -3418,12 +3724,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -3441,6 +3747,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -3603,7 +3915,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -3642,6 +3954,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									count++;
 							}
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -3768,7 +4086,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -3801,6 +4119,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								return count;
 							}
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -3942,12 +4266,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -3973,6 +4297,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							else
 								return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -4111,12 +4441,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -4134,6 +4464,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -4259,7 +4595,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -4326,6 +4662,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 							}
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -4486,12 +4828,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -4509,6 +4851,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -4633,12 +4981,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -4656,6 +5004,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -4788,12 +5142,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -4811,6 +5165,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -4943,12 +5303,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -4966,6 +5326,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -5094,12 +5460,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -5117,6 +5483,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -5238,12 +5610,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -5261,6 +5633,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -5391,7 +5769,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -5448,6 +5826,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									return num;
 							}
 							return 1;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -5567,12 +5951,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -5590,6 +5974,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -5735,7 +6125,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -5783,6 +6173,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 							}
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -5911,12 +6307,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -5934,6 +6330,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -6084,12 +6486,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -6107,6 +6509,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -6238,12 +6646,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -6261,6 +6669,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -6414,12 +6828,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 						private volatile long recentVisit = 0;
 
 						@Override
@@ -6438,6 +6852,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -6633,12 +7053,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 						private volatile long recentVisit = 0;
 
 						@Override
@@ -6658,6 +7078,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -6828,12 +7254,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -6851,6 +7277,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -7007,12 +7439,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -7030,6 +7462,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -7181,7 +7619,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -7231,6 +7669,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 							}
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -7357,12 +7801,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -7380,6 +7824,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override
@@ -7514,7 +7964,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -7539,6 +7989,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								return ((Clan)tracked).getClanLevel();
 							}
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toBinaryString(getCount(tracked));
 						}
 
 						@Override

@@ -35,13 +35,22 @@ public class CaselessTreeMap<K> extends TreeMap<String,K>
 	private static final long serialVersionUID = 5949532522375107316L;
 	public CaselessTreeMap()
 	{
-		super(new Comparator<String>()
-		{
-			@Override
-			public int compare(final String arg0, final String arg1)
-			{
-				return arg0.compareToIgnoreCase(arg1);
-			}
-		});
+		super(comparatorIgnoreCase);
 	}
+	public static Comparator<String> comparatorIgnoreCase = new Comparator<String>()
+	{
+		@Override
+		public int compare(final String arg0, final String arg1)
+		{
+			return arg0.compareToIgnoreCase(arg1);
+		}
+	};
+	public static Comparator<String> comparatorCaseSensitive = new Comparator<String>()
+	{
+		@Override
+		public int compare(final String arg0, final String arg1)
+		{
+			return arg0.compareToIgnoreCase(arg1);
+		}
+	};
 }

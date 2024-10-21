@@ -45,7 +45,7 @@
  43. The XML files feature from quest scripts can now be used in mobprog scripts also.
  44. New prayer: Divine Quest, mostly to use in blessings or curses.
  45. New spell: Tap Scroll, Mystic Task, mostly for use in scripts
- 46. Achievements now supports LEVELUP, LEVELDOWN, CLASSLEVELUP, CLASSLEVELDOWN events.
+ 46. Achievements now supports LEVELUP, LEVELDOWN, CLASSLEVELUP, CLASSLEVELDOWN, EFFECTSHAD events.
  47. POSE command now supports HERE argument.
  48. New Achievement award types: ITEM, and MOB
  49. New chants: Release Magic, Tasseography, Curse Mood, Enhance Jewelry, Extend Fortune

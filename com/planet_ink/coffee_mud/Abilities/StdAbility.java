@@ -686,6 +686,8 @@ public class StdAbility implements Ability
 					}
 				}
 			}
+			if(mob.isPlayer())
+				CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.EFFECTSHAD, 1, this);
 			try
 			{
 				room.recoverRoomStats();
