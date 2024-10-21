@@ -106,7 +106,7 @@ public class Chant_EnhanceJewelry extends Chant
 			return false;
 		}
 
-		if(target.phyStats().ability()>5+(super.getXLEVELLevel(mob)/2))
+		if(target.phyStats().ability()>=5+(super.getXLEVELLevel(mob)/2))
 		{
 			mob.tell(L("@x1 cannot be enhanced further.",target.name(mob)));
 			return false;
