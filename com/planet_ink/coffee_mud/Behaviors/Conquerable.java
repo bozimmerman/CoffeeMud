@@ -423,14 +423,17 @@ public class Conquerable extends Arrest
 			for(int i=clanItems.size()-1;i>=0;i--)
 			{
 				final ClanItem I=clanItems.getFirst(i);
-				if((!I.amDestroyed())
-				&&(I.owner() instanceof MOB)
-				&&(((MOB)I.owner()).isMonster())
-				&&(CMLib.flags().isInTheGame((MOB)I.owner(),true))
-				&&(A.inMyMetroArea(((MOB)I.owner()).getStartRoom().getArea()))
-				&&((holdingClan.length()==0)||(I.clanID().equals(holdingClan)))
-				&&(I.getClanItemType()!=ClanItem.ClanItemType.PROPAGANDA))
-					itemControlPoints+=((MOB)((Item)I).owner()).phyStats().level();
+				final ItemPossessor poss = I.owner();
+				if((!I.amDestroyed()) && (poss instanceof MOB))
+				{
+					final MOB mposs = (MOB)poss;
+					if((mposs.isMonster())
+					&&(CMLib.flags().isInTheGame(mposs,true))
+					&&(A.inMyMetroArea(CMLib.map().getStartArea(mposs)))
+					&&((holdingClan.length()==0)||(I.clanID().equals(holdingClan)))
+					&&(I.getClanItemType()!=ClanItem.ClanItemType.PROPAGANDA))
+						itemControlPoints+=mposs.phyStats().level();
+				}
 			}
 		}
 		return itemControlPoints;
