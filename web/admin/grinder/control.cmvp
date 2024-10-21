@@ -471,7 +471,7 @@
 		<FONT SIZE=5 COLOR=WHITE><B>Standard Channels:</B></FONT><BR>
 		<TABLE BORDER=0><TR><TD VALIGN=TOP>
 		<TABLE BORDER=1>
-		<INPUT TYPE=HIDDEN NAME="INIBUILDVARS" VALUE="CHANNELS,FORUMJOURNALS,COMMANDJOURNALS,IMC2CHANNELS,ICHANNELS">
+		<INPUT TYPE=HIDDEN NAME="INIBUILDVARS" VALUE="CHANNELS,FORUMJOURNALS,COMMANDJOURNALS,ICHANNELS">
 		@ChannelNext?RESET@
 		@loop@
 		  @ChannelNext?NEXT&ALLCHANNELS@
@@ -481,10 +481,10 @@
 				</TD>
 				<TD VALIGN=TOP>
 				<table border=0>
-				<tr><td><FONT COLOR=WHITE>Mask (<A HREF="javascript:openUp2('ZAPPERMASKS')"><font color=cyan>?</font></A>):</td><td><INPUT NAME="CHANNEL_@ChannelInfo?ID@_MASK" SIZE=30 VALUE="@ChannelInfo?MASK@"></td></tr>
-				<tr><td><FONT COLOR=WHITE>Colors (<A HREF="javascript:openUp2('COLORCODES')"><font color=cyan>?</font></A>):</td><td><INPUT NAME="CHANNEL_@ChannelInfo?ID@_COLORS" SIZE=20 VALUE="@ChannelInfo?COLOROVERRIDE@"></td></tr>
-				<tr><td><FONT COLOR=WHITE>I3:</td><td><INPUT NAME="CHANNEL_@ChannelInfo?ID@_I3NAME" SIZE=20 VALUE="@ChannelInfo?I3NAME@" ONCHANGE="document.INIFORM.CHANNEL_@ChannelInfo?ID@_IMC2NAME.value='';"></td></tr>
-				<tr><td><FONT COLOR=WHITE>IMC2:</td><td><INPUT NAME="CHANNEL_@ChannelInfo?ID@_IMC2NAME" SIZE=20 VALUE="@ChannelInfo?IMC2NAME@" ONCHANGE="document.INIFORM.CHANNEL_@ChannelInfo?ID@_I3NAME.value='';"></td></tr>
+				<tr><td><FONT COLOR=WHITE>Mask(<A HREF="javascript:openUp2('ZAPPERMASKS')"><font color=cyan>?</font></A>)</td><td><INPUT NAME="CHANNEL_@ChannelInfo?ID@_MASK" SIZE=25 VALUE="@ChannelInfo?MASK@"></td></tr>
+				<tr><td><FONT COLOR=WHITE>Colors(<A HREF="javascript:openUp2('COLORCODES')"><font color=cyan>?</font></A>)</td><td><INPUT NAME="CHANNEL_@ChannelInfo?ID@_COLORS" SIZE=20 VALUE="@ChannelInfo?COLOROVERRIDE@"></td></tr>
+				<tr><td><FONT COLOR=WHITE>I3</td><td><INPUT NAME="CHANNEL_@ChannelInfo?ID@_I3NAME" SIZE=20 VALUE="@ChannelInfo?I3NAME@" ONCHANGE="document.INIFORM.CHANNEL_@ChannelInfo?ID@_DISCNAME.value='';"></td></tr>
+				<tr><td><FONT COLOR=WHITE>DISC</td><td><INPUT NAME="CHANNEL_@ChannelInfo?ID@_DISCNAME" SIZE=20 VALUE="@ChannelInfo?DISCNAME@" ONCHANGE="document.INIFORM.CHANNEL_@ChannelInfo?ID@_I3NAME.value='';"></td></tr>
 				</table>
 				</TD>
 				<TD VALIGN=TOP>
@@ -504,10 +504,10 @@
 				<TD WIDTH=200 VALIGN=TOP><FONT COLOR=WHITE>Add New:</FONT><BR><INPUT NAME="CHANNEL__NAME" SIZE=20 VALUE="@ChannelInfo?NAME@">
 				</TD>
 				<TD VALIGN=TOP><FONT COLOR=WHITE><table border=0>
-				<tr><td><FONT COLOR=WHITE>Mask (<A HREF="javascript:openUp2('ZAPPERMASKS')"><font color=cyan>?</font></A>):</td><td><INPUT NAME="CHANNEL__MASK" SIZE=30 VALUE=""></td></tr>
-				<tr><td><FONT COLOR=WHITE>Colors (<A HREF="javascript:openUp2('COLORCODES')"><font color=cyan>?</font></A>):</td><td><INPUT NAME="CHANNEL__COLORS" SIZE=20 VALUE=""></td></tr>
-				<tr><td><FONT COLOR=WHITE>I3:</td><td><INPUT NAME="CHANNEL__I3NAME" SIZE=20 VALUE="@ChannelInfo?I3NAME@" ONCHANGE="document.INIFORM.CHANNEL_@ChannelInfo?ID@_IMC2NAME.value='';"></td></tr>
-				<tr><td><FONT COLOR=WHITE>IMC2:</td><td><INPUT NAME="CHANNEL__IMC2NAME" SIZE=20 VALUE="@ChannelInfo?IMC2NAME@" ONCHANGE="document.INIFORM.CHANNEL_@ChannelInfo?ID@_I3NAME.value='';"></td></tr>
+				<tr><td><FONT COLOR=WHITE>Mask(<A HREF="javascript:openUp2('ZAPPERMASKS')"><font color=cyan>?</font></A>)</td><td><INPUT NAME="CHANNEL__MASK" SIZE=25 VALUE=""></td></tr>
+				<tr><td><FONT COLOR=WHITE>Colors(<A HREF="javascript:openUp2('COLORCODES')"><font color=cyan>?</font></A>)</td><td><INPUT NAME="CHANNEL__COLORS" SIZE=20 VALUE=""></td></tr>
+				<tr><td><FONT COLOR=WHITE>I3</td><td><INPUT NAME="CHANNEL__I3NAME" SIZE=20 VALUE="@ChannelInfo?I3NAME@" ONCHANGE="document.INIFORM.CHANNEL_@ChannelInfo?ID@_DISCNAME.value='';"></td></tr>
+				<tr><td><FONT COLOR=WHITE>DISC</td><td><INPUT NAME="CHANNEL__DISCNAME" SIZE=20 VALUE="@ChannelInfo?DISCNAME@" ONCHANGE="document.INIFORM.CHANNEL_@ChannelInfo?ID@_I3NAME.value='';"></td></tr>
 				</table>
 				</TD>
 				<TD VALIGN=TOP>
@@ -526,8 +526,7 @@
 		<TD VALIGN=TOP>
 			<FONT COLOR=WHITE>
 				@INIValue?MASK=CHANNELS&INIHELP@<P>
-				@INIValue?MASK=ICHANNELS&INIHELP@<P>
-				@INIValue?MASK=IMC2CHANNELS&INIHELP@
+				@INIValue?MASK=ICHANNELS&INIHELP@
 			</FONT>
 		</TD></TR></TABLE>
 		<TABLE WIDTH=100% BORDER=1>
