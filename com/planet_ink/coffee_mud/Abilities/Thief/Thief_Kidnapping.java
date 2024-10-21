@@ -145,7 +145,7 @@ public class Thief_Kidnapping extends ThiefSkill implements PrivateProperty
 	protected static boolean isKidnappable(final MOB kidnapperM, final MOB M)
 	{
 		if((M.charStats().ageCategory()>=Race.AGE_YOUNGADULT)
-		&&(!CMLib.flags().isAgingChild(M))
+		&&(!CMLib.flags().isAgedChild(M))
 		&&(!CMLib.flags().isAnimalIntelligence(M))
 		&&(!CMStrings.containsWord(M.name().toLowerCase(), "child"))
 		&&(!CMStrings.containsWord(M.name().toLowerCase(), "kid")))
@@ -219,7 +219,7 @@ public class Thief_Kidnapping extends ThiefSkill implements PrivateProperty
 		{
 			final MOB M = (MOB)affected;
 			if((!M.isAttributeSet(Attrib.AUTOASSIST))
-			&&(!CMLib.flags().isAgingChild(affected)))
+			&&(!CMLib.flags().isAgedChild(affected)))
 				M.setAttribute(Attrib.AUTOASSIST, true); // true means its assist is turned OFF
 			if(invoker() == null)
 				return true;

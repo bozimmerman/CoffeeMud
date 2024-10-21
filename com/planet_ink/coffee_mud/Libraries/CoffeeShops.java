@@ -1062,8 +1062,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				}
 			}
 		}
-		if((product instanceof Item)
-		&& (!CMLib.law().mayOwnThisItem(sellerCustM, (Item)product))
+		if((!CMLib.law().mayOwnThisItem(sellerCustM, product))
 		&& ((!CMLib.flags().isEvil(buyerShopM))
 			||(CMLib.flags().isLawful(buyerShopM))))
 		{
@@ -2101,7 +2100,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					V.addElement(L("Slaves"));
 					break;
 				case ShopKeeper.DEAL_CHILDREN:
-					V.addElement(L("Orphans"));
+					V.addElement(L("Children"));
 					break;
 				case ShopKeeper.DEAL_POSTMAN:
 					V.addElement(L("My services as a Postman"));
@@ -2141,7 +2140,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		switch(dealCode)
 		{
 		case ShopKeeper.DEAL_ANYTHING:
-			chk = (!(E instanceof LandTitle)) && (!CMLib.flags().isAgingChild(E));
+			chk = (!(E instanceof LandTitle)) && (!CMLib.flags().isAgedChild(E));
 			break;
 		case ShopKeeper.DEAL_ARMOR:
 			chk = (E instanceof Armor);
@@ -2208,7 +2207,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				chk = (E instanceof MOB)&&(!CMLib.flags().isAnimalIntelligence((MOB)E)) && CMLib.flags().isASlave((MOB)E);
 			break;
 		case ShopKeeper.DEAL_CHILDREN:
-			chk = CMLib.flags().isAgingChild(E);
+			chk = CMLib.flags().isAgedChild(E);
 			break;
 		case ShopKeeper.DEAL_INVENTORYONLY:
 		{
@@ -2312,18 +2311,19 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			return false;
 		if((thisThang instanceof Coins)
 		||(thisThang instanceof DeadBody)
-		||(CMLib.flags().isAgingChild(thisThang)))
+		||(CMLib.flags().isAgedChild(thisThang)&&(!shop.isSold(ShopKeeper.DEAL_CHILDREN))))
 			return false;
 		boolean yesISell=false;
 		if(shop.isSold(ShopKeeper.DEAL_ANYTHING))
 		{
-			yesISell = !(thisThang instanceof LandTitle);
+			yesISell = (!(thisThang instanceof LandTitle)) && (!CMLib.flags().isAgedChild(thisThang));
 		}
 		else
 		{
 			for(int d=1;d<ShopKeeper.DEAL_DESCS.length;d++)
 			{
-				if(shop.isSold(d) && shopKeeperItemTypeCheck(thisThang,d,shop))
+				if(shop.isSold(d)
+				&& shopKeeperItemTypeCheck(thisThang,d,shop))
 				{
 					yesISell=true;
 					break;

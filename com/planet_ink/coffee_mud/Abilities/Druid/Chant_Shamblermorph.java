@@ -68,6 +68,12 @@ public class Chant_Shamblermorph extends Chant
 		return Ability.QUALITY_OK_OTHERS;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_POLYMORPHING;
+	}
+
 	protected static Race treeForm=null;
 
 	@Override

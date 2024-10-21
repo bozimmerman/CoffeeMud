@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary.AutoProperties;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -103,6 +104,93 @@ public class Age extends StdAbility
 		return displayText();
 	}
 
+	@Override
+	public String displayText()
+	{
+		if(ageYears>1)
+			return "("+ageYears+" year(s) old)";
+		final long start=getAgeCode();
+		if(start<Short.MAX_VALUE)
+		{
+			if(start>0)
+				return "("+start+" year(s) old)";
+			return "";
+		}
+		final TimeClock C=CMLib.time().localClock(affected);
+		final long days=((System.currentTimeMillis()-start)/CMProps.getTickMillis())/CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY); // down to days;
+		final long months=days/C.getDaysInMonth();
+		final long years=months/C.getMonthsInYear();
+		if(days<1)
+			return "(<1 day old)";
+		else
+		if(months<1)
+			return "("+days+" day(s) old)";
+		else
+		if(years<1)
+			return "("+months+" month(s) old)";
+		else
+			return "("+years+" year(s) old)";
+	}
+
+	protected boolean		norecurse			= false;
+	protected Race			myRace				= null;
+	protected double		divisor				= 0.0;
+	protected long			lastSoiling			= 0;
+	protected long			lastFollowCheck		= 0;
+	protected long			ageCode				= 0;
+	protected volatile long	nextAgeCheckTimeMs	= System.currentTimeMillis();
+	protected volatile int	ageYears			= -1;
+	protected volatile int	ageCat				= -1;
+
+	public final static String happyBabyEmoter="min=1 mingrp=3 max=50 chance=100;makes goo goo noises.;loves its mommy.;loves its daddy.;smiles.;makes a spit bubble.;wiggles its toes.;chews on their finger.;holds up a finger.;stretches its little body.";
+	public final static String otherBabyEmoter="min=1 max=5 chance=10;wants its mommy.;wants its daddy.;cries.;doesnt like you.;cries for its mommy.;cries for its daddy.";
+	public final static String downBabyEmoter="min=1 max=2 chance=50;wants its mommy.;wants its daddy.;cries.;cries!;cries.";
+
+	protected int getAgeYears()
+	{
+		if(ageYears >= 0)
+			return ageYears;
+		final Physical P = affected;
+		if(P != null )
+		{
+			final long start=getAgeCode();
+			if(start<Short.MAX_VALUE)
+			{
+				ageYears = (int)start;
+				return ageYears;
+			}
+			final TimeClock C=CMLib.time().localClock(affected);
+			final long days=((System.currentTimeMillis()-start)/CMProps.getTickMillis())/CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY); // down to days;
+			final long months=days/C.getDaysInMonth();
+			ageYears=(int)(months/C.getMonthsInYear());
+			ageCat=-1;
+		}
+		return ageYears;
+	}
+
+	protected int getAgeCat()
+	{
+		if(ageCat >= 0)
+			return ageCat;
+		final Physical P = affected;
+		if(P instanceof MOB)
+		{
+			final int yrs = getAgeYears();
+			if(yrs < 0)
+				return ageCat;
+			final Race R = ((MOB)P).baseCharStats().getMyRace();
+			for(int i=0;i<Race.AGE_DESCS.length;i++)
+			{
+				if(yrs < R.getAgingChart()[i])
+				{
+					ageCat=i-1;
+					break;
+				}
+			}
+		}
+		return ageCat;
+	}
+
 	protected void setAgeRace(final MOB mob, final int ageYears)
 	{
 		final Race R=mob.baseCharStats().getMyRace();
@@ -174,15 +262,21 @@ public class Age extends StdAbility
 
 	protected void setAgeYears(final int ageYears)
 	{
-		if((this.ageYears!=ageYears)&&(affected!=null))
+		if(this.ageYears!=ageYears)
 		{
 			if(affected instanceof MOB)
 				setAgeRace((MOB)affected,ageYears);
+			if(affected != null)
+				this.ageYears = ageYears;
+			this.ageCat=-1;
 		}
-		this.ageYears = ageYears;
 	}
 
-	protected long getRawAgeCode()
+	/**
+	 * Could be the number of years, or a birthday timestamp.  Either one.
+	 * @return the number of years, or a birthday timestamp.  Either one.
+	 */
+	protected long getAgeCode()
 	{
 		if(ageCode == 0)
 		{
@@ -231,45 +325,6 @@ public class Age extends StdAbility
 		}
 		return ageCode;
 	}
-
-	@Override
-	public String displayText()
-	{
-		if(ageYears>1)
-			return "("+ageYears+" year(s) old)";
-		final long start=getRawAgeCode();
-		if(start<Short.MAX_VALUE)
-		{
-			if(start>0)
-				return "("+start+" year(s) old)";
-			return "";
-		}
-		final TimeClock C=CMLib.time().localClock(affected);
-		final long days=((System.currentTimeMillis()-start)/CMProps.getTickMillis())/CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY); // down to days;
-		final long months=days/C.getDaysInMonth();
-		final long years=months/C.getMonthsInYear();
-		if(days<1)
-			return "(<1 day old)";
-		else
-		if(months<1)
-			return "("+days+" day(s) old)";
-		else
-		if(years<1)
-			return "("+months+" month(s) old)";
-		else
-			return "("+years+" year(s) old)";
-	}
-
-	protected boolean			norecurse		= false;
-	protected Race				myRace			= null;
-	protected double			divisor			= 0.0;
-	protected long				lastSoiling		= 0;
-	protected long				lastFollowCheck	= 0;
-	protected long				ageCode			= 0;
-
-	public final static String happyBabyEmoter="min=1 mingrp=3 max=50 chance=100;makes goo goo noises.;loves its mommy.;loves its daddy.;smiles.;makes a spit bubble.;wiggles its toes.;chews on their finger.;holds up a finger.;stretches its little body.";
-	public final static String otherBabyEmoter="min=1 max=5 chance=10;wants its mommy.;wants its daddy.;cries.;doesnt like you.;cries for its mommy.;cries for its daddy.";
-	public final static String downBabyEmoter="min=1 max=2 chance=50;wants its mommy.;wants its daddy.;cries.;cries!;cries.";
 
 	protected Race getMyRace()
 	{
@@ -381,8 +436,9 @@ public class Age extends StdAbility
 				miscText = ""+(System.currentTimeMillis()
 						- (CMProps.getMillisPerMudHour() * CMath.s_long(miscText.substring(1).trim())));
 			}
-			this.ageCode = CMath.s_long(miscText);
+			this.ageCode = CMath.s_long(miscText); // zero means TBD, -1 means "ignore", otherwise timestamp or Years
 			this.ageYears=-1;
+			this.ageCat=-1;
 			this.nextAgeCheckTimeMs = System.currentTimeMillis();
 		}
 		super.setMiscText(miscText);
@@ -393,10 +449,10 @@ public class Age extends StdAbility
 		final Physical affected=this.affected;
 		if(affected==null)
 			return;
-		final long l=getRawAgeCode();
-		if(l<Short.MAX_VALUE)
+		final long ageCode=getAgeCode();
+		if(ageCode<Short.MAX_VALUE)
 		{
-			setAgeYears((int)l);
+			setAgeYears((int)ageCode);
 			return;
 		}
 		if(norecurse)
@@ -404,7 +460,7 @@ public class Age extends StdAbility
 		try
 		{
 			norecurse=true;
-			doUnprotectedAgeChangeCheck(affected,l);
+			doUnprotectedAgeChangeCheck(affected,ageCode);
 		}
 		finally
 		{
@@ -475,19 +531,21 @@ public class Age extends StdAbility
 		return true;
 	}
 
-	protected void doUnprotectedAgeChangeCheck(final Physical affected, final long l)
+	protected void doUnprotectedAgeChangeCheck(final Physical affected, final long agingCode)
 	{
 		if(divisor==0.0)
 		{
 			final TimeClock C=CMLib.time().localClock(affected);
 			divisor = C.getMonthsInYear() *C.getDaysInMonth() * CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );
 		}
-		int ageYears=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,CMProps.getTickMillis()),divisor)));
+		int ageYears=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-agingCode,CMProps.getTickMillis()),divisor)));
 		if((ageYears>=Short.MAX_VALUE)||(ageYears<0))
 		{
 			Log.errOut("Age","Recorded, on "+affected.name()+", age of "+ageYears+", from tick values (("+System.currentTimeMillis()+"-"+text()+")/4000)/"+divisor);
 			ageYears=1;
 			miscText=""+(1L+System.currentTimeMillis()-(CMProps.getTickMillis()*divisor));
+			this.ageYears=-1;
+			this.ageCat=-1;
 		}
 		setAgeYears(ageYears);
 		if((affected instanceof Item)
@@ -796,8 +854,8 @@ public class Age extends StdAbility
 						liege.tell(babe.name()+" can't grow up because someone stole that name.");
 					else
 						CMLib.commands().postSay(babe, "I can't grow up because someone stole my name!");
-					if(getRawAgeCode()>Short.MAX_VALUE)
-						setMiscText(Long.toString(getRawAgeCode()-600000L));
+					if(getAgeCode()>Short.MAX_VALUE)
+						setMiscText(Long.toString(getAgeCode()-600000L));
 					return;
 				}
 				final MOB newMan=CMClass.getMOB("StdMOB");
@@ -1140,9 +1198,6 @@ public class Age extends StdAbility
 		}
 	}
 
-	protected volatile long nextAgeCheckTimeMs = System.currentTimeMillis();
-	protected volatile int ageYears = -1;
-
 	protected void doPeriodicAgeCheck()
 	{
 		long lastCheckedAt;
@@ -1193,22 +1248,10 @@ public class Age extends StdAbility
 				return text();
 			else
 			if (code.equalsIgnoreCase("AGEYEARS"))
-			{
-				final long start=getRawAgeCode();
-				if(start<Short.MAX_VALUE)
-				{
-					if(start>0)
-						return ""+start;
-					return "";
-				}
-				final TimeClock C=CMLib.time().localClock(affected);
-				final long days=((System.currentTimeMillis()-start)/CMProps.getTickMillis())/CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY); // down to days;
-				final long months=days/C.getDaysInMonth();
-				final long years=months/C.getMonthsInYear();
-				if(years > 0)
-					return ""+years;
-				return "0";
-			}
+				return ""+getAgeYears();
+			else
+			if (code.equalsIgnoreCase("AGECAT"))
+				return ""+getAgeCat();
 			else
 				return super.getStat(code);
 		}
@@ -1237,15 +1280,15 @@ public class Age extends StdAbility
 						final TimeClock C=CMLib.time().localClock(affected);
 						divisor = C.getMonthsInYear() * C.getDaysInMonth() * CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );
 					}
-					final long l=getRawAgeCode();
-					if((l>0)&&(l<Long.MAX_VALUE))
+					final long ageCode=getAgeCode();
+					if((ageCode>0)&&(ageCode<Long.MAX_VALUE))
 					{
 						String ageStr="";
-						if(l < Short.MAX_VALUE)
+						if(ageCode < Short.MAX_VALUE)
 							ageStr = displayText();
 						else
 						{
-							final int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,CMProps.getTickMillis()),divisor)));
+							final int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-ageCode,CMProps.getTickMillis()),divisor)));
 							if(ellapsed<=myRace.getAgingChart()[3])
 								ageStr=displayText();
 						}
@@ -1323,7 +1366,7 @@ public class Age extends StdAbility
 							final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
 							divisor = C.getMonthsInYear() * C.getDaysInMonth() * CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );
 						}
-						final long l=getRawAgeCode();
+						final long l=getAgeCode();
 						if((l>0)&&(l<Long.MAX_VALUE))
 						{
 							final int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,CMProps.getTickMillis()),divisor)));
@@ -1409,9 +1452,9 @@ public class Age extends StdAbility
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(ageYears>=0)
+		if(getAgeYears()>=0)
 		{
-			affected.baseCharStats().setStat(CharStats.STAT_AGE,ageYears);
+			affected.baseCharStats().setStat(CharStats.STAT_AGE,getAgeYears());
 			affectableStats.setStat(CharStats.STAT_AGE,affected.baseCharStats().getStat(CharStats.STAT_AGE));
 		}
 	}

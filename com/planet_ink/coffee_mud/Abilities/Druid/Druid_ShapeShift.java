@@ -81,6 +81,12 @@ public class Druid_ShapeShift extends StdAbility
 		return 0;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_POLYMORPHING;
+	}
+
 	public int		myRaceCode	= -1;
 	public int		myRaceLevel	= -1;
 	public Race		newRace		= null;

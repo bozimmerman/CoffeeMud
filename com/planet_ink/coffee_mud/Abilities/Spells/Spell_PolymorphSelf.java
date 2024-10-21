@@ -81,6 +81,12 @@ public class Spell_PolymorphSelf extends Spell
 		return Ability.QUALITY_OK_SELF;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_POLYMORPHING;
+	}
+
 	Race newRace=null;
 
 	@Override

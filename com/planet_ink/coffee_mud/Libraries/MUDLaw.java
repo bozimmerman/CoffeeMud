@@ -241,6 +241,21 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return null;
 	}
 
+	protected PrivateProperty getPropertyRecord(final Environmental E)
+	{
+		if(E instanceof LandTitle)
+			return (LandTitle)E;
+		if(E instanceof Area)
+			return getPropertyRecord((Area)E);
+		if(E instanceof Room)
+			return getPropertyRecord((Room)E);
+		if(E instanceof Item)
+			return getPropertyRecord((Item)E);
+		if(E instanceof MOB)
+			return getPropertyRecord((MOB)E);
+		return null;
+	}
+
 	@Override
 	public PrivateProperty getPropertyRecord(final Area area)
 	{
@@ -949,9 +964,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean mayOwnThisItem(final MOB mob, final Item item)
+	public boolean mayOwnThisItem(final MOB mob, final Environmental E)
 	{
-		final PrivateProperty record = getPropertyRecord(item);
+		final PrivateProperty record = getPropertyRecord(E);
 		if(record != null)
 		{
 			if(doesHaveWeakPrivilegesWith(mob,record))
@@ -966,17 +981,19 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 					return true;
 				following=following.amFollowing();
 			}
-			if(item.owner() instanceof Room)
+			if((E instanceof Item)
+			&&(((Item)E).owner() instanceof Room))
 			{
-				final Room R=(Room)item.owner();
+				final Room R=(Room)((Item)E).owner();
 				if(doesHavePriviledgesHere(mob,R))
 					return true;
 			}
 			return false;
 		}
-		if(item.owner() instanceof Room)
+		if((E instanceof Item)
+		&&(((Item)E).owner() instanceof Room))
 		{
-			final Room R=(Room)item.owner();
+			final Room R=(Room)((Item)E).owner();
 			final PrivateProperty roomRecord = getPropertyRecord(R);
 			if(roomRecord != null)
 			{

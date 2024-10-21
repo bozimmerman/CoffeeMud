@@ -228,7 +228,7 @@ public class Nanny extends StdBehavior
 		for(int v=0;v<V.size();v++)
 		{
 			final PhysicalAgent E=V.get(v);
-			if(CMLib.flags().isBaby(E)||CMLib.flags().isAgingChild(E))
+			if(CMLib.flags().isBaby(E)||CMLib.flags().isAgedChild(E))
 				babies++;
 			else
 			if(isMount(E))
@@ -469,11 +469,11 @@ public class Nanny extends StdBehavior
 			return false;
 		if((watchesBabies)&&(CMLib.flags().isBaby(E)))
 			return true;
-		if((watchesChildren)&&(CMLib.flags().isAgingChild(E))&&(!CMLib.flags().isBaby(E)))
+		if((watchesChildren)&&(CMLib.flags().isAgedChild(E))&&(!CMLib.flags().isBaby(E)))
 			return true;
 		if((watchesMounts)&&(isMount(E)))
 			return true;
-		if((watchesMOBFollowers)&&(E instanceof MOB)&&(!isMount(E))&&(!CMLib.flags().isAgingChild(E))&&(!CMLib.flags().isBaby(E)))
+		if((watchesMOBFollowers)&&(E instanceof MOB)&&(!isMount(E))&&(!CMLib.flags().isAgedChild(E))&&(!CMLib.flags().isBaby(E)))
 			return true;
 		if((this.watchesWagons)
 		&&(E instanceof Rideable)
@@ -1041,7 +1041,7 @@ public class Nanny extends StdBehavior
 
 			}
 			else
-			if(CMLib.flags().isAgingChild(PA))
+			if(CMLib.flags().isAgedChild(PA))
 			{
 				if(CMLib.dice().rollPercentage()>20)
 					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> play(s) with <T-NAME>."));

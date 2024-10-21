@@ -74,6 +74,12 @@ public class Chant_Reincarnation extends Chant
 		return 200;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_POLYMORPHING;
+	}
+
 	Race newRace=null;
 	volatile int newBaseWeightAdj = 0;
 
@@ -114,7 +120,9 @@ public class Chant_Reincarnation extends Chant
 	public void unInvoke()
 	{
 		super.unInvoke();
-		if((!this.canBeUninvoked)&&(affected!=null)&&(affected.fetchEffect(ID())==this))
+		if((!this.canBeUninvoked)
+		&&(affected!=null)
+		&&(affected.fetchEffect(ID())==this))
 			this.unInvoked=false;
 	}
 

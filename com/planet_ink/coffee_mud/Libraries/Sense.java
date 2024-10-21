@@ -2276,26 +2276,35 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
-	protected boolean isAgingThing(final Physical P)
-	{
-		if(P==null)
-			return false;
-		final Ability A=P.fetchEffect("Age");
-		if((A!=null)&&(CMath.isInteger(A.text())&&(CMath.s_long(A.text())>Short.MAX_VALUE)))
-			return true;
-		return false;
-	}
-
 	@Override
-	public boolean isAgingChild(final Environmental E)
+	public boolean isAgedChild(final Environmental E)
 	{
-		return isBaby(E)||((E instanceof MOB)&&(((MOB)E).isMonster())&&(isAgingThing((MOB)E)));
+		if(E instanceof Item)
+			return isBaby(E);
+		else
+		if(E instanceof MOB)
+		{
+			final Ability A=((MOB)E).fetchEffect("Age");
+			if(A != null)
+			{
+				final int cat = CMath.s_int(A.getStat("AGECAT"));
+				return cat <= Race.AGE_CHILD;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public boolean isBaby(final Environmental E)
 	{
-		return ((E instanceof CagedAnimal)&&(isAgingThing((CagedAnimal)E)));
+		if(E instanceof CagedAnimal)
+		{
+			final Ability A=((MOB)E).fetchEffect("Age");
+			if((A != null)&&(((CMath.s_long(A.text())>Short.MAX_VALUE))))
+				return true;
+
+		}
+		return false;
 	}
 
 	@Override

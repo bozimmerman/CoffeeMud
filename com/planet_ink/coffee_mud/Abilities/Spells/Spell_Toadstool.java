@@ -75,6 +75,12 @@ public class Spell_Toadstool extends Spell
 		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_POLYMORPHING;
+	}
+
 	Race newRace=null;
 
 	@Override

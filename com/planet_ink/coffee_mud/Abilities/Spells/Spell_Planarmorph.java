@@ -81,6 +81,12 @@ public class Spell_Planarmorph extends Spell
 		return Ability.QUALITY_OK_OTHERS;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_POLYMORPHING;
+	}
+
 	protected Race					newRace		= null;
 	protected final List<Ability>	fakeEffects	= new Vector<Ability>();
 	protected int[]					lastSet		= null;

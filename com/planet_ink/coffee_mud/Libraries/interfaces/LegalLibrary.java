@@ -480,10 +480,10 @@ public interface LegalLibrary extends CMLibrary
 	 * @see LegalLibrary#doesHaveWeakPrivilegesWith(MOB, PrivateProperty)
 	 *
 	 * @param mob the mob to check possible item ownership of
-	 * @param item the item to check
+	 * @param E the item to check
 	 * @return true if there is some sort of ownership privilege
 	 */
-	public boolean mayOwnThisItem(MOB mob, Item item);
+	public boolean mayOwnThisItem(MOB mob, Environmental E);
 
 	/**
 	 * Someone is considered the direct owner if they are the named owner.

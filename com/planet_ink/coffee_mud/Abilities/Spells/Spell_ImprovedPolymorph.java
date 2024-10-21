@@ -69,6 +69,12 @@ public class Spell_ImprovedPolymorph extends Spell
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_POLYMORPHING;
+	}
+
+	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_OK_OTHERS;

@@ -1264,6 +1264,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 							final CMChannel chan = lib.discordChannels.getValue(channelObj);
 							if(chan == null)
 								continue;
+							if(chan.flags().contains(ChannelsLibrary.ChannelFlag.READONLY)
+							|| chan.flags().contains(ChannelsLibrary.ChannelFlag.PLAYERREADONLY)
+							|| chan.flags().contains(ChannelsLibrary.ChannelFlag.ARCHONREADONLY))
+								continue;
 							final Class<?> authClass = discordClassLoader.loadClass("org.javacord.api.entity.message.MessageAuthor");
 							final Method contentM = eventClass.getMethod("getMessageContent");
 							final String content = (String)contentM.invoke(args[0]);

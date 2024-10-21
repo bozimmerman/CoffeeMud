@@ -1113,7 +1113,7 @@ public interface CMFlagLibrary extends CMLibrary
 	 * @param E the potential child
 	 * @return true if its a child, false otherwise
 	 */
-	public boolean isAgingChild(Environmental E);
+	public boolean isAgedChild(Environmental E);
 
 	/**
 	 * Returns whether the given mob (item usually) is a

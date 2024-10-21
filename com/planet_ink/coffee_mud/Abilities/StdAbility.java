@@ -2161,6 +2161,14 @@ public class StdAbility implements Ability
 			return (int)Math.round(CMath.mul(CMath.div(-tickAdjustmentFromStandard, 100.0) , (double)tickTime));
 	}
 
+	public int getTickdownTime(final MOB mob, final Physical target, final int asLevel, final int tickAdjustmentFromStandard)
+	{
+		if(abstractQuality()==Ability.QUALITY_MALICIOUS)
+			return getMaliciousTickdownTime(mob, target, tickAdjustmentFromStandard, asLevel);
+		else
+			return getBeneficialTickdownTime(mob, target, tickAdjustmentFromStandard, asLevel);
+	}
+
 	public Ability beneficialAffect(final MOB mob, final Physical target, final int asLevel, int tickAdjustmentFromStandard)
 	{
 		invoker=mob;
