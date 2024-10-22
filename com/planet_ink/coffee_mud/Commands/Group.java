@@ -46,7 +46,7 @@ public class Group extends StdCommand
 	}
 
 	public static StringBuffer showMemberLong(final MOB seer, final MOB who,
-											  final int[] cols, final int statShortLevel, final int lflag)
+											  final int[] cols, final int statShortLevel)
 	{
 		final StringBuffer msg=new StringBuffer("^N");
 		msg.append("[^w");
@@ -109,11 +109,6 @@ public class Group extends StdCommand
 			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2^N/",mnColor,mnCur),cols[5]));
 			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2^N",mvColor,mvCur),cols[5]));
 		}
-		if(lflag == 1)
-			msg.append("^Y+^N");
-		else
-		if(lflag > 1)
-			msg.append("^y*^N");
 		msg.append("\n\r");
 		return msg;
 	}
@@ -242,11 +237,6 @@ public class Group extends StdCommand
 		final StringBuffer msg=new StringBuffer("");
 		final int[] cols=new int[6];
 		final int statShortLevel = fixCols(mob, cols, orderedGroup);
-		final MOB semiLeader;
-		if((mob.amFollowing()!=null)&&(mob.amFollowing()!=ultLeader))
-			semiLeader = mob.amFollowing();
-		else
-			semiLeader=null;
 		for (final MOB follower : orderedGroup)
 		{
 			if((follower!=null)
@@ -266,8 +256,7 @@ public class Group extends StdCommand
 					}
 				}
 			}
-			final int lFlag = (follower == ultLeader)?2:((follower == semiLeader)?1:0);
-			msg.append(showMemberLong(mob,follower,cols,statShortLevel,lFlag));
+			msg.append(showMemberLong(mob,follower,cols,statShortLevel));
 		}
 		mob.tell(msg.toString());
 		mob.tell(L("You have @x1/@x2 followers.",""+mob.totalFollowers(),""+mob.maxFollowers()));
