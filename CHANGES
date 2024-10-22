@@ -69,6 +69,7 @@
  67. Game Channels can now be tied to Discord channels via Discord Apps and Bots.
  68. New shopkeeper type: children seller (for an orphanage).
  69. New RP/MUSH-like command 'DIEROLL'.
+ 70. User selection masking now supports "LAST.", like GET LAST.SWORD
  
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.
