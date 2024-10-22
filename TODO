@@ -1,4 +1,5 @@
 BUGS/UNTESTED STUFF:
+  * APPROACH/DEPROACH can over/under accelerate, and needs to do more coasting when things are wrong.
 
 TECH TODO:
    *. navigation course system testing.
