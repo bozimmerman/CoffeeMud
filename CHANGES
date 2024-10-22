@@ -68,6 +68,7 @@
  66. Magical Ability code on armor now applies only to non-multiwear armor.
  67. Game Channels can now be tied to Discord channels via Discord Apps and Bots.
  68. New shopkeeper type: children seller (for an orphanage).
+ 69. New RP/MUSH-like command 'DIEROLL'.
  
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.
