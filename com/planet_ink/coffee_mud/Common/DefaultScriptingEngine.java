@@ -5824,9 +5824,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						else
 						if((CMClass.classID(R).toUpperCase().indexOf(uarg2)>=0)
 						||((R.domainType()<Room.INDOORS)
-							&&uarg2.startsWith("OUTDOOR")||(Room.DOMAIN_OUTDOOR_DESCS[R.domainType()].indexOf(uarg2)>=0))
+							&&(uarg2.startsWith("OUTDOOR")||(Room.DOMAIN_OUTDOOR_DESCS[R.domainType()].indexOf(uarg2)>=0)))
 						||((R.domainType()>=Room.INDOORS)
-							&&uarg2.startsWith("INDOOR")||(Room.DOMAIN_INDOORS_DESCS[R.domainType()&~Room.INDOORS].indexOf(uarg2)>=0)))
+							&&(uarg2.startsWith("INDOOR")||(Room.DOMAIN_INDOORS_DESCS[R.domainType()&~Room.INDOORS].indexOf(uarg2)>=0))))
 							returnable=true;
 						else
 							returnable=false;
