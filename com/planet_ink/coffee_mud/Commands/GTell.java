@@ -38,7 +38,7 @@ public class GTell extends StdCommand
 	{
 	}
 
-	private final String[] access=I(new String[]{"GTELL","GT"});
+	private final String[] access=I(new String[]{"GTELL","FTELL","GT"});
 	@Override
 	public String[] getAccessWords()
 	{
@@ -49,10 +49,11 @@ public class GTell extends StdCommand
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
+		final String cmd = (commands.size()>1)?commands.get(0).toUpperCase():"GTELL";
 		String text=CMParms.combine(commands,1);
 		if(text.length()==0)
 		{
-			mob.tell(L("Tell the group what?"));
+			mob.tell(L("Tell your group what?"));
 			return false;
 		}
 		text=CMProps.applyINIFilter(text,CMProps.Str.SAYFILTER);
@@ -123,7 +124,29 @@ public class GTell extends StdCommand
 					+ ",\"player\":\""+mob.name()+"\"}");
 		}
 
-		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
+		final Set<MOB> group;
+		if(cmd.startsWith("F"))
+		{
+			group = new XTreeSet<MOB>();
+			final Stack<MOB> stk = new Stack<MOB>();
+			stk.add(mob);
+			while(stk.size() > 0)
+			{
+				final MOB M = stk.pop();
+				if(!group.contains(M))
+				{
+					group.add(M);
+					for(int f=0;f<M.numFollowers();f++)
+					{
+						final MOB F = M.fetchFollower(f);
+						if(F != null)
+							stk.add(F);
+					}
+				}
+			}
+		}
+		else
+			group = mob.getGroupMembers(new HashSet<MOB>());
 		final CMMsg msg=tellMsg;
 		for (final MOB target : group)
 		{
