@@ -69,7 +69,7 @@ import java.sql.*;
 */
 public class MUD extends Thread implements MudHost
 {
-	private static final String	  HOST_VERSION	= "5.10.3.1";
+	private static final String	  HOST_VERSION	= "5.10.3.2";
 
 	private static enum MudState
 	{
