@@ -103,7 +103,8 @@ public class Chant_EnhanceShard extends Chant
 		if(maxLevel > mob.phyStats().level())
 			maxLevel = mob.phyStats().level();
 
-		if(target.phyStats().level()>=maxLevel)
+		if((target.phyStats().level()>=maxLevel)
+		&&(target.basePhyStats().ability()>=5+(super.getXLEVELLevel(mob)/2)))
 		{
 			mob.tell(L("@x1 cannot be enhanced further.",target.name(mob)));
 			return false;
