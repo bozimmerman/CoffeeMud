@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -197,6 +198,16 @@ public class Group extends StdCommand
 			}
 			if(newLeaderM != null)
 			{
+				if(newLeaderM.isAttributeSet(Attrib.NOFOLLOW))
+				{
+					mob.tell(L("@x1 is not accepting followers.",newLeaderM.name(mob)));
+					return false;
+				}
+				if(newLeaderM.maxFollowers()<allFollowers.size())
+				{
+					mob.tell(L("@x1 can not successfully lead @x2.",newLeaderM.name(mob), ""+allFollowers.size()));
+					return false;
+				}
 				CMLib.commands().postFollow(newLeaderM, null, true);
 				for(final MOB F : allFollowers)
 				{
