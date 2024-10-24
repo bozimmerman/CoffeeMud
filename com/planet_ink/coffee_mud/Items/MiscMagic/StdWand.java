@@ -183,7 +183,21 @@ public class StdWand extends StdItem implements Wand
 			uses="unlimited";
 		final String plus = ((phyStats().ability()>0)&&(phyStats.ability()<10))?("+"+phyStats.ability()):"";
 		if(A!=null)
-			id="'A wand of "+A.name()+plus+" Charges: "+uses+"\n\r"+id;
+		{
+			switch(A.classificationCode()&Ability.ALL_ACODES)
+			{
+			case Ability.ACODE_PRAYER:
+				id="'A relic of "+A.name()+plus+" Charges: "+uses+"\n\r"+id;
+				break;
+			case Ability.ACODE_CHANT:
+				id="'A shard of "+A.name()+plus+" Charges: "+uses+"\n\r"+id;
+				break;
+			case Ability.ACODE_SPELL:
+			default:
+				id="'A wand of "+A.name()+plus+" Charges: "+uses+"\n\r"+id;
+				break;
+			}
+		}
 		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
 	}
 

@@ -1314,15 +1314,17 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 	}
 
-	protected void processFormation(final List<MOB>[] done, final MOB leader, final int level)
+	protected List<MOB>[] processFormation(List<MOB>[] done, final MOB leader, final int baseLevel, final int relOrder)
 	{
 		for (final List<MOB> element : done)
 		{
-			if((element!=null)&&(element.contains(leader)))
-				return;
+			if((element!=null)
+			&&(element.contains(leader)))
+				return done;
 		}
+		final int level = baseLevel + relOrder;
 		if(level>=done.length)
-			return;
+			done = Arrays.copyOf(done, level+1);
 		if(done[level]==null)
 			done[level]=new Vector<MOB>();
 		done[level].add(leader);
@@ -1331,11 +1333,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			final MOB M=leader.fetchFollower(f);
 			if(M==null)
 				continue;
-			int range=leader.fetchFollowerOrder(M);
-			if(range<0)
-				range=0;
-			processFormation(done,M,level+range);
+			int order=leader.fetchFollowerOrder(M);
+			if(order<0)
+				order=0;
+			done = processFormation(done, M, level, order-level);
 		}
+		return done;
 	}
 
 	@Override
@@ -1343,9 +1346,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public List<MOB>[] getFormation(final MOB mob)
 	{
 		final MOB leader=mob.getGroupLeader();
-		final Vector<MOB>[] done=new Vector[20];
-		processFormation(done,leader,0);
-		return done;
+		int leaderLevel = leader.fetchFollowerOrder(leader);
+		if(leaderLevel < 0)
+			leaderLevel = 0;
+		final List<MOB>[] first = new List[] { new Vector<MOB>() };
+		return processFormation(first, leader, 0, leaderLevel);
 	}
 
 	@Override
@@ -1354,12 +1359,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final List<MOB>[] form=getFormation(mob);
 		for(int i=1;i<form.length;i++)
 		{
-			if((form[i]!=null)&&(form[i].contains(mob)))
+			if((form[i]!=null)
+			&&(form[i].contains(mob)))
 			{
 				i--;
 				while(i>=0)
 				{
-					if((form[i]!=null)&&(form[i].size()>0))
+					if((form[i]!=null)
+					&&(form[i].size()>0))
 						return form[i];
 					i--;
 				}
@@ -1374,7 +1381,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final List<MOB>[] form=getFormation(mob);
 		for(int i=1;i<form.length;i++)
 		{
-			if((form[i]!=null)&&(form[i].contains(mob)))
+			if((form[i]!=null)
+			&&(form[i].contains(mob)))
 				return i;
 		}
 		return 0;
@@ -2754,15 +2762,57 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		if(!(msg.target() instanceof MOB))
 			return;
-		final MOB attacker=msg.source();
+		MOB attacker=msg.source();
 		final MOB target=(MOB)msg.target();
 
+		final Room R = target.location();
 		if((!target.isInCombat())
-		&&(target.location()!=null)
-		&&(target.location().isInhabitant(attacker))
+		&&(R!=null)
+		&&(R.isInhabitant(attacker))
 		&&((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 			||(!(msg.tool() instanceof DiseaseAffect))))
 		{
+			if((target.getVictim()==null)
+			&& (R!=null)
+			&&((attacker.amFollowing()!=null)
+				||(attacker.numFollowers()>1)))
+			{
+				MOB frontM = null;
+				for(final List<MOB> formation : getFormation(attacker))
+				{
+					if((formation!=null)
+					&&(formation.size()>0))
+					{
+						if(formation.contains(attacker))
+							break; // this means nothing would have changed.
+						boolean brk=false;
+						for(final MOB M : formation)
+						{
+							if((M.location()==R)
+							&&(!M.isAttributeSet(MOB.Attrib.AUTOASSIST)) // ! means they DO autoassist
+							&&(!CMath.bset(M.phyStats().disposition(), PhyStats.IS_UNHELPFUL)))
+							{
+								frontM=M;
+								brk=true;
+							}
+						}
+						if(brk)
+							break;
+					}
+				}
+				if((frontM!=null)
+				&&(frontM!=attacker))
+				{
+					if(!frontM.isInCombat())
+					{
+						final CMMsg msgf = CMClass.getMsg(target, frontM, null,
+								CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_VISUAL,null);
+						if(R.okMessage(target, msgf))
+							R.send(target, msgf);
+					}
+					attacker=frontM;
+				}
+			}
 			establishRange(target,attacker,msg.tool());
 			target.setVictim(attacker);
 		}
@@ -2830,16 +2880,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		||(targetFollows==observerM)
 		||((targetFollows!=null)&&(targetFollows==observerFollows)))
 		{
-			observerM.setVictim(attackerM);
 			establishRange(observerM,attackerM,observerM.fetchWieldedItem());
+			observerM.setVictim(attackerM);
 		}
 		else
 		if((observerFollows==attackerM)
 		||(sourceFollows==observerM)
 		||((sourceFollows!=null)&&(sourceFollows==observerFollows)))
 		{
-			observerM.setVictim(defenderM);
 			establishRange(observerM,defenderM,observerM.fetchWieldedItem());
+			observerM.setVictim(defenderM);
 		}
 	}
 
@@ -2885,16 +2935,25 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	@Override
 	public int calculateRangeToTarget(final MOB source, final MOB target, final Environmental tool)
 	{
+		// establish and enforce range for the target, who is being assaulted
+
+		// if your victim already has a range, you inherit that
+		if((target.getVictim()==source)
+		&&(target.rangeToTarget()>=0))
+			return target.rangeToTarget();
+
+		// if you are riding something, you inherit the range of the horse, or other riders
+		// already in combat.
 		if(source.riding()!=null)
 		{
 			if((target==source.riding())||(source.riding().amRiding(target)))
 				return 0;
 			else
 			if((source.riding() instanceof MOB)
-			   &&(((MOB)source.riding()).isInCombat())
-			   &&(((MOB)source.riding()).getVictim()==target)
-			   &&(((MOB)source.riding()).rangeToTarget()>=0)
-			   &&(((MOB)source.riding()).rangeToTarget()<source.rangeToTarget()))
+			&&(((MOB)source.riding()).isInCombat())
+			&&(((MOB)source.riding()).getVictim()==target)
+			&&(((MOB)source.riding()).rangeToTarget()>=0)
+			&&(((MOB)source.riding()).rangeToTarget()<source.rangeToTarget()))
 				return ((MOB)source.riding()).rangeToTarget();
 			else
 			for(int r=0;r<source.riding().numRiders();r++)
@@ -2904,50 +2963,65 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					continue;
 				final MOB otherMOB=(MOB)rider;
 				if((otherMOB!=source)
-				   &&(otherMOB.isInCombat())
-				   &&(otherMOB.getVictim()==target)
-				   &&(otherMOB.rangeToTarget()>=0)
-				   &&(otherMOB.rangeToTarget()<source.rangeToTarget()))
+				&&(otherMOB.isInCombat())
+				&&(otherMOB.getVictim()==target)
+				&&(otherMOB.rangeToTarget()>=0)
+				&&((otherMOB.rangeToTarget()<source.rangeToTarget())||(source.rangeToTarget()<0)))
 					return otherMOB.rangeToTarget();
 			}
 		}
 
-		final MOB follow=source.amFollowing();
-		if((target.getVictim()==source)&&(target.rangeToTarget()>=0))
-			return target.rangeToTarget();
-		else
-		if((follow!=null)&&(follow.location()==source.location()))
+		// if the source is a rideable, and you are being ridden,
+		// then you inherit the range of a rider, if any
+		if((source instanceof Rideable)
+		&&(((Rideable)source).numRiders()>0))
 		{
-			int newRange=follow.fetchFollowerOrder(source);
+			for(int r=0;r<((Rideable)source).numRiders();r++)
+			{
+				final Rider rider=((Rideable)source).fetchRider(r);
+				if(!(rider instanceof MOB))
+					continue;
+				final MOB otherMOB=(MOB)rider;
+				if((otherMOB.isInCombat())
+				&&(otherMOB.getVictim()==target)
+				&&(otherMOB.rangeToTarget()>=0)
+				&&((otherMOB.rangeToTarget()<source.rangeToTarget())||(source.rangeToTarget()<0)))
+					return otherMOB.rangeToTarget();
+			}
+		}
+
+		final Room R = source.location();
+		final int maxToolRange = maxRangeWith(source,tool);
+		final MOB leader=source.amFollowing();
+		if((leader!=null)
+		&&(leader!=source)
+		&&(leader.location()==source.location()))
+		{
+			int leaderRange = leader.isInCombat()?leader.rangeToTarget():-1;
+			if(leaderRange<0)
+				leaderRange = calculateRangeToTarget(leader, target, leader.fetchWieldedItem());
+			int newRange=leader.fetchFollowerOrder(source);
 			if(newRange<0)
 			{
-				if(follow.rangeToTarget()>=0)
-				{
-					newRange=follow.rangeToTarget();
-					if(newRange<maxRangeWith(source,tool))
-						newRange=maxRangeWith(source,tool);
-				}
-				else
-					newRange=maxRangeWith(source,tool);
+				// if you aren't in formation, then just follow your leader
+				newRange=maxToolRange;
+				if((leaderRange >= 0) && (leaderRange < newRange))
+					newRange = leaderRange;
 			}
 			else
 			{
-				if(follow.rangeToTarget()>=0)
-					newRange=newRange+follow.rangeToTarget();
+				if(leaderRange>=0)
+					newRange=newRange+leaderRange;
 			}
-			if((source.location()!=null)&&(source.location().maxRange()<newRange))
-				newRange=source.location().maxRange();
-			return newRange;
+			return (R!=null)?Math.min(newRange,R.maxRange()):newRange;
 		}
-		else
-			return maxRangeWith(source,tool);
+		return (R!=null)?Math.min(maxToolRange,R.maxRange()):maxToolRange;
 	}
 
 	@Override
 	public void establishRange(final MOB source, final MOB target, final Environmental tool)
 	{
-		// establish and enforce range
-		if((source.rangeToTarget()<0))
+		if((source.rangeToTarget()<0)||(source.getVictim()!=target))
 		{
 			final int newRange = calculateRangeToTarget(source, target, tool);
 			if(newRange != source.rangeToTarget())

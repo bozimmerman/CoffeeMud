@@ -87,20 +87,20 @@ public class Formation extends StdCommand
 			MOB who=null;
 			if(CMLib.english().containsString(mob.name(),name)
 			   ||CMLib.english().containsString(mob.Name(),name))
+				who=mob;
+			else
 			{
-				CMLib.commands().postCommandFail(mob,origCmds,L("You can not move your own position.  You are always the leader of your party."));
-				return false;
-			}
-			for(int f=0;f<mob.numFollowers();f++)
-			{
-				final MOB M=mob.fetchFollower(f);
-				if(M==null)
-					continue;
-				if(CMLib.english().containsString(M.name(),name)
-				   ||CMLib.english().containsString(M.Name(),name))
+				for(int f=0;f<mob.numFollowers();f++)
 				{
-					who=M;
-					break;
+					final MOB M=mob.fetchFollower(f);
+					if(M==null)
+						continue;
+					if(CMLib.english().containsString(M.name(),name)
+					   ||CMLib.english().containsString(M.Name(),name))
+					{
+						who=M;
+						break;
+					}
 				}
 			}
 			if(who==null)
@@ -109,7 +109,7 @@ public class Formation extends StdCommand
 				return false;
 			}
 			if((!CMath.isNumber(row))||(CMath.s_int(row)<0))
-				CMLib.commands().postCommandFail(mob,origCmds,L("'@x1' is not a valid row in which to put @x2.  Try number greater than 0.",row,who.name()));
+				CMLib.commands().postCommandFail(mob,origCmds,L("'@x1' is not a valid row in which to put @x2.  Try number greater than or equal to 0.",row,who.name()));
 			else
 			{
 				int leaderRow=-1;
@@ -124,11 +124,8 @@ public class Formation extends StdCommand
 				if(leaderRow<0)
 					CMLib.commands().postCommandFail(mob,origCmds,L("You do not exist."));
 				else
-				if(CMath.s_int(row)<leaderRow)
-					CMLib.commands().postCommandFail(mob,origCmds,L("You can not place @x1 behind your own position, which is @x2.",who.name(),""+leaderRow));
-				else
 				{
-					mob.addFollower(who,CMath.s_int(row)-leaderRow);
+					mob.addFollower(who,CMath.s_int(row));
 					mob.tell(L("You have positioned @x1 to row @x2",who.name(),""+CMath.s_int(row)));
 				}
 			}

@@ -134,6 +134,7 @@ public class StdMOB implements MOB
 	protected CMUniqSortSVec<Behavior>		behaviors			= new CMUniqSortSVec<Behavior>(1);
 	protected CMUniqNameSortSVec<Tattoo>	tattoos				= new CMUniqNameSortSVec<Tattoo>(1);
 	protected volatile PairList<MOB, Short>	followers			= null;
+	protected volatile int					followOrder			= -1;
 	protected LinkedList<QMCommand>			commandQue			= new LinkedList<QMCommand>();
 	protected SVector<ScriptingEngine>		scripts				= new SVector<ScriptingEngine>(1);
 	protected volatile List<Ability>		racialAffects		= null;
@@ -650,6 +651,7 @@ public class StdMOB implements MOB
 		tattoos = new CMUniqNameSortSVec<Tattoo>();
 		expertises = new STreeMap<String, Integer>();
 		followers = null;
+		followOrder = -1;
 		commandQue = new LinkedList<QMCommand>();
 		scripts = new SVector<ScriptingEngine>();
 		racialAffects = null;
@@ -1141,6 +1143,7 @@ public class StdMOB implements MOB
 		cachedImageName = null;
 		inventory.setSize(0);
 		followers = null;
+		followOrder = -1;
 		abilitys.setSize(0);
 		triggerer.setObsolete();
 		abilityUseCache.clear();
@@ -2517,7 +2520,7 @@ public class StdMOB implements MOB
 								tell(L("You are serving '@x1'!", getLiegeID()));
 							return false;
 						}
-						CMLib.combat().establishRange(this, (MOB) msg.target(), msg.tool());
+						CMLib.combat().establishRange(this, (MOB) msg.target(), msg.tool()); // why this here?
 					}
 				}
 
@@ -3446,20 +3449,18 @@ public class StdMOB implements MOB
 			&& ((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				|| (!(msg.tool() instanceof DiseaseAffect))))
 			{
-				CMLib.combat().establishRange(this, (MOB) msg.target(), msg.tool());
+				CMLib.combat().establishRange(this, (MOB)msg.target(), msg.tool());
 				if(!((MOB)msg.target()).isPlayer())
 					CMLib.awards().giveAutoProperties((MOB)msg.target(), false);
 				if(!isPlayer())
 					CMLib.awards().giveAutoProperties(this, false);
 				if((msg.tool() instanceof Weapon)
-				|| (msg.sourceMinor() == CMMsg.TYP_WEAPONATTACK))
+				|| (msg.sourceMinor() == CMMsg.TYP_WEAPONATTACK)
+				|| (!flagLib.isAliveAwakeMobileUnbound((MOB)msg.target(), true)))
 				{
-					setVictim((MOB) msg.target());
+					setVictim((MOB)msg.target());
 					combatStarted();
 				}
-				else
-				if(!flagLib.isAliveAwakeMobileUnbound((MOB) msg.target(), true))
-					setVictim((MOB) msg.target());
 			}
 
 			if(msg.sourceMajor(CMMsg.MASK_CHANNEL))
@@ -4582,6 +4583,11 @@ public class StdMOB implements MOB
 	{
 		if(follower != null)
 		{
+			if(follower == this)
+			{
+				followOrder = order;
+				return;
+			}
 			if(followers == null)
 				followers = new SPairList<MOB, Short>();
 			else
@@ -4629,6 +4635,8 @@ public class StdMOB implements MOB
 	@Override
 	public int fetchFollowerOrder(final MOB thisOne)
 	{
+		if(thisOne == this)
+			return followOrder;
 		for(final Enumeration<Pair<MOB, Short>> f = followers(); f.hasMoreElements();)
 		{
 			final Pair<MOB, Short> F = f.nextElement();

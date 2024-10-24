@@ -599,7 +599,7 @@ public interface CombatLibrary extends CMLibrary
 	 * from each other.  Does not care about current combat or range state.
 	 *
 	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#setRangeToTarget(int)
-	 * @see CombatLibrary#establishRange(MOB, MOB, Environmental)
+	 * @see CombatLibrary#establishRange(MOB, MOB, Environmental, boolean)
 	 *
 	 * @param source the attacker
 	 * @param target the target

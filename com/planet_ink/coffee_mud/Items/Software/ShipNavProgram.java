@@ -1087,12 +1087,12 @@ public class ShipNavProgram extends ShipSensorProgram
 				if(toDirDiff < MAX_DIR_DIFF)
 				{
 					// Yes, so check if we should be speeding up, or slowing down
-
 					// first see if we are actually underway...
 					if((ship.speed()>targetAcceleration)
 					&& (targetAcceleration > 0.0))
 					{
 						final double ticksToStop = ship.speed() / targetAcceleration;
+						// * * final double ticksToTarget = distToITarget / ship.speed();
 						final double stopDistance = (ship.speed()/2.0) * ticksToStop;
 						// now see if we need to adjust decelleration during deproach
 						if((ticksToStop > 0)
@@ -1146,22 +1146,14 @@ public class ShipNavProgram extends ShipSensorProgram
 					Dir3D facingDir;
 					if(toDirDiff < Math.PI/2)
 					{
-						track.state = ShipNavState.DEPROACH;
 						facingDir=CMLib.space().getOffsetAngle(dirToITarget, ship.direction());
 						facingDir=CMLib.space().getOppositeDir(facingDir);
 					}
 					else
 					if(toDirDiff < Math.PI)
-					{
-						track.state = ShipNavState.DEPROACH;
 						facingDir=CMLib.space().getOppositeDir(ship.direction());
-						//facingDir=CMLib.space().getMiddleAngle(dirToITarget, CMLib.space().getOppositeDir(ship.direction()));
-					}
 					else
-					{
-						track.state = ShipNavState.APPROACH;
 						facingDir=CMLib.space().getOppositeDir(dirToITarget);
-					}
 					if(CMLib.space().getAngleDelta(ship.facing(), facingDir)>MAX_DIR_DIFF)
 						changeFacing(ship, facingDir);
 				}
