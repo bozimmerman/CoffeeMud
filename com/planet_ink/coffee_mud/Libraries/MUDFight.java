@@ -2992,15 +2992,19 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 		final Room R = source.location();
 		final int maxToolRange = maxRangeWith(source,tool);
-		final MOB leader=source.amFollowing();
+		final MOB leader=(source.amFollowing()!=null)?source.amFollowing():null;
 		if((leader!=null)
-		&&(leader!=source)
 		&&(leader.location()==source.location()))
 		{
-			int leaderRange = leader.isInCombat()?leader.rangeToTarget():-1;
-			if(leaderRange<0)
-				leaderRange = calculateRangeToTarget(leader, target, leader.fetchWieldedItem());
 			int newRange=leader.fetchFollowerOrder(source);
+			int leaderRange=0;
+			if(leader.amFollowing()!=null)
+			{
+				if(leader.isInCombat() && (leader.rangeToTarget()>=0))
+					leaderRange=leader.rangeToTarget();
+				else
+					leaderRange=calculateRangeToTarget(leader, target, leader.fetchWieldedItem());
+			}
 			if(newRange<0)
 			{
 				// if you aren't in formation, then just follow your leader
@@ -3010,10 +3014,42 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			}
 			else
 			{
-				if(leaderRange>=0)
-					newRange=newRange+leaderRange;
+				boolean found=false;
+				MOB firstElligibleM=null;
+				for(final List<MOB> form :  getFormation(leader))
+				{
+					if((form!=null)&&(form.size()>0))
+					{
+						for(final MOB M : form)
+						{
+							if(M.location()==R)
+							{
+								if(firstElligibleM==null)
+									firstElligibleM=M;
+								if((M.getVictim()==target)
+								&&(M.rangeToTarget()>=0))
+								{
+									leaderRange+=M.rangeToTarget();
+									found=true;
+									break;
+								}
+							}
+						}
+					}
+					if(found)
+						break;
+				}
+				if((!found)&&(firstElligibleM!=null)&&(firstElligibleM!=source))
+					leaderRange+=calculateRangeToTarget(firstElligibleM, target, firstElligibleM.fetchWieldedItem());
+				newRange=newRange+leaderRange;
 			}
 			return (R!=null)?Math.min(newRange,R.maxRange()):newRange;
+		}
+		if(source.numFollowers()>0)
+		{
+			final int position = source.fetchFollowerOrder(source);
+			if(position > 0)
+				return (R!=null)?Math.min(position,R.maxRange()):position;
 		}
 		return (R!=null)?Math.min(maxToolRange,R.maxRange()):maxToolRange;
 	}

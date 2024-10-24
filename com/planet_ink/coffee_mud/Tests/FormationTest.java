@@ -131,7 +131,7 @@ public class FormationTest extends StdTest
 				for(int i=0;i<grp.size();i++)
 				{
 					if(grp.get(i).isInCombat() && grp.get(i).rangeToTarget()!=test[0]+i)
-						return "Fail(test#"+tnum+".X"+i+"): "+grp.get(i).getVictim().name()+"=="+grp.get(i).rangeToTarget();
+						return "Fail(test#"+tnum+".X"+i+"): "+grp.get(i).name()+"=="+grp.get(i).rangeToTarget();
 				}
 				enemyM.tick(enemyM, Tickable.TICKID_MOB);
 				for(final MOB M : grp)
