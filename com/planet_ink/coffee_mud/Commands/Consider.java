@@ -72,12 +72,12 @@ public class Consider extends StdCommand
 		return levelDiffed*(levelDiff<0.0?-1:1);
 	}
 
-	public int doConsider(final MOB mob, final Physical target, final boolean heShe)
+	public int doConsider(final MOB mob, final Physical target, final boolean heShe, final String msgStr)
 	{
 		final Room R=mob.location();
 		if(R==null)
 			return 0;
-		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_EYES|CMMsg.TYP_OK_VISUAL,null,L("<S-NAME> consider(s) <T-NAMESELF>."),L("<S-NAME> consider(s) <T-NAMESELF>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_EYES|CMMsg.TYP_OK_VISUAL,null,msgStr,msgStr);
 		if(R.okMessage(mob,msg))
 			R.send(mob,msg);
 		int lvlDiff=0;
@@ -265,8 +265,16 @@ public class Consider extends StdCommand
 			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see '@x1' here.",targetName));
 			return false;
 		}
-		for(final Physical P : targets)
-			doConsider(mob,P,false);
+		String msgStr;
+		if(targets.size()>1)
+			msgStr = L("<S-NAME> consider(s) several things.");
+		else
+			msgStr = L("<S-NAME> consider(s) <T-NAMESELF>.");
+		for(int p=0;p<targets.size();p++)
+		{
+			doConsider(mob,targets.get(p),false, msgStr);
+			msgStr=null;
+		}
 		return true;
 	}
 
@@ -275,7 +283,8 @@ public class Consider extends StdCommand
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Integer.valueOf(0);
-		return Integer.valueOf(doConsider(mob, (MOB)args[0], false));
+		final String msgStr = L("<S-NAME> consider(s) <T-NAMESELF>.");
+		return Integer.valueOf(doConsider(mob, (MOB)args[0], false, msgStr));
 	}
 
 	@Override
