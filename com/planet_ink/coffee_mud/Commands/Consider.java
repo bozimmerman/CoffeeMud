@@ -201,7 +201,7 @@ public class Consider extends StdCommand
 		if(withWhat.length()>0)
 			mob.tell(withWhat.toString()+".");
 		else
-		if(!(target instanceof MOB))
+		if((!(target instanceof MOB))&&(msgStr!=null))
 			mob.tell(L("You don't have any particular thoughts about that."));
 		return lvlDiff;
 	}
