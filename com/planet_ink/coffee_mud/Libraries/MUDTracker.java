@@ -2299,7 +2299,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			final Room R=trailV.get(s);
 			final Room RA=trailV.get(s-1);
-			theDirTrail.add(CMLib.directions().getDirectionChar(getRoomDirection(R,RA,empty))+delimeter);
+			theDirTrail.add(CMLib.directions().getDirectionChar(getRoomDirection(R,RA,empty)));
 		}
 		final StringBuffer theTrail=new StringBuffer("");
 		if(confirm)

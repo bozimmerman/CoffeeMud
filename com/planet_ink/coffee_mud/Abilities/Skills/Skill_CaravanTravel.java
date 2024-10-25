@@ -210,6 +210,11 @@ public class Skill_CaravanTravel extends StdSkill
 				mob.tell(L("'@x1' is not a valid chart point number to get the distance to. Try TRADECHART LIST.",parm));
 			return false;
 		}
+		if(currentR == targetR)
+		{
+			mob.tell(L("You are already there!"));
+			return false;
+		}
 
 		if((targetR==null)||(trail==null)||(trail.size()==0))
 		{

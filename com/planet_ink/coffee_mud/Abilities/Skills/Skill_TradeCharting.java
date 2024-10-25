@@ -299,13 +299,19 @@ public class Skill_TradeCharting extends StdSkill
 						mob.tell(L("You can't get there from here."));
 						return false;
 					}
+					if(currentR == room)
+					{
+						mob.tell(L("You are already there."));
+						return false;
+					}
 
 					final List<Room> destRooms=new XVector<Room>(room);
 					final TrackingFlags flags=CMLib.tracking().newFlags()
 												.plus(TrackingFlag.PASSABLE)
 												.plus(TrackingFlag.DRIVEABLEONLY);
 					final List<Room> trail=CMLib.tracking().findTrailToAnyRoom(currentR, destRooms, flags, 100);
-					if((trail.size()==0)
+					if((trail==null)
+					||(trail.size()==0)
 					||(trail.get(trail.size()-1)!=currentR)
 					||(trail.get(0)!=room))
 					{

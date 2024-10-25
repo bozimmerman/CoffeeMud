@@ -984,7 +984,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 					final String rest = CMParms.combine(parsedFail,1);
 					if(!securityCheck(msg.source()))
 					{
-						msg.source().tell(L("The captain does not permit you."));
+						msg.source().tell(L("You are not permitted to do that."));
 						return false;
 					}
 					final Boolean result = startAttack(msg.source(),thisRoom,rest);
