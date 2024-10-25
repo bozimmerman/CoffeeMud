@@ -3122,17 +3122,19 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			final CharStats RT=(CharStats)CT.copyOf();
 			R.affectCharStats(mob, RT);
 			int total=0;
+			int maxTotal=0;
 			for(final int i : CharStats.CODES.BASECODES())
 			{
 				final int statVal=RT.getStat(i);
 				final int statDiff=RT.getStat(i)-CT.getStat(i);
 				total += statVal;
+				maxTotal += (max+RT.getStat(CharStats.CODES.toMAXBASE(i)));
 				final String valDiff = (statDiff == 0)?"":(((statDiff>0)?("+"+statDiff):(""+statDiff))+" from "+R.name());
 				statstr.append("^H"+CMStrings.padRight(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)),15)
 							  +"^N: ^w"+CMStrings.padRight(Integer.toString(statVal),2)
 							  +"^N/^w"+(max+RT.getStat(CharStats.CODES.toMAXBASE(i)))+"^N "+valDiff+"\n\r");
 			}
-			statstr.append("^w"+CMStrings.padRight(L("STATS TOTAL"),15)+"^N: ^w"+total+"^N/^w"+(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)*6)+"^.^N");
+			statstr.append("^w"+CMStrings.padRight(L("STATS TOTAL"),15)+"^N: ^w"+total+"^N/^w"+maxTotal+"^.^N");
 			session.println(statstr.toString());
 			if((qualifyingClassListV.size()==0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)))
 				qualifyingClassListV=classQualifies(mob,loginObj.theme);
