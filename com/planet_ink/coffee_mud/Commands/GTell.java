@@ -79,6 +79,7 @@ public class GTell extends StdCommand
 
 		CMMsg tellMsg=CMClass.getMsg(mob,null,null,CMMsg.MSG_TELL,null,CMMsg.NO_EFFECT,null,CMMsg.MSG_TELL,null);
 		text=text.trim();
+		final String rawTextMsgStr;
 		if(text.startsWith(",")
 		||(text.startsWith(":")
 			&&(text.length()>1)
@@ -100,6 +101,10 @@ public class GTell extends StdCommand
 						V,
 						null,
 						false);
+				if((tellMsg.othersMessage()!=null)&&(tellMsg.othersMessage().length()>0))
+					rawTextMsgStr=CMStrings.removeColors(tellMsg.othersMessage());
+				else
+					rawTextMsgStr=CMStrings.removeColors(tellMsg.sourceMessage());
 			}
 			else
 			{
@@ -109,18 +114,21 @@ public class GTell extends StdCommand
 					text=" "+text.trim();
 				tellMsg.setSourceMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^>[GTELL] <S-NAME>"+text+"^</GTELL^>^?^.");
 				tellMsg.setOthersMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^>"+mob.name()+" tells the group '"+text+"'^</GTELL^>^?^.");
+				rawTextMsgStr=mob.name()+" tells the group '"+text+"'";
 			}
 		}
 		else
 		{
 			tellMsg.setSourceMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> tell(s) the group '"+text+"'^</GTELL^>^?^.");
 			tellMsg.setOthersMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^>"+mob.name()+" tells the group '"+text+"'^</GTELL^>^?^.");
+			rawTextMsgStr=mob.name()+" tells the group '"+text+"'";
 		}
 
 		if((mob.session()!=null)
 		&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)))
 		{
-			mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\"GTELL\",\"msg\":\""+MiniJSON.toJSONString(text)+"\""
+			mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\"GTELL\","
+					+ "\"msg\":\""+MiniJSON.toJSONString(rawTextMsgStr)+"\""
 					+ ",\"player\":\""+mob.name()+"\"}");
 		}
 
@@ -158,7 +166,7 @@ public class GTell extends StdCommand
 				&&(target.session().getClientTelnetMode(Session.TELNET_GMCP)))
 				{
 					target.session().sendGMCPEvent("comm.channel", "{\"chan\":\"GTELL\","
-							+ "\"msg\":\""+MiniJSON.toJSONString(text)+"\""
+							+ "\"msg\":\""+MiniJSON.toJSONString(rawTextMsgStr)+"\""
 							+ ",\"player\":\""+mob.name()+"\"}");
 				}
 				if(target.playerStats()!=null)
