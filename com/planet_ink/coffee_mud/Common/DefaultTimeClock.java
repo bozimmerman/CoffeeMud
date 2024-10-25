@@ -248,7 +248,7 @@ public class DefaultTimeClock implements TimeClock
 		if(getDaysInWeek()>0)
 		{
 			long x=((long)getYear())*((long)getMonthsInYear())*getDaysInMonth();
-			x=x+((long)(getMonth()-1))*((long)getDaysInMonth());
+			x=x+((long)(getMonth()))*((long)getDaysInMonth());
 			x=x+getDayOfMonth();
 			final String[] weekNames = getWeekNames();
 			final int weekDayIndex = (int)(x%getDaysInWeek());
@@ -321,12 +321,12 @@ public class DefaultTimeClock implements TimeClock
 		if(getDaysInWeek()>0)
 		{
 			long x=((long)getYear())*((long)getMonthsInYear())*getDaysInMonth();
-			x=x+((long)(getMonth()-1))*((long)getDaysInMonth());
+			x=x+((long)(getMonth()))*((long)getDaysInMonth());
 			x=x+getDayOfMonth();
 			timeDesc.append(getWeekNames()[(int)(x%getDaysInWeek())]+", ");
 		}
 		timeDesc.append("the "+getDayOfMonth()+CMath.numAppendage(getDayOfMonth()));
-		timeDesc.append(" day of "+getMonthNames()[getMonth()-1]);
+		timeDesc.append(" day of "+getMonthNames()[getMonth()]);
 		if(getYearNames().length>0)
 			timeDesc.append(", "+CMStrings.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
 		timeDesc.append(L(".\n\rIt is "+getSeasonCode().toString().toLowerCase()+"."));
@@ -475,7 +475,7 @@ public class DefaultTimeClock implements TimeClock
 		day = d;
 		if(getMonth()>0)
 		{
-			dayOfYear = ((getMonth()-1) * getDaysInMonth()) + d;
+			dayOfYear = ((getMonth()) * getDaysInMonth()) + d;
 			if(getDaysInWeek()>0)
 			{
 				weekOfMonth = (int)Math.round(CMath.floor(CMath.div(day,getDaysInWeek())));
