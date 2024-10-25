@@ -358,10 +358,11 @@ public class ListCmd extends StdCommand
 						uniqueID = uniqueID.substring(14);
 					if(uniqueID.startsWith("ROOM_PROPERTY_"))
 						uniqueID = uniqueID.substring(14);
+					final String owedStr = (owed==0.0)?"0":("-$"+owed);
 					lines.append(CMStrings.padRight(ownr, colWidths[0])+": "+
 								CMStrings.padRightPreserve("("+rooms+")",colWidths[1])+": "+
 								 "^N^<LSTROOMID^>"+CMStrings.padRight(uniqueID,colWidths[2])+"^</LSTROOMID^>"+": "+
-								 "^.^N"+CMStrings.limit("($"+totalValue+", -$"+owed+")",colWidths[3])+
+								 "^.^N"+CMStrings.limit("($"+totalValue+", "+owedStr+")",colWidths[3])+
 								 "\n\r");
 				}
 			}

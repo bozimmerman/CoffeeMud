@@ -64,12 +64,12 @@ public class TickTock extends StdCommand
 				mob.location().getArea().getTimeObj().save();
 			}
 			else
-			if((commands.size()==2)
-			&&(CMath.isInteger(commands.get(0)))
-			&&(TimePeriod.get(commands.get(1))!=null))
+			if((commands.size()==3)
+			&&(CMath.isInteger(commands.get(1)))
+			&&(TimePeriod.get(commands.get(2))!=null))
 			{
-				final int num = CMath.s_int(commands.get(0));
-				final TimePeriod P = TimePeriod.get(commands.get(1));
+				final int num = CMath.s_int(commands.get(1));
+				final TimePeriod P = TimePeriod.get(commands.get(2));
 				mob.tell(L("..tick..tock.."));
 				mob.location().getArea().getTimeObj().bump(P, num);
 				mob.location().getArea().getTimeObj().save();

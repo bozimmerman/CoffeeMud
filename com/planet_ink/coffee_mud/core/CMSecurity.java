@@ -2915,7 +2915,8 @@ public class CMSecurity
 		RITUALS("rituals and services"),
 		CRONTRACE("cron job tracing"),
 		CALENDAR("calendar event tracing"),
-		TROPHIES("clan trophy logic tracing")
+		TROPHIES("clan trophy logic tracing"),
+		PROPTAXES("property tax changes")
 		;
 		private final String desc;
 
