@@ -138,6 +138,7 @@ public class Burning extends StdAbility
 		Physical affected=this.affected;
 		if((affected instanceof Item)
 		&&(((Item)affected).owner() instanceof Room)
+		&&(((Item)affected).container()==null)
 		&&(!CMath.bset(abilityCode(), Burning.FIREFLAG_UNEXTINGUISHABLE)))
 		{
 			int unInvokeChance;

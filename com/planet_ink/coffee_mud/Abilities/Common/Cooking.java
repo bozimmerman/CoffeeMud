@@ -146,6 +146,22 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return getDuration(40,mob,level,5);
 	}
 
+	protected boolean isInnerCookOven(final Container cooking, final boolean mustBeBurning)
+	{
+		if(cooking.owner() instanceof Room)
+		{
+			for(final Item I : cooking.getContents())
+				if(CMLib.flags().isOnFire(I))
+					return true;
+			if(mustBeBurning)
+				return false;
+			for(final Item I : cooking.getContents())
+				if(CMLib.materials().getBurnDuration(I)>0)
+					return true;
+		}
+		return false;
+	}
+
 	protected boolean isMineForCooking(final MOB mob, final Container cooking)
 	{
 		for(int a=0;a<mob.numEffects();a++)
@@ -159,8 +175,10 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		if((mob.location()==cooking.owner())
 		&&((CMLib.flags().isOnFire(cooking))
 			||(!requireFire())
-			||((cooking.container()!=null)&&(CMLib.flags().isOnFire(cooking.container())))))
+			||((cooking.container()!=null)&&(CMLib.flags().isOnFire(cooking.container())))
+			||(isInnerCookOven(cooking,false))))
 		   return true;
+
 		return false;
 	}
 
@@ -222,8 +240,9 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			||(finalAmount<=0)
 			||(!isMineForCooking(mob,cookingPot))
 			||(!meetsLidRequirements(mob,cookingPot))
-			||(!contentsSame(potContents(cookingPot),oldPotContents))
+			||(!contentsSame(potContents(),oldPotContents))
 			||(requireFire()
+				&&(!isInnerCookOven(cookingPot,true))
 				&&(getRequiredFire(mob,0)==null)
 				&&(mob.location()==activityRoom)))
 			{
@@ -290,7 +309,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				&&(buildingI!=null)
 				&&(mob!=null))
 				{
-					final List<Item> V=cookingPot.getDeepContents();
+					final List<Item> V=getPotContents();
 					for(int v=0;v<V.size();v++)
 						V.get(v).destroy();
 					if(cookingPot instanceof Drink)
@@ -354,48 +373,53 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return true;
 	}
 
-	protected Map<String,Integer> potContents(final Container pot)
+	protected Map<String,Integer> potContents()
 	{
 		final Map<String,Integer> h=new Hashtable<String,Integer>();
-		if((pot instanceof Drink)&&(((Drink)pot).liquidRemaining()>0))
+		final Container pot = this.cookingPot;
+		if(pot != null)
 		{
-			if(pot instanceof RawMaterial)
-				h.put(RawMaterial.CODES.NAME(((RawMaterial)pot).material())+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
-			else
-				h.put(RawMaterial.CODES.NAME(((Drink)pot).liquidType())+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
-		}
-		if(pot.owner()==null)
-			return h;
-		final List<Item> V=pot.getDeepContents();
-		for(int v=0;v<V.size();v++)
-		{
-			final Item I=V.get(v);
-			String ing="Unknown";
-			if(I instanceof RawMaterial)
+			if((pot instanceof Drink)
+			&&(((Drink)pot).liquidRemaining()>0))
 			{
-				ing=RawMaterial.CODES.NAME(I.material());
-				if(CMParms.indexOf( RawMaterial.CODES.FISHES(), I.material())>=0)
-					ing+="/FISH";
+				if(pot instanceof RawMaterial)
+					h.put(RawMaterial.CODES.NAME(((RawMaterial)pot).material())+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
 				else
-				if(CMParms.indexOf( RawMaterial.CODES.BERRIES(), I.material())>=0)
-					ing+="/BERRIES";
+					h.put(RawMaterial.CODES.NAME(((Drink)pot).liquidType())+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
 			}
-			else
-			if((((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
-				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
-				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH))
-			&&(CMParms.parse(I.name()).size()>0))
-				ing=CMParms.parse(I.name()).lastElement().toUpperCase();
-			else
-				ing=I.name();
-			Integer INT=h.get(ing+"/"+I.rawSecretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/");
-			if(INT==null)
-				INT=Integer.valueOf(0);
-			if(I instanceof RawMaterial)
-				INT=Integer.valueOf(INT.intValue()+((RawMaterial)I).phyStats().weight());
-			else
-				INT=Integer.valueOf(INT.intValue()+1);
-			h.put(ing+"/"+I.rawSecretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/",INT);
+			if(pot.owner()==null)
+				return h;
+			final List<Item> V=getPotContents();
+			for(int v=0;v<V.size();v++)
+			{
+				final Item I=V.get(v);
+				String ing="Unknown";
+				if(I instanceof RawMaterial)
+				{
+					ing=RawMaterial.CODES.NAME(I.material());
+					if(CMParms.indexOf( RawMaterial.CODES.FISHES(), I.material())>=0)
+						ing+="/FISH";
+					else
+					if(CMParms.indexOf( RawMaterial.CODES.BERRIES(), I.material())>=0)
+						ing+="/BERRIES";
+				}
+				else
+				if((((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+					||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+					||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH))
+				&&(CMParms.parse(I.name()).size()>0))
+					ing=CMParms.parse(I.name()).lastElement().toUpperCase();
+				else
+					ing=I.name();
+				Integer INT=h.get(ing+"/"+I.rawSecretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/");
+				if(INT==null)
+					INT=Integer.valueOf(0);
+				if(I instanceof RawMaterial)
+					INT=Integer.valueOf(INT.intValue()+((RawMaterial)I).phyStats().weight());
+				else
+					INT=Integer.valueOf(INT.intValue()+1);
+				h.put(ing+"/"+I.rawSecretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/",INT);
+			}
 		}
 		return h;
 	}
@@ -598,6 +622,34 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 	{
 		final int hc=getX1Level(mob);
 		return hc*hc*multiplyer;
+	}
+
+	// this was necessary because ovens contain burnables AND food.
+	protected List<Item> getPotContents()
+	{
+		final Container C = this.cookingPot;
+		if(C != null)
+		{
+			final List<Item> contents = new XVector<Item>(C.getDeepContents());
+			int fireMat = -1;
+			for(final Iterator<Item> i=contents.iterator();i.hasNext();)
+			{
+				final Item I = i.next();
+				if(CMLib.flags().isOnFire(I))
+					fireMat=I.material();
+			}
+			if(fireMat > 0)
+			{
+				for(final Iterator<Item> i=contents.iterator();i.hasNext();)
+				{
+					final Item I = i.next();
+					if(I.material()==fireMat)
+						i.remove();
+				}
+			}
+			return new ReadOnlyList<Item>(contents);
+		}
+		return new ArrayList<Item>(0);
 	}
 
 	public Item buildItem(final MOB mob, final List<String> finalRecipe, final List<Item> contents)
@@ -1191,7 +1243,9 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			return false;
 		}
 
-		if(requireFire())
+		cookingPot=(Container)target;
+		if((requireFire())
+		&&(!isInnerCookOven(cookingPot,true)))
 		{
 			final Item fire=getRequiredFire(mob,0);
 			if(fire==null)
@@ -1200,8 +1254,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 		int duration=getDuration(mob, 1);
-		cookingPot=(Container)target;
-		oldPotContents=potContents(cookingPot);
+		oldPotContents=potContents();
 
 		//***********************************************
 		//* figure out recipe
@@ -1342,7 +1395,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			return false;
 		}
 
-		buildingI=buildItem(mob,finalRecipe,cookingPot.getDeepContents());
+		buildingI=buildItem(mob,finalRecipe,getPotContents());
 		duration=getDuration(mob, CMath.isInteger(finalRecipe.get(RCP_LEVEL))?CMath.s_int(finalRecipe.get(RCP_LEVEL)):1);
 		//***********************************************
 		//* done figuring out recipe
