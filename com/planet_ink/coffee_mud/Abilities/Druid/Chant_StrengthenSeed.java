@@ -118,6 +118,15 @@ public class Chant_StrengthenSeed extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
+		if((!auto)
+		&&(!mob.getGroupMembers(new XTreeSet<MOB>()).contains(target))
+		&&(!mob.mayIFight(target))
+		&&(mob!=target))
+		{
+			mob.tell(mob,target,null,L("<T-HE-SHE> <T-IS-ARE> not a valid target."));
+			return false;
+		}
+
 		final boolean success=proficiencyCheck(mob,0,auto) && (auto||(target.fetchEffect("Pregnancy")==null));
 		if(success)
 		{

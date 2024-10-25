@@ -71,6 +71,7 @@ public class Spell_DispelMagic extends Spell
 	{
 		if((A!=null)
 		&&(A.canBeUninvoked())
+		&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_CURSING)
 		&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 		   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
 		   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
