@@ -391,10 +391,11 @@ public class DefaultLawSet implements Law
 		if(lastMonthChecked != A.getTimeObj().getMonth())
 		{
 			Resources.submitResource("SYSTEM_TAXES_LASTCHECK", Integer.valueOf(A.getTimeObj().getMonth()));
-			final double tax=CMath.s_double((String)taxLaws.get("PROPERTYTAX"));
+			double tax=CMath.s_double((String)taxLaws.get("PROPERTYTAX"));
 			if(tax==0.0)
 				return;
-			//tax=CMath.div(tax,100.0); // property tax is already a portion of 1%
+			if(tax >= 1.0)
+				tax=CMath.div(tax,100.0); // property tax is already a portion of 1%, except when it isn't.
 			// now pull out the actual unique titles from the rooms
 			List<LandTitle> titles=CMLib.law().getAllUniqueLandTitles(A,"*",false);
 			final Map<String,List<LandTitle>> owners=new HashMap<String,List<LandTitle>>();
