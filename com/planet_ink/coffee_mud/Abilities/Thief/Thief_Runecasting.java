@@ -616,7 +616,7 @@ public class Thief_Runecasting extends ThiefSkill
 					final TimeClock C = CMLib.masking().dateMaskToNextTimeClock(mob, P.getDateCMask());
 					if(C == null)
 						continue;
-					clocks.put(P, C);
+					clocks.put(P, C); // must always be before the add
 					awards.add(P);
 				}
 			}
@@ -627,13 +627,11 @@ public class Thief_Runecasting extends ThiefSkill
 		{
 			final AutoProperties P = pi.next();
 			if(ct<num)
-			{
 				winner.add(P);
-				ct++;
-			}
 			else
-			if(CMLib.dice().rollPercentage()<20)
-				winner.set(CMLib.dice().roll(1, winner.size(), -1), P);
+			if((CMLib.dice().rollPercentage()<20)&&(num>3)&&(ct<num*2))
+				winner.set(CMLib.dice().roll(1, winner.size()-3, 2), P);
+			ct++;
 		}
 		if(winner.size()==0)
 			return null;
