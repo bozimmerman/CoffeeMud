@@ -22,7 +22,7 @@ import java.util.*;
 import org.w3c.dom.Text;
 
 /*
-   Copyright 2014-2024 Bo Zimmerman
+   Copyright 2024-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -146,17 +146,18 @@ public class TriggeredAffects extends StdAbility
 		}
 	}
 
-	protected List<TriggeredAffect>	naffects	= new SVector<TriggeredAffect>();
-	protected List<TriggeredAffect>	affects		= new SVector<TriggeredAffect>();
+	protected SVector<TriggeredAffect>	naffects	= new SVector<TriggeredAffect>();
+	protected SVector<TriggeredAffect>	affects		= new SVector<TriggeredAffect>();
 
 	@Override
 	public String displayText()
 	{
 		final StringBuilder str = new StringBuilder("");
-		for(final TriggeredAffect p : affects)
+		for(int p=0;p<affects.size();p++)
 		{
-			if(p.first instanceof Ability)
-				str.append(((Ability)p.first).displayText());
+			final TriggeredAffect P = affects.getSafe(p);
+			if((P!=null) && (P.first instanceof Ability))
+				str.append(((Ability)P.first).displayText());
 		}
 		return str.toString();
 	}
@@ -164,11 +165,12 @@ public class TriggeredAffects extends StdAbility
 	@Override
 	public int abstractQuality()
 	{
-		for(final TriggeredAffect p : affects)
+		for(int p=0;p<affects.size();p++)
 		{
-			if(p.first instanceof Ability)
+			final TriggeredAffect P = affects.getSafe(p);
+			if((P!=null) && (P.first instanceof Ability))
 			{
-				if(((Ability)p.first).abstractQuality()==Ability.QUALITY_MALICIOUS)
+				if(((Ability)P.first).abstractQuality()==Ability.QUALITY_MALICIOUS)
 					return Ability.QUALITY_MALICIOUS;
 			}
 		}
@@ -179,10 +181,11 @@ public class TriggeredAffects extends StdAbility
 	public long flags()
 	{
 		long flag=0;
-		for(final TriggeredAffect p : affects)
+		for(int p=0;p<affects.size();p++)
 		{
-			if(p.first instanceof Ability)
-				flag |=((Ability)p.first).flags();
+			final TriggeredAffect P = affects.getSafe(p);
+			if((P!=null) && (P.first instanceof Ability))
+				flag |=((Ability)P.first).flags();
 		}
 		return flag;
 	}
@@ -210,10 +213,11 @@ public class TriggeredAffects extends StdAbility
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null)
 			return;
-		for(final TriggeredAffect p : affects)
+		for(int p=0;p<affects.size();p++)
 		{
-			if(p.first instanceof StatsAffecting)
-				((StatsAffecting)p.first).affectPhyStats(affected, affectableStats);
+			final TriggeredAffect P = affects.getSafe(p);
+			if((P!=null) && (P.first instanceof StatsAffecting))
+				((StatsAffecting)P.first).affectPhyStats(affected, affectableStats);
 		}
 	}
 
@@ -223,10 +227,11 @@ public class TriggeredAffects extends StdAbility
 		super.affectCharStats(affected, affectableStats);
 		if(affected==null)
 			return;
-		for(final TriggeredAffect p : affects)
+		for(int p=0;p<affects.size();p++)
 		{
-			if(p.first instanceof StatsAffecting)
-				((StatsAffecting)p.first).affectCharStats(affected, affectableStats);
+			final TriggeredAffect P = affects.getSafe(p);
+			if((P!=null) && (P.first instanceof StatsAffecting))
+				((StatsAffecting)P.first).affectCharStats(affected, affectableStats);
 		}
 	}
 
@@ -236,10 +241,11 @@ public class TriggeredAffects extends StdAbility
 		super.affectCharState(affected, affectableStats);
 		if(affected==null)
 			return;
-		for(final TriggeredAffect p : affects)
+		for(int p=0;p<affects.size();p++)
 		{
-			if(p.first instanceof StatsAffecting)
-				((StatsAffecting)p.first).affectCharState(affected, affectableStats);
+			final TriggeredAffect P = affects.getSafe(p);
+			if((P!=null) && (P.first instanceof StatsAffecting))
+				((StatsAffecting)P.first).affectCharState(affected, affectableStats);
 		}
 	}
 
@@ -316,8 +322,12 @@ public class TriggeredAffects extends StdAbility
 
 	protected void eraseSelf()
 	{
-		for(final TriggeredAffect p : affects)
-			unAffectAffected(p);
+		for(int p=affects.size()-1;p>=0;p--)
+		{
+			final TriggeredAffect P = affects.getSafe(p);
+			if(P!=null)
+				unAffectAffected(P);
+		}
 		affects.clear();
 		naffects.clear();
 	}
@@ -329,44 +339,48 @@ public class TriggeredAffects extends StdAbility
 			return;
 		eraseSelf();
 		super.unInvoke();
+		destroy();
 	}
 
 	protected void unInvokeByName(final String txt)
 	{
-		for(final TriggeredAffect p : affects)
+		for(int p=0;p<affects.size();p++)
 		{
-			if((p.first instanceof CMObject)
-			&&(((CMObject)p.first).ID().toLowerCase().equals(txt)))
+			final TriggeredAffect P = affects.getSafe(p);
+			if(P==null)
+				continue;
+			if((P.first instanceof CMObject)
+			&&(((CMObject)P.first).ID().toLowerCase().equals(txt)))
 			{
-				unAffectAffected(p);
+				unAffectAffected(P);
 				return;
 			}
 			else
-			if((p.first instanceof Ability)
-			&&(((Environmental)p.first).name().toLowerCase().startsWith(txt)))
+			if((P.first instanceof Ability)
+			&&(((Environmental)P.first).name().toLowerCase().startsWith(txt)))
 			{
-				unAffectAffected(p);
+				unAffectAffected(P);
 				return;
 			}
 			else
-			if((p.first instanceof Behavior)
-			&&(((Behavior)p.first).name().toLowerCase().startsWith(txt)))
+			if((P.first instanceof Behavior)
+			&&(((Behavior)P.first).name().toLowerCase().startsWith(txt)))
 			{
-				unAffectAffected(p);
+				unAffectAffected(P);
 				return;
 			}
 			else
-			if((p.first instanceof AmbianceAdder)
+			if((P.first instanceof AmbianceAdder)
 			&&(txt.equalsIgnoreCase("AMBIANCE")))
 			{
-				unAffectAffected(p);
+				unAffectAffected(P);
 				return;
 			}
 			else
-			if((p.first instanceof Attrib)
-			&&(txt.equalsIgnoreCase(((Attrib)p.first).name())))
+			if((P.first instanceof Attrib)
+			&&(txt.equalsIgnoreCase(((Attrib)P.first).name())))
 			{
-				unAffectAffected(p);
+				unAffectAffected(P);
 				return;
 			}
 		}
@@ -540,22 +554,34 @@ public class TriggeredAffects extends StdAbility
 		}
 	}
 
+	
+	@Override
+	public void destroy()
+	{
+		super.destroy();
+		CMLib.threads().deleteTick(this,-1);
+	}
+	
 	@Override
 	public void setAffectedOne(final Physical P)
 	{
 		super.setAffectedOne(P);
-		if(text().length()>0)
+		if(P == null)
+			destroy();
+		else
+		if(text().trim().length()>0)
 			this.setMiscText(text());
 	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		for(final TriggeredAffect p : affects)
+		for(int p=0;p<affects.size();p++)
 		{
-			if(p.first instanceof MsgListener)
+			final TriggeredAffect P = affects.getSafe(p);
+			if((P!=null)&&(P.first instanceof MsgListener))
 			{
-				if(!((MsgListener)p.first).okMessage(myHost, msg))
+				if(!((MsgListener)P.first).okMessage(myHost, msg))
 					return false;
 			}
 		}
@@ -592,6 +618,8 @@ public class TriggeredAffects extends StdAbility
 			&&(p.message.length()>0)
 			&&(src.location()!=null))
 				src.location().show(src, null, CMMsg.MSG_OK_VISUAL,p.message);
+			if(!CMLib.threads().isTicking(this, Tickable.TICKID_PROPERTY_SPECIAL))
+				CMLib.threads().startTickDown(this, Tickable.TICKID_PROPERTY_SPECIAL, 1);
 		}
 		return ret;
 	}
@@ -601,38 +629,27 @@ public class TriggeredAffects extends StdAbility
 	{
 		for(int i=affects.size()-1;i>=0;i--)
 		{
-			try
-			{
-				final TriggeredAffect p = affects.get(i);
-				if((p.onTrigger==-1) // means remove on trigger
-				&&(this.isTriggered(p, msg)))
-					this.unAffectAffected(p);
-			}
-			catch(final Exception e)
-			{
-				break;
-			}
+			final TriggeredAffect P = affects.getSafe(i);
+			if((P!=null)
+			&&(P.onTrigger==-1) // means remove on trigger
+			&&(this.isTriggered(P, msg)))
+				this.unAffectAffected(P);
 		}
-		for(final TriggeredAffect p : affects)
+		for(int p=0;p<affects.size();p++)
 		{
-			if(p.first instanceof MsgListener)
+			final TriggeredAffect P = affects.getSafe(p);
+			if((P!=null)&&(P.first instanceof MsgListener))
 			{
-				((MsgListener)p.first).executeMsg(myHost, msg);
+				((MsgListener)P.first).executeMsg(myHost, msg);
 			}
 		}
 		for(int i=naffects.size()-1;i>=0;i--)
 		{
-			try
-			{
-				final TriggeredAffect p = naffects.get(i);
-				if((p.onTrigger==1) // means add on trigger
-				&&(this.isTriggered(p, msg)))
-					this.reAffectAffected(p);
-			}
-			catch(final Exception e)
-			{
-				break;
-			}
+			final TriggeredAffect P = naffects.getSafe(i);
+			if((P!=null)
+			&&(P.onTrigger==1) // means add on trigger
+			&&(this.isTriggered(P, msg)))
+				this.reAffectAffected(P);
 		}
 	}
 
@@ -641,45 +658,63 @@ public class TriggeredAffects extends StdAbility
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if(super.canBeUninvoked())
-			super.makeLongLasting();
-		for(final TriggeredAffect p : naffects)
+		if(tickID == Tickable.TICKID_PROPERTY_SPECIAL)
 		{
-			switch(p.onTrigger)
+			boolean tickMattered = false;
+			for(int p=naffects.size()-1;p>=0;p--)
 			{
-			case 1: // wait for your trigger
-				break;
-			case -1:
-				if(--p.tickDown<=0)
-					reAffectAffected(p);
-				break;
+				final TriggeredAffect P=naffects.getSafe(p);
+				if(P == null)
+					continue;
+				switch(P.onTrigger)
+				{
+				case 1: // wait for your trigger
+					break;
+				case -1:
+					if(--P.tickDown<=0)
+						reAffectAffected(P);
+					else
+						tickMattered=true;
+					break;
+				}
+			}
+			for(int p=affects.size()-1;p>=0;p--)
+			{
+				final TriggeredAffect P=affects.getSafe(p);
+				if(P == null)
+					continue;
+				if(P.onTrigger==1)
+				{
+					if(--P.tickDown<=0)
+						unAffectAffected(P);
+					else
+						tickMattered=true;
+				}
+			}
+			return tickMattered;
+		}
+		else
+		{
+			for(int p=0;p<affects.size();p++)
+			{
+				final TriggeredAffect P = affects.getSafe(p);
+				if((P!=null)&&(P.first instanceof Tickable))
+				{
+					final Tickable ticker = (ticking == this)?affected:ticking;
+					((Tickable)P.first).tick(ticker, tickID);
+				}
 			}
 		}
-		for(final TriggeredAffect p : affects)
+		if(affected instanceof MOB)
 		{
-			if(p.first instanceof Tickable)
+			for(int p=0;p<affects.size();p++)
 			{
-				final Tickable ticker = (ticking == this)?affected:ticking;
-				((Tickable)p.first).tick(ticker, tickID);
+				final TriggeredAffect P = affects.getSafe(p);
+				if((P!=null)
+				&&(P.first instanceof Attrib)
+				&&(P.attribParms.length>0))
+					((MOB)affected).setAttribute((Attrib)P.first, P.attribParms[0]==0?true:false);
 			}
-			else
-			if((p.first instanceof Attrib)
-			&&(affected instanceof MOB)
-			&&(p.attribParms.length>0))
-			{
-				((MOB)affected).setAttribute((Attrib)p.first, p.attribParms[0]==0?true:false);
-			}
-			if(p.onTrigger==1)
-			{
-				if(--p.tickDown<=0)
-					unAffectAffected(p);
-			}
-		}
-		if((affects.size()==0)
-		&&(canBeUninvoked()))
-		{
-			this.unInvoke();
-			return false;
 		}
 		return true;
 	}
