@@ -682,7 +682,8 @@ public class StdRideable extends StdContainer implements Rideable
 			if((msg.tool() instanceof Item)
 			&&(msg.target()==this))
 			{
-				if(getContents().size()>=this.riderCapacity())
+				if((rideBasis == Rideable.Basis.FURNITURE_HOOK)
+				&&(getContents().size()>=this.riderCapacity()))
 				{
 					msg.source().tell(L("@x1 can't hold any more.",name(msg.source())));
 					return false;
