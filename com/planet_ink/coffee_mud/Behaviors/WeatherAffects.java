@@ -990,12 +990,18 @@ public class WeatherAffects extends PuddleMaker
 							mob.tell(L("^JThe wind gusts around you.^?@x1",CMLib.protocol().msp("wind.wav",40)));
 						break;
 					case Climate.WEATHER_HEAT_WAVE:
+					{
 						if((roomWeather(host,R,areaWeather)==Climate.WEATHER_HEAT_WAVE)
 						&&(mob.charStats().getStat(CharStats.STAT_SAVE_FIRE)<10)
 						&&((mob.fetchWornItems(Item.WORN_TORSO,(short)0,(short)0).size()>0)
 							||(mob.fetchWornItems(Item.WORN_ABOUT_BODY,(short)0,(short)0).size()>0)))
+						{
 							mob.tell(L("^JYou are sweating in the grueling heat.^?"));
+							final int factor = 4;
+							mob.curState().adjThirst(-(R.thirstPerRound()*factor),mob.maxState().maxThirst(mob.baseWeight()));
+						}
 						break;
+					}
 					case Climate.WEATHER_WINTER_COLD:
 						if((roomWeather(host,R,areaWeather)==Climate.WEATHER_WINTER_COLD)
 						&&(mob.charStats().getStat(CharStats.STAT_SAVE_COLD)<10))
