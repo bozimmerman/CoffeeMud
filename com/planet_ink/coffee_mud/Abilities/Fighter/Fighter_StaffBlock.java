@@ -114,14 +114,14 @@ public class Fighter_StaffBlock extends FighterSkill
 		&&(mob.fetchWieldedItem() instanceof Weapon)
 		&&(((Weapon)mob.fetchWieldedItem()).weaponClassification() == Weapon.CLASS_STAFF)
 		&&(CMLib.flags().isAliveAwakeMobile(mob,true))
-		&&(msg.source().rangeToTarget()==0)
+		&&(msg.source().rangeToTarget()<=((Weapon)mob.fetchWieldedItem()).maxRange())
 		&&(CMLib.flags().canBeSeenBy(mob, msg.source()))
 		&&(!CMLib.flags().isBoundOrHeld(mob))
 		&&(msg.source().getVictim()==mob))
 		{
 			final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,
 					L("<S-NAME> block(s) the attack by <T-NAME> with @x1!",mob.fetchWieldedItem().name()));
-			if(((++triesThisRound)<(mob.phyStats().speed()+CMath.div(super.getXLEVELLevel(mob),3.0)))
+			if(((++triesThisRound)<=(mob.phyStats().speed()+CMath.div(super.getXLEVELLevel(mob),3.0)))
 			&&(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-93+(getXLEVELLevel(mob)),false))
 			&&(mob.location().okMessage(mob,msg2)))
 			{
