@@ -1,5 +1,4 @@
 package com.planet_ink.coffee_mud.core;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
