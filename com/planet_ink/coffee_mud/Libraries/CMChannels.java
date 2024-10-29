@@ -1373,12 +1373,18 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
 	protected static void initDiscord()
 	{
-		if(discordApi!=null)
+		if(discordApi != null)
 			return;
 		final String jarPath = CMProps.getVar(Str.DISCORD_JAR_PATH);
 		if(jarPath.length()==0)
 		{
 			Log.errOut("DISCORD_JAR_PATH not set in INI file.");
+			return;
+		}
+		final CMFile F = new CMFile(jarPath, null);
+		if(!F.exists())
+		{
+			Log.errOut("DISCORD jar file not found in "+jarPath);
 			return;
 		}
 		URL jarUrl;
@@ -1401,6 +1407,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 						@Override
 						public java.io.InputStream getInputStream() throws IOException
 						{
+							if(!F.exists())
+								throw new IOException("File not found: "+F.getAbsolutePath());
 							return F.getRawStream();
 						}
 					};
@@ -1421,7 +1429,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			{
 			}
 		}));
-        try
+		try
 		{
 			final Class<?> apiBuilderClass = discordClassLoader.loadClass("org.javacord.api.DiscordApiBuilder");
 			final Class<?> apiClass = discordClassLoader.loadClass("org.javacord.api.DiscordApi");
