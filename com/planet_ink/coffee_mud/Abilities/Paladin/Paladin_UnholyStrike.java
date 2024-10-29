@@ -211,7 +211,8 @@ public class Paladin_UnholyStrike extends StdAbility
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,L("^F^<FIGHT^><S-NAME> call(s) down a holy strike against <T-NAME>!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,
+					L("^F^<FIGHT^><S-NAME> call(s) down a holy strike against <T-NAME>!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -226,7 +227,7 @@ public class Paladin_UnholyStrike extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> call(s) an unholy strike against , but fail(s) <S-HIS-HER> attack."));
+			return maliciousFizzle(mob,target,L("<S-NAME> call(s) an unholy strike against <T-NAME>, but fail(s) <S-HIS-HER> attack."));
 
 		// return whether it worked
 		return success;
