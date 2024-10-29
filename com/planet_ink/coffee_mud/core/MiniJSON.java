@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -546,14 +547,14 @@ public class MiniJSON
 	}
 
 	/**
-	 * Given a char array, and index into it, returns the byte value of the 1 hex
+	 * Given a char array, and index into it, returns the nybble value of the 1 hex
 	 * digits at the indexed point of the char array.
 	 * @param doc the json doc containing a hex number
 	 * @param index the index into that json doc where the hex number begins
-	 * @return the byte value of the 1 digit hex number
+	 * @return the byte value of the 1 digit hex nybble
 	 * @throws MJSONException a parse error meaning it wasn't a hex number at all
 	 */
-	private byte getByteFromHex(final char[] doc, final int index) throws MJSONException
+	private byte getHexNybble(final char[] doc, final int index) throws MJSONException
 	{
 		final char c = doc[index];
 		if((c >= '0') && (c <= '9'))
@@ -618,19 +619,11 @@ public class MiniJSON
 				{
 					if(index[0] >= doc.length-5)
 						throw new MJSONException("Unfinished unicode escape at "+index[0]);
-					final byte[] hexBuf=new byte[4];
-					hexBuf[0] = getByteFromHex(doc,++index[0]);
-					hexBuf[1] = getByteFromHex(doc,++index[0]);
-					hexBuf[2] = getByteFromHex(doc,++index[0]);
-					hexBuf[3] = getByteFromHex(doc,++index[0]);
-					try
-					{
-						value.append(new String(hexBuf, "Cp1251"));
-					}
-					catch (final UnsupportedEncodingException e)
-					{
-						throw new MJSONException("Illegal character at"+index[0],e);
-					}
+					final byte[] hexBuf=new byte[] {
+						(byte)((getHexNybble(doc,++index[0]) << 4) | getHexNybble(doc,++index[0])),
+						(byte)((getHexNybble(doc,++index[0]) << 4) | getHexNybble(doc,++index[0]))
+					};
+					value.append(new String(hexBuf, StandardCharsets.UTF_16));
 					break;
 				}
 				default:
