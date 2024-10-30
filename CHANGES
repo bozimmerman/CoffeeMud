@@ -75,6 +75,7 @@
  73. FORMATION can now put anyone in front row, and attacks initiated by formation make front row tank.
  74. New item type: GenBurnOven -- an oven that requires burning fuel inside.
  75. New Property: TriggeredAffects, for having effects that are triggered :)
+ 76. New race: Rust Monster
  
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.
