@@ -2654,7 +2654,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		final Vector<Race> racesToBaseFrom=new Vector<Race>();
 		final Race human=CMClass.getRace("Human");
 		final Race halfling=CMClass.getRace("Halfling");
-		if((raceID.length()>1)&&(!raceID.endsWith("Race"))&&(Character.isUpperCase(raceID.charAt(0))))
+		if((raceID.length()>1)
+		&&(!raceID.endsWith("Race"))
+		&&(Character.isUpperCase(raceID.charAt(0))))
 		{
 			int lastStart=0;
 			int c=1;
@@ -2865,6 +2867,17 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				return R;
 		}
 		return null;
+	}
+
+	private static final String[] ELEMENTS = new String[] {"Earth", "Air", "Water", "Electricity","Fire" };
+
+	private boolean isPureElemental(final Race R)
+	{
+		if(R==null)
+			return false;
+		return R.racialCategory().equals("Elemental")
+				&&R.ID().endsWith("Elemental")
+				&&(CMParms.containsIgnoreCase(ELEMENTS,R.ID().substring(0,R.ID().length()-9)));
 	}
 
 	@Override
@@ -3130,6 +3143,39 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				else
 				{
 					R=R.mixRace(CMClass.getRace("Halfling"),halfRace,CMStrings.capitalizeAndLower(R.name())+"ling");
+					if(R.isGeneric() && (!R.ID().equals(motherRaceID))&& (!R.ID().equals(fatherRaceID)))
+					{
+						CMClass.addRace(R);
+						CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+					}
+				}
+			}
+		}
+		else
+		if((isPureElemental(motherR)&&(!isPureElemental(fatherR)))
+		||(isPureElemental(fatherR)&&(!isPureElemental(motherR))))
+		{
+			final Race elemR=isPureElemental(motherR)?motherR:fatherR;
+			final String elemName = elemR.ID().substring(0,elemR.ID().length()-9);
+			R=isPureElemental(motherR)?fatherR:motherR;
+			if((R!=null)&&(!R.ID().startsWith(elemName)))
+			{
+				final String halfRace=elemName+R.ID();
+				Race testR=CMClass.getRace(halfRace);
+				if((testR!=null)&&(testR.isGeneric()))
+				{
+					if(CMLib.database().isRaceExpired(halfRace))
+					{
+						CMLib.database().DBDeleteRace(halfRace);
+						CMClass.delRace(testR);
+						testR=null;
+					}
+				}
+				if(testR!=null)
+					R=testR;
+				else
+				{
+					R=R.mixRace(elemR,halfRace,CMStrings.capitalizeAndLower(elemName+" "+R.name()));
 					if(R.isGeneric() && (!R.ID().equals(motherRaceID))&& (!R.ID().equals(fatherRaceID)))
 					{
 						CMClass.addRace(R);
