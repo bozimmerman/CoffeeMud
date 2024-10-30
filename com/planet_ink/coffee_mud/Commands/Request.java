@@ -60,17 +60,18 @@ public class Request extends StdCommand
 		}
 		if(all.size()==0)
 		{
-			origCmds.set(0, "REQUEST");
-			final Command C = CMClass.getCommand("Say");
-			if(C != null)
-				return C.execute(mob, origCmds, metaFlags);
-			else
+			if(commands.size()>1)
 			{
-				CMLib.commands().postCommandFail(mob,origCmds,L("Request how much, of what, for how much, from whom?"));
-				return false;
+				origCmds.set(0, "REQUEST");
+				final Command C = CMClass.getCommand("Say");
+				if(C != null)
+					return C.execute(mob, origCmds, metaFlags);
 			}
+			CMLib.commands().postCommandFail(mob,origCmds,L("Request how much, of what, for how much, from whom?"));
+			return false;
 		}
 
+		commands.remove(0);
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"from", "Request how much, of what, for how much, from whom?");
 		if(shopkeeper==null)
 			return false;
