@@ -92,7 +92,8 @@ public class BookEditing extends CommonSkill
 					commonTelL(mob,"You mess up your book editing.");
 				else
 				{
-					final CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.TYP_REWRITE,L("<S-NAME> start(s) editing <T-NAME>."),pageNum,L("<S-NAME> start(s) editing <T-NAME>."));
+					final CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.TYP_REWRITE,
+							L("<S-NAME> start(s) editing <T-NAME>."),pageNum,L("<S-NAME> start(s) editing <T-NAME>."));
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
@@ -119,8 +120,16 @@ public class BookEditing extends CommonSkill
 			return error(mob);
 		found = null;
 		pageNum="";
-		if((commands.size()>1)&&(CMath.isInteger(commands.get(commands.size()-1))))
+		if((commands.size()>1)
+		&&(CMath.isInteger(commands.get(commands.size()-1))))
+		{
 			pageNum=commands.remove(commands.size()-1);
+			if(commands.get(commands.size()-1).equalsIgnoreCase("DELETE"))
+			{
+				commands.remove(commands.size()-1);
+				pageNum="DELETE "+pageNum;
+			}
+		}
 		final String itemName = CMParms.combine(commands);
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemName);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
@@ -185,7 +194,8 @@ public class BookEditing extends CommonSkill
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			found = null;
 		final int duration=getDuration(30,mob,1,1);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),L("<S-NAME> prepare(s) to edit <T-NAME>."),pageNum,L("<S-NAME> prepare(s) to edit <T-NAME>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),
+				L("<S-NAME> prepare(s) to edit <T-NAME>."),pageNum,L("<S-NAME> prepare(s) to edit <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
