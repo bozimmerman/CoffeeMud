@@ -429,6 +429,7 @@ public class Thief_Runecasting extends ThiefSkill
 				}
 				else
 				{
+					final String format = "I see @x1 @x2. @x3 @x4 @x5";
 					final TimeClock nowC = CMLib.time().homeClock(forM);
 					this.reports = new XVector<String>();
 					for(final AutoProperties P : APs)
@@ -439,6 +440,7 @@ public class Thief_Runecasting extends ThiefSkill
 						for(final Pair<String, String> ps : P.getProps())
 						{
 							final Ability A = CMClass.getAbility(ps.first);
+							final int oldsz=reports.size();
 							if(A != null)
 							{
 								final MOB M = CMClass.getFactoryMOB();
@@ -456,7 +458,6 @@ public class Thief_Runecasting extends ThiefSkill
 								A.affectCharState(M, M.curState());
 								A.affectCharStats(M, M.charStats());
 								A.affectPhyStats(M, M.phyStats());
-								final String format = "I see @x1 @x2. @x3 @x4 @x5";
 								for(final int cd : CharStats.CODES.ALLCODES())
 								{
 									final int diff = M.charStats().getStat(cd) - cStats.getStat(cd);
@@ -534,6 +535,16 @@ public class Thief_Runecasting extends ThiefSkill
 									}
 								}
 							}
+							if(oldsz==reports.size())
+							{
+								String codeName;
+								if(A.accountForYourself().length()>0)
+									codeName = A.accountForYourself().toLowerCase();
+								else
+									codeName = A.name();
+								final String report = L("I see @x1 @x2.",codeName,getFTTime(C,nowC,expireC) );
+								reports.add(report);
+							}
 						}
 					}
 					if(reports.size()==0)
@@ -575,23 +586,22 @@ public class Thief_Runecasting extends ThiefSkill
 	}
 
 	protected static AutoProperties[] getApplicableAward(final MOB mob, final Filterer<AutoProperties> playerFilter,
-														 final int num)
+														 int num)
 	{
 		final Map<CompiledZMask,Boolean> playerTried = new HashMap<CompiledZMask,Boolean>();
 		final Map<AutoProperties, TimeClock> clocks = new HashMap<AutoProperties, TimeClock>();
-		final Set<AutoProperties> awards = new TreeSet<AutoProperties>(new Comparator<AutoProperties>() {
-			@Override
-			public int compare(final AutoProperties o1, final AutoProperties o2)
+		final List<AutoProperties> awards = new ArrayList<AutoProperties>();
+
+		final Set<Integer> currentSet = new TreeSet<Integer>();
+		{
+			final Ability A = mob.fetchEffect("AutoAwards");
+			if(A != null)
 			{
-				final TimeClock c1 = clocks.get(o1);
-				final TimeClock c2 = clocks.get(o2);
-				if(c1.isEqual(c2))
-					return 0;
-				if(c1.isBefore(c2))
-					return -1;
-				return 1;
+				final String list = A.getStat("AUTOAWARDS");
+				for(final String s : list.split(";"))
+					currentSet.add(Integer.valueOf(CMath.s_int(s)));
 			}
-		});
+		}
 		for(final Enumeration<AutoProperties> p = CMLib.awards().getAutoProperties();p.hasMoreElements();)
 		{
 			final AutoProperties P = p.nextElement();
@@ -614,13 +624,36 @@ public class Thief_Runecasting extends ThiefSkill
 				&& (playerFilter.passesFilter(P)))
 				{
 					final TimeClock C = CMLib.masking().dateMaskToNextTimeClock(mob, P.getDateCMask());
-					if(C == null)
-						continue;
-					clocks.put(P, C); // must always be before the add
-					awards.add(P);
+					if(C != null)
+					{
+						clocks.put(P, C); // must always be before the add
+						if(!awards.contains(P))
+						{
+							if(currentSet.contains(Integer.valueOf(P.hashCode()))
+							&&(awards.size()>0))
+								awards.add(0,P);
+							else
+								awards.add(P);
+						}
+					}
 				}
 			}
 		}
+		awards.sort(new Comparator<AutoProperties>() {
+			@Override
+			public int compare(final AutoProperties o1, final AutoProperties o2)
+			{
+				final TimeClock c1 = clocks.get(o1);
+				final TimeClock c2 = clocks.get(o2);
+				if(c1.isEqual(c2))
+					return 0;
+				if(c1.isBefore(c2))
+					return -1;
+				return 1;
+			}
+		});
+		if(num<currentSet.size())
+			num=currentSet.size();
 		int ct = 0;
 		final List<AutoProperties> winner = new ArrayList<AutoProperties>();
 		for(final Iterator<AutoProperties> pi = awards.iterator(); pi.hasNext();)

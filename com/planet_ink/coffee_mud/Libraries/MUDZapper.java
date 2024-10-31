@@ -8214,6 +8214,30 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return true;
 	}
 
+	protected int getTimeValue(final TimeClock C, final ZapperKey key)
+	{
+		switch(key)
+		{
+		case WEEK/*ofmonth*/:
+		case _WEEK/*ofmonth*/:
+			return C.getWeekOfMonth();
+		default:
+			return C.get(toTimePeriod(key));
+		}
+	}
+
+	protected int getTimeMax(final TimeClock C, final ZapperKey key)
+	{
+		switch(key)
+		{
+		case WEEK/*ofmonth*/:
+		case _WEEK/*ofmonth*/:
+			return (C.getDaysInMonth() / C.getDaysInWeek())-1;
+		default:
+			return C.getMax(toTimePeriod(key));
+		}
+	}
+
 	protected TimePeriod toTimePeriod(final ZapperKey key)
 	{
 		switch(key)
@@ -8336,7 +8360,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					okVals.put(period, okV);
 				}
 				final int min = (period == TimePeriod.YEAR)?C.get(period):C.getMin(period);
-				final int max = (period == TimePeriod.YEAR)?C.get(period)+100:C.getMax(period);
+				final int max = (period == TimePeriod.YEAR)?C.get(period)+100:getTimeMax(C,entry.maskType());
 				for(final Object o : entry.parms())
 					addDateValues(o, okV, min, max);
 			}
@@ -8354,10 +8378,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				final List<Integer> okV = okVals.get(period);
 				if(okV == null) // if null, anything will do!
 					continue;
-				final int max = (period == TimePeriod.YEAR)?C.get(period)+100:C.getMax(period)+1;
+				final int max = (period == TimePeriod.YEAR)?(C.get(period)+100):(getTimeMax(C,entry.maskType())+1);
 				boolean useNot = !entry.maskType().name().startsWith("_");
 				useNot = (not == null || (!not[0])) ? useNot : !useNot;
-				Integer perI = Integer.valueOf(C.get(period));
+				Integer perI = Integer.valueOf(getTimeValue(C,entry.maskType()));
 				if(useNot)
 				{
 					for(int i=0;i<=max;i++) // time for brute force
@@ -8367,7 +8391,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						else
 						{
 							C.bump(period, 1);
-							perI = Integer.valueOf(C.get(period));
+							perI = Integer.valueOf(getTimeValue(C,entry.maskType()));
 						}
 					}
 				}
@@ -8406,8 +8430,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						{
 							switch(P)
 							{
-							case MONTH:
 							case DAY:
+								if(period == TimePeriod.WEEK)
+									C.set(TimePeriod.DAY, (C.getWeekOfMonth()*C.getDaysInWeek())+1);
+								else
+									C.set(P, C.getMin(P));
+								break;
+							case MONTH:
 							case HOUR:
 								C.set(P, C.getMin(P));
 								break;
@@ -8433,6 +8462,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		if((clock == null)||(clock.second==null))
 			return null;
 		TimePeriod lowestPeriodC = null;
+		ZapperKey lowestKey = null;
 		for(int i=0;i<clock.first.length;i++)
 		{
 			final CompiledZMaskEntry entry = clock.first[i];
@@ -8441,13 +8471,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				continue;
 			if((lowestPeriodC == null)
 			||(lowestPeriodC.getIncrement()>period.getIncrement()))
+			{
 				lowestPeriodC = period;
+				lowestKey = entry.maskType();
+			}
 		}
 
 		if(lowestPeriodC == null)
 			return clock.second;
 		final TimeClock C = (TimeClock)clock.second.copyOf();
-		final int max = (lowestPeriodC == TimePeriod.YEAR)?C.get(lowestPeriodC)+100:C.getMax(lowestPeriodC);
+		final int max = (lowestPeriodC == TimePeriod.YEAR)?C.get(lowestPeriodC)+100:getTimeMax(C,lowestKey);
 		for(int i=0;i<max;i++)
 		{
 			C.bump(lowestPeriodC, 1);
