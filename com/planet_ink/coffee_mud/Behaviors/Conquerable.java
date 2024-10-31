@@ -1610,8 +1610,6 @@ public class Conquerable extends Arrest
 							data.append(CMLib.xml().convertXMLtoTag("IABLE",I.basePhyStats().ability()));
 							data.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(I.text())));
 							data.append("</ACITEM>");
-							if(I.getClanItemType()==ClanItem.ClanItemType.FLAG)
-								Log.debugOut(L("Destroying flag of clan @x1 in @x2 because reset.",I.clanID(),CMLib.map().getExtendedRoomID(R)));
 							((Item)I).destroy();
 						}
 					}
