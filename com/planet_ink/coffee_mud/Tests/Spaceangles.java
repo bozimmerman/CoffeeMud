@@ -71,10 +71,22 @@ public class Spaceangles extends StdTest
 			{ {15,90},  	 {195,90} }
 		};
 		final int[][][] offsets = new int[][][] {
-			{ {90,45},{85,45},   {95,45} },
+			{ {90,40},{85,50},   {95,30} },
+			{ {85,50},{90,40},   {80,60} },
+			{ {350,10},{10,20},   {330,0} },
+			{ {10,20},{350,10},   {30,30} },
 		};
 		final int[][][] midsets = new int[][][] {
-			{ {90,45},{80,45},   {85,45} },
+			{ {90,40},{80,50},   {85,45} },
+			{ {80,50},{90,40},   {85,45} },
+			{ {350,10},{10,170},   {360,90} },
+			{ {10,170},{350,10},   {0,90} },
+		};
+		final int[][][] exaggsets = new int[][][] {
+			{ {90,45},{80,50},   {70,55} },
+			{ {80,50},{90,45},   {100,40} },
+			{ {10,10},{350,5},   {330,0} },
+			{ {350,5},{10,10},   {30,15} },
 		};
 		for(int i=0;i<diffsets.length;i++)
 		{
@@ -134,6 +146,19 @@ public class Spaceangles extends StdTest
 			final boolean pass = (Math.abs(mid.xyd() - and.xyd())<0.001) && (Math.abs(mid.zd() - and.zd())<0.001);
 			if(!pass)
 				return ("MID Test #"+(i+1)+" failed: "+Math.toDegrees(mid.xyd())+","+Math.toDegrees(mid.zd()));
+		}
+		for(int i=0;i<exaggsets.length;i++)
+		{
+			final int[] anglei1 = exaggsets[i][0];
+			final Dir3D angle1 = new Dir3D(new double[] {Math.toRadians(anglei1[0]), Math.toRadians(anglei1[1])});
+			final int[] anglei2 = exaggsets[i][1];
+			final Dir3D angle2 = new Dir3D(new double[] {Math.toRadians(anglei2[0]), Math.toRadians(anglei2[1])});
+			final Dir3D mid = CMLib.space().getExaggeratedAngle(angle1, angle2);
+			final int[] an = exaggsets[i][2];
+			final Dir3D and = new Dir3D(new double[] {Math.toRadians(an[0]), Math.toRadians(an[1])});
+			final boolean pass = (Math.abs(mid.xyd() - and.xyd())<0.001) && (Math.abs(mid.zd() - and.zd())<0.001);
+			if(!pass)
+				return ("EXX Test #"+(i+1)+" failed: "+Math.toDegrees(mid.xyd())+","+Math.toDegrees(mid.zd()));
 		}
 		return null;
 	}

@@ -225,6 +225,17 @@ public interface GalacticMap extends CMLibrary
 	public Dir3D getOffsetAngle(final Dir3D correctAngle, final Dir3D wrongAngle);
 
 	/**
+	 * Given a base 'correct' angle and another 'wrong' angle, this will return
+	 * the angle that is more incorrect, being equal in distance, in the same
+	 * direction as the incorrect angle
+	 *
+	 * @param correctAngle the base angle
+	 * @param wrongAngle the wrong angle
+	 * @return a MORE wrong angle, on the same 'side' of the base
+	 */
+	public Dir3D getExaggeratedAngle(final Dir3D correctAngle, final Dir3D wrongAngle);
+
+	/**
 	 * Given two angles, this returns the difference between them in pitch and yaw.
 	 *
 	 * @see GalacticMap#getAngleDelta(Dir3D, Dir3D)

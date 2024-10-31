@@ -327,12 +327,26 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final Dir3D middleAngle = new Dir3D (angle1.xy(), angle1.z());
 		if(!angle1.xy().equals(angle2.xy()))
 		{
-			final BigDecimal xy1 = angle1.xy().compareTo(angle2.xy())>0?angle1.xy():angle2.xy();
-			final BigDecimal xy2 = xy1.equals(angle1.xy()) ? angle2.xy() : angle1.xy();
-			if(xy2.compareTo(xy1.subtract(BigCMath.PI))<0)
-				middleAngle.xy(((BigCMath.PI_TIMES_2.subtract(xy1)).add(xy2)).divide(BigCMath.TWO,Dir3D.SCALE,RoundingMode.UP));
+			BigDecimal xyd = angle1.xy().subtract(angle2.xy());
+			final int zcp = xyd.compareTo(BigCMath.ZERO);
+			final boolean add;
+			add = ((zcp>0) && (xyd.compareTo(BigCMath.PI)>0))
+				||((zcp<0) && (xyd.compareTo(BigCMath.PI.negate())>0));
+			if(add)
+			{
+				if(zcp<0)
+					xyd = angle2.xy().subtract(angle1.xy());
+				else
+					xyd = BigCMath.PI_TIMES_2.subtract(angle1.xy()).add(angle2.xy());
+			}
 			else
-				middleAngle.xy((xy1.add(xy2)).divide(BigCMath.TWO,Dir3D.SCALE,RoundingMode.UP));
+			if(zcp<0)
+				xyd = BigCMath.PI_TIMES_2.subtract(angle2.xy()).add(angle1.xy());
+
+			if(add)
+				middleAngle.xy(middleAngle.xy().add(xyd.divide(BigCMath.TWO,Dir3D.SCALE,RoundingMode.UP)));
+			else
+				middleAngle.xy(middleAngle.xy().subtract(xyd.divide(BigCMath.TWO,Dir3D.SCALE,RoundingMode.UP)).abs());
 		}
 		middleAngle.z((angle1.z().add(angle2.z())).divide(BigCMath.TWO,Dir3D.SCALE,RoundingMode.UP));
 		return middleAngle;
@@ -344,25 +358,26 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final Dir3D offsetAngles = new Dir3D (correctAngle.xy(), correctAngle.z());
 		if(!correctAngle.xy().equals(wrongAngle.xy()))
 		{
-			final BigDecimal xy1 = correctAngle.xy().compareTo(wrongAngle.xy())>0?correctAngle.xy():wrongAngle.xy();
-			final BigDecimal xy2 = xy1.equals(correctAngle.xy()) ? wrongAngle.xy() : correctAngle.xy();
-			if(xy2.compareTo(xy1.subtract(BigCMath.PI))<0)
-				offsetAngles.xy(((BigCMath.PI_TIMES_2.subtract(xy1)).add(xy2)));
-			else
-				offsetAngles.xy(xy1.subtract(xy2));
-			if((wrongAngle.xy().compareTo(correctAngle.xy())>0)
-			&&((wrongAngle.xy().subtract(correctAngle.xy()).compareTo(BigCMath.PI)<0)))
+			BigDecimal xyd = correctAngle.xy().subtract(wrongAngle.xy());
+			final int zcp = xyd.compareTo(BigCMath.ZERO);
+			final boolean add;
+			add = ((zcp>0) && (xyd.compareTo(BigCMath.PI)>0))
+				||((zcp<0) && (xyd.compareTo(BigCMath.PI.negate())>0));
+			if(add)
 			{
-				offsetAngles.xy(correctAngle.xy().subtract(offsetAngles.xy()));
-				if(offsetAngles.xy().compareTo(BigCMath.ZERO) < 0)
-					offsetAngles.xy(offsetAngles.xy().add(BigCMath.PI_TIMES_2));
+				if(zcp<0)
+					xyd = wrongAngle.xy().subtract(correctAngle.xy());
+				else
+					xyd = BigCMath.PI_TIMES_2.subtract(correctAngle.xy()).add(wrongAngle.xy());
 			}
 			else
-			{
-				offsetAngles.xy(correctAngle.xy().add(offsetAngles.xy()));
-				if(offsetAngles.xy().compareTo(BigCMath.PI_TIMES_2) >= 0)
-					offsetAngles.xy(offsetAngles.xy().subtract(BigCMath.PI_TIMES_2));
-			}
+			if(zcp<0)
+				xyd = BigCMath.PI_TIMES_2.subtract(wrongAngle.xy()).add(correctAngle.xy());
+
+			if(add)
+				offsetAngles.xy(offsetAngles.xy().subtract(xyd).abs());
+			else
+				offsetAngles.xy(offsetAngles.xy().add(xyd));
 		}
 		if(!correctAngle.z().equals(wrongAngle.z()))
 		{
@@ -375,6 +390,44 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				offsetAngles.z(correctAngle.z().add(offsetAngles.z()));
 		}
 		return offsetAngles;
+	}
+
+	@Override
+	public Dir3D getExaggeratedAngle(final Dir3D correctAngle, final Dir3D wrongAngle)
+	{
+		final Dir3D exaggAngle = new Dir3D (wrongAngle.xy(), wrongAngle.z());
+		if(!correctAngle.xy().equals(wrongAngle.xy()))
+		{
+			BigDecimal xyd = correctAngle.xy().subtract(wrongAngle.xy());
+			final int zcp = xyd.compareTo(BigCMath.ZERO);
+			final boolean add;
+			add = ((zcp>0) && (xyd.compareTo(BigCMath.PI)>0))
+				||((zcp<0) && (xyd.compareTo(BigCMath.PI.negate())>0));
+			if(add)
+			{
+				if(zcp<0)
+					xyd = wrongAngle.xy().subtract(correctAngle.xy());
+				else
+					xyd = BigCMath.PI_TIMES_2.subtract(correctAngle.xy()).add(wrongAngle.xy());
+			}
+			else
+			if(zcp<0)
+				xyd = BigCMath.PI_TIMES_2.subtract(wrongAngle.xy()).add(correctAngle.xy());
+
+			if(add)
+				exaggAngle.xy(exaggAngle.xy().add(xyd));
+			else
+				exaggAngle.xy(exaggAngle.xy().subtract(xyd).abs());
+		}
+		if(!correctAngle.z().equals(wrongAngle.z()))
+		{
+			final BigDecimal zd = correctAngle.z().subtract(wrongAngle.z()).abs();
+			if(correctAngle.z().compareTo(wrongAngle.z())<0)
+				exaggAngle.z(exaggAngle.z().add(zd));
+			else
+				exaggAngle.z(exaggAngle.z().subtract(zd).abs());
+		}
+		return exaggAngle;
 	}
 
 	@Override
