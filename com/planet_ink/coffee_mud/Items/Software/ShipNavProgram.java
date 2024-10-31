@@ -361,6 +361,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		final MOB M=CMClass.getFactoryMOB();
 		M.setName(ship.Name());
 		final boolean isDebugging = CMSecurity.isDebugging(DbgFlag.SPACESHIP);
+		final boolean isDebuggingTurns = false; // isDebugging
 		CMLib.space().getOppositeDir(ship.facing()); // I think this is to normalize the facing dir
 		try
 		{
@@ -370,8 +371,11 @@ public class ShipNavProgram extends ShipSensorProgram
 			{
 				// step one, face opposite direction of motion
 				if(isDebugging)
-					Log.debugOut(ship.Name()+" maneuvering to go from "+ship.facing().xyd()+","+ship.facing().zd()
-							+"  to  "+newFacing.xyd()+","+newFacing.z());
+				{
+					Log.debugOut(ship.Name()+" maneuvering to go from "+
+								CMLib.english().directionDescShort(ship.facing().toDoubles())
+							+"  to  "+CMLib.english().directionDescShort(newFacing.toDoubles()));
+				}
 				for(final ShipEngine engineE : engines)
 				{
 					if((CMParms.contains(engineE.getAvailPorts(),ShipDirectional.ShipDir.STARBOARD))
@@ -394,7 +398,7 @@ public class ShipNavProgram extends ShipSensorProgram
 							{
 								final ShipDirectional.ShipDir dir = angleDelta.xyd() < 0 ? ShipDir.PORT : ShipDir.STARBOARD;
 								final Double thrust = Double.valueOf(angleDelta.xy().abs().doubleValue() / angleAchievedPerPt);
-								if(isDebugging)
+								if(isDebuggingTurns)
 								{
 									Log.debugOut("Thrusting "+thrust+"*"+angleAchievedPerPt+" to "+
 											dir+" to delta, and go from "+
@@ -411,7 +415,7 @@ public class ShipNavProgram extends ShipSensorProgram
 								break;
 							angleDelta = CMLib.space().getAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 							/*
-							if(isDebugging)
+							if(isDebuggingTurns)
 							{
 								Log.debugOut("Turn Deltas now: "+(Math.round(angleDelta[0]*100)/100.0)+" + "+(Math.round(angleDelta[1]*100)/100.0)
 										+"=="+(Math.round(Math.abs((angleDelta[0])+Math.abs(angleDelta[1]))*100)/100.0));
@@ -427,7 +431,7 @@ public class ShipNavProgram extends ShipSensorProgram
 							{
 								final ShipDirectional.ShipDir dir = angleDelta.zd() < 0 ? ShipDir.VENTRAL : ShipDir.DORSEL;
 								final Double thrust = Double.valueOf(Math.abs(angleDelta.zd()) / angleAchievedPerPt);
-								if(isDebugging)
+								if(isDebuggingTurns)
 								{
 									Log.debugOut("Thrusting "+thrust+"*"+angleAchievedPerPt+" to "+dir+" to achieve delta, and go from "
 												+ship.facing().zd()+" to "+newFacing.zd());
@@ -441,7 +445,7 @@ public class ShipNavProgram extends ShipSensorProgram
 							else
 								break;
 							angleDelta = CMLib.space().getAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
-							if(isDebugging)
+							if(isDebuggingTurns)
 							{
 								Log.debugOut("Turn Deltas now: "+(Math.round(angleDelta.xyd()*100)/100.0)+" + "+(Math.round(angleDelta.zd()*100)/100.0)
 										+"=="+(Math.round(Math.abs((angleDelta.xyd())+Math.abs(angleDelta.zd()))*100)/100.0));
@@ -933,7 +937,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				return false;
 			}
 			{
-				//TODO: this is completely wrong
+				//TODO: this is completely wrong.
 				final long distance=CMLib.space().getDistanceFrom(ship, targetObject);
 				if(distance > (targetObject.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS))
 				{
@@ -1054,11 +1058,12 @@ public class ShipNavProgram extends ShipSensorProgram
 				long distToITarget = (CMLib.space().getDistanceFrom(ship, intTarget)-ship.radius()
 						-Math.round(CMath.mul(intTarget.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 				Dir3D dirToITarget = CMLib.space().getDirection(ship.coordinates(), intTarget.coordinates());
-				double toDirDiff = CMLib.space().getAngleDelta(ship.direction(), dirToITarget);
+Log.debugOut("Target="+intTarget.Name()+", "+CMLib.english().directionDescShort(dirToITarget.toDoubles()));//TODO:BZ:DELME
+				double directionDiff = CMLib.space().getAngleDelta(ship.direction(), dirToITarget);
 				// see if we've hit a waypoint
 				{
 					int safeDistance=100 + (int)Math.round(ship.speed());
-					if(toDirDiff<MAX_DIR_DIFF)
+					if(directionDiff<MAX_DIR_DIFF)
 						safeDistance += (int)Math.round(ship.speed());
 					if(distToITarget < safeDistance)
 					{
@@ -1069,97 +1074,75 @@ public class ShipNavProgram extends ShipSensorProgram
 							distToITarget = (CMLib.space().getDistanceFrom(ship, intTarget)-ship.radius()
 									-Math.round(CMath.mul(intTarget.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 							dirToITarget = CMLib.space().getDirection(ship.coordinates(), intTarget.coordinates());
-							toDirDiff = CMLib.space().getAngleDelta(ship.direction(), dirToITarget);
+							directionDiff = CMLib.space().getAngleDelta(ship.direction(), dirToITarget);
 							targetAcceleration=this.findTargetAcceleration(programEngines.get(0));
 							track.state = ShipNavState.APPROACH;
 						}
 					}
 				}
-				// if we are presently traveling towards the target, get detailed.
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SPACESHIP))
-				{
-					Log.debugOut(ship.name(),"Nav direction diff: "+CMath.div(Math.round(toDirDiff * 10000),10000.0)
-								+", speed: "+CMLib.english().distanceDescShort(Math.round(ship.speed()))
-								+", dist: "+CMLib.english().distanceDescShort(distToITarget)+", dir: "
-								+CMLib.english().directionDescShort(dirToITarget.toDoubles()));
-				}
-				// regardless of speeding up or slowing down, are we still going the right way?
-				if(toDirDiff < MAX_DIR_DIFF)
-				{
-					// Yes, so check if we should be speeding up, or slowing down
-					// first see if we are actually underway...
-					if((ship.speed()>targetAcceleration)
-					&& (targetAcceleration > 0.0))
-					{
-						final double ticksToStop = ship.speed() / targetAcceleration;
-						// * * final double ticksToTarget = distToITarget / ship.speed();
-						final double stopDistance = (ship.speed()/2.0) * ticksToStop;
-						// now see if we need to adjust decelleration during deproach
-						if((ticksToStop > 0)
-						&&(track.state==ShipNavState.DEPROACH))
-						{
-							final double overUnderDistance = stopDistance - distToITarget;
-							if(overUnderDistance > targetAcceleration * 2) // means we are stopping too slowly
-								targetAcceleration += Math.min(CMath.div(overUnderDistance , ticksToStop), 1.0) ;
-							else
-							if(overUnderDistance < -(targetAcceleration * 2)) // stopping too quickly
-								targetAcceleration -= CMath.div(overUnderDistance , ticksToStop);
-							if(ship.speed()>distToITarget*2) // this is deproach, so we want to STOP!
-								targetAcceleration = ship.speed();
-						}
 
-						// now see if it is time to decellerate
-						if(track.state==ShipNavState.APPROACH)
-						{
-							if((stopDistance >= distToITarget)
-							&&(targetObject != null)
-							&&(ship.speed() > (targetObject.speed() * 2)))
-							{
-								track.state = ShipNavState.DEPROACH;
-								// ensure we are mooning our direction
-								final Dir3D opDirToITarget = CMLib.space().getOppositeDir(dirToITarget);
-								if(CMLib.space().getAngleDelta(ship.facing(), opDirToITarget)>MAX_DIR_DIFF)
-									changeFacing(ship, opDirToITarget);
-								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SPACESHIP))
-									Log.debugOut(ship.name(),"New Target Accelleration: "+targetAcceleration);
-							}
-							else
-							{
-								// otherwise, just continue the approach
-								track.state = ShipNavState.APPROACH;
-								if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>MAX_DIR_DIFF)
-									changeFacing(ship, dirToITarget);
-							}
-						}
-					}
-					else // since we aren't moving yet, Begin standard approach.
-					{
-						track.state = ShipNavState.APPROACH;
-						if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>MAX_DIR_DIFF)
-							changeFacing(ship, dirToITarget);
-					}
-				}
-				else // we are not going the right way, so look for solutions
-				if(ship.speed() > (targetAcceleration * 10)) // are we moving a bit too fast to turn properly?
+				// Check if we should be speeding up, or slowing down, and ideal facing direction
+
+				// first see if we are actually underway...
+				if((ship.speed()>targetAcceleration)
+				&& (targetAcceleration > 0.0))
 				{
-					//TODO: when this triggers, the target navigation falls apart.
-					Dir3D facingDir;
-					if(toDirDiff < Math.PI/2)
+					final double ticksToStop = ship.speed() / targetAcceleration;
+					// * * final double ticksToTarget = distToITarget / ship.speed();
+					final double stopDistance = (ship.speed()/2.0) * ticksToStop;
+					// now see if we need to adjust decelleration during deproach
+					Dir3D correctFacing;
+					//final Dir3D correctDirection = dirToITarget;
+					if((ticksToStop > 0)
+					&&(track.state==ShipNavState.DEPROACH))
 					{
-						facingDir=CMLib.space().getOffsetAngle(dirToITarget, ship.direction());
-						facingDir=CMLib.space().getOppositeDir(facingDir);
+						correctFacing = CMLib.space().getOppositeDir(ship.direction());
+						final double overUnderDistance = stopDistance - distToITarget;
+//TODO: the first 'stopping too slowly' case isn't working, I guess because higher TA is not allowed?
+						if(overUnderDistance > targetAcceleration * 2) // means we are stopping too slowly
+							targetAcceleration += Math.min(CMath.div(overUnderDistance , ticksToStop), 1.0) ;
+						else
+						if(overUnderDistance < -(targetAcceleration * 2)) // stopping too quickly
+							targetAcceleration -= CMath.div(overUnderDistance , ticksToStop);
+						if(ship.speed()>distToITarget*2) // this is deproach, so we want to STOP!
+							targetAcceleration = ship.speed();
+Log.debugOut("TTS: "+ticksToStop+", OUD="+overUnderDistance+", TA="+targetAcceleration); //TODO:BZ:DELME
 					}
-					else
-					if(toDirDiff < Math.PI)
-						facingDir=CMLib.space().getOppositeDir(ship.direction());
-					else
-						facingDir=CMLib.space().getOppositeDir(dirToITarget);
-					if(CMLib.space().getAngleDelta(ship.facing(), facingDir)>MAX_DIR_DIFF)
-						changeFacing(ship, facingDir);
+					else  // APPROACH -- so see if it is time to decelerate
+					{
+						correctFacing = dirToITarget;
+						if((stopDistance >= distToITarget)
+						&&(targetObject != null)
+						&&(ship.speed() > (targetObject.speed() * 2)))
+						{
+							track.state = ShipNavState.DEPROACH;
+							// ensure we are mooning our direction
+							correctFacing = CMLib.space().getOppositeDir(ship.direction()); // just slower at first
+						}
+						else // during approach, facing should be = direction
+						if(CMLib.space().getAngleDelta(ship.direction(), correctFacing)>0)
+							correctFacing = CMLib.space().getOffsetAngle(correctFacing, ship.direction());
+					}
+					// correctFacing is now at the Ideal point.
+
+					// if we are presently traveling towards the target, get detailed.
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SPACESHIP))
+					{
+						final double facingDiff = CMLib.space().getAngleDelta(ship.facing(), correctFacing);
+						Log.debugOut(ship.name(),"Face diff: "+CMath.div(Math.round(facingDiff * 10000),10000.0)
+									+", Dir diff: "+CMath.div(Math.round(directionDiff * 10000),10000.0)
+									+", speed: "+CMLib.english().distanceDescShort(Math.round(ship.speed()))
+									+", dist: "+CMLib.english().distanceDescShort(distToITarget)+", dir: "
+									+CMLib.english().directionDescShort(correctFacing.toDoubles()));
+					}
+					if(CMLib.space().getAngleDelta(ship.facing(), correctFacing)>0)
+						changeFacing(ship, correctFacing);
 				}
-				else // see how big a problem it is...
-				if(CMLib.space().getAngleDelta(ship.facing(), dirToITarget)>MAX_DIR_DIFF)
+				else // since we aren't moving yet, Begin standard approach.
+				{
+					track.state = ShipNavState.APPROACH;
 					changeFacing(ship, dirToITarget);
+				}
 			}
 			break;
 		}
