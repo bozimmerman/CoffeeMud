@@ -1,5 +1,5 @@
 BUGS/UNTESTED STUFF:
-  * APPROACH/DEPROACH can over/under accelerate, and needs to do more coasting when things are wrong.
+  * Debug direction correction in a Test (approach and deproach), then reintroduce to ShipNavProgram and retest
 
 TECH TODO:
    *. navigation course system testing.
