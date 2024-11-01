@@ -116,7 +116,7 @@ public class Skill_RustingStrike extends StdSkill
 		if(success)
 		{
 			final Room roomR=CMLib.map().roomLocation(mob);
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.MASK_MALICIOUS|CMMsg.TYP_ACID|(auto?CMMsg.MASK_ALWAYS:0),
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),
 					L("<S-NAME> strike(s) at <T-NAME>."));
 			if(roomR.okMessage(mob,msg))
 			{
@@ -124,7 +124,7 @@ public class Skill_RustingStrike extends StdSkill
 				if(msg.value() <=0)
 				{
 					CMLib.combat().postDamage(mob,target,this,damage,
-							CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,
+							CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_MOVE|CMMsg.TYP_ACID,Weapon.TYPE_BASHING,
 							L("^F^<FIGHT^><S-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?@x1",CMLib.protocol().msp("bashed1.wav",30)));
 
 					final Map<Long,Item> candidates = new TreeMap<Long,Item>();

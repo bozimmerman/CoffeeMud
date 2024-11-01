@@ -401,6 +401,14 @@ public class CMStrings
 		return (("aeiouAEIOU").indexOf(c)>=0);
 	}
 
+	public final static String getFirstWord(final String s)
+	{
+		if(s==null)
+			return "";
+		return s.substring(0,indexOfEndOfWord(s,0));
+	}
+
+
 	/**
 	 * Returns the next index in the given string of an end-of-word character,
 	 * such as space,.;? or !.  It returns that index.
@@ -1609,6 +1617,23 @@ public class CMStrings
 		if((start>0)&&(end>start))
 			return msg.substring(start+1,end);
 		return null;
+	}
+
+	/**
+	 * Replaces the string between the first and last ' characters in the
+	 * given string with the given string.
+	 * @param msg the string to parse out from
+	 * @param rep the string to replace
+	 */
+	public final static String replaceSayInMessage(final String msg, final String rep)
+	{
+		if(msg==null)
+			return msg;
+		final int start=msg.indexOf('\'');
+		final int end=msg.lastIndexOf('\'');
+		if((start>0)&&(end>start))
+			return msg.substring(0,start+1)+rep+msg.substring(end);
+		return msg;
 	}
 
 	/**

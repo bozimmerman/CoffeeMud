@@ -3682,6 +3682,12 @@ public class StdMOB implements MOB
 				CMLib.commands().handleBeingSpokenTo(srcM, this, msg.targetMessage());
 				break;
 			}
+			case CMMsg.TYP_ORDER:
+			{
+				if(msg.targetMessage()!=null)
+					enqueCommand(CMParms.parse(CMStrings.getSayFromMessage(msg.targetMessage())),MUDCmdProcessor.METAFLAG_ORDER,0);
+				break;
+			}
 			default:
 				if((CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS)) && (!amDead))
 					CMLib.combat().handleBeingAssaulted(msg);
