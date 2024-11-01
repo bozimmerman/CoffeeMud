@@ -767,10 +767,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								@Override
 								public String getDescription()
 								{
-									if(getAmount()<0)
-										return getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat())+(savingThrow ? " resistance":""));
+									int amount = getAmount();
+									if((amount<0)&&(stat.equalsIgnoreCase("ARMOR")))
+										amount = -amount;
+									if(amount<0)
+										return amount + " " + L(CMStrings.capitalizeAndLower(getStat())+(savingThrow ? " resistance":""));
 									else
-										return "+"+getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat())+(savingThrow ? " resistance":""));
+										return "+"+amount + " " + L(CMStrings.capitalizeAndLower(getStat())+(savingThrow ? " resistance":""));
 								}
 
 								@Override
