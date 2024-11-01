@@ -91,6 +91,17 @@ public class BookEditing extends CommonSkill
 				if(found==null)
 					commonTelL(mob,"You mess up your book editing.");
 				else
+				if((pageNum!=null)&&(pageNum.startsWith("DELETE ")))
+				{
+					final CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.TYP_REWRITE,
+							L("<S-NAME> edit(s) <T-NAME>."),pageNum,L("<S-NAME> edit(s) <T-NAME>."));
+					if(mob.location().okMessage(mob,msg))
+					{
+						mob.location().send(mob,msg);
+						verb="";
+					}
+				}
+				else
 				{
 					final CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.TYP_REWRITE,
 							L("<S-NAME> start(s) editing <T-NAME>."),pageNum,L("<S-NAME> start(s) editing <T-NAME>."));
@@ -177,6 +188,13 @@ public class BookEditing extends CommonSkill
 		if(!CMLib.flags().isReadable(target))
 		{
 			commonTelL(mob,"That's not even readable!");
+			return false;
+		}
+
+		if((target instanceof Recipes)
+		&&((pageNum.length()==0)||(!pageNum.startsWith("DELETE "))))
+		{
+			commonTelL(mob,"You can't edit that with this skill, but only delete pages.");
 			return false;
 		}
 

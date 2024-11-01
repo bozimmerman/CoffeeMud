@@ -65,7 +65,6 @@ public class GenRecipe extends GenReadable implements RecipesBook
 		if(msg.amITarget( this )
 		&& (msg.targetMinor()==CMMsg.TYP_READ))
 		{
-
 			if((msg.targetMessage()!=null)
 			&& (recipeLines.length>0)
 			&&(CMath.isInteger(msg.targetMessage())))
@@ -95,6 +94,22 @@ public class GenRecipe extends GenReadable implements RecipesBook
 					this.commonSkillID="";
 				else
 					msg.source().tell(L("This book is only for @x1 recipes.",A.name()));
+			}
+		}
+		if(msg.amITarget(this)
+		&&(msg.targetMinor()==CMMsg.TYP_REWRITE))
+		{
+			if((msg.targetMessage()!=null)
+			&&(msg.targetMessage().toUpperCase().startsWith("DELETE "))
+			&&(CMath.isInteger(msg.targetMessage().substring(7).trim())))
+			{
+				final int totRecipes = getRecipeCodeLines().length;
+				final int msgNum=CMath.s_int(msg.targetMessage().substring(7).trim());
+				if((msgNum <1)||(msgNum>totRecipes))
+				{
+					msg.source().tell(L("There is no Recipe #@x1",""+(msgNum)));
+					return false;
+				}
 			}
 		}
 		if(msg.amITarget( this )
@@ -301,6 +316,28 @@ public class GenRecipe extends GenReadable implements RecipesBook
 						 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, rawCodes.toString()+" ",
 						 CMMsg.NO_EFFECT, null);
 				msg.addTrailerMsg(readMsg);
+			}
+			return;
+		}
+		if(msg.amITarget(this)
+		&&(msg.targetMinor()==CMMsg.TYP_REWRITE))
+		{
+			if((msg.targetMessage()!=null)
+			&&(msg.targetMessage().toUpperCase().startsWith("DELETE "))
+			&&(CMath.isInteger(msg.targetMessage().substring(7).trim())))
+			{
+				final int totRecipes = getRecipeCodeLines().length;
+				final int msgNum=CMath.s_int(msg.targetMessage().substring(7).trim());
+				if((msgNum >0)&&(msgNum<=totRecipes))
+				{
+					final List<String> newLines = new ArrayList<String>(getRecipeCodeLines().length-1);
+					for(int i = 0;i<getRecipeCodeLines().length;i++)
+					{
+						if(i!=(msgNum-1))
+							newLines.add(getRecipeCodeLines()[i]);
+					}
+					setRecipeCodeLines(newLines.toArray(new String[0]));
+				}
 			}
 			return;
 		}
