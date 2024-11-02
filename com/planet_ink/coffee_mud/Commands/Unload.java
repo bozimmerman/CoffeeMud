@@ -50,7 +50,7 @@ public class Unload extends StdCommand
 	final String[]	ARCHON_LIST	= {
 		"CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE",
 		"RESOURCE", "INIFILE", "ACHIEVEMENTS", "[FILENAME]", "VFS",
-		"INI", "SETTINGS"
+		"INI", "SETTINGS", "AWARDS"
 	};
 
 	@SuppressWarnings("rawtypes")
@@ -264,6 +264,12 @@ public class Unload extends StdCommand
 			{
 				CMLib.achievements().shutdown();
 				mob.tell(L("Achievements unloaded."));
+			}
+			else
+			if(str.equalsIgnoreCase("awards")||str.equalsIgnoreCase("autoawards"))
+			{
+				CMLib.awards().shutdown();
+				mob.tell(L("Auto-Awards unloaded."));
 			}
 			else
 			if((str.equalsIgnoreCase("all"))&&(CMSecurity.isASysOp(mob)))

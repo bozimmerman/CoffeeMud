@@ -363,7 +363,7 @@
 -CLASS +Doomsayer :: -WEEKOFYEAR +9 :: Prop_Adjuster(SAVEELE-10)
 -CLASS +Healer :: -WEEKOFYEAR +10 :: Prop_Adjuster(SAVEELE-10)
 -CLASS +Missionary :: -WEEKOFYEAR +11 :: Prop_Adjuster(SAVEELE-10)
--CLASS +Necromancer :: -WEEKOFYEAR +12 :: Prop_Adjuster(SAVEELE-10) 
+-CLASS +Necromancer :: -WEEKOFYEAR +12 :: Prop_Adjuster(SAVEELE-10)
 -CLASS +Oracle :: -WEEKOFYEAR +13 :: Prop_Adjuster(SAVEELE-10)
 -CLASS +Purist :: -WEEKOFYEAR +14 :: Prop_Adjuster(SAVEELE-10)
 -CLASS +Shaman :: -WEEKOFYEAR +15 :: Prop_Adjuster(SAVEELE-10)

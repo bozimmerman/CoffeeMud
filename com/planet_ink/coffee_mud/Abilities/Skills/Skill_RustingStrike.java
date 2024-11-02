@@ -121,79 +121,77 @@ public class Skill_RustingStrike extends StdSkill
 			if(roomR.okMessage(mob,msg))
 			{
 				roomR.send(mob,msg);
-				if(msg.value() <=0)
+				CMLib.combat().postDamage(mob,target,this,damage,
+						CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_MOVE|CMMsg.TYP_ACID,Weapon.TYPE_BASHING,
+						L("^F^<FIGHT^><S-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?@x1",CMLib.protocol().msp("bashed1.wav",30)));
+				final Map<Long,Item> candidates = new TreeMap<Long,Item>();
+				int metalCount = 0;
+				for(final Enumeration<Item> i=target.items();i.hasMoreElements();)
 				{
-					CMLib.combat().postDamage(mob,target,this,damage,
-							CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_MOVE|CMMsg.TYP_ACID,Weapon.TYPE_BASHING,
-							L("^F^<FIGHT^><S-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?@x1",CMLib.protocol().msp("bashed1.wav",30)));
-
-					final Map<Long,Item> candidates = new TreeMap<Long,Item>();
-					int metalCount = 0;
-					for(final Enumeration<Item> i=target.items();i.hasMoreElements();)
+					final Item I=i.nextElement();
+					if((I!=null)
+					&&(I.amBeingWornProperly()))
 					{
-						final Item I=i.nextElement();
-						if((I!=null)
-						&&(I.amBeingWornProperly()))
+						if(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+						&&(RawMaterial.CODES.HARDNESS(I.material())<10)
+						&&(I.subjectToWearAndTear()))
+							metalCount++;
+						for(final long l : Wearable.CODES.ALL())
 						{
-							if(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
-							&&(RawMaterial.CODES.HARDNESS(I.material())<10)
-							&&(I.subjectToWearAndTear()))
-								metalCount++;
-							for(final long l : Wearable.CODES.ALL())
+							if(CMath.bset(I.rawWornCode(), l))
 							{
-								if(CMath.bset(I.rawWornCode(), l))
+								final Long L = Long.valueOf(l);
+								if(I instanceof Armor)
 								{
-									final Long L = Long.valueOf(l);
-									if(I instanceof Armor)
+									if(candidates.containsKey(L))
 									{
-										if(candidates.containsKey(L))
-										{
-											final Item otherI = candidates.get(L);
-											if((otherI instanceof Armor)
-											&&(((Armor)otherI).getClothingLayer()<((Armor)I).getClothingLayer()))
-												candidates.put(L, I);
-										}
+										final Item otherI = candidates.get(L);
+										if((otherI instanceof Armor)
+										&&(((Armor)otherI).getClothingLayer()<((Armor)I).getClothingLayer()))
+											candidates.put(L, I);
 									}
 									else
 										candidates.put(L, I);
 								}
+								else
+									candidates.put(L, I);
 							}
 						}
 					}
-					if((candidates.size()>0)
-					&&(metalCount>0))
+				}
+				if((candidates.size()>0)
+				&&(metalCount>0))
+				{
+					final List<Item> items = new XVector<Item>(candidates.values());
+					final Item rustI =items.get(CMLib.dice().roll(1, items.size(), -1));
+					if(((rustI.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+					&&(RawMaterial.CODES.HARDNESS(rustI.material())<10)
+					&&(rustI.subjectToWearAndTear()))
 					{
-						final List<Item> items = new XVector<Item>(candidates.values());
-						final Item rustI =items.get(CMLib.dice().roll(1, items.size(), -1));
-						if(((rustI.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
-						&&(RawMaterial.CODES.HARDNESS(rustI.material())<10)
-						&&(rustI.subjectToWearAndTear()))
+						int amt = 10 * (10-RawMaterial.CODES.HARDNESS(rustI.material()));
+						final int uses = rustI.usesRemaining() / 10;
+						CMLib.combat().postItemDamage(mob, rustI, this, amt, CMMsg.TYP_ACID, L("<T-NAME> rusts!"));
+						final Food F = (Food)CMClass.getBasicItem("GenFoodResource");
+						if(F != null)
 						{
-							int amt = 10 * (10-RawMaterial.CODES.HARDNESS(rustI.material()));
-							final int uses = rustI.usesRemaining() / 10;
-							CMLib.combat().postItemDamage(mob, rustI, null, amt, CMMsg.TYP_ACID, "<T-NAME> rusts!");
-							final Food F = (Food)CMClass.getBasicItem("GenFoodResource");
-							if(F != null)
-							{
-								if(amt > uses)
-									amt = uses;
-								if(amt <= 0)
-									amt = 1;
-								F.setBite(F.nourishment());
-								F.setNourishment(F.nourishment() * amt);
-								F.setName("some rust");
-								F.setDisplayText("some rust lies here");
-								F.basePhyStats().setWeight(amt);
-								F.phyStats().setWeight(amt);
-								F.setMaterial(RawMaterial.RESOURCE_DUST);
-								((RawMaterial)F).setSubType("RUST");
-								final Ability A = CMClass.getAbility("Disease_Lockjaw");
-								if(A!=null)
-									F.addNonUninvokableEffect(A);
-								final Room R = CMLib.map().roomLocation(mob);
-								if(R!=null)
-									R.addItem(F, Expire.Monster_EQ);
-							}
+							if(amt > uses)
+								amt = uses;
+							if(amt <= 0)
+								amt = 1;
+							F.setBite(F.nourishment());
+							F.setNourishment(F.nourishment() * amt);
+							F.setName("some rust");
+							F.setDisplayText("some rust lies here");
+							F.basePhyStats().setWeight(amt);
+							F.phyStats().setWeight(amt);
+							F.setMaterial(RawMaterial.RESOURCE_DUST);
+							((RawMaterial)F).setSubType("RUST");
+							final Ability A = CMClass.getAbility("Disease_Lockjaw");
+							if(A!=null)
+								F.addNonUninvokableEffect(A);
+							final Room R = CMLib.map().roomLocation(mob);
+							if(R!=null)
+								R.addItem(F, Expire.Monster_EQ);
 						}
 					}
 				}

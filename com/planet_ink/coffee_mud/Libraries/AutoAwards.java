@@ -453,7 +453,7 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 		while(k.hasNext())
 			Resources.removeResource(k.next());
 		final List<String> V = new ArrayList<String>();
-		for(final CMFile F : CMFile.getExistingExtendedFiles(getAutoTitleFilename(), null, CMFile.FLAG_FORCEALLOW))
+		for(final CMFile F : CMFile.getExistingExtendedFiles(Resources.makeFileResourceName(getAutoTitleFilename()), null, CMFile.FLAG_FORCEALLOW))
 			V.addAll(Resources.getFileLineVector(Resources.getFileResource(F.getAbsolutePath(),true)));
 		String WKID=null;
 		for(int v=0;v<V.size();v++)
@@ -463,7 +463,7 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 			if(WKID==null)
 				continue;
 			if(WKID.startsWith("Error: "))
-				Log.errOut("CharCreation",WKID);
+				Log.errOut("Awards-Titles",WKID);
 		}
 		for(final Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 		{
@@ -759,6 +759,15 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 		else
 		if(reset)
 			A.setStat("RESET","true");
+	}
+
+	@Override
+	public boolean shutdown()
+	{
+		autoTitles		= null;
+		autoPropHash	= null;
+		autoProperties	= null;
+		return true;
 	}
 
 	@Override

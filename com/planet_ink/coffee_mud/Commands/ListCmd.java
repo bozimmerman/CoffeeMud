@@ -4213,15 +4213,15 @@ public class ListCmd extends StdCommand
 		int i=1;
 		final int COL_LEN1=CMLib.lister().fixColWidth(17.0,viewerS);
 		final int COL_LEN2=CMLib.lister().fixColWidth(17.0,viewerS);
-		final int COL_LEN3=CMLib.lister().fixColWidth(79-18-18-3,viewerS);
-		buf.append("## ");
+		final int COL_LEN3=CMLib.lister().fixColWidth(79-18-18-4,viewerS);
+		buf.append("### ");
 		buf.append(CMStrings.padRight(L("Player Mask"), COL_LEN1)).append(" ");
 		buf.append(CMStrings.padRight(L("Date Mask"), COL_LEN2)).append(" ");
 		buf.append(L("Properties")).append("\n\r");
 		for(final Enumeration<AutoProperties> ap = CMLib.awards().getAutoProperties();ap.hasMoreElements();)
 		{
 			final AutoProperties AP = ap.nextElement();
-			buf.append(CMStrings.padRight(""+i, 3));
+			buf.append(CMStrings.padRight(""+i, 4));
 			buf.append(CMStrings.padRight(AP.getPlayerMask(), COL_LEN1)).append(" ");
 			buf.append(CMStrings.padRight(AP.getDateMask(), COL_LEN2)).append(" ");
 			final StringBuilder p1 = new StringBuilder("");
