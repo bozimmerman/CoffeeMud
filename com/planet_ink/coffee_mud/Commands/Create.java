@@ -1185,7 +1185,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		if(CMLib.awards().modifyAutoProperty(Integer.MAX_VALUE, CMParms.combine(commands,2)))
+		if(CMLib.awards().modifyAutoProperty(Integer.MAX_VALUE, CMParms.combineQuoted(commands,2)))
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The superstition of the players just increased!"));
 		else
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
