@@ -535,7 +535,7 @@ public class Thief_Runecasting extends ThiefSkill
 									}
 								}
 							}
-							if(oldsz==reports.size())
+							if((oldsz==reports.size()) && (A != null))
 							{
 								String codeName;
 								if(A.accountForYourself().length()>0)

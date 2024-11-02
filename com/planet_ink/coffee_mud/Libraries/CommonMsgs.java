@@ -327,7 +327,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 		finally
 		{
-			if (destroyTheTalker)
+			if (destroyTheTalker && (talker != null))
 				talker.destroy();
 		}
 	}

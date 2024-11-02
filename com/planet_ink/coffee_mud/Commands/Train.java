@@ -430,6 +430,11 @@ public class Train extends StdCommand
 		}
 
 		final Environmental details = (Environmental)CMClass.getCommon("DefaultEnvironmental");
+		if(cost == null)
+		{
+			CMLib.commands().postCommandFail(mob,origCmds,L("Something is wrong with that train attempt."));
+			return false;
+		}
 		details.setStat("COST", cost.value());
 		switch(trainType)
 		{

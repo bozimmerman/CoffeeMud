@@ -3152,8 +3152,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
 		}
 		else
-		if((isPureElemental(motherR)&&(!isPureElemental(fatherR)))
-		||(isPureElemental(fatherR)&&(!isPureElemental(motherR))))
+		if(((isPureElemental(motherR)&&(!isPureElemental(fatherR)))
+			||(isPureElemental(fatherR)&&(!isPureElemental(motherR))))
+		&&(motherR != null)
+		&&(fatherR != null))
 		{
 			final Race elemR=isPureElemental(motherR)?motherR:fatherR;
 			final String elemName = elemR.ID().substring(0,elemR.ID().length()-9);

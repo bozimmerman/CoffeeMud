@@ -152,7 +152,7 @@ public class Prayer_AuraStrife extends Prayer
 					if(invokerGroup.contains(mob))
 						unInvoke();
 					else
-					if(mob.isInCombat())
+					if((mob!=null) && (mob.isInCombat()))
 					{
 						if(CMLib.dice().rollPercentage()<10)
 						{
@@ -169,6 +169,7 @@ public class Prayer_AuraStrife extends Prayer
 					{
 						final MOB newvictim=R.fetchRandomInhabitant();
 						if((newvictim!=mob)
+						&&(mob != null)
 						&&(mob.mayIFight(newvictim))
 						&&(!invokerGroup.contains(newvictim)))
 						{
@@ -194,6 +195,7 @@ public class Prayer_AuraStrife extends Prayer
 					if((M != null)
 					&&(M != templarM)
 					&&(!invokerGroup.contains(M))
+					&&(mob != null)
 					&&(mob.mayIFight(M))
 					&&(!M.Name().equals(mob.getLiegeID())))
 						beneficialAffect(templarM,M,0,Ability.TICKS_FOREVER);
