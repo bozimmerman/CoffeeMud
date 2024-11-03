@@ -203,16 +203,21 @@ public class Dir3D extends BigVector
 	}
 
 	@Override
+	public int hashCode()
+	{
+		return xy().hashCode() << 32 | z().hashCode();
+	}
+	
+	@Override
 	public boolean equals(final Object o)
 	{
 		if(o instanceof Dir3D)
 		{
 			final Dir3D v = (Dir3D)o;
-			if(v.length()!=b.length)
+			if(!xy().equals(v.xy()))
 				return false;
-			for(int i=0;i<b.length;i++)
-				if(b[i].doubleValue() != v.b[i].doubleValue())
-					return false;
+			if(!z().equals(v.z()))
+				return false;
 			return true;
 		}
 		return super.equals(o);

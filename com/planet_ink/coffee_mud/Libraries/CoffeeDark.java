@@ -320,6 +320,26 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		}
 		return finalDelta;
 	}
+	
+	protected BigDecimal getShortestYawDelta(final BigDecimal correctAngle, final BigDecimal wrongAngle)
+	{
+		BigDecimal xyd = correctAngle.subtract(wrongAngle);
+		final int zcp = xyd.compareTo(BigCMath.ZERO);
+		final boolean add;
+		add = ((zcp>0) && (xyd.compareTo(BigCMath.PI)>0))
+			||((zcp<0) && (xyd.compareTo(BigCMath.PI.negate())>0));
+		if(add)
+		{
+			if(zcp<0)
+				xyd = wrongAngle.subtract(correctAngle);
+			else
+				xyd = BigCMath.PI_TIMES_2.subtract(correctAngle).add(wrongAngle);
+		}
+		else
+		if(zcp<0)
+			xyd = BigCMath.PI_TIMES_2.subtract(wrongAngle).add(correctAngle);
+		return add?xyd:xyd.negate();
+	}
 
 	@Override
 	public Dir3D getMiddleAngle(final Dir3D angle1, final Dir3D angle2)
@@ -327,26 +347,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final Dir3D middleAngle = new Dir3D (angle1.xy(), angle1.z());
 		if(!angle1.xy().equals(angle2.xy()))
 		{
-			BigDecimal xyd = angle1.xy().subtract(angle2.xy());
-			final int zcp = xyd.compareTo(BigCMath.ZERO);
-			final boolean add;
-			add = ((zcp>0) && (xyd.compareTo(BigCMath.PI)>0))
-				||((zcp<0) && (xyd.compareTo(BigCMath.PI.negate())>0));
-			if(add)
-			{
-				if(zcp<0)
-					xyd = angle2.xy().subtract(angle1.xy());
-				else
-					xyd = BigCMath.PI_TIMES_2.subtract(angle1.xy()).add(angle2.xy());
-			}
-			else
-			if(zcp<0)
-				xyd = BigCMath.PI_TIMES_2.subtract(angle2.xy()).add(angle1.xy());
-
-			if(add)
-				middleAngle.xy(middleAngle.xy().add(xyd.divide(BigCMath.TWO,Dir3D.SCALE,RoundingMode.UP)));
-			else
-				middleAngle.xy(middleAngle.xy().subtract(xyd.divide(BigCMath.TWO,Dir3D.SCALE,RoundingMode.UP)).abs());
+			final BigDecimal xyd = getShortestYawDelta(angle1.xy(),angle2.xy());
+			middleAngle.xy(middleAngle.xy().add(xyd.divide(BigCMath.TWO,Dir3D.SCALE,RoundingMode.UP)));
 		}
 		middleAngle.z((angle1.z().add(angle2.z())).divide(BigCMath.TWO,Dir3D.SCALE,RoundingMode.UP));
 		return middleAngle;
@@ -358,26 +360,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final Dir3D offsetAngles = new Dir3D (correctAngle.xy(), correctAngle.z());
 		if(!correctAngle.xy().equals(wrongAngle.xy()))
 		{
-			BigDecimal xyd = correctAngle.xy().subtract(wrongAngle.xy());
-			final int zcp = xyd.compareTo(BigCMath.ZERO);
-			final boolean add;
-			add = ((zcp>0) && (xyd.compareTo(BigCMath.PI)>0))
-				||((zcp<0) && (xyd.compareTo(BigCMath.PI.negate())>0));
-			if(add)
-			{
-				if(zcp<0)
-					xyd = wrongAngle.xy().subtract(correctAngle.xy());
-				else
-					xyd = BigCMath.PI_TIMES_2.subtract(correctAngle.xy()).add(wrongAngle.xy());
-			}
-			else
-			if(zcp<0)
-				xyd = BigCMath.PI_TIMES_2.subtract(wrongAngle.xy()).add(correctAngle.xy());
-
-			if(add)
-				offsetAngles.xy(offsetAngles.xy().subtract(xyd).abs());
-			else
-				offsetAngles.xy(offsetAngles.xy().add(xyd));
+			final BigDecimal xyd = getShortestYawDelta(correctAngle.xy(),wrongAngle.xy());
+			offsetAngles.xy(offsetAngles.xy().subtract(xyd));
 		}
 		if(!correctAngle.z().equals(wrongAngle.z()))
 		{
@@ -398,26 +382,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final Dir3D exaggAngle = new Dir3D (wrongAngle.xy(), wrongAngle.z());
 		if(!correctAngle.xy().equals(wrongAngle.xy()))
 		{
-			BigDecimal xyd = correctAngle.xy().subtract(wrongAngle.xy());
-			final int zcp = xyd.compareTo(BigCMath.ZERO);
-			final boolean add;
-			add = ((zcp>0) && (xyd.compareTo(BigCMath.PI)>0))
-				||((zcp<0) && (xyd.compareTo(BigCMath.PI.negate())>0));
-			if(add)
-			{
-				if(zcp<0)
-					xyd = wrongAngle.xy().subtract(correctAngle.xy());
-				else
-					xyd = BigCMath.PI_TIMES_2.subtract(correctAngle.xy()).add(wrongAngle.xy());
-			}
-			else
-			if(zcp<0)
-				xyd = BigCMath.PI_TIMES_2.subtract(wrongAngle.xy()).add(correctAngle.xy());
-
-			if(add)
-				exaggAngle.xy(exaggAngle.xy().add(xyd));
-			else
-				exaggAngle.xy(exaggAngle.xy().subtract(xyd).abs());
+			final BigDecimal xyd = getShortestYawDelta(correctAngle.xy(),wrongAngle.xy());
+			exaggAngle.xy(exaggAngle.xy().add(xyd));
 		}
 		if(!correctAngle.z().equals(wrongAngle.z()))
 		{
@@ -466,46 +432,33 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final BigDecimal currentSpeed = BigDecimal.valueOf(curSpeed);
 		final BigDecimal acceleration = BigDecimal.valueOf(newAcceleration);
 
-		final BigDecimal yawSign;
-		BigDecimal yawDelta;
-		if(curDirectionYaw.compareTo(accelDirectionYaw) >0)
-		{
-			yawSign = BigDecimal.valueOf(-1.0);
-			yawDelta = curDirectionYaw.subtract(accelDirectionYaw);
-		}
-		else
-		{
-			yawSign = BigDecimal.valueOf(1.0);
-			yawDelta = accelDirectionYaw.subtract(curDirectionYaw);
-		}
-		// 350 and 10, diff = 340 + -360 = 20
-		if(yawDelta.compareTo(BigCMath.PI)>0) // a delta is never more than 180 degrees
-			yawDelta=BigCMath.PI_TIMES_2.subtract(yawDelta);
-		final BigDecimal pitchSign;
-		final BigDecimal pitchDelta;
-		if(curDirectionPitch.compareTo(accelDirectionPitch) >0)
-		{
-			pitchSign = BigDecimal.valueOf(-1.0);
-			pitchDelta = curDirectionPitch.subtract(accelDirectionPitch);
-		}
-		else
-		{
-			pitchSign = BigDecimal.valueOf(1.0);
-			pitchDelta = accelDirectionPitch.subtract(curDirectionPitch);
-		}
 		final BigDecimal anglesDelta =  BigDecimal.valueOf(getAngleDelta(curDirection, accelDirection));
 		if((anglesDelta.subtract(BigCMath.PI).abs().compareTo(BigCMath.ZERO_ALMOST)<=0)
 		&&(currentSpeed.compareTo(acceleration)>0))
 			return currentSpeed.subtract(acceleration).doubleValue();
+		
+		final BigDecimal xyd = getShortestYawDelta(curDirectionYaw,accelDirectionYaw);
+		final BigDecimal yawSign = (xyd.signum() >= 0) ? BigCMath.ONE : BigCMath.MIN_ONE;
+		final BigDecimal yawDelta = xyd.abs();
+		final BigDecimal zd = curDirectionPitch.subtract(accelDirectionPitch);
+		final BigDecimal pitchSign = (zd.signum() >= 0) ? BigCMath.MIN_ONE : BigCMath.ONE;
+		final BigDecimal pitchDelta = zd.abs();
 		BigDecimal newDirectionYaw;
 		BigDecimal newDirectionPitch;
-		final BigDecimal deltaMultiplier = Dir3D.sin(anglesDelta);
+		final BigDecimal deltaMultiplier =  BigCMath.sqrt(Dir3D.sin(anglesDelta));
 		final BigDecimal yawMin =  deltaMultiplier.multiply((BigCMath.POINT01.add(yawDelta.multiply(BigCMath.ONEPOINT01.subtract(BigDecimal.valueOf(Math.sin(curDirectionPitch.doubleValue())))))));
-		final BigDecimal accelerationMultiplier;
+		BigDecimal accelerationMultiplier;
 		if(currentSpeed.compareTo(BigCMath.ZERO)==0)
 			accelerationMultiplier = BigCMath.ONE;
 		else
-			accelerationMultiplier = acceleration.multiply(BigCMath.TEN).divide(currentSpeed,Dir3D.SCALE,RoundingMode.UP).multiply(deltaMultiplier,MathContext.DECIMAL128);
+		if(currentSpeed.compareTo(acceleration)<=0)
+			accelerationMultiplier = BigCMath.ONE;
+		else
+		{
+			accelerationMultiplier = acceleration.divide(currentSpeed,Dir3D.SCALE,RoundingMode.UP).multiply(deltaMultiplier,MathContext.DECIMAL128);
+			if(accelerationMultiplier.compareTo(BigCMath.POINT01)<0)
+				accelerationMultiplier=BigCMath.ONE;
+		}
 		if((yawDelta.compareTo(yawMin) <= 0))
 			newDirectionYaw = accelDirectionYaw;
 		else

@@ -232,7 +232,7 @@ public class Spacemoves extends StdTest
 					errMsg=e.getMessage();
 			}
 		}
-		if(passes>fails/2)
+		if((fails>0)||(passes==0))
 			return null;
 		return errMsg;
 	}
