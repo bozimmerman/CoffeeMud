@@ -1,9 +1,6 @@
 BUGS/UNTESTED STUFF:
-  * Debug direction correction in a Test (approach and deproach), then reintroduce to ShipNavProgram and retest
 
 TECH TODO:
-   *. ship nav needs coasting time to make direction correction doable, which means a 'max speed' for the nav trip.
-   *. navigation course system testing.
    *. fix landing to require an orbit first
    *. make orbit ability, integrate with navigation: 1. go dir, 2. adjust point same dist from planet. 3. plot course. 4. Cheat
    *. make inertia battery that alter ships inertia overall for dir change 

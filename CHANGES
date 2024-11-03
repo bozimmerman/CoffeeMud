@@ -77,6 +77,7 @@
  75. New Property: TriggeredAffects, for having effects that are triggered :)
  76. New race: Rust Monster
  77. ORDER now works with animal followers for specific commands in LISTS.INI file
+ 78. Can now LIST DBCONNECTIONS to check database status
  
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

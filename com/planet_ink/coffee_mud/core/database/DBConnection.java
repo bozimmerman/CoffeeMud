@@ -76,6 +76,9 @@ public class DBConnection
 
 	/** for remembering whether this is a fakeDB connection */
 	private Boolean				isFakeDB			= null;
+	
+	/** Track the thread that owns the connection */
+	private volatile Thread		lastThread			= null;
 
 	public static enum FetchType
 	{
@@ -226,6 +229,7 @@ public class DBConnection
 	{
 		if((!inUse)&&(ready())&&(!isProbablyDead()))
 		{
+			this.lastThread = Thread.currentThread();
 			lastError=null;
 			try
 			{
@@ -281,6 +285,7 @@ public class DBConnection
 	{
 		if((!inUse)&&(ready())&&(!isProbablyDead()))
 		{
+			this.lastThread = Thread.currentThread();
 			lastError=null;
 			myPreparedStatement=null;
 			sqlserver=true;
@@ -304,9 +309,8 @@ public class DBConnection
 	{
 		if((!inUse)&&(ready()))
 		{
-
+			this.lastThread = Thread.currentThread();
 			lastError=null;
-
 			try
 			{
 				myStatement=null;
@@ -441,6 +445,7 @@ public class DBConnection
 		closeStatements(Closer);
 		if(!isReusable)
 			close();
+		this.lastThread = null;
 		inUse=false;
 	}
 
@@ -660,6 +665,54 @@ public class DBConnection
 	public boolean inSQLServerCommunication()
 	{
 		return sqlserver;
+	}
+
+	/**
+	 * If the connection is in use, returns the status of the thread
+	 * that has claimed it.
+	 * 
+	 * @return true if the thread is alive, false if no claimed thread, or its not alive
+	 */
+	public boolean isThreadAlive()
+	{
+		final Thread t = this.lastThread;
+		if(t == null)
+			return false;
+		final java.lang.StackTraceElement[] s=t.getStackTrace();
+		boolean isAlive=t.isAlive();
+		if(isAlive)
+		{
+			for (final StackTraceElement element : s)
+			{
+				if(element.getMethodName().equalsIgnoreCase("sleep")
+				&&(element.getClassName().equalsIgnoreCase("java.lang.Thread")))
+					isAlive=false;
+				else
+				if(element.getMethodName().equalsIgnoreCase("park")
+				&&(element.getClassName().equalsIgnoreCase("sun.misc.Unsafe")))
+					isAlive=false;
+				else
+				if(element.getMethodName().equalsIgnoreCase("wait")
+				&&(element.getClassName().equalsIgnoreCase("java.lang.Object")))
+					isAlive=false;
+				break;
+			}
+		}
+		return isAlive;
+	}
+	
+	/**
+	 * Returns an empty stack trace, or a full one if the connection has
+	 * an owner thread and its not dead.
+	 *  
+	 * @return a stack trace, always
+	 */
+	public java.lang.StackTraceElement[] getStackTrace()
+	{
+		final Thread t = this.lastThread;
+		if(!isThreadAlive())
+			return new java.lang.StackTraceElement[0];
+		return t.getStackTrace();
 	}
 
 	/**

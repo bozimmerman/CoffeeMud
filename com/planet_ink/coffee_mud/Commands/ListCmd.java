@@ -40,6 +40,7 @@ import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.*;
@@ -1170,6 +1171,16 @@ public class ListCmd extends StdCommand
 		}
 		return lines;
 
+	}
+	
+	public String listDB(final MOB mob, final List<String> cmds)
+	{
+		final StringBuilder str = new StringBuilder("");
+		final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		final PrintStream ps = new PrintStream(bout);
+		CMLib.database().getConnector().listConnections(ps,CMParms.indexOfIgnoreCase(cmds, "LONG")>=0);
+		str.append(new String(bout.toByteArray()));
+		return str.toString();
 	}
 
 	public StringBuilder listThread(final Session viewerS, final MOB mob, final String threadname)
@@ -4771,6 +4782,7 @@ public class ListCmd extends StdCommand
 		CRON("CRON",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDCRON}),
 		SELECT("SELECT:",new SecFlag[]{SecFlag.LISTADMIN}),
 		TRACKINGFLAGS("TRACKINGFLAGS", new SecFlag[] {SecFlag.LISTADMIN}),
+		DBCONNECTIONS("DBCONNECTIONS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDDATABASE}),
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -6113,6 +6125,9 @@ public class ListCmd extends StdCommand
 			break;
 		case SELECT:
 			s.wraplessPrint(listMQL(mob, false, commands));
+			break;
+		case DBCONNECTIONS:
+			s.wraplessPrint(listDB(mob, commands));
 			break;
 		case WEAPONS:
 			s.println("^HWeapon Item IDs:^N");

@@ -976,8 +976,9 @@ public class DBConnections
 	 *
 	 * Usage: listConnections(out);
 	 * @param out    place to send the list out to
+	 * @param stackDump also include stack traces on active connections
 	 */
-	public void listConnections(final PrintStream out)
+	public void listConnections(final PrintStream out, final boolean stackDump)
 	{
 		out.println("\nDatabase connections:");
 		if((lockedUp)||(disconnected))
@@ -988,18 +989,24 @@ public class DBConnections
 		{
 			String OKString="OK";
 			if((conn.isProbablyDead())&&(conn.isProbablyLockedUp()))
-				OKString="Completely dead"+(conn.inSQLServerCommunication()?" (SERVER COMM)":"")+".";
+				OKString="Completely dead"+(conn.inSQLServerCommunication()?" (SERVER COMM)":"");
 			else
 			if(conn.isProbablyDead())
-				OKString="Dead"+(conn.inSQLServerCommunication()?" (SERVER COMM)":"")+".";
+				OKString="Dead"+(conn.inSQLServerCommunication()?" (SERVER COMM)":"");
 			else
 			if(conn.isProbablyLockedUp())
-				OKString="Locked up"+(conn.inSQLServerCommunication()?" (SERVER COMM)":"")+".";
+				OKString="Locked up"+(conn.inSQLServerCommunication()?" (SERVER COMM)":"");
 			out.println(Integer.toString(p)
 						+". Connected="+conn.ready()
 						+", In use="+conn.inUse()
-						+", Status="+OKString
+						+", Status="+OKString+"."
 						);
+			if(stackDump && conn.isThreadAlive())
+			{
+				final java.lang.StackTraceElement[] s=conn.getStackTrace();
+				for (final StackTraceElement element : s)
+					out.println("\n   "+element.getClassName()+": "+element.getMethodName()+"("+element.getFileName()+": "+element.getLineNumber()+")");
+			}
 			p++;
 		}
 		out.println("\n");

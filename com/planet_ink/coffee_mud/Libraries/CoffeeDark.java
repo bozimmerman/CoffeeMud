@@ -456,7 +456,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		else
 		{
 			accelerationMultiplier = acceleration.divide(currentSpeed,Dir3D.SCALE,RoundingMode.UP).multiply(deltaMultiplier,MathContext.DECIMAL128);
-			if(accelerationMultiplier.compareTo(BigCMath.POINT2)<0)
+			if((accelerationMultiplier.compareTo(BigCMath.POINT2)<0)
+			&&(anglesDelta.compareTo(BigCMath.PI_BY_2)<0))
 				accelerationMultiplier=BigCMath.POINT2;
 		}
 		if((yawDelta.compareTo(yawMin) <= 0))
