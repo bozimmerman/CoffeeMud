@@ -39,6 +39,7 @@ public class BigCMath
 	public static final BigDecimal		ZERO_ALMOST		= BigDecimal.valueOf(0.000001);
 	public static final BigDecimal		POINT01			= BigDecimal.valueOf(0.01);
 	public static final BigDecimal		POINT1			= BigDecimal.valueOf(0.1);
+	public static final BigDecimal		POINT2			= BigDecimal.valueOf(0.2);
 	public static final BigDecimal		ONEPOINT01		= BigDecimal.valueOf(1.01);
 	public static final BigDecimal		ALMOST_ZERO		= ZERO_ALMOST;
 	public static final BigDecimal		MIN_ONE			= BigDecimal.valueOf(-1L);
@@ -85,23 +86,34 @@ public class BigCMath
 		return result;
 	}
 	
-	public static BigDecimal sqrt(final BigDecimal A)
+	public static BigDecimal sqrt(final BigDecimal value)
 	{
-		if(A.doubleValue()<0)
+		if(value.doubleValue()<=0)
 			return BigCMath.ZERO;
+		BigDecimal x = new BigDecimal(Math.sqrt(value.doubleValue()));
+		return x.add(new BigDecimal(value.subtract(x.multiply(x)).doubleValue() / (x.doubleValue() * 2.0)));
+		/*
 		final int SCALE=BigCMath.SCALE*2;
 		BigDecimal x0 = BigDecimal.valueOf(0);
 		BigDecimal x1 = BigDecimal.valueOf(Math.sqrt(A.doubleValue()));
-		int times=0;
-		while ((!x0.equals(x1))&&(++times<20))
+		try
 		{
-			x0 = x1;
-			x1 = A.divide(x0, SCALE, RoundingMode.UP);
-			x1 = x1.add(x0);
-			x1 = x1.divide(BigCMath.TWO, SCALE, RoundingMode.UP);
+			int times=0;
+			while ((!x0.equals(x1))&&(++times<20))
+			{
+				x0 = x1;
+				x1 = A.divide(x0, SCALE, RoundingMode.UP);
+				x1 = x1.add(x0);
+				x1 = x1.divide(BigCMath.TWO, SCALE, RoundingMode.UP);
+			}
+			x1.setScale(BigCMath.SCALE, ROUND);
 		}
-		x1.setScale(BigCMath.SCALE, ROUND);
+		catch(Exception e)
+		{
+			Log.errOut(""+A);
+		}
 		return x1;
+		*/
 	}
 
 }

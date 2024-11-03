@@ -445,7 +445,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final BigDecimal pitchDelta = zd.abs();
 		BigDecimal newDirectionYaw;
 		BigDecimal newDirectionPitch;
-		final BigDecimal deltaMultiplier =  BigCMath.sqrt(Dir3D.sin(anglesDelta));
+		final BigDecimal deltaMultiplier =  Dir3D.sin(anglesDelta);//BigCMath.sqrt(Dir3D.sin(anglesDelta));
 		final BigDecimal yawMin =  deltaMultiplier.multiply((BigCMath.POINT01.add(yawDelta.multiply(BigCMath.ONEPOINT01.subtract(BigDecimal.valueOf(Math.sin(curDirectionPitch.doubleValue())))))));
 		BigDecimal accelerationMultiplier;
 		if(currentSpeed.compareTo(BigCMath.ZERO)==0)
@@ -456,8 +456,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		else
 		{
 			accelerationMultiplier = acceleration.divide(currentSpeed,Dir3D.SCALE,RoundingMode.UP).multiply(deltaMultiplier,MathContext.DECIMAL128);
-			if(accelerationMultiplier.compareTo(BigCMath.POINT01)<0)
-				accelerationMultiplier=BigCMath.ONE;
+			if(accelerationMultiplier.compareTo(BigCMath.POINT2)<0)
+				accelerationMultiplier=BigCMath.POINT2;
 		}
 		if((yawDelta.compareTo(yawMin) <= 0))
 			newDirectionYaw = accelDirectionYaw;
