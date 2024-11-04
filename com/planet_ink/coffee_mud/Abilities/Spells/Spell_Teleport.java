@@ -167,13 +167,10 @@ public class Spell_Teleport extends Spell
 						spellA.castMsgStr="";
 						spellA.leaveMsgStr=L("<S-NAME> disappear(s) into @x1.",affected.name(msg.source()));
 					}
-					if(msg.source().fetchEffect(spellA.ID())==null)
-					{
-						spellA.invoke(msg.source(), cmds, msg.source(), true, msg.source().phyStats().level());
-						final Spell_Teleport pA= (Spell_Teleport)msg.source().fetchEffect(spellA.ID());
-						if(pA != null)
-							pA.parentGenA = parentGenA;
-					}
+					spellA.invoke(msg.source(), cmds, msg.source(), true, msg.source().phyStats().level());
+					final Spell_Teleport pA= (Spell_Teleport)msg.source().fetchEffect(spellA.ID());
+					if(pA != null)
+						pA.parentGenA = parentGenA;
 					return false;
 				}
 			}
@@ -239,8 +236,10 @@ public class Spell_Teleport extends Spell
 			||(commands.get(0)).equals(mob.name()))
 			{
 				commands.clear();
+				if(parentGenA != null)
+					commands.add(parentGenA.Name());
+				else
 				if((text().length()>0)
-				&&(parentGenA == null)
 				&&(CMLib.map().findArea(text())!=null))
 					commands.add(text());
 				else
@@ -268,9 +267,15 @@ public class Spell_Teleport extends Spell
 				candidates.removeElementAt(c);
 		}
 
-		final Ability effA = mob.fetchEffect(ID());
-		if(effA!=null)
-			effA.unInvoke();
+		if(parentGenA == null)
+		{
+			final Ability effA = mob.fetchEffect(ID());
+			if(effA!=null)
+				effA.unInvoke();
+		}
+		else
+		if(candidates.size()==0)
+			candidates.add(parentGenA.getRandomProperRoom());
 
 		if(candidates.size()==0)
 		{
