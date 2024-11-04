@@ -36,7 +36,7 @@ import org.w3c.dom.Text;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class TriggeredAffects extends StdAbility
+public class TriggeredAffects extends StdAbility implements TriggeredAffect
 {
 	@Override
 	public String ID()
@@ -78,6 +78,12 @@ public class TriggeredAffects extends StdAbility
 	protected int canTargetCode()
 	{
 		return CAN_MOBS | CAN_ITEMS | CAN_EXITS | CAN_ROOMS;
+	}
+
+	@Override
+	public int triggerMask()
+	{
+		return com.planet_ink.coffee_mud.Abilities.interfaces.TriggeredAffect.TRIGGER_ALWAYS;
 	}
 
 	@Override
@@ -292,7 +298,7 @@ public class TriggeredAffects extends StdAbility
 		if(P == null)
 			return;
 		Os.tickDown = Os.ticks;
-		final Object A = Os.first;
+		Object A = Os.first;
 		if(A instanceof Ability)
 		{
 			if(Os.invoke)
@@ -300,10 +306,21 @@ public class TriggeredAffects extends StdAbility
 				final MOB fixM = getFixMob();
 				synchronized(fixM)
 				{
-					fixM.basePhyStats().setLevel(P.phyStats().level());
-					fixM.phyStats().setLevel(P.phyStats().level());
-					fixM.setLocation(CMLib.map().roomLocation(P));
-					((Ability)A).invoke(fixM, P, true, 0);
+					final boolean wasEffect = fixM.fetchEffect(((Ability)A).ID()) != null;
+					if(!wasEffect)
+					{
+						fixM.basePhyStats().setLevel(P.phyStats().level());
+						fixM.phyStats().setLevel(P.phyStats().level());
+						fixM.setLocation(CMLib.map().roomLocation(P));
+						((Ability)A).invoke(fixM, P, true, 0);
+						final Ability effA = fixM.fetchEffect(((Ability)A).ID());
+						if((effA != null)&&(!effA.isNowAnAutoEffect()))
+						{
+							fixM.delEffect(effA);
+							Os.first = effA;
+							A=effA;
+						}
+					}
 				}
 			}
 			((Ability)A).makeNonUninvokable();
@@ -554,14 +571,14 @@ public class TriggeredAffects extends StdAbility
 		}
 	}
 
-	
+
 	@Override
 	public void destroy()
 	{
 		super.destroy();
 		CMLib.threads().deleteTick(this,-1);
 	}
-	
+
 	@Override
 	public void setAffectedOne(final Physical P)
 	{
