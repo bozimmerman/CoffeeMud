@@ -10271,6 +10271,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
+			if(me.numScripts()>0)
+				genScripts(mob,me,++showNumber,showFlag);
 
 			if (showFlag < -900)
 			{
@@ -10334,6 +10336,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
+			if(me.numScripts()>0)
+				genScripts(mob,me,++showNumber,showFlag);
 
 			if (showFlag < -900)
 			{
@@ -10360,7 +10364,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genScripts(final MOB mob, final MOB E, final int showNumber, final int showFlag)
+	protected void genScripts(final MOB mob, final PhysicalAgent E, final int showNumber, final int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -10458,6 +10462,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
+			if((me instanceof PhysicalAgent) && (((PhysicalAgent)me).numScripts()>0))
+				genScripts(mob,(PhysicalAgent)me,++showNumber,showFlag);
 
 			if (showFlag < -900)
 			{
@@ -10563,6 +10569,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
+			if(me.numScripts()>0)
+				genScripts(mob,me,++showNumber,showFlag);
 
 			if (showFlag < -900)
 			{
@@ -10697,6 +10705,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
+			if(me.numScripts()>0)
+				genScripts(mob,me,++showNumber,showFlag);
 
 			if (showFlag < -900)
 			{
@@ -10806,6 +10816,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
+			if(me.numScripts()>0)
+				genScripts(mob,me,++showNumber,showFlag);
 
 			if (showFlag < -900)
 			{
@@ -10890,6 +10902,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
+			if(me.numScripts()>0)
+				genScripts(mob,me,++showNumber,showFlag);
 
 			if (showFlag < -900)
 			{
@@ -10954,6 +10968,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
+			if(me.numScripts()>0)
+				genScripts(mob,me,++showNumber,showFlag);
 
 			if (showFlag < -900)
 			{
@@ -11013,6 +11029,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
+			if(me.numScripts()>0)
+				genScripts(mob,me,++showNumber,showFlag);
 
 			if (showFlag < -900)
 			{
