@@ -117,7 +117,12 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
-			if((weapon==null)||(weapon.owner()!=affected)||(weapon.amDestroyed())||(!CMLib.flags().isInTheGame(mob, true))||(mob.location()==null))
+			if((weapon==null)
+			||(weapon.owner()!=affected)
+			||(weapon.amDestroyed())
+			||(mob.isInCombat())
+			||(!CMLib.flags().isInTheGame(mob, true))
+			||(mob.location()==null))
 			{
 				weapon=null;
 				unInvoke();

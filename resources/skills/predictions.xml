@@ -1730,7 +1730,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			MPGSET \$b DISPLAY a tiny horse statue  sits here
 			MPGSET \$b DESCRIPTION It's a beautiful knick-knack, and seems to be quite ancient.
 			MPGSET \$b MATERIAL GOLD
-			MPAFFECT Prop_WearSpellCast \$b Spell_Steed
+			MPAFFECT Prop_WearSpellCast \$b Spell_SummonSteed
 			MPSCRIPT \$i DELETE *
 		~
 	</script>
