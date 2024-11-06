@@ -216,8 +216,10 @@ public class Sessions extends StdLibrary implements SessionsList
 							Log.sysOut(serviceClient.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+", idle: "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true)+", status: "+S.getStatus());
 						else
 						{
-							Log.errOut(serviceClient.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true));
-							Log.errOut(serviceClient.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.getPreviousCMD()!=null)?S.getPreviousCMD().toString():""));
+							Log.errOut(serviceClient.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())
+									+" ("+roomID+"), out for "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true));
+							Log.errOut(serviceClient.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"
+									+((S.getPreviousCMD()!=null)?CMParms.combineQuoted(S.getPreviousCMD(),0):""));
 							if(S instanceof Thread)
 								CMLib.threads().dumpDebugStack("Sessions",(Thread)S);
 						}
@@ -237,7 +239,7 @@ public class Sessions extends StdLibrary implements SessionsList
 							final String statusMsg;
 							if(((S.getStatus())!=Session.SessionStatus.LOGIN)
 							||((S.getPreviousCMD()!=null)&&(S.getPreviousCMD().size()>0)))
-								statusMsg = "STATUS  is :"+S.getStatus()+", LASTCMD was :"+((S.getPreviousCMD()!=null)?S.getPreviousCMD().toString():"");
+								statusMsg = "STATUS  is :"+S.getStatus()+", LASTCMD was :"+((S.getPreviousCMD()!=null)?CMParms.combineQuoted(S.getPreviousCMD(),0):"");
 							else
 								statusMsg = "STATUS  is :"+S.getStatus()+", no last command available.";
 							if((S.isLockedUpWriting())
@@ -269,7 +271,7 @@ public class Sessions extends StdLibrary implements SessionsList
 					{
 						if(((S.getStatus())!=Session.SessionStatus.LOGIN)
 						||((S.getPreviousCMD()!=null)&&(S.getPreviousCMD().size()>0)))
-							Log.errOut(serviceClient.getName(),"STATUS was :"+S.getStatus()+", LASTCMD was :"+((S.getPreviousCMD()!=null)?S.getPreviousCMD().toString():""));
+							Log.errOut(serviceClient.getName(),"STATUS was :"+S.getStatus()+", LASTCMD was :"+((S.getPreviousCMD()!=null)?CMParms.combineQuoted(S.getPreviousCMD(),0):""));
 					}
 					setThreadStatus(serviceClient,"killing session ");
 					stopSessionAtAllCosts(S);
