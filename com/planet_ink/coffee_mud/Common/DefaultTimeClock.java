@@ -474,13 +474,13 @@ public class DefaultTimeClock implements TimeClock
 	{
 		day = d;
 		if(getMonth()>0)
-		{
 			dayOfYear = ((getMonth()) * getDaysInMonth()) + d;
-			if(getDaysInWeek()>0)
-			{
-				weekOfMonth = (int)Math.round(CMath.floor(CMath.div(day,getDaysInWeek())));
-				weekOfYear = (int)Math.round(CMath.floor(CMath.div(dayOfYear,getDaysInWeek())));
-			}
+		else
+			dayOfYear = d;
+		if(getDaysInWeek()>0)
+		{
+			weekOfMonth = (int)Math.round(CMath.floor(CMath.div(day,getDaysInWeek())));
+			weekOfYear = (int)Math.round(CMath.floor(CMath.div(dayOfYear,getDaysInWeek())));
 		}
 	}
 

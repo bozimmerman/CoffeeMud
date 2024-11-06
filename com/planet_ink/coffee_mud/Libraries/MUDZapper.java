@@ -4655,7 +4655,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case DAY: // +DAY
 				case _DAY: // -DAY
 				case DAYOFYEAR: // +DAYOFYEAR
-				case _DAYOFYEAR: // -DAY
+				case _DAYOFYEAR: // -DAYOFYEAR
 					{
 						// three data formats supported:
 						// -MONTH +5 (the month numbered 5)
@@ -8221,6 +8221,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		case WEEK/*ofmonth*/:
 		case _WEEK/*ofmonth*/:
 			return C.getWeekOfMonth();
+		case DAYOFYEAR:
+		case _DAYOFYEAR:
+			return C.getDayOfYear();
 		default:
 			return C.get(toTimePeriod(key));
 		}
@@ -8233,6 +8236,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		case WEEK/*ofmonth*/:
 		case _WEEK/*ofmonth*/:
 			return (C.getDaysInMonth() / C.getDaysInWeek())-1;
+		case DAYOFYEAR:
+		case _DAYOFYEAR:
+			return C.getDaysInYear();
 		default:
 			return C.getMax(toTimePeriod(key));
 		}
@@ -8261,13 +8267,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			return TimePeriod.WEEK;
 		case DAY:
 		case _DAY:
+		case DAYOFYEAR:
+		case _DAYOFYEAR:
 			return TimePeriod.DAY;
 		case BIRTHDAY:
 		case _BIRTHDAY:
-			return TimePeriod.DAY;
 		case BIRTHDAYOFYEAR:
 		case _BIRTHDAYOFYEAR:
-			return TimePeriod.YEAR;
+			return TimePeriod.DAY;
 		case BIRTHSEASON:
 		case _BIRTHSEASON:
 			return TimePeriod.SEASON;

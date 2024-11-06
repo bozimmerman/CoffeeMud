@@ -247,7 +247,6 @@ public class AutoAwards extends StdAbility
 									applyAward(aE, pE, reverserA!=null);
 							}
 						}
-						lastClock.setDateTime(now);
 						affected.recoverPhyStats();
 						if(affected instanceof MOB)
 						{
@@ -255,6 +254,7 @@ public class AutoAwards extends StdAbility
 							((MOB)affected).recoverMaxState();
 						}
 					}
+					lastClock.setDateTime(now);
 				}
 				if(suppressorA == null)
 				{
