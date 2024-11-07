@@ -53,17 +53,17 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public int getManaBonusNextLevel(final MOB mob)
 	{
 		final CharClass charClass = mob.baseCharStats().getCurrentClass();
-		final double[] variables={
-				mob.phyStats().level(),
-				mob.charStats().getStat(CharStats.STAT_WISDOM),
-				CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)),
-				mob.charStats().getStat(CharStats.STAT_INTELLIGENCE),
-				CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_INTELLIGENCE)),
-				mob.charStats().getStat(charClass.getAttackAttribute()),
-				CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(charClass.getAttackAttribute())),
-				mob.charStats().getStat(CharStats.STAT_CHARISMA),
-				mob.charStats().getStat(CharStats.STAT_CONSTITUTION)
-			};
+		final double[] variables= {
+			mob.phyStats().level(),
+			mob.charStats().getStat(CharStats.STAT_WISDOM),
+			CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)),
+			mob.charStats().getStat(CharStats.STAT_INTELLIGENCE),
+			CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_INTELLIGENCE)),
+			mob.charStats().getStat(charClass.getAttackAttribute()),
+			CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(charClass.getAttackAttribute())),
+			mob.charStats().getStat(CharStats.STAT_CHARISMA),
+			mob.charStats().getStat(CharStats.STAT_CONSTITUTION)
+		};
 		return (int)Math.round(CMath.parseMathExpression(charClass.getManaFormula()+CMProps.getVar(Str.FORMULA_CLASSMNADD), variables));
 	}
 

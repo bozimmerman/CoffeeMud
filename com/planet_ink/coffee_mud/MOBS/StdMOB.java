@@ -276,7 +276,7 @@ public class StdMOB implements MOB
 	{
 		if(basePhyStats().level() <= 1)
 			return 0;
-		final int neededLowest = CMLib.leveler().getLevelExperience(this, basePhyStats().level() - 2);
+		final int neededLowest = CMLib.leveler().getLevelExperience(this, basePhyStats().level() - 1);
 		return neededLowest;
 	}
 
