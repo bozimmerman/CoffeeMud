@@ -8437,14 +8437,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						{
 							switch(P)
 							{
-							case DAY:
+							case DAY: // period is month, week, year, etc
 								if(period == TimePeriod.WEEK)
 									C.set(TimePeriod.DAY, (C.getWeekOfMonth()*C.getDaysInWeek())+1);
 								else
 									C.set(P, C.getMin(P));
 								break;
-							case MONTH:
-							case HOUR:
+							case MONTH: // period must be year
+							case HOUR: // period is year, month, day, etc
 								C.set(P, C.getMin(P));
 								break;
 							default:
