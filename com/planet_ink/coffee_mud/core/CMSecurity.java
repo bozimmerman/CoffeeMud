@@ -2916,7 +2916,8 @@ public class CMSecurity
 		CRONTRACE("cron job tracing"),
 		CALENDAR("calendar event tracing"),
 		TROPHIES("clan trophy logic tracing"),
-		PROPTAXES("property tax changes")
+		PROPTAXES("property tax changes"),
+		RANDOMQUESTS("random quests generated")
 		;
 		private final String desc;
 

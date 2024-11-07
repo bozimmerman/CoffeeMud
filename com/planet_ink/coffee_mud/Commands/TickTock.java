@@ -47,11 +47,21 @@ public class TickTock extends StdCommand
 		return access;
 	}
 
+	protected boolean isAllNumbers(final String[] s)
+	{
+		if(s==null)
+			return false;
+		for(int i=0;i<s.length;i++)
+			if(!CMath.isInteger(s[i]))
+				return false;
+		return s.length>1;
+	}
+
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		final String s=CMParms.combine(commands,1).toLowerCase();
+		String s=CMParms.combine(commands,1).toLowerCase();
 		try
 		{
 			if(CMath.isInteger(s))
@@ -90,6 +100,42 @@ public class TickTock extends StdCommand
 				{
 					for(int n=0;n<numTimes;n++)
 						mob.tell(L(CMLib.host().executeCommand("TICK SMTP")));
+				}
+				else
+				if(s.startsWith("set"))
+				{
+					s = CMParms.combine(commands,2);
+					boolean wellFormatted=false;
+					final int spx = s.indexOf(' ');
+					if(spx > 0)
+					{
+						if((s.endsWith("h"))
+						&&(s.substring(0,spx).trim().split("/").length==3)
+						&&(isAllNumbers(s.substring(0,spx).trim().split("/")))
+						&&(CMath.isInteger(s.substring(spx,s.length()-1))))
+							wellFormatted=true;
+						else
+						if((s.substring(0,spx).trim().split("/").length==4)
+						&&(isAllNumbers(s.substring(0,spx).trim().split("/"))))
+							wellFormatted=true;
+					}
+					else
+					if((s.trim().split("/").length==4)
+					&&(isAllNumbers(s.trim().split("/"))))
+						wellFormatted=true;
+					if(!wellFormatted)
+					{
+						final StringBuilder help = new StringBuilder("Illegal format, try one of: ");
+						help.append("Y#/M#/D#/H#").append(" or, ")
+							.append("M#/D#/Y# H#h");
+						mob.tell(help.toString());
+					}
+					else
+					{
+						final TimeClock C = CMLib.time().localClock(mob);
+						C.setDateTime(C.fromTimePeriodCodeString(s));
+						mob.tell("Date/Time set.");
+					}
 				}
 				else
 				if(s.startsWith("propertytax"))

@@ -1028,6 +1028,12 @@ public class DefaultTimeClock implements TimeClock
 			{
 				date = Arrays.copyOf(date, 4);
 				date[3]=clockName.substring(0,clockName.length()-1);
+				final String month = date[0];
+				final String day=date[1];
+				final String year=date[2];
+				date[0]=year;
+				date[1]=month;
+				date[2]=day;
 			}
 			else
 			{

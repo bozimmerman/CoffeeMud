@@ -232,27 +232,29 @@ public class RandomQuests extends ActiveTicker
 							if(!Q.startQuest())
 							{
 								CMLib.quests().delQuest(Q);
-								throw new CMException("Unable to start quest '"+Q.name()+"'  Perhaps the problem was logged?");
+								throw new CMException("Unable to start quest '"+Q.name()+" for "+ticking.name()+"'");
 							}
 						}
 						Q.setCopy(true);
 						myQuests.add(new WeakReference<Quest>(Q));
-						Log.debugOut("RandomQuests generated "+Q.name()+" for "+ticking.name());
+						if(CMSecurity.isDebugging(DbgFlag.RANDOMQUESTS))
+							Log.debugOut("RandomQuests generated "+Q.name()+" for "+ticking.name());
 						break;
 					}
 					catch(final CMException cme)
 					{
 						if(i==maxAttempts-1)
 						{
-							if(Log.debugChannelOn() && CMSecurity.isDebugging(DbgFlag.MUDPERCOLATOR))
+							if(Log.debugChannelOn() && CMSecurity.isDebugging(DbgFlag.RANDOMQUESTS))
 								Log.debugOut("RandomQuests",cme);
 							else
 								Log.errOut("RandomQuests",cme.getMessage());
-							Log.errOut(L("Failed to finish creating a quest for @x1",ticking.name()));
+							Log.errOut(L("Failed to finish creating a quest for @x1. Disabling.",ticking.name()));
 							disable.set(true);
 							return;
 						}
 						else
+						if(CMSecurity.isDebugging(DbgFlag.RANDOMQUESTS))
 							Log.debugOut("RandomQuests",ticking.name()+": "+cme.getMessage());
 					}
 				}

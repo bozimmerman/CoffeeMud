@@ -3051,7 +3051,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			for(int i=0;i<bonusPoints;i++)
 			{
 				final int randStat=CMLib.dice().roll(1, CharStats.CODES.BASECODES().length, -1);
-				mob.baseCharStats().setStat(CharStats.CODES.BASECODES()[randStat], mob.baseCharStats().getStat(CharStats.CODES.BASECODES()[randStat])+1);
+				mob.baseCharStats().setStat(CharStats.CODES.BASECODES()[randStat],
+						mob.baseCharStats().getStat(CharStats.CODES.BASECODES()[randStat])+1);
 			}
 			mob.recoverCharStats();
 			loginObj.state=LoginState.CHARCR_STATDONE;
