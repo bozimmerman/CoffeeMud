@@ -1704,8 +1704,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 
 	protected String getAbilityGroupName(final int code)
 	{
-		return Ability.ACODE.DESCS.get(code&Ability.ALL_ACODES).toLowerCase()+
-				"-"+Ability.DOMAIN.DESCS.get((code&Ability.ALL_DOMAINS)>>5).toLowerCase();
+		return CMStrings.capitalizeAllFirstLettersAndLower(Ability.ACODE.DESCS.get(code&Ability.ALL_ACODES))+
+				"-"+CMStrings.capitalizeAllFirstLettersAndLower(Ability.DOMAIN.DESCS.get((code&Ability.ALL_DOMAINS)>>5));
 	}
 
 	protected void resetMsdpConfigurable(final Session session, final String var, final Map<Object,Object> reportables)

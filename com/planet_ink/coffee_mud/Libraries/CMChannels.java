@@ -1230,6 +1230,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	protected static class DiscordMsgListener implements InvocationHandler
 	{
 		private final Class<?> eventClass;
+		private final static Map<String,MOB> discordTalkers = Collections.synchronizedMap(new TreeMap<String,MOB>());
 		public DiscordMsgListener(final Class<?> eventClass)
 		{
 			this.eventClass = eventClass;
@@ -1277,28 +1278,30 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 								final Object authorO = authorM.invoke(args[0]);
 								final Method nameM = authClass.getMethod("getDisplayName");
 								final String name = (String)nameM.invoke(authorO);
-								final MOB M = CMClass.getFactoryMOB(name, 1, CMLib.map().getRandomRoom());
-								try
+								final MOB M;
+								// preserve because backlogs
+								if(discordTalkers.containsKey(name))
+									M = discordTalkers.get(name);
+								else
 								{
-									final StringBuilder str = new StringBuilder("");
-									for(final char c : content.toCharArray())
+									M=CMClass.getMOB(name);
+									M.setLocation(CMLib.map().getRandomRoom());
+									discordTalkers.put(name,M);
+								}
+								final StringBuilder str = new StringBuilder("");
+								for(final char c : content.toCharArray())
+								{
+									if((c>31)&&(c<128))
+										str.append(c);
+									else
+									switch(c)
 									{
-										if((c>31)&&(c<128))
-											str.append(c);
-										else
-										switch(c)
-										{
-										case '\n':case '\r':case '\t':
-											str.append(c);
-											break;
-										}
+									case '\n':case '\r':case '\t':
+										str.append(c);
+										break;
 									}
-									lib.createAndSendChannelMessage(M, chan.name(), str.toString(), false, true);
 								}
-								finally
-								{
-									M.destroy();
-								}
+								lib.createAndSendChannelMessage(M, chan.name(), str.toString(), false, true);
 							}
 						}
 					}
