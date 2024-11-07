@@ -530,7 +530,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			s = new StringBuilder(workCmdList.get(commandIndex).toString());
 			for(int i=0;i<s.length();i++)
 			{
-				if((s.charAt(i)=='\\')||(s.charAt(i)=='\t'))
+				if((s.charAt(i)=='\\') // why? turns \n into \\n, which turns into \<cr>, which is ugly
+				||(s.charAt(i)=='\t'))
 				{
 					s.insert(i, '\\');
 					i++;
