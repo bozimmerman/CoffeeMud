@@ -129,10 +129,12 @@ public class Thief_PalmReading extends Thief_Runecasting
 					{
 						switch(entry.maskType())
 						{
+						case CLASS:
 						case ANYCLASS:
 						case ANYCLASSLEVEL:
 						case BASECLASS:
 						case MAXCLASSLEVEL:
+						case _CLASS:
 						case _ANYCLASS:
 						case _ANYCLASSLEVEL:
 						case _BASECLASS:
