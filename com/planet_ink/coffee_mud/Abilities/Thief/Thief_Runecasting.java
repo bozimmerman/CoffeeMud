@@ -435,7 +435,7 @@ public class Thief_Runecasting extends ThiefSkill
 					for(final AutoProperties P : APs)
 					{
 						final TimeClock C = CMLib.masking().dateMaskToNextTimeClock(forM, P.getDateCMask());
-						final boolean isNow = CMLib.masking().maskCheck(P.getDateCMask(), forM, true);
+						final boolean isNow = CMLib.masking().maskCheckDateEntries(P.getDateCMask(), nowC);
 						final TimeClock expireC = isNow ? CMLib.masking().dateMaskToExpirationTimeClock(forM, P.getDateCMask()) : null;
 						if(C.isBefore(nowC) && (!isNow))
 							continue;

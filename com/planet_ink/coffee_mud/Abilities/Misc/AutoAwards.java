@@ -124,10 +124,11 @@ public class AutoAwards extends StdAbility
 			||(affected.fetchEffect(holdA.ID())!=holdA))
 				this.holderA = null;
 		}
+		final TimeClock C = CMLib.time().homeClock(P);
 		for(final AutoProperties E : entries)
 		{
 			if(((holderA != null) && (affects.containsFirst(E)))
-			||(mlib.maskCheck(E.getDateCMask(), P, true)))
+			||(mlib.maskCheckDateEntries(E.getDateCMask(), C)))
 			{
 				apply.add(E);
 				hash[0] ^= E.hashCode();

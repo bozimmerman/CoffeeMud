@@ -5137,6 +5137,41 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return false;
 	}
 
+	@Override
+	public boolean maskCheckDateEntries(final CompiledZMask cset, final TimeClock C)
+	{
+		if(C==null)
+			return true;
+		if((cset==null)||(cset.empty())||(cset.entries().length<1))
+			return true;
+		getMaskCodes();
+		if(cset.entries().length<3)
+			return maskCheckDateEntries(cset.entries()[0], C);
+		else
+		{
+			boolean lastValue = false;
+			boolean lastConnectorNot = false;
+			for(int i=0;i<cset.entries().length;i+=2)
+			{
+				boolean subResult =  maskCheckDateEntries(cset.entries()[i],C);
+				if(lastConnectorNot)
+					subResult = !subResult;
+				lastValue = lastValue || subResult;
+				if(i==cset.entries().length-1)
+					return lastValue;
+				final CompiledZMaskEntry entry = cset.entries()[i+1][0];
+				if(entry.maskType()==MaskingLibrary.ZapperKey._OR)
+					lastConnectorNot=true;
+				else
+				if(entry.maskType()==MaskingLibrary.ZapperKey.OR)
+					lastConnectorNot=false;
+				else
+					Log.errOut("Badly compiled zappermask @ "+C.name());
+			}
+			return lastValue;
+		}
+	}
+
 	protected boolean maskCheckDateEntries(final CompiledZMaskEntry[] set, final TimeClock C)
 	{
 		for(final CompiledZMaskEntry entry : set)

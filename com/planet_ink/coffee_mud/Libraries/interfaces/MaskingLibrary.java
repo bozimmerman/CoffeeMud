@@ -135,6 +135,15 @@ public interface MaskingLibrary extends CMLibrary
 	public boolean maskCheck(final CompiledZMask cset, final Environmental E, final boolean actual);
 
 	/**
+	 * Given a compiled zappermask containing only date/time and birth date/time related filters,
+	 * this will return whether the given clock passes the filter, or is rejected by it.
+	 * @param cset the compiled zappermask to apply to the player
+	 * @param C the clock to apply the pas to
+	 * @return true to pass the given clock, false if rejected
+	 */
+	public boolean maskCheckDateEntries(final CompiledZMask cset, final TimeClock C);
+
+	/**
 	 * Given a zappermask and a Environmental object, this will return whether the
 	 * Environmental passes the filter, or is rejected by it.
 	 *
