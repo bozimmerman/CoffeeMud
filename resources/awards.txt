@@ -1036,7 +1036,7 @@
 -ALIGNMENT +Neutral :: -MONTH "+8 of 9" :: Prop_Adjuster(DAMAGE+110 MULTIPLYPH=TRUE)
 -ALIGNMENT +Evil :: -MONTH "+0 of 9" :: Prop_ModExperience(+10% SELF)
 -ALIGNMENT +Lawful :: -WEEK "+0 of 4" -MONTH "+0 of 9":: Prop_Adjuster(critpctweapons+10)
--ALIGNMENT +Moderate :: -WEEK "+1 of 4 -MONTH "+1 of 9" :: Prop_Adjuster(critpctmagic+10)
+-ALIGNMENT +Moderate :: -WEEK "+1 of 4" -MONTH "+1 of 9" :: Prop_Adjuster(critpctmagic+10)
 -ALIGNMENT +Chaotic :: -WEEK "+2 of 4" -MONTH "+2 of 9" :: Prop_Adjuster(critdmgweapons+10)
 -ALIGNMENT +Lawful :: -WEEK "+1 of 4" -MONTH "+3 of 9" :: Prop_ModExperience(+5% SELF)
 -ALIGNMENT +Moderate :: -WEEK "+2 of 4" -MONTH "+4 of 9" :: Prop_Adjuster(critdmgmagic+10)
