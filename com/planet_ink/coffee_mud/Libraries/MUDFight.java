@@ -3308,12 +3308,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if((!CMLib.flags().isSleeping(mob))
 			&&(!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.IMMORT)))
 			{
-				int factor=mob.baseWeight()/500;
-				if(factor<1)
-					factor=1;
+				double factor=CMath.div(mob.baseWeight(),500.0);
+				if(factor<0.001)
+					factor=0.001;
 				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.THIRST))
 				&&(mob.maxState().getThirst() < (Integer.MAX_VALUE/2)))
-					curState.adjThirst(-(room.thirstPerRound()*factor),maxState.maxThirst(mob.baseWeight()));
+					curState.adjThirst(-CMath.mul(room.thirstPerRound(),factor),maxState.maxThirst(mob.baseWeight()));
 				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.HUNGER))
 				&&(mob.maxState().getHunger() < (Integer.MAX_VALUE/2)))
 					curState.adjHunger(-factor,maxState.maxHunger(mob.baseWeight()));

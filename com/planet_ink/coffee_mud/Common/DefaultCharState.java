@@ -47,6 +47,8 @@ public class DefaultCharState implements CharState
 
 	protected final static int[]	DEFAULT_STATES	= { 10, 100, 50, 500, 1000, 0, 0 };
 	protected int[]					states			= DEFAULT_STATES.clone();
+	protected float					hoverflow		= 0.0f;
+	protected float					toverflow		= 0.0f;
 	protected long					fatigue			= 0;
 
 	public DefaultCharState()
@@ -168,6 +170,7 @@ public class DefaultCharState implements CharState
 		states[STAT_HUNGER]=newVal;
 		if(states[STAT_HUNGER]>0)
 			states[STAT_TICKSHUNGRY]=0;
+		hoverflow=0.0f;
 	}
 
 	@Override
@@ -179,18 +182,20 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public boolean adjHunger(int byThisMuch, final int max)
+	public boolean adjHunger(double byThisMuch, final int max)
 	{
 		if(byThisMuch>0)
 		{
 			if(states[STAT_HUNGER]==Integer.MAX_VALUE)
 				return false;
-			byThisMuch=(int)Math.round(CMProps.getIntVarAsPct(CMProps.Int.HUNGER_GAIN_PCT)*byThisMuch);
+			byThisMuch*=CMProps.getIntVarAsPct(CMProps.Int.HUNGER_GAIN_PCT);
 		}
 		else
-			byThisMuch=(int)Math.round(CMProps.getIntVarAsPct(CMProps.Int.HUNGER_LOSS_PCT)*byThisMuch);
-
-		states[STAT_HUNGER]+=byThisMuch;
+			byThisMuch*=CMProps.getIntVarAsPct(CMProps.Int.HUNGER_LOSS_PCT);
+		byThisMuch += hoverflow;
+		final int intMuch = (int)Math.floor(byThisMuch);
+		hoverflow = (float)(byThisMuch-intMuch);
+		states[STAT_HUNGER]+=intMuch;
 		if(states[STAT_HUNGER]<0)
 		{
 			states[STAT_HUNGER]=0;
@@ -230,6 +235,7 @@ public class DefaultCharState implements CharState
 		states[STAT_THIRST]=newVal;
 		if(states[STAT_THIRST]>0)
 			states[STAT_TICKSTHIRSTY]=0;
+		toverflow=0.0f;
 	}
 
 	@Override
@@ -241,17 +247,20 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public boolean adjThirst(int byThisMuch, final int max)
+	public boolean adjThirst(double byThisMuch, final int max)
 	{
 		if(byThisMuch>0)
 		{
 			if(states[STAT_THIRST]==Integer.MAX_VALUE)
 				return false;
-			byThisMuch=(int)Math.round(CMProps.getIntVarAsPct(CMProps.Int.THIRST_GAIN_PCT)*byThisMuch);
+			byThisMuch*=CMProps.getIntVarAsPct(CMProps.Int.THIRST_GAIN_PCT);
 		}
 		else
-			byThisMuch=(int)Math.round(CMProps.getIntVarAsPct(CMProps.Int.THIRST_LOSS_PCT)*byThisMuch);
-		states[STAT_THIRST]+=byThisMuch;
+			byThisMuch*=CMProps.getIntVarAsPct(CMProps.Int.THIRST_LOSS_PCT);
+		byThisMuch += toverflow;
+		final int intMuch = (int)Math.floor(byThisMuch);
+		toverflow = (float)byThisMuch-intMuch;
+		states[STAT_THIRST]+=intMuch;
 		if(states[STAT_THIRST]<0)
 		{
 			states[STAT_THIRST]=0;
