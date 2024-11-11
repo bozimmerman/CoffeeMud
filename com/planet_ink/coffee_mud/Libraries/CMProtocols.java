@@ -2765,7 +2765,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									doc.append("\"group\":\""+MiniJSON.toJSONString(groupName)+"\",");
 									doc.append("\"list\":[");
 									for(final Ability A : allMyGroups.get(grp))
-										doc.append("\"").append(MiniJSON.toJSONString(A.name().toLowerCase())).append("\",");
+										doc.append("\"").append(MiniJSON.toJSONString(A.name())).append("\",");
 									doc.setCharAt(doc.length()-1,']');
 									break;
 								}
@@ -2794,7 +2794,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								if((A!=null)&&(A.name().toLowerCase().equals(name)))
 								{
 									doc.append("\"group\":\""+MiniJSON.toJSONString(getAbilityGroupName(A.abilityCode()))+"\",");
-									doc.append("\"skill\":\""+MiniJSON.toJSONString(name)+"\",");
+									doc.append("\"skill\":\""+MiniJSON.toJSONString(A.name())+"\",");
 									doc.append("\"info\":\""+MiniJSON.toJSONString(CMLib.help().getHelpText(A.Name().toUpperCase(), mob, false).toString())+"\"");
 									break;
 								}

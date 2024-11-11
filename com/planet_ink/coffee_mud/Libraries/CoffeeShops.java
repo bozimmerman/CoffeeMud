@@ -2000,6 +2000,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			mob.tell(whoIgnores,null,null,L("<S-NAME> appear(s) to be ignoring you."));
 			return false;
 		}
+		if((whoIgnores != null)
+		&&(whoIgnores.amDead() || whoIgnores.isInCombat()))
+		{
+			mob.tell(whoIgnores,null,null,L("<S-NAME> appear(s) to be too busy right now."));
+			return false;
+		}
 		return true;
 	}
 

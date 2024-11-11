@@ -197,8 +197,8 @@ public class Switch extends StdCommand
 					sess.stopSession(true, true, true);
 				else
 				{
+					sess.setStat("CPING", "true");
 					CMLib.login().showTheNews(target);
-
 					Log.sysOut(mob.Name()+" switched login to: "+target.Name());
 				}
 			}

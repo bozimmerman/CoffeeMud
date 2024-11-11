@@ -1521,7 +1521,10 @@ public class DefaultTriggerer implements Triggerer
 				case DRINK:
 				case EAT:
 					if((msg.target()!=null)
-					&&(DT.parm1.equals("0")||containsString(msg.target().name(),DT.parm1)))
+					&&(DT.parm1.equals("0")
+						||containsString(msg.target().name(),DT.parm1)
+						||((msg.target() instanceof Item)
+							&&(containsString(RawMaterial.CODES.NAME(((Item)msg.target()).material()),DT.parm1)))))
 					{
 						if(state == null)
 							state = getCreateTrigState(hostM, key);
