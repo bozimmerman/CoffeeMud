@@ -963,10 +963,13 @@ public class StdItem implements Item
 			final Wearable.CODES codes = Wearable.CODES.instance();
 			if(alreadyWearing!=null)
 			{
+				final short layer=(this instanceof Armor)?((Armor)this).getClothingLayer():0;
+				final short layer2=(alreadyWearing instanceof Armor)?((Armor)alreadyWearing).getClothingLayer():0;
 				if((cantWearAt!=Wearable.WORN_HELD)&&(cantWearAt!=Wearable.WORN_WIELD))
 				{
 					final boolean amWearingOther = !alreadyWearing.amWearingAt(Item.IN_INVENTORY);
-					if(!CMLib.commands().postRemove(mob,alreadyWearing,quiet))
+					if((layer != layer2)
+					||(!CMLib.commands().postRemove(mob,alreadyWearing,quiet)))
 					{
 						mob.tell(L("You are already wearing @x1 on your @x2.",alreadyWearing.name(),codes.name(cantWearAt)));
 						return false;
@@ -982,12 +985,7 @@ public class StdItem implements Item
 				}
 				else
 				{
-					final short layer=(this instanceof Armor)?((Armor)this).getClothingLayer():0;
-					final short layer2=(alreadyWearing instanceof Armor)?((Armor)alreadyWearing).getClothingLayer():0;
-					if((rawProperLocationBitmap() == alreadyWearing.rawProperLocationBitmap())
-					&&(rawLogicalAnd())
-					&&(alreadyWearing.rawLogicalAnd())
-					&&(layer == layer2)
+					if((layer == layer2)
 					&&(CMLib.commands().postRemove(mob,alreadyWearing,quiet)))
 						return true;
 					if(cantWearAt==Wearable.WORN_HELD)
