@@ -209,6 +209,8 @@
 			
 			<li> <a href="#LIST_CURRENTS">LIST_CURRENTS</a>
 			
+			<li> <a href="#LIST_DBCONNECTIONS">LIST_DBCONNECTIONS</a>
+			
 			<li> <a href="#LIST_DEBUGFLAG">LIST_DEBUGFLAG</a>
 			
 			<li> <a href="#LIST_DISABLEFLAG">LIST_DISABLEFLAG</a>
@@ -828,7 +830,7 @@
 			
 			<p>
 			<a name="LIST"><B>LIST</B></a>
-			<pre>Command : LIST <BR>Usage   : LIST ([SHOPKEEPER]) <BR>Example : list <BR>Example : list quests <BR>Example : list reports <BR>Example : list areas <BR>Example : list log last 10 <BR>Short(s):  <BR>The normal player version of this command will display the items which a<BR>particular shopkeeper MOB may be selling, along with the prices being offered<BR>to your characters.  <BR> <BR>The Admin version can also be qualified with UNLINKEDEXITS, ITEMS, ARMOR,<BR>ENVRESOURCES, WEAPONS, MOBS, ROOMS, AREA, LOCALES, BEHAVIORS, EXITS, RACES,<BR>CLASSES, STAFF, SPELLS, SONGS, PRAYERS, PROPERTIES, THIEFSKILLS, COMMON,<BR>JOURNALS, SKILLS, QUESTS, DISEASES, POISONS, TICKS, MAGIC, TECH, CLANITEMS,<BR>COMMANDJOURNAL, TITLES, NOPURGE, BANNED, RACECATS, LOG, USERS, LINKAGES,<BR>REPORTS, THREADS, RESOURCES, ONEWAYDOORS, CHANTS, POWERS, SUPERPOWERS, CLANS,<BR>GOVERNMENTS, CRON, FACTIONS, MATERIALS, OBJCOUNTERS, POLLS, CONTENTS, BUGS,<BR>TYPOS, IDEAS, TASKS, NEWS, AREAS, SESSIONS, AREATYPE, REALESTATE, SELECT:, or<BR>AUTOAWARDS, ASSISTS... depending upon the listers security. <BR> <BR>Additional help *may* be available by entering HELP LIST [X] where X is one of<BR>the above.</pre>
+			<pre>Command : LIST <BR>Usage   : LIST ([SHOPKEEPER]) <BR>Example : list <BR>Example : list quests <BR>Example : list reports <BR>Example : list areas <BR>Example : list log last 10 <BR>Short(s):  <BR>The normal player version of this command will display the items which a<BR>particular shopkeeper MOB may be selling, along with the prices being offered<BR>to your characters.  <BR> <BR>The Admin version can also be qualified with UNLINKEDEXITS, ITEMS, ARMOR,<BR>ENVRESOURCES, WEAPONS, MOBS, ROOMS, AREA, LOCALES, BEHAVIORS, EXITS, RACES,<BR>CLASSES, STAFF, SPELLS, SONGS, PRAYERS, PROPERTIES, THIEFSKILLS, COMMON,<BR>JOURNALS, SKILLS, QUESTS, DISEASES, POISONS, TICKS, MAGIC, TECH, CLANITEMS,<BR>COMMANDJOURNAL, TITLES, NOPURGE, BANNED, RACECATS, LOG, USERS, LINKAGES,<BR>REPORTS, THREADS, RESOURCES, ONEWAYDOORS, CHANTS, POWERS, SUPERPOWERS, CLANS,<BR>GOVERNMENTS, CRON, FACTIONS, MATERIALS, OBJCOUNTERS, POLLS, CONTENTS, BUGS,<BR>TYPOS, IDEAS, TASKS, NEWS, AREAS, SESSIONS, AREATYPE, REALESTATE, SELECT:,<BR>AUTOAWARDS, ASSISTS, DBCONNECTIONS... depending upon the listers security. <BR> <BR>Additional help *may* be available by entering HELP LIST [X] where X is one of<BR>the above.</pre>
 			</P>
 			
 			<p>
@@ -984,6 +986,11 @@
 			<p>
 			<a name="LIST_CURRENTS"><B>LIST_CURRENTS</B></a>
 			<pre>Command  : LIST <BR>Usage    : LIST CURRENTS <BR>Example  : list currents <BR>Lists all the electronic devices receiving electronic current processing in the<BR>game. This could be groups of computers in a lab, or devices aboard a single<BR>space ship.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_DBCONNECTIONS"><B>LIST_DBCONNECTIONS</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST DBCONNECTIONS (LONG) <BR>Example  : list dbconnections <BR>Lists your database connections and their current status.  <BR>LONG will add a stack trace dump if the connection is in use.</pre>
 			</P>
 			
 			<p>
@@ -1628,7 +1635,7 @@
 			
 			<p>
 			<a name="TICKTOCK"><B>TICKTOCK</B></a>
-			<pre>Command : TickTock <BR>Usage   : [NUM HOURS]/CLANTICK/[THREAD NAME] <BR>Example : ticktock 10 <BR>Example : ticktock -4 <BR>Example : ticktock CLANTICK <BR>Example : ticktock THPLAYERS0 <BR>Advance the time by specified number of hours, or cause one of the specified<BR>maintenance threads to immediately go through a cycle.  Use LIST REPORTS to get<BR>a list of maintenance threads.  The CLANTICK argument forces the timed clan<BR>maintenance.</pre>
+			<pre>Command : TickTock <BR>Usage   : TICKTOCK [NUM] (HOURS/MONTHS/DAYS/YEARS)/CLANTICK/[THREAD] <BR>Usage   : SET [FORMATTED DATE] <BR>Example : ticktock 10 <BR>Example : ticktock 5 weeks <BR>Example : ticktock -4 <BR>Example : ticktock CLANTICK <BR>Example : ticktock THPLAYERS0 <BR>Advance the time by specified number of hours, or cause one of the specified<BR>maintenance threads to immediately go through a cycle.  Use LIST REPORTS to get<BR>a list of maintenance threads.  The CLANTICK argument forces the timed clan<BR>maintenance. <BR>Formatted dates can be: Y#/M#/D#/H# or M#/D#/Y# H#h.</pre>
 			</P>
 			
 			<p>
@@ -1653,7 +1660,7 @@
 			
 			<p>
 			<a name="UNLOAD"><B>UNLOAD</B></a>
-			<pre>Command  : UNLOAD <BR>Usage    : UNLOAD CLASS/HELP/USER/AREA/FACTION/ALL/FILE <BR>Usage    : UNLOAD RESOURCE/INIFILE/ACHIEVEMENTS/[FILENAME] <BR>Usage    : UNLOAD VFS/[RESOURCE NAME] <BR>Example  : unload help <BR>Example  : unload all <BR>Example  : unload armorsmith <BR>Example  : unload class Thief_Search <BR>Example  : unload user joe <BR>Short(s) :  <BR>Unloads most resource text, cached users, class objects, areas, coffeemud.ini,<BR>lists.ini, library caches, and help files for easy refreshing. </pre>
+			<pre>Command  : UNLOAD <BR>Usage    : UNLOAD CLASS/HELP/USER/AREA/FACTION/ALL/FILE <BR>Usage    : UNLOAD RESOURCE/INIFILE/ACHIEVEMENTS/[FILENAME] <BR>Usage    : UNLOAD VFS/INI/SETTINGS/AWARDS/[RESOURCE NAME] <BR>Example  : unload help <BR>Example  : unload all <BR>Example  : unload armorsmith <BR>Example  : unload class Thief_Search <BR>Example  : unload user joe <BR>Short(s) :  <BR>Unloads most resource text, cached users, class objects, areas, coffeemud.ini,<BR>lists.ini, library caches, and help files for easy refreshing. </pre>
 			</P>
 			
 			<p>

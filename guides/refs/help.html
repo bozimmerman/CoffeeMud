@@ -335,6 +335,8 @@
 			
 			<li> <a href="#DEXTERITY">DEXTERITY</a>
 			
+			<li> <a href="#DIEROLL">DIEROLL</a>
+			
 			<li> <a href="#DIG">DIG</a>
 			
 			<li> <a href="#DISEASED">DISEASED</a>
@@ -442,6 +444,8 @@
 			<li> <a href="#FORUM">FORUM</a>
 			
 			<li> <a href="#FRIENDS">FRIENDS</a>
+			
+			<li> <a href="#FTELL">FTELL</a>
 			
 			<li> <a href="#GAIAN">GAIAN</a>
 			
@@ -735,6 +739,10 @@
 			
 			<li> <a href="#PIXIE">PIXIE</a>
 			
+			<li> <a href="#PLANARVEIL">PLANARVEIL</a>
+			
+			<li> <a href="#PLANAR_VEIL">PLANAR_VEIL</a>
+			
 			<li> <a href="#PLAYERKILL">PLAYERKILL</a>
 			
 			<li> <a href="#POLITICS">POLITICS</a>
@@ -776,6 +784,8 @@
 			<li> <a href="#PUT">PUT</a>
 			
 			<li> <a href="#PUT_OUT">PUT_OUT</a>
+			
+			<li> <a href="#PVEIL">PVEIL</a>
 			
 			<li> <a href="#QUALIFY">QUALIFY</a>
 			
@@ -872,8 +882,6 @@
 			<li> <a href="#SETTINGS">SETTINGS</a>
 			
 			<li> <a href="#SHAMAN">SHAMAN</a>
-			
-			<li> <a href="#SHARDS">SHARDS</a>
 			
 			<li> <a href="#SHARE">SHARE</a>
 			
@@ -1091,7 +1099,7 @@
 			
 			<p>
 			<a name="ACCOUNT"><B>ACCOUNT</B></a>
-			<pre>Command : ACCOUNT <BR>Usage   : ACCOUNT <BR>Example : account <BR>Short(s):  <BR>If this mud supports accounts, this command will show you a list of your<BR>characters, and your account expiration date, if applicable.  You can also use<BR>LOGOUT to return to the account menu, or SWITCH to quickly change between<BR>characters on the same account.</pre>
+			<pre>Command : ACCOUNT <BR>Usage   : ACCOUNT ([SORT FIELD]) <BR>Example : account <BR>Short(s):  <BR>If this mud supports accounts, this command will show you a list of your<BR>characters, and your account expiration date, if applicable.  You can also use<BR>LOGOUT to return to the account menu, or SWITCH to quickly change between<BR>characters on the same account. If specified, you can sort the list of<BR>characters by things like name, class, race, or level.</pre>
 			</P>
 			
 			<p>
@@ -1766,7 +1774,7 @@
 			
 			<p>
 			<a name="CONSIDER"><B>CONSIDER</B></a>
-			<pre>Command : CONSIDER <BR>Usage   : CONSIDER [MOB NAME]/[ITEM NAME] <BR>Example : consider dragon <BR>Example : consider sword <BR>Short(s):  <BR>Sizes up a monster or character against your own, so that you can determine<BR>first whether the creature measures up in experience worth, and then whether a<BR>fight with such a creature is wise, or just a waste of time.  This command will<BR>also tell you if you have any skills that might be helpful to the item or<BR>character. See also HELP GCONSIDER.</pre>
+			<pre>Command : CONSIDER <BR>Usage   : CONSIDER [MOB NAME]/[ITEM NAME] <BR>Example : consider dragon <BR>Example : consider sword <BR>Example : consider all.dragon <BR>Short(s):  <BR>Sizes up a monster or character against your own, so that you can determine<BR>first whether the creature measures up in experience worth, and then whether a<BR>fight with such a creature is wise, or just a waste of time.  This command will<BR>also tell you if you have any skills that might be helpful to the item or<BR>character. See also HELP GCONSIDER.</pre>
 			</P>
 			
 			<p>
@@ -1870,6 +1878,11 @@
 			</P>
 			
 			<p>
+			<a name="DIEROLL"><B>DIEROLL</B></a>
+			<pre>Command : DIEROLL <BR>Usage   : DIEROLL D[DIE]/[NUM]D[DIE]/[STAT] ([DIFFICULTY])  <BR>Example : dieroll 3d6 <BR>Example : dieroll 1d20 <BR>Example : dieroll save vs slash <BR>Example : dieroll strength easy <BR>Short(s):  <BR>Makes either a simple die roll, or a stat check, and reports the results<BR>publicly.  You can specify a simple die size to roll, or you can specify a<BR>stat, or saving throw, and optionally a difficulty.  Valid stats include:<BR>STRENGTH, INTELLIGENCE, DEXTERITY, CONSTITUTION, CHARISMA, WISDOM, PARALYSIS,<BR>FIRE, COLD, WATER, GAS, MIND, GENERAL, JUSTICE, ACID, ELECTRICITY, POISON,<BR>UNDEAD, MAGIC, DISEASE, TRAPS, DETECTION, OVERLOOKING, DOUBT, SAVEBLUNT,<BR>SAVEPIERCE, SAVESLASH, SAVESPELLS, SAVEPRAYERS, SAVESONGS, SAVECHANTS. <BR>Difficulties include: RUDIMENTARY, TRIVIAL, SIMPLE, EASY, NORMAL, HARD,<BR>DIFFICULT, STRENUOUS, ARDUOUS, MIRACULOUS, IMPROBABLE, INCALCULABLE,<BR>IMPOSSIBLE.</pre>
+			</P>
+			
+			<p>
 			<a name="DIG"><B>DIG</B></a>
 			<pre>Usage    : DIG (STOP) <BR>Example  : dig <BR>Example  : dig stop <BR>This command lets the player dig a hole in the ground.  The hole is best dug<BR>with proper tools, but smaller ones can still be dug with hands and elbows. The<BR>more often this command is used, the larger the hole will be.  Items can be<BR>placed in the hole, and filled back in by anyone using the CLOSE or FILL<BR>commands.  If a hole is not filled in when the player leaves, it will be filled<BR>in if empty, and hidden from view otherwise. A hole with items can be uncovered<BR>by anyone by using the DIG command in the same room. Items placed in holes will<BR>persist, but foods and liquids will rot faster.  Digging can be aborted by<BR>entering dig stop.</pre>
 			</P>
@@ -1946,7 +1959,7 @@
 			
 			<p>
 			<a name="DRUID"><B>DRUID</B></a>
-			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Druid </FONT><FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Druid</FONT><FONT COLOR=CYAN>)</I></U></BLINK></B></FONT> <BR></FONT><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Constitution (25), Others (18) <BR></FONT><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Constitution 9+ <BR></FONT><FONT COLOR=CYAN>Races     :</I></U></BLINK></B></FONT> Duergar, Dwarf, Elf, Half Elf, Half Ogre or Human <BR></FONT><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Constitution               </FONT><FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Con/18) per level <BR></FONT><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>5 +[(Wisdom/6)+2 per lvl]  </FONT><FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level <BR></FONT><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +[(Con/2)+(2d7) /lvl]   </FONT><FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +[(Int/4)+(1d4)/lvl] <BR></FONT><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +[5X(Str/18) /lvl]     </FONT><FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 30 level(s) <BR></FONT><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use wooden, plant-based, or leather weapons. <BR></FONT><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear non-metal armor. <BR></FONT><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> Will gain random qualified chants. When leading animals into <BR>            battle, will not divide experience among animal followers.  Can <BR>            create a druidic connection with an area.  Benefits from <BR>            animal/plant/stone followers leveling.  Benefits from freeing<BR>animals from <BR>            cities.  Benefits from balancing the weather. <BR></FONT><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT> Must remain Neutral to avoid skill and chant failure chances. <BR></FONT><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT> <BR>Druids are mystical guardians of the natural world, and the wielders of natures<BR>grandest powers.  They may not wear metal, and can only use a small set of<BR>natural weapons, but their notorious health and magical chants more than make<BR>up for this.  Like the natural world, Druids are restricted to a moderate<BR>neutral alignment in order for their chants to work reliably. <BR> <BR>Druid is the starting point for numerous sub-classes which the player may<BR>choose to gain levels in at any time.  These sub-classes include: Delver,<BR>Beastmaster, Gaian, Mer, and SkyWatcher. <BR> <BR>How to play: The druid is the most complex class to play.  Most of his magic<BR>requires the assistance of numerous spells to bear fruit, but the benefits make<BR>the complexity well worth it.  The druid is also best fit for travelling with<BR>animal armies of his own creation.  In groups, the druid can assist with some<BR>extra fire power at high levels.  For the most part though, it is alone that<BR>the druid will flourish, forming his own animal groups to make up for his<BR>weakness in combat. <BR> <BR>Although weak in melee combat, due to equipment and skill limitations, the<BR>druid is capable of marshaling all the powers of animals and plants to aid in<BR>the vanquishing of foes for experience.  At higher levels, as the powers of<BR>weather come into play, the Druid will find their magical prowess unequaled by<BR>any other class.</FONT></pre>
+			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Druid </FONT><FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Druid</FONT><FONT COLOR=CYAN>)</I></U></BLINK></B></FONT> <BR></FONT><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Constitution (25), Others (18) <BR></FONT><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Constitution 9+ <BR></FONT><FONT COLOR=CYAN>Races     :</I></U></BLINK></B></FONT> Duergar, Dwarf, Elf, Half Elf, Half Ogre or Human <BR></FONT><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Constitution               </FONT><FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Con/18) per level <BR></FONT><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>5 +[(Wisdom/6)+2 per lvl]  </FONT><FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level <BR></FONT><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +[(Con/2)+(2d7) /lvl]   </FONT><FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +[(Int/4)+(1d4)/lvl] <BR></FONT><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +[5X(Str/18) /lvl]     </FONT><FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 30 level(s) <BR></FONT><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use wooden, plant-based, or leather weapons. <BR></FONT><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear non-metal armor. <BR></FONT><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> Will gain random qualified chants. When leading animals into <BR>            battle, will not divide experience among animal followers.  Can <BR>            create a druidic connection with an area.  Benefits from <BR>            animal/plant/stone followers leveling.  Benefits from freeing<BR>animals from <BR>            cities.  Benefits from balancing the weather. <BR></FONT><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT> Must remain Neutral to avoid skill and chant failure chances. <BR></FONT><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT> <BR>Druids are mystical guardians of the natural world, and the wielders of natures<BR>grandest powers.  They must wear vegetative armorl, and can only use a small<BR>set of natural weapons, but their notorious health and magical chants more than<BR>make up for this.  Like the natural world, Druids are restricted to a moderate<BR>neutral alignment in order for their chants to work reliably. <BR> <BR>Druid is the starting point for numerous sub-classes which the player may<BR>choose to gain levels in at any time.  These sub-classes include: Delver,<BR>Beastmaster, Gaian, Mer, and SkyWatcher. <BR> <BR>How to play: The druid is the most complex class to play.  Most of his magic<BR>requires the assistance of numerous spells to bear fruit, but the benefits make<BR>the complexity well worth it.  The druid is also best fit for travelling with<BR>animal armies of his own creation.  In groups, the druid can assist with some<BR>extra fire power at high levels.  For the most part though, it is alone that<BR>the druid will flourish, forming his own animal groups to make up for his<BR>weakness in combat. <BR> <BR>Although weak in melee combat, due to equipment and skill limitations, the<BR>druid is capable of marshaling all the powers of animals and plants to aid in<BR>the vanquishing of foes for experience.  At higher levels, as the powers of<BR>weather come into play, the Druid will find their magical prowess unequaled by<BR>any other class.</FONT></pre>
 			</P>
 			
 			<p>
@@ -2126,7 +2139,7 @@
 			
 			<p>
 			<a name="FORMATION"><B>FORMATION</B></a>
-			<pre>Command : FORMATION <BR>Usage   : FORMATION ([MOB NAME] [ROW NUMBER]) <BR>Example : formation <BR>Example : formation joe 2 <BR>Short(s):  <BR>When a player has followers, this command can be used to show where in the<BR>group order the player is located.  The "front line" is considered row 0. The<BR>lead player must always be on a row ahead or on the same row as his followers.<BR>When formations are used in conjunction with AUTOMELEE, it can effectively aid<BR>archers and mages with ranged spells in battle.  The range of the group members<BR>in formation, with respect to enemies, is always relative to the initial range<BR>of the lead player in combat.  That is to say, if a group member is set to be<BR>at row #1, and the leader uses a bow to start off at range 3, then that group<BR>member will be at row #4 instead (1 off from the leaders position).   <BR>Any member of a group can enter the FORMATION command without parameters to<BR>view the current marching order. See also GROUP, FOLLOW, NOFOLLOW, ORDER, and<BR>GTELL.</pre>
+			<pre>Command : FORMATION <BR>Usage   : FORMATION ([MOB NAME] [ROW NUMBER]) <BR>Example : formation <BR>Example : formation joe 2 <BR>Short(s):  <BR>When a player has followers, this command can be used to show where in the<BR>group order the player is located.  The "front line" is considered row 0. When<BR>formations are used in conjunction with AUTOMELEE, it can effectively aid<BR>archers and mages with ranged spells in battle.  The range of the group members<BR>in formation, with respect to enemies, is always relative to the initial range<BR>of the lead player in combat.  That is to say, if a group member is set to be<BR>at row #1, and the leader uses a bow to start off at range 3, then that group<BR>member will be at row #4 instead (1 off from the leaders position). <BR> <BR>Formations only keep their initial integrity when a member of the formation<BR>starts combat. <BR> <BR>Any member of a group can enter the FORMATION command without parameters to<BR>view the current marching order. See also GROUP, FOLLOW, NOFOLLOW, ORDER, and<BR>GTELL.</pre>
 			</P>
 			
 			<p>
@@ -2137,6 +2150,11 @@
 			<p>
 			<a name="FRIENDS"><B>FRIENDS</B></a>
 			<pre>Command : FRIENDS <BR>Usage   : FRIENDS (ADD/REMOVE [PLAYER NAME]) <BR>Example : friends <BR>Example : friends list <BR>Example : friends add bob <BR>Example : friends remove bob <BR>Short(s):  <BR>This command allows the player to add or remove names from his or her friends<BR>list.  The friends list consists of some number of other players by name. <BR>Names on this list are subject to the AUTONOTIFY command, and are also<BR>filterable with the WHO command.  For the spell of this name, use HELP SPELL<BR>FRIENDS.</pre>
+			</P>
+			
+			<p>
+			<a name="FTELL"><B>FTELL</B></a>
+			<pre>Command : FTELL <BR>Usage   : FTELL [MESSAGE] <BR>Example : ftell So when do we kill this thing? <BR>Example : ftell last 10 <BR>Short(s):  <BR>Sends a private message to your characters followers. If the first parameter is<BR>"last" and a number X follows, this command will show you the last X group<BR>tells. See also GROUP, FOLLOW, NOFOLLOW, ORDER, GTELL, and FORMATION.</pre>
 			</P>
 			
 			<p>
@@ -2156,7 +2174,7 @@
 			
 			<p>
 			<a name="GCONSIDER"><B>GCONSIDER</B></a>
-			<pre>Command : GCONSIDER <BR>Usage   : GCONSIDER [MOB NAME] <BR>Example : gconsider dragon <BR>Short(s):  <BR>Sizes up a monster or character against your group, so that you can determine<BR>whether a fight with such a creature is wise, or just a waste of time.  Unlike<BR>consider, this command will take into account the damage which your entire<BR>group will do against the creature, while limiting the creatures return attacks<BR>only against the leader of your group.</pre>
+			<pre>Command : GCONSIDER <BR>Usage   : GCONSIDER [MOB NAME] <BR>Example : gconsider dragon <BR>Example : gconsider all <BR>Short(s):  <BR>Sizes up a monster or character against your group, so that you can determine<BR>whether a fight with such a creature is wise, or just a waste of time.  Unlike<BR>consider, this command will take into account the damage which your entire<BR>group will do against the creature, while limiting the creatures return attacks<BR>only against the leader of your group.</pre>
 			</P>
 			
 			<p>
@@ -2201,7 +2219,7 @@
 			
 			<p>
 			<a name="GO"><B>GO</B></a>
-			<pre>Command : GO <BR>Usage   : GO ([NUMBER]) [DIRECTION] (etc..) <BR>Example : go east <BR>Example : go east north <BR>Example : go 4 north 2 east <BR>Short(s):  <BR>Allows your player to automatically travel in the given path.  Multiple<BR>directions may be specified.</pre>
+			<pre>Command : GO <BR>Usage   : GO ([NUMBER]) [DIRECTION] (etc..) <BR>Example : go east <BR>Example : go east north <BR>Example : go 4 north 2 east <BR>Example : go n n,n n,4e,e, <BR>Short(s):  <BR>Allows your player to automatically travel in the given path.  Multiple<BR>directions may be specified; space and comma delimited.</pre>
 			</P>
 			
 			<p>
@@ -2216,7 +2234,7 @@
 			
 			<p>
 			<a name="GROUP"><B>GROUP</B></a>
-			<pre>Command : GROUP <BR>Usage   : GROUP <BR>Example : group <BR>Short(s):  <BR>Lists the members of any group to which you may belong.  See the FOLLOW,<BR>NOFOLLOW, ORDER, GTELL and FORMATION commands for more information on groups. <BR>See also the help on UNDRESS, AUTOMELEE, RANGE, and FEED.</pre>
+			<pre>Command : GROUP <BR>Usage   : GROUP <BR>Usage   : GROUP LEADER [NEW LEADERS NAME] <BR>Example : group <BR>Example : group leader bob <BR>Short(s):  <BR>Lists the members of any group to which you may belong. <BR> <BR>If you are the leader of a group or sub-group, and use the LEADER keyword, you<BR>can change the groups immediate leader. This may have strange effects on<BR>summoned followers. <BR> <BR>See the FOLLOW, NOFOLLOW, ORDER, GTELL FTELL, and FORMATION commands for more<BR>information on groups.  See also the help on UNDRESS, AUTOMELEE, RANGE, and<BR>FEED.</pre>
 			</P>
 			
 			<p>
@@ -2226,12 +2244,12 @@
 			
 			<p>
 			<a name="GTELL"><B>GTELL</B></a>
-			<pre>Command : GTELL <BR>Usage   : GTELL <BR>Example : gtell So when do we kill this thing? <BR>Example : gtell last 10 <BR>Short(s):  <BR>Sends a private message to the members of your characters group. If the first<BR>parameter is "last" and a number X follows, this command will show you the last<BR>X group tells. See also GROUP, FOLLOW, NOFOLLOW, ORDER, and FORMATION.</pre>
+			<pre>Command : GTELL <BR>Usage   : GTELL [MESSAGE] <BR>Example : gtell So when do we kill this thing? <BR>Example : gtell last 10 <BR>Short(s):  <BR>Sends a private message to the members of your characters group. If the first<BR>parameter is "last" and a number X follows, this command will show you the last<BR>X group tells. See also GROUP, FOLLOW, NOFOLLOW, ORDER, FTELL, and FORMATION.</pre>
 			</P>
 			
 			<p>
 			<a name="GYPSY"><B>GYPSY</B></a>
-			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Gypsy </FONT><FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Thief</FONT><FONT COLOR=CYAN>)</I></U></BLINK></B></FONT> <BR></FONT><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Dexterity (22), Constitution (22), Others (18) <BR></FONT><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Dexterity 9+, Constitution 9+ <BR></FONT><FONT COLOR=CYAN>Races     :</I></U></BLINK></B></FONT> Gnome, Half Elf or Human <BR></FONT><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Dexterity                  </FONT><FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Dex/18) per level <BR></FONT><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>5 +[(Wisdom/6)+2 per lvl]  </FONT><FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level <BR></FONT><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +[(Con/6)+(1d5) /lvl]   </FONT><FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +[(Int/10)+(1d2)/lvl] <BR></FONT><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +[10X(Str/18) /lvl]    </FONT><FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 5 level(s) <BR></FONT><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use staves, swords, daggers, axes, or blunt weapons. <BR></FONT><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear leather, cloth, or vegetation based armor. <BR></FONT><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> Huge discounts when buying druidic potions after 5th level.  <BR>            Ability to memorize chants learned through ChantCraft. Can see <BR>            druidic scroll charges at level 30. <BR></FONT><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT>  <BR></FONT><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT> <BR>The gypsy is a traveling soothsayer who is very connected with their ancestral<BR>roots and the world as a whole. They are not bound to any one location as<BR>druids or shaman are, instead viewing the whole world (perhaps even the whole<BR>cosmos) as one interconnected essence. They borrow druidic magic from the land<BR>and spirits to create powerful wards and charms. <BR>How to play: Often misunderstood by other societies, gypsies roam the world<BR>freely and learn skills necessary to survive these social biases. Some gypsies<BR>embrace their pariah status and use it as an excuse to break laws and customs.<BR>Others seek a higher connection with the past, present and future as fortune<BR>tellers. While still others are expert craftsmen and ritualistic protectors who<BR>sell their wares where most needed in the world.</FONT></pre>
+			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Gypsy </FONT><FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Thief</FONT><FONT COLOR=CYAN>)</I></U></BLINK></B></FONT> <BR></FONT><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Dexterity (22), Constitution (22), Others (18) <BR></FONT><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Dexterity 9+, Constitution 9+ <BR></FONT><FONT COLOR=CYAN>Races     :</I></U></BLINK></B></FONT> Gnome, Half Elf or Human <BR></FONT><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Dexterity                  </FONT><FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Dex/18) per level <BR></FONT><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>5 +[(Wisdom/6)+2 per lvl]  </FONT><FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level <BR></FONT><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +[(Con/6)+(1d5) /lvl]   </FONT><FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +[(Int/10)+(1d2)/lvl] <BR></FONT><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +[10X(Str/18) /lvl]    </FONT><FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 5 level(s) <BR></FONT><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use staves, swords, daggers, axes, or blunt weapons. <BR></FONT><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear leather, cloth, or vegetation based armor. <BR></FONT><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> Huge discounts when buying druidic potions after 5th level.  <BR>            Ability to memorize chants learned through ChantCraft. Can see <BR>            druidic scroll charges at level 30. <BR></FONT><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT> Must remain Neutral to avoid failure chances for some chants. <BR></FONT><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT> <BR>The gypsy is a traveling soothsayer who is very connected with their ancestral<BR>roots and the world as a whole. They are not bound to any one location as<BR>druids or shaman are, instead viewing the whole world (perhaps even the whole<BR>cosmos) as one interconnected essence. They borrow druidic magic from the land<BR>and spirits to create powerful wards and charms. <BR>How to play: Often misunderstood by other societies, gypsies roam the world<BR>freely and learn skills necessary to survive these social biases. Some gypsies<BR>embrace their pariah status and use it as an excuse to break laws and customs.<BR>Others seek a higher connection with the past, present and future as fortune<BR>tellers. While still others are expert craftsmen and ritualistic protectors who<BR>sell their wares where most needed in the world.</FONT></pre>
 			</P>
 			
 			<p>
@@ -2436,7 +2454,7 @@
 			
 			<p>
 			<a name="KILL"><B>KILL</B></a>
-			<pre>Command : KILL <BR>Usage   : KILL [MOB NAME] <BR>Example : kill dragon <BR>Alts(s): MURDER, FIGHT, ATTACK <BR>Causes your character to attack the mob given with the command.  If you are<BR>wielding a weapon, it will be used in the attack.  If you have any followers,<BR>they will also join in on the attack.  The mob being attacked will also likely<BR>defend itself against you, and try to attack you.</pre>
+			<pre>Command : KILL <BR>Usage   : KILL [MOB NAME] <BR>Example : kill dragon <BR>Alts(s): MURDER, FIGHT, ATTACK <BR>Causes your character to attack the mob given with the command.  If you are<BR>wielding a weapon, it will be used in the attack.  If you have any followers,<BR>they will also join in on the attack.  The mob being attacked will also likely<BR>defend itself against you, and try to attack you.  If you are behind the line<BR>in a FORMATION, this command will initiate combat for the front line.  If you<BR>are already in combat, using this command will change targets.</pre>
 			</P>
 			
 			<p>
@@ -2561,7 +2579,7 @@
 			
 			<p>
 			<a name="MAGE"><B>MAGE</B></a>
-			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Mage </FONT><FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Mage</FONT><FONT COLOR=CYAN>)</I></U></BLINK></B></FONT> <BR></FONT><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Intelligence (25), Others (18) <BR></FONT><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Intelligence 9+ <BR></FONT><FONT COLOR=CYAN>Races     :</I></U></BLINK></B></FONT> Elf, Gnome, Half Elf or Human <BR></FONT><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Intelligence               </FONT><FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Int/18) per level <BR></FONT><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>6 +[(Wisdom/6)+4 per lvl]  </FONT><FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level <BR></FONT><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +[(Con/6)+(1d5) /lvl]   </FONT><FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +[(Int/3)+(1d4)/lvl] <BR></FONT><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +[3X(Str/18) /lvl]     </FONT><FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 30 level(s) <BR></FONT><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use daggers, staves, or natural weapons. <BR></FONT><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear cloth, vegetation, or paper based armor. <BR></FONT><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT>  <BR></FONT><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT>  <BR></FONT><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT> <BR>Mages are masters of magic, and wielders of the great elemental powers.  While<BR>weak in hit points and in fighting skill, their spells are the most widely<BR>prized and powerful of all the classes.  They may not wear any metal or leather<BR>armors, or use most weapons.  However, the sting of their magic missiles and<BR>the armor of magic they wear makes up for any loss. <BR> <BR>Mage is the basis for numerous sub-classes which the player may choose to gain<BR>levels in at any time.  These sub-classes include: Abjurer, Alterer, Conjurer,<BR>Diviner, Enchanter, Evoker, Illusionist, Transmuter, and Wizard. <BR> <BR>How to play: Mages are among the most versatile of classes, being able to make<BR>spell choices which carve out the path the Mage would like to take.  For the<BR>loner Mage, the emphasis on offensive magic will make him a powerful opponent<BR>in battle.  In groups, the mage may focus on protective magic to make him a<BR>more desirable companion.  And even the playful mage may focus on the<BR>role-playing magic to make his mudding as fun as possible! <BR> <BR>The mage is almost useless in weapon combat.  The mage must be smart and<BR>creative to use his spells to give him the edge.  But the versatility of the<BR>mage gives him the ability to do just that, using magic and guile to trick<BR>monsters to their death, granting experience for the mage. <BR></FONT></pre>
+			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Mage </FONT><FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Mage</FONT><FONT COLOR=CYAN>)</I></U></BLINK></B></FONT> <BR></FONT><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Intelligence (25), Others (18) <BR></FONT><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Intelligence 9+ <BR></FONT><FONT COLOR=CYAN>Races     :</I></U></BLINK></B></FONT> Elf, Gnome, Half Elf or Human <BR></FONT><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Intelligence               </FONT><FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Int/18) per level <BR></FONT><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>6 +[(Wisdom/6)+4 per lvl]  </FONT><FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level <BR></FONT><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +[(Con/6)+(1d5) /lvl]   </FONT><FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +[(Int/3)+(1d4)/lvl] <BR></FONT><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +[3X(Str/18) /lvl]     </FONT><FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 30 level(s) <BR></FONT><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use daggers, staves, or natural weapons. <BR></FONT><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear cloth, vegetation, or paper based armor. <BR></FONT><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT>  <BR></FONT><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT>  <BR></FONT><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT> <BR>Mages are masters of magic, and wielders of the great elemental powers.  While<BR>weak in hit points and in fighting skill, their spells are the most widely<BR>prized and powerful of all the classes.  They can't wear non-cloth armors, or<BR>use most weapons.  However, the sting of their magic missiles and the armor of<BR>magic they wear makes up for any loss. <BR> <BR>Mage is the basis for numerous sub-classes which the player may choose to gain<BR>levels in at any time.  These sub-classes include: Abjurer, Alterer, Conjurer,<BR>Diviner, Enchanter, Evoker, Illusionist, Transmuter, and Wizard. <BR> <BR>How to play: Mages are among the most versatile of classes, being able to make<BR>spell choices which carve out the path the Mage would like to take.  For the<BR>loner Mage, the emphasis on offensive magic will make him a powerful opponent<BR>in battle.  In groups, the mage may focus on protective magic to make him a<BR>more desirable companion.  And even the playful mage may focus on the<BR>role-playing magic to make his mudding as fun as possible! <BR> <BR>The mage is almost useless in weapon combat.  The mage must be smart and<BR>creative to use his spells to give him the edge.  But the versatility of the<BR>mage gives him the ability to do just that, using magic and guile to trick<BR>monsters to their death, granting experience for the mage. <BR></FONT></pre>
 			</P>
 			
 			<p>
@@ -2806,7 +2824,7 @@
 			
 			<p>
 			<a name="ORDER"><B>ORDER</B></a>
-			<pre>Command : ORDER <BR>Usage   : ORDER <BR>Example : order dog flee <BR>Short(s):  <BR>If your character has any followers, whether characters or mobs, this command<BR>will allow you to force that follower to perform any command listed in the<BR>COMMANDS or SOCIALS list. See also GROUP, FOLLOW, NOFOLLOW, FORMATION, and<BR>GTELL.</pre>
+			<pre>Command : ORDER <BR>Usage   : ORDER <BR>Example : order dog flee <BR>Short(s):  <BR>If your character has any followers, whether characters or mobs, this command<BR>will allow you to force that follower to perform any command listed in the<BR>COMMANDS or SOCIALS list.  If the follower is an animal, or does not understand<BR>your language, then the types of orders that may be given is severely limited.<BR>See also GROUP, FOLLOW, NOFOLLOW, FORMATION, and GTELL.</pre>
 			</P>
 			
 			<p>
@@ -2867,6 +2885,16 @@
 			<p>
 			<a name="PIXIE"><B>PIXIE</B></a>
 			<pre><FONT COLOR=CYAN>Race Name : </I></U></BLINK></B></FONT>Pixie </FONT><FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Fairy-kin</FONT><FONT COLOR=CYAN>)</I></U></BLINK></B></FONT> <BR></FONT><FONT COLOR=CYAN>Stat Mods.:</I></U></BLINK></B></FONT> Strength-6, dexterity+7, constitution-7, charisma+2, save vs <BR>            poison+10, save vs magic+50, max strength adj.-6, max dexterity <BR>            adj.+7, max constitution adj.-7, max charisma adj.+2 <BR></FONT><FONT COLOR=CYAN>Abilities :</I></U></BLINK></B></FONT> Infravision, Winged Flight(100%), Foraging(50%), Improved<BR>Invisibility(100%) <BR></FONT><FONT COLOR=CYAN>Languages :</I></U></BLINK></B></FONT> Fey(100%) <BR></FONT><FONT COLOR=CYAN>Life Exp. :</I></U></BLINK></B></FONT> 430 Years <BR></FONT><FONT COLOR=CYAN>XP Adjust.:</I></U></BLINK></B></FONT> -10% <BR></FONT><FONT COLOR=CYAN>Immunities:</I></U></BLINK></B></FONT> Poison Ivy <BR></FONT><FONT COLOR=CYAN>Equipment :</I></U></BLINK></B></FONT> A delicate green shirt, a pair of sandals, some delicate <BR>            leggings, a knitted weapon belt <BR></FONT><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT> <BR>Pixies are playful fairy-kin, standing roughly two feet tall.  These pranksters<BR>rarely venture into society, but sometimes enjoy pranking villagers near their<BR>woodland habitats.  Pixies have transparent butterfly wings and the innate<BR>ability to remain invisible as long as they wish.  Pixies are vegetarians and<BR>eating meat can make them violently ill.</FONT></pre>
+			</P>
+			
+			<p>
+			<a name="PLANARVEIL"><B>PLANARVEIL</B></a>
+			<pre>SKILL_PLANARVEIL</pre>
+			</P>
+			
+			<p>
+			<a name="PLANAR_VEIL"><B>PLANAR_VEIL</B></a>
+			<pre>SKILL_PLANARVEIL</pre>
 			</P>
 			
 			<p>
@@ -2972,6 +3000,11 @@
 			<p>
 			<a name="PUT_OUT"><B>PUT_OUT</B></a>
 			<pre>To extinguish something that's on fire.  See help on the PUT command.</pre>
+			</P>
+			
+			<p>
+			<a name="PVEIL"><B>PVEIL</B></a>
+			<pre>SKILL_PLANARVEIL</pre>
 			</P>
 			
 			<p>
@@ -3091,7 +3124,7 @@
 			
 			<p>
 			<a name="REQUEST"><B>REQUEST</B></a>
-			<pre>Try the IDEA, BUG, or TYPO commands.</pre>
+			<pre>Command : REQUEST <BR>Usage   : REQUEST [AMOUNT] [TYPE] ([PARMS]) [PRICE] (FROM [SHOPKEEPER NAME]) <BR>Usage   : REQUEST CANCEL <BR>Example : request 1 armor torso "10 gold" from brokerboy <BR>Example : request 30 resource gold 30 <BR>Short(s):  <BR>When a crafting/item broker is present in the same room as your character, this<BR>command will allow you to add a new item request for others to fulfill.  An<BR>item request can only exist for a limited time, but if it is fulfilled using<BR>SELL, the character can then pick up the requested item using the BUY command. <BR><BR> <BR>The syntax for adding a listing requires an amount of items (usually 1),<BR>followed by an item type (weapon, armor, wand, ring, resource, food, drink,<BR>potion), followed by optional parameters, such as a weapon damage type<BR>(natural, slashing, piercing, bashing, burning, bursting, shooting), weapon<BR>class (axe, blunt, edged, flailed, hammer, polearm, ranged, sword, dagger,<BR>staff, thrown), a spell name for potions/wands, an armor wear location (head,<BR>neck, torso, arms, wrist, finger, feet, held, wield, hands, waist, legs, eyes,<BR>ears, body, mouth, back), item material (oak, silver, iron, mithril, etc), or a<BR>level or level range, such as 4-10. A final optional parameter may also include<BR>the word NAMED followed by the exact or portal name of an item you are after. <BR>After the optional parameters you must specify the amount of currency you are<BR>willing to pay. <BR> <BR>If you already have one or more requests listed, they can be cancelled before<BR>they time-out using the REQUEST CANCEL syntax. <BR> <BR>See also LIST, BUY, SELL, VIEW.</pre>
 			</P>
 			
 			<p>
@@ -3212,11 +3245,6 @@
 			<p>
 			<a name="SHAMAN"><B>SHAMAN</B></a>
 			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Shaman </FONT><FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Cleric</FONT><FONT COLOR=CYAN>)</I></U></BLINK></B></FONT> <BR></FONT><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Constitution (22), Wisdom (22), Others (18) <BR></FONT><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Wisdom 9+, Constitution 9+ <BR></FONT><FONT COLOR=CYAN>Races     :</I></U></BLINK></B></FONT> All <BR></FONT><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Wisdom                     </FONT><FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Wis/18) per level <BR></FONT><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>5 +[(Wisdom/6)+2 per lvl]  </FONT><FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level <BR></FONT><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +[(Con/3)+(1d10) /lvl]  </FONT><FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +[(Int/4)+(1d4)/lvl] <BR></FONT><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +[5X(Str/18) /lvl]     </FONT><FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 30 level(s) <BR></FONT><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use swords, staves, natural, ranged, or blunt weapons <BR></FONT><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>May wear any armor. <BR></FONT><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> Never fumbles neutral prayers, receives smallest prayer fumble <BR>            chance, and receives 1pt/level of acid damage reduction. <BR></FONT><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT> Using non-neutral prayers introduces small failure chance.  <BR>            Vulnerable to electric attacks. <BR></FONT><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT> <BR>Shaman are those who worship the gods in the most primitive and basic ways of<BR>the earth.  The Shaman is thus granted special powers over the earth by the<BR>gods, including resistances to acid attacks, at the expense of vulnerability to<BR>electricity.  The Shaman is a moderate and neutral aligned class, meaning that<BR>he will never fumble on neutral prayers, and has a much smaller fumble chance<BR>on good and evil prayers.  The Shaman is restricted to neutral weapons, any<BR>kind of armor, and gets numerous special prayers known only to Shaman.  <BR> <BR>How to play: The Shaman is a typical village priest, having powers from his<BR>deity well suited to almost any daily concern.  His neutrality shows his<BR>wisdom, and his power earns him respect.  The Shaman can fill almost any role<BR>in the game, whether it be as a group member, or a lone adventurer seeking an<BR>inner peace far from home.</FONT></pre>
-			</P>
-			
-			<p>
-			<a name="SHARDS"><B>SHARDS</B></a>
-			<pre>Skill    : Shards <BR>Example  :  <BR>A magic shard is a holdable item that can be used to create druidic magical<BR>chant affects. <BR> <BR>This skill allows one to effectively use a druidic "wand" or "staff"-like shard<BR>or shillelagh.  To invoke a shard, it must first be held.  Then the magic word<BR>is spoken to the target.  For instance, if the magic word is `zuy`, you would<BR>enter the following to invoke your shard: sayto orc zuy.  Using SAYTO instead<BR>of SAY is important because SAY might target the wrong person or thing.  You<BR>can also use SAYTO NOBODY &lt;magic word> to make sure you aren't targeting<BR>anyone. <BR> <BR>If the chant on the shard requires extra parameters, then you can include those<BR>after the casting words.  <BR>Shards generally require a small amount of mana to use, and less if the shard<BR>user is capable of learning the chant invoked by the crystal shard.</pre>
 			</P>
 			
 			<p>
@@ -3421,7 +3449,7 @@
 			
 			<p>
 			<a name="THIEF"><B>THIEF</B></a>
-			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Thief </FONT><FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Thief</FONT><FONT COLOR=CYAN>)</I></U></BLINK></B></FONT> <BR></FONT><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Dexterity (25), Others (18) <BR></FONT><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Dexterity 9+ <BR></FONT><FONT COLOR=CYAN>Races     :</I></U></BLINK></B></FONT> All <BR></FONT><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Dexterity                  </FONT><FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Dex/18) per level <BR></FONT><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>5 +[(Wisdom/6)+1 per lvl]  </FONT><FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level <BR></FONT><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +[(Con/3)+(1d10) /lvl]  </FONT><FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +[(Int/6)+(1d3)/lvl] <BR></FONT><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +[6X(Str/18) /lvl]     </FONT><FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 5 level(s) <BR></FONT><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use swords, daggers, natural, or ranged weapons. <BR></FONT><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear leather, cloth, or vegetation based armor. <BR></FONT><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> Bonus experience for using certain skills. <BR></FONT><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT>  <BR></FONT><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT> <BR>Thieves are skillful, sly, and devious. They may only use daggers and swords,<BR>and may only wear leather armor at best.  However, they come with numerous<BR>skills allowing them to survive in the dog-eat-dog world, including swiping and<BR>stealing; hiding, peeking, and sneaking; trapping, poisoning, and many others. <BR>Thieves also qualify for many devious fighting abilities. <BR> <BR>Thief is the starting point for numerous sub-classes which the player may<BR>choose to gain levels in at any time.  These sub-classes include: Assassin,<BR>Arcanist (Arcane Rogue), Burglar, Reliquist, Pirate, and Trapper. <BR> <BR>How to play: The thieves strength is in his ability to obtain money, and in his<BR>ability to navigate tricky situations.  By accumulating the wealth of others,<BR>the thief can stay comfortably equipped with the latest and best money can buy.<BR>When playing alone, the thief thrives as the only class able to get into and<BR>out of any secret place without stirring up unnecessary trouble.  Although not<BR>generally appreciated in groups, a group benefits from these skills, as well as<BR>the thiefs unique ability to deliver enormous amounts of backstab damage. <BR> <BR>The thief is only moderately skilled at combat, but can make up for it by using<BR>his wealth to obtain favors, good equipment, and the necessary potions and<BR>scrolls necessary to survive the experience gaining battles. <BR></FONT></pre>
+			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Thief </FONT><FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Thief</FONT><FONT COLOR=CYAN>)</I></U></BLINK></B></FONT> <BR></FONT><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Dexterity (25), Others (18) <BR></FONT><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Dexterity 9+ <BR></FONT><FONT COLOR=CYAN>Races     :</I></U></BLINK></B></FONT> All <BR></FONT><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Dexterity                  </FONT><FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Dex/18) per level <BR></FONT><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>5 +[(Wisdom/6)+1 per lvl]  </FONT><FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level <BR></FONT><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +[(Con/3)+(1d10) /lvl]  </FONT><FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +[(Int/6)+(1d3)/lvl] <BR></FONT><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +[6X(Str/18) /lvl]     </FONT><FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 5 level(s) <BR></FONT><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use swords, daggers, natural, or ranged weapons. <BR></FONT><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear leather, cloth, or vegetation based armor. <BR></FONT><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> Bonus experience for using certain skills. <BR></FONT><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT>  <BR></FONT><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT> <BR>Thieves are skillful, sly, and devious. They may only use daggers and swords,<BR>and may only wear leather armor at best.  However, they come with numerous<BR>skills allowing them to survive in the dog-eat-dog world, including swiping and<BR>stealing; hiding, peeking, and sneaking; trapping, poisoning, and many others. <BR>Thieves also qualify for many devious fighting abilities. <BR> <BR>Thief is the starting point for numerous sub-classes which the player may<BR>choose to gain levels in at any time.  These sub-classes include: Assassin,<BR>Arcanist, Burglar, Gypsy, Reliquist, Pirate, and Trapper. <BR> <BR>How to play: The thieves strength is in his ability to obtain money, and in his<BR>ability to navigate tricky situations.  By accumulating the wealth of others,<BR>the thief can stay comfortably equipped with the latest and best money can buy.<BR>When playing alone, the thief thrives as the only class able to get into and<BR>out of any secret place without stirring up unnecessary trouble.  Although not<BR>generally appreciated in groups, a group benefits from these skills, as well as<BR>the thiefs unique ability to deliver enormous amounts of backstab damage. <BR> <BR>The thief is only moderately skilled at combat, but can make up for it by using<BR>his wealth to obtain favors, good equipment, and the necessary potions and<BR>scrolls necessary to survive the experience gaining battles. <BR></FONT></pre>
 			</P>
 			
 			<p>
