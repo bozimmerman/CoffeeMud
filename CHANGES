@@ -79,6 +79,7 @@
  77. ORDER now works with animal followers for specific commands in LISTS.INI file
  78. Can now LIST DBCONNECTIONS to check database status
  79. New character class: Gypsy - thief subclass with druid highlights
+ 80. New command: AUTOTELLNOTIFY, with CONFIG support also, for account-based muds.
  
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.
