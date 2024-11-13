@@ -1162,7 +1162,7 @@ public class DefaultTimeClock implements TimeClock
 		case SEASON:
 			return 3;
 		case WEEK:
-			return this.getDaysInYear() / this.getDaysInWeek();
+			return (int)Math.round(Math.ceil(CMath.div(this.getDaysInYear(), this.getDaysInWeek())))-1;
 		case YEAR:
 			return Integer.MAX_VALUE/2;
 		}
