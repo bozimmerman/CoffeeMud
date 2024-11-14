@@ -1684,26 +1684,27 @@ public class StdMOB implements MOB
 	@Override
 	public DeadBody killMeDead(final boolean createBody)
 	{
-		final Room deathRoom;
+		final Room corpseRoom;
+		Room deathRoom = location();
 		if(isMonster())
-			deathRoom = location();
+			corpseRoom = deathRoom;
 		else
-			deathRoom = CMLib.login().getDefaultBodyRoom(this);
-		if(location() != null)
-			location().delInhabitant(this);
+			corpseRoom = CMLib.login().getDefaultBodyRoom(this);
+		if(deathRoom != null)
+			deathRoom.delInhabitant(this);
 		amDead = true;
 		DeadBody bodyI = null;
 		if(createBody)
 		{
-			bodyI = charStats().getMyRace().getCorpseContainer(this, deathRoom);
+			bodyI = charStats().getMyRace().getCorpseContainer(this, corpseRoom);
 			if((bodyI != null)
 			&& (playerStats() != null))
 			{
 				bodyI.setSavable(false); // if the player is saving it, rooms are NOT.
 				playerStats().getExtItems().addItem(bodyI);
 			}
-			if(deathRoom != null)
-				deathRoom.show(this, bodyI, CMMsg.MASK_ALWAYS|CMMsg.MSG_BODYDROP, null);
+			if(corpseRoom != null)
+				corpseRoom.show(this, bodyI, CMMsg.MASK_ALWAYS|CMMsg.MSG_BODYDROP, null);
 		}
 		makePeace(false);
 		setRiding(null);
@@ -1733,9 +1734,12 @@ public class StdMOB implements MOB
 			setFollowing(null);
 		}
 		if((!isMonster()) && (soulMate() == null))
-			bringToLife(CMLib.login().getDefaultDeathRoom(this), true);
-		if(deathRoom != null)
-			deathRoom.recoverRoomStats();
+		{
+			deathRoom = CMLib.login().getDefaultDeathRoom(this);
+			bringToLife(deathRoom, true);
+		}
+		if(corpseRoom != null)
+			corpseRoom.recoverRoomStats();
 		return bodyI;
 	}
 
