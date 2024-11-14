@@ -1606,7 +1606,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if(A==null)
 			return;
-		A.setStat("BIRTHDAY",prompt(mob,A.getStat("BIRTHDAY"),showNumber,showFlag,"Birthday (m,d,y)",true,false,null));
+		A.setStat("BIRTHDAY",prompt(mob,A.getStat("BIRTHDAY"),showNumber,showFlag,"Birthday (d,m,y)",true,false,null));
 	}
 
 	@Override
