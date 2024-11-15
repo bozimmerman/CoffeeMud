@@ -103,14 +103,14 @@ public class Chant_EndowJewelry extends Chant
 				& ( Wearable.WORN_EARS | Wearable.WORN_RIGHT_FINGER | Wearable.WORN_LEFT_FINGER | Wearable.WORN_NECK | Wearable.WORN_LEFT_WRIST | Wearable.WORN_RIGHT_WRIST);
 		if(goodCheck == 0)
 		{
-			mob.tell(L("@x1 can not be endowed with this magic, as it is not worn on the ears, fingers, neck, or wrist."));
+			mob.tell(L("@x1 can not be endowed with this magic, as it is not worn on the ears, fingers, neck, or wrist.",target.name(mob)));
 			return false;
 		}
 		final long badCheck = ((Armor)target).rawProperLocationBitmap()
 				& ( Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_FEET | Wearable.WORN_ABOUT_BODY | Wearable.WORN_HANDS | Wearable.WORN_HEAD);
 		if(badCheck != 0)
 		{
-			mob.tell(L("@x1 can not be endowed with this magic, as it is not worn exclusively on the ears, fingers, neck, or wrist."));
+			mob.tell(L("@x1 can not be endowed with this magic, as it is not worn exclusively on the ears, fingers, neck, or wrist.",target.name(mob)));
 			return false;
 		}
 
