@@ -206,7 +206,6 @@ public class Fighter_ArmorTweaking extends FighterSkill
 				final Ability A=beneficialAffect(mob,armor,asLevel,0);
 				if(A!=null)
 				{
-System.out.println(bonus);//TODO:BZ:DELME
 					A.setMiscText(""+bonus);
 					A.makeLongLasting();
 				}
