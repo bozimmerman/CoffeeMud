@@ -533,7 +533,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						for(final Session S : CMLib.sessions().allIterableAllHosts())
 						{
 							final MOB M = S.mob();
-							if((M != mob)
+							if((M != null)
+							&&(M != mob)
 							&&(M != target)
 							&&(M.playerStats() != null)
 							&&(M.playerStats().getAccount() == acct)

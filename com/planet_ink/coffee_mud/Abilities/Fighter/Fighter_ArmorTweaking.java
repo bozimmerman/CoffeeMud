@@ -169,15 +169,26 @@ public class Fighter_ArmorTweaking extends FighterSkill
 			mob.tell(L("@x1 can not be tweaked to provide any more benefit.",armor.name()));
 			return false;
 		}
-		if((!auto)&&(mob.isInCombat()))
+		if((!auto)
+		&&(mob.isInCombat()))
 		{
 			mob.tell(L("You are a bit too busy to do that right now."));
 			return false;
 		}
-		final int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),armor.phyStats().armor()));
+		int oldBonus = 0;
+		final Ability oldA = armor.fetchEffect(ID());
+		if(oldA!=null)
+			oldBonus = CMath.s_int(oldA.text());
+
+		final int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),armor.phyStats().armor()-oldBonus));
 		if(bonus<1)
 		{
 			mob.tell(L("@x1 is too weak of an armor to provide any more benefit from tweaking.",armor.name()));
+			return false;
+		}
+		if(oldBonus>=bonus)
+		{
+			mob.tell(L("@x1 can not be tweaked to provide any more benefit.",armor.name()));
 			return false;
 		}
 
@@ -192,10 +203,10 @@ public class Fighter_ArmorTweaking extends FighterSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,armor,asLevel,0);
-				final Ability A=armor.fetchEffect(ID());
+				final Ability A=beneficialAffect(mob,armor,asLevel,0);
 				if(A!=null)
 				{
+System.out.println(bonus);//TODO:BZ:DELME
 					A.setMiscText(""+bonus);
 					A.makeLongLasting();
 				}
