@@ -91,9 +91,10 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 			return all.get(str.toUpperCase().trim());
 		}
 
-		public long delta()
+		public long delta(TimeClock clock)
 		{
-			final TimeClock globalClock = CMLib.time().globalClock();
+			if(clock == null)
+				clock = CMLib.time().globalClock();
 			final Calendar C = Calendar.getInstance();
 			switch(this)
 			{
@@ -133,16 +134,16 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 				Log.sysOut(CMLib.time().date2String(C.getTimeInMillis()));
 				break;
 			case MUDDAY:
-				return CMProps.getMillisPerMudHour()*globalClock.getHoursInDay();
+				return CMProps.getMillisPerMudHour()*clock.getHoursInDay();
 			case MUDHOUR:
 				return CMProps.getMillisPerMudHour();
 			case MUDMONTH:
-				return CMProps.getMillisPerMudHour()*globalClock.getHoursInDay()*globalClock.getDaysInMonth();
+				return CMProps.getMillisPerMudHour()*clock.getHoursInDay()*clock.getDaysInMonth();
 			case MUDWEEK:
-				return CMProps.getMillisPerMudHour()*globalClock.getHoursInDay()*globalClock.getDaysInWeek();
+				return CMProps.getMillisPerMudHour()*clock.getHoursInDay()*clock.getDaysInWeek();
 			case MUDYEAR:
-				return CMProps.getMillisPerMudHour()*globalClock.getHoursInDay()
-						*globalClock.getDaysInMonth()*globalClock.getMonthsInYear();
+				return CMProps.getMillisPerMudHour()*clock.getHoursInDay()
+						*clock.getDaysInMonth()*clock.getMonthsInYear();
 			case SECOND:
 				return TimeManager.MILI_SECOND;
 			case SECONDLY:
@@ -947,7 +948,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	public String date2SmartEllapsedMudTime(TimeClock C, final long millis, final boolean shortest)
 	{
 		if(C == null)
-			C=globalClock();
+			C = globalClock();
 		final long millisPerHr =CMProps.getMillisPerMudHour();
 		final long millisPerDay = millisPerHr * C.getHoursInDay();
 		final long millisPerWeek = millisPerDay * (C.getDaysInWeek()<=2?2:C.getDaysInWeek());
@@ -1060,7 +1061,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	{
 		try
 		{
-			parseTickExpression(val);
+			parseTickExpression(CMLib.time().globalClock(), val);
 			return true;
 		}
 		catch(final CMException e)
@@ -1070,7 +1071,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public int parseTickExpression(String val) throws CMException
+	public int parseTickExpression(final TimeClock clock, String val) throws CMException
 	{
 		val=val.trim();
 		if(CMath.isMathExpression(val))
@@ -1108,7 +1109,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 					val=val.substring(0,s)+("@x"+(1+curr))+val.substring(i);
 					i=s+3;
 				}
-				vars[curr++] = delta.delta();
+				vars[curr++] = delta.delta(clock);
 				lastDigit=-1;
 			}
 			else
@@ -1124,7 +1125,10 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	public TimeClock localClock(final Physical P)
 	{
 		if(P instanceof Area)
-			return ((Area)P).getTimeObj();
+		{
+			final TimeClock C = ((Area)P).getTimeObj();
+			return (C == null)?globalClock():C;
+		}
 		if(P instanceof Room)
 			return localClock(((Room)P).getArea());
 		if(P instanceof Item)
@@ -1138,7 +1142,10 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	public TimeClock homeClock(final Physical P)
 	{
 		if(P instanceof Area)
-			return ((Area)P).getTimeObj();
+		{
+			final TimeClock C = ((Area)P).getTimeObj();
+			return (C == null)?globalClock():C;
+		}
 		if(P instanceof Room)
 			return homeClock(((Room)P).getArea());
 		if(P instanceof Item)

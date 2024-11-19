@@ -241,7 +241,7 @@ public class Skill_BefoulShrine extends StdSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final int duration=(int)(CMLib.time().globalClock().getHoursInDay()*CMProps.getTicksPerMudHour())
+				final int duration=(int)(CMLib.time().localClock(mob).getHoursInDay()*CMProps.getTicksPerMudHour())
 								+ (adjustedLevel(mob,asLevel)/10)+super.getXLEVELLevel(mob);
 				cleans=0;
 				this.maliciousAffect(mob, target, asLevel, duration,-1);

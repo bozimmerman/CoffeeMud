@@ -113,10 +113,7 @@ public class ListCmd extends StdCommand
 		private final TimeClock to;
 		public WorldFilter(final Room R)
 		{
-			if((R!=null)&&(R.getArea()!=null))
-				to=R.getArea().getTimeObj();
-			else
-				to=CMLib.time().globalClock();
+			to = CMLib.time().homeClock(R);
 		}
 
 		@Override
@@ -1172,7 +1169,7 @@ public class ListCmd extends StdCommand
 		return lines;
 
 	}
-	
+
 	public String listDB(final MOB mob, final List<String> cmds)
 	{
 		final StringBuilder str = new StringBuilder("");

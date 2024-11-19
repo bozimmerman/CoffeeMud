@@ -680,7 +680,7 @@ public class InstanceArea extends StdAbility
 			final String absorb = instVars.get(InstVar.ABSORB.toString());
 			if(absorb != null)
 				reEffect(instArea,"Prop_AbsorbDamage",absorb);
-			final TimeClock C=(TimeClock)CMLib.time().globalClock().copyOf();
+			final TimeClock C=(TimeClock)CMLib.time().homeClock(affected).copyOf();
 			C.setDayOfMonth(1);
 			C.setYear(1);
 			C.setMonth(1);
@@ -688,7 +688,7 @@ public class InstanceArea extends StdAbility
 			final String hours = instVars.get(InstVar.HOURS.toString());
 			if((hours != null)&&(CMath.isInteger(hours)))
 			{
-				final double mul=CMath.div(CMath.s_int(hours),CMLib.time().globalClock().getHoursInDay());
+				final double mul=CMath.div(CMath.s_int(hours),C.getHoursInDay());
 				if(mul != 1.0)
 				{
 					final int newHours = (int)Math.round(CMath.mul(C.getHoursInDay(),mul));

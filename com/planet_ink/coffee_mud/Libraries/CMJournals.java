@@ -761,6 +761,12 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				return E.update();
 			if(debug)
 				Log.debugOut("Running cron job "+E.subj());
+			mob = CMLib.players().getLoadPlayerAllHosts(E.from());
+			if(mob == null)
+			{
+				Log.errOut("Cron job "+E.subj()+" has unkknown runner "+E.from());
+				return touch;
+			}
 			long interval = CMProps.getMillisPerMudHour();
 			try
 			{
@@ -769,7 +775,10 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					interval = CMath.s_long(intStr);
 				else
 				{
-					final int ticks = CMLib.time().parseTickExpression(intStr);
+					TimeClock C = E.getKnownClock();
+					if (C == null)
+						C = CMLib.time().homeClock(mob);
+					final int ticks = CMLib.time().parseTickExpression(C, intStr);
 					interval = ticks * CMProps.getTickMillis();
 				}
 			}
@@ -780,12 +789,6 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			touch = System.currentTimeMillis()+interval;
 			E.update(System.currentTimeMillis()+interval);
 			CMLib.database().DBTouchJournalMessage(jobKey, E.update());
-			mob = CMLib.players().getLoadPlayerAllHosts(E.from());
-			if(mob == null)
-			{
-				Log.errOut("Cron job "+E.subj()+" has unkknown runner "+E.from());
-				return touch;
-			}
 			if(mob.session()==null)
 			{
 				fakeS=(Session)CMClass.getCommon("FakeSession");

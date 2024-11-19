@@ -216,8 +216,8 @@ public class Chant_SpeedAging extends Chant
 						final long millisPerMudday=CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
 						if(age<millisPerMudday)
 							age=millisPerMudday;
-						final long millisPerMonth=CMLib.time().globalClock().getDaysInMonth() * millisPerMudday;
-						final long millisPerYear=CMLib.time().globalClock().getMonthsInYear() * millisPerMonth;
+						final long millisPerMonth=CMLib.time().homeClock(mob).getDaysInMonth() * millisPerMudday;
+						final long millisPerYear=CMLib.time().homeClock(mob).getMonthsInYear() * millisPerMonth;
 						long ageBy=age/(10-(super.getXLEVELLevel(mob)/3));
 						if(ageBy<millisPerMonth)
 							ageBy=millisPerMonth+1;

@@ -1616,7 +1616,7 @@ public class Create extends StdCommand
 		{
 			if(interval.trim().length()==0)
 				throw new CMException("Bad value: "+interval);
-			tm = CMLib.time().parseTickExpression(interval);
+			tm = CMLib.time().parseTickExpression(CMLib.time().homeClock(mob), interval);
 			if(tm < 0)
 				throw new CMException("Bad value: "+tm);
 		}

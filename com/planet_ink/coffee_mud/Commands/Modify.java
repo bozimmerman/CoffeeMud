@@ -1118,7 +1118,7 @@ public class Modify extends StdCommand
 			{
 				if(value.trim().length()==0)
 					throw new CMException("Bad value: "+value);
-				tm = CMLib.time().parseTickExpression(value);
+				tm = CMLib.time().parseTickExpression(CMLib.time().homeClock(mob), value);
 				if(tm < 0)
 					throw new CMException("Bad value: "+tm);
 			}

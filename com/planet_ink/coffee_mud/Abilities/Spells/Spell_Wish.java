@@ -974,8 +974,8 @@ public class Spell_Wish extends Spell
 					final long millisPerMudday=CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
 					if(age<millisPerMudday)
 						age=millisPerMudday;
-					final long millisPerMonth=CMLib.time().globalClock().getDaysInMonth() * millisPerMudday;
-					final long millisPerYear=CMLib.time().globalClock().getMonthsInYear() * millisPerMonth;
+					final long millisPerMonth=CMLib.time().homeClock(mob).getDaysInMonth() * millisPerMudday;
+					final long millisPerYear=CMLib.time().homeClock(mob).getMonthsInYear() * millisPerMonth;
 					final int ageYears = (int)(age / millisPerYear);
 					if(!isLegalTarget(mob, target, false, myWish))
 						return false;

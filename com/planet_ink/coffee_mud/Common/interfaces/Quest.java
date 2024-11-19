@@ -774,17 +774,26 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param flags the flag bitmap
 	 */
 	public void setFlags(long flags);
-	
-	
+
+
 	/**
 	 * If errors occured on the last start of this quest, this will
-	 * return those messages.  Works regardless of whether log 
+	 * return those messages.  Works regardless of whether log
 	 * reporting is turned on.
-	 * 
+	 *
 	 * @return "" or some errors.
 	 */
 	public String getLastErrors();
-	
+
+	/**
+	 * If a specific area can be associated with this quest
+	 * script easily, this will return it.  Once a quest runs,
+	 * this becomes fairly reliable, but until then, is at
+	 * best a guess or null.
+	 * @return null or an area
+	 */
+	public Area getQuestArea();
+
 	/**
 	 * Quest step spawning options
 	 * @author Bo Zimmerman

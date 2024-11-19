@@ -232,9 +232,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		{
 			budgetRemaining = budget.first.longValue();
 			budgetTickDown = 100;
-			TimeClock C=CMLib.time().homeClock(this);
-			if(C==null)
-				C=CMLib.time().globalClock();
+			final TimeClock C=CMLib.time().homeClock(this);
 			budgetTickDown = (int) (CMProps.getTicksPerMudHour() * C.getHoursPer(budget.second));
 		}
 		budgetMax = budgetRemaining;

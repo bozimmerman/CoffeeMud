@@ -146,14 +146,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	public String getFormattedDate(final Environmental E)
 	{
 		String date=CMStrings.padRight(L("Unknown"),11);
-		if(E!=null)
+		if(E != null)
 		{
 			final Area A=CMLib.map().areaLocation(E);
-			final TimeClock C;
-			if(A != null)
-				C=A.getTimeObj();
-			else
-				C=CMLib.time().globalClock();
+			final TimeClock C = CMLib.time().homeClock(A);
 			if(C!=null)
 				date=CMStrings.padRight(C.getDayOfMonth()+"-"+C.getMonth()+"-"+C.getYear(),11);
 		}

@@ -691,7 +691,8 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			final String absorb = planeVars.get(PlanarVar.ABSORB.toString());
 			if(absorb != null)
 				reEffect(planeArea,"Prop_AbsorbDamage",absorb);
-			final TimeClock C=(TimeClock)CMLib.time().globalClock().copyOf();
+			final TimeClock myC = CMLib.time().homeClock(affected);
+			final TimeClock C=(TimeClock)myC.copyOf();
 			C.setDayOfMonth(1);
 			C.setYear(1);
 			C.setMonth(1);
@@ -699,7 +700,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			final String hours = planeVars.get(PlanarVar.HOURS.toString());
 			if((hours != null)&&(CMath.isInteger(hours)))
 			{
-				final double mul=CMath.div(CMath.s_int(hours),CMLib.time().globalClock().getHoursInDay());
+				final double mul=CMath.div(CMath.s_int(hours),myC.getHoursInDay());
 				if(mul != 1.0)
 				{
 					final int newHours = (int)Math.round(CMath.mul(C.getHoursInDay(),mul));

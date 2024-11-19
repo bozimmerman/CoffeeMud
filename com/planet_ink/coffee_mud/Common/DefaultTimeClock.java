@@ -542,7 +542,7 @@ public class DefaultTimeClock implements TimeClock
 		catch(final CloneNotSupportedException e)
 		{
 		}
-		return CMLib.time().globalClock();
+		return (TimeClock)copyOf();
 	}
 
 	@Override

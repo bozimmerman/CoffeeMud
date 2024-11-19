@@ -74,6 +74,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	private QuestState	questState			= new QuestState();
 	private boolean		copy				= false;
 	private int[]		resetData			= null;
+	private TimeClock	popularClock		= null;
+	private Area		areaGuessA			= null;
 
 	public PairList<String,StringBuffer>internalFiles		= null;
 	private final AtomicBoolean			suspended			= new AtomicBoolean(false);
@@ -164,7 +166,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	protected ScriptingEngine ensureEngine()
 	{
 		if((checkAcceptHost == null)
-		||(this.checkAcceptEng==null)
+		||(checkAcceptEng==null)
 		||((checkAcceptHost.fetchBehavior(checkAcceptEng.ID())!=checkAcceptEng)
 			&&(!CMParms.contains(checkAcceptHost.scripts(),checkAcceptEng))))
 		{
@@ -529,19 +531,37 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	{
 		List<String> parsedLine=null;
 		String var=null;
-		String val=null;
-		final List<List<String>> setScripts=CMLib.quests().getNextQuestScriptCommands(script,"SET",startAtLine);
+		final List<List<String>> setScripts=CMLib.quests().getNextQuestScriptCommands(script, "SET", startAtLine);
+		Area areaGuessA = null;
 		for(int v=0;v<setScripts.size();v++)
 		{
 			parsedLine=setScripts.get(v);
 			if(parsedLine.size()>1)
 			{
 				var=parsedLine.get(1).toUpperCase();
-				val=CMParms.combine(parsedLine,2);
 				if(isStat(var))
-					setStat(var,val);
+					setStat(var,CMParms.combine(parsedLine,2));
+				else // set the area guess
+				if(areaGuessA == null)
+				{
+					if(var.equalsIgnoreCase("AREA"))
+					{
+						final List<Area> areas = parseSetAreaLine(parsedLine);
+						if(areas.size()>0)
+							areaGuessA=areas.get(CMLib.dice().roll(1,areas.size(),-1));
+					}
+					else
+					if(var.equalsIgnoreCase("AREAGROUP"))
+					{
+						final List<Area> areas = parseSetAreaGroupLine(parsedLine);
+						if(areas.size()>0)
+							areaGuessA=areas.get(CMLib.dice().roll(1,areas.size(),-1));
+					}
+				}
 			}
 		}
+		if(areaGuessA != null)
+			this.areaGuessA = areaGuessA;
 	}
 
 	@Override
@@ -642,25 +662,67 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return choices;
 	}
 
-	private TimeClock getMysteryTimeNowFromState()
+	@Override
+	public Area getQuestArea()
 	{
-		TimeClock NOW=null;
-		if(questState.mysteryData==null)
-			return (TimeClock)CMLib.time().globalClock().copyOf();
-		if((questState.mysteryData.whereAt!=null)&&(questState.mysteryData.whereAt.getArea()!=null))
-			NOW=(TimeClock)questState.mysteryData.whereAt.getArea().getTimeObj().copyOf();
-		else
-		if((questState.mysteryData.whereHappened!=null)&&(questState.mysteryData.whereHappened.getArea()!=null))
-			NOW=(TimeClock)questState.mysteryData.whereHappened.getArea().getTimeObj().copyOf();
-		else
-		if((questState.room!=null)&&(questState.room.getArea()!=null))
-			NOW=(TimeClock)questState.room.getArea().getTimeObj().copyOf();
-		else
-		if(questState.area!=null)
-			NOW=(TimeClock)questState.area.getTimeObj().copyOf();
-		else
-			NOW=(TimeClock)CMLib.time().globalClock().copyOf();
-		return NOW;
+		if(questState != null)
+		{
+			if(questState.mysteryData!=null)
+			{
+				if((questState.mysteryData.whereAt!=null)
+				&&(questState.mysteryData.whereAt.getArea()!=null))
+					return questState.mysteryData.whereAt.getArea();
+				if((questState.mysteryData.whereHappened!=null)
+				&&(questState.mysteryData.whereHappened.getArea()!=null))
+					return questState.mysteryData.whereHappened.getArea();
+			}
+			if((questState.room!=null)
+			&&(questState.room.getArea()!=null))
+				return questState.room.getArea();
+			if((questState.roomGroup !=null)
+			&&(questState.roomGroup.size()>0)
+			&&(questState.roomGroup.get(0).getArea()!=null))
+				return questState.roomGroup.get(0).getArea();
+			if(questState.area!=null)
+				return questState.area;
+		}
+		if(this.areaGuessA != null)
+			return areaGuessA;
+		return null;
+	}
+
+	private TimeClock getQuestClock()
+	{
+		final Area areaA = getQuestArea();
+		if(areaA != null)
+			return (TimeClock)areaA.getTimeObj().copyOf();
+		TimeClock mostPopular = popularClock;
+		if(mostPopular == null)
+		{
+			final Map<TimeClock,int[]> popularClocks=new HashMap<TimeClock,int[]>();
+			mostPopular = CMLib.time().globalClock();
+			int most = 0;
+			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			{
+				final Area A = a.nextElement();
+				if(A == null)
+					continue;
+				final TimeClock C = A.getTimeObj();
+				if(C == null)
+					continue;
+				if(!popularClocks.containsKey(C))
+					popularClocks.put(C, new int[] {1});
+				else
+					popularClocks.get(C)[0]++;
+				if(popularClocks.get(C)[0] >= most)
+				{
+					most  = popularClocks.get(C)[0];
+					mostPopular = C;
+				}
+			}
+			popularClock = mostPopular;
+		}
+		return (TimeClock)mostPopular.copyOf();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -825,6 +887,124 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			}
 		}
 		return finalScript;
+	}
+
+	private List<Area> parseSetAreaGroupLine(final List<String> p)
+	{
+		final List<String> names=new ArrayList<String>();
+		final List<Area> areas=new ArrayList<Area>();
+		for(int ip=2;ip<p.size();ip++)
+			names.add(p.get(ip));
+		for(int n=0;n<names.size();n++)
+		{
+			final String areaName=names.get(n);
+			final int oldSize=areas.size();
+			if(areaName.equalsIgnoreCase("any"))
+				areas.add(CMLib.map().getRandomArea());
+			final boolean addAll=areaName.equalsIgnoreCase("all");
+			if(oldSize==areas.size())
+			{
+				if(addAll)
+				{
+					for (final Enumeration<Area> e = CMLib.map().areas(); e.hasMoreElements(); )
+					{
+						final Area A2=e.nextElement();
+						if(!areas.contains(A2))
+							areas.add(A2);
+					}
+				}
+				else
+				{
+					Area A2=CMLib.map().findArea(areaName);
+					if(A2 == null)
+					{
+						final Boardable ship=CMLib.map().findShip(areaName, true);
+						if(ship != null)
+							A2=ship.getArea();
+					}
+					if((A2!=null)&&(!areas.contains(A2)))
+						areas.add(A2);
+				}
+			}
+		}
+		return areas;
+	}
+
+	private List<Area> parseSetAreaLine(final List<String> p)
+	{
+		final List<String> names=new ArrayList<String>();
+		final List<Area> areas=new ArrayList<Area>();
+		if((p.size()>3)&&(p.get(2).equalsIgnoreCase("any")))
+		{
+			for(int ip=3;ip<p.size();ip++)
+				names.add(p.get(ip));
+		}
+		else
+			names.add(CMParms.combine(p,2));
+		for(int n=0;n<names.size();n++)
+		{
+			final String areaName=names.get(n);
+			final int oldSize=areas.size();
+			if(areaName.equalsIgnoreCase("any"))
+				areas.add(CMLib.map().getRandomArea());
+			if(oldSize==areas.size())
+			{
+				for (final Enumeration<Area> e = CMLib.map().areas(); e.hasMoreElements(); )
+				{
+					final Area A2 = e.nextElement();
+					if (A2.Name().equalsIgnoreCase(areaName))
+					{
+						areas.add(A2);
+						break;
+					}
+				}
+			}
+			if(oldSize==areas.size())
+			{
+				for(final Enumeration<Boardable> e=CMLib.map().ships();e.hasMoreElements();)
+				{
+					final Boardable ship=e.nextElement();
+					final Area A2=(ship != null) ? ship.getArea() : null;
+					if(A2 != null)
+					{
+						if (A2.Name().equalsIgnoreCase(areaName))
+						{
+							areas.add(A2);
+							break;
+						}
+					}
+				}
+			}
+			if(oldSize==areas.size())
+			{
+				for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+				{
+					final Area A2=e.nextElement();
+					if(CMLib.english().containsString(A2.Name(),areaName))
+					{
+						areas.add(A2);
+						break;
+					}
+				}
+			}
+			if(oldSize==areas.size())
+			{
+				for(final Enumeration<Boardable> e=CMLib.map().ships();e.hasMoreElements();)
+				{
+					final Boardable ship=e.nextElement();
+					final Area A2=(ship != null) ? ship.getArea() : null;
+					if(A2 != null)
+					{
+						if(CMLib.english().containsString(A2.Name(),areaName))
+						{
+							areas.add(A2);
+							break;
+						}
+					}
+				}
+			}
+		}
+		return areas;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1021,78 +1201,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						{
 							q.area=null;
 						}
-						final List<String> names=new ArrayList<String>();
-						final List<Area> areas=new ArrayList<Area>();
-						if((p.size()>3)&&(p.get(2).equalsIgnoreCase("any")))
-						{
-							for(int ip=3;ip<p.size();ip++)
-								names.add(p.get(ip));
-						}
-						else
-							names.add(CMParms.combine(p,2));
-						for(int n=0;n<names.size();n++)
-						{
-							final String areaName=names.get(n);
-							final int oldSize=areas.size();
-							if(areaName.equalsIgnoreCase("any"))
-								areas.add(CMLib.map().getRandomArea());
-							if(oldSize==areas.size())
-							{
-								for (final Enumeration<Area> e = CMLib.map().areas(); e.hasMoreElements(); )
-								{
-									final Area A2 = e.nextElement();
-									if (A2.Name().equalsIgnoreCase(areaName))
-									{
-										areas.add(A2);
-										break;
-									}
-								}
-							}
-							if(oldSize==areas.size())
-							{
-								for(final Enumeration<Boardable> e=CMLib.map().ships();e.hasMoreElements();)
-								{
-									final Boardable ship=e.nextElement();
-									final Area A2=(ship != null) ? ship.getArea() : null;
-									if(A2 != null)
-									{
-										if (A2.Name().equalsIgnoreCase(areaName))
-										{
-											areas.add(A2);
-											break;
-										}
-									}
-								}
-							}
-							if(oldSize==areas.size())
-							{
-								for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
-								{
-									final Area A2=e.nextElement();
-									if(CMLib.english().containsString(A2.Name(),areaName))
-									{
-										areas.add(A2);
-										break;
-									}
-								}
-							}
-							if(oldSize==areas.size())
-							{
-								for(final Enumeration<Boardable> e=CMLib.map().ships();e.hasMoreElements();)
-								{
-									final Boardable ship=e.nextElement();
-									final Area A2=(ship != null) ? ship.getArea() : null;
-									if(A2 != null)
-									{
-										if(CMLib.english().containsString(A2.Name(),areaName))
-										{
-											areas.add(A2);
-											break;
-										}
-									}
-								}
-							}
-						}
+						final List<Area> areas = parseSetAreaLine(p);
 						if(areas.size()>0)
 							q.area=areas.get(CMLib.dice().roll(1,areas.size(),-1));
 						if(q.area==null)
@@ -1112,42 +1221,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						q.roomGroup=null;
 						if(p.size()<3)
 							continue;
-						final List<String> names=new ArrayList<String>();
-						final List<Area> areas=new ArrayList<Area>();
-						for(int ip=2;ip<p.size();ip++)
-							names.add(p.get(ip));
-						for(int n=0;n<names.size();n++)
-						{
-							final String areaName=names.get(n);
-							final int oldSize=areas.size();
-							if(areaName.equalsIgnoreCase("any"))
-								areas.add(CMLib.map().getRandomArea());
-							final boolean addAll=areaName.equalsIgnoreCase("all");
-							if(oldSize==areas.size())
-							{
-								if(addAll)
-								{
-									for (final Enumeration<Area> e = CMLib.map().areas(); e.hasMoreElements(); )
-									{
-										final Area A2=e.nextElement();
-										if(!areas.contains(A2))
-											areas.add(A2);
-									}
-								}
-								else
-								{
-									Area A2=CMLib.map().findArea(areaName);
-									if(A2 == null)
-									{
-										final Boardable ship=CMLib.map().findShip(areaName, true);
-										if(ship != null)
-											A2=ship.getArea();
-									}
-									if((A2!=null)&&(!areas.contains(A2)))
-										areas.add(A2);
-								}
-							}
-						}
+						final List<Area> areas = parseSetAreaGroupLine(p);
 						if(areas.size()>0)
 						{
 							q.roomGroup=Collections.synchronizedList(new ArrayList<Room>());
@@ -1856,7 +1930,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 					}
 					else
-					if(cmd.equals("ROOM")||cmd.equals("ROOMGROUP")||cmd.equals("ROOMGROUPAROUND"))
+					if(cmd.equals("ROOM")
+					||cmd.equals("ROOMGROUP")
+					||cmd.equals("ROOMGROUPAROUND"))
 					{
 						int range=0;
 						if(cmd.equals("ROOM"))
@@ -2729,7 +2805,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						if(p.size()<3)
 							continue;
 						V2=new ArrayList<TimeClock>();
-						final TimeClock NOW=getMysteryTimeNowFromState();
+						final TimeClock NOW=getQuestClock();
 						if(cmd.equals("WHENHAPPENEDGROUP"))
 						{
 							q.mysteryData.whenHappenedGroup=Collections.synchronizedList(V2);
@@ -2795,7 +2871,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						if(p.size()<3)
 							continue;
-						final TimeClock NOW=getMysteryTimeNowFromState();
+						final TimeClock NOW=getQuestClock();
 						TimeClock TC=null;
 						final String numStr=CMParms.combine(p,2);
 						if(!CMath.isMathExpression(numStr))
@@ -4970,8 +5046,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					return false;
 				final int mudmonth=CMath.s_parseIntExpression(sd2.substring(0,x));
 				final int mudday=CMath.s_parseIntExpression(sd2.substring(x+1));
-				final TimeClock C=(TimeClock)CMLib.time().globalClock().copyOf();
-				final TimeClock NOW=CMLib.time().globalClock();
+				final TimeClock NOW=getQuestClock();
+				final TimeClock C=(TimeClock)NOW.copyOf();
 				C.setMonth(mudmonth);
 				C.setDayOfMonth(mudday);
 				C.setHourOfDay(0);
@@ -6215,7 +6291,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 2:
 			try
 			{
-				setDuration(CMLib.time().parseTickExpression(val));
+				setDuration(CMLib.time().parseTickExpression(getQuestClock(), val));
 			}
 			catch(final CMException e)
 			{
@@ -6225,7 +6301,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 3:
 			try
 			{
-				setMinWait(CMLib.time().parseTickExpression(val));
+				setMinWait(CMLib.time().parseTickExpression(getQuestClock(), val));
 			}
 			catch(final CMException e)
 			{
@@ -6250,7 +6326,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 9:
 			try
 			{
-				setWaitInterval(CMLib.time().parseTickExpression(val));
+				setWaitInterval(CMLib.time().parseTickExpression(getQuestClock(), val));
 			}
 			catch(final CMException e)
 			{
@@ -6280,7 +6356,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			{
 				try
 				{
-					final int ticks=CMLib.time().parseTickExpression(val);
+					final int ticks=CMLib.time().parseTickExpression(getQuestClock(), val);
 					if(ticks == 0)
 						this.setCopy(false);
 					else
@@ -6305,7 +6381,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			try
 			{
 				if((code.toUpperCase().trim().equalsIgnoreCase("REMAINING"))&&(running()))
-					ticksRemaining=CMLib.time().parseTickExpression(val);
+					ticksRemaining=CMLib.time().parseTickExpression(getQuestClock(), val);
 				else
 					questState.vars.put(code.toUpperCase().trim(), val);
 			}

@@ -84,8 +84,8 @@ public class Disease_WritersBlock extends Disease
 	protected int DISEASE_TICKS()
 	{
 		final long max=CMProps.getTicksPerMudHour()
-					* CMLib.time().globalClock().getHoursInDay()
-					* CMLib.time().globalClock().getDaysInMonth();
+					* CMLib.time().homeClock(affected).getHoursInDay()
+					* CMLib.time().homeClock(affected).getDaysInMonth();
 		return CMLib.dice().roll(1, (int)max, 0);
 	}
 

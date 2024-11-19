@@ -135,13 +135,6 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 		isAutoInvoked();
 	}
 
-	protected TimeClock getMyClock()
-	{
-		if(affected != null)
-			return CMLib.time().localClock(affected);
-		return CMLib.time().globalClock();
-	}
-
 	@Override
 	public CMObject copyOf()
 	{
@@ -647,7 +640,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			{
 				if (System.currentTimeMillis() > lastChangeMs[1])
 				{
-					final TimeClock clock = getMyClock();
+					final TimeClock clock = CMLib.time().localClock(affected);
 					lastChangeMs[1] = System.currentTimeMillis() + (CMProps.getMillisPerMudHour() * (clock==null?1:clock.getHoursInDay()));
 					doMaintenance = true;
 				}
@@ -695,7 +688,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 
 	protected boolean processCheckedOutRecord(final CheckedOutRecord rec)
 	{
-		final TimeClock clock = getMyClock();
+		final TimeClock clock = CMLib.time().localClock(affected);
 		final long nowTime = (clock != null) ? clock.toHoursSinceEpoc() : 0;
 		if ((clock == null) || (nowTime == 0))
 			return false;
@@ -1372,7 +1365,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 					final Item old = (Item) msg.tool();
 					if ((getRecord(msg.source().Name(), old.Name()) == null) && (msg.source().isPlayer()))
 					{
-						final TimeClock clock = getMyClock();
+						final TimeClock clock = CMLib.time().localClock(affected);
 						if (clock != null)
 						{
 							final long millisPerMudDay = clock.getHoursInDay() * CMProps.getMillisPerMudHour();
@@ -1429,7 +1422,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 						final StringBuilder str = new StringBuilder("");
 						final List<CheckedOutRecord> recs = this.getAllMyRecords(msg.source().Name());
 						double totalDue = 0.0;
-						final TimeClock clock = getMyClock();
+						final TimeClock clock = CMLib.time().localClock(affected);
 						if (clock != null)
 						{
 							boolean recordsChanged = false;
@@ -1577,7 +1570,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			{
 				final boolean recordChanged = processCheckedOutRecord(rec);
 				recordsChanged = recordsChanged || recordChanged;
-				TimeClock reClk = (TimeClock)this.getMyClock().copyOf();
+				TimeClock reClk = (TimeClock)CMLib.time().localClock(affected).copyOf();
 				reClk=reClk.deriveClock(rec.mudDueDateMs);
 				if((rec.itemName==null)
 				||(rec.itemName.length()==0))

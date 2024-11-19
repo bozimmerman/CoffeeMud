@@ -201,9 +201,7 @@ public class CalendarCmd extends StdCommand
 	{
 		if(rl)
 			return P.getIncrement();
-		TimeClock C = CMLib.time().homeClock(mob);
-		if(C == null)
-			C=CMLib.time().globalClock();
+		final TimeClock C = CMLib.time().homeClock(mob);
 		switch(P)
 		{
 		case ALLTIME:
@@ -233,9 +231,7 @@ public class CalendarCmd extends StdCommand
 					+ CMStrings.padRight(L("When (y/m/d)"), COLW)
 					+ CMStrings.padRight(L("Event"), COLE)
 					).append("^N\n\r");
-		TimeClock C = CMLib.time().homeClock(M);
-		if(C == null)
-			C = CMLib.time().globalClock();
+		final TimeClock C = CMLib.time().homeClock(M);
 		boolean color=true;
 		for(final JournalEntry entry : entries)
 		{
