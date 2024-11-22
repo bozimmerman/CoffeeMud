@@ -952,13 +952,12 @@ public class StdItem implements Item
 		CMLib.flags().setSavable(this, truefalse);
 	}
 
-	protected boolean canWearComplete(final MOB mob, final long wearWhere, final boolean quiet)
+	protected boolean canWearComplete(final MOB mob, long wearWhere, final boolean quiet)
 	{
 		if(!canWear(mob,wearWhere))
 		{
-			long cantWearAt=whereCantWear(mob);
-			if(wearWhere!=0)
-				cantWearAt = cantWearAt & wearWhere;
+			wearWhere = (wearWhere == 0) ? (long)~0 : wearWhere;
+			long cantWearAt=whereCantWear(mob) & wearWhere;
 			Item alreadyWearing=(cantWearAt==0)?null:mob.fetchFirstWornItem(cantWearAt);
 			final Wearable.CODES codes = Wearable.CODES.instance();
 			if(alreadyWearing!=null)
@@ -987,7 +986,17 @@ public class StdItem implements Item
 				{
 					if((layer == layer2)
 					&&(CMLib.commands().postRemove(mob,alreadyWearing,quiet)))
-						return true;
+					{
+						if((wornLogicalAnd) && ((cantWearAt = (whereCantWear(mob) & wearWhere)) != 0))
+						{
+							alreadyWearing=(cantWearAt==0)?null:mob.fetchFirstWornItem(cantWearAt);
+							if((alreadyWearing != null)
+							&&(CMLib.commands().postRemove(mob,alreadyWearing,quiet)))
+								return true;
+						}
+						else
+							return true;
+					}
 					if(cantWearAt==Wearable.WORN_HELD)
 						mob.tell(L("You are already holding @x1.",alreadyWearing.name()));
 					else
