@@ -15666,7 +15666,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	protected void dupCheckClear(final ScriptableResponse resp, final String[] triggerStr)
 	{
-		if(que.size()>25)
+		if(que.size()>5)
 		{
 			int max = 25;
 			if(resp.ctx.scripted instanceof Area)
