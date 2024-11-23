@@ -1,0 +1,61 @@
+# fakedb data
+fakedb.*
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Package Files
+*.jar
+*.war
+*.ear
+*.nar
+*.zip
+*.tar.gz
+*.rar
+
+# Virtual machine crash logs
+hs_err_pid*
+
+# Maven specific files
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+pom.xml.bak
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle specific files
+.gradle/
+build/
+bin/
+gradle-app.setting
+
+# IntelliJ IDEA specific files
+.idea/
+*.iml
+
+# Visual Studio Code specific files
+.vscode/
+
+# OS generated files (macOS)
+.DS_Store
+
+# Backup and temporary files from editors (e.g., Vim, Emacs)
+*~
+*.swp
+*.bak
+
+# Other temporary files
+*.tmp
+nohup.org
