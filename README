@@ -1,3 +1,25 @@
+# CoffeeMud (C)2000-2024 Bo Zimmerman
+
+Please read the LICENSE file for license information.
+Please read the NOTICE file for credits information.
+
+# coffeemud-dedicated-heron
+
+`coffeemud-dedicated-heron` is a fork of the original CoffeeMud project
+([GitHub Repository](https://github.com/bozimmerman/CoffeeMud)). This version includes enhancements, additional
+features, and hotfixes tailored specifically for a designated MUD environment.
+
+**Please note that this fork is optimized for its dedicated target environment and may not be suitable for
+other uses or deployments.**
+
+While it attempts to retain compatibility with the original CoffeeMud codebase, it might introduce new bugs or
+issues due to the modifications made. Users should proceed with caution and thoroughly test in their specific
+environments.
+
+---
+
+# Original CoffeeMud README
+
 CoffeeMud (C)2000-2024 Bo Zimmerman
 Please read the LICENSE file for license information
 Please read the NOTICE file for credits information
