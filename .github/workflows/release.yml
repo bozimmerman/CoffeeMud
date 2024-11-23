@@ -1,0 +1,68 @@
+name: Release Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number for tagging'
+        required: true
+      dry_run:
+        description: 'Set to true for a dry run'
+        required: false
+        default: 'true'
+
+jobs:
+  package_release:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/heads/release/')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      - name: Build Project (Dry Run)
+        if: ${{ github.event.inputs.dry_run == 'true' }}
+        run: |
+          echo "Dry Run Mode: This would build the project with version ${github.event.inputs.version}"
+          echo "Command: mvn clean package -Drevision=${{ github.event.inputs.version }}"
+
+      - name: Build Project (Actual)
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: mvn clean package -Drevision=${{ github.event.inputs.version }}
+
+      - name: Tag Release (Dry Run)
+        if: ${{ github.event.inputs.dry_run == 'true' }}
+        run: |
+          echo "Dry Run Mode: This would tag the release with version v${{ github.event.inputs.version }}"
+          echo "Command: git tag v${{ github.event.inputs.version }}"
+
+      - name: Tag Release (Actual)
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          VERSION=${{ github.event.inputs.version }}
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git tag "v${VERSION}"
+          git push origin "v${VERSION}"
+
+      - name: Publish JAR to GitHub Releases (Dry Run)
+        if: ${{ github.event.inputs.dry_run == 'true' }}
+        run: |
+          echo "Dry Run Mode: This would publish the JAR to GitHub Releases"
+          echo "Tagging as v${{ github.event.inputs.version }} and uploading target/*.jar"
+
+      - name: Publish Artifact to GitHub Repository (Actual)
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ github.event.inputs.version }}
+          files: target/*.jar
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
