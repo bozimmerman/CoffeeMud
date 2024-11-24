@@ -23,6 +23,8 @@ import java.io.IOException;
 
 // requires nothing to load
 /*
+   Copyright 2024 github.com/toasted323
+
    Copyright 2001-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,6 +38,9 @@ import java.io.IOException;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   CHANGES:
+   2024-11 toasted323: fix out of bounds access to string
 */
 public class Socials extends StdLibrary implements SocialsList
 {
@@ -58,7 +63,7 @@ public class Socials extends StdLibrary implements SocialsList
 			if(x>=0)
 			{
 				final Social socobj=(Social)CMClass.getCommon("DefaultSocial");
-				final String s=getline.substring(0,x).toUpperCase().trim();
+				final String s=getline.substring(0,x).toUpperCase().replace("\t","");
 				if(s.length()>0)
 				{
 					boolean fail=false;
@@ -86,7 +91,7 @@ public class Socials extends StdLibrary implements SocialsList
 					}
 					if(fail)
 					{
-						Log.errOut("Socials", "Unknown S code: '"+s.charAt(1)+"' in "+getline);
+						Log.errOut("Socials", "Unknown S code: '"+s.charAt(0)+"' in "+getline);
 						continue;
 					}
 				}
