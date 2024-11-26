@@ -38,8 +38,8 @@ buildNumber.properties
 # Gradle specific files
 .gradle/
 build/
-bin/
 gradle-app.setting
+
 
 # IntelliJ IDEA specific files
 .idea/

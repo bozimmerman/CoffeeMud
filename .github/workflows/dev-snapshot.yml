@@ -1,17 +1,19 @@
 name: Development Snapshot Build
 
 on:
-  workflow_dispatch:  # Manual trigger
+  workflow_dispatch:
     inputs:
       dry_run:
         description: 'Set to true for a dry run'
         required: false
         default: 'true'
+  pull_request:
+    branches:
+      - '**'
 
 jobs:
   build_snapshot:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/heads/develop')
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -22,26 +24,48 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
 
+      - name: Check Java version
+        run: java -version
+
       - name: Get Committer Date and Short Hash
         id: get_commit_info
         run: |
-          COMMITTER_DATE=$(git log -1 --format=%ci | cut -d' ' -f1)
+          COMMITTER_DATE=$(git log -1 --format=%ci | cut -d' ' -f1 | tr -d '-') 
           SHORT_HASH=$(echo $GITHUB_SHA | cut -c1-7)  # Get the short commit hash
-          echo "dev_revision=DEV_${COMMITTER_DATE}_${SHORT_HASH}" >> $GITHUB_ENV  # Format as DEV_YYYY-MM-DD_hash
+          echo "dev_version=dev-${COMMITTER_DATE}-${SHORT_HASH}" >> $GITHUB_ENV  # Format as DEV_YYYY-MM-DD_hash
 
       - name: Build Project (Dry Run)
         if: ${{ github.event.inputs.dry_run == 'true' }}
         run: |
-          echo "Dry Run Mode: This would build the project with revision ${{ env.dev_revision }}"
-          echo "Command: mvn clean package -Drevision=${{ env.dev_revision }}"
+          echo "Dry Run Mode: This would build the project with version ${{ env.dev_version }}"
+          echo "Command: ARTIFACT_VERSION=${{ env.dev_version }} ./gradlew build"
 
       - name: Build Project (Actual)
         if: ${{ github.event.inputs.dry_run != 'true' }}
-        run: mvn clean package -Drevision=${{ env.dev_revision }}
+        env:
+          ARTIFACT_VERSION: ${{ env.dev_version }}
+        run: ./gradlew build
+
+      - name: Run Tests and Coverage (Dry Run)
+        if: ${{ github.event.inputs.dry_run == 'true' }}
+        run: |
+          echo "Dry Run Mode: This would run tests and generate coverage reports."
+          echo "Command: ./gradlew test jacocoTestReport"
+
+      - name: Run Tests and Coverage (Actual)
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: ./gradlew test jacocoTestReport || true
+        continue-on-error: true
+
+      - name: Report Coverage Results
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          echo "Coverage report generated."
+          echo "Check the reports in build/reports/jacoco/test/html/index.html"
 
       - name: Upload Artifact
         if: ${{ github.event.inputs.dry_run != 'true' }}
         uses: actions/upload-artifact@v3
         with:
-          name: coffeemud-build-artifact
-          path: target/*.jar
+          name: 'coffeemud-dedicated-heron-${{ github.run_id }}-${{ github.sha }}'
+          path: build/libs/*.jar

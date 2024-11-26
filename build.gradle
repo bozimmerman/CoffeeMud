@@ -1,0 +1,134 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+}
+
+group = 'io.github.toasted323.coffeemud-dedicated-heron'
+version = 'dev'
+
+def artifactName = System.getenv('ARTIFACT_NAME') ?: 'coffeemud-dedicated-heron'
+def artifactVersion = System.getenv('ARTIFACT_VERSION') ?: version
+
+description = '''
+`coffeemud-dedicated-heron` is a fork of the original CoffeeMud project
+([GitHub Repository](https://github.com/bozimmerman/CoffeeMud)). This version includes enhancements, additional
+features, and hotfixes tailored specifically for a designated MUD environment.
+
+**Please note that this fork is optimized for its dedicated target environment and may not be suitable for
+other uses or deployments.**
+
+While it attempts to retain compatibility with the original CoffeeMud codebase, it might introduce new bugs or
+issues due to the modifications made. Users should proceed with caution and thoroughly test in their specific
+environments.
+'''
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    junitVersion = '5.9.2'
+    mockitoVersion = '5.3.1'
+}
+
+dependencies {
+    implementation files('lib/js.jar')
+    implementation files('lib/jzlib.jar')
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "org.mockito:mockito-junit-jupiter:$mockitoVersion"
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['.']
+            exclude '**/tests/**'
+        }
+    }
+
+    test {
+        java {
+            srcDirs = ['tests']
+        }
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+tasks.withType(JavaCompile) {
+    println "Configuring JavaCompile task: ${name}"
+    options.encoding = 'UTF-8'
+    // options.compilerArgs << '-Xlint:-deprecation'
+    // options.compilerArgs << '-Xlint:-removal' // failing on github
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task testWithCoverage(type: Test) {
+    group = "Verification"
+    description = "Runs the unit tests with coverage"
+
+    dependsOn test
+    finalizedBy jacocoTestReport
+}
+
+task copyClasses(type: Copy) {
+    from("$buildDir/classes/java/main")
+    into('.')
+    include('**/*.class')
+}
+copyClasses.dependsOn(classes)
+compileTestJava.dependsOn('copyClasses')
+build.dependsOn(copyClasses)
+jar.dependsOn(copyClasses)
+
+
+
+jar {
+    archiveBaseName = artifactName
+    version = artifactVersion
+    manifest {
+        attributes(
+                'Implementation-Title': artifactName,
+                'Implementation-Version': artifactVersion,
+                'Main-Class': 'com.planet_ink.coffee_mud.application.MUD'
+        )
+    }
+
+    from('com') {
+        include '**/*.java'
+        into('com')
+    }
+
+    from('resources/help') {
+        include '*'
+        into('resources/help')
+    }
+
+    from('resources/fakedb') {
+        include 'fakedb.schema'
+        into('resources/fakedb')
+    }
+
+    //eachFile { FileCopyDetails details ->
+    //    println "Including file: ${details.file}"
+    //}
+}
+
+clean {
+    doFirst {
+        delete fileTree(dir: '.', include: '**/*.class')
+    }
+}

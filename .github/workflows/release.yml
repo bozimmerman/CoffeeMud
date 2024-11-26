@@ -25,15 +25,37 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
 
+      - name: Check Java version
+        run: java -version
+
       - name: Build Project (Dry Run)
         if: ${{ github.event.inputs.dry_run == 'true' }}
         run: |
-          echo "Dry Run Mode: This would build the project with version ${github.event.inputs.version}"
-          echo "Command: mvn clean package -Drevision=${{ github.event.inputs.version }}"
+          echo "Dry Run Mode: This would build the project with version ${{ github.event.inputs.version }}"
+          echo "Command: ARTIFACT_VERSION=${{ github.event.inputs.version }} ./gradlew build"
 
       - name: Build Project (Actual)
         if: ${{ github.event.inputs.dry_run != 'true' }}
-        run: mvn clean package -Drevision=${{ github.event.inputs.version }}
+        env:
+          ARTIFACT_VERSION: ${{ github.event.inputs.version }}
+        run: ./gradlew build
+
+      - name: Run Tests and Coverage (Dry Run)
+        if: ${{ github.event.inputs.dry_run == 'true' }}
+        run: |
+          echo "Dry Run Mode: This would run tests and generate coverage reports."
+          echo "Command: ./gradlew test jacocoTestReport"
+
+      - name: Run Tests and Coverage (Actual)
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: ./gradlew test jacocoTestReport || true
+        continue-on-error: true
+
+      - name: Report Coverage Results
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          echo "Coverage report generated."
+          echo "Check the reports in build/reports/jacoco/test/html/index.html"
 
       - name: Tag Release (Dry Run)
         if: ${{ github.event.inputs.dry_run == 'true' }}
@@ -54,14 +76,14 @@ jobs:
         if: ${{ github.event.inputs.dry_run == 'true' }}
         run: |
           echo "Dry Run Mode: This would publish the JAR to GitHub Releases"
-          echo "Tagging as v${{ github.event.inputs.version }} and uploading target/*.jar"
+          echo "Tagging as v${{ github.event.inputs.version }} and uploading build/libs/*.jar"
 
       - name: Publish Artifact to GitHub Repository (Actual)
         if: ${{ github.event.inputs.dry_run != 'true' }}
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ github.event.inputs.version }}
-          files: target/*.jar
+          files: build/libs/*.jar
           draft: false
           prerelease: false
         env:
