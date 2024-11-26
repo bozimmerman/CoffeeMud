@@ -18,6 +18,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
+   Copyright 2024 github.com/toasted323
+
    Copyright 2004-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,6 +33,9 @@ import java.util.*;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   CHANGES:
+   2024-11 toasted323: reset ticks required to make a loyal companion to 1 rl hour
 */
 public class Fighter_CompanionMount extends FighterSkill
 {
@@ -251,7 +256,7 @@ public class Fighter_CompanionMount extends FighterSkill
 							||(choices.containsFirst(target.baseCharStats().getMyRace().racialCategory())))
 						{
 							final TimeClock C = CMLib.time().homeClock(mob);
-							mountTicks = (int)(C.getDaysInMonth() * C.getHoursInDay() * CMProps.getTicksPerMudHour());
+							mountTicks = (int)(CMProps.getTicksPerMudHour());
 							mountTicks -= (int)(super.getXTIMELevel(mob) * CMProps.getTicksPerMudHour());
 							if(mountTicks < 10)
 								mountTicks = 10;
