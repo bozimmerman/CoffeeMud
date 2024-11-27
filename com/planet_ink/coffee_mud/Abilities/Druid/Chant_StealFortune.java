@@ -152,11 +152,11 @@ public class Chant_StealFortune extends Chant
 				if(msg.value()<=0)
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) <S-HIS-HER> fortune being stolen."));
-					final Ability tmeA = beneficialAffect(mob,target,asLevel,0);
+					final Chant_StealFortune tmeA = (Chant_StealFortune)beneficialAffect(mob,target,asLevel,0);
 					if(tmeA != null)
 					{
-						final Ability smeA = beneficialAffect(mob,mob,asLevel,0);
-						smeA.setStat("TICKDOWN", tmeA.getStat("TICKDOWN"));
+						final Chant_StealFortune smeA = (Chant_StealFortune)beneficialAffect(mob,mob,asLevel,0);
+						smeA.tickDown = tmeA.tickDown;
 						if(!mob.isPlayer())
 							CMLib.awards().giveAutoProperties(mob, false);
 						if(!target.isPlayer())

@@ -744,7 +744,8 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.AUTOAWARDS))
 			return;
-		if((!mob.isPlayer())&&(CMSecurity.isDisabled(CMSecurity.DisFlag.NPCAUTOAWARDS)))
+		if((!mob.isPlayer())
+		&&(CMSecurity.isDisabled(CMSecurity.DisFlag.NPCAUTOAWARDS)))
 			return;
 		Ability A=mob.fetchEffect("AutoAwards");
 		if(A==null)
@@ -754,6 +755,8 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 			{
 				mob.addNonUninvokableEffect(A);
 				A.setSavable(false);
+				if(!mob.isPlayer())
+					A.tick(mob, Tickable.TICKID_MOB);
 			}
 		}
 		else
