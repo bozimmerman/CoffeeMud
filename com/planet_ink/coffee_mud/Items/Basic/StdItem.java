@@ -952,12 +952,12 @@ public class StdItem implements Item
 		CMLib.flags().setSavable(this, truefalse);
 	}
 
-	protected boolean canWearComplete(final MOB mob, long wearWhere, final boolean quiet)
+	protected boolean canWearComplete(final MOB mob, final long wearWhere, final boolean quiet)
 	{
 		if(!canWear(mob,wearWhere))
 		{
-			wearWhere = (wearWhere == 0) ? (long)~0 : wearWhere;
-			long cantWearAt=whereCantWear(mob) & wearWhere;
+			final long wearMask = (wearWhere == 0) ? (long)~0 : wearWhere;
+			long cantWearAt=whereCantWear(mob) & wearMask;
 			Item alreadyWearing=(cantWearAt==0)?null:mob.fetchFirstWornItem(cantWearAt);
 			final Wearable.CODES codes = Wearable.CODES.instance();
 			if(alreadyWearing!=null)
@@ -987,7 +987,7 @@ public class StdItem implements Item
 					if((layer == layer2)
 					&&(CMLib.commands().postRemove(mob,alreadyWearing,quiet)))
 					{
-						if((wornLogicalAnd) && ((cantWearAt = (whereCantWear(mob) & wearWhere)) != 0))
+						if((wornLogicalAnd) && ((cantWearAt = (whereCantWear(mob) & wearMask)) != 0))
 						{
 							alreadyWearing=(cantWearAt==0)?null:mob.fetchFirstWornItem(cantWearAt);
 							if((alreadyWearing != null)
@@ -1011,10 +1011,16 @@ public class StdItem implements Item
 			if(wearWhere!=0)
 			{
 				final StringBuilder locs=new StringBuilder("");
+				int tooMany=0;
 				for(int i=0;i<codes.total();i++)
 				{
-					if((codes.get(i)&wearWhere)>0)
-						locs.append(", " + codes.name(i));
+					if((codes.get(i)&wearMask)>0)
+					{
+						if(++tooMany>4)
+							locs.setLength(0);
+						else
+							locs.append(", " + codes.name(i));
+					}
 				}
 				if(locs.length()==0)
 					mob.tell(L("You can't wear that there."));
