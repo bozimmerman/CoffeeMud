@@ -66,8 +66,6 @@ public class Wearing extends PropTest
 		M.addItem(w2);
 		final Item w3 = CMClass.getWeapon("TwoHandedSword");
 		M.addItem(w3);
-		/*
-
 		CMLib.commands().postWear(M, w1, true);
 		if((!w1.amBeingWornProperly())||(M.fetchWieldedItem()!=w1))
 			return (L("Error#1"));
@@ -95,9 +93,6 @@ public class Wearing extends PropTest
 		if((!w2.amBeingWornProperly())
 		||(M.fetchHeldItem()!=w2))
 			return (L("Error#6"));
-
-		*/
-
 		final Item a1 = CMClass.getArmor("Hat");
 		M.addItem(a1);
 		final Item a2 = CMClass.getArmor("Helmet");
