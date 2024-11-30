@@ -2,11 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 
 import com.planet_ink.coffee_mud.Abilities.interfaces.Ability;
 import com.planet_ink.coffee_mud.Common.interfaces.CMMsg;
-import com.planet_ink.coffee_mud.Locales.interfaces.Room;
-import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.interfaces.Environmental;
-
-import java.util.Enumeration;
 
 /*
    Copyright 2024 github.com/toasted323
@@ -25,63 +21,90 @@ import java.util.Enumeration;
 */
 
 public
-class Prop_DebugMessages extends Property
-{
+class Prop_DebugMessages extends LoggableProperty {
 	@Override
-	public String ID()
-	{
+	public String ID() {
 		return "Prop_DebugMessages";
 	}
 
 	@Override
-	public String name()
-	{
+	public String name() {
 		return "Room Debug Messages";
 	}
 
 	@Override
-	protected int canAffectCode()
-	{
+	protected int canAffectCode() {
 		return Ability.CAN_ROOMS;
 	}
 
 	@Override
-	public String accountForYourself()
-	{
+	public String accountForYourself() {
 		return "This is a property to debug messages passing through rooms.";
-
 	}
 
 	@Override
-	public boolean okMessage(final Environmental myHost,final CMMsg msg)
-	{
-		return super.okMessage(myHost,msg);
+	protected void handleParsedConfiguration() {
+		super.handleParsedConfiguration();
+		logger.logInfo("Configuration parsed");
 	}
 
 	@Override
-	public void executeMsg(final Environmental myHost,final CMMsg msg)
-	{
-		if(myHost instanceof Room)
-		{
-			Room room = (Room) myHost;
-			for(Enumeration<MOB> e = room.inhabitants(); e.hasMoreElements(); )
-			{
-				MOB mob = e.nextElement();
-				if(mob != null && mob.isPlayer())
-				{
-					StringBuilder debugMessage = new StringBuilder();
-					debugMessage.append("Debug: Message received in Prop_DebugMessages:\n");
-					debugMessage.append("Source: ").append(msg.source() != null ? msg.source().name() : "None").append("\n");
-					debugMessage.append("Target: ").append(msg.target() != null ? msg.target().name() : "None").append("\n");
-					debugMessage.append("Tool: ").append(msg.tool() != null ? msg.tool().name() : "None").append("\n");
-					debugMessage.append("Source Message: ").append(msg.sourceMessage()).append("\n");
-					debugMessage.append("Target Message: ").append(msg.targetMessage()).append("\n");
-					debugMessage.append("Others Message: ").append(msg.othersMessage()).append("\n");
-					debugMessage.append("Type: ").append(msg.sourceMinor()).append("/").append(msg.targetMinor()).append("/").append(msg.othersMinor()).append("\n");
-					mob.tell(debugMessage.toString());
-				}
-			}
+	public boolean okMessage(final Environmental myHost, final CMMsg msg) {
+		logger.logDebug("Received okMessage: " + describeMessage(msg));
+		return super.okMessage(myHost, msg);
+	}
+
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg) {
+		logger.logDebug("Executing message: " + describeMessage(msg));
+		super.executeMsg(myHost, msg);
+	}
+
+	private String describeMessage(CMMsg msg) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Debug: Message Details:\n");
+
+		sb.append("Source: ").append(describeMsgComponent(msg.source())).append("\n");
+		sb.append("Target: ").append(describeMsgComponent(msg.target())).append("\n");
+		sb.append("Tool: ").append(describeMsgComponent(msg.tool())).append("\n");
+
+		sb.append("Source Message: ").append(describeStringField(msg.sourceMessage())).append("\n");
+		sb.append("Target Message: ").append(describeStringField(msg.targetMessage())).append("\n");
+		sb.append("Others Message: ").append(describeStringField(msg.othersMessage())).append("\n");
+
+		sb.append("Source Minor: ").append(describeMsgType(msg.sourceMinor())).append("\n");
+		sb.append("Target Minor: ").append(describeMsgType(msg.targetMinor())).append("\n");
+		sb.append("Others Minor: ").append(describeMsgType(msg.othersMinor())).append("\n");
+
+		sb.append("Source Major: ").append(describeMsgType(msg.sourceMajor())).append("\n");
+		sb.append("Target Major: ").append(describeMsgType(msg.targetMajor())).append("\n");
+		sb.append("Others Major: ").append(describeMsgType(msg.othersMajor())).append("\n");
+
+		sb.append("Source Code (flags): ").append(Integer.toBinaryString(msg.sourceCode())).append(" (Decimal: ").append(msg.sourceCode()).append(")\n");
+		sb.append("Target Code (flags): ").append(Integer.toBinaryString(msg.targetCode())).append(" (Decimal: ").append(msg.targetCode()).append(")\n");
+		sb.append("Others Code (flags): ").append(Integer.toBinaryString(msg.othersCode())).append(" (Decimal: ").append(msg.othersCode()).append(")\n");
+
+		return sb.toString();
+	}
+
+
+	private String describeMsgComponent(Environmental component) {
+		if (component == null) return "None";
+		return component.name() + " (ID: " + component.ID() + ", Type: " + component.getClass().getSimpleName() + ")";
+	}
+
+	private String describeStringField(String field) {
+		if (field == null) return "None";
+		if (field.isEmpty()) return "Empty String";
+		return "\"" + field + "\"";
+	}
+
+	private String describeMsgType(int type) {
+		if (type >= 0 && type < CMMsg.TYPE_DESCS.length) {
+			String typeName = CMMsg.TYPE_DESCS[type];
+			return typeName + " (" + type + ")";
+		} else {
+			return "Unknown Type (" + type + ")";
 		}
-		super.executeMsg(myHost,msg);
 	}
 }
