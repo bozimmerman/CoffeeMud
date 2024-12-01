@@ -1,0 +1,36 @@
+<AREA><ACLAS>StdArea</ACLAS><ANAME>Test Prop_Arena</ANAME><ADESC /><ACLIM>-1</ACLIM><ASUBS>;</ASUBS><ATECH>0</ATECH><ADATA><ARCHP /><PARENTS /><CHILDREN /><PREJFC /><IGNMSK /><BUDGET /><DEVALR /><INVRER>0</INVRER><CURRENCY /><IPRICS /><IMG /><BEHAVES /><AFFECS /><AUTHOR /><BLURBS /><AATMO>-1</AATMO></ADATA><AROOMS><AROOM><ROOMID>Test Prop_Arena#0</ROOMID><RAREA>Test Prop_Arena</RAREA><RCLAS>StdRoom</RCLAS><RDISP>Pit Room</RDISP><RDESC>You stand in the heart of the arena, a vast pit surrounded by towering walls. The ground is packed dirt, scuffed from countless battles fought here. Above, the sky is open, allowing sunlight to pour in, illuminating the area where champions clash.
+
+This is the main action area where all duels and contests take place. As a spectator or participant, you can observe or engage in combat here.
+
+**How to Use**:
+- To broadcast actions occurring in this pit to spectators, ensure that the `Prop_ArenaPit` property is applied to this room.
+- Configure the property by setting a message prefix using `PREFIX`, which will prepend messages sent to spectators.
+- Specify which spectator rooms should receive updates by listing their IDs in the `SPECTATORS` parameter.
+
+**Example Configuration**:
+PREFIX="[Arena] "; SPECTATORS="Test Prop_Arena#1", "Test Prop_Arena#2";</RDESC><RTEXT>&lt;RCLIM&gt;-1&lt;/RCLIM&gt;&lt;RATMO&gt;-1&lt;/RATMO&gt;&lt;IMG /&gt;&lt;BEHAVES /&gt;&lt;AFFECS&gt;&lt;AFF&gt;&lt;ACLASS&gt;Prop_RoomLit&lt;/ACLASS&gt;&lt;ATEXT /&gt;&lt;/AFF&gt;&lt;AFF&gt;&lt;ACLASS&gt;Prop_NoSummon&lt;/ACLASS&gt;&lt;ATEXT /&gt;&lt;/AFF&gt;&lt;AFF&gt;&lt;ACLASS&gt;Prop_NoTeleport&lt;/ACLASS&gt;&lt;ATEXT /&gt;&lt;/AFF&gt;&lt;AFF&gt;&lt;ACLASS&gt;Prop_RoomUnmappable&lt;/ACLASS&gt;&lt;ATEXT /&gt;&lt;/AFF&gt;&lt;AFF&gt;&lt;ACLASS&gt;Prop_ArenaPit&lt;/ACLASS&gt;&lt;ATEXT&gt;PREFIX="[Arena] "; SPECTATORS="Test Prop_Arena#1", "Test Prop_Arena#2";&lt;/ATEXT&gt;&lt;/AFF&gt;&lt;AFF&gt;&lt;ACLASS&gt;Prop_DebugMessages&lt;/ACLASS&gt;&lt;ATEXT /&gt;&lt;/AFF&gt;&lt;/AFFECS&gt;</RTEXT><ROOMEXITS><REXIT><XDIRE>3</XDIRE><XDOOR>Test Prop_Arena#2</XDOOR><XEXIT><EXID>StdOpenDoorway</EXID><EXDAT /></XEXIT></REXIT><REXIT><XDIRE>2</XDIRE><XDOOR>Test Prop_Arena#1</XDOOR><XEXIT><EXID>StdOpenDoorway</EXID><EXDAT /></XEXIT></REXIT></ROOMEXITS><ROOMCONTENT><ROOMMOBS><RMOB><MCLAS>Chicken</MCLAS><MLEVL>1</MLEVL><MABLE>11</MABLE><MREJV>37</MREJV><MTEXT /><MRIDE /></RMOB></ROOMMOBS><ROOMITEMS /></ROOMCONTENT></AROOM>
+
+<AROOM><ROOMID>Test Prop_Arena#1</ROOMID><RAREA>Test Prop_Arena</RAREA><RCLAS>StdRoom</RCLAS><RDISP>Spectator Room 1</RDISP><RDESC>You are in a spectator room that provides an excellent view of the arena pit. The walls are adorned with banners celebrating past champions, and rows of seats are available for eager onlookers.
+
+From here, you can witness all the action taking place in the pit. The atmosphere is electric as spectators cheer for their favorites.
+
+**How to Use**:
+- To observe actions happening in the arena pit, ensure that the Prop_ArenaSpectator property is applied to this room.
+- Set the PIT parameter to point to the arena room (e.g., PIT="Test Prop_Arena#0").
+- Customize your viewing experience with messages by setting VIEW_MESSAGE and DETAILED_VIEW_MESSAGE.
+
+**Example Configuration**:
+PIT="Test Prop_Arena#0"; VIEW_MESSAGE="In the arena, you see: "; LONGLOOK; DETAILED_VIEW_MESSAGE="Detailed view of the arena: ";</RDESC><RTEXT>&lt;RCLIM&gt;-1&lt;/RCLIM&gt;&lt;RATMO&gt;-1&lt;/RATMO&gt;&lt;IMG /&gt;&lt;BEHAVES /&gt;&lt;AFFECS&gt;&lt;AFF&gt;&lt;ACLASS&gt;Prop_RoomLit&lt;/ACLASS&gt;&lt;ATEXT /&gt;&lt;/AFF&gt;&lt;AFF&gt;&lt;ACLASS&gt;Prop_NoSummon&lt;/ACLASS&gt;&lt;ATEXT /&gt;&lt;/AFF&gt;&lt;AFF&gt;&lt;ACLASS&gt;Prop_NoTeleport&lt;/ACLASS&gt;&lt;ATEXT /&gt;&lt;/AFF&gt;&lt;AFF&gt;&lt;ACLASS&gt;Prop_RoomUnmappable&lt;/ACLASS&gt;&lt;ATEXT /&gt;&lt;/AFF&gt;&lt;AFF&gt;&lt;ACLASS&gt;Prop_ArenaSpectator&lt;/ACLASS&gt;&lt;ATEXT&gt;PIT="Test Prop_Arena#0"; VIEW_MESSAGE="You catch a glimpse of the action!"; LONGLOOK; DETAILED_VIEW_MESSAGE="A detailed view of what's happening in the arena:";&lt;/ATEXT&gt;&lt;/AFF&gt;&lt;/AFFECS&gt;</RTEXT><ROOMEXITS><REXIT><XDIRE>3</XDIRE><XDOOR>Test Prop_Arena#0</XDOOR><XEXIT><EXID>StdOpenDoorway</EXID><EXDAT /></XEXIT></REXIT></ROOMEXITS><ROOMCONTENT><ROOMMOBS /><ROOMITEMS /></ROOMCONTENT></AROOM>
+
+<AROOM><ROOMID>Test Prop_Arena#2</ROOMID><RAREA>Test Prop_Arena</RAREA><RCLAS>StdRoom</RCLAS><RDISP>Spectator Room 2</RDISP><RDESC>You find yourself in another spectator room, similar to the first but with its unique charm. This room offers a slightly different angle of view into the arena pit, allowing you to catch all the action from another perspective.
+
+The excitement here is palpable as fans discuss strategies and outcomes of ongoing battles.
+
+**How to Use**:
+- Like Spectator Room 1, apply the `Prop_ArenaSpectator` property to this room.
+- Ensure that it points to the same arena pit using the `PIT` parameter.
+- You can customize your viewing messages just like in Spectator Room 1.
+
+Example Configuration:
+PIT="Test Prop_Arena#0"; VIEW_MESSAGE="You catch a glimpse of the action!"; LONGLOOK; DETAILED_VIEW_MESSAGE="A detailed view of what's happening in the arena:";</RDESC><RTEXT>&lt;RCLIM&gt;-1&lt;/RCLIM&gt;&lt;RATMO&gt;-1&lt;/RATMO&gt;&lt;IMG /&gt;&lt;BEHAVES /&gt;&lt;AFFECS&gt;&lt;AFF&gt;&lt;ACLASS&gt;Prop_RoomLit&lt;/ACLASS&gt;&lt;ATEXT /&gt;&lt;/AFF&gt;&lt;AFF&gt;&lt;ACLASS&gt;Prop_NoSummon&lt;/ACLASS&gt;&lt;ATEXT /&gt;&lt;/AFF&gt;&lt;AFF&gt;&lt;ACLASS&gt;Prop_NoTeleport&lt;/ACLASS&gt;&lt;ATEXT /&gt;&lt;/AFF&gt;&lt;AFF&gt;&lt;ACLASS&gt;Prop_RoomUnmappable&lt;/ACLASS&gt;&lt;ATEXT /&gt;&lt;/AFF&gt;&lt;AFF&gt;&lt;ACLASS&gt;Prop_ArenaSpectator&lt;/ACLASS&gt;&lt;ATEXT&gt;PIT="Test Prop_Arena#0"; VIEW_MESSAGE="You catch a glimpse of the action!"; LONGLOOK; DETAILED_VIEW_MESSAGE="A detailed view of what's happening in the arena:";&lt;/ATEXT&gt;&lt;/AFF&gt;&lt;/AFFECS&gt;</RTEXT><ROOMEXITS><REXIT><XDIRE>2</XDIRE><XDOOR>Test Prop_Arena#0</XDOOR><XEXIT><EXID>StdOpenDoorway</EXID><EXDAT /></XEXIT></REXIT></ROOMEXITS><ROOMCONTENT><ROOMMOBS /><ROOMITEMS /></ROOMCONTENT></AROOM>
+</AROOMS></AREA>
