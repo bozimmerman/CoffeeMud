@@ -182,16 +182,6 @@ public class AutoAwards extends StdAbility
 		if(affected != null)
 		{
 			TimeClock lastClock = this.lastClock;
-			if(lastClock == null)
-			{
-				lastClock = (TimeClock)CMLib.time().homeClock(affected).copyOf();
-				lastClock.setYear(1);
-				lastClock.setMonth(1);
-				lastClock.setDayOfMonth(1);
-				lastClock.setHourOfDay(0);
-				this.lastClock = lastClock;
-			}
-
 			final int astroHash = CMLib.awards().getAutoPropertiesHash();
 			if((savedHash==null)
 			||(savedHash[0]!=astroHash))
@@ -200,6 +190,16 @@ public class AutoAwards extends StdAbility
 					savedHash = new int[] { 0 };
 				savedHash[0] = astroHash;
 				assignMyEntries(affected);
+			}
+			if(lastClock == null)
+			{
+				lastClock = (TimeClock)CMLib.time().homeClock(affected).copyOf();
+				lastClock.setYear(1);
+				lastClock.setMonth(1);
+				lastClock.setDayOfMonth(1);
+				lastClock.setHourOfDay(0);
+				this.forceApply=true;
+				this.lastClock = lastClock;
 			}
 			if(myEntries.size()>0)
 			{
@@ -219,7 +219,8 @@ public class AutoAwards extends StdAbility
 					||((now.getWeekOfYear() != lastClock.getWeekOfYear()) && myEntries.containsKey(TimePeriod.WEEK) )
 					||((now.getMonth() != lastClock.getMonth()) && myEntries.containsKey(TimePeriod.MONTH) )
 					||((now.getSeasonCode() != lastClock.getSeasonCode()) && myEntries.containsKey(TimePeriod.SEASON) )
-					||((now.getYear() != lastClock.getYear()) && myEntries.containsKey(TimePeriod.YEAR) ))
+					||((now.getYear() != lastClock.getYear()) && myEntries.containsKey(TimePeriod.YEAR) )
+					|| (forceApply))
 					{
 						forceApply = false;
 						final List<AutoProperties> chk = new ArrayList<AutoProperties>();
@@ -496,8 +497,11 @@ public class AutoAwards extends StdAbility
 		if(code.equalsIgnoreCase("AUTOAWARDS"))
 		{
 			final StringBuilder str = new StringBuilder("");
-			for(final Pair<AutoProperties, CMObject> p : affects)
-				str.append(p.first.hashCode()+";");
+			if(suppressorA == null)
+			{
+				for(final Pair<AutoProperties, CMObject> p : affects)
+					str.append(p.first.hashCode()+";");
+			}
 			return str.toString();
 		}
 		return super.getStat(code);

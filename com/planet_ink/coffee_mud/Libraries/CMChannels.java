@@ -1538,6 +1538,22 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
 			serviceClient=null;
 		}
+		if(discordApi != null)
+		{
+			try
+			{
+				final Method disconnM = discordApi.getClass().getMethod("disconnect");
+				disconnM.invoke(discordApi);
+			}
+			catch(final Exception e)
+			{
+				Log.errOut(e);
+			}
+			finally
+			{
+				discordApi = null;
+			}
+		}
 		return true;
 	}
 

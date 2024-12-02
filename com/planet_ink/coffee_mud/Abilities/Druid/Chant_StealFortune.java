@@ -165,10 +165,12 @@ public class Chant_StealFortune extends Chant
 						final Ability tA = target.fetchEffect("AutoAwards");
 						if(tA != null)
 						{
+							final String oldAwards = tA.getStat("AUTOAWARDS");
 							tA.setStat("SUPPRESSOR", tmeA.ID());
-							if((sA != null)&&(smeA!=null))
+							if((sA != null)
+							&&(smeA!=null))
 							{
-								sA.setStat("AUTOAWARDS", tA.getStat("AUTOAWARDS"));
+								sA.setStat("AUTOAWARDS", oldAwards);
 								sA.setStat("HOLDER", smeA.ID());
 							}
 							mob.recoverPhyStats();
