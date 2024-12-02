@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
+   Copyright 2024 github.com/toasted323
    Copyright 2004-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,6 +32,9 @@ import java.util.*;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   CHANGES:
+   2024-12 toasted323: hide level and class from group command
 */
 public class Group extends StdCommand
 {
@@ -57,24 +61,25 @@ public class Group extends StdCommand
 				msg.append(CMStrings.padRight(who.charStats().raceName(),cols[0])+" ");
 		}
 
-		String levelStr=who.charStats().displayClassLevel(who,true).trim();
-		final int x=levelStr.lastIndexOf(' ');
-		if(x>=0)
-			levelStr=levelStr.substring(x).trim();
-		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
-		{
-			if(who.charStats().getMyRace().classless())
-				msg.append(CMStrings.padRight(" ",cols[1])+" ");
-			else
-				msg.append(CMStrings.padRight(who.charStats().displayClassName(),cols[1])+" ");
-		}
-		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
-		{
-			if(who.charStats().getCurrentClass().leveless()
-			||who.charStats().getMyRace().leveless())
-				msg.append(CMStrings.padRight(" ",cols[2]));
-			else
-				msg.append(CMStrings.padRight(levelStr,cols[2]));
+		Boolean includeClassAndLevelInfo = false;
+		if (includeClassAndLevelInfo) {
+			String levelStr = who.charStats().displayClassLevel(who, true).trim();
+			final int x = levelStr.lastIndexOf(' ');
+			if (x >= 0) levelStr = levelStr.substring(x).trim();
+
+
+			if (!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)) {
+				if (who.charStats().getMyRace().classless())
+					msg.append(CMStrings.padRight(" ", cols[1]) + " ");
+				else
+					msg.append(CMStrings.padRight(who.charStats().displayClassName(), cols[1]) + " ");
+			}
+			if (!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)) {
+				if (who.charStats().getCurrentClass().leveless() || who.charStats().getMyRace().leveless())
+					msg.append(CMStrings.padRight(" ", cols[2]));
+				else
+					msg.append(CMStrings.padRight(levelStr, cols[2]));
+			}
 		}
 		final double hpPct = CMath.div(who.curState().getHitPoints(), who.maxState().getHitPoints());
 		final double mnPct = CMath.div(who.curState().getMana(), who.maxState().getMana());
@@ -154,8 +159,15 @@ public class Group extends StdCommand
 			}
 		}
 		cols[0]=CMLib.lister().fixColWidth(7,mob.session()); // race
-		cols[1]=CMLib.lister().fixColWidth(7,mob.session()); // class
-		cols[2]=CMLib.lister().fixColWidth(5,mob.session());// level
+		Boolean includeClassAndLevelInfo = false;
+		if (includeClassAndLevelInfo) {
+			cols[1] = CMLib.lister().fixColWidth(7, mob.session()); // class
+			cols[2] = CMLib.lister().fixColWidth(5, mob.session()); // level
+		}
+		else {
+			cols[1] = CMLib.lister().fixColWidth(0, mob.session()); // class
+			cols[2] = CMLib.lister().fixColWidth(0, mob.session()); // level
+		}
 		cols[3]=CMLib.lister().fixColWidth(longestName,mob.session());//name
 		cols[4]=CMLib.lister().fixColWidth(3,mob.session()); // one digit
 		cols[5]=CMLib.lister().fixColWidth(statLen,mob.session()); // one stat
