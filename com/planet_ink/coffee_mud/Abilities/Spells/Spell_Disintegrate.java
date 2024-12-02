@@ -135,7 +135,6 @@ public class Spell_Disintegrate extends Spell
 						&&(I.container()==null))
 							oldBodies.add((DeadBody)I);
 					}
-
 					if(target instanceof MOB)
 					{
 						if(((MOB)target).curState().getHitPoints()>0)
@@ -167,9 +166,7 @@ public class Spell_Disintegrate extends Spell
 					}
 					R.recoverRoomStats();
 				}
-
 			}
-
 		}
 		else
 			maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and utter(s) a treacherous but fizzled spell!"));
