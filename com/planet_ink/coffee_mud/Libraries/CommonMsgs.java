@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 /*
+   Copyright 2024 github.com/toasted323
    Copyright 2004-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,6 +37,9 @@ import java.lang.ref.WeakReference;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   CHANGES:
+   2024-12 toasted323: hide level and class from look command
 */
 public class CommonMsgs extends StdLibrary implements CommonCommands
 {
@@ -2276,8 +2280,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	{
 		final MOB viewermob=msg.source();
 		final MOB viewedmob=(MOB)msg.target();
+
+		// Check if the viewer is looking at themselves
+		boolean isSelfExamination = viewermob == viewedmob;
+
 		final boolean longlook=msg.targetMinor()==CMMsg.TYP_EXAMINE;
 		final StringBuilder myDescription=new StringBuilder("");
+
 		if(CMLib.flags().canBeSeenBy(viewedmob,viewermob))
 		{
 			if(viewermob.isAttributeSet(MOB.Attrib.SYSOPMSGS))
@@ -2296,24 +2305,32 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 									+"Misc  : "+viewedmob.text()
 									+"\n\r");
 			}
-			if(!viewedmob.isMonster())
-			{
-				String levelStr=null;
-				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
-				&&(!viewedmob.charStats().getMyRace().classless())
-				&&(!viewedmob.charStats().getCurrentClass().leveless())
-				&&(!viewedmob.charStats().getMyRace().leveless())
-				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
-					levelStr=CMLib.english().startWithAorAn(viewedmob.charStats().displayClassLevel(viewedmob,false));
-				else
-				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
-				&&(!viewedmob.charStats().getCurrentClass().leveless())
-				&&(!viewedmob.charStats().getMyRace().leveless()))
-					levelStr="level "+viewedmob.charStats().displayClassLevelOnly(viewedmob);
-				else
-				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
-				&&(!viewedmob.charStats().getMyRace().classless()))
-					levelStr=CMLib.english().startWithAorAn(viewedmob.charStats().displayClassName());
+
+			// Class and level information logic
+			if(!viewedmob.isMonster()) {
+				String levelStr = null;
+
+				// Show class and level information for self-examination or SysOp
+				if (isSelfExamination || CMSecurity.isASysOp(viewermob)) {
+					if ((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
+							&& (!viewedmob.charStats().getMyRace().classless())
+							&& (!viewedmob.charStats().getCurrentClass().leveless())
+							&& (!viewedmob.charStats().getMyRace().leveless())
+							&& (!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))) {
+						levelStr = CMLib.english().startWithAorAn(viewedmob.charStats().displayClassLevel(viewedmob, false));
+					}
+					else if ((!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
+							&& (!viewedmob.charStats().getCurrentClass().leveless())
+							&& (!viewedmob.charStats().getMyRace().leveless())) {
+						levelStr = "level " + viewedmob.charStats().displayClassLevelOnly(viewedmob);
+					}
+					else if ((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
+							&& (!viewedmob.charStats().getMyRace().classless())) {
+						levelStr = CMLib.english().startWithAorAn(viewedmob.charStats().displayClassName());
+					}
+				}
+
+				// Race information logic
 				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 				&&(!viewedmob.charStats().getCurrentClass().raceless()))
 				{
@@ -2327,10 +2344,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if(levelStr!=null)
 					myDescription.append(" is "+levelStr+".\n\r");
 				else
-					myDescription.append("is here.\n\r");
+					myDescription.append(" is here.\n\r");
 			}
+
+			// Physical characteristics
 			if(viewedmob.phyStats().height()>0)
 				myDescription.append(L("@x1 is @x2 inches tall and weighs @x3 pounds.\n\r",viewedmob.charStats().HeShe(),""+viewedmob.phyStats().height(),""+viewedmob.baseWeight()));
+
+			// Long look details
 			if((longlook)&&(viewermob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5))
 			{
 				myDescription.append(L("@x1 has ",viewedmob.charStats().HeShe()));
@@ -2380,6 +2401,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					partsList.add(L("wings"));
 				myDescription.append(CMLib.english().toEnglishStringList(partsList)).append(".\n\r");
 			}
+
+			// Intelligence-based insights
 			if((longlook)&&(viewermob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>12))
 			{
 				final CharStats C=(CharStats)CMClass.getCommon("DefaultCharStats");
@@ -2393,6 +2416,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				myDescription.append(relativeCharStatTest(C,viewedmob,"dumber","smarter",CharStats.STAT_INTELLIGENCE));
 				testMOB.destroy();
 			}
+
+			// Equipment display
 			if(!viewermob.isMonster())
 				myDescription.append(CMLib.protocol().mxpImage(viewedmob," ALIGN=RIGHT H=70 W=70"));
 			myDescription.append(CMStrings.capitalizeFirstLetter(viewedmob.healthText(viewermob))+"\n\r\n\r");
@@ -2412,6 +2437,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					myDescription.append(viewedmob.charStats().HeShe()+" is wearing:\n\r"+eq.toString());
 			}
 			viewermob.tell(msg.source(), viewedmob, null, myDescription.toString());
+
+			// Consider command execution on long look
 			if(longlook)
 			{
 				final Command C=CMClass.getCommand("Consider");
@@ -2422,6 +2449,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				}
 				catch (final java.io.IOException e)
 				{
+					//FIXME log error
 				}
 			}
 		}
