@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
+   Copyright 2024 github.com/toasted323
    Copyright 2004-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,6 +32,9 @@ import java.util.*;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   CHANGES:
+   2024-12 toasted323: enable hiding class and level information by configuration
 */
 public class ClanWho extends Who
 {
@@ -132,7 +136,7 @@ public class ClanWho extends Who
 				}
 				else
 				{
-					msg.append(getHead(colWidths));
+					msg.append(getHead(mob, colWidths));
 					for(final Session S : CMLib.sessions().localOnlineIterable())
 					{
 						MOB mob2=S.mob();

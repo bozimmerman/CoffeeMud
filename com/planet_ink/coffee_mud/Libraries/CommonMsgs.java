@@ -39,6 +39,7 @@ import java.lang.ref.WeakReference;
    limitations under the License.
 
    CHANGES:
+   2024-12 toasted323: enable hiding class and level information by configuration
    2024-12 toasted323: hide level and class from look command
 */
 public class CommonMsgs extends StdLibrary implements CommonCommands
@@ -2308,26 +2309,21 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
 			// Class and level information logic
 			if(!viewedmob.isMonster()) {
-				String levelStr = null;
+				String levelStr = "";
+				boolean showClass = (isSelfExamination || CMSecurity.isASysOp(viewermob) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.CLASS))
+						&& !CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
+						&& !viewedmob.charStats().getMyRace().classless();
+				boolean showLevel = (isSelfExamination || CMSecurity.isASysOp(viewermob) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.LEVEL))
+						&& !CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)
+						&& !viewedmob.charStats().getCurrentClass().leveless()
+						&& !viewedmob.charStats().getMyRace().leveless();
 
-				// Show class and level information for self-examination or SysOp
-				if (isSelfExamination || CMSecurity.isASysOp(viewermob)) {
-					if ((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
-							&& (!viewedmob.charStats().getMyRace().classless())
-							&& (!viewedmob.charStats().getCurrentClass().leveless())
-							&& (!viewedmob.charStats().getMyRace().leveless())
-							&& (!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))) {
-						levelStr = CMLib.english().startWithAorAn(viewedmob.charStats().displayClassLevel(viewedmob, false));
-					}
-					else if ((!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
-							&& (!viewedmob.charStats().getCurrentClass().leveless())
-							&& (!viewedmob.charStats().getMyRace().leveless())) {
-						levelStr = "level " + viewedmob.charStats().displayClassLevelOnly(viewedmob);
-					}
-					else if ((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
-							&& (!viewedmob.charStats().getMyRace().classless())) {
-						levelStr = CMLib.english().startWithAorAn(viewedmob.charStats().displayClassName());
-					}
+				if (showClass && showLevel) {
+					levelStr = CMLib.english().startWithAorAn(viewedmob.charStats().displayClassLevel(viewedmob, false));
+				} else if (showLevel) {
+					levelStr = "level " + viewedmob.charStats().displayClassLevelOnly(viewedmob);
+				} else if (showClass) {
+					levelStr = CMLib.english().startWithAorAn(viewedmob.charStats().displayClassName());
 				}
 
 				// Race information logic
@@ -2341,7 +2337,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				}
 				else
 					myDescription.append(viewedmob.name(viewermob)+" ");
-				if(levelStr!=null)
+				if(!levelStr.isEmpty())
 					myDescription.append(" is "+levelStr+".\n\r");
 				else
 					myDescription.append(" is here.\n\r");

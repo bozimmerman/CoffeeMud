@@ -26,7 +26,8 @@ import java.util.*;
    limitations under the License.
 
    CHANGES:
-   2024-11 toasted323: Hide class and level details.
+   2024-12 toasted323: enable hiding class and level information by configuration
+   2024-11 toasted323: hide class and level details.
 */
 public class Who extends StdCommand
 {
@@ -42,21 +43,19 @@ public class Who extends StdCommand
 		return access;
 	}
 
-	private boolean isRacesHidden()
+	private boolean showRaces(MOB viewerMob)
 	{
-		return CMSecurity.isDisabled(CMSecurity.DisFlag.RACES);
+		return !CMSecurity.isDisabled(CMSecurity.DisFlag.RACES);
 	}
 
-	private boolean isClassesHidden()
+	private boolean showClasses(MOB viewerMob)
 	{
-		// CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES);
-		return true;
+		return (CMSecurity.isASysOp(viewerMob) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.CLASS)) && !CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES);
 	}
 
-	private boolean isLevelsHidden()
+	private boolean showLevels(MOB viewerMob)
 	{
-		// CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS);
-		return true;
+		return (CMSecurity.isASysOp(viewerMob) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.LEVEL)) && !CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -76,21 +75,21 @@ public class Who extends StdCommand
 		};
 	}
 
-	public String getHead(final int[] colWidths)
+	public String getHead(MOB viewerMob, final int[] colWidths)
 	{
 		final StringBuilder head = new StringBuilder("");
 		head.append("^x[");
-		if(!isRacesHidden())
+		if(showRaces(viewerMob))
 			head.append(CMStrings.padRight(L("Race"),colWidths[0])+" ");
-		if(!isClassesHidden())
+		if(showClasses(viewerMob))
 			head.append(CMStrings.padRight(L("Class"),colWidths[1])+" ");
-		if(!isLevelsHidden())
+		if(showLevels(viewerMob))
 			head.append(CMStrings.padRight(L("Level"),colWidths[2]));
 		head.append("] Character name^.^N\n\r");
 		return head.toString();
 	}
 
-	public String getTail(final int[] colWidths,final String word,final int amt)
+	public String getTail(MOB viewerMob, final int[] colWidths,final String word,final int amt)
 	{
 		int width = colWidths[0];
 		for(int i = 1; i <= 2; i++)
@@ -100,7 +99,7 @@ public class Who extends StdCommand
 		return tail.toString();
 	}
 
-	public StringBuffer showWhoSingle(final MOB who,final MOB viewerM,final int[] colWidths)
+	public StringBuffer showWhoSingle(final MOB who,final MOB viewerMob,final int[] colWidths)
 	{
 		final StringBuffer msg = new StringBuffer("");
 		int datWidth = 0;
@@ -108,7 +107,7 @@ public class Who extends StdCommand
 			datWidth += colWidths[i];
 		final int headCol = 1;
 		datWidth -= colWidths[headCol];
-		if(!isRacesHidden())
+		if(showRaces(viewerMob))
 		{
 			msg.append("^x[").append(CMStrings.padRight(L("Race"),colWidths[headCol])).append("]^.^N ");
 			if(who.charStats().getCurrentClass().raceless())
@@ -117,7 +116,7 @@ public class Who extends StdCommand
 				msg.append(CMStrings.limit(who.charStats().raceName(),datWidth));
 			msg.append("\n\r");
 		}
-		if(!isClassesHidden())
+		if(showClasses(viewerMob))
 		{
 			msg.append("^x[").append(CMStrings.padRight(L("Class"),colWidths[headCol])).append("]^.^N ");
 			if(who.charStats().getMyRace().classless())
@@ -126,7 +125,7 @@ public class Who extends StdCommand
 				msg.append(CMStrings.limit(who.charStats().displayClassName(),datWidth));
 			msg.append("\n\r\n\r");
 		}
-		if(!isLevelsHidden())
+		if(showLevels(viewerMob))
 		{
 			msg.append("^x[").append(CMStrings.padRight(L("Level"),colWidths[headCol])).append("]^.^N ");
 			String levelStr = who.charStats().displayClassLevel(who,true).trim();
@@ -139,18 +138,18 @@ public class Who extends StdCommand
 				msg.append(CMStrings.limit(levelStr,datWidth));
 			msg.append("\n\r");
 		}
-		final String name = getWhoName(who,viewerM);
+		final String name = getWhoName(who,viewerMob);
 		msg.append("^x[").append(CMStrings.padRight(L("Name"),colWidths[headCol])).append("]^.^N ");
 		msg.append(CMStrings.limit(name,datWidth));
 		msg.append("\n\r");
 		return msg;
 	}
 
-	public StringBuffer showWhoShort(final MOB who,final MOB viewerM,final int[] colWidths)
+	public StringBuffer showWhoShort(final MOB who,final MOB viewerMob,final int[] colWidths)
 	{
 		final StringBuffer msg = new StringBuffer("");
 		msg.append("[");
-		if(!isRacesHidden())
+		if(showRaces(viewerMob))
 		{
 			if(who.charStats().getCurrentClass().raceless())
 				msg.append(CMStrings.padRight(" ",colWidths[0])+" ");
@@ -161,21 +160,21 @@ public class Who extends StdCommand
 		final int x = levelStr.lastIndexOf(' ');
 		if(x >= 0)
 			levelStr = levelStr.substring(x).trim();
-		if(!isClassesHidden())
+		if(showClasses(viewerMob))
 		{
 			if(who.charStats().getMyRace().classless())
 				msg.append(CMStrings.padRight(" ",colWidths[1])+" ");
 			else
 				msg.append(CMStrings.padRight(who.charStats().displayClassName(),colWidths[1])+" ");
 		}
-		if(!isLevelsHidden())
+		if(showLevels(viewerMob))
 		{
 			if(who.charStats().getMyRace().leveless() || who.charStats().getCurrentClass().leveless())
 				msg.append(CMStrings.padRight(" ",colWidths[2]));
 			else
 				msg.append(CMStrings.padRight(levelStr,colWidths[2]));
 		}
-		final String name = getWhoName(who,viewerM);
+		final String name = getWhoName(who,viewerMob);
 		msg.append("] "+CMStrings.padRight(name,colWidths[3]));
 		msg.append("\n\r");
 		return msg;
@@ -240,10 +239,10 @@ public class Who extends StdCommand
 			return "";
 		else
 		{
-			final StringBuffer head = new StringBuffer(getHead(colWidths));
+			final StringBuffer head = new StringBuffer(getHead(mob, colWidths));
 			head.append(msg.toString());
 			if(tailStr != null)
-				head.append(getTail(colWidths,tailStr,count));
+				head.append(getTail(mob, colWidths,tailStr,count));
 			return head.toString();
 		}
 	}
