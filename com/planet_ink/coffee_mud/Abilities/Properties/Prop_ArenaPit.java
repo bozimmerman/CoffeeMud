@@ -157,11 +157,6 @@ public class Prop_ArenaPit extends LoggableProperty {
 
 		logger.logDebug("executeMsg called with message: " + msg.toString());
 
-		if (!(affected instanceof Room)) {
-			logger.logWarn("Affected is not a Room: " + (affected != null ? affected.getClass().getName() : "null"));
-			return;
-		}
-
 		if (msg.othersCode() == CMMsg.NO_EFFECT) {
 			logger.logDebug("Message has NO_EFFECT for others");
 			return;

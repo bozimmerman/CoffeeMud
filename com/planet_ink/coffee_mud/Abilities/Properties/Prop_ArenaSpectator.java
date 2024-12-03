@@ -144,41 +144,53 @@ public class Prop_ArenaSpectator extends LoggableProperty {
 				return false;
 			}
 
-			Room currentPitRoom = getPitRoom();
-			if (currentPitRoom != null && msg.source().location() == affected) {
-				if (msg.targetMinor() == CMMsg.TYP_LOOK || msg.targetMinor() == CMMsg.TYP_EXAMINE) {
-					addPitViewTrailer(msg);
-					return true;
-				}
-			}
-
 			return true;
 		} finally {
 			recursionDepth.set(recursionDepth.get() - 1);
 		}
 	}
 
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg) {
+		super.executeMsg(myHost, msg);
+
+		logger.logDebug("executeMsg called with message: " + msg.toString());
+
+		if (msg.source().location() == affected
+				&& msg.target() == affected
+				&& (msg.targetMinor() == CMMsg.TYP_LOOK || msg.targetMinor() == CMMsg.TYP_EXAMINE)) {
+			Room currentPitRoom = getPitRoom();
+			if (currentPitRoom != null) {
+				logger.logInfo(msg.source().name() + " is examining in room: " + ((Room) affected).roomID());
+
+				addPitViewTrailer(msg);
+			}
+		}
+	}
+
 	private void addPitViewTrailer(final CMMsg msg) {
 		msg.addTrailerRunnable(new Runnable() {
-			final Room R = getPitRoom();
+			final Room currentPitRoom = getPitRoom();
 			final CMMsg mmsg = msg;
 
 			@Override
 			public void run() {
-				if (CMLib.flags().canBeSeenBy(R, mmsg.source()) && mmsg.source().session() != null) {
+				if (CMLib.flags().canBeSeenBy(currentPitRoom, mmsg.source()) && mmsg.source().session() != null) {
 
+					// Render detailed view
 					if (longlook && mmsg.targetMinor() == CMMsg.TYP_EXAMINE) {
 						mmsg.source().tell("\n" + detailedViewMessage);
-						final CMMsg msg2 = CMClass.getMsg(mmsg.source(), R, mmsg.tool(),
+						final CMMsg msg2 = CMClass.getMsg(mmsg.source(), currentPitRoom, mmsg.tool(),
 								mmsg.sourceCode(), null, mmsg.targetCode(), null, mmsg.othersCode(), null);
-						if (R.okMessage(mmsg.source(), msg2)) R.send(mmsg.source(), msg2);
+						if (currentPitRoom.okMessage(mmsg.source(), msg2)) currentPitRoom.send(mmsg.source(), msg2);
 					}
+					// Render inhabitants view
 					else {
 						mmsg.source().tell("\n" + viewMessage);
-						for (Enumeration<MOB> e = R.inhabitants(); e.hasMoreElements(); ) {
-							MOB M = e.nextElement();
-							if (M != null && CMLib.flags().canBeSeenBy(M, mmsg.source())) {
-								mmsg.source().tell("  " + M.name(mmsg.source()));
+						for (Enumeration<MOB> e = currentPitRoom.inhabitants(); e.hasMoreElements(); ) {
+							MOB mob = e.nextElement();
+							if (mob != null && CMLib.flags().canBeSeenBy(mob, mmsg.source())) {
+								mmsg.source().tell("  " + mob.name(mmsg.source()));
 							}
 						}
 					}
