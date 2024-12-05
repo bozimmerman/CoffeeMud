@@ -2917,7 +2917,8 @@ public class CMSecurity
 		CALENDAR("calendar event tracing"),
 		TROPHIES("clan trophy logic tracing"),
 		PROPTAXES("property tax changes"),
-		RANDOMQUESTS("random quests generated")
+		RANDOMQUESTS("random quests generated"),
+		AUTOAWARDS("auto-awards system"),
 		;
 		private final String desc;
 

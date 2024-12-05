@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -419,7 +420,7 @@ public class Thief_Runecasting extends ThiefSkill
 			if(tickUp >= 2)
 			{
 				final int numToReturn = 1 + getXTIMELevel(iM);
-				final AutoProperties[] APs = Thief_Runecasting.getApplicableAward(forM, getPlayerFilter(), numToReturn);
+				final AutoProperties[] APs = Thief_Runecasting.getApplicableAward(this, forM, getPlayerFilter(), numToReturn);
 				if((APs == null) || (APs.length==0))
 				{
 					final int x =CMLib.dice().roll(1, getFailPhrases().length, -1);
@@ -435,6 +436,16 @@ public class Thief_Runecasting extends ThiefSkill
 					for(final AutoProperties P : APs)
 					{
 						final TimeClock C = CMLib.masking().dateMaskToNextTimeClock(forM, P.getDateCMask());
+						if(CMSecurity.isDebugging(DbgFlag.AUTOAWARDS)
+						&&(P.getProps()!=null)
+						&&(P.getProps().length>0))
+						{
+							Log.debugOut(ID(),"Rept: "
+											+ CMStrings.padRight(forM.name(),8)
+											+ ": " + CMStrings.padRight(P.getProps()[0].second,17)
+											+ ": " + CMStrings.padRight(P.getDateMask(),32)
+											+ ": " + C.toTimePeriodCodeString());
+						}
 						final boolean isNow = CMLib.masking().maskCheckDateEntries(P.getDateCMask(), nowC);
 						final TimeClock expireC = isNow ? CMLib.masking().dateMaskToExpirationTimeClock(forM, P.getDateCMask()) : null;
 						if(C.isBefore(nowC) && (!isNow))
@@ -587,7 +598,9 @@ public class Thief_Runecasting extends ThiefSkill
 			unInvoke();
 	}
 
-	protected static AutoProperties[] getApplicableAward(final MOB mob, final Filterer<AutoProperties> playerFilter,
+	protected static AutoProperties[] getApplicableAward(final Thief_Runecasting meA,
+														 final MOB mob,
+														 final Filterer<AutoProperties> playerFilter,
 														 int num)
 	{
 		final Map<CompiledZMask,Boolean> playerTried = new HashMap<CompiledZMask,Boolean>();
@@ -604,6 +617,8 @@ public class Thief_Runecasting extends ThiefSkill
 					currentSet.add(Integer.valueOf(CMath.s_int(s)));
 			}
 		}
+		if(CMSecurity.isDebugging(DbgFlag.AUTOAWARDS))
+			Log.debugOut(meA.ID(),"HCLK: --- "+CMLib.time().homeClock(mob).toTimePeriodCodeString());
 		for(final Enumeration<AutoProperties> p = CMLib.awards().getAutoProperties();p.hasMoreElements();)
 		{
 			final AutoProperties P = p.nextElement();
@@ -628,6 +643,16 @@ public class Thief_Runecasting extends ThiefSkill
 					final TimeClock C = CMLib.masking().dateMaskToNextTimeClock(mob, P.getDateCMask());
 					if(C != null)
 					{
+						if(CMSecurity.isDebugging(DbgFlag.AUTOAWARDS)
+						&&(P.getProps()!=null)
+						&&(P.getProps().length>0))
+						{
+							Log.debugOut(meA.ID(),"Pass: "
+											+ CMStrings.padRight(mob.name(),8)
+											+ ": " + CMStrings.padRight(P.getProps()[0].second,17)
+											+ ": " + CMStrings.padRight(P.getDateMask(),32)
+											+ ": " + C.toTimePeriodCodeString());
+						}
 						clocks.put(P, C); // must always be before the add
 						if(!awards.contains(P))
 						{

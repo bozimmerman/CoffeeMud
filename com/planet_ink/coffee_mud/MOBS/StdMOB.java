@@ -3450,6 +3450,7 @@ public class StdMOB implements MOB
 			&& (!msg.sourceMajor(CMMsg.MASK_INTERMSG))
 			&& (msg.target() instanceof MOB)
 			&& (getVictim() != msg.target())
+			&&(msg.source()!=msg.target())
 			&& ((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				|| (!(msg.tool() instanceof DiseaseAffect))))
 			{

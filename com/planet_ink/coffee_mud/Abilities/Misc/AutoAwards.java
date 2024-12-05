@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Misc;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -125,6 +126,7 @@ public class AutoAwards extends StdAbility
 				this.holderA = null;
 		}
 		final TimeClock C = CMLib.time().homeClock(P);
+		final boolean debug = CMSecurity.isDebugging(DbgFlag.AUTOAWARDS);
 		for(final AutoProperties E : entries)
 		{
 			if(((holderA != null) && (affects.containsFirst(E)))
@@ -132,6 +134,16 @@ public class AutoAwards extends StdAbility
 			{
 				apply.add(E);
 				hash[0] ^= E.hashCode();
+				if(debug
+				&&(E.getProps()!=null)
+				&&(E.getProps().length>0))
+				{
+					Log.debugOut(ID(),"Auto: "
+									+ CMStrings.padRight(P.name(),8)
+									+ ": " + CMStrings.padRight(E.getProps()[0].second,17)
+									+ ": " + CMStrings.padRight(E.getDateMask(),32)
+									+ ": " + C.toTimePeriodCodeString());
+				}
 			}
 		}
 	}
@@ -225,9 +237,8 @@ public class AutoAwards extends StdAbility
 						forceApply = false;
 						final List<AutoProperties> chk = new ArrayList<AutoProperties>();
 						final int[] eHash = new int[] {0};
-						final Room R=CMLib.map().roomLocation(affected);
 						for(final TimePeriod key : myEntries.keySet())
-							gatherTimelyEntries(R, myEntries.get(key), chk, eHash);
+							gatherTimelyEntries(affected, myEntries.get(key), chk, eHash);
 						if((affectHash==null)
 						||(affectHash[0] != eHash[0]))
 						{
