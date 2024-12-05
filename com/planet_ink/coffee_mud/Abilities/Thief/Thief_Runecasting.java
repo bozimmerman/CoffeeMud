@@ -440,11 +440,14 @@ public class Thief_Runecasting extends ThiefSkill
 						&&(P.getProps()!=null)
 						&&(P.getProps().length>0))
 						{
+							final String tpcs = C.toTimePeriodCodeString();
+							final int tpcsx = tpcs.indexOf(' ');
 							Log.debugOut(ID(),"Rept: "
 											+ CMStrings.padRight(forM.name(),8)
+											+ ": " + CMStrings.padRight(P.getPlayerMask(),17)
 											+ ": " + CMStrings.padRight(P.getProps()[0].second,17)
 											+ ": " + CMStrings.padRight(P.getDateMask(),32)
-											+ ": " + C.toTimePeriodCodeString());
+											+ ": " + ((tpcsx>0)?tpcs.substring(0,tpcsx):tpcs));
 						}
 						final boolean isNow = CMLib.masking().maskCheckDateEntries(P.getDateCMask(), nowC);
 						final TimeClock expireC = isNow ? CMLib.masking().dateMaskToExpirationTimeClock(forM, P.getDateCMask()) : null;
@@ -647,11 +650,14 @@ public class Thief_Runecasting extends ThiefSkill
 						&&(P.getProps()!=null)
 						&&(P.getProps().length>0))
 						{
+							final String tpcs = C.toTimePeriodCodeString();
+							final int tpcsx = tpcs.indexOf(' ');
 							Log.debugOut(meA.ID(),"Pass: "
 											+ CMStrings.padRight(mob.name(),8)
+											+ ": " + CMStrings.padRight(P.getPlayerMask(),17)
 											+ ": " + CMStrings.padRight(P.getProps()[0].second,17)
 											+ ": " + CMStrings.padRight(P.getDateMask(),32)
-											+ ": " + C.toTimePeriodCodeString());
+											+ ": " + ((tpcsx>0)?tpcs.substring(0,tpcsx):tpcs));
 						}
 						clocks.put(P, C); // must always be before the add
 						if(!awards.contains(P))

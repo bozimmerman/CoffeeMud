@@ -138,11 +138,15 @@ public class AutoAwards extends StdAbility
 				&&(E.getProps()!=null)
 				&&(E.getProps().length>0))
 				{
+
+					final String tpcs = C.toTimePeriodCodeString();
+					final int tpcsx = tpcs.indexOf(' ');
 					Log.debugOut(ID(),"Auto: "
 									+ CMStrings.padRight(P.name(),8)
+									+ ": " + CMStrings.padRight(E.getPlayerMask(),17)
 									+ ": " + CMStrings.padRight(E.getProps()[0].second,17)
 									+ ": " + CMStrings.padRight(E.getDateMask(),32)
-									+ ": " + C.toTimePeriodCodeString());
+									+ ": " + ((tpcsx>0)?tpcs.substring(0,tpcsx):tpcs));
 				}
 			}
 		}
