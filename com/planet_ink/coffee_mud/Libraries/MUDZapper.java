@@ -8270,6 +8270,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		{
 		case WEEK/*ofmonth*/:
 		case _WEEK/*ofmonth*/:
+			if(C.getDaysInWeek()<1)
+				return 0;
 			return (C.getDaysInMonth() / C.getDaysInWeek())-1;
 		case DAYOFYEAR:
 		case _DAYOFYEAR:
