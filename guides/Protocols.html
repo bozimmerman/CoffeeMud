@@ -26,7 +26,7 @@
 <li><a href="#mxp">MXP</a></li>
 <li><a href="#msdp">MSDP</a></li>
 <li><a href="#gmcp">GMCP</a></li>
-<li><a href="#mssp">MSSP</a></li>
+<li><a href="#mssp">MSSP</a></li><li><a href="#discord">DISCORD</a></li>
 </ul>
 </td>
 <td align="left" valign="top">
@@ -861,7 +861,43 @@ MXXP, MSP, MXP. &nbsp;To this list is added any special variables and
 values defined in the coffeemud.ini file under "MSXPVARS". &nbsp;See
 the above MSSP web site for more information on what extra variables
 might be cool to send.</p>
-<p></p>
+<h2><a name="discord">DISCORD</a></h2>
+The MUD supports a two-way channel message interface with the popular
+chat site/app "Discord" through a fantastic library called "Javacord".
+&nbsp;As suggested, it allows the CoffeeMud administrator to tie
+specific in-game message channels to specific Discord channels on a
+particular Discord server. &nbsp;Messages then sent from on this
+channel from either end are received and displayed at the other.<br /><br />The
+Javacord interface requires quite a bit of setup, as well as
+cooperation from the administrator of the Discord server itself.<br /><br />The first step is to visit '<a href="https://discord.com/developers/docs/intro">https://discord.com/developers/docs/intro</a>' and create an account.<br /><br />After
+authorized, you can click on the Applications tab on the left and then
+click New Application button on the upper right. &nbsp;Give your app a
+name. &nbsp;Now select the "Bot" tab on the left and set the Username
+to your unique Mud name. &nbsp;Under "Privileged Gateway Intents", make
+sure all of the Intents are turned ON. &nbsp;Also, make sure you copy
+your Bot Token and keep it somewhere safe -- you'll need it later.
+&nbsp;After saving everything, you are done with the Discord App.<br /><br />The third step is to visit <a href="https://coffeemud.org/">https://coffeemud.org/</a>
+and download the Discord (Javacord) jar file from the link under
+"Downloading the Software". &nbsp;Save this jar file in your Coffeemud
+"lib" directory for reference later. &nbsp;If you find a more updated
+version of the jar file, that will probably be fine also.<br /><br />The fourth step is open up your coffeemud.ini file and make several changes. &nbsp;Set your javacord lib path:<br /><div style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255);">
+<div style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-family: &quot;Courier New&quot;; font-size: 10pt; white-space: nowrap;">
+<p style="background-color: rgb(232, 242, 254);"><span style="color: rgb(63, 127, 95);">DISCORD_JAR_PATH=/</span><span style="color: rgb(63, 127, 95); text-decoration: underline;">lib</span><span style="color: rgb(63, 127, 95);">/</span><span style="color: rgb(63, 127, 95); text-decoration: underline;">javacord</span><span style="color: rgb(63, 127, 95);">-3.9.0-shaded.jar</span></p></div>
+</div>... and set your discord bot key to the token you copied earlier:<br /><div style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255);">
+<div style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-family: &quot;Courier New&quot;; font-size: 10pt; white-space: nowrap;">
+<p style="background-color: rgb(232, 242, 254);"><span style="color: rgb(63, 127, 95);">DISCORD_BOT_KEY=....</span></p></div>
+</div>Now you can go up to the CHANNELS= &nbsp;entry and either add
+some new channels to correspond with various Discord server channels
+with the DISCORD=channelname flag. &nbsp;Do not include the hash-marks
+in the channel names.<br /><br />After saving your coffeemud.ini file,
+the fifth step is to restart your CoffeeMud server and look for any
+discord error messages in the log file. &nbsp;Also look for an entry
+that looks like this:<br />Discord Bot auth url: <span style="font-family: monospace;">https://discord.com/oauth2/authorize?client_id=..
+..&amp;scope=bot%20applications.commands&amp;permissions=2048&amp;prompt=consent</span><br /><br />Put that link into your browser and authorize your app to interact with the server with messaging privileges.<br /><br />The
+last step is contact the administrator of your Discord server and ask
+them to authorize your bot for the server. &nbsp;You may need to
+provide your apps name. &nbsp;This will be done under the
+"Integrations" area of Discord server administration.<br /><br />After this last is done, you *may* need to restart CoffeeMud one more time -- I'm not sure, so give your channels a test.<br />
 <p></p>
 <p></p>
 <p></p>
