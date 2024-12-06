@@ -1,4 +1,4 @@
-# Build 5.10.4 Release ??/??/2024
+# Build 5.10.4 Release 12/05/2024
   *  DATABASE CHANGED! (Bitmap field in CMCHAR table is now larger)
   1. Races/GenRaces support parameters for cultural abilities.
   2. Better MSSP/MSDP support.  New INI entry: MSXPVARS.
@@ -80,7 +80,7 @@
  78. Can now LIST DBCONNECTIONS to check database status
  79. New character class: Gypsy - thief subclass with druid highlights
  80. New command: AUTOTELLNOTIFY, with CONFIG support also, for account-based muds.
- 
+
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.
   1. New Paladin skills: Unholy Strike, Chaos Rage, Paladin's Fear, Paladin's Corruption

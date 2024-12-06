@@ -218,8 +218,7 @@ public class Thief_Kidnapping extends ThiefSkill implements PrivateProperty
 		if(affected instanceof MOB)
 		{
 			final MOB M = (MOB)affected;
-			if((!M.isAttributeSet(Attrib.AUTOASSIST))
-			&&(!CMLib.flags().isAgedChild(affected)))
+			if(!M.isAttributeSet(Attrib.AUTOASSIST))
 				M.setAttribute(Attrib.AUTOASSIST, true); // true means its assist is turned OFF
 			if(invoker() == null)
 				return true;
