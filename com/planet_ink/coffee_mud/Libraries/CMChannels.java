@@ -1283,8 +1283,15 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 								if(discordTalkers.containsKey(name))
 									M = discordTalkers.get(name);
 								else
+								if(CMLib.players().getPlayer(name)!=null)
 								{
-									M=CMClass.getMOB(name);
+									M=CMLib.players().getPlayer(name);
+									discordTalkers.put(name,M);
+								}
+								else
+								{
+									M=CMClass.getMOB("StdMOB");
+									M.setName(name);
 									M.setLocation(CMLib.map().getRandomRoom());
 									discordTalkers.put(name,M);
 								}
