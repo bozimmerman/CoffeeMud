@@ -97,11 +97,15 @@ public class Prop_ArenaPit extends LoggableProperty {
 	}
 
 	protected List<Room> getSpectatorRooms() {
-		for (Room spectatorRoom : spectatorRooms) {
-			if (spectatorRoom == null || spectatorRoom.amDestroyed()) {
-				logger.logError("Invalid spectator room, recreate all spectator rooms.");
-				recreateSpectatorRooms();
-				break;
+		if (spectatorRooms.size() < spectatorRoomIDs.size())
+			recreateSpectatorRooms();
+		else {
+			for (Room spectatorRoom : spectatorRooms) {
+				if (spectatorRoom == null || spectatorRoom.amDestroyed()) {
+					logger.logError("Invalid spectator room, recreate all spectator rooms.");
+					recreateSpectatorRooms();
+					break;
+				}
 			}
 		}
 		return spectatorRooms;
@@ -151,22 +155,37 @@ public class Prop_ArenaPit extends LoggableProperty {
 	public void executeMsg(final Environmental myHost, final CMMsg msg) {
 		super.executeMsg(myHost, msg);
 
-		if ((affected instanceof Room) && (msg.othersCode() != CMMsg.NO_EFFECT) && (msg.othersMessage() != null) && !msg.othersMessage().isEmpty()) {
-			final Room pitRoom = (Room) affected;
-			broadcastToSpectators(pitRoom, msg);
+		logger.logDebug("executeMsg called with message: " + msg.toString());
+
+		if (msg.othersCode() == CMMsg.NO_EFFECT) {
+			logger.logDebug("Message has NO_EFFECT for others");
+			return;
 		}
-		else {
-			logger.logInfo("Message not processed for broadcasting; either affected is not a room or there is no relevant message for others.");
+
+		if (msg.othersMessage() == null || msg.othersMessage().isEmpty()) {
+			logger.logDebug("Others message is null or empty");
+			return;
 		}
+
+		final Room pitRoom = (Room) affected;
+		broadcastToSpectators(pitRoom, msg);
 	}
 
 	private void broadcastToSpectators(Room pitRoom, CMMsg msg) {
+		logger.logDebug("Broadcasting to spectators. Pit room: " + pitRoom.roomID());
+		logger.logDebug("Original message: " + msg.othersMessage());
+
 		List<Room> currentSpectatorRooms = getSpectatorRooms();
+		logger.logDebug("Number of spectator rooms: " + currentSpectatorRooms.size());
+
 		for (Room spectatorRoom : currentSpectatorRooms) {
 			if (spectatorRoom == null || spectatorRoom.amDestroyed()) {
-				logger.logError("Invalid spectator room.");
+				logger.logError("Invalid spectator room: " + (spectatorRoom != null ? spectatorRoom.roomID() : "null"));
 				continue;
 			}
+
+			String broadcastMessage = (prefix != null && !prefix.isEmpty()) ? (prefix + msg.othersMessage()) : msg.othersMessage();
+			logger.logDebug("Broadcast message: " + broadcastMessage);
 
 			CMMsg msg2 = CMClass.getMsg(
 					msg.source(),
@@ -175,7 +194,7 @@ public class Prop_ArenaPit extends LoggableProperty {
 					CMMsg.NO_EFFECT, null,
 					CMMsg.NO_EFFECT, null,
 					CMMsg.MSG_OK_VISUAL,
-					(prefix != null && !prefix.isEmpty()) ? (prefix + msg.othersMessage()) : msg.othersMessage()
+					broadcastMessage
 			);
 
 			for (Enumeration<MOB> e = spectatorRoom.inhabitants(); e.hasMoreElements(); ) {
