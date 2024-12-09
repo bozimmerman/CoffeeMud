@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 /*
+   Copyright 2024 github.com/toasted323
    Copyright 2013-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,6 +31,9 @@ import java.util.*;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   CHANGES:
+   2024-12 toasted323: mapping from ships
 */
 /**
  * Library for supporting various in-line MUD protocols.
@@ -162,7 +166,7 @@ public interface ProtocolLibrary extends CMLibrary
 	 * Main entry point to handle GMCP commands from the user
 	 *
 	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map)
-	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map)
+	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, String)
 	 * @see ProtocolLibrary.GMCPCommand
 	 *
 	 * @param session the session of the mob to report to
@@ -173,11 +177,26 @@ public interface ProtocolLibrary extends CMLibrary
 	public byte[] processGmcp(final Session session, final String data, final Map<String,Double> supportables);
 
 	/**
+	 * Main entry point to handle GMCP commands from the user
+	 *
+	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map)
+	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, String)
+	 * @see ProtocolLibrary.GMCPCommand
+	 *
+	 * @param session the session of the mob to report to
+	 * @param data the command sent by the user
+	 * @param supportables map of supported GMCP features
+	 * @param roomID additional room context
+	 * @return null, or bytes to send to the user
+	 */
+	public byte[] processGmcp(final Session session, final String data, final Map<String,Double> supportables, String roomID);
+
+	/**
 	 * Called every second from each player session to deal with periodic GMCP
 	 * reports.
 	 *
-	 * @see ProtocolLibrary#processGmcp(Session, String, Map)
-	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map)
+	 * @see ProtocolLibrary#processGmcp(Session, String, Map, String)
+	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, String)
 	 * @see ProtocolLibrary.GMCPCommand
 	 *
 	 * @param session the session of the mob to report to
@@ -188,8 +207,10 @@ public interface ProtocolLibrary extends CMLibrary
 	public byte[] pingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables);
 
 	/**
-	 * GMCP appears to support getting a report from the protocol when entering
-	 * a new room.  This method is called to handle those reports.
+	 * Handles GMCP messages that indicate a room change to the given room.
+	 *
+	 * This method checks if the session supports GMCP features related to room
+	 * information and processes the necessary updates accordingly.
 	 *
 	 * @see ProtocolLibrary#processGmcp(Session, String, Map)
 	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map)
@@ -198,9 +219,12 @@ public interface ProtocolLibrary extends CMLibrary
 	 * @param session the session of the mob to report to
 	 * @param reporteds the 'subscriptions' of the given session
 	 * @param supportables map of supported GMCP features
+	 * @param roomID the new roomID
 	 * @return null, or bytes to send to the user
 	 */
-	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables);
+	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, String roomID);
+
+
 
 	/**
 	 * Returns all the MSSP variables for crawlers.
@@ -237,6 +261,7 @@ public interface ProtocolLibrary extends CMLibrary
 		char_effects_get,
 		group,
 		room_info, // means they want room.wrongdir and room.enter
+		room_info_navigable_boardable,
 		room_items_inv,
 		room_items_contents,
 		room_mobiles,

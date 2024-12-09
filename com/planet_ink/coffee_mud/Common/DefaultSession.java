@@ -2,20 +2,12 @@ package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.CMRunnable;
 import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Areas.interfaces.*;
-import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
-import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionFilter;
-import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus;
-import com.planet_ink.coffee_mud.Exits.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginResult;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginSession;
@@ -23,20 +15,18 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
-import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.jcraft.jzlib.*;
 
-import java.awt.Color;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
-import java.sql.*;
 import java.net.*;
 import java.nio.charset.Charset;
 
 /*
+   Copyright 2024 github.com/toasted323
    Copyright 2005-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,6 +40,9 @@ import java.nio.charset.Charset;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   CHANGES:
+   2024-12 toasted323: mapping from ships
 */
 public class DefaultSession implements Session
 {
@@ -147,6 +140,7 @@ public class DefaultSession implements Session
 	protected AtomicBoolean				lastWasPrompt	= new AtomicBoolean(false);
 	protected List<SessionFilter>		textFilters		= new Vector<SessionFilter>(3);
 	protected volatile InputCallback	inputCallback	= null;
+	protected String 					lastSeenRoomID 	= null;
 
 	@Override
 	public String ID()
@@ -3780,9 +3774,17 @@ public class DefaultSession implements Session
 			lastLoopTop = CMLib.time().string2Millis(val);
 			break;
 		case ROOMLOOK:
+			if (val == null || val.isEmpty()) {
+				Log.errOut("ROOMLOOK triggered with an unset or empty value.");
+				break;
+			}
+
+			String currentRoomID = val;
+			lastSeenRoomID = currentRoomID;
+
 			if(getClientTelnetMode(TELNET_GMCP))
 			{
-				final byte[] gmcpPingBuf=CMLib.protocol().invokeRoomChangeGmcp(this, gmcpPings, gmcpSupports);
+				final byte[] gmcpPingBuf=CMLib.protocol().invokeRoomChangeGmcp(this, gmcpPings, gmcpSupports, currentRoomID);
 				if(gmcpPingBuf!=null)
 				{
 					try
@@ -3791,6 +3793,7 @@ public class DefaultSession implements Session
 					}
 					catch (final IOException e)
 					{
+						Log.errOut(e);
 					}
 				}
 			}
@@ -3832,5 +3835,10 @@ public class DefaultSession implements Session
 			else
 				end++;
 		}
+	}
+
+	@Override
+	public String getLastSeenRoomID() {
+		return lastSeenRoomID;
 	}
 }

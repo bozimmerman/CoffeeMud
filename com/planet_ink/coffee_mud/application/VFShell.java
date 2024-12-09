@@ -51,6 +51,7 @@ import com.planet_ink.coffee_mud.core.interfaces.MudHost;
 import com.planet_ink.coffee_mud.core.interfaces.Physical;
 import com.planet_ink.coffee_mud.core.interfaces.Tickable;
 /*
+Copyright 2024 github.com/toasted323
 Copyright 2007-2024 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,6 +65,9 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+CHANGES:
+2024-12 toasted323: mapping from ships
 */
 public class VFShell
 {
@@ -855,6 +859,11 @@ public class VFShell
 					public void setMob(final MOB newmob)
 					{
 						mob = newmob;
+					}
+
+					@Override
+					public String getLastSeenRoomID() {
+						return CMLib.map().getExtendedRoomID(mob.location());
 					}
 
 					@Override

@@ -49,6 +49,7 @@ import org.mozilla.javascript.optimizer.*;
    limitations under the License.
 
    CHANGES:
+   2024-12 toasted323: mapping from ships
    2024-12 toasted323: filter hidden exits from gmcp roominfoexits
 */
 
@@ -1899,7 +1900,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return attribs.toString();
 	}
 
-	protected String processGmcpStr(final Session session, final String jsonData, final Map<String,Double> supportables)
+	protected String processGmcpStr(final Session session, final String jsonData, final Map<String, Double> supportables, String roomID)
 	{
 		final MiniJSON jsonParser=new MiniJSON();
 		try
@@ -1941,7 +1942,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				{
 					final StringBuilder str=new StringBuilder(allDoc);
 					str.setCharAt(pkgSepIndex, '_');
-					return processGmcpStr(session,str.toString(),supportables);
+						return processGmcpStr(session, str.toString(), supportables, null);
 				}
 				case char_login:
 				{
@@ -1955,7 +1956,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							final String pw=json.getCheckedString("password");
 							if(session.autoLogin(name, pw))
 							{
-								return processGmcpStr(session,"char.statusvars",supportables);
+									return processGmcpStr(session, "char.statusvars", supportables, null);
 							}
 						}
 					}
@@ -2413,7 +2414,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				case request_sectors:
 				case request_room:
 				case room_info:
-					return new RoomInfoSender().sendRoomInfo(mob);
+						return new RoomInfoSender().sendRoomInfo(mob, roomID);
+
 				case request_quest:
 					// comm.quest responds whenever quest stuff happens..
 					// comm.quest {"action": "start", "targ": "a swamp ape", "room": "Swamp Ape Enclosure", "area": "Aardwolf Zoological Park", "timer": 52 }
@@ -2623,21 +2625,31 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@Override
-	public byte[] processGmcp(final Session session, final String data, final Map<String,Double> supportables)
+	public byte[] processGmcp(final Session session, final String data, final Map<String, Double> supportables)
 	{
-		final String doc=processGmcpStr(session, data, supportables);
+		byte[] result = processGmcp(session, data, supportables, null);
+		return result;
+	}
+
+	@Override
+	public byte[] processGmcp(final Session session, final String data, final Map<String, Double> supportables, String roomID)
+	{
+		final String doc = processGmcpStr(session, data, supportables, roomID);
 		if(doc != null)
 		{
 			if(CMSecurity.isDebugging(DbgFlag.GMCP))
 				Log.debugOut("GMCP Sent: "+doc);
 			return buildGmcpResponse(doc);
 		}
+		else {
+			Log.debugOut("GMCP not sent, no content.");
+		}
 		return null;
 	}
 
 	protected byte[] possiblePingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, final String command)
 	{
-		final String chunkStr=processGmcpStr(session, command, supportables);
+		final String chunkStr = processGmcpStr(session, command, supportables, null);
 		if(chunkStr!=null)
 		{
 			final Long oldHash=reporteds.get(command);
@@ -2654,7 +2666,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@Override
-	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables)
+	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, String roomID)
 	{
 		try
 		{
@@ -2665,11 +2677,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				byte[] buf;
 				if(mob!=null)
 				{
-					final Room room;
-					synchronized(mob)
-					{
-						room = mob.location();
-					}
+					final Room room = CMLib.map().getRoom(roomID);
 					if(room!=null)
 					{
 						final Long oldRoomHash=reporteds.get("system.currentRoom");
@@ -2679,7 +2687,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							reporteds.put("system.currentRoom", Long.valueOf(room.hashCode()));
 							final String command="room.info";
 							final char[] cmd=command.toCharArray();
-							buf=processGmcp(session, new String(cmd), supportables);
+							buf=processGmcp(session, new String(cmd), supportables, roomID);
 							if(buf!=null)
 								bout.write(buf);
 						}
@@ -2779,9 +2787,18 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						bout.write(buf);
 				}
 			}
-			final byte[] roomStuff = invokeRoomChangeGmcp(session, reporteds, supportables);
+
+			String roomIDToUse = session.getLastSeenRoomID();
+			if (roomIDToUse == null && session.mob() != null) {
+				roomIDToUse = CMLib.map().getExtendedRoomID(session.mob().location());
+			}
+
+			if (roomIDToUse != null) {
+				final byte[] roomStuff = invokeRoomChangeGmcp(session, reporteds, supportables, roomIDToUse);
 			if(roomStuff != null)
 				bout.write(roomStuff);
+			}
+
 			return (bout.size()==0) ? null: bout.toByteArray();
 		}
 		catch(final java.io.IOException ioe)

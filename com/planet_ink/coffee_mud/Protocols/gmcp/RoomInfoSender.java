@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Protocols.gmcp;
 
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
+import com.planet_ink.coffee_mud.core.CMLib;
 
 /*
    Copyright 2024 github.com/toasted323
@@ -20,11 +21,9 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 */
 
 public class RoomInfoSender {
-	public String sendRoomInfo(MOB mob) {
-		if (mob == null) return null;
-		Room room = mob.location();
+	public String sendRoomInfo(MOB mob, String roomID) {
+		Room room = CMLib.map().getRoom(roomID);
 		if (room == null) return null;
-
 		return new RoomInfoBuilder(room, mob).build();
 	}
 }

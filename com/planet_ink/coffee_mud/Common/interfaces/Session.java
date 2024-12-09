@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
 /*
+   Copyright 2024 github.com/toasted323
    Copyright 2001-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,6 +35,9 @@ import java.net.SocketException;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   CHANGES:
+   2024-12 toasted323: mapping from ships
 */
 /**
  * A Session object is the key interface between the internet user
@@ -670,6 +674,14 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param newmob the player MOB attached to this session object.
 	 */
 	public void setMob(MOB newmob);
+
+	/**
+	 * Retrieves the last seen room ID for this session.
+	 *
+	 * @return the last seen room ID, or null if not set.
+	 */
+	public String getLastSeenRoomID();
+
 
 	/**
 	 * Sets the player acount attached to this session object.

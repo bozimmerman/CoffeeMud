@@ -39,6 +39,7 @@ import java.lang.ref.WeakReference;
    limitations under the License.
 
    CHANGES:
+   2024-12 toasted323: mapping from ships
    2024-12 toasted323: enable hiding class and level information by configuration
    2024-12 toasted323: hide level and class from look command
 */
@@ -1980,7 +1981,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(msg.targetMinor()!=CMMsg.TYP_EXAMINE)
 			lookCode=((msg.sourceMessage()==null)||mob.isAttributeSet(MOB.Attrib.COMPRESS))?LookView.LOOK_BRIEFOK:LookView.LOOK_NORMAL;
 
-		sess.setStat("ROOMLOOK", ""+room.hashCode()); // for gmcp/protocol notifications
+		String extendedRoomID = CMLib.map().getExtendedRoomID(room);
+		sess.setStat("ROOMLOOK", extendedRoomID); // Trigger the gmcp room info update
 
 		final String finalLookStr=getFullRoomView(mob, room, lookCode, sess.getClientTelnetMode(Session.TELNET_MXP));
 

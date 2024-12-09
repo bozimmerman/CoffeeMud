@@ -30,6 +30,7 @@ import com.planet_ink.coffee_mud.core.interfaces.Environmental;
 import com.planet_ink.coffee_mud.core.interfaces.Physical;
 import com.planet_ink.coffee_mud.core.interfaces.Tickable;
 /*
+   Copyright 2024 github.com/toasted323
    Copyright 2008-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,6 +44,9 @@ import com.planet_ink.coffee_mud.core.interfaces.Tickable;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   CHANGES:
+   2024-12 toasted323: mapping from ships
 */
 public class FakeSession implements Session
 {
@@ -589,6 +593,11 @@ public class FakeSession implements Session
 			final String COLOR_NORM = CMLib.color().standardColorLookups()[ColorLibrary.SpecialColor.NORMAL.getCodeChar()];
 			stripStr = COLOR_IMP3+((mob==null)?"?":mob.Name())+":"+COLOR_NORM+" ";
 		}
+	}
+
+	@Override
+	public String getLastSeenRoomID() {
+		return CMLib.map().getExtendedRoomID(mob.location());
 	}
 
 	@Override
