@@ -58,7 +58,7 @@ public class Time extends StdCommand
 			mob.tell(room.getArea().getTimeObj().timeDescription(mob,room));
 		if((mob.playerStats()!=null)&&(mob.playerStats().getBirthday()!=null))
 		{
-			final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
+			final TimeClock C=CMLib.time().homeClock(mob);
 			final int day=C.getDayOfMonth();
 			final int month=C.getMonth();
 			int year=C.getYear();

@@ -325,6 +325,42 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			return getActualUsageInternal(A,whichUsageCode,forM);
 	}
 
+	protected String getLocalTimebaseDesc(final MOB mob)
+	{
+		final TimeClock C = CMLib.time().localClock(mob);
+		final StringBuilder str = new StringBuilder("");
+		str.append("The time here is divided into @x1 hours, each of which is about ");
+		str.append("@x2 real minutes long.  Hours in CoffeeMud are numbered from 0-@x3. ");
+		str.append("Dawn is at hour @x4, day begins at @x5, dusk is at hour @x6, and night begins at hour @x7.\n\r");
+		return CMLib.lang().L(str.toString(),
+				""+C.getHoursInDay(),
+				""+Math.round(CMProps.getMillisPerMudHour()/60000L),
+				""+(C.getHoursInDay()-1),
+				""+C.getDawnToDusk()[0],
+				""+C.getDawnToDusk()[1],
+				""+C.getDawnToDusk()[2],
+				""+C.getDawnToDusk()[3]
+				);
+	}
+
+	protected String getLocalCalendarDesc(final MOB mob)
+	{
+		final TimeClock C = CMLib.time().localClock(mob);
+		final StringBuilder str = new StringBuilder("");
+		if(C.getDaysInWeek()>1)
+			str.append("There are @x2 mud days to each week, and @x1 days in each month. There are ");
+		else
+			str.append("There are @x1 mud days to each month, and ");
+		str.append("@x3 mud months to each year. ");
+		str.append("The years are divided into four seasons of @x4 months each.\n\r");
+		return CMLib.lang().L(str.toString(),
+				""+C.getDaysInMonth(),
+				""+C.getDaysInWeek(),
+				""+C.getMonthsInYear(),
+				""+C.getMonthsInSeason()
+				);
+	}
+
 	protected String getActualUsage(final Ability A, final int whichUsageCode)
 	{
 		String usageCost;
@@ -581,6 +617,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				str=prepend.toString()+"\n\r"+str;
 			}
 		}
+		if(str.endsWith("<CALENDAR>"))
+			str=str.substring(0, str.length()-10) + this.getLocalTimebaseDesc(forM)+this.getLocalCalendarDesc(forM);
 		if(str.endsWith("<COLORS>"))
 			str=str.substring(0, str.length()-8)+CMLib.color().getColorInfo(false);
 		if(str.endsWith("<COLORS256>"))
