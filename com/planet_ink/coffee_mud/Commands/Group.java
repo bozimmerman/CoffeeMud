@@ -66,7 +66,8 @@ public class Group extends StdCommand
 		final int x = levelStr.lastIndexOf(' ');
 		if (x >= 0) levelStr = levelStr.substring(x).trim();
 
-		if ((CMSecurity.isASysOp(seer) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.CLASS)) && !CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)) {
+		if ((CMSecurity.isASysOp(seer) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.CLASS) || !who.isPlayer())
+				&& !CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)) {
 			if (who.charStats().getMyRace().classless())
 				msg.append(CMStrings.padRight(" ", cols[1]) + " ");
 			else
@@ -163,7 +164,15 @@ public class Group extends StdCommand
 		else
 			cols[1] = CMLib.lister().fixColWidth(0, mob.session()); // class
 
-		if ((CMSecurity.isASysOp(mob) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.LEVEL)))
+		boolean hasNPC = false;
+		for (MOB m : orderedGroup) {
+			if (!m.isPlayer()) {
+				hasNPC = true;
+				break;
+			}
+		}
+
+		if ((CMSecurity.isASysOp(mob) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.LEVEL) || hasNPC))
 			cols[2] = CMLib.lister().fixColWidth(5, mob.session()); // level
 		else
 			cols[2] = CMLib.lister().fixColWidth(0, mob.session()); // level
