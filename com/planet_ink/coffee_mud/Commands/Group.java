@@ -66,18 +66,21 @@ public class Group extends StdCommand
 		final int x = levelStr.lastIndexOf(' ');
 		if (x >= 0) levelStr = levelStr.substring(x).trim();
 
-		if ((CMSecurity.isASysOp(seer) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.CLASS) || !who.isPlayer())
-				&& !CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)) {
+		if ((CMSecurity.isASysOp(seer) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.CLASS)) && !CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)) {
 			if (who.charStats().getMyRace().classless())
 				msg.append(CMStrings.padRight(" ", cols[1]) + " ");
 			else
 				msg.append(CMStrings.padRight(who.charStats().displayClassName(), cols[1]) + " ");
 		}
-		if ((CMSecurity.isASysOp(seer) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.LEVEL)) && !CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)) {
+		if ((CMSecurity.isASysOp(seer) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.LEVEL)) && !CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS) || !who.isPlayer()) {
 			if (who.charStats().getCurrentClass().leveless() || who.charStats().getMyRace().leveless())
 				msg.append(CMStrings.padRight(" ", cols[2]));
 			else
 				msg.append(CMStrings.padRight(levelStr, cols[2]));
+		}
+		else
+		{
+			msg.append(CMStrings.padRight(" ", cols[2]));
 		}
 
 		final double hpPct = CMath.div(who.curState().getHitPoints(), who.maxState().getHitPoints());
@@ -171,9 +174,9 @@ public class Group extends StdCommand
 				break;
 			}
 		}
-
-		if ((CMSecurity.isASysOp(mob) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.LEVEL) || hasNPC))
+		if ((CMSecurity.isASysOp(mob) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.LEVEL) || hasNPC)) {
 			cols[2] = CMLib.lister().fixColWidth(5, mob.session()); // level
+		}
 		else
 			cols[2] = CMLib.lister().fixColWidth(0, mob.session()); // level
 
