@@ -813,27 +813,32 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				}
 				break;
 			case '&':
-				if(doMXP)
-				{
-					if((!buf.substring(loop+1,loop+4).equalsIgnoreCase("lt;"))
-					&&(!buf.substring(loop+1,loop+4).equalsIgnoreCase("gt;")))
-					{
-						buf.delete(loop,loop+1);
-						buf.insert(loop,"&amp;".toCharArray());
-						loop+=4;
-					}
-				}
-				else
 				if(loop<=buf.length()-4)
 				{
-					if(buf.substring(loop+1,loop+4).equalsIgnoreCase("lt;"))
-						buf.replace(loop,loop+4,"<");
+					final String next4 = buf.substring(loop+1,loop+4);
+					if(doMXP)
+					{
+						if((!next4.equalsIgnoreCase("lt;"))
+						&&(!next4.equalsIgnoreCase("gt;")))
+						{
+							buf.delete(loop,loop+1);
+							buf.insert(loop,"&amp;".toCharArray());
+							loop+=4;
+						}
+					}
 					else
-					if(buf.substring(loop+1,loop+4).equalsIgnoreCase("gt;"))
-						buf.replace(loop,loop+4,">");
-					else
-					if((loop<=buf.length()-6) && (buf.substring(loop+1,loop+6).equalsIgnoreCase("quot;")))
-						buf.replace(loop,loop+6,"\"");
+					{
+						if(next4.equalsIgnoreCase("lt;"))
+							buf.replace(loop,loop+4,"<");
+						else
+						if(next4.equalsIgnoreCase("gt;"))
+							buf.replace(loop,loop+4,">");
+						else
+						if( next4.equalsIgnoreCase("quo")
+						&& (loop<=buf.length()-6)
+						&& (buf.substring(loop+1,loop+6).equalsIgnoreCase("quot;")))
+							buf.replace(loop,loop+6,"\"");
+					}
 				}
 				break;
 			case '<':
