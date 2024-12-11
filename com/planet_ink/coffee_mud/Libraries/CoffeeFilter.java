@@ -816,7 +816,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				if(doMXP)
 				{
 					if((!buf.substring(loop+1,loop+4).equalsIgnoreCase("lt;"))
-					&&(buf.substring(loop+1,loop+4).equalsIgnoreCase("gt;")))
+					&&(!buf.substring(loop+1,loop+4).equalsIgnoreCase("gt;")))
 					{
 						buf.delete(loop,loop+1);
 						buf.insert(loop,"&amp;".toCharArray());
