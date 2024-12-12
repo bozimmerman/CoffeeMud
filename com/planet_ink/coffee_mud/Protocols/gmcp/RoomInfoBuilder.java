@@ -1,7 +1,6 @@
 package com.planet_ink.coffee_mud.Protocols.gmcp;
 
 import com.planet_ink.coffee_mud.Common.interfaces.Climate;
-import com.planet_ink.coffee_mud.Exits.interfaces.Exit;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.CMLib;
@@ -58,7 +57,7 @@ public class RoomInfoBuilder {
 		addBasicInfo();
 		addExits();
 		addCoordinates();
-		return "room.info " + json.toString();
+		return "room.info " + json;
 	}
 
 	private String getDomainType() {
@@ -70,15 +69,15 @@ public class RoomInfoBuilder {
 
 	private void addExits() {
 		JSONObject exits = new JSONObject();
-		if (room.getArea().getClimateObj().weatherType(room) == Climate.WEATHER_FOG) {
-			json.put("exits", exits);
-			return;
-		}
 
 		for (int d : Directions.DISPLAY_CODES()) {
-			Room room2 = room.getRoomInDir(d);
-			if (room2 != null) {
-				exits.put(CMLib.directions().getDirectionChar(d), CMath.abs(CMLib.map().getExtendedRoomID(room2).hashCode()));
+			if (room.getExitInDir(d) != null) {
+				Room room2 = room.getRoomInDir(d);
+				if (room2 != null) {
+					String room2ID = CMLib.map().getExtendedRoomID(room2);
+					if (!room2ID.isEmpty())
+						exits.put(CMLib.directions().getDirectionChar(d), CMath.abs(room2ID.hashCode()));
+				}
 			}
 		}
 		json.put("exits", exits);

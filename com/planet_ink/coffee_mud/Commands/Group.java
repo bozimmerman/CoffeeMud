@@ -72,11 +72,15 @@ public class Group extends StdCommand
 			else
 				msg.append(CMStrings.padRight(who.charStats().displayClassName(), cols[1]) + " ");
 		}
-		if ((CMSecurity.isASysOp(seer) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.LEVEL)) && !CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)) {
+		if ((CMSecurity.isASysOp(seer) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.LEVEL)) && !CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS) || !who.isPlayer()) {
 			if (who.charStats().getCurrentClass().leveless() || who.charStats().getMyRace().leveless())
 				msg.append(CMStrings.padRight(" ", cols[2]));
 			else
 				msg.append(CMStrings.padRight(levelStr, cols[2]));
+		}
+		else
+		{
+			msg.append(CMStrings.padRight(" ", cols[2]));
 		}
 
 		final double hpPct = CMath.div(who.curState().getHitPoints(), who.maxState().getHitPoints());
@@ -163,8 +167,16 @@ public class Group extends StdCommand
 		else
 			cols[1] = CMLib.lister().fixColWidth(0, mob.session()); // class
 
-		if ((CMSecurity.isASysOp(mob) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.LEVEL)))
+		boolean hasNPC = false;
+		for (MOB m : orderedGroup) {
+			if (!m.isPlayer()) {
+				hasNPC = true;
+				break;
+			}
+		}
+		if ((CMSecurity.isASysOp(mob) || !CMProps.isCharacterInfoPrivate(CMProps.PrivateCharacterInfo.LEVEL) || hasNPC)) {
 			cols[2] = CMLib.lister().fixColWidth(5, mob.session()); // level
+		}
 		else
 			cols[2] = CMLib.lister().fixColWidth(0, mob.session()); // level
 
