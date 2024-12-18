@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Protocols.gmcp;
 
+import com.planet_ink.coffee_mud.Abilities.Misc.ExtraData;
 import com.planet_ink.coffee_mud.Common.interfaces.Climate;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
@@ -36,6 +37,18 @@ public class RoomInfoBuilder {
 		this.json = new JSONObject();
 	}
 
+	public String build() {
+		if (mob == null || room == null || mob.isMonster() || !CMLib.flags().canSee(mob)) {
+			return "room.info {}";
+		}
+
+		addBasicInfo();
+		addExtraData();
+		addExits();
+		addCoordinates();
+		return "room.info " + json;
+	}
+
 	private void addBasicInfo() {
 		final String roomID = CMLib.map().getExtendedRoomID(room);
 		final String domType = getDomainType();
@@ -47,17 +60,6 @@ public class RoomInfoBuilder {
 		json.put("desc", MiniJSON.toJSONString(room.description(mob)));
 		json.put("terrain", domType.toLowerCase());
 		json.put("details", "");
-	}
-
-	public String build() {
-		if (mob == null || room == null || mob.isMonster() || !CMLib.flags().canSee(mob)) {
-			return "room.info {}";
-		}
-
-		addBasicInfo();
-		addExits();
-		addCoordinates();
-		return "room.info " + json;
 	}
 
 	private String getDomainType() {
@@ -81,6 +83,26 @@ public class RoomInfoBuilder {
 			}
 		}
 		json.put("exits", exits);
+	}
+
+	private void addExtraData() {
+		ExtraData extraData = (ExtraData) room.fetchEffect("ExtraData");
+		if (extraData != null) {
+			JSONObject extraDataJson = new JSONObject();
+			boolean hasExtraData = false;
+			for (String key : extraData.getStatCodes()) {
+				if (!key.equals("CLASS") && !key.equals("TEXT")) {
+					String value = extraData.getStat(key);
+					if (value != null && !value.isEmpty()) {
+						extraDataJson.put(key.toLowerCase(), MiniJSON.toJSONString(value));
+						hasExtraData = true;
+					}
+				}
+			}
+			if (hasExtraData) {
+				json.put("extraData", extraDataJson);
+			}
+		}
 	}
 
 	private void addCoordinates() {
