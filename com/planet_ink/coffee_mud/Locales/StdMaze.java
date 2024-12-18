@@ -176,13 +176,67 @@ public class StdMaze extends StdGrid
 		}
 	}
 
+	private boolean validateMazeConnectivity(Set<Room> visited) {
+		Room[][] grid = getBuiltGrid();
+		for (int x = 0; x < grid.length; x++) {
+			for (int y = 0; y < grid[x].length; y++) {
+				Room room = grid[x][y];
+				if (room != null && !visited.contains(room)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	protected void buildMaze()
 	{
 		final Set<Room> visited=new HashSet<Room>();
 		final int x=xsize/2;
 		final int y=ysize/2;
 		mazify(visited,x,y);
+
+		if (!validateMazeConnectivity(visited))
+		{
+			Log.errOut("Maze validation failed: Not all rooms are connected.");
+		}
 	}
+
+	public boolean validateMazeConnectivity() {
+		Set<Room> visited = new HashSet<>();
+		Room startRoom = subMap[xsize / 2][ysize / 2];
+		if (startRoom == null) {
+			return false;
+		}
+
+		Stack<Room> stack = new Stack<>();
+		stack.push(startRoom);
+
+		while (!stack.isEmpty()) {
+			Room currentRoom = stack.pop();
+			if (!visited.contains(currentRoom)) {
+				visited.add(currentRoom);
+				for (int d = 0; d < Directions.NUM_DIRECTIONS(); d++) {
+					Room adjacentRoom = currentRoom.getRoomInDir(d);
+					if (adjacentRoom != null && !visited.contains(adjacentRoom)) {
+						stack.push(adjacentRoom);
+					}
+				}
+			}
+		}
+
+		for (int x = 0; x < xsize; x++) {
+			for (int y = 0; y < ysize; y++) {
+				Room room = subMap[x][y];
+				if (room != null && !visited.contains(room)) {
+					return false; // Found an unvisited room
+				}
+			}
+		}
+
+		return true; // All rooms are connected
+	}
+
 
 	@Override
 	public void buildGrid()
@@ -190,6 +244,7 @@ public class StdMaze extends StdGrid
 		clearGrid(null);
 		try
 		{
+			System.out.println("Building grid with size: " + xsize + "x" + ysize);
 			subMap=new Room[xsize][ysize];
 			for(int x=0;x<subMap.length;x++)
 			{
@@ -200,8 +255,15 @@ public class StdMaze extends StdGrid
 						subMap[x][y]=newRoom;
 				}
 			}
+
+			Log.debugOut("Starting maze generation...");
 			buildMaze();
+
+			Log.debugOut("Establishing final links...");
 			buildFinalLinks();
+
+			Log.debugOut("Filling in extraneous exits...");
+			fillInTheExtraneousExternals(subMap, CMClass.getExit("Open"));
 		}
 		catch(final Exception e)
 		{

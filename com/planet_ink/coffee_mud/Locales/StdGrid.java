@@ -808,53 +808,30 @@ public class StdGrid extends StdRoom implements GridLocale
 
 	public void fillInTheExtraneousExternals(final Room[][] subMap, final Exit ox)
 	{
-		if(subMap!=null)
+		if (subMap != null)
 		{
-			for(int d=0;d<gridexits.size();d++)
+			Log.debugOut("Starting to fill in extraneous externals...");
+
+			for (CrossExit EX : gridexits)
 			{
-				final CrossExit EX=gridexits.get(d);
-				try
-				{
-					if(!EX.out)
-						continue;
-					switch(EX.dir)
+				try {
+					if (!EX.out) continue;
+
+					boolean isOnEdge =
+							(EX.x == 0 && (EX.dir == Directions.WEST || EX.dir == Directions.NORTHWEST || EX.dir == Directions.SOUTHWEST)) ||
+							(EX.x == xGridSize() - 1 && (EX.dir == Directions.EAST || EX.dir == Directions.NORTHEAST || EX.dir == Directions.SOUTHEAST)) ||
+							(EX.y == 0 && (EX.dir == Directions.NORTH || EX.dir == Directions.NORTHEAST || EX.dir == Directions.NORTHWEST)) ||
+							(EX.y == yGridSize() - 1 && (EX.dir == Directions.SOUTH || EX.dir == Directions.SOUTHEAST || EX.dir == Directions.SOUTHWEST));
+
+					if (isOnEdge)
 					{
-					case Directions.NORTH:
-						if(EX.y==0)
-							tryFillInExtraneousExternal(EX,ox);
-						break;
-					case Directions.SOUTH:
-						if(EX.y==yGridSize()-1)
-							tryFillInExtraneousExternal(EX,ox);
-						break;
-					case Directions.EAST:
-						if(EX.x==xGridSize()-1)
-							tryFillInExtraneousExternal(EX,ox);
-						break;
-					case Directions.WEST:
-						if(EX.x==0)
-							tryFillInExtraneousExternal(EX,ox);
-						break;
-					case Directions.NORTHEAST:
-						if((EX.y==0)&&(EX.x==xGridSize()-1))
-							tryFillInExtraneousExternal(EX,ox);
-						break;
-					case Directions.SOUTHWEST:
-						if((EX.y==yGridSize()-1)&&(EX.x==0))
-							tryFillInExtraneousExternal(EX,ox);
-						break;
-					case Directions.NORTHWEST:
-						if((EX.y==0)&&(EX.x==0))
-							tryFillInExtraneousExternal(EX,ox);
-						break;
-					case Directions.SOUTHEAST:
-						if((EX.y==yGridSize()-1)&&(EX.x==xGridSize()-1))
-							tryFillInExtraneousExternal(EX,ox);
-						break;
+						Log.debugOut("Filling exit for CrossExit at (" + EX.x + ", " + EX.y + ") in direction " + EX.dir);
+						tryFillInExtraneousExternal(EX, ox);
+						Log.debugOut("Successfully filled exit for CrossExit at (" + EX.x + ", " + EX.y + ")");
 					}
 				}
-				catch (final Exception e)
-				{
+				catch (final Exception e) {
+					Log.errOut("Error filling extraneous external exits", e);
 				}
 			}
 		}
