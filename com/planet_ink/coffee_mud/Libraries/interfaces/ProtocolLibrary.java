@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 
    CHANGES:
+   2024-12 toasted323: ensure any exit changes observed by the player are sent via gmcp too
    2024-12 toasted323: mapping from ships
 */
 /**
@@ -166,7 +167,7 @@ public interface ProtocolLibrary extends CMLibrary
 	 * Main entry point to handle GMCP commands from the user
 	 *
 	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map)
-	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, String)
+	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, String, Integer)
 	 * @see ProtocolLibrary.GMCPCommand
 	 *
 	 * @param session the session of the mob to report to
@@ -180,7 +181,7 @@ public interface ProtocolLibrary extends CMLibrary
 	 * Main entry point to handle GMCP commands from the user
 	 *
 	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map)
-	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, String)
+	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, String, Integer)
 	 * @see ProtocolLibrary.GMCPCommand
 	 *
 	 * @param session the session of the mob to report to
@@ -196,7 +197,7 @@ public interface ProtocolLibrary extends CMLibrary
 	 * reports.
 	 *
 	 * @see ProtocolLibrary#processGmcp(Session, String, Map, String)
-	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, String)
+	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, String, Integer)
 	 * @see ProtocolLibrary.GMCPCommand
 	 *
 	 * @param session the session of the mob to report to
@@ -220,9 +221,10 @@ public interface ProtocolLibrary extends CMLibrary
 	 * @param reporteds the 'subscriptions' of the given session
 	 * @param supportables map of supported GMCP features
 	 * @param roomID the new roomID
+	 * @param roomHash the new hash of the room
 	 * @return null, or bytes to send to the user
 	 */
-	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, String roomID);
+	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, String roomID, Integer roomHash);
 
 
 

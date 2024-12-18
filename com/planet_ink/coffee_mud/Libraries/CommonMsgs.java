@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Libraries;
+import com.planet_ink.coffee_mud.Common.RoomState;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -39,6 +40,7 @@ import java.lang.ref.WeakReference;
    limitations under the License.
 
    CHANGES:
+   2024-12 toasted323: ensure any exit changes observed by the player are sent via gmcp too
    2024-12 toasted323: mapping from ships
    2024-12 toasted323: enable hiding class and level information by configuration
    2024-12 toasted323: hide level and class from look command
@@ -1982,7 +1984,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			lookCode=((msg.sourceMessage()==null)||mob.isAttributeSet(MOB.Attrib.COMPRESS))?LookView.LOOK_BRIEFOK:LookView.LOOK_NORMAL;
 
 		String extendedRoomID = CMLib.map().getExtendedRoomID(room);
-		sess.setStat("ROOMLOOK", extendedRoomID); // Trigger the gmcp room info update
+		int roomHash = generateRoomHash(mob, room);
+		RoomState roomState = new RoomState(extendedRoomID, roomHash);
+		Log.debugOut(roomState.encode());
+		sess.setStat("ROOMLOOK", roomState.encode()); // Trigger the gmcp room info update
 
 		final String finalLookStr=getFullRoomView(mob, room, lookCode, sess.getClientTelnetMode(Session.TELNET_MXP));
 
@@ -1990,25 +1995,37 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			mob.tell(L("You can't see anything!"));
 		else
 		{
-			mob.tell(finalLookStr.toString());
-			if((CMProps.getIntVar(CMProps.Int.AWARERANGE)>0)
-			&&(!mob.isAttributeSet(MOB.Attrib.AUTOMAP)))
+			mob.tell(finalLookStr);
+			handleRegionalAwareness(mob, sess);
+		}
+	}
+
+	private int generateRoomHash(MOB mob, Room room) {
+		StringBuilder hashBuilder = new StringBuilder();
+		hashBuilder.append(room.roomID());
+		hashBuilder.append(room.displayText(mob));
+		hashBuilder.append(getRoomExitsParagraph(mob, room));
+		return hashBuilder.toString().hashCode();
+	}
+
+	private void handleRegionalAwareness(MOB mob, Session sess) {
+		if((CMProps.getIntVar(CMProps.Int.AWARERANGE)>0)
+		&&(!mob.isAttributeSet(MOB.Attrib.AUTOMAP)))
+		{
+			if(awarenessA==null)
+				awarenessA=CMClass.getAbility("Skill_RegionalAwareness");
+			final Room mobLocR=mob.location();
+			if((awarenessA!=null)&&(mobLocR != null))
 			{
-				if(awarenessA==null)
-					awarenessA=CMClass.getAbility("Skill_RegionalAwareness");
-				final Room mobLocR=mob.location();
-				if((awarenessA!=null)&&(mobLocR != null))
+				sess.colorOnlyPrintln("", true);
+				final List<String> list=new Vector<String>();
+				awarenessA.invoke(mob, list, mobLocR, true, CMProps.getIntVar(CMProps.Int.AWARERANGE));
+				for(final String o : list)
 				{
-					sess.colorOnlyPrintln("", true);
-					final List<String> list=new Vector<String>();
-					awarenessA.invoke(mob, list, mobLocR, true, CMProps.getIntVar(CMProps.Int.AWARERANGE));
-					for(final String o : list)
-					{
-						sess.setIdleTimers();
-						sess.colorOnlyPrintln(o, true); // the zero turns off stack
-					}
-					sess.colorOnlyPrintln("\n\r", true);
+					sess.setIdleTimers();
+					sess.colorOnlyPrintln(o, true); // the zero turns off stack
 				}
+				sess.colorOnlyPrintln("\n\r", true);
 			}
 		}
 	}

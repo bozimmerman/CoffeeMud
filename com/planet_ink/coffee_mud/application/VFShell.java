@@ -67,6 +67,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 CHANGES:
+2024-12 toasted323: ensure any exit changes observed by the player are sent via gmcp too
 2024-12 toasted323: mapping from ships
 */
 public class VFShell
@@ -865,6 +866,9 @@ public class VFShell
 					public String getLastSeenRoomID() {
 						return CMLib.map().getExtendedRoomID(mob.location());
 					}
+
+					@Override
+					public Integer getLastSeenRoomHash() { return null;}
 
 					@Override
 					public void setAccount(final PlayerAccount account)

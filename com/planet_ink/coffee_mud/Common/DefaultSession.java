@@ -42,6 +42,7 @@ import java.nio.charset.Charset;
    limitations under the License.
 
    CHANGES:
+   2024-12 toasted323: ensure any exit changes observed by the player are sent via gmcp too
    2024-12 toasted323: mapping from ships
 */
 public class DefaultSession implements Session
@@ -141,6 +142,7 @@ public class DefaultSession implements Session
 	protected List<SessionFilter>		textFilters		= new Vector<SessionFilter>(3);
 	protected volatile InputCallback	inputCallback	= null;
 	protected String 					lastSeenRoomID 	= null;
+	protected Integer 					lastRoomHash 	= null;
 
 	@Override
 	public String ID()
@@ -3774,17 +3776,18 @@ public class DefaultSession implements Session
 			lastLoopTop = CMLib.time().string2Millis(val);
 			break;
 		case ROOMLOOK:
-			if (val == null || val.isEmpty()) {
-				Log.errOut("ROOMLOOK triggered with an unset or empty value.");
+			if (val == null || val.isEmpty() || !RoomState.canDecode(val)) {
+				Log.errOut("ROOMLOOK triggered with an unset, empty or invalid value.");
 				break;
 			}
 
-			String currentRoomID = val;
-			lastSeenRoomID = currentRoomID;
+			RoomState roomState = RoomState.decode(val);
+			lastSeenRoomID = roomState.getRoomId();
+			lastRoomHash = roomState.getRoomHash();
 
 			if(getClientTelnetMode(TELNET_GMCP))
 			{
-				final byte[] gmcpPingBuf=CMLib.protocol().invokeRoomChangeGmcp(this, gmcpPings, gmcpSupports, currentRoomID);
+				final byte[] gmcpPingBuf = CMLib.protocol().invokeRoomChangeGmcp(this, gmcpPings, gmcpSupports, lastSeenRoomID, lastRoomHash);
 				if(gmcpPingBuf!=null)
 				{
 					try
@@ -3840,5 +3843,10 @@ public class DefaultSession implements Session
 	@Override
 	public String getLastSeenRoomID() {
 		return lastSeenRoomID;
+	}
+
+	@Override
+	public Integer getLastSeenRoomHash() {
+		return lastRoomHash;
 	}
 }

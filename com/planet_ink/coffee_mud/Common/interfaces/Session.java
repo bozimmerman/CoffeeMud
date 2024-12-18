@@ -37,6 +37,7 @@ import java.net.SocketException;
    limitations under the License.
 
    CHANGES:
+   2024-12 toasted323: ensure any exit changes observed by the player are sent via gmcp too
    2024-12 toasted323: mapping from ships
 */
 /**
@@ -681,6 +682,13 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @return the last seen room ID, or null if not set.
 	 */
 	public String getLastSeenRoomID();
+
+	/**
+	 * Retrieves the hash of the last seen room for this session.
+	 *
+	 * @return the hash of the last seen room, or null if not set.
+	 */
+	public Integer getLastSeenRoomHash();
 
 
 	/**

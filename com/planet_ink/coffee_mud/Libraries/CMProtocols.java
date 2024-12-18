@@ -49,6 +49,7 @@ import org.mozilla.javascript.optimizer.*;
    limitations under the License.
 
    CHANGES:
+   2024-12 toasted323: ensure any exit changes observed by the player are sent via gmcp too
    2024-12 toasted323: mapping from ships
    2024-12 toasted323: filter hidden exits from gmcp roominfoexits
 */
@@ -2666,7 +2667,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@Override
-	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, String roomID)
+	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, String roomID, Integer roomHash)
 	{
 		try
 		{
@@ -2682,9 +2683,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					{
 						final Long oldRoomHash=reporteds.get("system.currentRoom");
 						if((oldRoomHash==null)
-						||(room.hashCode() != oldRoomHash.longValue()))
+						||(roomHash != oldRoomHash.longValue()))
 						{
-							reporteds.put("system.currentRoom", Long.valueOf(room.hashCode()));
+							reporteds.put("system.currentRoom", Long.valueOf(roomHash));
 							final String command="room.info";
 							final char[] cmd=command.toCharArray();
 							buf=processGmcp(session, new String(cmd), supportables, roomID);
@@ -2789,12 +2790,14 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 
 			String roomIDToUse = session.getLastSeenRoomID();
+			Integer roomHashToUse = session.getLastSeenRoomHash();
 			if (roomIDToUse == null && session.mob() != null) {
 				roomIDToUse = CMLib.map().getExtendedRoomID(session.mob().location());
+				roomHashToUse = null;
 			}
 
 			if (roomIDToUse != null) {
-				final byte[] roomStuff = invokeRoomChangeGmcp(session, reporteds, supportables, roomIDToUse);
+				final byte[] roomStuff = invokeRoomChangeGmcp(session, reporteds, supportables, roomIDToUse, roomHashToUse);
 			if(roomStuff != null)
 				bout.write(roomStuff);
 			}
