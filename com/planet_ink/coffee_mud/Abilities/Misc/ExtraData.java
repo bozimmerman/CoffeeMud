@@ -20,6 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
+   Copyright 2024 github.com/toasted323
    Copyright 2019-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,6 +34,9 @@ import java.util.*;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   CHANGES:
+   2024-12 toasted323: Fix cloneFix method to implement deep copy for data map
 */
 public class ExtraData extends ThinAbility
 {
@@ -198,8 +202,7 @@ public class ExtraData extends ThinAbility
 
 	private void cloneFix(final ExtraData E)
 	{
-		this.data.clear();
-		this.data.putAll(E.data);
+		this.data = new Hashtable<>(E.data);
 		CODES=BASE_CODES;
 	}
 
