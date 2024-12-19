@@ -1983,10 +1983,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(msg.targetMinor()!=CMMsg.TYP_EXAMINE)
 			lookCode=((msg.sourceMessage()==null)||mob.isAttributeSet(MOB.Attrib.COMPRESS))?LookView.LOOK_BRIEFOK:LookView.LOOK_NORMAL;
 
-		String extendedRoomID = CMLib.map().getExtendedRoomID(room);
-		int roomHash = generateRoomHash(mob, room);
-		RoomState roomState = new RoomState(extendedRoomID, roomHash);
-		Log.debugOut(roomState.encode());
+		String extendedRoomId = CMLib.map().getExtendedRoomID(room);
+		int roomHash = generateRoomHash(mob, room, extendedRoomId);
+		RoomState roomState = new RoomState(extendedRoomId, roomHash);
 		sess.setStat("ROOMLOOK", roomState.encode()); // Trigger the gmcp room info update
 
 		final String finalLookStr=getFullRoomView(mob, room, lookCode, sess.getClientTelnetMode(Session.TELNET_MXP));
@@ -2000,10 +1999,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 	}
 
-	private int generateRoomHash(MOB mob, Room room) {
+	private int generateRoomHash(MOB mob, Room room, String roomId) {
 		StringBuilder hashBuilder = new StringBuilder();
-		hashBuilder.append(room.roomID());
-		hashBuilder.append(room.displayText(mob));
+		hashBuilder.append(roomId + "---");
+		hashBuilder.append(room.displayText(mob)+ "---");
 		hashBuilder.append(getRoomExitsParagraph(mob, room));
 		return hashBuilder.toString().hashCode();
 	}
