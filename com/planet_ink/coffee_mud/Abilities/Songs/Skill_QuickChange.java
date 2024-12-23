@@ -106,11 +106,14 @@ public class Skill_QuickChange extends BardSkill
 			||(!I.ultimateContainer(null).amWearingAt(Wearable.IN_INVENTORY)))
 				items.add(new PackedItem(I,I.container(),I.rawWornCode()));
 		}
+		Log.debugOut("Skill_QuickChange", "getAllWornItems: Found " + items.size() + " worn items");
 		return items;
 	}
 
 	public List<PackedItem> getAllPackedItems(final Session S)
 	{
+		Log.debugOut("Skill_QuickChange", "getAllPackedItems: Full miscText content:\n" + super.miscText);
+
 		final List<PackedItem> items=new LinkedList<PackedItem>();
 		if(super.miscText.trim().length()>0)
 		{
@@ -119,9 +122,13 @@ public class Skill_QuickChange extends BardSkill
 			if((locStart>0)&&(contStart>locStart))
 			{
 				final List<Item> itemList=new Vector<Item>();
-				CMLib.coffeeMaker().addItemsFromXML(super.miscText.substring(0,locStart), itemList, S);
+				String xmlContent = super.miscText.substring(0,locStart);
+				Log.debugOut("Skill_QuickChange", "getAllPackedItems: XML content:\n" + xmlContent);
+				CMLib.coffeeMaker().addItemsFromXML(xmlContent, itemList, S);
 				final List<String> itemLocList=CMParms.parseAny(super.miscText.substring(locStart+locationsDelim.length(),contStart), ';', true);
 				final List<String> itemConList=CMParms.parseAny(super.miscText.substring(contStart+containerDelim.length()), ';', true);
+				Log.debugOut("Skill_QuickChange", "getAllPackedItems: Item locations: " + itemLocList);
+				Log.debugOut("Skill_QuickChange", "getAllPackedItems: Item containers: " + itemConList);
 				if((itemLocList.size()==itemList.size())&&(itemLocList.size()==itemConList.size()))
 				{
 					for(int i=0;i<itemList.size();i++)
@@ -134,8 +141,18 @@ public class Skill_QuickChange extends BardSkill
 						items.add(new PackedItem(itemList.get(i),containerI,wornLoc));
 					}
 				}
+				Log.debugOut("Skill_QuickChange", "getAllPackedItems: Parsed " + items.size() + " items from miscText");
+			}
+			else
+			{
+				Log.debugOut("Skill_QuickChange", "getAllPackedItems: Invalid miscText format");
 			}
 		}
+		else
+		{
+			Log.debugOut("Skill_QuickChange", "getAllPackedItems: No items found in miscText");
+		}
+
 		return items;
 	}
 
@@ -147,6 +164,8 @@ public class Skill_QuickChange extends BardSkill
 				I.I.setContainer((Container)I.containerI);
 			mob.addItem(I.I);
 			I.I.wearAt(I.wornLoc);
+
+			Log.debugOut("Skill_QuickChange", "wearThese: Wore item " + I.I.name() + " at location " + I.wornLoc);
 		}
 		// this is to clear the wear/wield cache
 		final CMMsg msg=CMClass.getMsg(mob, null, null, CMMsg.MASK_ALWAYS|CMMsg.MSG_WIELD,null,CMMsg.MSG_OK_VISUAL,null,CMMsg.MSG_OK_VISUAL,null);
@@ -155,6 +174,8 @@ public class Skill_QuickChange extends BardSkill
 
 	public void packThese(final List<PackedItem> items)
 	{
+		Log.debugOut("Skill_QuickChange", "packThese: Packing " + items.size() + " items");
+
 		final List<Item> itemList=new Vector<Item>();
 		for(final PackedItem I : items)
 			itemList.add(I.I);
@@ -167,9 +188,14 @@ public class Skill_QuickChange extends BardSkill
 		str.append(containerDelim);
 		for(final PackedItem I : items)
 			str.append(itemList.indexOf(I.containerI)).append(";");
+		Log.debugOut("Skill_QuickChange", "packThese: Full XML content:\n" + str.toString());
 		super.miscText=str.toString();
 		for(final PackedItem I : items)
+		{
 			I.I.destroy();
+
+			Log.debugOut("Skill_QuickChange", "packThese: Destroyed item " + I.I.name());
+		}
 	}
 
 	@Override
@@ -190,13 +216,23 @@ public class Skill_QuickChange extends BardSkill
 				final List<PackedItem> mySavedGear=getAllPackedItems(mob.session());
 				packThese(myCurrentGear);
 				if(mySavedGear.size()==0)
+				{
 					mob.tell(L("That outfit is now tucked away for a quick change later on."));
+					Log.debugOut("Skill_QuickChange", "invoke: Current gear size: " + myCurrentGear.size() + ", Saved gear size: " + mySavedGear.size());
+				}
 				else
-					wearThese(mob,mySavedGear);
+				{
+					wearThese(mob, mySavedGear);
+
+					Log.debugOut("Skill_QuickChange", "invoke: Wore saved gear");
+				}
 			}
 		}
-		else
+		else {
+			Log.debugOut("Skill_QuickChange", "invoke: Skill check failed");
+
 			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to change clothes, but forget(s) how."));
+		}
 
 		return success;
 	}
