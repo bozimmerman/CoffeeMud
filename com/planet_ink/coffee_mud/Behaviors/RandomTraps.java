@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
+   Copyright 2024 github.com/toasted323
    Copyright 2003-2024 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,6 +32,9 @@ import java.util.*;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   CHANGES:
+   2024-12 toasted323: fix RandomTraps parameter parsing by removing semicolon dependency
 */
 public class RandomTraps extends ActiveTicker
 {
@@ -82,6 +86,8 @@ public class RandomTraps extends ActiveTicker
 	@Override
 	public void setParms(final String newParms)
 	{
+		Log.debugOut("RandomTraps", "Setting parameters: " + newParms);
+
 		maintained=new Vector<Physical>();
 		doAnyItems=false;
 		doAnyContainers=false;
@@ -90,140 +96,148 @@ public class RandomTraps extends ActiveTicker
 		doAnyDoors=false;
 		doAnyLockedDoors=true;
 		doRooms=false;
-		final int x=newParms.indexOf(';');
-		String oldParms=newParms;
 		restrictedLocales=null;
-		if(x>=0)
+		String p=CMParms.getParmStr(newParms,"ROOMS","NO").toUpperCase().trim();
+		if(p.startsWith("Y"))
+			doRooms=true;
+		p=CMParms.getParmStr(newParms,"ITEMS","NO").toUpperCase().trim();
+		if(p.startsWith("Y"))
 		{
-			oldParms=newParms.substring(0,x).trim();
-			String p=CMParms.getParmStr(oldParms,"ROOMS","NO").toUpperCase().trim();
-			if(p.startsWith("Y"))
-				doRooms=true;
-			p=CMParms.getParmStr(oldParms,"ITEMS","NO").toUpperCase().trim();
-			if(p.startsWith("Y"))
-			{
-				doAnyItems=true;
-				doAnyContainers=true;
-				doDooredContainers=true;
-				doLockedContainers=true;
-			}
-			else
-			if(p.startsWith("CONT"))
-			{
-				doAnyItems=false;
-				doAnyContainers=true;
-				doDooredContainers=true;
-				doLockedContainers=true;
-			}
-			else
-			if(p.startsWith("LID"))
-			{
-				doAnyItems=false;
-				doAnyContainers=false;
-				doDooredContainers=true;
-				doLockedContainers=true;
-			}
-			else
-			if(p.startsWith("LOCK"))
-			{
-				doAnyItems=false;
-				doAnyContainers=false;
-				doDooredContainers=false;
-				doLockedContainers=true;
-			}
-			else
-			if(p.startsWith("NO"))
-			{
-				doAnyItems=false;
-				doAnyContainers=false;
-				doDooredContainers=false;
-				doLockedContainers=false;
-			}
+			doAnyItems=true;
+			doAnyContainers=true;
+			doDooredContainers=true;
+			doLockedContainers=true;
+		}
+		else
+		if(p.startsWith("CONT"))
+		{
+			doAnyItems=false;
+			doAnyContainers=true;
+			doDooredContainers=true;
+			doLockedContainers=true;
+		}
+		else
+		if(p.startsWith("LID"))
+		{
+			doAnyItems=false;
+			doAnyContainers=false;
+			doDooredContainers=true;
+			doLockedContainers=true;
+		}
+		else
+		if(p.startsWith("LOCK"))
+		{
+			doAnyItems=false;
+			doAnyContainers=false;
+			doDooredContainers=false;
+			doLockedContainers=true;
+		}
+		else
+		if(p.startsWith("NO"))
+		{
+			doAnyItems=false;
+			doAnyContainers=false;
+			doDooredContainers=false;
+			doLockedContainers=false;
+		}
 
-			p=CMParms.getParmStr(oldParms,"EXITS","LOCKED").toUpperCase().trim();
-			if((p.startsWith("Y"))
-			||(p.startsWith("DOOR")))
-			{
-				doAnyDoors=true;
-				doAnyLockedDoors=true;
-			}
-			else
-			if(p.startsWith("LOCK"))
-			{
-				doAnyDoors=false;
-				doAnyLockedDoors=true;
-			}
-			else
-			if(p.startsWith("NO"))
-			{
-				doAnyDoors=false;
-				doAnyLockedDoors=false;
-			}
+		p=CMParms.getParmStr(newParms,"EXITS","LOCKED").toUpperCase().trim();
+		if((p.startsWith("Y"))
+		||(p.startsWith("DOOR")))
+		{
+			doAnyDoors=true;
+			doAnyLockedDoors=true;
+		}
+		else
+		if(p.startsWith("LOCK"))
+		{
+			doAnyDoors=false;
+			doAnyLockedDoors=true;
+		}
+		else
+		if(p.startsWith("NO"))
+		{
+			doAnyDoors=false;
+			doAnyLockedDoors=false;
+		}
 
-			final Vector<String> V=CMParms.parse(oldParms);
-			for(int v=0;v<V.size();v++)
+		final Vector<String> V=CMParms.parse(newParms);
+		for(int v=0;v<V.size();v++)
+		{
+			String s=V.elementAt(v);
+			if((s.startsWith("+")||(s.startsWith("-")))&&(s.length()>1))
 			{
-				String s=V.elementAt(v);
-				if((s.startsWith("+")||(s.startsWith("-")))&&(s.length()>1))
+				if(restrictedLocales==null)
+					restrictedLocales=new TreeSet<Integer>();
+				if(s.equalsIgnoreCase("+ALL"))
+					restrictedLocales.clear();
+				else
+				if(s.equalsIgnoreCase("-ALL"))
 				{
-					if(restrictedLocales==null)
-						restrictedLocales=new TreeSet<Integer>();
-					if(s.equalsIgnoreCase("+ALL"))
-						restrictedLocales.clear();
-					else
-					if(s.equalsIgnoreCase("-ALL"))
+					restrictedLocales.clear();
+					for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
+						restrictedLocales.add(Integer.valueOf(Room.INDOORS+i));
+					for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
+						restrictedLocales.add(Integer.valueOf(i));
+				}
+				else
+				{
+					final char c=s.charAt(0);
+					s=s.substring(1).toUpperCase().trim();
+					int code=-1;
+					for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
 					{
-						restrictedLocales.clear();
-						for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
-							restrictedLocales.add(Integer.valueOf(Room.INDOORS+i));
-						for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
-							restrictedLocales.add(Integer.valueOf(i));
+						if(Room.DOMAIN_INDOORS_DESCS[i].startsWith(s))
+							code=Room.INDOORS+i;
 					}
-					else
+					if(code>=0)
 					{
-						final char c=s.charAt(0);
-						s=s.substring(1).toUpperCase().trim();
-						int code=-1;
-						for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
-						{
-							if(Room.DOMAIN_INDOORS_DESCS[i].startsWith(s))
-								code=Room.INDOORS+i;
-						}
-						if(code>=0)
-						{
-							if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
-								restrictedLocales.remove(Integer.valueOf(code));
-							else
-							if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
-								restrictedLocales.add(Integer.valueOf(code));
-						}
-						code=-1;
-						for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
-						{
-							if(Room.DOMAIN_OUTDOOR_DESCS[i].startsWith(s))
-								code=i;
-						}
-						if(code>=0)
-						{
-							if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
-								restrictedLocales.remove(Integer.valueOf(code));
-							else
-							if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
-								restrictedLocales.add(Integer.valueOf(code));
-						}
+						if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
+							restrictedLocales.remove(Integer.valueOf(code));
+						else
+						if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
+							restrictedLocales.add(Integer.valueOf(code));
+					}
+					code=-1;
+					for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
+					{
+						if(Room.DOMAIN_OUTDOOR_DESCS[i].startsWith(s))
+							code=i;
+					}
+					if(code>=0)
+					{
+						if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
+							restrictedLocales.remove(Integer.valueOf(code));
+						else
+						if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
+							restrictedLocales.add(Integer.valueOf(code));
 					}
 				}
 			}
 		}
-		super.setParms(oldParms);
-		minTraps=CMParms.getParmInt(oldParms,"mintraps",1);
-		maxTraps=CMParms.getParmInt(oldParms,"maxtraps",1);
+		super.setParms(newParms);
+		minTraps=CMParms.getParmInt(newParms,"mintraps",1);
+		maxTraps=CMParms.getParmInt(newParms,"maxtraps",1);
 		if(maxTraps<minTraps)
 			maxTraps=minTraps;
 		avgTraps=CMLib.dice().roll(1,maxTraps-minTraps,minTraps);
 		parms=newParms;
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
 			restrictedLocales=null;
+
+		Log.debugOut("RandomTraps", "Final Settings: " +
+				"Rooms=" + (doRooms ? "Y" : "NO") +
+				", Items=" + (doAnyItems ? "Y" :
+				(doAnyContainers ? "CONT" :
+						(doDooredContainers ? "LID" :
+								(doLockedContainers ? "LOCK" : "NO")))) +
+				", Exits=" + (doAnyDoors ? "Y" :
+				(doAnyLockedDoors ? "LOCKED" : "NO")) +
+				", MinTraps=" + minTraps +
+				", MaxTraps=" + maxTraps +
+				", AvgTraps=" + avgTraps +
+				", RestrictedLocales=" + (restrictedLocales != null ? restrictedLocales.size() : "None")
+		);
 	}
 
 	protected void makeRoomEligible(final Room R, final List<Physical> eligible)
@@ -250,6 +264,15 @@ public class RandomTraps extends ActiveTicker
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
+		String locationInfo = "Unknown";
+		if (ticking instanceof Room) {
+			Room room = (Room) ticking;
+			locationInfo = "Room: " + CMLib.map().getExtendedRoomID(room) +
+					", Area: " + room.getArea().name();
+		} else if (ticking instanceof Area) {
+			locationInfo = "Area: " + ((Area) ticking).name();
+		}
+
 		tickStatus=Tickable.STATUS_START;
 		super.tick(ticking,tickID);
 		tickStatus=Tickable.STATUS_MISC+0;
@@ -301,8 +324,10 @@ public class RandomTraps extends ActiveTicker
 					return true;
 
 				tickStatus=Tickable.STATUS_MISC+6;
-				if(eligible.size()==0)
+				if(eligible.size() == 0) {
+					Log.warnOut("RandomTraps", "No eligible objects found (" + locationInfo + ")");
 					return true;
+				}
 
 				final int oldSize=eligible.size();
 				for(int r=0;r<oldSize;r++)
@@ -398,11 +423,15 @@ public class RandomTraps extends ActiveTicker
 					tickStatus=Tickable.STATUS_MISC+30;
 				}
 
-				if(eligible.size()==0)
+				if(eligible.size() == 0)
+				{
+					Log.debugOut("RandomTraps", "No eligible objects after processing (" + locationInfo + ")");
 					return true;
+				}
 
 				tickStatus=Tickable.STATUS_MISC+31;
 				final Physical P=eligible.get(CMLib.dice().roll(1,eligible.size(),-1));
+				Log.debugOut("RandomTraps", "Selected object for trapping: " + P.name() + " (" + locationInfo + ")");
 
 				final List<Trap> eligibleTraps=new ArrayList<Trap>();
 				for(int t=0;t<allTraps.size();t++)
@@ -413,10 +442,14 @@ public class RandomTraps extends ActiveTicker
 				}
 
 				if(eligibleTraps.size()==0)
+				{
+					Log.debugOut("RandomTraps", "No eligible traps found for " + P.name() + " (" + locationInfo + ")");
 					return true;
+				}
 
 				tickStatus=Tickable.STATUS_MISC+32;
-				Trap T=eligibleTraps.get(CMLib.dice().roll(1,eligibleTraps.size(),-1));
+				Trap T=eligibleTraps.get(CMLib.dice().roll(1, eligibleTraps.size(),-1));
+				Log.debugOut("RandomTraps", "Selected trap: " + T.ID() + " for " + P.name() + " (" + locationInfo + ")");
 				T=(Trap)T.copyOf();
 				T.setProficiency(100);
 				final Area A=CMLib.map().areaLocation(ticking);
@@ -426,6 +459,7 @@ public class RandomTraps extends ActiveTicker
 				T.setSavable(false);
 				P.addEffect(T);
 				maintained.add(P);
+				Log.debugOut("RandomTraps", "Trap " + T.ID() + " added to " + P.name() + " (" + locationInfo + ")");
 				tickStatus=Tickable.STATUS_MISC+33;
 			}
 		}
