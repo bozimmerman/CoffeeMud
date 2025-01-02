@@ -182,7 +182,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<NAME condition="$mob_level &lt; 70 and $mob_level &gt;=  40">an adult $rats_dragoncolor dragon</NAME>
 					<NAME condition="$mob_level &lt; 80 and $mob_level &gt;=  70">an old $rats_dragoncolor dragon</NAME>
 					<NAME condition="$mob_level &lt; 85 and $mob_level &gt;=  80">a very old $rats_dragoncolor dragon</NAME>
-					<NAME condition="$mob_level &gt;=  85">a ancient $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level &gt;=  85">an ancient $rats_dragoncolor dragon</NAME>
 				</NAME>
 				<DISPLAY>$mob_name is guarding her brood.</DISPLAY>
 				<DESCRIPTION>$mob_name is majestic, but simply being in its presence makes you uneasy.</DESCRIPTION>
@@ -236,7 +236,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<NAME condition="$mob_level &lt; 70 and $mob_level &gt;=  40">an adult $rats_dragoncolor dragon</NAME>
 					<NAME condition="$mob_level &lt; 80 and $mob_level &gt;=  70">an old $rats_dragoncolor dragon</NAME>
 					<NAME condition="$mob_level &lt; 85 and $mob_level &gt;=  80">a very old $rats_dragoncolor dragon</NAME>
-					<NAME condition="$mob_level &gt;=  85">a ancient $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level &gt;=  85">an ancient $rats_dragoncolor dragon</NAME>
 				</NAME>
 				<DISPLAY>$mob_name watches you intently.</DISPLAY>
 				<DESCRIPTION>$mob_name is majestic, but simply being in its presence makes you uneasy.</DESCRIPTION>

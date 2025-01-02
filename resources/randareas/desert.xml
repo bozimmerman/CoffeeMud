@@ -135,7 +135,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		<NAME condition="$mob_level&lt;70 and $mob_level&gt;=40">an adult blue dragon</NAME>
 		<NAME condition="$mob_level&lt;80 and $mob_level&gt;=70">an old blue dragon</NAME>
 		<NAME condition="$mob_level&lt;85 and $mob_level&gt;=80">a very old blue dragon</NAME>
-		<NAME condition="$mob_level&gt;=85">a ancient blue dragon</NAME>
+		<NAME condition="$mob_level&gt;=85">an ancient blue dragon</NAME>
 	</NAME>
 	<DISPLAY select="pick-1">
 		<DISPLAY pickweight="1">$mob_name leaps towards you.</DISPLAY>
