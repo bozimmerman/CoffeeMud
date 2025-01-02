@@ -836,9 +836,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	@Override
-	public Pair<String, String> getHelpMatch(final String helpStr, final Properties rHelpFile, final MOB forM, final int skipEntries)
+	public Triad<String, String, HelpMatchType> getHelpMatch(final String helpStr, final Properties rHelpFile, final MOB forM, final int skipEntries)
 	{
-		final Pair<String,String> p = getHelpText(helpStr, rHelpFile, forM, false, new int[]{skipEntries});
+		final Triad<String, String, HelpMatchType> p = getHelpText(helpStr, rHelpFile, forM, false, new int[]{skipEntries});
 		if((p == null)||(p.second==null))
 			return null;
 		return p;
@@ -858,7 +858,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 	protected String getHelpText(final String helpKey, final Properties rHelpFile, final MOB forM, final boolean noFix)
 	{
-		final Pair<String,String> p = getHelpText(helpKey, rHelpFile, forM, noFix, new int[]{0});
+		final Triad<String, String, HelpMatchType> p = getHelpText(helpKey, rHelpFile, forM, noFix, new int[]{0});
 		if(p == null)
 			return null;
 		return p.second;
@@ -887,7 +887,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		return thisStr;
 	}
 
-	protected Pair<String,String> getHelpText(String helpKey, final Properties rHelpFile, final MOB forM, final boolean noFix, final int[] skip)
+	protected Triad<String, String, HelpMatchType> getHelpText(String helpKey,
+			final Properties rHelpFile, final MOB forM, final boolean noFix, final int[] skip)
 	{
 		helpKey=helpKey.toUpperCase().trim();
 		final String helpKeyWSpaces = helpKey;
@@ -902,6 +903,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			helpKey="COLON";
 		if(helpKey.equals(";"))
 			helpKey="SEMICOLON";
+		HelpMatchType matchType = HelpMatchType.OTHER;
 
 		// first come the callouts:
 
@@ -927,7 +929,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				helpText=CMStrings.replaceAll(helpText,"[channel]",s.toLowerCase());
 				final String extra = no?"":CMLib.channels().getExtraChannelDesc(s);
 				helpText=CMStrings.replaceAll(helpText,"[EXTRA]",extra);
-				return new Pair<String,String>(helpKey, helpText);
+				matchType = HelpMatchType.CHANNEL;
+				return new Triad<String, String, HelpMatchType>(helpKey, helpText, matchType);
 			}
 			return null;
 		}
@@ -941,7 +944,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				final Area A=e.nextElement();
 				if((A.name().equalsIgnoreCase(ahelpStr))
 				&&((forM==null)||(CMLib.flags().canAccess(forM, A))))
-					return new Pair<String,String>(ahelpStr, CMLib.map().getArea(A.Name()).getAreaStats().toString());
+				{
+					matchType = HelpMatchType.AREA;
+					return new Triad<String, String, HelpMatchType>(ahelpStr, CMLib.map().getArea(A.Name()).getAreaStats().toString(), matchType);
+				}
 			}
 			return null;
 		}
@@ -958,9 +964,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			if((C!=null)&&(C.isGeneric()))
 			{
 				final String helpText="<CHARCLASS>"+C.getStat("HELP");
+				matchType = HelpMatchType.CHARCLASS;
 				if(noFix)
-					return new Pair<String,String>(helpKey, helpText);
-				return new Pair<String,String>(helpKey.substring(13), fixHelp(helpKey.substring(13),helpText,forM));
+					return new Triad<String, String, HelpMatchType>(helpKey, helpText, matchType);
+				return new Triad<String, String, HelpMatchType>(helpKey.substring(13), fixHelp(helpKey.substring(13),helpText,forM), matchType);
 			}
 			return null;
 		}
@@ -979,13 +986,14 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				|| (rHelpFile == this.getArcHelpFile())))
 			{
 				String helpText;
+				matchType = HelpMatchType.RACE;
 				if(R.getStat("HELP").length()==0)
 					helpText="<RACE>"+L("No further information available");
 				else
 					helpText="<RACE>"+R.getStat("HELP");
 				if(noFix)
-					return new Pair<String,String>(helpKey, helpText);
-				return new Pair<String,String>(helpKey.substring(8), fixHelp(helpKey.substring(8),helpText,forM));
+					return new Triad<String, String, HelpMatchType>(helpKey, helpText, matchType);
+				return new Triad<String, String, HelpMatchType>(helpKey.substring(8), fixHelp(helpKey.substring(8),helpText,forM), matchType);
 			}
 			return null;
 		}
@@ -993,7 +1001,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		{
 			final String helpText=normalizeHelpText(CMLib.socials().getSocialsHelp(forM,helpKeyWSpaces.substring(7)),skip);
 			if(helpText!=null)
-				return new Pair<String,String>(helpKeyWSpaces.substring(7), fixHelp(helpKeyWSpaces.substring(7),helpText,forM));
+			{
+				matchType = HelpMatchType.SOCIAL;
+				return new Triad<String, String, HelpMatchType>(helpKeyWSpaces.substring(7), fixHelp(helpKeyWSpaces.substring(7),helpText,forM), matchType);
+			}
 			return null;
 		}
 		// now start the exact, or darn near-exact matches
@@ -1010,6 +1021,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				if(helpText!=null)
 				{
 					helpKey=prefix+helpKey;
+					matchType = HelpMatchType.ABILITY;
 					break;
 				}
 			}
@@ -1023,7 +1035,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			{
 				helpText=normalizeHelpText(CMLib.socials().getSocialsHelp(forM,helpKeyWSpaces),skip);
 				if(helpText!=null)
+				{
+					matchType = HelpMatchType.SOCIAL;
 					helpKey=helpKeyWSpaces;
+				}
 			}
 		}
 		if(helpText==null)
@@ -1033,7 +1048,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			{
 				helpText=normalizeHelpText(CMLib.clans().getGovernmentHelp(forM,helpKeyWSpaces),skip);
 				if(helpText!=null)
+				{
+					matchType = HelpMatchType.CLANGVT;
 					helpKey=helpKeyWSpaces;
+				}
 			}
 		}
 		if(helpText==null)
@@ -1046,7 +1064,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					helpKey=helpKeyWSpaces;
 			}
 			if((A!=null)&&(A.isGeneric()))
+			{
+				matchType = HelpMatchType.ABILITY;
 				helpText=normalizeHelpText(A.getStat("HELP"),skip);
+			}
 		}
 		if(helpText==null)
 		{
@@ -1055,7 +1076,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			{
 				helpText=normalizeHelpText(CMLib.expertises().getExpertiseHelp(helpKeyWSpaces),skip);
 				if(helpText!=null)
+				{
+					matchType = HelpMatchType.EXPERTISE;
 					helpKey=helpKeyWSpaces;
+				}
 			}
 		}
 		if(helpText==null)
@@ -1068,7 +1092,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					helpKey=helpKeyWSpaces;
 			}
 			if((C!=null)&&(C.isGeneric()))
+			{
+				matchType = HelpMatchType.CHARCLASS;
 				helpText=normalizeHelpText("<CHARCLASS>"+C.getStat("HELP"),skip);
+			}
 		}
 
 		if(helpText==null)
@@ -1085,6 +1112,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				|| (rHelpFile == this.getArcHelpFile())))
 			{
 				helpKey=subKey;
+				matchType = HelpMatchType.RACE;
 				if(R.getStat("HELP").length()==0)
 					helpText=normalizeHelpText("<RACE>"+L("No further information available"),skip);
 				else
@@ -1106,6 +1134,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					helpText = normalizeHelpText(CMLib.map().getArea(A.Name()).getAreaStats().toString(),skip);
 					if(helpText != null)
 					{
+						matchType = HelpMatchType.AREA;
 						helpKey=A.name().toUpperCase();
 						break;
 					}
@@ -1124,7 +1153,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				{
 					helpText=normalizeHelpText((String)CMD.executeInternal(forM, MUDCmdProcessor.METAFLAG_FORCED, D),skip);
 					if(helpText!=null)
+					{
+						matchType = HelpMatchType.DEITY;
 						helpKey = D.Name().toUpperCase();
+					}
 				}
 				catch(final Exception e)
 				{
@@ -1150,11 +1182,12 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					helpText=normalizeHelpText(rHelpFile.getProperty("CHANNEL"),skip);
 				if(helpText != null)
 				{
+					matchType = HelpMatchType.CHANNEL;
 					helpText=CMStrings.replaceAll(helpText,"[CHANNEL]",helpKey.toUpperCase());
 					helpText=CMStrings.replaceAll(helpText,"[channel]",helpKey.toLowerCase());
 					final String extra = no?"":CMLib.channels().getExtraChannelDesc(helpKey);
 					helpText=CMStrings.replaceAll(helpText,"[EXTRA]",extra);
-					return new Pair<String,String>(helpKey, helpText);
+					return new Triad<String, String, HelpMatchType>(helpKey, helpText, matchType);
 				}
 			}
 		}
@@ -1178,7 +1211,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						CMLib.english().toEnglishStringList(skills));
 				helpText=normalizeHelpText(recipeHelp,skip);
 				if(helpText != null)
-					return new Pair<String,String>(helpKey, helpText);
+					return new Triad<String, String, HelpMatchType>(helpKey, helpText, HelpMatchType.SKILL_RECIPE);
 			}
 		}
 
@@ -1212,6 +1245,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					{
 						helpKey=helpKeyWSpaces;
 						helpText=normalizeHelpText(C2.name()+" is "+C2.description().toLowerCase(),skip);
+						matchType = HelpMatchType.CURRENCY;
 					}
 				}
 			}
@@ -1240,7 +1274,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			{
 				helpText=normalizeHelpText(CMLib.socials().getSocialsHelp(forM,realKey),skip);
 				if(helpText != null)
+				{
+					matchType = HelpMatchType.SOCIAL;
 					helpKey=realKey;
+				}
 			}
 		}
 
@@ -1251,7 +1288,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			{
 				helpText=normalizeHelpText(CMLib.clans().getGovernmentHelp(forM,realKey),skip);
 				if(helpText != null)
+				{
+					matchType = HelpMatchType.CLANGVT;
 					helpKey=realKey;
+				}
 			}
 		}
 
@@ -1262,6 +1302,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			{
 				helpKey = A.Name();
 				helpText=normalizeHelpText(A.getStat("HELP"),skip);
+				if(helpText != null)
+					matchType = HelpMatchType.ABILITY;
 			}
 			else
 			{
@@ -1270,6 +1312,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				{
 					helpKey = A.Name();
 					helpText=normalizeHelpText(A.getStat("HELP"),skip);
+					if(helpText != null)
+						matchType = HelpMatchType.ABILITY;
 				}
 			}
 		}
@@ -1281,7 +1325,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			{
 				helpText=normalizeHelpText(CMLib.expertises().getExpertiseHelp(realKey),skip);
 				if(helpText != null)
+				{
+					matchType = HelpMatchType.EXPERTISE;
 					helpKey=realKey;
+				}
 			}
 		}
 		if(helpText==null)
@@ -1293,7 +1340,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			{
 				helpText=normalizeHelpText(CMLib.achievements().getAchievementsHelp(realKey),skip);
 				if(helpText != null)
+				{
+					matchType = HelpMatchType.ACHIEVEMENT;
 					helpKey=realKey;
+				}
 			}
 		}
 
@@ -1324,6 +1374,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					helpText=normalizeHelpText(CMLib.map().getArea(A.Name()).getAreaStats().toString(),skip);
 					if(helpText != null)
 					{
+						matchType = HelpMatchType.AREA;
 						helpKey=A.name().toUpperCase();
 						break;
 					}
@@ -1335,7 +1386,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		if(helpText==null)
 		{
 			if(CMLib.map().getArea(helpKey)!=null)
-				return new Pair<String,String>(helpKey, normalizeHelpText(CMLib.map().getArea(helpKey).getAreaStats().toString(),skip));
+			{
+				matchType = HelpMatchType.AREA;
+				return new Triad<String, String, HelpMatchType>(helpKey, normalizeHelpText(CMLib.map().getArea(helpKey).getAreaStats().toString(),skip), matchType);
+			}
 		}
 
 		// internal exceptions
@@ -1361,7 +1415,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					helpText=CMStrings.replaceAll(helpText,"[channel]",s.toLowerCase());
 					final String extra = no?"":CMLib.channels().getExtraChannelDesc(s);
 					helpText=CMStrings.replaceAll(helpText,"[EXTRA]",extra);
-					return new Pair<String,String>(helpKey, helpText);
+					matchType = HelpMatchType.CHANNEL;
+					return new Triad<String, String, HelpMatchType>(helpKey, helpText, matchType);
 				}
 			}
 		}
@@ -1376,7 +1431,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				if(helpKey.endsWith(suf))
 				{
 					helpKey=helpKey.substring(0,helpKey.length()-suf.length());
-					return new Pair<String,String>(helpKey, getHelpText(helpKey,rHelpFile,forM,noFix));
+					matchType = HelpMatchType.ABILITY;
+					return new Triad<String, String, HelpMatchType>(helpKey, getHelpText(helpKey,rHelpFile,forM,noFix), matchType);
 				}
 			}
 		}
@@ -1393,7 +1449,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					final String recipeHelp = L("@x1 is an item that is craftable by @x2.",recipeName,cA.name());
 					helpText=normalizeHelpText(recipeHelp,skip);
 					if(helpText != null)
-						return new Pair<String,String>(recipeName.toUpperCase().trim(), helpText);
+						return new Triad<String, String, HelpMatchType>(recipeName.toUpperCase().trim(), helpText, HelpMatchType.SKILL_RECIPE);
 				}
 			}
 		}
@@ -1420,9 +1476,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			return null;
 
 		if(noFix)
-			return new Pair<String,String>(helpKey, helpText);
+			return new Triad<String, String, HelpMatchType>(helpKey, helpText, matchType);
 		final String finalHelpText = fixHelp(helpKey,helpText,forM);
-		return new Pair<String,String>(helpKey, finalHelpText);
+		return new Triad<String, String, HelpMatchType>(helpKey, finalHelpText, matchType);
 	}
 
 	@Override
@@ -1748,7 +1804,12 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	@Override
-	public List<String> getSeeAlsoHelpOn(final MOB mob, final Properties rHelpFile, final String helpSearch, final String helpKey, final String helpText, final int howMany)
+	public List<String> getSeeAlsoHelpOn(final MOB mob,
+										 final Properties rHelpFile,
+										 final String helpSearch,
+										 final String helpKey,
+										 final String helpText,
+										 final int howMany)
 	{
 		final String nKey = helpKey.replace(' ', '_');
 		final List<String> otherHelps = new Vector<String>();

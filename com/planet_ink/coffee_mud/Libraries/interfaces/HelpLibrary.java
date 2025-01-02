@@ -132,7 +132,8 @@ public interface HelpLibrary extends CMLibrary
 
 	/**
 	 * Returns a viewable help entry for the given key, checking the given
-	 * help file and returning the matching key and help text.
+	 * help file and returning the matching key and help text, and the
+	 * type of match
 	 *
 	 * @see HelpLibrary#getArcHelpFile()
 	 * @see HelpLibrary#getHelpFile()
@@ -141,9 +142,9 @@ public interface HelpLibrary extends CMLibrary
 	 * @param rHelpFile the help file cache to use
 	 * @param forM the mob to get info for
 	 * @param skipEntries number of matches to skip before returning the next one
-	 * @return the help entry key, and help entry text as a pair
+	 * @return the help entry key, and help entry text, and type status as a triad
 	 */
-	public Pair<String, String> getHelpMatch(String helpStr, Properties rHelpFile, MOB forM, int skipEntries);
+	public Triad<String, String, HelpMatchType> getHelpMatch(String helpStr, Properties rHelpFile, MOB forM, int skipEntries);
 
 	/**
 	 * Returns a list of help entries containing the given string, as an aid
@@ -271,5 +272,22 @@ public interface HelpLibrary extends CMLibrary
 		NormalOnly,
 		ArchonFirst,
 		NormalFirst
+	}
+
+	public static enum HelpMatchType
+	{
+		SKILL_RECIPE,
+		CURRENCY,
+		CHANNEL,
+		AREA,
+		CHARCLASS,
+		RACE,
+		SOCIAL,
+		ABILITY,
+		CLANGVT,
+		EXPERTISE,
+		DEITY,
+		ACHIEVEMENT,
+		OTHER
 	}
 }
