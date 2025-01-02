@@ -122,7 +122,7 @@ ${SELECT:any\name from (SELECT: . from $item_junk)}
 	<ITEM class="GenItem" name="(a(n)) ${l:item_material} puzzle piece" display="$item_name lies here" material="$any_wood" level="$item_level" weight=1 />
 	<ITEM class="GenPlayingCard" name="a playing card" ability="0?62" />
 	<ITEM class="GenKey" name="a worn ${l:item_material} key" display="$item_name lies here" material="$any_cheap_metal" level="$item_level" weight=1 READABLETEXT="opensnothing"/>
-	<ITEM class="GenItem" name="a locke of $any_humanoid_race hair" display="$item_name lies here" material="MEAT" level="$item_level" weight=1 />
+	<ITEM class="GenItem" name="a lock of $any_humanoid_race hair" display="$item_name lies here" material="MEAT" level="$item_level" weight=1 />
 	<ITEM class="GenItem" name="a bit of ${l:item_material}" display="$item_name lies here" material="$any_cheap_cloth" level="$item_level" weight=1 />
 	<ITEM class="GenReadable" name="a scrap of paper" display="$item_name lies here" material="PAPER" level="$item_level" weight=1 description="There`s something written on it." READABLETEXT="$[0?99]-$[0?999]-$[0?999]"/>
 	<ITEM class="metacraft:any-Weaponsmithing &lt; $item_level" name="(a(n)) $adj_metal_broken bloody $item_name" display="$item_name lies here" damage=1  attack=-10 affbehav="<BEHAVES /><AFFECS />" />

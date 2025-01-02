@@ -704,7 +704,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		<ITEM class="GenPlayingCard" name="a playing card" ability="0?62" />
 		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken $any_avian_race feather" display="$item_name lies here" material="FEATHERS" level="$level_range" weight=1 />
 		<ITEM class="GenKey" name="(a(n)) $adj_metal_broken ${l:item_material} key" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 READABLETEXT="opensnothing"/>
-		<ITEM class="GenItem" name="a cherished locke of $any_humanoid_race hair" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a cherished lock of $any_humanoid_race hair" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken toothpick" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="a bit of bloody ${l:item_material}" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken pully" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
