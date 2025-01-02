@@ -178,6 +178,15 @@ public interface GalacticMap extends CMLibrary
 	public double getMinDistanceFrom(final Coord3D prevPos, final Coord3D curPosition, final Coord3D objPos);
 
 	/**
+	 * Calculates the best available orbit.
+	 *
+	 * @param o the space ship that wants to orbit
+	 * @param p the planet to orbit
+	 * @return the final direction and speed to be in orbit
+	 */
+	public Pair<Dir3D, Double> calculateOrbit(final SpaceObject o, final SpaceObject p);
+
+	/**
 	 * Given two vectors, this will return the minimum
 	 * distance between the two vectors.
 	 *

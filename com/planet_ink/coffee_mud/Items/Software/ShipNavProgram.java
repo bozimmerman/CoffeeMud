@@ -943,13 +943,19 @@ public class ShipNavProgram extends ShipSensorProgram
 				return false;
 			}
 			{
-				//TODO: this is completely wrong.
 				final long distance=CMLib.space().getDistanceFrom(ship, targetObject);
-				if(distance > (targetObject.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS))
+				final long maxDistance=Math.round(CMath.mul(targetObject.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS));
+				final long minDistance = targetObject.radius() + Math.round(CMath.mul(.75, maxDistance-targetObject.radius()));
+				if((distance < maxDistance) && (distance > minDistance))
 				{
-					super.addScreenMessage(L("Orbit program completed. Neutralizing velocity."));
-					this.cancelNavigation();
-					return false;
+					final Pair<Dir3D,Double> orb = CMLib.space().calculateOrbit(ship,targetObject);
+					if((orb != null)
+					&&(CMath.isWithin(ship.speed(), orb.second.doubleValue(), 0.05)))
+					{
+						super.addScreenMessage(L("Orbit program completed. Neutralizing acceleration."));
+						this.cancelNavigation();
+						return false;
+					}
 				}
 			}
 			break;

@@ -1093,6 +1093,21 @@ public class CMath
 	}
 
 	/**
+	 * Returns whether the first number is within a %pct (0-1) distance from
+	 * the second/ideal value.
+	 *
+	 * @param v the value to test
+	 * @param ideal the ideal
+	 * @param pct the pct to return true if less than or equal to
+	 * @return true if its within the pct range, false otherwise
+	 */
+	public final static boolean isWithin(final double v, final double ideal, final double pct)
+	{
+		final double a = Math.abs(v - ideal);
+		return (a / ideal) < pct;
+	}
+
+	/**
 	 * Returns true if the bitnumberth bit (0...) is set
 	 * in the given number
 	 * @param number the given number

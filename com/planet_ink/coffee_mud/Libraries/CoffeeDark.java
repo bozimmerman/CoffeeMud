@@ -320,7 +320,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		}
 		return finalDelta;
 	}
-	
+
 	protected BigDecimal getShortestYawDelta(final BigDecimal correctAngle, final BigDecimal wrongAngle)
 	{
 		BigDecimal xyd = correctAngle.subtract(wrongAngle);
@@ -436,7 +436,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		if((anglesDelta.subtract(BigCMath.PI).abs().compareTo(BigCMath.ZERO_ALMOST)<=0)
 		&&(currentSpeed.compareTo(acceleration)>0))
 			return currentSpeed.subtract(acceleration).doubleValue();
-		
+
 		final BigDecimal xyd = getShortestYawDelta(curDirectionYaw,accelDirectionYaw);
 		final BigDecimal yawSign = (xyd.signum() >= 0) ? BigCMath.ONE : BigCMath.MIN_ONE;
 		final BigDecimal yawDelta = xyd.abs();
@@ -1043,6 +1043,31 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
+	public Pair<Dir3D, Double> calculateOrbit(final SpaceObject o, final SpaceObject p)
+	{
+		final double force = getGravityForce(o, p);
+		if(force > 0.0)
+		{
+			final BigDecimal dist = this.getBigDistanceFrom(o.coordinates(), p.coordinates());
+			final Dir3D[] perp3ds = getPerpendicularAngles(getDirection(o, p));
+			Dir3D min3D = perp3ds[0];
+			double minDiff = getAngleDelta(o.direction(), min3D);
+			for(int i=1;i<perp3ds.length;i++)
+			{
+				final double thisDiff = getAngleDelta(o.direction(), perp3ds[i]);
+				if(thisDiff < minDiff)
+				{
+					min3D = perp3ds[i];
+					minDiff = thisDiff;
+				}
+			}
+			final BigDecimal speed = BigCMath.sqrt(dist.multiply(BigDecimal.valueOf(force)));
+			return new Pair<Dir3D,Double>( min3D, Double.valueOf(speed.doubleValue()) );
+		}
+		return null;
+	}
+
+	@Override
 	public ShipDir[] getCurrentBattleCoveredDirections(final ShipDirectional comp)
 	{
 		final ShipDir[] currCoverage;
@@ -1233,7 +1258,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final long oMass = S.getMass();
 		if(((cO instanceof Area)||(cO.getMass() >= SpaceObject.ASTEROID_MASS))
 		&&(distance > 0)
-		&&(oMass < SpaceObject.MOONLET_MASS))
+		&&(oMass < SpaceObject.MOONLET_MASS)
+		&&(distance <= CMath.mul(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS, cO.radius())))
 		{
 			final double graviRadiusMax=(cO.radius()*(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS-1.0));
 			if(distance<graviRadiusMax)
