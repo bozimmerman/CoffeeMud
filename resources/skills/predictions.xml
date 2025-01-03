@@ -1291,7 +1291,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			MPGSET \$b REJUV 0
 			MPFORCE \$b sayto \$i Hi there.  I was told of your quest and will be invaluable.
 			MPFORCE \$b FOLLOW \$i
-			MPSCRIPT \$b STATIC GLOBAL FIGHT_PROG 10\;IF ISFOLLOW('\$i')\;FOLLOW SELF\;KILL \$i;SAYTO \$i I am tired of you.\;ENDIF\;\~\;
+			MPSCRIPT \$b STATIC GLOBAL FIGHT_PROG 10\;IF ISFOLLOW('\$b')\;FOLLOW SELF\;KILL \$i\;SAYTO \$i I am tired of you.\;ENDIF\;\~\;
 			MPSCRIPT \$i DELETE *
 		~
 	</script>
