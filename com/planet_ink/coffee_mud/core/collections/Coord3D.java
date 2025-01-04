@@ -3,7 +3,7 @@ package com.planet_ink.coffee_mud.core.collections;
 import java.math.BigDecimal;
 
 /*
-   Copyright 2024-2024 Bo Zimmerman
+   Copyright 2024-2025 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

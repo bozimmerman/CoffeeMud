@@ -10,7 +10,7 @@ import java.net.SocketAddress;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.intermud.i3.I3Client;
 /**
- * Copyright (c) 2024-2024 Bo Zimmerman
+ * Copyright (c) 2024-2025 Bo Zimmerman
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at

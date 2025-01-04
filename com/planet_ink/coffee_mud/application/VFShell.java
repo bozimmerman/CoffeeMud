@@ -51,7 +51,7 @@ import com.planet_ink.coffee_mud.core.interfaces.MudHost;
 import com.planet_ink.coffee_mud.core.interfaces.Physical;
 import com.planet_ink.coffee_mud.core.interfaces.Tickable;
 /*
-Copyright 2007-2024 Bo Zimmerman
+Copyright 2007-2025 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
