@@ -94,6 +94,7 @@ public class Fighter_FaithfulMount extends FighterSkill
 		&&(msg.source()==affected)
 		&&(super.proficiencyCheck(msg.source(), 0, false)))
 		{
+			Log.debugOut("Fighter_FaithfulMount", "Death event triggered for " + msg.source().Name());
 			super.helpProficiency(msg.source(), 0);
 			MOB riddenM = null;
 			final Set<? extends Rider> grp = msg.source().getGroupMembersAndRideables(new XTreeSet<Rider>());
@@ -115,6 +116,7 @@ public class Fighter_FaithfulMount extends FighterSkill
 							if(msg.source().riding()==M)
 							{
 								riddenM = M;
+								Log.debugOut("Fighter_FaithfulMount", "Found ridden mount: " + M.Name());
 								break;
 							}
 							else
@@ -134,6 +136,7 @@ public class Fighter_FaithfulMount extends FighterSkill
 					@Override
 					public void run()
 					{
+						Log.debugOut("Fighter_FaithfulMount", "Trailer runnable started for " + deadM.Name());
 						final Room R = riddenM.location();
 						if((deadM.amDead()
 							||(deadM.location() != riddenM.location())
@@ -143,6 +146,7 @@ public class Fighter_FaithfulMount extends FighterSkill
 						&&(deadM.location() != null)
 						&&(deadM.location() != R))
 						{
+							Log.debugOut("Fighter_FaithfulMount", "Conditions met for corpse retrieval");
 							DeadBody dbI = null;
 							for(final Enumeration<Item> i = R.items();i.hasMoreElements();)
 							{
@@ -153,12 +157,15 @@ public class Fighter_FaithfulMount extends FighterSkill
 							}
 							if(dbI != null)
 							{
+								Log.debugOut("Fighter_FaithfulMount", "Corpse found: " + dbI.Name());
 								if(riddenM.isInCombat())
 									riddenM.makePeace(false);
 								riddenM.moveItemTo(dbI);
+								Log.debugOut("Fighter_FaithfulMount", "Corpse moved to mount: " + riddenM.Name());
 								CMLib.tracking().wanderAway(riddenM, false, false);
 								if(riddenM.location() != R)
 								{
+									Log.debugOut("Fighter_FaithfulMount", "Mount moved to new location");
 									final Room tempR = CMClass.getLocale("StdRoom");
 									tempR.setDisplayText(L("The trail"));
 									tempR.setArea(CMClass.getAreaType("StdArea"));
@@ -170,6 +177,7 @@ public class Fighter_FaithfulMount extends FighterSkill
 											- (4000 * meA.getXTIMELevel(deadM));
 									if(delayTime <= 0)
 										delayTime = 1000;
+									Log.debugOut("Fighter_FaithfulMount", "Calculated delay time: " + delayTime + "ms");
 									deadM.tell(L("Your faithful mount is on the way with your corpse!"));
 									final MOB deadM2 = deadM;
 									final MOB riddenM2 = riddenM;
@@ -184,28 +192,50 @@ public class Fighter_FaithfulMount extends FighterSkill
 										@Override
 										public void run()
 										{
+											Log.debugOut("Fighter_FaithfulMount", "Re-enter runnable started, attempt: " + (501 - attempts));
 											final Room tR = deadM.location();
 											if(CMLib.flags().isInTheGame(deadM, true))
 											{
 												CMLib.tracking().wanderIn(riddenM, tR);
 												if(riddenM.location() == tR)
 												{
+													Log.debugOut("Fighter_FaithfulMount", "Mount arrived at target room");
 													tR.show(riddenM, bodyI, CMMsg.MSG_DROP,L("<S-NAME> arrive(s) and allow(s) <T-NAME> to gently slide to the ground."));
 													if(bodyI.owner() != tR)
 														tR.moveItemTo(bodyI, Expire.Player_Body);
+													Log.debugOut("Fighter_FaithfulMount", "Corpse delivered successfully");
 												}
 												return;
 											}
 											if(--attempts>0)
+											{
+												Log.debugOut("Fighter_FaithfulMount", "Rescheduling re-enter runnable, attempts left: " + attempts);
 												CMLib.threads().scheduleRunnable(meRun, 10000);
+											}
+											else
+											{
+												Log.debugOut("Fighter_FaithfulMount", "Re-enter attempts exhausted");
+											}
 										}
 									};
 									CMLib.threads().scheduleRunnable(reEnter[0], delayTime);
 								}
 							}
+							else
+							{
+								Log.debugOut("Fighter_FaithfulMount", "Corpse not found for " + deadM.Name());
+							}
+						}
+						else
+						{
+							Log.debugOut("Fighter_FaithfulMount", "Conditions not met for corpse retrieval");
 						}
 					}
 				});
+			}
+			else
+			{
+				Log.debugOut("Fighter_FaithfulMount", "No suitable mount found for " + msg.source().Name());
 			}
 		}
 		return true;
