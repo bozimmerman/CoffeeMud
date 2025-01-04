@@ -997,7 +997,7 @@ public class StdItem implements Item
 						else
 							return true;
 					}
-					final String wearName = (alreadyWearing != null) ? alreadyWearing.Name()
+					final String wearName = (alreadyWearing != null) ? alreadyWearing.name(mob)
 											: L("something in your @x1",codes.name(cantWearAt));
 					if(cantWearAt==Wearable.WORN_HELD)
 						mob.tell(L("You are already holding @x1.",wearName));
