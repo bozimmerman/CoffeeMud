@@ -997,13 +997,15 @@ public class StdItem implements Item
 						else
 							return true;
 					}
+					final String wearName = (alreadyWearing != null) ? alreadyWearing.Name()
+											: L("something in your @x1",codes.name(cantWearAt));
 					if(cantWearAt==Wearable.WORN_HELD)
-						mob.tell(L("You are already holding @x1.",alreadyWearing.name()));
+						mob.tell(L("You are already holding @x1.",wearName));
 					else
 					if(cantWearAt==Wearable.WORN_WIELD)
-						mob.tell(L("You are already wielding @x1.",alreadyWearing.name()));
+						mob.tell(L("You are already wielding @x1.",wearName));
 					else
-						mob.tell(L("You are already wearing @x1 on your @x2.",alreadyWearing.name(),codes.name(cantWearAt)));
+						mob.tell(L("You are already wearing @x1 on your @x2.",wearName,codes.name(cantWearAt)));
 					return false;
 				}
 			}
