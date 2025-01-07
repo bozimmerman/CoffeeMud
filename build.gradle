@@ -122,6 +122,11 @@ jar {
         into('resources/fakedb')
     }
 
+    from('web') {
+        include '*'
+        into('web')
+    }
+
     //eachFile { FileCopyDetails details ->
     //    println "Including file: ${details.file}"
     //}
