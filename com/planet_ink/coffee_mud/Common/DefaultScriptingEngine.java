@@ -4434,7 +4434,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									M=Q.getQuestMob(Q.getQuestMobIndex(arg1));
 								if(M!=null)
 								{
-									returnable=!M.amDead();
+									returnable=(!M.amDead()) && (!M.amDestroyed());
 									break;
 								}
 							}
@@ -4455,7 +4455,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(M==null)
 								returnable=false;
 							else
-								returnable=!M.amDead();
+								returnable=(!M.amDead()) && (!M.amDestroyed());
 						}
 					}
 					break;
