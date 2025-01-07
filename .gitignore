@@ -1,3 +1,7 @@
+# coffeemud
+/coffeemud.ini
+/web/*.ini
+
 # fakedb data
 fakedb.*
 
