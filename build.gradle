@@ -94,8 +94,6 @@ compileTestJava.dependsOn('copyClasses')
 build.dependsOn(copyClasses)
 jar.dependsOn(copyClasses)
 
-
-
 jar {
     archiveBaseName = artifactName
     version = artifactVersion
@@ -125,6 +123,11 @@ jar {
     from('web') {
         include '*'
         into('web')
+    }
+
+    from('guides') {
+        include '*'
+        into('guides')
     }
 
     //eachFile { FileCopyDetails details ->
