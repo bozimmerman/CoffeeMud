@@ -266,6 +266,8 @@ public class CMProps extends Properties
 		PRIDECATS,
 		FORMULA_PROFGAIN,
 		PRIVATE_CHARACTER_INFO,
+		DISCORD_JAR_PATH,
+		DISCORD_BOT_KEY
 	}
 
 	public final static int DEFAULT_MOB_HP_BASE = 11;
@@ -559,6 +561,8 @@ public class CMProps extends Properties
 		ARMOR_CONDITION_OTHER,
 		GENDERS,
 		ISO_LANG_CODES,
+		CORPSE_BLURBS,
+		ANIMAL_ORDER_LIST,
 		WEATHER_CLEAR, // try to always and forever keep these at the end...
 		WEATHER_CLOUDY, // try to always and forever keep these at the end...
 		WEATHER_WINDY, // try to always and forever keep these at the end...
@@ -2555,8 +2559,13 @@ public class CMProps extends Properties
 			final List<String> newDoms = CMParms.parseCommas(getVar(Str.NEWDOMAINS), true);
 			if(newDoms.size() > 0)
 			{
-				Ability.DOMAIN.DESCS.clear();
-				Ability.DOMAIN.VERBS.clear();
+				try
+				{
+					Ability.DOMAIN.DESCS.clear();
+					Ability.DOMAIN.VERBS.clear();
+				}
+				catch(final Exception e)
+				{}
 				for(final String newDom : newDoms)
 				{
 					final int x = newDom.indexOf('=');
@@ -2989,6 +2998,8 @@ public class CMProps extends Properties
 		setUpLowVar(Str.FORMULA_MAXFOLLOW, getStr("FORMULA_MAXFOLLOW","1 + ( ( @x2 - 6.0 ) / 3.0)"));
 		setUpLowVar(Str.FORMULA_PROFGAIN, getStr("FORMULA_PROFGAIN","(100 - (@x3 * 50)) * ( (@x1 + 1 - @x2) / ( (@x1 * 2) + (10 * @x2) ) )"));
 
+		setUpLowVar(Str.DISCORD_JAR_PATH, getStr("DISCORD_JAR_PATH",""));
+		setUpLowVar(Str.DISCORD_BOT_KEY, getStr("DISCORD_BOT_KEY",""));
 
 		final LanguageLibrary lang = CMLib.lang();
 		Directions.instance().reInitialize(getInt("DIRECTIONS"), new Directions.DirectionWordTranslator()

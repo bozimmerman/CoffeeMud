@@ -713,22 +713,34 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public static final int WEAPONS_MERLIKE=12;
 	/** constant returned by allowedWeaponLevel() to designate staffs only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_STAFFONLY=13;
+	/** constant returned by allowedWeaponLevel() to designate gypsy weapons only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
+	public static final int WEAPONS_GYPSY=14;
+	/** constant returned by allowedWeaponLevel() to designate reliquist weapons only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
+	public static final int WEAPONS_RELIQUIST=15;
 	/** constant set of integer arrays defining the Weapon.CLASS_* constants for the CharClass.WEAPONS_* constants, ordered by CharClass.WEAPONS_* values. */
 	public static final int[][] WEAPONS_SETS={
-/*0*/{Weapon.CLASS_AXE,Weapon.CLASS_BLUNT,Weapon.CLASS_DAGGER,Weapon.CLASS_EDGED,Weapon.CLASS_FLAILED,Weapon.CLASS_HAMMER,Weapon.CLASS_NATURAL,Weapon.CLASS_POLEARM,Weapon.CLASS_RANGED,Weapon.CLASS_STAFF,Weapon.CLASS_SWORD,Weapon.CLASS_THROWN},
+/*0*/{Weapon.CLASS_AXE,Weapon.CLASS_BLUNT,Weapon.CLASS_DAGGER,Weapon.CLASS_EDGED,Weapon.CLASS_FLAILED,Weapon.CLASS_HAMMER,
+		Weapon.CLASS_NATURAL,Weapon.CLASS_POLEARM,Weapon.CLASS_RANGED,Weapon.CLASS_STAFF,Weapon.CLASS_SWORD,Weapon.CLASS_THROWN},
 /*1*/{Weapon.CLASS_NATURAL,Weapon.CLASS_DAGGER},
 /*2*/{Weapon.CLASS_SWORD,Weapon.CLASS_RANGED,Weapon.CLASS_THROWN,Weapon.CLASS_NATURAL,Weapon.CLASS_DAGGER,Weapon.CLASS_EDGED},
-/*3*/{RawMaterial.MATERIAL_WOODEN,RawMaterial.MATERIAL_UNKNOWN,RawMaterial.MATERIAL_VEGETATION,RawMaterial.MATERIAL_FLESH,RawMaterial.MATERIAL_LEATHER},
+/*3*/{RawMaterial.MATERIAL_WOODEN,RawMaterial.MATERIAL_UNKNOWN,RawMaterial.MATERIAL_VEGETATION,RawMaterial.MATERIAL_FLESH,
+		RawMaterial.MATERIAL_LEATHER},
 /*4*/{Weapon.CLASS_NATURAL,Weapon.CLASS_SWORD,Weapon.CLASS_FLAILED,Weapon.CLASS_BLUNT,Weapon.CLASS_DAGGER,Weapon.CLASS_EDGED},
-/*5*/{RawMaterial.MATERIAL_ROCK,RawMaterial.MATERIAL_UNKNOWN,RawMaterial.MATERIAL_GLASS,RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL,RawMaterial.MATERIAL_PRECIOUS},
+/*5*/{RawMaterial.MATERIAL_ROCK,RawMaterial.MATERIAL_UNKNOWN,RawMaterial.MATERIAL_GLASS,RawMaterial.MATERIAL_METAL,
+		RawMaterial.MATERIAL_MITHRIL,RawMaterial.MATERIAL_PRECIOUS},
 /*6*/{Weapon.CLASS_NATURAL,Weapon.CLASS_DAGGER,Weapon.CLASS_STAFF},
 /*7*/{Weapon.CLASS_EDGED,Weapon.CLASS_POLEARM,Weapon.CLASS_AXE,Weapon.CLASS_SWORD,Weapon.CLASS_DAGGER},
 /*8*/{Weapon.CLASS_BLUNT,Weapon.CLASS_HAMMER,Weapon.CLASS_FLAILED,Weapon.CLASS_NATURAL,Weapon.CLASS_STAFF},
 /*9*/{Weapon.CLASS_BLUNT,Weapon.CLASS_RANGED,Weapon.CLASS_THROWN,Weapon.CLASS_STAFF,Weapon.CLASS_NATURAL,Weapon.CLASS_SWORD},
-/*10*/{Weapon.CLASS_AXE,Weapon.CLASS_BLUNT,Weapon.CLASS_DAGGER,Weapon.CLASS_EDGED,Weapon.CLASS_FLAILED,Weapon.CLASS_HAMMER,Weapon.CLASS_NATURAL,Weapon.CLASS_POLEARM,Weapon.CLASS_RANGED,Weapon.CLASS_STAFF,Weapon.CLASS_SWORD,Weapon.CLASS_THROWN},
+/*10*/{Weapon.CLASS_AXE,Weapon.CLASS_BLUNT,Weapon.CLASS_DAGGER,Weapon.CLASS_EDGED,Weapon.CLASS_FLAILED,Weapon.CLASS_HAMMER,
+		Weapon.CLASS_NATURAL,Weapon.CLASS_POLEARM,Weapon.CLASS_RANGED,Weapon.CLASS_STAFF,Weapon.CLASS_SWORD,Weapon.CLASS_THROWN},
 /*11*/{Weapon.CLASS_NATURAL,Weapon.CLASS_FLAILED},
-/*12*/{Weapon.CLASS_POLEARM,RawMaterial.MATERIAL_WOODEN,RawMaterial.MATERIAL_UNKNOWN,RawMaterial.MATERIAL_VEGETATION,RawMaterial.MATERIAL_FLESH,RawMaterial.MATERIAL_LEATHER},
+/*12*/{Weapon.CLASS_POLEARM,RawMaterial.MATERIAL_WOODEN,RawMaterial.MATERIAL_UNKNOWN,RawMaterial.MATERIAL_VEGETATION,
+		RawMaterial.MATERIAL_FLESH,RawMaterial.MATERIAL_LEATHER},
 /*13*/{Weapon.CLASS_NATURAL,Weapon.CLASS_STAFF},
+/*14*/{Weapon.CLASS_NATURAL,Weapon.CLASS_STAFF, Weapon.CLASS_SWORD, Weapon.CLASS_DAGGER, Weapon.CLASS_BLUNT, Weapon.CLASS_AXE},
+/*15*/{Weapon.CLASS_NATURAL,Weapon.CLASS_EDGED,Weapon.CLASS_DAGGER, Weapon.CLASS_BLUNT, Weapon.CLASS_HAMMER, Weapon.CLASS_POLEARM,
+			Weapon.CLASS_STAFF, Weapon.CLASS_FLAILED},
 	};
 	/** list of string descriptions for the CharClass.WEAPONS_* constants, ordered by their value.  @see CharClass */
 	public static final String[] WEAPONS_LONGDESC=CMLib.lang().sessionTranslation(new String[]{
@@ -746,6 +758,8 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 /*11*/"Must use flailed weapons.",
 /*12*/"May use polearms of any kind or other weapons made from wood, plant-based materials, or leather.",
 /*13*/"Must use staffs or natural weapons.",
+/*14*/"Must use staves, swords, daggers, axes, or blunt weapons.",
+/*15*/"Must use edged, dagger, blunt, hamer, polearm, staff, or flailed weapons."
 	});
 
 	/** for character classes that define themselves using getParms, this can designate racelessness bitmaps */

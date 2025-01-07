@@ -55,6 +55,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	protected long	monthsRemaining	= -1;
 	protected long	daysRemaining	= -1;
 	protected Ability addictions	= null;
+	protected int	ticksInLabor	= 0;
+
 
 	@Override
 	public String getHealthConditionDesc()
@@ -79,177 +81,140 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		return "";
 	}
 
+	protected enum PregArg
+	{
+		STARTTIME,
+		ENDTIME,
+		FATHERNAME,
+		FATHERRACE,
+		BABYRACE,
+		BABYGENDER
+	}
+
+	protected String getSplitArgument(final PregArg arg)
+	{
+		return getSplitArgument(arg, "");
+	}
+
+	protected String getSplitArgument(final PregArg arg, final String def)
+	{
+		final String txt = text();
+		int ord = 0;
+		int prevX = 0;
+		int x = txt.indexOf('/');
+		while(ord < arg.ordinal())
+		{
+			if(x<0)
+				return def;
+			prevX = x;
+			x=txt.indexOf('/',prevX+1);
+			ord++;
+		}
+		if(x<0)
+			return txt.substring(prevX+1);
+		return txt.substring(prevX+1,x);
+	}
+
+	protected void setSplitArgument(final PregArg arg, final String value)
+	{
+		final List<String> parms = CMParms.parseAny(text(),'/',false);
+		if(arg.ordinal() >= parms.size())
+			return;
+		while(parms.size()<=arg.ordinal())
+			parms.add("");
+		parms.set(arg.ordinal(),value);
+		setMiscText(CMParms.combineWith(parms, '/'));
+	}
+
 	protected long getPregnancyStartTime()
 	{
-		final String text = text();
-		final int x = text.indexOf('/');
-		if (x > 0)
-		{
-			final int y = text.indexOf('/', x + 1);
-			if (y >= 0)
-				return CMath.s_long(text.substring(0, x));
-		}
-		return -1;
+		return CMath.s_long(this.getSplitArgument(PregArg.STARTTIME, "-1"));
 	}
 
 	protected void setPregnancyStartTime(final long newTime)
 	{
-		final String text = text();
-		final int x = text.indexOf('/');
-		if (x > 0)
-		{
-			final int y = text.indexOf('/', x + 1);
-			if (y >= 0)
-				this.setMiscText(newTime + text.substring(x));
-		}
+		this.setSplitArgument(PregArg.STARTTIME, ""+newTime);
 	}
 
 	protected long getPregnancyEndTime()
 	{
-		final int x = text().indexOf('/');
-		if (x > 0)
-		{
-			final int y = text().indexOf('/', x + 1);
-			if (y >= 0)
-				return CMath.s_long(text().substring(x + 1, y));
-		}
-		return -1;
+		return CMath.s_long(this.getSplitArgument(PregArg.ENDTIME, "-1"));
 	}
 
 	protected void setPregnancyEndTime(final long newTime)
 	{
-		final String text = text();
-		final int x = text.indexOf('/');
-		if (x > 0)
-		{
-			final int y = text.indexOf('/', x + 1);
-			if (y >= 0)
-				this.setMiscText(text.substring(0, x + 1) + newTime + text.substring(y));
-		}
+		this.setSplitArgument(PregArg.ENDTIME, ""+newTime);
 	}
 
 	protected String getFathersName()
 	{
-		final int x = text().indexOf('/');
-		if (x > 0)
-		{
-			final int y = text().indexOf('/', x + 1);
-			if (y > x)
-			{
-				final int z = text().indexOf('/', y + 1);
-				if (z > y)
-					return text().substring(y + 1, z);
-			}
-		}
-		return "";
+		return getSplitArgument(PregArg.FATHERNAME);
 	}
 
 	protected void setFathersName(final String name)
 	{
-		final int x = text().indexOf('/');
-		if (x > 0)
-		{
-			final int y = text().indexOf('/', x + 1);
-			if (y > x)
-			{
-				final int z = text().indexOf('/', y + 1);
-				if (z > y)
-					super.setMiscText(text().substring(0,y+1)+name+text().substring(z));
-			}
-		}
+		setSplitArgument(PregArg.FATHERNAME,name);
+	}
+
+	protected String getBabyRace()
+	{
+		return getSplitArgument(PregArg.BABYRACE);
+	}
+
+	protected void setBabyRace(final String raceID)
+	{
+		setSplitArgument(PregArg.BABYRACE,raceID);
+	}
+
+	protected String getBabyGender()
+	{
+		return getSplitArgument(PregArg.BABYGENDER);
+	}
+
+	protected void setBabyGender(final String genderChar)
+	{
+		setSplitArgument(PregArg.BABYGENDER,genderChar);
 	}
 
 	protected String getFathersRace()
 	{
-		final int x = text().indexOf('/');
-		if (x > 0)
-		{
-			final int y = text().indexOf('/', x + 1);
-			if (y > x)
-			{
-				final int z = text().indexOf('/', y + 1);
-				if (z > y)
-				{
-					final String race2 = text().substring(z + 1).trim();
-					if((race2.length()>2)
-					&& Character.isDigit(race2.charAt(0))
-					&& race2.charAt(1)=='X')
-						return race2.substring(2);
-					else
-						return race2;
-				}
-			}
-		}
-		return "";
+		final String racePart=getSplitArgument(PregArg.FATHERRACE);
+		if((racePart.length()>2)
+		&& Character.isDigit(racePart.charAt(0))
+		&& racePart.charAt(1)=='X')
+			return racePart.substring(2);
+		return racePart;
 	}
 
 	protected void setFathersRace(final String raceID)
 	{
-		final int x = text().indexOf('/');
-		if (x > 0)
-		{
-			final int y = text().indexOf('/', x + 1);
-			if (y > x)
-			{
-				final int z = text().indexOf('/', y + 1);
-				if (z > y)
-				{
-					final int numKids = this.getNumKids();
-					final String race2;
-					if(numKids > 1)
-						race2=numKids+"X"+raceID;
-					else
-						race2=raceID;
-					super.setMiscText(text().substring(0,z+1)+race2);
-				}
-			}
-		}
+		if((raceID.length()>2)
+		&& Character.isDigit(raceID.charAt(0))
+		&& raceID.charAt(1)=='X')
+			setSplitArgument(PregArg.FATHERRACE,raceID);
+		else
+			setSplitArgument(PregArg.FATHERRACE,getNumKids()+"X"+raceID);
 	}
 
 	protected int getNumKids()
 	{
-		final int x = text().indexOf('/');
-		if (x > 0)
-		{
-			final int y = text().indexOf('/', x + 1);
-			if (y > x)
-			{
-				final int z = text().indexOf('/', y + 1);
-				if (z > y)
-				{
-					final String race2 = text().substring(z + 1).trim();
-					if((race2.length()>2)
-					&& Character.isDigit(race2.charAt(0))
-					&& race2.charAt(1)=='X')
-						return CMath.s_int(race2.substring(0,1));
-				}
-			}
-		}
+		final String racePart=getSplitArgument(PregArg.FATHERRACE);
+		if((racePart.length()>2)
+		&& Character.isDigit(racePart.charAt(0))
+		&& racePart.charAt(1)=='X')
+			return CMath.s_int(racePart.substring(0,1));
 		return 1;
 	}
 
-	protected void setNumKids(final int num)
+	protected void setNumKids(int num)
 	{
-		final int x = text().indexOf('/');
-		if (x > 0)
-		{
-			final int y = text().indexOf('/', x + 1);
-			if (y > x)
-			{
-				final int z = text().indexOf('/', y + 1);
-				if (z > y)
-				{
-					String race2 = text().substring(z + 1).trim();
-					if((race2.length()>2)
-					&& Character.isDigit(race2.charAt(0))
-					&& race2.charAt(1)=='X')
-						race2=race2.substring(2);
-					if(num > 1)
-						race2=num+"X"+race2;
-					super.setMiscText(text().substring(0,z+1)+race2);
-				}
-			}
-		}
+		final String racePart=getSplitArgument(PregArg.FATHERRACE);
+		if(num<1)
+			num=1;
+		else
+		if(num>9)
+			num=9;
+		setSplitArgument(PregArg.FATHERRACE,num+"X"+racePart);
 	}
 
 	@Override
@@ -268,6 +233,12 @@ public class Pregnancy extends StdAbility implements HealthCondition
 			else
 			if (code.equalsIgnoreCase("FATHERRACE"))
 				this.setFathersRace(val);
+			else
+			if (code.equalsIgnoreCase("BABYRACE"))
+				this.setBabyRace(val);
+			else
+			if (code.equalsIgnoreCase("BABYGENDER"))
+				this.setBabyGender(val);
 			else
 			if (code.equalsIgnoreCase("NUMBABIES"))
 				this.setNumKids(Math.min(9, CMath.s_int(val)));
@@ -301,6 +272,12 @@ public class Pregnancy extends StdAbility implements HealthCondition
 			else
 			if (code.equalsIgnoreCase("NUMBABIES"))
 				return "" + this.getNumKids();
+			else
+			if (code.equalsIgnoreCase("BABYRACE"))
+				return "" + this.getBabyRace();
+			else
+			if (code.equalsIgnoreCase("BABYGENDER"))
+				return "" + this.getBabyGender();
 			else
 				return super.getStat(code);
 		}
@@ -371,8 +348,6 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	{
 		return Ability.ACODE_PROPERTY;
 	}
-
-	protected int	ticksInLabor	= 0;
 
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
@@ -462,24 +437,43 @@ public class Pregnancy extends StdAbility implements HealthCondition
 						&&(!(mob instanceof ShopKeeper)))
 							classID=mob.ID();
 						final int numKids=this.getNumKids();
-						String fatherR = this.getFathersRace();
-						if((fatherR==null)||(fatherR.length()==0))
-							fatherR=mob.baseCharStats().getMyRace().ID();
 						String otherParentName = this.getFathersName();
 						if((otherParentName!=null)&&(otherParentName.length()==0))
 							otherParentName = null;
 						MOB otherParentM = null;
+						String fatherR = this.getFathersRace();
 						if((otherParentName!=null)&&(otherParentName.length()>0))
 							otherParentM=CMLib.players().getLoadPlayer(otherParentName);
+						if((fatherR==null)||(fatherR.length()==0))
+						{
+							if(otherParentM!=null)
+								fatherR=otherParentM.baseCharStats().getMyRace().ID();
+							else
+								fatherR=mob.baseCharStats().getMyRace().ID();
+						}
+						final String babyRaceID = this.getBabyRace();
 						for(int k=0;k<numKids;k++)
 						{
-							char gender = 'F';
-							String sondat = "daughter";
-							if (CMLib.dice().rollPercentage() > 50)
+							char gender;
+							if((getBabyGender()!=null)
+							&&(getBabyGender().length()>0)
+							&&("MFN".indexOf(getBabyGender().toUpperCase().charAt(0))>=0))
+								gender = getBabyGender().toUpperCase().charAt(0);
+							else
+								gender = (CMLib.dice().rollPercentage() > 50)?'M':'F';
+							String sondat;
+							switch(gender)
 							{
-								gender = 'M';
-								sondat = "son";
+							case 'M':
+								sondat="son";
+								break;
+							case 'F':
+								sondat="daughter";
+								break;
+							default:
+								sondat="child";
 							}
+
 							final MOB babe = CMClass.getMOB(classID);
 							babe.addTattoo("PARENT:" + mob.Name());
 							final String desc;
@@ -518,14 +512,20 @@ public class Pregnancy extends StdAbility implements HealthCondition
 									A = mob.fetchAbility(ID());
 								}
 							}
-							final int numRaces = CMClass.numPrototypes(CMObjectType.RACE);
 							boolean newRaceGenerated = false;
-							Race R = CMLib.utensils().getMixedRace(motherR, fatherR, false);
-							if (R == null)
-								R = mob.baseCharStats().getMyRace();
+							Race R;
+							if((babyRaceID!=null)&&(babyRaceID.length()>0)&&(CMClass.getRace(babyRaceID)!=null))
+								R=CMClass.getRace(babyRaceID);
 							else
-							if(numRaces > CMClass.numPrototypes(CMObjectType.RACE))
-								newRaceGenerated = true;
+							{
+								final int numRaces = CMClass.numPrototypes(CMObjectType.RACE);
+								R = CMLib.utensils().getMixedRace(motherR, fatherR, false);
+								if (R == null)
+									R = mob.baseCharStats().getMyRace();
+								else
+								if(numRaces > CMClass.numPrototypes(CMObjectType.RACE))
+									newRaceGenerated = true;
+							}
 							String name = CMLib.english().startWithAorAn(R.makeMobName(gender, 2)).toLowerCase();
 							babe.setName(name);
 							CMLib.factions().setAlignment(babe, Faction.Align.GOOD);
@@ -556,7 +556,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							CMLib.beanCounter().clearZeroMoney(babe, null);
 							babe.setMoneyVariation(0);
 							babe.baseCharStats().setMyRace(R);
-							babe.baseCharStats().setMyClasses("Apprentice");
+							babe.baseCharStats().setAllClassInfo("Apprentice", "1");
 							babe.baseCharStats().setStat(CharStats.STAT_CHARISMA, 10);
 							babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION, 6);
 							babe.baseCharStats().setStat(CharStats.STAT_DEXTERITY, 2);
@@ -627,6 +627,16 @@ public class Pregnancy extends StdAbility implements HealthCondition
 									babe.addNonUninvokableEffect(AGE);
 								}
 							}
+							for(final Enumeration<Ability> a = mob.effects();a.hasMoreElements();)
+							{
+								final Ability A = a.nextElement();
+								if((A instanceof DiseaseAffect)
+								&&((((DiseaseAffect)A).spreadBitmap()&DiseaseAffect.SPREAD_INHERETED)==DiseaseAffect.SPREAD_INHERETED))
+								{
+									final Ability effA = (Ability)A.copyOf();
+									babe.addEffect(effA);
+								}
+							}
 							babe.recoverCharStats();
 							babe.recoverPhyStats();
 							babe.recoverMaxState();
@@ -643,6 +653,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							final Item I = CMClass.getItem("GenCaged");
 							((CagedAnimal) I).cageMe(babe);
 							((CagedAnimal) I).setCageFlagsBitmap(CagedAnimal.CAGEFLAG_TO_MOB_PROGRAMMATICALLY);
+							I.setBaseValue(1000);
 							final Ability AGE = CMClass.getAbility("Age");
 							if (AGE != null)
 							{

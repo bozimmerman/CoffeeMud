@@ -47,6 +47,10 @@
 		{
 			Clicked("journal.cmvp#"+journal,message,journal,cardinal,document.JOURNAL.JOURNALPAGE.value,action);
 		}
+		function Clicked4(journal,message,action,cardinal,page)
+		{
+			Clicked("journal.cmvp#"+journal,message,journal,cardinal,page,action);
+		}
 		function ClickedSearch(journal)
 		{
 			if(!ShowAllWarning())
@@ -244,7 +248,6 @@
 				@AddRequestParameter?JOURNALMESSAGE=@@RequestParameter?OLDMESSAGE@@ @
 				@AddRequestParameter?JOURNALCARDINAL=@@RequestParameter?OLDCARDINAL@@ @
 				@AddRequestParameter?JOURNAL=@@RequestParameter?OLDJOURNAL@@ @
-				
 				@if?!CheckReqParm?JOURNAL=@
 					@if?CheckReqParm?FUNCTION=POSTNEW@
 						<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
@@ -287,7 +290,7 @@
 						</TR>
 						</TABLE>
 						<HR>
-						<FONT COLOR=WHITE>@JournalInfo?MESSAGE@</FONT><P>
+						<FONT COLOR=WHITE>@JournalInfo?MESSAGE&SMARTTAGS@</FONT><P>
 						<HR>
 						
 						<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
@@ -411,7 +414,7 @@
 							</TR>
 							</TABLE>
 							<HR>
-							<FONT COLOR=WHITE>@JournalInfo?MESSAGE@</FONT><P>
+							<FONT COLOR=WHITE>@JournalInfo?MESSAGE&SMARTTAGS@</FONT><P>
 							<HR>
 							<TABLE WIDTH=100% BORDER=0>
 							<TR VALIGN=TOP>
@@ -424,7 +427,7 @@
 								@JournalNext?RESET@
 								@loop@
 									@JournalNext@
-									<OPTION VALUE="@JournalName@">@JournalName?NOCOLOR@
+									<OPTION VALUE="@JournalName@">@JournalName?NOCOLOR&LIMIT=25@
 								@back@
 								@AddRequestParameter?JOURNAL=@@RequestParameter?THISJOURNAL@@ @
 								@JournalInfo?ASSIGN&RESET@
@@ -513,7 +516,7 @@
                                         <SELECT NAME=NEWJOURNAL@RequestParameter?JOURNALMESSAGE@>
                                         @JournalNext?RESET@
                                         @loop@
-                                            @JournalNext@
+                                            @JournalNext?TRANSFERLIST@
                                             <OPTION VALUE="@JournalName@">@JournalName?NOCOLOR@
                                         @back@
                                         </SELECT>
@@ -540,7 +543,7 @@
 								@AddRequestParameter?JOURNALCARDINAL=@@RequestParameter?OLDCARDINAL@@ @
 								@AddRequestParameter?JOURNAL=@@RequestParameter?OLDJOURNAL@@ @
                                 <CENTER>
-                                <INPUT TYPE=BUTTON NAME=PROCESSALL Value="Submit All" ONCLICK="if(window.confirm('Submit all changes above?')) Clicked3('@RequestParameter?JOURNAL@','','EVERYTHING','');">
+                                <INPUT TYPE=BUTTON NAME=PROCESSALL Value="Submit All" ONCLICK="if(window.confirm('Submit all changes above?')) Clicked4('@RequestParameter?JOURNAL@','','EVERYTHING','','@RequestParameter?JOURNALPAGE@');">
                                 </CENTER>
                             @endif@
 						@endif@

@@ -197,6 +197,17 @@ QUEST_TIME_PROG * -1
 	MPSETVAR * $QUEST_ID_REWARDED ''
 ~
 
+SPEECH_PROG quest quests quest? quests?
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !STRIN('$<$i $QUEST_ID_ALREADY_TOLD>' '$n')
+				sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept' to take on this quest.
+				MPSETVAR $i $QUEST_ID_ALREADY_TOLD '$<$i $QUEST_ID_ALREADY_TOLD> "$n"'
+			endif
+		endif
+	endif
+~
+
 GREET_PROG 100
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
@@ -259,6 +270,7 @@ ENTRY_PROG 100
 			if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
 				mpoloadroom QuestPoint
 				mpforce $n GET "a quest point"
+				mpjunk a quest point
 			endif
 			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
 				mpoloadroom $GOLD

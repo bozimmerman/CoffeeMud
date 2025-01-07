@@ -111,10 +111,11 @@ public class Chant_PlantSelf extends Chant
 
 		if((msg.amISource(mob))
 		&&(msg.tool()!=this)
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)) // prevents endless loops
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 		&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))
 				||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-				||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH))))
+				||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)&&CMath.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))))
 			unInvoke();
 		return;
 	}

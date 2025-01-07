@@ -77,6 +77,8 @@ public class QuestData extends StdWebMacro
 				return clearWebMacros(CMStrings.replaceAll(""+Q,"@","*"));
 			if(parms.containsKey("DURATION"))
 				return ""+Q.duration();
+			if(parms.containsKey("AREA"))
+				return (Q.getQuestArea()==null)?"":Q.getQuestArea().Name();
 			if(parms.containsKey("EXPIRATION"))
 				return ""+(Q.isCopy()?Q.duration():0);
 			if(parms.containsKey("WAIT"))

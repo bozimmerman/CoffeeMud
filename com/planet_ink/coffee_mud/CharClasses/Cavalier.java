@@ -219,6 +219,7 @@ public class Cavalier extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_CompanionMount",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_HoldTheLine",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_FaithfulMount",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_TradeCharting",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_BreakMount",false);
@@ -237,6 +238,7 @@ public class Cavalier extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_RegionalAwareness",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_PlainsTactics",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_RidingFight",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_CaravanTravel",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_CalledShot",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ProtectedMount",true);
@@ -311,7 +313,7 @@ public class Cavalier extends StdCharClass
 		&&(mob!=killed)
 		&&(!mob.amDead())
 		&&((!mob.isMonster())
-			||(!CMLib.flags().isAnimalIntelligence(mob))
+			||(!CMLib.flags().isAnAnimal(mob))
 			||(!(mob instanceof Rideable)))
 		&&((mob.getVictim()==killed)
 		 ||(followers.contains(mob))

@@ -180,7 +180,7 @@ public class Chant_FeedingFrenzy extends Chant
 						{
 							final MOB M=m.nextElement();
 							if(M.isMonster()
-							&&CMLib.flags().isAnimalIntelligence(M)
+							&&CMLib.flags().isAnAnimal(M)
 							&&CMLib.flags().canActAtAll(M)
 							&&(M.fetchEffect(ID())==null)
 							&&(CMLib.flags().isMarine(M)))

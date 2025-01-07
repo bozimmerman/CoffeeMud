@@ -1432,7 +1432,7 @@ public class DefaultClan implements Clan
 	}
 
 	@Override
-	public MOB getFactoryMOB()
+	public MOB getClanTalker()
 	{
 		if(this.factoryMob == null)
 		{
@@ -1512,7 +1512,7 @@ public class DefaultClan implements Clan
 		{
 			final Tracker T = i.next();
 			if(T.getAchievement().isSavableTracker() && (T.getCount(null) != 0))
-				str.append(" ").append(T.getAchievement().getTattoo()).append("=").append(T.getCount(null));
+				str.append(" ").append(T.getAchievement().getTattoo()).append("=").append(T.getCountParms(null));
 			// getCount(null) should be ok, because it's only the un-savable trackers that need the mob obj
 		}
 		str.append(" />");
@@ -1616,9 +1616,9 @@ public class DefaultClan implements Clan
 		{
 			final Achievement A=a.nextElement();
 			if((achievePiece != null) && achievePiece.parms().containsKey(A.getTattoo()))
-				achievementers.put(A.getTattoo(), A.getTracker(CMath.s_int(achievePiece.parms().get(A.getTattoo()).trim())));
+				achievementers.put(A.getTattoo(), A.getTracker(achievePiece.parms().get(A.getTattoo()).trim()));
 			else
-				achievementers.put(A.getTattoo(), A.getTracker(0));
+				achievementers.put(A.getTattoo(), A.getTracker("0"));
 		}
 		final String[] allTattoos=xmlLib.getValFromPieces(poliData, "TATTOOS").split(",");
 		this.tattoos.clear();
@@ -2776,7 +2776,7 @@ public class DefaultClan implements Clan
 		}
 		else
 		{
-			T=A.getTracker(0);
+			T=A.getTracker("0");
 			achievementers.put(A.getTattoo(), T);
 		}
 		return T;
@@ -2789,9 +2789,9 @@ public class DefaultClan implements Clan
 		if(A!=null)
 		{
 			if(achievementers.containsKey(A.getTattoo()))
-				achievementers.put(A.getTattoo(), A.getTracker(achievementers.get(A.getTattoo()).getCount(C)));
+				achievementers.put(A.getTattoo(), A.getTracker(achievementers.get(A.getTattoo()).getCountParms(C)));
 			else
-				achievementers.put(A.getTattoo(), A.getTracker(0));
+				achievementers.put(A.getTattoo(), A.getTracker("0"));
 		}
 		else
 			achievementers.remove(achievementTattoo);

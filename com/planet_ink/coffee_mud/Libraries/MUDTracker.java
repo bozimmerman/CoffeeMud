@@ -900,7 +900,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if(((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0))
 		||((mob.amFollowing()!=null)
 			&&(CMLib.tracking().areNearEachOther(mob,mob.amFollowing())
-				||CMLib.tracking().areNearEachOther(mob,mob.amUltimatelyFollowing()))))
+				||CMLib.tracking().areNearEachOther(mob,mob.getGroupLeader()))))
 		{
 			if(status!=null)
 				status[0]=Tickable.STATUS_NOT;
@@ -1168,7 +1168,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			if(((M instanceof Rideable)&&(((Rideable)M).numRiders()>0))
 			||((M.amFollowing()!=null)
 				&&(CMLib.tracking().areNearEachOther(M,M.amFollowing())
-					||CMLib.tracking().areNearEachOther(M,M.amUltimatelyFollowing()))))
+					||CMLib.tracking().areNearEachOther(M,M.getGroupLeader()))))
 				return;
 			beMobile(M,true,true,false,false,false,null,null);
 		}
@@ -1968,6 +1968,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					{
 						if((((Rideable)I).rideBasis()!=Rideable.Basis.FURNITURE_SIT)
 						&&(((Rideable)I).rideBasis()!=Rideable.Basis.FURNITURE_TABLE)
+						&&(((Rideable)I).rideBasis()!=Rideable.Basis.FURNITURE_HOOK)
 						&&(((Rideable)I).rideBasis()!=Rideable.Basis.ENTER_IN)
 						&&(((Rideable)I).rideBasis()!=Rideable.Basis.FURNITURE_SLEEP)
 						&&(((Rideable)I).rideBasis()!=Rideable.Basis.LADDER))
@@ -2251,8 +2252,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	@Override
 	public String getTrailToDescription(final Room startR, final List<Room> radiantV, final String where,
 										final Set<TrailFlag> trailFlags, final int radius, final Set<Room> ignoreRooms,
-										final int maxSecs)
+										String delimeter, final int maxSecs)
 	{
+		if(delimeter==null)
+			delimeter=" ";
 		final Room R2=getWhere(where,radiantV);
 		if(R2==null)
 			return L("Unable to determine '@x1'.",where);
@@ -2296,7 +2299,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			final Room R=trailV.get(s);
 			final Room RA=trailV.get(s-1);
-			theDirTrail.add(CMLib.directions().getDirectionChar(getRoomDirection(R,RA,empty))+" ");
+			theDirTrail.add(CMLib.directions().getDirectionChar(getRoomDirection(R,RA,empty)));
 		}
 		final StringBuffer theTrail=new StringBuffer("");
 		if(confirm)
@@ -2317,9 +2320,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			else
 			{
 				if(lastNum==1)
-					theTrail.append(lastDir+" ");
+					theTrail.append(lastDir+delimeter);
 				else
-					theTrail.append(Integer.toString(lastNum)+lastDir+" ");
+					theTrail.append(Integer.toString(lastNum)+lastDir+delimeter);
 				lastDir=s;
 				lastNum=1;
 			}
@@ -2330,7 +2333,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		else
 		if(lastNum>0)
 			theTrail.append(Integer.toString(lastNum)+lastDir);
-
+		if((theTrail.length()>delimeter.length())
+		&&(theTrail.substring(theTrail.length()-delimeter.length()).equals(delimeter)))
+			theTrail.delete(theTrail.length()-delimeter.length(), theTrail.length());
 		if((confirm)&&(trailV.size()>1))
 		{
 			for(int i=0;i<trailV.size();i++)
@@ -2783,6 +2788,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 					{
 						return !CMLib.flags().isWaterySurfaceRoom(R);
+					}
+				};
+				break;
+			case DRIVEABLEONLY: tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						return !CMLib.flags().isDrivableRoom(R);
 					}
 				};
 				break;

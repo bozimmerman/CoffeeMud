@@ -138,7 +138,7 @@ public class Fighter_CompanionMount extends FighterSkill
 								{
 									final MOB M=mob.fetchFollower(f);
 									if((M!=mob)
-									&&(CMLib.flags().isAnimalIntelligence(M))
+									&&(CMLib.flags().isAnAnimal(M))
 									&&(M.fetchEffect("Loyalty")!=null))
 										numLoyal++;
 								}
@@ -248,7 +248,7 @@ public class Fighter_CompanionMount extends FighterSkill
 					mountMob = (MOB)riding;
 					if((mountMob.fetchEffect("Loyalty")==null)
 					&&(mountMob.isMonster())
-					&&(CMLib.flags().isAnimalIntelligence(mountMob)))
+					&&(CMLib.flags().isAnAnimal(mountMob)))
 					{
 						target = mountMob;
 						final PairList<String, Race> choices = CMLib.utensils().getFavoredMounts(mob);

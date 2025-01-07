@@ -287,7 +287,7 @@ public class GrinderAreas
 				for(int i=0;i<3;i++)
 				{
 					if(i<parts.size())
-						SO.coordinates()[i]=CMath.s_long(parts.get(i));
+						SO.coordinates().set(i,CMath.s_long(parts.get(i)));
 				}
 				if(CMLib.space().isObjectInSpace(SO))
 				{
@@ -298,12 +298,12 @@ public class GrinderAreas
 			}
 
 			if(httpReq.isUrlParameter("COORDINATES0"))
-				SO.coordinates()[0]=CMath.s_long(httpReq.getUrlParameter("COORDINATES0"));
+				SO.coordinates().x(CMath.s_long(httpReq.getUrlParameter("COORDINATES0")));
 			if(httpReq.isUrlParameter("COORDINATES1"))
-				SO.coordinates()[1]=CMath.s_long(httpReq.getUrlParameter("COORDINATES1"));
+				SO.coordinates().y(CMath.s_long(httpReq.getUrlParameter("COORDINATES1")));
 			if(httpReq.isUrlParameter("COORDINATES2"))
 			{
-				SO.coordinates()[2]=CMath.s_long(httpReq.getUrlParameter("COORDINATES2"));
+				SO.coordinates().z(CMath.s_long(httpReq.getUrlParameter("COORDINATES2")));
 				if(CMLib.space().isObjectInSpace(SO))
 				{
 					CMLib.space().delObjectInSpace(SO);
@@ -321,14 +321,14 @@ public class GrinderAreas
 				for(int i=0;i<3;i++)
 				{
 					if(i<parts.size())
-						SO.direction()[i]=CMath.s_double(parts.get(i));
+						SO.direction().set(i,CMath.s_double(parts.get(i)));
 				}
 			}
 
 			if(httpReq.isUrlParameter("DIRECTION0"))
-				SO.direction()[0]=CMath.s_double(httpReq.getUrlParameter("DIRECTION0"));
+				SO.direction().xy(CMath.s_double(httpReq.getUrlParameter("DIRECTION0")));
 			if(httpReq.isUrlParameter("DIRECTION1"))
-				SO.direction()[1]=CMath.s_double(httpReq.getUrlParameter("DIRECTION1"));
+				SO.direction().z(CMath.s_double(httpReq.getUrlParameter("DIRECTION1")));
 
 			if(httpReq.isUrlParameter("SPEED"))
 				SO.setSpeed(CMath.s_long(httpReq.getUrlParameter("SPEED")));

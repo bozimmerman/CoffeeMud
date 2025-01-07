@@ -37,6 +37,7 @@ public class DefaultAreaIStats implements AreaIStats
 {
 	private volatile AISBuildState	state		= AISBuildState.NOT_STARTED;
 	private final int[]				statData	= new int[Area.Stats.values().length];
+	private Race					commonRace	= null;
 
 	private enum AISBuildState
 	{
@@ -52,6 +53,7 @@ public class DefaultAreaIStats implements AreaIStats
 		private final List<Integer>	alignRanges		= new Vector<Integer>();
 		private volatile long		totalAlignments	= 0;
 		private RoomnumberSet		done			= null;
+		private final Map<Race,Pair<int[], Boolean>> races = new Hashtable<Race,Pair<int[], Boolean>>();
 	}
 
 	@Override
@@ -133,6 +135,7 @@ public class DefaultAreaIStats implements AreaIStats
 				{
 					wk = workData;
 				}
+				final Race R = mob.baseCharStats().getMyRace();
 				final int lvl = mob.basePhyStats().level();
 				wk.levelRanges.add(Integer.valueOf(lvl));
 				if ((wk.theFaction != null)
@@ -143,6 +146,7 @@ public class DefaultAreaIStats implements AreaIStats
 				}
 				statData[Area.Stats.POPULATION.ordinal()]++;
 				statData[Area.Stats.TOTAL_LEVELS.ordinal()] += lvl;
+				boolean animalFlag = false;
 				if (!CMLib.flags().isAnimalIntelligence(mob))
 				{
 					statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()] += lvl;
@@ -151,7 +155,11 @@ public class DefaultAreaIStats implements AreaIStats
 				else
 				{
 					statData[Area.Stats.ANIMALS.ordinal()]++;
+					animalFlag = true;
 				}
+				if(!wk.races.containsKey(R))
+					wk.races.put(R, new Pair<int[], Boolean>(new int[] {0}, Boolean.valueOf(animalFlag)));
+				wk.races.get(R).first[0]++;
 				if (lvl < statData[Area.Stats.MIN_LEVEL.ordinal()])
 					statData[Area.Stats.MIN_LEVEL.ordinal()] = lvl;
 				if (lvl >= statData[Area.Stats.MAX_LEVEL.ordinal()])
@@ -163,22 +171,25 @@ public class DefaultAreaIStats implements AreaIStats
 					}
 					statData[Area.Stats.MAX_LEVEL_MOBS.ordinal()]++;
 				}
-				/*
-				 * if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)) {
-				 * if(CMLib.flags().isGood(mob))
-				 * statData[Area.Stats.GOOD_MOBS.ordinal()]++; else
-				 * if(CMLib.flags().isEvil(mob))
-				 * statData[Area.Stats.EVIL_MOBS.ordinal()]++; }
-				 * if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL)) {
-				 * if(CMLib.flags().isLawful(mob))
-				 * statData[Area.Stats.LAWFUL_MOBS.ordinal()]++; else
-				 * if(CMLib.flags().isChaotic(mob))
-				 * statData[Area.Stats.CHAOTIC_MOBS.ordinal()]++; }
-				 * if(mob.fetchEffect("Prop_ShortEffects")!=null)
-				 * statData[Area.Stats.BOSS_MOBS.ordinal()]++;
-				 * if(" Humanoid Elf Dwarf Halfling HalfElf ".indexOf(" "+mob.charStats().getMyRace().racialCategory()+" ")>=0)
-				 * statData[Area.Stats.HUMANOIDS.ordinal()]++;
-				 */
+				if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+				{
+					if(CMLib.flags().isGood(mob))
+						statData[Area.Stats.GOOD_MOBS.ordinal()]++;
+					else
+					if(CMLib.flags().isEvil(mob))
+						statData[Area.Stats.EVIL_MOBS.ordinal()]++;
+				}
+				if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+				{
+					if(CMLib.flags().isLawful(mob))
+						statData[Area.Stats.LAWFUL_MOBS.ordinal()]++; else
+					if(CMLib.flags().isChaotic(mob))
+						statData[Area.Stats.CHAOTIC_MOBS.ordinal()]++;
+				}
+				if(mob.fetchEffect("Prop_ShortEffects")!=null)
+					statData[Area.Stats.BOSS_MOBS.ordinal()]++;
+				if(" Humanoid Elf Dwarf Halfling HalfElf ".indexOf(" "+R.racialCategory()+" ")>=0)
+					statData[Area.Stats.HUMANOIDS.ordinal()]++;
 			}
 		}
 	}
@@ -205,6 +216,12 @@ public class DefaultAreaIStats implements AreaIStats
 					buildAreaIMobStats(workData, R2.fetchInhabitant(i2));
 			}
 		}
+	}
+
+	@Override
+	public Race getCommonRace()
+	{
+		return this.commonRace;
 	}
 
 	protected void buildAreaIRoomItemsStats(final AISBuild workData, final Room R)
@@ -299,9 +316,78 @@ public class DefaultAreaIStats implements AreaIStats
 			}
 			statData[Area.Stats.AVG_LEVEL.ordinal()] = (int) Math.round(CMath.div(statData[Area.Stats.TOTAL_LEVELS.ordinal()], statData[Area.Stats.POPULATION.ordinal()]));
 			statData[Area.Stats.AVG_ALIGNMENT.ordinal()] = (int) Math.round(((double) wk.totalAlignments) / (statData[Area.Stats.POPULATION.ordinal()]));
+			if(wk.levelRanges.size()>0)
+			{
+				Integer modeLevel=null;
+				int modeCt = -1;
+				Integer lastI=wk.levelRanges.get(0);
+				int curCt = 0;
+				for(int i=1;i<wk.levelRanges.size();i++)
+				{
+					final Integer I=wk.levelRanges.get(i);
+					if(I.intValue() != lastI.intValue())
+					{
+						if(curCt > modeCt)
+						{
+							modeLevel = lastI;
+							modeCt=curCt;
+						}
+						curCt=0;
+					}
+					lastI=I;
+					curCt++;
+				}
+				if(curCt > modeCt)
+				{
+					modeLevel = lastI;
+					modeCt=curCt;
+				}
+				if(modeLevel != null)
+					statData[Area.Stats.MODE_LEVEL.ordinal()] = modeLevel.intValue();
+			}
 		}
 		wk.levelRanges.clear();
+		if(wk.alignRanges.size()>0)
+		{
+			Integer modeAlign=null;
+			int modeCt = -1;
+			Integer lastI=wk.alignRanges.get(0);
+			int curCt = 0;
+			for(int i=1;i<wk.alignRanges.size();i++)
+			{
+				final Integer I=wk.alignRanges.get(i);
+				if(I.intValue() != lastI.intValue())
+				{
+					if(curCt > modeCt)
+					{
+						modeAlign = lastI;
+						modeCt=curCt;
+					}
+					curCt=0;
+				}
+				lastI=I;
+				curCt++;
+			}
+			if(curCt > modeCt)
+			{
+				modeAlign = lastI;
+				modeCt=curCt;
+			}
+			if(modeAlign != null)
+				statData[Area.Stats.MODE_ALIGNMENT.ordinal()] = modeAlign.intValue();
+		}
 		wk.alignRanges.clear();
+		int maxRace = 0;
+		Race winRace = null;
+		for(final Race R : wk.races.keySet())
+		{
+			if(wk.races.get(R).first[0] > maxRace)
+			{
+				maxRace = wk.races.get(R).first[0];
+				winRace = R;
+			}
+		}
+		commonRace = winRace;
 		A.basePhyStats().setLevel(statData[Area.Stats.MED_LEVEL.ordinal()]);
 		A.phyStats().setLevel(statData[Area.Stats.MED_LEVEL.ordinal()]);
 		Resources.removeResource("HELP_" + A.Name().toUpperCase());
@@ -330,6 +416,8 @@ public class DefaultAreaIStats implements AreaIStats
 		statData[Area.Stats.MAX_LEVEL.ordinal()] = Integer.MIN_VALUE;
 		statData[Area.Stats.AVG_LEVEL.ordinal()] = 0;
 		statData[Area.Stats.MED_LEVEL.ordinal()] = 0;
+		statData[Area.Stats.MODE_LEVEL.ordinal()] = 0;
+		statData[Area.Stats.MODE_ALIGNMENT.ordinal()] = 0;
 		statData[Area.Stats.AVG_ALIGNMENT.ordinal()] = 0;
 		statData[Area.Stats.TOTAL_LEVELS.ordinal()] = 0;
 		statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()] = 0;

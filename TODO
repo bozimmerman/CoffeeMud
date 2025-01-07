@@ -1,9 +1,6 @@
 BUGS/UNTESTED STUFF:
-   *. Is turning broken?  Swivel from approach->deproach looks terrible.  
-      And then during deproach you end up drifting FURTHER from the target!
 
 TECH TODO:
-   *. navigation course system testing.
    *. fix landing to require an orbit first
    *. make orbit ability, integrate with navigation: 1. go dir, 2. adjust point same dist from planet. 3. plot course. 4. Cheat
    *. make inertia battery that alter ships inertia overall for dir change 
@@ -36,6 +33,9 @@ TECH TODO:
    *. Radiation Props: Alpha (damage), Beta (?!), Gamma (Mutation if in too long)
    *. Multiple SPACE arrays for planes of existence.
 
+NON-TECH (Short Term) TODO:
+   *. Classes missing planar 35's: Arcanist Assassin Burglar Delver Gypsy Healer Jester Minstrel Thief 
+   *. Classes missing planar 35's: Missionary Necromancer Pirate Prancer Reliquist Templar Trapper
 NON-TECH (Long Term) TODO:
    *. MudChat - integrate with Percolator for mood/attitude based adjective variety
    *. Builder Achievements, Archon Achievements

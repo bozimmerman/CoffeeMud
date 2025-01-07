@@ -736,7 +736,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			{
 				final Session sess = targetM.session();
 				if((sess != null)
-				&&(mob.getGroupMembers(new TreeSet<MOB>()).contains(targetM))
+				&&(mob.getGroupMembers(new XTreeSet<MOB>()).contains(targetM))
 				&&(!targetM.isMonster()))
 				{
 					// law doesn't matter on a follower player
@@ -780,7 +780,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 				}
 				else
 				if((sess != null)
-				&&(mob.getGroupMembers(new TreeSet<MOB>()).contains(targetM))
+				&&(mob.getGroupMembers(new XTreeSet<MOB>()).contains(targetM))
 				&&(!targetM.isMonster()))
 				{
 					if(!(""+sess).equals(confirmedSessID))
@@ -916,7 +916,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 				str=auto?"":L("^F^<FIGHT^><S-NAME> amputate(s) <T-YOUPOSS> @x1!^</FIGHT^>^?",goneName);
 			else
 				str=auto?"":L("<S-NAME> amputate(s) <T-YOUPOSS> @x1.",goneName);
-			final int move = mob.getGroupMembers(new TreeSet<MOB>()).contains(target)?CMMsg.MASK_MOVE:CMMsg.MSK_MALICIOUS_MOVE;
+			final int move = mob.getGroupMembers(new XTreeSet<MOB>()).contains(target)?CMMsg.MASK_MOVE:CMMsg.MSK_MALICIOUS_MOVE;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,move|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),str);
 			CMLib.color().fixSourceFightColor(msg);
 			final Room R=CMLib.map().roomLocation(target);

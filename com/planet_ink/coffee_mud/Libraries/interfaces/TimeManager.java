@@ -2,14 +2,17 @@ package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.CoffeeTime.TimeDelta;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -277,6 +280,7 @@ public interface TimeManager extends CMLibrary
 	 * @return String Formatted date/time
 	 */
 	public String date2String24(final long time);
+
 	/**
 	 * Converts a given number of milliseconds,
 	 * into a number of rl years, months, days,
@@ -299,6 +303,7 @@ public interface TimeManager extends CMLibrary
 	 * @return ellapsed time approximation.
 	 */
 	public String date2BestShortEllapsedTime(long t);
+
 	/**
 	 * Converts a given number of milliseconds,
 	 * into a number of rl years, months, days,
@@ -307,12 +312,42 @@ public interface TimeManager extends CMLibrary
 	 * will automatically determine the smallest reasonable
 	 * unit of time to show.
 	 *
-	 * Usage: date2SmartEllapsedTime(time)
+	 * Usage: date2SmartEllapsedTime(time,true)
 	 * @param time The time in miliseconds
 	 * @param shortest true for short form, false otherwise
 	 * @return String Formatted ellapsed time
 	 */
 	public String date2SmartEllapsedTime(long time, boolean shortest);
+
+	/**
+	 * Converts a given number of milliseconds,
+	 * into a number of mud years, months, weeks, days,
+	 * and hours.  If in short form,
+	 * returns y, m, d, w, h.
+	 *
+	 * @param C the calendar to use, or null for global
+	 * @param time The time in miliseconds
+	 * @param minUnit The smallest unit to round down to
+	 * @param shortest true for short form, false otherwise
+	 * @return String Formatted ellapsed time
+	 */
+	public String date2EllapsedMudTime(TimeClock C, long time, final TimeDelta minUnit, final boolean shortest);
+
+	/**
+	 * Converts a given number of milliseconds,
+	 * into a number of rl years, months, days,
+	 * hours, minutes, and seconds.  If in short form,
+	 * returns y, m, d, h, m, and s.  This method
+	 * will automatically determine the smallest reasonable
+	 * unit of time to show.
+	 *
+	 * Usage: date2SmartEllapsedMudTime(time,true)
+	 * @param C the calendar to use, or null for global
+	 * @param time the time in miliseconds
+	 * @param shortest true for short form, false otherwise
+	 * @return String Formatted ellapsed mud time
+	 */
+	public String date2SmartEllapsedMudTime(final TimeClock C, long millis, boolean shortest);
 
 	/**
 	 * Converts a given date into a string of form:
@@ -347,10 +382,12 @@ public interface TimeManager extends CMLibrary
 	 * expression ending with the word minutes,
 	 * hours, seconds, days, mudhours, muddays,
 	 * mudweeks, mudmonths, or mudyears
+	 * @param clock clock to use for muddays
 	 * @param val the expression
+	 * @throws any parsing errors
 	 * @return the number of ticks represented by the string
 	 */
-	public int parseTickExpression(String val);
+	public int parseTickExpression(TimeClock clock, String val) throws CMException;
 
 	/**
 	 * Parses whether a tick expression, or an
@@ -411,4 +448,32 @@ public interface TimeManager extends CMLibrary
 	public final static long MILI_MONTH=MILI_DAY*30;
 	/** constant for the number of milliseconds in a rl year */
 	public final static long MILI_YEAR=MILI_DAY*365;
+
+
+	/**
+	 * Extended time periods for other uses
+	 * @author Bo Zimmerman
+	 */
+	public enum TimePeriod
+	{
+		HOUR(MILI_HOUR),
+		DAY(MILI_DAY),
+		WEEK(MILI_WEEK),
+		MONTH(MILI_MONTH),
+		SEASON(MILI_YEAR / 4L),
+		YEAR(MILI_YEAR),
+		ALLTIME(0)
+		;
+		private final long millis;
+
+		private TimePeriod(final long increment)
+		{
+			this.millis=increment;
+		}
+
+		public long getMillis()
+		{
+			return millis;
+		}
+	}
 }

@@ -265,17 +265,27 @@ public class Achievements extends StdCommand
 			{
 				final StringBuilder str=new StringBuilder("");
 				int i=1;
+				final List<Achievement> achs = new ArrayList<Achievement>();
 				for(final Enumeration<Tattoo> t = whoM.tattoos();t.hasMoreElements();)
 				{
 					final Achievement A=CMLib.achievements().getAchievement(t.nextElement().getTattooName());
 					if(A != null)
+						achs.add(A);
+				}
+				achs.sort(new Comparator<Achievement>() {
+					@Override
+					public int compare(final Achievement o1, final Achievement o2)
 					{
-						if(A.getRewards().length>0)
-							str.append(L("\n\r^HFrom the achievement ^w'@x1'^N:",A.getDisplayStr()));
-						for(final Award award : A.getRewards())
-						{
-							str.append("\n\r  "+(i++)+") "+CMLib.achievements().fixAwardDescription(A, award, whoM, whoM));
-						}
+						return o1.getDisplayStr().compareToIgnoreCase(o2.getDisplayStr());
+					}
+				});
+				for(final Achievement A : achs)
+				{
+					if(A.getRewards().length>0)
+						str.append(L("\n\r^HFrom the achievement ^w'@x1'^N:",A.getDisplayStr()));
+					for(final Award award : A.getRewards())
+					{
+						str.append("\n\r  "+(i++)+") "+CMLib.achievements().fixAwardDescription(A, award, whoM, whoM));
 					}
 				}
 				if(str.length()==0)

@@ -530,7 +530,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			s = new StringBuilder(workCmdList.get(commandIndex).toString());
 			for(int i=0;i<s.length();i++)
 			{
-				if((s.charAt(i)=='\\')||(s.charAt(i)=='\t'))
+				if((s.charAt(i)=='\\') // why? turns \n into \\n, which turns into \<cr>, which is ugly
+				||(s.charAt(i)=='\t'))
 				{
 					s.insert(i, '\\');
 					i++;
@@ -704,6 +705,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				matcher=pattern.matcher(str);
 				if(matcher.find())
 				{
+					str = (String)parser.elementAt(p,  3);
 					for(int i=0;i<=matcher.groupCount();i++)
 						str=CMStrings.replaceAll(str,"\\"+i,matcher.group(i));
 				}

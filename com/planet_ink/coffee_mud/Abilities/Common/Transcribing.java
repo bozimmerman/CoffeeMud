@@ -157,7 +157,7 @@ public class Transcribing extends CommonSkill
 		if((I!=null)&&(CMLib.flags().canBeSeenBy(I,mob)))
 		{
 			/*
-			final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
+			final Set<MOB> followers=mob.getGroupMembers(new XTreeSet<MOB>());
 			boolean ok=false;
 			for(final MOB M : followers)
 			{

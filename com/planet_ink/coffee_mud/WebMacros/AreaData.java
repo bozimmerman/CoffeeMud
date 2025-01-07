@@ -514,14 +514,14 @@ public class AreaData extends StdWebMacro
 					str.append(A.text());
 
 				if(parms.containsKey("COORDINATES") && (A instanceof SpaceObject))
-					str.append(CMParms.toListString(((SpaceObject)A).coordinates()));
+					str.append(CMParms.toListString(((SpaceObject)A).coordinates().toLongs()));
 
 				if(parms.containsKey("COORDINATES0") && (A instanceof SpaceObject))
-					str.append(((SpaceObject)A).coordinates()[0]);
+					str.append(((SpaceObject)A).coordinates().x().longValue());
 				if(parms.containsKey("COORDINATES1") && (A instanceof SpaceObject))
-					str.append(((SpaceObject)A).coordinates()[1]);
+					str.append(((SpaceObject)A).coordinates().y().longValue());
 				if(parms.containsKey("COORDINATES2") && (A instanceof SpaceObject))
-					str.append(((SpaceObject)A).coordinates()[2]);
+					str.append(((SpaceObject)A).coordinates().z().longValue());
 
 				if(parms.containsKey("RADIUS") && (A instanceof SpaceObject))
 					str.append(((SpaceObject)A).radius());
@@ -530,12 +530,12 @@ public class AreaData extends StdWebMacro
 					str.append(((SpaceObject)A).getMass());
 
 				if(parms.containsKey("DIRECTION") && (A instanceof SpaceObject))
-					str.append(CMParms.toListString(((SpaceObject)A).direction()));
+					str.append(CMParms.toListString(((SpaceObject)A).direction().toDoubles()));
 
 				if(parms.containsKey("DIRECTION0") && (A instanceof SpaceObject))
-					str.append(((SpaceObject)A).direction()[0]);
+					str.append(((SpaceObject)A).direction().xyd());
 				if(parms.containsKey("DIRECTION1") && (A instanceof SpaceObject))
-					str.append(((SpaceObject)A).direction()[1]);
+					str.append(((SpaceObject)A).direction().zd());
 
 				if(parms.containsKey("SPEED") && (A instanceof SpaceObject))
 					str.append(((SpaceObject)A).speed());

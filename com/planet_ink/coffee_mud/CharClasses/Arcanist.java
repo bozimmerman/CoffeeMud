@@ -106,6 +106,7 @@ public class Arcanist extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Spell_ClarifyScroll",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Sneak",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Spell_TapScroll",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"PaperMaking",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Revoke",false);
@@ -153,6 +154,7 @@ public class Arcanist extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_Knock",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_UsePotion",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_ScrollFamiliarity",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_Refit",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Detection",false);

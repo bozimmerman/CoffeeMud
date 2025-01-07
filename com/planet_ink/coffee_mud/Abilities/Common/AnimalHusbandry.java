@@ -211,7 +211,7 @@ public class AnimalHusbandry extends CommonSkill
 					commonTelL(mob,"You don't see anyone called '@x1' here.",name);
 					return false;
 				}
-				if((!M.isMonster())||(!CMLib.flags().isAnimalIntelligence(M)))
+				if((!M.isMonster())||(!CMLib.flags().isAnAnimal(M)))
 				{
 					commonTelL(mob,"You can't use @x1.",M.name(mob));
 					return false;

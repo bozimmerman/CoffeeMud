@@ -1062,7 +1062,7 @@ public class StdExit implements Exit
 		{
 			return affects.get(index);
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -1149,7 +1149,7 @@ public class StdExit implements Exit
 		{
 			return behaviors.get(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return null;

@@ -113,7 +113,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 
 	protected boolean canSpeakWithThis(final MOB mob)
 	{
-		if(CMLib.flags().isAnimalIntelligence(mob))
+		if(CMLib.flags().isAnAnimal(mob))
 			return true;
 		if(mob != null)
 		{

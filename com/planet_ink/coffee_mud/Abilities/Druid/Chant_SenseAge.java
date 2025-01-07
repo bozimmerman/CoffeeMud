@@ -97,15 +97,11 @@ public class Chant_SenseAge extends Chant
 				mob.location().send(mob,msg);
 				final Ability A=target.fetchEffect("Age");
 				final StringBuilder info=new StringBuilder("");
-				int ageYears = -1;
+				final int ageYears = CMLib.flags().getAgeYears(target);
 				MOB M=null;
 				boolean destroyM = false;
 				if(target instanceof MOB)
-				{
 					M=(MOB)target;
-					if(M.charStats().getStat(CharStats.STAT_AGE)>0)
-						ageYears=M.charStats().getStat(CharStats.STAT_AGE);
-				}
 				else
 				if(target instanceof CagedAnimal)
 				{
@@ -121,8 +117,6 @@ public class Chant_SenseAge extends Chant
 					if(s.endsWith(")"))
 						s=s.substring(0,s.length()-1);
 					info.append(L("@x1 is @x2.  ",target.name(mob),s));
-					if(ageYears < 0)
-						ageYears = CMath.s_int(A.getStat("AGEYEARS"));
 				}
 				else
 				if(ageYears >= 0)

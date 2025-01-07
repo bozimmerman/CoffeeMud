@@ -124,7 +124,7 @@ public class GenClanCastle extends GenCastle implements ClanItem
 		&&(msg.sourceMessage().indexOf(mountString(CMMsg.TYP_SIT,msg.source()))>0)
 		&&(clanID().length()>0))
 		{
-			final MOB srcM=(msg.source().amUltimatelyFollowing()==null)?msg.source():msg.source().amUltimatelyFollowing();
+			final MOB srcM=msg.source().getGroupLeader();
 			final Clan C=CMLib.clans().getClan(clanID());
 			if((C!=null)
 			&&(!CMLib.clans().isClanFriendly(srcM, C))
@@ -147,10 +147,10 @@ public class GenClanCastle extends GenCastle implements ClanItem
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(clanID().length()>0))
 		{
-			final MOB srcM=(msg.source().amUltimatelyFollowing()==null)?msg.source():msg.source().amUltimatelyFollowing();
 			final Clan C=CMLib.clans().getClan(clanID());
 			if(C!=null)
 			{
+				final MOB srcM=msg.source().getGroupLeader();
 				if((!CMLib.clans().isClanFriendly(srcM, C))
 				&&(!CMLib.flags().isSneaking(msg.source())))
 				{

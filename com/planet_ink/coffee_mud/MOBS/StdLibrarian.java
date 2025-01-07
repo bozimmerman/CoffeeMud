@@ -175,7 +175,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			{
 				totalDue += recs.get(i).charges;
 			}
-			catch (final java.lang.IndexOutOfBoundsException e)
+			catch (final IndexOutOfBoundsException e)
 			{
 			}
 		}
@@ -349,6 +349,12 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	}
 
 	@Override
+	public CoffeeShop getShop(final MOB mob)
+	{
+		return getShop();
+	}
+
+	@Override
 	public CoffeeShop getShop()
 	{
 		if (shopApply)
@@ -373,7 +379,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 						if (rec.itemName.length() > 0)
 							curShop.lowerStock("$" + rec.itemName + "$");
 					}
-					catch (final java.lang.IndexOutOfBoundsException e)
+					catch (final IndexOutOfBoundsException e)
 					{
 					}
 				}
@@ -471,7 +477,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			if (System.currentTimeMillis() > rec.mudDueDateMs)
 			{
 				stockItem = shop.getStock("$" + rec.itemName + "$", null);
-				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this, shop);
+				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this);
 				final double value = (P!=null)? P.absoluteGoldPrice : 0;
 				double newCharges = this.getOverdueCharge();
 				if (value > 0)
@@ -497,7 +503,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			{
 				if(stockItem == null)
 					stockItem = shop.getStock("$" + rec.itemName+"$", null);
-				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this, shop);
+				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this);
 				final double value = (P!=null)? P.absoluteGoldPrice : 0;
 				if(rec.charges < value)
 					rec.charges = value;
@@ -883,7 +889,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			{
 				if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), this))
 					return false;
-				return super.stdokMessage(myHost, msg);
+				return super.stdMOBokMessage(myHost, msg);
 			}
 			default:
 				break;

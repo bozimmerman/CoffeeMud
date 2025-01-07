@@ -284,6 +284,7 @@ public class Paladin_SummonMount extends StdAbility implements PrivateProperty
 		}
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0 RIDEOK"));
 		newMOB.addTattoo("SYSTEM_SUMMONED");
+		newMOB.addTattoo("SUMMONED_BY:"+caster.name());
 		ride.setRiderCapacity(4);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

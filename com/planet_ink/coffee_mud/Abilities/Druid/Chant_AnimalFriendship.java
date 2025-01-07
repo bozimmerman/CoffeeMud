@@ -74,7 +74,7 @@ public class Chant_AnimalFriendship extends Chant
 		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&((msg.amITarget(affected)))
-		&&(CMLib.flags().isAnimalIntelligence(msg.source())))
+		&&(CMLib.flags().isAnAnimal(msg.source())))
 		{
 			final MOB target=(MOB)msg.target();
 			if((!target.isInCombat())

@@ -125,6 +125,7 @@ public class Carnivorous extends StdAbility
 					public void run()
 					{
 						M.curState().setHunger(oldH);
+						M.tell(L("That didn't seem very nourishing."));
 					}
 				});
 			}

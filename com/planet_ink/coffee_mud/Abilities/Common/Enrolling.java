@@ -218,8 +218,9 @@ public class Enrolling extends CommonSkill
 		else
 			commands.remove(commands.size()-1);
 
-		if((!(mob.charStats().getCharClasses().contains(enrolledInC)))
-		&&((mob.playerStats()==null)||(mob.playerStats().getActiveTitle().toLowerCase().indexOf(enrolledInC.name().toLowerCase())<0)))
+		if((mob.charStats().getClassLevel(enrolledInC)<0)
+		&&((mob.playerStats()==null)
+			||(mob.playerStats().getActiveTitle().toLowerCase().indexOf(enrolledInC.name().toLowerCase())<0)))
 		{
 			commonTelL(mob,"You need to either be a @x1, or an honorary @x1 to enroll anyone in that.",enrolledInC.name());
 			return false;

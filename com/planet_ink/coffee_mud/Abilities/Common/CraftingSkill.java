@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompConnector;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
@@ -206,8 +207,12 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				recipePath = filename;
 			else
 				recipePath = Resources.buildResourcePath("skills")+filename;
-			final StringBuffer str=new CMFile(recipePath,null,CMFile.FLAG_LOGERRORS).text();
-			V=loadList(str);
+			V = new Vector<List<String>>();
+			for(final CMFile F : CMFile.getExistingExtendedFiles(recipePath,null,CMFile.FLAG_LOGERRORS))
+			{
+				final StringBuffer str = F.text();
+				V.addAll(loadList(str));
+			}
 			Collections.sort(V,new Comparator<List<String>>()
 			{
 				@Override
@@ -386,12 +391,13 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			msg.setValue(0);
 		else
 		{
-			final CraftingSkill mySkill = (CraftingSkill)mob.fetchAbility(ID());
+			final Ability mySkill = mob.fetchAbility(ID());
 			if(mySkill == null)
 				msg.setValue(0);
 			else
+			if(mySkill instanceof CraftingSkill)
 			{
-				final LinkedList<String> localLast25Items = mySkill.last25items;
+				final LinkedList<String> localLast25Items = ((CraftingSkill)mySkill).last25items;
 				final String buildingIName = cleanBuildingNameForXP(mob,buildingI.Name().toUpperCase());
 				int lastBaseDuration = this.lastBaseDuration;
 				if(lastBaseDuration > 75)
@@ -1467,34 +1473,55 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				}
 			}
 		}
-		if(supportsWeapons()
-		&& (matches.size()==0)
-		&&(recipeName.length()>2)
-		&&(recipeName.toUpperCase().endsWith("S")))
+		if((matches.size()==0)
+		&&(!beLoose))
 		{
-			recipeName=recipeName.substring(0,recipeName.length()-1);
-			int x=CMParms.indexOf(Weapon.CLASS_DESCS,recipeName.toUpperCase().trim());
-			if(x>=0)
+			// names are higher priority on non-loose matchings
+			for(int r=0;r<recipes.size();r++)
 			{
-				final String weaponClass = Weapon.CLASS_DESCS[x];
-				for(int r=0;r<recipes.size();r++)
+				final List<String> V=recipes.get(r);
+				if(V.size()>0)
 				{
-					final List<String> V=recipes.get(r);
-					if((V.contains(weaponClass))
-					&&(!matches.contains(V)))
+					final String item=V.get(RCP_FINALNAME);
+					if(replacePercent(item,"").equalsIgnoreCase(recipeName))
 						matches.add(V);
 				}
 			}
-			x=CMParms.indexOf(Weapon.TYPE_DESCS,recipeName.toUpperCase().trim());
-			if(x>=0)
+		}
+		if(supportsWeapons()
+		&& (matches.size()==0)
+		&&(recipeName.length()>2))
+		{
+			final String[] checks;
+			if(recipeName.toUpperCase().endsWith("S"))
+				checks = new String[] {recipeName.toUpperCase(), recipeName.substring(0,recipeName.length()-1).toUpperCase()};
+			else
+				checks = new String[] {recipeName.toUpperCase()};
+			for(final String chk : checks)
 			{
-				final String weaponType = Weapon.TYPE_DESCS[x];
-				for(int r=0;r<recipes.size();r++)
+				int x=CMParms.indexOf(Weapon.CLASS_DESCS,chk.trim());
+				if(x>=0)
 				{
-					final List<String> V=recipes.get(r);
-					if((V.contains(weaponType))
-					&&(!matches.contains(V)))
-						matches.add(V);
+					final String weaponClass = Weapon.CLASS_DESCS[x];
+					for(int r=0;r<recipes.size();r++)
+					{
+						final List<String> V=recipes.get(r);
+						if((V.contains(weaponClass))
+						&&(!matches.contains(V)))
+							matches.add(V);
+					}
+				}
+				x=CMParms.indexOf(Weapon.TYPE_DESCS,chk.trim());
+				if(x>=0)
+				{
+					final String weaponType = Weapon.TYPE_DESCS[x];
+					for(int r=0;r<recipes.size();r++)
+					{
+						final List<String> V=recipes.get(r);
+						if((V.contains(weaponType))
+						&&(!matches.contains(V)))
+							matches.add(V);
+					}
 				}
 			}
 		}
@@ -1529,20 +1556,6 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				}
 			}
 		}
-		if(matches.size()==0)
-		{
-			for(int r=0;r<recipes.size();r++)
-			{
-				final List<String> V=recipes.get(r);
-				if(V.size()>0)
-				{
-					final String item=V.get(RCP_FINALNAME);
-					if(replacePercent(item,"").equalsIgnoreCase(recipeName))
-						matches.add(V);
-				}
-			}
-		}
-
 		if(supportsArmors() && (matches.size()==0))
 		{
 			long code=Wearable.CODES.FIND_ignoreCase(recipeName.toUpperCase().trim());
@@ -1572,6 +1585,20 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 
 		if(!beLoose)
 			return matches;
+
+		if(matches.size()==0)
+		{
+			for(int r=0;r<recipes.size();r++)
+			{
+				final List<String> V=recipes.get(r);
+				if(V.size()>0)
+				{
+					final String item=V.get(RCP_FINALNAME);
+					if(replacePercent(item,"").equalsIgnoreCase(recipeName))
+						matches.add(V);
+				}
+			}
+		}
 
 		if(matches.size()==0)
 		{
@@ -1906,6 +1933,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		||((!CMLib.flags().isGettable(I))&&(!(I instanceof Boardable)))
 		||(!CMLib.flags().isRemovable(I))
 		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
+		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ALWAYSRUIN))
 		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH))
 		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_UNLOCATABLE))
 		||(CMLib.flags().flaggedAffects(I, Ability.FLAG_UNCRAFTABLE).size()>0))
@@ -2107,6 +2135,9 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		if(basises.indexOf("TABLE")>=0)
 			rideable.setRideBasis(Rideable.Basis.FURNITURE_TABLE);
 		else
+		if(basises.indexOf("HOOK")>=0)
+			rideable.setRideBasis(Rideable.Basis.FURNITURE_HOOK);
+		else
 		if(basises.indexOf("LADDER")>=0)
 		{
 			rideable.setRideBasis(Rideable.Basis.LADDER);
@@ -2205,11 +2236,16 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				return components;
 			}
 			final StringBuffer buf=new StringBuffer("");
-			for(int r=0;r<componentsRequirements.size();r++)
+			if((componentsRequirements.size() > 0) && (componentsRequirements.get(componentsRequirements.size()-1).getConnector()==CompConnector.MESSAGE))
+				buf.append(componentsRequirements.get(componentsRequirements.size()-1).getMaskStr());
+			else
 			{
-				String str=CMLib.ableComponents().getAbilityComponentDesc(mob,componentsRequirements.get(r),r>0);
-				str=CMStrings.replaceAll(str,L(" on the ground"), ""); // this is implied
-				buf.append(str);
+				for(int r=0;r<componentsRequirements.size();r++)
+				{
+					String str=CMLib.ableComponents().getAbilityComponentDesc(mob,componentsRequirements.get(r),r>0);
+					str=CMStrings.replaceAll(str,L(" on the ground"), ""); // this is implied
+					buf.append(str);
+				}
 			}
 			commonTelL(mob,"You lack the necessary materials to @x1, the requirements are: @x2.",doingWhat.toLowerCase(),buf.toString());
 			return null;

@@ -137,9 +137,9 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		else
 		if(this.channels.size()==0)
 		{
-			this.channels.add(CMLib.channels().createNewChannel("I3CHAT", "diku_chat", "", "", new HashSet<ChannelFlag>(), "",""));
-			this.channels.add(CMLib.channels().createNewChannel("I3GOSSIP", "diku_immortals", "", "", new HashSet<ChannelFlag>(), "",""));
-			this.channels.add(CMLib.channels().createNewChannel("GREET", "diku_code", "", "", new HashSet<ChannelFlag>(), "",""));
+			this.channels.add(CMLib.channels().createNewChannel("I3CHAT", "diku_chat", "", "", new HashSet<ChannelFlag>(),"","",""));
+			this.channels.add(CMLib.channels().createNewChannel("I3GOSSIP", "diku_immortals", "", "", new HashSet<ChannelFlag>(),"","",""));
+			this.channels.add(CMLib.channels().createNewChannel("GREET", "diku_code", "", "", new HashSet<ChannelFlag>(),"","",""));
 		}
 		this.port=port;
 	}

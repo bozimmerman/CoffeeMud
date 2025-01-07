@@ -411,11 +411,12 @@ public class DBConnector
 	 *
 	 * Usage: listConnections(out);
 	 * @param out    place to send the list out to
+	 * @param stackDump also include stack traces on active connections
 	 */
-	public void listConnections(final PrintStream out)
+	public void listConnections(final PrintStream out, final boolean stackDump)
 	{
 		if (dbConnections != null)
-			dbConnections.listConnections(out);
+			dbConnections.listConnections(out, stackDump);
 	}
 
 	/** return a status string, or "" if everything is ok.

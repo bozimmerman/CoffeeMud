@@ -653,7 +653,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		{
 			final Item I=V.get(v);
 			if(!(I instanceof Coins))
-				min+=CMLib.coffeeShops().pawningPrice(this, buyer, I, this, shop).absoluteGoldPrice;
+				min+=CMLib.coffeeShops().pawningPrice(this, buyer, I, this).absoluteGoldPrice;
 			I.destroy();
 		}
 		return min;
@@ -1281,7 +1281,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					CMLib.commands().postSay(this,mob,str.toString()+"^T",true,false);
 					return false;
 				}
-				return super.stdokMessage(myHost, msg);
+				return super.stdMOBokMessage(myHost, msg);
 			}
 			default:
 				break;

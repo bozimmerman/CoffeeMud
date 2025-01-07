@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -153,7 +154,9 @@ public class AllQualifyData extends StdWebMacro
 						lvl=s.substring(x+1,s.length()-1).trim();
 					}
 					final Ability A=CMClass.getAbility(ableID);
-					if(A!=null)
+					if((A!=null)
+					||(CMLib.expertises().findDefinition(ableID, true) != null)
+					||(CMLib.expertises().getStageCodes(ableID).size()>0))
 					{
 						httpReq.addFakeUrlParameter("REQABLE"+pnum, ableID);
 						httpReq.addFakeUrlParameter("REQLEVEL"+pnum, lvl);
@@ -228,6 +231,12 @@ public class AllQualifyData extends StdWebMacro
 					final Ability A=CMClass.getAbility(ableID);
 					if(A!=null)
 						str.append("<OPTION VALUE=\""+A.ID()+"\" SELECTED>"+A.ID());
+					else
+					if(CMLib.expertises().findDefinition(ableID, true) != null)
+						str.append("<OPTION VALUE=\""+ableID.toUpperCase()+"\" SELECTED>"+CMLib.expertises().findDefinition(ableID, true).name());
+					else
+					if(CMLib.expertises().getStageCodes(ableID).size()>0)
+						str.append("<OPTION VALUE=\""+ableID+"\" SELECTED>"+ableID);
 				}
 				else
 				{
@@ -238,6 +247,11 @@ public class AllQualifyData extends StdWebMacro
 						if((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
 							continue;
 						str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
+					}
+					for(final Enumeration<ExpertiseDefinition> x=CMLib.expertises().definitions();x.hasMoreElements();)
+					{
+						final ExpertiseDefinition D = x.nextElement();
+						str.append("<OPTION VALUE=\""+D.ID()+"\">"+D.name());
 					}
 				}
 				str.append(", ");

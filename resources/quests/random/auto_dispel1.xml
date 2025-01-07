@@ -38,11 +38,12 @@ settable vars:
 
 <QUEST ID="auto_dispel1" QUEST_TEMPLATE_ID="auto_dispel1">
 	<QUEST_ID DEFINE="quest_id">${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
-	<QUEST_NAME SELECT="Any-1">
+	<QUEST_NAME SELECT="Pick-1">
 		<QUEST_NAME>You need $num_targets ${p:target_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
 		<QUEST_NAME>You want $num_targets ${p:target_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
 		<QUEST_NAME>You must $reason_verb $num_targets ${p:target_name} in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_name} in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME PICKWEIGHT=99 CONDITION="$deityname!=''">$deityname needs $num_targets ${p:target_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_CRITERIA  SELECT="Pick-1">
 		<QUEST_CRITERIA CONDITION="$target_min_arealevel = ''">+SYSOP +LEVELS -&lt;$[$target_level - $level_span] -&gt;$[$target_level + $level_span]</QUEST_CRITERIA>
@@ -106,6 +107,7 @@ settable vars:
 		<STRING>${c:reason_verb} ${p:target_name} for goodness sake!</STRING>
 		<STRING>${c:reason_verb} ${p:target_name}, quickly!</STRING>
 		<STRING>You want ${p:target_name} $reason_verbed!</STRING>
+		<STRING CONDITION="$deityname!=''">${c:deityname} needs ${p:target_name} $reason_verbed!</STRING>
 	</STRING>
 
 	<STRING ID="quest_instructionstring" SELECT="ALL">
@@ -117,6 +119,7 @@ settable vars:
 		<STRING ACTION="APPEND" CONDITION="$do_drop_item = 'YES' AND $quest_drop_loc != 'ROOM'">
 			If you need help, ${p:quest_drop_item_name} are being carried nearby.
 		</STRING>
+		<STRING ACTION="APPEND" CONDITION="$deityname!=''" PICKWEIGHT=99>Do this in the name of ${c:deityname}.</STRING>
 	</STRING>
 
 	<STRING ID="do_drop_item" define="do_drop_item" SELECT="PICK-1">

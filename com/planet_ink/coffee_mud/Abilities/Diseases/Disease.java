@@ -161,9 +161,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 
 	protected int getTicksPerDay()
 	{
-		TimeClock C=(affected != null)?CMLib.time().localClock(affected):CMLib.time().globalClock();
-		if(C==null)
-			C=CMLib.time().globalClock();
+		final TimeClock C=CMLib.time().homeClock(affected);
 		return (int)(C.getHoursInDay() * CMProps.getTicksPerMudHour());
 	}
 

@@ -281,7 +281,7 @@ public class Skill_PrisonAssignment extends StdSkill
 						oldA.unInvoke();
 						target.delEffect(oldA);
 					}
-					final int duration = (int)(CMProps.getTicksPerMudHour() * CMLib.time().globalClock().getHoursInDay() * (1+super.getXLEVELLevel(mob)));
+					final int duration = (int)(CMProps.getTicksPerMudHour() * CMLib.time().localClock(mob).getHoursInDay() * (1+super.getXLEVELLevel(mob)));
 					final Ability A=beneficialAffect(mob, target, asLevel, duration);
 					if(A!=null)
 					{

@@ -2,6 +2,9 @@ package com.planet_ink.coffee_mud.core.collections;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Arrays;
+
+import com.planet_ink.coffee_mud.core.BigCMath;
 
 /*
    Copyright 2022-2024 Bo Zimmerman
@@ -20,15 +23,24 @@ import java.math.RoundingMode;
 */
 public class BigVector implements Comparable<BigVector>
 {
-	public static final BigDecimal	ZERO	= BigDecimal.valueOf(0.0);
-	public static final BigDecimal	TWO		= BigDecimal.valueOf(2L);
-	public final static int			SCALE	= 25;
+	public static final BigDecimal	 ZERO	= BigDecimal.ZERO;
+	public static final BigDecimal	 TWO	= BigDecimal.valueOf(2L);
+	public final static int			 SCALE	= BigCMath.SCALE;
+	public final static RoundingMode ROUND	= BigCMath.ROUND;
+	public static final BigDecimal[] ZEROS	= new BigDecimal[] { ZERO, ZERO, ZERO };
 
 	protected final BigDecimal[] b;
 
 	public BigVector(final int len)
 	{
-		b=new BigDecimal[len];
+		if(len == 3)
+			b=ZEROS.clone();
+		else
+		{
+			b=new BigDecimal[len];
+			for(int i=0;i<len;i++)
+				b[i]=ZERO;
+		}
 	}
 
 	public BigVector(final long[] l)
@@ -75,27 +87,6 @@ public class BigVector implements Comparable<BigVector>
 		return b.length;
 	}
 
-	public BigDecimal x()
-	{
-		if(b.length>0)
-			return b[0];
-		return null;
-	}
-
-	public BigDecimal y()
-	{
-		if(b.length>1)
-			return b[1];
-		return null;
-	}
-
-	public BigDecimal z()
-	{
-		if(b.length>2)
-			return b[2];
-		return null;
-	}
-
 	public BigVector subtract(final BigVector v)
 	{
 		if(b.length != v.length())
@@ -132,7 +123,7 @@ public class BigVector implements Comparable<BigVector>
 			b[i] = b[i].add(v.b[i]);
 	}
 
-	public final static BigDecimal bigSqrt(final BigDecimal A)
+	public final static BigDecimal sqrt(final BigDecimal A)
 	{
 		if(A.doubleValue()<0)
 			return ZERO;
@@ -149,12 +140,34 @@ public class BigVector implements Comparable<BigVector>
 		return x1;
 	}
 
+	@Override
+	public boolean equals(final Object o)
+	{
+		if(o instanceof BigVector)
+		{
+			final BigVector v = (BigVector)o;
+			if(v.length()!=b.length)
+				return false;
+			for(int i=0;i<b.length;i++)
+				if(!b[i].equals(v.b[i]))
+					return false;
+			return true;
+		}
+		return o==this;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Arrays.hashCode(b);
+	}
+
 	public BigDecimal magnitude()
 	{
 		BigDecimal a = ZERO;
 		for(int i=0;i<b.length;i++)
 			a=a.add(b[i].pow(2));
-		return bigSqrt(a);
+		return sqrt(a);
 	}
 
 	public BigVector unitVector()
@@ -176,7 +189,7 @@ public class BigVector implements Comparable<BigVector>
 			final BigDecimal p=v.b[i].subtract(b[i]);
 			x0=x0.add(p.multiply(p));
 		}
-		return BigVector.bigSqrt(x0);
+		return BigVector.sqrt(x0);
 	}
 
 	public void unitVectorFrom()
@@ -211,14 +224,64 @@ public class BigVector implements Comparable<BigVector>
 
 	}
 
+	public static BigDecimal cos(final BigDecimal d)
+	{
+		return BigDecimal.valueOf(Math.cos(d.doubleValue()));
+	}
+
+	public static BigDecimal acos(final BigDecimal d)
+	{
+		return BigDecimal.valueOf(Math.acos(d.doubleValue()));
+	}
+
+	public static BigDecimal sin(final BigDecimal d)
+	{
+		return BigDecimal.valueOf(Math.sin(d.doubleValue()));
+	}
+
+	public static BigDecimal tan(final BigDecimal d)
+	{
+		return BigDecimal.valueOf(Math.tan(d.doubleValue()));
+	}
+
+	public static BigDecimal atan(final BigDecimal d)
+	{
+		return BigDecimal.valueOf(Math.atan(d.doubleValue()));
+	}
+
+	public static BigDecimal cos(final double d)
+	{
+		return BigDecimal.valueOf(Math.cos(d));
+	}
+
+	public static BigDecimal acos(final double d)
+	{
+		return BigDecimal.valueOf(Math.acos(d));
+	}
+
+	public static BigDecimal sin(final double d)
+	{
+		return BigDecimal.valueOf(Math.sin(d));
+	}
+
+	public static BigDecimal tan(final double d)
+	{
+		return BigDecimal.valueOf(Math.tan(d));
+	}
+
+	public static BigDecimal atan(final double d)
+	{
+		return BigDecimal.valueOf(Math.atan(d));
+	}
+
 	public BigVector sphereToCartesian()
 	{
 		if(b.length != 2)
 			throw new IllegalArgumentException("Different sphere dimensions");
 		final BigVector d = new BigVector(3);
-		d.b[0]=new BigDecimal(Math.sin(b[1].doubleValue())).multiply(new BigDecimal(Math.cos(b[0].doubleValue())));
-		d.b[1]=new BigDecimal(Math.sin(b[1].doubleValue())).multiply(new BigDecimal(Math.sin(b[0].doubleValue())));
-		d.b[2]=new BigDecimal(Math.cos(b[1].doubleValue()));
+		d.b[0]=sin(b[1]).multiply(cos(b[0]));
+		d.b[1]=sin(b[1]).multiply(sin(b[0]));
+		d.b[2]=cos(b[1]);
 		return d;
 	}
 

@@ -29,6 +29,7 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicInteger;
 /*
    Copyright 2001-2024 Bo Zimmerman
 
@@ -141,7 +142,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				else
 					start=mid+1;
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 				start=0;
 				end=list.size()-1;
@@ -557,7 +558,7 @@ public class CMMap extends StdLibrary implements WorldMap
 						O.executeMsg(host,msg);
 				}
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException xx)
+			catch(final IndexOutOfBoundsException xx)
 			{
 			}
 			catch (final Exception x)
@@ -1399,7 +1400,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		try
 		{
 			final Map<Room,Set<Integer>> roomsToDo=new HashMap<Room,Set<Integer>>();
-			if(deadRoom.roomID().length()>0)
+			if(includeDB && (deadRoom.roomID().length()>0))
 			{
 				final Map<Integer,Pair<String,String>> exitIntoMap = CMLib.database().DBReadIncomingRoomExitIDsMap(deadRoom.roomID());
 				for(final Integer key : exitIntoMap.keySet())
@@ -1413,6 +1414,23 @@ public class CMMap extends StdLibrary implements WorldMap
 							if(!roomsToDo.containsKey(R))
 								roomsToDo.put(R, new TreeSet<Integer>());
 							roomsToDo.get(R).add(key);
+						}
+					}
+				}
+			}
+			else
+			{
+				for(int i=0;i<Directions.NUM_DIRECTIONS();i++)
+				{
+					final Room R = deadRoom.getRoomInDir(i);
+					if((R != null)
+					&&((linkInRooms == null)||(R.getArea()!=deadRoom.getArea())))
+					{
+						if(R.getRoomInDir(Directions.getOpDirectionCode(i)) == deadRoom)
+						{
+							if(!roomsToDo.containsKey(R))
+								roomsToDo.put(R, new TreeSet<Integer>());
+							roomsToDo.get(R).add(Integer.valueOf(Directions.getOpDirectionCode(i)));
 						}
 					}
 				}
@@ -2079,12 +2097,17 @@ public class CMMap extends StdLibrary implements WorldMap
 				area = room.getArea();
 			if(area == null)
 				area = getStartArea(AE);
-			addScriptHost(area, room, AE);
 			if(o instanceof MOB)
 			{
-				for(final Enumeration<Item> i=((MOB)o).items();i.hasMoreElements();)
-					addScriptHost(area, room, i.nextElement());
+				if(!((MOB)o).isPlayer())
+				{
+					addScriptHost(area, room, AE);
+					for(final Enumeration<Item> i=((MOB)o).items();i.hasMoreElements();)
+						addScriptHost(area, room, i.nextElement());
+				}
 			}
+			else
+				addScriptHost(area, room, AE);
 		}
 	}
 
@@ -2254,6 +2277,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public boolean activate()
 	{
+		if(!super.activate())
+			return false;
 		if(serviceClient==null)
 		{
 			name="THMap"+Thread.currentThread().getThreadGroup().getName().charAt(0);
@@ -2291,68 +2316,108 @@ public class CMMap extends StdLibrary implements WorldMap
 	public boolean shutdown()
 	{
 		final boolean debugMem = CMSecurity.isDebugging(CMSecurity.DbgFlag.SHUTDOWN);
-		for(final Enumeration<Area> a=areasList.elements();a.hasMoreElements();)
+		final Enumeration<Area> aIter = areasList.elements();
+		final AtomicInteger areasDone = new AtomicInteger(0);
+		final int numAreasChk = 0;
+		for(int i=0;i<Runtime.getRuntime().availableProcessors();i++)
 		{
-			try
+			new Thread(new Runnable()
 			{
-				final Area A = a.nextElement();
-				if(A!=null)
+				@Override
+				public void run()
 				{
-					CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down Map area '"+A.Name()+"'...");
-					final LinkedList<Room> rooms=new LinkedList<Room>();
-					for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+					while(true)
 					{
+						final Area A;
+						synchronized(aIter)
+						{
+							if(!aIter.hasMoreElements())
+							{
+								break;
+							}
+							A=aIter.nextElement();
+						}
+						if(A==null)
+							continue;
 						try
 						{
-							final Room R=r.nextElement();
-							if(R!=null)
-								rooms.add(R);
+							CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down Map area '"+A.Name()+"'...");
+							final LinkedList<Room> rooms=new LinkedList<Room>();
+							for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+							{
+								try
+								{
+									final Room R=r.nextElement();
+									if(R!=null)
+										rooms.add(R);
+								}
+								catch(final Exception e)
+								{
+								}
+							}
+							for(final Iterator<Room> r=rooms.iterator();r.hasNext();)
+							{
+								try
+								{
+									final Room R=r.next();
+									A.delProperRoom(R);
+									R.destroy();
+								}
+								catch(final Exception e)
+								{
+								}
+							}
+							if(debugMem)
+							{
+								try
+								{
+									Object obj = new Object();
+									final WeakReference<Object> ref = new WeakReference<Object>(obj);
+									obj = null;
+									System.gc();
+									System.runFinalization();
+									while(ref.get() != null)
+									{
+										System.gc();
+									}
+									Thread.sleep(3000);
+								}
+								catch (final Exception e)
+								{
+								}
+								final long free=Runtime.getRuntime().freeMemory()/1024;
+								final long total=Runtime.getRuntime().totalMemory()/1024;
+								if(A!=null)
+									Log.debugOut("Memory: CMMap: "+A.Name()+": "+(total-free)+"/"+total);
+							}
 						}
-						catch(final Exception e)
+						catch (final Exception e)
 						{
+							Log.errOut(e);
 						}
-					}
-					for(final Iterator<Room> r=rooms.iterator();r.hasNext();)
-					{
-						try
-						{
-							final Room R=r.next();
-							A.delProperRoom(R);
-							R.destroy();
-						}
-						catch(final Exception e)
-						{
-						}
+						areasDone.addAndGet(1);
 					}
 				}
-				if(debugMem)
-				{
-					try
-					{
-						Object obj = new Object();
-						final WeakReference<Object> ref = new WeakReference<Object>(obj);
-						obj = null;
-						System.gc();
-						System.runFinalization();
-						while(ref.get() != null)
-						{
-							System.gc();
-						}
-						Thread.sleep(3000);
-					}
-					catch (final Exception e)
-					{
-					}
-					final long free=Runtime.getRuntime().freeMemory()/1024;
-					final long total=Runtime.getRuntime().totalMemory()/1024;
-					if(A!=null)
-						Log.debugOut("Memory: CMMap: "+A.Name()+": "+(total-free)+"/"+total);
-				}
-			}
-			catch (final Exception e)
-			{
-			}
+			}).start();
 		}
+		long lastTime = System.currentTimeMillis();
+		while(areasDone.get() < areasList.size())
+		{
+			CMLib.s_sleep(500);
+			if(numAreasChk == areasDone.get())
+			{
+				final long diff = System.currentTimeMillis() - lastTime;
+				if(diff > 30000)
+				{
+					Log.errOut("Timeout in map shutdown.  Cancelling.");
+					break;
+				}
+			}
+			else
+				lastTime = System.currentTimeMillis();
+		}
+		if(areasDone.get()>=areasList.size())
+			Log.infoOut(areasDone.get()+"/"+areasList.size()+" areas cleared.");
 		areasList.clear();
 		deitiesList.clear();
 		shipList.clear();

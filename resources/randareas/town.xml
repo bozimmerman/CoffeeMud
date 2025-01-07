@@ -87,7 +87,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />
-		<MOB condition="1?3=1" select="any-1" insert="town_mobs" />
+		<MOB condition="(1?3=1) and ($pop_mobs!='false')" select="any-1" insert="town_mobs" />
 	</ROOM>
 </ROOM>
 
@@ -95,13 +95,13 @@ See guides/RandomAreas.html for information about documents of this type.
 	<ROOM class="Road" condition="$theme='town' and $roomtag_nodetype='square'">
 		<TITLE>$a_streetprefix $_square_name</TITLE>
 		<DESCRIPTION predefine="_street_name=Square">$town_street_desc</DESCRIPTION>
-		<MOB condition="1?3=1" select="any-1" insert="town_mobs" />
+		<MOB condition="(1?3=1) and ($pop_mobs!='false')" select="any-1" insert="town_mobs" />
 		<EXIT class="Open" />
 	</ROOM>
 	<ROOM class="Road" condition="$theme='town' and $roomtag_nodetype!='square'">
 		<TITLE>$a_streetprefix $_street_name</TITLE>
 		<DESCRIPTION>$town_street_desc</DESCRIPTION>
-		<MOB condition="1?3=1" select="any-1" insert="town_mobs" />
+		<MOB condition="(1?3=1) and ($pop_mobs!='false')" select="any-1" insert="town_mobs" />
 		<EXIT class="Open" />
 	</ROOM>
 </ROOM>
@@ -131,7 +131,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="GenDoor" defclosed="true" />
-			<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
+			<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" condition="$pop_mobs!='false'">
 				<NAME>${c:fantasy_name1}</NAME>
 				<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
 				<ALIGNMENT>0?10000</ALIGNMENT>
@@ -145,7 +145,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 			</MOB>
-			<ITEM select="all">
+			<ITEM select="all" condition="$pop_items!='false'">
 				<ITEM class="GenBed"  name="a bed" display="$ITEM_NAME is made here"  isgettable="false" />
 				<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here with chairs around it." isgettable="false" />
 			</ITEM>
@@ -180,8 +180,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="GenDoor" defclosed="false" />
-			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for sale `buy [itemname]` to get something, or `view [itemname]` to get more information." />
-			<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" whatisell="inventory only">
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for sale `buy [itemname]` to get something, or `view [itemname]` to get more information." condition="$pop_items!='false'"/>
+			<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" whatisell="inventory only" condition="$pop_mobs!='false'">
 				<NAME>${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name will take your order now.</DISPLAY>
@@ -194,13 +194,13 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="Fighterness" parms="" />
 					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
-				<ITEM class="GenArmor" LEVEL="$mob_level">
+				<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME select="any-1"><NAME>a cook`s apron</NAME></NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
-				<ITEM class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME>a rolling pin</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>OAK</MATERIAL>
@@ -211,11 +211,11 @@ See guides/RandomAreas.html for information about documents of this type.
 					<ITEM select="all" insert="any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item" />
 				</SHOPINVENTORY>
 			</MOB>
-			<ITEM class="GenTable" name="a private table" display="$ITEM_NAME is here" isgettable="false" />
-			<ITEM class="GenTable" name="a central table" display="$ITEM_NAME is here" isgettable="false" />
-			<ITEM class="GenTable" name="a clean table" display="$ITEM_NAME is here" isgettable="false" />
-			<ITEM class="GenTable" name="a dirty table" display="$ITEM_NAME is here" isgettable="false" />
-			<ITEM class="GenTable" name="a table near the kitchen" display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="a private table" display="$ITEM_NAME is here" isgettable="false" condition="$pop_items!='false'"/>
+			<ITEM class="GenTable" name="a central table" display="$ITEM_NAME is here" isgettable="false" condition="$pop_items!='false'" />
+			<ITEM class="GenTable" name="a clean table" display="$ITEM_NAME is here" isgettable="false" condition="$pop_items!='false'" />
+			<ITEM class="GenTable" name="a dirty table" display="$ITEM_NAME is here" isgettable="false" condition="$pop_items!='false'" />
+			<ITEM class="GenTable" name="a table near the kitchen" display="$ITEM_NAME is here" isgettable="false" condition="$pop_items!='false'" />
 		</ROOM>
 		
 		<ROOM id="town_bar" class="WoodRoom"  condition="$__townthird &gt; 5" define="__townbar+=1">
@@ -253,7 +253,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</DESCRIPTION>
 			<EXIT class="GenDoor" defclosed="false" />
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for sale `buy [itemname]` to get something, or `view [itemname]` to get more information." />
-			<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" whatisell="inventory only">
+			<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" whatisell="inventory only" condition="$pop_mobs!='false'">
 				<NAME>${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name will take your order now.</DISPLAY>
@@ -267,13 +267,13 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="Fighterness" parms="" />
 					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
-				<ITEM class="GenArmor" LEVEL="$mob_level">
+				<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME select="any-1"><NAME>a bartender`s apron</NAME></NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
-				<ITEM class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME>an lime peeler</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
@@ -284,8 +284,8 @@ See guides/RandomAreas.html for information about documents of this type.
 					<ITEM select="all" insert="any_distilling_item,any_distilling_item,any_distilling_item,any_distilling_item,any_distilling_item," />
 				</SHOPINVENTORY>
 			</MOB>
-			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
-			<ITEM class="GenTable" name="the bar" MOBSHELD=20 display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false"  condition="$pop_items!='false'"/>
+			<ITEM class="GenTable" name="the bar" MOBSHELD=20 display="$ITEM_NAME is here" isgettable="false"  condition="$pop_items!='false'"/>
 		</ROOM>
 	
 		<ROOM id="town_inn" layout="APARTMENT" size=10 condition="$__towninn&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__towninn+=1,__townthird+=1">
@@ -320,7 +320,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<EXIT class="GenDoor" defclosed="false" condition="$ROOMLINK_DIR = $ROOMTAG_NODEGATEEXIT" />
 				<EXIT class="Open" condition="$ROOMLINK_DIR != $ROOMTAG_NODEGATEEXIT" />
 				<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what rooms are available, `buy [keyname]` to get a room key, after which just find the right room and let yourself in." />
-				<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="INNKEEPER">
+				<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="INNKEEPER" condition="$pop_mobs!='false'">
 					<NAME>Innkeeper ${c:fantasy_name1}</NAME>
 					<DISPLAY select="pick-1">
 						<DISPLAY pickweight="1">$mob_name looks bored.</DISPLAY>
@@ -334,13 +334,13 @@ See guides/RandomAreas.html for information about documents of this type.
 						<BEHAVIOR class="MudChat" parms="" />
 						<BEHAVIOR class="Fighterness" parms="" />
 					</BEHAVIOR>
-					<ITEM class="GenArmor" LEVEL="$mob_level">
+					<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 						<NAME select="any-1"><NAME>a conservative suit</NAME></NAME>
 						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>COTTON</MATERIAL>
 						<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 					</ITEM>
-					<ITEM class="GenWeapon" LEVEL="$mob_level" WORNAND="true">
+					<ITEM class="GenWeapon" LEVEL="$mob_level" WORNAND="true" condition="$pop_items!='false'">
 						<NAME>a broom</NAME>
 						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>WOOD</MATERIAL>
@@ -373,12 +373,12 @@ See guides/RandomAreas.html for information about documents of this type.
 				<TITLE>Room number $__innroomnumber</TITLE>
 				<DESCRIPTION>$desc_exits</DESCRIPTION>
 				<EXIT class="GenDoor" hasalock="true" deflocked="true" level="$level_range" keyname="INN$__innroomnumber" />
-				<ITEM class="GenBed"  name="a bed" display="$ITEM_NAME is made here"  isgettable="false" />
-				<ITEM class="GenChair" name="a chair" display="$ITEM_NAME is waiting to be rested upon" isgettable="false" />
-				<ITEM class="GenMirror" name="a mirror" display="$ITEM_NAME is on the wall." description="You see yourself." isgettable="false" />
-				<ITEM class="GenTub"  name="a tub" display="$ITEM_NAME is here" isgettable="false" />
-				<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
-				<ITEM class="GenContainer" name="a trunk" display="$ITEM_NAME sits at the foot of the bed" HASLID="true" />
+				<ITEM class="GenBed"  name="a bed" display="$ITEM_NAME is made here"  isgettable="false" condition="$pop_items!='false'" />
+				<ITEM class="GenChair" name="a chair" display="$ITEM_NAME is waiting to be rested upon" isgettable="false" condition="$pop_items!='false'" />
+				<ITEM class="GenMirror" name="a mirror" display="$ITEM_NAME is on the wall." description="You see yourself." isgettable="false" condition="$pop_items!='false'" />
+				<ITEM class="GenTub"  name="a tub" display="$ITEM_NAME is here" isgettable="false" condition="$pop_items!='false'" />
+				<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" condition="$pop_items!='false'" />
+				<ITEM class="GenContainer" name="a trunk" display="$ITEM_NAME sits at the foot of the bed" HASLID="true" condition="$pop_items!='false'" />
 			</ROOM>
 		</ROOM>
 		
@@ -422,7 +422,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</DESCRIPTION>
 			<EXIT class="GenDoor" defclosed="false" />
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what spells are available, `buy [spellname]` to have a spell cast on you." />
-			<MOB class="GenShopKeeper" level="($level_range) * 1.05 &gt; 30" race="$_humanoid_races" gender="$anygender" whatisell="caster">
+			<MOB class="GenShopKeeper" level="($level_range) * 1.05 &gt; 30" race="$_humanoid_races" gender="$anygender" whatisell="caster" condition="$pop_mobs!='false'">
 				<NAME select="pick-1">
 					<NAME>${c:fantasy_name1}</NAME>
 					<NAME>Priest ${c:fantasy_name1}</NAME>
@@ -441,13 +441,13 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="CommonSpeaker" parms="" />
 					<BEHAVIOR class="Clericness" parms="" />
 				</BEHAVIOR>
-				<ITEM class="GenArmor" LEVEL="$mob_level">
+				<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME select="any-1"><NAME>a healer`s robe</NAME></NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
-				<ITEM class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME>a holy sceptor</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>WOOD</MATERIAL>
@@ -467,13 +467,13 @@ See guides/RandomAreas.html for information about documents of this type.
 					<ABILITY class="Prayer_RemoveCurse" number=1000/>
 				</SHOPINVENTORY>
 			</MOB>
-			<ITEM class="GenContainer" LEVEL="1" isgettable="false" capacity=100000 hasalid=false>
+			<ITEM class="GenContainer" LEVEL="1" isgettable="false" capacity=100000 hasalid=false condition="$pop_items!='false'">
 				<NAME>the sacrificial pit</NAME>
 				<DISPLAY>$item_name sits here</DISPLAY>
 				<MATERIAL>STONE</MATERIAL>
 				<AFFECT class="Prop_Trashcan"></AFFECT>
 			</ITEM>
-			<ITEM class="GenFountain" LEVEL="$mob_level" isgettable="false" liquidheld=1000000 hasalid=false>
+			<ITEM class="GenFountain" LEVEL="$mob_level" isgettable="false" liquidheld=1000000 hasalid=false condition="$pop_items!='false'">
 				<NAME>a fountain</NAME>
 				<DISPLAY>$item_name flows from the wall</DISPLAY>
 				<MATERIAL>STONE</MATERIAL>
@@ -550,7 +550,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<AFFECT class="Prop_ClosedDayNight" />
 			</EXIT>
 			<AFFECT class="Prop_ClosedDayNight" />
-			<MOB class="GenShopKeeper" level="($level_range) * 1.05" id="shop_patron" whatisell="$wshoptype" race="$_humanoid_races" gender="$anygender" prejudice="SELL=1.0 ; BUY=2.0">
+			<MOB class="GenShopKeeper" level="($level_range) * 1.05" id="shop_patron" whatisell="$wshoptype" race="$_humanoid_races" gender="$anygender" prejudice="SELL=1.0 ; BUY=2.0" condition="$pop_mobs!='false'">
 				<NAME>$fantasy_name1</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is ready to serve.</DISPLAY>
@@ -564,14 +564,14 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="Mageness" parms=""  condition="($NOFANTASY != 'true') and ($shoptype='potion' or $shoptype='magic' or $shoptype='jewelry')"/>
 					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
-				<ITEM class="GenArmor" LEVEL="$mob_level">
+				<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME select="any-1"><NAME>(a(n)) apron</NAME></NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>WAIST,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 					<LAYER>4</LAYER>
 				</ITEM>
-				<ITEM class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME>(a(n)) ${shoptype}working tool</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
@@ -744,7 +744,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				</SHOPINVENTORY>
 			</MOB>
 			<ITEM class="GenWallpaper" name="a sign" isreadable="true" readableText="Use `list` to see what is for sale, `view [itemname]` to see more information, `buy [itemname]` to buy something, `value [itemname]` to value your item, or `sell [itemname]` to try to sell something of yours." />
-			<ITEM class="GenFountain" LEVEL="$mob_level" isgettable="false" liquidheld=1000000 hasalid=false condition="$shoptype='food'">
+			<ITEM class="GenFountain" LEVEL="$mob_level" isgettable="false" liquidheld=1000000 hasalid=false condition="($shoptype='food') and ($pop_items!='false')">
 				<NAME>a drinking fountain</NAME>
 				<DISPLAY>$item_name flows from the wall</DISPLAY>
 				<MATERIAL>STONE</MATERIAL>
@@ -842,7 +842,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `quests` to see what quests you are currently on.  `quests [quest name]` for mor information on a specifc quest." />
 			<ITEM class="GenWallpaper" name="WANTED posters wall" description="Various customers have left posts of all sizes along the walls for orders, some of which are very old." />
 			<AFFECT class="Prop_ClosedDayNight" />
-			<MOB class="GenMob" level="($level_range)" race="$_humanoid_races" gender="$anygender">
+			<MOB class="GenMob" level="($level_range)" race="$_humanoid_races" gender="$anygender" condition="$pop_mobs!='false'">
 				<NAME select="any-1">
 					<NAME>Commissary ${c:fantasy_name1}</NAME>
 					<NAME>${c:fantasy_name1} the Commissary</NAME>
@@ -858,13 +858,13 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="CommonSpeaker" parms="" />
 					<BEHAVIOR class="RandomQuests" parms="min=15 max=30 maxquests=3 template=normal_collect4 QUEST_POINT_AWARDED=NO ANNOUNCECHANNEL=LOCAL AGGRESSION=NO" />
 				</BEHAVIOR>
-				<ITEM class="GenArmor" LEVEL="$mob_level">
+				<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME select="any-1"><NAME>(a(n)) crafter apron</NAME></NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
-				<ITEM class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME>(a(n)) wooden mallet</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>WOOD</MATERIAL>
@@ -917,7 +917,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</DESCRIPTION>
 			<EXIT class="GenDoor" defclosed="false" />
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `buy [itemname]` to acquire a horse, `borrow [amount]` to borrow money." />
-			<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="PETS">
+			<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="PETS" condition="$pop_mobs!='false'">
 				<NAME>Stable-Master ${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is here working.</DISPLAY>
@@ -930,13 +930,13 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="Fighterness" parms="" />
 					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
-				<ITEM class="GenArmor" LEVEL="$mob_level">
+				<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME select="any-1"><NAME>a stablehand`s uniform</NAME></NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
-				<ITEM class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME>a shovel</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>WOOD</MATERIAL>
@@ -993,7 +993,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</DESCRIPTION>
 			<EXIT class="GenDoor" defclosed="false" />
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
-			<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="F">
+			<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="F" condition="$pop_mobs!='false'">
 				<NAME>Nanny ${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is exhausted.</DISPLAY>
@@ -1008,13 +1008,13 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="Fighterness" parms="" />
 					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
-				<ITEM class="GenArmor" LEVEL="$mob_level">
+				<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME select="any-1"><NAME>a nanny`s uniform</NAME></NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
-				<ITEM class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME>a ruler</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>WOOD</MATERIAL>
@@ -1071,7 +1071,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</EXIT>
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
 			<AFFECT class="Prop_ClosedDayNight" />
-			<MOB class="GenBanker" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="CLAN BANKER">
+			<MOB class="GenBanker" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="CLAN BANKER" condition="$pop_mobs!='false'">
 				<NAME>Bank clerk ${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is here to serve.</DISPLAY>
@@ -1084,13 +1084,13 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="Scavenger" parms="" />
 					<BEHAVIOR class="Fighterness" parms="" />
 				</BEHAVIOR>
-				<ITEM class="GenArmor" LEVEL="$mob_level">
+				<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME select="any-1"><NAME>a conservative uniform</NAME></NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
-				<ITEM class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME>a money clip</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
@@ -1133,7 +1133,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="GenDoor" defclosed="false" />
-			<MOB class="GenMob" level="30+(($level_range) * 1.1)<91" race="$_humanoid_races" gender="$anygender">
+			<MOB class="GenMob" level="30+(($level_range) * 1.1)<91" race="$_humanoid_races" gender="$anygender" condition="$pop_mobs!='false'">
 				<NAME>$__chieftype ${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is ready to dispense justice.</DISPLAY>
@@ -1144,13 +1144,13 @@ See guides/RandomAreas.html for information about documents of this type.
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="Fighterness" parms="" />
 				</BEHAVIOR>
-				<ITEM class="GenArmor" LEVEL="$mob_level">
+				<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME select="any-1"><NAME>(a(n)) ${l:__chieftype}`s uniform</NAME></NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
-				<ITEM class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME>a gavel</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>WOOD</MATERIAL>
@@ -1158,7 +1158,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<WEAPONTYPE>BASHING</WEAPONTYPE>
 				</ITEM>
 			</MOB>
-			<MOB select="repeat-3" insert="town_cityguard" />
+			<MOB select="repeat-3" insert="town_cityguard"  condition="$pop_mobs!='false'"/>
 		</ROOM>
 		<ROOM id="town_auctionhall" class="WoodRoom"  condition="$__townauctionhall&lt;1 and $__numshoptypes_all &gt; 10" define="__townauctionhall+=1,__townsecond+=1">
 			<TITLE select="any-1">
@@ -1206,7 +1206,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</EXIT>
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for auction, `bid [amount] [itemname]` make a bid, `sell [itemname]` to put an item up for auction, or `view [itemname]` to get more information." />
 			<AFFECT class="Prop_ClosedDayNight" />
-			<MOB class="GenAuctioneer" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
+			<MOB class="GenAuctioneer" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" condition="$pop_mobs!='false'">
 				<NAME>Auctioneer ${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is shouting out prices.</DISPLAY>
@@ -1220,13 +1220,13 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="Fighterness" parms="" />
 					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
-				<ITEM class="GenArmor" LEVEL="$mob_level">
+				<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME select="any-1"><NAME>a colonel`s uniform</NAME></NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
-				<ITEM class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME>an auction pointer</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
@@ -1283,7 +1283,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your box, `deposit [itemname]` to mail an item, `withdraw [itemname]` to remove an item." />
 			<ITEM class="GenWallpaper" name="WANTED posters wall" description="Faces of various known Killers and Thieves can barely be seen." />
 			<AFFECT class="Prop_ClosedDayNight" />
-			<MOB class="GenPostman" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" prejudice="SELL=1.0 ; BUY=2.0">
+			<MOB class="GenPostman" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" prejudice="SELL=1.0 ; BUY=2.0" condition="$pop_mobs!='false'">
 				<NAME select="any-1">
 					<NAME>Postal clerk ${c:fantasy_name1}</NAME>
 					<NAME>Postman ${c:fantasy_name1}</NAME>
@@ -1300,13 +1300,13 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="Fighterness" parms="" />
 					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
-				<ITEM class="GenArmor" LEVEL="$mob_level">
+				<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME select="any-1"><NAME>(a(n)) postal uniform</NAME></NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
-				<ITEM class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME>(a(n)) letter opener</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
@@ -1364,7 +1364,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</EXIT>
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
 			<AFFECT class="Prop_ClosedDayNight" />
-			<MOB class="GenBanker" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
+			<MOB class="GenBanker" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" condition="$pop_mobs!='false'">
 				<NAME>Bank clerk ${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is here to serve.</DISPLAY>
@@ -1377,13 +1377,13 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="Scavenger" parms="" />
 					<BEHAVIOR class="Fighterness" parms="" />
 				</BEHAVIOR>
-				<ITEM class="GenArmor" LEVEL="$mob_level">
+				<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME select="any-1"><NAME>a conservative uniform</NAME></NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
-				<ITEM class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME>a money clip</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
@@ -1462,7 +1462,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</DESCRIPTION>
 			<EXIT class="GenDoor" defclosed="false" />
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `train [classname]` to change classes, `train [statname]` improve a stat, `gain [skillname]`  to learn a new skill, or `practice [skillname]` to improve a skill." />
-			<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
+			<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" condition="$pop_mobs!='false'">
 				<NAME select="any-1">
 					<NAME>Guildmaster ${c:fantasy_name1}</NAME>
 					<NAME>Master ${c:fantasy_name1}</NAME>
@@ -1481,13 +1481,13 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
 				<AFFECT class="Prop_Trainer" parms="ALL" />
-				<ITEM class="GenArmor" LEVEL="$mob_level">
+				<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME select="any-1"><NAME>a simple robe</NAME></NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
-				<ITEM class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level" condition="$pop_items!='false'">
 					<NAME>a ruler</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>WOOD</MATERIAL>
@@ -1550,13 +1550,13 @@ See guides/RandomAreas.html for information about documents of this type.
 			<BEHAVIOR class="Fighterness" parms="" />
 			<BEHAVIOR class="Mobile" parms="" />
 		</BEHAVIOR>
-		<ITEM class="GenArmor" LEVEL="$mob_level">
+		<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 			<NAME select="any-1"><NAME>(a(n)) ${l:__officertype}`s uniform</NAME></NAME>
 			<DISPLAY>$item_name has been left here</DISPLAY>
 			<MATERIAL>COTTON</MATERIAL>
 			<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 		</ITEM>
-		<ITEM class="GenWeapon" LEVEL="$mob_level">
+		<ITEM class="GenWeapon" LEVEL="$mob_level" condition="$pop_items!='false'">
 			<NAME>(a(n)) ${l:__officertype} night stick</NAME>
 			<DISPLAY>$item_name has been left here</DISPLAY>
 			<MATERIAL>WOOD</MATERIAL>
@@ -1579,13 +1579,13 @@ See guides/RandomAreas.html for information about documents of this type.
 			<BEHAVIOR class="Mobile" parms="" />
 			<BEHAVIOR class="MudChat" parms="" />
 		</BEHAVIOR>
-		<ITEM class="GenArmor" LEVEL="$mob_level">
+		<ITEM class="GenArmor" LEVEL="$mob_level" condition="$pop_items!='false'">
 			<NAME select="any-1"><NAME>a street sweeper`s uniform</NAME></NAME>
 			<DISPLAY>$item_name has been left here</DISPLAY>
 			<MATERIAL>COTTON</MATERIAL>
 			<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 		</ITEM>
-		<ITEM class="GenWeapon" LEVEL="$mob_level">
+		<ITEM class="GenWeapon" LEVEL="$mob_level" condition="$pop_items!='false'">
 			<NAME>a broom</NAME>
 			<DISPLAY>$item_name has been left here</DISPLAY>
 			<MATERIAL>WOOD</MATERIAL>

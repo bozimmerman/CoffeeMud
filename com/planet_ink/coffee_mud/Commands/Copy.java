@@ -185,7 +185,8 @@ public class Copy extends StdCommand
 			E = CMClass.getAbility(commands.get(0));
 			if(E != null)
 			{
-				final String newID = CMParms.combine(commands,1);
+				String newID = CMParms.combine(commands,1);
+				newID = CMStrings.replaceAll(newID, " ", "");
 				if(CMClass.getAbility(newID)!=null)
 				{
 					mob.tell(L("The ability ID '@x1' already exists.\n\r",newID));

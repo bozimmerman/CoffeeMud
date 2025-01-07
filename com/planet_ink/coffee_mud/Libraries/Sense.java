@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -156,7 +157,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean canAutoAttack(final MOB M)
 	{
-		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_NOT_AUTO_ATTACK) == 0);
+		return (M != null)
+				&& ((M.phyStats().sensesMask() & PhyStats.CAN_NOT_AUTO_ATTACK) == 0)
+				&& (!M.isAttributeSet(Attrib.AUTOATTACK));
 	}
 
 	@Override
@@ -717,6 +720,23 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public int getAgeYears(final Physical P)
+	{
+		if(P == null)
+			return -1;
+		if(P instanceof MOB)
+		{
+			final MOB M=(MOB)P;
+			if(M.charStats().getStat(CharStats.STAT_AGE)>0)
+				return M.charStats().getStat(CharStats.STAT_AGE);
+		}
+		final Ability A=P.fetchEffect("Age");
+		if(A!=null)
+			return CMath.s_int(A.getStat("AGEYEARS"));
+		return -1;
+	}
+
+	@Override
 	public String getAge(final MOB M)
 	{
 		final Ability A=M.fetchEffect("Age");
@@ -1232,10 +1252,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			{
 				if(locR == null)
 					return "*"+M.name()+" is nowhere!";
-				final MOB ultFol = M.amUltimatelyFollowing();
 				if(!locR.isInhabitant(M)
 				&&(!M.isPlayer())
-				&&((ultFol==null)||(!ultFol.isPlayer())))
+				&&((M.amFollowing()==M)||(!M.getGroupLeader().isPlayer())))
 					return "*"+M.name()+" is not where he is: "+CMLib.map().getExtendedRoomID(locR);
 				final String roomReport =validCheck(locR);
 				if(roomReport != null)
@@ -1272,7 +1291,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				final MOB M=(MOB)owner;
 				if((!M.isPlayer())
 				&& (!CMLib.threads().isTicking(M, -1))
-				&& ((M.amUltimatelyFollowing()==null)||(!M.amUltimatelyFollowing().isPlayer())))
+				&& ((M.amFollowing()==null)||(!M.getGroupLeader().isPlayer())))
 					return I.name()+" on non-ticking mob: "+M.name()+", in: "+CMLib.map().getExtendedRoomID(M.location());
 				final String mobReport = validCheck(M);
 				if(mobReport != null)
@@ -1751,6 +1770,13 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public boolean isAnAnimal(final MOB M)
+	{
+		return isAnimalIntelligence(M) && M.charStats().getMyRace().canBreedWith(M.charStats().getMyRace(), false);
+
+	}
+
+	@Override
 	public boolean isVegetable(final MOB M)
 	{
 		return (M != null)
@@ -2007,6 +2033,31 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
+
+	@Override
+	public boolean isDrivableRoom(final Room R)
+	{
+		if(R==null)
+			return false;
+		switch(R.domainType())
+		{
+		case Room.DOMAIN_OUTDOORS_SEAPORT:
+		case Room.DOMAIN_OUTDOORS_SPACEPORT:
+		case Room.DOMAIN_INDOORS_CAVE_SEAPORT:
+		case Room.DOMAIN_INDOORS_SEAPORT:
+		case Room.DOMAIN_OUTDOORS_CITY:
+		case Room.DOMAIN_OUTDOORS_PLAINS:
+			return true;
+		case Room.DOMAIN_INDOORS_CAVE:
+			return R.basePhyStats().weight()>3;
+		case Room.DOMAIN_INDOORS_STONE: // underground city street
+			return R.basePhyStats().weight()<=2
+				&& R.basePhyStats().weight()>0
+				&& R.basePhyStats().height()>=5;
+		}
+		return false;
+	}
+
 	@Override
 	public boolean isWateryRoom(final Room R)
 	{
@@ -2126,6 +2177,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isInTheGame(final MOB M, final boolean reqInhabitation)
 	{
+		if(M==null)
+			return false;
 		final Room R;
 		synchronized(M)
 		{
@@ -2139,6 +2192,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isInTheGame(final Item I, final boolean reqInhabitation)
 	{
+		if(I==null)
+			return false;
 		final ItemPossessor iP;
 		synchronized(I)
 		{
@@ -2221,26 +2276,35 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
-	public boolean isAgingThing(final Physical P)
-	{
-		if(P==null)
-			return false;
-		final Ability A=P.fetchEffect("Age");
-		if((A!=null)&&(CMath.isInteger(A.text())&&(CMath.s_long(A.text())>Short.MAX_VALUE)))
-			return true;
-		return false;
-	}
-
 	@Override
-	public boolean isChild(final Environmental E)
+	public boolean isAgedChild(final Environmental E)
 	{
-		return isBaby(E)||((E instanceof MOB)&&(((MOB)E).isMonster())&&(isAgingThing((MOB)E)));
+		if(E instanceof Item)
+			return isBaby(E);
+		else
+		if(E instanceof MOB)
+		{
+			final Ability A=((MOB)E).fetchEffect("Age");
+			if(A != null)
+			{
+				final int cat = CMath.s_int(A.getStat("AGECAT"));
+				return cat <= Race.AGE_CHILD;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public boolean isBaby(final Environmental E)
 	{
-		return ((E instanceof CagedAnimal)&&(isAgingThing((CagedAnimal)E)));
+		if(E instanceof CagedAnimal)
+		{
+			final Ability A=((MOB)E).fetchEffect("Age");
+			if((A != null)&&(((CMath.s_long(A.text())>Short.MAX_VALUE))))
+				return true;
+
+		}
+		return false;
 	}
 
 	@Override
@@ -2848,6 +2912,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(str.toString().endsWith(", "))
 			return str.toString().substring(0,str.length()-2);
 		return str.toString();
+	}
+
+	@Override
+	public boolean isASlave(final MOB slaveM)
+	{
+		return isASlave(slaveM);
 	}
 
 	@Override

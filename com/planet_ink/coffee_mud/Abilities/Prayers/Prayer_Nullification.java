@@ -89,6 +89,7 @@ public class Prayer_Nullification extends Prayer
 				{
 					final Ability A=a.nextElement();
 					if((A!=null)&&(A.canBeUninvoked())&&(!A.isAutoInvoked())
+					&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_CURSING)
 					&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 					   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 					   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
@@ -137,6 +138,7 @@ public class Prayer_Nullification extends Prayer
 					{
 						final Ability A=target.fetchEffect(a);
 						if((A!=null)&&(A.canBeUninvoked())&&(!A.isAutoInvoked())
+						&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_CURSING)
 						&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 						   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 						   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)

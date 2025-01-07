@@ -3,11 +3,12 @@
 #    Spell/Skill ID=[PARAMETERS LIST]
 # [PARAMETERS LIST] are as follows:
 #    Spell_Sleep=([COMPONENT PARAMETER])&&([COMPONENT PARAMETER])||([COMPONENT PARAMETER])&&..etc..
+#    May also end with a "description of the component requirement", in quotes, instead of &&/||
 # [COMPONENT PARAMETER] are as follows:
 #    ([DISPOSITION]:[FATE]:[AMOUNT]:[COMPONENT ID]:[MASK])
 #  	 - OR -
 #    (TRIGGER:[RITUAL]:[MASK])
-# [DISPOSITION] is either: inventory, held, worn, nearby, onground (default inventory)
+# [DISPOSITION] is either: inventory, have, held, worn, nearby, onground (default inventory)
 # [FATE] is either: consumed, kept (default consumed)
 # [AMOUNT] is the number of amount of the component required (default 1)
 # [COMPONENT ID] is one of the following:
@@ -29,6 +30,9 @@
 # SPELL_SLEEP=(held:consumed:1:cotton:-CLASS +MAGE) || (inventory:consumed:10:sand:-CLASS +MAGE)
 #   (the above requires either cotton in hand, or 10 sand in inventory to cast sleep -- applies only to mages)
 # SPELL_SLEEP=(held:consumed:5:SAND:-class +wizard)&&(trigger:say you are feeling sleepy&social+ GOODNIGHT <T-NAME>:-class +wizard)
-#   (the aove requires held sane if you are a wizard AND a trigger ritual with SAY and GOODNIGHT social.)
+#   (the aove requires held sand if you are a wizard AND a trigger ritual with SAY and GOODNIGHT social.)
 BANDAGING=(inventory:consumed:1:CLOTH:)||(held:consumed:5:DUST:-race +elf)
-SPELL_LIGHT=(trigger:SAY light &STANDING &INCLUDE 1 -NPC &ASSISTSAY okee:)
+Thief_Runecasting=(have:kept:1:RUNE TILE:)||(have:kept:1:RUNE STONE:)||(have:kept:1:RUNE CUBE:) "a crafted rune cube, tile, or stone"
+THIEF_TAROTREADING=(have:kept:1:tarot cards:) "a deck of tarot cards"
+THIEF_TASSEOGRAPHY=(have:consumed:1:coffee:) "some coffee"
+THIEF_FORTUNETELLING=(have:kept:1:crystal ball:) "a crystal ball"

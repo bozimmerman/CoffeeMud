@@ -131,6 +131,8 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 	@Override
 	public boolean activate()
 	{
+		if(!super.activate())
+			return false;
 		if(serviceClient==null)
 		{
 			name="THStats"+Thread.currentThread().getThreadGroup().getName().charAt(0);

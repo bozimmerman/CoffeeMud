@@ -233,6 +233,7 @@ public class Quests extends StdLibrary implements QuestManager
 				List<String> dateLine=null;
 				List<String> duraLine=null;
 				List<String> muddayLine=null;
+				TimeClock C = null;
 				for(int v=0;v<cmds.size();v++)
 				{
 					line=cmds.get(v);
@@ -243,10 +244,18 @@ public class Quests extends StdLibrary implements QuestManager
 						||(var.equals("AREA")&&(areaLine == null)))
 						{
 							areaLine = line;
-							if((line.size()>1)&&(line.get(0).equalsIgnoreCase("ANY")))
+							if((line.size()>1)
+							&&(line.get(0).equalsIgnoreCase("ANY")))
 							{
 								line.remove(0);
 								areaLine = new XArrayList<String>(CMParms.combineQuoted(line, 0));
+							}
+							else
+							for(final String areaName : areaLine)
+							{
+								final Area A = CMLib.map().getArea(areaName);
+								if(A != null)
+									C = A.getTimeObj();
 							}
 						}
 						if (var.equals("NAME"))
@@ -278,7 +287,9 @@ public class Quests extends StdLibrary implements QuestManager
 						entry.to("ALL");
 					if(muddayLine != null)
 					{
-						entry.dateStr(""+parseMudDay(CMParms.combine(muddayLine, 2)));
+						if(C == null)
+							C=CMLib.time().globalClock();
+						entry.dateStr(""+parseHolidayMudDay(C, CMParms.combine(muddayLine, 2)));
 						entry.update(entry.date());
 					}
 					if(dateLine != null)
@@ -324,7 +335,7 @@ public class Quests extends StdLibrary implements QuestManager
 		return distance;
 	}
 
-	protected long parseMudDay(final String str)
+	protected long parseHolidayMudDay(final TimeClock clock, final String str)
 	{
 		int x=str.indexOf('-');
 		if(x<0)
@@ -333,8 +344,8 @@ public class Quests extends StdLibrary implements QuestManager
 			return 0;
 		final int mudmonth=CMath.s_parseIntExpression(str.substring(0,x));
 		final int mudday=CMath.s_parseIntExpression(str.substring(x+1));
-		final TimeClock C=(TimeClock)CMLib.time().globalClock().copyOf();
-		final TimeClock NOW=CMLib.time().globalClock();
+		final TimeClock NOW=clock;
+		final TimeClock C=(TimeClock)clock.copyOf();
 		C.setMonth(mudmonth);
 		C.setDayOfMonth(mudday);
 		C.setHourOfDay(0);

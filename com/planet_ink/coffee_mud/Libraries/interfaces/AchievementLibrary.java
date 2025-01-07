@@ -82,11 +82,12 @@ public interface AchievementLibrary extends CMLibrary
 		DECONSTRUCTING("Deconstructing",new String[]{"NUM","ABILITYID","ITEMMASK"}),
 		SKILLUSE("Using Skills",new String[]{"NUM","ABILITYID"}),
 		SKILLPROF("Skill proficiency",new String[]{"NUM", "PROF","ABILITYID"}),
+		EFFECTSHAD("Effects checked-off",new String[] {"NUM", "ABILITYID"}),
 		SOCIALUSE("Using Socials",new String[]{"NUM","SOCIALID"}),
 		QUESTOR("Completing Quests",new String[]{"NUM","QUESTMASK"}),
 		ACHIEVER("Completing Achievements",new String[]{"ACHIEVEMENTLIST"}),
-		LEVELSGAINED("Gaining Levels",new String[]{"NUM"}),
-		CLASSLEVELSGAINED("Gaining Class Levels",new String[]{"NUM","CLASS"}),
+		LEVELSGAINED("Gaining net Levels",new String[]{"NUM"}),
+		CLASSLEVELSGAINED("Gaining net Class Levels",new String[]{"NUM","CLASS"}),
 		TIMEPLAYED("Time Played",new String[]{"SECONDS"}),
 		JUSTBE("Character State",new String[]{}),
 		DEATHS("Dieing",new String[]{"NUM","ZAPPERMASK"}),
@@ -111,7 +112,11 @@ public interface AchievementLibrary extends CMLibrary
 		CMDUSE("Using Commands",new String[]{"NUM","COMMANDID"}),
 		GROUPKILLS("Number of Group Kills",new String[]{"NUM","SIZE","ZAPPERMASK"}),
 		ENTITLED("Number of titles",new String[]{"NUM","TITLEMASK"}),
-		SCRIPTED("Special Scripted",new String[]{"NUM"})
+		SCRIPTED("Special Scripted",new String[]{"NUM"}),
+		LEVELUP("Gaining a level",new String[]{"NUM"}),
+		CLASSLEVELUP("Gaining a Class levels",new String[]{"NUM","CLASS"}),
+		LEVELDOWN("Losing a level",new String[]{"NUM"}),
+		CLASSLEVELDOWN("Losing a Class levels",new String[]{"NUM","CLASS"}),
 		;
 		private final String[] parameters;
 		private final String displayName;
@@ -219,10 +224,10 @@ public interface AchievementLibrary extends CMLibrary
 		 * Creates a new tracker object with the given progress count as
 		 * the default/starting value.
 		 * @see Achievement#getTargetCount()
-		 * @param oldCount the initial value for progress, if applicable
+		 * @param oldVal the initial value for progress, if applicable
 		 * @return a new tracker object with the given progress count
 		 */
-		public Tracker getTracker(int oldCount);
+		public Tracker getTracker(String oldVal);
 
 		/**
 		 * Parses the parameters defined by the event type of this achievement
@@ -321,7 +326,9 @@ public interface AchievementLibrary extends CMLibrary
 		NOPURGE,
 		CLANXP,
 		CLANCURRENCY,
-		TATTOO
+		TATTOO,
+		ITEM,
+		MOB
 		;
 	}
 
@@ -492,6 +499,27 @@ public interface AchievementLibrary extends CMLibrary
 	}
 
 	/**
+	 * The CatalogAward interface provides pre-parsed award information for those who
+	 * complete the achievement and have earned a mob or item from the catalog.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public interface CatalogAward extends AmountAward
+	{
+		/**
+		 * The item or mob granted.
+		 * @return the item or mob granted.
+		 */
+		public PhysicalAgent getItem();
+
+		/**
+		 * The name of the item or mob to grant.
+		 * @return the name of the item or mob to grant.
+		 */
+		public String getItemName();
+	}
+
+	/**
 	 * A tracker object assigned to a particular player or account
 	 * for a particular achievement, allowing the achievement to
 	 * track progress if it needs to, or just providing a way
@@ -537,6 +565,15 @@ public interface AchievementLibrary extends CMLibrary
 		 * @return the score for this achievement and this mob
 		 */
 		public int getCount(Tattooable tracked);
+
+		/**
+		 * Returns the parms to store for the given mob.  If the
+		 * achievement of this tracker is Savable, then the mob may be
+		 * null, since the count would then be internally stored.
+		 * @param tracked the mob to get a parms for -- required ONLY for unsavable
+		 * @return the parms for this achievement and this mob
+		 */
+		public String getCountParms(Tattooable tracked);
 
 		/**
 		 * Returns a copy of this tracker, unattached to the
@@ -670,6 +707,16 @@ public interface AchievementLibrary extends CMLibrary
 	 * @return all the comment/help entries from the achievement definition file
 	 */
 	public Map<String,Map<String,String>> getAchievementsHelpMap();
+
+	/**
+	 * Parses the given string as per an achievements.ini 'rewards'
+	 * definition and grants the given mob the given awards.
+	 *
+	 * @param mob the mob to give awards to
+	 * @param rewardStr the rewards definition
+	 * @return
+	 */
+	public String giveAwards(final MOB mob, final String rewardStr);
 
 	/**
 	 * Given the comments/help entried from the achievement definition file, and an event,

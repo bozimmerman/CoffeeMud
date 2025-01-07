@@ -55,7 +55,8 @@ public class GrinderAbilities
 			httpReq.addFakeUrlParameter(field, value);
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
-		final String newid=httpReq.getUrlParameter("NEWID");
+		String newid=httpReq.getUrlParameter("NEWID");
+		newid = CMStrings.replaceAll(newid, " ", "");
 		String old;
 		old=httpReq.getUrlParameter("NAME");
 		A.setStat("NAME",(old==null)?"NAME":old);

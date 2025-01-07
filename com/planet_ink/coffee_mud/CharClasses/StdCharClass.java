@@ -447,7 +447,10 @@ public class StdCharClass implements CharClass
 			{
 				final CharStats cStats = (CharStats)mob.baseCharStats().copyOf();
 				cStats.getMyRace().affectCharStats(mob, cStats);
-				if(cStats.getStat(statCode) < minReq.second.intValue())
+				final String uStat = minReq.first.toUpperCase().trim();
+				if((cStats.getStat(statCode) < minReq.second.intValue())
+					&& (!CMLib.login().isTattooedLike(mob, "CHARCLASS_"+ID()+"+"+uStat))
+					&& (!CMLib.login().isTattooedLike(mob,"CHARCLASS_ALL"+"+"+uStat)))
 				{
 					if(!quiet)
 						mob.tell(L("You need at least a @x1 @x2 to become a @x3.",minReq.second.toString(),CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode)),name()));
@@ -456,7 +459,13 @@ public class StdCharClass implements CharClass
 			}
 		}
 		final Race R=mob.baseCharStats().getMyRace();
-		if(!isAllowedRace(R))
+		if(!(isAllowedRace(R)
+			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_"+ID()+"+RACE_"+R.ID()))
+			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_"+ID()+"+RACE_ALL"))
+			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_ALL+RACE_"+R.ID()))
+			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_ALL+RACE_ALL"))
+			)
+		)
 		{
 			if(!quiet)
 			{
@@ -1047,19 +1056,23 @@ public class StdCharClass implements CharClass
 		||CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,R.racialCategory()))
 			secondCheck = true;
 		else
-		if(CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,"-"+R.ID())
+		if(CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,"-All")
+		||CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,"-"+R.ID())
 		||CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,"-"+R.name())
 		||CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,"-"+R.racialCategory()))
 			secondCheck=false;
 		else
+		{
 			secondCheck =
 				(CMStrings.containsIgnoreCase(requiredRaceList,"All")
 				||CMStrings.containsIgnoreCase(requiredRaceList,R.ID())
 				||CMStrings.containsIgnoreCase(requiredRaceList,R.name())
 				||CMStrings.containsIgnoreCase(requiredRaceList,R.racialCategory()))
+			&&(!CMStrings.containsIgnoreCase(requiredRaceList,"-All"))
 			&&(!CMStrings.containsIgnoreCase(requiredRaceList,"-"+R.ID()))
 			&&(!CMStrings.containsIgnoreCase(requiredRaceList,"-"+R.name()))
 			&&(!CMStrings.containsIgnoreCase(requiredRaceList,"-"+R.racialCategory()));
+		}
 
 		synchronized(finalAllowedRaceSet)
 		{
@@ -1110,8 +1123,7 @@ public class StdCharClass implements CharClass
 		CR.setStat("QUAL","");
 
 		final MOB fakeMOB=CMClass.getFactoryMOB();
-		fakeMOB.baseCharStats().setMyClasses(ID());
-		fakeMOB.baseCharStats().setMyLevels("0");
+		fakeMOB.baseCharStats().setAllClassInfo(ID(), "0");
 		fakeMOB.recoverCharStats();
 
 		final PhyStats RS=(PhyStats)CMClass.getCommon("DefaultPhyStats");
@@ -1121,17 +1133,14 @@ public class StdCharClass implements CharClass
 		CR.setStat("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(RS));
 
 		final CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");
-		S1.setMyClasses(ID());
-		S1.setMyLevels("0");
+		S1.setAllClassInfo(ID(), "0");
 		S1.setAllValues(0);
 		final CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats");
 		S2.setAllValues(10);
-		S2.setMyClasses(ID());
-		S2.setMyLevels("0");
+		S2.setAllClassInfo(ID(), "0");
 		final CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats");
 		S3.setAllValues(11);
-		S3.setMyClasses(ID());
-		S3.setMyLevels("0");
+		S3.setAllClassInfo(ID(), "0");
 		final CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
 		SETSTAT.setAllValues(0);
 		final CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
@@ -1328,9 +1337,11 @@ public class StdCharClass implements CharClass
 	@Override
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
-		if(affectableStats.getCurrentClass().ID().equals(ID()))
-		for(final int i: CharStats.CODES.MAXCODES())
-			affectableStats.setStat(i,affectableStats.getStat(i)+maxStatAdjustments()[i]+maxStatAdjustments()[CharStats.CODES.toMAXBASE(i)]);
+		if(affectableStats.getCurrentClass()==this)
+		{
+			for(final int i: CharStats.CODES.MAXCODES())
+				affectableStats.setStat(i,affectableStats.getStat(i)+maxStatAdjustments()[i]+maxStatAdjustments()[CharStats.CODES.toMAXBASE(i)]);
+		}
 	}
 
 	@Override

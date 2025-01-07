@@ -151,7 +151,7 @@ public interface CharState extends CMCommon, Modifiable
 	 * @param maxHunger the highest amount to allow the hunger number to reach
 	 * @return whether the highest or lowest boundary was reached
 	 */
-	public boolean adjHunger(int byThisMuch, int maxHunger);
+	public boolean adjHunger(double byThisMuch, int maxHunger);
 	/**
 	 * This method is used to recalculate the maximum thirhungerst for a mob, based
 	 * on their weight and the default maximum hunger
@@ -176,7 +176,7 @@ public interface CharState extends CMCommon, Modifiable
 	 * @param maxThirst the highest amount to allow the thirst number to reach
 	 * @return whether the highest or lowest boundary was reached
 	 */
-	public boolean adjThirst(int byThisMuch, int maxThirst);
+	public boolean adjThirst(double byThisMuch, int maxThirst);
 	/**
 	 * This method is used to recalculate the maximum thirst for a mob, based
 	 * on their weight and the default maximum thirst

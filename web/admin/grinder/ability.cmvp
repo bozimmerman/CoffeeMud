@@ -45,6 +45,11 @@
         function EditDone()
         {
             @if?AbilityData?ISNEWABILITY@
+                if(document.RESOURCES.NEWID.value.indexOf(' ')>=0)
+                {
+                    alert('Spaces are not allowed in Ability IDs');
+                    return;
+                }
                 if(confirm('Create this new ability?'))
             @else@
                 @if?AbilityData?ISGENERIC@

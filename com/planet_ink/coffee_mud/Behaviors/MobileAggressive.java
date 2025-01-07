@@ -84,16 +84,32 @@ public class MobileAggressive extends Mobile
 		attackMsg=CMParms.getParmStr(newParms,"MESSAGE",null);
 		tickDown=tickWait;
 		aggressiveTickDown=tickWait;
-		final Vector<String> V=CMParms.parse(newParms.toUpperCase());
+		final List<String> V=CMParms.parse(newParms.toUpperCase());
 		levelcheck=V.remove("CHECKLEVEL");
 		mobkill=V.remove("MOBKILL");
 		noGangUp=V.remove("NOGANG")||V.remove("NOGANGUP");
 		misbehave=V.remove("MISBEHAVE");
 		V.removeAll(getMobileRemovables());
-		maskStr = CMLib.masking().separateZapperMask(CMParms.combineQuoted(V, 0));
+		maskStr = CMLib.masking().separateZapperMask(V);
+		final Collection<String> removables = getMobileRemovables();
 		this.mask=null;
 		if(maskStr.length()>0)
 			this.mask=CMLib.masking().getPreCompiledMask(maskStr);
+		String fixedParms = newParms;
+		for(int i=0;i<fixedParms.length();i++)
+		{
+			final char c=fixedParms.charAt(i);
+			if((c=='+')||(c=='-'))
+			{
+				int sp = fixedParms.indexOf(' ',i);
+				if(sp<0)
+					sp=fixedParms.length();
+				final String chk = fixedParms.substring(i,sp).toUpperCase();
+				if(removables.contains(chk))
+					fixedParms = fixedParms.substring(0,i)+fixedParms.substring(sp);
+			}
+		}
+		this.veryA.setParms(fixedParms);
 	}
 
 	@Override

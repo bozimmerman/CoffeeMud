@@ -40,13 +40,13 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 * The current absolute coordinates of  the object
 	 * @return 3 dimensional array of the coordinates
 	 */
-	public long[] coordinates();
+	public Coord3D coordinates();
 
 	/**
 	 * Sets the current absolute coordinates of the object
 	 * @param coords 3  dimensional array of the coordinates in space
 	 */
-	public void setCoords(long[] coords);
+	public void setCoords(Coord3D coords);
 
 	/**
 	 * The current radius of  the object
@@ -65,7 +65,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 * The direction of travel of this object in radians.
 	 * @return 2 dimensional array for the direction of movement
 	 */
-	public double[] direction();
+	public Dir3D direction();
 
 	/**
 	 * Sets the direction of travel of this object in radians.
@@ -73,7 +73,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 * direction[1] less than or equal to 2PI
 	 * @param dir 2 dimensional array for the direction of movement
 	 */
-	public void setDirection(double[] dir);
+	public void setDirection(Dir3D dir);
 
 	/**
 	 * The speed of the object through space

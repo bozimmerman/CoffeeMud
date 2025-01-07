@@ -135,8 +135,8 @@ public class Spell_ClanWard extends Spell
 				H.add(msg.source());
 				if(!noFollow)
 				{
-					final MOB M=msg.source().amUltimatelyFollowing();
-					if(M!=null)
+					final MOB M=msg.source().getGroupLeader();
+					if(M!=msg.source())
 						H.add(M);
 				}
 				for(final Iterator<MOB> e=H.iterator();e.hasNext();)
@@ -162,8 +162,8 @@ public class Spell_ClanWard extends Spell
 						H.add(msg.source());
 						if(!noFollow)
 						{
-							final MOB M=msg.source().amUltimatelyFollowing();
-							if(M!=null)
+							final MOB M=msg.source().getGroupLeader();
+							if(M!=msg.source())
 								H.add(M);
 						}
 						for(final Iterator<MOB> e=H.iterator();e.hasNext();)

@@ -254,12 +254,8 @@ public class ItemGenerator extends ActiveTicker
 				Log.sysOut(ID(),"Starting master item generation");
 				allItems.clear();
 				skills=new Vector<ItemCraftor>();
-				for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
-				{
-					final Ability A=e.nextElement();
-					if(A instanceof ItemCraftor)
-						skills.add((ItemCraftor)A.copyOf());
-				}
+				for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
+					skills.add((ItemCraftor)e.nextElement().copyOf());
 				return true;
 			}
 			final ItemCraftor skill;

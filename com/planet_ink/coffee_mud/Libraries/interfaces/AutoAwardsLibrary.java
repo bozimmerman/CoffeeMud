@@ -165,8 +165,9 @@ public interface AutoAwardsLibrary extends CMLibrary
 	 * auto-properties.
 	 *
 	 * @param mob the mob who wants auto properties
+	 * @param reset recalculate any existing auto properties
 	 */
-	public void giveAutoProperties(final MOB mob);
+	public void giveAutoProperties(final MOB mob, boolean reset);
 
 	/**
 	 * In auto properties, this will allow it to be modified on a line-by-line

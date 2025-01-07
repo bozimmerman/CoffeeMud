@@ -45,8 +45,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		return "ColumbiaUniv";
 	}
 
-	protected SHashtable<String, ExpertiseDefinition>	completeEduMap		= new SHashtable<String, ExpertiseDefinition>();
-	protected SHashtable<String, List<String>>			baseEduSetLists		= new SHashtable<String, List<String>>();
+	protected STreeMap<String, ExpertiseDefinition>	completeEduMap		= new STreeMap<String, ExpertiseDefinition>();
+	protected SHashtable<String, List<String>>		baseEduSetLists		= new SHashtable<String, List<String>>();
 
 	@SuppressWarnings("unchecked")
 	protected Map<String, String>[]		completeUsageMap	= new Hashtable[XType.values().length];
@@ -283,7 +283,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	@Override
 	public Enumeration<ExpertiseDefinition> definitions()
 	{
-		return completeEduMap.elements();
+		return new IteratorEnumeration<ExpertiseDefinition>(completeEduMap.values().iterator());
 	}
 
 	@Override
@@ -300,23 +300,23 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		ExpertiseDefinition D=getDefinition(ID);
 		if(D!=null)
 			return D;
-		for(final Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
+		for(final Iterator<ExpertiseDefinition> e=completeEduMap.values().iterator();e.hasNext();)
 		{
-			D=e.nextElement();
+			D=e.next();
 			if(D.name().equalsIgnoreCase(ID))
 				return D;
 		}
 		if(exactOnly)
 			return null;
-		for(final Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
+		for(final Iterator<ExpertiseDefinition> e=completeEduMap.values().iterator();e.hasNext();)
 		{
-			D=e.nextElement();
+			D=e.next();
 			if(D.ID().startsWith(ID))
 				return D;
 		}
-		for(final Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
+		for(final Iterator<ExpertiseDefinition> e=completeEduMap.values().iterator();e.hasNext();)
 		{
-			D=e.nextElement();
+			D=e.next();
 			if(CMLib.english().containsString(D.name(),ID))
 				return D;
 		}
@@ -328,9 +328,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	{
 		ExpertiseDefinition D=null;
 		final List<ExpertiseDefinition> V=new Vector<ExpertiseDefinition>();
-		for(final Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
+		for(final Iterator<ExpertiseDefinition> e=completeEduMap.values().iterator();e.hasNext();)
 		{
-			D=e.nextElement();
+			D=e.next();
 			if(((D.compiledFinalMask()==null)||(CMLib.masking().maskCheck(D.compiledFinalMask(),mob,true)))
 			&&((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true))))
 				V.add(D);
@@ -358,9 +358,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	{
 		ExpertiseDefinition D=null;
 		final List<ExpertiseDefinition> V=new Vector<ExpertiseDefinition>();
-		for(final Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
+		for(final Iterator<ExpertiseDefinition> e=completeEduMap.values().iterator();e.hasNext();)
 		{
-			D=e.nextElement();
+			D=e.next();
 			if((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true)))
 			{
 				V.add(D);
@@ -430,9 +430,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			return 0;
 		ExpertiseDefinition D=null;
 		int max=0;
-		for(final Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
+		for(final Iterator<ExpertiseDefinition> e=completeEduMap.values().iterator();e.hasNext();)
 		{
-			D=e.nextElement();
+			D=e.next();
 			if(expertiseID.equals(D.getBaseName()))
 			{
 				if((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true)))
@@ -498,9 +498,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				if(set==null)
 				{
 					final List<String> codes=new LinkedList<String>();
-					for(final Enumeration<String> e=completeEduMap.keys();e.hasMoreElements();)
+					for(final Iterator<String> e=completeEduMap.keySet().iterator();e.hasNext();)
 					{
-						key=e.nextElement();
+						key=e.next();
 						if(key.startsWith(baseExpertiseCode)
 						&&(CMath.isInteger(key.substring(baseExpertiseCode.length()))||CMath.isRomanNumeral(key.substring(baseExpertiseCode.length()))))
 							codes.add(key);
@@ -1091,8 +1091,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		final Room R=studentM.location();
 		if((sess==null)
 		||(R==null)
-		||((!teacherM.isPlayer())
-			&&((teacherM.amFollowing()==null)||(!teacherM.amUltimatelyFollowing().isPlayer()))))
+		||((!teacherM.isPlayer())&&(!teacherM.getGroupLeader().isPlayer())))
 		{
 			final boolean success=postTeach(teacherM,studentM,teachableO);
 			if(callBack != null)

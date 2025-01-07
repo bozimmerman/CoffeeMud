@@ -93,12 +93,12 @@ public interface SpaceShip extends SpaceObject, Boardable
 	 * The direction of facing of this object in radians.
 	 * @return 2 dimensional array for the direction of facing
 	 */
-	public double[] facing();
+	public Dir3D facing();
 	/**
 	 * Sets the direction of facing of this object in radians.
 	 * @param dir 2 dimensional array for the direction of facing
 	 */
-	public void setFacing(double[] dir);
+	public void setFacing(Dir3D dir);
 
 	/**
 	 * The full 360 orientation of the top of the object in radians.

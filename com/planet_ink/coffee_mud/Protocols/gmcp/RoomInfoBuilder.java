@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Protocols.gmcp;
 
 import com.planet_ink.coffee_mud.Abilities.Misc.ExtraData;
+import com.planet_ink.coffee_mud.Areas.interfaces.GridZones;
 import com.planet_ink.coffee_mud.Common.interfaces.Climate;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
@@ -44,7 +45,8 @@ public class RoomInfoBuilder {
 
 		addBasicInfo();
 		addExtraData();
-		addExits();
+		addExitsNum();
+		addExitsId();
 		addCoordinates();
 		return "room.info " + json;
 	}
@@ -52,6 +54,7 @@ public class RoomInfoBuilder {
 	private void addBasicInfo() {
 		final String roomID = CMLib.map().getExtendedRoomID(room);
 		final String domType = getDomainType();
+		final String moveType = getMoveType();
 
 		json.put("num", CMath.abs(roomID.hashCode()));
 		json.put("id", roomID);
@@ -60,6 +63,7 @@ public class RoomInfoBuilder {
 		json.put("desc", MiniJSON.toJSONString(room.description(mob)));
 		json.put("terrain", domType.toLowerCase());
 		json.put("details", "");
+		json.put("move", moveType);
 	}
 
 	private String getDomainType() {
@@ -69,7 +73,18 @@ public class RoomInfoBuilder {
 			return Room.DOMAIN_INDOORS_DESCS[CMath.unsetb(room.domainType(), Room.INDOORS)];
 	}
 
-	private void addExits() {
+	private String getMoveType() {
+		String type = "normal";
+		if (CMLib.flags().isCrawlable(room))
+			type = "crawl";
+		else if (CMLib.flags().isWateryRoom(room))
+			type = "swim";
+		else if (CMLib.flags().isAiryRoom(room))
+			type = "fly";
+		return type;
+	}
+
+	private void addExitsNum() {
 		JSONObject exits = new JSONObject();
 
 		for (int d : Directions.DISPLAY_CODES()) {
@@ -83,6 +98,22 @@ public class RoomInfoBuilder {
 			}
 		}
 		json.put("exits", exits);
+	}
+
+	private void addExitsId() {
+		JSONObject exits = new JSONObject();
+
+		for (int d : Directions.DISPLAY_CODES()) {
+			if (room.getExitInDir(d) != null) {
+				Room room2 = room.getRoomInDir(d);
+				if (room2 != null) {
+					String room2ID = CMLib.map().getExtendedRoomID(room2);
+					if (!room2ID.isEmpty())
+						exits.put(CMLib.directions().getDirectionChar(d), room2ID);
+				}
+			}
+		}
+		json.put("exitsid", exits);
 	}
 
 	private void addExtraData() {
@@ -107,15 +138,30 @@ public class RoomInfoBuilder {
 
 	private void addCoordinates() {
 		JSONObject coord = new MiniJSON.JSONObject();
+
 		if (room.getArea().getClimateObj().weatherType(room) == Climate.WEATHER_FOG) {
 			json.put("coord", coord);
 			return;
 		}
 
-		coord.put("id", 0);
-		coord.put("x", -1);
-		coord.put("y", -1);
-		coord.put("cont", 0);
+		if (room.getGridParent() != null) {
+			String parentID = room.getGridParent().roomID();
+			GridZones.XYVector vec = room.getGridParent().getRoomXY(room);
+			coord.put("id", Math.abs(parentID.hashCode()));
+			coord.put("x", (vec == null) ? -1 : vec.x);
+			coord.put("y", (vec == null) ? -1 : vec.y);
+		} else if (room.getArea() instanceof GridZones) {
+			GridZones.XYVector vec = ((GridZones)room.getArea()).getRoomXY(room);
+			coord.put("id", 0);
+			coord.put("x", (vec == null) ? -1 : vec.x);
+			coord.put("y", (vec == null) ? -1 : vec.y);
+		} else {
+			coord.put("id", 0);
+			coord.put("x", -1);
+			coord.put("y", -1);
+		}
+
+		coord.put("cont", 0);  // continent?
 		json.put("coord", coord);
 	}
 }

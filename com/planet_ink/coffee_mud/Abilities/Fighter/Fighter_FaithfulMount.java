@@ -104,7 +104,7 @@ public class Fighter_FaithfulMount extends FighterSkill
 				{
 					final MOB M = (MOB)R;
 					if((M.isMonster())
-					&&(CMLib.flags().isAnimalIntelligence(M))
+					&&(CMLib.flags().isAnAnimal(M))
 					&&(M instanceof Rideable)
 					&&(M.location()==msg.source().location())
 					&&(CMLib.flags().isAliveAwakeMobileUnbound(M, true)))

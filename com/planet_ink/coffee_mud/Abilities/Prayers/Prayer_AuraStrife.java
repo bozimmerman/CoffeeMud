@@ -90,7 +90,9 @@ public class Prayer_AuraStrife extends Prayer
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if((invoker()!=null)&&(affected!=invoker())&&(CMLib.flags().isEvil(invoker())))
+		if((invoker()!=null)
+		&&(affected!=invoker())
+		&&(CMLib.flags().isEvil(invoker())))
 		{
 			affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-(adjustedLevel(invoker(),0)/5));
 			if(affectableStats.getStat(CharStats.STAT_CHARISMA)<=0)
@@ -125,51 +127,78 @@ public class Prayer_AuraStrife extends Prayer
 			M.location().show(M,null,CMMsg.MSG_OK_VISUAL,L("The aura of strife around <S-NAME> fades."));
 	}
 
+	protected volatile MOB lastTargetM = null;
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
 		if((tickID==Tickable.TICKID_MOB)
-		&&(invoker()!=null)
 		&&(affected instanceof MOB))
 		{
 			final MOB mob=(MOB)affected;
-			final Set<MOB> invokerGroup=invoker().getGroupMembers(new HashSet<MOB>());
-			if(mob!=invoker())
+			final MOB templarM = invoker();
+			final Room R = (mob!=null)?mob.location():null;
+			if((R == null)||(templarM==null))
+				return true;
+			if(mob != templarM)
 			{
-				if(mob.location()!=invoker().location())
+				if(R!=templarM.location())
 					unInvoke();
 				else
 				{
+					final Set<MOB> invokerGroup=templarM.getGroupMembers(new HashSet<MOB>());
 					if(invokerGroup.contains(mob))
 						unInvoke();
 					else
-					if(mob.isInCombat())
+					if((mob!=null) && (mob.isInCombat()))
 					{
-						int levels=invoker().charStats().getClassLevel("Templar");
-						if(levels<0)
-							levels=invoker().phyStats().level();
-						if(CMLib.dice().rollPercentage()>=levels)
+						if(CMLib.dice().rollPercentage()<10)
 						{
-							final MOB newvictim=mob.location().fetchRandomInhabitant();
-							if(newvictim!=mob)
+							final MOB newvictim=R.fetchRandomInhabitant();
+							if((newvictim!=mob)
+							&&(mob.mayIFight(newvictim))
+							&&(!invokerGroup.contains(newvictim)))
 								mob.setVictim(newvictim);
+						}
+					}
+					else
+					if((CMLib.dice().rollPercentage()<=15)
+					&&(CMLib.flags().isEvil(templarM)))
+					{
+						final MOB newvictim=R.fetchRandomInhabitant();
+						if((newvictim!=mob)
+						&&(mob != null)
+						&&(mob.mayIFight(newvictim))
+						&&(!invokerGroup.contains(newvictim)))
+						{
+							if(lastTargetM == newvictim)
+								CMLib.combat().postAttack(mob, newvictim, mob.fetchWieldedItem());
+							else
+							{
+								lastTargetM = newvictim;
+								CMLib.commands().forceStandardCommand(mob, "Emote",
+										new XVector<String>("EMOTE",L("yell(s) and curse(s) at @x1.",newvictim.name(mob))));
+							}
 						}
 					}
 				}
 			}
 			else
-			if((mob.location()!=null)&&(CMLib.flags().isEvil(invoker())))
+			if(CMLib.flags().isEvil(templarM))
 			{
-				for(int m=0;m<mob.location().numInhabitants();m++)
+				final Set<MOB> invokerGroup=templarM.getGroupMembers(new HashSet<MOB>());
+				for(int m=0;m<R.numInhabitants();m++)
 				{
-					final MOB M=mob.location().fetchInhabitant(m);
-					if((M!=null)
-					&&(M!=invoker())
+					final MOB M=R.fetchInhabitant(m);
+					if((M != null)
+					&&(M != templarM)
 					&&(!invokerGroup.contains(M))
+					&&(mob != null)
+					&&(mob.mayIFight(M))
 					&&(!M.Name().equals(mob.getLiegeID())))
-						beneficialAffect(invoker,M,0,Ability.TICKS_FOREVER);
+						beneficialAffect(templarM,M,0,Ability.TICKS_FOREVER);
 				}
 			}
 		}

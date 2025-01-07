@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.Readable;
 import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.interfaces.TickableGroup.LocalType;
 import com.planet_ink.coffee_mud.core.*;
@@ -222,8 +223,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final XMLLibrary xmlLib=CMLib.xml();
 			final StringBuilder str=new StringBuilder("");
 			str.append(xmlLib.convertXMLtoTag("SSRADIUS",((SpaceObject)E).radius()));
-			str.append(xmlLib.convertXMLtoTag("SSCOORDS",CMParms.toListString(((SpaceObject)E).coordinates())));
-			str.append(xmlLib.convertXMLtoTag("SSDIR",CMParms.toListString(((SpaceObject)E).direction())));
+			str.append(xmlLib.convertXMLtoTag("SSCOORDS",CMParms.toListString(((SpaceObject)E).coordinates().toLongs())));
+			str.append(xmlLib.convertXMLtoTag("SSDIR",CMParms.toListString(((SpaceObject)E).direction().toDoubles())));
 			str.append(xmlLib.convertXMLtoTag("SSSPEED",Math.round(((SpaceObject)E).speed())));
 			return str.append((E.isGeneric()?getGenEnvironmentalXML(E):"") + (fromTop?getOrdEnvironmentalXML(E):"")).toString();
 		}
@@ -255,7 +256,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				str.append(xmlLib.convertXMLtoTag("YGRID",((GridLocale)E).yGridSize()));
 			}
 			if(E instanceof LocationRoom)
-				str.append(xmlLib.convertXMLtoTag("COREDIR",CMParms.toListString(((LocationRoom)E).getDirectionFromCore())));
+			{
+				str.append(xmlLib.convertXMLtoTag("COREDIR",CMParms.toListString(((LocationRoom)E).getDirectionFromCore().toDoubles())));
+			}
 			str.append(getExtraEnvironmentalXML(E));
 			str.append(getGenScriptsXML((Room)E,false));
 		}
@@ -445,7 +448,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				CMLib.catalog().updateCatalogIntegrity(thisItem);
 				final Item cont=thisItem.ultimateContainer(null);
 				final String roomID=((cont.owner()==null)&&(thisItem instanceof SpaceObject)&&(CMLib.space().isObjectInSpace((SpaceObject)thisItem)))?
-						("SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates())):CMLib.map().getExtendedRoomID((Room)cont.owner());
+						("SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates().toLongs()))
+							:CMLib.map().getExtendedRoomID((Room)cont.owner());
 				itemstr.append("<ITEM>");
 				itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(thisItem)));
 				itemstr.append((thisItem instanceof Container)
@@ -504,7 +508,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final String roomID=irm.parms().get("ID");
 			final long expirationDate=CMath.s_long(irm.parms().get("EXPIRE"));
 			if(roomID.startsWith("SPACE.") && (newOne instanceof SpaceObject))
-				CMLib.space().addObjectToSpace((SpaceObject)newOne,CMParms.toLongArray(CMParms.parseCommas(roomID.substring(6), true)));
+			{
+				CMLib.space().addObjectToSpace((SpaceObject)newOne,
+						new Coord3D(CMParms.toLongArray(CMParms.parseCommas(roomID.substring(6), true))));
+			}
 			else
 			{
 				final Room itemR=CMLib.map().getRoom(roomID);
@@ -591,7 +598,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(E instanceof SpaceShip)
 			{
 				text.append(xmlLib.convertXMLtoTag("SSOML",((SpaceShip)item).getOMLCoeff()+""));
-				text.append(xmlLib.convertXMLtoTag("SSFACE", CMParms.toListString(((SpaceShip)item).facing())));
+				text.append(xmlLib.convertXMLtoTag("SSFACE", CMParms.toListString(((SpaceShip)item).facing().toDoubles())));
 			}
 		}
 
@@ -860,6 +867,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				text.append(xmlLib.convertXMLtoTag("TIMECUT",""+((Auctioneer)E).timedFinalCutPct()));
 				text.append(xmlLib.convertXMLtoTag("MAXADAYS",""+((Auctioneer)E).maxTimedAuctionDays()));
 				text.append(xmlLib.convertXMLtoTag("MINADAYS",""+((Auctioneer)E).minTimedAuctionDays()));
+			}
+			if(E instanceof CraftBroker)
+			{
+				text.append(xmlLib.convertXMLtoTag("BROCHAIN",""+((CraftBroker)E).brokerChain()));
+				text.append(xmlLib.convertXMLtoTag("MAXCDAYS",""+((CraftBroker)E).maxTimedListingDays()));
+				text.append(xmlLib.convertXMLtoTag("MAXLISTINGS",""+((CraftBroker)E).maxListings()));
+				text.append(xmlLib.convertXMLtoTag("COMMPCT",""+((CraftBroker)E).commissionPct()));
 			}
 			if(E instanceof Deity)
 			{
@@ -1445,7 +1459,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					final Manufacturer M=(Manufacturer)CMClass.getCommon("DefaultManufacturer");
 					if(M!=null)
 					{
-						M.setXml(ablk.value());
+						M.setXML(ablk.value());
 						if(CMLib.tech().getManufacturer(M.name())==null)
 							custom.add(M);
 					}
@@ -2683,13 +2697,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(E instanceof SpaceObject)
 			{
 				((SpaceObject)E).setRadius(CMLib.xml().getLongFromPieces(V,"SSRADIUS"));
-				final long[] coords=CMParms.toLongArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"SSCOORDS"), true));
-				if((coords!=null)&&(coords.length==3))
+				final Coord3D coords=new Coord3D(CMParms.toLongArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"SSCOORDS"), true)));
+				if((coords!=null)&&(coords.length()==3))
 					((SpaceObject)E).setCoords(coords);
 				((SpaceObject)E).setSpeed(CMLib.xml().getDoubleFromPieces(V,"SSSPEED"));
 				final double[] dir=CMParms.toDoubleArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"SSDIR"), true));
 				if((dir!=null)&&(dir.length==2))
-					((SpaceObject)E).setDirection(dir);
+					((SpaceObject)E).setDirection(new Dir3D(dir));
 			}
 		}
 		if(E instanceof Physical)
@@ -2714,7 +2728,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((GridLocale)E).setYGridSize(CMLib.xml().getIntFromPieces(V,"YGRID"));
 			}
 			if(E instanceof LocationRoom)
-				((LocationRoom)E).setDirectionFromCore(CMParms.toDoubleArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"COREDIR"),true)));
+			{
+				final double[] oldDir = CMParms.toDoubleArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"COREDIR"),true));
+				if(oldDir.length==2)
+					((LocationRoom)E).setDirectionFromCore(new Dir3D(oldDir));
+			}
 			((Room)E).setClimateType(CMLib.xml().getIntFromPieces(V,"RCLIM",((Room)E).getClimateTypeCode()));
 			((Room)E).setAtmosphere(CMLib.xml().getIntFromPieces(V,"RATMO",((Room)E).getAtmosphereCode()));
 		}
@@ -3344,6 +3362,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				switch(fakeStat)
 				{
+				case AGENAME:
+					return current?((MOB)P).charStats().ageName():((MOB)P).baseCharStats().ageName();
+				case AGEMINS:
+					return ""+((MOB)P).getAgeMinutes();
 				case QUESTPOINTS:
 					return ""+((MOB)P).getQuestPoint();
 				case FOLLOWERS:
@@ -3356,6 +3378,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					if(((MOB)P).playerStats()!=null)
 						return CMath.toPct(((MOB)P).playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
 					break;
+				case IDLETICKS:
+				{
+					final Session sess = ((MOB)P).session();
+					return ""+((sess != null) ? sess.getIdleMillis()/CMProps.getTickMillis() : -1);
+				}
+				case PEACETICKS:
+				{
+					final MOB mob = (MOB)P;
+					return ""+(mob.getPeaceTime()/CMProps.getTickMillis());
+				}
 				case OBJATTRIB:
 					{
 						final StringBuilder attrib=new StringBuilder("");
@@ -3378,8 +3410,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 							attrib.append("\"SHOP\" \"STORE\" ");
 						if(CMLib.flags().isUndead(M))
 							attrib.append("\"UNDEAD\" ");
-						if(CMLib.flags().isAnimalIntelligence(M))
+						if(CMLib.flags().isAnAnimal(M))
 							attrib.append("\"ANIMAL\" ");
+						else
+						if(CMLib.flags().isAnimalIntelligence(M))
+							attrib.append("\"CREATURE\" ");
 						if(CMLib.flags().isAPlant(M))
 							attrib.append("\"PLANT\" ");
 						if(CMLib.flags().isInsect(M))
@@ -3505,6 +3540,17 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						return ""+((MOB)P).fetchFaction(alignID);
 					if(((MOB)P).fetchFaction(inclinID)!=Integer.MAX_VALUE)
 						return ""+((MOB)P).fetchFaction(inclinID);
+					return "";
+				}
+				case BIRTHDATE:
+				{
+					final MOB mob=(MOB)P;
+					if(mob.playerStats() != null)
+					{
+						final int bday=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
+						final int bmonth=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+						return bmonth+"-"+bday;
+					}
 					return "";
 				}
 				}
@@ -3633,7 +3679,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					{
 						final int x=CMParms.indexOf(PhyStats.IS_CODES, v);
 						if(x>=0)
-							newDisposition |= (2^x);
+							newDisposition |= (int)Math.round(Math.pow(2,x));
 					}
 					if(current)
 						P.phyStats().setDisposition(newDisposition);
@@ -3666,7 +3712,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					{
 						final int x=CMParms.indexOf(set, v);
 						if(x>=0)
-							newSensesMask |= (2^x);
+							newSensesMask |= (int)Math.round(Math.pow(2,x));
 					}
 					if(current)
 						P.phyStats().setSensesMask(newSensesMask);
@@ -3723,6 +3769,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				switch(fakeStat)
 				{
+				case AGENAME:
+					return;
+				case AGEMINS:
+					((MOB)P).setAgeMinutes(CMath.parseLongExpression(value));
+					return;
 				case QUESTPOINTS:
 					((MOB)P).setQuestPoint(CMath.parseIntExpression(value));
 					return;
@@ -3736,6 +3787,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					return;
 				case STINK:
 					((MOB)P).playerStats().setHygiene(Math.round(CMath.s_pct(value)*PlayerStats.HYGIENE_DELIMIT));
+					return;
+				case IDLETICKS:
+					return;
+				case PEACETICKS:
 					return;
 				case CHARCLASS:
 				{
@@ -3777,6 +3832,22 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					break;
 				case FACTIONAMT:
 					break;
+				case BIRTHDATE:
+				{
+					final MOB mob=(MOB)P;
+					if(mob.playerStats()!=null)
+					{
+						final String[] pts = value.trim().split("-");
+						if((pts.length==2)
+						&&(CMath.s_int(pts[0])>0)
+						&&(CMath.s_int(pts[1])>0))
+						{
+							mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH] = CMath.s_int(pts[0]);
+							mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY] = CMath.s_int(pts[1]);
+						}
+					}
+					break;
+				}
 				case FACTIONID:
 					break;
 				case INCLINATION:
@@ -3976,7 +4047,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((SpaceShip)item).setOMLCoeff(xml.getDoubleFromPieces(buf,"SSOML"));
 				final double[] facing=CMParms.toDoubleArray(CMParms.parseCommas(xml.getValFromPieces(buf,"SSFACE"),true));
 				if((facing!=null)&&(facing.length==2))
-					((SpaceShip)item).setFacing(facing);
+					((SpaceShip)item).setFacing(new Dir3D(facing));
 			}
 		}
 
@@ -4293,6 +4364,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((Auctioneer)E).setMinTimedAuctionDays(xml.getIntFromPieces(buf,"MINADAYS"));
 			}
 
+			if(E instanceof CraftBroker)
+			{
+				((CraftBroker)E).setBrokerChain(xml.getValFromPieces(buf,"BROCHAIN"));
+				((CraftBroker)E).setMaxTimedListingDays(xml.getIntFromPieces(buf,"MAXCDAYS"));
+				((CraftBroker)E).setMaxListings(xml.getIntFromPieces(buf,"MAXLISTINGS"));
+				((CraftBroker)E).setCommissionPct(xml.getDoubleFromPieces(buf,"COMMPCT"));
+			}
+
 			if(E instanceof Deity)
 			{
 				final Deity godmob=(Deity)E;
@@ -4468,13 +4547,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		str.append(CMLib.xml().convertXMLtoTag("CLASSID",mob.ID()));
 		str.append(CMLib.xml().convertXMLtoTag("NAME",mob.Name()));
 		str.append(CMLib.xml().convertXMLtoTag("PASS",pstats.getPasswordStr()));
-		str.append(CMLib.xml().convertXMLtoTag("CLASS",mob.baseCharStats().getMyClassesStr()));
+		final Pair<String, String> classInfo = mob.baseCharStats().getAllClassInfo();
+		str.append(CMLib.xml().convertXMLtoTag("CLASS",classInfo.first));
 		str.append(CMLib.xml().convertXMLtoTag("RACE",mob.baseCharStats().getMyRace().ID()));
 		str.append(CMLib.xml().convertXMLtoTag("GEND",""+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))));
 		for(final int i : CharStats.CODES.BASECODES())
 			str.append(CMLib.xml().convertXMLtoTag(CMStrings.limit(CharStats.CODES.NAME(i),3),mob.baseCharStats().getStat(i)));
 		str.append(CMLib.xml().convertXMLtoTag("HIT",mob.baseState().getHitPoints()));
-		str.append(CMLib.xml().convertXMLtoTag("LVL",mob.baseCharStats().getMyLevelsStr()));
+		str.append(CMLib.xml().convertXMLtoTag("LVL",classInfo.second));
 		str.append(CMLib.xml().convertXMLtoTag("MANA",mob.baseState().getMana()));
 		str.append(CMLib.xml().convertXMLtoTag("MOVE",mob.baseState().getMovement()));
 		str.append(CMLib.xml().convertXMLtoTag("EXP",mob.getExperience()));
@@ -4560,8 +4640,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 			mob.setName(mblk.getValFromPieces("NAME"));
 			mob.playerStats().setPassword(mblk.getValFromPieces("PASS"));
-			mob.baseCharStats().setMyClasses(mblk.getValFromPieces("CLASS"));
-			mob.baseCharStats().setMyLevels(mblk.getValFromPieces("LVL"));
+			mob.baseCharStats().setAllClassInfo(mblk.getValFromPieces("CLASS"), mblk.getValFromPieces("LVL"));
 			int level=0;
 			for(int i=0;i<mob.baseCharStats().numClasses();i++)
 				level+=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(i));
@@ -4796,7 +4875,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return text.toString();
 	}
 
-	public void fillFileSet(final List<String> V, final Set<String> H)
+	protected void fillFileSet(final List<String> V, final Set<String> H)
 	{
 		if(H==null)
 			return;
@@ -4812,7 +4891,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	@Override
 	public void fillFileSet(final Environmental E, final Set<String> H)
 	{
-		if(E==null)
+		if((E==null)||(H==null))
 			return;
 		if(E instanceof PhysicalAgent)
 		{
@@ -4828,6 +4907,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				final ScriptingEngine SE=e.nextElement();
 				if(SE!=null)
 					fillFileSet(SE.externalFiles(),H);
+			}
+			if(E instanceof Item)
+			{
+				final String filename = getItemFilename((Item)E);
+				if((filename != null)
+				&& (!H.contains(filename)))
+					H.add(filename);
 			}
 		}
 		if(E instanceof Physical)
@@ -4860,10 +4946,26 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				final CMFile file = new CMFile(Resources.makeFileResourceName(CMLib.factions().makeFactionFilename(F.factionID())),null);
 				if(file.exists()
+				&&(!file.isDirectory())
 				&& (!H.contains(file.getAbsolutePath())))
 					H.add(file.getAbsolutePath());
 			}
 		}
+	}
+
+	protected String getItemFilename(final Item I)
+	{
+		if(I.isReadable()
+		&&(I.readableText()!=null)
+		&&(I.readableText().startsWith(Readable.FILE_PREFIX)))
+		{
+			final String subFilename = I.readableText().substring(5);
+			final CMFile file = new CMFile(Resources.makeFileResourceName(subFilename),null);
+			if(file.exists()
+			&&(!file.isDirectory()))
+				return file.getAbsolutePath();
+		}
+		return null;
 	}
 
 	protected void fillFileMap(final Environmental E, final List<String> V, final Map<String,Set<Environmental>> H)
@@ -4890,7 +4992,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	@Override
 	public void fillFileMap(final Environmental E, final Map<String,Set<Environmental>> H)
 	{
-		if(E==null)
+		if((E==null)||(H==null))
 			return;
 		if(E instanceof PhysicalAgent)
 		{
@@ -4906,6 +5008,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				final ScriptingEngine SE=e.nextElement();
 				if(SE!=null)
 					fillFileMap(E, SE.externalFiles(),H);
+			}
+			if(E instanceof Item)
+			{
+				final String filename = getItemFilename((Item)E);
+				if(filename != null)
+					fillFileMap(E, new XVector<String>(filename),H);
 			}
 		}
 		if(E instanceof Physical)
@@ -5868,6 +5976,113 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				str.append(";").append(A.getParms());
 		}
 		return str.toString();
+	}
+
+	@Override
+	public List<Ability> getCodedEffects(final String spells, final Character delimiter)
+	{
+		final Vector<Ability> spellsV=new Vector<Ability>();
+		List<String> parts;
+		if(delimiter != null)
+			parts = CMParms.parseAny(spells, delimiter.charValue(), true, true);
+		else
+			parts = new XArrayList<String>(spells);
+		for(final String part : parts)
+		{
+			final StringBuilder parms=new StringBuilder("");
+			final StringBuilder settings=new StringBuilder("");
+			String abilityID="";
+			int state=0;
+			final StringBuilder s=new StringBuilder(part);
+			int depth=0;
+			for(int i=0;i<s.length();i++)
+			{
+				final char c=s.charAt(i);
+				switch(state)
+				{
+				case 0:
+					if(c =='\\')
+						s.deleteCharAt(i);
+					else
+					if(c == '(')
+					{
+						state=1;
+						depth=0;
+						abilityID=s.substring(0,i);
+					}
+					else
+					if(c == '[')
+					{
+						state=2;
+						depth=0;
+						abilityID=s.substring(0,i);
+					}
+					break;
+				case 1:
+					if((c=='\\')
+					&&(i<s.length()-1)
+					&&(s.charAt(i+1)=='('))
+						s.deleteCharAt(i);
+					else
+					if((c==')')&&(depth==0))
+						state=3;
+					else
+					{
+						parms.append(c);
+						if(c=='(')
+							depth++;
+						else
+						if(c==')')
+							depth--;
+					}
+					break;
+				case 2:
+					if((c=='\\')
+					&&(i<s.length()-1)
+					&&(s.charAt(i+1)=='['))
+						s.deleteCharAt(i);
+					else
+					if((c==']')&&(depth==0))
+						state=3;
+					else
+					{
+						settings.append(c);
+						if(c=='[')
+							depth++;
+						else
+						if(c==']')
+							depth--;
+					}
+					break;
+				case 3:
+					depth=0;
+					if(c == '(')
+						state=1;
+					else
+					if(c == '[')
+						state=2;
+					break;
+				}
+			}
+			if((state==0)&&(abilityID.length()==0))
+				abilityID=s.toString();
+			if(abilityID.length()>0)
+			{
+				final Ability A=CMClass.getAbility(abilityID);
+				if(A==null)
+					continue;
+				if(settings.length()>0)
+				{
+					final Map<String,String> map=CMParms.parseEQParms(settings.toString());
+					for(final String key : map.keySet())
+						A.setStat(key, map.get(key));
+				}
+				if(parms.length()>0)
+					A.setMiscText(parms.toString());
+				spellsV.add(A);
+			}
+		}
+		return spellsV;
 	}
 
 	@Override

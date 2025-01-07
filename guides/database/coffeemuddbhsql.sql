@@ -152,7 +152,7 @@ CREATE TABLE CMCHAR (
 	CMATTA integer NULL,
 	CMAMOR integer NULL,
 	CMDAMG integer NULL,
-	CMBTMP integer NULL,
+	CMBTMP bigint NULL,
 	CMLEIG varchar (50) NULL,
 	CMHEIT integer NULL,
 	CMWEIT integer NULL,

@@ -170,6 +170,8 @@ public class Prayer_Christen extends Prayer
 					oldName=txt.substring(startNameX+6,endNameX);
 				txt=CMStrings.replaceFirst(txt,"<NAME>"+oldName+"</NAME>","<NAME>"+name+"</NAME>");
 				txt=CMStrings.replaceFirst(txt,"<DISP>"+oldName,"<DISP>"+name);
+				if(txt.indexOf("<TATTOOS>CHRISTENED, ")<0)
+					txt=CMStrings.replaceFirst(txt,"<TATTOOS>","<TATTOOS>CHRISTENED, ");
 				((CagedAnimal)target).setCageText(txt);
 				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CHRISTENINGS, null);
 				for(int i=0;i<channels.size();i++)

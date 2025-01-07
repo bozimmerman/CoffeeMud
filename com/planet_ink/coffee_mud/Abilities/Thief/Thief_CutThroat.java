@@ -134,7 +134,11 @@ public class Thief_CutThroat extends ThiefSkill
 				if(((MOB)msg.target()).phyStats().level()>=CMProps.getIntVar(CMProps.Int.INJBLEEDMINLEVEL))
 					A2.invoke(msg.source(),(MOB)msg.target(),true,0);
 				if((msg.trailerMsgs()==null)||(msg.trailerMsgs().size()==0))
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_ACTION, L("<S-NAME> cut(s) <T-YOUPOSS> throat with <O-NAME>! Blood starts running...")));
+				{
+					final String bloodStr = (CMLib.flags().isGolem(affected))?"":"Blood starts running...";
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_ACTION,
+							L("<S-NAME> cut(s) <T-YOUPOSS> throat with <O-NAME>! "+bloodStr)));
+				}
 			}
 		}
 	}
@@ -191,6 +195,11 @@ public class Thief_CutThroat extends ThiefSkill
 			mob.tell(L("You are too busy to focus on cutting someone`s throat right now."));
 			return false;
 		}
+		if(target.charStats().getBodyPart(Race.BODY_NECK) == 0)
+		{
+			mob.tell(L("@x1 has no neck. :/",target.name(mob)));
+			return false;
+		}
 
 		CMLib.commands().postDraw(mob,false,true);
 
@@ -214,7 +223,8 @@ public class Thief_CutThroat extends ThiefSkill
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT),auto?"":L("<S-NAME> attempt(s) to cut <T-YOUPOSS> throat!"));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT),
+				auto?"":L("<S-NAME> attempt(s) to cut <T-YOUPOSS> throat!"));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -67,4 +67,13 @@ public interface AreaIStats extends CMCommon
 	 * @param val the stat value
 	 */
 	public void setStat(Area.Stats stat, int val);
+
+	/**
+	 * Returns the most common race in the area.
+	 * This might be null if one could not be determined.
+	 *
+	 * @return the most common race in the area.
+	 */
+	public Race getCommonRace();
+
 }

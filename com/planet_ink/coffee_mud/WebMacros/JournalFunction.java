@@ -295,6 +295,7 @@ public class JournalFunction extends StdWebMacro
 					parms.put(replyemail,replyemail);
 				if(parms.size()==1)
 				{
+					// means there was no action found
 					JournalEntry entry = JournalInfo.getNextEntry(msgs, msgKey);
 					while((entry!=null) && (!CMLib.journals().canReadMessage(entry,srch,M,parms.containsKey("NOPRIV"))))
 						entry = JournalInfo.getNextEntry(msgs, entry.key());
@@ -310,8 +311,7 @@ public class JournalFunction extends StdWebMacro
 			else
 				keepProcessing=false;
 			JournalEntry entry = JournalInfo.getEntry(msgs, msgKey);
-			if((entry==null)
-			&&(parms.containsKey("DELETEREPLY")||parms.containsKey("DELETE")))
+			if(entry==null)
 				entry=CMLib.database().DBReadJournalEntry(journalName, msgKey);
 			if(entry == null)
 				return "Function not performed -- illegal journal message specified.<BR>";

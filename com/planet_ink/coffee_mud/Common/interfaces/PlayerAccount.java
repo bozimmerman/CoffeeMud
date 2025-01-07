@@ -190,6 +190,8 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 		ANSI16,
 		/** Constant for account flags that prevents any character purges */
 		NOCHARPURGE,
+		/** Constant for account flags to notify active sessions of tells */
+		AUTOTELLNOTIFY
 		;
 		/**
 		 * Returns a comma-delimited list of strings representing the accountflag values

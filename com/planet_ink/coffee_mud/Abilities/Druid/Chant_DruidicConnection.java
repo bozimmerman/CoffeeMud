@@ -128,7 +128,7 @@ public class Chant_DruidicConnection extends Chant
 		{
 			final MOB mob=(MOB)affected;
 			if((mob==invoker())
-			||CMLib.flags().isAnimalIntelligence(mob)
+			||CMLib.flags().isAnAnimal(mob)
 			||(mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")))
 			{
 				stats.setAttackAdjustment((int)Math.round(CMath.mul(1.1+(0.05*getXLEVELLevel(invoker())),stats.attackAdjustment())));

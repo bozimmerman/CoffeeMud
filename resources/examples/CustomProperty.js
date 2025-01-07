@@ -85,11 +85,11 @@ function okMessage(host,msg)
 	{
 		if(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDITEMS))
 			return true;
-		var ultimateFollowing=msg.source().amUltimatelyFollowing();
+		var ultimateFollowing=msg.source().getGroupLeader();
 		if((msg.source().isMonster())
-		&&((ultimateFollowing==null)||(ultimateFollowing.isMonster())))
+		&&((ultimateFollowing==msg.source())||(ultimateFollowing.isMonster())))
 			return true;
-		if(!((msg.source()).isAttributeSet(MOB.Attrib.PLAYERKILL)))
+		if(!msg.source().isAttributeSet(MOB.Attrib.PLAYERKILL))
 		{
 			msg.source().tell(CMLib.lang().L("You can not get that.  You are not a player killer."));
 			return false;

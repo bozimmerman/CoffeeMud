@@ -536,7 +536,7 @@
 		</SELECT>
 		</TD>
 	</TR>
-	@if?!MobData?ISAUCTION&@
+	@if?!MobData?ISAUCTION&@ @if?!MobData?ISBROKER&@
 		@if?!MobData?ISLIBRARIAN@
 			<TR>
 				<TD><FONT COLOR="#66FFFF"><B>Item Buy Mask:</B></FONT></TD>
@@ -556,13 +556,13 @@
 			<TD COLSPAN=2><INPUT TYPE=TEXT NAME=SHOPPREJ SIZE=60 MAXLENGTH=99999 VALUE="@MobData?SHOPPREJ@">
 			<a href="javascript:OpenUp('ihelp.cmvp','PREJUDICE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
 		</TR>
-	@endif@
+	@endif@ @endif@
 	<TR>
 		<TD><FONT COLOR="#66FFFF"><B>Ignorable Mask:</B></FONT>
 		<TD COLSPAN=2><INPUT TYPE=TEXT NAME=IGNOREMASK SIZE=60 MAXLENGTH=255 VALUE="@MobData?IGNOREMASK@">
 		<a href="javascript:OpenUp('ihelp.cmvp','IGNOREMASK');"><FONT COLOR=WHITE><I>?</I></FONT></a>
 	</TR>
-	@if?!MobData?ISAUCTION@
+	@if?!MobData?ISAUCTION@ @if?!MobData?ISBROKER@
 		<TR>
 			<TD><FONT COLOR="#66FFFF"><B>Shop Item Pricing:</B></FONT>
 		    <TD COLSPAN=2>
@@ -574,7 +574,7 @@
 				<A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>mask help</I></FONT></a>
 			</TD>
 		</TR>
-	@endif@
+	@endif@ @endif@
 	@if?MobData?ISBANKER@
 		<TR>
 			<TD><FONT COLOR="#66FFFF"><B>Bank Chain Name:</B></FONT></TD>
@@ -709,24 +709,48 @@
 					    </TD>
 					</TR>
 				@else@
-					<TR>
-						<TD><FONT COLOR="#66FFFF"><B>Budget:</B></FONT></TD>
-					    <TD COLSPAN=2><INPUT TYPE=TEXT NAME=BUDGET SIZE=30 VALUE="@MobData?BUDGET@">
-						<a href="javascript:OpenUp('ihelp.cmvp','BUDGET');"><FONT COLOR=WHITE><I>?</I></FONT></a>
-					    </TD>
-					</TR>
-					<TR>
-						<TD><FONT COLOR="#66FFFF"><B>Deval. Rate(s):</B></FONT></TD>
-					    <TD COLSPAN=2><INPUT TYPE=TEXT NAME=DEVALRATE SIZE=7 VALUE="@MobData?DEVALRATE@">
-						<a href="javascript:OpenUp('ihelp.cmvp','DEVALUERATE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
-					    </TD>
-					</TR>
-					<TR>
-						<TD><FONT COLOR="#66FFFF"><B>Inv. Reset (Ticks):</B></FONT></TD>
-					    <TD COLSPAN=2><INPUT TYPE=TEXT NAME=INVRESETRATE SIZE=7 VALUE="@MobData?INVRESETRATE@">
-						<a href="javascript:OpenUp('ihelp.cmvp','INVRESETRATE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
-					    </TD>
-					</TR>
+					@if?MobData?ISBROKER@
+						<TR>
+							<TD><FONT COLOR="#66FFFF"><B>Budget:</B></FONT></TD>
+						    <TD COLSPAN=2><INPUT TYPE=TEXT NAME=BUDGET SIZE=30 VALUE="@MobData?BUDGET@">
+							<a href="javascript:OpenUp('ihelp.cmvp','BUDGET');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+						    </TD>
+						</TR>
+						<TR>
+							<TD><FONT COLOR="#66FFFF"><B>Broker Chain Name:</B></FONT></TD>
+						    <TD COLSPAN=2><INPUT TYPE=TEXT NAME=BROCHAIN SIZE=50 VALUE="@MobData?BROCHAIN@">
+						    </TD>
+						</TR>
+						<TR>
+							<TD><FONT COLOR="#66FFFF"><B>Maximum mud-days:</B></FONT></TD>
+						    <TD COLSPAN=2><INPUT TYPE=TEXT NAME=MAXDAYS SIZE=7 VALUE="@MobData?MAXDAYS@">
+						    </TD>
+						</TR>
+						<TR>
+							<TD><FONT COLOR="#66FFFF"><B>Max Listings per Player:</B></FONT></TD>
+						    <TD COLSPAN=2><INPUT TYPE=TEXT NAME=MAXLISTINGS SIZE=7 VALUE="@MobData?MAXLISTINGS@">
+						    </TD>
+						</TR>
+					@else@
+						<TR>
+							<TD><FONT COLOR="#66FFFF"><B>Budget:</B></FONT></TD>
+						    <TD COLSPAN=2><INPUT TYPE=TEXT NAME=BUDGET SIZE=30 VALUE="@MobData?BUDGET@">
+							<a href="javascript:OpenUp('ihelp.cmvp','BUDGET');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+						    </TD>
+						</TR>
+						<TR>
+							<TD><FONT COLOR="#66FFFF"><B>Deval. Rate(s):</B></FONT></TD>
+						    <TD COLSPAN=2><INPUT TYPE=TEXT NAME=DEVALRATE SIZE=7 VALUE="@MobData?DEVALRATE@">
+							<a href="javascript:OpenUp('ihelp.cmvp','DEVALUERATE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+						    </TD>
+						</TR>
+						<TR>
+							<TD><FONT COLOR="#66FFFF"><B>Inv. Reset (Ticks):</B></FONT></TD>
+						    <TD COLSPAN=2><INPUT TYPE=TEXT NAME=INVRESETRATE SIZE=7 VALUE="@MobData?INVRESETRATE@">
+							<a href="javascript:OpenUp('ihelp.cmvp','INVRESETRATE');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+						    </TD>
+						</TR>
+					@endif@
 				@endif@
 			@endif@
 		@endif@

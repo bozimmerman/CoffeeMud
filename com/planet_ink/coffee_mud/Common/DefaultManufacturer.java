@@ -214,7 +214,7 @@ public class DefaultManufacturer implements Manufacturer
 	}
 
 	@Override
-	public String getXml()
+	public String getXML()
 	{
 		final StringBuilder xml=new StringBuilder("");
 		xml.append("<NAME>"+CMLib.xml().parseOutAngleBrackets(name)+"</NAME>");
@@ -228,7 +228,7 @@ public class DefaultManufacturer implements Manufacturer
 	}
 
 	@Override
-	public void setXml(final String xml)
+	public void setXML(final String xml)
 	{
 		final List<XMLTag> xpc = CMLib.xml().parseAllXML(xml);
 		setName(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xpc,"NAME")));

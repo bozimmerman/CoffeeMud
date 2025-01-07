@@ -54,7 +54,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		return localizedName;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "JEWEL", "JEWELMAKING" });
+	private static final String[]	triggerStrings	= I(new String[] { "JEWEL", "JEWELMAKE", "JEWELMAKING" });
 
 	@Override
 	public String[] triggerStrings()
@@ -238,6 +238,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				case FURNITURE_SLEEP:
 				case FURNITURE_SIT:
 				case FURNITURE_TABLE:
+				case FURNITURE_HOOK:
 					return true;
 				default:
 					return false;

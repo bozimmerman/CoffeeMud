@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 /*
    Copyright 2005-2024 Bo Zimmerman
@@ -900,6 +901,17 @@ public interface EnglishParsing extends CMLibrary
 	public Triad<String, Double, Long> parseMoneyStringSDL(MOB mob, String moneyStr, String correctCurrency);
 
 	/**
+	 * For cases when a string input probably contains an amount of money,
+	 * this method is used to determine the currency, denomination, and
+	 * number of units of that currency.
+	 *
+	 * @param currency the type of currency to prefer
+	 * @param moneyStr the parsable user input
+	 * @return the currency, denomination, and amount as a triad
+	 */
+	public Triad<String, Double, Long> parseMoneyStringSDL(String currency, String moneyStr);
+
+	/**
 	 * For cases when a string input must contain an amount of money,
 	 * this method is used to determine the currency id reflect by
 	 * the whole denomination specified by the given user input.
@@ -1099,5 +1111,14 @@ public interface EnglishParsing extends CMLibrary
 	 * @param dist the user-entered string
 	 * @return the distance in decameters
 	 */
-	public Long parseSpaceDistance(String dist);
+	public BigDecimal parseSpaceDistance(String dist);
+
+	/**
+	 * Returns a speed in decameters/second represented by the given
+	 * parsable user-entered string.
+	 *
+	 * @param dist the user-entered string
+	 * @return the distance in decameters or null
+	 */
+	public BigDecimal parseSpaceSpeed(String speed);
 }

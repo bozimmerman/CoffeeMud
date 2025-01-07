@@ -166,46 +166,49 @@ public interface ProtocolLibrary extends CMLibrary
 	/**
 	 * Main entry point to handle GMCP commands from the user
 	 *
-	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map)
-	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, String, Integer)
+	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map, Map)
+	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, Map, String, Integer)
 	 * @see ProtocolLibrary.GMCPCommand
 	 *
 	 * @param session the session of the mob to report to
 	 * @param data the command sent by the user
 	 * @param supportables map of supported GMCP features
+	 * @param reportables the msdp 'subscriptions' of the given session
 	 * @return null, or bytes to send to the user
 	 */
-	public byte[] processGmcp(final Session session, final String data, final Map<String,Double> supportables);
+	public byte[] processGmcp(final Session session, final String data, final Map<String,Double> supportables, final Map<Object,Object> reportables);
 
 	/**
 	 * Main entry point to handle GMCP commands from the user
 	 *
-	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map)
-	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, String, Integer)
+	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map, Map)
+	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, Map, String, Integer)
 	 * @see ProtocolLibrary.GMCPCommand
 	 *
 	 * @param session the session of the mob to report to
 	 * @param data the command sent by the user
 	 * @param supportables map of supported GMCP features
+	 * @param reportables the msdp 'subscriptions' of the given session
 	 * @param roomID additional room context
 	 * @return null, or bytes to send to the user
 	 */
-	public byte[] processGmcp(final Session session, final String data, final Map<String,Double> supportables, String roomID);
+	public byte[] processGmcp(final Session session, final String data, final Map<String,Double> supportables, final Map<Object,Object> reportables, String roomID);
 
 	/**
 	 * Called every second from each player session to deal with periodic GMCP
 	 * reports.
 	 *
 	 * @see ProtocolLibrary#processGmcp(Session, String, Map, String)
-	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, String, Integer)
+	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, Map, String, Integer)
 	 * @see ProtocolLibrary.GMCPCommand
 	 *
 	 * @param session the session of the mob to report to
 	 * @param reporteds the 'subscriptions' of the given session
 	 * @param supportables map of supported GMCP features
+	 * @param reportables the msdp 'subscriptions' of the given session
 	 * @return null, or bytes to send to the user
 	 */
-	public byte[] pingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables);
+	public byte[] pingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, final Map<Object,Object> reportables);
 
 	/**
 	 * Handles GMCP messages that indicate a room change to the given room.
@@ -213,20 +216,19 @@ public interface ProtocolLibrary extends CMLibrary
 	 * This method checks if the session supports GMCP features related to room
 	 * information and processes the necessary updates accordingly.
 	 *
-	 * @see ProtocolLibrary#processGmcp(Session, String, Map)
-	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map)
+	 * @see ProtocolLibrary#processGmcp(Session, String, Map, Map)
+	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map, Map)
 	 * @see ProtocolLibrary.GMCPCommand
 	 *
 	 * @param session the session of the mob to report to
 	 * @param reporteds the 'subscriptions' of the given session
 	 * @param supportables map of supported GMCP features
+	 * @param reportables the msdp 'subscriptions' of the given session
 	 * @param roomID the new roomID
 	 * @param roomHash the new hash of the room
 	 * @return null, or bytes to send to the user
 	 */
-	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, String roomID, Integer roomHash);
-
-
+	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, final Map<Object,Object> reportables, String roomID, Integer roomHash);
 
 	/**
 	 * Returns all the MSSP variables for crawlers.
@@ -262,7 +264,7 @@ public interface ProtocolLibrary extends CMLibrary
 		char_skills_get,
 		char_effects_get,
 		group,
-		room_info, // means they want room.wrongdir and room.enter
+		room_info, // means they want room.wrongdir and room.enter and room.leave
 		room_info_navigable_boardable,
 		room_items_inv,
 		room_items_contents,
@@ -282,7 +284,8 @@ public interface ProtocolLibrary extends CMLibrary
 		maplevel,
 		client,
 		client_version,
-		external_discord_hello
+		external_discord_hello,
+		msdp
 	}
 
 	/**

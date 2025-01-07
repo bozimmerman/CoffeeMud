@@ -55,8 +55,10 @@ public class JournalNext extends StdWebMacro
 			return "";
 		}
 
+		final boolean xfer = parms.containsKey("TRANSFERLIST");
+
 		@SuppressWarnings("unchecked")
-		List<String> journals=(List<String>)httpReq.getRequestObjects().get("JOURNALLIST");
+		List<String> journals=(List<String>)httpReq.getRequestObjects().get("JOURNALLIST_"+xfer);
 		if(journals==null)
 		{
 			final List<String> rawJournals=CMLib.database().DBReadJournals();
@@ -69,7 +71,13 @@ public class JournalNext extends StdWebMacro
 				&&(!rawJournals.contains(CJ.JOURNAL_NAME())))
 					rawJournals.add(CJ.JOURNAL_NAME());
 			}
-			Collections.sort(rawJournals);
+			Collections.sort(rawJournals,new Comparator<String>() {
+				@Override
+				public int compare(final String o1, final String o2)
+				{
+					return o1.compareToIgnoreCase(o2);
+				}
+			});
 			journals=new Vector<String>();
 			String s;
 			for(final Iterator<String> i=rawJournals.iterator();i.hasNext();)
@@ -80,9 +88,15 @@ public class JournalNext extends StdWebMacro
 					journals.add(s);
 					i.remove();
 				}
+				else
+				if(xfer)
+				{
+					if(s.startsWith("CLAN_MOTD_"))
+						i.remove();
+				}
 			}
 			journals.addAll(rawJournals);
-			httpReq.getRequestObjects().put("JOURNALLIST",journals);
+			httpReq.getRequestObjects().put("JOURNALLIST_"+xfer,journals);
 		}
 		String lastID="";
 		final Set<String> H=CMLib.journals().getArchonJournalNames();

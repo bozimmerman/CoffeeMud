@@ -80,6 +80,12 @@ public class Druid_PlantForm extends StdAbility
 		return 0;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_POLYMORPHING;
+	}
+
 	public Race newRace=null;
 	public String raceName="";
 

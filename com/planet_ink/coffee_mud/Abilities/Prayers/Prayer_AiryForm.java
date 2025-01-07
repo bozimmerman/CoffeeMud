@@ -130,6 +130,12 @@ public class Prayer_AiryForm extends Prayer
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 
+		if(target.fetchEffect(ID())!=null)
+		{
+			target.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already an airy form."));
+			return false;
+		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

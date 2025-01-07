@@ -46,10 +46,11 @@ public class PrideStat extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		TimeClock.TimePeriod period=null;
-		AccountStats.PrideStat stat=null;
+		PrideStats.PrideStat stat=null;
 		int which=-1;
 		String val=null;
 		boolean fixi = false;
+		boolean prev = false;
 		PlayerLibrary.PrideCat cat=null;
 		String catUnit=null;
 		int padRight=0;
@@ -62,6 +63,9 @@ public class PrideStat extends StdWebMacro
 			else
 			if(s.equalsIgnoreCase("account"))
 				player=false;
+			else
+			if(s.equalsIgnoreCase("previous"))
+				prev=true;
 			else
 			if(s.equalsIgnoreCase("fixi"))
 				fixi=true;
@@ -96,7 +100,7 @@ public class PrideStat extends StdWebMacro
 				{
 					try
 					{
-						stat=AccountStats.PrideStat.valueOf(s.toUpperCase().trim());
+						stat=PrideStats.PrideStat.valueOf(s.toUpperCase().trim());
 					}
 					catch(final Exception e2)
 					{
@@ -108,7 +112,7 @@ public class PrideStat extends StdWebMacro
 		if(period==null)
 			return " [error missing valid period, try "+CMParms.toListString(TimeClock.TimePeriod.values())+"]";
 		if(stat==null)
-			return " [error missing valid stat, try "+CMParms.toListString(AccountStats.PrideStat.values())+"]";
+			return " [error missing valid stat, try "+CMParms.toListString(PrideStats.PrideStat.values())+"]";
 		if(val==null)
 			return " [error missing value type, try name or value]";
 		if(which<1)
@@ -121,11 +125,20 @@ public class PrideStat extends StdWebMacro
 			{
 				if((cat==null)||(catUnit==null))
 					return " [error missing cat/catunit pairing]";
-				list = CMLib.players().getTopPridePlayers(cat, catUnit, period, stat);
+				if(prev)
+					list = CMLib.players().getPreviousTopPridePlayers(cat, catUnit, period, stat);
+				else
+					list = CMLib.players().getTopPridePlayers(cat, catUnit, period, stat);
 			}
+			else
+			if(prev)
+				list = CMLib.players().getPreviousTopPridePlayers(period, stat);
 			else
 				list = CMLib.players().getTopPridePlayers(period, stat);
 		}
+		else
+		if(prev)
+			list = CMLib.players().getPreviousTopPrideAccounts(period, stat);
 		else
 			list = CMLib.players().getTopPrideAccounts(period, stat);
 		String fval;

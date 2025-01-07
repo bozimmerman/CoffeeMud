@@ -325,8 +325,8 @@ public class Pirate extends Thief
 											{
 												timeOut = timeOuts.get(victimM);
 											}
-											final MOB ultiM=victimM.amUltimatelyFollowing();
-											if((timeOut == null)&&(ultiM!=null))
+											final MOB ultiM=victimM.getGroupLeader();
+											if((timeOut == null)&&(ultiM!=victimM))
 											{
 												synchronized(timeOuts)
 												{
@@ -363,8 +363,8 @@ public class Pirate extends Thief
 											{
 												timeOut = timeOuts.get(attackerM);
 											}
-											final MOB ultiM=attackerM.amUltimatelyFollowing();
-											if((timeOut == null)&&(ultiM!=null))
+											final MOB ultiM=attackerM.getGroupLeader();
+											if((timeOut == null)&&(ultiM!=attackerM))
 											{
 												synchronized(timeOuts)
 												{

@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
+import com.planet_ink.coffee_mud.Common.interfaces.PrideStats.PrideStat;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -53,17 +53,17 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public int getManaBonusNextLevel(final MOB mob)
 	{
 		final CharClass charClass = mob.baseCharStats().getCurrentClass();
-		final double[] variables={
-				mob.phyStats().level(),
-				mob.charStats().getStat(CharStats.STAT_WISDOM),
-				CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)),
-				mob.charStats().getStat(CharStats.STAT_INTELLIGENCE),
-				CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_INTELLIGENCE)),
-				mob.charStats().getStat(charClass.getAttackAttribute()),
-				CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(charClass.getAttackAttribute())),
-				mob.charStats().getStat(CharStats.STAT_CHARISMA),
-				mob.charStats().getStat(CharStats.STAT_CONSTITUTION)
-			};
+		final double[] variables= {
+			mob.phyStats().level(),
+			mob.charStats().getStat(CharStats.STAT_WISDOM),
+			CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)),
+			mob.charStats().getStat(CharStats.STAT_INTELLIGENCE),
+			CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_INTELLIGENCE)),
+			mob.charStats().getStat(charClass.getAttackAttribute()),
+			CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(charClass.getAttackAttribute())),
+			mob.charStats().getStat(CharStats.STAT_CHARISMA),
+			mob.charStats().getStat(CharStats.STAT_CONSTITUTION)
+		};
 		return (int)Math.round(CMath.parseMathExpression(charClass.getManaFormula()+CMProps.getVar(Str.FORMULA_CLASSMNADD), variables));
 	}
 
@@ -476,6 +476,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.delExpertise(null); // clears the cache
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.LEVELSGAINED, -1, mob);
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLASSLEVELSGAINED, -1, mob);
+		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.LEVELDOWN, 1, mob);
+		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLASSLEVELDOWN, 1, mob);
 		if(mob.isPlayer()
 		&&(!CMLib.flags().isInTheGame(mob, true)))
 			CMLib.database().DBUpdatePlayerMOBOnly(mob);
@@ -1307,6 +1309,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.LEVELSGAINED, 1, mob);
+		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.LEVELUP, 1, mob);
+		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLASSLEVELUP, 1, mob);
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLASSLEVELSGAINED, 1, mob);
 		if(mob.isPlayer()
 		&&(!CMLib.flags().isInTheGame(mob, true)))

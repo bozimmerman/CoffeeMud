@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.application;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.ConnectState;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
@@ -68,7 +69,7 @@ import java.sql.*;
 */
 public class MUD extends Thread implements MudHost
 {
-	private static final String	  HOST_VERSION	= "5.10.3";
+	private static final String	  HOST_VERSION	= "5.10.4.0";
 
 	private static enum MudState
 	{
@@ -98,6 +99,7 @@ public class MUD extends Thread implements MudHost
 	private static AtomicBoolean 		bootSync			= new AtomicBoolean(false);
 	private static Map<String,String>	clArgs				= new Hashtable<String,String>();
 
+	private static final long 			SHUTDOWN_TIMEOUT 	= 5 * 60 * 1000;
 
 	public MUD(final String name)
 	{
@@ -436,13 +438,36 @@ public class MUD extends Thread implements MudHost
 		Log.debugOut("Memory: "+blockName+": "+(total-free)+"/"+total);
 	}
 
+	protected static void shutdownLibrarySet(final Library lib, final Session S, final AtomicLong shutdownStateTime, final boolean debugMem)
+	{
+		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down "+CMStrings.capitalizeAndLower(lib.name())+"...");
+		for(final Enumeration<CMLibrary> e=CMLib.libraries(lib);e.hasMoreElements();)
+		{
+			try
+			{
+				shutdownStateTime.set(System.currentTimeMillis()+(5*SHUTDOWN_TIMEOUT));
+				final CMLibrary library=e.nextElement();
+				if(S!=null)
+					S.print(library.name()+"...");
+				library.shutdown();
+				if(S!=null)
+					S.println("shut down.");
+				if(debugMem)
+					shutdownMemReport(library.ID());
+			}
+			catch (final Throwable ex)
+			{
+				Log.errOut(ex);
+			}
+		}
+	}
+
 	public static void globalShutdown(final Session S, final boolean keepItDown, final String externalCommand)
 	{
 		CMProps.setBoolAllVar(CMProps.Bool.MUDSTARTED,false);
 		CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,true);
 		bootSync.set(false);
 		final AtomicLong shutdownStateTime = new AtomicLong(System.currentTimeMillis());
-		final long shutdownTimeout = 5 * 60 * 1000;
 		final Thread currentShutdownThread=Thread.currentThread();
 		final Thread shutdownWatchThread = new Thread(new Runnable()
 		{
@@ -452,7 +477,7 @@ public class MUD extends Thread implements MudHost
 				while(shutdownStateTime.get()!=0)
 				{
 					final long ellapsed=System.currentTimeMillis()-shutdownStateTime.get();
-					if(ellapsed > shutdownTimeout)
+					if(ellapsed > SHUTDOWN_TIMEOUT)
 					{
 						if(externalCommand!=null)
 							MUD.execExternalRestart(externalCommand);
@@ -615,27 +640,9 @@ public class MUD extends Thread implements MudHost
 
 		shutdownStateTime.set(System.currentTimeMillis());
 		for(final CMLib.Library lib : libraryShutdownLists[0])
-		{
-			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down "+CMStrings.capitalizeAndLower(lib.name())+"...");
-			for(final Enumeration<CMLibrary> e=CMLib.libraries(lib);e.hasMoreElements();)
-			{
-				try
-				{
-					shutdownStateTime.set(System.currentTimeMillis()+(5*shutdownTimeout));
-					final CMLibrary library = e.nextElement();
-					library.shutdown();
-					if(debugMem) shutdownMemReport(library.ID());
-					shutdownStateTime.set(System.currentTimeMillis());
-				}
-				catch(final Throwable t)
-				{
-					Log.errOut(t);
-				}
-			}
-		}
-
+			shutdownLibrarySet(lib, S, shutdownStateTime, debugMem);
 		if(S!=null)
-			S.println(CMLib.lang().L("Save thread stopped"));
+			S.println(CMLib.lang().L("Save thread stopped")); // from sessions
 
 		if(CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMMOBS)
 		||CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMITEMS)
@@ -696,7 +703,6 @@ public class MUD extends Thread implements MudHost
 			{
 				if(S!=null)
 					S.println(CMLib.lang().L("@x1 stopped",cm1server.getName()));
-				Log.sysOut(Thread.currentThread().getName(),cm1server.getName()+" stopped");
 				if(debugMem) shutdownMemReport("CM1Server");
 			}
 		}
@@ -785,59 +791,16 @@ public class MUD extends Thread implements MudHost
 		}
 
 		shutdownStateTime.set(System.currentTimeMillis());
-		if(S!=null)
-			S.print(CMLib.lang().L("Stopping all threads..."));
 		for(final CMLib.Library lib : libraryShutdownLists[1])
-		{
-			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down "+CMStrings.capitalizeAndLower(lib.name())+"...");
-			for(final Enumeration<CMLibrary> e=CMLib.libraries(lib);e.hasMoreElements();)
-			{
-				try
-				{
-					shutdownStateTime.set(System.currentTimeMillis()+(5*shutdownTimeout));
-					final CMLibrary library = e.nextElement();
-					if(S!=null)
-						S.print(library.name()+"...");
-					library.shutdown();
-					if(S!=null)
-						S.println("shut down.");
-				}
-				catch (final Throwable ex)
-				{
-					Log.errOut(ex);
-				}
-			}
-		}
-		if(S!=null)
-			S.println(CMLib.lang().L("done"));
+			shutdownLibrarySet(lib, S, shutdownStateTime, debugMem);
+
 		if(debugMem) shutdownMemReport("Map Threads");
 		Log.sysOut(Thread.currentThread().getName(),"Map Threads Stopped.");
 
 		shutdownStateTime.set(System.currentTimeMillis());
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down services...");
 		for(final CMLib.Library lib : libraryShutdownLists[2])
-		{
-			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down "+CMStrings.capitalizeAndLower(lib.name())+"...");
-			for(final Enumeration<CMLibrary> e=CMLib.libraries(lib);e.hasMoreElements();)
-			{
-				try
-				{
-					shutdownStateTime.set(System.currentTimeMillis()+(5*shutdownTimeout));
-					final CMLibrary library=e.nextElement();
-					if(S!=null)
-						S.print(library.name()+"...");
-					library.shutdown();
-					if(S!=null)
-						S.println("shut down.");
-					if(debugMem)
-						shutdownMemReport(library.ID());
-				}
-				catch (final Throwable ex)
-				{
-					Log.errOut(ex);
-				}
-			}
-		}
+			shutdownLibrarySet(lib, S, shutdownStateTime, debugMem);
 		shutdownStateTime.set(System.currentTimeMillis());
 		for(final CMLib.Library lib : CMLib.Library.values())
 		{
@@ -845,28 +808,7 @@ public class MUD extends Thread implements MudHost
 			for(final CMLib.Library[] prevSet : libraryShutdownLists)
 				found=found||CMParms.contains(prevSet, lib);
 			if(!found)
-			{
-				CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down "+CMStrings.capitalizeAndLower(lib.name())+"...");
-				for(final Enumeration<CMLibrary> e=CMLib.libraries(lib);e.hasMoreElements();)
-				{
-					try
-					{
-						shutdownStateTime.set(System.currentTimeMillis()+(5*shutdownTimeout));
-						final CMLibrary library=e.nextElement();
-						if(S!=null)
-							S.print(library.name()+"...");
-						library.shutdown();
-						if(S!=null)
-							S.println("shut down.");
-						if(debugMem)
-							shutdownMemReport(library.ID());
-					}
-					catch (final Throwable ex)
-					{
-						Log.errOut(ex);
-					}
-				}
-			}
+				shutdownLibrarySet(lib, S, shutdownStateTime, debugMem);
 		}
 		shutdownStateTime.set(System.currentTimeMillis());
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...unloading resources");
@@ -961,7 +903,7 @@ public class MUD extends Thread implements MudHost
 		CMSecurity.unloadAll();
 		if(!keepItDown)
 			CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,false);
-		Log.debugOut("Used memory = "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
+		Log.debugOut("Final Used memory = "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
 	}
 
 	private static boolean startWebServer(final CMProps page, final String serverName)
@@ -1662,6 +1604,7 @@ public class MUD extends Thread implements MudHost
 				if(!CMLib.map().roomIDs().hasMoreElements())
 				{
 					Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
+					CMLib.time().globalClock().setYear(1000);
 					final String id="START";//New Area#0";
 					final Area newArea=CMClass.getAreaType("StdArea");
 					newArea.setName(CMLib.lang().L("New Area"));

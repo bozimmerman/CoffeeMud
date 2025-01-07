@@ -81,6 +81,12 @@ public class Druid_GolemForm extends StdAbility
 		return Ability.ACODE_SKILL | Ability.DOMAIN_SHAPE_SHIFTING;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_POLYMORPHING;
+	}
+
 	protected Race		newRace		= null;
 	protected String	raceName	= "";
 	protected int		raceLevel	= 0;

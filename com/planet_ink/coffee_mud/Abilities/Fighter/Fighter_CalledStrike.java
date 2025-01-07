@@ -122,10 +122,11 @@ public class Fighter_CalledStrike extends FighterSkill
 	}
 
 	@Override
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
+		super.executeMsg(myHost, msg);
 		if((affected==null)||(!(affected instanceof MOB))||(target==null))
-			return super.okMessage(myHost,msg);
+			return;
 		final MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
 		&&(msg.amITarget(target))
@@ -133,7 +134,8 @@ public class Fighter_CalledStrike extends FighterSkill
 		{
 			int hurtAmount=msg.value();
 			final int reqDivisor=hpReq+getXLEVELLevel(invoker());
-			if(hurtAmount>=(target.baseState().getHitPoints()/reqDivisor))
+			if((hurtAmount>=(target.baseState().getHitPoints()/reqDivisor))
+			&&(msg.value()>0))
 			{
 				hurtAmount=(target.baseState().getHitPoints()/reqDivisor);
 				msg.setValue(msg.value()+hurtAmount);
@@ -143,7 +145,6 @@ public class Fighter_CalledStrike extends FighterSkill
 				mob.tell(mob,target,null,L("You failed to cut off <T-YOUPOSS> '@x1'.",gone));
 			unInvoke();
 		}
-		return super.okMessage(myHost,msg);
 	}
 
 	protected boolean prereqs(final MOB mob, final boolean quiet)

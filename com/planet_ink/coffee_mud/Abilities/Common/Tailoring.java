@@ -499,7 +499,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if(bundling)
 				itemName=CMLib.english().startWithAorAn(woodRequired+"# "+itemName);
 			else
-			if(itemName.endsWith("s"))
+			if(itemName.endsWith("s")&&(!itemName.endsWith("dress")))
 				itemName="some "+itemName;
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);

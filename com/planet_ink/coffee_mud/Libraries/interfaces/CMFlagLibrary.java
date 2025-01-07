@@ -672,6 +672,13 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isASlave(MOB slaveM, MOB masterM);
 
 	/**
+	 * Returns whether the given mob is a slave.
+	 * @param slaveM the mob to check
+	 * @return true if its a slave, false otherwise
+	 */
+	public boolean isASlave(final MOB slaveM);
+
+	/**
 	 * Returns whether the given player or npc mob is being
 	 * driven (tracking) towards something
 	 * @param M the mob to check
@@ -822,6 +829,14 @@ public interface CMFlagLibrary extends CMLibrary
 	 * @return true if it is airy, false otherwise
 	 */
 	public boolean isAiryRoom(Room R);
+
+	/**
+	 * Returns whether the given room, whatever is
+	 * driveable, such as a road, street, etc.
+	 * @param R the room to check
+	 * @return true if it is driveable, false otherwise
+	 */
+	public boolean isDrivableRoom(Room R);
 
 	/**
 	 * Returns whether the given room, whatever is
@@ -1057,6 +1072,15 @@ public interface CMFlagLibrary extends CMLibrary
 	 */
 	public boolean isAnimalIntelligence(MOB M);
 
+
+	/**
+	 * Returns whether the given mob is classifyable as
+	 * an animal, being breedable, but with low intelligence.
+	 * @param M the mob to check
+	 * @return true if its an animal, false otherwise
+	 */
+	public boolean isAnAnimal(final MOB M);
+
 	/**
 	 * Returns whether the given mob, item, whatever has a
 	 * behavior making it move around.
@@ -1089,7 +1113,7 @@ public interface CMFlagLibrary extends CMLibrary
 	 * @param E the potential child
 	 * @return true if its a child, false otherwise
 	 */
-	public boolean isChild(Environmental E);
+	public boolean isAgedChild(Environmental E);
 
 	/**
 	 * Returns whether the given mob (item usually) is a
@@ -1406,10 +1430,19 @@ public interface CMFlagLibrary extends CMLibrary
 	/**
 	 * Returns the friendly descriptive age of the given mob,
 	 * whether baby, child, player, whatever.
+	 * @see CMFlagLibrary#getAgeYears(Physical)
 	 * @param M the mob to check
 	 * @return the friendly age of the mob
 	 */
 	public String getAge(MOB M);
+
+	/**
+	 * Returns the age of the mob or item in years, or -1.
+	 * @see CMFlagLibrary#getAge(MOB)
+	 * @param P the mob or item or baby to inspect
+	 * @return the age in years, or -1
+	 */
+	public int getAgeYears(final Physical P);
 
 	/**
 	 * Returns the name of the plane of existence upon which

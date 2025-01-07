@@ -354,6 +354,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			&&(loop!=lastSp)
 			&&(lastSp>=0)
 			&&(loop>=0)
+			&&(loop<buf.length())
 			&&(buf.charAt(loop)!=13)
 			&&(buf.charAt(loop)!=10)
 			&&(endLookAhead(buf,loop)<buf.length()))
@@ -377,7 +378,6 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					buf.insert(lastSp,(char)13);
 					buf.insert(lastSp,(char)10);
 				}
-				loop=lastSp+2;
 			}
 			if(wrap>0)
 				len=loop+wrap;
@@ -441,7 +441,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					if(lastColor.backgroundCode() < 256)
 					{
 						bgEscapeSequence=clookup[lastColor.backgroundCode()];
-						if(bgEscapeSequence==null)
+						if((bgEscapeSequence==null)||(lastColor.backgroundCode()==ColorLibrary.Color.BGBLACK.getBGCodeChar()))
 							bgEscapeSequence=ColorLibrary.Color.BGBLACK.getANSICode();
 						else
 						{
@@ -580,6 +580,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			final String escapeSequence=clookup[bc];
 			if(escapeSequence == null)
 				bgEscapeSequence = null;
+			else
+			if(bc == ColorLibrary.Color.BGBLACK.getBGCodeChar())
+				bgEscapeSequence=Color.BGBLACK.getANSICode();
 			else
 				bgEscapeSequence=CMLib.color().getBackgroundAnsiCode(escapeSequence);
 			if(bgEscapeSequence != null)
@@ -810,27 +813,32 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				}
 				break;
 			case '&':
-				if(doMXP)
-				{
-					if((!buf.substring(loop+1,loop+4).equalsIgnoreCase("lt;"))
-					&&(buf.substring(loop+1,loop+4).equalsIgnoreCase("gt;")))
-					{
-						buf.delete(loop,loop+1);
-						buf.insert(loop,"&amp;".toCharArray());
-						loop+=4;
-					}
-				}
-				else
 				if(loop<=buf.length()-4)
 				{
-					if(buf.substring(loop+1,loop+4).equalsIgnoreCase("lt;"))
-						buf.replace(loop,loop+4,"<");
+					final String next4 = buf.substring(loop+1,loop+4);
+					if(doMXP)
+					{
+						if((!next4.equalsIgnoreCase("lt;"))
+						&&(!next4.equalsIgnoreCase("gt;")))
+						{
+							buf.delete(loop,loop+1);
+							buf.insert(loop,"&amp;".toCharArray());
+							loop+=4;
+						}
+					}
 					else
-					if(buf.substring(loop+1,loop+4).equalsIgnoreCase("gt;"))
-						buf.replace(loop,loop+4,">");
-					else
-					if((loop<=buf.length()-6) && (buf.substring(loop+1,loop+6).equalsIgnoreCase("quot;")))
-						buf.replace(loop,loop+6,"\"");
+					{
+						if(next4.equalsIgnoreCase("lt;"))
+							buf.replace(loop,loop+4,"<");
+						else
+						if(next4.equalsIgnoreCase("gt;"))
+							buf.replace(loop,loop+4,">");
+						else
+						if( next4.equalsIgnoreCase("quo")
+						&& (loop<=buf.length()-6)
+						&& (buf.substring(loop+1,loop+6).equalsIgnoreCase("quot;")))
+							buf.replace(loop,loop+6,"\"");
+					}
 				}
 				break;
 			case '<':
@@ -1116,6 +1124,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							{
 								if(S.getClientTelnetMode(Session.TELNET_MXP))
 								{
+									buf.setCharAt(loop, ' ');
 									buf.setCharAt(loop+1, '<');
 									buf.setCharAt(x, ' ');
 									buf.setCharAt(y, '>');
@@ -1735,6 +1744,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			&&(loop!=lastSp)
 			&&(lastSp>=0)
 			&&(loop>=0)
+			&&(loop<buf.length())
 			&&(buf.charAt(loop)!=13)
 			&&(buf.charAt(loop)!=10)
 			&&(endLookAhead(buf,loop)<buf.length()))
@@ -1758,7 +1768,6 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					buf.insert(lastSp,(char)13);
 					buf.insert(lastSp,(char)10);
 				}
-				loop=lastSp+2;
 			}
 			if(wrap>0)
 				len=loop+wrap;

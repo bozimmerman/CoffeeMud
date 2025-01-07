@@ -167,8 +167,8 @@ public class Poison_Hives extends Poison
 	{
 		if(affected==null)
 			return;
-		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-1);
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-3);
+		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-(int)Math.round(rank));
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-2-(int)Math.round(rank));
 		if(affectableStats.getStat(CharStats.STAT_CHARISMA)<=0)
 			affectableStats.setStat(CharStats.STAT_CHARISMA,1);
 		if(affectableStats.getStat(CharStats.STAT_DEXTERITY)<=0)

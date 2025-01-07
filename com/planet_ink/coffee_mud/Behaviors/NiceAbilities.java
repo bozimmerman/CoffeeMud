@@ -110,9 +110,7 @@ public class NiceAbilities extends ActiveTicker
 							target = null;
 						else
 						{
-							MOB followMOB=target;
-							if(target.amFollowing()!=null)
-								followMOB=target.amUltimatelyFollowing();
+							final MOB followMOB=target.getGroupLeader();
 							if((followMOB.getVictim()==mob)
 							||(followMOB.isMonster()))
 								target = null;

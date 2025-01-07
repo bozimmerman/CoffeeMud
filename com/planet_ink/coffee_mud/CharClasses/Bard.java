@@ -178,6 +178,7 @@ public class Bard extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Song_Lethargy",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Song_Flight",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Song_Knowledge",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_TradeCharting",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Swipe",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Song_Blasting",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Song_Strength",true);
@@ -188,6 +189,7 @@ public class Bard extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_Steal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Song_Death",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Song_Disgust",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_CaravanTravel",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Song_Rebirth",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Song_Ode",true);
 
@@ -315,7 +317,7 @@ public class Bard extends StdCharClass
 				{
 					if(mob.playerStats().addRoomVisit(R))
 					{
-						CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.ROOMS_EXPLORED,1);
+						CMLib.players().bumpPrideStat(mob,PrideStats.PrideStat.ROOMS_EXPLORED,1);
 						int xp=(int)Math.round(100.0*CMath.div(A.getIStat(Area.Stats.AVG_LEVEL),hostP.phyStats().level()));
 						if(xp>250)
 							xp=250;
@@ -329,7 +331,7 @@ public class Bard extends StdCharClass
 					final int pctBefore=mob.playerStats().percentVisited((MOB)host,A);
 					if(mob.playerStats().addRoomVisit(R))
 					{
-						CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.ROOMS_EXPLORED,1);
+						CMLib.players().bumpPrideStat(mob,PrideStats.PrideStat.ROOMS_EXPLORED,1);
 						final int pctAfter=mob.playerStats().percentVisited((MOB)host,A);
 						if((pctBefore<50)&&(pctAfter>=50))
 						{

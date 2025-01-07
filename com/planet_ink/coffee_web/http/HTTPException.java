@@ -168,13 +168,13 @@ public class HTTPException extends Exception
 		{
 			str.append(HTTPHeader.Common.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(date)));
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException e)
+		catch(final IndexOutOfBoundsException e)
 		{
 			try
 			{
 				str.append(HTTPHeader.Common.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException e2)
+			catch(final IndexOutOfBoundsException e2)
 			{
 			}
 		}

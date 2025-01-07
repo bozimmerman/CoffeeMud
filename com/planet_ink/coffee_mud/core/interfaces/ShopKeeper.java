@@ -110,6 +110,8 @@ public interface ShopKeeper extends Environmental, Economics
 	public final static int DEAL_READABLES=33;
 	/** shopkeeper type constant, means they buy and sell any readables*/
 	public final static int DEAL_CLOTHSPINNER=34;
+	/** shopkeeper type constant, means they buy and sell any children*/
+	public final static int DEAL_CHILDREN=35;
 
 	/** shopkeeper integer sets denoting the DEAL_* constants which conflict with each other */
 	public final static int[][] DEAL_CONFLICTS={
@@ -129,7 +131,8 @@ public interface ShopKeeper extends Environmental, Economics
 		"VEGETABLES","HIDES","LUMBER","METALS","ROCKS",
 		"CLAN BANKER", "INN KEEPER", "SHIP SELLER",
 		"CLAN SHIP SELLER", "SLAVES", "POSTMAN", "CLAN POSTMAN",
-		"AUCTIONEER","INSTRUMENTS","BOOKS","READABLES","CLOTHS"
+		"AUCTIONEER","INSTRUMENTS","BOOKS","READABLES","CLOTHS",
+		"CHILDREN"
 	};
 
 	/**
@@ -157,11 +160,20 @@ public interface ShopKeeper extends Environmental, Economics
 	}
 
 	/**
-	 * the CoffeeShop method to access the shopkeepers store of goods
+	 * The Main CoffeeShop method to access the shopkeepers store of goods
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop
 	 * @return the CoffeeShop object
 	 */
 	public CoffeeShop getShop();
+
+	/**
+	 * Alternative CoffeeShop method to access the shopkeepers store of goods
+	 * for a specific person.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop
+	 * @param mob the shop mob
+	 * @return the CoffeeShop object
+	 */
+	public CoffeeShop getShop(final MOB mob);
 
 	/**
 	 * Returns the ShopKeeper DEAL_* mask describing what is sold or bought by this ShopKeeper
@@ -211,6 +223,7 @@ public interface ShopKeeper extends Environmental, Economics
 	 * @return a description of the whatIsSold() code
 	 */
 	public String storeKeeperString();
+
 	/**
 	 * Returns whether this ShopKeeper deals in the type of item passed in.  The determination is based
 	 * on the whatIsSold() code.

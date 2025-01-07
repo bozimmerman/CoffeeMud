@@ -87,7 +87,7 @@ public class Borrow extends StdCommand
 		if(SHOP instanceof Librarian)
 		{
 			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-			thisThang=SK.getShop().getStock(str,mob);
+			thisThang=SK.getShop(mob).getStock(str,mob);
 		}
 
 		if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))

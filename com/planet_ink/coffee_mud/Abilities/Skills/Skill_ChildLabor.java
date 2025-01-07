@@ -110,7 +110,7 @@ public class Skill_ChildLabor extends StdSkill
 				if((M != null)
 				&&(!M.isPlayer())
 				&&(M != notM)
-				&&(flags.isChild(M))
+				&&(flags.isAgedChild(M))
 				&&(flags.isAliveAwakeMobileUnbound(M, true)))
 					kids.add(M);
 			}

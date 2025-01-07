@@ -122,7 +122,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			return (obj != null)
 				&& (!obj.isPlayer())
-				&&((obj.amFollowing()==null)||(!obj.amUltimatelyFollowing().isPlayer()));
+				&& (!obj.getGroupLeader().isPlayer());
 		}
 
 	};
@@ -1527,6 +1527,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final List<Varidentifier> list=new XVector<Varidentifier>();
 		while((x>=0)&&(x<str.length()-1))
 		{
+			if((x>0)&&(str.charAt(x-1)=='\\'))
+			{
+				x=str.indexOf('$',x+1);
+				continue;
+			}
 			final Varidentifier var = new Varidentifier();
 			var.outerStart=x;
 			x++;
@@ -2359,12 +2364,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(craftorPrototypes == null)
 			{
 				craftorPrototypes=new Vector<ItemCraftor>();
-				for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
-				{
-					final Ability A=e.nextElement();
-					if(A instanceof ItemCraftor)
-						craftorPrototypes.add((ItemCraftor)A);
-				}
+				for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
+					craftorPrototypes.add(e.nextElement());
 				defined.put("____SYSTEM_FILTERED_ITEM_CRAFTORS", craftorPrototypes);
 			}
 			final List<ItemCraftor> craftors = new ArrayList<ItemCraftor>(craftorPrototypes.size());
@@ -3240,45 +3241,53 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		tagName=tagName.toUpperCase().trim();
 
-		if(tagName.startsWith("SYSTEM_RANDOM_NAME:"))
+		switch(tagName.charAt(0))
 		{
-			final String[] split=tagName.substring(19).split("-");
-			if((split.length==2)&&(CMath.isInteger(split[0]))&&(CMath.isInteger(split[1])))
-				return CMLib.login().generateRandomName(CMath.s_int(split[0]), CMath.s_int(split[1]));
-			throw new CMException("Bad random name range in '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
-		}
-		else
-		if(tagName.equals("ROOM_AREAGATE"))
-		{
-			if(E instanceof Environmental)
+		case 'S':
+			if(tagName.startsWith("SYSTEM_RANDOM_NAME:"))
 			{
-				final Room R=CMLib.map().roomLocation((Environmental)E);
-				if(R!=null)
-				{
-					boolean foundOne=false;
-					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-					{
-						final Room R2=R.getRoomInDir(d);
-						foundOne=(R2!=null) || foundOne;
-						if((R2!=null) && (R2.roomID().length()>0) && (R.getArea()!=R2.getArea()))
-							return CMLib.directions().getDirectionName(d);
-					}
-					if(!foundOne)
-						throw new PostProcessException("No exits at all on on object "+R.roomID()+" in variable '"+tagName+"'");
-				}
+				final String[] split=tagName.substring(19).split("-");
+				if((split.length==2)&&(CMath.isInteger(split[0]))&&(CMath.isInteger(split[1])))
+					return CMLib.login().generateRandomName(CMath.s_int(split[0]), CMath.s_int(split[1]));
+				throw new CMException("Bad random name range in '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 			}
-			return "";
+			break;
+		case 'R':
+			if(tagName.equals("ROOM_AREAGATE"))
+			{
+				if(E instanceof Environmental)
+				{
+					final Room R=CMLib.map().roomLocation((Environmental)E);
+					if(R!=null)
+					{
+						boolean foundOne=false;
+						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+						{
+							final Room R2=R.getRoomInDir(d);
+							foundOne=(R2!=null) || foundOne;
+							if((R2!=null) && (R2.roomID().length()>0) && (R.getArea()!=R2.getArea()))
+								return CMLib.directions().getDirectionName(d);
+						}
+						if(!foundOne)
+							throw new PostProcessException("No exits at all on on object "+R.roomID()+" in variable '"+tagName+"'");
+					}
+				}
+				return "";
+			}
+			break;
+		default:
+			break;
 		}
 		if(defPrefix != null)
 		{
-			final Object asPreviouslyDefined = defined.get((defPrefix+tagName).toUpperCase());
+			final Object asPreviouslyDefined = defined.get(defPrefix.toUpperCase()+tagName);
 			if(asPreviouslyDefined instanceof String)
-				return strFilter(E,ignoreStats,defPrefix,(String)asPreviouslyDefined,piece, defined);
+				return CMStrings.replaceAll(strFilter(E,ignoreStats,defPrefix,(String)asPreviouslyDefined,piece, defined),"\\$","$");
 		}
 
 		final String asParm = piece.getParmValue(tagName);
 		if(asParm != null)
-			return strFilter(E,ignoreStats,defPrefix,asParm,piece, defined);
+			return CMStrings.replaceAll(strFilter(E,ignoreStats,defPrefix,asParm,piece, defined),"\\$","$");
 
 		final Object asDefined = defined.get(tagName);
 		if(asDefined instanceof String)
@@ -3290,7 +3299,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			final CMFile file = new CMFile(contentload,null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
 			if(file.exists() && file.canRead())
-				return strFilter(E, ignoreStats, defPrefix,file.text().toString(), piece, defined);
+				return CMStrings.replaceAll(strFilter(E, ignoreStats, defPrefix,file.text().toString(), piece, defined),"\\$","$");
 			else
 				throw new CMException("Bad content_load filename in '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 		}
@@ -3334,28 +3343,41 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(processDefined!=valPiece)
 				defineReward(E,ignoreStats,defPrefix,valPiece.getParmValue("DEFINE"),valPiece,value,defined,true);
 
-			String action = valPiece.getParmValue("ACTION");
-			if(action==null)
+			final String action = valPiece.getParmValue("ACTION");
+			if((action==null) || (action.length()==0))
 				finalValue.append(" ").append(value);
 			else
+			switch(action.charAt(0))
 			{
-				action=action.toUpperCase().trim();
-				if((action.length()==0)||(action.equals("APPEND")))
-					finalValue.append(" ").append(value);
-				else
-				if(action.equals("REPLACE"))
+			case 'a': case 'A':
+				if(action.equalsIgnoreCase("APPEND"))
+				{
+					finalValue.append(" ").append(value); //append
+					break;
+				}
+				//$FALL-THROUGH$
+			case 'r': case 'R': // replace
+				if(action.equalsIgnoreCase("REPLACE"))
+				{
 					finalValue = new StringBuffer(value);
-				else
-				if(action.equals("PREPEND"))
+					break;
+				}
+				//$FALL-THROUGH$
+			case 'p': case 'P':
+				if(action.equalsIgnoreCase("PREPEND"))
+				{
 					finalValue.insert(0,' ').insert(0,value);
-				else
-					throw new CMException("Unknown action '"+action+" on subPiece "+valPiece.tag()+" on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
+					break;
+				}
+				//$FALL-THROUGH$
+			default:
+				throw new CMException("Unknown action '"+action+" on subPiece "+valPiece.tag()+" on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 			}
 		}
 		final String finalFinalValue=finalValue.toString().trim();
 		if(processDefined!=null)
 			defineReward(E,ignoreStats,defPrefix,piece.getParmValue("DEFINE"),processDefined,finalFinalValue,defined,true);
-		return finalFinalValue;
+		return CMStrings.deEscape(finalFinalValue,"$");
 	}
 
 	@Override
@@ -3632,11 +3654,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 	protected boolean testCondition(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String condition, final XMLTag piece, final Map<String,Object> defined) throws PostProcessException
 	{
+		if((condition == null)||(condition.length()==0))
+			return true;
 		final Map<String,Object> fixed=new HashMap<String,Object>();
 		try
 		{
-			if(condition == null)
-				return true;
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MudPercolator","START-TEST "+piece.tag()+": "+condition);
 			final List<Varidentifier> ids=parseVariables(condition);
@@ -3709,7 +3731,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			finalDefined.putAll(defined);
 			finalDefined.putAll(fixed);
 			final boolean test= CMStrings.parseStringExpression(condition.toUpperCase(),finalDefined, true);
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) //TODO:BZ:FIX
 				Log.debugOut("MudPercolator","TEST "+piece.tag()+": "+condition+"="+test);
 			return test;
 		}
@@ -6596,7 +6618,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(e instanceof MQLException)
 				throw (MQLException)e;
 			else
-				throw new MQLException("MQL failure on $"+strpath,e);
+				throw new MQLException("MQL failure on $"+CMParms.combine(Arrays.asList(strpath),0),e);
 		}
 		return finalO;
 	}
@@ -7535,6 +7557,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			else
 			if(V.var.length()==0)
 				continue;
+			else
+			if(V.var.equals("$"))
+				val="$";
 			else
 				val = defined.get(V.var.toUpperCase().trim());
 			if(val instanceof XMLTag)

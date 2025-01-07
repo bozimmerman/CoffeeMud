@@ -773,7 +773,7 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void initTelnetMode(final int mobbitmap)
+	public void initTelnetMode(final long mobbitmap)
 	{
 	}
 

@@ -84,89 +84,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 	};
 
-	@Override
-	public String evaluateAchievement(final Agent agent, final String row, final boolean addIfPossible)
+	protected List<Award> parseAwards(final String eventStr, final String rewardStr) throws CMException
 	{
-		if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0))
-			return null;
-		int x=row.indexOf('=');
-		while((x>=1)&&(row.charAt(x-1)=='\\'))
-			x=row.indexOf('=',x+1);
-		if(x<0)
-			return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!";
-		final String tattoo=row.substring(0,x).toUpperCase().trim();
-		if(tattoo.length()==0)
-			return "Error: Blank achievement tattoo: "+tattoo+"!";
-		if(Character.isDigit(tattoo.charAt(0)))
-			return "Error: Invalid achievement tattoo: "+tattoo+"!";
-		final String params=row.substring(x+1).trim();
-		final String eventStr=CMParms.getParmStr(params, "EVENT", "");
-		final Event eventType = (Event)CMath.s_valueOf(Event.class, eventStr.toUpperCase().trim());
-		if(eventType == null)
-			return "Error: Blank or unknown achievement type: "+eventStr+"!";
-		final String displayStr=CMStrings.deEscape(CMParms.getParmStr(params, "DISPLAY", ""));
-		final String titleStr=CMStrings.deEscape(CMParms.getParmStr(params, "TITLE", ""));
-		final String rewardStr=CMStrings.deEscape(CMParms.getParmStr(params, "REWARDS", ""));
-		final int duration=CMParms.getParmInt(params, "DURATION", 0);
 		final String[] awardSet = CMParms.parse(rewardStr).toArray(new String[0]);
-		final Set<AchievementFlag> flags = Collections.synchronizedSet(new HashSet<AchievementFlag>());
-		final List<String> flagParts = CMParms.parse(CMParms.getParmStr(params, "FLAGS", ""));
-		for(final String fp : flagParts)
-		{
-			final AchievementFlag f = (AchievementFlag)CMath.s_valueOf(AchievementFlag.class, fp.toUpperCase().trim());
-			if(f != null)
-				flags.add(f);
-		}
-		final CompiledZMask seenMask;
-		final String seenMaskStr=CMStrings.deEscape(CMParms.getParmStr(params, "VISIBLEMASK", ""));
-		if(seenMaskStr.trim().length()>0)
-			seenMask = CMLib.masking().getPreCompiledMask(seenMaskStr);
-		else
-			seenMask = null;
-
-		final String playerMaskStr=CMStrings.deEscape(CMParms.getParmStr(params, "PLAYERMASK", ""));
-		final CompiledZMask playerMask;
-		if(playerMaskStr.trim().length()>0)
-			playerMask = CMLib.masking().getPreCompiledMask(playerMaskStr);
-		else
-			playerMask = null;
-
-		final List<Award> awardsList = new ArrayList<Award>();
-		if(titleStr.length()>0)
-		{
-			awardsList.add(new TitleAward()
-			{
-				@Override
-				public AwardType getType()
-				{
-					return AwardType.TITLE;
-				}
-
-				@Override
-				public String getTitle()
-				{
-					return titleStr;
-				}
-
-				@Override
-				public boolean isPreAwarded()
-				{
-					return false;
-				}
-
-				@Override
-				public String getDescription()
-				{
-					return L("The title: @x1",getTitle());
-				}
-
-				@Override
-				public boolean isNotAwardedOnRemort()
-				{
-					return false;
-				}
-			});
-		}
+		final List<Award> awardsList = new XVector<Award>();
 		for(int a=0;a<awardSet.length;a++)
 		{
 			if(awardSet[a].length()>0)
@@ -337,27 +258,27 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							thing=thing.substring(0,y);
 						}
 						if(parms.length()==0)
-							return "Error: Invalid TATTOO award for "+eventStr+":  Missing () arguments.";
+							throw new CMException("Error: Invalid TATTOO award for "+eventStr+":  Missing () arguments.");
 						final String accttattoo;
 						final String desc;
 						if(parms.indexOf('=')<0)
-							return "Error: Invalid TATTOO award for "+eventStr+":  Missing (ID= DESC=) arguments.";
+							throw new CMException("Error: Invalid TATTOO award for "+eventStr+":  Missing (ID= DESC=) arguments.");
 						else
 						{
 							if(CMParms.getParmStr(parms, "ID", "").length()>0)
 								accttattoo=CMStrings.deEscape(CMParms.getParmStr(parms, "ID", ""));
 							else
-								return "Error: Invalid TATTOO award for "+eventStr+":  Missing ID= argument.";
+								throw new CMException("Error: Invalid TATTOO award for "+eventStr+":  Missing ID= argument.");
 							if(CMParms.getParmStr(parms, "DESC", "").length()>0)
 								desc=CMStrings.deEscape(CMParms.getParmStr(parms, "DESC",""));
 							else
-							if(tattoo.startsWith("RACE_"))
-								desc=L("create a character of race '@x1'.",tattoo.toLowerCase().substring(5));
+							if(accttattoo.startsWith("RACE_"))
+								desc=L("create a character of race '@x1'.",accttattoo.toLowerCase().substring(5));
 							else
-							if(tattoo.startsWith("CHARCLASS_"))
-								desc=L("create a character of class '@x1'.",tattoo.toLowerCase().substring(9));
+							if(accttattoo.startsWith("CHARCLASS_"))
+								desc=L("create a character of class '@x1'.",accttattoo.toLowerCase().substring(9));
 							else
-								desc=tattoo.toLowerCase();
+								desc=accttattoo.toLowerCase();
 						}
 						awardsList.add(new TattooAward()
 						{
@@ -389,6 +310,99 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							public boolean isNotAwardedOnRemort()
 							{
 								return false;
+							}
+						});
+					}
+					else
+					if(thing.startsWith("MOB")||thing.startsWith("ITEM"))
+					{
+						final AwardType type = thing.startsWith("MOB")?AwardType.MOB:AwardType.ITEM;
+						final int y=thing.indexOf('(');
+						String parms="";
+						if((y>0) && thing.endsWith(")"))
+						{
+							parms=thing.substring(y+1,thing.length()-1).trim();
+							thing=thing.substring(0,y);
+						}
+						if(parms.length()==0)
+							throw new CMException("Error: Invalid "+thing+" award for "+eventStr+":  Missing () arguments.");
+						final String accttattoo;
+						final String desc;
+						if(parms.indexOf('=')<0)
+							throw new CMException("Error: Invalid "+thing+" award for "+eventStr+":  Missing (ID= DESC=) arguments.");
+						else
+						{
+							if(CMParms.getParmStr(parms, "ID", "").length()>0)
+								accttattoo=CMStrings.deEscape(CMParms.getParmStr(parms, "ID", ""));
+							else
+								throw new CMException("Error: Invalid "+thing+" award for "+eventStr+":  Missing ID= argument.");
+							if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+							{
+								Physical P;
+								if(type == AwardType.ITEM)
+									P = CMLib.catalog().getCatalogItem(accttattoo);
+								else
+									P = CMLib.catalog().getCatalogMob(accttattoo);
+								if(P == null)
+									throw new CMException("Error: Invalid "+thing+" award for "+eventStr+":  Missing catalog ("+accttattoo+").");
+								desc = P.name();
+							}
+							else
+								desc = accttattoo.toLowerCase();
+						}
+						awardsList.add(new CatalogAward()
+						{
+							private final AwardType awardType = type;
+							private final String awardDesc = desc;
+							private final String awardID = accttattoo;
+							private final int awardNum = number;
+							@Override
+							public AwardType getType()
+							{
+								return awardType;
+							}
+
+							@Override
+							public String getItemName()
+							{
+								return awardID;
+							}
+
+							@Override
+							public PhysicalAgent getItem()
+							{
+								PhysicalAgent P;
+								if(type == AwardType.ITEM)
+									P = CMLib.catalog().getCatalogItem(accttattoo);
+								else
+									P = CMLib.catalog().getCatalogMob(accttattoo);
+								if(P != null)
+									P=(PhysicalAgent)P.copyOf();
+								return P;
+							}
+
+							@Override
+							public boolean isPreAwarded()
+							{
+								return false;
+							}
+
+							@Override
+							public int getAmount()
+							{
+								return awardNum;
+							}
+
+							@Override
+							public String getDescription()
+							{
+								return awardDesc;
+							}
+
+							@Override
+							public boolean isNotAwardedOnRemort()
+							{
+								return true;
 							}
 						});
 					}
@@ -753,10 +767,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								@Override
 								public String getDescription()
 								{
-									if(getAmount()<0)
-										return getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat())+(savingThrow ? " resistance":""));
+									int amount = getAmount();
+									if((amount<0)&&(stat.equalsIgnoreCase("ARMOR")))
+										amount = -amount;
+									if(amount<0)
+										return amount + " " + L(CMStrings.capitalizeAndLower(getStat())+(savingThrow ? " resistance":""));
 									else
-										return "+"+getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat())+(savingThrow ? " resistance":""));
+										return "+"+amount + " " + L(CMStrings.capitalizeAndLower(getStat())+(savingThrow ? " resistance":""));
 								}
 
 								@Override
@@ -898,6 +915,100 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 			}
 		}
+		return awardsList;
+	}
+
+	@Override
+	public String evaluateAchievement(final Agent agent, final String row, final boolean addIfPossible)
+	{
+		if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0))
+			return null;
+		int x=row.indexOf('=');
+		while((x>=1)&&(row.charAt(x-1)=='\\'))
+			x=row.indexOf('=',x+1);
+		if(x<0)
+			return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!";
+		final String tattoo=row.substring(0,x).toUpperCase().trim();
+		if(tattoo.length()==0)
+			return "Error: Blank achievement tattoo: "+tattoo+"!";
+		if(Character.isDigit(tattoo.charAt(0)))
+			return "Error: Invalid achievement tattoo: "+tattoo+"!";
+		final String params=row.substring(x+1).trim();
+		final String eventStr=CMParms.getParmStr(params, "EVENT", "");
+		final Event eventType = (Event)CMath.s_valueOf(Event.class, eventStr.toUpperCase().trim());
+		if(eventType == null)
+			return "Error: Blank or unknown achievement type: "+eventStr+"!";
+		final String displayStr=CMStrings.deEscape(CMParms.getParmStr(params, "DISPLAY", ""));
+		final String titleStr=CMStrings.deEscape(CMParms.getParmStr(params, "TITLE", ""));
+		final String rewardStr=CMStrings.deEscape(CMParms.getParmStr(params, "REWARDS", ""));
+		final int duration=CMParms.getParmInt(params, "DURATION", 0);
+		final Set<AchievementFlag> flags = Collections.synchronizedSet(new HashSet<AchievementFlag>());
+		final List<String> flagParts = CMParms.parse(CMParms.getParmStr(params, "FLAGS", ""));
+		for(final String fp : flagParts)
+		{
+			final AchievementFlag f = (AchievementFlag)CMath.s_valueOf(AchievementFlag.class, fp.toUpperCase().trim());
+			if(f != null)
+				flags.add(f);
+		}
+		final CompiledZMask seenMask;
+		final String seenMaskStr=CMStrings.deEscape(CMParms.getParmStr(params, "VISIBLEMASK", ""));
+		if(seenMaskStr.trim().length()>0)
+			seenMask = CMLib.masking().getPreCompiledMask(seenMaskStr);
+		else
+			seenMask = null;
+
+		final String playerMaskStr=CMStrings.deEscape(CMParms.getParmStr(params, "PLAYERMASK", ""));
+		final CompiledZMask playerMask;
+		if(playerMaskStr.trim().length()>0)
+			playerMask = CMLib.masking().getPreCompiledMask(playerMaskStr);
+		else
+			playerMask = null;
+
+		final List<Award> awardsList = new ArrayList<Award>();
+		if(titleStr.length()>0)
+		{
+			awardsList.add(new TitleAward()
+			{
+				@Override
+				public AwardType getType()
+				{
+					return AwardType.TITLE;
+				}
+
+				@Override
+				public String getTitle()
+				{
+					return titleStr;
+				}
+
+				@Override
+				public boolean isPreAwarded()
+				{
+					return false;
+				}
+
+				@Override
+				public String getDescription()
+				{
+					return L("The title: @x1",getTitle());
+				}
+
+				@Override
+				public boolean isNotAwardedOnRemort()
+				{
+					return false;
+				}
+			});
+		}
+		try
+		{
+			awardsList.addAll(parseAwards(eventStr, rewardStr));
+		}
+		catch(final CMException e)
+		{
+			return e.getMessage();
+		}
+
 		final Award[] rewardList = awardsList.toArray(new Award[0]);
 		Achievement A;
 		switch(eventType)
@@ -981,12 +1092,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -1004,6 +1115,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -1138,12 +1255,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -1161,6 +1278,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -1296,12 +1419,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -1319,6 +1442,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -1459,7 +1588,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -1489,6 +1618,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -1617,7 +1752,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -1642,6 +1777,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							if(tracked instanceof MOB)
 								return CMath.s_int(CMLib.coffeeMaker().getAnyGenStat((MOB)tracked, statName));
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -1771,7 +1912,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -1807,6 +1948,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								return f;
 							}
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -1938,7 +2085,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -1973,6 +2120,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								return num;
 							}
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -2110,7 +2263,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -2156,6 +2309,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 							}
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -2286,12 +2445,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -2309,6 +2468,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -2507,12 +2672,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -2530,6 +2695,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -2711,12 +2882,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -2734,6 +2905,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -2841,6 +3018,234 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 			};
 			break;
+		case EFFECTSHAD:
+			A=new Achievement()
+			{
+				private int			num			= 0;
+				private String[]	abilityIDs	= new String[0];
+
+				@Override
+				public Event getEvent()
+				{
+					return eventType;
+				}
+
+				@Override
+				public Agent getAgent()
+				{
+					return agent;
+				}
+
+				@Override
+				public boolean canBeSeenBy(final MOB mob)
+				{
+					return ((seenMask==null)||(CMLib.masking().maskCheck(seenMask, mob, true)));
+				}
+
+				@Override
+				public boolean canApplyTo(final Agent agent)
+				{
+					return true;
+				}
+
+				@Override
+				public String getTattoo()
+				{
+					return tattoo;
+				}
+
+				@Override
+				public String getDisplayStr()
+				{
+					return displayStr;
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+
+				@Override
+				public Award[] getRewards()
+				{
+					return rewardList;
+				}
+
+				@Override
+				public int getDuration()
+				{
+					return duration;
+				}
+
+				@Override
+				public boolean isFlag(final AchievementFlag flag)
+				{
+					return flags.contains(flag);
+				}
+
+				@Override
+				public int getTargetCount()
+				{
+					return num;
+				}
+
+				@Override
+				public String getRawParmVal(final String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
+				public Tracker getTracker(final String oldVal)
+				{
+					final Achievement me=this;
+					final Bitmap newBits = new Bitmap(oldVal);
+					final int newCount = newBits.onCount();
+					return new Tracker()
+					{
+						private final Bitmap	bits	= newBits;
+						private volatile int	count	= newCount;
+
+						@Override
+						public Achievement getAchievement()
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved(final Tattooable tracked)
+						{
+							return getCount(tracked) >= num;
+						}
+
+						@Override
+						public int getCount(final Tattooable tracked)
+						{
+							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return bits.toHexString();
+						}
+
+						@Override
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
+						{
+							if((playerMask!=null)&&(!CMLib.masking().maskCheck(playerMask, mob, true)))
+								return false;
+							final Ability A;
+							if(parms.length>0)
+							{
+								if(parms[0] instanceof String)
+								{
+									A=CMClass.getAbility((String)parms[0]);
+									if(A==null)
+										return false;
+								}
+								else
+								if(parms[0] instanceof Ability)
+									A=(Ability)parms[0];
+								else
+									return false;
+								final int bitNum = Arrays.binarySearch(abilityIDs, A.ID());
+								if(bitNum < 0)
+									return false;
+								if(!bits.get(bitNum))
+								{
+									count+=1;
+									bits.set(bitNum, true);
+								}
+								return true;
+							}
+							return false;
+						}
+
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(final Exception e)
+							{
+								return this;
+							}
+						}
+					};
+				}
+
+				@Override
+				public boolean isSavableTracker()
+				{
+					return true;
+				}
+
+				@Override
+				public String parseParms(final String parms)
+				{
+					final String numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid NUM parameter: "+numStr+" for "+tattoo+"!";
+					this.num=CMath.s_int(numStr);
+					final String abilityIDMask=CMParms.getParmStr(parms, "ABILITYID", "").toUpperCase().trim();
+					if(abilityIDMask.length()==0)
+						return "Error: Missing ABILITYID parameter: "+abilityIDs+" for "+tattoo+"!";
+					final String[] strList=abilityIDMask.split(",");
+					final Set<String> abilityMaskList = new TreeSet<String>();
+					for(int i=0;i<strList.length;i++)
+					{
+						final String abilityID = strList[i].trim();
+						if(abilityID.equals("*"))
+						{
+							abilityMaskList.add(abilityID);
+							break;
+						}
+						else
+						{
+							final Ability A;
+							if(CMParms.contains(Ability.ACODE.DESCS,abilityID)
+							||CMParms.contains(Ability.DOMAIN.DESCS,abilityID))
+								A=null;
+							else
+							{
+								A=CMClass.getAbility(abilityID);
+								if(A==null)
+								{
+									if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+									||(!CMClass.isLanguage(abilityID)))
+										return "Error: Unknown ABILITYID: "+abilityID+" for "+tattoo+"!";
+									else
+										return "";
+								}
+							}
+							if(A!=null)
+								abilityMaskList.add(A.ID());
+							else
+								abilityMaskList.add(abilityID.toUpperCase());
+						}
+					}
+					if(abilityMaskList.size()==0)
+						return "Error: Unknown crafting ABILITYIDs: "+abilityIDs+" for "+tattoo+"!";
+					final List<String> finalAbilityList = new LinkedList<String>();
+					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					{
+						final Ability A = a.nextElement();
+						if(abilityMaskList.contains("*")
+							||abilityMaskList.contains(A.ID())
+							||(abilityMaskList.contains(Ability.ACODE.DESCS.get(A.classificationCode()&Ability.ALL_ACODES)))
+							||(abilityMaskList.contains(Ability.DOMAIN.DESCS.get((A.classificationCode()&Ability.ALL_DOMAINS)>>5))))
+								finalAbilityList.add(A.ID());
+					}
+					finalAbilityList.sort(CaselessTreeMap.comparatorCaseSensitive);
+					abilityIDs = finalAbilityList.toArray(new String[finalAbilityList.size()]);
+					return "";
+				}
+			};
+			break;
 		case SOCIALUSE:
 			A=new Achievement()
 			{
@@ -2920,12 +3325,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -2943,6 +3348,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -3124,12 +3535,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -3147,6 +3558,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -3310,12 +3727,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -3333,6 +3750,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -3495,7 +3918,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -3534,6 +3957,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									count++;
 							}
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -3660,7 +4089,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -3693,6 +4122,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								return count;
 							}
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -3754,6 +4189,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			};
 			break;
 		case CLASSLEVELSGAINED:
+		case CLASSLEVELUP:
+		case CLASSLEVELDOWN:
 			A=new Achievement()
 			{
 				private int				num			= -1;
@@ -3832,12 +4269,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -3863,6 +4300,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							else
 								return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -3922,6 +4365,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case RETIRE:
 		case REMORT:
 		case LEVELSGAINED:
+		case LEVELUP:
+		case LEVELDOWN:
 			A=new Achievement()
 			{
 				private int				num			= -1;
@@ -3999,12 +4444,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -4022,6 +4467,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -4147,7 +4598,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -4214,6 +4665,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 							}
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -4374,12 +4831,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -4397,6 +4854,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -4521,12 +4984,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -4544,6 +5007,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -4676,12 +5145,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -4699,6 +5168,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -4831,12 +5306,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -4854,6 +5329,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -4982,12 +5463,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -5005,6 +5486,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -5126,12 +5613,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -5149,6 +5636,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -5279,7 +5772,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -5336,6 +5829,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									return num;
 							}
 							return 1;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -5455,12 +5954,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -5478,6 +5977,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -5623,7 +6128,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -5671,6 +6176,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 							}
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -5799,12 +6310,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -5822,6 +6333,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -5972,12 +6489,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -5995,6 +6512,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -6126,12 +6649,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -6149,6 +6672,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -6302,12 +6831,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 						private volatile long recentVisit = 0;
 
 						@Override
@@ -6326,6 +6855,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -6521,12 +7056,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 						private volatile long recentVisit = 0;
 
 						@Override
@@ -6546,6 +7081,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -6716,12 +7257,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -6739,6 +7280,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -6895,12 +7442,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -6918,6 +7465,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -7069,7 +7622,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -7119,6 +7672,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 							}
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -7245,12 +7804,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile int count = oldCount;
+						private volatile int count = CMath.s_int(oldVal);
 
 						@Override
 						public Achievement getAchievement()
@@ -7268,6 +7827,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(final Tattooable tracked)
 						{
 							return count;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -7402,7 +7967,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final int oldCount)
+				public Tracker getTracker(final String oldVal)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -7427,6 +7992,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								return ((Clan)tracked).getClanLevel();
 							}
 							return 0;
+						}
+
+						@Override
+						public String getCountParms(final Tattooable tracked)
+						{
+							return Integer.toString(getCount(tracked));
 						}
 
 						@Override
@@ -7803,10 +8374,25 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return achievements;
 	}
 
-	protected void giveAwards(final MOB mob, final Clan forClan, final Award[] awardSet, final AchievementLoadFlag flag)
+	@Override
+	public String giveAwards(final MOB mob, final String rewardStr)
+	{
+		final List<Award> awards;
+		try
+		{
+			awards = parseAwards("AWARD", rewardStr);
+		}
+		catch(final CMException e)
+		{
+			return "Error giving awards: "+e.getMessage();
+		}
+		return giveAwards(mob, null, awards.toArray(new Award[0]), AchievementLoadFlag.NORMAL);
+	}
+
+	protected String giveAwards(final MOB mob, final Clan forClan, final Award[] awardSet, final AchievementLoadFlag flag)
 	{
 		if(mob == null)
-			return;
+			return "";
 		final PlayerStats pStats = mob.playerStats();
 		final StringBuilder awardMessage = new StringBuilder("");
 		for(final Award award : awardSet)
@@ -7983,14 +8569,48 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				CMLib.leveler().postExperience(mob, "ACHIEVE:"+ID(), null, null, aaward.getAmount(), false);
 				break;
 			}
+			case ITEM:
+			{
+				final CatalogAward aaward=(CatalogAward)award;
+				if(aaward.getAmount() == 1)
+					awardMessage.append(L("^HYou are awarded @x1!\n\r^?\n\r",aaward.getItemName()));
+				else
+				{
+					awardMessage.append(L("^HYou are awarded @x1 @x2s!\n\r^?\n\r",""+aaward.getAmount(),
+							CMLib.english().removeArticleLead(aaward.getItemName())));
+				}
+				for(int i=0;i<aaward.getAmount();i++)
+					mob.addItem((Item)aaward.getItem());
+				break;
+			}
+			case MOB:
+			{
+				final CatalogAward aaward=(CatalogAward)award;
+				if(aaward.getAmount() == 1)
+					awardMessage.append(L("^HYou are awarded @x1!\n\r^?\n\r",aaward.getItemName()));
+				else
+				{
+					awardMessage.append(L("^HYou are awarded @x1 @x2s!\n\r^?\n\r",""+aaward.getAmount(),
+							CMLib.english().removeArticleLead(aaward.getItemName())));
+				}
+				for(int i=0;i<aaward.getAmount();i++)
+				{
+					final MOB M = (MOB)aaward.getItem();
+					if(M != null)
+					{
+						M.bringToLife(mob.location(), true);
+						M.setFollowing(mob);
+					}
+				}
+				break;
+			}
 			default:
 				break;
 
 			}
 		}
-		if(awardMessage.length()>0)
-			mob.tell(awardMessage.toString());
 		grantAbilitiesAndExpertises(mob);
+		return awardMessage.toString();
 	}
 
 	protected void giveAwards(final Clan clan, final Award[] awardSet, final AchievementLoadFlag flag)
@@ -8108,6 +8728,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				CMLib.clans().clanAnnounce(cM,L("Your @x2 @x3 has been granted '@x1'.",""+taward.getDescription(),clan.getGovernmentName(),clan.name()));
 				break;
 			}
+			case MOB:
+			case ITEM:
+				// awarded elsewhere, not directly to clan
+				break;
 			default:
 				break;
 			}
@@ -8365,6 +8989,16 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				// is never un-awarded
 				break;
 			}
+			case ITEM:
+			{
+				// is never un-awarded
+				break;
+			}
+			case MOB:
+			{
+				// is never un-awarded
+				break;
+			}
 			default:
 				break;
 
@@ -8433,7 +9067,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 			if(A.getAgent() == Agent.PLAYER)
 			{
-				giveAwards(mob,null,awardSet,flag);
+				final String awardMessage = giveAwards(mob,null,awardSet,flag);
+				if(awardMessage.length()>0)
+					mob.tell(awardMessage.toString());
 			}
 			return true;
 		}
@@ -8655,6 +9291,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case TATTOO:
 				awardStr.append("1 TATTOO(ID="+((TattooAward)award).getTattoo())
 						.append(" ").append("DESC="+CMStrings.escape("\""+CMStrings.escape(((TattooAward)award).getDescription())+"\")"));
+				break;
+			case MOB:
+				awardStr.append(" ").append(((CatalogAward)award).getAmount())
+						.append(" ").append("MOB(ID="+CMStrings.escape("\""+CMStrings.escape(((CatalogAward)award).getItemName())+"\")"));
+				break;
+			case ITEM:
+				awardStr.append(" ").append(((CatalogAward)award).getAmount())
+						.append(" ").append("ITEM(ID="+CMStrings.escape("\""+CMStrings.escape(((CatalogAward)award).getItemName())+"\")"));
 				break;
 			default:
 				break;
@@ -9238,7 +9882,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				final Achievement A=getAchievement(t.nextElement().getTattooName());
 				if((A != null)&&(A.getAgent()==Agent.PLAYER))
 				{
-					giveAwards(mob, null, A.getRewards(), flag);
+					final String awardMessage = giveAwards(mob, null, A.getRewards(), flag);
+					if(awardMessage.length()>0)
+						mob.tell(awardMessage.toString());
 					somethingDone=true;
 				}
 			}
@@ -9275,7 +9921,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								mob.addTattoo(A.getTattoo());
 							somethingDone=true;
 						}
-						giveAwards(mob, null, A.getRewards(), flag);
+						final String awardMessage = giveAwards(mob, null, A.getRewards(), flag);
+						if(awardMessage.length()>0)
+							mob.tell(awardMessage.toString());
 					}
 				}
 			}
@@ -9311,7 +9959,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									mob.addTattoo(A.getTattoo());
 								somethingDone=true;
 							}
-							giveAwards(mob, clan, A.getRewards(), flag);
+							final String awardMessage = giveAwards(mob, clan, A.getRewards(), flag);
+							if(awardMessage.length()>0)
+								mob.tell(awardMessage.toString());
 						}
 					}
 				}

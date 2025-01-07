@@ -90,13 +90,13 @@ public class Fighter_ForearmBlock extends FighterSkill
 		return false;
 	}
 
-	protected boolean	doneThisRound	= false;
+	protected volatile int	triesThisRound = 0;
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
-			doneThisRound=false;
+			triesThisRound=0;
 		return super.tick(ticking,tickID);
 	}
 
@@ -116,15 +116,14 @@ public class Fighter_ForearmBlock extends FighterSkill
 		&&(!CMLib.flags().isBoundOrHeld(mob))
 		&&(mob.charStats().getBodyPart(Race.BODY_ARM)>0)
 		&&((msg.tool()==null)
-			||((msg.tool() instanceof Weapon)&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL))))
+			||((msg.tool() instanceof Weapon)&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
+		&&(msg.source().getVictim()==mob))
 		{
 			final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> block(s) the attack by <T-NAME>!"));
-			if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-93+(getXLEVELLevel(mob)),false))
-			&&(msg.source().getVictim()==mob)
-			&&(!doneThisRound)
+			if(((++triesThisRound)<(mob.phyStats().speed()+CMath.div(super.getXLEVELLevel(mob),3.0)))
+			&&(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-93+(getXLEVELLevel(mob)),false))
 			&&(mob.location().okMessage(mob,msg2)))
 			{
-				doneThisRound=true;
 				mob.location().send(mob,msg2);
 				helpProficiency(mob, 0);
 				return false;

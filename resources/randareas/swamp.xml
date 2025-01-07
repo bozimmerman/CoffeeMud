@@ -76,7 +76,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />
-		<MOB condition="1?2=1" select="any-1" insert="swamp_mobs" />
+		<MOB condition="(1?2=1) and ($pop_mobs!='false')" select="any-1" insert="swamp_mobs" />
 	</ROOM>
 </ROOM>
 
@@ -114,9 +114,9 @@ See guides/RandomAreas.html for information about documents of this type.
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />
-		<MOB condition="($NOFANTASY != 'true') and ($__defined_swamp_dragon&lt;1)" define="__defined_swamp_dragon+=1" like="swamp_dragon_mob" />
-		<MOB condition="1?2=1" select="any-1" insert="swamp_mobs" />
-		<ITEM condition="1?4=1" select="any-1">
+		<MOB condition="($NOFANTASY != 'true') and ($__defined_swamp_dragon&lt;1) and ($pop_mobs!='false')" define="__defined_swamp_dragon+=1" like="swamp_dragon_mob" />
+		<MOB condition="(1?2=1) and ($pop_mobs!='false')" select="any-1" insert="swamp_mobs" />
+		<ITEM condition="(1?4=1) and ($pop_items!='false')" select="any-1">
 			<ITEM class="GenContainer" name="(a(n)) $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="$trueorfalse">
 				<CONTENT>
 					<ITEM select="any-5" insert="dungeon_treasure_items" />
@@ -136,7 +136,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		<NAME condition="$mob_level&lt;70 and $mob_level&gt;=40">an adult black dragon</NAME>
 		<NAME condition="$mob_level&lt;80 and $mob_level&gt;=70">an old black dragon</NAME>
 		<NAME condition="$mob_level&lt;85 and $mob_level&gt;=80">a very old black dragon</NAME>
-		<NAME condition="$mob_level&gt;=85">a ancient black dragon</NAME>
+		<NAME condition="$mob_level&gt;=85">an ancient black dragon</NAME>
 	</NAME>
 		<DISPLAY select="pick-1">
 			<DISPLAY pickweight="1">$mob_name leaps towards you.</DISPLAY>

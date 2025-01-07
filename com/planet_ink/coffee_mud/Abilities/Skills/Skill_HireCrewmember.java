@@ -666,6 +666,7 @@ public class Skill_HireCrewmember extends StdSkill
 			targetM.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(targetM));
 			//targetM.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0")); -- could be dangerous not having this, but 5-10 levels lower, so...
 			targetM.addTattoo("SYSTEM_SUMMONED");
+			targetM.addTattoo("SUMMONED_BY:"+mob.name());
 			targetM.recoverCharStats();
 			targetM.recoverPhyStats();
 			targetM.recoverMaxState();

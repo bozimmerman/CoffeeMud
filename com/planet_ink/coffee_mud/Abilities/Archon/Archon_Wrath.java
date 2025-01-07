@@ -135,7 +135,7 @@ public class Archon_Wrath extends ArchonSkill
 					I.removeFromOwnerContainer();
 					target.location().addItem(I,ItemPossessor.Expire.Player_Drop);
 				}
-				Log.sysOut("Banish",mob.Name()+" wrathed "+target.name()+".");
+				Log.sysOut(mob.Name()+" wrathed "+target.name()+".");
 				if(announce)
 				{
 					final Command C=CMClass.getCommand("Announce");

@@ -166,14 +166,17 @@ public class Druid extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_Moonbeam",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_RestoreMana",0,"",false,SecretFlag.SECRET);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SenseLife",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_KnowAnimal",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_Tangle",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_SummonFire",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_LocateAnimals",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_EnhancePotion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_FortifyFood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_Farsight",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_FeelElectricity",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_InspectShard",0,false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_CalmAnimal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_Sunray",false);
@@ -212,6 +215,7 @@ public class Druid extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_HoldAnimal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_PlantBed",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_LightningWard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_StabilizeForm",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_ColdWard",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_Bury",false);
@@ -236,6 +240,7 @@ public class Druid extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_GasWard",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_Hibernation",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_Reabsorb",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_ScrollFamiliarity",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_SummonAnimal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_Nectar",false);
@@ -252,6 +257,7 @@ public class Druid extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_PlantSnare",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_SensePregnancy",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_SenseFluids",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"ImprovedHerbalism",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_Treemorph",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_SummonWind",false);
@@ -471,11 +477,11 @@ public class Druid extends StdCharClass
 		&&(msg.source().isMonster())
 		&&(msg.source().basePhyStats().level() < msg.value()))
 		{
-			final MOB druidM=msg.source().amUltimatelyFollowing();
-			if((druidM!=null)
+			final MOB druidM=msg.source().getGroupLeader();
+			if((druidM != msg.source())
 			&&(!druidM.isMonster())
 			&&(druidM.charStats().getCurrentClass().ID().equals(C.ID()))
-			&&(CMLib.flags().isAnimalIntelligence(msg.source())
+			&&(CMLib.flags().isAnAnimal(msg.source())
 			  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")
 			  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Stone Golem"))
 			&&(Math.abs(druidM.phyStats().level()-msg.source().phyStats().level())<=10))
@@ -502,7 +508,7 @@ public class Druid extends StdCharClass
 		&&(msg.source().getStartRoom()!=null)
 		&&(CMLib.law().isACity(msg.source().getStartRoom().getArea()))
 		&&(((MOB)host).charStats().getCurrentClass().ID().equals(C.ID()))
-		&&(CMLib.flags().isAnimalIntelligence(msg.source())
+		&&(CMLib.flags().isAnAnimal(msg.source())
 		  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")
 		  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Stone Golem"))
 		&&(CMLib.flags().flaggedAffects(msg.source(),Ability.FLAG_SUMMONING).size()==0)
@@ -602,7 +608,7 @@ public class Druid extends StdCharClass
 		if((mob!=null)
 		&&(mob!=killed)
 		&&(!mob.amDead())
-		&&((!mob.isMonster())||(!CMLib.flags().isAnimalIntelligence(mob)))
+		&&((!mob.isMonster())||(!CMLib.flags().isAnAnimal(mob)))
 		&&((mob.getVictim()==killed)
 		 ||(followers.contains(mob))
 		 ||(mob==killer)))

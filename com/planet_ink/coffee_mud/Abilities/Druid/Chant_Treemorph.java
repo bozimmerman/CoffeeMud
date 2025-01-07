@@ -68,6 +68,13 @@ public class Chant_Treemorph extends Chant
 	{
 		return Ability.QUALITY_MALICIOUS;
 	}
+
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_POLYMORPHING;
+	}
+
 	Item tree=null;
 	Race treeForm=null;
 

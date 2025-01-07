@@ -234,9 +234,7 @@ public class MOTD extends StdCommand
 				if(CJseparator)
 					buf.append("\n\r--------------------------------------\n\r");
 
-				final boolean canReceiveRealEmail =(pStats.getEmail().length()>0);
-				if(canReceiveRealEmail
-				&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
+				if(CMProps.getVar(CMProps.Str.MAILBOX).length()>0)
 				{
 					final String[] queries=new String[] { mob.Name(),"ALL","MASK=%" };
 					final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgsByUpdateDate(CMProps.getVar(CMProps.Str.MAILBOX), false, max, queries);

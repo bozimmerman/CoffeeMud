@@ -345,7 +345,7 @@ public class Disease_Vampirism extends Disease
 					}
 					if(bloodHeal)
 					{
-						final CMMsg msg2 = CMClass.getMsg(msg.source(),mob,msg.tool(),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,CMMsg.MSG_HEALING,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,null);
+						final CMMsg msg2 = CMClass.getMsg(msg.source(),mob,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,CMMsg.MSG_HEALING,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,null);
 						msg2.setValue(prevEat);
 						final Room R=CMLib.map().roomLocation(mob);
 						if((R!=null)

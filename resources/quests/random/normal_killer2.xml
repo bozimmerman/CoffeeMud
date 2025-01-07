@@ -58,11 +58,12 @@ settable vars:
 	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
 	<FACTION>$source_faction</FACTION>
 	<NUMFACTION>$[$source_faction_amt / 500]</NUMFACTION>
-	<QUEST_NAME SELECT="Any-1">
+	<QUEST_NAME SELECT="Pick-1">
 		<QUEST_NAME>${C:source_name} in ${C:source_area_name} needs $num_targets ${p:target_name} $reason_verbed</QUEST_NAME>
 		<QUEST_NAME>${C:source_name} in ${C:source_area_name} wants $num_targets ${p:target_name} $reason_verbed</QUEST_NAME>
 		<QUEST_NAME>${C:source_name} in ${C:source_area_name} asks for $num_targets ${p:target_name} to be $reason_verbed</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_name} for ${C:source_name} in ${C:source_area_name}</QUEST_NAME>
+		<QUEST_NAME PICKWEIGHT=99 CONDITION="$deityname!=''">${C:source_name} in ${C:source_area_name} needs $num_targets ${p:target_name} $reason_verbed for $deityname</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_NOTIFYSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSTRING>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
@@ -214,6 +215,7 @@ settable vars:
 			<STRING>Please?! You can't make me die for $deityname!</STRING>
 			<STRING>I'd rather kill you than submit to $deityname!</STRING>
 		</STRING>
+		<STRING define="reason_short">${c:deityname} requires that you engage in a $adj_feeling_good ${p:target_name} ${hurt_verb}ing.</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>The ${p:target_name} are trying to kill followers of ${c:deityname}, and must be stopped.</STRING>
 			<STRING>The ${p:target_name} have insulted ${c:deityname}`s honor, and only a ritual $hurt_verb will satisfy it.</STRING>

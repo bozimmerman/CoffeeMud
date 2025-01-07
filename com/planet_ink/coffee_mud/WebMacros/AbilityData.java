@@ -184,6 +184,7 @@ public class AbilityData extends StdWebMacro
 			&&(newAbilityID!=null)
 			&&(newAbilityID.length()>0))
 			{
+				newAbilityID = CMStrings.replaceAll(newAbilityID, " ", "");
 				A=CMClass.getAbility(newAbilityID);
 				if(A == null)
 					A=(Ability)CMClass.getAbility(newClass).copyOf();

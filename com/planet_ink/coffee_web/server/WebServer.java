@@ -330,7 +330,7 @@ public class WebServer extends Thread
 			{
 				i=handlers.iterator();
 			}
-			catch(final java.lang.IndexOutOfBoundsException x)
+			catch(final IndexOutOfBoundsException x)
 			{
 				handlers.clear();
 				throw x;
@@ -437,7 +437,7 @@ public class WebServer extends Thread
 			}
 		}
 		close();
-		config.getLogger().info("Shutdown complete");
+		config.getLogger().info(serverName+" shutdown complete");
 	}
 
 	/**

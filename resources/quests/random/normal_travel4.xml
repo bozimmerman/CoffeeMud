@@ -52,11 +52,12 @@ settable vars:
 	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
 	<FACTION>$source_faction</FACTION>
 	<NUMFACTION>$[$source_faction_amt / 500]</NUMFACTION>
-	<QUEST_NAME SELECT="Any-1">
+	<QUEST_NAME SELECT="Pick-1">
 		<QUEST_NAME>${C:source_name} needs you to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:source_name} wants you to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:source_name} asks for you to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $target_name in ${C:target_area_name} for ${C:source_name}</QUEST_NAME>
+		<QUEST_NAME PICKWEIGHT=99 CONDITION="$deityname!=''">${C:source_name} needs you to $reason_verb $target_name in ${C:target_area_name} for $deityname</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_NOTIFYSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSTRING>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
@@ -204,6 +205,7 @@ settable vars:
 		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
 		<STRING define="quest_message">$quest_generic_traveled_message</STRING>
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_short">${c:deityname} requires you to visit ${c:target_name}.</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:deityname} need you to travel to $target_name.</STRING>
 			<STRING>By ${c:deityname}`s command, you need to meet with ${target_name}.</STRING>

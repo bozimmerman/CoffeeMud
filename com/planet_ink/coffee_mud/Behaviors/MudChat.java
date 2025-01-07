@@ -484,13 +484,13 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 	protected static ChattyGroup[] loadChatData(final String resourceName)
 	{
-		final CMFile //F=new CMFile(Resources.makeFileResourceName("behavior/"+resourceName),null,0);
-		//if((!F.exists()) || (!F.canRead()))
-			F=new CMFile(Resources.makeFileResourceName(resourceName),null,0);
-		if(F.exists() && F.canRead())
+		final CMFile[] fileList = CMFile.getExistingExtendedFiles(Resources.makeFileResourceName(resourceName), null, 0);
+		if(fileList.length>0)
 		{
-			final StringBuffer rsc=F.text();
-			return parseChatData(rsc);
+			final ArrayList<ChattyGroup> chatGroups = new ArrayList<ChattyGroup>();
+			for(final CMFile F : fileList)
+				chatGroups.addAll(Arrays.asList(parseChatData(F.text())));
+			return chatGroups.toArray(new ChattyGroup[chatGroups.size()]);
 		}
 		else
 		{

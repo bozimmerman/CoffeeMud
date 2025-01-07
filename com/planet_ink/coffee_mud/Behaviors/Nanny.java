@@ -228,7 +228,7 @@ public class Nanny extends StdBehavior
 		for(int v=0;v<V.size();v++)
 		{
 			final PhysicalAgent E=V.get(v);
-			if(CMLib.flags().isBaby(E)||CMLib.flags().isChild(E))
+			if(CMLib.flags().isBaby(E)||CMLib.flags().isAgedChild(E))
 				babies++;
 			else
 			if(isMount(E))
@@ -469,11 +469,11 @@ public class Nanny extends StdBehavior
 			return false;
 		if((watchesBabies)&&(CMLib.flags().isBaby(E)))
 			return true;
-		if((watchesChildren)&&(CMLib.flags().isChild(E))&&(!CMLib.flags().isBaby(E)))
+		if((watchesChildren)&&(CMLib.flags().isAgedChild(E))&&(!CMLib.flags().isBaby(E)))
 			return true;
 		if((watchesMounts)&&(isMount(E)))
 			return true;
-		if((watchesMOBFollowers)&&(E instanceof MOB)&&(!isMount(E))&&(!CMLib.flags().isChild(E))&&(!CMLib.flags().isBaby(E)))
+		if((watchesMOBFollowers)&&(E instanceof MOB)&&(!isMount(E))&&(!CMLib.flags().isAgedChild(E))&&(!CMLib.flags().isBaby(E)))
 			return true;
 		if((this.watchesWagons)
 		&&(E instanceof Rideable)
@@ -497,28 +497,18 @@ public class Nanny extends StdBehavior
 		return false;
 	}
 
-	public MOB ultimateFollowing(final Environmental E)
-	{
-		MOB ultimateFollowing=null;
-		if(E instanceof MOB)
-			ultimateFollowing=((MOB)E).amUltimatelyFollowing();
-		return ultimateFollowing;
-	}
-
 	public MOB getMommyOf(final Physical P)
 	{
 		if((P instanceof Item)
 		&&(((Item)P).owner() instanceof MOB)
 		&&(!((MOB)((Item)P).owner()).isMonster()))
 			return (MOB)((Item)P).owner();
+
 		if((P instanceof MOB)
 		&&(((MOB)P).amFollowing()!=null)
-		&&(!((MOB)P).amFollowing().isMonster()))
+		&&(((MOB)P).amFollowing().isPlayer()||(!((MOB)P).amFollowing().isMonster())))
 			return ((MOB)P).amFollowing();
-		if((P instanceof MOB)
-		&&(ultimateFollowing(P)!=null)
-		&&(!ultimateFollowing(P).isMonster()))
-			return ultimateFollowing(P);
+
 		if(P instanceof Rideable)
 		{
 			final Rideable R=(Rideable)P;
@@ -1051,7 +1041,7 @@ public class Nanny extends StdBehavior
 
 			}
 			else
-			if(CMLib.flags().isChild(PA))
+			if(CMLib.flags().isAgedChild(PA))
 			{
 				if(CMLib.dice().rollPercentage()>20)
 					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> play(s) with <T-NAME>."));

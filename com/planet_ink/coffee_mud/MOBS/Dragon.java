@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Dragon extends StdMOB
+public class Dragon extends StdMOB implements MOBPossessor
 {
 	@Override
 	public String ID()
@@ -44,6 +44,7 @@ public class Dragon extends StdMOB
 	protected int breatheDown=4;
 	protected int swallowDown=5;
 	protected int digestDown=4;
+	protected int dmgBonus=0;
 
 	protected int birthColor=0;
 	protected int birthAge=0;
@@ -364,11 +365,13 @@ public class Dragon extends StdMOB
 				myStomachR = CMClass.getLocale("StoneRoom");
 				if(myStomachR!=null)
 				{
+					final Area A = CMClass.getAreaType("StdArea");
+					A.setName("a stomach");
 					myStomachR.setSavable(false);
 					myStomachR.setRoomID("");
 					myStomachR.setName(L("Dragon Stomach"));
 					myStomachR.setDisplayText(L("Dragon Stomach"));
-					myStomachR.setArea(location().getArea());
+					myStomachR.setArea(A);
 					myStomachR.setDescription(L("You are in the stomach of a dragon.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested."));
 				}
 			}
@@ -515,8 +518,14 @@ public class Dragon extends StdMOB
 		return true;
 	}
 
+	public Room getStomach()
+	{
+		return myStomachR;
+	}
+
 	protected boolean trySwallowWhole()
 	{
+		final Room myStomachR = getStomach();
 		if(myStomachR==null)
 			return true;
 		if (CMLib.flags().isAliveAwakeMobileUnbound(this,true)
@@ -607,6 +616,7 @@ public class Dragon extends StdMOB
 
 	protected boolean digestTastyMorsels()
 	{
+		final Room myStomachR = getStomach();
 		if(myStomachR==null)
 			return true;
 		// ===== loop through all inhabitants of the stomach
@@ -623,7 +633,7 @@ public class Dragon extends StdMOB
 										   CMMsg.MSG_OK_ACTION,
 										   L("<S-NAME> digest(s) <T-NAMESELF>!!"));
 				myStomachR.send(this,digestMsg);
-				int damage=((int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),5)));
+				int damage=dmgBonus + ((int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),5)));
 				if(damage<(TastyMorsel.phyStats().level()+6))
 					damage=TastyMorsel.curState().getHitPoints()+1;
 				if(digestMsg.value()!=0)
@@ -631,6 +641,10 @@ public class Dragon extends StdMOB
 				CMLib.combat().postDamage(this,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,L("The stomach acid <DAMAGE> <T-NAME>!"));
 			}
 		}
+		if(morselCount == 0)
+			dmgBonus = 0;
+		else
+			dmgBonus++;
 		return true;
 	}
 
@@ -642,6 +656,7 @@ public class Dragon extends StdMOB
 		Room room = location();
 		if(room == null)
 			room = CMLib.map().getRandomRoom();
+		final Room myStomachR = getStomach();
 		if((myStomachR!=null)&&(room != null))
 		{
 			final int morselCount = myStomachR.numInhabitants();
@@ -669,4 +684,104 @@ public class Dragon extends StdMOB
 		// ===== Bury Him
 		return super.killMeDead(createBody);
 	}
+
+	@Override
+	public MOB fetchInhabitant(final String inhabitantID)
+	{
+		if(getStomach() != null)
+			return getStomach().fetchInhabitant(inhabitantID);
+		return null;
+	}
+
+	@Override
+	public MOB fetchInhabitantExact(final String inhabitantID)
+	{
+		if(getStomach() != null)
+			return getStomach().fetchInhabitantExact(inhabitantID);
+		return null;
+	}
+
+	@Override
+	public List<MOB> fetchInhabitants(final String inhabitantID)
+	{
+		if(getStomach() != null)
+			return getStomach().fetchInhabitants(inhabitantID);
+		return null;
+	}
+
+	@Override
+	public MOB fetchInhabitant(final int i)
+	{
+		if(getStomach() != null)
+			return getStomach().fetchInhabitant(i);
+		return null;
+	}
+
+	@Override
+	public Enumeration<MOB> inhabitants()
+	{
+		if(getStomach() != null)
+			return getStomach().inhabitants();
+		return null;
+	}
+
+	@Override
+	public void addInhabitant(final MOB mob)
+	{
+		if(getStomach() != null)
+			getStomach().addInhabitant(mob);
+	}
+
+	@Override
+	public void delInhabitant(final MOB mob)
+	{
+		if(getStomach() != null)
+			getStomach().delInhabitant(mob);
+	}
+
+	@Override
+	public int numInhabitants()
+	{
+		if(getStomach() != null)
+			return getStomach().numInhabitants();
+		return 0;
+	}
+
+	@Override
+	public boolean isInhabitant(final MOB mob)
+	{
+		if(getStomach() != null)
+			return getStomach().isInhabitant(mob);
+		return false;
+	}
+
+	@Override
+	public void delAllInhabitants(final boolean destroy)
+	{
+		if(getStomach() != null)
+			getStomach().delAllInhabitants(destroy);
+	}
+
+	@Override
+	public MOB fetchRandomInhabitant()
+	{
+		if(getStomach() != null)
+			return getStomach().fetchRandomInhabitant();
+		return null;
+	}
+
+	@Override
+	public void bringMobHere(final MOB mob, final boolean andFollowers)
+	{
+		if(getStomach() != null)
+			getStomach().bringMobHere(mob, andFollowers);
+	}
+
+	@Override
+	public void eachInhabitant(final EachApplicable<MOB> applier)
+	{
+		if(getStomach() != null)
+			getStomach().eachInhabitant(applier);
+	}
 }
+

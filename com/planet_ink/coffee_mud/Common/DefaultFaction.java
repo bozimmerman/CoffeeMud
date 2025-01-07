@@ -2971,8 +2971,8 @@ public class DefaultFaction implements Faction, MsgListener
 			if((!CMLib.flags().canBeSeenBy(myHost, M))
 			&&(!CMLib.flags().canBeHeardMovingBy(myHost,M)))
 				return null;
-			if((M.amUltimatelyFollowing()!=null)
-			&&(!M.amUltimatelyFollowing().isMonster()))
+			if((M.amFollowing()!=null)
+			&&(!M.getGroupLeader().isMonster()))
 				return null;
 			List<String> myReactions=null;
 			List<Faction.FReactionItem> tempReactSet=null;

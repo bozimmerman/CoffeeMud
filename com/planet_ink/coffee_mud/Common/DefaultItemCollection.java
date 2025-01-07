@@ -219,7 +219,7 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 		{
 			return contents.elementAt(i);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return null;

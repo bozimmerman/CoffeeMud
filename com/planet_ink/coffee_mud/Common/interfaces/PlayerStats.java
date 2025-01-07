@@ -172,13 +172,25 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	public String getSavedPose();
 
 	/**
+	 * Gets the saved pose string for players.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setSavedPose(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#isPoseConstant()
+	 *
+	 * @return a saved pose string
+	 */
+	public boolean isPoseConstant();
+
+	/**
 	 * Sets the saved pose string for players.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getSavedPose()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#isPoseConstant()
 	 *
 	 * @param msg a saved pose string
+	 * @param const true to set as constant
 	 */
-	public void setSavedPose(String msg);
+	public void setSavedPose(String msg, boolean constant);
 
 	/**
 	 * Returns the word wrap column number for this player, or 0.

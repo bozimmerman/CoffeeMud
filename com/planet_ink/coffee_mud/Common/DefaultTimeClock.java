@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
@@ -89,11 +90,13 @@ public class DefaultTimeClock implements TimeClock
 	protected int		day				= 1;
 	protected int		time			= 0;
 	protected int		hoursInDay		= 6;
+	protected Season	season			= Season.FALL;
 
 	protected int		weekOfMonth		= 0; // these are derived
 	protected int		weekOfYear		= 0; // these are derived
 	protected int		dayOfYear		= 1; // these are derived
 	protected int		daysInYear		= 8 * 20; // these are derived
+	protected int		monthsInSeason	= 3; // these are derived
 
 	protected String[] monthsInYear={
 		 "the 1st month","the 2nd month","the 3rd month","the 4th month",
@@ -152,6 +155,7 @@ public class DefaultTimeClock implements TimeClock
 			monthsInYear = months;
 			if((getDaysInMonth()>0)&&(months.length>0))
 				daysInYear = months.length * getDaysInMonth();
+			monthsInSeason = (int)Math.round(Math.floor(CMath.div(getMonthsInYear(),4.0)));
 		}
 	}
 
@@ -219,7 +223,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public void setDaysInWeek(final String[] days)
+	public void setWeekNames(final String[] days)
 	{
 		weekNames = days;
 		setDayOfMonth(getDayOfMonth()); // causes derived fields to be recalculated
@@ -244,7 +248,7 @@ public class DefaultTimeClock implements TimeClock
 		if(getDaysInWeek()>0)
 		{
 			long x=((long)getYear())*((long)getMonthsInYear())*getDaysInMonth();
-			x=x+((long)(getMonth()-1))*((long)getDaysInMonth());
+			x=x+((long)(getMonth()))*((long)getDaysInMonth());
 			x=x+getDayOfMonth();
 			final String[] weekNames = getWeekNames();
 			final int weekDayIndex = (int)(x%getDaysInWeek());
@@ -261,7 +265,11 @@ public class DefaultTimeClock implements TimeClock
 				timeDesc.append(weekNames[weekDayIndex]+", ");
 		}
 		timeDesc.append("the "+getDayOfMonth()+CMath.numAppendage(getDayOfMonth()));
-		timeDesc.append(" day of "+getMonthNames()[getMonth()-1]);
+		final int month = getMonth();
+		if((month>=0)&&(month<getMonthsInYear()))
+			timeDesc.append(" day of "+getMonthNames()[month]);
+		else
+			timeDesc.append(" day of month "+month);
 		if(getYearNames().length>0)
 			timeDesc.append(", "+CMStrings.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
 		return timeDesc.toString();
@@ -280,7 +288,7 @@ public class DefaultTimeClock implements TimeClock
 		if(monthsInYear.trim().length()>0)
 			setMonthsInYear(CMParms.toStringArray(CMParms.parseCommas(monthsInYear,true)));
 
-		setDaysInWeek(CMParms.toStringArray(CMParms.parseCommas(page.getStr("DAYSINWEEK"),true)));
+		setWeekNames(CMParms.toStringArray(CMParms.parseCommas(page.getStr("DAYSINWEEK"),true)));
 
 		if(page.containsKey("YEARDESC"))
 			setYearNames(CMParms.toStringArray(CMParms.parseCommas(page.getStr("YEARDESC"),true)));
@@ -313,12 +321,12 @@ public class DefaultTimeClock implements TimeClock
 		if(getDaysInWeek()>0)
 		{
 			long x=((long)getYear())*((long)getMonthsInYear())*getDaysInMonth();
-			x=x+((long)(getMonth()-1))*((long)getDaysInMonth());
+			x=x+((long)(getMonth()))*((long)getDaysInMonth());
 			x=x+getDayOfMonth();
 			timeDesc.append(getWeekNames()[(int)(x%getDaysInWeek())]+", ");
 		}
 		timeDesc.append("the "+getDayOfMonth()+CMath.numAppendage(getDayOfMonth()));
-		timeDesc.append(" day of "+getMonthNames()[getMonth()-1]);
+		timeDesc.append(" day of "+getMonthNames()[getMonth()]);
 		if(getYearNames().length>0)
 			timeDesc.append(", "+CMStrings.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
 		timeDesc.append(L(".\n\rIt is "+getSeasonCode().toString().toLowerCase()+"."));
@@ -374,14 +382,7 @@ public class DefaultTimeClock implements TimeClock
 	@Override
 	public Season getSeasonCode()
 	{
-		final int div=getMonthsInSeason();
-		if(month<div)
-			return TimeClock.Season.WINTER;
-		if(month<(div*2))
-			return TimeClock.Season.SPRING;
-		if(month<(div*3))
-			return TimeClock.Season.SUMMER;
-		return TimeClock.Season.FALL;
+		return season;
 	}
 
 	@Override
@@ -394,6 +395,17 @@ public class DefaultTimeClock implements TimeClock
 	public void setMonth(final int m)
 	{
 		month=m;
+		final int div=getMonthsInSeason();
+		if(month<div)
+			season=TimeClock.Season.WINTER;
+		else
+		if(month<(div*2))
+			season=TimeClock.Season.SPRING;
+		else
+		if(month<(div*3))
+			season=TimeClock.Season.SUMMER;
+		else
+			season=TimeClock.Season.FALL;
 	}
 
 	@Override
@@ -462,13 +474,13 @@ public class DefaultTimeClock implements TimeClock
 	{
 		day = d;
 		if(getMonth()>0)
+			dayOfYear = ((getMonth()) * getDaysInMonth()) + d;
+		else
+			dayOfYear = d;
+		if(getDaysInWeek()>0)
 		{
-			dayOfYear = ((getMonth()-1) * getDaysInMonth()) + d;
-			if(getDaysInWeek()>0)
-			{
-				weekOfMonth = (int)Math.round(CMath.floor(CMath.div(day,getDaysInWeek())));
-				weekOfYear = (int)Math.round(CMath.floor(CMath.div(dayOfYear,getDaysInWeek())));
-			}
+			weekOfMonth = (int)Math.round(CMath.floor(CMath.div(day,getDaysInWeek())));
+			weekOfYear = (int)Math.round(CMath.floor(CMath.div(dayOfYear,getDaysInWeek())));
 		}
 	}
 
@@ -530,7 +542,7 @@ public class DefaultTimeClock implements TimeClock
 		catch(final CloneNotSupportedException e)
 		{
 		}
-		return CMLib.time().globalClock();
+		return (TimeClock)copyOf();
 	}
 
 	@Override
@@ -565,7 +577,7 @@ public class DefaultTimeClock implements TimeClock
 			months=(int)Math.round(Math.floor(CMath.div(days,getDaysInMonth())));
 			days=days-(months*getDaysInMonth());
 		}
-		if(months>getMonthsInYear())
+		if(months>=getMonthsInYear())
 		{
 			years=(int)Math.round(Math.floor(CMath.div(months,getMonthsInYear())));
 			months=months-(years*getMonthsInYear());
@@ -630,7 +642,7 @@ public class DefaultTimeClock implements TimeClock
 	{
 		if(getYear()!=C.getYear())
 			return getYear()>C.getYear();
-		if(getMonth()!=C.getYear())
+		if(getMonth()!=C.getMonth())
 			return getMonth()>C.getMonth();
 		if(getDayOfMonth()!=C.getDayOfMonth())
 			return getDayOfMonth()>C.getDayOfMonth();
@@ -644,7 +656,7 @@ public class DefaultTimeClock implements TimeClock
 	{
 		if(getYear()!=C.getYear())
 			return getYear()<C.getYear();
-		if(getMonth()!=C.getYear())
+		if(getMonth()!=C.getMonth())
 			return getMonth()<C.getMonth();
 		if(getDayOfMonth()!=C.getDayOfMonth())
 			return getDayOfMonth()<C.getDayOfMonth();
@@ -748,37 +760,25 @@ public class DefaultTimeClock implements TimeClock
 		final TimeOfDay todCode=getTODCode();
 		if(howManyHours!=0)
 		{
-			setHourOfDay(getHourOfDay()+howManyHours);
 			lastTicked=System.currentTimeMillis();
-			while(getHourOfDay()>=getHoursInDay())
+			setHourOfDay(getHourOfDay()+howManyHours);
+			if(getHourOfDay()>=getHoursInDay())
 			{
-				setHourOfDay(getHourOfDay()-getHoursInDay());
-				setDayOfMonth(getDayOfMonth()+1);
-				if(getDayOfMonth()>getDaysInMonth())
-				{
-					setDayOfMonth(1);
-					setMonth(getMonth()+1);
-					if(getMonth()>getMonthsInYear())
-					{
-						setMonth(1);
-						setYear(getYear()+1);
-					}
-				}
+				bumpDays(1);
+				final int extraHours = getHourOfDay() - getHoursInDay();
+				final int newHour = extraHours % getHoursInDay();
+				setHourOfDay(newHour);
+				if(extraHours>=getHoursInDay())
+					bumpDays((int)Math.round(Math.floor(extraHours / getHoursInDay())));
 			}
-			while(getHourOfDay()<0)
+			else
+			if(getHourOfDay()<0)
 			{
-				setHourOfDay(getHoursInDay()+getHourOfDay());
-				setDayOfMonth(getDayOfMonth()-1);
-				if(getDayOfMonth()<1)
-				{
-					setDayOfMonth(getDaysInMonth());
-					setMonth(getMonth()-1);
-					if(getMonth()<1)
-					{
-						setMonth(getMonthsInYear());
-						setYear(getYear()-1);
-					}
-				}
+				bumpDays(-1);
+				final int extraHours = Math.abs(getHourOfDay());
+				setHourOfDay(getHoursInDay() - (extraHours % getHoursInDay()));
+				if(extraHours>=getHoursInDay())
+					bumpDays(-(int)Math.round(Math.floor(extraHours / getHoursInDay())));
 			}
 		}
 		if((moveTheSky)&&(getTODCode()!=todCode))
@@ -800,25 +800,62 @@ public class DefaultTimeClock implements TimeClock
 	@Override
 	public void bumpDays(final int num)
 	{
-		tickTock(this.getHoursInDay() * num,false);
+		setDayOfMonth(getDayOfMonth()+num);
+		if(getDayOfMonth()>getDaysInMonth())
+		{
+			bumpMonths(1);
+			final int extraDays = getDayOfMonth() - getDaysInMonth();
+			final int newDay = (extraDays % getDaysInMonth());
+			setDayOfMonth(newDay+1);
+			if(extraDays>getDaysInMonth())
+				bumpMonths((int)Math.round(Math.floor(extraDays / getDaysInMonth())));
+		}
+		else
+		if(getDayOfMonth()<=0)
+		{
+			bumpMonths(-1);
+			final int extraDays = Math.abs(getDayOfMonth());
+			final int newDay = getDaysInMonth() - (extraDays % getDaysInMonth());
+			setDayOfMonth(newDay);
+			if(extraDays>getDaysInMonth())
+				bumpMonths(-(int)Math.round(Math.floor(extraDays / getDaysInMonth())));
+		}
 	}
 
 	@Override
 	public void bumpWeeks(final int num)
 	{
-		tickTock(this.getHoursInDay() * this.getDaysInWeek() * num,false);
+		bumpDays(getDaysInWeek() * num);
 	}
 
 	@Override
 	public void bumpMonths(final int num)
 	{
-		tickTock(this.getHoursInDay() * this.getDaysInMonth() * num,false);
+		setMonth(getMonth()+num);
+		if(getMonth()>=getMonthsInYear())
+		{
+			bumpYears(1);
+			final int extraMonths = getMonth() - getMonthsInYear();
+			final int newMonth = extraMonths % getMonthsInYear();
+			setMonth(newMonth);
+			if(extraMonths>=getMonthsInYear())
+				bumpYears((int)Math.round(Math.floor(extraMonths / getMonthsInYear()))); // this should be an even #
+		}
+		if(getMonth()<0)
+		{
+			bumpYears(-1);
+			final int extraMonths = Math.abs(getMonth());
+			final int newMonth = getMonthsInYear() - (extraMonths % getMonthsInYear());
+			setMonth(newMonth);
+			if(extraMonths>=getMonthsInYear())
+				bumpYears(-(int)Math.round(Math.floor(extraMonths / getMonthsInYear())));
+		}
 	}
 
 	@Override
 	public void bumpYears(final int num)
 	{
-		tickTock(this.getHoursInDay() * this.getDaysInMonth() * this.getMonthsInYear() * num,false);
+		setYear(getYear()+num);
 	}
 
 	@Override
@@ -893,6 +930,31 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
+	public void setDateTime(final TimeClock fromC)
+	{
+		loaded = true;
+		if(fromC instanceof DefaultTimeClock)
+		{
+			final DefaultTimeClock fromDC = (DefaultTimeClock)fromC;
+			year = fromDC.year;
+			month = fromDC.month;
+			day = fromDC.day;
+			time = fromDC.time;
+			dayOfYear = fromDC.dayOfYear;
+			weekOfMonth = fromDC.weekOfMonth;
+			weekOfYear = fromDC.weekOfYear;
+			season = fromDC.season;
+		}
+		else
+		{
+			this.setYear(fromC.getYear());
+			this.setMonth(fromC.getMonth());
+			this.setDayOfMonth(fromC.getDayOfMonth());
+			this.setHourOfDay(fromC.getHourOfDay());
+		}
+	}
+
+	@Override
 	public int getHoursPer(final TimePeriod period)
 	{
 		switch(period)
@@ -920,6 +982,7 @@ public class DefaultTimeClock implements TimeClock
 		if((loaded)&&(loadName!=null))
 		{
 			CMLib.database().DBReCreatePlayerData(loadName,"TIMECLOCK","TIMECLOCK/"+loadName,
+			"<HOUR>"+getHourOfDay()+"</HOUR>"+
 			"<DAY>"+getDayOfMonth()+"</DAY><MONTH>"+getMonth()+"</MONTH><YEAR>"+getYear()+"</YEAR>"
 			+"<HOURS>"+getHoursInDay()+"</HOURS><DAYS>"+getDaysInMonth()+"</DAYS>"
 			+"<MONTHS>"+CMParms.toListString(getMonthNames())+"</MONTHS>"
@@ -940,6 +1003,12 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
+	public String toTimeString()
+	{
+		return getMonth()+"/"+getDayOfMonth()+"/"+getYear()+" "+getHourOfDay()+"h ";
+	}
+
+	@Override
 	public TimeClock fromTimePeriodCodeString(String period)
 	{
 		TimeClock C = null;
@@ -952,9 +1021,26 @@ public class DefaultTimeClock implements TimeClock
 		{
 			date = period.substring(0,x).trim().split("/");
 			final String clockName =  period.substring(x+1).trim();
-			final TimeClock foundClock = CMLib.map().getClockCache().get(clockName);
-			if(foundClock != null)
-				C = (TimeClock)foundClock.copyOf();
+			if((clockName.length()>1)
+			&&(date.length==3)
+			&&(clockName.endsWith("h"))
+			&&(CMath.isInteger(clockName.substring(0,clockName.length()-1))))
+			{
+				date = Arrays.copyOf(date, 4);
+				date[3]=clockName.substring(0,clockName.length()-1);
+				final String month = date[0];
+				final String day=date[1];
+				final String year=date[2];
+				date[0]=year;
+				date[1]=month;
+				date[2]=day;
+			}
+			else
+			{
+				final TimeClock foundClock = CMLib.map().getClockCache().get(clockName);
+				if(foundClock != null)
+					C = (TimeClock)foundClock.copyOf();
+			}
 		}
 		if(C == null)
 			C = (TimeClock)this.copyOf();
@@ -989,7 +1075,7 @@ public class DefaultTimeClock implements TimeClock
 			final List<PlayerData> bitV=CMLib.database().DBReadPlayerData(loadName,"TIMECLOCK");
 			String timeRsc=null;
 			if((bitV==null)||(bitV.size()==0))
-				timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1</YEAR>";
+				timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1000</YEAR>";
 			else
 				timeRsc=bitV.get(0).xml();
 			final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(timeRsc);
@@ -997,6 +1083,9 @@ public class DefaultTimeClock implements TimeClock
 			setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));
 			setMonth(CMLib.xml().getIntFromPieces(V,"MONTH"));
 			setYear(CMLib.xml().getIntFromPieces(V,"YEAR"));
+			final String hr = CMLib.xml().getValFromPieces(V,"HOUR");
+			if(hr.length()>0)
+				setHourOfDay(CMath.s_int(hr));
 			final TimeClock globalClock=CMLib.time().globalClock();
 			if(this!=globalClock)
 			{
@@ -1011,7 +1100,7 @@ public class DefaultTimeClock implements TimeClock
 								  globalClock.getDawnToDusk()[TimeOfDay.DAY.ordinal()],
 								  globalClock.getDawnToDusk()[TimeOfDay.DUSK.ordinal()],
 								  globalClock.getDawnToDusk()[TimeOfDay.NIGHT.ordinal()]);
-					setDaysInWeek(globalClock.getWeekNames());
+					setWeekNames(globalClock.getWeekNames());
 					setYearNames(globalClock.getYearNames());
 				}
 				else
@@ -1023,7 +1112,7 @@ public class DefaultTimeClock implements TimeClock
 								  CMLib.xml().getIntFromPieces(V,"DAYHR"),
 								  CMLib.xml().getIntFromPieces(V,"DUSKHR"),
 								  CMLib.xml().getIntFromPieces(V,"NIGHTHR"));
-					setDaysInWeek(CMParms.toStringArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"WEEK"),true)));
+					setWeekNames(CMParms.toStringArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"WEEK"),true)));
 					setYearNames(CMParms.toStringArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"YEARS"),true)));
 				}
 			}
@@ -1032,6 +1121,169 @@ public class DefaultTimeClock implements TimeClock
 		if(timeToTick)
 			tickTock(1);
 		return true;
+	}
+
+	@Override
+	public int get(final TimePeriod period)
+	{
+		switch(period)
+		{
+		case ALLTIME:
+			return 0;
+		case DAY:
+			return this.getDayOfMonth();
+		case HOUR:
+			return this.getHourOfDay();
+		case MONTH:
+			return this.getMonth();
+		case SEASON:
+			return this.getSeasonCode().ordinal();
+		case WEEK:
+			return this.getWeekOfYear();
+		case YEAR:
+			return this.getYear();
+		}
+		return -1;
+	}
+
+	@Override
+	public int getMax(final TimePeriod period)
+	{
+		switch(period)
+		{
+		case ALLTIME:
+			return -1;
+		case DAY:
+			return this.getDaysInMonth();
+		case HOUR:
+			return this.getHoursInDay()-1;
+		case MONTH:
+			return this.getMonthsInYear()-1;
+		case SEASON:
+			return 3;
+		case WEEK:
+			if(this.getDaysInWeek()<1)
+				return 0;
+			return (int)Math.round(Math.ceil(CMath.div(this.getDaysInYear(), this.getDaysInWeek())))-1;
+		case YEAR:
+			return Integer.MAX_VALUE/2;
+		}
+		return -1;
+	}
+
+
+	@Override
+	public int getMin(final TimePeriod period)
+	{
+		switch(period)
+		{
+		case ALLTIME:
+			return -1;
+		case DAY:
+			return 1;
+		case HOUR:
+			return 0;
+		case MONTH:
+			return 0;
+		case SEASON:
+			return 0;
+		case WEEK:
+			return 0;
+		case YEAR:
+			return 0;
+		}
+		return -1;
+	}
+
+	@Override
+	public void set(final TimePeriod period, final int value)
+	{
+		switch(period)
+		{
+		case ALLTIME:
+			return;
+		case DAY:
+			setDayOfMonth(value);
+			break;
+		case HOUR:
+			setHourOfDay(value);
+			break;
+		case MONTH:
+			setMonth(value);
+			break;
+		case SEASON:
+			if(value != getSeasonCode().ordinal())
+				setNext(period, value);
+			break;
+		case WEEK:
+			if(value != getWeekOfYear())
+				setNext(period, value);
+			break;
+		case YEAR:
+			setYear(value);
+			break;
+		}
+	}
+
+	@Override
+	public void setNext(final TimePeriod period, final int value)
+	{
+		switch(period)
+		{
+		case ALLTIME:
+			return;
+		case DAY:
+			if(value <= getDayOfMonth())
+				bump(TimePeriod.MONTH, 1);
+			setDayOfMonth(value);
+			break;
+		case HOUR:
+			if(value <= getHourOfDay())
+				bump(TimePeriod.DAY, 1);
+			setHourOfDay(value);
+			break;
+		case MONTH:
+			if(value <= getMonth())
+				bump(TimePeriod.YEAR, 1);
+			setMonth(value);
+			break;
+		case SEASON:
+			if(this.getSeasonCode().ordinal()==value)
+				bump(TimePeriod.YEAR, 1);
+			else
+			if((value>=0)&&(value<Season.values().length))
+			{
+				for(int i=0;i<getMonthsInYear();i++)
+				{
+					if(this.getSeasonCode().ordinal()!=value)
+						bump(TimePeriod.MONTH, 1);
+					else
+						break;
+				}
+			}
+			break;
+		case WEEK:
+			if(getWeekOfYear()==value)
+				bump(TimePeriod.YEAR, 1);
+			else
+			{
+				final int numWeeksInYear = (getDaysInYear() / getWeekNames().length);
+				if((value>=0)&&(value<=numWeeksInYear))
+				{
+					for(int i=0;i<=numWeeksInYear;i++)
+					{
+						if(getWeekOfYear() != value)
+							bump(TimePeriod.WEEK, 1);
+						else
+							break;
+					}
+				}
+			}
+			break;
+		case YEAR:
+			setYear(getYear());
+			break;
+		}
 	}
 
 	@Override

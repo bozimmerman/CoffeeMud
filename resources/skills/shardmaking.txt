@@ -1,0 +1,84 @@
+small % shard	1	10	2	140	GenWand	5			*Prop_ItemSlot;NUM=1 REMOVABLE=FALSE TYPE="shardspirit" LEVEL="HIGH" ; <ITEMS></ITEMS>	CHANT	
+short % shard	2	10	2	140	GenWand	6			*Prop_ItemSlot;NUM=1 REMOVABLE=FALSE TYPE="shardspirit" LEVEL="HIGH" ; <ITEMS></ITEMS>	CHANT	
+tiny % shard	3	11	1	144	GenWand	6			prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+peculiar % shard	4	12	3	148	GenWand	7			prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+dull % shard	5	14	3	156	GenWand	7			prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+glassy % shard	6	15	3	160	GenWand	8			prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+long % shard	7	17	4	168	GenWand	8			prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+heavy % shard	8	21	6	184	GenWand	9			prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+chipped % shard	9	20	3	180	GenWand	9			prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+blemished % shard	10	24	4	196	GenWand	10			prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+tin-tipped % shard	12	29	3	216	GenWand	11	tin	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+zinc-tipped % shard	14	35	3	240	GenWand	12	zinc	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+lead-tipped % shard	16	42	3	268	GenWand	13	lead	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+copper-tipped % shard	18	49	3	296	GenWand	14	copper	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+bronze-tipped % shard	20	58	3	332	GenWand	15	bronze	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+brass-tipped % shard	22	67	3	368	GenWand	16	brass	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+iron-tipped % shard	24	77	3	408	GenWand	17	iron	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+silver-tipped % shard	26	88	3	452	GenWand	18	silver	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+steel-tipped % shard	28	99	3	496	GenWand	19	steel	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+chromium-tipped % shard	30	112	3	548	GenWand	20	chromium	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+gold-tipped % shard	32	125	3	600	GenWand	21	gold	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+platinum-tipped % shard	34	139	3	656	GenWand	22	platinum	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+mithril-tipped % shard	36	154	3	716	GenWand	23	mithril	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+adamantite-tipped % shard	38	169	3	776	GenWand	24	adamantite	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+quartz-fused % shard	40	186	3	844	GenWand	25	quartz	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+chrysoberyl-fused % shard	42	203	3	912	GenWand	26	chrysoberyl	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+aquamarine-fused % shard	44	221	3	984	GenWand	27	aquamarine	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+jade-fused % shard	46	240	3	1060	GenWand	28	jade	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+peridot-fused % shard	48	259	3	1136	GenWand	29	peridot	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+garnet-fused % shard	50	280	3	1220	GenWand	30	garnet	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+lapis-fused % shard	52	301	3	1304	GenWand	31	lapis	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+onyx-fused % shard	54	323	3	1392	GenWand	32	onyx	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+turquoise-fused % shard	56	346	3	1484	GenWand	33	turquoise	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+amber-fused % shard	58	369	3	1576	GenWand	34	amber	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+opal-fused % shard	60	394	3	1676	GenWand	35	opal	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+bloodstone-fused % shard	62	419	3	1776	GenWand	36	bloodstone	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+moonstone-fused % shard	64	445	3	1880	GenWand	37	moonstone	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+alexandrite-fused % shard	66	472	3	1988	GenWand	38	alexandrite	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+citrine-fused % shard	68	499	3	2096	GenWand	39	citrine	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+agate-fused % shard	70	528	3	2212	GenWand	40	agate	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+sapphire-fused % shard	72	557	3	2328	GenWand	41	sapphire	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+topaz-fused % shard	75	602	3	2508	GenWand	42	topaz	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+emerald-fused % shard	78	649	3	2696	GenWand	44	emerald	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+amethyst-fused % shard	81	698	3	2892	GenWand	45	amethyst	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+ruby-fused % shard	84	749	3	3096	GenWand	47	ruby	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+pearl-fused % shard	87	801	3	3304	GenWand	48	pearl	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+diamond-fused % shard	90	856	3	3524	GenWand	50	diamond	1	prop_itemslot;num=1 type=shardspirit removable=false level=high	CHANT	
+brittle % shard spirit	1	15	1	100	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(mana+10)		
+porous % shard spirit	3	15	1	100	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(mana+20)		
+sturdy % shard spirit	5	15	1	100	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(mana+30)		
+pliable % shard spirit	7	15	1	100	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(mana+40)		
+rigid % shard spirit	9	15	1	100	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(mana+50)		
+frog shard spirit	11	20	(onground:consumed:1:some frog blood:)	250	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(move+50)		
+cat shard spirit	13	20	(onground:consumed:1:some cat blood:)	250	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(dex+1)		
+bat shard spirit	15	20	(onground:consumed:1:some bat blood:)	250	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(con+1)		
+snake shard spirit	17	20	(onground:consumed:1:some snake blood:)	250	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(armor-10)		
+monkey shard spirit	19	20	(onground:consumed:1:some monkey blood:)	250	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(hit+25)		
+fox shard spirit	21	20	(onground:consumed:1:some fox blood:)	500	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(int+1)		
+deer shard spirit	23	20	(onground:consumed:1:some deer blood:)	500	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(cha+1)		
+eagle shard spirit	25	20	(onground:consumed:1:some eagle blood:)	500	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(wis+1)		
+gorilla shard spirit	27	20	(onground:consumed:1:some gorilla blood:)	500	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(str+1)		
+horse shard spirit	29	20	(onground:consumed:1:some horse blood:)	500	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(move+100)		
+dolphin shard spirit	31	20	(onground:consumed:1:some dolphin blood:)	750	GenItem				*Prop_ItemSlotFiller;num=1 type=shardspirit adds=prop_wearadjuster(mana+100)		
+dire wolf shard spirit	33	30	(onground:consumed:1:some dire wolf blood:)	750	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(armor-20)		
+dwarven shard spirit	35	30	(onground:consumed:1:some dwarf blood:)	750	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(hit+50)		
+wererat shard spirit	37	30	(onground:consumed:1:some wererat blood:)	750	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(dex+2)		
+pixie shard spirit	39	30	(onground:consumed:1:some pixie blood:)	750	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(int+2)		
+naga shard spirit	41	30	(onground:consumed:1:some naga blood:)	1000	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(armor-30)		
+griffon shard spirit	43	30	(onground:consumed:1:some griffon blood:)	1000	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(wis+2)		
+nymph shard spirit	45	30	(onground:consumed:1:some nymph blood:)	1000	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(cha+2)		
+manticore shard spirit	47	30	(onground:consumed:1:some manticore blood:)	1000	GenItem				*Prop_ItemSlotFiller;num=1 type=shardspirit adds=prop_wearadjuster(con+2)		
+minotaur shard spirit	49	30	(onground:consumed:1:some minotaur blood:)	1000	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(str+2)		
+troll shard spirit	51	30	(onground:consumed:1:some troll blood:)	2500	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(hit+75)		
+centaur shard spirit	53	30	(onground:consumed:1:some centaur blood:)	2500	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(move+150)		
+sasquatch shard spirit	55	30	(onground:consumed:1:some sasquatch blood:)	2500	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(mana+150)		
+wyvern shard spirit	57	30	(onground:consumed:1:some wyvern blood:)	2500	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(armor-50)		
+undead shard spirit	59	30	(onground:consumed:1:undead blood:)	2500	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(mana+200)		
+unicorn shard spirit	61	60	(onground:consumed:1:some unicorn blood:)	5000	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(mana+250)		
+spectral shard spirit	63	60	(onground:consumed:1:some spirit essence:)	5000	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(mana+300)		
+umber hulk shard spirit	65	60	(onground:consumed:1:some umber hulk blood:)	5000	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(mana+350)		
+demonic shard spirit	67	60	(onground:consumed:1:some demon blood:)	5000	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(mana+400)		
+faerie dragon shard spirit	69	60	(onground:consumed:1:some faerie dragon blood:)	5000	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(mana+450)		
+devilish shard spirit	71	60	(onground:consumed:1:some devil blood:)	7500	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(mana+500)		
+draconic shard spirit	73	60	(onground:consumed:1:some dragon blood:)	7500	GenItem				prop_itemslotfiller;num=1 type=shardspirit adds=prop_wearadjuster(mana+750)

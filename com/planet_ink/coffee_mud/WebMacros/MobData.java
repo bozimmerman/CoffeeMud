@@ -1342,7 +1342,7 @@ public class MobData extends StdWebMacro
 						str.append("<OPTION VALUE=\""+R2.ID()+"\"");
 						if(R2.ID().equals(old))
 							str.append(" SELECTED");
-						str.append(">"+R2.name());
+						str.append(">"+CMStrings.ellipse(R2.name(),40));
 					}
 					if((changedClass)||(changedLevel))
 					{
@@ -1834,6 +1834,11 @@ public class MobData extends StdWebMacro
 						old=((Auctioneer)M).auctionHouse();
 					str.append(old);
 					break;
+				case BROCHAIN:
+					if((firstTime)&&(M instanceof CraftBroker))
+						old=((CraftBroker)M).brokerChain();
+					str.append(old);
+					break;
 				case LIVELIST: // live list
 					//if((firstTime)&&(M instanceof Auctioneer))
 					//    old=""+((Auctioneer)M).liveListingPrice();
@@ -1867,9 +1872,25 @@ public class MobData extends StdWebMacro
 						old="";
 					str.append(old);
 					break;
+				case MAXLISTINGS: // max days
+					if((firstTime)&&(M instanceof CraftBroker))
+						old=""+((CraftBroker)M).maxListings();
+					if(CMath.s_double(old)<0.0)
+						old="";
+					str.append(old);
+					break;
+				case COMMISSIONPCT: // commission pct
+					if((firstTime)&&(M instanceof CraftBroker))
+						old=CMath.toPct(((CraftBroker)M).commissionPct());
+					if(CMath.s_double(old)<0.0)
+						old="";
+					str.append(old);
+					break;
 				case MAXDAYS: // max days
 					if((firstTime)&&(M instanceof Auctioneer))
 						old=""+((Auctioneer)M).maxTimedAuctionDays();
+					if((firstTime)&&(M instanceof CraftBroker))
+						old=""+((CraftBroker)M).maxTimedListingDays();
 					if(CMath.s_double(old)<0.0)
 						old="";
 					str.append(old);
@@ -1883,6 +1904,10 @@ public class MobData extends StdWebMacro
 					break;
 				case ISAUCTION: // is auction
 					if(M instanceof Auctioneer)
+						return "true";
+					return "false";
+				case ISBROKER: // is auction
+					if(M instanceof CraftBroker)
 						return "true";
 					return "false";
 				case DEITYID: // deityid

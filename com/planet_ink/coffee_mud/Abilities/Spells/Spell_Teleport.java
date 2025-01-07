@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.StdPlanarAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -16,6 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /*
    Copyright 2001-2024 Bo Zimmerman
@@ -76,32 +78,186 @@ public class Spell_Teleport extends Spell
 	private boolean isBadRoom(final Room room, final MOB mob, final Room newRoom)
 	{
 		return (room==null)
-		||(room==newRoom)
-		||(room.getArea()==newRoom.getArea())
-		||(room==mob.location())
-		||(!CMLib.flags().canAccess(mob,room))
-		||(CMLib.law().getLandTitle(room)!=null);
+			|| (room==newRoom)
+			|| (room.getArea()==newRoom.getArea())
+			|| (room==mob.location())
+			|| (!CMLib.flags().canAccess(mob,room))
+			|| (CMLib.law().getLandTitle(room)!=null);
+	}
+
+	@Override
+	public CMObject copyOf()
+	{
+		final Spell_Teleport st = (Spell_Teleport)super.copyOf();
+		st.setMiscText(text()); // will overwrite old parentGenA;
+		return st;
+	}
+
+	private final static AtomicInteger ctr = new AtomicInteger(0);
+
+	private Area parentGenA = null;
+	private Room returnToRoom = null;
+	private String castMsgStr = "^S<S-NAME> invoke(s) a teleportation spell.^?";
+	private String appearMsgStr = "<S-NAME> appears in a puff of smoke.@x1";
+	private String leaveMsgStr = "<S-NAME> disappear(s) in a puff of smoke.";
+
+	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if(newMiscText.length()>0)
+		{
+			castMsgStr = CMParms.getParmStr(newMiscText, "CASTMSG", castMsgStr);
+			appearMsgStr = CMParms.getParmStr(newMiscText, "APPEARMSG", appearMsgStr);
+			leaveMsgStr = CMParms.getParmStr(newMiscText, "LEAVEMSG", leaveMsgStr);
+			final String theme = CMParms.getParmStr(newMiscText, "THEME", "");
+			if(theme.length()>0)
+			{
+				parentGenA = CMClass.getAreaType("StdAutoGenInstance");
+				((AutoGenArea)parentGenA).setAutoGenVariables(newMiscText);
+				parentGenA.setName(ID()+ctr.addAndGet(1));
+				final Room R = CMClass.getLocale("StdRoom");
+				R.setName(L("In the void"));
+				R.setDisplayText(L("You are trapped in a void between spaces."));
+				R.setRoomID(parentGenA.Name()+"#0");
+				R.setArea(parentGenA);
+			}
+		}
+	}
+
+	@Override
+	public void unInvoke()
+	{
+		final boolean affM = !(affected instanceof Exit);
+		super.unInvoke();
+		// this MUST be done, because you never know when its the last ticker...
+		if((parentGenA != null) && (affM))
+			((AutoGenArea)parentGenA).resetInstance(returnToRoom);
+	}
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if(affected instanceof Exit)
+		{
+			if(((msg.targetMinor()==CMMsg.TYP_ENTER)
+				&&((msg.tool()==affected)||(msg.target()==affected)))
+			||((msg.targetMinor()==CMMsg.TYP_SIT)&&(msg.target()==affected)))
+			{
+				final Spell_Teleport spellA = (Spell_Teleport)CMClass.getAbility(ID());
+				final List<String> cmds;
+				if(text().length()>0)
+				{
+					if(parentGenA != null)
+						cmds = new XVector<String>(msg.source().Name());
+					else
+						cmds = new XVector<String>(text());
+				}
+				else
+					cmds = new XVector<String>(msg.source().Name());
+				if(spellA != null)
+				{
+					if(parentGenA != null)
+					{
+						// skip regeneration
+						spellA.miscText = this.miscText;
+						spellA.parentGenA = this.parentGenA;
+						spellA.castMsgStr="";
+						spellA.leaveMsgStr=L("<S-NAME> disappear(s) into @x1.",affected.name(msg.source()));
+					}
+					spellA.invoke(msg.source(), cmds, msg.source(), true, msg.source().phyStats().level());
+					final Spell_Teleport pA= (Spell_Teleport)msg.source().fetchEffect(spellA.ID());
+					if(pA != null)
+						pA.parentGenA = parentGenA;
+					return false;
+				}
+			}
+		}
+		else
+		if((parentGenA!=null) && (!parentGenA.okMessage(myHost, msg)))
+			return false;
+		return true;
+	}
+
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if((parentGenA!=null)
+		&&(!(affected instanceof Exit)))
+			parentGenA.executeMsg(myHost, msg);
+		return;
+	}
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if((parentGenA!=null)
+		&&(!(affected instanceof Exit))
+		&& (!parentGenA.tick(parentGenA, Area.TICKID_AREA)))
+			return false;
+		return true;
+	}
+
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		if((parentGenA!=null)&&(!(affected instanceof Exit)))
+			parentGenA.affectPhyStats(affected, affectableStats);
+	}
+
+	@Override
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMob, affectableStats);
+		if(parentGenA!=null)
+			parentGenA.affectCharStats(affectedMob, affectableStats);
+	}
+
+	@Override
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
+	{
+		super.affectCharState(affectedMob, affectableMaxState);
+		if(parentGenA!=null)
+			parentGenA.affectCharState(affectedMob, affectableMaxState);
 	}
 
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-
-		if((auto||mob.isMonster())&&((commands.size()<1)||((commands.get(0)).equals(mob.name()))))
+		if(auto||mob.isMonster())
 		{
-			commands.clear();
-			if((text().length()>0)&&(CMLib.map().findArea(text())!=null))
-				commands.add(text());
-			else
-				commands.add(CMLib.map().getRandomArea().Name());
+			if((commands.size()<1)
+			||(commands.get(0)).equals(mob.name()))
+			{
+				commands.clear();
+				if(parentGenA != null)
+					commands.add(parentGenA.Name());
+				else
+				if((text().length()>0)
+				&&(CMLib.map().findArea(text())!=null))
+					commands.add(text());
+				else
+					commands.add(CMLib.map().getRandomArea().Name());
+			}
 		}
-		if(commands.size()<1)
+		if((commands.size()<1)
+		&&(parentGenA == null))
 		{
 			mob.tell(L("Teleport to what area?"));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
-		final Area A=CMLib.map().findArea(areaName);
+		final Area A;
+		if(parentGenA != null)
+			A = parentGenA;
+		else
+			A = CMLib.map().findArea(areaName);
 		final Vector<Room> candidates=new Vector<Room>();
 		if(A!=null)
 			candidates.addAll(new XVector<Room>(A.getProperMap()));
@@ -111,13 +267,24 @@ public class Spell_Teleport extends Spell
 				candidates.removeElementAt(c);
 		}
 
+		if(parentGenA == null)
+		{
+			final Ability effA = mob.fetchEffect(ID());
+			if(effA!=null)
+				effA.unInvoke();
+		}
+		else
+		if(candidates.size()==0)
+			candidates.add(parentGenA.getRandomProperRoom());
+
 		if(candidates.size()==0)
 		{
 			mob.tell(L("You don't know of an area called '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 
-		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
+		if((!auto)
+		&&(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
 		{
 			mob.tell(L("You need to stand up!"));
 			return false;
@@ -136,7 +303,8 @@ public class Spell_Teleport extends Spell
 			}
 			final CMMsg enterMsg=CMClass.getMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 			final Session session=mob.session();
-			mob.setSession(null);
+			if(A != parentGenA)
+				mob.setSession(null);
 			if(!newRoom.okMessage(mob,enterMsg))
 				newRoom=null;
 			else
@@ -166,10 +334,19 @@ public class Spell_Teleport extends Spell
 			newRoom=room;
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,newRoom,auto),L("^S<S-NAME> invoke(s) a teleportation spell.^?"));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,newRoom,auto), L(castMsgStr));
 		if(mob.location().okMessage(mob,msg)&&(newRoom!=null))
 		{
 			mob.location().send(mob,msg);
+			if(A == parentGenA)
+			{
+				if(mob.fetchEffect(ID())==null)
+				{
+					final Spell_Teleport tA = (Spell_Teleport)beneficialAffect(mob, mob, asLevel, 0);
+					if(tA != null)
+						tA.returnToRoom = mob.location();
+				}
+			}
 			final List<MOB> h=properTargetList(mob,givenTarget,false);
 			if(h==null)
 				return false;
@@ -177,9 +354,11 @@ public class Spell_Teleport extends Spell
 			final Room thisRoom=mob.location();
 			for (final MOB follower : h)
 			{
-				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears in a puff of smoke.@x1",CMLib.protocol().msp("appear.wav",10)));
-				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> disappear(s) in a puff of smoke."));
-				if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
+				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,
+						L(appearMsgStr,CMLib.protocol().msp("appear.wav",10)));
+				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC, L(leaveMsgStr));
+				if(thisRoom.okMessage(follower,leaveMsg)
+				&&newRoom.okMessage(follower,enterMsg))
 				{
 					if(follower.isInCombat())
 					{

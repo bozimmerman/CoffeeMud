@@ -449,6 +449,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"GROUP_GREET_PROG", //52
 		"DROPPING_PROG", // 53
 		"GETTING_PROG", // 54
+		XMLLibrary.FILE_XML_BOUNDARY.toUpperCase().substring(0,XMLLibrary.FILE_XML_BOUNDARY.indexOf(' ')), // 55
 	};
 
 	/** String list of all valid mobprog functions for logical expressions or string functions */
@@ -740,7 +741,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	public final static String[] DATETIME_ARGS={"HOUR","TIME","DAY","DATE","MONTH","YEAR"};
 
 	/** List of evaluation signs ==, !=, &gt;, etc.*/
-	public final static String[] SIGNS={"==",">=",">","<","<=","=>","=<","!="};
+	public final static String[] SIGNS={"==",">=",">","<","<=","=>","=<","!=",".in."};
 
 	/** Index and equate for == */
 	public final static int SIGN_EQUL=0;
@@ -758,6 +759,8 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	public final static int SIGN_EQLT=6;
 	/** Index and equate for != */
 	public final static int SIGN_NTEQ=7;
+	/** Index and equate for != */
+	public final static int SIGN_IN=8;
 
 	/** a list of logical connectors (and, or, etc)*/
 	public final static String[] CONNECTORS={"AND","OR","NOT","ANDNOT","ORNOT"};

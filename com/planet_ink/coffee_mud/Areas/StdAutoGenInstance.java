@@ -124,7 +124,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		statData=(AreaIStats)CMClass.getCommon("DefaultAreaIStats");
 		for(final Area childA : workList)
 		{
-			if(childA.isAreaStatsLoaded())
+			if((childA != this) && childA.isAreaStatsLoaded())
 			{
 				ct++;
 				for(final Area.Stats stat : Area.Stats.values())
@@ -261,6 +261,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		{
 			final Room R= M.location();
 			if(returnToRoom == null)
+				returnToRoom = M.getStartRoom();
+			if(returnToRoom == null)
 				returnToRoom = CMLib.map().getRandomRoom();
 			if((R!=null)
 			&&(R!=returnToRoom)
@@ -280,6 +282,26 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	@Override
 	public boolean resetInstance(final Room returnToRoom)
 	{
+		if(CMath.bset(flags(),Area.FLAG_INSTANCE_PARENT))
+		{
+			final List<StdAutoGenInstance> areas = new ArrayList<StdAutoGenInstance>();
+			synchronized(instanceChildren)
+			{
+				for(int i=instanceChildren.size()-1;i>=0;i--)
+				{
+					if((instanceChildren.get(i).A instanceof StdAutoGenInstance)
+					&&(CMath.bset(instanceChildren.get(i).A.flags(),Area.FLAG_INSTANCE_CHILD)))
+						areas.add((StdAutoGenInstance)instanceChildren.get(i).A);
+				}
+			}
+			for(final StdAutoGenInstance A : areas)
+			{
+				if(A != this)
+					A.resetInstance(returnToRoom);
+			}
+			return instanceChildren.size()==0;
+		}
+		// else, child I guess?
 		final Area A=this.getParentArea();
 		if(A instanceof StdAutoGenInstance)
 		{
@@ -465,11 +487,6 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			direction = CMLib.map().getRoomDir(msg.source().location(), (Room)msg.target());
 			if((direction<0)&&(msg.tool() instanceof Exit))
 				direction = CMLib.map().getExitDir(msg.source().location(), (Exit)msg.tool());
-			if(direction < 0)
-			{
-				msg.source().tell(L("Can't figure out where you're coming from?!"));
-				return false;
-			}
 			if(myDex<0)
 			{
 				final StdAutoGenInstance newA=(StdAutoGenInstance)this.copyOf();
@@ -482,6 +499,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				newA.blurbFlags=new STreeMap<String,String>();
 				newA.setName((++instanceCounter)+"_"+Name());
 				newA.flags |= Area.FLAG_INSTANCE_CHILD;
+				newA.flags = newA.flags & ~Area.FLAG_INSTANCE_PARENT;
 				final Set<MOB> myGroup=msg.source().getGroupMembers(new HashSet<MOB>());
 				final StringBuffer xml = Resources.getFileResource(getGeneratorXmlPath(), true);
 				if((xml==null)||(xml.length()==0))
@@ -589,7 +607,6 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					final List<XMLTag> pieces = CMLib.percolator().getAllChoices(piece.tag(), piece, definedIDs);
 					if(pieces.size()>0)
 						piece=pieces.get(CMLib.dice().roll(1, pieces.size(), -1));
-					//FIXME: this can maybe pick town.
 					if(!definedIDs.containsKey("THEME"))
 					{
 						final Map<String,String> unfilled = CMLib.percolator().getUnfilledRequirements(definedIDs,piece);
@@ -609,39 +626,38 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					for(final MOB M : myGroup)
 					{
 						if(M.location() == msg.source().location())
-						{
-							M.tell(L("^x------------------------------------------------------\n\r"
-									+ "Preparing to enter @x1, please stand by...\n\r"
-									+ "------------------------------------------------------^N^.",Name()));
-						}
+							M.tell(L("^x----------------- Please stand by... ----------------\n\r"));
 					}
-					final int magicDir = Directions.getOpDirectionCode(direction);
-					definedIDs.put("ROOMTAG_NODEGATEEXIT", CMLib.directions().getDirectionName(magicDir));
-					definedIDs.put("ROOMTAG_GATEEXITROOM", msg.source().location());
-					definedIDs.put("ROOMTAG_GATEEXITCLASS", msg.source().location().getExitInDir(direction));
-					definedIDs.put("ROOMTAG_NODEGATEEXIT"+magicDir, CMLib.directions().getDirectionName(magicDir));
-					definedIDs.put("ROOMTAG_GATEEXITROOM"+magicDir, msg.source().location());
-					definedIDs.put("ROOMTAG_GATEEXITCLASS"+magicDir, msg.source().location().getExitInDir(direction));
-					final Room innerR = getRandomProperRoom();
-					if(innerR != null)
+					if(direction >= 0)
 					{
-						for(int dir = 0; dir<Directions.NUM_DIRECTIONS(); dir++)
+						final int magicDir = Directions.getOpDirectionCode(direction);
+						definedIDs.put("ROOMTAG_NODEGATEEXIT", CMLib.directions().getDirectionName(magicDir));
+						definedIDs.put("ROOMTAG_GATEEXITROOM", msg.source().location());
+						definedIDs.put("ROOMTAG_GATEEXITCLASS", msg.source().location().getExitInDir(direction));
+						definedIDs.put("ROOMTAG_NODEGATEEXIT"+magicDir, CMLib.directions().getDirectionName(magicDir));
+						definedIDs.put("ROOMTAG_GATEEXITROOM"+magicDir, msg.source().location());
+						definedIDs.put("ROOMTAG_GATEEXITCLASS"+magicDir, msg.source().location().getExitInDir(direction));
+						final Room innerR = getRandomProperRoom();
+						if(innerR != null)
 						{
-							final Room linkR = innerR.getRoomInDir(dir);
-							if((linkR != null)
-							&&((linkR.roomID().length()>0)
-								||((linkR.getGridParent()!=null)&&(linkR.getGridParent().roomID().length()>0)))
-							&& (linkR.getRoomInDir(Directions.getOpDirectionCode(dir))==innerR))
+							for(int dir = 0; dir<Directions.NUM_DIRECTIONS(); dir++)
 							{
-								final Exit E = linkR.getExitInDir(Directions.getOpDirectionCode(dir));
-								if(E != null)
+								final Room linkR = innerR.getRoomInDir(dir);
+								if((linkR != null)
+								&&((linkR.roomID().length()>0)
+									||((linkR.getGridParent()!=null)&&(linkR.getGridParent().roomID().length()>0)))
+								&& (linkR.getRoomInDir(Directions.getOpDirectionCode(dir))==innerR))
 								{
-									definedIDs.put("ROOMTAG_NODEGATEEXIT"+dir, CMLib.directions().getDirectionName(dir));
-									definedIDs.put("ROOMTAG_GATEEXITROOM"+dir, linkR);
-									definedIDs.put("ROOMTAG_GATEEXITCLASS"+dir, E);
+									final Exit E = linkR.getExitInDir(Directions.getOpDirectionCode(dir));
+									if(E != null)
+									{
+										definedIDs.put("ROOMTAG_NODEGATEEXIT"+dir, CMLib.directions().getDirectionName(dir));
+										definedIDs.put("ROOMTAG_GATEEXITROOM"+dir, linkR);
+										definedIDs.put("ROOMTAG_GATEEXITCLASS"+dir, E);
+									}
+									else
+										Log.errOut("Room "+linkR.roomID()+" needs an Exit object "+Directions.getOpDirectionCode(dir));
 								}
-								else
-									Log.errOut("Room "+linkR.roomID()+" needs an Exit object "+Directions.getOpDirectionCode(dir));
 							}
 						}
 					}
@@ -661,6 +677,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				}
 				redirectA=newA;
 				CMLib.map().addArea(newA);
+				newA.parentArea = new WeakReference<Area>(this);
 				newA.setAreaState(Area.State.ACTIVE); // starts ticking
 				final List<WeakReference<MOB>> newMobList = new SVector<WeakReference<MOB>>(5);
 				newMobList.add(new WeakReference<MOB>(msg.source()));
@@ -672,19 +689,22 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 
 				getAreaIStats(); // if this is the first child ever, this will force stat making
 
-				final Room R=redirectA.getRoom(redirectA.Name()+"#0");
-				if(R!=null)
+				if(direction >= 0)
 				{
-					final int opDir=Directions.getOpDirectionCode(direction);
-					Exit E=R.getExitInDir(opDir);
-					if(E==null)
-						E = CMClass.getExit("Open");
-					if(R.getRoomInDir(opDir)!=null)
-						msg.source().tell(L("An error has caused the following exit to be one-way."));
-					else
+					final Room R=redirectA.getRoom(redirectA.Name()+"#0");
+					if(R!=null)
 					{
-						R.setRawExit(opDir, E);
-						R.rawDoors()[opDir]=msg.source().location();
+						final int opDir=Directions.getOpDirectionCode(direction);
+						Exit E=R.getExitInDir(opDir);
+						if(E==null)
+							E = CMClass.getExit("Open");
+						if(R.getRoomInDir(opDir)!=null)
+							msg.source().tell(L("An error has caused the following exit to be one-way."));
+						else
+						{
+							R.setRawExit(opDir, E);
+							R.rawDoors()[opDir]=msg.source().location();
+						}
 					}
 				}
 			}
@@ -696,27 +716,30 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				Room R=redirectA.getRoom(redirectA.Name()+"#0");
 				if(R!=null)
 				{
-					final int opDir=Directions.getOpDirectionCode(direction);
-					if(R.getRoomInDir(opDir)!=msg.source().location())
+					if(direction>=0)
 					{
-						for(final Enumeration<Room> r = redirectA.getProperMap(); r.hasMoreElements(); )
-						{
-							final Room rR = r.nextElement();
-							if((rR!=null)&&(rR.getRoomInDir(opDir)==msg.source().location()))
-							{
-								R = rR;
-								break;
-							}
-						}
+						final int opDir=Directions.getOpDirectionCode(direction);
 						if(R.getRoomInDir(opDir)!=msg.source().location())
 						{
 							for(final Enumeration<Room> r = redirectA.getProperMap(); r.hasMoreElements(); )
 							{
 								final Room rR = r.nextElement();
-								if((rR!=null)&&(rR.phyStats().isAmbiance("#GATE"+opDir)))
+								if((rR!=null)&&(rR.getRoomInDir(opDir)==msg.source().location()))
 								{
 									R = rR;
 									break;
+								}
+							}
+							if(R.getRoomInDir(opDir)!=msg.source().location())
+							{
+								for(final Enumeration<Room> r = redirectA.getProperMap(); r.hasMoreElements(); )
+								{
+									final Room rR = r.nextElement();
+									if((rR!=null)&&(rR.phyStats().isAmbiance("#GATE"+opDir)))
+									{
+										R = rR;
+										break;
+									}
 								}
 							}
 						}

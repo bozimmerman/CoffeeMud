@@ -24,6 +24,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.math.BigDecimal;
 import java.net.Socket;
 import java.util.*;
 
@@ -472,17 +473,17 @@ public class GenShipProgram extends GenSoftware
 
 	}
 
-	protected long[] convertStringToCoords(final String coordStr)
+	protected Coord3D convertStringToCoords(final String coordStr)
 	{
 		final List<String> coordCom = CMParms.parseCommas(coordStr,true);
 		if(coordCom.size()==3)
 		{
-			final long[] coords=new long[3];
+			final Coord3D coords=new Coord3D(new long[3]);
 			for(int i=0;(i<coordCom.size()) && (i<3);i++)
 			{
-				final Long coord=CMLib.english().parseSpaceDistance(coordCom.get(i));
+				final BigDecimal coord=CMLib.english().parseSpaceDistance(coordCom.get(i));
 				if(coord != null)
-					coords[i]=coord.longValue();
+					coords.set(i, coord);
 				else
 					return null;
 			}
@@ -491,7 +492,7 @@ public class GenShipProgram extends GenSoftware
 		return null;
 	}
 
-	protected long[] findCoordinates(final String name)
+	protected Coord3D findCoordinates(final String name)
 	{
 		final String[] parms = new String[] {name};
 		final List<String[]> names = super.doServiceTransaction(SWServices.COORDQUERY, parms);
@@ -501,7 +502,7 @@ public class GenShipProgram extends GenSoftware
 			{
 				if(r.length()>0)
 				{
-					final long[] coords = convertStringToCoords(r);
+					final Coord3D coords = convertStringToCoords(r);
 					if(coords !=null)
 						return coords;
 				}

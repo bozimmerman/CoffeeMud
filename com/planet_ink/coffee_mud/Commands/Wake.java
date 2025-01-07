@@ -64,7 +64,10 @@ public class Wake extends StdCommand
 					mob.location().send(mob,msg);
 					msg.modify(mob, CMMsg.MSG_STAND, null);
 					if(mob.location().okMessage(mob,msg))
+					{
 						mob.location().send(mob,msg);
+						CMLib.commands().postLook(mob, true);
+					}
 					else
 						CMLib.commands().postCommandRejection(msg.source(),msg.target(),msg.tool(),origCmds);
 				}

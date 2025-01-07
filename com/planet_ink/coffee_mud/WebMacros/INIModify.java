@@ -415,11 +415,29 @@ public class INIModify extends StdWebMacro
 			if(colors.trim().length()>0)
 				str.append(colors.trim().replace(',',' ').toUpperCase()).append(" ");
 			String flagid="";
+			final Set<ChannelsLibrary.ChannelFlag> flags = new HashSet<ChannelsLibrary.ChannelFlag>();
 			for(int i=0;httpReq.isUrlParameter("CHANNEL_"+index+"_FLAG_"+flagid);flagid=""+(++i))
 			{
 				final String flagName=httpReq.getUrlParameter("CHANNEL_"+index+"_FLAG_"+flagid);
 				final ChannelsLibrary.ChannelFlag flag=(ChannelsLibrary.ChannelFlag)CMath.s_valueOf(ChannelsLibrary.ChannelFlag.values(), flagName);
 				if(flag != null)
+					flags.add(flag);
+			}
+			String discName=httpReq.getUrlParameter("CHANNEL_"+index+"_DISCNAME");
+			if((discName!=null)&&(discName.trim().length()>0))
+				discName=CMStrings.replaceAll(discName," ","").trim();
+			if((discName==null)||(discName.trim().length()==0))
+			{
+				discName="";
+				flags.remove(ChannelsLibrary.ChannelFlag.DISCORD);
+			}
+			else
+				flags.add(ChannelsLibrary.ChannelFlag.DISCORD);
+			for(final ChannelsLibrary.ChannelFlag flag : flags)
+			{
+				if(flag == ChannelsLibrary.ChannelFlag.DISCORD)
+					str.append(flag.name()).append("=").append(discName).append(" ");
+				else
 					str.append(flag.name()).append(" ");
 			}
 			if(mask.trim().length()>0)

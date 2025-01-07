@@ -2,12 +2,14 @@ package com.planet_ink.siplet.support;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
+import java.lang.reflect.*;
 
-import com.planet_ink.coffee_mud.core.MiniJSON.MJSONException;
 /*
    Copyright 2013-2024 Bo Zimmerman
 
@@ -122,7 +124,7 @@ public class MiniJSON
 	/**
 	 * The official definition of "null" for a JSON object
 	 */
-	public static final Object	NULL	= new Object();
+	public static final Object NULL = new Object();
 
 	/**
 	 * An official MiniJSON parsing exception. It means the document being parsed was malformed in some way.
@@ -130,7 +132,7 @@ public class MiniJSON
 	 */
 	public static class MJSONException extends Exception
 	{
-		private static final long	serialVersionUID	= -2651922052891126260L;
+		private static final long serialVersionUID = -2651922052891126260L;
 
 		/**
 		 * Constructs a new exception with the given parse error
@@ -160,14 +162,13 @@ public class MiniJSON
 	 */
 	public static String toJSONString(final String value)
 	{
-		final StringBuilder strBldr = new StringBuilder("");
+		final StringBuilder strBldr=new StringBuilder("");
 		for(final char c : value.toCharArray())
 		{
-			switch (c)
+			switch(c)
 			{
 			case '\"':
 			case '\\':
-			case '/':
 				strBldr.append('\\').append(c);
 				break;
 			case '\b':
@@ -186,7 +187,14 @@ public class MiniJSON
 				strBldr.append('\\').append('t');
 				break;
 			default:
-				strBldr.append(c);
+				if((c>31)&&(c<127))
+					strBldr.append(c);
+				else
+				{
+					String hex = ("000"+Integer.toHexString(c));
+					hex = hex.substring(hex.length()-4);
+					strBldr.append("\\u"+hex.toLowerCase());
+				}
 				break;
 			}
 		}
@@ -199,9 +207,9 @@ public class MiniJSON
 	 * their mapped values in different ways, both raw, and checked.
 	 * @author Bo Zimmerman
 	 */
-	public static class JSONObject extends TreeMap<String, Object>
+	public static class JSONObject extends TreeMap<String,Object>
 	{
-		private static final long	serialVersionUID	= 8390676973120915175L;
+		private static final long serialVersionUID = 8390676973120915175L;
 
 		/**
 		 * Internal method that returns a raw value object, or throws
@@ -212,8 +220,8 @@ public class MiniJSON
 		 */
 		private Object getCheckedObject(final String key) throws MJSONException
 		{
-			if (!containsKey(key))
-				throw new MJSONException("Key '" + key + "' not found");
+			if(!containsKey(key))
+				throw new MJSONException("Key '"+key+"' not found");
 			return get(key);
 		}
 
@@ -227,9 +235,9 @@ public class MiniJSON
 		public JSONObject getCheckedJSONObject(final String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
-			if (!(o instanceof JSONObject))
-				throw new MJSONException("Key '" + key + "' is not a JSON object");
-			return (JSONObject) o;
+			if(!(o instanceof JSONObject))
+				throw new MJSONException("Key '"+key+"' is not a JSON object");
+			return (JSONObject)o;
 		}
 
 		/**
@@ -242,9 +250,9 @@ public class MiniJSON
 		public Object[] getCheckedArray(final String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
-			if (!(o instanceof Object[]))
-				throw new MJSONException("Key '" + key + "' is not an array");
-			return (Object[]) o;
+			if(!(o instanceof Object[]))
+				throw new MJSONException("Key '"+key+"' is not an array");
+			return (Object[])o;
 		}
 
 		/**
@@ -257,9 +265,9 @@ public class MiniJSON
 		public String getCheckedString(final String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
-			if (!(o instanceof String))
-				throw new MJSONException("Key '" + key + "' is not a String");
-			return (String) o;
+			if(!(o instanceof String))
+				throw new MJSONException("Key '"+key+"' is not a String");
+			return (String)o;
 		}
 
 		/**
@@ -272,9 +280,9 @@ public class MiniJSON
 		public Long getCheckedLong(final String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
-			if (!(o instanceof Long))
-				throw new MJSONException("Key '" + key + "' is not a long");
-			return (Long) o;
+			if(!(o instanceof Long))
+				throw new MJSONException("Key '"+key+"' is not a long");
+			return (Long)o;
 		}
 
 		/**
@@ -287,9 +295,9 @@ public class MiniJSON
 		public Double getCheckedDouble(final String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
-			if (!(o instanceof Double))
-				throw new MJSONException("Key '" + key + "' is not a double");
-			return (Double) o;
+			if(!(o instanceof Double))
+				throw new MJSONException("Key '"+key+"' is not a double");
+			return (Double)o;
 		}
 
 		/**
@@ -302,9 +310,9 @@ public class MiniJSON
 		public Boolean getCheckedBoolean(final String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
-			if (!(o instanceof Boolean))
-				throw new MJSONException("Key '" + key + "' is not a boolean");
-			return (Boolean) o;
+			if(!(o instanceof Boolean))
+				throw new MJSONException("Key '"+key+"' is not a boolean");
+			return (Boolean)o;
 		}
 
 		/**
@@ -317,11 +325,11 @@ public class MiniJSON
 		public double getCheckedNumber(final String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
-			if (o instanceof Double)
-				return ((Double) o).doubleValue();
-			if (o instanceof Long)
-				return ((Long) o).doubleValue();
-			throw new MJSONException("Key '" + key + "' is not a number");
+			if(o instanceof Double)
+				return ((Double)o).doubleValue();
+			if(o instanceof Long)
+				return ((Long)o).doubleValue();
+			throw new MJSONException("Key '"+key+"' is not a number");
 		}
 
 		/**
@@ -347,23 +355,23 @@ public class MiniJSON
 		 */
 		public static void appendJSONValue(final StringBuilder value, final Object obj)
 		{
-			if (obj instanceof String)
+			if(obj instanceof String)
 			{
 				value.append("\"").append(toJSONString((String)obj)).append("\"");
 			}
 			else
-			if (obj == NULL)
+			if(obj == NULL)
 			{
 				value.append("null");
 			}
 			else
-			if (obj instanceof Object[])
+			if(obj instanceof Object[])
 			{
 				value.append("[");
-				final Object[] array = (Object[]) obj;
-				for (int i = 0; i < array.length; i++)
+				final Object[] array=(Object[])obj;
+				for(int i=0; i<array.length; i++)
 				{
-					if (i > 0)
+					if(i>0)
 						value.append(",");
 					appendJSONValue(value, array[i]);
 				}
@@ -384,13 +392,13 @@ public class MiniJSON
 		{
 			final StringBuilder value = new StringBuilder("");
 			value.append("{");
-			for (final Iterator<String> k = keySet().iterator(); k.hasNext();)
+			for(final Iterator<String> k = keySet().iterator(); k.hasNext();)
 			{
 				final String keyVar = k.next();
 				value.append("\"").append(toJSONString(keyVar)).append("\":");
 				final Object obj = get(keyVar);
 				appendJSONValue(value, obj);
-				if (k.hasNext())
+				if(k.hasNext())
 				{
 					value.append(",");
 				}
@@ -399,6 +407,40 @@ public class MiniJSON
 			return value.toString();
 		}
 
+		public Object jsonDeepCopy(final Object obj)
+		{
+			if(obj instanceof JSONObject)
+				return ((JSONObject)obj).copyOf();
+			else
+			if(obj.getClass().isArray())
+			{
+				final Object[] newArray = Arrays.copyOf((Object[])obj, ((Object[])obj).length);
+				for(int i=0;i<newArray.length;i++)
+					newArray[i] = jsonDeepCopy(newArray[i]);
+				return newArray;
+			}
+			else
+				return obj;
+		}
+
+		public JSONObject copyOf()
+		{
+			final JSONObject newObj = new JSONObject();
+			for(final String key : this.keySet())
+				newObj.put(key, jsonDeepCopy(this.get(key)));
+			return newObj;
+		}
+
+		public void putString(final String key, final String value)
+		{
+			if(value == null)
+				this.put(key, NULL);
+			else
+			{
+				final String fixedValue=MiniJSON.toJSONString(value);
+				this.put(key, fixedValue);
+			}
+		}
 	}
 
 	/**
@@ -412,22 +454,22 @@ public class MiniJSON
 	{
 		final int numStart = index[0];
 		NumberParseState state = NumberParseState.INITIAL;
-		while (index[0] < doc.length)
+		while(index[0] < doc.length)
 		{
-			final char c = doc[index[0]];
-			switch (state)
+			final char c=doc[index[0]];
+			switch(state)
 			{
 			case INITIAL:
-				if (c == '0')
-					state = NumberParseState.NEEDDOT;
+				if(c=='0')
+					state=NumberParseState.NEEDDOT;
 				else
 				if(c=='-')
-					state = NumberParseState.NEEDNODASH;
+					state=NumberParseState.NEEDNODASH;
 				else
 				if(Character.isDigit(c))
-					state = NumberParseState.HAVEDIGIT;
+					state=NumberParseState.HAVEDIGIT;
 				else
-					throw new MJSONException("Expected digit at " + index[0]);
+					throw new MJSONException("Expected digit at "+index[0]);
 				break;
 			case NEEDNODASH:
 				if(c=='-')
@@ -442,87 +484,87 @@ public class MiniJSON
 					throw new MJSONException("Expected digit at "+index[0]);
 				break;
 			case HAVEDIGIT:
-				if (c == '.')
-					state = NumberParseState.NEEDDOTDIGIT;
+				if(c=='.')
+					state=NumberParseState.NEEDDOTDIGIT;
 				else
 				if((c=='E')||(c=='e'))
-					state = NumberParseState.HAVEE;
+					state=NumberParseState.HAVEE;
 				else
 				if(Character.isDigit(c))
-					state = NumberParseState.HAVEDIGIT;
+					state=NumberParseState.HAVEDIGIT;
 				else
 				{
 					index[0]--;
-					return Long.valueOf(new String(doc, numStart, index[0] - numStart + 1));
+					return Long.valueOf(new String(doc,numStart,index[0]-numStart+1));
 				}
 				break;
 			case NEEDDOT:
-				if (c == '.')
-					state = NumberParseState.NEEDDOTDIGIT;
+				if(c=='.')
+					state=NumberParseState.NEEDDOTDIGIT;
 				else
 				{
 					index[0]--;
-					return Long.valueOf(new String(doc, numStart, index[0] - numStart + 1));
+					return Long.valueOf(new String(doc,numStart,index[0]-numStart+1));
 				}
 				break;
 			case NEEDDOTDIGIT:
-				if (Character.isDigit(c))
-					state = NumberParseState.HAVEDOTDIGIT;
+				if(Character.isDigit(c))
+					state=NumberParseState.HAVEDOTDIGIT;
 				else
-					throw new MJSONException("Expected digit at " + index[0]);
+					throw new MJSONException("Expected digit at "+index[0]);
 				break;
 			case HAVEDOTDIGIT:
-				if (Character.isDigit(c))
-					state = NumberParseState.HAVEDOTDIGIT;
+				if(Character.isDigit(c))
+					state=NumberParseState.HAVEDOTDIGIT;
 				else
 				if((c=='e')||(c=='E'))
-					state = NumberParseState.HAVEE;
+					state=NumberParseState.HAVEE;
 				else
 				{
 					index[0]--;
-					return Double.valueOf(new String(doc, numStart, index[0] - numStart + 1));
+					return Double.valueOf(new String(doc,numStart,index[0]-numStart+1));
 				}
 				break;
 			case HAVEE:
-				if (c == '0')
-					throw new MJSONException("Expected non-zero digit at " + index[0]);
+				if(c=='0')
+					throw new MJSONException("Expected non-zero digit at "+index[0]);
 				else
 				if(Character.isDigit(c)||(c=='+')||(c=='-'))
-					state = NumberParseState.HAVEEDIGIT;
+					state=NumberParseState.HAVEEDIGIT;
 				else
-					throw new MJSONException("Expected +- or non-zero digit at " + index[0]);
+					throw new MJSONException("Expected +- or non-zero digit at "+index[0]);
 				break;
 			case HAVEEDIGIT:
-				if (!Character.isDigit(c))
+				if(!Character.isDigit(c))
 				{
 					index[0]--;
-					return Double.valueOf(new BigDecimal(new String(doc, numStart, index[0] - numStart + 1)).doubleValue());
+					return Double.valueOf(new BigDecimal(new String(doc,numStart,index[0]-numStart+1)).doubleValue());
 				}
 				break;
 			}
 			index[0]++;
 		}
-		throw new MJSONException("Unexpected end of number at" + index[0]);
+		throw new MJSONException("Unexpected end of number at"+index[0]);
 	}
 
 	/**
-	 * Given a char array, and index into it, returns the byte value of the 1 hex
+	 * Given a char array, and index into it, returns the nybble value of the 1 hex
 	 * digits at the indexed point of the char array.
 	 * @param doc the json doc containing a hex number
 	 * @param index the index into that json doc where the hex number begins
-	 * @return the byte value of the 1 digit hex number
+	 * @return the byte value of the 1 digit hex nybble
 	 * @throws MJSONException a parse error meaning it wasn't a hex number at all
 	 */
-	private byte getByteFromHex(final char[] doc, final int index) throws MJSONException
+	private byte getHexNybble(final char[] doc, final int index) throws MJSONException
 	{
 		final char c = doc[index];
-		if ((c >= '0') && (c <= '9'))
-			return (byte) (c - '0');
-		if ((c >= 'a') && (c <= 'f'))
-			return (byte) (10 + (c - 'a'));
-		if ((c >= 'A') && (c <= 'F'))
-			return (byte) (10 + (c - 'A'));
-		throw new MJSONException("Illegal hex digit at " + index);
+		if((c >= '0') && (c <= '9'))
+			return (byte)(c-'0');
+		if((c >= 'a') && (c <= 'f'))
+			return (byte)(10 + (c-'a'));
+		if((c >= 'A') && (c <= 'F'))
+			return (byte)(10 + (c-'A'));
+		throw new MJSONException("Illegal hex digit at "+index);
 	}
 
 	/**
@@ -536,23 +578,23 @@ public class MiniJSON
 	private String parseString(final char[] doc, final int[] index) throws MJSONException
 	{
 		final StringBuilder value=new StringBuilder("");
-		if (doc[index[0]] != '\"')
+		if(doc[index[0]]!='\"')
 		{
-			throw new MJSONException("Expectged quote at: " + doc[index[0]]);
+			throw new MJSONException("Expected quote at: "+doc[index[0]]);
 		}
 		index[0]++;
-		while (index[0] < doc.length)
+		while(index[0] < doc.length)
 		{
-			final char c = doc[index[0]];
-			if (c == '\"')
+			final char c=doc[index[0]];
+			if(c=='\"')
 				return value.toString();
 			else
 			if(c=='\\')
 			{
-				if (index[0] == doc.length - 1)
+				if(index[0] == doc.length-1)
 					throw new MJSONException("Unfinished escape");
 				index[0]++;
-				switch (doc[index[0]])
+				switch(doc[index[0]])
 				{
 				case '\"':
 				case '\\':
@@ -576,32 +618,24 @@ public class MiniJSON
 					break;
 				case 'u':
 				{
-					if (index[0] >= doc.length - 5)
-						throw new MJSONException("Unfinished unicode escape at " + index[0]);
-					final byte[] hexBuf = new byte[4];
-					hexBuf[0] = getByteFromHex(doc, ++index[0]);
-					hexBuf[1] = getByteFromHex(doc, ++index[0]);
-					hexBuf[2] = getByteFromHex(doc, ++index[0]);
-					hexBuf[3] = getByteFromHex(doc, ++index[0]);
-					try
-					{
-						value.append(new String(hexBuf, "Cp1251"));
-					}
-					catch (final UnsupportedEncodingException e)
-					{
-						throw new MJSONException("Illegal character at" + index[0], e);
-					}
+					if(index[0] >= doc.length-5)
+						throw new MJSONException("Unfinished unicode escape at "+index[0]);
+					final byte[] hexBuf=new byte[] {
+						(byte)((getHexNybble(doc,++index[0]) << 4) | getHexNybble(doc,++index[0])),
+						(byte)((getHexNybble(doc,++index[0]) << 4) | getHexNybble(doc,++index[0]))
+					};
+					value.append(new String(hexBuf, StandardCharsets.UTF_16));
 					break;
 				}
 				default:
-					throw new MJSONException("Illegal escape character: " + doc[index[0]]);
+					throw new MJSONException("Illegal escape character: "+doc[index[0]]);
 				}
 			}
 			else
 				value.append(c);
 			index[0]++;
 		}
-		throw new MJSONException("Unfinished string at " + index[0]);
+		throw new MJSONException("Unfinished string at "+index[0]);
 	}
 
 	/**
@@ -614,48 +648,48 @@ public class MiniJSON
 	 */
 	private Object[] parseArray(final char[] doc, final int[] index) throws MJSONException
 	{
-		ArrayParseState state = ArrayParseState.INITIAL;
-		final List<Object> finalSet = new ArrayList<Object>();
-		while (index[0] < doc.length)
+		ArrayParseState state=ArrayParseState.INITIAL;
+		final List<Object> finalSet=new ArrayList<Object>();
+		while(index[0] < doc.length)
 		{
-			final char c = doc[index[0]];
-			if (!Character.isWhitespace(c))
+			final char c=doc[index[0]];
+			if(!Character.isWhitespace(c))
 			{
-				switch (state)
+				switch(state)
 				{
 				case INITIAL:
-					if (c == '[')
+					if(c=='[')
 						state = ArrayParseState.NEEDOBJECT;
 					else
-						throw new MJSONException("Expected String at " + index[0]);
+						throw new MJSONException("Expected String at "+index[0]);
 					break;
 				case EXPECTOBJECT:
-					finalSet.add(parseElement(doc, index));
+					finalSet.add(parseElement(doc,index));
 					state = ArrayParseState.GOTOBJECT;
 					break;
 				case NEEDOBJECT:
-					if (c == ']')
+					if(c==']')
 						return finalSet.toArray(new Object[0]);
 					else
 					{
-						finalSet.add(parseElement(doc, index));
+						finalSet.add(parseElement(doc,index));
 						state = ArrayParseState.GOTOBJECT;
 					}
 					break;
 				case GOTOBJECT:
-					if (c == ']')
+					if(c==']')
 						return finalSet.toArray(new Object[0]);
 					else
 					if(c==',')
 						state = ArrayParseState.EXPECTOBJECT;
 					else
-						throw new MJSONException("Expected ] or , at " + index[0]);
+						throw new MJSONException("Expected ] or , at "+index[0]);
 					break;
 				}
 			}
 			index[0]++;
 		}
-		throw new MJSONException("Expected ] at " + index[0]);
+		throw new MJSONException("Expected ] at "+index[0]);
 	}
 
 	/**
@@ -669,14 +703,14 @@ public class MiniJSON
 	 */
 	private Object parseElement(final char[] doc, final int[] index) throws MJSONException
 	{
-		switch (doc[index[0]])
+		switch(doc[index[0]])
 		{
 		case '\"':
-			return parseString(doc, index);
+			return parseString(doc,index);
 		case '[':
-			return parseArray(doc, index);
+			return parseArray(doc,index);
 		case '{':
-			return parseObject(doc, index);
+			return parseObject(doc,index);
 		case '-':
 		case '0':
 		case '1':
@@ -688,30 +722,30 @@ public class MiniJSON
 		case '7':
 		case '8':
 		case '9':
-			return parseNumber(doc, index);
+			return parseNumber(doc,index);
 		case 't':
-			if ((index[0] < doc.length - 5) && (new String(doc, index[0], 4).equals("true")))
+			if((index[0] < doc.length-5) && (new String(doc,index[0],4).equals("true")))
 			{
-				index[0] += 3;
+				index[0]+=3;
 				return Boolean.TRUE;
 			}
-			throw new MJSONException("Invalid true at " + index[0]);
+			throw new MJSONException("Invalid true at "+index[0]);
 		case 'f':
-			if ((index[0] < doc.length - 6) && (new String(doc, index[0], 5).equals("false")))
+			if((index[0] < doc.length-6) && (new String(doc,index[0],5).equals("false")))
 			{
-				index[0] += 4;
+				index[0]+=4;
 				return Boolean.FALSE;
 			}
-			throw new MJSONException("Invalid false at " + index[0]);
+			throw new MJSONException("Invalid false at "+index[0]);
 		case 'n':
-			if ((index[0] < doc.length - 5) && (new String(doc, index[0], 4).equals("null")))
+			if((index[0] < doc.length-5) && (new String(doc,index[0],4).equals("null")))
 			{
-				index[0] += 3;
+				index[0]+=3;
 				return NULL;
 			}
-			throw new MJSONException("Invalid null at " + index[0]);
+			throw new MJSONException("Invalid null at "+index[0]);
 		default:
-			throw new MJSONException("Unknown character at " + index[0]);
+			throw new MJSONException("Unknown character at "+index[0]);
 		}
 	}
 
@@ -728,55 +762,55 @@ public class MiniJSON
 		final JSONObject map = new JSONObject();
 		String key = null;
 		ObjectParseState state = ObjectParseState.INITIAL;
-		while (index[0] < doc.length)
+		while(index[0] < doc.length)
 		{
-			final char c = doc[index[0]];
-			if (!Character.isWhitespace(c))
+			final char c=doc[index[0]];
+			if(!Character.isWhitespace(c))
 			{
-				switch (state)
+				switch(state)
 				{
 				case INITIAL:
-					if (c == '{')
+					if(c=='{')
 						state = ObjectParseState.NEEDKEY;
 					else
-						throw new MJSONException("Expected Key/String at " + index[0]);
+						throw new MJSONException("Expected Key/String at "+index[0]);
 					break;
 				case NEEDKEY:
-					if (c == '\"')
+					if(c=='\"')
 					{
-						key = parseString(doc, index);
+						key = parseString(doc,index);
 						state = ObjectParseState.GOTKEY;
 					}
 					else
 					if(c=='}')
 						return map;
 					else
-						throw new MJSONException("Expected Key/String at " + index[0]);
+						throw new MJSONException("Expected Key/String at "+index[0]);
 					break;
 				case GOTKEY:
-					if (c == ':')
+					if(c==':')
 						state = ObjectParseState.NEEDOBJECT;
 					else
-						throw new MJSONException("Expected Colon at " + index[0]);
+						throw new MJSONException("Expected Colon at "+index[0]);
 					break;
 				case NEEDOBJECT:
-					map.put(key, parseElement(doc, index));
+					map.put(key, parseElement(doc,index));
 					state = ObjectParseState.GOTOBJECT;
 					break;
 				case GOTOBJECT:
-					if (c == ',')
+					if(c==',')
 						state = ObjectParseState.NEEDKEY;
 					else
 					if(c=='}')
 						return map;
 					else
-						throw new MJSONException("Expected } or , at " + index[0]);
+						throw new MJSONException("Expected } or , at "+index[0]);
 					break;
 				}
 			}
 			index[0]++;
 		}
-		throw new MJSONException("Expected } at " + index[0]);
+		throw new MJSONException("Expected } at "+index[0]);
 	}
 
 	/**
@@ -790,7 +824,7 @@ public class MiniJSON
 	{
 		try
 		{
-			return parseObject(doc.toCharArray(), new int[] { 0 });
+			return parseObject(doc.toCharArray(), new int[]{0});
 		}
 		catch (final MJSONException e)
 		{
@@ -798,7 +832,268 @@ public class MiniJSON
 		}
 		catch (final Exception e)
 		{
-			throw new MJSONException("Internal error", e);
+			throw new MJSONException("Internal error",e);
+		}
+	}
+
+	/**
+	 * Converts a pojo field to a JSON value.
+	 * @param type the class type
+	 * @param val the value
+	 * @return the json value
+	 */
+	public String fromPOJOFieldtoJSON(final Class<?> type, final Object val)
+	{
+		final StringBuilder str=new StringBuilder("");
+		if(val==null)
+			str.append("null");
+		else
+		if(type.isArray())
+		{
+			str.append("[");
+			final int length = Array.getLength(val);
+			for (int i=0; i<length; i++)
+			{
+				final Object e = Array.get(val, i);
+				if(i>0)
+					str.append(",");
+				str.append(fromPOJOFieldtoJSON(type.getComponentType(),e));
+			}
+			str.append("]");
+		}
+		else
+		if(type == String.class)
+			str.append("\"").append(toJSONString(val.toString())).append("\"");
+		else
+		if(type.isPrimitive())
+			str.append(val.toString());
+		else
+		if((type == Float.class)||(type==Integer.class)||(type==Double.class)||(type==Boolean.class)
+		 ||(type==Long.class)||(type==Short.class)||(type==Byte.class))
+			str.append(val.toString());
+		else
+			str.append(fromPOJOtoJSON(val));
+		return str.toString();
+	}
+
+	/**
+	 * Converts a pojo object to a JSON document.
+	 * @param o the object to convert
+	 * @return the json document
+	 */
+	public String fromPOJOtoJSON(final Object o)
+	{
+		final StringBuilder str=new StringBuilder("");
+		str.append("{");
+		final Field[] fields = o.getClass().getDeclaredFields();
+		boolean firstField=true;
+		for(final Field field : fields)
+		{
+			try
+			{
+				field.setAccessible(true);
+				if(field.isAccessible())
+				{
+					if(!firstField)
+						str.append(",");
+					else
+						firstField=false;
+					str.append("\"").append(field.getName()).append("\":");
+					str.append(fromPOJOFieldtoJSON(field.getType(),field.get(o)));
+				}
+			}
+			catch (final IllegalArgumentException e)
+			{
+			}
+			catch (final IllegalAccessException e)
+			{
+			}
+		}
+		str.append("}");
+		return str.toString();
+	}
+
+	/**
+	 * Converts a JSON document to a pojo object.
+	 * @param json the json document
+	 * @param o the object to convert
+	 * @throws MJSONException a parse exception
+	 */
+	public void fromJSONtoPOJO(final String json, final Object o) throws MJSONException
+	{
+		fromJSONtoPOJO(parseObject(json),o);
+	}
+	/**
+	 * Converts a json object to a pojo object.
+	 * @param jsonObj the json object
+	 * @param o the object to convert
+	 * @throws MJSONException a parse exception
+	 */
+	public void fromJSONtoPOJO(final MiniJSON.JSONObject jsonObj, final Object o) throws MJSONException
+	{
+		final Field[] fields = o.getClass().getDeclaredFields();
+		for(final Field field : fields)
+		{
+			try
+			{
+				field.setAccessible(true);
+				if(field.isAccessible() && jsonObj.containsKey(field.getName()))
+				{
+
+					final Object jo = jsonObj.get(field.getName());
+					if((jo == null) || (jo == MiniJSON.NULL))
+						field.set(o, null);
+					else
+					if(field.getType().isArray() && (jo instanceof Object[]))
+					{
+						final Object[] objs = (Object[])jo;
+						final Object tgt;
+						final Class<?> cType = field.getType().getComponentType();
+						tgt = Array.newInstance(cType, objs.length);
+						for(int i=0;i<objs.length;i++)
+						{
+							if(objs[i].getClass() == cType)
+								Array.set(tgt, i, objs[i]);
+							else
+							if((cType == Float.class)&&(objs[i] instanceof Double))
+								Array.set(tgt, i, Float.valueOf(((Double)objs[i]).floatValue()));
+							else
+							if((cType == Integer.class)&&(objs[i] instanceof Long))
+								Array.set(tgt, i, Integer.valueOf(((Long)objs[i]).intValue()));
+							else
+							if((cType == Byte.class)&&(objs[i] instanceof Long))
+								Array.set(tgt, i, Byte.valueOf(((Long)objs[i]).byteValue()));
+							else
+							if((cType == Short.class)&&(objs[i] instanceof Long))
+								Array.set(tgt, i, Short.valueOf(((Long)objs[i]).shortValue()));
+							else
+							if(cType.isPrimitive())
+							{
+								if(cType == boolean.class)
+									Array.setBoolean(tgt, i, Boolean.valueOf(objs[i].toString()).booleanValue());
+								else
+								if(cType == int.class)
+									Array.setInt(tgt, i, Long.valueOf(objs[i].toString()).intValue());
+								else
+								if(cType == short.class)
+									Array.setShort(tgt, i, Long.valueOf(objs[i].toString()).shortValue());
+								else
+								if(cType == byte.class)
+									Array.setByte(tgt, i, Long.valueOf(objs[i].toString()).byteValue());
+								else
+								if(cType == long.class)
+									Array.setLong(tgt, i, Long.valueOf(objs[i].toString()).longValue());
+								else
+								if(cType == float.class)
+									Array.setFloat(tgt, i, Double.valueOf(objs[i].toString()).floatValue());
+								else
+								if(cType == double.class)
+									Array.setDouble(tgt, i, Double.valueOf(objs[i].toString()).doubleValue());
+							}
+							else
+							if(objs[i] instanceof JSONObject)
+							{
+								Object newObj;
+								try
+								{
+									newObj = cType.getDeclaredConstructor().newInstance();
+									fromJSONtoPOJO((JSONObject)objs[i], newObj);
+									Array.set(tgt, i, newObj);
+								}
+								catch (final Exception e)
+								{
+									e.printStackTrace();
+								}
+							}
+						}
+						field.set(o, tgt);
+					}
+					else
+					if((field.getType() == String.class)&&(jo instanceof String))
+						field.set(o, jo);
+					else
+					if(field.getType().isPrimitive())
+					{
+						final Class<?> cType=field.getType();
+						if(cType == boolean.class)
+							field.setBoolean(o, Boolean.valueOf(jo.toString()).booleanValue());
+						else
+						if(cType == int.class)
+							field.setInt(o, Long.valueOf(jo.toString()).intValue());
+						else
+						if(cType == short.class)
+							field.setShort(o, Long.valueOf(jo.toString()).shortValue());
+						else
+						if(cType == byte.class)
+							field.setByte(o, Long.valueOf(jo.toString()).byteValue());
+						else
+						if(cType == long.class)
+							field.setLong(o, Long.valueOf(jo.toString()).longValue());
+						else
+						if(cType == float.class)
+							field.setFloat(o, Double.valueOf(jo.toString()).floatValue());
+						else
+						if(cType == double.class)
+							field.setDouble(o, Double.valueOf(jo.toString()).doubleValue());
+						else
+							field.set(o, jo);
+					}
+					else
+					if(jo instanceof JSONObject)
+					{
+						final Object newObj = field.getType().getDeclaredConstructor().newInstance();
+						fromJSONtoPOJO((JSONObject)jo, newObj);
+						field.set(o, newObj);
+					}
+					else
+					if((field.getType() == Integer.class)&&(jo instanceof Long))
+						field.set(o, Integer.valueOf(((Long)jo).intValue()));
+					else
+					if((field.getType() == Short.class)&&(jo instanceof Long))
+						field.set(o, Short.valueOf(((Long)jo).shortValue()));
+					else
+					if((field.getType() == Byte.class)&&(jo instanceof Long))
+						field.set(o, Byte.valueOf(((Long)jo).byteValue()));
+					else
+					if((field.getType() == Long.class)&&(jo instanceof Long))
+						field.set(o, Long.valueOf(((Long)jo).longValue()));
+					else
+					if((field.getType() == Double.class)&&(jo instanceof Double))
+						field.set(o, Double.valueOf(((Double)jo).doubleValue()));
+					else
+					if((field.getType() == Float.class)&&(jo instanceof Double))
+						field.set(o, Float.valueOf(((Double)jo).floatValue()));
+					else
+					if((field.getType() == Boolean.class)&&(jo instanceof Boolean))
+						field.set(o, Boolean.valueOf(((Boolean)jo).booleanValue()));
+					else
+						field.set(o, jo);
+				}
+			}
+			catch (final IllegalArgumentException e)
+			{
+				throw new MJSONException(e.getMessage(),e);
+			}
+			catch (final IllegalAccessException e)
+			{
+				throw new MJSONException(e.getMessage(),e);
+			}
+			catch (final InstantiationException e)
+			{
+				throw new MJSONException(e.getMessage(),e);
+			}
+			catch (final InvocationTargetException e)
+			{
+				throw new MJSONException(e.getMessage(),e);
+			}
+			catch (final NoSuchMethodException e)
+			{
+				throw new MJSONException(e.getMessage(),e);
+			}
+			catch (final SecurityException e)
+			{
+				throw new MJSONException(e.getMessage(),e);
+			}
 		}
 	}
 }

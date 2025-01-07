@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.Rideable.Basis;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -117,6 +118,7 @@ public class StdRideable extends StdContainer implements Rideable
 		{
 			case FURNITURE_SIT:
 			case FURNITURE_TABLE:
+			case FURNITURE_HOOK:
 			case ENTER_IN:
 			case FURNITURE_SLEEP:
 			case LADDER:
@@ -165,7 +167,7 @@ public class StdRideable extends StdContainer implements Rideable
 		{
 			return riders.get(which);
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException e)
+		catch (final IndexOutOfBoundsException e)
 		{
 		}
 		return null;
@@ -234,6 +236,8 @@ public class StdRideable extends StdContainer implements Rideable
 			return L("a bed");
 		case FURNITURE_TABLE:
 			return L("a table");
+		case FURNITURE_HOOK:
+			return L("a hook");
 		case ENTER_IN:
 			return L("a thing to get in");
 		case LADDER:
@@ -282,6 +286,7 @@ public class StdRideable extends StdContainer implements Rideable
 			case LADDER:
 				return "climbing on";
 			case FURNITURE_SLEEP:
+			case FURNITURE_HOOK:
 				return "on";
 			}
 			return "riding in";
@@ -325,6 +330,7 @@ public class StdRideable extends StdContainer implements Rideable
 				return "in";
 			case FURNITURE_SIT:
 			case FURNITURE_TABLE:
+			case FURNITURE_HOOK:
 			case LADDER:
 				return "on";
 			}
@@ -406,6 +412,7 @@ public class StdRideable extends StdContainer implements Rideable
 			case ENTER_IN:
 				return "get(s) into";
 			case LADDER:
+			case FURNITURE_HOOK:
 				return "climb(s) onto";
 			case FURNITURE_SLEEP:
 				if(commandType==CMMsg.TYP_SIT)
@@ -451,6 +458,8 @@ public class StdRideable extends StdContainer implements Rideable
 				return "get(s) off of";
 			case ENTER_IN:
 				return "get(s) out of";
+			case FURNITURE_HOOK:
+				return "remove(s) themselves from";
 			}
 			return "disembark(s) from";
 		}
@@ -499,6 +508,8 @@ public class StdRideable extends StdContainer implements Rideable
 				return "occupied by";
 			case LADDER:
 				return "occupied by";
+			case FURNITURE_HOOK:
+				return "holding";
 			}
 			return "";
 		}
@@ -597,6 +608,36 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			return sendBack.toString();
 		}
+ 		else
+ 		if((rideBasis()==Basis.FURNITURE_HOOK)
+ 		&&(stateStringSubject(this).length()>0)
+ 		&&(displayText!=null)
+ 		&&(displayText.length()>0)
+ 		&&CMLib.flags().isWithSeenContents(this))
+ 		{
+ 			final List<Item> contents =this.getContents();
+ 	 		if(contents.size()>0)
+ 	 		{
+ 				final StringBuffer sendBack=new StringBuffer(name(mob));
+ 				sendBack.append(" "+stateStringSubject(this)+" ");
+ 				for(int r=0;r<contents.size();r++)
+ 				{
+ 					final Item I = contents.get(r);
+ 					if(I!=null)
+ 					{
+ 						if(r>0)
+ 						{
+ 							sendBack.append(", ");
+ 							if(r==numRiders()-1)
+ 								sendBack.append("and ");
+ 						}
+ 						sendBack.append(I.name(mob));
+ 					}
+
+ 				}
+ 				return sendBack.toString();
+ 	 		}
+ 		}
 		return super.displayText(mob);
 	}
 
@@ -635,6 +676,18 @@ public class StdRideable extends StdContainer implements Rideable
 			{
 				msg.source().tell(L("You cannot retreat while @x1 @x2!",stateString(msg.source()),name(msg.source())));
 				return false;
+			}
+			break;
+		case CMMsg.TYP_PUT:
+			if((msg.tool() instanceof Item)
+			&&(msg.target()==this))
+			{
+				if((rideBasis == Rideable.Basis.FURNITURE_HOOK)
+				&&(getContents().size()>=this.riderCapacity()))
+				{
+					msg.source().tell(L("@x1 can't hold any more.",name(msg.source())));
+					return false;
+				}
 			}
 			break;
 		case CMMsg.TYP_DISMOUNT:
@@ -678,6 +731,9 @@ public class StdRideable extends StdContainer implements Rideable
 					if(CMLib.flags().isSleeping(msg.source()))
 						return true;
 					break;
+				case FURNITURE_HOOK:
+					msg.source().tell(L("You can't do that to @x1.",name(msg.source())));
+					return false;
 				default:
 					break;
 				}
@@ -778,6 +834,12 @@ public class StdRideable extends StdContainer implements Rideable
 			&&(((Item)msg.tool()).container() != container()))
 			{
 				msg.source().tell(null,msg.tool(),null,L("<T-NAME> can't be mounted to @x1 from where it is!",name(msg.source())));
+				return false;
+			}
+			else
+			if(rideBasis()==Basis.FURNITURE_HOOK)
+			{
+				msg.source().tell(L("You can't do that to @x1.",name(msg.source())));
 				return false;
 			}
 			else

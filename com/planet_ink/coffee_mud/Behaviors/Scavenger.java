@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimeOfDay;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -50,6 +51,9 @@ public class Scavenger extends ActiveTicker
 	protected int			origItems	= -1;
 	protected CompiledZMask	mask		= null;
 	protected String		trashRoomID	= "";
+	protected int 			lastHourDay = -1;
+	protected boolean		doAtNight	= false;
+	protected Room			returnR		= null;
 
 	public Scavenger()
 	{
@@ -69,7 +73,7 @@ public class Scavenger extends ActiveTicker
 	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
-		String argParms="";
+		String argParms=newParms;
 		String maskStr="";
 		final int x=newParms.indexOf(';');
 		if(x>=0)
@@ -78,6 +82,7 @@ public class Scavenger extends ActiveTicker
 			maskStr=newParms.substring(x+1);
 		}
 		trashRoomID=CMParms.getParmStr(argParms,"TRASH","");
+		doAtNight=CMParms.getParmBool(argParms,"ATNIGHT",false);
 		mask=(maskStr.length()==0)?null:CMLib.masking().getPreCompiledMask(maskStr);
 	}
 
@@ -86,97 +91,120 @@ public class Scavenger extends ActiveTicker
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-
-		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
+		if(ticking instanceof MOB)
 		{
 			final MOB mob=(MOB)ticking;
 			final Room thisRoom=mob.location();
 			if(thisRoom == null)
 				return true;
-
 			if(origItems<0)
 				origItems=mob.numItems();
-			if((mob.phyStats().weight()>=(int)Math.round(CMath.mul(mob.maxCarry(),0.9)))
-			||(mob.numItems()>=mob.maxItems()))
+			boolean canAct = canAct(ticking,tickID);
+			if(doAtNight && (CMLib.time().homeClock(mob).getTODCode()==TimeOfDay.NIGHT))
+				canAct = true;
+			if(canAct)
 			{
-				if(CMLib.flags().isATrackingMonster(mob))
-					return true;
-				if(trashRoomID.equalsIgnoreCase("NO"))
-					return true;
-				final Room R=(trashRoomID.length()>0)?CMLib.map().getRoom(trashRoomID):null;
-				if((mob.location()==R)&&(R!=null))
+				if((mob.phyStats().weight()>=(int)Math.round(CMath.mul(mob.maxCarry(),0.9)))
+				||(mob.numItems()>=mob.maxItems())
+				||(doAtNight && (mob.numItems()>origItems)
+							&& ((CMLib.time().homeClock(mob).getTODCode()==TimeOfDay.NIGHT)
+							&&(CMLib.time().homeClock(mob).getDayOfMonth()!=lastHourDay))))
 				{
-					Container C=null;
-					int maxCapacity=0;
-					for(int i=0;i<R.numItems();i++)
+					if(CMLib.flags().isATrackingMonster(mob))
+						return true;
+					if(trashRoomID.equalsIgnoreCase("NO"))
+						return true;
+					final Room R=(trashRoomID.length()>0)?CMLib.map().getRoom(trashRoomID):null;
+					if((mob.location()==R)&&(R!=null))
 					{
-						final Item I=R.getItem(i);
-						if((I instanceof Container)
-						&&(I.container()==null)
-						&&(!CMLib.flags().isGettable(I)))
+						if(doAtNight)
+							lastHourDay = CMLib.time().homeClock(mob).getDayOfMonth();
+						Container C=null;
+						int maxCapacity=0;
+						for(int i=0;i<R.numItems();i++)
 						{
-							if(((Container)I).capacity()>maxCapacity)
+							final Item I=R.getItem(i);
+							if((I instanceof Container)
+							&&(I.container()==null)
+							&&(!CMLib.flags().isGettable(I)))
 							{
-								C=(Container)I;
-								maxCapacity=((Container)I).capacity();
+								if(((Container)I).capacity()>maxCapacity)
+								{
+									C=(Container)I;
+									maxCapacity=((Container)I).capacity();
+								}
 							}
 						}
-					}
-					if(C!=null)
-						mob.doCommand(new XVector<String>("PUT","ALL",C.Name()),MUDCmdProcessor.METAFLAG_FORCED);
-					else
-						mob.doCommand(new XVector<String>("DROP","ALL"),MUDCmdProcessor.METAFLAG_FORCED);
-					CMLib.tracking().wanderAway(mob,false,true);
-				}
-				else
-				if(R!=null)
-				{
-					final Ability A=CMLib.flags().isTracking(mob) ? null : CMClass.getAbility("Skill_Track");
-					if(A!=null)
-						A.invoke(mob,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\" NPC"),R,true,0);
-				}
-				else
-				if((origItems>=0)&&(mob.numItems()>origItems))
-				{
-					while((origItems>=0)&&(mob.numItems()>origItems))
-					{
-						final Item I=mob.getItem(origItems);
-						if(I==null)
+						if(C!=null)
+							mob.doCommand(new XVector<String>("PUT","ALL",C.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+						else
+							mob.doCommand(new XVector<String>("DROP","ALL"),MUDCmdProcessor.METAFLAG_FORCED);
+						if(this.doAtNight) // a signal to include money
 						{
-							if(origItems>0)
-								origItems--;
-							break;
+							if(C!=null)
+								mob.doCommand(new XVector<String>("PUT","ALL",C.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							else
+								mob.doCommand(new XVector<String>("DROP","ALL"),MUDCmdProcessor.METAFLAG_FORCED);
 						}
-						if(I.owner()==null)
-							I.setOwner(mob);
-						I.destroy();
+						if(returnR == null)
+							CMLib.tracking().wanderAway(mob,false,true);
+						else
+							CMLib.tracking().wanderCheckedFromTo(mob, returnR, false);
 					}
-					mob.recoverPhyStats();
-					mob.recoverCharStats();
-					mob.recoverMaxState();
+					else
+					if(R!=null)
+					{
+						final Ability A=CMLib.flags().isTracking(mob) ? null : CMClass.getAbility("Skill_Track");
+						if(A!=null)
+						{
+							if(doAtNight)
+								returnR = mob.location();
+							A.invoke(mob,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\" NPC"),R,true,0);
+						}
+					}
+					else
+					if((origItems>=0)&&(mob.numItems()>origItems))
+					{
+						while((origItems>=0)&&(mob.numItems()>origItems))
+						{
+							final Item I=mob.getItem(origItems);
+							if(I==null)
+							{
+								if(origItems>0)
+									origItems--;
+								break;
+							}
+							if(I.owner()==null)
+								I.setOwner(mob);
+							I.destroy();
+						}
+						mob.recoverPhyStats();
+						mob.recoverCharStats();
+						mob.recoverMaxState();
+					}
 				}
+				if((thisRoom.numItems()==0)||(thisRoom.numPCInhabitants()>0))
+					return true;
+				List<Item> choices=new ArrayList<Item>(thisRoom.numItems()<1000?thisRoom.numItems():1000);
+				for(int i=0;(i<thisRoom.numItems())&&(choices.size()<1000);i++)
+				{
+					final Item thisItem=thisRoom.getItem(i);
+					if((thisItem!=null)
+					&&(thisItem.container()==null)
+					&&(CMLib.flags().isGettable(thisItem))
+					&&(CMLib.flags().canBeSeenBy(thisItem, mob))
+					&&(!(thisItem instanceof DeadBody))
+					&&(mask==null)||(CMLib.masking().maskCheck(mask, thisItem, false)))
+						choices.add(thisItem);
+				}
+				if(choices.size()==0)
+					return true;
+				final Item I=choices.get(CMLib.dice().roll(1,choices.size(),-1));
+				if(I!=null)
+					mob.doCommand(new XVector<String>("GET","$"+I.Name()+"$"),MUDCmdProcessor.METAFLAG_FORCED);
+				choices.clear();
+				choices=null;
 			}
-			if((thisRoom.numItems()==0)||(thisRoom.numPCInhabitants()>0))
-				return true;
-			List<Item> choices=new ArrayList<Item>(thisRoom.numItems()<1000?thisRoom.numItems():1000);
-			for(int i=0;(i<thisRoom.numItems())&&(choices.size()<1000);i++)
-			{
-				final Item thisItem=thisRoom.getItem(i);
-				if((thisItem!=null)
-				&&(thisItem.container()==null)
-				&&(CMLib.flags().isGettable(thisItem))
-				&&(CMLib.flags().canBeSeenBy(thisItem, mob))
-				&&(!(thisItem instanceof DeadBody))
-				&&(mask==null)||(CMLib.masking().maskCheck(mask, thisItem, false)))
-					choices.add(thisItem);
-			}
-			if(choices.size()==0)
-				return true;
-			final Item I=choices.get(CMLib.dice().roll(1,choices.size(),-1));
-			if(I!=null)
-				mob.doCommand(new XVector<String>("GET","$"+I.Name()+"$"),MUDCmdProcessor.METAFLAG_FORCED);
-			choices.clear();
-			choices=null;
 		}
 		return true;
 	}

@@ -248,6 +248,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			case FURNITURE_SLEEP:
 			case FURNITURE_SIT:
 			case FURNITURE_TABLE:
+			case FURNITURE_HOOK:
 				return true;
 			default:
 				return false;

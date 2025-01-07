@@ -369,6 +369,23 @@ public class CMParms
 	}
 
 	/**
+	 * Returns a string containing the given Strings, and now space delimited.
+	 * @param args the Strings to combine into a single string
+	 * @param startAt the index in the list to start at.
+	 * @return the single string
+	 */
+	public final static String combine(final String[] args, final int startAt)
+	{
+		final StringBuilder combined=new StringBuilder("");
+		if(args!=null)
+		{
+			for(int commandIndex=startAt;commandIndex<args.length;commandIndex++)
+				combined.append(args[commandIndex].toString()+" ");
+		}
+		return combined.toString().trim();
+	}
+
+	/**
 	 * Returns a string containing the given objects, with toString()
 	 * called, and now delimited by the character given.
 	 * @param commands the objects to combine into a single string
@@ -399,13 +416,10 @@ public class CMParms
 	public final static String combineWith(final List<?> commands, final char withChar)
 	{
 		final StringBuilder combined=new StringBuilder("");
-		if(commands!=null)
-		{
-			for(final Object o : commands)
-				combined.append(withChar).append(o.toString());
-		}
-		if(combined.length()==0)
+		if((commands==null)||(commands.size()==0))
 			return "";
+		for(final Object o : commands)
+			combined.append(withChar).append(o.toString());
 		return combined.substring(1);
 	}
 
@@ -968,19 +982,19 @@ public class CMParms
 			c=str.charAt(i);
 			if(c==delimiter)
 			{
-				sub=str.substring(last,i).trim();
-				last=i+1;
-				if(!ignoreNulls||(sub.length()>0))
+				if(safe&&(i>0)&&(str.charAt(i-1)=='\\'))
 				{
-					if(!safe)
-						V.add(sub.replace("\\",""));
-					else
+					str.deleteCharAt(i-1);
+					i--;
+				}
+				else
+				{
+					sub=str.substring(last,i).trim();
+					last=i+1;
+					if(!ignoreNulls||(sub.length()>0))
 						V.add(sub);
 				}
 			}
-			else
-			if(safe &&(c=='\\'))
-				str.deleteCharAt(i);
 		}
 		sub = (last>=str.length())?"":str.substring(last,str.length()).trim();
 		if(!ignoreNulls||(sub.length()>0))

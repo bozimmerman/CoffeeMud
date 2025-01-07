@@ -65,13 +65,13 @@ public class Poison_Liquor extends Poison_Alcohol
 	@Override
 	protected int alcoholContribution()
 	{
-		return 2;
+		return 1+(int)Math.round(rank);
 	}
 
 	@Override
-	protected int level()
+	protected int alchoholLevel()
 	{
-		return 2;
+		return 1+(int)Math.round(rank);
 	}
 
 	@Override

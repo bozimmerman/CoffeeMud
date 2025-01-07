@@ -1667,7 +1667,7 @@ public class CMLib
 	 */
 	public final static Enumeration<CMLibrary> libraries(final Library code)
 	{
-		final Vector<CMLibrary> V=new Vector<CMLibrary>();
+		final LinkedList<CMLibrary> V=new LinkedList<CMLibrary>();
 		for(int l=0;l<libs.length;l++)
 		{
 			if((libs[l]!=null)
@@ -1675,7 +1675,7 @@ public class CMLib
 			&&(!V.contains(libs[l].libraries[code.ordinal()])))
 				V.add(libs[l].libraries[code.ordinal()]);
 		}
-		return V.elements();
+		return new IteratorEnumeration<CMLibrary>(V.iterator());
 	}
 
 	/**

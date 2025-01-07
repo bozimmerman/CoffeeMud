@@ -440,7 +440,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 		}
 		if(!targetM.charStats().getWorshipCharID().equals(deityName))
 		{
-			mob.tell(L("@x1 must worship also worship @x2 to begin the imbuing.",targetM.Name(),deityName));
+			mob.tell(L("@x1 must also worship @x2 to begin the imbuing.",targetM.Name(),deityName));
 			return false;
 		}
 

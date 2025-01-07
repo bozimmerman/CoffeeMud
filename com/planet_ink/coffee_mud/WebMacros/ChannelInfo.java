@@ -85,6 +85,8 @@ public class ChannelInfo extends StdWebMacro
 					str.append(C.colorOverrideWords()).append(", ");
 				if(parms.containsKey("I3NAME"))
 					str.append(C.i3name()).append(", ");
+				if(parms.containsKey("DISCNAME"))
+					str.append(C.discordName()).append(", ");
 				if(parms.containsKey("IMC2NAME"))
 					str.append(C.imc2Name()).append(", ");
 				if(parms.containsKey("MASK"))

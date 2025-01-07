@@ -49,20 +49,20 @@ public class Pose extends StdCommand
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
+		final PlayerStats pstats = mob.playerStats();
 		if((commands.size()>0)&&(commands.get(0).toString().equalsIgnoreCase("NOPOSE")))
 		{
-			final PlayerStats pstats = mob.playerStats();
 			if(pstats != null)
 			{
-				if((pstats.getSavedPose()==null)||(pstats.getSavedPose().length()==0))
+				if(pstats.getSavedPose().length()==0)
 				{
 					mob.tell(L("You are not currently posing."));
 					return false;
 				}
-				pstats.setSavedPose("");
-				mob.setDisplayText("");
-				mob.tell(L("You stop posing."));
+				pstats.setSavedPose("", true);
 			}
+			mob.setDisplayText("");
+			mob.tell(L("You stop posing."));
 			return false;
 		}
 		if(commands.size()<2)
@@ -70,8 +70,19 @@ public class Pose extends StdCommand
 			if(mob.displayText().length()==0)
 				mob.tell(L("POSE how?"));
 			else
-				mob.tell(L("Your current pose is: @x1",mob.displayText(mob)));
+			if(pstats.isPoseConstant())
+				mob.tell(L("Your current pose is: @x1 (constant)",mob.displayText(mob)));
+			else
+				mob.tell(L("Your current pose here is: @x1 (here only)",mob.displayText(mob)));
 			return false;
+		}
+		boolean isConstant=true;
+		if(commands.get(1).equalsIgnoreCase("here")
+		&&(pstats != null)
+		&&(commands.size()>2))
+		{
+			commands.remove(1);
+			isConstant=false;
 		}
 		String combinedCommands=CMParms.combine(commands,1);
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.POSEFILTER);
@@ -85,9 +96,8 @@ public class Pose extends StdCommand
 		{
 			mob.location().send(mob,msg);
 			mob.setDisplayText(mob.Name()+combinedCommands);
-			final PlayerStats pstats = mob.playerStats();
 			if(pstats != null)
-				pstats.setSavedPose(mob.Name()+combinedCommands);
+				pstats.setSavedPose(mob.Name()+combinedCommands, isConstant);
 		}
 		return false;
 	}

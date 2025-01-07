@@ -252,6 +252,30 @@ public class CMFile extends File
 	}
 
 	/**
+	 * Returns an array of existing CMFile file objects
+	 * @param fileName the base file to look for
+	 * @param user the user to open all files as
+	 * @param bitmap file open flags (errors only apply on first)
+	 * @return non-null array of CMFile objects that exist on the filesystem
+	 */
+	public static CMFile[] getExistingExtendedFiles(final String fileName, final MOB user, int bitmap)
+	{
+		final List<CMFile> fileList = new ArrayList<CMFile>(1);
+		String i="";
+		for(int x=0;x<=9;x++,i="."+(x))
+		{
+			final CMFile F=new CMFile(fileName+i, user, bitmap);
+			if(F.exists())
+				fileList.add(F);
+			else
+			if(x>1)
+				break;
+			bitmap = bitmap & (~CMFile.FLAG_LOGERRORS);
+		}
+		return fileList.toArray(new CMFile[fileList.size()]);
+	}
+
+	/**
 	 *
 	 * @author Bo Zimmerman
 	 * Class to hold an internal database (VFS) file, or directory

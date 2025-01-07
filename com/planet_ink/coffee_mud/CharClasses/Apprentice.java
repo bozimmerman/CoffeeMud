@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.CharClasses;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -165,6 +166,37 @@ public class Apprentice extends StdCharClass
 			if(!quiet)
 				mob.tell(L("You are beyond apprentice skill at this point."));
 			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!(myHost instanceof MOB))
+			return super.okMessage(myHost,msg);
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((msg.target()==myHost)
+		&&(msg.targetMinor()==CMMsg.TYP_TRAIN)
+		&&(((MOB)msg.target()).charStats().getCurrentClass().ID().equals("Apprentice"))
+		&&(msg.tool() != null))
+		{
+			final String costStr = msg.tool().getStat("COST");
+			final String typStr = msg.tool().getStat("TYPE");
+			if((costStr!=null)
+			&&(costStr.length()>0)
+			&&(typStr!=null)
+			&&(typStr.length()>0))
+			{
+				final Cost C = Cost.valueOf(costStr);
+				if((C != null)
+				&&(CMClass.getCharClass(typStr)==null))
+				{
+					//final CostManager cM = CMLib.utensils().createCostManager(C);
+					//TODO: something that prevents an Apprentice from using their last train
+				}
+			}
 		}
 		return true;
 	}

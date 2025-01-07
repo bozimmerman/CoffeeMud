@@ -504,25 +504,23 @@ public class DefaultCoffeeShop implements CoffeeShop
 	public Environmental removeStock(final String name, final MOB mob)
 	{
 		Environmental item=getStock(name,mob);
-		if(item instanceof Ability)
-			return item;
+		for(final ShelfProduct SP : storeInventory)
+		{
+			if(SP.product==item)
+			{
+				final Environmental copyItem=(Environmental)item.copyOf();
+				if(SP.number>1)
+					SP.number--;
+				else
+				{
+					storeInventory.remove(SP);
+					item.destroy();
+				}
+				item=copyItem;
+			}
+		}
 		if(item instanceof Physical)
 		{
-			for(final ShelfProduct SP : storeInventory)
-			{
-				if(SP.product==item)
-				{
-					final Environmental copyItem=(Environmental)item.copyOf();
-					if(SP.number>1)
-						SP.number--;
-					else
-					{
-						storeInventory.remove(SP);
-						item.destroy();
-					}
-					item=copyItem;
-				}
-			}
 			((Physical)item).basePhyStats().setRejuv(PhyStats.NO_REJUV);
 			((Physical)item).phyStats().setRejuv(PhyStats.NO_REJUV);
 		}

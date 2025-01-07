@@ -51,11 +51,12 @@ settable vars:
 	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
 	<FACTION>$source_faction</FACTION>
 	<NUMFACTION>$[$source_faction_amt / 500]</NUMFACTION>
-	<QUEST_NAME SELECT="Any-1">
+	<QUEST_NAME SELECT="Pick-1">
 		<QUEST_NAME>${C:source_name} needs you to $reason_verb to $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:source_name} wants you to $reason_verb to $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:source_name} asks you to $reason_verb to $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} to $target_name in ${C:target_area_name} for ${C:source_name}</QUEST_NAME>
+		<QUEST_NAME PICKWEIGHT=99 CONDITION="$deityname!=''">${C:source_name} needs you to $reason_verb to $target_name in ${C:target_area_name} for $deityname</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_NOTIFYSSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSSTRING>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
@@ -175,6 +176,7 @@ settable vars:
 	</STRING>
 	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
 		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="reason_short">${c:deityname} requires that you go to $target_name.</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:deityname} requires that you go to $target_name.</STRING>
 		</STRING>

@@ -245,7 +245,7 @@ public class AttributeTraining extends CommonSkill
 				commonTelL(mob,"@x1 is perfectly capable of training on their own.",M.name(mob));
 				return false;
 			}
-			if(CMLib.flags().isAnimalIntelligence(M))
+			if(CMLib.flags().isAnAnimal(M))
 			{
 				commonTelL(mob,"You can't train with @x1.",M.name(mob));
 				return false;

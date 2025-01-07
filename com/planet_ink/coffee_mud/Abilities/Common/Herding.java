@@ -182,7 +182,7 @@ public class Herding extends CommonSkill
 		{
 			final MOB M = m.nextElement();
 			if((M.isMonster())
-			&&(CMLib.flags().isAnimalIntelligence(M))
+			&&(CMLib.flags().isAnAnimal(M))
 			&&(CMLib.flags().canBeSeenBy(M, mob))
 			&&(mob.riding()!=M)
 			&&((raceName.toLowerCase().startsWith(M.charStats().getMyRace().name().toLowerCase()))
@@ -199,7 +199,7 @@ public class Herding extends CommonSkill
 			||(!exampleM.isMonster())
 			||(!CMLib.flags().canBeSeenBy(exampleM, mob))
 			||(mob.riding()==exampleM)
-			||(!CMLib.flags().isAnimalIntelligence(exampleM)))
+			||(!CMLib.flags().isAnAnimal(exampleM)))
 				exampleM = null;
 		}
 		if(exampleM == null)
@@ -212,7 +212,7 @@ public class Herding extends CommonSkill
 		{
 			final MOB M = m.nextElement();
 			if((M.isMonster())
-			&&(CMLib.flags().isAnimalIntelligence(M))
+			&&(CMLib.flags().isAnAnimal(M))
 			&&(CMLib.flags().canBeSeenBy(M, mob))
 			&&(mob.riding()!=M)
 			&&(M.charStats().getMyRace()==exampleM.charStats().getMyRace()))

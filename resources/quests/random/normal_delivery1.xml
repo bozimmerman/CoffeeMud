@@ -53,11 +53,12 @@ settable vars:
 	<FACTION>$source_faction</FACTION>
 	<NUMFACTION>$[$source_faction_amt / 500]</NUMFACTION>
 	<DELIVEREE_COUNT>$num_targets</DELIVEREE_COUNT>
-	<QUEST_NAME SELECT="Any-1">
+	<QUEST_NAME SELECT="Pick-1">
 		<QUEST_NAME>${C:source_name} needs ${target_item_name} $reason_verbed to $c_target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:source_name} wants ${target_item_name} $reason_verbed to $c_target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:source_name} asks for ${target_item_name} to be $reason_verbed to $c_target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} ${target_item_name} to $c_target_name in ${C:target_area_name} for ${C:source_name}</QUEST_NAME>
+		<QUEST_NAME PICKWEIGHT=99 CONDITION="$deityname!=''">${C:source_name} needs ${target_item_name} $reason_verbed to $c_target_name in ${C:target_area_name} for $deityname</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_NOTIFYSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSTRING>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
@@ -256,6 +257,7 @@ settable vars:
 	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_short">${c:deityname} wants $target_item_name delivered to ${p_target_name}.</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:deityname} requires that I start a ${target_item_name} factory with ${p_target_name} help.</STRING>
 			<STRING>${c:deityname} requires that ${c:p_target_name} and I study $target_item_name today.</STRING>

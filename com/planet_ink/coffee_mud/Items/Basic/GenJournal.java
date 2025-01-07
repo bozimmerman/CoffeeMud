@@ -101,8 +101,13 @@ public class GenJournal extends StdJournal
 	@Override
 	public String getStat(final String code)
 	{
+		if(code == null)
+			return "";
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
+		final String ucode=code.toUpperCase().trim();
+		if(CMParms.indexOf(JOURNAL_PARMS_LIST, ucode)>0)
+			return getParm(ucode);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
 

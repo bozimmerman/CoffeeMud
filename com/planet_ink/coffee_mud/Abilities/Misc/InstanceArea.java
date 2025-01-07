@@ -329,7 +329,7 @@ public class InstanceArea extends StdAbility
 					return true;
 				}
 				InstanceArea iA=null;
-				final MOB leaderM = (msg.source().amFollowing()!=null)?msg.source().amUltimatelyFollowing():msg.source();
+				final MOB leaderM = msg.source().getGroupLeader();
 				final Set<MOB> grp = getAppropriateGroup(leaderM);
 				synchronized(managed)
 				{
@@ -680,7 +680,7 @@ public class InstanceArea extends StdAbility
 			final String absorb = instVars.get(InstVar.ABSORB.toString());
 			if(absorb != null)
 				reEffect(instArea,"Prop_AbsorbDamage",absorb);
-			final TimeClock C=(TimeClock)CMLib.time().globalClock().copyOf();
+			final TimeClock C=(TimeClock)CMLib.time().homeClock(affected).copyOf();
 			C.setDayOfMonth(1);
 			C.setYear(1);
 			C.setMonth(1);
@@ -688,7 +688,7 @@ public class InstanceArea extends StdAbility
 			final String hours = instVars.get(InstVar.HOURS.toString());
 			if((hours != null)&&(CMath.isInteger(hours)))
 			{
-				final double mul=CMath.div(CMath.s_int(hours),CMLib.time().globalClock().getHoursInDay());
+				final double mul=CMath.div(CMath.s_int(hours),C.getHoursInDay());
 				if(mul != 1.0)
 				{
 					final int newHours = (int)Math.round(CMath.mul(C.getHoursInDay(),mul));
@@ -1711,10 +1711,10 @@ public class InstanceArea extends StdAbility
 			return (mob==affected)||mobGrp.contains(affected);
 		if(affected instanceof Rideable)
 			return ((Rideable)affected).amRiding(mob)
-				||((mob.amFollowing()!=null)&&((Rideable)affected).amRiding(mob.amUltimatelyFollowing()));
+				||((mob.amFollowing()!=null)&&((Rideable)affected).amRiding(mob.getGroupLeader()));
 		if(affected instanceof Item)
 			return (((Item)affected).owner()==mob)
-					||((mob.amFollowing()!=null)&&(((Item)affected).owner()==mob.amUltimatelyFollowing()));
+					||((mob.amFollowing()!=null)&&(((Item)affected).owner()==mob.getGroupLeader()));
 		return false;
 	}
 
@@ -1799,7 +1799,7 @@ public class InstanceArea extends StdAbility
 			final Room srcStartRoom =msg.source().getStartRoom();
 			if(((srcStartRoom==null)||(srcStartRoom.getArea()!=parentA)||(msg.source().isPlayer())))
 			{
-				MOB leaderM = (msg.source().amFollowing()!=null)?msg.source().amUltimatelyFollowing():msg.source();
+				MOB leaderM = msg.source().getGroupLeader();
 				final Set<MOB> grp = getAppropriateGroup(leaderM);
 				Area instA = findExistingInstance(msg.source(), grp, parentA);
 				boolean created = false;
@@ -2061,14 +2061,10 @@ public class InstanceArea extends StdAbility
 		if(map == null)
 		{
 			map = new TreeMap<String,Map<String,String>[]>();
+			final CMFile[] fileList = CMFile.getExistingExtendedFiles(Resources.makeFileResourceName("skills/areainstancetypes.txt"),null,CMFile.FLAG_FORCEALLOW);
 			final List<String> lines = new ArrayList<String>();
-			for(String i="";!i.equals(".9");i=("."+(Math.round(CMath.s_double(i)*10)+1)))
-			{
-				final CMFile F=new CMFile(Resources.makeFileResourceName("skills/areainstancetypes.txt"+i), null);
-				if(!F.exists())
-					break;
+			for(final CMFile F : fileList)
 				lines.addAll(Resources.getFileLineVector(F.text()));
-			}
 			for(String line : lines)
 			{
 				line=line.trim();

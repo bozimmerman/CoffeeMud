@@ -357,7 +357,7 @@ public class Modify extends StdCommand
 	public void rooms(final MOB mob, final List<String> commands)
 		throws IOException
 	{
-		if(mob.location().roomID().equals(""))
+		if(mob.location().getGridParent() != null)
 		{
 			mob.tell(L("This command is invalid from within a GridLocaleChild room."));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
@@ -567,7 +567,30 @@ public class Modify extends StdCommand
 		else
 		if(CMLib.coffeeMaker().isAnyGenStat(mob.location(), command))
 		{
+			final String roomID = mob.location().roomID();
+			final boolean roomIDChange=command.equalsIgnoreCase("roomID");
+			if(roomIDChange)
+			{
+				if(restStr.length()==0)
+				{
+					mob.tell(L("'@x1' is not a valid room id.",restStr));
+					return;
+				}
+				else
+				if((CMLib.map().getRoom(restStr) != null) && (CMLib.map().getRoom(restStr) != mob.location()))
+				{
+					mob.tell(L("'@x1' is not a valid room id: Already Exists.",restStr));
+					return;
+				}
+			}
 			CMLib.coffeeMaker().setAnyGenStat(mob.location(),command, restStr);
+			if(roomIDChange && (!roomID.equals(mob.location().roomID())))
+			{
+				if(mob.location().roomID().length()==0)
+					mob.location().setRoomID(roomID);
+				else
+					CMLib.database().DBReCreate(mob.location(),roomID);
+			}
 			mob.location().recoverPhyStats();
 			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The very nature of reality changes.\n\r"));
@@ -1090,15 +1113,23 @@ public class Modify extends StdCommand
 		else
 		if(field.equals("INTERVAL"))
 		{
-			long tm = CMLib.time().parseTickExpression(value);
-			if((tm <= 0)||(value.trim().length()==0))
+			long tm;
+			try
 			{
-				mob.tell(L("@x1 is not a valid interval.\n\r",value));
+				if(value.trim().length()==0)
+					throw new CMException("Bad value: "+value);
+				tm = CMLib.time().parseTickExpression(CMLib.time().homeClock(mob), value);
+				if(tm < 0)
+					throw new CMException("Bad value: "+tm);
+			}
+			catch(final CMException e)
+			{
+				mob.tell(L("@x1 is not a valid interval.  Try like 10 minutes (@x2)!",value,e.getMessage()));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 				return;
 			}
 			tm = tm * CMProps.getTickMillis();
-			modJob.data("INTERVAL="+tm);
+			modJob.data("INTERVAL=\""+value+"\"");
 			modJob.update(System.currentTimeMillis()+tm);
 			CMLib.database().DBUpdateJournal("SYSTEM_CRON", modJob);
 			Log.sysOut(mob.Name()+" modified cron job "+modJob.subj()+".");
@@ -1331,7 +1362,7 @@ public class Modify extends StdCommand
 	public void exits(final MOB mob, final List<String> commands)
 		throws IOException
 	{
-		if(mob.location().roomID().equals(""))
+		if(mob.location().getGridParent() != null)
 		{
 			mob.tell(L("This command is invalid from within a GridLocaleChild room."));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));

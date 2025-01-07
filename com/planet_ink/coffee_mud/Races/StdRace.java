@@ -653,7 +653,7 @@ public class StdRace implements Race
 			if(autoInvoke)
 			{
 				A.autoInvocation(mob, false);
-				final boolean isChild=CMLib.flags().isChild(mob);
+				final boolean isChild=CMLib.flags().isAgedChild(mob);
 				final boolean isAnimal=CMLib.flags().isAnimalIntelligence(mob);
 				final boolean isMonster=mob.isMonster();
 				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
@@ -959,10 +959,10 @@ public class StdRace implements Race
 		if(mob.isMonster())
 		{
 			final MOB following=mob.amFollowing();
-			final MOB ultFollow=mob.amUltimatelyFollowing();
+			final MOB ultFollow=mob.getGroupLeader();
 			if((following!=null)
 			&&((!following.isMonster())
-				||((ultFollow != null) && (!ultFollow.isMonster()))))
+				||(!ultFollow.isMonster())))
 			{
 				final MOB M=(MOB)mob.copyOf();
 				CMLib.threads().unTickAll(M);
@@ -978,7 +978,7 @@ public class StdRace implements Race
 		bodyI.setCharStats((CharStats)mob.baseCharStats().copyOf());
 		bodyI.basePhyStats().setLevel(mob.basePhyStats().level());
 		bodyI.basePhyStats().setWeight(mob.basePhyStats().weight());
-		bodyI.setIsPlayerCorpse(!mob.isMonster());
+		bodyI.setIsPlayerCorpse(mob.isPlayer());
 		bodyI.setTimeOfDeath(System.currentTimeMillis());
 		bodyI.setMobPKFlag(mob.isAttributeSet(MOB.Attrib.PLAYERKILL));
 		bodyI.setName(L("the body of @x1",mob.Name().replace('\'','`')));

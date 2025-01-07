@@ -176,6 +176,8 @@ public class Prayer_AnimateGhoul extends Prayer
 		newMOB.baseState().setMana(100);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 		newMOB.addTattoo("SYSTEM_SUMMONED");
+		if(mob != null)
+			newMOB.addTattoo("SUMMONED_BY:"+mob.name());
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

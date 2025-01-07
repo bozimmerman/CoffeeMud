@@ -143,9 +143,12 @@ public class ShipTacticalProgram extends ShipNavProgram
 				return false;
 			}
 			//final double[] targetDirection = CMLib.space().getDirection(ship.coordinates(), CMLib.space().moveSpaceObject(targetObj.coordinates(), targetObj.direction(), (long)targetObj.speed()));
-			double[] targetDirection = CMLib.space().getDirection(ship.coordinates(), targetObj.coordinates());
+			Dir3D targetDirection = CMLib.space().getDirection(ship.coordinates(), targetObj.coordinates());
 			if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-				Log.debugOut("Fire: "+ship.Name()+" -> "+targetObj.Name()+"@"+Math.toDegrees(targetDirection[0])+","+Math.toDegrees(targetDirection[1]));
+			{
+				Log.debugOut("Fire: "+ship.Name()+" -> "+targetObj.Name()+"@"+Math.toDegrees(targetDirection.xyd())
+					+","+Math.toDegrees(targetDirection.zd()));
+			}
 			TechComponent finalWeaponToFire = null;
 			final String weapName = CMParms.combine(parsed,1);
 			if(weapName.length()>0)
@@ -193,9 +196,9 @@ public class ShipTacticalProgram extends ShipNavProgram
 			{
 				E=finalWeaponToFire;
 				String code;
-				code=TechCommand.TARGETSET.makeCommand(Long.valueOf(targetObj.coordinates()[0]),
-													   Long.valueOf(targetObj.coordinates()[1]),
-													   Long.valueOf(targetObj.coordinates()[2]));
+				code=TechCommand.TARGETSET.makeCommand(Long.valueOf(targetObj.coordinates().x().longValue()),
+													   Long.valueOf(targetObj.coordinates().y().longValue()),
+													   Long.valueOf(targetObj.coordinates().z().longValue()));
 				msg=CMClass.getMsg(mob, finalWeaponToFire, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 				if((finalWeaponToFire.getTechType()!=Technical.TechType.SHIP_LAUNCHER)
 				||sendMessage(mob, finalWeaponToFire, msg, unparsed))
@@ -226,7 +229,7 @@ public class ShipTacticalProgram extends ShipNavProgram
 								final long maxChaseTimeMs = 300000; //TODO: magic numbers suck
 								final int maxTicks = (int)(maxChaseTimeMs/CMProps.getTickMillis());
 								final double maxSpeed = CMath.mul((ammoI.phyStats().speed()/100.0), SpaceObject.VELOCITY_LIGHT);
-								final Pair<double[], Long> intercept = CMLib.space().calculateIntercept(ammoO, targetO, Math.round(maxSpeed), maxTicks);
+								final Pair<Dir3D, Long> intercept = CMLib.space().calculateIntercept(ammoO, targetO, Math.round(maxSpeed), maxTicks);
 								if(intercept != null)
 								{
 									ammoO.setSpeed(intercept.second.longValue());
@@ -235,7 +238,7 @@ public class ShipTacticalProgram extends ShipNavProgram
 							}
 						}
 					}
-					code=TechCommand.AIMSET.makeCommand(Double.valueOf(targetDirection[0]), Double.valueOf(targetDirection[1]));
+					code=TechCommand.AIMSET.makeCommand(Double.valueOf(targetDirection.xyd()), Double.valueOf(targetDirection.zd()));
 					msg=CMClass.getMsg(mob, finalWeaponToFire, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 					if(sendMessage(mob, finalWeaponToFire, msg, unparsed))
 					{
@@ -395,7 +398,7 @@ public class ShipTacticalProgram extends ShipNavProgram
 				String coords = "";
 				if((currentTarget.speed()==0)
 				&&(currentTarget.radius()>SpaceObject.Distance.AsteroidRadius.dm))
-					coords = CMParms.toListString(currentTarget.coordinates());
+					coords = CMParms.toListString(currentTarget.coordinates().toLongs());
 				final String code=TechCommand.SWSVCRES.makeCommand(service,new String[] { Name,name,coords });
 				final CMMsg msg2=CMClass.getMsg(factoryMOB, S, this,
 								CMMsg.NO_EFFECT, null,

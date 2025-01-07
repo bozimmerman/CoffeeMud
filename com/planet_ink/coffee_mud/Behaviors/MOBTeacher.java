@@ -74,8 +74,7 @@ public class MOBTeacher extends CombatAbilities
 		&&(mob.baseCharStats().getMyClass(0).ID().equals("StdCharClass"))
 		&&(!C.ID().equals("StdCharClass")))
 		{
-			mob.baseCharStats().setMyClasses(C.ID());
-			mob.baseCharStats().setMyLevels(""+mob.phyStats().level());
+			mob.baseCharStats().setAllClassInfo(C.ID(), ""+mob.phyStats().level());
 			mob.recoverCharStats();
 			return;
 		}
@@ -213,8 +212,7 @@ public class MOBTeacher extends CombatAbilities
 
 	protected void ensureCharClass()
 	{
-		myMOB.baseCharStats().setMyClasses("StdCharClass");
-		myMOB.baseCharStats().setMyLevels(""+myMOB.phyStats().level());
+		myMOB.baseCharStats().setAllClassInfo("StdCharClass", ""+myMOB.phyStats().level());
 		myMOB.recoverCharStats();
 
 		final Map<String,Ability> myAbles=new HashMap<String,Ability>();

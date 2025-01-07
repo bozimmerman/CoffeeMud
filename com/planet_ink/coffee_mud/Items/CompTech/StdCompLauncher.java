@@ -52,7 +52,7 @@ public class StdCompLauncher extends StdElecCompContainer implements TechCompone
 	private volatile ShipDir[]				currCoverage	= null;
 	private volatile Reference<SpaceShip>	myShip			= null;
 	private volatile long					powerSetting	= Integer.MAX_VALUE;
-	private final double[]					targetDirection	= new double[] { 0.0, 0.0 };
+	private final Dir3D						targetDirection	= new Dir3D();
 	private volatile SpaceObject			targetSet		= null;
 	private TechType						techType		= TechType.ANY;
 
@@ -273,7 +273,8 @@ public class StdCompLauncher extends StdElecCompContainer implements TechCompone
 								reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 								return;
 							}
-							final long[] proposedLoc=new long[] {((Long)parms[0]).longValue(), ((Long)parms[1]).longValue(), ((Long)parms[2]).longValue()};
+							final Coord3D proposedLoc=
+									new Coord3D(new long[] {((Long)parms[0]).longValue(), ((Long)parms[1]).longValue(), ((Long)parms[2]).longValue()});
 							final List<SpaceObject> nearbies = CMLib.space().getSpaceObjectsByCenterpointWithin(proposedLoc, 0, 1000);
 							SpaceObject nearestObj = null;
 							long closest = Long.MAX_VALUE;
@@ -306,20 +307,20 @@ public class StdCompLauncher extends StdElecCompContainer implements TechCompone
 							{
 								if(ship instanceof SpaceShip)
 								{
-									final double[] proposedDirection=new double[] {((Double)parms[0]).doubleValue(),((Double)parms[1]).doubleValue()};
+									final Dir3D proposedDirection=new Dir3D(new double[] {((Double)parms[0]).doubleValue(),((Double)parms[1]).doubleValue()});
 									final ShipDir dir = CMLib.space().getDirectionFromDir(((SpaceShip)ship).facing(), ((SpaceShip)ship).roll(), proposedDirection);
 									if(!CMParms.contains(getCurrentBattleCoveredDirections(), dir))
 										reportError(this, controlI, mob, null, lang.L("Failure: @x1: weapon is not facing correctly for that target direction.",me.name(mob)));
 									else
 									{
-										targetDirection[0] = ((Double)parms[0]).doubleValue();
-										targetDirection[1] = ((Double)parms[1]).doubleValue();
+										targetDirection.xy(((Double)parms[0]).doubleValue());
+										targetDirection.z(((Double)parms[1]).doubleValue());
 									}
 								}
 								else
 								{
-									targetDirection[0] = ((Double)parms[0]).doubleValue();
-									targetDirection[1] = ((Double)parms[1]).doubleValue();
+									targetDirection.xy(((Double)parms[0]).doubleValue());
+									targetDirection.z(((Double)parms[1]).doubleValue());
 								}
 							}
 						}
@@ -376,7 +377,7 @@ public class StdCompLauncher extends StdElecCompContainer implements TechCompone
 											launchSpeed = launchedO.speed();
 										final int accellerationOfShipInSameDirectionAsWeapon = 4; //TODO: magic numbers suck
 										//TODO: adding ship.speed() is wrong because you could be firing aft.
-										final long[] firstCoords = CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection,
+										final Coord3D firstCoords = CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection,
 												(int)Math.round(ship.radius()+launchedO.radius()+ship.speed()+accellerationOfShipInSameDirectionAsWeapon));
 										launchedO.setCoords(firstCoords);
 										launchedO.setDirection(targetDirection);

@@ -538,9 +538,7 @@ public class Gaoler extends StdCharClass
 							qualifyingFood=false;
 						else
 						{
-							TimeClock C=CMLib.time().localClock(msg.source());
-							if(C==null)
-								C=CMLib.time().globalClock();
+							final TimeClock C=CMLib.time().localClock(msg.source());
 							map.put(""+msg.target(), Long.valueOf(System.currentTimeMillis() + (CMProps.getMillisPerMudHour() * C.getHoursInDay())));
 						}
 					}

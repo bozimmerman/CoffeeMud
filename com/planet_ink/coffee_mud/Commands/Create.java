@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.PlanarAbility.PlanarVar;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -20,6 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 /*
    Copyright 2004-2024 Bo Zimmerman
@@ -141,17 +143,17 @@ public class Create extends StdCommand
 		Log.sysOut("Exits",mob.location().roomID()+" exits changed by "+mob.Name()+".");
 	}
 
-	private long[] makeSpaceLocation(final MOB mob, final SpaceObject newItem, String rest)
+	private Coord3D makeSpaceLocation(final MOB mob, final SpaceObject newItem, String rest)
 	{
 		final List<String> utokens=CMParms.parseSpaces(rest.toUpperCase(),true);
 		final String distErrorMsg=L("Valid distance units include: @x1.",SpaceObject.Distance.getFullList());
 		int x;
 		if(((x=utokens.indexOf("FROM"))>0)&&(x<utokens.size()-1))
 		{
-			final double[] direction=new double[]{Math.toRadians(CMLib.dice().roll(1, 360, -1)),Math.toRadians(CMLib.dice().roll(1,180,-1))};
+			final Dir3D direction=new Dir3D(Math.toRadians(CMLib.dice().roll(1, 360, -1)),Math.toRadians(CMLib.dice().roll(1,180,-1)));
 			final String distStr=CMParms.combine(utokens,0,x);
 			final String objName=CMParms.combine(utokens,x+1);
-			final Long dist=CMLib.english().parseSpaceDistance(distStr);
+			final BigDecimal dist=CMLib.english().parseSpaceDistance(distStr);
 			if(dist==null)
 			{
 				mob.tell(L("Unknown distance for space object @x1:",newItem.ID())+" '"+distStr+"'. \n\r"+distErrorMsg);
@@ -171,7 +173,7 @@ public class Create extends StdCommand
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 				return null;
 			}
-			rest=CMParms.toListString(CMLib.space().getLocation(O.coordinates(), direction, dist.longValue()));
+			rest=CMParms.toListString(CMLib.space().getLocation(O.coordinates(), direction, dist.longValue()).toLongs());
 		}
 		final List<String> valsL=CMParms.parseCommas(rest,true);
 		if(valsL.size()!=3)
@@ -184,10 +186,10 @@ public class Create extends StdCommand
 		else
 		{
 			boolean fail=true;
-			final Long[] valL=new Long[3];
+			final Coord3D valL = new Coord3D();
 			for(int i=0;i<3;i++)
 			{
-				final Long newValue=CMLib.english().parseSpaceDistance(valsL.get(i));
+				final BigDecimal newValue=CMLib.english().parseSpaceDistance(valsL.get(i));
 				if(newValue==null)
 				{
 					mob.tell(L("Unknown coord: '@x2'. @x3 for space object @x1:",newItem.ID(),valsL.get(i),distErrorMsg));
@@ -195,14 +197,14 @@ public class Create extends StdCommand
 				}
 				else
 				{
-					valL[i]=newValue;
+					valL.set(i,newValue);
 					if(i==2)
 						fail=false;
 				}
 			}
 			if(!fail)
 			{
-				return new long[]{valL[0].longValue(),valL[1].longValue(),valL[2].longValue()};
+				return valL;
 			}
 			else
 			{
@@ -227,11 +229,11 @@ public class Create extends StdCommand
 		Environmental dest=mob.location();
 		Container setContainer=null;
 		String rest="";
-		long [] coordinates=new long[]{
+		Coord3D coordinates=new Coord3D(new long[]{
 			CMLib.dice().getRandomizer().nextLong(),
 			CMLib.dice().getRandomizer().nextLong(),
 			CMLib.dice().getRandomizer().nextLong()
-		};
+		});
 
 		final int x=itemID.indexOf('@');
 		if(x>0)
@@ -318,11 +320,11 @@ public class Create extends StdCommand
 			int i=21;
 			while((--i>0)&&(CMLib.space().getSpaceObjectsByCenterpointWithin(coordinates, 0, SpaceObject.Distance.SolarSystemDiameter.dm).size()>0))
 			{
-				coordinates=new long[]{
+				coordinates=new Coord3D(new long[]{
 					CMLib.dice().getRandomizer().nextLong(),
 					CMLib.dice().getRandomizer().nextLong(),
 					CMLib.dice().getRandomizer().nextLong()
-				};
+				});
 			}
 		}
 
@@ -332,7 +334,7 @@ public class Create extends StdCommand
 		&&(!(newItem instanceof Weapon))
 		&&(!(newItem instanceof SpaceShip)))
 		{
-			CMLib.space().addObjectToSpace(((SpaceObject)newItem), coordinates);
+			CMLib.space().addObjectToSpace(((SpaceObject)newItem), new Coord3D(coordinates));
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 appears in the sky.",newItem.name()));
 		}
 		else
@@ -942,11 +944,11 @@ public class Create extends StdCommand
 			return;
 		}
 		String areaName=CMParms.combine(commands,2);
-		long [] coordinates=new long[]{
+		Coord3D coordinates=new Coord3D(new long[]{
 			CMLib.dice().getRandomizer().nextLong(),
 			CMLib.dice().getRandomizer().nextLong(),
 			CMLib.dice().getRandomizer().nextLong()
-		};
+		});
 
 		final int x=areaName.indexOf('@');
 		String spaceCoords="";
@@ -990,7 +992,7 @@ public class Create extends StdCommand
 					return;
 				}
 			}
-			CMLib.space().addObjectToSpace(((SpaceObject)A), coordinates);
+			CMLib.space().addObjectToSpace(((SpaceObject)A), new Coord3D(coordinates));
 		}
 		A.setName(areaName);
 		CMLib.map().addArea(A);
@@ -1183,7 +1185,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		if(CMLib.awards().modifyAutoProperty(Integer.MAX_VALUE, CMParms.combine(commands,2)))
+		if(CMLib.awards().modifyAutoProperty(Integer.MAX_VALUE, CMParms.combineQuoted(commands,2)))
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The superstition of the players just increased!"));
 		else
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
@@ -1609,10 +1611,18 @@ public class Create extends StdCommand
 		}
 		final String name=commands.get(2);
 		final String interval=CMParms.combine(commands,3);
-		long tm = CMLib.time().parseTickExpression(interval);
-		if(tm <= 0)
+		long tm;
+		try
 		{
-			mob.tell(L("@x1 is not a valid interval.  Try like 10 minutes!",interval));
+			if(interval.trim().length()==0)
+				throw new CMException("Bad value: "+interval);
+			tm = CMLib.time().parseTickExpression(CMLib.time().homeClock(mob), interval);
+			if(tm < 0)
+				throw new CMException("Bad value: "+tm);
+		}
+		catch(final CMException e)
+		{
+			mob.tell(L("@x1 is not a valid interval.  Try like 10 minutes (@x2)!",interval,e.getMessage()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -1626,7 +1636,7 @@ public class Create extends StdCommand
 		msg.parent("");
 		msg.msgIcon("");
 		msg.attributes(msg.attributes()|JournalEntry.JournalAttrib.PROTECTED.bit);
-		msg.data("INTERVAL="+tm);
+		msg.data("INTERVAL=\""+interval+"\"");
 		msg.to("ALL");
 		CMLib.database().DBWriteJournal("SYSTEM_CRON", msg);
 		mob.tell(L("New cron job created.  Use LIST CRON and MODIFY CRON to set a script."));

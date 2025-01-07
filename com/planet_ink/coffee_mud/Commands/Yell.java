@@ -38,7 +38,7 @@ public class Yell extends StdCommand
 	{
 	}
 
-	private final String[] access=I(new String[]{"YELL","Y"});
+	private final String[] access=I(new String[]{"YELL","YELLTO","YELLAT","Y"});
 	@Override
 	public String[] getAccessWords()
 	{

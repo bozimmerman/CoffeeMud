@@ -401,6 +401,14 @@ public class CMStrings
 		return (("aeiouAEIOU").indexOf(c)>=0);
 	}
 
+	public final static String getFirstWord(final String s)
+	{
+		if(s==null)
+			return "";
+		return s.substring(0,indexOfEndOfWord(s,0));
+	}
+
+
 	/**
 	 * Returns the next index in the given string of an end-of-word character,
 	 * such as space,.;? or !.  It returns that index.
@@ -647,18 +655,18 @@ public class CMStrings
 	/**
 	 * Returns whether the given string contains the second string, without any following
 	 * letter, which is the CMStrings definition of a "word".  This check is case
-	 * sensitive.
+	 * sensitive.  It returns the index of the word
 	 * @param thisStr the string to look in
 	 * @param word the string/word to look for
-	 * @return true if the word is in the string, and false otherwise
+	 * @return -1, or the index of the found word in the string
 	 */
-	public final static boolean containsWord(final String thisStr, final String word)
+	public final static int indexOfWord(final String thisStr, final String word)
 	{
 		if((thisStr==null)
 		||(word==null)
 		||(thisStr.length()==0)
 		||(word.length()==0))
-			return false;
+			return -1;
 		for(int i=thisStr.length()-1;i>=0;i--)
 		{
 			if((thisStr.charAt(i)==word.charAt(0))
@@ -666,12 +674,23 @@ public class CMStrings
 			{
 				if((thisStr.substring(i).startsWith(word))
 				&&((thisStr.length()==i+word.length())||(!Character.isLetter(thisStr.charAt(i+word.length())))))
-				{
-					return true;
-				}
+					return i;
 			}
 		}
-		return false;
+		return -1;
+	}
+
+	/**
+	 * Returns whether the given string contains the second string, without any following
+	 * letter, which is the CMStrings definition of a "word".  This check is case
+	 * sensitive.
+	 * @param thisStr the string to look in
+	 * @param word the string/word to look for
+	 * @return true if the word is in the string, and false otherwise
+	 */
+	public final static boolean containsWord(final String thisStr, final String word)
+	{
+		return indexOfWord(thisStr,word) >=0;
 	}
 
 	/**
@@ -941,6 +960,32 @@ public class CMStrings
 		{
 			if(str.charAt(i)=='\\')
 				str=str.substring(0,i)+str.substring(i+1);
+		}
+		return str;
+	}
+
+	/**
+	 * This methods replaces any double-escapes to single escape characters, and any
+	 * escaped double-chars to double-chars
+	 * @param str the string to de-escape
+	 * @param chars the chars to de-escape
+	 * @return the string, de-escaped
+	 */
+	public final static String deEscape(String str, final String chars)
+	{
+		if(str==null)
+			return str;
+		if(str.indexOf('\\')<0)
+			return str;
+		for(int i=0;i<str.length()-1;i++)
+		{
+			if(str.charAt(i)=='\\')
+			{
+				if(chars.indexOf(str.charAt(i+1))>=0)
+					str=str.substring(0,i)+str.substring(i+1);
+				else
+					i++;
+			}
 		}
 		return str;
 	}
@@ -1575,6 +1620,23 @@ public class CMStrings
 	}
 
 	/**
+	 * Replaces the string between the first and last ' characters in the
+	 * given string with the given string.
+	 * @param msg the string to parse out from
+	 * @param rep the string to replace
+	 */
+	public final static String replaceSayInMessage(final String msg, final String rep)
+	{
+		if(msg==null)
+			return msg;
+		final int start=msg.indexOf('\'');
+		final int end=msg.lastIndexOf('\'');
+		if((start>0)&&(end>start))
+			return msg.substring(0,start+1)+rep+msg.substring(end);
+		return msg;
+	}
+
+	/**
 	 * This method replaces the string between the first and last ' characters in the
 	 * first string with the second string.
 	 * @param affmsg the string to replace a portion of
@@ -2102,6 +2164,77 @@ public class CMStrings
 		return str.toString();
 	}
 
+	/**
+	 * Strips cr and lf
+	 * @param s the string to strip
+	 * @return the stripped string
+	 */
+	public final static String removeCRLF(final String s)
+	{
+		if(s==null)
+			return "";
+		if((s.indexOf('\n')<0)&&(s.indexOf('\r')<0))
+			return s;
+		final StringBuilder str=new StringBuilder(s);
+		for(int i=0;i<str.length();i++)
+		{
+			switch(str.charAt(i))
+			{
+			case '\n':
+			case '\r':
+				str.delete(i, i+1);
+				break;
+			default:
+				break;
+			}
+		}
+		return str.toString();
+	}
+
+	/**
+	 * Strips cr and lf, replacing them with a space when necc
+	 * @param s the string to strip
+	 * @return the stripped string
+	 */
+	public final static String unWWrap(final String s)
+	{
+		if(s==null)
+			return "";
+		if((s.indexOf('\n')<0)&&(s.indexOf('\r')<0))
+			return s;
+		final StringBuilder str=new StringBuilder(s);
+		for(int i=0;i<str.length();i++)
+		{
+			final char c=str.charAt(i);
+			switch(c)
+			{
+			case '\n':
+			case '\r':
+			{
+				if((i==0)||(i==str.length()-1))
+					str.delete(i, i+1);
+				else
+				{
+					int len=1;
+					final char nc = str.charAt(i+1);
+					if((nc!=c)&&((nc=='\n')||(nc=='\r')))
+						len++;
+					if(i+len>=str.length())
+						str.delete(i, i+len);
+					else
+					if((!Character.isWhitespace(str.charAt(i-1))&&(!Character.isWhitespace(str.charAt(i+len)))))
+						str.replace(i, i+len, " ");
+					else
+						str.delete(i, i+len);
+				}
+				break;
+			}
+			default:
+				break;
+			}
+		}
+		return str.toString();
+	}
 
 	/**
 	 * Returns a boolean array of the chars marking where
@@ -4306,10 +4439,10 @@ public class CMStrings
 	/**
 	 * Number of seconds to map a diff before giving up (0 for infinity).
 	 */
-	private static float Diff_Timeout = 1.0f;
+	private static float DIFF_TIMEOUT = 1.0f;
 
 	/**
-	 * Internal class for returning results from diff_linesToChars().
+	 * Internal class for returning results from diffLinesToChars().
 	 * Other less paranoid languages just use a three-element array.
 	 * @author fraser@google.com (Neil Fraser)
 	 */
@@ -4340,16 +4473,16 @@ public class CMStrings
 	/**
 	 * Find the differences between two texts.
 	 * Run a faster, slightly less optimal diff.
-	 * This method allows the 'checklines' of diff_main() to be optional.
+	 * This method allows the 'checklines' of diffMain() to be optional.
 	 * Most of the time checklines is wanted, so default to true.
 	 * @author fraser@google.com (Neil Fraser)
 	 * @param text1 Old string to be diffed.
 	 * @param text2 New string to be diffed.
 	 * @return Linked List of Diff objects.
 	 */
-	public static LinkedList<Diff> diff_main(final String text1, final String text2)
+	public static LinkedList<Diff> diffMain(final String text1, final String text2)
 	{
-		return diff_main(text1, text2, true);
+		return diffMain(text1, text2, true);
 	}
 
 	/**
@@ -4362,19 +4495,19 @@ public class CMStrings
 	 *		 If true, then run a faster slightly less optimal diff.
 	 * @return Linked List of Diff objects.
 	 */
-	public static LinkedList<Diff> diff_main(final String text1, final String text2, final boolean checklines)
+	public static LinkedList<Diff> diffMain(final String text1, final String text2, final boolean checklines)
 	{
 		// Set a deadline by which time the diff must be complete.
 		long deadline;
-		if (Diff_Timeout <= 0)
+		if (DIFF_TIMEOUT <= 0)
 		{
 			deadline = Long.MAX_VALUE;
 		}
 		else
 		{
-			deadline = System.currentTimeMillis() + (long) (Diff_Timeout * 1000);
+			deadline = System.currentTimeMillis() + (long) (DIFF_TIMEOUT * 1000);
 		}
-		return diff_main(text1, text2, checklines, deadline);
+		return diffMain(text1, text2, checklines, deadline);
 	}
 
 	/**
@@ -4390,12 +4523,12 @@ public class CMStrings
 	 *		 internally for recursive calls.	Users should set DiffTimeout instead.
 	 * @return Linked List of Diff objects.
 	 */
-	private static LinkedList<Diff> diff_main(String text1, String text2, final boolean checklines, final long deadline)
+	private static LinkedList<Diff> diffMain(String text1, String text2, final boolean checklines, final long deadline)
 	{
 		// Check for null inputs.
 		if (text1 == null || text2 == null)
 		{
-			throw new IllegalArgumentException("Null inputs. (diff_main)");
+			throw new IllegalArgumentException("Null inputs. (diffMain)");
 		}
 
 		// Check for equality (speedup).
@@ -4411,19 +4544,19 @@ public class CMStrings
 		}
 
 		// Trim off common prefix (speedup).
-		int commonlength = diff_commonPrefix(text1, text2);
+		int commonlength = diffCommonPrefix(text1, text2);
 		final String commonprefix = text1.substring(0, commonlength);
 		text1 = text1.substring(commonlength);
 		text2 = text2.substring(commonlength);
 
 		// Trim off common suffix (speedup).
-		commonlength = diff_commonSuffix(text1, text2);
+		commonlength = diffCommonSuffix(text1, text2);
 		final String commonsuffix = text1.substring(text1.length() - commonlength);
 		text1 = text1.substring(0, text1.length() - commonlength);
 		text2 = text2.substring(0, text2.length() - commonlength);
 
 		// Compute the diff on the middle block.
-		diffs = diff_compute(text1, text2, checklines, deadline);
+		diffs = diffCompute(text1, text2, checklines, deadline);
 
 		// Restore the prefix and suffix.
 		if (commonprefix.length() != 0)
@@ -4435,7 +4568,7 @@ public class CMStrings
 			diffs.addLast(new Diff(DiffOperation.EQUAL, commonsuffix));
 		}
 
-		diff_cleanupMerge(diffs);
+		diffCleanupMerge(diffs);
 		return diffs;
 	}
 
@@ -4451,7 +4584,7 @@ public class CMStrings
 	 * @param deadline Time when the diff should be complete by.
 	 * @return Linked List of Diff objects.
 	 */
-	private static LinkedList<Diff> diff_compute(final String text1, final String text2, final boolean checklines, final long deadline)
+	private static LinkedList<Diff> diffCompute(final String text1, final String text2, final boolean checklines, final long deadline)
 	{
 		LinkedList<Diff> diffs = new LinkedList<Diff>();
 
@@ -4492,31 +4625,31 @@ public class CMStrings
 		}
 
 		// Check to see if the problem can be split in two.
-		final String[] hm = diff_halfMatch(text1, text2);
+		final String[] hm = diffHalfMatch(text1, text2);
 		if (hm != null)
 		{
 			// A half-match was found, sort out the return data.
-			final String text1_a = hm[0];
-			final String text1_b = hm[1];
-			final String text2_a = hm[2];
-			final String text2_b = hm[3];
-			final String mid_common = hm[4];
+			final String text1a = hm[0];
+			final String text1b = hm[1];
+			final String text2a = hm[2];
+			final String text2b = hm[3];
+			final String midcommon = hm[4];
 			// Send both pairs off for separate processing.
-			final LinkedList<Diff> diffs_a = diff_main(text1_a, text2_a, checklines, deadline);
-			final LinkedList<Diff> diffs_b = diff_main(text1_b, text2_b, checklines, deadline);
+			final LinkedList<Diff> diffsa = diffMain(text1a, text2a, checklines, deadline);
+			final LinkedList<Diff> diffsb = diffMain(text1b, text2b, checklines, deadline);
 			// Merge the results.
-			diffs = diffs_a;
-			diffs.add(new Diff(DiffOperation.EQUAL, mid_common));
-			diffs.addAll(diffs_b);
+			diffs = diffsa;
+			diffs.add(new Diff(DiffOperation.EQUAL, midcommon));
+			diffs.addAll(diffsb);
 			return diffs;
 		}
 
 		if (checklines && text1.length() > 100 && text2.length() > 100)
 		{
-			return diff_lineMode(text1, text2, deadline);
+			return diffLineMode(text1, text2, deadline);
 		}
 
-		return diff_bisect(text1, text2, deadline);
+		return diffBisect(text1, text2, deadline);
 	}
 
 	/**
@@ -4529,28 +4662,28 @@ public class CMStrings
 	 * @param deadline Time when the diff should be complete by.
 	 * @return Linked List of Diff objects.
 	 */
-	private static LinkedList<Diff> diff_lineMode(String text1, String text2, final long deadline)
+	private static LinkedList<Diff> diffLineMode(String text1, String text2, final long deadline)
 	{
 		// Scan the text on a line-by-line basis first.
-		final LinesToCharsResult b = diff_linesToChars(text1, text2);
+		final LinesToCharsResult b = diffLinesToChars(text1, text2);
 		text1 = b.chars1;
 		text2 = b.chars2;
 		final List<String> linearray = b.lineArray;
 
-		final LinkedList<Diff> diffs = diff_main(text1, text2, false, deadline);
+		final LinkedList<Diff> diffs = diffMain(text1, text2, false, deadline);
 
 		// Convert the diff back to original text.
-		diff_charsToLines(diffs, linearray);
+		diffCharsToLines(diffs, linearray);
 		// Eliminate freak matches (e.g. blank lines)
-		diff_cleanupSemantic(diffs);
+		diffCleanupSemantic(diffs);
 
 		// Rediff any replacement blocks, this time character-by-character.
 		// Add a dummy entry at the end.
 		diffs.add(new Diff(DiffOperation.EQUAL, ""));
-		int count_delete = 0;
-		int count_insert = 0;
-		String text_delete = "";
-		String text_insert = "";
+		int countdelete = 0;
+		int countinsert = 0;
+		String textdelete = "";
+		String textinsert = "";
 		final ListIterator<Diff> pointer = diffs.listIterator();
 		Diff thisDiff = pointer.next();
 		while (thisDiff != null)
@@ -4558,33 +4691,33 @@ public class CMStrings
 			switch (thisDiff.operation)
 			{
 			case INSERT:
-				count_insert++;
-				text_insert += thisDiff.text;
+				countinsert++;
+				textinsert += thisDiff.text;
 				break;
 			case DELETE:
-				count_delete++;
-				text_delete += thisDiff.text;
+				countdelete++;
+				textdelete += thisDiff.text;
 				break;
 			case EQUAL:
 				// Upon reaching an equality, check for prior redundancies.
-				if (count_delete >= 1 && count_insert >= 1)
+				if (countdelete >= 1 && countinsert >= 1)
 				{
 					// Delete the offending records and add the merged ones.
 					pointer.previous();
-					for (int j = 0; j < count_delete + count_insert; j++)
+					for (int j = 0; j < countdelete + countinsert; j++)
 					{
 						pointer.previous();
 						pointer.remove();
 					}
-					for (final Diff newDiff : diff_main(text_delete, text_insert, false, deadline))
+					for (final Diff newDiff : diffMain(textdelete, textinsert, false, deadline))
 					{
 						pointer.add(newDiff);
 					}
 				}
-				count_insert = 0;
-				count_delete = 0;
-				text_delete = "";
-				text_insert = "";
+				countinsert = 0;
+				countdelete = 0;
+				textdelete = "";
+				textinsert = "";
 				break;
 			}
 			thisDiff = pointer.hasNext() ? pointer.next() : null;
@@ -4604,24 +4737,24 @@ public class CMStrings
 	 * @param deadline Time at which to bail if not yet complete.
 	 * @return LinkedList of Diff objects.
 	 */
-	private static LinkedList<Diff> diff_bisect(final String text1, final String text2, final long deadline)
+	private static LinkedList<Diff> diffBisect(final String text1, final String text2, final long deadline)
 	{
 		// Cache the text lengths to prevent multiple calls.
-		final int text1_length = text1.length();
-		final int text2_length = text2.length();
-		final int max_d = (text1_length + text2_length + 1) / 2;
-		final int v_offset = max_d;
-		final int v_length = 2 * max_d;
-		final int[] v1 = new int[v_length];
-		final int[] v2 = new int[v_length];
-		for (int x = 0; x < v_length; x++)
+		final int text1length = text1.length();
+		final int text2length = text2.length();
+		final int maxd = (text1length + text2length + 1) / 2;
+		final int voffset = maxd;
+		final int vlength = 2 * maxd;
+		final int[] v1 = new int[vlength];
+		final int[] v2 = new int[vlength];
+		for (int x = 0; x < vlength; x++)
 		{
 			v1[x] = -1;
 			v2[x] = -1;
 		}
-		v1[v_offset + 1] = 0;
-		v2[v_offset + 1] = 0;
-		final int delta = text1_length - text2_length;
+		v1[voffset + 1] = 0;
+		v2[voffset + 1] = 0;
+		final int delta = text1length - text2length;
 		// If the total number of characters is odd, then the front path will
 		// collide with the reverse path.
 		final boolean front = (delta % 2 != 0);
@@ -4631,7 +4764,7 @@ public class CMStrings
 		int k1end = 0;
 		int k2start = 0;
 		int k2end = 0;
-		for (int d = 0; d < max_d; d++)
+		for (int d = 0; d < maxd; d++)
 		{
 			// Bail out if deadline is reached.
 			if (System.currentTimeMillis() > deadline)
@@ -4642,31 +4775,31 @@ public class CMStrings
 			// Walk the front path one step.
 			for (int k1 = -d + k1start; k1 <= d - k1end; k1 += 2)
 			{
-				final int k1_offset = v_offset + k1;
+				final int k1offset = voffset + k1;
 				int x1;
-				if (k1 == -d || (k1 != d && v1[k1_offset - 1] < v1[k1_offset + 1]))
+				if (k1 == -d || (k1 != d && v1[k1offset - 1] < v1[k1offset + 1]))
 				{
-					x1 = v1[k1_offset + 1];
+					x1 = v1[k1offset + 1];
 				}
 				else
 				{
-					x1 = v1[k1_offset - 1] + 1;
+					x1 = v1[k1offset - 1] + 1;
 				}
 				int y1 = x1 - k1;
-				while (x1 < text1_length && y1 < text2_length
+				while (x1 < text1length && y1 < text2length
 				&& text1.charAt(x1) == text2.charAt(y1))
 				{
 					x1++;
 					y1++;
 				}
-				v1[k1_offset] = x1;
-				if (x1 > text1_length)
+				v1[k1offset] = x1;
+				if (x1 > text1length)
 				{
 					// Ran off the right of the graph.
 					k1end += 2;
 				}
 				else
-				if (y1 > text2_length)
+				if (y1 > text2length)
 				{
 					// Ran off the bottom of the graph.
 					k1start += 2;
@@ -4674,15 +4807,15 @@ public class CMStrings
 				else
 				if (front)
 				{
-					final int k2_offset = v_offset + delta - k1;
-					if (k2_offset >= 0 && k2_offset < v_length && v2[k2_offset] != -1)
+					final int k2offset = voffset + delta - k1;
+					if (k2offset >= 0 && k2offset < vlength && v2[k2offset] != -1)
 					{
 						// Mirror x2 onto top-left coordinate system.
-						final int x2 = text1_length - v2[k2_offset];
+						final int x2 = text1length - v2[k2offset];
 						if (x1 >= x2)
 						{
 							// Overlap detected.
-							return diff_bisectSplit(text1, text2, x1, y1, deadline);
+							return diffBisectSplit(text1, text2, x1, y1, deadline);
 						}
 					}
 				}
@@ -4691,31 +4824,31 @@ public class CMStrings
 			// Walk the reverse path one step.
 			for (int k2 = -d + k2start; k2 <= d - k2end; k2 += 2)
 			{
-				final int k2_offset = v_offset + k2;
+				final int k2offset = voffset + k2;
 				int x2;
-				if (k2 == -d || (k2 != d && v2[k2_offset - 1] < v2[k2_offset + 1]))
+				if (k2 == -d || (k2 != d && v2[k2offset - 1] < v2[k2offset + 1]))
 				{
-					x2 = v2[k2_offset + 1];
+					x2 = v2[k2offset + 1];
 				}
 				else
 				{
-					x2 = v2[k2_offset - 1] + 1;
+					x2 = v2[k2offset - 1] + 1;
 				}
 				int y2 = x2 - k2;
-				while (x2 < text1_length && y2 < text2_length
-				&& text1.charAt(text1_length - x2 - 1) == text2.charAt(text2_length - y2 - 1))
+				while (x2 < text1length && y2 < text2length
+				&& text1.charAt(text1length - x2 - 1) == text2.charAt(text2length - y2 - 1))
 				{
 					x2++;
 					y2++;
 				}
-				v2[k2_offset] = x2;
-				if (x2 > text1_length)
+				v2[k2offset] = x2;
+				if (x2 > text1length)
 				{
 					// Ran off the left of the graph.
 					k2end += 2;
 				}
 				else
-				if (y2 > text2_length)
+				if (y2 > text2length)
 				{
 					// Ran off the top of the graph.
 					k2start += 2;
@@ -4723,17 +4856,17 @@ public class CMStrings
 				else
 				if (!front)
 				{
-					final int k1_offset = v_offset + delta - k2;
-					if (k1_offset >= 0 && k1_offset < v_length && v1[k1_offset] != -1)
+					final int k1offset = voffset + delta - k2;
+					if (k1offset >= 0 && k1offset < vlength && v1[k1offset] != -1)
 					{
-						final int x1 = v1[k1_offset];
-						final int y1 = v_offset + x1 - k1_offset;
+						final int x1 = v1[k1offset];
+						final int y1 = voffset + x1 - k1offset;
 						// Mirror x2 onto top-left coordinate system.
-						x2 = text1_length - x2;
+						x2 = text1length - x2;
 						if (x1 >= x2)
 						{
 							// Overlap detected.
-							return diff_bisectSplit(text1, text2, x1, y1, deadline);
+							return diffBisectSplit(text1, text2, x1, y1, deadline);
 						}
 					}
 				}
@@ -4758,7 +4891,7 @@ public class CMStrings
 	 * @param deadline Time at which to bail if not yet complete.
 	 * @return LinkedList of Diff objects.
 	 */
-	private static LinkedList<Diff> diff_bisectSplit(final String text1, final String text2, final int x, final int y, final long deadline)
+	private static LinkedList<Diff> diffBisectSplit(final String text1, final String text2, final int x, final int y, final long deadline)
 	{
 		final String text1a = text1.substring(0, x);
 		final String text2a = text2.substring(0, y);
@@ -4766,8 +4899,8 @@ public class CMStrings
 		final String text2b = text2.substring(y);
 
 		// Compute both diffs serially.
-		final LinkedList<Diff> diffs = diff_main(text1a, text2a, false, deadline);
-		final LinkedList<Diff> diffsb = diff_main(text1b, text2b, false, deadline);
+		final LinkedList<Diff> diffs = diffMain(text1a, text2a, false, deadline);
+		final LinkedList<Diff> diffsb = diffMain(text1b, text2b, false, deadline);
 
 		diffs.addAll(diffsb);
 		return diffs;
@@ -4783,7 +4916,7 @@ public class CMStrings
 	 *		 the List of unique strings.	The zeroth element of the List of
 	 *		 unique strings is intentionally blank.
 	 */
-	private static LinesToCharsResult diff_linesToChars(final String text1, final String text2)
+	private static LinesToCharsResult diffLinesToChars(final String text1, final String text2)
 	{
 		final List<String> lineArray = new ArrayList<String>();
 		final Map<String, Integer> lineHash = new HashMap<String, Integer>();
@@ -4794,8 +4927,8 @@ public class CMStrings
 		// So we'll insert a junk entry to avoid generating a null character.
 		lineArray.add("");
 
-		final String chars1 = diff_linesToCharsMunge(text1, lineArray, lineHash);
-		final String chars2 = diff_linesToCharsMunge(text2, lineArray, lineHash);
+		final String chars1 = diffLinesToCharsMunge(text1, lineArray, lineHash);
+		final String chars2 = diffLinesToCharsMunge(text2, lineArray, lineHash);
 		return new LinesToCharsResult(chars1, chars2, lineArray);
 	}
 
@@ -4808,7 +4941,7 @@ public class CMStrings
 	 * @param lineHash Map of strings to indices.
 	 * @return Encoded string.
 	 */
-	private static String diff_linesToCharsMunge(final String text, final List<String> lineArray, final Map<String, Integer> lineHash)
+	private static String diffLinesToCharsMunge(final String text, final List<String> lineArray, final Map<String, Integer> lineHash)
 	{
 		int lineStart = 0;
 		int lineEnd = -1;
@@ -4848,7 +4981,7 @@ public class CMStrings
 	 * @param diffs LinkedList of Diff objects.
 	 * @param lineArray List of unique strings.
 	 */
-	private static void diff_charsToLines(final LinkedList<Diff> diffs, final List<String> lineArray)
+	private static void diffCharsToLines(final LinkedList<Diff> diffs, final List<String> lineArray)
 	{
 		StringBuilder text;
 		for (final Diff diff : diffs)
@@ -4869,7 +5002,7 @@ public class CMStrings
 	 * @param text2 Second string.
 	 * @return The number of characters common to the start of each string.
 	 */
-	private static int diff_commonPrefix(final String text1, final String text2)
+	private static int diffCommonPrefix(final String text1, final String text2)
 	{
 		// Performance analysis: http://neil.fraser.name/news/2007/10/09/
 		final int n = Math.min(text1.length(), text2.length());
@@ -4890,15 +5023,15 @@ public class CMStrings
 	 * @param text2 Second string.
 	 * @return The number of characters common to the end of each string.
 	 */
-	private static int diff_commonSuffix(final String text1, final String text2)
+	private static int diffCommonSuffix(final String text1, final String text2)
 	{
 		// Performance analysis: http://neil.fraser.name/news/2007/10/09/
-		final int text1_length = text1.length();
-		final int text2_length = text2.length();
-		final int n = Math.min(text1_length, text2_length);
+		final int text1length = text1.length();
+		final int text2length = text2.length();
+		final int n = Math.min(text1length, text2length);
 		for (int i = 1; i <= n; i++)
 		{
-			if (text1.charAt(text1_length - i) != text2.charAt(text2_length - i))
+			if (text1.charAt(text1length - i) != text2.charAt(text2length - i))
 			{
 				return i - 1;
 			}
@@ -4914,31 +5047,31 @@ public class CMStrings
 	 * @return The number of characters common to the end of the first
 	 *		 string and the start of the second string.
 	 */
-	private static int diff_commonOverlap(String text1, String text2)
+	private static int diffCommonOverlap(String text1, String text2)
 	{
 		// Cache the text lengths to prevent multiple calls.
-		final int text1_length = text1.length();
-		final int text2_length = text2.length();
+		final int text1length = text1.length();
+		final int text2length = text2.length();
 		// Eliminate the null case.
-		if (text1_length == 0 || text2_length == 0)
+		if (text1length == 0 || text2length == 0)
 		{
 			return 0;
 		}
 		// Truncate the longer string.
-		if (text1_length > text2_length)
+		if (text1length > text2length)
 		{
-			text1 = text1.substring(text1_length - text2_length);
+			text1 = text1.substring(text1length - text2length);
 		}
 		else
-		if (text1_length < text2_length)
+		if (text1length < text2length)
 		{
-			text2 = text2.substring(0, text1_length);
+			text2 = text2.substring(0, text1length);
 		}
-		final int text_length = Math.min(text1_length, text2_length);
+		final int textlength = Math.min(text1length, text2length);
 		// Quick check for the worst case.
 		if (text1.equals(text2))
 		{
-			return text_length;
+			return textlength;
 		}
 
 		// Start by looking for a single character match
@@ -4948,14 +5081,14 @@ public class CMStrings
 		int length = 1;
 		while (true)
 		{
-			final String pattern = text1.substring(text_length - length);
+			final String pattern = text1.substring(textlength - length);
 			final int found = text2.indexOf(pattern);
 			if (found == -1)
 			{
 				return best;
 			}
 			length += found;
-			if (found == 0 || text1.substring(text_length - length).equals(text2.substring(0, length)))
+			if (found == 0 || text1.substring(textlength - length).equals(text2.substring(0, length)))
 			{
 				best = length;
 				length++;
@@ -4974,9 +5107,9 @@ public class CMStrings
 	 *		 suffix of text1, the prefix of text2, the suffix of text2 and the
 	 *		 common middle.	Or null if there was no match.
 	 */
-	private static String[] diff_halfMatch(final String text1, final String text2)
+	private static String[] diffHalfMatch(final String text1, final String text2)
 	{
-		if (Diff_Timeout <= 0)
+		if (DIFF_TIMEOUT <= 0)
 		{
 			// Don't risk returning a non-optimal diff if we have unlimited time.
 			return null;
@@ -4989,9 +5122,9 @@ public class CMStrings
 		}
 
 		// First check if the second quarter is the seed for a half-match.
-		final String[] hm1 = diff_halfMatchI(longtext, shorttext, (longtext.length() + 3) / 4);
+		final String[] hm1 = diffHalfMatchI(longtext, shorttext, (longtext.length() + 3) / 4);
 		// Check again based on the third quarter.
-		final String[] hm2 = diff_halfMatchI(longtext, shorttext, (longtext.length() + 1) / 2);
+		final String[] hm2 = diffHalfMatchI(longtext, shorttext, (longtext.length() + 1) / 2);
 		String[] hm;
 		if (hm1 == null && hm2 == null)
 		{
@@ -5041,30 +5174,30 @@ public class CMStrings
 	 *		 suffix of longtext, the prefix of shorttext, the suffix of shorttext
 	 *		 and the common middle.	Or null if there was no match.
 	 */
-	private static String[] diff_halfMatchI(final String longtext, final String shorttext, final int i)
+	private static String[] diffHalfMatchI(final String longtext, final String shorttext, final int i)
 	{
 		// Start with a 1/4 length substring at position i as a seed.
 		final String seed = longtext.substring(i, i + longtext.length() / 4);
 		int j = -1;
-		String best_common = "";
-		String best_longtext_a = "", best_longtext_b = "";
-		String best_shorttext_a = "", best_shorttext_b = "";
+		String bestcommon = "";
+		String bestlongtexta = "", bestlongtextb = "";
+		String bestshorttexta = "", bestshorttextb = "";
 		while ((j = shorttext.indexOf(seed, j + 1)) != -1)
 		{
-			final int prefixLength = diff_commonPrefix(longtext.substring(i), shorttext.substring(j));
-			final int suffixLength = diff_commonSuffix(longtext.substring(0, i), shorttext.substring(0, j));
-			if (best_common.length() < suffixLength + prefixLength)
+			final int prefixLength = diffCommonPrefix(longtext.substring(i), shorttext.substring(j));
+			final int suffixLength = diffCommonSuffix(longtext.substring(0, i), shorttext.substring(0, j));
+			if (bestcommon.length() < suffixLength + prefixLength)
 			{
-				best_common = shorttext.substring(j - suffixLength, j) + shorttext.substring(j, j + prefixLength);
-				best_longtext_a = longtext.substring(0, i - suffixLength);
-				best_longtext_b = longtext.substring(i + prefixLength);
-				best_shorttext_a = shorttext.substring(0, j - suffixLength);
-				best_shorttext_b = shorttext.substring(j + prefixLength);
+				bestcommon = shorttext.substring(j - suffixLength, j) + shorttext.substring(j, j + prefixLength);
+				bestlongtexta = longtext.substring(0, i - suffixLength);
+				bestlongtextb = longtext.substring(i + prefixLength);
+				bestshorttexta = shorttext.substring(0, j - suffixLength);
+				bestshorttextb = shorttext.substring(j + prefixLength);
 			}
 		}
-		if (best_common.length() * 2 >= longtext.length())
+		if (bestcommon.length() * 2 >= longtext.length())
 		{
-			return new String[]{best_longtext_a, best_longtext_b, best_shorttext_a, best_shorttext_b, best_common};
+			return new String[]{bestlongtexta, bestlongtextb, bestshorttexta, bestshorttextb, bestcommon};
 		}
 		else
 		{
@@ -5077,7 +5210,7 @@ public class CMStrings
 	 * @author fraser@google.com (Neil Fraser)
 	 * @param diffs LinkedList of Diff objects.
 	 */
-	private static void diff_cleanupSemantic(final LinkedList<Diff> diffs)
+	private static void diffCleanupSemantic(final LinkedList<Diff> diffs)
 	{
 		if (diffs.isEmpty())
 		{
@@ -5088,11 +5221,11 @@ public class CMStrings
 		String lastequality = null; // Always equal to equalities.lastElement().text
 		ListIterator<Diff> pointer = diffs.listIterator();
 		// Number of characters that changed prior to the equality.
-		int length_insertions1 = 0;
-		int length_deletions1 = 0;
+		int lengthinsertions1 = 0;
+		int lengthdeletions1 = 0;
 		// Number of characters that changed after the equality.
-		int length_insertions2 = 0;
-		int length_deletions2 = 0;
+		int lengthinsertions2 = 0;
+		int lengthdeletions2 = 0;
 		Diff thisDiff = pointer.next();
 		while (thisDiff != null)
 		{
@@ -5100,10 +5233,10 @@ public class CMStrings
 			{
 				// Equality found.
 				equalities.push(thisDiff);
-				length_insertions1 = length_insertions2;
-				length_deletions1 = length_deletions2;
-				length_insertions2 = 0;
-				length_deletions2 = 0;
+				lengthinsertions1 = lengthinsertions2;
+				lengthdeletions1 = lengthdeletions2;
+				lengthinsertions2 = 0;
+				lengthdeletions2 = 0;
 				lastequality = thisDiff.text;
 			}
 			else
@@ -5111,16 +5244,16 @@ public class CMStrings
 				// An insertion or deletion.
 				if (thisDiff.operation == DiffOperation.INSERT)
 				{
-					length_insertions2 += thisDiff.text.length();
+					lengthinsertions2 += thisDiff.text.length();
 				}
 				else
 				{
-					length_deletions2 += thisDiff.text.length();
+					lengthdeletions2 += thisDiff.text.length();
 				}
 				// Eliminate an equality that is smaller or equal to the edits on both
 				// sides of it.
-				if (lastequality != null && (lastequality.length() <= Math.max(length_insertions1, length_deletions1))
-				&& (lastequality.length() <= Math.max(length_insertions2, length_deletions2)))
+				if (lastequality != null && (lastequality.length() <= Math.max(lengthinsertions1, lengthdeletions1))
+				&& (lastequality.length() <= Math.max(lengthinsertions2, lengthdeletions2)))
 				{
 					// Walk back to offending equality.
 					while (thisDiff != equalities.lastElement())
@@ -5158,10 +5291,10 @@ public class CMStrings
 						}
 					}
 
-					length_insertions1 = 0;	// Reset the counters.
-					length_insertions2 = 0;
-					length_deletions1 = 0;
-					length_deletions2 = 0;
+					lengthinsertions1 = 0;	// Reset the counters.
+					lengthinsertions2 = 0;
+					lengthdeletions1 = 0;
+					lengthdeletions2 = 0;
 					lastequality = null;
 					changes = true;
 				}
@@ -5172,9 +5305,9 @@ public class CMStrings
 		// Normalize the diff.
 		if (changes)
 		{
-			diff_cleanupMerge(diffs);
+			diffCleanupMerge(diffs);
 		}
-		diff_cleanupSemanticLossless(diffs);
+		diffCleanupSemantiCLossless(diffs);
 
 		// Find any overlaps between deletions and insertions.
 		// e.g: <del>abcxxx</del><ins>xxxdef</ins>
@@ -5195,37 +5328,39 @@ public class CMStrings
 		}
 		while (thisDiff != null)
 		{
-			if ((prevDiff!=null)&&(prevDiff.operation == DiffOperation.DELETE && thisDiff.operation == DiffOperation.INSERT))
+			if ((prevDiff!=null)
+			&&(prevDiff.operation == DiffOperation.DELETE)
+			&&(thisDiff.operation == DiffOperation.INSERT))
 			{
 				final String deletion = prevDiff.text;
 				final String insertion = thisDiff.text;
-				final int overlap_length1 = diff_commonOverlap(deletion, insertion);
-				final int overlap_length2 = diff_commonOverlap(insertion, deletion);
-				if (overlap_length1 >= overlap_length2)
+				final int overlaplength1 = diffCommonOverlap(deletion, insertion);
+				final int overlaplength2 = diffCommonOverlap(insertion, deletion);
+				if (overlaplength1 >= overlaplength2)
 				{
-					if (overlap_length1 >= deletion.length() / 2.0 || overlap_length1 >= insertion.length() / 2.0)
+					if (overlaplength1 >= deletion.length() / 2.0 || overlaplength1 >= insertion.length() / 2.0)
 					{
 						// Overlap found. Insert an equality and trim the surrounding edits.
 						pointer.previous();
-						pointer.add(new Diff(DiffOperation.EQUAL, insertion.substring(0, overlap_length1)));
-						prevDiff.text = deletion.substring(0, deletion.length() - overlap_length1);
-						thisDiff.text = insertion.substring(overlap_length1);
+						pointer.add(new Diff(DiffOperation.EQUAL, insertion.substring(0, overlaplength1)));
+						prevDiff.text = deletion.substring(0, deletion.length() - overlaplength1);
+						thisDiff.text = insertion.substring(overlaplength1);
 						// pointer.add inserts the element before the cursor, so there is
 						// no need to step past the new element.
 					}
 				}
 				else
 				{
-					if (overlap_length2 >= deletion.length() / 2.0 || overlap_length2 >= insertion.length() / 2.0)
+					if (overlaplength2 >= deletion.length() / 2.0 || overlaplength2 >= insertion.length() / 2.0)
 					{
 						// Reverse overlap found.
 						// Insert an equality and swap and trim the surrounding edits.
 						pointer.previous();
-						pointer.add(new Diff(DiffOperation.EQUAL, deletion.substring(0, overlap_length2)));
+						pointer.add(new Diff(DiffOperation.EQUAL, deletion.substring(0, overlaplength2)));
 						prevDiff.operation = DiffOperation.INSERT;
-						prevDiff.text = insertion.substring(0, insertion.length() - overlap_length2);
+						prevDiff.text = insertion.substring(0, insertion.length() - overlaplength2);
 						thisDiff.operation = DiffOperation.DELETE;
-						thisDiff.text = deletion.substring(overlap_length2);
+						thisDiff.text = deletion.substring(overlaplength2);
 						// pointer.add inserts the element before the cursor, so there is
 						// no need to step past the new element.
 					}
@@ -5244,7 +5379,7 @@ public class CMStrings
 	 * @author fraser@google.com (Neil Fraser)
 	 * @param diffs LinkedList of Diff objects.
 	 */
-	private static void diff_cleanupSemanticLossless(final LinkedList<Diff> diffs)
+	private static void diffCleanupSemantiCLossless(final LinkedList<Diff> diffs)
 	{
 		String equality1, edit, equality2;
 		String commonString;
@@ -5267,7 +5402,7 @@ public class CMStrings
 				equality2 = nextDiff.text;
 
 				// First, shift the edit as far left as possible.
-				commonOffset = diff_commonSuffix(equality1, edit);
+				commonOffset = diffCommonSuffix(equality1, edit);
 				if (commonOffset != 0)
 				{
 					commonString = edit.substring(edit.length() - commonOffset);
@@ -5280,14 +5415,14 @@ public class CMStrings
 				bestEquality1 = equality1;
 				bestEdit = edit;
 				bestEquality2 = equality2;
-				bestScore = diff_cleanupSemanticScore(equality1, edit) + diff_cleanupSemanticScore(edit, equality2);
+				bestScore = diffCleanupSemanticScore(equality1, edit) + diffCleanupSemanticScore(edit, equality2);
 				while (edit.length() != 0 && equality2.length() != 0
 				&& edit.charAt(0) == equality2.charAt(0))
 				{
 					equality1 += edit.charAt(0);
 					edit = edit.substring(1) + equality2.charAt(0);
 					equality2 = equality2.substring(1);
-					score = diff_cleanupSemanticScore(equality1, edit) + diff_cleanupSemanticScore(edit, equality2);
+					score = diffCleanupSemanticScore(equality1, edit) + diffCleanupSemanticScore(edit, equality2);
 					// The >= encourages trailing rather than leading whitespace on edits.
 					if (score >= bestScore)
 					{
@@ -5342,7 +5477,7 @@ public class CMStrings
 	 * @param two Second string.
 	 * @return The score.
 	 */
-	private static int diff_cleanupSemanticScore(final String one, final String two)
+	private static int diffCleanupSemanticScore(final String one, final String two)
 	{
 		if (one.length() == 0 || two.length() == 0)
 		{
@@ -5407,14 +5542,14 @@ public class CMStrings
 	 * Any edit section can move as long as it doesn't cross an equality.
 	 * @param diffs LinkedList of Diff objects.
 	 */
-	private static void diff_cleanupMerge(final LinkedList<Diff> diffs)
+	private static void diffCleanupMerge(final LinkedList<Diff> diffs)
 	{
 		diffs.add(new Diff(DiffOperation.EQUAL, ""));	// Add a dummy entry at the end.
 		ListIterator<Diff> pointer = diffs.listIterator();
-		int count_delete = 0;
-		int count_insert = 0;
-		String text_delete = "";
-		String text_insert = "";
+		int countdelete = 0;
+		int countinsert = 0;
+		String textdelete = "";
+		String textinsert = "";
 		Diff thisDiff = pointer.next();
 		Diff prevEqual = null;
 		int commonlength;
@@ -5423,70 +5558,70 @@ public class CMStrings
 			switch (thisDiff.operation)
 			{
 			case INSERT:
-				count_insert++;
-				text_insert += thisDiff.text;
+				countinsert++;
+				textinsert += thisDiff.text;
 				prevEqual = null;
 				break;
 			case DELETE:
-				count_delete++;
-				text_delete += thisDiff.text;
+				countdelete++;
+				textdelete += thisDiff.text;
 				prevEqual = null;
 				break;
 			case EQUAL:
-				if (count_delete + count_insert > 1)
+				if (countdelete + countinsert > 1)
 				{
-					final boolean both_types = count_delete != 0 && count_insert != 0;
+					final boolean bothtypes = countdelete != 0 && countinsert != 0;
 					// Delete the offending records.
 					pointer.previous();	// Reverse direction.
-					while (count_delete-- > 0)
+					while (countdelete-- > 0)
 					{
 						pointer.previous();
 						pointer.remove();
 					}
-					while (count_insert-- > 0)
+					while (countinsert-- > 0)
 					{
 						pointer.previous();
 						pointer.remove();
 					}
-					if (both_types)
+					if (bothtypes)
 					{
 						// Factor out any common prefixies.
-						commonlength = diff_commonPrefix(text_insert, text_delete);
+						commonlength = diffCommonPrefix(textinsert, textdelete);
 						if (commonlength != 0)
 						{
 							if (pointer.hasPrevious())
 							{
 								thisDiff = pointer.previous();
 								assert thisDiff.operation == DiffOperation.EQUAL : "Previous diff should have been an equality.";
-								thisDiff.text += text_insert.substring(0, commonlength);
+								thisDiff.text += textinsert.substring(0, commonlength);
 								pointer.next();
 							}
 							else
 							{
-								pointer.add(new Diff(DiffOperation.EQUAL, text_insert.substring(0, commonlength)));
+								pointer.add(new Diff(DiffOperation.EQUAL, textinsert.substring(0, commonlength)));
 							}
-							text_insert = text_insert.substring(commonlength);
-							text_delete = text_delete.substring(commonlength);
+							textinsert = textinsert.substring(commonlength);
+							textdelete = textdelete.substring(commonlength);
 						}
 						// Factor out any common suffixies.
-						commonlength = diff_commonSuffix(text_insert, text_delete);
+						commonlength = diffCommonSuffix(textinsert, textdelete);
 						if (commonlength != 0)
 						{
 							thisDiff = pointer.next();
-							thisDiff.text = text_insert.substring(text_insert.length() - commonlength) + thisDiff.text;
-							text_insert = text_insert.substring(0, text_insert.length() - commonlength);
-							text_delete = text_delete.substring(0, text_delete.length() - commonlength);
+							thisDiff.text = textinsert.substring(textinsert.length() - commonlength) + thisDiff.text;
+							textinsert = textinsert.substring(0, textinsert.length() - commonlength);
+							textdelete = textdelete.substring(0, textdelete.length() - commonlength);
 							pointer.previous();
 						}
 					}
 					// Insert the merged records.
-					if (text_delete.length() != 0)
+					if (textdelete.length() != 0)
 					{
-						pointer.add(new Diff(DiffOperation.DELETE, text_delete));
+						pointer.add(new Diff(DiffOperation.DELETE, textdelete));
 					}
-					if (text_insert.length() != 0)
+					if (textinsert.length() != 0)
 					{
-						pointer.add(new Diff(DiffOperation.INSERT, text_insert));
+						pointer.add(new Diff(DiffOperation.INSERT, textinsert));
 					}
 					// Step forward to the equality.
 					thisDiff = pointer.hasNext() ? pointer.next() : null;
@@ -5500,10 +5635,10 @@ public class CMStrings
 					thisDiff = pointer.previous();
 					pointer.next();	// Forward direction
 				}
-				count_insert = 0;
-				count_delete = 0;
-				text_delete = "";
-				text_insert = "";
+				countinsert = 0;
+				countdelete = 0;
+				textdelete = "";
+				textinsert = "";
 				prevEqual = thisDiff;
 				break;
 			}
@@ -5564,7 +5699,7 @@ public class CMStrings
 		// If shifts were made, the diff needs reordering and another shift sweep.
 		if (changes)
 		{
-			diff_cleanupMerge(diffs);
+			diffCleanupMerge(diffs);
 		}
 	}
 

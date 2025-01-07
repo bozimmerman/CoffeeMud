@@ -92,7 +92,7 @@ public class Fighter_TendMount extends FighterSkill implements MendingSkill
 			final PairList<String, Race> choices = CMLib.utensils().getFavoredMounts(mob);
 			if(((!choices.containsSecond(tmob.baseCharStats().getMyRace()))
 				&&(!choices.containsFirst(tmob.baseCharStats().getMyRace().racialCategory())))
-			||(!CMLib.flags().isAnimalIntelligence(tmob)))
+			||(!CMLib.flags().isAnAnimal(tmob)))
 				return Ability.QUALITY_INDIFFERENT;
 			if(tmob.curState().getHitPoints()<tmob.maxState().getHitPoints())
 				return Ability.QUALITY_BENEFICIAL_OTHERS;
@@ -109,7 +109,7 @@ public class Fighter_TendMount extends FighterSkill implements MendingSkill
 		if(!(item instanceof MOB))
 			return false;
 		final MOB tmob = (MOB)item;
-		if(!CMLib.flags().isAnimalIntelligence(tmob))
+		if(!CMLib.flags().isAnAnimal(tmob))
 			return false;
 		if(tmob.curState().getHitPoints()<tmob.maxState().getHitPoints())
 			return true;
@@ -221,7 +221,7 @@ public class Fighter_TendMount extends FighterSkill implements MendingSkill
 		final PairList<String, Race> choices = CMLib.utensils().getFavoredMounts(mob);
 		if(((!choices.containsSecond(target.baseCharStats().getMyRace()))
 			&&(!choices.containsFirst(target.baseCharStats().getMyRace().racialCategory())))
-		||(!CMLib.flags().isAnimalIntelligence(target)))
+		||(!CMLib.flags().isAnAnimal(target)))
 		{
 			mob.tell(L("@x1 is not the sort you know how to tend to.",target.name(mob)));
 			return false;

@@ -49,7 +49,7 @@ public interface LocationRoom extends Room
 	 * @see LocationRoom#getDirectionFromCore()
 	 * @return Coordinates of the place
 	 */
-	public long[] coordinates();
+	public Coord3D coordinates();
 
 	/**
 	 * Returns the direction from the core of the planet to the
@@ -57,7 +57,7 @@ public interface LocationRoom extends Room
 	 * is always the radius of the planet.
 	 * @return direction to this place from planets core.
 	 */
-	public double[] getDirectionFromCore();
+	public Dir3D getDirectionFromCore();
 
 	/**
 	 * Sets the direction from the core of the planet to the
@@ -65,5 +65,5 @@ public interface LocationRoom extends Room
 	 * is always the radius of the planet.
 	 * @param dir direction to this place from planets core.
 	 */
-	public void setDirectionFromCore(double[] dir);
+	public void setDirectionFromCore(Dir3D dir);
 }

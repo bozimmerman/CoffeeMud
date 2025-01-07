@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.core.interfaces;
 
+import com.planet_ink.coffee_mud.core.CMParms;
+import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.collections.Triad;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 /*
@@ -94,6 +96,30 @@ public interface CostDef
 		public Cost(final double amt, final CostType type)
 		{
 			super(Double.valueOf(amt), type, "");
+		}
+
+		/**
+		 * Produce a string representation of this cost.
+		 * @return a string representation of this cost.
+		 */
+		public String value()
+		{
+			return first.doubleValue()+" "+second.name()+" "+third;
+		}
+
+		/**
+		 * Derive cost from a string representation of this cost.
+		 * @param str a string representation of this cost.
+		 * @return a cost object
+		 */
+		public static Cost valueOf(final String str)
+		{
+			final String[] parts = str.split(" ");
+			if(parts.length<3)
+				return null;
+			final double first = CMath.s_double(parts[0]);
+			final CostType typ = (CostType)CMath.s_valueOf(CostType.class, parts[1]);
+			return new Cost(first, typ, parts[2]);
 		}
 	}
 }

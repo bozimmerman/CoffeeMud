@@ -91,7 +91,7 @@ public class Chant_SweetScent extends Chant
 				{
 					final MOB M=room.fetchInhabitant(i);
 					if((M!=null)
-					&&(CMLib.flags().isAnimalIntelligence(M))
+					&&(CMLib.flags().isAnAnimal(M))
 					&&(CMLib.flags().canSmell(M,I)))
 						M.tell(M,I,null,L("<T-NAME> smell(s) absolutely intoxicating!"));
 				}
@@ -104,7 +104,7 @@ public class Chant_SweetScent extends Chant
 						{
 							final MOB M=R.fetchInhabitant(i);
 							if((M!=null)
-							&&(CMLib.flags().isAnimalIntelligence(M))
+							&&(CMLib.flags().isAnAnimal(M))
 							&&(!M.isInCombat())
 							&&((!M.isMonster())||(CMLib.flags().isMobile(M)))
 							&&(CMLib.flags().canSmell(M,I)))

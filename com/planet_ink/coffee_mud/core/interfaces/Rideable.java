@@ -51,7 +51,8 @@ public interface Rideable extends Rider
 		FURNITURE_TABLE,
 		ENTER_IN,
 		LADDER,
-		WAGON
+		WAGON,
+		FURNITURE_HOOK
 		;
 		private final String friendlyCodeName;
 		private static String[] friendlyCodeNames = null;

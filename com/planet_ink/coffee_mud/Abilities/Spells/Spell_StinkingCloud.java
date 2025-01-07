@@ -94,6 +94,7 @@ public class Spell_StinkingCloud extends Spell
 	}
 
 	Room	castingRoom	= null;
+	Ability	nauseaDiseaseA = null;
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -110,6 +111,8 @@ public class Spell_StinkingCloud extends Spell
 			&&(M.location()!=null)
 			&&(CMLib.flags().canSmell(M)))
 			{
+				if(nauseaDiseaseA == null)
+					nauseaDiseaseA = CMClass.getAbility("Disease_Nausea");
 				final int damage= (M.phyStats().level()/10) + super.getXLEVELLevel(invoker) + super.getX1Level(invoker);
 				if((M.curState().getHunger()<=0))
 					CMLib.combat().postDamage(invoker,M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,-1,L("<T-NAME> heave(s) in the stinking cloud."));
@@ -117,6 +120,13 @@ public class Spell_StinkingCloud extends Spell
 				{
 					CMLib.combat().postDamage(invoker,M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,-1,L("<T-NAME> heave(s) all over the place!"));
 					M.curState().adjHunger(-500,M.maxState().maxHunger(M.baseWeight()));
+				}
+				if(nauseaDiseaseA != null)
+				{
+					nauseaDiseaseA.setAbilityCode(1);
+					nauseaDiseaseA.setInvoker(invoker);
+					nauseaDiseaseA.setAffectedOne(M);
+					nauseaDiseaseA.tick(M, Tickable.TICKID_MOB);
 				}
 				CMLib.combat().postRevengeAttack(M, invoker);
 			}

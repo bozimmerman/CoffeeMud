@@ -75,17 +75,17 @@ public class Spaceinterception extends StdTest
 				obj2.setRadius(100);
 				for(int i=0;i<3;i++)
 				{
-					obj1.coordinates()[i]=rand.nextInt(50000);
-					obj2.coordinates()[i]=rand.nextInt(50000);
+					obj1.coordinates().set(i,rand.nextInt(50000));
+					obj2.coordinates().set(i,rand.nextInt(50000));
 				}
-				obj2.direction()[0]=Math.abs(rand.nextDouble() * Math.PI * 2.0);
-				obj2.direction()[1]=Math.abs(rand.nextDouble() * Math.PI);
+				obj2.direction().xy(Math.abs(rand.nextDouble() * Math.PI * 2.0));
+				obj2.direction().z(Math.abs(rand.nextDouble() * Math.PI));
 				obj2.setSpeed(300+rand.nextInt(300));
-				final Pair<double[], Long> pair = space.calculateIntercept(obj1, obj2, 1000, maxTicks);
+				final Pair<Dir3D, Long> pair = space.calculateIntercept(obj1, obj2, 1000, maxTicks);
 				if(pair == null)
 				{
-					throw new CMException("FAILED! #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates())
-							+": "+CMLib.english().directionDescShort(obj2.direction())
+					throw new CMException("FAILED! #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates().toLongs())
+							+": "+CMLib.english().directionDescShort(obj2.direction().toDoubles())
 							+": "+obj2.speed());
 				}
 				else
@@ -95,8 +95,8 @@ public class Spaceinterception extends StdTest
 					obj1.setSpeed(pair.second.longValue());
 					if(!space.canMaybeIntercept(obj1, obj2, maxTicks, pair.second.longValue()))
 					{
-						mob.tell("Stupid #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates())
-								+": "+CMLib.english().directionDescShort(obj2.direction())
+						mob.tell("Stupid #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates().toLongs())
+								+": "+CMLib.english().directionDescShort(obj2.direction().toDoubles())
 								+": "+obj2.speed());
 						continue;
 					}
@@ -105,7 +105,7 @@ public class Spaceinterception extends StdTest
 					//final double orig = space.getDistanceFrom(obj1, obj2);
 					for(;atti<maxTicks;atti++)
 					{
-						final long[] oldCoords1=obj1.coordinates().clone();
+						final Coord3D oldCoords1=obj1.coordinates().copyOf();
 						obj1.setCoords(space.moveSpaceObject(oldCoords1, obj1.direction(), Math.round(obj1.speed())));
 						final double x=space.getMinDistanceFrom(oldCoords1, obj1.coordinates(), obj2.coordinates());
 						if(x<radius)
@@ -114,8 +114,8 @@ public class Spaceinterception extends StdTest
 					}
 					if(atti>=maxTicks)
 					{
-						throw new CMException("Failed #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates())
-								+": "+CMLib.english().directionDescShort(obj2.direction())
+						throw new CMException("Failed #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates().toLongs())
+								+": "+CMLib.english().directionDescShort(obj2.direction().toDoubles())
 								+": "+obj2.speed());
 					}
 					else

@@ -85,7 +85,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 				else
 					start=mid+1;
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 				comp=-1;
 				mid=-1;
@@ -195,7 +195,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 					else
 						start=mid+1;
 				}
-				catch(final java.lang.ArrayIndexOutOfBoundsException e)
+				catch(final IndexOutOfBoundsException e)
 				{
 					start=0;
 					end=size()-1;
@@ -219,7 +219,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 					else
 						start=mid+1;
 				}
-				catch(final java.lang.ArrayIndexOutOfBoundsException e)
+				catch(final IndexOutOfBoundsException e)
 				{
 					start=0;
 					end=size()-1;
@@ -252,7 +252,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 				else
 					start=mid+1;
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 				start=0;
 				end=size()-1;
@@ -284,7 +284,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 				else
 					start=mid+1;
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 				start=0;
 				end=size()-1;
@@ -316,7 +316,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 				else
 					start=mid+1;
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 				start=0;
 				end=size()-1;

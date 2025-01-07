@@ -133,35 +133,12 @@ public class GenCaravan extends GenNavigableBoardable
 		return cmd;
 	}
 
-	protected boolean isDrivableRoom(final Room R)
-	{
-		if(R==null)
-			return false;
-		switch(R.domainType())
-		{
-		case Room.DOMAIN_OUTDOORS_SEAPORT:
-		case Room.DOMAIN_OUTDOORS_SPACEPORT:
-		case Room.DOMAIN_INDOORS_CAVE_SEAPORT:
-		case Room.DOMAIN_INDOORS_SEAPORT:
-		case Room.DOMAIN_OUTDOORS_CITY:
-		case Room.DOMAIN_OUTDOORS_PLAINS:
-			return true;
-		case Room.DOMAIN_INDOORS_CAVE:
-			return R.basePhyStats().weight()>3;
-		case Room.DOMAIN_INDOORS_STONE: // underground city street
-			return R.basePhyStats().weight()<=2
-				&& R.basePhyStats().weight()>0
-				&& R.basePhyStats().height()>=5;
-		}
-		return false;
-	}
-
 	@Override
 	protected Room findNearestDocks(final Room R)
 	{
 		if(R!=null)
 		{
-			if(isDrivableRoom(R))
+			if(CMLib.flags().isDrivableRoom(R))
 				return R;
 			TrackingLibrary.TrackingFlags flags;
 			flags = CMLib.tracking().newFlags()
@@ -173,7 +150,7 @@ public class GenCaravan extends GenNavigableBoardable
 			final List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, 25);
 			for(final Room R2 : rooms)
 			{
-				if(isDrivableRoom(R2))
+				if(CMLib.flags().isDrivableRoom(R2))
 					return R2;
 			}
 		}
@@ -224,7 +201,7 @@ public class GenCaravan extends GenNavigableBoardable
 		for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();
-			if((R!=null)&& (isDrivableRoom(R)) &&(CMLib.map().getExtendedRoomID(R).length()>0))
+			if((R!=null)&& (CMLib.flags().isDrivableRoom(R)) &&(CMLib.map().getExtendedRoomID(R).length()>0))
 				return R;
 		}
 		return null;
@@ -242,7 +219,7 @@ public class GenCaravan extends GenNavigableBoardable
 		final Room R=CMLib.map().roomLocation(this);
 		if((R==null)
 		|| R.amDestroyed()
-		|| (!isDrivableRoom(R))
+		|| (!CMLib.flags().isDrivableRoom(R))
 		|| ((!CMLib.flags().isFalling(this)) && (getAnyExitDir(R)<0)))
 			return true;
 		return false;
@@ -277,7 +254,7 @@ public class GenCaravan extends GenNavigableBoardable
 	@Override
 	protected boolean preNavigateCheck(final Room thisRoom, final int direction, final Room destRoom)
 	{
-		if(!isDrivableRoom(destRoom))
+		if(!CMLib.flags().isDrivableRoom(destRoom))
 		{
 			announceToAllAboard(L("As there is no where to "+verb_sail+" @x1, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction)));
 			courseDirections.clear();

@@ -913,6 +913,25 @@
             <POWER>CLAN_TITLES</POWER>
             <POWER>JOURNAL</POWER>
         </POSITION>
+        <POSITION ID="NEUTER" ROLEID=7 RANK=1 NAME="NEUTER" PLURAL="NEUTERS" MAX=999999 INNERMASK="-FEMALE -MALE" PUBLIC="true">
+            <POWER>ACCEPT</POWER>
+            <POWER>ASSIGN</POWER>
+            <POWER>WITHDRAW</POWER>
+            <POWER>DEPOSIT</POWER>
+            <POWER>ORDER_UNDERLINGS</POWER>
+            <POWER>ORDER_CONQUERED</POWER>
+            <POWER>CREATE_LAW</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
+            <POWER>TAX</POWER>
+            <POWER>ENCHANT</POWER>
+            <POWER>CHANNEL</POWER>
+            <POWER>MORGUE</POWER>
+            <POWER>LIST_MEMBERS</POWER>
+            <POWER>HOME_PRIVS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
+            <POWER>CLAN_TITLES</POWER>
+            <POWER>JOURNAL</POWER>
+        </POSITION>
         <POSITION ID="COUSIN" ROLEID=2 RANK=2 NAME="COUSIN" PLURAL="COUSINS" MAX=999999 INNERMASK="" PUBLIC="true">
             <POWER>ACCEPT</POWER>
             <POWER>ASSIGN</POWER>
@@ -1307,7 +1326,7 @@
     <SHORTDESC>ruled by those who donate the most XP to their clan</SHORTDESC>
     <LONGDESC>The meritocracy is an hierarchical organization run by those who donate the most net XP to the clan.  The ranks, from entrepreneurs down to workers, are automatically assigned by who has donated the most net XP to the clan.  Members also have the authority to maintain discipline in the ranks using the ORDER command.</LONGDESC>
     <POSITIONS>
-        <POSITION ID="HIGH ENTREPRENUER" ROLEID=5 RANK=0 NAME="HIGH ENTREPRENUER" PLURAL="HIGH ENTREPRENUERS" MAX=2% INNERMASK="" PUBLIC="true">
+        <POSITION ID="HIGH ENTREPRENEUR" ROLEID=5 RANK=0 NAME="HIGH ENTREPRENEUR" PLURAL="HIGH ENTREPRENEURS" MAX=2% INNERMASK="" PUBLIC="true">
             <POWER>ACCEPT</POWER>
             <POWER>EXILE</POWER>
             <POWER>SET_HOME</POWER>

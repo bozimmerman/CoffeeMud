@@ -187,7 +187,7 @@ public class PlayInstrument extends CommonSkill implements Wand.WandUsage
 					&&(mob.fetchFirstWornItem(Wearable.WORN_WIELD)==null)
 					&&(mob.fetchHeldItem()==null));
 		}
-		return mob.isMine(I)&&(!I.amWearingAt(Wearable.IN_INVENTORY));
+		return mob.isMine(I) && I.amBeingWornProperly();
 	}
 
 	@Override

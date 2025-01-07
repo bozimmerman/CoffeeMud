@@ -121,6 +121,12 @@ public class Disease_Lycanthropy extends Disease
 		return 8;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_POLYMORPHING;
+	}
+
 	protected boolean changed=false;
 
 	@Override

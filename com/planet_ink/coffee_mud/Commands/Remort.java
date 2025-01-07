@@ -94,6 +94,9 @@ public class Remort extends StdCommand
 		sess.stopSession(true,true,false);
 		CMLib.s_sleep(3000);
 		sess.stopSession(true,true,false);
+		if((!CMLib.flags().isInTheGame(mob, false))
+		&&((mob.session()==null)||(mob.session().isStopped())))
+			CMLib.players().unloadOfflinePlayer(mob);
 		if(pStats != null)
 		{
 			pStats.getExtItems().delAllItems(true);
@@ -402,10 +405,12 @@ public class Remort extends StdCommand
 				else
 				{
 					Log.sysOut("Remort: "+mob.Name());
+					final PlayerStats pStats = mob.playerStats();
+					if(pStats != null)
+						CMLib.players().savePlayer(mob);
 					if(mob.numFollowers()>0)
 						CMLib.commands().forceStandardCommand(mob, "Nofollow",new XVector<String>("NOFOLLOW","ALL"));
 
-					final PlayerStats pStats = mob.playerStats();
 					final PlayerAccount oldAccount;
 					if((pStats!=null)&&(pStats.getAccount()!=null))
 						oldAccount = (PlayerAccount)pStats.getAccount().copyOf();
@@ -526,8 +531,7 @@ public class Remort extends StdCommand
 										{
 											pStats.setSavable(false); // protect vulnerable weakling from saves so restore works
 											final Session sess = mob.session();
-											mob.baseCharStats().setMyClasses("StdCharClass");
-											mob.baseCharStats().setMyLevels("1");
+											mob.baseCharStats().setAllClassInfo("StdCharClass", "1");
 											mob.basePhyStats().setLevel(1);
 											for(int i=0;i<3;i++)
 											{
@@ -570,7 +574,7 @@ public class Remort extends StdCommand
 												}
 												if(sess.isStopped())
 												{
-													slowStop(sess,mob,oldAccount);
+													slowStop(sess,mob,oldAccount); // will throw IOException
 												}
 												recoverEverything(mob);
 											}
@@ -586,7 +590,7 @@ public class Remort extends StdCommand
 												}
 												if(sess.isStopped())
 												{
-													slowStop(sess,mob,oldAccount);
+													slowStop(sess,mob,oldAccount); // will throw IOException
 												}
 												recoverEverything(mob);
 											}
@@ -606,7 +610,7 @@ public class Remort extends StdCommand
 												}
 												if(sess.isStopped())
 												{
-													slowStop(sess,mob,oldAccount);
+													slowStop(sess,mob,oldAccount); // will throw IOException
 												}
 												recoverEverything(mob);
 											}
@@ -634,7 +638,7 @@ public class Remort extends StdCommand
 												}
 												if(sess.isStopped())
 												{
-													slowStop(sess,mob,oldAccount);
+													slowStop(sess,mob,oldAccount); // will throw IOException
 												}
 												recoverEverything(mob);
 											}
@@ -688,6 +692,7 @@ public class Remort extends StdCommand
 											final Ability A=mob.fetchEffect(failsafeID);
 											if(A!=null)
 												mob.delEffect(A);
+											pStats.setSavable(true); // restore savability
 											CMLib.database().DBUpdatePlayer(mob);
 										}
 										catch(final IOException e)

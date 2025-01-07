@@ -152,7 +152,7 @@ public class Poison extends StdAbility implements HealthCondition
 
 	protected int POISON_DAMAGE()
 	{
-		return (invoker != null) ? CMLib.dice().roll(1, invoker().phyStats().level(), 1) : 0;
+		return (invoker != null) ? CMLib.dice().roll(1, invoker().phyStats().level(), (int)Math.round(rank)) : 0;
 	}
 
 	protected boolean POISON_MAKE_PEACE()
@@ -161,8 +161,18 @@ public class Poison extends StdAbility implements HealthCondition
 	}
 
 	protected boolean	processing	= false;
-
+	protected double	rank		= 1.0;
 	protected int		poisonTick	= 3;
+
+	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if(newMiscText.length()>0)
+		{
+			rank = CMParms.getParmDouble(newMiscText, "RANK", 1.0);
+		}
+	}
 
 	@Override
 	public String getHealthConditionDesc()

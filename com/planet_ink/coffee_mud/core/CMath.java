@@ -50,7 +50,6 @@ public class CMath
 	private static final int[]			INTEGER_BITMASKS= new int[31];
 	private static final long[]			LONG_BITMASKS	= new long[63];
 	private static Random 				rand			= new Random(System.currentTimeMillis());
-	public  static BigDecimal			BIG_PI			= BigDecimal.valueOf(Math.PI);
 
 	static
 	{
@@ -335,6 +334,31 @@ public class CMath
 			return def;
 		return obj;
 	}
+
+	/**
+	 * Returns the matching enum using startsWith.  Case insensitive!
+	 * @param c the enum class to look in
+	 * @param s the string to look
+	 * @return the enum or null
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public final static Enum<? extends Enum> s_valueOfStartsWith(final Class<? extends Enum> c, final String s)
+	{
+		if((c==null)||(s==null))
+			return null;
+		final Enum<? extends Enum> fe = s_valueOf(c, s);
+		if(fe != null)
+			return fe;
+		final String us = s.toUpperCase().trim();
+		for(final Enum e : c.getEnumConstants())
+		{
+			if(e.name().toUpperCase().startsWith(us))
+				return e;
+		}
+		return null;
+	}
+
+
 
 	/**
 	 * Returns true if the string is a number (float or int)
@@ -1066,6 +1090,21 @@ public class CMath
 	{
 		final double diff=(d1>d2)?d1-d2:d2-d1;
 		return diff/range;
+	}
+
+	/**
+	 * Returns whether the first number is within a %pct (0-1) distance from
+	 * the second/ideal value.
+	 *
+	 * @param v the value to test
+	 * @param ideal the ideal
+	 * @param pct the pct to return true if less than or equal to
+	 * @return true if its within the pct range, false otherwise
+	 */
+	public final static boolean isWithin(final double v, final double ideal, final double pct)
+	{
+		final double a = Math.abs(v - ideal);
+		return (a / ideal) < pct;
 	}
 
 	/**

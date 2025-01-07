@@ -137,15 +137,12 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		if(castlePrototypes == null)
 		{
 			castlePrototypes=new Vector<Item>();
-			final CMFile F=new CMFile(Resources.makeFileResourceName("skills/clancastles.cmare"),null);
-			if(F.exists())
-			{
+			for(final CMFile F : CMFile.getExistingExtendedFiles(Resources.makeFileResourceName("skills/clancastles.cmare"),null,CMFile.FLAG_FORCEALLOW))
 				CMLib.coffeeMaker().addItemsFromXML(F.textUnformatted().toString(), castlePrototypes, null);
-				for(final Item I : castlePrototypes)
-					CMLib.threads().unTickAll(I);
-				if(castlePrototypes.size()>0)
-					Resources.submitResource(allItemID, castlePrototypes);
-			}
+			for(final Item I : castlePrototypes)
+				CMLib.threads().unTickAll(I);
+			if(castlePrototypes.size()>0)
+				Resources.submitResource(allItemID, castlePrototypes);
 		}
 		return castlePrototypes;
 	}
@@ -157,8 +154,12 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
 		if(V==null)
 		{
-			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
-			V=loadList(str);
+			V = new Vector<List<String>>();
+			for(final CMFile F : CMFile.getExistingExtendedFiles(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS))
+			{
+				final StringBuffer str = F.text();
+				V.addAll(loadList(str));
+			}
 			for(final Item I : getCastles())
 			{
 				final List<String> recipe = new ArrayList<String>();

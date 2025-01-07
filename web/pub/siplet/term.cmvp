@@ -123,6 +123,8 @@ function connect(url,port,tries)
 			goGreen();
 			lastReceived = new Date().getTime();
 			setTimeout('displayData(); top.entry.boxFocus();',pingDelay);
+			setTimeout('displayData(); top.entry.boxFocus();',pingDelay+1000);
+			setTimeout('displayData(); top.entry.boxFocus();',pingDelay+pingDelay);
 		}
 	}); 
 }

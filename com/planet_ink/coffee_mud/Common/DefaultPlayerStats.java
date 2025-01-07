@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
+import com.planet_ink.coffee_mud.Common.interfaces.PrideStats.PrideStat;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -45,7 +45,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class DefaultPlayerStats implements PlayerStats
+public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 {
 	@Override
 	public String ID()
@@ -88,6 +88,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected String		 deathPoof		= "";
 	protected String		 announceMsg	= "";
 	protected String		 savedPose		= "";
+	protected boolean		 poseConstant	= true; // makes the location change a bit faster
 	protected String		 notes			= "";
 	private volatile String  actTitle		= null;
 	protected int   		 wrap			= DEFAULT_WORDWRAP;
@@ -114,8 +115,6 @@ public class DefaultPlayerStats implements PlayerStats
 	protected RoomnumberSet  visitedRoomSet	= null;
 	protected RoomnumberSet  tVisitedRoomSet= null;
 	protected Set<String>	 introductions	= new SHashSet<String>();
-	protected long[]	 	 prideExpireTime= new long[TimeClock.TimePeriod.values().length];
-	protected int[][]		 prideStats		= new int[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
 	protected long[][]		 combatStats	= new long[0][PlayerCombatStat.values().length];
 	protected TimeClock		 birthdayClock	= null;
 
@@ -442,9 +441,19 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setSavedPose(final String msg)
+	public void setSavedPose(final String msg, final boolean constant)
 	{
-		savedPose=msg;
+		if(msg == null)
+			savedPose="";
+		else
+			savedPose=msg;
+		poseConstant = constant;
+	}
+
+	@Override
+	public boolean isPoseConstant()
+	{
+		return poseConstant;
 	}
 
 	@Override
@@ -969,36 +978,6 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void bumpPrideStat(final PrideStat stat, final int amt)
-	{
-		final long now=System.currentTimeMillis();
-		if(stat!=null)
-		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
-		{
-			if(period==TimeClock.TimePeriod.ALLTIME)
-				prideStats[period.ordinal()][stat.ordinal()]+=amt;
-			else
-			{
-				if(now>prideExpireTime[period.ordinal()])
-				{
-					for(final AccountStats.PrideStat stat2 : AccountStats.PrideStat.values())
-						prideStats[period.ordinal()][stat2.ordinal()]=0;
-					prideExpireTime[period.ordinal()]=period.nextPeriod();
-				}
-				prideStats[period.ordinal()][stat.ordinal()]+=amt;
-			}
-		}
-	}
-
-	@Override
-	public int getPrideStat(final TimePeriod period, final PrideStat stat)
-	{
-		if((period==null)||(stat==null))
-			return 0;
-		return prideStats[period.ordinal()][stat.ordinal()];
-	}
-
-	@Override
 	public String getXML()
 	{
 		final String friendsStr=getPrivateList(getFriends());
@@ -1012,18 +991,13 @@ public class DefaultPlayerStats implements PlayerStats
 			final String code=codes[x].toUpperCase();
 			rest.append("<"+code+">"+CMLib.xml().parseOutAngleBrackets(getStat(code))+"</"+code+">");
 		}
-		rest.append("<NEXTPRIDEPERIODS>").append(CMParms.toTightListString(prideExpireTime)).append("</NEXTPRIDEPERIODS>");
-		rest.append("<PRIDESTATS>");
-		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
-			rest.append(CMParms.toTightListString(prideStats[period.ordinal()])).append(";");
-		rest.append("</PRIDESTATS>");
-
+		rest.append(super.getXML());
 		rest.append("<ACHIEVEMENTS");
 		for(final Iterator<Tracker> i=achievementers.values().iterator();i.hasNext();)
 		{
 			final Tracker T = i.next();
 			if(T.getAchievement().isSavableTracker() && (T.getCount(null) != 0))
-				rest.append(" ").append(T.getAchievement().getTattoo()).append("=").append(T.getCount(null));
+				rest.append(" ").append(T.getAchievement().getTattoo()).append("=").append(T.getCountParms(null));
 			// getCount(null) should be ok, because it's only the un-savable trackers that need the mob obj
 		}
 		rest.append(" />");
@@ -1054,6 +1028,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+((poofout.length()>0)?"<POOFOUT>"+CMLib.xml().parseOutAngleBrackets(poofout)+"</POOFOUT>":"")
 			+((announceMsg.length()>0)?"<ANNOUNCE>"+CMLib.xml().parseOutAngleBrackets(announceMsg)+"</ANNOUNCE>":"")
 			+((savedPose.length()>0)?"<POSE>"+CMLib.xml().parseOutAngleBrackets(savedPose)+"</POSE>":"")
+			+((savedPose.length()>0)?"<POSECONST>"+poseConstant+"</POSECONST>":"")
 			+((tranpoofin.length()>0)?"<TRANPOOFIN>"+CMLib.xml().parseOutAngleBrackets(tranpoofin)+"</TRANPOOFIN>":"")
 			+((tranpoofout.length()>0)?"<TRANPOOFOUT>"+CMLib.xml().parseOutAngleBrackets(tranpoofout)+"</TRANPOOFOUT>":"")
 			+"<DATES>"+CMLib.xml().parseOutAngleBrackets(this.getLevelDateTimesStr())+"</DATES>"
@@ -1306,6 +1281,11 @@ public class DefaultPlayerStats implements PlayerStats
 		if(savedPose==null)
 			savedPose="";
 		savedPose=xmlLib.restoreAngleBrackets(savedPose);
+		if(savedPose.length()>0)
+		{
+			final String c = xmlLib.getValFromPieces(xml, "POSECONST");
+			poseConstant = (c.length()>0) ? CMath.s_bool(c) : true;
+		}
 
 		notes=xmlLib.getValFromPieces(xml,"NOTES");
 		if(debug)
@@ -1366,9 +1346,9 @@ public class DefaultPlayerStats implements PlayerStats
 		{
 			final Achievement A=a.nextElement();
 			if((achievePiece != null) && achievePiece.parms().containsKey(A.getTattoo()))
-				achievementers.put(A.getTattoo(), A.getTracker(CMath.s_int(achievePiece.parms().get(A.getTattoo()).trim())));
+				achievementers.put(A.getTattoo(), A.getTracker(achievePiece.parms().get(A.getTattoo()).trim()));
 			else
-				achievementers.put(A.getTattoo(), A.getTracker(0));
+				achievementers.put(A.getTattoo(), A.getTracker("0"));
 		}
 
 		final String[] codes=getStatCodes();
@@ -1379,18 +1359,7 @@ public class DefaultPlayerStats implements PlayerStats
 				str="";
 			setStat(codes[i].toUpperCase(),xmlLib.restoreAngleBrackets(str));
 		}
-		final String[] nextPeriods=xmlLib.getValFromPieces(xml, "NEXTPRIDEPERIODS").split(",");
-		final String[] prideStats=xmlLib.getValFromPieces(xml, "PRIDESTATS").split(";");
-		final Pair<Long,int[]>[] finalPrideStats = CMLib.players().parsePrideStats(nextPeriods, prideStats);
-		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
-		{
-			if(period.ordinal()<finalPrideStats.length)
-			{
-				this.prideExpireTime[period.ordinal()]=finalPrideStats[period.ordinal()].first.longValue();
-				this.prideStats[period.ordinal()]=finalPrideStats[period.ordinal()].second;
-			}
-		}
-
+		super.setXML(xmlLib, xml);
 		str = xmlLib.getValFromPieces(xml,"ACCOUNT");
 		if(debug)
 			Log.debugOut("ACCOUNT="+str);
@@ -1645,7 +1614,7 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		else
 		{
-			T=A.getTracker(0);
+			T=A.getTracker("0");
 			achievementers.put(A.getTattoo(), T);
 		}
 		return T;
@@ -1658,9 +1627,9 @@ public class DefaultPlayerStats implements PlayerStats
 		if(A!=null)
 		{
 			if(achievementers.containsKey(A.getTattoo()))
-				achievementers.put(A.getTattoo(), A.getTracker(achievementers.get(A.getTattoo()).getCount(mob)));
+				achievementers.put(A.getTattoo(), A.getTracker(achievementers.get(A.getTattoo()).getCountParms(mob)));
 			else
-				achievementers.put(A.getTattoo(), A.getTracker(0));
+				achievementers.put(A.getTattoo(), A.getTracker("0"));
 		}
 		else
 			achievementers.remove(achievementTattoo);
@@ -2146,7 +2115,10 @@ public class DefaultPlayerStats implements PlayerStats
 			pageBreak = CMath.s_parseIntExpression(val);
 			break;
 		case 21:
-			savedPose = val;
+			if(val == null)
+				savedPose = "";
+			else
+				savedPose = val;
 			break;
 		case 22:
 			theme = CMath.s_parseIntExpression(val);

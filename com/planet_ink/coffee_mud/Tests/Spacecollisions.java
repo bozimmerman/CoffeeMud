@@ -136,23 +136,23 @@ public class Spacecollisions extends StdTest
 			{{9735, -1357, 707161},{29979245},{5,0},{2000, 1000, 0},{0}}, // 73
 			{{9735, -1357, 707161},{29979245},{0,0},{20000, 10000, 5030},{1}}, // 74
 		};
-		final long[] lt1= new long[]{5, 2, 1};
-		final long[] lt2= new long[]{3, 1, -1};
-		final long[] lt3= new long[]{0, 2, 3};
+		final Coord3D lt1= new Coord3D(new long[]{5, 2, 1});
+		final Coord3D lt2= new Coord3D(new long[]{3, 1, -1});
+		final Coord3D lt3= new Coord3D(new long[]{0, 2, 3});
 		if(CMLib.space().getMinDistanceFrom(lt1,lt2,lt3)<1)
 		{
 			return (L("Error: Straight line test failed: "+CMLib.space().getMinDistanceFrom(lt1,lt2,lt3)));
 		}
-		final long[] ld1 = new long[] {175, 193, 117};
-		final long[] ld2 = new long[] {197, 218, 134};
-		final long[] ld3 = new long[] {0, 0, 0};
+		final Coord3D ld1 = new Coord3D(new long[] {175, 193, 117});
+		final Coord3D ld2 = new Coord3D(new long[] {197, 218, 134});
+		final Coord3D ld3 = new Coord3D(new long[] {0, 0, 0});
 		if(CMLib.space().getMinDistanceFrom(ld1,ld2,ld3)<285)
 		{
 			return (L("Error: Short line test failed: "+CMLib.space().getMinDistanceFrom(ld1,ld2,ld3)));
 		}
-		final long[] l1= new long[]{3515255, 3877051, -239069815};
-		final long[] l2= new long[]{3953445, 4361852, -269041937};
-		final long[] l3= new long[]{9734, -1358, 707222};
+		final Coord3D l1= new Coord3D(new long[]{3515255, 3877051, -239069815});
+		final Coord3D l2= new Coord3D(new long[]{3953445, 4361852, -269041937});
+		final Coord3D l3= new Coord3D(new long[]{9734, -1358, 707222});
 		if(CMLib.space().getMinDistanceFrom(l1,l2,l3)<239834022)
 		{
 			return (L("Error: Straight line test failed: "+CMLib.space().getMinDistanceFrom(l1,l2,l3)));
@@ -162,17 +162,17 @@ public class Spacecollisions extends StdTest
 			final long[][] l=tests[li];
 			// l->r
 			{
-				final long[] shipCoord1 = l[0];
+				final Coord3D shipCoord1 = new Coord3D(l[0]);
 				final long speed = l[1][0];
-				final long[] targetCoord=l[3];
-				final double[] dir=CMLib.space().getDirection(shipCoord1, targetCoord);
+				final Coord3D targetCoord=new Coord3D(l[3]);
+				final Dir3D dir=CMLib.space().getDirection(shipCoord1, targetCoord);
 				if(l[2].length==2)
 				{
 					CMLib.space().changeDirection(dir, Math.toRadians(l[2][0]), Math.toRadians(l[2][1]));
 				}
 				//Log.debugOut(dir[0]+","+dir[1]);
 				final boolean expectHit=l[4][0]>0;
-				final long[] shipCoord2=CMLib.space().moveSpaceObject(shipCoord1, dir, speed);
+				final Coord3D shipCoord2=CMLib.space().moveSpaceObject(shipCoord1, dir, speed);
 				final double swish=CMLib.space().getMinDistanceFrom(shipCoord1, shipCoord2, targetCoord);
 				if(expectHit != (swish < 10))
 				{
@@ -191,17 +191,17 @@ public class Spacecollisions extends StdTest
 			}
 			// r->l
 			{
-				final long[] shipCoord1 = l[3];
+				final Coord3D shipCoord1 = new Coord3D(l[3]);
 				final long speed = l[1][0];
-				final long[] targetCoord=l[0];
-				final double[] dir=CMLib.space().getDirection(shipCoord1, targetCoord);
+				final Coord3D targetCoord=new Coord3D(l[0]);
+				final Dir3D dir=CMLib.space().getDirection(shipCoord1, targetCoord);
 				if(l[2].length==2)
 				{
 					CMLib.space().changeDirection(dir, Math.toRadians(l[2][0]), Math.toRadians(l[2][1]));
 				}
 				//Log.debugOut(dir[0]+","+dir[1]);
 				final boolean expectHit=l[4][0]>0;
-				final long[] shipCoord2=CMLib.space().moveSpaceObject(shipCoord1, dir, speed);
+				final Coord3D shipCoord2=CMLib.space().moveSpaceObject(shipCoord1, dir, speed);
 				final double swish=CMLib.space().getMinDistanceFrom(shipCoord1, shipCoord2, targetCoord);
 				if(expectHit != (swish < 10))
 				{

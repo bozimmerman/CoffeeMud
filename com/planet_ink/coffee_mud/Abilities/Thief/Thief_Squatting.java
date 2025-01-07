@@ -254,13 +254,13 @@ public class Thief_Squatting extends ThiefSkill
 			return false;
 		}
 
+		final CMMsg buyMsg = CMClass.getMsg(mob,warnMOB==null?mob:warnMOB,T,CMMsg.MSG_BUY,CMMsg.MSG_BUY,CMMsg.MSG_BUY,"");
 		final boolean success=proficiencyCheck(mob,0,auto);
-
 		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":L("<S-NAME> start(s) squatting."));
 		if(!success)
 			return beneficialVisualFizzle(mob,null,auto?"":L("<S-NAME> can't seem to get comfortable here."));
 		else
-		if(mob.location().okMessage(mob,msg))
+		if(mob.location().okMessage(mob,msg) && mob.okMessage(mob, buyMsg))
 		{
 			mob.location().send(mob,msg);
 			failed=false;

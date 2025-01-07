@@ -201,9 +201,7 @@ public class CalendarCmd extends StdCommand
 	{
 		if(rl)
 			return P.getIncrement();
-		TimeClock C = CMLib.time().homeClock(mob);
-		if(C == null)
-			C=CMLib.time().globalClock();
+		final TimeClock C = CMLib.time().homeClock(mob);
 		switch(P)
 		{
 		case ALLTIME:
@@ -233,9 +231,7 @@ public class CalendarCmd extends StdCommand
 					+ CMStrings.padRight(L("When (y/m/d)"), COLW)
 					+ CMStrings.padRight(L("Event"), COLE)
 					).append("^N\n\r");
-		TimeClock C = CMLib.time().homeClock(M);
-		if(C == null)
-			C = CMLib.time().globalClock();
+		final TimeClock C = CMLib.time().homeClock(M);
 		boolean color=true;
 		for(final JournalEntry entry : entries)
 		{
@@ -902,10 +898,10 @@ public class CalendarCmd extends StdCommand
 								showError(S,startDateCallback[0],"^XBad day of the month (@x1)!^N",""+d);
 								return;
 							}
-							if((h<0)||(h>C.getHoursInDay())
+							if((h<0)||(h>=C.getHoursInDay())
 							||((m==C.getMonth())&&(y==C.getYear())&&(d==C.getDayOfMonth())&&(h<=C.getHourOfDay())))
 							{
-								showError(S,startDateCallback[0],"^XBad hour (@x1)! (0-@x2 only)^N",""+h,""+C.getHoursInDay());
+								showError(S,startDateCallback[0],"^XBad hour (@x1)! (0-@x2 only)^N",""+h,""+(C.getHoursInDay()-1));
 								return;
 							}
 							finalV.add("START:"+y+"/"+m+"/"+d+"/"+h);

@@ -724,7 +724,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * to spend actually working.  The balance is spent sleeping.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PrideStats.PrideStat
 	 * @param callBack a call back containing the user id and data for each period
 	 * @param scanCPUPercent the percent (0-100) to spend working
 	 * @return the arrays of lists of top winner players
@@ -741,7 +741,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * to spend actually working.  The balance is spent sleeping.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PrideStats.PrideStat
 	 * @param callBack a call back containing the user id and data for each period
 	 * @param scanCPUPercent the percent (0-100) to spend working
 	 * @return the arrays of lists of top winner accounts

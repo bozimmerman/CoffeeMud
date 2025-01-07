@@ -48,8 +48,8 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 		return Technical.TechType.SHIP_SENSOR;
 	}
 
-	protected final static long[] emptyCoords = new long[] {0,0,0};
-	protected final static double[] emptyDirection = new double[] {0,0};
+	protected final static Coord3D emptyCoords = new Coord3D();
+	protected final static Dir3D emptyDirection = new Dir3D();
 	protected final static BoundedCube smallCube = new BoundedCube(1,1,1,1,1,1);
 	protected final static BoundedSphere smallSphere = new BoundedSphere(new long[] {1,1,1},1);
 	protected Map<Software,Room> feedbackObjects = new TreeMap<Software,Room>(XTreeSet.comparator);
@@ -406,16 +406,16 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				}
 
 				@Override
-				public long[] coordinates()
+				public Coord3D coordinates()
 				{
 					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
-						return Arrays.copyOf(sobj.coordinates(), sobj.coordinates().length);
-					return Arrays.copyOf(emptyCoords, emptyCoords.length);
+						return sobj.coordinates().copyOf();
+					return emptyCoords.copyOf();
 				}
 
 				@Override
-				public void setCoords(final long[] coords)
+				public void setCoords(final Coord3D coords)
 				{
 				}
 
@@ -429,7 +429,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				}
 
 				@Override
-				public long[] center()
+				public Coord3D center()
 				{
 					return coordinates();
 				}
@@ -440,7 +440,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				}
 
 				@Override
-				public double[] direction()
+				public Dir3D direction()
 				{
 					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
@@ -449,7 +449,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				}
 
 				@Override
-				public void setDirection(final double[] dir)
+				public void setDirection(final Dir3D dir)
 				{
 				}
 

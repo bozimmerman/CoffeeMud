@@ -79,13 +79,13 @@ public class Spell_KnowOrigin extends Spell
 		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
 	}
 
-	public Room origin(final MOB mob, final Environmental meThang)
+	public Pair<Room,Environmental> origin(final MOB mob, final Environmental meThang)
 	{
 		if(meThang instanceof LandTitle)
-			return ((LandTitle)meThang).getATitledRoom();
+			return new Pair<Room,Environmental>(((LandTitle)meThang).getATitledRoom(), null);
 		else
 		if(meThang instanceof MOB)
-			return ((MOB)meThang).getStartRoom();
+			return new Pair<Room,Environmental>(((MOB)meThang).getStartRoom(), null);
 		else
 		if(meThang instanceof Item)
 		{
@@ -96,11 +96,14 @@ public class Spell_KnowOrigin extends Spell
 				final String srchStr="$"+me.Name()+"$";
 				Environmental E=CMLib.hunt().findFirstShopStocker(CMLib.map().rooms(), mob, srchStr, 10);
 				if(E!=null)
-					return CMLib.map().getStartRoom(E);
+					return new Pair<Room,Environmental>(CMLib.map().getStartRoom(E),E);
 				E=CMLib.hunt().findFirstInventory(CMLib.map().rooms(), mob, srchStr, 10);
 				if(E!=null)
-					return CMLib.map().getStartRoom(E);
-				return CMLib.hunt().findWorldRoomLiberally(mob,srchStr, "I",10,600000);
+					return new Pair<Room,Environmental>(CMLib.map().getStartRoom(E),(E instanceof Item)?((Item)E).owner():E);
+				E=CMLib.hunt().findFirstRoomItem(CMLib.map().rooms(), mob, srchStr, true, 10);
+				if(E!=null)
+					return new Pair<Room,Environmental>(CMLib.map().roomLocation(E),((Item)E).owner());
+				return new Pair<Room,Environmental>(CMLib.hunt().findWorldRoomLiberally(mob,srchStr, "I",10,600000), null);
 			}
 			catch(final NoSuchElementException nse)
 			{
@@ -119,15 +122,81 @@ public class Spell_KnowOrigin extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final Room R=origin(mob,target);
+		final Pair<Room,Environmental> o=origin(mob,target);
 		final boolean success=proficiencyCheck(mob,0,auto);
-		if((success)&&(R!=null))
+		if((success)
+		&&(o != null)
+		&&(o.first != null)
+		&&(CMLib.flags().canAccess(mob, o.first)))
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s), divining the origin of <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				commonTelL(mob,"@x1 seems to come from '@x2'.",target.name(mob),R.displayText(mob));
+				switch(super.getXLEVELLevel(mob))
+				{
+				case 0:
+					commonTelL(mob,"@x1 seems to come from '@x2''.",target.name(mob),o.first.getArea().name(mob));
+					break;
+				case 1:
+					commonTelL(mob,"@x1 seems to come from '@x2' in a place called '@x3'.",target.name(mob),o.first.displayText(mob),o.first.getArea().name(mob));
+					break;
+				case 2:
+					if(o.second instanceof Item)
+					{
+						commonTelL(mob,"@x1 seems to come from '@x2' in a container @x3, at a place called '@x4'.",
+								target.name(mob),
+								o.first.displayText(mob),
+								((Item)o.second).name(mob),
+								o.first.getArea().name(mob));
+					}
+					else
+						commonTelL(mob,"@x1 seems to come from '@x2' in a place called '@x3'.",target.name(mob),o.first.displayText(mob),o.first.getArea().name(mob));
+					break;
+				case 3:
+					if(o.second instanceof Item)
+					{
+						commonTelL(mob,"@x1 seems to come from '@x2' in a container @x3, at a place called '@x4'.",
+								target.name(mob),
+								o.first.displayText(mob),
+								((Item)o.second).name(mob),
+								o.first.getArea().name(mob));
+					}
+					else
+					if((o.second instanceof ShopKeeper)
+					&&(o.second instanceof MOB))
+					{
+						commonTelL(mob,"@x1 seems to come from '@x2' in the shop of @x3, at a place called '@x4'.",
+								target.name(mob),
+								o.first.displayText(mob),
+								((MOB)o.second).name(mob),
+								o.first.getArea().name(mob));
+					}
+					else
+						commonTelL(mob,"@x1 seems to come from '@x2' in a place called '@x3'.",target.name(mob),o.first.displayText(mob),o.first.getArea().name(mob));
+					break;
+				default:
+					if(o.second instanceof Item)
+					{
+						commonTelL(mob,"@x1 seems to come from '@x2' in a container @x3, at a place called '@x4'.",
+								target.name(mob),
+								o.first.displayText(mob),
+								((Item)o.second).name(mob),
+								o.first.getArea().name(mob));
+					}
+					else
+					if(o.second instanceof MOB)
+					{
+						commonTelL(mob,"@x1 seems to come from '@x2' belonging to @x3, at a place called '@x4'.",
+								target.name(mob),
+								o.first.displayText(mob),
+								((MOB)o.second).name(mob),
+								o.first.getArea().name(mob));
+					}
+					else
+						commonTelL(mob,"@x1 seems to come from '@x2' in a place called '@x3'.",target.name(mob),o.first.displayText(mob),o.first.getArea().name(mob));
+					break;
+				}
 			}
 		}
 		else

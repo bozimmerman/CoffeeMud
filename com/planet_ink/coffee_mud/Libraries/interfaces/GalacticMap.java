@@ -80,7 +80,7 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#numSpaceObjects()
 	 * @see GalacticMap#isObjectInSpace(SpaceObject)
 	 * @see GalacticMap#delObjectInSpace(SpaceObject)
-	 * @see GalacticMap#addObjectToSpace(SpaceObject, long[])
+	 * @see GalacticMap#addObjectToSpace(SpaceObject, Coord3D)
 	 * @see GalacticMap#addObjectToSpace(SpaceObject)
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 *
@@ -96,7 +96,7 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#numSpaceObjects()
 	 * @see GalacticMap#isObjectInSpace(SpaceObject)
 	 * @see GalacticMap#delObjectInSpace(SpaceObject)
-	 * @see GalacticMap#addObjectToSpace(SpaceObject, long[])
+	 * @see GalacticMap#addObjectToSpace(SpaceObject, Coord3D)
 	 * @see GalacticMap#addObjectToSpace(SpaceObject)
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 *
@@ -111,14 +111,14 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#numSpaceObjects()
 	 * @see GalacticMap#isObjectInSpace(SpaceObject)
 	 * @see GalacticMap#delObjectInSpace(SpaceObject)
-	 * @see GalacticMap#addObjectToSpace(SpaceObject, long[])
+	 * @see GalacticMap#addObjectToSpace(SpaceObject, Coord3D)
 	 * @see GalacticMap#addObjectToSpace(SpaceObject)
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 *
 	 * @param O the SpaceObject to add
 	 * @param coords the coordinates to add it at
 	 */
-	public void addObjectToSpace(SpaceObject O, long[] coords);
+	public void addObjectToSpace(SpaceObject O, Coord3D coords);
 
 	/**
 	 * Adds the given SpaceObject to the galactic map cache.
@@ -126,7 +126,7 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#numSpaceObjects()
 	 * @see GalacticMap#isObjectInSpace(SpaceObject)
 	 * @see GalacticMap#delObjectInSpace(SpaceObject)
-	 * @see GalacticMap#addObjectToSpace(SpaceObject, long[])
+	 * @see GalacticMap#addObjectToSpace(SpaceObject, Coord3D)
 	 * @see GalacticMap#addObjectToSpace(SpaceObject)
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 *
@@ -138,9 +138,9 @@ public interface GalacticMap extends CMLibrary
 	 * Given two space objects, this returns the actual
 	 * distance between the two.
 	 *
-	 * @see GalacticMap#getDistanceFrom(long[], long[])
+	 * @see GalacticMap#getDistanceFrom(Coord3D, Coord3D)
 	 * @see GalacticMap#getDistanceFrom(SpaceObject, SpaceObject)
-	 * @see GalacticMap#getMinDistanceFrom(long[], long[], long[])
+	 * @see GalacticMap#getMinDistanceFrom(Coord3D, Coord3D, Coord3D)
 	 *
 	 * @param O1 the first space object
 	 * @param O2 the second space object
@@ -152,39 +152,48 @@ public interface GalacticMap extends CMLibrary
 	 * Given two galactic coordinates, this returns the actual
 	 * distance between the two.
 	 *
-	 * @see GalacticMap#getDistanceFrom(long[], long[])
+	 * @see GalacticMap#getDistanceFrom(Coord3D, Coord3D)
 	 * @see GalacticMap#getDistanceFrom(SpaceObject, SpaceObject)
-	 * @see GalacticMap#getMinDistanceFrom(long[], long[], long[])
+	 * @see GalacticMap#getMinDistanceFrom(Coord3D, Coord3D, Coord3D)
 	 *
 	 * @param coord1 first galactic coords
 	 * @param coord2 second galactic coords
 	 * @return distance between the two
 	 */
-	public long getDistanceFrom(final long[] coord1, final long[] coord2);
+	public long getDistanceFrom(final Coord3D coord1, final Coord3D coord2);
 
 	/**
 	 * Given a previous position and a current position, this will return the minimum
 	 * distance approached to the given object position.
 	 *
-	 * @see GalacticMap#getDistanceFrom(long[], long[])
+	 * @see GalacticMap#getDistanceFrom(Coord3D, Coord3D)
 	 * @see GalacticMap#getDistanceFrom(SpaceObject, SpaceObject)
-	 * @see GalacticMap#getMinDistanceFrom(long[], long[], long[])
+	 * @see GalacticMap#getMinDistanceFrom(Coord3D, Coord3D, Coord3D)
 	 *
 	 * @param prevPos previous position on galactic chart
 	 * @param curPosition current position on galactic chart
 	 * @param objPos the object position curious about minimum distance to
 	 * @return the minimum distance in high precision
 	 */
-	public double getMinDistanceFrom(final long[] prevPos, final long[] curPosition, final long[] objPos);
+	public double getMinDistanceFrom(final Coord3D prevPos, final Coord3D curPosition, final Coord3D objPos);
+
+	/**
+	 * Calculates the best available orbit.
+	 *
+	 * @param o the space ship that wants to orbit
+	 * @param p the planet to orbit
+	 * @return the final direction and speed to be in orbit
+	 */
+	public Pair<Dir3D, Double> calculateOrbit(final SpaceObject o, final SpaceObject p);
 
 	/**
 	 * Given two vectors, this will return the minimum
 	 * distance between the two vectors.
 	 *
-	 * @see GalacticMap#getDistanceFrom(long[], long[])
+	 * @see GalacticMap#getDistanceFrom(Coord3D, Coord3D)
 	 * @see GalacticMap#getDistanceFrom(SpaceObject, SpaceObject)
-	 * @see GalacticMap#getMinDistanceFrom(long[], long[], long[])
-	 * @see GalacticMap#getMinDistanceFrom(long[], long[], long[], long[])
+	 * @see GalacticMap#getMinDistanceFrom(Coord3D, Coord3D, Coord3D)
+	 * @see GalacticMap#getMinDistanceFrom(Coord3D, Coord3D, Coord3D, Coord3D)
 	 *
 	 * @param vec1s start point of the first vector
 	 * @param vec1e end point of the first vector
@@ -192,19 +201,19 @@ public interface GalacticMap extends CMLibrary
 	 * @param vec2e end point of the second vector
 	 * @return the minimum distance in low precision
 	 */
-	public double getMinDistanceFrom(final long[] vec1s, final long[] vec1e, final long[] vec2s, final long[] vec2e);
+	public double getMinDistanceFrom(final Coord3D vec1s, final Coord3D vec1e, final Coord3D vec2s, final Coord3D vec2e);
 
 	/**
 	 * Given two angles, this returns the difference between them as a single angle.
 	 *
-	 * @see GalacticMap#getAngleDiff(double[], double[])
+	 * @see GalacticMap#getAngleDiff(Dir3D, Dir3D)
 	 *
 	 * @param fromAngle the first angle
 	 * @param toAngle the second angle
 	 * @return the angle delta
 	 */
 
-	public double getAngleDelta(final double[] fromAngle, final double[] toAngle);
+	public double getAngleDelta(final Dir3D fromAngle, final Dir3D toAngle);
 
 	/**
 	 * Given two angles, this returns the angle between them.
@@ -212,7 +221,7 @@ public interface GalacticMap extends CMLibrary
 	 * @param angle2 the second angle
 	 * @return the middle angle
 	 */
-	public double[] getMiddleAngle(final double[] angle1, final double[] angle2);
+	public Dir3D getMiddleAngle(final Dir3D angle1, final Dir3D angle2);
 
 	/**
 	 * Given a base 'correct' angle and another 'wrong' angle, this will return
@@ -222,18 +231,29 @@ public interface GalacticMap extends CMLibrary
 	 * @param wrongAngle the wrong angle
 	 * @return another wrong angle, on the other 'side' of the base
 	 */
-	public double[] getOffsetAngle(final double[] correctAngle, final double[] wrongAngle);
+	public Dir3D getOffsetAngle(final Dir3D correctAngle, final Dir3D wrongAngle);
+
+	/**
+	 * Given a base 'correct' angle and another 'wrong' angle, this will return
+	 * the angle that is more incorrect, being equal in distance, in the same
+	 * direction as the incorrect angle
+	 *
+	 * @param correctAngle the base angle
+	 * @param wrongAngle the wrong angle
+	 * @return a MORE wrong angle, on the same 'side' of the base
+	 */
+	public Dir3D getExaggeratedAngle(final Dir3D correctAngle, final Dir3D wrongAngle);
 
 	/**
 	 * Given two angles, this returns the difference between them in pitch and yaw.
 	 *
-	 * @see GalacticMap#getAngleDelta(double[], double[])
+	 * @see GalacticMap#getAngleDelta(Dir3D, Dir3D)
 	 *
 	 * @param fromAngle the first angle
 	 * @param toAngle the second angle
 	 * @return the angle delta
 	 */
-	public double[] getAngleDiff(final double[] fromAngle, final double[] toAngle);
+	public Dir3D getAngleDiff(final Dir3D fromAngle, final Dir3D toAngle);
 
 	/**
 	 * Given an angle and a simple delta, with positive and negative values,
@@ -242,37 +262,37 @@ public interface GalacticMap extends CMLibrary
 	 * @param angle the angle to modify
 	 * @param delta the delta
 	 */
-	public void applyAngleDiff(final double[] angle, final double[] delta);
+	public void applyAngleDiff(final Dir3D angle, final Dir3D delta);
 
 	/**
 	 * Given two space objects, this will return the direction in radians
 	 * from the first to the second.
 	 *
-	 * @see GalacticMap#getDirection(long[], long[])
+	 * @see GalacticMap#getDirection(Coord3D, Coord3D)
 	 * @see GalacticMap#getDirection(SpaceObject, SpaceObject)
-	 * @see GalacticMap#getDirectionFromDir(double[], double, double[])
-	 * @see GalacticMap#getOppositeDir(double[])
+	 * @see GalacticMap#getDirectionFromDir(Dir3D, double, Dir3D)
+	 * @see GalacticMap#getOppositeDir(Dir3D)
 	 *
 	 * @param fromObj the first SpaceObject
 	 * @param toObj the second SpaceObject
 	 * @return the direction in radians from the first to the second
 	 */
-	public double[] getDirection(SpaceObject fromObj, SpaceObject toObj);
+	public Dir3D getDirection(SpaceObject fromObj, SpaceObject toObj);
 
 	/**
 	 * Given two galactic coordinates, this will return the direction in radians
 	 * from the first to the second.
 	 *
-	 * @see GalacticMap#getDirection(long[], long[])
+	 * @see GalacticMap#getDirection(Coord3D, Coord3D)
 	 * @see GalacticMap#getDirection(SpaceObject, SpaceObject)
-	 * @see GalacticMap#getDirectionFromDir(double[], double, double[])
-	 * @see GalacticMap#getOppositeDir(double[])
+	 * @see GalacticMap#getDirectionFromDir(Dir3D, double, Dir3D)
+	 * @see GalacticMap#getOppositeDir(Dir3D)
 	 *
 	 * @param fromCoords the first coordinates
 	 * @param toCoords the second coordinates
 	 * @return the angle of direction from the first to the second
 	 */
-	public double[] getDirection(final long[] fromCoords, final long[] toCoords);
+	public Dir3D getDirection(final Coord3D fromCoords, final Coord3D toCoords);
 
 	/**
 	 * Given a facing direction (NOT direction of travel), and a roll angle (belly/axis), and a
@@ -282,18 +302,18 @@ public interface GalacticMap extends CMLibrary
 	 *
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir
 	 *
-	 * @see GalacticMap#getDirection(long[], long[])
+	 * @see GalacticMap#getDirection(Coord3D, Coord3D)
 	 * @see GalacticMap#getDirection(SpaceObject, SpaceObject)
-	 * @see GalacticMap#getDirectionFromDir(double[], double, double[])
-	 * @see GalacticMap#getOppositeDir(double[])
-	 * @see GalacticMap#getAbsoluteDirectionalFromDir(double[])
+	 * @see GalacticMap#getDirectionFromDir(Dir3D, double, Dir3D)
+	 * @see GalacticMap#getOppositeDir(Dir3D)
+	 * @see GalacticMap#getAbsoluteDirectionalFromDir(Dir3D)
 	 *
 	 * @param facing the direction of facing
 	 * @param roll the roll angle
 	 * @param direction the direction to the other object
 	 * @return the relative direction code
 	 */
-	public ShipDirectional.ShipDir getDirectionFromDir(double[] facing, double roll, double[] direction);
+	public ShipDirectional.ShipDir getDirectionFromDir(Dir3D facing, double roll, Dir3D direction);
 
 	/**
 	 * Given a direction this will return a relative direction object describing
@@ -302,29 +322,29 @@ public interface GalacticMap extends CMLibrary
 	 *
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir
 	 *
-	 * @see GalacticMap#getDirection(long[], long[])
+	 * @see GalacticMap#getDirection(Coord3D, Coord3D)
 	 * @see GalacticMap#getDirection(SpaceObject, SpaceObject)
-	 * @see GalacticMap#getDirectionFromDir(double[], double, double[])
-	 * @see GalacticMap#getOppositeDir(double[])
-	 * @see GalacticMap#getDirectionFromDir(double[], double, double[])
+	 * @see GalacticMap#getDirectionFromDir(Dir3D, double, Dir3D)
+	 * @see GalacticMap#getOppositeDir(Dir3D)
+	 * @see GalacticMap#getDirectionFromDir(Dir3D, double, Dir3D)
 	 *
 	 * @param direction the direction to the other object
 	 * @return the absolute direction code
 	 */
-	public ShipDirectional.ShipDir getAbsoluteDirectionalFromDir(final double[] direction);
+	public ShipDirectional.ShipDir getAbsoluteDirectionalFromDir(final Dir3D direction);
 
 	/**
 	 * Given a direction, this will return its opposite
 	 *
-	 * @see GalacticMap#getDirection(long[], long[])
+	 * @see GalacticMap#getDirection(Coord3D, Coord3D)
 	 * @see GalacticMap#getDirection(SpaceObject, SpaceObject)
-	 * @see GalacticMap#getDirectionFromDir(double[], double, double[])
-	 * @see GalacticMap#getOppositeDir(double[])
+	 * @see GalacticMap#getDirectionFromDir(Dir3D, double, Dir3D)
+	 * @see GalacticMap#getOppositeDir(Dir3D)
 	 *
 	 * @param dir the direction
 	 * @return the opposite direction
 	 */
-	public double[] getOppositeDir(final double[] dir);
+	public Dir3D getOppositeDir(final Dir3D dir);
 
 	/**
 	 * Given an angle from origin, this will return the other
@@ -334,21 +354,21 @@ public interface GalacticMap extends CMLibrary
 	 * @param angle the angle from origin
 	 * @return the set of angles (usually 4 of them).
 	 */
-	public double[][] getPerpendicularAngles(final double[] angle);
+	public Dir3D[] getPerpendicularAngles(final Dir3D angle);
 
 	/**
 	 * Given the origin point and an angle from the origin, this
 	 * will return the other points that are 90 degrees from the
 	 * given one, at the given distance.
 	 *
-	 * @see GalacticMap#getPerpendicularAngles(double[])
+	 * @see GalacticMap#getPerpendicularAngles(Dir3D)
 	 *
 	 * @param origin the origin points
 	 * @param angle the angle from origin
 	 * @param distance the distance from origin of the points to return
 	 * @return the set of points (usually 4 of them)
 	 */
-	public long[][] getPerpendicularPoints(final long[] origin, final double[] angle, final long distance);
+	public Coord3D[] getPerpendicularPoints(final Coord3D origin, final Dir3D angle, final long distance);
 
 	/**
 	 * Changes the given direction by the given delta variables.  Corrects any
@@ -358,7 +378,7 @@ public interface GalacticMap extends CMLibrary
 	 * @param delta0 the port/starboard delta
 	 * @param delta1 the ventral/dorsel delta
 	 */
-	public void changeDirection(final double[] dir, final double delta0, final double delta1);
+	public void changeDirection(final Dir3D dir, final double delta0, final double delta1);
 
 	/**
 	 * Changes the given direction by the given delta variable.  Corrects any
@@ -367,7 +387,7 @@ public interface GalacticMap extends CMLibrary
 	 * @param dir the current direction to change
 	 * @param delta the delta to change it by, + or -
 	 */
-	public void changeDirection(final double[] dir, final double[] delta);
+	public void changeDirection(final Dir3D dir, final Dir3D delta);
 
 	/**
 	 * Calculates the relative speed of two SpaceObjects to each other.
@@ -386,19 +406,19 @@ public interface GalacticMap extends CMLibrary
 	 * acceleration direction and an acceleration speed, this will alter the space objects
 	 * direction and speed based on the new acceleration.
 	 *
-	 * @see GalacticMap#accelSpaceObject(double[], double, double[], double)
+	 * @see GalacticMap#accelSpaceObject(Dir3D, double, Dir3D, double)
 	 *
 	 * @param O the space object to modify
 	 * @param accelDirection the acceleration direction
 	 * @param newAcceleration the acceleration amount
 	 */
-	public void accelSpaceObject(final SpaceObject O, final double[] accelDirection, final double newAcceleration);
+	public void accelSpaceObject(final SpaceObject O, final Dir3D accelDirection, final double newAcceleration);
 
 	/**
 	 * This method does not actually move anything, but returns a change in direction, and
 	 * a change in speed caused by an acceleration in a new direction.
 	 *
-	 * @see GalacticMap#accelSpaceObject(double[], double, double[], double)
+	 * @see GalacticMap#accelSpaceObject(Dir3D, double, Dir3D, double)
 	 *
 	 * @param curDirection the current direction, *AND* the new direction
 	 * @param curSpeed the current speed
@@ -406,30 +426,30 @@ public interface GalacticMap extends CMLibrary
 	 * @param newAcceleration the amount of acceleration
 	 * @return the new speed
 	 */
-	public double accelSpaceObject(final double[] curDirection, final double curSpeed, final double[] accelDirection, final double newAcceleration);
+	public double accelSpaceObject(final Dir3D curDirection, final double curSpeed, final Dir3D accelDirection, final double newAcceleration);
 
 	/**
 	 * Given some galactic coordinates, a direction of travel, and a distance, this will
 	 * return the new coordinates.
 	 *
 	 * @see GalacticMap#moveSpaceObject(SpaceObject)
-	 * @see GalacticMap#moveSpaceObject(SpaceObject, long[])
-	 * @see GalacticMap#moveSpaceObject(long[], double[], long)
+	 * @see GalacticMap#moveSpaceObject(SpaceObject, Coord3D)
+	 * @see GalacticMap#moveSpaceObject(Coord3D, Dir3D, long)
 	 *
 	 * @param oldLocation the previous location
 	 * @param direction the direction of travel
 	 * @param distance the distance of travel
 	 * @return the new location
 	 */
-	public long[] getLocation(long[] oldLocation, double[] direction, long distance);
+	public Coord3D getLocation(Coord3D oldLocation, Dir3D direction, long distance);
 
 	/**
 	 * Given a SpaceObject that is moving, this will alter the given objects
 	 * coordinates based on its speed and direction.
 	 *
-	 * @see GalacticMap#moveSpaceObject(SpaceObject, long[])
-	 * @see GalacticMap#moveSpaceObject(long[], double[], long)
-	 * @see GalacticMap#getLocation(long[], double[], long)
+	 * @see GalacticMap#moveSpaceObject(SpaceObject, Coord3D)
+	 * @see GalacticMap#moveSpaceObject(Coord3D, Dir3D, long)
+	 * @see GalacticMap#getLocation(Coord3D, Dir3D, long)
 	 *
 	 * @param O the SpaceObject to move
 	 */
@@ -440,28 +460,28 @@ public interface GalacticMap extends CMLibrary
 	 * based on the speed and direction of the given space object.
 	 *
 	 * @see GalacticMap#moveSpaceObject(SpaceObject)
-	 * @see GalacticMap#moveSpaceObject(long[], double[], long)
-	 * @see GalacticMap#getLocation(long[], double[], long)
+	 * @see GalacticMap#moveSpaceObject(Coord3D, Dir3D, long)
+	 * @see GalacticMap#getLocation(Coord3D, Dir3D, long)
 	 *
 	 * @param O the space object that is moving
 	 * @param coords the coordinates to modify based on speed/dir of the object
 	 */
-	public void moveSpaceObject(SpaceObject O, long[] coords);
+	public void moveSpaceObject(SpaceObject O, Coord3D coords);
 
 	/**
 	 * Given a set of galactic coordinates, and a direction angle, and a speed, this will return
 	 * the new coordinates after applying all the inputs.
 	 *
 	 * @see GalacticMap#moveSpaceObject(SpaceObject)
-	 * @see GalacticMap#moveSpaceObject(SpaceObject, long[])
-	 * @see GalacticMap#getLocation(long[], double[], long)
+	 * @see GalacticMap#moveSpaceObject(SpaceObject, Coord3D)
+	 * @see GalacticMap#getLocation(Coord3D, Dir3D, long)
 	 *
 	 * @param coordinates the galactic coordinates
 	 * @param direction the direction angle
 	 * @param speed the speed
 	 * @return the new coordinates
 	 */
-	public long[] moveSpaceObject(final long[] coordinates, final double[] direction, long speed);
+	public Coord3D moveSpaceObject(final Coord3D coordinates, final Dir3D direction, long speed);
 
 	/**
 	 * Returns the proper direction and speed to allow the given chaser to intercept the given runner.
@@ -474,7 +494,7 @@ public interface GalacticMap extends CMLibrary
 	 * @param maxTicks the maximum number of movements
 	 * @return null if no intercept possible, or the new dir and speed
 	 */
-	public Pair<double[],Long> calculateIntercept(final SpaceObject chaserO, final SpaceObject runnerO, final long maxChaserSpeed, final int maxTicks);
+	public Pair<Dir3D,Long> calculateIntercept(final SpaceObject chaserO, final SpaceObject runnerO, final long maxChaserSpeed, final int maxTicks);
 
 	/**
 	 * Returns whether the vectors described by the chaser and runners, their speeds, and the amount of time in
@@ -495,7 +515,7 @@ public interface GalacticMap extends CMLibrary
 	 *
 	 * @see GalacticMap#getSpaceObjectEntries()
 	 * @see GalacticMap#getSpaceObjectsWithin(SpaceObject, long, long)
-	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(long[], long, long)
+	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(Coord3D, long, long)
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 * @see GalacticMap#getSpaceObject(CMObject, boolean)
 	 *
@@ -510,7 +530,7 @@ public interface GalacticMap extends CMLibrary
 	 *
 	 * @see GalacticMap#getSpaceObjects()
 	 * @see GalacticMap#getSpaceObjectsWithin(SpaceObject, long, long)
-	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(long[], long, long)
+	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(Coord3D, long, long)
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 * @see GalacticMap#getSpaceObject(CMObject, boolean)
 	 * @see GalacticMap#getSpaceObjectsInBound(BoundedCube)
@@ -525,7 +545,7 @@ public interface GalacticMap extends CMLibrary
 	 *
 	 * @see GalacticMap#getSpaceObjects()
 	 * @see GalacticMap#getSpaceObjectEntries()
-	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(long[], long, long)
+	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(Coord3D, long, long)
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 * @see GalacticMap#getSpaceObject(CMObject, boolean)
 	 * @see GalacticMap#getSpaceObjectsInBound(BoundedCube)
@@ -544,7 +564,7 @@ public interface GalacticMap extends CMLibrary
 	 *
 	 * @see GalacticMap#getSpaceObjects()
 	 * @see GalacticMap#getSpaceObjectEntries()
-	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(long[], long, long)
+	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(Coord3D, long, long)
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 * @see GalacticMap#getSpaceObject(CMObject, boolean)
 	 * @see GalacticMap#getSpaceObjectsInBound(BoundedTube)
@@ -556,19 +576,21 @@ public interface GalacticMap extends CMLibrary
 
 
 	/**
-	 * Given a bounded tube, this will return all space objects within that tube.
+	 * Given a bounded tube, this will return all space objects within that tube,
+	 * with exceptions
 	 *
 	 * @see GalacticMap#getSpaceObjects()
 	 * @see GalacticMap#getSpaceObjectEntries()
-	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(long[], long, long)
+	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(Coord3D, long, long)
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 * @see GalacticMap#getSpaceObject(CMObject, boolean)
 	 * @see GalacticMap#getSpaceObjectsInBound(BoundedCube)
 	 *
 	 * @param tube the tube to look within
+	 * @param except don't return any objects centered on the given coordinates
 	 * @return the objects in space in that tube
 	 */
-	public List<SpaceObject> getSpaceObjectsInBound(final BoundedTube tube);
+	public List<SpaceObject> getSpaceObjectsInBound(final BoundedTube tube, final Set<Coord3D> except);
 
 	/**
 	 * Given a center galactic coordinates, and a minimum and maximum distance from that coordinate, this will
@@ -587,7 +609,7 @@ public interface GalacticMap extends CMLibrary
 	 * @param maxDistance the maximum distance to return
 	 * @return all objects matching the distance scan
 	 */
-	public List<SpaceObject> getSpaceObjectsByCenterpointWithin(final long[] centerCoordinates, long minDistance, long maxDistance);
+	public List<SpaceObject> getSpaceObjectsByCenterpointWithin(final Coord3D centerCoordinates, long minDistance, long maxDistance);
 
 	/**
 	 * Given a random object, this will return null, or the "nearest" space object,
@@ -596,7 +618,7 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#getSpaceObjects()
 	 * @see GalacticMap#getSpaceObjectEntries()
 	 * @see GalacticMap#getSpaceObjectsWithin(SpaceObject, long, long)
-	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(long[], long, long)
+	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(Coord3D, long, long)
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 * @see GalacticMap#getSpaceObjectsInBound(BoundedCube)
 	 * @see GalacticMap#getSpaceObjectsInBound(BoundedTube)
@@ -615,7 +637,7 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#getSpaceObjects()
 	 * @see GalacticMap#getSpaceObjectEntries()
 	 * @see GalacticMap#getSpaceObjectsWithin(SpaceObject, long, long)
-	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(long[], long, long)
+	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(Coord3D, long, long)
 	 * @see GalacticMap#getSpaceObject(CMObject, boolean)
 	 * @see GalacticMap#getSpaceObjectsInBound(BoundedCube)
 	 * @see GalacticMap#getSpaceObjectsInBound(BoundedTube)
@@ -630,24 +652,24 @@ public interface GalacticMap extends CMLibrary
 	 * Given some absolute space coordinates, this will return
 	 * the name of the sector the coordinates are in.
 	 *
-	 * @see GalacticMap#getInSectorCoords(long[])
+	 * @see GalacticMap#getInSectorCoords(Coord3D)
 	 *
 	 * @param coordinates the space coordinates
 	 * @return the name of the sector the coordinates are in
 	 */
-	public String getSectorName(long[] coordinates);
+	public String getSectorName(Coord3D coordinates);
 
 	/**
 	 * Given absolute space coordinates, from -Long.MAX to Long.MAX,
 	 * this will return the relative coordinates INSIDE the
 	 * sector, whose bounds are determined by lots of math.
 	 *
-	 * @see GalacticMap#getSectorName(long[])
+	 * @see GalacticMap#getSectorName(Coord3D)
 	 *
 	 * @param coordinates the space coordinates
 	 * @return the inner bounds
 	 */
-	public long[] getInSectorCoords(long[] coordinates);
+	public Coord3D getInSectorCoords(Coord3D coordinates);
 
 	/**
 	 * Given a space ship, and an object that can be reduced to an Area, this will
@@ -720,5 +742,5 @@ public interface GalacticMap extends CMLibrary
 	 * @param maxTicks maximum number of direction changes .. always send something gt 0
 	 * @return the step coordinates in the course, with the source implied
 	 */
-	public List<long[]> plotCourse(final long[] osrc, final long sradius, final long[] otarget, final long tradius, int maxTicks);
+	public List<Coord3D> plotCourse(final Coord3D osrc, final long sradius, final Coord3D otarget, final long tradius, int maxTicks);
 }

@@ -145,7 +145,8 @@ public class Thief_ConcealDoor extends ThiefSkill
 			else
 			{
 				final Set<MOB> grp=invoker().getGroupMembers(new HashSet<MOB>());
-				if(!grp.contains(msg.source()))
+				if((!grp.contains(msg.source()))
+				&&(!msg.source().mayIFight(invoker())))
 				{
 					unInvoke();
 					if(affected!=null)

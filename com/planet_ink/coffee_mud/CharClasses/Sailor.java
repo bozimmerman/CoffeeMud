@@ -306,7 +306,7 @@ public class Sailor extends StdCharClass
 			if(mob.playerStats().addRoomVisit(R))
 			{
 				final Area A=R.getArea();
-				CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.ROOMS_EXPLORED,1);
+				CMLib.players().bumpPrideStat(mob,PrideStats.PrideStat.ROOMS_EXPLORED,1);
 				if(mob.playerStats().hasVisited(R))
 				{
 					CMLib.leveler().postExperience(mob, "CLASS:"+ID(), null, null, amt, false);

@@ -360,6 +360,7 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_Delude",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_ResistPetrification",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_Summon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_ScrollFamiliarity",true);
 		if(!ID().equals("Transmuter"))
 		{
 			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_FindPlanarFamiliar", ID().equals("Conjurer")?25:0, "", false,

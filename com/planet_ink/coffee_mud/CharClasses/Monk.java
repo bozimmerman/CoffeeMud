@@ -141,6 +141,7 @@ public class Monk extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Skill_Climb",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_ForearmBlock",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_StaffSweep",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Parry",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_TwoWeaponFighting",false);
@@ -158,6 +159,7 @@ public class Monk extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_DeflectProjectile",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_KnifeHand",false,CMParms.parseSemicolons("Fighter_MonkeyPunch",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_StaffBlock",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Trip",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_AxKick",false,CMParms.parseSemicolons("Fighter_Kick",true));
@@ -173,6 +175,7 @@ public class Monk extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_CatchProjectile",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_FlyingKick",false,CMParms.parseSemicolons("Fighter_AxKick",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_StaffSpin",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_WeaponBreak",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_Pin",false);

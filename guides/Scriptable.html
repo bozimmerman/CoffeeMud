@@ -614,16 +614,20 @@ in this way must be terminated by a semicolon. Here is an example.</p>
 
       <pre>RAND_PROG 50;bounce;say "hi!";~;<br /></pre>
 
-      <p>Scripts which are entered
+      
+
+      <p>Scripts
+which are entered
 into text files for the LOAD
 parameter have their lines terminated by carriage returns (ENTER)
 instead of semicolons. The script syntax is, in all other ways,
 identical. If you need to put special characters (like ; ~ or LOAD=)
 into particular commands, you may need to escape those characters by
 putting a \ character before them, to tell the Scriptable behavior not
-to consider them line or script delimiters.</p>
-
-      <p>When the Scriptable
+to consider them line or script delimiters. All the characters which
+must be escaped to include inside scripts are: ; ~ # &lt; and \.
+&nbsp;Not escaping one or more of these characters MIGHT cause issues
+for your script.<br /><br />When the Scriptable
 behavior loads a file using the LOAD=
 syntax, it automatically keeps a copy of it in memory for future use.
 This memory cache is called the CoffeeMud Resources. If you have a
@@ -655,7 +659,12 @@ trigger event occurs. Each event trigger/command grouping is terminated
 by a ~ character, which should appear on a line by itself. Putting this
 together, we have a high level syntax that looks like this:</p>
 
-      <pre>EVENT_TRIGGER parameter1 parameter2 ...<br />command1<br />command2<br />...<br />commandN<br />~<br /><br />ANOTHER_EVENT_TRIGGER parameter1 parameter2 ...<br />command1<br />command2<br />...<br />commandN<br />~<br />etc.<br /></pre>
+      <pre>EVENT_TRIGGER parameter1 parameter2 ...<br />command1<br />command2<br />...<br />commandN<br />~<br /><br />ANOTHER_EVENT_TRIGGER parameter1 parameter2 ...<br />command1<br />command2<br />...<br />commandN<br />~<br />etc.<br /><br /></pre><p>After
+all the triggers, at the end of the script,, an XML document may be
+defined if needed. &nbsp; &nbsp;This is entirely optional, and only
+useful if you use commands like MPMLOAD or MPOLOAD and want to access a
+file of XML defined mobs or items. &nbsp;If this is desired, the syntax
+is as follows:</p><pre>&lt;?xml version="1.0"?&gt;<br />&lt;FILE&gt;&lt;NAME&gt;name_of_the_items_file.xml&lt;/NAME&gt;&lt;DATA&gt;&lt;ITEMS&gt;...&lt;/ITEMS&gt;&lt;/DATA&gt;&lt;/FILE&gt;<br />&lt;FILE&gt;&lt;NAME&gt;name_of_the_mobs_file.xml&lt;/NAME&gt;&lt;DATA&gt;&lt;MOBS&gt;...&lt;/MOBS&gt;&lt;/DATA&gt;&lt;/FILE&gt;</pre>
 
       <h2><a name="events">Scripting Events</a></h2>
 
@@ -3588,7 +3597,7 @@ the mount of the given mob, depending on the code.</td>
 
             <td>Returns the name
 of the room type the monster is in
-(plains, city, mountains, hills, watersurface, etc).</td>
+(plains, city, mountains, hills, watersurface, indoors, outdoors, etc).</td>
 
           </tr>
 
@@ -5284,13 +5293,16 @@ function to modify the value of a faction.</p>
 
       <pre>mpforce [target] [command]<br /></pre>
 
-      <p>This command forces the
+      <p>This
+command forces the
 victim to do the designated command.
 The target can be a character variable or a keyword of a mob. This
 command has a lot of uses, but is mostly use in combat to do
 particularly nasty things, like force the player to heal the mob, etc.
 It can also be used to trigger other mobs by forcing them to perform a
-specific action which triggers an act_prog.</p>
+specific action which triggers an act_prog. &nbsp;If you need a neutral
+mob to, for example, cast a malicious spell, you can also MPFORCE $GOD
+...&nbsp;</p>
 
       <p>EXAMPLES:</p>
 
@@ -5375,7 +5387,8 @@ Additional variable names for mobs above the official ones include:
 "QUESTPOINTS", "FOLLOWERS", "TRAINS", "PRACTICES", "STINK",
 "CHARCLASS", "ALIGNMENT", "INCLINATION", "FACTIONID", "FACTIONAMT",
 "DEITY", "MATTRIB", "CLAN", "CLANROLE", "OBJATTRIB", "CLANROLE",
-"OWNER", "DISPOSITIONSTR", "SENSESSTR", "BUDGETRESETDATE", "INVENTORYRESETDATE",
+"OWNER", "DISPOSITIONSTR", "SENSESSTR", "BUDGETRESETDATE", "INVENTORYRESETDATE", 
+"IDLETICKS", "PEACETICKS", "AGENAME", "AGEMINS"
       <p>Valid variable names for
 player mobs also include: "FRIENDS",
 "IGNORE", "TITLES", "ALIAS","LASTIP","LASTDATETIME", "CHANNELMASK",
@@ -5457,7 +5470,7 @@ hidden thing to sight.</p>
 
       <p>This command destroys the
 object that the mob is referring to.
-The object must be in the mob's inventory or part of its equipment. You
+The object must be in the mob's inventory, part of its equipment, or in the same room. You
 can also have a mob mpjunk all, which destroys everything on their
 person. You can also do things such as mpjunk all.sword or mpjunk
 all.bread, and can use the character variable $o. The command gives no
@@ -6725,8 +6738,7 @@ Operators</a></h3>
       <p>These operators are found
 in many of the functions below. Here
 are their meanings:</p>
-
-      <pre>== This operator means &#8216;equal to'<br />!= This operator means &#8216;not equal to'<br />&gt; This operator means &#8216;greater than'<br />&lt; This operator means &#8216;less than'<br />&gt;= This operator means &#8216;equal or greater than'<br />&lt;= This operator means &#8216;equal or less than'<br /></pre>
+      <pre>      == This operator means 'equal to'<br />      != This operator means 'not equal to'<br />      &gt; This operator means 'greater than'<br />      &lt; This operator means 'less than'<br />      &gt;= This operator means 'equal or greater than'<br />      &lt;= This operator means 'equal or less than'<br />      .in. This operator means 'is inside'.  For strings, it must be whole words.<br />      </pre>
 
       <h3><a name="affected">affected</a></h3>
 
@@ -7296,12 +7308,15 @@ what we are after here.</p>
 
       <pre>inroom(target == roomcode)<br /></pre>
 
-      <p>This checks to see if the
+      <p>This
+checks to see if the
 target is in the room specified by
 the room code. The room code may be a room id, a mob name, or text from
 the rooms name or description. If you need to be need to find mobile
 mobs or items, you can include the mob or item name, followed by @
-followed by a room id or area name. The '==' may also be '!='.</p>
+followed by a room id or area name. The '==' may also be '!='.
+&nbsp;The roomcode can also be one of the special codes: BEACON,
+MYPROPERTY, ANYPROPERTY, or ANYSPECIAL.</p>
 
       <p>EXAMPLES:</p>
 

@@ -233,11 +233,13 @@ public interface TrackingLibrary extends CMLibrary
 	 * @param trailFlags the flags for rooms to travel through
 	 * @param radius the maximum radius to travel
 	 * @param ignoreRooms optional set of rooms to ignore in the trail
+	 * @param delimeter null, or a string delimeter between directions
 	 * @param maxSecs maximum seconds to keep looking for trail
 	 * @return the description of the way to get there
 	 */
-	public String getTrailToDescription(Room startR, List<Room> radiantV, String where, Set<TrailFlag> trailFlags, int radius, Set<Room> ignoreRooms, int maxSecs);
-
+	public String getTrailToDescription(Room startR, List<Room> radiantV, String where,
+			Set<TrailFlag> trailFlags, int radius, Set<Room> ignoreRooms,
+			final String delimeter, int maxSecs);
 
 	/**
 	 * Searches for a room fitting to the given search string, within the given
@@ -1091,7 +1093,8 @@ public interface TrackingLibrary extends CMLibrary
 		NOCLIMB,
 		NOCRAWL,
 		OUTDOORONLY,
-		INDOORONLY
+		INDOORONLY,
+		DRIVEABLEONLY
 		;
 		public RFilter myFilter=null;
 

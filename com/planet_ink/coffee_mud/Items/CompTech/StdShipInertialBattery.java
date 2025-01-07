@@ -21,6 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
 import java.util.*;
 
 /*
@@ -138,7 +139,7 @@ public class StdShipInertialBattery extends StdElecCompItem
 				if((retainingDelta > 0.0)&&(retainingDelta<1.0)) // retain SOME speed!
 					removedSpeed = CMath.mul(ship.speed(), retainingDelta);
 
-				final double[] newDirections = Arrays.copyOf(ship.facing(), 2);
+				final Dir3D newDirections = ship.facing().copyOf();
 				double efficiency = this.getFinalManufacturer().getEfficiencyPct();
 				if(removedSpeed <= speedAbsorbAbility)
 					this.setPowerRemaining(Math.round(speedAbsorbAbility-removedSpeed));
@@ -152,15 +153,15 @@ public class StdShipInertialBattery extends StdElecCompItem
 					this.setPowerRemaining(0);
 				if(efficiency < 1.0)
 				{
-					final double[] deltas = CMLib.space().getAngleDiff(ship.direction(), ship.facing());
-					final double d0 = Math.abs(deltas[0]) - (efficiency * Math.abs(deltas[0]));
-					final double d1 = Math.abs(deltas[1]) - (efficiency * Math.abs(deltas[1]));
-					deltas[0] += (CMLib.dice().rollPercentage()>50)?d0:-d0;
-					deltas[1] += CMLib.dice().getRandomizer().nextBoolean()?d1:-d1;
+					final Dir3D deltas = CMLib.space().getAngleDiff(ship.direction(), ship.facing());
+					final BigDecimal d0 = deltas.xy().abs().subtract(BigDecimal.valueOf(efficiency * Math.abs(deltas.xyd())));
+					final BigDecimal d1 = deltas.z().abs().subtract((BigDecimal.valueOf(efficiency * Math.abs(deltas.zd()))));
+					deltas.xy(deltas.xy().add((CMLib.dice().rollPercentage()>50)?d0:d0.negate()));
+					deltas.z(deltas.z().add(CMLib.dice().getRandomizer().nextBoolean()?d1:d1.negate()));
 					CMLib.space().applyAngleDiff(newDirections, deltas);
 				}
-				ship.direction()[0]=newDirections[0];
-				ship.direction()[1]=newDirections[1];
+				ship.direction().xy(newDirections.xy());
+				ship.direction().z(newDirections.z());
 			}
 		}
 		return true;

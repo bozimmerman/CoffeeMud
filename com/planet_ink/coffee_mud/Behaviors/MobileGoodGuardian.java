@@ -77,7 +77,7 @@ public class MobileGoodGuardian extends Mobile
 		tickStatus=Tickable.STATUS_MISC+2;
 		if(((mob.amFollowing()!=null)
 			&&(CMLib.tracking().areNearEachOther(mob,mob.amFollowing())
-				||CMLib.tracking().areNearEachOther(mob,mob.amUltimatelyFollowing())))
+				||CMLib.tracking().areNearEachOther(mob,mob.getGroupLeader())))
 		||(!CMLib.flags().canTaste(mob))) // wtf?
 		{
 			tickStatus=Tickable.STATUS_NOT;

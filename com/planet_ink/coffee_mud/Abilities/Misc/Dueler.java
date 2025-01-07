@@ -197,7 +197,7 @@ public class Dueler extends StdAbility
 			||(!(CMLib.flags().isInTheGame(mob, false)))
 			||(!(CMLib.flags().isInTheGame((MOB)tDuel.affecting(), false)))
 			||(mob.getVictim()==null)
-			||((mob.getVictim()!=tDuel.affecting())&&(mob.getVictim().amUltimatelyFollowing()!=tDuel.affecting()))
+			||((mob.getVictim()!=tDuel.affecting())&&(mob.getVictim().getGroupLeader()!=tDuel.affecting()))
 			)
 				unInvoke();
 			else

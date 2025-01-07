@@ -1,0 +1,10 @@
+Calf	>	3	M	Bull
+Calf	>	3	*	Cow
+Kitten	>	3	*	Cat
+Puppy	>	3	*	Dog
+Cub	>	3	*	Bear
+Bull	<	3	*	Calf
+Cow	<	3	*	Calf
+Cat	<	3	*	Kitten
+Dog	<	3	*	Puppy
+Bear	<	3	*	Cub

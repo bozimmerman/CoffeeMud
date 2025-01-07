@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_BigMouth extends Spell
+public class Spell_BigMouth extends Spell implements MOBPossessor, ItemCollection
 {
 
 	@Override
@@ -199,6 +199,7 @@ public class Spell_BigMouth extends Spell
 		super.executeMsg(myHost,msg);
 	}
 
+	protected int  dmgBonus = 0;
 	protected Room myStomachR = null;
 	protected Room lastKnownRoom=null;
 	protected Room lastKnownLocation()
@@ -387,6 +388,10 @@ public class Spell_BigMouth extends Spell
 								L("The stomach acid <DAMAGE> <T-NAME>!"));
 					}
 				}
+				if(stomachR.numInhabitants() == 0)
+					dmgBonus = 0;
+				else
+					dmgBonus++;
 			}
 			for (int x=0;x<stomachR.numInhabitants();x++)
 			{
@@ -405,6 +410,205 @@ public class Spell_BigMouth extends Spell
 		&&(((Room)affected).numInhabitants()==0))
 			unInvoke();
 		return true;
+	}
+
+	@Override
+	public MOB fetchInhabitant(final String inhabitantID)
+	{
+		if(getStomach() != null)
+			return getStomach().fetchInhabitant(inhabitantID);
+		return null;
+	}
+
+	@Override
+	public void eachInhabitant(final EachApplicable<MOB> applier)
+	{
+		if(getStomach() != null)
+			getStomach().eachInhabitant(applier);
+	}
+
+	@Override
+	public MOB fetchInhabitantExact(final String inhabitantID)
+	{
+		if(getStomach() != null)
+			return getStomach().fetchInhabitantExact(inhabitantID);
+		return null;
+	}
+
+	@Override
+	public List<MOB> fetchInhabitants(final String inhabitantID)
+	{
+		if(getStomach() != null)
+			return getStomach().fetchInhabitants(inhabitantID);
+		return null;
+	}
+
+	@Override
+	public MOB fetchInhabitant(final int i)
+	{
+		if(getStomach() != null)
+			return getStomach().fetchInhabitant(i);
+		return null;
+	}
+
+	@Override
+	public Enumeration<MOB> inhabitants()
+	{
+		if(getStomach() != null)
+			return getStomach().inhabitants();
+		return null;
+	}
+
+	@Override
+	public void addInhabitant(final MOB mob)
+	{
+		if(getStomach() != null)
+			getStomach().addInhabitant(mob);
+	}
+
+	@Override
+	public void delInhabitant(final MOB mob)
+	{
+		if(getStomach() != null)
+			getStomach().delInhabitant(mob);
+	}
+
+	@Override
+	public int numInhabitants()
+	{
+		if(getStomach() != null)
+			return getStomach().numInhabitants();
+		return 0;
+	}
+
+	@Override
+	public boolean isInhabitant(final MOB mob)
+	{
+		if(getStomach() != null)
+			return getStomach().isInhabitant(mob);
+		return false;
+	}
+
+	@Override
+	public void delAllInhabitants(final boolean destroy)
+	{
+		if(getStomach() != null)
+			getStomach().delAllInhabitants(destroy);
+	}
+
+	@Override
+	public MOB fetchRandomInhabitant()
+	{
+		if(getStomach() != null)
+			return getStomach().fetchRandomInhabitant();
+		return null;
+	}
+
+	@Override
+	public void bringMobHere(final MOB mob, final boolean andFollowers)
+	{
+		if(getStomach() != null)
+			getStomach().bringMobHere(mob, andFollowers);
+	}
+
+	@Override
+	public void addItem(final Item item)
+	{
+		if(getStomach() != null)
+			getStomach().addItem(item);
+	}
+
+	@Override
+	public void delItem(final Item item)
+	{
+		if(getStomach() != null)
+			getStomach().delItem(item);
+	}
+
+	@Override
+	public int numItems()
+	{
+		if(getStomach() != null)
+			return getStomach().numItems();
+		return 0;
+	}
+
+	@Override
+	public Item getItem(final int i)
+	{
+		if(getStomach() != null)
+			return getStomach().getItem(i);
+		return null;
+	}
+
+	@Override
+	public Item getRandomItem()
+	{
+		if(getStomach() != null)
+			return getStomach().getRandomItem();
+		return null;
+	}
+
+	@Override
+	public Enumeration<Item> items()
+	{
+		if(getStomach() != null)
+			return getStomach().items();
+		return null;
+	}
+
+	@Override
+	public Item findItem(final Item goodLocation, final String itemID)
+	{
+		if(getStomach() != null)
+			return getStomach().findItem(goodLocation, itemID);
+		return null;
+	}
+
+	@Override
+	public Item findItem(final String itemID)
+	{
+		if(getStomach() != null)
+			return getStomach().findItem(itemID);
+		return null;
+	}
+
+	@Override
+	public List<Item> findItems(final Item goodLocation, final String itemID)
+	{
+		if(getStomach() != null)
+			return getStomach().findItems(goodLocation, itemID);
+		return null;
+	}
+
+	@Override
+	public List<Item> findItems(final String itemID)
+	{
+		if(getStomach() != null)
+			return getStomach().findItems(itemID);
+		return null;
+	}
+
+	@Override
+	public boolean isContent(final Item item)
+	{
+		if(getStomach() != null)
+			return getStomach().isContent(item);
+		return false;
+	}
+
+	@Override
+	public void delAllItems(final boolean destroy)
+	{
+		if(getStomach() != null)
+			getStomach().delAllItems(destroy);
+	}
+
+	@Override
+	public void eachItem(final EachApplicable<Item> applier)
+	{
+		if(getStomach() != null)
+			getStomach().eachItem(applier);
 	}
 
 	@Override

@@ -59,6 +59,6 @@ public class Inebriation extends Poison_Alcohol
 	@Override
 	protected int alcoholContribution()
 	{
-		return 6;
+		return 5+(int)Math.round(rank);
 	}
 }

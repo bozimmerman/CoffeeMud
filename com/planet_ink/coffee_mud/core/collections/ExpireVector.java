@@ -277,6 +277,14 @@ public class ExpireVector<T> implements Serializable, Iterable<T>, Collection<T>
 		return list.add(new Pair<T,Long>(e,new Long(System.currentTimeMillis() + expirationMs)));
 	}
 
+	public long getExpiration(final T e)
+	{
+		final int x = indexOf(e);
+		if(x<0)
+			return System.currentTimeMillis();
+		return list.get(x).second.longValue();
+	}
+
 	@Override
 	public boolean remove(final Object o)
 	{
@@ -366,7 +374,7 @@ public class ExpireVector<T> implements Serializable, Iterable<T>, Collection<T>
 	public T get(final int index)
 	{
 		if(index >= list.size())
-			throw new java.lang.IndexOutOfBoundsException();
+			throw new IndexOutOfBoundsException();
 		final Pair<T,Long> O = list.get(index);
 		if(O != null)
 		{
@@ -420,7 +428,7 @@ public class ExpireVector<T> implements Serializable, Iterable<T>, Collection<T>
 				if(p == o)
 					return i;
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException x)
+			catch(final IndexOutOfBoundsException x)
 			{}
 		}
 		return -1;
@@ -437,7 +445,7 @@ public class ExpireVector<T> implements Serializable, Iterable<T>, Collection<T>
 				if(p == o)
 					return i;
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException x)
+			catch(final IndexOutOfBoundsException x)
 			{}
 		}
 		return -1;
@@ -479,7 +487,7 @@ public class ExpireVector<T> implements Serializable, Iterable<T>, Collection<T>
 					return remove(i) == obj;
 				}
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException x)
+			catch(final IndexOutOfBoundsException x)
 			{}
 		}
 		return false;
@@ -488,5 +496,10 @@ public class ExpireVector<T> implements Serializable, Iterable<T>, Collection<T>
 	public void removeElementAt(final int index)
 	{
 		list.remove(index);
+	}
+	
+	public void setExpirationTime(final long millis)
+	{
+		this.expirationTime = millis;
 	}
 }

@@ -101,13 +101,25 @@ public class Spell_Knock extends Spell
 
 		final String whatToOpen=CMParms.combine(commands,0);
 		Physical openThis=givenTarget;
-		final int dirCode=CMLib.directions().getGoodDirectionCode(whatToOpen);
-		if(dirCode>=0)
-			openThis=R.getExitInDir(dirCode);
-		if(openThis==null)
-			openThis=getTarget(mob,R,givenTarget,commands,Wearable.FILTER_ANY);
-		if(openThis==null)
-			return false;
+		final int dirCode;
+		if(givenTarget != null)
+		{
+			openThis=givenTarget;
+			if(openThis instanceof Exit)
+				dirCode=CMLib.map().getExitDir(R, (Exit)openThis);
+			else
+				dirCode=-1;
+		}
+		else
+		{
+			dirCode=CMLib.directions().getGoodDirectionCode(whatToOpen);
+			if(dirCode>=0)
+				openThis=R.getExitInDir(dirCode);
+			if(openThis==null)
+				openThis=getTarget(mob,R,givenTarget,commands,Wearable.FILTER_ANY);
+			if(openThis==null)
+				return false;
+		}
 
 		if(openThis instanceof Exit)
 		{

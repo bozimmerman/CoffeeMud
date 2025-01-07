@@ -2,7 +2,6 @@ package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -93,13 +92,13 @@ public class GenWormhole extends StdWormhole
 		switch(getInternalCodeNum(code))
 		{
 		case 0:
-			return "" + CMParms.toListString(direction());
+			return "" + CMParms.toListString(direction().toDoubles());
 		case 1:
 			return "" + speed();
 		case 2:
 			return "" + radius();
 		case 3:
-			return "" + CMParms.toListString(coordinates());
+			return "" + CMParms.toListString(coordinates().toLongs());
 		case 4:
 			return "" + getPermittedNumDirections();
 		case 5:
@@ -118,7 +117,7 @@ public class GenWormhole extends StdWormhole
 		switch(getInternalCodeNum(code))
 		{
 		case 0:
-			setDirection(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
+			setDirection(new Dir3D(CMParms.toDoubleArray(CMParms.parseCommas(val, true))));
 			break;
 		case 1:
 			setSpeed(CMath.s_parseMathExpression(val));
@@ -127,10 +126,10 @@ public class GenWormhole extends StdWormhole
 			setRadius(CMath.s_parseLongExpression(val));
 			break;
 		case 3:
-			setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true)));
-			coordinates[0] = coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm;
-			coordinates[1] = coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm;
-			coordinates[2] = coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm;
+			setCoords(new Coord3D(CMParms.toLongArray(CMParms.parseCommas(val, true))));
+			coordinates.x(coordinates.x().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
+			coordinates.y(coordinates.y().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
+			coordinates.z(coordinates.z().longValue() % SpaceObject.Distance.GalaxyRadius.dm);
 			break;
 		case 4:
 			setPermittedNumDirections(CMath.s_int(val));

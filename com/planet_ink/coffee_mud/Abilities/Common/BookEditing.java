@@ -91,8 +91,20 @@ public class BookEditing extends CommonSkill
 				if(found==null)
 					commonTelL(mob,"You mess up your book editing.");
 				else
+				if((pageNum!=null)&&(pageNum.startsWith("DELETE ")))
 				{
-					final CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.TYP_REWRITE,L("<S-NAME> start(s) editing <T-NAME>."),pageNum,L("<S-NAME> start(s) editing <T-NAME>."));
+					final CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.TYP_REWRITE,
+							L("<S-NAME> edit(s) <T-NAME>."),pageNum,L("<S-NAME> edit(s) <T-NAME>."));
+					if(mob.location().okMessage(mob,msg))
+					{
+						mob.location().send(mob,msg);
+						verb="";
+					}
+				}
+				else
+				{
+					final CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.TYP_REWRITE,
+							L("<S-NAME> start(s) editing <T-NAME>."),pageNum,L("<S-NAME> start(s) editing <T-NAME>."));
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
@@ -119,8 +131,16 @@ public class BookEditing extends CommonSkill
 			return error(mob);
 		found = null;
 		pageNum="";
-		if((commands.size()>1)&&(CMath.isInteger(commands.get(commands.size()-1))))
+		if((commands.size()>1)
+		&&(CMath.isInteger(commands.get(commands.size()-1))))
+		{
 			pageNum=commands.remove(commands.size()-1);
+			if(commands.get(commands.size()-1).equalsIgnoreCase("DELETE"))
+			{
+				commands.remove(commands.size()-1);
+				pageNum="DELETE "+pageNum;
+			}
+		}
 		final String itemName = CMParms.combine(commands);
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemName);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
@@ -128,7 +148,7 @@ public class BookEditing extends CommonSkill
 		if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			/*
-			final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
+			final Set<MOB> followers=mob.getGroupMembers(new XTreeSet<MOB>());
 			boolean ok=false;
 			for(final MOB M : followers)
 			{
@@ -171,6 +191,13 @@ public class BookEditing extends CommonSkill
 			return false;
 		}
 
+		if((target instanceof Recipes)
+		&&((pageNum.length()==0)||(!pageNum.startsWith("DELETE "))))
+		{
+			commonTelL(mob,"You can't edit that with this skill, but only delete pages.");
+			return false;
+		}
+
 		if(!target.isGeneric())
 		{
 			commonTelL(mob,"You aren't able to give that a name.");
@@ -185,7 +212,8 @@ public class BookEditing extends CommonSkill
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			found = null;
 		final int duration=getDuration(30,mob,1,1);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),L("<S-NAME> prepare(s) to edit <T-NAME>."),pageNum,L("<S-NAME> prepare(s) to edit <T-NAME>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),
+				L("<S-NAME> prepare(s) to edit <T-NAME>."),pageNum,L("<S-NAME> prepare(s) to edit <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

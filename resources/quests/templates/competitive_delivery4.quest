@@ -194,7 +194,7 @@ GREET_PROG 100
 	endif
 ~
 
-SPEECH_PROG mission problem quest help pay paid 'me to do' 'to do' mission? problem? quest? help? paid? pay? 'me to do?' 'to do?' 
+SPEECH_PROG mission problem quest help pay paid 'me to do' 'to do' mission? problem? quest? help? paid? pay? 'me to do?' 'to do?' quests 
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			sayto "$n" I need someone to pay $DELIVEREE_COUNT to ${2 *}.  If you'll pay for me, say 'I accept', and I will give you the details.

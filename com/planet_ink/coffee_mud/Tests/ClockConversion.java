@@ -60,7 +60,7 @@ public class ClockConversion extends StdTest
 	{
 		for(int h=1;h<65536;h*=2)
 		{
-			final TimeClock NOW = (TimeClock)CMLib.time().globalClock().copyOf();
+			final TimeClock NOW = (TimeClock)CMLib.time().localClock(mob).copyOf();
 			final TimeClock C1 = (TimeClock)NOW.copyOf();
 			final TimeClock C2 = (TimeClock)NOW.copyOf();
 			C1.tickTock(h);

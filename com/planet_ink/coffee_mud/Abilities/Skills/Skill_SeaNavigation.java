@@ -215,6 +215,12 @@ public class Skill_SeaNavigation extends StdSkill
 			return false;
 		}
 
+		if(currentR == targetR)
+		{
+			mob.tell(L("You are already there!"));
+			return false;
+		}
+
 		if((targetR==null)||(trail==null)||(trail.size()==0))
 		{
 			mob.tell(L("You don't know how to get there from here."));

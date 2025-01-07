@@ -121,7 +121,7 @@ public class Spell_SummonArmy extends Spell
 			&&(CMLib.flags().isAliveAwakeMobile(mob, true)))
 			{
 				msg.source().setVictim(mob); // if you don't do this now, then EVERY soldier will jump in...
-				CMLib.threads().scheduleRunnable(new Runnable() 
+				CMLib.threads().scheduleRunnable(new Runnable()
 				{
 					final MOB targetM=msg.source();
 					@Override
@@ -192,6 +192,7 @@ public class Spell_SummonArmy extends Spell
 					final MOB newMOB=CMClass.getMOB(choices[CMLib.dice().roll(1,choices.length,-1)]);
 					newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 					newMOB.addTattoo("SYSTEM_SUMMONED");
+					newMOB.addTattoo("SUMMONED_BY:"+mob.name());
 					newMOB.setLocation(mob.location());
 					newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 					newMOB.recoverCharStats();

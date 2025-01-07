@@ -55,6 +55,7 @@ public class Clans extends StdLibrary implements ClanManager
 	protected Map<String,String>		clanWebPathMappings = new SHashtable<String,String>();
 	protected ClanManager[]				clanLibList			= new ClanManager[0];
 	protected SHashtable<String,Object> xpAwardMap			= new SHashtable<String,Object>();
+	protected MOB						factoryMob			= null;
 
 	@Override
 	public String ID()
@@ -583,6 +584,24 @@ public class Clans extends StdLibrary implements ClanManager
 				enums.addEnumeration(manager.clansNames());
 		}
 		return enums;
+	}
+
+	@Override
+	public MOB getAllClanTalker()
+	{
+		if(this.factoryMob == null)
+		{
+			this.factoryMob = CMClass.getMOB("StdMOB");
+			this.factoryMob.setName("^</B^>");
+			this.factoryMob.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
+			this.factoryMob.phyStats().setDisposition(PhyStats.IS_GOLEM);
+			for(final Iterator<Pair<Clan,Integer>> c=clanRoles().iterator();c.hasNext();)
+			{
+				final Pair<Clan,Integer> P = c.next();
+				this.factoryMob.setClan(P.first.clanID(),P.second.intValue());
+			}
+		}
+		return this.factoryMob;
 	}
 
 	@Override
@@ -1740,7 +1759,7 @@ public class Clans extends StdLibrary implements ClanManager
 
 	public void clanDues()
 	{
-		final TimeClock clock = CMLib.time().globalClock();
+		final TimeClock clock = CMLib.time().homeClock(CMLib.map().getRandomArea());
 		final long lastDuesPaid = CMath.s_long(Resources.getPropResource(this.name, "LAST_DUES_PAID"));
 		final long hoursPerYear = clock.getHoursInDay() * clock.getDaysInYear();
 		final long nextDuesPaid = lastDuesPaid + (CMProps.getMillisPerMudHour() * hoursPerYear);
@@ -2342,6 +2361,8 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public boolean activate()
 	{
+		if(!super.activate())
+			return false;
 		if(serviceClient==null)
 		{
 			name="THClans"+Thread.currentThread().getThreadGroup().getName().charAt(0);

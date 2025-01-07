@@ -179,7 +179,7 @@ public class Chant extends StdAbility
 				return false;
 			}
 			else
-			if(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_LEATHER))
+			if(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_NONMETAL))
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,A.L("<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!"));
 				return false;

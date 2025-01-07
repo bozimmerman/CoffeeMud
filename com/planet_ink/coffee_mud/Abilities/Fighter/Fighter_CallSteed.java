@@ -594,6 +594,7 @@ public class Fighter_CallSteed extends StdAbility
 		newMOB.setDisplayText(L("@x1 is here", CMStrings.capitalizeAndLower(newMOB.name())));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience", "0 RIDEOK"));
 		newMOB.addTattoo("SYSTEM_SUMMONED");
+		newMOB.addTattoo("SUMMONED_BY:"+caster.name());
 		ride.setRiderCapacity(3);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

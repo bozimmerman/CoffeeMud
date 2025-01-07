@@ -1,9 +1,10 @@
-# Build 5.10.4 Release ??/??/2024
+# Build 5.10.4 Release 12/05/2024
+  *  DATABASE CHANGED! (Bitmap field in CMCHAR table is now larger)
   1. Races/GenRaces support parameters for cultural abilities.
   2. Better MSSP/MSDP support.  New INI entry: MSXPVARS.
   3. Ability CODES & DOMAINS can now be added to via the INI file/control panel.
   4. Deity powers, curses, blessings all now support arguments
-  5. New skills: Improved Revoke, Hard to Starboard
+  5. New skills: Improved Revoke, Hard to Starboard, Staff Sweep, Staff Block
   6. GenAbilities: better argument parsing (see Game Builders Guide)
   7. New command: NOSPAM
   8. AutoGenInstances will now respect multiple entrances.  See RandomAreas guide.
@@ -15,7 +16,7 @@
  14. Can now modify GenAbility IDs, and create new ones based on existing ones.
  15. Regeneration property now has many finer controls
  16. GMCP now supports char.effects.get
- 17. New chants: breath color
+ 17. New chants: breath color, know animal, enhance potion, spark runes, inspect shard
  18. All Qualifies list now supports secret flag
  19. New formula: proficiency gain; see ini file
  20. Note:  Due to InterMud 3 changes, some will see a harmless one-time error at startup.
@@ -25,6 +26,60 @@
  24. Wish/Limited Wish now has a configuration file in resources/skills/wish.txt
  25. Unleveling and Unleveling from XP loss can be disabled in the INI file
  26. Unleveling no longer removes a level 0 class, but still takes from other classes
+ 27. SCORE command has more arguments for narrowing the results.
+ 28. Prop_ItemNoRuin can now be used to Always ruin an item.
+ 29. Class Skills, including All Qualifys, now support expertises as requirements.
+ 30. New Command "AutoAttack" for toggling auto attack.   Also available in Config.
+ 31. Players can now drop, get, etc all weapons, armor, items, or money.
+ 32. TOP/Pride stats now preserves previous-period stats.
+ 33. CRON jobs now support new intervals and better formula support (HELP CRON)
+ 34. New example script playerBackups.js for making player backups as cmare xml.
+ 35. New example script topMonthlyRpt.js for making TOP player reports every month.
+ 36. New example script topMonthlyAwards.js for giving TOP player awards every month.
+ 37. New thief skills: Runecasting, Kidnapping, Urchinize, Tarot Reading, Find Runaway
+ 38. Prophecy prayer will now also use new random predictions file
+ 39. New property: ScriptLater for, well, scripting later
+ 40. Generate command now supports object type SCRIPTS
+ 41. StdPlanarAbility, etc now works on exits and portals
+ 42. Spell_Teleport can now generate random areas when places on exits and portals.
+ 43. The XML files feature from quest scripts can now be used in mobprog scripts also.
+ 44. New prayer: Divine Quest, mostly to use in blessings or curses.
+ 45. New spell: Tap Scroll, Mystic Task, mostly for use in scripts
+ 46. Achievements now supports LEVELUP, LEVELDOWN, CLASSLEVELUP, CLASSLEVELDOWN, EFFECTSHAD events.
+ 47. POSE command now supports HERE argument.
+ 48. New Achievement award types: ITEM, and MOB
+ 49. New chants: Release Magic, Tasseography, Curse Mood, Enhance Jewelry, Extend Fortune
+ 50. Areas now track several more stats and most common race, see LIST AREAS for more info.
+ 51. New thief skills: My Urchins, Astrology, Name Urchin, Promote Urchin, Call Urchins
+ 52. New chants: Suppress Fortune, Enhance Shard, Bountiful Womb, Curse Fortune, Palm Reading
+ 53. New common skill: Shard Making, Improved Herbalism
+ 54. New skills: Staff Spin, Scroll Familiarity, Trade Charting, Staff Thrust, Caravan Travel
+ 55. New chants: Steal Fortune, Strengthen Seed, Endow Club, Reverse Fortune, Endow Gemstones
+ 56. New thief skills: Conceal Pathway, Urchin Spy, Fortune Telling
+ 57. New chants: Curse Seed, Endow Jewelry, Endow Ioun Stone, Stabilize Form
+ 58. New rideable type: furniture-hook
+ 59. HELP can now match on common recipes to tell you which skill produces them.
+ 60. Many resource files can be 'extended' by adding versions with .1, .2, etc after the extension.
+ 61. Std/Gen Journals now support post and msg size limits, and post expiration.
+ 62. CONSIDER and GCONSIDER now support the "all" syntax.
+ 63. ACCOUNT now supports a sort field.
+ 64. Corpses can now be generated with some cause-of-death blurbs, see CORPSE_BLURBS in LISTS.INI.
+ 65. New MOB class: StdCraftBroker, allows players to craft for each other async. See Archons Guide
+ 66. Magical Ability code on armor now applies only to non-multiwear armor.
+ 67. Game Channels can now be tied to Discord channels via Discord Apps and Bots.
+ 68. New shopkeeper type: children seller (for an orphanage).
+ 69. New RP/MUSH-like command 'DIEROLL'.
+ 70. User selection masking now supports "LAST.", like GET LAST.SWORD
+ 71. FTELL will now invoke GTELL, but only for your followers.
+ 72. GROUP now supports LEADER keyword to change your group leader.
+ 73. FORMATION can now put anyone in front row, and attacks initiated by formation make front row tank.
+ 74. New item type: GenBurnOven -- an oven that requires burning fuel inside.
+ 75. New Property: TriggeredAffects, for having effects that are triggered :)
+ 76. New race: Rust Monster
+ 77. ORDER now works with animal followers for specific commands in LISTS.INI file
+ 78. Can now LIST DBCONNECTIONS to check database status
+ 79. New character class: Gypsy - thief subclass with druid highlights
+ 80. New command: AUTOTELLNOTIFY, with CONFIG support also, for account-based muds.
 
 # Build 5.10.3 Release 01/01/2024
   *. CoffeeMud now officially requires jdk 1.8.  ATM, it will still compile in 1.6 tho.

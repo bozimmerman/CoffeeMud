@@ -21,7 +21,6 @@ See guides/RandomAreas.html for information about documents of this type.
 <string id="randomtheme" merge=true select="any-1">
 	<string condition="$theme=''">rats</string>
 </string>
-
 <STRING load="/resources/randareas/inc_roomruns.xml" />
 <STRING load="/resources/randareas/inc_common.xml" />
 <STRING load="/resources/randareas/inc_adjectives.xml" />
@@ -65,8 +64,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
 			<EXIT class="Open" />
-			<MOB select="repeat-2?5" insert="rats_bat" />
-			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+			<MOB select="repeat-2?5" insert="rats_bat" condition="$pop_mobs!='false'" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="StoneRoom">
 			<TITLE>a laboratory</TITLE>
@@ -96,7 +95,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<EXIT pickweight=1 class="GenDoor" hasalock="true" deflocked="true" disposition="ISHIDDEN" keyname="$areaname labkey"/>
 				<EXIT pickweight=2 class="GenDoor" hasalock="true" deflocked="true" keyname="$areaname labkey"/>
 			</EXIT>
-			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" race="_humanoid_races" gender="$anygender">
+			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" race="_humanoid_races" gender="$anygender" condition="$pop_mobs!='false'">
 				<NAME>Doctor $fantasy_name1</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
@@ -119,7 +118,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 					<AFFECT condition="$mob_level&gt;=30" class="Prop_ShortEffects" parms="" />
 				</AFFECT>
-				<ITEM select="pick-1?2">
+				<ITEM select="pick-1?2" condition="$pop_items!='false'">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
 						<NAME select="any-1"><NAME>(a(n)) $adj_fancy pointy hat</NAME><NAME>(a(n)) $adj_fancy hat</NAME></NAME>
 						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>COTTON</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
@@ -129,7 +128,7 @@ See guides/RandomAreas.html for information about documents of this type.
 						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO,LEGS,ARMS</PROPERWORN><WORNAND>true</WORNAND>
 					</ITEM>
 				</ITEM>
-				<ITEM select="pick-1">
+				<ITEM select="pick-1" condition="$pop_items!='false'">
 					<ITEM pickweight="1" class="GenStaff" LEVEL="$mob_level">
 						<NAME>(a(n)) $adj_fancy staff</NAME>
 						<DISPLAY>$item_name has been left here</DISPLAY>
@@ -138,18 +137,18 @@ See guides/RandomAreas.html for information about documents of this type.
 						<WEAPONTYPE>BASHING</WEAPONTYPE>
 					</ITEM>
 				</ITEM>
-				<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+				<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 			</MOB>
-			<ITEM class="GenTable" name="(a(n)) $adj_nasty table" display="$ITEM_NAME is here" isgettable="false">
+			<ITEM class="GenTable" name="(a(n)) $adj_nasty table" display="$ITEM_NAME is here" isgettable="false" condition="$pop_items!='false'">
 				<CONTENT><ITEM select="any-2" insert="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENT>
 			</ITEM>
-			<ITEM class="metacraft:Scroll Case">
+			<ITEM class="metacraft:Scroll Case" condition="$pop_items!='false'">
 				<CONTENT><ITEM select="any-2" insert="any_scrollscribing_item,any_scrollscribing_item" /></CONTENT>
 			</ITEM>
-			<ITEM class="metacraft:Potion Rack">
+			<ITEM class="metacraft:Potion Rack" condition="$pop_items!='false'">
 				<CONTENT><ITEM select="any-2" insert="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENT>
 			</ITEM>
-			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a hatchery</TITLE>
@@ -174,7 +173,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
-			<MOB class="GenMob" level="$level_range" id="rats_momma_dragon" race="Dragon" gender="F" hpmod="15">
+			<MOB class="GenMob" level="$level_range" id="rats_momma_dragon" race="Dragon" gender="F" hpmod="15" condition="$pop_mobs!='false'">
 				<NAME select="all">
 					<NAME condition="$mob_level &lt; 10">a hatchling $rats_dragoncolor dragon</NAME>
 					<NAME condition="$mob_level &lt; 20 and $mob_level &gt;=  10">a very young $rats_dragoncolor dragon</NAME>
@@ -183,7 +182,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<NAME condition="$mob_level &lt; 70 and $mob_level &gt;=  40">an adult $rats_dragoncolor dragon</NAME>
 					<NAME condition="$mob_level &lt; 80 and $mob_level &gt;=  70">an old $rats_dragoncolor dragon</NAME>
 					<NAME condition="$mob_level &lt; 85 and $mob_level &gt;=  80">a very old $rats_dragoncolor dragon</NAME>
-					<NAME condition="$mob_level &gt;=  85">a ancient $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level &gt;=  85">an ancient $rats_dragoncolor dragon</NAME>
 				</NAME>
 				<DISPLAY>$mob_name is guarding her brood.</DISPLAY>
 				<DESCRIPTION>$mob_name is majestic, but simply being in its presence makes you uneasy.</DESCRIPTION>
@@ -205,10 +204,10 @@ See guides/RandomAreas.html for information about documents of this type.
 					<ABILITY condition="$mob_level &gt;=  90" class="Spell_ResistSlashing" parms="" />
 				</ABILITY>
 			</MOB>
-			<ITEM class="GenFood" weight="100" NOURISHMENT="10000" bite="500" id="dragon_egg" name="(a(n)) $adj_scary_feeling dragon egg" display="$item_name is here" material="EGGS" />
-			<ITEM select="2?5" insert="dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg" />
+			<ITEM class="GenFood" weight="100" NOURISHMENT="10000" bite="500" id="dragon_egg" name="(a(n)) $adj_scary_feeling dragon egg" display="$item_name is here" material="EGGS" condition="$pop_items!='false'" />
+			<ITEM select="2?5" insert="dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg" condition="$pop_items!='false'" />
 			<EXIT class="Open" />
-			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a dragon`s lair</TITLE>
@@ -228,7 +227,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
-			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="rats_boss_dragon" race="Dragon" gender="$anygender">
+			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="rats_boss_dragon" race="Dragon" gender="$anygender" condition="$pop_mobs!='false'">
 				<NAME select="all">
 					<NAME condition="$mob_level &lt; 10">a hatchling $rats_dragoncolor dragon</NAME>
 					<NAME condition="$mob_level &lt; 20 and $mob_level &gt;=  10">a very young $rats_dragoncolor dragon</NAME>
@@ -237,7 +236,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<NAME condition="$mob_level &lt; 70 and $mob_level &gt;=  40">an adult $rats_dragoncolor dragon</NAME>
 					<NAME condition="$mob_level &lt; 80 and $mob_level &gt;=  70">an old $rats_dragoncolor dragon</NAME>
 					<NAME condition="$mob_level &lt; 85 and $mob_level &gt;=  80">a very old $rats_dragoncolor dragon</NAME>
-					<NAME condition="$mob_level &gt;=  85">a ancient $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level &gt;=  85">an ancient $rats_dragoncolor dragon</NAME>
 				</NAME>
 				<DISPLAY>$mob_name watches you intently.</DISPLAY>
 				<DESCRIPTION>$mob_name is majestic, but simply being in its presence makes you uneasy.</DESCRIPTION>
@@ -263,7 +262,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				</ABILITY>
 			</MOB>
 			<EXIT class="Open" />
-			<ITEM class="GenContainer" name="The Dragons Chest" display="The Dragons Chest is here" HASLID="true">
+			<ITEM class="GenContainer" name="The Dragons Chest" display="The Dragons Chest is here" HASLID="true" condition="$pop_items!='false'">
 				<CONTENT>
 					<ITEM select="any-5" insert="dungeon_treasure_items" />
 				</CONTENT>
@@ -289,8 +288,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Open" />
-			<MOB select="repeat-1?3" insert="ratty_skeleton" />
-			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+			<MOB select="repeat-1?3" insert="ratty_skeleton" condition="$pop_mobs!='false'" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a crypt</TITLE>
@@ -314,10 +313,10 @@ See guides/RandomAreas.html for information about documents of this type.
 				<EXIT pickweight=1 class="GenDoor" disposition="ISHIDDEN"/>
 				<EXIT pickweight=2 class="GenDoor"/>
 			</EXIT>
-			<MOB select="repeat-1?2" insert="ratty_zombie" />
-			<MOB select="any-1" insert="ratty_mummy" />
-			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
-			<ITEM class="GenContainer" NAME="an open sarcophagus" display="$item_name is here" material="STONE" weight=5000 capacity=5300 description="It appears both ornate and extremely heavy." />
+			<MOB select="repeat-1?2" insert="ratty_zombie" condition="$pop_mobs!='false'" />
+			<MOB select="any-1" insert="ratty_mummy" condition="$pop_mobs!='false'" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
+			<ITEM class="GenContainer" NAME="an open sarcophagus" display="$item_name is here" material="STONE" weight=5000 capacity=5300 description="It appears both ornate and extremely heavy." condition="$pop_items!='false'" />
 		</ROOM>
 		<ROOM class="StoneRoom">
 			<TITLE>a safe room</TITLE>
@@ -341,7 +340,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<EXIT pickweight=2 class="GenDoor"/>
 			</EXIT>
 			<AFFECT class="Prop_RoomDark" />
-			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="StdMaze">
 			<TITLE>lost in the catacombs</TITLE>
@@ -375,7 +374,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<XSIZE>5</XSIZE>
 			<YSIZE>5</YSIZE>
 			<EXIT class="Door" />
-			<MOB class="GenUndead" level="$level_range" id="rats_mobile_spirit" race="Spirit" gender="$anygender">
+			<MOB class="GenUndead" level="$level_range" id="rats_mobile_spirit" race="Spirit" gender="$anygender" condition="$pop_mobs!='false'">
 				<NAME>a spirit of the dead</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name whisps towards you.</DISPLAY>
@@ -399,11 +398,11 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
 					<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
 				</BEHAVIOR>
-				<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+				<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="prison_junk" />
 			</MOB>
-			<MOB select="repeat-5?10" insert="rats_mobile_spirit" />
+			<MOB select="repeat-5?10" insert="rats_mobile_spirit" condition="$pop_mobs!='false'" />
 			<AFFECT class="Prop_RoomDark" />
-			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a rat den</TITLE>
@@ -425,8 +424,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
 			<EXIT class="Open" />
-			<MOB select="repeat-3?5" insert="rats_rat" />
-			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+			<MOB select="repeat-3?5" insert="rats_rat" condition="$pop_mobs!='false'" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a web filled den</TITLE>
@@ -448,8 +447,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
 			<EXIT class="Open" />
-			<MOB select="repeat-3?5" insert="rats_spider" />
-			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+			<MOB select="repeat-3?5" insert="rats_spider" condition="$pop_mobs!='false'" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a dry lizard`s den</TITLE>
@@ -471,8 +470,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
 			<EXIT class="Open" />
-			<MOB select="repeat-3?5" insert="rats_lizard" />
-			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+			<MOB select="repeat-3?5" insert="rats_lizard" condition="$pop_mobs!='false'" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a slithering den</TITLE>
@@ -494,8 +493,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
 			<EXIT class="Open" />
-			<MOB select="repeat-3?5" insert="rats_snake" />
-			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+			<MOB select="repeat-3?5" insert="rats_snake" condition="$pop_mobs!='false'" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="IndoorWaterSurface" condition="1?20=1 and $__lakes&lt;1" define="__lakes+=1">
 			<TITLE>an underground lake</TITLE>
@@ -518,7 +517,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</DESCRIPTION>
 			<AFFECT class="Prop_RoomDark" />
 			<EXIT class="Open" />
-			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+			<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 		</ROOM>
 	</ROOM>
 </ROOM>
@@ -549,8 +548,8 @@ See guides/RandomAreas.html for information about documents of this type.
 		</STRING>
 		<DESCRIPTION>$rats_interior_desc</DESCRIPTION>
 		<EXIT class="Open" />
-		<MOB condition="1?3=1" select="any-1" insert="rats_mobs" />
-		<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+		<MOB condition="(1?3=1) and ($pop_mobs!='false')" select="any-1" insert="rats_mobs"/>
+		<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 	</ROOM>
 </ROOM>
 
@@ -582,8 +581,8 @@ See guides/RandomAreas.html for information about documents of this type.
 			<STRING select="any-1" insert="rats_random_blurbs" action="APPEND" />
 		</STRING>
 		<EXIT class="Open" />
-		<MOB condition="1?2=1" select="any-1" insert="rats_mobs" />
-		<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+		<MOB condition="(1?2=1) and ($pop_mobs!='false')" select="any-1" insert="rats_mobs"/>
+		<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 	</ROOM>
 	<ROOM class="CaveRoom" pickweight="1" condition="$theme='rats' or $theme='random'">
 		<TITLE>$a_streetprefix $_rats_crawlways_street_name</TITLE>
@@ -611,7 +610,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		</STRING>
 		<AFFECT class="Prop_Crawlspace" parms="" />
 		<EXIT class="Open" />
-		<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+		<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 	</ROOM>
 </ROOM>
 
@@ -655,7 +654,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
 		<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
 	</BEHAVIOR>
-	<ITEM select="pick-1">
+	<ITEM select="pick-1" condition="$pop_items!='false'">
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 			<NAME>(a(n)) $adj_ragged spear</NAME>
 			<DISPLAY>$item_name has been left here</DISPLAY>
@@ -685,7 +684,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<WEAPONTYPE>BASHING</WEAPONTYPE>
 		</ITEM>
 	</ITEM>
-	<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+	<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 </MOB>
 		
 <MOB class="GenUndead" level="$level_range" id="ratty_zombie" race="Undead" gender="$anygender">
@@ -704,7 +703,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
 		<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
 	</BEHAVIOR>
-	<ITEM select="pick-1">
+	<ITEM select="pick-1" condition="$pop_items!='false'">
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 			<NAME>(a(n)) $adj_ragged polearm</NAME>
 			<DISPLAY>$item_name has been left here</DISPLAY>
@@ -734,7 +733,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<WEAPONTYPE>BASHING</WEAPONTYPE>
 		</ITEM>
 	</ITEM>
-	<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+	<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="rats_junk" />
 </MOB>
 		
 <MOB class="GenUndead" level="2+($level_range)" id="ratty_mummy" race="Undead" gender="$anygender">
@@ -753,7 +752,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
 		<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
 	</BEHAVIOR>
-	<ITEM select="pick-1">
+	<ITEM select="pick-1" condition="$pop_items!='false'">
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 			<NAME>a gleaming iron polearm</NAME>
 			<DISPLAY>$item_name has been left here</DISPLAY>
@@ -783,12 +782,12 @@ See guides/RandomAreas.html for information about documents of this type.
 			<WEAPONTYPE>BASHING</WEAPONTYPE>
 		</ITEM>
 	</ITEM>
-	<ITEM condition="1?10=1" select="any-1" insert="dungeon_mundane_items" />
-	<ITEM condition="1?10=1" select="any-1" insert="any_alchemy_item" />
-	<ITEM condition="1?10=1" select="any-1" insert="any_herbalism_item" />
-	<ITEM condition="1?10=1" select="any-1" insert="any_apothecary_item" />
-	<ITEM condition="1?10=1" select="any-1" insert="any_distilling_item" />
-	<ITEM condition="1?10=1" select="any-1" insert="any_scrollscribing_item" />
+	<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="dungeon_mundane_items" />
+	<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="any_alchemy_item" />
+	<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="any_herbalism_item" />
+	<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="any_apothecary_item" />
+	<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="any_distilling_item" />
+	<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="any_scrollscribing_item" />
 </MOB>
 		
 <MOB id="rats_mobs" select="all" requires="level_range=int,theme=rats,aggrochance=int">

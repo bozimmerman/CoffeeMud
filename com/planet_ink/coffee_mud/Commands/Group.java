@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -50,7 +51,8 @@ public class Group extends StdCommand
 		return access;
 	}
 
-	public static StringBuffer showWhoLong(final MOB seer, final MOB who, final int[] cols, final int statShortLevel)
+	public static StringBuffer showMemberLong(final MOB seer, final MOB who,
+											  final int[] cols, final int statShortLevel)
 	{
 		final StringBuffer msg=new StringBuffer("^N");
 		msg.append("[^w");
@@ -190,7 +192,69 @@ public class Group extends StdCommand
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		mob.tell(L("@x1's group:\n\r",mob.name()));
+		if((commands.size()>1)
+		&&(commands.get(1).equalsIgnoreCase("LEADER")))
+		{
+			if(mob.numFollowers()==0)
+			{
+				mob.tell(L("You don't have any followers."));
+				return false;
+			}
+			if(commands.size()==2)
+			{
+				mob.tell(L("Who do you want to be the leader?"));
+				return false;
+			}
+			final String whom = commands.get(2);
+			MOB newLeaderM = null;
+			final List<MOB> allFollowers=new ArrayList<MOB>();
+			allFollowers.add(mob);
+			for(int f=0;f<mob.numFollowers();f++)
+			{
+				final MOB F = mob.fetchFollower(f);
+				if((F!=null)&&(F!=mob))
+				{
+					if(F.name().equalsIgnoreCase(whom))
+						newLeaderM=F;
+					else
+						allFollowers.add(F);
+				}
+			}
+			if(newLeaderM != null)
+			{
+				if(newLeaderM.isAttributeSet(Attrib.NOFOLLOW))
+				{
+					mob.tell(L("@x1 is not accepting followers.",newLeaderM.name(mob)));
+					return false;
+				}
+				if(newLeaderM.maxFollowers()<allFollowers.size())
+				{
+					mob.tell(L("@x1 can not successfully lead @x2.",newLeaderM.name(mob), ""+allFollowers.size()));
+					return false;
+				}
+				CMLib.commands().postFollow(newLeaderM, null, true);
+				for(final MOB F : allFollowers)
+				{
+					if(F.amFollowing()!=null)
+						CMLib.commands().postFollow(F, null, true);
+				}
+				for(final MOB F : allFollowers)
+				{
+					if(F!=newLeaderM)
+						CMLib.commands().postFollow(F, newLeaderM, true);
+				}
+				CMLib.commands().forceStandardCommand(mob, "GTell",
+						new XVector<String>("FTELL",L("@x1 is now the leader of our group.",newLeaderM.name(mob))));
+				return true;
+			}
+			else
+			{
+				mob.tell(L("You don't have a follower '@x1' to transfer leadership to.",whom));
+				return false;
+			}
+		}
+		final MOB ultLeader = mob.getGroupLeader();
+		mob.tell(L("@x1's group:\n\r",ultLeader.name(mob)));
 		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 		final List<MOB> orderedGroup = new LinkedList<MOB>();
 		final Room R=mob.location();
@@ -208,7 +272,6 @@ public class Group extends StdCommand
 		final StringBuffer msg=new StringBuffer("");
 		final int[] cols=new int[6];
 		final int statShortLevel = fixCols(mob, cols, orderedGroup);
-
 		for (final MOB follower : orderedGroup)
 		{
 			if((follower!=null)
@@ -228,7 +291,7 @@ public class Group extends StdCommand
 					}
 				}
 			}
-			msg.append(showWhoLong(mob,follower,cols,statShortLevel));
+			msg.append(showMemberLong(mob,follower,cols,statShortLevel));
 		}
 		mob.tell(msg.toString());
 		mob.tell(L("You have @x1/@x2 followers.",""+mob.totalFollowers(),""+mob.maxFollowers()));

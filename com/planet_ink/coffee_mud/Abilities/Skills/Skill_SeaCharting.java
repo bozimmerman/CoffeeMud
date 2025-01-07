@@ -295,6 +295,11 @@ public class Skill_SeaCharting extends StdSkill
 						mob.tell(L("You can't get there from here."));
 						return false;
 					}
+					if(currentR == room)
+					{
+						mob.tell(L("You are already there."));
+						return false;
+					}
 
 					final List<Room> destRooms=new XVector<Room>(room);
 					final TrackingFlags flags=CMLib.tracking().newFlags()

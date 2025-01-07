@@ -205,20 +205,17 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 		List<Item> itemPrototypes = (List<Item>)Resources.getResource(allItemID);
 		if(itemPrototypes == null)
 		{
-			final CMFile F=new CMFile(Resources.makeFileResourceName("skills/"+(String)V(ID,V_FNAM)),null);
-			if(F.exists())
+			itemPrototypes=new Vector<Item>();
+			for(final CMFile F : CMFile.getExistingExtendedFiles(Resources.makeFileResourceName("skills/"+(String)V(ID,V_FNAM)), null, 0))
 			{
 				final String xml = F.textUnformatted().toString().trim();
 				if(xml.length()>0)
-				{
-					itemPrototypes=new Vector<Item>();
 					CMLib.coffeeMaker().addItemsFromXML(F.textUnformatted().toString(), itemPrototypes, null);
-					for(final Item I : itemPrototypes)
-						CMLib.threads().unTickAll(I);
-					if(itemPrototypes.size()>0)
-						Resources.submitResource(allItemID, itemPrototypes);
-				}
 			}
+			for(final Item I : itemPrototypes)
+				CMLib.threads().unTickAll(I);
+			if(itemPrototypes.size()>0)
+				Resources.submitResource(allItemID, itemPrototypes);
 		}
 		return itemPrototypes;
 	}
@@ -429,8 +426,8 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 							{
 								final Boardable boardableI=(Boardable)buildingI;
 								MOB buyer = mob;
-								if(buyer.isMonster() && (buyer.amFollowing()!=null))
-									buyer = buyer.amUltimatelyFollowing();
+								if(buyer.isMonster())
+									buyer = buyer.getGroupLeader();
 								if(buyer.isMonster())
 									((Boardable)buildingI).rename(""+CMLib.dice().roll(1, 999, 0));
 								else

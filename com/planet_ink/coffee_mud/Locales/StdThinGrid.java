@@ -233,7 +233,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				else
 					start=mid+1;
 			}
-			catch(final java.lang.IndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 				comp=0;
 				mid=0;
@@ -283,9 +283,14 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		synchronized(rooms)
 		{
 			final int pos=properRoomIndex(x,y);
-			final ThinGridEntry entry = rooms.elementAt(pos);
-			if((entry.xy.x==x)&&(entry.xy.y==y))
-				return entry.room;
+			try
+			{
+				final ThinGridEntry entry = rooms.elementAt(pos);
+				if((entry.xy.x==x)&&(entry.xy.y==y))
+					return entry.room;
+			}
+			catch(final ArrayIndexOutOfBoundsException e)
+			{}
 		}
 		return null;
 	}

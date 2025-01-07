@@ -224,7 +224,7 @@ public class Chant_CharmAnimal extends Chant
 		{
 			if(target instanceof MOB)
 			{
-				if(!CMLib.flags().isAnimalIntelligence((MOB)target))
+				if(!CMLib.flags().isAnAnimal((MOB)target))
 					return Ability.QUALITY_INDIFFERENT;
 			}
 		}
@@ -241,7 +241,7 @@ public class Chant_CharmAnimal extends Chant
 		if(R==null)
 			R=mob.location();
 
-		if(!CMLib.flags().isAnimalIntelligence(target))
+		if(!CMLib.flags().isAnAnimal(target))
 		{
 			mob.tell(L("@x1 is not an animal!",target.name(mob)));
 			return false;

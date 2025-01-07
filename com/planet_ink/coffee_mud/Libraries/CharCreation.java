@@ -255,6 +255,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		while (pointsLeft > 0)
 		{
+			boolean procede = false;
+			for(final int cd : CharStats.CODES.BASECODES())
+				if(stats[cd] < basemax)
+					procede = true;
+			if(!procede)
+				break;
 			final int whichNum = CMLib.dice().roll(1,CharStats.CODES.BASECODES().length,-1);
 			if(stats[whichNum]<basemax)
 			{
@@ -270,14 +276,24 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	@Override
 	public boolean canChangeToThisClass(final MOB mob, final CharClass thisClass, final int theme)
 	{
-		if((isAvailableCharClass(thisClass)||(isTattooedLike(mob,"CHARCLASS_"+thisClass.ID().toUpperCase())))
-		&&((theme<0)||((thisClass.availabilityCode()&theme)>0))
-		&&((mob==null)||(thisClass.qualifiesForThisClass(mob,true))))
+		if((isAvailableCharClass(thisClass)
+			||(isTattooedLike(mob,"CHARCLASS_"+thisClass.ID().toUpperCase()))
+			||(isTattooedLike(mob,"CHARCLASS_ALL")))
+		&&((theme<0)
+			||((thisClass.availabilityCode()&theme)>0))
+		&&((mob==null)
+			||(thisClass.qualifiesForThisClass(mob,true)))
+		&&((mob==null)
+			||(mob.charStats().getClassLevel(thisClass)>=0)
+			||(mob.charStats().getAllClassInfo().first.length()+thisClass.ID().length()+1<=250)))
+		{
 			return true;
+		}
 		return false;
 	}
 
-	protected boolean isTattooedLike(final MOB mob, final String fullID)
+	@Override
+	public boolean isTattooedLike(final MOB mob, final String fullID)
 	{
 		if(mob==null)
 			return false;
@@ -3035,7 +3051,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			for(int i=0;i<bonusPoints;i++)
 			{
 				final int randStat=CMLib.dice().roll(1, CharStats.CODES.BASECODES().length, -1);
-				mob.baseCharStats().setStat(CharStats.CODES.BASECODES()[randStat], mob.baseCharStats().getStat(CharStats.CODES.BASECODES()[randStat])+1);
+				mob.baseCharStats().setStat(CharStats.CODES.BASECODES()[randStat],
+						mob.baseCharStats().getStat(CharStats.CODES.BASECODES()[randStat])+1);
 			}
 			mob.recoverCharStats();
 			loginObj.state=LoginState.CHARCR_STATDONE;
@@ -3102,15 +3119,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			final int max=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 			final StringBuffer statstr=new StringBuffer(L("Your current stats are: \n\r"));
 			final CharStats CT=mob.baseCharStats();
+			final Race R = mob.baseCharStats().getMyRace();
+			final CharStats RT=(CharStats)CT.copyOf();
+			R.affectCharStats(mob, RT);
 			int total=0;
+			int maxTotal=0;
 			for(final int i : CharStats.CODES.BASECODES())
 			{
-				total += CT.getStat(i);
+				final int statVal=RT.getStat(i);
+				final int statDiff=RT.getStat(i)-CT.getStat(i);
+				total += statVal;
+				maxTotal += (max+RT.getStat(CharStats.CODES.toMAXBASE(i)));
+				final String valDiff = (statDiff == 0)?"":(((statDiff>0)?("+"+statDiff):(""+statDiff))+" from "+R.name());
 				statstr.append("^H"+CMStrings.padRight(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)),15)
-							  +"^N: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)
-							  +"^N/^w"+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+"^N\n\r");
+							  +"^N: ^w"+CMStrings.padRight(Integer.toString(statVal),2)
+							  +"^N/^w"+(max+RT.getStat(CharStats.CODES.toMAXBASE(i)))+"^N "+valDiff+"\n\r");
 			}
-			statstr.append("^w"+CMStrings.padRight(L("STATS TOTAL"),15)+"^N: ^w"+total+"^N/^w"+(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)*6)+"^.^N");
+			statstr.append("^w"+CMStrings.padRight(L("STATS TOTAL"),15)+"^N: ^w"+total+"^N/^w"+maxTotal+"^.^N");
 			session.println(statstr.toString());
 			if((qualifyingClassListV.size()==0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)))
 				qualifyingClassListV=classQualifies(mob,loginObj.theme);
@@ -3459,8 +3484,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult charcrClassStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
-		mob.baseCharStats().setMyClasses("StdCharClass");
-		mob.baseCharStats().setMyLevels("0");
+		mob.baseCharStats().setAllClassInfo("StdCharClass", "0");
 		final List<CharClass> qualClassesV=classQualifies(mob,loginObj.theme);
 		final String listOfClasses = buildQualifyingClassList(mob, qualClassesV, "or");
 		session.println(L("\n\r^!Please choose from the following Classes:"));

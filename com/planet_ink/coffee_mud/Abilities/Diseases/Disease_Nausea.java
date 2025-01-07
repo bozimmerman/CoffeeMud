@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Diseases;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -117,10 +118,20 @@ public class Disease_Nausea extends Disease
 		return L("^G<S-NAME> do(es) not feel right.^?");
 	}
 
+	int abilityCode = 0;
+
 	@Override
 	public int abilityCode()
 	{
-		return 0;
+		return abilityCode;
+	}
+
+	@Override
+	public void setAbilityCode(final int newCode)
+	{
+		abilityCode = newCode;
+		if(newCode > 0)
+			diseaseTick=1;
 	}
 
 	@Override
@@ -141,6 +152,32 @@ public class Disease_Nausea extends Disease
 				final Ability A=CMClass.getAbility("Disease_Obesity");
 				if ((A != null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 					A.invoke(mob, mob, true, 0);
+			}
+		}
+	}
+
+	protected void pukeUpMobs(final MOBCollection coll, final Room R)
+	{
+		if(coll.numInhabitants() > 0)
+		{
+			final List<MOB> all = new XVector<MOB>(coll.inhabitants());
+			for(final MOB M : all)
+			{
+				if((M != null)&&(M.location()!=R))
+					R.bringMobHere(M, false);
+			}
+		}
+	}
+
+	protected void pukeUpItems(final ItemCollection coll, final Room R)
+	{
+		if(coll.numItems() > 0)
+		{
+			final List<Item> all = new XVector<Item>(coll.items());
+			for(final Item I : all)
+			{
+				if((I != null)&&((I.container()==null)||(!I.owner().isContent(I.container()))))
+					R.moveItemTo(I, Expire.Monster_EQ, Move.Followers);
 			}
 		}
 	}
@@ -174,22 +211,48 @@ public class Disease_Nausea extends Disease
 					sA.setMiscText("+It smells awful.");
 					I.addNonUninvokableEffect(sA);
 				}
-				for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+				if(mob instanceof MOBCollection)
+					pukeUpMobs((MOBCollection)mob, R);
+				for(final Enumeration<Ability> e = mob.effects();e.hasMoreElements();)
 				{
-					final MOB M=m.nextElement();
-					if((M!=null)
-					&&(M!=mob)
-					&&(!CMLib.flags().isGolem(M))
-					&&(!CMLib.flags().isUndead(M))
-					&&(CMLib.flags().canBeSeenBy(mob, M))
-					&&(!CMLib.flags().isSleeping(M))
-					&&(CMLib.dice().rollPercentage()<20))
+					final Ability A = e.nextElement();
+					if(A instanceof MOBCollection)
+						pukeUpMobs((MOBCollection)A, R);
+					if(A instanceof ItemCollection)
+						pukeUpItems((ItemCollection)A, R);
+				}
+				for(final Enumeration<Behavior> e = mob.behaviors();e.hasMoreElements();)
+				{
+					final Behavior A = e.nextElement();
+					if(A instanceof MOBCollection)
+						pukeUpMobs((MOBCollection)A, R);
+					if(A instanceof ItemCollection)
+						pukeUpItems((ItemCollection)A, R);
+				}
+				if(abilityCode() <= 0)
+				{
+					for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 					{
-						Ability A=(Ability)this.copyOf();
-						A.invoke(M, M, true, 0);
-						A=M.fetchEffect(ID());
-						if(A!=null)
-							A.setStat("TICKDOWN", "15"); // just enough for one puke
+						final MOB M=m.nextElement();
+						if((M!=null)
+						&&(M!=mob)
+						&&(!CMLib.flags().isGolem(M))
+						&&(!CMLib.flags().isUndead(M))
+						&&(CMLib.flags().canBeSeenBy(mob, M))
+						&&(!CMLib.flags().isSleeping(M))
+						&&(CMLib.dice().rollPercentage()<20))
+						{
+							if(CMLib.dice().rollPercentage() > M.charStats().getSave(CharStats.STAT_SAVE_DISEASE))
+							{
+								Ability A=(Ability)this.copyOf();
+								A.invoke(M, M, true, 0);
+								A=M.fetchEffect(ID());
+								if(A!=null)
+									A.setStat("TICKDOWN", "15"); // just enough for one puke
+							}
+							else
+								spreadImmunity(M);
+						}
 					}
 				}
 			}

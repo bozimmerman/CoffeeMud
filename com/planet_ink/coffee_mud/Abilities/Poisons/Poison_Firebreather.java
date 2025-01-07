@@ -64,13 +64,13 @@ public class Poison_Firebreather extends Poison_Liquor
 	@Override
 	protected int alcoholContribution()
 	{
-		return 3;
+		return 2+(int)Math.round(rank);
 	}
 
 	@Override
-	protected int level()
+	protected int alchoholLevel()
 	{
-		return 3;
+		return 2+(int)Math.round(rank);
 	}
 
 	@Override

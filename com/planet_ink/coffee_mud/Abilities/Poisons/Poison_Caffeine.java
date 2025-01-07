@@ -39,7 +39,7 @@ public class Poison_Caffeine extends Poison {
 		return "Poison_Caffeine";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Poison_Hyper");
+	private final static String localizedName = CMLib.lang().L("Hyper");
 
 	@Override
 	public String name()
@@ -119,14 +119,14 @@ public class Poison_Caffeine extends Poison {
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+1);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+(int)Math.round(rank));
 	}
 
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setSpeed(affectableStats.speed() + (CMProps.getSpeedAdjustment()*0.25));
+		affectableStats.setSpeed(affectableStats.speed() + (CMProps.getSpeedAdjustment()*0.25*rank));
 		int oldDisposition=affectableStats.disposition();
 		oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
 		affectableStats.setDisposition(oldDisposition);

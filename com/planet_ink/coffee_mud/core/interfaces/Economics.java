@@ -54,6 +54,7 @@ public interface Economics extends Environmental
 	 * @return the string describing price prejudicing
 	 */
 	//TODO: This is a rediculously complex string parsed EVERY TIME a customer interaction.  Fix it.
+	// see Prejudices below!
 	public String getFinalPrejudiceFactors();
 
 	/**
@@ -209,4 +210,73 @@ public interface Economics extends Environmental
 	 * @param currency  a currency name/definition
 	 */
 	public void setCurrency(String currency);
+
+	/**
+	 * The interface for a single economic prejudice factor.
+	 * Each entry is a group name, representing a group
+	 * to have unique factors for, followed by the factor
+	 * to multiply the prices by.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static interface Prejudice
+	{
+		/**
+		 * The prejudice factor group, typically
+		 * the name of a race, class, race category,
+		 * gender, etc.
+		 * @return the factor group
+		 */
+		public String group();
+
+		/**
+		 * Number to multiply prices by when
+		 * buying from players.
+		 * @return buy multiplier
+		 */
+		public double buyFactor();
+
+		/**
+		 * Number to multiply prices by when
+		 * selling to players.
+		 * @return sell multiplier
+		 */
+		public double sellFactor();
+	}
+
+	/**
+	 * The interface for economic Prejudice factors,
+	 * as well as various miscellaneous fields for
+	 * shopkeepers.
+	 *
+	 * @author BZ
+	 */
+	public static interface Prejudices
+	{
+		/**
+		 * The set of prejudice factors for various
+		 * groups.
+		 * @return the prejudice group factors
+		 */
+		public Prejudice[]  factors();
+
+		/**
+		 * The maximum number of rows of produces to display
+		 * at a time when a player LISTs inventory. 0 disables.
+		 *
+		 * @return 0, or maximum rows to display.
+		 */
+		public int displayLimit();
+
+		/**
+		 * The level range that the shopkeeper will buy.  If
+		 * this is between 0-1, it is a percentage of the areas
+		 * median level.  Otherwise, it is the number of levels
+		 * above or below the median that the shopkeeper will buy.
+		 *
+		 * @return the level range factor
+		 */
+		public double levelRange();
+	}
 }

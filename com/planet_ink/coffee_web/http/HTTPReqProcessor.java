@@ -265,7 +265,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 			final String formattedDate = HTTPIOHandler.DATE_FORMAT.format(now);
 			str.append(HTTPHeader.Common.DATE.makeLine(formattedDate));
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException e)
+		catch(final IndexOutOfBoundsException e)
 		{
 			// just eat it.
 		}

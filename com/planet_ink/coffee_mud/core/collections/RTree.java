@@ -74,7 +74,7 @@ public class RTree<T extends BoundedObject>
 		}
 
 		@Override
-		public long[] center()
+		public Coord3D center()
 		{
 			return getCube().center();
 		}

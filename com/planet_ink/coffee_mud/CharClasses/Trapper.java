@@ -141,6 +141,7 @@ public class Trapper extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_Cage",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Domesticating",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_SetTimer",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_ConcealPathway",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_Snipe",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_AttackHalf",false);

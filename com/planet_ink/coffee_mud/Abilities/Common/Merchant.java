@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ShoppingLibrary.BuySellFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -118,6 +119,12 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		displayText="";
 
 		isAutoInvoked();
+	}
+
+	@Override
+	public CoffeeShop getShop(final MOB mob)
+	{
+		return getShop();
 	}
 
 	@Override
@@ -469,7 +476,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 						return false;
 					final double budgetRemaining=CMLib.beanCounter().getTotalAbsoluteValue(merchantM,CMLib.beanCounter().getCurrency(merchantM));
 					final double budgetMax=budgetRemaining*100;
-					if(CMLib.coffeeShops().pawnEvaluation(merchantM,msg.source(),msg.tool(),this,budgetRemaining,budgetMax,msg.targetMinor()==CMMsg.TYP_SELL))
+					final BuySellFlag flag = (msg.targetMinor()==CMMsg.TYP_SELL)?BuySellFlag.RETAIL:BuySellFlag.INFO;
+					if(CMLib.coffeeShops().pawnEvaluation(merchantM,msg.source(),msg.tool(),this,budgetRemaining,budgetMax,flag))
 						return super.okMessage(myHost,msg);
 					return false;
 				}
@@ -484,7 +492,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 						return false;
 					if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
 						return false;
-					if(CMLib.coffeeShops().sellEvaluation(merchantM,msg.source(),msg.tool(),this,msg.targetMinor()==CMMsg.TYP_BUY))
+					final BuySellFlag buyFlag = (msg.targetMinor()==CMMsg.TYP_BUY)?BuySellFlag.RETAIL:BuySellFlag.INFO;
+					if(CMLib.coffeeShops().sellEvaluation(merchantM,msg.source(),msg.tool(),this,buyFlag))
 						return super.okMessage(myHost,msg);
 					return false;
 				}
@@ -594,7 +603,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				super.executeMsg(myHost,msg);
 				if(isActive(merchantM) && merchantM.isMonster())
 				{
-					final double pawnPrice = CMLib.coffeeShops().pawningPrice(merchantM,mob,msg.tool(),this, getShop()).absoluteGoldPrice;
+					final double pawnPrice = CMLib.coffeeShops().pawningPrice(merchantM,mob,msg.tool(),this).absoluteGoldPrice;
 					final String currencyPriceStr = CMLib.beanCounter().nameCurrencyShort(merchantM,pawnPrice);
 					CMLib.commands().postSay(merchantM,mob,L("I'll give you @x1 for @x2.", currencyPriceStr,msg.tool().name()),true,false);
 				}
@@ -605,14 +614,16 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				&& isActive(merchantM)
 				&&(getShop().doIHaveThisInStock(msg.tool().Name(),mob)))
 				{
-					CMLib.commands().postSay(merchantM,msg.source(),L("Interested in @x1? Here is some information for you:\n\rLevel @x2\n\rDescription: @x3",msg.tool().name(),""+((Physical)msg.tool()).phyStats().level(),msg.tool().description()),true,false);
+					CMLib.commands().postSay(merchantM,msg.source(),
+							L("Interested in @x1? Here is some information for you:\n\rLevel @x2\n\rDescription: @x3",
+									msg.tool().name(),""+((Physical)msg.tool()).phyStats().level(),msg.tool().description()),true,false);
 				}
 				break;
 			case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player
 			{
 				super.executeMsg(myHost,msg);
 				if(isActive(merchantM))
-					CMLib.coffeeShops().transactPawn(merchantM,msg.source(),this,msg.tool());
+					CMLib.coffeeShops().transactPawn(merchantM,msg.source(),this,msg.tool(), getShop(), BuySellFlag.RETAIL);
 				break;
 			}
 			case CMMsg.TYP_BUY:
@@ -626,7 +637,10 @@ public class Merchant extends CommonSkill implements ShopKeeper
 					{
 						final Environmental item=getShop().getStock("$"+msg.tool().Name()+"$",mobFor);
 						if(item!=null)
-							CMLib.coffeeShops().transactMoneyOnly(merchantM,msg.source(),this,item,!merchantM.isMonster());
+						{
+							final BuySellFlag flag = !merchantM.isMonster() ? BuySellFlag.RETAIL : BuySellFlag.INFO;
+							CMLib.coffeeShops().transactMoneyOnly(merchantM,msg.source(),this,item,flag);
+						}
 
 						final List<Environmental> products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
 						if(products.size()==0)

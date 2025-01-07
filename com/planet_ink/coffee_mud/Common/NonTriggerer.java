@@ -118,7 +118,7 @@ public class NonTriggerer implements Triggerer
 	}
 
 	@Override
-	public String getTriggerDesc(final Object key)
+	public String getTriggerDesc(final Object key, String thePlayer)
 	{
 		return "";
 	}

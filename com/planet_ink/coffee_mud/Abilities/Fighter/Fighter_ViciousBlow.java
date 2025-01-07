@@ -91,6 +91,20 @@ public class Fighter_ViciousBlow extends FighterSkill
 	}
 
 	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if((msg.source()==affected)
+		&& (msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&& (msg.tool() instanceof Weapon))
+		{
+			final int hurtAmount = msg.value();
+			if (hurtAmount > msg.source().phyStats().damage())
+				super.helpProficiency(msg.source(), 0);
+		}
+	}
+
+	@Override
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob, affectableStats);

@@ -96,7 +96,7 @@ public class Spell_GreaterEnchantArmor extends Spell
 			mob.tell(L("@x1 cannot be greatly enchanted until it has first attained 3 levels of regular enchantment.",target.name(mob)));
 			return false;
 		}
-		if(target.phyStats().ability()>9)
+		if(target.phyStats().ability()>9+(super.getXLEVELLevel(mob)/3))
 		{
 			mob.tell(L("@x1 cannot be greatly enchanted further.",target.name(mob)));
 			return false;

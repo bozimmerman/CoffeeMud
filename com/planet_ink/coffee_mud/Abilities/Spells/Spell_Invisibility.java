@@ -83,7 +83,9 @@ public class Spell_Invisibility extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 
-		if((msg.amISource(mob))&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS)))
+		if((msg.amISource(mob))
+		&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
+		&&(msg.target()!=mob))
 			unInvoke();
 		return;
 	}

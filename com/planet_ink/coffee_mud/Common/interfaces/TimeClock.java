@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.Common.interfaces;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -327,7 +329,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * Gets the week names, which is the names of the days of each week,
 	 * a string array indexed by the day of the week - 1.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDaysInWeek(String[])
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setWeekNames(String[])
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getDaysInWeek()
 	 *
 	 * @return the week names as an array of strings
@@ -337,7 +339,7 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Gets the number of days in each week
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDaysInWeek(String[])
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setWeekNames(String[])
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getWeekNames()
 	 *
 	 * @return the days in each week
@@ -384,7 +386,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 *
 	 * @param days the new days in each week string array
 	 */
-	public void setDaysInWeek(String[] days);
+	public void setWeekNames(String[] days);
 
 	/**
 	 * Gets the names of the year, an arbitrary sized list that is rotated
@@ -643,6 +645,20 @@ public interface TimeClock extends Tickable, CMCommon
 	public TimeClock fromTimePeriodCodeString(final String period);
 
 	/**
+	 * Returns this timeclock in m/d/y h format.
+	 * @return this timeclock in m/d/y h format.
+	 */
+	public String toTimeString();
+
+	/**
+	 * Updates the date/time info from one clock into this one.
+	 * The calendar structure should be the same before doing this.
+	 *
+	 * @param fromC the current clock to copy from
+	 */
+	public void setDateTime(final TimeClock fromC);
+
+	/**
 	 * Given a time period, returns the number of mud hours
 	 * contained in each, based on this clock.
 	 *
@@ -652,20 +668,67 @@ public interface TimeClock extends Tickable, CMCommon
 	public int getHoursPer(final TimePeriod period);
 
 	/**
-	 * Different time periods.
+	 * Returns the value of the given period for this
+	 * time clock object.
+	 *
+	 * @param period the hours, months, etc.
+	 * @return the value for this calendar
+	 */
+	public int get(final TimePeriod period);
+
+	/**
+	 * Returns the maximum value of the given period for this
+	 * time clock object.
+	 *
+	 * @param period hours, months, days, etc
+	 * @return the last hour, months, etc.
+	 */
+	public int getMax(final TimePeriod period);
+
+	/**
+	 * Returns the first value of the given period for this
+	 * time clock object.
+	 *
+	 * @param period hours, months, days, etc
+	 * @return the first hour, months, etc.
+	 */
+	public int getMin(final TimePeriod period);
+
+	/**
+	 * Sets the value of the given period for this
+	 * time clock object.
+	 *
+	 * @param period the hours, months, etc.
+	 * @param value the value for this calendar
+	 */
+	public void set(final TimePeriod period, int value);
+
+	/**
+	 * Sets the value of the given period for this
+	 * time clock object by bumping the clock until
+	 * it is the next of the given period.
+	 *
+	 * @param period the hours, months, etc.
+	 * @param value the value for this calendar
+	 */
+	public void setNext(final TimePeriod period, int value);
+
+	/**
+	 * Different time periods for player stats.
 	 * @author Bo Zimmerman
 	 */
 	public enum TimePeriod
 	{
-		HOUR(60L * 60L * 1000L),
-		DAY(60L * 60L * 1000L * 24L),
-		WEEK(60L * 60L * 1000L * 24L * 7L),
-		MONTH(60L * 60L * 1000L * 24L * 30L),
-		SEASON(60L * 60L * 1000L * 24L * 365L / 4L),
-		YEAR(60L * 60L * 1000L * 24L * 365L),
+		HOUR(TimeManager.MILI_HOUR),
+		DAY(TimeManager.MILI_DAY),
+		WEEK(TimeManager.MILI_WEEK),
+		MONTH(TimeManager.MILI_MONTH),
+		SEASON(TimeManager.MILI_YEAR / 4L),
+		YEAR(TimeManager.MILI_YEAR),
 		ALLTIME(0)
 		;
 		private final long increment;
+		private static TimePeriod[] reversed = null;
 
 		private TimePeriod(final long increment)
 		{
@@ -675,6 +738,31 @@ public interface TimeClock extends Tickable, CMCommon
 		public long getIncrement()
 		{
 			return increment;
+		}
+
+		public static TimePeriod get(final String s)
+		{
+			if(s==null)
+				return null;
+			try
+			{
+				return valueOf(s.toUpperCase().trim());
+			}
+			catch(final Exception e)
+			{}
+			if(s.endsWith("s")||s.endsWith("S"))
+				return get(s.substring(0,s.length()-1));
+			return null;
+		}
+
+		public static TimePeriod[] reversed()
+		{
+			if(reversed == null)
+			{
+				reversed = Arrays.copyOf(values(),values().length);
+				Collections.reverse(Arrays.asList(reversed));
+			}
+			return reversed;
 		}
 
 		public long nextPeriod()

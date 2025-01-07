@@ -81,12 +81,8 @@ public class Spell_PolymorphObject extends Spell
 		if(craftingSkills.size()==0)
 		{
 			final Vector<Ability> V=new Vector<Ability>();
-			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
-			{
-				final Ability A=e.nextElement();
-				if(A instanceof ItemCraftor)
-					V.addElement((ItemCraftor)A.copyOf());
-			}
+			for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
+				V.addElement((ItemCraftor)e.nextElement().copyOf());
 			while(V.size()>0)
 			{
 				int lowest=Integer.MAX_VALUE;

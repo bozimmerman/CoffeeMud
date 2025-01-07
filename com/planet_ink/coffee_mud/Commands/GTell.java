@@ -38,7 +38,7 @@ public class GTell extends StdCommand
 	{
 	}
 
-	private final String[] access=I(new String[]{"GTELL","GT"});
+	private final String[] access=I(new String[]{"GTELL","FTELL","GT"});
 	@Override
 	public String[] getAccessWords()
 	{
@@ -49,10 +49,11 @@ public class GTell extends StdCommand
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
+		final String cmd = (commands.size()>1)?commands.get(0).toUpperCase():"GTELL";
 		String text=CMParms.combine(commands,1);
 		if(text.length()==0)
 		{
-			mob.tell(L("Tell the group what?"));
+			mob.tell(L("Tell your group what?"));
 			return false;
 		}
 		text=CMProps.applyINIFilter(text,CMProps.Str.SAYFILTER);
@@ -78,6 +79,7 @@ public class GTell extends StdCommand
 
 		CMMsg tellMsg=CMClass.getMsg(mob,null,null,CMMsg.MSG_TELL,null,CMMsg.NO_EFFECT,null,CMMsg.MSG_TELL,null);
 		text=text.trim();
+		final String rawTextMsgStr;
 		if(text.startsWith(",")
 		||(text.startsWith(":")
 			&&(text.length()>1)
@@ -99,6 +101,10 @@ public class GTell extends StdCommand
 						V,
 						null,
 						false);
+				if((tellMsg.othersMessage()!=null)&&(tellMsg.othersMessage().length()>0))
+					rawTextMsgStr=CMStrings.removeColors(tellMsg.othersMessage());
+				else
+					rawTextMsgStr=CMStrings.removeColors(tellMsg.sourceMessage());
 			}
 			else
 			{
@@ -108,27 +114,68 @@ public class GTell extends StdCommand
 					text=" "+text.trim();
 				tellMsg.setSourceMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^>[GTELL] <S-NAME>"+text+"^</GTELL^>^?^.");
 				tellMsg.setOthersMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^>"+mob.name()+" tells the group '"+text+"'^</GTELL^>^?^.");
+				rawTextMsgStr=mob.name()+" tells the group '"+text+"'";
 			}
 		}
 		else
 		{
 			tellMsg.setSourceMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> tell(s) the group '"+text+"'^</GTELL^>^?^.");
 			tellMsg.setOthersMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^>"+mob.name()+" tells the group '"+text+"'^</GTELL^>^?^.");
+			rawTextMsgStr=mob.name()+" tells the group '"+text+"'";
 		}
 
-		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
+		if((mob.session()!=null)
+		&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)))
+		{
+			mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\"GTELL\","
+					+ "\"msg\":\""+MiniJSON.toJSONString(rawTextMsgStr)+"\""
+					+ ",\"player\":\""+mob.name()+"\"}");
+		}
+
+		final Set<MOB> group;
+		if(cmd.startsWith("F"))
+		{
+			group = new XTreeSet<MOB>();
+			final Stack<MOB> stk = new Stack<MOB>();
+			stk.add(mob);
+			while(stk.size() > 0)
+			{
+				final MOB M = stk.pop();
+				if(!group.contains(M))
+				{
+					group.add(M);
+					for(int f=0;f<M.numFollowers();f++)
+					{
+						final MOB F = M.fetchFollower(f);
+						if(F != null)
+							stk.add(F);
+					}
+				}
+			}
+		}
+		else
+			group = mob.getGroupMembers(new HashSet<MOB>());
 		final CMMsg msg=tellMsg;
 		for (final MOB target : group)
 		{
 			if((mob.location().okMessage(mob,msg))
 			&&(target.okMessage(target,msg)))
 			{
+				if((target.session()!=null)
+				&&(target!=mob)
+				&&(target.session().getClientTelnetMode(Session.TELNET_GMCP)))
+				{
+					target.session().sendGMCPEvent("comm.channel", "{\"chan\":\"GTELL\","
+							+ "\"msg\":\""+MiniJSON.toJSONString(rawTextMsgStr)+"\""
+							+ ",\"player\":\""+mob.name()+"\"}");
+				}
 				if(target.playerStats()!=null)
 				{
 					final String tellStr=(target==mob)?msg.sourceMessage():(
 									(target==msg.target())?msg.targetMessage():msg.othersMessage()
 									);
-					target.playerStats().addGTellStack(mob.Name(), target.Name(), CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,msg.target(),null,CMStrings.removeColors(tellStr),false));
+					final String msgStr = CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,msg.target(),null,CMStrings.removeColors(tellStr),false);
+					target.playerStats().addGTellStack(mob.Name(), target.Name(), msgStr);
 				}
 				target.executeMsg(target,msg);
 				if(msg.trailerMsgs()!=null)

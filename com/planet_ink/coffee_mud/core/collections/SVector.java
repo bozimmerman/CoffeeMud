@@ -366,6 +366,18 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		return list.get(index);
 	}
 
+	public T getSafe(final int index)
+	{
+		try
+		{
+			return list.get(index);
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
+	}
+
 	@Override
 	public T set(final int index, final T element)
 	{

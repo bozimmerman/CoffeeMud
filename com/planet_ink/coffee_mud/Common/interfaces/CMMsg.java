@@ -127,6 +127,17 @@ public interface CMMsg extends CMCommon
 	public boolean targetMajor(final int bitMask);
 
 	/**
+	 * Returns whether high order bitmask for the target code is set with
+	 * any of the given bits
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMinor()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
+	 * @param bitMask the bitmask to check for
+	 * @return true if high order bitmask for the target code is set
+	 */
+	public boolean targetMajorAny(final int bitMask);
+
+	/**
 	 * Returns low order action type integer for the target code
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMajor(int)
@@ -266,6 +277,17 @@ public interface CMMsg extends CMCommon
 	 * @return true if high order bitmask for the source code is set
 	 */
 	public boolean sourceMajor(final int bitMask);
+
+	/**
+	 * Returns whether high order bitmask for the source code is set
+	 * with ANY of the given bits.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMinor()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
+	 * @param bitMask the bitmask to check for
+	 * @return true if high order bitmask for the source code is set
+	 */
+	public boolean sourceMajorAny(final int bitMask);
 
 	/**
 	 * Returns low order action type integer for the target code
@@ -409,6 +431,17 @@ public interface CMMsg extends CMCommon
 	 * @return true if high order bitmask for the others code is set
 	 */
 	public boolean othersMajor(final int bitMask);
+
+	/**
+	 * Returns whether high order bitmask for the others code is set
+	 * with any of the given bits.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMinor()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
+	 * @param bitMask the bitmask to check for
+	 * @return true if high order bitmask for the others code is set
+	 */
+	public boolean othersMajorAny(final int bitMask);
 
 	/**
 	 * Returns low order action type integer for the others code
@@ -1225,6 +1258,12 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_GLANCE=143;
 	/** MINOR_MASK minor action code type, denoting a ritual step */
 	public static final int TYP_RITUAL=144;
+	/** MINOR_MASK minor action code type, denoting a puff on a smokeable */
+	public static final int TYP_PUFF=145;
+	/** MINOR_MASK minor action code type, denoting a train action */
+	public static final int TYP_TRAIN=146;
+	/** MINOR_MASK minor action code type, denoting a broker request action*/
+	public static final int TYP_BROKERADD=147;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1255,7 +1294,8 @@ public interface CMMsg extends CMCommon
 		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER","ITEMSGENERATED",
 		"WROTE", "REWRITE", "WASREAD", "PREMOVE", "THINK", "STARTUP", "RPXPCHANGE",
 		"COMMANDREJECT","RECIPELEARNED", "GRAVITY", "LEGALSTATE", "NEWROOM","CAUSESINK",
-		"ENDQUEST","WINQUEST","HOLYEVENT","EMISSION", "BODYDROP", "GLANCE", "RITUAL"
+		"ENDQUEST","WINQUEST","HOLYEVENT","EMISSION", "BODYDROP", "GLANCE", "RITUAL",
+		"PUFF", "TRAIN", "BROKERADD"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1603,6 +1643,12 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_GLANCE=MASK_EYES|TYP_GLANCE;
 	/** combined MAJOR and MINOR codes for useful event message type for a quick glance */
 	public static final int MSG_RITUAL=MASK_ALWAYS|TYP_RITUAL;
+	/** combined MAJOR and MINOR codes for useful event message type for a smokeing event */
+	public static final int MSG_PUFF=MASK_MOUTH|TYP_PUFF;
+	/** combined MAJOR and MINOR codes for useful event message type for a train event */
+	public static final int MSG_TRAIN=MASK_HANDS|MASK_SOUND|MASK_MOVE|TYP_NOISYMOVEMENT;
+	/** combined MAJOR and MINOR codes for useful event message type for a auction bid event */
+	public static final int MSG_BROKERADD=MASK_SOUND|MASK_MOUTH|TYP_BROKERADD;
 
 	/**
 	 * An enum to use for an external message check from inside

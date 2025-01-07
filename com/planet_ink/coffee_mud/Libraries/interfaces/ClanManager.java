@@ -334,6 +334,15 @@ public interface ClanManager extends CMLibrary
 	public Iterable<Pair<Clan,Integer>> clanRoles();
 
 	/**
+	 * Returns a permanent mob that belongs to all clans
+	 * at accept roles.  This is typically for clan info
+	 * channel messages for all clans.
+	 *
+	 * @return the all-clan mob
+	 */
+	public MOB getAllClanTalker();
+
+	/**
 	 * Adds the given clan to the games list
 	 * @param C the clan to add
 	 */

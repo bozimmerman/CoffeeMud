@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.Readable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -144,7 +145,7 @@ public class Skill_Write extends StdSkill
 			return false;
 		}
 
-		if(CMParms.combine(commands,1).toUpperCase().startsWith("FILE="))
+		if(CMParms.combine(commands,1).toUpperCase().startsWith(Readable.FILE_PREFIX))
 		{
 			mob.tell(L("You can't write that."));
 			return false;

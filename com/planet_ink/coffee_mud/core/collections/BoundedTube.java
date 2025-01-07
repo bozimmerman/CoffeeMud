@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.core.collections;
 
+import java.math.BigDecimal;
+
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
@@ -25,36 +27,36 @@ limitations under the License.
 */
 public class BoundedTube extends BoundedSphere
 {
-	public BigVector	exp;
-	public double[] 	dir;
-	public long			dist;
+	public Coord3D	exp;
+	public Dir3D 	dir;
+	public long		dist;
 
-	public BoundedTube(final BoundedSphere l, final double[] direction, final long distance)
+	public BoundedTube(final BoundedSphere l, final Dir3D direction, final long distance)
 	{
 		super(l);
 		this.dir = direction;
 		this.dist = distance;
-		exp = new BigVector(extendTo(distance));
+		exp = new Coord3D(extendTo(distance));
 	}
 
 	public BoundedTube(final BoundedSphere l)
 	{
 		super(l);
 		this.exp = null;
-		this.dir = new double[2];
+		this.dir = new Dir3D();
 		this.dist = 2;
 	}
 
-	private long[] extendTo(final long distance)
+	private Coord3D extendTo(final long distance)
 	{
-		final long[] start = xyz.toLongs();
-		final double x1=Math.cos(dir[0])*Math.sin(dir[1]);
-		final double y1=Math.sin(dir[0])*Math.sin(dir[1]);
-		final double z1=Math.cos(dir[1]);
-		final long speed = this.dist/2;
-		return new long[]{start[0]+Math.round(CMath.mul(speed,x1)),
-						start[1]+Math.round(CMath.mul(speed,y1)),
-						start[2]+Math.round(CMath.mul(speed,z1))};
+		final Coord3D start = xyz.copyOf();
+		final BigDecimal x1=Dir3D.cos(dir.xy()).multiply(Dir3D.sin(dir.z()));
+		final BigDecimal y1=Dir3D.sin(dir.xy()).multiply(Dir3D.sin(dir.z()));
+		final BigDecimal z1=Dir3D.cos(dir.z());
+		final BigDecimal speed = BigDecimal.valueOf(this.dist/2);
+		return new Coord3D(start.x().add(speed.multiply(x1)),
+						   start.y().add(speed.multiply(y1)),
+						   start.z().add(speed.multiply(z1)));
 	}
 
 	@Override
@@ -85,10 +87,10 @@ public class BoundedTube extends BoundedSphere
 	{
 		if(exp != null)
 		{
-			final long[] mid = extendTo(this.dist/2);
+			final Coord3D mid = extendTo(this.dist/2);
 			return new BoundedSphere(mid,dist);
 		}
-		return new BoundedSphere(xyz.toLongs(), radius);
+		return new BoundedSphere(xyz, radius);
 	}
 
 	@Override
@@ -100,9 +102,9 @@ public class BoundedTube extends BoundedSphere
 			{
 				if(((BoundedTube)two).exp == null)
 					return super.intersects(two);
-				final double dist = CMLib.space().getMinDistanceFrom(((BoundedTube)two).xyz.toLongs(),
-																	((BoundedTube)two).exp.toLongs(),
-																	xyz.toLongs());
+				final double dist = CMLib.space().getMinDistanceFrom(((BoundedTube)two).xyz,
+																	((BoundedTube)two).exp,
+																	xyz);
 				return dist < radius() + two.radius();
 			}
 			else
@@ -113,21 +115,21 @@ public class BoundedTube extends BoundedSphere
 		{
 			if(((BoundedTube)two).exp == null) // line vs point
 			{
-				final double dist = CMLib.space().getMinDistanceFrom(xyz.toLongs(), exp.toLongs(),
-																	((BoundedTube)two).xyz.toLongs());
+				final double dist = CMLib.space().getMinDistanceFrom(xyz, exp,
+																	((BoundedTube)two).xyz);
 				return dist < radius() + two.radius();
 			}
 			// line vs line
-			final double dist = CMLib.space().getMinDistanceFrom(xyz.toLongs(), exp.toLongs(),
-														((BoundedTube)two).xyz.toLongs(),
-														((BoundedTube)two).exp.toLongs());
+			final double dist = CMLib.space().getMinDistanceFrom(xyz, exp,
+														((BoundedTube)two).xyz,
+														((BoundedTube)two).exp);
 			return dist < radius() + two.radius();
 		}
 		else
 		if(two instanceof BoundedSphere)
 		{
-			final double dist = CMLib.space().getMinDistanceFrom(xyz.toLongs(), exp.toLongs(),
-																((BoundedSphere)two).xyz.toLongs());
+			final double dist = CMLib.space().getMinDistanceFrom(xyz, exp,
+																((BoundedSphere)two).xyz);
 			return dist < radius() + two.radius();
 		}
 		else

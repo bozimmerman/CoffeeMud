@@ -106,14 +106,14 @@ public class StdWormhole extends StdSpaceBody implements SpaceObject.SpaceGatewa
 		{
 			final SpaceObject ship=(SpaceObject)msg.tool();
 			final SpaceObject sobj = this;
-			final double[] shipDir=CMLib.space().getDirection(ship, sobj);
+			final Dir3D shipDir=CMLib.space().getDirection(ship, sobj);
 			final ShipDir dir = CMLib.space().getAbsoluteDirectionalFromDir(shipDir);
 			if (CMParms.contains(this.getPermittedDirections(), dir))
 			{
 				long distance = CMLib.space().getDistanceFrom(ship, sobj);
 				if(distance < ship.radius() + knownTarget().radius() + 2)
 					distance=ship.radius() + knownTarget().radius() + 2;
-				final long[] newCoords = CMLib.space().moveSpaceObject(knownTarget().coordinates(), ship.direction(), distance);
+				final Coord3D newCoords = CMLib.space().moveSpaceObject(knownTarget().coordinates(), ship.direction(), distance);
 				ship.setCoords(newCoords);
 			}
 		}

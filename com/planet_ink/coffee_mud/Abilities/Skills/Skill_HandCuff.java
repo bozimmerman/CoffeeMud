@@ -166,12 +166,17 @@ public class Skill_HandCuff extends StdSkill
 			&&((msg.sourceMajor(CMMsg.MASK_HANDS))
 				||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> struggle(s) against <S-HIS-HER> cuffs."));
 				amountRemaining-=mob.charStats().getStat(CharStats.STAT_STRENGTH);
 				if(amountRemaining<0)
+				{
 					unInvoke();
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> struggle(s) against <S-HIS-HER> cuffs."));
+				}
 				else
+				{
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> struggle(s) against <S-HIS-HER> cuffs."));
 					return false;
+				}
 			}
 		}
 		else
@@ -285,7 +290,8 @@ public class Skill_HandCuff extends StdSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_HANDS|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),L("<S-NAME> handcuff(s) <T-NAME>."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_HANDS|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),
+					L("<S-NAME> handcuff(s) <T-NAME>."));
 			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);

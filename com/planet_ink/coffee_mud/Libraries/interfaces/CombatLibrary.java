@@ -418,16 +418,6 @@ public interface CombatLibrary extends CMLibrary
 	public void postItemDamage(MOB mob, Item I, Environmental tool, int damageAmount, int messageType, String message);
 
 	/**
-	 * Returns the front of the follower line for
-	 * this mob.  If this mob is following someone, it returns
-	 * the MOB being ultimately followed, otherwise it
-	 * just returns the mob
-	 * @param mob the mob who might be following someone
-	 * @return the leader mob
-	 */
-	public MOB getFollowedLeader(MOB mob);
-
-	/**
 	 * Returns this mobs combat formation an an array
 	 * of string lists, where each entry is a "row" in the
 	 * formation, and the lists contain the mobs at that
@@ -609,7 +599,7 @@ public interface CombatLibrary extends CMLibrary
 	 * from each other.  Does not care about current combat or range state.
 	 *
 	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#setRangeToTarget(int)
-	 * @see CombatLibrary#establishRange(MOB, MOB, Environmental)
+	 * @see CombatLibrary#establishRange(MOB, MOB, Environmental, boolean)
 	 *
 	 * @param source the attacker
 	 * @param target the target

@@ -160,7 +160,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 			str.append("^H").append(CMStrings.padRight(L("Speed"),10));
 			str.append("^N").append(CMStrings.padRight(displayPerSec(Math.round(ship.speed())),25));
 			str.append("^H").append(CMStrings.padRight(L("Direction"),10));
-			final String dirStr=display(ship.direction());
+			final String dirStr=display(ship.direction().toDoubles());
 			str.append("^N").append(CMStrings.padRight(dirStr,15));
 			if(orbitingPlanet!=null)
 			{
@@ -182,10 +182,10 @@ public class RocketShipProgram extends ShipTacticalProgram
 				str.append("^N").append(CMStrings.padRight(CMLib.space().getSectorName(ship.coordinates()),50));
 				str.append("\n\r");
 				str.append("^H").append(CMStrings.padRight(L("Location"),10));
-				str.append("^N").append(CMStrings.padRight(CMLib.english().coordDescShort(CMLib.space().getInSectorCoords(shipSpaceObject.coordinates())),25));
+				str.append("^N").append(CMStrings.padRight(CMLib.english().coordDescShort(CMLib.space().getInSectorCoords(shipSpaceObject.coordinates()).toLongs()),25));
 			}
 			str.append("^H").append(CMStrings.padRight(L("Facing"),10));
-			final String facStr=display(ship.facing());
+			final String facStr=display(ship.facing().toDoubles());
 			str.append("^N").append(CMStrings.padRight(facStr,15));
 		}
 		str.append("^.^N\n\r");
@@ -252,6 +252,26 @@ public class RocketShipProgram extends ShipTacticalProgram
 						final List<SpaceObject> sortedReport = new ArrayList<SpaceObject>(localSensorReport.size());
 						sortedReport.addAll(localSensorReport);
 						Collections.sort(sortedReport, new DistanceSorter(spaceMe));
+						final int[] cols = new int[] {
+							CMLib.lister().fixColWidth(19, 78),
+							CMLib.lister().fixColWidth(10, 78),
+							CMLib.lister().fixColWidth(12, 78),
+							CMLib.lister().fixColWidth(10, 78),
+							CMLib.lister().fixColWidth(10, 78)
+						};
+						boolean withSpaceObject = false;
+						for(final Object o : sortedReport)
+							withSpaceObject = withSpaceObject || ((o instanceof SpaceObject)&&(o != spaceObject));
+						if(withSpaceObject)
+						{
+							str.append("  ^w")
+								.append(CMStrings.padRight(L("Desc"),cols[0]))
+								.append(CMStrings.padRight(L("Dist"),cols[1]))
+								.append(CMStrings.padRight(L("Dir"),cols[2]))
+								.append(CMStrings.padRight(L("Mass"),cols[3]))
+								.append(CMStrings.padRight(L("Size"),cols[4]))
+								.append("^N\n\r");
+						}
 						for(final Object o : sortedReport)
 						{
 							if(o == spaceObject)
@@ -260,23 +280,25 @@ public class RocketShipProgram extends ShipTacticalProgram
 							{
 								final SpaceObject obj = (SpaceObject)o;
 								final long distance = CMLib.space().getDistanceFrom(spaceMe.coordinates(), obj.coordinates()) - spaceMe.radius() - obj.radius();
-								final double[] direction = CMLib.space().getDirection(spaceMe, obj);
-								int pos=0;
-								final int max = 60;
+								final Dir3D direction = CMLib.space().getDirection(spaceMe, obj);
 								if((currentTarget!=null)
 								&&((currentTarget==o)||(currentTarget.ID().equals(obj.ID()))))
-									pos = appendToLength(str, "^r*^N ", pos, max);
-								pos = appendToLength(str, "^W" + obj.name(), pos, max);
-								if(!Arrays.equals(obj.coordinates(),emptyCoords))
-									pos = appendToLength(str, "^N, ^WDist: ^N" + CMLib.english().distanceDescShort(distance), pos, max);
-								if(!Arrays.equals(obj.coordinates(),emptyCoords))
-									pos = appendToLength(str, "^N, ^WDir: ^N" + CMLib.english().directionDescShortest(direction), pos, max);
-								if(obj.getMass()>0)
-									pos = appendToLength(str, "^N, ^WMass: ^N" + CMath.abbreviateLong(obj.getMass()), pos, max);
-								if(obj.radius()>0)
-									pos = appendToLength(str, "^N, ^WSize: ^N" + CMLib.english().distanceDescShort(obj.radius()), pos, max);
+									str.append("^r*^W");
+								else
+									str.append(" ^W");
+								str.append(" ")
+									.append(CMStrings.padRight(obj.name(),cols[0])).append("^.^N")
+									.append(CMStrings.padRight(CMLib.english().distanceDescShort(distance),cols[1]))
+									.append(CMStrings.padRight(CMLib.english().directionDescShortest(direction.toDoubles()),cols[2]))
+									.append(CMStrings.padRight(CMath.abbreviateLong(obj.getMass()),cols[3]))
+									.append(CMStrings.padRight(CMLib.english().distanceDescShort(obj.radius()),cols[4]))
+									.append("\n\r");
 							}
-							else
+						}
+						for(final Object o : sortedReport)
+						{
+							if(o instanceof SpaceObject)
+								continue;
 							if(o instanceof CMObject)
 								str.append("^W").append(L("Found: ")).append("^N").append(((CMObject)o).name());
 							else
@@ -433,6 +455,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 							+ "^wTARGET [NAME]          ^N: target a sensor object\n\r"
 							+ "^wFACE [NAME]            ^N: face a sensor object\n\r"
 							+ "^wAPPROACH [NAME]        ^N: approach a sensor object\n\r"
+							+ "^wCOURSE [NAME]          ^N: plot a course\n\r"
 							+ "^wMOON [NAME]            ^N: moon a sensor object\n\r"
 							+ "^w[SENSOR NAME] [DIR]    ^N: aim/use a sensor\n\r"
 							+ "^wFIRE [WEAPON]          ^N: fire weapon at target\n\r"

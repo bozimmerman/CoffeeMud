@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.Brown;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerSortCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -174,9 +175,12 @@ public class Account extends StdCommand
 		final boolean showLastLogin;
 		if(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS) && (commands.size()>1))
 		{
-			final String name = CMStrings.capitalizeAndLower(CMParms.combine(commands,1));
+			final String name = CMStrings.capitalizeAndLower(commands.get(1));
 			if(CMLib.players().accountExists(name))
+			{
 				account = CMLib.players().getLoadAccount(name);
+				commands.remove(1);
+			}
 			else
 			if(CMLib.players().playerExists(name))
 			{
@@ -188,6 +192,7 @@ public class Account extends StdCommand
 				}
 				else
 					account = null;
+				commands.remove(1);
 			}
 			else
 			{
@@ -229,9 +234,42 @@ public class Account extends StdCommand
 			str.append("\n\r");
 			str.append(CMStrings.padRight(L("^X@x1's characters:",account.getAccountName()),40)).append("^.^N\n\r");
 			boolean toggle = false;
-			for (final Enumeration<ThinPlayer> p=account.getThinPlayers(); p.hasMoreElements();)
+			final String sortByStr;
+			if(commands.size()==1)
+				sortByStr="NAME";
+			else
 			{
-				final ThinPlayer player = p.nextElement();
+				sortByStr=CMParms.combine(commands,1).toUpperCase().trim();
+			}
+			final PlayerSortCode sortBy = CMLib.players().getCharThinSortCode(sortByStr,true);
+			if(sortBy==null)
+			{
+				mob.tell(L("Unrecognized sort criteria: @x1",sortByStr));
+				return false;
+			}
+			final PlayerLibrary lib = CMLib.players();
+			final List<ThinPlayer> players = new XVector<ThinPlayer>(account.getThinPlayers());
+			Collections.sort(players, new Comparator<PlayerLibrary.ThinPlayer>() {
+				@Override
+				public int compare(final ThinPlayer o1, final ThinPlayer o2)
+				{
+					if(o1 == null)
+						return (o2 == null) ? 0 : -1;
+					if(o2 == null)
+						return 1;
+					@SuppressWarnings("unchecked")
+					final Comparable<Object> c1 = (Comparable<Object>)lib.getThinSortValue(o1, sortBy);
+					@SuppressWarnings("unchecked")
+					final Comparable<Object> c2 = (Comparable<Object>)lib.getThinSortValue(o2,sortBy);
+					final int x= c1.compareTo(c2);
+					if(x != 0)
+						return x;
+					return lib.getThinSortValue(o1, PlayerSortCode.NAME).toString().compareTo(lib.getThinSortValue(o2,PlayerSortCode.NAME).toString());
+				}
+			});
+
+			for (final ThinPlayer player : players)
+			{
 				str.append("^N");
 				str.append(showCharLong("",mob,player));
 				toggle = !toggle;

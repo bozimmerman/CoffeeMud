@@ -102,7 +102,8 @@ public class Spell_Hungerless extends Spell
 		super.unInvoke();
 
 		if((canBeUninvoked())
-		&&(!CMSecurity.isDisabled(DisFlag.HUNGER)))
+		&&(!CMSecurity.isDisabled(DisFlag.HUNGER))
+		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMMORT)))
 		{
 			mob.tell(L("You are starting to feel hungrier."));
 			mob.curState().setHunger(0);

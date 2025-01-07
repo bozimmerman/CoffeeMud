@@ -233,6 +233,14 @@ public class FireBuilding extends CommonSkill
 				return false;
 			}
 
+			verb=L("lighting @x1",lighting.name());
+			displayText=L("You are lighting @x1.",lighting.name());
+			final CMMsg preMsg=CMClass.getMsg(mob,lighting,this,CMMsg.MSG_OK_ACTION,null);
+			if((!mob.location().okMessage(mob,preMsg))
+			&&(preMsg.target() instanceof Item)
+			&&(preMsg.target() != lighting))
+				lighting = (Item)preMsg.target();
+
 			if(!(lighting instanceof RawMaterial))
 			{
 				final LandTitle t=CMLib.law().getLandTitle(mob.location());
@@ -256,8 +264,6 @@ public class FireBuilding extends CommonSkill
 			}
 			if((lighting.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 				duration=getDuration(25,mob,1,3);
-			verb=L("lighting @x1",lighting.name());
-			displayText=L("You are lighting @x1.",lighting.name());
 		}
 
 		switch(mob.location().getArea().getClimateObj().weatherType(mob.location()))

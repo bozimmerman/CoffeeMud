@@ -102,16 +102,17 @@ public class Buy extends StdCommand
 		}
 		int addendum=1;
 		boolean doBugFix = true;
+		final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
+		final CoffeeShop shop = SK.getShop(mob);
 		while(doBugFix || ((allFlag)&&(addendum<=maxToDo)))
 		{
 			doBugFix=false;
-			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-			final Environmental itemToDo=SK.getShop().getStock(whatName,mob);
+			final Environmental itemToDo=shop.getStock(whatName,mob);
 			if(itemToDo==null)
 				break;
 			if(CMLib.flags().canBeSeenBy(itemToDo,mob))
 				buyItemsV.add(itemToDo);
-			if(addendum>=CMLib.coffeeShops().getShopKeeper(shopkeeper).getShop().numberInStock(itemToDo))
+			if(addendum>=shop.numberInStock(itemToDo))
 				break;
 			++addendum;
 		}
@@ -125,12 +126,16 @@ public class Buy extends StdCommand
 		}
 
 		if(buyItemsV.size()==0)
-			mob.tell(mob,shopkeeper,null,L("<T-NAME> do(es)n't appear to have any '@x1' for sale.  Try LIST.",whatName));
+		{
+			CMLib.commands().postCommandFail(mob,shopkeeper,null,origCmds,
+					L("<T-NAME> do(es)n't appear to have any '@x1' for sale.  Try LIST.",whatName));
+		}
 		else
 		for(int v=0;v<buyItemsV.size();v++)
 		{
 			final Environmental thisThang=buyItemsV.get(v);
-			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,L("<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>@x1.",forName));
+			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,
+					L("<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>@x1.",forName));
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 			else

@@ -246,6 +246,16 @@ public interface JournalsLibrary extends CMLibrary
 	public void registerClanForum(Clan clan, String allClanForumMappings);
 
 	/**
+	 * When a StdJournal item is created, and an expire field is set,
+	 * this is called to register the journal name so that its
+	 * expiration argument, or message limits, can be respected during
+	 * the journal thread.
+	 *
+	 * @param itemJournal the journal item, last one wins
+	 */
+	public void registerItemJournal(final Item itemJournal);
+
+	/**
 	 * Returns the list of ForumJournals that exist for the given clan.
 	 *
 	 * @see JournalsLibrary#registerClanForum(Clan, String)

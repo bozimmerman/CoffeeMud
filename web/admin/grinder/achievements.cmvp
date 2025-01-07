@@ -169,7 +169,7 @@
             @AchievementNext@
                 <TR>
                 <TD><a href="javascript:Achievement('@AchievementID?ENCODED@','PLAYER')"><FONT COLOR=WHITE><B>@AchievementID@</B></FONT></a></TD>
-                <TD><FONT COLOR=WHITE><B>@AchievementData?EVENT@</B></FONT></TD>
+                <TD><FONT COLOR=WHITE SIZE=-1><B>@AchievementData?EVENT@</B></FONT></TD>
                 <TD><FONT COLOR=WHITE><B>@AchievementData?DISPLAY@</B></FONT></TD>
                 <TD><FONT COLOR=WHITE><B>@AchievementData?COUNT@</B></FONT></TD>
                 <TD><FONT COLOR=WHITE><B>@AchievementData?TITLE&FRIENDLY@ @AchievementData?REWARDS@</B></FONT></TD>

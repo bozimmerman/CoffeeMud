@@ -218,7 +218,7 @@ public class Baiting extends GatheringSkill
 		}
 		if(mob.isMonster()
 		&&(!auto)
-		&&(!CMLib.flags().isAnimalIntelligence(mob))
+		&&(!CMLib.flags().isAnAnimal(mob))
 		&&(commands.size()==0))
 		{
 			commands.add(RawMaterial.CODES.NAME(CMLib.dice().pick(RawMaterial.CODES.FISHES())));

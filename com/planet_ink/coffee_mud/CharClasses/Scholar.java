@@ -200,6 +200,7 @@ public class Scholar extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Recollecting",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_HonoraryDegreeThief",false, CMParms.parseSemicolons("Studying",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_ScrollFamiliarity",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"ScrollScribing",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_Chantcraft",false);
@@ -452,7 +453,7 @@ public class Scholar extends StdCharClass
 			&&(CMLib.dice().rollPercentage()<25)
 			&&((A=msg.source().fetchAbility(msg.tool().ID()))!=null)
 			&&(((MOB)myHost).fetchAbility(msg.tool().ID())!=null)
-			&&(((MOB)myHost).getGroupMembers(new TreeSet<MOB>()).contains(msg.source())))
+			&&(((MOB)myHost).getGroupMembers(new XTreeSet<MOB>()).contains(msg.source())))
 			{
 				final Ability A1=(Ability)msg.tool();
 				if((A1!=null)&&(A1.isSavable()))

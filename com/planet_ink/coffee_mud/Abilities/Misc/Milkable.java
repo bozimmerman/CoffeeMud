@@ -166,7 +166,7 @@ public class Milkable extends StdAbility implements Drink
 				&&(CMLib.law().doesHavePriviledgesHere(milkingMOB, ((MOB)affected).getStartRoom())))
 			||((((MOB)affected).isMonster())
 				&&(milkingMOB!=null)
-				&&(((MOB)affected).amUltimatelyFollowing()==milkingMOB)))
+				&&(((MOB)affected).getGroupLeader()==milkingMOB)))
 					return true;
 		}
 		return false;

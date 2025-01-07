@@ -104,7 +104,7 @@ public class AnimalTrading extends CommonSkill
 				commonTelL(mob,"You don't see anyone called '@x1' here.",str);
 				return false;
 			}
-			if((!M.isMonster())||(!CMLib.flags().isAnimalIntelligence(M)))
+			if((!M.isMonster())||(!CMLib.flags().isAnAnimal(M)))
 			{
 				commonTelL(mob,"You can't sell @x1.",M.name(mob));
 				return false;

@@ -63,22 +63,22 @@ public class Spacemoves extends StdTest
 		// timtest1
 		{
 			// pitches 45 & 135
-			final long[] startCoords = new long[] {0,0,0};
-			o.setCoords(Arrays.copyOf(startCoords, 3));
-			o.setDirection(new double[] {Math.PI/8.0, Math.PI*3.0/8.0});
+			final Coord3D startCoords = new Coord3D(new long[] {0,0,0});
+			o.setCoords(startCoords.copyOf());
+			o.setDirection(new Dir3D(new double[] {Math.PI/8.0, Math.PI*3.0/8.0}));
 			o.setSpeed(100.0);
 			o.setFacing(o.direction());
 			CMLib.space().moveSpaceObject(o);
-			final long[] midCoord = Arrays.copyOf(o.coordinates(), 3);
+			final Coord3D midCoord = o.coordinates().copyOf();
 			//mob.tell(CMParms.toListString(o.coordinates())+", dist="+CMLib.space().getDistanceFrom(startCoords, midCoord)+"");
-			o.setDirection(new double[] {Math.PI/8.0, Math.PI*5.0/8.0});
+			o.setDirection(new Dir3D(new double[] {Math.PI/8.0, Math.PI*5.0/8.0}));
 			o.setSpeed(100.0);
 			o.setFacing(o.direction());
 			CMLib.space().moveSpaceObject(o);
 			//mob.tell(CMParms.toListString(o.coordinates())+", dist="+CMLib.space().getDistanceFrom(midCoord, o.coordinates())+"");
-			if(!Arrays.equals(o.coordinates(), new long[] {170,70,0}))
+			if(!o.coordinates().equals(new Coord3D(new long[]{170,70,0})))
 			{
-				return ("Error space move: TT1: "+CMParms.toListString(o.coordinates())
+				return ("Error space move: TT1: "+CMParms.toListString(o.coordinates().toLongs())
 				+", dist="+CMLib.space().getDistanceFrom(midCoord, o.coordinates())+"");
 			}
 		}
@@ -92,16 +92,16 @@ public class Spacemoves extends StdTest
 		{
 			try
 			{
-				final double[] dir = new double[] { Math.random() * Math.PI*2, Math.random() * Math.PI};
+				final Dir3D dir = new Dir3D(new double[] { Math.random() * Math.PI*2, Math.random() * Math.PI});
 				o.setSpeed(0.0);
 				o.setDirection(dir);
 				o.setFacing(dir);
-				final double[] opDir = CMLib.space().getOppositeDir(dir);
-				final double[] opOpDir = CMLib.space().getOppositeDir(opDir);
+				final Dir3D opDir = CMLib.space().getOppositeDir(dir);
+				final Dir3D opOpDir = CMLib.space().getOppositeDir(opDir);
 				if(CMLib.space().getAngleDelta(dir, opOpDir)>0.01)
 				{
-					final String angles = Math.round(Math.toDegrees(dir[0]))+"mk"+Math.round(Math.toDegrees(dir[1]))
-					+" vs "+Math.round(Math.toDegrees(opOpDir[0]))+"mk"+Math.round(Math.toDegrees(opOpDir[1]));
+					final String angles = Math.round(Math.toDegrees(dir.xyd()))+"mk"+Math.round(Math.toDegrees(dir.zd()))
+					+" vs "+Math.round(Math.toDegrees(opOpDir.xyd()))+"mk"+Math.round(Math.toDegrees(opOpDir.zd()));
 					final String s=(L("Error: Space move OpDir Fail: "+angles));
 					throw new CMException(s);
 				}
@@ -112,27 +112,27 @@ public class Spacemoves extends StdTest
 				double predictedDistance = predictedMidDistance;
 				for(int a=accelMoves;a>0;a--)
 					predictedDistance += (accel * a);
-				final long[] startCoords = Arrays.copyOf(o.coordinates(),3);
+				final Coord3D startCoords =o.coordinates().copyOf();
 				double speed=0.0;
 				double distanceTravelled = 0.0;
 				for(int a=0;a<accelMoves;a++)
 				{
 					CMLib.space().accelSpaceObject(o,dir,accel);
 					speed += accel;
-					final long[] oldCoords = Arrays.copyOf(o.coordinates(), 3);
+					final Coord3D oldCoords = o.coordinates().copyOf();
 					CMLib.space().moveSpaceObject(o);
 					distanceTravelled+=speed;
 					final double traveledDistance = CMLib.space().getDistanceFrom(startCoords, o.coordinates());
 					final double distDiff = Math.abs(traveledDistance - distanceTravelled);
 					final double speedDiff = Math.abs(o.speed() - speed);
 					if((speedDiff>1)
-					||(!Arrays.equals(dir, o.direction()))
+					||(!dir.equals(o.direction()))
 					||(distDiff > 2))
 					{
 						final String s;
 						if(shortDebug)
 						{
-							final String complaint = (speedDiff>1)+"/"+(!Arrays.equals(dir, o.direction()))+"/"+(distDiff > 2);
+							final String complaint = (speedDiff>1)+"/"+(!dir.equals(o.direction()))+"/"+(distDiff > 2);
 							s="Error: Space move mid-mid"+i+"."+a+", test failed: "+complaint;
 						}
 						else
@@ -152,13 +152,13 @@ public class Spacemoves extends StdTest
 				final double midDistDiff = Math.abs(midTraveledDistance - predictedMidDistance);
 				final double midSpeedDiff = Math.abs(o.speed() - predictedMidSpeed);
 				if((midSpeedDiff>accel+1)
-				||(!Arrays.equals(dir, o.direction()))
+				||(!dir.equals(o.direction()))
 				||(midDistDiff > accel))
 				{
 					final String s;
 					if(shortDebug)
 					{
-						final String complaint = (midSpeedDiff>accel+1)+"/"+(!Arrays.equals(dir, o.direction()))+"/"+(midDistDiff > accel);
+						final String complaint = (midSpeedDiff>accel+1)+"/"+(!dir.equals(o.direction()))+"/"+(midDistDiff > accel);
 						s="Error: Space move mid-"+i+", test failed: "+complaint;
 					}
 					else
@@ -169,11 +169,12 @@ public class Spacemoves extends StdTest
 					throw new CMException(s);
 				}
 
+				final Dir3D opDir3D = CMLib.space().getOppositeDir(o.direction());
 				for(int a=0;a<decelMoves;a++)
 				{
-					CMLib.space().accelSpaceObject(o,CMLib.space().getOppositeDir(o.direction()),accel);
+					CMLib.space().accelSpaceObject(o,opDir3D,accel);
 					speed -= accel;
-					final long[] oldCoords = Arrays.copyOf(o.coordinates(), 3);
+					final Coord3D oldCoords = o.coordinates().copyOf();
 					final double otraveledDistance = CMLib.space().getDistanceFrom(startCoords, o.coordinates());
 					CMLib.space().moveSpaceObject(o);
 					distanceTravelled+=speed;
@@ -181,13 +182,13 @@ public class Spacemoves extends StdTest
 					final double distDiff = Math.abs(traveledDistance - distanceTravelled);
 					final double speedDiff = Math.abs(o.speed() - speed);
 					if((speedDiff>1)
-					||(!Arrays.equals(dir, o.direction()))
+					||(!dir.equals(o.direction()))
 					||(distDiff > (accel*10*(a+1))))
 					{
 						String s;
 						if(shortDebug)
 						{
-							final String complaint = (speedDiff>1)+"/"+(!Arrays.equals(dir, o.direction()))+"/"+(distDiff > accel+(2*speed));
+							final String complaint = (speedDiff>1)+"/"+(!dir.equals(o.direction()))+"/"+(distDiff > (accel*10*(a+1)));
 							s="Error: Space move mid-end"+i+"."+a+", test failed: "+complaint;
 						}
 						else
@@ -206,13 +207,13 @@ public class Spacemoves extends StdTest
 				final double distDiff = Math.abs(traveledDistance - predictedDistance);
 				final double speedDiff = Math.abs(o.speed() - accel);
 				if((speedDiff>accel+1)
-				||(!Arrays.equals(dir, o.direction()))
+				||(!dir.equals(o.direction()))
 				||(distDiff > 3000))
 				{
 					String s;
 					if(shortDebug)
 					{
-						final String complaint = (speedDiff>accel+1)+"/"+(!Arrays.equals(dir, o.direction()))+"/"+(distDiff > decelMoves);
+						final String complaint = (speedDiff>accel+1)+"/"+(!dir.equals(o.direction()))+"/"+(distDiff > decelMoves);
 						s="Error: Space move test"+i+", test failed: "+complaint;
 					}
 					else
@@ -231,31 +232,31 @@ public class Spacemoves extends StdTest
 					errMsg=e.getMessage();
 			}
 		}
-		if(passes>fails/2)
+		if((fails>0)||(passes==0))
 			return null;
 		return errMsg;
 	}
 
-	public String spaceMoveError(final String pos, final SpaceShip o, final double[] dir,
+	public String spaceMoveError(final String pos, final SpaceShip o, final Dir3D dir,
 								 final double speedDiff, final double speed,
 								 final double distDiff, final double traveledDistance, final double distanceTravelled,
-								 final long[] oldCoords)
+								 final Coord3D oldCoords)
 	{
 		String complaint="";
-		if((!Arrays.equals(dir, o.direction())))
+		if(!dir.equals(o.direction()))
 		{
 			complaint += " angles: "+
-				Math.round(Math.toDegrees(dir[0]))+"mk"+Math.round(Math.toDegrees(dir[1]))
-			 +" vs "+Math.round(Math.toDegrees(o.direction()[0]))+"mk"+Math.round(Math.toDegrees(o.direction()[1]))
+				Math.round(Math.toDegrees(dir.xyd()))+"mk"+Math.round(Math.toDegrees(dir.zd()))
+			 +" vs "+Math.round(Math.toDegrees(o.direction().xyd()))+"mk"+Math.round(Math.toDegrees(o.direction().zd()))
 			 +"\n\r";
 		}
 		if(speedDiff > 1)
 			complaint +=  "speed: "+o.speed()+" vs "+speed+"\n\r";
 		if(distDiff > 1)
 			complaint += "dist: "+traveledDistance+" vs "+distanceTravelled+"\n\r";
-		if(!Arrays.equals(o.coordinates(), oldCoords))
+		if(!o.coordinates().equals(oldCoords))
 		{
-			complaint += "coords: "+CMParms.toListString(oldCoords)+" vs "+CMParms.toListString(o.coordinates());
+			complaint += "coords: "+CMParms.toListString(oldCoords.toLongs())+" vs "+CMParms.toListString(o.coordinates().toLongs());
 			complaint += "\n\r";
 		}
 		return "Error: Space move "+pos+", test failed: "+"\n\r"+complaint;

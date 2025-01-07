@@ -1366,7 +1366,8 @@ public class CMSecurity
 			if(flagList.size()>0)
 			{
 				final String flag = getFinalSpecialXableFlagName(flagList.get(0));
-				if(!set.containsKey(flag))
+				if((!set.containsKey(flag))
+				||(CMClass.getCharClass(flag)!=null))
 				{
 					flagList.remove(0);
 					set.put(flag,flagList.toArray(new String[0]));
@@ -2914,7 +2915,10 @@ public class CMSecurity
 		RITUALS("rituals and services"),
 		CRONTRACE("cron job tracing"),
 		CALENDAR("calendar event tracing"),
-		TROPHIES("clan trophy logic tracing")
+		TROPHIES("clan trophy logic tracing"),
+		PROPTAXES("property tax changes"),
+		RANDOMQUESTS("random quests generated"),
+		AUTOAWARDS("auto-awards system"),
 		;
 		private final String desc;
 
@@ -3036,6 +3040,7 @@ public class CMSecurity
 		SPACETHREAD("space thread"),
 		CRONJOBS("cron jobs"),
 		AUTOAWARDS("auto-awards system"),
+		NPCAUTOAWARDS("auto-awards system for npcs"),
 		FATIGUE("fatigue system"),
 		UNLEVELXP("unleveling from xp"),
 		UNLEVEL("unleveling at all")

@@ -133,7 +133,12 @@ public class Affect extends StdCommand
 				continue;
 			String disp=A.displayText();
 			if(autosAlso && disp.length()==0)
-				disp=A.ID()+"+"+A.proficiency();
+			{
+				if(A.canBeUninvoked())
+					disp=A.ID()+":"+A.getStat("TICKDOWN");
+				else
+					disp=A.ID()+"+"+A.proficiency();
+			}
 			if(disp.length()>0)
 			{
 				if(disp.startsWith("(")&&disp.endsWith(")"))

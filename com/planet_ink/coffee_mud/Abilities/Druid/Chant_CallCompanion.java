@@ -81,7 +81,7 @@ public class Chant_CallCompanion extends Chant
 		for(final Iterator<MOB> m=H.iterator();m.hasNext();)
 		{
 			final MOB M=m.next();
-			if(!CMLib.flags().isAnimalIntelligence(M))
+			if(!CMLib.flags().isAnAnimal(M))
 				m.remove();
 		}
 		if((H.size()==0)||((H.size()==1)&&(H.contains(mob))))

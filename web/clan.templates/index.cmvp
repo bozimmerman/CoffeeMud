@@ -71,7 +71,7 @@
 	<FONT COLOR=#90ee90><B>Server status: <a href="gamestatus.cmvp"><b>@MUDSERVERSTATUS@</B></a><BR>
 	<FONT COLOR=GREEN>Connection: </FONT><FONT COLOR=BLUE>@MudInfo?DOMAIN@:@MudInfo?PORT@</FONT><BR>
 	-->
-	<FONT COLOR=ORANGE><B>Members currently online: <FONT COLOR=RED><b>@ClanData?MEMBERSONLINE@/@NUMPLAYERS@</B></FONT>
+	<FONT COLOR=ORANGE><B>Members currently online: <FONT COLOR=RED><b>@ClanData?MEMBERSONLINE@/@ClanData?NUMMEMBERS@</B></FONT>
 </FONT></TD></TR>
 <TR><TD WIDTH=100%>
 <BR>

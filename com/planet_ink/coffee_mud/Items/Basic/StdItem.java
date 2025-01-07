@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.Readable;
 import com.planet_ink.coffee_mud.core.interfaces.EachApplicable.ApplyAffectPhyStats;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -630,7 +631,10 @@ public class StdItem implements Item
 				if(CMLib.flags().isInDark(affected))
 					affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 			}
-			if((amWearingAt(Wearable.WORN_MOUTH))&&(affected instanceof MOB))
+			if((amWearingAt(Wearable.WORN_MOUTH))
+			&&(affected instanceof MOB)
+			&&((((MOB)affected).charStats().getBodyPart(Race.BODY_MOUTH)<2)
+				||((MOB)affected).freeWearPositions(WORN_MOUTH, (short)0,(short)0)==0))
 			{
 				if(!(this instanceof Light))
 					affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
@@ -952,17 +956,19 @@ public class StdItem implements Item
 	{
 		if(!canWear(mob,wearWhere))
 		{
-			long cantWearAt=whereCantWear(mob);
-			if(wearWhere!=0)
-				cantWearAt = cantWearAt & wearWhere;
+			final long wearMask = (wearWhere == 0) ? (long)~0 : wearWhere;
+			long cantWearAt=whereCantWear(mob) & wearMask;
 			Item alreadyWearing=(cantWearAt==0)?null:mob.fetchFirstWornItem(cantWearAt);
 			final Wearable.CODES codes = Wearable.CODES.instance();
 			if(alreadyWearing!=null)
 			{
+				final short layer=(this instanceof Armor)?((Armor)this).getClothingLayer():0;
+				final short layer2=(alreadyWearing instanceof Armor)?((Armor)alreadyWearing).getClothingLayer():0;
 				if((cantWearAt!=Wearable.WORN_HELD)&&(cantWearAt!=Wearable.WORN_WIELD))
 				{
 					final boolean amWearingOther = !alreadyWearing.amWearingAt(Item.IN_INVENTORY);
-					if(!CMLib.commands().postRemove(mob,alreadyWearing,quiet))
+					if((layer != layer2)
+					||(!CMLib.commands().postRemove(mob,alreadyWearing,quiet)))
 					{
 						mob.tell(L("You are already wearing @x1 on your @x2.",alreadyWearing.name(),codes.name(cantWearAt)));
 						return false;
@@ -978,14 +984,19 @@ public class StdItem implements Item
 				}
 				else
 				{
-					final short layer=(this instanceof Armor)?((Armor)this).getClothingLayer():0;
-					final short layer2=(alreadyWearing instanceof Armor)?((Armor)alreadyWearing).getClothingLayer():0;
-					if((rawProperLocationBitmap() == alreadyWearing.rawProperLocationBitmap())
-					&&(rawLogicalAnd())
-					&&(alreadyWearing.rawLogicalAnd())
-					&&(layer == layer2)
+					if((layer == layer2)
 					&&(CMLib.commands().postRemove(mob,alreadyWearing,quiet)))
-						return true;
+					{
+						if((wornLogicalAnd) && ((cantWearAt = (whereCantWear(mob) & wearMask)) != 0))
+						{
+							alreadyWearing=(cantWearAt==0)?null:mob.fetchFirstWornItem(cantWearAt);
+							if((alreadyWearing != null)
+							&&(CMLib.commands().postRemove(mob,alreadyWearing,quiet)))
+								return true;
+						}
+						else
+							return true;
+					}
 					if(cantWearAt==Wearable.WORN_HELD)
 						mob.tell(L("You are already holding @x1.",alreadyWearing.name()));
 					else
@@ -1000,10 +1011,16 @@ public class StdItem implements Item
 			if(wearWhere!=0)
 			{
 				final StringBuilder locs=new StringBuilder("");
+				int tooMany=0;
 				for(int i=0;i<codes.total();i++)
 				{
-					if((codes.get(i)&wearWhere)>0)
-						locs.append(", " + codes.name(i));
+					if((codes.get(i)&wearMask)>0)
+					{
+						if(++tooMany>4)
+							locs.setLength(0);
+						else
+							locs.append(", " + codes.name(i));
+					}
 				}
 				if(locs.length()==0)
 					mob.tell(L("You can't wear that there."));
@@ -1499,6 +1516,8 @@ public class StdItem implements Item
 			final Ability A=fetchEffect("Burning");
 			if((A!=null)&&(!CMath.bset(A.abilityCode(), 2048))) // yes, magic numbers suck
 				return true;
+			if(this instanceof LightSource)
+				return true;
 			break;
 		}
 		case CMMsg.TYP_CAUSESINK:
@@ -1551,7 +1570,7 @@ public class StdItem implements Item
 						mob.tell(L("Write what on @x1?",name()));
 					return false;
 				}
-				if(readableText().startsWith("FILE="))
+				if(readableText().startsWith(Readable.FILE_PREFIX))
 				{
 					mob.tell(L("There's no more room to write on @x1.",name()));
 					return false;
@@ -1572,7 +1591,7 @@ public class StdItem implements Item
 						mob.tell(L("Write what on @x1?",name()));
 					return false;
 				}
-				if(readableText().startsWith("FILE="))
+				if(readableText().startsWith(Readable.FILE_PREFIX))
 				{
 					mob.tell(L("There's no more room to write on @x1.",name()));
 					return false;
@@ -1954,7 +1973,7 @@ public class StdItem implements Item
 		{
 			return affects.elementAt(index);
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -2044,7 +2063,7 @@ public class StdItem implements Item
 		{
 			return behaviors.elementAt(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return null;

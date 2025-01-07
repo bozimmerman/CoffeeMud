@@ -154,8 +154,12 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 		List<List<String>> recipes=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
 		if(recipes==null)
 		{
-			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
-			recipes=loadList(str);
+			recipes = new Vector<List<String>>();
+			for(final CMFile F : CMFile.getExistingExtendedFiles(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS))
+			{
+				final StringBuffer str = F.text();
+				recipes.addAll(loadList(str));
+			}
 			if(recipes.size()==0)
 				Log.errOut("LeatherWorking","Recipes not found!");
 			else
@@ -291,6 +295,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			case FURNITURE_SLEEP:
 			case FURNITURE_SIT:
 			case FURNITURE_TABLE:
+			case FURNITURE_HOOK:
 				return true;
 			default:
 				return false;

@@ -148,7 +148,7 @@ public class Fighter_SootheMount extends FighterSkill
 		final PairList<String, Race> choices = CMLib.utensils().getFavoredMounts(mob);
 		if(((!choices.containsSecond(target.baseCharStats().getMyRace()))
 			&&(!choices.containsFirst(target.baseCharStats().getMyRace().racialCategory())))
-		||(!CMLib.flags().isAnimalIntelligence(target)))
+		||(!CMLib.flags().isAnAnimal(target)))
 		{
 			mob.tell(L("@x1 is not the sort that would heed you.",target.name(mob)));
 			return false;

@@ -388,13 +388,14 @@ public class DefaultLawSet implements Law
 		if(!Resources.isResource("SYSTEM_TAXES_LASTCHECK"))
 			Resources.submitResource("SYSTEM_TAXES_LASTCHECK", Integer.valueOf(A.getTimeObj().getMonth()));
 		final int lastMonthChecked = ((Integer)Resources.getResource("SYSTEM_TAXES_LASTCHECK")).intValue();
-		if(lastMonthChecked!=A.getTimeObj().getMonth())
+		if(lastMonthChecked != A.getTimeObj().getMonth())
 		{
 			Resources.submitResource("SYSTEM_TAXES_LASTCHECK", Integer.valueOf(A.getTimeObj().getMonth()));
 			double tax=CMath.s_double((String)taxLaws.get("PROPERTYTAX"));
 			if(tax==0.0)
 				return;
-			tax=CMath.div(tax,100.0);
+			if(tax >= 1.0)
+				tax=CMath.div(tax,100.0); // property tax is already a portion of 1%, except when it isn't.
 			// now pull out the actual unique titles from the rooms
 			List<LandTitle> titles=CMLib.law().getAllUniqueLandTitles(A,"*",false);
 			final Map<String,List<LandTitle>> owners=new HashMap<String,List<LandTitle>>();
@@ -447,6 +448,8 @@ public class DefaultLawSet implements Law
 					}
 				}
 				owed+=CMath.mul(totalValue,tax);
+				if((tax>0.0)&&(owed<1.0)&&(owed>0.1))
+					owed=1.0;
 
 				if(owed>0)
 				{
@@ -513,6 +516,8 @@ public class DefaultLawSet implements Law
 										notifyPlayer(T.getOwnerName(),"",owed,T.landPropertyID(),"@x1 property lost on @x3.",
 												"@x1 has lost the title to @x4 in "+A.Name()+" due to failure to pay property taxes.");
 									}
+									if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPTAXES))
+										Log.debugOut("Confiscated property "+T.getTitleID()+" ("+T.getOwnerName()+") owed "+T.backTaxes()+" on property valued "+T.getPrice());
 									T.setBackTaxes(0);
 									T.setOwnerName("");
 									T.updateTitle();
@@ -520,6 +525,8 @@ public class DefaultLawSet implements Law
 								else
 								if(T.backTaxes() > oldBackTaxes)
 								{
+									if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPTAXES))
+										Log.debugOut("Back taxes on "+T.getTitleID()+" ("+T.getOwnerName()+") went from "+oldBackTaxes+"->"+T.backTaxes()+" on property valued "+T.getPrice());
 									owesButNotConfiscated=true;
 									T.updateTitle();
 								}
@@ -557,7 +564,7 @@ public class DefaultLawSet implements Law
 							if((evasionBits!=null)
 							&&(evasionBits[Law.BIT_CRIMENAME].length()>0))
 							{
-								final MOB responsibleMob=(C!=null)?CMLib.players().getLoadPlayer(C.getResponsibleMemberName()):CMLib.players().getLoadPlayer(owner);
+								final MOB responsibleMob=(C!=null)?CMLib.players().getPlayer(C.getResponsibleMemberName()):CMLib.players().getPlayer(owner);
 								if(responsibleMob != null)
 									legalDetails.fillOutWarrant(responsibleMob,
 																this,
@@ -589,10 +596,10 @@ public class DefaultLawSet implements Law
 							final List<Coins> V=CMLib.beanCounter().makeAllCurrency(CMLib.beanCounter().getCurrency(A),owed+paid);
 							for(int v=0;v<V.size();v++)
 							{
-								final Coins COIN=V.get(v);
-								COIN.setContainer(container);
-								treasuryR.addItem(COIN);
-								COIN.putCoinsBack();
+								final Coins coinI=V.get(v);
+								coinI.setContainer(container);
+								treasuryR.addItem(coinI);
+								coinI.putCoinsBack();
 							}
 						}
 						if((evasionBits!=null)

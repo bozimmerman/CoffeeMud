@@ -21,6 +21,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Ability
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AmountAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.CatalogAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.CurrencyAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.ExpertiseAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.StatAward;
@@ -39,7 +40,9 @@ import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -110,10 +113,7 @@ public class ListCmd extends StdCommand
 		private final TimeClock to;
 		public WorldFilter(final Room R)
 		{
-			if((R!=null)&&(R.getArea()!=null))
-				to=R.getArea().getTimeObj();
-			else
-				to=CMLib.time().globalClock();
+			to = CMLib.time().homeClock(R);
 		}
 
 		@Override
@@ -356,10 +356,11 @@ public class ListCmd extends StdCommand
 						uniqueID = uniqueID.substring(14);
 					if(uniqueID.startsWith("ROOM_PROPERTY_"))
 						uniqueID = uniqueID.substring(14);
+					final String owedStr = (owed==0.0)?"0":("-$"+owed);
 					lines.append(CMStrings.padRight(ownr, colWidths[0])+": "+
 								CMStrings.padRightPreserve("("+rooms+")",colWidths[1])+": "+
 								 "^N^<LSTROOMID^>"+CMStrings.padRight(uniqueID,colWidths[2])+"^</LSTROOMID^>"+": "+
-								 "^.^N"+CMStrings.limit("($"+totalValue+", -$"+owed+")",colWidths[3])+
+								 "^.^N"+CMStrings.limit("($"+totalValue+", "+owedStr+")",colWidths[3])+
 								 "\n\r");
 				}
 			}
@@ -1167,6 +1168,16 @@ public class ListCmd extends StdCommand
 		}
 		return lines;
 
+	}
+
+	public String listDB(final MOB mob, final List<String> cmds)
+	{
+		final StringBuilder str = new StringBuilder("");
+		final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		final PrintStream ps = new PrintStream(bout);
+		CMLib.database().getConnector().listConnections(ps,CMParms.indexOfIgnoreCase(cmds, "LONG")>=0);
+		str.append(new String(bout.toByteArray()));
+		return str.toString();
 	}
 
 	public StringBuilder listThread(final Session viewerS, final MOB mob, final String threadname)
@@ -2649,7 +2660,7 @@ public class ListCmd extends StdCommand
 			buf.append("\n\r^xQuest Report:^.^N\n\r");
 			final int COL_LEN1=CMLib.lister().fixColWidth(5.0,viewerS);
 			final int COL_LEN2=CMLib.lister().fixColWidth(30.0,viewerS);
-			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Name"),COL_LEN2)+" Status^.^N\n\r");
+			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Name"),COL_LEN2)+L(" Status")+"^.^N\n\r");
 			for(int i=0;i<CMLib.quests().numQuests();i++)
 			{
 				final Quest Q=CMLib.quests().fetchQuest(i);
@@ -2661,17 +2672,19 @@ public class ListCmd extends StdCommand
 					buf.append(CMStrings.padRight(""+(i+1),COL_LEN1)+CMStrings.padRight("^<LSTQUEST^>"+Q.name()+"^</LSTQUEST^>",COL_LEN2)+" ");
 					if(Q.running())
 					{
-						String minsLeft="("+Q.minsRemaining()+" mins left)";
+						final String str;
 						if(Q.duration()==0)
-							minsLeft="(Eternal)";
-						if(Q.isCopy())
-							buf.append(L("copy running @x1",minsLeft));
+							str=L("*Eternal*");
 						else
-							buf.append("running "+minsLeft);
+							str = CMLib.time().date2EllapsedTime(Q.minsRemaining()*60000, TimeUnit.SECONDS, true)+" remain";
+						if(Q.isCopy())
+							buf.append(L("copy running (@x1)",str));
+						else
+							buf.append(L("running (@x1)",str));
 					}
 					else
 					if(Q.suspended())
-						buf.append("disabled");
+						buf.append(L("disabled"));
 					else
 					if(Q.waiting())
 					{
@@ -2680,7 +2693,10 @@ public class ListCmd extends StdCommand
 						{
 							min=min*CMProps.getTickMillis();
 							if(min>60000)
-								buf.append(L("waiting (@x1 minutes left)",""+(min/60000)));
+							{
+								final String str = CMLib.time().date2EllapsedTime(min, TimeUnit.SECONDS, true);
+								buf.append(L("waiting (@x1)",str));
+							}
 							else
 								buf.append(L("waiting (@x1 seconds left)",""+(min/1000)));
 						}
@@ -2688,7 +2704,7 @@ public class ListCmd extends StdCommand
 							buf.append(L("waiting (@x1 minutes left)",""+min));
 					}
 					else
-						buf.append("loaded");
+						buf.append(L("loaded"));
 					buf.append("^N\n\r");
 				}
 			}
@@ -2837,8 +2853,8 @@ public class ListCmd extends StdCommand
 					id=Integer.toString(idx & 255);
 				}
 				String finalVal=CMLib.threads().getTickInfoReport(finalCol+group+"-"+tick);
-				final boolean suspended=CMath.s_bool(CMLib.threads().getTickInfoReport("tickerSuspended"+group+"-"+tick));
-				final int realCol4Len=COL[3]-(suspended?2:1);
+				final char statusChar = CMath.s_bool(CMLib.threads().getTickInfoReport("tickerSuspended"+group+"-"+tick))?'_':' ';
+				final int realCol4Len=COL[3]-2;
 				if(finalVal.length()>realCol4Len)
 				{
 					if(CMath.isLong(finalVal))
@@ -2860,7 +2876,7 @@ public class ListCmd extends StdCommand
 				final String chunk=CMStrings.padRight(""+group,COL[0])
 								   +" "+CMStrings.padRight(id+"",COL[2])
 								   +CMStrings.padRight(name,COL[1])+"^N"
-								   +" "+CMStrings.padRight((activeOnly?(finalVal+(suspended?"*":"")):finalVal+(suspended?"*":"")),COL[3]);
+								   +" "+CMStrings.padRight(finalVal+statusChar,COL[3]);
 				msg.append(chunk);
 			}
 		}
@@ -3457,8 +3473,8 @@ public class ListCmd extends StdCommand
 		}
 		final String[] keywords=CMLib.lang().sessionTranslation(new String[]{"ALL","WITHIN","DISTANCE"});
 		final String[] sortcols=CMLib.lang().sessionTranslation(new String[]{"TYPE","RADIUS","COORDINATES","SPEED","MASS","NAME","COORDSX","COORDSY","COORDSZ"});
-		Long withinDistance=null;
-		long[] centerPoint=null;
+		BigDecimal withinDistance=null;
+		Coord3D centerPoint=null;
 		final SpaceObject SO=CMLib.space().getSpaceObject(mob, false);
 		for(int i=1;i<commands.size();i++)
 		{
@@ -3482,20 +3498,20 @@ public class ListCmd extends StdCommand
 					{
 						final String around=CMParms.combine(commands,i,end);
 						final List<String> listStr=CMParms.parseCommas(around,true);
-						long[] coords=null;
+						Coord3D coords=null;
 						if(listStr.size()==3)
 						{
 							final long[] valL=new long[3];
 							for(int x=0;x<3;x++)
 							{
-								final Long newValue=CMLib.english().parseSpaceDistance(listStr.get(x));
+								final BigDecimal newValue=CMLib.english().parseSpaceDistance(listStr.get(x));
 								if(newValue==null)
 									break;
 								else
 								{
 									valL[i]=newValue.longValue();
 									if(i==2)
-										coords=valL;
+										coords=new Coord3D(valL);
 								}
 							}
 						}
@@ -3536,7 +3552,7 @@ public class ListCmd extends StdCommand
 					else
 					{
 						final String within=CMParms.combine(commands,i,end);
-						final Long distance=CMLib.english().parseSpaceDistance(within);
+						final BigDecimal distance=CMLib.english().parseSpaceDistance(within);
 						if(distance==null)
 						{
 							return L("\n\rBad WITHIN parm: '@x1' -- no valid distance specified.\n\r",within);
@@ -3635,17 +3651,17 @@ public class ListCmd extends StdCommand
 								@Override
 								public int compare(final SpaceObject o1, final SpaceObject o2)
 								{
-									int i = Long.valueOf(o1 == null ? Long.MIN_VALUE : o1.coordinates()[b[0][0]])
-											.compareTo(Long.valueOf(o2 == null ? Long.MIN_VALUE : o2.coordinates()[b[0][0]]));
+									int i = Long.valueOf(o1 == null ? Long.MIN_VALUE : o1.coordinates().getl(b[0][0]))
+											.compareTo(Long.valueOf(o2 == null ? Long.MIN_VALUE : o2.coordinates().getl(b[0][0])));
 									if (i != 0)
 									{
-										i = Long.valueOf(o1 == null ? Long.MIN_VALUE : o1.coordinates()[b[0][1]])
-											.compareTo(Long.valueOf(o2 == null ? Long.MIN_VALUE : o2.coordinates()[b[0][1]]));
+										i = Long.valueOf(o1 == null ? Long.MIN_VALUE : o1.coordinates().getl(b[0][1]))
+											.compareTo(Long.valueOf(o2 == null ? Long.MIN_VALUE : o2.coordinates().getl(b[0][1])));
 									}
 									if (i != 0)
 									{
-										i = Long.valueOf(o1 == null ? Long.MIN_VALUE : o1.coordinates()[b[0][2]])
-											.compareTo(Long.valueOf(o2 == null ? Long.MIN_VALUE : o2.coordinates()[b[0][2]]));
+										i = Long.valueOf(o1 == null ? Long.MIN_VALUE : o1.coordinates().getl(b[0][2]))
+											.compareTo(Long.valueOf(o2 == null ? Long.MIN_VALUE : o2.coordinates().getl(b[0][2])));
 									}
 									return i;
 								}
@@ -3669,10 +3685,10 @@ public class ListCmd extends StdCommand
 				if(SO!=null)
 					centerPoint=SO.coordinates();
 				else
-					centerPoint=new long[]{0,0,0};
+					centerPoint=new Coord3D(new long[]{0,0,0});
 			}
 			if(withinDistance==null)
-				withinDistance=Long.valueOf(SpaceObject.Distance.SolarSystemRadius.dm+1000000);
+				withinDistance=BigDecimal.valueOf(SpaceObject.Distance.SolarSystemRadius.dm+1000000);
 			final List<SpaceObject> objs2=CMLib.space().getSpaceObjectsByCenterpointWithin(centerPoint, 0, withinDistance.longValue());
 			for(final Iterator<SpaceObject> i=objs.iterator();i.hasNext();)
 			{
@@ -3693,7 +3709,7 @@ public class ListCmd extends StdCommand
 		{
 			str.append(CMStrings.padRight(getSpaceObjectType(obj),COL_LEN1)+" ");
 			str.append(CMStrings.padRight(CMLib.english().sizeDescShort(obj.radius()),COL_LEN2)+" ");
-			str.append(CMStrings.padRight(CMLib.english().coordDescShort(obj.coordinates()),COL_LEN3)+" ");
+			str.append(CMStrings.padRight(CMLib.english().coordDescShort(obj.coordinates().toLongs()),COL_LEN3)+" ");
 			str.append(CMStrings.padRight(CMLib.english().speedDescShort(obj.speed()),COL_LEN4)+" ");
 			str.append(CMStrings.padRight(shortenNumber(obj.getMass(),COL_LEN5),COL_LEN5)+" ");
 			str.append(obj.name()+"\n\r");
@@ -3843,8 +3859,15 @@ public class ListCmd extends StdCommand
 		{
 			final JournalEntry E = jobs.get(CMath.s_int(rest)-1);
 			str.append(L("^HNAME      ^N: @x1\n\r",E.subj()));
-			final long interval = CMParms.getParmLong(E.data(), "INTERVAL", CMProps.getMillisPerMudHour());
-			str.append(L("^HINTERVAL  ^N: @x1\n\r",CMLib.time().date2EllapsedTime(interval, TimeUnit.SECONDS, false)));
+			final String intervalStr = CMParms.getParmStr(E.data(), "INTERVAL", ""+System.currentTimeMillis());
+			if(CMath.isLong(intervalStr))
+			{
+				final long interval = CMath.s_long(intervalStr);
+				str.append(L("^HINTERVAL  ^N: @x1\n\r",CMLib.time().date2EllapsedTime(interval, TimeUnit.SECONDS, false)));
+			}
+			else
+				str.append(L("^HINTERVAL  ^N: @x1\n\r",intervalStr));
+			str.append(L("^HNEXT ACT  ^N: @x1\n\r",CMLib.time().date2String(E.update())));
 			str.append(L("^HSCRIPT    ^N: \n\r"));
 			str.append(E.msg());
 			str.append("^N\n\r");
@@ -3857,10 +3880,16 @@ public class ListCmd extends StdCommand
 			for(int i=0;i<jobs.size();i++)
 			{
 				final JournalEntry E = jobs.get(i);
-				final long interval = CMParms.getParmLong(E.data(), "INTERVAL", CMProps.getMillisPerMudHour());
 				str.append(CMStrings.padRight(""+(i+1),COL_LEN1+1));
 				str.append(CMStrings.padRight(E.subj(),COL_LEN2+1));
-				str.append(CMLib.time().date2EllapsedTime(interval, TimeUnit.SECONDS, false));
+				final String intervalStr = CMParms.getParmStr(E.data(), "INTERVAL", ""+System.currentTimeMillis());
+				if(CMath.isLong(intervalStr))
+				{
+					final long interval = CMath.s_long(intervalStr);
+					str.append(CMLib.time().date2EllapsedTime(interval, TimeUnit.SECONDS, false));
+				}
+				else
+					str.append(intervalStr);
 				str.append("\n\r");
 			}
 		}
@@ -4192,15 +4221,15 @@ public class ListCmd extends StdCommand
 		int i=1;
 		final int COL_LEN1=CMLib.lister().fixColWidth(17.0,viewerS);
 		final int COL_LEN2=CMLib.lister().fixColWidth(17.0,viewerS);
-		final int COL_LEN3=CMLib.lister().fixColWidth(79-18-18-3,viewerS);
-		buf.append("## ");
+		final int COL_LEN3=CMLib.lister().fixColWidth(79-18-18-4,viewerS);
+		buf.append("### ");
 		buf.append(CMStrings.padRight(L("Player Mask"), COL_LEN1)).append(" ");
 		buf.append(CMStrings.padRight(L("Date Mask"), COL_LEN2)).append(" ");
 		buf.append(L("Properties")).append("\n\r");
 		for(final Enumeration<AutoProperties> ap = CMLib.awards().getAutoProperties();ap.hasMoreElements();)
 		{
 			final AutoProperties AP = ap.nextElement();
-			buf.append(CMStrings.padRight(""+i, 3));
+			buf.append(CMStrings.padRight(""+i, 4));
 			buf.append(CMStrings.padRight(AP.getPlayerMask(), COL_LEN1)).append(" ");
 			buf.append(CMStrings.padRight(AP.getDateMask(), COL_LEN2)).append(" ");
 			final StringBuilder p1 = new StringBuilder("");
@@ -4301,6 +4330,16 @@ public class ListCmd extends StdCommand
 					case CLANXP:
 						rewardDisplay.append(((AmountAward)award).getAmount()+" Clan XP ");
 						break;
+					case ITEM:
+					case MOB:
+					{
+						final CatalogAward itm = (CatalogAward)award;
+						if(itm.getAmount() == 1)
+							rewardDisplay.append(itm.getItemName());
+						else
+							rewardDisplay.append(itm.getAmount()+" "+CMLib.english().removeArticleLead(itm.getItemName())+"s");
+						break;
+					}
 					default:
 						break;
 					}
@@ -4740,6 +4779,7 @@ public class ListCmd extends StdCommand
 		CRON("CRON",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDCRON}),
 		SELECT("SELECT:",new SecFlag[]{SecFlag.LISTADMIN}),
 		TRACKINGFLAGS("TRACKINGFLAGS", new SecFlag[] {SecFlag.LISTADMIN}),
+		DBCONNECTIONS("DBCONNECTIONS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDDATABASE}),
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -4820,7 +4860,8 @@ public class ListCmd extends StdCommand
 		STATE("State", 10),
 		HIDDEN("Hiddn", 6),
 		PIETY("Piety",50),
-		CACHED("Cached", 6)
+		CACHED("Cached", 6),
+		RACE("Race", 15)
 		;
 
 		public String	shortName;
@@ -4875,6 +4916,14 @@ public class ListCmd extends StdCommand
 					}
 					return piety.toString();
 				}
+			case RACE:
+				if(A.isAreaStatsLoaded())
+				{
+					final Race R = A.getAreaRace();
+					if(R != null)
+						return R.ID();
+				}
+				return "";
 			default:
 				return "";
 			}
@@ -5224,7 +5273,7 @@ public class ListCmd extends StdCommand
 			final Boardable S=s.nextElement();
 			str.append(CMStrings.padRight(S.Name(), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");
 			if((S instanceof SpaceObject)&&(((SpaceShip)S).getIsDocked()==null))
-				str.append(CMStrings.padRight(CMParms.toListString(((SpaceObject)S).coordinates()), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");
+				str.append(CMStrings.padRight(CMParms.toListString(((SpaceObject)S).coordinates().toLongs()), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");
 			else
 				str.append(CMStrings.padRight(CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(S)), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");
 			if(S instanceof SpaceObject)
@@ -6073,6 +6122,9 @@ public class ListCmd extends StdCommand
 			break;
 		case SELECT:
 			s.wraplessPrint(listMQL(mob, false, commands));
+			break;
+		case DBCONNECTIONS:
+			s.wraplessPrint(listDB(mob, commands));
 			break;
 		case WEAPONS:
 			s.println("^HWeapon Item IDs:^N");

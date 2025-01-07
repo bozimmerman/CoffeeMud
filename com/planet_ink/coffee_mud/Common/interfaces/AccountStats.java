@@ -38,7 +38,7 @@ import java.util.*;
  * An interface for a base player account. Shared by PlayerAccount
  * and PlayerStats (since the account system is optional)
  */
-public interface AccountStats extends CMCommon, Achievable
+public interface AccountStats extends CMCommon, Achievable, PrideStats
 {
 	/**
 	 * Returns the players email address, if available.
@@ -338,58 +338,6 @@ public interface AccountStats extends CMCommon, Achievable
 	 * @return true if the given name is ignored
 	 */
 	public boolean isIgnored(final String name);
-
-	/**
-	 * Add to one of the pride stats for this player or account
-	 * @see PrideStat
-	 * @param stat which pride stat to add to
-	 * @param amt the amount to add
-	 */
-	public void bumpPrideStat(PrideStat stat, int amt);
-
-	/**
-	 * Get one of the pride stats for this player or account
-	 * @see PrideStat
-	 * @param period the time period to get the number for
-	 * @param stat which pride stat to get
-	 * @return the pride stat value/count/whatever
-	 */
-	public int getPrideStat(TimeClock.TimePeriod period, PrideStat stat);
-
-	/**
-	 * Returns an XML representation of all the data in this object, for
-	 * persistent storage.
-	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#setXML(String)
-	 *
-	 * @return an XML representation of all the data in this object
-	 */
-	public String getXML();
-
-	/**
-	 * Restores the data in this object from an XML document.
-	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#getXML()
-	 *
-	 * @param str an XML representation of all the data in this object
-	 */
-	public void setXML(String str);
-
-	/**
-	 * The recorded player and account statistics.
-	 * @author Bo Zimmerman
-	 *
-	 */
-	public enum PrideStat
-	{
-		PVPKILLS,
-		AREAS_EXPLORED,
-		ROOMS_EXPLORED,
-		EXPERIENCE_GAINED,
-		MINUTES_ON,
-		QUESTS_COMPLETED,
-		QUESTPOINTS_EARNED
-	}
 
 	/**
 	 * A simple enum for picking between a player and an account

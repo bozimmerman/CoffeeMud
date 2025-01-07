@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMParms;
+import com.planet_ink.coffee_mud.core.CMStrings;
 import com.planet_ink.coffee_mud.core.collections.Converter;
 import com.planet_ink.coffee_mud.core.collections.ConvertingEnumeration;
 import com.planet_ink.coffee_mud.core.collections.IteratorEnumeration;
@@ -176,6 +177,26 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		return affects;
 	}
 
+	protected String newText()
+	{
+		final StringBuilder str = new StringBuilder("");
+		if(slotCount>1)
+			str.append("NUM="+slotCount+" ");
+		if(slotType.length()>0)
+			str.append("TYPE=\""+slotType+"\" ");
+		final StringBuilder skips = new StringBuilder("");
+		for(final String s : this.skips)
+			skips.append(","+CMStrings.escape(s));
+		if(skips.toString().trim().length()>0)
+			str.append("SKIPS=\""+skips.toString().substring(1).trim()+"\" ");
+		final StringBuilder adds = new StringBuilder("");
+		for(final Pair<String,String> p : this.adds)
+			adds.append(",").append(p.first).append("(").append(p.second).append(")");
+		if(adds.toString().trim().length()>0)
+			str.append("ADDS=\""+adds.toString().substring(1).trim()+"\" ");
+		return str.toString().trim();
+	}
+
 	@Override
 	public void setMiscText(final String text)
 	{
@@ -299,15 +320,24 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	{
 		if(isSlotted())
 		{
-			final Physical P=(affected2 != null)?affected2:host;
-			for(final Ability A : getAffects())
+			if(host instanceof MOB)
 			{
-				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
+				for(final Ability A : getAffects())
 				{
-					if(A.bubbleAffect())
+					if((A!=null)
+					&&(A.bubbleAffect())
+					&&(!A.ID().startsWith("Prop_ItemSlot")))
 						A.affectPhyStats(host, affectableStats);
-					else
-						A.affectPhyStats(P, affectableStats);
+				}
+			}
+			else
+			{
+				for(final Ability A : getAffects())
+				{
+					if((A!=null)
+					&&(!A.bubbleAffect())
+					&&(!A.ID().startsWith("Prop_ItemSlot")))
+						A.affectPhyStats(host, affectableStats);
 				}
 			}
 		}
@@ -321,7 +351,9 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		{
 			for(final Ability A : getAffects())
 			{
-				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
+				if((A!=null)
+				&&(A.bubbleAffect())
+				&&(!A.ID().startsWith("Prop_ItemSlot")))
 					A.affectCharStats(affectedMOB, affectedStats);
 			}
 		}
@@ -335,7 +367,9 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		{
 			for(final Ability A : getAffects())
 			{
-				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
+				if((A!=null)
+				&&(A.bubbleAffect())
+				&&(!A.ID().startsWith("Prop_ItemSlot")))
 					A.affectCharState(affectedMOB, affectedState);
 			}
 		}
@@ -345,13 +379,22 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	@Override
 	public void addAbility(final Ability to)
 	{
-		throw new java.lang.UnsupportedOperationException();
+		adds.add(new Pair<String,String>(to.ID(),to.text()));
+		super.miscText = newText();
+		this.affects = null;
 	}
 
 	@Override
 	public void delAbility(final Ability to)
 	{
-		throw new java.lang.UnsupportedOperationException();
+		for(final Iterator<Pair<String,String>> i=adds.iterator();i.hasNext();)
+		{
+			final Pair<String,String> p=i.next();
+			if(p.first.equalsIgnoreCase(to.ID()) && p.second.equalsIgnoreCase(to.text()))
+				i.remove();
+		}
+		super.miscText = newText();
+		this.affects = null;
 	}
 
 	@Override

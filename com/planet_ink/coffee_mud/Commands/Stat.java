@@ -1794,6 +1794,16 @@ public class Stat  extends Skills
 					str.append(M.getExpNextLevel()).append(" ");
 					found=true;
 				}
+				else
+				if(thisStat.equals("XPSTATS"))
+				{
+					str.append(M.getExpPrevLevel()).append(" < ");
+					str.append(M.getExperience()).append(" > ");
+					str.append(M.getExpNextLevel()).append(" = ");
+					str.append(M.getExpNeededLevel()).append(" (");
+					str.append(M.getExpNeededDelevel()).append(")");
+					found=true;
+				}
 				if(!found)
 				{
 					for(final String stat : M.curState().getStatCodes())

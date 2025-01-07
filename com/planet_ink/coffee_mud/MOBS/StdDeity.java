@@ -229,7 +229,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(numBlessings()>0)
 		{
 			return L("The blessings of @x1 are placed upon @x2 clerics whenever the cleric does the following: @x3.",
-					name(),charStats().hisher(),rituals.getTriggerDesc(RitualType.CLERIC_BLESSING));
+					name(),charStats().hisher(),rituals.getTriggerDesc(RitualType.CLERIC_BLESSING, "the cleric"));
 		}
 		return "";
 	}
@@ -246,7 +246,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(numBlessings()>0)
 		{
 			return L("The blessings of @x1 are placed upon @x2 worshippers whenever they do the following: @x3.",
-					name(), charStats().hisher(), rituals.getTriggerDesc(RitualType.WORSHIP_BLESSING));
+					name(), charStats().hisher(), rituals.getTriggerDesc(RitualType.WORSHIP_BLESSING, "the worshipper"));
 		}
 		return "";
 	}
@@ -255,7 +255,7 @@ public class StdDeity extends StdMOB implements Deity
 	public String getServiceTriggerDesc()
 	{
 		return L("The services of @x1 requires using an Infused place, and are the following: @x2.",
-				name(),rituals.getTriggerDesc(RitualType.SERVICE));
+				name(),rituals.getTriggerDesc(RitualType.SERVICE, "the cleric"));
 	}
 
 	@Override
@@ -758,7 +758,7 @@ public class StdDeity extends StdMOB implements Deity
 					case SERVICE_CANCEL:
 						{
 							final WorshipService service=findService(msg.source(),null);
-							this.cancelService(service);
+							this.cancelService(service,"");
 							break;
 						}
 					case CURSING:
@@ -834,7 +834,7 @@ public class StdDeity extends StdMOB implements Deity
 					{
 						if(rituals.isCompleted(RitualType.SERVICE, msg))
 						{
-							if(!alreadyServiced(msg.source(),msg.source().location()))
+							if(!serviceCheck(msg.source(),msg.source().location(),false))
 								finishService(msg.source(),msg.source().location());
 						}
 						else
@@ -849,17 +849,20 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		if((mob==null)||(room==null))
 			return;
+		if(serviceCheck(mob, room, true))
+			return;
+		if(serviceCheck(mob, room, false))
+		{
+			if(!mob.isMonster())
+				mob.tell(L("Services have already been performed here for @x1 recently.",name()));
+			return;
+		}
 		final List<MOB> parishaners=new ArrayList<MOB>();
 		synchronized(services)
 		{
-			for(final WorshipService w : services)
-			{
-				if(w.room==room)
-					return;
-			}
 			final CMMsg msg=CMClass.getMsg(this,mob,null,
-					CMMsg.MSG_HOLYEVENT, L("<T-NAME> begin(s) to hold services for @x1 here.",mob.Name()),
-					CMMsg.MSG_HOLYEVENT,null,
+					CMMsg.MSG_HOLYEVENT, L("<T-NAME> begin(s) to hold services for @x1 here.",name()),
+					CMMsg.MSG_HOLYEVENT, L("<T-NAME> begin(s) to hold services for @x1 here.",name()),
 					CMMsg.NO_EFFECT,HolyEvent.SERVICE_BEGIN.toString());
 			if(!room.okMessage(this, msg))
 				return;
@@ -898,10 +901,8 @@ public class StdDeity extends StdMOB implements Deity
 						&&(!M.isInCombat())
 						&&(CMLib.flags().isAliveAwakeMobileUnbound(M, true)))
 						{
-							final Ability TRACKA=CMClass.getAbility("Skill_Track");
-							if(TRACKA!=null)
+							if(CMLib.tracking().autoTrack(M, room))
 							{
-								TRACKA.invoke(M,CMParms.parse("\""+CMLib.map().getExtendedRoomID(room)+"\" NPC"),room,true,0);
 								parishaners.add(M);
 								if(parishaners.size()>maxMobs)
 									break;
@@ -922,7 +923,7 @@ public class StdDeity extends StdMOB implements Deity
 		for(int m=V.size()-1;m>=0;m--)
 		{
 			M=V.get(m);
-			if(M==null)
+			if((M==null)||(!M.isMonster())||(M.isPlayer()))
 				continue;
 			A=M.fetchEffect("Skill_Track");
 			if(A!=null)
@@ -932,7 +933,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 	}
 
-	protected boolean alreadyServiced(final MOB mob, final Room room)
+	protected boolean serviceCheck(final MOB mob, final Room room, final boolean inProgress)
 	{
 		synchronized(services)
 		{
@@ -950,7 +951,7 @@ public class StdDeity extends StdMOB implements Deity
 				else
 				if((service.room != null)
 				&&(service.room.getArea()==room.getArea())
-				&&(service.serviceCompleted))
+				&&(service.serviceCompleted == !inProgress))
 					return true;
 			}
 		}
@@ -999,13 +1000,24 @@ public class StdDeity extends StdMOB implements Deity
 		final WorshipService service = findService(mob,room);
 		if(service == null)
 			return false;
+		for(int m=0;m<room.numInhabitants();m++)
+		{
+			M=room.fetchInhabitant(m);
+			if((M==null)||(M==mob)||(CMLib.flags().isAnimalIntelligence(M)))
+				continue;
+			if(M.charStats().getWorshipCharID().equals(Name()))
+			{
+				if(!M.isMonster())
+					service.parishaners.add(M);
+			}
+		}
 		if(service.parishaners.size()==0)
 		{
-			return this.cancelService(service);
+			return this.cancelService(service,L(" because no one showed up for it."));
 		}
-		final CMMsg eventMsg=CMClass.getMsg(this, null, null,
+		final CMMsg eventMsg=CMClass.getMsg(this, mob, null,
 				CMMsg.MSG_HOLYEVENT, null,
-				CMMsg.MSG_HOLYEVENT, null,
+				CMMsg.MSG_HOLYEVENT, L("<T-NAME> <T-HAS-HAVE> completed services for @x1.",name()),
 				CMMsg.NO_EFFECT, HolyEvent.SERVICE.toString());
 		eventMsg.setValue(service.parishaners.size());
 		service.serviceCompleted = true;
@@ -1034,10 +1046,15 @@ public class StdDeity extends StdMOB implements Deity
 		return true;
 	}
 
-	public boolean cancelService(final WorshipService service)
+	protected boolean cancelService(final WorshipService service, final String reason)
 	{
 		if(service == null)
 			return false;
+		synchronized(services)
+		{
+			if(!services.contains(service))
+				return false;
+		}
 		final Room room = service.room;
 		final MOB mob = service.cleric;
 		MOB M=null;
@@ -1058,7 +1075,7 @@ public class StdDeity extends StdMOB implements Deity
 				CMMsg.MSG_HOLYEVENT, null,
 				CMMsg.NO_EFFECT, HolyEvent.SERVICE_CANCEL.toString());
 		final CMMsg msg2=CMClass.getMsg(this,null,null,
-				CMMsg.NO_EFFECT, null,CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_ACTION,L("The service conducted by @x1 has been cancelled.",mob.Name()));
+				CMMsg.NO_EFFECT, null,CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_ACTION,L("The service conducted by @x1 has been cancelled@x2.",mob.Name(),reason));
 		if(room.okMessage(this, msg)
 		&&room.okMessage(this, msg2))
 		{
@@ -1216,7 +1233,7 @@ public class StdDeity extends StdMOB implements Deity
 				if(delThese != null)
 				{
 					for(final WorshipService w : delThese)
-						cancelService(w);
+						cancelService(w,"");
 				}
 			}
 		}
@@ -1281,7 +1298,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return blessings.get(index).power;
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -1294,7 +1311,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return blessings.get(index).clericOnly;
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return false;
@@ -1383,7 +1400,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return curses.get(index).power;
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -1415,7 +1432,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return curses.get(index).clericOnly;
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return false;
@@ -1452,7 +1469,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(numCurses()>0)
 		{
 			return L("The curses of @x1 are placed upon @x2 clerics whenever the cleric does the following: @x3.",
-					name(),charStats().hisher(),rituals.getTriggerDesc(RitualType.CLERIC_CURSE));
+					name(),charStats().hisher(),rituals.getTriggerDesc(RitualType.CLERIC_CURSE, "the cleric"));
 		}
 		return "";
 	}
@@ -1476,7 +1493,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(numCurses()>0)
 		{
 			return L("The curses of @x1 are placed upon @x2 worshippers whenever the worshipper does the following: @x3.",
-					name(),charStats().hisher(),rituals.getTriggerDesc(RitualType.WORSHIP_CURSE));
+					name(),charStats().hisher(),rituals.getTriggerDesc(RitualType.WORSHIP_CURSE, "the worshipper"));
 		}
 		return "";
 	}
@@ -1525,7 +1542,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return powers.get(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		catch(final IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -1562,7 +1579,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(numPowers()>0)
 		{
 			return L("Special powers of @x1 are placed upon @x2 clerics whenever the cleric does the following: @x3.",
-					name(),charStats().hisher(),rituals.getTriggerDesc(RitualType.POWER));
+					name(),charStats().hisher(),rituals.getTriggerDesc(RitualType.POWER, "the cleric"));
 		}
 		return "";
 	}

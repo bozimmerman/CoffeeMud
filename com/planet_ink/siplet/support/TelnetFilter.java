@@ -1012,7 +1012,7 @@ public class TelnetFilter
 				case '!':
 					if ((i < buf.length() - 3) && (buf.charAt(i + 1) == '!'))
 					{
-						if (MSPsupport())
+						if (MSPsupport()||MXPsupport())
 						{
 							final int endl = mspModule.process(buf, i, codeBase, neverSupportMSP == MSPStatus.External);
 							if (endl == -1)

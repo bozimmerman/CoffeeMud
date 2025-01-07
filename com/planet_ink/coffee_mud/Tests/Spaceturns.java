@@ -71,10 +71,10 @@ public class Spaceturns extends StdTest
 		{
 			final double[][] test = tests[t];
 			final double speed = test[0][0];
-			final double[] startDir = test[1];
-			final double[] accelDir = test[2];
-			final long[] startCoords = new long[] {0,0,0};
-			o.setCoords(Arrays.copyOf(startCoords, 3));
+			final Dir3D startDir = new Dir3D(test[1]);
+			final Dir3D accelDir = new Dir3D(test[2]);
+			final Coord3D startCoords = new Coord3D();
+			o.setCoords(startCoords.copyOf());
 			o.setDirection(startDir);
 			o.setSpeed(speed);
 			o.setFacing(accelDir);

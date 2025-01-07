@@ -217,6 +217,11 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		}
 	}
 
+	protected String getNoPermissionStr()
+	{
+		return L("You are not permitted to do that.");
+	}
+
 	protected boolean canJumpFromHere(final Room R)
 	{
 		if(((R.domainType()&Room.INDOORS)!=0)
@@ -359,7 +364,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				{
 					if(!securityCheck(msg.source()))
 					{
-						msg.source().tell(L("The captain does not permit you."));
+						msg.source().tell(getNoPermissionStr());
 						return false;
 					}
 					final Room R=CMLib.map().roomLocation(this);
@@ -417,7 +422,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				{
 					if(!securityCheck(msg.source()))
 					{
-						msg.source().tell(L("The captain does not permit you."));
+						msg.source().tell(getNoPermissionStr());
 						return false;
 					}
 					final Room R=msg.source().location();
@@ -472,7 +477,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						return true;
 					if(!securityCheck(msg.source()))
 					{
-						msg.source().tell(L("The captain does not permit you."));
+						msg.source().tell(getNoPermissionStr());
 						return false;
 					}
 					if(safetyMove())
@@ -501,7 +506,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						return true;
 					if(!securityCheck(msg.source()))
 					{
-						msg.source().tell(L("The captain does not permit you."));
+						msg.source().tell(getNoPermissionStr());
 						return false;
 					}
 					stopFollowing(msg.source());
@@ -530,7 +535,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				{
 					if(!securityCheck(msg.source()))
 					{
-						msg.source().tell(L("The captain does not permit you."));
+						msg.source().tell(getNoPermissionStr());
 						return false;
 					}
 					stopFollowing(msg.source());
@@ -601,7 +606,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				{
 					if(!securityCheck(msg.source()))
 					{
-						msg.source().tell(L("The captain does not permit you."));
+						msg.source().tell(getNoPermissionStr());
 						return false;
 					}
 					stopFollowing(msg.source());
@@ -675,7 +680,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				{
 					if(!securityCheck(msg.source()))
 					{
-						msg.source().tell(L("The captain does not permit you."));
+						msg.source().tell(getNoPermissionStr());
 						return false;
 					}
 					stopFollowing(msg.source());

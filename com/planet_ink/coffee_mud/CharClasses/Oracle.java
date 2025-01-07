@@ -294,37 +294,48 @@ public class Oracle extends Cleric
 
 			Ability newOne=null;
 			int tries=0;
-			while((newOne==null)&&((++tries)<100))
+			while((newOne==null)&&((++tries)<1000))
 			{
 				final CharClass C=CMClass.randomCharClass();
 				if((C!=null)
 				&&(!C.ID().equals(ID()))
 				&&(!(C instanceof ArchonOnly))
+				&&((C.availabilityCode()&Area.THEME_FANTASY)==Area.THEME_FANTASY)
+				&&((C.availabilityCode()&Area.THEME_SKILLONLYMASK)==0)
 				&&(mob.charStats().getClassLevel(C)<0))
 				{
-					int tries2=0;
-					while((newOne==null)&&((++tries2)<10000))
+					final List<AbilityMapping> list = CMLib.ableMapper().getUpToLevelListings(C.ID(),25,true,false);
+					for(final Iterator<AbilityMapping> i = list.iterator();i.hasNext();)
 					{
-						final Ability A=CMClass.randomAbility();
-						if( A != null )
+						final AbilityMapping aM = i.next();
+						final Ability A = CMClass.getAbility(aM.abilityID());
+						if(A == null)
 						{
-							final int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
-							if((lql<25)
-							&&(lql>0))
-							{
-								if((CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID())==SecretFlag.PUBLIC)
-								&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<0)
-								&&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
-								&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
-								&&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0)))
-								&&(mob.fetchAbility(A.ID())==null))
-								{
-									final DVector prereqs=CMLib.ableMapper().getUnmetPreRequisites(mob,A);
-									if((prereqs==null)||(prereqs.size()==0))
-										newOne=A;
-								}
-							}
+							i.remove();
+							continue;
 						}
+						final int lql=CMLib.ableMapper().getQualifyingLevel(C.ID(), false, A.ID());
+						if((lql<25)
+						&&(lql>0)
+						&&(CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID())==SecretFlag.PUBLIC)
+						&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<0)
+						&&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
+						&&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0)))
+						&&(mob.fetchAbility(A.ID())==null))
+						{ /* hurray */	}
+						else
+							i.remove();
+					}
+					if(list.size()==0)
+						continue;
+					int sz = list.size();
+					while((--sz>=0)&&(newOne==null))
+					{
+						final AbilityMapping aM = list.get(CMLib.dice().roll(1,list.size(),-1));
+						final Ability A = CMClass.getAbility(aM.abilityID());
+						final DVector prereqs=CMLib.ableMapper().getUnmetPreRequisites(mob,A);
+						if((prereqs==null)||(prereqs.size()==0))
+							newOne=A;
 					}
 				}
 			}

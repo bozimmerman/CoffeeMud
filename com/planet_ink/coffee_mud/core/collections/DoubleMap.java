@@ -28,6 +28,21 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 		H2=map2;
 	}
 
+	@SuppressWarnings("unchecked")
+	public DoubleMap(final Class<?> clas)
+	{
+		super();
+		try
+		{
+			H1=(Map<K,F>)clas.newInstance();
+			H2=(Map<F,K>)clas.newInstance();
+		}
+		catch (final Exception e)
+		{
+			throw new IllegalArgumentException(e);
+		}
+	}
+
 	public synchronized Vector<String> toStringVector(final String divider)
 	{
 		final Vector<String> V=new Vector<String>(size());
@@ -92,6 +107,11 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 		return H1.get(arg0);
 	}
 
+	public synchronized K getValue(final Object arg0)
+	{
+		return H2.get(arg0);
+	}
+
 	@Override
 	public int hashCode()
 	{
@@ -114,7 +134,7 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 	public synchronized F put(final K arg0, final F arg1)
 	{
 		final F f=H1.put(arg0, arg1);
-		if(f!=null)
+		if(arg1!=null)
 			H2.put(arg1, arg0);
 		return f;
 	}

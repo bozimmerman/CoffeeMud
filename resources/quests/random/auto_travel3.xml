@@ -54,11 +54,12 @@ settable vars:
 	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
 	<FACTION>$target_faction</FACTION>
 	<NUMFACTION>$[$target_faction_amt / 500]</NUMFACTION>
-	<QUEST_NAME SELECT="Any-1">
+	<QUEST_NAME SELECT="Pick-1">
 		<QUEST_NAME>You need to $reason_verb at $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>You want to $reason_verb at $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>You must $reason_verb at $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>Do ${reason_verb} at $target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME PICKWEIGHT=99 CONDITION="$deityname!=''">$deityname needs you to $reason_verb at $target_name in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_NOTIFYSSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSSTRING>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
@@ -127,7 +128,8 @@ settable vars:
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
 	<STRING ID="reason" DEFINE="reason">
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>You have some $reason_verbing to get done.</STRING>
+			<STRING CONDITION="$deityname=''">You have some $reason_verbing to get done.</STRING>
+			<STRING CONDITION="$deityname!=''">You have some $reason_verbing to get done for ${c:deityname}.</STRING>
 		</STRING>
 	</STRING>
 
