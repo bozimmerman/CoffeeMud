@@ -11,6 +11,8 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEval;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrCallback;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrResolution;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary.ListStringer;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -174,6 +176,28 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public void promptStatStr(final MOB mob, final Modifiable E, final String help, final int showNumber, final int showFlag, final String fieldDisplayStr, final String field, final boolean emptyOK) throws IOException
 	{
 		E.setStat(field, prompt(mob, E.getStat(field), showNumber, showFlag, fieldDisplayStr, emptyOK, false, help, null, null));
+	}
+
+	public void promptStatMsg(final MOB mob, final Modifiable E, final int showNumber, final int showFlag,
+							  final String fieldDisplayStr, final String field,
+							  final Filterer<String> filter, final String filterErr) throws IOException
+	{
+		final String oldVal = E.getStat(field);
+		final List<String> vbuf = CMParms.parseAny(oldVal, '\n', false);
+		MsgMkrResolution res = CMLib.journals().makeMessage(mob, fieldDisplayStr, vbuf, false);
+		while((res == MsgMkrResolution.SAVEFILE)
+		&&(mob.session()!=null)
+		&&(!mob.session().isStopped()))
+		{
+			final String newMsgTxt = CMParms.combineWith(vbuf, "\n");
+			if((filter == null)||(filter.passesFilter(newMsgTxt)))
+			{
+				E.setStat(field, newMsgTxt);
+				return;
+			}
+			else
+				res = CMLib.journals().makeMessage(mob, fieldDisplayStr, vbuf, false);
+		}
 	}
 
 	public void promptRawStatStr(final MOB mob, final Modifiable E, final String help, final int showNumber, final int showFlag, final String fieldDisplayStr, final String field, final boolean emptyOK) throws IOException
@@ -9297,6 +9321,61 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatBool(mob,me,null,++showNumber,showFlag,"Clan only","CLANONLY");
 			promptStatStr(mob,me,null,++showNumber,showFlag,"MSP file","SOUND",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
+
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
+			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
+			if(showFlag<=0)
+			{
+				showFlag=-1;
+				ok=true;
+			}
+		}
+	}
+
+	@Override
+	public void modifyGenCommand(final MOB mob, final Modifiable me, int showFlag) throws IOException
+	{
+		if(mob.isMonster())
+			return;
+		boolean ok=false;
+		if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
+			showFlag=-999;
+		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
+		{
+			int showNumber=0;
+			// id is bad to change.. make them delete it.
+			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","ACCESS",false);
+			promptStatBool(mob,me,null,++showNumber,showFlag,"Can be Ordered","ORDEROK");
+			promptStatStr(mob,me,CMLib.masking().maskHelp("\n", "disallow"),++showNumber,showFlag,
+					"Security Mask","SECMASK",false);
+			promptStatDouble(mob, me, showNumber, showFlag, "Action Cost", "ACTCOST");
+			promptStatDouble(mob, me, showNumber, showFlag, "Combat Cost", "CBTCOST");
+			promptStatMsg(mob,me,++showNumber,showFlag,"Help Text","HELP",null,"");
+			promptStatMsg(mob,me,++showNumber,showFlag,"Help Text","SCRIPT",new Filterer<String>() {
+				@Override
+				public boolean passesFilter(final String obj)
+				{
+					final List<String> lines = CMParms.parseAny(obj.toUpperCase(), '\n', true);
+					for(final String l : lines)
+					{
+						final String s = l.trim();
+						if(s.startsWith("FUNCTION_PROG")
+						&&(s.substring(13).trim().startsWith("EXECUTE")))
+							return true;
+					}
+					return false;
+				}
+			},"Your script must have a FUNCTION_PROG EXECUTE in it.");
 
 			if (showFlag < -900)
 			{
