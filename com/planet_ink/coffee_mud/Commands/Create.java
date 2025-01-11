@@ -1384,6 +1384,68 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
 	}
 
+	public void commands(final MOB mob, final List<String> commands)
+	throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is CREATE COMMAND [ID]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		final String classD=CMParms.combine(commands,2);
+		final Command C=CMClass.getCommand(classD);
+		if((C!=null)&&(C.isGeneric()))
+		{
+			mob.tell(L("A generic command with the ID '@x1' already exists!",C.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		if(classD.indexOf(' ')>=0)
+		{
+			mob.tell(L("'@x1' is an invalid  id, because it contains a space.",classD));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		final Command CR;
+		if(C != null)
+		{
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The command @x1 already exists, and will be over-ridden.",classD));
+			CR=(Command)CMClass.getCommand("GenCommand").copyOf();
+			final StringBuilder script = new StringBuilder("");
+			final String fullClassName = C.getClass().getCanonicalName();
+			script.append("FUNCTION_PROG EXECUTE\n");
+			script.append("<SCRIPT>\n");
+			script.append("  var c = new Packages."+fullClassName+"();\n");
+			script.append("  var l = new Packages.com.planet_ink.coffee_mud.core.collections.XArrayList();\n");
+			script.append("  for(var i=0;i<objs().length;i++)\n");
+			script.append("    if((''+objs()[i]).length>0)\n");
+			script.append("      l.add(''+objs()[i]);\n");
+			script.append("  var r = c.execute(source(),l,0);\n");
+			script.append("  objs()[0] = ''+r;\n");
+			script.append("</SCRIPT>\n");
+			script.append("RETURN $0\n");
+			script.append("~\n");
+			((Modifiable)CR).setStat("CLASS",C.ID());
+			((Modifiable)CR).setStat("HELP",CMLib.help().getHelpText(C.getAccessWords()[0], mob, false, true));
+			((Modifiable)CR).setStat("ACCESS",CMParms.toListString(C.getAccessWords()));
+			((Modifiable)CR).setStat("SCRIPT",script.toString());
+			((Modifiable)CR).setStat("ORDEROK",C.canBeOrdered()+"");
+			((Modifiable)CR).setStat("SECMASK","");
+			((Modifiable)CR).setStat("ACTCOST","-1");
+			((Modifiable)CR).setStat("CBMCOST","-1");
+		}
+		else
+		{
+			CR=(Command)CMClass.getCommand("GenCommand").copyOf();
+			((Modifiable)CR).setStat("CLASS",classD);
+		}
+		//CMLib.genEd().modifyGenWrightSkill(mob,CR,-1); //TODO:BZ:
+		//CMLib.database().DBCreateAbility(CR.ID(),"GenCommand",((Modifiable)CR).getStat("ALLXML")); //TODO:BZ:
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The power of the world just increased!"));
+		CMClass.reloadCommandWords();
+	}
+
 	public void craftSkills(final MOB mob, final List<String> commands)
 	throws IOException
 	{
@@ -1794,6 +1856,14 @@ public class Create extends StdCommand
 				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			wrightSkills(mob,commands);
+		}
+		else
+		if(commandType.equals("COMMAND"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMD))
+				return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+			commands(mob,commands);
 		}
 		else
 		if(commandType.equals("GATHERSKILL"))

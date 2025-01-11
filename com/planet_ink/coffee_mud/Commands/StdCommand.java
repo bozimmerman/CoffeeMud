@@ -83,6 +83,12 @@ public class StdCommand implements Command
 	}
 
 	@Override
+	public boolean isGeneric()
+	{
+		return false;
+	}
+
+	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
@@ -291,5 +297,4 @@ public class StdCommand implements Command
 	{
 		return true;
 	}
-
 }

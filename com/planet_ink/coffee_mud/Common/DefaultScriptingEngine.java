@@ -81,6 +81,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected int					tickStatus		 = Tickable.STATUS_NOT;
 	protected boolean				isSavable		 = true;
 	protected boolean				alwaysTriggers	 = false;
+	protected boolean				approvedScripts	 = false;
 
 	protected MOB					lastToHurtMe	 = null;
 	protected volatile Room			lastKnownLocation= null;
@@ -359,6 +360,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	public String getVarScope()
 	{
 		return scope;
+	}
+
+	@Override
+	public void preApproveScripts()
+	{
+		this.approvedScripts = true;
 	}
 
 	@Override
@@ -1086,9 +1093,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(state == 0)
 					addSubScriptLine(currentScript, text.substring(lastLine,i));
 				else
-				if(state==2)
+				if(state == 2)
 					state=0;
-				lastLine=i+1;
+				if(state != 3)
+					lastLine=i+1;
 				break;
 			case '#':
 				if((state==0)
@@ -1119,7 +1127,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				break;
 			case '<':
 				if((i<text.length()-9)
-				&&(Character.isLetter(text.charAt(i+1))))
+				&&(Character.isLetter(text.charAt(i+1))
+					||((text.charAt(i+1)=='/'))&&Character.isLetter(text.charAt(i+2))))
 				{
 					final String uppAhead=text.substring(i,i+9).toUpperCase();
 					if((state==0)
@@ -1128,8 +1137,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						addSubScriptLine(currentScript, text.substring(lastLine,i));
 						addSubScriptLine(currentScript, "<SCRIPT>");
-						i+=8;
-						lastLine=i;
+						i+=7; // the 8th char is coming later
+						lastLine=i+1;
 						state=3;
 					}
 					else
@@ -1139,8 +1148,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						addSubScriptLine(currentScript, text.substring(lastLine,i));
 						addSubScriptLine(currentScript, "</SCRIPT>");
-						i+=9;
-						lastLine=i;
+						i+=8; // 9th is coming later
+						lastLine=i+1;
 						state=0;
 					}
 				}
@@ -9084,7 +9093,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					ln.third = new Object[] {jscript, Integer.valueOf(si-oldsi)};
 				}
-				if(CMSecurity.isApprovedJScript(jscript))
+				if(this.approvedScripts || CMSecurity.isApprovedJScript(jscript))
 				{
 					final Context cx = Context.enter();
 					try

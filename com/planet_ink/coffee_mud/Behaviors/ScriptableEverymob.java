@@ -145,7 +145,7 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public void dequeResponses(Object[] objects)
+	public void dequeResponses(final Object[] objects)
 	{
 		if(sampleB!=null)
 			sampleB.dequeResponses(null);
@@ -155,6 +155,13 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	public List<String> externalFiles()
 	{
 		return (sampleB==null)?null:sampleB.externalFiles();
+	}
+
+	@Override
+	public void preApproveScripts()
+	{
+		if(sampleB != null)
+			sampleB.preApproveScripts();
 	}
 
 	@Override

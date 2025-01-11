@@ -3022,7 +3022,7 @@ public class CMClass extends ClassLoader
 	 * Causes the map of command words associated with command objects
 	 * to be re-mapped, so that users can use them.
 	 */
-	protected static final void reloadCommandWords()
+	public static final void reloadCommandWords()
 	{
 		c().commandWords.clear();
 		Command C;

@@ -798,7 +798,6 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 		return str.toString();
 	}
 
-
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{

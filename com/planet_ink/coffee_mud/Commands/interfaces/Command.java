@@ -108,6 +108,12 @@ public interface Command extends CMObject
 	public boolean securityCheck(MOB mob);
 
 	/**
+	 * Returns whether this class generic or not.
+	 * @return whether this class is defined fully by parameters
+	 */
+	public boolean isGeneric();
+
+	/**
 	 * This method actually performs the command, when the given parsed
 	 * set of command-line words.  The commands list is almost always the
 	 * set of strings, starting with the access word that triggered the

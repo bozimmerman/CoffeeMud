@@ -44,7 +44,7 @@ public class GenCommand extends StdCommand implements Modifiable
 	private String			ID			= "GenCommand";
 	private String[]		access		= new String[] { "COMMANDWORD" };
 	private Boolean			orderok		= Boolean.TRUE;
-	private String			secMaskStr	= "";
+	private String			secMaskStr	= "-PLAYER -NPC";
 	private CompiledZMask	secMask		= null;
 	private double			actCost		= -1;
 	private double			cbtCost		= -1;
@@ -83,6 +83,8 @@ public class GenCommand extends StdCommand implements Modifiable
 					S.setSavable(false);
 					S.setVarScope("*");
 					S.setScript(script);
+					S.preApproveScripts();
+					this.engine = S;
 				}
 			}
 		}
@@ -102,7 +104,7 @@ public class GenCommand extends StdCommand implements Modifiable
 				objs[i] = "";
 			final MPContext ctx = new MPContext(mob, mob, mob,
 					mob.getVictim(), mob.fetchWieldedItem(), mob.fetchHeldItem(), mob.Name(), objs);
-			eng.callFunc("EXECUTE", commands.size()+"", ctx);
+			return CMath.s_bool(eng.callFunc("EXECUTE", commands.size()+"", ctx));
 		}
 		else
 			mob.tell(L("No EXECUTE function found."));
@@ -205,7 +207,8 @@ public class GenCommand extends StdCommand implements Modifiable
 		case 0:
 			if(val.trim().length()>0)
 			{
-				CMClass.delClass(CMObjectType.COMMAND,this);
+				if(!ID().equals("GenCommand"))
+					CMClass.delClass(CMObjectType.COMMAND,CMClass.getCommand(ID()));
 				this.ID=val;
 				CMClass.addClass(CMObjectType.COMMAND,this);
 			}
@@ -238,6 +241,12 @@ public class GenCommand extends StdCommand implements Modifiable
 				parseAllXML(val);
 			break;
 		}
+	}
+
+	@Override
+	public boolean isGeneric()
+	{
+		return !ID.equals("GenCommand");
 	}
 
 	@Override

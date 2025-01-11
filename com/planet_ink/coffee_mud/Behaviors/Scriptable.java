@@ -96,6 +96,13 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
+	public void preApproveScripts()
+	{
+		if(engine() != null)
+			engine().preApproveScripts();
+	}
+
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -252,7 +259,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public void dequeResponses(Object[] objects)
+	public void dequeResponses(final Object[] objects)
 	{
 		engine().dequeResponses(null);
 	}

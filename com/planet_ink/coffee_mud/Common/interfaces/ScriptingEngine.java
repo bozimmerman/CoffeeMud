@@ -324,6 +324,13 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	public void setVar(String context, String variable, String value);
 
 	/**
+	 * If the script contains any javascript, calling this method will
+	 * pre-approve the scripts so that they bypass any approval
+	 * requirements.
+	 */
+	public void preApproveScripts();
+
+	/**
 	 * Wrapper class for a standard parsed line of script,
 	 * which includes the full line of text, the parsed line,
 	 * and an optional helper object of any sort
