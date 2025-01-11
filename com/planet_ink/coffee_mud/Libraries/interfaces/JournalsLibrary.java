@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrResolution;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -342,6 +343,7 @@ public interface JournalsLibrary extends CMLibrary
 	 *
 	 * @see JournalsLibrary.MsgMkrCallback
 	 * @see JournalsLibrary.MsgMkrResolution
+	 * @see JournalsLibrary#makeMessage(MOB, String, List, boolean)
 	 *
 	 * @param mob the player doing the editing
 	 * @param messageTitle the title of the message
@@ -350,6 +352,22 @@ public interface JournalsLibrary extends CMLibrary
 	 * @param back the callBack when done
 	 */
 	public void makeMessageASync(final MOB mob, final String messageTitle, final List<String> vbuf, final boolean autoAdd, final MsgMkrCallback back);
+
+	/**
+	 * An synchronous system for allowing a user to edit a text document with options for search and replace, line
+	 * inserting and deleting, and line replacement.  A save option is also provided.
+	 *
+	 * @see JournalsLibrary.MsgMkrCallback
+	 * @see JournalsLibrary.MsgMkrResolution
+	 * @see JournalsLibrary#makeMessageASync(MOB, String, List, boolean, MsgMkrCallback)
+	 *
+	 * @param mob the player doing the editing
+	 * @param messageTitle the title of the message
+	 * @param vbuf the text of the message
+	 * @param autoAdd true to go directly into line adding mode, false to start in menu
+	 * @return the resolution when done
+	 */
+	public MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, final boolean autoAdd) throws IOException;
 
 	/**
 	 * Since Calendar events are also journal entries, whenever the calendar is changed,

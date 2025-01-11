@@ -1433,7 +1433,7 @@ public class Create extends StdCommand
 			((Modifiable)CR).setStat("ORDEROK",C.canBeOrdered()+"");
 			((Modifiable)CR).setStat("SECMASK","");
 			((Modifiable)CR).setStat("ACTCOST","-1");
-			((Modifiable)CR).setStat("CBMCOST","-1");
+			((Modifiable)CR).setStat("CBTCOST","-1");
 		}
 		else
 		{

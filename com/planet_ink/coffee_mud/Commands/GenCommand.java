@@ -149,7 +149,7 @@ public class GenCommand extends StdCommand implements Modifiable
 		"ORDEROK",//4B
 		"SECMASK",//5S
 		"ACTCOST",//6D
-		"CBMCOST",//7D
+		"CBTCOST",//7D
 	};
 
 	@Override

@@ -2023,7 +2023,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		});
 	}
 
-	protected MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, final boolean autoAdd) throws IOException
+	@Override
+	public MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, final boolean autoAdd) throws IOException
 	{
 		final Session sess=mob.session();
 		if((sess == null )||(sess.isStopped()))
