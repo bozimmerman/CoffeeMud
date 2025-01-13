@@ -576,6 +576,24 @@ ALTER TABLE CMGAAC
 	);
 
 /**
+  TABLE CMCDAC - Generic Commands
+  CMCDID: Command ID
+  CMCDAT: Generic Command XML Definition
+  CMCDCL: Generic Command Base Class ID
+*/
+CREATE TABLE CMCDAC (
+	CMCDID char (50) ,
+	CMCDAT CLOB NULL , 
+	CMCDCL char (250) NULL 
+);
+
+ALTER TABLE CMCDAC 
+	ADD 
+	( 
+		PRIMARY KEY (CMCDID)
+	);
+
+/**
   TABLE CMACCT - Player Account
   CMANAM: Account Name
   CMPASS: Account Password (or hash)

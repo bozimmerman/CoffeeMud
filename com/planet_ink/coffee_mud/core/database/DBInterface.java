@@ -71,6 +71,7 @@ public class DBInterface implements DatabaseEngine
 	GCClassLoader	GCClassLoader	= null;
 	ClanLoader		ClanLoader		= null;
 	BackLogLoader	BackLogLoader	= null;
+	GCommandLoader	CommandLoader	= null;
 	DBConnector		DB				= null;
 
 	public DBInterface(final DBConnector DB, Set<String> privacyV)
@@ -98,6 +99,7 @@ public class DBInterface implements DatabaseEngine
 				this.QuestLoader = ((DBInterface) baseEngine).QuestLoader;
 				this.ClanLoader = ((DBInterface) baseEngine).ClanLoader;
 				this.BackLogLoader = ((DBInterface) baseEngine).BackLogLoader;
+				this.CommandLoader = ((DBInterface) baseEngine).CommandLoader;
 			}
 		}
 
@@ -1261,6 +1263,24 @@ public class DBInterface implements DatabaseEngine
 		GAbilityLoader.DBCreateAbility(classID, typeClass, data);
 	}
 
+	@Override
+	public List<AckRecord> DBReadCommands()
+	{
+		return CommandLoader.DBReadCommands();
+	}
+	
+	@Override
+	public AckRecord DBDeleteCommand(String classID)
+	{
+		return CommandLoader.DBDeleteCommand(classID);
+	}
+	
+	@Override
+	public void DBCreateCommand(String classID, String baseClassID, String data)
+	{
+		CommandLoader.DBCreateCommand(classID, baseClassID, data);
+	}
+	
 	@Override
 	public void DBReadArtifacts()
 	{

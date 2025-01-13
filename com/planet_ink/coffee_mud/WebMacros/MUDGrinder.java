@@ -1209,6 +1209,47 @@ public class MUDGrinder extends StdWebMacro
 			return type+" "+A.ID()+" created.";
 		}
 		else
+		if(parms.containsKey("EDITCOMMAND"))
+		{
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null)
+				return "@break@";
+			Command C=null;
+			Command oldC=null;
+			final String last=httpReq.getUrlParameter("COMMAND");
+			if(last==null)
+				return " @break@";
+			C=CMClass.getCommand(last);
+			oldC=C;
+			boolean create=false;
+			if((C!=null)&&(!C.isGeneric()))
+				return " @break@";
+			if(C==null)
+			{
+				create=true;
+				C=(Command)CMClass.getAbility("GenCommand").copyOf();
+				if(C==null)
+					return " @break@";
+				((Modifiable)C).setStat("CLASS",last);
+			}
+			final String errMsg=GrinderCommands.modifyCommand(httpReq, parms, (oldC==null)?C:oldC, (Modifiable)C);
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
+			String type = "";
+			if(oldC != null)
+				type = CMStrings.limit(oldC.getClass().getCanonicalName(),250);
+			if(!create)
+			{
+				DatabaseEngine.AckRecord rec = CMLib.database().DBDeleteCommand(C.ID());
+				type = (rec == null) ? "" : rec.typeClass(); 
+				CMLib.database().DBCreateCommand(C.ID(),type,((Modifiable)C).getStat("ALLXML"));
+				Log.sysOut("Grinder",mob.name()+" modified command "+C.ID()+" ("+type+")");
+				return "Command "+C.ID()+" modified.";
+			}
+			CMLib.database().DBCreateCommand(C.ID(),type,((Modifiable)C).getStat("ALLXML"));
+			Log.sysOut("Grinder",mob.name()+" created command "+C.ID()+" ("+type+")");
+			return type+" "+C.ID()+" created.";
+		}
+		else
 		if(parms.containsKey("EDITITEM"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);

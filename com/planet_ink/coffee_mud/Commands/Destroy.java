@@ -69,7 +69,7 @@ public class Destroy extends StdCommand
 		return "EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, "
 			+ "SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, ACHIEVEMENT, CLASS, ABILITY, MANUFACTURER, "
 			+ "LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, "
-			+ "WEBSERVER, POLL, DEBUGFLAG, DISABLEFLAG, ENABLEFLAG, CRAFTSKILL, GATHERSKILL, CRON, "
+			+ "WEBSERVER, POLL, DEBUGFLAG, DISABLEFLAG, ENABLEFLAG, CRAFTSKILL, GATHERSKILL, CRON, COMMAND, "
 			+ "TRAP, WRIGHTSKILL, AWARD, DELETE:, or a ROOM";
 	}
 
@@ -811,6 +811,51 @@ public class Destroy extends StdCommand
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The diversity of the world just changed?!"));
 		else
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The diversity of the world just decreased!"));
+		return true;
+	}
+
+	public boolean commands(final MOB mob, final List<String> commands)
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is DESTROY COMMAND [COMMAND ID]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+
+		final String commandID=CMParms.combine(commands,2);
+		Command C=CMClass.getCommand(commandID);
+		if(C==null)
+		{
+			mob.tell(L("'@x1' is an invalid command id.",commandID));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(!(C.isGeneric()))
+		{
+			mob.tell(L("'@x1' is not generic, and may not be deleted.",C.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		CMClass.delClass(CMObjectType.COMMAND, C);
+		DatabaseEngine.AckRecord rec = CMLib.database().DBDeleteCommand(C.ID());
+		if((rec != null) && (rec.typeClass() != null) && (rec.typeClass().length() > 0))
+		{
+			try
+			{
+				Class<?> classC = Class.forName(rec.typeClass(), true, CMClass.instance());
+				C = (Command)classC.newInstance();
+				CMClass.addClass(CMObjectType.COMMAND, C);
+				CMClass.reloadCommandWords();
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The power of the world just changed?!"));
+				return true;
+			}
+			catch (Exception e)
+			{
+			}
+		}
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The power of the world just decreased!"));
+		CMClass.reloadCommandWords();
 		return true;
 	}
 
@@ -1679,6 +1724,14 @@ public class Destroy extends StdCommand
 		if(commandType.equals("RACE"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES))
+				return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+			races(mob,commands);
+		}
+		else
+		if(commandType.equals("COMMAND"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMD))
 				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			races(mob,commands);

@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.UpdateSet;
 import com.planet_ink.coffee_mud.Libraries.interfaces.HelpLibrary.HelpSection;
@@ -1468,6 +1469,38 @@ public class Modify extends StdCommand
 		return true;
 	}
 
+	public boolean commands(final MOB mob, final List<String> commands)
+			throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is MODIFY COMMAND [COMMAND ID]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+
+		final String cmdID=CMParms.combine(commands,2);
+		final Command C=CMClass.getCommand(cmdID);
+		if(C==null)
+		{
+			mob.tell(L("'@x1' is an invalid command id.",cmdID));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(!(C.isGeneric()))
+		{
+			mob.tell(L("'@x1' is not generic, and may not be modified as it is.  Use CREATE COMMAND @x2 to convert it to a generic command.",C.ID(),C.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around all @x1s.",C.name()));
+		CMLib.genEd().modifyGenCommand(mob,(Modifiable)C,-1);
+		DatabaseEngine.AckRecord rec = CMLib.database().DBDeleteCommand(C.ID());
+		CMLib.database().DBCreateCommand(C.ID(),rec.typeClass(),((Modifiable)C).getStat("ALLXML"));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",C.name()));
+		return true;
+	}
+
 	public void allQualify(final MOB mob, final List<String> commands)
 	throws IOException
 	{
@@ -2391,7 +2424,7 @@ public class Modify extends StdCommand
 	protected String listOfThings()
 	{
 		return "ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, GATHERSKILL, WRIGHTSKILL, "
-			+ "ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, QUEST, "
+			+ "ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, QUEST, COMMAND, "
 			+ "MOB, USER, HOLIDAY, ACHIEVEMENT, MANUFACTURER, HELP/AHELP, TRAP, CRON, "
 			+ "GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, "
 			+ "TIME, HOUR, UPDATE:, or ROOM";
@@ -2503,6 +2536,13 @@ public class Modify extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
 				return errorOut(mob);
 			traps(mob,commands);
+		}
+		else
+		if(commandType.equals("COMMAND"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMD))
+				return errorOut(mob);
+			commands(mob,commands);
 		}
 		else
 		if(commandType.equals("LANGUAGE"))

@@ -450,8 +450,20 @@ CREATE TABLE CMCCAC (
 CREATE TABLE CMGAAC (
 	CMGAID varchar (50) NOT NULL,
 	CMGAAT CLOB , 
-	CMGACL varchar (50) ,
+	CMGACL varchar (250) ,
 	PRIMARY KEY (CMGAID)
+);
+/**
+  TABLE CMCDAC - Generic Commands
+  CMCDID: Command ID
+  CMCDAT: Generic Command XML Definition
+  CMCDCL: Generic Command Base Class ID
+*/
+CREATE TABLE CMCDAC (
+	CMCDID varchar (50) NOT NULL,
+	CMCDAT CLOB , 
+	CMCDCL varchar (250) ,
+	PRIMARY KEY (CMCDID)
 );
 /**
   TABLE CMACCT - Player Account

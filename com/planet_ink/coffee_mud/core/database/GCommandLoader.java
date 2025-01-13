@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /*
-   Copyright 2008-2025 Bo Zimmerman
+   Copyright 2025-2025 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -35,46 +35,45 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GAbilityLoader
+public class GCommandLoader
 {
 	protected DBConnector DB=null;
-	public GAbilityLoader(final DBConnector newDB)
+	public GCommandLoader(final DBConnector newDB)
 	{
 		DB=newDB;
 	}
 
-	public List<DatabaseEngine.AckRecord> DBReadAbilities()
+	public List<DatabaseEngine.AckRecord> DBReadCommands()
 	{
 		DBConnection D=null;
 		final Vector<DatabaseEngine.AckRecord> rows=new Vector<DatabaseEngine.AckRecord>();
 		try
 		{
 			D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT * FROM CMGAAC");
+			final ResultSet R=D.query("SELECT * FROM CMCDAC");
 			while(R.next())
 			{
-				final String gaid = DBConnections.getRes(R,"CMGAID");
-				final String gaat = DBConnections.getRes(R,"CMGAAT");
-				final String gaac = DBConnections.getRes(R,"CMGACL");
-				final String finalGaac = (gaac == null) || (gaac.length()==0) ? "GenAbility" : gaac;
+				final String cdid = DBConnections.getRes(R,"CMCDID");
+				final String cdat = DBConnections.getRes(R,"CMCDAT");
+				final String cdac = DBConnections.getRes(R,"CMCDCL");
 				rows.addElement(new DatabaseEngine.AckRecord()
 				{
 					@Override
 					public String ID()
 					{
-						return gaid;
+						return cdid;
 					}
 
 					@Override
 					public String data()
 					{
-						return gaat;
+						return cdat;
 					}
 
 					@Override
 					public String typeClass()
 					{
-						return finalGaac;
+						return cdac;
 					}
 				});
 			}
@@ -91,23 +90,66 @@ public class GAbilityLoader
 		return rows;
 	}
 
-	public void DBCreateAbility(final String classID, final String typeClass, final String data)
+	public void DBCreateCommand(final String classID, final String baseClass, final String data)
 	{
 		DB.updateWithClobs(
-		 "INSERT INTO CMGAAC ("
-		 +"CMGAID, "
-		 +"CMGAAT, "
-		 +"CMGACL "
+		 "INSERT INTO CMCDAC ("
+		 +"CMCDID, "
+		 +"CMCDAT, "
+		 +"CMCDCL "
 		 +") values ("
 		 +"'"+classID+"',"
 		 +"?,"
-		 +"'"+typeClass+"'"
+		 +"'"+baseClass+"'"
 		 +")",
 		 data+" ");
 	}
 
-	public void DBDeleteAbility(final String classID)
+	public DatabaseEngine.AckRecord DBDeleteCommand(String classID)
 	{
-		DB.update("DELETE FROM CMGAAC WHERE CMGAID='"+classID+"'");
+		DBConnection D=null;
+		classID = DB.injectionClean(classID);
+		DatabaseEngine.AckRecord ack=null;
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT * FROM CMCDAC WHERE CMCDID='"+classID+"'");
+			while(R.next())
+			{
+				final String cdid = DBConnections.getRes(R,"CMCDID");
+				final String cdat = DBConnections.getRes(R,"CMCDAT");
+				final String cdac = DBConnections.getRes(R,"CMCDCL");
+				ack = new DatabaseEngine.AckRecord()
+				{
+					@Override
+					public String ID()
+					{
+						return cdid;
+					}
+
+					@Override
+					public String data()
+					{
+						return cdat;
+					}
+
+					@Override
+					public String typeClass()
+					{
+						return cdac;
+					}
+				};
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("GCmdLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		DB.update("DELETE FROM CMCDAC WHERE CMCDID='"+classID+"'");
+		return ack;
 	}
 }
