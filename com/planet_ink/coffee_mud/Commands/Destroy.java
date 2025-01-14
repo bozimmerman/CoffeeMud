@@ -838,19 +838,19 @@ public class Destroy extends StdCommand
 			return false;
 		}
 		CMClass.delClass(CMObjectType.COMMAND, C);
-		DatabaseEngine.AckRecord rec = CMLib.database().DBDeleteCommand(C.ID());
+		final DatabaseEngine.AckRecord rec = CMLib.database().DBDeleteCommand(C.ID());
 		if((rec != null) && (rec.typeClass() != null) && (rec.typeClass().length() > 0))
 		{
 			try
 			{
-				Class<?> classC = Class.forName(rec.typeClass(), true, CMClass.instance());
+				final Class<?> classC = Class.forName(rec.typeClass(), true, CMClass.instance());
 				C = (Command)classC.newInstance();
 				CMClass.addClass(CMObjectType.COMMAND, C);
 				CMClass.reloadCommandWords();
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The power of the world just changed?!"));
 				return true;
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 		}
@@ -1731,10 +1731,10 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("COMMAND"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMD))
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCOMMANDS))
 				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
-			races(mob,commands);
+			commands(mob,commands);
 		}
 		else
 		if(commandType.equals("CLASS"))

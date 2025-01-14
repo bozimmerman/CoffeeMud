@@ -1215,6 +1215,26 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 		}
 
+		if(helpText==null)
+		{
+			String subKey=helpKey;
+			Command C=CMClass.findCommand(helpKey, true, false);
+			if(C==null)
+			{
+				subKey=helpKeyWSpaces;
+				C=CMClass.findCommand(helpKeyWSpaces, true, false);
+			}
+			if((C!=null)
+			&&(C instanceof Modifiable)
+			&&(C.securityCheck(forM))
+			&&(((Modifiable)C).getStat("HELP").length()>0))
+			{
+				helpKey=subKey;
+				matchType = HelpMatchType.COMMAND;
+				helpText=normalizeHelpText(((Modifiable)C).getStat("HELP"),skip);
+			}
+		}
+
 		// INEXACT searches start here
 		if(helpText==null)
 		{
@@ -1451,6 +1471,26 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					if(helpText != null)
 						return new Triad<String, String, HelpMatchType>(recipeName.toUpperCase().trim(), helpText, HelpMatchType.SKILL_RECIPE);
 				}
+			}
+		}
+
+		if(helpText==null)
+		{
+			String subKey=helpKey;
+			Command C=CMClass.findCommand(helpKey, true, true);
+			if(C==null)
+			{
+				subKey=helpKeyWSpaces;
+				C=CMClass.findCommand(helpKeyWSpaces, true, true);
+			}
+			if((C!=null)
+			&&(C instanceof Modifiable)
+			&&(C.securityCheck(forM))
+			&&(((Modifiable)C).getStat("HELP").length()>0))
+			{
+				helpKey=subKey;
+				matchType = HelpMatchType.COMMAND;
+				helpText=normalizeHelpText(((Modifiable)C).getStat("HELP"),skip);
 			}
 		}
 

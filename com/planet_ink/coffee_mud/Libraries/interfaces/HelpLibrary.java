@@ -288,6 +288,7 @@ public interface HelpLibrary extends CMLibrary
 		EXPERTISE,
 		DEITY,
 		ACHIEVEMENT,
+		COMMAND,
 		OTHER
 	}
 }

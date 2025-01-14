@@ -40,7 +40,7 @@ Builders Guide</h1>
         <li><a href="#titles">Titles</a><br>
         </li>
 
-        <li><a href="#achievements">Achievements</a></li>
+        <li><a href="#achievements">Achievements</a></li><li><a href="#commands">Commands</a></li>
         <li style="list-style-type: none; list-style-image: none; list-style-position: outside;"><span style="text-decoration: underline;"><br>
           </span></li>
       </ul>
@@ -1333,7 +1333,7 @@ entire
 component relates to the ones before it. &nbsp;If it is ALSO
 required in addition to the ones before it, set this to say AND.
 &nbsp;If it is an OPTION along with the ones before it, set it to
-say OR. &nbsp;The <em>last</em> component may also be set to MESSAGE/&quot;, 
+say OR. &nbsp;The <em>last</em> component may also be set to MESSAGE/", 
 which is a readable description of the skill component.
 On the command line, enter X to delete the entire component.</td>
           </tr>
@@ -1394,7 +1394,7 @@ Deity Rituals in the Archon's Guide for more information on this syntax.</td></t
             <td><em>Description</em></td>
             <td>if this is the final component, and the Conjuction is MESSAGE, then this
             a description of the skill component.</td>
-        </tbody>
+        </tr></tbody>
       </table>
       <p>If you no longer want a
 skill to require a component, you can always just obliterate it with
@@ -6001,7 +6001,93 @@ ALIGNMENT (for median alignment)</td>
           </tr>
         </tbody>
       </table>
-      <strong><em></em></strong><br>
+      <strong><em></em></strong><br><br>
+      <strong><a name="commands"><font color="blue" size="5">Generic Commands</font></a></strong>
+      <p>Commands are the main player input mechanism -- which is probably what you already suspected.</p>
+      <p>Although CoffeeMud
+includes a wide variety of &nbsp;commands, it is not beyond the realm
+of possibility that you may want to
+add onto them. &nbsp;Therefore,
+CoffeeMud also allows you to define commands outside of the
+java-realm. This can be done from the command line using the CREATE
+command. If you want to create a new command called ARG, for
+instance,
+you might enter:</p>
+      <p><strong>CREATE COMMAND Arg</strong></p>
+      <p>And
+it would be done. &nbsp;When creating a command with the exact same ID
+as an existing command (case insensitive), then your new generic
+command will replace the old standard one. &nbsp;When deleting a
+generic command, the previous standard command will be restored.</p>
+      <p>Whenever creating or
+modifying a new command, the Archon is
+presented with a menu of selections and options available to customize
+the command. Here is a description of those options:</p>
+      <strong></strong>
+      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tbody>
+          <tr>
+            <td width="25%"><strong>Property</strong></td>
+            <td width="75%"><strong>Description</strong></td>
+          </tr>
+          <tr>
+            <td><em>Command Words</em></td>
+            <td>the list of words to invoke the command. &nbsp;These are comma-delimited and in uppercase by default.</td>
+          </tr>
+          <tr>
+            <td><em>Can Be Ordered</em></td>
+            <td>whether this is a command that an npc or group member can be ORDERed to do.</td>
+          </tr>
+          <tr>
+            <td><em>Security Mask</em></td>
+            <td>the zapper mask to check whether any given player or npc can invoke the command. &nbsp;See HELP ZAPPERMASK for more information.</td>
+          </tr>
+          <tr>
+            <td><i>Action Cost</i></td>
+            <td>the
+number of action points per tick required to invoke the command when
+not in combat. &nbsp;A value of -1 will use the defaults from the
+coffeemud.ini file.</td>
+          </tr>
+          <tr>
+            <td><span style="font-style: italic;">Combat Cost</span></td>
+            <td>the number of action points per tick required to invoke the command
+when&nbsp;in combat. &nbsp;A value of -1 will use the defaults from the
+coffeemud.ini file.</td>
+          </tr>
+          <tr>
+            <td><i>Help</i></td>
+            <td>the
+text to show when the user enters HELP on the Command Words of the
+command. &nbsp;This will not necessarily override anything in the
+help.ini files, so you might need to remove old entries from there if
+they conflict.</td>
+          </tr>
+          <tr>
+            <td><span style="font-style: italic;">Script</span></td>
+            <td>the Scriptable (MOBPROB) script to execute when the command is invoked. &nbsp;It MUST contain a FUNCTION_PROG EXECUTE.<br><br>When
+running, the function prog will be able to access all command arguments
+(including the command word) via $g. &nbsp;The official number of
+arguments will be stored in $0. &nbsp;The arguments themselves are
+available in $g.0...9 or $1...$9. &nbsp;<br><br>The $n source will be
+the invoking mob. &nbsp;The $t will either be empty, or the name of the
+npc the $n source is in combat with. &nbsp;The $o item will be the $n
+source's wielded item, while $p item will be the $n source's held item.</td>
+          </tr>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        </tbody>
+      </table>
+      <br>
+<br>
       </td>
     </tr>
   </tbody>

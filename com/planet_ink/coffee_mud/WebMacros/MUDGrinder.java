@@ -777,6 +777,18 @@ public class MUDGrinder extends StdWebMacro
 			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 		}
 		else
+		if(parms.containsKey("DELCOMMAND"))
+		{
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null)
+				return "@break@";
+			final Command C=CMClass.getCommand(httpReq.getUrlParameter("COMMAND"));
+			if((C==null)||(!C.isGeneric()))
+				return "@break@";
+			Log.sysOut("Grinder",mob.Name()+" deleted command "+C.ID());
+			CMLib.database().DBDeleteCommand(C.ID());
+		}
+		else
 		if(parms.containsKey("EDITEXIT"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
@@ -1230,7 +1242,8 @@ public class MUDGrinder extends StdWebMacro
 				C=(Command)CMClass.getAbility("GenCommand").copyOf();
 				if(C==null)
 					return " @break@";
-				((Modifiable)C).setStat("CLASS",last);
+				if(C instanceof Modifiable)
+					((Modifiable)C).setStat("CLASS",last);
 			}
 			final String errMsg=GrinderCommands.modifyCommand(httpReq, parms, (oldC==null)?C:oldC, (Modifiable)C);
 			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
@@ -1239,13 +1252,15 @@ public class MUDGrinder extends StdWebMacro
 				type = CMStrings.limit(oldC.getClass().getCanonicalName(),250);
 			if(!create)
 			{
-				DatabaseEngine.AckRecord rec = CMLib.database().DBDeleteCommand(C.ID());
-				type = (rec == null) ? "" : rec.typeClass(); 
-				CMLib.database().DBCreateCommand(C.ID(),type,((Modifiable)C).getStat("ALLXML"));
+				final DatabaseEngine.AckRecord rec = CMLib.database().DBDeleteCommand(C.ID());
+				type = (rec == null) ? "" : rec.typeClass();
+				if(C instanceof Modifiable)
+					CMLib.database().DBCreateCommand(C.ID(),type,((Modifiable)C).getStat("ALLXML"));
 				Log.sysOut("Grinder",mob.name()+" modified command "+C.ID()+" ("+type+")");
 				return "Command "+C.ID()+" modified.";
 			}
-			CMLib.database().DBCreateCommand(C.ID(),type,((Modifiable)C).getStat("ALLXML"));
+			if(C instanceof Modifiable)
+				CMLib.database().DBCreateCommand(C.ID(),type,((Modifiable)C).getStat("ALLXML"));
 			Log.sysOut("Grinder",mob.name()+" created command "+C.ID()+" ("+type+")");
 			return type+" "+C.ID()+" created.";
 		}

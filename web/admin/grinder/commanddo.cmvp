@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDCOMMANDS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+	<META CHARSET="utf-8"/>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+    <link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
+</head>
+<body BGCOLOR=BLACK>
+<SCRIPT LANGUAGE=JavaScript>
+//<!--
+@if?CheckReqParm?FUNCTION=DELCOMMAND@
+    var v='@MUDGrinder?DELCOMMAND@';
+    if((v != '')&&(alert))
+        alert(v);
+    else
+    if(alert)
+        alert('Command deleted.');
+    opener.Refresh();
+    window.close();
+@endif@
+@if?CheckReqParm?FUNCTION=EDITCOMMAND@
+    var v='@MUDGrinder?EDITCOMMAND@';
+    if((v != '')&&(alert))
+        alert(v);
+    else
+    if(alert)
+        alert('Command created/modified.');
+    opener.Refresh();
+    window.close();
+@endif@
+//-->
+</SCRIPT>
+
+</BODY>
+</HTML>
+@endif@
+@endif@

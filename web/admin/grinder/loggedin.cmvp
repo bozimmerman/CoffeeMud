@@ -237,6 +237,10 @@
 			<BR>
 			@endif@
 		</TD><TD ALIGN=CENTER VALIGN=TOP ROWSPAN=3>
+			@if?CheckAuthCode?AUTH_CMDCOMMANDS=true@
+			<A href="javascript:Clicked('commands.cmvp')"><FONT COLOR=WHITE>Commands</FONT></a>
+			<BR>
+			@endif@
 			@if?CheckAuthCode?AUTH_CMDRACES=true@
 			<A href="javascript:Clicked('races.cmvp')"><FONT COLOR=WHITE>Races</FONT></a>
 			<BR>
@@ -251,10 +255,6 @@
 			@endif@
 			@if?CheckAuthCode?AUTH_CMDRECIPES=true@
 			<A href="javascript:Clicked('recipes.cmvp')"><FONT COLOR=WHITE>Skill Recipes</FONT></a>
-			<BR>
-			@endif@
-			@if?CheckAuthCode?AUTH_COMPONENTS=true@
-			<A href="javascript:Clicked('components.cmvp')"><FONT COLOR=WHITE>Skill Components</FONT></a>
 			<BR>
 			@endif@
 			@if?CheckAuthCode?AUTH_TITLES=true&||AUTH_ACHIEVEMENTS=true&||AUTH_AUTOAWARDS=true@

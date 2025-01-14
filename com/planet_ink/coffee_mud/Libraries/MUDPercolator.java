@@ -516,10 +516,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		final String filePath="com/planet_ink/coffee_mud/Libraries/layouts";
 		final CMProps page = CMProps.instance();
-		final Vector<Object> layouts=CMClass.loadClassList(filePath,page.getStr("LIBRARY"),"/layouts",LayoutManager.class,true);
+		final List<Object> layouts=CMClass.loadClassList(filePath,page.getStr("LIBRARY"),"/layouts",LayoutManager.class,true);
 		for(int f=0;f<layouts.size();f++)
 		{
-			final LayoutManager lmgr= (LayoutManager)layouts.elementAt(f);
+			final LayoutManager lmgr= (LayoutManager)layouts.get(f);
 			final Class<LayoutManager> lmgrClass=(Class<LayoutManager>)lmgr.getClass();
 			mgrs.put(lmgr.name().toUpperCase().trim(),lmgrClass);
 		}

@@ -129,6 +129,8 @@ public class DBInterface implements DatabaseEngine
 			this.ClanLoader = 		new ClanLoader(privacyV.contains(DatabaseTables.DBCLANS.toString()) ? DB : oldBaseDB);
 		if((this.BackLogLoader == null) || privacyV.contains(DatabaseTables.DBBACKLOG.toString()))
 			this.BackLogLoader = 	new BackLogLoader(privacyV.contains(DatabaseTables.DBBACKLOG.toString()) ? DB : oldBaseDB);
+		if((this.CommandLoader == null) || privacyV.contains(DatabaseTables.DBCOMMANDS.toString()))
+			this.CommandLoader = 	new GCommandLoader(privacyV.contains(DatabaseTables.DBCOMMANDS.toString()) ? DB : oldBaseDB);
 	}
 
 	@Override
@@ -1268,19 +1270,19 @@ public class DBInterface implements DatabaseEngine
 	{
 		return CommandLoader.DBReadCommands();
 	}
-	
+
 	@Override
-	public AckRecord DBDeleteCommand(String classID)
+	public AckRecord DBDeleteCommand(final String classID)
 	{
 		return CommandLoader.DBDeleteCommand(classID);
 	}
-	
+
 	@Override
-	public void DBCreateCommand(String classID, String baseClassID, String data)
+	public void DBCreateCommand(final String classID, final String baseClassID, final String data)
 	{
 		CommandLoader.DBCreateCommand(classID, baseClassID, data);
 	}
-	
+
 	@Override
 	public void DBReadArtifacts()
 	{

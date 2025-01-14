@@ -4766,7 +4766,7 @@ public class ListCmd extends StdCommand
 		EXPIRED("EXPIRED",new SecFlag[]{SecFlag.CMDPLAYERS}),
 		SQL("SQL",new SecFlag[]{SecFlag.CMDDATABASE}),
 		SHIPS("SHIPS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDPLAYERS}),
-		COMMANDS("COMMANDS",new SecFlag[]{SecFlag.LISTADMIN}),
+		COMMANDS("COMMANDS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDCOMMANDS}),
 		FILEUSE("FILEUSE",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS}),
 		SOCIALS("SOCIALS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDSOCIALS,SecFlag.AREA_CMDSOCIALS}),
 		AREATYPES("AREATYPES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS}),
@@ -4951,7 +4951,6 @@ public class ListCmd extends StdCommand
 
 	public void listCommands(final MOB mob, final List<String> commands)
 	{
-
 		String rest="";
 		MOB whoM=mob;
 		final WikiFlag wiki = getWikiFlagRemoved(commands);
@@ -4982,26 +4981,15 @@ public class ListCmd extends StdCommand
 			final String[] access=C.getAccessWords();
 			if((access!=null)
 			&&(access.length>0)
-			&&(access[0].length()>0)
-			&&(!done.contains(access[0]))
-			&&(C.securityCheck(whoM)))
+			&&(access[0].length()>0))
 			{
-				done.add(access[0]);
-				if(time)
-					commandSet.add(access[0] + "("+C.actionsCost(mob, commandSet)+", "+C.combatActionsCost(mob, commandSet)+")");
-				else
-					commandSet.add(access[0]);
-			}
-		}
-		if(!time)
-		{
-			for(final Enumeration<Ability> a=whoM.allAbilities();a.hasMoreElements();)
-			{
-				final Ability A=a.nextElement();
-				if((A!=null)&&(A.triggerStrings()!=null)&&(A.triggerStrings().length>0)&&(!done.contains(A.triggerStrings()[0])))
+				if(!done.contains(access[0]))
 				{
-					done.add(A.triggerStrings()[0]);
-					commandSet.add(A.triggerStrings()[0]);
+					done.add(access[0]);
+					if(time)
+						commandSet.add(access[0] + (C.isGeneric()?"^y*^?":"") + "("+C.actionsCost(mob, commandSet)+", "+C.combatActionsCost(mob, commandSet)+")");
+					else
+						commandSet.add(access[0] + (C.isGeneric()?"^y*^?":""));
 				}
 			}
 		}
@@ -5097,7 +5085,7 @@ public class ListCmd extends StdCommand
 			}
 		}
 		if(mob.session()!=null)
-			mob.session().rawPrint(commandList.toString());
+			mob.session().colorOnlyPrint(commandList.toString());
 	}
 
 	public void listManufacturers(final MOB mob, final List<String> commands)

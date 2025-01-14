@@ -183,11 +183,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							  final Filterer<String> filter, final String filterErr) throws IOException
 	{
 		final String oldVal = E.getStat(field);
+		if((mob==null)||(mob.session() == null))
+			return;
+		final Session sess=mob.session();
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		final String showVal=CMStrings.limit(CMStrings.removeCRLF(oldVal),50)+"...";
+		final String numStr = (showNumber == 0)?"   ":(showNumber+". ");
+		mob.tell(numStr+field+": '"+showVal+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
+
 		final List<String> vbuf = CMParms.parseAny(oldVal, '\n', false);
 		MsgMkrResolution res = CMLib.journals().makeMessage(mob, fieldDisplayStr, vbuf, false);
-		while((res == MsgMkrResolution.SAVEFILE)
-		&&(mob.session()!=null)
-		&&(!mob.session().isStopped()))
+		while((res == MsgMkrResolution.SAVEFILE) && (!sess.isStopped()))
 		{
 			final String newMsgTxt = CMParms.combineWith(vbuf, "\n");
 			if((filter == null)||(filter.passesFilter(newMsgTxt)))
@@ -9357,9 +9366,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","ACCESS",false);
 			promptStatBool(mob,me,null,++showNumber,showFlag,"Can be Ordered","ORDEROK");
 			promptStatStr(mob,me,CMLib.masking().maskHelp("\n", "disallow"),++showNumber,showFlag,
-					"Security Mask","SECMASK",false);
-			promptStatDouble(mob, me, showNumber, showFlag, "Action Cost", "ACTCOST");
-			promptStatDouble(mob, me, showNumber, showFlag, "Combat Cost", "CBTCOST");
+					"Security Mask","SECMASK",true);
+			promptStatDouble(mob, me, ++showNumber, showFlag, "Action Cost", "ACTCOST");
+			promptStatDouble(mob, me, ++showNumber, showFlag, "Combat Cost", "CBTCOST");
 			promptStatMsg(mob,me,++showNumber,showFlag,"Help Text","HELP",null,"");
 			promptStatMsg(mob,me,++showNumber,showFlag,"Help Text","SCRIPT",new Filterer<String>() {
 				@Override

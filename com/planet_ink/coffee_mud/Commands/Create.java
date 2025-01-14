@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.HelpLibrary.HelpSection;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.WebMacros.Authenticate;
 
 import java.util.*;
 import java.io.IOException;
@@ -1408,8 +1409,10 @@ public class Create extends StdCommand
 			return;
 		}
 		final Command CR;
+		String typeClass = "";
 		if(C != null)
 		{
+			typeClass=C.getClass().getCanonicalName();
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The command @x1 already exists, and will be over-ridden.",classD));
 			CR=(Command)CMClass.getCommand("GenCommand").copyOf();
 			final StringBuilder script = new StringBuilder("");
@@ -1418,30 +1421,62 @@ public class Create extends StdCommand
 			script.append("<SCRIPT>\n");
 			script.append("  var c = new Packages."+fullClassName+"();\n");
 			script.append("  var l = new Packages.com.planet_ink.coffee_mud.core.collections.XArrayList();\n");
-			script.append("  for(var i=0;i<objs().length;i++)\n");
-			script.append("    if((''+objs()[i]).length>0)\n");
-			script.append("      l.add(''+objs()[i]);\n");
+			script.append("  for(var i=0;i<Number(objs()[0]);i++)\n");
+			script.append("    if((''+objs()[i+1]).length>0)\n");
+			script.append("      l.add(''+objs()[i+1]);\n");
 			script.append("  var r = c.execute(source(),l,0);\n");
 			script.append("  objs()[0] = ''+r;\n");
 			script.append("</SCRIPT>\n");
 			script.append("RETURN $0\n");
 			script.append("~\n");
+			boolean secCheck=false;
+			final MOB M = CMClass.getFactoryMOB();
+			try
+			{
+				secCheck=C.securityCheck(M);
+			}
+			finally
+			{
+				M.destroy();
+			}
 			((Modifiable)CR).setStat("CLASS",C.ID());
-			((Modifiable)CR).setStat("HELP",CMLib.help().getHelpText(C.getAccessWords()[0], mob, false, true));
+			if((C.getAccessWords()!=null)&&(C.getAccessWords().length>0))
+				((Modifiable)CR).setStat("HELP",CMLib.help().getHelpText(C.getAccessWords()[0], mob, !secCheck, true));
 			((Modifiable)CR).setStat("ACCESS",CMParms.toListString(C.getAccessWords()));
 			((Modifiable)CR).setStat("SCRIPT",script.toString());
 			((Modifiable)CR).setStat("ORDEROK",C.canBeOrdered()+"");
-			((Modifiable)CR).setStat("SECMASK","");
-			((Modifiable)CR).setStat("ACTCOST","-1");
-			((Modifiable)CR).setStat("CBTCOST","-1");
+			((Modifiable)CR).setStat("SECMASK",secCheck?"":"+SYSOP -NAMES");
+			final String cmdWord = (C.getAccessWords()!=null)&&C.getAccessWords().length>0
+					?C.getAccessWords()[0]:"WORD";
+			String old=""+C.actionsCost(mob, new XArrayList<String>(cmdWord));
+			if(old.equalsIgnoreCase(""+CMProps.getCommandActionCost(C.ID())))
+				old="-1.0";
+			((Modifiable)CR).setStat("ACTCOST",old);
+			old=""+C.combatActionsCost(mob, new XArrayList<String>(cmdWord));
+			if(old.equalsIgnoreCase(""+CMProps.getCommandCombatActionCost(C.ID())))
+				old="-1.0";
+			((Modifiable)CR).setStat("CBTCOST",old);
 		}
 		else
 		{
 			CR=(Command)CMClass.getCommand("GenCommand").copyOf();
 			((Modifiable)CR).setStat("CLASS",classD);
+			((Modifiable)CR).setStat("ACTCOST","-1");
+			((Modifiable)CR).setStat("CBTCOST","-1");
+			((Modifiable)CR).setStat("ACCESS",classD.toUpperCase().trim());
+			final StringBuilder script = new StringBuilder("");
+			script.append("FUNCTION_PROG EXECUTE\n");
+			script.append("  MPECHO Number of arguments: $0\n");
+			script.append("  MPECHO All Arguments      : $g\n");
+			script.append("  FOR $1 = 0 to $0\n");
+			script.append("    MPECHO Argument#$1         : $g.$1\n");
+			script.append("  NEXT\n");
+			script.append("  RETURN true\n");
+			script.append("~\n");
+			((Modifiable)CR).setStat("SCRIPT",script.toString());
 		}
-		//CMLib.genEd().modifyGenWrightSkill(mob,CR,-1); //TODO:BZ:
-		//CMLib.database().DBCreateAbility(CR.ID(),"GenCommand",((Modifiable)CR).getStat("ALLXML")); //TODO:BZ:
+		CMLib.genEd().modifyGenCommand(mob,(Modifiable)CR,-1);
+		CMLib.database().DBCreateCommand(CR.ID(),typeClass,((Modifiable)CR).getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The power of the world just increased!"));
 		CMClass.reloadCommandWords();
 	}
@@ -1860,7 +1895,7 @@ public class Create extends StdCommand
 		else
 		if(commandType.equals("COMMAND"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMD))
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCOMMANDS))
 				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			commands(mob,commands);

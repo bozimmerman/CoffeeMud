@@ -86,7 +86,8 @@ public interface DatabaseEngine extends CMLibrary
 		DBJOURNALS,
 		DBQUEST,
 		DBCLANS,
-		DBBACKLOG
+		DBBACKLOG,
+		DBCOMMANDS
 	}
 
 	/**

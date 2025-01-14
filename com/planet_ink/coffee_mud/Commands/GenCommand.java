@@ -88,23 +88,27 @@ public class GenCommand extends StdCommand implements Modifiable
 				}
 			}
 		}
-		final ScriptingEngine eng = this.engine;
+		ScriptingEngine eng = this.engine;
 		if((eng != null)
 		&&(eng.isFunc("EXECUTE")))
 		{
 			final Object[] objs = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
-			for(int i=0;i<commands.size();i++)
+			for(int i=1;i<=commands.size();i++)
 			{
 				if(i<ScriptingEngine.SPECIAL_NUM_OBJECTS)
-					objs[i] = commands.get(i);
+					objs[i] = commands.get(i-1);
 				else
-					objs[ScriptingEngine.SPECIAL_NUM_OBJECTS-1] += " " + commands.get(i);
+					objs[ScriptingEngine.SPECIAL_NUM_OBJECTS-1] += " " + commands.get(i-1);
 			}
-			for(int i=commands.size();i<ScriptingEngine.SPECIAL_NUM_OBJECTS;i++)
+			for(int i=commands.size()+1;i<ScriptingEngine.SPECIAL_NUM_OBJECTS;i++)
 				objs[i] = "";
+			objs[0] = "" + commands.size();
+			final String allParms = CMParms.combineQuoted(commands, 0);
 			final MPContext ctx = new MPContext(mob, mob, mob,
-					mob.getVictim(), mob.fetchWieldedItem(), mob.fetchHeldItem(), mob.Name(), objs);
-			return CMath.s_bool(eng.callFunc("EXECUTE", commands.size()+"", ctx));
+								mob.getVictim(), mob.fetchWieldedItem(), mob.fetchHeldItem(), allParms, objs);
+			eng = (ScriptingEngine)eng.copyOf();
+			eng.tick(mob, Tickable.TICKID_MOB);
+			return CMath.s_bool(eng.callFunc("EXECUTE", allParms, ctx));
 		}
 		else
 			mob.tell(L("No EXECUTE function found."));
@@ -210,6 +214,7 @@ public class GenCommand extends StdCommand implements Modifiable
 				if(!ID().equals("GenCommand"))
 					CMClass.delClass(CMObjectType.COMMAND,CMClass.getCommand(ID()));
 				this.ID=val;
+				CMClass.delClass(CMObjectType.COMMAND,CMClass.getCommand(ID));
 				CMClass.addClass(CMObjectType.COMMAND,this);
 			}
 			break;
@@ -237,7 +242,7 @@ public class GenCommand extends StdCommand implements Modifiable
 			this.cbtCost = CMath.s_double(val);
 			break;
 		default:
-			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenCommand"))
+			if(code.equalsIgnoreCase("allxml"))
 				parseAllXML(val);
 			break;
 		}
@@ -268,9 +273,6 @@ public class GenCommand extends StdCommand implements Modifiable
 			return;
 		for(int c=0;c<getStatCodes().length;c++)
 		{
-			if(getStatCodes()[c].equals("CLASS"))
-				this.ID=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V, getStatCodes()[c]));
-			else
 			if(!getStatCodes()[c].equals("TEXT"))
 				setStat(getStatCodes()[c],CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V, getStatCodes()[c])));
 		}

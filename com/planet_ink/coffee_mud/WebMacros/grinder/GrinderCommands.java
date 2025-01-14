@@ -59,8 +59,45 @@ public class GrinderCommands
 		String newid=httpReq.getUrlParameter("NEWID");
 		newid = CMStrings.replaceAll(newid, " ", "");
 		String old;
-		old=httpReq.getUrlParameter("NAME");
-		C.setStat("NAME",(old==null)?"NAME":old);
+		old=httpReq.getUrlParameter("HELP");
+		if(old != null)
+			C.setStat("HELP",old);
+		old=httpReq.getUrlParameter("WORDLIST");
+		if(old != null)
+			C.setStat("ACTIONS",old.toUpperCase());
+		old=httpReq.getUrlParameter("SCRIPT");
+		if(old != null)
+		{
+			final List<String> lines = CMParms.parseAny(old.toUpperCase(), '\n', true);
+			boolean found=false;
+			for(final String l : lines)
+			{
+				final String s = l.trim();
+				if(s.startsWith("FUNCTION_PROG")
+				&&(s.substring(13).trim().startsWith("EXECUTE")))
+					found=true;
+			}
+			if(!found)
+				return "Illegal Script -- must contain FUNCTION_PROG EXECUTE";
+			C.setStat("SCRIPT",old);
+		}
+		old=httpReq.getUrlParameter("SECMASK");
+		if(old != null)
+			C.setStat("SECMASK",old);
+		old=httpReq.getUrlParameter("ACOST");
+		if(old != null)
+		{
+			if(!CMath.isNumber(old))
+				return "Illegal action cost.";
+			C.setStat("ACOST",""+CMath.s_double(old));
+		}
+		old=httpReq.getUrlParameter("CCOST");
+		if(old != null)
+		{
+			if(!CMath.isNumber(old))
+				return "Illegal combat cost.";
+			C.setStat("CCOST",""+CMath.s_double(old));
+		}
 
 		if((newid!=null)
 		&&(newid.length()>0)

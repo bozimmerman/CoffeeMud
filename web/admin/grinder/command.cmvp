@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDCOMMANDS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<html>
+	<META CHARSET="utf-8"/>
+<head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+ 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
+	<title>Command Manager</title>
+	<script language=JavaScript>
+	<!--
+		function openUp2(named)
+		{
+			var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/property.cmvp?ABILITY="+named,
+			            "Ability",strFeatures, false);
+		}
+        function NewCommand()
+        {
+            var commandid=window.prompt('Enter a new unique ID for your Command (no spaces):');
+            if(commandid==null)
+                return;
+            if(commandid.length==0)
+                return;
+            if(commandid.indexOf(' ')>=0)
+            {
+                if(window.alert) window.alert('No spaces are allowed in your ID!');
+                return;
+            }
+            document.RESOURCES.NEWCOMMANDID.value=commandid;
+            document.RESOURCES.FUNCTION.value='RECOMMAND';
+            document.RESOURCES.action='/grinder/commanddo.cmvp';
+            document.RESOURCES.submit();
+        }
+		function Delete()
+		{
+			if(confirm('Delete this generic command?! Confirm!'))
+			{
+				if(confirm('Press OK to Delete this command!'))
+				{
+					document.RESOURCES.action='commanddo.cmvp';
+					document.RESOURCES.FUNCTION.value='DELCOMMAND';
+					document.RESOURCES.submit();
+				}
+			}
+		}
+		function EditDone()
+		{
+		    @if?CommandData?ISNEWCOMMAND@
+                if(confirm('Create this new command?'))
+            @else@
+                @if?CommandData?ISGENERIC@
+                    if(confirm('Submit your changes to this command?'))
+                @else@
+        			if(confirm('Submitting these changes will convert your standard Command to a Generic Command.  Are you absolutely sure?'))
+                @endif@
+    	    @endif@
+                {
+                    document.RESOURCES.action='commanddo.cmvp';
+                    document.RESOURCES.FUNCTION.value='EDITCOMMAND';
+                    document.RESOURCES.submit();
+                }
+		}
+		function ReShow()
+		{
+			document.RESOURCES.FUNCTION.value='';
+			document.RESOURCES.action='/grinder/command.cmvp';
+			document.RESOURCES.submit();
+		}
+        function ReCommand()
+        {
+            document.RESOURCES.FUNCTION.value='RECOMMAND';
+            document.RESOURCES.action='/grinder/commanddo.cmvp';
+            document.RESOURCES.submit();
+        }
+		function Cancel()
+		{
+    		  window.close();
+		}
+		function OpenUp(file,named)
+		{
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/"+file+"?HELPTOPIC="+named,
+			            "Help",strFeatures, false);
+		}
+        function Clicked(action)
+        {
+            document.RESOURCES.action=action;
+            document.RESOURCES.submit();
+        }
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="command.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=HIDDEN NAME=COMMAND VALUE="@RequestParameter?COMMAND@">
+<INPUT TYPE=HIDDEN NAME=NEWCOMMAND VALUE="@RequestParameter?NEWCOMMAND@">
+@if?CheckReqParm?COMMAND=@
+	Select a command above to view/edit.
+@else@
+	<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Command ID: </FONT></TD>
+            <TD WIDTH=66%><FONT COLOR=WHITE>@RequestParameter?COMMAND&ELLIPSE=40@</FONT></TD>
+        </TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Can Order: </FONT></TD>
+            <TD WIDTH=66%><INPUT TYPE=CHECKBOX NAME=CANORDER @if?CommandData?CANORDER@CHECKED@endif@><FONT COLOR=WHITE>Orderable</FONT></TD>
+        </TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Action Words: </FONT></TD>
+			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=55 NAME=WORDLIST VALUE="@CommandData?WORDLIST@"></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Security Mask: </FONT></TD>
+			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=55 NAME=SECMASK VALUE="@CommandData?SECMASK@"></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Action Cost (-1.0): </FONT></TD>
+			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=10 NAME=ACOST VALUE="@CommandData?ACOST@"></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Combat Cost (-1.0): </FONT></TD>
+			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=10 NAME=CCOST VALUE="@CommandData?CCOST@"></TD>
+		</TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Script: </FONT></TD>
+            <TD><TEXTAREA ROWS=10 COLS=55 NAME=SCRIPT>@CommandData?SCRIPT@</TEXTAREA></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Help Entry: </FONT></TD>
+            <TD><TEXTAREA ROWS=10 COLS=55 NAME=HELP>@CommandData?HELP@</TEXTAREA></TD>
+        </TR>
+	</TABLE>
+@endif@
+<BR>
+<TABLE WIDTH=100% BORDER=0>
+<TR>
+    @if?!CheckReqParm?COMMAND=@
+        @if?CommandData?ISNEWCOMMAND@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
+        @else@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+        @endif@
+        @if?CommandData?ISGENERIC@
+            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+        @endif@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
+    @endif@
+</TR>
+</TABLE>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

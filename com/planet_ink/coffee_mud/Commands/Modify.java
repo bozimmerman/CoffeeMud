@@ -1495,8 +1495,9 @@ public class Modify extends StdCommand
 		}
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around all @x1s.",C.name()));
 		CMLib.genEd().modifyGenCommand(mob,(Modifiable)C,-1);
-		DatabaseEngine.AckRecord rec = CMLib.database().DBDeleteCommand(C.ID());
-		CMLib.database().DBCreateCommand(C.ID(),rec.typeClass(),((Modifiable)C).getStat("ALLXML"));
+		final DatabaseEngine.AckRecord rec = CMLib.database().DBDeleteCommand(C.ID());
+		if(C instanceof Modifiable)
+			CMLib.database().DBCreateCommand(C.ID(),rec.typeClass(),((Modifiable)C).getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",C.name()));
 		return true;
 	}
@@ -2540,7 +2541,7 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("COMMAND"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMD))
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCOMMANDS))
 				return errorOut(mob);
 			commands(mob,commands);
 		}
