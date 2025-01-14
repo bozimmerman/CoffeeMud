@@ -782,11 +782,25 @@ public class MUDGrinder extends StdWebMacro
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null)
 				return "@break@";
-			final Command C=CMClass.getCommand(httpReq.getUrlParameter("COMMAND"));
+			Command C=CMClass.getCommand(httpReq.getUrlParameter("COMMAND"));
 			if((C==null)||(!C.isGeneric()))
 				return "@break@";
 			Log.sysOut("Grinder",mob.Name()+" deleted command "+C.ID());
-			CMLib.database().DBDeleteCommand(C.ID());
+			final DatabaseEngine.AckRecord rec = CMLib.database().DBDeleteCommand(C.ID());
+			CMClass.delClass(CMObjectType.COMMAND, C);
+			if((rec!=null)&&(rec.typeClass()!=null)&&(rec.typeClass().length()>0))
+			{
+				try
+				{
+					final Class<?> classC = Class.forName(rec.typeClass(), true, CMClass.instance());
+					C = (Command)classC.newInstance();
+					CMClass.addClass(CMObjectType.COMMAND, C);
+				}
+				catch (final Exception e)
+				{
+				}
+			}
+			CMClass.reloadCommandWords();
 		}
 		else
 		if(parms.containsKey("EDITEXIT"))

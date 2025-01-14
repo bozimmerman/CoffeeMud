@@ -42,9 +42,9 @@ public class GenCommand extends StdCommand implements Modifiable
 	// data should be stored in a common instance object .. something common to all genability of same id,
 	// but diff to others.n  I'm thinking like a DVector, and just have
 	private String			ID			= "GenCommand";
-	private String[]		access		= new String[] { "COMMANDWORD" };
+	private String[]		access		= new String[] { "" };
 	private Boolean			orderok		= Boolean.TRUE;
-	private String			secMaskStr	= "-PLAYER -NPC";
+	private String			secMaskStr	= "";
 	private CompiledZMask	secMask		= null;
 	private double			actCost		= -1;
 	private double			cbtCost		= -1;

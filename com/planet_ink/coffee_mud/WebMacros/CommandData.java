@@ -81,6 +81,7 @@ public class CommandData extends StdWebMacro
 			{
 				C=(Command)CMClass.getCommand("GenCommand").copyOf();
 				last=newCommandID;
+				((Modifiable)C).setStat("ACCESS", newCommandID.toUpperCase().trim());
 				httpReq.addFakeUrlParameter("COMMAND",newCommandID);
 				httpReq.addFakeUrlParameter("NEWCOMMAND",newCommandID);
 			}
