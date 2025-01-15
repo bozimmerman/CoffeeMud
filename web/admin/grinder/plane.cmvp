@@ -281,7 +281,7 @@
         		<TR>
         			<TD>
         				<SELECT NAME=AEFFECT_@RequestParameter?CT@ ONCHANGE="ReShow()">
-        				@PlanarData?AEFFECT&@@RequestParameter?CT@@ @
+        				@PlanarData?AEFFECT&@@RequestParameter?CT@@&LIMIT=22@
         				</SELECT>
         			</TD>
         			<TD>
@@ -292,7 +292,7 @@
        		<TR>
        			<TD>
        				<SELECT NAME=AEFFECT_@RequestParameter?CT@ ONCHANGE="ReShow()">
-       				@PlanarData?AEFFECT&@@RequestParameter?CT@@ @
+       				@PlanarData?AEFFECT&@@RequestParameter?CT@@&LIMIT=22@
        				</SELECT>
        			</TD>
        			<TD>
@@ -316,7 +316,7 @@
         		<TR>
         			<TD>
         				<SELECT NAME=REFFECT_@RequestParameter?CT@ ONCHANGE="ReShow()">
-        				@PlanarData?REFFECT&@@RequestParameter?CT@@ @
+        				@PlanarData?REFFECT&@@RequestParameter?CT@@&LIMIT=22@
         				</SELECT>
         			</TD>
         			<TD>
@@ -327,7 +327,7 @@
        		<TR>
        			<TD>
        				<SELECT NAME=REFFECT_@RequestParameter?CT@ ONCHANGE="ReShow()">
-       				@PlanarData?REFFECT&@@RequestParameter?CT@@ @
+       				@PlanarData?REFFECT&@@RequestParameter?CT@@&LIMIT=22@
        				</SELECT>
        			</TD>
        			<TD>
@@ -351,7 +351,7 @@
         		<TR>
         			<TD>
         				<SELECT NAME=BEHAVE_@RequestParameter?CT@ ONCHANGE="ReShow()">
-        				@PlanarData?BEHAVE&@@RequestParameter?CT@@ @
+        				@PlanarData?BEHAVE&@@RequestParameter?CT@@&LIMIT=22@
         				</SELECT>
         			</TD>
         			<TD>
@@ -362,7 +362,7 @@
        		<TR>
        			<TD>
        				<SELECT NAME=BEHAVE_@RequestParameter?CT@ ONCHANGE="ReShow()">
-       				@PlanarData?BEHAVE&@@RequestParameter?CT@@ @
+       				@PlanarData?BEHAVE&@@RequestParameter?CT@@&LIMIT=22@
        				</SELECT>
        			</TD>
        			<TD>
@@ -386,12 +386,12 @@
         		<TR>
         			<TD>
         				<SELECT NAME=BEHAVAFFID_@RequestParameter?CT@ ONCHANGE="ReShow()">
-        				@PlanarData?BEHAVAFFID&@@RequestParameter?CT@@ @
+        				@PlanarData?BEHAVAFFID&@@RequestParameter?CT@@&LIMIT=22@
         				</SELECT>
         			</TD>
        			<TD>
        				<SELECT NAME=BEHAVAFFID_V@RequestParameter?CT@ ONCHANGE="ReShow()">
-       				@PlanarData?BEHAVAFFID&V@@RequestParameter?CT@@ @
+       				@PlanarData?BEHAVAFFID&V@@RequestParameter?CT@@&LIMIT=22@
        				</SELECT>
        				<FONT COLOR=WHITE>
        				Keep parms: <INPUT TYPE=CHECKBOX NAME=BEHAVAFFID_S@RequestParameter?CT@ @PlanarData?BEHAVAFFID&S@@RequestParameter?CT@@ @>
@@ -402,12 +402,12 @@
        		<TR>
        			<TD>
        				<SELECT NAME=BEHAVAFFID_@RequestParameter?CT@ ONCHANGE="ReShow()">
-       				@PlanarData?BEHAVAFFID&@@RequestParameter?CT@@ @
+       				@PlanarData?BEHAVAFFID&@@RequestParameter?CT@@&LIMIT=22@
        				</SELECT>
        			</TD>
        			<TD>
        				<SELECT NAME=BEHAVAFFID_V@RequestParameter?CT@ ONCHANGE="ReShow()">
-       				@PlanarData?BEHAVAFFID&V@@RequestParameter?CT@@ @
+       				@PlanarData?BEHAVAFFID&V@@RequestParameter?CT@@&LIMIT=22@
        				</SELECT>
        				<FONT COLOR=WHITE>Keep parms: <INPUT TYPE=CHECKBOX NAME=BEHAVAFFID_S@RequestParameter?CT@ @PlanarData?BEHAVAFFID&S@@RequestParameter?CT@@ @></FONT>
        			</TD>
@@ -429,7 +429,7 @@
         		<TR>
         			<TD>
         				<SELECT NAME=ENABLE_@RequestParameter?CT@ ONCHANGE="ReShow()">
-        				@PlanarData?ENABLE&@@RequestParameter?CT@@ @
+        				@PlanarData?ENABLE&@@RequestParameter?CT@@&LIMIT=22@
         				</SELECT>
         			</TD>
         			<TD>
@@ -440,7 +440,7 @@
        		<TR>
        			<TD>
        				<SELECT NAME=ENABLE_@RequestParameter?CT@ ONCHANGE="ReShow()">
-       				@PlanarData?ENABLE&@@RequestParameter?CT@@ @
+       				@PlanarData?ENABLE&@@RequestParameter?CT@@&LIMIT=22@
        				</SELECT>
        			</TD>
        			<TD>
@@ -464,7 +464,7 @@
         		<TR>
         			<TD>
         				<SELECT NAME=FACTIONS_@RequestParameter?CT@ ONCHANGE="ReShow()">
-        				@PlanarData?FACTIONS&@@RequestParameter?CT@@ @
+        				@PlanarData?FACTIONS&@@RequestParameter?CT@@&LIMIT=22@
         				</SELECT>
         			</TD>
         			<TD>
@@ -475,7 +475,7 @@
        		<TR>
        			<TD>
        				<SELECT NAME=FACTIONS_@RequestParameter?CT@ ONCHANGE="ReShow()">
-       				@PlanarData?FACTIONS&@@RequestParameter?CT@@ @
+       				@PlanarData?FACTIONS&@@RequestParameter?CT@@&LIMIT=22@
        				</SELECT>
        			</TD>
        			<TD>
@@ -533,7 +533,7 @@
 	        	@if?CheckReqParm?PROMOTIONSEXISTS=@ @break@ @endif@
         		<TR>
         			<TD>
-	        			<FONT COLOR=WHITE>X@RequestParameter?SHOWCT@ Title:<INPUT TYPE=TEXT SIZE=20 NAME="PROMOTIONS_@RequestParameter?CT@" VALUE="@PlanarData?PROMOTIONS&@@RequestParameter?CT@@ @"></FONT>
+	        			<FONT COLOR=WHITE>X@RequestParameter?SHOWCT@ Title:<INPUT TYPE=TEXT SIZE=20 NAME="PROMOTIONS_@RequestParameter?CT@" VALUE="@PlanarData?PROMOTIONS&@@RequestParameter?CT@@ @" ONCHANGE="if(this.value=='')ReShow();"></FONT>
         			</TD>
         			<TD>
 	        			<FONT COLOR=WHITE>Chance%:<INPUT TYPE=TEXT SIZE=20 NAME="PROMOTIONS_V@RequestParameter?CT@" VALUE="@PlanarData?PROMOTIONS&V@@RequestParameter?CT@@ @"></FONT>
@@ -542,7 +542,7 @@
         	@back@
        		<TR>
        			<TD>
-        			<FONT COLOR=WHITE>X@RequestParameter?SHOWCT@ Title:<INPUT TYPE=TEXT SIZE=5 NAME="PROMOTIONS_@RequestParameter?CT@" VALUE=""></FONT>
+        			<FONT COLOR=WHITE>X@RequestParameter?SHOWCT@ Title:<INPUT TYPE=TEXT SIZE=5 NAME="PROMOTIONS_@RequestParameter?CT@" VALUE="" ONCHANGE="ReShow();"></FONT>
        			</TD>
        			<TD>
         			<FONT COLOR=WHITE>Chance%:<INPUT TYPE=TEXT SIZE=5 NAME="PROMOTIONS_V@RequestParameter?CT@" VALUE=""></FONT>

@@ -296,13 +296,27 @@ public class PlanarData extends StdWebMacro
 						str.append(httpVal).append(", ");
 						break;
 					case DESCRIPTION:
-						str.append(httpVal).append(", ");
+						if(((httpVal==null)||(httpVal.length()==0))
+						&&(parms.containsKey("FILL")))
+						{
+							String s = "";
+							for(final String k : planarData.keySet())
+								if(s.length()>80)
+									s=CMStrings.ellipse(s, 80);
+								else
+								if(planarData.get(k).length()>0)
+									s+= k + "=" + planarData.get(k) + ", ";
+							str.append(s);
+						}
+						else
+							str.append(httpVal).append(", ");
 						break;
 					case ELITE:
 						str.append(httpVal).append(", ");
 						break;
 					case ENABLE:
 					{
+						final int limit = CMath.s_int(parms.get("LIMIT"));
 						final List<Pair<String,String>> parsed = CMParms.parseSpaceParenList(httpVal);
 						if(httpReq.isUrlParameter(key+"_1"))
 						{
@@ -360,7 +374,8 @@ public class PlanarData extends StdWebMacro
 							{
 								str.append("<OPTION VALUE=\"\" >").append("Delete");
 								for(final String opt : options)
-									str.append("<OPTION VALUE=\""+opt+"\" "+(opt.equalsIgnoreCase(k.first)?"SELECTED":"")+">").append(opt);
+									str.append("<OPTION VALUE=\""+opt+"\" "+(opt.equalsIgnoreCase(k.first)?"SELECTED":"")+">")
+										.append(CMStrings.limit(opt,limit));
 								str.append(", ");
 							}
 							if(parms.containsKey("V"+i))
@@ -371,7 +386,7 @@ public class PlanarData extends StdWebMacro
 						{
 							str.append("<OPTION VALUE=\"\" SELECTED>").append("Select");
 							for(final String opt : options)
-								str.append("<OPTION VALUE=\""+opt+"\" >").append(opt);
+								str.append("<OPTION VALUE=\""+opt+"\" >").append(CMStrings.limit(opt,limit));
 							str.append(", ");
 						}
 						break;
@@ -521,6 +536,7 @@ public class PlanarData extends StdWebMacro
 					case AEFFECT:
 					case REFFECT:
 					{
+						final int limit = CMath.s_int(parms.get("LIMIT"));
 						final List<Pair<String,String>> parsed = CMParms.parseSpaceParenList(httpVal);
 						if(httpReq.isUrlParameter(key+"_1"))
 						{
@@ -550,12 +566,14 @@ public class PlanarData extends StdWebMacro
 								{
 									final Ability A=a.nextElement();
 									if((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON)
-										str.append("<OPTION VALUE=\""+A.ID()+"\" "+(A.ID().equalsIgnoreCase(k.first)?"SELECTED":"")+">").append(A.ID());
+										str.append("<OPTION VALUE=\""+A.ID()+"\" "+(A.ID().equalsIgnoreCase(k.first)?"SELECTED":"")+">")
+											.append(CMStrings.limit(A.ID(),limit));
 								}
 								for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
 								{
 									final Behavior B=b.nextElement();
-									str.append("<OPTION VALUE=\""+B.ID()+"\" "+(B.ID().equalsIgnoreCase(k.first)?"SELECTED":"")+">").append(B.ID());
+									str.append("<OPTION VALUE=\""+B.ID()+"\" "+(B.ID().equalsIgnoreCase(k.first)?"SELECTED":"")+">")
+										.append(CMStrings.limit(B.ID(),limit));
 								}
 								str.append(", ");
 							}
@@ -570,12 +588,12 @@ public class PlanarData extends StdWebMacro
 							{
 								final Ability A=a.nextElement();
 								if((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON)
-									str.append("<OPTION VALUE=\""+A.ID()+"\" >").append(A.ID());
+									str.append("<OPTION VALUE=\""+A.ID()+"\" >").append(CMStrings.limit(A.ID(),limit));
 							}
 							for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
 							{
 								final Behavior B=b.nextElement();
-								str.append("<OPTION VALUE=\""+B.ID()+"\" >").append(B.ID());
+								str.append("<OPTION VALUE=\""+B.ID()+"\" >").append(CMStrings.limit(B.ID(),limit));
 							}
 							str.append(", ");
 						}

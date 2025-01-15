@@ -3299,6 +3299,8 @@ public class CMStrings
 	 */
 	public final static String limit(final String thisStr, final int thisMuch)
 	{
+		if(thisMuch <= 0)
+			return thisStr;
 		final int lenMinusColors=lengthMinusColors(thisStr);
 		if(lenMinusColors>thisMuch)
 			return removeColors(thisStr).substring(0,thisMuch);

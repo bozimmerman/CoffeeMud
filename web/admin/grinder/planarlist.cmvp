@@ -12,7 +12,7 @@
     <!--
         function Plane(action)
         {
-            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=770,alwaysRaised=yes,dependent=yes";
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=790,alwaysRaised=yes,dependent=yes";
             w=window.open("plane.cmvp?AUTH=@Authenticate?AUTH@&PLANE="+action,
                 "Plane of "+action,strFeatures, false);
         }
@@ -58,8 +58,8 @@
     @loop@
     @PlaneNext@
     <TR>
-    <TD><a href="javascript:Plane('@PlanarID@')"><FONT COLOR=WHITE>@PlanarData?ID@</FONT></a></TD>
-    <TD COLSPAN=5><FONT COLOR=WHITE>@PlanarData?DESCRIPTION@</FONT></TD>
+    <TD><a href="javascript:Plane('@PlanarID@')"><FONT COLOR=WHITE><U>@PlanarData?ID@</U></FONT></a></TD>
+    <TD COLSPAN=5><FONT COLOR=WHITE>@PlanarData?DESCRIPTION&FILL@</FONT></TD>
     </TR>
     @back@
     <TR>
