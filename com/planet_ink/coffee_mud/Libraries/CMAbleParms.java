@@ -2610,6 +2610,78 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
 				}
 			},
+			new AbilityParmEditorImpl("WEAR_LOC","Wear Loc",ParmType.SPECIAL)
+			{
+				@Override
+				public int appliesToClass(final Object o)
+				{
+					return 0;
+				}
+
+				@Override
+				public void createChoices()
+				{
+					final PairList<String,String> list = new PairArrayList<String,String>();
+					for(final String w : Wearable.CODES.NAMES())
+						list.add(new Pair<String,String>(w,w));
+					choices = list;
+				}
+
+				@Override
+				public boolean confirmValue(final String oldVal)
+				{
+					return oldVal.trim().length() > 0;
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "NECK";
+				}
+
+				@Override
+				public String webValue(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final String oldVal, final String fieldName)
+				{
+					return httpReq.getUrlParameter(fieldName+"_WEARLOC");
+				}
+
+				@Override
+				public String webField(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final String oldVal, final String fieldName)
+				{
+					final String value = webValue(httpReq,parms,oldVal,fieldName);
+					final StringBuffer str = new StringBuffer("");
+					str.append("\n\r<SELECT NAME="+fieldName+"_WORLOC>");
+					final Wearable.CODES codes = Wearable.CODES.instance();
+					for(int i=1;i<codes.total();i++)
+					{
+						final String locstr=codes.name(i);
+						str.append("<OPTION VALUE=\""+locstr+"\"");
+						if(locstr.equalsIgnoreCase(value))
+							str.append(" SELECTED");
+						str.append(">"+locstr);
+					}
+					str.append("</SELECT>");
+					return str.toString();
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor C, final Item I)
+				{
+					return "HELD";
+				}
+
+				@Override
+				public String[] fakeUserInput(final String oldVal)
+				{
+					return new String[] { oldVal } ;
+				}
+
+				@Override
+				public String commandLinePrompt(final MOB mob, final String oldVal, final int[] showNumber, final int showFlag) throws java.io.IOException
+				{
+					return CMLib.genEd().promptChoice(mob, oldVal, ++showNumber[0], showFlag, L("Wear Location"), choices);
+				}
+			},
 			new AbilityParmEditorImpl("PAGES_CHARS","Max Pgs/Chrs.",ParmType.SPECIAL)
 			{
 				@Override
@@ -5037,6 +5109,31 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					if(I instanceof Perfume)
 						return ((Perfume)I).getSmellList();
+					return "";
+				}
+			},
+			new AbilityParmEditorImpl("BODY_PART_DESC","Body Part",ParmType.STRINGORNULL)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+
+				@Override
+				public int appliesToClass(final Object o)
+				{
+					return 0;
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
 					return "";
 				}
 			},

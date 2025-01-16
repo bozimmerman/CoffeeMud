@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class BodyPiercing extends CommonSkill
+public class BodyPiercing extends CommonSkill implements RecipeDriven
 {
 	@Override
 	public String ID()
@@ -78,6 +78,50 @@ public class BodyPiercing extends CommonSkill
 		super();
 		displayText=L("You are piercing...");
 		verb=L("piercing");
+	}
+
+	@Override
+	public List<List<String>> fetchRecipes()
+	{
+		return loadRecipes(getRecipeFilename());
+	}
+
+	@Override
+	public String getRecipeFormat()
+	{
+		return
+		"WEAR_LOC\tITEM_LEVEL\tBODY_PART_DESC\tBODY_PART_DESC\tBODY_PART_DESC\tBODY_PART_DESC";
+	}
+
+	@Override
+	public String getRecipeFilename()
+	{
+		return "bodypierce.txt";
+	}
+
+	@Override
+	public List<String> matchingRecipeNames(final String recipeName, final boolean beLoose)
+	{
+		final List<String> matches = new Vector<String>();
+		for(final List<String> list : fetchRecipes())
+		{
+			String name;
+			for(int i=RecipeDriven.RCP_LEVEL+1;i<list.size();i++)
+			{
+				name=list.get(i);
+				if(name.equalsIgnoreCase(recipeName)
+				||(beLoose && (name.toUpperCase().indexOf(recipeName.toUpperCase())>=0)))
+					matches.add(name);
+			}
+		}
+		return matches;
+	}
+
+	@Override
+	public Pair<String, Integer> getDecodedItemNameAndLevel(final List<String> recipe)
+	{
+		return new Pair<String,Integer>(recipe.get( RecipeDriven.RCP_LEVEL + 1 ),
+				Integer.valueOf(CMath.s_int(recipe.get( RecipeDriven.RCP_LEVEL ))));
 	}
 
 	@Override
@@ -144,13 +188,15 @@ public class BodyPiercing extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		if(commands.size()<2)
+		if((commands.size()<2)&&(!CMParms.combine(commands, 0).equalsIgnoreCase("list")))
 		{
 			commonTelL(mob,"You must specify remove and/or whom you want to pierce, and what body part to pierce.");
 			return false;
 		}
 		String name=commands.get(0);
 		String part=CMParms.combine(commands,1);
+		if(name.equalsIgnoreCase("list"))
+			part=name;
 		String command="";
 		if(commands.size()>2)
 		{
@@ -162,61 +208,60 @@ public class BodyPiercing extends CommonSkill
 			}
 		}
 
-		final MOB target=super.getTarget(mob,new XVector<String>(name),givenTarget);
-		if(target==null)
-			return false;
-		if((!auto)&&(CMLib.flags().isSleeping(target)))
-			CMLib.commands().postStand(target, true, true);
-		if((target.isMonster())
-		&&(CMLib.flags().isAliveAwakeMobile(target,true))
-		&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
+		MOB target=null;
+		if(!name.equalsIgnoreCase("list"))
 		{
-			commonTelL(mob,"@x1 doesn't want any piercings.",target.Name());
-			return false;
+			target=super.getTarget(mob,new XVector<String>(name),givenTarget);
+			if(target==null)
+				return false;
+			if((!auto)&&(CMLib.flags().isSleeping(target)))
+				CMLib.commands().postStand(target, true, true);
+			if((target.isMonster())
+			&&(CMLib.flags().isAliveAwakeMobile(target,true))
+			&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
+			{
+				commonTelL(mob,"@x1 doesn't want any piercings.",target.Name());
+				return false;
+			}
 		}
 
 		int partNum=-1;
 		final StringBuffer allParts=new StringBuffer("");
-
-		final String[][] piercables={
-										{"lip"},
-										{"nose"},
-										{"left ear","right ear", "ears"},
-										{"eyebrows"},
-										{"left nipple","right nipple","nipples"},
-										{"belly button"}
-									};
-
-		final long[] piercable={Wearable.WORN_MOUTH,
-								Wearable.WORN_HEAD,
-								Wearable.WORN_EARS,
-								Wearable.WORN_EYES,
-								Wearable.WORN_TORSO,
-								Wearable.WORN_WAIST};
-
 		String fullPartName=null;
 		final Wearable.CODES codes = Wearable.CODES.instance();
+		final List<List<String>> recipes = CMLib.utensils().addExtRecipes(mob,ID(),fetchRecipes());
 		String wearLocName=null;
-		for(int i=0;i<codes.total();i++)
+		for(final List<String> recipe : recipes)
 		{
-			for(int ii=0;ii<piercable.length;ii++)
+			final int lvl = CMath.s_int(recipe.get(RecipeDriven.RCP_LEVEL));
+			if(lvl <= adjustedLevel(mob,asLevel))
 			{
-				if(codes.get(i)==piercable[ii])
+				for(int i=RecipeDriven.RCP_LEVEL+1;i<recipe.size();i++)
 				{
-					for(int iii=0;iii<piercables[ii].length;iii++)
+					final String l = recipe.get(i);
+					if(l.trim().length()>0)
 					{
-						if(piercables[ii][iii].startsWith(part.toLowerCase()))
+						if(l.toLowerCase().startsWith(part.toLowerCase()))
 						{
-							partNum=i;
-							fullPartName=piercables[ii][iii];
-							wearLocName=codes.name(partNum).toUpperCase();
+							partNum=codes.findDex_ignoreCase(recipe.get(RecipeDriven.RCP_FINALNAME));
+							if(partNum >= 0)
+							{
+								fullPartName=l.toLowerCase();
+								wearLocName=codes.name(partNum).toUpperCase();
+							}
 						}
-						allParts.append(", "+CMStrings.capitalizeAndLower(piercables[ii][iii]));
+						allParts.append(", "+CMStrings.capitalizeAndLower(l));
 					}
-					break;
 				}
 			}
 		}
+		if(part.equalsIgnoreCase("list"))
+		{
+			commonTelL(mob,"You must specify remove and/or whom you want to pierce, and what body part to pierce.");
+			commonTelL(mob,"Valid locations include: @x2",part,allParts.toString().substring(2));
+			return false;
+		}
+		else
 		if((partNum<0)||(wearLocName==null))
 		{
 			commonTelL(mob,"'@x1' is not a valid location.  Valid locations include: @x2",part,allParts.toString().substring(2));

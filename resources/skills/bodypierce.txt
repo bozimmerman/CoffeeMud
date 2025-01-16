@@ -1,0 +1,7 @@
+#WEAR_LOC	LEVEL	NAME1 ...
+EARS	1	left ear	right ear	ears
+WAIST	5	belly button
+HEAD	10	nose
+MOUTH	15	lip
+EYES	20	eyebrows
+TORSO	25	left nipple	right nipple	nipples
