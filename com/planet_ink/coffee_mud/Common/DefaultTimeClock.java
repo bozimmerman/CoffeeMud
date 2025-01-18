@@ -1226,6 +1226,43 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
+	public void bumpToNext(final TimePeriod period, final int times)
+	{
+		switch(period)
+		{
+		case ALLTIME:
+			return;
+		case DAY:
+			bump(period, times);
+			set(TimePeriod.HOUR,getMin(TimePeriod.HOUR));
+			break;
+		case HOUR:
+			bump(period, times);
+			break;
+		case MONTH:
+			bump(period, times);
+			set(TimePeriod.DAY,getMin(TimePeriod.DAY));
+			set(TimePeriod.HOUR,getMin(TimePeriod.HOUR));
+			break;
+		case SEASON:
+			bump(period, times);
+			set(TimePeriod.MONTH,getMin(TimePeriod.MONTH) + (getMonthsInSeason()*getSeasonCode().ordinal()));
+			set(TimePeriod.DAY,getMin(TimePeriod.DAY));
+			set(TimePeriod.HOUR,getMin(TimePeriod.HOUR));
+			break;
+		case WEEK:
+			bump(period, times);
+			if(getDaysInWeek()>0)
+				set(TimePeriod.DAY, getWeekOfMonth()*getDaysInWeek()+1);
+			set(TimePeriod.HOUR,getMin(TimePeriod.HOUR));
+			break;
+		case YEAR:
+			bump(period, times);
+			break;
+		}
+	}
+	
+	@Override
 	public void setNext(final TimePeriod period, final int value)
 	{
 		switch(period)

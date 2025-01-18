@@ -270,6 +270,9 @@ public class BodyPiercing extends CommonSkill implements RecipeDriven
 		final long wornCode=codes.get(partNum);
 		final String wornName=fullPartName;
 
+		if(target == null)
+			return false;
+
 		if((target.getWearPositions(wornCode)<=0)
 		||(target.freeWearPositions(wornCode,(short)(Short.MIN_VALUE+1),(short)0)<=0))
 		{

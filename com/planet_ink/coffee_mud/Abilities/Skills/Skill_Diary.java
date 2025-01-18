@@ -68,6 +68,14 @@ public class Skill_Diary extends StdSkill
 		return "";
 	}
 
+	private final String[] AVAIL_PERIODS = new String[] {
+		TimePeriod.HOUR.name().toUpperCase(),
+		TimePeriod.DAY.name().toUpperCase(),
+		TimePeriod.WEEK.name().toUpperCase(),
+		TimePeriod.MONTH.name().toUpperCase(),
+		TimePeriod.SEASON.name().toUpperCase(),
+		TimePeriod.YEAR.name().toUpperCase()
+	};
 	@Override
 	protected int canAffectCode()
 	{
@@ -106,20 +114,23 @@ public class Skill_Diary extends StdSkill
 		return USAGE_MANA | USAGE_MOVEMENT;
 	}
 
-	protected Set<DiaryEntry>	entries			= new SHashSet<DiaryEntry>();
-	protected TimePeriod		period			= TimePeriod.DAY;
-	protected Item				diaryI			= null;
+	protected final Set<DiaryEntry>	entries			= new SHashSet<DiaryEntry>();
+	protected TimePeriod			period			= TimePeriod.DAY;
+	protected Book					diaryI			= null;
+	protected volatile Area			lastA			= null;
+	protected TimeClock				nextPeriodBegin	= null;
+	protected final StringBuffer	pageBuffer		= new StringBuffer("");
 
 	protected enum DiaryEntry
 	{
 		XP(0),
-		KILL(2),
-		DEATHS(3),
-		AREA(4),
-		FACTION(6),
-		LOOT(7),
-		DAMAGE(8),
-		HEALING(9),
+		KILLS(1),
+		DEATHS(2),
+		AREAS(3),
+		FACTION(4),
+		LOOT(5),
+		DAMAGE(7),
+		HEALING(8),
 		ALL(10)
 		;
 		public int xLevel;
@@ -138,11 +149,124 @@ public class Skill_Diary extends StdSkill
 		return true;
 	}
 
-	protected void record(final String s)
+	protected String getPeriodDate(final TimePeriod period, final TimeClock clock)
 	{
-		if(this.diaryI == null)
+		final StringBuilder newDate = new StringBuilder("");
+		switch(period)
+		{
+		case ALLTIME:
+			newDate.append("All Time");
+			nextPeriodBegin.bump(TimePeriod.YEAR, 9999999);
+			break;
+		case HOUR:
+			newDate.append("hour "+clock.getHourOfDay()+" on ");
+			//$FALL-THROUGH$
+		case DAY:
+			newDate.append("the "+clock.getDayOfMonth()+CMath.numAppendage(clock.getDayOfMonth()));
+			newDate.append(" day of ");
+			//$FALL-THROUGH$
+		case MONTH:
+			final int month = clock.getMonth();
+			if((month>=0)&&(month<clock.getMonthsInYear()))
+				newDate.append(clock.getMonthNames()[month]);
+			else
+				newDate.append("month "+month);
+			if(clock.getYearNames().length>0)
+				newDate.append(", ");
+			//$FALL-THROUGH$
+		case YEAR:
+			break;
+		case SEASON:
+			newDate.append(clock.getSeasonCode().name()+", ");
+			break;
+		case WEEK:
+			newDate.append("week "+clock.getWeekOfYear()+", ");
+			break;
+		}
+		if(period != TimePeriod.ALLTIME)
+		{
+			if(clock.getYearNames().length>0)
+				newDate.append("year "+CMStrings.replaceAll(clock.getYearNames()[clock.getYear()%clock.getYearNames().length],"#",""+clock.getYear()));
+			else
+				newDate.append("year "+clock.getYear());
+		}
+		return newDate.toString();
+	}
+	
+	protected void record(String s)
+	{
+		if((this.diaryI == null)||(!(affected instanceof MOB)))
 			return;
-
+		final MOB mob=(MOB)affected;
+		if(diaryI.owner() != affected)
+		{
+			unInvoke();
+			return;
+		}
+		final Ability writeA = mob.fetchAbility("Skill_Write");
+		if((writeA!=null)&&(!writeA.proficiencyCheck(mob, 0, false)))
+			s="(unintelligible)";
+		final TimeClock homeClock = CMLib.time().homeClock(mob);
+		if((nextPeriodBegin == null)
+		||(pageBuffer.length()==0))
+		{
+			pageBuffer.setLength(0);
+			final TimeClock lastPeriodBegin = (TimeClock)homeClock.copyOf();
+			lastPeriodBegin.bumpToNext(period, 0); // hopefully this resets it backward
+			String lastPeriodDate = getPeriodDate(period, lastPeriodBegin);
+			if(diaryI.getUsedPages()>0)
+			{
+				String chapter=diaryI.getContent(diaryI.getUsedPages());
+				if(chapter.trim().startsWith(lastPeriodDate.trim()))
+				{
+					pageBuffer.setLength(0);
+					pageBuffer.append(chapter);
+				}
+			}
+			if(pageBuffer.length()==0)
+			{
+				pageBuffer.setLength(0);
+				pageBuffer.append(lastPeriodDate+"\n\r");
+				final String cmd = pageBuffer.toString()+"\n\r";
+				final CMMsg msg=CMClass.getMsg(mob,diaryI,writeA,CMMsg.TYP_WRITE,null,cmd,null);
+				if(mob.location().okMessage(mob,msg))
+					mob.location().send(mob,msg);
+				else
+				{
+					unInvoke();
+					return;
+				}
+			}
+			nextPeriodBegin = (TimeClock)homeClock.copyOf();
+			nextPeriodBegin.bumpToNext(period, 1);
+		}
+		else
+		if(homeClock.isAfter(nextPeriodBegin))
+		{
+			pageBuffer.setLength(0);
+			pageBuffer.append(getPeriodDate(period,nextPeriodBegin));
+			nextPeriodBegin = (TimeClock)homeClock.copyOf();
+			nextPeriodBegin.bumpToNext(period, 1);
+			final String cmd = pageBuffer.toString()+"\n\r";
+			final CMMsg msg=CMClass.getMsg(mob,diaryI,writeA,CMMsg.TYP_WRITE,null,cmd,null);
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
+			else
+			{
+				unInvoke();
+				return;
+			}
+		}
+		final String pageNum = ""+diaryI.getUsedPages();
+		final String cmd = "EDIT "+pageNum+" "+pageBuffer.toString()+"\n\r"+s;
+		final CMMsg msg=CMClass.getMsg(mob,diaryI,writeA,CMMsg.TYP_REWRITE,null,cmd,null);
+		if(mob.location().okMessage(mob,msg))
+			mob.location().send(mob,msg);
+		else
+		{
+			unInvoke();
+			return;
+		}
 	}
 
 	@Override
@@ -177,7 +301,8 @@ public class Skill_Diary extends StdSkill
 		switch(msg.sourceMinor())
 		{
 		case CMMsg.TYP_DEATH:
-			if(entries.contains(DiaryEntry.DEATHS))
+			if(entries.contains(DiaryEntry.DEATHS)
+			||((msg.source()==affected)&&entries.contains(DiaryEntry.KILLS)))
 			{
 				if((msg.tool() instanceof MOB)
 				&&(msg.tool() != msg.source()))
@@ -185,6 +310,15 @@ public class Skill_Diary extends StdSkill
 				else
 					record(L("@x1 dies.",msg.source().name()));
 				return;
+			}
+			break;
+		case CMMsg.TYP_ENTER:
+			if((msg.source()==affected)
+			&&(msg.target() instanceof Room)
+			&&(((Room)msg.target()).getArea() != lastA))
+			{
+				lastA = ((Room)msg.target()).getArea();
+				record(L("Entering @x1.",lastA.name()));
 			}
 			break;
 		case CMMsg.TYP_EXPCHANGE:
@@ -226,6 +360,15 @@ public class Skill_Diary extends StdSkill
 	@Override
 	public void unInvoke()
 	{
+		if(super.canBeUninvoked())
+		{
+			if(affected instanceof MOB)
+			{
+				((MOB)affected).tell(L("Diary keeping aborted."));
+				diaryI = null;
+				pageBuffer.setLength(0);
+			}
+		}
 		super.unInvoke();
 	}
 
@@ -238,7 +381,21 @@ public class Skill_Diary extends StdSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if(commands.size()==0)
+		final Ability oldA =mob.fetchEffect(ID()); 
+		if(oldA!=null)
+		{
+			oldA.unInvoke();
+			return false;
+		}
+		final List<String> availE = new ArrayList<String>();
+		final int xl = super.getXLEVELLevel(mob);
+		for(final DiaryEntry E : DiaryEntry.values())
+		{
+			if(xl >= E.xLevel)
+				availE.add(E.name().toUpperCase().trim());
+		}
+		List<String> availP = new XArrayList<String>(AVAIL_PERIODS);
+		if(commands.size()<3)
 		{
 			mob.tell(L("Keep a diary on what, for what period, and what features?"));
 			return false;
@@ -252,10 +409,55 @@ public class Skill_Diary extends StdSkill
 			mob.tell(L("You don't know how to write!"));
 			return false;
 		}
+		final Set<DiaryEntry> found = new HashSet<DiaryEntry>();
+		TimePeriod per = null;
+		for(int i=commands.size()-1;i>0;i--)
+		{
+			final String s = commands.get(i).toUpperCase().trim();
+			if(availE.contains(s))
+			{
+				found.add((DiaryEntry)CMath.s_valueOf(DiaryEntry.class, s));
+				commands.remove(i);
+			}
+			else
+			if(availP.contains(s))
+			{
+				if(per != null)
+				{
+					mob.tell(L("You can not specify a second time period (@x1 and @x2).",s,per.name()));
+					return false;
+				}
+				per = (TimePeriod)CMath.s_valueOf(TimePeriod.class, s);
+				commands.remove(i);
+			}
+			else
+			if(per == null)
+			{
+				mob.tell(L("Time period not specified (@x1).",CMParms.toListString(availP)));
+				return false;
+			}
+			else
+			if(found.size()==0)
+			{
+				mob.tell(L("No Diary Entries specified (@x1).",CMParms.toListString(availE)));
+				return false;
+			}
+			else
+				break;
+		}
+		
+		if(found.contains(DiaryEntry.ALL))
+			found.addAll(new XHashSet<DiaryEntry>(DiaryEntry.values()));
 
-		final Item target = super.getTarget(mob, R, givenTarget, commands, Wearable.FILTER_MOBINVONLY);
-		if(target == null)
+		final Item targetI = super.getTarget(mob, R, givenTarget, commands, Wearable.FILTER_MOBINVONLY);
+		if(targetI == null)
 			return false;
+		if(!(targetI instanceof Book))
+		{
+			mob.tell(L("@x1 is not a book.",targetI.name(mob)));
+			return false;
+		}
+		final Book target = (Book)targetI;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -269,11 +471,14 @@ public class Skill_Diary extends StdSkill
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				final Skill_Diary log = (Skill_Diary)super.beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE/3);
+				final Skill_Diary log = (Skill_Diary)super.beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE/3);
 				if(log != null)
 				{
-					//TODO: set period, entries, and diaryI
 					log.makeLongLasting();
+					log.diaryI = target;
+					log.entries.clear();
+					log.entries.addAll(found);
+					log.period = per;
 				}
 			}
 		}
