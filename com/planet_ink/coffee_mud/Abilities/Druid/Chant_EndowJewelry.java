@@ -100,7 +100,8 @@ public class Chant_EndowJewelry extends Chant
 			return false;
 		}
 		final long goodCheck = ((Armor)target).rawProperLocationBitmap()
-				& ( Wearable.WORN_EARS | Wearable.WORN_RIGHT_FINGER | Wearable.WORN_LEFT_FINGER | Wearable.WORN_NECK | Wearable.WORN_LEFT_WRIST | Wearable.WORN_RIGHT_WRIST);
+				& ( Wearable.WORN_EARS | Wearable.WORN_RIGHT_FINGER | Wearable.WORN_LEFT_FINGER
+						| Wearable.WORN_NECK | Wearable.WORN_LEFT_WRIST | Wearable.WORN_RIGHT_WRIST);
 		if(goodCheck == 0)
 		{
 			mob.tell(L("@x1 can not be endowed with this magic, as it is not worn on the ears, fingers, neck, or wrist.",target.name(mob)));

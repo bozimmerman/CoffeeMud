@@ -70,6 +70,12 @@ public class Spell_SlowProjectiles extends Spell
 	}
 
 	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;

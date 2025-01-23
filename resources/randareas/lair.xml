@@ -334,7 +334,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<ITEM select="any-2" condition="$pop_items!='false'">
 				<ITEM class="GenFoodResource" weight="10" name="some $adj_nasty meat" display="$item_name is stored here" material="MEAT" />
 				<ITEM class="GenFoodResource" weight="10" name="some $adj_nasty bread" display="$item_name is stored here" material="bread" />
-				<ITEM class="GenFoodResource" weight="10" name="some $adj_nasty mushrooms" display="$item_name is stored here" material="mushrooms" />
+				<ITEM class="GenFoodResource" weight="10" name="some $adj_nasty mushrooms" display="$item_name are stored here" material="mushrooms" />
 				<ITEM class="GenFoodResource" weight="10" name="some $adj_nasty fish" display="$item_name is stored here" material="fish" />
 			</ITEM>
 			<MOB select="all" insert="$lair_rat" condition="(1?2=1) and ($pop_mobs!='false')" />

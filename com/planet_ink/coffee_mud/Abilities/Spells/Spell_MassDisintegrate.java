@@ -56,6 +56,12 @@ public class Spell_MassDisintegrate extends Spell
 	}
 
 	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_MALICIOUS;

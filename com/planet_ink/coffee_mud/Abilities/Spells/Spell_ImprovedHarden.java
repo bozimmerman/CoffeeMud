@@ -69,7 +69,7 @@ public class Spell_ImprovedHarden extends Spell
 	@Override
 	protected int canAffectCode()
 	{
-		return CAN_MOBS;
+		return CAN_ITEMS;
 	}
 
 	@Override
