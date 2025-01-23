@@ -954,19 +954,19 @@ public class CMStrings
 	{
 		if(str==null)
 			return str;
-		if(str.indexOf('\\')<0)
-			return str;
-		for(int i=0;i<str.length()-1;i++)
+		int i = str.indexOf('\\');
+		while((i>-1)&&(i<str.length()-1))
 		{
-			if(str.charAt(i)=='\\')
+			final char c = str.charAt(i+1);
+			if((quot == c)||(c=='\\'))
 				str=str.substring(0,i)+str.substring(i+1);
+			i = str.indexOf('\\',i+1);
 		}
 		return str;
 	}
 
 	/**
-	 * This methods replaces any double-escapes to single escape characters, and any
-	 * escaped double-chars to double-chars
+	 * This methods replaces any of the given escaped chars to being de-escaped.
 	 * @param str the string to de-escape
 	 * @param chars the chars to de-escape
 	 * @return the string, de-escaped
@@ -975,17 +975,12 @@ public class CMStrings
 	{
 		if(str==null)
 			return str;
-		if(str.indexOf('\\')<0)
-			return str;
-		for(int i=0;i<str.length()-1;i++)
+		int i = str.indexOf('\\');
+		while((i>-1)&&(i<str.length()-1))
 		{
-			if(str.charAt(i)=='\\')
-			{
-				if(chars.indexOf(str.charAt(i+1))>=0)
-					str=str.substring(0,i)+str.substring(i+1);
-				else
-					i++;
-			}
+			if(chars.indexOf(str.charAt(i+1))>=0)
+				str=str.substring(0,i)+str.substring(i+1);
+			i = str.indexOf('\\',i+1);
 		}
 		return str;
 	}
