@@ -65,7 +65,7 @@ jobs:
 
       - name: Upload Artifact
         if: ${{ github.event.inputs.dry_run != 'true' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: 'coffeemud-dedicated-heron-${{ github.run_id }}-${{ github.sha }}'
           path: build/libs/*.jar
