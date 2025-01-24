@@ -448,10 +448,13 @@ public class StdBook extends StdItem implements Book
 								else
 								{
 									editOldChapter(mob.Name(),to,editKey[0],subject[0],message[0]);
-									if((R!=null)&&(msg.targetMessage().length()<=1))
-										R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter modified."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
-									else
-										mob.tell(L("Chapter modified."));
+									if(msg.sourceMessage() != null)
+									{
+										if((R!=null)&&(msg.targetMessage().length()<=1))
+											R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter modified."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
+										else
+											mob.tell(L("Chapter modified."));
+									}
 								}
 							}
 						}

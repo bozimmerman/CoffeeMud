@@ -192,7 +192,7 @@ public class Skill_Diary extends StdSkill
 		}
 		return newDate.toString();
 	}
-	
+
 	protected void record(String s)
 	{
 		if((this.diaryI == null)||(!(affected instanceof MOB)))
@@ -213,10 +213,10 @@ public class Skill_Diary extends StdSkill
 			pageBuffer.setLength(0);
 			final TimeClock lastPeriodBegin = (TimeClock)homeClock.copyOf();
 			lastPeriodBegin.bumpToNext(period, 0); // hopefully this resets it backward
-			String lastPeriodDate = getPeriodDate(period, lastPeriodBegin);
+			final String lastPeriodDate = getPeriodDate(period, lastPeriodBegin);
 			if(diaryI.getUsedPages()>0)
 			{
-				String chapter=diaryI.getContent(diaryI.getUsedPages());
+				final String chapter=diaryI.getContent(diaryI.getUsedPages());
 				if(chapter.trim().startsWith(lastPeriodDate.trim()))
 				{
 					pageBuffer.setLength(0);
@@ -225,7 +225,6 @@ public class Skill_Diary extends StdSkill
 			}
 			if(pageBuffer.length()==0)
 			{
-				pageBuffer.setLength(0);
 				pageBuffer.append(lastPeriodDate+"\n\r");
 				final String cmd = pageBuffer.toString()+"\n\r";
 				final CMMsg msg=CMClass.getMsg(mob,diaryI,writeA,CMMsg.TYP_WRITE,null,cmd,null);
@@ -241,7 +240,7 @@ public class Skill_Diary extends StdSkill
 			nextPeriodBegin.bumpToNext(period, 1);
 		}
 		else
-		if(homeClock.isAfter(nextPeriodBegin))
+		if(homeClock.isAfter(nextPeriodBegin) || homeClock.isEqual(nextPeriodBegin))
 		{
 			pageBuffer.setLength(0);
 			pageBuffer.append(getPeriodDate(period,nextPeriodBegin));
@@ -258,7 +257,8 @@ public class Skill_Diary extends StdSkill
 			}
 		}
 		final String pageNum = ""+diaryI.getUsedPages();
-		final String cmd = "EDIT "+pageNum+" "+pageBuffer.toString()+"\n\r"+s;
+		pageBuffer.append("\n\r"+s);
+		final String cmd = "EDIT "+pageNum+" "+pageBuffer.toString();
 		final CMMsg msg=CMClass.getMsg(mob,diaryI,writeA,CMMsg.TYP_REWRITE,null,cmd,null);
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
@@ -381,7 +381,7 @@ public class Skill_Diary extends StdSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final Ability oldA =mob.fetchEffect(ID()); 
+		final Ability oldA =mob.fetchEffect(ID());
 		if(oldA!=null)
 		{
 			oldA.unInvoke();
@@ -394,10 +394,11 @@ public class Skill_Diary extends StdSkill
 			if(xl >= E.xLevel)
 				availE.add(E.name().toUpperCase().trim());
 		}
-		List<String> availP = new XArrayList<String>(AVAIL_PERIODS);
+		final List<String> availP = new XArrayList<String>(AVAIL_PERIODS);
 		if(commands.size()<3)
 		{
-			mob.tell(L("Keep a diary on what, for what period, and what features?"));
+			mob.tell(L("Keep a diary in what book, for what period (@x1), and what features (@x2)?",
+					CMParms.toListString(availP),CMParms.toListString(availE)));
 			return false;
 		}
 		final Room R=mob.location();
@@ -445,7 +446,7 @@ public class Skill_Diary extends StdSkill
 			else
 				break;
 		}
-		
+
 		if(found.contains(DiaryEntry.ALL))
 			found.addAll(new XHashSet<DiaryEntry>(DiaryEntry.values()));
 

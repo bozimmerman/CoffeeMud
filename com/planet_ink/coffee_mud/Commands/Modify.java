@@ -2841,7 +2841,7 @@ public class Modify extends StdCommand
 			I.setName(L("SYSTEM_NEWS"));
 			I.setDescription(L("Enter `LIST NEWS [NUMBER]` to read an entry.%0D%0AEnter CREATE NEWS to add new entries. "));
 			final CMMsg newMsg=CMClass.getMsg(mob,I,null,
-											CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null,
+											CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,L("<S-NAME> modif(ys) the news."),
 											CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,CMParms.combine(commands,2),
 											CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null);
 			if(mob.location().okMessage(mob,newMsg)&&I.okMessage(mob, newMsg))
