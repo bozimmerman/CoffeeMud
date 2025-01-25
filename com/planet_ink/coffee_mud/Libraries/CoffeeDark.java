@@ -1263,9 +1263,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		{
 			final double graviRadiusMax=(cO.radius()*(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS-1.0));
 			if(distance<graviRadiusMax)
-			{
-				return 1.0-(distance/graviRadiusMax);
-			}
+				return 0.5 + (0.5 *(1.0 - (distance/graviRadiusMax)));
 		}
 		return 0;
 	}
