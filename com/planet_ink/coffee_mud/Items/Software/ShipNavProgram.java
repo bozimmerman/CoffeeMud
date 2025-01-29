@@ -950,7 +950,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				{
 					final Pair<Dir3D,Double> orb = CMLib.space().calculateOrbit(ship,targetObject);
 					if((orb != null)
-					&&(CMath.isWithin(ship.speed(), orb.second.doubleValue(), 0.05)))
+					&&(CMath.isWithin(ship.speed(), orb.second.doubleValue(), 0.05))
+					&&(CMLib.space().getAngleDelta(ship.direction(), orb.first)<0.01))
 					{
 						super.addScreenMessage(L("Orbit program completed. Neutralizing acceleration."));
 						this.cancelNavigation();
