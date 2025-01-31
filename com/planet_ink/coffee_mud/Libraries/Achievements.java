@@ -261,6 +261,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							throw new CMException("Error: Invalid TATTOO award for "+eventStr+":  Missing () arguments.");
 						final String accttattoo;
 						final String desc;
+						final boolean isForAccount;
 						if(parms.indexOf('=')<0)
 							throw new CMException("Error: Invalid TATTOO award for "+eventStr+":  Missing (ID= DESC=) arguments.");
 						else
@@ -279,6 +280,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								desc=L("create a character of class '@x1'.",accttattoo.toLowerCase().substring(9));
 							else
 								desc=accttattoo.toLowerCase();
+							isForAccount = CMParms.getParmBool(parms, "ACCOUNT", false);
 						}
 						awardsList.add(new TattooAward()
 						{
@@ -310,6 +312,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							public boolean isNotAwardedOnRemort()
 							{
 								return false;
+							}
+
+							@Override
+							public boolean isForAccount()
+							{
+								return isForAccount;
 							}
 						});
 					}
@@ -8557,6 +8565,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(pStats instanceof PlayerAccount)
 						((PlayerAccount)taward).addTattoo(tattooStr);
 					else
+					if(taward.isForAccount() && (pStats.getAccount()!=null))
+						pStats.getAccount().addTattoo(tattooStr);
+					else
 						mob.addTattoo(tattooStr);
 					awardMessage.append(L("^HYou are awarded: @x1!\n\r^?",taward.getDescription()));
 				}
@@ -8957,11 +8968,17 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(pStats instanceof PlayerAccount)
 						canRemove = ((PlayerAccount)pStats).findTattoo(tattooStr) != null;
 					else
+					if(taward.isForAccount() && (pStats.getAccount()!=null))
+						canRemove = pStats.getAccount().findTattoo(tattooStr) != null;
+					else
 						canRemove = mob.findTattoo(tattooStr) != null;
 					if(canRemove && (!alsoAwardedElsewhere))
 					{
 						if(pStats instanceof PlayerAccount)
 							((PlayerAccount)pStats).delTattoo(tattooStr);
+						else
+						if(taward.isForAccount() && (pStats.getAccount()!=null))
+							pStats.getAccount().delTattoo(tattooStr);
 						else
 							mob.delTattoo(tattooStr);
 						awardMessage.append(L("^HYou have lost: @x1!\n\r^?",taward.getDescription()));
@@ -9290,6 +9307,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				break;
 			case TATTOO:
 				awardStr.append("1 TATTOO(ID="+((TattooAward)award).getTattoo())
+						.append(((TattooAward)award).isForAccount()?" ACCOUNT=TRUE":"")
 						.append(" ").append("DESC="+CMStrings.escape("\""+CMStrings.escape(((TattooAward)award).getDescription())+"\")"));
 				break;
 			case MOB:

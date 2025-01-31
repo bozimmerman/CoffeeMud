@@ -496,6 +496,13 @@ public interface AchievementLibrary extends CMLibrary
 		 * @return the tattoo to grant to the player or account
 		 */
 		public String getTattoo();
+
+		/**
+		 * Returns whether the tattoo award should be applied
+		 * to an account, default false.
+		 * @return true for an account tattoo
+		 */
+		public boolean isForAccount();
 	}
 
 	/**
