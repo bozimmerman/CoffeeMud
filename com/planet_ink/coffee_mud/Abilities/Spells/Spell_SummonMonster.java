@@ -112,10 +112,46 @@ public class Spell_SummonMonster extends Spell
 	}
 
 	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if((affected instanceof MOB)
+		&&((((MOB)affected).amFollowing()!=invoker())||(invoker()==null)))
+		{
+			final MOB M = (MOB)affected;
+			if((M!=null)
+			&&(!M.isPlayer())
+			&&(M.fetchEffect("WanderHomeLater")==null))
+			{
+				final Ability A = CMClass.getAbility("WanderHomeLater");
+				if(A != null)
+				{
+					A.setMiscText("IGNOREPCS=true RESPECTFOLLOW=true ONCE=true MINTICKS=4 MAXTICKS=10 DESTROY=true");
+					M.addEffect(A);
+					A.setSavable(false);
+					A.makeLongLasting();
+				}
+			}
+		}
+		return super.tick(ticking, tickID);
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
+
+		for(int i=0;i<mob.numFollowers();i++)
+		{
+			final MOB M = mob.fetchFollower(i);
+			if(M!=null)
+			{
+				final Spell_SummonMonster sA = (Spell_SummonMonster)M.fetchEffect(ID());
+				if((sA != null)
+				&&(sA.invoker()==mob))
+					sA.unInvoke();
+			}
+		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
