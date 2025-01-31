@@ -141,7 +141,6 @@ public class Spell_SummonMonster extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		/* nah, if mages want to spend the cha, its ok
 		for(int i=0;i<mob.numFollowers();i++)
 		{
 			final MOB M = mob.fetchFollower(i);
@@ -153,7 +152,6 @@ public class Spell_SummonMonster extends Spell
 					sA.unInvoke();
 			}
 		}
-		*/
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
