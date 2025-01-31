@@ -138,6 +138,7 @@ public class Skill_SpreadHate extends StdSkill
 			maps.get(rcwords.size()-1).put(lword, pluralKey+"=\""+mask+" \\\"+"+fword+"\\\" \"");
 	}
 
+	@SuppressWarnings("unchecked")
 	protected String findHateable(final String msg)
 	{
 		final List<String> words = CMLib.english().parseWords(msg.toLowerCase());
@@ -173,6 +174,7 @@ public class Skill_SpreadHate extends StdSkill
 						addNewHate(maps, R.racialCategory().toLowerCase(), null, "-RACECAT");
 						addNewHate(maps, CMLib.english().makePlural(R.racialCategory().toLowerCase()), R.racialCategory().toLowerCase(), "-RACECAT");
 					}
+					types = maps.toArray(new Map[0]);
 				}
 			}
 		}

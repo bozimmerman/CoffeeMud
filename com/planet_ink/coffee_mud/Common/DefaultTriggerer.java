@@ -146,10 +146,13 @@ public class DefaultTriggerer implements Triggerer
 			if(states.containsKey(key))
 			{
 				final TrigState T = states.get(key);
-				if((T.timeout > 0)
-				&&(System.currentTimeMillis()>T.time + T.timeout))
-					return null;
-				return states.get(key);
+				if(T != null)
+				{
+					if((T.timeout > 0)
+					&&(System.currentTimeMillis()>T.time + T.timeout))
+						return null;
+					return T;
+				}
 			}
 			return null;
 		}
