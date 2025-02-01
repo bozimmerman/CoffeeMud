@@ -180,7 +180,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		if(oldA!=null)
 			oldBonus = CMath.s_int(oldA.text());
 
-		final int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),armor.phyStats().armor()-oldBonus));
+		final int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),armor.phyStats().armor()));
 		if(bonus<1)
 		{
 			mob.tell(L("@x1 is too weak of an armor to provide any more benefit from tweaking.",armor.name()));
@@ -203,11 +203,16 @@ public class Fighter_ArmorTweaking extends FighterSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final Ability A=beneficialAffect(mob,armor,asLevel,0);
-				if(A!=null)
+				if(oldA != null)
+					oldA.setMiscText(""+bonus);
+				else
 				{
-					A.setMiscText(""+bonus);
-					A.makeLongLasting();
+					final Ability A=beneficialAffect(mob,armor,asLevel,0);
+					if(A!=null)
+					{
+						A.setMiscText(""+bonus);
+						A.makeLongLasting();
+					}
 				}
 				armor.recoverPhyStats();
 				mob.location().recoverRoomStats();
