@@ -10246,10 +10246,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genDisplayText(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
 			genLevel(mob,me,++showNumber,showFlag);
-			genSecretIdentity(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,me,++showNumber,showFlag);
 			if(me instanceof RawMaterial)
 				genMaterialSubType(mob,(RawMaterial)me,++showNumber,showFlag);
+			else
+				genSecretIdentity(mob,me,++showNumber,showFlag);
 			if(me instanceof Book)
 			{
 				((Book)me).setMaxPages(prompt(mob, ((Book)me).getMaxPages(), ++showNumber, showFlag, "Max Pages"));
@@ -10403,7 +10404,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genName(mob,me,++showNumber,showFlag);
 			genDisplayText(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
-			genSecretIdentity(mob,me,++showNumber,showFlag);
 			genLevel(mob,me,++showNumber,showFlag);
 			genValue(mob,me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
@@ -10411,6 +10411,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genMaterialCode(mob,me,++showNumber,showFlag);
 			if(me instanceof RawMaterial)
 				genMaterialSubType(mob,(RawMaterial)me,++showNumber,showFlag);
+			else
+				genSecretIdentity(mob,me,++showNumber,showFlag);
 			genNourishment(mob,me,++showNumber,showFlag);
 			genBiteSize(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me.basePhyStats(),++showNumber,showFlag);
@@ -10514,7 +10516,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genName(mob,me,++showNumber,showFlag);
 			genDisplayText(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
-			genSecretIdentity(mob,(Item)me,++showNumber,showFlag);
 			genValue(mob,(Item)me,++showNumber,showFlag);
 			if(me instanceof Physical)
 			{
@@ -10526,6 +10527,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genMaterialCode(mob,(Item)me,++showNumber,showFlag);
 			if(me instanceof RawMaterial)
 				genMaterialSubType(mob,(RawMaterial)me,++showNumber,showFlag);
+			else
+				genSecretIdentity(mob,(Item)me,++showNumber,showFlag);
 			genDrinkHeld(mob,me,++showNumber,showFlag);
 			genGettable(mob,(Item)me,++showNumber,showFlag);
 			genIsReadable(mob,(Item)me,++showNumber,showFlag);
