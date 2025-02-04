@@ -14782,9 +14782,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&((msg.tool()==affecting)
 						||(affecting instanceof Room)
 						||(affecting instanceof Area)
-						||(affecting instanceof MOB))
+						||((affecting instanceof MOB)&&(msg.source()==affecting)))
 					&&(msg.tool() instanceof Item)
-					&&(!msg.amISource(monster))
 					&&(msg.target() instanceof Item)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
