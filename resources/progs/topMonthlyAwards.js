@@ -78,7 +78,7 @@ for(e=CMLib.libraries(Packages.com.planet_ink.coffee_mud.core.CMLib.Library.PLAY
 						award = awardsList[awardsList.length-1];
 				}
 				if(award.length > 0)
-					msg += CMLib.achievements().giveAwards(winnerM, award);
+					msg += CMStrings.removeColors(CMLib.achievements().giveAwards(winnerM, award));
 				else
 					msg += ' You win this notification!';
 				numDone++;
