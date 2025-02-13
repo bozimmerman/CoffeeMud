@@ -101,7 +101,7 @@ public class Farming extends GatheringSkill
 	{
 		return "seed";
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
@@ -302,15 +302,20 @@ public class Farming extends GatheringSkill
 				||((rsc&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN);
 	}
 
-	protected boolean plantable(final MOB mob, final Item I2)
+	protected boolean[] plantable(final MOB mob, final Item I2)
 	{
 		if((I2!=null)
 		&&(I2 instanceof RawMaterial)
 		&&(I2.container()==null)
-		&&((I2 instanceof Food)||(((RawMaterial)I2).getSubType().equals(RawMaterial.ResourceSubType.SEED.name())))
 		&&(plantableResource(I2.material())))
-			return true;
-		return false;
+		{
+			if(I2 instanceof Food)
+				return new boolean[] { true };
+			if(((RawMaterial)I2).getSubType().equals(RawMaterial.ResourceSubType.SEED.name()))
+				return new boolean[] { true };
+			return new boolean[] { false, true };
+		}
+		return new boolean[] { false, false };
 	}
 
 	protected boolean canGrowHere(final MOB mob, final Room R, final boolean quiet)
@@ -382,7 +387,7 @@ public class Farming extends GatheringSkill
 			for(int i=0;i<R.numItems();i++)
 			{
 				final Item I2=R.getItem(i);
-				if(plantable(mob,I2))
+				if(plantable(mob,I2)[0])
 				{
 					mine=I2;
 					commands.add(RawMaterial.CODES.NAME(I2.material()));
@@ -394,7 +399,7 @@ public class Farming extends GatheringSkill
 				for(int i=0;i<mob.numItems();i++)
 				{
 					final Item I2=mob.getItem(i);
-					if(plantable(mob,I2))
+					if(plantable(mob,I2)[0])
 					{
 						commands.add(RawMaterial.CODES.NAME(I2.material()));
 						mine=(Item)I2.copyOf();
@@ -451,19 +456,30 @@ public class Farming extends GatheringSkill
 		}
 
 		Item mine=null;
+		boolean seedProb = false;
 		for(int i=0;i<R.numItems();i++)
 		{
 			final Item I=R.getItem(i);
-			if(plantable(mob,I)
+			if((I!=null)
 			&&(I.material()==code))
 			{
-				mine = I;
-				break;
+				final boolean[] resp = plantable(mob,I);
+				if(resp[0])
+				{
+					mine = I;
+					break;
+				}
+				else
+				if(resp[1])
+					seedProb = true;
 			}
 		}
 		if(mine==null)
 		{
-			commonTelL(mob,"You'll need to have some @x1 to seed from on the ground first.",foundShortName);
+			if(seedProb)
+				commonTelL(mob,"You'll need to have some @x1 Seeds on the ground first.",foundShortName);
+			else
+				commonTelL(mob,"You'll need to have some @x1 to seed from on the ground first.",foundShortName);
 			return false;
 		}
 		final String mineName=mine.name();

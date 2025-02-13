@@ -3,6 +3,9 @@
   1. New Generic Commands!, see GameBuildersGuide for more information.
   2. BodyPiercing is now recipe driven, and recipes are now split off by level.
   3. New Skill: Diary
+  4. ColorSet now supports Exits, as well as explored/unexplored doors.
+  5. Mudborn kids get Prop_SafePet with auto-leiging and auto-follow
+  6. New prompt features: %h% %m% and %v% for percentages .. breaks MXP bars
   
 # Build 5.10.4 Release 12/05/2024
   *  DATABASE CHANGED! (Bitmap field in CMCHAR table is now larger)

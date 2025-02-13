@@ -651,7 +651,8 @@ public class Age extends StdAbility
 							if(A1==null)
 							{
 								A1=CMClass.getAbility("Prop_SafePet");
-								babe.addNonUninvokableEffect(A);
+								A1.setMiscText("LIEGEFOLLOW=\""+leigeM.Name()+"\"");
+								babe.addNonUninvokableEffect(A1);
 							}
 						}
 						babe.text();

@@ -2507,11 +2507,21 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						if(mob.isAttributeSet(MOB.Attrib.AUTORUN))
 							state=12;
 						doc.append("\"state\":").append(state).append(",");
-						doc.append("\"pos\":\"").append(
-									CMLib.flags().isSleeping(mob)?"Sleeping":
-									CMLib.flags().isSitting(mob)?"Sitting":
-									"Standing"
-									).append("\"");
+						final Rideable rd = mob.riding();
+						if(rd != null)
+						{
+							doc.append("\"pos\":\"")
+								.append(CMStrings.capitalizeAndLower(rd.stateString(mob)))
+								.append(" ").append(rd.name(mob));
+						}
+						else
+						{
+							doc.append("\"pos\":\"").append(
+										CMLib.flags().isSleeping(mob)?"Sleeping":
+										CMLib.flags().isSitting(mob)?"Sitting":
+										"Standing"
+										).append("\"");
+						}
 						final MOB vicM=mob.getVictim();
 						if(vicM!=null)
 						{

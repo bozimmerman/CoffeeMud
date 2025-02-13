@@ -2677,10 +2677,10 @@ public class StdMOB implements MOB
 					{
 						switch(msg.sourceMinor())
 						{
+						case CMMsg.TYP_SLEEP:
 						case CMMsg.TYP_STAND:
 						case CMMsg.TYP_SITMOVE:
 						case CMMsg.TYP_SIT:
-						case CMMsg.TYP_SLEEP:
 							break;
 						case CMMsg.TYP_WEAPONATTACK:
 						case CMMsg.TYP_THROW:
@@ -2879,6 +2879,14 @@ public class StdMOB implements MOB
 						return false;
 					}
 					break;
+				case CMMsg.TYP_SLEEP:
+					if((!flags.canBreatheHere(this, location))
+					&& (!msg.sourceMajor(CMMsg.MASK_MAGIC)))
+					{
+						tell(L("You can't breathe!"));
+						return false;
+					}
+					//$FALL-THROUGH$
 				case CMMsg.TYP_SIT: // SIT is waking!
 					if(flags.isSleeping(this))
 						break;
@@ -2889,7 +2897,6 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_FILL:
 				case CMMsg.TYP_LIST:
 				case CMMsg.TYP_LOCK:
-				case CMMsg.TYP_SLEEP:
 				case CMMsg.TYP_UNLOCK:
 				case CMMsg.TYP_VALUE:
 				case CMMsg.TYP_SELL:
