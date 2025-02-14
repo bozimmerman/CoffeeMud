@@ -747,6 +747,22 @@ public class MiniJSON
 		}
 	}
 
+
+	/**
+	 * Given a JSON document string, this parses and returns its value.
+	 * A value object may be anything from a string, array, a JSON
+	 * object, boolean, null, or a number.
+	 *
+	 * @param doc the JSON doc containing the value
+	 * @return the value object of the found value
+	 * @throws MJSONException a parse exception, meaning no recognized value was
+	 * there
+	 */
+	public Object parse(final String doc) throws MJSONException {
+		final int[] index = new int[] { 0 };
+		return parseElement(doc.toCharArray(), index);
+	}
+
 	/**
 	 * Given a json document char array, and an index into it, parses a JSON object at
 	 * the indexed point of the char array and returns it as a mapped JSON object.
