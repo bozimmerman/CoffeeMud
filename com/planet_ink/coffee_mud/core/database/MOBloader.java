@@ -1418,7 +1418,7 @@ public class MOBloader
 				{
 					final Ability newAbility=CMClass.getRawAbility(abilityID);
 					if(newAbility==null)
-						Log.errOut("MOB","Couldn't find ability '"+abilityID+"'");
+						Log.errOut("MOB","Couldn't find ability '"+abilityID+"' for "+mob.Name());
 					else
 					{
 						if((proficiency<0)||(proficiency==Integer.MAX_VALUE))
