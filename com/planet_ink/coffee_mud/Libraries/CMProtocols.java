@@ -2512,7 +2512,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						{
 							doc.append("\"pos\":\"")
 								.append(CMStrings.capitalizeAndLower(rd.stateString(mob)))
-								.append(" ").append(rd.name(mob));
+								.append(" ").append(rd.name(mob)).append("\"");
 						}
 						else
 						{
