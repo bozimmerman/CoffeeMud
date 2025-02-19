@@ -858,7 +858,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(H!=null)
 			val=H.get(var.toUpperCase());
 		else
-		if((defaultQuestName!=null)&&(defaultQuestName.length()>0))
+		if((defaultQuestName!=null)
+		&&(defaultQuestName.length()>0))
 		{
 			final MOB M=CMLib.players().getPlayerAllHosts(host);
 			if(M!=null)
@@ -921,7 +922,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		que = Collections.synchronizedList(new ArrayList<ScriptableResponse>());
 		lastToHurtMe = null;
 		lastKnownLocation= null;
-		homeKnownLocation=null;
+		homeKnownLocation= null;
 		altStatusTickable= null;
 		oncesDone = Collections.synchronizedList(new ArrayList<Integer>());
 		delayTargetTimes = Collections.synchronizedMap(new HashMap<Integer,Integer>());
@@ -1967,27 +1968,32 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 			}
 		}
-		if(lastKnownLocation!=null)
+		str=varify(ctx,str);
+		Environmental E=null;
+		if(str.indexOf('#')>0)
+			E=CMLib.map().getRoom(str);
+		if((lastKnownLocation!=null) && (E==null))
 		{
-			str=varify(ctx,str);
-			Environmental E=null;
-			if(str.indexOf('#')>0)
-				E=CMLib.map().getRoom(str);
+			E=lastKnownLocation.fetchFromRoomFavorMOBs(null,str);
 			if(E==null)
-				E=lastKnownLocation.fetchFromRoomFavorMOBs(null,str);
-			if(E==null)
+			{
 				E=lastKnownLocation.fetchFromMOBRoomFavorsItems(ctx.monster,null,str,Wearable.FILTER_ANY);
-			if(E==null)
-				E=lastKnownLocation.findItem(str);
-			if((E==null)&&(ctx.monster!=null))
-				E=ctx.monster.findItem(str);
-			if(E==null)
-				E=CMLib.players().getPlayerAllHosts(str);
-			if((E==null)&&(ctx.source!=null))
-				E=ctx.source.findItem(str);
-			if(E instanceof PhysicalAgent)
-				return (PhysicalAgent)E;
+				if(E==null)
+					E=lastKnownLocation.findItem(str);
+			}
 		}
+		if((E == null)
+		&&(ctx.monster!=null))
+			E=ctx.monster.findItem(str);
+		if(E == null)
+		{
+			E=CMLib.players().getPlayerAllHosts(str);
+			if((E == null)
+			&&(ctx.source != null))
+				E=ctx.source.findItem(str);
+		}
+		if(E instanceof PhysicalAgent)
+			return (PhysicalAgent)E;
 		return null;
 	}
 
@@ -2032,11 +2038,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected void confirmLastKnownLocation(final MOB monster, final MOB source)
 	{
 		if((monster!=null)&&(monster.location()!=null))
-			lastKnownLocation=monster.location();
+			lastKnownLocation = monster.location();
 		if((source!=null)&&(lastKnownLocation==null))
-			lastKnownLocation=source.location();
-		if(homeKnownLocation==null)
-			homeKnownLocation=lastKnownLocation;
+			lastKnownLocation = source.location();
+		if(homeKnownLocation == null)
+			homeKnownLocation = lastKnownLocation;
 	}
 
 	@Override
@@ -3897,7 +3903,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							returnable=((Exit)E).isOpen();
 					}
 					else
-					if(lastKnownLocation!=null)
+					if(lastKnownLocation != null)
 					{
 						final Exit E=lastKnownLocation.getExitInDir(dir);
 						if(E!=null)
@@ -5581,32 +5587,39 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					Environmental which=null;
 					int ct=1;
 					if(lastKnownLocation!=null)
-					for(int i=0;i<lastKnownLocation.numItems();i++)
 					{
-						final Item I=lastKnownLocation.getItem(i);
-						if((I!=null)&&(I.container()==null))
+						for(int i=0;i<lastKnownLocation.numItems();i++)
 						{
-							if(ct==CMath.s_int(arg1.trim()))
+							final Item I=lastKnownLocation.getItem(i);
+							if((I!=null)&&(I.container()==null))
 							{
-								which = I;
-								break;
+								if(ct==CMath.s_int(arg1.trim()))
+								{
+									which = I;
+									break;
+								}
+								ct++;
 							}
-							ct++;
 						}
 					}
 					if(which==null)
 						returnable=false;
 					else
+					{
 						returnable=(CMLib.english().containsString(which.name(),arg2)
 									||CMLib.english().containsString(which.Name(),arg2)
 									||CMLib.english().containsString(which.displayText(),arg2));
+					}
 					break;
 				}
 				case 36: // ishere
 				{
 					final String arg1=varify(ctx,CMParms.cleanBit(tt[t+0]));
 					if((arg1.length()>0)&&(lastKnownLocation!=null))
-						returnable=((lastKnownLocation.findItem(arg1)!=null)||(lastKnownLocation.fetchInhabitant(arg1)!=null));
+					{
+						returnable=((lastKnownLocation.findItem(arg1)!=null)
+								||(lastKnownLocation.fetchInhabitant(arg1)!=null));
+					}
 					else
 						returnable=false;
 					break;
@@ -5617,7 +5630,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						tt=parseSpecial3PartEval(eval,t);
 					String comp="==";
 					Environmental E=ctx.monster;
-					final Room mobLocR=CMLib.map().roomLocation(E);
 					String arg2;
 					if(signH.containsKey(tt[t+1]))
 					{
@@ -5627,6 +5639,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					else
 						arg2=varify(ctx,tt[t+0]);
+					final Room mobLocR=CMLib.map().roomLocation(E);
 					Room R=null;
 					if(arg2.equalsIgnoreCase("BEACON"))
 						ctx.monster.getStartRoom();
@@ -8045,7 +8058,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					int num=0;
 					for(final Session S : CMLib.sessions().localOnlineIterable())
 					{
-						if((S.mob().location()!=null)&&(S.mob().location().getArea()==lastKnownLocation.getArea()))
+						if((S.mob().location()!=null)
+						&&(S.mob().location().getArea()==lastKnownLocation.getArea()))
 							num++;
 					}
 					results.append(""+num);
@@ -11397,7 +11411,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				String parm=tt[1];
 				final Environmental newTarget=getArgumentMOB(parm,ctx);
-				final Room lastR=lastKnownLocation;
+				final Room lastR=CMLib.map().roomLocation(newTarget);
 				if((newTarget instanceof MOB)
 				&&(lastR!=null))
 				{
@@ -11470,7 +11484,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 				}
 				final Environmental newTarget=getArgumentMOB(tt[1],ctx);
-				final Room lastR=lastKnownLocation;
+				final Room lastR=CMLib.map().roomLocation(newTarget);
 				if((newTarget!=null)&&(newTarget instanceof MOB)&&(lastR!=null))
 					lastR.showOthers((MOB)newTarget,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
 				break;
@@ -14134,7 +14148,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 				case 1: // greet_prog
 					if((msg.targetMinor()==CMMsg.TYP_ENTER)
-					&&(msg.amITarget(lastKnownLocation))
+					&&(msg.amITarget(lastKnownLocation)||(affecting instanceof Area))
 					&&(!msg.amISource(eventMob))
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
 					&&canTrigger(1)
@@ -14192,8 +14206,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					break;
 				case 2: // all_greet_prog
 					if((msg.targetMinor()==CMMsg.TYP_ENTER)&&canTrigger(2)
-					&&(msg.amITarget(lastKnownLocation))
 					&&(!msg.amISource(eventMob))
+					&&(msg.amITarget(lastKnownLocation)||(affecting instanceof Area))
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
 					&&((!(affecting instanceof MOB)) ||CMLib.flags().canActAtAll(monster)))
 					{
