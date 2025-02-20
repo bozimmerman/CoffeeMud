@@ -2098,7 +2098,7 @@ public class Modify extends StdCommand
 		}
 
 		final String mobID=commands.get(2);
-		final MOB M=CMLib.players().getLoadPlayer(mobID);
+		final MOB M=CMLib.players().getLoadPlayerAllHosts(mobID);
 		if(M!=null)
 		{
 			if(M.playerStats()!=null)
