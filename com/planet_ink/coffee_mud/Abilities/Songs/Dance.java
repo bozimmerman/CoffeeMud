@@ -527,10 +527,17 @@ public class Dance extends StdAbility
 
 						// malicious dances must not affect the invoker!
 						int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
+						int taffectType=CMMsg.MASK_MAGIC|CMMsg.MASK_EYES|CMMsg.TYP_CAST_SPELL;
 						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
+						{
 							affectType=affectType|CMMsg.MASK_MALICIOUS;
+							taffectType=taffectType|CMMsg.MASK_MALICIOUS;
+						}
 						if(auto)
+						{
 							affectType=affectType|CMMsg.MASK_ALWAYS;
+							taffectType=taffectType|CMMsg.MASK_ALWAYS;
+						}
 
 						final Dance effectD = (Dance)follower.fetchEffect(this.ID());
 						if(effectD!=null)
@@ -539,7 +546,7 @@ public class Dance extends StdAbility
 						if((R2!=null)
 						&&(CMLib.flags().canBeSeenBy(invoker,follower)))
 						{
-							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null,taffectType,null,affectType,null);
 							final CMMsg msg3=msg2;
 							if((mindAttack())&&(follower!=mob))
 								msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
