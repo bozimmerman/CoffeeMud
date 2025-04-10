@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Int;
 import com.planet_ink.coffee_mud.core.CMProps.ListFile;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
@@ -2845,6 +2846,19 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		MOB mob=loginObj.mob;
 		session.setMob(loginObj.mob);
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.CHARCRRACE))
+		{
+			final List<Race> qualRaces = raceQualifies(mob, loginObj.theme);
+			Race newRace;
+			if(qualRaces.size()==0)
+				newRace = CMClass.randomRace();
+			else
+				newRace = qualRaces.get(CMLib.dice().roll(1, qualRaces.size(), -1));
+			mob.baseCharStats().setMyRace(newRace);
+			loginObj.state=LoginState.CHARCR_RACEDONE;
+			return null;
+		}
+		else
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		{
 			Race newRace=CMClass.getRace("PlayerRace");
@@ -2862,7 +2876,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				Log.errOut("CharCreation","Races are disabled, but neither PlayerRace nor StdRace exists?!");
 			}
 		}
-		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
+		else
 		{
 			StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"races.txt",null,CMFile.FLAG_LOGERRORS).text();
 			try
@@ -2979,17 +2993,31 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	protected LoginResult charcrGenderStart(final LoginSessionImpl loginObj, final Session session)
 	{
-		final StringBuilder str = new StringBuilder("");
+		final List<Character> choices = new ArrayList<Character>();
 		for(final Object[] gset : CMProps.getListFileStringChoices(ListFile.GENDERS))
 		{
 			if((gset.length>0)
 			&&(gset[0].toString().length()>0)
 			&&(!gset[0].toString().trim().endsWith("-")))
-			{
-				if(str.length()>0)
-					str.append("/");
-				str.append(gset[0].toString().charAt(0));
-			}
+				choices.add(Character.valueOf(Character.toUpperCase(gset[0].toString().charAt(0))));
+		}
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.CHARCRGENDER))
+		{
+			final MOB mob = loginObj.mob;
+			char gender = 'N';
+			if(choices.size()>0)
+				gender = choices.get(CMLib.dice().roll(1, choices.size(), -1)).charValue();
+			mob.baseCharStats().setStat(CharStats.STAT_GENDER,gender);
+			mob.charStats().setStat(CharStats.STAT_GENDER,gender);
+			loginObj.state=LoginState.CHARCR_GENDERDONE;
+			return null;
+		}
+		final StringBuilder str = new StringBuilder("");
+		for(final Character c : choices)
+		{
+			if(str.length()>0)
+				str.append("/");
+			str.append(c);
 		}
 		StringBuffer genderIntro=new CMFile(Resources.buildResourcePath("text")+"gender.txt",null,0).text();
 		try
@@ -3011,24 +3039,27 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final MOB mob=loginObj.mob;
 		final PlayerAccount acct=loginObj.acct;
 
-		final String gender=loginObj.lastInput.toUpperCase().trim();
-		boolean found=false;
-		for(final Object[] gset : CMProps.getListFileStringChoices(ListFile.GENDERS))
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CHARCRGENDER))
 		{
-			if((gset.length>0)
-			&&(gset.length>0)
-			&&(gset[0].toString().length()>0)
-			&&(gender.startsWith(""+gset[0].toString().charAt(0)))
-			&&(!gset[0].toString().trim().endsWith("-")))
-				found=true;
+			final String gender=loginObj.lastInput.toUpperCase().trim();
+			boolean found=false;
+			for(final Object[] gset : CMProps.getListFileStringChoices(ListFile.GENDERS))
+			{
+				if((gset.length>0)
+				&&(gset.length>0)
+				&&(gset[0].toString().length()>0)
+				&&(gender.startsWith(""+gset[0].toString().charAt(0)))
+				&&(!gset[0].toString().trim().endsWith("-")))
+					found=true;
+			}
+			if(!found)
+			{
+				loginObj.state=LoginState.CHARCR_GENDERSTART;
+				return null;
+			}
+			mob.baseCharStats().setStat(CharStats.STAT_GENDER,gender.toUpperCase().charAt(0));
+			mob.charStats().setStat(CharStats.STAT_GENDER,gender.toUpperCase().charAt(0));
 		}
-		if(!found)
-		{
-			loginObj.state=LoginState.CHARCR_GENDERSTART;
-			return null;
-		}
-		mob.baseCharStats().setStat(CharStats.STAT_GENDER,gender.toUpperCase().charAt(0));
-		mob.charStats().setStat(CharStats.STAT_GENDER,gender.toUpperCase().charAt(0));
 
 		mob.baseCharStats().getMyRace().startRacing(mob,false);
 
@@ -3053,6 +3084,22 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				final int randStat=CMLib.dice().roll(1, CharStats.CODES.BASECODES().length, -1);
 				mob.baseCharStats().setStat(CharStats.CODES.BASECODES()[randStat],
 						mob.baseCharStats().getStat(CharStats.CODES.BASECODES()[randStat])+1);
+			}
+			mob.recoverCharStats();
+			loginObj.state=LoginState.CHARCR_STATDONE;
+		}
+		else
+		if(CMSecurity.isDisabled(DisFlag.CHARCRSTAT))
+		{
+			if(startStat < 0)
+				mob.baseCharStats().setAllBaseValues(CMProps.getIntVar(CMProps.Int.BASEMINSTAT));
+			else
+			for(final int i : CharStats.CODES.BASECODES())
+			{
+
+				final int statValue = CMProps.getIntVar(CMProps.Int.BASEMINSTAT)
+						+ CMLib.dice().roll(1,CMProps.getIntVar(CMProps.Int.BASEMAXSTAT) - CMProps.getIntVar(CMProps.Int.BASEMINSTAT),-1);
+				mob.baseCharStats().setStat(i,statValue);
 			}
 			mob.recoverCharStats();
 			loginObj.state=LoginState.CHARCR_STATDONE;
@@ -3469,6 +3516,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			if(newClass == null)
 				newClass = qualClassesV.get(0);
+			mob.baseCharStats().setCurrentClass(newClass);
+			mob.charStats().setCurrentClass(newClass);
+			loginObj.state=LoginState.CHARCR_CLASSDONE;
+			return null;
+		}
+		else
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.CHARCRCLASS)) // and qualClassesV.size() > 1
+		{
+			final CharClass newClass = qualClassesV.get(CMLib.dice().roll(1, qualClassesV.size(), -1));
 			mob.baseCharStats().setCurrentClass(newClass);
 			mob.charStats().setCurrentClass(newClass);
 			loginObj.state=LoginState.CHARCR_CLASSDONE;

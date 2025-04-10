@@ -81,6 +81,7 @@ public class WebSock extends StdWebMacro
 		CMLib.threads().startTickDown(new Tickable()
 		{
 			private int	tickStatus	= Tickable.STATUS_NOT;
+			private final byte[] pingFrame = new byte[] {(byte)0x89, 0x00};
 
 			@Override
 			public int getTickStatus()
@@ -92,6 +93,19 @@ public class WebSock extends StdWebMacro
 			public String name()
 			{
 				return "WebSock";
+			}
+
+			private void closeCMSocks(final WebSockHandler W)
+			{
+				try
+				{
+					W.lsock.close();
+					W.rsock.close();
+				}
+				catch (final IOException e)
+				{
+				}
+				W.closeAndWait();
 			}
 
 			@Override
@@ -106,30 +120,35 @@ public class WebSock extends StdWebMacro
 						if (W == null)
 							continue;
 						final long idle = System.currentTimeMillis() - W.lastPing;
-						if ((idle > (30 * 1000)))
+						if ((idle > (30 * 1000 * 1000))) //TODO:BZ:degrade plz
 						{
-							try
-							{
-								W.lsock.close();
-								W.rsock.close();
-							}
-							catch (final IOException e)
-							{
-								Log.errOut(e);
-							}
-							h.remove();
+							closeCMSocks(W);
 						}
 						else
 						if(W.ioHandler != null)
 						{
 							try
 							{
-								if(W.in.available()>0)
+								DataBuffers outBuffer = new CWDataBuffers();
+								outBuffer.add(pingFrame, System.currentTimeMillis(), true);
+								W.ioHandler.writeBytesToChannel(outBuffer);
+								final int avail = W.mudIn.available();
+								if(avail>0)
+								{
+									final byte[] buf = W.readBuffer(avail);
+									if(buf.length>0)
+									{
+										final byte[] outBuf = W.encodeResponse(buf,1);
+										outBuffer = new CWDataBuffers();
+										outBuffer.add(outBuf, System.currentTimeMillis(), true);
+										W.ioHandler.writeBytesToChannel(outBuffer);
+									}
 									W.ioHandler.scheduleProcessing();
+								}
 							}
 							catch (final IOException e)
 							{
-								Log.errOut(e);
+								W.closeAndWait();
 							}
 						}
 					}
@@ -183,8 +202,8 @@ public class WebSock extends StdWebMacro
 
 		private final CoffeePipeSocket lsock;
 		private final CoffeePipeSocket rsock;
-		private final OutputStream out;
-		private final InputStream in;
+		private final OutputStream mudOut;
+		private final InputStream mudIn;
 		private final ByteArrayOutputStream payload = new ByteArrayOutputStream();
 		private final ByteArrayOutputStream msg		= new ByteArrayOutputStream();
 
@@ -200,8 +219,8 @@ public class WebSock extends StdWebMacro
 						lsock=new CoffeePipeSocket(httpReq.getClientAddress(),pipes.getLeftPipe(),pipes.getRightPipe());
 						rsock=new CoffeePipeSocket(httpReq.getClientAddress(),pipes.getRightPipe(),pipes.getLeftPipe());
 						h.acceptConnection(rsock);
-						out=lsock.getOutputStream();
-						in=lsock.getInputStream();
+						mudOut=lsock.getOutputStream();
+						mudIn=lsock.getInputStream();
 						return;
 					}
 					catch(final IOException e)
@@ -275,36 +294,81 @@ public class WebSock extends StdWebMacro
 			return outBuffer;
 		}
 
+		private byte[] readBuffer(final int avail) throws IOException
+		{
+			byte[] buf=new byte[avail];
+			int num=mudIn.read(buf);
+			if (num > 0)
+			{
+				byte[] nbuf = CMLib.protocol().stripTelnet(buf, num);
+				if(nbuf != buf)
+				{
+					buf = nbuf;
+					num = buf.length;
+				}
+				if(num > 0)
+				{
+					nbuf = CMLib.protocol().stripLF(buf, num);
+					if(nbuf != buf)
+					{
+						buf = nbuf;
+						num = buf.length;
+						return buf;
+					}
+				}
+				if(num > 0)
+				{
+					if(num != avail)
+						buf = Arrays.copyOf(buf, num);
+					return buf;
+				}
+			}
+			return new byte[0];
+		}
+
 		private DataBuffers done(final HTTPRequest request, final ByteBuffer buffer, DataBuffers outBuffer) throws HTTPException
 		{
 			switch(opCode)
 			{
+			case 0: break; //continue frame
 			case 1: // text data
 			{
 				this.lastPing=System.currentTimeMillis();
-				final byte[] newPayload = msg.toByteArray();
+				final byte[] newPayload = payload.toByteArray(); //TODO:BZ:WAS msg.toByteArray()
 				if(newPayload.length>0)
 				{
 					try
 					{
-						out.write(newPayload);
+						mudOut.write(newPayload);
 					}
 					catch (final IOException e)
 					{
-						Log.errOut(e);
+						this.closeAndWait();
+						break;
 					}
 				}
 				reset(buffer);
 				outBuffer = getOutput(outBuffer);
 				try
 				{
-					final int avail=in.available();
-					final byte[] buf=new byte[avail];
-					final int num=in.read(buf);
-					if(num>0)
+					final int avail;
+					try
 					{
-						final byte[] outBuf = encodeResponse((num==avail)?buf:Arrays.copyOf(buf, num),1);
-						outBuffer.add(outBuf, System.currentTimeMillis(), true);
+						avail=mudIn.available();
+					}
+					catch(final java.io.IOException e)
+					{
+						this.closeAndWait();
+						break;
+					}
+					if(avail > 0)
+					{
+						final byte[] buf = readBuffer(avail);
+						if(buf.length>0)
+						{
+							final byte[] outBuf = encodeResponse(buf,1);
+							outBuffer.add(outBuf, System.currentTimeMillis(), true);
+						}
 					}
 				}
 				catch (final IOException e)
@@ -313,7 +377,12 @@ public class WebSock extends StdWebMacro
 				}
 				break;
 			}
+			case 2: break; //binary frame
+			case 8: //connection close?!
+				this.closeAndWait();
+				break;
 			case 9: // ping
+			case 10: // pong -- ignore
 			{
 				this.lastPing=System.currentTimeMillis();
 				final byte[] newPayload = msg.toByteArray();
@@ -323,8 +392,6 @@ public class WebSock extends StdWebMacro
 				outBuffer.add(newPayload,System.currentTimeMillis(),true);
 				break;
 			}
-			case 10: // pong -- ignore
-				break;
 			case 11: // close
 				break;
 			default:
@@ -424,7 +491,6 @@ public class WebSock extends StdWebMacro
 					break;
 				}
 				}
-				//System.out.print(Integer.toHexString(buffer.get() & 0xff)+" ");
 			}
 			buffer.clear();
 			return outBuffers;
@@ -457,6 +523,9 @@ public class WebSock extends StdWebMacro
 			{
 				handlers.remove(this);
 			}
+			if(this.ioHandler != null)
+				this.ioHandler.closeAndWait();
+			this.ioHandler = null;
 		}
 	}
 
@@ -505,7 +574,6 @@ public class WebSock extends StdWebMacro
 					handlers.add(newHandler);
 				}
 				exception.setNewProtocolHandler(newHandler);
-				httpReq.getRequestObjects().put("___SIPLETHANDLER", newHandler);
 			}
 			catch (final Exception e)
 			{

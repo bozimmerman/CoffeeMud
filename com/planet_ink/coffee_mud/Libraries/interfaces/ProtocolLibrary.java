@@ -213,6 +213,21 @@ public interface ProtocolLibrary extends CMLibrary
 	public Map<String,Object> getMSSPPackage();
 
 	/**
+	 * Strips telnet codes from the given buffer.
+	 * @param buf the buffer to strip
+	 * @param num length of the buffer
+	 * @return the original buffer, or a stripped one
+	 */
+	public byte[] stripTelnet(final byte[] buf, int num);
+
+	/**
+	 * Strips linefeeds from the given buffer.
+	 * @param buf the buffer to strip
+	 * @param num length of the buffer
+	 * @return the original buffer, or a stripped one
+	 */
+	public byte[] stripLF(final byte[] buf, int num);
+	/**
 	 * Enumeration of all support GMCP commands
 	 *
 	 * @author Bo Zimmerman

@@ -3148,6 +3148,78 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@Override
+	public byte[] stripTelnet(final byte[] buf, final int num)
+	{
+		boolean strip=false;
+		for(int i=0;i<num;i++)
+		{
+			if(buf[i] == (byte)Session.TELNET_IAC)
+				strip=true;
+		}
+		if(!strip)
+			return buf;
+		final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		int last=0;
+		for(int i=0;i<num;i++)
+		{
+			if(buf[i] == (byte)Session.TELNET_IAC)
+			{
+				bout.write(buf,last,i-last);
+				last=i+1;
+				if(++i<num)
+				{
+					switch(buf[i])
+					{
+					case (byte)Session.TELNET_DO:
+					case (byte)Session.TELNET_DONT:
+					case (byte)Session.TELNET_WILL:
+					case (byte)Session.TELNET_WONT:
+						++i; // i is now on the offending code
+						last=i+1;
+						break;
+					case (byte)Session.TELNET_SB:
+						while(++i < num && (buf[i] != (byte)Session.TELNET_SE))
+						{}
+						last=(i<num)?i+1:num;
+						break;
+					default:
+						if(buf[i] < 0)
+							last=i+1;
+						break;
+					}
+				}
+			}
+		}
+		bout.write(buf,last,num-last);
+		return bout.toByteArray();
+	}
+
+	@Override
+	public byte[] stripLF(final byte[] buf, final int num)
+	{
+		boolean strip=false;
+		for(int i=0;i<num;i++)
+		{
+			if(buf[i] == (byte)10)
+				strip=true;
+		}
+		if(!strip)
+			return buf;
+		final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		int last=0;
+		for(int i=0;i<num;i++)
+		{
+			if(buf[i] == 10)
+			{
+				bout.write(buf,last,i-last);
+				last=i+1;
+			}
+		}
+		bout.write(buf,last,num-last);
+		return bout.toByteArray();
+	}
+
+	@Override
 	public Map<String,Object> getMSSPPackage()
 	{
 		final Map<String,Object> pkg = new Hashtable<String, Object>();

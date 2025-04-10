@@ -3043,7 +3043,11 @@ public class CMSecurity
 		NPCAUTOAWARDS("auto-awards system for npcs"),
 		FATIGUE("fatigue system"),
 		UNLEVELXP("unleveling from xp"),
-		UNLEVEL("unleveling at all")
+		UNLEVEL("unleveling at all"),
+		CHARCRSTAT("disable stat choices in char creation"),
+		CHARCRRACE("disable race picking in char creation"),
+		CHARCRCLASS("disable class picking in char creation"),
+		CHARCRGENDER("disable gender picking in char creation"),
 		;
 		private final String desc;
 

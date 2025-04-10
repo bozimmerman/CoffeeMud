@@ -322,7 +322,7 @@ public class DefaultSession implements Session
 					{
 						if(debugBinInputBuf.length()>0)
 						{
-							Log.sysOut("BINPUT: "+(mob==null?"":mob.Name())+": '"+debugBinInputBuf.toString()+"'");
+							Log.debugOut("BINPUT: "+(mob==null?"":mob.Name())+": '"+debugBinInputBuf.toString()+"'");
 							debugBinInputBuf.setLength(0);
 						}
 						return !killFlag;
@@ -2411,7 +2411,7 @@ public class DefaultSession implements Session
 				return null;
 			snoopSupportPrint(str+"\n\r",true);
 			if(debugStrInput)
-				Log.sysOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
+				Log.debugOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
 			final MOB mob=this.mob;
 			if((mob != null)&&(mob.isAttributeSet(Attrib.NOREPROMPT)))
 				needPrompt=true;
@@ -2437,7 +2437,7 @@ public class DefaultSession implements Session
 			if(inStr.substring(0, 3).equals("#$#"))
 			{
 				if(debugStrInput)
-					Log.sysOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
+					Log.debugOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
 				if(CMLib.protocol().mcp(this,inStr,mcpKey,mcpSupported,mcpKeyPairs))
 					return false;
 			}
@@ -2486,8 +2486,8 @@ public class DefaultSession implements Session
 		if(str==null)
 			return null;
 		snoopSupportPrint(str+"\n\r",true);
-		if(debugStrInput)
-			Log.sysOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
+		if(debugStrInput && (inStr.length()>0))
+			Log.debugOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
 		final MOB mob=this.mob;
 		if((mob != null)&&(mob.isAttributeSet(Attrib.NOREPROMPT)))
 			needPrompt=true;
