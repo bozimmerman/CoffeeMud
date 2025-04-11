@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -163,34 +164,53 @@ public class Channel extends StdCommand
 			}
 		}
 
-		if((commands.size()==1)
-		&&("last".startsWith(commands.get(0))||"list".startsWith(commands.get(0))))
+		if(commands.size()==1)
 		{
-			commands.set(0, "last");
-			commands.add("10");
-		}
-
-		if((commands.size()==1)
-		&&("undo".startsWith(commands.get(0))||"delete".startsWith(commands.get(0))))
-		{
-			final List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt, 0, 1, mob);
-			if(que.size()>0)
+			if("last".startsWith(commands.get(0))||"list".startsWith(commands.get(0)))
 			{
-				final ChannelsLibrary.ChannelMsg chanMsg =que.get(que.size()-1);
-				final CMMsg msg=chanMsg.msg();
-				if((msg!=null)
-				&&(msg.source()!=null)
-				&&(msg.source().Name().equals(mob.Name())))
+				commands.set(0, "last");
+				commands.add("10");
+			}
+			else
+			if("off".equals(commands.get(0)))
+			{
+				final Command C = CMClass.getCommand("NoChannel");
+				if(C!=null)
 				{
-					CMLib.database().delBackLogEntry(channelName, chanMsg.sentTimeMillis());
-					mob.tell(L("Previous message deleted."));
-					return true;
+					commands.clear();
+					commands.add("NO"+channelName.toUpperCase().trim());
+					try
+					{
+						return C.execute(mob, commands, 0);
+					}
+					catch (final IOException e)
+					{
+						return false;
+					}
 				}
 			}
-			if(commands.get(0).length()>=4)
+			else
+			if(("undo".startsWith(commands.get(0))||"delete".startsWith(commands.get(0))))
 			{
-				mob.tell(L("You may not delete the last message."));
-				return true;
+				final List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt, 0, 1, mob);
+				if(que.size()>0)
+				{
+					final ChannelsLibrary.ChannelMsg chanMsg =que.get(que.size()-1);
+					final CMMsg msg=chanMsg.msg();
+					if((msg!=null)
+					&&(msg.source()!=null)
+					&&(msg.source().Name().equals(mob.Name())))
+					{
+						CMLib.database().delBackLogEntry(channelName, chanMsg.sentTimeMillis());
+						mob.tell(L("Previous message deleted."));
+						return true;
+					}
+				}
+				if(commands.get(0).length()>=4)
+				{
+					mob.tell(L("You may not delete the last message."));
+					return true;
+				}
 			}
 		}
 

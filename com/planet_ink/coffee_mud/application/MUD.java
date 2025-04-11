@@ -108,12 +108,13 @@ public class MUD extends Thread implements MudHost
 	}
 
 	@Override
-	public void acceptConnection(final Socket sock) throws SocketException, IOException
+	public Session acceptConnection(final Socket sock) throws SocketException, IOException
 	{
 		sock.setKeepAlive(true);
 		setState(MudState.ACCEPTING);
 		final ConnectionAcceptor acceptor = new ConnectionAcceptor(sock, Thread.currentThread().getName());
 		serviceEngine.executeRunnable(threadGroup.getName(),acceptor);
+		return acceptor.sess;
 	}
 
 	@Override
@@ -140,6 +141,7 @@ public class MUD extends Thread implements MudHost
 		Socket sock;
 		long startTime=0;
 		String name = null;
+		Session sess = null;
 
 		public ConnectionAcceptor(final Socket sock, final String name) throws SocketException, IOException
 		{
@@ -242,9 +244,9 @@ public class MUD extends Thread implements MudHost
 						catch (final Exception ex)
 						{
 						}
-						final Session S=(Session)CMClass.getCommon("DefaultSession");
-						S.initializeSession(sock, threadGroup().getName(), introText != null ? introText.toString() : null);
-						CMLib.sessions().add(S);
+						sess=(Session)CMClass.getCommon("DefaultSession");
+						sess.initializeSession(sock, threadGroup().getName(), introText != null ? introText.toString() : null);
+						CMLib.sessions().add(sess);
 						sock = null;
 					}
 				}

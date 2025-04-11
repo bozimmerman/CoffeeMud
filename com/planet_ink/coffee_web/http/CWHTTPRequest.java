@@ -108,8 +108,9 @@ public class CWHTTPRequest implements HTTPRequest
 	 * @param disableFlags a set of config disable flags, if any
 	 * @param buffer a buffer to use instead of creating a new one
 	 */
-	public CWHTTPRequest(final InetAddress address, final boolean isHttps, final int requestPort, final boolean overwriteDups,
-						 final long requestLineSize, final Logger debugLogger, final Set<DisableFlag> disableFlags, final ByteBuffer buffer)
+	public CWHTTPRequest(final InetAddress address, final boolean isHttps, final int requestPort,
+						 final boolean overwriteDups, final long requestLineSize, final Logger debugLogger,
+						 final Set<DisableFlag> disableFlags, final ByteBuffer buffer)
 	{
 		this.address=address;
 		this.requestLineSize=requestLineSize;

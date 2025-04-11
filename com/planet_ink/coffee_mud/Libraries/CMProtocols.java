@@ -3148,9 +3148,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@Override
-	public byte[] stripTelnet(final byte[] buf, final int num)
+	public byte[] stripTelnet(final byte[] buf)
 	{
 		boolean strip=false;
+		final int num = buf.length;
 		for(int i=0;i<num;i++)
 		{
 			if(buf[i] == (byte)Session.TELNET_IAC)
@@ -3195,9 +3196,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@Override
-	public byte[] stripLF(final byte[] buf, final int num)
+	public byte[] stripLF(final byte[] buf)
 	{
 		boolean strip=false;
+		final int num = buf.length;
 		for(int i=0;i<num;i++)
 		{
 			if(buf[i] == (byte)10)
@@ -3212,6 +3214,61 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			if(buf[i] == 10)
 			{
 				bout.write(buf,last,i-last);
+				last=i+1;
+			}
+		}
+		bout.write(buf,last,num-last);
+		return bout.toByteArray();
+	}
+
+	@Override
+	public byte[] stripNonASCII(final byte[] buf)
+	{
+		boolean strip=false;
+		final int num = buf.length;
+		for(int i=0;i<num;i++)
+		{
+			if(buf[i] < 0)
+				strip=true;
+		}
+		if(!strip)
+			return buf;
+		final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		int last=0;
+		for(int i=0;i<num;i++)
+		{
+			if(buf[i] < 0)
+			{
+				bout.write(buf,last,i-last);
+				last=i+1;
+			}
+		}
+		bout.write(buf,last,num-last);
+		return bout.toByteArray();
+	}
+
+	@Override
+	public byte[] stripANSI(final byte[] buf)
+	{
+		boolean strip=false;
+		final int num = buf.length;
+		for(int i=0;i<num;i++)
+		{
+			if(buf[i] == (byte)'\033')
+				strip=true;
+		}
+		if(!strip)
+			return buf;
+		final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		int last=0;
+		for(int i=0;i<num-1;i++)
+		{
+			if((buf[i] == '\033') && (buf[i+1]=='['))
+			{
+				bout.write(buf,last,i-last);
+				i++;
+				while(++i<num && (buf[i] != 'm'))
+				{}
 				last=i+1;
 			}
 		}

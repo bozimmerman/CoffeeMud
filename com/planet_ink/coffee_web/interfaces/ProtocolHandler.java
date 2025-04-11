@@ -25,6 +25,10 @@ public interface ProtocolHandler
 	 *
 	 * The method should exit with the buffer in the same writeable state it
 	 * was handed.
+	 *
+	 * This method will also be called with an empty buffer whenever an
+	 * HTTPRequest does a switching protocols exception.
+	 *
 	 * @param handler the I/O handler that generated the processing
 	 * @param request the request currently being parsed
 	 * @param buffer the bytebuffer to process data from

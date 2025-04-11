@@ -186,7 +186,7 @@ public class OffLine extends Thread implements MudHost
 	}
 
 	@Override
-	public void acceptConnection(Socket sock)
+	public Session acceptConnection(Socket sock)
 	throws SocketException, IOException
 {
 		sock.setSoLinger(true,3);
@@ -307,6 +307,7 @@ public class OffLine extends Thread implements MudHost
 			CMLib.s_sleep(250);
 			sock = null;
 		}
+		return null;
 	}
 
 	@Override

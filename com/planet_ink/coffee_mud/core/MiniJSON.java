@@ -214,14 +214,27 @@ public final class MiniJSON
 	 */
 	public static String toJSONString(final String value)
 	{
+		return toJSONString(value.getBytes(StandardCharsets.UTF_8));
+	}
+
+
+    /**
+     * Given a byte buffer, this method will return a JSON-Safe string, which
+     * means escaped cr-lf, escaped tabs and backslashes, etc.
+     *
+	 * @param value the unsafe bytes
+	 * @return the JSON safe string
+	 */
+	public static String toJSONString(final byte[] value)
+	{
 		final StringBuilder strBldr=new StringBuilder("");
-		for(final char c : value.toCharArray())
+		for(final byte c : value)
 		{
-			switch(c)
+			switch((char)c)
 			{
 			case '\"':
 			case '\\':
-				strBldr.append('\\').append(c);
+				strBldr.append('\\').append((char)c);
 				break;
 			case '\b':
 				strBldr.append('\\').append('b');
@@ -239,8 +252,8 @@ public final class MiniJSON
 				strBldr.append('\\').append('t');
 				break;
 			default:
-                if (isASCIIViewable(c))
-					strBldr.append(c);
+                if (isASCIIViewable((char)c))
+					strBldr.append((char)c);
 				else
 				{
                     final int sixteenBits = 0xffff;
@@ -426,6 +439,11 @@ public final class MiniJSON
 				value.append("\"").append(toJSONString((String)obj)).append("\"");
 			}
 			else
+			if(obj instanceof byte[])
+			{
+				value.append("\"").append(toJSONString((byte[])obj)).append("\"");
+			}
+			else
 			if(obj == NULL)
 			{
 				value.append(NULL_STR);
@@ -516,6 +534,22 @@ public final class MiniJSON
          * @param value the value, which is fixed by this method.
          */
  		public void putString(final String key, final String value)
+		{
+			if(value == null)
+				this.put(key, NULL);
+			else
+			{
+				final String fixedValue=MiniJSON.toJSONString(value);
+				this.put(key, fixedValue);
+			}
+		}
+
+        /**
+         * Adds a string:string key pair to this JSONObject.
+         * @param key the key
+         * @param value the value, which is fixed by this method.
+         */
+ 		public void putString(final String key, final byte[] value)
 		{
 			if(value == null)
 				this.put(key, NULL);

@@ -215,18 +215,31 @@ public interface ProtocolLibrary extends CMLibrary
 	/**
 	 * Strips telnet codes from the given buffer.
 	 * @param buf the buffer to strip
-	 * @param num length of the buffer
 	 * @return the original buffer, or a stripped one
 	 */
-	public byte[] stripTelnet(final byte[] buf, int num);
+	public byte[] stripTelnet(final byte[] buf);
 
 	/**
 	 * Strips linefeeds from the given buffer.
 	 * @param buf the buffer to strip
-	 * @param num length of the buffer
 	 * @return the original buffer, or a stripped one
 	 */
-	public byte[] stripLF(final byte[] buf, int num);
+	public byte[] stripLF(final byte[] buf);
+
+	/**
+	 * Strips ansi codes from the given buffer.
+	 * @param buf the buffer to strip
+	 * @return the original buffer, or a stripped one
+	 */
+	public byte[] stripANSI(final byte[] buf);
+
+	/**
+	 * Strips non-ascii codes from the given buffer.
+	 * @param buf the buffer to strip
+	 * @return the original buffer, or a stripped one
+	 */
+	public byte[] stripNonASCII(final byte[] buf);
+
 	/**
 	 * Enumeration of all support GMCP commands
 	 *

@@ -974,7 +974,10 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 				if(me.getStatus() == HTTPStatus.S101_SWITCHING_PROTOCOLS)
 				{
 					if(me.getNewProtocolHandler() != null)
+					{
 						this.protocolHandler = me.getNewProtocolHandler();
+						protocolHandler.processBuffer(this, currentReq, ByteBuffer.allocate(0)); // initialize the protocol handler
+					}
 				}
 			}
 			finally
