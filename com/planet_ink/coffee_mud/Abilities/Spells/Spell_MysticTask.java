@@ -294,8 +294,8 @@ public class Spell_MysticTask extends Spell
 					beneficialWordsFizzle(mob,targetM,L("<T-NAME> fail(s) entirely."));
 					return false;
 				}
-				obj.putString("template1", definedIDs.get("TEMPLATE").toString());
-				obj.putString("quest1", q1.name());
+				obj.put("template1", definedIDs.get("TEMPLATE").toString());
+				obj.put("quest1", q1.name());
 				final Spell_MysticTask dA=(Spell_MysticTask)beneficialAffect(mob,targetM,asLevel,(int)(CMProps.getTicksPerHour()*2));
 				if(dA!=null)
 					dA.setMiscText(obj.toString());

@@ -527,38 +527,6 @@ public final class MiniJSON
 				newObj.put(key, jsonDeepCopy(this.get(key)));
 			return newObj;
 		}
-
-        /**
-         * Adds a string:string key pair to this JSONObject.
-         * @param key the key
-         * @param value the value, which is fixed by this method.
-         */
- 		public void putString(final String key, final String value)
-		{
-			if(value == null)
-				this.put(key, NULL);
-			else
-			{
-				final String fixedValue=MiniJSON.toJSONString(value);
-				this.put(key, fixedValue);
-			}
-		}
-
-        /**
-         * Adds a string:string key pair to this JSONObject.
-         * @param key the key
-         * @param value the value, which is fixed by this method.
-         */
- 		public void putString(final String key, final byte[] value)
-		{
-			if(value == null)
-				this.put(key, NULL);
-			else
-			{
-				final String fixedValue=MiniJSON.toJSONString(value);
-				this.put(key, fixedValue);
-			}
-		}
 	}
 
 	/**

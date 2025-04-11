@@ -623,10 +623,10 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 				final Area deity1Area=deity1Areas.get(0);
 				final Area deity2Area=deity2Areas.get(0);
 				final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
-				obj.putString("deity1", deity1M.Name());
-				obj.putString("deity2", deity2M.Name());
-				obj.putString("area1", deity1Area.Name());
-				obj.putString("area2", deity2Area.Name());
+				obj.put("deity1", deity1M.Name());
+				obj.put("deity2", deity2M.Name());
+				obj.put("area1", deity1Area.Name());
+				obj.put("area2", deity2Area.Name());
 				final Map<String,Object> definedIDs = new Hashtable<String,Object>();
 				definedIDs.put("TARGETAREA_NAME", deity2Area.Name());
 				definedIDs.put("target_level".toUpperCase(), ""+mob.phyStats().level());
@@ -731,17 +731,17 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 						break;
 					}
 				}
-				obj.putString("template1", definedIDs.get("TEMPLATE").toString());
+				obj.put("template1", definedIDs.get("TEMPLATE").toString());
 				final Quest q1=deviseAndStartQuest(mob, definedIDs);
 				if(q1 == null)
 				{
 					mob.tell(L("<S-NAME> attempt(s) to plot a feud between @x1 and @x2, but become(s) exhausted before figuring out a plot.",deity1M.Name(),deity2M.Name()));
 					return false;
 				}
-				obj.putString("quest1", q1.name());
+				obj.put("quest1", q1.name());
 				if(definedIDs.containsKey("target_item_name".toUpperCase()))
-					obj.putString("item1name", definedIDs.get("target_item_name".toUpperCase()).toString());
-				obj.putString("target1name", definedIDs.get("target_name".toUpperCase()).toString());
+					obj.put("item1name", definedIDs.get("target_item_name".toUpperCase()).toString());
+				obj.put("target1name", definedIDs.get("target_name".toUpperCase()).toString());
 				final Thief_InciteDivineFeud dA=(Thief_InciteDivineFeud)beneficialAffect(mob,mob,asLevel,(int)(CMProps.getTicksPerHour()*2));
 				if(dA!=null)
 					dA.setMiscText(obj.toString());

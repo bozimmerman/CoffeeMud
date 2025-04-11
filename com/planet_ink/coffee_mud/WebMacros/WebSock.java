@@ -86,7 +86,8 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 
 	protected final CoffeePipeSocket lsock;
 	protected final CoffeePipeSocket rsock;
-	protected final Session	sess;
+	protected final Session[]	sess;
+	protected final MudHost host;
 	protected final OutputStream mudOut;
 	protected final InputStream mudIn;
 	protected final ByteArrayOutputStream payload = new ByteArrayOutputStream();
@@ -110,31 +111,21 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 		mudOut=null;
 		mudIn=null;
 		sess=null;
+		host=null;
 	}
 
 	public WebSock(final HTTPRequest httpReq) throws IOException
 	{
 		synchronized(this)
 		{
-			for(final MudHost h : CMLib.hosts())
-			{
-				try
-				{
-					final CoffeeIOPipes pipes = new CoffeeIOPipes(65536);
-					lsock=new CoffeePipeSocket(httpReq.getClientAddress(),pipes.getLeftPipe(),pipes.getRightPipe());
-					rsock=new CoffeePipeSocket(httpReq.getClientAddress(),pipes.getRightPipe(),pipes.getLeftPipe());
-					sess = h.acceptConnection(rsock);
-					mudOut=lsock.getOutputStream();
-					mudIn=lsock.getInputStream();
-					return;
-				}
-				catch(final IOException e)
-				{
-					throw e;
-				}
-			}
+			host = CMLib.host();
+			final CoffeeIOPipes pipes = new CoffeeIOPipes(65536);
+			lsock=new CoffeePipeSocket(httpReq.getClientAddress(),pipes.getLeftPipe(),pipes.getRightPipe());
+			rsock=new CoffeePipeSocket(httpReq.getClientAddress(),pipes.getRightPipe(),pipes.getLeftPipe());
+			mudOut=lsock.getOutputStream();
+			mudIn=lsock.getInputStream();
+			sess = host.acceptConnection(rsock);
 		}
-		throw new IOException("No host found.");
 	}
 
 
@@ -219,6 +210,18 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 		return new Pair<byte[], WSPType>(data, WSPType.BINARY);
 	}
 
+	protected void sendPacket(final byte[] buf, final WSPType type) throws IOException
+	{
+		if(buf.length>0)
+		{
+			final byte[] outBuf = encodeResponse(buf,type.ordinal());
+			final DataBuffers outBuffer = new CWDataBuffers();
+			outBuffer.add(outBuf, System.currentTimeMillis(), true);
+			ioHandler.writeBytesToChannel(outBuffer);
+			ioHandler.scheduleProcessing();
+		}
+	}
+
 	protected void poll()
 	{
 		try
@@ -227,14 +230,8 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 			if(avail>0)
 			{
 				final Pair<byte[], WSPType> buf = processPolledBytes(readBuffer(avail));
-				if(buf.first.length>0)
-				{
-					final byte[] outBuf = encodeResponse(buf.first,buf.second.ordinal());
-					final DataBuffers outBuffer = new CWDataBuffers();
-					outBuffer.add(outBuf, System.currentTimeMillis(), true);
-					ioHandler.writeBytesToChannel(outBuffer);
-				}
-				ioHandler.scheduleProcessing();
+				if (buf != null)
+					sendPacket(buf.first, buf.second);
 			}
 		}
 		catch (final IOException e)
@@ -257,10 +254,13 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 			{
 				if(payload.length>0)
 				{
+					Pair<byte[],WSPType> response;
 					if (opCode == 2)
-						processBinaryInput(payload);
+						response=processBinaryInput(payload);
 					else
-						processTextInput(new String(payload, CMProps.getVar(CMProps.Str.CHARSETINPUT)));
+						response=processTextInput(new String(payload, CMProps.getVar(CMProps.Str.CHARSETINPUT)));
+					if(response != null)
+						sendPacket(response.first, response.second);
 				}
 			}
 			catch (final IOException e)
@@ -429,16 +429,18 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 		}
 	}
 
-	protected void processTextInput(final String input) throws IOException
+	protected Pair<byte[], WSPType> processTextInput(final String input) throws IOException
 	{
 		if (mudOut != null)
 			mudOut.write(input.getBytes());
+		return null;
 	}
 
-	protected void processBinaryInput(final byte[] input) throws IOException
+	protected Pair<byte[], WSPType> processBinaryInput(final byte[] input) throws IOException
 	{
 		if (mudOut != null)
 			mudOut.write(input);
+		return null;
 	}
 
 	protected byte[] encodeResponse(final byte[] resp, final int type)

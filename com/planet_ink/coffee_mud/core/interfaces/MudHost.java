@@ -127,11 +127,11 @@ public interface MudHost
 	/**
 	 * Handles a connection from a user, and internal states
 	 * @param sock the socket the connection was made on
-	 * @return the session object managing this connection, or null
+	 * @return the session object in 1 dim array managing this connection, or null
 	 * @throws java.net.SocketException socket exceptions
 	 * @throws java.io.IOException io exceptions
 	 */
-	public Session acceptConnection(Socket sock) throws SocketException, IOException;
+	public Session[] acceptConnection(Socket sock) throws SocketException, IOException;
 
 	/**
 	 * Sets whether this mud is accepting connections

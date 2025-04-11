@@ -550,11 +550,11 @@ public class Prayer_SacredImbuingQuest extends Prayer
 					beneficialWordsFizzle(mob,targetI,L("<S-NAME> fail(s) entirely.",super.prayWord(mob),targetM.Name()));
 					return false;
 				}
-				obj.putString("ability", imbuePrayerA.ID());
-				obj.putString("template1", definedIDs.get("TEMPLATE").toString());
-				obj.putString("quest1", q1.name());
-				obj.putString("itemname", targetI.Name());
-				obj.putString("itemid", ""+targetI);
+				obj.put("ability", imbuePrayerA.ID());
+				obj.put("template1", definedIDs.get("TEMPLATE").toString());
+				obj.put("quest1", q1.name());
+				obj.put("itemname", targetI.Name());
+				obj.put("itemid", ""+targetI);
 				final Prayer_SacredImbuingQuest dA=(Prayer_SacredImbuingQuest)beneficialAffect(mob,targetM,asLevel,(int)(CMProps.getTicksPerHour()*2));
 				if(dA!=null)
 					dA.setMiscText(obj.toString());
