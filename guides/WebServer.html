@@ -29,9 +29,9 @@ Virtual Pages</a></li>
 error pages</a></li>
 <li><a href="#add">Adding new macros to CMVP</a></li>
 <li><a href="#javascript">Using Javascript
-in your pages</a></li>
-<li><a href="#siplet">Siplet and
-SipletInterface</a></li>
+in your pages</a></li><li><a href="#servlet">Servlet interfaces</a></li>
+<li><a href="#websock">WebSock interfaces</a></li><li><a href="#siplet">Siplet and
+SipletInterface</a></li><li><a href="#websockjson">WebSockJSON<br /></a></li>
 </ul>
 </td>
 <td align="left" valign="top">
@@ -40,7 +40,7 @@ The
 CoffeeMud Web Server is a simple, extensible web server that runs as
 part of CoffeeMud; it uses HTTP 1.1 to communicate with a web browser.
 In addition to being able to serve standard HTML web pages, it also
-supports a simple server-processed form of HTML called <i>CMVP</i>
+supports servlets, websocks, and a simple server-processed form of HTML called <i>CMVP</i>
 (Coffee MUD Virtual Pages) - this allows the server to insert
 information into the page before sending it to the browser. This
 document assumes you have some familiarty with HTTP, mime types, and
@@ -1984,10 +1984,10 @@ method to insert
 our HTML into the page. We also used the <code>request()</code>
 object
 to fetch the client ip address. Now here is a more involved example:</p>
-<pre>&lt;HTML&gt;<br />&lt;HEAD&gt;<br />&lt;TITLE&gt;My JavaScript Enabled Web Page&lt;/TITLE&gt;<br />&lt;/HEAD&gt;<br />&lt;BODY&gt;<br />&lt;H1&gt;An Example of using JavaScript in a CMVP Web Page to fetch MUD Server data.&lt;/H1&gt;<br /><br />@jscript@<br />var lib=Packages.com.planet_ink.coffee_mud.core.CMLib;<br />// define a shortcut to the CoffeeMud libraries.<br /><br />var randomRoom=lib.map().getRandomRoom();<br />var randomArea=lib.map().getRandomArea();<br />// finding random rooms and areas is easy<br /><br />var randomMob=null;<br />var randomItem=null;<br />// assign our random mobs and items to null until they are found<br /><br />var attempts=1000;<br />// finding random items and mobs is more difficult. We will<br />// select a random room, and attempt to pick out a random mob<br />// and/or item from the room. We will do this a maximum of 1000<br />// times before giving up, until we find one of each.<br />while(((--attempts)&gt;0)&amp;&amp;((randomMob==null)||(randomItem==null)))<br />{<br /> var room=lib.map().getRandomRoom();<br /> if((randomMob==null)&amp;&amp;(room.numInhabitants()&gt;0))<br /> {<br /> randomMob=room.fetchRandomInhabitant();<br /> }<br /> if((randomItem==null)&amp;&amp;(room.numItems()&gt;0))<br /> {<br /> randomItem = room.getRandomItem();<br /> }<br />} //now we have all our random things. We could easily insert our HTML using<br /> // the write() method as we did in example 1. To be fancy, however, we'll use the<br /> // the request() object to assign the names of our selections to HTTP Request<br /> // strings.<br /><br />request().addFakeUrlParameter("RANDOMROOM",randomRoom.displayText());<br />request().addFakeUrlParameter("RANDOMAREA",randomArea.name());<br />if(randomMob!=null)<br /> request().addFakeUrlParameter("RANDOMMOB",randomMob.name());<br />if(randomItem!=null)<br /> request().addFakeUrlParameter("RANDOMITEM",randomItem.name());<br />// now we exit back and continue with our HTML, using standard CMVP web macros<br />// to fetch the random names we saved.<br />@/jscript@<br /><br />&lt;FONT FACE="Courier New"&gt;<br />&lt;B&gt;A random area: &lt;B&gt;@RequestParameter?RANDOMAREA@&lt;BR&gt;<br />&lt;B&gt;A random room: &lt;B&gt;@RequestParameter?RANDOMROOM@&lt;BR&gt;<br />&lt;B&gt;A random mob : &lt;B&gt;@RequestParameter?RANDOMMOB@&lt;BR&gt;<br />&lt;B&gt;A random item: &lt;B&gt;@RequestParameter?RANDOMITEM@&lt;BR&gt;<br /><br />&lt;/FONT&gt;<br />&lt;P&gt;<br />&lt;/BODY&gt;<br />&lt;/HTML&gt;<br /><br /></pre>
-<h2><a name="siplet">Siplet and SipletInterface</a></h2>
-The CoffeeMud web server supports HTTP Web Sockets technology, and uses
-it to provide a web game client. &nbsp;This client can be found on
+<pre>&lt;HTML&gt;<br />&lt;HEAD&gt;<br />&lt;TITLE&gt;My JavaScript Enabled Web Page&lt;/TITLE&gt;<br />&lt;/HEAD&gt;<br />&lt;BODY&gt;<br />&lt;H1&gt;An Example of using JavaScript in a CMVP Web Page to fetch MUD Server data.&lt;/H1&gt;<br /><br />@jscript@<br />var lib=Packages.com.planet_ink.coffee_mud.core.CMLib;<br />// define a shortcut to the CoffeeMud libraries.<br /><br />var randomRoom=lib.map().getRandomRoom();<br />var randomArea=lib.map().getRandomArea();<br />// finding random rooms and areas is easy<br /><br />var randomMob=null;<br />var randomItem=null;<br />// assign our random mobs and items to null until they are found<br /><br />var attempts=1000;<br />// finding random items and mobs is more difficult. We will<br />// select a random room, and attempt to pick out a random mob<br />// and/or item from the room. We will do this a maximum of 1000<br />// times before giving up, until we find one of each.<br />while(((--attempts)&gt;0)&amp;&amp;((randomMob==null)||(randomItem==null)))<br />{<br /> var room=lib.map().getRandomRoom();<br /> if((randomMob==null)&amp;&amp;(room.numInhabitants()&gt;0))<br /> {<br /> randomMob=room.fetchRandomInhabitant();<br /> }<br /> if((randomItem==null)&amp;&amp;(room.numItems()&gt;0))<br /> {<br /> randomItem = room.getRandomItem();<br /> }<br />} //now we have all our random things. We could easily insert our HTML using<br /> // the write() method as we did in example 1. To be fancy, however, we'll use the<br /> // the request() object to assign the names of our selections to HTTP Request<br /> // strings.<br /><br />request().addFakeUrlParameter("RANDOMROOM",randomRoom.displayText());<br />request().addFakeUrlParameter("RANDOMAREA",randomArea.name());<br />if(randomMob!=null)<br /> request().addFakeUrlParameter("RANDOMMOB",randomMob.name());<br />if(randomItem!=null)<br /> request().addFakeUrlParameter("RANDOMITEM",randomItem.name());<br />// now we exit back and continue with our HTML, using standard CMVP web macros<br />// to fetch the random names we saved.<br />@/jscript@<br /><br />&lt;FONT FACE="Courier New"&gt;<br />&lt;B&gt;A random area: &lt;B&gt;@RequestParameter?RANDOMAREA@&lt;BR&gt;<br />&lt;B&gt;A random room: &lt;B&gt;@RequestParameter?RANDOMROOM@&lt;BR&gt;<br />&lt;B&gt;A random mob : &lt;B&gt;@RequestParameter?RANDOMMOB@&lt;BR&gt;<br />&lt;B&gt;A random item: &lt;B&gt;@RequestParameter?RANDOMITEM@&lt;BR&gt;<br /><br />&lt;/FONT&gt;<br />&lt;P&gt;<br />&lt;/BODY&gt;<br />&lt;/HTML&gt;<br /><br /></pre><h2><a name="websock">Servlet interfaces</a></h2>
+The CoffeeMud web server supports HTTP Web Sockets technology in an unusual way. &nbsp;<br /><pre><br /><br /></pre><h2><a name="websock">WebSock interfaces</a></h2>
+The CoffeeMud web server supports HTTP Web Sockets technology in an unusual way. &nbsp;<pre><br /></pre>
+<h2><a name="siplet">Siplet and SipletInterface</a></h2>Using one of the WebSock interfaces mentioned above, a web page game client was built. &nbsp;This client can be found on
 your
 public pages with the Play Now link, which is directed at
 /web/siplet/index.html. &nbsp;The client supports ANSI color,
@@ -2118,8 +2118,8 @@ any particular command. &nbsp;These are incoming data from the mud,
 and
 will be formatted exactly the same as if you had sent a Poll Command
 above.<br />
-&nbsp;<span style="font-weight: bold;"><br />
-</span><br />
+&nbsp;<span style="font-weight: bold;"><br /></span></span><br /><br /><h2><a name="websockjson">WebSockJSON</a></h2>
+The C<br /><span style="font-family: monospace;">
 <br />
 <pre><br /></pre>
 </span></td>

@@ -70,6 +70,20 @@ public class WebSockJSON extends WebSock
 	}
 
 	protected volatile boolean	sessionInit	= false;
+	protected boolean linefeeds = true;
+	protected boolean ascii = false;
+	protected boolean telnet = true;
+
+	private enum WSConfig
+	{
+		LINEFEEDS,
+		ASCIIONLY,
+		TELNET,
+		MXP,
+		MSP,
+		MSDP,
+		GMCP
+	}
 
 	private enum WJSONType
 	{
@@ -78,16 +92,37 @@ public class WebSockJSON extends WebSock
 		LOGIN,
 		TEXT,
 		ERROR,
-		LOGOUT
+		LOGOUT,
+		CONFIG
 	}
 
 	@Override
-	protected Pair<byte[],WSPType> processPolledBytes(final byte[] data)
+	protected Pair<byte[],WSPType> processPolledBytes(byte[] data)
 	{
+		if(!telnet)
+			data = CMLib.protocol().stripTelnet(data);
+		if(ascii)
+		{
+			data = CMLib.protocol().stripNonASCII(
+					CMLib.protocol().stripANSI(data));
+		}
+		if(!linefeeds)
+			data = CMLib.protocol().stripLF(data);
 		final MiniJSON.JSONObject json = new MiniJSON.JSONObject();
 		json.put("type", WJSONType.TEXT.name().toLowerCase());
 		json.put("text", data);
 		return new Pair<byte[],WSPType>(json.toString().getBytes(), WSPType.TEXT);
+	}
+
+	protected void sendSimplePacket(final MiniJSON.JSONObject json)
+	{
+		try
+		{
+			super.sendPacket(json.toString().getBytes(), WSPType.TEXT);
+		}
+		catch (final IOException e)
+		{
+		}
 	}
 
 	protected void sendSimplePacket(final String type, final String data)
@@ -103,12 +138,84 @@ public class WebSockJSON extends WebSock
 					json.put(pair.substring(0,x),pair.substring(x+1));
 			}
 		}
-		try
+		sendSimplePacket(json);
+	}
+
+	protected Object getConfig(final WSConfig conf)
+	{
+		switch(conf)
 		{
-			super.sendPacket(json.toString().getBytes(), WSPType.TEXT);
+		case ASCIIONLY:
+			return Boolean.valueOf(ascii);
+		case LINEFEEDS:
+			return Boolean.valueOf(linefeeds);
+		case MSP:
+			if((sess == null)||(sess[0] == null))
+				return MiniJSON.NULL;
+			return Boolean.valueOf(sess[0].getClientTelnetMode(Session.TELNET_MSP));
+		case MSDP:
+			if((sess == null)||(sess[0] == null))
+				return MiniJSON.NULL;
+			return Boolean.valueOf(sess[0].getClientTelnetMode(Session.TELNET_MSDP));
+		case MXP:
+			if((sess == null)||(sess[0] == null))
+				return MiniJSON.NULL;
+			return Boolean.valueOf(sess[0].getClientTelnetMode(Session.TELNET_MXP));
+		case GMCP:
+			if((sess == null)||(sess[0] == null))
+				return MiniJSON.NULL;
+			return Boolean.valueOf(sess[0].getClientTelnetMode(Session.TELNET_GMCP));
+		case TELNET:
+			return Boolean.valueOf(telnet);
 		}
-		catch (final IOException e)
+		return MiniJSON.NULL;
+	}
+
+	protected void setConfig(final WSConfig conf, final Object value)
+	{
+		switch(conf)
 		{
+		case ASCIIONLY:
+			ascii = (value == null) ? ascii : CMath.s_bool(value.toString());
+			break;
+		case GMCP:
+			if((sess != null) && (sess[0] != null))
+			{
+				final boolean onoff = CMath.s_bool(value.toString());
+				sess[0].setClientTelnetMode(Session.TELNET_GMCP, onoff);
+				sess[0].setServerTelnetMode(Session.TELNET_GMCP, onoff);
+			}
+			break;
+		case LINEFEEDS:
+			linefeeds = (value == null) ? linefeeds : CMath.s_bool(value.toString());
+			break;
+		case MSDP:
+			if((sess != null) && (sess[0] != null))
+			{
+				final boolean onoff = CMath.s_bool(value.toString());
+				sess[0].setClientTelnetMode(Session.TELNET_MSDP, onoff);
+				sess[0].setServerTelnetMode(Session.TELNET_MSDP, onoff);
+			}
+			break;
+		case MSP:
+			if((sess != null) && (sess[0] != null))
+			{
+				final boolean onoff = CMath.s_bool(value.toString());
+				sess[0].setClientTelnetMode(Session.TELNET_MSP, onoff);
+				sess[0].setServerTelnetMode(Session.TELNET_MSP, onoff);
+			}
+			break;
+		case MXP:
+			if((sess != null) && (sess[0] != null))
+			{
+				final boolean onoff = CMath.s_bool(value.toString());
+				sess[0].setClientTelnetMode(Session.TELNET_MXP, onoff);
+				sess[0].setServerTelnetMode(Session.TELNET_MXP, onoff);
+			}
+			break;
+		case TELNET:
+			telnet = (value == null) ? telnet : CMath.s_bool(value.toString());
+			break;
 		}
 	}
 
@@ -125,6 +232,30 @@ public class WebSockJSON extends WebSock
 			}
 		}
 		super.poll();
+	}
+
+	private void config(final MiniJSON.JSONObject obj) throws IOException, MiniJSON.MJSONException
+	{
+		if(obj.containsKey("key"))
+			throw new MiniJSON.MJSONException("Invalid JSON: Missing key.");
+		final String key = obj.getCheckedString("key");
+		final WSConfig conf = (WSConfig)CMath.s_valueOf(WSConfig.class, key.toUpperCase().trim());
+		if(conf == null)
+			throw new MiniJSON.MJSONException("Invalid JSON: Invalid key.");
+		if(!obj.containsKey("value"))
+		{
+			final MiniJSON.JSONObject json = new MiniJSON.JSONObject();
+			json.put("type", WJSONType.CONFIG.name().toLowerCase());
+			json.put("key", conf.name());
+			json.put("value", getConfig(conf));
+			sendSimplePacket(json);
+		}
+		else
+		{
+			this.setConfig(conf, obj.get("value"));
+			obj.remove("value");
+			config(obj); // respond with the already set value
+		}
 	}
 
 	private void logout(final MiniJSON.JSONObject obj) throws IOException, MiniJSON.MJSONException
@@ -233,6 +364,9 @@ public class WebSockJSON extends WebSock
 				break;
 			case ERROR:
 				throw new MiniJSON.MJSONException("ERROR is a server-only command.");
+			case CONFIG:
+				config(obj);
+				break;
 			}
 		}
 		catch(final MiniJSON.MJSONException x)
