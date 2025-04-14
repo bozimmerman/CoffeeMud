@@ -195,9 +195,13 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 	{
 		try
 		{
-			final DataBuffers outBuffer = new CWDataBuffers();
-			outBuffer.add(pingFrame, System.currentTimeMillis(), true);
-			ioHandler.writeBytesToChannel(outBuffer);
+			final long idle = System.currentTimeMillis() - lastPing;
+			if ((idle > (5 * 1000)))
+			{
+				final DataBuffers outBuffer = new CWDataBuffers();
+				outBuffer.add(pingFrame, System.currentTimeMillis(), true);
+				ioHandler.writeBytesToChannel(outBuffer);
+			}
 		}
 		catch (final IOException e)
 		{
