@@ -18,8 +18,7 @@
 <ul>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#connect">How to Connect</a></li>
-<li><a href="#limits">What it does and
-doesn't do</a></li>
+<li><a href="#limits">Features</a></li>
 <li><a href="#security">Security</a></li>
 <li><a href="#configuration">Configuration</a></li>
 <li><a href="#virtualdir">Virtual Directories</a></li>
@@ -30,9 +29,7 @@ error pages</a></li>
 <li><a href="#add">Adding new macros to CMVP</a></li>
 <li><a href="#javascript">Using Javascript
 in your pages</a></li><li><a href="#servlet">Servlet interfaces</a></li>
-<li><a href="#websock">WebSock interfaces</a></li><li><a href="#siplet">Siplet and
-SipletInterface</a></li><li><a href="#websockjson">WebSockJSON<br /></a></li>
-</ul>
+<li><a href="#websock">WebSockets&nbsp;</a></li></ul>
 </td>
 <td align="left" valign="top">
 <p><a name="introduction" id="introduction">&nbsp;</a>
@@ -40,7 +37,7 @@ The
 CoffeeMud Web Server is a simple, extensible web server that runs as
 part of CoffeeMud; it uses HTTP 1.1 to communicate with a web browser.
 In addition to being able to serve standard HTML web pages, it also
-supports servlets, websocks, and a simple server-processed form of HTML called <i>CMVP</i>
+supports a&nbsp; server-processed form of HTML called <i>CMVP</i>
 (Coffee MUD Virtual Pages) - this allows the server to insert
 information into the page before sending it to the browser. This
 document assumes you have some familiarty with HTTP, mime types, and
@@ -56,11 +53,10 @@ browser:</p>
 following
 URL:</p>
 <p><a href="http://localhost:27777/">http://localhost:27777/</a></p>
-<h2><a name="limits">What it does and doesn't
-do</a></h2>
+<h2><a name="limits">Features</a></h2>
 <p>It supports GET, urlencoded and multipart POST requests,
 and
-HEAD requests. &nbsp;It supports custom servlets, cookies,
+HEAD requests. &nbsp;It supports custom servlets, websocks, cookies,
 sessions,
 SSL, gzip and deflate encodings, pipelining, etag support, ranged
 requests, async IO (fast!), mapping mime types to java
@@ -83,7 +79,7 @@ configuration, allowing it to access the more powerful CoffeeMud
 macros. &nbsp;The web server also supports SSL (https).
 &nbsp;However,
 this is not turned on by default, since it requires access to a special
-(and pricey!) SSL web certificate from a respected certification
+SSL web certificate from a respected certification
 agency, such as Verisign. &nbsp;To learn more about setting this
 up,
 see the SSLPORT entry and the information under SSL CONFIGURATION in
@@ -1985,9 +1981,116 @@ our HTML into the page. We also used the <code>request()</code>
 object
 to fetch the client ip address. Now here is a more involved example:</p>
 <pre>&lt;HTML&gt;<br />&lt;HEAD&gt;<br />&lt;TITLE&gt;My JavaScript Enabled Web Page&lt;/TITLE&gt;<br />&lt;/HEAD&gt;<br />&lt;BODY&gt;<br />&lt;H1&gt;An Example of using JavaScript in a CMVP Web Page to fetch MUD Server data.&lt;/H1&gt;<br /><br />@jscript@<br />var lib=Packages.com.planet_ink.coffee_mud.core.CMLib;<br />// define a shortcut to the CoffeeMud libraries.<br /><br />var randomRoom=lib.map().getRandomRoom();<br />var randomArea=lib.map().getRandomArea();<br />// finding random rooms and areas is easy<br /><br />var randomMob=null;<br />var randomItem=null;<br />// assign our random mobs and items to null until they are found<br /><br />var attempts=1000;<br />// finding random items and mobs is more difficult. We will<br />// select a random room, and attempt to pick out a random mob<br />// and/or item from the room. We will do this a maximum of 1000<br />// times before giving up, until we find one of each.<br />while(((--attempts)&gt;0)&amp;&amp;((randomMob==null)||(randomItem==null)))<br />{<br /> var room=lib.map().getRandomRoom();<br /> if((randomMob==null)&amp;&amp;(room.numInhabitants()&gt;0))<br /> {<br /> randomMob=room.fetchRandomInhabitant();<br /> }<br /> if((randomItem==null)&amp;&amp;(room.numItems()&gt;0))<br /> {<br /> randomItem = room.getRandomItem();<br /> }<br />} //now we have all our random things. We could easily insert our HTML using<br /> // the write() method as we did in example 1. To be fancy, however, we'll use the<br /> // the request() object to assign the names of our selections to HTTP Request<br /> // strings.<br /><br />request().addFakeUrlParameter("RANDOMROOM",randomRoom.displayText());<br />request().addFakeUrlParameter("RANDOMAREA",randomArea.name());<br />if(randomMob!=null)<br /> request().addFakeUrlParameter("RANDOMMOB",randomMob.name());<br />if(randomItem!=null)<br /> request().addFakeUrlParameter("RANDOMITEM",randomItem.name());<br />// now we exit back and continue with our HTML, using standard CMVP web macros<br />// to fetch the random names we saved.<br />@/jscript@<br /><br />&lt;FONT FACE="Courier New"&gt;<br />&lt;B&gt;A random area: &lt;B&gt;@RequestParameter?RANDOMAREA@&lt;BR&gt;<br />&lt;B&gt;A random room: &lt;B&gt;@RequestParameter?RANDOMROOM@&lt;BR&gt;<br />&lt;B&gt;A random mob : &lt;B&gt;@RequestParameter?RANDOMMOB@&lt;BR&gt;<br />&lt;B&gt;A random item: &lt;B&gt;@RequestParameter?RANDOMITEM@&lt;BR&gt;<br /><br />&lt;/FONT&gt;<br />&lt;P&gt;<br />&lt;/BODY&gt;<br />&lt;/HTML&gt;<br /><br /></pre><h2><a name="websock">Servlet interfaces</a></h2>
-The CoffeeMud web server supports HTTP Web Sockets technology in an unusual way. &nbsp;<br /><pre><br /><br /></pre><h2><a name="websock">WebSock interfaces</a></h2>
-The CoffeeMud web server supports HTTP Web Sockets technology in an unusual way. &nbsp;<pre><br /></pre>
-<h2><a name="siplet">Siplet and SipletInterface</a></h2>Using one of the WebSock interfaces mentioned above, a web page game client was built. &nbsp;This client can be found on
+The CoffeeMud web server supports Java Servlets, which are special Java
+classes that can handle HTTP requests and generate their own responses
+for the requesters browser to process. &nbsp;They must implement the <span style="font-family: monospace;">SimpleServlet</span> interface, which is part of the <span style="font-family: monospace;">com.planet_ink.coffee_web.interfaces</span> package. &nbsp;The web server does not yet support the official JavaX Servlet interface.<br /><br />Web
+Browsers gain access to servlets by configuring a particular URL path
+to a particular servlet class that is already defined and available in
+the web servers java path. &nbsp;This configuration is done in the INI
+file for your web server, as mentioned above under configuration.
+&nbsp;The configuration entry for servlets is as follows:<br /><span style="font-weight: bold;"><br />SERVLET*</span>=javaclass<br /><br />To assign a servlet to a SimpleServlet-based class, you can map
+it to a top-level url context by using the word "SERVLET" followed by a
+slash, followed by the root url context, and then setting that equal to
+the java class name where your SimpleServlet can be found.&nbsp; Here are some default examples:<br /><br /><span style="font-family: monospace;">SERVLET/stats=com.planet_ink.coffee_web.servlets.ServletStatsServlet</span><br /><br />This
+example servlet provides some request counters for the various other
+servlets. &nbsp;As mentioned above, you would access it by the url <span style="font-family: monospace;">http://localhost:27744/stats</span> , though the 'localhost' and port 27744 might be different based on how your configured your web server.<br /><br /><span style="font-family: monospace;">SERVLET/info=com.planet_ink.coffee_web.servlets.ServerInfoServlet</span><br /><br />This example servlet provides some configuration information about the web server, such as found in the web server INI files.<br /><h3>WebMacroCreamer servlet:</h3>This
+servlet is special in that its only job is to execute special web
+server "Web Macros" as if they were servlets instead of web macros.
+&nbsp;(See the CoffeeMud Virtual Pages section above for more
+information on their normal use.) &nbsp; These special web macros
+proclaim that they are of the 'web path' type by returning true from
+the method <span style="font-family: monospace;">public boolean isAWebPath()</span>, which signals to the WebMacroCreamer servlet that it can execute it. <br /><br />In
+order for this to work, the final part of the servlet URL path must be
+the same as the name of the special WebMacro so declared.<br /><br />Most of the remaining servlet examples, therefore, are actually WebMacros being redirected to through WebMacroCreamer servlet. <br /><br />Here are examples of those webmacro-servlets:<br /><br /><span style="font-family: monospace;">SERVLET/images/mxp/PlayerPortrait=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><br />Executes
+the PlayerPortrait Web Macro, which returns&nbsp;binary image data
+associated with a game character, for display in various pages.
+&nbsp;The players name is passed as a url parameter; for example: &nbsp;<span style="font-family: monospace;">http://localhost:27744/images/mxp/PlayerPortrait?PLAYER=Bob</span><br /><br /><span style="font-family: monospace;">SERVLET/AreaXML=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><br />Exports
+the XML representing a game Area, named by URL parameter AREA.
+&nbsp;This also requires the AUTH url parameter, which ensures that
+areas can only be exported by authenticated administrators.<br /><br /><span style="font-family: monospace;">SERVLET/FileData=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><br />Exports
+the contents of a VFS File denoted by the url parameter PATH or FILE.
+&nbsp;This also requires the AUTH url parameter, which ensures that
+files can only be read by authenticated administrators.<br /><br /><span style="font-family: monospace;">SERVLET/ImageVerificationImage=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><br />Generates a CAPTCHA-like image for human verification. &nbsp;<br /><br /><span style="font-family: monospace;">SERVLET/pub/Unsubscribe=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer<br /></span><span style="font-family: monospace;">SERVLET/Unsubscribe=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><br />These
+url paths execute the Unsubscribe Web Macro, which is typically
+followed by an automatically generated email from the mud. &nbsp;It
+unsubscribes the user who clicks on the link from a journal denoted by
+an UNSUBKEY passed into it, along with a USER parameter to confirm the
+appropriate account or user. <br /><span style="font-family: monospace;"></span><br />The remaining WebMacro servlets are covered below under WebSockets<br /><br /><span style="font-family: monospace;">SERVLET/pub/SipletInterface=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><span style="font-family: monospace;">SERVLET/SipletInterface=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><span style="font-family: monospace;">SERVLET/WebSockASCII=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><span style="font-family: monospace;">SERVLET/WebSockJSON=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><span style="font-family: monospace;">SERVLET/WebSock=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><span style="font-family: monospace;"></span><h2><a name="websock">WebSockets in CoffeeMud</a></h2>WebSocket
+interface is a protocol that is initiated by HTTP, but which
+maintains&nbsp;persistent two-way communication between the web server
+and client over a single connection. &nbsp;<br /><br />The CoffeeMud
+web server supports&nbsp;Web Sockets via a series of special Web Macros
+and the specific servlet called WebMacroCreamer. &nbsp; This means that
+each of the various flavors of WebSockets provided by CoffeeMud are
+actually configured in your web server INI file under the section on
+servlets. &nbsp;Please read the previous section on Servlets, and
+especially WebMacroCreamer, for a bit more information on how this is
+configured, and how it works.<br /><br />Each of the WebSock WebMacros
+is responsible for managing the connection between the MUD, itself, and
+the browser client, once the macro is executed to initiate a
+connection. &nbsp;In effect, this means that&nbsp;disconnecting from
+the mud will also end the websock session, and vis-a-versa. &nbsp;They
+also implement a short timer tied to the websock PING operation, which
+will cause the websock session to end of the browser client does not
+regularly and promptly respond to every ping from the server.<br /><br />There
+are four special WebSock web macros provided for web developers to play
+around with, with the difference mostly being in the high-level
+protocol packaging, and the level of filtering or other services
+provided to the browser client.<br /><br /><big style="font-weight: bold;"><big><span style="font-family: monospace;">WebSock</span></big></big><br /><br />WebSock&nbsp;is
+the base, and most 'raw' of the websock interfaces to the mud.
+&nbsp;Connecting to the /WebSock path will initiate a new telnet
+session with the underlying MUD. &nbsp;All text and binary input sent
+to it by the browser is forwarded directly to the telnet port, and all
+new data received from the telnet port is returned to the browser
+client as a Binary packet.<br /><br /><big><big style="font-weight: bold;"><span style="font-family: monospace;">WebSockASCII</span></big></big><br /><br />WebSockASCII
+is the ascii-text version of the above WebSock, but instead of sending
+Binary packets back to the browser, it will send a Text packet, with
+all ANSI color, TELNET codes, and any other non-text data filtered out.<br /><br /><span style="font-family: monospace;"><big style="font-weight: bold;"><big>WebSockJSON</big></big><br /><br /></span>WebSockJSON
+is a more managed version of a raw interface to the MUD telnet
+sessions. &nbsp;All input and output is a Text packet that contains a
+JSON document. &nbsp;Every JSON packet consists of a "type" property,
+denoting the kind of data being sent or received, along with other
+properties specific to that type. &nbsp;For example, the "login" packet
+might look like this:<br /><br /><span style="font-family: monospace;">{<br />&nbsp; "type": "login",<br />&nbsp; "name": "elrond",<br />&nbsp; "password": "destroytheonering"<br />}<br /></span><br />The types are as folllows:<br /><br />"login"<br />This
+type of packet is sent from the client to the server to log a specific
+character into the game. &nbsp;It requires two other properties: "name"
+for the name of the character, and "password" for the character/account
+password. &nbsp;This packet is rejected if the websock is already
+logged in, or if the character given is already in the game, the
+character doesn't exist, or if the login information is invalid.
+&nbsp;Normal game spam protections are also enforced. &nbsp;If
+successful, a "connect" packet is returned by the server, otherwise an
+"error"&nbsp;is sent.<br /><br />"connect"<br />This type of packet is
+sent from the server to the client to let it know that the websock
+session has been successfully initialized, or that the "login" packet
+was processed successfully. &nbsp;When sent in response to a "login",
+the packet will contain a "username" property with the name of the
+character logged in.<br /><br />"logout"<br />This packet will log the
+current character out of the game, without disconnecting the websock.
+&nbsp;It will fail only if no character is currently logged in.
+&nbsp;After executing this command, the "login" command may be sent to
+change to a new character.<br /><br />"error"<br />This packet is only
+sent by the server in response to another packet, and delivers a
+failure message regarding it. &nbsp;It will contain a "text" property
+describing the failure.<br /><br />"input"<br />This packet is sent by
+the client to the server to forward to the mud as user input. &nbsp;It
+must contain the property "data", sent as either a string, or an array
+of strings.<br /><br />"text"<br />This packet is sent by the server to
+the client to forward output from the mud to the user. &nbsp;It
+contains a "data" property containing the exact output from the mud,
+encoded as a JSON string, but often containing telnet, ansi, or other
+control codes.<br /><br />"config"<br />This packet is used to read
+WebSockJSON configuration and filtering information, or to change it.
+&nbsp;To read a configuration value, the client will send the packet
+with a "key" property of the appropriate configuration value to read.
+&nbsp;To write a new value, the client will also include a "value"
+property with the new value to set the configuration entry to. &nbsp;In
+either case, the server will respond with its own "config" packet
+returning the current or new "key" and "value" for the requested data.
+&nbsp; &nbsp;<br /><br />Valid configuration keys and values include: &nbsp;<br /><ul><li>"asciionly" (true/false) to filter out all binary data from "text" packets</li><li>"gmcp" (true/false) to turn GMCP support on or off</li><li>"linefeeds" (true/false) to allow or filter out linefeeds in "text" packets</li><li>"msdp" (true/false) to turn MSDP support on or off</li><li>"msp" (true/false) to turn MSP support on or off</li><li>"mxp" (true/false) to turn MXP support on or off</li><li>"telnet" (true/false) to allow or filter out telnet codes from "text" packets</li></ul><span style="font-family: monospace;"></span><span style="font-family: monospace;"><br /><big style="font-weight: bold;"><big>SipletInterface</big></big></span><span style="font-weight: bold;"><br /><br /></span>A
+full web page game client web socket interface that converts all MUD
+output into HTML on the server side before sending it to the browser.
+&nbsp;This client can be found on
 your
 public pages with the Play Now link, which is directed at
 /web/siplet/index.html. &nbsp;The client supports ANSI color,
@@ -2118,8 +2221,7 @@ any particular command. &nbsp;These are incoming data from the mud,
 and
 will be formatted exactly the same as if you had sent a Poll Command
 above.<br />
-&nbsp;<span style="font-weight: bold;"><br /></span></span><br /><br /><h2><a name="websockjson">WebSockJSON</a></h2>
-The C<br /><span style="font-family: monospace;">
+</span><br /><span style="font-family: monospace;">
 <br />
 <pre><br /></pre>
 </span></td>

@@ -8,6 +8,8 @@
   6. New prompt features: %h% %m% and %v% for percentages .. breaks MXP bars
   7. New disable flags: CHARCRSTAT, CHARCRRACE, CHARCRCLASS, CHARCRGENDER
   8. New archon LISTs: DEBUGFLAGS, DISABLEFLAGS
+  9. Three new WebSocket macros (WebSock, WebSockASCII, and WebSockJSON).  See WebServer.html
+
   
 # Build 5.10.4 Release 12/05/2024
   *  DATABASE CHANGED! (Bitmap field in CMCHAR table is now larger)
