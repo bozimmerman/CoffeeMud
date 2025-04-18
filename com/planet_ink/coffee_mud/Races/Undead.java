@@ -374,6 +374,11 @@ public class Undead extends StdRace
 					break;
 				}
 			}
+			else
+			if((msg.source()==mob)
+			&&(msg.tool() instanceof Ability)
+			&&(msg.tool().ID().equals("Bleeding")))
+				return false;
 		}
 		return super.okMessage(myHost,msg);
 	}
