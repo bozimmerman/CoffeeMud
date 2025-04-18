@@ -145,7 +145,7 @@ public class DefaultSession implements Session
 
 	protected final Stack<ColorState>	markedColors	= new Stack<ColorState>();
 	protected AtomicBoolean				lastWasPrompt	= new AtomicBoolean(false);
-	protected List<SessionFilter>		textFilters		= new Vector<SessionFilter>(3);
+	protected List<SessionFilter>		textFilters		= new SVector<SessionFilter>(3);
 	protected volatile InputCallback	inputCallback	= null;
 
 	@Override
