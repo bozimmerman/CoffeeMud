@@ -2299,10 +2299,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(E instanceof CagedAnimal)
 		{
-			final Ability A=((MOB)E).fetchEffect("Age");
+			final CagedAnimal I = (CagedAnimal)E;
+			final Ability A=I.fetchEffect("Age");
 			if((A != null)&&(((CMath.s_long(A.text())>Short.MAX_VALUE))))
 				return true;
-
 		}
 		return false;
 	}
