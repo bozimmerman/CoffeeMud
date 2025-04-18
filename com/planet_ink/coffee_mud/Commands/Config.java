@@ -262,6 +262,9 @@ public class Config extends StdCommand
 					if("OFF".startsWith(newWrap.toUpperCase())&&(newWrap.length()>0))
 						newVal=0;
 					else
+					if("0".equals(newWrap.toUpperCase()))
+						newVal=0;
+					else
 					{
 						mob.tell(L("'@x1' is not a valid linewrap setting. Enter a number larger than 10 or 'disable'.",newWrap));
 						return false;

@@ -815,6 +815,8 @@ public class Modify extends StdCommand
 		Resources.removeResource("HELP_"+myArea.Name().toUpperCase());
 		final Set<Area> alsoUpdateAreas=new HashSet<Area>();
 		final Area copyA = (Area)myArea.copyOf();
+		final TimeClock copyClock = (TimeClock)myArea.getTimeObj().copyOf();
+		final TimeClock oldClock = myArea.getTimeObj();
 		if(commands.size()==2)
 			CMLib.genEd().modifyArea(mob,myArea,alsoUpdateAreas, -1);
 		else
@@ -1050,7 +1052,13 @@ public class Modify extends StdCommand
 			&&(!A.Name().equals(myArea.Name())))
 				CMLib.database().DBUpdateArea(A.Name(),A);
 		}
-		if(!copyA.sameAs(myArea))
+		copyClock.setHourOfDay(myArea.getTimeObj().getHourOfDay());
+		if((!copyA.sameAs(myArea))
+		||(oldClock != myArea.getTimeObj())
+		||(oldClock.getDaysInMonth() != copyClock.getDaysInMonth())
+		||(oldClock.getMonthsInYear() != copyClock.getMonthsInYear())
+		||(oldClock.getHoursInDay() != copyClock.getHoursInDay())
+		||(!Arrays.equals(oldClock.getDawnToDusk(), copyClock.getDawnToDusk())))
 			Log.sysOut("Rooms",mob.Name()+" modified area "+myArea.Name()+".");
 		copyA.destroy();
 	}

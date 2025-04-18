@@ -3267,7 +3267,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			{
 				bout.write(buf,last,i-last);
 				i++;
-				while(++i<num && (buf[i] != 'm'))
+				while(++i<num && (buf[i] != 'm')&& (buf[i] != 'z'))
 				{}
 				last=i+1;
 			}

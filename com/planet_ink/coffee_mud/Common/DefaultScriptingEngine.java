@@ -11410,17 +11410,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 				}
 				String parm=tt[1];
-				final Environmental newTarget=getArgumentMOB(parm,ctx);
-				final Room lastR=CMLib.map().roomLocation(newTarget);
-				if((newTarget instanceof MOB)
-				&&(lastR!=null))
-				{
-					if(newTarget==ctx.monster)
-						lastR.showSource(ctx.monster,null,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
-					else
-						lastR.show(ctx.monster,newTarget,null,CMMsg.MSG_OK_ACTION,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]),CMMsg.NO_EFFECT,null);
-				}
-				else
+				Room lastR = lastKnownLocation;
 				if((parm.equalsIgnoreCase("world"))
 				&&(lastR!=null))
 				{
@@ -11448,25 +11438,38 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				else
 				{
-					parm = this.varify(ctx, parm);
-					if(parm.trim().length()>0)
+					final Environmental newTarget = getArgumentMOB(parm,ctx);
+					lastR=CMLib.map().roomLocation(newTarget);
+					if((newTarget instanceof MOB)
+					&&(lastR!=null))
 					{
-						Room R = CMLib.map().getRoom(parm);
-						if(R!=null)
-							R.show(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+						if(newTarget==ctx.monster)
+							lastR.showSource(ctx.monster,null,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
 						else
+							lastR.show(ctx.monster,newTarget,null,CMMsg.MSG_OK_ACTION,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]),CMMsg.NO_EFFECT,null);
+					}
+					else
+					{
+						parm = this.varify(ctx, parm);
+						if(parm.trim().length()>0)
 						{
-							final Area A = CMLib.map().findArea(parm);
-							if(A != null)
+							Room R = CMLib.map().getRoom(parm);
+							if(R!=null)
+								R.show(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+							else
 							{
-								if((lastR!=null)
-								&&((lastR.numInhabitants()==0)||(!A.inMyMetroArea(lastR.getArea()))))
-									lastR.showSource(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
-								for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+								final Area A = CMLib.map().findArea(parm);
+								if(A != null)
 								{
-									R=e.nextElement();
-									if(R.numInhabitants()>0)
-										R.showOthers(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+									if((lastR!=null)
+									&&((lastR.numInhabitants()==0)||(!A.inMyMetroArea(lastR.getArea()))))
+										lastR.showSource(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+									for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+									{
+										R=e.nextElement();
+										if(R.numInhabitants()>0)
+											R.showOthers(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+									}
 								}
 							}
 						}

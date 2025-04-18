@@ -158,23 +158,36 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 
 		if((affected!=null)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.value()>0))
+		&&(msg.value()>0)
+		&&(msg.tool()!=null))
 		{
-			MOB M=null;
+			//MOB M=null;
 			if(affected instanceof MOB)
-				M=(MOB)affected;
+			{
+				if(!msg.amITarget(affected))
+					return true;
+			}
 			else
-			if((affected instanceof Item)
-			&&(((Item)affected).amBeingWornProperly())
-			&&(((Item)affected).owner()!=null)
-			&&(((Item)affected).owner() instanceof MOB))
-				M=(MOB)((Item)affected).owner();
-			if(M==null)
-				return true;
-			if(!msg.amITarget(M))
-				return true;
-			if(msg.tool()==null)
-				return true;
+			if(affected instanceof Item)
+			{
+				if(affected instanceof Rideable)
+				{
+					if((!(msg.target() instanceof Rider))
+					||(!((Rideable)affected).amRiding((Rider)msg.target())))
+						return true;
+				}
+				else
+				if((((Item)affected).amBeingWornProperly())
+				&&(((Item)affected).owner()!=null)
+				&&(((Item)affected).owner() instanceof MOB))
+				{
+					if(!msg.amITarget(((Item)affected).owner()))
+						return true;
+				}
+				else	// this item is not worn or owned, so it doesn't count.
+					return true;
+			}
+			// else a room or area or exit or something, in which case ALL might be immune
 
 			boolean immune=flags.containsKey("ALL")&&(((Character)flags.get("ALL")).charValue()=='+');
 			Character foundPlusMinus=null;

@@ -1,0 +1,27 @@
+<HTML><BODY><PRE ID=BOB>
+<SCRIPT LANGUAGE=JavaScript src="js/binparser.js"></SCRIPT>
+<SCRIPT LANGUAGE=JavaScript>
+var wsocket;
+var wsopened = false;
+wsocket = new WebSocket("ws://localhost:27744/WebSock");
+wsocket.binaryType = "arraybuffer";
+function onmessage(e)
+{
+	var i=0;
+	
+    document.getElementById('BOB').innerHTML += event.data;
+    window.scrollTo(0, document.body.scrollHeight);
+}
+
+function onkeypress(e)
+{
+	document.getElementById('BOB').innerHTML +=String.fromCharCode(event.keyCode);
+	if(wsopened)
+		wsocket.send(String.fromCharCode(event.keyCode));
+}
+
+wsocket.onmessage = onmessage;
+wsocket.onopen = function(event)  { wsopened=true; document.bgColor="black";document.fgColor="white";};
+wsocket.onclose = function(event)  { wsopened=false; document.bgColor="red";};
+document.onkeypress = onkeypress;
+</SCRIPT></PRE></BODY><HTML>

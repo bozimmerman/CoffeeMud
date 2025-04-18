@@ -141,7 +141,10 @@ public class Affect extends StdCommand
 			}
 			if(disp.length()>0)
 			{
-				if(disp.startsWith("(")&&disp.endsWith(")"))
+				if(disp.startsWith("(")
+				&&disp.endsWith(")")
+				&&(A.canBeUninvoked())
+				&&(!A.isNowAnAutoEffect()))
 				{
 					long tr=A.expirationDate();
 					if(A.invoker()!=null)
