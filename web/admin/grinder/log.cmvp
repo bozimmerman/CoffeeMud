@@ -15,33 +15,60 @@
 			document.RESOURCES.action=action;
 			document.RESOURCES.submit();
 		}
+		function Previous()
+		{
+			document.RESOURCES.PAGE.value=Number(document.RESOURCES.PAGE.value)-1;
+			Clicked('/grinder/log.cmvp');
+		}
+		function Next()
+		{
+			document.RESOURCES.PAGE.value=Number(document.RESOURCES.PAGE.value)+1;
+			Clicked('/grinder/log.cmvp');
+		}
 	//-->
 	</script>
 </head>
 <body BGCOLOR=BLACK>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="log.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 	<TABLE WIDTH=100% BORDER=0>
 	<TR>
 	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
 	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
 	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
-		<TABLE WIDTH=50% BORDER=1>
+		<TABLE WIDTH=65% BORDER=1>
 		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
 		<TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+		<TR><TD><FONT COLOR=WHITE SIZE=-1>
+			<B>Page Len:</B>
+			@if?CheckReqParm?PAGELEN=@ @AddRequestParameter?PAGELEN=250@ @endif@
+			<INPUT NAME=PAGELEN TYPE=TEXT SIZE=4 VALUE=@RequestParameter?PAGELEN@>
+			</FONT></TD></TR>
 		<TR><TD><a href="javascript:Clicked('/grinder/log.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Refresh</B></FONT></A></TD></TR>
 		</TABLE>
 	</TD>
 	</TR>
 	</TABLE>
-<FONT COLOR=WHITE>@LogViewer@</FONT>
+	<FONT COLOR=WHITE><PRE>@LogViewer?PAGEBREAK=@@RequestParameter?PAGELEN@@&REVERSE@</PRE></FONT>
 	<TABLE WIDTH=100% BORDER=0>
 	<TR>
-	<TD WIDTH=100% VALIGN=TOP ALIGN=CENTER>
+	<TD WIDTH=33% VALIGN=TOP ALIGN=CENTER>
+	@if?CheckReqParm?>PAGE=0@
+	<INPUT TYPE=BUTTON NAME=PREV VALUE="PREVIOUS" ONCLICK="Previous()">
+	@endif@
+	</TD>
+	<TD WIDTH=33% VALIGN=TOP ALIGN=CENTER>
 	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="REFRESH" ONCLICK="Clicked('/grinder/log.cmvp');">
+	</TD>
+	<TD WIDTH=33% VALIGN=TOP ALIGN=CENTER>
+	@if?CheckReqParm?HASMORE=true@
+	<INPUT TYPE=BUTTON NAME=NEXT VALUE="NEXT" ONCLICK="Next()">
+	@endif@
 	</TD>
 	</TR>
 	</TABLE>
+	<INPUT TYPE=HIDDEN NAME=PAGE VALUE="@RequestParameter?PAGE@">
+	</FORM>
 </BODY>
 </HTML>
 @endif@

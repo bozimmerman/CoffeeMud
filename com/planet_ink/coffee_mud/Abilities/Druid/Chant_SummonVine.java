@@ -109,8 +109,11 @@ public class Chant_SummonVine extends Chant
 				||(mob.location()!=invoker.location())))
 					unInvoke();
 				else
-				if((!mob.isInCombat())&&((++peaceTicks)>5))
-					unInvoke();
+				if(!mob.isInCombat())
+				{
+					if((++peaceTicks)>5)
+						unInvoke();
+				}
 				else
 					peaceTicks=0;
 			}

@@ -9,7 +9,7 @@
   7. New disable flags: CHARCRSTAT, CHARCRRACE, CHARCRCLASS, CHARCRGENDER
   8. New archon LISTs: DEBUGFLAGS, DISABLEFLAGS
   9. Three new WebSocket macros (WebSock, WebSockASCII, and WebSockJSON).  See WebServer.html
-
+ 10. Log viewer in the MUDGrinder now shows the log by pages, starting at the last one.
   
 # Build 5.10.4 Release 12/05/2024
   *  DATABASE CHANGED! (Bitmap field in CMCHAR table is now larger)

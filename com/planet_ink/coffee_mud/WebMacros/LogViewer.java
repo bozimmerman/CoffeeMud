@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.Log.LogReader;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -50,8 +51,53 @@ public class LogViewer extends StdWebMacro
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
-		String s=Log.instance().getLog().toString();
-		s=s.replaceAll("\n\r", "\n");
-		return clearWebMacros("<PRE>"+CMLib.xml().parseOutAngleBrackets(s)+"</PRE>");
+		final java.util.Map<String,String> parms=parseParms(parm);
+		final int pagebreak = CMath.s_int(parms.get("PAGEBREAK"));
+		String s;
+		if(pagebreak > 0)
+		{
+			int curPage = CMath.s_int(httpReq.getUrlParameter("PAGE"));
+			final boolean reverse = parms.containsKey("REVERSE");
+			if(reverse)
+			{
+				if ((!httpReq.isUrlParameter("PAGE"))
+				||(httpReq.getUrlParameter("PAGE").toString().trim().length()==0))
+				{
+					curPage = Integer.MAX_VALUE;
+				}
+			}
+			final LogReader reader = Log.instance().getLogReader();
+			final String[] lines = new String[pagebreak];
+			int pageNum = 0;
+			String line = reader.nextLine();
+			int end = 0;
+			while(line != null)
+			{
+				lines[end] = line;
+				line = reader.nextLine();
+				if(end == pagebreak-1)
+				{
+					if(pageNum >= curPage)
+						break;
+					if(line != null)
+					{
+						pageNum++;
+						end=0;
+					}
+				}
+				else
+				if(line != null)
+					end = end + 1;
+			}
+			final StringBuilder str = new StringBuilder("");
+			for(int i=0;i<=end;i++)
+				str.append(lines[i]+"\n");
+			httpReq.addFakeUrlParameter("PAGE", ""+pageNum);
+			httpReq.addFakeUrlParameter("HASMORE", ""+(line != null));
+			s=str.toString();
+		}
+		else
+			s=Log.instance().getLog().toString();
+		return clearWebMacros(CMLib.xml().parseOutAngleBrackets(s.replaceAll("\r","")));
 	}
 }
