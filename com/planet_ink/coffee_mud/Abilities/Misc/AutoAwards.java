@@ -110,7 +110,7 @@ public class AutoAwards extends StdAbility
 	protected volatile Ability		suppressorA	= null;
 	protected volatile Ability		reverserA	= null;
 
-	protected final PairList<AutoProperties, CMObject>	affects		= new PairVector<AutoProperties, CMObject>();
+	protected final PairList<AutoProperties, CMObject>	affects		= new PairSVector<AutoProperties, CMObject>();
 	protected final Map<TimePeriod, AutoProperties[]>	myEntries	= new Hashtable<TimePeriod, AutoProperties[]>();
 
 	protected void gatherTimelyEntries(final Physical P, final AutoProperties[] entries, final List<AutoProperties> apply, final int[] hash)
@@ -327,7 +327,7 @@ public class AutoAwards extends StdAbility
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null)
 			return;
-		if(suppressorA == null)
+		if((suppressorA == null)&&(affects.size()>0))
 		{
 			for(final Pair<AutoProperties, CMObject> p : affects)
 			{
@@ -343,7 +343,7 @@ public class AutoAwards extends StdAbility
 		super.affectCharStats(affected, affectableStats);
 		if(affected==null)
 			return;
-		if(suppressorA == null)
+		if((suppressorA == null)&&(affects.size()>0))
 		{
 			for(final Pair<AutoProperties, CMObject> p : affects)
 			{
@@ -359,7 +359,7 @@ public class AutoAwards extends StdAbility
 		super.affectCharState(affected, affectableStats);
 		if(affected==null)
 			return;
-		if(suppressorA == null)
+		if((suppressorA == null)&&(affects.size()>0))
 		{
 			for(final Pair<AutoProperties, CMObject> p : affects)
 			{
