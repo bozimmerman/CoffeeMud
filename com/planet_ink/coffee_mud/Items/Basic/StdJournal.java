@@ -863,15 +863,20 @@ public class StdJournal extends StdItem implements Book
 			for(int j=journalEntries.size()-1;j>=0;j--)
 			{
 				final JournalEntry entry=journalEntries.get(j);
-				final String from=entry.from();
-				final String to=entry.to();
+				final String from=""+entry.from();
+				final String to=""+entry.to();
 				// message is 5, but dont matter.
 				final long compdate=entry.update();
-				boolean mayRead=(to.equals("ALL")
-								||to.equalsIgnoreCase(reader.Name())
-								||from.equalsIgnoreCase(reader.Name()));
-				if((to.toUpperCase().trim().startsWith("MASK="))&&(CMLib.masking().maskCheck(to.trim().substring(5),reader,true)))
-					mayRead=true;
+				boolean mayRead = to.equals("ALL");
+				if(reader != null)
+				{
+					mayRead = mayRead
+								|| to.equalsIgnoreCase(reader.Name())
+								|| from.equalsIgnoreCase(reader.Name());
+					if((to.toUpperCase().trim().startsWith("MASK="))
+					&&(CMLib.masking().maskCheck(to.trim().substring(5),reader,true)))
+						mayRead=true;
+				}
 				if(mayRead)
 				{
 					if((compdate<=lastTimeDate)&&(newOnly))
@@ -932,13 +937,17 @@ public class StdJournal extends StdItem implements Book
 			String message=entry.msg();
 
 			fakeEntry = entry.copyOf();
-
-			boolean allMine=(to.equalsIgnoreCase(reader.Name())
-							||from.equalsIgnoreCase(reader.Name()));
-			if((to.toUpperCase().trim().startsWith("MASK="))&&(CMLib.masking().maskCheck(to.trim().substring(5),reader,true)))
+			boolean allMine=false;
+			if(reader != null)
 			{
-				allMine=true;
-				to=CMLib.masking().maskDesc(to.trim().substring(5),true);
+				allMine=(to.equalsIgnoreCase(reader.Name())
+							||from.equalsIgnoreCase(reader.Name()));
+				if((to.toUpperCase().trim().startsWith("MASK="))
+				&&(CMLib.masking().maskCheck(to.trim().substring(5),reader,true)))
+				{
+					allMine=true;
+					to=CMLib.masking().maskDesc(to.trim().substring(5),true);
+				}
 			}
 			if(allMine)
 				buf.append("*");
