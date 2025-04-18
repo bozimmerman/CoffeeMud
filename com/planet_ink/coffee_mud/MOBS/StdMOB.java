@@ -801,8 +801,9 @@ public class StdMOB implements MOB
 				phyStats.setSpeed(1.0+((baseSpeed-1.0)*speedAdj));
 		}
 		phyStats.setWeight(phyStats.weight() + charStats.getStat(CharStats.STAT_WEIGHTADJ));
-		if(location() != null)
-			location().affectPhyStats(this, phyStats);
+		final Room R = location();
+		if(R != null)
+			R.affectPhyStats(this, phyStats);
 		if(getMoney() > 0)
 			phyStats().setWeight(phyStats().weight() + (getMoney() / 100));
 		final Rideable riding = riding();
