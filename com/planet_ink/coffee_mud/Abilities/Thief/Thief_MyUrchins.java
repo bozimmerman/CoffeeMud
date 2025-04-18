@@ -199,6 +199,8 @@ public class Thief_MyUrchins extends StdAbility
 
 	public static List<MOB> getMyUrchins(final MOB mob)
 	{
+		if(mob == null)
+			return new ArrayList<MOB>(0);
 		List<MOB> myUrchins = allUrchins.get(mob.Name());
 		if(myUrchins == null)
 		{
