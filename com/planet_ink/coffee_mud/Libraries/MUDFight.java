@@ -2004,9 +2004,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public String damageProwessStr(final MOB mob)
 	{
 		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
-		if(CMProps.Int.Prowesses.NONE.is(prowessCode))
+		if(CMProps.Int.Prowesses.NONE.is(prowessCode)||(mob==null))
 			return "";
-		final int damageProwess = this.adjustedDamage(mob, (Weapon)mob.fetchWieldedItem(), null, 0, false,true);
+		final Item I = mob.fetchWieldedItem();
+		if(!(I instanceof Weapon))
+			return "";
+		final int damageProwess = this.adjustedDamage(mob, (Weapon)I, null, 0, false,true);
 		final StringBuilder str=new StringBuilder("");
 		if(CMProps.Int.Prowesses.DAMAGE_ADJ.is(prowessCode)||CMProps.Int.Prowesses.DAMAGE_ADV.is(prowessCode))
 		{
