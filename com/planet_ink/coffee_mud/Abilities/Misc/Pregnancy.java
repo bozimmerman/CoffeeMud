@@ -106,13 +106,13 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		{
 			if(x<0)
 				return def;
-			prevX = x;
-			x=txt.indexOf('/',prevX+1);
+			prevX = x+1;
+			x=txt.indexOf('/',prevX);
 			ord++;
 		}
 		if(x<0)
-			return txt.substring(prevX+1);
-		return txt.substring(prevX+1,x);
+			return txt.substring(prevX);
+		return txt.substring(prevX,x);
 	}
 
 	protected void setSplitArgument(final PregArg arg, final String value)
