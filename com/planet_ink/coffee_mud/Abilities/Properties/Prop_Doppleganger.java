@@ -119,14 +119,13 @@ public class Prop_Doppleganger extends Property
 		}
 	}
 
-	protected void doppleGangItem(final Item I)
+	protected void doppleGangItem(final Item I, final ItemPossessor owner)
 	{
-		final ItemPossessor owner=I.owner();
 		if(owner!=null)
 		{
 			lastOwner=owner;
 			lastLevel=owner.phyStats().level();
-			int level=(int)Math.round(CMath.mul(((MOB)owner).phyStats().level(),levelPct))+levelAdd;
+			int level=(int)Math.round(CMath.mul(owner.phyStats().level(),levelPct))+levelAdd;
 			if(level<minLevel)
 				level=minLevel;
 			if(level>maxLevel)
@@ -141,7 +140,7 @@ public class Prop_Doppleganger extends Property
 			I.basePhyStats().setLevel(level);
 			I.phyStats().setLevel(level);
 			I.setMaterial(oldMaterial);
-			level=((MOB)owner).phyStats().level();
+			level=owner.phyStats().level();
 			if(level<minLevel)
 				level=minLevel;
 			if(level>maxLevel)
@@ -168,7 +167,7 @@ public class Prop_Doppleganger extends Property
 		if((affected instanceof Item)
 		&&((((Item)affected).owner()!=lastOwner)||((lastOwner!=null)&&(lastOwner.phyStats().level()!=lastLevel)))
 		&&(((Item)affected).owner() instanceof MOB))
-			doppleGangItem((Item)affected);
+			doppleGangItem((Item)affected, (MOB)((Item)affected).owner());
 		super.executeMsg(myHost,msg);
 	}
 
@@ -323,6 +322,12 @@ public class Prop_Doppleganger extends Property
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		if((affected instanceof Item)
+		&&(msg.target()==affected)
+		&&(msg.targetMinor()==CMMsg.TYP_GET)
+		&&(((Item)affected).owner()!=msg.source()))
+			doppleGangItem((Item)affected, msg.source());
+		else
 		if((((msg.target() instanceof Room)&&(msg.sourceMinor()==CMMsg.TYP_ENTER))
 		   ||(msg.sourceMinor()==CMMsg.TYP_LIFE))
 		&&(!(affected instanceof Item)))
