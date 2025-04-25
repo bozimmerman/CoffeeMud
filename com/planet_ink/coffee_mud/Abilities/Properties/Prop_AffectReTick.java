@@ -275,21 +275,27 @@ public class Prop_AffectReTick extends Property
 				@Override
 				public void run()
 				{
-					Ability A;
-					if(src instanceof Affectable)
-					{
-						A = ((Affectable)src).fetchEffect(ID);
-						if((A != null)
-						&&((mask==null)||CMLib.masking().maskCheck(mask, src, true)))
-							retick(A);
-					}
-					if(target instanceof Affectable)
-					{
-						A = ((Affectable)target).fetchEffect(ID);
-						if((A != null)
-						&&((mask==null)||CMLib.masking().maskCheck(mask, target, true)))
-							retick(A);
-					}
+					CMLib.threads().scheduleRunnable(new Runnable() {
+						@Override
+						public void run()
+						{
+							Ability A;
+							if(src instanceof Affectable)
+							{
+								A = ((Affectable)src).fetchEffect(ID);
+								if((A != null)
+								&&((mask==null)||CMLib.masking().maskCheck(mask, src, true)))
+									retick(A);
+							}
+							if(target instanceof Affectable)
+							{
+								A = ((Affectable)target).fetchEffect(ID);
+								if((A != null)
+								&&((mask==null)||CMLib.masking().maskCheck(mask, target, true)))
+									retick(A);
+							}
+						}
+					}, 800);
 				}
 			});
 		}
