@@ -1271,7 +1271,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			{
 				if((this.compiledListMask==null)&&(uncompiledListMask.length()>0))
 				{
-					compiledListMask=CMLib.masking().maskCompile(uncompiledListMask);
+					compiledListMask=CMLib.masking().getPreCompiledMask(uncompiledListMask);
 					CMLib.ableMapper().addPreRequisites(ID,new Vector<String>(),uncompiledListMask.trim());
 				}
 				return this.compiledListMask;
@@ -1282,7 +1282,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			{
 				if((this.compiledFinalMask==null)&&(uncompiledFinalMask.length()>0))
 				{
-					this.compiledFinalMask=CMLib.masking().maskCompile(uncompiledFinalMask);
+					this.compiledFinalMask=CMLib.masking().getPreCompiledMask(uncompiledFinalMask);
 					CMLib.ableMapper().addPreRequisites(ID,new Vector<String>(),uncompiledFinalMask.trim());
 				}
 				return this.compiledFinalMask;
@@ -1334,7 +1334,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 					uncompiledFinalMask=mask;
 				else
 					uncompiledFinalMask+=mask;
-				compiledFinalMask=CMLib.masking().maskCompile(uncompiledFinalMask);
+				compiledFinalMask=CMLib.masking().getPreCompiledMask(uncompiledFinalMask);
 				CMLib.ableMapper().addPreRequisites(ID,new Vector<String>(),uncompiledFinalMask.trim());
 			}
 

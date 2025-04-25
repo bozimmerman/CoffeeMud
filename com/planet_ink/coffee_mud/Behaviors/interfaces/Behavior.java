@@ -178,6 +178,11 @@ public interface Behavior extends Tickable, MsgListener, Contingent, Modifiable
 	/** constant mask for the canImprove() and canImproveCode() methods.  Means it can improve exits @see Behavior#canImprove(Behavable) */
 	public static final int CAN_EXITS=16;
 
+	/** description of the various canImprove() codes */
+	public static final String[] CAN_DESCS = new String[] {
+		"MOBS", "ITEMS", "AREAS", "ROOMS", "EXITS"
+	};
+
 	/** constant mask for the flags() method designating that this behavior makes the host move @see Behavior#flags() */
 	public static final long FLAG_MOBILITY=1;
 	/** constant mask for the flags() method designating that this behavior makes the host a trouble-maker @see Behavior#flags() */

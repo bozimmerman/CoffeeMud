@@ -2326,7 +2326,7 @@ public class DefaultFaction implements Faction, MsgListener
 			if(compiledTargetZapper == null)
 			{
 				if(targetZapperStr.trim().length()>0)
-					compiledTargetZapper=CMLib.masking().maskCompile(targetZapperStr);
+					compiledTargetZapper=CMLib.masking().getPreCompiledMask(targetZapperStr);
 			}
 			return compiledTargetZapper;
 		}
@@ -2338,7 +2338,7 @@ public class DefaultFaction implements Faction, MsgListener
 			{
 				final String sourceZapperStr=savedTriggerParms.get("MASK");
 				if((sourceZapperStr!=null)&&(sourceZapperStr.length()>0))
-					compiledSourceZapper=CMLib.masking().maskCompile(sourceZapperStr);
+					compiledSourceZapper=CMLib.masking().getPreCompiledMask(sourceZapperStr);
 			}
 			return compiledSourceZapper;
 		}

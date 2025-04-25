@@ -509,9 +509,9 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 		public AutoPropertiesImpl(final String pMask, final String dMask, final PairList<String,String> ps)
 		{
 			playerMask = pMask;
-			playerCMask = CMLib.masking().maskCompile(playerMask);
+			playerCMask = CMLib.masking().getPreCompiledMask(playerMask);
 			dateMask = dMask;
-			dateCMask = CMLib.masking().maskCompile(dateMask);
+			dateCMask = CMLib.masking().getPreCompiledMask(dateMask);
 			@SuppressWarnings("unchecked")
 			final Pair<String,String>[] base = new Pair[ps.size()];
 			props = ps.toArray(base);

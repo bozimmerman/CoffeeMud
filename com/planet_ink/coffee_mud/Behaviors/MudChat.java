@@ -298,7 +298,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				if(s.length()>0)
 				{
 					if(lookFor=='/')
-						masks.add(CMLib.masking().maskCompile(s));
+						masks.add(CMLib.masking().getPreCompiledMask(s));
 					else
 						names.add(s.toUpperCase());
 				}
