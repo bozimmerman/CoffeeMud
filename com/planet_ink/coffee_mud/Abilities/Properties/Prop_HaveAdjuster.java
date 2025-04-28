@@ -309,7 +309,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 				"MULTIPLYPH", "MULTIPLYCH", "abi", "arm", "att", "dam", "dis", "lev",
 				"rej", "sen", "spe", "wei", "hei", "gen", "cla", "cls", "rac", "hit",
 				"hun", "man", "mov", "thi", "ALLSAVES", "ABLEPROFS", "ABLELVLS","chr","hp",
-				"ALLSET","RONDEATH","AMBIANCE"
+				"ALLSET","RONDEATH","AMBIANCE","DEITY"
 			}));
 			for(final int i : CharStats.CODES.BASECODES())
 			{
@@ -377,6 +377,12 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		{
 			charStatsV.add(Character.valueOf('G'));
 			charStatsV.add(Character.valueOf(val.charAt(0)));
+		}
+		val=getParmStr(ps,parameters[0],"DEITY","").toUpperCase();
+		if(val.length()>0)
+		{
+			charStatsV.add(Character.valueOf('W'));
+			charStatsV.add(val);
 		}
 		val=getParmStr(ps,parameters[0],"cla","").toUpperCase();
 		if(val.length()>0)
@@ -779,6 +785,9 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			{
 				switch(((Character)changes[i]).charValue())
 				{
+				case 'W':
+					charStats.setWorshipCharID((String) changes[i + 1]);
+					break;
 				case 'G':
 					charStats.setStat(CharStats.STAT_GENDER, ((Character) changes[i + 1]).charValue());
 					break;
