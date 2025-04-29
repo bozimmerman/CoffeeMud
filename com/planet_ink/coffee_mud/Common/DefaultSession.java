@@ -633,13 +633,19 @@ public class DefaultSession implements Session
 	{
 		final byte[] command;
 		if(telnetCode == TELNET_TERMTYPE)
+		{
 			command=new byte[]{(byte)TELNET_IAC,onOff?(byte)TELNET_DO:(byte)TELNET_DONT,(byte)telnetCode};
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+				Log.debugOut("Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
+		}
 		else
+		{
 			command=new byte[]{(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+				Log.debugOut("Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
+		}
 		rawBytesOut(out, command);
 		//rawout.flush(); rawBytesOut already flushes
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
-			Log.debugOut("Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
 

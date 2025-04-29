@@ -20,32 +20,11 @@ var BPCODE =
 {
 	ESC: 27,
 	IAC: 0xFF,
-	TELNET_BINARY: 0,
-	TELNET_ECHO: 1,
-	TELNET_LOGOUT: 18,
-	TELNET_SUPRESS_GO_AHEAD: 3,
-	TELNET_TERMTYPE: 24,
-	TELNET_NAWS: 31,
-	TELNET_TOGGLE_FLOW_CONTROL: 33,
-	TELNET_LINEMODE: 34,
-	TELNET_MSDP: 69,
-	TELNET_MSSP: 70,
-	TELNET_COMPRESS: 85,
-	TELNET_COMPRESS2: 86,
-	TELNET_MSP: 90,
-	TELNET_MXP: 91,
-	TELNET_AARD: 102,
 	TELNET_SE: 0xF0,
-	TELNET_AYT: 0xF6,
-	TELNET_EC: 0xF7,
-	TELNET_ATCP: 0xC8,
-	TELNET_GMCP: 0xC9,
 	TELNET_SB: 0xFA,
 	TELNET_WILL: 0xFB,
 	TELNET_WONT: 0xFC,
-	TELNET_ANSI16: 0xFC,
 	TELNET_DO: 0xFD,
-	TELNET_ANSI: 0xFD,
 	TELNET_DONT: 0xFE,
 	TELNET_GA: 0xF9,
 	TELNET_NOP: 0xF1
@@ -62,7 +41,8 @@ var BPPARSE = function()
 {
 	this.entries = [];
 	this.data = [];
-	this.prev = '\0';
+	this.prev = 0;
+	this.nolf = false;
 	this.state = BPSTATE.OUTER;
 };
 
@@ -74,28 +54,46 @@ function binparse(block)
 	var curr = entries[entries.length-1];
 	var i=-1;
 	var c=block.prev;
-	while(++i < block.data.length)
+	// should this be Uint16Array, since I'm encoding unicode?
+	var data = new Uint8Array(block.data);
+	while(++i < data.length)
 	{
-		prev = c;
-		c = block.data[i];
+		var prev = c;
+		c = data[i];
 		switch(block.state)
 		{
 		case BPSTATE.OUTER:
-			if(c==BPCODE.ESC)
-				block.state = BPSTATE.ANSI;
-			else if(c==BPCODE.IAC)
-				block.state = BPSTATE.TELNET;
-			else
-			if((c & 0xFF00) > 0)
+			switch(c)
 			{
-				curr.data.push((c & 0xFF00)>>8);
-				curr.data.push(c & 0xFF);
-			}
-			else
+			case BPCODE.ESC:
+				block.state = BPSTATE.ANSI;
+				break;
+			case BPCODE.IAC:
+				block.state = BPSTATE.TELNET;
+				break;
+			case 13:
 				curr.data.push(c);
+				curr.done = true;
+				curr = new BPENTRY();
+				block.entries.push(curr);
+				break;
+			case 10:
+				if (!block.nolf)
+					curr.data.push(c);
+				break;
+			default:
+				if((c & 0xFF00) > 0)
+				{
+					curr.data.push((c & 0xFF00)>>8);
+					curr.data.push(c & 0xFF);
+				}
+				else
+					curr.data.push(c);
+				break;
+			}
 			break;
 		case BPSTATE.ANSI:
-			if(c=='[')
+			if(c==91) // [
 			{
 				block.state = BPSTATE.ANSI2;
 				curr.done = true;
@@ -112,10 +110,10 @@ function binparse(block)
 			break;
 		case BPSTATE.ANSI2:
 			curr.data.push(c);
-			if(c=='"')
+			if(c==34) // "
 				block.state = BPSTATE.ANSI3;
 			else
-			if((c=='m') || (c=='z'))
+			if((c==109) || (c==122)) //m, z
 			{
 				block.state = BPSTATE.OUTER;
 				curr.done=true;
@@ -125,11 +123,11 @@ function binparse(block)
 			break;
 		case BPSTATE.ANSI3:
 			curr.data.push(c);
-			if(c=='"')
+			if(c==34) // "
 				block.state = BPSTATE.ANSI2;
 			else
 			if((curr.data.length>128)
-			||(!(((c>='a')&&(c<='z'))||((c>='A')&&(c<='Z')))))
+			||(!(((c>=97)&&(c<=122))||((c>=65)&&(c<=90)))))
 			{
 				//something went very very wrong.  kill with fire.
 				block.state = BPSTATE.OUTER;
@@ -182,12 +180,12 @@ function binparse(block)
 			block.state = BPSTATE.OUTER;
 			break;
 		case BPSTATE.TELNETSB:
-			if(block.prev == BPCODE.IAC)
+			if(prev == BPCODE.IAC)
 			{
 				if(c == BPCODE.IAC)
 					curr.data.push(c);
 				else
-				if(c == BPCODE.TELNET_EC)
+				if(c == BPCODE.TELNET_SE)
 				{
 					curr.done = true;
 					curr = new BPENTRY();
@@ -199,9 +197,8 @@ function binparse(block)
 				curr.data.push(c);
 			break;
 		}
-		
 	}
+	block.prev = c;
 	if((curr.type == BPTYPE.TEXT) && (curr.data.length > 0))
 		curr.done = true;
-	return bits;
 }
