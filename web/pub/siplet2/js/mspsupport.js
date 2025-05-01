@@ -1,9 +1,79 @@
-
 var MSP = function(flags, playerName)
 {
+	this.tag = null;
+	this.data = null;
 	this.sounders=[];
 	this.soundDates=[];
 	this.soundPriorities=[];
+	
+	this.active = function() { return (flags != null) && (flags.MSPsupport); };
+	this.eolDetected = function() { return null; };
+
+	this.cancelProcessing = function() {
+		var s = '';
+		if(this.tag != null)
+		{
+			s += this.tag;
+			if(this.data != null)
+				s += this.data;
+		}
+		this.data = null;
+		this.tag = null;
+		return s;
+	}
+
+	this.process = function(c) {
+		if (!this.active())
+			return null;
+		if(this.tag == null)
+		{
+			if(c=='!')
+			{
+				this.tag = '!';
+				this.data = null;
+				return '';
+			}
+			else
+				return null;
+		}
+		else
+		if(this.data == null)
+		{
+			this.tag += c;
+			if((this.tag == '!!SOUND(')||(this.tag == '!!MUSIC('))
+			{
+				this.data = '';
+				return '';
+			}
+			if('!!SOUND('.startsWith(this.tag)||'!!MUSIC('.startsWith(this.tag))
+				return '';
+			return this.cancelProcessing();
+		}
+		else
+		switch(c)
+		{
+			case ')':
+			{
+				var which = this.tag.startsWith('!!SOUND');
+				this.tag = null;
+				var tagData = this.data;
+				this.data = null;
+				if(which == 0)
+					this.processSoundEmbed(tagData);
+				else
+					this.processMusicEmbed(tagData);
+				return '';
+			}
+			case '\n':
+			case '\r':
+				return this.cancelProcessing();
+			default:
+				this.data += c;
+				if(this.data.length > 256)
+					return this.cancelProcessing();
+				return '';
+		}
+	};
 	
 	this.PlaySound = function(key,url,repeats,volume,priority)
 	{
@@ -35,7 +105,7 @@ var MSP = function(flags, playerName)
 		if(theSoundPlayer.play)
 			theSoundPlayer.play();
 	}
-	
+
 	this.StopSound - function(key)
 	{
 		var theSoundPlayer=document.getElementById(playerName);
@@ -43,27 +113,15 @@ var MSP = function(flags, playerName)
 		theSoundPlayer.Play();
 		theSoundPlayer.innerHTML='';
 	};
-	
-	this.process = function(str)
-	{
-		if ((flags == null) || (!flags.MSPsupport))
-			return str;
-		var x = str.indexOf('!!SOUND(');
-		if(x >= 0)
-			return this.processSoundEmbed(str, x);
-		x = str.indexOf('!!MUSIC(');
-		if(x >= 0)
-			return this.processMusicEmbed(str, x);
-		return str;
-	};
 
 	this.processParms = function(tag, parms)
 	{
-		var parmLetters = "V#L#P#C#T$U$";
+		var parmLetters = "VLPCTU";
+		var parmTypes   = '####$$';
 		var last = -1;
-		var state=2;
+		var state = 2;
 		var tagLetter = 'N';
-		var value='';
+		var value = '';
 		var num = false;
 		var z;
 		for(var i=0;i<tag.length;i++)
@@ -73,10 +131,10 @@ var MSP = function(flags, playerName)
 			{
 			case 0:
 				z=parmLetters.indexOf(c.toUpperCase()); 
-				if((z>=0)&&(c!='#')&&(c!='$'))
+				if(z>=0)
 				{
 					tagLetter = c.toUpperCase();
-					num = parmLetters[z+1] == '#';
+					num = parmTypes[z] == '#';
 					state=1;
 				}
 				break;
@@ -110,12 +168,9 @@ var MSP = function(flags, playerName)
 		if(state == 2)
 			parms[tagLetter] = num ? Number(value) : value;
 	};
-	
-	this.processSoundEmbed = function(str, x)
+
+	this.processSoundEmbed = function(tag, x)
 	{
-		var y = str.indexOf(')', x+8);
-		if(y<0)
-			return str;
 		//!!SOUND(&fname; V=&v; L=&l; P=&p; T=&t; U=&u;)
 		var parms = {
 			N: "",
@@ -126,23 +181,17 @@ var MSP = function(flags, playerName)
 			T: "",
 			U: ""
 		};
-		var tag = str.substr(0,y).substr(x+8);
-		str = str.substr(0,x) + str.substr(y+1);
 		this.processParms(tag, parms);
 		if((parms.U.length == 0)||(parms.N.length==0))
-			return str; // no internal sound files, so....
+			return; // no internal sound files, so....
 		if(parms.N.toLowerCase() == 'off')
 			this.StopSound('');
 		else
 			this.PlaySound(parms.N,parms.U,parms.L,parms.V,parms.P);
-		return str;
 	};
-	
-	this.processMusicEmbed = function(str, x)
+
+	this.processMusicEmbed = function(tag)
 	{
-		var y = str.indexOf(')', x+8);
-		if(y<0)
-			return str;
 		//!!MUSIC(&fname; V=&v; L=&l; P=&p; T=&t; U=&u;)
 		var parms = {
 			N: "",
@@ -153,16 +202,13 @@ var MSP = function(flags, playerName)
 			T: "",
 			U: ""
 		};
-		var tag = str.substr(0,y).substr(x+8);
-		str = str.substr(0,x) + str.substr(y+1);
 		this.processParms(tag, parms);
 		if((parms.U.length == 0)||(parms.N.length==0))
-			return str; // no internal sound files, so....
+			return; // no internal sound files, so....
 		if(parms.N.toLowerCase() == 'off')
 			this.StopSound('');
 		else
-			this.PlaySound(parms.N,parms.U,parms.L,parms.V,parms.P)
-		return str;
+			this.PlaySound(parms.N,parms.U,parms.L,parms.V,parms.P);
 	};
 }
 

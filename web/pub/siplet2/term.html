@@ -1,22 +1,27 @@
-<HTML><BODY><PRE ID=BOB>
+<HTML><BODY><FONT FACE="MONOSPACE" ID=BOB>
+<SCRIPT LANGUAGE=JavaScript src="js/util.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/siplet.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/binparser.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/ansiparser.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/telnetparser.js"></SCRIPT>
+<SCRIPT LANGUAGE=JavaScript src="js/textparser.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/mspsupport.js"></SCRIPT>
+<SCRIPT LANGUAGE=JavaScript src="js/mxpsupport.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript>
 var siplet = JSON.parse(JSON.stringify(Siplet)); // makes a deep copy
-var wsocket;
-var wsopened = false;
-var windowName = '0';
+siplet.wsocket = new WebSocket("ws://localhost:27744/WebSock");
+siplet.wsocket.binaryType = "arraybuffer";
+siplet.wsopened = false;
+siplet.windowName = '0';
+
 var binblock = new BPPARSE();
 binblock.nolf = true;
 var ansipage = new ANSISTACK();
 var telnet = new TELNET(siplet);
-var msp = new MSP(telnet, windowName);
+var msp = new MSP(telnet, siplet.windowName);
+var mxp = new MXP(siplet, ansipage, siplet.windowName);
+var text = new TEXT([msp,mxp]);
 var termWindow = document.getElementById('BOB');
-wsocket = new WebSocket("ws://localhost:27744/WebSock");
-wsocket.binaryType = "arraybuffer";
 function onmessage(e)
 {
 	binblock.data = event.data;
@@ -35,18 +40,23 @@ function onmessage(e)
 			continue;
 		if(blk.type == BPTYPE.TEXT)
 		{
-			//TODO: this is not going to support utf-16 well 
+			//TODO: this is not going to support utf-16 well
+			var newText = '';
 			for (var i=0; i < blk.data.length; i++) {
-				html += String.fromCharCode( blk.data[i]);
+				newText += String.fromCharCode( blk.data[i]);
 			}
-			if((html.length>0)&&(html[html.length-1]=='\n'))
+			newText = text.process(newText);
+			if(newText.length>0)
 			{
-				html = msp.process(html);
-				var span = document.createElement('span');
-				span.innerHTML = html;
-				termWindow.appendChild(span);
-				html='';
-				scroll=true;
+				html += newText;
+				if(newText.indexOf('<BR>')>=0)
+				{
+					var span = document.createElement('span');
+					span.innerHTML = html;
+					termWindow.appendChild(span);
+					html='';
+					scroll=true;
+				}
 			}
 		}
 		else
@@ -56,14 +66,14 @@ function onmessage(e)
 		if(blk.type == BPTYPE.TELNET)
 		{
 			var buffer = telnet.process(blk.data);
-			if ((buffer.byteLength > 0) && (wsopened))
-				wsocket.send(buffer);
+			if ((buffer.byteLength > 0) && (siplet.wsopened))
+				siplet.wsocket.send(buffer);
 		}
 	}
 	if(html.length > 0)
 	{
 		var span = document.createElement('span');
-		html = msp.process(html);
+		//html = text.process(html); // already processed when it came in
 		span.innerHTML = html;
 		termWindow.appendChild(span);
 		scroll=true;
@@ -74,21 +84,24 @@ function onmessage(e)
 
 function onkeypress(e)
 {
-	termWindow.innerHTML +=String.fromCharCode(event.keyCode);
-	if(wsopened)
-		wsocket.send(String.fromCharCode(event.keyCode));
+	if(e.keyCode == 13)
+		termWindow.innerHTML += '<BR>';
+	else
+		termWindow.innerHTML += String.fromCharCode(event.keyCode);
+	if(siplet.wsopened)
+		siplet.wsocket.send(String.fromCharCode(event.keyCode));
 }
 
-wsocket.onmessage = onmessage;
-wsocket.onopen = function(event)  
+siplet.wsocket.onmessage = onmessage;
+siplet.wsocket.onopen = function(event)  
 {
-	wsopened=true; 
+	siplet.wsopened=true; 
 	document.bgColor="black";
 	document.fgColor="white";
 };
-wsocket.onclose = function(event)  
+siplet.wsocket.onclose = function(event)  
 { 
-	wsopened=false; 
+	siplet.wsopened=false; 
 	document.bgColor="red";
 };
 document.onkeypress = onkeypress;

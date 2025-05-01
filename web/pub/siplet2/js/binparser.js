@@ -126,8 +126,7 @@ function binparse(block)
 			if(c==34) // "
 				block.state = BPSTATE.ANSI2;
 			else
-			if((curr.data.length>128)
-			||(!(((c>=97)&&(c<=122))||((c>=65)&&(c<=90)))))
+			if((curr.data.length>128) || (!isLetter(c)))
 			{
 				//something went very very wrong.  kill with fire.
 				block.state = BPSTATE.OUTER;

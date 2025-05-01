@@ -8,4 +8,3 @@ var Siplet =
 	},
 	maxLines: 5000
 };
-
