@@ -230,12 +230,14 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 	{
 		try
 		{
-			final int avail = mudIn.available();
-			if(avail>0)
+			int avail = mudIn.available();
+			while(avail>0)
 			{
 				final Pair<byte[], WSPType> buf = processPolledBytes(readBuffer(avail));
-				if (buf != null)
+				if(buf != null)
 					sendPacket(buf.first, buf.second);
+				CMLib.s_sleep(1); // if there's some, there might be more incoming
+				avail = mudIn.available();
 			}
 		}
 		catch (final IOException e)
