@@ -9,7 +9,7 @@
 <SCRIPT LANGUAGE=JavaScript src="js/mxpsupport.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript>
 var siplet = JSON.parse(JSON.stringify(Siplet)); // makes a deep copy
-siplet.wsocket = new WebSocket("ws://localhost:27744/WebSock");
+siplet.wsocket = new WebSocket("ws://coffeemud.net:27744/WebSock");
 siplet.wsocket.binaryType = "arraybuffer";
 siplet.wsopened = false;
 siplet.windowName = '0';
