@@ -1,7 +1,7 @@
 function isLetter(c)
 {
 	if ((typeof c === 'string')&&(c.length>0))
-		c = c.codeCharAt(0);
+		c = c.charCodeAt(0);
 	return ((((c>=97)&&(c<=122))
 			||((c>=65)&&(c<=90))));
 }
@@ -9,14 +9,14 @@ function isLetter(c)
 function isLowerCase(c)
 {
 	if ((typeof c === 'string')&&(c.length>0))
-		c = c.codeCharAt(0);
+		c = c.charCodeAt(0);
 	return (c>=97)&&(c<=122);
 }
 
 function isUpperCase(c)
 {
 	if ((typeof c === 'string')&&(c.length>0))
-		c = c.codeCharAt(0);
+		c = c.charCodeAt(0);
 	return (c>=65)&&(c<=90);
 }
 
@@ -28,7 +28,7 @@ function isLetterOrDigit(c)
 function isDigit(c)
 {
 	if ((typeof c === 'string')&&(c.length>0))
-		c = c.codeCharAt(0);
+		c = c.charCodeAt(0);
 	return (c>=48)&&(c<=90);
 }
 
