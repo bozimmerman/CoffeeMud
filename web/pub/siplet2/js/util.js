@@ -39,6 +39,6 @@ function isNumber(c)
 	if(typeof c === 'number')
 		return true;
 	if ((typeof c === 'string')&&(c.length>0))
-		return (!isNan(c)) && (!isNan(parseFloat(c)));
+		return (!isNaN(c)) && (!isNaN(parseFloat(c)));
 	return false;
 }

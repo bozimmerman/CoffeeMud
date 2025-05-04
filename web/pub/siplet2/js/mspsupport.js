@@ -1,4 +1,4 @@
-var MSP = function(flags, playerName)
+var MSP = function(siplet, flags)
 {
 	this.tag = null;
 	this.data = null;
@@ -77,6 +77,7 @@ var MSP = function(flags, playerName)
 	
 	this.PlaySound = function(key,url,repeats,volume,priority)
 	{
+		var playerName = siplet.windowName;
 		var theSoundPlayer = this.sounders[playerName];  
 		if(theSoundPlayer)
 		{
@@ -108,6 +109,7 @@ var MSP = function(flags, playerName)
 
 	this.StopSound - function(key)
 	{
+		var playerName = siplet.windowName;
 		var theSoundPlayer=document.getElementById(playerName);
 		theSoundPlayer.src='';
 		theSoundPlayer.Play();

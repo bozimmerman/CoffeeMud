@@ -48,7 +48,7 @@ var StringToAsciiArray = function(str) {
 var TELNET = function(siplet)
 {
 	this.neverSupportMSP = false;
-	this.neverSupportMXP = true; //TODO: soon!
+	this.neverSupportMXP = false;
 	this.neverSupportMSDP= true; //TODO: soon!
 	this.neverSupportGMCP = true; //TODO: soon!
 	this.neverSupportMCCP = true; //TODO: maybe add pako later?
@@ -350,7 +350,7 @@ var TELNET = function(siplet)
 					this.MXPsupport = false;
 					//TODO: if (mxpModule != null) mxpModule.shutdownMXP();
 				}
-			break;
+				break;
 			case TELOPT.GA:
 			case TELOPT.NOP:
 				break;

@@ -129,7 +129,7 @@ var ANSISTACK = function()
 		return "";
 	};
 
-	this.ansiparser = function(dat)
+	this.process = function(dat)
 	{
 		if(dat.length < 2)
 			return "";

@@ -9,7 +9,7 @@
 <SCRIPT LANGUAGE=JavaScript src="js/mxpsupport.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript>
 var siplet = JSON.parse(JSON.stringify(Siplet)); // makes a deep copy
-siplet.wsocket = new WebSocket("ws://coffeemud.net:27744/WebSock");
+siplet.wsocket = new WebSocket("ws://localhost:27744/WebSock");
 siplet.wsocket.binaryType = "arraybuffer";
 siplet.wsopened = false;
 siplet.windowName = '0';
@@ -18,9 +18,9 @@ var binblock = new BPPARSE();
 binblock.nolf = true;
 var ansipage = new ANSISTACK();
 var telnet = new TELNET(siplet);
-var msp = new MSP(telnet, siplet.windowName);
-var mxp = new MXP(siplet, ansipage, siplet.windowName);
-var text = new TEXT([msp,mxp]);
+var msp = new MSP(siplet, telnet);
+var mxp = new MXP(siplet, ansipage, telnet);
+var text = new TEXT([mxp,msp]);
 var termWindow = document.getElementById('BOB');
 function onmessage(e)
 {
@@ -61,7 +61,12 @@ function onmessage(e)
 		}
 		else
 		if(blk.type == BPTYPE.ANSI)
-			html += ansipage.ansiparser(blk.data)
+		{
+			html += ansipage.process(blk.data);
+			var s = mxp.process(blk.data);
+			if (s != null)
+				html += s;
+		}
 		else
 		if(blk.type == BPTYPE.TELNET)
 		{

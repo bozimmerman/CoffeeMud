@@ -52,7 +52,12 @@ var MXPElement = function(theName, theDefinition, theAttributes, theFlag, theBit
 	
 	if (((this.bitmap & MXPBIT.COMMAND)==0) 
 	&& (theDefinition.toUpperCase().indexOf("&TEXT;") >= 0))
-		bitmap = bitmap | MXPBIT.NEEDTEXT;
+		this.bitmap = this.bitmap | MXPBIT.NEEDTEXT;
+	//TODO: figure out how to implement flaggable data!
+	/*
+	if((this.flag != null) && (this.flag.length > 0)) 
+		this.bitmap = this.bitmap | MXPBIT.NEEDTEXT;
+	*/
 	
 	this.copyOf = function() 
 	{
@@ -71,20 +76,20 @@ var MXPElement = function(theName, theDefinition, theAttributes, theFlag, theBit
 	this.getAttributeValue = function(tag)
 	{
 		tag = tag.toUpperCase().trim();
-		var attribs = getParsedAttributes();
-		if (tag in attribs)
-			return attribs[tag];
+		this.getParsedAttributes();
+		if (tag in this.attributeValues)
+			return this.attributeValues[tag];
 		return null;
 	};
 
 	this.setAttributeValue = function(tag, value)
 	{
 		tag = tag.toUpperCase().trim();
-		var attribs = getParsedAttributes();
-		if (tag in attribs)
-			delete attribs[tag];
+		this.getParsedAttributes();
+		if (tag in this.attributeValues)
+			delete this.attributeValues[tag];
 		if (value != null)
-			attribs[tag] = value;
+			this.attributeValues[tag] = value;
 	};
 
 	this.getParsedAttributes = function()
@@ -166,7 +171,7 @@ var MXPElement = function(theName, theDefinition, theAttributes, theFlag, theBit
 		}
 		if ((!firstEqual) && (bit.length > 0))
 			this.parsedAttributes.push(bit.toUpperCase().trim());
-		for (var p = parsedAttributes.length - 1; p >= 0; p--)
+		for (var p = this.parsedAttributes.length - 1; p >= 0; p--)
 		{
 			var PA = this.parsedAttributes[p];
 			var VAL = this.attributeValues[PA];
@@ -236,6 +241,65 @@ var MXPElement = function(theName, theDefinition, theAttributes, theFlag, theBit
 		}
 		return tags;
 	};
+	
+	this.getFoldedDefinition = function(text)
+	{
+		var aV = this.getParsedAttributes();
+		if ("TEXT" in this.attributeValues)
+			delete this.attributeValues["TEXT"];
+		this.attributeValues["TEXT"] =  text;
+		if ((this.userParms != null) && (this.userParms.length > 0))
+		{
+			var position = -1;
+			var avParm = null;
+			var userParm = null;
+			for (var u = 0; u < this.userParms.length; u++)
+			{
+				userParm = this.userParms[u].toUpperCase().trim();
+				var xx = userParm.indexOf('=');
+				if ((xx > 0) 
+				&& (userParm.substr(0, xx).trim() in this.alternativeAttributes))
+				{
+					var newKey = this.alternativeAttributes[userParm.substr(0, xx).trim()];
+					var uu = this.userParms[u];
+					xx = uu.indexOf('=');
+					this.userParms[u] = newKey + uu.substr(xx);
+					userParm = this.userParms[u].toUpperCase().trim();
+				}
+				var found = false;
+				if (userParm != null)
+				{
+					for (var a = 0; a < aV.length; a++)
+					{
+						avParm = aV[a];
+						if ((userParm.startsWith(avParm + "=")) || (avParm == userParm))
+						{
+							found = true;
+							if (a > position)
+								position = a;
+							if (avParm != null)
+							{
+								if (avParm in this.attributeValues)
+									delete this.attributeValues[avParm];
+								this.attributeValues[avParm] = (userParm == avParm) 
+									? "" : this.userParms[u].trim().substr(avParm.length + 1);
+							}
+							break;
+						}
+					}
+				}
+				if ((!found) && (position < (aV.length - 1)))
+				{
+					position++;
+					avParm = aV[position];
+					if (avParm in this.attributeValues)
+						delete this.attributeValues[avParm];
+					this.attributeValues[avParm] = this.userParms[u].trim();
+				}
+			}
+		}
+		return this.definition;
+	};
 };
 
 var MXP = function(siplet, ansistack, flags)
@@ -247,6 +311,7 @@ var MXP = function(siplet, ansistack, flags)
 	this.eatAllEOLN = false;
 	this.text = null;
 	this.openElements = [];
+	this.gauges = [];
 	this.elements = {
 		"B": new MXPElement("B", "<B>", "", "", MXPBIT.HTML),
 		"BOLD": new MXPElement("BOLD", "<B>", "", "", MXPBIT.HTML),
@@ -280,7 +345,7 @@ var MXP = function(siplet, ansistack, flags)
 																											// done
 		"A": new MXPElement("A", "<A TARGET=ELSEWHERE STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">",
 				"HREF HINT EXPIRE TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK", "", 0, "EXPIRE"),
-		"SEND": new MXPElement("SEND", "<A STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"delayhidemenu();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">", "HREF HINT PROMPT EXPIRE STYLE", "", MXPBIT.SPECIAL,
+		"SEND": new MXPElement("SEND", "<A STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"delayhidemenu();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">", "HREF HINT PROMPT EXPIRE STYLE", "", MXPBIT.SPECIAL|MXPBIT.NEEDTEXT,
 				"EXPIRE"), // special done
 		"EXPIRE": new MXPElement("EXPIRE", "", "NAME", "", MXPBIT.NOTSUPPORTED),
 		"VERSION": new MXPElement("VERSION", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
@@ -300,7 +365,7 @@ var MXP = function(siplet, ansistack, flags)
 		"IMG": new MXPElement("IMG", "<IMG SRC=\"&src;\" HEIGHT=&height; WIDTH=&width; ALIGN=&align;>", "SRC HEIGHT=70 WIDTH=70 ALIGN", "", MXPBIT.COMMAND),
 		"FILTER": new MXPElement("FILTER", "", "SRC DEST NAME", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
 		"SCRIPT": new MXPElement("SCRIPT", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-		"ENETITY": new MXPElement("ENTITY", "", "NAME VALUE DESC PRIVATE PUBLISH DELETE ADD", "", MXPBIT.SPECIAL | MXPBIT.COMMAND, "PRIVATE PUBLISH ADD"), // special
+		"ENTITY": new MXPElement("ENTITY", "", "NAME VALUE DESC PRIVATE PUBLISH DELETE ADD", "", MXPBIT.SPECIAL | MXPBIT.COMMAND, "PRIVATE PUBLISH ADD"), // special
 																																											// done
 		"EN": new MXPElement("EN", "", "NAME VALUE DESC PRIVATE PUBLISH DELETE ADD", "", MXPBIT.SPECIAL | MXPBIT.COMMAND, "PRIVATE PUBLISH ADD"), // special
 																																										// done
@@ -347,11 +412,8 @@ var MXP = function(siplet, ansistack, flags)
 	this.process = function(c) {
 		if(!this.active())
 			return null;
-		if(this.textProcessor != null)
-		{
-			if(this.textProcess.text.length < 4096)
-				this.textProcessor.text += c;
-		}
+		if((typeof c == 'object') && (c.length))
+			return this.processAnsiEscape(c);
 		if(this.eatTextUntilEOLN)
 		{
 			this.partial = null;
@@ -366,11 +428,19 @@ var MXP = function(siplet, ansistack, flags)
 				this.startParsing(c);
 				return '';
 			}
+			else
+			if(this.textProcessor != null)
+			{
+				if(this.textProcessor.text.length < 4096)
+					this.textProcessor.text += c;
+				return '';
+			}
 			return null;
 		}
 		else
 		if(this.partial[0]=='&')
 		{
+			this.partial += c;
 			if(this.partial.length > 64)
 				return this.cancelProcessing();
 			switch(c)
@@ -388,6 +458,7 @@ var MXP = function(siplet, ansistack, flags)
 					}
 					break;
 				}
+			
 			default:
 				if(isDigit(c))
 				{
@@ -404,6 +475,7 @@ var MXP = function(siplet, ansistack, flags)
 					return this.cancelProcessing();
 				break;
 			}
+			return '';
 		}
 		else
 		{
@@ -482,13 +554,13 @@ var MXP = function(siplet, ansistack, flags)
 					this.partialBit += c;
 				else
 				{
-					if (bit.length > 0)
-						this.parts.push(bit);
-					bit = '';
+					if (this.partialBit.length > 0)
+						this.parts.push(this.partialBit);
+					this.partialBit = '';
 					return this.processTag();
 				}
 				break;
-			case '/':
+			case '!':
 				if (this.partQuote != '\0')
 					this.partialBit += c;
 				else
@@ -497,8 +569,26 @@ var MXP = function(siplet, ansistack, flags)
 				else
 					return this.cancelProcessing();
 				break;
+			case '/':
+				if (this.partQuote != '\0')
+					this.partialBit += c;
+				else
+				if((this.partialBit.length == 0) && (this.parts.length == 0))
+					this.partialBit += c;
+				else
+				if(this.partialBit.length >0)
+				{
+					this.parts.push(this.partialBit);
+					this.parts.push('/');
+					this.partialBit='';
+				}
+				else
+					return this.cancelProcessing();
+				break;
 			default:
-				if ((this.partQuote != '\0') || (isLetter(c)) || (this.partialBit.length > 0))
+				if ((this.partQuote != '\0') 
+				|| (isLetter(c)) 
+				|| (this.partialBit.length > 0))
 					this.partialBit += c;
 				else
 					return this.cancelProcessing();
@@ -518,18 +608,65 @@ var MXP = function(siplet, ansistack, flags)
 		this.partLastC = ' ';
 	};
 
+	this.processAnsiEscape = function(dat)
+	{
+		if(dat.length < 2)
+			return '';
+		if("zZ".indexOf(String.fromCharCode(dat[dat.length-1]))>=0)
+		{
+			var code=0;
+			for(var i=0;i<dat.length-1;i++)
+				code = (code * 10) + dat[i] - 48;
+			if (code < 0)
+				return '';
+			else
+			if (code < 20)
+			{
+				this.mode = code;
+				return this.executeMode();
+			}
+			else
+			if (code < 100)
+			{
+				var tag = this.tags[code];
+				if ((tag != null) 
+				&& ((tag.bitmap & MXPBIT.DISABLED)==0))
+				{
+					if ((tag.bitmap & MXPBIT.EATTEXT)==MXPBIT.EATTEXT)
+						eatTextUntilEOLN = true;
+					// should this actually re-process as a tag?
+					return tag.getFoldedDefinition("");
+				}
+			}
+		}
+		return '';
+	};
+
 	this.processTag = function()
 	{
+		var oldString = this.partial;
 		var abort = this.cancelProcessing();
-		var tag = (parts.length > 0) ? parts[0].toUpperCase().trim() : "";
-		if(tag.startsWith("!"))
-			tag = tag.substring(1).trim();
+		if(this.parts.length == 0)
+			return ''; // this is an error of some sort
+		var tag = this.parts[0].toUpperCase().trim();
+		this.parts.splice(0,1); // lose the tag name
 		var endTag = tag.startsWith("/");
 		if (endTag)
-			tag = tag.substring(1).trim();
-		if ((tag.length == 0) || (!(tag in elements)))
+			tag = tag.substr(1).trim();
+		var selfCloser = false;
+		if((this.parts.length>0) && (this.parts[this.parts.length-1] == '/'))
+		{
+			this.parts.splice(this.parts.length-1,1); // lose the self closer
+			selfCloser = true;
+		}
+		if(tag.startsWith("!"))
+			tag = tag.substr(1).trim();
+if(tag == 'RDESC')
+	console.log('stop!');
+console.log("TAG:"+tag+"/"+this.parts.length+'/'+oldString); //TODO:DELME
+		if ((tag.length == 0) || (!(tag in this.elements)))
 			return abort;
-		var E = elements[tag];
+		var E = this.elements[tag];
 		var text = "";
 		if (endTag)
 		{
@@ -538,7 +675,7 @@ var MXP = function(siplet, ansistack, flags)
 			for (var x = this.openElements.length - 1; x >= 0; x--)
 			{
 				E = this.openElements[x];
-				if (E.name.equals(tag))
+				if (E.name == tag)
 				{
 					foundAt = x;
 					this.openElements.splice(x,1);
@@ -546,9 +683,12 @@ var MXP = function(siplet, ansistack, flags)
 				}
 				if ((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT) 
 					troubleE = E;
+				else
+				if(this.textProcessor == E)
+					troubleE = E;
 			}
 			if (foundAt < 0)
-				return abort; // closed an unopened tag!
+				return ''; // closed an unopened tag!
 			// a close tag of an mxp element always erases an
 			// **INTERIOR** needstext element
 			if (troubleE != null)
@@ -560,82 +700,181 @@ var MXP = function(siplet, ansistack, flags)
 			var close = this.getCloseTag(E);
 			// anyway...
 			if ((troubleE!=null)&&(troubleE.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT)
-				text = this.stripBadHTMLTags(troubleE.text.replaceAll("&nbsp;", " "));
+				text = troubleE.text;
 			else
+			if((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT)
+				text = E.text;
 			if ((E.bitmap & MXPBIT.HTML)==MXPBIT.HTML) 
 			{
 				if ((E.bitmap & MXPBIT.SPECIAL)==MXPBIT.SPECIAL) 
 					this.doSpecialProcessing(E, true);
-				return close.length();
-			}
-			else
-			if (close.equals("</" + E.name()))
-				return ''; // normal end-tag exit - just noted and done?
-			else
-				return ''; // I have no idea what this stuff is:
-			/*
-				if (E.getBufInsert() < oldI)
-				{
-					return -((oldI - E.getBufInsert()) + 1);
-				}
-				else
-				{
-					return close.length();
-				}
-			*/
-		}
-		else
-		if(parts.length > 0)
-		{
-			E = E.copyOf();
-			this.parts.splice(0); // because the TAG itself is 0
-			E.parts = this.parts;
-			if ((E.bitmap & MXPBIT.COMMAND)==0) 
-				this.openElements.push(E);
-			if ((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT) 
-			{
-				this.textProcessor = E;
-				E.text = '';
 				return '';
 			}
+			this.textProcessor = null;
 		}
-		//final String totalDefinition = E.getFoldedDefinition(text);
-		if ((endTag) 
+		else
+		{
+			E = E.copyOf();
+			E.userParms = this.parts;
+			if(!selfCloser)
+			{
+				if (((E.bitmap & MXPBIT.COMMAND)==0) 
+				|| ((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT)) 
+					this.openElements.push(E);
+				if ((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT) 
+				{
+					this.textProcessor = E;
+					E.text = '';
+					return '';
+				}
+			}
+		}
+		var definition = E.getFoldedDefinition(this.stripBadHTMLTags(text.replaceAll("&nbsp;", " ")));
+		if ((endTag || selfCloser) 
 		&& ((E.bitmap & MXPBIT.COMMAND)==0)
 		&& (E.flag != null)
 		&& (E.flag.length > 0))
 		{
 			var f = E.flag.trim();
 			if (f.toUpperCase().startsWith("SET "))
-				f = f.substring(4).trim();
+				f = f.substr(4).trim();
 			this.modifyEntity(f, text);
 		}
 
 		if ((E.bitmap & MXPBIT.SPECIAL)==MXPBIT.SPECIAL) 
-			this.doSpecialProcessing(E, endTag);
-		if (((E.bitmap & MXPBIT.HTML)==MXPBIT.HTML)
-		|| (totalDefinition.toLowerCase() == oldString.toLowerCase()))
+			this.doSpecialProcessing(E, endTag || selfCloser);
+
+		definition = this.processAnyEntities(definition, E);
+		if (endTag)
 		{
-			buf.insert(oldI, totalDefinition);
-			if ((endTag) && (oldI < oldOldI))
+			var endHtml = '';
+			if(definition.trim().startsWith('<'))
 			{
-				return -((oldOldI - oldI) + 1);
+				//var first = this.getFirstTag(definition);
+				var close = this.makeCloseTag(definition);
+				if((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT)
+					endHtml = '\0' + definition + text + close;
+				else
+				if((E.bitmap & MXPBIT.HTML)==MXPBIT.HTML)
+					endHtml = close;
 			}
-			return totalDefinition.length() - 1;
+			else
+			if((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT)
+				endHtml = definition + text;
+			return endHtml;
 		}
-		var def = totalDefinition;
-		this.processAnyEntities(def, E);
-		buf.insert(oldI, def.toString());
-		if ((endTag) && (oldI < oldOldI))
-		{
-			return -((oldOldI - oldI) + 1);
-		}
-		if ((def.toLowerCase() == oldString.toLowerCase()) 
-		|| (E.name.toUpperCase().trim() == getFirstTag(def.toString().trim())))
-		{
-			return def.toString().length() - 1;
-		}
-		return -1;
+		return definition;
+	};
+	
+	this.getFirstTag = function(s)
+	{
+		if (!s.startsWith("<"))
+			return "";
+		var x = s.indexOf(' ');
+		if (x < 0)
+			x = s.indexOf('>');
+		if (x < 0)
+			return "";
+		return s.substr(1, x).toUpperCase().trim();
+	};
+	
+	this.makeCloseTag = function(s)
+	{
+		if (!s.startsWith("<"))
+			return "";
+		var x = s.indexOf(' ');
+		if (x < 0)
+			x = s.indexOf('>');
+		if (x < 0)
+			return "";
+		return '</' + s.substr(1, x).toUpperCase().trim()+'>';
+	};
+	
+	this.processAnyEntities = function(buf, currentElement)
+	{
+		var i = -1;
+		while (++i < buf.length)
+			if(buf[i] == '&')
+			{
+				if ((this.mode == MXP.MODE_LINE_LOCKED) || (this.mode == MXP.MODE_LOCK_LOCKED))
+					continue;
+				var convertIt = false;
+				var oldI = i;
+				var content = '';
+				if ((i < buf.length - 3) 
+				&& (buf[i + 1] == '#') 
+				&& (isDigit(buf[i + 2])))
+				{
+					i++; // skip to the hash, the next line will skip to the digit
+					while ((++i) < buf.length)
+					{
+						if (buf[i] == ';')
+						{
+							convertIt = false;
+							break;
+						}
+						else
+						if (!isDigit(buf[i]))
+						{
+							convertIt = true;
+							break;
+						}
+					}
+				}
+				else
+				{
+					while ((++i) < buf.length)
+					{
+						if (buf[i] == ';')
+						{
+							convertIt = false;
+							break;
+						}
+						else
+						if (!isLetterOrDigit(buf[i]))
+						{
+							convertIt = true;
+							break;
+						}
+						else
+						if ((!isLetter(buf[i])) && (content.length == 0))
+						{
+							convertIt = true;
+							break;
+						}
+						content += buf[i];
+						if (content.length > 20)
+							break;
+					}
+				}
+				if ((i >= buf.length) && (content.length > 0) && ((buf.length - i) < 10))
+					return buf;
+				if ((convertIt) || (content.length == 0) || (buf[i] != ';'))
+					continue; // dont adjust i, just continue
+				var tag = content.trim();
+				var val = this.getEntityValue(tag, currentElement);
+				var oldValue = buf.substr(oldI, i + 1 - oldI);
+				buf = buf.substr(0,oldI) + buf.substr(i+1);
+				i = oldI;
+				if (val != null)
+				{
+					if ((currentElement != null) 
+					&& (currentElement.name.toUpperCase() == "FONT"))
+					{
+						if (tag.toUpperCase() == "COLOR")
+							ansistack.lastForeground = val;
+						else
+						if (tag.toUpperCase() == "BACK")
+							ansistack.lastBackground = val;
+					}
+					buf = buf.substr(0,oldI) + val + buf.substr(oldI);
+					if ((val.toUpperCase()== oldValue.toUpperCase()) 
+					|| (currentElement != null))
+						i += val.length;
+				}
+				i +=-1;
+			}
+		return buf;
 	};
 
 	this.stripBadHTMLTags = function(s)
@@ -716,9 +955,9 @@ var MXP = function(siplet, ansistack, flags)
 			X.definition =value;
 		}
 		var gauge = null;
-		for (var g = 0; g < gauges.length; g++)
+		for (var g = 0; g < this.gauges.length; g++)
 		{
-			gauge = gauges[g];
+			gauge = this.gauges[g];
 			if ((gauge[0].toLowerCase() == name) || (gauge[1].toLowerCase() == name))
 			{
 				var initEntity = this.getEntityValue(gauge[0], null);
@@ -734,7 +973,7 @@ var MXP = function(siplet, ansistack, flags)
 				if (initValue > 0)
 					initValue = Math.round(100.0 * (initValue / maxValue));
 				//TODO: javascript being pushed -- do this immediately!
-				jscriptBuffer.append("modifyGauge('" + gauge[0] + "'," + initValue + "," + maxValue + ");");
+				//jscriptBuffer.append("modifyGauge('" + gauge[0] + "'," + initValue + "," + maxValue + ");");
 			}
 		}
 	};
@@ -758,13 +997,13 @@ var MXP = function(siplet, ansistack, flags)
 		}
 		if (val == null)
 		{
-			var N = entities[tag];
+			var N = this.entities[tag];
 			if (N == null)
-				N = entities[tag.toLowerCase()];
+				N = this.entities[tag.toLowerCase()];
 			if (N == null)
-				N = entities[tag.toUpperCase()];
+				N = this.entities[tag.toUpperCase()];
 			if (N != null)
-				val = N.getDefinition();
+				val = N.definition;
 		}
 		return val;
 	};
@@ -823,16 +1062,17 @@ var MXP = function(siplet, ansistack, flags)
 					{
 						v = s.substr(y + 1);
 						s = s.substr(0, y);
-						if (s.toLowerCase() == "color")
+						var ls = s.toLowerCase();
+						if (ls == "color")
 							E.setAttributeValue("COLOR", v);
 						else
-						if (s.equalsIgnoreCase("background-color"))
+						if (ls == "background-color")
 							E.setAttributeValue("BACK", v);
 						else
-						if (s.equalsIgnoreCase("font-size"))
+						if (ls == "font-size")
 							E.setAttributeValue("SIZE", v);
 						else
-						if (s.equalsIgnoreCase("font-family"))
+						if (ls == "font-family")
 							E.setAttributeValue("FACE", v);
 					}
 				}
@@ -860,7 +1100,7 @@ var MXP = function(siplet, ansistack, flags)
 		if (tagName == "SEND")
 		{
 			var prompt = E.getAttributeValue("PROMPT");
-			if ((prompt != null) && (prompt.length() > 0))
+			if ((prompt != null) && (prompt.length > 0))
 				return;
 			if (prompt == null)
 				prompt = "false";
@@ -869,9 +1109,9 @@ var MXP = function(siplet, ansistack, flags)
 			E.setAttributeValue("PROMPT", prompt);
 			var href = E.getAttributeValue("HREF");
 			var hint = E.getAttributeValue("HINT");
-			if ((href == null) || (href.trim().length() == 0))
+			if ((href == null) || (href.trim().length == 0))
 				href = "if(window.alert) alert('Nothing done.');";
-			if ((hint == null) || (hint.trim().length() == 0))
+			if ((hint == null) || (hint.trim().length == 0))
 				hint = "Click here!";
 			hint = hint.replaceAll(new RegExp("RIGHT-CLICK","gi"), "click");
 			hint = hint.replaceAll(new RegExp("RIGHT-MOUSE","gi"), "click mouse");
@@ -927,12 +1167,12 @@ var MXP = function(siplet, ansistack, flags)
 			var attributes = E.getAttributeValue("ATT");
 			var tag = E.getAttributeValue("TAG");
 			var flags = E.getAttributeValue("FLAG");
-			var OPEN = E.getAttributeValue("OPEN");
-			var DELETE = E.getAttributeValue("DELETE");
-			var EMPTY = E.getAttributeValue("EMPTY");
+			var open = E.getAttributeValue("OPEN");
+			var delflag = E.getAttributeValue("DELETE");
+			var emptyFlag = E.getAttributeValue("EMPTY");
 			if (name == null)
 				return;
-			if ((DELETE != null) && (name in this.elements))
+			if ((delflag != null) && (name in this.elements))
 			{
 				E = this.elements[name];
 				if ((E.bitmap & MXPBIT.OPEN) == MXPBIT.OPEN)
@@ -944,9 +1184,9 @@ var MXP = function(siplet, ansistack, flags)
 			if (attributes == null)
 				attributes = "";
 			var bitmap = 0;
-			if (OPEN != null)
+			if (open != null)
 				bitmap |= MXPBIT.OPEN;
-			if (EMPTY != null)
+			if (emptyFlag != null)
 				bitmap |= MXPBIT.COMMAND;
 			var L = new MXPElement(name.toUpperCase().trim(), definition, attributes, flags, bitmap);
 			L.basicElement = false;
@@ -971,30 +1211,30 @@ var MXP = function(siplet, ansistack, flags)
 			// var desc=E.getAttributeValue("DESC");
 			// var PRIVATE=E.getAttributeValue("PRIVATE");
 			// var PUBLISH=E.getAttributeValue("PUBLISH");
-			var DELETE = E.getAttributeValue("DELETE");
-			var REMOVE = E.getAttributeValue("REMOVE");
-			var ADD = E.getAttributeValue("ADD");
+			var delflag = E.getAttributeValue("DELETE");
+			var removeFlag = E.getAttributeValue("REMOVE");
+			var addFlag = E.getAttributeValue("ADD");
 			if ((name == null) || (name.length == 0))
 				return;
-			if (DELETE != null)
+			if (delflag != null)
 			{
 				if(name in this.entities)
-					delete entities[name];
+					delete this.entities[name];
 				return;
 			}
-			if (REMOVE != null)
+			if (removeFlag != null)
 			{
 				// whatever a string list is (| separated things) this removes
 				// it
 			}
 			else
-			if (ADD != null)
+			if (addFlag != null)
 			{
 				// whatever a string list is (| separated things) this adds it?
 				// it
 			}
 			else
-				modifyEntity(name, value);
+				this.modifyEntity(name, value);
 			return;
 		}
 		else
@@ -1003,33 +1243,33 @@ var MXP = function(siplet, ansistack, flags)
 			var name = E.getAttributeValue("NAME");
 			// var PRIVATE=E.getAttributeValue("PRIVATE");
 			// var PUBLISH=E.getAttributeValue("PUBLISH");
-			var DELETE = E.getAttributeValue("DELETE");
-			var REMOVE = E.getAttributeValue("REMOVE");
-			var VALUE = E.getAttributeValue("TEXT");
-			if (VALUE == null)
-				VALUE = "";
-			var ADD = E.getAttributeValue("ADD");
-			if ((name == null) || (name.length() == 0))
+			var delflag = E.getAttributeValue("DELETE");
+			var removeFlag = E.getAttributeValue("REMOVE");
+			var value = E.getAttributeValue("TEXT");
+			if (value == null)
+				value = "";
+			var addFlag = E.getAttributeValue("ADD");
+			if ((name == null) || (name.length == 0))
 				return;
-			if (DELETE != null)
+			if (delflag != null)
 			{
 				if(name in this.entities)
-					delete entities[name];
+					delete this.entities[name];
 				return;
 			}
-			if (REMOVE != null)
+			if (removeFlag != null)
 			{
 				// whatever a string list is (| separated things) this removes
 				// it
 			}
 			else
-			if (ADD != null)
+			if (addFlag != null)
 			{
 				// whatever a string list is (| separated things) this adds
 				// it?
 			}
 			else
-				this.modifyEntity(name, VALUE);
+				this.modifyEntity(name, value);
 			return;
 		}
 		else
@@ -1054,7 +1294,7 @@ var MXP = function(siplet, ansistack, flags)
 			var initValue = 0;
 			if (isNumber(initEntity))
 				initValue = Number(initEntity);
-			var maxEntity = getEntityValue(MAX, null);
+			var maxEntity = this.getEntityValue(MAX, null);
 			var maxValue = 100;
 			if (isNumber(maxEntity))
 				maxValue = Number(maxEntity);
@@ -1100,7 +1340,7 @@ var MXP = function(siplet, ansistack, flags)
 				for (var e in this.elements)
 				{
 					var E2 = this.elements[e];
-					if (!E2.isBasicElement)
+					if (!E2.basicElement)
 						continue;
 					var unsupportedParms = E2.unsupported.split(' ').filter(item => item);
 					if ((E2.bitmap & MXPBIT.NOTSUPPORTED) == MXPBIT.NOTSUPPORTED)
@@ -1229,7 +1469,7 @@ var MXP = function(siplet, ansistack, flags)
 		{
 		case MXPMODE.RESET:
 			this.defaultMode = MXPMODE.LINE_OPEN;
-			this.mode = defaultMode;
+			this.mode = this.defaultMode;
 			return this.closeAllTags();
 		case MXPMODE.LOCK_OPEN:
 		case MXPMODE.LOCK_SECURE:
@@ -1245,7 +1485,7 @@ var MXP = function(siplet, ansistack, flags)
 		if(!this.active())
 			return null;
 		if ((this.mode == MXPMODE.LINE_LOCKED) || (this.mode == MXPMODE.LOCK_LOCKED))
-			return '<BR>';
+			return null;
 		var eatEOL = this.eatNextEOLN;
 		this.eatNextEOLN = this.eatAllEOLN;
 		if (this.eatTextUntilEOLN)
@@ -1259,7 +1499,7 @@ var MXP = function(siplet, ansistack, flags)
 		{
 			var ret = this.closeAllTags();
 			ret += this.executeMode();
-			return ret;
+			return ret + '<BR>';
 		}
 		case MXPMODE.LINE_SECURE:
 		case MXPMODE.LINE_LOCKED:

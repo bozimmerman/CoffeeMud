@@ -24,10 +24,19 @@ function TEXT(textParsers)
 			var s = this.parse(c);
 			if(s != null) // should this be before the parser trig checks?
 			{
-				str = str.substr(0,i) + s + str.substr(i+1);
-				i += s.length;
+				if((s.length>0) && (s[0] == '\0'))
+				{
+					str = str.substr(0,i) + s.substr(1) + str.substr(i+1);
+					i -= 1;
+				}
+				else
+				{
+					str = str.substr(0,i) + s + str.substr(i+1);
+					i += s.length;
+				}
 				continue;
-			};
+			}
+			else
 			switch(c)
 			{
 			case '\0':
