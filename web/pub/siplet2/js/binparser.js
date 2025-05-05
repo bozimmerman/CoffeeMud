@@ -37,167 +37,167 @@ var BPENTRY = function()
 	this.done = false;
 };
 
-var BPPARSE = function()
+var BPPARSE = function(lfok)
 {
 	this.entries = [];
 	this.data = [];
 	this.prev = 0;
-	this.nolf = false;
+	this.nolf = !lfok;
 	this.state = BPSTATE.OUTER;
-};
-
-function binparse(block)
-{
-	var entries = block.entries;
-	if (entries.length == 0)
-		entries.push(new BPENTRY());
-	var curr = entries[entries.length-1];
-	var i=-1;
-	var c=block.prev;
-	// should this be Uint16Array, since I'm encoding unicode?
-	var data = new Uint8Array(block.data);
-	while(++i < data.length)
+	this.parse = function()
 	{
-		var prev = c;
-		c = data[i];
-		switch(block.state)
+		var entries = this.entries;
+		if (entries.length == 0)
+			entries.push(new BPENTRY());
+		var curr = entries[entries.length-1];
+		var i=-1;
+		var c=this.prev;
+		// should this be Uint16Array, since I'm encoding unicode?
+		var data = new Uint8Array(this.data);
+		while(++i < data.length)
 		{
-		case BPSTATE.OUTER:
-			switch(c)
+			var prev = c;
+			c = data[i];
+			switch(this.state)
 			{
-			case BPCODE.ESC:
-				block.state = BPSTATE.ANSI;
-				break;
-			case BPCODE.IAC:
-				block.state = BPSTATE.TELNET;
-				break;
-			case 13:
-				curr.data.push(c);
-				curr.done = true;
-				curr = new BPENTRY();
-				block.entries.push(curr);
-				break;
-			case 10:
-				if (!block.nolf)
-					curr.data.push(c);
-				break;
-			default:
-				if((c & 0xFF00) > 0)
+			case BPSTATE.OUTER:
+				switch(c)
 				{
-					curr.data.push((c & 0xFF00)>>8);
-					curr.data.push(c & 0xFF);
-				}
-				else
+				case BPCODE.ESC:
+					this.state = BPSTATE.ANSI;
+					break;
+				case BPCODE.IAC:
+					this.state = BPSTATE.TELNET;
+					break;
+				case 13:
 					curr.data.push(c);
-				break;
-			}
-			break;
-		case BPSTATE.ANSI:
-			if(c==91) // [
-			{
-				block.state = BPSTATE.ANSI2;
-				curr.done = true;
-				curr = new BPENTRY();
-				block.entries.push(curr);
-				curr.type = BPTYPE.ANSI;
-			}
-			else
-			{
-				block.state = BPSTATE.OUTER;
-				curr.data.push(27);
-				curr.data.push(c);
-			}
-			break;
-		case BPSTATE.ANSI2:
-			curr.data.push(c);
-			if(c==34) // "
-				block.state = BPSTATE.ANSI3;
-			else
-			if((c==109) || (c==122)) //m, z
-			{
-				block.state = BPSTATE.OUTER;
-				curr.done=true;
-				curr = new BPENTRY();
-				block.entries.push(curr);
-			}
-			break;
-		case BPSTATE.ANSI3:
-			curr.data.push(c);
-			if(c==34) // "
-				block.state = BPSTATE.ANSI2;
-			else
-			if((curr.data.length>128) || (!isLetter(c)))
-			{
-				//something went very very wrong.  kill with fire.
-				block.state = BPSTATE.OUTER;
-				curr.type=BPTYPE.TEXT;
-				curr.data=[];
-				i--;
-			}
-			break;
-		case BPSTATE.TELNET:
-			switch(c)
-			{
-			case BPCODE.IAC: // double escape?  Just stay here..
-				break;
-			case BPCODE.TELNET_SB:
-				curr.done = true;
-				curr = new BPENTRY();
-				block.entries.push(curr);
-				curr.type = BPTYPE.TELNET;
-				curr.data.push(c);
-				block.state = BPSTATE.TELNETSB;
-				break;
-			case BPCODE.TELNET_WILL:
-			case BPCODE.TELNET_WONT:
-			case BPCODE.TELNET_DO:
-			case BPCODE.TELNET_DONT:
-				curr.done = true;
-				curr = new BPENTRY();
-				block.entries.push(curr);
-				curr.type = BPTYPE.TELNET;
-				curr.data.push(c);
-				block.state = BPSTATE.TELNET2;
-				break;
-			case BPCODE.TELNET_GA:
-			case BPCODE.TELNET_NOP:
-				// just eat it
-				block.state = BPSTATE.OUTER;
-				break;
-			default:
-				curr.data.push(BPCODE.IAC);
-				curr.data.push(c);
-				block.state = BPSTATE.OUTER;
-				break;
-			}
-			break;
-		case BPSTATE.TELNET2:
-			curr.data.push(c);
-			curr.done = true;
-			curr = new BPENTRY();
-			block.entries.push(curr);
-			block.state = BPSTATE.OUTER;
-			break;
-		case BPSTATE.TELNETSB:
-			if(prev == BPCODE.IAC)
-			{
-				if(c == BPCODE.IAC)
-					curr.data.push(c);
-				else
-				if(c == BPCODE.TELNET_SE)
-				{
 					curr.done = true;
 					curr = new BPENTRY();
-					block.entries.push(curr);
-					block.state = BPSTATE.OUTER;
+					this.entries.push(curr);
+					break;
+				case 10:
+					if (!this.nolf)
+						curr.data.push(c);
+					break;
+				default:
+					if((c & 0xFF00) > 0)
+					{
+						curr.data.push((c & 0xFF00)>>8);
+						curr.data.push(c & 0xFF);
+					}
+					else
+						curr.data.push(c);
+					break;
 				}
-			}
-			else
+				break;
+			case BPSTATE.ANSI:
+				if(c==91) // [
+				{
+					this.state = BPSTATE.ANSI2;
+					curr.done = true;
+					curr = new BPENTRY();
+					this.entries.push(curr);
+					curr.type = BPTYPE.ANSI;
+				}
+				else
+				{
+					this.state = BPSTATE.OUTER;
+					curr.data.push(27);
+					curr.data.push(c);
+				}
+				break;
+			case BPSTATE.ANSI2:
 				curr.data.push(c);
-			break;
+				if(c==34) // "
+					this.state = BPSTATE.ANSI3;
+				else
+				if((c==109) || (c==122)) //m, z
+				{
+					this.state = BPSTATE.OUTER;
+					curr.done=true;
+					curr = new BPENTRY();
+					this.entries.push(curr);
+				}
+				break;
+			case BPSTATE.ANSI3:
+				curr.data.push(c);
+				if(c==34) // "
+					this.state = BPSTATE.ANSI2;
+				else
+				if((curr.data.length>128) || (!isLetter(c)))
+				{
+					//something went very very wrong.  kill with fire.
+					this.state = BPSTATE.OUTER;
+					curr.type=BPTYPE.TEXT;
+					curr.data=[];
+					i--;
+				}
+				break;
+			case BPSTATE.TELNET:
+				switch(c)
+				{
+				case BPCODE.IAC: // double escape?  Just stay here..
+					break;
+				case BPCODE.TELNET_SB:
+					curr.done = true;
+					curr = new BPENTRY();
+					this.entries.push(curr);
+					curr.type = BPTYPE.TELNET;
+					curr.data.push(c);
+					this.state = BPSTATE.TELNETSB;
+					break;
+				case BPCODE.TELNET_WILL:
+				case BPCODE.TELNET_WONT:
+				case BPCODE.TELNET_DO:
+				case BPCODE.TELNET_DONT:
+					curr.done = true;
+					curr = new BPENTRY();
+					this.entries.push(curr);
+					curr.type = BPTYPE.TELNET;
+					curr.data.push(c);
+					this.state = BPSTATE.TELNET2;
+					break;
+				case BPCODE.TELNET_GA:
+				case BPCODE.TELNET_NOP:
+					// just eat it
+					this.state = BPSTATE.OUTER;
+					break;
+				default:
+					curr.data.push(BPCODE.IAC);
+					curr.data.push(c);
+					this.state = BPSTATE.OUTER;
+					break;
+				}
+				break;
+			case BPSTATE.TELNET2:
+				curr.data.push(c);
+				curr.done = true;
+				curr = new BPENTRY();
+				this.entries.push(curr);
+				this.state = BPSTATE.OUTER;
+				break;
+			case BPSTATE.TELNETSB:
+				if(prev == BPCODE.IAC)
+				{
+					if(c == BPCODE.IAC)
+						curr.data.push(c);
+					else
+					if(c == BPCODE.TELNET_SE)
+					{
+						curr.done = true;
+						curr = new BPENTRY();
+						this.entries.push(curr);
+						this.state = BPSTATE.OUTER;
+					}
+				}
+				else
+					curr.data.push(c);
+				break;
+			}
 		}
-	}
-	block.prev = c;
-	if((curr.type == BPTYPE.TEXT) && (curr.data.length > 0))
-		curr.done = true;
-}
+		this.prev = c;
+		if((curr.type == BPTYPE.TEXT) && (curr.data.length > 0))
+			curr.done = true;
+		return '';
+	};
+};

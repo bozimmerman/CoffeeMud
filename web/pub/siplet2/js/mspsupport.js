@@ -1,12 +1,13 @@
-var MSP = function(siplet, flags)
+var MSP = function(sipwin)
 {
 	this.tag = null;
 	this.data = null;
 	this.sounders=[];
 	this.soundDates=[];
 	this.soundPriorities=[];
+	this.skip=0;
 	
-	this.active = function() { return (flags != null) && (flags.MSPsupport); };
+	this.active = function() { return sipwin.MSPsupport; };
 	this.eolDetected = function() { return null; };
 
 	this.cancelProcessing = function() {
@@ -19,7 +20,8 @@ var MSP = function(siplet, flags)
 		}
 		this.data = null;
 		this.tag = null;
-		return s;
+		this.skip = 1;
+		return '\0' + s;
 	}
 
 	this.process = function(c) {
@@ -29,6 +31,8 @@ var MSP = function(siplet, flags)
 		{
 			if(c=='!')
 			{
+				if(this.skip-->0)
+					return null;
 				this.tag = '!';
 				this.data = null;
 				return '';
@@ -77,7 +81,7 @@ var MSP = function(siplet, flags)
 	
 	this.PlaySound = function(key,url,repeats,volume,priority)
 	{
-		var playerName = siplet.windowName;
+		var playerName = sipwin.windowName;
 		var theSoundPlayer = this.sounders[playerName];  
 		if(theSoundPlayer)
 		{
@@ -109,7 +113,7 @@ var MSP = function(siplet, flags)
 
 	this.StopSound - function(key)
 	{
-		var playerName = siplet.windowName;
+		var playerName = sipwin.windowName;
 		var theSoundPlayer=document.getElementById(playerName);
 		theSoundPlayer.src='';
 		theSoundPlayer.Play();

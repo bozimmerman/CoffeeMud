@@ -1,4 +1,4 @@
-<HTML><BODY><FONT FACE="MONOSPACE" ID=BOB>
+<HTML><BODY><FONT FACE="MONOSPACE" ID=W0>
 <SCRIPT LANGUAGE=JavaScript src="js/util.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/siplet.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/binparser.js"></SCRIPT>
@@ -8,39 +8,27 @@
 <SCRIPT LANGUAGE=JavaScript src="js/mspsupport.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/mxpsupport.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript>
-var siplet = JSON.parse(JSON.stringify(Siplet)); // makes a deep copy
-siplet.wsocket = new WebSocket("ws://localhost:27744/WebSock");
-siplet.wsocket.binaryType = "arraybuffer";
-siplet.wsopened = false;
-siplet.windowName = '0';
+var siplet = new SipletWindow('W0'); // makes a deep copy
+siplet.connect("ws://localhost:27744/WebSock");
 
-var binblock = new BPPARSE();
-binblock.nolf = true;
-var ansipage = new ANSISTACK();
-var telnet = new TELNET(siplet);
-var msp = new MSP(siplet, telnet);
-var mxp = new MXP(siplet, ansipage, telnet);
-var text = new TEXT([mxp,msp]);
-var termWindow = document.getElementById('BOB');
 function onmessage(e)
 {
-	binblock.data = event.data;
-	binparse(binblock);
-	var html = "";
-	if (termWindow.childNodes.length > siplet.maxLines)
-		termWindow.removeChild(termWindow.firstChild);
+	siplet.bin.data = event.data;
+	var html = siplet.bin.parse(siplet.bin);
+	if (siplet.window.childNodes.length > siplet.maxLines)
+		siplet.window.removeChild(siplet.window.firstChild);
 	var scroll=false;
-	while(binblock.entries.length > 0)
+	while(siplet.bin.entries.length > 0)
 	{
-		if((binblock.entries.length == 1)
-		&&(!binblock.entries[0].done))
+		if((siplet.bin.entries.length == 1)
+		&&(!siplet.bin.entries[0].done))
 			break;
-		var blk = binblock.entries.shift();
+		var blk = siplet.bin.entries.shift();
 		if(blk.data.length==0)
 			continue;
 		if(blk.type == BPTYPE.TELNET)
 		{
-			var buffer = telnet.process(blk.data);
+			var buffer = siplet.telnet.process(blk.data);
 			if ((buffer.byteLength > 0) && (siplet.wsopened))
 				siplet.wsocket.send(buffer);
 		}
@@ -49,8 +37,13 @@ function onmessage(e)
 			var newText = '';
 			if(blk.type == BPTYPE.ANSI)
 			{
-				newText += ansipage.process(blk.data);
-				var s = mxp.process(blk.data);
+				newText += siplet.ansi.process(blk.data);
+				if(!siplet.mxp.active())
+				{
+					html += newText;
+					continue;
+				}
+				var s = siplet.mxp.process(blk.data);
 				if (s != null)
 					newText += s;
 				blk.data = newText; // convert to text-like
@@ -62,7 +55,7 @@ function onmessage(e)
 					newText += String.fromCharCode( blk.data[i]);
 				}
 			}
-			newText = text.process(newText);
+			newText = siplet.text.process(newText);
 			if(newText.length>0)
 			{
 				html += newText;
@@ -70,7 +63,7 @@ function onmessage(e)
 				{
 					var span = document.createElement('span');
 					span.innerHTML = html;
-					termWindow.appendChild(span);
+					siplet.window.appendChild(span);
 					html='';
 					scroll=true;
 				}
@@ -82,7 +75,7 @@ function onmessage(e)
 		var span = document.createElement('span');
 		//html = text.process(html); // already processed when it came in
 		span.innerHTML = html;
-		termWindow.appendChild(span);
+		siplet.window.appendChild(span);
 		scroll=true;
 	}
 	if(scroll)
@@ -92,9 +85,9 @@ function onmessage(e)
 function onkeypress(e)
 {
 	if(e.keyCode == 13)
-		termWindow.innerHTML += '<BR>';
+		siplet.window.innerHTML += '<BR>';
 	else
-		termWindow.innerHTML += String.fromCharCode(event.keyCode);
+		siplet.window.innerHTML += String.fromCharCode(event.keyCode);
 	if(siplet.wsopened)
 		siplet.wsocket.send(String.fromCharCode(event.keyCode));
 }

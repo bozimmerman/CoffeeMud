@@ -45,18 +45,13 @@ var StringToAsciiArray = function(str) {
 	return arr;
 };
 
-var TELNET = function(siplet)
+var TELNET = function(sipwin)
 {
 	this.neverSupportMSP = false;
 	this.neverSupportMXP = false;
 	this.neverSupportMSDP= true; //TODO: soon!
 	this.neverSupportGMCP = true; //TODO: soon!
 	this.neverSupportMCCP = true; //TODO: maybe add pako later?
-	this.MSPsupport = false;
-	this.MSDPsupport = false;
-	this.GMCPsupport = false;
-	this.MXPsupport = false;
-	this.MCCPsupport = false;
 	this.msdpInforms = "";
 	this.gmcpInforms = "";
 	
@@ -97,7 +92,7 @@ var TELNET = function(siplet)
 				//TODO: store screen info somewhere else
 				response = response.concat([
 					TELOPT.IAC, TELOPT.SB, TELOPT.NAWS,
-						0,siplet.ScreenData.width,0,siplet.ScreenData.height,
+						0,sipwin.width,0,sipwin.height,
 					TELOPT.IAC, TELOPT.SE]);
 			}
 			else
@@ -141,57 +136,58 @@ var TELNET = function(siplet)
 			case TELOPT.NAWS:
 				response = response.concat([
 					TELOPT.IAC, TELOPT.SB, TELOPT.NAWS,
-						0,siplet.ScreenData.width,0,siplet.ScreenData.height,
+						0,sipwin.width,0,sipwin.height,
 					TELOPT.IAC, TELOPT.SE]);
 				break;
 			case TELOPT.MSP:
 				if (this.neverSupportMSP)
 				{
-					if (this.MSPsupport)
+					if (sipwin.MSPsupport)
 					{
 						response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.MSP]);
-						this.MSPsupport = false;
+						sipwin.MSPsupport = false;
 					}
 				}
 				else
-				if (!this.MSPsupport)
+				if (!sipwin.MSPsupport)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.DO, TELOPT.MSP]);
-					this.MSPsupport = true;
+					sipwin.MSPsupport = true;
 				}
 				break;
 			case TELOPT.MSDP:
 				if (this.neverSupportMSDP)
 				{
-					if (this.MSDPsupport)
+					if (sipwin.MSDPsupport)
 					{
 						response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.MSDP]);
-						this.MSDPsupport = false;
+						sipwin.MSDPsupport = false;
 					}
 				}
 				else
-				if (!this.MSDPsupport)
+				if (!sipwin.MSDPsupport)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.DO, TELOPT.MSDP]);
-					this.MSDPsupport = true;
+					sipwin.MSDPsupport = true;
 				}
 				break;
 			case TELOPT.GMCP:
 				if (this.neverSupportGMCP)
 				{
-					if (this.GMCPsupport)
+					if (sipwin.GMCPsupport)
 					{
 						response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.GMCP]);
-						this.GMCPsupport = false;
+						sipwin.GMCPsupport = false;
 					}
 				}
 				else
-				if (!this.GMCPsupport)
+				if (!sipwin.GMCPsupport)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.DO, TELOPT.GMCP]);
-					this.GMCPsupport =true;
+					sipwin.GMCPsupport =true;
 					response = response.concat([TELOPT.IAC, TELOPT.SB,TELOPT.GMCP]);
-					var gmcpMsg = "core.hello {\"client\":\"siplet\",\"version\":" + siplet.VERSION_MAJOR + "}";
+					var gmcpMsg = "core.hello {\"client\":\"siplet\",\"version\":" 
+								+ sipwin.siplet.VERSION_MAJOR + "}";
 					response = response.concat(StringToAsciiArray(gmcpMsg));
 					response = response.concat([TELOPT.IAC, TELOPT.SE]);
 				}
@@ -199,33 +195,33 @@ var TELNET = function(siplet)
 			case TELOPT.MXP:
 				if (this.neverSupportMXP)
 				{
-					if (this.MXPsupport)
+					if (sipwin.MXPsupport)
 					{
 						response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.MXP]);
-						this.MXPsupport = false;
+						sipwin.MXPsupport = false;
 					}
 				}
 				else
-				if (!this.MXPsupport)
+				if (!sipwin.MXPsupport)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.DO, TELOPT.MXP]);
-					this.MXPsupport = true;
+					sipwin.MXPsupport = true;
 				}
 				break;
 			case TELOPT.COMPRESS2:
 				if (this.neverSupportMCCP)
 				{
-					if (this.MCCPsupport)
+					if (sipwin.MCCPsupport)
 					{
 						response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.MCCP]);
-						this.MCCPsupport = false;
+						sipwin.MCCPsupport = false;
 					}
 				}
 				else
-				if (!this.MCCPsupport)
+				if (!sipwin.MCCPsupport)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.DO, TELOPT.MCCP]);
-					this.MCCPsupport = false;
+					sipwin.MCCPsupport = false;
 					//TODO: it cant get here, but when it does, fix it.
 				}
 				break;
@@ -241,31 +237,31 @@ var TELNET = function(siplet)
 			switch(dat[1])
 			{
 			case TELOPT.MSP:
-				if (this.MSPsupport)
+				if (sipwin.MSPsupport)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.MSP]);
-					this.MSPsupport = false;
+					sipwin.MSPsupport = false;
 				}
 				break;
 			case TELOPT.MSDP:
-				if (this.MSDPsupport)
+				if (sipwin.MSDPsupport)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.MSDP]);
-					this.MSDPsupport = false;
+					sipwin.MSDPsupport = false;
 				}
 				break;
 			case TELOPT.GMCP:
-				if (this.GMCPsupport)
+				if (sipwin.GMCPsupport)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.GMCP]);
-					this.GMCPsupport = false;
+					sipwin.GMCPsupport = false;
 				}
 				break;
 			case TELOPT.MXP:
-				if (this.MXPsupport)
+				if (sipwin.MXPsupport)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.MXP]);
-					this.MXPsupport = false;
+					sipwin.MXPsupport = false;
 					//TODO: if (mxpModule != null) mxpModule.shutdownMXP();
 				}
 				break;
@@ -279,33 +275,33 @@ var TELNET = function(siplet)
 			case TELOPT.MSP:
 				if (this.neverSupportMSP)
 				{
-					if (this.MSPsupport)
+					if (sipwin.MSPsupport)
 					{
 						response = response.concat([TELOPT.IAC, TELOPT.WONT, TELOPT.MSP]);
-						this.MSPsupport = false;
+						sipwin.MSPsupport = false;
 					}
 				}
 				else
-				if (!this.MSPsupport)
+				if (!sipwin.MSPsupport)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.WILL, TELOPT.MSP]);
-					this.MSPsupport = true;
+					sipwin.MSPsupport = true;
 				}
 				break;
 			case TELOPT.GMCP:
 				if (this.neverSupportGMCP)
 				{
-					if (this.GMCPsupport)
+					if (sipwin.GMCPsupport)
 					{
 						response = response.concat([TELOPT.IAC, TELOPT.WONT, TELOPT.GMCP]);
-						this.GMCPsupport = false;
+						sipwin.GMCPsupport = false;
 					}
 				}
 				else
-				if (!this.GMCPsupport)
+				if (!sipwin.GMCPsupport)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.WILL, TELOPT.GMCP]);
-					this.GMCPsupport = true;
+					sipwin.GMCPsupport = true;
 				}
 				break;
 			case TELOPT.LOGOUT:
@@ -314,17 +310,17 @@ var TELNET = function(siplet)
 			case TELOPT.MXP:
 				if (this.neverSupportMXP)
 				{
-					if (this.MXPsupport)
+					if (sipwin.MXPsupport)
 					{
 						response = response.concat([TELOPT.IAC, TELOPT.WONT, TELOPT.MXP]);
-						this.MXPsupport = false;
+						sipwin.MXPsupport = false;
 					}
 				}
 				else
-				if (!this.MXPsupport)
+				if (!sipwin.MXPsupport)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.WILL, TELOPT.MXP]);
-					this.MXPsupport = true;
+					sipwin.MXPsupport = true;
 				}
 				break;
 			default:
@@ -337,17 +333,17 @@ var TELNET = function(siplet)
 			switch(dat[1])
 			{
 			case TELOPT.MSP:
-				if (this.MSPsupport)
+				if (sipwin.MSPsupport)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.WONT, TELOPT.MSP]);
-					this.MSPsupport = false;
+					sipwin.MSPsupport = false;
 				}
 				break;
 			case TELOPT.MXP:
-				if (this.MXPsupport)
+				if (sipwin.MXPsupport)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.WONT, TELOPT.MXP]);
-					this.MXPsupport = false;
+					sipwin.MXPsupport = false;
 					//TODO: if (mxpModule != null) mxpModule.shutdownMXP();
 				}
 				break;

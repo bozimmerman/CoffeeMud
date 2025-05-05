@@ -305,7 +305,7 @@ var MXPElement = function(theName, theDefinition, theAttributes, theFlag, theBit
 	};
 };
 
-var MXP = function(siplet, ansistack, flags)
+var MXP = function(sipwin)
 {
 	this.defaultMode = MXPMODE.LINE_OPEN; // actually changes!
 	this.mode = 0;
@@ -392,7 +392,7 @@ var MXP = function(siplet, ansistack, flags)
 	this.parts = [];
 	this.textProcessor = null;
 
-	this.active = function() { return (flags != null) && (flags.MXPsupport) };
+	this.active = function() { return sipwin.MXPsupport };
 
 	this.cancelProcessing = function() {
 		var s = this.partial;
@@ -420,7 +420,7 @@ var MXP = function(siplet, ansistack, flags)
 		}
 		if(this.partial == null)
 		{
-			if((c == '<')||(c=='&'))
+			if(c == '<')
 			{
 				this.startParsing(c);
 				return '';
@@ -430,6 +430,12 @@ var MXP = function(siplet, ansistack, flags)
 			{
 				if(this.textProcessor.text.length < 4096)
 					this.textProcessor.text += c;
+				return '';
+			}
+			else
+			if(c=='&')
+			{
+				this.startParsing(c);
 				return '';
 			}
 			return null;
@@ -676,8 +682,6 @@ var MXP = function(siplet, ansistack, flags)
 		}
 		if(tag.startsWith("!"))
 			tag = tag.substr(1).trim();
-if((!endTag) && (tag=='FONT'))
-	console.log('ou');
 console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //TODO:DELME
 		if ((tag.length == 0) || (!(tag in this.elements)))
 			return abort;
@@ -733,13 +737,12 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 			E = E.copyOf();
 			E.userParms = this.parts;
 			if((!selfCloser)
-			&&(E.name !== 'FONT')
 			//&& ((E.bitmap & MXPBIT.HTML)==0) // this caused problems, I need to know why.
 			&& (((E.bitmap & MXPBIT.COMMAND)==0)
 			|| ((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT)))
 			{
-				E.lastBackground = ansistack.lastBackground;
-				E.lastForeground = ansistack.lastForeground;
+				E.lastBackground = sipwin.ansi.lastBackground;
+				E.lastForeground = sipwin.ansi.lastForeground;
 				this.openElements.push(E);
 				if ((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT) 
 				{
@@ -791,9 +794,9 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 		||(E.name==this.getFirstTag(definition))) // this line added for FONT exception
 			return definition;
 		if(E.lastForeground)
-			ansistack.lastForeground = E.lastForeground;
+			sipwin.ansi.lastForeground = E.lastForeground;
 		if(E.lastBackground)
-			ansistack.lastBackground = E.lastBackground;
+			sipwin.ansi.lastBackground = E.lastBackground;
 		return '\0'+definition;
 	};
 	
@@ -806,15 +809,15 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 		if((x<0)&&(y<0))
 			return '';
 		if(y<0)
-			return s.substr(1, x).toUpperCase().trim();
+			return s.substr(1, x-1).toUpperCase();
 		else
 		if(x<0)
-			return s.substr(1, y).toUpperCase().trim();
+			return s.substr(1, y-1).toUpperCase();
 		else
 		if(x<y)
-			return s.substr(1, x).toUpperCase().trim();
+			return s.substr(1, x-1).toUpperCase();
 		else
-			return s.substr(1, y).toUpperCase().trim();
+			return s.substr(1, y-1).toUpperCase();
 	};
 	
 	this.makeCloseTag = function(s)
@@ -897,10 +900,10 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 					&& (currentElement.name.toUpperCase() == "FONT"))
 					{
 						if (tag.toUpperCase() == "COLOR")
-							ansistack.lastForeground = val;
+							sipwin.ansi.lastForeground = val;
 						else
 						if (tag.toUpperCase() == "BACK")
-							ansistack.lastBackground = val;
+							sipwin.ansi.lastBackground = val;
 					}
 					buf = buf.substr(0,oldI) + val + buf.substr(oldI);
 					if ((val.toUpperCase()== oldValue.toUpperCase()) 
@@ -1017,7 +1020,7 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 	{
 		var val = null;
 		if (tag.toLowerCase() == "lcc")
-			val = "color: " + ansistack.lastForeground + "; background-color: " + ansistack.lastBackground;
+			val = "color: " + sipwin.ansi.lastForeground + "; background-color: " + sipwin.ansi.lastBackground;
 		if ((val == null) && (E != null))
 			val = E.getAttributeValue(tag);
 		if ((val == null) && (E == null))
@@ -1055,10 +1058,10 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 			if ((currentE != null) && (currentE.name.toUpperCase() == "FONT"))
 			{
 				if (tag.toUpperCase() == "COLOR")
-					ansistack.lastForeground = val;
+					sipwin.ansi.lastForeground = val;
 				else
 				if (tag.toUpperCase() == "BACK")
-					ansistack.lastBackground = val;
+					sipwin.ansi.lastBackground = val;
 			}
 			return val;
 		}
@@ -1311,7 +1314,10 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 		}
 		else
 		if (tagName == "VERSION")
-			siplet.wsocket.send("\033[1z<VERSION MXP=1.0 STYLE=1.0 CLIENT=Siplet VERSION=" + siplet.VERSION_MAJOR + " REGISTERED=NO>\n");
+		{
+			sipwin.wsocket.send("\033[1z<VERSION MXP=1.0 STYLE=1.0 CLIENT=Siplet VERSION=" 
+				+ sipwin.siplet.VERSION_MAJOR + " REGISTERED=NO>\n");
+		}
 		else
 		if (tagName =="GAUGE")
 		{
@@ -1446,7 +1452,7 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 						supportResponse += (" +" + tag + "." + parm);
 				}
 			}
-			siplet.wsocket.send("\033[1z<SUPPORTS" + supportResponse + ">\n");
+			sipwin.wsocket.send("\033[1z<SUPPORTS" + supportResponse + ">\n");
 		}
 		else
 		if (tagName == "TAG")

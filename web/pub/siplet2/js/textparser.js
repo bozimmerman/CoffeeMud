@@ -1,10 +1,26 @@
 function TEXT(textParsers)
 {
-	this.parse = function(c) {
+	this.lastParser = null;
+	
+	this.parse = function(c)
+	{
 		var s;
-		for(var x=0;x<textParsers.length;x++)
-			if((s=textParsers[x].process(c)) != null)
+		var lp = this.lastParser; 
+		if(lp != null)
+		{
+			if((s=lp.process(c)) != null)
 				return s;
+			this.lastParser=null;
+		}
+		for(var x=0;x<textParsers.length;x++)
+		{
+			var p = textParsers[x]; 
+			if((p!=lp)&&((s=p.process(c)) != null))
+			{
+				this.lastParser = p;
+				return s;
+			}
+		}
 		return null;
 	};
 	this.eolDetected = function() {
