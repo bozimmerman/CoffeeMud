@@ -303,7 +303,7 @@ var ANSISTACK = function()
 						this.lastBackground = background;
 						this.lastForeground = foreground;
 						this.fontOn = true;
-						html += "<FONT STYLE=\"color: " + foreground + ";background-color: " + background + "\">";
+						html += "<FONT STYLE=\"color: " + foreground.trim() + ";background-color: " + background.trim() + "\">";
 					}
 				}
 			}

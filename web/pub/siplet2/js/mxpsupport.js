@@ -53,11 +53,8 @@ var MXPElement = function(theName, theDefinition, theAttributes, theFlag, theBit
 	if (((this.bitmap & MXPBIT.COMMAND)==0) 
 	&& (theDefinition.toUpperCase().indexOf("&TEXT;") >= 0))
 		this.bitmap = this.bitmap | MXPBIT.NEEDTEXT;
-	//TODO: figure out how to implement flaggable data!
-	/*
 	if((this.flag != null) && (this.flag.length > 0)) 
 		this.bitmap = this.bitmap | MXPBIT.NEEDTEXT;
-	*/
 	
 	this.copyOf = function() 
 	{
@@ -242,16 +239,22 @@ var MXPElement = function(theName, theDefinition, theAttributes, theFlag, theBit
 		return tags;
 	};
 	
+	/**
+	 * Does 2 things:
+	 * 1. Parses user attributes into tag attributes.
+	 * 2. Returns the internal definition complete with variables.
+	 */
 	this.getFoldedDefinition = function(text)
 	{
-		var aV = this.getParsedAttributes();
+		var attribsList = this.getParsedAttributes();
 		if ("TEXT" in this.attributeValues)
 			delete this.attributeValues["TEXT"];
 		this.attributeValues["TEXT"] =  text;
+		// user parms are just 'parts' of the form VAR="VAL"
 		if ((this.userParms != null) && (this.userParms.length > 0))
 		{
 			var position = -1;
-			var avParm = null;
+			var attribName = null;
 			var userParm = null;
 			for (var u = 0; u < this.userParms.length; u++)
 			{
@@ -269,32 +272,32 @@ var MXPElement = function(theName, theDefinition, theAttributes, theFlag, theBit
 				var found = false;
 				if (userParm != null)
 				{
-					for (var a = 0; a < aV.length; a++)
+					for (var a = 0; a < attribsList.length; a++)
 					{
-						avParm = aV[a];
-						if ((userParm.startsWith(avParm + "=")) || (avParm == userParm))
+						attribName = attribsList[a];
+						if ((userParm.startsWith(attribName + "=")) || (attribName == userParm))
 						{
 							found = true;
 							if (a > position)
 								position = a;
-							if (avParm != null)
+							if (attribName != null)
 							{
-								if (avParm in this.attributeValues)
-									delete this.attributeValues[avParm];
-								this.attributeValues[avParm] = (userParm == avParm) 
-									? "" : this.userParms[u].trim().substr(avParm.length + 1);
+								if (attribName in this.attributeValues)
+									delete this.attributeValues[attribName];
+								this.attributeValues[attribName] = (userParm == attribName) 
+									? "" : this.userParms[u].trim().substr(attribName.length + 1);
 							}
 							break;
 						}
 					}
 				}
-				if ((!found) && (position < (aV.length - 1)))
+				if ((!found) && (position < (attribsList.length - 1)))
 				{
 					position++;
-					avParm = aV[position];
-					if (avParm in this.attributeValues)
-						delete this.attributeValues[avParm];
-					this.attributeValues[avParm] = this.userParms[u].trim();
+					attribName = attribsList[position];
+					if (attribName in this.attributeValues)
+						delete this.attributeValues[attribName];
+					this.attributeValues[attribName] = this.userParms[u].trim();
 				}
 			}
 		}
@@ -309,7 +312,6 @@ var MXP = function(siplet, ansistack, flags)
 	this.eatTextUntilEOLN = false;
 	this.eatNextEOLN = false;
 	this.eatAllEOLN = false;
-	this.text = null;
 	this.openElements = [];
 	this.gauges = [];
 	this.elements = {
@@ -335,30 +337,25 @@ var MXP = function(siplet, ansistack, flags)
 		"BR": new MXPElement("BR", "<BR>", "", "", MXPBIT.HTML | MXPBIT.COMMAND),
 		"SBR": new MXPElement("SBR", "&nbsp;", "", "", MXPBIT.HTML | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
 		"P": new MXPElement("P", "", "", "", MXPBIT.HTML | MXPBIT.SPECIAL), // special
-																									// done
 		"C": new MXPElement("C", "<FONT COLOR=&fore; BACK=&back;>", "FORE BACK", "", 0),
 		"COLOR": new MXPElement("COLOR", "<FONT COLOR=&fore; BACK=&back;>", "FORE BACK", "", 0),
 		"HIGH": new MXPElement("HIGH", "", "", "", MXPBIT.NOTSUPPORTED),
 		"H": new MXPElement("H", "", "", "", MXPBIT.NOTSUPPORTED),
-		"FONT": new MXPElement("FONT", "<FONT STYLE=\"color: &color;;background-color: &back;;font-family: &face;;font-size: &size;;\">", "FACE SIZE COLOR BACK STYLE", "", MXPBIT.SPECIAL),
+		"FONT": new MXPElement("FONT", "<FONT STYLE=\"color: &color;;background-color: &back;;font-family: &face;;font-size: &size;;\">", "FACE SIZE COLOR BACK STYLE", "", MXPBIT.SPECIAL|MXPBIT.HTML),
 		"NOBR": new MXPElement("NOBR", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-																											// done
 		"A": new MXPElement("A", "<A TARGET=ELSEWHERE STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">",
-				"HREF HINT EXPIRE TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK", "", 0, "EXPIRE"),
+				"HREF HINT EXPIRE TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK", "", MXPBIT.HTML, "EXPIRE"),
 		"SEND": new MXPElement("SEND", "<A STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"delayhidemenu();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">", "HREF HINT PROMPT EXPIRE STYLE", "", MXPBIT.SPECIAL|MXPBIT.NEEDTEXT,
 				"EXPIRE"), // special done
 		"EXPIRE": new MXPElement("EXPIRE", "", "NAME", "", MXPBIT.NOTSUPPORTED),
 		"VERSION": new MXPElement("VERSION", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-																											// done
 		"SUPPORT": new MXPElement("SUPPORT", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-																											// done
 		"GAUGE": new MXPElement("GAUGE", "", "ENTITY MAX CAPTION COLOR", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 		"STAT": new MXPElement("STAT", "", "ENTITY MAX CAPTION", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
 		"FRAME": new MXPElement("FRAME", "", "NAME ACTION TITLE INTERNAL ALIGN LEFT TOP WIDTH HEIGHT SCROLLING FLOATING", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
 		"DEST": new MXPElement("DEST", "", "NAME", "", MXPBIT.SPECIAL | MXPBIT.NOTSUPPORTED),
 		"DESTINATION": new MXPElement("DESTINATION", "", "NAME", "", MXPBIT.SPECIAL | MXPBIT.NOTSUPPORTED),
 		"RELOCATE": new MXPElement("RELOCATE", "", "URL PORT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-		
 		"USER": new MXPElement("USER", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
 		"PASSWORD": new MXPElement("PASSWORD", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
 		"IMAGE": new MXPElement("IMAGE", "<IMG SRC=\"&url;&fname;\" HEIGHT=&h; WIDTH=&w; ALIGN=&align;>", "FNAME URL T H W HSPACE VSPACE ALIGN ISMAP", "", MXPBIT.COMMAND, "HSPACE VSPACE ISMAP"),
@@ -366,18 +363,12 @@ var MXP = function(siplet, ansistack, flags)
 		"FILTER": new MXPElement("FILTER", "", "SRC DEST NAME", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
 		"SCRIPT": new MXPElement("SCRIPT", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
 		"ENTITY": new MXPElement("ENTITY", "", "NAME VALUE DESC PRIVATE PUBLISH DELETE ADD", "", MXPBIT.SPECIAL | MXPBIT.COMMAND, "PRIVATE PUBLISH ADD"), // special
-																																											// done
 		"EN": new MXPElement("EN", "", "NAME VALUE DESC PRIVATE PUBLISH DELETE ADD", "", MXPBIT.SPECIAL | MXPBIT.COMMAND, "PRIVATE PUBLISH ADD"), // special
-																																										// done
 		"TAG": new MXPElement("TAG", "", "INDEX WINDOWNAME FORE BACK GAG ENABLE DISABLE", "", MXPBIT.SPECIAL | MXPBIT.COMMAND, "WINDOWNAME"),
 		"VAR": new MXPElement("VAR", "", "NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE", "", MXPBIT.SPECIAL, "PRIVATE PUBLISH ADD REMOVE"), // special
-																																						// done
 		"V": new MXPElement("V", "", "NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE", "", MXPBIT.SPECIAL, "PRIVATE PUBLISH ADD REMOVE"), // special
-																																						// done
 		"ELEMENT": new MXPElement("ELEMENT", "", "NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-																																							// done
 		"EL": new MXPElement("EL", "", "NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-																																						// done
 		"ATTLIST": new MXPElement("ATTLIST", "", "NAME ATT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 		"AT": new MXPElement("AT", "", "NAME ATT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 		"SOUND": new MXPElement("SOUND", "!!SOUND(&fname; V=&v; L=&l; P=&p; T=&t; U=&u;)", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND),
@@ -406,7 +397,13 @@ var MXP = function(siplet, ansistack, flags)
 	this.cancelProcessing = function() {
 		var s = this.partial;
 		this.partial = null;
-		return s.replaceAll('&','&amp;').replaceAll('<','&lt;');
+		if(s.length==0)
+			return '';
+		// set resume parsing markers
+		if(s[0]=='&')
+			return '&amp;\0'+s.substr(1); 
+		else
+			return '&lt;\0'+s.substr(1);
 	};
 
 	this.process = function(c) {
@@ -599,6 +596,24 @@ var MXP = function(siplet, ansistack, flags)
 		}
 	};
 
+	this.cancelTextProcessing = function()
+	{
+		if(this.textProcessor != null)
+		{
+			var nextProcessor = null;
+			// go back in the open elements tree to find another text eating candidate
+			for(var i=0; i<this.openElements.length;i++)
+			{
+				var E = this.openElements[i];
+				if(E == this.textProcessor)
+					break;
+				if ((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT) 
+					nextProcessor = E;
+			}
+			this.textProcessor = nextProcessor;
+		}
+	};
+
 	this.startParsing = function(c)
 	{
 		this.partial = c;
@@ -634,7 +649,7 @@ var MXP = function(siplet, ansistack, flags)
 				{
 					if ((tag.bitmap & MXPBIT.EATTEXT)==MXPBIT.EATTEXT)
 						eatTextUntilEOLN = true;
-					// should this actually re-process as a tag?
+					//TODO: should this actually re-process as a tag?
 					return tag.getFoldedDefinition("");
 				}
 			}
@@ -661,9 +676,9 @@ var MXP = function(siplet, ansistack, flags)
 		}
 		if(tag.startsWith("!"))
 			tag = tag.substr(1).trim();
-if(tag == 'RDESC')
-	console.log('stop!');
-console.log("TAG:"+tag+"/"+this.parts.length+'/'+oldString); //TODO:DELME
+if((!endTag) && (tag=='FONT'))
+	console.log('ou');
+console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //TODO:DELME
 		if ((tag.length == 0) || (!(tag in this.elements)))
 			return abort;
 		var E = this.elements[tag];
@@ -688,7 +703,7 @@ console.log("TAG:"+tag+"/"+this.parts.length+'/'+oldString); //TODO:DELME
 					troubleE = E;
 			}
 			if (foundAt < 0)
-				return ''; // closed an unopened tag!
+				return oldString; // closed an unopened tag!
 			// a close tag of an mxp element always erases an
 			// **INTERIOR** needstext element
 			if (troubleE != null)
@@ -708,19 +723,24 @@ console.log("TAG:"+tag+"/"+this.parts.length+'/'+oldString); //TODO:DELME
 			{
 				if ((E.bitmap & MXPBIT.SPECIAL)==MXPBIT.SPECIAL) 
 					this.doSpecialProcessing(E, true);
-				return '';
+				return oldString; // this is an end html, so why not just return it?
 			}
-			this.textProcessor = null;
+			if(this.textProcessor == E)
+				this.cancelTextProcessing();
 		}
 		else
 		{
 			E = E.copyOf();
 			E.userParms = this.parts;
-			if(!selfCloser)
+			if((!selfCloser)
+			&&(E.name !== 'FONT')
+			//&& ((E.bitmap & MXPBIT.HTML)==0) // this caused problems, I need to know why.
+			&& (((E.bitmap & MXPBIT.COMMAND)==0)
+			|| ((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT)))
 			{
-				if (((E.bitmap & MXPBIT.COMMAND)==0) 
-				|| ((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT)) 
-					this.openElements.push(E);
+				E.lastBackground = ansistack.lastBackground;
+				E.lastForeground = ansistack.lastForeground;
+				this.openElements.push(E);
 				if ((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT) 
 				{
 					this.textProcessor = E;
@@ -729,6 +749,7 @@ console.log("TAG:"+tag+"/"+this.parts.length+'/'+oldString); //TODO:DELME
 				}
 			}
 		}
+		
 		var definition = E.getFoldedDefinition(this.stripBadHTMLTags(text.replaceAll("&nbsp;", " ")));
 		if ((endTag || selfCloser) 
 		&& ((E.bitmap & MXPBIT.COMMAND)==0)
@@ -748,46 +769,60 @@ console.log("TAG:"+tag+"/"+this.parts.length+'/'+oldString); //TODO:DELME
 		if (endTag)
 		{
 			var endHtml = '';
-			if(definition.trim().startsWith('<'))
-			{
-				//var first = this.getFirstTag(definition);
-				var close = this.makeCloseTag(definition);
-				if((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT)
-					endHtml = '\0' + definition + text + close;
-				else
-				if((E.bitmap & MXPBIT.HTML)==MXPBIT.HTML)
-					endHtml = close;
-			}
-			else
+			var close = this.makeCloseTag(definition.trim());
 			if((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT)
-				endHtml = definition + text;
-			return endHtml;
+				endHtml = definition + text + close;
+			else
+			if((E.bitmap & MXPBIT.HTML)==MXPBIT.HTML)
+				endHtml = close;
+			else
+				endHtml = text;
+			definition = endHtml;
 		}
-		return definition;
+		if(this.textProcessor != null)
+		{
+			this.textProcessor.text += definition;
+			return '';
+		}
+		//can this lead to infinite recursion?!
+		//TODO: prehaps enforce a size limit here?
+		if((definition=='')
+		||(oldString.toLowerCase() == definition.toLowerCase())
+		||(E.name==this.getFirstTag(definition))) // this line added for FONT exception
+			return definition;
+		if(E.lastForeground)
+			ansistack.lastForeground = E.lastForeground;
+		if(E.lastBackground)
+			ansistack.lastBackground = E.lastBackground;
+		return '\0'+definition;
 	};
 	
 	this.getFirstTag = function(s)
 	{
 		if (!s.startsWith("<"))
 			return "";
-		var x = s.indexOf(' ');
-		if (x < 0)
-			x = s.indexOf('>');
-		if (x < 0)
-			return "";
-		return s.substr(1, x).toUpperCase().trim();
+		var x = s.indexOf('>');
+		var y = s.indexOf(' ');
+		if((x<0)&&(y<0))
+			return '';
+		if(y<0)
+			return s.substr(1, x).toUpperCase().trim();
+		else
+		if(x<0)
+			return s.substr(1, y).toUpperCase().trim();
+		else
+		if(x<y)
+			return s.substr(1, x).toUpperCase().trim();
+		else
+			return s.substr(1, y).toUpperCase().trim();
 	};
 	
 	this.makeCloseTag = function(s)
 	{
-		if (!s.startsWith("<"))
-			return "";
-		var x = s.indexOf(' ');
-		if (x < 0)
-			x = s.indexOf('>');
-		if (x < 0)
-			return "";
-		return '</' + s.substr(1, x).toUpperCase().trim()+'>';
+		s = this.getFirstTag(s);
+		if(s.length == 0)
+			return s;
+		return '</' + s + '>';
 	};
 	
 	this.processAnyEntities = function(buf, currentElement)
@@ -1040,7 +1075,8 @@ console.log("TAG:"+tag+"/"+this.parts.length+'/'+oldString); //TODO:DELME
 			var back = E.getAttributeValue("BACK");
 			var face = E.getAttributeValue("FACE");
 			var size = E.getAttributeValue("SIZE");
-			if ((style != null) && (color == null) && (back == null) && (face == null) && (size == null))
+			if ((style != null) 
+			&& (color == null) && (back == null) && (face == null) && (size == null))
 			{
 				var s = null;
 				var v = null;
@@ -1078,6 +1114,7 @@ console.log("TAG:"+tag+"/"+this.parts.length+'/'+oldString); //TODO:DELME
 				}
 				E.setAttributeValue("STYLE", null);
 			}
+			
 		}
 		else
 		if (tagName == "NOBR")
@@ -1545,7 +1582,7 @@ console.log("TAG:"+tag+"/"+this.parts.length+'/'+oldString); //TODO:DELME
 		if(this.textProcessor != null)
 		{
 			s = this.textProcessor.text + s;
-			this.textProcessor = null;
+			this.cancelTextProcessing();
 		}
 		return s;
 	};

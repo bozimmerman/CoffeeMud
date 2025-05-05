@@ -38,12 +38,29 @@ function onmessage(e)
 		var blk = binblock.entries.shift();
 		if(blk.data.length==0)
 			continue;
-		if(blk.type == BPTYPE.TEXT)
+		if(blk.type == BPTYPE.TELNET)
 		{
-			//TODO: this is not going to support utf-16 well
+			var buffer = telnet.process(blk.data);
+			if ((buffer.byteLength > 0) && (siplet.wsopened))
+				siplet.wsocket.send(buffer);
+		}
+		else
+		{
 			var newText = '';
-			for (var i=0; i < blk.data.length; i++) {
-				newText += String.fromCharCode( blk.data[i]);
+			if(blk.type == BPTYPE.ANSI)
+			{
+				newText += ansipage.process(blk.data);
+				var s = mxp.process(blk.data);
+				if (s != null)
+					newText += s;
+				blk.data = newText; // convert to text-like
+			}
+			else
+			{
+				//TODO: this is not going to support utf-16 well
+				for (var i=0; i < blk.data.length; i++) {
+					newText += String.fromCharCode( blk.data[i]);
+				}
 			}
 			newText = text.process(newText);
 			if(newText.length>0)
@@ -58,21 +75,6 @@ function onmessage(e)
 					scroll=true;
 				}
 			}
-		}
-		else
-		if(blk.type == BPTYPE.ANSI)
-		{
-			html += ansipage.process(blk.data);
-			var s = mxp.process(blk.data);
-			if (s != null)
-				html += s;
-		}
-		else
-		if(blk.type == BPTYPE.TELNET)
-		{
-			var buffer = telnet.process(blk.data);
-			if ((buffer.byteLength > 0) && (siplet.wsopened))
-				siplet.wsocket.send(buffer);
 		}
 	}
 	if(html.length > 0)

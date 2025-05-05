@@ -3,14 +3,14 @@ function TEXT(textParsers)
 	this.parse = function(c) {
 		var s;
 		for(var x=0;x<textParsers.length;x++)
-			if((s=textParsers[x].process(c))!=null)
+			if((s=textParsers[x].process(c)) != null)
 				return s;
 		return null;
 	};
 	this.eolDetected = function() {
 		var s;
 		for(var x=0;x<textParsers.length;x++)
-			if((s=textParsers[x].eolDetected())!=null)
+			if((s=textParsers[x].eolDetected()) != null)
 				return s;
 		return null;
 	};
@@ -24,16 +24,22 @@ function TEXT(textParsers)
 			var s = this.parse(c);
 			if(s != null) // should this be before the parser trig checks?
 			{
-				if((s.length>0) && (s[0] == '\0'))
+				if(s.length>0)
 				{
-					str = str.substr(0,i) + s.substr(1) + str.substr(i+1);
-					i -= 1;
+					var z = s.indexOf('\0'); // resume marker
+					if(z >= 0)
+					{
+						str = str.substr(0,i) + s.substr(0,z) + s.substr(z+1) + str.substr(i+1);
+						i += z;
+					}
+					else
+					{
+						str = str.substr(0,i) + s + str.substr(i+1);
+						i += s.length;
+					}
 				}
 				else
-				{
-					str = str.substr(0,i) + s + str.substr(i+1);
-					i += s.length;
-				}
+					str = str.substr(0,i) + str.substr(i+1);
 				continue;
 			}
 			else

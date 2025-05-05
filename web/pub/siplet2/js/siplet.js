@@ -8,3 +8,6 @@ var Siplet =
 	},
 	maxLines: 5000
 };
+
+var nextSipletSpanId = 0;
+
