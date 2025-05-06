@@ -51,6 +51,66 @@
             entry.focus();
         }, 100);
     }
+    /*
+            // Create sandboxed iframe
+            var iframe = document.createElement("iframe");
+            iframe.setAttribute("sandbox", "allow-scripts");
+            iframe.style.display = "none";
+            document.body.appendChild(iframe);
+
+            // Plugin script (user-submitted, e.g., adds a message)
+            var pluginCode = `
+                function safeExecute(input) {
+                    // Safe API: Only allow appending to content
+                    return "<p>Plugin processed: " + input + "</p>";
+                }
+                var result = safeExecute("${input}");
+                window.parent.postMessage(result, "*");
+            `;
+
+            // Write plugin code to iframe
+            var script = iframe.contentWindow.document.createElement("script");
+            script.textContent = pluginCode;
+            iframe.contentWindow.document.body.appendChild(script);
+            // Listen for plugin output
+            window.addEventListener("message", function(event) {
+                var content = document.getElementById("W0");
+                content.innerHTML += event.data;
+                content.scrollTop = content.scrollHeight - content.clientHeight;
+                document.body.removeChild(iframe); // Clean up
+            }, { once: true });
+            
+            const pluginWorker = new Worker('pluginWorker.js');
+            pluginWorker.onmessage = function(e) {
+                var content = document.getElementById("W0");
+                content.innerHTML += "<p>" + e.data + "</p>";
+                content.scrollTop = content.scrollHeight - content.clientHeight;
+            };
+
+            function inputKeyPress(element, event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    var content = document.getElementById("W0");
+                    content.innerHTML += "<p>" + element.value + "</p>";
+                    content.scrollTop = content.scrollHeight - content.clientHeight;
+                    // Send input to plugin
+                    pluginWorker.postMessage(element.value);
+                    element.value = "";
+                }
+            }
+            
+            javascript
+
+            self.onmessage = function(e) {
+                // Plugin receives input (e.g., "Hello")
+                var input = e.data;
+                // Process input (example plugin logic)
+                var output = "Plugin processed: " + input.toUpperCase();
+                // Send message back to main thread
+                self.postMessage(output);
+            };
+
+       */
 
 </SCRIPT>
 </HEAD>
