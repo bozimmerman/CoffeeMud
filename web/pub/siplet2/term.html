@@ -25,20 +25,39 @@
     }
 </style>
 <SCRIPT LANGUAGE=JavaScript>
-	function inputKeyPress(i,e)
-	{
-		if(e.keyCode == 13)
-		{
-			e.preventDefault();
-			currentSiplet.submitInput(i.value);
-			i.value='';
-		}
-	}
+    function inputKeyPress(i,e)
+    {
+        if(e.keyCode == 13)
+        {
+            e.preventDefault();
+            currentSiplet.submitInput(i.value);
+            i.value='';
+        }
+    }
+    
+    function addToPrompt(x,att)
+    {
+        var entry = document.getElementById('input');
+        entry.value='';
+        if(att)
+            currentSiplet.submitInput(x);
+        else
+            entry.value=x+" ";
+    }
+    function boxFocus() 
+    {
+        setTimeout(function() {
+            var entry = document.getElementById('input');
+            entry.focus();
+        }, 100);
+    }
+
 </SCRIPT>
 </HEAD>
 <BODY>
 <FONT COLOR=WHITE>
 <SCRIPT LANGUAGE=JavaScript src="js/util.js"></SCRIPT>
+<SCRIPT LANGUAGE=JavaScript src="js/ctxmenu.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/siplet.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/binparser.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/ansiparser.js"></SCRIPT>
@@ -48,8 +67,8 @@
 <SCRIPT LANGUAGE=JavaScript src="js/mxpsupport.js"></SCRIPT>
 <div id="W0">
 </div>
-<div class="input-area" id="input">
-    <textarea rows=3 type="text" onkeypress="inputKeyPress(this,event);"></textarea>
+<div class="input-area">
+    <textarea rows=3 type="text" id="input" onkeypress="inputKeyPress(this,event);"></textarea>
 </div>
 <SCRIPT LANGUAGE=JavaScript>
 var inputAreaHeight = 70; //document.getElementById("input").style.height;

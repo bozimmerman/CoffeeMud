@@ -343,9 +343,9 @@ var MXP = function(sipwin)
 		"H": new MXPElement("H", "", "", "", MXPBIT.NOTSUPPORTED),
 		"FONT": new MXPElement("FONT", "<FONT STYLE=\"color: &color;;background-color: &back;;font-family: &face;;font-size: &size;;\">", "FACE SIZE COLOR BACK STYLE", "", MXPBIT.SPECIAL|MXPBIT.HTML),
 		"NOBR": new MXPElement("NOBR", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-		"A": new MXPElement("A", "<A TARGET=ELSEWHERE STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">",
+		"A": new MXPElement("A", "<A STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">",
 				"HREF HINT EXPIRE TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK", "", MXPBIT.HTML, "EXPIRE"),
-		"SEND": new MXPElement("SEND", "<A STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"delayhidemenu();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">", "HREF HINT PROMPT EXPIRE STYLE", "", MXPBIT.SPECIAL|MXPBIT.NEEDTEXT,
+		"SEND": new MXPElement("SEND", "<A STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"delayhidemenu();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">", "HREF HINT PROMPT EXPIRE STYLE", "", MXPBIT.SPECIAL,
 				"EXPIRE"), // special done
 		"EXPIRE": new MXPElement("EXPIRE", "", "NAME", "", MXPBIT.NOTSUPPORTED),
 		"VERSION": new MXPElement("VERSION", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
@@ -690,7 +690,6 @@ var MXP = function(sipwin)
 		}
 		if(tag.startsWith("!"))
 			tag = tag.substr(1).trim();
-console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //TODO:DELME
 		if ((tag.length == 0) || (!(tag in this.elements)))
 			return abort;
 		var E = this.elements[tag];
@@ -784,19 +783,20 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 			if((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT)
 				endHtml = definition + text + close;
 			else
-			if((E.bitmap & MXPBIT.HTML)==MXPBIT.HTML)
-				endHtml = close;
+			if(((E.bitmap & MXPBIT.HTML)==MXPBIT.HTML)
+			||(definition.length>0))
+				endHtml = text + close;
 			else
 				endHtml = text;
 			definition = endHtml;
 		}
+		if(definition.length > 8192) // safety fallout
+			return '';
 		if(this.textProcessor != null)
 		{
 			this.textProcessor.text += definition;
 			return '';
 		}
-		//can this lead to infinite recursion?!
-		//TODO: prehaps enforce a size limit here?
 		if((definition=='')
 		||(oldString.toLowerCase() == definition.toLowerCase())
 		||(E.name==this.getFirstTag(definition))) // this line added for FONT exception
@@ -830,10 +830,17 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 	
 	this.makeCloseTag = function(s)
 	{
+		var x = s.indexOf('><');
+		var post = '';
+		if(x>0)
+		{
+			post = this.makeCloseTag(s.substr(x+1));
+			s=s.substr(0,x+1);
+		}
 		s = this.getFirstTag(s);
 		if(s.length == 0)
 			return s;
-		return '</' + s + '>';
+		return '</' + s + '>' + post;
 	};
 	
 	this.processAnyEntities = function(buf, currentElement)
@@ -1170,7 +1177,6 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 			if (hrefV.length == 1)
 			{
 				href = hrefV[0].replaceAll("'", "\\'");
-				//TODO: javascript
 				E.setAttributeValue("HREF", "javascript:addToPrompt('" + href + "'," + prompt + ")");
 				if (hintV.length > 1)
 					hint = hintV[0];
@@ -1181,7 +1187,6 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 			{
 				E.setAttributeValue("HINT", hintV[0]);
 				hintV.splice(0,1);
-				//TODO: javascript
 				E.setAttributeValue("HREF", "javascript:goDefault(0);");
 				var newHint = '';
 				for (var i = 0; i < hintV.length; i++)
@@ -1192,18 +1197,15 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 				}
 				href = href.replaceAll("'", "\\'");
 				hint = newHint.replaceAll("'", "\\'");
-				//TODO: javascript
-				E.setAttributeValue("ONCLICK", "return dropdownmenu(this, event, getSendMenu(this,'" + href + "','" + hint + "','" + prompt + "'), '200px');");
+				E.setAttributeValue("ONCLICK", "return dropdownmenu(this, event, '" + href + "','" + hint + "','" + prompt + "', '200px');");
 			}
 			else
 			{
 				E.setAttributeValue("HINT", "Click to open menu");
-				//TODO: javascript
 				E.setAttributeValue("HREF", "javascript:goDefault(0);");
 				href = href.replaceAll("'", "\\'");
 				hint = newHint.replaceAll("'", "\\'");
-				//TODO: javascript
-				E.setAttributeValue("ONCLICK", "return dropdownmenu(this, event, getSendMenu(this,'" + href + "','" + hint + "','" + prompt + "'), '200px');");
+				E.setAttributeValue("ONCLICK", "return dropdownmenu(this, event, '" + href + "','" + hint + "','" + prompt + "', '200px');");
 			}
 		}
 		else
@@ -1377,7 +1379,7 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 			var name = E.getAttributeValue("NAME");
 			if(name==null)
 				name="";
-			//TODO: javascript
+			//TODO: not yet implemented, because frame is not
 			//jscriptBuffer.append("retarget('" + NAME + "');");
 			return;
 		}
