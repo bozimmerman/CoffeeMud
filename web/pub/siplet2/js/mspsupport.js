@@ -91,7 +91,7 @@ var MSP = function(sipwin)
 				return;
 			if(theSoundPlayer.stop)
 				theSoundPlayer.stop();
-			document.childNodes[0].removeChild(theSoundPlayer);
+			sipwin.window.removeChild(theSoundPlayer);
 		}
 		theSoundPlayer=document.createElement('audio');
 		if(!theSoundPlayer || !theSoundPlayer.play) 
@@ -101,10 +101,13 @@ var MSP = function(sipwin)
 		this.sounders[playerName]=theSoundPlayer;
 		this.soundDates[playerName]=new Date();
 		this.soundPriorities[playerName]=priority;
-		document.childNodes[0].appendChild(theSoundPlayer);
+		sipwin.window.appendChild(theSoundPlayer);
 		theSoundPlayer.setAttribute('src', url+key);
-		//TODO: use the actual extension in the mime type
-		theSoundPlayer.setAttribute('type','audio/wav');
+		var x = key.lastIndexOf('.');
+		var mimeType = 'wav';
+		if(x>0)
+			mimeType = key.substr(x+1);
+		theSoundPlayer.setAttribute('type','audio/'+mimeType);
 		theSoundPlayer.setAttribute('hidden','true');
 		theSoundPlayer.setAttribute('volume', volume);
 		if(theSoundPlayer.play)

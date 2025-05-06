@@ -1,4 +1,43 @@
-<HTML><BODY><FONT FACE="MONOSPACE" ID=W0>
+<HTML>
+<HEAD>
+ <style>
+    body { 
+        margin: 0; padding: 0;
+    }
+    .gauge {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 20px;
+        background: black;
+    }
+    .input-area {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 70px;
+        background: #f0f0f0;
+    }
+    .input-area textarea {
+        width: 90%;
+        margin: 5px;
+        padding: 5px;
+    }
+</style>
+<SCRIPT LANGUAGE=JavaScript>
+	function inputKeyPress(i,e)
+	{
+		if(e.keyCode == 13)
+		{
+			e.preventDefault();
+			currentSiplet.submitInput(i.value);
+			i.value='';
+		}
+	}
+</SCRIPT>
+</HEAD>
+<BODY>
+<FONT COLOR=WHITE>
 <SCRIPT LANGUAGE=JavaScript src="js/util.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/siplet.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/binparser.js"></SCRIPT>
@@ -7,102 +46,17 @@
 <SCRIPT LANGUAGE=JavaScript src="js/textparser.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/mspsupport.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/mxpsupport.js"></SCRIPT>
+<div id="W0">
+</div>
+<div class="input-area" id="input">
+    <textarea rows=3 type="text" onkeypress="inputKeyPress(this,event);"></textarea>
+</div>
 <SCRIPT LANGUAGE=JavaScript>
+var inputAreaHeight = 70; //document.getElementById("input").style.height;
 var siplet = new SipletWindow('W0'); // makes a deep copy
+var currentSiplet = siplet;
 siplet.connect("ws://localhost:27744/WebSock");
-
-function onmessage(e)
-{
-	siplet.bin.data = event.data;
-	var html = siplet.bin.parse(siplet.bin);
-	if (siplet.window.childNodes.length > siplet.maxLines)
-		siplet.window.removeChild(siplet.window.firstChild);
-	var scroll=false;
-	while(siplet.bin.entries.length > 0)
-	{
-		if((siplet.bin.entries.length == 1)
-		&&(!siplet.bin.entries[0].done))
-			break;
-		var blk = siplet.bin.entries.shift();
-		if(blk.data.length==0)
-			continue;
-		if(blk.type == BPTYPE.TELNET)
-		{
-			var buffer = siplet.telnet.process(blk.data);
-			if ((buffer.byteLength > 0) && (siplet.wsopened))
-				siplet.wsocket.send(buffer);
-		}
-		else
-		{
-			var newText = '';
-			if(blk.type == BPTYPE.ANSI)
-			{
-				newText += siplet.ansi.process(blk.data);
-				if(!siplet.mxp.active())
-				{
-					html += newText;
-					continue;
-				}
-				var s = siplet.mxp.process(blk.data);
-				if (s != null)
-					newText += s;
-				blk.data = newText; // convert to text-like
-			}
-			else
-			{
-				//TODO: this is not going to support utf-16 well
-				for (var i=0; i < blk.data.length; i++) {
-					newText += String.fromCharCode( blk.data[i]);
-				}
-			}
-			newText = siplet.text.process(newText);
-			if(newText.length>0)
-			{
-				html += newText;
-				if(newText.indexOf('<BR>')>=0)
-				{
-					var span = document.createElement('span');
-					span.innerHTML = html;
-					siplet.window.appendChild(span);
-					html='';
-					scroll=true;
-				}
-			}
-		}
-	}
-	if(html.length > 0)
-	{
-		var span = document.createElement('span');
-		//html = text.process(html); // already processed when it came in
-		span.innerHTML = html;
-		siplet.window.appendChild(span);
-		scroll=true;
-	}
-	if(scroll)
-		window.scrollTo(0, document.body.scrollHeight);
-}
-
-function onkeypress(e)
-{
-	if(e.keyCode == 13)
-		siplet.window.innerHTML += '<BR>';
-	else
-		siplet.window.innerHTML += String.fromCharCode(event.keyCode);
-	if(siplet.wsopened)
-		siplet.wsocket.send(String.fromCharCode(event.keyCode));
-}
-
-siplet.wsocket.onmessage = onmessage;
-siplet.wsocket.onopen = function(event)  
-{
-	siplet.wsopened=true; 
-	document.bgColor="black";
-	document.fgColor="white";
-};
-siplet.wsocket.onclose = function(event)  
-{ 
-	siplet.wsopened=false; 
-	document.bgColor="red";
-};
-document.onkeypress = onkeypress;
-</SCRIPT></PRE></BODY><HTML>
+</SCRIPT>
+</FONT>
+</BODY>
+<HTML>

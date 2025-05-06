@@ -44,8 +44,9 @@ var BPPARSE = function(lfok)
 	this.prev = 0;
 	this.nolf = !lfok;
 	this.state = BPSTATE.OUTER;
-	this.parse = function()
+	this.parse = function(data)
 	{
+		this.data = data;
 		var entries = this.entries;
 		if (entries.length == 0)
 			entries.push(new BPENTRY());
@@ -198,6 +199,6 @@ var BPPARSE = function(lfok)
 		this.prev = c;
 		if((curr.type == BPTYPE.TEXT) && (curr.data.length > 0))
 			curr.done = true;
-		return '';
+		return this.entries;
 	};
 };

@@ -371,8 +371,8 @@ var MXP = function(sipwin)
 		"EL": new MXPElement("EL", "", "NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
 		"ATTLIST": new MXPElement("ATTLIST", "", "NAME ATT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 		"AT": new MXPElement("AT", "", "NAME ATT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
-		"SOUND": new MXPElement("SOUND", "!!SOUND(&fname; V=&v; L=&l; P=&p; T=&t; U=&u;)", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND),
-		"MUSIC": new MXPElement("MUSIC", "!!MUSIC(&fname; V=&v; L=&l; P=&p; T=&t; U=&u;)", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND),
+		"SOUND": new MXPElement("SOUND", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL),
+		"MUSIC": new MXPElement("MUSIC", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL)
 		// -------------------------------------------------------------------------
 		
 	};
@@ -461,7 +461,6 @@ var MXP = function(sipwin)
 					}
 					break;
 				}
-			
 			default:
 				if(isDigit(c))
 				{
@@ -564,7 +563,8 @@ var MXP = function(sipwin)
 				}
 				break;
 			case '!':
-				if (this.partQuote != '\0')
+				if ((this.partQuote != '\0')
+				|| ((this.parts.length > 0) && (this.parts[0] in this.elements)))
 					this.partialBit += c;
 				else
 				if((this.partialBit.length == 0) && (this.parts.length == 0))
@@ -573,7 +573,8 @@ var MXP = function(sipwin)
 					return this.cancelProcessing();
 				break;
 			case '/':
-				if (this.partQuote != '\0')
+				if ((this.partQuote != '\0')
+				|| ((this.parts.length > 0) && (this.parts[0] in this.elements)))
 					this.partialBit += c;
 				else
 				if((this.partialBit.length == 0) && (this.parts.length == 0))
@@ -581,6 +582,8 @@ var MXP = function(sipwin)
 				else
 				if(this.partialBit.length >0)
 				{
+					if(this.parts.length == 0)
+						this.partialBit = this.partialBit.toUpperCase().trim();
 					this.parts.push(this.partialBit);
 					this.parts.push('/');
 					this.partialBit='';
@@ -591,7 +594,8 @@ var MXP = function(sipwin)
 			default:
 				if ((this.partQuote != '\0') 
 				|| (isLetter(c)) 
-				|| (this.partialBit.length > 0))
+				|| (this.partialBit.length > 0)
+				|| ((this.parts.length > 0) && (this.parts[0] in this.elements)))
 					this.partialBit += c;
 				else
 					return this.cancelProcessing();
@@ -655,8 +659,12 @@ var MXP = function(sipwin)
 				{
 					if ((tag.bitmap & MXPBIT.EATTEXT)==MXPBIT.EATTEXT)
 						eatTextUntilEOLN = true;
-					//TODO: should this actually re-process as a tag?
-					return tag.getFoldedDefinition("");
+					var definition = tag.getFoldedDefinition("");
+					if(definition==null)
+						return null;
+					if(definition.length == 0)
+						return '';
+					return '\0' + definition;
 				}
 			}
 		}
@@ -1010,8 +1018,7 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 					maxValue = (initValue <= 0) ? 100 : initValue;
 				if (initValue > 0)
 					initValue = Math.round(100.0 * (initValue / maxValue));
-				//TODO: javascript being pushed -- do this immediately!
-				//jscriptBuffer.append("modifyGauge('" + gauge[0] + "'," + initValue + "," + maxValue + ");");
+				sipwin.modifyGauge(gauge[0],initValue,maxValue);
 			}
 		}
 	};
@@ -1278,7 +1285,21 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 			return;
 		}
 		else
-		if (((tagName== "VAR") || (tagName == "V")) && (endTag))
+		if ((tagName == "SOUND") || (tagName == "MUSIC"))
+		{
+			var name = E.getAttributeValue("FNAME");
+			var url = E.getAttributeValue("U");
+			var repeats = E.getAttributeValue("L");
+			repeats = (repeats.length > 0) ? Number(repeats) : 0;
+			var priority = E.getAttributeValue("P");
+			priority = (priority.length > 0) ? Number(priority) : 50;
+			var volume = E.getAttributeValue("V");
+			volume = (volume.length > 0) ? Number(volume) : 50;
+			sipwin.msp.PlaySound(name,url,repeats,volume,priority);
+			return;
+		}
+		else
+		if (((tagName== "VAR") || (tagName == "V")) && (isEndTag))
 		{
 			var name = E.getAttributeValue("NAME");
 			// var PRIVATE=E.getAttributeValue("PRIVATE");
@@ -1321,23 +1342,23 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 		else
 		if (tagName =="GAUGE")
 		{
-			var ENTITY = E.getAttributeValue("ENTITY");
-			var MAX = E.getAttributeValue("MAX");
-			if ((ENTITY == null) || (MAX == null))
+			var gaugeEntity = E.getAttributeValue("ENTITY");
+			var max = E.getAttributeValue("MAX");
+			if ((gaugeEntity == null) || (max == null))
 				return '';
-			ENTITY = ENTITY.toLowerCase();
-			MAX = MAX.toLowerCase();
-			var CAPTION = E.getAttributeValue("CAPTION");
-			if (CAPTION == null)
-				CAPTION = "";
-			var COLOR = E.getAttributeValue("COLOR");
-			if (COLOR == null)
-				COLOR = "WHITE";
-			var initEntity = this.getEntityValue(ENTITY, null);
+			gaugeEntity = gaugeEntity.toLowerCase();
+			max = max.toLowerCase();
+			var caption = E.getAttributeValue("CAPTION");
+			if (caption == null)
+				caption = "";
+			var color = E.getAttributeValue("COLOR");
+			if (color == null)
+				color = "WHITE";
+			var initEntity = this.getEntityValue(gaugeEntity, null);
 			var initValue = 0;
 			if (isNumber(initEntity))
 				initValue = Number(initEntity);
-			var maxEntity = this.getEntityValue(MAX, null);
+			var maxEntity = this.getEntityValue(max, null);
 			var maxValue = 100;
 			if (isNumber(maxEntity))
 				maxValue = Number(maxEntity);
@@ -1345,18 +1366,17 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 				maxValue = (initValue <= 0) ? 100 : initValue;
 			if (initValue > 0)
 				initValue = Math.round(100.0 * (initValue / maxValue));
-			//TODO: javascript
-			//jscriptBuffer.append("createGauge('" + ENTITY + "','" + CAPTION + "','" + COLOR + "'," + initValue + "," + maxValue + ");");
-			var gauge = [ ENTITY, MAX ];
+			sipwin.createGauge(gaugeEntity,caption,color,initValue,maxValue);
+			var gauge = [ gaugeEntity, max ];
 			this.gauges.push(gauge);
 		}
 		else
 		if ((tagName == "DEST")
 		|| (tagName == "DESTINATION"))
 		{
-			var NAME = E.getAttributeValue("NAME");
-			if(NAME==null)
-				NAME="";
+			var name = E.getAttributeValue("NAME");
+			if(name==null)
+				name="";
 			//TODO: javascript
 			//jscriptBuffer.append("retarget('" + NAME + "');");
 			return;
@@ -1420,8 +1440,9 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 						tag = request.substr(0, x).trim();
 						parm = request.substr(x + 1).trim();
 					}
-					var RE = this.elements[tag];
-					if ((RE == null) || ((RE.bitmap & MXPBIT.NOTSUPPORTED) == MXPBIT.NOTSUPPORTED))
+					var elem = this.elements[tag];
+					if ((elem == null) 
+					|| ((elem.bitmap & MXPBIT.NOTSUPPORTED) == MXPBIT.NOTSUPPORTED))
 					{
 						if ((parm.length > 0) && (parm != "*"))
 							supportResponse += (" -" + tag + "." + parm);
@@ -1434,8 +1455,8 @@ console.log("TAG:"+(endTag?"/":"")+tag+"/"+this.parts.length+'/'+oldString); //T
 						supportResponse += (" +" + tag);
 						continue;
 					}
-					var unsupportedParms = RE.unsupported.split(' ').filter(item => item);
-					var allAttributes = RE.getParsedAttributes();
+					var unsupportedParms = elem.unsupported.split(' ').filter(item => item);
+					var allAttributes = elem.getParsedAttributes();
 					if (parm == "*")
 					{
 						for (var a = 0; a < allAttributes.length; a++)
