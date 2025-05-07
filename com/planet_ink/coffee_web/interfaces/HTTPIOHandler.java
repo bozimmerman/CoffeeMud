@@ -80,6 +80,13 @@ public interface HTTPIOHandler extends Runnable
 	public boolean scheduleProcessing();
 
 	/**
+	 * Notifies the I/O handler that it has data to process from its internal
+	 * read buffers, which it will be allowed to process in the future.
+	 * @return true if the scheduling was successful
+	 */
+	public boolean scheduleReading();
+
+	/**
 	 * Reads bytes from the given buffer into the internal channel channel.
 	 * @param buffer source buffer for the data write
 	 * @return number of bytes written

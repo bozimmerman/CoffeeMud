@@ -216,6 +216,18 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 		return isRunning.get() && ((forwarder==null) || forwarder.isRunning());
 	}
 
+	/**
+	 * Notifies the I/O handler that it has data to process from its internal
+	 * read buffers, which it will be allowed to process in the future.
+	 * @return true if the scheduling was successful
+	 */
+	@Override
+	public boolean scheduleReading()
+	{
+		this.idleTime.set(System.currentTimeMillis());
+		return true;
+	}
+
 	@Override
 	public boolean isTimedOut()
 	{
@@ -278,7 +290,6 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 		forwarder=null;
 		try
 		{
-
 			final SocketChannel forwarderChannel = SocketChannel.open(address.getAddress());
 			if (forwarderChannel == null)
 				throw new IOException("Unable to create channel.");

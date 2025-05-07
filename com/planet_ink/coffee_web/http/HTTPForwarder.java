@@ -75,6 +75,18 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 		return name;
 	}
 
+	/**
+	 * Notifies the I/O handler that it has data to process from its internal
+	 * read buffers, which it will be allowed to process in the future.
+	 * @return true if the scheduling was successful
+	 */
+	@Override
+	public boolean scheduleReading()
+	{
+		this.idleTime = 0;
+		return true;
+	}
+
 	@Override
 	/**
 	 * Whenever bytes are received on the remote web channel, they are flushed out and

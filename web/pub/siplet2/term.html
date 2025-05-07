@@ -4,53 +4,8 @@
     body { 
         margin: 0; padding: 0;
     }
-    .gauge {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        height: 20px;
-        background: black;
-    }
-    .input-area {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        height: 70px;
-        background: #f0f0f0;
-    }
-    .input-area textarea {
-        width: 90%;
-        margin: 5px;
-        padding: 5px;
-    }
 </style>
 <SCRIPT LANGUAGE=JavaScript>
-    function inputKeyPress(i,e)
-    {
-        if(e.keyCode == 13)
-        {
-            e.preventDefault();
-            currentSiplet.submitInput(i.value);
-            i.value='';
-        }
-    }
-    
-    function addToPrompt(x,att)
-    {
-        var entry = document.getElementById('input');
-        entry.value='';
-        if(att)
-            currentSiplet.submitInput(x);
-        else
-            entry.value=x+" ";
-    }
-    function boxFocus() 
-    {
-        setTimeout(function() {
-            var entry = document.getElementById('input');
-            entry.focus();
-        }, 100);
-    }
     /*
             // Create sandboxed iframe
             var iframe = document.createElement("iframe");
@@ -116,6 +71,9 @@
 </HEAD>
 <BODY>
 <FONT COLOR=WHITE>
+<SCRIPT LANGUAGE=JavaScript src="js/input.js"></SCRIPT>
+<SCRIPT LANGUAGE=JavaScript src="js/menu.js"></SCRIPT>
+<SCRIPT LANGUAGE=JavaScript src="js/tabs.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/util.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/ctxmenu.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/siplet.js"></SCRIPT>
@@ -125,16 +83,20 @@
 <SCRIPT LANGUAGE=JavaScript src="js/textparser.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/mspsupport.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/mxpsupport.js"></SCRIPT>
-<div id="W0">
-</div>
-<div class="input-area">
+<div id="menuarea"></div>
+<div id="tabarea"></div>
+<span id="windowarea"></span>
+<div id="inputarea">
     <textarea rows=3 type="text" id="input" onkeypress="inputKeyPress(this,event);"></textarea>
 </div>
 <SCRIPT LANGUAGE=JavaScript>
-var inputAreaHeight = 70; //document.getElementById("input").style.height;
-var siplet = new SipletWindow('W0'); // makes a deep copy
-var currentSiplet = siplet;
-siplet.connect("ws://localhost:27744/WebSock");
+var topOffset = menuAreaHeight + tabAreaHeight;
+windowArea = document.getElementById('windowarea');
+configureInput(document.getElementById('inputarea'), document.getElementById('input'));
+configureMenu(document.getElementById('menuarea'));
+configureTabs(document.getElementById('tabarea'));
+AddNewSipletTab("ws://localhost:27744/WebSock");
+window.addEventListener("beforeunload", CloseAllSiplets);
 </SCRIPT>
 </FONT>
 </BODY>

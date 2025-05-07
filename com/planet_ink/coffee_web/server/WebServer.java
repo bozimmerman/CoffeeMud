@@ -278,6 +278,7 @@ public class WebServer extends Thread
 						try
 						{
 							key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
+							handler.scheduleReading();
 							executor.execute(handler);
 						}
 						catch(final CancelledKeyException x)

@@ -28,11 +28,17 @@ function SipletWindow(windowName)
 	this.wsocket = null;
 	this.gauges=[];
 	this.gaugeWindow = null;
+	this.windowTop = topOffset;
+	this.windowUnHeight = topOffset + inputAreaHeight;
 
 	var me = this;
 	
-    this.window.style.height = 'calc(100vh - ' + inputAreaHeight + 'px)';
+    this.window.style.height = 'calc(100vh - ' + this.windowUnHeight + 'px)';
+    this.window.style.top = this.windowTop;
+    this.window.style.width = '100%';
+    this.window.style.position = 'fixed';
     this.window.style.overflowY = 'auto';
+    this.window.style.overflowX = 'hidden';
     this.window.style.fontFamily = 'monospace';
 	
 	this.connect = function(url)
@@ -43,13 +49,17 @@ function SipletWindow(windowName)
 		this.wsocket.onopen = function(event)  
 		{
 			me.wsopened=true; 
+			me.tab.style.backgroundColor="green";
+			me.tab.style.foregroundColor="white";
+			me.tab.innerHTML='';
 			me.window.style.backgroundColor="black";
 			me.window.style.foregroundColor="white";
 		};
 		this.wsocket.onclose = function(event)  
 		{ 
 			me.wsopened=false; 
-			me.window.style.background="red";
+			me.tab.style.backgroundColor="red";
+			me.tab.style.foregroundColor="white";
 		};
 	};
 	
@@ -120,7 +130,14 @@ function SipletWindow(windowName)
 			scroll=true;
 		}
 		if(scroll)
+		{
+			if(window.currentSiplet != me)
+			{
+				me.tab.style.backgroundColor = "lightgreen";
+				me.tab.style.foregroundColor = "black";
+			}
 			me.window.scrollTop = me.window.scrollHeight - me.window.clientHeight;
+		}
 	};
 	
 	this.createGauge = function(entity,caption,color,value,max)
@@ -135,13 +152,20 @@ function SipletWindow(windowName)
 		if(this.gaugeWindow == null)
 		{
 			var oldMainWindow = this.window;
+			var gaugeHeight = 20;
+			this.windowUnHeight += gaugeHeight;
+			this.windowTop += gaugeHeight;
 		    oldMainWindow.style.overflowY = 'visible';
 			this.gaugeWindow = document.createElement('div');
 			this.gaugeWindow.innerHTML = '';
-			this.gaugeWindow.classList = 'gauge';
+			this.gaugeWindow.style.position = 'fixed';
+			this.gaugeWindow.style.top = this.window.style.top;
+			this.gaugeWindow.style.width = '100%';
+			this.gaugeWindow.style.height = gaugeHeight+'px';
+			this.gaugeWindow.style.background = 'black';
 			this.window = document.createElement('div');
-		    this.window.style.height = 'calc(100vh - ' + (20+inputAreaHeight) + 'px)';
-		    this.window.style.top = 20;
+		    this.window.style.height = 'calc(100vh - '+ this.windowUnHeight + 'px)';
+		    this.window.style.top = this.windowTop;
 		    this.window.style.width = '100vw';
 		    this.window.style.position='fixed';
 		    this.window.style.overflowY = 'auto';
@@ -218,5 +242,59 @@ function SipletWindow(windowName)
 	};
 }
 
-var nextSipletSpanId = 0;
+window.currentSiplet = null;
+window.nextSipletSpanId = 0;
+window.siplets = [];
+window.windowArea = null;
 
+function AddNewSipletTab(url)
+{
+	var windowName = 'W'+window.siplets.length;
+	var newWinElement=document.createElement('DIV');
+	newWinElement.id = windowName; 
+	window.windowArea.appendChild(newWinElement);
+	var siplet = new SipletWindow(windowName); // makes a deep copy
+	siplet.tab = AddNewTab(); 
+	siplet.url = url;
+	window.siplets.push(siplet);
+	siplet.connect(url);
+	SetCurrentTab(window.siplets.length-1);
+}
+
+function SetCurrentTab(which)
+{
+	window.currentSiplet=window.siplets[which];
+	for(var i=0;i<window.siplets.length;i++)
+	{
+		var s = window.siplets[i];
+		if(i == which)
+		{
+			s.topWindow.style.visibility = "visible";
+			if(s.wsopened)
+			{
+				s.tab.style.backgroundColor = "green";
+				s.tab.style.foregroundColor = "white";
+			}
+		}
+		else
+		{
+			s.topWindow.style.visibility = "hidden";
+			if(s.wsopened)
+			{
+				s.tab.style.backgroundColor = "lightgray";
+				s.tab.style.foregroundColor = "black";
+			}
+		}
+	}
+}
+
+function CloseAllSiplets()
+{
+	for(var i=0;i<window.siplets.length;i++)
+	{
+		var siplet = window.siplets[i];
+	    if (siplet.wsocket && siplet.wsocket.readyState === WebSocket.OPEN) {
+	    	siplet.wsocket.close();
+	    }
+	}
+}
