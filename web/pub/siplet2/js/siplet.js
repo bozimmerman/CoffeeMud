@@ -7,9 +7,9 @@ var Siplet =
 function SipletWindow(windowName)
 {
 	this.siplet = Siplet;
-	this.width = 80;
-	this.height = 25;
-	this.maxLines = 5000;
+	this.width = getConfig('window/width',80);
+	this.height = getConfig('window/height',25);;
+	this.maxLines = getConfig('window/lines',5000);;
 	this.MSPsupport = false;
 	this.MSDPsupport = false;
 	this.GMCPsupport = false;
@@ -39,7 +39,7 @@ function SipletWindow(windowName)
     this.window.style.position = 'fixed';
     this.window.style.overflowY = 'auto';
     this.window.style.overflowX = 'hidden';
-    this.window.style.fontFamily = 'monospace';
+    this.window.style.fontFamily = getConfig('window/fontface', 'monospace');
 	
 	this.connect = function(url)
 	{
@@ -58,7 +58,7 @@ function SipletWindow(windowName)
 		this.wsocket.onclose = function(event)  
 		{ 
 			me.wsopened=false; 
-			me.tab.style.backgroundColor="red";
+			me.tab.style.backgroundColor="lightred";
 			me.tab.style.foregroundColor="white";
 		};
 	};
@@ -169,7 +169,7 @@ function SipletWindow(windowName)
 		    this.window.style.width = '100vw';
 		    this.window.style.position='fixed';
 		    this.window.style.overflowY = 'auto';
-		    this.window.style.fontFamily = 'monospace';
+		    this.window.style.fontFamily = oldMainWindow.style.fontFamily;
 			this.window.innerHTML = oldMainWindow.innerHTML;
 			this.window.classList = 'subcontent';
 			oldMainWindow.innerHTML='';

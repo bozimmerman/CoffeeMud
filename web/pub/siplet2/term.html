@@ -71,6 +71,7 @@
 </HEAD>
 <BODY>
 <FONT COLOR=WHITE>
+<SCRIPT LANGUAGE=JavaScript src="js/config.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/input.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/menu.js"></SCRIPT>
 <SCRIPT LANGUAGE=JavaScript src="js/tabs.js"></SCRIPT>
@@ -95,7 +96,9 @@ windowArea = document.getElementById('windowarea');
 configureInput(document.getElementById('inputarea'), document.getElementById('input'));
 configureMenu(document.getElementById('menuarea'));
 configureTabs(document.getElementById('tabarea'));
-AddNewSipletTab("ws://localhost:27744/WebSock");
+var autoUrl = getConfig('/phonebook/auto',{"ws":"ws://coffeemud.net:27744/WebSock"}).ws;
+if(autoUrl.length > 0)
+	AddNewSipletTab(autoUrl);
 window.addEventListener("beforeunload", CloseAllSiplets);
 </SCRIPT>
 </FONT>

@@ -7,7 +7,15 @@ function delayhidemenu()
     },250);
 }
 
-function dropdownmenu(obj, e, href, hint, prompt, menuwidth){
+function contextmenu(obj, e, href, hint, prompt) {
+	return dropdownmenu(obj, e, href, hint, prompt, e.pageX-40, e.pageY-10, 200);
+}
+
+function menumenu(obj, e, href, hint, prompt) {
+	return dropdownmenu(obj, e, href, hint, prompt, obj.offsetLeft, obj.offsetTop, 200);
+}
+
+function dropdownmenu(obj, e, href, hint, prompt, x,y,width) {
 	if (window.event) 
 		event.cancelBubble=true
 	else 
@@ -18,8 +26,9 @@ function dropdownmenu(obj, e, href, hint, prompt, menuwidth){
 	var menucontents = getCtxMenu(obj, href, hint, prompt);
 	var menu = document.createElement("div")
 	menu.id = "ctxmenu"
-	menu.style = "top:" + (e.pageY-10)+"px;"
-			   + "left:" + (e.pageX-40)+"px;"
+	menu.style = "top:" + y+"px;"
+			   + "left:" + x+"px;"
+			   + "width:" + width+"px;"
 			   + "font-family: monospace;"
 			   + "font-size: 12px;"
 			   + "position: fixed;"
@@ -86,7 +95,11 @@ function getCtxMenu(titleSet,menu,hints,prompt)
         else
         if(hints.length>0)
             hint=hints;
-        mmenu[count]='<a href="javascript:addToPrompt(\''+fixCtxEnt(menu.substr(0,x))+'\','+prompt+');">'+hint+'</a>';
+        var m = fixCtxEnt(menu.substr(0,x));
+        if(m.startsWith("javascript:"))
+            mmenu[count]='<a href="'+m+'">'+hint+'</a>';
+        else
+            mmenu[count]='<a href="javascript:addToPrompt(\''+m+'\','+prompt+');">'+hint+'</a>';
         count++;
         menu=menu.substr(x+1);
         x=menu.indexOf("|");
@@ -97,7 +110,11 @@ function getCtxMenu(titleSet,menu,hints,prompt)
     else
     if(hints.length>0)
         hint=hints;
-    mmenu[count]='<a href="javascript:addToPrompt(\''+fixCtxEnt(menu)+'\','+prompt+');">'+hint+'</a>';
+    var m = fixCtxEnt(menu);
+    if(m.startsWith("javascript:"))
+        mmenu[count]='<a href="'+m+'">'+hint+'</a>';
+    else
+        mmenu[count]='<a href="javascript:addToPrompt(\''+m+'\','+prompt+');">'+hint+'</a>';
     return mmenu;
 }
 

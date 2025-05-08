@@ -671,6 +671,17 @@ var MXP = function(sipwin)
 		return '';
 	};
 
+	this.elementIndexOf = function(tag)
+	{
+		for (var x = this.openElements.length - 1; x >= 0; x--)
+		{
+			E = this.openElements[x];
+			if (E.name == tag)
+				return x;
+		}
+		return -1;
+	}
+
 	this.processTag = function()
 	{
 		var oldString = this.partial;
@@ -696,38 +707,16 @@ var MXP = function(sipwin)
 		var text = "";
 		if (endTag)
 		{
-			var troubleE = null;
-			var foundAt = -1;
-			for (var x = this.openElements.length - 1; x >= 0; x--)
-			{
-				E = this.openElements[x];
-				if (E.name == tag)
-				{
-					foundAt = x;
-					this.openElements.splice(x,1);
-					break;
-				}
-				if ((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT) 
-					troubleE = E;
-				else
-				if(this.textProcessor == E)
-					troubleE = E;
-			}
+			var foundAt = this.elementIndexOf(tag);
 			if (foundAt < 0)
 				return oldString; // closed an unopened tag!
-			// a close tag of an mxp element always erases an
-			// **INTERIOR** needstext element
-			if (troubleE != null)
+			else
 			{
-				var x = this.openElements.indexOf(troubleE);
-				if(x >= 0)
-					this.openElements.splice(x,1);
+				E=this.openElements[foundAt];
+				this.openElements.splice(foundAt,1);
 			}
 			var close = this.getCloseTag(E);
 			// anyway...
-			if ((troubleE!=null)&&(troubleE.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT)
-				text = troubleE.text;
-			else
 			if((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT)
 				text = E.text;
 			if ((E.bitmap & MXPBIT.HTML)==MXPBIT.HTML) 
@@ -748,6 +737,14 @@ var MXP = function(sipwin)
 			&& (((E.bitmap & MXPBIT.COMMAND)==0)
 			|| ((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT)))
 			{
+				var foundAt = this.elementIndexOf(tag);
+				if (foundAt >= 0)
+				{
+					var oldE = this.openElements[foundAt];
+					if((oldE.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT)
+						text += oldE.text;
+					this.openElements.splice(foundAt,1);
+				}
 				E.lastBackground = sipwin.ansi.lastBackground;
 				E.lastForeground = sipwin.ansi.lastForeground;
 				this.openElements.push(E);
@@ -755,7 +752,7 @@ var MXP = function(sipwin)
 				{
 					this.textProcessor = E;
 					E.text = '';
-					return '';
+					return text == null ? '' : text;
 				}
 			}
 		}
@@ -1157,9 +1154,9 @@ var MXP = function(sipwin)
 			if ((prompt != null) && (prompt.length > 0))
 				return;
 			if (prompt == null)
-				prompt = "false";
-			else
 				prompt = "true";
+			else
+				prompt = "false";
 			E.setAttributeValue("PROMPT", prompt);
 			var href = E.getAttributeValue("HREF");
 			var hint = E.getAttributeValue("HINT");
@@ -1197,7 +1194,8 @@ var MXP = function(sipwin)
 				}
 				href = href.replaceAll("'", "\\'");
 				hint = newHint.replaceAll("'", "\\'");
-				E.setAttributeValue("ONCLICK", "return dropdownmenu(this, event, '" + href + "','" + hint + "','" + prompt + "', '200px');");
+				var func = "contextmenu(this, event, '"+href+"','"+hint+"',"+prompt+");";
+				E.setAttributeValue("ONCLICK", "return "+func);
 			}
 			else
 			{
@@ -1205,7 +1203,8 @@ var MXP = function(sipwin)
 				E.setAttributeValue("HREF", "javascript:goDefault(0);");
 				href = href.replaceAll("'", "\\'");
 				hint = newHint.replaceAll("'", "\\'");
-				E.setAttributeValue("ONCLICK", "return dropdownmenu(this, event, '" + href + "','" + hint + "','" + prompt + "', '200px');");
+				var func = "contextmenu(this, event, '"+href+"','"+hint+"',"+prompt+");";
+				E.setAttributeValue("ONCLICK", "return "+func);
 			}
 		}
 		else
