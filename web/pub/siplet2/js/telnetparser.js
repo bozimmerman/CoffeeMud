@@ -47,13 +47,17 @@ var StringToAsciiArray = function(str) {
 
 var TELNET = function(sipwin)
 {
-	this.neverSupportMSP = false;
-	this.neverSupportMXP = false;
-	this.neverSupportMSDP= true; //TODO: soon!
-	this.neverSupportGMCP = true; //TODO: soon!
-	this.neverSupportMCCP = true; //TODO: maybe add pako later?
-	this.msdpInforms = "";
-	this.gmcpInforms = "";
+	this.reset = function()
+	{
+		this.neverSupportMSP = false;
+		this.neverSupportMXP = false;
+		this.neverSupportMSDP= true; //TODO: soon!
+		this.neverSupportGMCP = true; //TODO: soon!
+		this.neverSupportMCCP = true; //TODO: maybe add pako later?
+		this.msdpInforms = "";
+		this.gmcpInforms = "";
+	};
+	this.reset();
 	
 	this.process = function(dat)
 	{

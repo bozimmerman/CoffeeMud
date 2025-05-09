@@ -3,6 +3,7 @@ var tabArea = null;
 var tabTabs = [];
 var tabSpacer = null;
 var tabRow = null;
+
 function configureTabs(obj)
 {
 	tabArea=obj;

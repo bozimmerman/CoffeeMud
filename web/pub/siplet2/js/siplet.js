@@ -24,6 +24,7 @@ function SipletWindow(windowName)
 	this.mxp = new MXP(this);
 	this.text = new TEXT([this.mxp,this.msp]);
 	this.window = document.getElementById(windowName);
+	this.window.onclick = function() { delayhidemenu(); boxFocus(); };
 	this.topWindow = this.window;
 	this.wsocket = null;
 	this.gauges=[];
@@ -40,6 +41,7 @@ function SipletWindow(windowName)
     this.window.style.overflowY = 'auto';
     this.window.style.overflowX = 'hidden';
     this.window.style.fontFamily = getConfig('window/fontface', 'monospace');
+    this.window.style.fontSize = getConfig('window/fontsize', '16px');
 	
 	this.connect = function(url)
 	{
@@ -58,10 +60,45 @@ function SipletWindow(windowName)
 		this.wsocket.onclose = function(event)  
 		{ 
 			me.wsopened=false; 
-			me.tab.style.backgroundColor="lightred";
+			me.tab.style.backgroundColor="#FF555B";
 			me.tab.style.foregroundColor="white";
 		};
 	};
+
+	this.closeSocket = function()
+	{
+	    if (this.wsocket && this.wsocket.readyState === WebSocket.OPEN) {
+	    	this.wsocket.close();
+	    }
+	}
+	
+	this.close = function()
+	{
+		this.closeSocket();
+		this.reset();
+	}
+	
+	this.reset = function()
+	{
+		this.topWindow.innerHTML = '<FONT COLOR=WHITE>';
+		this.window = this.topWindow;
+		this.MSPsupport = false;
+		this.MSDPsupport = false;
+		this.GMCPsupport = false;
+		this.MXPsupport = false;
+		this.MCCPsupport = false;
+		this.wsopened = false;
+		this.bin.reset();
+		this.ansi.reset();
+		this.telnet.reset();
+		this.msp.reset();
+		this.mxp.reset();
+		this.text.reset();
+		this.gauges=[];
+		this.gaugeWindow = null;
+		this.windowTop = topOffset;
+		this.windowUnHeight = topOffset + inputAreaHeight;
+	}
 	
 	this.onReceive = function(e)
 	{
@@ -236,7 +273,7 @@ function SipletWindow(windowName)
 	this.submitInput = function(value)
 	{
 		var span = document.createElement('span');
-		span.innerHTML = value + '<BR>';
+		span.innerHTML = value.replaceAll('\n','<BR>') + '<BR>';
 		this.window.appendChild(span);
 		this.wsocket.send(value+'\n');
 	};
@@ -293,8 +330,6 @@ function CloseAllSiplets()
 	for(var i=0;i<window.siplets.length;i++)
 	{
 		var siplet = window.siplets[i];
-	    if (siplet.wsocket && siplet.wsocket.readyState === WebSocket.OPEN) {
-	    	siplet.wsocket.close();
-	    }
+		siplet.closeSocket();
 	}
 }

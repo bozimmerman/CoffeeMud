@@ -1,6 +1,10 @@
 function TEXT(textParsers)
 {
-	this.lastParser = null;
+	this.reset = function()
+	{
+		this.lastParser = null;
+	};
+	this.reset();
 	
 	this.parse = function(c)
 	{

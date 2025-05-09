@@ -79,14 +79,18 @@ var ANSITABLES = {
 	
 var ANSISTACK = function()
 {
-	this.blinkOn = false;
-	this.fontOn = false;
-	this.boldOn = false;
-	this.underlineOn = false;
-	this.italicsOn = false;
-	this.lastBackground = null;
-	this.lastForeground = null;
-	
+	this.reset = function()
+	{
+		this.blinkOn = false;
+		this.fontOn = false;
+		this.boldOn = false;
+		this.underlineOn = false;
+		this.italicsOn = false;
+		this.lastBackground = null;
+		this.lastForeground = null;
+	};
+	this.reset();
+		
 	this.blinkOff = function()
 	{
 		if (this.blinkOn)

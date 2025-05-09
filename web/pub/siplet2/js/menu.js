@@ -1,6 +1,24 @@
 var menuAreaHeight = 20;
 var menuArea = null;
+var menuBackgroundColor = "#404040";
+var menuForegroundColor = "Yellow";
 var menuWindow = null;
+
+function menumenu(obj, e, href, hint) {
+	nowhidemenu();
+	var m = dropdownmenu(obj, e, href, hint, prompt, obj.offsetLeft, obj.offsetTop + 20, 200);
+	m.style.background = menuBackgroundColor;
+	m.style.color = menuForegroundColor;
+	var as = Array.from(m.getElementsByTagName("A"));
+	for(var a=0;a<as.length;a++)
+	{
+		as[a].style.color=menuForegroundColor;
+		as[a].style.fontSize=16;
+		as[a].style.textDecoration = 'none';
+	}
+	return m;
+}
+
 function configureMenu(obj)
 {
 	menuArea=obj;
@@ -8,13 +26,14 @@ function configureMenu(obj)
 	menuArea.style.top=0;
 	menuArea.style.width='100%';
 	menuArea.style.height=menuAreaHeight+'px';
-	menuArea.style.background='#404040';
+	menuArea.style.background=menuBackgroundColor;
+	menuArea.style.color=menuForegroundColor;
 	
 	var menuData = [
 		{"Window": [
-			{"n":"New"},
-			{"n":"Disconnect"},
-			{"n":"Reconnect"}
+			{"n":"New","a":"javascript:menuNew();"},
+			{"n":"Disconnect","a":"javascript:menuDisconnect();"},
+			{"n":"Reconnect","a":"javascript:menuReconnect();"}
 		]},
 		{"Options": [
 			{"n":"Global"}
@@ -40,10 +59,9 @@ function configureMenu(obj)
 			href+=sub['a']+'|';
 			hint+=sub['n']+'|';
 		}
-		//dropdownmenu(obj, e, href, hint, prompt, menuwidth)
-		html += ' ONCLICK="menumenu(this,event,\''+href+'\',\''+hint+'\',\'\')" ';
-		html += '><FONT COLOR=YELLOW><B>&nbsp;&nbsp;';
-		html += topN + '</B></FONT></TD>';
+		html += ' ONCLICK="menumenu(this,event,\''+href+'\',\''+hint+'\')" ';
+		html += '><FONT COLOR="'+menuForegroundColor+'"><B>&nbsp;&nbsp;';
+		html += topN + '</FONT></TD>';
 	}
 	html += '</TR></TABLE>';
 	menuArea.innerHTML = html;
@@ -51,26 +69,26 @@ function configureMenu(obj)
 
 function hideOptionWindow()
 {
-	if(window.menuWindow != null)
+	if(menuWindow != null)
 	{
-		window.menuWindow.style.visibility = 'hidden';
-		window.menuWindow.onclick = function() {};
-		var contentWindow = window.menuWindow.getElementsByTagName('div')[1];
+		menuWindow.style.visibility = 'hidden';
+		menuWindow.onclick = function() {};
+		var contentWindow = menuWindow.getElementsByTagName('div')[1];
 		contentWindow.innerHTML = '';
 	}
 }
 
 function getOptionWindow(heading, w, h)
 {
-	if(window.menuWindow == null)
+	if(menuWindow == null)
 	{
-		window.menuWindow = document.createElement('div');
-		window.menuWindow.style.cssText = "position:absolute;top:20%;left:10%;height:60%;width:80%;z-index:99;";
-		window.menuWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;";
-		window.menuWindow.style.backgroundColor = 'darkgray';
-		window.menuWindow.style.visibility = 'visible';
-		window.menuWindow.style.foregroundColor = 'black';
-		document.body.appendChild(window.menuWindow);
+		menuWindow = document.createElement('div');
+		menuWindow.style.cssText = "position:absolute;top:20%;left:10%;height:60%;width:80%;z-index:99;";
+		menuWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;";
+		menuWindow.style.backgroundColor = 'darkgray';
+		menuWindow.style.visibility = 'visible';
+		menuWindow.style.foregroundColor = 'black';
+		document.body.appendChild(menuWindow);
 		var titleBar = document.createElement('div');
 		titleBar.style.cssText = "position:absolute;top:0%;left:0%;height:20px;width:100%;";
 		titleBar.style.backgroundColor = 'white';
@@ -79,18 +97,18 @@ function getOptionWindow(heading, w, h)
 		contentWindow.style.cssText = "position:absolute;top:20px;left:0%;height:calc(100% - 20px);width:100%;";
 		contentWindow.style.backgroundColor = 'lightgray';
 		contentWindow.style.foregroundColor = 'black';
-		window.menuWindow.appendChild(titleBar);
-		window.menuWindow.appendChild(contentWindow);
+		menuWindow.appendChild(titleBar);
+		menuWindow.appendChild(contentWindow);
 	}
-	window.menuWindow.onclick = function() {};
-	var titleBar = window.menuWindow.getElementsByTagName('div')[0];
-	var contentWindow = window.menuWindow.getElementsByTagName('div')[1];
+	menuWindow.onclick = function() {};
+	var titleBar = menuWindow.getElementsByTagName('div')[0];
+	var contentWindow = menuWindow.getElementsByTagName('div')[1];
 	contentWindow.innerHTML = '';
-	window.menuWindow.style.top = 'calc(' + (((100-h)/2)+'%') + ' - '+inputAreaHeight+'px);';
-	window.menuWindow.style.left = ((100-w)/2)+'%';
-	window.menuWindow.style.height = h+'%';
-	window.menuWindow.style.width = w+'%';
-	window.menuWindow.style.visibility = 'visible';
+	menuWindow.style.top = 'calc(' + (((100-h)/2)+'%') + ' - '+inputAreaHeight+'px);';
+	menuWindow.style.left = ((100-w)/2)+'%';
+	menuWindow.style.height = h+'%';
+	menuWindow.style.width = w+'%';
+	menuWindow.style.visibility = 'visible';
 	titleBar.innerHTML = '<FONT COLOR=BLACK>'+heading+'</FONT>'+
 		'<IMG style="float: right; width: 16px; height: 16px;" '
 		+'ONCLICK="hideOptionWindow();" '
@@ -111,4 +129,30 @@ function menuAbout()
 	aboutHtml += '</div>';
 	content.innerHTML=aboutHtml;
 	this.menuWindow.onclick = hideOptionWindow;
+}
+
+function menuDisconnect()
+{
+	if(this.currentSiplet != null)
+	{
+		this.currentSiplet.closeSocket();
+	}
+}
+
+function menuReconnect()
+{
+	if(this.currentSiplet != null)
+	{
+		this.currentSiplet.closeSocket();
+		this.currentSiplet.reset();
+		this.currentSiplet.connect(this.currentSiplet.url);
+	}
+}
+
+function menuNew()
+{
+	if(this.currentSiplet != null)
+	{
+		AddNewSipletTab(this.currentSiplet.url);
+	}
 }

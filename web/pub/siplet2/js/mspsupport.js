@@ -1,11 +1,15 @@
 var MSP = function(sipwin)
 {
-	this.tag = null;
-	this.data = null;
-	this.sounders=[];
-	this.soundDates=[];
-	this.soundPriorities=[];
-	this.skip=0;
+	this.reset = function()
+	{
+		this.tag = null;
+		this.data = null;
+		this.sounders=[];
+		this.soundDates=[];
+		this.soundPriorities=[];
+		this.skip=0;
+	};
+	this.reset();
 	
 	this.active = function() { return sipwin.MSPsupport; };
 	this.eolDetected = function() { return null; };

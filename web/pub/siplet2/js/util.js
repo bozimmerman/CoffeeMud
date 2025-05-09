@@ -42,3 +42,14 @@ function isNumber(c)
 		return (!isNaN(c)) && (!isNaN(parseFloat(c)));
 	return false;
 }
+
+function copyStyles(source, target)
+{
+	var styles = window.getComputedStyle(source);
+	for (var i=0; i < styles.length; i++)
+	{
+		var name = styles.item(i);
+		var val = styles.getPropertyValue(name);
+		target.style.setProperty(name, val);
+	}
+}

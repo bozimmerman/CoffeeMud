@@ -307,90 +307,106 @@ var MXPElement = function(theName, theDefinition, theAttributes, theFlag, theBit
 
 var MXP = function(sipwin)
 {
-	this.defaultMode = MXPMODE.LINE_OPEN; // actually changes!
-	this.mode = 0;
-	this.eatTextUntilEOLN = false;
-	this.eatNextEOLN = false;
-	this.eatAllEOLN = false;
-	this.openElements = [];
-	this.gauges = [];
-	this.elements = {
-		"B": new MXPElement("B", "<B>", "", "", MXPBIT.HTML),
-		"BOLD": new MXPElement("BOLD", "<B>", "", "", MXPBIT.HTML),
-		"STRONG": new MXPElement("STRONG", "<B>", "", "", MXPBIT.HTML),
-		"U": new MXPElement("U", "<U>", "", "", MXPBIT.HTML),
-		"UNDERLINE": new MXPElement("UNDERLINE", "<U>", "", "", MXPBIT.HTML),
-		"I": new MXPElement("I", "<I>", "", "", MXPBIT.HTML),
-		"ITALIC": new MXPElement("ITALIC", "<I>", "", "", MXPBIT.HTML),
-		"S": new MXPElement("S", "<S>", "", "", MXPBIT.HTML),
-		"STRIKEOUT": new MXPElement("STRIKEOUT", "<S>", "", "", MXPBIT.HTML),
-		"EM": new MXPElement("EM", "<I>", "", "", MXPBIT.HTML),
-		"H1": new MXPElement("H1", "<H1>", "", "", MXPBIT.HTML),
-		"H2": new MXPElement("H2", "<H2>", "", "", MXPBIT.HTML),
-		"H3": new MXPElement("H3", "<H3>", "", "", MXPBIT.HTML),
-		"H4": new MXPElement("H4", "<H4>", "", "", MXPBIT.HTML),
-		"H5": new MXPElement("H5", "<H5>", "", "", MXPBIT.HTML),
-		"H6": new MXPElement("H6", "<H6>", "", "", MXPBIT.HTML),
-		"HR": new MXPElement("HR", "<HR>", "", "", MXPBIT.HTML | MXPBIT.COMMAND),
-		"SMALL": new MXPElement("SMALL", "<SMALL>", "", "", MXPBIT.HTML),
-		"TT": new MXPElement("TT", "<PRE>", "", "", MXPBIT.HTML),
-		"BR": new MXPElement("BR", "<BR>", "", "", MXPBIT.HTML | MXPBIT.COMMAND),
-		"SBR": new MXPElement("SBR", "&nbsp;", "", "", MXPBIT.HTML | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-		"P": new MXPElement("P", "", "", "", MXPBIT.HTML | MXPBIT.SPECIAL), // special
-		"C": new MXPElement("C", "<FONT COLOR=&fore; BACK=&back;>", "FORE BACK", "", 0),
-		"COLOR": new MXPElement("COLOR", "<FONT COLOR=&fore; BACK=&back;>", "FORE BACK", "", 0),
-		"HIGH": new MXPElement("HIGH", "", "", "", MXPBIT.NOTSUPPORTED),
-		"H": new MXPElement("H", "", "", "", MXPBIT.NOTSUPPORTED),
-		"FONT": new MXPElement("FONT", "<FONT STYLE=\"color: &color;;background-color: &back;;font-family: &face;;font-size: &size;;\">", "FACE SIZE COLOR BACK STYLE", "", MXPBIT.SPECIAL|MXPBIT.HTML),
-		"NOBR": new MXPElement("NOBR", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-		"A": new MXPElement("A", "<A STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">",
-				"HREF HINT EXPIRE TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK", "", MXPBIT.HTML, "EXPIRE"),
-		"SEND": new MXPElement("SEND", "<A STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"delayhidemenu();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">", "HREF HINT PROMPT EXPIRE STYLE", "", MXPBIT.SPECIAL,
-				"EXPIRE"), // special done
-		"EXPIRE": new MXPElement("EXPIRE", "", "NAME", "", MXPBIT.NOTSUPPORTED),
-		"VERSION": new MXPElement("VERSION", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-		"SUPPORT": new MXPElement("SUPPORT", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-		"GAUGE": new MXPElement("GAUGE", "", "ENTITY MAX CAPTION COLOR", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
-		"STAT": new MXPElement("STAT", "", "ENTITY MAX CAPTION", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-		"FRAME": new MXPElement("FRAME", "", "NAME ACTION TITLE INTERNAL ALIGN LEFT TOP WIDTH HEIGHT SCROLLING FLOATING", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-		"DEST": new MXPElement("DEST", "", "NAME", "", MXPBIT.SPECIAL | MXPBIT.NOTSUPPORTED),
-		"DESTINATION": new MXPElement("DESTINATION", "", "NAME", "", MXPBIT.SPECIAL | MXPBIT.NOTSUPPORTED),
-		"RELOCATE": new MXPElement("RELOCATE", "", "URL PORT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-		"USER": new MXPElement("USER", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-		"PASSWORD": new MXPElement("PASSWORD", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-		"IMAGE": new MXPElement("IMAGE", "<IMG SRC=\"&url;&fname;\" HEIGHT=&h; WIDTH=&w; ALIGN=&align;>", "FNAME URL T H W HSPACE VSPACE ALIGN ISMAP", "", MXPBIT.COMMAND, "HSPACE VSPACE ISMAP"),
-		"IMG": new MXPElement("IMG", "<IMG SRC=\"&src;\" HEIGHT=&height; WIDTH=&width; ALIGN=&align;>", "SRC HEIGHT=70 WIDTH=70 ALIGN", "", MXPBIT.COMMAND),
-		"FILTER": new MXPElement("FILTER", "", "SRC DEST NAME", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-		"SCRIPT": new MXPElement("SCRIPT", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-		"ENTITY": new MXPElement("ENTITY", "", "NAME VALUE DESC PRIVATE PUBLISH DELETE ADD", "", MXPBIT.SPECIAL | MXPBIT.COMMAND, "PRIVATE PUBLISH ADD"), // special
-		"EN": new MXPElement("EN", "", "NAME VALUE DESC PRIVATE PUBLISH DELETE ADD", "", MXPBIT.SPECIAL | MXPBIT.COMMAND, "PRIVATE PUBLISH ADD"), // special
-		"TAG": new MXPElement("TAG", "", "INDEX WINDOWNAME FORE BACK GAG ENABLE DISABLE", "", MXPBIT.SPECIAL | MXPBIT.COMMAND, "WINDOWNAME"),
-		"VAR": new MXPElement("VAR", "", "NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE", "", MXPBIT.SPECIAL, "PRIVATE PUBLISH ADD REMOVE"), // special
-		"V": new MXPElement("V", "", "NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE", "", MXPBIT.SPECIAL, "PRIVATE PUBLISH ADD REMOVE"), // special
-		"ELEMENT": new MXPElement("ELEMENT", "", "NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-		"EL": new MXPElement("EL", "", "NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-		"ATTLIST": new MXPElement("ATTLIST", "", "NAME ATT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
-		"AT": new MXPElement("AT", "", "NAME ATT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
-		"SOUND": new MXPElement("SOUND", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL),
-		"MUSIC": new MXPElement("MUSIC", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL)
-		// -------------------------------------------------------------------------
+	this.reset = function()
+	{
+		this.defaultMode = MXPMODE.LINE_OPEN; // actually changes!
+		this.mode = 0;
+		this.eatTextUntilEOLN = false;
+		this.eatNextEOLN = false;
+		this.eatAllEOLN = false;
+		this.openElements = [];
+		this.gauges = [];
+		this.elements = {
+			"B": new MXPElement("B", "<B>", "", "", MXPBIT.HTML),
+			"BOLD": new MXPElement("BOLD", "<B>", "", "", MXPBIT.HTML),
+			"STRONG": new MXPElement("STRONG", "<B>", "", "", MXPBIT.HTML),
+			"U": new MXPElement("U", "<U>", "", "", MXPBIT.HTML),
+			"UNDERLINE": new MXPElement("UNDERLINE", "<U>", "", "", MXPBIT.HTML),
+			"I": new MXPElement("I", "<I>", "", "", MXPBIT.HTML),
+			"ITALIC": new MXPElement("ITALIC", "<I>", "", "", MXPBIT.HTML),
+			"S": new MXPElement("S", "<S>", "", "", MXPBIT.HTML),
+			"STRIKEOUT": new MXPElement("STRIKEOUT", "<S>", "", "", MXPBIT.HTML),
+			"EM": new MXPElement("EM", "<I>", "", "", MXPBIT.HTML),
+			"H1": new MXPElement("H1", "<H1>", "", "", MXPBIT.HTML),
+			"H2": new MXPElement("H2", "<H2>", "", "", MXPBIT.HTML),
+			"H3": new MXPElement("H3", "<H3>", "", "", MXPBIT.HTML),
+			"H4": new MXPElement("H4", "<H4>", "", "", MXPBIT.HTML),
+			"H5": new MXPElement("H5", "<H5>", "", "", MXPBIT.HTML),
+			"H6": new MXPElement("H6", "<H6>", "", "", MXPBIT.HTML),
+			"HR": new MXPElement("HR", "<HR>", "", "", MXPBIT.HTML | MXPBIT.COMMAND),
+			"SMALL": new MXPElement("SMALL", "<SMALL>", "", "", MXPBIT.HTML),
+			"TT": new MXPElement("TT", "<PRE>", "", "", MXPBIT.HTML),
+			"BR": new MXPElement("BR", "<BR>", "", "", MXPBIT.HTML | MXPBIT.COMMAND),
+			"SBR": new MXPElement("SBR", "&nbsp;", "", "", MXPBIT.HTML | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+			"P": new MXPElement("P", "", "", "", MXPBIT.HTML | MXPBIT.SPECIAL), // special
+			"C": new MXPElement("C", "<FONT COLOR=&fore; BACK=&back;>", "FORE BACK", "", 0),
+			"COLOR": new MXPElement("COLOR", "<FONT COLOR=&fore; BACK=&back;>", "FORE BACK", "", 0),
+			"HIGH": new MXPElement("HIGH", "", "", "", MXPBIT.NOTSUPPORTED),
+			"H": new MXPElement("H", "", "", "", MXPBIT.NOTSUPPORTED),
+			"FONT": new MXPElement("FONT", "<FONT STYLE=\"color: &color;;background-color: &back;;font-family: &face;;font-size: &size;;\">", 
+					"FACE SIZE COLOR BACK STYLE", "", MXPBIT.SPECIAL|MXPBIT.HTML),
+			"NOBR": new MXPElement("NOBR", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
+			"A": new MXPElement("A", "<A STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">",
+					"HREF HINT EXPIRE TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK", "", MXPBIT.HTML, "EXPIRE"),
+			"SEND": new MXPElement("SEND", "<A STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"delayhidemenu();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">", 
+					"HREF HINT PROMPT EXPIRE STYLE", "", MXPBIT.SPECIAL, "EXPIRE"), // special done
+			"EXPIRE": new MXPElement("EXPIRE", "", "NAME", "", MXPBIT.NOTSUPPORTED),
+			"VERSION": new MXPElement("VERSION", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
+			"SUPPORT": new MXPElement("SUPPORT", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
+			"GAUGE": new MXPElement("GAUGE", "", "ENTITY MAX CAPTION COLOR", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
+			"STAT": new MXPElement("STAT", "", "ENTITY MAX CAPTION", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+			"FRAME": new MXPElement("FRAME", "", "NAME ACTION TITLE INTERNAL ALIGN LEFT TOP WIDTH HEIGHT SCROLLING FLOATING", 
+					"", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+			"DEST": new MXPElement("DEST", "", "NAME", "", MXPBIT.SPECIAL | MXPBIT.NOTSUPPORTED),
+			"DESTINATION": new MXPElement("DESTINATION", "", "NAME", "", MXPBIT.SPECIAL | MXPBIT.NOTSUPPORTED),
+			"RELOCATE": new MXPElement("RELOCATE", "", "URL PORT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+			"USER": new MXPElement("USER", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+			"PASSWORD": new MXPElement("PASSWORD", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+			"IMAGE": new MXPElement("IMAGE", "<IMG SRC=\"&url;&fname;\" HEIGHT=&h; WIDTH=&w; ALIGN=&align;>", 
+					"FNAME URL T H W HSPACE VSPACE ALIGN ISMAP", "", MXPBIT.COMMAND, "HSPACE VSPACE ISMAP"),
+			"IMG": new MXPElement("IMG", "<IMG SRC=\"&src;\" HEIGHT=&height; WIDTH=&width; ALIGN=&align;>", 
+					"SRC HEIGHT=70 WIDTH=70 ALIGN", "", MXPBIT.COMMAND),
+			"FILTER": new MXPElement("FILTER", "", "SRC DEST NAME", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+			"SCRIPT": new MXPElement("SCRIPT", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+			"ENTITY": new MXPElement("ENTITY", "", "NAME VALUE DESC PRIVATE PUBLISH DELETE ADD", 
+					"", MXPBIT.SPECIAL | MXPBIT.COMMAND, "PRIVATE PUBLISH ADD"), // special
+			"EN": new MXPElement("EN", "", "NAME VALUE DESC PRIVATE PUBLISH DELETE ADD", 
+					"", MXPBIT.SPECIAL | MXPBIT.COMMAND, "PRIVATE PUBLISH ADD"), // special
+			"TAG": new MXPElement("TAG", "", "INDEX WINDOWNAME FORE BACK GAG ENABLE DISABLE", 
+					"", MXPBIT.SPECIAL | MXPBIT.COMMAND, "WINDOWNAME"),
+			"VAR": new MXPElement("VAR", "", "NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE", 
+					"", MXPBIT.SPECIAL, "PRIVATE PUBLISH ADD REMOVE"), // special
+			"V": new MXPElement("V", "", "NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE", 
+					"", MXPBIT.SPECIAL, "PRIVATE PUBLISH ADD REMOVE"), // special
+			"ELEMENT": new MXPElement("ELEMENT", "", "NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY", 
+					"", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
+			"EL": new MXPElement("EL", "", "NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY", 
+					"", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
+			"ATTLIST": new MXPElement("ATTLIST", "", "NAME ATT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
+			"AT": new MXPElement("AT", "", "NAME ATT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
+			"SOUND": new MXPElement("SOUND", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL),
+			"MUSIC": new MXPElement("MUSIC", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL)
+			// -------------------------------------------------------------------------
+			
+		};
+		this.tags = {};
+		this.frames = {};
+		this.entities = {
+			"nbsp": new MXPEntity("nbsp", "&nbsp;"),
+			"lt": new MXPEntity("lt", "&lt;"),
+			"gt": new MXPEntity("gt", "&gt;"),
+			"quot": new MXPEntity("quot", "&quot;"),
+			"amp": new MXPEntity("amp", "&amp;")
+		};
 		
+		this.partial = null;
+		this.partQuote = '\0';
+		this.partialBit ='';
+		this.partLastC=' ';
+		this.parts = [];
+		this.textProcessor = null;
 	};
-	this.tags = {};
-	this.entities = {
-		"nbsp": new MXPEntity("nbsp", "&nbsp;"),
-		"lt": new MXPEntity("lt", "&lt;"),
-		"gt": new MXPEntity("gt", "&gt;"),
-		"quot": new MXPEntity("quot", "&quot;"),
-		"amp": new MXPEntity("amp", "&amp;")
-	};
-	
-	this.partial = null;
-	this.partQuote = '\0';
-	this.partialBit ='';
-	this.partLastC=' ';
-	this.parts = [];
-	this.textProcessor = null;
+	this.reset();
 
 	this.active = function() { return sipwin.MXPsupport };
 
@@ -1273,17 +1289,162 @@ var MXP = function(sipwin)
 			if (removeFlag != null)
 			{
 				// whatever a string list is (| separated things) this removes
-				// it
+				// it, but since i've no idea what a string list is used for...
 			}
 			else
 			if (addFlag != null)
 			{
 				// whatever a string list is (| separated things) this adds it?
-				// it
+				// it, but since i've no idea what a string list is used for...
 			}
 			else
 				this.modifyEntity(name, value);
 			return;
+		}
+		else
+		if (tagName=="FRAME")
+		{
+			//		"FRAME": new MXPElement("FRAME", "", 
+			//"NAME ACTION TITLE INTERNAL ALIGN LEFT TOP WIDTH HEIGHT SCROLLING FLOATING", 
+			//"", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+			// names = _top and _previous
+			var name = E.getAttributeValue("NAME");
+			var action = E.getAttributeValue("ACTION"); // open,close,redirect
+			var title = E.getAttributeValue("TITLE");
+			var internal = E.getAttributeValue("INTERNAL");
+			var align = E.getAttributeValue("ALIGN"); // internal only: left,right,bottom,top 
+			var left = E.getAttributeValue("LEFT"); // ignored if internal is specified 
+			var top = E.getAttributeValue("TOP"); // ignored if internal is specified 
+			var width = E.getAttributeValue("WIDTH");
+			var height = E.getAttributeValue("HEIGHT");
+			var scrolling = E.getAttributeValue("SCROLLING");
+			var floating = E.getAttributeValue("FLOATING"); // otherwise, close on click-away
+			if("CLOSE" == action.toUpperCase())
+			{
+				if((name != null) && (name in this.frames))
+				{
+					var frame = this.frames[name];
+					//TODO: what if frame == this.window?
+					var sprops = frame.sprops;
+					if(sprops.internal)
+					{
+						var parentFrame = sprops.parent;
+						var otherFrames = Array.from(parentFrame.getElementsByTagName('div'));
+						var otherContentFrame = null;
+						for(var i=0;i<otherFrames.length;i++)
+						{
+							if(otherFrames[i] != frame)
+								otherContentFrame = otherFrames[i];
+						}
+						delete sipwin.frames[name];
+					}
+					else
+					{
+						delete this.frames[name];
+						// so simple!
+						sipwin.topWindow.removeChild(frame);
+					}
+				}
+			}
+			else
+			if((("OPEN" == action.toUpperCase())||("REDIRECT" == action.toUpperCase()))
+			&&(name != null))
+			{
+				var fixSize = function(s)
+				{
+					if(s==null)
+						return null;
+					if((s.length>1)&&(s.endsWith("c"))&&(isDigit(s[0])))
+						return (Number(s.substr(0,s.length-1))*16)+'px';
+					return s;
+				};
+				top=fixSize(top);
+				left=fixSize(left);
+				width=fixSize(width);
+				height=fixSize(height);
+				var sprops = {
+					"name": name,
+					"action": action,
+					"title": title,
+					"internal": internal,
+					"align": align, 
+					"left": left, 
+					"top": top, 
+					"width": width,
+					"height": height,
+					"scrolling": scrolling,
+					"floating": floating
+				};
+				if(internal != null)
+				{
+					if(align != null)
+					{
+						if(width == null)
+							width = "50%";
+						if(height == null)
+							height = "50%";
+						var currentWindow = sipwin.window; // where to add new windows
+						var oldWindow = document.createElement('div');
+						var newWindow = document.createElement('div');
+						
+						
+					}
+				}
+				else
+				if((top != null)
+				&&(left != null)
+				&&(width != null)
+				&&(height != null))
+				{
+					var newTopWindow = document.createElement('div');
+					newTopWindow.style.cssText = "position:absolute;top:"+top+";left:"+left+";height:"+height+";width:"+width+";z-index:99;";
+					newTopWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;";
+					newTopWindow.style.backgroundColor = 'darkgray';
+					newTopWindow.style.visibility = 'visible';
+					newTopWindow.style.foregroundColor = 'black';
+					var titleBar;
+					var contentTop = "0px";
+					if((title != null) && (title.trim().length>0))
+					{
+						titleBar = document.createElement('div');
+						titleBar.style.cssText = "position:absolute;top:0%;left:0%;height:20px;width:100%;";
+						titleBar.style.backgroundColor = 'white';
+						titleBar.style.foregroundColor = 'black';
+						contentTop = "20px";
+					}
+					else
+					{
+						titleBar = document.createElement('div');
+						titleBar.style.cssText = "position:absolute;top:0px;left:0px;height:0px;width:0px;";
+					}
+					var contentWindow = document.createElement('div');
+					contentWindow.style.cssText = "position:absolute;top:20px;left:0%;height:calc(100% - "+contentTop+");width:100%;";
+					contentWindow.style.backgroundColor = 'black';
+					contentWindow.style.foregroundColor = 'white';
+					newTopWindow.sprops = sprops;
+				    contentWindow.style.overflowY = 'hidden';
+				    contentWindow.style.overflowX = 'hidden';
+					if((scrolling!=null) && (scrolling.toLowerCase() == 'yes'))
+					{
+					    contentWindow.style.overflowY = 'auto';
+					    contentWindow.style.overflowX = 'auto';
+					}
+					if(floating == null)
+					{
+						contentWindow.onclick=function() {
+							sipwin.topWindow.removeChild(newTopWindow);
+							delete this.frames[name];
+						}
+					}
+					newTopWindow.appendChild(titleBar);
+					newTopWindow.appendChild(contentWindow);
+					if(action.toUpperCase() =='REDIRECT')
+						sipwin.window = contentWindow;
+					sipwin.topWindow.appendChild(newTopWindow);
+					sprops["parent"] = sipwin.topWindow;
+					this.frames[name] = newTopWindow;
+				}
+			}
 		}
 		else
 		if ((tagName == "SOUND") || (tagName == "MUSIC"))
@@ -1322,13 +1483,13 @@ var MXP = function(sipwin)
 			if (removeFlag != null)
 			{
 				// whatever a string list is (| separated things) this removes
-				// it
+				// it, but since i've no idea what a string list is used for...
 			}
 			else
 			if (addFlag != null)
 			{
 				// whatever a string list is (| separated things) this adds
-				// it?
+				// it, but since i've no idea what a string list is used for...
 			}
 			else
 				this.modifyEntity(name, value);
@@ -1378,8 +1539,12 @@ var MXP = function(sipwin)
 			var name = E.getAttributeValue("NAME");
 			if(name==null)
 				name="";
+			var eof = E.getAttributeValue("EOF");
+			var dx = E.getAttributeValue("X");
+			var dy = E.getAttributeValue("Y");
 			//TODO: not yet implemented, because frame is not
 			//jscriptBuffer.append("retarget('" + NAME + "');");
+			// this also supports positioning the cursor.. how the heck is that possible here?
 			return;
 		}
 		else

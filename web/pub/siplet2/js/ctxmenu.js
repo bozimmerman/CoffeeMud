@@ -1,30 +1,29 @@
 function delayhidemenu()
 {
-    setTimeout(function() {
-        var menu = document.getElementById('ctxmenu');
-        if(menu != null)
-            menu.outerHTML='';
-    },250);
+    setTimeout(nowhidemenu,250);
+}
+
+function nowhidemenu()
+{
+    var menu = document.getElementById('ctxmenu');
+    if(menu != null)
+        menu.outerHTML='';
 }
 
 function contextmenu(obj, e, href, hint, prompt) {
 	return dropdownmenu(obj, e, href, hint, prompt, e.pageX-40, e.pageY-10, 200);
 }
 
-function menumenu(obj, e, href, hint, prompt) {
-	return dropdownmenu(obj, e, href, hint, prompt, obj.offsetLeft, obj.offsetTop, 200);
-}
-
 function dropdownmenu(obj, e, href, hint, prompt, x,y,width) {
 	if (window.event) 
-		event.cancelBubble=true
+		window.event.cancelBubble=true;
 	else 
 	if (e.stopPropagation) 
-		e.stopPropagation()
+		e.stopPropagation();
 	if(e.preventDefault)
 		e.preventDefault();
 	var menucontents = getCtxMenu(obj, href, hint, prompt);
-	var menu = document.createElement("div")
+	var menu = document.createElement("div");
 	menu.id = "ctxmenu"
 	menu.style = "top:" + y+"px;"
 			   + "left:" + x+"px;"
@@ -35,13 +34,14 @@ function dropdownmenu(obj, e, href, hint, prompt, x,y,width) {
 			   + "background: darkgray;"
 			   + "color: black;"
 			   + "cursor: pointer;"
-			   + "border: 1px black solid"
+			   + "border: 1px black solid";
 	menu.onmouseleave = delayhidemenu;
 	menu.onclick = delayhidemenu;
 	var pstyle = "<p style=\"padding: 0 1rem; margin: 0;\">";
 	for(var i=0;i<menucontents.length;i++)
-		menu.innerHTML += pstyle+menucontents[i]+'</p>'
-	document.body.appendChild(menu)
+		menu.innerHTML += pstyle+menucontents[i]+'</p>';
+	document.body.appendChild(menu);
+	return menu;
 }
 
 function fixCtxEnt(s)

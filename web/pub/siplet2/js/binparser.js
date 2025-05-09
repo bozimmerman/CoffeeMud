@@ -39,11 +39,16 @@ var BPENTRY = function()
 
 var BPPARSE = function(lfok)
 {
-	this.entries = [];
-	this.data = [];
-	this.prev = 0;
-	this.nolf = !lfok;
-	this.state = BPSTATE.OUTER;
+	this.reset = function()
+	{
+		this.entries = [];
+		this.data = [];
+		this.prev = 0;
+		this.nolf = !lfok;
+		this.state = BPSTATE.OUTER;
+	};
+	this.reset();
+	
 	this.parse = function(data)
 	{
 		this.data = data;
