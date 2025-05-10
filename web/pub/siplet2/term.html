@@ -86,16 +86,19 @@
 <SCRIPT LANGUAGE=JavaScript src="js/mxpsupport.js"></SCRIPT>
 <div id="menuarea"></div>
 <div id="tabarea"></div>
-<span id="windowarea"></span>
+<div id="windowarea"></div>
 <div id="inputarea">
     <textarea rows=3 type="text" id="input"></textarea>
 </div>
 <SCRIPT LANGUAGE=JavaScript>
-var topOffset = menuAreaHeight + tabAreaHeight;
-windowArea = document.getElementById('windowarea');
 configureInput(document.getElementById('inputarea'), document.getElementById('input'));
 configureMenu(document.getElementById('menuarea'));
 configureTabs(document.getElementById('tabarea'));
+var tabStyle = window.getComputedStyle(document.getElementById('tabarea'));
+var winAreaTop = parseInt(tabStyle.top) + parseInt(tabStyle.height) + 1;
+var winAreaHeight = 'calc(100% - '+(winAreaTop+inputAreaHeight)+'px)';
+window.windowArea = document.getElementById('windowarea');
+window.windowArea.style.cssText='background-color:black;position:absolute;width:100%;top:'+winAreaTop+'px;height:'+winAreaHeight+';';
 var autoUrl = getConfig('/phonebook/auto',{"ws":"ws://coffeemud.net:27744/WebSock"}).ws;
 if(autoUrl.length > 0)
 	AddNewSipletTab(autoUrl);

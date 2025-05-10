@@ -1,5 +1,6 @@
 function TEXT(textParsers)
 {
+	this.resume = null;
 	this.reset = function()
 	{
 		this.lastParser = null;
@@ -37,11 +38,38 @@ function TEXT(textParsers)
 
 	this.process = function(str)
 	{
+		if(this.resume != null)
+		{
+			if(this.resume)
+				str = this.resume.text + str;
+			if(this.resume.call)
+				this.resume.call();
+			this.resume = null;
+		}
 		var i=0;
+		var excep = null;
 		while(i<str.length)
 		{
+			if(excep != null)
+			{
+				this.resume = {
+					"text": str.substr(i),
+					"call": excep
+				}
+				return str.substr(0,i);
+			}
 			var c = str[i];
-			var s = this.parse(c);
+			var s;
+			try 
+			{
+				s = this.parse(c);
+			}
+			catch(e)
+			{
+				s = e.message;
+				if(e.call !== undefined)
+					excep = e.call;
+			} 
 			if(s != null) // should this be before the parser trig checks?
 			{
 				if(s.length>0)
@@ -104,6 +132,13 @@ function TEXT(textParsers)
 				break;
 			}
 			i++;
+		}
+		if(excep != null)
+		{
+			this.resume = {
+				"text": '',
+				"call": excep
+			}
 		}
 		return str;
 	}

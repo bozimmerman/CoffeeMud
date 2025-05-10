@@ -49,6 +49,7 @@ var MXPElement = function(theName, theDefinition, theAttributes, theFlag, theBit
 	this.attributeValues = null;
 	this.alternativeAttributes	= null;
 	this.text = null;
+	this.dests = [];
 	
 	if (((this.bitmap & MXPBIT.COMMAND)==0) 
 	&& (theDefinition.toUpperCase().indexOf("&TEXT;") >= 0))
@@ -309,6 +310,7 @@ var MXP = function(sipwin)
 {
 	this.reset = function()
 	{
+		this.dests = [];
 		this.defaultMode = MXPMODE.LINE_OPEN; // actually changes!
 		this.mode = 0;
 		this.eatTextUntilEOLN = false;
@@ -356,9 +358,9 @@ var MXP = function(sipwin)
 			"GAUGE": new MXPElement("GAUGE", "", "ENTITY MAX CAPTION COLOR", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 			"STAT": new MXPElement("STAT", "", "ENTITY MAX CAPTION", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
 			"FRAME": new MXPElement("FRAME", "", "NAME ACTION TITLE INTERNAL ALIGN LEFT TOP WIDTH HEIGHT SCROLLING FLOATING", 
-					"", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-			"DEST": new MXPElement("DEST", "", "NAME", "", MXPBIT.SPECIAL | MXPBIT.NOTSUPPORTED),
-			"DESTINATION": new MXPElement("DESTINATION", "", "NAME", "", MXPBIT.SPECIAL | MXPBIT.NOTSUPPORTED),
+					"", MXPBIT.SPECIAL | MXPBIT.COMMAND),
+			"DEST": new MXPElement("DEST", "", "NAME EOF", "", MXPBIT.SPECIAL),
+			"DESTINATION": new MXPElement("DESTINATION", "", "NAME EOF", "", MXPBIT.SPECIAL),
 			"RELOCATE": new MXPElement("RELOCATE", "", "URL PORT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
 			"USER": new MXPElement("USER", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
 			"PASSWORD": new MXPElement("PASSWORD", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
@@ -1094,6 +1096,18 @@ var MXP = function(sipwin)
 		}
 		return old;
 	};
+
+	this.getFrameMap = function()
+	{
+		var framechoices = Object.assign({}, this.frames);
+		if(this.dests.length == 1) 
+			framechoices['_previous'] = sipwin.topWindow;
+		else
+		if(this.dests.length > 1) 
+			framechoices['_previous'] = this.dests[this.dests.length-2];
+		framechoices['_top'] = sipwin.topWindow;
+		return framechoices;
+	};
 	
 	this.doSpecialProcessing = function(E, isEndTag)
 	{
@@ -1304,12 +1318,10 @@ var MXP = function(sipwin)
 		else
 		if (tagName=="FRAME")
 		{
-			//		"FRAME": new MXPElement("FRAME", "", 
-			//"NAME ACTION TITLE INTERNAL ALIGN LEFT TOP WIDTH HEIGHT SCROLLING FLOATING", 
-			//"", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-			// names = _top and _previous
 			var name = E.getAttributeValue("NAME");
 			var action = E.getAttributeValue("ACTION"); // open,close,redirect
+			if(action == null)
+				action = '';
 			var title = E.getAttributeValue("TITLE");
 			var internal = E.getAttributeValue("INTERNAL");
 			var align = E.getAttributeValue("ALIGN"); // internal only: left,right,bottom,top 
@@ -1319,16 +1331,17 @@ var MXP = function(sipwin)
 			var height = E.getAttributeValue("HEIGHT");
 			var scrolling = E.getAttributeValue("SCROLLING");
 			var floating = E.getAttributeValue("FLOATING"); // otherwise, close on click-away
+			var framechoices = this.getFrameMap();
 			if("CLOSE" == action.toUpperCase())
 			{
-				if((name != null) && (name in this.frames))
+				if((name != null) && (name in framechoices))
 				{
-					var frame = this.frames[name];
-					//TODO: what if frame == this.window?
+					var frame = framechoices[name];
+					//TODO: what if frame == sipwin.window?
 					var sprops = frame.sprops;
 					if(sprops.internal)
 					{
-						var parentFrame = sprops.parent;
+						var parentFrame = frame.parentNode;
 						var otherFrames = Array.from(parentFrame.getElementsByTagName('div'));
 						var otherContentFrame = null;
 						for(var i=0;i<otherFrames.length;i++)
@@ -1375,19 +1388,99 @@ var MXP = function(sipwin)
 					"scrolling": scrolling,
 					"floating": floating
 				};
+				if((name in framechoices) && ("REDIRECT" == action.toUpperCase()))
+				{
+					var error = new Error('');
+					var newFrame = framechoices[name];
+					error.call = function() {
+						sipwin.flushWindow();
+						sipwin.window = newFrame;
+					};
+					throw error;
+				}
+				else
 				if(internal != null)
 				{
-					if(align != null)
+					var aligns = ["LEFT","RIGHT","TOP","BOTTOM"];
+					var alignx = aligns.indexOf(align.toUpperCase().trim());
+					if(alignx >= 0)
 					{
 						if(width == null)
 							width = "50%";
 						if(height == null)
 							height = "50%";
-						var currentWindow = sipwin.window; // where to add new windows
-						var oldWindow = document.createElement('div');
-						var newWindow = document.createElement('div');
-						
-						
+						var mainParentWindow = sipwin.window.parentNode; // has the gauge and so forth
+						var newParentWindow = document.createElement('div'); // will replace the old parent window.
+						newParentWindow.style.cssText = sipwin.window.style.cssText;
+						newParentWindow.style.border = "solid white";
+						mainParentWindow.appendChild(newParentWindow);
+						var newContentWindow = document.createElement('div');
+						newContentWindow.style.cssText = sipwin.window.style.cssText;
+						newContentWindow.style.left = '0%';
+						newContentWindow.style.top = '0%';
+						newContentWindow.style.width = '100%';
+						newContentWindow.style.height = '100%';
+						newParentWindow.appendChild(newContentWindow);
+						switch(alignx)
+						{
+						case 0: // left
+							newParentWindow.style.width = width;
+							sipwin.window.style.left = width;
+							sipwin.window.style.width  = 'calc('+sipwin.window.style.width+' - ' + newParentWindow.style.width + ')';
+							break;
+						case 1: // right
+							newParentWindow.style.left = 'calc(' + newParentWindow.style.width + ' - '  + width + ')';
+							newParentWindow.style.width = width;
+							sipwin.window.style.width  = 'calc('+sipwin.window.style.width+' - ' + newParentWindow.style.width + ')';
+							break;
+						case 2: // top
+							newParentWindow.style.top = "0%";
+							newParentWindow.style.height = height;
+							sipwin.window.style.top = height;
+							sipwin.window.style.height  = 'calc('+sipwin.window.style.height+' - ' + newParentWindow.style.height + ')';
+							break;
+						case 3: // bottom
+							newParentWindow.style.top = 'calc(' + newParentWindow.style.height + ' - '  + height + ')';
+							newParentWindow.style.height = height;
+							sipwin.window.style.height  = 'calc('+sipwin.window.style.height+' - ' + newParentWindow.style.height + ')';
+							break;
+						}
+						newParentWindow.style.overflowX = 'hidden';
+						newParentWindow.style.overflowY = 'hidden';
+						// how we can get the new windows real width
+						var titleBar;
+						if((title != null) && (title.trim().length>0))
+						{
+							titleBar = document.createElement('div');
+							titleBar.style.cssText = "position:absolute;left:0%;height:20px;width:100%;";
+							titleBar.style.top = newContentWindow.style.top;
+							titleBar.style.backgroundColor = 'white';
+							titleBar.style.foregroundColor = 'black';
+							titleBar.style.color = 'black';
+							newContentWindow.style.top = '20px';
+							newContentWindow.style.height = 'calc(100% - 20px)';
+							titleBar.innerHTML = title;
+						}
+						else
+						{
+							titleBar = document.createElement('div');
+							titleBar.style.cssText = "position:absolute;top:0px;left:0px;height:0px;width:0px;";
+						}
+						newParentWindow.append(titleBar);
+						if((scrolling!=null) && (scrolling.toLowerCase() == 'yes'))
+						{
+						    newContentWindow.style.overflowY = 'auto';
+						    newContentWindow.style.overflowX = 'auto';
+						}
+						if(floating == null)
+						{
+							newContentWindow.onclick=function() {
+								//todo; delete and revert the window
+							}
+						}
+						if(action.toUpperCase() =='REDIRECT')
+							sipwin.window = newContentWindow;
+						this.frames[name] = newParentWindow;
 					}
 				}
 				else
@@ -1410,7 +1503,9 @@ var MXP = function(sipwin)
 						titleBar.style.cssText = "position:absolute;top:0%;left:0%;height:20px;width:100%;";
 						titleBar.style.backgroundColor = 'white';
 						titleBar.style.foregroundColor = 'black';
+						titleBar.style.color = 'black';
 						contentTop = "20px";
+						titleBar.innerHTML = title;
 					}
 					else
 					{
@@ -1441,7 +1536,6 @@ var MXP = function(sipwin)
 					if(action.toUpperCase() =='REDIRECT')
 						sipwin.window = contentWindow;
 					sipwin.topWindow.appendChild(newTopWindow);
-					sprops["parent"] = sipwin.topWindow;
 					this.frames[name] = newTopWindow;
 				}
 			}
@@ -1537,14 +1631,43 @@ var MXP = function(sipwin)
 		|| (tagName == "DESTINATION"))
 		{
 			var name = E.getAttributeValue("NAME");
-			if(name==null)
-				name="";
 			var eof = E.getAttributeValue("EOF");
 			var dx = E.getAttributeValue("X");
 			var dy = E.getAttributeValue("Y");
-			//TODO: not yet implemented, because frame is not
-			//jscriptBuffer.append("retarget('" + NAME + "');");
-			// this also supports positioning the cursor.. how the heck is that possible here?
+			var framechoices = this.getFrameMap();
+			if((name != null) && (name in framechoices))
+			{
+				if(isEndTag)
+				{
+					var error = new Error('');
+					var newFrame = framechoices[name];
+					var dests = this.dests;
+					error.call = function() {
+						sipwin.flushWindow();
+						if(dests.length > 0)
+							sipwin.window = dests.pop(); // the text window
+						else
+							sipwin.window = sipwin.topWindow.firstChild.firstChild;
+					};
+					throw error;
+				}
+				else
+				{
+					var frame = framechoices[name];
+					if(frame.firstChild)
+						frame = frame.firstChild;
+					this.dests.push(sipwin.window);
+					var error = new Error('');
+					if(eof != null)
+						frame.innerHTML = '';
+					error.call = function() {
+						sipwin.flushWindow();
+						sipwin.window = frame;
+					};
+					throw error;
+				}
+			}
+			//TODO: this also supports positioning the cursor.. how the heck is that possible here?
 			return;
 		}
 		else
