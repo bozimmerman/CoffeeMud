@@ -1409,44 +1409,55 @@ var MXP = function(sipwin)
 							width = "50%";
 						if(height == null)
 							height = "50%";
-						var mainParentWindow = sipwin.window.parentNode; // has the gauge and so forth
+						var siblingWindow = sipwin.window.parentNode; // the current window container
+						if(siblingWindow == sipwin.topContainer)
+							siblingWindow = sipwin.window;
+						var mainParentWindow = siblingWindow.parentNode; // has the titlebar in it and so forth
 						var newParentWindow = document.createElement('div'); // will replace the old parent window.
-						newParentWindow.style.cssText = sipwin.window.style.cssText;
+						newParentWindow.style.cssText = siblingWindow.style.cssText;
 						newParentWindow.style.border = "solid white";
+						var newTitleWindow = document.createElement('div'); // will replace the old parent window.
+						newTitleWindow.style.cssText = siblingWindow.style.cssText;
+						newTitleWindow.style.border = "solid white";
+						newParentWindow.appendChild(newTitleWindow);
 						mainParentWindow.appendChild(newParentWindow);
 						var newContentWindow = document.createElement('div');
-						newContentWindow.style.cssText = sipwin.window.style.cssText;
+						newContentWindow.style.cssText = siblingWindow.style.cssText;
 						newContentWindow.style.left = '0%';
 						newContentWindow.style.top = '0%';
 						newContentWindow.style.width = '100%';
 						newContentWindow.style.height = '100%';
-						newParentWindow.appendChild(newContentWindow);
+						newTitleWindow.appendChild(newContentWindow);
 						switch(alignx)
 						{
 						case 0: // left
 							newParentWindow.style.width = width;
-							sipwin.window.style.left = width;
-							sipwin.window.style.width  = 'calc('+sipwin.window.style.width+' - ' + newParentWindow.style.width + ')';
+							siblingWindow.style.left = width;
+							siblingWindow.style.width  = 'calc('+siblingWindow.style.width+' - ' + newParentWindow.style.width + ')';
 							break;
 						case 1: // right
 							newParentWindow.style.left = 'calc(' + newParentWindow.style.width + ' - '  + width + ')';
 							newParentWindow.style.width = width;
-							sipwin.window.style.width  = 'calc('+sipwin.window.style.width+' - ' + newParentWindow.style.width + ')';
+							siblingWindow.style.width  = 'calc('+siblingWindow.style.width+' - ' + newParentWindow.style.width + ')';
 							break;
 						case 2: // top
 							newParentWindow.style.top = "0%";
 							newParentWindow.style.height = height;
-							sipwin.window.style.top = height;
-							sipwin.window.style.height  = 'calc('+sipwin.window.style.height+' - ' + newParentWindow.style.height + ')';
+							siblingWindow.style.top = height;
+							siblingWindow.style.height  = 'calc('+siblingWindow.style.height+' - ' + newParentWindow.style.height + ')';
 							break;
 						case 3: // bottom
 							newParentWindow.style.top = 'calc(' + newParentWindow.style.height + ' - '  + height + ')';
 							newParentWindow.style.height = height;
-							sipwin.window.style.height  = 'calc('+sipwin.window.style.height+' - ' + newParentWindow.style.height + ')';
+							siblingWindow.style.height  = 'calc('+siblingWindow.style.height+' - ' + newParentWindow.style.height + ')';
 							break;
 						}
 						newParentWindow.style.overflowX = 'hidden';
 						newParentWindow.style.overflowY = 'hidden';
+						newTitleWindow.style.overflowX = 'hidden';
+						newTitleWindow.style.overflowY = 'hidden';
+						newContentWindow.style.overflowX = 'hidden';
+						newContentWindow.style.overflowY = 'hidden';
 						// how we can get the new windows real width
 						var titleBar;
 						if((title != null) && (title.trim().length>0))
@@ -1459,14 +1470,14 @@ var MXP = function(sipwin)
 							titleBar.style.color = 'black';
 							newContentWindow.style.top = '20px';
 							newContentWindow.style.height = 'calc(100% - 20px)';
-							titleBar.innerHTML = title;
+							titleBar.innerHTML = '&nbsp;'+title;
 						}
 						else
 						{
 							titleBar = document.createElement('div');
 							titleBar.style.cssText = "position:absolute;top:0px;left:0px;height:0px;width:0px;";
 						}
-						newParentWindow.append(titleBar);
+						newTitleWindow.append(titleBar);
 						if((scrolling!=null) && (scrolling.toLowerCase() == 'yes'))
 						{
 						    newContentWindow.style.overflowY = 'auto';
@@ -1480,7 +1491,7 @@ var MXP = function(sipwin)
 						}
 						if(action.toUpperCase() =='REDIRECT')
 							sipwin.window = newContentWindow;
-						this.frames[name] = newParentWindow;
+						this.frames[name] = newTitleWindow;
 					}
 				}
 				else
@@ -1505,7 +1516,7 @@ var MXP = function(sipwin)
 						titleBar.style.foregroundColor = 'black';
 						titleBar.style.color = 'black';
 						contentTop = "20px";
-						titleBar.innerHTML = title;
+						titleBar.innerHTML = '&nbsp;'+title;
 					}
 					else
 					{
