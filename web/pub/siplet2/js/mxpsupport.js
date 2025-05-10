@@ -1415,7 +1415,6 @@ var MXP = function(sipwin)
 						var mainParentWindow = siblingWindow.parentNode; // has the titlebar in it and so forth
 						var newParentWindow = document.createElement('div'); // will replace the old parent window.
 						newParentWindow.style.cssText = siblingWindow.style.cssText;
-						newParentWindow.style.border = "solid white";
 						var newTitleWindow = document.createElement('div'); // will replace the old parent window.
 						newTitleWindow.style.cssText = siblingWindow.style.cssText;
 						newTitleWindow.style.border = "solid white";
