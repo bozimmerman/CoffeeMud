@@ -32,40 +32,91 @@ function configureTabs(obj)
 	tabRow.appendChild(tabSpacer);
 }
 
+function FindTabSpan()
+{
+	var tabSpan=1;
+	switch(tabTabs.length)
+	{
+		case 0: tabSpan=9; break;
+		case 1: tabSpan=4; break;
+		case 2: tabSpan=3; break;
+		case 3: tabSpan=2; break;
+		case 4: tabSpan=2; break;
+		case 5: tabSpan=1; break;
+		case 6: tabSpan=1; break;
+		case 7: tabSpan=1; break;
+		case 8: tabSpan=1; break;
+		case 9: tabSpan=1; break;
+	}
+	return tabSpan;
+}
+
+function CloseTab(img)
+{
+	var tab = img.parentNode;
+	for(var i=0;i<window.siplets.length;i++)
+		if(window.siplets[i].tab == tab)
+		{
+			window.siplets[i].closeSocket();
+			window.siplets.splice(i,1);
+			if(window.currentSiplet == window.siplets[i])
+			{
+				if(window.siplets.length == 0)
+					window.currentSiplet = null;
+				else
+					SetCurrentTab(0);
+				break;
+			}
+		}
+	var tabRow = tab.parentNode;
+	tabRow.removeChild(tab);
+	var x = tabTabs.indexOf(tab);
+	tabTabs.splice(x,1);
+	var tabSpan = FindTabSpan();
+	var spacerSpan=10 - ((tabTabs.length) * tabSpan); 
+	for(var i=0;i<tabTabs.length;i++)
+		tabTabs[i].colSpan=tabSpan;
+	if(tabTabs.length == 9)
+		tabRow.appendChild(tabSpacer); // re-add it
+	tabSpacer.colSpan = spacerSpan;
+}
+
 function AddNewTab()
 {
 	if(tabTabs.length < 10)
 	{
-		var tabSpan=1;
-		switch(tabTabs.length)
-		{
-			case 0: tabSpan=9; break;
-			case 1: tabSpan=4; break;
-			case 2: tabSpan=3; break;
-			case 3: tabSpan=2; break;
-			case 4: tabSpan=2; break;
-			case 5: tabSpan=1; break;
-			case 6: tabSpan=1; break;
-			case 7: tabSpan=1; break;
-			case 8: tabSpan=1; break;
-			case 9: tabSpan=0; break;
-		}
+		var tabSpan = FindTabSpan();
 		var spacerSpan=10 - ((tabTabs.length+1) * tabSpan); 
 		for(var i=0;i<tabTabs.length;i++)
 			tabTabs[i].colSpan=tabSpan;
-		if(tabSpan == 0)
-			tabSpacer.outerHTML = ''; // delete it!
+		if(tabTabs.length == 9)
+			tabSpacer.parentNode.removeChild(tabSpacer); // delete it, but also keep it
 		else
 			tabSpacer.colSpan = spacerSpan;
 		var tab = document.createElement('td');
+		tab.onmouseover=function() {
+			var old = tab.getElementsByTagName('img');
+			if((old==null)||(old.length ==0))
+			{
+				var close = '<IMG style="float: right; width: 16px; height: 16px;" '
+				+'ONCLICK="CloseTab(this);" '
+				+'SRC="images/close.gif">';
+				tab.innerHTML += close;
+			}
+		};
+		tab.onmouseleave=function() {
+			var old = tab.getElementsByTagName('img');
+			if((old!=null)&&(old.length >0))
+				tab.removeChild(old[0]);
+		}
 		tab.colSpan = tabSpan;
 		tab.style = "border: 1px solid white; padding: 0;background-color:yellow;foreground-color:black;";
 		var currentTab = tabTabs.length;
 		tab.onclick = function() {
-			SetCurrentTab(currentTab)
+			SetCurrentTab(currentTab);
 		};
 		tab.innerHTML = 'connecting...';
-		if(tabSpan == 0)
+		if(tabTabs.length == 9)
 			tabRow.appendChild(tab);
 		else
 			tabRow.insertBefore(tab,tabSpacer);
