@@ -36,7 +36,7 @@ function configureMenu(obj)
 			{"n":"Reconnect","a":"javascript:menuReconnect();"}
 		]},
 		{"Options": [
-			{"n":"Global"}
+			{"n":"Global","a":"javascript:menuGlobal();"}
 		]},
 		{"Help": [
 			{"n":"About","a":"javascript:menuAbout()"}
@@ -97,6 +97,8 @@ function getOptionWindow(heading, w, h)
 		contentWindow.style.cssText = "position:absolute;top:20px;left:0%;height:calc(100% - 20px);width:100%;";
 		contentWindow.style.backgroundColor = 'lightgray';
 		contentWindow.style.foregroundColor = 'black';
+	    contentWindow.style.overflowY = 'auto';
+	    contentWindow.style.overflowX = 'hidden';
 		menuWindow.appendChild(titleBar);
 		menuWindow.appendChild(contentWindow);
 	}
@@ -119,16 +121,14 @@ function getOptionWindow(heading, w, h)
 function menuAbout()
 {
 	var content = getOptionWindow("About",60,40);
-	var aboutHtml = '<div style="position:absolute;top:50%;left:50%;white-space:nowrap;';
-	aboutHtml += 'transform:translate(-50%,-50%);text-align:center;line-height: 1.5;">';
-	aboutHtml += '<div style="display:block;margin:0 auto;"><h1>Siplet v'+Siplet.VERSION_MAJOR;
-	if(Siplet.VERSION_MINOR != 0)
-		aboutHtml += '.'+Siplet.VERSION_MINOR;
-	aboutHtml += '</h1></div><BR><BR><div style="display:block;margin:0 auto;">';
-	aboutHtml += '(C)2025-2025 Bo Zimmerman</div>';
-	aboutHtml += '</div>';
-	content.innerHTML=aboutHtml;
+	populateDivFromUrl(content, 'js/dialogs/about.htm');
 	this.menuWindow.onclick = hideOptionWindow;
+}
+
+function menuGlobal()
+{
+	var content = getOptionWindow("Global Options",60,40);
+	populateDivFromUrl(content, 'js/dialogs/global.htm');
 }
 
 function menuDisconnect()

@@ -118,7 +118,18 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 	{
 		synchronized(this)
 		{
-			host = CMLib.host();
+			MudHost foundH = null;
+			if((httpReq != null)
+			&&(httpReq.getUrlParameter("port")!=null))
+			{
+				final int portNum = CMath.s_int(httpReq.getUrlParameter("port"));
+				for(final MudHost mudhost : CMLib.hosts())
+				{
+					if(mudhost.getPort() == portNum)
+						foundH = mudhost;
+				}
+			}
+			host = (foundH != null) ? foundH : CMLib.host();
 			final CoffeeIOPipes pipes = new CoffeeIOPipes(65536);
 			lsock=new CoffeePipeSocket(httpReq.getClientAddress(),pipes.getLeftPipe(),pipes.getRightPipe());
 			rsock=new CoffeePipeSocket(httpReq.getClientAddress(),pipes.getRightPipe(),pipes.getLeftPipe());

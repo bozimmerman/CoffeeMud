@@ -1,0 +1,37 @@
+<TABLE WIDTH=100% BORDER=0>
+<TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE>Windows</TD>
+</TR><TR>
+	<TD WIDTH=30%>Buffer Size</TD>
+	<TD><INPUT SIZE=5 ONCHANGE="setConfig('window/lines',this.value);" VALUE="${getConfig('window/lines',null)}"></TD>
+</TR><TR>
+	<TD>Text Font</TD>
+	<TD>
+		<SELECT ONCHANGE="setConfig('window/fontface',this.value);">
+			<OPTION VALUE="monospace" ${getConfig('window/fontface',null).toLowerCase()=='monospace'?'SELECTED':''}>Monospace
+			<OPTION VALUE="Courier" ${getConfig('window/fontface',null).toLowerCase()=='courier'?'SELECTED':''}>Courier
+			<OPTION VALUE="Courier New" ${getConfig('window/fontface',null).toLowerCase()=='courier new'?'SELECTED':''}>Courier New
+		</SELECT>
+	</TD>
+</TR><TR>
+	<TD>Text Font Size</TD>
+	<TD><INPUT SIZE=5 ONCHANGE="setConfig('window/fontsize',this.value+'px');" VALUE="${parseInt(getConfig('window/fontsize',null))}"></TD>
+</TR><TR><TD COLSPAN=2></TD>
+</TR><TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE>Protocols</TD>
+</TR><TR>
+	<TD><INPUT TYPE=CHECKBOX ${getConfig('window/term/msp','true').toLowerCase()==='true'?'CHECKED':''}
+			ONCLICK="setConfig('window/term/msp',''+this.checked);">MSP</TD>
+	<TD>(Mud Sound Protocol)</TD>
+</TR><TR>
+	<TD><INPUT TYPE=CHECKBOX ${getConfig('window/term/mxp','true').toLowerCase()==='true'?'CHECKED':''}
+			ONCLICK="setConfig('window/term/mxp',''+this.checked);">MXP</TD>
+	<TD>(Mud eXtension Protocol)</TD>
+</TR><TR>
+	<TD><INPUT TYPE=CHECKBOX ${getConfig('window/term/msdp','true').toLowerCase()==='true'?'CHECKED':''}
+			ONCLICK="setConfig('window/term/msdp',''+this.checked);">MSDP</TD>
+	<TD>(Mud Server Data Protocol)</TD>
+</TR><TR>
+	<TD><INPUT TYPE=CHECKBOX ${getConfig('window/term/gmcp','true').toLowerCase()==='true'?'CHECKED':''}
+			ONCLICK="setConfig('window/term/gmcp',''+this.checked);">GMCP</TD>
+	<TD>(Generic Mud Communication Protocol)</TD>
+</TR>
+</TABLE>

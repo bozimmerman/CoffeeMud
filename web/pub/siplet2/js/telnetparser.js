@@ -38,6 +38,16 @@ var TELOPT =
 	TTYPE: 24
 };
 
+var MSDPOP =
+{
+	MSDP_VAR: 1,
+	MSDP_VAL: 2,
+	MSDP_TABLE_OPEN: 3,
+	MSDP_TABLE_CLOSE: 4,
+	MSDP_ARRAY_OPEN: 5,
+	MSDP_ARRAY_CLOSE: 6
+}
+
 var StringToAsciiArray = function(str) {
 	var arr = [];
 	for(var i=0;i<str.length;i++)
@@ -49,10 +59,10 @@ var TELNET = function(sipwin)
 {
 	this.reset = function()
 	{
-		this.neverSupportMSP = false;
-		this.neverSupportMXP = false;
-		this.neverSupportMSDP= true; //TODO: soon!
-		this.neverSupportGMCP = true; //TODO: soon!
+		this.neverSupportMSP = !(getConfig("window/term/msp",'true') === 'true');
+		this.neverSupportMXP = !(getConfig("window/term/mxp",'true') === 'true');
+		this.neverSupportMSDP= !(getConfig("window/term/msdp",'true') === 'true');
+		this.neverSupportGMCP = !(getConfig("window/term/gmcp",'true') === 'true');
 		this.neverSupportMCCP = true; //TODO: maybe add pako later?
 		this.msdpInforms = "";
 		this.gmcpInforms = "";
@@ -93,7 +103,6 @@ var TELNET = function(sipwin)
 			else
 			if (subOptionCode == TELOPT.NAWS)
 			{
-				//TODO: store screen info somewhere else
 				response = response.concat([
 					TELOPT.IAC, TELOPT.SB, TELOPT.NAWS,
 						0,sipwin.width,0,sipwin.height,
@@ -107,30 +116,16 @@ var TELNET = function(sipwin)
 			else
 			if (subOptionCode == TELOPT.MSDP)
 			{
-				//TODO: !!!
-				/*
-				final String received = this.msdpModule.msdpReceive(subOptionData.toByteArray());
-				synchronized (msdpInforms)
-				{
-					msdpInforms.append(received);
-				}
-				if (debugTelnetCodes)
-					debugStream.println("Got MSDP: " + received);
-				*/
+				var received = this.msdpReceive(subOptionData);
+				msdpInforms += received;
+				//TODO: really, we just accumulate it?!
 			}
 			else
 			if (subOptionCode == TELOPT.GMCP)
 			{
-				//TODO: !!!
-				/*
-					final String received = this.gmcpModule.gmcpReceive(subOptionData.toByteArray());
-					synchronized (gmcpInforms)
-					{
-						gmcpInforms.append(received + "\n");
-					}
-					if (debugTelnetCodes)
-						debugStream.println("Got GMCP: " + received);
-				*/
+				var received = this.gmcpReceive(subOptionData);
+				this.gmcpInforms += received + "\n";
+				//TODO: really, we just accumulate it?!
 			}
 			break;
 		}
@@ -266,7 +261,7 @@ var TELNET = function(sipwin)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.MXP]);
 					sipwin.MXPsupport = false;
-					//TODO: if (mxpModule != null) mxpModule.shutdownMXP();
+					//if (mxpModule != null) mxpModule.shutdownMXP();
 				}
 				break;
 			};
@@ -348,7 +343,7 @@ var TELNET = function(sipwin)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.WONT, TELOPT.MXP]);
 					sipwin.MXPsupport = false;
-					//TODO: if (mxpModule != null) mxpModule.shutdownMXP();
+					//if (mxpModule != null) mxpModule.shutdownMXP();
 				}
 				break;
 			case TELOPT.GA:
@@ -360,5 +355,113 @@ var TELNET = function(sipwin)
 			break;
 		}
 		return new Uint8Array(response).buffer;
+	};
+	
+	this.gmcpReceive = function(buffer)
+	{
+		var s = '';
+		for (var i=0; i <buffer.length; i++)
+			newText += String.fromCharCode( buffer[i]);
+		var x=s.indexOf(' ');
+		if(x<0)
+			return s;
+		var cmd = s.substring(0,x);
+		var jsonStr = s.substring(x+1).trim();
+		if(cmd.equalsIgnoreCase("siplet.input"))
+		{
+			var obj=JSON.parse(jsonStr);
+			var title = obj["title"];
+			var data = obj["text"];
+			jscriptBuffer.append("retarget('" + MiniJSON.toJSONString(title) + "','"+MiniJSON.toJSONString(data)+"');");
+			return "";
+		}
+		return s;
+	};
+	
+	this.msdpReceive = function(buffer)
+	{
+		var map = {};
+		var stack = [];
+		stack.push({});
+		var str = null;
+		var v = null;
+		var valVar = null;
+		var x = -1;
+		var M = null;
+		while (++x < dataSize)
+		{
+			switch (buffer[x])
+			{
+			case MSDPOP.MSDP_VAR: // start a string
+				str = '';
+				v = str;
+				if (Array.isArray(stack[stack.length-1]))
+					stack[stack.length-1].push(str);
+				else
+					stack[stack.length-1][str] = '';
+				break;
+			case MSDPOP.MSDP_VAL:
+				valVar = v;
+				v = null;
+				str = '';
+				break;
+			case MSDPOP.MSDP_TABLE_OPEN: // open a table
+				M = {};
+				if (Array.isArray(stack[stack.length-1]))
+					stack[stack.length-1].push(M);
+				else
+				if(varVal != null)
+					stack[stack.length-1][valVar] = M;
+				valVar = null;
+				stack.push(M);
+				break;
+			case MSDPOP.MSDP_TABLE_CLOSE: // done with table
+				if((stack.length > 1)&&(!Array.isArray(stack[stack.length-1])))
+					stack.pop();
+				break;
+			case MSDPOP.MSDP_ARRAY_OPEN: // open an array
+				M = [];
+				if (Array.isArray(stack[stack.length-1]))
+					stack[stack.length-1].push(M);
+				else
+				if (valVar != null)
+					stack[stack.length-1][valVar]= M;
+				valVar = null;
+				stack.push(M);
+				break;
+			case MSDPOP.MSDP_ARRAY_CLOSE: // close an array
+				if((stack.length > 1)&&(Array.isArray(stack[stack.length-1])))
+					stack.pop();
+				break;
+			default:
+				if (Array.isArray(stack[stack.length-1]))
+				{
+					if(!(str in stack[stack.length-1]))
+						stack[stack.length-1].push(str);
+				}
+				else
+					stack[stack.length-1][valVar]= str;
+				valVar = null;
+				if (str != null)
+					str += String.fromCharCode(buffer[x]);
+				break;
+			}
+		}
+		return JSON.stringify(stack[0]);
 	}
+};
+
+var updateTelnetOptions = function() {
+	for(var i=0;i<window.siplets.length;i++)
+	{
+		var siplet = window.siplets[i];
+		siplet.telnet.neverSupportMSP = !(getConfig("window/term/msp",'true') === 'true');
+		siplet.telnet.neverSupportMXP = !(getConfig("window/term/mxp",'true') === 'true');
+		siplet.telnet.neverSupportMSDP= !(getConfig("window/term/msdp",'true') === 'true');
+		siplet.telnet.neverSupportGMCP = !(getConfig("window/term/gmcp",'true') === 'true');
+    }
 }
+addConfigListener('window/term/msp', updateTelnetOptions);
+addConfigListener('window/term/mxp', updateTelnetOptions);
+addConfigListener('window/term/msdp', updateTelnetOptions);
+addConfigListener('window/term/gmcp', updateTelnetOptions);

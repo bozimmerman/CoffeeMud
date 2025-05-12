@@ -42,3 +42,30 @@ function isNumber(c)
 		return (!isNaN(c)) && (!isNaN(parseFloat(c)));
 	return false;
 }
+
+function populateDivFromUrl(div, url) 
+{
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url, true);
+	xhr.onreadystatechange = function() {
+		if((xhr.readyState === 4)&&(xhr.status === 200)) 
+		{
+			var txt = xhr.responseText; // Populate div
+			var x = txt.indexOf('${');
+			while(x>=0) {
+				var y = txt.indexOf('}',x);
+				if(y>0)
+				{
+					var js = txt.substr(x+2,y-(x+2));
+					txt = txt.substr(0,x) + eval(js) + txt.substr(y+1);
+				}
+				else
+					txt = txt.substr(0,x) +  txt.substr(y+1);
+				x = txt.indexOf('${',x);
+			}
+			div.innerHTML = txt;
+		}
+	};
+	xhr.onerror = function() { div.innerHTML = 'Failed'; };
+	xhr.send();
+}

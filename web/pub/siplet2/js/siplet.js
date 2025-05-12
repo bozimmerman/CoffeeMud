@@ -34,9 +34,7 @@ function SipletWindow(windowName)
     this.topWindow.style.fontFamily = getConfig('window/fontface', 'monospace');
     this.topWindow.style.fontSize = getConfig('window/fontsize', '16px');
     this.topContainer = this.topWindow.firstChild;
-	this.topContainer.style.cssText = this.topWindow.style.cssText;
 	this.window = this.topContainer.firstChild;
-	this.window.style.cssText = this.topContainer.style.cssText;
 	[this.topWindow, this.topContainer, this.window].forEach(function(o)
 	{
 		o.style.position='absolute';
@@ -117,20 +115,16 @@ function SipletWindow(windowName)
 	this.flushWindow = function() {
 		if(this.htmlBuffer.length > 0)
 		{
-			var scroll = this.htmlBuffer.indexOf('<BR>')>=0;
 			var span = document.createElement('span');
 			span.innerHTML = this.htmlBuffer;
 			this.window.appendChild(span);
 			this.htmlBuffer='';
-			if(scroll)
+			if(window.currentSiplet != me)
 			{
-				if(window.currentSiplet != me)
-				{
-					this.tab.style.backgroundColor = "lightgreen";
-					this.tab.style.foregroundColor = "black";
-				}
-				this.window.scrollTop = this.window.scrollHeight - this.window.clientHeight;
+				this.tab.style.backgroundColor = "lightgreen";
+				this.tab.style.foregroundColor = "black";
 			}
+			this.window.scrollTop = this.window.scrollHeight - this.window.clientHeight;
 		}
 	}
 	this.onReceive = function(e)
@@ -161,7 +155,7 @@ function SipletWindow(windowName)
 					newText += me.ansi.process(blk.data);
 					if(!me.mxp.active())
 					{
-						this.htmlBuffer += newText;
+						me.htmlBuffer += newText;
 						continue;
 					}
 					var s = me.mxp.process(blk.data);
@@ -341,3 +335,27 @@ function CloseAllSiplets()
 		siplet.closeSocket();
 	}
 }
+setTimeout(function() {
+	var updateSipletConfigs = function() {
+		for(var i=0;i<window.siplets.length;i++)
+		{
+			var siplet = window.siplets[i];
+			siplet.width = getConfig('window/width',siplet.width);
+			siplet.height = getConfig('window/height',siplet.height);
+			siplet.maxLines = getConfig('window/lines',siplet.maxLines);
+		}
+	};
+	addConfigListener('window/width', updateSipletConfigs);
+	addConfigListener('window/height', updateSipletConfigs);
+	addConfigListener('window/lines', updateSipletConfigs);
+	var updateSipletWindows = function() {
+		for(var i=0;i<window.siplets.length;i++)
+		{
+			var siplet = window.siplets[i];
+		    siplet.topWindow.style.fontFamily = getConfig('window/fontface', siplet.topWindow.style.fontFamily);
+		    siplet.topWindow.style.fontSize = getConfig('window/fontsize', siplet.topWindow.style.fontSize);
+	    }
+	}
+	addConfigListener('window/fontface', updateSipletWindows);
+	addConfigListener('window/fontsize', updateSipletWindows);
+},0);
