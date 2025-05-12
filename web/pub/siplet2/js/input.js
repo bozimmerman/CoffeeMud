@@ -41,6 +41,15 @@ function inputKeyPress(e)
     }
 }
 
+function sendOneLine(txt)
+{
+	if(txt != null)
+	{
+		txt = txt.replaceAll('\n','%0D').replaceAll('\r','');
+	    window.currentSiplet.submitInput(txt);
+	}
+}
+
 function inputKeyDown(e)
 {
     var x = e.keyCode;

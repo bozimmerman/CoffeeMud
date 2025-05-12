@@ -101,8 +101,8 @@ function TEXT(textParsers)
 				i += 3;
 				break;
 			case ' ':
-				str = str.substr(0,i)+'&nbsp;'+str.substr(i+1);
-				i += 4;
+				//str = str.substr(0,i)+'&nbsp;'+str.substr(i+1);
+				//i += 4;
 				break;
 			case '>':
 				str = str.substr(0,i)+'&gt;'+str.substr(i+1);

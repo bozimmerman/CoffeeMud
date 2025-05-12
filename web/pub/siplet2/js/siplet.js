@@ -33,6 +33,7 @@ function SipletWindow(windowName)
 	
     this.topWindow.style.fontFamily = getConfig('window/fontface', 'monospace');
     this.topWindow.style.fontSize = getConfig('window/fontsize', '16px');
+	this.topWindow.style.whiteSpace = 'pre'; // Preserve spaces as-is
     this.topContainer = this.topWindow.firstChild;
 	this.window = this.topContainer.firstChild;
 	[this.topWindow, this.topContainer, this.window].forEach(function(o)

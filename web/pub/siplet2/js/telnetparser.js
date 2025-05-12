@@ -116,16 +116,26 @@ var TELNET = function(sipwin)
 			else
 			if (subOptionCode == TELOPT.MSDP)
 			{
-				var received = this.msdpReceive(subOptionData);
-				msdpInforms += received;
-				//TODO: really, we just accumulate it?!
+				if(subOptionData.length > 1)
+				{
+					if(subOptionData[subOptionData.length-1] == 255)
+						subOptionData.splice(subOptionData.length-1);
+					var received = this.msdpReceive(subOptionData);
+					msdpInforms += received;
+					//TODO: really, we just accumulate it?!
+				}
 			}
 			else
 			if (subOptionCode == TELOPT.GMCP)
 			{
-				var received = this.gmcpReceive(subOptionData);
-				this.gmcpInforms += received + "\n";
-				//TODO: really, we just accumulate it?!
+				if(subOptionData.length > 1)
+				{
+					if(subOptionData[subOptionData.length-1] == 255)
+						subOptionData.splice(subOptionData.length-1);
+					var received = this.gmcpReceive(subOptionData);
+					this.gmcpInforms += received + "\n";
+					//TODO: really, we just accumulate it?!
+				}
 			}
 			break;
 		}
@@ -361,18 +371,32 @@ var TELNET = function(sipwin)
 	{
 		var s = '';
 		for (var i=0; i <buffer.length; i++)
-			newText += String.fromCharCode( buffer[i]);
+			s += String.fromCharCode( buffer[i]);
 		var x=s.indexOf(' ');
 		if(x<0)
 			return s;
 		var cmd = s.substring(0,x);
 		var jsonStr = s.substring(x+1).trim();
-		if(cmd.equalsIgnoreCase("siplet.input"))
+		if(cmd.toLowerCase() == "siplet.input")
 		{
 			var obj=JSON.parse(jsonStr);
-			var title = obj["title"];
-			var data = obj["text"];
-			jscriptBuffer.append("retarget('" + MiniJSON.toJSONString(title) + "','"+MiniJSON.toJSONString(data)+"');");
+			window.sipletInputTitle = obj["title"];
+			window.sipletInputText = obj["text"];
+			var content = getOptionWindow("Siplet.Input",60,40);
+			populateDivFromUrl(content, 'js/dialogs/editor.htm');
+			window.SubmitSipletInputEntry = function()
+			{
+			    var textarea = content.getElementsByTagName('textarea')[0];
+			    sendOneLine(textarea.value);
+			    hideOptionWindow();
+			    setTimeout(boxFocus,500);
+			};
+			var SipletInputEntryFocus = function()
+			{
+			    var textarea = content.getElementsByTagName('textarea')[0];
+			    textarea.focus();
+			};
+			setTimeout(SipletInputEntryFocus,1000);
 			return "";
 		}
 		return s;
