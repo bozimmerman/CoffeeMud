@@ -98,7 +98,7 @@ function AddNewTab()
 			var old = tab.getElementsByTagName('img');
 			if((old==null)||(old.length ==0))
 			{
-				var close = '<IMG style="float: right; width: 16px; height: 16px;" '
+				var close = '<IMG style="position:absolute;top:0;right:0;width:16px; height:16px;" '
 				+'ONCLICK="CloseTab(this);" '
 				+'SRC="images/close.gif">';
 				tab.innerHTML += close;
@@ -110,7 +110,9 @@ function AddNewTab()
 				tab.removeChild(old[0]);
 		}
 		tab.colSpan = tabSpan;
-		tab.style = "border: 1px solid white; padding: 0;background-color:yellow;foreground-color:black;";
+		tab.style = "border: 1px solid white; padding: 0;background-color:yellow;color:black;";
+		tab.style.fontSize = 10;
+		tab.style.position = 'relative';
 		var currentTab = tabTabs.length;
 		tab.onclick = function() {
 			SetCurrentTab(currentTab);
@@ -124,4 +126,26 @@ function AddNewTab()
 		return tab;
 	}
 	return null;
+}
+
+function UpdateTabTitles(which)
+{
+	if((which+'').startsWith('g'))
+		return;
+	var phonebook = getConfig('/phonebook/dial',[]);
+	which = Number(which);
+	if((which<0) || (which > phonebook.length))
+		return;
+	var pb = phonebook[which];
+	for(var i=0;i<window.siplets.length;i++)
+	{
+		var siplet = window.siplets[i];
+		if(siplet.pbentry === pb)
+		{
+			siplet.tabTitle = pb.user + '@' + pb.name + ' ('+pb.port+')';
+			if(siplet.tab)
+				siplet.tab.innerHTML = siplet.tabTitle;
+			return;
+		}
+	}
 }

@@ -31,7 +31,7 @@ function configureMenu(obj)
 	
 	var menuData = [
 		{"Window": [
-			{"n":"New","a":"javascript:menuNew();"},
+			{"n":"Connect","a":"javascript:menuConnect();"},
 			{"n":"Disconnect","a":"javascript:menuDisconnect();"},
 			{"n":"Reconnect","a":"javascript:menuReconnect();"}
 		]},
@@ -87,16 +87,16 @@ function getOptionWindow(heading, w, h)
 		menuWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;";
 		menuWindow.style.backgroundColor = 'darkgray';
 		menuWindow.style.visibility = 'visible';
-		menuWindow.style.foregroundColor = 'black';
+		menuWindow.style.color = 'black';
 		document.body.appendChild(menuWindow);
 		var titleBar = document.createElement('div');
 		titleBar.style.cssText = "position:absolute;top:0%;left:0%;height:20px;width:100%;";
 		titleBar.style.backgroundColor = 'white';
-		titleBar.style.foregroundColor = 'black';
+		titleBar.style.color = 'black';
 		var contentWindow = document.createElement('div');
 		contentWindow.style.cssText = "position:absolute;top:20px;left:0%;height:calc(100% - 20px);width:100%;";
 		contentWindow.style.backgroundColor = 'lightgray';
-		contentWindow.style.foregroundColor = 'black';
+		contentWindow.style.color = 'black';
 	    contentWindow.style.overflowY = 'auto';
 	    contentWindow.style.overflowX = 'hidden';
 		menuWindow.appendChild(titleBar);
@@ -149,10 +149,8 @@ function menuReconnect()
 	}
 }
 
-function menuNew()
+function menuConnect()
 {
-	if(this.currentSiplet != null)
-	{
-		AddNewSipletTab(this.currentSiplet.url);
-	}
+	var content = getOptionWindow("Connect",60,40);
+	populateDivFromUrl(content, 'js/dialogs/connect.htm');
 }

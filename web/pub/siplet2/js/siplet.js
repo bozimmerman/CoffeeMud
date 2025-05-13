@@ -1,3 +1,8 @@
+window.currentSiplet = null;
+window.nextSipletSpanId = 0;
+window.siplets = [];
+window.windowArea = null;
+
 var Siplet =
 {
 	VERSION_MAJOR: 3.0,
@@ -28,6 +33,9 @@ function SipletWindow(windowName)
 	this.wsocket = null;
 	this.gauges=[];
 	this.gaugeWindow = null;
+	this.textBuffer = '';
+	this.textBufferPruneIndex = 0;
+	this.globalTriggers = GetGlobalTriggers();
 
 	var me = this;
 	
@@ -56,16 +64,16 @@ function SipletWindow(windowName)
 		{
 			me.wsopened=true; 
 			me.tab.style.backgroundColor="green";
-			me.tab.style.foregroundColor="white";
-			me.tab.innerHTML='';
+			me.tab.style.color="white";
+			me.tab.innerHTML=(me.tabTitle)?(me.tabTitle):'';
 			me.window.style.backgroundColor="black";
-			me.window.style.foregroundColor="white";
+			me.window.style.color="white";
 		};
 		this.wsocket.onclose = function(event)  
 		{ 
 			me.wsopened=false; 
 			me.tab.style.backgroundColor="#FF555B";
-			me.tab.style.foregroundColor="white";
+			me.tab.style.color="white";
 		};
 	};
 
@@ -123,7 +131,7 @@ function SipletWindow(windowName)
 			if(window.currentSiplet != me)
 			{
 				this.tab.style.backgroundColor = "lightgreen";
-				this.tab.style.foregroundColor = "black";
+				this.tab.style.color = "black";
 			}
 			this.window.scrollTop = this.window.scrollHeight - this.window.clientHeight;
 		}
@@ -175,13 +183,70 @@ function SipletWindow(windowName)
 				if(newText.length>0)
 				{
 					me.htmlBuffer += newText;
+					me.textBuffer += stripHtmlTags(newText);
 					if(newText.indexOf('<BR>')>=0)
+					{
 						me.flushWindow();
+						me.triggerCheck();
+						while(me.textBuffer.length > 1024)
+						{
+							var x = me.textBuffer.indexOf('\n');
+							if(x<0)
+							{
+								me.textBufferPruneIndex+=me.textBuffer.length;
+								me.textBuffer = '';
+							}
+							else
+							{
+								me.textBuffer = me.textBuffer.substr(0,x+1);
+								me.textBufferPruneIndex+=x;
+							}
+						}
+					}
 				}
 			}
 		}
 		me.flushWindow();
+		me.triggerCheck();
 	};
+	
+	this.triggerCheck = function()
+	{
+		var globalTriggers=this.globalTriggers;
+		var win = this;
+		for(var i=0;i<globalTriggers.length;i++)
+		{
+			var trig = globalTriggers[i];
+			if((!trig.once || trig.prev==0) && eval(trig.allowed) && trig.pattern)
+			{
+				var prev = trig.prev - this.textBufferPruneIndex;
+				if(prev < 0)
+					prev = 0;
+				if(trig.regex)
+				{
+					trig.pattern.lastIndex = prev;
+					var match = trig.pattern.exec(this.textBuffer);
+					while(match !== null)
+					{
+						trig.prev = this.textBufferPruneIndex + match.index + 1;
+						eval(trig.action);
+						match = trig.pattern.exec(this.textBuffer);
+					}
+				}
+				else
+				{
+					var x = this.textBuffer.indexOf(trig.pattern,prev);
+					while(x>=0)
+					{
+						prev += x + trig.pattern.length + 1;
+						trig.prev = this.textBufferPruneIndex + prev;
+						eval(trig.action);
+						x = this.textBuffer.indexOf(trig.pattern,prev);
+					}
+				}
+			}
+		}
+	}
 	
 	this.createGauge = function(entity,caption,color,value,max)
 	{
@@ -277,10 +342,51 @@ function SipletWindow(windowName)
 	};
 }
 
-window.currentSiplet = null;
-window.nextSipletSpanId = 0;
-window.siplets = [];
-window.windowArea = null;
+function AddNewSipletTabByPort(port)
+{
+	var protocol = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
+	var defaultUrl = protocol + '//' + window.location.host + '/WebSock';
+	if(port === 'default')
+		return AddNewSipletTab(defaultUrl);
+	else
+		return AddNewSipletTab(defaultUrl+'?port='+port);
+}
+	
+function AddNewSipletTabByPB(which)
+{
+	if(which=='')
+		return;
+	var global = (''+which).startsWith('g');
+	var pb;
+	if(global)
+	{
+		which = Number(which.substr(1));
+		if((which<0) || (which > window.phonebook.length))
+			return;
+		pb = window.phonebook[which];
+	}
+	else
+	{
+		var phonebook = getConfig('/phonebook/dial',[]);
+		which = Number(which);
+		if((which<0) || (which > phonebook.length))
+			return;
+		pb = phonebook[which];
+	}
+	var port = pb.port;
+	var protocol = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
+	var defaultUrl = protocol + '//' + window.location.host + '/WebSock';
+	var siplet;
+	if(port === 'default')
+		siplet = AddNewSipletTab(defaultUrl);
+	else
+		siplet = AddNewSipletTab(defaultUrl+'?port='+port);
+	if(global)
+		siplet.tabTitle = pb.name + '('+pb.port+')';
+	else
+		siplet.tabTitle = pb.user + '@' + pb.name + ' ('+pb.port+')';
+	siplet.pbentry = pb;
+}
 
 function AddNewSipletTab(url)
 {
@@ -299,6 +405,7 @@ function AddNewSipletTab(url)
 	window.siplets.push(siplet);
 	siplet.connect(url);
 	SetCurrentTab(window.siplets.length-1);
+	return siplet;
 }
 
 function SetCurrentTab(which)
@@ -313,7 +420,7 @@ function SetCurrentTab(which)
 			if(s.wsopened)
 			{
 				s.tab.style.backgroundColor = "green";
-				s.tab.style.foregroundColor = "white";
+				s.tab.style.color = "white";
 			}
 		}
 		else
@@ -322,7 +429,7 @@ function SetCurrentTab(which)
 			if(s.wsopened)
 			{
 				s.tab.style.backgroundColor = "lightgray";
-				s.tab.style.foregroundColor = "black";
+				s.tab.style.color = "black";
 			}
 		}
 	}
@@ -336,6 +443,12 @@ function CloseAllSiplets()
 		siplet.closeSocket();
 	}
 }
+
+function AutoConnect()
+{
+	AddNewSipletTabByPB(getConfig('/phonebook/auto',''));
+}
+
 setTimeout(function() {
 	var updateSipletConfigs = function() {
 		for(var i=0;i<window.siplets.length;i++)

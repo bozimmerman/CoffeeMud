@@ -78,10 +78,8 @@ var winAreaTop = parseInt(tabStyle.top) + parseInt(tabStyle.height) + 1;
 var winAreaHeight = 'calc(100% - '+(winAreaTop+inputAreaHeight)+'px)';
 window.windowArea = document.getElementById('windowarea');
 window.windowArea.style.cssText='background-color:black;position:absolute;width:100%;top:'+winAreaTop+'px;height:'+winAreaHeight+';';
-var autoUrl = getConfig('/phonebook/auto',{"ws":"ws://coffeemud.net:27744/WebSock"}).ws;
-if(autoUrl.length > 0)
-	AddNewSipletTab(autoUrl);
 window.addEventListener("beforeunload", CloseAllSiplets);
+LoadGlobalPhonebook();
 </SCRIPT>
 </FONT>
 </BODY>

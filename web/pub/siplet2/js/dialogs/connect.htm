@@ -1,0 +1,251 @@
+<TABLE WIDTH=100% BORDER=0 style="font-size:12" ID="PHONEBOOKROOT">
+<TR>
+	<TD WIDTH=20%>Quick Conn:</TD>
+	<TD><SELECT ID="QUICKCONNECTDROPDOWN" STYLE="position:relative;">
+		</SELECT>
+		<a href="javascript:var el=document.getElementById('QUICKCONNECTDROPDOWN');if(el)AddNewSipletTabByPB(el.value);hideOptionWindow();">
+			<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
+				ONCLICK="var el=document.getElementById('QUICKCONNECTDROPDOWN');if(el)AddNewSipletTabByPB(el.value);hideOptionWindow();" 
+				TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
+			<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
+				<B>Connect</B></FONT>
+			</TD></TR></TABLE>
+		</a>
+</TD></TR>
+</TR><TR><TD COLSPAN=2>&nbsp;</TD>
+<TR>
+	<TD>Auto Conn:</TD>
+	<TD><SELECT ID="AUTOCONNECTDROPDOWN" ONCHANGE="setConfig('/phonebook/auto',this.value);">
+		<OPTION VALUE="-1" ${(getConfig('/phonebook/auto')>=0)?"":"SELECTED"}>No Auto Connect
+		</SELECT>
+</TD></TR>
+</TR><TR><TD COLSPAN=2>&nbsp;</TD>
+</TR><TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE>Phonebook</TD>
+</TR><TR>
+	<TD>Select:</TD>
+	<TD><SELECT ID="CONNECTPHONEBOOK" ONCHANGE="{
+		var phonebook = getConfig('/phonebook/dial',[]);
+		if(Number(this.value)<0)
+		{
+			document.getElementById('PHONEBOOKPORT').selectedIndex=0;
+			document.getElementById('PHONEBOOKHASACCOUNT').style.visibility='visible';
+			document.getElementById('PHONEBOOKDELETE').style.visibility='hidden';
+			document.getElementById('PHONEBOOKACCT').value='';
+			document.getElementById('PHONEBOOKUSER').value='';
+			document.getElementById('PHONEBOOKPASS').value='';
+		}
+		else
+		if(Number(this.value) < phonebook.length)
+		{
+			var pb = phonebook[Number(this.value)];
+			for(var i=0;i<window.phonebook.length;i++)
+				if(window.phonebook[i].port == pb.port)
+					document.getElementById('PHONEBOOKPORT').selectedIndex=i;
+			document.getElementById('PHONEBOOKHASACCOUNT').style.visibility='hidden';
+			document.getElementById('PHONEBOOKDELETE').style.visibility='visible';
+			if(pb.account)
+				document.getElementById('PHONEBOOKHASACCOUNT').style.visibility='visible';
+			document.getElementById('PHONEBOOKACCT').value=pb.accountName;
+			document.getElementById('PHONEBOOKUSER').value=pb.user;
+			document.getElementById('PHONEBOOKPASS').value=pb.password;
+		}
+	}">
+		<OPTION VALUE="-1">Add New Entry
+		</SELECT>
+</TD></TR>
+<TR>
+	<TD>Port:</TD>
+	<TD><SELECT ID="PHONEBOOKPORT" ONCHANGE="
+			var gphonebook = window.phonebook;
+			var portWhich = this.selectedIndex;
+			if((portWhich<0)||(portWhich>=gphonebook.length))
+				return;
+			var pb = gphonebook[portWhich];
+			var acctRow = document.getElementById('PHONEBOOKHASACCOUNT');
+			acctRow.style.visibility = pb.accounts?'visible':'hidden';
+			var root = document.getElementById('PHONEBOOKROOT');
+			root.fixphonebookfields();
+		">
+		${
+			var html = '';
+			for(var i=0;i<window.phonebook.length;i++)
+				html += '<OPTION VALUE="' + i + '" >' + window.phonebook[i].name + ' ('+window.phonebook[i].port+')';
+		}
+		</SELECT>
+</TD></TR>
+<TR ID="PHONEBOOKHASACCOUNT">
+	<TD>Account:</TD>
+	<TD><INPUT TYPE=TEXT ID="PHONEBOOKACCT" ONCHANGE="document.getElementById('PHONEBOOKROOT').fixphonebookfields();"
+		SIZE=20 VALUE=""></TD>
+</TR>
+<TR>
+	<TD>Character:</TD>
+	<TD><INPUT TYPE=TEXT ID="PHONEBOOKUSER" ONCHANGE="document.getElementById('PHONEBOOKROOT').fixphonebookfields();"
+		SIZE=20 VALUE=""></TD>
+</TR>
+<TR>
+	<TD>Password:</TD>
+	<TD><INPUT TYPE=PASSWORD ID="PHONEBOOKPASS" ONCHANGE="document.getElementById('PHONEBOOKROOT').fixphonebookfields();" 
+		SIZE=20 VALUE=""></TD>
+</TR>
+<TR><TD COLSPAN=2>
+	<a ID="PHONEBOOKDELETE" href="javascript:document.getElementById('PHONEBOOKROOT').trydelphonebook();">
+		<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
+			ONCLICK="document.getElementById('PHONEBOOKROOT').trydelphonebook();" 
+			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
+		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
+			<B>Delete</B></FONT>
+		</TD></TR></TABLE>
+	</a>
+</TD></TR>
+</TABLE>
+${
+	var fixphonebookpage=function(){
+	if(document.getElementById('PHONEBOOKDELETE'))
+	{
+		var pbsel = document.getElementById('CONNECTPHONEBOOK');
+		document.getElementById('PHONEBOOKPORT').selectedIndex=-1;
+		document.getElementById('PHONEBOOKDELETE').style.visibility='hidden';
+		
+		var root = document.getElementById('PHONEBOOKROOT');
+		root.makephonebookname = function(user,name,port)
+		{
+			return user + '@' + name + ' (' + port + ')';
+		};
+		
+		var phonebook = getConfig('/phonebook/dial',[]);
+		for(var i=0;i < phonebook.length;i++)
+		{
+			var mybpentry = phonebook[i];
+			var name = root.makephonebookname(mybpentry.user,mybpentry.name,mybpentry.port);
+			var newOption = new Option(name,''+i);
+			pbsel.add(newOption);
+		}
+		pbsel.selectedIndex=-1;
+		
+		root.fixtopdropdowns = function()
+		{
+			var gphonebook = window.phonebook;
+			var phonebook = getConfig('/phonebook/dial',[]);
+			var auto = getConfig('/phonebook/auto','');
+			var qcdd = document.getElementById('QUICKCONNECTDROPDOWN');
+			var acdd = document.getElementById('AUTOCONNECTDROPDOWN');
+			while(qcdd.options.length > 0)
+				qcdd.remove(0);
+			while(acdd.options.length > 1)
+				acdd.remove(1);
+			acdd.selectedIndex=-1;
+			qcdd.selectedIndex=-1;
+			for(var i=0;i < gphonebook.length;i++)
+			{
+				var pb = gphonebook[i];
+				qcdd.add(new Option(pb.name + ' ('+pb.port+')', 'g'+i));
+				var opt = new Option(pb.name + ' ('+pb.port+')', 'g'+i);
+				acdd.add(opt);
+				if(auto == opt.value)
+					opt.selected=true;
+			}
+			for(var i=0;i < phonebook.length;i++)
+			{
+				var pb = phonebook[i];
+				qcdd.add(new Option(pb.user+'@'+pb.name + ' ('+pb.port+')', ''+i));
+				var opt = new Option(pb.user+'@'+pb.name + ' ('+pb.port+')', ''+i);
+				acdd.add(opt);
+				if(auto == opt.value)
+					opt.selected=true;
+			}
+		};
+		root.fixtopdropdowns();
+		
+		root.fixphonebookfields = function()
+		{
+			var phonebook = getConfig('/phonebook/dial',[]);
+			var pbsel = document.getElementById('CONNECTPHONEBOOK');
+			if(pbsel.selectedIndex < 0)
+				return;
+			var acctField = document.getElementById('PHONEBOOKACCT');
+			var userField = document.getElementById('PHONEBOOKUSER');
+			var passField = document.getElementById('PHONEBOOKPASS');
+			var portField = document.getElementById('PHONEBOOKPORT');
+			var gphonebook = window.phonebook;
+			var portWhich = portField.selectedIndex;
+			var pbwhich = Number(pbsel.value);
+			var mybpentry = {};
+			if((pbwhich >= 0)&&(pbwhich < phonebook.length))
+				mybpentry = phonebook[pbwhich];
+			var portValue = null;
+			if((portWhich >= 0)&&(portWhich < gphonebook.length))
+			{
+				portValue = gphonebook[portWhich];
+				mybpentry.account = portValue.accounts;
+				mybpentry.name = portValue.name;
+				mybpentry.port = portValue.port;
+			}
+			mybpentry.accountName = acctField.value;
+			mybpentry.user = userField.value;
+			mybpentry.password = passField.value;
+			if((pbwhich >= 0) && (pbwhich < phonebook.length))
+			{
+				if(!mybpentry.user)
+					window.alert('A character name is required.');
+				else
+				if(portValue == null)
+					window.alert('A host and port is required.');
+				else
+				{
+					setConfig('/phonebook/dial', phonebook);
+					pbsel.options[pbsel.selectedIndex].text = root.makephonebookname(mybpentry.user,portValue.name,portValue.port);
+					UpdateTabTitles(pbwhich);
+					root.fixtopdropdowns();
+				}
+			}
+			else
+			if(mybpentry.user && (portValue != null))
+			{
+				phonebook.push(mybpentry);
+				setConfig('/phonebook/dial', phonebook);
+				var name = root.makephonebookname(mybpentry.user,portValue.name,portValue.port);
+				var newOption = new Option(name,''+(phonebook.length-1));
+				newOption.selected=true;
+				pbsel.add(newOption);
+				newOption.selected=true;
+				pbsel.selectedIndex = phonebook.length;
+				document.getElementById('PHONEBOOKDELETE').style.visibility='visible';
+			}
+		};
+		root.trydelphonebook = function()
+		{
+			var phonebook = getConfig('/phonebook/dial',[]);
+			var pbsel = document.getElementById('CONNECTPHONEBOOK');
+			if(pbsel.selectedIndex < 0)
+				return;
+			var pbwhich = Number(pbsel.value);
+			if((pbwhich >=0) && (pbwhich < phonebook.length))
+			{
+				var pb = phonebook[pbwhich];
+				var root = document.getElementById('PHONEBOOKROOT');
+				var name = root.makephonebookname(pb.user,pb.name,pb.port);
+				if(window.confirm('Delete entry ' + name + '?'))
+				{
+					var opt = pbsel.options[pbsel.selectedIndex];
+					for(var i=pbsel.selectedIndex+1; i < pbsel.options.length; i++)
+					{
+						var val = Number(pbsel.options[i].value);
+						pbsel.options[i].value = (val - 1);
+					}
+					phonebook.splice(pbwhich,1);
+					pbsel.remove(pbsel.selectedIndex);
+					pbsel.selectedIndex = -1;
+					document.getElementById('PHONEBOOKACCT').value='';
+					document.getElementById('PHONEBOOKUSER').value='';
+					document.getElementById('PHONEBOOKPASS').value='';
+					document.getElementById('PHONEBOOKPORT').selectedIndex=-1;
+					setConfig('/phonebook/dial', phonebook);
+					document.getElementById('PHONEBOOKDELETE').style.visibility='hidden';
+				}
+			}
+		};
+	} else
+		setTimeout(fixphonebookpage,10);
+};setTimeout(fixphonebookpage,10);
+'';}

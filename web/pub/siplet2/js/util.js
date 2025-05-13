@@ -43,6 +43,13 @@ function isNumber(c)
 	return false;
 }
 
+function stripHtmlTags(htmlString) 
+{
+	var tempDiv = document.createElement('div');
+	tempDiv.innerHTML = htmlString;
+	return tempDiv.textContent || tempDiv.innerText || '';
+}
+
 function populateDivFromUrl(div, url) 
 {
 	var xhr = new XMLHttpRequest();
@@ -53,15 +60,23 @@ function populateDivFromUrl(div, url)
 			var txt = xhr.responseText; // Populate div
 			var x = txt.indexOf('${');
 			while(x>=0) {
-				var y = txt.indexOf('}',x);
-				if(y>0)
+				var y = x+2;
+				var depth = 0;
+				while((y<txt.length) && ((txt[y]!='}')||(depth>0)))
+				{
+					var c = txt[y++];
+					if(c=='{')
+						depth++;
+					else
+					if(c=='}')
+						depth--;
+				}
+				if((y>x)&&(y<txt.length))
 				{
 					var js = txt.substr(x+2,y-(x+2));
 					txt = txt.substr(0,x) + eval(js) + txt.substr(y+1);
 				}
-				else
-					txt = txt.substr(0,x) +  txt.substr(y+1);
-				x = txt.indexOf('${',x);
+				x = txt.indexOf('${',x+1);
 			}
 			div.innerHTML = txt;
 		}
