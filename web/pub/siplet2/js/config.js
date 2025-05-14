@@ -7,6 +7,7 @@ else
 window.phonebook = [];
 window.defTriggers = [
 	{
+		name: "Phonebook Account Name",
 		allowed: 'win.pbentry && win.pbentry.account',
 		regex: true,
 		once: true,
@@ -14,6 +15,7 @@ window.defTriggers = [
 		action: 'win.submitInput(win.pbentry.accountName)'
 	},
 	{
+		name: "Phonebook Account Character",
 		allowed: 'win.pbentry && win.pbentry.account && win.pbentry.user',
 		regex: true,
 		once: true,
@@ -21,6 +23,7 @@ window.defTriggers = [
 		action: 'win.submitInput(win.pbentry.user)'
 	},
 	{
+		name: "Phonebook Character",
 		allowed: 'win.pbentry && !win.pbentry.account && win.pbentry.user',
 		regex: true,
 		once: true,
@@ -28,13 +31,13 @@ window.defTriggers = [
 		action: 'win.submitInput(win.pbentry.user)'
 	},
 	{
+		name: "Phonebook Password",
 		allowed: 'win.pbentry',
 		regex: true,
 		once: true,
 		pattern: 'Password:(?![\\s\\S]*\\n)',
 		action: 'win.submitInput(win.pbentry.password)'
 	}
-	
 ];
 
 function getConfigPath(path)
@@ -115,24 +118,29 @@ function LoadGlobalPhonebook()
 	xhr.send();
 }
 
-function GetGlobalTriggers()
+function ParseTriggers(baseTriggers)
 {
-	setConfig('/global/triggers', window.defTriggers); //TODO:DELME
-	var rawTriggers = getConfig('/global/triggers', window.defTriggers);
-	if(Array.isArray(rawTriggers))
+	if(Array.isArray(baseTriggers))
 	{
-		var globalTriggers = [];
-		for(var i=0;i<rawTriggers.length;i++)
+		var triggers = [];
+		for(var i=0;i<baseTriggers.length;i++)
 		{
-			var rawTrig=rawTriggers[i];
+			var rawTrig=baseTriggers[i];
 			var trigCopy = JSON.parse(JSON.stringify(rawTrig));
 			trigCopy["prev"]=0;
+			trigCopy["disabled"]=false;
 			if ((trigCopy.regex) && (typeof trigCopy.pattern === 'string')) {
 				trigCopy.pattern = new RegExp(trigCopy.pattern,'g');
 			}
-			globalTriggers.push(trigCopy);
+			triggers.push(trigCopy);
 		}
-		return globalTriggers;
+		return triggers;
 	}
 	return [];
+}
+
+function GetGlobalTriggers()
+{
+	var rawTriggers = getConfig('/global/triggers', window.defTriggers);
+	return ParseTriggers(rawTriggers);
 }

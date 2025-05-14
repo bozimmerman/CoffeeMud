@@ -96,6 +96,9 @@ function getCtxMenu(titleSet,menu,hints,prompt)
         if(hints.length>0)
             hint=hints;
         var m = fixCtxEnt(menu.substr(0,x));
+        if(m.length==0)
+            mmenu[count]='<font color=lightgray>'+hint+'</font>';
+        else
         if(m.startsWith("javascript:"))
             mmenu[count]='<a href="'+m+'">'+hint+'</a>';
         else
@@ -111,6 +114,9 @@ function getCtxMenu(titleSet,menu,hints,prompt)
     if(hints.length>0)
         hint=hints;
     var m = fixCtxEnt(menu);
+    if(m.length==0)
+        mmenu[count]='<font color=lightgray>'+hint+'</font>';
+    else
     if(m.startsWith("javascript:"))
         mmenu[count]='<a href="'+m+'">'+hint+'</a>';
     else

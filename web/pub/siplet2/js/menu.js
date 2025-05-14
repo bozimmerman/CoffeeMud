@@ -4,20 +4,25 @@ var menuBackgroundColor = "#404040";
 var menuForegroundColor = "Yellow";
 var menuWindow = null;
 
-function menumenu(obj, e, href, hint) {
-	nowhidemenu();
-	var m = dropdownmenu(obj, e, href, hint, prompt, obj.offsetLeft, obj.offsetTop + 20, 200);
-	m.style.background = menuBackgroundColor;
-	m.style.color = menuForegroundColor;
-	var as = Array.from(m.getElementsByTagName("A"));
-	for(var a=0;a<as.length;a++)
-	{
-		as[a].style.color=menuForegroundColor;
-		as[a].style.fontSize=16;
-		as[a].style.textDecoration = 'none';
-	}
-	return m;
-}
+var menuData = [
+	{"Window": [
+		{"n":"Connect",
+		 "a":"javascript:menuConnect();",
+		 "e":""},
+		{"n":"Disconnect",
+		 "e":"currentSiplet!=null && currentSiplet.wsopened",
+		 "a":"javascript:menuDisconnect();"},
+		{"n":"Reconnect",
+		 "e":"currentSiplet!=null",
+		 "a":"javascript:menuReconnect();"}
+	]},
+	{"Options": [
+		{"n":"Global","a":"javascript:menuGlobal();"}
+	]},
+	{"Help": [
+		{"n":"About","a":"javascript:menuAbout()"}
+	]}
+];
 
 function configureMenu(obj)
 {
@@ -29,19 +34,6 @@ function configureMenu(obj)
 	menuArea.style.background=menuBackgroundColor;
 	menuArea.style.color=menuForegroundColor;
 	
-	var menuData = [
-		{"Window": [
-			{"n":"Connect","a":"javascript:menuConnect();"},
-			{"n":"Disconnect","a":"javascript:menuDisconnect();"},
-			{"n":"Reconnect","a":"javascript:menuReconnect();"}
-		]},
-		{"Options": [
-			{"n":"Global","a":"javascript:menuGlobal();"}
-		]},
-		{"Help": [
-			{"n":"About","a":"javascript:menuAbout()"}
-		]}
-	];
 	var html = '';
 	html += '<TABLE style="border: 1px solid white; border-collapse: collapse; height: 20px; table-layout: fixed; width: 100%;">';
 	html +='<TR style="height: 20px;" >';
@@ -49,22 +41,42 @@ function configureMenu(obj)
 	{
 		var topO = menuData[to];
 		var topN = Object.keys(topO)[0];
-		var subList = topO[topN];
 		html += '<TD style="border: 1px solid white; padding: 0;"';
-		var href='';
-		var hint='';
-		for(var h=0;h<subList.length;h++)
-		{
-			var sub=subList[h];
-			href+=sub['a']+'|';
-			hint+=sub['n']+'|';
-		}
-		html += ' ONCLICK="menumenu(this,event,\''+href+'\',\''+hint+'\')" ';
+		html += ' ONCLICK="menumenu(this,event,'+to+')" ';
 		html += '><FONT COLOR="'+menuForegroundColor+'"><B>&nbsp;&nbsp;';
 		html += topN + '</FONT></TD>';
 	}
 	html += '</TR></TABLE>';
 	menuArea.innerHTML = html;
+}
+
+function menumenu(obj, e, to) {
+	nowhidemenu();
+	var topO = menuData[to];
+	var topN = Object.keys(topO)[0];
+	var subList = topO[topN];
+	var href='';
+	var hint='';
+	for(var h=0;h<subList.length;h++)
+	{
+		var sub=subList[h];
+		hint+=sub['n']+'|';
+		if(('e' in sub)&&(sub['e'])&&(!eval(sub['e'])))
+			href+='|';
+		else
+			href+=sub['a']+'|';
+	}
+	var m = dropdownmenu(obj, e, href, hint, prompt, obj.offsetLeft, obj.offsetTop + 20, 200);
+	m.style.background = menuBackgroundColor;
+	m.style.color = menuForegroundColor;
+	var as = Array.from(m.getElementsByTagName("A"));
+	for(var a=0;a<as.length;a++)
+	{
+		as[a].style.color=menuForegroundColor;
+		as[a].style.fontSize=16;
+		as[a].style.textDecoration = 'none';
+	}
+	return m;
 }
 
 function hideOptionWindow()

@@ -36,6 +36,8 @@ function SipletWindow(windowName)
 	this.textBuffer = '';
 	this.textBufferPruneIndex = 0;
 	this.globalTriggers = GetGlobalTriggers();
+	this.triggers = null;
+	this.aliases = null; //TODO: allow local aliases, and global aliases
 
 	var me = this;
 	
@@ -209,15 +211,16 @@ function SipletWindow(windowName)
 		me.flushWindow();
 		me.triggerCheck();
 	};
-	
-	this.triggerCheck = function()
+
+	this.evalTriggerGroup = function(triggers)
 	{
-		var globalTriggers=this.globalTriggers;
 		var win = this;
-		for(var i=0;i<globalTriggers.length;i++)
+		for(var i=0;i<triggers.length;i++)
 		{
-			var trig = globalTriggers[i];
-			if((!trig.once || trig.prev==0) && eval(trig.allowed) && trig.pattern)
+			var trig = triggers[i];
+			if((!trig.once || trig.prev==0) 
+			&& eval(trig.allowed) && trig.pattern
+			&& (!trig.disabled))
 			{
 				var prev = trig.prev - this.textBufferPruneIndex;
 				if(prev < 0)
@@ -246,7 +249,29 @@ function SipletWindow(windowName)
 				}
 			}
 		}
+	};
+	
+	this.localTriggers = function()
+	{
+		if(this.triggers == null)
+		{
+			if((!this.pbentry)
+			||(!this.pbentry.triggers)
+			||(!Array.isArray(this.pbentry.triggers)))
+			{
+				this.triggers=[];
+				return [];
+			}
+			this.triggers = ParseTriggers(this.pbentry.triggers);
+		}
+		return this.triggers;
 	}
+	
+	this.triggerCheck = function()
+	{
+		this.evalTriggerGroup(this.globalTriggers);
+		this.evalTriggerGroup(this.localTriggers());
+	};
 	
 	this.createGauge = function(entity,caption,color,value,max)
 	{
@@ -335,11 +360,88 @@ function SipletWindow(windowName)
 	
 	this.submitInput = function(value)
 	{
+		this.DisplayText(value);
+		this.wsocket.send(value+'\n');
+	};
+	
+	this.DisplayText = function(value)
+	{
 		var span = document.createElement('span');
 		span.innerHTML = value.replaceAll('\n','<BR>') + '<BR>';
 		this.window.appendChild(span);
-		this.wsocket.send(value+'\n');
 	};
+	
+	this.PlaySound = function(file)
+	{
+		if(!file)
+			return;
+		var x = file.lastIndexOf('/');
+		var url;
+		var key;
+		if(x>0)
+		{
+			key=file.substr(x+1);
+			url=file.substr(0,x+1);
+		}
+		else
+		{
+			url = window.location.protocol + '//' + window.location.host + '/images/';
+			key = file;
+		}
+		this.msp.PlaySound(key,url,0,50,50);
+	};
+
+	this.SetVariable = function(key, value)
+	{
+		this[key] = value;
+	};
+	
+	this.GetVariable = function(key)
+	{
+		if(key in this)
+			return this[key];
+		return '';
+	};
+	
+	this.RunScript = function(value)
+	{
+		var win = this;
+		eval(value);
+	};
+	
+	this.EnableTrigger = function(value)
+	{
+		var trigs = this.localTriggers();
+		for(var i=0;i<trigs.length;i++)
+			if(value == trigs[i].name)
+				trigs[i].disabled = false;
+		trigs = this.globalTriggers;
+		for(var i=0;i<trigs.length;i++)
+			if(value == trigs[i].name)
+				trigs[i].disabled = false;
+	};
+	
+	this.DisableTrigger = function(value)
+	{
+		var trigs = this.localTriggers();
+		for(var i=0;i<trigs.length;i++)
+			if(value == trigs[i].name)
+				trigs[i].disabled = true;
+		trigs = this.globalTriggers;
+		for(var i=0;i<trigs.length;i++)
+			if(value == trigs[i].name)
+				trigs[i].disabled = true;
+	};
+	
+	this.SetColor = function(value)
+	{
+		this.DisplayText('</FONT><FONT COLOR="'+value+'">');
+	};
+	
+	this.isConnected = function() 
+	{
+		return this.wsopened;
+	}
 }
 
 function AddNewSipletTabByPort(port)
