@@ -50,6 +50,71 @@ function stripHtmlTags(htmlString)
 	return tempDiv.textContent || tempDiv.innerText || '';
 }
 
+function setSelectByValue(select, value) 
+{
+	for (let i = 0; i < select.options.length; i++) 
+	{
+		if (select.options[i].value == value) 
+		{
+			select.selectedIndex = i;
+			break;
+		}
+	}
+}
+
+function isValidExpression(exp) {
+	try 
+	{
+		if (exp.trim().length === 0)
+			return false;
+		var depth = 0;
+		var inString = false;
+		var stringChar = null;
+		var inComment = false;
+		for (var i = 0; i < exp.length; i++) 
+		{
+			if (inComment) {
+				inComment =  (exp[i] !== '\n');
+				continue;
+			}
+			if (inString) {
+				inString =  ! (exp[i] === stringChar && exp[i - 1] !== '\\');
+				continue;
+			}
+			if (exp[i] === '"' || exp[i] === "'") 
+			{
+				inString = true;
+				stringChar = exp[i];
+			} 
+			else 
+			if (exp[i] === '/' && exp[i + 1] === '/')
+				inComment = true;
+			else 
+			if (exp[i] === '{')
+				depth++;
+			else 
+			if (exp[i] === '}') 
+			{
+				depth--;
+				if (depth < 0)
+					return false;
+			}
+		}
+		if (inString)
+			return false;
+		if (depth !== 0)
+			return false;
+		if (exp.trim().startsWith('}'))
+			return false;
+		new Function(exp);
+		return true;
+	} 
+	catch (e) 
+	{
+		return false;
+	}
+}
+
 function populateDivFromUrl(div, url) 
 {
 	var xhr = new XMLHttpRequest();

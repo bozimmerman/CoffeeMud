@@ -127,25 +127,3 @@ function AddNewTab()
 	}
 	return null;
 }
-
-function UpdateTabTitles(which)
-{
-	if((which+'').startsWith('g'))
-		return;
-	var phonebook = getConfig('/phonebook/dial',[]);
-	which = Number(which);
-	if((which<0) || (which > phonebook.length))
-		return;
-	var pb = phonebook[which];
-	for(var i=0;i<window.siplets.length;i++)
-	{
-		var siplet = window.siplets[i];
-		if(siplet.pbentry === pb)
-		{
-			siplet.tabTitle = pb.user + '@' + pb.name + ' ('+pb.port+')';
-			if(siplet.tab)
-				siplet.tab.innerHTML = siplet.tabTitle;
-			return;
-		}
-	}
-}

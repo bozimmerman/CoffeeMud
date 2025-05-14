@@ -141,6 +141,7 @@ function ParseTriggers(baseTriggers)
 
 function GetGlobalTriggers()
 {
+	setConfig('/global/triggers', window.defTriggers);
 	var rawTriggers = getConfig('/global/triggers', window.defTriggers);
 	return ParseTriggers(rawTriggers);
 }

@@ -1,0 +1,247 @@
+<TABLE WIDTH=100% BORDER=0 style="font-size:12" ID="TRIGGERSROOT">
+<TR>
+	<TD WIDTH=20%>Triggers:</TD>
+	<TD><SELECT ID="TRIGGERDROPDOWN" STYLE="position:relative;" 
+			ONCHANGE="var root = document.getElementById('TRIGGERSROOT'); root.triggerselected(); "
+		>
+		<OPTION VALUE="-1">Add New Trigger
+		</SELECT>
+</TD></TR>
+<TR><TD COLSPAN=2>&nbsp;</TD>
+<TR><TD WIDTH=20%>Name:</TD><TD>
+	<INPUT id="TRIGGERNAME" type="text"
+		ONCHANGE="var root = document.getElementById('TRIGGERSROOT'); root.triggerfieldchange(); "
+	>
+</TD></TR>
+<TR><TD>Pattern:<BR>&nbsp;&nbsp;<INPUT id="TRIGGERREGEX" type="checkbox"
+		ONCHANGE="var root = document.getElementById('TRIGGERSROOT'); root.triggerfieldchange(); "
+	>(RegEx)</TD><TD VALIGN=TOP>
+	<TEXTAREA id="TRIGGERPATTERN"
+		ONCHANGE="var root = document.getElementById('TRIGGERSROOT'); root.triggerfieldchange(); "
+	ROWS=2 STYLE="width:300px;"></TEXTAREA>
+</TD></TR>
+<TR><TD>Run Once:</TD><TD>
+	<INPUT id="TRIGGERRUNONCE" type="checkbox"
+		ONCHANGE="var root = document.getElementById('TRIGGERSROOT'); root.triggerfieldchange(); "
+	>
+</TD></TR>
+<TR><TD>Action:</TD><TD>
+	<select id="TRIGGERACTION"
+		ONCHANGE="var root = document.getElementById('TRIGGERSROOT'); root.triggerfieldchange(); "
+	>
+		<option value="win.submitInput">Send Command</option>
+		<option value="win.displayText">Display Text</option>
+		<option value="win.playSound">Play Sound</option>
+		<option value="win.setVariable">Set Variable</option>
+		<option value="win.runScript">Run Script</option>
+		<option value="win.enableTrigger">Enable Trigger</option>
+		<option value="win.disableTrigger">Disable Trigger</option>
+		<option value="win.setColor">Set Color</option>
+	</select>
+	<INPUT id="TRIGGERAVALUE" type="text"
+		ONCHANGE="var root = document.getElementById('TRIGGERSROOT'); root.triggerfieldchange(); "
+	>
+</TD></TR>
+<TR><TD>Allowed:</TD><TD>
+	<INPUT id="TRIGGERALLOWED" type="text" placeholder="e.g., win.isConnected()" style="width:300px;"
+		ONCHANGE="var root = document.getElementById('TRIGGERSROOT'); root.triggerfieldchange(); "
+	>
+</TD></TR>
+<TR><TD colspan="2">
+	<a ID="TRIGGERDELETE" href="javascript:document.getElementById('TRIGGERSROOT').trydeltrigger();">
+		<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
+			ONCLICK="document.getElementById('TRIGGERSROOT').trydeltrigger();" 
+			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
+		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
+			<B>Delete</B></FONT>
+		</TD></TR></TABLE>
+	</a>
+</TD></TR>
+</TABLE>
+${
+	var fixtriggerspage=function(){
+	if(document.getElementById('TRIGGERALLOWED'))
+	{
+		var root = document.getElementById('TRIGGERSROOT');
+		var triggers = root.parentNode.triggers;
+		var global = root.parentNode.which == 'global';
+		delete root.parentNode.triggers;
+		delete root.parentNode.which;
+		var dd = document.getElementById('TRIGGERDROPDOWN');
+		var tname = document.getElementById('TRIGGERNAME');
+		var tpatt = document.getElementById('TRIGGERPATTERN');
+		var trege = document.getElementById('TRIGGERREGEX');
+		var truno = document.getElementById('TRIGGERRUNONCE');
+		var tacto = document.getElementById('TRIGGERACTION');
+		var taval = document.getElementById('TRIGGERAVALUE');
+		var tallo = document.getElementById('TRIGGERALLOWED');
+		var delbutt = document.getElementById('TRIGGERDELETE');
+		var rfields = [tname, tpatt, tacto, taval, tallo];
+		dd.selectedIndex = -1;
+		delbutt.style.visibility='hidden';
+		for(var i=0;i < triggers.length;i++)
+		{
+			var trig = triggers[i];
+			var opt = new Option(trig.name,i);
+			dd.add(opt);
+		}
+		dd.selectedIndex = -1;
+		root.triggerselected = function() {
+			if(dd.value == "-1")
+			{
+				tname.value='';
+				tname.style.backgroundColor = 'red';
+				tpatt.value='';
+				tpatt.style.backgroundColor = 'red';
+				trege.checked=false;
+				truno.checked=false;
+				tacto.selectedIndex=-1;
+				tacto.style.backgroundColor = 'red';
+				taval.value='';
+				taval.style.backgroundColor = 'red';
+				tallo.value='win.isConnected()';
+				delbutt.style.visibility='hidden';
+			}
+			else
+			if(Number(dd.value) < triggers.length)
+			{
+				delbutt.style.visibility='visible';
+				var trig = triggers[Number(dd.value)];
+				tname.value=trig.name;
+				tname.style.backgroundColor = 'white';
+				tpatt.value=trig.pattern;
+				tpatt.style.backgroundColor = 'white';
+				trege.checked=trig.regex;
+				truno.checked=trig.once;
+				tallo.value=trig.allowed;
+				tallo.style.backgroundColor = 'white';
+				tacto.style.backgroundColor = 'white';
+				var x1 = trig.action.indexOf('(');
+				var x2 = trig.action.lastIndexOf(')');
+				setSelectByValue(tacto,trig.action.substr(0,x1));
+				taval.value=trig.action.substr(x1+1,x2-x1-1);
+				taval.style.backgroundColor = 'white';
+			}
+		};
+		root.triggerfieldchange = function() {
+			if(!global)
+				window.win = window.currentSiplet;
+			tname.style.backgroundColor = (tname.value.length==0)?'red':'white';
+			tpatt.style.backgroundColor = (tpatt.value.length==0)?'red':'white';
+			if(trege.checked) {
+				try 
+				{ 
+					var a = new RegExp(tpatt.value,'g');
+					if(!a.exec) 
+						tpatt.style.backgroundColor = 'red'; 
+				} catch(e) 
+				{
+					console.log(e);
+					tpatt.style.backgroundColor = 'red'; 
+				}
+			}
+			taval.style.backgroundColor = !isValidExpression(taval.value)?'red':'white';
+			tallo.style.backgroundColor = !isValidExpression(tallo.value)?'red':'white';
+			tacto.style.backgroundColor = (tacto.selectedIndex < 0)?'red':'white';
+			delete window['win'];
+			var myname = Number(dd.value)>=0?triggers[Number(dd.value)].name:'';
+			for(var i=0;i < dd.options.length; i++)
+			{
+				if((dd.options[i].value == tname.value) && (myname != tname.value))
+					tname.style.backgroundColor = 'red';
+			}
+			for(var i=0;i < rfields.length; i++)
+				if(rfields[i].style.backgroundColor == 'red')
+					return;
+			var fact = tacto.value + '(' + taval.value + ');';
+			if(Number(dd.value) < 0)
+			{
+				var newTrigger = {
+					name: tname.value,
+					allowed: tallo.value,
+					regex: trege.checked,
+					once: truno.checked,
+					pattern: tpatt.value,
+					action: fact
+				};
+				triggers.push(newTrigger);
+				var opt = new Option(tname.value, triggers.length-1);
+				dd.add(opt);
+				dd.selectedIndex = dd.options.length-1;
+				delbutt.style.visibility='visible';
+			}
+			else
+			{
+				var trig = triggers[Number(dd.value)];
+				trig.name= tname.value;
+				trig.allowed= tallo.value;
+				trig.regex= trege.checked;
+				trig.once= truno.checked;
+				trig.pattern= tpatt.value;
+				trig.action= fact;
+				dd.options[dd.selectedIndex].text = trig.name;
+			}
+			root.modifytriggers();
+		};
+		
+		root.modifytriggers = function()
+		{
+			if(global)
+			{
+				setConfig('/global/triggers', triggers);
+				for(var i=0;i < window.siplets.length; i++)
+					window.siplets[i].globalTriggers = GetGlobalTriggers();
+			}
+			else
+			{
+				var phonebook = getConfig('/phonebook/dial',[]);
+				if((window.currentSiplet.pbentry) 
+				&& (window.currentSiplet.pbwhich) 
+				&& (!window.currentSiplet.pbwhich.startsWith('g')))
+				{
+					var pbindex = Number(window.currentSiplet.pbwhich);
+					var pbentry = phonebook[pbindex];
+					pbentry.triggers = JSON.parse(JSON.stringify(triggers));
+					var found = FindSipletsByPB(pbentry);
+					if(!(window.currentSiplet in found))
+						found.push(window.currentSiplet);
+					for(var i=0;i < found.length;i++)
+					{
+						found[i].pbentry = pbentry;
+						found[i].triggers = null;
+					}
+					setConfig('/phonebook/dial',phonebook);
+				}
+			}
+		};
+		
+		root.trydeltrigger = function() {
+			var trigindex = Number(dd.value);
+			if(trigindex < 0)
+				return;
+			var curr=dd.selectedIndex;
+			dd.selectedIndex=-1;
+			dd.remove(curr);
+			for(var i=0;i < dd.options.length;i++)
+				if(Number(dd.options[i].value)>trigindex)
+					dd.options[i].value=(Number(dd.options[i].value)-1);
+			var deadt = triggers[trigindex];
+			triggers.splice(trigindex,1);
+			root.modifytriggers();
+			tname.value='';
+			tname.style.backgroundColor = 'white';
+			tpatt.value='';
+			tpatt.style.backgroundColor = 'white';
+			trege.checked=false;
+			truno.checked=false;
+			tacto.selectedIndex=-1;
+			tacto.style.backgroundColor = 'white';
+			taval.value='';
+			taval.style.backgroundColor = 'white';
+			tallo.value='';
+			delbutt.style.visibility='hidden';
+		};
+	} else
+		setTimeout(fixtriggerspage,10);
+};setTimeout(fixtriggerspage,10);
+'';}

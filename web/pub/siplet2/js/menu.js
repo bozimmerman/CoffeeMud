@@ -9,15 +9,21 @@ var menuData = [
 		{"n":"Connect",
 		 "a":"javascript:menuConnect();",
 		 "e":""},
+		{"n":"Triggers",
+		 "e":"window.currentSiplet!=null && window.currentSiplet.pbentry && window.currentSiplet.pbentry.user",
+		 "a":"javascript:menuTriggers('local');"},
 		{"n":"Disconnect",
-		 "e":"currentSiplet!=null && currentSiplet.wsopened",
+		 "e":"window.currentSiplet!=null && window.currentSiplet.wsopened",
 		 "a":"javascript:menuDisconnect();"},
 		{"n":"Reconnect",
-		 "e":"currentSiplet!=null",
+		 "e":"window.currentSiplet!=null",
 		 "a":"javascript:menuReconnect();"}
 	]},
-	{"Options": [
-		{"n":"Global","a":"javascript:menuGlobal();"}
+	{"Global Options": [
+		{"n":"Windows",
+		 "a":"javascript:menuWindows();"},
+		{"n":"Triggers",
+		 "a":"javascript:menuTriggers('global');"},
 	]},
 	{"Help": [
 		{"n":"About","a":"javascript:menuAbout()"}
@@ -50,7 +56,8 @@ function configureMenu(obj)
 	menuArea.innerHTML = html;
 }
 
-function menumenu(obj, e, to) {
+function menumenu(obj, e, to) 
+{
 	nowhidemenu();
 	var topO = menuData[to];
 	var topN = Object.keys(topO)[0];
@@ -137,27 +144,27 @@ function menuAbout()
 	this.menuWindow.onclick = hideOptionWindow;
 }
 
-function menuGlobal()
+function menuWindows()
 {
-	var content = getOptionWindow("Global Options",60,40);
-	populateDivFromUrl(content, 'js/dialogs/global.htm');
+	var content = getOptionWindow("Window Options",60,40);
+	populateDivFromUrl(content, 'js/dialogs/window.htm');
 }
 
 function menuDisconnect()
 {
-	if(this.currentSiplet != null)
+	if(window.currentSiplet != null)
 	{
-		this.currentSiplet.closeSocket();
+		window.currentSiplet.closeSocket();
 	}
 }
 
 function menuReconnect()
 {
-	if(this.currentSiplet != null)
+	if(window.currentSiplet != null)
 	{
-		this.currentSiplet.closeSocket();
-		this.currentSiplet.reset();
-		this.currentSiplet.connect(this.currentSiplet.url);
+		window.currentSiplet.closeSocket();
+		window.currentSiplet.reset();
+		window.currentSiplet.connect(window.currentSiplet.url);
 	}
 }
 
@@ -165,4 +172,17 @@ function menuConnect()
 {
 	var content = getOptionWindow("Connect",60,40);
 	populateDivFromUrl(content, 'js/dialogs/connect.htm');
+}
+
+function menuTriggers(value)
+{
+	var which = 'Global';
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
+		which = window.currentSiplet.pbentry.name;
+	var content = getOptionWindow(which + " Triggers",60,40);
+	content.which = value;
+	content.triggers = getConfig('/global/triggers', window.defTriggers); // dont parse them
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
+		content.triggers = window.currentSiplet.localTriggers();
+	populateDivFromUrl(content, 'js/dialogs/triggers.htm');
 }

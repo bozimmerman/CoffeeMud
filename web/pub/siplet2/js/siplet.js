@@ -137,7 +137,8 @@ function SipletWindow(windowName)
 			}
 			this.window.scrollTop = this.window.scrollHeight - this.window.clientHeight;
 		}
-	}
+	};
+
 	this.onReceive = function(e)
 	{
 		var entries = me.bin.parse(e.data);
@@ -225,7 +226,7 @@ function SipletWindow(windowName)
 				var prev = trig.prev - this.textBufferPruneIndex;
 				if(prev < 0)
 					prev = 0;
-				if(trig.regex)
+				if(trig.regex && trig.pattern && trig.pattern.exec)
 				{
 					trig.pattern.lastIndex = prev;
 					var match = trig.pattern.exec(this.textBuffer);
@@ -242,7 +243,7 @@ function SipletWindow(windowName)
 					while(x>=0)
 					{
 						prev += x + trig.pattern.length + 1;
-						trig.prev = this.textBufferPruneIndex + prev;
+						trig.prev = this.textBufferPruneIndex + x + trig.pattern.length + 1;
 						eval(trig.action);
 						x = this.textBuffer.indexOf(trig.pattern,prev);
 					}
@@ -360,18 +361,19 @@ function SipletWindow(windowName)
 	
 	this.submitInput = function(value)
 	{
-		this.DisplayText(value);
+		this.displayText(value);
 		this.wsocket.send(value+'\n');
 	};
 	
-	this.DisplayText = function(value)
+	this.displayText = function(value)
 	{
 		var span = document.createElement('span');
 		span.innerHTML = value.replaceAll('\n','<BR>') + '<BR>';
 		this.window.appendChild(span);
+		this.window.scrollTop = this.window.scrollHeight - this.window.clientHeight;
 	};
 	
-	this.PlaySound = function(file)
+	this.playSound = function(file)
 	{
 		if(!file)
 			return;
@@ -391,25 +393,25 @@ function SipletWindow(windowName)
 		this.msp.PlaySound(key,url,0,50,50);
 	};
 
-	this.SetVariable = function(key, value)
+	this.setVariable = function(key, value)
 	{
 		this[key] = value;
 	};
 	
-	this.GetVariable = function(key)
+	this.getVariable = function(key)
 	{
 		if(key in this)
 			return this[key];
 		return '';
 	};
 	
-	this.RunScript = function(value)
+	this.runScript = function(value)
 	{
 		var win = this;
 		eval(value);
 	};
 	
-	this.EnableTrigger = function(value)
+	this.enableTrigger = function(value)
 	{
 		var trigs = this.localTriggers();
 		for(var i=0;i<trigs.length;i++)
@@ -421,7 +423,7 @@ function SipletWindow(windowName)
 				trigs[i].disabled = false;
 	};
 	
-	this.DisableTrigger = function(value)
+	this.disableTrigger = function(value)
 	{
 		var trigs = this.localTriggers();
 		for(var i=0;i<trigs.length;i++)
@@ -433,7 +435,7 @@ function SipletWindow(windowName)
 				trigs[i].disabled = true;
 	};
 	
-	this.SetColor = function(value)
+	this.setColor = function(value)
 	{
 		this.DisplayText('</FONT><FONT COLOR="'+value+'">');
 	};
@@ -458,11 +460,12 @@ function AddNewSipletTabByPB(which)
 {
 	if(which=='')
 		return;
-	var global = (''+which).startsWith('g');
+	var ogwhich = ''+which;
+	var global = ogwhich.startsWith('g');
 	var pb;
 	if(global)
 	{
-		which = Number(which.substr(1));
+		which = Number(ogwhich.substr(1));
 		if((which<0) || (which > window.phonebook.length))
 			return;
 		pb = window.phonebook[which];
@@ -470,7 +473,7 @@ function AddNewSipletTabByPB(which)
 	else
 	{
 		var phonebook = getConfig('/phonebook/dial',[]);
-		which = Number(which);
+		which = Number(ogwhich);
 		if((which<0) || (which > phonebook.length))
 			return;
 		pb = phonebook[which];
@@ -488,6 +491,7 @@ function AddNewSipletTabByPB(which)
 	else
 		siplet.tabTitle = pb.user + '@' + pb.name + ' ('+pb.port+')';
 	siplet.pbentry = pb;
+	siplet.pbwhich = ogwhich;
 }
 
 function AddNewSipletTab(url)
@@ -549,6 +553,57 @@ function CloseAllSiplets()
 function AutoConnect()
 {
 	AddNewSipletTabByPB(getConfig('/phonebook/auto',''));
+}
+
+function PBSameAs(pb1, pb2)
+{
+	if(pb1 === pb2)
+		return true;
+	if(!pb1.user || !pb2.name || !pb1.user || !pb1.name)
+		return false;
+	return (pb1.account == pb2.account)
+		&&(pb1.name == pb2.name)
+		&&(pb1.port == pb2.port)
+		&&(pb1.accountName == pb2.accountName)
+		&&(pb1.user == pb2.user)
+		&&(pb1.password == pb2.password);
+}
+
+function FindSipletsByPB(pb)
+{
+	var found = [];
+	for(var i=0;i<window.siplets.length;i++)
+	{
+		var siplet = window.siplets[i];
+		var p = siplet.pbentry;
+		if(PBSameAs(pb,p))
+			found.push(siplet);
+	}
+	return found;
+}
+
+function UpdateSipetTabsByPBIndex(which)
+{
+	if((which+'').startsWith('g'))
+		return;
+	var phonebook = getConfig('/phonebook/dial',[]);
+	which = Number(which);
+	if((which<0) || (which > phonebook.length))
+		return;
+	var pb = phonebook[which];
+	for(var i=0;i<window.siplets.length;i++)
+	{
+		var siplet = window.siplets[i];
+		if(Number(siplet.pbwhich) == which)
+		{
+			siplet.tabTitle = pb.user + '@' + pb.name + ' ('+pb.port+')';
+			if(siplet.tab)
+				siplet.tab.innerHTML = siplet.tabTitle;
+			siplet.pbentry = pb;
+			if(siplet.triggers != null)
+				siplet.triggers = null;
+		}
+	}
 }
 
 setTimeout(function() {

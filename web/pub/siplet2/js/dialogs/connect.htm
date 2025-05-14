@@ -169,10 +169,10 @@ ${
 			var portField = document.getElementById('PHONEBOOKPORT');
 			var gphonebook = window.phonebook;
 			var portWhich = portField.selectedIndex;
-			var pbwhich = Number(pbsel.value);
+			var pbindex = Number(pbsel.value);
 			var mybpentry = {};
-			if((pbwhich >= 0)&&(pbwhich < phonebook.length))
-				mybpentry = phonebook[pbwhich];
+			if((pbindex >= 0)&&(pbindex < phonebook.length))
+				mybpentry = phonebook[pbindex];
 			var portValue = null;
 			if((portWhich >= 0)&&(portWhich < gphonebook.length))
 			{
@@ -184,7 +184,7 @@ ${
 			mybpentry.accountName = acctField.value;
 			mybpentry.user = userField.value;
 			mybpentry.password = passField.value;
-			if((pbwhich >= 0) && (pbwhich < phonebook.length))
+			if((pbindex >= 0) && (pbindex < phonebook.length))
 			{
 				if(!mybpentry.user)
 					window.alert('A character name is required.');
@@ -195,7 +195,7 @@ ${
 				{
 					setConfig('/phonebook/dial', phonebook);
 					pbsel.options[pbsel.selectedIndex].text = root.makephonebookname(mybpentry.user,portValue.name,portValue.port);
-					UpdateTabTitles(pbwhich);
+					UpdateSipetTabsByPBIndex(pbindex);
 					root.fixtopdropdowns();
 				}
 			}
@@ -219,10 +219,10 @@ ${
 			var pbsel = document.getElementById('CONNECTPHONEBOOK');
 			if(pbsel.selectedIndex < 0)
 				return;
-			var pbwhich = Number(pbsel.value);
-			if((pbwhich >=0) && (pbwhich < phonebook.length))
+			var pbindex = Number(pbsel.value);
+			if((pbindex >=0) && (pbindex < phonebook.length))
 			{
-				var pb = phonebook[pbwhich];
+				var pb = phonebook[pbindex];
 				var root = document.getElementById('PHONEBOOKROOT');
 				var name = root.makephonebookname(pb.user,pb.name,pb.port);
 				if(window.confirm('Delete entry ' + name + '?'))
@@ -233,7 +233,7 @@ ${
 						var val = Number(pbsel.options[i].value);
 						pbsel.options[i].value = (val - 1);
 					}
-					phonebook.splice(pbwhich,1);
+					phonebook.splice(pbindex,1);
 					pbsel.remove(pbsel.selectedIndex);
 					pbsel.selectedIndex = -1;
 					document.getElementById('PHONEBOOKACCT').value='';
@@ -242,6 +242,19 @@ ${
 					document.getElementById('PHONEBOOKPORT').selectedIndex=-1;
 					setConfig('/phonebook/dial', phonebook);
 					document.getElementById('PHONEBOOKDELETE').style.visibility='hidden';
+					for(var i=0;i < window.siplets.length;i++)
+					{
+						var siplet = window.siplets[i];
+						if((siplet.pbwhich) 
+						&& (!siplet.pbwhich.startsWith('g')))
+						{
+							if(Number(siplet.pbwhich) > pbindex)
+								siplet.pbwhich = ''+(Number(siplet.pbwhich)-1);
+							else
+							if(Number(siplet.pbwhich) == pbindex)
+								siplet.pbwhich = 'g0';
+						}
+					}
 				}
 			}
 		};
