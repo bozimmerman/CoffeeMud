@@ -12,6 +12,9 @@ var menuData = [
 		{"n":"Triggers",
 		 "e":"window.currentSiplet!=null && window.currentSiplet.pbentry && window.currentSiplet.pbentry.user",
 		 "a":"javascript:menuTriggers('local');"},
+		{"n":"Aliases",
+		 "e":"window.currentSiplet!=null && window.currentSiplet.pbentry && window.currentSiplet.pbentry.user",
+		 "a":"javascript:menuAliases('local');"},
 		{"n":"Disconnect",
 		 "e":"window.currentSiplet!=null && window.currentSiplet.wsopened",
 		 "a":"javascript:menuDisconnect();"},
@@ -24,6 +27,8 @@ var menuData = [
 		 "a":"javascript:menuWindows();"},
 		{"n":"Triggers",
 		 "a":"javascript:menuTriggers('global');"},
+		{"n":"Aliases",
+		 "a":"javascript:menuAliases('global');"}
 	]},
 	{"Help": [
 		{"n":"About","a":"javascript:menuAbout()"}
@@ -185,4 +190,17 @@ function menuTriggers(value)
 	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
 		content.triggers = window.currentSiplet.localTriggers();
 	populateDivFromUrl(content, 'dialogs/triggers.htm');
+}
+
+function menuAliases(value)
+{
+	var which = 'Global';
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
+		which = window.currentSiplet.pbentry.name;
+	var content = getOptionWindow(which + " Aliases",60,40);
+	content.which = value;
+	content.aliases = getConfig('/global/aliases', window.defAliases); // dont parse them
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
+		content.aliases = window.currentSiplet.localAliases();
+	populateDivFromUrl(content, 'dialogs/aliases.htm');
 }

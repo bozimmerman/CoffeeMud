@@ -1,0 +1,239 @@
+<TABLE WIDTH=100% BORDER=0 style="font-size:12" ID="ALIASSROOT">
+<TR>
+	<TD WIDTH=20%>Aliases:</TD>
+	<TD><SELECT ID="ALIASDROPDOWN" STYLE="position:relative;" 
+			ONCHANGE="var root = document.getElementById('ALIASSROOT'); root.aliasselected(); "
+		>
+		<OPTION VALUE="-1">Add New Alias
+		</SELECT>
+</TD></TR>
+<TR><TD COLSPAN=2>&nbsp;</TD>
+<TR><TD WIDTH=20%>Name:</TD><TD>
+	<INPUT id="ALIASNAME" type="text"
+		ONCHANGE="var root = document.getElementById('ALIASSROOT'); root.aliasfieldchange(); "
+	>
+</TD></TR>
+<TR><TD>Pattern:<BR>&nbsp;&nbsp;<INPUT id="ALIASREGEX" type="checkbox"
+		ONCHANGE="var root = document.getElementById('ALIASSROOT'); root.aliasfieldchange(); "
+	>(RegEx)</TD><TD VALIGN=TOP>
+	<TEXTAREA id="ALIASPATTERN"
+		ONCHANGE="var root = document.getElementById('ALIASSROOT'); root.aliasfieldchange(); "
+	ROWS=2 STYLE="width:300px;"></TEXTAREA>
+</TD></TR>
+<TR><TD>Replace:</TD><TD>
+	<INPUT id="ALIASREPLACE" type="text" STYLE="width:300px" 
+		ONCHANGE="var root = document.getElementById('ALIASSROOT'); root.aliasfieldchange(); "
+	>
+</TD></TR>
+<TR><TD>Action:</TD><TD>
+	<select id="ALIASACTION"
+		ONCHANGE="var root = document.getElementById('ALIASSROOT'); root.aliasfieldchange(); "
+	>
+		<option value="">Do Nothing Else</option>
+		<option value="win.submitInput">Send Command</option>
+		<option value="win.displayText">Display Text</option>
+		<option value="win.playSound">Play Sound</option>
+		<option value="win.setVariable">Set Variable</option>
+		<option value="win.runScript">Run Script</option>
+		<option value="win.enableTrigger">Enable Trigger</option>
+		<option value="win.disableTrigger">Disable Trigger</option>
+		<option value="win.setColor">Set Color</option>
+	</select>
+	<INPUT id="ALIASAVALUE" type="text"
+		ONCHANGE="var root = document.getElementById('ALIASSROOT'); root.aliasfieldchange(); "
+	>
+</TD></TR>
+<TR><TD colspan="2">
+	<a ID="ALIASDELETE" href="javascript:document.getElementById('ALIASSROOT').trydelalias();">
+		<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
+			ONCLICK="document.getElementById('ALIASSROOT').trydelalias();" 
+			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
+		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
+			<B>Delete</B></FONT>
+		</TD></TR></TABLE>
+	</a>
+</TD></TR>
+</TABLE>
+${
+	var fixaliasspage=function(){
+	if(document.getElementById('ALIASAVALUE'))
+	{
+		var root = document.getElementById('ALIASSROOT');
+		var aliases = root.parentNode.aliases;
+		var global = root.parentNode.which == 'global';
+		delete root.parentNode.aliases;
+		delete root.parentNode.which;
+		var dd = document.getElementById('ALIASDROPDOWN');
+		var aname = document.getElementById('ALIASNAME');
+		var apatt = document.getElementById('ALIASPATTERN');
+		var arege = document.getElementById('ALIASREGEX');
+		var arepl = document.getElementById('ALIASREPLACE');
+		var aacto = document.getElementById('ALIASACTION');
+		var aaval = document.getElementById('ALIASAVALUE');
+		var delbutt = document.getElementById('ALIASDELETE');
+		var rfields = [aname, apatt, aacto, aaval];
+		dd.selectedIndex = -1;
+		delbutt.style.visibility='hidden';
+		for(var i=0;i < aliases.length;i++)
+		{
+			var alias = aliases[i];
+			var opt = new Option(alias.name,i);
+			dd.add(opt);
+		}
+		dd.selectedIndex = -1;
+		root.aliasselected = function() {
+			if(dd.value == "-1")
+			{
+				aname.value='';
+				aname.style.backgroundColor = 'red';
+				apatt.value='';
+				apatt.style.backgroundColor = 'red';
+				arege.checked=false;
+				arepl.value='';
+				aacto.selectedIndex=-1;
+				aacto.style.backgroundColor = 'red';
+				aaval.value='';
+				aaval.style.backgroundColor = 'red';
+				delbutt.style.visibility='hidden';
+			}
+			else
+			if(Number(dd.value) < aliases.length)
+			{
+				delbutt.style.visibility='visible';
+				var alias = aliases[Number(dd.value)];
+				aname.value=alias.name;
+				aname.style.backgroundColor = 'white';
+				apatt.value=alias.pattern;
+				apatt.style.backgroundColor = 'white';
+				arege.checked=alias.regex;
+				arepl.value=alias.replace;
+				aacto.style.backgroundColor = 'white';
+				if(alias.action)
+				{
+					var x1 = alias.action.indexOf('(');
+					var x2 = alias.action.lastIndexOf(')');
+					setSelectByValue(aacto,alias.action.substr(0,x1));
+					aaval.value=alias.action.substr(x1+1,x2-x1-1);
+				}
+				else
+					setSelectByValue(aacto,'');
+				aaval.style.backgroundColor = 'white';
+			}
+		};
+		root.aliasfieldchange = function() {
+			if(!global)
+				window.win = window.currentSiplet;
+			aname.style.backgroundColor = (aname.value.length==0)?'red':'white';
+			apatt.style.backgroundColor = (apatt.value.length==0)?'red':'white';
+			if(arege.checked) {
+				try 
+				{ 
+					var a = new RegExp(apatt.value,'g');
+					if(!a.exec) 
+						apatt.style.backgroundColor = 'red'; 
+				} catch(e) 
+				{
+					apatt.style.backgroundColor = 'red'; 
+				}
+			}
+			aaval.style.backgroundColor = ((aacto.value!='')&& (!isValidExpression(aaval.value)))?'red':'white';
+			aacto.style.backgroundColor = (aacto.selectedIndex < 0)?'red':'white';
+			delete window['win'];
+			var myname = Number(dd.value)>=0?aliases[Number(dd.value)].name:'';
+			for(var i=0;i < dd.options.length; i++)
+			{
+				if((dd.options[i].value == aname.value) && (myname != aname.value))
+					aname.style.backgroundColor = 'red';
+			}
+			for(var i=0;i < rfields.length; i++)
+				if(rfields[i].style.backgroundColor == 'red')
+					return;
+			var fact = (aacto.value=='') ? '' : (aacto.value + '(' + aaval.value + ');');
+			if(Number(dd.value) < 0)
+			{
+				var newAlias = {
+					name: aname.value,
+					regex: arege.checked,
+					replace: arepl.value,
+					pattern: apatt.value,
+					action: fact
+				};
+				aliases.push(newAlias);
+				var opt = new Option(aname.value, aliases.length-1);
+				dd.add(opt);
+				dd.selectedIndex = dd.options.length-1;
+				delbutt.style.visibility='visible';
+			}
+			else
+			{
+				var alias = aliases[Number(dd.value)];
+				alias.name= aname.value;
+				alias.regex= arege.checked;
+				alias.replace= arepl.value;
+				alias.pattern= apatt.value;
+				alias.action= fact;
+				dd.options[dd.selectedIndex].text = alias.name;
+			}
+			root.modifyaliases();
+		};
+		
+		root.modifyaliases = function()
+		{
+			if(global)
+			{
+				setConfig('/global/aliases', aliases);
+				for(var i=0;i < window.siplets.length; i++)
+					window.siplets[i].globalAliases = GetGlobalAliases();
+			}
+			else
+			{
+				var phonebook = getConfig('/phonebook/dial',[]);
+				if((window.currentSiplet.pbentry) 
+				&& (window.currentSiplet.pbwhich) 
+				&& (!window.currentSiplet.pbwhich.startsWith('g')))
+				{
+					var pbindex = Number(window.currentSiplet.pbwhich);
+					var pbentry = phonebook[pbindex];
+					pbentry.aliases = JSON.parse(JSON.stringify(aliases));
+					var found = FindSipletsByPB(pbentry);
+					if(!(window.currentSiplet in found))
+						found.push(window.currentSiplet);
+					for(var i=0;i < found.length;i++)
+					{
+						found[i].pbentry = pbentry;
+						found[i].aliases = null;
+					}
+					setConfig('/phonebook/dial',phonebook);
+				}
+			}
+		};
+		
+		root.trydelalias = function() {
+			var aliasindex = Number(dd.value);
+			if(aliasindex < 0)
+				return;
+			var curr=dd.selectedIndex;
+			dd.selectedIndex=-1;
+			dd.remove(curr);
+			for(var i=0;i < dd.options.length;i++)
+				if(Number(dd.options[i].value)>aliasindex)
+					dd.options[i].value=(Number(dd.options[i].value)-1);
+			var deadt = aliases[aliasindex];
+			aliases.splice(aliasindex,1);
+			root.modifyaliases();
+			aname.value='';
+			aname.style.backgroundColor = 'white';
+			apatt.value='';
+			apatt.style.backgroundColor = 'white';
+			arege.checked=false;
+			arepl.value='';
+			aacto.selectedIndex=-1;
+			aacto.style.backgroundColor = 'white';
+			aaval.value='';
+			aaval.style.backgroundColor = 'white';
+			delbutt.style.visibility='hidden';
+		};
+	} else
+		setTimeout(fixaliasspage,10);
+};setTimeout(fixaliasspage,10);
+'';}

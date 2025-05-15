@@ -37,7 +37,8 @@ function SipletWindow(windowName)
 	this.textBufferPruneIndex = 0;
 	this.globalTriggers = GetGlobalTriggers();
 	this.triggers = null;
-	this.aliases = null; //TODO: allow local aliases, and global aliases
+	this.globalAliases = GetGlobalAliases();
+	this.aliases = null;
 	this.vars = {};
 
 	var me = this;
@@ -125,7 +126,8 @@ function SipletWindow(windowName)
 		this.textBufferPruneIndex = 0;
 		this.globalTriggers = GetGlobalTriggers();
 		this.triggers = null;
-		this.aliases = null; //TODO: allow local aliases, and global aliases
+		this.globalAliases = GetGlobalAliases();
+		this.aliases = null;
 		this.vars = {};
 	}
 	
@@ -252,7 +254,8 @@ function SipletWindow(windowName)
 					{
 						prev += x + trig.pattern.length + 1;
 						trig.prev = this.textBufferPruneIndex + x + trig.pattern.length + 1;
-						eval(trig.action);
+						var action = trig.action.replaceAll('\\n','\n');
+						try { eval(action); } catch(e) {};
 						x = this.textBuffer.indexOf(trig.pattern,prev);
 					}
 				}
@@ -280,6 +283,61 @@ function SipletWindow(windowName)
 	{
 		this.evalTriggerGroup(this.globalTriggers);
 		this.evalTriggerGroup(this.localTriggers());
+	};
+	
+	this.evalAliasGroup = function(aliases, txt)
+	{
+		var win = this;
+		for(var i=0;i<aliases.length;i++)
+		{
+			var alias = aliases[i];
+			if(!alias.disabled)
+			{
+				if(alias.regex && alias.pattern && alias.pattern.test)
+				{
+					if(alias.pattern.test(txt))
+					{
+						txt = txt.replace(alias.pattern,alias.replace);
+						var action = alias.action.replaceAll('\\n','\n');
+						try { eval(action); } catch(e) {};
+						return txt
+					}
+				}
+				else
+				if(txt.startsWith(alias.pattern))
+				{
+					var action = alias.action.replaceAll('\\n','\n');
+					try { eval(action); } catch(e) {};
+					return alias.replace + txt.substr(alias.pattern.length);
+				}
+			}
+		}
+		return txt;
+	};
+	
+	this.aliasProcess = function(x)
+	{
+		var oldx = x;
+		x = this.evalAliasGroup(this.globalAliases, x);
+		if(x == oldx)
+			x = this.evalAliasGroup(this.localAliases(), x);
+		return x;
+	};
+	
+	this.localAliases = function()
+	{
+		if(this.aliases == null)
+		{
+			if((!this.pbentry)
+			||(!this.pbentry.aliases)
+			||(!Array.isArray(this.pbentry.aliases)))
+			{
+				this.aliases=[];
+				return [];
+			}
+			this.aliases = ParseAliases(this.pbentry.aliases);
+		}
+		return this.aliases;
 	};
 	
 	this.createGauge = function(entity,caption,color,value,max)

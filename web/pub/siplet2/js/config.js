@@ -5,6 +5,7 @@ if(window.config)
 else
 	window.config = {};
 window.phonebook = [];
+window.defAliases = [];
 window.defTriggers = [
 	{
 		name: "Phonebook Account Name",
@@ -139,8 +140,33 @@ function ParseTriggers(baseTriggers)
 	return [];
 }
 
+function ParseAliases(baseAliases)
+{
+	if(Array.isArray(baseAliases))
+	{
+		var aliases = [];
+		for(var i=0;i<baseAliases.length;i++)
+		{
+			var rawAliases=baseAliases[i];
+			var aliasCopy = JSON.parse(JSON.stringify(rawAliases));
+			if ((aliasCopy.regex) && (typeof aliasCopy.pattern === 'string')) {
+				aliasCopy.pattern = new RegExp(aliasCopy.pattern,'g');
+			}
+			aliases.push(aliasCopy);
+		}
+		return aliases;
+	}
+	return [];
+}
+
 function GetGlobalTriggers()
 {
 	var rawTriggers = getConfig('/global/triggers', window.defTriggers);
 	return ParseTriggers(rawTriggers);
+}
+
+function GetGlobalAliases()
+{
+	var rawAliases = getConfig('/global/aliases', window.defAliases);
+	return ParseAliases(rawAliases);
 }
