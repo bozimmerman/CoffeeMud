@@ -1580,7 +1580,7 @@ public class DefaultSession implements Session
 					newMsg = filter.applyFilter(mob, src, trg, tol, newMsg);
 					if(newMsg == null)
 					{
-						s.remove();
+						textFilters.remove(filter);
 						return CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,noWrap);
 					}
 				}
