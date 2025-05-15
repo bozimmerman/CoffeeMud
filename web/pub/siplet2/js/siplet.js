@@ -38,6 +38,7 @@ function SipletWindow(windowName)
 	this.globalTriggers = GetGlobalTriggers();
 	this.triggers = null;
 	this.aliases = null; //TODO: allow local aliases, and global aliases
+	this.vars = {};
 
 	var me = this;
 	
@@ -395,13 +396,13 @@ function SipletWindow(windowName)
 
 	this.setVariable = function(key, value)
 	{
-		this[key] = value;
+		this.vars[key] = value;
 	};
 	
 	this.getVariable = function(key)
 	{
-		if(key in this)
-			return this[key];
+		if(key in this.vars)
+			return this.vars[key];
 		return '';
 	};
 	
