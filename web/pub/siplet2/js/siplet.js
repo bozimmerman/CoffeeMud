@@ -240,7 +240,8 @@ function SipletWindow(windowName)
 					while(match !== null)
 					{
 						trig.prev = this.textBufferPruneIndex + match.index + 1;
-						eval(trig.action);
+						var action = trig.action.replaceAll('\\n','\n');
+						try { eval(action); } catch(e) {};
 						match = trig.pattern.exec(this.textBuffer);
 					}
 				}
