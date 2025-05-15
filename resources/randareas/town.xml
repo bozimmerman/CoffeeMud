@@ -607,7 +607,7 @@ See guides/RandomAreas.html for information about documents of this type.
 						<ITEM class="metacraft:any-herbalism &lt; $level_range" number=20 price="$item_level * 10"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='jewelry'">
-						<ITEM class="metacraft:all-jewelmaking<$mob_level" material="$any_cheap_metal" number=20/>
+						<ITEM class="metacraft:all-jewelmaking<$mob_level" number=20/>
 					</ITEM>
 					<MOB select="all" condition="$shoptype='pet'">
 						<MOB class="genmob" copyof="Monkey" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>

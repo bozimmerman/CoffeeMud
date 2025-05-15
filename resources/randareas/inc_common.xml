@@ -380,6 +380,8 @@ ${SELECT:any\name from (SELECT: . from $dungeon_junk)}
 <STRING id="all_cloth" insert="all_cheap_cloth,all_rich_cloth" select="all"></STRING>
 <STRING id="any_cloth" insert="all_cloth" select="any-1"></STRING>
 <STRING id="any_Item_material" insert="all_cloth,all_wood,all_metal,all_mithril" select="any-1" />
+<STRING id="all_cheap_jewel" select="all"><string>quartz</string><string>diamels</string><string>peridot</string><string>chrysoberyl</string><string>aquamarine</string><string>jade</string></STRING>
+<STRING id="any_cheap_jewel" insert="all_cheap_jewel" select="any-1" />
 
 <STRING id="trueorfalse" SELECT="any-1"><STRING>true</STRING><STRING>false</STRING></STRING>
 
