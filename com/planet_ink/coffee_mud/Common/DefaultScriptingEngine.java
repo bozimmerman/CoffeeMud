@@ -82,6 +82,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected boolean				isSavable		 = true;
 	protected boolean				alwaysTriggers	 = false;
 	protected boolean				approvedScripts	 = false;
+	protected boolean				multiTriggers	 = false;
 
 	protected MOB					lastToHurtMe	 = null;
 	protected volatile Room			lastKnownLocation= null;
@@ -9811,6 +9812,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(arg2.equals("ACTIVETRIGGER")||arg2.equals("ACTIVETRIGGERS"))
 					alwaysTriggers=CMath.s_bool(arg3);
 				else
+				if(arg2.equals("MULTITRIGGER")||arg2.equals("MULTITRIGGERS"))
+					multiTriggers=CMath.s_bool(arg3);
+				else
 				if(arg2.equals("DEFAULTQUEST"))
 					registerDefaultQuest(arg3);
 				else
@@ -10894,12 +10898,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						findSomethingCalledThis(name.substring(containerIndex+6).trim(),null,putRoom,containers,false);
 						for(int c=0;c<containers.size();c++)
 						{
-							if((containers.get(c) instanceof Container)
-							&&(((Container)containers.get(c)).capacity()>0))
+							if(containers.get(c) instanceof Container)
 							{
-								container=(Container)containers.get(c);
-								name=name.substring(0,containerIndex).trim();
-								break;
+								final Container C = (Container)containers.get(c);
+								if((C.owner()==putRoom)
+								&&(C.capacity()>0))
+								{
+									container=(Container)containers.get(c);
+									name=name.substring(0,containerIndex).trim();
+									break;
+								}
 							}
 						}
 					}
@@ -14165,7 +14173,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
 								enqueResponse(triggerCode,affecting,monster,msg.source(),monster,defaultItem,null,null,script,1, t);
-								return;
+								if(!multiTriggers)
+									return;
 							}
 						}
 					}
@@ -14202,8 +14211,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									}
 								}
 								enqueResponse(triggerCode,affecting,monster,msg.source(),monster,defaultItem,null,null,script,1, t);
-								return;
-							}
+								if(!multiTriggers)
+									return;
+						}
 						}
 					}
 					break;
@@ -14222,7 +14232,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
 								enqueResponse(triggerCode,affecting,monster,msg.source(),monster,defaultItem,null,null,script,1, t);
-								return;
+								if(!multiTriggers)
+									return;
 							}
 						}
 					}
@@ -14243,7 +14254,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							{
 								noTrigger.put(Integer.valueOf(-52),Long.valueOf(System.currentTimeMillis()+CMProps.getTickMillis()));
 								enqueResponse(triggerCode,affecting,monster,msg.source(),monster,defaultItem,null,null,script,1, t);
-								return;
+								if(!multiTriggers)
+									return;
 							}
 						}
 					}
@@ -14283,7 +14295,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if((t[1].length()==0)||(t[1].equals("ALL")))
 							{
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),defaultItem,null,str,script,1, t);
-								return;
+								if(!multiTriggers)
+									return;
 							}
 							else
 							if((t[1].equals("P"))&&(t.length>2))
@@ -14291,7 +14304,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								if(match(str.trim(),t[2]))
 								{
 									enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),defaultItem,null,str,script,1, t);
-									return;
+									if(!multiTriggers)
+										return;
 								}
 							}
 							else
@@ -14301,7 +14315,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								if(x>=0)
 								{
 									enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),defaultItem,null,str.substring(x).trim(),script,1, t);
-									return;
+									if(!multiTriggers)
+										return;
 								}
 							}
 						}
@@ -14344,7 +14359,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if((t[1].length()==0)||(t[1].equals("ALL")))
 							{
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),defaultItem,null,str,script,1, t);
-								return;
+								if(!multiTriggers)
+									return;
 							}
 							else
 							if((t[1].equals("P"))&&(t.length>2))
@@ -14352,7 +14368,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								if(match(str.trim(),t[2]))
 								{
 									enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),defaultItem,null,str,script,1, t);
-									return;
+									if(!multiTriggers)
+										return;
 								}
 							}
 							else
@@ -14362,7 +14379,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								if(x>=0)
 								{
 									enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),defaultItem,null,str.substring(x).trim(),script,1, t);
-									return;
+									if(!multiTriggers)
+										return;
 								}
 							}
 						}
@@ -14386,7 +14404,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							lastMsg=msg;
 							enqueResponse(triggerCode,affecting,monster,msg.source(),monster,(Item)msg.tool(),defaultItem,check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14407,7 +14426,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							lastMsg=msg;
 							enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.tool(),defaultItem,check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14429,7 +14449,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							lastMsg=msg;
 							enqueResponse(triggerCode,affecting,monster,msg.source(),monster,defaultItem,null,check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14450,7 +14471,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							lastMsg=msg;
 							enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),defaultItem,null,check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14463,7 +14485,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(check!=null)
 						{
 							enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),defaultItem,null,check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14589,7 +14612,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),Tool,(Item)msg.target(),str,script,1, t);
 									else
 										enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),Tool,defaultItem,str,script,1, t);
-									return;
+									if(!multiTriggers)
+										return;
 								}
 							}
 						}
@@ -14604,7 +14628,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(check!=null)
 						{
 							enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),defaultItem,defaultItem,check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14629,7 +14654,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							lastMsg=msg;
 							enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),checkInE,defaultItem,check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14650,7 +14676,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							lastMsg=msg;
 							enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),checkInE,defaultItem,check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14674,7 +14701,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null),script);
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.target(),defaultItem,check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14694,7 +14722,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null),script);
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.target(),defaultItem,check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14712,7 +14741,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(check!=null)
 						{
 							enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.target(),defaultItem,check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14745,7 +14775,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(check!=null)
 						{
 							enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),I,defaultItem,check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14765,7 +14796,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null),script);
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.target(),defaultItem,check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14790,7 +14822,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null),script);
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)msg.tool(),check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14814,7 +14847,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null),script);
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)msg.tool(),check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14835,7 +14869,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								execute(new MPContext(affecting,monster,msg.source(),monster,product,(Item)product.copyOf(),check, null),script);
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),monster,product,product,check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14855,7 +14890,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								execute(new MPContext(affecting,monster,msg.source(),monster,product,(Item)product.copyOf(),null, null),script);
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),monster,product,product,check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14872,7 +14908,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(check!=null)
 						{
 							enqueResponse(triggerCode,affecting,monster,msg.source(),monster,(Item)msg.target(),defaultItem,check,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -14902,7 +14939,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							||(t[1].equals("ANY")))
 							{
 								enqueResponse(triggerCode,affecting,monster,msg.source(),monster,(Item)msg.tool(),defaultItem,null,script,1, t);
-								return;
+								if(!multiTriggers)
+									return;
 							}
 						}
 					}
@@ -14938,7 +14976,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									}
 								}
 								enqueResponse(triggerCode,affecting,monster,msg.source(),monster,defaultItem,null,roomID,script,1, t);
-								return;
+								if(!multiTriggers)
+									return;
 							}
 						}
 					}
@@ -14972,7 +15011,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									}
 								}
 								enqueResponse(triggerCode,affecting,monster,msg.source(),monster,defaultItem,null,roomID,script,1, t);
-								return;
+								if(!multiTriggers)
+									return;
 							}
 						}
 					}
@@ -14990,7 +15030,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if((src==null)||(src.location()!=monster.location()))
 							src=ded;
 						execute(new MPContext(affecting,ded,src,ded,defaultItem,null,null, null),script);
-						return;
+						if(!multiTriggers)
+							return;
 					}
 					break;
 				case 44: // kill_prog
@@ -15006,7 +15047,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if((src==null)||(src.location()!=monster.location()))
 							src=ded;
 						execute(new MPContext(affecting,ded,src,ded,defaultItem,null,null, null),script);
-						return;
+						if(!multiTriggers)
+							return;
 					}
 					break;
 				case 26: // damage_prog
@@ -15019,7 +15061,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(msg.tool() instanceof Item)
 							I=(Item)msg.tool();
 						execute(new MPContext(affecting,eventMob,msg.source(),msg.target(),defaultItem,I,""+msg.value(), null),script);
-						return;
+						if(!multiTriggers)
+							return;
 					}
 					break;
 				case 29: // login_prog
@@ -15040,7 +15083,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
 								enqueResponse(triggerCode,affecting,monster,msg.source(),monster,defaultItem,null,null,script,1, t);
-								return;
+								if(!multiTriggers)
+									return;
 							}
 						}
 					}
@@ -15067,7 +15111,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								for(int i=0;i<t.length && (i<ctx.tmp.length);i++)
 									ctx.tmp[i]=t;
 								execute(ctx,script);
-								return;
+								if(!multiTriggers)
+									return;
 							}
 						}
 					}
@@ -15085,7 +15130,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
 								enqueResponse(triggerCode,affecting,monster,msg.source(),monster,defaultItem,null,null,script,1, t);
-								return;
+								if(!multiTriggers)
+									return;
 							}
 						}
 					}
@@ -15153,7 +15199,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),Tool,(Item)msg.target(),str,script,1, t);
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),Tool,defaultItem,str,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -15175,7 +15222,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),Tool,(Item)msg.target(),msg.tool().Name(),script,1, t);
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),Tool,defaultItem,msg.tool().Name(),script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
@@ -15256,7 +15304,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),Tool,(Item)msg.target(),str,script,1, t);
 								else
 									enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),Tool,defaultItem,str,script,1, t);
-								return;
+								if(!multiTriggers)
+									return;
 							}
 						}
 					}
@@ -15307,7 +15356,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),Tool,(Item)msg.target(),str,script,1, t);
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),Tool,defaultItem,str,script,1, t);
-							return;
+							if(!multiTriggers)
+								return;
 						}
 					}
 					break;
