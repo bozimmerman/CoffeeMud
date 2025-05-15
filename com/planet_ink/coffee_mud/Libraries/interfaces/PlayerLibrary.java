@@ -483,6 +483,19 @@ public interface PlayerLibrary extends CMLibrary
 	public ThinPlayer getThinPlayer(final String mobName);
 
 	/**
+	 * Given a player name, this will return an empty
+	 * and invalid ThinPlayer object.
+	 *
+	 * @see PlayerLibrary.ThinPlayer
+	 * @see PlayerLibrary#newThinnerPlayer()
+	 * @see PlayerLibrary#thinPlayers(String, Map)
+	 *
+	 * @param mobName the char name
+	 * @return a ThinPlayer object
+	 */
+	public ThinPlayer getEmptyThinPlayerObject(final String mobName);
+
+	/**
 	 * Given a possible player sort code string, and an optional cache of
 	 * pre-loaded key pairs, one of which might be "PLAYERLISTVECTOR"+sort,
 	 * pointing to a vector of pre-loaded thinplayers, this will return

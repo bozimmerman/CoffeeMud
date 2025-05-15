@@ -195,6 +195,98 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
+	public ThinPlayer getEmptyThinPlayerObject(final String mobName)
+	{
+		return new PlayerLibrary.ThinPlayer()
+		{
+			final String name = mobName;
+			@Override
+			public String name()
+			{
+				return name;
+			}
+
+			@Override
+			public String charClass()
+			{
+				return "";
+			}
+
+			@Override
+			public String race()
+			{
+				return "";
+			}
+
+			@Override
+			public int level()
+			{
+				return 0;
+			}
+
+			@Override
+			public int age()
+			{
+				return 0;
+			}
+
+			@Override
+			public long last()
+			{
+				return 0;
+			}
+
+			@Override
+			public String email()
+			{
+				return "";
+			}
+
+			@Override
+			public String ip()
+			{
+				return "";
+			}
+
+			@Override
+			public int exp()
+			{
+				return 0;
+			}
+
+			@Override
+			public int expLvl()
+			{
+				return 0;
+			}
+
+			@Override
+			public String liege()
+			{
+				return "";
+			}
+
+			@Override
+			public String worship()
+			{
+				return "";
+			}
+
+			@Override
+			public String gender()
+			{
+				return "neuter";
+			}
+
+			@Override
+			public Enumeration<String> clans()
+			{
+				return new EmptyEnumeration<String>();
+			}
+		};
+	}
+
+	@Override
 	public ThinPlayer getThinPlayer(final String mobName)
 	{
 		final MOB M=this.getPlayer(mobName);
@@ -314,13 +406,14 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			@Override
 			public String charClass()
 			{
-				return M.baseCharStats().getCurrentClass().ID();
+				final CharClass C = M.baseCharStats().getCurrentClass();
+				return (C.nameSet().length>1) ? C.ID() : C.name();
 			}
 
 			@Override
 			public String race()
 			{
-				return M.baseCharStats().getMyRace().ID();
+				return M.baseCharStats().getMyRace().name();
 			}
 
 			@Override

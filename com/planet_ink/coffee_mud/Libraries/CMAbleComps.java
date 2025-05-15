@@ -920,7 +920,6 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				final List<Pair<Integer,String>> compInts=new ArrayList<Pair<Integer,String>>();
 				while(i>=0)
 				{
-
 					if((destroy)
 					&&(found.get(0) instanceof Item))
 					{

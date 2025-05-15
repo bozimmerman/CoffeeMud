@@ -1071,7 +1071,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</EXIT>
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
 			<AFFECT class="Prop_ClosedDayNight" />
-			<MOB class="GenBanker" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="CLAN BANKER" condition="$pop_mobs!='false'">
+			<MOB class="GenBanker" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="CLAN BANKER" condition="$pop_mobs!='false'" BANKCHAIN="Random Inc">
 				<NAME>Bank clerk ${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is here to serve.</DISPLAY>

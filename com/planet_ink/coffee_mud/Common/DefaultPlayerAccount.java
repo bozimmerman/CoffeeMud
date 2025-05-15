@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.StdMOB;
@@ -559,97 +560,8 @@ public class DefaultPlayerAccount extends DefaultPrideStats implements PlayerAcc
 				for(final Enumeration<String> e=getPlayers();e.hasMoreElements();)
 				{
 					final String name = e.nextElement();
-					PlayerLibrary.ThinPlayer tP = CMLib.database().getThinUser(name);
-					if (tP == null)
-					{
-						tP = new PlayerLibrary.ThinPlayer()
-						{
-							@Override
-							public String name()
-							{
-								return name;
-							}
-
-							@Override
-							public String charClass()
-							{
-								return "";
-							}
-
-							@Override
-							public String race()
-							{
-								return "";
-							}
-
-							@Override
-							public int level()
-							{
-								return 0;
-							}
-
-							@Override
-							public int age()
-							{
-								return 0;
-							}
-
-							@Override
-							public long last()
-							{
-								return 0;
-							}
-
-							@Override
-							public String email()
-							{
-								return "";
-							}
-
-							@Override
-							public String ip()
-							{
-								return "";
-							}
-
-							@Override
-							public int exp()
-							{
-								return 0;
-							}
-
-							@Override
-							public int expLvl()
-							{
-								return 0;
-							}
-
-							@Override
-							public String liege()
-							{
-								return "";
-							}
-
-							@Override
-							public String worship()
-							{
-								return "";
-							}
-
-							@Override
-							public String gender()
-							{
-								return "neuter";
-							}
-
-							@Override
-							public Enumeration<String> clans()
-							{
-								return new EmptyEnumeration<String>();
-							}
-						};
-					}
-					thinPlayers.add(tP);
+					final ThinPlayer tP = CMLib.players().getThinPlayer(name);
+					thinPlayers.add((tP!=null) ? tP : CMLib.players().getEmptyThinPlayerObject(name));
 				}
 			}
 		}
