@@ -383,7 +383,7 @@ var TELNET = function(sipwin)
 			window.sipletInputTitle = obj["title"];
 			window.sipletInputText = obj["text"];
 			var content = getOptionWindow("Siplet.Input",60,40);
-			populateDivFromUrl(content, 'js/dialogs/editor.htm');
+			populateDivFromUrl(content, 'dialogs/editor.htm');
 			window.SubmitSipletInputEntry = function()
 			{
 			    var textarea = content.getElementsByTagName('textarea')[0];

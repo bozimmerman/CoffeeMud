@@ -140,14 +140,14 @@ function getOptionWindow(heading, w, h)
 function menuAbout()
 {
 	var content = getOptionWindow("About",60,40);
-	populateDivFromUrl(content, 'js/dialogs/about.htm');
+	populateDivFromUrl(content, 'dialogs/about.htm');
 	this.menuWindow.onclick = hideOptionWindow;
 }
 
 function menuWindows()
 {
 	var content = getOptionWindow("Window Options",60,40);
-	populateDivFromUrl(content, 'js/dialogs/window.htm');
+	populateDivFromUrl(content, 'dialogs/window.htm');
 }
 
 function menuDisconnect()
@@ -171,7 +171,7 @@ function menuReconnect()
 function menuConnect()
 {
 	var content = getOptionWindow("Connect",60,40);
-	populateDivFromUrl(content, 'js/dialogs/connect.htm');
+	populateDivFromUrl(content, 'dialogs/connect.htm');
 }
 
 function menuTriggers(value)
@@ -184,5 +184,5 @@ function menuTriggers(value)
 	content.triggers = getConfig('/global/triggers', window.defTriggers); // dont parse them
 	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
 		content.triggers = window.currentSiplet.localTriggers();
-	populateDivFromUrl(content, 'js/dialogs/triggers.htm');
+	populateDivFromUrl(content, 'dialogs/triggers.htm');
 }
