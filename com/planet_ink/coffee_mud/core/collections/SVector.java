@@ -199,25 +199,18 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 			return EmptyEnumeration.INSTANCE;
 		return new Enumeration<T>()
 		{
-			int i=0;
+			final Iterator<T>	i	= iterator();
+
 			@Override
 			public boolean hasMoreElements()
 			{
-				return i<list.size();
+				return i.hasNext();
 			}
+
 			@Override
 			public T nextElement()
 			{
-				if(i>=list.size())
-					throw new NoSuchElementException();
-				try
-				{
-					return list.get(i++);
-				}
-				catch(final Exception e)
-				{
-					throw new NoSuchElementException();
-				}
+				return i.next();
 			}
 		};
 	}
