@@ -121,6 +121,12 @@ function SipletWindow(windowName)
 		this.text.reset();
 		this.gauges=[];
 		this.gaugeWindow = null;
+		this.textBuffer = '';
+		this.textBufferPruneIndex = 0;
+		this.globalTriggers = GetGlobalTriggers();
+		this.triggers = null;
+		this.aliases = null; //TODO: allow local aliases, and global aliases
+		this.vars = {};
 	}
 	
 	this.htmlBuffer = '';
