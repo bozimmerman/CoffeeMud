@@ -510,7 +510,7 @@ var MXP = function(sipwin)
 			}
 			if('<!--'.startsWith(this.partial))
 				return '';
-			if(this.partial.length > 512)
+			if(this.partial.length > 1024)
 				return this.cancelProcessing();
 			if ((this.mode == MXPMODE.LINE_LOCKED) || (this.mode == MXPMODE.LOCK_LOCKED))
 				return this.cancelProcessing();
