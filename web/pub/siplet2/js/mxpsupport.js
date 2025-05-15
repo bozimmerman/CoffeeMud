@@ -504,13 +504,13 @@ var MXP = function(sipwin)
 			{
 				if(this.partial.endsWith('-->')
 				&& (this.partial.length > 6)
-				&& (this.partial.length < 4096))
+				&& (this.partial.length < 8192))
 					this.cancelProcessing();
 				return '';
 			}
 			if('<!--'.startsWith(this.partial))
 				return '';
-			if(this.partial.length > 1024)
+			if(this.partial.length > 2048)
 				return this.cancelProcessing();
 			if ((this.mode == MXPMODE.LINE_LOCKED) || (this.mode == MXPMODE.LOCK_LOCKED))
 				return this.cancelProcessing();
