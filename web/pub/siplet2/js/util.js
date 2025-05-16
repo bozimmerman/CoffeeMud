@@ -115,6 +115,13 @@ function isValidExpression(exp) {
 	}
 }
 
+function In(element,inlist)
+{
+	if(Array.isArray(inlist))
+		return inlist.indexOf(element)>=0;
+	return element in inlist;
+}
+
 function populateDivFromUrl(div, url) 
 {
 	var xhr = new XMLHttpRequest();

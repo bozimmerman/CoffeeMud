@@ -173,7 +173,7 @@ var MXPElement = function(theName, theDefinition, theAttributes, theFlag, theBit
 		{
 			var PA = this.parsedAttributes[p];
 			var VAL = this.attributeValues[PA];
-			if ((VAL != null) && (VAL in this.parsedAttributes))
+			if ((VAL != null) && In(VAL, this.parsedAttributes))
 			{
 				
 				this.parsedAttributes.splice(p,1);
@@ -1759,12 +1759,12 @@ var MXP = function(sipwin)
 						for (var a = 0; a < allAttributes.length; a++)
 						{
 							var att = allAttributes[a];
-							if (!(att in unsupportedParms))
+							if (!In(att, unsupportedParms))
 								supportResponse += (" +" + tag + "." + att);
 						}
 						continue;
 					}
-					if ((parm in unsupportedParms) || (!(parm in allAttributes)))
+					if (In(parm, unsupportedParms) || (!In(parm, allAttributes)))
 						supportResponse += (" -" + tag + "." + parm);
 					else
 						supportResponse += (" +" + tag + "." + parm);

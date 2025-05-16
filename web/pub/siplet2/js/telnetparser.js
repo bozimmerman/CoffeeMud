@@ -460,7 +460,7 @@ var TELNET = function(sipwin)
 			default:
 				if (Array.isArray(stack[stack.length-1]))
 				{
-					if(!(str in stack[stack.length-1]))
+					if(!In(str, stack[stack.length-1]))
 						stack[stack.length-1].push(str);
 				}
 				else

@@ -207,7 +207,7 @@ ${
 					var pbentry = phonebook[pbindex];
 					pbentry.aliases = JSON.parse(JSON.stringify(aliases));
 					var found = FindSipletsByPB(pbentry);
-					if(!(window.currentSiplet in found))
+					if(!In(window.currentSiplet, found))
 						found.push(window.currentSiplet);
 					for(var i=0;i < found.length;i++)
 					{
