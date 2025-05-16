@@ -40,6 +40,7 @@ function SipletWindow(windowName)
 	this.globalAliases = GetGlobalAliases();
 	this.aliases = null;
 	this.vars = {};
+	this.lastStyle = '';
 
 	var me = this;
 	
@@ -136,6 +137,8 @@ function SipletWindow(windowName)
 		if(this.htmlBuffer.length > 0)
 		{
 			var span = document.createElement('span');
+			span.style.cssText = this.lastStyle;
+			this.lastStyle = this.ansi.styleSheet();
 			span.innerHTML = this.htmlBuffer;
 			this.window.appendChild(span);
 			this.htmlBuffer='';

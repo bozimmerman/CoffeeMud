@@ -132,6 +132,15 @@ var ANSISTACK = function()
 		}
 		return "";
 	};
+	
+	this.styleSheet = function()
+	{
+		return	'color:' + this.lastForeground + ';background-color:' + this.lastBackground+';'
+		+(this.italicsOn?'font-style: italic;':'')
+		+(this.boldOn?'font-weight: bold;':'')
+		+(this.underlineOn?'text-decoration: underline;':'')
+		+(this.blinkOn?'animation: blinker 1s linear infinite;':'');
+	}
 
 	this.process = function(dat)
 	{
@@ -307,7 +316,7 @@ var ANSISTACK = function()
 						this.lastBackground = background;
 						this.lastForeground = foreground;
 						this.fontOn = true;
-						html += "<FONT STYLE=\"color: " + foreground.trim() + ";background-color: " + background.trim() + "\">";
+						html += '<FONT STYLE="' + this.styleSheet() + '">'; 
 					}
 				}
 			}
