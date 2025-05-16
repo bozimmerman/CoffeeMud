@@ -72,6 +72,8 @@ var TELNET = function(sipwin)
 	this.process = function(dat)
 	{
 		var response = [];
+		//TODO:BZ:DELME
+		//var s='>' + new Date().getTime()+'>';for(var i=0;i<dat.length;i++)s+=dat[i]+',';console.log(s);
 		switch (dat[0])
 		{
 		case TELOPT.SB:
@@ -364,6 +366,8 @@ var TELNET = function(sipwin)
 		default:
 			break;
 		}
+		//TODO:BZ:DELME
+		//var s='<' + new Date().getTime()+'<';for(var i=0;i<response.length;i++)s+=response[i]+',';console.log(s);
 		return new Uint8Array(response).buffer;
 	};
 	
