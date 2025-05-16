@@ -135,6 +135,21 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 			rsock=new CoffeePipeSocket(httpReq.getClientAddress(),pipes.getRightPipe(),pipes.getLeftPipe());
 			mudOut=lsock.getOutputStream();
 			mudIn=lsock.getInputStream();
+			pipes.getRightPipe().setWriteCallback(new Runnable() {
+				@Override
+				public void run()
+				{
+					try
+					{
+						if(ioHandler != null)
+							poll();
+					}
+					catch(final Throwable t)
+					{
+						closeAndWait();
+					}
+				}
+			});
 			sess = host.acceptConnection(rsock);
 		}
 	}
@@ -247,7 +262,6 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 				final Pair<byte[], WSPType> buf = processPolledBytes(readBuffer(avail));
 				if(buf != null)
 					sendPacket(buf.first, buf.second);
-				CMLib.s_sleep(1); // if there's some, there might be more incoming
 				avail = mudIn.available();
 			}
 		}
@@ -257,7 +271,7 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 		}
 	}
 
-	private DataBuffers processInput(final HTTPRequest request, final byte[] payload , final DataBuffers outBuffer) throws HTTPException
+	private DataBuffers processInput(final int opCode, final HTTPRequest request, final byte[] payload , final DataBuffers outBuffer) throws HTTPException
 	{
 		switch(opCode)
 		{
@@ -337,7 +351,7 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 				else
 				{
 					if(finished)
-						outBuffers = processInput(request,payload.toByteArray(),outBuffers);
+						outBuffers = processInput(opCode,request,payload.toByteArray(),outBuffers);
 					state=WSState.S0;
 				}
 				break;
@@ -372,7 +386,7 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 				if(--dataLen <= 0)
 				{
 					if(finished)
-						outBuffers = processInput(request,payload.toByteArray(),outBuffers);
+						outBuffers = processInput(opCode,request,payload.toByteArray(),outBuffers);
 					state=WSState.S0;
 				}
 				break;
@@ -449,14 +463,20 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 	protected Pair<byte[], WSPType> processTextInput(final String input) throws IOException
 	{
 		if (mudOut != null)
+		{
 			mudOut.write(input.getBytes());
+			mudOut.flush();
+		}
 		return null;
 	}
 
 	protected Pair<byte[], WSPType> processBinaryInput(final byte[] input) throws IOException
 	{
 		if (mudOut != null)
+		{
 			mudOut.write(input);
+			mudOut.flush();
+		}
 		return null;
 	}
 
