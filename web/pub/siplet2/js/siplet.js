@@ -340,6 +340,22 @@ function SipletWindow(windowName)
 		return this.aliases;
 	};
 	
+	this.localScripts = function()
+	{
+		if(this.scripts == null)
+		{
+			if((!this.pbentry)
+			||(!this.pbentry.scripts)
+			||(!Array.isArray(this.pbentry.scripts)))
+			{
+				this.scripts=[];
+				return [];
+			}
+			this.scripts = this.pbentry.scripts;
+		}
+		return this.scripts;
+	};
+	
 	this.createGauge = function(entity,caption,color,value,max)
 	{
 		var gaugedata=new Array(5);
@@ -470,11 +486,29 @@ function SipletWindow(windowName)
 			return this.vars[key];
 		return '';
 	};
+
+	this.findLocalScript = function(value)
+	{
+		var run = FindAScript(this.localScripts(),value,false);
+		if(run == null) 
+			run = FindAScript(this.globalScripts,value,false);
+		if(run == null) 
+			run = FindAScript(this.localScripts(),value,true);
+		if(run == null) 
+			run = FindAScript(this.globalScripts,value,true);
+		return run;
+	}
 	
 	this.runScript = function(value)
 	{
-		var win = this;
-		eval(value);
+		var run = findLocalScript(value);
+		if(run != null)
+		{
+			var win = this;
+			eval(value);
+		}
+		else
+			console.log("Unable to find script '"+value+"'");
 	};
 	
 	this.enableTrigger = function(value)

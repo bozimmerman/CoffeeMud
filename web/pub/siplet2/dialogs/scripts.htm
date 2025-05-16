@@ -1,0 +1,220 @@
+<SPAN  ID="SCRIPTSROOT">
+<TABLE WIDTH=100% BORDER=0 style="font-size:12;height:200px">
+<TR>
+	<TD WIDTH=20%>Scripts:</TD>
+	<TD><SELECT ID="SCRIPTSDROPDOWN" STYLE="position:relative;" 
+			ONCHANGE="var root = document.getElementById('SCRIPTSROOT'); root.scriptselected(); "
+		>
+		<OPTION VALUE="-1">Add New Script
+		</SELECT>
+</TD></TR>
+<TR><TD COLSPAN=2>&nbsp;</TD>
+<TR><TD WIDTH=20%>Name:</TD><TD>
+	<INPUT id="SCRIPTSNAME" type="text"
+		ONCHANGE="var root = document.getElementById('SCRIPTSROOT'); root.scriptfieldchange(); "
+	>
+</TD></TR>
+<TR><TD WIDTH=20%>Script:</TD>
+<TD><TEXTAREA ID="SCRIPTSTEXT" style="height:160px;"
+		ONCHANGE="var root = document.getElementById('SCRIPTSROOT'); root.scriptfieldchange(); "
+	></TEXTAREA>
+</TD></TR>
+<TR><TD colspan="2">
+	<a ID="SCRIPTSDELETE" href="javascript:document.getElementById('SCRIPTSROOT').trydelscript();">
+		<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
+			ONCLICK="document.getElementById('SCRIPTSROOT').trydelscript();" 
+			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
+		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
+			<B>Delete</B></FONT>
+		</TD></TR></TABLE>
+	</a>
+</TD></TR>
+</TABLE>
+</SPAN>
+${
+	var fixscriptspage=function(){
+	if(document.getElementById('SCRIPTSTEXT'))
+	{
+		var root = document.getElementById('SCRIPTSROOT');
+		var sname = document.getElementById('SCRIPTSNAME');
+		var stext = document.getElementById('SCRIPTSTEXT');
+		var scripts = root.parentNode.scripts;
+		var global = root.parentNode.which == 'global';
+		delete root.parentNode.scripts;
+		delete root.parentNode.which;
+		var dd = document.getElementById('SCRIPTSDROPDOWN');
+		var delbutt = document.getElementById('SCRIPTSDELETE');
+		dd.selectedIndex = -1;
+		delbutt.style.visibility='hidden';
+		for(var i=0;i < scripts.length;i++)
+		{
+			var script = scripts[i];
+			var opt = new Option(script.name,i);
+			dd.add(opt);
+		}
+		dd.selectedIndex = -1;
+		root.scriptselected = function() {
+			if(dd.value == "-1")
+			{
+				sname.value='';
+				sname.style.backgroundColor = 'red';
+				stext.value='';
+				stext.editor.setValue('');
+				stext.style.backgroundColor = 'red';
+				delbutt.style.visibility='hidden';
+			}
+			else
+			if(Number(dd.value) < scripts.length)
+			{
+				delbutt.style.visibility='visible';
+				var script = scripts[Number(dd.value)];
+				sname.value=script.name;
+				sname.style.backgroundColor = 'white';
+				stext.value=script.text;
+				stext.style.backgroundColor = 'white';
+				stext.editor.setValue(script.text);
+			}
+			stext.editor.getWrapperElement().style.backgroundColor = stext.style.backgroundColor;
+		};
+		root.scriptfieldchange = function() {
+			if(!global)
+				window.win = window.currentSiplet;
+			sname.style.backgroundColor = (sname.value.length==0)?'red':'white';
+			stext.style.backgroundColor = (stext.value.length==0)?'red':'white';
+			try {
+				new Function(stext.value);
+			} catch(e) {
+				console.log(e);
+				stext.style.backgroundColor = 'red';
+			}
+			delete window['win'];
+			var myname = Number(dd.value)>=0?scripts[Number(dd.value)].name:'';
+			for(var i=0;i < dd.options.length; i++)
+			{
+				if((dd.options[i].value == sname.value) && (myname != sname.value))
+					sname.style.backgroundColor = 'red';
+			}
+			var rfields = [sname,stext];
+			for(var i=0;i < rfields.length; i++)
+				if(rfields[i].style.backgroundColor == 'red')
+					return;
+			if(Number(dd.value) < 0)
+			{
+				var newScript = {
+					name: sname.value,
+					text: stext.vale
+				};
+				scripts.push(newScript);
+				var opt = new Option(sname.value, scripts.length-1);
+				dd.add(opt);
+				dd.selectedIndex = dd.options.length-1;
+				delbutt.style.visibility='visible';
+			}
+			else
+			{
+				var script = scripts[Number(dd.value)];
+				script.name= sname.value;
+				script.text= stext.value;
+				dd.options[dd.selectedIndex].text = script.name;
+			}
+			root.modifyscripts();
+			stext.editor.getWrapperElement().style.backgroundColor = stext.style.backgroundColor;
+		};
+
+		root.modifyscripts = function()
+		{
+			if(global)
+			{
+				setConfig('/global/scripts', scripts);
+				for(var i=0;i < window.siplets.length; i++)
+					window.siplets[i].globalScripts = GetGlobalScripts();
+			}
+			else
+			{
+				var phonebook = getConfig('/phonebook/dial',[]);
+				if((window.currentSiplet.pbentry) 
+				&& (window.currentSiplet.pbwhich) 
+				&& (!window.currentSiplet.pbwhich.startsWith('g')))
+				{
+					var pbindex = Number(window.currentSiplet.pbwhich);
+					var pbentry = phonebook[pbindex];
+					pbentry.scripts = JSON.parse(JSON.stringify(scripts));
+					var found = FindSipletsByPB(pbentry);
+					if(!(window.currentSiplet in found))
+						found.push(window.currentSiplet);
+					for(var i=0;i < found.length;i++)
+					{
+						found[i].pbentry = pbentry;
+						found[i].scripts = null;
+					}
+					setConfig('/phonebook/dial',phonebook);
+				}
+			}
+		};
+		root.trydelscript = function() {
+			var scriptindex = Number(dd.value);
+			if(scriptindex < 0)
+				return;
+			var curr=dd.selectedIndex;
+			dd.selectedIndex=-1;
+			dd.remove(curr);
+			for(var i=0;i < dd.options.length;i++)
+				if(Number(dd.options[i].value)>scriptindex)
+					dd.options[i].value=(Number(dd.options[i].value)-1);
+			var deadt = scripts[scriptindex];
+			scripts.splice(scriptindex,1);
+			root.modifyscripts();
+			sname.value='';
+			sname.style.backgroundColor = 'white';
+			stext.value='';
+			stext.editor.setValue('');
+			stext.style.backgroundColor = 'white';
+			delbutt.style.visibility='hidden';
+			stext.editor.getWrapperElement().style.backgroundColor = stext.style.backgroundColor;
+		};
+		
+		var addParser = document.createElement('script');
+		addParser.src = 'js/codemirror.js';
+		addParser.async = false;
+		root.appendChild(addParser);
+		var addLang = document.createElement('script');
+		addLang.src = 'js/javascript.js';
+		addLang.async = false;
+		root.appendChild(addLang);
+		var addCss = document.createElement('link');
+		addCss.rel = 'stylesheet';
+		addCss.href = 'dialogs/codemirror.css';
+		addCss.async = false;
+		root.appendChild(addCss);
+		addLang.onload = function() {
+			var editor = CodeMirror.fromTextArea(stext, {
+			      mode: 'javascript', 
+			      theme: 'default', 
+			      lineNumbers: false, 
+			      lineWrapping: false,
+			      tabSize: 2,
+			      indentWithTabs: false,
+			      extraKeys: {
+			        'Tab': function(cm) {
+			          cm.replaceSelection('  '); // 2 spaces for Tab
+			        }
+			      },
+			      viewportMargin: Infinity,
+			      styleActiveLine: false,
+			      matchBrackets: false,
+			      fontFamily: 'Consolas, monospace',
+			      fontSize: '14px',
+			      lineHeight: '1.5'
+			    });
+    	    editor.getWrapperElement().style.height='160px';
+			editor.on('change', function() {
+				editor.save();
+				stext.value = editor.getValue();
+				root.scriptfieldchange();
+			});
+			stext.editor = editor;
+    	};
+	} else
+		setTimeout(fixscriptspage,10);
+};setTimeout(fixscriptspage,10);
+'';}

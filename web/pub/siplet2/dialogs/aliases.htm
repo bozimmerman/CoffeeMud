@@ -136,8 +136,19 @@ ${
 					apatt.style.backgroundColor = 'red'; 
 				}
 			}
-			aaval.style.backgroundColor = ((aacto.value!='')&& (!isValidExpression(aaval.value)))?'red':'white';
 			aacto.style.backgroundColor = (aacto.selectedIndex < 0)?'red':'white';
+			aaval.style.backgroundColor = ((aacto.value!='')&& (!isValidExpression(aaval.value)))?'red':'white';
+			if(aacto.value.indexOf('runScript')>=0)
+			{
+				var key = aaval.value.replace(/^['"]|['"]$/g, '');;
+				var found;
+				var globalScripts = GetGlobalScripts();
+				found = FindAScript(globalScripts,key,true);
+				if(!global)
+					found = found || FindAScript(window.currentSiplet.localScripts(),key,true);
+				if(!found)
+					aaval.style.backgroundColor = 'red';
+			}
 			delete window['win'];
 			var myname = Number(dd.value)>=0?aliases[Number(dd.value)].name:'';
 			for(var i=0;i < dd.options.length; i++)

@@ -6,6 +6,7 @@ else
 	window.config = {};
 window.phonebook = [];
 window.defAliases = [];
+window.defScripts = [];
 window.defTriggers = [
 	{
 		name: "Phonebook Account Name",
@@ -94,6 +95,25 @@ function addConfigListener(path, func)
 	window.configlisteners[path].push(func);
 }
 
+function FindAScript(scripts, value, ci)
+{
+	if((!scripts)||(!Array.isArray(scripts)))
+		return null;
+	for(var i=0;i<scripts.length;i++)
+	{
+		var script = scripts[i];
+		if(ci)
+		{
+			if(script.name.toLowerCase() == value.toLowerCase())
+				return script.text;
+		}
+		else
+		if(script.name == value)
+			return script.text;
+	}
+	return null;
+};
+
 function LoadGlobalPhonebook()
 {
 	window.phonebook.push({
@@ -169,4 +189,9 @@ function GetGlobalAliases()
 {
 	var rawAliases = getConfig('/global/aliases', window.defAliases);
 	return ParseAliases(rawAliases);
+}
+
+function GetGlobalScripts()
+{
+	return getConfig('/global/scripts', window.defScripts);
 }

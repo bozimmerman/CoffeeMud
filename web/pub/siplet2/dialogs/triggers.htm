@@ -143,6 +143,17 @@ ${
 			taval.style.backgroundColor = !isValidExpression(taval.value)?'red':'white';
 			tallo.style.backgroundColor = !isValidExpression(tallo.value)?'red':'white';
 			tacto.style.backgroundColor = (tacto.selectedIndex < 0)?'red':'white';
+			if(tacto.value.indexOf('runScript')>=0)
+			{
+				var key = taval.value.replace(/^['"]|['"]$/g, '');
+				var found;
+				var globalScripts = GetGlobalScripts();
+				found = FindAScript(globalScripts,key,true);
+				if(!global)
+					found = found || FindAScript(window.currentSiplet.localScripts(),key,true);
+				if(!found)
+					taval.style.backgroundColor = 'red';
+			}
 			delete window['win'];
 			var myname = Number(dd.value)>=0?triggers[Number(dd.value)].name:'';
 			for(var i=0;i < dd.options.length; i++)

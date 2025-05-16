@@ -13,6 +13,11 @@
    RHINO
     * Copyright 1997, 1998 Sun Microsystems, Inc.  All Rights Reserved.
    see lib/RHINO.LICENSE
+   
+   CODEMIRROR
+    * Copyright (C) 2017 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+    See: https://github.com/codemirror/codemirror5/blob/master/LICENSE
+   
    ---------------------------------------------------------------------------
    Bo would like to acknowledge and thank the following 
    people for contributing, both directly and indirectly 
