@@ -1456,7 +1456,16 @@ public class CMClass extends ClassLoader
 		if(O==null)
 			return false;
 		if(classes.containsKey(O.getClass().getName()))
+		{
+			final String sw = O.getClass().getName() + "$";
 			classes.remove(O.getClass().getName());
+			for(final Iterator<String> k = classes.keySet().iterator();k.hasNext();)
+			{
+				final String key = k.next();
+				if(key.startsWith(sw))
+					k.remove();
+			}
+		}
 		final Object set=getClassSet(type);
 		if(set==null)
 			return false;
@@ -2905,13 +2914,10 @@ public class CMClass extends ClassLoader
 			throw new ClassFormatError();
 		}
 		if (resolveIt)
-		{
 			resolveClass(result);
-		}
 
 		if(debugging)
 			Log.debugOut("CMClass","Loaded: "+result.getName());
-
 		classes.put(className, result);
 		return result;
 	}
