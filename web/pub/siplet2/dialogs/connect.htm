@@ -23,33 +23,7 @@
 </TR><TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE>Phonebook</TD>
 </TR><TR>
 	<TD>Select:</TD>
-	<TD><SELECT ID="CONNECTPHONEBOOK" ONCHANGE="{
-		var phonebook = getConfig('/phonebook/dial',[]);
-		if(Number(this.value)<0)
-		{
-			document.getElementById('PHONEBOOKPORT').selectedIndex=0;
-			document.getElementById('PHONEBOOKHASACCOUNT').style.visibility='visible';
-			document.getElementById('PHONEBOOKDELETE').style.visibility='hidden';
-			document.getElementById('PHONEBOOKACCT').value='';
-			document.getElementById('PHONEBOOKUSER').value='';
-			document.getElementById('PHONEBOOKPASS').value='';
-		}
-		else
-		if(Number(this.value) < phonebook.length)
-		{
-			var pb = phonebook[Number(this.value)];
-			for(var i=0;i<window.phonebook.length;i++)
-				if(window.phonebook[i].port == pb.port)
-					document.getElementById('PHONEBOOKPORT').selectedIndex=i;
-			document.getElementById('PHONEBOOKHASACCOUNT').style.visibility='hidden';
-			document.getElementById('PHONEBOOKDELETE').style.visibility='visible';
-			if(pb.account)
-				document.getElementById('PHONEBOOKHASACCOUNT').style.visibility='visible';
-			document.getElementById('PHONEBOOKACCT').value=pb.accountName;
-			document.getElementById('PHONEBOOKUSER').value=pb.user;
-			document.getElementById('PHONEBOOKPASS').value=pb.password;
-		}
-	}">
+	<TD><SELECT ID="CONNECTPHONEBOOK" ONCHANGE="document.getElementById('PHONEBOOKROOT').dropdownselected();">
 		<OPTION VALUE="-1">Add New Entry
 		</SELECT>
 		<a href="javascript:var el=document.getElementById('CONNECTPHONEBOOK');if(el)AddNewSipletTabByPB(el.value);hideOptionWindow();">
@@ -63,17 +37,7 @@
 </TD></TR>
 <TR>
 	<TD>Port:</TD>
-	<TD><SELECT ID="PHONEBOOKPORT" ONCHANGE="
-			var gphonebook = window.phonebook;
-			var portWhich = this.selectedIndex;
-			if((portWhich<0)||(portWhich>=gphonebook.length))
-				return;
-			var pb = gphonebook[portWhich];
-			var acctRow = document.getElementById('PHONEBOOKHASACCOUNT');
-			acctRow.style.visibility = pb.accounts?'visible':'hidden';
-			var root = document.getElementById('PHONEBOOKROOT');
-			root.fixphonebookfields();
-		">
+	<TD><SELECT ID="PHONEBOOKPORT" ONCHANGE="document.getElementById('PHONEBOOKROOT').portselected();">
 		${
 			var html = '';
 			for(var i=0;i<window.phonebook.length;i++)
@@ -111,11 +75,18 @@ ${
 	var fixphonebookpage=function(){
 	if(document.getElementById('PHONEBOOKDELETE'))
 	{
-		var pbsel = document.getElementById('CONNECTPHONEBOOK');
-		document.getElementById('PHONEBOOKPORT').selectedIndex=-1;
-		document.getElementById('PHONEBOOKDELETE').style.visibility='hidden';
-		
+		var RED = '#FF555B';
 		var root = document.getElementById('PHONEBOOKROOT');
+		var phbkField = document.getElementById('CONNECTPHONEBOOK');
+		var portField = document.getElementById('PHONEBOOKPORT'); 
+		portField.selectedIndex=-1;
+		var acctField = document.getElementById('PHONEBOOKACCT');
+		var userField = document.getElementById('PHONEBOOKUSER');
+		var passField = document.getElementById('PHONEBOOKPASS');
+		var acctRow = document.getElementById('PHONEBOOKHASACCOUNT');
+		var delButt = document.getElementById('PHONEBOOKDELETE'); 
+		delButt.style.visibility='hidden';
+		
 		root.makephonebookname = function(user,name,port)
 		{
 			return user + '@' + name + ' (' + port + ')';
@@ -127,14 +98,58 @@ ${
 			var mybpentry = phonebook[i];
 			var name = root.makephonebookname(mybpentry.user,mybpentry.name,mybpentry.port);
 			var newOption = new Option(name,''+i);
-			pbsel.add(newOption);
+			phbkField.add(newOption);
 		}
-		pbsel.selectedIndex=-1;
+		phbkField.selectedIndex=-1;
+
+		root.portselected = function()
+		{
+			var gphonebook = window.phonebook;
+			var portWhich = portField.selectedIndex;
+			if((portWhich<0)||(portWhich>=gphonebook.length))
+				return;
+			var pb = gphonebook[portWhich];
+			acctRow.style.visibility = pb.accounts?'visible':'hidden';
+			root.fixphonebookfields();
+		};
+		
+		root.dropdownselected = function()
+		{
+			if(Number(phbkField.value)<0)
+			{
+				portField.selectedIndex=0;
+				acctRow.style.visibility='visible';
+				delButt.style.visibility='hidden';
+				acctField.value='';
+				acctField.style.backgroundColor=RED;
+				userField.value='';
+				userField.style.backgroundColor=RED;
+				passField.value='';
+				passField.style.backgroundColor=RED;
+			}
+			else
+			if(Number(phbkField.value) < phonebook.length)
+			{
+				var pb = phonebook[Number(phbkField.value)];
+				for(var i=0;i < window.phonebook.length;i++)
+					if(window.phonebook[i].port == pb.port)
+						portField.selectedIndex=i;
+				acctRow.style.visibility='hidden';
+				delButt.style.visibility='visible';
+				if(pb.account)
+					acctRow.style.visibility='visible';
+				acctField.value=pb.accountName;
+				userField.value=pb.user;
+				passField.value=pb.password;
+				acctField.style.backgroundColor='white';
+				userField.style.backgroundColor='white';
+				passField.style.backgroundColor='white';
+			}
+		};
 		
 		root.fixtopdropdowns = function()
 		{
 			var gphonebook = window.phonebook;
-			var phonebook = getConfig('/phonebook/dial',[]);
 			var auto = getConfig('/phonebook/auto','');
 			var qcdd = document.getElementById('QUICKCONNECTDROPDOWN');
 			var acdd = document.getElementById('AUTOCONNECTDROPDOWN');
@@ -167,24 +182,25 @@ ${
 		
 		root.fixphonebookfields = function()
 		{
-			var phonebook = getConfig('/phonebook/dial',[]);
-			var pbsel = document.getElementById('CONNECTPHONEBOOK');
-			if(pbsel.selectedIndex < 0)
+			if(phbkField.selectedIndex < 0)
 				return;
-			var acctField = document.getElementById('PHONEBOOKACCT');
-			var userField = document.getElementById('PHONEBOOKUSER');
-			var passField = document.getElementById('PHONEBOOKPASS');
-			var portField = document.getElementById('PHONEBOOKPORT');
 			var gphonebook = window.phonebook;
 			var portWhich = portField.selectedIndex;
-			var pbindex = Number(pbsel.value);
+			var pbindex = Number(phbkField.value);
 			var mybpentry = {};
 			if((pbindex >= 0)&&(pbindex < phonebook.length))
 				mybpentry = phonebook[pbindex];
+			acctField.style.backgroundColor = (acctField.value.trim().length==0)?RED:'white';
+			userField.style.backgroundColor = (userField.value.trim().length==0)?RED:'white';
+			passField.style.backgroundColor = (passField.value.trim().length==0)?RED:'white';
+			if((userField.value.trim().length==0)||(passField.value.trim().length==0))
+				return;
 			var portValue = null;
 			if((portWhich >= 0)&&(portWhich < gphonebook.length))
 			{
 				portValue = gphonebook[portWhich];
+				if((acctField.value.trim().length==0)&&(portValue.account))
+					return;
 				mybpentry.account = portValue.accounts;
 				mybpentry.name = portValue.name;
 				mybpentry.port = portValue.port;
@@ -202,7 +218,7 @@ ${
 				else
 				{
 					setConfig('/phonebook/dial', phonebook);
-					pbsel.options[pbsel.selectedIndex].text = root.makephonebookname(mybpentry.user,portValue.name,portValue.port);
+					phbkField.options[phbkField.selectedIndex].text = root.makephonebookname(mybpentry.user,portValue.name,portValue.port);
 					UpdateSipetTabsByPBIndex(pbindex);
 					root.fixtopdropdowns();
 				}
@@ -215,41 +231,38 @@ ${
 				var name = root.makephonebookname(mybpentry.user,portValue.name,portValue.port);
 				var newOption = new Option(name,''+(phonebook.length-1));
 				newOption.selected=true;
-				pbsel.add(newOption);
+				phbkField.add(newOption);
 				newOption.selected=true;
-				pbsel.selectedIndex = phonebook.length;
-				document.getElementById('PHONEBOOKDELETE').style.visibility='visible';
+				phbkField.selectedIndex = phonebook.length;
+				delButt.style.visibility='visible';
 			}
 		};
 		root.trydelphonebook = function()
 		{
-			var phonebook = getConfig('/phonebook/dial',[]);
-			var pbsel = document.getElementById('CONNECTPHONEBOOK');
-			if(pbsel.selectedIndex < 0)
+			if(phbkField.selectedIndex < 0)
 				return;
-			var pbindex = Number(pbsel.value);
+			var pbindex = Number(phbkField.value);
 			if((pbindex >=0) && (pbindex < phonebook.length))
 			{
 				var pb = phonebook[pbindex];
-				var root = document.getElementById('PHONEBOOKROOT');
 				var name = root.makephonebookname(pb.user,pb.name,pb.port);
 				if(window.confirm('Delete entry ' + name + '?'))
 				{
-					var opt = pbsel.options[pbsel.selectedIndex];
-					for(var i=pbsel.selectedIndex+1; i < pbsel.options.length; i++)
+					var opt = phbkField.options[phbkField.selectedIndex];
+					for(var i=phbkField.selectedIndex+1; i < phbkField.options.length; i++)
 					{
-						var val = Number(pbsel.options[i].value);
-						pbsel.options[i].value = (val - 1);
+						var val = Number(phbkField.options[i].value);
+						phbkField.options[i].value = (val - 1);
 					}
 					phonebook.splice(pbindex,1);
-					pbsel.remove(pbsel.selectedIndex);
-					pbsel.selectedIndex = -1;
-					document.getElementById('PHONEBOOKACCT').value='';
-					document.getElementById('PHONEBOOKUSER').value='';
-					document.getElementById('PHONEBOOKPASS').value='';
-					document.getElementById('PHONEBOOKPORT').selectedIndex=-1;
+					phbkField.remove(phbkField.selectedIndex);
+					phbkField.selectedIndex = -1;
+					acctField.value='';
+					userField.value='';
+					passField.value='';
+					portField.selectedIndex=-1;
 					setConfig('/phonebook/dial', phonebook);
-					document.getElementById('PHONEBOOKDELETE').style.visibility='hidden';
+					delButt.style.visibility='hidden';
 					for(var i=0;i < window.siplets.length;i++)
 					{
 						var siplet = window.siplets[i];

@@ -18,6 +18,9 @@ var menuData = [
 		{"n":"Scripts",
 		 "e":"window.currentSiplet!=null && window.currentSiplet.pbentry && window.currentSiplet.pbentry.user",
 		 "a":"javascript:menuScripts('local');"},
+		{"n":"Timers",
+		 "e":"window.currentSiplet!=null && window.currentSiplet.pbentry && window.currentSiplet.pbentry.user",
+		 "a":"javascript:menuTimers('local');"},
 		{"n":"Disconnect",
 		 "e":"window.currentSiplet!=null && window.currentSiplet.wsopened",
 		 "a":"javascript:menuDisconnect();"},
@@ -33,7 +36,9 @@ var menuData = [
 		{"n":"Aliases",
 		 "a":"javascript:menuAliases('global');"},
 		{"n":"Scripts",
-		 "a":"javascript:menuScripts('global');"}
+		 "a":"javascript:menuScripts('global');"},
+		{"n":"Timers",
+		 "a":"javascript:menuTimers('global');"}
 	]},
 	{"Help": [
 		{"n":"About","a":"javascript:menuAbout()"}
@@ -222,3 +227,17 @@ function menuScripts(value)
 		content.scripts = window.currentSiplet.localScripts();
 	populateDivFromUrl(content, 'dialogs/scripts.htm');
 }
+
+function menuTimers(value)
+{
+	var which = 'Global';
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
+		which = window.currentSiplet.pbentry.name;
+	var content = getOptionWindow(which + " Timers",60,40);
+	content.which = value;
+	content.timers = getConfig('/global/timers', window.defTimers); // dont parse them
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
+		content.timers = window.currentSiplet.localTimers();
+	populateDivFromUrl(content, 'dialogs/timers.htm');
+}
+

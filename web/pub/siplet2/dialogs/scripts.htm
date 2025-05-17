@@ -35,6 +35,7 @@ ${
 	var fixscriptspage=function(){
 	if(document.getElementById('SCRIPTSTEXT'))
 	{
+		var RED = '#FF555B';
 		var root = document.getElementById('SCRIPTSROOT');
 		var sname = document.getElementById('SCRIPTSNAME');
 		var stext = document.getElementById('SCRIPTSTEXT');
@@ -57,10 +58,10 @@ ${
 			if(dd.value == "-1")
 			{
 				sname.value='';
-				sname.style.backgroundColor = 'red';
+				sname.style.backgroundColor = RED;
 				stext.value='';
 				stext.editor.setValue('');
-				stext.style.backgroundColor = 'red';
+				stext.style.backgroundColor = RED;
 				delbutt.style.visibility='hidden';
 			}
 			else
@@ -79,24 +80,24 @@ ${
 		root.scriptfieldchange = function() {
 			if(!global)
 				window.win = window.currentSiplet;
-			sname.style.backgroundColor = (sname.value.length==0)?'red':'white';
-			stext.style.backgroundColor = (stext.value.length==0)?'red':'white';
+			sname.style.backgroundColor = (sname.value.length==0)?RED:'white';
+			stext.style.backgroundColor = (stext.value.length==0)?RED:'white';
 			try {
 				new Function(stext.value);
 			} catch(e) {
 				console.log(e);
-				stext.style.backgroundColor = 'red';
+				stext.style.backgroundColor = RED;
 			}
 			delete window['win'];
 			var myname = Number(dd.value)>=0?scripts[Number(dd.value)].name:'';
 			for(var i=0;i < dd.options.length; i++)
 			{
 				if((dd.options[i].value == sname.value) && (myname != sname.value))
-					sname.style.backgroundColor = 'red';
+					sname.style.backgroundColor = RED;
 			}
 			var rfields = [sname,stext];
 			for(var i=0;i < rfields.length; i++)
-				if(rfields[i].style.backgroundColor == 'red')
+				if(rfields[i].style.backgroundColor == RED)
 					return;
 			if(Number(dd.value) < 0)
 			{

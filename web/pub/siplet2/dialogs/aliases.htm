@@ -37,6 +37,8 @@
 		<option value="win.runScript">Run Script</option>
 		<option value="win.enableTrigger">Enable Trigger</option>
 		<option value="win.disableTrigger">Disable Trigger</option>
+		<option value="win.startTimer">Start Timer</option>
+		<option value="win.clearTimer">Stop Timer</option>
 		<option value="win.setColor">Set Color</option>
 	</select>
 	<INPUT id="ALIASAVALUE" type="text"
@@ -58,6 +60,7 @@ ${
 	var fixaliasspage=function(){
 	if(document.getElementById('ALIASAVALUE'))
 	{
+		var RED = '#FF555B';
 		var root = document.getElementById('ALIASSROOT');
 		var aliases = root.parentNode.aliases;
 		var global = root.parentNode.which == 'global';
@@ -85,15 +88,15 @@ ${
 			if(dd.value == "-1")
 			{
 				aname.value='';
-				aname.style.backgroundColor = 'red';
+				aname.style.backgroundColor = RED;
 				apatt.value='';
-				apatt.style.backgroundColor = 'red';
+				apatt.style.backgroundColor = RED;
 				arege.checked=false;
 				arepl.value='';
 				aacto.selectedIndex=-1;
-				aacto.style.backgroundColor = 'red';
+				aacto.style.backgroundColor = RED;
 				aaval.value='';
-				aaval.style.backgroundColor = 'red';
+				aaval.style.backgroundColor = RED;
 				delbutt.style.visibility='hidden';
 			}
 			else
@@ -123,21 +126,21 @@ ${
 		root.aliasfieldchange = function() {
 			if(!global)
 				window.win = window.currentSiplet;
-			aname.style.backgroundColor = (aname.value.length==0)?'red':'white';
-			apatt.style.backgroundColor = (apatt.value.length==0)?'red':'white';
+			aname.style.backgroundColor = (aname.value.length==0)?RED:'white';
+			apatt.style.backgroundColor = (apatt.value.length==0)?RED:'white';
 			if(arege.checked) {
 				try 
 				{ 
 					var a = new RegExp(apatt.value,'g');
 					if(!a.exec) 
-						apatt.style.backgroundColor = 'red'; 
+						apatt.style.backgroundColor = RED; 
 				} catch(e) 
 				{
-					apatt.style.backgroundColor = 'red'; 
+					apatt.style.backgroundColor = RED; 
 				}
 			}
-			aacto.style.backgroundColor = (aacto.selectedIndex < 0)?'red':'white';
-			aaval.style.backgroundColor = ((aacto.value!='')&& (!isValidExpression(aaval.value)))?'red':'white';
+			aacto.style.backgroundColor = (aacto.selectedIndex < 0)?RED:'white';
+			aaval.style.backgroundColor = ((aacto.value!='')&& (!isValidExpression(aaval.value)))?RED:'white';
 			if(aacto.value.indexOf('runScript')>=0)
 			{
 				var key = aaval.value.replace(/^['"]|['"]$/g, '');;
@@ -147,17 +150,17 @@ ${
 				if(!global)
 					found = found || FindAScript(window.currentSiplet.localScripts(),key,true);
 				if(!found)
-					aaval.style.backgroundColor = 'red';
+					aaval.style.backgroundColor = RED;
 			}
 			delete window['win'];
 			var myname = Number(dd.value)>=0?aliases[Number(dd.value)].name:'';
 			for(var i=0;i < dd.options.length; i++)
 			{
 				if((dd.options[i].value == aname.value) && (myname != aname.value))
-					aname.style.backgroundColor = 'red';
+					aname.style.backgroundColor = RED;
 			}
 			for(var i=0;i < rfields.length; i++)
-				if(rfields[i].style.backgroundColor == 'red')
+				if(rfields[i].style.backgroundColor == RED)
 					return;
 			var fact = (aacto.value=='') ? '' : (aacto.value + '(' + aaval.value + ');');
 			if(Number(dd.value) < 0)

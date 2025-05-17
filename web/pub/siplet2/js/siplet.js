@@ -39,6 +39,9 @@ function SipletWindow(windowName)
 	this.triggers = null;
 	this.globalAliases = GetGlobalAliases();
 	this.aliases = null;
+	this.globalTimers = JSON.parse(JSON.stringify(GetGlobalTimers()));
+	this.timers = null;
+	this.activeTimers = [];
 	this.vars = {};
 	this.lastStyle = '';
 
@@ -73,12 +76,14 @@ function SipletWindow(windowName)
 			me.tab.innerHTML=(me.tabTitle)?(me.tabTitle):'';
 			me.window.style.backgroundColor="black";
 			me.window.style.color="white";
+			me.startTimers();
 		};
 		this.wsocket.onclose = function(event)  
 		{ 
 			me.wsopened=false; 
 			me.tab.style.backgroundColor="#FF555B";
 			me.tab.style.color="white";
+			me.clearTimers();
 		};
 	};
 
@@ -130,6 +135,7 @@ function SipletWindow(windowName)
 		this.globalAliases = GetGlobalAliases();
 		this.aliases = null;
 		this.vars = {};
+		this.resetTimers();
 	}
 	
 	this.htmlBuffer = '';
@@ -357,6 +363,156 @@ function SipletWindow(windowName)
 			this.scripts = this.pbentry.scripts;
 		}
 		return this.scripts;
+	};
+	
+	this.localTimers = function()
+	{
+		if(this.timers == null)
+		{
+			if((!this.pbentry)
+			||(!this.pbentry.timers)
+			||(!Array.isArray(this.pbentry.timers)))
+			{
+				this.timers=[];
+				return [];
+			}
+			this.timers = this.pbentry.timers;
+		}
+		return this.timers;
+	};
+
+	this.findTimerByName = function(name, ci)
+	{
+		var i;
+		for(i=0;i<this.localTimers().length;i++)
+			if((this.localTimers()[i].name == name)
+			||(ci && (this.localTimers()[i].name.toLowerCase() == name.toLowerCase())))
+				return this.localTimers()[i];
+		for(i=0;i<this.globalTimers.length;i++)
+			if((this.globalTimers[i].name == name)
+			||(ci && (this.globalTimers[i].name.toLowerCase() == name.toLowerCase())))
+				return this.globalTimers[i];
+		return null;
+	};
+
+	this.startTimer = function(timer)
+	{
+		if(timer == null)
+			return;
+		if(typeof timer === "string")
+		{
+			this.startTimer(findTimerByName(timer));
+			return;
+		}
+		if(!timer.multiple)
+		{
+			for(var i=0;i < this.activeTimers.length; i++)
+			{
+				var atimer = this.activeTimers[i];
+				if(atimer.timerId == timer.timerId)
+					return;
+				if(timer.name == atimer.name)
+				{
+					timer.timerId = atimer.timerId;
+					return;
+				}
+			}
+		}
+		var timerCopy = JSON.parse(JSON.stringify(timer));
+		var me = this;
+		var execute = function() {
+			var action = timer.action.replaceAll('\\n','\n');
+			var win = me;
+			try { eval(action); } catch(e) {};
+			if(timer.repeat)
+			{
+				timer.timerId = setTimeout(execute, timer.delay);
+				timerCopy.timerId = timer.timerId;
+			}
+			else
+			{
+				var x = me.activeTimers.indexOf(timerCopy);
+				if(x >= 0 )
+				{
+					me.activeTimers.splice(x,1);
+					if(timer.timerid)
+						delete timer.timerId;
+				}
+			}
+		}
+		timer.timerId = setTimeout(execute, timer.delay);
+		timerCopy.timerId = timer.timerId;
+		this.activeTimers.push(timerCopy);
+	};
+
+	this.startTimers = function(timers)
+	{
+		if(!this.wsopened)
+			return;
+		if((timers == null)||(timers==undefined)||(!Array.isArray(timers)))
+		{
+			this.startTimers(this.globalTimers);
+			this.startTimers(this.localTimers());
+		}
+		else
+		{
+			for(var i=0;i < timers.length; i++)
+			{
+				var timer = timers[i];
+				if((timer.timerId == undefined)
+				&&(timer.trigger))
+					this.startTimer(timer);
+			}
+		}
+	};
+	
+	this.clearTimer = function(name)
+	{
+		var timer = findTimerByName(name);
+		if(timer !== null)
+		{
+			for(var i=this.activeTimers.length-1;i>=0;i--)
+			{
+				if((this.activeTimers[i].timerId == timer.timerId)
+				||(this.activeTimers[i].name == timer.name))
+				{
+					clearTimeout(this.activeTimers[i].timerId);
+					if(timer.timerId !== undefined)
+						delete timer.timerId;
+					this.activeTimers.splice(i,1);
+				}
+			}
+		}
+	};
+	
+	this.clearTimers = function(timers)
+	{
+		if((timers == null)||(timers==undefined)||(!Array.isArray(timers)))
+		{
+			if(this.activeTimers && Array.isArray(this.activeTimers))
+				this.clearTimers(this.activeTimers);
+			this.activeTimers = [];
+			if(this.globalTimers && Array.isArray(this.globalTimers))
+				this.clearTimers(this.globalTimers);
+			if(this.timers && Array.isArray(this.timers))
+				this.clearTimers(this.timers);
+		}
+		else
+		{
+			for(var i=0;i < timers.length; i++)
+			{
+				var timer = timers[i];
+				if(timer.timerId !== undefined)
+					clearTimeout(timer.timerId);
+				delete timer.timerId;
+			}
+		}
+	};
+	
+	this.resetTimers = function()
+	{
+		this.clearTimers();
+		this.startTimers();
 	};
 	
 	this.createGauge = function(entity,caption,color,value,max)

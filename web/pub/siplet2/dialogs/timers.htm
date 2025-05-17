@@ -1,0 +1,291 @@
+<TABLE WIDTH=100% BORDER=0 style="font-size:12" ID="TIMERSROOT">
+<TR>
+	<TD WIDTH=20%>Timers:</TD>
+	<TD><SELECT ID="TIMERDROPDOWN" STYLE="position:relative;" 
+			ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerselected(); "
+		>
+		<OPTION VALUE="-1">Add New Timer
+		</SELECT>
+</TD></TR>
+<TR><TD COLSPAN=2>&nbsp;</TD>
+<TR><TD WIDTH=20%>Name:</TD><TD>
+	<INPUT id="TIMERNAME" type="text"
+		ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerfieldchange(); "
+	>
+</TD></TR>
+<TR><TD>Delay:</TD><TD>
+			<SELECT ID="TIMERHR" ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerfieldchange(); ">
+			${	var s='';
+				for(var i=0;i<=80;i++)
+				{
+					var l = ('0'+i);
+					l=l.substr(l.length-2,2);
+					s += '<OPTION VALUE="'+i+'">'+l;
+				}
+				s;
+			 }
+			</SELECT>hours&nbsp;&nbsp;
+			<SELECT ID="TIMERMN" ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerfieldchange(); ">
+			${	var s='';
+				for(var i=0;i<60;i++)
+				{
+					var l = ('0'+i);
+					l=l.substr(l.length-2,2);
+					s += '<OPTION VALUE="'+i+'">'+l;
+				}
+				s;
+			 }
+			</SELECT>mins&nbsp;&nbsp;
+			<SELECT ID="TIMERSC" ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerfieldchange(); ">
+			${	var s='';
+				for(var i=0;i<60;i++)
+				{
+					var l = ('0'+i);
+					l=l.substr(l.length-2,2);
+					s += '<OPTION VALUE="'+i+'">'+l;
+				}
+				s;
+			 }
+			</SELECT>secs&nbsp;&nbsp;
+</TD></TR>
+<TR><TD>Auto-Start:</TD><TD><INPUT TYPE=CHECKBOX id="TIMERTRIGGER" ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerfieldchange(); "></TD></TR>
+<TR><TD>Options:</TD>
+	<TD>
+		<INPUT TYPE=RADIO NAME="TIMEROPTIONS" VALUE="" ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerfieldchange(); ">Once
+		<INPUT TYPE=RADIO NAME="TIMEROPTIONS" VALUE="multiple" ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerfieldchange(); ">Multiple
+		<INPUT TYPE=RADIO NAME="TIMEROPTIONS" VALUE="repeat" ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerfieldchange(); ">Repeats
+</TD></TR>
+<TR><TD>Action:</TD><TD>
+	<select id="TIMERACTION"
+		ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerfieldchange(); "
+	>
+		<option value="win.submitInput">Send Command</option>
+		<option value="win.displayText">Display Text</option>
+		<option value="win.playSound">Play Sound</option>
+		<option value="win.setVariable">Set Variable</option>
+		<option value="win.runScript">Run Script</option>
+		<option value="win.enableTrigger">Enable Trigger</option>
+		<option value="win.disableTrigger">Disable Trigger</option>
+		<option value="win.startTimer">Start Timer</option>
+		<option value="win.clearTimer">Stop Timer</option>
+		<option value="win.setColor">Set Color</option>
+	</select>
+	<INPUT id="TIMERAVALUE" type="text"
+		ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerfieldchange(); "
+	>
+</TD></TR>
+<TR><TD colspan="2">
+	<a ID="TIMERDELETE" href="javascript:document.getElementById('TIMERSROOT').trydeltimer();">
+		<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
+			ONCLICK="document.getElementById('TIMERSROOT').trydeltimer();" 
+			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
+		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
+			<B>Delete</B></FONT>
+		</TD></TR></TABLE>
+	</a>
+</TD></TR>
+</TABLE>
+${
+var fixtimerspage=function(){
+	if(document.getElementById('TIMERAVALUE'))
+	{
+		var RED = '#FF555B';
+		var root = document.getElementById('TIMERSROOT');
+		var timers = root.parentNode.timers;
+		var global = root.parentNode.which == 'global';
+		delete root.parentNode.timers;
+		delete root.parentNode.which;
+		var dd = document.getElementById('TIMERDROPDOWN');
+		var tname = document.getElementById('TIMERNAME');
+		var thour = document.getElementById('TIMERHR');
+		var tmins = document.getElementById('TIMERMN');
+		var tsecs = document.getElementById('TIMERSC');
+		var ttrig = document.getElementById('TIMERTRIGGER');
+		var topts = document.getElementsByName('TIMEROPTIONS');
+		var tacto = document.getElementById('TIMERACTION');
+		var taval = document.getElementById('TIMERAVALUE');
+		var delbutt = document.getElementById('TIMERDELETE');
+		var rfields = [tname, tacto, taval];
+		dd.selectedIndex = -1;
+		delbutt.style.visibility='hidden';
+		for(var i=0;i < timers.length;i++)
+		{
+			var timer = timers[i];
+			var opt = new Option(timer.name,i);
+			dd.add(opt);
+		}
+		dd.selectedIndex = -1;
+		root.timerselected = function() {
+			if(dd.value == "-1")
+			{
+				tname.value='';
+				tname.style.backgroundColor = RED;
+				thour.selectedIndex=0;
+				tmins.selectedIndex=0;
+				tsecs.selectedIndex=0;
+				ttrig.checked = false;
+				setRadioValue(topts,'');
+				tacto.selectedIndex=-1;
+				tacto.style.backgroundColor = RED;
+				taval.value='';
+				taval.style.backgroundColor = RED;
+				delbutt.style.visibility='hidden';
+			}
+			else
+			if(Number(dd.value) < timers.length)
+			{
+				delbutt.style.visibility='visible';
+				var timer = timers[Number(dd.value)];
+				tname.value=timer.name;
+				tname.style.backgroundColor = 'white';
+				var hours = Math.floor(timer.delay / 3600000);
+				var remainingAfterHours = timer.delay % 3600000;
+				var minutes = Math.floor(remainingAfterHours / 60000);
+				var remainingAfterMinutes = remainingAfterHours % 60000;
+				var seconds = Math.floor(remainingAfterMinutes / 1000);
+				thour.selectedIndex=hours;
+				tmins.selectedIndex=minutes;
+				tsecs.selectedIndex=seconds;
+				ttrig.checked = timer.trigger;
+				setRadioValue(topts,timer.repeat?'repeat':(timer.multiple?'multiple':''));
+				tacto.style.backgroundColor = 'white';
+				if(timer.action)
+				{
+					var x1 = timer.action.indexOf('(');
+					var x2 = timer.action.lastIndexOf(')');
+					setSelectByValue(tacto,timer.action.substr(0,x1));
+					taval.value=timer.action.substr(x1+1,x2-x1-1);
+				}
+				else
+					setSelectByValue(tacto,'');
+				taval.style.backgroundColor = 'white';
+			}
+		};
+		root.timerfieldchange = function() {
+			if(!global)
+				window.win = window.currentSiplet;
+			tname.style.backgroundColor = (tname.value.length==0)?RED:'white';
+			tacto.style.backgroundColor = (tacto.selectedIndex < 0)?RED:'white';
+			taval.style.backgroundColor = ((tacto.value!='')&& (!isValidExpression(taval.value)))?RED:'white';
+			if(tacto.value.indexOf('runScript')>=0)
+			{
+				var key = taval.value.replace(/^['"]|['"]$/g, '');;
+				var found;
+				var globalScripts = GetGlobalScripts();
+				found = FindAScript(globalScripts,key,true);
+				if(!global)
+					found = found || FindAScript(window.currentSiplet.localScripts(),key,true);
+				if(!found)
+					taval.style.backgroundColor = RED;
+			}
+			delete window['win'];
+			var myname = Number(dd.value)>=0?timers[Number(dd.value)].name:'';
+			for(var i=0;i < dd.options.length; i++)
+			{
+				if((dd.options[i].value == tname.value) && (myname != tname.value))
+					tname.style.backgroundColor = RED;
+			}
+			for(var i=0;i < rfields.length; i++)
+				if(rfields[i].style.backgroundColor == RED)
+					return;
+			var fact = (tacto.value=='') ? '' : (tacto.value + '(' + taval.value + ');');
+			var delayms = (thour.selectedIndex * 3600000)
+						+ (tmins.selectedIndex * 60000)
+						+ (tsecs.selectedIndex * 1000);
+			if(Number(dd.value) < 0)
+			{
+				var newTimer = {
+					name: tname.value,
+					delay: delayms,
+					repeat: getRadioValue(topts)=='repeat',
+					multiple: getRadioValue(topts)=='multiple',
+					trigger: ttrig.checked,
+					action: fact
+				};
+				timers.push(newTimer);
+				var opt = new Option(tname.value, timers.length-1);
+				dd.add(opt);
+				dd.selectedIndex = dd.options.length-1;
+				delbutt.style.visibility='visible';
+			}
+			else
+			{
+				var timer = timers[Number(dd.value)];
+				if(timer.timerId)
+					delete timer.timerId;
+				timer.name= tname.value;
+				timer.delay= delayms;
+				timer.repeat = getRadioValue(topts)=='repeat';
+				timer.multiple = getRadioValue(topts)=='multiple';
+				timer.trigger= ttrig.checked;
+				timer.action= fact;
+				dd.options[dd.selectedIndex].text = timer.name;
+			}
+			root.modifytimers();
+		};
+		
+		root.modifytimers = function()
+		{
+			if(global)
+			{
+				setConfig('/global/timers', timers);
+				for(var i=0;i < window.siplets.length; i++)
+				{
+					window.siplets[i].globalTimers = JSON.parse(JSON.stringify(GetGlobalTimers()));
+					window.siplets[i].resetTimers();
+				}
+			}
+			else
+			{
+				var phonebook = getConfig('/phonebook/dial',[]);
+				if((window.currentSiplet.pbentry) 
+				&& (window.currentSiplet.pbwhich) 
+				&& (!window.currentSiplet.pbwhich.startsWith('g')))
+				{
+					var pbindex = Number(window.currentSiplet.pbwhich);
+					var pbentry = phonebook[pbindex];
+					pbentry.timers = JSON.parse(JSON.stringify(timers));
+					var found = FindSipletsByPB(pbentry);
+					if(!In(window.currentSiplet, found))
+						found.push(window.currentSiplet);
+					for(var i=0;i < found.length;i++)
+					{
+						found[i].pbentry = pbentry;
+						found[i].timers = null;
+						found[i].resetTimers();
+					}
+					setConfig('/phonebook/dial',phonebook);
+				}
+			}
+		};
+		
+		root.trydeltimer = function() {
+			var timerindex = Number(dd.value);
+			if(timerindex < 0)
+				return;
+			var curr=dd.selectedIndex;
+			dd.selectedIndex=-1;
+			dd.remove(curr);
+			for(var i=0;i < dd.options.length;i++)
+				if(Number(dd.options[i].value)>timerindex)
+					dd.options[i].value=(Number(dd.options[i].value)-1);
+			var deadt = timers[timerindex];
+			timers.splice(timerindex,1);
+			root.modifytimers();
+			tname.value='';
+			tname.style.backgroundColor = 'white';
+			thour.selectedIndex=0;
+			tmins.selectedIndex=0;
+			tsecs.selectedIndex=0;
+			ttrig.checked = false;
+			getRadioValue(topts,'');
+			tacto.selectedIndex=-1;
+			tacto.style.backgroundColor = 'white';
+			taval.value='';
+			taval.style.backgroundColor = 'white';
+			delbutt.style.visibility='hidden';
+		};
+	} else
+		setTimeout(fixtimerspage,10);
+};setTimeout(fixtimerspage,10);
+'';}

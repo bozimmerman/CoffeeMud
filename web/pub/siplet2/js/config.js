@@ -7,6 +7,7 @@ else
 window.phonebook = [];
 window.defAliases = [];
 window.defScripts = [];
+window.defTimers = [];
 window.defTriggers = [
 	{
 		name: "Phonebook Account Name",
@@ -194,4 +195,9 @@ function GetGlobalAliases()
 function GetGlobalScripts()
 {
 	return getConfig('/global/scripts', window.defScripts);
+}
+
+function GetGlobalTimers()
+{
+	return getConfig('/global/timers', window.defTimers);
 }

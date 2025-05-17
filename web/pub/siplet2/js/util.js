@@ -122,6 +122,20 @@ function In(element,inlist)
 	return element in inlist;
 }
 
+function getRadioValue(radio)
+{
+	for(var i=0;i<radio.length;i++)
+		if(radio[i].checked)
+			return radio[i].value;
+	return '';
+}
+
+function setRadioValue(radio, value)
+{
+	for(var i=0;i<radio.length;i++)
+		radio[i].checked = radio[i].value == value;
+}
+
 function populateDivFromUrl(div, url) 
 {
 	var xhr = new XMLHttpRequest();

@@ -36,6 +36,8 @@
 		<option value="win.runScript">Run Script</option>
 		<option value="win.enableTrigger">Enable Trigger</option>
 		<option value="win.disableTrigger">Disable Trigger</option>
+		<option value="win.startTimer">Start Timer</option>
+		<option value="win.clearTimer">Stop Timer</option>
 		<option value="win.setColor">Set Color</option>
 	</select>
 	<INPUT id="TRIGGERAVALUE" type="text"
@@ -62,6 +64,7 @@ ${
 	var fixtriggerspage=function(){
 	if(document.getElementById('TRIGGERALLOWED'))
 	{
+		var RED = '#FF555B';
 		var root = document.getElementById('TRIGGERSROOT');
 		var triggers = root.parentNode.triggers;
 		var global = root.parentNode.which == 'global';
@@ -90,15 +93,15 @@ ${
 			if(dd.value == "-1")
 			{
 				tname.value='';
-				tname.style.backgroundColor = 'red';
+				tname.style.backgroundColor = RED;
 				tpatt.value='';
-				tpatt.style.backgroundColor = 'red';
+				tpatt.style.backgroundColor = RED;
 				trege.checked=false;
 				truno.checked=false;
 				tacto.selectedIndex=-1;
-				tacto.style.backgroundColor = 'red';
+				tacto.style.backgroundColor = RED;
 				taval.value='';
-				taval.style.backgroundColor = 'red';
+				taval.style.backgroundColor = RED;
 				tallo.value='win.isConnected()';
 				delbutt.style.visibility='hidden';
 			}
@@ -126,23 +129,23 @@ ${
 		root.triggerfieldchange = function() {
 			if(!global)
 				window.win = window.currentSiplet;
-			tname.style.backgroundColor = (tname.value.length==0)?'red':'white';
-			tpatt.style.backgroundColor = (tpatt.value.length==0)?'red':'white';
+			tname.style.backgroundColor = (tname.value.length==0)?RED:'white';
+			tpatt.style.backgroundColor = (tpatt.value.length==0)?RED:'white';
 			if(trege.checked) {
 				try 
 				{ 
 					var a = new RegExp(tpatt.value,'g');
 					if(!a.exec) 
-						tpatt.style.backgroundColor = 'red'; 
+						tpatt.style.backgroundColor = RED; 
 				} catch(e) 
 				{
 					console.log(e);
-					tpatt.style.backgroundColor = 'red'; 
+					tpatt.style.backgroundColor = RED; 
 				}
 			}
-			taval.style.backgroundColor = !isValidExpression(taval.value)?'red':'white';
-			tallo.style.backgroundColor = !isValidExpression(tallo.value)?'red':'white';
-			tacto.style.backgroundColor = (tacto.selectedIndex < 0)?'red':'white';
+			taval.style.backgroundColor = !isValidExpression(taval.value)?RED:'white';
+			tallo.style.backgroundColor = !isValidExpression(tallo.value)?RED:'white';
+			tacto.style.backgroundColor = (tacto.selectedIndex < 0)?RED:'white';
 			if(tacto.value.indexOf('runScript')>=0)
 			{
 				var key = taval.value.replace(/^['"]|['"]$/g, '');
@@ -152,17 +155,17 @@ ${
 				if(!global)
 					found = found || FindAScript(window.currentSiplet.localScripts(),key,true);
 				if(!found)
-					taval.style.backgroundColor = 'red';
+					taval.style.backgroundColor = RED;
 			}
 			delete window['win'];
 			var myname = Number(dd.value)>=0?triggers[Number(dd.value)].name:'';
 			for(var i=0;i < dd.options.length; i++)
 			{
 				if((dd.options[i].value == tname.value) && (myname != tname.value))
-					tname.style.backgroundColor = 'red';
+					tname.style.backgroundColor = RED;
 			}
 			for(var i=0;i < rfields.length; i++)
-				if(rfields[i].style.backgroundColor == 'red')
+				if(rfields[i].style.backgroundColor == RED)
 					return;
 			var fact = tacto.value + '(' + taval.value + ');';
 			if(Number(dd.value) < 0)
