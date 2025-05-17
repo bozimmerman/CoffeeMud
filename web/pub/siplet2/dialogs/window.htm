@@ -2,19 +2,19 @@
 <TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE>Windows</TD>
 </TR><TR>
 	<TD WIDTH=30%>Buffer Size</TD>
-	<TD><INPUT SIZE=5 ONCHANGE="setConfig('window/lines',this.value);" VALUE="${getConfig('window/lines',null)}"></TD>
+	<TD><INPUT SIZE=5 ONCHANGE="setConfig('window/lines',this.value);" VALUE="${getConfig('window/lines',5000)}"></TD>
 </TR><TR>
 	<TD>Text Font</TD>
 	<TD>
 		<SELECT ONCHANGE="setConfig('window/fontface',this.value);">
-			<OPTION VALUE="monospace" ${getConfig('window/fontface',null).toLowerCase()=='monospace'?'SELECTED':''}>Monospace
-			<OPTION VALUE="Courier" ${getConfig('window/fontface',null).toLowerCase()=='courier'?'SELECTED':''}>Courier
-			<OPTION VALUE="Courier New" ${getConfig('window/fontface',null).toLowerCase()=='courier new'?'SELECTED':''}>Courier New
+			<OPTION VALUE="monospace" ${getConfig('window/fontface','monospace').toLowerCase()=='monospace'?'SELECTED':''}>Monospace
+			<OPTION VALUE="Courier" ${getConfig('window/fontface','monospace').toLowerCase()=='courier'?'SELECTED':''}>Courier
+			<OPTION VALUE="Courier New" ${getConfig('window/fontface','monospace').toLowerCase()=='courier new'?'SELECTED':''}>Courier New
 		</SELECT>
 	</TD>
 </TR><TR>
 	<TD>Text Font Size</TD>
-	<TD><INPUT SIZE=5 ONCHANGE="setConfig('window/fontsize',this.value+'px');" VALUE="${parseInt(getConfig('window/fontsize',null))}"></TD>
+	<TD><INPUT SIZE=5 ONCHANGE="setConfig('window/fontsize',this.value+'px');" VALUE="${parseInt(getConfig('window/fontsize','16px'))}"></TD>
 </TR><TR><TD COLSPAN=2></TD>
 </TR><TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE>Protocols</TD>
 </TR><TR>
