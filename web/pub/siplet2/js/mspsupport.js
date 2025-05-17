@@ -85,6 +85,7 @@ var MSP = function(sipwin)
 	
 	this.PlaySound = function(key,url,repeats,volume,priority)
 	{
+		var volPct = Number(getConfig('window/volume','100'));
 		var playerName = sipwin.windowName;
 		var theSoundPlayer = this.sounders[playerName];  
 		if(theSoundPlayer)
@@ -113,9 +114,13 @@ var MSP = function(sipwin)
 			mimeType = key.substr(x+1);
 		theSoundPlayer.setAttribute('type','audio/'+mimeType);
 		theSoundPlayer.setAttribute('hidden','true');
-		theSoundPlayer.setAttribute('volume', volume);
 		if(theSoundPlayer.play)
+		{
+			theSoundPlayer.volume = (Number(volume) * (volPct/100.0))/100.0;
 			theSoundPlayer.play();
+		}
+		else
+			theSoundPlayer.setAttribute('volume', (Number(volume) * (volPct/100.0)));
 	}
 
 	this.StopSound - function(key)

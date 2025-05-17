@@ -15,6 +15,19 @@
 </TR><TR>
 	<TD>Text Font Size</TD>
 	<TD><INPUT SIZE=5 ONCHANGE="setConfig('window/fontsize',this.value+'px');" VALUE="${parseInt(getConfig('window/fontsize','16px'))}"></TD>
+</TD><TR><TD>Sound</TD>
+	<TD><SELECT ID="VOLUME" ONCHANGE="setConfig('window/volume',this.value);">
+			${	var s='';
+				var old = Number(getConfig('window/volume','100'));
+				for(var i=0;i <= 100;i++)
+					if(old == i)
+						s += '<OPTION VALUE="'+i+'" SELECTED>'+i+'%</OPTION>';
+					else
+						s += '<OPTION VALUE="'+i+'">'+i+'%</OPTION>';
+				s;
+			 }
+	</TD>
+</TD></TR>
 </TR><TR><TD COLSPAN=2></TD>
 </TR><TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE>Protocols</TD>
 </TR><TR>
