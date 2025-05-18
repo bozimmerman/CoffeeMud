@@ -1,0 +1,223 @@
+<SPAN  ID="ENTITIESROOT">
+<TABLE WIDTH=100% BORDER=0 style="font-size:12;height:200px;">
+<TR>
+	<TD WIDTH=20%>Entities:</TD>
+	<TD><SELECT ID="ENTITIESDROPDOWN" STYLE="position:relative;" 
+			ONCHANGE="var root = document.getElementById('ENTITIESROOT'); root.entitieselected(); "
+		>
+		<OPTION VALUE="-1">Add New Entity
+		</SELECT>
+</TD></TR>
+<TR><TD WIDTH=20%>Name:</TD><TD>
+	<INPUT id="ENTITIESNAME" type="text" SIZE=10
+		ONCHANGE="var root = document.getElementById('ENTITIESROOT'); root.entityfieldchange(); "
+	>
+</TD></TR>
+<TR><TD WIDTH=20%>Value:</TD>
+<TD><INPUT TYPE=TEXT ID="ENTITIESTEXT"
+		ONCHANGE="var root = document.getElementById('ENTITIESROOT'); root.entityfieldchange(); "
+	>
+</TD></TR>
+<TR><TD colspan="2">
+	<a ID="ENTITIESDELETE" href="javascript:document.getElementById('ENTITIESROOT').trydelentity();">
+		<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
+			ONCLICK="document.getElementById('ENTITIESROOT').trydelentity();" 
+			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
+		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
+			<B>Delete</B></FONT>
+		</TD></TR></TABLE>
+	</a>
+</TD></TR>
+<TR><TD WIDTH=20%>MXP Elements:
+	<a ID="ENTITIESMXPLOAD" href="javascript:document.getElementById('ENTITIESROOT').tryloadmxp();">
+		<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;visibility:hidden;" 
+			ONCLICK="document.getElementById('ENTITIESROOT').tryloadmxp();" 
+			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
+		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
+			<B>Load</B></FONT>
+		</TD></TR></TABLE>
+	</a>
+</TD>
+<TD><TEXTAREA ID="ENTITIESMXP" style="height:110px;width:100%;"
+		ONCHANGE="var root = document.getElementById('ENTITIESROOT'); root.entityfieldchange(); "
+	></TEXTAREA>
+</TD></TR>
+</TABLE>
+</SPAN>
+${
+	var fixentitiespage=function(){
+	if(document.getElementById('ENTITIESTEXT'))
+	{
+		var RED = '#FF555B';
+		var root = document.getElementById('ENTITIESROOT');
+		var mxpField = document.getElementById('ENTITIESMXP');
+		var sname = document.getElementById('ENTITIESNAME');
+		var stext = document.getElementById('ENTITIESTEXT');
+		var entities = root.parentNode.entities;
+		var global = root.parentNode.which == 'global';
+		var ogmxp = root.parentNode.mxp;
+		mxpField.value = ogmxp;
+		delete root.parentNode.entities;
+		delete root.parentNode.which;
+		delete root.parentNode.mxp;
+		var dd = document.getElementById('ENTITIESDROPDOWN');
+		var loadbutt = document.getElementById('ENTITIESMXPLOAD');
+		var delbutt = document.getElementById('ENTITIESDELETE');
+		dd.selectedIndex = -1;
+		delbutt.style.visibility='hidden';
+		for(var k in entities)
+		{
+			var entity = entities[k];
+			var opt = new Option(k,k);
+			dd.add(opt);
+		}
+		dd.selectedIndex = -1;
+		root.entitieselected = function() {
+			if(dd.value == "-1")
+			{
+				sname.value='';
+				sname.style.backgroundColor = RED;
+				stext.value='';
+				stext.style.backgroundColor = RED;
+				delbutt.style.visibility='hidden';
+			}
+			else
+			{
+				delbutt.style.visibility='visible';
+				var val = entities[dd.value];
+				sname.value=dd.value;
+				sname.style.backgroundColor = 'white';
+				stext.value=val;
+				stext.style.backgroundColor = 'white';
+			}
+		};
+		root.entityfieldchange = function() {
+			if(dd.selectedIndex<0)
+			{
+				if(mxpField.value != ogmxp)
+					root.modifyentities();
+				return;
+			}
+			sname.style.backgroundColor = (sname.value.length==0)?RED:'white';
+			stext.style.backgroundColor = (stext.value.length==0)?RED:'white';
+			var myname = (dd.value != '-1')?dd.value:'';
+			for(var i=0;i < dd.options.length; i++)
+			{
+				if((dd.options[i].value == sname.value) && (myname != sname.value))
+					sname.style.backgroundColor = RED;
+			}
+			var rfields = [sname,stext];
+			if(mxpField.value == ogmxp)
+			{
+				for(var i=0;i < rfields.length; i++)
+					if(rfields[i].style.backgroundColor == RED)
+						return;
+			}
+			if(Number(dd.value) < 0)
+			{
+				entities[sname.value] = stext.value;
+				var opt = new Option(sname.value, sname.value);
+				dd.add(opt);
+				dd.selectedIndex = dd.options.length-1;
+				delbutt.style.visibility='visible';
+			}
+			else
+			{
+				delete entities[dd.value];
+				entities[sname.value] = stext.value;
+				dd.options[dd.selectedIndex].value = sname.value;
+				dd.options[dd.selectedIndex].text = sname.value;
+			}
+			root.modifyentities();
+		};
+
+		root.modifyentities = function()
+		{
+			if(global)
+			{
+				if(mxpField.value != ogmxp)
+				{
+					ogmxp = mxpField.value;
+					setConfig('/global/elements', mxpField.value);
+					for(var i=0;i < window.siplets.length; i++)
+					{
+						var siplet = window.siplets[i];
+						siplet.mxp.defBitmap = 256; // no override
+						siplet.internalTextProcess(ogmxp);
+						if(siplet.pbentry && siplet.pbentry.elements)
+							siplet.internalTextProcess(siplet.pbentry.elements);
+						siplet.mxp.defBitmap = 0; // normal operation
+					}
+				}
+				else
+				{
+					setConfig('/global/entities', entities);
+					for(var i=0;i < window.siplets.length; i++)
+					{
+						var siplet=window.siplets[i];
+						siplet.mxp.entities = JSON.parse(JSON.stringify(entities));
+						if(siplet.pbentry && siplet.pbentry.entities)
+							for(var k in siplet.pbentry.entities)
+								siplet.mxp.entities[k] = siplet.pbentry.entities[k];
+					}
+				}
+			}
+			else
+			{
+				var phonebook = getConfig('/phonebook/dial',[]);
+				if((window.currentSiplet.pbentry) 
+				&& (window.currentSiplet.pbwhich) 
+				&& (!window.currentSiplet.pbwhich.startsWith('g')))
+				{
+					var pbindex = Number(window.currentSiplet.pbwhich);
+					var pbentry = phonebook[pbindex];
+					var found = FindSipletsByPB(pbentry);
+					if(!In(window.currentSiplet, found))
+						found.push(window.currentSiplet);
+					if(mxpField.value != ogmxp)
+					{
+						ogmxp = mxpField.value;
+						pbentry.elements = ogmxp;
+						for(var i=0;i < found.length;i++)
+						{
+							var siplet=found[i];
+							siplet.mxp.defBitmap = 256; // no override
+							siplet.internalTextProcess(ogmxp);
+							siplet.mxp.defBitmap = 0; // normal operation
+						}
+					}
+					else
+					{
+						pbentry.entities = JSON.parse(JSON.stringify(entities));
+						for(var i=0;i < found.length;i++)
+						{
+							found[i].pbentry = pbentry;
+							found[i].mxp.entities = GetGlobalEntities();
+							for(var k in entities)
+								found[i].mxp.entities[k] = entities[k];
+						}
+					}
+					setConfig('/phonebook/dial',phonebook);
+				}
+			}
+		};
+		root.trydelentity = function() {
+			var val = dd.value;
+			var entityindex = Number(val);
+			if(entityindex < 0)
+				return;
+			var currIndex=dd.selectedIndex;
+			dd.selectedIndex=-1;
+			dd.remove(currIndex);
+			delete entities[val];
+			root.modifyentities();
+			sname.value='';
+			sname.style.backgroundColor = 'white';
+			stext.value='';
+			stext.style.backgroundColor = 'white';
+			delbutt.style.visibility='hidden';
+		};
+	} else
+		setTimeout(fixentitiespage,10);
+};setTimeout(fixentitiespage,10);
+'';}

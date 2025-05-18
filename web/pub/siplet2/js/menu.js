@@ -21,6 +21,9 @@ var menuData = [
 		{"n":"Timers",
 		 "e":"window.currentSiplet!=null && window.currentSiplet.pbentry && window.currentSiplet.pbentry.user",
 		 "a":"javascript:menuTimers('local');"},
+		{"n":"Entities",
+		 "e":"window.currentSiplet!=null && window.currentSiplet.pbentry && window.currentSiplet.pbentry.user",
+		 "a":"javascript:menuEntities('local');"},
 		{"n":"Disconnect",
 		 "e":"window.currentSiplet!=null && window.currentSiplet.wsopened",
 		 "a":"javascript:menuDisconnect();"},
@@ -38,7 +41,9 @@ var menuData = [
 		{"n":"Scripts",
 		 "a":"javascript:menuScripts('global');"},
 		{"n":"Timers",
-		 "a":"javascript:menuTimers('global');"}
+		 "a":"javascript:menuTimers('global');"},
+		{"n":"Entities",
+		 "a":"javascript:menuEntities('global');"}
 	]},
 	{"Help": [
 		{"n":"About","a":"javascript:menuAbout()"}
@@ -239,5 +244,21 @@ function menuTimers(value)
 	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
 		content.timers = window.currentSiplet.localTimers();
 	populateDivFromUrl(content, 'dialogs/timers.htm');
+}
+
+function menuEntities(value)
+{
+	var which = 'Global';
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
+		which = window.currentSiplet.pbentry.name;
+	var content = getOptionWindow(which + " Entities (Variables)",60,40);
+	content.which = value;
+	content.entities = getConfig('/global/entities', window.defEntities); // dont parse them
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
+		content.entities = window.currentSiplet.mxp.entities;
+	content.mxp = getConfig('/global/elements', '');
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
+		content.mxp = window.currentSiplet.pbentry.elements?window.currentSiplet.pbentry.elements:'';
+	populateDivFromUrl(content, 'dialogs/entities.htm');
 }
 

@@ -1,9 +1,3 @@
-var MXPEntity = function(theName, theDefinition)
-{
-	this.name = theName;
-	this.definition = theDefinition;
-};
-
 var MXPBIT = 
 {
 	OPEN: 1,
@@ -13,7 +7,8 @@ var MXPBIT =
 	HTML: 16,
 	NOTSUPPORTED: 32,
 	EATTEXT: 64,
-	DISABLED: 128
+	DISABLED: 128,
+	NOOVERRIDE: 256
 };
 
 var MXPMODE = 
@@ -306,10 +301,89 @@ var MXPElement = function(theName, theDefinition, theAttributes, theFlag, theBit
 	};
 };
 
+window.defElements = {
+	"B": new MXPElement("B", "<B>", "", "", MXPBIT.HTML),
+	"BOLD": new MXPElement("BOLD", "<B>", "", "", MXPBIT.HTML),
+	"STRONG": new MXPElement("STRONG", "<B>", "", "", MXPBIT.HTML),
+	"U": new MXPElement("U", "<U>", "", "", MXPBIT.HTML),
+	"UNDERLINE": new MXPElement("UNDERLINE", "<U>", "", "", MXPBIT.HTML),
+	"I": new MXPElement("I", "<I>", "", "", MXPBIT.HTML),
+	"ITALIC": new MXPElement("ITALIC", "<I>", "", "", MXPBIT.HTML),
+	"S": new MXPElement("S", "<S>", "", "", MXPBIT.HTML),
+	"STRIKEOUT": new MXPElement("STRIKEOUT", "<S>", "", "", MXPBIT.HTML),
+	"EM": new MXPElement("EM", "<I>", "", "", MXPBIT.HTML),
+	"H1": new MXPElement("H1", "<H1>", "", "", MXPBIT.HTML),
+	"H2": new MXPElement("H2", "<H2>", "", "", MXPBIT.HTML),
+	"H3": new MXPElement("H3", "<H3>", "", "", MXPBIT.HTML),
+	"H4": new MXPElement("H4", "<H4>", "", "", MXPBIT.HTML),
+	"H5": new MXPElement("H5", "<H5>", "", "", MXPBIT.HTML),
+	"H6": new MXPElement("H6", "<H6>", "", "", MXPBIT.HTML),
+	"HR": new MXPElement("HR", "<HR>", "", "", MXPBIT.HTML | MXPBIT.COMMAND),
+	"SMALL": new MXPElement("SMALL", "<SMALL>", "", "", MXPBIT.HTML),
+	"TT": new MXPElement("TT", "<PRE>", "", "", MXPBIT.HTML),
+	"BR": new MXPElement("BR", "<BR>", "", "", MXPBIT.HTML | MXPBIT.COMMAND),
+	"SBR": new MXPElement("SBR", "&nbsp;", "", "", MXPBIT.HTML | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+	"P": new MXPElement("P", "", "", "", MXPBIT.HTML | MXPBIT.SPECIAL), // special
+	"C": new MXPElement("C", "<FONT COLOR=&fore; BACK=&back;>", "FORE BACK", "", 0),
+	"COLOR": new MXPElement("COLOR", "<FONT COLOR=&fore; BACK=&back;>", "FORE BACK", "", 0),
+	"HIGH": new MXPElement("HIGH", "", "", "", MXPBIT.NOTSUPPORTED),
+	"H": new MXPElement("H", "", "", "", MXPBIT.NOTSUPPORTED),
+	"FONT": new MXPElement("FONT", "<FONT STYLE=\"color: &color;;background-color: &back;;font-family: &face;;font-size: &size;;\">", 
+			"FACE SIZE COLOR BACK STYLE", "", MXPBIT.SPECIAL|MXPBIT.HTML),
+	"NOBR": new MXPElement("NOBR", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
+	"A": new MXPElement("A", "<A STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">",
+			"HREF HINT EXPIRE TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK", "", MXPBIT.HTML, "EXPIRE"),
+	"SEND": new MXPElement("SEND", "<A STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"delayhidemenu();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">", 
+			"HREF HINT PROMPT EXPIRE STYLE", "", MXPBIT.SPECIAL, "EXPIRE"), // special done
+	"EXPIRE": new MXPElement("EXPIRE", "", "NAME", "", MXPBIT.NOTSUPPORTED),
+	"VERSION": new MXPElement("VERSION", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
+	"SUPPORT": new MXPElement("SUPPORT", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
+	"GAUGE": new MXPElement("GAUGE", "", "ENTITY MAX CAPTION COLOR", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
+	"STAT": new MXPElement("STAT", "", "ENTITY MAX CAPTION", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+	"FRAME": new MXPElement("FRAME", "", "NAME ACTION TITLE INTERNAL ALIGN LEFT TOP WIDTH HEIGHT SCROLLING FLOATING", 
+			"", MXPBIT.SPECIAL | MXPBIT.COMMAND),
+	"DEST": new MXPElement("DEST", "", "NAME EOF", "", MXPBIT.SPECIAL),
+	"DESTINATION": new MXPElement("DESTINATION", "", "NAME EOF", "", MXPBIT.SPECIAL),
+	"RELOCATE": new MXPElement("RELOCATE", "", "URL PORT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+	"USER": new MXPElement("USER", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+	"PASSWORD": new MXPElement("PASSWORD", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+	"IMAGE": new MXPElement("IMAGE", "<IMG SRC=\"&url;&fname;\" HEIGHT=&h; WIDTH=&w; ALIGN=&align;>", 
+			"FNAME URL T H W HSPACE VSPACE ALIGN ISMAP", "", MXPBIT.COMMAND, "HSPACE VSPACE ISMAP"),
+	"IMG": new MXPElement("IMG", "<IMG SRC=\"&src;\" HEIGHT=&height; WIDTH=&width; ALIGN=&align;>", 
+			"SRC HEIGHT=70 WIDTH=70 ALIGN", "", MXPBIT.COMMAND),
+	"FILTER": new MXPElement("FILTER", "", "SRC DEST NAME", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+	"SCRIPT": new MXPElement("SCRIPT", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+	"ENTITY": new MXPElement("ENTITY", "", "NAME VALUE DESC PRIVATE PUBLISH DELETE ADD", 
+			"", MXPBIT.SPECIAL | MXPBIT.COMMAND, "PRIVATE PUBLISH ADD"), // special
+	"EN": new MXPElement("EN", "", "NAME VALUE DESC PRIVATE PUBLISH DELETE ADD", 
+			"", MXPBIT.SPECIAL | MXPBIT.COMMAND, "PRIVATE PUBLISH ADD"), // special
+	"TAG": new MXPElement("TAG", "", "INDEX WINDOWNAME FORE BACK GAG ENABLE DISABLE", 
+			"", MXPBIT.SPECIAL | MXPBIT.COMMAND, "WINDOWNAME"),
+	"VAR": new MXPElement("VAR", "", "NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE", 
+			"", MXPBIT.SPECIAL, "PRIVATE PUBLISH ADD REMOVE"), // special
+	"V": new MXPElement("V", "", "NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE", 
+			"", MXPBIT.SPECIAL, "PRIVATE PUBLISH ADD REMOVE"), // special
+	"ELEMENT": new MXPElement("ELEMENT", "", "NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY", 
+			"", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
+	"EL": new MXPElement("EL", "", "NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY", 
+			"", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
+	"ATTLIST": new MXPElement("ATTLIST", "", "NAME ATT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
+	"AT": new MXPElement("AT", "", "NAME ATT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
+	"SOUND": new MXPElement("SOUND", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL),
+	"MUSIC": new MXPElement("MUSIC", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL)
+	// -------------------------------------------------------------------------
+};
+
 var MXP = function(sipwin)
 {
+	this.defBitmap = 0;
 	this.reset = function()
 	{
+		this.elements = window.defElements;
+		this.entities = GetGlobalEntities();
+		if(sipwin.pbentry && sipwin.pbentry.entities)
+			for(var k in sipwin.pbentry.entities)
+				this.entities[k] = sipwin.pbentry.entities[k];
 		this.dests = [];
 		this.defaultMode = MXPMODE.LINE_OPEN; // actually changes!
 		this.mode = 0;
@@ -318,89 +392,8 @@ var MXP = function(sipwin)
 		this.eatAllEOLN = false;
 		this.openElements = [];
 		this.gauges = [];
-		this.elements = {
-			"B": new MXPElement("B", "<B>", "", "", MXPBIT.HTML),
-			"BOLD": new MXPElement("BOLD", "<B>", "", "", MXPBIT.HTML),
-			"STRONG": new MXPElement("STRONG", "<B>", "", "", MXPBIT.HTML),
-			"U": new MXPElement("U", "<U>", "", "", MXPBIT.HTML),
-			"UNDERLINE": new MXPElement("UNDERLINE", "<U>", "", "", MXPBIT.HTML),
-			"I": new MXPElement("I", "<I>", "", "", MXPBIT.HTML),
-			"ITALIC": new MXPElement("ITALIC", "<I>", "", "", MXPBIT.HTML),
-			"S": new MXPElement("S", "<S>", "", "", MXPBIT.HTML),
-			"STRIKEOUT": new MXPElement("STRIKEOUT", "<S>", "", "", MXPBIT.HTML),
-			"EM": new MXPElement("EM", "<I>", "", "", MXPBIT.HTML),
-			"H1": new MXPElement("H1", "<H1>", "", "", MXPBIT.HTML),
-			"H2": new MXPElement("H2", "<H2>", "", "", MXPBIT.HTML),
-			"H3": new MXPElement("H3", "<H3>", "", "", MXPBIT.HTML),
-			"H4": new MXPElement("H4", "<H4>", "", "", MXPBIT.HTML),
-			"H5": new MXPElement("H5", "<H5>", "", "", MXPBIT.HTML),
-			"H6": new MXPElement("H6", "<H6>", "", "", MXPBIT.HTML),
-			"HR": new MXPElement("HR", "<HR>", "", "", MXPBIT.HTML | MXPBIT.COMMAND),
-			"SMALL": new MXPElement("SMALL", "<SMALL>", "", "", MXPBIT.HTML),
-			"TT": new MXPElement("TT", "<PRE>", "", "", MXPBIT.HTML),
-			"BR": new MXPElement("BR", "<BR>", "", "", MXPBIT.HTML | MXPBIT.COMMAND),
-			"SBR": new MXPElement("SBR", "&nbsp;", "", "", MXPBIT.HTML | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-			"P": new MXPElement("P", "", "", "", MXPBIT.HTML | MXPBIT.SPECIAL), // special
-			"C": new MXPElement("C", "<FONT COLOR=&fore; BACK=&back;>", "FORE BACK", "", 0),
-			"COLOR": new MXPElement("COLOR", "<FONT COLOR=&fore; BACK=&back;>", "FORE BACK", "", 0),
-			"HIGH": new MXPElement("HIGH", "", "", "", MXPBIT.NOTSUPPORTED),
-			"H": new MXPElement("H", "", "", "", MXPBIT.NOTSUPPORTED),
-			"FONT": new MXPElement("FONT", "<FONT STYLE=\"color: &color;;background-color: &back;;font-family: &face;;font-size: &size;;\">", 
-					"FACE SIZE COLOR BACK STYLE", "", MXPBIT.SPECIAL|MXPBIT.HTML),
-			"NOBR": new MXPElement("NOBR", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-			"A": new MXPElement("A", "<A STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">",
-					"HREF HINT EXPIRE TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK", "", MXPBIT.HTML, "EXPIRE"),
-			"SEND": new MXPElement("SEND", "<A STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"delayhidemenu();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">", 
-					"HREF HINT PROMPT EXPIRE STYLE", "", MXPBIT.SPECIAL, "EXPIRE"), // special done
-			"EXPIRE": new MXPElement("EXPIRE", "", "NAME", "", MXPBIT.NOTSUPPORTED),
-			"VERSION": new MXPElement("VERSION", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-			"SUPPORT": new MXPElement("SUPPORT", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-			"GAUGE": new MXPElement("GAUGE", "", "ENTITY MAX CAPTION COLOR", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
-			"STAT": new MXPElement("STAT", "", "ENTITY MAX CAPTION", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-			"FRAME": new MXPElement("FRAME", "", "NAME ACTION TITLE INTERNAL ALIGN LEFT TOP WIDTH HEIGHT SCROLLING FLOATING", 
-					"", MXPBIT.SPECIAL | MXPBIT.COMMAND),
-			"DEST": new MXPElement("DEST", "", "NAME EOF", "", MXPBIT.SPECIAL),
-			"DESTINATION": new MXPElement("DESTINATION", "", "NAME EOF", "", MXPBIT.SPECIAL),
-			"RELOCATE": new MXPElement("RELOCATE", "", "URL PORT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-			"USER": new MXPElement("USER", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-			"PASSWORD": new MXPElement("PASSWORD", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-			"IMAGE": new MXPElement("IMAGE", "<IMG SRC=\"&url;&fname;\" HEIGHT=&h; WIDTH=&w; ALIGN=&align;>", 
-					"FNAME URL T H W HSPACE VSPACE ALIGN ISMAP", "", MXPBIT.COMMAND, "HSPACE VSPACE ISMAP"),
-			"IMG": new MXPElement("IMG", "<IMG SRC=\"&src;\" HEIGHT=&height; WIDTH=&width; ALIGN=&align;>", 
-					"SRC HEIGHT=70 WIDTH=70 ALIGN", "", MXPBIT.COMMAND),
-			"FILTER": new MXPElement("FILTER", "", "SRC DEST NAME", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-			"SCRIPT": new MXPElement("SCRIPT", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-			"ENTITY": new MXPElement("ENTITY", "", "NAME VALUE DESC PRIVATE PUBLISH DELETE ADD", 
-					"", MXPBIT.SPECIAL | MXPBIT.COMMAND, "PRIVATE PUBLISH ADD"), // special
-			"EN": new MXPElement("EN", "", "NAME VALUE DESC PRIVATE PUBLISH DELETE ADD", 
-					"", MXPBIT.SPECIAL | MXPBIT.COMMAND, "PRIVATE PUBLISH ADD"), // special
-			"TAG": new MXPElement("TAG", "", "INDEX WINDOWNAME FORE BACK GAG ENABLE DISABLE", 
-					"", MXPBIT.SPECIAL | MXPBIT.COMMAND, "WINDOWNAME"),
-			"VAR": new MXPElement("VAR", "", "NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE", 
-					"", MXPBIT.SPECIAL, "PRIVATE PUBLISH ADD REMOVE"), // special
-			"V": new MXPElement("V", "", "NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE", 
-					"", MXPBIT.SPECIAL, "PRIVATE PUBLISH ADD REMOVE"), // special
-			"ELEMENT": new MXPElement("ELEMENT", "", "NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY", 
-					"", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-			"EL": new MXPElement("EL", "", "NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY", 
-					"", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-			"ATTLIST": new MXPElement("ATTLIST", "", "NAME ATT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
-			"AT": new MXPElement("AT", "", "NAME ATT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
-			"SOUND": new MXPElement("SOUND", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL),
-			"MUSIC": new MXPElement("MUSIC", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL)
-			// -------------------------------------------------------------------------
-			
-		};
 		this.tags = {};
 		this.frames = {};
-		this.entities = {
-			"nbsp": new MXPEntity("nbsp", "&nbsp;"),
-			"lt": new MXPEntity("lt", "&lt;"),
-			"gt": new MXPEntity("gt", "&gt;"),
-			"quot": new MXPEntity("quot", "&quot;"),
-			"amp": new MXPEntity("amp", "&amp;")
-		};
-		
 		this.partial = null;
 		this.partQuote = '\0';
 		this.partialBit ='';
@@ -1010,18 +1003,15 @@ var MXP = function(sipwin)
 	this.modifyEntity =function(name, value)
 	{
 		name = name.toLowerCase();
-		var X = (name in this.entities) ? this.entities[name] : null;
-		if (X == null)
+		if (name in this.entities)
 		{
-			X = new MXPEntity(name, value);
-			this.entities[name] = X;
+			var X =  this.entities[name];
+			if (X.toLowerCase() == value.toLowerCase())
+				return;
+			this.entities[name] = value;
 		}
 		else
-		{
-			if (X.definition.toLowerCase() == value.toLowerCase())
-				return;
-			X.definition =value;
-		}
+			this.entities[name] = value;
 		var gauge = null;
 		for (var g = 0; g < this.gauges.length; g++)
 		{
@@ -1070,7 +1060,7 @@ var MXP = function(sipwin)
 			if (N == null)
 				N = this.entities[tag.toUpperCase()];
 			if (N != null)
-				val = N.definition;
+				val = N;
 		}
 		return val;
 	};
@@ -1250,6 +1240,12 @@ var MXP = function(sipwin)
 			var emptyFlag = E.getAttributeValue("EMPTY");
 			if (name == null)
 				return;
+			var uname = name.toUpperCase().trim();
+			if((uname in this.elements) && (this.defBitmap == 0))
+			{
+				if((this.elements[uname].bitmap&MXPBIT.NOOVERRIDE)==0)
+					return;
+			}
 			if ((delflag != null) && (name in this.elements))
 			{
 				E = this.elements[name];
@@ -1261,7 +1257,7 @@ var MXP = function(sipwin)
 				definition = "";
 			if (attributes == null)
 				attributes = "";
-			var bitmap = 0;
+			var bitmap = this.defBitmap;
 			if (open != null)
 				bitmap |= MXPBIT.OPEN;
 			if (emptyFlag != null)

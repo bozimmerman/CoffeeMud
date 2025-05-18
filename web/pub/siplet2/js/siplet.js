@@ -42,7 +42,6 @@ function SipletWindow(windowName)
 	this.globalTimers = JSON.parse(JSON.stringify(GetGlobalTimers()));
 	this.timers = null;
 	this.activeTimers = [];
-	this.vars = {};
 	this.lastStyle = '';
 
 	var me = this;
@@ -92,13 +91,38 @@ function SipletWindow(windowName)
 	    if (this.wsocket && this.wsocket.readyState === WebSocket.OPEN) {
 	    	this.wsocket.close();
 	    }
-	}
+	};
 	
 	this.close = function()
 	{
 		this.closeSocket();
 		this.reset();
-	}
+	};
+	
+	this.internalTextProcess = function(s)
+	{
+		if(!s) return s;
+		var oldResume = this.text.resume;
+		this.text.resume = null;
+		s=this.text.process(s);
+		if((!this.mxp.active())&&(this.fixVariables))
+			s = this.fixVariables(s);
+		this.text.resume = oldResume;
+		return s;
+	};
+
+	this.mxpFix = function()
+	{
+		this.mxp.defBitmap = 256; // no override
+		var oldActive = this.mxp.active;
+		this.mxp.active = function() { return true; };
+		this.internalTextProcess(GetGlobalElements());
+		if(this.pbentry && this.pbentry.elements)
+			this.internalTextProcess(this.pbentry.elements);
+		this.mxp.active = oldActive;
+		this.mxp.defBitmap = 0; // normal operation
+	};
+	this.mxpFix();
 	
 	this.reset = function()
 	{
@@ -134,9 +158,9 @@ function SipletWindow(windowName)
 		this.triggers = null;
 		this.globalAliases = GetGlobalAliases();
 		this.aliases = null;
-		this.vars = {};
 		this.resetTimers();
-	}
+		this.mxpFix();
+	};
 	
 	this.htmlBuffer = '';
 	this.flushWindow = function() {
@@ -251,7 +275,7 @@ function SipletWindow(windowName)
 					while(match !== null)
 					{
 						trig.prev = this.textBufferPruneIndex + match.index + 1;
-						var action = trig.action.replaceAll('\\n','\n');
+						var action = this.fixVariables(trig.action.replaceAll('\\n','\n'));
 						try { eval(action); } catch(e) {};
 						match = trig.pattern.exec(this.textBuffer);
 					}
@@ -263,7 +287,7 @@ function SipletWindow(windowName)
 					{
 						prev += x + trig.pattern.length + 1;
 						trig.prev = this.textBufferPruneIndex + x + trig.pattern.length + 1;
-						var action = trig.action.replaceAll('\\n','\n');
+						var action = this.fixVariables(trig.action.replaceAll('\\n','\n'));
 						try { eval(action); } catch(e) {};
 						x = this.textBuffer.indexOf(trig.pattern,prev);
 					}
@@ -286,14 +310,14 @@ function SipletWindow(windowName)
 			this.triggers = ParseTriggers(this.pbentry.triggers);
 		}
 		return this.triggers;
-	}
-	
+	};
+
 	this.triggerCheck = function()
 	{
 		this.evalTriggerGroup(this.globalTriggers);
 		this.evalTriggerGroup(this.localTriggers());
 	};
-	
+
 	this.evalAliasGroup = function(aliases, txt)
 	{
 		var win = this;
@@ -307,7 +331,7 @@ function SipletWindow(windowName)
 					if(alias.pattern.test(txt))
 					{
 						txt = txt.replace(alias.pattern,alias.replace);
-						var action = alias.action.replaceAll('\\n','\n');
+						var action = this.fixVariables(alias.action.replaceAll('\\n','\n'));
 						try { eval(action); } catch(e) {};
 						return txt
 					}
@@ -315,7 +339,7 @@ function SipletWindow(windowName)
 				else
 				if(txt.startsWith(alias.pattern))
 				{
-					var action = alias.action.replaceAll('\\n','\n');
+					var action = this.fixVariables(alias.action.replaceAll('\\n','\n'));
 					try { eval(action); } catch(e) {};
 					return alias.replace + txt.substr(alias.pattern.length);
 				}
@@ -323,7 +347,7 @@ function SipletWindow(windowName)
 		}
 		return txt;
 	};
-	
+
 	this.aliasProcess = function(x)
 	{
 		var oldx = x;
@@ -332,7 +356,7 @@ function SipletWindow(windowName)
 			x = this.evalAliasGroup(this.localAliases(), x);
 		return x;
 	};
-	
+
 	this.localAliases = function()
 	{
 		if(this.aliases == null)
@@ -421,7 +445,7 @@ function SipletWindow(windowName)
 		var timerCopy = JSON.parse(JSON.stringify(timer));
 		var me = this;
 		var execute = function() {
-			var action = timer.action.replaceAll('\\n','\n');
+			var action = me.fixVariables(timer.action.replaceAll('\\n','\n'));
 			var win = me;
 			try { eval(action); } catch(e) {};
 			if(timer.repeat)
@@ -558,7 +582,7 @@ function SipletWindow(windowName)
 				this.gaugeWindow = null;
 			}
 		}
-	}
+	};
 	
 	this.modifyGauge = function(entity,value,max)
 	{
@@ -603,15 +627,20 @@ function SipletWindow(windowName)
 	this.submitInput = function(value)
 	{
 		this.displayText(value);
+		value = this.fixVariables(value);
 		this.wsocket.send(value+'\n');
 	};
 	
 	this.displayText = function(value)
 	{
-		var span = document.createElement('span');
-		span.innerHTML = value.replaceAll('\n','<BR>') + '<BR>';
-		this.window.appendChild(span);
-		this.window.scrollTop = this.window.scrollHeight - this.window.clientHeight;
+		value = me.internalTextProcess(value);
+		if(value.length > 0)
+		{
+			var span = document.createElement('span');
+			span.innerHTML = value.replaceAll('\n','<BR>') + '<BR>';
+			this.window.appendChild(span);
+			this.window.scrollTop = this.window.scrollHeight - this.window.clientHeight;
+		}
 	};
 	
 	this.playSound = function(file)
@@ -636,14 +665,35 @@ function SipletWindow(windowName)
 
 	this.setVariable = function(key, value)
 	{
-		this.vars[key] = value;
+		this.mxp.entities[key] = value;
 	};
 	
 	this.getVariable = function(key)
 	{
-		if(key in this.vars)
-			return this.vars[key];
+		if(key in this.mxp.entities)
+			return this.fixVariables(this.mxp.entities[key]);
 		return '';
+	};
+	
+	this.fixVariables = function(s)
+	{
+		if(!s || (s===undefined))
+			return s;
+		var x = s.indexOf('&');
+		while(x>=0)
+		{
+			var y = s.indexOf(';',x+1);
+			if(y>x)
+			{
+				var v = s.substr(x+1,y-(x+1));
+				if(v in this.mxp.entities)
+					s = s.substr(0,x) + this.mxp.entities[v] + s.substr(y+1);
+			}
+			if(x+1>=s.length)
+				break;
+			x=s.indexOf('&',x+1);
+		}
+		return s;
 	};
 
 	this.findLocalScript = function(value)
@@ -656,7 +706,7 @@ function SipletWindow(windowName)
 		if(run == null) 
 			run = FindAScript(this.globalScripts,value,true);
 		return run;
-	}
+	};
 	
 	this.runScript = function(value)
 	{
@@ -664,7 +714,7 @@ function SipletWindow(windowName)
 		if(run != null)
 		{
 			var win = this;
-			eval(value);
+			eval(this.fixVariables(run));
 		}
 		else
 			console.log("Unable to find script '"+value+"'");
@@ -702,7 +752,7 @@ function SipletWindow(windowName)
 	this.isConnected = function() 
 	{
 		return this.wsopened;
-	}
+	};
 }
 
 function AddNewSipletTabByPort(port)
@@ -765,7 +815,7 @@ function AddNewSipletTab(url)
 	newWinContainer.appendChild(newWindow);
 	newWinContainer.style.cssText = 'position:absolute;top:0%;left:0%;width:100%;height:100%;'
 	var siplet = new SipletWindow(windowName); // makes a deep copy
-	siplet.tab = AddNewTab(); 
+	siplet.tab = AddNewTab();
 	siplet.url = url;
 	window.siplets.push(siplet);
 	siplet.connect(url);

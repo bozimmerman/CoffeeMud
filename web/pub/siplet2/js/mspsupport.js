@@ -86,6 +86,8 @@ var MSP = function(sipwin)
 	this.PlaySound = function(key,url,repeats,volume,priority)
 	{
 		var volPct = Number(getConfig('window/volume','100'));
+		if(volPct<0.01)
+			return;
 		var playerName = sipwin.windowName;
 		var theSoundPlayer = this.sounders[playerName];  
 		if(theSoundPlayer)

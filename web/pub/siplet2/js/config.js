@@ -8,6 +8,13 @@ window.phonebook = [];
 window.defAliases = [];
 window.defScripts = [];
 window.defTimers = [];
+window.defEntities = {
+	"nbsp": "&nbsp;",
+	"lt": "&lt;",
+	"gt": "&gt;",
+	"quot": "&quot;",
+	"amp": "&amp;"
+};
 window.defTriggers = [
 	{
 		name: "Phonebook Account Name",
@@ -200,4 +207,14 @@ function GetGlobalScripts()
 function GetGlobalTimers()
 {
 	return getConfig('/global/timers', window.defTimers);
+}
+
+function GetGlobalEntities()
+{
+	return JSON.parse(JSON.stringify(getConfig('/global/entities', window.defEntities)));
+}
+
+function GetGlobalElements()
+{
+	return getConfig('/global/elements', '');
 }
