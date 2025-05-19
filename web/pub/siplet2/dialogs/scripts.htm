@@ -78,6 +78,7 @@ ${
 			stext.editor.getWrapperElement().style.backgroundColor = stext.style.backgroundColor;
 		};
 		root.scriptfieldchange = function() {
+			if(dd.selectedIndex<0) return;
 			if(!global)
 				window.win = window.currentSiplet;
 			sname.style.backgroundColor = (sname.value.length==0)?RED:'white';
@@ -85,7 +86,6 @@ ${
 			try {
 				new Function(stext.value);
 			} catch(e) {
-				console.log(e);
 				stext.style.backgroundColor = RED;
 			}
 			delete window['win'];
@@ -133,19 +133,19 @@ ${
 			else
 			{
 				var phonebook = getConfig('/phonebook/dial',[]);
-				if((window.currentSiplet.pbentry) 
+				if((window.currentSiplet.pb) 
 				&& (window.currentSiplet.pbwhich) 
 				&& (!window.currentSiplet.pbwhich.startsWith('g')))
 				{
 					var pbindex = Number(window.currentSiplet.pbwhich);
-					var pbentry = phonebook[pbindex];
-					pbentry.scripts = JSON.parse(JSON.stringify(scripts));
-					var found = FindSipletsByPB(pbentry);
+					var pb = phonebook[pbindex];
+					pb.scripts = JSON.parse(JSON.stringify(scripts));
+					var found = FindSipletsByPB(pb);
 					if(!In(window.currentSiplet, found))
 						found.push(window.currentSiplet);
 					for(var i=0;i < found.length;i++)
 					{
-						found[i].pbentry = pbentry;
+						found[i].pb = pb;
 						found[i].scripts = null;
 					}
 					setConfig('/phonebook/dial',phonebook);

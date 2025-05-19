@@ -1,0 +1,31 @@
+<DIV  ID="HELPROOT">
+Actions can be triggered by the user through <a href="javascript:menuHelp('Aliases')">Aliases</a>, 
+through the mud by <a href="javascript:menuHelp('Triggers')">Triggers</a>, 
+or after a time with <a href="javascript:menuHelp('Timers')">Timers</a>.
+<P>
+Each action requires one or more arguments, usually as a string or a variable.
+Strings must begin and end with either a 'single' or "double" quote, and may include
+entities/variables in the form '&amp;varname;'.
+The available actions include:
+<UL>
+<LI>Send Command: Sends a string to the mud to execute.  Aliases are NOT processed.</LI>
+<LI>Display Text: Sends a string to the current window, and may include 
+MXP tags as well as entities/variables.</LI>
+<LI>Play Sound: Downloads the argument wav file and plays it.  The 
+argument may be a full url, or the name of an MSP wav file.</LI>
+<LI>Set Variable: This requires two arguments: an entity name, and its value, with the arguments separated by a comma.</LI>
+<LI>Run Script: Executes the <a href="javascript:menuHelp('Scripts')">Script</a> 
+of the given name.</LI>
+<LI>Enable Trigger: Re-enables a previously disabled <a href="javascript:menuHelp('Triggers')">Trigger</a> 
+of the given name.</LI>
+<LI>Disable Trigger: Disables a <a href="javascript:menuHelp('Triggers')">Trigger</a>
+of the given name.</LI>
+<LI>Start Timer: Starts a <a href="javascript:menuHelp('Timers')">Timer</a>
+of the given name.</LI>
+<LI>Stop Timer: Stops a <a href="javascript:menuHelp('Timers')">Timer</a>
+of the given name from going off, or repeating if it was already triggered.</LI>
+<LI>Send Text to Frame: Two arguments, the first being the text to display in a 
+frame, while the second is the name of the frame. _top is the special name for
+the main frame.</LI>
+</UL>  
+</DIV>

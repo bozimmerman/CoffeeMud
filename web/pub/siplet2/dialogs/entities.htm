@@ -143,9 +143,9 @@ ${
 					{
 						var siplet = window.siplets[i];
 						siplet.mxp.defBitmap = 256; // no override
-						siplet.internalTextProcess(ogmxp);
-						if(siplet.pbentry && siplet.pbentry.elements)
-							siplet.internalTextProcess(siplet.pbentry.elements);
+						siplet.process(ogmxp);
+						if(siplet.pb && siplet.pb.elements)
+							siplet.process(siplet.pb.elements);
 						siplet.mxp.defBitmap = 0; // normal operation
 					}
 				}
@@ -156,42 +156,42 @@ ${
 					{
 						var siplet=window.siplets[i];
 						siplet.mxp.entities = JSON.parse(JSON.stringify(entities));
-						if(siplet.pbentry && siplet.pbentry.entities)
-							for(var k in siplet.pbentry.entities)
-								siplet.mxp.entities[k] = siplet.pbentry.entities[k];
+						if(siplet.pb && siplet.pb.entities)
+							for(var k in siplet.pb.entities)
+								siplet.mxp.entities[k] = siplet.pb.entities[k];
 					}
 				}
 			}
 			else
 			{
 				var phonebook = getConfig('/phonebook/dial',[]);
-				if((window.currentSiplet.pbentry) 
+				if((window.currentSiplet.pb) 
 				&& (window.currentSiplet.pbwhich) 
 				&& (!window.currentSiplet.pbwhich.startsWith('g')))
 				{
 					var pbindex = Number(window.currentSiplet.pbwhich);
-					var pbentry = phonebook[pbindex];
-					var found = FindSipletsByPB(pbentry);
+					var pb = phonebook[pbindex];
+					var found = FindSipletsByPB(pb);
 					if(!In(window.currentSiplet, found))
 						found.push(window.currentSiplet);
 					if(mxpField.value != ogmxp)
 					{
 						ogmxp = mxpField.value;
-						pbentry.elements = ogmxp;
+						pb.elements = ogmxp;
 						for(var i=0;i < found.length;i++)
 						{
 							var siplet=found[i];
 							siplet.mxp.defBitmap = 256; // no override
-							siplet.internalTextProcess(ogmxp);
+							siplet.process(ogmxp);
 							siplet.mxp.defBitmap = 0; // normal operation
 						}
 					}
 					else
 					{
-						pbentry.entities = JSON.parse(JSON.stringify(entities));
+						pb.entities = JSON.parse(JSON.stringify(entities));
 						for(var i=0;i < found.length;i++)
 						{
-							found[i].pbentry = pbentry;
+							found[i].pb = pb;
 							found[i].mxp.entities = GetGlobalEntities();
 							for(var k in entities)
 								found[i].mxp.entities[k] = entities[k];

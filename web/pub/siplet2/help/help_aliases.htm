@@ -1,0 +1,31 @@
+<DIV ID="HELPROOT">
+<h3>Aliases</h3>
+An Alias is a rule that is triggered by submitting text in the 
+<a href="javascript:menuHelp('Input')">Input</a> box to an 
+active and connected mud window.  Such rules can then alter the
+text entered by the user before it is submitted to the mud, and/or
+trigger some special <a href="javascript:menuHelp('Actions')">Action</a>.
+<P>
+Like other editors, you can customize your global Aliases from the 
+Global Options/Aliases menu, or customize the Aliases that apply only 
+to the active mud window's phonebook entry through the Window/Aliases menu.
+<P>
+The top list field in the Aliases editor allows you to either begin adding a new
+alias, or editing or deleting an existing one from the list.  When adding or 
+editing an entry, Red fields will denote those with invalid or missing data. 
+Changes to an Alias will not be submitted so long as a Red field exists. The fields are
+as follows:<BR>
+<UL>
+<LI>Name: The unique name of your Alias.  If a phonebook alias name collides with 
+a global alias name, then the phonebook one will be preferred.</LI>
+<LI>Pattern: The pattern that must match the input text for it to be
+replaced, or action taken.  The pattern may be a 
+<a href="javascript:menuHelp('Regex')">Regular Expression</a> or a simple
+string that matches the beginning of the user input. All alias patterns
+are case-insensitive.</LI>  
+<LI>Replace: The string to replace the pattern with, when matched in user input.  If RegEx is checked,
+then you may use $1, $2, etc to insert text from a capture group.  The matched and replaced
+string is then the one that is submitted to the current connected mud.
+<LI>Action: (Optional) Take an additional <a href="javascript:menuHelp('Actions')">Action</a>.  
+</UL>
+</DIV>

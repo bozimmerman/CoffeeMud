@@ -39,7 +39,7 @@
 		<option value="win.disableTrigger">Disable Trigger</option>
 		<option value="win.startTimer">Start Timer</option>
 		<option value="win.clearTimer">Stop Timer</option>
-		<option value="win.setColor">Set Color</option>
+		<option value="win.displayAt">Send Text to Frame</option>
 	</select>
 	<INPUT id="ALIASAVALUE" type="text"
 		ONCHANGE="var root = document.getElementById('ALIASSROOT'); root.aliasfieldchange(); "
@@ -124,6 +124,7 @@ ${
 			}
 		};
 		root.aliasfieldchange = function() {
+			if(dd.selectedIndex<0) return;
 			if(!global)
 				window.win = window.currentSiplet;
 			aname.style.backgroundColor = (aname.value.length==0)?RED:'white';
@@ -202,19 +203,19 @@ ${
 			else
 			{
 				var phonebook = getConfig('/phonebook/dial',[]);
-				if((window.currentSiplet.pbentry) 
+				if((window.currentSiplet.pb) 
 				&& (window.currentSiplet.pbwhich) 
 				&& (!window.currentSiplet.pbwhich.startsWith('g')))
 				{
 					var pbindex = Number(window.currentSiplet.pbwhich);
-					var pbentry = phonebook[pbindex];
-					pbentry.aliases = JSON.parse(JSON.stringify(aliases));
-					var found = FindSipletsByPB(pbentry);
+					var pb = phonebook[pbindex];
+					pb.aliases = JSON.parse(JSON.stringify(aliases));
+					var found = FindSipletsByPB(pb);
 					if(!In(window.currentSiplet, found))
 						found.push(window.currentSiplet);
 					for(var i=0;i < found.length;i++)
 					{
-						found[i].pbentry = pbentry;
+						found[i].pb = pb;
 						found[i].aliases = null;
 					}
 					setConfig('/phonebook/dial',phonebook);

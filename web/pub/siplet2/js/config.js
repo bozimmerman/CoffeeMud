@@ -18,35 +18,35 @@ window.defEntities = {
 window.defTriggers = [
 	{
 		name: "Phonebook Account Name",
-		allowed: 'win.pbentry && win.pbentry.account',
+		allowed: 'win.pb && win.pb.account',
 		regex: true,
 		once: true,
 		pattern: 'Account name:(?![\\s\\S]*\\n)',
-		action: 'win.submitInput(win.pbentry.accountName)'
+		action: 'win.submitInput(win.pb.accountName)'
 	},
 	{
 		name: "Phonebook Account Character",
-		allowed: 'win.pbentry && win.pbentry.account && win.pbentry.user',
+		allowed: 'win.pb && win.pb.account && win.pb.user',
 		regex: true,
 		once: true,
 		pattern: 'Command or Name \\(\\?\\):(?!\\[\\s\\S\\]*\\n)',
-		action: 'win.submitInput(win.pbentry.user)'
+		action: 'win.submitInput(win.pb.user)'
 	},
 	{
 		name: "Phonebook Character",
-		allowed: 'win.pbentry && !win.pbentry.account && win.pbentry.user',
+		allowed: 'win.pb && !win.pb.account && win.pb.user',
 		regex: true,
 		once: true,
 		pattern: 'name:(?!\\[\\s\\S\\]*\\n)',
-		action: 'win.submitInput(win.pbentry.user)'
+		action: 'win.submitInput(win.pb.user)'
 	},
 	{
 		name: "Phonebook Password",
-		allowed: 'win.pbentry',
+		allowed: 'win.pb',
 		regex: true,
 		once: true,
 		pattern: 'Password:(?![\\s\\S]*\\n)',
-		action: 'win.submitInput(win.pbentry.password)'
+		action: 'win.submitInput(win.pb.password)'
 	}
 ];
 
@@ -159,7 +159,7 @@ function ParseTriggers(baseTriggers)
 			trigCopy["prev"]=0;
 			trigCopy["disabled"]=false;
 			if ((trigCopy.regex) && (typeof trigCopy.pattern === 'string')) {
-				trigCopy.pattern = new RegExp(trigCopy.pattern,'g');
+				trigCopy.pattern = new RegExp(trigCopy.pattern,'gi');
 			}
 			triggers.push(trigCopy);
 		}
@@ -178,7 +178,7 @@ function ParseAliases(baseAliases)
 			var rawAliases=baseAliases[i];
 			var aliasCopy = JSON.parse(JSON.stringify(rawAliases));
 			if ((aliasCopy.regex) && (typeof aliasCopy.pattern === 'string')) {
-				aliasCopy.pattern = new RegExp(aliasCopy.pattern,'g');
+				aliasCopy.pattern = new RegExp(aliasCopy.pattern,'gi');
 			}
 			aliases.push(aliasCopy);
 		}

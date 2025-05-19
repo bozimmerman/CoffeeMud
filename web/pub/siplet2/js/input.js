@@ -30,7 +30,10 @@ function inputSubmit(x)
         inputbacklog.push(x);
         inputbacklogindex=inputbacklog.length;
     }
-    window.currentSiplet.submitInput(x);
+    if(window.currentSiplet)
+        window.currentSiplet.submitInput(x);
+    else
+        window.alert("You need to connect first!");
 }
 
 function inputKeyPress(e)

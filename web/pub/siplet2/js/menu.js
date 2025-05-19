@@ -10,19 +10,19 @@ var menuData = [
 		 "a":"javascript:menuConnect();",
 		 "e":""},
 		{"n":"Triggers",
-		 "e":"window.currentSiplet!=null && window.currentSiplet.pbentry && window.currentSiplet.pbentry.user",
+		 "e":"window.currentSiplet!=null && window.currentSiplet.pb && window.currentSiplet.pb.user",
 		 "a":"javascript:menuTriggers('local');"},
 		{"n":"Aliases",
-		 "e":"window.currentSiplet!=null && window.currentSiplet.pbentry && window.currentSiplet.pbentry.user",
+		 "e":"window.currentSiplet!=null && window.currentSiplet.pb && window.currentSiplet.pb.user",
 		 "a":"javascript:menuAliases('local');"},
 		{"n":"Scripts",
-		 "e":"window.currentSiplet!=null && window.currentSiplet.pbentry && window.currentSiplet.pbentry.user",
+		 "e":"window.currentSiplet!=null && window.currentSiplet.pb && window.currentSiplet.pb.user",
 		 "a":"javascript:menuScripts('local');"},
 		{"n":"Timers",
-		 "e":"window.currentSiplet!=null && window.currentSiplet.pbentry && window.currentSiplet.pbentry.user",
+		 "e":"window.currentSiplet!=null && window.currentSiplet.pb && window.currentSiplet.pb.user",
 		 "a":"javascript:menuTimers('local');"},
 		{"n":"Entities",
-		 "e":"window.currentSiplet!=null && window.currentSiplet.pbentry && window.currentSiplet.pbentry.user",
+		 "e":"window.currentSiplet!=null && window.currentSiplet.pb && window.currentSiplet.pb.user",
 		 "a":"javascript:menuEntities('local');"},
 		{"n":"Disconnect",
 		 "e":"window.currentSiplet!=null && window.currentSiplet.wsopened",
@@ -46,7 +46,21 @@ var menuData = [
 		 "a":"javascript:menuEntities('global');"}
 	]},
 	{"Help": [
-		{"n":"About","a":"javascript:menuAbout()"}
+		{"n":"About","a":"javascript:menuAbout()"},
+		{"n":"Input",
+		 "a":"javascript:menuHelp('Input');"},
+		{"n":"Windows",
+		 "a":"javascript:menuHelp('Windows');"},
+		{"n":"Triggers",
+		 "a":"javascript:menuHelp('Triggers');"},
+		{"n":"Aliases",
+		 "a":"javascript:menuHelp('Aliases');"},
+		{"n":"Scripts",
+		 "a":"javascript:menuHelp('Scripts');"},
+		{"n":"Timers",
+		 "a":"javascript:menuHelp('Timers');"},
+		{"n":"Entities",
+		 "a":"javascript:menuHelp('Entities');"}
 	]}
 ];
 
@@ -197,12 +211,12 @@ function menuConnect()
 function menuTriggers(value)
 {
 	var which = 'Global';
-	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
-		which = window.currentSiplet.pbentry.name;
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pb))
+		which = window.currentSiplet.pb.name;
 	var content = getOptionWindow(which + " Triggers",60,40);
 	content.which = value;
 	content.triggers = getConfig('/global/triggers', window.defTriggers); // dont parse them
-	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pb))
 		content.triggers = window.currentSiplet.localTriggers();
 	populateDivFromUrl(content, 'dialogs/triggers.htm');
 }
@@ -210,12 +224,12 @@ function menuTriggers(value)
 function menuAliases(value)
 {
 	var which = 'Global';
-	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
-		which = window.currentSiplet.pbentry.name;
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pb))
+		which = window.currentSiplet.pb.name;
 	var content = getOptionWindow(which + " Aliases",60,40);
 	content.which = value;
 	content.aliases = getConfig('/global/aliases', window.defAliases); // dont parse them
-	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pb))
 		content.aliases = window.currentSiplet.localAliases();
 	populateDivFromUrl(content, 'dialogs/aliases.htm');
 }
@@ -223,12 +237,12 @@ function menuAliases(value)
 function menuScripts(value)
 {
 	var which = 'Global';
-	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
-		which = window.currentSiplet.pbentry.name;
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pb))
+		which = window.currentSiplet.pb.name;
 	var content = getOptionWindow(which + " Scripts",60,40);
 	content.which = value;
 	content.scripts = getConfig('/global/scripts', window.defScripts); // dont parse them
-	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pb))
 		content.scripts = window.currentSiplet.localScripts();
 	populateDivFromUrl(content, 'dialogs/scripts.htm');
 }
@@ -236,12 +250,12 @@ function menuScripts(value)
 function menuTimers(value)
 {
 	var which = 'Global';
-	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
-		which = window.currentSiplet.pbentry.name;
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pb))
+		which = window.currentSiplet.pb.name;
 	var content = getOptionWindow(which + " Timers",60,40);
 	content.which = value;
 	content.timers = getConfig('/global/timers', window.defTimers); // dont parse them
-	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pb))
 		content.timers = window.currentSiplet.localTimers();
 	populateDivFromUrl(content, 'dialogs/timers.htm');
 }
@@ -249,16 +263,33 @@ function menuTimers(value)
 function menuEntities(value)
 {
 	var which = 'Global';
-	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
-		which = window.currentSiplet.pbentry.name;
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pb))
+		which = window.currentSiplet.pb.name;
 	var content = getOptionWindow(which + " Entities (Variables)",60,40);
 	content.which = value;
 	content.entities = getConfig('/global/entities', window.defEntities); // dont parse them
-	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pb))
 		content.entities = window.currentSiplet.mxp.entities;
 	content.mxp = getConfig('/global/elements', '');
-	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pbentry))
-		content.mxp = window.currentSiplet.pbentry.elements?window.currentSiplet.pbentry.elements:'';
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pb))
+		content.mxp = window.currentSiplet.pb.elements?window.currentSiplet.pb.elements:'';
 	populateDivFromUrl(content, 'dialogs/entities.htm');
+}
+
+function menuHelp(f)
+{
+	var content = getOptionWindow("Help "+f,60,40);
+	f = 'help_' + f.toLowerCase() + '.htm';
+	populateDivFromUrl(content, 'help/'+f,function(){
+		content.lastElementChild.style.cssText = 
+			"background-color:black;"
+			+"position:absolute;"
+			+"color:white;"
+			+"font-size:16;"
+			+"overflowX:auto;"
+			+"overflowY:auto;"
+			+"min-height:100%;"
+			+"height: auto;";
+	});
 }
 

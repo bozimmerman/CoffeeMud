@@ -38,7 +38,7 @@
 		<option value="win.disableTrigger">Disable Trigger</option>
 		<option value="win.startTimer">Start Timer</option>
 		<option value="win.clearTimer">Stop Timer</option>
-		<option value="win.setColor">Set Color</option>
+		<option value="win.displayAt">Send Text to Frame</option>
 	</select>
 	<INPUT id="TRIGGERAVALUE" type="text"
 		ONCHANGE="var root = document.getElementById('TRIGGERSROOT'); root.triggerfieldchange(); "
@@ -127,6 +127,7 @@ ${
 			}
 		};
 		root.triggerfieldchange = function() {
+			if(dd.selectedIndex<0) return;
 			if(!global)
 				window.win = window.currentSiplet;
 			tname.style.backgroundColor = (tname.value.length==0)?RED:'white';
@@ -193,6 +194,7 @@ ${
 				trig.once= truno.checked;
 				trig.pattern= tpatt.value;
 				trig.action= fact;
+				delete trig.disabled;
 				dd.options[dd.selectedIndex].text = trig.name;
 			}
 			root.modifytriggers();
@@ -209,19 +211,19 @@ ${
 			else
 			{
 				var phonebook = getConfig('/phonebook/dial',[]);
-				if((window.currentSiplet.pbentry) 
+				if((window.currentSiplet.pb) 
 				&& (window.currentSiplet.pbwhich) 
 				&& (!window.currentSiplet.pbwhich.startsWith('g')))
 				{
 					var pbindex = Number(window.currentSiplet.pbwhich);
-					var pbentry = phonebook[pbindex];
-					pbentry.triggers = JSON.parse(JSON.stringify(triggers));
-					var found = FindSipletsByPB(pbentry);
+					var pb = phonebook[pbindex];
+					pb.triggers = JSON.parse(JSON.stringify(triggers));
+					var found = FindSipletsByPB(pb);
 					if(!In(window.currentSiplet, found))
 						found.push(window.currentSiplet);
 					for(var i=0;i < found.length;i++)
 					{
-						found[i].pbentry = pbentry;
+						found[i].pb = pb;
 						found[i].triggers = null;
 					}
 					setConfig('/phonebook/dial',phonebook);

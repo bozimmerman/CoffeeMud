@@ -1,5 +1,4 @@
 window.currentSiplet = null;
-window.nextSipletSpanId = 0;
 window.siplets = [];
 window.windowArea = null;
 
@@ -99,7 +98,7 @@ function SipletWindow(windowName)
 		this.reset();
 	};
 	
-	this.internalTextProcess = function(s)
+	this.process = function(s)
 	{
 		if(!s) return s;
 		var oldResume = this.text.resume;
@@ -116,9 +115,9 @@ function SipletWindow(windowName)
 		this.mxp.defBitmap = 256; // no override
 		var oldActive = this.mxp.active;
 		this.mxp.active = function() { return true; };
-		this.internalTextProcess(GetGlobalElements());
-		if(this.pbentry && this.pbentry.elements)
-			this.internalTextProcess(this.pbentry.elements);
+		this.process(GetGlobalElements());
+		if(this.pb && this.pb.elements)
+			this.process(this.pb.elements);
 		this.mxp.active = oldActive;
 		this.mxp.defBitmap = 0; // normal operation
 	};
@@ -261,8 +260,7 @@ function SipletWindow(windowName)
 		for(var i=0;i<triggers.length;i++)
 		{
 			var trig = triggers[i];
-			if((!trig.once || trig.prev==0) 
-			&& eval(trig.allowed) && trig.pattern
+			if(eval(trig.allowed) && trig.pattern
 			&& (!trig.disabled))
 			{
 				var prev = trig.prev - this.textBufferPruneIndex;
@@ -278,6 +276,8 @@ function SipletWindow(windowName)
 						var action = this.fixVariables(trig.action.replaceAll('\\n','\n'));
 						try { eval(action); } catch(e) {};
 						match = trig.pattern.exec(this.textBuffer);
+						if(trig.once)
+							trig.disabled=true;
 					}
 				}
 				else
@@ -289,6 +289,8 @@ function SipletWindow(windowName)
 						trig.prev = this.textBufferPruneIndex + x + trig.pattern.length + 1;
 						var action = this.fixVariables(trig.action.replaceAll('\\n','\n'));
 						try { eval(action); } catch(e) {};
+						if(trig.once)
+							trig.disabled=true;
 						x = this.textBuffer.indexOf(trig.pattern,prev);
 					}
 				}
@@ -300,14 +302,14 @@ function SipletWindow(windowName)
 	{
 		if(this.triggers == null)
 		{
-			if((!this.pbentry)
-			||(!this.pbentry.triggers)
-			||(!Array.isArray(this.pbentry.triggers)))
+			if((!this.pb)
+			||(!this.pb.triggers)
+			||(!Array.isArray(this.pb.triggers)))
 			{
 				this.triggers=[];
 				return [];
 			}
-			this.triggers = ParseTriggers(this.pbentry.triggers);
+			this.triggers = ParseTriggers(this.pb.triggers);
 		}
 		return this.triggers;
 	};
@@ -361,14 +363,14 @@ function SipletWindow(windowName)
 	{
 		if(this.aliases == null)
 		{
-			if((!this.pbentry)
-			||(!this.pbentry.aliases)
-			||(!Array.isArray(this.pbentry.aliases)))
+			if((!this.pb)
+			||(!this.pb.aliases)
+			||(!Array.isArray(this.pb.aliases)))
 			{
 				this.aliases=[];
 				return [];
 			}
-			this.aliases = ParseAliases(this.pbentry.aliases);
+			this.aliases = ParseAliases(this.pb.aliases);
 		}
 		return this.aliases;
 	};
@@ -377,14 +379,14 @@ function SipletWindow(windowName)
 	{
 		if(this.scripts == null)
 		{
-			if((!this.pbentry)
-			||(!this.pbentry.scripts)
-			||(!Array.isArray(this.pbentry.scripts)))
+			if((!this.pb)
+			||(!this.pb.scripts)
+			||(!Array.isArray(this.pb.scripts)))
 			{
 				this.scripts=[];
 				return [];
 			}
-			this.scripts = this.pbentry.scripts;
+			this.scripts = this.pb.scripts;
 		}
 		return this.scripts;
 	};
@@ -393,14 +395,14 @@ function SipletWindow(windowName)
 	{
 		if(this.timers == null)
 		{
-			if((!this.pbentry)
-			||(!this.pbentry.timers)
-			||(!Array.isArray(this.pbentry.timers)))
+			if((!this.pb)
+			||(!this.pb.timers)
+			||(!Array.isArray(this.pb.timers)))
 			{
 				this.timers=[];
 				return [];
 			}
-			this.timers = this.pbentry.timers;
+			this.timers = this.pb.timers;
 		}
 		return this.timers;
 	};
@@ -633,7 +635,7 @@ function SipletWindow(windowName)
 	
 	this.displayText = function(value)
 	{
-		value = me.internalTextProcess(value);
+		value = me.process(value);
 		if(value.length > 0)
 		{
 			var span = document.createElement('span');
@@ -642,7 +644,23 @@ function SipletWindow(windowName)
 			this.window.scrollTop = this.window.scrollHeight - this.window.clientHeight;
 		}
 	};
-	
+
+	this.displayAt = function(value, frame)
+	{
+		var framechoices = mxp.getFrameMap();
+		if(!(frame in framechoices))
+			return;
+		var frame = framechoices[frame];
+		if(frame.firstChild)
+			frame = frame.firstChild;
+		var oldWindow = this.window;
+		this.flushWindow();
+		this.window=frame;
+		this.displayText(value);
+		this.flushWindow();
+		this.window=oldWindow;
+	};
+
 	this.playSound = function(file)
 	{
 		if(!file)
@@ -657,7 +675,7 @@ function SipletWindow(windowName)
 		}
 		else
 		{
-			url = window.location.protocol + '//' + window.location.host + '/images/';
+			url = window.location.protocol + '//' + window.location.host + '/sounds/';
 			key = file;
 		}
 		this.msp.PlaySound(key,url,0,50,50);
@@ -665,7 +683,7 @@ function SipletWindow(windowName)
 
 	this.setVariable = function(key, value)
 	{
-		this.mxp.entities[key] = value;
+		this.mxp.entities[this.fixVariables(key)] = this.fixVariables(value);
 	};
 	
 	this.getVariable = function(key)
@@ -799,7 +817,7 @@ function AddNewSipletTabByPB(which)
 		siplet.tabTitle = pb.name + '('+pb.port+')';
 	else
 		siplet.tabTitle = pb.user + '@' + pb.name + ' ('+pb.port+')';
-	siplet.pbentry = pb;
+	siplet.pb = pb;
 	siplet.pbwhich = ogwhich;
 }
 
@@ -884,7 +902,7 @@ function FindSipletsByPB(pb)
 	for(var i=0;i<window.siplets.length;i++)
 	{
 		var siplet = window.siplets[i];
-		var p = siplet.pbentry;
+		var p = siplet.pb;
 		if(PBSameAs(pb,p))
 			found.push(siplet);
 	}
@@ -908,7 +926,7 @@ function UpdateSipetTabsByPBIndex(which)
 			siplet.tabTitle = pb.user + '@' + pb.name + ' ('+pb.port+')';
 			if(siplet.tab)
 				siplet.tab.innerHTML = siplet.tabTitle;
-			siplet.pbentry = pb;
+			siplet.pb = pb;
 			if(siplet.triggers != null)
 				siplet.triggers = null;
 		}

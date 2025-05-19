@@ -136,7 +136,7 @@ function setRadioValue(radio, value)
 		radio[i].checked = radio[i].value == value;
 }
 
-function populateDivFromUrl(div, url) 
+function populateDivFromUrl(div, url, callback) 
 {
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', url, true);
@@ -165,6 +165,8 @@ function populateDivFromUrl(div, url)
 				x = txt.indexOf('${',x+1);
 			}
 			div.innerHTML = txt;
+			if(callback !== undefined && callback)
+				callback();
 		}
 	};
 	xhr.onerror = function() { div.innerHTML = 'Failed'; };

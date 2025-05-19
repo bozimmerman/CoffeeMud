@@ -1,0 +1,34 @@
+<DIV ID="HELPROOT">
+<h3>Triggers</h3>
+An Trigger is a rule that is triggered by matching the text that comes from 
+a mud and appears in a connected window.  Matching rules can then 
+trigger some special <a href="javascript:menuHelp('Actions')">Action</a>.
+<P>
+Like other editors, you can customize your global Triggers from the 
+Global Options/Triggers menu, or customize the Triggers that apply only 
+to the active mud window's phonebook entry through the Window/Triggers menu.
+<P>
+The top list field in the Triggers editor allows you to either begin adding a new
+trigger, or editing or deleting an existing one from the list.  When adding or 
+editing an entry, Red fields will denote those with invalid or missing data. 
+Changes to an Trigger will not be submitted so long as a Red field exists. The fields are
+as follows:<BR>
+<UL>
+<LI>Name: The unique name of your Trigger.  If a phonebook trigger name collides with 
+a global trigger name, then the phonebook one will be preferred.</LI>
+<LI>Pattern: The pattern that must match the plain mud text for the 
+action to be taken.  The pattern may be a 
+<a href="javascript:menuHelp('Regex')">Regular Expression</a> or a simple
+string that matches the the mud output. All trigger patterns
+are case-insensitive.</LI>
+<LI>Run Once: When checked, a trigger will only run its action one time, and then disable it.  
+<LI>Action: The <a href="javascript:menuHelp('Actions')">Action</a> to take when the trigger matches.  
+<LI>Allowed: A special javascript expression that must evaluate to true before this 
+match will even be attempted, with the purpose being to establish that the window is in a 
+proper state to match the trigger. Putting <pre>win.isConnected()</pre> is default, and simply makes
+sure that the connection for the current window is active.  Other useful values include
+<pre>win.pb && win.pb.user</pre> to only apply to windows tied to a full 
+phonebook entry.  See help on <a href="javascript:menuHelp('Scripts')">Scripts</a> for
+more information.
+</UL>
+</DIV>

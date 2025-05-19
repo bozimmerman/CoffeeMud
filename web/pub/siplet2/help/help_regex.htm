@@ -1,0 +1,27 @@
+<DIV  ID="HELPROOT">
+Regular Expressions (Regex) are a special syntax for identifying one string
+of characters and/or numbers inside of a larger string.  The special syntax
+for regular expressions is as follows:
+<TABLE WIDTH=100% BORDER=1 STYLE="color:white;">
+<TR><TD>Char</TD><TD>Description</TD></TR>
+<TR><TD>^</TD><TD>Start of Input</TD></TR>
+<TR><TD>a,b</TD><TD>Matches exact character</TD></TR>
+<TR><TD>.</TD><TD>Matches any one character</TD></TR>
+<TR><TD>\d</TD><TD>Matches any digit (\D not)</TD></TR>
+<TR><TD>\w</TD><TD>Matches any letter (\W not)</TD></TR>
+<TR><TD>\s</TD><TD>Matches whitespace char (\S not)</TD></TR>
+<TR><TD>\b</TD><TD>Word Boundary (\B not)</TD></TR>
+<TR><TD>\</TD><TD>Matches next exact char (escape)</TD></TR>
+<TR><TD>[...]</TD><TD>Matches a character from a set</TD></TR>
+<TR><TD>[^...]</TD><TD>Matches a character not in set</TD></TR>
+<TR><TD>(...)</TD><TD>Creates a "capture group"</TD></TR>
+<TR><TD>(?:...)</TD><TD>Non-"capture" group</TD></TR>
+<TR><TD>\1, \2</TD><TD>Matches a prev "capture group"</TD></TR>
+<TR><TD>(?=...)</TD><TD>Look ahead (?! not)</TD></TR>
+<TR><TD>(?&lt;...)</TD><TD>Look behind (?! not)</TD></TR>
+<TR><TD>*</TD><TD>Matches prev 0 or more times</TD></TR>
+<TR><TD>+</TD><TD>Matches prev 1 or more times</TD></TR>
+<TR><TD>{n}</TD><TD>Matches prev n times</TD></TR>
+<TR><TD>{x,y}</TD><TD>Matches prev x-y times</TD></TR>
+</TABLE>
+</DIV>

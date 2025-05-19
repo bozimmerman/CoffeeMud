@@ -1,0 +1,70 @@
+<DIV ID="HELPROOT">
+<h3>Scripts</h3>
+An Script is a named bit of free-form javascript code that can be triggered
+by an <a href="javascript:menuHelp('Actions')">Action</a> taken by a Trigger,
+Timer, or Alias. 
+<P>
+Like other editors, you can customize your global Scripts from the 
+Global Options/Scripts menu, or customize the Scripts that apply only 
+to the active mud window's phonebook entry through the Window/Scripts menu.
+<P>
+The top list field in the Scripts editor allows you to either begin adding a new
+script, or editing or deleting an existing one from the list.  When adding or 
+editing an entry, Red fields will denote those with invalid or missing data. 
+Changes to an Script will not be submitted so long as a Red field exists. The fields are
+as follows:<BR>
+<UL>
+<LI>Name: The unique name of your Script.  If a phonebook script name collides with 
+a global script name, then the phonebook one will be preferred.</LI>
+<LI>Script: The Javascript to execute.  Entities/Variables may be included in strings
+in scripts in the form '&amp;varname;'.</LI>
+</UL>
+<h3>Useful Variables</h3>
+<table border=1 style="color:white">
+<thead>
+<tr><td>Variable</td><td>Description</td></tr>
+</thead>
+<tbody style="font-size:12px;color:white;">
+<tr><td style="font-family:monospace;">window.siplets</td><td>Array of all window managers</td></tr>
+<tr><td style="font-family:monospace;">win</td><td>Current active window manager</td></tr>
+<tr><td style="font-family:monospace;">window.currentSiplet</td><td>Current active window manager</td></tr>
+<tr><td style="font-family:monospace;">win.pb</td><td>Phonebook or connection info</td></tr>
+<tr><td style="font-family:monospace;">win.pb.account</td><td>True if accounts are used</td></tr>
+<tr><td style="font-family:monospace;">win.pb.name</td><td>Mud name</td></tr>
+<tr><td style="font-family:monospace;">win.pb.port</td><td>Mud port</td></tr>
+<tr><td style="font-family:monospace;">win.pb.accountName</td><td>Account name  (Phonebook only</td></tr>
+<tr><td style="font-family:monospace;">win.pb.user</td><td>Character name (Phonebook only)</td></tr>
+<tr><td style="font-family:monospace;">win.pb.password</td><td>Password (Phonebook only</td></tr>
+<tr><td style="font-family:monospace;">win.MSPsupport</td><td>Whether MSP is active</td></tr>
+<tr><td style="font-family:monospace;">win.MSDPsupport</td><td>Whether MSDP is active</td></tr>
+<tr><td style="font-family:monospace;">win.GMCPsupport</td><td>Whether GMCP is active</td></tr>
+<tr><td style="font-family:monospace;">win.MXPsupport</td><td>Whether MXP is active</td></tr>
+<tr><td style="font-family:monospace;">win.MCCPsupport</td><td>Whether MCCP is active</td></tr>
+<tr><td style="font-family:monospace;">win.wsopened</td><td>Whether connection is active</td></tr>
+<tr><td style="font-family:monospace;">win.windowName</td><td>Window/Connection name</td></tr>
+<tr><td style="font-family:monospace;">win.topContiner.firstChild</td><td>DIV of top/first window</td></tr>
+<tr><td style="font-family:monospace;">win.window</td><td>DIV of current/active frame</td></tr>
+</tbody>
+</table>
+<h3>Useful Variables</h3>
+<table border=1 style="color:white">
+<thead>
+<tr><td>Variable</td><td>Description</td></tr>
+</thead>
+<tbody style="font-size:12px;color:white;">
+<tr><td style="font-family:monospace;">win.mxp.getFrameMap()</td><td>Map string-&gt;div of frames</td></tr>
+<tr><td style="font-family:monospace;">win.process(str)</td><td>Process MXP/Entities without display</td></tr>
+<tr><td style="font-family:monospace;">win.submitInput(str)</td><td>Submit command to the mud</td></tr>
+<tr><td style="font-family:monospace;">win.displayText(str)</td><td>Display Text in active window</td></tr>
+<tr><td style="font-family:monospace;">win.playSound(str)</td><td>Play wav file named or url str</td></tr>
+<tr><td style="font-family:monospace;">win.setVariable(str,str)</td><td>Set variable/entity key to value</td></tr>
+<tr><td style="font-family:monospace;">win.getVariable(str)</td><td>Get variable/entity value</td></tr>
+<tr><td style="font-family:monospace;">win.runScript(str)</td><td>Run script by name</td></tr>
+<tr><td style="font-family:monospace;">win.enableTrigger(str)</td><td>Enable Trigger</td></tr>
+<tr><td style="font-family:monospace;">win.disableTrigger(str)</td><td>Disable Trigger</td></tr>
+<tr><td style="font-family:monospace;">win.isConnected()</td><td>Whether connection is active</td></tr>
+<tr><td style="font-family:monospace;">win.displayAt(str,str)</td><td>Display string in MXP frame str(2)</td></tr>
+</tbody>
+</table>
+
+</DIV>

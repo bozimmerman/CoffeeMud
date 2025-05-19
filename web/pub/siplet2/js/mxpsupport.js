@@ -381,9 +381,9 @@ var MXP = function(sipwin)
 	{
 		this.elements = window.defElements;
 		this.entities = GetGlobalEntities();
-		if(sipwin.pbentry && sipwin.pbentry.entities)
-			for(var k in sipwin.pbentry.entities)
-				this.entities[k] = sipwin.pbentry.entities[k];
+		if(sipwin.pb && sipwin.pb.entities)
+			for(var k in sipwin.pb.entities)
+				this.entities[k] = sipwin.pb.entities[k];
 		this.dests = [];
 		this.defaultMode = MXPMODE.LINE_OPEN; // actually changes!
 		this.mode = 0;
@@ -1091,11 +1091,11 @@ var MXP = function(sipwin)
 	{
 		var framechoices = Object.assign({}, this.frames);
 		if(this.dests.length == 1) 
-			framechoices['_previous'] = sipwin.topWindow;
+			framechoices['_previous'] = sipwin.topContainer.firstChild;
 		else
 		if(this.dests.length > 1) 
 			framechoices['_previous'] = this.dests[this.dests.length-2];
-		framechoices['_top'] = sipwin.topWindow;
+		framechoices['_top'] = sipwin.topContainer.firstChild;
 		return framechoices;
 	};
 	
