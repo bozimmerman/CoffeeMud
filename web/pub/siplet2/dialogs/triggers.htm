@@ -6,6 +6,7 @@
 		>
 		<OPTION VALUE="-1">Add New Trigger
 		</SELECT>
+		<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Triggers')">
 </TD></TR>
 <TR><TD COLSPAN=2>&nbsp;</TD>
 <TR><TD WIDTH=20%>Name:</TD><TD>
@@ -19,6 +20,7 @@
 	<TEXTAREA id="TRIGGERPATTERN"
 		ONCHANGE="var root = document.getElementById('TRIGGERSROOT'); root.triggerfieldchange(); "
 	ROWS=2 STYLE="width:300px;"></TEXTAREA>
+	<IMG SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Regex')">
 </TD></TR>
 <TR><TD>Run Once:</TD><TD>
 	<INPUT id="TRIGGERRUNONCE" type="checkbox"
@@ -38,11 +40,11 @@
 		<option value="win.disableTrigger">Disable Trigger</option>
 		<option value="win.startTimer">Start Timer</option>
 		<option value="win.clearTimer">Stop Timer</option>
-		<option value="win.displayAt">Send Text to Frame</option>
+		<option value="win.displayAt">Send to Frame</option>
 	</select>
 	<INPUT id="TRIGGERAVALUE" type="text"
 		ONCHANGE="var root = document.getElementById('TRIGGERSROOT'); root.triggerfieldchange(); "
-	>
+	><IMG SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Actions')">
 </TD></TR>
 <TR><TD>Allowed:</TD><TD>
 	<INPUT id="TRIGGERALLOWED" type="text" placeholder="e.g., win.isConnected()" style="width:300px;"

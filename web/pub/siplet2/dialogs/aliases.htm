@@ -6,6 +6,7 @@
 		>
 		<OPTION VALUE="-1">Add New Alias
 		</SELECT>
+		<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Aliases')">
 </TD></TR>
 <TR><TD COLSPAN=2>&nbsp;</TD>
 <TR><TD WIDTH=20%>Name:</TD><TD>
@@ -19,6 +20,7 @@
 	<TEXTAREA id="ALIASPATTERN"
 		ONCHANGE="var root = document.getElementById('ALIASSROOT'); root.aliasfieldchange(); "
 	ROWS=2 STYLE="width:300px;"></TEXTAREA>
+	<IMG SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Regex')">
 </TD></TR>
 <TR><TD>Replace:</TD><TD>
 	<INPUT id="ALIASREPLACE" type="text" STYLE="width:300px" 
@@ -39,11 +41,11 @@
 		<option value="win.disableTrigger">Disable Trigger</option>
 		<option value="win.startTimer">Start Timer</option>
 		<option value="win.clearTimer">Stop Timer</option>
-		<option value="win.displayAt">Send Text to Frame</option>
+		<option value="win.displayAt">Send to Frame</option>
 	</select>
 	<INPUT id="ALIASAVALUE" type="text"
 		ONCHANGE="var root = document.getElementById('ALIASSROOT'); root.aliasfieldchange(); "
-	>
+	><IMG SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Actions')">
 </TD></TR>
 <TR><TD colspan="2">
 	<a ID="ALIASDELETE" href="javascript:document.getElementById('ALIASSROOT').trydelalias();">

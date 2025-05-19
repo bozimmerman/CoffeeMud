@@ -25,16 +25,18 @@ function dropdownmenu(obj, e, href, hint, prompt, x,y,width) {
 	var menucontents = getCtxMenu(obj, href, hint, prompt);
 	var menu = document.createElement("div");
 	menu.id = "ctxmenu"
-	menu.style = "top:" + y+"px;"
-			   + "left:" + x+"px;"
-			   + "width:" + width+"px;"
-			   + "font-family: monospace;"
-			   + "font-size: 12px;"
-			   + "position: fixed;"
-			   + "background: darkgray;"
-			   + "color: black;"
-			   + "cursor: pointer;"
-			   + "border: 1px black solid";
+	menu.style.cssText = "top:" + y+"px;"
+					   + "left:" + x+"px;"
+					   + "width:" + width+"px;"
+					   + "font-family: monospace;"
+					   + "font-size: 12px;"
+					   + "position: fixed;"
+					   + "background: darkgray;"
+					   + "color: black;"
+					   + "cursor: pointer;"
+					   + "z-order: 999;"
+					   + "z-index: 999;"
+					   + "border: 1px black solid";
 	menu.onmouseleave = delayhidemenu;
 	menu.onclick = delayhidemenu;
 	var pstyle = "<p style=\"padding: 0 1rem; margin: 0;\">";
@@ -124,3 +126,22 @@ function getCtxMenu(titleSet,menu,hints,prompt)
     return mmenu;
 }
 
+function contextHelp(obj, e,title)
+{
+	nowhidemenu();
+	var content = dropdownmenu(obj, e, '', '', '', 0, 20, 400)
+	var f = 'help_' + title.toLowerCase() + '.htm';
+	content.style.height = '400px';
+	populateDivFromUrl(content, 'help/'+f,function(){
+		content.lastElementChild.style.cssText = 
+			"background-color:black;"
+			+"position:absolute;"
+			+"color:white;"
+			+"font-size:14;"
+			+"overflow-x:auto;"
+			+"overflow-y:auto;"
+			+"overflow:auto;"
+			+"height: 400px;";
+	});
+	
+}
