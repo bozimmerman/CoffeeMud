@@ -302,7 +302,39 @@ function menuEntities(value)
 
 function menuHelp(f)
 {
-	var content = getOptionWindow("Help "+f,60,40);
+	var addBack = '';
+	if((window.menuWindow != null)
+	&&(window.menuWindow.style.visibility == 'visible'))
+	{
+		var titleBar = menuWindow.getElementsByTagName('div')[0];
+		var x = titleBar.innerHTML.indexOf('Help ');
+		if(x > 0)
+		{
+			var y = titleBar.innerHTML.indexOf("<",x+1);
+			if(y>x)
+			{
+				addBack = titleBar.innerHTML.substr(x+5,y-(x+5))+'/';
+				while(addBack.endsWith(f+'/'))
+					addBack = addBack.substr(0,addBack.length-(f.length+1));
+			}
+		}
+	}
+	if((f == '<')&&(addBack != ''))
+	{
+		var parts = addBack.substr(0,addBack.length-1).split('/');
+		if(parts.length > 1)
+		{
+			f=parts[parts.length-2];
+			parts.splice(parts.length-2,2);
+			addBack=parts.length>0?(parts.join('/')+'/'):'';
+		}
+		else
+		{
+			f=parts[0];
+			addBack='';
+		}
+	}
+	var content = getOptionWindow("Help "+addBack+f,60,40);
 	f = 'help_' + f.toLowerCase() + '.htm';
 	populateDivFromUrl(content, 'help/'+f,function(){
 		content.lastElementChild.style.cssText = 
@@ -315,6 +347,14 @@ function menuHelp(f)
 			+"min-height:100%;"
 			+"width:100%;"
 			+"height: auto;";
+		if(addBack != '')
+		{
+			var bb = document.createElement('img');
+			bb.onclick = function(e) { menuHelp('<'); };
+			bb.src="images/docback.gif";
+			bb.align="right";
+			content.lastElementChild.insertBefore(bb,content.lastElementChild.firstChild);
+		}
 	});
 }
 
