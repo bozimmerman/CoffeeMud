@@ -62,6 +62,7 @@ function SipletWindow(windowName)
 		});
 	    this.window.style.overflowY = 'auto';
 	    this.window.style.overflowX = 'hidden';
+		this.plugins.reset();
 	}
 	
 	this.connect = function(url)
@@ -368,7 +369,7 @@ function SipletWindow(windowName)
 		if(x == oldx)
 			x = this.evalAliasGroup(this.localAliases(), x);
 		if(this.plugins.aliases())
-			this.evalAliasGroup(this.plugins.aliases());
+			x = this.evalAliasGroup(this.plugins.aliases(), x);
 		return x;
 	};
 
@@ -447,7 +448,7 @@ function SipletWindow(windowName)
 			return;
 		if(typeof timer === "string")
 		{
-			this.startTimer(findTimerByName(timer));
+			this.startTimer(this.findTimerByName(timer));
 			return;
 		}
 		if(!timer.multiple)
@@ -516,7 +517,7 @@ function SipletWindow(windowName)
 	
 	this.clearTimer = function(name)
 	{
-		var timer = findTimerByName(name);
+		var timer = this.findTimerByName(name);
 		if(timer !== null)
 		{
 			for(var i=this.activeTimers.length-1;i>=0;i--)
@@ -759,7 +760,8 @@ function SipletWindow(windowName)
 			}
 			if(!('type' in json))
 				json['type'] = 'event';
-			this.plugins.postEventToPlugin(plugin, this.fixvariables(JSON.stringify(json)));	
+			var doc = this.fixVariables(JSON.stringify(json));
+			this.plugins.postEventToPlugin(plugin, JSON.parse(doc));	
 		}
 	}
 

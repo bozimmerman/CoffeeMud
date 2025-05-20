@@ -61,8 +61,6 @@ var PLUGINS = function(sipwin)
 		}
 	};
 	
-	this.reset();
-	
 	this.postEvent = function(event) {
 		for(var k in this.framesMap)
 			this.framesMap[k].contentWindow.postMessage({ type: 'message', payload: event}, '*');
@@ -156,7 +154,7 @@ var PLUGINS = function(sipwin)
 						var req = ['name','regex','pattern','replace','action','argument'];
 						var r=0;
 						for(r=0;r<req.length;r++)
-							if((!(req[r] in palias)) || (!palias[req[r]]))
+							if(!(req[r] in palias))
 							{
 								console.log("Missing "+req[r]+" from plugin "+this.plugins[i].name+" alias");
 								break;
@@ -204,7 +202,7 @@ var PLUGINS = function(sipwin)
 						var req = ['name','regex','pattern','once','action','argument'];
 						var r=0;
 						for(r=0;r<req.length;r++)
-							if((!(req[r] in ptrigger)) || (!ptrigger[req[r]]))
+							if(!(req[r] in ptrigger))
 							{
 								console.log("Missing "+req[r]+" from plugin "+this.plugins[i].name+" trigger");
 								break;
@@ -253,7 +251,7 @@ var PLUGINS = function(sipwin)
 						var req = ['name','delay','option','auto','action','argument'];
 						var r=0;
 						for(r=0;r<req.length;r++)
-							if((!(req[r] in ptimer)) || (!ptimer[req[r]]))
+							if(!(req[r] in ptimer))
 							{
 								console.log("Missing "+req[r]+" from plugin "+this.plugins[i].name+" timer");
 								break;
@@ -280,7 +278,7 @@ var PLUGINS = function(sipwin)
 									repeat: ptimer.option=='repeat',
 									multiple: ptimer.option=='multiple',
 									trigger: (''+ptimer.auto).toLowerCase()=='true',
-									action: 'win.' + ptrigger.action + '(' + ptrigger.argument + ')',
+									action: 'win.' + ptimer.action + '(' + ptimer.argument + ')',
 									allowed: true
 								};
 								this.timerList.push(newOne);

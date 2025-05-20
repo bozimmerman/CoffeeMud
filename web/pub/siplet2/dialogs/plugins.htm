@@ -100,7 +100,7 @@ ${
 		};
 
 		root.baseFields = {
-			name:'',
+			name:' ',
 			version:0,
 			mxp:'',
 			code:function(s){
@@ -112,7 +112,7 @@ ${
 				return true;
 			},
 			triggers:[{
-				name:'',
+				name:' ',
 				regex:true,
 				pattern:function(s,p){
 					if(!p.regex)
@@ -129,7 +129,7 @@ ${
 				argument:function(s) { return isValidExpression(s);}
 			}],
 			aliases:[{
-				name:'',
+				name:' ',
 				regex:true,
 				pattern:function(s,p){
 					if(!p.regex)
@@ -146,7 +146,7 @@ ${
 				argument:function(s,p) { return (p['action']=='') || isValidExpression(s); }
 			}],
 			timers:[{
-				name:'',
+				name:' ',
 				delay:0,
 				option:function(s) { return (['repeat','multiple','once'].indexOf(s.toLowerCase())>=0);},
 				auto:true,
@@ -189,7 +189,7 @@ ${
 				if(json.length > 0)
 				{
 					var comp = base[0];
-					for(var i=0;i<json.length;i++)
+					for(var i=0;i < json.length;i++)
 					{
 						var s = root.compareJson(help+'/'+i,comp,json[i],json);
 						if (s != null)
@@ -200,7 +200,7 @@ ${
 			else
 			if(typeof json === "string")
 			{
-				if(!json)
+				if(!json && base)
 					return "Empty string: "+help;
 			}
 			return null;
