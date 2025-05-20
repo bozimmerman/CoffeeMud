@@ -309,10 +309,11 @@ function menuHelp(f)
 			"background-color:black;"
 			+"position:absolute;"
 			+"color:white;"
-			+"font-size:16;"
+			+"font-size:14;"
 			+"overflowX:auto;"
 			+"overflowY:auto;"
 			+"min-height:100%;"
+			+"width:100%;"
 			+"height: auto;";
 	});
 }

@@ -119,6 +119,10 @@ var PLUGINS = function(sipwin)
 				if(data.data && data.frame)
 					sipwin.displayAt(data.data, data.frame);
 				break;
+			case 'fetchVariable':
+				if(data.data)
+					sipwin.fetchVariable(pluginName, data.data);
+				break;
 			}
 		}
 	};
@@ -131,6 +135,7 @@ var PLUGINS = function(sipwin)
 			for(var i=0;i<this.plugins.length;i++)
 				if('mxp' in this.plugins[i])
 					s += '\n' + this.plugins[i].mxp;
+			s=s.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
 			this.mxpText = s;
 		}
 		return this.mxpText;

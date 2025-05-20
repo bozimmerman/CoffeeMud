@@ -1,0 +1,147 @@
+<DIV ID="HELPROOT">
+<h3>Plugin</h3>
+A <a href="javascript:menuHelp('Plugins')">plugin</a> is represented
+as a JSON document that specifies all of its features, which are
+broken down below.  A minimalist plugin document looks like this:
+<PRE>
+{
+  "name": "my minimal plugin",
+  "version": 1,
+  "code": "",
+  "mxp":"",
+  "triggers": [],
+  "aliases": [],
+  "timers": []
+}
+</PRE>
+The <B>name</B> may be any string, but try to keep it unique.  <B>Version</B>
+must be an integer or real number.  <B>mxp</B> is a document of 
+<a href="javascript:menuHelp('Entities')">MXP tags/entities</a> that your
+plugin contributes.  <B>Code</B> is your message handling 
+javascript.  The API is discussed in the last section.
+<P>
+The <B>triggers</B> field is an array of trigger objects, each of which looks like 
+this:
+<PRE>
+{
+	name:'my trigger',
+	regex:false,
+	pattern:'string',
+	once:true,
+	action:'displayText',
+	argument:'"hi"'
+}
+</PRE>
+The <B>name</B> of a plugin trigger is not terribly important, but is required.  <B>Regex</B>
+is true if your <B>pattern</B> is a <a href="javascript:menuHelp('Regex')">regular expression</a>, 
+and false if it is a simple string.  <B>Once</B> is true if the trigger should be disabled after 
+its initial match, or false to continue matching.
+<P>
+<B>Action</B> is one of: submitInput, displayText, playSound, setVariable, runScript,
+enableTrigger, disableTrigger, startTimer, clearTimer, displayAt, or sendPlugin.  These,
+and the required <B>argument(s)</B> are summarized in the help for  
+<a href="javascript:menuHelp('Actions')">Actions</a>.  Remember that an argument string must
+be internally quoted, unless it is not a string, but one of the permitted variable names.
+<P>
+The top level <B>aliases</B> field is an array of alias objects, each of which looks like 
+this:
+<PRE>
+{
+	name:'my alias',
+	regex:false,
+	pattern:'string',
+	replace:'replacement string',
+	action:'displayText',
+	argument:'"hi"'
+}
+</PRE>
+The <B>name</B>, <b>regex</b>, <B>pattern</B>, <B>action</B>, and <B>argument</B> 
+of a plugin alias is the same as described above for triggers, except that the 
+<b>action</b> and <b>argument</b> may be empty.  The <B>replace</B> field is
+the string that replaces the user input matched by the <B>pattern</B>.
+<P>
+The top level <B>timers</B> field is an array of timer objects, each of which looks like 
+this:
+<PRE>
+{
+	name:'my timer',
+	delay:0,
+	option:'once'
+	auto:true,
+	action:'displayText'
+	argument:'"hi"'
+}
+</PRE>
+The <B>name</B>, <B>action</B>, and <B>argument</B> 
+of a plugin timer is the same as described above for triggers.  The <b>option</b>
+field must be one of 'once', 'multiple', or 'repeat'; see the help on 
+<a href="javascript:menuHelp('Timers')">Timers</a> for more information on Options.
+The <b>auto</b> field is true if a timer begins its delay immediately, or false if
+it must be externally triggered before counting down.  <B>Delay</B> is the number
+of milliseconds (1000th of a second) that the timer delays for; for example, 5000
+would be 5 seconds, and 60000 would be a minute.
+<P>
+<h3>Javascript Code</h3>
+Unlike normal <a href="javascript:menuHelp('Scripts')">Scripts</a>, a plugin code
+script is
+sandboxed to protect the user installing it, which means that the code will not
+have direct access to the mud client api or dom.  Instead it must receive information 
+from a <pre>window.onevent</pre> function, and send commands to the mud using 
+<pre>window.send</pre>. More detail on the types of events and the specifics
+of send commands is below, but first, here is some minimal plugin code:
+<PRE style="font-size:12;">
+window.onevent=function(event)
+{ 
+  console.log("plugin received event type " + event.type);
+  var response = {
+    command: 'displayText',
+    data: '"i received ' + event.type + '"'
+  };
+  window.send(response); // send the same event back 
+};
+</PRE>
+The following are the events and event fields that might trigger the
+window.onevent function for a plugin.  All events have a 'type' field,
+and always a 'data' field, in addition to other 'extra' fields.
+<table border=1 style="color:white;font-size:12;">
+<TR><TD>Type</TD><TD>Extra</TD><TD>Description</TD></TR>
+<TR><TD>connect</TD><TD></TD><TD>Connection made, with url</TD></TR>
+<TR><TD>closesock</TD><TD></TD><TD>Connection lost, with url</TD></TR>
+<TR><TD>close</TD><TD></TD><TD>Plugins window closing</TD></TR>
+<TR><TD>msdp</TD><TD></TD><TD>MSDP message with msdp js object data</TD></TR>
+<TR><TD>gmcp</TD><TD>command</TD><TD>GMCP message with js object data</TD></TR>
+<TR><TD>event</TD><TD></TD><TD>Un-typed event from trigger/alias/etc</TD></TR>
+<TR><TD>variable</TD><TD>key</TD><TD>Result from fetchVariable with key,data</TD></TR>
+<TR><TD>?</TD><TD>?</TD><TD>Typed event from trigger/alias/etc</TD></TR>
+</table> 
+<P>
+The following are the commands and data + other fields that can be
+transmitted via window.send function for a plugin.  <b>window.send</b>
+requires a json document, with a field 'command' with one of the
+commands below, and almost always a 'data' field with the first
+or primary argument that the command requires.  Additional fields for
+secondary arguments may be required also, and are specified below.
+<table border=1 style="color:white;font-size:12;">
+<TR><TD>Command</TD><TD>Extra</TD><TD>Description</TD></TR>
+<TR><TD>submitInput</TD><TD></TD><TD>Send data to mud server</TD></TR>
+<TR><TD>displayText</TD><TD></TD><TD>Send data to mud window</TD></TR>
+<TR><TD>playSound</TD><TD></TD><TD>Play sound url or name</TD></TR>
+<TR><TD>setVariable</TD><TD>key</TD><TD>Sets entity/var 'key' to data value</TD></TR>
+<TR><TD>enableTrigger</TD><TD></TD><TD>Enables the trigger named by data</TD></TR>
+<TR><TD>disableTrigger</TD><TD></TD><TD>Disables the trigger named by data</TD></TR>
+<TR><TD>startTimer</TD><TD></TD><TD>Starts the timer named by data</TD></TR>
+<TR><TD>clearTimer</TD><TD></TD><TD>Stops the timer named by data</TD></TR>
+<TR><TD>displayAt</TD><TD>frame</TD><TD>Send data to mud frame named by frame</TD></TR>
+<TR><TD>fetchVariable</TD><TD></TD><TD>Fetch variable/entity named data (see above)</TD></TR>
+</table> 
+<P>
+<h3>Notes</h3>
+<UL>
+<LI>The displayText and displayAt commands are your workhorses.  Remember that you can send
+MXP tags and entities in the data for them, allowing you to do things like create
+frames and gauges, display pictures, etc.</LI>
+<LI>MXP Entities and connection 'variables' are the same things.  Setting a variable called
+'bob' to the value 'was here' would cause the entity '&bob;' to be replaced with 'was here'.
+<LI>The plugin triggers, aliases, and timers are intended to interact with each other, and 
+with your script code via the Plugin Event <a href="javascript:menuHelp('Actions')">Action</a>.
+</UL>

@@ -99,9 +99,9 @@ function SipletWindow(windowName)
 	
 	this.close = function()
 	{
+		this.plugins.postEvent({type: 'close'});
 		this.closeSocket();
 		this.reset();
-		this.plugins.postEvent({type: 'close'});
 	};
 	
 	this.process = function(s)
@@ -717,6 +717,14 @@ function SipletWindow(windowName)
 		return '';
 	};
 	
+	this.fetchVariable = function(plugin, key)
+	{
+		var value = '';
+		if(key in this.mxp.entities)
+			value = this.fixVariables(this.mxp.entities[key]);
+		this.sendPlugin(plugin, {type: 'variable', key: key, data: value});
+	};
+	
 	this.fixVariables = function(s)
 	{
 		if(!s || (s===undefined))
@@ -742,7 +750,17 @@ function SipletWindow(windowName)
 	this.sendPlugin = function(plugin, event)
 	{
 		if(plugin && event)
-			this.plugins.postEventToPlugin(plugin, this.fixvariables(event));	
+		{
+			var json = {};
+			try {
+				json = JSON.parse(event);
+			} catch(e) {
+				json = {'type':'event', 'data': event};
+			}
+			if(!('type' in json))
+				json['type'] = 'event';
+			this.plugins.postEventToPlugin(plugin, this.fixvariables(JSON.stringify(json)));	
+		}
 	}
 
 	this.findLocalScript = function(value)

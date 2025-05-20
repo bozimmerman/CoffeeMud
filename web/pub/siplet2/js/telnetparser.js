@@ -64,8 +64,6 @@ var TELNET = function(sipwin)
 		this.neverSupportMSDP= !(getConfig("window/term/msdp",'true') === 'true');
 		this.neverSupportGMCP = !(getConfig("window/term/gmcp",'true') === 'true');
 		this.neverSupportMCCP = true; //TODO: maybe add pako later?
-		this.msdpInforms = "";
-		this.gmcpInforms = "";
 	};
 	this.reset();
 	
@@ -122,7 +120,6 @@ var TELNET = function(sipwin)
 					if(subOptionData[subOptionData.length-1] == 255)
 						subOptionData.splice(subOptionData.length-1);
 					var received = this.msdpReceive(subOptionData);
-					msdpInforms += received;
 					sipwin.plugins.postEvent({type: 'msdp',data:received});
 				}
 			}
@@ -134,8 +131,20 @@ var TELNET = function(sipwin)
 					if(subOptionData[subOptionData.length-1] == 255)
 						subOptionData.splice(subOptionData.length-1);
 					var received = this.gmcpReceive(subOptionData);
-					this.gmcpInforms += received + "\n";
-					sipwin.plugins.postEvent({type: 'gmcp',data:received});
+					var x=received.indexOf(' ');
+					if(received<0)
+						sipwin.plugins.postEvent({type: 'gmcp',command:'?', data:received});
+					else
+					{
+						var cmd = s.substring(0,x);
+						var jsonStr = s.substring(x+1).trim();
+						try {
+							var json = JSON.parse(jsonStr);
+							sipwin.plugins.postEvent({type: 'gmcp',command:cmd, data:json});
+						} catch(e) {
+							sipwin.plugins.postEvent({type: 'gmcp',command:cmd, data:jsonStr});
+						}
+					}
 				}
 			}
 			break;

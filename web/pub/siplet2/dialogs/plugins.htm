@@ -18,15 +18,6 @@
 			<B>File</B></FONT>
 		</TD></TR></TABLE>
 </TD>
-<TR><TD WIDTH=20%>Download:</TD><TD>
-	<INPUT id="PLUGINSURL" type="text">
-		<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
-			ONCLICK="document.getElementById('PLUGINSROOT').tryloadplugin();" 
-			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
-		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
-			<B>Fetch</B></FONT>
-		</TD></TR></TABLE>
-</TD></TR>
 <TR><TD WIDTH=20%>Plugin:<IMG ID="PLUGINSHELP" SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Plugin')"></TD>
 <TD><TEXTAREA ID="PLUGINSTEXT" style="height:160px;width:100%;"
 		ONCHANGE="var root = document.getElementById('PLUGINSROOT'); root.pluginfieldchange(); "
@@ -50,7 +41,6 @@ ${
 	{
 		var RED = '#FF555B';
 		var root = document.getElementById('PLUGINSROOT');
-		var sname = document.getElementById('PLUGINSURL');
 		var shelp = document.getElementById('PLUGINSHELP');
 		var stext = document.getElementById('PLUGINSTEXT');
 		var plugins = root.parentNode.plugins;
@@ -71,7 +61,6 @@ ${
 		root.pluginselected = function() {
 			if(dd.value == "-1")
 			{
-				sname.value='';
 				stext.value='';
 				stext.editor.setValue('');
 				stext.style.backgroundColor = RED;
@@ -82,10 +71,9 @@ ${
 			{
 				delbutt.style.visibility='visible';
 				var plugin = plugins[Number(dd.value)];
-				sname.value=plugin.name;
-				stext.value=plugin.text;
+				stext.value=JSON.stringify(plugin, null, 2);
 				stext.style.backgroundColor = 'white';
-				stext.editor.setValue(plugin.text);
+				stext.editor.setValue(stext.value);
 			}
 			stext.editor.getWrapperElement().style.backgroundColor = stext.style.backgroundColor;
 		};
@@ -113,6 +101,8 @@ ${
 
 		root.baseFields = {
 			name:'',
+			version:0,
+			mxp:'',
 			code:function(s){
 				try {
 					new Function(s);
@@ -152,8 +142,8 @@ ${
 					return true;
 				},
 				replace:function(s) { return true; },
-				action:function(s) { return (s in window.sampleSiplet); },
-				argument:function(s) { return isValidExpression(s);}
+				action:function(s) { return (s=='')||(s in window.sampleSiplet); },
+				argument:function(s,p) { return (p['action']=='') || isValidExpression(s); }
 			}],
 			timers:[{
 				name:'',
@@ -326,8 +316,6 @@ ${
 			var deadt = plugins[pluginindex];
 			plugins.splice(pluginindex,1);
 			root.modifyplugins();
-			sname.value='';
-			sname.style.backgroundColor = 'white';
 			stext.value='';
 			stext.editor.setValue('');
 			stext.style.backgroundColor = 'white';
