@@ -24,6 +24,9 @@ var menuData = [
 		{"n":"Entities",
 		 "e":"window.currentSiplet!=null && window.currentSiplet.pb && window.currentSiplet.pb.user",
 		 "a":"javascript:menuEntities('local');"},
+		{"n":"Plugins",
+		 "e":"window.currentSiplet!=null && window.currentSiplet.pb && window.currentSiplet.pb.user",
+		 "a":"javascript:menuPlugins('local');"},
 		{"n":"Disconnect",
 		 "e":"window.currentSiplet!=null && window.currentSiplet.wsopened",
 		 "a":"javascript:menuDisconnect();"},
@@ -43,7 +46,9 @@ var menuData = [
 		{"n":"Timers",
 		 "a":"javascript:menuTimers('global');"},
 		{"n":"Entities",
-		 "a":"javascript:menuEntities('global');"}
+		 "a":"javascript:menuEntities('global');"},
+		{"n":"Plugins",
+		 "a":"javascript:menuPlugins('global');"}
 	]},
 	{"Help": [
 		{"n":"About","a":"javascript:menuAbout()"},
@@ -60,7 +65,9 @@ var menuData = [
 		{"n":"Timers",
 		 "a":"javascript:menuHelp('Timers');"},
 		{"n":"Entities",
-		 "a":"javascript:menuHelp('Entities');"}
+		 "a":"javascript:menuHelp('Entities');"},
+		{"n":"Plugins",
+		 "a":"javascript:menuHelp('Plugins');"}
 	]}
 ];
 
@@ -245,6 +252,23 @@ function menuScripts(value)
 	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pb))
 		content.scripts = window.currentSiplet.localScripts();
 	populateDivFromUrl(content, 'dialogs/scripts.htm');
+}
+
+function menuPlugins(value)
+{
+	var which = 'Global';
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pb))
+		which = window.currentSiplet.pb.name;
+	var content = getOptionWindow(which + " Plugins",60,45);
+	content.which = value;
+	content.plugins = getConfig('/global/plugins', window.defPlugins); // dont parse them
+	if((value != 'global')&&(window.currentSiplet != null)&&(window.currentSiplet.pb))
+	{
+		if(!window.currentSiplet.pb.plugins)
+			window.currentSiplet.pb.plugins = [];
+		content.plugins = JSON.parse(JSON.stringify(window.currentSiplet.pb.plugins));
+	}
+	populateDivFromUrl(content, 'dialogs/plugins.htm');
 }
 
 function menuTimers(value)

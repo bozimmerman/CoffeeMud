@@ -96,6 +96,7 @@ ${
 				if((dd.options[i].value == sname.value) && (myname != sname.value))
 					sname.style.backgroundColor = RED;
 			}
+			stext.editor.getWrapperElement().style.backgroundColor = stext.style.backgroundColor;
 			var rfields = [sname,stext];
 			for(var i=0;i < rfields.length; i++)
 				if(rfields[i].style.backgroundColor == RED)

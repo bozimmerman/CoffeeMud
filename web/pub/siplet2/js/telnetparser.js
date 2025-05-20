@@ -72,7 +72,6 @@ var TELNET = function(sipwin)
 	this.process = function(dat)
 	{
 		var response = [];
-		//TODO:BZ:DELME
 		//var s='>' + new Date().getTime()+'>';for(var i=0;i<dat.length;i++)s+=dat[i]+',';console.log(s);
 		switch (dat[0])
 		{
@@ -124,7 +123,7 @@ var TELNET = function(sipwin)
 						subOptionData.splice(subOptionData.length-1);
 					var received = this.msdpReceive(subOptionData);
 					msdpInforms += received;
-					//TODO: really, we just accumulate it?!
+					sipwin.plugins.postEvent({type: 'msdp',data:received});
 				}
 			}
 			else
@@ -136,7 +135,7 @@ var TELNET = function(sipwin)
 						subOptionData.splice(subOptionData.length-1);
 					var received = this.gmcpReceive(subOptionData);
 					this.gmcpInforms += received + "\n";
-					//TODO: really, we just accumulate it?!
+					sipwin.plugins.postEvent({type: 'gmcp',data:received});
 				}
 			}
 			break;

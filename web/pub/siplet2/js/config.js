@@ -8,6 +8,7 @@ window.phonebook = [];
 window.defAliases = [];
 window.defScripts = [];
 window.defTimers = [];
+window.defPlugins = [];
 window.defEntities = {
 	"nbsp": "&nbsp;",
 	"lt": "&lt;",
@@ -218,3 +219,9 @@ function GetGlobalElements()
 {
 	return getConfig('/global/elements', '');
 }
+
+function GetGlobalPlugins()
+{
+	return JSON.parse(JSON.stringify(getConfig('/global/plugins', window.defPlugins)));
+}
+

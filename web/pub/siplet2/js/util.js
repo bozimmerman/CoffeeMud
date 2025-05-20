@@ -136,6 +136,16 @@ function setRadioValue(radio, value)
 		radio[i].checked = radio[i].value == value;
 }
 
+function escapeHTML(s)
+{
+	return s
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
+}
+
 function populateDivFromUrl(div, url, callback) 
 {
 	var xhr = new XMLHttpRequest();

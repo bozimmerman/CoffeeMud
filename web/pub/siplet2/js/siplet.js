@@ -26,9 +26,9 @@ function SipletWindow(windowName)
 	this.telnet = new TELNET(this);
 	this.msp = new MSP(this);
 	this.mxp = new MXP(this);
+	this.plugins = new PLUGINS(this);
 	this.text = new TEXT([this.mxp,this.msp]);
 	this.topWindow = document.getElementById(windowName);
-	this.topWindow.onclick = function() { delayhidemenu(); boxFocus(); };
 	this.wsocket = null;
 	this.gauges=[];
 	this.gaugeWindow = null;
@@ -44,22 +44,25 @@ function SipletWindow(windowName)
 	this.lastStyle = '';
 
 	var me = this;
-	
-    this.topWindow.style.fontFamily = getConfig('window/fontface', 'monospace');
-    this.topWindow.style.fontSize = getConfig('window/fontsize', '16px');
-	this.topWindow.style.whiteSpace = 'pre'; // Preserve spaces as-is
-    this.topContainer = this.topWindow.firstChild;
-	this.window = this.topContainer.firstChild;
-	[this.topWindow, this.topContainer, this.window].forEach(function(o)
+	if(this.topWindow)
 	{
-		o.style.position='absolute';
-		o.style.top = '0%';
-		o.style.height = '100%';
-		o.style.width = '100%';
-		o.style.left = '0%';
-	});
-    this.window.style.overflowY = 'auto';
-    this.window.style.overflowX = 'hidden';
+		this.topWindow.onclick = function() { delayhidemenu(); boxFocus(); };
+	    this.topWindow.style.fontFamily = getConfig('window/fontface', 'monospace');
+	    this.topWindow.style.fontSize = getConfig('window/fontsize', '16px');
+		this.topWindow.style.whiteSpace = 'pre'; // Preserve spaces as-is
+	    this.topContainer = this.topWindow.firstChild;
+		this.window = this.topContainer.firstChild;
+		[this.topWindow, this.topContainer, this.window].forEach(function(o)
+		{
+			o.style.position='absolute';
+			o.style.top = '0%';
+			o.style.height = '100%';
+			o.style.width = '100%';
+			o.style.left = '0%';
+		});
+	    this.window.style.overflowY = 'auto';
+	    this.window.style.overflowX = 'hidden';
+	}
 	
 	this.connect = function(url)
 	{
@@ -68,6 +71,7 @@ function SipletWindow(windowName)
 		this.wsocket.onmessage = this.onReceive;
 		this.wsocket.onopen = function(event)  
 		{
+			me.plugins.postEvent({type: 'connect',data:url});
 			me.wsopened=true; 
 			me.tab.style.backgroundColor="green";
 			me.tab.style.color="white";
@@ -78,6 +82,7 @@ function SipletWindow(windowName)
 		};
 		this.wsocket.onclose = function(event)  
 		{ 
+			me.plugins.postEvent({type: 'closesock',data:url});
 			me.wsopened=false; 
 			me.tab.style.backgroundColor="#FF555B";
 			me.tab.style.color="white";
@@ -96,6 +101,7 @@ function SipletWindow(windowName)
 	{
 		this.closeSocket();
 		this.reset();
+		this.plugins.postEvent({type: 'close'});
 	};
 	
 	this.process = function(s)
@@ -118,6 +124,8 @@ function SipletWindow(windowName)
 		this.process(GetGlobalElements());
 		if(this.pb && this.pb.elements)
 			this.process(this.pb.elements);
+		if(this.plugins.mxp())
+			this.process(this.plugins.mxp());
 		this.mxp.active = oldActive;
 		this.mxp.defBitmap = 0; // normal operation
 	};
@@ -149,6 +157,7 @@ function SipletWindow(windowName)
 		this.msp.reset();
 		this.mxp.reset();
 		this.text.reset();
+		this.plugins.reset();
 		this.gauges=[];
 		this.gaugeWindow = null;
 		this.textBuffer = '';
@@ -318,6 +327,8 @@ function SipletWindow(windowName)
 	{
 		this.evalTriggerGroup(this.globalTriggers);
 		this.evalTriggerGroup(this.localTriggers());
+		if(this.plugins.triggers())
+			this.evalTriggerGroup(this.plugins.triggers());
 	};
 
 	this.evalAliasGroup = function(aliases, txt)
@@ -356,6 +367,8 @@ function SipletWindow(windowName)
 		x = this.evalAliasGroup(this.globalAliases, x);
 		if(x == oldx)
 			x = this.evalAliasGroup(this.localAliases(), x);
+		if(this.plugins.aliases())
+			this.evalAliasGroup(this.plugins.aliases());
 		return x;
 	};
 
@@ -418,6 +431,13 @@ function SipletWindow(windowName)
 			if((this.globalTimers[i].name == name)
 			||(ci && (this.globalTimers[i].name.toLowerCase() == name.toLowerCase())))
 				return this.globalTimers[i];
+		if(this.plugins.timers() && Array.isArray(this.plugins.timers()))
+		{
+			for(i=0;i<this.plugins.timers().length;i++)
+				if((this.plugins.timers()[i].name == name)
+				||(ci && (this.plugins.timers()[i].name.toLowerCase() == name.toLowerCase())))
+					return this.plugins.timers()[i];
+		}
 		return null;
 	};
 
@@ -479,6 +499,8 @@ function SipletWindow(windowName)
 		{
 			this.startTimers(this.globalTimers);
 			this.startTimers(this.localTimers());
+			if(this.plugins.timers())
+				this.startTimers(this.plugins.timers());
 		}
 		else
 		{
@@ -543,12 +565,15 @@ function SipletWindow(windowName)
 	
 	this.createGauge = function(entity,caption,color,value,max)
 	{
-		var gaugedata=new Array(5);
-		gaugedata[0]=entity;
-		gaugedata[1]=caption;
-		gaugedata[2]=color;
-		gaugedata[3]=value;
-		gaugedata[4]=max;
+		var gaugedata = {};
+		for(var i=0;i<this.gauges.length;i++)
+			if(this.gauges[i].caption == caption)
+				gaugedata = this.gauges[i];
+		gaugedata.entity=entity;
+		gaugedata.caption=caption;
+		gaugedata.color=color;
+		gaugedata.value=value;
+		gaugedata.max=max;
 		this.gauges[this.gauges.length]=gaugedata;
 		var gaugeHeight = 20;
 		if(this.gaugeWindow == null)
@@ -601,22 +626,21 @@ function SipletWindow(windowName)
 			for(i=0;i<this.gauges.length;i++)
 			{
 				var gaugedata=this.gauges[i];
-				if(gaugedata[0]==entity)
+				if(gaugedata.entity==entity)
 				{
-					gaugedata[3]=value;
-					gaugedata[4]=max;
+					gaugedata.value=value;
+					gaugedata.max=max;
 				}
 			}
 			for(i=0;i<this.gauges.length;i++)
 			{
 				var gaugedata=this.gauges[i];
 				s+='<TD WIDTH='+cellwidth+'%>';
-				s+='<FONT STYLE="color: '+gaugedata[2]+'" SIZE=-2>'+gaugedata[1]+'</FONT><BR>';
-				var gaugedata=this.gauges[i];
-				var fullwidth=100-gaugedata[3];
-				var lesswidth=gaugedata[3];
+				s+='<FONT STYLE="color: '+gaugedata.color+'" SIZE=-2>'+gaugedata.caption+'</FONT><BR>';
+				var fullwidth=100-gaugedata.value;
+				var lesswidth=gaugedata.value;
 				s+='<TABLE WIDTH=100% CELLPADDING=0 CELLSPACING=0 BORDER=0 HEIGHT=5><TR HEIGHT=5>';
-				s+='<TD STYLE="background-color: '+gaugedata[2]+'" WIDTH='+lesswidth+'%></TD>';
+				s+='<TD STYLE="background-color: '+gaugedata.color+'" WIDTH='+lesswidth+'%></TD>';
 				s+='<TD STYLE="background-color: black" WIDTH='+fullwidth+'%></TD>';
 				s+='</TR></TABLE>';
 				s+='</TD>';
@@ -697,6 +721,7 @@ function SipletWindow(windowName)
 	{
 		if(!s || (s===undefined))
 			return s;
+		s=s.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
 		var x = s.indexOf('&');
 		while(x>=0)
 		{
@@ -713,6 +738,12 @@ function SipletWindow(windowName)
 		}
 		return s;
 	};
+
+	this.sendPlugin = function(plugin, event)
+	{
+		if(plugin && event)
+			this.plugins.postEventToPlugin(plugin, this.fixvariables(event));	
+	}
 
 	this.findLocalScript = function(value)
 	{
@@ -933,7 +964,20 @@ function UpdateSipetTabsByPBIndex(which)
 	}
 }
 
+function PostEvent(event)
+{
+	for(var k in window.siplets)
+	{
+		try {
+			window.siplets[k].plugins.postEvent(event);
+		} catch(e) {
+			console.log(e);
+		}
+	}
+}
+
 setTimeout(function() {
+	window.sampleSiplet = new SipletWindow('sample');
 	var updateSipletConfigs = function() {
 		for(var i=0;i<window.siplets.length;i++)
 		{

@@ -1,0 +1,382 @@
+<SPAN  ID="PLUGINSROOT">
+<TABLE WIDTH=100% BORDER=0 style="font-size:12;height:240px">
+<TR>
+	<TD WIDTH=20%>Plugins:</TD>
+	<TD><SELECT ID="PLUGINSDROPDOWN" STYLE="position:relative;" 
+			ONCHANGE="var root = document.getElementById('PLUGINSROOT'); root.pluginselected(); "
+		>
+		<OPTION VALUE="-1">Add New Plugin
+		</SELECT>
+		<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Plugins')">
+</TD></TR>
+<TD><TD COLSPAN=2>&nbsp;</TD></TR>
+<TR><TD WIDTH=20%>Browse:</TD><TD>
+		<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
+			ONCLICK="document.getElementById('PLUGINSROOT').selectFile();" 
+			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
+		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
+			<B>File</B></FONT>
+		</TD></TR></TABLE>
+</TD>
+<TR><TD WIDTH=20%>Download:</TD><TD>
+	<INPUT id="PLUGINSURL" type="text">
+		<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
+			ONCLICK="document.getElementById('PLUGINSROOT').tryloadplugin();" 
+			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
+		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
+			<B>Fetch</B></FONT>
+		</TD></TR></TABLE>
+</TD></TR>
+<TR><TD WIDTH=20%>Plugin:<IMG ID="PLUGINSHELP" SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Plugin')"></TD>
+<TD><TEXTAREA ID="PLUGINSTEXT" style="height:160px;width:100%;"
+		ONCHANGE="var root = document.getElementById('PLUGINSROOT'); root.pluginfieldchange(); "
+	></TEXTAREA>
+</TD></TR>
+<TR><TD colspan="2">
+	<a ID="PLUGINSDELETE" href="javascript:document.getElementById('PLUGINSROOT').trydelplugin();">
+		<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
+			ONCLICK="document.getElementById('PLUGINSROOT').trydelplugin();" 
+			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
+		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
+			<B>Delete</B></FONT>
+		</TD></TR></TABLE>
+	</a>
+</TD></TR>
+</TABLE>
+</SPAN>
+${
+	var fixpluginspage=function(){
+	if(document.getElementById('PLUGINSTEXT'))
+	{
+		var RED = '#FF555B';
+		var root = document.getElementById('PLUGINSROOT');
+		var sname = document.getElementById('PLUGINSURL');
+		var shelp = document.getElementById('PLUGINSHELP');
+		var stext = document.getElementById('PLUGINSTEXT');
+		var plugins = root.parentNode.plugins;
+		var global = root.parentNode.which == 'global';
+		delete root.parentNode.plugins;
+		delete root.parentNode.which;
+		var dd = document.getElementById('PLUGINSDROPDOWN');
+		var delbutt = document.getElementById('PLUGINSDELETE');
+		dd.selectedIndex = -1;
+		delbutt.style.visibility='hidden';
+		for(var i=0;i < plugins.length;i++)
+		{
+			var plugin = plugins[i];
+			var opt = new Option(plugin.name,i);
+			dd.add(opt);
+		}
+		dd.selectedIndex = -1;
+		root.pluginselected = function() {
+			if(dd.value == "-1")
+			{
+				sname.value='';
+				stext.value='';
+				stext.editor.setValue('');
+				stext.style.backgroundColor = RED;
+				delbutt.style.visibility='hidden';
+			}
+			else
+			if(Number(dd.value) < plugins.length)
+			{
+				delbutt.style.visibility='visible';
+				var plugin = plugins[Number(dd.value)];
+				sname.value=plugin.name;
+				stext.value=plugin.text;
+				stext.style.backgroundColor = 'white';
+				stext.editor.setValue(plugin.text);
+			}
+			stext.editor.getWrapperElement().style.backgroundColor = stext.style.backgroundColor;
+		};
+
+		root.selectFile = function() {
+			var input = document.createElement('input');
+			input.type = 'file';
+			input.accept = '.json';
+			input.onchange = function(event) {
+				var file = event.target.files[0];
+				if (!file) return;
+				if (file.size > (1024 * 2048)) {
+					console.error('File too large:', file.size, 'bytes');
+					return;
+				};
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					stext.value = e.target.result;
+					root.pluginfieldchange();
+				};
+				reader.readAsText(file);
+			};
+			input.click();
+		};
+
+		root.baseFields = {
+			name:'',
+			code:function(s){
+				try {
+					new Function(s);
+				} catch(e) {
+					return false;
+				}
+				return true;
+			},
+			triggers:[{
+				name:'',
+				regex:true,
+				pattern:function(s,p){
+					if(!p.regex)
+						return true;
+					try {
+						new RegExp(s);
+					} catch(e) {
+						return false;
+					}
+					return true;
+				},
+				once:true,
+				action:function(s) { return (s in window.sampleSiplet); },
+				argument:function(s) { return isValidExpression(s);}
+			}],
+			aliases:[{
+				name:'',
+				regex:true,
+				pattern:function(s,p){
+					if(!p.regex)
+						return true;
+					try {
+						new RegExp(s);
+					} catch(e) {
+						return false;
+					}
+					return true;
+				},
+				replace:function(s) { return true; },
+				action:function(s) { return (s in window.sampleSiplet); },
+				argument:function(s) { return isValidExpression(s);}
+			}],
+			timers:[{
+				name:'',
+				delay:0,
+				option:function(s) { return (['repeat','multiple','once'].indexOf(s.toLowerCase())>=0);},
+				auto:true,
+				action:function(s) { return (s in window.sampleSiplet); },
+				argument:function(s) { return isValidExpression(s);}
+			}]
+		};
+
+		root.compareJson = function(help, base, json, jparent) 
+		{
+			if(typeof base == "function")
+			{
+				if(typeof json !== "string")
+					return "Wrong type match(string): "+help;
+				if(!base(json,jparent))
+					return "Failed proper value check: "+help;
+				return null;
+			}
+			if(((typeof base) !== (typeof json))
+			||(Array.isArray(base) != Array.isArray(json)))
+				return "Wrong type match ("+(typeof base)+"): "+help;
+			if((typeof base === 'object')
+			&& (!Array.isArray(base))
+			&& (Object.getPrototypeOf(base) === Object.prototype))
+			{
+				for(var k in base) {
+					if(!(k in json))
+						return "Missing: " + k +" in "+help;
+					else
+					{
+						var s = root.compareJson(help+'/'+k,base[k],json[k],json);
+						if (s != null)
+							return s;
+					}
+	        	}
+        	}
+        	else
+			if(Array.isArray(base))
+			{
+				if(json.length > 0)
+				{
+					var comp = base[0];
+					for(var i=0;i<json.length;i++)
+					{
+						var s = root.compareJson(help+'/'+i,comp,json[i],json);
+						if (s != null)
+							return s;
+					}
+				}
+			}
+			else
+			if(typeof json === "string")
+			{
+				if(!json)
+					return "Empty string: "+help;
+			}
+			return null;
+		};
+		
+		root.pluginfieldchange = function() {
+			root.lastError = '';
+			shelp.setAttribute('title',root.lastError);
+			if(dd.selectedIndex<0) return;
+			if(stext.value.length == 0)
+			{
+				stext.style.backgroundColor = RED;
+				root.lastError = 'Enter a json document';
+			}
+			else
+			{
+				stext.style.backgroundColor = 'white';
+				try {
+					JSON.parse(stext.value);
+				} catch(e) {
+					root.lastError = 'Invalid JSON: '+e;
+					stext.style.backgroundColor = RED;
+				}
+			}
+			if(root.lastError == '')
+			{
+				var json = JSON.parse(stext.value);
+				var error = root.compareJson('root',root.baseFields, json, null);
+				if(error != null)
+				{
+					stext.style.backgroundColor = RED;
+					root.lastError = error;
+				}
+				if(root.lastError == '')
+				{
+					var myname = Number(dd.value)>=0?plugins[Number(dd.value)].name:'';
+					for(var i=0;i < dd.options.length; i++)
+					{
+						if((dd.options[i].value == json.name) && (myname != json.name))
+						{
+							root.lastError = 'Duplicate name';
+							stext.style.backgroundColor = RED;
+						}
+					}
+				}
+			}
+			stext.editor.getWrapperElement().style.backgroundColor = stext.style.backgroundColor;
+			if(root.lastError != '')
+			{
+				shelp.setAttribute('title',root.lastError);
+				return;
+			}
+			
+			var pluginDefinition = JSON.parse(stext.value);
+			if(Number(dd.value) < 0)
+			{
+				plugins.push(pluginDefinition);
+				var opt = new Option(pluginDefinition.name, plugins.length-1);
+				dd.add(opt);
+				dd.selectedIndex = dd.options.length-1;
+				delbutt.style.visibility='visible';
+			}
+			else
+			{
+				var plugin = plugins[Number(dd.value)];
+				plugins[Number(dd.value)] = pluginDefinition;
+				dd.options[dd.selectedIndex].text = pluginDefinition.name;
+			}
+			root.modifyplugins();
+			stext.editor.getWrapperElement().style.backgroundColor = stext.style.backgroundColor;
+		};
+
+		root.modifyplugins = function()
+		{
+			if(global)
+			{
+				setConfig('/global/plugins', plugins);
+				for(var i=0;i < window.siplets.length; i++)
+					window.siplets[i].plugins.reset();
+			}
+			else
+			{
+				var phonebook = getConfig('/phonebook/dial',[]);
+				if((window.currentSiplet.pb) 
+				&& (window.currentSiplet.pbwhich) 
+				&& (!window.currentSiplet.pbwhich.startsWith('g')))
+				{
+					var pbindex = Number(window.currentSiplet.pbwhich);
+					var pb = phonebook[pbindex];
+					pb.plugins = JSON.parse(JSON.stringify(plugins));
+					var found = FindSipletsByPB(pb);
+					if(!In(window.currentSiplet, found))
+						found.push(window.currentSiplet);
+					for(var i=0;i < found.length;i++)
+					{
+						found[i].pb = pb;
+						found[i].plugins.reset();
+					}
+					setConfig('/phonebook/dial',phonebook);
+				}
+			}
+		};
+		root.trydelplugin = function() {
+			var pluginindex = Number(dd.value);
+			if(pluginindex < 0)
+				return;
+			var curr=dd.selectedIndex;
+			dd.selectedIndex=-1;
+			dd.remove(curr);
+			for(var i=0;i < dd.options.length;i++)
+				if(Number(dd.options[i].value)>pluginindex)
+					dd.options[i].value=(Number(dd.options[i].value)-1);
+			var deadt = plugins[pluginindex];
+			plugins.splice(pluginindex,1);
+			root.modifyplugins();
+			sname.value='';
+			sname.style.backgroundColor = 'white';
+			stext.value='';
+			stext.editor.setValue('');
+			stext.style.backgroundColor = 'white';
+			delbutt.style.visibility='hidden';
+			stext.editor.getWrapperElement().style.backgroundColor = stext.style.backgroundColor;
+		};
+		
+		var addParser = document.createElement('script');
+		addParser.src = 'js/codemirror.js';
+		addParser.async = false;
+		root.appendChild(addParser);
+		var addLang = document.createElement('script');
+		addLang.src = 'js/javascript.js';
+		addLang.async = false;
+		root.appendChild(addLang);
+		var addCss = document.createElement('link');
+		addCss.rel = 'stylesheet';
+		addCss.href = 'dialogs/codemirror.css';
+		addCss.async = false;
+		root.appendChild(addCss);
+		addLang.onload = function() {
+			var editor = CodeMirror.fromTextArea(stext, {
+			      mode: 'javascript', 
+			      theme: 'default', 
+			      lineNumbers: false, 
+			      lineWrapping: false,
+			      tabSize: 2,
+			      indentWithTabs: false,
+			      extraKeys: {
+			        'Tab': function(cm) {
+			          cm.replaceSelection('  '); // 2 spaces for Tab
+			        }
+			      },
+			      viewportMargin: Infinity,
+			      styleActiveLine: false,
+			      matchBrackets: false,
+			      fontFamily: 'Consolas, monospace',
+			      fontSize: '14px',
+			      lineHeight: '1.5'
+			    });
+    	    editor.getWrapperElement().style.height='160px';
+			editor.on('change', function() {
+				editor.save();
+				stext.value = editor.getValue();
+				root.pluginfieldchange();
+			});
+			stext.editor = editor;
+    	};
+	} else
+		setTimeout(fixpluginspage,10);
+};setTimeout(fixpluginspage,10);
+'';}
