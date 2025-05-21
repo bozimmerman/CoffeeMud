@@ -1,8 +1,8 @@
 <SPAN  ID="SCRIPTSROOT">
-<TABLE WIDTH=100% BORDER=0 style="font-size:12;height:200px">
+<TABLE WIDTH=100% BORDER=0 style="font-size:12;height:200px;table-layout:fixed">
 <TR>
 	<TD WIDTH=20%>Scripts:</TD>
-	<TD><SELECT ID="SCRIPTSDROPDOWN" STYLE="position:relative;" 
+	<TD WIDTH=80%><SELECT ID="SCRIPTSDROPDOWN" STYLE="position:relative;" 
 			ONCHANGE="var root = document.getElementById('SCRIPTSROOT'); root.scriptselected(); "
 		>
 		<OPTION VALUE="-1">Add New Script
@@ -10,13 +10,13 @@
 		<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Scripts')">
 </TD></TR>
 <TR><TD COLSPAN=2>&nbsp;</TD>
-<TR><TD WIDTH=20%>Name:</TD><TD>
+<TR><TD WIDTH=20%>Name:</TD><TD WIDTH=80%>
 	<INPUT id="SCRIPTSNAME" type="text"
 		ONCHANGE="var root = document.getElementById('SCRIPTSROOT'); root.scriptfieldchange(); "
 	>
 </TD></TR>
 <TR><TD WIDTH=20%>Script:</TD>
-<TD><TEXTAREA ID="SCRIPTSTEXT" style="height:160px;"
+<TD WIDTH=80%><TEXTAREA ID="SCRIPTSTEXT" style="height:160px;"
 		ONCHANGE="var root = document.getElementById('SCRIPTSROOT'); root.scriptfieldchange(); "
 	></TEXTAREA>
 </TD></TR>
