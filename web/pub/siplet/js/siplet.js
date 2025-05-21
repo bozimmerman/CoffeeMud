@@ -947,7 +947,7 @@ function CloseAllSiplets()
 
 function AutoConnect()
 {
-	AddNewSipletTabByPB(getConfig('/phonebook/auto',''));
+	AddNewSipletTabByPB(getConfig('/phonebook/auto','g0'));
 }
 
 function PBSameAs(pb1, pb2)

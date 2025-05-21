@@ -26,7 +26,7 @@ Players currently online: <FONT COLOR=RED><b>@NUMPLAYERS@</B></FONT>
 </B></FONT></TD></TR>
 <TR><TD WIDTH=100%>
 <BR>
-<LI><a href="siplet/index.cmvp"><FONT COLOR=GREEN><B>Play NOW</B></FONT></a><FONT COLOR=GREEN>&nbsp;(IE/CH/FF)!</B></FONT>&nbsp;&nbsp;<a href="telnet:@MudInfo?DOMAIN@"><FONT SIZE=-2 COLOR=GREEN><I>(Others)</I></FONT></a>
+<LI><a href="siplet/index.html"><FONT COLOR=GREEN><B>Play NOW</B></FONT></a><FONT COLOR=GREEN>&nbsp;(IE/CH/FF)!</B></FONT>&nbsp;&nbsp;<a href="telnet:@MudInfo?DOMAIN@"><FONT SIZE=-2 COLOR=GREEN><I>(Others)</I></FONT></a>
 <NOSCRIPT>
 <LI><a href="telnet:@MudInfo?DOMAIN@"><FONT COLOR=GREEN><B>Play NOW!</B></FONT></a>
 </NOSCRIPT>

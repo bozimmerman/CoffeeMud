@@ -17,7 +17,7 @@
 <TR>
 	<TD>Auto Conn:</TD>
 	<TD><SELECT ID="AUTOCONNECTDROPDOWN" ONCHANGE="setConfig('/phonebook/auto',this.value);">
-		<OPTION VALUE="-1" ${(getConfig('/phonebook/auto')>=0)?"":"SELECTED"}>No Auto Connect
+		<OPTION VALUE="-1" ${(getConfig('/phonebook/auto','g0')!='-1')?"":"SELECTED"}>No Auto Connect
 		</SELECT>
 </TD></TR>
 </TR><TR><TD COLSPAN=2>&nbsp;</TD>
@@ -151,7 +151,7 @@ ${
 		root.fixtopdropdowns = function()
 		{
 			var gphonebook = window.phonebook;
-			var auto = getConfig('/phonebook/auto','');
+			var auto = getConfig('/phonebook/auto','g0');
 			var qcdd = document.getElementById('QUICKCONNECTDROPDOWN');
 			var acdd = document.getElementById('AUTOCONNECTDROPDOWN');
 			while(qcdd.options.length > 0)
