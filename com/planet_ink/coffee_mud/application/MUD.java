@@ -352,7 +352,8 @@ public class MUD extends Thread implements MudHost
 		{
 			servsock=new ServerSocket(port, q_len, bindAddr);
 
-			Log.sysOut(Thread.currentThread().getName(),"MUD Server started on port: "+port);
+			Log.sysOut(Thread.currentThread().getName(),
+					"MUD Server started on port: "+port +" (" + CMProps.getVar(CMProps.Str.MUDNAME) + ")");
 			if (bindAddr != null)
 				Log.sysOut(Thread.currentThread().getName(),"MUD Server bound to: "+bindAddr.toString());
 			CMLib.hosts().add(this);
@@ -1344,6 +1345,7 @@ public class MUD extends Thread implements MudHost
 			CMProps.setBoolVar(CMProps.Bool.MAPFINDSNOCACHE,nocache.contains("MAPFINDERS"));
 			CMProps.setBoolVar(CMProps.Bool.ACCOUNTSNOCACHE,nocache.contains("ACCOUNTS"));
 			CMProps.setBoolVar(CMProps.Bool.PLAYERSNOCACHE,nocache.contains("PLAYERS"));
+			CMProps.setUpLowVar(CMProps.Str.MUDNAME, name);
 
 			DBConnector currentDBconnector=null;
 			String dbClass=page.getStr("DBCLASS");
@@ -1953,10 +1955,7 @@ public class MUD extends Thread implements MudHost
 			&& page.containsKey("MUD_NAME")
 			&& (page.getStr("MUD_NAME") != null)
 			&& (page.getStr("MUD_NAME").toString().trim().length()>0))
-			{
-				nameID = page.getStr("MUD_NAME").toString().trim();
-				nameID = CMStrings.replaceAll(nameID, "\"", "`");
-			}
+				nameID = page.getStr("MUD_NAME").toString().trim().replace('\'', '`');
 			else
 				System.err.println("*** Please give your mud a unique name in mud.bat or mudUNIX.sh!! ***");
 		}
@@ -2004,11 +2003,24 @@ public class MUD extends Thread implements MudHost
 			final LinkedList<HostGroup> myGroups=new LinkedList<HostGroup>();
 			HostGroup mainHostGroup=null;
 			ThreadGroup mainThreadGroup = null;
+			final Set<String> usedNames = new TreeSet<String>();
 			for(int i=0;i<iniFiles.size();i++)
 			{
 				iniFile=iniFiles.elementAt(i);
+				String mudName = nameID;
+				final Properties myPage = CMProps.loadDetachedProperties(iniFile);
+				if((i>0)
+				&& myPage.containsKey("MUD_NAME")
+				&& (myPage.get("MUD_NAME") != null)
+				&& (myPage.get("MUD_NAME").toString().trim().length()>0))
+				{
+					final String myName = myPage.get("MUD_NAME").toString().trim().replace('\'', '`');
+					if(!usedNames.contains(myName))
+						mudName = myName;
+					usedNames.add(myName);
+				}
 				final ThreadGroup G=new ThreadGroup(i+"-MUD");
-				final HostGroup H=new HostGroup(G,nameID,iniFile);
+				final HostGroup H=new HostGroup(G,mudName,iniFile);
 				if((mainHostGroup==null)||(mainThreadGroup == null))
 				{
 					mainHostGroup=H;

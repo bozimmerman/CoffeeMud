@@ -748,6 +748,30 @@ public class CMProps extends Properties
 	}
 
 	/**
+	 * Creates a new properties object detached from any thread group
+	 * and loads the given ini file.
+	 * @param iniFile the path and name of the ini file to load
+	 * @return the new properties object
+	 */
+	public static final Properties loadDetachedProperties(final String iniFile)
+	{
+		final CMFile F=new CMFile(iniFile,null);
+		if(F.exists())
+		{
+			final Properties P = new Properties();
+			try
+			{
+				P.load(new ByteArrayInputStream(F.textUnformatted().toString().getBytes()));
+				return P;
+			}
+			catch (final IOException e)
+			{
+			}
+		}
+		return new Properties();
+	}
+
+	/**
 	 * Returns an instance of CMProps appropriate to either
 	 * the given session, or otherwise the current thread,
 	 * as normal.
