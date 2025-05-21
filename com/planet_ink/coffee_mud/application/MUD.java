@@ -344,7 +344,8 @@ public class MUD extends Thread implements MudHost
 			}
 			catch (final UnknownHostException e)
 			{
-				Log.errOut(Thread.currentThread().getName(),"ERROR: MUD Server could not bind to address " + CMProps.getVar(CMProps.Str.MUDBINDADDRESS));
+				Log.errOut(Thread.currentThread().getName(),
+						CMProps.getVar(CMProps.Str.MUDNAME)+" Server could not bind to address " + CMProps.getVar(CMProps.Str.MUDBINDADDRESS));
 			}
 		}
 
@@ -353,9 +354,10 @@ public class MUD extends Thread implements MudHost
 			servsock=new ServerSocket(port, q_len, bindAddr);
 
 			Log.sysOut(Thread.currentThread().getName(),
-					"MUD Server started on port: "+port +" (" + CMProps.getVar(CMProps.Str.MUDNAME) + ")");
+					CMProps.getVar(CMProps.Str.MUDNAME)+" Server started on port: "+port);
 			if (bindAddr != null)
-				Log.sysOut(Thread.currentThread().getName(),"MUD Server bound to: "+bindAddr.toString());
+				Log.sysOut(Thread.currentThread().getName(),
+						CMProps.getVar(CMProps.Str.MUDNAME)+" Server bound to: "+bindAddr.toString());
 			CMLib.hosts().add(this);
 			String oldPorts = CMProps.getVar(CMProps.Str.LOCALMUDPORTS);
 			if(oldPorts == null)
