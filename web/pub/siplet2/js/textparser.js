@@ -36,6 +36,21 @@ function TEXT(textParsers)
 		return null;
 	};
 
+	this.flush = function() {
+		var s = '';
+		for(var x=0;x<textParsers.length;x++)
+		{
+			var p = textParsers[x];
+			s += p.flush();
+		}
+		if(this.resume != null)
+		{
+			s += this.resume.text;
+			this.resume = null;
+		}
+		return s;
+	};
+
 	this.process = function(str)
 	{
 		if(this.resume != null)

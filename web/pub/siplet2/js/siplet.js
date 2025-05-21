@@ -110,7 +110,7 @@ function SipletWindow(windowName)
 		if(!s) return s;
 		var oldResume = this.text.resume;
 		this.text.resume = null;
-		s=this.text.process(s);
+		s=this.text.process(s) + this.text.flush();
 		if((!this.mxp.active())&&(this.fixVariables))
 			s = this.fixVariables(s);
 		this.text.resume = oldResume;

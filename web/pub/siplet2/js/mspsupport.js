@@ -28,6 +28,21 @@ var MSP = function(sipwin)
 		return '\0' + s;
 	}
 
+	this.flush = function() {
+		var s = '';
+		if(this.tag != null)
+		{
+			s += this.tag;
+			this.tag = null;
+		}
+		if(this.data != null)
+		{
+			s += this.data;
+			this.data = null;
+		}
+		return s;
+	};
+
 	this.process = function(c) {
 		if (!this.active())
 			return null;

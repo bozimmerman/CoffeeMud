@@ -416,6 +416,12 @@ var MXP = function(sipwin)
 		else
 			return '&lt;\0'+s.substr(1);
 	};
+	
+	this.flush = function() {
+		var s = this.partial;
+		this.partial = null;
+		return s == null ? '' : s;
+	};
 
 	this.process = function(c) {
 		if(!this.active())
