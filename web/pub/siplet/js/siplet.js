@@ -576,15 +576,21 @@ function SipletWindow(windowName)
 	this.createGauge = function(entity,caption,color,value,max)
 	{
 		var gaugedata = {};
+		var add = true;
 		for(var i=0;i<this.gauges.length;i++)
-			if(this.gauges[i].caption == caption)
+			if((this.gauges[i].caption == caption)
+			&&(this.gauges[i].entity == entity))
+			{
+				add=false;
 				gaugedata = this.gauges[i];
+			}
 		gaugedata.entity=entity;
 		gaugedata.caption=caption;
 		gaugedata.color=color;
 		gaugedata.value=value;
 		gaugedata.max=max;
-		this.gauges[this.gauges.length]=gaugedata;
+		if(add)
+			this.gauges.push(gaugedata);
 		var gaugeHeight = 20;
 		if(this.gaugeWindow == null)
 		{
