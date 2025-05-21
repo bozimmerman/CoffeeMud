@@ -44,6 +44,7 @@ public class ClanHelper extends StdBehavior
 	protected int		num			= 999;
 	protected String	clanName	= "";
 	protected String	msg			= null;
+	protected boolean	clanSet		= false;
 
 	@Override
 	public String accountForYourself()
@@ -54,13 +55,43 @@ public class ClanHelper extends StdBehavior
 			return "fellow clan members protecting";
 	}
 
+	protected boolean setClan(final MOB observer)
+	{
+		if(clanName.length()>0)
+		{
+			Clan C=CMLib.clans().getClan(clanName.trim());
+			if(C==null)
+				C=CMLib.clans().findClan(clanName.trim());
+			if(C!=null)
+			{
+				observer.setClan(C.clanID(),C.getGovernment().getAcceptPos());
+				return true;
+			}
+			else
+				return false;
+		}
+		return true;
+	}
+
+	protected void ensureObserverClan(final MOB observer)
+	{
+		if(!clanSet)
+		{
+			clanSet=true;
+			if(!setClan(observer))
+				Log.errOut("ClanHelper","Unknown clan "+clanName+" for "+observer.Name()+" in "+CMLib.map().getDescriptiveExtendedRoomID(CMLib.map().roomLocation(observer)));
+		}
+	}
+
 	@Override
 	public void startBehavior(final PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
 		num=999;
+		clanSet = false;
 		if(forMe instanceof MOB)
 		{
+			final MOB observer=(MOB)forMe;
 			String clanName=parms.trim();
 			final int x=clanName.lastIndexOf(' ');
 			if(x>0)
@@ -86,17 +117,8 @@ public class ClanHelper extends StdBehavior
 				}
 				clanName=CMParms.combine(V);
 			}
-			if(clanName.length()>0)
-			{
-				this.clanName=clanName;
-				Clan C=CMLib.clans().getClan(clanName.trim());
-				if(C==null)
-					C=CMLib.clans().findClan(clanName.trim());
-				if(C!=null)
-					((MOB)forMe).setClan(C.clanID(),C.getGovernment().getAcceptPos());
-				else
-					Log.errOut("ClanHelper","Unknown clan "+clanName+" for "+forMe.Name()+" in "+CMLib.map().getDescriptiveExtendedRoomID(CMLib.map().roomLocation(forMe)));
-			}
+			this.clanName=clanName;
+			clanSet = setClan(observer);
 		}
 	}
 
@@ -104,14 +126,14 @@ public class ClanHelper extends StdBehavior
 	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
-		if((msg.target()==null)||(!(msg.target() instanceof MOB)))
+		final MOB observer=(MOB)affecting;
+		if((observer==null)||(msg.target()==null))
+			return;
+		ensureObserverClan(observer);
+		if(!(msg.target() instanceof MOB))
 			return;
 		final MOB source=msg.source();
-		final MOB observer=(MOB)affecting;
 		final MOB target=(MOB)msg.target();
-
-		if((target==null)||(observer==null))
-			return;
 		if((source!=observer)
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(target!=observer)

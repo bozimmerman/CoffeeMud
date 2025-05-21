@@ -1535,18 +1535,6 @@ public class MUD extends Thread implements MudHost
 					Log.sysOut(Thread.currentThread().getName(),"Socials loaded    : "+list.size());
 			}
 
-			final Map<String,Clan> clanPostLoads=new TreeMap<String,Clan>();
-			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.CLANS.name())))
-			{
-				final List<Clan> clans = CMLib.database().DBReadAllClans();
-				for(final Clan C : clans)
-				{
-					CMLib.clans().addClan(C);
-					clanPostLoads.put(C.clanID(), C);
-				}
-				Log.sysOut(Thread.currentThread().getName(),"Clans loaded      : "+CMLib.clans().numClans());
-			}
-
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.FACTIONS.name())))
 				serviceEngine.startTickDown(Thread.currentThread().getThreadGroup(),CMLib.factions(),Tickable.TICKID_MOB,CMProps.getTickMillis(),10);
 
@@ -1627,10 +1615,21 @@ public class MUD extends Thread implements MudHost
 				}
 			}
 
-			if(clanPostLoads.size()>0)
+			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.CLANS.name())))
 			{
-				final int num = CMLib.database().DBReadClanItems(clanPostLoads);
-				Log.sysOut(Thread.currentThread().getName(),"Clan owned items  : "+num);
+				final Map<String,Clan> clanPostLoads=new TreeMap<String,Clan>();
+				final List<Clan> clans = CMLib.database().DBReadAllClans();
+				for(final Clan C : clans)
+				{
+					CMLib.clans().addClan(C);
+					clanPostLoads.put(C.clanID(), C);
+				}
+				Log.sysOut(Thread.currentThread().getName(),"Clans loaded      : "+CMLib.clans().numClans());
+				if(clanPostLoads.size()>0)
+				{
+					final int num = CMLib.database().DBReadClanItems(clanPostLoads);
+					Log.sysOut(Thread.currentThread().getName(),"Clan owned items  : "+num);
+				}
 			}
 
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.QUEST.name())))
