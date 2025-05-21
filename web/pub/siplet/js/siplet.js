@@ -83,6 +83,8 @@ function SipletWindow(windowName)
 		};
 		this.wsocket.onclose = function(event)  
 		{ 
+			if(me.tab && me.tab.innerHTML.startsWith("Connecting"))
+				me.tab.innerHTML = 'Failed connection to ' + url;
 			me.plugins.postEvent({type: 'closesock',data:url});
 			me.wsopened=false; 
 			me.tab.style.backgroundColor="#FF555B";
@@ -908,6 +910,7 @@ function AddNewSipletTab(url)
 	newWinContainer.style.cssText = 'position:absolute;top:0%;left:0%;width:100%;height:100%;'
 	var siplet = new SipletWindow(windowName); // makes a deep copy
 	siplet.tab = AddNewTab();
+	siplet.tab.innerHTML = 'Connecting to ' + url + '...';
 	siplet.url = url;
 	window.siplets.push(siplet);
 	siplet.connect(url);

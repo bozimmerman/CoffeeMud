@@ -18,39 +18,58 @@ TODO: (optional) refactor to sep out triggers, alias, etc libs
 </HEAD>
 <BODY>
 <FONT COLOR=WHITE>
-<SCRIPT LANGUAGE=JavaScript src="js/config.js"></SCRIPT>
-<SCRIPT LANGUAGE=JavaScript src="js/input.js"></SCRIPT>
-<SCRIPT LANGUAGE=JavaScript src="js/menu.js"></SCRIPT>
-<SCRIPT LANGUAGE=JavaScript src="js/tabs.js"></SCRIPT>
-<SCRIPT LANGUAGE=JavaScript src="js/util.js"></SCRIPT>
-<SCRIPT LANGUAGE=JavaScript src="js/plugins.js"></SCRIPT>
-<SCRIPT LANGUAGE=JavaScript src="js/ctxmenu.js"></SCRIPT>
-<SCRIPT LANGUAGE=JavaScript src="js/binparser.js"></SCRIPT>
-<SCRIPT LANGUAGE=JavaScript src="js/ansiparser.js"></SCRIPT>
-<SCRIPT LANGUAGE=JavaScript src="js/telnetparser.js"></SCRIPT>
-<SCRIPT LANGUAGE=JavaScript src="js/textparser.js"></SCRIPT>
-<SCRIPT LANGUAGE=JavaScript src="js/mspsupport.js"></SCRIPT>
-<SCRIPT LANGUAGE=JavaScript src="js/mxpsupport.js"></SCRIPT>
-<SCRIPT LANGUAGE=JavaScript src="js/siplet.js"></SCRIPT>
+<div id="loadingmsg" style="background-color:yellow;color:blue;height:100%;width:100%;display:flex;justify-content:center;align-items:center;">
+<h1>Loading Siplet...</h1>
+</div>
 <div id="menuarea"></div>
 <div id="tabarea"></div>
 <div id="windowarea"></div>
-<div id="inputarea">
+<div id="inputarea" style="visibility:hidden">
     <textarea rows=3 type="text" id="input"></textarea>
 </div>
 <SCRIPT LANGUAGE=JavaScript>
-configureInput(document.getElementById('inputarea'), document.getElementById('input'));
-configureMenu(document.getElementById('menuarea'));
-configureTabs(document.getElementById('tabarea'));
-var tabStyle = window.getComputedStyle(document.getElementById('tabarea'));
-var winAreaTop = parseInt(tabStyle.top) + parseInt(tabStyle.height) + 1;
-var winAreaHeight = 'calc(100% - '+(winAreaTop+inputAreaHeight)+'px)';
-window.windowArea = document.getElementById('windowarea');
-window.windowArea.style.cssText='background-color:black;position:absolute;width:100%;top:'+winAreaTop+'px;height:'+winAreaHeight+';';
-window.addEventListener("beforeunload", CloseAllSiplets);
-LoadGlobalPhonebook();
-document.body.style.fontFamily='Arial';
-document.body.style.fontSize='14';
+function ConfigureSiplet()
+{
+	document.getElementById('loadingmsg').style.visibility='hidden';
+	document.getElementById('inputarea').style.visibility='visible';
+	configureInput(document.getElementById('inputarea'), document.getElementById('input'));
+	configureMenu(document.getElementById('menuarea'));
+	configureTabs(document.getElementById('tabarea'));
+	var tabStyle = window.getComputedStyle(document.getElementById('tabarea'));
+	var winAreaTop = parseInt(tabStyle.top) + parseInt(tabStyle.height) + 1;
+	var winAreaHeight = 'calc(100% - '+(winAreaTop+inputAreaHeight)+'px)';
+	window.windowArea = document.getElementById('windowarea');
+	window.windowArea.style.cssText='background-color:black;position:absolute;width:100%;top:'+winAreaTop+'px;height:'+winAreaHeight+';';
+	window.addEventListener("beforeunload", CloseAllSiplets);
+	LoadGlobalPhonebook();
+	document.body.style.fontFamily='Arial';
+	document.body.style.fontSize='14';
+}
+var loadableScripts = [
+	"js/config.js", "js/input.js", "js/menu.js", "js/tabs.js",
+	"js/util.js", "js/plugins.js", "js/ctxmenu.js", "js/binparser.js",
+	"js/ansiparser.js", "js/telnetparser.js", "js/textparser.js",
+	"js/mspsupport.js", "js/mxpsupport.js", "js/siplet.js"
+]
+function LoadJavaScript()
+{
+	if(loadableScripts.length == 0)
+		ConfigureSiplet();
+	else
+	{
+		var url = loadableScripts[0];
+		loadableScripts.splice(0,1);
+		var scriptElement = document.createElement("script");
+		scriptElement.src = url;
+		scriptElement.onload = LoadJavaScript;
+		scriptElement.onerror=function() { 
+			window.alert('Unable to load.  Click OK to refresh.');
+			location.reload();
+		};
+		document.head.appendChild(scriptElement);
+	}
+}
+LoadJavaScript();
 </SCRIPT>
 </FONT>
 </BODY>

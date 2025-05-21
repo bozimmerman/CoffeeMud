@@ -117,7 +117,6 @@ function AddNewTab()
 		tab.onclick = function() {
 			SetCurrentTab(currentTab);
 		};
-		tab.innerHTML = 'connecting...';
 		if(tabTabs.length == 9)
 			tabRow.appendChild(tab);
 		else
