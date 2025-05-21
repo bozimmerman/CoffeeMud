@@ -11,7 +11,11 @@ function nowhidemenu()
 }
 
 function contextmenu(obj, e, href, hint, prompt) {
-	return dropdownmenu(obj, e, href, hint, prompt, e.pageX-40, e.pageY-10, 200);
+	var menu= dropdownmenu(obj, e, href, hint, prompt, e.pageX-40, e.pageY-10, 200);
+	menu.style.border = "1px solid";
+	menu.style.borderColor = "white";
+	menu.style.left = (parseInt(menu.style.left || "0") + 10) + "px";
+	return menu;
 }
 
 function dropdownmenu(obj, e, href, hint, prompt, x,y,width) {
@@ -31,8 +35,8 @@ function dropdownmenu(obj, e, href, hint, prompt, x,y,width) {
 					   + "font-family: monospace;"
 					   + "font-size: 12px;"
 					   + "position: fixed;"
-					   + "background: darkgray;"
-					   + "color: black;"
+					   + "background: black;"
+					   + "color: yellow;"
 					   + "cursor: pointer;"
 					   + "z-order: 999;"
 					   + "z-index: 999;"
