@@ -24,7 +24,8 @@ replaced, or action taken.  The pattern may be a
 string that matches the beginning of the user input. All alias patterns
 are case-insensitive.</LI>  
 <LI>Replace: The string to replace the pattern with, when matched in user input.  If RegEx is checked,
-then you may use $1, $2, etc to insert text from a capture group.  The matched and replaced
+then you may use &amp;match1;, &amp;match2;, etc to insert text from a capture group into a replacement
+string or an action argument.  The matched and replaced
 string is then the one that is submitted to the current connected mud.
 <LI>Action: (Optional) Take an additional <a href="javascript:menuHelp('Actions')">Action</a>.  
 </UL>

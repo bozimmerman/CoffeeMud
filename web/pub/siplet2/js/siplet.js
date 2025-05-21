@@ -282,9 +282,13 @@ function SipletWindow(windowName)
 					var match = trig.pattern.exec(this.textBuffer);
 					while(match !== null)
 					{
+						for(var i=0;i<match.length;i++)
+							this.setVariable('match'+i,match[i]);
 						trig.prev = this.textBufferPruneIndex + match.index + 1;
 						var action = this.fixVariables(trig.action.replaceAll('\\n','\n'));
 						try { eval(action); } catch(e) {};
+						for(var i=0;i<match.length;i++)
+							this.setVariable('match'+i,null);
 						match = trig.pattern.exec(this.textBuffer);
 						if(trig.once)
 							trig.disabled=true;
@@ -342,11 +346,16 @@ function SipletWindow(windowName)
 			{
 				if(alias.regex && alias.pattern && alias.pattern.test)
 				{
-					if(alias.pattern.test(txt))
+					var match = alias.pattern.exec(txt);
+					if(match !== null)
 					{
-						txt = txt.replace(alias.pattern,alias.replace);
+						for(var i=0;i<match.length;i++)
+							this.setVariable('match'+i,match[i]);
+						txt = txt.replace(alias.pattern,this.fixVariables(alias.replace));
 						var action = this.fixVariables(alias.action.replaceAll('\\n','\n'));
 						try { eval(action); } catch(e) {};
+						for(var i=0;i<match.length;i++)
+							this.setVariable('match'+i,null);
 						return txt
 					}
 				}
@@ -708,7 +717,15 @@ function SipletWindow(windowName)
 
 	this.setVariable = function(key, value)
 	{
-		this.mxp.entities[this.fixVariables(key)] = this.fixVariables(value);
+		if((key !== undefined)&&(value !== undefined)&&(key != null))
+		{
+			key = this.fixVariables(key);
+			if(value == null)
+				delete this.mxp.entities[key];
+			else 
+				this.mxp.entities[key] = this.fixVariables(value);
+			
+		}
 	};
 	
 	this.getVariable = function(key)

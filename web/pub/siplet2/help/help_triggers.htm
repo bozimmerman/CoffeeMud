@@ -20,7 +20,8 @@ a global trigger name, then the phonebook one will be preferred.</LI>
 action to be taken.  The pattern may be a 
 <a href="javascript:menuHelp('Regex')">Regular Expression</a> or a simple
 string that matches the the mud output. All trigger patterns
-are case-insensitive.</LI>
+are case-insensitive, and &amp;match1;, &amp;match2;, may be used in the action
+argument to add in capture group strings from regular expressions.</LI>
 <LI>Run Once: When checked, a trigger will only run its action one time, and then disable it.  
 <LI>Action: The <a href="javascript:menuHelp('Actions')">Action</a> to take when the trigger matches.  
 <LI>Allowed: A special javascript expression that must evaluate to true before this 
