@@ -61,6 +61,12 @@ Graveyard/Crypt: Description: Haunted cemeteries, catacombs, or mausoleums with 
 Castle/Fortress: Description: Royal strongholds, haunted keeps, or war-torn forts with knights, ghosts, or bandits.
 Volcano/Lava: Description: Fiery craters, magma caves, or demon forges with elemental creatures (e.g., fire elementals, demons).
 Sky/Clouds: Description: Floating islands, storm temples, or aerial lairs with flying creatures (e.g., harpies, cloud giants).
+More layouts:
+Branches: tree layout, but the spokes also branch, etc.
+Clump layout:  perfect square, interconnected, but random leaf rooms with 1 exit
+Sky versions of these layouts, that split the allotment into multiple levels with 1 way up/down for mansions or whatever.
+
+
  -->
 <string id="randomareasize" select="any-1">
 	<string condition="$areasize!=''">$areasize</string>
