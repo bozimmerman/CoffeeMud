@@ -49,7 +49,7 @@
 #                be evaluated by the MOBPROG Scriptable system.
 #         ~      Separates one or more responses on a line.  May be followed by
 #                 one of operators: ", :, or !.
-#        #@      switches to another chat database until a different player.  Use
+#        #@      switches to another chat database temporarily until a different player.  Use
 #                #@default to link to the default database.  Put this at the end of 
 #                the response.  Use #@+ to append a new database instead of switching.
 #

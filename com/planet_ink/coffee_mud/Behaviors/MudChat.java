@@ -76,7 +76,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 	protected final static int	RESPONSE_DELAY		= 2;
 	protected final static int	TALK_WAIT_DELAY		= 8;
-	protected final static int	TALK_SWITCH_DELAY	= 360000;
+	protected final static int	TALK_SWITCH_EXPIRE	= 360000;
 
 	/**
 	 * Enum for different match types
@@ -712,7 +712,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 					final PairList<ChattyGroup,Long> list = this.getChatGroups(source, allGroups);
 					if(!list.containsFirst(matchedCG))
 					{
-						final long expire = System.currentTimeMillis() + TALK_SWITCH_DELAY;
+						final long expire = System.currentTimeMillis() + TALK_SWITCH_EXPIRE;
 						if(!add)
 							list.clear();
 						list.add(new Pair<ChattyGroup, Long>(matchedCG,Long.valueOf(expire)));
@@ -1113,7 +1113,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			{
 				if((this.chatEntryExpire < Long.MAX_VALUE)
 				&&(this.chatEntryExpire < System.currentTimeMillis() + 60000))
-					this.chatEntryExpire = this.chatEntryExpire + 60000L;
+					this.chatEntryExpire = this.chatEntryExpire + TALK_SWITCH_EXPIRE;
 			}
 			else
 			if(this.lastSpeakerM!=null)
