@@ -718,6 +718,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 						list.add(new Pair<ChattyGroup, Long>(matchedCG,Long.valueOf(expire)));
 						if(expire < this.chatEntryExpire)
 							this.chatEntryExpire = expire;
+						this.currChatEntries = null;
 					}
 				}
 			}
