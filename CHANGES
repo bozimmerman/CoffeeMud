@@ -1,5 +1,5 @@
 # Build 5.10.5 Release ??/??/2025
-  *  DATABASE CHANGED! (new CBCDAT table)
+  *  DATABASE CHANGED! (new CMCDAC table)
   1. New Generic Commands!, see GameBuildersGuide for more information.
   2. BodyPiercing is now recipe driven, and recipes are now split off by level.
   3. New Skill: Diary
