@@ -41,7 +41,7 @@
 #        :       Issue repsonse as "emote". Muds and 2nd column only. Optional.
 #        !       Issue response as command. Muds and 2nd column only. Optional.
 #                 Note, you do not need a space after an :,", or !
-#  
+#  special response variables:
 #        $?      Are variables where ? is a case sensitive letter.
 #                 $r is rest of sentence, $n is its name, $t is target's name.
 #                 They may appear anywhere in the response, multiple times.
@@ -49,7 +49,10 @@
 #                be evaluated by the MOBPROG Scriptable system.
 #         ~      Separates one or more responses on a line.  May be followed by
 #                 one of operators: ", :, or !.
-#        
+#        #@      switches to another chat database until a different player.  Use
+#                #@default to link to the default database.  Put this at the end of 
+#                the response.  Use #@+ to append a new database instead of switching.
+#
 #Some special notes:
 #	#,',",weights, and the first (,[,or { must be in column one.
 #
@@ -901,10 +904,10 @@
 
 (who programmed  )
 9that is my secret!
-9cbusch@ub.d.umn.edu programmed me. he did a good job, I think.
+9cbusch and bz programmed me. they did a good job, I think.
 
 (who programmed you )
-9cbusch@ub.d.umn.edu programmed me. he did a good job, I think.
+9cbusch and bz programmed me. they did a good job, I think.
 
 (who is your owner )
 9: giggles, Judge Dredd owns me, body and soul!

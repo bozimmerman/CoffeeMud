@@ -35,6 +35,8 @@ import java.util.*;
    limitations under the License.
 */
 
+import org.mozilla.javascript.JavaScriptException;
+
 public class MudChat extends StdBehavior implements ChattyBehavior
 {
 	@Override
@@ -49,19 +51,23 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	// each chat group includes a string describing
 	// qualifying mobs followed by one or more chat
 	// collections.
-	protected ChattyGroup	myChatGroup			= null;
-	protected String		myOldName			= "";
-	protected ChattyEntry[]	addedChatEntries	= new ChattyEntry[0];
 	// chat collection: first string is the pattern
 	// match string
 	// following strings are the proposed responses.
 	//----------------------------------------------
 
-	protected MOB		lastReactedTo		= null;
-	protected MOB		lastRespondedTo		= null;
-	protected String	lastThingSaid		= null;
-	protected int		tickDown			= 3;
-	protected int		talkDown			= 0;
+	protected final PairList<ChattyGroup, Long> chatGroups = new PairSVector<ChattyGroup, Long>();
+	protected volatile long chatEntryExpire = Long.MAX_VALUE;
+	protected ChattyEntry[] currChatEntries = null;
+	protected ChattyEntry[]	addedChatEntries= new ChattyEntry[0];
+	protected ChattyGroup	baseChatGroup 	= null;
+	protected String 		myOldName 		= "";
+	protected volatile MOB	lastReactedToM	= null;
+	protected volatile MOB	lastRespondedToM= null;
+	protected volatile MOB	lastSpeakerM	= null;
+	protected String		lastThingSaid	= null;
+	protected int			tickDown		= 3;
+	protected volatile int	talkDown		= 0;
 	// responseQue is a qued set of commands to
 	// run through the standard command processor,
 	// on tick or more.
@@ -70,6 +76,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 	protected final static int	RESPONSE_DELAY		= 2;
 	protected final static int	TALK_WAIT_DELAY		= 8;
+	protected final static int	TALK_SWITCH_DELAY	= 360000;
 
 	/**
 	 * Enum for different match types
@@ -170,11 +177,22 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		public String[] responses;
 		public int weight;
 		public boolean combatFlag;
+		public String switchDB = "";
 		public ChattyTestResponse(final String resp, final boolean combatFlag)
 		{
 			weight=CMath.s_int(""+resp.charAt(0));
 			this.combatFlag=combatFlag;
 			responses=CMParms.parseSquiggleDelimited(resp.substring(1),true).toArray(new String[0]);
+			for(int i=0;i<responses.length;i++)
+			{
+				final int x = responses[i].lastIndexOf("$@");
+				if(x>0)
+				{
+					final String db = responses[i].substring(x+2).trim();
+					switchDB = db;
+					responses[i] = responses[i].substring(0,x);
+				}
+			}
 		}
 	}
 
@@ -267,7 +285,10 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			addedChatEntries=new ChattyEntry[0];
 		}
 		responseQue=new SLinkedList<ChattyResponse>();
-		myChatGroup=null;
+		baseChatGroup = null;
+		currChatEntries=null;
+		chatGroups.clear();
+		this.tickDown=3;
 	}
 
 	@Override
@@ -279,7 +300,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	@Override
 	public MOB getLastRespondedTo()
 	{
-		return lastRespondedTo;
+		return lastRespondedToM;
 	}
 
 	protected static ChattyGroup newChattyGroup(final String name)
@@ -566,8 +587,9 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 	protected ChattyGroup getMyBaseChatGroup(final MOB forMe, final ChattyGroup[] chatGroups)
 	{
-		if((myChatGroup!=null)&&(myOldName.equals(forMe.Name())))
-			return myChatGroup;
+		if((baseChatGroup!=null)
+		&&(myOldName.equals(forMe.Name())))
+			return baseChatGroup;
 		myOldName=forMe.Name();
 		ChattyGroup matchedCG=null;
 		final String parms=getParms();
@@ -589,33 +611,71 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			if(plusParms != null)
 				this.addChatEntries(plusParms);
 		}
+		if(matchedCG==null)
+		{
+			matchedCG=matchChatGroup(forMe,CMLib.english().removeArticleLead(CMStrings.removeColors(myOldName.toUpperCase())),chatGroups);
+			if(matchedCG==null)
+			{
+				matchedCG=matchChatGroup(forMe,forMe.charStats().raceName(),chatGroups);
+				if(matchedCG==null)
+					matchedCG=matchChatGroup(forMe,forMe.charStats().getCurrentClass().name(),chatGroups);
+			}
+		}
 		if(matchedCG!=null)
+		{
+			baseChatGroup =  matchedCG;
 			return matchedCG;
-		matchedCG=matchChatGroup(forMe,CMLib.english().removeArticleLead(CMStrings.removeColors(myOldName.toUpperCase())),chatGroups);
-		if(matchedCG!=null)
-			return matchedCG;
-		matchedCG=matchChatGroup(forMe,forMe.charStats().raceName(),chatGroups);
-		if(matchedCG!=null)
-			return matchedCG;
-		matchedCG=matchChatGroup(forMe,forMe.charStats().getCurrentClass().name(),chatGroups);
-		if(matchedCG!=null)
-			return matchedCG;
+		}
+		baseChatGroup =  chatGroups[0];
 		return chatGroups[0];
 	}
 
-	protected ChattyGroup getMyChatGroup(final MOB forMe, final ChattyGroup[] chatGroups)
+	protected PairList<ChattyGroup, Long> getChatGroups(final MOB forMe, final ChattyGroup[] chatGroups)
 	{
-		if((myChatGroup!=null)&&(myOldName.equals(forMe.Name())))
-			return myChatGroup;
-		ChattyGroup chatGrp=getMyBaseChatGroup(forMe,chatGroups);
-		if((addedChatEntries==null)||(addedChatEntries.length==0))
-			return chatGrp;
-		final List<ChattyEntry> newEntries = new ArrayList<ChattyEntry>();
-		newEntries.addAll(Arrays.asList(addedChatEntries));
-		newEntries.addAll(Arrays.asList(chatGrp.entries));
-		chatGrp=chatGrp.clone();
-		chatGrp.entries = newEntries.toArray(new ChattyEntry[0]);
-		return chatGrp;
+		if((this.chatGroups != null)
+		&&(System.currentTimeMillis()<this.chatEntryExpire)
+		&&(myOldName.equals(forMe.Name())))
+			return this.chatGroups;
+		long newExpire = Long.MAX_VALUE;
+		if(this.chatGroups.size()>0)
+		{
+			final Iterator<Pair<ChattyGroup,Long>> i = this.chatGroups.iterator();
+			this.chatGroups.clear();
+			for(;i.hasNext();)
+			{
+				final Pair<ChattyGroup,Long> p = i.next();
+				if(System.currentTimeMillis()<p.second.longValue())
+				{
+					this.chatGroups.add(p);
+					if(p.second.longValue() < newExpire)
+						newExpire = p.second.longValue();
+				}
+			}
+		}
+		if((!myOldName.equals(forMe.Name()))
+		||(this.chatGroups.size()==0))
+		{
+			this.chatGroups.clear();
+			final ChattyGroup chatGrp=getMyBaseChatGroup(forMe,chatGroups);
+			this.chatGroups.add(chatGrp, Long.valueOf(Long.MAX_VALUE));
+		}
+		return this.chatGroups;
+	}
+
+	protected ChattyEntry[] getChatEntries(final MOB forMe, final ChattyGroup[] chatGroups)
+	{
+		if((this.currChatEntries != null)
+		&&(System.currentTimeMillis()<this.chatEntryExpire)
+		&&(myOldName.equals(forMe.Name())))
+			return this.currChatEntries;
+		final XArrayList<ChattyEntry> newEntries = new XArrayList<ChattyEntry>();
+		if(addedChatEntries != null)
+			newEntries.addAll(addedChatEntries);
+		final PairList<ChattyGroup, Long> currGroups = getChatGroups(forMe,chatGroups);
+		for(final Iterator<ChattyGroup> i=currGroups.firstIterator();i.hasNext();)
+			newEntries.addAll(i.next().entries);
+		this.currChatEntries = newEntries.toArray(new ChattyEntry[newEntries.size()]);
+		return this.currChatEntries;
 	}
 
 	protected void queResponse(final List<Pair<ChattyTestResponse,String>> responses, final MOB source, final MOB target)
@@ -641,6 +701,26 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 		if(selection!=null)
 		{
+			if(selection.switchDB.length()>0)
+			{
+				final ChattyGroup[] allGroups = getChatGroups(getParms());
+				final boolean add = selection.switchDB.startsWith("+");
+				final String dbname = add?selection.switchDB.substring(1).trim():selection.switchDB;
+				final ChattyGroup matchedCG=matchChatGroup(source, dbname, allGroups);
+				if(matchedCG != null)
+				{
+					final PairList<ChattyGroup,Long> list = this.getChatGroups(source, allGroups);
+					if(!list.containsFirst(matchedCG))
+					{
+						final long expire = System.currentTimeMillis() + TALK_SWITCH_DELAY;
+						if(!add)
+							list.clear();
+						list.add(new Pair<ChattyGroup, Long>(matchedCG,Long.valueOf(expire)));
+						if(expire < this.chatEntryExpire)
+							this.chatEntryExpire = expire;
+					}
+				}
+			}
 			for(String finalCommand : selection.responses)
 			{
 				if(finalCommand.trim().length()==0)
@@ -1025,6 +1105,30 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		return rollingTruth;
 	}
 
+	protected void checkReactionReset(final MOB mob)
+	{
+		synchronized(this)
+		{
+			if(mob == this.lastSpeakerM)
+			{
+				if((this.chatEntryExpire < Long.MAX_VALUE)
+				&&(this.chatEntryExpire < System.currentTimeMillis() + 60000))
+					this.chatEntryExpire = this.chatEntryExpire + 60000L;
+			}
+			else
+			if(this.lastSpeakerM!=null)
+			{
+				if(this.chatEntryExpire < Long.MAX_VALUE)
+				{
+					this.chatGroups.clear();
+					this.currChatEntries = null;
+					this.chatEntryExpire = Long.MAX_VALUE;
+				}
+				this.lastSpeakerM = mob;
+			}
+		}
+	}
+
 	@Override
 	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
@@ -1045,7 +1149,6 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		&&(CMLib.flags().canBeSeenBy(meMob,srcMob)))
 		{
 			List<Pair<ChattyTestResponse,String>> myResponses=null;
-			myChatGroup=getMyChatGroup(meMob,getChatGroups(getParms()));
 			final String rest[]=new String[1];
 			final boolean combat=((meMob.isInCombat()))||(srcMob.isInCombat());
 
@@ -1058,14 +1161,14 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				  &&(talkDown<=0)
 				  &&(srcMob.location().numPCInhabitants()<3)))
 			&&(CMLib.flags().canBeHeardSpeakingBy(srcMob,meMob))
-			&&(myChatGroup!=null)
-			&&(lastReactedTo!=msg.source())
+			&&(lastReactedToM!=msg.source())
 			&&(msg.sourceMessage()!=null)
 			&&(msg.targetMessage()!=null)
 			&&((str=CMStrings.getSayFromMessage(msg.sourceMessage()))!=null))
 			{
+				checkReactionReset(msg.source());
 				str=CMLib.english().stripEnglishPunctuation(str).toLowerCase().trim();
-				for(final ChattyEntry entry : myChatGroup.entries)
+				for(final ChattyEntry entry : getChatEntries(meMob, getChatGroups(getParms())))
 				{
 					final ChatExpression expression=entry.expression;
 					if((expression.type==ChatMatchType.SAY)
@@ -1093,8 +1196,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			&&(CMLib.flags().canBeSeenBy(meMob,srcMob))
 			&&(!srcMob.isMonster())
 			&&(talkDown<=0)
-			&&(lastReactedTo!=msg.source())
-			&&(myChatGroup!=null))
+			&&(lastReactedToM!=msg.source()))
 			{
 				str=null;
 				ChatMatchType matchType = ChatMatchType.EMOTE;
@@ -1112,7 +1214,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				}
 				if(str!=null)
 				{
-					for(final ChattyEntry entry : myChatGroup.entries)
+					checkReactionReset(msg.source());
+					for(final ChattyEntry entry : getChatEntries(meMob,getChatGroups(getParms())))
 					{
 						final ChatExpression expression=entry.expression;
 						if((expression.type==matchType)
@@ -1132,8 +1235,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 			if(myResponses!=null)
 			{
-				lastReactedTo=msg.source();
-				lastRespondedTo=msg.source();
+				lastReactedToM=msg.source();
+				lastRespondedToM=msg.source();
 				queResponse(myResponses,meMob,srcMob);
 			}
 		}
@@ -1147,44 +1250,42 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		&&(ticking instanceof MOB)
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MUDCHAT)))
 		{
-			if(talkDown>0)
-				talkDown--;
-
-			if(tickDown>=0)
+			if(tickDown>0)
 			{
 				--tickDown;
-				if(tickDown<0)
-				{
-					myChatGroup=getMyChatGroup((MOB)ticking,getChatGroups(getParms()));
-				}
+				return true;
 			}
-			if((myChatGroup!=null)&&(myChatGroup.tickies.length>0) && canActAtAll(ticking))
-			{
-				final boolean combat = ((MOB)ticking).isInCombat();
-				List<Pair<ChattyTestResponse,String>> myResponses=null;
-				for(final ChattyEntry entry : myChatGroup.tickies)
-				{
-					if((entry.combatEntry==combat)
-					&&(this.match((MOB)ticking, entry.expression, CMLib.dice().rollPercentage())))
-					{
-						myResponses=new ArrayList<Pair<ChattyTestResponse,String>>();
-						for(final ChattyTestResponse c : entry.responses)
-							myResponses.add(new Pair<ChattyTestResponse,String>(c,""));
-					}
-				}
-				if(myResponses!=null)
-				{
-					queResponse(myResponses,(MOB)ticking,(MOB)ticking);
-				}
-			}
-			if(responseQue.size()==0)
-				lastReactedTo=null;
-			else
 			if(!canActAtAll(ticking))
 			{
 				responseQue.clear();
 				return true;
 			}
+			if(talkDown>0)
+				talkDown--;
+			final PairList<ChattyGroup,Long> groups=getChatGroups((MOB)ticking,getChatGroups(getParms()));
+			for(final Iterator<ChattyGroup> i = groups.firstIterator(); i.hasNext();)
+			{
+				final ChattyGroup group = i.next();
+				if(group.tickies.length>0)
+				{
+					final boolean combat = ((MOB)ticking).isInCombat();
+					List<Pair<ChattyTestResponse,String>> myResponses=null;
+					for(final ChattyEntry entry : group.tickies)
+					{
+						if((entry.combatEntry==combat)
+						&&(this.match((MOB)ticking, entry.expression, CMLib.dice().rollPercentage())))
+						{
+							myResponses=new ArrayList<Pair<ChattyTestResponse,String>>();
+							for(final ChattyTestResponse c : entry.responses)
+								myResponses.add(new Pair<ChattyTestResponse,String>(c,""));
+						}
+					}
+					if(myResponses!=null)
+						queResponse(myResponses,(MOB)ticking,(MOB)ticking);
+				}
+			}
+			if(responseQue.size()==0)
+				lastReactedToM=null;
 			else
 			{
 				for(final Iterator<ChattyResponse> riter= responseQue.descendingIterator();riter.hasNext();)
@@ -1197,7 +1298,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 						if(R.combatFlag == ((MOB)ticking).isInCombat())
 						{
 							((MOB)ticking).doCommand(R.parsedCommand,MUDCmdProcessor.METAFLAG_FORCED);
-							lastReactedTo=null;
+							lastReactedToM=null;
 							// you've done one, so get out before doing another!
 							break;
 						}

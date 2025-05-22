@@ -13,6 +13,7 @@
  11. Undead-based races are now immune to Bleeding.
  12. New property: Prop_AffectReTick for changing the tick time of effects
  13. Siplet has been replaced with a new ph@-client version.
+ 14. MudChat now supports switching/adding dbs based on responses.
   
 # Build 5.10.4 Release 12/05/2024
   *  DATABASE CHANGED! (Bitmap field in CMCHAR table is now larger)
