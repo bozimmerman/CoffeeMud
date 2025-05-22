@@ -177,6 +177,7 @@ function SipletWindow(windowName)
 	this.flushWindow = function() {
 		if(this.htmlBuffer.length > 0)
 		{
+			var rescroll = this.window.scrollTop + this.window.clientHeight >= this.window.scrollHeight - 10;
 			var span = document.createElement('span');
 			span.style.cssText = this.lastStyle;
 			this.lastStyle = this.ansi.styleSheet();
@@ -188,7 +189,13 @@ function SipletWindow(windowName)
 				this.tab.style.backgroundColor = "lightgreen";
 				this.tab.style.color = "black";
 			}
-			this.window.scrollTop = this.window.scrollHeight - this.window.clientHeight;
+			if(rescroll)
+			{
+				var rewin = this.window;
+				setTimeout(function(){
+					rewin.scrollTop = rewin.scrollHeight - rewin.clientHeight;
+				},1);
+    		}
 		}
 	};
 
@@ -680,10 +687,17 @@ function SipletWindow(windowName)
 		value = me.process(value);
 		if(value.length > 0)
 		{
+			var rescroll = this.window.scrollTop + this.window.clientHeight >= this.window.scrollHeight - 10;
 			var span = document.createElement('span');
 			span.innerHTML = value.replaceAll('\n','<BR>') + '<BR>';
 			this.window.appendChild(span);
-			this.window.scrollTop = this.window.scrollHeight - this.window.clientHeight;
+			if(rescroll)
+			{
+				var rewin = this.window;
+				setTimeout(function(){
+					rewin.scrollTop = rewin.scrollHeight - rewin.clientHeight;
+				},1);
+			}
 		}
 	};
 
