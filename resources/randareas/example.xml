@@ -54,7 +54,14 @@ See guides/RandomAreas.html for information about documents of this type.
 <STRING load="/resources/randareas/rats.xml" />
 <STRING load="/resources/randareas/lair.xml" />
 <STRING load="/resources/randareas/oceanfloor.xml" />
-
+<!-- 
+TODO: more ideas:
+Ruins: Ancient temples, crumbled cities, or necromancer lairs, filled with traps, relics, and undead or scavengers (e.g., skeletons, bandits).
+Graveyard/Crypt: Description: Haunted cemeteries, catacombs, or mausoleums with undead (e.g., ghosts, zombies) and eerie atmosphere.
+Castle/Fortress: Description: Royal strongholds, haunted keeps, or war-torn forts with knights, ghosts, or bandits.
+Volcano/Lava: Description: Fiery craters, magma caves, or demon forges with elemental creatures (e.g., fire elementals, demons).
+Sky/Clouds: Description: Floating islands, storm temples, or aerial lairs with flying creatures (e.g., harpies, cloud giants).
+ -->
 <string id="randomareasize" select="any-1">
 	<string condition="$areasize!=''">$areasize</string>
 	<string condition="$areasize=''">30?60</string>
