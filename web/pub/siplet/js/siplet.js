@@ -61,7 +61,7 @@ function SipletWindow(windowName)
 			o.style.left = '0%';
 		});
 	    this.window.style.overflowY = 'auto';
-	    this.window.style.overflowX = 'hidden';
+	    this.window.style.overflowX = 'auto';
 		this.plugins.reset();
 	}
 	
