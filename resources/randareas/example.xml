@@ -17,6 +17,16 @@ limitations under the License.
 
 See guides/RandomAreas.html for information about documents of this type.
 
+TODO: more ideas:
+Ruins: Ancient temples, crumbled cities, or necromancer lairs, filled with traps, relics, and undead or scavengers (e.g., skeletons, bandits).
+Graveyard/Crypt: Description: Haunted cemeteries, catacombs, or mausoleums with undead (e.g., ghosts, zombies) and eerie atmosphere.
+Castle/Fortress: Description: Royal strongholds, haunted keeps, or war-torn forts with knights, ghosts, or bandits.
+Volcano/Lava: Description: Fiery craters, magma caves, or demon forges with elemental creatures (e.g., fire elementals, demons).
+Sky/Clouds: Description: Floating islands, storm temples, or aerial lairs with flying creatures (e.g., harpies, cloud giants).
+More layouts:
+Branches: tree layout, but the spokes also branch, etc.
+Clump layout:  perfect square, interconnected, but random leaf rooms with 1 exit
+Sky versions of these layouts, that split the allotment into multiple levels with 1 way up/down for mansions or whatever.
 -->
 <AREADATA>
 
@@ -26,19 +36,16 @@ See guides/RandomAreas.html for information about documents of this type.
 	<ROOM merge=false insert="hallway_rooms,interior_rooms,leaf_rooms" />
 	<BEHAVIOR condition="$theme='random'" class="RandomTraps" parms="mintraps=1 maxtraps=3 rooms=Y exits=Y" />
 </AREA>
-<AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" >
-</AREA>
-<AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" >
-</AREA>
-<AREA id="box_dungeon" merge=true like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" >
-</AREA>
-<AREA id="cross_dungeon" merge=true like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" >
-</AREA>
-<AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" >
-</AREA>
+<AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
+<AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
+<AREA id="box_dungeon" merge=true like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
+<AREA id="cross_dungeon" merge=true like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
+<AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
+<AREA id="branch_dungeon" merge=true like="maze_dungeon" layout="BRANCH" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
+<AREA id="spot_dungeon" merge=true like="maze_dungeon" layout="SPOTTEDMESH" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
 
 <AREA id="random_dungeon" merge=true select="any" requires="areaname=$" 
-	insert="maze_dungeon,grid_dungeon,square_dungeon,box_dungeon,cross_dungeon,tree_dungeon" 
+	insert="maze_dungeon,grid_dungeon,square_dungeon,box_dungeon,cross_dungeon,tree_dungeon,branch_dungeon,spot_dungeon" 
 	predefine="areasize=$randomareasize,level_range=$randomlevelrange,aggrochance=10+$level_range,theme=$randomtheme" >
 </AREA>
 
@@ -54,20 +61,7 @@ See guides/RandomAreas.html for information about documents of this type.
 <STRING load="/resources/randareas/rats.xml" />
 <STRING load="/resources/randareas/lair.xml" />
 <STRING load="/resources/randareas/oceanfloor.xml" />
-<!-- 
-TODO: more ideas:
-Ruins: Ancient temples, crumbled cities, or necromancer lairs, filled with traps, relics, and undead or scavengers (e.g., skeletons, bandits).
-Graveyard/Crypt: Description: Haunted cemeteries, catacombs, or mausoleums with undead (e.g., ghosts, zombies) and eerie atmosphere.
-Castle/Fortress: Description: Royal strongholds, haunted keeps, or war-torn forts with knights, ghosts, or bandits.
-Volcano/Lava: Description: Fiery craters, magma caves, or demon forges with elemental creatures (e.g., fire elementals, demons).
-Sky/Clouds: Description: Floating islands, storm temples, or aerial lairs with flying creatures (e.g., harpies, cloud giants).
-More layouts:
-Branches: tree layout, but the spokes also branch, etc.
-Clump layout:  perfect square, interconnected, but random leaf rooms with 1 exit
-Sky versions of these layouts, that split the allotment into multiple levels with 1 way up/down for mansions or whatever.
 
-
- -->
 <string id="randomareasize" select="any-1">
 	<string condition="$areasize!=''">$areasize</string>
 	<string condition="$areasize=''">30?60</string>

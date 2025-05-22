@@ -41,6 +41,11 @@ public class DefaultLayoutNode implements LayoutNode
 	private final Map<LayoutTags, String>	tags			= new SHashtable<LayoutTags, String>();
 	private final Set<LayoutFlags>			flags			= new HashSet<LayoutFlags>();
 
+	protected static final Integer NORTH = Integer.valueOf(Directions.NORTH);
+	protected static final Integer SOUTH = Integer.valueOf(Directions.SOUTH);
+	protected static final Integer EAST = Integer.valueOf(Directions.EAST);
+	protected static final Integer WEST = Integer.valueOf(Directions.WEST);
+
 	public DefaultLayoutNode(final long[] coord)
 	{
 		this.coord = coord;
@@ -212,34 +217,62 @@ public class DefaultLayoutNode implements LayoutNode
 	}
 
 	@Override
-	public String getColorRepresentation(final char roomChar, final int line)
+	public String getFullDirRepresentation(final char roomChar, final int line)
 	{
 
 		switch (line)
 		{
 		case 0:
-			if (links.containsKey(Integer.valueOf(Directions.NORTH)))
+			if (links.containsKey(NORTH))
 				return " ^ ";
 			return "   ";
 		case 1:
 		{
-			if (links.containsKey(Integer.valueOf(Directions.EAST)))
+			if (links.containsKey(EAST))
 			{
-				if (links.containsKey(Integer.valueOf(Directions.WEST)))
+				if (links.containsKey(WEST))
 					return "<" + roomChar + ">";
 				return " " + roomChar + ">";
 			}
 			else
-			if (links.containsKey(Integer.valueOf(Directions.WEST)))
+			if (links.containsKey(WEST))
 				return "<" + roomChar + " ";
 			return " " + roomChar + " ";
 		}
 		case 2:
-			if (links.containsKey(Integer.valueOf(Directions.SOUTH)))
+			if (links.containsKey(SOUTH))
 				return " v ";
 			return "   ";
 		default:
 			return "   ";
+		}
+	}
+
+	@Override
+	public String getLinkRepresentation(final char roomChar, final int line)
+	{
+		switch (line)
+		{
+		case 0:
+			if(links.containsKey(NORTH)
+			&&(links.get(NORTH).getLink(SOUTH.intValue())==this))
+				return "| ";
+			else
+			if(links.containsKey(NORTH))
+				return "^ ";
+			else
+				return "  ";
+		case 2:
+			if(links.containsKey(EAST)
+			&&(links.get(EAST).getLink(WEST.intValue())==this))
+				return roomChar+"-";
+			else
+			if(links.containsKey(EAST))
+				return roomChar+">";
+			else
+				return roomChar+" ";
+		default:
+			return "  ";
 		}
 	}
 }

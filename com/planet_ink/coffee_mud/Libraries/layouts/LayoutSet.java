@@ -102,6 +102,11 @@ public class LayoutSet
 		return set.size() < total;
 	}
 
+	public boolean spaceAvailable(final int plus)
+	{
+		return set.size() + plus <= total;
+	}
+
 	public long[] makeNextCoord(final long[] n, final int dir)
 	{
 		switch(dir)

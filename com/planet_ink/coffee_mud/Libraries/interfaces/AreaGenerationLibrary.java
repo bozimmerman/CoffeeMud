@@ -458,7 +458,18 @@ public interface AreaGenerationLibrary extends CMLibrary
 		 * @param line which line, 0, 1, or 2
 		 * @return the 3 character string for this line.
 		 */
-		public String getColorRepresentation(char roomChar, int line);
+		public String getFullDirRepresentation(char roomChar, int line);
+
+		/**
+		 * Returns one line of a 2x2 character representation. Each call
+		 * returns 2 characters, with the second being the roomchar, and
+		 * the rest depending on the links.  Call this twice with
+		 * 0, and 2, to get both lines.
+		 * @param roomChar the char to use for this room
+		 * @param line which line, 0, or 2
+		 * @return the 2 character string for this line.
+		 */
+		public String getLinkRepresentation(char roomChar, int line);
 
 		/**
 		 * Returns the room object assigned to this node.
