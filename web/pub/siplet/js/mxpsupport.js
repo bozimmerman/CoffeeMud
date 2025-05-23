@@ -920,6 +920,13 @@ var MXP = function(sipwin)
 					continue; // dont adjust i, just continue
 				var tag = content.trim();
 				var val = this.getEntityValue(tag, currentElement);
+				if(val != null)
+				{
+					val = val.replaceAll('\n\r',' ')
+							.replaceAll('\r\n',' ')
+							.replaceAll('\r',' ')
+							.replaceAll('\n','');
+				}
 				var oldValue = buf.substr(oldI, i + 1 - oldI);
 				buf = buf.substr(0,oldI) + buf.substr(i+1);
 				i = oldI;
