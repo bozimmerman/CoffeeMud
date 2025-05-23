@@ -366,7 +366,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				return false;
 		}
 
-		if((!pstats.isIgnored(sender))
+		if((!pstats.isIgnored(chan.name(),sender))
 		&&(CMLib.masking().maskCheck(chan.mask(),M,true))
 		&&((!areaReq)
 		   ||(sender.location()==null)
@@ -413,8 +413,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		final Room R=M.location();
 		if((!ses.isStopped())
 		&&(R!=null)
-		&&(!pstats.isIgnored(sender))
+		&&(!pstats.isIgnored(chan.name(),sender))
 		&&(!pstats.isIgnored(senderName))
+		&&(!pstats.isIgnored(chan.name()+"."+senderName))
 		&&(CMLib.masking().maskCheck(chan.mask(),M,true))
 		&&((!areaReq)
 		   ||(sender.location()==null)

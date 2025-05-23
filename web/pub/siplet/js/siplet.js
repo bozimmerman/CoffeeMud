@@ -685,7 +685,7 @@ function SipletWindow(windowName)
 	this.displayText = function(value)
 	{
 		value = me.process(value);
-		if(value.length > 0)
+		if(value)
 		{
 			var rescroll = this.window.scrollTop + this.window.clientHeight >= this.window.scrollHeight - 10;
 			var span = document.createElement('span');

@@ -15,6 +15,7 @@
  13. Siplet has been replaced with a new ph@-client version.
  14. MudChat now supports switching/adding dbs based on responses.
  15. New Percolator layouts: mesh, spotted mesh, and branch
+ 16. Ignore now supports ignoring players by limited categories.
   
 # Build 5.10.4 Release 12/05/2024
   *  DATABASE CHANGED! (Bitmap field in CMCHAR table is now larger)

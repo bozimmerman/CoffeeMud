@@ -642,23 +642,28 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 	}
 
 	@Override
-	public boolean isIgnored(MOB mob)
+	public boolean isIgnored(final String cat, MOB mob)
 	{
 		if(mob==null)
 			return false;
-		if(account != null)
-			return account.isIgnored(mob);
 		if (mob.soulMate() != null)
 			mob=mob.soulMate();
+		if((account != null) && (account.isIgnored(cat, mob)))
+			return true;
+		if(ignored.size()==0)
+			return false;
 		if(ignored.contains(mob.Name()))
 			return true;
-		final PlayerStats stats=mob.playerStats();
-		if(stats ==null)
+		final PlayerAccount acct = (mob.playerStats()!=null)?mob.playerStats().getAccount():null;
+		if((acct!=null) &&(ignored.contains(acct.getAccountName()+"*")))
+			return true;
+		if(cat == null)
 			return false;
-		final PlayerAccount account=stats.getAccount();
-		if(account == null)
-			return false;
-		return ignored.contains(account.getAccountName()+"*");
+		if(ignored.contains(cat+"."+mob.Name()))
+			return true;
+		if(acct != null)
+			return ignored.contains(cat+"."+acct.getAccountName()+"*");
+		return false;
 	}
 
 	@Override
@@ -666,8 +671,8 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 	{
 		if(name==null)
 			return false;
-		if(account != null)
-			return account.isIgnored(name);
+		if((account != null)&&account.isIgnored(name))
+			return true;
 		return (ignored.contains(name) || ignored.contains(name+"*"));
 	}
 

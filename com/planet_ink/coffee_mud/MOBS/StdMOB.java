@@ -3199,7 +3199,7 @@ public class StdMOB implements MOB
 					srcM.tell(srcM, this, null, L("<T-NAME> isn't interested."));
 					return false;
 				}
-				if(playerStats().isIgnored(msg.source()))
+				if(playerStats().isIgnored("TEACH",msg.source()))
 					return false;
 				if(!CMLib.expertises().canBeTaught(msg.source(), (MOB) msg.target(), msg.tool(), msg.targetMessage()))
 					return false;

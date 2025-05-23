@@ -16,6 +16,7 @@ function configureInput(obj, ta)
     inputTextArea.style.padding='5px';
     inputTextArea.onkeypress=inputKeyPress;
     inputTextArea.onkeydown=inputKeyDown;
+    inputTextArea.style.resize='none';
 }
 
 function inputSubmit(x)
@@ -28,7 +29,7 @@ function inputSubmit(x)
         inputbacklog.push(x);
         inputbacklogindex=inputbacklog.length;
     }
-    if(window.currentSiplet != null)
+    if(x && window.currentSiplet != null)
     {
         x = window.currentSiplet.aliasProcess(x);
         if(!x)

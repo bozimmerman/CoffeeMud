@@ -1,11 +1,11 @@
-<TABLE WIDTH=100% BORDER=0>
+<TABLE STYLE="position:absolute;width:100%;table-layout:fixed" BORDER=0>
 <TR><TD>
 	<INPUT TYPE=TEXT  STYLE="width:400px;" NAME="SIPLETTITLE" VALUE="${window.sipletInputTitle}">
 </TD></TR>
-<TR><TD>
-	<TEXTAREA WRAP=SOFT NAME="SIPLETTEXT" ROWS=10 STYLE="width:400px;height:200px;">${window.sipletInputText.replaceAll('%0D','\n')}</TEXTAREA>
+<TR><TD WIDTH=100%>
+	<TEXTAREA WRAP=SOFT NAME="SIPLETTEXT" STYLE="width:100%;height:180px;">${window.sipletInputText.replaceAll('%0D','\n')}</TEXTAREA>
 </TD></TR>
-<TR><TD>
+<TR><TD WIDTH=100%>
 	<a href="javascript:SubmitSipletInputEntry();">
 	<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand" 
 		ONCLICK="SubmitSipletInputEntry();" 

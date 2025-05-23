@@ -178,7 +178,8 @@ public class MassMailer implements Runnable
 					final PlayerStats toMpStats=toM.playerStats();
 					if(toMpStats==null)
 						continue;
-					if(toMpStats.isIgnored(from))
+					if(toMpStats.isIgnored(from)
+					||(toMpStats.isIgnored("MAIL."+from)))
 					{
 						// email is ignored
 						CMLib.database().DBDeleteJournal(journalName,key);
@@ -191,7 +192,7 @@ public class MassMailer implements Runnable
 							fromM=CMLib.players().getPlayerAllHosts(from);
 						if(fromM != null)
 						{
-							if(toMpStats.isIgnored(fromM))
+							if(toMpStats.isIgnored("MAIL",fromM))
 							{
 								// email is ignored
 								CMLib.database().DBDeleteJournal(journalName,key);
@@ -203,7 +204,7 @@ public class MassMailer implements Runnable
 							fromM = CMLib.players().getLoadPlayer(from);
 							if(fromM != null)
 							{
-								if(toMpStats.isIgnored(fromM))
+								if(toMpStats.isIgnored("MAIL",fromM))
 								{
 									// email is ignored
 									CMLib.database().DBDeleteJournal(journalName,key);

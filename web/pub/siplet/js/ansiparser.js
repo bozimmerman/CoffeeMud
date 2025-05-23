@@ -116,7 +116,8 @@ var ANSISTACK = function()
 		if (this.fontOn)
 		{
 			this.lastBackground = ANSITABLES.defaultBackground;
-			this.lastForeground = ANSITABLES.defaultForeground;
+			// why does this fix anything?!
+			//this.lastForeground = ANSITABLES.defaultForeground;
 			this.fontOn = false;
 			return "</FONT>";
 		}
@@ -135,11 +136,11 @@ var ANSISTACK = function()
 	
 	this.styleSheet = function()
 	{
-		return	'color:' + this.lastForeground + ';background-color:' + this.lastBackground+';'
+		return ('color:'+this.lastForeground+';')
 		+(this.italicsOn?'font-style: italic;':'')
-		+(this.boldOn?'font-weight: bold;':'')
 		+(this.underlineOn?'text-decoration: underline;':'')
-		+(this.blinkOn?'animation: blinker 1s linear infinite;':'');
+		+(this.blinkOn?'animation: blinker 1s linear infinite;':'')
+		+((this.lastBackground)?('background-color:'+this.lastBackground+';'):'');
 	}
 
 	this.process = function(dat)

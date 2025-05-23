@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -44,6 +45,10 @@ public class Ignore extends StdCommand
 	{
 		return access;
 	}
+
+	protected final static String[] OK_CATS = new String[] {
+		"MAIL", "TELL", "TEACH", "RIDE"
+	};
 
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
@@ -79,6 +84,34 @@ public class Ignore extends StdCommand
 				mob.tell(L("Add whom?"));
 				return false;
 			}
+			String cat = null;
+			final int x = name.lastIndexOf('.');
+			if(x>0)
+			{
+				if((!CMLib.players().accountExistsAllHosts(name))
+				||(!CMLib.players().playerExistsAllHosts(name)))
+				{
+					cat = name.substring(0,x);
+					name = name.substring(x+1);
+					if(CMParms.indexOfIgnoreCase(OK_CATS, cat)>=0)
+						cat = cat.toUpperCase().trim();
+					else
+					{
+						CMChannel chan = CMLib.channels().getChannel(cat);
+						if(chan == null)
+							chan = CMLib.channels().getChannel(CMLib.channels().findChannelName(cat));
+						if(chan == null)
+						{
+							mob.tell(L("'@x1' is not a channel name, or one of: @x2.",
+									cat,CMParms.toListString(OK_CATS)));
+							return false;
+						}
+						else
+							cat = chan.name();
+					}
+				}
+			}
+
 			name=CMStrings.capitalizeAndLower(name);
 			if(CMLib.players().accountExistsAllHosts(name))
 				name=name+"*";
@@ -89,16 +122,17 @@ public class Ignore extends StdCommand
 				mob.tell(L("No player by that name was found."));
 				return false;
 			}
-			if(h.contains(name))
+			final String finalIgnoreName = (cat == null)?name:(cat+"."+name);
+			if(h.contains(finalIgnoreName))
 			{
 				mob.tell(L("That name is already on your list."));
 				return false;
 			}
-			h.add(name);
+			h.add(finalIgnoreName);
 			if(name.endsWith("*"))
-				mob.tell(L("The Account '@x1' has been added to your ignore list.",name));
+				mob.tell(L("The Account '@x1' has been added to your ignore list.",finalIgnoreName));
 			else
-				mob.tell(L("The Player/Account '@x1' has been added to your ignore list.",name));
+				mob.tell(L("The Player/Account '@x1' has been added to your ignore list.",finalIgnoreName));
 		}
 		else
 		if(commands.get(1).equalsIgnoreCase("REMOVE"))

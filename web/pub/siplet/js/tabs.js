@@ -27,7 +27,15 @@ function configureTabs(obj)
 	tabSpacer.innerHTML = '<FONT COLOR=LIGHTBLUE>&nbsp;&nbsp;<B>+</B></FONT>';
 	tabSpacer.onclick = function() { 
 		if(window.siplets.length > 0)
-			AddNewSipletTab(window.siplets[window.siplets.length-1].url);
+		{
+			var copySiplet = window.siplets[window.siplets.length-1];
+			var win = AddNewSipletTab(copySiplet.url);
+			if(win) {
+				win.pb = copySiplet.pb;
+				win.pbwhich = copySiplet.pbwhich;
+				win.tabTitle = copySiplet.tabTitle;
+			}
+		}
 	};
 	tabRow.appendChild(tabSpacer);
 }
@@ -57,7 +65,8 @@ function CloseTab(img)
 	for(var i=0;i<window.siplets.length;i++)
 		if(window.siplets[i].tab == tab)
 		{
-			window.siplets[i].closeSocket();
+			window.siplets[i].close();
+			window.siplets[i].topWindow.outerHTML = '';
 			window.siplets.splice(i,1);
 			if(window.currentSiplet == window.siplets[i])
 			{

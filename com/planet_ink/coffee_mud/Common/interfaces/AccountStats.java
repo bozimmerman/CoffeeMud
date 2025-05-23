@@ -313,31 +313,34 @@ public interface AccountStats extends CMCommon, Achievable, PrideStats
 	 * Returns a modifiable Set that contains the set of player
 	 * Names that constitutes this players ignored player list.
 	 * @see AccountStats#isIgnored(String)
-	 * @see AccountStats#isIgnored(MOB)
+	 * @see AccountStats#isIgnored(String, MOB)
 	 *
 	 * @return a set of player ignored player list Names
 	 */
 	public Set<String> getIgnored();
 
-	/**
-	 * Returns whether the given player is being ignored.
-	 * @see AccountStats#getIgnored()
-	 * @see AccountStats#isIgnored(String)
-	 *
-	 * @param mob the mob to check
-	 * @return true if the given mob is ignored
-	 */
-	public boolean isIgnored(final MOB mob);
 
 	/**
-	 * Returns whether the given player name is being ignored.
+	 * Returns whether the given player or account name is being ignored.
 	 * @see AccountStats#getIgnored()
-	 * @see AccountStats#isIgnored(MOB)
+	 * @see AccountStats#isIgnored(String, MOB)
 	 *
 	 * @param name the name to check
 	 * @return true if the given name is ignored
 	 */
 	public boolean isIgnored(final String name);
+
+	/**
+	 * Returns whether the given player or account name is being ignored
+	 * generally, or even just in the given category
+	 * @see AccountStats#getIgnored()
+	 * @see AccountStats#isIgnored(String)
+	 *
+	 * @param category the name of the category
+	 * @param name the name to check
+	 * @return true if the given name is ignored
+	 */
+	public boolean isIgnored(final String category, final MOB mob);
 
 	/**
 	 * A simple enum for picking between a player and an account
