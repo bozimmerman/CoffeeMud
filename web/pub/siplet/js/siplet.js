@@ -295,7 +295,7 @@ function SipletWindow(windowName)
 							this.setVariable('match'+i,match[i]);
 						trig.prev = this.textBufferPruneIndex + match.index + 1;
 						var action = this.fixVariables(trig.action.replaceAll('\\n','\n'));
-						try { eval(action); } catch(e) {};
+						try { eval(action); } catch(e) {console.log(e);};
 						for(var i=0;i<match.length;i++)
 							this.setVariable('match'+i,null);
 						match = trig.pattern.exec(this.textBuffer);
@@ -311,7 +311,7 @@ function SipletWindow(windowName)
 						prev += x + trig.pattern.length + 1;
 						trig.prev = this.textBufferPruneIndex + x + trig.pattern.length + 1;
 						var action = this.fixVariables(trig.action.replaceAll('\\n','\n'));
-						try { eval(action); } catch(e) {};
+						try { eval(action); } catch(e) {console.log(e);};
 						if(trig.once)
 							trig.disabled=true;
 						x = this.textBuffer.indexOf(trig.pattern,prev);
@@ -362,7 +362,7 @@ function SipletWindow(windowName)
 							this.setVariable('match'+i,match[i]);
 						txt = txt.replace(alias.pattern,this.fixVariables(alias.replace));
 						var action = this.fixVariables(alias.action.replaceAll('\\n','\n'));
-						try { eval(action); } catch(e) {};
+						try { eval(action); } catch(e) {console.log(e);};
 						for(var i=0;i<match.length;i++)
 							this.setVariable('match'+i,null);
 						return txt
@@ -372,7 +372,7 @@ function SipletWindow(windowName)
 				if(txt.startsWith(alias.pattern))
 				{
 					var action = this.fixVariables(alias.action.replaceAll('\\n','\n'));
-					try { eval(action); } catch(e) {};
+					try { eval(action); } catch(e) {console.log(e);};
 					return alias.replace + txt.substr(alias.pattern.length);
 				}
 			}
@@ -488,7 +488,7 @@ function SipletWindow(windowName)
 		var execute = function() {
 			var action = me.fixVariables(timer.action.replaceAll('\\n','\n'));
 			var win = me;
-			try { eval(action); } catch(e) {};
+			try { eval(action); } catch(e) {console.log(e);};
 			if(timer.repeat)
 			{
 				timer.timerId = setTimeout(execute, timer.delay);
@@ -806,19 +806,20 @@ function SipletWindow(windowName)
 
 	this.findLocalScript = function(value)
 	{
+		var globalScripts = GetGlobalScripts();
 		var run = FindAScript(this.localScripts(),value,false);
 		if(run == null) 
-			run = FindAScript(this.globalScripts,value,false);
+			run = FindAScript(globalScripts,value,false);
 		if(run == null) 
 			run = FindAScript(this.localScripts(),value,true);
 		if(run == null) 
-			run = FindAScript(this.globalScripts,value,true);
+			run = FindAScript(globalScripts,value,true);
 		return run;
 	};
 	
 	this.runScript = function(value)
 	{
-		var run = findLocalScript(value);
+		var run = this.findLocalScript(value);
 		if(run != null)
 		{
 			var win = this;
@@ -826,6 +827,100 @@ function SipletWindow(windowName)
 		}
 		else
 			console.log("Unable to find script '"+value+"'");
+	};
+	
+	this.sendGMCP = function(command, json)
+	{
+		if(!this.wsopened)
+			return;
+		if(typeof json === "string")
+		{
+			try {
+				json = JSON.parse(json);
+			} catch(e) {
+				console.log(e);
+				return;
+			}
+		}
+		var response = [TELOPT.IAC, TELOPT.SB, TELOPT.GMCP];
+		for(var i=0;i<command.length;i++)
+			response.push(command.charCodeAt(i));
+		response.push(' '.charCodeAt(0));
+		var jsonStr = JSON.stringify(json);
+		for(var i=0;i<jsonStr.length;i++)
+			response.push(jsonStr.charCodeAt(i));
+		response.push(TELOPT.IAC);
+		response.push(TELOPT.SE);
+		var buffer = new Uint8Array(response).buffer;
+		if ((buffer.byteLength > 0) && (me.wsopened))
+			me.wsocket.send(buffer);
+	};
+	
+	this.sendMSDP = function(json)
+	{
+		if(!this.wsopened)
+			return;
+		if(typeof json === "string")
+		{
+			try {
+				json = JSON.parse(json);
+			} catch(e) {
+				console.log(e);
+				return;
+			}
+		}
+		var isMSDPJSONObj = function(j)
+		{
+			if((j === null)
+			||(typeof j !== 'object')
+			||(j.constructor !== Object)
+			||(Array.isArray(j)))
+				return false;
+			return true;
+		};
+		if(!isMSDPJSONObj(json))
+		{
+			console.log('MSDP json is not a JSON object.');
+			return;
+		}
+		var addMSDPStr = function(response, val) {
+			for(var i=0;i<val.length;i++)
+				response.push(val.charCodeAt(i));
+		}
+		var addMSDP = function(response, val) {
+			if(Array.isArray(val)) {
+				response.push(MSDPOP.MSDP_ARRAY_OPEN);
+				for(var i=0;i<val.length;i++)
+					addMSDP(response, val[i]);
+				response.push(MSDPOP.MSDP_ARRAY_CLOSE);
+				return;
+			}
+			if(isMSDPJSONObj(val)) {
+				response.push(MSDPOP.MSDP_TABLE_OPEN);
+				for(var key in val) {
+					response.push(MSDPOP.MSDP_VAR);
+					addMSDPStr(response, key);
+					response.push(MSDPOP.MSDP_VAL);
+					addMSDP(response, val[key]);
+				}
+				response.push(MSDPOP.MSDP_TABLE_CLOSE);
+				return;
+			}
+			addMSDPStr(response, ''+val);
+		};
+		var response = [TELOPT.IAC, TELOPT.SB, TELOPT.MSDP];
+		for(var key in json) {
+			response.push(MSDPOP.MSDP_VAR);
+			addMSDPStr(response, key);
+			response.push(MSDPOP.MSDP_VAL);
+			if(json[key] != null)
+				addMSDP(response, json[key]);
+		}
+		response.push(TELOPT.IAC);
+		response.push(TELOPT.SE);
+		var buffer = new Uint8Array(response).buffer;
+		if ((buffer.byteLength > 0) && (me.wsopened))
+			me.wsocket.send(buffer);
 	};
 	
 	this.enableTrigger = function(value)

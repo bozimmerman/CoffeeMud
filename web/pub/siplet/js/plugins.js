@@ -101,6 +101,14 @@ var PLUGINS = function(sipwin)
 				if(data.data)
 					sipwin.enableTrigger(data.data);
 				break;
+			case 'sendGMCP':
+				if(data.command && data.data)
+					sipwin.sendGMCP(data.command, data.data);
+				break;
+			case 'sendMSDP':
+				if(data.data)
+					sipwin.sendMSDP(data.data);
+				break;
 			case 'disableTrigger':
 				if(data.data)
 					sipwin.disableTrigger(data.data);

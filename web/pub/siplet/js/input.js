@@ -20,8 +20,6 @@ function configureInput(obj, ta)
 
 function inputSubmit(x)
 {
-	if(window.currentSiplet != null)
-	    x = window.currentSiplet.aliasProcess(x);
     var max = getConfig('window/input_buffer',500);
     while(inputbacklog.length>max)
         inputbacklog.splice(0,1);
@@ -29,6 +27,12 @@ function inputSubmit(x)
     {
         inputbacklog.push(x);
         inputbacklogindex=inputbacklog.length;
+    }
+    if(window.currentSiplet != null)
+    {
+        x = window.currentSiplet.aliasProcess(x);
+        if(!x)
+            return;
     }
     if(window.currentSiplet)
         window.currentSiplet.submitInput(x);
