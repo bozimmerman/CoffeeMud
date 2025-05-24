@@ -177,7 +177,7 @@ function SipletWindow(windowName)
 	this.flushWindow = function() {
 		if(this.htmlBuffer.length > 0)
 		{
-			var rescroll = this.window.scrollTop + this.window.clientHeight >= this.window.scrollHeight - 10;
+			var rescroll = this.isAtBottom(-10);
 			var span = document.createElement('span');
 			var reprocess = '';
 			if(this.mxp.openElements.length)
@@ -199,12 +199,7 @@ function SipletWindow(windowName)
 				this.tab.style.color = "black";
 			}
 			if(rescroll)
-			{
-				var rewin = this.window;
-				setTimeout(function(){
-					rewin.scrollTop = rewin.scrollHeight - rewin.clientHeight;
-				},1);
-    		}
+				this.scrollToBottom(this.window,0);
 		}
 	};
 
@@ -692,22 +687,33 @@ function SipletWindow(windowName)
 		this.wsocket.send(value+'\n');
 	};
 	
+	this.isAtBottom = function(diff)
+	{
+		return this.window.scrollTop + this.window.clientHeight >= this.window.scrollHeight + diff;
+	};
+	
+	this.scrollToBottom = function(rewin, tries)
+	{
+		if(tries > 10)
+			return;
+		var me = this;
+		setTimeout(function(){
+			rewin.scrollTop = rewin.scrollHeight - rewin.clientHeight;
+			me.scrollToBottom(rewin,++tries);
+		},50);
+	};
+	
 	this.displayText = function(value)
 	{
 		value = me.process(value);
 		if(value)
 		{
-			var rescroll = this.window.scrollTop + this.window.clientHeight >= this.window.scrollHeight - 10;
+			var rescroll = this.isAtBottom(-10);
 			var span = document.createElement('span');
 			span.innerHTML = value.replaceAll('\n','<BR>') + '<BR>';
 			this.window.appendChild(span);
 			if(rescroll)
-			{
-				var rewin = this.window;
-				setTimeout(function(){
-					rewin.scrollTop = rewin.scrollHeight - rewin.clientHeight;
-				},1);
-			}
+				this.scrollToBottom(this.window,0);
 		}
 	};
 

@@ -74,6 +74,16 @@ public class Channel extends StdCommand
 		return Boolean.FALSE;
 	}
 
+	protected String reTimeAgo(final String str, final String timeAgo)
+	{
+		if((str == null)||(str.length()==0))
+			return null;
+		final int x = str.lastIndexOf("^</CHANNEL^>");
+		if(x<0)
+			return str+timeAgo;
+		return str.substring(0,x) + timeAgo+str.substring(x);
+	}
+
 	public boolean showBacklogMsg(final MOB mob, final long now, final int channelInt, final boolean areareq, final ChannelsLibrary.ChannelMsg msg)
 	{
 		final CMMsg modMsg = (CMMsg)msg.msg().copyOf();
@@ -86,12 +96,9 @@ public class Channel extends StdCommand
 		}
 
 		final String timeAgo = "^.^N ("+CMLib.time().date2SmartEllapsedTime(elapsedTime,false)+" ago)";
-		if((modMsg.sourceMessage()!=null)&&(modMsg.sourceMessage().length()>0))
-			modMsg.setSourceMessage(modMsg.sourceMessage()+timeAgo);
-		if((modMsg.targetMessage()!=null)&&(modMsg.targetMessage().length()>0))
-			modMsg.setTargetMessage(modMsg.targetMessage()+timeAgo);
-		if((modMsg.othersMessage()!=null)&&(modMsg.othersMessage().length()>0))
-			modMsg.setOthersMessage(modMsg.othersMessage()+timeAgo);
+		modMsg.setSourceMessage(reTimeAgo(modMsg.sourceMessage(),timeAgo));
+		modMsg.setTargetMessage(reTimeAgo(modMsg.targetMessage(),timeAgo));
+		modMsg.setOthersMessage(reTimeAgo(modMsg.othersMessage(),timeAgo));
 		if(CMath.bset(modMsg.sourceCode(),CMMsg.MASK_CHANNEL))
 			modMsg.setSourceCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt));
 		if(CMath.bset(modMsg.targetCode(),CMMsg.MASK_CHANNEL))

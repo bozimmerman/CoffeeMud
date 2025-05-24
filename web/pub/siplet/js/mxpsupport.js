@@ -821,7 +821,7 @@ var MXP = function(sipwin)
 		sipwin.ansi.setColors(E.lastForeground, E.lastBackground);
 		return '\0'+definition;
 	};
-	
+
 	this.getFirstTag = function(s)
 	{
 		if (!s.startsWith("<"))
@@ -841,7 +841,7 @@ var MXP = function(sipwin)
 		else
 			return s.substr(1, y-1).toUpperCase();
 	};
-	
+
 	this.makeCloseTag = function(s)
 	{
 		var x = s.indexOf('><');
@@ -856,7 +856,7 @@ var MXP = function(sipwin)
 			return s;
 		return '</' + s + '>' + post;
 	};
-	
+
 	this.processAnyEntities = function(buf, currentElement)
 	{
 		var i = -1;
