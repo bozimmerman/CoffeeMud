@@ -1320,7 +1320,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							Log.debugOut("Calendar "+event.from()+" announce: "+event.subj()+"@"+event.dateStr());
 						final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CALENDAR, null);
 						for(int i=0;i<channels.size();i++)
-							CMLib.commands().postChannel(channels.get(i),null,getCalendarEvent(null,event),true);
+							CMLib.commands().postChannel(channels.get(i),null,getCalendarEvent(null,event),true,null);
 					}
 					else
 					{

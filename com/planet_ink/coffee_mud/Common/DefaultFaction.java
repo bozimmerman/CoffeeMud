@@ -1967,7 +1967,7 @@ public class DefaultFaction implements Faction, MsgListener
 			{
 				final String msgStr = source.Name()+" ("+name()+"): "+seenMsg;
 				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel(channels.get(i),source.clans(),msgStr,true);
+					CMLib.commands().postChannel(channels.get(i),source.clans(),msgStr,true,source);
 			}
 		}
 		CMMsg facMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,seenMsg,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,_factionID);

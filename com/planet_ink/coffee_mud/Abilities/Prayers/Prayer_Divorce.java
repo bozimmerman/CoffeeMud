@@ -104,7 +104,7 @@ public class Prayer_Divorce extends Prayer
 				}
 				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DIVORCES, target);
 				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 and @x2 are now divorced.",maleName,femaleName),true);
+					CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 and @x2 are now divorced.",maleName,femaleName),true,target);
 				final MOB M=CMLib.players().getPlayerAllHosts(target.getLiegeID());
 				if(M!=null)
 					M.setLiegeID("");

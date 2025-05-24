@@ -378,7 +378,7 @@ public class CommandJournal extends StdCommand
 							prePend+msgString);
 					mob.tell(L("Your @x1 message has been sent.  Thank you.",journal.NAME().toLowerCase()));
 					if(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL)!=null)
-						CMLib.commands().postChannel(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL).toUpperCase().trim(),null,L("@x1 posted to @x2: @x3",mob.Name(),journal.NAME(),CMParms.combine(commands,1)),true);
+						CMLib.commands().postChannel(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL).toUpperCase().trim(),null,L("@x1 posted to @x2: @x3",mob.Name(),journal.NAME(),CMParms.combine(commands,1)),true,mob);
 				}
 
 			};

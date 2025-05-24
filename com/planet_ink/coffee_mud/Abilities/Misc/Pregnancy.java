@@ -796,7 +796,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 				setMiscText(start + "/" + end + "/" + mob.Name() + "/" + numKidMarker+mob.charStats().getMyRace().ID());
 				final List<String> channels = CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONCEPTIONS, mob);
 				for (int i = 0; i < channels.size(); i++)
-					CMLib.commands().postChannel(channels.get(i), mob.clans(), L("@x1 is now in a 'family way'.", target.name()), true);
+					CMLib.commands().postChannel(channels.get(i), mob.clans(), L("@x1 is now in a 'family way'.", target.name()), true,mob);
 				final Pregnancy P=(Pregnancy)copyOf();
 				if((!mob.isPlayer())
 				&&(!target.isPlayer()))

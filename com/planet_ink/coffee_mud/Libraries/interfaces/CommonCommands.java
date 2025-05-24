@@ -213,8 +213,9 @@ public interface CommonCommands extends CMLibrary
 	 * @param clanList null normally, or a list of clans for possible focus
 	 * @param message the message to send to the channel
 	 * @param systemMsg true to format as a system message, false for a normal chat message
+	 * @param mob who the message is credited to, even though not the direct sender.
 	 */
-	public void postChannel(String channelName, Iterable<Pair<Clan,Integer>> clanList, String message, boolean systemMsg);
+	public void postChannel(String channelName, Iterable<Pair<Clan,Integer>> clanList, String message, boolean systemMsg, final MOB mob);
 
 	/**
 	 * Shortcut method to make a mob drop an item onto the room.

@@ -2544,16 +2544,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					for(int i=0;i<channels.size();i++)
 					{
 						if((msg.tool() instanceof MOB))
-							CMLib.commands().postChannel(channels.get(i),deadmob.clans(),L("@x1 was just killed in @x2 by @x3.",deadmob.Name(),CMLib.map().getExtendedRoomID(deadmob.location()),msg.tool().Name()),true);
+							CMLib.commands().postChannel(channels.get(i),deadmob.clans(),L("@x1 was just killed in @x2 by @x3.",deadmob.Name(),CMLib.map().getExtendedRoomID(deadmob.location()),msg.tool().Name()),true,deadmob);
 						else
-							CMLib.commands().postChannel(channels.get(i),deadmob.clans(),L("@x1 has just died at @x2",deadmob.Name(),CMLib.map().getExtendedRoomID(deadmob.location())),true);
+							CMLib.commands().postChannel(channels.get(i),deadmob.clans(),L("@x1 has just died at @x2",deadmob.Name(),CMLib.map().getExtendedRoomID(deadmob.location())),true,deadmob);
 					}
 				}
 				if(!CMLib.flags().isCloaked(deadmob))
 				{
 					for(int i=0;i<channels2.size();i++)
 						if((msg.tool() instanceof MOB))
-							CMLib.commands().postChannel(channels2.get(i),deadmob.clans(),L("@x1 was just killed.",deadmob.Name()),true);
+							CMLib.commands().postChannel(channels2.get(i),deadmob.clans(),L("@x1 was just killed.",deadmob.Name()),true,deadmob);
 				}
 			}
 			if(msg.tool() instanceof MOB)

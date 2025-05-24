@@ -268,11 +268,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		forceInternalCommand(mob,"Channel",Boolean.valueOf(systemMsg),channelName,message);
 	}
 
-	protected MOB nonClanTalkerM = null;
 	protected Room talkLocationR = null;
 
 	@Override
-	public void postChannel(final String channelName, final Iterable<Pair<Clan,Integer>> clanList, final String message, final boolean systemMsg)
+	public void postChannel(final String channelName, final Iterable<Pair<Clan,Integer>> clanList, final String message, final boolean systemMsg, final MOB mob)
 	{
 		MOB talker = null;
 		boolean destroyTheTalker = false;
@@ -301,6 +300,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
 					talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
 					talker.setClan(P.first.clanID(),P.second.intValue());
+					talker.setSoulMate(mob);
 					for(;pc.hasNext();)
 					{
 						P = pc.next();
@@ -312,23 +312,26 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				// never destroy the clans factory mob!
 			}
 			else
-			if(nonClanTalkerM!=null)
-				talker=nonClanTalkerM;
-			else
 			{
-				talker=CMClass.getMOB("StdMOB"); // not factory because he lasts forever
+				talker=CMClass.getFactoryMOB(); // not factory because he lasts forever
 				talker.setName("^</B^>");
 				talker.setLocation(talkLocationR);
 				talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
 				talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
-				nonClanTalkerM=talker;
+				talker.setSoulMate(mob);
+				destroyTheTalker = true;
 			}
 			postChannel(talker,channelName,message,systemMsg);
 		}
 		finally
 		{
 			if (destroyTheTalker && (talker != null))
+			{
+				talker.basePhyStats().setDisposition(0);
+				talker.phyStats().setDisposition(0);
+				talker.setSoulMate(null);
 				talker.destroy();
+			}
 		}
 	}
 

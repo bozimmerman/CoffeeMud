@@ -2592,7 +2592,7 @@ public class DefaultClan implements Clan
 		}
 		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO, null);
 		for(int i=0;i<channels.size();i++)
-			CMLib.commands().postChannel(channels.get(i),channelSet,msg,true);
+			CMLib.commands().postChannel(channels.get(i),channelSet,msg,true,null);
 	}
 
 	private static final SearchIDList<Ability> emptyAbles =new CMUniqSortSVec<Ability>(1);

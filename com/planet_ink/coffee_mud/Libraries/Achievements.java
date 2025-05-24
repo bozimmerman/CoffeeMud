@@ -9051,7 +9051,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				else
 					name = mob.name();
 				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has completed the '@x2' @x3 achievement!",name,A.getDisplayStr(),A.getAgent().name().toLowerCase()),true);
+					CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has completed the '@x2' @x3 achievement!",name,A.getDisplayStr(),A.getAgent().name().toLowerCase()),true,mob);
 			}
 			final Award[] awardSet = A.getRewards();
 			if((A.getAgent() == Agent.CLAN)

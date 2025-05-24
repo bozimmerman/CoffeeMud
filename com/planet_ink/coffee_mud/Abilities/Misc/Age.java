@@ -1066,7 +1066,7 @@ public class Age extends StdAbility
 
 				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS, newMan);
 				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel(channels.get(i),newMan.clans(),L("@x1 has just been created.",newMan.Name()),true);
+					CMLib.commands().postChannel(channels.get(i),newMan.clans(),L("@x1 has just been created.",newMan.Name()),true,newMan);
 
 				if(liege != null)
 				{

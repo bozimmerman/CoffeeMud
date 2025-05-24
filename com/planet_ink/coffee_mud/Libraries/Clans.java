@@ -555,7 +555,7 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO, null);
 		for(int i=0;i<channels.size();i++)
-			CMLib.commands().postChannel(channels.get(i),clanRoles(),msg,true);
+			CMLib.commands().postChannel(channels.get(i),clanRoles(),msg,true,null);
 	}
 
 	@Override

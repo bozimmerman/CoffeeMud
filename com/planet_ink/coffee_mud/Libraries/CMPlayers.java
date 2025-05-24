@@ -1583,7 +1583,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			final String msgStr = CMLib.lang().fullSessionTranslation("@x1 has just been deleted.",name);
 			for(int i=0;i<channels.size();i++)
 			{
-				CMLib.commands().postChannel(channels.get(i),deadMOB.clans(),msgStr,true);
+				CMLib.commands().postChannel(channels.get(i),deadMOB.clans(),msgStr,true,deadMOB);
 			}
 		}
 		CMLib.coffeeTables().bump(deadMOB,CoffeeTableRow.STAT_PURGES);

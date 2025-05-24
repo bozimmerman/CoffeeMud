@@ -2762,7 +2762,7 @@ public class DefaultSession implements Session
 				{
 					final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS, M);
 					for(int i=0;i<channels.size();i++)
-						CMLib.commands().postChannel(channels.get(i),M.clans(),L("@x1 has logged out",name),true);
+						CMLib.commands().postChannel(channels.get(i),M.clans(),L("@x1 has logged out",name),true,mob);
 				}
 				if(!M.isAttributeSet(Attrib.PRIVACY))
 					CMLib.login().notifyFriends(M,L("^X@x1 has logged off.^.^?",M.Name()));
@@ -3212,7 +3212,7 @@ public class DefaultSession implements Session
 					{
 						final List<String> channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.ACCOUNTLOGOFFS, M2);
 						for(int i=0;i<channels2.size();i++)
-							CMLib.commands().postChannel(channels2.get(i),null,L("Account @x1 has logged off.",acct.getAccountName()),true);
+							CMLib.commands().postChannel(channels2.get(i),null,L("Account @x1 has logged off.",acct.getAccountName()),true,M);
 					}
 				}
 				catch(final Exception e)

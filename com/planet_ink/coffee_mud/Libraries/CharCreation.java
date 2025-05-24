@@ -1601,7 +1601,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 						if((mob==null)||(!CMLib.flags().isCloaked(mob)))
 						{
 							for(int i=0;i<channels.size();i++)
-								CMLib.commands().postChannel(channels.get(i),null,L("Account @x1 has logged on.",loginObj.acct.getAccountName()),true);
+								CMLib.commands().postChannel(channels.get(i),null,L("Account @x1 has logged on.",loginObj.acct.getAccountName()),true,mob);
 						}
 					}
 				}
@@ -4003,7 +4003,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		CMLib.database().DBUpdatePlayer(mob);
 		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS, mob);
 		for(int i=0;i<channels.size();i++)
-			CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has just been created.",mob.Name()),true);
+			CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has just been created.",mob.Name()),true,mob);
 		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_NEWPLAYERS);
 		if(isExpired(mob.playerStats().getAccount(),session,mob))
 		{
@@ -4366,7 +4366,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(!CMLib.flags().isCloaked(mob))
 		{
 			for(int i=0;i<channels.size();i++)
-				CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has logged on.",mob.Name()),true);
+				CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has logged on.",mob.Name()),true,mob);
 		}
 		for(final Pair<Clan,Integer> clan : mob.clans())
 			clan.first.updateClanPrivileges(mob);
