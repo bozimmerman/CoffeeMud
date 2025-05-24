@@ -1660,7 +1660,7 @@ var MXP = function(sipwin)
 					var newFrame = framechoices[name];
 					var dests = this.dests;
 					error.call = function() {
-						sipwin.htmlBuffer += "<BR></FONT>";
+						sipwin.htmlBuffer += "<BR>";
 						sipwin.flushWindow();
 						if(dests.length > 0)
 							sipwin.window = dests.pop(); // the text window
