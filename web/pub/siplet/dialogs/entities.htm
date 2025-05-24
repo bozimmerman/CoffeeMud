@@ -30,8 +30,9 @@
 	</a>
 </TD></TR>
 <TR><TD WIDTH=20%>MXP Elements:
-	<a ID="ENTITIESMXPLOAD" href="javascript:document.getElementById('ENTITIESROOT').tryloadmxp();">
-		<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;visibility:hidden;" 
+	<a href="javascript:document.getElementById('ENTITIESROOT').tryloadmxp();">
+		<TABLE ID="ENTITIESMXPLOAD" WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  
+			style="cursor:hand;display:inline;visibility:visible;" 
 			ONCLICK="document.getElementById('ENTITIESROOT').tryloadmxp();" 
 			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
 		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
@@ -93,6 +94,11 @@ ${
 			}
 		};
 		root.entityfieldchange = function() {
+			if((mxpField.value.trim().length == 0)
+			&&(window.currentSiplet !== null))
+				loadbutt.style.visibility = 'visible';
+			else
+				loadbutt.style.visibility = 'hidden';
 			if(dd.selectedIndex<0)
 			{
 				if(mxpField.value != ogmxp)
@@ -218,6 +224,48 @@ ${
 			stext.style.backgroundColor = 'white';
 			delbutt.style.visibility='hidden';
 		};
+		
+		root.tryloadmxp = function() {
+			var newMXP = '';
+			if(window.currentSiplet !== null)
+			{
+				for(var key in window.currentSiplet.mxp.elements)
+				{
+					var elem = window.currentSiplet.mxp.elements[key];
+					if(key in window.defElements)
+					{
+						var base = window.defElements[key];
+						if(elem.sameAs(base))
+							continue;
+					}
+					newMXP += '<' + '!ELEMENT ' + elem.name + ' ';
+					if((elem.definition.trim()==0)
+					||((elem.bitmap && MXPBIT.COMMAND)>0))
+						newMXP +='EMPTY ';
+					else
+						newMXP += '"' + elem.definition + '" ';
+					if(elem.attributes)
+						newMXP +='ATT="'+elem.attributes+'" ';
+					if(elem.flag)
+						newMXP +='FLAG="'+elem.flag+'" ';
+					if(elem.tag)
+						newMXP +='TAG="'+elem.tag+'" ';
+					if((elem.bitmap && MXPBIT.OPEN)>0)
+						newMXP += 'OPEN ';
+					newMXP = newMXP.trim() + '>\n';
+				}
+			}
+			if(newMXP.length==0)
+				window.alert('No non-standard tags found.');
+			else
+				mxpField.value = newMXP;
+		};
+		
+		if((mxpField.value.trim().length == 0)
+		&&(window.currentSiplet !== null))
+			loadbutt.style.visibility = 'visible';
+		else
+			loadbutt.style.visibility = 'hidden';
 	} else
 		setTimeout(fixentitiespage,10);
 };setTimeout(fixentitiespage,10);

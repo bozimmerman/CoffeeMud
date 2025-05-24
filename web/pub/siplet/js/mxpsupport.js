@@ -44,13 +44,21 @@ var MXPElement = function(theName, theDefinition, theAttributes, theFlag, theBit
 	this.attributeValues = null;
 	this.alternativeAttributes	= null;
 	this.text = null;
-	this.dests = [];
 	
 	if (((this.bitmap & MXPBIT.COMMAND)==0) 
 	&& (theDefinition.toUpperCase().indexOf("&TEXT;") >= 0))
 		this.bitmap = this.bitmap | MXPBIT.NEEDTEXT;
 	if((this.flag != null) && (this.flag.length > 0)) 
 		this.bitmap = this.bitmap | MXPBIT.NEEDTEXT;
+
+	this.sameAs = function(x)
+	{
+		return this.name == x.name
+			&& this.definition == x.definition
+			&& this.attributes == x.attributes
+			&& this.flag == x.flag
+			&& this.bitmap == x.bitmap;
+	}
 	
 	this.copyOf = function() 
 	{
@@ -1281,13 +1289,14 @@ var MXP = function(sipwin)
 			if(L.name in this.elements)
 				delete this.elements[L.name];
 			this.elements[L.name]= L;
+			L.tag = tag;
 			if (isNumber(tag)
 			&& (Number(tag) > 19) && (Number(tag) < 100))
 			{
 				var tagNum = Number(tag);
 				if (tagNum in this.tags)
 					delete this.tags[tagNum];
-				tags[tagNum] = L;
+				this.tags[tagNum] = L;
 			}
 			return;
 		}
