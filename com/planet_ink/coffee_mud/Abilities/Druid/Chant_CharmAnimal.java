@@ -195,6 +195,7 @@ public class Chant_CharmAnimal extends Chant
 		super.unInvoke();
 
 		if((canBeUninvoked())
+		&&(mob!=null)
 		&&(!mob.amDead())
 		&&(mob.location()!=null))
 		{
