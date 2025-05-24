@@ -1256,7 +1256,7 @@ var MXP = function(sipwin)
 			var uname = name.toUpperCase().trim();
 			if((uname in this.elements) && (this.defBitmap == 0))
 			{
-				if((this.elements[uname].bitmap&MXPBIT.NOOVERRIDE)==0)
+				if((this.elements[uname].bitmap&MXPBIT.NOOVERRIDE)>0)
 					return;
 			}
 			if ((delflag != null) && (name in this.elements))
@@ -1548,8 +1548,8 @@ var MXP = function(sipwin)
 							delete this.frames[name];
 						}
 					}
-					newTopWindow.appendChild(titleBar);
 					newTopWindow.appendChild(contentWindow);
+					newTopWindow.appendChild(titleBar);
 					if(action.toUpperCase() =='REDIRECT')
 						sipwin.window = contentWindow;
 					sipwin.topWindow.appendChild(newTopWindow);
@@ -1660,6 +1660,7 @@ var MXP = function(sipwin)
 					var newFrame = framechoices[name];
 					var dests = this.dests;
 					error.call = function() {
+						sipwin.htmlBuffer += "<BR></FONT>";
 						sipwin.flushWindow();
 						if(dests.length > 0)
 							sipwin.window = dests.pop(); // the text window

@@ -63,12 +63,14 @@ var PLUGINS = function(sipwin)
 	
 	this.postEvent = function(event) {
 		for(var k in this.framesMap)
-			this.framesMap[k].contentWindow.postMessage({ type: 'message', payload: event}, '*');
+			if(this.framesMap[k].contentWindow)
+				this.framesMap[k].contentWindow.postMessage({ type: 'message', payload: event}, '*');
 	};
 	
 	this.postEventToPlugin = function(plugin, event) {
 		if(plugin in this.framesMap)
-			this.framesMap[plugin].contentWindow.postMessage({ type: 'message', payload: event}, '*');
+			if(this.framesMap[plugin].contentWindow)
+				this.framesMap[plugin].contentWindow.postMessage({ type: 'message', payload: event}, '*');
 	}
 	
 	this.processMessage = function(sipwin, pluginName, data) {

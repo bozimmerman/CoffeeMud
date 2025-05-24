@@ -677,6 +677,8 @@ function SipletWindow(windowName)
 	
 	this.submitInput = function(value)
 	{
+		if((value === undefined) || (val == null))
+			return;
 		this.displayText(value);
 		value = this.fixVariables(value);
 		this.wsocket.send(value+'\n');
@@ -1004,6 +1006,8 @@ function AddNewSipletTabByPB(which)
 		siplet.tabTitle = pb.user + '@' + pb.name + ' ('+pb.port+')';
 	siplet.pb = pb;
 	siplet.pbwhich = ogwhich;
+	boxFocus();
+	return siplet;
 }
 
 function AddNewSipletTab(url)
@@ -1052,6 +1056,7 @@ function SetCurrentTab(which)
 			}
 		}
 	}
+	boxFocus();
 }
 
 function CloseAllSiplets()
@@ -1066,6 +1071,7 @@ function CloseAllSiplets()
 function AutoConnect()
 {
 	AddNewSipletTabByPB(getConfig('/phonebook/auto','g0'));
+	boxFocus();
 }
 
 function PBSameAs(pb1, pb2)
