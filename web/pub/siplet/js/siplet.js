@@ -677,7 +677,7 @@ function SipletWindow(windowName)
 	
 	this.submitInput = function(value)
 	{
-		if((value === undefined) || (val == null))
+		if((value === undefined) || (value == null))
 			return;
 		this.displayText(value);
 		value = this.fixVariables(value);
