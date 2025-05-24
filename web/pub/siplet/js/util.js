@@ -146,6 +146,32 @@ function escapeHTML(s)
 		.replace(/'/g, '&#39;');
 }
 
+function extractUnclosedFontTags(span, htmlBuffer) {
+	if(!htmlBuffer)
+		return '';
+	var w = '';
+	var x = htmlBuffer.lastIndexOf("<FONT");
+	var y = htmlBuffer.lastIndexOf("</FONT");
+	if(y<x)
+		w += htmlBuffer.substr(x,htmlBuffer.indexOf('>',x)-x+1);
+	var x1 = htmlBuffer.lastIndexOf("<A ");
+	var y1 = htmlBuffer.lastIndexOf("</A>");
+	if(y1<x1)
+	{
+		if(x>=0)
+		{
+			if(x<x1)
+				w += htmlBuffer.substr(x1,htmlBuffer.indexOf('>',x1)-x1+1);
+			else
+				w = htmlBuffer.substr(x1,htmlBuffer.indexOf('>',x1)-x1+1) + w;
+		}
+		else
+			w = htmlBuffer.substr(x1,htmlBuffer.indexOf('>',x1)-x1+1);
+		
+	}
+	return w;
+}
+
 function populateDivFromUrl(div, url, callback) 
 {
 	var xhr = new XMLHttpRequest();

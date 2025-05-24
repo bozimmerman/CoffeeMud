@@ -179,10 +179,19 @@ function SipletWindow(windowName)
 		{
 			var rescroll = this.window.scrollTop + this.window.clientHeight >= this.window.scrollHeight - 10;
 			var span = document.createElement('span');
-			span.style.cssText = this.lastStyle;
-			this.lastStyle = this.ansi.styleSheet();
-			span.innerHTML = this.htmlBuffer;
+			var reprocess = '';
+			if(this.mxp.openElements.length)
+			{
+				for(var i=0;i<this.mxp.openElements.length;i++)
+				{
+					var elem = this.mxp.openElements[i];
+					if((elem.bitmap & MXPBIT.HTML)>0)
+						reprocess += elem.rawText;
+				}
+			}
+			span.innerHTML = reprocess + this.htmlBuffer;
 			this.window.appendChild(span);
+			this.process(reprocess);
 			this.htmlBuffer='';
 			if(window.currentSiplet != me)
 			{
@@ -249,7 +258,6 @@ function SipletWindow(windowName)
 					me.textBuffer += stripHtmlTags(newText);
 					if(newText.indexOf('<BR>')>=0)
 					{
-						me.flushWindow();
 						me.triggerCheck();
 						while(me.textBuffer.length > 1024)
 						{
@@ -1031,6 +1039,14 @@ function AddNewSipletTab(url)
 	return siplet;
 }
 
+function SetCurrentTabByTab(me)
+{
+	for(var i=0;i<window.siplets.length;i++)
+		if(window.siplets[i].tab == me)
+			return SetCurrentTab(i);
+	return null;
+}
+
 function SetCurrentTab(which)
 {
 	window.currentSiplet=window.siplets[which];
@@ -1057,6 +1073,7 @@ function SetCurrentTab(which)
 		}
 	}
 	boxFocus();
+	return window.currentSiplet;
 }
 
 function CloseAllSiplets()

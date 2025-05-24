@@ -379,7 +379,9 @@ var MXP = function(sipwin)
 	this.defBitmap = 0;
 	this.reset = function()
 	{
-		this.elements = window.defElements;
+		this.elements = [];
+		for(var k in window.defElements)
+			this.elements[k] = window.defElements[k];
 		this.entities = GetGlobalEntities();
 		if(sipwin.pb && sipwin.pb.entities)
 			for(var k in sipwin.pb.entities)
@@ -762,8 +764,9 @@ var MXP = function(sipwin)
 						text += oldE.text;
 					this.openElements.splice(foundAt,1);
 				}
-				E.lastBackground = sipwin.ansi.lastBackground;
-				E.lastForeground = sipwin.ansi.lastForeground;
+				E.lastBackground = sipwin.ansi.background;
+				E.lastForeground = sipwin.ansi.foreground;
+				E.rawText = oldString;
 				this.openElements.push(E);
 				if ((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT) 
 				{
@@ -815,10 +818,7 @@ var MXP = function(sipwin)
 		||(oldString.toLowerCase() == definition.toLowerCase())
 		||(E.name==this.getFirstTag(definition))) // this line added for FONT exception
 			return definition;
-		if(E.lastForeground)
-			sipwin.ansi.lastForeground = E.lastForeground;
-		if(E.lastBackground)
-			sipwin.ansi.lastBackground = E.lastBackground;
+		sipwin.ansi.setColors(E.lastForeground, E.lastBackground);
 		return '\0'+definition;
 	};
 	
@@ -936,10 +936,10 @@ var MXP = function(sipwin)
 					&& (currentElement.name.toUpperCase() == "FONT"))
 					{
 						if (tag.toUpperCase() == "COLOR")
-							sipwin.ansi.lastForeground = val;
+							sipwin.ansi.setColors(val, null);
 						else
 						if (tag.toUpperCase() == "BACK")
-							sipwin.ansi.lastBackground = val;
+							sipwin.ansi.setColors(null, val);
 					}
 					buf = buf.substr(0,oldI) + val + buf.substr(oldI);
 					if ((val.toUpperCase()== oldValue.toUpperCase()) 
@@ -1052,7 +1052,7 @@ var MXP = function(sipwin)
 	{
 		var val = null;
 		if (tag.toLowerCase() == "lcc")
-			val = "color: " + sipwin.ansi.lastForeground + "; background-color: " + sipwin.ansi.lastBackground;
+			val = "color: " + sipwin.ansi.foreground + "; background-color: " + sipwin.ansi.background;
 		if ((val == null) && (E != null))
 			val = E.getAttributeValue(tag);
 		if ((val == null) && (E == null))
@@ -1090,10 +1090,10 @@ var MXP = function(sipwin)
 			if ((currentE != null) && (currentE.name.toUpperCase() == "FONT"))
 			{
 				if (tag.toUpperCase() == "COLOR")
-					sipwin.ansi.lastForeground = val;
+					sipwin.ansi.setColors(val, null);
 				else
 				if (tag.toUpperCase() == "BACK")
-					sipwin.ansi.lastBackground = val;
+					sipwin.ansi.setColors(null, val);
 			}
 			return val;
 		}
@@ -1161,7 +1161,8 @@ var MXP = function(sipwin)
 				}
 				E.setAttributeValue("STYLE", null);
 			}
-			
+			color = E.getAttributeValue("COLOR");
+			back = E.getAttributeValue("BACK");
 		}
 		else
 		if (tagName == "NOBR")
@@ -1508,10 +1509,11 @@ var MXP = function(sipwin)
 				&&(height != null))
 				{
 					var newTopWindow = document.createElement('div');
-					newTopWindow.style.cssText = "position:absolute;top:"+top+";left:"+left+";height:"+height+";width:"+width+";z-index:99;";
+					if(window.sipcounter === undefined) window.sipcounter=1;
+					newTopWindow.id = "WIN" + (window.sipcounter++);
+					newTopWindow.style.cssText = "position:absolute;top:"+top+";left:"+left+";height:"+height+";width:"+width+";";
 					newTopWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;";
 					newTopWindow.style.backgroundColor = 'darkgray';
-					newTopWindow.style.visibility = 'visible';
 					newTopWindow.style.color = 'black';
 					var titleBar;
 					var contentTop = "0px";
@@ -1530,7 +1532,7 @@ var MXP = function(sipwin)
 						titleBar.style.cssText = "position:absolute;top:0px;left:0px;height:0px;width:0px;";
 					}
 					var contentWindow = document.createElement('div');
-					contentWindow.style.cssText = "position:absolute;top:20px;left:0%;height:calc(100% - "+contentTop+");width:100%;";
+					contentWindow.style.cssText = "position:absolute;top:"+contentTop+"px;left:0%;height:calc(100% - "+contentTop+");width:100%;";
 					contentWindow.style.backgroundColor = 'black';
 					contentWindow.style.color = 'white';
 					newTopWindow.sprops = sprops;
@@ -1552,7 +1554,7 @@ var MXP = function(sipwin)
 					newTopWindow.appendChild(titleBar);
 					if(action.toUpperCase() =='REDIRECT')
 						sipwin.window = contentWindow;
-					sipwin.topWindow.appendChild(newTopWindow);
+					sipwin.topContainer.appendChild(newTopWindow);
 					this.frames[name] = newTopWindow;
 				}
 			}

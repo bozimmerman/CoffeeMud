@@ -124,7 +124,7 @@ function AddNewTab()
 		tab.style.position = 'relative';
 		var currentTab = tabTabs.length;
 		tab.onclick = function() {
-			SetCurrentTab(currentTab);
+			SetCurrentTabByTab(this);
 		};
 		if(tabTabs.length == 9)
 			tabRow.appendChild(tab);

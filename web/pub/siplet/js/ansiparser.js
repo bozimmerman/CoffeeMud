@@ -86,8 +86,8 @@ var ANSISTACK = function()
 		this.boldOn = false;
 		this.underlineOn = false;
 		this.italicsOn = false;
-		this.lastBackground = null;
-		this.lastForeground = null;
+		this.background = null;
+		this.foreground = null;
 	};
 	this.reset();
 		
@@ -115,7 +115,7 @@ var ANSISTACK = function()
 	{
 		if (this.fontOn)
 		{
-			this.lastBackground = ANSITABLES.defaultBackground;
+			this.background = ANSITABLES.defaultBackground;
 			// why does this fix anything?!
 			//this.lastForeground = ANSITABLES.defaultForeground;
 			this.fontOn = false;
@@ -136,12 +136,18 @@ var ANSISTACK = function()
 	
 	this.styleSheet = function()
 	{
-		return ('color:'+this.lastForeground+';')
+		return ('color:'+this.foreground+';')
 		+(this.italicsOn?'font-style: italic;':'')
 		+(this.underlineOn?'text-decoration: underline;':'')
 		+(this.blinkOn?'animation: blinker 1s linear infinite;':'')
-		+((this.lastBackground)?('background-color:'+this.lastBackground+';'):'');
+		+((this.background)?('background-color:'+this.background+';'):'');
 	}
+
+	this.setColors = function(fg, bg)
+	{
+		if(fg) this.foreground = fg;
+		if(bg) this.background = bg;
+	};
 
 	this.process = function(dat)
 	{
@@ -301,21 +307,20 @@ var ANSISTACK = function()
 				}
 				if ((background != null) || (foreground != null))
 				{
-					if (this.lastBackground == null)
-						this.lastBackground = ANSITABLES.defaultBackground;
-					if (this.lastForeground == null)
-						this.lastForeground = ANSITABLES.defaultForeground;
+					if (this.background == null)
+						this.background = ANSITABLES.defaultBackground;
+					if (this.foreground == null)
+						this.foreground = ANSITABLES.defaultForeground;
 					if (background == null)
-						background = this.lastBackground;
+						background = this.background;
 					if (foreground == null)
-						foreground = this.lastForeground;
+						foreground = this.foreground;
 
-					if ((this.lastBackground != background) 
-					|| (this.lastForeground != foreground))
+					if ((this.background != background) 
+					|| (this.foreground != foreground))
 					{
 						html += this.fontOff();
-						this.lastBackground = background;
-						this.lastForeground = foreground;
+						this.setColors(foreground, background);
 						this.fontOn = true;
 						html += '<FONT STYLE="' + this.styleSheet() + '">'; 
 					}
