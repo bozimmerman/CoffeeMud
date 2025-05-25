@@ -69,5 +69,18 @@ in scripts in the form '&amp;varname;'.</LI>
 <tr><td style="font-family:monospace;">win.sendMSDP(str,str)</td><td>Send msdp json doc str</td></tr>
 </tbody>
 </table>
+<h3>Special events</h3>
+Scripts can also listen for special events from GMCP or MSDP.
+<pre>
+win.addEventListener('gmcp', function(e) {
+	console.log('Got GMCP command ' + e.command + ' with data ' + JSON.stringify(e.data));
+});
+win.sendGMCP("core_hello", {"client":"Siplet","version":''+win.siplet.VERSION_MAJOR});
+</pre>
+<pre>
+win.addEventListener('msdp', function(e) {
+	console.log('Got MSDP data ' + JSON.stringify(e.data));
+});
+</pre>
 
 </DIV>

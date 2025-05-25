@@ -42,6 +42,7 @@ function SipletWindow(windowName)
 	this.timers = null;
 	this.activeTimers = [];
 	this.lastStyle = '';
+	this.listeners = {};
 
 	var me = this;
 	if(this.topWindow)
@@ -169,6 +170,7 @@ function SipletWindow(windowName)
 		this.triggers = null;
 		this.globalAliases = GetGlobalAliases();
 		this.aliases = null;
+		this.listeners = {};
 		this.resetTimers();
 		this.mxpFix();
 	};
@@ -346,6 +348,37 @@ function SipletWindow(windowName)
 		this.evalTriggerGroup(this.localTriggers());
 		if(this.plugins.triggers())
 			this.evalTriggerGroup(this.plugins.triggers());
+	};
+
+	this.addEventListener = function(type, func)
+	{
+		if(type && func)
+		{
+			if(!(type in this.listeners))
+				this.listeners[type] = [];
+			this.listeners[type].push(func);
+		}
+	};
+
+	this.triggerEvent = function(event)
+	{
+		if(event && event.type 
+		&& (event.type in this.listeners))
+		{
+			event.cancelBubble=false;
+			event.stopPropagation = function () { event.cancelBubble=true;};
+			event.preventDefault = function () { event.cancelBubble=true;};
+			var calls = this.listeners[event.type];
+			if(Array.isArray(calls))
+			{
+				for(var i=0;i<calls.length;i++)
+				{
+					calls[i](event);
+					if(event.cancelBubble)
+						break;
+				}
+			}
+		}
 	};
 
 	this.evalAliasGroup = function(aliases, txt)

@@ -121,6 +121,7 @@ var TELNET = function(sipwin)
 						subOptionData.splice(subOptionData.length-1);
 					var received = this.msdpReceive(subOptionData);
 					sipwin.plugins.postEvent({type: 'msdp',data:received});
+					sipwin.triggerEvent({type: 'msdp',data:received});
 				}
 			}
 			else
@@ -136,14 +137,12 @@ var TELNET = function(sipwin)
 						sipwin.plugins.postEvent({type: 'gmcp',command:'?', data:received});
 					else
 					{
-						var cmd = s.substring(0,x);
-						var jsonStr = s.substring(x+1).trim();
-						try {
-							var json = JSON.parse(jsonStr);
-							sipwin.plugins.postEvent({type: 'gmcp',command:cmd, data:json});
-						} catch(e) {
-							sipwin.plugins.postEvent({type: 'gmcp',command:cmd, data:jsonStr});
-						}
+						var cmd = received.substring(0,x);
+						var jsonStr = received.substring(x+1).trim();
+						var e = {type: 'gmcp', command:cmd, data:jsonStr};
+						try { e.data = JSON.parse(jsonStr); } catch(e) {}
+						sipwin.plugins.postEvent(e);
+						sipwin.triggerEvent(e);
 					}
 				}
 			}
