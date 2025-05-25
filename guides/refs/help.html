@@ -739,10 +739,6 @@
 			
 			<li> <a href="#PIXIE">PIXIE</a>
 			
-			<li> <a href="#PLANARVEIL">PLANARVEIL</a>
-			
-			<li> <a href="#PLANAR_VEIL">PLANAR_VEIL</a>
-			
 			<li> <a href="#PLAYERKILL">PLAYERKILL</a>
 			
 			<li> <a href="#POLITICS">POLITICS</a>
@@ -784,8 +780,6 @@
 			<li> <a href="#PUT">PUT</a>
 			
 			<li> <a href="#PUT_OUT">PUT_OUT</a>
-			
-			<li> <a href="#PVEIL">PVEIL</a>
 			
 			<li> <a href="#QUALIFY">QUALIFY</a>
 			
@@ -947,8 +941,6 @@
 			
 			<li> <a href="#SVIRFNEBLIN">SVIRFNEBLIN</a>
 			
-			<li> <a href="#SWIM">SWIM</a>
-			
 			<li> <a href="#SWITCH">SWITCH</a>
 			
 			<li> <a href="#TABAXI">TABAXI</a>
@@ -1024,8 +1016,6 @@
 			<li> <a href="#WAGON">WAGON</a>
 			
 			<li> <a href="#WAKE">WAKE</a>
-			
-			<li> <a href="#WANDS">WANDS</a>
 			
 			<li> <a href="#WEALTH">WEALTH</a>
 			
@@ -1484,7 +1474,7 @@
 			
 			<p>
 			<a name="CHANNEL"><B>CHANNEL</B></a>
-			<pre>Command : [CHANNEL] <BR>Usage   : [CHANNEL] [MESSAGE] <BR>Usage   : [CHANNEL] ,[SOCIAL] ([TARGET]) <BR>Usage   : [CHANNEL] LAST [NUMBER]/[MESSAGE] <BR>Usage   : [CHANNEL] SEARCH: [STRING] <BR>Example : [channel] hello everyone! <BR>Example : [channel] ,smile bob <BR>Example : [channel] ,does a high five! <BR>Example : [channel] last 30 <BR>Example : [channel] search: blah <BR>Short(s):  <BR>This command allows accessing a channel of the same name.  Channels are<BR>generally for global communication with all users online, although some<BR>channels will limit recipients by location or affiliation. The parameter is a<BR>simple message to send to everyone online. You can use a comma and a social<BR>name to use a social over the channel.  You can use a comma and an emote string<BR>to emote over the channel.  The "LAST" command can be used to view previous<BR>messages you may have missed.  Use the NO[CHANNEL] command to silence this<BR>channel and turn if off for you.  When turned off [CHANNEL] can turn it on<BR>again.[EXTRA] <BR>See also: CHANNELS, SOCIALS</pre>
+			<pre>Command : [CHANNEL] <BR>Usage   : [CHANNEL] [MESSAGE] <BR>Usage   : [CHANNEL] ,[SOCIAL] ([TARGET]) <BR>Usage   : [CHANNEL] LAST [NUMBER]/[MESSAGE] <BR>Usage   : [CHANNEL] SEARCH: [STRING] <BR>Usage   : [CHANNEL] UNDO <BR>Usage   : [CHANNEL] OFF <BR>Example : [channel] hello everyone! <BR>Example : [channel] ,smile bob <BR>Example : [channel] ,does a high five! <BR>Example : [channel] last 30 <BR>Example : [channel] search: blah <BR>Short(s):  <BR>This command allows accessing a channel of the same name.  Channels are<BR>generally for global communication with all users online, although some<BR>channels will limit recipients by location or affiliation. The parameter is a<BR>simple message to send to everyone online. You can use a comma and a social<BR>name to use a social over the channel.  You can use a comma and an emote string<BR>to emote over the channel.  The "LAST" command can be used to view previous<BR>messages you may have missed.  Use the NO[CHANNEL] command to silence this<BR>channel and turn if off for you.  When turned off [CHANNEL] can turn it on<BR>again.[EXTRA] <BR>[CHANNEL] OFF is the same as entering NO[CHANNEL] <BR>[CHANNEL] UNDO will remove the previous message from logs, if it's yours. <BR>See also: CHANNELS, SOCIALS</pre>
 			</P>
 			
 			<p>
@@ -2364,7 +2354,7 @@
 			
 			<p>
 			<a name="IGNORE"><B>IGNORE</B></a>
-			<pre>Command : IGNORE <BR>Usage   : IGNORE (ADD/REMOVE [PLAYER/ACCOUNT NAME]) <BR>Example : ignore <BR>Example : ignore list <BR>Example : ignore add bob <BR>Example : ignore remove bob <BR>Short(s):  <BR>This command allows the player to add or remove names from his or her ignored<BR>players list.  The ignored list consists of some number of other players by<BR>name.  A player will never receive channel messages from players on this list,<BR>nor will they receive any TELL messages from players on this list.</pre>
+			<pre>Command : IGNORE <BR>Usage   : IGNORE (ADD/REMOVE ([CATEGORY].)[PLAYER/ACCOUNT NAME]) <BR>Example : ignore <BR>Example : ignore list <BR>Example : ignore add bob <BR>Example : ignore add tell.bob <BR>Example : ignore remove bob <BR>Short(s):  <BR>This command allows the player to add or remove names from his or her ignored<BR>players list.  The ignored list consists of some number of other players by<BR>name.  A player will never receive channel messages from simple players on this<BR>list, nor will they receive any TELL messages from players on this list.  You<BR>can also, however, ignore only certain categories of messages from another<BR>player.  To do this, you can prefix the players name with a channel name, or<BR>one of MAIL, TELL, TEACH, or RIDE, followed by a period, and then the other<BR>player name.</pre>
 			</P>
 			
 			<p>
@@ -2888,16 +2878,6 @@
 			</P>
 			
 			<p>
-			<a name="PLANARVEIL"><B>PLANARVEIL</B></a>
-			<pre>SKILL_PLANARVEIL</pre>
-			</P>
-			
-			<p>
-			<a name="PLANAR_VEIL"><B>PLANAR_VEIL</B></a>
-			<pre>SKILL_PLANARVEIL</pre>
-			</P>
-			
-			<p>
 			<a name="PLAYERKILL"><B>PLAYERKILL</B></a>
 			<pre>Command : PLAYERKILL <BR>Usage   : PLAYERKILL <BR>Example : playerkill <BR>Short(s): PKILL PVP <BR>Toggles whether or not your character may kill, and be killed by other players.<BR> The area permitting, you may only kill another player when both your<BR>playerkill flag and the other players playerkill flags are both on.  If you do<BR>engage in combat with another player, you will not be permitted to logoff or<BR>turn off your playerkill flag for 5 minutes.</pre>
 			</P>
@@ -2964,7 +2944,7 @@
 			
 			<p>
 			<a name="PROMPT"><B>PROMPT</B></a>
-			<pre>Command : PROMPT <BR>Usage   : PROMPT ([NEW PROMPT STRING]) <BR>Example : prompt^ ^Nh%hhp^ m%mm^ v%vm^vN> <BR>Example : prompt default <BR>Short(s):  <BR>Display or change your prompt string.  Typing PROMPT DEFAULT will reset your<BR>prompt to the default setting.  You can enter PROMPT^ N to effectively turn<BR>"off" your prompt.  <BR>Valid embedded codes for custom prompts include: <BR>%h :  Current hits        %m :  Current mana        %v :  Current moves      <BR>%H :  Maximum hits        %M :  Maximum mana        %V :  Maximum moves      <BR>%p :  Actions rem/tick    %P :  Maximum action pts  %l :  % area visited     <BR>%x :  Current experience  %X :  Needed experience   %L :  % world visited    <BR>%g :  Money/Value         %G :  Amt+Name of money   %I :  Hide/invis. state  <BR>%a :  Alignment in %      %A :  Alignment as text   %@ :  The weather here   <BR>%w :  Weight encumbrance  %W :  Max carry-weight    %B :  Go to a new line   <BR>%c :  Item encumbrance    %C :  Max carry-items     %D :  Ammo remaining     <BR>%e :  Combatant name      %E :  Combatant state     %d :  Combat range       <BR>%t :  Time of day         %T :  Hour of the day     %ZL:  Area Med. level    <BR>%z :  Current area name   %r :  Room name           %R :  Room ID (ADMIN)    <BR>%y :  Common skill % prog %Y :  Comm.skill time/rem %u :  Skills on cooldown <BR>%Kh:  Tanks current hits  %Km:  Tanks current mana  %Kv:  Tanks curr. moves  <BR>%KH:  Tanks maximum hits  %KM:  Tanks maximum mana  %KV:  Tanks maxi. moves  <BR>%Ke:  Tanks name          %KE:  Tanks health        %j :  Group size/%J: max <BR><FONT COLOR=CYAN>MISC:</I></U></BLINK></B></FONT> <BR>%/ :  Begin/End combat-only section -- %\ :  Begin/End non-combat sect. <BR>%fFACTION NAME : Faction value as pct. %FfACTION NAME : Faction value as text <BR>%&lt;CONFIGFLAG   : Begin/end config sec. %&lt;CONFIGFLAG!  : Beg/end not-conf. sec <BR>%-STAT NAME    : One of the below: <BR>STRENGTH, WISDOM, etc..MAX STRENGTH, etc.. BASE STRENGTH, etc.., ATTACK,  <BR>ARMOR, WEIGHT, HEIGHT, LEVEL, HITS, MANA, MOVE, HUNGER, THIRST, FATIGUE,  <BR>STINK, HEAD, NECK, TORSO, ARMS, LEFT WRIST, WIELD, EYES, etc.. <BR></FONT><FONT COLOR=CYAN>COLORS:</I></U></BLINK></B></FONT>                </FONT><FONT COLOR=PURPLE^>P :  Dark Purple      </FONT><FONT COLOR=VIOLET^>p :  Light purple <BR></FONT><FONT COLOR=CYAN^>h :  Hit point color  </FONT><FONT COLOR=CYAN^>m :  Mana color       </FONT><FONT COLOR=CYAN^>v :  Movement color  <BR></I></U></BLINK></B></FONT^>N :  Normal color     </I></U></BLINK></B></FONT^>? :  Previous color   </FONT><FONT COLOR=LIGHTGREY^>W :  Grey <BR></FONT><FONT COLOR=WHITE^>w :  White            </FONT><FONT COLOR=LIGHTGREEN^>g :  Light green      </FONT><FONT COLOR=GREEN^>G :  Dark Green <BR></FONT><FONT COLOR=BLUE^>b :  Light blue       </FONT><FONT COLOR=#000099^>B :  Dark Blue        </FONT><FONT COLOR=RED^>r :  Light red <BR></FONT><FONT COLOR=#993300^>R :  Maroon           </FONT><FONT COLOR=YELLOW^>y :  Yellow           </FONT><FONT COLOR=#999966^>Y :  Dark yellow <BR></FONT><FONT COLOR=CYAN^>c :  Cyan             </FONT><FONT COLOR=DARKCYAN^>C :  Dark Cyan         <BR></I></U></BLINK></B></FONT>-----</FONT></pre>
+			<pre>Command : PROMPT <BR>Usage   : PROMPT ([NEW PROMPT STRING]) <BR>Example : prompt^ ^Nh%hhp^ m%mm^ v%vm^vN> <BR>Example : prompt default <BR>Short(s):  <BR>Display or change your prompt string.  Typing PROMPT DEFAULT will reset your<BR>prompt to the default setting.  You can enter PROMPT^ N to effectively turn<BR>"off" your prompt.  <BR>Valid embedded codes for custom prompts include: <BR>%h :  Current hits*       %m :  Current mana*       %v :  Current moves*     <BR>%H :  Maximum hits        %M :  Maximum mana        %V :  Maximum moves      <BR>%p :  Actions rem/tick    %P :  Maximum action pts  %l :  % area visited     <BR>%x :  Current experience  %X :  Needed experience   %L :  % world visited    <BR>%g :  Money/Value         %G :  Amt+Name of money   %I :  Hide/invis. state  <BR>%a :  Alignment in %      %A :  Alignment as text   %@ :  The weather here   <BR>%w :  Weight encumbrance  %W :  Max carry-weight    %B :  Go to a new line   <BR>%c :  Item encumbrance    %C :  Max carry-items     %D :  Ammo remaining     <BR>%e :  Combatant name      %E :  Combatant state     %d :  Combat range       <BR>%t :  Time of day         %T :  Hour of the day     %ZL:  Area Med. level    <BR>%z :  Current area name   %r :  Room name           %R :  Room ID (ADMIN)    <BR>%y :  Common skill % prog %Y :  Comm.skill time/rem %u :  Skills on cooldown <BR>%Kh:  Tanks current hits* %Km:  Tanks current mana* %Kv:  Tanks curr. moves* <BR>%KH:  Tanks maximum hits  %KM:  Tanks maximum mana  %KV:  Tanks maxi. moves  <BR>%Ke:  Tanks name          %KE:  Tanks health        %j :  Group size/%J: max <BR>* Supports adding another % after the letter to show percentage. <BR><FONT COLOR=CYAN>MISC:</I></U></BLINK></B></FONT> <BR>%/ :  Begin/End combat-only section -- %\ :  Begin/End non-combat sect. <BR>%fFACTION NAME : Faction value as pct. %FfACTION NAME : Faction value as text <BR>%&lt;CONFIGFLAG   : Begin/end config sec. %&lt;CONFIGFLAG!  : Beg/end not-conf. sec <BR>%-STAT NAME    : One of the below: <BR>STRENGTH, WISDOM, etc..MAX STRENGTH, etc.. BASE STRENGTH, etc.., ATTACK,  <BR>ARMOR, WEIGHT, HEIGHT, LEVEL, HITS, MANA, MOVE, HUNGER, THIRST, FATIGUE,  <BR>STINK, HEAD, NECK, TORSO, ARMS, LEFT WRIST, WIELD, EYES, etc.. <BR></FONT><FONT COLOR=CYAN>COLORS:</I></U></BLINK></B></FONT>                </FONT><FONT COLOR=PURPLE^>P :  Dark Purple      </FONT><FONT COLOR=VIOLET^>p :  Light purple <BR></FONT><FONT COLOR=CYAN^>h :  Hit point color  </FONT><FONT COLOR=CYAN^>m :  Mana color       </FONT><FONT COLOR=CYAN^>v :  Movement color  <BR></I></U></BLINK></B></FONT^>N :  Normal color     </I></U></BLINK></B></FONT^>? :  Previous color   </FONT><FONT COLOR=LIGHTGREY^>W :  Grey <BR></FONT><FONT COLOR=WHITE^>w :  White            </FONT><FONT COLOR=LIGHTGREEN^>g :  Light green      </FONT><FONT COLOR=GREEN^>G :  Dark Green <BR></FONT><FONT COLOR=BLUE^>b :  Light blue       </FONT><FONT COLOR=#000099^>B :  Dark Blue        </FONT><FONT COLOR=RED^>r :  Light red <BR></FONT><FONT COLOR=#993300^>R :  Maroon           </FONT><FONT COLOR=YELLOW^>y :  Yellow           </FONT><FONT COLOR=#999966^>Y :  Dark yellow <BR></FONT><FONT COLOR=CYAN^>c :  Cyan             </FONT><FONT COLOR=DARKCYAN^>C :  Dark Cyan         <BR></I></U></BLINK></B></FONT>-----</FONT></pre>
 			</P>
 			
 			<p>
@@ -3000,11 +2980,6 @@
 			<p>
 			<a name="PUT_OUT"><B>PUT_OUT</B></a>
 			<pre>To extinguish something that's on fire.  See help on the PUT command.</pre>
-			</P>
-			
-			<p>
-			<a name="PVEIL"><B>PVEIL</B></a>
-			<pre>SKILL_PLANARVEIL</pre>
 			</P>
 			
 			<p>
@@ -3408,11 +3383,6 @@
 			</P>
 			
 			<p>
-			<a name="SWIM"><B>SWIM</B></a>
-			<pre>Skill    : SWIM <BR>Usage    : SWIM [DIRECTION] <BR>Available: ALL <BR>Example  : swim e <BR>This skill allows the character to travel on a water surface.  The amount of<BR>weight being carried can affect this skill.</pre>
-			</P>
-			
-			<p>
 			<a name="SWITCH"><B>SWITCH</B></a>
 			<pre>Command : SWITCH <BR>Usage   : SWITCH [PLAYER] <BR>Example : switch joe <BR>Short(s):  <BR>Allows your player to switch sessions with another character on the same<BR>account.  If the other character is already logged on, then the two players<BR>will switch sessions/screens; the window that the switch player is typing in<BR>will now control the other character, and vice versa.  If the other character<BR>is NOT currently logged in, then this command will log the current player out<BR>and quickly re-log the other character in, while remaining in the same<BR>connected session.</pre>
 			</P>
@@ -3469,7 +3439,7 @@
 			
 			<p>
 			<a name="TIME"><B>TIME</B></a>
-			<pre>Time in CoffeeMud is divided into 6 "hours", each of which is about 10 real<BR>minutes long.  Hours in CoffeeMud are numbered from 0-5. Dawn is at hour 0,<BR>dusk is at hour 4, and night at hour 5. There are 20 mud "days" to each month,<BR>and 8 mud "months" to each year. The months are divided into four seasons.</pre>
+			<pre>Command : TIME <BR>Usage   : TIME <BR>Example : time <BR>Shows you the local time, date, and season where you are, as well as your<BR>birthday (which may not be on the local calendar). <BR>Local calendar information: <BR>The time here is divided into 6 hours, each of which is about 10 real minutes<BR>long.  Hours in CoffeeMud are numbered from 0-5. Dawn is at hour 0, day begins<BR>at 1, dusk is at hour 4, and night begins at hour 5. <BR>There are 24 mud days to each month, and 7 mud months to each year. The years<BR>are divided into four seasons of 1 months each. <BR></pre>
 			</P>
 			
 			<p>
@@ -3600,11 +3570,6 @@
 			<p>
 			<a name="WAKE"><B>WAKE</B></a>
 			<pre>Command : WAKE <BR>Usage   : WAKE ([TARGET NAME]) <BR>Example : wake <BR>Example : wake bob <BR>Short(s):  <BR>If your character is SLEEPing, this command will make them wake up and stand<BR>up.  If someone else is sleeping, this will wake them up.</pre>
-			</P>
-			
-			<p>
-			<a name="WANDS"><B>WANDS</B></a>
-			<pre>Skill    : Wands <BR>Available: Almost All <BR>Example  :  <BR>A wand is a holdable item that can be used to create magical affects. <BR> <BR>This skill allows one to effectively use an arcane wand or staff.  To invoke a<BR>wand or staff, it must first be held.  Then the magic word is spoken to the<BR>target.  For instance, if the magic word is `zuy`, you would enter the<BR>following to invoke your wand: sayto orc zuy.  Using SAYTO instead of SAY is<BR>important because SAY might target the wrong person or thing.  You can also use<BR>SAYTO NOBODY &lt;magic word> to make sure you aren't targeting anyone. <BR> <BR>If the spell on the wand requires extra parameters, then you can include those<BR>after the casting words.  For a wand of Summon, for instance, you might try:<BR>say zuy cityguard.  <BR>Wands generally require a small amount of mana to use, and less if the wand<BR>user is capable of learning the spell cast by the wand.</pre>
 			</P>
 			
 			<p>
