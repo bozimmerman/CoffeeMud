@@ -1470,12 +1470,27 @@ var MXP = function(sipwin)
 							siblingWindow.style.height  = 'calc('+siblingWindow.style.height+' - ' + newParentWindow.style.height + ')';
 							break;
 						}
-						newParentWindow.style.overflowX = 'hidden';
-						newParentWindow.style.overflowY = 'hidden';
-						newTitleWindow.style.overflowX = 'hidden';
-						newTitleWindow.style.overflowY = 'hidden';
-						newContentWindow.style.overflowX = 'hidden';
-						newContentWindow.style.overflowY = 'hidden';
+						for(var ww in [newParentWindow,newTitleWindow,newContentWindow])
+						{
+							ww.style.overflowX = 'hidden';
+							ww.style.overflowY = 'hidden';
+						}
+						if((scrolling!=null) && (scrolling.toLowerCase() == 'yes'))
+						{
+						    newContentWindow.style.overflowY = 'auto';
+						    newContentWindow.style.overflowX = 'auto';
+						}
+						else
+						if((scrolling!=null) && (scrolling.toLowerCase() == 'x'))
+						    newContentWindow.style.overflowX = 'auto';
+						else
+						{
+							if((scrolling!=null) && (scrolling.toLowerCase() == 'y'))
+							    newContentWindow.style.overflowY = 'auto';
+							newContentWindow.style.overflowWrap = 'break-word';
+							newContentWindow.style.wordWrap = 'break-word';
+							newContentWindow.style.whiteSpace = 'pre-wrap';
+						}
 						// how we can get the new windows real width
 						var titleBar;
 						if((title != null) && (title.trim().length>0))

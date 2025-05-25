@@ -43,8 +43,25 @@ function SipletWindow(windowName)
 	this.activeTimers = [];
 	this.lastStyle = '';
 	this.listeners = {};
-
+	this.overflow = getConfig('window/overflow','');
 	var me = this;
+	
+	this.fixOverflow = function()
+	{
+		if(!this.topContainer)
+			return;
+		var window = this.topContainer.firstChild; 
+	    if(this.overflow == '')
+	    	window.style.overflowX = 'auto';
+	    else
+	    {
+	    	window.style.overflowX = 'hidden';
+			window.style.overflowWrap = 'break-word';
+			window.style.wordWrap = 'break-word';
+			window.style.whiteSpace = 'pre-wrap';
+		}
+	};
+	
 	if(this.topWindow)
 	{
 		this.topWindow.onclick = function() { delayhidemenu(); boxFocus(); };
@@ -62,7 +79,8 @@ function SipletWindow(windowName)
 			o.style.left = '0%';
 		});
 	    this.window.style.overflowY = 'auto';
-	    this.window.style.overflowX = 'auto';
+    	this.window.style.overflowX = 'auto';
+    	this.fixOverflow();
 		this.plugins.reset();
 	}
 	
@@ -134,7 +152,7 @@ function SipletWindow(windowName)
 		this.mxp.defBitmap = 0; // normal operation
 	};
 	this.mxpFix();
-	
+
 	this.reset = function()
 	{
 		while (this.topWindow.children.length > 1) {
@@ -173,6 +191,7 @@ function SipletWindow(windowName)
 		this.listeners = {};
 		this.resetTimers();
 		this.mxpFix();
+		this.fixOverflow();
 	};
 	
 	this.htmlBuffer = '';
@@ -1217,14 +1236,17 @@ setTimeout(function() {
 		for(var i=0;i<window.siplets.length;i++)
 		{
 			var siplet = window.siplets[i];
-			siplet.width = getConfig('window/width',siplet.width);
-			siplet.height = getConfig('window/height',siplet.height);
-			siplet.maxLines = getConfig('window/lines',siplet.maxLines);
+			siplet.width = getConfig('window/width','80');
+			siplet.height = getConfig('window/height','25');
+			siplet.maxLines = getConfig('window/lines','5000');
+			siplet.overflow = getConfig('window/overflow','');
+			siplet.fixOverflow();
 		}
 	};
 	addConfigListener('window/width', updateSipletConfigs);
 	addConfigListener('window/height', updateSipletConfigs);
 	addConfigListener('window/lines', updateSipletConfigs);
+	addConfigListener('window/overflow', updateSipletConfigs);
 	var updateSipletWindows = function() {
 		for(var i=0;i<window.siplets.length;i++)
 		{
