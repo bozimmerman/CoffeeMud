@@ -1515,12 +1515,6 @@ var MXP = function(sipwin)
 						    newContentWindow.style.overflowY = 'auto';
 						    newContentWindow.style.overflowX = 'auto';
 						}
-						if(floating == null)
-						{
-							newContentWindow.onclick=function() {
-								//todo; delete and revert the window
-							}
-						}
 						if(action.toUpperCase() =='REDIRECT')
 							sipwin.window = newContentWindow;
 						this.frames[name] = newTitleWindow;
