@@ -360,7 +360,22 @@ function SipletWindow(windowName)
 		}
 	};
 
-	this.triggerEvent = function(event)
+	this.removeEventListener = function(type, func)
+	{
+		if(type && func)
+		{
+			if(!(type in this.listeners))
+				return;
+			var x = this.listeners[type].indexOf(func);
+			if(x<0)
+				return;
+			this.listeners[type].splice(x,1);
+			if(this.listeners[type].length==0)
+				delete this.listeners[type];
+		}
+	};
+
+	this.dispatchEvent = function(event)
 	{
 		if(event && event.type 
 		&& (event.type in this.listeners))
@@ -375,10 +390,13 @@ function SipletWindow(windowName)
 				{
 					calls[i](event);
 					if(event.cancelBubble)
-						break;
+						return;
 				}
 			}
-		}
+			delete event.stopPropagation;
+			delete event.preventDefault;
+		};
+		this.plugins.postEvent(event);
 	};
 
 	this.evalAliasGroup = function(aliases, txt)
