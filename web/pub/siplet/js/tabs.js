@@ -24,7 +24,7 @@ function configureTabs(obj)
 	tabSpacer = document.createElement('td');
 	tabSpacer.colSpan = 10;
 	tabSpacer.style = "border: 1px solid white; padding: 0;";
-	tabSpacer.innerHTML = '<FONT COLOR=LIGHTBLUE>&nbsp;&nbsp;<B>+</B></FONT>';
+	tabSpacer.innerHTML='';
 	tabSpacer.onclick = function() { 
 		if(window.siplets.length > 0)
 		{
@@ -77,6 +77,7 @@ function CloseTab(img)
 				break;
 			}
 		}
+	//'<FONT COLOR=LIGHTBLUE>&nbsp;&nbsp;<B>+</B></FONT>'
 	var tabRow = tab.parentNode;
 	tabRow.removeChild(tab);
 	var x = tabTabs.indexOf(tab);
@@ -88,6 +89,10 @@ function CloseTab(img)
 	if(tabTabs.length == 9)
 		tabRow.appendChild(tabSpacer); // re-add it
 	tabSpacer.colSpan = spacerSpan;
+	if(window.siplets.length == 0)
+		tabSpacer.innerHTML = '';
+	else
+		tabSpacer.innerHTML = '<FONT COLOR=LIGHTBLUE>&nbsp;&nbsp;<B>+</B></FONT>';
 }
 
 function AddNewTab()
@@ -131,6 +136,7 @@ function AddNewTab()
 		else
 			tabRow.insertBefore(tab,tabSpacer);
 		tabTabs.push(tab);
+		tabSpacer.innerHTML = '<FONT COLOR=LIGHTBLUE>&nbsp;&nbsp;<B>+</B></FONT>';
 		return tab;
 	}
 	return null;
