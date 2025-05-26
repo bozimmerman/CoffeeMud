@@ -483,6 +483,57 @@ public class Modify extends StdCommand
 			}
 		}
 		else
+		if(command.equalsIgnoreCase("ID"))
+		{
+			if (commands.size() < 4)
+			{
+				flunkRoomCmd(mob);
+				return;
+			}
+			Room R=mob.location();
+			final Area A = R.getArea();
+			final String oldID=R.roomID();
+			String newID=restStr.trim();
+			if(CMath.isInteger(newID))
+				newID=A.Name()+"#"+newID;
+			else
+			if(newID.startsWith("#") && CMath.isInteger(newID.substring(1)))
+				newID=A.Name()+newID;
+			else
+			if(newID.toLowerCase().startsWith(A.Name().toLowerCase()+"#")
+			&&(CMath.isInteger(newID.substring(A.Name().length()+1))))
+				newID=A.Name()+"#"+newID.substring(A.Name().length()+1);
+			else
+			{
+				mob.tell(L("'@x1' must start with its area name.",newID));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
+				return;
+			}
+			if(CMLib.map().getRoom(newID)==R)
+			{
+				mob.tell(L("Uh, well done?"));
+				return;
+			}
+			if(CMLib.map().getRoom(newID)!=null)
+			{
+				mob.tell(L("'@x1' is already being used by another room.",newID));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
+				return;
+			}
+			synchronized(CMClass.getSync("SYNC"+R.roomID()))
+			{
+				R=CMLib.map().getRoom(R);
+				if(CMLib.map().getRoom(newID)==R)
+				{
+					mob.tell(L("Uh, well done?"));
+					return;
+				}
+				mob.location().setRoomID(newID);
+				CMLib.database().DBReCreate(R,oldID);
+			}
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("There is something different about this place...\n\r"));
+		}
+		else
 		if(command.equalsIgnoreCase("NAME"))
 		{
 			if (commands.size() < 4)
