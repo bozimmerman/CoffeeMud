@@ -119,7 +119,6 @@ var ANSISTACK = function()
 			// why does this fix anything?!
 			this.foreground = ANSITABLES.defaultForeground;
 			this.fontOn = false;
-			return "</FONT>";
 		}
 		return "";
 	};
@@ -189,7 +188,7 @@ var ANSISTACK = function()
 						html += this.underlineOff();
 						html += this.fontOff();
 						html += this.italicsOff();
-						html += "<FONT COLOR=\""+this.foreground+"\" BACK=\""+this.background+"\">";
+						html += "</FONT><FONT COLOR=\""+this.foreground+"\" BACK=\""+this.background+"\">";
 					}
 					this.boldOn = false;
 					break;
@@ -243,7 +242,7 @@ var ANSISTACK = function()
 					html += this.underlineOff();
 					html += this.fontOff();
 					html += this.italicsOff();
-					html += "<FONT COLOR=\""+this.foreground+"\" BACK=\""+this.background+"\">";
+					html += "</FONT><FONT COLOR=\""+this.foreground+"\" BACK=\""+this.background+"\">";
 					break;
 				case 24:
 					html += this.underlineOff();
@@ -324,7 +323,7 @@ var ANSISTACK = function()
 						html += this.fontOff();
 						this.setColors(foreground, background);
 						this.fontOn = true;
-						html += '<FONT STYLE="' + this.styleSheet() + '">'; 
+						html += '</FONT><FONT STYLE="' + this.styleSheet() + '">'; 
 					}
 				}
 			}

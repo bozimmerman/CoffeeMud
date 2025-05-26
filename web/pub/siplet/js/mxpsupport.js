@@ -455,7 +455,7 @@ var MXP = function(sipwin)
 			else
 			if(this.textProcessor != null)
 			{
-				if(this.textProcessor.text.length < 4096)
+				if(this.textProcessor.text.length < 8192)
 					this.textProcessor.text += c;
 				return '';
 			}
@@ -815,10 +815,10 @@ var MXP = function(sipwin)
 				endHtml = text;
 			definition = endHtml;
 		}
-		if(definition.length > 8192) // safety fallout
-			return '';
 		if(this.textProcessor != null)
 		{
+			if(definition.length > 8192) // safety fallout
+				return '';
 			this.textProcessor.text += definition;
 			return '';
 		}
