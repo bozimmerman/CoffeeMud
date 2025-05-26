@@ -4471,10 +4471,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				startRoom = CMLib.map().getStartRoom(mob);
 				if(startRoom == null)
 					startRoom = getDefaultStartRoom(mob);
-				if(startRoom == null)
-					startRoom = CMLib.map().getRandomRoom();
 				if(startRoom != null)
 					mob.setStartRoom(startRoom);
+				if(startRoom == null)
+					startRoom = CMLib.map().getRandomRoom();
 			}
 		}
 		return this.finishLogin(session, mob, startRoom, resetStats);
