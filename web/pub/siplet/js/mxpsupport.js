@@ -1561,6 +1561,17 @@ var MXP = function(sipwin)
 					    contentWindow.style.overflowY = 'auto';
 					    contentWindow.style.overflowX = 'auto';
 					}
+					else
+					if((scrolling!=null) && (scrolling.toLowerCase() == 'x'))
+					    contentWindow.style.overflowX = 'auto';
+					else
+					{
+						if((scrolling!=null) && (scrolling.toLowerCase() == 'y'))
+						    contentWindow.style.overflowY = 'auto';
+						contentWindow.style.overflowWrap = 'break-word';
+						contentWindow.style.wordWrap = 'break-word';
+						contentWindow.style.whiteSpace = 'pre-wrap';
+					}
 					if(floating == null)
 					{
 						contentWindow.onclick=function() {
