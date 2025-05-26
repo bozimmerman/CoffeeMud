@@ -2763,21 +2763,21 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			final Exit exit=room.getExitInDir(d);
 			final Room room2=room.getRoomInDir(d);
-			StringBuilder Say=new StringBuilder("");
+			StringBuilder str=new StringBuilder("");
 			if(exit!=null)
-				Say=exit.viewableText(mob, room2);
+				str=exit.viewableText(mob, room2);
 			else
 			if((room2!=null)&&(mob.isAttributeSet(MOB.Attrib.SYSOPMSGS)))
-				Say.append(room2.roomID()+" via NULL");
-			if(Say.length()>0)
+				str.append(room2.roomID()+" via NULL");
+			if(str.length()>0)
 			{
 				Dir=CMStrings.padRightPreserve(CMLib.directions().getDirectionName(d,dirType),5);
 				if((mob.playerStats()!=null)
 				&&(room2!=null)
 				&&(mob.playerStats().hasVisited(room2)))
-					buf.append("^D^<EX^>" + Dir+"^</EX^>:^.^N ^d"+Say+"^.^N\n\r");
+					buf.append("^D^<EX^>" + Dir+"^</EX^>:^.^N ^d"+str+"^.^N\n\r");
 				else
-					buf.append("^U^<EX^>" + Dir+"^</EX^>:^.^N ^u"+Say+"^.^N\n\r");
+					buf.append("^U^<EX^>" + Dir+"^</EX^>:^.^N ^u"+str+"^.^N\n\r");
 			}
 		}
 		boolean noBoardableShips = false;
