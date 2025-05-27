@@ -20,6 +20,7 @@ if (isElectron)
 		this.port = parseInt(url.substr(x+6));
 		// Initialize TCP socket
 		this.socket = net.createConnection({ host: this.host, port: this.port }, () => {
+			this.socket.readyState = WebSocket.OPEN;
 			if (this.onopen) {
 				this.onopen(new Event('open'));
 			}
@@ -42,6 +43,7 @@ if (isElectron)
 			if (this.onclose) {
 				this.onclose(new Event('close'));
 			}
+			this.socket.readyState = WebSocket.CLOSED;
 		});
 	
 		this.send = function(data) {
@@ -54,6 +56,7 @@ if (isElectron)
 		this.close = function() {
 			if (this.socket) {
 				this.socket.end();
+				this.socket.readyState = WebSocket.CLOSED;
 			}
 		}
 	};

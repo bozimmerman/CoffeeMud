@@ -1,5 +1,6 @@
 window.configlisteners = {};
-window.config = localStorage.getItem('config1.1');
+window.sipConfigName = 'config1.1';
+window.config = localStorage.getItem(window.sipConfigName);
 if(window.config) 
 	window.config = JSON.parse(window.config);
 else
@@ -78,7 +79,7 @@ function getConfig(path, def)
 	if(def === undefined)
 		return null;
 	c[p] = def;
-	localStorage.setItem('config1', JSON.stringify(window.config));
+	localStorage.setItem(window.sipConfigName, JSON.stringify(window.config));
 	return def;
 }
 
@@ -94,7 +95,7 @@ function setConfig(path, val)
 		for(var i=0;i<lst.length;i++)
 			lst[i](path, val);
 	}
-	localStorage.setItem('config1', JSON.stringify(window.config));
+	localStorage.setItem(window.sipConfigName, JSON.stringify(window.config));
 }
 
 function addConfigListener(path, func)

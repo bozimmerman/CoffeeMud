@@ -103,6 +103,7 @@ function SipletWindow(windowName)
 		};
 		this.wsocket.onclose = function(event)  
 		{ 
+			me.flushWindow();
 			if(me.tab && me.tab.innerHTML.startsWith("Connecting"))
 				me.tab.innerHTML = 'Failed connection to ' + url;
 			me.plugins.postEvent({type: 'closesock',data:url});

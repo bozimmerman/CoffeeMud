@@ -575,6 +575,7 @@ var MXP = function(sipwin)
 				{
 					var s = this.cancelProcessing();
 					this.startParsing(c);
+					s = s.replaceAll('\0',''); // otherwise its endless
 					return s;
 				}
 				break;
@@ -853,16 +854,16 @@ var MXP = function(sipwin)
 	this.makeCloseTag = function(s)
 	{
 		var x = s.indexOf('><');
-		var post = '';
+		var pre = '';
 		if(x>0)
 		{
-			post = this.makeCloseTag(s.substr(x+1));
+			pre = this.makeCloseTag(s.substr(x+1));
 			s=s.substr(0,x+1);
 		}
 		s = this.getFirstTag(s);
 		if(s.length == 0)
-			return s;
-		return '</' + s + '>' + post;
+			return pre + s;
+		return pre + '</' + s + '>';
 	};
 
 	this.processAnyEntities = function(buf, currentElement)
@@ -1470,8 +1471,10 @@ var MXP = function(sipwin)
 							siblingWindow.style.height  = 'calc('+siblingWindow.style.height+' - ' + newParentWindow.style.height + ')';
 							break;
 						}
-						for(var ww in [newParentWindow,newTitleWindow,newContentWindow])
+						var ents = [newParentWindow,newTitleWindow,newContentWindow];
+						for(var w =0; w<ents.length;w++)
 						{
+							var ww = ents[w];
 							ww.style.overflowX = 'hidden';
 							ww.style.overflowY = 'hidden';
 						}

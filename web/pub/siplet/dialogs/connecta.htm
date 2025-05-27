@@ -181,11 +181,10 @@ ${
 			nameField.style.backgroundColor = (nameField.value.trim().length==0)?RED:'white';
 			hostField.style.backgroundColor = (hostField.value.trim().length==0)?RED:'white';
 			portField.style.backgroundColor = (portField.value.trim().length==0)?RED:'white';
-			//TODO: better validation: check port
-			// make sure name is unique from list
 			if((nameField.value.trim().length==0)
 			||(hostField.value.trim().length==0)
-			||(portField.value.trim().length==0))
+			||(portField.value.trim().length==0)
+			||(!isNumber(portField.value)))
 				return;
 			//mybpentry.account = portValue.accounts;
 			for(var i=0;i < phonebook.length;i++)
@@ -197,17 +196,15 @@ ${
 			mybpentry.name = nameField.value;
 			mybpentry.host = hostField.value;
 			mybpentry.port = portField.value;
-			
-			var pbnm = root.makephonebookname(mybpentry.user,mybpentry.host,mybpentry.port);
-			
 			mybpentry.accountName = acctField.value;
 			mybpentry.user = userField.value;
 			mybpentry.password = passField.value;
 			mybpentry.pb = true;
+			var pbnm = root.makephonebookname(mybpentry.user,mybpentry.name,mybpentry.port);
 			if((pbindex >= 0) && (pbindex < phonebook.length))
 			{
 				setConfig('/phonebook/dial', phonebook);
-				phbkField.options[phbkField.selectedIndex].text = root.makephonebookname(mybpentry.user,mybpentry.host,mybpentry.port);
+				phbkField.options[phbkField.selectedIndex].text = pbnm;
 				UpdateSipetTabsByPBIndex(pbindex);
 				root.fixtopdropdowns();
 			}
@@ -215,8 +212,7 @@ ${
 			{
 				phonebook.push(mybpentry);
 				setConfig('/phonebook/dial', phonebook);
-				var name = root.makephonebookname(mybpentry.user,mybpentry.name,mybpentry.port);
-				var newOption = new Option(name,''+(phonebook.length-1));
+				var newOption = new Option(pbnm,''+(phonebook.length-1));
 				newOption.selected=true;
 				phbkField.add(newOption);
 				newOption.selected=true;
